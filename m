@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9C795B960
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FDE95B95F
 	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 17:10:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sh9Rf-0007lT-6G; Thu, 22 Aug 2024 11:09:52 -0400
+	id 1sh9Rk-00082P-Ch; Thu, 22 Aug 2024 11:09:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1sh9RQ-0007dq-0z
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 11:09:36 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1sh9RW-0007xa-PX
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 11:09:43 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1sh9RI-00052O-H5
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 11:09:35 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2d3b595c18dso1547410a91.0
- for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 08:09:28 -0700 (PDT)
+ id 1sh9RP-00052U-Le
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 11:09:39 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2cd5d6b2581so690514a91.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 08:09:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724339367; x=1724944167; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1724339374; x=1724944174; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GeAwo6rJ9Ssp7fNXqJixt1EPPvNs6AeUb8bCCXYa7xY=;
- b=hB8yH1v1XsMIB+frIz8vnQpASVGzCH3uSy4Laj3zgqx4PE7PUVvnvKyGC7Bw88tGcj
- gbNM6x1LUqbzeYx20oO+GeiQ1qyuodwWQiUFfInTon3NOnLEv/2bjHfNtguhj4w3o9/w
- Tb+E0xMdbcydWHQgxYYHsEvCoHSPXUek4/wDJWD8tRY85CqClKdrCyP5iUcbXX3qSXvl
- o5WkvKtMWJT5m8o4tBE5hdW/qIODTjL+N9H8iBF5dqIP+RUF6wMDbe5HPmbbQQoyUIPJ
- 8Org8LkXVShYlnuQwZzJLlv23Rruqe5nBA9np5RIA427LF4AwlbcbQJrjfb8S5ANnuYP
- ulaw==
+ bh=izWLyVz2FVNcSSORRePgMUPNA6D0gLoIH3Mfk9kM1/8=;
+ b=aeAczvvT/GxjKbptPi7Gru02JlSH8ZufJJu9oO4AsvnoAls07O4zL2xYJzBtbLgnax
+ DrbAoChGDY0uGJ6TSo8dZBge7YqdfKXtIhGADcX7CvKlUSoSW83u9Nl0kBJNQC5B1teU
+ c/fl1nBNpo/KBZY+mQHf29mPg+VV5xK6Lw8IXXUeUaTV6VRxxLQtaSJL1h3FWAFycuF+
+ ZVkFmrWy2zNefEFWW9txWUflyjczn+NtYMw9gfhrDfV8etawFba4l6Bs2WhoBZhoRX9H
+ 0udcCEqpQECyJPnOuJlY0wWzK91VaBCmV2Y+daPOCFvW/9WWp9qtrw4jyNiUfqvybqXD
+ 3uWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724339367; x=1724944167;
+ d=1e100.net; s=20230601; t=1724339374; x=1724944174;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GeAwo6rJ9Ssp7fNXqJixt1EPPvNs6AeUb8bCCXYa7xY=;
- b=eq5rhUMZTQPajDbZ9HZjH0O62jFCIWtya+jGgEi3tHIOlnm9rRrL6XLogCSHcTDqC2
- T4VYXg6GaoIZIE8aCBFL33f1AbSYqd3hUIqSojy6whYUlbDxu1ZPEST8pEbBclrvvBOI
- DzXKKTsoddlNONan0zE6ujeRq+fj8FSUvq/PxuCYIGmnJYgc96GUVixSLWzW/aG53nj2
- +YI9w6+ivnbEjyN433yBYfmPwSH69itBltGD8yKeIjHCKGKSfNmojKxLj72FVaCH7B/l
- uIJTLLWjCnlNKO7VjBxy8U7CxntCAZkhenmwNs3gXzv+a4mbavZIX2PL54gs7t7kM3/D
- L3Mw==
-X-Gm-Message-State: AOJu0YykvI3R+eY2YdpTuaC7/mSEKqy7bouJ7tyurgB50mnwzjqVjRh8
- N9GiAjYUHLkZhXAOaAUPPd/FLHs1lWmqcjCci1EhGvysK6hDpvEATCP+yQ==
-X-Google-Smtp-Source: AGHT+IHTPFPRE9v35Z52EqGf1ZXU39olEwYHZBhKEzYW9SlscFqfSPhB8wCeUIhlzUDUnCsjDUtNqA==
-X-Received: by 2002:a17:90a:70c4:b0:2c9:5a71:1500 with SMTP id
- 98e67ed59e1d1-2d60a747c55mr5165797a91.0.1724339366847; 
- Thu, 22 Aug 2024 08:09:26 -0700 (PDT)
+ bh=izWLyVz2FVNcSSORRePgMUPNA6D0gLoIH3Mfk9kM1/8=;
+ b=w0lzwWrAplamOwXXhM+KLHcjWrFH3tklIUTNVt6FtdC7cGMlsSZclc9Cx05a3vP6EN
+ nhKzcRKbSroE9KAjSRZ0ljqp7FjbOY+hd5rHLwijwqTnyCM8OfcEUCeBEcor28UTvqVN
+ znj9bxXmE7Tfyzpsz0Zw9kg4h7Aikki4Cp31oeDrFBE+7zWiLzvz2qAUtPfVASrKFeQn
+ P2+sR+TTHptZwvDYLR5++mHx+ZfwRqNuASGHSlolBc/hYjPw37kernusnLbEn1tGRSYG
+ XABP68a24hmk0yp4efnwpXFNHDokmYXiQoc1MVsPLOzQOsUvB25/5+0qRL4muek9/nfP
+ ItQQ==
+X-Gm-Message-State: AOJu0YyqMoRgjUTB3u+7SXfPLc23etzqttztEBFp55jG1lIZTFhZOdWJ
+ IKKRFlDsRt+bDjHClYpMFwnhx5ufWb36GeVKCmnaQy09b7xGbEVVkqwJ8w==
+X-Google-Smtp-Source: AGHT+IHAh1yPpoMahcNChjTSTiZGqxHznp4ZblG7PnOWaTkJxVD46yrWRaioh9zh2MkS5CkkeV4B6w==
+X-Received: by 2002:a17:90b:3b45:b0:2cc:ff56:5be1 with SMTP id
+ 98e67ed59e1d1-2d5e99c52d1mr6633857a91.7.1724339373755; 
+ Thu, 22 Aug 2024 08:09:33 -0700 (PDT)
 Received: from localhost.localdomain ([103.103.35.175])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d613919fd2sm1991567a91.13.2024.08.22.08.09.20
+ 98e67ed59e1d1-2d613919fd2sm1991567a91.13.2024.08.22.08.09.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Aug 2024 08:09:26 -0700 (PDT)
+ Thu, 22 Aug 2024 08:09:33 -0700 (PDT)
 From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: graf@amazon.com, agraf@csgraf.de, stefanha@redhat.com, pbonzini@redhat.com,
  slp@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  mst@redhat.com, marcel.apfelbaum@gmail.com, berrange@redhat.com,
  philmd@linaro.org
-Subject: [PATCH v5 3/8] crypto: Introduce x509 utils
-Date: Thu, 22 Aug 2024 21:08:44 +0600
-Message-Id: <20240822150849.21759-4-dorjoychy111@gmail.com>
+Subject: [PATCH v5 4/8] tests/lcitool: Update libvirt-ci and add libcbor
+ dependency
+Date: Thu, 22 Aug 2024 21:08:45 +0600
+Message-Id: <20240822150849.21759-5-dorjoychy111@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240822150849.21759-1-dorjoychy111@gmail.com>
 References: <20240822150849.21759-1-dorjoychy111@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=dorjoychy111@gmail.com; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=dorjoychy111@gmail.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: 15
 X-Spam_score: 1.5
 X-Spam_bar: +
@@ -95,142 +96,280 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An utility function for getting fingerprint from X.509 certificate
-has been introduced. Implementation only provided using gnutls.
+libcbor dependecy is necessary for adding virtio-nsm and nitro-enclave
+machine support in the following commits. libvirt-ci has already been
+updated with the dependency upstream and this commit updates libvirt-ci
+submodule in QEMU to latest upstream. Also the libcbor dependency has
+been added to tests/lcitool/projects/qemu.yml.
 
 Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 ---
- crypto/meson.build          |  4 ++
- crypto/x509-utils.c         | 75 +++++++++++++++++++++++++++++++++++++
- include/crypto/x509-utils.h | 22 +++++++++++
- 3 files changed, 101 insertions(+)
- create mode 100644 crypto/x509-utils.c
- create mode 100644 include/crypto/x509-utils.h
+ .gitlab-ci.d/cirrus/macos-13.vars                     | 2 +-
+ .gitlab-ci.d/cirrus/macos-14.vars                     | 2 +-
+ scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml      | 1 +
+ scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml        | 1 +
+ tests/docker/dockerfiles/alpine.docker                | 1 +
+ tests/docker/dockerfiles/debian-amd64-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-arm64-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-armel-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-armhf-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-i686-cross.docker     | 1 +
+ tests/docker/dockerfiles/debian-mips64el-cross.docker | 1 +
+ tests/docker/dockerfiles/debian-mipsel-cross.docker   | 1 +
+ tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 1 +
+ tests/docker/dockerfiles/debian-s390x-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian.docker                | 1 +
+ tests/docker/dockerfiles/fedora.docker                | 1 +
+ tests/docker/dockerfiles/opensuse-leap.docker         | 3 ++-
+ tests/docker/dockerfiles/ubuntu2204.docker            | 1 +
+ tests/lcitool/libvirt-ci                              | 2 +-
+ tests/lcitool/projects/qemu.yml                       | 1 +
+ 20 files changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/crypto/meson.build b/crypto/meson.build
-index c46f9c22a7..735635de1f 100644
---- a/crypto/meson.build
-+++ b/crypto/meson.build
-@@ -24,6 +24,10 @@ crypto_ss.add(files(
-   'rsakey.c',
- ))
+diff --git a/.gitlab-ci.d/cirrus/macos-13.vars b/.gitlab-ci.d/cirrus/macos-13.vars
+index ac3fa3a847..b10b7f34de 100644
+--- a/.gitlab-ci.d/cirrus/macos-13.vars
++++ b/.gitlab-ci.d/cirrus/macos-13.vars
+@@ -11,6 +11,6 @@ MAKE='/opt/homebrew/bin/gmake'
+ NINJA='/opt/homebrew/bin/ninja'
+ PACKAGING_COMMAND='brew'
+ PIP3='/opt/homebrew/bin/pip3'
+-PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
++PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libcbor libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
+ PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+ PYTHON='/opt/homebrew/bin/python3'
+diff --git a/.gitlab-ci.d/cirrus/macos-14.vars b/.gitlab-ci.d/cirrus/macos-14.vars
+index 24cfec3b89..2bbab50ca0 100644
+--- a/.gitlab-ci.d/cirrus/macos-14.vars
++++ b/.gitlab-ci.d/cirrus/macos-14.vars
+@@ -11,6 +11,6 @@ MAKE='/opt/homebrew/bin/gmake'
+ NINJA='/opt/homebrew/bin/ninja'
+ PACKAGING_COMMAND='brew'
+ PIP3='/opt/homebrew/bin/pip3'
+-PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
++PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libcbor libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
+ PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+ PYTHON='/opt/homebrew/bin/python3'
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
+index 71a0f0c433..4fb3c7555f 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
+@@ -35,6 +35,7 @@ packages:
+   - libcacard-dev
+   - libcap-ng-dev
+   - libcapstone-dev
++  - libcbor-dev
+   - libcmocka-dev
+   - libcurl4-gnutls-dev
+   - libdaxctl-dev
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
+index d8de967b18..d79399caf3 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
+@@ -35,6 +35,7 @@ packages:
+   - libcacard-dev
+   - libcap-ng-dev
+   - libcapstone-dev
++  - libcbor-dev
+   - libcmocka-dev
+   - libcurl4-gnutls-dev
+   - libdaxctl-dev
+diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
+index 54b9721997..a0136181d3 100644
+--- a/tests/docker/dockerfiles/alpine.docker
++++ b/tests/docker/dockerfiles/alpine.docker
+@@ -45,6 +45,7 @@ RUN apk update && \
+         libaio-dev \
+         libbpf-dev \
+         libcap-ng-dev \
++        libcbor-dev \
+         libdrm-dev \
+         libepoxy-dev \
+         libffi-dev \
+diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
+index 136c3a79a1..5c5a753aca 100644
+--- a/tests/docker/dockerfiles/debian-amd64-cross.docker
++++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:amd64 \
+                       libcap-ng-dev:amd64 \
+                       libcapstone-dev:amd64 \
++                      libcbor-dev:amd64 \
+                       libcmocka-dev:amd64 \
+                       libcurl4-gnutls-dev:amd64 \
+                       libdaxctl-dev:amd64 \
+diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
+index 233f6ee1de..7724b5f7fb 100644
+--- a/tests/docker/dockerfiles/debian-arm64-cross.docker
++++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:arm64 \
+                       libcap-ng-dev:arm64 \
+                       libcapstone-dev:arm64 \
++                      libcbor-dev:arm64 \
+                       libcmocka-dev:arm64 \
+                       libcurl4-gnutls-dev:arm64 \
+                       libdaxctl-dev:arm64 \
+diff --git a/tests/docker/dockerfiles/debian-armel-cross.docker b/tests/docker/dockerfiles/debian-armel-cross.docker
+index 8476fc8cce..5e9c4002db 100644
+--- a/tests/docker/dockerfiles/debian-armel-cross.docker
++++ b/tests/docker/dockerfiles/debian-armel-cross.docker
+@@ -95,6 +95,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:armel \
+                       libcap-ng-dev:armel \
+                       libcapstone-dev:armel \
++                      libcbor-dev:armel \
+                       libcmocka-dev:armel \
+                       libcurl4-gnutls-dev:armel \
+                       libdaxctl-dev:armel \
+diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
+index f26385e0b9..d64c2a2cbd 100644
+--- a/tests/docker/dockerfiles/debian-armhf-cross.docker
++++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:armhf \
+                       libcap-ng-dev:armhf \
+                       libcapstone-dev:armhf \
++                      libcbor-dev:armhf \
+                       libcmocka-dev:armhf \
+                       libcurl4-gnutls-dev:armhf \
+                       libdaxctl-dev:armhf \
+diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
+index 3fe8ee623d..5b548c764b 100644
+--- a/tests/docker/dockerfiles/debian-i686-cross.docker
++++ b/tests/docker/dockerfiles/debian-i686-cross.docker
+@@ -95,6 +95,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:i386 \
+                       libcap-ng-dev:i386 \
+                       libcapstone-dev:i386 \
++                      libcbor-dev:i386 \
+                       libcmocka-dev:i386 \
+                       libcurl4-gnutls-dev:i386 \
+                       libdaxctl-dev:i386 \
+diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+index 2862785692..c375921c2d 100644
+--- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+@@ -94,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:mips64el \
+                       libcap-ng-dev:mips64el \
+                       libcapstone-dev:mips64el \
++                      libcbor-dev:mips64el \
+                       libcmocka-dev:mips64el \
+                       libcurl4-gnutls-dev:mips64el \
+                       libdaxctl-dev:mips64el \
+diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+index 0d559ae4ba..370f8d9c90 100644
+--- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
++++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+@@ -94,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:mipsel \
+                       libcap-ng-dev:mipsel \
+                       libcapstone-dev:mipsel \
++                      libcbor-dev:mipsel \
+                       libcmocka-dev:mipsel \
+                       libcurl4-gnutls-dev:mipsel \
+                       libdaxctl-dev:mipsel \
+diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+index 8c1dcec9cf..393d0300c6 100644
+--- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:ppc64el \
+                       libcap-ng-dev:ppc64el \
+                       libcapstone-dev:ppc64el \
++                      libcbor-dev:ppc64el \
+                       libcmocka-dev:ppc64el \
+                       libcurl4-gnutls-dev:ppc64el \
+                       libdaxctl-dev:ppc64el \
+diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
+index 72668e0315..cbe590080d 100644
+--- a/tests/docker/dockerfiles/debian-s390x-cross.docker
++++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:s390x \
+                       libcap-ng-dev:s390x \
+                       libcapstone-dev:s390x \
++                      libcbor-dev:s390x \
+                       libcmocka-dev:s390x \
+                       libcurl4-gnutls-dev:s390x \
+                       libdaxctl-dev:s390x \
+diff --git a/tests/docker/dockerfiles/debian.docker b/tests/docker/dockerfiles/debian.docker
+index 42bd0067d1..631fe6b671 100644
+--- a/tests/docker/dockerfiles/debian.docker
++++ b/tests/docker/dockerfiles/debian.docker
+@@ -41,6 +41,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev \
+                       libcap-ng-dev \
+                       libcapstone-dev \
++                      libcbor-dev \
+                       libcmocka-dev \
+                       libcurl4-gnutls-dev \
+                       libdaxctl-dev \
+diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
+index ecdefaff1a..a01c004cfa 100644
+--- a/tests/docker/dockerfiles/fedora.docker
++++ b/tests/docker/dockerfiles/fedora.docker
+@@ -61,6 +61,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                libbpf-devel \
+                libcacard-devel \
+                libcap-ng-devel \
++               libcbor-devel \
+                libcmocka-devel \
+                libcurl-devel \
+                libdrm-devel \
+diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
+index 66143621fe..751919c1ec 100644
+--- a/tests/docker/dockerfiles/opensuse-leap.docker
++++ b/tests/docker/dockerfiles/opensuse-leap.docker
+@@ -4,7 +4,7 @@
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
  
-+if gnutls.found()
-+  crypto_ss.add(files('x509-utils.c'))
-+endif
-+
- if nettle.found()
-   crypto_ss.add(nettle, files('hash-nettle.c', 'hmac-nettle.c', 'pbkdf-nettle.c'))
-   if hogweed.found()
-diff --git a/crypto/x509-utils.c b/crypto/x509-utils.c
-new file mode 100644
-index 0000000000..593eb8968b
---- /dev/null
-+++ b/crypto/x509-utils.c
-@@ -0,0 +1,75 @@
-+/*
-+ * X.509 certificate related helpers
-+ *
-+ * Copyright (c) 2024 Dorjoy Chowdhury <dorjoychy111@gmail.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * (at your option) any later version.  See the COPYING file in the
-+ * top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "crypto/x509-utils.h"
-+#include <gnutls/gnutls.h>
-+#include <gnutls/crypto.h>
-+#include <gnutls/x509.h>
-+
-+static const int qcrypto_to_gnutls_hash_alg_map[QCRYPTO_HASH_ALG__MAX] = {
-+    [QCRYPTO_HASH_ALG_MD5] = GNUTLS_DIG_MD5,
-+    [QCRYPTO_HASH_ALG_SHA1] = GNUTLS_DIG_SHA1,
-+    [QCRYPTO_HASH_ALG_SHA224] = GNUTLS_DIG_SHA224,
-+    [QCRYPTO_HASH_ALG_SHA256] = GNUTLS_DIG_SHA256,
-+    [QCRYPTO_HASH_ALG_SHA384] = GNUTLS_DIG_SHA384,
-+    [QCRYPTO_HASH_ALG_SHA512] = GNUTLS_DIG_SHA512,
-+    [QCRYPTO_HASH_ALG_RIPEMD160] = GNUTLS_DIG_RMD160,
-+};
-+
-+int qcrypto_get_x509_cert_fingerprint(uint8_t *cert, size_t size,
-+                                      QCryptoHashAlgorithm alg,
-+                                      uint8_t *result,
-+                                      size_t *resultlen,
-+                                      Error **errp)
-+{
-+    int ret;
-+    gnutls_x509_crt_t crt;
-+    gnutls_datum_t datum = {.data = cert, .size = size};
-+
-+    if (alg >= G_N_ELEMENTS(qcrypto_to_gnutls_hash_alg_map)) {
-+        error_setg(errp, "Unknown hash algorithm");
-+        return -1;
-+    }
-+
-+    if (result == NULL) {
-+        error_setg(errp, "No valid buffer given");
-+        return -1;
-+    }
-+
-+    gnutls_x509_crt_init(&crt);
-+
-+    if (gnutls_x509_crt_import(crt, &datum, GNUTLS_X509_FMT_PEM) != 0) {
-+        error_setg(errp, "Failed to import certificate");
-+        goto cleanup;
-+    }
-+
-+    ret = gnutls_hash_get_len(qcrypto_to_gnutls_hash_alg_map[alg]);
-+    if (*resultlen < ret) {
-+        error_setg(errp,
-+                   "Result buffer size %zu is smaller than hash %d",
-+                   *resultlen, ret);
-+        goto cleanup;
-+    }
-+
-+    if (gnutls_x509_crt_get_fingerprint(crt,
-+                                        qcrypto_to_gnutls_hash_alg_map[alg],
-+                                        result, resultlen) != 0) {
-+        error_setg(errp, "Failed to get fingerprint from certificate");
-+        goto cleanup;
-+    }
-+
-+    return 0;
-+
-+ cleanup:
-+    gnutls_x509_crt_deinit(crt);
-+    return -1;
-+}
-diff --git a/include/crypto/x509-utils.h b/include/crypto/x509-utils.h
-new file mode 100644
-index 0000000000..4210dfbcfc
---- /dev/null
-+++ b/include/crypto/x509-utils.h
-@@ -0,0 +1,22 @@
-+/*
-+ * X.509 certificate related helpers
-+ *
-+ * Copyright (c) 2024 Dorjoy Chowdhury <dorjoychy111@gmail.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * (at your option) any later version.  See the COPYING file in the
-+ * top-level directory.
-+ */
-+
-+#ifndef QCRYPTO_X509_UTILS_H
-+#define QCRYPTO_X509_UTILS_H
-+
-+#include "crypto/hash.h"
-+
-+int qcrypto_get_x509_cert_fingerprint(uint8_t *cert, size_t size,
-+                                      QCryptoHashAlgorithm hash,
-+                                      uint8_t *result,
-+                                      size_t *resultlen,
-+                                      Error **errp);
-+
-+#endif
+-FROM registry.opensuse.org/opensuse/leap:15.5
++FROM registry.opensuse.org/opensuse/leap:15.6
+ 
+ RUN zypper update -y && \
+     zypper install -y \
+@@ -46,6 +46,7 @@ RUN zypper update -y && \
+            libbz2-devel \
+            libcacard-devel \
+            libcap-ng-devel \
++           libcbor-devel \
+            libcmocka-devel \
+            libcurl-devel \
+            libdrm-devel \
+diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
+index 3a7de6a318..ecd5c4fd08 100644
+--- a/tests/docker/dockerfiles/ubuntu2204.docker
++++ b/tests/docker/dockerfiles/ubuntu2204.docker
+@@ -41,6 +41,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev \
+                       libcap-ng-dev \
+                       libcapstone-dev \
++                      libcbor-dev \
+                       libcmocka-dev \
+                       libcurl4-gnutls-dev \
+                       libdaxctl-dev \
+diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+index 789b4601bc..a8253ca565 160000
+--- a/tests/lcitool/libvirt-ci
++++ b/tests/lcitool/libvirt-ci
+@@ -1 +1 @@
+-Subproject commit 789b4601bce4e01f43fdb6ad4ce5ab4e46674440
++Subproject commit a8253ca5656c34c1d91f2c1170bd0cbf117358f1
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 252e871f80..35878951b6 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -42,6 +42,7 @@ packages:
+  - libc-static
+  - libcacard
+  - libcap-ng
++ - libcbor
+  - libcurl
+  - libdrm
+  - libepoxy
 -- 
 2.39.2
 
