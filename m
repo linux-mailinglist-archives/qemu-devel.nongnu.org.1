@@ -2,86 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1316B95BE8F
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 20:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8AD95BE99
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 20:57:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shCxR-0005DA-B0; Thu, 22 Aug 2024 14:54:53 -0400
+	id 1shD08-0003Aj-D6; Thu, 22 Aug 2024 14:57:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1shCxP-00051a-6S
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 14:54:51 -0400
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1shCxN-0004CN-49
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 14:54:50 -0400
-Delivered-To: bob.beckett@collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1724352876; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=YZTJahEXIWWmZmpWkMVi4QaJ6z88cZ8c4Xu6c9cA7GC85YQF/ylnP2uMV9BA10aBd4SH5bhr2W36r3swWsz+AhRB8auPnYCpYVKZ/9jBZUFjIxLZtHjdWGWo14PazPxfdxkDCLsDQkV/vtEMQX7DHlUPeniqZFsrB3xGa3VzOZ0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1724352876;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=0TeVr0CzxEOLcQqudq6qya+TLeNypH/sxqTL5gxtDzw=; 
- b=FdIeC6HNlBtOQckYplQf0qTaIHiyEzLkCwL6gQqrE3Mj+1ViH9CIyYkEJgokOQXlzcJCg78SozLiGqFcWbJexW3uixd02O+wgVg4p8oSAzc3TZblrf0KqiWbOYqfV3olTzvaOICIZHeInb6NOyEEiPNgWq2b6bgeojSVJNAKc7Y=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724352876; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=0TeVr0CzxEOLcQqudq6qya+TLeNypH/sxqTL5gxtDzw=;
- b=ftIQsZpfp8Nsr4jidtkde+5h8N42I59JyrPAlvv96wbT6JMV/6pPSl1J743a18pW
- aRk4paZWtbjZVyhs5GVmVCGNnW5/KgGBnEGpgLpY+WhOXdAII4T/eVvXzevQsdaGup3
- 69BIZG/wwifYWBzCKqZJeoIC2axg2Xr8Sd2w1IiU=
-Received: by mx.zohomail.com with SMTPS id 1724352873837722.7415751999997;
- Thu, 22 Aug 2024 11:54:33 -0700 (PDT)
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v17 13/13] virtio-gpu: Support Venus context
-Date: Thu, 22 Aug 2024 21:51:09 +0300
-Message-ID: <20240822185110.1757429-14-dmitry.osipenko@collabora.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240822185110.1757429-1-dmitry.osipenko@collabora.com>
-References: <20240822185110.1757429-1-dmitry.osipenko@collabora.com>
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1shD05-00033U-QD
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 14:57:37 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1shD02-0004ZH-8N
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 14:57:37 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-52efdf02d13so1656445e87.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 11:57:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1724353052; x=1724957852; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=EwqKo5OF7mFrEAuAgBAi12JIIbjG/XKy+C2LYbS52nc=;
+ b=aLvVEUDlChCFCAlnC5TESgXxdZMAdsBxEgejLs5L3CNZ1KSeq9msOVPVYr00aH+OXT
+ v6SmC1I6r90rFvws76FihYvvY/e72CUTXby5lLjmGNe+7Z4/+l2+7d9RLGKD6iAhbXEv
+ lUBnXPynITimHc24Ns9QD/qBELWk4Qre25MNmqwuo+31F374/zDtIfZZQwDglj6lcxiE
+ KhFnTScXX3mMFWU/nPzXpWwdjbGYlgRtWb1VntyjXQVb/gosFZOR5Abj6+BWTMmksbRS
+ b2l97OdD+/gJ2A/YuMQ9IVrHOTCrUKDbcv45x1F/OkwOYqYhNo6eGtv0ofMuqF246hIf
+ pEiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724353052; x=1724957852;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EwqKo5OF7mFrEAuAgBAi12JIIbjG/XKy+C2LYbS52nc=;
+ b=L+dLPegfgBVTAFu+CIWBG7X9vMGBPwZ514nWssucmM7VhZYE534DoLUHJgmpHMY4Ao
+ 63DKu/A1pojBmr7s08LcBe06Ff7lNdpmWoQqGzfKHbEk0gz3B8s944xIhQgGRl8JvL+t
+ rfpRtflzJ7KCzpzvcOlp2qPFV7gGtR1SZgOPRohddR3JSXXnDJa2A9giwhLGjpYaQPb4
+ DsO7YkYP9qfUoicFQiBN0XJxRlC+LaSWRjo7S18QyxV6QbMV66af7IK9xaI6sacrbBot
+ fM7aBl+jSjXxnbuXHldUJkhYp6TuLtwqri44zKbqh0yWMC8A1Ov2uJZODecZxfiZ20lp
+ f5GQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVm2AAhQxYLHEaVKw70HWL7KXF+uGHZjVFL8vvjpMc/mQCiqV1s0v+y3p3nvRK2H9aS1EpgMglz59Ap@nongnu.org
+X-Gm-Message-State: AOJu0Yx+dVDGGGoxkWcCKq7GPxFy48QdbWTDXLsF9a0FqPFecYNHCIxt
+ tg+LQngb84rkESl0bd8MtTTEici+F+Z9L6ZDUJQI6d5FbQqrg1tMUw8mlp9WYOU=
+X-Google-Smtp-Source: AGHT+IEkjNA5bVOF6ZQownTyztsxwEfmWsFYTucF71xT/+1oQ7HYd3layJhMmiLw1DBpOg4oU4BQUA==
+X-Received: by 2002:a05:6512:281c:b0:52c:c9e4:3291 with SMTP id
+ 2adb3069b0e04-5334fd64f4dmr2031935e87.60.1724353051625; 
+ Thu, 22 Aug 2024 11:57:31 -0700 (PDT)
+Received: from [192.168.200.25] (83.25.211.12.ipv4.supernova.orange.pl.
+ [83.25.211.12]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a868f2a1df5sm151883766b.68.2024.08.22.11.57.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 Aug 2024 11:57:31 -0700 (PDT)
+Message-ID: <02034817-3f31-42ca-ba5f-0333e7bd344f@linaro.org>
+Date: Thu, 22 Aug 2024 20:57:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] tests/functional: Convert Aarch64 SBSA-Ref avocado
+ tests
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20240822114146.86838-1-philmd@linaro.org>
+ <d8c744cf-0da1-42fc-92cc-f8bec8ca00e1@linaro.org>
+ <b3d054b9-4ede-489c-bca5-b61b046dea50@linaro.org>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Content-Language: pl-PL, en-GB
+Organization: Linaro
+In-Reply-To: <b3d054b9-4ede-489c-bca5-b61b046dea50@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,158 +103,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Antonio Caggiano <antonio.caggiano@collabora.com>
+On 22.08.2024 16:39, Philippe Mathieu-Daudé wrote:
+> On 22/8/24 16:06, Marcin Juszkiewicz wrote:
 
-Request Venus when initializing VirGL and if venus=true flag is set for
-virtio-gpu-gl device.
+>> Maybe for QEMU project this is a progress. For me it is moving tests 
+>> from working ones to "sorry, timeout, find out why" ones.
 
-Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
----
- docs/system/devices/virtio-gpu.rst | 11 +++++++++++
- hw/display/virtio-gpu-gl.c         |  2 ++
- hw/display/virtio-gpu-virgl.c      | 22 ++++++++++++++++++----
- hw/display/virtio-gpu.c            | 15 +++++++++++++++
- include/hw/virtio/virtio-gpu.h     |  3 +++
- 5 files changed, 49 insertions(+), 4 deletions(-)
+OK, problem was found (check my previous mail). Tests took 222s on
+Macbook with M1 Pro. Not looked yet how to enable skipped ones.
 
-diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
-index cb73dd799858..b7eb0fc0e727 100644
---- a/docs/system/devices/virtio-gpu.rst
-+++ b/docs/system/devices/virtio-gpu.rst
-@@ -71,6 +71,17 @@ representation back to OpenGL API calls.
- .. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
- .. _virglrenderer: https://gitlab.freedesktop.org/virgl/virglrenderer/
- 
-+Translation of Vulkan API calls is supported since release of `virglrenderer`_
-+v1.0.0 using `venus`_ protocol. ``Venus`` virtio-gpu capability set ("capset")
-+requires host blob support (``hostmem`` and ``blob`` fields) and should
-+be enabled using ``venus`` field. The ``hostmem`` field specifies the size
-+of virtio-gpu host memory window. This is typically between 256M and 8G.
-+
-+.. parsed-literal::
-+    -device virtio-gpu-gl,hostmem=8G,blob=true,venus=true
-+
-+.. _venus: https://gitlab.freedesktop.org/virgl/venus-protocol/
-+
- virtio-gpu rutabaga
- -------------------
- 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index e859c0dff055..7c0e448b4661 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -157,6 +157,8 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
- static Property virtio_gpu_gl_properties[] = {
-     DEFINE_PROP_BIT("stats", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_STATS_ENABLED, false),
-+    DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 5a881c58a11d..eedae7357f1a 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1128,6 +1128,11 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
-     }
- #endif
-+#if VIRGL_VERSION_MAJOR >= 1
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
-+    }
-+#endif
- 
-     ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
-     if (ret != 0) {
-@@ -1161,7 +1166,7 @@ static void virtio_gpu_virgl_add_capset(GArray *capset_ids, uint32_t capset_id)
- 
- GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
- {
--    uint32_t capset2_max_ver, capset2_max_size;
-+    uint32_t capset_max_ver, capset_max_size;
-     GArray *capset_ids;
- 
-     capset_ids = g_array_new(false, false, sizeof(uint32_t));
-@@ -1170,11 +1175,20 @@ GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
-     virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VIRGL);
- 
-     virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
--                              &capset2_max_ver,
--                              &capset2_max_size);
--    if (capset2_max_ver) {
-+                               &capset_max_ver,
-+                               &capset_max_size);
-+    if (capset_max_ver) {
-         virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VIRGL2);
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
-+                                   &capset_max_ver,
-+                                   &capset_max_size);
-+        if (capset_max_size) {
-+            virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VENUS);
-+        }
-+    }
-+
-     return capset_ids;
- }
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 6a9eb880ebbf..0d1de7dc398c 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1506,6 +1506,21 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
- #endif
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+#ifdef VIRGL_VERSION_MAJOR
-+    #if VIRGL_VERSION_MAJOR >= 1
-+        if (!virtio_gpu_blob_enabled(g->parent_obj.conf) ||
-+            !virtio_gpu_hostmem_enabled(g->parent_obj.conf)) {
-+            error_setg(errp, "venus requires enabled blob and hostmem options");
-+            return;
-+        }
-+    #else
-+        error_setg(errp, "old virglrenderer, venus unsupported");
-+        return;
-+    #endif
-+#endif
-+    }
-+
-     if (!virtio_gpu_base_device_realize(qdev,
-                                         virtio_gpu_handle_ctrl_cb,
-                                         virtio_gpu_handle_cursor_cb,
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 83232f4b4bfa..230fa0c4ee0a 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -99,6 +99,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_BLOB_ENABLED,
-     VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
-     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
-+    VIRTIO_GPU_FLAG_VENUS_ENABLED,
- };
- 
- #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -117,6 +118,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
- #define virtio_gpu_hostmem_enabled(_cfg) \
-     (_cfg.hostmem > 0)
-+#define virtio_gpu_venus_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
--- 
-2.45.2
 
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_alpine_linux_cortex_a57       OK
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_alpine_linux_max              SKIP
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_alpine_linux_max_pauth_impdef OK
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_alpine_linux_max_pauth_off    OK
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_alpine_linux_neoverse_n1      OK
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_edk2_firmware                 OK
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_openbsd73_cortex_a57          OK
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_openbsd73_max                 SKIP
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_openbsd73_max_pauth_impdef    SKIP
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_openbsd73_max_pauth_off       OK
+▶ 1/4 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_openbsd73_neoverse_n1         OK
+1/4 qemu:func-thorough+func-aarch64-thorough+thorough / func-aarch64-aarch64_sbsaref        OK                 222.88s   8 subtests passed
+
+> Sorry for the annoyance of switching from one framework to another
+> one :/ 
+
+Project wants to change framework so I am not against it. Just asking
+questions.
+
+> Are you using Linux on your Macbook with M1 Pro? I'm using
+> macOS and these tests currently don't work, so for me this is a
+> huge win.
+
+I am using Fedora Asahi Remix on this Macbook for over a year. Total use
+of MacOS was probably a few hours total (including waiting for MacOS
+updates to fetch).
 
