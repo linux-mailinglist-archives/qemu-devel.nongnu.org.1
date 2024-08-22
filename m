@@ -2,88 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A417895B031
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 10:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2105695B112
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 11:01:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sh38U-00067C-Pn; Thu, 22 Aug 2024 04:25:38 -0400
+	id 1sh3g8-00005G-OH; Thu, 22 Aug 2024 05:00:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sh38N-0005fr-Vj
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 04:25:31 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sh38J-00061r-Ln
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 04:25:31 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-20231aa8908so4819595ad.0
- for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 01:25:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724315126; x=1724919926;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ak9PVtm0xOUDnaFvLdvWza9j+CseOeqPaayHYoeyFwg=;
- b=WkpfESniFv8uOsoB7KgLx8Dupcc3YG+7nb7yDHAjbG9MoGDWk9p5tve3EwT7S3eps1
- RMplVEfLCKo61HWJOh1bDciiUYqEoZF8s3OxZ+wY/ctyT9p7+qmT5LgfCsbl2397ULKH
- 8AzQSXLWLiZk8vfEyeLNXn+GVwiy1LPpfpzhFLiZnzxmtGYZ4GZTGo4by5FecaFhTQpH
- yT34naNDX01gBrA9NfFTboAcFOVX1QeuF2DGkhMg9RIMCYN4d48yz+fg6j5l7fuzBFGU
- qFzfYSmSTJTeTsGvxtYdHqjGv2A0oVWAfYNwEfv6q6ThBaGvXizsTTAu8BhfsbPL9Jdx
- Az2g==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sh3g0-0008Vz-PI
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 05:00:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sh3fs-0003cE-7P
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 05:00:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1724317204;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=UzTUMLDxS1yZpFMfVMkTgmhCYUnd9PjpGV935hTAnLE=;
+ b=iXfYJi+wUodvkErdAPlqlURHLtGBqijYop9m5s2abfB4j2CEh5GI3Za3M8wUVSlqN4u7Tk
+ JkCMkwRj1SSUwJkMMSEgcE5VWEQSiDOWK//hQOL5wl0IpQQQWx1nbmLwGOKMIJEDsJZy1K
+ J1jn0xGQUppMunEFny/bSfuWFhGyOHk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-296-EQ2249TSN4O8pvrmnYk_xA-1; Thu, 22 Aug 2024 05:00:03 -0400
+X-MC-Unique: EQ2249TSN4O8pvrmnYk_xA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-428ea5b1479so3779815e9.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 02:00:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724315126; x=1724919926;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ak9PVtm0xOUDnaFvLdvWza9j+CseOeqPaayHYoeyFwg=;
- b=JOZW/9JYSrbtURsYRKgm4ulhKkoxB9pPCsbvrRfvSMkVlQA8ONHl4jqx4ACSiivTv4
- uGVGSq5Rj9OJ3+bzuH9j44/inJKkg+EOlEv/0RE3kwRO9YcYBLPdQdVghDw99QtipxrO
- sSm7CJc59yMfzhZKcGs7wPmq10Ev7MBzqKOYWkYjCgf8eKa83/62dI1OKGl46eIRNE6z
- IuuHgUfoF7mibhB3ALeiGkr6gUz79P80RZoHo1lnWltsHb1eB5jLtiexlCKGmqa/eRPl
- 92RzRTNbFmAiA8ju2hz/OL4zHiThlizb8KrbZH/g1uguTE1HeLx2LPqXMX4v7k4WuQ+O
- GDJA==
+ d=1e100.net; s=20230601; t=1724317202; x=1724922002;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=UzTUMLDxS1yZpFMfVMkTgmhCYUnd9PjpGV935hTAnLE=;
+ b=O5eJx1x25CQWE+LyURzHFyZobtsw/xumefvP1DKO1w7ybOpefDM3B5g/vjK7L2I30G
+ X86JhJoNSqnC6/yPV9n/rzjmnhsWwLpF+vdRix4qHhSV2q/+VLN1xKUaS9kh9vtzeMiT
+ SZXcje0CaosyuYY00UWjMxzB9OH8bV8tDj4eA1b+0LO+ET5HuYPh3n4e0jF2DqZG/A1P
+ NwGT9Vv4PgnJ/dI3idkhE32Z2Cv65muLe7S1GpBWJA3rwbBbUf+AXhKTiAAFOX/Wc9V1
+ wrV2K9pCKSClQ/6rxvydW7PAsgicO5vbSakz+c4nZ4/FIYlFBhnycLnozXC04nWRzQMq
+ U5zA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUHr888ItYmt9lBrBTKJxCQrZLVe6KCfThqg7isSXlNvMgOeAV/qKLv1RMfs23Bel6or5lEVUoBvN/X@nongnu.org
-X-Gm-Message-State: AOJu0Yy93ySavOdW5hyqRddLAp7SP35adSLCgpLeCVm4W8AYdsi5YPDd
- 6d+CGnYqL4aOlgG+Pk0NoYwpIGiEWoUyqnFnTDP5osAyiiP0KoV3aGf1iF1/XUzzaZK6LNZZGQH
- l
-X-Google-Smtp-Source: AGHT+IEzPRWxcj1XUV1wkS5lu8tkh3S4g0jYkYjA4YXDJRiNp8ws81uKE1wnj/ZBFjMiaikqKpBWZA==
-X-Received: by 2002:a17:902:d2c3:b0:202:2e81:27c7 with SMTP id
- d9443c01a7336-20367d56b79mr59191085ad.35.1724315126149; 
- Thu, 22 Aug 2024 01:25:26 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20385589225sm7641295ad.115.2024.08.22.01.25.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Aug 2024 01:25:25 -0700 (PDT)
-From: Deepak Gupta <debug@rivosinc.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, bmeng.cn@gmail.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, andy.chiu@sifive.com,
- kito.cheng@sifive.com, Deepak Gupta <debug@rivosinc.com>
-Subject: [PATCH v7 17/17] disas/riscv: enable disassembly for compressed
- sspush/sspopchk
-Date: Thu, 22 Aug 2024 01:25:03 -0700
-Message-ID: <20240822082504.3979610-18-debug@rivosinc.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240822082504.3979610-1-debug@rivosinc.com>
-References: <20240822082504.3979610-1-debug@rivosinc.com>
+ AJvYcCXxx+Y9wBvbBF6aVU05D9elfTfJsx3aPoVL9DjumURdoCQjgB44SrjOFEbBF6YAIff1wzfKNQ3AfCuT@nongnu.org
+X-Gm-Message-State: AOJu0Yy1ZX+BXVVLvNTWHbyI1tn1k52XAclaWQ5LwENmwUAomNo7yTA/
+ i9WAOe54cZuS2hmV461SIRZXYlzczIYSwQBT90uYWalS3igs2wYsxMT6vIHnoGiHL/A9W3/10fP
+ 7v01KZCM4qyCYpM60njvCQzMMYZCpHHKnulhgDwroUgkZO6H4S1G0
+X-Received: by 2002:a05:600c:45c3:b0:428:e820:37ae with SMTP id
+ 5b1f17b1804b1-42ac55bbee7mr7777955e9.1.1724317201780; 
+ Thu, 22 Aug 2024 02:00:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHmM54MPy9OOwHe0s2eH/eo3RdaKOsz8DAv9l31g8rGVHR8EsLJvPBtKln9n1jOXcucNPsaRQ==
+X-Received: by 2002:a05:600c:45c3:b0:428:e820:37ae with SMTP id
+ 5b1f17b1804b1-42ac55bbee7mr7777755e9.1.1724317201326; 
+ Thu, 22 Aug 2024 02:00:01 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-43-177-41.web.vodafone.de.
+ [109.43.177.41]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42ab87ef024sm63980895e9.1.2024.08.22.02.00.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 Aug 2024 02:00:00 -0700 (PDT)
+Message-ID: <b9ad2876-6e6a-4f96-9953-134c6769b5e9@redhat.com>
+Date: Thu, 22 Aug 2024 10:59:59 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] tests/functional: Convert mipsel Malta YAMON
+ avocado test
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@kernel.org>, Aurelien Jarno
+ <aurelien@aurel32.net>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>
+References: <20240821133353.65903-1-philmd@linaro.org>
+ <20240821133353.65903-4-philmd@linaro.org>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240821133353.65903-4-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=debug@rivosinc.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,80 +150,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sspush and sspopchk have equivalent compressed encoding taken from zcmop.
-cmop.1 is sspush x1 while cmop.5 is sspopchk x5. Due to unusual encoding
-for both rs1 and rs2 from space bitfield, this required a new codec.
+On 21/08/2024 15.33, Philippe Mathieu-Daudé wrote:
+> Straight forward conversion using the Python standard zipfile
+> module instead of avocado.utils package. Update the SHA1 hashes
+> to SHA256 hashes since SHA1 should not be used anymore nowadays.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   MAINTAINERS                             |  2 +-
+>   tests/avocado/machine_mips_malta.py     | 54 -------------------------
+>   tests/functional/meson.build            |  4 ++
+>   tests/functional/test_mips64el_malta.py |  3 ++
+>   tests/functional/test_mipsel_malta.py   | 46 +++++++++++++++++++++
+>   5 files changed, 54 insertions(+), 55 deletions(-)
+>   delete mode 100644 tests/avocado/machine_mips_malta.py
+>   create mode 100755 tests/functional/test_mipsel_malta.py
 
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
----
- disas/riscv.c | 19 ++++++++++++++++++-
- disas/riscv.h |  1 +
- 2 files changed, 19 insertions(+), 1 deletion(-)
-
-diff --git a/disas/riscv.c b/disas/riscv.c
-index f1f4ffc50a..8eeaa9f843 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -980,6 +980,8 @@ typedef enum {
-     rv_op_ssrdp = 949,
-     rv_op_ssamoswap_w = 950,
-     rv_op_ssamoswap_d = 951,
-+    rv_op_c_sspush = 952,
-+    rv_op_c_sspopchk = 953,
- } rv_op;
- 
- /* register names */
-@@ -2244,6 +2246,10 @@ const rv_opcode_data rvi_opcode_data[] = {
-     { "ssrdp", rv_codec_r, rv_fmt_rd, NULL, 0, 0, 0 },
-     { "ssamoswap.w", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-     { "ssamoswap.d", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-+    { "c.sspush", rv_codec_cmop_ss, rv_fmt_rs2, NULL, rv_op_sspush,
-+      rv_op_sspush, 0 },
-+    { "c.sspopchk", rv_codec_cmop_ss, rv_fmt_rs1, NULL, rv_op_sspopchk,
-+      rv_op_sspopchk, 0 },
- };
- 
- /* CSR names */
-@@ -2604,7 +2610,13 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-             if (dec->cfg->ext_zcmop) {
-                 if ((((inst >> 2) & 0b111111) == 0b100000) &&
-                     (((inst >> 11) & 0b11) == 0b0)) {
--                    op = rv_c_mop_1 + ((inst >> 8) & 0b111);
-+                    unsigned int cmop_code = 0;
-+                    cmop_code = ((inst >> 8) & 0b111);
-+                    op = rv_c_mop_1 + cmop_code;
-+                    if (dec->cfg->ext_zicfiss) {
-+                        op = (cmop_code == 0) ? rv_op_c_sspush : op;
-+                        op = (cmop_code == 2) ? rv_op_c_sspopchk : op;
-+                    }
-                     break;
-                 }
-             }
-@@ -4923,6 +4935,11 @@ static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-     case rv_codec_lp:
-         dec->imm = operand_lpl(inst);
-         break;
-+    case rv_codec_cmop_ss:
-+        dec->rd = rv_ireg_zero;
-+        dec->rs1 = dec->rs2 = operand_crs1(inst);
-+        dec->imm = 0;
-+        break;
-     };
- }
- 
-diff --git a/disas/riscv.h b/disas/riscv.h
-index 4895c5a301..6a3b371cd3 100644
---- a/disas/riscv.h
-+++ b/disas/riscv.h
-@@ -167,6 +167,7 @@ typedef enum {
-     rv_codec_r2_imm2_imm5,
-     rv_codec_fli,
-     rv_codec_lp,
-+    rv_codec_cmop_ss,
- } rv_codec;
- 
- /* structures */
--- 
-2.44.0
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
