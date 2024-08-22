@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF82995B791
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 15:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB81995B79F
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 15:56:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sh8HI-0002Fk-Cz; Thu, 22 Aug 2024 09:55:04 -0400
+	id 1sh8IM-00050d-UF; Thu, 22 Aug 2024 09:56:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sh8HF-00026C-MC
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 09:55:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sh8Hq-0004a9-5c
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 09:55:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sh8HC-0002b3-U5
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 09:55:01 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sh8Ho-0002qb-IR
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 09:55:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724334895;
+ s=mimecast20190719; t=1724334935;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=TO2JazLLWoX6m/4FGezM0A2aGW0qnFa6KLYqFxLkDqM=;
- b=eO0dcV0+pirbWRLn43QDCotaeM4xeC6lnvMnx6UiSlilFXdfntNyMT0tu3rSvS04goV6W4
- kK/5nI88PeiEZPJJtzimkoEz1hr95rgWGipht5yZ4uD5E1D+OMCCH/VroFgqCGGgiEqlQo
- w21ge+pyuZxYnGL465qlxHSQlxttPCs=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2W7yuZuqO9Am9/f/wVFTg03wO+qlWIDwOGf/k0Fply4=;
+ b=JP46gO/8tIwBVKCXYrxkOvj+2pFQatwrte3d+6VfixajnhQOtxssdKGvh+yTLjv+EiINgR
+ D/DgGCDTBLo2ml7HZwqig6v8qcU7TcvGXWxtwQcRTu+4vx5ueao0pmFQ71n8F3iTfp7nx5
+ vU52cY7wrJTg8iw7ld1euh3b3mhk4+w=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-292-aC5yhMP2PoaD7m-trLzTug-1; Thu, 22 Aug 2024 09:54:53 -0400
-X-MC-Unique: aC5yhMP2PoaD7m-trLzTug-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-428040f49f9so7919095e9.0
- for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 06:54:53 -0700 (PDT)
+ us-mta-617-fSKtvoozMW2NFwvidIaB0w-1; Thu, 22 Aug 2024 09:55:34 -0400
+X-MC-Unique: fSKtvoozMW2NFwvidIaB0w-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-37188f68116so374456f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 06:55:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724334892; x=1724939692;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TO2JazLLWoX6m/4FGezM0A2aGW0qnFa6KLYqFxLkDqM=;
- b=FODYTgT7T2TdPw7QyL/L+jj9YUU6TWok+gyV7TcslDP77dCKxZ3OTZUjOw9zMJakBH
- 9f3gJ06jS23JZCxpn5x+CyajzjPTdXCdLMB89v2shcm2wimglvAqPIL5HTJAm/jPUHW3
- kPPyu2BUP6l56z6LkIVQtY9Unw+CgN7VBngMeepwq9UelDMZx6KyyqtkjC/JgfaMOmdy
- 5+RokbQ5xvXvEf3US1vZSp7aD0pF/odVO2QvFKCM8JSnsviZO9A29ATq1X+dyazmoUTj
- HPnfHBBjTlf2WDmUa9iogBWKUhdjVhPRaBYcdlq5UGkCoYgZuH2ekSAlgG3jJGhfxyML
- eyNg==
+ d=1e100.net; s=20230601; t=1724334933; x=1724939733;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2W7yuZuqO9Am9/f/wVFTg03wO+qlWIDwOGf/k0Fply4=;
+ b=GRLG/03y0JHM2zDRzEnZ4fK5urDo2yMlF7Qzt1cR6YT92XJnKna/TciL01mzAIjeyC
+ DxDyuJP2tI58k5bd3OZZ50+BjN09qjMARXRTug8jTMEk8BvycJiYIq/hyTLLcErBVyKk
+ 6mXjhPTDzAFUS+omStzppYsgFA6XPOZ03Y9aqAVcIvZGqviD4Ok3H8v8f2MCMmCWeXB2
+ uetsWTvf6c3ZX5yr1jnHbgpFljVZkt0VqbJOd5bh5v7v61uvGj+8inZuNSZq3S3fSKCX
+ 82ScKkfscgemGWP2fayMtsZUhYJhwFC1dgUBkJ+/8Al6dxHNXXuNIZrX09lJPS2Rs8lE
+ TQ6g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUlX68iDTh+yACYJHZI70oCLHzFRwamdk+/YQHjlETCNS0Wk5/UCKmYrwtdnQM9UjPPvz+u/gmZbPwl@nongnu.org
-X-Gm-Message-State: AOJu0YySV7SysaavbnVn6m/VuU5MXqRoUjaSuSQ5RJhcyDD6zVok0kNH
- yuHMb1Jwj19xz/szSlEDk17ktLdgpHtuQ48GyG0sNiqalNdpe95hZcqLE2lhPdJQIeIIyivmQYb
- TIthkBbLfNdO/bAXKrrBa2VjFiN3ip27woA6hHFoIgrF6t03Zin/d
-X-Received: by 2002:a05:600c:1e1d:b0:426:614b:1a72 with SMTP id
- 5b1f17b1804b1-42abd21f4fcmr43392885e9.17.1724334892481; 
- Thu, 22 Aug 2024 06:54:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEyV3WF+XLsX8nXhjL9FNgJTtqWt2ibCyhhxBVR1PfM1ZxHOoAjTwIE5ftKe2Yj6tP72I3Gsg==
-X-Received: by 2002:a05:600c:1e1d:b0:426:614b:1a72 with SMTP id
- 5b1f17b1804b1-42abd21f4fcmr43392675e9.17.1724334892050; 
- Thu, 22 Aug 2024 06:54:52 -0700 (PDT)
+ AJvYcCWSDHPSunry4RbMM7xy5iuFC8FHfF46efzDxsFyctswUotBzh3D2YHnTx1HdSqUUBhSLhTe+gun8DX7@nongnu.org
+X-Gm-Message-State: AOJu0YwDCN3n+bwqoLru6iNTlcDpDDMZQWhb3IWpIXDWlinUKP77TVb6
+ 4svpRmkaUpK9K1sAs4de0z1713XTYw11MaysKnodlvJFL3ZpXfLaE1+f/60O88Nhz/N/hR8lUjd
+ C5FVo9cQ9Ujhwkn8K9iD6FEgEKm/A8ZND/+wgrdAShAYtuuceh33d
+X-Received: by 2002:adf:e642:0:b0:363:7bbf:efcc with SMTP id
+ ffacd0b85a97d-3730906b0admr1179158f8f.62.1724334933208; 
+ Thu, 22 Aug 2024 06:55:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExeOMFWu28knwN7lwT4BmpADy8sjMPxt8feAf8IZExSB6ZAJ3y0eHOQSfY3alGLz2k1VOHzQ==
+X-Received: by 2002:adf:e642:0:b0:363:7bbf:efcc with SMTP id
+ ffacd0b85a97d-3730906b0admr1179143f8f.62.1724334932798; 
+ Thu, 22 Aug 2024 06:55:32 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-43-177-41.web.vodafone.de.
  [109.43.177.41]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42ac518013asm25201355e9.42.2024.08.22.06.54.51
+ ffacd0b85a97d-373081ffb66sm1752571f8f.84.2024.08.22.06.55.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Aug 2024 06:54:51 -0700 (PDT)
-Message-ID: <6bc29bc8-83e5-4edd-8ed2-0369aa67f0d1@redhat.com>
-Date: Thu, 22 Aug 2024 15:54:50 +0200
+ Thu, 22 Aug 2024 06:55:32 -0700 (PDT)
+Message-ID: <d89a954b-87b6-4c3a-ab18-29aeaeef0805@redhat.com>
+Date: Thu, 22 Aug 2024 15:55:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] tests/functional: Add QemuUserTest class
+Subject: Re: [PATCH 3/3] tests/avocado: Remove unused QemuUserTest class
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>
 References: <20240822104238.75045-1-philmd@linaro.org>
- <20240822104238.75045-2-philmd@linaro.org>
-Content-Language: en-US
+ <20240822104238.75045-4-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -119,17 +119,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240822104238.75045-2-philmd@linaro.org>
+In-Reply-To: <20240822104238.75045-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -149,18 +149,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 22/08/2024 12.42, Philippe Mathieu-Daudé wrote:
-> Per commit 5334df4822 ("tests/avocado: Introduce
-> QemuUserTest base class"):
-> 
->    Similarly to the 'System' Test base class with methods
->    for testing system emulation, the QemuUserTest class
->    contains methods useful to test user-mode emulation.
+> The single test that was using the QemuUserTest class
+> has been converted to the functional test framework.
+> This class is now unused, remove it.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   tests/functional/qemu_test/__init__.py |  2 +-
->   tests/functional/qemu_test/testcase.py | 17 +++++++++++++++++
->   2 files changed, 18 insertions(+), 1 deletion(-)
+>   tests/avocado/avocado_qemu/__init__.py | 19 +------------------
+>   1 file changed, 1 insertion(+), 18 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
