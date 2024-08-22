@@ -2,64 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E023695B3B0
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 13:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B3595B393
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 13:15:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sh5v6-00083f-AO; Thu, 22 Aug 2024 07:24:00 -0400
+	id 1sh5ld-0001CD-Sc; Thu, 22 Aug 2024 07:14:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1sh5v2-00081N-Fk
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 07:23:56 -0400
-Received: from netsrv01.beckhoff.com ([62.159.14.10])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sh5lY-00019w-87
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 07:14:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1sh5v0-00035l-Dt
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 07:23:56 -0400
-Received: from 172.17.5.170 by netsrv01.beckhoff.com (Tls12, Aes256, Sha384,
- DiffieHellmanEllipticKey384); Thu, 22 Aug 2024 11:18:48 GMT
-DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022e; 
- t=1724325528; bh=51g5v0YASy9hVByXKdNTFlH8GhBPc80zGQ+RejMqEuw=; h=
- Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
- a=ed25519-sha256; b=
- CuceMlyIjYx0zPQVCeHdeftVUpQOBQRgciV1ZO9PHRP0WG6WbJkkOhpXYfwZKdeZ/tvJn6oO+YiDSa3hhMa8Dw==
-DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022r; 
- t=1724325528; bh=51g5v0YASy9hVByXKdNTFlH8GhBPc80zGQ+RejMqEuw=; h=
- Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
- a=rsa-sha256; b=
- F1Zs27GyFHZwvmD0vTgKtIS0O0mw2deg8VviA59jHLKG+MwF8KwhsqgoLnCbU7WKmaOc8EbOddg4knK7+26P4ib38Fn7CnRnk2SaIJOV1r90f5sUax52wGcWhfxf6m1MuEf7Ov5ZC30XUuU6xw/Sv++jUCCNUPRHEUEogdcGmtOZkY3msmK4UUVcALWFIFGUSC+jA4Wt6dasT79TuYzVM+fOSTsc3PYVuRXllYcUCH+ToUcMvSj/2s7+iDKIsiVQpFlvFPcjgptNb6XTXSGMEd8CR+EDbjePS/ti9aIQtEgKOApdb9ovzC9IKhWjuSLRVQnPbNm+TVTvOaRcRfcaPA==
-Received: from corvink-nb.c.koehne.headscale.beckhoff.dev (172.17.61.20) by
- ex04.beckhoff.com (172.17.5.170) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 22 Aug
- 2024 13:18:45 +0200
-From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
-To: <qemu-devel@nongnu.org>
-CC: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 4/7] vfio/igd: add new bar0 quirk to emulate BDSM mirror
-Date: Thu, 22 Aug 2024 13:08:29 +0200
-Message-ID: <20240822111819.34306-5-c.koehne@beckhoff.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240822111819.34306-1-c.koehne@beckhoff.com>
-References: <20240822111819.34306-1-c.koehne@beckhoff.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sh5lW-0000Fp-3A
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 07:14:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1724325244;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=MoN4D9jCk7hGAVT3ex/lfXJ9CiJxvSpgAs5H2oc8Cos=;
+ b=S4PjhYCqzyWTna68DbONWPuDlTQMs6LZrqANEUFBEsjLSZAXvdlFqcp0NfFYLXtYJj/24Q
+ TDAZq73bGSuZ8Wa77zsTd2pHqjuyPIDStynG/S4BCJKE8RgCSk3nN0uUc/Z9C4O5iKBbSY
+ oCDui3f7pH4KUK9oJBCJFMmqTIWnWYs=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-137-QtYk9nVvO7u3JhfVzsg2yg-1; Thu, 22 Aug 2024 07:14:03 -0400
+X-MC-Unique: QtYk9nVvO7u3JhfVzsg2yg-1
+Received: by mail-ot1-f71.google.com with SMTP id
+ 46e09a7af769-70947f2854dso918831a34.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 04:14:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724325242; x=1724930042;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MoN4D9jCk7hGAVT3ex/lfXJ9CiJxvSpgAs5H2oc8Cos=;
+ b=XiZLgRGHrYFm7+b6pSkNXlRlSFrnAs9KK6x0r/i5YYfAUL6FhvaqfgqRGo7O9zFY4W
+ wG3tqJ0CWOZBNh5GDSlZ1X7ZSyCGi9RRAl4XZW2Hbbqe1xfvE7gXbeWXVGXDBwZ27D5L
+ NdvxSbUhyYfAuKV8WIXf0oETi4ywgGSZip3sq+HUb6zbF/KCs6Ow7yhyiDa4h9IF7WX4
+ 9PCPmJFXb+MzANrbdwTA2FndwHrYmgPsX3SnliANfc6iSxoNrbPCFrn1zMSmnleaopHq
+ OTsNmvoUIygrz4wuKc9oazPxmwGLH5m4s3pWkvibS6QkobnEg2BlqIN/gAn5vmid5M12
+ dGiA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWw1h5PZwkVnE+R/H/uikfiNXhOo2X6Z0cAfds11CAY2uvlLeaCnLEeO/qvJKP4VUB6RHVDv1Jrl841@nongnu.org
+X-Gm-Message-State: AOJu0YxdFEJHQmGUdOwaXw6NVNXKCtbcwUDzHcgl5KgjaIM93hDb3lfd
+ 1zz3CLnz+3xYg6zO5HeqQKTkGMDNsVoCZTZj2ktiqSwfxJefuuWP2UhHVeBawjgX5sovfmKpXNP
+ NKLfeVwjAr4XaZdanFfUZB0Km4Yc6ytUNY05L9K9vvSIlxUS/8pIN
+X-Received: by 2002:a05:6830:71a6:b0:709:41c2:5104 with SMTP id
+ 46e09a7af769-70e046b9964mr1542662a34.8.1724325242441; 
+ Thu, 22 Aug 2024 04:14:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8XFRBKYowJMPbIlqka6MrG9U4+XXr+XU5a4Qp7zOnmyezYh5tddkFrUEVRDma5sUSZz5Xjg==
+X-Received: by 2002:a05:6830:71a6:b0:709:41c2:5104 with SMTP id
+ 46e09a7af769-70e046b9964mr1542648a34.8.1724325242143; 
+ Thu, 22 Aug 2024 04:14:02 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-43-177-41.web.vodafone.de.
+ [109.43.177.41]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-454fdfc16e0sm5604191cf.7.2024.08.22.04.14.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 Aug 2024 04:14:01 -0700 (PDT)
+Message-ID: <3435b5e3-c469-4f6a-a535-e7ef1909a5c9@redhat.com>
+Date: Thu, 22 Aug 2024 13:13:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [172.17.61.20]
-X-ClientProxiedBy: ex01.beckhoff.com (172.17.2.168) To ex04.beckhoff.com
- (172.17.5.170)
-X-OLX-Disclaimer: EX04.BECKHOFF.COM
-Received-SPF: pass client-ip=62.159.14.10; envelope-from=C.Koehne@beckhoff.com;
- helo=netsrv01.beckhoff.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/functional: Convert ARM Integrator/CP avocado tests
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
+References: <20240822110238.82312-1-philmd@linaro.org>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240822110238.82312-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,186 +146,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=EF=BB=BFThe BDSM register is mirrored into MMIO space at least for gen 11 =
-and
-later devices. Unfortunately, the Windows driver reads the register
-value from MMIO space instead of PCI config space for those devices [1].
-Therefore, we either have to keep a 1:1 mapping for the host and guest
-address or we have to emulate the MMIO register too. Using the igd in
-legacy mode is already hard due to it's many constraints. Keeping a 1:1
-mapping may not work in all cases and makes it even harder to use. An
-MMIO emulation has to trap the whole MMIO page. This makes accesses to
-this page slower compared to using second level address translation.
-Nevertheless, it doesn't have any constraints and I haven't noticed any
-performance degradation yet making it a better solution.
+On 22/08/2024 13.02, Philippe Mathieu-Daudé wrote:
+> Straight forward conversion. Update the SHA1 hashes to SHA256
+> hashes since SHA1 should not be used anymore nowadays.
+> 
+>    $ QEMU_TEST_ALLOW_UNTRUSTED_CODE=1 make check-functional-arm
+>    ...
+>    6/6 qemu:func-thorough+func-arm-thorough+thorough / func-arm-arm_integratorcp   OK   3.90s   2 subtests passed
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> Based-on: <20240821082748.65853-1-thuth@redhat.com>
+> ---
+>   MAINTAINERS                                   |  2 +-
+>   tests/functional/meson.build                  |  1 +
+>   .../test_arm_integratorcp.py}                 | 56 ++++++++++---------
+>   3 files changed, 33 insertions(+), 26 deletions(-)
+>   rename tests/{avocado/machine_arm_integratorcp.py => functional/test_arm_integratorcp.py} (63%)
+>   mode change 100644 => 100755
 
-[1] https://github.com/projectacrn/acrn-hypervisor/blob/5c351bee0f6ae46250e=
-efc07f44b4a31e770f3cf/devicemodel/hw/pci/passthrough.c#L650-L653
-
-Signed-off-by: Corvin K=C3=B6hne <c.koehne@beckhoff.com>
----
- hw/vfio/igd.c        | 97 ++++++++++++++++++++++++++++++++++++++++++++
- hw/vfio/pci-quirks.c |  1 +
- hw/vfio/pci.h        |  1 +
- 3 files changed, 99 insertions(+)
-
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 0b6533bbf7..863b58565e 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -374,6 +374,103 @@ static const MemoryRegionOps vfio_igd_index_quirk =3D=
- {
-     .endianness =3D DEVICE_LITTLE_ENDIAN,
- };
-=20
-+#define IGD_BDSM_MMIO_OFFSET 0x1080C0
-+
-+static uint64_t vfio_igd_quirk_bdsm_read(void *opaque,
-+                                          hwaddr addr, unsigned size)
-+{
-+    VFIOPCIDevice *vdev =3D opaque;
-+    uint64_t offset;
-+
-+    offset =3D IGD_BDSM_GEN11 + addr;
-+
-+    switch (size) {
-+    case 1:
-+        return pci_get_byte(vdev->pdev.config + offset);
-+    case 2:
-+        return le16_to_cpu(pci_get_word(vdev->pdev.config + offset));
-+    case 4:
-+        return le32_to_cpu(pci_get_long(vdev->pdev.config + offset));
-+    case 8:
-+        return le64_to_cpu(pci_get_quad(vdev->pdev.config + offset));
-+    default:
-+        hw_error("igd: unsupported read size, %u bytes", size);
-+        break;
-+    }
-+
-+    return 0;
-+}
-+
-+static void vfio_igd_quirk_bdsm_write(void *opaque, hwaddr addr,
-+                                       uint64_t data, unsigned size)
-+{
-+    VFIOPCIDevice *vdev =3D opaque;
-+    uint64_t offset;
-+
-+    offset =3D IGD_BDSM_GEN11 + addr;
-+
-+    switch (size) {
-+    case 1:
-+        pci_set_byte(vdev->pdev.config + offset, data);
-+        break;
-+    case 2:
-+        pci_set_word(vdev->pdev.config + offset, data);
-+        break;
-+    case 4:
-+        pci_set_long(vdev->pdev.config + offset, data);
-+        break;
-+    case 8:
-+        pci_set_quad(vdev->pdev.config + offset, data);
-+        break;
-+    default:
-+        hw_error("igd: unsupported read size, %u bytes", size);
-+        break;
-+    }
-+}
-+
-+static const MemoryRegionOps vfio_igd_bdsm_quirk =3D {
-+    .read =3D vfio_igd_quirk_bdsm_read,
-+    .write =3D vfio_igd_quirk_bdsm_write,
-+    .endianness =3D DEVICE_LITTLE_ENDIAN,
-+};
-+
-+void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
-+{
-+    VFIOQuirk *quirk;
-+    int gen;
-+
-+    /*
-+     * This must be an Intel VGA device at address 00:02.0 for us to even
-+     * consider enabling legacy mode. Some driver have dependencies on the=
- PCI
-+     * bus address.
-+     */
-+    if (!vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, PCI_ANY_ID) ||
-+        !vfio_is_vga(vdev) || nr !=3D 0 ||
-+        &vdev->pdev !=3D pci_find_device(pci_device_root_bus(&vdev->pdev),
-+                                       0, PCI_DEVFN(0x2, 0))) {
-+        return;
-+    }
-+
-+    /*
-+     * Only on IGD devices of gen 11 and above, the BDSM register is mirro=
-red
-+     * into MMIO space and read from MMIO space by the Windows driver.
-+     */
-+    gen =3D igd_gen(vdev);
-+    if (gen < 11) {
-+        return;
-+    }
-+
-+    quirk =3D vfio_quirk_alloc(1);
-+    quirk->data =3D vdev;
-+
-+    memory_region_init_io(&quirk->mem[0], OBJECT(vdev), &vfio_igd_bdsm_qui=
-rk,
-+                          vdev, "vfio-igd-bdsm-quirk", 8);
-+    memory_region_add_subregion_overlap(vdev->bars[0].region.mem, 0x1080C0=
-,
-+                                        &quirk->mem[0], 1);
-+
-+    QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
-+}
-+
- void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
- {
-     g_autofree struct vfio_region_info *rom =3D NULL;
-diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
-index 39dae72497..d37f722cce 100644
---- a/hw/vfio/pci-quirks.c
-+++ b/hw/vfio/pci-quirks.c
-@@ -1259,6 +1259,7 @@ void vfio_bar_quirk_setup(VFIOPCIDevice *vdev, int nr=
-)
-     vfio_probe_nvidia_bar0_quirk(vdev, nr);
-     vfio_probe_rtl8168_bar2_quirk(vdev, nr);
- #ifdef CONFIG_VFIO_IGD
-+    vfio_probe_igd_bar0_quirk(vdev, nr);
-     vfio_probe_igd_bar4_quirk(vdev, nr);
- #endif
- }
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index bf67df2fbc..5ad090a229 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -215,6 +215,7 @@ void vfio_setup_resetfn_quirk(VFIOPCIDevice *vdev);
- bool vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp);
- void vfio_quirk_reset(VFIOPCIDevice *vdev);
- VFIOQuirk *vfio_quirk_alloc(int nr_mem);
-+void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr);
- void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr);
-=20
- extern const PropertyInfo qdev_prop_nv_gpudirect_clique;
---=20
-2.46.0
-
-This email contains confidential information. If you have received it in er=
-ror, you must not read, use, copy or pass on this e-mail or its attachments=
-. If you have received the e-mail in error, please inform me immediately by=
- reply e-mail and then delete this e-mail from your system. Thank you
-=20
-Diese E-Mail enth=C3=A4lt vertrauliche Informationen. Sollten Sie sie irrt=
-=C3=BCmlich erhalten haben, d=C3=BCrfen Sie diese E-Mail oder ihre Anh=C3=
-=A4nge nicht lesen, verwenden, kopieren oder weitergeben. Sollten Sie die M=
-ail versehentlich erhalten haben, teilen Sie mir dies bitte umgehend per An=
-twort-E-Mail mit und l=C3=B6schen Sie diese E-Mail dann aus Ihrem System. V=
-ielen Dank
-
-Beckhoff Automation GmbH & Co. KG | Managing Director: Dipl. Phys. Hans Bec=
-khoff
-Registered office: Verl, Germany | Register court: Guetersloh HRA 7075
-
-
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
