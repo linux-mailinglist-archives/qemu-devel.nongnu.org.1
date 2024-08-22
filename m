@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B859495BE89
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 20:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 128D695BE92
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 20:55:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shCwr-0000R5-BT; Thu, 22 Aug 2024 14:54:17 -0400
+	id 1shCws-0000mj-Nc; Thu, 22 Aug 2024 14:54:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1shCwh-00081L-BN
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 14:54:07 -0400
+ id 1shCwq-0000Vt-TJ
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 14:54:16 -0400
 Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1shCwf-00048t-Kq
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 14:54:07 -0400
+ id 1shCwp-00049E-2w
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 14:54:16 -0400
 Delivered-To: bob.beckett@collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1724352831; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1724352840; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=WXwjbwMcfdq5ffcF3cwt+zaCKLsq6+IGcdf8bzzqF8UQzWzx/FSa4GFvH48oscxahF688KG/dTroaiIiNtxZOeF1WRGtv+nggz2H6A0k5AcBFGkh54L5+HzqdFnAvRDl35/+ZDyKoEiAlhH9dcHl1CUGzHWpDARQxyTL8Qx54Bg=
+ b=ZUOB1T3gCbhg+duf9CudkjxgkFopsMn8Z7Ew8AaUUGxeSD1gIDDebqMpdFrUjxOSznjXG5r4tlVtLXRFf8OOvmxVSebSh2hv17XblDYKrVk+5MbLxw7b+8umn+TxLU3qoRNJuogVFo9zkcgJ+zKbhdZnv8FF1qMeAr336gqclSQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1724352831;
+ s=zohoarc; t=1724352840;
  h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=frnqjafg5IubhILQVfLqgoboDzq9pwuDpaRE2L+cPu4=; 
- b=lt7bkLYkuvxx80CMkxQdP7feQ2vm4HWfXXjkPhFjYV6sugD2H6tNHB6/l29CeK5JRR7SFKWAXg+pl0KYVYy6Lu/VoNIpqXFdzeoxFkvX54tI/ZD1uiXxWATIXHz52hgdYAbpjhE1HIfCRXZQkWubR7m5vrnlEz89LBiVP7nMX5g=
+ bh=ap8P/zbrScy+lnoMzkTzbFmuJHrSIe0PxDMWd9b5lXg=; 
+ b=SYjG7vVGyGgeYf0c9EkvEOTHszUdkWSSWwzxxpV+MdDXuHXxahkIVxMLl1w1qcanEzE3hWig5nsXcRXOE2Lh/hvi9PHsyAIyxmqYgfSBjNxZ+9dTMtBm62pmNuGEZ+QXSWAXHxmddvvbOsouBNc01tTywy1izNC2MS0qniKDQYI=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
  dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724352831; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724352840; 
  s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
  h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=frnqjafg5IubhILQVfLqgoboDzq9pwuDpaRE2L+cPu4=;
- b=IDDOGf4b2z5G/T6F5aLlPNLsJfthU65MGnHrXuV/8pjgTYaNNCGqTHps6ZC43OeL
- dBoqFfjA/INk/XO4oq6ESQsSnXAdQ0/Y7CyqAKDwxgey+nXmz3EHeKsowgAa40fT+TV
- mTC5XLPKdfXbkasJerrumZiSuYDJjPIa+tJ8HHKE=
-Received: by mx.zohomail.com with SMTPS id 1724352830482540.1515550962702;
- Thu, 22 Aug 2024 11:53:50 -0700 (PDT)
+ bh=ap8P/zbrScy+lnoMzkTzbFmuJHrSIe0PxDMWd9b5lXg=;
+ b=HBvCUV2WdAKcesBAbLGYlt/FKajxAfUiqirfj0jPhSWeiBOnaTU+VhjP/fVWwR6u
+ UGm5NjN+bqxGGHftjOR9FAMVHtG+HsSCUDdKxKk9dEIuwCNEIt5PrmXW+lBG+JtBIl8
+ uMujzfnqRy4XONS3RisQIU/MMNculNnzuICqVaTQ=
+Received: by mx.zohomail.com with SMTPS id 1724352837858643.7842343988855;
+ Thu, 22 Aug 2024 11:53:57 -0700 (PDT)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
@@ -61,10 +61,10 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v17 07/13] virtio-gpu: Support context-init feature with
- virglrenderer
-Date: Thu, 22 Aug 2024 21:51:03 +0300
-Message-ID: <20240822185110.1757429-8-dmitry.osipenko@collabora.com>
+Subject: [PATCH v17 08/13] virtio-gpu: Don't require udmabuf when blobs and
+ virgl are enabled
+Date: Thu, 22 Aug 2024 21:51:04 +0300
+Message-ID: <20240822185110.1757429-9-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240822185110.1757429-1-dmitry.osipenko@collabora.com>
 References: <20240822185110.1757429-1-dmitry.osipenko@collabora.com>
@@ -98,13 +98,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Huang Rui <ray.huang@amd.com>
+The udmabuf usage is mandatory when virgl is disabled and blobs feature
+enabled in the Qemu machine configuration. If virgl and blobs are enabled,
+then udmabuf requirement is optional. Since udmabuf isn't widely supported
+by a popular Linux distros today, let's relax the udmabuf requirement for
+blobs=on,virgl=on. Now, a full-featured virtio-gpu acceleration is
+available to Qemu users without a need to have udmabuf available in the
+system.
 
-Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
-feature flags. Expose this feature and support creating virglrenderer
-context with flags using context_id if libvirglrenderer is new enough.
-
-Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+Reviewed-by: Antonio Caggiano <antonio.caggiano@collabora.com>
 Signed-off-by: Huang Rui <ray.huang@amd.com>
 Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
@@ -113,56 +115,21 @@ Tested-by: Alex Bennée <alex.bennee@linaro.org>
 Acked-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/virtio-gpu-gl.c    |  4 ++++
- hw/display/virtio-gpu-virgl.c | 20 ++++++++++++++++++--
- 2 files changed, 22 insertions(+), 2 deletions(-)
+ hw/display/virtio-gpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index 753b35ed69fd..bf87ba423283 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -147,6 +147,10 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
-     VIRTIO_GPU_BASE(g)->virtio_config.num_capsets =
-         virtio_gpu_virgl_get_num_capsets(g);
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 60dfed87765b..24608338d7ea 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1484,6 +1484,7 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
  
-+#if VIRGL_VERSION_MAJOR >= 1
-+    g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED;
-+#endif
-+
-     virtio_gpu_device_realize(qdev, errp);
- }
- 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index ca6f4d6cbb58..b3aa444bcfa5 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -106,8 +106,24 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
-     trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
-                                     cc.debug_name);
- 
--    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
--                                  cc.debug_name);
-+    if (cc.context_init) {
-+        if (!virtio_gpu_context_init_enabled(g->parent_obj.conf)) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: context_init disabled",
-+                          __func__);
-+            cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
-+            return;
-+        }
-+
-+#if VIRGL_VERSION_MAJOR >= 1
-+        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
-+                                                 cc.context_init,
-+                                                 cc.nlen,
-+                                                 cc.debug_name);
-+        return;
-+#endif
-+    }
-+
-+    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen, cc.debug_name);
- }
- 
- static void virgl_cmd_context_destroy(VirtIOGPU *g,
+     if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
+         if (!virtio_gpu_rutabaga_enabled(g->parent_obj.conf) &&
++            !virtio_gpu_virgl_enabled(g->parent_obj.conf) &&
+             !virtio_gpu_have_udmabuf()) {
+             error_setg(errp, "need rutabaga or udmabuf for blob resources");
+             return;
 -- 
 2.45.2
 
