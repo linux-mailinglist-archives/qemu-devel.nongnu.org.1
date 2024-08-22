@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D21095B79D
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 15:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B2195B792
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 15:55:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sh8HI-0002GM-JX; Thu, 22 Aug 2024 09:55:04 -0400
+	id 1sh8HG-00026w-FW; Thu, 22 Aug 2024 09:55:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1sh8HF-000278-S0
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 09:55:01 -0400
+ id 1sh8HE-00020T-Cj
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 09:55:00 -0400
 Received: from netsrv01.beckhoff.com ([62.159.14.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1sh8H8-0002aq-Na
- for qemu-devel@nongnu.org; Thu, 22 Aug 2024 09:55:01 -0400
+ id 1sh8H8-0002au-Nh
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 09:55:00 -0400
 Received: from 172.17.5.170 by netsrv01.beckhoff.com (Tls12, Aes256, Sha384,
- DiffieHellmanEllipticKey384); Thu, 22 Aug 2024 13:54:52 GMT
+ DiffieHellmanEllipticKey384); Thu, 22 Aug 2024 13:54:53 GMT
 DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022e; 
- t=1724334892; bh=vZpI2KX970FCkxh4TIH5tOCE+9k5HnXqH3orDbOlCUg=; h=
+ t=1724334893; bh=d/oIKbgF+x1vzJ0O29d6n+1kiRF+USqgvvZ8Zv6x47M=; h=
  Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
  a=ed25519-sha256; b=
- ll4BqYlLqTjnTIpoEMlnysz2Hh/5mf/bEGRFUesyLXYBAZmQcbMIFfMcFsryXiCuIVjM+ZuPu1wvIguszRGpBQ==
+ xc1CJLE5vOWYcqapPneyywVp7LYbWlzH9PT0qGJR7xow1zauX0sJ0EqbZTCbJJgKHKqsTM1Mx/o1ehixzVe3DA==
 DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022r; 
- t=1724334892; bh=vZpI2KX970FCkxh4TIH5tOCE+9k5HnXqH3orDbOlCUg=; h=
+ t=1724334893; bh=d/oIKbgF+x1vzJ0O29d6n+1kiRF+USqgvvZ8Zv6x47M=; h=
  Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
  a=rsa-sha256; b=
- JaEZc710jg0Zx6A6IciK7U5NAC1EWre9ETzGNZ/9WsVcYyBci6ZQfIgkAeTQF5ZkkNSRkOfS4wE0XtS/b78D7eWrF6QfmBfHuWqV7Q7UNGCv/1mv4fckEfpD7sw0PlFI5ruyLxQlJfkwJ4vr3Q3/tSbfLzrvXWSRsbuBC6KHVfFzhgjEWqohOnRqKwffIkMk3pnMO0j98t77bM/d8T8NlrwbFModFDpJDPbfKjcdKS+Y2e+E0dI11n+Oqlm+/KQyu2LA0ghx9uYH+HdYazqVvYy+dUByTn7AQwY1mMLh7A7r0GX2KMqgam1NiD0CRZeEE5XjdWkIZBfH5ssN8D4QEQ==
+ WxfFUSi9TEcqaIIw/4qnuQ6LBj5GGKFHC5WtYo39J7WtKFrVWFBtXZTY2Ki8qJvwN6fJNAsgHq3Vq+PEFFMt1udXcEsWKkzTeS+GC0jZYkQtW+iadba5BbXO3PRZezFlHbKK7DpgcRNkk29FdP/+4T1mwGDoskRfAw6muZ4xx5qI8KervgpgPSauII+fB7xJfwzUoBgDwShjlu0yzxAvNJUMKpo6acRrD1qwgR7BhfaKXI4zK6yCxL3YGtXC20iN2+7Sv+Z5rubOgnzociD7gK/2BktIYMt5TDJnaJMUILXhQ2NXsHKiVBXkUbAmCmnVQrzAwdHmrtK3DKPxhRuVUg==
 Received: from corvink-nb.c.koehne.headscale.beckhoff.dev (172.17.61.20) by
  ex04.beckhoff.com (172.17.5.170) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 22 Aug
@@ -38,9 +38,10 @@ From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
 To: <qemu-devel@nongnu.org>
 CC: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 6/7] vfio/igd: don't set stolen memory size to zero
-Date: Thu, 22 Aug 2024 15:54:15 +0200
-Message-ID: <20240822135420.58849-6-c.koehne@beckhoff.com>
+Subject: [PATCH 7/7] vfio/igd: correctly calculate stolen memory size for gen
+ 9 and later
+Date: Thu, 22 Aug 2024 15:54:16 +0200
+Message-ID: <20240822135420.58849-7-c.koehne@beckhoff.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240822111819.34306-1-c.koehne@beckhoff.com>
 References: <20240822111819.34306-1-c.koehne@beckhoff.com>
@@ -59,8 +60,9 @@ X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,79 +78,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=EF=BB=BFThe stolen memory is required for the GOP (EFI) driver and the Win=
-dows
-driver. While the GOP driver seems to work with any stolen memory size,
-the Windows driver will crash if the size doesn't match the size
-allocated by the host BIOS. For that reason, it doesn't make sense to
-overwrite the stolen memory size. It's true that this wastes some VM
-memory. In the worst case, the stolen memory can take up more than a GB.
-However, that's uncommon. Additionally, it's likely that a bunch of RAM
-is assigned to VMs making use of GPU passthrough.
+=EF=BB=BFWe have to update the calculation of the stolen memory size becaus=
+e
+we've seen devices using values of 0xf0 and above for the graphics mode
+select field. The new calculation was taken from the linux kernel [1].
+
+[1] https://github.com/torvalds/linux/blob/7c626ce4bae1ac14f60076d00eafe71a=
+f30450ba/arch/x86/kernel/early-quirks.c#L455-L460
 
 Signed-off-by: Corvin K=C3=B6hne <c.koehne@beckhoff.com>
 ---
- hw/vfio/igd.c | 35 ++++++++++++++++++-----------------
- 1 file changed, 18 insertions(+), 17 deletions(-)
+ hw/vfio/igd.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 84b0ec3139..122432e6a6 100644
+index 122432e6a6..70c60fe7bc 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -477,6 +477,23 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, in=
-t nr)
-     QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
- }
-=20
-+static int igd_get_stolen_mb(int gen, uint32_t gmch)
-+{
-+    int gms;
-+
-+    if (gen < 8) {
-+        gms =3D (gmch >> 3) & 0x1f;
-+    } else {
-+        gms =3D (gmch >> 8) & 0xff;
-+    }
-+
-+    if (gms > 0x10) {
-+        error_report("Unsupported IGD GMS value 0x%x", gms);
-+        return 0;
-+    }
-+    return gms * 32;
-+}
-+
- void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
- {
-     g_autofree struct vfio_region_info *rom =3D NULL;
-@@ -654,23 +671,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, in=
-t nr)
-         ggms_mb =3D 1 << ggms_mb;
+@@ -487,11 +487,18 @@ static int igd_get_stolen_mb(int gen, uint32_t gmch)
+         gms =3D (gmch >> 8) & 0xff;
      }
 =20
--    /*
--     * Assume we have no GMS memory, but allow it to be overridden by devi=
-ce
--     * option (experimental).  The spec doesn't actually allow zero GMS wh=
-en
--     * when IVD (IGD VGA Disable) is clear, but the claim is that it's unu=
-sed,
--     * so let's not waste VM memory for it.
--     */
--    gmch &=3D ~((gen < 8 ? 0x1f : 0xff) << (gen < 8 ? 3 : 8));
--
--    if (vdev->igd_gms) {
--        if (vdev->igd_gms <=3D 0x10) {
--            gms_mb =3D vdev->igd_gms * 32;
--            gmch |=3D vdev->igd_gms << (gen < 8 ? 3 : 8);
--        } else {
--            error_report("Unsupported IGD GMS value 0x%x", vdev->igd_gms);
--            vdev->igd_gms =3D 0;
--        }
--    }
-+    gms_mb =3D igd_get_stolen_mb(gen, gmch);
+-    if (gms > 0x10) {
+-        error_report("Unsupported IGD GMS value 0x%x", gms);
+-        return 0;
++    if (gen < 9) {
++        if (gms > 0x10) {
++            error_report("Unsupported IGD GMS value 0x%x", gms);
++            return 0;
++        }
++        return gms * 32;
++    } else {
++        if (gms < 0xf0)
++            return gms * 32;
++        else
++            return gms * 4 + 4;
+     }
+-    return gms * 32;
+ }
 =20
-     /*
-      * Request reserved memory for stolen memory via fw_cfg.  VM firmware
+ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
 --=20
 2.46.0
 
