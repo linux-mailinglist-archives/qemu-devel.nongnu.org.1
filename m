@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0942F95AD04
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 07:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C65195AC78
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Aug 2024 06:17:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sh0cr-0001IC-Hn; Thu, 22 Aug 2024 01:44:49 -0400
+	id 1sgzEk-0000ZB-K5; Thu, 22 Aug 2024 00:15:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <doug@schmorgal.com>)
- id 1sgvGK-00004r-4p
- for qemu-devel@nongnu.org; Wed, 21 Aug 2024 20:01:13 -0400
-Received: from mail-il1-x131.google.com ([2607:f8b0:4864:20::131])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sgzEe-0000XP-Ko
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 00:15:44 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <doug@schmorgal.com>)
- id 1sgvGD-0007eH-PK
- for qemu-devel@nongnu.org; Wed, 21 Aug 2024 20:01:11 -0400
-Received: by mail-il1-x131.google.com with SMTP id
- e9e14a558f8ab-39d3872e542so1095685ab.2
- for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 17:01:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sgzEc-0001K4-KZ
+ for qemu-devel@nongnu.org; Thu, 22 Aug 2024 00:15:44 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-7c3d9a5e050so267512a12.2
+ for <qemu-devel@nongnu.org>; Wed, 21 Aug 2024 21:15:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=schmorgal.com; s=google; t=1724284864; x=1724889664; darn=nongnu.org;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1724300140; x=1724904940;
+ darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=rniunWcptbIXXKNuJm7p8500w/SrEx/HWbj0BosbAcs=;
- b=f0isbYF/k1yZndhnqcZRiNWewafNhmC9A2t5KVaXAgZafd51yfBKr3yPILoWka6zzD
- hIDiaa+wJzPpIZzEORZ5ftl8t7Euj7BuU6zZ+pb54ZRzmU10rNniNiCpe+30he12cRF2
- BOYJ9LiOiJZms4up2SuEhurT9KC/4Qkg1Lp/8=
+ bh=cLPIMAtNJsErtAYDPZGhNQ9X5w0MHlA6ecqtaKbpwPE=;
+ b=XIjt1ixVZ6Cz/8InxVNJqbim2A9LBtZx8t5XuBRAZqgfDghrhCFOcb4TbPrgW6jmiz
+ 6gaGPmQG55FFqmYJ31BPyQtZvWWEc/2xxvEPQ6tq5X7keAimgQAsbQbIzV8BUhfcjftO
+ RNORiQvenKIXOx957G4DyukUEG1C/HpMXQ4AVLGtk3EWj0VPRMkDGolFiGNmyCeah40B
+ sdmLJ0GHB7wR+FhGvfqmrfkTJkR6Gl5180wafvQ4f+TlshdZhGEpcByaADMBj1X+xgN0
+ O/RzjDJDCQ3+4u24EL7xqmksIOxeb2LFZTDYE6QYTYbxtAjyywU4klO50jO0h9p28Hp2
+ U9uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724284864; x=1724889664;
+ d=1e100.net; s=20230601; t=1724300140; x=1724904940;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rniunWcptbIXXKNuJm7p8500w/SrEx/HWbj0BosbAcs=;
- b=toW5HsqRjShY6roLLDi0IgnUeFc94WbiVOsqeUYpJ9rNQ2tWYy9U/YtPYRGhPo+qsA
- /cbxAeRCdXPIdbCMx5JcrGi0EJwg1465spUW9JMwT2d9z/MDuj9sDIsw/MYd6gDO8SJE
- hPIVkRmD533wLOt3jkqjl7R361/9Sk/v7aDTL8kzTIU3xSiMtsvSuiGkwXxIMqnwtoq2
- QiuyK7afN0I0JYLt55yikXUGPSruKKk+c6NMMmt1ANpqum6szxKREKLKltH0G1qf/gqo
- HKh/TAJLqp7p5QKzc3uzosvh/j4mwQk8+hTVirDAaJxaKyy7aB3bnU7rUb61oTQ3nH4S
- ogRg==
+ bh=cLPIMAtNJsErtAYDPZGhNQ9X5w0MHlA6ecqtaKbpwPE=;
+ b=dtA1fv1M+sknRLyZTveNmbq+VDG3XkJBZ9hODiB6018Wen7z46nkLpBMsibcGmFF1a
+ ffAJ6IqzeP330lBoaPzUs3+OfIqiJTT5lxtQVsGEKBJmsIW6ACPYGnWO9WBWzkD80aou
+ IEkVuWxHVyNolUDMWnbhitV8nMetcZRK+5g/vU+vnkh6FkrL9VS3yP/zYXQh9hEEf9dN
+ ZqK7YQMW5vSstBmPnakT438qMyAX2Nqe443ft2UN+1WnSLV9STUMDvITryk+0BMpu3YI
+ UAdUePxkQLPynwiCvi0N02bq4bbHAxyrGN/uEAzSNOztJPpa3T4v23zHOv8IYaBlWYbf
+ 0nww==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWIfJ3A+dSJ2NUp7YirqtxGCKXct1TxHMbXyHRfjfXEUP6BkzbV7qWXD+rYk6Ds0B5IG2L6Jj08K5Bg@nongnu.org
-X-Gm-Message-State: AOJu0YwuUtFZo6A5jLXOvpJy8anKUvaH5UGe4ncgoRHgq9io8SDazQls
- RU7jiw/RLwtvAvjGZDAT0cBmv+kN9j8YJbiKzmfVzdaMQ5F42ufIk29NQydAFD4=
-X-Google-Smtp-Source: AGHT+IG/kLRWv3KV7VTc4yGrqCaDbrIx4SE7Rw+CThIVIJh/V6LmyQnIpjSHVU8pDwOLI9S5XY7rFw==
-X-Received: by 2002:a05:6e02:1807:b0:39d:2ced:e3ee with SMTP id
- e9e14a558f8ab-39d6c378e0emr52754365ab.8.1724284862979; 
- Wed, 21 Aug 2024 17:01:02 -0700 (PDT)
-Received: from [192.168.1.33] ([50.37.200.153])
- by smtp.googlemail.com with ESMTPSA id
- 41be03b00d2f7-7cd9ad6e8e9sm143665a12.86.2024.08.21.17.01.02
+ AJvYcCUEbCaWVzq9qR5QHLMRaeDNVOOw4GneQZAwniGL7Mhw0WmUGhkhWMAkDsCcw92ucEVPfZ23OKypksH0@nongnu.org
+X-Gm-Message-State: AOJu0YxTMZT6EwMal/io4DOwvpNlfAxpC78An3An6Q1TEDmwIDqHk9j4
+ HbBOSLHpuuZ/fV/lOZfHW5shgEPQmv72UpLwENAmMnuyslHk58llimDL54l8VXc=
+X-Google-Smtp-Source: AGHT+IEihNqr99kHAmEgEhP/qpzrsvPNyY6COlMxUqti3kvEvASZ1oGXhPqTBJ4MiAuycQ1XFf9GHg==
+X-Received: by 2002:a05:6a21:e96:b0:1c4:c337:e24e with SMTP id
+ adf61e73a8af0-1cada063fecmr4641970637.17.1724300139897; 
+ Wed, 21 Aug 2024 21:15:39 -0700 (PDT)
+Received: from [133.11.54.73] (shio03.csg.ci.i.u-tokyo.ac.jp. [133.11.54.73])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2d5c0f78e51sm3491637a91.0.2024.08.21.21.15.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Aug 2024 17:01:02 -0700 (PDT)
-Message-ID: <fdce5258-59f7-486c-bfd1-a4befdf72e3e@schmorgal.com>
-Date: Wed, 21 Aug 2024 17:01:01 -0700
+ Wed, 21 Aug 2024 21:15:39 -0700 (PDT)
+Message-ID: <0b5b1773-f090-4733-96d2-f23ac101498e@daynix.com>
+Date: Thu, 22 Aug 2024 13:15:36 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] hw/net/can/xlnx-versal-canfd: Fix CAN FD flag check
-To: Pavel Pisa <pisa@fel.cvut.cz>
-Cc: Francisco Iglesias <francisco.iglesias@amd.com>,
- Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
-References: <20240816163504.789393-1-doug@schmorgal.com>
- <20240816163504.789393-3-doug@schmorgal.com>
- <202408210857.20254.pisa@fel.cvut.cz>
+Subject: Re: [PATCH] vnc: fix crash when no console attached
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+References: <20240820131112.1267954-1-marcandre.lureau@redhat.com>
 Content-Language: en-US
-From: Doug Brown <doug@schmorgal.com>
-In-Reply-To: <202408210857.20254.pisa@fel.cvut.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::131;
- envelope-from=doug@schmorgal.com; helo=mail-il1-x131.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20240820131112.1267954-1-marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::533;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 22 Aug 2024 01:44:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,69 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Pavel,
-
-(Dropping Vikram from the email chain; I received "recipient not found"
-errors from AMD's mail servers in response to all of my patches)
-
-On 8/20/2024 11:57 PM, Pavel Pisa wrote:
-> Hello Doug Brown,
+On 2024/08/20 22:11, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> On Friday 16 of August 2024 18:35:02 Doug Brown wrote:
->> -        if (frame->flags == QEMU_CAN_FRMF_TYPE_FD) {
->> +        if (frame->flags & QEMU_CAN_FRMF_TYPE_FD) {
+> Since commit e99441a3793b5 ("ui/curses: Do not use console_select()")
+> qemu_text_console_put_keysym() no longer checks for NULL console
+> argument, which leads to a later crash:
 > 
-> Reviewed-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+> Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
+> 0x00005555559ee186 in qemu_text_console_handle_keysym (s=0x0, keysym=31) at ../ui/console-vc.c:332
+> 332	        } else if (s->echo && (keysym == '\r' || keysym == '\n')) {
+> (gdb) bt
+>   #0  0x00005555559ee186 in qemu_text_console_handle_keysym (s=0x0, keysym=31) at ../ui/console-vc.c:332
+>   #1  0x00005555559e18e5 in qemu_text_console_put_keysym (s=<optimized out>, keysym=<optimized out>) at ../ui/console.c:303
+>   #2  0x00005555559f2e88 in do_key_event (vs=vs@entry=0x5555579045c0, down=down@entry=1, keycode=keycode@entry=60, sym=sym@entry=65471) at ../ui/vnc.c:2034
+>   #3  0x00005555559f845c in ext_key_event (vs=0x5555579045c0, down=1, sym=65471, keycode=<optimized out>) at ../ui/vnc.c:2070
+>   #4  protocol_client_msg (vs=0x5555579045c0, data=<optimized out>, len=<optimized out>) at ../ui/vnc.c:2514
+>   #5  0x00005555559f515c in vnc_client_read (vs=0x5555579045c0) at ../ui/vnc.c:1607
 > 
-> That is a great catch, I have overlooked this in previous
-> review of the Xilinx code.
+> Fixes: e99441a3793b5 ("ui/curses: Do not use console_select()")
+> Fixes: https://issues.redhat.com/browse/RHEL-50529
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Thank you for reviewing!
-
-> When I look into hw/net/can/xlnx-versal-canfd.c functions
-> regs2frame and store_rx_sequential then I see missing
-> handling of flags QEMU_CAN_FRMF_ESI and QEMU_CAN_FRMF_BRS.
-
-Nice find. It looks like it would be pretty straightforward to add
-support for those flags. As far as I can tell they map directly to
-register bits.
-
-> In the function regs2frame is missing even initialization
-> of frame->flags = 0 at the start, which I expect should be there.
-> The
->   frame->flags = QEMU_CAN_FRMF_TYPE_FD;
-> should be then
->   frame->flags |= QEMU_CAN_FRMF_TYPE_FD;
-
-You're absolutely right. It looks like frame->flags isn't being
-initialized at all when it's a non-FD frame. I can also take care of
-this. I'll wait and see how the review goes for the other patches, and I
-can add another patch to fix these flag issues in the next version of
-the series.
-
-> As for the DLC conversion, there are functions
-> 
->   frame->can_dlc = can_dlc2len(xxxx)
->   XXX = can_len2dlc(frame->can_dlc);
-> 
-> provided by net/can/can_core.c
-
-Nice! It seems like using these functions could simplify this code quite
-a bit, by eliminating the need for canfd_dlc_array. I can add this as
-another patch for the next version.
-
-> I am not sure how much competent I am for the rest of the patches,
-> because I do not know XilinX IP core so well. Review by Vikram Garhwal
-> or somebody else from AMD/XilinX is more valueable there.
-> But I can add my ACK there based on rough overview.
-Thanks! I also see that Francisco reviewed a couple of the patches --
-thanks Francisco! I will wait and see how review goes on the others.
-
-For what it's worth, I was stress testing this in QEMU today and found
-another issue with the FIFO read_index and store_index calculations and
-the logic that wraps them around to 0. I will submit the fix for this
-problem as another patch in the next version of the series (or a new
-series if that's more convenient).
-
-Doug
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
