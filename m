@@ -2,50 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9B095CF4E
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 16:17:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFE895CFD4
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 16:31:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shV61-0002TO-Kq; Fri, 23 Aug 2024 10:16:57 -0400
+	id 1shVIC-0006yj-8T; Fri, 23 Aug 2024 10:29:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1shV5A-00022U-CC; Fri, 23 Aug 2024 10:16:09 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1shV57-0004IL-4Q; Fri, 23 Aug 2024 10:16:03 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 09C3B87EC5;
- Fri, 23 Aug 2024 17:14:46 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id ACDF312B0F8;
- Fri, 23 Aug 2024 17:15:42 +0300 (MSK)
-Received: (nullmailer pid 1411624 invoked by uid 1000);
- Fri, 23 Aug 2024 14:15:42 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: Haoran Zhang <wh1sper@zju.edu.cn>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 3/3] hw/display/vhost-user-gpu.c: fix vhost_user_gpu_chr_read()
-Date: Fri, 23 Aug 2024 17:15:42 +0300
-Message-Id: <20240823141542.1411594-4-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240823141542.1411594-1-mjt@tls.msk.ru>
-References: <20240823141542.1411594-1-mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1shVIA-0006ua-E9
+ for qemu-devel@nongnu.org; Fri, 23 Aug 2024 10:29:30 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1shVI7-0006W1-CE
+ for qemu-devel@nongnu.org; Fri, 23 Aug 2024 10:29:29 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3718c176ed7so1048374f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Aug 2024 07:29:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1724423366; x=1725028166; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=BPbbLF0GHdd+ri1cnfKNyoAt6KlPi+CZPhgJOEB10iM=;
+ b=AHRhr2fHckZNt2khPKfMXAzzNNBXG/JSWYs83YBo3oClKGRdnjDUB0zD+DBcWnRAqQ
+ vBf4PZZ/rGPRWfpLo8m5lADcDV+sh6Gzun2QvAjCIiXzpytWm3ZeSnBjvki+YICGvA/T
+ J5Vnoqw3qzNFOTMl1xFiyCdEK+tSrl577ZNAFO6gwPvAKXK1cih/yANJ6JL3lH+pXOKz
+ hcanBgW61EPTdmLBfrrjX5EJAhurniQhiAPOASFgQauTVFBbF0VXLzeEpSozeSRNnc+/
+ z9g6QCbD4H+TpV8JMlwMkzCJFyeUGb+1pDBpu9rHcxL7eWoawS+i8s8xjK6laXbYb+bI
+ CSIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724423366; x=1725028166;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BPbbLF0GHdd+ri1cnfKNyoAt6KlPi+CZPhgJOEB10iM=;
+ b=MIaaQb7S0gCyY/2DOOG6mjlqYM+3ha4EjXJePtA6Fd9R9fYVvqtBOr9x03GvpXuh3o
+ 4i+7/JGEjR3sCNYzGirMFMxImlazZKMVo+6nnllCc/PO8beHPI/JaWB4CB/GMFhwOHUE
+ OUvriOnkrOLB41M9yJ6ntFoaKn1VjCM2gg7482peoZPFs3HNIbbT8l8Pecy0a0uZiZi9
+ nHVPOzQYdv/OoRTSnwkzMtHQoiV1qmJX5Ky+DWHAMxAthnof3MIakrW4qQbZpgmZL5ye
+ /rIgrFbIWfcs00vk4XaBJCR9sN758fN3sQ1s7Zm1YIUeG2xljEpHDl57wXhgdkbUEaWj
+ e/dA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUHfauIpdXID+DslBKjuOc1gXmEKANKLpt7WuFQ9bF3RNL8vp65gkQ2mMwip/Jd0ifX9imIeY5HznAV@nongnu.org
+X-Gm-Message-State: AOJu0YwIr2lRPzJYJhtnmyqL3icjhsjCFamlp2/s2i46NA6Ux9iu22fU
+ tTdah0ubs7SAFQwunFfw/LAYf8Q4pz1sV79nhTv2jxj+lA/HRD4rCl5OW92SuCE=
+X-Google-Smtp-Source: AGHT+IHhy0MPvUljam6DaNcTP8kGCEGZh78USoZJvSAbNjQ3BzzSExHvOnLrQE5np8+31XHeC0FyWQ==
+X-Received: by 2002:a5d:64ef:0:b0:367:9522:5e6b with SMTP id
+ ffacd0b85a97d-373118c7ce8mr2137032f8f.45.1724423365528; 
+ Fri, 23 Aug 2024 07:29:25 -0700 (PDT)
+Received: from sunil-laptop ([106.51.198.16]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-373081ffb34sm4295403f8f.71.2024.08.23.07.29.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 23 Aug 2024 07:29:25 -0700 (PDT)
+Date: Fri, 23 Aug 2024 19:59:13 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
+ peter.maydell@linaro.org, shannon.zhaosl@gmail.com,
+ palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+Subject: Re: [PATCH RESEND v4 0/3] Upgrade ACPI SPCR table to support SPCR
+ table revision 4 format
+Message-ID: <ZsicubCBw2YAjq9c@sunil-laptop>
+References: <20240823113142.161727-1-jeeheng.sia@starfivetech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240823113142.161727-1-jeeheng.sia@starfivetech.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,34 +97,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Haoran Zhang <wh1sper@zju.edu.cn>
+Hi Jee Heng,
+On Fri, Aug 23, 2024 at 04:31:39AM -0700, Sia Jee Heng wrote:
+> Update the SPCR table to accommodate the SPCR Table revision 4 [1].
+> The SPCR table has been modified to adhere to the revision 4 format [2].
+> 
+> Meanwhile, the virt SPCR golden reference file for RISC-V have been updated to
+> accommodate the SPCR Table revision 4.
+> 
+> [1]: https://learn.microsoft.com/en-us/windows-hardware/drivers/serports/serial-port-console-redirection-table
+> [2]: https://github.com/acpica/acpica/pull/931
+> 
+Just curious - whether this needs changes in linux side as well? Does
+current linux code work fine with version 4 of SPCR table on RISC-V?
 
-fix vhost_user_gpu_chr_read() where `size` was incorrectly passed to `msg->flags`.
-
-Fixes: 267f664658 ("hw/display: add vhost-user-vga & gpu-pci")
-Signed-off-by: Haoran Zhang <wh1sper@zju.edu.cn>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- hw/display/vhost-user-gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-index 63c64ddde6..c0c66910f1 100644
---- a/hw/display/vhost-user-gpu.c
-+++ b/hw/display/vhost-user-gpu.c
-@@ -390,7 +390,7 @@ vhost_user_gpu_chr_read(void *opaque)
-     }
- 
-     msg->request = request;
--    msg->flags = size;
-+    msg->flags = flags;
-     msg->size = size;
- 
-     if (request == VHOST_USER_GPU_CURSOR_UPDATE ||
--- 
-2.39.2
-
+Thanks,
+Sunil
 
