@@ -2,107 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDD195D489
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 19:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0901795D49E
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 19:45:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shYGP-0000t6-D5; Fri, 23 Aug 2024 13:39:53 -0400
+	id 1shYLl-00044R-W9; Fri, 23 Aug 2024 13:45:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1shYGI-0000SW-0f
- for qemu-devel@nongnu.org; Fri, 23 Aug 2024 13:39:47 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1shYGE-00005b-Qj
- for qemu-devel@nongnu.org; Fri, 23 Aug 2024 13:39:45 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 7DED6226F4;
- Fri, 23 Aug 2024 17:39:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1724434781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nCGJ6g6u1RhA88ge48hCn24EJLSG0+tWkoZzJwM756I=;
- b=X2cPOLzAABOUL/YZ5pmKc0SheW1xSqlvWp9jyVb71EJP5ttXzfI3yJmscIBxqUcU7Sp2Cy
- DltcFs79eP15PKFUxUO45j5EYpGPjIugxCj9zE46K+ThLHupUkLqfQy6QkJW+umzzA/oTa
- 8qxeFYz5spMji3l1X7t8Xmlk77SsyPo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1724434781;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nCGJ6g6u1RhA88ge48hCn24EJLSG0+tWkoZzJwM756I=;
- b=vYQGwoXWC0dPxtbBMqENnO6Poz94qLArim0lRVF+cBP1S0AIXGqXSUkuG43HtwhDhIPCws
- JJw607MEmUIE6cCw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1724434781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nCGJ6g6u1RhA88ge48hCn24EJLSG0+tWkoZzJwM756I=;
- b=X2cPOLzAABOUL/YZ5pmKc0SheW1xSqlvWp9jyVb71EJP5ttXzfI3yJmscIBxqUcU7Sp2Cy
- DltcFs79eP15PKFUxUO45j5EYpGPjIugxCj9zE46K+ThLHupUkLqfQy6QkJW+umzzA/oTa
- 8qxeFYz5spMji3l1X7t8Xmlk77SsyPo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1724434781;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nCGJ6g6u1RhA88ge48hCn24EJLSG0+tWkoZzJwM756I=;
- b=vYQGwoXWC0dPxtbBMqENnO6Poz94qLArim0lRVF+cBP1S0AIXGqXSUkuG43HtwhDhIPCws
- JJw607MEmUIE6cCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1D4561333E;
- Fri, 23 Aug 2024 17:39:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 0N0/NVvJyGb2LwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 23 Aug 2024 17:39:39 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
- "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
-Subject: [PATCH v4 16/16] migration/multifd: Move nocomp code into
- multifd-nocomp.c
-Date: Fri, 23 Aug 2024 14:39:11 -0300
-Message-Id: <20240823173911.6712-17-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240823173911.6712-1-farosas@suse.de>
-References: <20240823173911.6712-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1shYLc-0003x3-FQ; Fri, 23 Aug 2024 13:45:16 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1shYLa-0001Dn-6v; Fri, 23 Aug 2024 13:45:16 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47NF20SJ015768;
+ Fri, 23 Aug 2024 17:45:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+ 1hfGFDSz3nGvlajlYzwrX4NweoxkxBfXKQQC6SwbneE=; b=UpWp+rNL5wNMMhbv
+ dpufg8nDYTd8xewP3Ha1YOg9pjMz0G90YVUqSCQwkWJI7vvRC4inSs9QqjuVKXfH
+ VrIdPUQ7dwk2V2/2vHjrBBzuus0+ujSc/hXFZdA9nhZqG+GrkRjwMgHfhl+bA0Ad
+ 0rl+Abb8p94cfc1UIBOl1zYL5ciVLOuD39li+El2uRcmITz8N/8caWAEN6sWUFC+
+ /P/bwT7xZbK0fozbWpiy5+WYRU+RTqPiW3P78zqEzh3zpbjQnPQeS27kRvKUDfZK
+ CkDFjBxi18QxpGgZ0IRFKjKv3M/gMebxWe2YmWZnHGXmlXqx5/OnFuXtyCdZrYM7
+ 4EewuQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 416vq30p2f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Aug 2024 17:45:08 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47NHj8pm021953;
+ Fri, 23 Aug 2024 17:45:08 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 416vq30p2c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Aug 2024 17:45:08 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47NF1dgD002201;
+ Fri, 23 Aug 2024 17:45:07 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4136k1353e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Aug 2024 17:45:06 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 47NHj06Q21758550
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 23 Aug 2024 17:45:02 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9FA052004B;
+ Fri, 23 Aug 2024 17:45:00 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E5E9020040;
+ Fri, 23 Aug 2024 17:44:59 +0000 (GMT)
+Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
+ [9.179.15.174]) by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 23 Aug 2024 17:44:59 +0000 (GMT)
+Message-ID: <a2fcc299abf9cd81a3554244f1574cb9c7f63d70.camel@linux.ibm.com>
+Subject: Re: [PATCH for-9.2 02/10] target/s390: Convert CPU to Resettable
+ interface
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org, Richard Henderson
+ <richard.henderson@linaro.org>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, David Hildenbrand <david@redhat.com>, Ilya Leoshkevich
+ <iii@linux.ibm.com>, Cornelia Huck <cohuck@redhat.com>, Halil Pasic
+ <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Christian
+ Borntraeger <borntraeger@linux.ibm.com>
+Date: Fri, 23 Aug 2024 19:44:59 +0200
+In-Reply-To: <20240813165250.2717650-3-peter.maydell@linaro.org>
+References: <20240813165250.2717650-1-peter.maydell@linaro.org>
+ <20240813165250.2717650-3-peter.maydell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.986];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
- RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: LVIIVO2z6VImmPm4SvTSM7qYMDxsb56U
+X-Proofpoint-GUID: jXtqrz_velvp3NVzgUXRg3QtADKXqOSq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-23_14,2024-08-22_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 impostorscore=0 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 clxscore=1015 malwarescore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408230130
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,906 +120,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation for adding new payload types to multifd, move most of
-the no-compression code into multifd-nocomp.c. Let's try to keep a
-semblance of layering by not mixing general multifd control flow with
-the details of transmitting pages of ram.
+On Tue, 2024-08-13 at 17:52 +0100, Peter Maydell wrote:
+> Convert the s390 CPU to the Resettable interface.  This is slightly
+> more involved than the other CPU types were (see commits
+> 9130cade5fc22..d66e64dd006df) because S390 has its own set of
+> different kinds of reset with different behaviours that it needs to
+> trigger.
+>=20
+> We handle this by adding these reset types to the Resettable
+> ResetType enum.  Now instead of having an underlying implementation
+> of reset that is s390-specific and which might be called either
+> directly or via the DeviceClass::reset method, we can implement only
+> the Resettable hold phase method, and have the places that need to
+> trigger an s390-specific reset type do so by calling
+> resettable_reset().
+>=20
+> The other option would have been to smuggle in the s390 reset
+> type via, for instance, a field in the CPU state that we set
+> in s390_do_cpu_initial_reset() etc and then examined in the
+> reset method, but doing it this way seems cleaner.
+>=20
+> The motivation for this change is that this is the last caller
+> of the legacy device_class_set_parent_reset() function, and
+> removing that will let us clean up some glue code that we added
+> for the transition to three-phase reset.
+>=20
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+> Tested with 'make check' and 'make check-avocado' only. The
+> descriptions of the reset types are borrowed from the commit
+> message of f5ae2a4fd8d573cfeba; please check them as I haven't
+> got a clue what s390 does ;-)
+> ---
 
-There are still some pieces leftover, namely the p->normal, p->zero,
-etc variables that we use for zero page tracking and the packet
-allocation which is heavily dependent on the ram code.
+With the already mentioned fix:
+Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/meson.build      |   1 +
- migration/multifd-nocomp.c | 394 +++++++++++++++++++++++++++++++++++++
- migration/multifd.c        | 377 +----------------------------------
- migration/multifd.h        |   5 +
- 4 files changed, 402 insertions(+), 375 deletions(-)
- create mode 100644 migration/multifd-nocomp.c
+> diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+> index 0fbfcd35d83..4e41a3dff59 100644
+> --- a/target/s390x/cpu.c
+> +++ b/target/s390x/cpu.c
+>=20
+[...]
 
-diff --git a/migration/meson.build b/migration/meson.build
-index 5ce2acb41e..77f3abf08e 100644
---- a/migration/meson.build
-+++ b/migration/meson.build
-@@ -21,6 +21,7 @@ system_ss.add(files(
-   'migration-hmp-cmds.c',
-   'migration.c',
-   'multifd.c',
-+  'multifd-nocomp.c',
-   'multifd-zlib.c',
-   'multifd-zero-page.c',
-   'options.c',
-diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
-new file mode 100644
-index 0000000000..53ea9f9c83
---- /dev/null
-+++ b/migration/multifd-nocomp.c
-@@ -0,0 +1,394 @@
-+/*
-+ * Multifd RAM migration without compression
-+ *
-+ * Copyright (c) 2019-2020 Red Hat Inc
-+ *
-+ * Authors:
-+ *  Juan Quintela <quintela@redhat.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "exec/ramblock.h"
-+#include "exec/target_page.h"
-+#include "file.h"
-+#include "multifd.h"
-+#include "options.h"
-+#include "qapi/error.h"
-+#include "qemu/error-report.h"
-+#include "trace.h"
-+
-+static MultiFDSendData *multifd_ram_send;
-+
-+size_t multifd_ram_payload_size(void)
-+{
-+    uint32_t n = multifd_ram_page_count();
-+
-+    /*
-+     * We keep an array of page offsets at the end of MultiFDPages_t,
-+     * add space for it in the allocation.
-+     */
-+    return sizeof(MultiFDPages_t) + n * sizeof(ram_addr_t);
-+}
-+
-+void multifd_ram_save_setup(void)
-+{
-+    multifd_ram_send = multifd_send_data_alloc();
-+}
-+
-+void multifd_ram_save_cleanup(void)
-+{
-+    g_free(multifd_ram_send);
-+    multifd_ram_send = NULL;
-+}
-+
-+static void multifd_set_file_bitmap(MultiFDSendParams *p)
-+{
-+    MultiFDPages_t *pages = &p->data->u.ram;
-+
-+    assert(pages->block);
-+
-+    for (int i = 0; i < pages->normal_num; i++) {
-+        ramblock_set_file_bmap_atomic(pages->block, pages->offset[i], true);
-+    }
-+
-+    for (int i = pages->normal_num; i < pages->num; i++) {
-+        ramblock_set_file_bmap_atomic(pages->block, pages->offset[i], false);
-+    }
-+}
-+
-+static int multifd_nocomp_send_setup(MultiFDSendParams *p, Error **errp)
-+{
-+    uint32_t page_count = multifd_ram_page_count();
-+
-+    if (migrate_zero_copy_send()) {
-+        p->write_flags |= QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
-+    }
-+
-+    if (!migrate_mapped_ram()) {
-+        /* We need one extra place for the packet header */
-+        p->iov = g_new0(struct iovec, page_count + 1);
-+    } else {
-+        p->iov = g_new0(struct iovec, page_count);
-+    }
-+
-+    return 0;
-+}
-+
-+static void multifd_nocomp_send_cleanup(MultiFDSendParams *p, Error **errp)
-+{
-+    g_free(p->iov);
-+    p->iov = NULL;
-+    return;
-+}
-+
-+static void multifd_send_prepare_iovs(MultiFDSendParams *p)
-+{
-+    MultiFDPages_t *pages = &p->data->u.ram;
-+    uint32_t page_size = multifd_ram_page_size();
-+
-+    for (int i = 0; i < pages->normal_num; i++) {
-+        p->iov[p->iovs_num].iov_base = pages->block->host + pages->offset[i];
-+        p->iov[p->iovs_num].iov_len = page_size;
-+        p->iovs_num++;
-+    }
-+
-+    p->next_packet_size = pages->normal_num * page_size;
-+}
-+
-+static int multifd_nocomp_send_prepare(MultiFDSendParams *p, Error **errp)
-+{
-+    bool use_zero_copy_send = migrate_zero_copy_send();
-+    int ret;
-+
-+    multifd_send_zero_page_detect(p);
-+
-+    if (migrate_mapped_ram()) {
-+        multifd_send_prepare_iovs(p);
-+        multifd_set_file_bitmap(p);
-+
-+        return 0;
-+    }
-+
-+    if (!use_zero_copy_send) {
-+        /*
-+         * Only !zerocopy needs the header in IOV; zerocopy will
-+         * send it separately.
-+         */
-+        multifd_send_prepare_header(p);
-+    }
-+
-+    multifd_send_prepare_iovs(p);
-+    p->flags |= MULTIFD_FLAG_NOCOMP;
-+
-+    multifd_send_fill_packet(p);
-+
-+    if (use_zero_copy_send) {
-+        /* Send header first, without zerocopy */
-+        ret = qio_channel_write_all(p->c, (void *)p->packet,
-+                                    p->packet_len, errp);
-+        if (ret != 0) {
-+            return -1;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
-+static int multifd_nocomp_recv_setup(MultiFDRecvParams *p, Error **errp)
-+{
-+    p->iov = g_new0(struct iovec, multifd_ram_page_count());
-+    return 0;
-+}
-+
-+static void multifd_nocomp_recv_cleanup(MultiFDRecvParams *p)
-+{
-+    g_free(p->iov);
-+    p->iov = NULL;
-+}
-+
-+static int multifd_nocomp_recv(MultiFDRecvParams *p, Error **errp)
-+{
-+    uint32_t flags;
-+
-+    if (migrate_mapped_ram()) {
-+        return multifd_file_recv_data(p, errp);
-+    }
-+
-+    flags = p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
-+
-+    if (flags != MULTIFD_FLAG_NOCOMP) {
-+        error_setg(errp, "multifd %u: flags received %x flags expected %x",
-+                   p->id, flags, MULTIFD_FLAG_NOCOMP);
-+        return -1;
-+    }
-+
-+    multifd_recv_zero_page_process(p);
-+
-+    if (!p->normal_num) {
-+        return 0;
-+    }
-+
-+    for (int i = 0; i < p->normal_num; i++) {
-+        p->iov[i].iov_base = p->host + p->normal[i];
-+        p->iov[i].iov_len = multifd_ram_page_size();
-+        ramblock_recv_bitmap_set_offset(p->block, p->normal[i]);
-+    }
-+    return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
-+}
-+
-+static void multifd_pages_reset(MultiFDPages_t *pages)
-+{
-+    /*
-+     * We don't need to touch offset[] array, because it will be
-+     * overwritten later when reused.
-+     */
-+    pages->num = 0;
-+    pages->normal_num = 0;
-+    pages->block = NULL;
-+}
-+
-+void multifd_ram_fill_packet(MultiFDSendParams *p)
-+{
-+    MultiFDPacket_t *packet = p->packet;
-+    MultiFDPages_t *pages = &p->data->u.ram;
-+    uint32_t zero_num = pages->num - pages->normal_num;
-+
-+    packet->pages_alloc = cpu_to_be32(multifd_ram_page_count());
-+    packet->normal_pages = cpu_to_be32(pages->normal_num);
-+    packet->zero_pages = cpu_to_be32(zero_num);
-+
-+    if (pages->block) {
-+        strncpy(packet->ramblock, pages->block->idstr, 256);
-+    }
-+
-+    for (int i = 0; i < pages->num; i++) {
-+        /* there are architectures where ram_addr_t is 32 bit */
-+        uint64_t temp = pages->offset[i];
-+
-+        packet->offset[i] = cpu_to_be64(temp);
-+    }
-+
-+    trace_multifd_send_ram_fill(p->id, pages->normal_num,
-+                                zero_num);
-+}
-+
-+int multifd_ram_unfill_packet(MultiFDRecvParams *p, Error **errp)
-+{
-+    MultiFDPacket_t *packet = p->packet;
-+    uint32_t page_count = multifd_ram_page_count();
-+    uint32_t page_size = multifd_ram_page_size();
-+    int i;
-+
-+    packet->pages_alloc = be32_to_cpu(packet->pages_alloc);
-+    /*
-+     * If we received a packet that is 100 times bigger than expected
-+     * just stop migration.  It is a magic number.
-+     */
-+    if (packet->pages_alloc > page_count) {
-+        error_setg(errp, "multifd: received packet "
-+                   "with size %u and expected a size of %u",
-+                   packet->pages_alloc, page_count) ;
-+        return -1;
-+    }
-+
-+    p->normal_num = be32_to_cpu(packet->normal_pages);
-+    if (p->normal_num > packet->pages_alloc) {
-+        error_setg(errp, "multifd: received packet "
-+                   "with %u normal pages and expected maximum pages are %u",
-+                   p->normal_num, packet->pages_alloc) ;
-+        return -1;
-+    }
-+
-+    p->zero_num = be32_to_cpu(packet->zero_pages);
-+    if (p->zero_num > packet->pages_alloc - p->normal_num) {
-+        error_setg(errp, "multifd: received packet "
-+                   "with %u zero pages and expected maximum zero pages are %u",
-+                   p->zero_num, packet->pages_alloc - p->normal_num) ;
-+        return -1;
-+    }
-+
-+    if (p->normal_num == 0 && p->zero_num == 0) {
-+        return 0;
-+    }
-+
-+    /* make sure that ramblock is 0 terminated */
-+    packet->ramblock[255] = 0;
-+    p->block = qemu_ram_block_by_name(packet->ramblock);
-+    if (!p->block) {
-+        error_setg(errp, "multifd: unknown ram block %s",
-+                   packet->ramblock);
-+        return -1;
-+    }
-+
-+    p->host = p->block->host;
-+    for (i = 0; i < p->normal_num; i++) {
-+        uint64_t offset = be64_to_cpu(packet->offset[i]);
-+
-+        if (offset > (p->block->used_length - page_size)) {
-+            error_setg(errp, "multifd: offset too long %" PRIu64
-+                       " (max " RAM_ADDR_FMT ")",
-+                       offset, p->block->used_length);
-+            return -1;
-+        }
-+        p->normal[i] = offset;
-+    }
-+
-+    for (i = 0; i < p->zero_num; i++) {
-+        uint64_t offset = be64_to_cpu(packet->offset[p->normal_num + i]);
-+
-+        if (offset > (p->block->used_length - page_size)) {
-+            error_setg(errp, "multifd: offset too long %" PRIu64
-+                       " (max " RAM_ADDR_FMT ")",
-+                       offset, p->block->used_length);
-+            return -1;
-+        }
-+        p->zero[i] = offset;
-+    }
-+
-+    return 0;
-+}
-+
-+static inline bool multifd_queue_empty(MultiFDPages_t *pages)
-+{
-+    return pages->num == 0;
-+}
-+
-+static inline bool multifd_queue_full(MultiFDPages_t *pages)
-+{
-+    return pages->num == multifd_ram_page_count();
-+}
-+
-+static inline void multifd_enqueue(MultiFDPages_t *pages, ram_addr_t offset)
-+{
-+    pages->offset[pages->num++] = offset;
-+}
-+
-+/* Returns true if enqueue successful, false otherwise */
-+bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
-+{
-+    MultiFDPages_t *pages;
-+
-+retry:
-+    pages = &multifd_ram_send->u.ram;
-+
-+    if (multifd_payload_empty(multifd_ram_send)) {
-+        multifd_pages_reset(pages);
-+        multifd_set_payload_type(multifd_ram_send, MULTIFD_PAYLOAD_RAM);
-+    }
-+
-+    /* If the queue is empty, we can already enqueue now */
-+    if (multifd_queue_empty(pages)) {
-+        pages->block = block;
-+        multifd_enqueue(pages, offset);
-+        return true;
-+    }
-+
-+    /*
-+     * Not empty, meanwhile we need a flush.  It can because of either:
-+     *
-+     * (1) The page is not on the same ramblock of previous ones, or,
-+     * (2) The queue is full.
-+     *
-+     * After flush, always retry.
-+     */
-+    if (pages->block != block || multifd_queue_full(pages)) {
-+        if (!multifd_send(&multifd_ram_send)) {
-+            return false;
-+        }
-+        goto retry;
-+    }
-+
-+    /* Not empty, and we still have space, do it! */
-+    multifd_enqueue(pages, offset);
-+    return true;
-+}
-+
-+int multifd_ram_flush_and_sync(void)
-+{
-+    if (!migrate_multifd()) {
-+        return 0;
-+    }
-+
-+    if (!multifd_payload_empty(multifd_ram_send)) {
-+        if (!multifd_send(&multifd_ram_send)) {
-+            error_report("%s: multifd_send fail", __func__);
-+            return -1;
-+        }
-+    }
-+
-+    return multifd_send_sync_main();
-+}
-+
-+bool multifd_send_prepare_common(MultiFDSendParams *p)
-+{
-+    MultiFDPages_t *pages = &p->data->u.ram;
-+    multifd_send_zero_page_detect(p);
-+
-+    if (!pages->normal_num) {
-+        p->next_packet_size = 0;
-+        return false;
-+    }
-+
-+    multifd_send_prepare_header(p);
-+
-+    return true;
-+}
-+
-+static MultiFDMethods multifd_nocomp_ops = {
-+    .send_setup = multifd_nocomp_send_setup,
-+    .send_cleanup = multifd_nocomp_send_cleanup,
-+    .send_prepare = multifd_nocomp_send_prepare,
-+    .recv_setup = multifd_nocomp_recv_setup,
-+    .recv_cleanup = multifd_nocomp_recv_cleanup,
-+    .recv = multifd_nocomp_recv
-+};
-+
-+static void multifd_nocomp_register(void)
-+{
-+    multifd_register_ops(MULTIFD_COMPRESSION_NONE, &multifd_nocomp_ops);
-+}
-+
-+migration_init(multifd_nocomp_register);
-diff --git a/migration/multifd.c b/migration/multifd.c
-index e100836cbe..0c07a2040b 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -96,20 +96,7 @@ struct {
-     MultiFDMethods *ops;
- } *multifd_recv_state;
- 
--static MultiFDSendData *multifd_ram_send;
--
--static size_t multifd_ram_payload_size(void)
--{
--    uint32_t n = multifd_ram_page_count();
--
--    /*
--     * We keep an array of page offsets at the end of MultiFDPages_t,
--     * add space for it in the allocation.
--     */
--    return sizeof(MultiFDPages_t) + n * sizeof(ram_addr_t);
--}
--
--static MultiFDSendData *multifd_send_data_alloc(void)
-+MultiFDSendData *multifd_send_data_alloc(void)
- {
-     size_t max_payload_size, size_minus_payload;
- 
-@@ -131,17 +118,6 @@ static MultiFDSendData *multifd_send_data_alloc(void)
-     return g_malloc0(size_minus_payload + max_payload_size);
- }
- 
--void multifd_ram_save_setup(void)
--{
--    multifd_ram_send = multifd_send_data_alloc();
--}
--
--void multifd_ram_save_cleanup(void)
--{
--    g_free(multifd_ram_send);
--    multifd_ram_send = NULL;
--}
--
- static bool multifd_use_packets(void)
- {
-     return !migrate_mapped_ram();
-@@ -152,141 +128,6 @@ void multifd_send_channel_created(void)
-     qemu_sem_post(&multifd_send_state->channels_created);
- }
- 
--static void multifd_set_file_bitmap(MultiFDSendParams *p)
--{
--    MultiFDPages_t *pages = &p->data->u.ram;
--
--    assert(pages->block);
--
--    for (int i = 0; i < pages->normal_num; i++) {
--        ramblock_set_file_bmap_atomic(pages->block, pages->offset[i], true);
--    }
--
--    for (int i = pages->normal_num; i < pages->num; i++) {
--        ramblock_set_file_bmap_atomic(pages->block, pages->offset[i], false);
--    }
--}
--
--static int multifd_nocomp_send_setup(MultiFDSendParams *p, Error **errp)
--{
--    uint32_t page_count = multifd_ram_page_count();
--
--    if (migrate_zero_copy_send()) {
--        p->write_flags |= QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
--    }
--
--    if (multifd_use_packets()) {
--        /* We need one extra place for the packet header */
--        p->iov = g_new0(struct iovec, page_count + 1);
--    } else {
--        p->iov = g_new0(struct iovec, page_count);
--    }
--
--    return 0;
--}
--
--static void multifd_nocomp_send_cleanup(MultiFDSendParams *p, Error **errp)
--{
--    g_free(p->iov);
--    p->iov = NULL;
--    return;
--}
--
--static void multifd_send_prepare_iovs(MultiFDSendParams *p)
--{
--    MultiFDPages_t *pages = &p->data->u.ram;
--    uint32_t page_size = multifd_ram_page_size();
--
--    for (int i = 0; i < pages->normal_num; i++) {
--        p->iov[p->iovs_num].iov_base = pages->block->host + pages->offset[i];
--        p->iov[p->iovs_num].iov_len = page_size;
--        p->iovs_num++;
--    }
--
--    p->next_packet_size = pages->normal_num * page_size;
--}
--
--static int multifd_nocomp_send_prepare(MultiFDSendParams *p, Error **errp)
--{
--    bool use_zero_copy_send = migrate_zero_copy_send();
--    int ret;
--
--    multifd_send_zero_page_detect(p);
--
--    if (!multifd_use_packets()) {
--        multifd_send_prepare_iovs(p);
--        multifd_set_file_bitmap(p);
--
--        return 0;
--    }
--
--    if (!use_zero_copy_send) {
--        /*
--         * Only !zerocopy needs the header in IOV; zerocopy will
--         * send it separately.
--         */
--        multifd_send_prepare_header(p);
--    }
--
--    multifd_send_prepare_iovs(p);
--    p->flags |= MULTIFD_FLAG_NOCOMP;
--
--    multifd_send_fill_packet(p);
--
--    if (use_zero_copy_send) {
--        /* Send header first, without zerocopy */
--        ret = qio_channel_write_all(p->c, (void *)p->packet,
--                                    p->packet_len, errp);
--        if (ret != 0) {
--            return -1;
--        }
--    }
--
--    return 0;
--}
--
--static int multifd_nocomp_recv_setup(MultiFDRecvParams *p, Error **errp)
--{
--    p->iov = g_new0(struct iovec, multifd_ram_page_count());
--    return 0;
--}
--
--static void multifd_nocomp_recv_cleanup(MultiFDRecvParams *p)
--{
--    g_free(p->iov);
--    p->iov = NULL;
--}
--
--static int multifd_nocomp_recv(MultiFDRecvParams *p, Error **errp)
--{
--    uint32_t flags;
--
--    if (!multifd_use_packets()) {
--        return multifd_file_recv_data(p, errp);
--    }
--
--    flags = p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
--
--    if (flags != MULTIFD_FLAG_NOCOMP) {
--        error_setg(errp, "multifd %u: flags received %x flags expected %x",
--                   p->id, flags, MULTIFD_FLAG_NOCOMP);
--        return -1;
--    }
--
--    multifd_recv_zero_page_process(p);
--
--    if (!p->normal_num) {
--        return 0;
--    }
--
--    for (int i = 0; i < p->normal_num; i++) {
--        p->iov[i].iov_base = p->host + p->normal[i];
--        p->iov[i].iov_len = multifd_ram_page_size();
--        ramblock_recv_bitmap_set_offset(p->block, p->normal[i]);
--    }
--    return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
--}
--
- static MultiFDMethods *multifd_ops[MULTIFD_COMPRESSION__MAX] = {};
- 
- void multifd_register_ops(int method, MultiFDMethods *ops)
-@@ -296,18 +137,6 @@ void multifd_register_ops(int method, MultiFDMethods *ops)
-     multifd_ops[method] = ops;
- }
- 
--/* Reset a MultiFDPages_t* object for the next use */
--static void multifd_pages_reset(MultiFDPages_t *pages)
--{
--    /*
--     * We don't need to touch offset[] array, because it will be
--     * overwritten later when reused.
--     */
--    pages->num = 0;
--    pages->normal_num = 0;
--    pages->block = NULL;
--}
--
- static int multifd_send_initial_packet(MultiFDSendParams *p, Error **errp)
- {
-     MultiFDInit_t msg = {};
-@@ -372,30 +201,6 @@ static int multifd_recv_initial_packet(QIOChannel *c, Error **errp)
-     return msg.id;
- }
- 
--static void multifd_ram_fill_packet(MultiFDSendParams *p)
--{
--    MultiFDPacket_t *packet = p->packet;
--    MultiFDPages_t *pages = &p->data->u.ram;
--    uint32_t zero_num = pages->num - pages->normal_num;
--
--    packet->pages_alloc = cpu_to_be32(multifd_ram_page_count());
--    packet->normal_pages = cpu_to_be32(pages->normal_num);
--    packet->zero_pages = cpu_to_be32(zero_num);
--
--    if (pages->block) {
--        strncpy(packet->ramblock, pages->block->idstr, 256);
--    }
--
--    for (int i = 0; i < pages->num; i++) {
--        /* there are architectures where ram_addr_t is 32 bit */
--        uint64_t temp = pages->offset[i];
--
--        packet->offset[i] = cpu_to_be64(temp);
--    }
--
--    trace_multifd_send_ram_fill(p->id, pages->normal_num, zero_num);
--}
--
- void multifd_send_fill_packet(MultiFDSendParams *p)
- {
-     MultiFDPacket_t *packet = p->packet;
-@@ -423,82 +228,6 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
-                             p->flags, p->next_packet_size);
- }
- 
--static int multifd_ram_unfill_packet(MultiFDRecvParams *p, Error **errp)
--{
--    MultiFDPacket_t *packet = p->packet;
--    uint32_t page_count = multifd_ram_page_count();
--    uint32_t page_size = multifd_ram_page_size();
--    int i;
--
--    packet->pages_alloc = be32_to_cpu(packet->pages_alloc);
--    /*
--     * If we received a packet that is 100 times bigger than expected
--     * just stop migration.  It is a magic number.
--     */
--    if (packet->pages_alloc > page_count) {
--        error_setg(errp, "multifd: received packet "
--                   "with size %u and expected a size of %u",
--                   packet->pages_alloc, page_count) ;
--        return -1;
--    }
--
--    p->normal_num = be32_to_cpu(packet->normal_pages);
--    if (p->normal_num > packet->pages_alloc) {
--        error_setg(errp, "multifd: received packet "
--                   "with %u normal pages and expected maximum pages are %u",
--                   p->normal_num, packet->pages_alloc) ;
--        return -1;
--    }
--
--    p->zero_num = be32_to_cpu(packet->zero_pages);
--    if (p->zero_num > packet->pages_alloc - p->normal_num) {
--        error_setg(errp, "multifd: received packet "
--                   "with %u zero pages and expected maximum zero pages are %u",
--                   p->zero_num, packet->pages_alloc - p->normal_num) ;
--        return -1;
--    }
--
--    if (p->normal_num == 0 && p->zero_num == 0) {
--        return 0;
--    }
--
--    /* make sure that ramblock is 0 terminated */
--    packet->ramblock[255] = 0;
--    p->block = qemu_ram_block_by_name(packet->ramblock);
--    if (!p->block) {
--        error_setg(errp, "multifd: unknown ram block %s",
--                   packet->ramblock);
--        return -1;
--    }
--
--    p->host = p->block->host;
--    for (i = 0; i < p->normal_num; i++) {
--        uint64_t offset = be64_to_cpu(packet->offset[i]);
--
--        if (offset > (p->block->used_length - page_size)) {
--            error_setg(errp, "multifd: offset too long %" PRIu64
--                       " (max " RAM_ADDR_FMT ")",
--                       offset, p->block->used_length);
--            return -1;
--        }
--        p->normal[i] = offset;
--    }
--
--    for (i = 0; i < p->zero_num; i++) {
--        uint64_t offset = be64_to_cpu(packet->offset[p->normal_num + i]);
--
--        if (offset > (p->block->used_length - page_size)) {
--            error_setg(errp, "multifd: offset too long %" PRIu64
--                       " (max " RAM_ADDR_FMT ")",
--                       offset, p->block->used_length);
--            return -1;
--        }
--        p->zero[i] = offset;
--    }
--
--    return 0;
--}
--
- static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
- {
-     MultiFDPacket_t *packet = p->packet;
-@@ -571,7 +300,7 @@ static void multifd_send_kick_main(MultiFDSendParams *p)
-  *
-  * Returns true if succeed, false otherwise.
-  */
--static bool multifd_send(MultiFDSendData **send_data)
-+bool multifd_send(MultiFDSendData **send_data)
- {
-     int i;
-     static int next_channel;
-@@ -632,61 +361,6 @@ static bool multifd_send(MultiFDSendData **send_data)
-     return true;
- }
- 
--static inline bool multifd_queue_empty(MultiFDPages_t *pages)
--{
--    return pages->num == 0;
--}
--
--static inline bool multifd_queue_full(MultiFDPages_t *pages)
--{
--    return pages->num == multifd_ram_page_count();
--}
--
--static inline void multifd_enqueue(MultiFDPages_t *pages, ram_addr_t offset)
--{
--    pages->offset[pages->num++] = offset;
--}
--
--/* Returns true if enqueue successful, false otherwise */
--bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
--{
--    MultiFDPages_t *pages;
--
--retry:
--    pages = &multifd_ram_send->u.ram;
--
--    if (multifd_payload_empty(multifd_ram_send)) {
--        multifd_pages_reset(pages);
--        multifd_set_payload_type(multifd_ram_send, MULTIFD_PAYLOAD_RAM);
--    }
--
--    /* If the queue is empty, we can already enqueue now */
--    if (multifd_queue_empty(pages)) {
--        pages->block = block;
--        multifd_enqueue(pages, offset);
--        return true;
--    }
--
--    /*
--     * Not empty, meanwhile we need a flush.  It can because of either:
--     *
--     * (1) The page is not on the same ramblock of previous ones, or,
--     * (2) The queue is full.
--     *
--     * After flush, always retry.
--     */
--    if (pages->block != block || multifd_queue_full(pages)) {
--        if (!multifd_send(&multifd_ram_send)) {
--            return false;
--        }
--        goto retry;
--    }
--
--    /* Not empty, and we still have space, do it! */
--    multifd_enqueue(pages, offset);
--    return true;
--}
--
- /* Multifd send side hit an error; remember it and prepare to quit */
- static void multifd_send_set_error(Error *err)
- {
-@@ -850,22 +524,6 @@ static int multifd_zero_copy_flush(QIOChannel *c)
-     return ret;
- }
- 
--int multifd_ram_flush_and_sync(void)
--{
--    if (!migrate_multifd()) {
--        return 0;
--    }
--
--    if (!multifd_payload_empty(multifd_ram_send)) {
--        if (!multifd_send(&multifd_ram_send)) {
--            error_report("%s: multifd_send fail", __func__);
--            return -1;
--        }
--    }
--
--    return multifd_send_sync_main();
--}
--
- int multifd_send_sync_main(void)
- {
-     int i;
-@@ -1676,34 +1334,3 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
-                        QEMU_THREAD_JOINABLE);
-     qatomic_inc(&multifd_recv_state->count);
- }
--
--bool multifd_send_prepare_common(MultiFDSendParams *p)
--{
--    MultiFDPages_t *pages = &p->data->u.ram;
--    multifd_send_zero_page_detect(p);
--
--    if (!pages->normal_num) {
--        p->next_packet_size = 0;
--        return false;
--    }
--
--    multifd_send_prepare_header(p);
--
--    return true;
--}
--
--static MultiFDMethods multifd_nocomp_ops = {
--    .send_setup = multifd_nocomp_send_setup,
--    .send_cleanup = multifd_nocomp_send_cleanup,
--    .send_prepare = multifd_nocomp_send_prepare,
--    .recv_setup = multifd_nocomp_recv_setup,
--    .recv_cleanup = multifd_nocomp_recv_cleanup,
--    .recv = multifd_nocomp_recv
--};
--
--static void multifd_nocomp_register(void)
--{
--    multifd_register_ops(MULTIFD_COMPRESSION_NONE, &multifd_nocomp_ops);
--}
--
--migration_init(multifd_nocomp_register);
-diff --git a/migration/multifd.h b/migration/multifd.h
-index 00c872dfda..a3e35196d1 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -257,6 +257,8 @@ static inline void multifd_send_prepare_header(MultiFDSendParams *p)
- }
- 
- void multifd_channel_connect(MultiFDSendParams *p, QIOChannel *ioc);
-+bool multifd_send(MultiFDSendData **send_data);
-+MultiFDSendData *multifd_send_data_alloc(void);
- 
- static inline uint32_t multifd_ram_page_size(void)
- {
-@@ -271,4 +273,7 @@ static inline uint32_t multifd_ram_page_count(void)
- void multifd_ram_save_setup(void);
- void multifd_ram_save_cleanup(void);
- int multifd_ram_flush_and_sync(void);
-+size_t multifd_ram_payload_size(void);
-+void multifd_ram_fill_packet(MultiFDSendParams *p);
-+int multifd_ram_unfill_packet(MultiFDRecvParams *p, Error **errp);
- #endif
--- 
-2.35.3
+> -/* S390CPUClass::reset() */
+> -static void s390_cpu_reset(CPUState *s, cpu_reset_type type)
+> +/* S390CPUClass Resettable reset_hold phase method */
+> +static void s390_cpu_reset_hold(Object *obj, ResetType type)
+>  {
+
+[...]
+> =20
+>      switch (type) {
+> -    case S390_CPU_RESET_CLEAR:
+> +    default:
+> +        /* RESET_TYPE_COLD: power on or "clear" reset */
+
+I'd prefer
+	case RESET_TYPE_COLD:
+	case RESET_TYPE_SNAPSHOT_LOAD:
+
+and keeping the default unreachable assert.
+
+>          memset(env, 0, offsetof(CPUS390XState, start_initial_reset_field=
+s));
+>          /* fall through */
+> -    case S390_CPU_RESET_INITIAL:
+> +    case RESET_TYPE_S390_CPU_INITIAL:
+>          /* initial reset does not clear everything! */
+>          memset(&env->start_initial_reset_fields, 0,
+>                 offsetof(CPUS390XState, start_normal_reset_fields) -
+> @@ -203,7 +206,7 @@ static void s390_cpu_reset(CPUState *s, cpu_reset_typ=
+e type)
+>          set_float_detect_tininess(float_tininess_before_rounding,
+>                                    &env->fpu_status);
+>         /* fall through */
+> -    case S390_CPU_RESET_NORMAL:
+> +    case RESET_TYPE_S390_CPU_NORMAL:
+>          env->psw.mask &=3D ~PSW_MASK_RI;
+>          memset(&env->start_normal_reset_fields, 0,
+>                 offsetof(CPUS390XState, end_reset_fields) -
+> @@ -212,20 +215,18 @@ static void s390_cpu_reset(CPUState *s, cpu_reset_t=
+ype type)
+>          env->pfault_token =3D -1UL;
+>          env->bpbc =3D false;
+>          break;
+> -    default:
+> -        g_assert_not_reached();
+>      }
+> =20
+>      /* Reset state inside the kernel that we cannot access yet from QEMU=
+. */
+>      if (kvm_enabled()) {
+>          switch (type) {
+> -        case S390_CPU_RESET_CLEAR:
+> +        default:
+
+And the same here.
+
+>              kvm_s390_reset_vcpu_clear(cpu);
+>              break;
+> -        case S390_CPU_RESET_INITIAL:
+> +        case RESET_TYPE_S390_CPU_INITIAL:
+>              kvm_s390_reset_vcpu_initial(cpu);
+>              break;
+> -        case S390_CPU_RESET_NORMAL:
+> +        case RESET_TYPE_S390_CPU_NORMAL:
+>              kvm_s390_reset_vcpu_normal(cpu);
+>              break;
+>          }
+> @@ -315,12 +316,6 @@ static Property s390x_cpu_properties[] =3D {
+>      DEFINE_PROP_END_OF_LIST()
+>  };
+
+[...]
 
 
