@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F97495C542
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 08:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CCBF95C54B
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 08:18:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shNYr-0003dR-CJ; Fri, 23 Aug 2024 02:14:13 -0400
+	id 1shNcR-0005Tu-F0; Fri, 23 Aug 2024 02:17:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1shNYo-0003Yt-QU
- for qemu-devel@nongnu.org; Fri, 23 Aug 2024 02:14:10 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1shNcO-0005MI-DX
+ for qemu-devel@nongnu.org; Fri, 23 Aug 2024 02:17:52 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1shNYn-0003DT-60
- for qemu-devel@nongnu.org; Fri, 23 Aug 2024 02:14:10 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-7141b04e7a3so1343288b3a.3
- for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 23:14:08 -0700 (PDT)
+ id 1shNcL-0003sx-Fz
+ for qemu-devel@nongnu.org; Fri, 23 Aug 2024 02:17:52 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-201fba05363so13295535ad.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 23:17:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1724393647; x=1724998447;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1724393868; x=1724998668;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=TCWqBNLN76lvDt02Z9O72XGpvlEOCWgTyfhqZXKjDaw=;
- b=tkEQIl/8nJAQAZb9O3Q84H+Ds+tyJ4rlz4/GAyLSCeA8o8SpeL66vShDQzudPIPXSi
- zBFHxXHzSjuhhwTzQBQqSJ4Q6JZ8xQKpGWGEZYz5hixUWETWfgPm9BFUejQ0M6LsRtuH
- tH35Dmm58QdQayVCTV3WDZfMR7DDcRbSG4Ws3mhqE6ZnOQ+sFFLs1r2VWIPNGOrFBkcQ
- 4jkTmicKJPD0xjVcN9aVfP5A4oghLqm7tXoFxuIrv1WcZXT/S8I5m3BmErNIL9lDULwv
- xe0RkHVVatItEO7PtuKqfKjyYU/Uv6s1z7wnQN5JgS999bSBvwOcxQ6OeZR5QYbO31LJ
- fnsA==
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bEhTIxiMdcSFu/oeJwhqekqf80o8895SfqhEvxUoXLw=;
+ b=oiHeMAINyXIcE5RWeVChkdvLgArpmsSHmQ9UcIc7ivEDsoDnxi62LtiAgwmqF6rCQm
+ wgX+PPGmcj5/rsRelSPXQ5GKcUnl4RWrHe9cA4W3E0xA+FPQlwkQ3x1cWH57oroOvyS3
+ 6NDF++34Ii9QkmpmeYMuiYmYsmY0dYZTL9uOfxwRmmrpt8Q2YiBHplPmVRz/pGmdJkkv
+ fU2in2zrw+Umr8R8anWdP7cYykvwP8Frcsfuoo8YVG8w+DODIUfEktZkNxP5zN9dSIST
+ XxpfZVQFHLNg47hkWya2iaMoPqL+IaWv7pFGmHOYmlq0Kq0Pc1vB2lS6XAaG795hf5XK
+ IW8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724393647; x=1724998447;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TCWqBNLN76lvDt02Z9O72XGpvlEOCWgTyfhqZXKjDaw=;
- b=i4ZL2FxpUrzDlKKHVEVmOk+5GbFS8ftnPPr20hHUtBrxlstmJvU5RxktY6b1Vcx0fV
- DhyQn+/sydjKHdw6zu+GnNNmUtXYLHJxb5kXjbpWmBHjgw6fHVsAD629H0Iyl2agllRX
- FwViusBEaWnvifhniUPZYCmteyT7R8MDh/InjBMprfDtNDW3j3i8I3h0YoDVshfh+pui
- OEmv9ZS6tJ/ZW06lub5dxJIeL2b2O7aK/Z6BKoara0FZWza6rcuZzT9Kixo+rtwmpw8E
- uusyRUY4M8ZIXkbN/GVdA8Qb1dxCVIBzwurL3PxscnaTJq/lHRLcdwQv3nnFMAptVkVG
- WIWw==
-X-Gm-Message-State: AOJu0YwVtGuOBCWLz3nZ4bFmzpMndRtqlmamrlvOrxcem9FIJ+4zJH5c
- KKQyZbVpeyRubeUxi0N0mQLQmax0jC31pyZSyKMHQana+js/MZUhgYRQs8ArAJM=
-X-Google-Smtp-Source: AGHT+IHQAQTjyHnSxviZgtgI0vIuOZfZH2ixcOe5Tj2LMg+WQaj65xPn4VkB/GO1BZ89fiRkpEeF7A==
-X-Received: by 2002:a05:6a00:1a8e:b0:710:4d08:e094 with SMTP id
- d2e1a72fcca58-7144573cd07mr1253784b3a.2.1724393647393; 
- Thu, 22 Aug 2024 23:14:07 -0700 (PDT)
-Received: from localhost ([157.82.207.23]) by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-7143431052bsm2316219b3a.181.2024.08.22.23.14.02
+ d=1e100.net; s=20230601; t=1724393868; x=1724998668;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bEhTIxiMdcSFu/oeJwhqekqf80o8895SfqhEvxUoXLw=;
+ b=D4wTzIYeeIG9YZ9U1AMu0teMcGQR3ojQ8rUQYTOzKQoQa7lC217ff98mTqThp0wIzE
+ 58s7YKeH/CpBgbwYLRxHQG6xUzwvYsKW2hVzceaeN/qdRjP0Q2DS4vEtjliEXV/p+xv/
+ xZNp35S4Wf2/IyueC2FHApvX8LbnX5AipE+7Dw93Ydqt7WrKMc7I/Ppk1SgPNJLuu9vs
+ YMSzAwwlmmtdqYrzRReOp1uNtqlOXAfdHCFibC74i+Y2tpudoSHgNadmIOd6MvSagQXj
+ 3RiLU7O65jtSKAX7pQ6NLzAmkGpziMxSGZIe8s9nfRAq/+P62rQFD3YXt2VUzT5MYR6o
+ bc3w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX8qI/yb4v5uEMHXQeyPem14NoJXMWSRDT/JNNiMqwNMEaspoVIYAjT7SsjkBP6o06GKDmKRNrJc1zH@nongnu.org
+X-Gm-Message-State: AOJu0YzhowIxGoo0BwLV7/+P8fkLvzgqbk+N/kMG19j+dyGLPkHYQOIG
+ YlZAeEDNnyv17kLtkpc9IRuRJnzNQ9ICuGHDufdM9DrDECZJRi64CcBfx3ustfY=
+X-Google-Smtp-Source: AGHT+IGirgNR8Ji38Pw7rZNWp/qdycpbe6l3foimze7j5FIrQwHvcNGWj+4ED4siWrZXBRKy1DeWrA==
+X-Received: by 2002:a17:902:c411:b0:203:a046:c676 with SMTP id
+ d9443c01a7336-203a046c87cmr9151025ad.0.1724393868031; 
+ Thu, 22 Aug 2024 23:17:48 -0700 (PDT)
+Received: from [157.82.207.23] ([157.82.207.23])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20385567d66sm21717935ad.53.2024.08.22.23.17.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Aug 2024 23:14:07 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 23 Aug 2024 15:13:12 +0900
-Subject: [PATCH v4 7/7] tests/qtest: Delete previous boot file
+ Thu, 22 Aug 2024 23:17:47 -0700 (PDT)
+Message-ID: <067b17a4-cdfc-4f7e-b7e4-28c38e1c10f0@daynix.com>
+Date: Fri, 23 Aug 2024 15:17:45 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/15] memory: Do not create circular reference with
+ subregion
+To: Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ qemu-devel@nongnu.org
+References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
+ <20240627-san-v2-9-750bb0946dbd@daynix.com>
+ <CAFEAcA9KTSjwF1rABpM5nv9UFuKqZZk6+Qo4PEF4+rTirNi5fQ@mail.gmail.com>
+ <ZsenKpu1czQGYz7m@x1n>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <ZsenKpu1czQGYz7m@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240823-san-v4-7-a24c6dfa4ceb@daynix.com>
-References: <20240823-san-v4-0-a24c6dfa4ceb@daynix.com>
-In-Reply-To: <20240823-san-v4-0-a24c6dfa4ceb@daynix.com>
-To: Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>, 
- BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- David Gibson <david@gibson.dropbear.id.au>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Alexey Kardashevskiy <aik@ozlabs.ru>, "Michael S. Tsirkin" <mst@redhat.com>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::42b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::636;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,60 +101,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A test run may create boot files several times. Delete the previous boot
-file before creating a new one.
+On 2024/08/23 6:01, Peter Xu wrote:
+> On Thu, Aug 22, 2024 at 06:10:43PM +0100, Peter Maydell wrote:
+>> On Thu, 27 Jun 2024 at 14:40, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>>
+>>> A memory region does not use their own reference counters, but instead
+>>> piggybacks on another QOM object, "owner" (unless the owner is not the
+>>> memory region itself). When creating a subregion, a new reference to the
+>>> owner of the container must be created. However, if the subregion is
+>>> owned by the same QOM object, this result in a self-reference, and make
+>>> the owner immortal. Avoid such a self-reference.
+>>>
+>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> ---
+>>>   system/memory.c | 11 +++++++++--
+>>>   1 file changed, 9 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/system/memory.c b/system/memory.c
+>>> index 74cd73ebc78b..949f5016a68d 100644
+>>> --- a/system/memory.c
+>>> +++ b/system/memory.c
+>>> @@ -2638,7 +2638,10 @@ static void memory_region_update_container_subregions(MemoryRegion *subregion)
+>>>
+>>>       memory_region_transaction_begin();
+>>>
+>>> -    memory_region_ref(subregion);
+>>> +    if (mr->owner != subregion->owner) {
+>>> +        memory_region_ref(subregion);
+>>> +    }
+>>> +
+>>>       QTAILQ_FOREACH(other, &mr->subregions, subregions_link) {
+>>>           if (subregion->priority >= other->priority) {
+>>>               QTAILQ_INSERT_BEFORE(other, subregion, subregions_link);
+>>> @@ -2696,7 +2699,11 @@ void memory_region_del_subregion(MemoryRegion *mr,
+>>>           assert(alias->mapped_via_alias >= 0);
+>>>       }
+>>>       QTAILQ_REMOVE(&mr->subregions, subregion, subregions_link);
+>>> -    memory_region_unref(subregion);
+>>> +
+>>> +    if (mr->owner != subregion->owner) {
+>>> +        memory_region_unref(subregion);
+>>> +    }
+>>> +
+>>>       memory_region_update_pending |= mr->enabled && subregion->enabled;
+>>>       memory_region_transaction_commit();
+>>>   }
+>>
+>> I was having another look at leaks this week, and I tried
+>> this patch to see how many of the leaks I was seeing it
+>> fixed. I found however that for arm it results in an
+>> assertion when the device-introspection-test exercises
+>> the "imx7.analog" device. By-hand repro:
+>>
+>> $ ./build/asan/qemu-system-aarch64 -display none -machine none -accel
+>> qtest -monitor stdio
+>> ==712838==WARNING: ASan doesn't fully support makecontext/swapcontext
+>> functions and may produce false positives in some cases!
+>> QEMU 9.0.92 monitor - type 'help' for more information
+>> (qemu) device_add imx7.analog,help
+>> qemu-system-aarch64: ../../system/memory.c:1777: void
+>> memory_region_finalize(Object *): Assertion `!mr->container' failed.
+>> Aborted (core dumped)
+>>
+>> It may be well be that this is a preexisting bug that's only
+>> exposed by this refcount change causing us to actually try
+>> to dispose of the memory regions.
+>>
+>> I think that what's happening here is that the device
+>> object has multiple MemoryRegions, each of which is a child
+>> QOM property. One of these MRs is a "container MR", and the
+>> other three are actual-content MRs which the device put into
+>> the container when it created them. When we deref the device,
+>> we go through all the child QOM properties unparenting and
+>> unreffing them. However, there's no particular ordering
+>> here, and it happens that we try to unref one of the
+>> actual-content MRs first. That MR is still inside the
+>> container MR, so we hit the assert. If we had happened to
+>> unref the container MR first then memory_region_finalize()
+>> would have removed all the subregions from it, avoiding
+>> the problem.
+>>
+>> I'm not sure what the best fix would be here -- that assert
+>> is there as a guard that the region isn't visible in
+>> any address space, so maybe it needs to be made a bit
+>> cleverer about the condition it checks? e.g. in this
+>> example although mr->container is not NULL,
+>> mr->container->container is NULL.
+> 
+> If we keep looking at ->container we'll always see NULL, IIUC, because
+> either it's removed from its parent MR so it's NULL already, or at some
+> point it can start to point to a root mr of an address space, where should
+> also be NULL, afaiu.
+> 
+>> Or we could check whether the mr->container->owner is the same as the
+>> mr->owner and allow a non-NULL mr->container in that case.  I don't know
+>> this subsystem well enough so I'm just making random stabs here, though.
+> 
+> If with the assumption of this patch applied, then looks like it's pretty
+> legal a container MR and the child MRs be finalized in any order when the
+> owner device is being destroyed.
+> 
+> IIUC the MR should be destined to be invisible until this point, with or
+> without the fact that mr->container is NULL.  It's because anyone who
+> references the MR should do memory_region_ref() first, which takes the
+> owner's refcount.  Here if MR finalize() is reached I think it means the
+> owner refcount must be zero.  So it looks to me the only possible case when
+> mr->container is non-NULL is it's used internally like this.  Then it's
+> invisible and also safe to be detached even if container != NULL.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Thomas Huth <thuth@redhat.com>
----
- tests/qtest/migration-test.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+It is still nice if we can protect internal uses; it is theoretically 
+possible for the owner to remove the subregion at runtime, and we want 
+to ensure the subregion will be kept alive while its container is even 
+in such a case. We can do so by creating a reference to the subregion 
+itself instead of its owner. I sent v4 for this change.
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 70b606b88864..6c06100d91e2 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -144,12 +144,23 @@ static char *bootpath;
- #include "tests/migration/ppc64/a-b-kernel.h"
- #include "tests/migration/s390x/a-b-bios.h"
- 
-+static void bootfile_delete(void)
-+{
-+    unlink(bootpath);
-+    g_free(bootpath);
-+    bootpath = NULL;
-+}
-+
- static void bootfile_create(char *dir, bool suspend_me)
- {
-     const char *arch = qtest_get_arch();
-     unsigned char *content;
-     size_t len;
- 
-+    if (bootpath) {
-+        bootfile_delete();
-+    }
-+
-     bootpath = g_strdup_printf("%s/bootsect", dir);
-     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
-         /* the assembled x86 boot sector should be exactly one sector large */
-@@ -177,13 +188,6 @@ static void bootfile_create(char *dir, bool suspend_me)
-     fclose(bootfile);
- }
- 
--static void bootfile_delete(void)
--{
--    unlink(bootpath);
--    g_free(bootpath);
--    bootpath = NULL;
--}
--
- /*
-  * Wait for some output in the serial output file,
-  * we get an 'A' followed by an endless string of 'B's
-
--- 
-2.46.0
-
+Regards,
+Akihiko Odaki
 
