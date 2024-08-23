@@ -2,88 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44BED95CD07
+	by mail.lfdr.de (Postfix) with ESMTPS id 468B695CD08
 	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 14:55:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shToU-0006Im-0e; Fri, 23 Aug 2024 08:54:46 -0400
+	id 1shTos-0006ax-W3; Fri, 23 Aug 2024 08:55:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1shToP-0006Hf-OE
- for qemu-devel@nongnu.org; Fri, 23 Aug 2024 08:54:42 -0400
-Received: from mail-qv1-xf2c.google.com ([2607:f8b0:4864:20::f2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1shToO-0004sJ-4k
- for qemu-devel@nongnu.org; Fri, 23 Aug 2024 08:54:41 -0400
-Received: by mail-qv1-xf2c.google.com with SMTP id
- 6a1803df08f44-6bf7658f4aaso9313996d6.0
- for <qemu-devel@nongnu.org>; Fri, 23 Aug 2024 05:54:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724417678; x=1725022478; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Wbys7aSbUEeoFbo2CczsEvIqae23lK3FB+T/gbx3lhg=;
- b=YIa8U5Y1NC+3wkYE8rCSRGLKRImMzASu+lVNs09QWfbyhd7BR6832PFEN5efd7v7EE
- Zgqc75iFNXrFCRBnJcNh+yleBg5ltL4nRJXkI9AurA1tGiLPRdUWEg9XCCJzbqDeI2+t
- 4//3qLGbPHuFyhkEOKVrBswXg3XW4im5p6OStZOAHysGRnYx8AEpbD9Q+Mx528RYG5i5
- vXNalnhw8oxDWNSLxzZ9kDPLqYZG/JsZvHNkMMr9VjnkrR5HRNqtGXHqXuuMCvieAAAG
- C1V13DKhefRrs54jIlu6vq8e8QKlOnY7vn4jR0Boy1yhI1LnYfGedPT0sLE70jJXlJ1c
- yMvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724417678; x=1725022478;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wbys7aSbUEeoFbo2CczsEvIqae23lK3FB+T/gbx3lhg=;
- b=G9NKIYEQZqOb43eyZgH6LaUjK4i6NDO2YeBrS+8WtS/0sNlcOAJDUIjTkTdJvg/vPu
- VoznmHg9J+vldyaAGQsdNeT/dJlv2XFaBVy7R4CDotsyL6g80onnVCA1ndBOtmsJof94
- v/X20HlDYpaaKCkyxiTHGw/7e0gcCyhfVHQmYvRNXCBPIRxg/bMKY0ll64lC256wTW7P
- IqGrMBNTYXNCgPiPDf8MF1SFPbVgrbKb8uOwcP/4WWy/eVvdZdS/XVGbOvwDRzTd1GPb
- 8vQuS1siMrobOmRW1xuIXV/aEtXbvwwQn5RGkBpE6x8/zjWFE41jOT7udk8LOuLrcNK8
- WzZw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXgzFagcs/wfizC0DZK0sNKnYo6kYIdI0OvaJVHmYEoVr4HP397ciOq6ppCGwd8rMnBr0fqZrXSoLEi@nongnu.org
-X-Gm-Message-State: AOJu0YwX1iH53HT4Xm982Y67G7/qxY3fCL2CgwFUGc2CYu8ROqh+XDP4
- 5iGWtmBrfTpeXd8JfTKq9mO6RtdiTmctqZNIMHA0+dcVXLe328WVJ1mHKg04Giw=
-X-Google-Smtp-Source: AGHT+IHF1wQgCsJOMhvB3lyaRLeHRnz7bvbKPrCmwArZGmFYl6pDL8a5xnujPMBBd61yD+7XR2b7fg==
-X-Received: by 2002:a05:6214:3281:b0:6b8:1936:9061 with SMTP id
- 6a1803df08f44-6c16decbf60mr23795516d6.52.1724417678328; 
- Fri, 23 Aug 2024 05:54:38 -0700 (PDT)
-Received: from [192.168.69.100] (plb95-h02-176-184-14-228.dsl.sta.abo.bbox.fr.
- [176.184.14.228]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c162d1d25bsm18319296d6.3.2024.08.23.05.54.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Aug 2024 05:54:37 -0700 (PDT)
-Message-ID: <4b4018c6-4a2b-4250-bb53-be9cc5df7cb4@linaro.org>
-Date: Fri, 23 Aug 2024 14:54:34 +0200
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1shTop-0006ZM-V0; Fri, 23 Aug 2024 08:55:07 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1shTom-0004uA-W6; Fri, 23 Aug 2024 08:55:07 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wr0M13ycsz6K91r;
+ Fri, 23 Aug 2024 20:51:41 +0800 (CST)
+Received: from lhrpeml500006.china.huawei.com (unknown [7.191.161.198])
+ by mail.maildlp.com (Postfix) with ESMTPS id 6BBAC140594;
+ Fri, 23 Aug 2024 20:54:50 +0800 (CST)
+Received: from a2303103017.china.huawei.com (10.47.79.211) by
+ lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 23 Aug 2024 13:54:49 +0100
+To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: <zhao1.liu@intel.com>, <zhenyu.z.wang@intel.com>,
+ <dapeng1.mi@linux.intel.com>, <yongwei.ma@intel.com>, <armbru@redhat.com>,
+ <farman@linux.ibm.com>, <peter.maydell@linaro.org>, <mst@redhat.com>,
+ <anisinha@redhat.com>, <shannon.zhaosl@gmail.com>, <imammedo@redhat.com>,
+ <mtosatti@redhat.com>, <berrange@redhat.com>, <richard.henderson@linaro.org>, 
+ <linuxarm@huwei.com>, <shameerali.kolothum.thodi@huawei.com>,
+ <Jonathan.Cameron@Huawei.com>, <jiangkunkun@huawei.com>
+Subject: [RFC PATCH 0/2] Specifying cache topology on ARM
+Date: Fri, 23 Aug 2024 13:54:44 +0100
+Message-ID: <20240823125446.721-1-alireza.sanaee@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 11/35] tests/functional: Prepare the meson build system
- for the functional tests
-To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-devel@nongnu.org,
- "Daniel P . Berrange" <berrange@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
- Fabiano Rosas <farosas@suse.de>
-References: <20240821082748.65853-1-thuth@redhat.com>
- <20240821082748.65853-12-thuth@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240821082748.65853-12-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2c;
- envelope-from=philmd@linaro.org; helo=mail-qv1-xf2c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Originating-IP: [10.47.79.211]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500006.china.huawei.com (7.191.161.198)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,62 +65,101 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
+From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/8/24 10:27, Thomas Huth wrote:
-> Provide a meson.build file for the upcoming python-based functional
-> tests, and add some wrapper glue targets to the tests/Makefile.include
-> file. We are going to use two "speed" modes for the functional tests:
-> The "quick" tests can be run at any time (i.e. also during "make check"),
-> while the "thorough" tests should only be run when running a
-> "make check-functional" test run (since these tests might download
-> additional assets from the internet).
-> 
-> The changes to the meson.build files are partly based on an earlier
-> patch by Ani Sinha.
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   tests/Makefile.include       | 11 ++++++
->   tests/functional/meson.build | 66 ++++++++++++++++++++++++++++++++++++
->   tests/meson.build            |  1 +
->   3 files changed, 78 insertions(+)
->   create mode 100644 tests/functional/meson.build
+Specifying the cache layout in virtual machines is useful for
+applications and operating systems to fetch accurate information about
+the cache structure and make appropriate adjustments. Enforcing correct
+sharing information can lead to better optimizations. This patch enables
+the specification of cache layout through a command line parameter,
+building on a patch set by Intel [1]. It uses this set as a foundation.
+The ACPI/PPTT table is populated based on user-provided information and
+CPU topology.
+
+Example:
 
 
-> +# Timeouts for individual tests that can be slow e.g. with debugging enabled
-> +test_timeouts = {
-> +}
++----------------+                            +----------------+
+|    Socket 0    |                            |    Socket 1    |
+|    (L3 Cache)  |                            |    (L3 Cache)  |
++--------+-------+                            +--------+-------+
+         |                                             |
++--------+--------+                            +--------+--------+
+|   Cluster 0     |                            |   Cluster 0     |
+|   (L2 Cache)    |                            |   (L2 Cache)    |
++--------+--------+                            +--------+--------+
+         |                                             |
++--------+--------+  +--------+--------+    +--------+--------+  +--------+----+
+|   Core 0         | |   Core 1        |    |   Core 0        |  |   Core 1    |
+|   (L1i, L1d)     | |   (L1i, L1d)    |    |   (L1i, L1d)    |  |   (L1i, L1d)|
++--------+--------+  +--------+--------+    +--------+--------+  +--------+----+
+         |                   |                       |                   |
++--------+              +--------+              +--------+          +--------+
+|Thread 0|              |Thread 1|              |Thread 1|          |Thread 0|
++--------+              +--------+              +--------+          +--------+
+|Thread 1|              |Thread 0|              |Thread 0|          |Thread 1|
++--------+              +--------+              +--------+          +--------+
 
 
-> +    foreach test : target_tests
-> +      test('func-@0@/@1@'.format(target_base, test),
-> +           python,
-> +           depends: [test_deps, test_emulator, emulator_modules],
-> +           env: test_env,
-> +           args: [meson.current_source_dir() / 'test_' + test + '.py'],
-> +           protocol: 'tap',
-> +           timeout: test_timeouts.get(test, 60),
-> +           priority: test_timeouts.get(test, 60),
+The following command will represent the system.
 
-IIUC with Avocado the timeout was for each test_func in a TestClass.
-Now this is only per TestClass. Hopefully I'm wrong...
+./qemu-system-aarch64 \
+ -machine virt,**smp-cache=cache0** \
+ -cpu max \
+ -m 2048 \
+ -smp sockets=2,clusters=1,cores=2,threads=2 \
+ -kernel ./Image.gz \
+ -append "console=ttyAMA0 root=/dev/ram rdinit=/init acpi=force" \
+ -initrd rootfs.cpio.gz \
+ -bios ./edk2-aarch64-code.fd \
+ **-object '{"qom-type":"smp-cache","id":"cache0","caches":[{"name":"l1d","topo":"core"},{"name":"l1i","topo":"core"},{"name":"l2","topo":"cluster"},{"name":"l3","topo":"socket"}]}'** \
+ -nographic
 
-> +           suite: suites)
-> +    endforeach
-> +  endforeach
-> +endforeach
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 80dd3029cf..907a4c1c98 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -85,3 +85,4 @@ subdir('unit')
->   subdir('qapi-schema')
->   subdir('qtest')
->   subdir('migration')
-> +subdir('functional')
+Failure cases:
+    1) there are cases where QEMU might not have any clusters selected in the
+    -smp option, while user specifies caches to be shared at cluster level. In
+    this situations, qemu returns error.
+
+    2) There are other scenarios where caches exist in systems' registers but
+    not left unspecified by users. In this case qemu returns failure.
+
+Currently only three levels of caches are supported to be specified from
+the command line. However, increasing the value does not require
+significant changes. Further, this patch assumes l2 and l3 unified
+caches and does not allow l(2/3)(i/d). The level terminology is
+thread/core/cluster/socket right now.
+
+Here is the hierarchy assumed in this patch:
+Socket level = Cluster level + 1 = Core level + 2 = Thread level + 3;
+
+[1] https://lore.kernel.org/qemu-devel/20240704031603.1744546-1-zhao1.liu@intel.com/#r
+
+TODO:
+1) Making the code to work with arbitrary levels
+2) Separated data and instruction cache at L2 and L3.
+3) Allow for different Data or Instruction only at a particular level.
+4) Additional cache controls.  e.g. size of L3 may not want to just
+match the underlying system, because only some of the associated host
+CPUs may be bound to this VM.
+5) Add device tree related code to generate info related to caches.
+
+Alireza Sanaee (2):
+  target/arm/tcg: increase cache level for cpu=max
+  hw/acpi: add cache hierarchy node to pptt table
+
+ hw/acpi/aml-build.c         | 307 +++++++++++++++++++++++++++++++++++-
+ hw/arm/virt-acpi-build.c    | 137 +++++++++++++++-
+ hw/arm/virt.c               |   5 +
+ hw/core/machine-smp.c       |   6 +-
+ hw/loongarch/acpi-build.c   |   3 +-
+ include/hw/acpi/aml-build.h |  20 ++-
+ target/arm/tcg/cpu64.c      |  35 ++++
+ 7 files changed, 503 insertions(+), 10 deletions(-)
+
+-- 
+2.34.1
 
 
