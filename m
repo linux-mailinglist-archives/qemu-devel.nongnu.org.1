@@ -2,108 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF58495D469
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 19:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E05EA95D492
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 19:41:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shYBO-0001xy-Ix; Fri, 23 Aug 2024 13:34:42 -0400
+	id 1shYFt-0007Ez-7P; Fri, 23 Aug 2024 13:39:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1shYBM-0001wM-66; Fri, 23 Aug 2024 13:34:40 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1shYBK-0007hJ-Ed; Fri, 23 Aug 2024 13:34:39 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47NHXb9C002607;
- Fri, 23 Aug 2024 17:34:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
- XDAnlUCXkBLI0oGYF1EHcmP1WrYexTkr+Jdg2bUVcZ8=; b=U7ei4sCcOtMVpCGp
- yH93ZlGQVuF2msTv2VlJjbx5zvPILAXlp+XqLI3tqi3k1qErnqwQ+oPoA4+Teibr
- Z/xD+cr6JrHr4ptcMTdOj54CKnHDN5z1CtFpCLktPnorCS8E1WnMEdUqGGWysT7W
- Mk3ncxjnBAZQx0Fz2RCQduv5/ncWBVsEZsA6pSD4Qi+6iOJsOshwGUIMRVon5Cnl
- mxeNmXw1cB8u6u9NqXZYwomRaaPYketTZqwPO8ipiLbavGp/GmW7QZQ5bhhSDEMq
- 7kVN8E1RN/2B+pB7AO+HraDCT7edXxtGifDUV+kOCAzxg3iQkmJPoTuU440p9+Mt
- HsVtpw==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 416xx9803j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Aug 2024 17:34:33 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47NHYWxS004280;
- Fri, 23 Aug 2024 17:34:33 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 416xx9803g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Aug 2024 17:34:32 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47NE2HC1013114;
- Fri, 23 Aug 2024 17:34:32 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41366uk6qk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Aug 2024 17:34:32 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 47NHYQ0d41287972
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 23 Aug 2024 17:34:28 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 956E620040;
- Fri, 23 Aug 2024 17:34:26 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4C622004B;
- Fri, 23 Aug 2024 17:34:25 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.179.15.174]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 23 Aug 2024 17:34:25 +0000 (GMT)
-Message-ID: <0a274a84eac1c4bfda96e8ea92cb4ac55a97791b.camel@linux.ibm.com>
-Subject: Re: [PATCH for-9.2 01/10] hw/s390/virtio-ccw: Convert to
- three-phase reset
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org, Richard Henderson
- <richard.henderson@linaro.org>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, David Hildenbrand <david@redhat.com>, Ilya Leoshkevich
- <iii@linux.ibm.com>, Cornelia Huck <cohuck@redhat.com>, Halil Pasic
- <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Christian
- Borntraeger <borntraeger@linux.ibm.com>
-Date: Fri, 23 Aug 2024 19:34:25 +0200
-In-Reply-To: <20240813165250.2717650-2-peter.maydell@linaro.org>
-References: <20240813165250.2717650-1-peter.maydell@linaro.org>
- <20240813165250.2717650-2-peter.maydell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1shYFq-0007D2-Iw
+ for qemu-devel@nongnu.org; Fri, 23 Aug 2024 13:39:18 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1shYFo-0008Q4-FR
+ for qemu-devel@nongnu.org; Fri, 23 Aug 2024 13:39:18 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id C12F42035D;
+ Fri, 23 Aug 2024 17:39:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724434754; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=TBaisGr2TFBtYkrQsLqFweBh+RLbVxjcK8P1EQguu9o=;
+ b=uJTR3RRcqnoPvPl1/RpnzAlABSsOFZNpn5XJS9G51UeQT3/lWeriYc636NQwNWmLXwe3hZ
+ MsO4IufCTBlsl+GLIXSEhUHgVVDot109yzhBHog9qPfWQet3ZqCCMeQEtBoxLIREGsk9pf
+ m4va2H0CO8vBlY0SodThfUGyqCoFwE4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724434754;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=TBaisGr2TFBtYkrQsLqFweBh+RLbVxjcK8P1EQguu9o=;
+ b=Q8h1gQujPvZYWlDwF6kBhC0v5aqO2Un4GM+YuAPTxRcU1GYQHpP8q34cOfmR+ooCz4/xjP
+ SObw4zslN7Vy9wDg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724434754; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=TBaisGr2TFBtYkrQsLqFweBh+RLbVxjcK8P1EQguu9o=;
+ b=uJTR3RRcqnoPvPl1/RpnzAlABSsOFZNpn5XJS9G51UeQT3/lWeriYc636NQwNWmLXwe3hZ
+ MsO4IufCTBlsl+GLIXSEhUHgVVDot109yzhBHog9qPfWQet3ZqCCMeQEtBoxLIREGsk9pf
+ m4va2H0CO8vBlY0SodThfUGyqCoFwE4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724434754;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=TBaisGr2TFBtYkrQsLqFweBh+RLbVxjcK8P1EQguu9o=;
+ b=Q8h1gQujPvZYWlDwF6kBhC0v5aqO2Un4GM+YuAPTxRcU1GYQHpP8q34cOfmR+ooCz4/xjP
+ SObw4zslN7Vy9wDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9863B1333E;
+ Fri, 23 Aug 2024 17:39:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id SPCbF0HJyGb2LwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 23 Aug 2024 17:39:13 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
+Subject: [PATCH v4 00/16] migration/multifd: Remove multifd_send_state->pages
+Date: Fri, 23 Aug 2024 14:38:55 -0300
+Message-Id: <20240823173911.6712-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8hSoKMokoRGbW53hYjuTRu7TOZqQONKq
-X-Proofpoint-ORIG-GUID: XIkN4nu4JdGTkk1JgEjzG58zPIH-Zmz0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-23_14,2024-08-22_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 spamscore=0 mlxlogscore=818 clxscore=1015 adultscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 bulkscore=0 impostorscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408230130
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.989];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -120,22 +108,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2024-08-13 at 17:52 +0100, Peter Maydell wrote:
-> Convert the virtio-ccw code to three-phase reset.  This allows us to
-> remove a call to device_class_set_parent_reset(), replacing it with
-> the three-phase equivalent resettable_class_set_parent_phases().
-> Removing all the device_class_set_parent_reset() uses will allow us
-> to remove some of the glue code that interworks between three-phase
-> and legacy reset.
->=20
-> This is a simple conversion, with no behavioural changes.
->=20
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> It looks a little odd that we do the this-class reset first
-> and then chain up to the parent's reset, but that's what the
-> existing code does, so I left it alone.
-> ---
+Hi,
 
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Not much changed sinced v3, the most notable is that I kept the nocomp
+names and created multifd-nocomp.c. I think "plain" is even more
+misterious, so let's keep what we are already used to.
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1425141484
+
+v3:
+https://lore.kernel.org/r/20240801123516.4498-1-farosas@suse.de
+
+This v3 incorporates the suggestions done by Peter in v2. Aside from
+those, of note:
+
+- fixed the allocation of MultiFDSendData. The previous version didn't
+  account for compiler-inserted holes;
+
+- kept the packet split patch;
+
+- added some patches to remove p->page_count, p->page_size,
+  pages->allocated. These are all constants and don't need to be
+  per-channel;
+
+- moved the code into multifd-ram.c.
+
+  However, I left the p->packet allocation (depends on page_count) and
+  p->normal + p->zero behind because I need to see how the device
+  state patches will deal with the packet stuff before I can come up
+  with a way to move those out of the MultiFD*Params. It might not be
+  worth it adding another struct just for the ram code to store
+  p->normal, p->zero.
+
+With this I'm pretty much done with what I think needs to be changed
+as a prereq for the device state work. I don't have anything else in
+mind to add to this series.
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1395572680
+
+v2:
+https://lore.kernel.org/r/20240722175914.24022-1-farosas@suse.de
+
+v1:
+https://lore.kernel.org/r/20240620212111.29319-1-farosas@suse.de
+
+First of all, apologies for the roughness of the series. I'm off for
+the next couple of weeks and wanted to put something together early
+for your consideration.
+
+This series is a refactoring (based on an earlier, off-list
+attempt[0]), aimed to remove the usage of the MultiFDPages_t type in
+the multifd core. If we're going to add support for more data types to
+multifd, we first need to clean that up.
+
+This time around this work was prompted by Maciej's series[1]. I see
+you're having to add a bunch of is_device_state checks to work around
+the rigidity of the code.
+
+Aside from the VFIO work, there is also the intent (coming back from
+Juan's ideas) to make multifd the default code path for migration,
+which will have to include the vmstate migration and anything else we
+put on the stream via QEMUFile.
+
+I have long since been bothered by having 'pages' sprinkled all over
+the code, so I might be coming at this with a bit of a narrow focus,
+but I believe in order to support more types of payloads in multifd,
+we need to first allow the scheduling at multifd_send_pages() to be
+independent of MultiFDPages_t. So here it is. Let me know what you
+think.
+
+(as I said, I'll be off for a couple of weeks, so feel free to
+incorporate any of this code if it's useful. Or to ignore it
+completely).
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1340992028
+
+0- https://github.com/farosas/qemu/commits/multifd-packet-cleanups/
+1- https://lore.kernel.org/r/cover.1718717584.git.maciej.szmigiero@oracle.com
+
+Fabiano Rosas (16):
+  migration/multifd: Reduce access to p->pages
+  migration/multifd: Inline page_size and page_count
+  migration/multifd: Remove pages->allocated
+  migration/multifd: Pass in MultiFDPages_t to file_write_ramblock_iov
+  migration/multifd: Introduce MultiFDSendData
+  migration/multifd: Make MultiFDPages_t:offset a flexible array member
+  migration/multifd: Replace p->pages with an union pointer
+  migration/multifd: Move pages accounting into
+    multifd_send_zero_page_detect()
+  migration/multifd: Remove total pages tracing
+  migration/multifd: Isolate ram pages packet data
+  migration/multifd: Don't send ram data during SYNC
+  migration/multifd: Replace multifd_send_state->pages with client data
+  migration/multifd: Allow multifd sync without flush
+  migration/multifd: Standardize on multifd ops names
+  migration/multifd: Register nocomp ops dynamically
+  migration/multifd: Move nocomp code into multifd-nocomp.c
+
+ migration/file.c              |   3 +-
+ migration/file.h              |   2 +-
+ migration/meson.build         |   1 +
+ migration/multifd-nocomp.c    | 394 +++++++++++++++++++++++++
+ migration/multifd-qpl.c       |  77 +----
+ migration/multifd-uadk.c      | 100 ++-----
+ migration/multifd-zero-page.c |  13 +-
+ migration/multifd-zlib.c      |  97 ++-----
+ migration/multifd-zstd.c      |  96 ++----
+ migration/multifd.c           | 531 ++++++----------------------------
+ migration/multifd.h           |  74 +++--
+ migration/ram.c               |  10 +-
+ migration/trace-events        |   9 +-
+ 13 files changed, 628 insertions(+), 779 deletions(-)
+ create mode 100644 migration/multifd-nocomp.c
+
+-- 
+2.35.3
+
 
