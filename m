@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8E095C546
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 08:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1264595C548
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Aug 2024 08:16:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shNYf-0002nI-IB; Fri, 23 Aug 2024 02:14:01 -0400
+	id 1shNYg-0002wI-Ex; Fri, 23 Aug 2024 02:14:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1shNYc-0002eV-0w
+ id 1shNYc-0002hI-H9
  for qemu-devel@nongnu.org; Fri, 23 Aug 2024 02:13:58 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1shNYV-00038n-LZ
- for qemu-devel@nongnu.org; Fri, 23 Aug 2024 02:13:57 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2d3d58d6e08so1217728a91.3
- for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 23:13:49 -0700 (PDT)
+ id 1shNYZ-0003A9-MJ
+ for qemu-devel@nongnu.org; Fri, 23 Aug 2024 02:13:58 -0400
+Received: by mail-yw1-x112d.google.com with SMTP id
+ 00721157ae682-6b47ff8a59aso13788887b3.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Aug 2024 23:13:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1724393628; x=1724998428;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1724393634; x=1724998434;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=YdHplAffMcXcyi9egxfeqIrbdnUVPw/pDkvqxXIV6Fk=;
- b=LaS6mr/2/L0gqc4ZRA57xV55f1UmRP6c6jbfJrKzTDCN2dM3B335HRL7OVN0aX0Qtw
- 02Gggpk/mHEU3+7rHeSHSeXW6qDX6084O/Ekce7kr9eBvOVhoC2chGaNIDKtZbveC8/m
- gMgzrCAzqzwX1bqqowkcdDg0mYs20zka/lxo4C+1yFNbRWRJ5yEMWBpKvz7rooDmTTVY
- yC//gPqh1olto06HGuaKyjtdLPOdQmwi97FI4VYwYbyqp4rxM3cTfz5R2ZL4csNYoh1b
- B7m2ow13hCCT2UyZ3zNCTbPe3JprtbeR9lNS4KHuOrChehOgN6MEZxxUxwmNdEkmLQ2W
- HHtw==
+ :reply-to; bh=ZgDoeEKExDSUUkKhA562XJclNi5ZhOHvZQVGrzBwI+A=;
+ b=0CjR7ZFUMrdwM+EQfvY1BmqX2JlVw3e6JNbgP6/gMuwvRsYzHEZgUYJMyxslQ+JlQ7
+ FV0WcoqX7cyHQzVCFSiUDywnAU+hV7ozmsBTB6ET/ZgR+AOcpHowW1YzD6/pUIJBQJYT
+ CO3n2m3/N0gokYF4HyTFex1erXhvmKQ/DQq3ASIMyvw2BJLxYYp7CApj5kWih/jVCZeg
+ vV0+Bpq2KHBRm1I/2q0aI5l4e1D1V/2mvr/0Zj7Zu5P8iY9FRlBF1TQl3BzZWREoOWHp
+ WT4s+2uWZzfUCkDDeoGQa36xIjcpQfXziwk0f33sEHZcShkWeqtczxHVhAK2dT1iSeuj
+ MhAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724393628; x=1724998428;
+ d=1e100.net; s=20230601; t=1724393634; x=1724998434;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YdHplAffMcXcyi9egxfeqIrbdnUVPw/pDkvqxXIV6Fk=;
- b=P2Vw6/GKwYVkMQTSfDl5twEWlrm1kF30Ns9QlyRGw148dqmJm1K/2N7uvVS9YNbfnN
- hkgVFDL4lPabjnzFIe/978ASKjXfo5v8fZqdwXFNRlWjdna2yqRt9uPFvx2wCig2ZQWb
- xCic/8ykIQL5Ji9/3qXj/7W0mMPf44Asgxyi25smIgkWFl9IukS0ZodoMBGXs2p8yF5q
- dnUqJT3xXl0pPll3Ci2ti/2LH9PY/VnRy1Da5R0ay46mtJielY8USMU1rKdJiDpaoHqf
- zSfe1OwrIjndra79XD6bHSuojPOe+lgyRC3qHnGL4sn+7ccfkWfVI8a9p0mAA1/eb25K
- wtXg==
-X-Gm-Message-State: AOJu0Yxme3Q7MTvy6rHQlqNMCU4oZVhx/Xt6zhogJbE9DqkkUgJkcaua
- wkSXAlDCiaZFBqFOoqDpwHbB+G9lxj0ru2yh85+7O7JAz7kIbMXV+ydSnKgpifA=
-X-Google-Smtp-Source: AGHT+IFzJ10oTRUyLJrWB5ipu7tvGZB9L6IX1t4YpN1zznxvJDoxVqCckhwL5Q+Xwak+DQuAoYo6Pg==
-X-Received: by 2002:a17:90a:c002:b0:2cb:e429:f525 with SMTP id
- 98e67ed59e1d1-2d646d2bbdfmr1123154a91.33.1724393628209; 
- Thu, 22 Aug 2024 23:13:48 -0700 (PDT)
+ bh=ZgDoeEKExDSUUkKhA562XJclNi5ZhOHvZQVGrzBwI+A=;
+ b=TTj5u9m3dsUDp8+IDlCu3Nj19sh5atrMmWeo9leOD9CYJ35BxUQTot8CLxE8msmc91
+ WvwkvRO0jNMDjFdHLL/hnzrwfVeOK1RrIaX4+l+f6V1eBdyeFZHb+W28KyJ/ocIrgy3F
+ g5YSALct36tZc9GLWPLhM6IHohURisVMUlVkVX1VfBIAC/ZasM+kjFKG5pWriCvz36Qn
+ mlFrfFyvXjb8qd1tecNlQYH4dT9/znC095Dd1FpeMx1t7Tjbs7FTOxSEofkuxohCqQeM
+ BxuoxMiO0iKPrp+Mgkoy87z/wF0a0sxlyZzgI8GeqvnBpSN1HX+0h+2tzZYZZ23iAtDQ
+ vTEw==
+X-Gm-Message-State: AOJu0YwnWgnC703KuXDJGabT7Xlp7k2+ucOItJXgWlM7tSU5T6Nj0IGQ
+ 2DGMz/45pqObLegSgfdR2VF9uvs+0gK/j9SyLVYl0vu/7jgO3Up6q+mdKxmPusY=
+X-Google-Smtp-Source: AGHT+IGuj1gFQTuDEsrNan7a7imNn/Sl/n8Bp2+X8RKJ6f6S0gWckt8yw2CT52Rt7ce2oK1y4+9S6Q==
+X-Received: by 2002:a05:690c:18:b0:64a:d5fd:f19f with SMTP id
+ 00721157ae682-6c625a4ca3bmr14298007b3.18.1724393634631; 
+ Thu, 22 Aug 2024 23:13:54 -0700 (PDT)
 Received: from localhost ([157.82.207.23]) by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2d61393fbcbsm3057579a91.22.2024.08.22.23.13.43
+ d2e1a72fcca58-714342316e8sm2406058b3a.16.2024.08.22.23.13.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Aug 2024 23:13:48 -0700 (PDT)
+ Thu, 22 Aug 2024 23:13:54 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 23 Aug 2024 15:13:09 +0900
-Subject: [PATCH v4 4/7] memory: Clarify that owner may be missing
+Date: Fri, 23 Aug 2024 15:13:10 +0900
+Subject: [PATCH v4 5/7] memory: Clarify owner must not call memory_region_ref()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240823-san-v4-4-a24c6dfa4ceb@daynix.com>
+Message-Id: <20240823-san-v4-5-a24c6dfa4ceb@daynix.com>
 References: <20240823-san-v4-0-a24c6dfa4ceb@daynix.com>
 In-Reply-To: <20240823-san-v4-0-a24c6dfa4ceb@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,8 +82,8 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::1034;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1034.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::112d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-yw1-x112d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -106,38 +106,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A memory region may not have an owner, and memory_region_ref() and
-memory_region_unref() do nothing for such.
-
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/exec/memory.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/exec/memory.h | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 461e42d03491..d79415a3b159 100644
+index d79415a3b159..6698e9d05eab 100644
 --- a/include/exec/memory.h
 +++ b/include/exec/memory.h
-@@ -1219,7 +1219,7 @@ void memory_region_init(MemoryRegion *mr,
- /**
+@@ -1220,6 +1220,7 @@ void memory_region_init(MemoryRegion *mr,
   * memory_region_ref: Add a reference to a memory region
   *
-- * This function adds a reference to the owner.
-+ * This function adds a reference to the owner if present.
+  * This function adds a reference to the owner if present.
++ * The owner must not call this function as it results in a circular reference.
   * See docs/devel/memory.rst to know about owner.
   *
   * @mr: the #MemoryRegion
-@@ -1229,8 +1229,8 @@ void memory_region_ref(MemoryRegion *mr);
- /**
-  * memory_region_unref: Remove a reference to a memory region
-  *
-- * This function removes a reference to the owner and possibly destroys it.
-- * See docs/devel/memory.rst to know about owner.
-+ * This function removes a reference to the owner and possibly destroys it if
-+ * present. See docs/devel/memory.rst to know about owner.
-  *
-  * @mr: the #MemoryRegion
-  */
 
 -- 
 2.46.0
