@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE46A95DB92
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Aug 2024 06:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 460C695DB9D
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Aug 2024 06:59:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shipj-0006V0-Rm; Sat, 24 Aug 2024 00:57:03 -0400
+	id 1shipm-0006eO-DM; Sat, 24 Aug 2024 00:57:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1shiph-0006Pn-LP
- for qemu-devel@nongnu.org; Sat, 24 Aug 2024 00:57:01 -0400
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ id 1shipk-0006Zh-Ma
+ for qemu-devel@nongnu.org; Sat, 24 Aug 2024 00:57:04 -0400
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1shipg-0002FC-0m
- for qemu-devel@nongnu.org; Sat, 24 Aug 2024 00:57:01 -0400
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-5dca9cc71b2so1889951eaf.2
- for <qemu-devel@nongnu.org>; Fri, 23 Aug 2024 21:56:59 -0700 (PDT)
+ id 1shipj-0002Fe-0t
+ for qemu-devel@nongnu.org; Sat, 24 Aug 2024 00:57:04 -0400
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-70e00cb1ee7so1955806a34.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Aug 2024 21:57:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724475418; x=1725080218; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1724475422; x=1725080222; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q8SeRNxqA0kdGYXuMPPKRU3j4MVX/4+712bEYl1oABA=;
- b=TkRmMzNMaK/2rBtB88m1V+WpQR9XvMmoBFDDzEJ+/wbjhMNhxz1+534jusz1I8P9G9
- LPt/6r+/lxZ7qi1J+hzwn91gLzCMyHemHLY7CRS/CIAiBr0ZgZhU+0cfmzqRoKcq/yCa
- BlPsTx2wrSLyMUWY0C8fNor2AkhEv9liBBSFRTcTTo06AMMWAVC5VFtC+j84VF6lBXY0
- 2KZ8LMeJ8G8kTWjsMFGDHQ+9pChS+nQxdhbfF8XeQYkLc14vod956jKML3zl5Y7zejHi
- mnJHqgWuvMWDzec5LPJsoigvNH+Pq8JptZ+nvDRioXnx62evnP8a3aZnMm/ITzkOHdWK
- 0lew==
+ bh=g4MfaAoEg0D4PG1s02DK0HI+nWn0NbjMokYUO+miRKs=;
+ b=cKdP30AxvTK8EfFWnZVNkOWd5iUyz4STMPomUTSEw5eKFn5+sGzIyO0/x+YEIW828v
+ JrEdoiFB4zGz6dV6FxmEAfzLCjrY/7rNejWQ+6cF8B9Np2NvpkgUMLR/1L7h22PY6c+I
+ LOVe6y0GaaVf/hhoMMg8eFh63dt0a/01fMuU3uMsLyo8h69QZH/apkw2NAp7bDlyiRPC
+ oyiGylOF9VvvTH/Ak0EVhCrBV1HCwdLb6VL3Wzc5q5xVD/9UjeArLJTjqIJtjNBOpJAO
+ VBfQ90lV5rMvdjhGfATNmCLOq/K3O7WT92Hr2iBZy0wFUMxTZg3FkBh2umrZ13OdPQw6
+ AQwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724475418; x=1725080218;
+ d=1e100.net; s=20230601; t=1724475422; x=1725080222;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q8SeRNxqA0kdGYXuMPPKRU3j4MVX/4+712bEYl1oABA=;
- b=F946qzewvG2MBx5g/wtaPe5hUnef/qvQ80RmFmKtoC2tkObAlNEDVhJUBZ2OaTurqj
- qCZoyog4l0lAv5Xjt3pR0BWFWCAEci/zDIJskJQxavQpxM10H20m8P7XJ8ymFBwrxyzQ
- GHq1Qlkqx6WxEZDHWnFLjGCGmG3E/rHARiSlwfLmw4EgzEdZiJy64jHb2zLWjqAC+O7y
- tJOW+BbE8C7lesWWJpZkOb6hyzPCz2zVYzVCfEsqJYyh5x4761kLzQfq9Puk68vLqihJ
- g3Az2ft3TTG6YiOwGjweC3Pk4+STS/Vht/LB4kA4obyhE8IbiD6C6gnxayCaXpn02Xuw
- kRzw==
-X-Gm-Message-State: AOJu0YyzYXU2g4W9x77D0jCx8g2oXZWzzllurqvuBVhodM1AfEC7fqLG
- j1tScnGwIknuzplnU/PmROd6X1P6RQfP7MduQqXaaPquYJk+d/ijNu/3hIs6uvU=
-X-Google-Smtp-Source: AGHT+IFTeZ9CLa/lZJpRSjrvpKue5t9QJa5YqYVz1J9IntD/mgLut8Y8Ij7aXYahJbrEwjQBIyhGWg==
-X-Received: by 2002:a05:6359:4124:b0:1ac:671a:f39f with SMTP id
- e5c5f4694b2df-1b5c2140578mr512613255d.11.1724475418349; 
- Fri, 23 Aug 2024 21:56:58 -0700 (PDT)
+ bh=g4MfaAoEg0D4PG1s02DK0HI+nWn0NbjMokYUO+miRKs=;
+ b=Wwh9F0mvSeZlkGF/OwbPkW+SNDgBwDfncIjBJa9nM68KI3WrRywzLoB9gBR3gnlQ5I
+ +tKupw3Gisx0YZorJ1GYEUhqGyHmJxP6+AVYxU+qn1gkeV25SarQOoVB/+aCiZ12KCjF
+ pylHEQldA7KIii26L48fFq29e4uwiszhNby+1h++2f1UcJlvf4E52Uf5vvXTuIjlwLWY
+ dHnoaCe3pDN5eebAzHEmJP4iDAcKQX+57uCFtp5OmANK4/vSy6kfKEOdyDpkE8X6Hl11
+ tHZaErimANmHRmQHSTmTn5vqyhnCNZ0wVSDE1B57YxmFbeDL2xOXUTgHaHtPwLgJaLx5
+ Z4SQ==
+X-Gm-Message-State: AOJu0Yy83zctNOLp2mGLAIB6QVFW1zkkWE6ekJhSDSCg+2fnUwCalwgf
+ DgieZm4LiQg9JrjTgWF6RaPNOq3pYoBVuFlWNL9gq2/5ad28QQ+x8DnI+WzcpSw=
+X-Google-Smtp-Source: AGHT+IEqZcgyHVjVo+1w4UmF1l00liOLIPcRToP9E2K9wxf3BOYPMJ96AizawETjTR22XtxS6JADWw==
+X-Received: by 2002:a05:6808:22a5:b0:3da:b335:538e with SMTP id
+ 5614622812f47-3de2a84071amr5193978b6e.8.1724475421599; 
+ Fri, 23 Aug 2024 21:57:01 -0700 (PDT)
 Received: from localhost.localdomain ([220.253.126.131])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7143422ecedsm3805934b3a.25.2024.08.23.21.56.55
+ d2e1a72fcca58-7143422ecedsm3805934b3a.25.2024.08.23.21.56.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Aug 2024 21:56:57 -0700 (PDT)
+ Fri, 23 Aug 2024 21:57:01 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Mark Corbin <mark@dibsco.co.uk>,
- Ajeet Singh <itachis@FreeBSD.org>,
+ Ajeet Singh <itachis@FreeBSD.org>, Kyle Evans <kevans@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 04/17] bsd-user: Implement RISC-V TLS register setup
-Date: Sat, 24 Aug 2024 14:56:22 +1000
-Message-Id: <20240824045635.8978-5-itachis@FreeBSD.org>
+Subject: [PATCH v3 05/17] bsd-user: Add RISC-V ELF definitions and hardware
+ capability detection
+Date: Sat, 24 Aug 2024 14:56:23 +1000
+Message-Id: <20240824045635.8978-6-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240824045635.8978-1-itachis@FreeBSD.org>
 References: <20240824045635.8978-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=itachis6234@gmail.com; helo=mail-oo1-xc2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=itachis6234@gmail.com; helo=mail-ot1-x335.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,61 +98,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Corbin <mark@dibsco.co.uk>
 
-Included the prototype for the 'target_cpu_set_tls' function in the
-'target_arch.h' header file. This function is responsible for setting
-the Thread Local Storage (TLS) register for RISC-V architecture.
+Introduced RISC-V specific ELF definitions and hardware capability
+detection.
+Additionally, a function to retrieve hardware capabilities
+('get_elf_hwcap') is implemented, which returns the common bits set in
+each CPU's ISA strings.
 
 Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
+Co-authored-by: Kyle Evans <kevans@FreeBSD.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/riscv/target_arch.h     | 27 +++++++++++++++++++++++++++
- bsd-user/riscv/target_arch_cpu.c | 29 +++++++++++++++++++++++++++++
- 2 files changed, 56 insertions(+)
- create mode 100644 bsd-user/riscv/target_arch.h
- create mode 100644 bsd-user/riscv/target_arch_cpu.c
+ bsd-user/riscv/target_arch_elf.h | 42 ++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+ create mode 100644 bsd-user/riscv/target_arch_elf.h
 
-diff --git a/bsd-user/riscv/target_arch.h b/bsd-user/riscv/target_arch.h
+diff --git a/bsd-user/riscv/target_arch_elf.h b/bsd-user/riscv/target_arch_elf.h
 new file mode 100644
-index 0000000000..26ce07f343
+index 0000000000..4eb915e61e
 --- /dev/null
-+++ b/bsd-user/riscv/target_arch.h
-@@ -0,0 +1,27 @@
++++ b/bsd-user/riscv/target_arch_elf.h
+@@ -0,0 +1,42 @@
 +/*
-+ * RISC-V specific prototypes
-+ *
-+ * Copyright (c) 2019 Mark Corbin <mark.corbin@embecsom.com>
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#ifndef TARGET_ARCH_H
-+#define TARGET_ARCH_H
-+
-+#include "qemu.h"
-+
-+void target_cpu_set_tls(CPURISCVState *env, target_ulong newtls);
-+
-+#endif /* TARGET_ARCH_H */
-diff --git a/bsd-user/riscv/target_arch_cpu.c b/bsd-user/riscv/target_arch_cpu.c
-new file mode 100644
-index 0000000000..44e25d2ddf
---- /dev/null
-+++ b/bsd-user/riscv/target_arch_cpu.c
-@@ -0,0 +1,29 @@
-+/*
-+ *  RISC-V CPU related code
++ *  RISC-V ELF definitions
 + *
 + *  Copyright (c) 2019 Mark Corbin
 + *
@@ -168,17 +137,30 @@ index 0000000000..44e25d2ddf
 + *  You should have received a copy of the GNU General Public License
 + *  along with this program; if not, see <http://www.gnu.org/licenses/>.
 + */
-+#include "qemu/osdep.h"
 +
-+#include "target_arch.h"
++#ifndef TARGET_ARCH_ELF_H
++#define TARGET_ARCH_ELF_H
 +
-+#define TP_OFFSET       16
++#define elf_check_arch(x) ((x) == EM_RISCV)
++#define ELF_START_MMAP 0x80000000
++#define ELF_ET_DYN_LOAD_ADDR    0x100000
++#define ELF_CLASS   ELFCLASS64
 +
-+/* Compare with cpu_set_user_tls() in riscv/riscv/vm_machdep.c */
-+void target_cpu_set_tls(CPURISCVState *env, target_ulong newtls)
++#define ELF_DATA    ELFDATA2LSB
++#define ELF_ARCH    EM_RISCV
++
++#define ELF_HWCAP get_elf_hwcap()
++static uint32_t get_elf_hwcap(void)
 +{
-+    env->gpr[xTP] = newtls + TP_OFFSET;
++    RISCVCPU *cpu = RISCV_CPU(thread_cpu);
++
++    return cpu->env.misa_ext_mask;
 +}
++
++#define USE_ELF_CORE_DUMP
++#define ELF_EXEC_PAGESIZE        4096
++
++#endif /* TARGET_ARCH_ELF_H */
 -- 
 2.34.1
 
