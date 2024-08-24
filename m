@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA05995DB91
+	by mail.lfdr.de (Postfix) with ESMTPS id D55F395DB8F
 	for <lists+qemu-devel@lfdr.de>; Sat, 24 Aug 2024 06:57:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1shipX-0005nm-Md; Sat, 24 Aug 2024 00:56:51 -0400
+	id 1shipa-0005xd-W9; Sat, 24 Aug 2024 00:56:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1shipU-0005nF-Nn
- for qemu-devel@nongnu.org; Sat, 24 Aug 2024 00:56:48 -0400
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1shipZ-0005x9-EC
+ for qemu-devel@nongnu.org; Sat, 24 Aug 2024 00:56:53 -0400
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1shipT-0002EC-58
- for qemu-devel@nongnu.org; Sat, 24 Aug 2024 00:56:48 -0400
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-2689e7a941fso2161326fac.3
- for <qemu-devel@nongnu.org>; Fri, 23 Aug 2024 21:56:46 -0700 (PDT)
+ id 1shipX-0002EQ-PQ
+ for qemu-devel@nongnu.org; Sat, 24 Aug 2024 00:56:53 -0400
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-70b3b62025dso2192422a34.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Aug 2024 21:56:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724475405; x=1725080205; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=7FCmXNdbxtrobSWcjfDOip3lv0JjlwBkpbj1XF+lIk8=;
- b=WajzUcTjovbs59jiJzbhhMW15RUyAdvzWHzQ4pxUW/Tx6LD3Lo5L6e7yIbdHlthE3s
- GXw5nH7gbOF87CE9TUsj2FPi/Cn3VY+WmTW8FB+91Pc8Jbu2tRbemChNn7ouwWxR8zFy
- vhqTn7dld8YWkLs5hoqjXoD3+oQTA2IbY4UlHJ5C4wKywxYXqXaEO+RnkygPcH3MkOeP
- 46rbTw+IMzKFUbuis+xGUon5n6BUVbUqsv7q6NzDdSHcYGGSNDpbSMju6Y4BtyEy4Mr5
- UkbRijberQ41hbUIuX+FUJ/OAd+ZMaY07cu3kVaGBnVSK202gYkJex1nDlFtntYc3d8v
- LOvQ==
+ d=gmail.com; s=20230601; t=1724475409; x=1725080209; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vomkfUtAllK0ojM5LRPdvdVvl+rjfsjudu3AMP3f7gI=;
+ b=UiEyRrqluZpgh5syvXwTRYg4zFPEne9F+nXfQCNyCUEkjTJ6+YMdowtxlGUxx4epwp
+ fHWjlJHknZzeQXIwMmfCiBGNkdwjIdNwSXdtaQexegfhcUykNXwrgmSGV/4zCFEOtuSa
+ YUEpyMptf0KsJlRSPuiBlhiWEzTheiQ2SSXzXNtTk9sCpOgNvsGhrOgXULkq2l7CUaCp
+ dqxbL6mJihyLyOVWAdPsAokdSTe292ez6rQ2jaMP2xAqNHT8syOpHFK3ewEBulorTkUq
+ ve/TXQdOvXC306wwfvD7fscKHHQ40SyoigFo3ww3Srejc3Op4A+X/6fJXlHZyS4wSD1T
+ JRag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724475405; x=1725080205;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7FCmXNdbxtrobSWcjfDOip3lv0JjlwBkpbj1XF+lIk8=;
- b=KgGIedFzy0mldc98IjqGQpiueRZHkwrLXRvqAuzp2KCm18CAs4I5JDVyJIbSSkbC9G
- RPoC4zV92A8RP/Xi7S0dgCSztU/4g/wWJjrInYxQ6byuPREFUPwgTOR5dYAW1Jy2SG8r
- CdK03nBANl2NobsYVqIpzKcZZGlxTktxVZNvmvwr2zFyaDA+WDCgciJOcJcUXQdSut8g
- KnPbmEGztF2qcJDh3u5H1WG1fyYFzTn/TcQDZedGe2k9JVeF+3IcvxSEvFEsa/99MEBN
- 1GgNfr0APmGHpbofpeRcNGDSdmQ6gIlok+8qFxK8/8YMXeYJmVY9qHIFIy22PnmMPWG/
- wzFg==
-X-Gm-Message-State: AOJu0YxdkE3OwjUV1TvNfw3B9VN33O25uWo96RdwwlPA2x+shSy/W5qV
- nDdf++xrWJLNOZiAIDh3oMw7tJPWdePyj0nI1kNjtJrR4LV0ZO3M5CHHTaDG
-X-Google-Smtp-Source: AGHT+IGaX89AA5i/CpTAtAof9mb5o8zkDzwT1IEpTwHCCWW6QwCK/0lLloj/nZrLwieEzx0aAHNavw==
-X-Received: by 2002:a05:6870:819c:b0:270:52c3:adcb with SMTP id
- 586e51a60fabf-273e64dfb25mr5238489fac.24.1724475405270; 
- Fri, 23 Aug 2024 21:56:45 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1724475409; x=1725080209;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vomkfUtAllK0ojM5LRPdvdVvl+rjfsjudu3AMP3f7gI=;
+ b=axnC7Jw+k03gdAzYdTPmyK5fmG3cO24536LDi7FEZPTnlA0RcBYW5+fuC/wRKtkpUU
+ i9B0hs+ccB9yt0lV3GxGfS+r6VpoF2foEpi/V9RRMeUwfnvuw6fgx8c+SoPiHjUW3UmV
+ 88IhsWqJRYl9Ni86hyXG2JSJMrdrIysbCtO62YxNZ4vAcjXAM/OsB90vjBhRdeH/UfY3
+ 8GksG0gB7a46qKVhFID/yeaMku3AIcYUb/FqzhVdqobOPnpBlQAqfFYIO7i0wTbw60Bf
+ IrsErAGalJI9ENhEpKgSh5EnXCmdehFT7chOpK7/7EuBxpfntd8H7N8RPbxsr4yNbKQf
+ X6tw==
+X-Gm-Message-State: AOJu0Yz5Zm2Z+5YEJ9zwkU+E2vNw8jDi9+RNEM8i419CBd5+tivlvyBk
+ 1lju7X17Ny0voewMEWl0a/xOtQU0od3jKyzLJwEh2T7gPt1sDzSnwMlfX8UXMDE=
+X-Google-Smtp-Source: AGHT+IFLdgBz6q0Mx+RG80CGDPINpdCR3FA/QoU5tRtjoh0ihEWOf9wYtyQEhxvqaGpf8WUbc4AUkA==
+X-Received: by 2002:a05:6808:bca:b0:3d9:e22a:97a4 with SMTP id
+ 5614622812f47-3de2a8e1762mr4913264b6e.36.1724475409103; 
+ Fri, 23 Aug 2024 21:56:49 -0700 (PDT)
 Received: from localhost.localdomain ([220.253.126.131])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7143422ecedsm3805934b3a.25.2024.08.23.21.56.42
+ d2e1a72fcca58-7143422ecedsm3805934b3a.25.2024.08.23.21.56.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Aug 2024 21:56:44 -0700 (PDT)
+ Fri, 23 Aug 2024 21:56:47 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Mark Corbin <mark@dibsco.co.uk>,
- Ajeet Singh <itachis@FreeBSD.org>
-Subject: [PATCH v3 00/17] bsd-user: Comprehensive RISCV Support
-Date: Sat, 24 Aug 2024 14:56:18 +1000
-Message-Id: <20240824045635.8978-1-itachis@FreeBSD.org>
+ Ajeet Singh <itachis@FreeBSD.org>, Jessica Clarke <jrtc27@jrtc27.com>
+Subject: [PATCH v3 01/17] bsd-user: Implement RISC-V CPU initialization and
+ main loop
+Date: Sat, 24 Aug 2024 14:56:19 +1000
+Message-Id: <20240824045635.8978-2-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240824045635.8978-1-itachis@FreeBSD.org>
+References: <20240824045635.8978-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=itachis6234@gmail.com; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=itachis6234@gmail.com; helo=mail-ot1-x329.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,62 +95,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Key Changes Compared to Version 2:
-Patch 1: changed loop conditions to avoid setting r0
-Patch 7: replaced manual byte swapping with const_le32
-Patch 9: used ROUND_DOWN to align the stack
+From: Mark Corbin <mark@dibsco.co.uk>
 
-Mark Corbin (15):
-  bsd-user: Implement RISC-V CPU initialization and main loop
-  bsd-user: Add RISC-V CPU execution loop and syscall handling
-  bsd-user: Implement RISC-V CPU register cloning and reset functions
-  bsd-user: Implement RISC-V TLS register setup
-  bsd-user: Add RISC-V ELF definitions and hardware capability detection
-  bsd-user: Define RISC-V register structures and register copying
-  bsd-user: Add RISC-V signal trampoline setup function
-  bsd-user: Implement RISC-V sysarch system call emulation
-  bsd-user: Add RISC-V thread setup and initialization support
-  bsd-user: Define RISC-V VM parameters and helper functions
-  bsd-user: Define RISC-V system call structures and constants
-  bsd-user: Define RISC-V signal handling structures and constants
-  bsd-user: Implement RISC-V signal trampoline setup functions
-  bsd-user: Implement 'get_mcontext' for RISC-V
-  bsd-user: Implement set_mcontext and get_ucontext_sigreturn for RISCV
+Added the initial implementation for RISC-V CPU initialization and main
+loop. This includes setting up the general-purpose registers and
+program counter based on the provided target architecture definitions.
 
-Warner Losh (2):
-  bsd-user: Add generic RISC-V64 target definitions
-  bsd-user: Add RISC-V 64-bit Target Configuration and Debug XML Files
-
- bsd-user/riscv/signal.c               | 170 ++++++++++++++++++++++++++
- bsd-user/riscv/target.h               |  20 +++
- bsd-user/riscv/target_arch.h          |  27 ++++
- bsd-user/riscv/target_arch_cpu.c      |  29 +++++
- bsd-user/riscv/target_arch_cpu.h      | 147 ++++++++++++++++++++++
- bsd-user/riscv/target_arch_elf.h      |  42 +++++++
- bsd-user/riscv/target_arch_reg.h      |  88 +++++++++++++
- bsd-user/riscv/target_arch_signal.h   |  75 ++++++++++++
- bsd-user/riscv/target_arch_sigtramp.h |  42 +++++++
- bsd-user/riscv/target_arch_sysarch.h  |  41 +++++++
- bsd-user/riscv/target_arch_thread.h   |  47 +++++++
- bsd-user/riscv/target_arch_vmparam.h  |  53 ++++++++
- bsd-user/riscv/target_syscall.h       |  38 ++++++
- configs/targets/riscv64-bsd-user.mak  |   4 +
- 14 files changed, 823 insertions(+)
- create mode 100644 bsd-user/riscv/signal.c
- create mode 100644 bsd-user/riscv/target.h
- create mode 100644 bsd-user/riscv/target_arch.h
- create mode 100644 bsd-user/riscv/target_arch_cpu.c
+Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
+Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
+Co-authored-by: Jessica Clarke <jrtc27@jrtc27.com>
+---
+ bsd-user/riscv/target_arch_cpu.h | 39 ++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
  create mode 100644 bsd-user/riscv/target_arch_cpu.h
- create mode 100644 bsd-user/riscv/target_arch_elf.h
- create mode 100644 bsd-user/riscv/target_arch_reg.h
- create mode 100644 bsd-user/riscv/target_arch_signal.h
- create mode 100644 bsd-user/riscv/target_arch_sigtramp.h
- create mode 100644 bsd-user/riscv/target_arch_sysarch.h
- create mode 100644 bsd-user/riscv/target_arch_thread.h
- create mode 100644 bsd-user/riscv/target_arch_vmparam.h
- create mode 100644 bsd-user/riscv/target_syscall.h
- create mode 100644 configs/targets/riscv64-bsd-user.mak
 
+diff --git a/bsd-user/riscv/target_arch_cpu.h b/bsd-user/riscv/target_arch_cpu.h
+new file mode 100644
+index 0000000000..e17c910ae9
+--- /dev/null
++++ b/bsd-user/riscv/target_arch_cpu.h
+@@ -0,0 +1,39 @@
++/*
++ *  RISC-V CPU init and loop
++ *
++ *  Copyright (c) 2019 Mark Corbin
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef TARGET_ARCH_CPU_H
++#define TARGET_ARCH_CPU_H
++
++#include "target_arch.h"
++
++#define TARGET_DEFAULT_CPU_MODEL "max"
++
++static inline void target_cpu_init(CPURISCVState *env,
++        struct target_pt_regs *regs)
++{
++    int i;
++
++    for (i = 1; i < 32; i++) {
++        env->gpr[i] = regs->regs[i];
++    }
++
++    env->pc = regs->sepc;
++}
++
++#endif /* TARGET_ARCH_CPU_H */
 -- 
 2.34.1
 
