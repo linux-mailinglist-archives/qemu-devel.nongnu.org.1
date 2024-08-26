@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4447B95F531
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 17:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 040E095F537
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 17:33:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sibgO-0002VO-6X; Mon, 26 Aug 2024 11:31:04 -0400
+	id 1sibgM-0002NM-5d; Mon, 26 Aug 2024 11:31:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sibfu-0000hl-Gx
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 11:30:39 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1sibfz-0000pd-KP
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 11:30:42 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sibfq-0003gD-Lw
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 11:30:33 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-714226888dfso3999304b3a.1
- for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 08:30:30 -0700 (PDT)
+ id 1sibfs-0003gc-Hp
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 11:30:39 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-714114be925so3869557b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 08:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724686229; x=1725291029;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724686230; x=1725291030;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hmHRx8s/W32kMwfWaFprt4Qicp4zWaDvYB7fNr0JPCQ=;
- b=QDcE22P6ZrhG3aLZMADRlECD5YxSfFnV1cu/xm4yquqygzTSH1zCG5GUr0Vcho3jR1
- O7ODshj2aespQY2Lc/59Hs+YJZSAWCSCCBtZ3rIMzkN5YvE7i48KYGctav4BEJZQP3Dc
- KGCxSw79bsusHGf1473w4Gas29Sj/Ya+EN7a9i14lMSHUiLPS87KaSc3HtEaTBuRgyXL
- 9kcM6p9gP1LzhO64ahVVtZItFt1ikB22y4vwCq6Tld/FDItQPOrFWzeqEy/2FZNlrQfv
- Ww41VMI4nn0G400rd3/AyeOtR4ZWNUDKYp6Ir97y1XA+N+X8d2BtKGdRNqwXRWcSGsP+
- tieg==
+ bh=O8YdqZUU8+ncezbzq+2x/I5a8BTFehZZsPQ1BjWfojs=;
+ b=Xb7QPcwGQBikvC9mG0+/Dhs5CpjPk2pyXkqqeHwoiXwL/p8pcPCjaCkc2ygWnEpmZf
+ 2Ff9npNh4wpKFrrwlTnIFyUElUsaAYTvooXWVtTsbizy7/tJvfUu548xTBrQMKcMNqIr
+ +h14qATPrfZmoFHukkAQEssPLLFSaKZE4zavv4vKKLdO55AGxToc+hR3ROU8UN1P9Pd4
+ 7PUy1CvTcgQ4dozkRLbL/qb1tGHQt39owr1YqBImLkAWm0F6nFBPeZ5SzbufoDBO74fQ
+ HWwEXYd3PqvR20nRLtsFcT+DZA8MFYJ0tU/sjqDTUWJ5iWXj3e6iPuNwYg+noRifI5rA
+ Vo+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724686229; x=1725291029;
+ d=1e100.net; s=20230601; t=1724686230; x=1725291030;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hmHRx8s/W32kMwfWaFprt4Qicp4zWaDvYB7fNr0JPCQ=;
- b=iCaCcOzAv7KjfRYbGKBKHkqagYforZ5J1i7tfdRzzpGHD4iLBMpIBs20oNLbHxywcL
- GjdnHoXmARJFA0wQDcPNGXgL32DkLQSRUeNRKV4eWyVCk9CTdiTXW3QrtLmYYqes/5gx
- 2gzwxVZJjfhqUhxy7WbNEiseCHItBNd0hAW3KNLDAH959GulsPTDje1HE0K/USZS2dyV
- 3aZmi00oCreaD83xSOPcGL13/hEjJ3KQA4cDFV7gW1oEZaep8lDYfqz7wWb/Zg463PVK
- rfbKcTDG4sVKFMKj25RGH9diJJHREtg/hDV29VOgvdR3h9CFG3L5ghMt4sONYEqz+8sm
- lL4w==
+ bh=O8YdqZUU8+ncezbzq+2x/I5a8BTFehZZsPQ1BjWfojs=;
+ b=YdnGN0lAVLxLZBj/laPPvf8va6nZ1gZQN1DrpFhj98jNTCxZTuzp2z7tRzCjIj5o+2
+ gqnBs5TO3pOqjvYPC2Ruzj3uBDcteMzK0KnSllh/zQNHS3OZqW9uB1sOF15SL4W2w0DM
+ VkX5MADbYrswvyr+L0sguBYCsnxIan91baeM+9Gd7BrgGTPbmX1ikg/m02Rnkd/xLwcV
+ OoTQTdMtwHdqWKaPKuy7UWHTQlZictzQuR5I2Lpq6ZJXjDTcSd/DnWApW5rr0hMkHTeF
+ iyc34Feb9RuWXQGWbTY66kxFfvvfMEhKWlk9B8lQm+gkBqUrCiHdtgeRhJ/GoJ84lCpw
+ 7Aig==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVajq57MwioQvT05EOBlYIKfO9/Ff6M6iY+M1FZI0ZxRFpcG+QS5C1xhGuRDv1XI3p01ZwMe4IA+yDB@nongnu.org
-X-Gm-Message-State: AOJu0YxfRKKEAGh+6KLdWgGAZBzaEnuj4ZIUtwy5dL6fPveWmkClFUZT
- TrlHd5l3EbvX341U0jgsyeG+Fqxi5Y+02+Y53jVmH7vr6V6QytdGKGcIKeTubss=
-X-Google-Smtp-Source: AGHT+IHvS+jW3nPSNvl5yWY07+f8UFZBD+qNzPtfGzfVQ6lIKEqeYP7hpy4D/uY5Ak31I+PcF4Wy6w==
-X-Received: by 2002:a05:6a20:c909:b0:1c6:ae03:670b with SMTP id
- adf61e73a8af0-1cc89d29dadmr13222715637.9.1724686229058; 
- Mon, 26 Aug 2024 08:30:29 -0700 (PDT)
+ AJvYcCUdUG56sEKRaU6SMTHxlKdi3j+S+irMLWoqNXvHV/Y2CmfJEAIeIRhWsHXQ2MgWE2zJBfduuQqN9V/5@nongnu.org
+X-Gm-Message-State: AOJu0YyXiTfImeWwIF5nLHWtRWh6s7I+Cmi74dkanXgfX/p3e8f1+W8X
+ OWyppdvRF19JY0tntP3QHgGu85jdKvMS8sh1je/nmv9uYoGi5X67RDulJIetxjY=
+X-Google-Smtp-Source: AGHT+IFvCWHO7Fx8C0DFM8aZnCtEK0BNdwrz8agxYvQawE1NGmXZGbxH7P3aKoYsA+Dvh47MaOrwKw==
+X-Received: by 2002:a05:6a21:3417:b0:1c6:9e5e:2ec4 with SMTP id
+ adf61e73a8af0-1cc8a0846c5mr13634294637.50.1724686230282; 
+ Mon, 26 Aug 2024 08:30:30 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7143422eaabsm7396525b3a.12.2024.08.26.08.30.28
+ d2e1a72fcca58-7143422eaabsm7396525b3a.12.2024.08.26.08.30.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Aug 2024 08:30:28 -0700 (PDT)
+ Mon, 26 Aug 2024 08:30:29 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -67,17 +67,17 @@ Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, bmeng.cn@gmail.com,
  zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, andy.chiu@sifive.com,
  richard.henderson@linaro.org, kito.cheng@sifive.com,
  Deepak Gupta <debug@rivosinc.com>
-Subject: [PATCH v9 15/17] target/riscv: compressed encodings for sspush and
- sspopchk
-Date: Mon, 26 Aug 2024 08:29:47 -0700
-Message-ID: <20240826152949.294506-16-debug@rivosinc.com>
+Subject: [PATCH v9 16/17] disas/riscv: enable disassembly for zicfiss
+ instructions
+Date: Mon, 26 Aug 2024 08:29:48 -0700
+Message-ID: <20240826152949.294506-17-debug@rivosinc.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240826152949.294506-1-debug@rivosinc.com>
 References: <20240826152949.294506-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=debug@rivosinc.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=debug@rivosinc.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,35 +99,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sspush/sspopchk have compressed encodings carved out of zcmops.
-compressed sspush is designated as c.mop.1 while compressed sspopchk
-is designated as c.mop.5.
-
-Note that c.sspush x1 exists while c.sspush x5 doesn't. Similarly
-c.sspopchk x5 exists while c.sspopchk x1 doesn't.
+Enable disassembly for sspush, sspopchk, ssrdp & ssamoswap.
+Disasembly is only enabled if zimop and zicfiss ext is set to true.
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Co-developed-by: Jim Shu <jim.shu@sifive.com>
-Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
 ---
- target/riscv/insn16.decode | 4 ++++
- 1 file changed, 4 insertions(+)
+ disas/riscv.c | 40 +++++++++++++++++++++++++++++++++++++++-
+ disas/riscv.h |  1 +
+ 2 files changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/insn16.decode b/target/riscv/insn16.decode
-index 3953bcf82d..bf893d1c2e 100644
---- a/target/riscv/insn16.decode
-+++ b/target/riscv/insn16.decode
-@@ -140,6 +140,10 @@ sw                110  ... ... .. ... 00 @cs_w
- addi              000 .  .....  ..... 01 @ci
- addi              010 .  .....  ..... 01 @c_li
- {
-+  # c.sspush x1 carving out of zcmops
-+  sspush          011 0  00001  00000 01 &r2_s rs2=1 rs1=0
-+  # c.sspopchk x5 carving out of zcmops
-+  sspopchk        011 0  00101  00000 01 &r2 rs1=5 rd=0
-   c_mop_n         011 0 0 n:3 1 00000 01
-   illegal         011 0  -----  00000 01 # c.addi16sp and c.lui, RES nzimm=0
-   addi            011 .  00010  ..... 01 @c_addi16sp
+diff --git a/disas/riscv.c b/disas/riscv.c
+index c7c92acef7..5eafb7f7f3 100644
+--- a/disas/riscv.c
++++ b/disas/riscv.c
+@@ -975,6 +975,11 @@ typedef enum {
+     rv_op_amocas_b  = 944,
+     rv_op_amocas_h  = 945,
+     rv_op_lpad = 946,
++    rv_op_sspush = 947,
++    rv_op_sspopchk = 948,
++    rv_op_ssrdp = 949,
++    rv_op_ssamoswap_w = 950,
++    rv_op_ssamoswap_d = 951,
+ } rv_op;
+ 
+ /* register names */
+@@ -2234,6 +2239,11 @@ const rv_opcode_data rvi_opcode_data[] = {
+     { "amocas.b", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
+     { "amocas.h", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
+     { "lpad", rv_codec_lp, rv_fmt_imm, NULL, 0, 0, 0 },
++    { "sspush", rv_codec_r, rv_fmt_rs2, NULL, 0, 0, 0 },
++    { "sspopchk", rv_codec_r, rv_fmt_rs1, NULL, 0, 0, 0 },
++    { "ssrdp", rv_codec_r, rv_fmt_rd, NULL, 0, 0, 0 },
++    { "ssamoswap.w", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
++    { "ssamoswap.d", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
+ };
+ 
+ /* CSR names */
+@@ -2251,6 +2261,7 @@ static const char *csr_name(int csrno)
+     case 0x0009: return "vxsat";
+     case 0x000a: return "vxrm";
+     case 0x000f: return "vcsr";
++    case 0x0011: return "ssp";
+     case 0x0015: return "seed";
+     case 0x0017: return "jvt";
+     case 0x0040: return "uscratch";
+@@ -3077,6 +3088,8 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+             case 66: op = rv_op_amoor_w; break;
+             case 67: op = rv_op_amoor_d; break;
+             case 68: op = rv_op_amoor_q; break;
++            case 74: op = rv_op_ssamoswap_w; break;
++            case 75: op = rv_op_ssamoswap_d; break;
+             case 96: op = rv_op_amoand_b; break;
+             case 97: op = rv_op_amoand_h; break;
+             case 98: op = rv_op_amoand_w; break;
+@@ -4028,7 +4041,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+             case 3: op = rv_op_csrrc; break;
+             case 4:
+                 if (dec->cfg->ext_zimop) {
+-                    int imm_mop5, imm_mop3;
++                    int imm_mop5, imm_mop3, reg_num;
+                     if ((extract32(inst, 22, 10) & 0b1011001111)
+                         == 0b1000000111) {
+                         imm_mop5 = deposit32(deposit32(extract32(inst, 20, 2),
+@@ -4036,11 +4049,36 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
+                                                        extract32(inst, 26, 2)),
+                                              4, 1, extract32(inst, 30, 1));
+                         op = rv_mop_r_0 + imm_mop5;
++                        /* if zicfiss enabled and mop5 is shadow stack */
++                        if (dec->cfg->ext_zicfiss &&
++                            ((imm_mop5 & 0b11100) == 0b11100)) {
++                                /* rs1=0 means ssrdp */
++                                if ((inst & (0b011111 << 15)) == 0) {
++                                    op = rv_op_ssrdp;
++                                }
++                                /* rd=0 means sspopchk */
++                                reg_num = (inst >> 15) & 0b011111;
++                                if (((inst & (0b011111 << 7)) == 0) &&
++                                    ((reg_num == 1) || (reg_num == 5))) {
++                                    op = rv_op_sspopchk;
++                                }
++                        }
+                     } else if ((extract32(inst, 25, 7) & 0b1011001)
+                                == 0b1000001) {
+                         imm_mop3 = deposit32(extract32(inst, 26, 2),
+                                              2, 1, extract32(inst, 30, 1));
+                         op = rv_mop_rr_0 + imm_mop3;
++                        /* if zicfiss enabled and mop3 is shadow stack */
++                        if (dec->cfg->ext_zicfiss &&
++                            ((imm_mop3 & 0b111) == 0b111)) {
++                                /* rs1=0 and rd=0 means sspush */
++                                reg_num = (inst >> 20) & 0b011111;
++                                if (((inst & (0b011111 << 15)) == 0) &&
++                                    ((inst & (0b011111 << 7)) == 0) &&
++                                    ((reg_num == 1) || (reg_num == 5))) {
++                                    op = rv_op_sspush;
++                                }
++                        }
+                     }
+                 }
+                 break;
+diff --git a/disas/riscv.h b/disas/riscv.h
+index 1182457aff..4895c5a301 100644
+--- a/disas/riscv.h
++++ b/disas/riscv.h
+@@ -224,6 +224,7 @@ enum {
+ 
+ #define rv_fmt_none                   "O\t"
+ #define rv_fmt_rs1                    "O\t1"
++#define rv_fmt_rs2                    "O\t2"
+ #define rv_fmt_offset                 "O\to"
+ #define rv_fmt_pred_succ              "O\tp,s"
+ #define rv_fmt_rs1_rs2                "O\t1,2"
 -- 
 2.44.0
 
