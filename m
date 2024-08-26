@@ -2,85 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4241095E8E4
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 08:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B8F95E934
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 08:46:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1siTHB-0004Xe-Ov; Mon, 26 Aug 2024 02:32:29 -0400
+	id 1siTTC-0007Z3-RC; Mon, 26 Aug 2024 02:44:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1siTGx-0004Wq-5p
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 02:32:16 -0400
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1siTTB-0007YZ-Kv
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 02:44:53 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1siTGv-0007mG-JT
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 02:32:14 -0400
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-5d5bf833de7so3043088eaf.2
- for <qemu-devel@nongnu.org>; Sun, 25 Aug 2024 23:32:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1siTT6-0000zP-JO
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 02:44:53 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5c09fd20eddso922123a12.3
+ for <qemu-devel@nongnu.org>; Sun, 25 Aug 2024 23:44:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724653932; x=1725258732; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=nam13A3RdtNOwsp+TM7/oTRlnH9wAf9Kn+rEQ6CJ3o4=;
- b=j6ebqIlnwdZqXoEOCrH/27QFvrIUKFdh/XjtyPid3IM0/kNwk4dT1b1mYGe2rmEBt0
- JI4qk5BwsAV0kU3A86zTF8l3CJv3ddK5yFpdJ2b1Tt7PBl9AEte4RrRyJOCLrt8l+T60
- ggZdHXICz+QA2CN1+bTGpeqrhrzcbC2h44gwKj5UVF/Wh8rQwDhOcNFZbPEQr5agVS4a
- tVImc3ECQWSeGklzHXt0gY/kHeeEGozJm3q3aUFme6Hht9GU56SsSaiu4m5nkrVeMfsF
- tNlHhS7lwobX6Du1t0b5B7lfi8mpkgvVAEzDC1Oau2hLwLpOWvrUStShRKXWAtOEIGmc
- 5Q9w==
+ d=linaro.org; s=google; t=1724654687; x=1725259487; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=5B4RWP+TuwixXz+Vvs/x2SDQhCLc/e6y8IkxjoC2Sb4=;
+ b=bUgNI/6YrzIT/AakVEdlY5OM6TQkJPKLELmNtDOZcbr4QuqehuqLvrd8frGKu8vogm
+ s9drUbB5w6PnETavcBk8l9h8a0syCWGi72Pu83vPWZ/P+F0ETVImWzU7y8vXXMFxYMkn
+ 9J06+VbdGNK//vtgk5A5IZnws8dBmLdtxbfh5xQuWWLYIvzwLme+5ee3JgAfWQl4hTr6
+ yvrH2fZIFx4Eqk3qNT5K1LpzAVYKmATcdteWkeReKDXXig/XQmI7SIIakuHvUAgitTNX
+ gEFXfU8zeiiHdr1zzcasZcf5KMMcLJ1IhJ1lqLl00JL0Li11vL0MWqZrWhGsXswqIkn/
+ hCow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724653932; x=1725258732;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nam13A3RdtNOwsp+TM7/oTRlnH9wAf9Kn+rEQ6CJ3o4=;
- b=msAyQbCkBjyvCzAXg5fgmVPGhAm16mhK7NBcXjHZGKiv2NLV21byEaO/6CcGtBIz53
- CU5kWIcOjwiYlV/FdqRY+LrEHXuAWvOOlqfTnz0zxCeLqgVmIYj9tpA4mUqQglTsp+8Z
- SzElN6E7XFPLrTm8aRBPnlGGnVyARh1uckg0wPIA8molp27JwNFAyJx9DO+bSeZ3lcK6
- Qp+tqldHzIpljkg6KLy+AsXMRm5VDSfCgY0RtpA/NLRs8+U21/6rP4ZmG/kxSuRLx3T+
- ivGtNMmZAx2FrboNtiWHGfVPWoB4ca4KM88BSa9FMYfVOy+noQBE0113app+oRK01Hia
- zf/w==
+ d=1e100.net; s=20230601; t=1724654687; x=1725259487;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5B4RWP+TuwixXz+Vvs/x2SDQhCLc/e6y8IkxjoC2Sb4=;
+ b=jozBpmfA2EYHXKYa2AEm0YIWMJEQW/TOVwvO/VG2mtVkuscW3tqZ/E0qsxx4ge9gvQ
+ DmFAFC82eWGAuCZEYmUmEL3PLRCF3RD4X9zOFGM0cOtkNllu0nBhniVpmLQUse8P7Mpy
+ 3oC705jfIIPbWV6XSjYL28zJQCBu4cJWM7iGYq0phRk9mL61+QZ3KjybiTqbJzztxLkq
+ ZHAqo17cbrop6jeUaZgihGMePx0RXw/HMXzAwjfGZmH2asUFBr1gPEFR57nD1Afb4vO7
+ AcaRL0Gba7zxiGX6zduU5N7h08pvRMeTWK+HKm9ZLHNOzDYDwkNgc/HsOR/uNRxDTlYx
+ StwA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXWqP5+CLBzuE5fXlEdc0xsEuRsh/Qi0Ni2Gcm2ip1Qs/UeFP2ns1qFPrfA3Hi9dl2xRtbKna8adylM@nongnu.org
-X-Gm-Message-State: AOJu0YyGukwaGGsBXizQfJAa7vmb89mWI0l2TeU//+WW9lZDLori/Z+w
- 1K9+89SXVVbFxqfBEH8Rp25YTyMIjsuXHARnN6TIP2ekJyXJ5VNhSxYjqKjqc2M=
-X-Google-Smtp-Source: AGHT+IElt2zAUxYIEEg1GsPabhnT3qbDhbI5KuiA6KAmWyjhklCGrEGccMtObxw3Gcd0ZbLMK+tnUw==
-X-Received: by 2002:a05:6359:5a92:b0:1aa:bde7:5725 with SMTP id
- e5c5f4694b2df-1b5c22eab67mr1179809555d.28.1724653931771; 
- Sun, 25 Aug 2024 23:32:11 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.216.241])
+ AJvYcCUPl5eYd59ktQhcHo0cdhlfcoM6/d3Tusye+07qO2PexgHdBuHImvfudneFqO5wTM20xbOpV0N8ihHR@nongnu.org
+X-Gm-Message-State: AOJu0YzLK/rlDqIbtuyfs0EcnqYLwTyOFMAOR7aGS157Tk9y3hqcp8xl
+ uq/cAwX6cNVSJZa3dWDZRCDwLa0EA2RoopNujqJb1UWw4qGc1Hr27hkbBhRmZ8I=
+X-Google-Smtp-Source: AGHT+IHshCbsuGHn1kwCEiW67PvgqTeGl/53fW0j3uFIQREAlaSUjxX+RDO00LhanaccAlz/ZRW5hw==
+X-Received: by 2002:a05:6402:3596:b0:5c0:8ea9:85a0 with SMTP id
+ 4fb4d7f45d1cf-5c08ea9863fmr6425713a12.5.1724654686138; 
+ Sun, 25 Aug 2024 23:44:46 -0700 (PDT)
+Received: from meli-email.org (adsl-98.109.242.227.tellas.gr. [109.242.227.98])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-454fe0f3e24sm40876461cf.55.2024.08.25.23.32.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 Aug 2024 23:32:11 -0700 (PDT)
-Message-ID: <c944fe50-1e59-4687-80a2-617ea3dbbced@linaro.org>
-Date: Mon, 26 Aug 2024 08:32:08 +0200
+ 4fb4d7f45d1cf-5c04a3cc25bsm5184093a12.38.2024.08.25.23.44.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 25 Aug 2024 23:44:45 -0700 (PDT)
+Date: Mon, 26 Aug 2024 09:41:58 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Junjie Mao <junjie.mao@intel.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v8 6/8] rust: add crate to expose bindings and interfaces
+User-Agent: meli 0.8.7
+References: <20240823-rust-pl011-v8-0-b9f5746bdaf3@linaro.org>
+ <20240823-rust-pl011-v8-6-b9f5746bdaf3@linaro.org>
+ <841befb6-5ce1-44e5-890c-4e60fcbd4fa6@intel.com>
+In-Reply-To: <841befb6-5ce1-44e5-890c-4e60fcbd4fa6@intel.com>
+Message-ID: <itc2k.22cnsecjnvt9@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 15/16] migration/multifd: Register nocomp ops
- dynamically
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>,
- "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
-References: <20240823173911.6712-1-farosas@suse.de>
- <20240823173911.6712-16-farosas@suse.de>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240823173911.6712-16-farosas@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=philmd@linaro.org; helo=mail-oo1-xc31.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,38 +105,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/8/24 19:39, Fabiano Rosas wrote:
-> Prior to moving the ram code into multifd-nocomp.c, change the code to
-> register the nocomp ops dynamically so we don't need to have the ops
-> structure defined in multifd.c.
-> 
-> While here, move the ops struct initialization to the end of the file
-> to make the next diff cleaner.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->   migration/multifd.c | 32 +++++++++++++++++++-------------
->   1 file changed, 19 insertions(+), 13 deletions(-)
+On Mon, 26 Aug 2024 08:31, Junjie Mao <junjie.mao@intel.com> wrote:
+>> +unsafe impl GlobalAlloc for QemuAllocator {
+>> +    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+>> +        if layout.align() == 0 {
+>> +            g_malloc0(layout.size().try_into().unwrap()).cast::<u8>()
+>> +        } else {
+>> +            g_aligned_alloc0(
+>
+>One more thing: g_aligned_alloc0() was introduced in glib 2.72 [1] but the 
+>current glib version check in meson is >= 2.66.0.
+>
+>Glib 2.72 still supports Win 7+, so no increase to _WIN32_WINNT is needed for 
+>this version bumping.
+>
+>[1] https://docs.gtk.org/glib/func.aligned_alloc0.html
+>[2] https://gitlab.gnome.org/GNOME/glib/-/blob/2.72.0/meson.build?ref_type=tags#L509
 
+Hm. Was there no way to have aligned allocations before 2.72? We can 
+emit a cfg from meson if glib is <2.72 and handle it differently.
 
-> +static MultiFDMethods multifd_nocomp_ops = {
-
-As a follow up cleanup, have multifd_register_ops() take a
-const MultiFDMethods*, making these arrays also const.
-
-> +    .send_setup = multifd_nocomp_send_setup,
-> +    .send_cleanup = multifd_nocomp_send_cleanup,
-> +    .send_prepare = multifd_nocomp_send_prepare,
-> +    .recv_setup = multifd_nocomp_recv_setup,
-> +    .recv_cleanup = multifd_nocomp_recv_cleanup,
-> +    .recv = multifd_nocomp_recv
-> +};
-> +
-> +static void multifd_nocomp_register(void)
-> +{
-> +    multifd_register_ops(MULTIFD_COMPRESSION_NONE, &multifd_nocomp_ops);
-> +}
-> +
-> +migration_init(multifd_nocomp_register);
-
+Manos
 
