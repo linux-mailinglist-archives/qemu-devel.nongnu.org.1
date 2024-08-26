@@ -2,106 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F356895F9E2
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 21:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0087E95FA06
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 21:54:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sifbX-0000cX-Ji; Mon, 26 Aug 2024 15:42:19 -0400
+	id 1sifmP-0006SK-IT; Mon, 26 Aug 2024 15:53:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sifbT-0000Yf-FD
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 15:42:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sifbP-0000SS-2i
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 15:42:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724701330;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=boFz7/tNpSvKRWQqI5iLbO5Vr5fl7hKnlbrJL3JKvYI=;
- b=dAuslKT88A6Rwu40R2qCEh2AZ1M4sb+deb9fizvtT/oRYBp1rYSnB8JTNXUCyxVOdQD2CD
- 6ZOfyVfPJQq9O+6svvo256nb6bRW/oeGasrclpjYjbFVi8y3FwqXqG951kTqG4vnPHpcVO
- S77O3xnq0p6AYzJs3XiFvsnr+QNJFLM=
-Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
- [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-rMsyRtl9O7-IVI62LVuFRw-1; Mon, 26 Aug 2024 15:42:06 -0400
-X-MC-Unique: rMsyRtl9O7-IVI62LVuFRw-1
-Received: by mail-vk1-f200.google.com with SMTP id
- 71dfb90a1353d-4fd04abe4a4so934921e0c.3
- for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 12:42:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724701326; x=1725306126;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=boFz7/tNpSvKRWQqI5iLbO5Vr5fl7hKnlbrJL3JKvYI=;
- b=J7in2zWppqyh2T7Z+cf9ndFNPpNc7k4uNQGKlbtcMk1VpBOITW37GfvO5eALW+h7Kj
- gVoaUCIx10pFiZ949nCiqehKdUUfXPpeJR4R8dRcl43EnsFP8IiNSfP7xWBbcNUdEQGL
- AzVVSrp8FNuRpGGnj0Rq/L0fd8ZhuGH7qSYbNqZBL8gkkeSsqPF3Acb4NU82BGF4I1Zi
- 66KeA9xftJ2qYPVWK+UiJDwW31h+bK0U8CCsmquRppUaGpqCdMfcYZkHkdV/lpHeFyLo
- hLq5tIp7y4NmMvN9sD78IZl6QJTRdIwbta2kxO5CO5e1e3wXCTitOh/eLRASdQsYSGgA
- LS6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWxGxPXMcBfaLMqmyiFM0B0IpAm0waY/GyJfs3B2pNLgHtJOkTkM/RdQCfx06aJl3CfyWBSVHeP4Qe3@nongnu.org
-X-Gm-Message-State: AOJu0YzUVlCzTXspM94/TLlDtJ2Gu5kY/Qg0uQxlvy+O5j0iooGyXnMF
- kCIdArlRZHwWpLjiivJ95Ejbc6OiLCJq5mX2Zoa4jplGr4gXv1YwUmSZHyIYkRlYQirj+QCkRT/
- aIxe6tu3q+jO/Gtc9+yyeWN1uK/hjOhbrp3XiA+zUpR8D9/C39YVw
-X-Received: by 2002:a05:6122:2205:b0:4f5:202b:6220 with SMTP id
- 71dfb90a1353d-4fed5a8c626mr1150233e0c.0.1724701325873; 
- Mon, 26 Aug 2024 12:42:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFnLa7RFFj6tXWaOBm/X1pO0jF4oDZKkf1twY225qFJiWFvpM9FA7G2I0ucOPLoX76tlgwICA==
-X-Received: by 2002:a05:6122:2205:b0:4f5:202b:6220 with SMTP id
- 71dfb90a1353d-4fed5a8c626mr1150203e0c.0.1724701325481; 
- Mon, 26 Aug 2024 12:42:05 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c162db09a7sm49673566d6.95.2024.08.26.12.42.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Aug 2024 12:42:04 -0700 (PDT)
-Date: Mon, 26 Aug 2024 15:42:02 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
-Subject: Re: [PATCH v4 6/7] memory: Do not create circular reference with
- subregion
-Message-ID: <Zszain3SH5cl9ohH@x1n>
-References: <20240823-san-v4-0-a24c6dfa4ceb@daynix.com>
- <20240823-san-v4-6-a24c6dfa4ceb@daynix.com> <Zsydli9ME1u79A9X@x1n>
- <CAFEAcA_uT3Db22V=Anqci_k6zOaAV7Qua2S1OVFxW_DQyh3bAA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sifmM-0006R9-5k
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 15:53:30 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sifmK-0002CC-4S
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 15:53:29 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 49AF01F8AE;
+ Mon, 26 Aug 2024 19:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724702006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3hKDlnoKkAzE8amwUEZakez0ilN6ZNiCkFmCHmCK1hQ=;
+ b=nZE/oc8pUDv/IsmR4kB9VXbydiKc7VsR0F14txab/UZBO9wHhPttKwM4Vyy7a9KuyPtyP+
+ 7OMhLh15+DVl7yIn9X3QozpUcvqdPPWmyeYHBb7+ei0soiO0W8rfc3oYs7p2wgcwszwCHE
+ H6QWd8HhaaJU0a0V0wA1IeYQn4HzRuc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724702006;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3hKDlnoKkAzE8amwUEZakez0ilN6ZNiCkFmCHmCK1hQ=;
+ b=+VRqAQ0Go4D0sd/ggxI6ArNXIIOJHI4b/z7ABYGVMdW5ejbSs6Lde8y8naNENk2IugzPNd
+ Ks75Ugfzm2FrvRAA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724702006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3hKDlnoKkAzE8amwUEZakez0ilN6ZNiCkFmCHmCK1hQ=;
+ b=nZE/oc8pUDv/IsmR4kB9VXbydiKc7VsR0F14txab/UZBO9wHhPttKwM4Vyy7a9KuyPtyP+
+ 7OMhLh15+DVl7yIn9X3QozpUcvqdPPWmyeYHBb7+ei0soiO0W8rfc3oYs7p2wgcwszwCHE
+ H6QWd8HhaaJU0a0V0wA1IeYQn4HzRuc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724702006;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3hKDlnoKkAzE8amwUEZakez0ilN6ZNiCkFmCHmCK1hQ=;
+ b=+VRqAQ0Go4D0sd/ggxI6ArNXIIOJHI4b/z7ABYGVMdW5ejbSs6Lde8y8naNENk2IugzPNd
+ Ks75Ugfzm2FrvRAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D5B761398D;
+ Mon, 26 Aug 2024 19:53:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id j/0vJjTdzGY5PQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 26 Aug 2024 19:53:24 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 00/18] migration/multifd: Remove multifd_send_state->pages
+Date: Mon, 26 Aug 2024 16:53:04 -0300
+Message-Id: <20240826195322.16532-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA_uT3Db22V=Anqci_k6zOaAV7Qua2S1OVFxW_DQyh3bAA@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
+ MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_THREE(0.00)[4];
+ FROM_HAS_DN(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url, suse.de:mid,
+ imap1.dmz-prg2.suse.org:helo]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,96 +114,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 26, 2024 at 06:10:25PM +0100, Peter Maydell wrote:
-> On Mon, 26 Aug 2024 at 16:22, Peter Xu <peterx@redhat.com> wrote:
-> >
-> > On Fri, Aug 23, 2024 at 03:13:11PM +0900, Akihiko Odaki wrote:
-> > > memory_region_update_container_subregions() used to call
-> > > memory_region_ref(), which creates a reference to the owner of the
-> > > subregion, on behalf of the owner of the container. This results in a
-> > > circular reference if the subregion and container have the same owner.
-> > >
-> > > memory_region_ref() creates a reference to the owner instead of the
-> > > memory region to match the lifetime of the owner and memory region. We
-> > > do not need such a hack if the subregion and container have the same
-> > > owner because the owner will be alive as long as the container is.
-> > > Therefore, create a reference to the subregion itself instead ot its
-> > > owner in such a case; the reference to the subregion is still necessary
-> > > to ensure that the subregion gets finalized after the container.
-> > >
-> > > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > > ---
-> > >  system/memory.c | 8 ++++++--
-> > >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/system/memory.c b/system/memory.c
-> > > index 5e6eb459d5de..e4d3e9d1f427 100644
-> > > --- a/system/memory.c
-> > > +++ b/system/memory.c
-> > > @@ -2612,7 +2612,9 @@ static void memory_region_update_container_subregions(MemoryRegion *subregion)
-> > >
-> > >      memory_region_transaction_begin();
-> > >
-> > > -    memory_region_ref(subregion);
-> > > +    object_ref(mr->owner == subregion->owner ?
-> > > +               OBJECT(subregion) : subregion->owner);
-> >
-> > The only place that mr->refcount is used so far is the owner with the
-> > object property attached to the mr, am I right (ignoring name-less MRs)?
-> >
-> > I worry this will further complicate refcounting, now we're actively using
-> > two refcounts for MRs..
-> >
-> > Continue discussion there:
-> >
-> > https://lore.kernel.org/r/067b17a4-cdfc-4f7e-b7e4-28c38e1c10f0@daynix.com
-> >
-> > What I don't see is how mr->subregions differs from mr->container, so we
-> > allow subregions to be attached but not the container when finalize()
-> > (which is, afaict, the other way round).
-> >
-> > It seems easier to me that we allow both container and subregions to exist
-> > as long as within the owner itself, rather than start heavier use of
-> > mr->refcount.
-> 
-> I don't think just "same owner" necessarily will be workable --
-> you can have a setup like:
->   * device A has a container C_A
->   * device A has a child-device B
->   * device B has a memory region R_B
->   * device A's realize method puts R_B into C_A
-> 
-> R_B's owner is B, and the container's owner is A,
-> but we still want to be able to get rid of A (in the process
-> getting rid of B because it gets unparented and unreffed,
-> and R_B and C_A also).
+Hi, thank you all for the reviews. One more version to address a
+couple of cleanups suggested by Philippe.
 
-For cross-device references, should we rely on an explicit call to
-memory_region_del_subregion(), so as to detach the link between C_A and
-R_B?
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1427843439
 
-My understanding so far: logically when MR finalize() it should guarantee
-both (1) mr->container==NULL, and (2) mr->subregions empty.  That's before
-commit 2e2b8eb70fdb7dfb and could be the ideal world (though at the very
-beginning we don't assert on ->container==NULL yet).  It requires all
-device emulations to do proper unrealize() to unlink all the MRs.
+Thanks
 
-However what I'm guessing is QEMU probably used to have lots of devices
-that are not following the rules and leaking these links.  Hence we have
-had 2e2b8eb70fdb7dfb, allowing that to happen as long as it's safe, and
-it's justified by comment in 2e2b8eb70fdb7dfb on why it's safe.
+================================================================
+v4:
+https://lore.kernel.org/r/20240823173911.6712-1-farosas@suse.de
 
-What I was thinking is this comment seems to apply too to mr->container, so
-that it should be safe too to unlink ->container the same way as its own
-subregions.
+Not much changed sinced v3, the most notable is that I kept the nocomp
+names and created multifd-nocomp.c. I think "plain" is even more
+misterious, so let's keep what we are already used to.
 
-IIUC that means for device-internal MR links we should be fine leaving
-whatever link between MRs owned by such device; the device->refcount
-guarantees none of them will be visible in any AS.  But then we need to
-always properly unlink the MRs when the link is across >1 device owners,
-otherwise it's prone to leak.
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1425141484
+
+v3:
+https://lore.kernel.org/r/20240801123516.4498-1-farosas@suse.de
+
+This v3 incorporates the suggestions done by Peter in v2. Aside from
+those, of note:
+
+- fixed the allocation of MultiFDSendData. The previous version didn't
+  account for compiler-inserted holes;
+
+- kept the packet split patch;
+
+- added some patches to remove p->page_count, p->page_size,
+  pages->allocated. These are all constants and don't need to be
+  per-channel;
+
+- moved the code into multifd-ram.c.
+
+  However, I left the p->packet allocation (depends on page_count) and
+  p->normal + p->zero behind because I need to see how the device
+  state patches will deal with the packet stuff before I can come up
+  with a way to move those out of the MultiFD*Params. It might not be
+  worth it adding another struct just for the ram code to store
+  p->normal, p->zero.
+
+With this I'm pretty much done with what I think needs to be changed
+as a prereq for the device state work. I don't have anything else in
+mind to add to this series.
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1395572680
+
+v2:
+https://lore.kernel.org/r/20240722175914.24022-1-farosas@suse.de
+
+v1:
+https://lore.kernel.org/r/20240620212111.29319-1-farosas@suse.de
+
+First of all, apologies for the roughness of the series. I'm off for
+the next couple of weeks and wanted to put something together early
+for your consideration.
+
+This series is a refactoring (based on an earlier, off-list
+attempt[0]), aimed to remove the usage of the MultiFDPages_t type in
+the multifd core. If we're going to add support for more data types to
+multifd, we first need to clean that up.
+
+This time around this work was prompted by Maciej's series[1]. I see
+you're having to add a bunch of is_device_state checks to work around
+the rigidity of the code.
+
+Aside from the VFIO work, there is also the intent (coming back from
+Juan's ideas) to make multifd the default code path for migration,
+which will have to include the vmstate migration and anything else we
+put on the stream via QEMUFile.
+
+I have long since been bothered by having 'pages' sprinkled all over
+the code, so I might be coming at this with a bit of a narrow focus,
+but I believe in order to support more types of payloads in multifd,
+we need to first allow the scheduling at multifd_send_pages() to be
+independent of MultiFDPages_t. So here it is. Let me know what you
+think.
+
+(as I said, I'll be off for a couple of weeks, so feel free to
+incorporate any of this code if it's useful. Or to ignore it
+completely).
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1340992028
+
+0- https://github.com/farosas/qemu/commits/multifd-packet-cleanups/
+1- https://lore.kernel.org/r/cover.1718717584.git.maciej.szmigiero@oracle.com
+
+Fabiano Rosas (18):
+  migration/multifd: Reduce access to p->pages
+  migration/multifd: Inline page_size and page_count
+  migration/multifd: Remove pages->allocated
+  migration/multifd: Pass in MultiFDPages_t to file_write_ramblock_iov
+  migration/multifd: Introduce MultiFDSendData
+  migration/multifd: Make MultiFDPages_t:offset a flexible array member
+  migration/multifd: Replace p->pages with an union pointer
+  migration/multifd: Move pages accounting into
+    multifd_send_zero_page_detect()
+  migration/multifd: Remove total pages tracing
+  migration/multifd: Isolate ram pages packet data
+  migration/multifd: Don't send ram data during SYNC
+  migration/multifd: Replace multifd_send_state->pages with client data
+  migration/multifd: Allow multifd sync without flush
+  migration/multifd: Standardize on multifd ops names
+  migration/multifd: Register nocomp ops dynamically
+  migration/multifd: Move nocomp code into multifd-nocomp.c
+  migration/multifd: Make MultiFDMethods const
+  migration/multifd: Stop changing the packet on recv side
+
+ migration/file.c              |   3 +-
+ migration/file.h              |   2 +-
+ migration/meson.build         |   1 +
+ migration/multifd-nocomp.c    | 388 ++++++++++++++++++++++++
+ migration/multifd-qpl.c       |  79 +----
+ migration/multifd-uadk.c      | 102 ++-----
+ migration/multifd-zero-page.c |  13 +-
+ migration/multifd-zlib.c      |  99 ++----
+ migration/multifd-zstd.c      |  98 ++----
+ migration/multifd.c           | 555 ++++++----------------------------
+ migration/multifd.h           |  76 +++--
+ migration/ram.c               |  10 +-
+ migration/trace-events        |   9 +-
+ 13 files changed, 638 insertions(+), 797 deletions(-)
+ create mode 100644 migration/multifd-nocomp.c
 
 -- 
-Peter Xu
+2.35.3
 
 
