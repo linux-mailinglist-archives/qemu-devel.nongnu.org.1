@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1371395E5EA
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 02:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FFB95E5EC
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 02:07:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1siNEW-0002WH-Kz; Sun, 25 Aug 2024 20:05:20 -0400
+	id 1siNFr-0008QH-5A; Sun, 25 Aug 2024 20:06:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1siNES-0002G7-OR; Sun, 25 Aug 2024 20:05:17 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ id 1siNFo-0008J4-UI; Sun, 25 Aug 2024 20:06:40 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1siNER-0000tf-1X; Sun, 25 Aug 2024 20:05:16 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2f3eabcd293so44145911fa.2; 
- Sun, 25 Aug 2024 17:05:14 -0700 (PDT)
+ id 1siNFn-00011v-82; Sun, 25 Aug 2024 20:06:40 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2f3f25a1713so42864411fa.2; 
+ Sun, 25 Aug 2024 17:06:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724630713; x=1725235513; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1724630797; x=1725235597; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QHlJRaBtIDTmH2AG8OZYvll6qWQ9sD6hvDte2Q2QKzU=;
- b=FU95UOzeOOmxanxfuQ9HHQYtxvHPYqk8ncauUEEYm7G+8yClT/iPh8C5mzldpjjIDc
- TEzCVdBpYC4qunBeShBLepqMebhi+lSjcKSlW/xsJ1Ddxrkf4E8mA9TydecRdlQmpeMu
- caiosDhLlYQTmE3CJWOmjIv0LPe5lj4MyXrKrZFCPIJIfTyKgY9tIA/yzY131HAY+tzs
- rNoMdryn/y25qtJj3O3mb8sra863lBFggFsT/pxRFncNOkC6L3auXfBMOZI79jfDqmvN
- Xqn6kgZAqklaCXDOCCoR6LnjXFGLQqdiXpjuWD4Hl5mxZjdffXAZoOAs7s5TjViTklQC
- c27w==
+ bh=c8KpSH2/8UXSgFzTZXJ5Acjckq9KLqp6+mKVmD/Y0+c=;
+ b=Bxim3B3INC6ibFiZ3G4rB1RLyCm4GgJMf6rtW97g53gZU+7yM1b7DNfr0mBWn/THqn
+ nFtRf3iy1qiOCcs6Cpvckh6iz3h3ty/H4D+vbbHQBLx70RTFVldNhuuOOnwJ0CB/dVB1
+ fjOBh6PQ7YKi6wtlG8SkPIWZRltNdqNUG6Q2C4veCeB1uI8AcZzC7bnzoB4nTmQ1Pnk2
+ ut9IJY6yiIS4Y5fCKK+ZD5C58kkrCvCN/wU4nLwMfPUgFqPvAHuYfMRrosRBuQ4VMf6C
+ K7yW26YaI/q08Ku3Wuh5I3u9PEm407odMe7hCjbktEFnsbSHebFUnBdj2/a+dwzSR4rp
+ 6KQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724630713; x=1725235513;
+ d=1e100.net; s=20230601; t=1724630797; x=1725235597;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QHlJRaBtIDTmH2AG8OZYvll6qWQ9sD6hvDte2Q2QKzU=;
- b=QprXwGAOrCuseTZbjZ3r4y1b+bJr4syxFptBYFWxkrwOttGRQy94BqRQEAzGSVOT1f
- ZmCoV/wkB2uYmF0EaSvsmZmlWHEu7kiB/dR3ql7smng+RDAHJx2URj4BvMiFbkKTy/ha
- kjvxAGE6y31YyMDU9ViOop6EgF8nWg7oVzVQaerwX66QT3MGgOGw6nCCZ1AnUFLQKd6e
- uYInQV0wejwAP92kyYtUp5k0jUs7lBpDoYU8ZKZlE9xD+6+lhjx4S2RAOASU7ePL5I7s
- xVZ2kXQMIq9654VtZy/kc+DxHw4nkSp1NwNu5GqaAyJwJTOqnDsnmvUG/Qz78oh43tuX
- l7Pg==
+ bh=c8KpSH2/8UXSgFzTZXJ5Acjckq9KLqp6+mKVmD/Y0+c=;
+ b=ON5KQj0+5nTM05SVpL4y7kcjVd7Nxu0u72bvdN2qupdzLZSthJ+Fxxv/JG657Qai7F
+ zAbG4cOOxBdtqjlIoi8eDfDRHFOjAHNlKOqVsF0gHQQ/MP/lzfIpxWol1OZ6I5mZbDfb
+ GGMH8gI6oIr6tSRYaBn/tDFc0/jh2cB21P2Vv/zHzYzm2YbztCPfNqdIg+GfbvT8TDLr
+ UFuqpnqwPuXLzYP1mC7LcyXn6kPUmVQjQGSDABs8xDWE6hOE85j5beGMVZeClYFWJjYc
+ PlrtvUIav1gmety8GnisiA09NzD50pYY7xbwRTMRVmvm2LXaM+AdUFpKsy6eXAcUPZAb
+ XCgw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXfhSNnoNOmOnQROMLjQQTDuDvMn7+6CVU8BCy9PSA9KB3IM86NiihJgTLi8UOUd48VD/oKsmnciXlJ@nongnu.org
-X-Gm-Message-State: AOJu0YwCAxpssFlP2iEXwRkMnn3XDmAwWZz2jffee20cZVRdtkjxJGhW
- vnB2zEE96yma+QPlKwQvRf0lg6zmcOgPaeSnGdsq+KmVGi/SsS4gyzsKIkpivmSvmxngmnpx2Jq
- YPbBTAKlDzcg7rHRJLpoYhA3Syus=
-X-Google-Smtp-Source: AGHT+IH1ge9QtSbC2RFO6yi9rW2tkxjnQXcDU1t7Upa4qLD9DHiRE8REqzk8iqGW+hpo2PjdoirGWsW+zSQ9pwQt5sE=
-X-Received: by 2002:a2e:9ec6:0:b0:2f3:ac52:416b with SMTP id
- 38308e7fff4ca-2f4f579934emr46444291fa.35.1724630712128; Sun, 25 Aug 2024
- 17:05:12 -0700 (PDT)
+ AJvYcCUiH/BjgVrL4/tClkpj4dzLA2VUHyQSE6MXAi8FMUVQxoSmc6PebkbbazwbUDLzoCI1jLmdHGBwjpjv@nongnu.org
+X-Gm-Message-State: AOJu0YzGoP+nfCL+gxKQ5E6xYD3AHPNzhM4DK+DFAV43Tendo4bfRzja
+ nzBk1uhw7yUT+l2nE5OjYMtoD0Rbe79qtnUN77NvVAqR8EdFkR1f1QIMeMXc0F0JX9rBN2fmDrM
+ BlvlMOXqd3dqhLKig/MfusUCFiGQ=
+X-Google-Smtp-Source: AGHT+IGDv7iuZxQJVzQqsCfjv3ZhI1Q4ZkECL4AOOzYS7UU6JUGkWOasMbHxYads5YbIZOQdgsNuWEQsnPUqLLi7Ocs=
+X-Received: by 2002:a2e:be8a:0:b0:2ef:251f:785 with SMTP id
+ 38308e7fff4ca-2f4f48d62a9mr59780031fa.1.1724630796177; Sun, 25 Aug 2024
+ 17:06:36 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240822162127.705879-1-peter.maydell@linaro.org>
- <20240822162127.705879-3-peter.maydell@linaro.org>
-In-Reply-To: <20240822162127.705879-3-peter.maydell@linaro.org>
+ <20240822162127.705879-4-peter.maydell@linaro.org>
+In-Reply-To: <20240822162127.705879-4-peter.maydell@linaro.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 26 Aug 2024 10:04:44 +1000
-Message-ID: <CAKmqyKPsErvX61F8fF2d8PcdHcQcH5KsEtBRpr-7Va=4W62Zcw@mail.gmail.com>
-Subject: Re: [PATCH for-9.2 2/6] hw/misc/xlnx-versal-trng: Free s->prng in
- finalize, not unrealize
+Date: Mon, 26 Aug 2024 10:06:08 +1000
+Message-ID: <CAKmqyKPj6fBcUG0wpzBVx4U+mYJufFm=W0t_Cy3pKQ5kj69W4w@mail.gmail.com>
+Subject: Re: [PATCH for-9.2 3/6] hw/nvram/xlnx-bbram: Call
+ register_finalize_block
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Alistair Francis <alistair@alistair23.me>,
@@ -68,8 +68,8 @@ Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
  Francisco Iglesias <francisco.iglesias@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=alistair23@gmail.com; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=alistair23@gmail.com; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,33 +96,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, Aug 23, 2024 at 2:22=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
 .org> wrote:
 >
-> The TYPE_XLNX_VERSAL_TRNG device creates s->prng with g_rand_new()
-> in its init method, but it frees it in its unrealize method. This
-> results in a leak in the QOM introspection "initialize-inspect-finalize"
-> lifecycle:
+> The TYPE_XLNX_BBRAM device creates a register block with
+> register_init_block32() in its instance_init method; we must
+> therefore destroy it in our instance_finalize method to avoid a leak
+> in the QOM introspection "init-inspect-finalize" lifecycle:
 >
-> Direct leak of 2500 byte(s) in 1 object(s) allocated from:
->     #0 0x55ec89eae9d8 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-=
-from-laptop/qemu/build/asan/qemu-system-aarch64+0x294d9d8) (BuildId: 6d5
-> 08874816cc47d17c8dd775e8f809ae520e8cb)
->     #1 0x7f697018fc50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:=
+> Direct leak of 304 byte(s) in 1 object(s) allocated from:
+>     #0 0x5641518ca9d8 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-=
+from-laptop/qemu/build/asan/qemu-system-aarch64+0x294d9d8) (BuildId: 4a6
+> 18cb63d57d5a19ed45cfc262b08da47eaafe5)
+>     #1 0x7ff1aab31c50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:=
 161:13
->     #2 0x7f6970197738 in g_rand_new_with_seed_array debian/build/deb/../.=
-./../glib/grand.c:202:17
->     #3 0x7f6970197816 in g_rand_new debian/build/deb/../../../glib/grand.=
-c:286:10
->     #4 0x55ec8aa3656a in trng_init hw/misc/xlnx-versal-trng.c:624:15
->     #5 0x55ec8ce75da1 in object_init_with_type qom/object.c:420:9
->     #6 0x55ec8ce5d07b in object_initialize_with_type qom/object.c:562:5
->     #7 0x55ec8ce5e91d in object_new_with_type qom/object.c:782:5
->     #8 0x55ec8ce5e9f1 in object_new qom/object.c:797:12
->     #9 0x55ec8d65c81d in qmp_device_list_properties qom/qom-qmp-cmds.c:14=
+>     #2 0x564151cffc5d in register_init_block hw/core/register.c:248:34
+>     #3 0x564151d006be in register_init_block32 hw/core/register.c:299:12
+>     #4 0x56415293df75 in bbram_ctrl_init hw/nvram/xlnx-bbram.c:462:9
+>     #5 0x564154891dc1 in object_init_with_type qom/object.c:420:9
+>     #6 0x56415487909b in object_initialize_with_type qom/object.c:562:5
+>     #7 0x56415487a93d in object_new_with_type qom/object.c:782:5
+>     #8 0x56415487aa11 in object_new qom/object.c:797:12
+>     #9 0x56415507883d in qmp_device_list_properties qom/qom-qmp-cmds.c:14=
 4:11
->
-> Move the free to finalize so it matches where we are initing
-> s->prng. Since that's the only thing our unrealize method was
-> doing, this essentially switches the whole function to be
-> a finalize implementation.
 >
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
@@ -131,42 +124,66 @@ Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Alistair
 
 > ---
->  hw/misc/xlnx-versal-trng.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  include/hw/nvram/xlnx-bbram.h |  1 +
+>  hw/nvram/xlnx-bbram.c         | 13 ++++++++++---
+>  2 files changed, 11 insertions(+), 3 deletions(-)
 >
-> diff --git a/hw/misc/xlnx-versal-trng.c b/hw/misc/xlnx-versal-trng.c
-> index 51eb7600414..c0d1dde8708 100644
-> --- a/hw/misc/xlnx-versal-trng.c
-> +++ b/hw/misc/xlnx-versal-trng.c
-> @@ -624,9 +624,9 @@ static void trng_init(Object *obj)
->      s->prng =3D g_rand_new();
+> diff --git a/include/hw/nvram/xlnx-bbram.h b/include/hw/nvram/xlnx-bbram.=
+h
+> index 6fc13f8cc17..bce8e89d905 100644
+> --- a/include/hw/nvram/xlnx-bbram.h
+> +++ b/include/hw/nvram/xlnx-bbram.h
+> @@ -47,6 +47,7 @@ struct XlnxBBRam {
+>      bool bbram8_wo;
+>      bool blk_ro;
+>
+> +    RegisterInfoArray *reg_array;
+>      uint32_t regs[RMAX_XLNX_BBRAM];
+>      RegisterInfo regs_info[RMAX_XLNX_BBRAM];
+>  };
+> diff --git a/hw/nvram/xlnx-bbram.c b/hw/nvram/xlnx-bbram.c
+> index 09575a77d77..1bc58e90ad0 100644
+> --- a/hw/nvram/xlnx-bbram.c
+> +++ b/hw/nvram/xlnx-bbram.c
+> @@ -456,9 +456,8 @@ static void bbram_ctrl_init(Object *obj)
+>  {
+>      XlnxBBRam *s =3D XLNX_BBRAM(obj);
+>      SysBusDevice *sbd =3D SYS_BUS_DEVICE(obj);
+> -    RegisterInfoArray *reg_array;
+>
+> -    reg_array =3D
+> +    s->reg_array =3D
+>          register_init_block32(DEVICE(obj), bbram_ctrl_regs_info,
+>                                ARRAY_SIZE(bbram_ctrl_regs_info),
+>                                s->regs_info, s->regs,
+> @@ -466,10 +465,17 @@ static void bbram_ctrl_init(Object *obj)
+>                                XLNX_BBRAM_ERR_DEBUG,
+>                                R_MAX * 4);
+>
+> -    sysbus_init_mmio(sbd, &reg_array->mem);
+> +    sysbus_init_mmio(sbd, &s->reg_array->mem);
+>      sysbus_init_irq(sbd, &s->irq_bbram);
 >  }
 >
-> -static void trng_unrealize(DeviceState *dev)
-> +static void trng_finalize(Object *obj)
+> +static void bbram_ctrl_finalize(Object *obj)
+> +{
+> +    XlnxBBRam *s =3D XLNX_BBRAM(obj);
+> +
+> +    register_finalize_block(s->reg_array);
+> +}
+> +
+>  static void bbram_prop_set_drive(Object *obj, Visitor *v, const char *na=
+me,
+>                                   void *opaque, Error **errp)
 >  {
-> -    XlnxVersalTRng *s =3D XLNX_VERSAL_TRNG(dev);
-> +    XlnxVersalTRng *s =3D XLNX_VERSAL_TRNG(obj);
->
->      g_rand_free(s->prng);
->      s->prng =3D NULL;
-> @@ -689,7 +689,6 @@ static void trng_class_init(ObjectClass *klass, void =
-*data)
->      ResettableClass *rc =3D RESETTABLE_CLASS(klass);
->
->      dc->vmsd =3D &vmstate_trng;
-> -    dc->unrealize =3D trng_unrealize;
->      rc->phases.hold =3D trng_reset_hold;
->
->      /* Clone uint64 property with set allowed after realized */
-> @@ -706,6 +705,7 @@ static const TypeInfo trng_info =3D {
->      .instance_size =3D sizeof(XlnxVersalTRng),
->      .class_init    =3D trng_class_init,
->      .instance_init =3D trng_init,
-> +    .instance_finalize =3D trng_finalize,
+> @@ -537,6 +543,7 @@ static const TypeInfo bbram_ctrl_info =3D {
+>      .instance_size =3D sizeof(XlnxBBRam),
+>      .class_init    =3D bbram_ctrl_class_init,
+>      .instance_init =3D bbram_ctrl_init,
+> +    .instance_finalize =3D bbram_ctrl_finalize,
 >  };
 >
->  static void trng_register_types(void)
+>  static void bbram_ctrl_register_types(void)
 > --
 > 2.34.1
 >
