@@ -2,124 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C7C95FA87
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 22:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5D995FB28
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 23:01:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sigBW-0002Wi-Op; Mon, 26 Aug 2024 16:19:30 -0400
+	id 1sigq6-00023A-0M; Mon, 26 Aug 2024 17:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sigBV-0002WC-Aa
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 16:19:29 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from
+ <3p-nMZggKCuoRMZVMeaZSaaSXQ.OaYcQYg-PQhQXZaZSZg.adS@flex--fanjason.bounces.google.com>)
+ id 1sigbi-0001XL-HU
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 16:46:34 -0400
+Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sigBS-0005bX-AS
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 16:19:29 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 51D0C1F8B5;
- Mon, 26 Aug 2024 20:19:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1724703564; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=t7feimIoJGv2rvhbgHuqob40zVArZNC1v7FYkNCbrfc=;
- b=sk6zyRcZi++v+keXHW8NAjlAthAgxUUfZgv6dsM/MOMzmkPqqm4MuqK7jrd5facDu7YixT
- glwRRvsizzfQr+xXqUonuLMiGZ4PABfMrIw8bvVcPa5UnJv4iLv3ptmIcCL/akdyDeL55G
- NtTBdz5lhr9HIohuNlm2L8CdDB6HQOY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1724703564;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=t7feimIoJGv2rvhbgHuqob40zVArZNC1v7FYkNCbrfc=;
- b=/mBZVIfWWymAeopIckz15mdNRnCYDcByhkDlnRe9OvC09hnqT5I7rPucuzuyi6k0xGdFsS
- ZptiAIB0fQbAH+BQ==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=sk6zyRcZ;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/mBZVIfW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1724703564; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=t7feimIoJGv2rvhbgHuqob40zVArZNC1v7FYkNCbrfc=;
- b=sk6zyRcZi++v+keXHW8NAjlAthAgxUUfZgv6dsM/MOMzmkPqqm4MuqK7jrd5facDu7YixT
- glwRRvsizzfQr+xXqUonuLMiGZ4PABfMrIw8bvVcPa5UnJv4iLv3ptmIcCL/akdyDeL55G
- NtTBdz5lhr9HIohuNlm2L8CdDB6HQOY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1724703564;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=t7feimIoJGv2rvhbgHuqob40zVArZNC1v7FYkNCbrfc=;
- b=/mBZVIfWWymAeopIckz15mdNRnCYDcByhkDlnRe9OvC09hnqT5I7rPucuzuyi6k0xGdFsS
- ZptiAIB0fQbAH+BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D23EF13724;
- Mon, 26 Aug 2024 20:19:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id CoruJUvjzGYwRQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 26 Aug 2024 20:19:23 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero"
- <mail@maciej.szmigiero.name>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH v5 18/18] migration/multifd: Stop changing the packet on
- recv side
-In-Reply-To: <ZszhkJ6Ydqr6JY98@x1n>
-References: <20240826195322.16532-1-farosas@suse.de>
- <20240826195322.16532-19-farosas@suse.de> <ZszhkJ6Ydqr6JY98@x1n>
-Date: Mon, 26 Aug 2024 17:19:21 -0300
-Message-ID: <8734mrxcja.fsf@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 51D0C1F8B5
-X-Spam-Score: -4.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- ARC_NA(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
- DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- RCPT_COUNT_THREE(0.00)[4]; MISSING_XM_UA(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email, suse.de:dkim, suse.de:mid,
- suse.de:email, imap1.dmz-prg2.suse.org:rdns, imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from
+ <3p-nMZggKCuoRMZVMeaZSaaSXQ.OaYcQYg-PQhQXZaZSZg.adS@flex--fanjason.bounces.google.com>)
+ id 1sigbh-0001q4-3E
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 16:46:34 -0400
+Received: by mail-yw1-x1149.google.com with SMTP id
+ 00721157ae682-6b052c5939cso51632367b3.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 13:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1724705191; x=1725309991; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=NzW5yYGsX4g1anKAwi4rxXT7kcbTpIvjzQhT7ZrBho4=;
+ b=EemGI1mtT2WwgwNLb+8Rivr7PyrP4/dmygDl+8HlsGTZ5D81nuIjfBxN0hA4nTwGYh
+ NJoFaAHH0PgtHcIVwYb8x53Xtx3URIcm0Y1MLa+z24enTJzx3BdlXQAvgVO1K3dY+pwt
+ Q5hEOTwJX37soyyXCd59VB98aE7UMit4+02ofxe56etRmcEZlndhnxCSDCaYo9nsO54g
+ XNW2ggAPwlyWEsKczA2fY0F0N+AQFoYMecSuOGQINFhkuLimnxkV8lo7LT7OUlv6zddu
+ Awz2vkWER0TeP3d8C57ramt6YpVHn4AhI6HtReBl6KAXhXhuRRcQj2dM8b/DjG4rTVZb
+ NdOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724705191; x=1725309991;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NzW5yYGsX4g1anKAwi4rxXT7kcbTpIvjzQhT7ZrBho4=;
+ b=hVf6TqD79bYtueIAV4r8jpxpR9nVbjKQo6UK6T+YD9tq1RYXDO5siurB78qFR7oG4n
+ cfYEtb1Im6brh8c+JRXN+e8wIb7+qif5QVJyHHNmO4uEat1qwkzg+A5EhvZiewIeKBP1
+ 8AsxPx/7RA+AD5+ATsNLOuHafKuZw1VbfepPaA3sOLRtQfBe8g5gqunpXDb+Jtri5B0c
+ QkPeamxgjJE9Dx830yIs1kRc2SKCjg52nHPMY+mKIwYhe13zWwN0ADHU4SQuNyDoluQe
+ gArLmwYaZsKc95AO8/uLQQj7WD2cjsG86qfmwbHv5i+Buu2mh4swh4MGXZDPXfYhOoMv
+ e2tA==
+X-Gm-Message-State: AOJu0YyT2MyuI7sF0ZMfZcI0hdno6Ie/tAH7rtB+FhbhJtORXennl9Mb
+ forxJbzkQqqoyg4rQUtJ4Ux1eUtorcDVufhJOA/lA0t1tPCeDJhjch3/tCXNUCZCOSyBZ74Z1jc
+ +jW+2Up7PtQ==
+X-Google-Smtp-Source: AGHT+IGh4NmiTv54sA7NpELVgkb8TdvABNKdaOE/UAVC+LvvBPxuRtwRl6VyzLNLk52gHZoB2GkL4lB6Tsm2Jw==
+X-Received: from fanjason3.c.googlers.com
+ ([fda3:e722:ac3:cc00:20:ed76:c0a8:2730])
+ (user=fanjason job=sendgmr) by 2002:a81:f802:0:b0:6be:523:af53 with SMTP id
+ 00721157ae682-6cfb48d2acemr334907b3.3.1724705191624; Mon, 26 Aug 2024
+ 13:46:31 -0700 (PDT)
+Date: Mon, 26 Aug 2024 20:46:27 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.46.0.295.g3b9ea8a38a-goog
+Message-ID: <20240826204628.3541850-1-fanjason@google.com>
+Subject: [PATCH 0/1] Subject: Support deposit8 in include/qemu/bitops.h
+From: Jason Fan <fanjason@google.com>
+To: philmd@redhat.com, richard.henderson@linaro.org
+Cc: qemu-devel@nongnu.org, Jason Fan <fanjason@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
+ envelope-from=3p-nMZggKCuoRMZVMeaZSaaSXQ.OaYcQYg-PQhQXZaZSZg.adS@flex--fanjason.bounces.google.com;
+ helo=mail-yw1-x1149.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 26 Aug 2024 17:01:24 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,153 +90,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
 
-> On Mon, Aug 26, 2024 at 04:53:22PM -0300, Fabiano Rosas wrote:
->> As observed by Philippe, the multifd_ram_unfill_packet() function
->> currently leaves the MultiFDPacket structure with mixed
->> endianness. This is harmless, but ultimately not very clean. Aside
->> from that, the packet is also written to on the recv side to ensure
->> the ramblock name is null-terminated.
->>=20
->> Stop touching the received packet and do the necessary work using
->> stack variables instead.
->>=20
->> While here tweak the error strings and fix the space before
->> semicolons. Also remove the "100 times bigger" comment because it's
->> just one possible explanation for a size mismatch and it doesn't even
->> match the code.
->>=20
->> CC: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>  migration/multifd-nocomp.c | 38 ++++++++++++++++----------------------
->>  migration/multifd.c        | 18 ++++++++----------
->>  2 files changed, 24 insertions(+), 32 deletions(-)
->>=20
->> diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
->> index f294d1b0b2..0cbf1b88e1 100644
->> --- a/migration/multifd-nocomp.c
->> +++ b/migration/multifd-nocomp.c
->> @@ -220,33 +220,29 @@ int multifd_ram_unfill_packet(MultiFDRecvParams *p=
-, Error **errp)
->>      MultiFDPacket_t *packet =3D p->packet;
->>      uint32_t page_count =3D multifd_ram_page_count();
->>      uint32_t page_size =3D multifd_ram_page_size();
->> +    uint32_t pages_per_packet =3D be32_to_cpu(packet->pages_alloc);
->> +    const char *ramblock_name;
->>      int i;
->>=20=20
->> -    packet->pages_alloc =3D be32_to_cpu(packet->pages_alloc);
->> -    /*
->> -     * If we received a packet that is 100 times bigger than expected
->> -     * just stop migration.  It is a magic number.
->> -     */
->> -    if (packet->pages_alloc > page_count) {
->> -        error_setg(errp, "multifd: received packet "
->> -                   "with size %u and expected a size of %u",
->> -                   packet->pages_alloc, page_count) ;
->> +    if (pages_per_packet > page_count) {
->> +        error_setg(errp, "multifd: received packet with %u pages, expec=
-ted %u",
->> +                   pages_per_packet, page_count);
->>          return -1;
->>      }
->>=20=20
->>      p->normal_num =3D be32_to_cpu(packet->normal_pages);
->> -    if (p->normal_num > packet->pages_alloc) {
->> -        error_setg(errp, "multifd: received packet "
->> -                   "with %u normal pages and expected maximum pages are=
- %u",
->> -                   p->normal_num, packet->pages_alloc) ;
->> +    if (p->normal_num > pages_per_packet) {
->> +        error_setg(errp, "multifd: received packet with %u non-zero pag=
-es, "
->> +                   "which exceeds maximum expected pages %u",
->> +                   p->normal_num, pages_per_packet);
->>          return -1;
->>      }
->>=20=20
->>      p->zero_num =3D be32_to_cpu(packet->zero_pages);
->> -    if (p->zero_num > packet->pages_alloc - p->normal_num) {
->> -        error_setg(errp, "multifd: received packet "
->> -                   "with %u zero pages and expected maximum zero pages =
-are %u",
->> -                   p->zero_num, packet->pages_alloc - p->normal_num) ;
->> +    if (p->zero_num > pages_per_packet - p->normal_num) {
->> +        error_setg(errp,
->> +                   "multifd: received packet with %u zero pages, expect=
-ed maximum %u",
->> +                   p->zero_num, pages_per_packet - p->normal_num);
->>          return -1;
->>      }
->>=20=20
->> @@ -254,12 +250,10 @@ int multifd_ram_unfill_packet(MultiFDRecvParams *p=
-, Error **errp)
->>          return 0;
->>      }
->>=20=20
->> -    /* make sure that ramblock is 0 terminated */
->> -    packet->ramblock[255] =3D 0;
->> -    p->block =3D qemu_ram_block_by_name(packet->ramblock);
->> +    ramblock_name =3D g_strndup(packet->ramblock, 255);
->
-> This one is leaked?
->
-> IMHO the "temp var for endianess" is better justified than this specific
-> one, where I think always null-terminating the packet->ramblock[] doesn't
-> sound too bad - it makes sure all future ref to packet->ramblock is safe.
+Jason Fan (1):
+  include/qemu/bitops.h: Add deposit8 for uint8_t bit operation
 
-Ok, I can drop this part.
+ include/qemu/bitops.h | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
->
->> +    p->block =3D qemu_ram_block_by_name(ramblock_name);
->>      if (!p->block) {
->> -        error_setg(errp, "multifd: unknown ram block %s",
->> -                   packet->ramblock);
->> +        error_setg(errp, "multifd: unknown ram block %s", ramblock_name=
-);
->>          return -1;
->>      }
->>=20=20
->> diff --git a/migration/multifd.c b/migration/multifd.c
->> index b89715fdc2..256ecdea56 100644
->> --- a/migration/multifd.c
->> +++ b/migration/multifd.c
->> @@ -231,21 +231,19 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
->>  static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **err=
-p)
->>  {
->>      MultiFDPacket_t *packet =3D p->packet;
->> +    uint32_t magic =3D be32_to_cpu(packet->magic);
->> +    uint32_t version =3D be32_to_cpu(packet->version);
->>      int ret =3D 0;
->>=20=20
->> -    packet->magic =3D be32_to_cpu(packet->magic);
->> -    if (packet->magic !=3D MULTIFD_MAGIC) {
->> -        error_setg(errp, "multifd: received packet "
->> -                   "magic %x and expected magic %x",
->> -                   packet->magic, MULTIFD_MAGIC);
->> +    if (magic !=3D MULTIFD_MAGIC) {
->> +        error_setg(errp, "multifd: received packet magic %x, expected %=
-x",
->> +                   magic, MULTIFD_MAGIC);
->>          return -1;
->>      }
->>=20=20
->> -    packet->version =3D be32_to_cpu(packet->version);
->> -    if (packet->version !=3D MULTIFD_VERSION) {
->> -        error_setg(errp, "multifd: received packet "
->> -                   "version %u and expected version %u",
->> -                   packet->version, MULTIFD_VERSION);
->> +    if (version !=3D MULTIFD_VERSION) {
->> +        error_setg(errp, "multifd: received packet version %u, expected=
- %u",
->> +                   version, MULTIFD_VERSION);
->>          return -1;
->>      }
->>=20=20
->> --=20
->> 2.35.3
->>=20
+-- 
+2.46.0.295.g3b9ea8a38a-goog
+
 
