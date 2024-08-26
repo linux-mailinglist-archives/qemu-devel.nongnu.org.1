@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99B295FC81
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 00:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB2F95FC7E
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 00:12:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sihvn-0000r2-I7; Mon, 26 Aug 2024 18:11:23 -0400
+	id 1sihvq-00017s-Rl; Mon, 26 Aug 2024 18:11:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sihvh-0000gf-Hy
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 18:11:18 -0400
-Received: from mail-qk1-x732.google.com ([2607:f8b0:4864:20::732])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sihvn-0000w5-CZ
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 18:11:23 -0400
+Received: from mail-qk1-x730.google.com ([2607:f8b0:4864:20::730])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sihvc-0000mg-0n
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 18:11:14 -0400
-Received: by mail-qk1-x732.google.com with SMTP id
- af79cd13be357-7a35eff1d06so325269185a.0
- for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 15:11:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sihvk-0000n9-VQ
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 18:11:23 -0400
+Received: by mail-qk1-x730.google.com with SMTP id
+ af79cd13be357-7a7d7ec7395so79874485a.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 15:11:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724710271; x=1725315071; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724710278; x=1725315078; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kTnjesUH2NNf1bjjgBGv8s5R89ah5gTEHGN2lVVE7a4=;
- b=pHNvbcY4Evsp+IVznnhyI2YFEUz6Vp4U6AEwwiKK8CqvjWMo3PSKgCWWSs0rb4Ugs5
- oVFQ89wO/RohvKWHmQbDNQiohxakj2P1BgQI4HWJk+1bdY5mMeFMY+6NXr/ZGSiB8ix5
- J4OnkFgMh52ckqMYY1nM/ZQSUWvdB2s1uOUpVVhk2ON68d1499YMmky2RM8rSiA+gmOq
- S1Mbuo8cpLND8tN+DZN2tyE2hly02baYe5IDfsS7F6jTUCyzdtTCrif59NoLaQlraa5I
- +37d+db0drOcHZwHnY1C5RYh2FiL4ayqC4JsMstzs2QJE2yQekcTmWZvUehKjj3kiRhv
- 4wfg==
+ bh=0M2cEI0ZxrImGj+myUthr78dS5dgAOhCAVweFn3WwQM=;
+ b=Z9yICaATLktuDI/oKZSVvp9fO4a7sE38J471AG6oX1HV6g1OPw0phE7/fcAUR+g9pn
+ qpK2zoE/zsvxuiGQ7MEnHgUsEb424zT6y1zDmMR41bSL3F+U76pVTGxYefdcsAWAxF5e
+ rTebM8eFnSn5YpDJVKVawOWYV2SJC3ajmC+tGEbJclDCZn6c2tB1b+0azIW9I18jv7rk
+ tnKOSOIJ/l2P9nElGkbhDP10z1dC6lX2Fxz7N4aEyIZSe6h/4yIpc8FEFGWI7F35UEWF
+ SqbQScz5al9Fm2VHTeru9UPHJo8rnN0qrEdXrEVcwqQwXUqG8AHAep1SeNSgvH60aTwd
+ FbSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724710271; x=1725315071;
+ d=1e100.net; s=20230601; t=1724710278; x=1725315078;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kTnjesUH2NNf1bjjgBGv8s5R89ah5gTEHGN2lVVE7a4=;
- b=kvU8CrkRt75lwHSD3dLHtPOZhXjtLtS1pXikFeUB9cSCqJl0rZM3FdADPnfG18OeVt
- 3dNj0oSE3uUvCjhNctA01nupVeylXFO5Os2RpNeJn7f7l9JMM8fRD+eDOP8Og7rWsdc4
- q07E821UtcN0uPIBBQ6ZpNZpEDbw0tjbc62QPcsH1MBCpjEaJ9Ol7SPEQGtl+Pqh/wb0
- 6NlSSdPwUA3ZBP4XZITM2Fm43oH6ILpZ8olw92DWqMBiZ7fS5JnmVgLibSt5c0ZNNldd
- D1z3Ynp1kPSgsFIS5SP9WFTGgVDHqsWU4oFJlf4sXuh+dtpZU64WNMDXIAoiPSpeQhjf
- FrCA==
-X-Gm-Message-State: AOJu0Yx5Dl/2tMdgXmmD3EPOQdY/NH68DSrqDtJnT/LQ4WgoTRdugcTe
- pmTv4VCiyiPlCvslb13tg/t9EXxEET9w/v2hzHRQfFRgcpNGGSobgv32J1dNznDVDmgRSkUFl6f
- S
-X-Google-Smtp-Source: AGHT+IGxyN0ScRvf8Afqwc/IGRknGR8/FbHVeE4F7/oUu2U17kpLLQExi0ONjRrLSpRsZO5+fo9o3w==
-X-Received: by 2002:a05:620a:40d5:b0:79f:87c:a540 with SMTP id
- af79cd13be357-7a6897a8b02mr1492498685a.58.1724710270701; 
- Mon, 26 Aug 2024 15:11:10 -0700 (PDT)
+ bh=0M2cEI0ZxrImGj+myUthr78dS5dgAOhCAVweFn3WwQM=;
+ b=sghHk/jmluIgJcWOlk2+0MfTaONYh3IWZDFu8SZZ22PCsV1RSpX9Y5XAf3WBCjm05Y
+ 2pYhmo9OxzD584dFhnBDonuoGfDq6GOnxmp6pnGJaLIcsgqK0fwPsUmJwVxJiOkc77XO
+ x8Ot4R8pda3BsugUcpjg80ZtsbWgWr7PE8pzTdTIOpOZXp2F0cVlcTAmIIC37zJw4oD9
+ SBVBQ0Dkgoi0fEXeB+9SZ/0qeAvZOI3DXJFD7hEt3DJ30pl63gbSwlcrrtjR5NNpoate
+ /q2b2OHxvPydIR5KO/ZF98JY7VyfevVnjHQXU66pQw5zYtSnxhrQa+REvPWyXzm+EE4V
+ r8iw==
+X-Gm-Message-State: AOJu0YwmjCEWjP0jWakDIarxxSUWTXGnqWzPf7LJO+xepmUADKJ2UUp/
+ zOR0NLlVhjs7zafN8Z4j0hib2klMQmkYMseatHAV9agOwOxu9esnmKmxBNnsc9e1dOWEEzukuNU
+ b
+X-Google-Smtp-Source: AGHT+IHRqn9+UUt7AFOsszyoeSDvWo3hGM/hbqzCRDOTEhCqq0WMDtXsWfc/lSmc90RlsC0Bsjy1VA==
+X-Received: by 2002:a05:620a:31a7:b0:79f:d55:24dd with SMTP id
+ af79cd13be357-7a6897b7ad1mr1387471685a.57.1724710278202; 
+ Mon, 26 Aug 2024 15:11:18 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.216.241])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7a67f3fbf22sm495614385a.103.2024.08.26.15.11.08
+ af79cd13be357-7a67f361318sm489319185a.57.2024.08.26.15.11.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Aug 2024 15:11:10 -0700 (PDT)
+ Mon, 26 Aug 2024 15:11:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -62,18 +62,17 @@ Cc: Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/4] tests/functional: Add a class containing Linux kernel
- helpers
-Date: Tue, 27 Aug 2024 00:10:55 +0200
-Message-ID: <20240826221058.75126-2-philmd@linaro.org>
+Subject: [PATCH 2/4] tests/functional: Convert ARM Raspi2 avocado tests
+Date: Tue, 27 Aug 2024 00:10:56 +0200
+Message-ID: <20240826221058.75126-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240826221058.75126-1-philmd@linaro.org>
 References: <20240826221058.75126-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::732;
- envelope-from=philmd@linaro.org; helo=mail-qk1-x732.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::730;
+ envelope-from=philmd@linaro.org; helo=mail-qk1-x730.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,41 +95,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the 'linux_kernel' namespace to provide common helpers
-to functional tests booting a Linux kernel.
+Straight forward conversion. Update the SHA1 hashes to SHA256
+hashes since SHA1 should not be used anymore nowadays.
 
-Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/functional/qemu_test/linux_kernel.py | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
- create mode 100644 tests/functional/qemu_test/linux_kernel.py
+ MAINTAINERS                         |   1 +
+ tests/avocado/boot_linux_console.py |  85 -----------------------
+ tests/functional/meson.build        |   1 +
+ tests/functional/test_arm_raspi2.py | 103 ++++++++++++++++++++++++++++
+ 4 files changed, 105 insertions(+), 85 deletions(-)
+ create mode 100755 tests/functional/test_arm_raspi2.py
 
-diff --git a/tests/functional/qemu_test/linux_kernel.py b/tests/functional/qemu_test/linux_kernel.py
-new file mode 100644
-index 0000000000..917beb7fb6
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e2e62afcdc..e2bbf1a994 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -910,6 +910,7 @@ F: hw/*/bcm283*
+ F: include/hw/arm/rasp*
+ F: include/hw/*/bcm283*
+ F: docs/system/arm/raspi.rst
++F: tests/functional/test_arm_raspi2.py
+ 
+ Real View
+ M: Peter Maydell <peter.maydell@linaro.org>
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index 370beb795a..226b92d057 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -203,91 +203,6 @@ def test_arm_emcraft_sf2(self):
+         exec_command_and_wait_for_pattern(self, 'ping -c 3 10.0.2.2',
+             '3 packets transmitted, 3 packets received, 0% packet loss')
+ 
+-    def do_test_arm_raspi2(self, uart_id):
+-        """
+-        :avocado: tags=accel:tcg
+-
+-        The kernel can be rebuilt using the kernel source referenced
+-        and following the instructions on the on:
+-        https://www.raspberrypi.org/documentation/linux/kernel/building.md
+-        """
+-        serial_kernel_cmdline = {
+-            0: 'earlycon=pl011,0x3f201000 console=ttyAMA0',
+-        }
+-        deb_url = ('http://archive.raspberrypi.org/debian/'
+-                   'pool/main/r/raspberrypi-firmware/'
+-                   'raspberrypi-kernel_1.20190215-1_armhf.deb')
+-        deb_hash = 'cd284220b32128c5084037553db3c482426f3972'
+-        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
+-        kernel_path = self.extract_from_deb(deb_path, '/boot/kernel7.img')
+-        dtb_path = self.extract_from_deb(deb_path, '/boot/bcm2709-rpi-2-b.dtb')
+-
+-        self.vm.set_console()
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               serial_kernel_cmdline[uart_id] +
+-                               ' root=/dev/mmcblk0p2 rootwait ' +
+-                               'dwc_otg.fiq_fsm_enable=0')
+-        self.vm.add_args('-kernel', kernel_path,
+-                         '-dtb', dtb_path,
+-                         '-append', kernel_command_line,
+-                         '-device', 'usb-kbd')
+-        self.vm.launch()
+-        console_pattern = 'Kernel command line: %s' % kernel_command_line
+-        self.wait_for_console_pattern(console_pattern)
+-        console_pattern = 'Product: QEMU USB Keyboard'
+-        self.wait_for_console_pattern(console_pattern)
+-
+-    def test_arm_raspi2_uart0(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:raspi2b
+-        :avocado: tags=device:pl011
+-        :avocado: tags=accel:tcg
+-        """
+-        self.do_test_arm_raspi2(0)
+-
+-    def test_arm_raspi2_initrd(self):
+-        """
+-        :avocado: tags=arch:arm
+-        :avocado: tags=machine:raspi2b
+-        """
+-        deb_url = ('http://archive.raspberrypi.org/debian/'
+-                   'pool/main/r/raspberrypi-firmware/'
+-                   'raspberrypi-kernel_1.20190215-1_armhf.deb')
+-        deb_hash = 'cd284220b32128c5084037553db3c482426f3972'
+-        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
+-        kernel_path = self.extract_from_deb(deb_path, '/boot/kernel7.img')
+-        dtb_path = self.extract_from_deb(deb_path, '/boot/bcm2709-rpi-2-b.dtb')
+-
+-        initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
+-                      '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
+-                      'arm/rootfs-armv7a.cpio.gz')
+-        initrd_hash = '604b2e45cdf35045846b8bbfbf2129b1891bdc9c'
+-        initrd_path_gz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
+-        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
+-        archive.gzip_uncompress(initrd_path_gz, initrd_path)
+-
+-        self.vm.set_console()
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               'earlycon=pl011,0x3f201000 console=ttyAMA0 '
+-                               'panic=-1 noreboot ' +
+-                               'dwc_otg.fiq_fsm_enable=0')
+-        self.vm.add_args('-kernel', kernel_path,
+-                         '-dtb', dtb_path,
+-                         '-initrd', initrd_path,
+-                         '-append', kernel_command_line,
+-                         '-no-reboot')
+-        self.vm.launch()
+-        self.wait_for_console_pattern('Boot successful.')
+-
+-        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
+-                                                'BCM2835')
+-        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
+-                                                '/soc/cprman@7e101000')
+-        exec_command_and_wait_for_pattern(self, 'halt', 'reboot: System halted')
+-        # Wait for VM to shut down gracefully
+-        self.vm.wait()
+-
+     def test_arm_raspi4(self):
+         """
+         :avocado: tags=arch:aarch64
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 175e88bb87..ec77835199 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -29,6 +29,7 @@ tests_generic = [
+ tests_arm_thorough = [
+   'arm_canona1100',
+   'arm_n8x0',
++  'arm_raspi2',
+ ]
+ 
+ tests_avr_thorough = [
+diff --git a/tests/functional/test_arm_raspi2.py b/tests/functional/test_arm_raspi2.py
+new file mode 100755
+index 0000000000..7a8f86edee
 --- /dev/null
-+++ b/tests/functional/qemu_test/linux_kernel.py
-@@ -0,0 +1,19 @@
-+# Linux kernel functional test helpers
++++ b/tests/functional/test_arm_raspi2.py
+@@ -0,0 +1,103 @@
++#!/usr/bin/env python3
 +#
-+# Copyright (c) 2024 Linaro Ltd.
++# Functional test that boots a Linux kernel on a Raspberry Pi machine
++# and checks the console
 +#
-+# Author:
-+#  Philippe Mathieu-Daudé <philmd@linaro.org>
++# Copyright (c) 2019 Philippe Mathieu-Daudé <f4bug@amsat.org>
 +#
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+from . import wait_for_console_pattern
++import os
 +
-+KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
++from qemu_test import QemuSystemTest, Asset
++from qemu_test import wait_for_console_pattern
++from qemu_test import exec_command_and_wait_for_pattern
++from qemu_test.linux_kernel import linux_kernel_wait_for_pattern
++from qemu_test.linux_kernel import KERNEL_COMMON_COMMAND_LINE
++from qemu_test.utils import extract_from_deb
++from qemu_test.utils import gzip_uncompress
 +
-+KERNEL_PANIC_MESSAGE = 'Kernel panic - not syncing'
 +
-+def linux_kernel_wait_for_pattern(test, success_message):
-+    wait_for_console_pattern(test,
-+                             success_message=success_message,
-+                             failure_message=KERNEL_PANIC_MESSAGE)
++class ArmRaspi2Machine(QemuSystemTest):
++
++    ASSET_KERNEL_20190215 = Asset(
++        ('http://archive.raspberrypi.org/debian/'
++         'pool/main/r/raspberrypi-firmware/'
++         'raspberrypi-kernel_1.20190215-1_armhf.deb'),
++        '9f1759f7228113da24f5ee2aa6312946ec09a83e076aba9406c46ff776dfb291')
++
++    ASSET_INITRD = Asset(
++        ('https://github.com/groeck/linux-build-test/raw/'
++         '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
++         'arm/rootfs-armv7a.cpio.gz'),
++        '2c8dbdb16ea7af2dfbcbea96044dde639fb07d09fd3c4fb31f2027ef71e55ddd')
++
++    def do_test_arm_raspi2(self, uart_id):
++        """
++        The kernel can be rebuilt using the kernel source referenced
++        and following the instructions on the on:
++        https://www.raspberrypi.org/documentation/linux/kernel/building.md
++        """
++        serial_kernel_cmdline = {
++            0: 'earlycon=pl011,0x3f201000 console=ttyAMA0',
++        }
++        deb_path = self.ASSET_KERNEL_20190215.fetch()
++        kernel_path = extract_from_deb(deb_path, self.workdir,
++                                       '/boot/kernel7.img')
++        dtb_path = extract_from_deb(deb_path, self.workdir,
++                                    '/boot/bcm2709-rpi-2-b.dtb')
++
++        self.set_machine('raspi2b')
++        self.vm.set_console()
++        kernel_command_line = (KERNEL_COMMON_COMMAND_LINE +
++                               serial_kernel_cmdline[uart_id] +
++                               ' root=/dev/mmcblk0p2 rootwait ' +
++                               'dwc_otg.fiq_fsm_enable=0')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-dtb', dtb_path,
++                         '-append', kernel_command_line,
++                         '-device', 'usb-kbd')
++        self.vm.launch()
++
++        console_pattern = 'Kernel command line: %s' % kernel_command_line
++        linux_kernel_wait_for_pattern(self, console_pattern)
++        linux_kernel_wait_for_pattern(self, 'Product: QEMU USB Keyboard')
++
++    def test_arm_raspi2_uart0(self):
++        self.do_test_arm_raspi2(0)
++
++    def test_arm_raspi2_initrd(self):
++        deb_path = self.ASSET_KERNEL_20190215.fetch()
++        kernel_path = extract_from_deb(deb_path, self.workdir,
++                                       '/boot/kernel7.img')
++        dtb_path = extract_from_deb(deb_path, self.workdir,
++                                    '/boot/bcm2709-rpi-2-b.dtb')
++        initrd_path_gz = self.ASSET_INITRD.fetch()
++        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
++        gzip_uncompress(initrd_path_gz, initrd_path)
++
++        self.set_machine('raspi2b')
++        self.vm.set_console()
++        kernel_command_line = (KERNEL_COMMON_COMMAND_LINE +
++                               'earlycon=pl011,0x3f201000 console=ttyAMA0 '
++                               'panic=-1 noreboot ' +
++                               'dwc_otg.fiq_fsm_enable=0')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-dtb', dtb_path,
++                         '-initrd', initrd_path,
++                         '-append', kernel_command_line,
++                         '-no-reboot')
++        self.vm.launch()
++        wait_for_console_pattern(self, 'Boot successful.')
++
++        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
++                                                'BCM2835')
++        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
++                                                '/soc/cprman@7e101000')
++        exec_command_and_wait_for_pattern(self, 'halt', 'reboot: System halted')
++        # Wait for VM to shut down gracefully
++        self.vm.wait()
++
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
 -- 
 2.45.2
 
