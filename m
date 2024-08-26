@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B371C95EFC2
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 13:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7B495EFF8
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Aug 2024 13:40:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1siXvc-00074d-C4; Mon, 26 Aug 2024 07:30:32 -0400
+	id 1siY4B-00082M-6d; Mon, 26 Aug 2024 07:39:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=7wMH=PZ=kaod.org=clg@ozlabs.org>)
- id 1siXva-00073d-1v; Mon, 26 Aug 2024 07:30:30 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ id 1siY48-00080W-9N; Mon, 26 Aug 2024 07:39:20 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=7wMH=PZ=kaod.org=clg@ozlabs.org>)
- id 1siXvX-0004ye-TT; Mon, 26 Aug 2024 07:30:29 -0400
+ id 1siY44-00064h-Pa; Mon, 26 Aug 2024 07:39:18 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4WspPm4QVdz4x11;
- Mon, 26 Aug 2024 21:30:20 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Wspby5p7Hz4x5G;
+ Mon, 26 Aug 2024 21:39:10 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4WspPj6vXJz4wj3;
- Mon, 26 Aug 2024 21:30:17 +1000 (AEST)
-Message-ID: <bb4a6c6c-42f7-4295-adb1-f05482bf893e@kaod.org>
-Date: Mon, 26 Aug 2024 13:30:12 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wspbw3JKtz4x3J;
+ Mon, 26 Aug 2024 21:39:08 +1000 (AEST)
+Message-ID: <e095f333-fef2-4c78-b176-9096a1b7f246@kaod.org>
+Date: Mon, 26 Aug 2024 13:39:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/13] pnv/xive2: Support for "OS LGS Push" TIMA operation
+Subject: Re: [PATCH 05/13] ppc/xive2: Dump more NVP state with 'info pic'
 To: Michael Kowal <kowal@linux.ibm.com>, qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
  milesg@linux.ibm.com
 References: <20240801203008.11224-1-kowal@linux.ibm.com>
- <20240801203008.11224-5-kowal@linux.ibm.com>
+ <20240801203008.11224-6-kowal@linux.ibm.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240801203008.11224-5-kowal@linux.ibm.com>
+In-Reply-To: <20240801203008.11224-6-kowal@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=7wMH=PZ=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -64,62 +64,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/1/24 22:29, Michael Kowal wrote:
-> From: Glenn Miles <milesg@linux.vnet.ibm.com>
+On 8/1/24 22:30, Michael Kowal wrote:
+> From: Frederic Barrat <fbarrat@linux.ibm.com>
 > 
-> Adds support for single byte writes to offset 0x15 of the TIMA address
-> space.  This offset holds the Logical Server Group Size (LGS) field.
-> The field is used to evenly distribute the interrupt load among the
-> members of a group, but is unused in the current implementation so we
-> just support the writing of the value for now.
+> The 'PGoFirst' field of a Notify Virtual Processor tells if the NVP
+> belongs to a VP group.
 > 
-> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> Also, print the Reporting Cache Line address, if defined.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 > Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
+> ---
+>   include/hw/ppc/xive2_regs.h |  1 +
+>   hw/intc/xive2.c             | 10 ++++++++--
+>   2 files changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
+> index 7acf7dccf3..d71a54f9ff 100644
+> --- a/include/hw/ppc/xive2_regs.h
+> +++ b/include/hw/ppc/xive2_regs.h
+> @@ -151,6 +151,7 @@ typedef struct Xive2Nvp {
+>   #define NVP2_W0_VALID              PPC_BIT32(0)
+>   #define NVP2_W0_HW                 PPC_BIT32(7)
+>   #define NVP2_W0_ESC_END            PPC_BIT32(25) /* 'N' bit 0:ESB  1:END */
+> +#define NVP2_W0_PGOFIRST           PPC_BITMASK32(26, 31)
+>           uint32_t       w1;
+>   #define NVP2_W1_CO                 PPC_BIT32(13)
+>   #define NVP2_W1_CO_PRIV            PPC_BITMASK32(14, 15)
+> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+> index dd3ae102fb..034baabf1e 100644
+> --- a/hw/intc/xive2.c
+> +++ b/hw/intc/xive2.c
+> @@ -161,14 +161,20 @@ void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf)
+>   {
+>       uint8_t  eq_blk = xive_get_field32(NVP2_W5_VP_END_BLOCK, nvp->w5);
+>       uint32_t eq_idx = xive_get_field32(NVP2_W5_VP_END_INDEX, nvp->w5);
+> +    uint64_t cache_line = xive2_nvp_reporting_addr(nvp);
+>   
+>       if (!xive2_nvp_is_valid(nvp)) {
+>           return;
+>       }
+>   
+> -    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x",
+> +    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x PGoFirst:%02x",
+>                              nvp_idx, eq_blk, eq_idx,
+> -                           xive_get_field32(NVP2_W2_IPB, nvp->w2));
+> +                           xive_get_field32(NVP2_W2_IPB, nvp->w2),
+> +                           xive_get_field32(NVP2_W0_PGOFIRST, nvp->w0));
+> +    if (cache_line) {
+> +        g_string_append_printf(buf, " CL:%016lx", cache_line);
 
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Please use PRIx64.
 
 Thanks,
 
 C.
 
 
-> ---
->   hw/intc/xive.c | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
-> 
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index 8e62c7e75f..8605dd618f 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -341,6 +341,19 @@ static void xive_tm_set_os_cppr(XivePresenter *xptr, XiveTCTX *tctx,
->       xive_tctx_set_cppr(tctx, TM_QW1_OS, value & 0xff);
->   }
->   
-> +static void xive_tctx_set_lgs(XiveTCTX *tctx, uint8_t ring, uint8_t lgs)
-> +{
-> +    uint8_t *regs = &tctx->regs[ring];
+> +    }
 > +
-> +    regs[TM_LGS] = lgs;
-> +}
-> +
-> +static void xive_tm_set_os_lgs(XivePresenter *xptr, XiveTCTX *tctx,
-> +                          hwaddr offset, uint64_t value, unsigned size)
-> +{
-> +    xive_tctx_set_lgs(tctx, TM_QW1_OS, value & 0xff);
-> +}
-> +
->   /*
->    * Adjust the IPB to allow a CPU to process event queues of other
->    * priorities during one physical interrupt cycle.
-> @@ -525,6 +538,8 @@ static const XiveTmOp xive2_tm_operations[] = {
->                                                        NULL },
->       { XIVE_TM_HV_PAGE, TM_QW1_OS + TM_WORD2,      4, xive2_tm_push_os_ctx,
->                                                        NULL },
-> +    { XIVE_TM_OS_PAGE, TM_QW1_OS + TM_LGS,        1, xive_tm_set_os_lgs,
-> +                                                     NULL },
->       { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR,  1, xive_tm_set_hv_cppr,
->                                                        NULL },
->       { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, xive_tm_vt_push,
+>       /*
+>        * When the NVP is HW controlled, more fields are updated
+>        */
 
 
