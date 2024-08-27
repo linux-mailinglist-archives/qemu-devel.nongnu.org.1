@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9599615BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE339615BC
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:47:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj0Gw-0000yh-QQ; Tue, 27 Aug 2024 13:46:26 -0400
+	id 1sj0Gx-00017d-FL; Tue, 27 Aug 2024 13:46:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sj0Gs-0000rD-2r
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:46:22 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sj0Gu-0000vn-2n
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:46:24 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sj0Gp-0000Ue-JZ
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:46:21 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sj0Gs-0000V1-56
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:46:23 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 3D3D01FB7F;
- Tue, 27 Aug 2024 17:46:18 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 258C31FB80;
+ Tue, 27 Aug 2024 17:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1724780778; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1724780780; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NlMmLQqIoc99biOand2+mbxP6OE6deuFa9cOXS8yzLU=;
- b=B73OblNHIIaoG2myKLNUhFVbrbvz1kz8QEX/zRM/5F+WWPcyoEFRy/AnV5Al3YRsbCf4Ls
- wOdGBZR9FbbsZvsi5D+rlKE0B10x2m3SaUOwWs2CVOsLB12+tmEom/MS/Ak7mykiAgnnsI
- K7gM3FjK0nmPx9YHn+TwQaeFXNFmSO0=
+ bh=zBNH5hoMByRQw4O6EKyHHEbwBKscWoD9zGn8eAJCu0A=;
+ b=itXpbZ68dwFPAZBiKBsj2QVMVI97J+uwQdbjtcazvWSYhvv7ADvlj42XaZ/Yq4B+WgFE1f
+ 7UQJVADNA76KD6vJjJ7eDP+koUHZ+dWFTHocAZ5VfSsCT/T51Jh9+EBCO5WAtZ9IQ87ad5
+ NCxL1c9ndmtGM8zeGVFYLIGESGDxtSM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1724780778;
+ s=susede2_ed25519; t=1724780780;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NlMmLQqIoc99biOand2+mbxP6OE6deuFa9cOXS8yzLU=;
- b=AVYhmtKF0+zwdD9/dqSlsyBLSD6guSJ4b0T6A1ToSH2QNp73qZRTN3aJ1RYUU9LOEyXFKr
- Q3RW5Bkf2AyQaMCw==
+ bh=zBNH5hoMByRQw4O6EKyHHEbwBKscWoD9zGn8eAJCu0A=;
+ b=mFHBzjtCiS3mbZ01sBis4MT6R9mrG0bRXEXSqzIgs5kzD/zsXPbmCjTt+t6eUQFIVtnOJ7
+ OeEgIcGROp9p0ZCA==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=B73OblNH;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=AVYhmtKF
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=itXpbZ68;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mFHBzjtC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1724780778; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1724780780; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NlMmLQqIoc99biOand2+mbxP6OE6deuFa9cOXS8yzLU=;
- b=B73OblNHIIaoG2myKLNUhFVbrbvz1kz8QEX/zRM/5F+WWPcyoEFRy/AnV5Al3YRsbCf4Ls
- wOdGBZR9FbbsZvsi5D+rlKE0B10x2m3SaUOwWs2CVOsLB12+tmEom/MS/Ak7mykiAgnnsI
- K7gM3FjK0nmPx9YHn+TwQaeFXNFmSO0=
+ bh=zBNH5hoMByRQw4O6EKyHHEbwBKscWoD9zGn8eAJCu0A=;
+ b=itXpbZ68dwFPAZBiKBsj2QVMVI97J+uwQdbjtcazvWSYhvv7ADvlj42XaZ/Yq4B+WgFE1f
+ 7UQJVADNA76KD6vJjJ7eDP+koUHZ+dWFTHocAZ5VfSsCT/T51Jh9+EBCO5WAtZ9IQ87ad5
+ NCxL1c9ndmtGM8zeGVFYLIGESGDxtSM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1724780778;
+ s=susede2_ed25519; t=1724780780;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NlMmLQqIoc99biOand2+mbxP6OE6deuFa9cOXS8yzLU=;
- b=AVYhmtKF0+zwdD9/dqSlsyBLSD6guSJ4b0T6A1ToSH2QNp73qZRTN3aJ1RYUU9LOEyXFKr
- Q3RW5Bkf2AyQaMCw==
+ bh=zBNH5hoMByRQw4O6EKyHHEbwBKscWoD9zGn8eAJCu0A=;
+ b=mFHBzjtCiS3mbZ01sBis4MT6R9mrG0bRXEXSqzIgs5kzD/zsXPbmCjTt+t6eUQFIVtnOJ7
+ OeEgIcGROp9p0ZCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D1BA913A20;
- Tue, 27 Aug 2024 17:46:16 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF2EE13A20;
+ Tue, 27 Aug 2024 17:46:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id +KytJegQzma+UAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 27 Aug 2024 17:46:16 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id iG09HeoQzma+UAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 27 Aug 2024 17:46:18 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 04/19] migration/multifd: Pass in MultiFDPages_t to
- file_write_ramblock_iov
-Date: Tue, 27 Aug 2024 14:45:51 -0300
-Message-Id: <20240827174606.10352-5-farosas@suse.de>
+Subject: [PATCH v6 05/19] migration/multifd: Introduce MultiFDSendData
+Date: Tue, 27 Aug 2024 14:45:52 -0300
+Message-Id: <20240827174606.10352-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240827174606.10352-1-farosas@suse.de>
 References: <20240827174606.10352-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3D3D01FB7F
+X-Rspamd-Queue-Id: 258C31FB80
 X-Spam-Score: -3.01
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
@@ -105,14 +104,16 @@ X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
  RCPT_COUNT_THREE(0.00)[4]; DKIM_TRACE(0.00)[suse.de:+]
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,61 +129,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to stop dereferencing 'pages' so it can be replaced by an
-opaque pointer in the next patches.
+Add a new data structure to replace p->pages in the multifd
+channel. This new structure will hide the multifd payload type behind
+an union, so we don't need to add a new field to the channel each time
+we want to handle a different data type.
+
+This also allow us to keep multifd_send_pages() as is, without needing
+to complicate the pointer switching.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/file.c    | 3 ++-
- migration/file.h    | 2 +-
- migration/multifd.c | 2 +-
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ migration/multifd.h | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/migration/file.c b/migration/file.c
-index 6451a21c86..7f11e26f5c 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -196,12 +196,13 @@ void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp)
- }
+diff --git a/migration/multifd.h b/migration/multifd.h
+index 660a9882c2..7bb4a2cbc4 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -17,6 +17,7 @@
+ #include "ram.h"
  
- int file_write_ramblock_iov(QIOChannel *ioc, const struct iovec *iov,
--                            int niov, RAMBlock *block, Error **errp)
-+                            int niov, MultiFDPages_t *pages, Error **errp)
- {
-     ssize_t ret = 0;
-     int i, slice_idx, slice_num;
-     uintptr_t base, next, offset;
-     size_t len;
-+    RAMBlock *block = pages->block;
+ typedef struct MultiFDRecvData MultiFDRecvData;
++typedef struct MultiFDSendData MultiFDSendData;
  
-     slice_idx = 0;
-     slice_num = 1;
-diff --git a/migration/file.h b/migration/file.h
-index 9f71e87f74..1a1115f7f1 100644
---- a/migration/file.h
-+++ b/migration/file.h
-@@ -21,6 +21,6 @@ int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp);
- void file_cleanup_outgoing_migration(void);
- bool file_send_channel_create(gpointer opaque, Error **errp);
- int file_write_ramblock_iov(QIOChannel *ioc, const struct iovec *iov,
--                            int niov, RAMBlock *block, Error **errp);
-+                            int niov, MultiFDPages_t *pages, Error **errp);
- int multifd_file_recv_data(MultiFDRecvParams *p, Error **errp);
- #endif
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 30e5c687d3..640e4450ff 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -956,7 +956,7 @@ static void *multifd_send_thread(void *opaque)
+ bool multifd_send_setup(void);
+ void multifd_send_shutdown(void);
+@@ -88,6 +89,31 @@ struct MultiFDRecvData {
+     off_t file_offset;
+ };
  
-             if (migrate_mapped_ram()) {
-                 ret = file_write_ramblock_iov(p->c, p->iov, p->iovs_num,
--                                              pages->block, &local_err);
-+                                              pages, &local_err);
-             } else {
-                 ret = qio_channel_writev_full_all(p->c, p->iov, p->iovs_num,
-                                                   NULL, 0, p->write_flags,
++typedef enum {
++    MULTIFD_PAYLOAD_NONE,
++    MULTIFD_PAYLOAD_RAM,
++} MultiFDPayloadType;
++
++typedef union MultiFDPayload {
++    MultiFDPages_t ram;
++} MultiFDPayload;
++
++struct MultiFDSendData {
++    MultiFDPayloadType type;
++    MultiFDPayload u;
++};
++
++static inline bool multifd_payload_empty(MultiFDSendData *data)
++{
++    return data->type == MULTIFD_PAYLOAD_NONE;
++}
++
++static inline void multifd_set_payload_type(MultiFDSendData *data,
++                                            MultiFDPayloadType type)
++{
++    data->type = type;
++}
++
+ typedef struct {
+     /* Fields are only written at creating/deletion time */
+     /* No lock required for them, they are read only */
 -- 
 2.35.3
 
