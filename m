@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3BE96063C
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 11:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE15A96063F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 11:50:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sispf-00022B-8n; Tue, 27 Aug 2024 05:49:47 -0400
+	id 1sispm-0002Ep-2v; Tue, 27 Aug 2024 05:49:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sispd-0001zQ-8W
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 05:49:45 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sispk-0002EK-MX
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 05:49:52 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sispb-0008Ad-6o
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 05:49:45 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-53345604960so5706727e87.3
- for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 02:49:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sispi-0008Ay-Ju
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 05:49:52 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2ef27bfd15bso53447481fa.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 02:49:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724752181; x=1725356981; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724752187; x=1725356987; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/SRm13bKO9QDQJ19FR2MtATnHDWXRSONTJTrN3dMHxs=;
- b=D6aR4jxTXQ4C3Nl3wIfh5wBKket3/xJtdmyJiE2kNzopG9EqGucCJvxTGI/55EHmZm
- XxgDFNN4661wZKAtksbR8wIHPlWuQqUofath8LbzpuAzlGwzAGp84HiCzHk+WU4iUaT4
- imHJB7ZFT4sS23AlaDRT8LqO44O+EykR7dOswuvHFVUbi9SkJI5UMtx/LFz+z79t7ISa
- H7ZUj3HoaB/QMLaRd3250JvCnjm0ylfvEtwEQtFCVqvnB6zZc7Q1u8jf9p1xx78E7KHl
- 8IjNpJgcUb8n76SPfzaplrjE41iztdzqhkrUiBXe7Fz+IMDZ5Btg0WlutgcwoVEwd5j4
- XBqQ==
+ bh=V5I9NlqjJ3uPggyv85VAD/1WgHDypHVBIY5yjNhqIwY=;
+ b=WxX0Ehaeb9RmkeloS+4SyztdxQUm2G80OOg/Wz0+z0y6sn8jkvSovETT6qlfyNna3n
+ 1DM3e9xdmiQTtcbDcATgsTv9Huox5OBfSaoYBU1H9jGhTdcmCfMqN2pP8mf2JXOounqg
+ OkjLTcaxJunexR/lxkCizrvAcN39TkXZnrXvEYLrjRaBa77uyWfHOc0C7Grph7uoFFTA
+ GJO3KTJ1ov+B4cprSSD8DGtFEndHdKrK9V+NsYD0OWEU9PU5iGQOZ5YFISIe9FK5bhTi
+ 701OD9+jC3Rcsfgg6e76oiNccJwFVk+hQ4o1HTI5wxJNiwOYiLFss0aOTOX6AkfLdNIz
+ g7fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724752181; x=1725356981;
+ d=1e100.net; s=20230601; t=1724752187; x=1725356987;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/SRm13bKO9QDQJ19FR2MtATnHDWXRSONTJTrN3dMHxs=;
- b=O2K/qp3sX8kPuuzlZVgQVTka6TBNqyOa7Mva70cgEdCqhfUMZ2FL62Ojv/fWgLBak0
- /23w7d6n8QywKct6HqeXZo0FdD3CVnZDZTbWJ3/TXcyVmD8Pp9+gMO0QnHisuxjkv3Qq
- 8K98zU6BSROmE4fdyfEifmUOTQAxhG9vHfOP82clbtojCCympw//4tMDsHKmmuOiJWtZ
- GJWVXApwf8s2YXIdDtMDhFel+pvqblT5p8GJLeBDyNJTcQXTRAIcS55jjGp7ebxiCtui
- QQEAmKWZjUgUZpsFMP34jqtT2+/eONT1j8UxgT8zw3dMAYNtc0+fPoeUOiU91ZxKOD6f
- KPtg==
-X-Gm-Message-State: AOJu0Yy/kqO7B7OEMxCCVF4WdEMkRasCW+OUkfDBCdbIu0ZOKCU/N37J
- QVskfrzbor+xnXXR4kcijKm3Q3LGDqdcdb1Ksz4Ozi+cT7Iaw+3jBbokjepsHb5YV8Ue77lGKJB
- R
-X-Google-Smtp-Source: AGHT+IEN1lB5JpS5AZaRs3y0y//AS28KhjXKf0+OciCZnUr8zZrO0i20WEPblgen6GQYRGMbncXFFA==
-X-Received: by 2002:a05:6512:23a9:b0:530:ad8b:de0a with SMTP id
- 2adb3069b0e04-534387557d1mr8274778e87.9.1724752180964; 
- Tue, 27 Aug 2024 02:49:40 -0700 (PDT)
+ bh=V5I9NlqjJ3uPggyv85VAD/1WgHDypHVBIY5yjNhqIwY=;
+ b=BprwqMCcug4E9pm8CphxB4bJza/xzMHOoeGhRbtmbPKTtboBvvnulCQdk6xZxE8TOX
+ BsiElnTZQtJc+0QY8Zd3b+KTkvToNqIG+/myLUDCcsNSwImQiSBmI3E+GbeMl0ZZ4QSA
+ 9DOwAV/INFtcl++8UKDMnQXTM+3hZJD+a5GYr27qps0sbVAjbaYzJS+HqlLiP4JpLLKT
+ l4TaWQAeZFGO9/fx5RyzXw9wS+vMGuz1MwrQ2CNeufEtoau/QkcRgc2jGKwgahJ8MGi7
+ FPI/D9N48SMgqRqG5MmQ1h3khyYL/4q5JP3JVBH9qC7WRxh8NZTnaOCmgo7w/K3mmW1r
+ 2U4w==
+X-Gm-Message-State: AOJu0Yxg80RpI+d5hnzX2fYJxGCxUbSUzbtD7v+mw4VywxX0sdi6kmth
+ TWSiNX5MExD4RG54UcRz5TN+Z7u7tSuyVkzpWOmQf7n5DlWwPBC25MKRH1HSTqnXBXmcTO3WL0x
+ C
+X-Google-Smtp-Source: AGHT+IGnPIEahluQIEA/0zZjwfWOoLX0lTIuVlI9BHOeJYGmeFteq3aBNOEYc1Gg+iWG6lZh6PBxNw==
+X-Received: by 2002:a2e:be88:0:b0:2ef:2c86:4d43 with SMTP id
+ 38308e7fff4ca-2f514a12d6dmr17256731fa.3.1724752187379; 
+ Tue, 27 Aug 2024 02:49:47 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.45])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a86e594d9eesm87951866b.189.2024.08.27.02.49.39
+ 4fb4d7f45d1cf-5c0bb481f44sm835994a12.91.2024.08.27.02.49.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Aug 2024 02:49:40 -0700 (PDT)
+ Tue, 27 Aug 2024 02:49:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Huacai Chen <chenhuacai@kernel.org>, Beraldo Leal <bleal@redhat.com>,
@@ -63,18 +63,17 @@ Cc: Huacai Chen <chenhuacai@kernel.org>, Beraldo Leal <bleal@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PATCH v4 5/7] tests/functional: Convert mips32el Malta YAMON avocado
- test
-Date: Tue, 27 Aug 2024 11:49:03 +0200
-Message-ID: <20240827094905.80648-6-philmd@linaro.org>
+Subject: [PATCH v4 6/7] tests/functional: Convert nanomips Malta avocado tests
+Date: Tue, 27 Aug 2024 11:49:04 +0200
+Message-ID: <20240827094905.80648-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240827094905.80648-1-philmd@linaro.org>
 References: <20240827094905.80648-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,176 +96,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Straight forward conversion using the Python standard zipfile
-module instead of avocado.utils package. Update the SHA1 hashes
-to SHA256 hashes since SHA1 should not be used anymore nowadays.
+Straight forward conversion. Update the SHA1 hashes to
+SHA256 hashes since SHA1 should not be used anymore nowadays.
+
+  $ QEMU_TEST_ALLOW_UNTRUSTED_CODE=1 \
+        make check-functional-mipsel
+  ...
+  ▶ 4/4 test_mipsel_malta.MaltaMachineConsole.test_mips_malta32el_nanomips_16k_up   OK
+  ▶ 4/4 test_mipsel_malta.MaltaMachineConsole.test_mips_malta32el_nanomips_4k       OK
+  ▶ 4/4 test_mipsel_malta.MaltaMachineConsole.test_mips_malta32el_nanomips_64k_dbg  OK
+  ▶ 4/4 test_mipsel_malta.MaltaMachineYAMON.test_mipsel_malta_yamon                 OK
+  4/4 qemu:func-thorough+func-mipsel-thorough+thorough / func-mipsel-mipsel_malta   OK   9.95s   4 subtests passed
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                             |  2 +-
- tests/avocado/machine_mips_malta.py     | 54 -------------------------
- tests/functional/meson.build            |  4 ++
- tests/functional/test_mips64el_malta.py |  3 ++
- tests/functional/test_mipsel_malta.py   | 47 +++++++++++++++++++++
- 5 files changed, 55 insertions(+), 55 deletions(-)
- delete mode 100644 tests/avocado/machine_mips_malta.py
- create mode 100755 tests/functional/test_mipsel_malta.py
+ tests/avocado/boot_linux_console.py   | 59 ---------------------------
+ tests/functional/test_mipsel_malta.py | 51 +++++++++++++++++++++++
+ 2 files changed, 51 insertions(+), 59 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3a91017979..4b480135f6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1368,7 +1368,7 @@ F: hw/mips/malta.c
- F: hw/pci-host/gt64120.c
- F: include/hw/southbridge/piix.h
- F: tests/avocado/linux_ssh_mips_malta.py
--F: tests/avocado/machine_mips_malta.py
-+F: tests/functional/test_mipsel_malta.py
- F: tests/functional/test_mips64el_malta.py
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index 10457743d1..0756e49ded 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -179,65 +179,6 @@ def test_mips_malta_cpio(self):
+         # Wait for VM to shut down gracefully
+         self.vm.wait()
  
- Mipssim
-diff --git a/tests/avocado/machine_mips_malta.py b/tests/avocado/machine_mips_malta.py
-deleted file mode 100644
-index 05c64e18c4..0000000000
---- a/tests/avocado/machine_mips_malta.py
-+++ /dev/null
-@@ -1,54 +0,0 @@
--# Functional tests for the MIPS Malta board
--#
--# Copyright (c) Philippe Mathieu-Daudé <f4bug@amsat.org>
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or later.
--# See the COPYING file in the top-level directory.
--#
--# SPDX-License-Identifier: GPL-2.0-or-later
--
--import os
--
--from avocado.utils import archive
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import interrupt_interactive_console_until_pattern
--from avocado_qemu import wait_for_console_pattern
--
--
--class MaltaMachine(QemuSystemTest):
--
--    def do_test_yamon(self):
--        rom_url = ('https://s3-eu-west-1.amazonaws.com/'
--                   'downloads-mips/mips-downloads/'
--                   'YAMON/yamon-bin-02.22.zip')
--        rom_hash = '8da7ecddbc5312704b8b324341ee238189bde480'
--        zip_path = self.fetch_asset(rom_url, asset_hash=rom_hash)
--
--        archive.extract(zip_path, self.workdir)
--        yamon_path = os.path.join(self.workdir, 'yamon-02.22.bin')
+-    def do_test_mips_malta32el_nanomips(self, kernel_path_xz):
+-        kernel_path = self.workdir + "kernel"
+-        with lzma.open(kernel_path_xz, 'rb') as f_in:
+-            with open(kernel_path, 'wb') as f_out:
+-                shutil.copyfileobj(f_in, f_out)
 -
 -        self.vm.set_console()
--        self.vm.add_args('-bios', yamon_path)
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE
+-                               + 'mem=256m@@0x0 '
+-                               + 'console=ttyS0')
+-        self.vm.add_args('-no-reboot',
+-                         '-kernel', kernel_path,
+-                         '-append', kernel_command_line)
 -        self.vm.launch()
+-        console_pattern = 'Kernel command line: %s' % kernel_command_line
+-        self.wait_for_console_pattern(console_pattern)
 -
--        prompt =  'YAMON>'
--        pattern = 'YAMON ROM Monitor'
--        interrupt_interactive_console_until_pattern(self, pattern, prompt)
--        wait_for_console_pattern(self, prompt)
--        self.vm.shutdown()
--
--    def test_mipsel_malta_yamon(self):
+-    def test_mips_malta32el_nanomips_4k(self):
 -        """
 -        :avocado: tags=arch:mipsel
 -        :avocado: tags=machine:malta
 -        :avocado: tags=endian:little
+-        :avocado: tags=cpu:I7200
 -        """
--        self.do_test_yamon()
+-        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+-                      'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+-                      'generic_nano32r6el_page4k.xz')
+-        kernel_hash = '477456aafd2a0f1ddc9482727f20fe9575565dd6'
+-        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
 -
--    def test_mips64el_malta_yamon(self):
+-    def test_mips_malta32el_nanomips_16k_up(self):
 -        """
--        :avocado: tags=arch:mips64el
+-        :avocado: tags=arch:mipsel
 -        :avocado: tags=machine:malta
 -        :avocado: tags=endian:little
+-        :avocado: tags=cpu:I7200
 -        """
--        self.do_test_yamon()
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index a82dbd43bb..f8e482a87c 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -51,6 +51,10 @@ tests_microblazeel_thorough = [
-   'microblazeel_s3adsp1800'
- ]
- 
-+tests_mipsel_thorough = [
-+  'mipsel_malta',
-+]
-+
- tests_mips64el_quick = [
-   'mips64el_fuloong2e',
- ]
-diff --git a/tests/functional/test_mips64el_malta.py b/tests/functional/test_mips64el_malta.py
-index 9f33146c89..2c781d0c8d 100755
---- a/tests/functional/test_mips64el_malta.py
-+++ b/tests/functional/test_mips64el_malta.py
-@@ -183,5 +183,8 @@ def test_mips_malta_i6400_framebuffer_logo_8cores(self):
-         self.do_test_i6400_framebuffer_logo(8)
- 
- 
-+from test_mipsel_malta import MaltaMachineYAMON
-+
-+
- if __name__ == '__main__':
-     QemuSystemTest.main()
+-        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+-                      'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+-                      'generic_nano32r6el_page16k_up.xz')
+-        kernel_hash = 'e882868f944c71c816e832e2303b7874d044a7bc'
+-        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
+-
+-    def test_mips_malta32el_nanomips_64k_dbg(self):
+-        """
+-        :avocado: tags=arch:mipsel
+-        :avocado: tags=machine:malta
+-        :avocado: tags=endian:little
+-        :avocado: tags=cpu:I7200
+-        """
+-        kernel_url = ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
+-                      'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
+-                      'generic_nano32r6el_page64k_dbg.xz')
+-        kernel_hash = '18d1c68f2e23429e266ca39ba5349ccd0aeb7180'
+-        kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
+-
+     def test_aarch64_xlnx_versal_virt(self):
+         """
+         :avocado: tags=arch:aarch64
 diff --git a/tests/functional/test_mipsel_malta.py b/tests/functional/test_mipsel_malta.py
-new file mode 100755
-index 0000000000..f31f96b012
---- /dev/null
+index f31f96b012..6f6e38a4a5 100755
+--- a/tests/functional/test_mipsel_malta.py
 +++ b/tests/functional/test_mipsel_malta.py
-@@ -0,0 +1,47 @@
-+#!/usr/bin/env python3
-+#
-+# Functional tests for the little-endian 32-bit MIPS Malta board
-+#
-+# Copyright (c) Philippe Mathieu-Daudé <f4bug@amsat.org>
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or later.
-+# See the COPYING file in the top-level directory.
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
+@@ -14,9 +14,60 @@
+ from qemu_test import QemuSystemTest, Asset
+ from qemu_test import interrupt_interactive_console_until_pattern
+ from qemu_test import wait_for_console_pattern
++from qemu_test.linux_kernel import linux_kernel_wait_for_pattern
++from qemu_test.linux_kernel import KERNEL_COMMON_COMMAND_LINE
++from qemu_test.utils import lzma_uncompress
+ from zipfile import ZipFile
+ 
+ 
++class MaltaMachineConsole(QemuSystemTest):
 +
-+import os
++    ASSET_KERNEL_4K = Asset(
++        ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
++         'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
++         'generic_nano32r6el_page4k.xz'),
++        '019e034094ac6cf3aa77df5e130fb023ce4dbc804b04bfcc560c6403e1ae6bdb')
++    ASSET_KERNEL_16K = Asset(
++        ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
++         'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
++         'generic_nano32r6el_page16k_up.xz'),
++        '3a54a10b3108c16a448dca9ea3db378733a27423befc2a45a5bdf990bd85e12c')
++    ASSET_KERNEL_64K = Asset(
++        ('http://mipsdistros.mips.com/LinuxDistro/nanomips/'
++         'kernels/v4.15.18-432-gb2eb9a8b07a1-20180627102142/'
++         'generic_nano32r6el_page64k_dbg.xz'),
++        'ce21ff4b07a981ecb8a39db2876616f5a2473eb2ab459c6f67465b9914b0c6b6')
 +
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import interrupt_interactive_console_until_pattern
-+from qemu_test import wait_for_console_pattern
-+from zipfile import ZipFile
-+
-+
-+class MaltaMachineYAMON(QemuSystemTest):
-+
-+    ASSET_YAMON_ROM = Asset(
-+        ('https://s3-eu-west-1.amazonaws.com/downloads-mips/mips-downloads/'
-+         'YAMON/yamon-bin-02.22.zip'),
-+        'eef86f0eed0ef554f041dcd47b87eebea0e6f9f1184ed31f7e9e8b4a803860ab')
-+
-+    def test_mipsel_malta_yamon(self):
-+        yamon_bin = 'yamon-02.22.bin'
-+        zip_path = self.ASSET_YAMON_ROM.fetch()
-+        with ZipFile(zip_path, 'r') as zf:
-+            zf.extract(yamon_bin, path=self.workdir)
-+        yamon_path = os.path.join(self.workdir, yamon_bin)
++    def do_test_mips_malta32el_nanomips(self, kernel_path_xz):
++        kernel_path = os.path.join(self.workdir, 'kernel')
++        lzma_uncompress(kernel_path_xz, kernel_path)
 +
 +        self.set_machine('malta')
 +        self.vm.set_console()
-+        self.vm.add_args('-bios', yamon_path)
++        kernel_command_line = (KERNEL_COMMON_COMMAND_LINE
++                               + 'mem=256m@@0x0 '
++                               + 'console=ttyS0')
++        self.vm.add_args('-cpu', 'I7200',
++                         '-no-reboot',
++                         '-kernel', kernel_path,
++                         '-append', kernel_command_line)
 +        self.vm.launch()
++        console_pattern = 'Kernel command line: %s' % kernel_command_line
++        linux_kernel_wait_for_pattern(self, console_pattern)
 +
-+        prompt =  'YAMON>'
-+        pattern = 'YAMON ROM Monitor'
-+        interrupt_interactive_console_until_pattern(self, pattern, prompt)
-+        wait_for_console_pattern(self, prompt)
-+        self.vm.shutdown()
++    def test_mips_malta32el_nanomips_4k(self):
++        kernel_path_xz = self.ASSET_KERNEL_4K.fetch()
++        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
++
++    def test_mips_malta32el_nanomips_16k_up(self):
++        kernel_path_xz = self.ASSET_KERNEL_16K.fetch()
++        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
++
++    def test_mips_malta32el_nanomips_64k_dbg(self):
++        kernel_path_xz = self.ASSET_KERNEL_16K.fetch()
++        self.do_test_mips_malta32el_nanomips(kernel_path_xz)
 +
 +
-+if __name__ == '__main__':
-+    QemuSystemTest.main()
+ class MaltaMachineYAMON(QemuSystemTest):
+ 
+     ASSET_YAMON_ROM = Asset(
 -- 
 2.45.2
 
