@@ -2,90 +2,158 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92EB961385
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 18:03:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 302679614E9
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:03:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1siydE-0003J3-1a; Tue, 27 Aug 2024 12:01:20 -0400
+	id 1sizaA-0006oD-Np; Tue, 27 Aug 2024 13:02:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1siyd7-00037Q-A1
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 12:01:13 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1siyd5-0006ME-4j
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 12:01:13 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-714114be925so4889490b3a.2
- for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 09:01:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724774469; x=1725379269; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=She6dLh7EB94KM+e5VTra8kYvo7BYX1BYNjLG+58MxY=;
- b=FaLG3iBas2gBoD2zT5EPTFrsT56Ebz5PDKBzK13+Pzmg0IWajvqn8+fM/VG56hY/+1
- TJssVQZxwk3in2v4DzofiEr3ppLIxv9xx9fNImMBUV+ym+S5s5tAUrxsq1cLNwv4bLEm
- q9ARrsAFLBUevgi7RpTnxQqHaODrSX9JvKXTyxO9KShYzWgE86mxFc1P29vfpoAXXxNd
- msHdf5wk7wtC8/xRF9c4cTrsI8Xq3lDYbECo8OFIoUzd2KED88PpA94FBtCpebFlbAiB
- XaGc1C8Ws5DkO7L7YPXxZsFullbmyIQ8JheP9mgAfsxz2l4RkgqxGrUrlsZ2LWbzOk90
- 5Q/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724774469; x=1725379269;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=She6dLh7EB94KM+e5VTra8kYvo7BYX1BYNjLG+58MxY=;
- b=EHBYochdJglvYjBrced987IbXLkrh6Kr/oCuriBTkl390xkNbNCwvGOpEL8GdGzKVY
- hmYy7i5wCbe+OfI5FZa9yIobCwn39J1LNtqnvZOBtRBS9WWFU9UbD1h7aSTVelqQOoEK
- PgS2U07dug59j7xczzri6wxJpifIg3fs0j8NbC22v/2StEO27xZuvB3prAwa55h/iH2Z
- UdAotMeHQnF/8dFZ6v2BGL2wTpjEGWxbuwPFVsq5E1u70kTTz4EYqlUEov9XALZF2GVX
- VhKlTb72LXBpAatyDdJHL16Wh6oIR6/ITXJefGEybQybpVlyz1iKSLMoiQEfpkb6LG92
- 0b+g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWe6ZseNJ58FiW4AoA31F0V8gsyRUnY1pStifTA9easn0Bv1/wH9mQa7D3gOsvBD3kibLj6TcRhC6q6@nongnu.org
-X-Gm-Message-State: AOJu0YyzT/4XDP/CbvL/xL8731SUrScKxYe78FpRBJLCs+XYZdDalxaU
- pFSTyTU5IeUTrtAhjLwTsTRDy0SsNt8IxvFjCYhb7Cyx46EpBut0YaFlWxqA/hI=
-X-Google-Smtp-Source: AGHT+IFuwyokgPZpgXpW9URk5MKIXiKR7PUrM/PXhT+20AfQdq4qWtPd/UGRiDZ/unixfWhpN12Nzw==
-X-Received: by 2002:a05:6a20:9f08:b0:1c4:c3a1:f479 with SMTP id
- adf61e73a8af0-1ccc098661fmr3617452637.39.1724774469352; 
- Tue, 27 Aug 2024 09:01:09 -0700 (PDT)
-Received: from ?IPV6:2604:3d08:9384:1d00:5b09:8db7:b002:cf61?
- ([2604:3d08:9384:1d00:5b09:8db7:b002:cf61])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7cd9ad6ba10sm8191971a12.78.2024.08.27.09.01.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Aug 2024 09:01:08 -0700 (PDT)
-Message-ID: <a972a1f1-b418-47a9-8ef1-8de1737d7822@linaro.org>
-Date: Tue, 27 Aug 2024 09:01:07 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] plugins: add option to dump write argument to
- syscall plugin
+ (Exim 4.90_1) (envelope-from <ajay.opensrc@micron.com>)
+ id 1siyis-0003Ha-70
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 12:07:10 -0400
+Received: from mail-bn8nam11on2058.outbound.protection.outlook.com
+ ([40.107.236.58] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ajay.opensrc@micron.com>)
+ id 1siyiq-00079P-BX
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 12:07:09 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QEXaHb2jPTB0KvL6Ty/NfwxRLgaYXutldKLlNJtBy2dHoLrOqP44Vx+U9vJKJLj1X1zDwaJ00KPpsK64JQ7BRMmRSGY8UVFguolsk3y2TP6q7V6rooipX3MKRmDctriYxRRYNujP61JSRDSDMV14iLlarnr8Cs2ErCRthi8B5FNSdBd5n01xSg+etyfNZku+CX6ydPzeKXxMItUssJP7hyj6v95Ix7CIoYZiMJ8742pBhm+QpF9fPqMofJBYq44iW/uZYfb3Uevf1plSRus6I6NoRUNSfRm/27x4C0UXHuSmYOsYkxFh98BANJ60dkmc8N7l4Hrp/7clGGr+yJrlpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kNLCUEs6lEcMRR0NNR/Xv3Abq59Iq09w/rxiqrm19nE=;
+ b=EXlaKLl5+SBORAcDM7WZEDoA6933uSIhtEtuIlAj+6Ls5oM7+D61/whSc87+Yr38iYquazEQ6QwQeKF4pWu9jfviiihCQ28jMxLhsRYRDkmubLzHoI/sIDavnn7/NwKSZ6zLvo6AcWWjKL/T6uP9cMYFJNpnRXqk8pbfF3vBGMHzFY03pxiNuq2CSRQxzdvat8AD96SKzFkZfjyw3aoBE5U5EJ65g1I+COXM++3XDiSo+uar2paxMspmiynOJo4wiaEsp66GnKcWe5SOmCRXgg0rP5SgKaIM8qXzJ34RWrH/vN/sL0IjaCmh/v1ZvlY1+S4WK8Osw505z2kTtjnJng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 137.201.242.130) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=micron.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=micron.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=micron.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kNLCUEs6lEcMRR0NNR/Xv3Abq59Iq09w/rxiqrm19nE=;
+ b=Zt/q89tuWCgNOHXlZzCCPGEKL5DrHoBkukUQvDENhhO4N02sLPuxAEH0gNP07g14Rs2EGv9YBGI8YaIHxou8tNAypWQctsljZZ7JsTtHOmxO1tq8nXli618m8gCivneh8R/ssyjxReqNVbwG87Pcr7PuCKiWduVaeglNzkBOnFcJf5xkRpe8Ms8CUdVYgKkp7S5rZg07+HF06LcbwF6wPm2IBB7ZtEA6hM18P1nx58q5dxdYGwXMQLz7RDaRfSpswXfe8eq+VvvdexEqjE/MWTSEoAkC3y0EKcn5Tf2Re+Fk5b8DXH8Hf0cJAgafBQ64dRF2iuvJ3HDw4gVWqTgzpQ==
+Received: from MW4PR03CA0285.namprd03.prod.outlook.com (2603:10b6:303:b5::20)
+ by CYXPR08MB9635.namprd08.prod.outlook.com (2603:10b6:930:e7::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.25; Tue, 27 Aug
+ 2024 16:01:58 +0000
+Received: from CO1PEPF000044F1.namprd05.prod.outlook.com
+ (2603:10b6:303:b5:cafe::91) by MW4PR03CA0285.outlook.office365.com
+ (2603:10b6:303:b5::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.25 via Frontend
+ Transport; Tue, 27 Aug 2024 16:01:58 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 137.201.242.130)
+ smtp.mailfrom=micron.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=micron.com;
+Received-SPF: Pass (protection.outlook.com: domain of micron.com designates
+ 137.201.242.130 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.201.242.130; helo=mail.micron.com; pr=C
+Received: from mail.micron.com (137.201.242.130) by
+ CO1PEPF000044F1.mail.protection.outlook.com (10.167.241.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7918.13 via Frontend Transport; Tue, 27 Aug 2024 16:01:58 +0000
+Received: from BOW17EX19B.micron.com (137.201.21.219) by BOW36EX19A.micron.com
+ (137.201.85.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 27 Aug
+ 2024 10:01:54 -0600
+Received: from BOW17EX19B.micron.com ([fe80::1c0a:12aa:1e25:d8a3]) by
+ BOW17EX19B.micron.com ([fe80::1c0a:12aa:1e25:d8a3%6]) with mapi id
+ 15.02.1544.011; Tue, 27 Aug 2024 10:01:54 -0600
+From: ajay.opensrc <ajay.opensrc@micron.com>
+To: "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>
+CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "john@jagalactic.com" <john@jagalactic.com>, Eishan Mirakhur
+ <emirakhur@micron.com>, Ajay Joshi <ajayjoshi@micron.com>, "Srinivasulu
+ Thanneeru" <sthanneeru@micron.com>, Ravis OpenSrc <Ravis.OpenSrc@micron.com>, 
+ Aravind Ramesh <arramesh@micron.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [EXT] Re: [PATCH] hw/cxl: Fix background completion percentage
+ calculation
+Thread-Topic: [EXT] Re: [PATCH] hw/cxl: Fix background completion percentage
+ calculation
+Thread-Index: AQHa4aFnXFAhiNhGOUK/S8twyYFQ27IPIt0AgCxNQto=
+Date: Tue, 27 Aug 2024 16:01:54 +0000
+Message-ID: <ad56f019ee6e43f4b209a814f5494af0@micron.com>
+References: <20240729102338.22337-1-ajay.opensrc@micron.com>,
+ <svy4snogtc2k5423b4vtmzaoaryetmxzatjfiqfeiywepkr7us@dcslpmazfuw5>
+In-Reply-To: <svy4snogtc2k5423b4vtmzaoaryetmxzatjfiqfeiywepkr7us@dcslpmazfuw5>
+Accept-Language: en-US
 Content-Language: en-US
-To: Rowan Hart <rowanbhart@gmail.com>, qemu-devel@nongnu.org
-Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-References: <20240827021847.218390-1-rowanbhart@gmail.com>
- <20240827021847.218390-3-rowanbhart@gmail.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240827021847.218390-3-rowanbhart@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x430.google.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [137.201.84.68]
+x-mt-whitelisted: matched
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F1:EE_|CYXPR08MB9635:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c927a10-c621-4998-8075-08dcc6b194b6
+X-EXT-ByPass: 1
+X-MT-RULE-Whitelisted: Triggered
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|376014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?iCjpZmz80m19u45IwsuKOv7C6WthP9eCxSYpGTcmiZMfMKXzdOgaPZLBBt?=
+ =?iso-8859-1?Q?mM2JusC1RfedxYhDrPAKVj0kGhPc/duwCtsmsyxxn9AGpK6t2dirRLjZK3?=
+ =?iso-8859-1?Q?P3au5DKNHZsBfHvhBuRCb5F1eLn4GxPgpg75oJ1WfqHAhUbkyzRpmE/S0F?=
+ =?iso-8859-1?Q?h7CIMOCc0Bfjbeo5n6uE6LApNZKxYFvc+BThnu0OTt3gG55ZP+Xxd+TVAl?=
+ =?iso-8859-1?Q?nImsukOb0XGszIW8xlzCPL36aMOet3yoxqU7/QUvBMFhIGc6eWCLNdYO2y?=
+ =?iso-8859-1?Q?gbx0s7aiwI/n1vE5q10aE2HcGmCHmW0FYlrhjMvTA/qgTR03nnbBfRrVI1?=
+ =?iso-8859-1?Q?yy3gCtQYwuL3dCbwcPEIwvL/ILbAZHalttni8cUTXt7Y04T6AC6ZLGNA5r?=
+ =?iso-8859-1?Q?ATKdjmpLjSx2a2Lr4Hk8+7hPAyszpNCNBBwzWTmwVDySJ8fEidKaENf0p0?=
+ =?iso-8859-1?Q?VaPgUX3UN1HtQ8amQHQ5EQrpTt1E2Q2KBd6trabF6Yah+RtEhnPMFq13o3?=
+ =?iso-8859-1?Q?fEJLj2+pJYyBPT/CeGa+L4rc9BHF5Vog4nVCKKQGaB3QAVZx/yf2OP/d9j?=
+ =?iso-8859-1?Q?zOgWqg7aQLVZIo8BQ86ssVEw5akV1ol+goQZLhs3mwa9sff3vk3YxXYeFH?=
+ =?iso-8859-1?Q?jqpCAQzPMYkXIB3678ptfsjwnWcx8F1om3RBW650uwSrcPvljFEeiXUFOG?=
+ =?iso-8859-1?Q?QURg2W5ATm7ysihTKs6ZjMB1BCVyUJOOh5cEh/81d9oRACXzMu9kxI7iOL?=
+ =?iso-8859-1?Q?v2h7T1vySfD7tXhx85Jo+VGrQS9UFggT1qMBBzRKFl8/ZwbbxoltxbuxbN?=
+ =?iso-8859-1?Q?uO8aehruseRvs+/vcueBdqu7bnXATRngLy6BmF7GRdzQwbxukEUtpwozww?=
+ =?iso-8859-1?Q?5MeYPvtBk7g8gwWqwgNtXud30VbmARIgWTxvCUfhSNJFXwxiKg1D7kY/z6?=
+ =?iso-8859-1?Q?wz97VTcbL5qWha3Z1V3xibWzPVrJzNBHdCPfrNXScG+V8fncKU3kjE5Fgk?=
+ =?iso-8859-1?Q?nYByVb4OJ5l09SGW+BpuxTWKCfFPbvCDeyPGUidbS0Lw0d9OCBnjKJKg6/?=
+ =?iso-8859-1?Q?v8Mv4slo1Ag8SltIYy12CF573nEy/eNfHSUu7IxtK2oV/p+gBA4Wcgm6tp?=
+ =?iso-8859-1?Q?HKU+bcg/Qzt3Wmqk3UnEXdI4iBj6gnNtIV9PUaJ/cvMvlCj+ZJeL0aW55v?=
+ =?iso-8859-1?Q?+WW8Db7e3sl+Rzz4DFodED+MwmqWwe+8G16msSn6v9lVcK1/hVFm9xjp48?=
+ =?iso-8859-1?Q?ceWyl2lkgzAyTveXxggvV2IKEAlHDsbSSD6/QLGQVi8VblaE4SJ0tQbtZ3?=
+ =?iso-8859-1?Q?LvCQh3EhzcR6vfE8/wP4yrAaNfFRF0BHaME0jLhcCHf/ve85TMBn2Z8S1B?=
+ =?iso-8859-1?Q?hjD16qjn8mXnOzzY2Kbha0XEThwzqneEfnOn8q1TOJKLx1SPb/EtKW6Nax?=
+ =?iso-8859-1?Q?SE3IdYgtZ57A6acGIKlARkOnup2QMiG4NlnUkADtfa45P6611pZ4Sqgu2l?=
+ =?iso-8859-1?Q?XQiOEOQ6ThOUr4rElE12Oh?=
+X-Forefront-Antispam-Report: CIP:137.201.242.130; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.micron.com; PTR:masquerade.micron.com; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: micron.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2024 16:01:58.5173 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c927a10-c621-4998-8075-08dcc6b194b6
+X-MS-Exchange-CrossTenant-Id: f38a5ecd-2813-4862-b11b-ac1d563c806f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f38a5ecd-2813-4862-b11b-ac1d563c806f; Ip=[137.201.242.130];
+ Helo=[mail.micron.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F1.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR08MB9635
+Received-SPF: pass client-ip=40.107.236.58;
+ envelope-from=ajay.opensrc@micron.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 27 Aug 2024 13:02:10 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,203 +168,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/26/24 19:18, Rowan Hart wrote:
-> Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
-> ---
->   docs/about/emulation.rst    |  14 ++++-
->   tests/tcg/plugins/syscall.c | 117 ++++++++++++++++++++++++++++++++++++
->   2 files changed, 130 insertions(+), 1 deletion(-)
-> 
-> diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-> index eea1261baa..e85d494ff0 100644
-> --- a/docs/about/emulation.rst
-> +++ b/docs/about/emulation.rst
-> @@ -388,6 +388,19 @@ run::
->     160          1      0
->     135          1      0
->   
-> +Behaviour can be tweaked with the following arguments:
-> +
-> +.. list-table:: Syscall plugin arguments
-> +  :widths: 20 80
-> +  :header-rows: 1
-> +
-> +  * - Option
-> +    - Description
-> +  * - print=true|false
-> +    - Print the number of times each syscall is called
-> +  * - log_writes=true|false
-> +    - Log the buffer of each write syscall in hexdump format
-> +
->   Test inline operations
->   ......................
->   
-> @@ -777,4 +790,3 @@ Other emulation features
->   When running system emulation you can also enable deterministic
->   execution which allows for repeatable record/replay debugging. See
->   :ref:`Record/Replay<replay>` for more details.
-> -
-> diff --git a/tests/tcg/plugins/syscall.c b/tests/tcg/plugins/syscall.c
-> index 72e1a5bf90..7c92f798b5 100644
-> --- a/tests/tcg/plugins/syscall.c
-> +++ b/tests/tcg/plugins/syscall.c
-> @@ -22,8 +22,57 @@ typedef struct {
->       int64_t errors;
->   } SyscallStats;
->   
-> +struct SyscallInfo {
-> +    const char *name;
-> +    int64_t write_sysno;
-> +};
-> +
-> +const struct SyscallInfo arch_syscall_info[] = {
-> +    { "aarch64", 64 },
-> +    { "aarch64_be", 64 },
-> +    { "alpha", 4 },
-> +    { "arm", 4 },
-> +    { "armeb", 4 },
-> +    { "avr", -1 },
-> +    { "cris", -1 },
-> +    { "hexagon", 64 },
-> +    { "hppa", -1 },
-> +    { "i386", 4 },
-> +    { "loongarch64", -1 },
-> +    { "m68k", 4 },
-> +    { "microblaze", 4 },
-> +    { "microblazeel", 4 },
-> +    { "mips", 1 },
-> +    { "mips64", 1 },
-> +    { "mips64el", 1 },
-> +    { "mipsel", 1 },
-> +    { "mipsn32", 1 },
-> +    { "mipsn32el", 1 },
-> +    { "or1k", -1 },
-> +    { "ppc", 4 },
-> +    { "ppc64", 4 },
-> +    { "ppc64le", 4 },
-> +    { "riscv32", 64 },
-> +    { "riscv64", 64 },
-> +    { "rx", -1 },
-> +    { "s390x", -1 },
-> +    { "sh4", -1 },
-> +    { "sh4eb", -1 },
-> +    { "sparc", 4 },
-> +    { "sparc32plus", 4 },
-> +    { "sparc64", 4 },
-> +    { "tricore", -1 },
-> +    { "x86_64", 1 },
-> +    { "xtensa", 13 },
-> +    { "xtensaeb", 13 },
-> +    { NULL, -1 },
-> +};
-> +
->   static GMutex lock;
->   static GHashTable *statistics;
-> +static GByteArray *memory_buffer;
-> +static bool do_log_writes;
-> +static int64_t write_sysno = -1;
->   
->   static SyscallStats *get_or_create_entry(int64_t num)
->   {
-> @@ -39,6 +88,44 @@ static SyscallStats *get_or_create_entry(int64_t num)
->       return entry;
->   }
->   
-> +/*
-> + * Hex-dump a GByteArray to the QEMU plugin output in the format:
-> + * 61 63 63 65 6c 09 09 20 20 20 66 70 75 09 09 09  | accel.....fpu...
-> + * 20 6d 6f 64 75 6c 65 2d 63 6f 6d 6d 6f 6e 2e 63  | .module-common.c
-> + */
-> +static void hexdump(const GByteArray *data)
-> +{
-> +    g_autoptr(GString) out = g_string_new("");
-> +
-> +    for (guint index = 0; index < data->len; index += 16) {
-> +        for (guint col = 0; col < 16; col++) {
-> +            if (index + col < data->len) {
-> +                g_string_append_printf(out, "%02x ", data->data[index + col]);
-> +            } else {
-> +                g_string_append(out, "   ");
-> +            }
-> +        }
-> +
-> +        g_string_append(out, " | ");
-> +
-> +        for (guint col = 0; col < 16; col++) {
-> +            if (index + col >= data->len) {
-> +                break;
-> +            }
-> +
-> +            if (g_ascii_isgraph(data->data[index + col])) {
-> +                g_string_append_printf(out, "%c", data->data[index + col]);
-> +            } else {
-> +                g_string_append(out, ".");
-> +            }
-> +        }
-> +
-> +        g_string_append(out, "\n");
-> +    }
-> +
-> +    qemu_plugin_outs(out->str);
-> +}
-> +
->   static void vcpu_syscall(qemu_plugin_id_t id, unsigned int vcpu_index,
->                            int64_t num, uint64_t a1, uint64_t a2,
->                            uint64_t a3, uint64_t a4, uint64_t a5,
-> @@ -54,6 +141,14 @@ static void vcpu_syscall(qemu_plugin_id_t id, unsigned int vcpu_index,
->           g_autofree gchar *out = g_strdup_printf("syscall #%" PRIi64 "\n", num);
->           qemu_plugin_outs(out);
->       }
-> +
-> +    if (do_log_writes && num == write_sysno) {
-> +        if (qemu_plugin_read_memory_vaddr(a2, memory_buffer, a3)) {
-> +            hexdump(memory_buffer);
-> +        } else {
-> +            fprintf(stderr, "Error reading memory from vaddr %lu\n", a2);
-> +        }
-> +    }
->   }
->   
->   static void vcpu_syscall_ret(qemu_plugin_id_t id, unsigned int vcpu_idx,
-> @@ -127,6 +222,10 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
->               if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_print)) {
->                   fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
->               }
-> +        } else if (g_strcmp0(tokens[0], "log_writes") == 0) {
-> +            if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_log_writes)) {
-> +                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-> +            }
->           } else {
->               fprintf(stderr, "unsupported argument: %s\n", argv[i]);
->               return -1;
-> @@ -137,6 +236,24 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
->           statistics = g_hash_table_new_full(NULL, g_direct_equal, NULL, g_free);
->       }
->   
-> +    if (do_log_writes) {
-> +        for (const struct SyscallInfo *syscall_info = arch_syscall_info;
-> +            syscall_info->name != NULL; syscall_info++) {
-> +
-> +            if (g_strcmp0(syscall_info->name, info->target_name) == 0) {
-> +                write_sysno = syscall_info->write_sysno;
-> +                break;
-> +            }
-> +        }
-> +
-> +        if (write_sysno == -1) {
-> +            fprintf(stderr, "write syscall number not found\n");
-> +            return -1;
-> +        }
-> +
-> +        memory_buffer = g_byte_array_new();
-> +    }
-> +
->       qemu_plugin_register_vcpu_syscall_cb(id, vcpu_syscall);
->       qemu_plugin_register_vcpu_syscall_ret_cb(id, vcpu_syscall_ret);
->       qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
+> From: Davidlohr Bueso <dave@stgolabs.net>
+>=20
+> On Mon, 29 Jul 2024, ajay.opensrc@micron.com wrote:\n
+> >From: Ajay Joshi <ajayjoshi@micron.com>
+> >
+> >The current completion percentage calculation does not account for the
+> >relative time since the start of the background activity, this leads to
+> >showing incorrect start percentage vs what has actually been completed.
+> >
+> >This patch calculates the percentage based on the actual elapsed time
+> >since the start of the operation.
+> >
+> >Fixes: 221d2cfbdb ("hw/cxl/mbox: Add support for background
+> >operations")
+> >
+> >Signed-off-by: Ajay Joshi <ajay.opensrc@micron.com>
+>=20
+> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
 
-Works as expected.
+Ping.
+Jonathan, this patch was reviewed by Dave already.
+Do you have any comments on this patch?
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Tested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Ajay=
 
