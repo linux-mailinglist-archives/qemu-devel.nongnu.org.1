@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1B3961623
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A3D961629
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:58:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj0Q1-0005T1-KC; Tue, 27 Aug 2024 13:55:49 -0400
+	id 1sj0Q2-0005ab-J8; Tue, 27 Aug 2024 13:55:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0Pv-00059H-JH
+ id 1sj0Pv-00059N-KC
  for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:55:43 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0Ph-0001Yt-U4
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:55:43 -0400
+ id 1sj0Ph-0001Yk-Gt
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:55:42 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0PH-0002La-Fn; Tue, 27 Aug 2024 19:55:03 +0200
+ id 1sj0PM-0002Lk-Ve; Tue, 27 Aug 2024 19:55:09 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,9 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v2 02/17] migration/ram: Add load start trace event
-Date: Tue, 27 Aug 2024 19:54:21 +0200
-Message-ID: <3e6af826a953ac88765064620d92b3797ea743f9.1724701542.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v2 03/17] migration/multifd: Zero p->flags before starting
+ filling a packet
+Date: Tue, 27 Aug 2024 19:54:22 +0200
+Message-ID: <6230f70a9d11f5b5efd2811ebdebc722318c6b15.1724701542.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1724701542.git.maciej.szmigiero@oracle.com>
 References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
@@ -65,36 +66,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-There's a RAM load complete trace event but there wasn't its start equivalent.
+This way there aren't stale flags there.
+
+p->flags can't contain SYNC to be sent at the next RAM packet since syncs
+are now handled separately in multifd_send_thread.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/ram.c        | 1 +
- migration/trace-events | 1 +
- 2 files changed, 2 insertions(+)
+ migration/multifd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 67ca3d5d51a1..7997bd830b9c 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -4127,6 +4127,7 @@ static int ram_load_precopy(QEMUFile *f)
-                           RAM_SAVE_FLAG_ZERO);
-     }
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 0c07a2040ba8..b06a9fab500e 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -601,6 +601,7 @@ static void *multifd_send_thread(void *opaque)
+          * qatomic_store_release() in multifd_send().
+          */
+         if (qatomic_load_acquire(&p->pending_job)) {
++            p->flags = 0;
+             p->iovs_num = 0;
+             assert(!multifd_payload_empty(p->data));
  
-+    trace_ram_load_start();
-     while (!ret && !(flags & RAM_SAVE_FLAG_EOS)) {
-         ram_addr_t addr;
-         void *host = NULL, *host_bak = NULL;
-diff --git a/migration/trace-events b/migration/trace-events
-index c65902f042bd..2a99a7baaea6 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -115,6 +115,7 @@ colo_flush_ram_cache_end(void) ""
- save_xbzrle_page_skipping(void) ""
- save_xbzrle_page_overflow(void) ""
- ram_save_iterate_big_wait(uint64_t milliconds, int iterations) "big wait: %" PRIu64 " milliseconds, %d iterations"
-+ram_load_start(void) ""
- ram_load_complete(int ret, uint64_t seq_iter) "exit_code %d seq iteration %" PRIu64
- ram_write_tracking_ramblock_start(const char *block_id, size_t page_size, void *addr, size_t length) "%s: page_size: %zu addr: %p length: %zu"
- ram_write_tracking_ramblock_stop(const char *block_id, size_t page_size, void *addr, size_t length) "%s: page_size: %zu addr: %p length: %zu"
+@@ -652,7 +653,6 @@ static void *multifd_send_thread(void *opaque)
+                 }
+                 /* p->next_packet_size will always be zero for a SYNC packet */
+                 stat64_add(&mig_stats.multifd_bytes, p->packet_len);
+-                p->flags = 0;
+             }
+ 
+             qatomic_set(&p->pending_sync, false);
 
