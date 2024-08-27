@@ -2,79 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096E1960642
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 11:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10AEE960662
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 11:57:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sispt-0002PE-62; Tue, 27 Aug 2024 05:50:01 -0400
+	id 1sisww-0000Vu-W5; Tue, 27 Aug 2024 05:57:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sispq-0002Oi-47
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 05:49:58 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1siswu-0000P8-NI
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 05:57:16 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sispo-0008Bn-1G
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 05:49:57 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-5334c018913so5052937e87.0
- for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 02:49:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sisws-0000XP-Sh
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 05:57:16 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2f40a1a2c1aso46394631fa.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 02:57:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724752194; x=1725356994; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mK1gcEL6ki/5i9onc4ehh9ftnC10AvXevSPtX+HlMCQ=;
- b=AmMgfw8fFUiNWfrf95mC+TQcQoKi4HQYtWHbQKlSTWmhnC7VGNnAT9Fay+W4RGbJxw
- WfBla2OJWrCaCGMgzAHwE0pjdKVsMNyGWNP3PDpNZy/WkWq8nFRQsCPeoVPI33SZYA75
- qll3cv67uj98FHYrag0yLsInehjKJDvSsaFiUbd3kNvm7id+pD2qb72/IIfaOX3BL525
- UfRzPe03va4+ZW1tQFIYdRnnmBv7thbOjucftvWTdZQEHQLqCwniBTkTXOofdkRgdu1L
- WDLlQXl59AueuObqUhPTaGRVJChE65n5V409dUnhNQm+ty/d5HJyOjdhvmVZtEukGYMA
- Ximw==
+ d=linaro.org; s=google; t=1724752632; x=1725357432; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Zmlv+/H2H4IOeK3iYOIt02YrzQd95rRGq2IRetE8nzU=;
+ b=Kj6ULqAwn/DDJsGIUfaHKjy/vu1gLCu917Z9YVcRMNgQKD4dnEoQ/LHv95b5B2snjm
+ Lt96ICooydvY65NIduvSZQf0KcN0UnBKW/Jb0G5UcTv3EFDlh5eaJR5DBQHTJztGvkZ9
+ h0V0ejA8cBo3xuq8Sv/gMDJIzDTVCRF+9MK5/6M8t5x2Ok950PoFJGuHINxwSzeZ9P1u
+ G9XQ5qJRBwBfD90CZlzEcQiCSC5gWf9z8niInI3HFaE9quEAqOe7h+6fvIiwaVtg6PUh
+ VZiJfEXEpUEdmJb/5+yOhB5mMYthx8aQUXIGsYl4BRvrz78QSjNG0O62PsNS6JwXlNvd
+ 95UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724752194; x=1725356994;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1724752632; x=1725357432;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mK1gcEL6ki/5i9onc4ehh9ftnC10AvXevSPtX+HlMCQ=;
- b=VMu88k6P3TqGlzk157VmabzQEFMMpTTuhmOY7e7t44C0kcs9L4MOfSn0d9JlnpvGfW
- Y3ddDM7ClgI08ix5FyHpDEgV9lHlhJevFrE3J+kxxbTnU840vbSo4UZa00sTLdwBJPLh
- ShrKvWvV9KbPOLw41HxJlLdIuxWRLVOKd/ITngcaAPl7fu2Okbf4wwP+aaOwk3Z5BtAT
- Ad9BbOAGnHAhkgcq65NJQVhW1BMygsKJmi8MFYoaOnqQ6ZSuuJZQ73raKJ+cpIWEckGL
- key2PL2yip6u+GVAwGKp7DS8qhTlTv4IMUVAPhRpYgGK7OxzMhkyOYvyHkLvsVC3Zfnw
- +Mlg==
-X-Gm-Message-State: AOJu0Yx/2gZz0S6DxTt6/H7BP+hbtC5ZsuJnFd2ExjEOnEJWwaY46jW2
- CNVLQX1BvWSYSZtXupJMsBhtKtUhNdc7QPxY475qyQ/od9EbcNN3p11zp3kYl1UuRr4VAeafpiJ
- R
-X-Google-Smtp-Source: AGHT+IEx7V/nVsSi+MYnhw6yqVZVybTIVsJk8zn7G69wM4w1kyFi9aNwgEvv2Ww2W4rxZ0SdLsIZ3g==
-X-Received: by 2002:a05:6512:ea2:b0:52e:9ebe:7325 with SMTP id
- 2adb3069b0e04-5343883b0ffmr8068059e87.31.1724752193761; 
- Tue, 27 Aug 2024 02:49:53 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.206.45])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a86e548620asm89128166b.8.2024.08.27.02.49.52
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Aug 2024 02:49:53 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@kernel.org>, Beraldo Leal <bleal@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PATCH v4 7/7] tests/functional: Convert mips32eb 4Kc Malta avocado
- tests
-Date: Tue, 27 Aug 2024 11:49:05 +0200
-Message-ID: <20240827094905.80648-8-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240827094905.80648-1-philmd@linaro.org>
-References: <20240827094905.80648-1-philmd@linaro.org>
+ bh=Zmlv+/H2H4IOeK3iYOIt02YrzQd95rRGq2IRetE8nzU=;
+ b=JRi5fubdfXfr29npKS4skbC8aXe05Y02dWFA4ao93LvAfBU4AUsxgYJmClYwsBvPFV
+ n5QCHgRIK7rlxhOm3hniB3V9bhIKCLweSMMtsGrBfG6VQpXUXcvPXOkdXVLA53cm3/M/
+ LcmFcRsalj95WqdWV/E37bfA3uJ7KQC3UeSx9cQb07ASWdYpHZD6m5d4zH8UozrnAO9Y
+ eulUmIP5+hXK7n0zbV6gZsByLlyJoSreF+pC+gjVmgUzrCf2NbCvF9kZiTnmVj4j/1Mf
+ ymGCR0u+pOxUr33df+HveF7NeMpuEuVS3xznm8y90bg+xDwwBLudgqWGMrU9N6KpkGks
+ UOpA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVt2M+Q+ms4YP/qMe191MOdbNBtMMKi36Zfv5hN/CwTenfPZg9I9ksa1jxkHqwlSUQhRxH44sd0gOPB@nongnu.org
+X-Gm-Message-State: AOJu0YzN4KUSY+EEVRcypNJ9oY2CnbkfMpQO747Z0+x+4lDDjCzUPzAP
+ PryYcRwwurYvfpwerrP9M163IAaSc7bC1YOY7G66XIbXO0DuJh/DhcOL6KVE8OQ=
+X-Google-Smtp-Source: AGHT+IE6rJ6z4ZKN7IlxKrB3NUJJq0jF7qZlDlbPZ9SoaFBM1BOmxcW6W33btaeszVTTjpvM9BBPyA==
+X-Received: by 2002:a05:651c:504:b0:2f5:abe:b6c3 with SMTP id
+ 38308e7fff4ca-2f50abeb7b6mr48488541fa.33.1724752631406; 
+ Tue, 27 Aug 2024 02:57:11 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5c0bb20e99asm858583a12.46.2024.08.27.02.57.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 Aug 2024 02:57:10 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id F30745F7A2;
+ Tue, 27 Aug 2024 10:57:09 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,  Huang Rui
+ <ray.huang@amd.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Gerd Hoffmann
+ <kraxel@redhat.com>,  "Michael S . Tsirkin" <mst@redhat.com>,  Stefano
+ Stabellini <sstabellini@kernel.org>,  Antonio Caggiano
+ <quic_acaggian@quicinc.com>,  "Dr . David Alan Gilbert"
+ <dgilbert@redhat.com>,  Robert Beckett <bob.beckett@collabora.com>,  Gert
+ Wollny <gert.wollny@collabora.com>,  qemu-devel@nongnu.org,  Gurchetan
+ Singh <gurchetansingh@chromium.org>,  ernunes@redhat.com,  Alyssa Ross
+ <hi@alyssa.is>,  Roger Pau =?utf-8?Q?Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,  Stefano Stabellini
+ <stefano.stabellini@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,  Pierre-Eric Pelloux-Prayer
+ <pierre-eric.pelloux-prayer@amd.com>,  Honglei Huang
+ <honglei1.huang@amd.com>,  Julia Zhang <julia.zhang@amd.com>,  Chen Jiqian
+ <Jiqian.Chen@amd.com>,  Yiwei Zhang <zzyiwei@chromium.org>
+Subject: Re: [PATCH v17 00/13] Support blob memory and venus on qemu
+In-Reply-To: <20240822185110.1757429-1-dmitry.osipenko@collabora.com> (Dmitry
+ Osipenko's message of "Thu, 22 Aug 2024 21:50:56 +0300")
+References: <20240822185110.1757429-1-dmitry.osipenko@collabora.com>
+Date: Tue, 27 Aug 2024 10:57:09 +0100
+Message-ID: <87ttf6cmq2.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,210 +112,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Straight forward conversion. Update the SHA1 hashes to
-SHA256 hashes since SHA1 should not be used anymore nowadays.
+Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- MAINTAINERS                         |  1 +
- tests/avocado/boot_linux_console.py | 63 ----------------------
- tests/functional/meson.build        |  4 ++
- tests/functional/test_mips_malta.py | 84 +++++++++++++++++++++++++++++
- 4 files changed, 89 insertions(+), 63 deletions(-)
- create mode 100755 tests/functional/test_mips_malta.py
+> Hello,
+>
+> This series enables Vulkan Venus context support on virtio-gpu.
+>
+> All virglrender and almost all Linux kernel prerequisite changes
+> needed by Venus are already in upstream. For kernel there is a pending
+> KVM patchset that fixes mapping of compound pages needed for DRM drivers
+> using TTM or huge pages [1], othewrwise hostmem blob mapping will fail
+> with a KVM error from Qemu.
+>
+> [1] https://lore.kernel.org/all/20240726235234.228822-1-seanjc@google.com/
+>
+> On guest you'll need to use recent Mesa 24.2+ version containing patch
+> that removes dependency on cross-device feature from Venus that isn't
+> supported by Qemu [2].
+>
+> [2]
+> https://gitlab.freedesktop.org/mesa/mesa/-/commit/087e9a96d13155e26987bef=
+ae78b6ccbb7ae242b
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4b480135f6..e2e62afcdc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1368,6 +1368,7 @@ F: hw/mips/malta.c
- F: hw/pci-host/gt64120.c
- F: include/hw/southbridge/piix.h
- F: tests/avocado/linux_ssh_mips_malta.py
-+F: tests/functional/test_mips_malta.py
- F: tests/functional/test_mipsel_malta.py
- F: tests/functional/test_mips64el_malta.py
- 
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 0756e49ded..370beb795a 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -116,69 +116,6 @@ def test_x86_64_pc(self):
-         console_pattern = 'Kernel command line: %s' % kernel_command_line
-         self.wait_for_console_pattern(console_pattern)
- 
--    def test_mips_malta(self):
--        """
--        :avocado: tags=arch:mips
--        :avocado: tags=machine:malta
--        :avocado: tags=endian:big
--        """
--        deb_url = ('http://snapshot.debian.org/archive/debian/'
--                   '20130217T032700Z/pool/main/l/linux-2.6/'
--                   'linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb')
--        deb_hash = 'a8cfc28ad8f45f54811fc6cf74fc43ffcfe0ba04'
--        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
--        kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinux-2.6.32-5-4kc-malta')
--
--        self.vm.set_console()
--        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
--        self.vm.add_args('-kernel', kernel_path,
--                         '-append', kernel_command_line)
--        self.vm.launch()
--        console_pattern = 'Kernel command line: %s' % kernel_command_line
--        self.wait_for_console_pattern(console_pattern)
--
--    def test_mips_malta_cpio(self):
--        """
--        :avocado: tags=arch:mips
--        :avocado: tags=machine:malta
--        :avocado: tags=endian:big
--        """
--        deb_url = ('http://snapshot.debian.org/archive/debian/'
--                   '20160601T041800Z/pool/main/l/linux/'
--                   'linux-image-4.5.0-2-4kc-malta_4.5.5-1_mips.deb')
--        deb_hash = 'a3c84f3e88b54e06107d65a410d1d1e8e0f340f8'
--        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
--        kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinux-4.5.0-2-4kc-malta')
--        initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
--                      '8584a59ed9e5eb5ee7ca91f6d74bbb06619205b8/rootfs/'
--                      'mips/rootfs.cpio.gz')
--        initrd_hash = 'bf806e17009360a866bf537f6de66590de349a99'
--        initrd_path_gz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
--        initrd_path = self.workdir + "rootfs.cpio"
--        archive.gzip_uncompress(initrd_path_gz, initrd_path)
--
--        self.vm.set_console()
--        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE
--                               + 'console=ttyS0 console=tty '
--                               + 'rdinit=/sbin/init noreboot')
--        self.vm.add_args('-kernel', kernel_path,
--                         '-initrd', initrd_path,
--                         '-append', kernel_command_line,
--                         '-no-reboot')
--        self.vm.launch()
--        self.wait_for_console_pattern('Boot successful.')
--
--        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
--                                                'BogoMIPS')
--        exec_command_and_wait_for_pattern(self, 'uname -a',
--                                                'Debian')
--        exec_command_and_wait_for_pattern(self, 'reboot',
--                                                'reboot: Restarting system')
--        # Wait for VM to shut down gracefully
--        self.vm.wait()
--
-     def test_aarch64_xlnx_versal_virt(self):
-         """
-         :avocado: tags=arch:aarch64
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index f8e482a87c..175e88bb87 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -51,6 +51,10 @@ tests_microblazeel_thorough = [
-   'microblazeel_s3adsp1800'
- ]
- 
-+tests_mips_thorough = [
-+  'mips_malta',
-+]
-+
- tests_mipsel_thorough = [
-   'mipsel_malta',
- ]
-diff --git a/tests/functional/test_mips_malta.py b/tests/functional/test_mips_malta.py
-new file mode 100755
-index 0000000000..2f26dd5884
---- /dev/null
-+++ b/tests/functional/test_mips_malta.py
-@@ -0,0 +1,84 @@
-+#!/usr/bin/env python3
-+#
-+# Functional tests for the little-endian 32-bit MIPS Malta board
-+#
-+# Copyright (c) Philippe Mathieu-Daudé <f4bug@amsat.org>
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+import os
-+
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import exec_command_and_wait_for_pattern
-+from qemu_test.linux_kernel import linux_kernel_wait_for_pattern
-+from qemu_test.linux_kernel import KERNEL_COMMON_COMMAND_LINE
-+from qemu_test.utils import extract_from_deb
-+from qemu_test.utils import gzip_uncompress
-+
-+
-+class MaltaMachineConsole(QemuSystemTest):
-+
-+    ASSET_KERNEL_2_63_2 = Asset(
-+        ('http://snapshot.debian.org/archive/debian/'
-+         '20130217T032700Z/pool/main/l/linux-2.6/'
-+         'linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb'),
-+        '16ca524148afb0626f483163e5edf352bc1ab0e4fc7b9f9d473252762f2c7a43')
-+
-+    def test_mips_malta(self):
-+        deb_path = self.ASSET_KERNEL_2_63_2.fetch()
-+        kernel_path = extract_from_deb(deb_path, self.workdir,
-+                                       '/boot/vmlinux-2.6.32-5-4kc-malta')
-+
-+        self.set_machine('malta')
-+        self.vm.set_console()
-+        kernel_command_line = KERNEL_COMMON_COMMAND_LINE + 'console=ttyS0'
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-append', kernel_command_line)
-+        self.vm.launch()
-+        console_pattern = 'Kernel command line: %s' % kernel_command_line
-+        linux_kernel_wait_for_pattern(self, console_pattern)
-+
-+    ASSET_KERNEL_4_5_0 = Asset(
-+        ('http://snapshot.debian.org/archive/debian/'
-+         '20160601T041800Z/pool/main/l/linux/'
-+         'linux-image-4.5.0-2-4kc-malta_4.5.5-1_mips.deb'),
-+        '526b17d5889840888b76fc2c36a0ebde182c9b1410a3a1e68203c3b160eb2027')
-+
-+    ASSET_INITRD = Asset(
-+        ('https://github.com/groeck/linux-build-test/raw/'
-+         '8584a59ed9e5eb5ee7ca91f6d74bbb06619205b8/rootfs/'
-+         'mips/rootfs.cpio.gz'),
-+        'dcfe3a7fe3200da3a00d176b95caaa086495eb158f2bff64afc67d7e1eb2cddc')
-+
-+    def test_mips_malta_cpio(self):
-+        deb_path = self.ASSET_KERNEL_4_5_0.fetch()
-+        kernel_path = extract_from_deb(deb_path, self.workdir,
-+                                       '/boot/vmlinux-4.5.0-2-4kc-malta')
-+        initrd_path_gz = self.ASSET_INITRD.fetch()
-+        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
-+        gzip_uncompress(initrd_path_gz, initrd_path)
-+
-+        self.set_machine('malta')
-+        self.vm.set_console()
-+        kernel_command_line = (KERNEL_COMMON_COMMAND_LINE
-+                               + 'console=ttyS0 console=tty '
-+                               + 'rdinit=/sbin/init noreboot')
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-initrd', initrd_path,
-+                         '-append', kernel_command_line,
-+                         '-no-reboot')
-+        self.vm.launch()
-+        linux_kernel_wait_for_pattern(self, 'Boot successful.')
-+
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
-+                                                'BogoMIPS')
-+        exec_command_and_wait_for_pattern(self, 'uname -a',
-+                                                'Debian')
-+        exec_command_and_wait_for_pattern(self, 'reboot',
-+                                                'reboot: Restarting system')
-+        # Wait for VM to shut down gracefully
-+        self.vm.wait()
-+
-+
-+if __name__ == '__main__':
-+    QemuSystemTest.main()
--- 
-2.45.2
+I've expanded the set of working tests so:
 
+x86 host, Intel GPU
+
+ x86/kvm Trixie guest + latest mesa - works
+ aarch64/tcg buildroot guest - works
+
+Aarch64 host, AMD GPU
+
+ x86/tcg Trixies guest + latest mesa - works
+ aarch64/kvm buildroot guest - works
+
+As the Aarch64 HW I'm testing on (AVA Devbox) needs additional patches
+on top of Sean's series to deal with the busted Altra PCI which I
+provide here:
+
+ https://git.linaro.org/people/alex.bennee/linux.git/log/?h=3Dreview/pfn-re=
+ferences-v12-with-altra-tweaks
+
+Anyway I'll re-state:
+
+  Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+And I think this series is ready to merge once the tree re-opens.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
