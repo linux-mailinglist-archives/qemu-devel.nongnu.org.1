@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4E996160E
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:57:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF61A961618
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:57:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj0QP-0006h9-Vm; Tue, 27 Aug 2024 13:56:14 -0400
+	id 1sj0Qm-00088F-K2; Tue, 27 Aug 2024 13:56:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0QD-0006Nv-GC
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:56:02 -0400
+ id 1sj0QS-0007Rc-CT
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:56:18 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0QB-0001cG-Tc
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:56:01 -0400
+ id 1sj0QH-0001cY-AE
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:56:16 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0Px-0002O7-TR; Tue, 27 Aug 2024 19:55:45 +0200
+ id 1sj0Q3-0002OX-3d; Tue, 27 Aug 2024 19:55:51 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v2 10/17] migration/multifd: Convert
- multifd_send()::next_channel to atomic
-Date: Tue, 27 Aug 2024 19:54:29 +0200
-Message-ID: <76dc3ad69fa457fd1e358ad3de874474f9f64716.1724701542.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v2 11/17] migration/multifd: Add an explicit MultiFDSendData
+ destructor
+Date: Tue, 27 Aug 2024 19:54:30 +0200
+Message-ID: <59483d382d5453e69c6c762eb0a006a1f7ac228f.1724701542.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1724701542.git.maciej.szmigiero@oracle.com>
 References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
@@ -46,8 +46,7 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,61 +65,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-This is necessary for multifd_send() to be able to be called
-from multiple threads.
+This way if there are fields there that needs explicit disposal (like, for
+example, some attached buffers) they will be handled appropriately.
+
+Add a related assert to multifd_set_payload_type() in order to make sure
+that this function is only used to fill a previously empty MultiFDSendData
+with some payload, not the other way around.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/multifd.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ migration/multifd-nocomp.c |  3 +--
+ migration/multifd.c        | 31 ++++++++++++++++++++++++++++---
+ migration/multifd.h        |  5 +++++
+ 3 files changed, 34 insertions(+), 5 deletions(-)
 
+diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
+index 53ea9f9c8371..39eb77c9b3b7 100644
+--- a/migration/multifd-nocomp.c
++++ b/migration/multifd-nocomp.c
+@@ -40,8 +40,7 @@ void multifd_ram_save_setup(void)
+ 
+ void multifd_ram_save_cleanup(void)
+ {
+-    g_free(multifd_ram_send);
+-    multifd_ram_send = NULL;
++    g_clear_pointer(&multifd_ram_send, multifd_send_data_free);
+ }
+ 
+ static void multifd_set_file_bitmap(MultiFDSendParams *p)
 diff --git a/migration/multifd.c b/migration/multifd.c
-index d5a8e5a9c9b5..b25789dde0b3 100644
+index b25789dde0b3..a74e8a5cc891 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -343,26 +343,38 @@ bool multifd_send(MultiFDSendData **send_data)
-         return false;
-     }
+@@ -119,6 +119,32 @@ MultiFDSendData *multifd_send_data_alloc(void)
+     return g_malloc0(size_minus_payload + max_payload_size);
+ }
  
--    /* We wait here, until at least one channel is ready */
--    qemu_sem_wait(&multifd_send_state->channels_ready);
--
-     /*
-      * next_channel can remain from a previous migration that was
-      * using more channels, so ensure it doesn't overflow if the
-      * limit is lower now.
-      */
--    next_channel %= migrate_multifd_channels();
--    for (i = next_channel;; i = (i + 1) % migrate_multifd_channels()) {
-+    i = qatomic_load_acquire(&next_channel);
-+    if (unlikely(i >= migrate_multifd_channels())) {
-+        qatomic_cmpxchg(&next_channel, i, 0);
++void multifd_send_data_clear(MultiFDSendData *data)
++{
++    if (multifd_payload_empty(data)) {
++        return;
 +    }
 +
-+    /* We wait here, until at least one channel is ready */
-+    qemu_sem_wait(&multifd_send_state->channels_ready);
++    switch (data->type) {
++    default:
++        /* Nothing to do */
++        break;
++    }
 +
-+    while (true) {
-+        int i_next;
++    data->type = MULTIFD_PAYLOAD_NONE;
++}
 +
-         if (multifd_send_should_exit()) {
-             return false;
-         }
++void multifd_send_data_free(MultiFDSendData *data)
++{
++    if (!data) {
++        return;
++    }
 +
-+        i = qatomic_load_acquire(&next_channel);
-+        i_next = (i + 1) % migrate_multifd_channels();
-+        if (qatomic_cmpxchg(&next_channel, i, i_next) != i) {
-+            continue;
-+        }
++    multifd_send_data_clear(data);
 +
-         p = &multifd_send_state->params[i];
-         /*
-          * Lockless read to p->pending_job is safe, because only multifd
-          * sender thread can clear it.
-          */
-         if (qatomic_read(&p->pending_job) == false) {
--            next_channel = (i + 1) % migrate_multifd_channels();
-             break;
-         }
-     }
++    g_free(data);
++}
++
+ static bool multifd_use_packets(void)
+ {
+     return !migrate_mapped_ram();
+@@ -506,8 +532,7 @@ static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
+     qemu_sem_destroy(&p->sem_sync);
+     g_free(p->name);
+     p->name = NULL;
+-    g_free(p->data);
+-    p->data = NULL;
++    g_clear_pointer(&p->data, multifd_send_data_free);
+     p->packet_len = 0;
+     g_free(p->packet);
+     p->packet = NULL;
+@@ -671,7 +696,7 @@ static void *multifd_send_thread(void *opaque)
+                        p->next_packet_size + p->packet_len);
+ 
+             p->next_packet_size = 0;
+-            multifd_set_payload_type(p->data, MULTIFD_PAYLOAD_NONE);
++            multifd_send_data_clear(p->data);
+ 
+             /*
+              * Making sure p->data is published before saying "we're
+diff --git a/migration/multifd.h b/migration/multifd.h
+index a8f3e4838c01..a0853622153e 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -139,6 +139,9 @@ static inline bool multifd_payload_empty(MultiFDSendData *data)
+ static inline void multifd_set_payload_type(MultiFDSendData *data,
+                                             MultiFDPayloadType type)
+ {
++    assert(multifd_payload_empty(data));
++    assert(type != MULTIFD_PAYLOAD_NONE);
++
+     data->type = type;
+ }
+ 
+@@ -288,6 +291,8 @@ static inline void multifd_send_prepare_header(MultiFDSendParams *p)
+ void multifd_channel_connect(MultiFDSendParams *p, QIOChannel *ioc);
+ bool multifd_send(MultiFDSendData **send_data);
+ MultiFDSendData *multifd_send_data_alloc(void);
++void multifd_send_data_clear(MultiFDSendData *data);
++void multifd_send_data_free(MultiFDSendData *data);
+ 
+ static inline uint32_t multifd_ram_page_size(void)
+ {
 
