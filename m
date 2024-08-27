@@ -2,50 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6321C96161B
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 029CC96162D
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:58:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj0RU-0003YW-9k; Tue, 27 Aug 2024 13:57:20 -0400
+	id 1sj0Q5-0005id-Mp; Tue, 27 Aug 2024 13:55:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0Qj-00006n-0W
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:56:33 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sj0Py-0005MO-Nj
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:55:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0Qg-0001eo-PZ
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:56:32 -0400
-Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
- (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0QY-0002Qh-Ai; Tue, 27 Aug 2024 19:56:22 +0200
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-To: Peter Xu <peterx@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v2 17/17] vfio/migration: Multifd device state transfer
- support - send side
-Date: Tue, 27 Aug 2024 19:54:36 +0200
-Message-ID: <1429fc59079d99ca035b31303892d807868dc6c0.1724701542.git.maciej.szmigiero@oracle.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1724701542.git.maciej.szmigiero@oracle.com>
-References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sj0Pw-0001aI-R6
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:55:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1724781343;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=+7FDSigdPhQFBGGYHOIWVAHBn210TIYe7QY6ZLlGEfw=;
+ b=R/4PPEJG5E9n0Np6cFVSHAUs50WuPTZRdGz1L1+s/tlxQk2Vrn2aKcTKyoMuiJoDTY15bW
+ hNZvjRE0d0JrQRoBabAJP+wEwlRSuVic1kUbYFZ1PuOFS59IKsPAInsOKhTKiNGEQV4jZS
+ OMGKa7aZitxY/7GpkHW2VM6OPoSpKuA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-639-wwkWZo6_PFumEVlKvEmoiw-1; Tue, 27 Aug 2024 13:55:42 -0400
+X-MC-Unique: wwkWZo6_PFumEVlKvEmoiw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-428e48612acso63154295e9.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 10:55:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724781341; x=1725386141;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+7FDSigdPhQFBGGYHOIWVAHBn210TIYe7QY6ZLlGEfw=;
+ b=DnpEpzjsgNJBPVufJEKZRMcY/vtzl1ykMruWWw6+yTagF+CHe9ePcfRDKBD38UoZ+r
+ Eh39EUACy1eVfgks3RtFhR5oDvGdL6Sx/g8GNiHReg0D12s0sqyYjlCc060OkidUozcM
+ 4f/vvEoAi0phruWPfy64KKqn6s30J5boFE7J53j/AKmWasdB/t6V957DnZGH7vHpoHPu
+ FpvwJEjvAPg+NACaqRDq+0tcRoz5lVDmahwfMGNv60h82L4STeKUb6Va9SqNpGERPg5h
+ ZWv3gV/A/6ANA3yX9VyYdsCle34KWEwpZP4gm0X3VIBdbHYEfUWTyDCZabX+gk6PhI6W
+ xRDA==
+X-Gm-Message-State: AOJu0YxqjH1wQJZtzfVOQfC6Pf/5+RKcoJnLh4YjvsUzxNVmlyDUIES5
+ 7AyURi27/gjr6mkiPinZA6luKFOUpcBOpe8PbUXgy8/ciZiFGaiRjfkSA58bRGp5VJc1coPxdxo
+ 5TCTDhHvXp5re72up6sB3+rIsQ1PNOmDWpYJ8ILFHlhBJHb0Reuhe
+X-Received: by 2002:a05:600c:4f83:b0:426:6ee7:d594 with SMTP id
+ 5b1f17b1804b1-42acd543423mr104470925e9.7.1724781340850; 
+ Tue, 27 Aug 2024 10:55:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3a5W8DRpOdGexU5HDOqnmGONYKtaBiCLHbFopSw233HP+st8Rggmkz9KRIJC7t//53CH6Kw==
+X-Received: by 2002:a05:600c:4f83:b0:426:6ee7:d594 with SMTP id
+ 5b1f17b1804b1-42acd543423mr104470715e9.7.1724781339863; 
+ Tue, 27 Aug 2024 10:55:39 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c742:a100:9dd2:c523:f5fd:da19?
+ (p200300cbc742a1009dd2c523f5fdda19.dip0.t-ipconnect.de.
+ [2003:cb:c742:a100:9dd2:c523:f5fd:da19])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42ac514e04dsm193768945e9.6.2024.08.27.10.55.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Aug 2024 10:55:39 -0700 (PDT)
+Message-ID: <fe612a16-8626-40be-81a2-2e8287b20fa2@redhat.com>
+Date: Tue, 27 Aug 2024 19:55:38 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] softmmu/physmem: fix memory leak in
+ dirty_memory_extend()
+To: Peter Xu <peterx@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-stable@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20240827083715.257768-1-david@redhat.com>
+ <CAJSP0QX+NiO7An468cKMFja3TGmgGzyNcPZjEtpPrfi3Q_1xgw@mail.gmail.com>
+ <36402f8f-dc97-4eaf-8197-1df2bc01720b@redhat.com>
+ <CAJSP0QWed1ZjRZ2pkUgx0j+9bepKg1hfaWXQLzP613xsiHtwyw@mail.gmail.com>
+ <Zs4SA8CYxK15CG_5@x1n>
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <Zs4SA8CYxK15CG_5@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=37.28.154.113;
- envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -64,257 +156,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+On 27.08.24 19:50, Peter Xu wrote:
+> On Tue, Aug 27, 2024 at 01:28:02PM -0400, Stefan Hajnoczi wrote:
+>> On Tue, 27 Aug 2024 at 13:24, David Hildenbrand <david@redhat.com> wrote:
+>>>
+>>> On 27.08.24 18:52, Stefan Hajnoczi wrote:
+>>>> On Tue, 27 Aug 2024 at 04:38, David Hildenbrand <david@redhat.com> wrote:
+>>>>>
+>>>>> As reported by Peter, we might be leaking memory when removing the
+>>>>> highest RAMBlock (in the weird ram_addr_t space), and adding a new one.
+>>>>>
+>>>>> We will fail to realize that we already allocated bitmaps for more
+>>>>> dirty memory blocks, and effectively discard the pointers to them.
+>>>>>
+>>>>> Fix it by getting rid of last_ram_page() and simply storing the number
+>>>>> of dirty memory blocks that have been allocated. We'll store the number
+>>>>> of blocks along with the actual pointer to keep it simple.
+>>>>>
+>>>>> Looks like this leak was introduced as we switched from using a single
+>>>>> bitmap_zero_extend() to allocating multiple bitmaps:
+>>>>> bitmap_zero_extend() relies on g_renew() which should have taken care of
+>>>>> this.
+>>>>>
+>>>>> Resolves: https://lkml.kernel.org/r/CAFEAcA-k7a+VObGAfCFNygQNfCKL=AfX6A4kScq=VSSK0peqPg@mail.gmail.com
+>>>>> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+>>>>> Fixes: 5b82b703b69a ("memory: RCU ram_list.dirty_memory[] for safe RAM hotplug")
+>>>>> Cc: qemu-stable@nongnu.org
+>>>>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
+>>>>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>>>>> Cc: Peter Xu <peterx@redhat.com>
+>>>>> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+>>>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>>>> ---
+>>>>>    include/exec/ramlist.h |  1 +
+>>>>>    system/physmem.c       | 44 ++++++++++++++----------------------------
+>>>>>    2 files changed, 16 insertions(+), 29 deletions(-)
+>>>>>
+>>>>> diff --git a/include/exec/ramlist.h b/include/exec/ramlist.h
+>>>>> index 2ad2a81acc..f2a965f293 100644
+>>>>> --- a/include/exec/ramlist.h
+>>>>> +++ b/include/exec/ramlist.h
+>>>>> @@ -41,6 +41,7 @@ typedef struct RAMBlockNotifier RAMBlockNotifier;
+>>>>>    #define DIRTY_MEMORY_BLOCK_SIZE ((ram_addr_t)256 * 1024 * 8)
+>>>>>    typedef struct {
+>>>>>        struct rcu_head rcu;
+>>>>> +    unsigned int num_blocks;
+>>>>
+>>>> The maximum amount of memory supported by unsigned int is:
+>>>> (2 ^ 32 - 1) * 4KB * DIRTY_MEMORY_BLOCK_SIZE
+>>>> = ~32 exabytes
+>>>>
+>>>
+>>> True, should we simply use ram_addr_t ?
+>>
+>> Sounds good to me. In practice scalability bottlenecks are likely with
+>> those memory sizes and it will be necessary to change how guest memory
+>> is organized anyway. But it doesn't hurt to make this counter
+>> future-proof.
+> 
+> IMHO it'll be nice to only use ram_addr_t when a variable is describing the
+> ramblock address space (with an offset, or a length there).  In this case
+> it is a pure counter for how many bitmap chunks we allocated, so maybe
+> "unsigned long" or "uint64_t" would suite more?
+> 
+> Though I'd think "unsigned int" is good enough per the calculation Stefan
+> provided.
 
-Implement the multifd device state transfer via additional per-device
-thread inside save_live_complete_precopy_thread handler.
+Likely best, "ram_addr_t" requires including "exec/cpu-common.h".
 
-Switch between doing the data transfer in the new handler and doing it
-in the old save_state handler depending on the
-x-migration-multifd-transfer device property value.
+So let's stick to "unsigned int" for now. Likely best to also include for consistency:
 
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
----
- hw/vfio/migration.c           | 169 ++++++++++++++++++++++++++++++++++
- hw/vfio/trace-events          |   2 +
- include/hw/vfio/vfio-common.h |   1 +
- 3 files changed, 172 insertions(+)
+diff --git a/system/physmem.c b/system/physmem.c
+index fa48ff8333..e1391492fd 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -1789,14 +1789,14 @@ void qemu_ram_msync(RAMBlock *block, ram_addr_t start, ram_addr_t length)
+  /* Called with ram_list.mutex held */
+  static void dirty_memory_extend(ram_addr_t new_ram_size)
+  {
+-    ram_addr_t new_num_blocks = DIV_ROUND_UP(new_ram_size,
+-                                             DIRTY_MEMORY_BLOCK_SIZE);
++    unsigned int new_num_blocks = DIV_ROUND_UP(new_ram_size,
++                                               DIRTY_MEMORY_BLOCK_SIZE);
+      int i;
+  
+      for (i = 0; i < DIRTY_MEMORY_NUM; i++) {
+          DirtyMemoryBlocks *old_blocks;
+          DirtyMemoryBlocks *new_blocks;
+-        ram_addr_t old_num_blocks = 0;
++        unsigned int old_num_blocks = 0;
+          int j;
+  
+          old_blocks = qatomic_rcu_read(&ram_list.dirty_memory[i]);
 
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 57c1542528dc..67996aa2df8b 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -655,6 +655,16 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
-     uint64_t stop_copy_size = VFIO_MIG_DEFAULT_DATA_BUFFER_SIZE;
-     int ret;
- 
-+    /* Make a copy of this setting at the start in case it is changed mid-migration */
-+    migration->multifd_transfer = vbasedev->migration_multifd_transfer;
-+
-+    if (migration->multifd_transfer && !migration_has_device_state_support()) {
-+        error_setg(errp,
-+                   "%s: Multifd device transfer requested but unsupported in the current config",
-+                   vbasedev->name);
-+        return -EINVAL;
-+    }
-+
-     qemu_put_be64(f, VFIO_MIG_FLAG_DEV_SETUP_STATE);
- 
-     vfio_query_stop_copy_size(vbasedev, &stop_copy_size);
-@@ -835,10 +845,20 @@ static int vfio_save_iterate(QEMUFile *f, void *opaque)
- static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
- {
-     VFIODevice *vbasedev = opaque;
-+    VFIOMigration *migration = vbasedev->migration;
-     ssize_t data_size;
-     int ret;
-     Error *local_err = NULL;
- 
-+    if (migration->multifd_transfer) {
-+        /*
-+         * Emit dummy NOP data, vfio_save_complete_precopy_thread()
-+         * does the actual transfer.
-+         */
-+        qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
-+        return 0;
-+    }
-+
-     trace_vfio_save_complete_precopy_started(vbasedev->name);
- 
-     /* We reach here with device state STOP or STOP_COPY only */
-@@ -864,12 +884,159 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
-     return ret;
- }
- 
-+static int vfio_save_complete_precopy_async_thread_config_state(VFIODevice *vbasedev,
-+                                                                char *idstr,
-+                                                                uint32_t instance_id,
-+                                                                uint32_t idx)
-+{
-+    g_autoptr(QIOChannelBuffer) bioc = NULL;
-+    QEMUFile *f = NULL;
-+    int ret;
-+    g_autofree VFIODeviceStatePacket *packet = NULL;
-+    size_t packet_len;
-+
-+    bioc = qio_channel_buffer_new(0);
-+    qio_channel_set_name(QIO_CHANNEL(bioc), "vfio-device-config-save");
-+
-+    f = qemu_file_new_output(QIO_CHANNEL(bioc));
-+
-+    ret = vfio_save_device_config_state(f, vbasedev, NULL);
-+    if (ret) {
-+        return ret;
-+    }
-+
-+    ret = qemu_fflush(f);
-+    if (ret) {
-+        goto ret_close_file;
-+    }
-+
-+    packet_len = sizeof(*packet) + bioc->usage;
-+    packet = g_malloc0(packet_len);
-+    packet->idx = idx;
-+    packet->flags = VFIO_DEVICE_STATE_CONFIG_STATE;
-+    memcpy(&packet->data, bioc->data, bioc->usage);
-+
-+    if (!multifd_queue_device_state(idstr, instance_id,
-+                                    (char *)packet, packet_len)) {
-+        ret = -1;
-+    }
-+
-+    bytes_transferred += packet_len;
-+
-+ret_close_file:
-+    g_clear_pointer(&f, qemu_fclose);
-+    return ret;
-+}
-+
-+static int vfio_save_complete_precopy_thread(char *idstr,
-+                                             uint32_t instance_id,
-+                                             bool *abort_flag,
-+                                             void *opaque)
-+{
-+    VFIODevice *vbasedev = opaque;
-+    VFIOMigration *migration = vbasedev->migration;
-+    int ret;
-+    g_autofree VFIODeviceStatePacket *packet = NULL;
-+    uint32_t idx;
-+
-+    if (!migration->multifd_transfer) {
-+        /* Nothing to do, vfio_save_complete_precopy() does the transfer. */
-+        return 0;
-+    }
-+
-+    trace_vfio_save_complete_precopy_thread_started(vbasedev->name,
-+                                                    idstr, instance_id);
-+
-+    /* We reach here with device state STOP or STOP_COPY only */
-+    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
-+                                   VFIO_DEVICE_STATE_STOP, NULL);
-+    if (ret) {
-+        goto ret_finish;
-+    }
-+
-+    packet = g_malloc0(sizeof(*packet) + migration->data_buffer_size);
-+
-+    for (idx = 0; ; idx++) {
-+        ssize_t data_size;
-+        size_t packet_size;
-+
-+        if (qatomic_read(abort_flag)) {
-+            ret = -ECANCELED;
-+            goto ret_finish;
-+        }
-+
-+        data_size = read(migration->data_fd, &packet->data,
-+                         migration->data_buffer_size);
-+        if (data_size < 0) {
-+            if (errno != ENOMSG) {
-+                ret = -errno;
-+                goto ret_finish;
-+            }
-+
-+            /*
-+             * Pre-copy emptied all the device state for now. For more information,
-+             * please refer to the Linux kernel VFIO uAPI.
-+             */
-+            data_size = 0;
-+        }
-+
-+        if (data_size == 0)
-+            break;
-+
-+        packet->idx = idx;
-+        packet_size = sizeof(*packet) + data_size;
-+
-+        if (!multifd_queue_device_state(idstr, instance_id,
-+                                        (char *)packet, packet_size)) {
-+            ret = -1;
-+            goto ret_finish;
-+        }
-+
-+        bytes_transferred += packet_size;
-+    }
-+
-+    ret = vfio_save_complete_precopy_async_thread_config_state(vbasedev, idstr,
-+                                                               instance_id,
-+                                                               idx);
-+
-+ret_finish:
-+    trace_vfio_save_complete_precopy_thread_finished(vbasedev->name, ret);
-+
-+    return ret;
-+}
-+
-+static int vfio_save_complete_precopy_begin(QEMUFile *f,
-+                                            char *idstr, uint32_t instance_id,
-+                                            void *opaque)
-+{
-+    VFIODevice *vbasedev = opaque;
-+    VFIOMigration *migration = vbasedev->migration;
-+
-+    if (!migration->multifd_transfer) {
-+        /* Emit dummy NOP data */
-+        qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
-+        return 0;
-+    }
-+
-+    qemu_put_be64(f, VFIO_MIG_FLAG_DEV_DATA_STATE_COMPLETE);
-+    qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
-+
-+    return qemu_fflush(f);
-+}
-+
- static void vfio_save_state(QEMUFile *f, void *opaque)
- {
-     VFIODevice *vbasedev = opaque;
-+    VFIOMigration *migration = vbasedev->migration;
-     Error *local_err = NULL;
-     int ret;
- 
-+    if (migration->multifd_transfer) {
-+        /* Emit dummy NOP data */
-+        qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
-+        return;
-+    }
-+
-     ret = vfio_save_device_config_state(f, opaque, &local_err);
-     if (ret) {
-         error_prepend(&local_err,
-@@ -1119,7 +1286,9 @@ static const SaveVMHandlers savevm_vfio_handlers = {
-     .state_pending_exact = vfio_state_pending_exact,
-     .is_active_iterate = vfio_is_active_iterate,
-     .save_live_iterate = vfio_save_iterate,
-+    .save_live_complete_precopy_begin = vfio_save_complete_precopy_begin,
-     .save_live_complete_precopy = vfio_save_complete_precopy,
-+    .save_live_complete_precopy_thread = vfio_save_complete_precopy_thread,
-     .save_state = vfio_save_state,
-     .load_setup = vfio_load_setup,
-     .load_cleanup = vfio_load_cleanup,
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index 9d2519a28a7e..b1d9c9d5f2e1 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -167,6 +167,8 @@ vfio_save_block(const char *name, int data_size) " (%s) data_size %d"
- vfio_save_cleanup(const char *name) " (%s)"
- vfio_save_complete_precopy(const char *name, int ret) " (%s) ret %d"
- vfio_save_complete_precopy_started(const char *name) " (%s)"
-+vfio_save_complete_precopy_thread_started(const char *name, const char *idstr, uint32_t instance_id) " (%s) idstr %s instance %"PRIu32
-+vfio_save_complete_precopy_thread_finished(const char *name, int ret) " (%s) ret %d"
- vfio_save_device_config_state(const char *name) " (%s)"
- vfio_save_iterate(const char *name, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
- vfio_save_iterate_started(const char *name) " (%s)"
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index fe05acb9a5d1..4578a0ca6a5c 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -72,6 +72,7 @@ typedef struct VFIOMigration {
-     uint64_t mig_flags;
-     uint64_t precopy_init_size;
-     uint64_t precopy_dirty_size;
-+    bool multifd_transfer;
-     bool initial_data_sent;
- 
-     bool save_iterate_run;
+
+> 
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+
+Thanks!
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
