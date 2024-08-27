@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE88961A71
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 01:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDEE961A8C
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 01:24:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj5TM-0003Lp-AS; Tue, 27 Aug 2024 19:19:37 -0400
+	id 1sj5TD-0002xE-0k; Tue, 27 Aug 2024 19:19:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sj5T3-0002Xz-1D
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 19:19:17 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1sj5T5-0002eL-Vr
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 19:19:20 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sj5Sz-0000pQ-ML
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 19:19:16 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2020e83eca1so58261155ad.2
- for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 16:19:13 -0700 (PDT)
+ id 1sj5T1-0000pY-0I
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 19:19:19 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-204f52fe74dso3053445ad.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 16:19:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724800752; x=1725405552;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724800753; x=1725405553;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wKicxsSUoIM+Q8CHwfOLtvkXELhMGHcyX8ahibvlzBY=;
- b=jHTh+ilkAqpg7OCZ9Uf3C5Z2fdHnjwYPlS1gWVbI4hpFjJDB8x7PeqVnTOtOWck6G0
- BdAV8CyPtu6JTVp89g+oP7FALly56PnvTJZ7SiCYJ1EQYYmj6oQeot419NNpE+Ij1MX/
- ZoU246oNU45mUKbmpcCZJXwpY69rJKUCPcDETxXYoJwq59QRyv9cytW87w28CDHqsNWX
- trCqjdBFZDDc8c8vaMu2mDnaxq+UuVMQLc+gJsmyTIYWY4SqiAH1LiRtJQgNP8MQufK4
- SJRhj02+EZ2zLjpY0SGPvAAXksZseSIB0tkoQdyFERBUEVEe7iEM0RDU3AlcKSHGgZZf
- AADw==
+ bh=aoOLJ1vSDf5p0Vfqc4dUxk3Eqww8q10OxxejFUrpUPs=;
+ b=g02zzFLx8gobhKqyCSiJCa/Ics2Mmrgrrknk1YTPScxC9ZL9RTFj7n3SNoWQaYjpHf
+ Mh7RwIniAWG0yku071ms0MYbPrA/YIdK6M3Pz8C0YSb2+PEnwEQ9wzJRPLsxYyujK0cz
+ JB0zY2rYLQkrWVLoMqDX9WK6+sp99HyOx+NQvjk/Z2L9DCW8BVNQmn7m20Ycy1ZPxQRe
+ 1KHc6JNQ6Q0ftH3IJvzU7vaRjnLiXyYJ6+nSmhBaT7FKhIGyWGbCqrWgP7E17fqAfcHQ
+ YMD8RfIDZkxwBrSBk3Lhj6Hj5IyRcbfCb5d+3wydD+uAI7I0x7X1hKkWK599MzwnriWV
+ Az2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724800752; x=1725405552;
+ d=1e100.net; s=20230601; t=1724800753; x=1725405553;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wKicxsSUoIM+Q8CHwfOLtvkXELhMGHcyX8ahibvlzBY=;
- b=Kwbz6KTSVfZpr1YqMWeKroahGTO3RNJgHygLCRF/xwvsnea1zg/i2Bc8n1y8hfBuBw
- z8YeSI4a87BzLQIHKRNzmMl5UHdxt5Jf1N9QIKcbkG9JANN3z5udOPZUjQs1ncQfUteq
- k4njTjm2re9KLxdRbMWAfOVa8KU1CdDCE90B7nySnBYhY0Rb/bUI1ITMJqVkw0Exac/h
- gxO1ZeLPDpkMQMTMV7noF8Drczv9akiHgq4qj7RJdVel2kDpm2qquZi7pophRJ2yg61l
- z3LBSA2Y12t0s2ylmyiERv0cLZIZL/ppoDBoxwKIT2rT/a/own/j5brBrZsuaxej2idi
- UoUg==
+ bh=aoOLJ1vSDf5p0Vfqc4dUxk3Eqww8q10OxxejFUrpUPs=;
+ b=bZ2ccBiOUg18VksvDC8tYSzJbPOBSntFUQlPMCv0OKUjErL+9xubUWWjSnxKyujljZ
+ +URW30S3VWoWXP5ZdJKRxJoFDLqCJ15HWFFyPQ17v96CdAErPE/tgmq9sjzBoRvBC6/h
+ hmT9lSYos4XNM26UHL89SiZLpIIenR3nNog2vAU7VvTXTGoXcCTt3n0cFrc9frreIjlI
+ vHgpHVo3IbRBuYaJoDpj4IPIGmZWnZz989rjrUPKlyWYDYrcMwLpJMOyxMfY8GtBmj7e
+ a07oyjNegmoWX20CZpGaJGBLUlXQK/+f/oUKzsvsYpa2uxPEWDD3c5jvGAVdjH/rn40G
+ TsTQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWscLKjrZQ9HKiNfuFabMWHWnSpYXXnaCPqM9P59P5f6Y2wD0bITuvVBM2VST9tfZ5PLEb67jmaJMXb@nongnu.org
-X-Gm-Message-State: AOJu0YxtOMSagx6tVhBq9CTZKaLx2a7Zih8s/o/DBh1m9VmnS35Uha92
- lBXGMecSqrSYW40ejTvHmpAZIE8I3BUFNKTLJfUuxIirAtU9iPUe6BuaYIkVI1s=
-X-Google-Smtp-Source: AGHT+IGoSmGtqr0bomgMNgtLvy1Ru6xPoeXR3NDWuR5yaozgIOyu7/y1XFZ2wQ7HtXFitcLL8xPsLA==
-X-Received: by 2002:a17:903:230b:b0:200:aa31:dc8d with SMTP id
- d9443c01a7336-2039e52cb0fmr163637595ad.63.1724800752148; 
- Tue, 27 Aug 2024 16:19:12 -0700 (PDT)
+ AJvYcCVaXrwAMc1WtwAqvZbBbAt8Xo36ha3djFRO+0Dadsl5PjU35wLAXEBDDxRPidNwX6mREg6ykPzxHESZ@nongnu.org
+X-Gm-Message-State: AOJu0Yzf2GEdVwQseoLYhttgmMSLCSuqijA8xEgoVErOvOtCFI+mWM4w
+ 8hDFuYWTSMoPthJ1L+8xtH2g8gmN7KOeFeazbDwxLrbenGld1+kYkDO0iaRquH0=
+X-Google-Smtp-Source: AGHT+IHYn6KHMObEsNpk0qA0CvpN+9r3ZY99LW+rC3IeZwuu6QTa8zcxOY2GH8u/15ySi+pEiABONQ==
+X-Received: by 2002:a17:902:c40c:b0:203:a12e:faa7 with SMTP id
+ d9443c01a7336-204f9b9ccbfmr5322005ad.27.1724800753332; 
+ Tue, 27 Aug 2024 16:19:13 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-203b0ee6179sm57785155ad.92.2024.08.27.16.19.11
+ d9443c01a7336-203b0ee6179sm57785155ad.92.2024.08.27.16.19.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2024 16:19:11 -0700 (PDT)
+ Tue, 27 Aug 2024 16:19:13 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, laurent@vivier.eu,
  bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, andy.chiu@sifive.com,
- kito.cheng@sifive.com, Deepak Gupta <debug@rivosinc.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v10 01/21] target/riscv: expose *envcfg csr and priv to
- qemu-user as well
-Date: Tue, 27 Aug 2024 16:18:45 -0700
-Message-ID: <20240827231906.553327-2-debug@rivosinc.com>
+ kito.cheng@sifive.com, Deepak Gupta <debug@rivosinc.com>
+Subject: [PATCH v10 02/21] linux-user/riscv: set priv for qemu-user and
+ defaults for *envcfg
+Date: Tue, 27 Aug 2024 16:18:46 -0700
+Message-ID: <20240827231906.553327-3-debug@rivosinc.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240827231906.553327-1-debug@rivosinc.com>
 References: <20240827231906.553327-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=debug@rivosinc.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=debug@rivosinc.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,61 +99,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Execution environment config CSR controlling user env and current
-privilege state shouldn't be limited to qemu-system only. *envcfg
-CSRs control enabling of features in next lesser mode. In some cases
-bits *envcfg CSR can be lit up by kernel as part of kernel policy or
-software (user app) can choose to opt-in by issuing a system call
-(e.g. prctl). In case of qemu-user, it should be no different because
-qemu is providing underlying execution environment facility and thus
-either should provide some default value in *envcfg CSRs or react to
-system calls (prctls) initiated from application.
-
-`henvcfg` has been left for qemu-system only because it is not expected
-that someone will use qemu-user where application is expected to have
-hypervisor underneath which is controlling its execution environment. If
-such a need arises then `henvcfg` could be exposed as well.
-
-Relevant discussion:
-https://lore.kernel.org/all/CAKmqyKOTVWPFep2msTQVdUmJErkH+bqCcKEQ4hAnyDFPdWKe0Q@mail.gmail.com/
+set priv to be PRV_U for qemu-user on riscv. And set default value for
+*envcfg CSR.
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/cpu.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ linux-user/riscv/cpu_loop.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 87742047ce..270a2a031c 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -226,8 +226,12 @@ struct CPUArchState {
-     uint32_t elf_flags;
- #endif
+diff --git a/linux-user/riscv/cpu_loop.c b/linux-user/riscv/cpu_loop.c
+index 52c49c2e42..7a68e8717b 100644
+--- a/linux-user/riscv/cpu_loop.c
++++ b/linux-user/riscv/cpu_loop.c
+@@ -32,6 +32,10 @@ void cpu_loop(CPURISCVState *env)
+     int trapnr;
+     target_ulong ret;
  
--#ifndef CONFIG_USER_ONLY
-     target_ulong priv;
-+    /* CSRs for execution environment configuration */
-+    uint64_t menvcfg;
-+    target_ulong senvcfg;
++    env->priv = PRV_U;
++    env->senvcfg = 0;
++    env->menvcfg = 0;
 +
-+#ifndef CONFIG_USER_ONLY
-     /* This contains QEMU specific information about the virt state. */
-     bool virt_enabled;
-     target_ulong geilen;
-@@ -429,12 +433,9 @@ struct CPUArchState {
-     target_ulong upmmask;
-     target_ulong upmbase;
- 
--    /* CSRs for execution environment configuration */
--    uint64_t menvcfg;
-     uint64_t mstateen[SMSTATEEN_MAX_COUNT];
-     uint64_t hstateen[SMSTATEEN_MAX_COUNT];
-     uint64_t sstateen[SMSTATEEN_MAX_COUNT];
--    target_ulong senvcfg;
-     uint64_t henvcfg;
- #endif
-     target_ulong cur_pmmask;
+     for (;;) {
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
 -- 
 2.44.0
 
