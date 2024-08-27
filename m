@@ -2,78 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD3E9617EC
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 21:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DF89617FA
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 21:28:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj1kA-0001py-5T; Tue, 27 Aug 2024 15:20:42 -0400
+	id 1sj1rD-0001Cw-U6; Tue, 27 Aug 2024 15:27:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sj1k7-0001oi-NW
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 15:20:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sj1k4-0002Wi-H7
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 15:20:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724786434;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YQovZ2FvGToAlKG75tverA4PubUQXFXHEniq77HGqAM=;
- b=UBi/U9ulH3UqYzPVWTjsKRVQFgTBc+WHca90hBKN5ro//N0jcSpek90ugJKT9DKMMeYNMr
- cavxcdQJctyLWZ4B5gPqWlM3vi8rnfy3lGbMNBnkKUL16DTGvK+UD0+waO09Dlc2AQf8GA
- fRPJNC+AOxKJuSY75ey8FzT814wRSwc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-JPusnosgPLWZgi6LSIOI4Q-1; Tue,
- 27 Aug 2024 15:20:27 -0400
-X-MC-Unique: JPusnosgPLWZgi6LSIOI4Q-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sj1r3-0000xu-9S
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 15:27:49 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sj1r1-00037H-K5
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 15:27:49 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A7C2A19560AB; Tue, 27 Aug 2024 19:20:25 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.119])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6E2FC19560AA; Tue, 27 Aug 2024 19:20:24 +0000 (UTC)
-Date: Tue, 27 Aug 2024 15:20:23 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: paul@xen.org
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, pkrempa@redhat.com,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Anthony PERARD <anthony@xenproject.org>
-Subject: Re: [PATCH v2 0/2] qdev-monitor: avoid QemuOpts in QMP device_add
-Message-ID: <20240827192023.GA937897@fedora.redhat.com>
-References: <20240801140552.1021693-1-stefanha@redhat.com>
- <87wmkz5oqk.fsf@pond.sub.org>
- <20240812181534.GC69160@fedora.redhat.com>
- <3a9f0e9a-3873-4cd0-8773-c2ed6230da81@xen.org>
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 887A51FB85;
+ Tue, 27 Aug 2024 19:27:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724786865; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7xmP7O7+DvFcHl4SYE92FwnBm6/iVVJX2kanx745/yE=;
+ b=bebBscmp5jldVAC91pubTNlgRC6BZtMqxIoaDyh8uHM03mm1+a6oW2uv17ucfPQT7X9aoa
+ wUjtxHa+HbtW+hEgVIEkHzxEBTpcQI5Irm1aFAU5+RwUOKsRtsDsXtrvQK6SesHvnGCct+
+ OYlp2OrWB0OFdnwLvm6VEbhSdymA0LQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724786865;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7xmP7O7+DvFcHl4SYE92FwnBm6/iVVJX2kanx745/yE=;
+ b=LuWnffm1/a7q2nSRnRBA7iERdzGVNa7MpVLmBQ+6h+QMIS0PB7JOl1iULGM2ZxUMwO5ZDq
+ AAsG3S1s939skIAQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bebBscmp;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LuWnffm1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724786865; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7xmP7O7+DvFcHl4SYE92FwnBm6/iVVJX2kanx745/yE=;
+ b=bebBscmp5jldVAC91pubTNlgRC6BZtMqxIoaDyh8uHM03mm1+a6oW2uv17ucfPQT7X9aoa
+ wUjtxHa+HbtW+hEgVIEkHzxEBTpcQI5Irm1aFAU5+RwUOKsRtsDsXtrvQK6SesHvnGCct+
+ OYlp2OrWB0OFdnwLvm6VEbhSdymA0LQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724786865;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7xmP7O7+DvFcHl4SYE92FwnBm6/iVVJX2kanx745/yE=;
+ b=LuWnffm1/a7q2nSRnRBA7iERdzGVNa7MpVLmBQ+6h+QMIS0PB7JOl1iULGM2ZxUMwO5ZDq
+ AAsG3S1s939skIAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0425813724;
+ Tue, 27 Aug 2024 19:27:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id Lnb8LrAozmbNbgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 27 Aug 2024 19:27:44 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero"
+ <mail@maciej.szmigiero.name>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH v6 18/19] migration/multifd: Stop changing the packet on
+ recv side
+In-Reply-To: <Zs4jeFpSgp1osMn3@x1n>
+References: <20240827174606.10352-1-farosas@suse.de>
+ <20240827174606.10352-19-farosas@suse.de> <Zs4V8HajCAzNS3ZZ@x1n>
+ <87plptx0so.fsf@suse.de> <Zs4jeFpSgp1osMn3@x1n>
+Date: Tue, 27 Aug 2024 16:27:42 -0300
+Message-ID: <87h6b5wytt.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="N0tVOeh+JhGgb5uc"
-Content-Disposition: inline
-In-Reply-To: <3a9f0e9a-3873-4cd0-8773-c2ed6230da81@xen.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 887A51FB85
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,66 +123,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Peter Xu <peterx@redhat.com> writes:
 
---N0tVOeh+JhGgb5uc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Tue, Aug 27, 2024 at 03:45:11PM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>> 
+>> > On Tue, Aug 27, 2024 at 02:46:05PM -0300, Fabiano Rosas wrote:
+>> >> @@ -254,12 +250,10 @@ int multifd_ram_unfill_packet(MultiFDRecvParams *p, Error **errp)
+>> >>          return 0;
+>> >>      }
+>> >>  
+>> >> -    /* make sure that ramblock is 0 terminated */
+>> >> -    packet->ramblock[255] = 0;
+>> >> -    p->block = qemu_ram_block_by_name(packet->ramblock);
+>> >> +    ramblock_name = g_strndup(packet->ramblock, 255);
+>> >
+>> > I understand we want to move to a const*, however this introduces a 256B
+>> > allocation per multifd packet, which we definitely want to avoid.. I wonder
+>> > whether that's worthwhile just to make it const. :-(
+>> >
+>> > I don't worry too much on the const* and vars pointed being abused /
+>> > updated when without it - the packet struct is pretty much limited only to
+>> > be referenced in this unfill function, and then we will do the load based
+>> > on MultiFDRecvParams* later anyway.  So personally I'd rather lose the
+>> > const* v.s. one allocation.
+>> >
+>> > Or we could also sanity check byte 255 to be '\0' (which, AFAIU, should
+>> > always be the case..), then we can get both benefits.
+>> 
+>> We can't because it breaks compat. Previous QEMUs didn't zero the
+>> packet.
+>
+> Ouch!
+>
+> Then.. shall we still try to avoid the allocation?
 
-On Tue, Aug 13, 2024 at 09:18:46AM +0100, Paul Durrant wrote:
-> On 12/08/2024 19:15, Stefan Hajnoczi wrote:
-> > On Fri, Aug 02, 2024 at 10:10:43AM +0200, Markus Armbruster wrote:
-> > > Can we additionally cut out the QemuOpts middleman in
-> > > usbback_portid_add()?
-> > >=20
-> > >      qdict =3D qdict_new();
-> > >      qdict_put_str(qdict, "driver", "usb-host");
-> > >      tmp =3D g_strdup_printf("%s.0", usbif->xendev.qdev.id);
-> > >      qdict_put_str(qdict, "bus", tmp);
-> > >      g_free(tmp);
-> > >      tmp =3D g_strdup_printf("%s-%u", usbif->xendev.qdev.id, port);
-> > >      qdict_put_str(qdict, "id", tmp);
-> > >      g_free(tmp);
-> > >      qdict_put_int(qdict, "port", port);
-> > >      qdict_put_int(qdict, "hostbus", atoi(busid));
-> > >      qdict_put_str(qdict, "hostport", portname);
-> > >      opts =3D qemu_opts_from_qdict(qemu_find_opts("device"), qdict,
-> > >                                  &error_abort);
-> > >      usbif->ports[port - 1].dev =3D USB_DEVICE(qdev_device_add(opts, =
-&local_err));
-> > >=20
-> > > Trying this is up to you!
-> >=20
-> > Paul or Anthony: Do you know how to run usbback_portid_add() for
-> > testing? I would like to make sure that suggested the code change works
-> > and don't have experience running the Xen code in QEMU.
->=20
-> Sorry, PV USB is not something I'm familiar with.
-> https://wiki.xenproject.org/wiki/Xen_USB_Passthrough suggests that `xl
-> usbdev-attach` might be the way to test... but you'd need a system with X=
-en
-> installed and suitably configured guest, so not trivial to set up.
+Can I strcpy it to the stack?
 
-Thanks for the pointer! I will leave the usbback_portid_add()
-refactoring because I don't have a setup for testing it.
+char idstr[256];
 
-Stefan
-
---N0tVOeh+JhGgb5uc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmbOJvcACgkQnKSrs4Gr
-c8gk3AgArfAGsYRTFQVSE8rN5VSpkSj/iinU8wj5PPe0r0hnnQSuGdLpc60t1n2o
-6UL195FNtS86INESz33H6aPBCr4bJiaQC/TA4kvzohDHsAjTJT8ccMgqxLh/y6FB
-b4OL1BoS9Jkk42csPGnAFLxwEdP2UwG+h3wSJigOnzqZYGEBkgQQD3YZtejk7UG7
-TRHS7ME8Eq+zgbVOZrrIBErrprU2lDUz+wf6ZRdRKYJXKnXXJhsfVpc0ZpJegXNL
-u6ygatRIkjY1pl86uJZh1ozphNepdsTg7WOFvkwmom/VOLvHAIunYsgc/QhlKGuc
-KlBdjNtbCPGRue/wEwhCEmYZqkmX4A==
-=kImC
------END PGP SIGNATURE-----
-
---N0tVOeh+JhGgb5uc--
-
+strncpy(&idstr, packet->ramblock, 256);
+idstr[255] = 0;
 
