@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA82961987
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C83961986
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 23:54:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj488-0002ry-TN; Tue, 27 Aug 2024 17:53:36 -0400
+	id 1sj489-0002u8-H8; Tue, 27 Aug 2024 17:53:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1sj486-0002qS-Gr
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 17:53:34 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1sj487-0002qx-1U
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 17:53:35 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
- id 1sj485-0000uS-0E
+ id 1sj485-0000uU-CE
  for qemu-devel@nongnu.org; Tue, 27 Aug 2024 17:53:34 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-7cd76b56e59so2101813a12.2
- for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 14:53:32 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2d3c0d587e4so4274270a91.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 14:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724795611; x=1725400411; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VyksA4hwbgCNHrndNdLtbY6rlOpmDyueTnwvm2JzCLI=;
- b=DyD+G0pBwl+AwMdZbR4QNZLd7LmkeOOJtBOV2fKuMTPcKBQKnESA/q+ABg+RPon87z
- qJcQIrcQ5GnUhzcDalNc45E9ZNgWvl95DZhSqMIe22MJsqXRiTu44jDc5j9GEJjquGnV
- EWD66LtWg976RMm1c/jL77lK3JRtXpozP7fmeth4cpUVttTX7twHx1zBj1tts65AiOxP
- heNiDjurAROA2bkXIr0K92PINu4C91pFRFuSnzyPxwGAmUPM5HbmF3ltLIm0NON4qTpa
- M49AX5Sn0R6Su2ywoQEmpAyqe8BdIPhU0ZDXXIEVPW47kES3l4lOYAm/RpAQg8vdXS7o
- QVAA==
+ d=gmail.com; s=20230601; t=1724795612; x=1725400412; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=witZCXcE7KUJfJbgxXp83/OpY1XcCKoZDa2zRQ4MDjQ=;
+ b=MsDTq9cBwxv0WDWHGTauKGUsep/srzJMkpKVo6g8PjHbSq6BT4QzkxWT1pzSXBiZE4
+ DtNpW3prKURfwhhmjFOh7jPVxmLE4jaEvtecrbkUniCLnoLG/DR1yzQLoUyqsf3EgCC7
+ SF+aEWhMBJm9P3FeAOoHgJgcC45tdgiJ0zauuTFfcaxVJTE4SiiyUyP0Q23E5amjGdLw
+ O3PXhT/yWo3Zs9oDSOySurgJyeWPM7mqSPgOd8HXN1E37h9mMosuQjQn8osuoVWGHBY2
+ 9w9ocw7mXWL3xKaAuaBZB+pfE3Nql4dkocO3xWIIXPYtY2tmtYQJCTOnN8rYYohFY//e
+ 9sPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724795611; x=1725400411;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VyksA4hwbgCNHrndNdLtbY6rlOpmDyueTnwvm2JzCLI=;
- b=pTQJxhtu7Wdpd8dV2E9A8LqlMbVbsFmZjp70GfvM+uydusXH7cqJgOroQVVe2y3N0p
- f4EiKkFT7qbOdNmUi37CCX/ljpAJTs+Uga4ZpqfGFmosq5nrtzh/QsQQFkLXijhRrMN+
- u36VJRYFccd53BeBMpeSFtLyODR51ENIy0uitKS6yUi3wk135wVlaKbTn6RYJvHxM5ds
- HFadxzhza1coRk8m+NSIKBrZ0WrMaLI+qYRfGq+cSoCZPeNzY60jqj5Sciq0k9g561Vq
- zHgfqEySmKfMqps60yIJ4RM8z2orGJ9e6Qu8VqvZJwydpbehQXIHG8YpY730PiGSZ36v
- M84g==
-X-Gm-Message-State: AOJu0YzSBOAmBz+CWYOJ01HdOzWXtys8qJpmdPhDsk2UBohc4yru9WY6
- HrJ89/FOI9km7aASAj5YENV9Zck3h5TJsbnV6LxtESwkDExOXS67msqL6YZprPoAGg==
-X-Google-Smtp-Source: AGHT+IFxsnMYFs3eCpuVzeOQE2K9vtcBZCwRQeKl1hdGgZF2W7BSCxe5L8bPMiOl5jomARskl3LNZQ==
-X-Received: by 2002:a17:90b:3144:b0:2d3:dca0:89b7 with SMTP id
- 98e67ed59e1d1-2d646bd1a32mr18213803a91.3.1724795610910; 
- Tue, 27 Aug 2024 14:53:30 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1724795612; x=1725400412;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=witZCXcE7KUJfJbgxXp83/OpY1XcCKoZDa2zRQ4MDjQ=;
+ b=ZLfd0aOjOarxfYxKv4HnXKqAqx2THaswA/o34MRReVLULNVBxe8HwsEh67YZDaP9f+
+ 33ZGruY/hzvwwxAB+hZa+LL5VlfrYsDCgZqL05FGySfL1vfRUdgp9sWkIlnceGn7l+r9
+ o4sA/vewPotykC1I4vXJyzcRsLF4/b9vLHwCneCYUkEgU1hu+wsRE1NF9jH3nPnVEC7H
+ 9LjbJSBbzzxpW3yWYjYN9TMtLIwzLArgRFhPpm8WAPTZUWsAknX2PE9pCBXinOgLi4qM
+ yQ4EeEnZLRMQWSTLc4gyuUVZ9kobGJUb2w9QoCt8TCj+0hNkdi1yCdS4DCdiClLRfNrp
+ vaLg==
+X-Gm-Message-State: AOJu0YyO1nR3dfvFs7HNriLU05rZ7bz/EBJ6Yh4jR92fdsIBFwAzTqfl
+ Q6SXpBe8M2S7s2J9CAl60X11vlrw/jsyBOmTctf/1Q0stOtod7J0JN4NtLRDrdFMtg==
+X-Google-Smtp-Source: AGHT+IH5xAmuMekrohjpciXkJSaV1vThH65JzTaBSEZGwm6NvkM2F9Cwh7Xy8MX2ZQaghPnr/A6UCQ==
+X-Received: by 2002:a17:90b:4ac3:b0:2cb:50fa:b01e with SMTP id
+ 98e67ed59e1d1-2d8441dad61mr73485a91.41.1724795611616; 
+ Tue, 27 Aug 2024 14:53:31 -0700 (PDT)
 Received: from chaos.lan ([50.46.173.74]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d613b1f0d5sm12671445a91.55.2024.08.27.14.53.30
+ 98e67ed59e1d1-2d613b1f0d5sm12671445a91.55.2024.08.27.14.53.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2024 14:53:30 -0700 (PDT)
+ Tue, 27 Aug 2024 14:53:31 -0700 (PDT)
 From: Rowan Hart <rowanbhart@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Rowan Hart <rowanbhart@gmail.com>
-Subject: [PATCH v3 0/2] plugins: add plugin API to read guest memory
-Date: Tue, 27 Aug 2024 14:53:27 -0700
-Message-ID: <20240827215329.248434-1-rowanbhart@gmail.com>
+Subject: [PATCH v3 1/2] plugins: add plugin API to read guest memory
+Date: Tue, 27 Aug 2024 14:53:28 -0700
+Message-ID: <20240827215329.248434-2-rowanbhart@gmail.com>
 X-Mailer: git-send-email 2.46.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240827215329.248434-1-rowanbhart@gmail.com>
+References: <20240827215329.248434-1-rowanbhart@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=rowanbhart@gmail.com; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=rowanbhart@gmail.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,35 +93,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds one API function to the QEMU plugin API
+Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ include/qemu/qemu-plugin.h   | 32 +++++++++++++++++++++++++++++++-
+ plugins/api.c                | 20 ++++++++++++++++++++
+ plugins/qemu-plugins.symbols |  1 +
+ 3 files changed, 52 insertions(+), 1 deletion(-)
 
-bool qemu_plugin_read_memory_vaddr(vaddr, GByteArray *, size_t);
-
-The API allows reading memory from an arbitrary guest virtual
-address, which is useful for many things but the motivating examples
-are:
-
-* Virtual Machine Introspection (VMI)
-* Accurate and easier execution trace extraction
-* Debugging and logging tools
-
-An example of its use is added to the existing syscalls plugin,
-which now has an option to hexdump the buf argument to any write(2)
-syscalls which occur.
-
-For v3, fixed a missing '*' in a comment which caused a doc build issue.
-
-Rowan Hart (2):
-  plugins: add plugin API to read guest memory
-  plugins: add option to dump write argument to syscall plugin
-
- docs/about/emulation.rst     |  14 ++++-
- include/qemu/qemu-plugin.h   |  32 +++++++++-
- plugins/api.c                |  20 ++++++
- plugins/qemu-plugins.symbols |   1 +
- tests/tcg/plugins/syscall.c  | 117 +++++++++++++++++++++++++++++++++++
- 5 files changed, 182 insertions(+), 2 deletions(-)
-
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index c71c705b69..e4068f823b 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -57,11 +57,19 @@ typedef uint64_t qemu_plugin_id_t;
+  * - Remove qemu_plugin_register_vcpu_{tb, insn, mem}_exec_inline.
+  *   Those functions are replaced by *_per_vcpu variants, which guarantee
+  *   thread-safety for operations.
++ *
++ * version 3:
++ * - modified arguments and return value of qemu_plugin_insn_data to copy
++ *   the data into a user-provided buffer instead of returning a pointer
++ *   to the data.
++ *
++ * version 4:
++ * - added qemu_plugin_read_memory_vaddr
+  */
+ 
+ extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
+ 
+-#define QEMU_PLUGIN_VERSION 3
++#define QEMU_PLUGIN_VERSION 4
+ 
+ /**
+  * struct qemu_info_t - system information for plugins
+@@ -852,6 +860,28 @@ typedef struct {
+ QEMU_PLUGIN_API
+ GArray *qemu_plugin_get_registers(void);
+ 
++/**
++ * qemu_plugin_read_memory_vaddr() - read from memory using a virtual address
++ *
++ * @addr: A virtual address to read from
++ * @data: A byte array to store data into
++ * @len: The number of bytes to read, starting from @addr
++ *
++ * @len bytes of data is read starting at @addr and stored into @data. If @data
++ * is not large enough to hold @len bytes, it will be expanded to the necessary
++ * size, reallocating if necessary. @len must be greater than 0.
++ *
++ * This function does not ensure writes are flushed prior to reading, so
++ * callers should take care when calling this function in plugin callbacks to
++ * avoid attempting to read data which may not yet be written and should use
++ * the memory callback API instead.
++ *
++ * Returns true on success and false on failure.
++ */
++QEMU_PLUGIN_API
++bool qemu_plugin_read_memory_vaddr(uint64_t addr,
++                                          GByteArray *data, size_t len);
++
+ /**
+  * qemu_plugin_read_register() - read register for current vCPU
+  *
+diff --git a/plugins/api.c b/plugins/api.c
+index 2ff13d09de..cb7d818918 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -527,6 +527,26 @@ GArray *qemu_plugin_get_registers(void)
+     return create_register_handles(regs);
+ }
+ 
++bool qemu_plugin_read_memory_vaddr(vaddr addr, GByteArray *data, size_t len)
++{
++    g_assert(current_cpu);
++
++    if (len == 0) {
++        return false;
++    }
++
++    g_byte_array_set_size(data, len);
++
++    int result = cpu_memory_rw_debug(current_cpu, addr, data->data,
++                                data->len, 0);
++
++    if (result < 0) {
++        return false;
++    }
++
++    return true;
++}
++
+ int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
+ {
+     g_assert(current_cpu);
+diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
+index ca773d8d9f..3ad479a924 100644
+--- a/plugins/qemu-plugins.symbols
++++ b/plugins/qemu-plugins.symbols
+@@ -20,6 +20,7 @@
+   qemu_plugin_num_vcpus;
+   qemu_plugin_outs;
+   qemu_plugin_path_to_binary;
++  qemu_plugin_read_memory_vaddr;
+   qemu_plugin_read_register;
+   qemu_plugin_register_atexit_cb;
+   qemu_plugin_register_flush_cb;
 -- 
 2.46.0
 
