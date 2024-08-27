@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88FC95FD8A
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 00:55:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C7395FDFD
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 02:28:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1siibY-0004fW-Tk; Mon, 26 Aug 2024 18:54:33 -0400
+	id 1sik35-0005GG-4l; Mon, 26 Aug 2024 20:27:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1siibW-0004eC-8g
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 18:54:30 -0400
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1siibT-0004m5-QB
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 18:54:29 -0400
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-70941cb73e9so3074582a34.2
- for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 15:54:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724712866; x=1725317666; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cZ+UPthX4rP3cF8jdMDC2pgiddv2d2zUseAD97wxdnw=;
- b=cD79mE1W5RpPebWR/Ncb5Uw2LaUCCWrSDqB50Fp+PcNgU9X6U3KwEH9Zuk7lJ9r7YI
- Klx7YUrnwMUlk5YneTRqfTGJA6Ka8+2cbbC8nfKlWF2WWbdGG0QdoO5xr3hu44DAyK0J
- 6CwxqEiFfUkUBEUI7WIJrEBC9nW/m+d4cdzHe3hMLjgq9babnKE2SCrARQGRvAivck0q
- +6bM1bRqOK9xhtgA6JsK8ev5GpRTbx/oyOcs9pai3/5Fc0+61RNjc4byUTVPnRBu6mDy
- kale0+Ql4w/+d29snYfE1Q40BW6rI1tPEqFhAuOIeHp4cl7HAqgwBzDmNRoTZgPqkLyi
- WVmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724712866; x=1725317666;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cZ+UPthX4rP3cF8jdMDC2pgiddv2d2zUseAD97wxdnw=;
- b=pk5dts5vI4Xfxr5bj4VuVDt8WRqhhWJ7RI6GEPSLt0DhqUAbMW//2BcRfPURnyKJvT
- gfD0C7ZeiD746IFwhpu7Nx168FEFshs2DP6Q1+e73XEwEM2k3d2q18Gs3L9Q9glt7Lh3
- gu0GBCwXTXiAHfpO6YZTCM8UG/8qLhUt0eaoi+Lp3C6t4taoqDsl8DiOhFBjKARqwrbN
- 8QoGf/Ugjbk4sM+viwBbFOq2CPzBdN9Ope9vFfOZ1rQe6tOYiNc1xGcLSBpgQjnsRePM
- zpeWpqAROFJWoJojs6PH7tfiwFk/Dovilp5PelA/ggUKFVLX7v0uPlqEDZlVhGm2B/SP
- TBzg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWhnn63gAkRNzE7Gls8DRkKgksYqDE+Qw0/ZxULd0eS7UCduu14Lf2aVn4LbQElfkx/5PdpxcgCI2lf@nongnu.org
-X-Gm-Message-State: AOJu0YzthebJHDK6FTZQndD2VxVDwmsyJc5fJ6IYIj5y/2IKsxfC7Xci
- ppn3QlBXWAT82qMYUvax+l67cUQiQ2LsLDewLFZn27ArDoqXVoDz2nQiYJjK37Q=
-X-Google-Smtp-Source: AGHT+IFPmHbwsQoEZpnj3yAQa+nc/3+sJEgQuty8Ki47hETLRCqvOeVRZPNYlly0KlIGtmobIEP7PQ==
-X-Received: by 2002:a05:6808:1143:b0:3da:ae19:ef0 with SMTP id
- 5614622812f47-3de2a911286mr14045453b6e.49.1724712866219; 
- Mon, 26 Aug 2024 15:54:26 -0700 (PDT)
-Received: from ?IPV6:2001:8004:5110:2082:f68a:6871:1edc:69fe?
- ([2001:8004:5110:2082:f68a:6871:1edc:69fe])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7cd9ad6e563sm8177198a12.81.2024.08.26.15.54.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Aug 2024 15:54:25 -0700 (PDT)
-Message-ID: <26e49a3e-76f1-4705-9322-a7825238bc60@linaro.org>
-Date: Tue, 27 Aug 2024 08:54:18 +1000
+ (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1sik31-0005F9-6V
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 20:26:59 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1sik2y-0007Lr-F4
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 20:26:58 -0400
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47QJGRq2006780;
+ Tue, 27 Aug 2024 00:26:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ cc:content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=qcppdkim1; bh=0PBXELqD6uwJtusDu94PP9
+ fSgDMH1M6FEAboEL9D4fc=; b=SWNNFFWchaPTYNpgfmFAmnI5SC6BldqH8F94wA
+ +haPd/zz+/3Lq2cwtbf2tyHX7BdX+bcIwqBLiUwQZEceCjjCkAIolibe4J1aMxbD
+ gP85sZSd39BAL0mPHetefPaTeyBqTEQhlGaRd5c/UiyqRgSQoFpqaowuigzJMMzW
+ 5qmgbiRmrJEheK+TgeeeZoFyiAqEn/PsfTMZBOh6wiC+JgGUXTPls69SbLmAIuZu
+ G14wlzYmmINza0DGHhGm07CM8egsbZnGpOzYcwelS19lt0XN2Mw2vyQlC2S61c9+
+ gA4a9f62BPE054hvZT6YpR+cvPrGsOMQ8WdDxIkxVp4xQIQA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41796kw578-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Aug 2024 00:26:52 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
+ [10.47.209.196])
+ by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47R0QpnZ026024
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Aug 2024 00:26:51 GMT
+Received: from hu-bcain-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Mon, 26 Aug 2024 17:26:50 -0700
+From: Brian Cain <bcain@quicinc.com>
+To: <qemu-devel@nongnu.org>
+CC: <bcain@quicinc.com>, <quic_mathbern@quicinc.com>, <sidneym@quicinc.com>,
+ <quic_mliebel@quicinc.com>, <ltaylorsimpson@gmail.com>
+Subject: [PATCH v2 0/2] target/hexagon: event codes
+Date: Mon, 26 Aug 2024 17:26:29 -0700
+Message-ID: <20240827002631.3492200-1-bcain@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/17] bsd-user: Add RISC-V thread setup and
- initialization support
-To: Ajeet Singh <itachis6234@gmail.com>, qemu-devel@nongnu.org
-Cc: Warner Losh <imp@bsdimp.com>, Mark Corbin <mark@dibsco.co.uk>,
- Ajeet Singh <itachis@FreeBSD.org>, Jessica Clarke <jrtc27@jrtc27.com>,
- Kyle Evans <kevans@FreeBSD.org>
-References: <20240824045635.8978-1-itachis@FreeBSD.org>
- <20240824045635.8978-10-itachis@FreeBSD.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240824045635.8978-10-itachis@FreeBSD.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: EYMcY0c4CtzB4xSuAZR68Utc0HEoe4z2
+X-Proofpoint-ORIG-GUID: EYMcY0c4CtzB4xSuAZR68Utc0HEoe4z2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-26_17,2024-08-26_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=622
+ malwarescore=0 impostorscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ spamscore=0 clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2407110000 definitions=main-2408270001
+Received-SPF: pass client-ip=205.220.180.131; envelope-from=bcain@quicinc.com;
+ helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,27 +94,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/24/24 14:56, Ajeet Singh wrote:
-> From: Mark Corbin<mark@dibsco.co.uk>
-> 
-> Implemented functions for setting up and initializing threads in the
-> RISC-V architecture.
-> The 'target_thread_set_upcall' function sets up the stack pointer,
-> program counter, and function argument for new threads.
-> The 'target_thread_init' function initializes thread registers based on
-> the provided image information.
-> 
-> Signed-off-by: Mark Corbin<mark@dibsco.co.uk>
-> Signed-off-by: Ajeet Singh<itachis@FreeBSD.org>
-> Co-authored-by: Jessica Clarke<jrtc27@jrtc27.com>
-> Co-authored-by: Kyle Evans<kevans@FreeBSD.org>
-> ---
->   bsd-user/riscv/target_arch_thread.h | 47 +++++++++++++++++++++++++++++
->   1 file changed, 47 insertions(+)
->   create mode 100644 bsd-user/riscv/target_arch_thread.h
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
+Q2hhbmdlcyBpbiB2MjoKCiogRml4ZWQgdGhlIEhFWF9FVkVOVF97SU5WQUxJRCosUFJJViosZXRj
+fSAtIHNldmVyYWwgb2YgdGhlc2Ugd2VyZSBhY3R1YWxseQpjYXVzZSBjb2RlcywganVzdCBsaWtl
+IFRSQVAwLgoqIEkgY29tYmluZWQgIlJlbmFtZSBIRVhfRVhDUF8gPT4gSEVYX0VWRU5UXyIgYW5k
+ICJyZW5hbWUgSEVYX0VWRU5UX1RSQVAwPT5IRVhfQ0FVU0VfVFJBUDAiCmludG8gYSBzaW5nbGUg
+Y29tbWl0LgoKQnJpYW4gQ2FpbiAoMik6CiAgdGFyZ2V0L2hleGFnb246IHJlbmFtZSBIRVhfRVhD
+UF8qPT5IRVhfQ0FVU0VfKgogIHRhcmdldC9oZXhhZ29uOiBhZGQgZW51bXMgZm9yIGV2ZW50LCBj
+YXVzZQoKIGxpbnV4LXVzZXIvaGV4YWdvbi9jcHVfbG9vcC5jIHwgIDQgKystLQogdGFyZ2V0L2hl
+eGFnb24vY3B1LmggICAgICAgICAgfCAgMiArLQogdGFyZ2V0L2hleGFnb24vY3B1X2JpdHMuaCAg
+ICAgfCAyMSArKysrKysrKysrKysrKy0tLS0tLS0KIHRhcmdldC9oZXhhZ29uL2dlbl90Y2cuaCAg
+ICAgIHwgIDIgKy0KIHRhcmdldC9oZXhhZ29uL3RyYW5zbGF0ZS5jICAgIHwgIDYgKysrLS0tCiA1
+IGZpbGVzIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDE0IGRlbGV0aW9ucygtKQoKLS0gCjIu
+MzQuMQoK
 
