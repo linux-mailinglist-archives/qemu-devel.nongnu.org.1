@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DC296000A
+	by mail.lfdr.de (Postfix) with ESMTPS id C974B960008
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 05:51:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sinER-0005At-6J; Mon, 26 Aug 2024 23:50:59 -0400
+	id 1sinER-0005D4-L7; Mon, 26 Aug 2024 23:50:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <doug@schmorgal.com>)
- id 1sinEL-00050q-Sz
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 23:50:55 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1sinEN-000553-Pp
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 23:50:57 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <doug@schmorgal.com>)
- id 1sinEI-0003qK-LE
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 23:50:53 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1fc47abc040so43308285ad.0
- for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 20:50:49 -0700 (PDT)
+ id 1sinEJ-0003qY-Rg
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 23:50:54 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-20230059241so40781015ad.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 20:50:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=schmorgal.com; s=google; t=1724730649; x=1725335449; darn=nongnu.org;
+ d=schmorgal.com; s=google; t=1724730650; x=1725335450; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ror+zQ+DasxDMrRgs2ZAqV/eDrJt5Rr/T3wV9vKTaPA=;
- b=iwZi6GGqP0SV4O9nSpowq1P4uFAZOFM+HhsXiNFZjFqjR3Z/6r+Zm6X0Np5eIk9SZZ
- IvWgpbJigdxxQCgPj+y3dm4FEA+c6mufnaQtbArIbFaPVzq1qUAFXtGoO/j2v+WPpbLN
- D4vUD8uNLpDzU8eCupNI2RV8++NF35sUBYxXY=
+ bh=S0zsQlf6Fpb3LogkSdeHLWACnHhbNDLVL/P8RxdypHM=;
+ b=emOTH1OSvNprDeGur9l+DepiM4vZ7VkUVv5X63f73hsn/eErEjxDNdRYOwhIywBIEc
+ 5aeDabqQbpjUkSSyoz2rSyOYpwc6ePpEjRpkkFZAQvIiJCsHOXqJ1Si7zwOy/dmVdWMU
+ Jt2bcM+feFoOec+1LbFkouMrJL6WWHKQaqrrg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724730649; x=1725335449;
+ d=1e100.net; s=20230601; t=1724730650; x=1725335450;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ror+zQ+DasxDMrRgs2ZAqV/eDrJt5Rr/T3wV9vKTaPA=;
- b=DZXFqyPu6kA+q8oeZPP8fia4ETbFyVlA2u0OYyG/I44epK7BqRvKBVz/tytXpDAQai
- 1u2y4Gn3RFtVm84GPiZNDnfVz/KlnkOqqUsX6gkhcliKzydEx6AY8uDuRrEJZpIHfQ9E
- HeEs90j2zAEQKTdUdBaT0R78xztQUuajHQFp5UqBr3KN0raulIPwm2oLNNL5yKAedF0C
- ucjR/1RDFq3e/vZymyueFDiK9f90IB8zD3/MrLe2tMtZoaWbaxpMcVBKvkYNsk4hwaeS
- N1qgk4NpWurCJP4AQeBIdfgcqDX3IyZ01yP7aWaKOjqu+8thDyI15Mvkib+We3pI1IkI
- mvPA==
+ bh=S0zsQlf6Fpb3LogkSdeHLWACnHhbNDLVL/P8RxdypHM=;
+ b=Dzotwy4DUp9BXTpGkTrdmogXbP8nHeSRdP0KhcJuUMQ0s9IHjDHCLjTJEfVqgcouk4
+ 9xJ4jtlNRwtqWIDrRU+wzPfoDLHinNao4hdTjp63iLFOll4LF/3MaKw68Oi/KwPRDUSc
+ UmIkqoZ6grlruX0rgXmND+/8opEGMOgNH8mFc1ktSqzegTdPFW6PZHioPytAh2WYjqKC
+ Z85NTYf+DIo072m4SB9mDCRycz5XEAxKuz25hUGFAUtjQlrIqhS85LLrj1YTmUuftiVR
+ sqJMSzbOFr6ysSqnCK4TSHLI8Yj9T8TWQLnXXjzKK6hO4lVJYdlOYLcUTz2tTTLH/5Ok
+ KRcQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWBCkuaWM+T04IhlkWEtZq3APuaqI3p7HKSHiltumwENPVqPhmOxlm6HzULKSCDpesbeL2ii4TA2mnE@nongnu.org
-X-Gm-Message-State: AOJu0YzICoqVOqadSEohgFy77WnMVaUKsbwPHJTKH1vpeYEGvJpLK0Kd
- dbZdENxtBj45W6NLQrL7ZStslnHzTHYek2e5XVs6yxty0wL6lnpSjErPwbITfKU=
-X-Google-Smtp-Source: AGHT+IH7r2rul8mzFc9QMCi4nmCHwJCYg4Z6YP/mq3st+xfgjYV5Tas+S2/vWDMwDPjdw1MAYnFUzg==
-X-Received: by 2002:a17:902:db09:b0:1fc:6a13:a39f with SMTP id
- d9443c01a7336-2039e48a2eemr167277755ad.25.1724730648755; 
- Mon, 26 Aug 2024 20:50:48 -0700 (PDT)
+ AJvYcCWIWSzuAN1V12lOnzC3H97RAjjLXa6RMcla0HG2tkcahq/kKkuVzVn6iFa0DnSgF/aI9vPJwXa+ik8s@nongnu.org
+X-Gm-Message-State: AOJu0YwmpLgmcWllxE2N03grMJgL4cyZK+HLlfNHbKfiFwEhD9IX755f
+ Zx0yBXB1YRbz3+Tlh3AIYrQ0qGwvqUZA9ibnIviXLNqjcDfnNIWz76nJEt3L+lo=
+X-Google-Smtp-Source: AGHT+IEwuUQ3gLat4m6or9KyVLa/RrfyK5pIfIYJe9KC8cESOTG7v7uh7oE0g8/jcAIfTVwoHF6kEQ==
+X-Received: by 2002:a17:903:2c7:b0:201:f1b5:24ac with SMTP id
+ d9443c01a7336-2039e51279bmr139896365ad.54.1724730650264; 
+ Mon, 26 Aug 2024 20:50:50 -0700 (PDT)
 Received: from doug-ryzen-5700G.. ([50.37.200.153])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-203855dd269sm74503625ad.135.2024.08.26.20.50.48
+ d9443c01a7336-203855dd269sm74503625ad.135.2024.08.26.20.50.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Aug 2024 20:50:48 -0700 (PDT)
+ Mon, 26 Aug 2024 20:50:49 -0700 (PDT)
 From: Doug Brown <doug@schmorgal.com>
 To: Francisco Iglesias <francisco.iglesias@amd.com>,
  Pavel Pisa <pisa@cmp.felk.cvut.cz>
 Cc: Jason Wang <jasowang@redhat.com>, Paolo Bonzini <bonzini@gnu.org>,
  qemu-devel@nongnu.org, Doug Brown <doug@schmorgal.com>
-Subject: [PATCH v2 3/7] hw/net/can/xlnx-versal-canfd: Translate CAN ID
- registers
-Date: Mon, 26 Aug 2024 20:49:23 -0700
-Message-Id: <20240827034927.66659-4-doug@schmorgal.com>
+Subject: [PATCH v2 4/7] hw/net/can/xlnx-versal-canfd: Handle flags correctly
+Date: Mon, 26 Aug 2024 20:49:24 -0700
+Message-Id: <20240827034927.66659-5-doug@schmorgal.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240827034927.66659-1-doug@schmorgal.com>
 References: <20240827034927.66659-1-doug@schmorgal.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=doug@schmorgal.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=doug@schmorgal.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,121 +92,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previously the emulated CAN ID register was being set to the exact same
-value stored in qemu_can_frame.can_id. This doesn't work correctly
-because the Xilinx IP core uses a different bit arrangement than
-qemu_can_frame for all of its ID registers. Correct this problem for
-both RX and TX, including RX filtering.
+Add support for QEMU_CAN_FRMF_ESI and QEMU_CAN_FRMF_BRS flags, and
+ensure frame->flags is always initialized to 0.
+
+Note that the Xilinx IP core doesn't allow manually setting the ESI bit
+during transmits, so it's only implemented for the receive case.
 
 Signed-off-by: Doug Brown <doug@schmorgal.com>
-Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 ---
- hw/net/can/xlnx-versal-canfd.c | 53 ++++++++++++++++++++++++++++++++--
- 1 file changed, 50 insertions(+), 3 deletions(-)
+ hw/net/can/xlnx-versal-canfd.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
-index 8968672b84..1704b558d0 100644
+index 1704b558d0..47631917ab 100644
 --- a/hw/net/can/xlnx-versal-canfd.c
 +++ b/hw/net/can/xlnx-versal-canfd.c
-@@ -869,6 +869,8 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
-     uint32_t val = 0;
-     uint32_t dlc_reg_val = 0;
-     uint32_t dlc_value = 0;
-+    uint32_t id_reg_val = 0;
-+    bool is_rtr = false;
+@@ -872,6 +872,8 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
+     uint32_t id_reg_val = 0;
+     bool is_rtr = false;
  
++    frame->flags = 0;
++
      /* Check that reg_num should be within TX register space. */
      assert(reg_num <= R_TB_ID_REGISTER + (NUM_REGS_PER_MSG_SPACE *
-@@ -877,7 +879,20 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
-     dlc_reg_val = s->regs[reg_num + 1];
-     dlc_value = FIELD_EX32(dlc_reg_val, TB0_DLC_REGISTER, DLC);
+                                           s->cfg.tx_fifo));
+@@ -913,7 +915,7 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
+          *  15                         49 - 64
+          */
  
--    frame->can_id = s->regs[reg_num];
-+    id_reg_val = s->regs[reg_num];
-+    if (FIELD_EX32(id_reg_val, TB_ID_REGISTER, IDE)) {
-+        frame->can_id = (FIELD_EX32(id_reg_val, TB_ID_REGISTER, ID) << 18) |
-+                        (FIELD_EX32(id_reg_val, TB_ID_REGISTER, ID_EXT)) |
-+                        QEMU_CAN_EFF_FLAG;
-+        if (FIELD_EX32(id_reg_val, TB_ID_REGISTER, RTR_RRS)) {
-+            is_rtr = true;
-+        }
-+    } else {
-+        frame->can_id = FIELD_EX32(id_reg_val, TB_ID_REGISTER, ID);
-+        if (FIELD_EX32(id_reg_val, TB_ID_REGISTER, SRR_RTR_RRS)) {
-+            is_rtr = true;
-+        }
-+    }
+-        frame->flags = QEMU_CAN_FRMF_TYPE_FD;
++        frame->flags |= QEMU_CAN_FRMF_TYPE_FD;
  
-     if (FIELD_EX32(dlc_reg_val, TB0_DLC_REGISTER, FDF)) {
-         /*
-@@ -923,6 +938,10 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
-         } else {
+         if (dlc_value < 8) {
              frame->can_dlc = dlc_value;
+@@ -921,6 +923,10 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
+             assert((dlc_value - 8) < ARRAY_SIZE(canfd_dlc_array));
+             frame->can_dlc = canfd_dlc_array[dlc_value - 8];
          }
 +
-+        if (is_rtr) {
-+            frame->can_id |= QEMU_CAN_RTR_FLAG;
++        if (FIELD_EX32(dlc_reg_val, TB0_DLC_REGISTER, BRS)) {
++            frame->flags |= QEMU_CAN_FRMF_BRS;
 +        }
-     }
- 
-     for (j = 0; j < frame->can_dlc; j++) {
-@@ -948,6 +967,33 @@ static void process_cancellation_requests(XlnxVersalCANFDState *s)
-     canfd_update_irq(s);
- }
- 
-+static uint32_t frame_to_reg_id(const qemu_can_frame *frame)
-+{
-+    uint32_t id_reg_val = 0;
-+    const bool is_canfd_frame = frame->flags & QEMU_CAN_FRMF_TYPE_FD;
-+    const bool is_rtr = !is_canfd_frame && (frame->can_id & QEMU_CAN_RTR_FLAG);
+     } else {
+         /*
+          * FD Format bit not set that means it is a CAN Frame.
+@@ -1058,6 +1064,13 @@ static void store_rx_sequential(XlnxVersalCANFDState *s,
+                     dlc_reg_val = FIELD_DP32(0, RB_DLC_REGISTER, DLC, 8 + i);
+                 }
+             }
 +
-+    if (frame->can_id & QEMU_CAN_EFF_FLAG) {
-+        id_reg_val |= FIELD_DP32(0, RB_ID_REGISTER, ID,
-+                                 (frame->can_id & QEMU_CAN_EFF_MASK) >> 18);
-+        id_reg_val |= FIELD_DP32(0, RB_ID_REGISTER, ID_EXT,
-+                                 frame->can_id & QEMU_CAN_EFF_MASK);
-+        id_reg_val |= FIELD_DP32(0, RB_ID_REGISTER, IDE, 1);
-+        id_reg_val |= FIELD_DP32(0, RB_ID_REGISTER, SRR_RTR_RRS, 1);
-+        if (is_rtr) {
-+            id_reg_val |= FIELD_DP32(0, RB_ID_REGISTER, RTR_RRS, 1);
-+        }
-+    } else {
-+        id_reg_val |= FIELD_DP32(0, RB_ID_REGISTER, ID,
-+                                 frame->can_id & QEMU_CAN_SFF_MASK);
-+        if (is_rtr) {
-+            id_reg_val |= FIELD_DP32(0, RB_ID_REGISTER, SRR_RTR_RRS, 1);
-+        }
-+    }
-+
-+    return id_reg_val;
-+}
-+
- static void store_rx_sequential(XlnxVersalCANFDState *s,
-                                 const qemu_can_frame *frame,
-                                 uint32_t fill_level, uint32_t read_index,
-@@ -999,7 +1045,7 @@ static void store_rx_sequential(XlnxVersalCANFDState *s,
-                                                     NUM_REGS_PER_MSG_SPACE));
-         }
++            if (frame->flags & QEMU_CAN_FRMF_BRS) {
++                dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, BRS, 1);
++            }
++            if (frame->flags & QEMU_CAN_FRMF_ESI) {
++                dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, ESI, 1);
++            }
+         } else {
+             is_canfd_frame = false;
  
--        s->regs[store_location] = frame->can_id;
-+        s->regs[store_location] = frame_to_reg_id(frame);
- 
-         dlc = frame->can_dlc;
- 
-@@ -1090,11 +1136,12 @@ static void update_rx_sequential(XlnxVersalCANFDState *s,
-     if (s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER]) {
-         uint32_t acceptance_filter_status =
-                                 s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER];
-+        const uint32_t reg_id = frame_to_reg_id(frame);
- 
-         for (i = 0; i < 32; i++) {
-             if (acceptance_filter_status & 0x1) {
-                 uint32_t msg_id_masked = s->regs[R_AFMR_REGISTER + 2 * i] &
--                                         frame->can_id;
-+                                         reg_id;
-                 uint32_t afir_id_masked = s->regs[R_AFIR_REGISTER + 2 * i] &
-                                           s->regs[R_AFMR_REGISTER + 2 * i];
-                 uint16_t std_msg_id_masked = FIELD_EX32(msg_id_masked,
 -- 
 2.34.1
 
