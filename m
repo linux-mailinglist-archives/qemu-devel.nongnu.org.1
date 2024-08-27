@@ -2,84 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6207D961A39
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 01:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FC5961A6E
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 01:20:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj5Gd-0005TE-5z; Tue, 27 Aug 2024 19:06:27 -0400
+	id 1sj5T5-0002Xl-SV; Tue, 27 Aug 2024 19:19:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sj5Gb-0005Sd-4P
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 19:06:25 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1sj5T1-0002XE-9v
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 19:19:15 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sj5GZ-00080X-9A
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 19:06:24 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-714287e4083so5434291b3a.2
- for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 16:06:22 -0700 (PDT)
+ id 1sj5Sy-0000pI-UH
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 19:19:15 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-20230059241so51211485ad.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 16:19:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724799981; x=1725404781;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724800751; x=1725405551;
  darn=nongnu.org; 
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=KNvkt4n/+2yRALA7QxJ9ImAlFQ5JbuehZ8EoLiYSyLQ=;
- b=l+9zYAIQm1lo4/2zWIeHdT5B0eHoYPFV+A5AR64yLym5i47hhhoVTMlpnQ4bH6AzdN
- ZN27aHNTqhk45wzdmpYZO2g5L/O3UrcXrPt0T/8mg3vsB7uWiek7m/By8AVUwwKbJM/c
- AyRz+vwjM8KvxRLyzN+1KA6XK1mP+VxsR56APDa1Y5VTimgdMhYelhrlT4lMiO/EkIlL
- RvQ6mPDLiYT9CGgXOuYguUpKhhn26YEvUaipt75Xz/JzqZpCSEJsR6AvVgqROL7UeyKV
- RxpY5t04wMJh1CZo0nKc3cb3ETnL2U6lEEiQdujsshZ+HOS55zKFq8VjqGU0MfU9v6X4
- bLuA==
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SvjKf/rIfA9jaUUelUyDC9d4Ohp0wbx6FhHiek9InnE=;
+ b=ffsoHNJWSgl5cFSsxrout88ZyehDI/PzcYvHPd8PgZ6tudCy5CKoJIAZto3dyaWNTB
+ MT+UEC/VBR4e7VI7sxdKRweUu2FBJrcEllhZDpOIF239Fq69xYQDrXFrAYtxr/yaCq06
+ l4q1HS/0tT3Zhm6rbKB8esmY6U4dnnZ5QKgyL4GYXin1XRHD87wvyr0iMdKxWg+Jmhfd
+ 8uVW1B8HN+YqWdDVeIEbUiIm8y5k0RYzUH/LOXtp/kk6zM7KhVOQhrx86BgF9FjqIXUH
+ T6qpRrFspbJCDZ7yoFYXOuJTj2etrdsMrMybqOpb6aLK6nB7pne70047I0H/5VfZb3P0
+ xZxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724799981; x=1725404781;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KNvkt4n/+2yRALA7QxJ9ImAlFQ5JbuehZ8EoLiYSyLQ=;
- b=PVwZiyQCnoxpzrPVCiablPhl+88ZwWkAvHYA/XRHvN8XibdSlY64cBnAm28f7c9rQD
- UldLWwmXJtlUCUm+p0JuBwE1sp5DlXVqbMugbt6y2cuFyULzDPC/c9C14sLsh/88lpsA
- Ncwwu9nlWT8wMRmI45gNB6YHOB2xZTFbBn3cxlkw+rbXIphgAAJoPX7RMeRs++CmKm7/
- 5a8q9gyhTHQ037wr1P7rbYjLzpapgycY5w98BiiQQd4enASfoTGxXcOk46PHTRF/nsrK
- MUFKmAe2vNwMyoo7EJ8Lj48DUzhH5/7AVKfOAwMJPJcAN1V95INX7wWLizC0AU4+gs/g
- 0C/w==
+ d=1e100.net; s=20230601; t=1724800751; x=1725405551;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SvjKf/rIfA9jaUUelUyDC9d4Ohp0wbx6FhHiek9InnE=;
+ b=KKyD3huwo0yG5/5y7eVfAgxRMtMIvv4WdgyEjSl1pjhUDhzPHbs6msHUhZ6yqX5cjd
+ PpS9ip7AtxQvU+tmu5dfXNh4YOexwzBluTycfMc2rSB6jTK5dvhV7rksYerZVR593Jew
+ QOoZzWKDz9pYvykWpVDu34hnkvnyKbXF+Uesxca9wAv8qVCn+E3TJ+5sGTzQaWMuQM1q
+ 5KdiC+ajzEdeOrrSS8x8hS8ky9QwAcCVbY55Mfy64EYVqh/uXpsjzLWXGRDMYjxXlYX1
+ PFI+yb8mCWO3jfGYFEc3FOVDk0JMRSKIPqEM4oufnBXpD1NAf7O8dO2u8k5TH1tl872I
+ guYg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVPAlq9QVAZNH0i6niRmMtlPOnHhlnkuReqG+rYdrvwFjB9KItHmUMqo4OZ9nxstGsb9Z/sisXvnyCo@nongnu.org
-X-Gm-Message-State: AOJu0YzWP/zd5B7/bpZm9L6sy0ZysjdW4k/Z+fedGMQmLchVAOiQN6Zv
- XtAPEYe5FC7CnIu1ZWQY/9phLViR+Hbnq7Qmy2Ya3vDcNTfhft1U8gE56U/esRs=
-X-Google-Smtp-Source: AGHT+IHwdnJKpPt8O1usG25Lg/pEcjqPSMTrzrZ9MIpIsrAdksIyC8Q1kd+vqN+2r5ZpVpuK65fhsQ==
-X-Received: by 2002:a05:6a00:1953:b0:705:951e:ed84 with SMTP id
- d2e1a72fcca58-71445d4d2e8mr17435241b3a.15.1724799981130; 
- Tue, 27 Aug 2024 16:06:21 -0700 (PDT)
+ AJvYcCUoNElvMkKSMi/WjgCegy0jEYqExDaVemnEbv48fok3HtjOLTPnDwjAngzzPseg+fDUS9nOUCiqjCKL@nongnu.org
+X-Gm-Message-State: AOJu0Yy++i5UrU8JMd5etb9QUrfuRSWDPp9TIthzICcpB/LAWydGrTZX
+ YBsp0L5t7a0FD7hnU8Uev7EzXljjDAYAfIYjB4whZLDot/AQ7w6H+pnPdTQUwpw=
+X-Google-Smtp-Source: AGHT+IGnN4voApBT8H5C5035zpNPR75MKcMXN9eLyN+BcpQyHEQH78KuxbILwSOFr6o4MLFQjHBo5Q==
+X-Received: by 2002:a17:902:f60a:b0:1fb:35c7:8eb2 with SMTP id
+ d9443c01a7336-2039e512374mr149040595ad.55.1724800750921; 
+ Tue, 27 Aug 2024 16:19:10 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7143422ec2esm9051766b3a.27.2024.08.27.16.06.20
+ d9443c01a7336-203b0ee6179sm57785155ad.92.2024.08.27.16.19.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2024 16:06:20 -0700 (PDT)
-Date: Tue, 27 Aug 2024 16:06:18 -0700
+ Tue, 27 Aug 2024 16:19:10 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com,
- Alistair.Francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- jim.shu@sifive.com, andy.chiu@sifive.com,
- richard.henderson@linaro.org, kito.cheng@sifive.com
-Subject: Re: [PATCH v9 11/17] target/riscv: mmu changes for zicfiss shadow
- stack protection
-Message-ID: <Zs5b6mXdYLMzoW0f@debug.ba.rivosinc.com>
-References: <20240826152949.294506-1-debug@rivosinc.com>
- <20240826152949.294506-12-debug@rivosinc.com>
- <CAKmqyKOQcUBjz0PsaYFWnir=FCNA_+7CkrN=5PLH+ayxU+zLkg@mail.gmail.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, laurent@vivier.eu,
+ bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, andy.chiu@sifive.com,
+ kito.cheng@sifive.com, Deepak Gupta <debug@rivosinc.com>
+Subject: [PATCH v10 00/21] riscv support for control flow integrity extensions
+Date: Tue, 27 Aug 2024 16:18:44 -0700
+Message-ID: <20240827231906.553327-1-debug@rivosinc.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKmqyKOQcUBjz0PsaYFWnir=FCNA_+7CkrN=5PLH+ayxU+zLkg@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=debug@rivosinc.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=debug@rivosinc.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,19 +94,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 27, 2024 at 03:59:08PM +1000, Alistair Francis wrote:
->On Tue, Aug 27, 2024 at 1:31 AM Deepak Gupta <debug@rivosinc.com> wrote:
->>
->> zicfiss protects shadow stack using new page table encodings PTE.W=0,
->> PTE.R=0 and PTE.X=0. This encoding is reserved if zicfiss is not
->
->Shouldn't this be R=0, W=1, and X=0 ?
+v10 for riscv zicfilp and zicfiss extensions support in qemu.
 
-Yes. A typo. Will fix.
+Links for previous versions
+[1] - v1 https://lists.nongnu.org/archive/html/qemu-devel/2024-07/msg06017.html
+[2] - v2 https://lore.kernel.org/all/ed23bcbc-fdc4-4492-803c-daa95880375a@linaro.org/T/
+[3] - v3 https://lists.nongnu.org/archive/html/qemu-devel/2024-08/msg01005.html
+[4] - v4 https://lore.kernel.org/all/20240816010711.3055425-6-debug@rivosinc.com/T/
+[5] - v5
++https://lore.kernel.org/all/20240820000129.3522346-1-debug@rivosinc.com/T/#m7b9cc847e739ec86f9569a3ca9f3d9377b01e21
+[6] - v6 https://mail.gnu.org/archive/html/qemu-riscv/2024-08/msg00418.html
+[7] - v7 https://lore.kernel.org/all/20240822082504.3979610-1-debug@rivosinc.com/
+[8] - v8 https://lore.kernel.org/all/20240823190140.4156920-1-debug@rivosinc.com/T/
+[9] - v9 https://lore.kernel.org/all/20240826152949.294506-1-debug@rivosinc.com/
 
->
->Alistair
->
->> implemented or if shadow stack are not enabled.
->> Loads on shadow stack memory are allowed while stores to shadow stack
+---
+v10:
+   - Exposed *envcfg CSR and priv to qemu-user as well and removed special
+     state management for *envcfg related feature enabling for qemu-user
+   - Exposing zicfilp and zicfiss as different patch
+v9:
+   - fix switch case fallthrough for sw_check excp in patch 4
+v8:
+   - fixed up `gen_cmpxchg` to store extra word2 during compile to raise storeAMO always
+v7:
+   - Updated decode_save_opc to take extra argument of excp_uw2 and
+     updated callsites
+   - added a helper for promoting load faults to store faults
+   - Removed stale comments and edited existed comments
+v6:
+   - Added support extra store word 2 for tcg compile and extraction during unwind
+   - Using extra word, AMO instructions and shadow stack instructions can raise store fault
+   - some alignment and cosmetic changes
+   - added vmstate migration support for elp and ssp cpu state
+v5:
+   - Simplified elp tracking and lpad implementation as per suggestion by richard
+   - Simplified shadow stack mmu checks as per suggestion by richard
+   - Converged zicfiss compressed and non-comressed instructions to same translation
+   - Removed trace hooks. Don't need for upstream.
+
+v4:
+   - elp state in cpu is true/false instead of enum and elp cleared
+     unconditionally on trap entry. elp in *status cleared unconditionally on
+     trap return.
+   - Moved logic for branch tracking in instruction translation from tb_start.
+   - fixed zicfiss dependency on 'A'
+   - `cpu_get_fcfien/bcfien` helpers checks fixed to check for extension first.
+   - removed trace hook enums. Instead added dedicated trace helpers wherever needed.
+   - fixed/simplified instruction format in decoder for lpad, sspush, sspopchk
+   - simplified tlb index logic for shadow stack instructions. Removed SUM TB_FLAG
+   - access to ssp CSR is gated on `cpu_get_bcfien` instead of duplicated logic
+   - removed vDSO related changes for now.
+v3:
+   - Removed prctl specific patches because they need to be upstream
+     in kernel first.
+   - As suggested by Richard, added TB flag if fcfi enabled
+   - Re-worked translation for landing pad and shadow stack instructions
+     to not require helper.
+   - tcg helpers only for cfi violation cases so that trace hooks can be
+     placed.
+   - Style changes.
+   - fixes assert condition in accel/tcg
+
+v2:
+   - added missed file (in v1) for shadow stack instructions implementation.
+
+Deepak Gupta (21):
+  target/riscv: expose *envcfg csr and priv to qemu-user as well
+  linux-user/riscv: set priv for qemu-user and defaults for *envcfg
+  target/riscv: Add zicfilp extension
+  target/riscv: Introduce elp state and enabling controls for zicfilp
+  target/riscv: save and restore elp state on priv transitions
+  target/riscv: additional code information for sw check
+  target/riscv: tracking indirect branches (fcfi) for zicfilp
+  target/riscv: zicfilp `lpad` impl and branch tracking
+  disas/riscv: enable `lpad` disassembly
+  target/riscv: Expose zicfilp extension as a cpu property
+  target/riscv: Add zicfiss extension
+  target/riscv: introduce ssp and enabling controls for zicfiss
+  target/riscv: tb flag for shadow stack  instructions
+  target/riscv: mmu changes for zicfiss shadow stack protection
+  target/riscv: AMO operations always raise store/AMO fault
+  target/riscv: update `decode_save_opc` to store extra word2
+  target/riscv: implement zicfiss instructions
+  target/riscv: compressed encodings for sspush and sspopchk
+  disas/riscv: enable disassembly for zicfiss instructions
+  disas/riscv: enable disassembly for compressed sspush/sspopchk
+  target/riscv: Expose zicfiss extension as a cpu property
+
+ disas/riscv.c                                 |  77 ++++++++-
+ disas/riscv.h                                 |   4 +
+ linux-user/riscv/cpu_loop.c                   |   4 +
+ target/riscv/cpu.c                            |  10 ++
+ target/riscv/cpu.h                            |  31 +++-
+ target/riscv/cpu_bits.h                       |  17 ++
+ target/riscv/cpu_cfg.h                        |   2 +
+ target/riscv/cpu_helper.c                     | 155 +++++++++++++++++-
+ target/riscv/cpu_user.h                       |   1 +
+ target/riscv/csr.c                            |  84 ++++++++++
+ target/riscv/insn16.decode                    |   4 +
+ target/riscv/insn32.decode                    |  26 ++-
+ .../riscv/insn_trans/trans_privileged.c.inc   |   8 +-
+ target/riscv/insn_trans/trans_rva.c.inc       |  43 ++++-
+ target/riscv/insn_trans/trans_rvd.c.inc       |   4 +-
+ target/riscv/insn_trans/trans_rvf.c.inc       |   4 +-
+ target/riscv/insn_trans/trans_rvh.c.inc       |   8 +-
+ target/riscv/insn_trans/trans_rvi.c.inc       |  61 ++++++-
+ target/riscv/insn_trans/trans_rvvk.c.inc      |  10 +-
+ target/riscv/insn_trans/trans_rvzacas.c.inc   |   4 +-
+ target/riscv/insn_trans/trans_rvzfh.c.inc     |   4 +-
+ target/riscv/insn_trans/trans_rvzicfiss.c.inc |  75 +++++++++
+ target/riscv/insn_trans/trans_svinval.c.inc   |   6 +-
+ target/riscv/internals.h                      |   3 +
+ target/riscv/machine.c                        |  38 +++++
+ target/riscv/op_helper.c                      |  18 ++
+ target/riscv/pmp.c                            |   5 +
+ target/riscv/pmp.h                            |   3 +-
+ target/riscv/tcg/tcg-cpu.c                    |  25 +++
+ target/riscv/translate.c                      |  45 ++++-
+ 30 files changed, 726 insertions(+), 53 deletions(-)
+ create mode 100644 target/riscv/insn_trans/trans_rvzicfiss.c.inc
+
+-- 
+2.44.0
+
 
