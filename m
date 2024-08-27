@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98471961628
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7B0961615
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 19:57:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj0Q5-0005ns-Sh; Tue, 27 Aug 2024 13:55:53 -0400
+	id 1sj0Q3-0005dX-Ki; Tue, 27 Aug 2024 13:55:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0Px-0005FF-20
+ id 1sj0Px-0005FC-21
  for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:55:45 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0Pl-0001Zc-3H
+ id 1sj0Pr-0001Zm-Q9
  for qemu-devel@nongnu.org; Tue, 27 Aug 2024 13:55:44 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1sj0PX-0002MW-Nt; Tue, 27 Aug 2024 19:55:19 +0200
+ id 1sj0Pc-0002Ml-VW; Tue, 27 Aug 2024 19:55:25 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,9 +31,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v2 05/17] thread-pool: Implement non-AIO (generic) pool support
-Date: Tue, 27 Aug 2024 19:54:24 +0200
-Message-ID: <54947c3a1df713f5b69d8296938f3da41116ffe0.1724701542.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v2 06/17] migration: Add save_live_complete_precopy_{begin,
+ end} handlers
+Date: Tue, 27 Aug 2024 19:54:25 +0200
+Message-ID: <afe0bc649007593edaa77f5f3923acb733a24c6a.1724701542.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1724701542.git.maciej.szmigiero@oracle.com>
 References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
@@ -65,227 +66,119 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Migration code wants to manage device data sending threads in one place.
+These SaveVMHandlers help device provide its own asynchronous
+transmission of the remaining data at the end of a precopy phase.
 
-QEMU has an existing thread pool implementation, however it was limited
-to queuing AIO operations only and essentially had a 1:1 mapping between
-the current AioContext and the ThreadPool in use.
-
-Implement what is necessary to queue generic (non-AIO) work on a ThreadPool
-too.
-
-This brings a few new operations on a pool:
-* thread_pool_set_minmax_threads() explicitly sets the minimum and maximum
-thread count in the pool.
-
-* thread_pool_join() operation waits until all the submitted work requests
-have finished.
-
-* thread_pool_poll() lets the new thread and / or thread completion bottom
-halves run (if they are indeed scheduled to be run).
-It is useful for thread pool users that need to launch or terminate new
-threads without returning to the QEMU main loop.
+In this use case the save_live_complete_precopy_begin handler might
+be used to mark the stream boundary before proceeding with asynchronous
+transmission of the remaining data while the
+save_live_complete_precopy_end handler might be used to mark the
+stream boundary after performing the asynchronous transmission.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- include/block/thread-pool.h   | 10 ++++-
- tests/unit/test-thread-pool.c |  2 +-
- util/thread-pool.c            | 77 ++++++++++++++++++++++++++++++-----
- 3 files changed, 76 insertions(+), 13 deletions(-)
+ include/migration/register.h | 36 ++++++++++++++++++++++++++++++++++++
+ migration/savevm.c           | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+)
 
-diff --git a/include/block/thread-pool.h b/include/block/thread-pool.h
-index b484c4780ea6..1769496056cd 100644
---- a/include/block/thread-pool.h
-+++ b/include/block/thread-pool.h
-@@ -37,9 +37,15 @@ BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func,
-                                    void *arg, GDestroyNotify arg_destroy,
-                                    BlockCompletionFunc *cb, void *opaque);
- int coroutine_fn thread_pool_submit_co(ThreadPoolFunc *func, void *arg);
--void thread_pool_submit(ThreadPoolFunc *func,
--                        void *arg, GDestroyNotify arg_destroy);
-+BlockAIOCB *thread_pool_submit(ThreadPool *pool, ThreadPoolFunc *func,
-+                               void *arg, GDestroyNotify arg_destroy,
-+                               BlockCompletionFunc *cb, void *opaque);
+diff --git a/include/migration/register.h b/include/migration/register.h
+index f60e797894e5..9de123252edf 100644
+--- a/include/migration/register.h
++++ b/include/migration/register.h
+@@ -103,6 +103,42 @@ typedef struct SaveVMHandlers {
+      */
+     int (*save_live_complete_precopy)(QEMUFile *f, void *opaque);
  
-+void thread_pool_join(ThreadPool *pool);
-+void thread_pool_poll(ThreadPool *pool);
++    /**
++     * @save_live_complete_precopy_begin
++     *
++     * Called at the end of a precopy phase, before all
++     * @save_live_complete_precopy handlers and before launching
++     * all @save_live_complete_precopy_thread threads.
++     * The handler might, for example, mark the stream boundary before
++     * proceeding with asynchronous transmission of the remaining data via
++     * @save_live_complete_precopy_thread.
++     * When postcopy is enabled, devices that support postcopy will skip this step.
++     *
++     * @f: QEMUFile where the handler can synchronously send data before returning
++     * @idstr: this device section idstr
++     * @instance_id: this device section instance_id
++     * @opaque: data pointer passed to register_savevm_live()
++     *
++     * Returns zero to indicate success and negative for error
++     */
++    int (*save_live_complete_precopy_begin)(QEMUFile *f,
++                                            char *idstr, uint32_t instance_id,
++                                            void *opaque);
++    /**
++     * @save_live_complete_precopy_end
++     *
++     * Called at the end of a precopy phase, after @save_live_complete_precopy
++     * handlers and after all @save_live_complete_precopy_thread threads have
++     * finished. When postcopy is enabled, devices that support postcopy will
++     * skip this step.
++     *
++     * @f: QEMUFile where the handler can synchronously send data before returning
++     * @opaque: data pointer passed to register_savevm_live()
++     *
++     * Returns zero to indicate success and negative for error
++     */
++    int (*save_live_complete_precopy_end)(QEMUFile *f, void *opaque);
 +
-+void thread_pool_set_minmax_threads(ThreadPool *pool,
-+                                    int min_threads, int max_threads);
- void thread_pool_update_params(ThreadPool *pool, struct AioContext *ctx);
+     /* This runs both outside and inside the BQL.  */
  
- #endif
-diff --git a/tests/unit/test-thread-pool.c b/tests/unit/test-thread-pool.c
-index e4afb9e36292..469c0f7057b6 100644
---- a/tests/unit/test-thread-pool.c
-+++ b/tests/unit/test-thread-pool.c
-@@ -46,7 +46,7 @@ static void done_cb(void *opaque, int ret)
- static void test_submit(void)
- {
-     WorkerTestData data = { .n = 0 };
--    thread_pool_submit(worker_cb, &data, NULL);
-+    thread_pool_submit(NULL, worker_cb, &data, NULL, NULL, NULL);
-     while (data.n == 0) {
-         aio_poll(ctx, true);
-     }
-diff --git a/util/thread-pool.c b/util/thread-pool.c
-index 69a87ee79252..2bf3be875a51 100644
---- a/util/thread-pool.c
-+++ b/util/thread-pool.c
-@@ -60,6 +60,7 @@ struct ThreadPool {
-     QemuMutex lock;
-     QemuCond worker_stopped;
-     QemuCond request_cond;
-+    QemuCond no_requests_cond;
-     QEMUBH *new_thread_bh;
- 
-     /* The following variables are only accessed from one AioContext. */
-@@ -73,6 +74,7 @@ struct ThreadPool {
-     int pending_threads; /* threads created but not running yet */
-     int min_threads;
-     int max_threads;
-+    size_t requests_executing;
- };
- 
- static void *worker_thread(void *opaque)
-@@ -107,6 +109,10 @@ static void *worker_thread(void *opaque)
-         req = QTAILQ_FIRST(&pool->request_list);
-         QTAILQ_REMOVE(&pool->request_list, req, reqs);
-         req->state = THREAD_ACTIVE;
-+
-+        assert(pool->requests_executing < SIZE_MAX);
-+        pool->requests_executing++;
-+
-         qemu_mutex_unlock(&pool->lock);
- 
-         ret = req->func(req->arg);
-@@ -118,6 +124,14 @@ static void *worker_thread(void *opaque)
- 
-         qemu_bh_schedule(pool->completion_bh);
-         qemu_mutex_lock(&pool->lock);
-+
-+        assert(pool->requests_executing > 0);
-+        pool->requests_executing--;
-+
-+        if (pool->requests_executing == 0 &&
-+            QTAILQ_EMPTY(&pool->request_list)) {
-+            qemu_cond_signal(&pool->no_requests_cond);
-+        }
-     }
- 
-     pool->cur_threads--;
-@@ -243,13 +257,16 @@ static const AIOCBInfo thread_pool_aiocb_info = {
-     .cancel_async       = thread_pool_cancel,
- };
- 
--BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func,
--                                   void *arg, GDestroyNotify arg_destroy,
--                                   BlockCompletionFunc *cb, void *opaque)
-+BlockAIOCB *thread_pool_submit(ThreadPool *pool, ThreadPoolFunc *func,
-+                               void *arg, GDestroyNotify arg_destroy,
-+                               BlockCompletionFunc *cb, void *opaque)
- {
-     ThreadPoolElement *req;
-     AioContext *ctx = qemu_get_current_aio_context();
--    ThreadPool *pool = aio_get_thread_pool(ctx);
-+
-+    if (!pool) {
-+        pool = aio_get_thread_pool(ctx);
-+    }
- 
-     /* Assert that the thread submitting work is the same running the pool */
-     assert(pool->ctx == qemu_get_current_aio_context());
-@@ -275,6 +292,18 @@ BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func,
-     return &req->common;
- }
- 
-+BlockAIOCB *thread_pool_submit_aio(ThreadPoolFunc *func,
-+                                   void *arg, GDestroyNotify arg_destroy,
-+                                   BlockCompletionFunc *cb, void *opaque)
-+{
-+    return thread_pool_submit(NULL, func, arg, arg_destroy, cb, opaque);
-+}
-+
-+void thread_pool_poll(ThreadPool *pool)
-+{
-+    aio_bh_poll(pool->ctx);
-+}
-+
- typedef struct ThreadPoolCo {
-     Coroutine *co;
+     /**
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 6bb404b9c86f..d43acbbf20cf 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1496,6 +1496,27 @@ int qemu_savevm_state_complete_precopy_iterable(QEMUFile *f, bool in_postcopy)
+     SaveStateEntry *se;
      int ret;
-@@ -297,18 +326,38 @@ int coroutine_fn thread_pool_submit_co(ThreadPoolFunc *func, void *arg)
-     return tpc.ret;
- }
  
--void thread_pool_submit(ThreadPoolFunc *func,
--                        void *arg, GDestroyNotify arg_destroy)
-+void thread_pool_join(ThreadPool *pool)
- {
--    thread_pool_submit_aio(func, arg, arg_destroy, NULL, NULL);
-+    /* Assert that the thread waiting is the same running the pool */
-+    assert(pool->ctx == qemu_get_current_aio_context());
++    QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
++        if (!se->ops || (in_postcopy && se->ops->has_postcopy &&
++             se->ops->has_postcopy(se->opaque)) ||
++            !se->ops->save_live_complete_precopy_begin) {
++            continue;
++        }
 +
-+    qemu_mutex_lock(&pool->lock);
++        save_section_header(f, se, QEMU_VM_SECTION_END);
 +
-+    if (pool->requests_executing > 0 ||
-+        !QTAILQ_EMPTY(&pool->request_list)) {
-+        qemu_cond_wait(&pool->no_requests_cond, &pool->lock);
++        ret = se->ops->save_live_complete_precopy_begin(f,
++                                                        se->idstr, se->instance_id,
++                                                        se->opaque);
++
++        save_section_footer(f, se);
++
++        if (ret < 0) {
++            qemu_file_set_error(f, ret);
++            return -1;
++        }
 +    }
-+    assert(pool->requests_executing == 0 &&
-+           QTAILQ_EMPTY(&pool->request_list));
 +
-+    qemu_mutex_unlock(&pool->lock);
+     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+         if (!se->ops ||
+             (in_postcopy && se->ops->has_postcopy &&
+@@ -1527,6 +1548,20 @@ int qemu_savevm_state_complete_precopy_iterable(QEMUFile *f, bool in_postcopy)
+                                     end_ts_each - start_ts_each);
+     }
+ 
++    QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
++        if (!se->ops || (in_postcopy && se->ops->has_postcopy &&
++             se->ops->has_postcopy(se->opaque)) ||
++            !se->ops->save_live_complete_precopy_end) {
++            continue;
++        }
 +
-+    aio_bh_poll(pool->ctx);
++        ret = se->ops->save_live_complete_precopy_end(f, se->opaque);
++        if (ret < 0) {
++            qemu_file_set_error(f, ret);
++            return -1;
++        }
++    }
 +
-+    assert(QLIST_EMPTY(&pool->head));
- }
+     trace_vmstate_downtime_checkpoint("src-iterable-saved");
  
--void thread_pool_update_params(ThreadPool *pool, AioContext *ctx)
-+void thread_pool_set_minmax_threads(ThreadPool *pool,
-+                                    int min_threads, int max_threads)
- {
-+    assert(min_threads >= 0);
-+    assert(max_threads > 0);
-+    assert(max_threads >= min_threads);
-+
-     qemu_mutex_lock(&pool->lock);
- 
--    pool->min_threads = ctx->thread_pool_min;
--    pool->max_threads = ctx->thread_pool_max;
-+    pool->min_threads = min_threads;
-+    pool->max_threads = max_threads;
- 
-     /*
-      * We either have to:
-@@ -330,6 +379,12 @@ void thread_pool_update_params(ThreadPool *pool, AioContext *ctx)
-     qemu_mutex_unlock(&pool->lock);
- }
- 
-+void thread_pool_update_params(ThreadPool *pool, AioContext *ctx)
-+{
-+    thread_pool_set_minmax_threads(pool,
-+                                   ctx->thread_pool_min, ctx->thread_pool_max);
-+}
-+
- static void thread_pool_init_one(ThreadPool *pool, AioContext *ctx)
- {
-     if (!ctx) {
-@@ -342,6 +397,7 @@ static void thread_pool_init_one(ThreadPool *pool, AioContext *ctx)
-     qemu_mutex_init(&pool->lock);
-     qemu_cond_init(&pool->worker_stopped);
-     qemu_cond_init(&pool->request_cond);
-+    qemu_cond_init(&pool->no_requests_cond);
-     pool->new_thread_bh = aio_bh_new(ctx, spawn_thread_bh_fn, pool);
- 
-     QLIST_INIT(&pool->head);
-@@ -382,6 +438,7 @@ void thread_pool_free(ThreadPool *pool)
-     qemu_mutex_unlock(&pool->lock);
- 
-     qemu_bh_delete(pool->completion_bh);
-+    qemu_cond_destroy(&pool->no_requests_cond);
-     qemu_cond_destroy(&pool->request_cond);
-     qemu_cond_destroy(&pool->worker_stopped);
-     qemu_mutex_destroy(&pool->lock);
+     return 0;
 
