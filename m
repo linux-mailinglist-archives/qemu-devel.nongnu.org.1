@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C974B960008
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 05:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C3E96000C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 05:52:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sinER-0005D4-L7; Mon, 26 Aug 2024 23:50:59 -0400
+	id 1sinET-0005K2-D1; Mon, 26 Aug 2024 23:51:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <doug@schmorgal.com>)
- id 1sinEN-000553-Pp
+ id 1sinEN-00055j-Vj
  for qemu-devel@nongnu.org; Mon, 26 Aug 2024 23:50:57 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <doug@schmorgal.com>)
- id 1sinEJ-0003qY-Rg
- for qemu-devel@nongnu.org; Mon, 26 Aug 2024 23:50:54 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-20230059241so40781015ad.3
- for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 20:50:51 -0700 (PDT)
+ id 1sinEL-0003qs-LW
+ for qemu-devel@nongnu.org; Mon, 26 Aug 2024 23:50:55 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-7bb75419123so3264053a12.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 20:50:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=schmorgal.com; s=google; t=1724730650; x=1725335450; darn=nongnu.org;
+ d=schmorgal.com; s=google; t=1724730651; x=1725335451; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=S0zsQlf6Fpb3LogkSdeHLWACnHhbNDLVL/P8RxdypHM=;
- b=emOTH1OSvNprDeGur9l+DepiM4vZ7VkUVv5X63f73hsn/eErEjxDNdRYOwhIywBIEc
- 5aeDabqQbpjUkSSyoz2rSyOYpwc6ePpEjRpkkFZAQvIiJCsHOXqJ1Si7zwOy/dmVdWMU
- Jt2bcM+feFoOec+1LbFkouMrJL6WWHKQaqrrg=
+ bh=JnP3Mz0YCYvkvuQOeow8f8X6KYRPaGRZd1rCOK6MrJs=;
+ b=ezn6Jw5yIk/p1LxOfuLXUfwN2RNBV1E5lO5T4x/exItkNiWPnpWTeOiKue205tDyAS
+ t/WSe3abnQJYnUNlf+BDU1lWz+WhODlMp/6eNvjY+ZzzuiyExYhqZoG7McIZdrz+cMoA
+ oyXA+8jtShnR870yNeGLGphSbxHT1a1a2qvLc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724730650; x=1725335450;
+ d=1e100.net; s=20230601; t=1724730651; x=1725335451;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S0zsQlf6Fpb3LogkSdeHLWACnHhbNDLVL/P8RxdypHM=;
- b=Dzotwy4DUp9BXTpGkTrdmogXbP8nHeSRdP0KhcJuUMQ0s9IHjDHCLjTJEfVqgcouk4
- 9xJ4jtlNRwtqWIDrRU+wzPfoDLHinNao4hdTjp63iLFOll4LF/3MaKw68Oi/KwPRDUSc
- UmIkqoZ6grlruX0rgXmND+/8opEGMOgNH8mFc1ktSqzegTdPFW6PZHioPytAh2WYjqKC
- Z85NTYf+DIo072m4SB9mDCRycz5XEAxKuz25hUGFAUtjQlrIqhS85LLrj1YTmUuftiVR
- sqJMSzbOFr6ysSqnCK4TSHLI8Yj9T8TWQLnXXjzKK6hO4lVJYdlOYLcUTz2tTTLH/5Ok
- KRcQ==
+ bh=JnP3Mz0YCYvkvuQOeow8f8X6KYRPaGRZd1rCOK6MrJs=;
+ b=S4wFOiqZXhudGhyn07Ja53JG0+R5ZqNSce5+bAaCBkLFSEMBifAu2ZGtWXO3chSNGo
+ m5a+5nsmlQ+7lDHEgG4FoB6njih91pUM97uTn+TPOXqt5ddk4H9vbUBN7K2Kifi4bx4Z
+ xL4L4CQwiL6F6bq7wkjlkxkHUl1qAKtBw2xZlG2xCzDHKhVbe81nHM4DnaMWBxBQ7xRs
+ pakM826h7o3csM6ehfhxf+/QXImiE58VbXWYflwxaO8bZyFt4h4ONJvZn9smc3Mub7I0
+ 82kQ/tfzUkPfN7dRbHGcjymYn9UmCABK96Kka5DKbso8b7f9DV6yD75tqmLt64MmTJhm
+ VeBQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWIWSzuAN1V12lOnzC3H97RAjjLXa6RMcla0HG2tkcahq/kKkuVzVn6iFa0DnSgF/aI9vPJwXa+ik8s@nongnu.org
-X-Gm-Message-State: AOJu0YwmpLgmcWllxE2N03grMJgL4cyZK+HLlfNHbKfiFwEhD9IX755f
- Zx0yBXB1YRbz3+Tlh3AIYrQ0qGwvqUZA9ibnIviXLNqjcDfnNIWz76nJEt3L+lo=
-X-Google-Smtp-Source: AGHT+IEwuUQ3gLat4m6or9KyVLa/RrfyK5pIfIYJe9KC8cESOTG7v7uh7oE0g8/jcAIfTVwoHF6kEQ==
-X-Received: by 2002:a17:903:2c7:b0:201:f1b5:24ac with SMTP id
- d9443c01a7336-2039e51279bmr139896365ad.54.1724730650264; 
- Mon, 26 Aug 2024 20:50:50 -0700 (PDT)
+ AJvYcCUtnXuYyzB2o8WTrpaZmePQYsN2FZ40WHoIXpOxKFoU8e6tFE/APxuMgyQk6ZD37KrDND+VRfYat8Nl@nongnu.org
+X-Gm-Message-State: AOJu0YyceIiirmmae5XyWTa/ztir6vri3TOC0afoYcuX/r6Uqoj5Rp31
+ 25YlmGypbNq718cHcJgSzjiex0bwt/8rcqMn0YCC3edVgSAqhTRfnntv0B5yifk=
+X-Google-Smtp-Source: AGHT+IGe3PUZEYCSgJsKiA6gmmK50hNyHr7QOk853mSIwidN4JmobSoIwlgaGyUk6yU8I4xAs38q6w==
+X-Received: by 2002:a17:902:d2c6:b0:202:2cd5:2085 with SMTP id
+ d9443c01a7336-2039e4b4b90mr96999355ad.32.1724730651632; 
+ Mon, 26 Aug 2024 20:50:51 -0700 (PDT)
 Received: from doug-ryzen-5700G.. ([50.37.200.153])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-203855dd269sm74503625ad.135.2024.08.26.20.50.49
+ d9443c01a7336-203855dd269sm74503625ad.135.2024.08.26.20.50.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Aug 2024 20:50:49 -0700 (PDT)
+ Mon, 26 Aug 2024 20:50:51 -0700 (PDT)
 From: Doug Brown <doug@schmorgal.com>
 To: Francisco Iglesias <francisco.iglesias@amd.com>,
  Pavel Pisa <pisa@cmp.felk.cvut.cz>
 Cc: Jason Wang <jasowang@redhat.com>, Paolo Bonzini <bonzini@gnu.org>,
  qemu-devel@nongnu.org, Doug Brown <doug@schmorgal.com>
-Subject: [PATCH v2 4/7] hw/net/can/xlnx-versal-canfd: Handle flags correctly
-Date: Mon, 26 Aug 2024 20:49:24 -0700
-Message-Id: <20240827034927.66659-5-doug@schmorgal.com>
+Subject: [PATCH v2 5/7] hw/net/can/xlnx-versal-canfd: Fix byte ordering
+Date: Mon, 26 Aug 2024 20:49:25 -0700
+Message-Id: <20240827034927.66659-6-doug@schmorgal.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240827034927.66659-1-doug@schmorgal.com>
 References: <20240827034927.66659-1-doug@schmorgal.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=doug@schmorgal.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=doug@schmorgal.com; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,64 +92,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for QEMU_CAN_FRMF_ESI and QEMU_CAN_FRMF_BRS flags, and
-ensure frame->flags is always initialized to 0.
+The endianness of the CAN data was backwards in each group of 4 bytes.
+For example, the following data:
 
-Note that the Xilinx IP core doesn't allow manually setting the ESI bit
-during transmits, so it's only implemented for the receive case.
+00 11 22 33 44 55 66 77
+
+was showing up like this:
+
+33 22 11 00 77 66 55 44
+
+Fix both the TX and RX code to put the data in the correct order.
 
 Signed-off-by: Doug Brown <doug@schmorgal.com>
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 ---
- hw/net/can/xlnx-versal-canfd.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ hw/net/can/xlnx-versal-canfd.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
-index 1704b558d0..47631917ab 100644
+index 47631917ab..5d7adf8740 100644
 --- a/hw/net/can/xlnx-versal-canfd.c
 +++ b/hw/net/can/xlnx-versal-canfd.c
-@@ -872,6 +872,8 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
-     uint32_t id_reg_val = 0;
-     bool is_rtr = false;
+@@ -951,7 +951,7 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
+     }
  
-+    frame->flags = 0;
-+
-     /* Check that reg_num should be within TX register space. */
-     assert(reg_num <= R_TB_ID_REGISTER + (NUM_REGS_PER_MSG_SPACE *
-                                           s->cfg.tx_fifo));
-@@ -913,7 +915,7 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
-          *  15                         49 - 64
-          */
+     for (j = 0; j < frame->can_dlc; j++) {
+-        val = 8 * i;
++        val = 8 * (3 - i);
  
--        frame->flags = QEMU_CAN_FRMF_TYPE_FD;
-+        frame->flags |= QEMU_CAN_FRMF_TYPE_FD;
+         frame->data[j] = extract32(s->regs[reg_num + 2 + (j / 4)], val, 8);
+         i++;
+@@ -1093,19 +1093,19 @@ static void store_rx_sequential(XlnxVersalCANFDState *s,
+             case 0:
+                 rx_reg_num = i / 4;
  
-         if (dlc_value < 8) {
-             frame->can_dlc = dlc_value;
-@@ -921,6 +923,10 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
-             assert((dlc_value - 8) < ARRAY_SIZE(canfd_dlc_array));
-             frame->can_dlc = canfd_dlc_array[dlc_value - 8];
-         }
-+
-+        if (FIELD_EX32(dlc_reg_val, TB0_DLC_REGISTER, BRS)) {
-+            frame->flags |= QEMU_CAN_FRMF_BRS;
-+        }
-     } else {
-         /*
-          * FD Format bit not set that means it is a CAN Frame.
-@@ -1058,6 +1064,13 @@ static void store_rx_sequential(XlnxVersalCANFDState *s,
-                     dlc_reg_val = FIELD_DP32(0, RB_DLC_REGISTER, DLC, 8 + i);
-                 }
-             }
-+
-+            if (frame->flags & QEMU_CAN_FRMF_BRS) {
-+                dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, BRS, 1);
-+            }
-+            if (frame->flags & QEMU_CAN_FRMF_ESI) {
-+                dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, ESI, 1);
-+            }
-         } else {
-             is_canfd_frame = false;
- 
+-                data_reg_val = FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES3,
++                data_reg_val = FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES0,
+                                           frame->data[i]);
+                 break;
+             case 1:
+-                data_reg_val |= FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES2,
++                data_reg_val |= FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES1,
+                                            frame->data[i]);
+                 break;
+             case 2:
+-                data_reg_val |= FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES1,
++                data_reg_val |= FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES2,
+                                            frame->data[i]);
+                 break;
+             case 3:
+-                data_reg_val |= FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES0,
++                data_reg_val |= FIELD_DP32(0, RB_DW0_REGISTER, DATA_BYTES3,
+                                            frame->data[i]);
+                 /*
+                  * Last Bytes data which means we have all 4 bytes ready to
 -- 
 2.34.1
 
