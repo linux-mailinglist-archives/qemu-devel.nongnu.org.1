@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5063B960227
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA3B960228
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 Aug 2024 08:47:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sipxW-0002Uv-MY; Tue, 27 Aug 2024 02:45:42 -0400
+	id 1sipxX-0002aH-Uq; Tue, 27 Aug 2024 02:45:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3DHbNZgUKCmscJeRYPXXPUN.LXVZNVd-MNeNUWXWPWd.XaP@flex--tavip.bounces.google.com>)
- id 1sipxU-0002TB-Ov
+ <3DnbNZgUKCm0eLgTaRZZRWP.NZXbPXf-OPgPWYZYRYf.ZcR@flex--tavip.bounces.google.com>)
+ id 1sipxU-0002Sd-Av
  for qemu-devel@nongnu.org; Tue, 27 Aug 2024 02:45:40 -0400
-Received: from mail-pf1-x44a.google.com ([2607:f8b0:4864:20::44a])
+Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3DHbNZgUKCmscJeRYPXXPUN.LXVZNVd-MNeNUWXWPWd.XaP@flex--tavip.bounces.google.com>)
- id 1sipxT-00063i-4L
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 02:45:40 -0400
-Received: by mail-pf1-x44a.google.com with SMTP id
- d2e1a72fcca58-71431f47164so5369660b3a.1
- for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 23:45:34 -0700 (PDT)
+ <3DnbNZgUKCm0eLgTaRZZRWP.NZXbPXf-OPgPWYZYRYf.ZcR@flex--tavip.bounces.google.com>)
+ id 1sipxR-00063u-Dq
+ for qemu-devel@nongnu.org; Tue, 27 Aug 2024 02:45:39 -0400
+Received: by mail-pl1-x649.google.com with SMTP id
+ d9443c01a7336-2021ab2b5e6so47184345ad.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Aug 2024 23:45:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1724741133; x=1725345933; darn=nongnu.org;
+ d=google.com; s=20230601; t=1724741135; x=1725345935; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=v9oflfpPfEUdfMbwTLTWxbGbyPrsj6gup4qbjEdCGHw=;
- b=n6mVlQr7eNzXsh5GZ0yrEKErqBremYzO3KiHb2eOEpoct0aKp9MKNdWXBIzsMT74ah
- fjiB9y4U2lyEmg4sGzpSRad/v0G4GL2NsSxFUnRL8tpCYwEZfz0+8NLV3n/mKhmnLm10
- OK28Z9YDWLmJ0CaZO67cR15eLWieW95bYEEG9x00yLGVxWaT6zVxYL5CH9Y75bhYxdjT
- vP5CbSLa6SpxbDqF802+JSiDRD8P34Y0ziq+2rbP1jzE+F93RHU0QS3E8Pqsbx0R/nKS
- fFerAQruI1nGdSL/8z4wewnxkAOPHF8RjkxHRUOlD8PwXvQ+zYuAddaevl0urZ79XEho
- BRXQ==
+ bh=LDq3l3mSZOO+uo7Qk5jaY9LnmHfoo3Af6599hG6MOzA=;
+ b=1o5ZIdwbzG8+nHe1Vvksg4nOobb9elmLaGjmjUK1LUrNslykbgNMVtthVbD6G8fjuD
+ 4T22gSiZsAtT1gG+gUJzwJ9WIvnIgOfBp9MbBMdOpEzTRPRTApWvttytYd206kL+5G0c
+ 3QKryHDpzxAZJVaIco6dT9VIivillDULo/k/WJXCS6SBXn1+BjDtxqr1/TYrTwyR90S7
+ nR8KBnjlW4/ynMKrGFzOxJ1AGhzyb7PRiekOv5jT2K5cE9auo3rEx1YcRlV6HstSIjJZ
+ a+WJ/VZZeChi+hHyqKquhDouYuZRtRFY0yKJzBn/5vk2P0KDdzeqNlTpOH3DHFCPdJQ1
+ 5A0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724741133; x=1725345933;
+ d=1e100.net; s=20230601; t=1724741135; x=1725345935;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=v9oflfpPfEUdfMbwTLTWxbGbyPrsj6gup4qbjEdCGHw=;
- b=Apb4xrje+GNO7WeyOUf7FV+41bBBfzCIDvsDkPcvgxpc6aHhghhhfOoGD97vhP68xo
- t+JSneSzLnfMve8ZZJtY54ltg0mgdYiVKyYAPkW+FqadGnqIqMkK/EMOjnKYEWXJuWU2
- XV9t+pZGTt9zgDy/ea6G59u/KL0Nka1NtFCGr2HbJ1NueHDh3VPtEnjIpCYBx8KQeXV/
- FcvA+lQgeSQ+hjCRRSrKgY2JS+YPPVl6Q2hSfzMs1LVoM4fYzTvHnjM/6B9UWv3NnTGr
- oCDYqAfqdkgRIx/M2147pHolKX8aAlw3C64nNoJFjMhYYdckJUadD+mWGm6YfwLWbs6u
- HyMQ==
-X-Gm-Message-State: AOJu0YzphTG3mawDefgeZJ2SzGfIR8MDl1fei3UM/OTqvjMmoa6RUthI
- EKs4MF0SBnSwhRfwDWvtOllICW62rJS6EF/uycwE3XgeFfm0SHA2q6RACGWA0xgNZmR7aQ3u2xi
- OZ0ZuJccLhJiV/tgKrOEym5oLcbHwuS7hymdxwvCp5jG4GXpaZpBDFIaW7k8ZrxJtxowBMZReIv
- CcrHJc+Lcp2W6GzMADHW0o+SATFw==
-X-Google-Smtp-Source: AGHT+IG07jwi+5XRAcMKfnQCOpZTVqRKZaSEOptZ7zn9AQZS1cDKhVEQlNeMI0+AMBhsBiv8NGIkPzweMg==
+ bh=LDq3l3mSZOO+uo7Qk5jaY9LnmHfoo3Af6599hG6MOzA=;
+ b=KR2t+d4EAR6rUyKeVvxtz2vA4L2VzDUT7XO4L/WnV9V0phhXcyIrEEQa6KMHIgWC2n
+ yenEEVAiHZK+REXXDRnDu4hCnw/aIHblFT5FkNB+qikhLK4jYj1uSV/XBpIiG4v32tVt
+ 3E8NHe0cBJEbiY0zcFc2NrNwX8t7qBXJvo1FgyYvrkjnvRQeZbIVwp3AeNH7VWWbB7FB
+ GqkBDeDwLNAI+j1x36+8XFP58f/hMttSCkaFi7QHHt07sl2hTj8L6Kyb/Z+SzVhfdLuR
+ e36NuThmhX0t9nzK+IwrfYWhQDNBv0PrBhRvDeulI1W91bL8cl03WNll5K0fDnRP6+Wi
+ hdGA==
+X-Gm-Message-State: AOJu0YwEPv1dxmhNELzVbLa7AQLVi/MO2mT3Yk05on/jcM+GaU9JoYMU
+ oObalHwwMD3Nv0uEEVMqk7iVyve5Xb5MGYPVUakdFHtDQNe9yRWpyKLr3cQE8RbYL7KrLOPpT5v
+ ylmOiEwHMQycLXIi3bEmu2fF//2unvAUImbMp0X6CE0y1ACvBPi8OkYZQfUEu2fKHq+r/1U7rFN
+ /nNYs2+yBHzurK6oDt4UqB/+AdHw==
+X-Google-Smtp-Source: AGHT+IEA7jWaAuy0gthJkmsd7FLetdm8lDt8WB6erXm6XSLeZXLeJlXAyIG698d6VWhcqslToghiRw9spg==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a05:6a00:1d93:b0:714:202d:df20
+ (user=tavip job=sendgmr) by 2002:a17:902:f541:b0:202:4712:e84c
  with SMTP id
- d2e1a72fcca58-714453f3033mr45518b3a.0.1724741132269; Mon, 26 Aug 2024
- 23:45:32 -0700 (PDT)
-Date: Mon, 26 Aug 2024 23:45:05 -0700
+ d9443c01a7336-204df43ca83mr936055ad.6.1724741134193; Mon, 26 Aug 2024
+ 23:45:34 -0700 (PDT)
+Date: Mon, 26 Aug 2024 23:45:06 -0700
 In-Reply-To: <20240827064529.1246786-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20240827064529.1246786-1-tavip@google.com>
 X-Mailer: git-send-email 2.46.0.295.g3b9ea8a38a-goog
-Message-ID: <20240827064529.1246786-2-tavip@google.com>
-Subject: [RFC PATCH v3 01/24] fifo32: add peek function
+Message-ID: <20240827064529.1246786-3-tavip@google.com>
+Subject: [RFC PATCH v3 02/24] tests/unit: add fifo test
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -70,9 +70,9 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  alistair@alistair23.me, thuth@redhat.com, philmd@linaro.org, jsnow@redhat.com, 
  crosa@redhat.com, lvivier@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::44a;
- envelope-from=3DHbNZgUKCmscJeRYPXXPUN.LXVZNVd-MNeNUWXWPWd.XaP@flex--tavip.bounces.google.com;
- helo=mail-pf1-x44a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
+ envelope-from=3DnbNZgUKCm0eLgTaRZZRWP.NZXbPXf-OPgPWYZYRYf.ZcR@flex--tavip.bounces.google.com;
+ helo=mail-pl1-x649.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -96,53 +96,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add fifo32_peek() that returns the first element from the queue
-without popping it.
+Add a simple FIFO unit test that test wrap around and push, pop and
+peek for both fifo8 and fifo32.
 
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- include/qemu/fifo32.h | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ tests/unit/test-fifo.c | 97 ++++++++++++++++++++++++++++++++++++++++++
+ tests/unit/meson.build |  1 +
+ 2 files changed, 98 insertions(+)
+ create mode 100644 tests/unit/test-fifo.c
 
-diff --git a/include/qemu/fifo32.h b/include/qemu/fifo32.h
-index 4e9fd1b5ef..77aab488ae 100644
---- a/include/qemu/fifo32.h
-+++ b/include/qemu/fifo32.h
-@@ -140,6 +140,34 @@ static inline uint32_t fifo32_pop(Fifo32 *fifo)
-     return ret;
- }
- 
-+/**
-+ * fifo32_peek:
-+ * @fifo: fifo to peek at
+diff --git a/tests/unit/test-fifo.c b/tests/unit/test-fifo.c
+new file mode 100644
+index 0000000000..3e6f007229
+--- /dev/null
++++ b/tests/unit/test-fifo.c
+@@ -0,0 +1,97 @@
++/*
++ * QEMU FIFO testing
 + *
-+ * Returns the value from the FIFO's head without poping it. Behaviour
-+ * is undefined if the FIFO is empty. Clients are responsible for
-+ * checking for emptiness using fifo32_is_empty().
++ * Copyright (C) 2024 Google LLC
 + *
-+ * Returns: the value from the FIFO's head
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
 + */
 +
-+static inline uint32_t fifo32_peek(Fifo32 *fifo)
++#include "qemu/osdep.h"
++
++#include "qemu/fifo8.h"
++#include "qemu/fifo32.h"
++
++typedef struct {
++    Fifo8 fifo8;
++    Fifo32 fifo32;
++} TestFixture;
++
++#define FIFO_SIZE 13
++
++/*
++ * Test fixture initialization.
++ */
++static void set_up(TestFixture *f, gconstpointer data)
 +{
-+    uint32_t ret = 0, num;
-+    const uint8_t *buf;
++    int n = (uintptr_t) data;
 +
-+    buf = fifo8_peek_buf(&fifo->fifo, 4, &num);
-+    if (num != 4) {
-+        return ret;
-+    }
-+
-+    for (int i = 0; i < sizeof(uint32_t); i++) {
-+        ret |= buf[i] << (i * 8);
-+    }
-+
-+    return ret;
++    fifo8_create(&f->fifo8, n);
++    fifo32_create(&f->fifo32, n);
 +}
 +
- /**
-  * There is no fifo32_pop_buf() because the data is not stored in the buffer
-  * as a set of native-order words.
++static void tear_down(TestFixture *f, gconstpointer user_data)
++{
++    fifo8_destroy(&f->fifo8);
++    fifo32_destroy(&f->fifo32);
++}
++
++static void test_push_pop_batch(TestFixture *f, int n)
++{
++    uint8_t i;
++
++    /* push and check peek */
++    for (i = 0; i < n; i++) {
++        uint8_t val8 = i;
++        uint32_t val32 = i | ((i + 1) << 8) | ((i + 2) << 16) | ((i + 3) << 24);
++
++        fifo8_push(&f->fifo8, val8);
++        if (i == 0) {
++            g_assert(*fifo8_peek_buf(&f->fifo8, 1, NULL) == val8);
++        }
++
++        fifo32_push(&f->fifo32, val32);
++        if (i == 0) {
++            g_assert(fifo32_peek(&f->fifo32) == val32);
++        }
++    }
++
++    /* check peek and pop */
++    for (i = 0; i < n; i++) {
++        uint8_t val8 = i;
++        uint32_t val32 = i | ((i + 1) << 8) | ((i + 2) << 16) | ((i + 3) << 24);
++
++        g_assert(*fifo8_peek_buf(&f->fifo8, 1, NULL) == val8);
++        g_assert(fifo8_pop(&f->fifo8) == val8);
++
++        g_assert(fifo32_peek(&f->fifo32) == val32);
++        g_assert(fifo32_pop(&f->fifo32) == val32);
++    }
++}
++
++/* max n should be less then 256 - 3 */
++static void wrap_around_test(TestFixture *f, gconstpointer user_data)
++{
++    int n = (uintptr_t) user_data;
++    const int cycles = 3;
++
++    for (int i = 0; i < cycles; i++) {
++        test_push_pop_batch(f, n / 2 + 1);
++    }
++}
++
++/* mock-ups */
++void *vmstate_info_buffer;
++uint32_t vmstate_info_uint32;
++
++int main(int argc, char **argv)
++{
++    g_test_init(&argc, &argv, NULL);
++
++    g_test_add("/fifo/wrap-around", TestFixture, (gconstpointer)FIFO_SIZE,
++               set_up, wrap_around_test, tear_down);
++
++    return g_test_run();
++}
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index 26c109c968..397f2503f8 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -47,6 +47,7 @@ tests = {
+   'test-logging': [],
+   'test-qapi-util': [],
+   'test-interval-tree': [],
++  'test-fifo': [],
+ }
+ 
+ if have_system or have_tools
 -- 
 2.46.0.295.g3b9ea8a38a-goog
 
