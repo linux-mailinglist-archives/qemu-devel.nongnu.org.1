@@ -2,89 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE4D961AEB
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 02:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D23BE961AFE
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 02:11:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj6BN-0003hd-RT; Tue, 27 Aug 2024 20:05:05 -0400
+	id 1sj6HP-0007wT-Vp; Tue, 27 Aug 2024 20:11:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sj6BH-0003W5-Je
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 20:05:00 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sj6HK-0007t2-BZ; Tue, 27 Aug 2024 20:11:14 -0400
+Received: from mail-vk1-xa29.google.com ([2607:f8b0:4864:20::a29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sj6B9-0005rq-Im
- for qemu-devel@nongnu.org; Tue, 27 Aug 2024 20:04:56 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-7141b04e7b5so3794616b3a.2
- for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 17:04:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sj6HI-0006cd-U4; Tue, 27 Aug 2024 20:11:14 -0400
+Received: by mail-vk1-xa29.google.com with SMTP id
+ 71dfb90a1353d-4fed4a1a003so507952e0c.2; 
+ Tue, 27 Aug 2024 17:11:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724803489; x=1725408289;
- darn=nongnu.org; 
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=nmfdDVi5FgIB7hY3jVkLfha/wn22ZY86E6OoRoOxpTY=;
- b=OM2K50jcCf84+zlfDJfaG8X/anS12Y6DKKrqWdFPnbpsIBmNilHoi8bFVkXb5m5o9r
- Mb4WSNHBL7dboPu/8z5C4s8hEX6V4Qh57xwR43YDNRixA7xolL5QQtqR5dcKLQ715Rv8
- bj8jdy39mDvXZK1vN4gilj1UuG/p4IyWvRjj/sMVkjcEnLPSuLjbu3ktTAFyyngKh6X4
- 3hJooFOlsK+/P72wcIwhLJTGFhgNL5NlpEHnXx7e0zbB2HOMF3vcvHv4elpYbfFUAolZ
- ptKFFVErEFUyqF1Tydwa/PduuoM7JZhQ732imBMURO2n4jSFzfer+1LRJiRafWFoaDOu
- D5+Q==
+ d=gmail.com; s=20230601; t=1724803871; x=1725408671; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=UGbWcwjCdjuUZOgrTdk6joAxU6BZNoFHrJPyvrMmCbU=;
+ b=Vbk8QnEXflCw5JMkiZgjLH/lAnZCrtMjAjNtz9LEdpxsfRiBGG5Ln0Q+/zX2jJPW9q
+ IKfHJ0buvzYX52ODPVMrlrQC1oj261MP6alHu69JZjLiyKVPg55o+BMKbb9PE8WTbCIt
+ TQ83mtb8A160UzWEYsViO9qhr1vPLsmynN0YGctEnFqeC+g7cfABqJhZVvU9DEF693b6
+ PABHlARp66ORyvGxLa5uH/1Cpfk9+rIKSWY+YBL0sTZ2a8eRLwpZza/9QuQkHOfNuNUM
+ Q+smpQ/LIyUdSuEIJwlYVYZOCXRra8xPP2w0DYshcBT7SJJ5dof0A/9D2ccCbivh1Hu8
+ KQ7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724803489; x=1725408289;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nmfdDVi5FgIB7hY3jVkLfha/wn22ZY86E6OoRoOxpTY=;
- b=ScBTHwOEt55x/r5CUVbVHiSd3UWL4N4hS3vIfPV9yH7B53lWLrzq5PVDHflEKizURI
- xOrl34raGXSjtdsD8hGhiNv2wYnvXd7GBtfv46OCuSlDeOUEmmc2lDzKFAlyV7Gcww5y
- c8lu+Shl2Ao5lFLXrF93ORwT7FU3dlY3VLSg7TXbIcg0u5LvhJRZFGNb6E0l+Kjv64Jq
- 4ih48WnhFHwn/TW3UOv4pTZFxekK3sGvUIy4koZMbQqo0SF3LIY01OXrp3RTs4zYzKxV
- NiJC8/AIcpo0CK2B/Zot1CYAvLWd4jj6pbe+woF2tY5tutCBNmJh7I7TSE9xdiGonBbe
- wtKw==
+ d=1e100.net; s=20230601; t=1724803871; x=1725408671;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=UGbWcwjCdjuUZOgrTdk6joAxU6BZNoFHrJPyvrMmCbU=;
+ b=Y3wsOiFbFl5+gJTmG/E9tfkkEivENcBlo+rkieRNueW+ym57vdcCdHu30Va8Pdplby
+ 9qxb/20zLpa6tunF8tvN16EqpmWDsSK4fdqv5RDJLAqE/0+DqugFOXOctq9fR/rkXBph
+ yWZAIMMI6vWDVLMEv3NfhIe9nb/RKdczkhup/zDUVgE/f/iroY0e8aMHMMXPxe9K0dqt
+ ugSCYzE01s2xKmZGkRRaBup7T7lXiPXZuyyznNlOz/7YQt/YivGhiHJBWLpDietAahsB
+ 1+J/LGCaG2PRO6GH81ZgXz/9VMMc02UaY/tOpsHm6SanZc+xcT16HLaGFDQIocb5igOz
+ w1Zg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUGO8ijP16MKaEDAZNvEarb0OPsGcwTWRWWUbjimaZsIS0CTx24edGRAy8q/nojcgD6KZd/DwWwsN01@nongnu.org
-X-Gm-Message-State: AOJu0YxP+5i9zbmqCAkK/LRu9jz/3cm4fw6VHBoHX4/7Fu9MDNeTzyxu
- 0gqPqs4hB5iq3F8polseXIvAI8lp8+Cl+LSMzsjwuULcCLeFNH30aOjwnhd/3Ro=
-X-Google-Smtp-Source: AGHT+IESTHxlU/FgwhPqlp5/aI+8Ieyv9QkNqzfosZ6fD3GeQYucSb+UfBh1XRO+uBwPuKB+p/x8vA==
-X-Received: by 2002:a05:6a21:e8a:b0:1c6:ed16:30e4 with SMTP id
- adf61e73a8af0-1cc89d29e87mr16033693637.7.1724803488617; 
- Tue, 27 Aug 2024 17:04:48 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71434231362sm9414143b3a.11.2024.08.27.17.04.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2024 17:04:48 -0700 (PDT)
-Date: Tue, 27 Aug 2024 17:04:46 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com,
- Alistair.Francis@wdc.com, laurent@vivier.eu, bmeng.cn@gmail.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com,
- andy.chiu@sifive.com, kito.cheng@sifive.com
-Subject: Re: [PATCH v10 00/21] riscv support for control flow integrity
- extensions
-Message-ID: <Zs5pnnEiEcXpp2YT@debug.ba.rivosinc.com>
-References: <20240827231906.553327-1-debug@rivosinc.com>
- <CAKmqyKPukMM7Q2o01c2Vmmqqhc2+f49FS=wM1oxRQ5mQaq2jAw@mail.gmail.com>
+ AJvYcCULzwiq1vEy0iZvqPKUkYbzyJH8BHu2GOX8tR1DoU1futbDEf01PoVexxfmDJ+6yQst00o2YSyauamo@nongnu.org
+X-Gm-Message-State: AOJu0YwpDa7GGUkMr0JdEgIwtUzcU5Xr3GavLNc8gIwP5FlDSw9YNQSL
+ XjxkpurA5yP8sk6iJdRzJz5f5vC0DmcRGBJTU3Q340Sw+WIiO+XAaZlV8k3h0DmkB89yzcSakk1
+ H7y49kjcE/QTOKPA5C2XgdqrB7ic=
+X-Google-Smtp-Source: AGHT+IE7f/NXJHA/3KBKdfJQVYsnGq7w8rvajvkoLo6RG0t+ZFsm4DYTk00uMQSH2XDfV6kCKMUbVt1nTP9RerkZv7I=
+X-Received: by 2002:a05:6122:3197:b0:4fc:e2bf:f5e2 with SMTP id
+ 71dfb90a1353d-4fd1a739ec9mr18410740e0c.7.1724803871130; Tue, 27 Aug 2024
+ 17:11:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKmqyKPukMM7Q2o01c2Vmmqqhc2+f49FS=wM1oxRQ5mQaq2jAw@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=debug@rivosinc.com; helo=mail-pf1-x430.google.com
+References: <20240827231906.553327-1-debug@rivosinc.com>
+ <20240827231906.553327-3-debug@rivosinc.com>
+In-Reply-To: <20240827231906.553327-3-debug@rivosinc.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 28 Aug 2024 10:10:44 +1000
+Message-ID: <CAKmqyKO2gaVNsSCuvSjTSOjKBOEBJOQC91BK0VDRscJbM-hx7A@mail.gmail.com>
+Subject: Re: [PATCH v10 02/21] linux-user/riscv: set priv for qemu-user and
+ defaults for *envcfg
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
+ Alistair.Francis@wdc.com, laurent@vivier.eu, bmeng.cn@gmail.com, 
+ liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
+ jim.shu@sifive.com, andy.chiu@sifive.com, kito.cheng@sifive.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a29;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa29.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,140 +93,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 28, 2024 at 10:02:42AM +1000, Alistair Francis wrote:
->On Wed, Aug 28, 2024 at 9:21 AM Deepak Gupta <debug@rivosinc.com> wrote:
->>
->> v10 for riscv zicfilp and zicfiss extensions support in qemu.
+On Wed, Aug 28, 2024 at 9:20=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> w=
+rote:
 >
->Please specify the exact version of the spec you used
+> set priv to be PRV_U for qemu-user on riscv. And set default value for
+> *envcfg CSR.
+>
+> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 
-https://github.com/riscv/riscv-cfi/releases/download/v1.0/riscv-cfi.pdf
+You can probably just squash this with the previous patch
 
+> ---
+>  linux-user/riscv/cpu_loop.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
->Alistair
+> diff --git a/linux-user/riscv/cpu_loop.c b/linux-user/riscv/cpu_loop.c
+> index 52c49c2e42..7a68e8717b 100644
+> --- a/linux-user/riscv/cpu_loop.c
+> +++ b/linux-user/riscv/cpu_loop.c
+> @@ -32,6 +32,10 @@ void cpu_loop(CPURISCVState *env)
+>      int trapnr;
+>      target_ulong ret;
 >
->>
->> Links for previous versions
->> [1] - v1 https://lists.nongnu.org/archive/html/qemu-devel/2024-07/msg06017.html
->> [2] - v2 https://lore.kernel.org/all/ed23bcbc-fdc4-4492-803c-daa95880375a@linaro.org/T/
->> [3] - v3 https://lists.nongnu.org/archive/html/qemu-devel/2024-08/msg01005.html
->> [4] - v4 https://lore.kernel.org/all/20240816010711.3055425-6-debug@rivosinc.com/T/
->> [5] - v5
->> +https://lore.kernel.org/all/20240820000129.3522346-1-debug@rivosinc.com/T/#m7b9cc847e739ec86f9569a3ca9f3d9377b01e21
->> [6] - v6 https://mail.gnu.org/archive/html/qemu-riscv/2024-08/msg00418.html
->> [7] - v7 https://lore.kernel.org/all/20240822082504.3979610-1-debug@rivosinc.com/
->> [8] - v8 https://lore.kernel.org/all/20240823190140.4156920-1-debug@rivosinc.com/T/
->> [9] - v9 https://lore.kernel.org/all/20240826152949.294506-1-debug@rivosinc.com/
->>
->> ---
->> v10:
->>    - Exposed *envcfg CSR and priv to qemu-user as well and removed special
->>      state management for *envcfg related feature enabling for qemu-user
->>    - Exposing zicfilp and zicfiss as different patch
->> v9:
->>    - fix switch case fallthrough for sw_check excp in patch 4
->> v8:
->>    - fixed up `gen_cmpxchg` to store extra word2 during compile to raise storeAMO always
->> v7:
->>    - Updated decode_save_opc to take extra argument of excp_uw2 and
->>      updated callsites
->>    - added a helper for promoting load faults to store faults
->>    - Removed stale comments and edited existed comments
->> v6:
->>    - Added support extra store word 2 for tcg compile and extraction during unwind
->>    - Using extra word, AMO instructions and shadow stack instructions can raise store fault
->>    - some alignment and cosmetic changes
->>    - added vmstate migration support for elp and ssp cpu state
->> v5:
->>    - Simplified elp tracking and lpad implementation as per suggestion by richard
->>    - Simplified shadow stack mmu checks as per suggestion by richard
->>    - Converged zicfiss compressed and non-comressed instructions to same translation
->>    - Removed trace hooks. Don't need for upstream.
->>
->> v4:
->>    - elp state in cpu is true/false instead of enum and elp cleared
->>      unconditionally on trap entry. elp in *status cleared unconditionally on
->>      trap return.
->>    - Moved logic for branch tracking in instruction translation from tb_start.
->>    - fixed zicfiss dependency on 'A'
->>    - `cpu_get_fcfien/bcfien` helpers checks fixed to check for extension first.
->>    - removed trace hook enums. Instead added dedicated trace helpers wherever needed.
->>    - fixed/simplified instruction format in decoder for lpad, sspush, sspopchk
->>    - simplified tlb index logic for shadow stack instructions. Removed SUM TB_FLAG
->>    - access to ssp CSR is gated on `cpu_get_bcfien` instead of duplicated logic
->>    - removed vDSO related changes for now.
->> v3:
->>    - Removed prctl specific patches because they need to be upstream
->>      in kernel first.
->>    - As suggested by Richard, added TB flag if fcfi enabled
->>    - Re-worked translation for landing pad and shadow stack instructions
->>      to not require helper.
->>    - tcg helpers only for cfi violation cases so that trace hooks can be
->>      placed.
->>    - Style changes.
->>    - fixes assert condition in accel/tcg
->>
->> v2:
->>    - added missed file (in v1) for shadow stack instructions implementation.
->>
->> Deepak Gupta (21):
->>   target/riscv: expose *envcfg csr and priv to qemu-user as well
->>   linux-user/riscv: set priv for qemu-user and defaults for *envcfg
->>   target/riscv: Add zicfilp extension
->>   target/riscv: Introduce elp state and enabling controls for zicfilp
->>   target/riscv: save and restore elp state on priv transitions
->>   target/riscv: additional code information for sw check
->>   target/riscv: tracking indirect branches (fcfi) for zicfilp
->>   target/riscv: zicfilp `lpad` impl and branch tracking
->>   disas/riscv: enable `lpad` disassembly
->>   target/riscv: Expose zicfilp extension as a cpu property
->>   target/riscv: Add zicfiss extension
->>   target/riscv: introduce ssp and enabling controls for zicfiss
->>   target/riscv: tb flag for shadow stack  instructions
->>   target/riscv: mmu changes for zicfiss shadow stack protection
->>   target/riscv: AMO operations always raise store/AMO fault
->>   target/riscv: update `decode_save_opc` to store extra word2
->>   target/riscv: implement zicfiss instructions
->>   target/riscv: compressed encodings for sspush and sspopchk
->>   disas/riscv: enable disassembly for zicfiss instructions
->>   disas/riscv: enable disassembly for compressed sspush/sspopchk
->>   target/riscv: Expose zicfiss extension as a cpu property
->>
->>  disas/riscv.c                                 |  77 ++++++++-
->>  disas/riscv.h                                 |   4 +
->>  linux-user/riscv/cpu_loop.c                   |   4 +
->>  target/riscv/cpu.c                            |  10 ++
->>  target/riscv/cpu.h                            |  31 +++-
->>  target/riscv/cpu_bits.h                       |  17 ++
->>  target/riscv/cpu_cfg.h                        |   2 +
->>  target/riscv/cpu_helper.c                     | 155 +++++++++++++++++-
->>  target/riscv/cpu_user.h                       |   1 +
->>  target/riscv/csr.c                            |  84 ++++++++++
->>  target/riscv/insn16.decode                    |   4 +
->>  target/riscv/insn32.decode                    |  26 ++-
->>  .../riscv/insn_trans/trans_privileged.c.inc   |   8 +-
->>  target/riscv/insn_trans/trans_rva.c.inc       |  43 ++++-
->>  target/riscv/insn_trans/trans_rvd.c.inc       |   4 +-
->>  target/riscv/insn_trans/trans_rvf.c.inc       |   4 +-
->>  target/riscv/insn_trans/trans_rvh.c.inc       |   8 +-
->>  target/riscv/insn_trans/trans_rvi.c.inc       |  61 ++++++-
->>  target/riscv/insn_trans/trans_rvvk.c.inc      |  10 +-
->>  target/riscv/insn_trans/trans_rvzacas.c.inc   |   4 +-
->>  target/riscv/insn_trans/trans_rvzfh.c.inc     |   4 +-
->>  target/riscv/insn_trans/trans_rvzicfiss.c.inc |  75 +++++++++
->>  target/riscv/insn_trans/trans_svinval.c.inc   |   6 +-
->>  target/riscv/internals.h                      |   3 +
->>  target/riscv/machine.c                        |  38 +++++
->>  target/riscv/op_helper.c                      |  18 ++
->>  target/riscv/pmp.c                            |   5 +
->>  target/riscv/pmp.h                            |   3 +-
->>  target/riscv/tcg/tcg-cpu.c                    |  25 +++
->>  target/riscv/translate.c                      |  45 ++++-
->>  30 files changed, 726 insertions(+), 53 deletions(-)
->>  create mode 100644 target/riscv/insn_trans/trans_rvzicfiss.c.inc
->>
->> --
->> 2.44.0
->>
->>
+> +    env->priv =3D PRV_U;
+> +    env->senvcfg =3D 0;
+> +    env->menvcfg =3D 0;
+
+I don't think this is the right place.
+
+This should be handled by a CPU reset, which is still called for linux
+user mode.
+
+Alistair
+
+> +
+>      for (;;) {
+>          cpu_exec_start(cs);
+>          trapnr =3D cpu_exec(cs);
+> --
+> 2.44.0
+>
+>
 
