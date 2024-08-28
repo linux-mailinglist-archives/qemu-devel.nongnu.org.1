@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8526961AEA
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 02:03:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E7F961AEC
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 02:05:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sj69c-0004lU-7b; Tue, 27 Aug 2024 20:03:16 -0400
+	id 1sj6Ba-0004gz-Px; Tue, 27 Aug 2024 20:05:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sj69Y-0004Wc-1p; Tue, 27 Aug 2024 20:03:12 -0400
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+ id 1sj6BV-0004NU-8G; Tue, 27 Aug 2024 20:05:14 -0400
+Received: from mail-vs1-xe2c.google.com ([2607:f8b0:4864:20::e2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sj69W-0005lL-1a; Tue, 27 Aug 2024 20:03:11 -0400
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3de13126957so887439b6e.0; 
- Tue, 27 Aug 2024 17:03:09 -0700 (PDT)
+ id 1sj6BT-00064L-9V; Tue, 27 Aug 2024 20:05:12 -0400
+Received: by mail-vs1-xe2c.google.com with SMTP id
+ ada2fe7eead31-498d053f116so1936935137.3; 
+ Tue, 27 Aug 2024 17:05:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724803388; x=1725408188; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1724803509; x=1725408309; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hu80teFx06w9n+ht9hQfpmWDUCQjZDmvnAqW/7OTc7o=;
- b=GB1pPnZ6enz0jToVDejYxCExaOgbaCm8BOvvbDvBTLQZs0LKM4LcmItrkTkFgyMTWn
- 47IQPZ0P7/Snr9q54UkGG7B/KPPiz+pwA1xfhDiI6onH0H4zkeXC1JTZU4/z2gCDObXj
- kCpguI2QY8nuUydneYknP51BTGxx8uVdjBoA+DlJ4CGv53pa7vrBPIzcOkaJdtHO9Znc
- WsN861EFoBX+Wc13xv+tW9yihlKK++1bBtA/j+DHKLMfx6hVvnyGbucZJUDWfkBgvyP2
- IwjkeOL21Z4iN7Cm0mLrrY2QExsgLiUK0vaWt+TpaLETx0PhPUe6GyxT3Pz9wY2shrOz
- 6IHQ==
+ bh=6bxLuwfGbpBVCloDdi2L53TLOYX0hjtvuGPV+y+IZkM=;
+ b=OrZaHqAPDwwuULFw1uJsWfnPENr3CDFOnJgsIkfbl3Bvz0r4Lhd+tE6oyvnxSVRoBZ
+ jH2YI68kv8yzB8PLoPAaYDujB66Qh2RmK5JbXQ6zrajGkqzOO+/tN/okSg4wTt8Gp+Ps
+ 5BdWkyYbA07odzx43pzj6Rc8+hGaUPsNuCxPhH3ndh9jjLw9wIV7k+zoTcffNsI3Q2HR
+ dnsA1x2H+1G2DyvTOX4/kdTzRT+i6D3cy+2WbcKgnIBmN+SyqwW/Y0YrxPxhxV9elSMp
+ Oij/r6aBmNkDGPMRfDT7Q8SLVNYvtz/g176mTEKEK2AXRLIkXAltd4v75szY20k9b1Cw
+ UIMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724803388; x=1725408188;
+ d=1e100.net; s=20230601; t=1724803509; x=1725408309;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hu80teFx06w9n+ht9hQfpmWDUCQjZDmvnAqW/7OTc7o=;
- b=ikOmcQVurwdHJfLxPmP8Im+ybcyI2MSNrquI5EpCsxjTSEgTVQ6hRC7xhf8hNxCoeI
- dvMfW8tZOGwBqZ78oP8IgiszUXb3yK7Pys1aa6xxWYWxls1+z0lSxfcNGvCOJl7LbeDY
- Y0d+ZPbUgwQuDWugQdNb8lcGLSYQ/liXAhVbuq50pjjVirVhy3/lKdEe3Ja2hXPG6t97
- 5kzar735cjICBDsIywz+zJUM+a3x7Pij/Qmfl995fB4UdSzjbbOo8BMca3aYExqMn4fG
- Z1Y67Sq5QKy5YFMaC8QttKd4Bbs84U3ZzF+13sgZHXNV1taZf1FZrbq8u/JtlKo/7lYt
- SySw==
+ bh=6bxLuwfGbpBVCloDdi2L53TLOYX0hjtvuGPV+y+IZkM=;
+ b=fnQtiA0N6Aw7wYheBzip2+S2sblQJ75iBr0hRl2WsB62bKBabsPFMXu5QG7zU2K4Cw
+ KQ1ar1PlFMkKzgC793CO0rXCN2tplX3+Kq8JmMThPdsBjjc1eHmZDMR8KoChLqcba77w
+ QgPjT2fbEuXS34hHHXIgi8RzOlqdEkfjO7JqMlLuP9LzyPFcYQbtYIqpjwbT16k/Q5vO
+ p4CwT4O8r+OM6okspK1gDbM9p67qpyT1tgGZ/WcAxeIBm2drWNSzhKOeEpCQ2cbMpid1
+ Mfa8DdXHMjDtXv1l4Sx1GvBGtgs3hXTryZyhvNsMRyQdxg0dkI+9vdOHEojvLF0e3i9d
+ kHuA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVwOntEjW9k8ZMyTEOT44yJWo8blsB1lsWhwkSVFphhOXLIM5iH0foA1uFjDt93S2JZ3e/b4FGOy9QR@nongnu.org
-X-Gm-Message-State: AOJu0YwdYQS3ryo5XXWc9mDTL4jAU1j8BBaux+ddzWfBHQUeZjuXAehf
- Y9HAqJG4Mru0Zwk5Of19C7fmQ7WXakvWfYQgK9sgVv5Ks2oOBDXqPIjmhEx+5BcN+lynELTG39n
- QQOexC77YfgeyZnOTqxZ0b4ueYto=
-X-Google-Smtp-Source: AGHT+IGt8qA6VU//t+ATvTE7fLds6LUix+F/Y0GCbC8OwC9BLbSTYSvo6J0xQzwtT0uKojwRMRLZI1C+KoxoejPo5pg=
-X-Received: by 2002:a05:6358:1c1:b0:1ac:ed54:224d with SMTP id
- e5c5f4694b2df-1b5c2140db7mr1769581855d.11.1724803388334; Tue, 27 Aug 2024
- 17:03:08 -0700 (PDT)
+ AJvYcCXe8i8GwCELMm8SIjyEYlAXfa7Ocy2VGM3C6CwrEMJ/rPD9bnyQ6cQY5cvMFlFNFT2qZGo9NseVdPa9@nongnu.org
+X-Gm-Message-State: AOJu0Yyhc2c72bRH5gs1JjNJ2jvo5zG3cQp1W5lvgK46qjPMGFHC4WF/
+ U7gObwHk69hek7akRw1vpwcMRS0lzF4augNZZ1Z5MaZmJfJa3Zprysr0G5nSLV3ooBFISUAaIVf
+ 5vO7Xtd5TUp+/JjUyw/jf9ZO5J5mDfPJk
+X-Google-Smtp-Source: AGHT+IEkr319L2DHLFl/E2E/49TlPHoHrB/5VClAWKuldx+tCYQYSe3Tv0K8+qOzk79S8LOJ/5aXrAU6IXMaBPm+hxU=
+X-Received: by 2002:a05:6102:3a14:b0:48f:42c8:e0a9 with SMTP id
+ ada2fe7eead31-49a4f072108mr372337137.26.1724803509142; Tue, 27 Aug 2024
+ 17:05:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240827231906.553327-1-debug@rivosinc.com>
-In-Reply-To: <20240827231906.553327-1-debug@rivosinc.com>
+ <20240827231906.553327-2-debug@rivosinc.com>
+In-Reply-To: <20240827231906.553327-2-debug@rivosinc.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 28 Aug 2024 10:02:42 +1000
-Message-ID: <CAKmqyKPukMM7Q2o01c2Vmmqqhc2+f49FS=wM1oxRQ5mQaq2jAw@mail.gmail.com>
-Subject: Re: [PATCH v10 00/21] riscv support for control flow integrity
- extensions
+Date: Wed, 28 Aug 2024 10:04:43 +1000
+Message-ID: <CAKmqyKNPHkUW3-ykSY4wnxrS+MXhF+vo_tMT7yxXa0yyUt0pEQ@mail.gmail.com>
+Subject: Re: [PATCH v10 01/21] target/riscv: expose *envcfg csr and priv to
+ qemu-user as well
 To: Deepak Gupta <debug@rivosinc.com>
 Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
  Alistair.Francis@wdc.com, laurent@vivier.eu, bmeng.cn@gmail.com, 
  liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
- jim.shu@sifive.com, andy.chiu@sifive.com, kito.cheng@sifive.com
+ jim.shu@sifive.com, andy.chiu@sifive.com, kito.cheng@sifive.com, 
+ Richard Henderson <richard.henderson@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=alistair23@gmail.com; helo=mail-oi1-x22b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2c;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,155 +97,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Wed, Aug 28, 2024 at 9:21=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> w=
 rote:
 >
-> v10 for riscv zicfilp and zicfiss extensions support in qemu.
+> Execution environment config CSR controlling user env and current
+> privilege state shouldn't be limited to qemu-system only. *envcfg
+> CSRs control enabling of features in next lesser mode. In some cases
+> bits *envcfg CSR can be lit up by kernel as part of kernel policy or
+> software (user app) can choose to opt-in by issuing a system call
+> (e.g. prctl). In case of qemu-user, it should be no different because
+> qemu is providing underlying execution environment facility and thus
+> either should provide some default value in *envcfg CSRs or react to
+> system calls (prctls) initiated from application.
+>
+> `henvcfg` has been left for qemu-system only because it is not expected
+> that someone will use qemu-user where application is expected to have
+> hypervisor underneath which is controlling its execution environment. If
+> such a need arises then `henvcfg` could be exposed as well.
+>
+> Relevant discussion:
+> https://lore.kernel.org/all/CAKmqyKOTVWPFep2msTQVdUmJErkH+bqCcKEQ4hAnyDFP=
+dWKe0Q@mail.gmail.com/
+>
+> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 
-Please specify the exact version of the spec you used
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
->
-> Links for previous versions
-> [1] - v1 https://lists.nongnu.org/archive/html/qemu-devel/2024-07/msg0601=
-7.html
-> [2] - v2 https://lore.kernel.org/all/ed23bcbc-fdc4-4492-803c-daa95880375a=
-@linaro.org/T/
-> [3] - v3 https://lists.nongnu.org/archive/html/qemu-devel/2024-08/msg0100=
-5.html
-> [4] - v4 https://lore.kernel.org/all/20240816010711.3055425-6-debug@rivos=
-inc.com/T/
-> [5] - v5
-> +https://lore.kernel.org/all/20240820000129.3522346-1-debug@rivosinc.com/=
-T/#m7b9cc847e739ec86f9569a3ca9f3d9377b01e21
-> [6] - v6 https://mail.gnu.org/archive/html/qemu-riscv/2024-08/msg00418.ht=
-ml
-> [7] - v7 https://lore.kernel.org/all/20240822082504.3979610-1-debug@rivos=
-inc.com/
-> [8] - v8 https://lore.kernel.org/all/20240823190140.4156920-1-debug@rivos=
-inc.com/T/
-> [9] - v9 https://lore.kernel.org/all/20240826152949.294506-1-debug@rivosi=
-nc.com/
->
 > ---
-> v10:
->    - Exposed *envcfg CSR and priv to qemu-user as well and removed specia=
-l
->      state management for *envcfg related feature enabling for qemu-user
->    - Exposing zicfilp and zicfiss as different patch
-> v9:
->    - fix switch case fallthrough for sw_check excp in patch 4
-> v8:
->    - fixed up `gen_cmpxchg` to store extra word2 during compile to raise =
-storeAMO always
-> v7:
->    - Updated decode_save_opc to take extra argument of excp_uw2 and
->      updated callsites
->    - added a helper for promoting load faults to store faults
->    - Removed stale comments and edited existed comments
-> v6:
->    - Added support extra store word 2 for tcg compile and extraction duri=
-ng unwind
->    - Using extra word, AMO instructions and shadow stack instructions can=
- raise store fault
->    - some alignment and cosmetic changes
->    - added vmstate migration support for elp and ssp cpu state
-> v5:
->    - Simplified elp tracking and lpad implementation as per suggestion by=
- richard
->    - Simplified shadow stack mmu checks as per suggestion by richard
->    - Converged zicfiss compressed and non-comressed instructions to same =
-translation
->    - Removed trace hooks. Don't need for upstream.
+>  target/riscv/cpu.h | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
 >
-> v4:
->    - elp state in cpu is true/false instead of enum and elp cleared
->      unconditionally on trap entry. elp in *status cleared unconditionall=
-y on
->      trap return.
->    - Moved logic for branch tracking in instruction translation from tb_s=
-tart.
->    - fixed zicfiss dependency on 'A'
->    - `cpu_get_fcfien/bcfien` helpers checks fixed to check for extension =
-first.
->    - removed trace hook enums. Instead added dedicated trace helpers wher=
-ever needed.
->    - fixed/simplified instruction format in decoder for lpad, sspush, ssp=
-opchk
->    - simplified tlb index logic for shadow stack instructions. Removed SU=
-M TB_FLAG
->    - access to ssp CSR is gated on `cpu_get_bcfien` instead of duplicated=
- logic
->    - removed vDSO related changes for now.
-> v3:
->    - Removed prctl specific patches because they need to be upstream
->      in kernel first.
->    - As suggested by Richard, added TB flag if fcfi enabled
->    - Re-worked translation for landing pad and shadow stack instructions
->      to not require helper.
->    - tcg helpers only for cfi violation cases so that trace hooks can be
->      placed.
->    - Style changes.
->    - fixes assert condition in accel/tcg
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 87742047ce..270a2a031c 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -226,8 +226,12 @@ struct CPUArchState {
+>      uint32_t elf_flags;
+>  #endif
 >
-> v2:
->    - added missed file (in v1) for shadow stack instructions implementati=
-on.
+> -#ifndef CONFIG_USER_ONLY
+>      target_ulong priv;
+> +    /* CSRs for execution environment configuration */
+> +    uint64_t menvcfg;
+> +    target_ulong senvcfg;
+> +
+> +#ifndef CONFIG_USER_ONLY
+>      /* This contains QEMU specific information about the virt state. */
+>      bool virt_enabled;
+>      target_ulong geilen;
+> @@ -429,12 +433,9 @@ struct CPUArchState {
+>      target_ulong upmmask;
+>      target_ulong upmbase;
 >
-> Deepak Gupta (21):
->   target/riscv: expose *envcfg csr and priv to qemu-user as well
->   linux-user/riscv: set priv for qemu-user and defaults for *envcfg
->   target/riscv: Add zicfilp extension
->   target/riscv: Introduce elp state and enabling controls for zicfilp
->   target/riscv: save and restore elp state on priv transitions
->   target/riscv: additional code information for sw check
->   target/riscv: tracking indirect branches (fcfi) for zicfilp
->   target/riscv: zicfilp `lpad` impl and branch tracking
->   disas/riscv: enable `lpad` disassembly
->   target/riscv: Expose zicfilp extension as a cpu property
->   target/riscv: Add zicfiss extension
->   target/riscv: introduce ssp and enabling controls for zicfiss
->   target/riscv: tb flag for shadow stack  instructions
->   target/riscv: mmu changes for zicfiss shadow stack protection
->   target/riscv: AMO operations always raise store/AMO fault
->   target/riscv: update `decode_save_opc` to store extra word2
->   target/riscv: implement zicfiss instructions
->   target/riscv: compressed encodings for sspush and sspopchk
->   disas/riscv: enable disassembly for zicfiss instructions
->   disas/riscv: enable disassembly for compressed sspush/sspopchk
->   target/riscv: Expose zicfiss extension as a cpu property
->
->  disas/riscv.c                                 |  77 ++++++++-
->  disas/riscv.h                                 |   4 +
->  linux-user/riscv/cpu_loop.c                   |   4 +
->  target/riscv/cpu.c                            |  10 ++
->  target/riscv/cpu.h                            |  31 +++-
->  target/riscv/cpu_bits.h                       |  17 ++
->  target/riscv/cpu_cfg.h                        |   2 +
->  target/riscv/cpu_helper.c                     | 155 +++++++++++++++++-
->  target/riscv/cpu_user.h                       |   1 +
->  target/riscv/csr.c                            |  84 ++++++++++
->  target/riscv/insn16.decode                    |   4 +
->  target/riscv/insn32.decode                    |  26 ++-
->  .../riscv/insn_trans/trans_privileged.c.inc   |   8 +-
->  target/riscv/insn_trans/trans_rva.c.inc       |  43 ++++-
->  target/riscv/insn_trans/trans_rvd.c.inc       |   4 +-
->  target/riscv/insn_trans/trans_rvf.c.inc       |   4 +-
->  target/riscv/insn_trans/trans_rvh.c.inc       |   8 +-
->  target/riscv/insn_trans/trans_rvi.c.inc       |  61 ++++++-
->  target/riscv/insn_trans/trans_rvvk.c.inc      |  10 +-
->  target/riscv/insn_trans/trans_rvzacas.c.inc   |   4 +-
->  target/riscv/insn_trans/trans_rvzfh.c.inc     |   4 +-
->  target/riscv/insn_trans/trans_rvzicfiss.c.inc |  75 +++++++++
->  target/riscv/insn_trans/trans_svinval.c.inc   |   6 +-
->  target/riscv/internals.h                      |   3 +
->  target/riscv/machine.c                        |  38 +++++
->  target/riscv/op_helper.c                      |  18 ++
->  target/riscv/pmp.c                            |   5 +
->  target/riscv/pmp.h                            |   3 +-
->  target/riscv/tcg/tcg-cpu.c                    |  25 +++
->  target/riscv/translate.c                      |  45 ++++-
->  30 files changed, 726 insertions(+), 53 deletions(-)
->  create mode 100644 target/riscv/insn_trans/trans_rvzicfiss.c.inc
->
+> -    /* CSRs for execution environment configuration */
+> -    uint64_t menvcfg;
+>      uint64_t mstateen[SMSTATEEN_MAX_COUNT];
+>      uint64_t hstateen[SMSTATEEN_MAX_COUNT];
+>      uint64_t sstateen[SMSTATEEN_MAX_COUNT];
+> -    target_ulong senvcfg;
+>      uint64_t henvcfg;
+>  #endif
+>      target_ulong cur_pmmask;
 > --
 > 2.44.0
 >
