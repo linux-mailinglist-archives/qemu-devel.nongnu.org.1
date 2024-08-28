@@ -2,59 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037AE96230C
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 11:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A13C8962260
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 10:37:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjEgt-0001tr-QL; Wed, 28 Aug 2024 05:10:11 -0400
+	id 1sjEAu-0007Nl-05; Wed, 28 Aug 2024 04:37:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1sjEgq-0001tJ-SB
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 05:10:08 -0400
-Received: from imap5.colo.codethink.co.uk ([78.40.148.171])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1sjEgo-0005YS-QA
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 05:10:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=p7u2uRITG+M6vwnJhPLEMQxr82PXj4I8DVtvucqxucY=; b=htoWf53SxyEF1UEnQnypjyhbJQ
- I/KhBsWysSselk1tjx50WbUKKl7RkG6vjlyx7KhSSFr63CQbJzm9q8wOipFfYzS5ilQe348z1KOVS
- UDPWF7ParqUQ3Zr3ulF6mvqipMXNWWATw593PyVRFAWVkJ3x+PXirKqGJ40ipi07Ho2/dyZEouqq9
- 1/q6LcFolk2E5AxhyMXGA6CnlTvZgzw6L1xJvL94dG2fzVJyopeqqODzoS65UUJcYUjiWQ7Gfrlj8
- TZdyEO8vXnCow22XybiT1/o8UDdC46ln3K0GVQO97uKABH5btZK0D64fikqkrReYvTBGkxXO7ZSKR
- nI/6nItQ==;
-Received: from [63.135.74.212] (helo=rainbowdash)
- by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1sjE8P-002sJG-VY; Wed, 28 Aug 2024 09:34:33 +0100
-Received: from ben by rainbowdash with local (Exim 4.98)
- (envelope-from <ben@rainbowdash>) id 1sjE8P-000000006Aa-1SA6;
- Wed, 28 Aug 2024 09:34:33 +0100
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Ben Dooks <ben.dooks@codethink.co.uk>
-Subject: [PATCH] qemu-timer: check for timerlist being initialised
-Date: Wed, 28 Aug 2024 09:34:32 +0100
-Message-Id: <20240828083432.23707-1-ben.dooks@codethink.co.uk>
-X-Mailer: git-send-email 2.37.2.352.g3c44437643
+ (Exim 4.90_1) (envelope-from <alexghiti@rivosinc.com>)
+ id 1sjEAk-0007Mn-TI
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 04:36:58 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alexghiti@rivosinc.com>)
+ id 1sjEAi-0001nE-Jx
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 04:36:58 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3730749ee7aso3767985f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 01:36:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724834215; x=1725439015;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0rvoMEVosXIPnN0S2N3s9u+CdKtkhPKuGueCmYXiVU0=;
+ b=xvLs839X8FB92DgJ3QFPjD0yUEUpSBGoiV3BMZKlzhxM0+6jSPQOdTaJwSVAmgqvhV
+ bfb7hbrSq1bJ8BeZmywc/8EGX5LMCj/s7KGa9fwfyYOiXo2FqLnL6wp0Gelpcv2clYHg
+ VKdFY/t0/mf1a2F1rJHoJXvxxcbIOd2oO3ychH96CZ8u/zb0XVn+0ZkRfxYBCPhvCo6A
+ 7ps4zMn3X2Bg8XIVuskWIFWK1EjKYt6RXZTXSLEly7Svsq4rXSEU5Sdqk3Qg99BTebLd
+ vx56ODyWd/1wIFu8n7Z53KX9o8THhlQt/uBkTb678lB37a3pqG8iXP/CTjHZgrr0uZHf
+ 4o2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724834215; x=1725439015;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0rvoMEVosXIPnN0S2N3s9u+CdKtkhPKuGueCmYXiVU0=;
+ b=ZrdzVkvWqEh+0OrN39huHJJm6VNXXwWVGW/BQt6WL+zE8OHv36Cyq+6alv37KZUoS1
+ tRQ9rNNjR/dMnEmN4jbUjthip1syCWGW9rIIEEa9IikQBP2h2TA3863M06XijKZJ+FlN
+ hAzlC1yKNTk2BmaYgyMy1nMx3jf0j1260QFlIszf9L5VfBz5/UpR2X5rHZJKds/aVzRW
+ VE+qm3wxNFL5U+V1SfUjuXs9Amd6VrMPYcqC/kXYZ1kS0JLjn1NPgs9NomZecpSAtSoE
+ ufrMc6bL29bX39l9TPtUtuOrecus9ocbZr56zjXhTIkW+JLfLILvguAMh+1/KeODfO12
+ TxvA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXZKSd5Xv+igNsxEL8nmc18dTp7nQSZVIue7R/5yesvtLGaygO0/5GrLG1AylJf7YmFItN4QvOCybaM@nongnu.org
+X-Gm-Message-State: AOJu0YyaYDx0p1JxdCpCCcoKwsloycJ782CfEH1jd3mwQuYVkocoWYGu
+ cJ+xpj1W2EpNlvAfL7gsWpHsjRUMEyVzXwnJ2+98T3XZpWOLyzgmRw7E9ZA4lAw=
+X-Google-Smtp-Source: AGHT+IErlDKsOh7F8KGrA/J7dIHCm/7wHsgvFN1dD3E1kxmgM1Ph0rVav39xl2LB4o4mocSbmmJ+9Q==
+X-Received: by 2002:a5d:614a:0:b0:371:8dcc:7f9f with SMTP id
+ ffacd0b85a97d-3749680af0bmr773691f8f.5.1724834214270; 
+ Wed, 28 Aug 2024 01:36:54 -0700 (PDT)
+Received: from alex-rivos.ba.rivosinc.com
+ (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42ba639d512sm13517745e9.18.2024.08.28.01.36.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Aug 2024 01:36:53 -0700 (PDT)
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH v3] target: riscv: Add Svvptc extension support
+Date: Wed, 28 Aug 2024 10:36:51 +0200
+Message-Id: <20240828083651.203861-1-alexghiti@rivosinc.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=78.40.148.171;
- envelope-from=srv_ts003@codethink.com; helo=imap5.colo.codethink.co.uk
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alexghiti@rivosinc.com; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,29 +96,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If you create a new timer before the timer lists have been
-initialised then you will end up with an abort due to trying
-to access an illegal timer list struct. Add an assert() for
-the timer list being NON-null.
+The Svvptc extension describes a uarch that does not cache invalid TLB
+entries: that's the case for qemu so there is nothing particular to
+implement other than the introduction of this extension.
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Since qemu already exposes Svvptc behaviour, let's enable it by default
+since it allows to drastically reduce the number of sfence.vma emitted
+by S-mode.
+
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 ---
- util/qemu-timer.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/util/qemu-timer.c b/util/qemu-timer.c
-index 213114be68..5c0c6be56b 100644
---- a/util/qemu-timer.c
-+++ b/util/qemu-timer.c
-@@ -365,6 +365,7 @@ void timer_init_full(QEMUTimer *ts,
-         timer_list_group = &main_loop_tlg;
-     }
-     ts->timer_list = timer_list_group->tl[type];
-+    assert(ts->timer_list != NULL);
-     ts->cb = cb;
-     ts->opaque = opaque;
-     ts->scale = scale;
+Changes in v3:
+- Rebase on top of master
+- Change 1.12 to 1.13 spec version (drew)
+
+Changes in v2:
+- Rebase on top of master
+- Enable Svvptc by default
+
+ target/riscv/cpu.c     | 2 ++
+ target/riscv/cpu_cfg.h | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index a90808a3ba..cabe698f2f 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -197,6 +197,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+     ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
+     ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
++    ISA_EXT_DATA_ENTRY(svvptc, PRIV_VERSION_1_13_0, ext_svvptc),
+     ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
+     ISA_EXT_DATA_ENTRY(xtheadbb, PRIV_VERSION_1_11_0, ext_xtheadbb),
+     ISA_EXT_DATA_ENTRY(xtheadbs, PRIV_VERSION_1_11_0, ext_xtheadbs),
+@@ -1509,6 +1510,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("svinval", ext_svinval, false),
+     MULTI_EXT_CFG_BOOL("svnapot", ext_svnapot, false),
+     MULTI_EXT_CFG_BOOL("svpbmt", ext_svpbmt, false),
++    MULTI_EXT_CFG_BOOL("svvptc", ext_svvptc, true),
+ 
+     MULTI_EXT_CFG_BOOL("zicntr", ext_zicntr, true),
+     MULTI_EXT_CFG_BOOL("zihpm", ext_zihpm, true),
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 8b272fb826..7d16048a76 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -81,6 +81,7 @@ struct RISCVCPUConfig {
+     bool ext_svinval;
+     bool ext_svnapot;
+     bool ext_svpbmt;
++    bool ext_svvptc;
+     bool ext_zdinx;
+     bool ext_zaamo;
+     bool ext_zacas;
 -- 
-2.37.2.352.g3c44437643
+2.39.2
 
 
