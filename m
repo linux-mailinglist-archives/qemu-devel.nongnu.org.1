@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8FA996240E
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 11:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31673962419
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 11:55:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjFMZ-0002Gl-Nx; Wed, 28 Aug 2024 05:53:15 -0400
+	id 1sjFMV-00023V-SV; Wed, 28 Aug 2024 05:53:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sjFMQ-0001wv-Q7
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 05:53:07 -0400
-Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
+ id 1sjFMS-0001xp-Dl
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 05:53:09 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sjFMN-0001o9-5u
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 05:53:05 -0400
-Received: by mail-oo1-xc34.google.com with SMTP id
- 006d021491bc7-5dcd8403656so3324196eaf.1
- for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 02:53:02 -0700 (PDT)
+ id 1sjFMQ-0001oN-IU
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 05:53:08 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-656d8b346d2so3921405a12.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 02:53:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724838781; x=1725443581; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1724838784; x=1725443584; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=T71bAWZ5le2Naj8DZ0ljjvL8S+u/egKAPUIr3/tluJ8=;
- b=NZTs+2EUVNqwBJ1RC8t1MOPCEz3GYbOeqQQvc4UKtHWLksPZjHgh6m9A6Dz8btDyYX
- lhT3joER4YcN8tS3niwM3Lj433QpOjrkZBVpOCB67cXBvCncy5B6P4LzVhf6z5aBjwSI
- 9HDOYiQl7TGd+0c22BDknHZYjkzsWIrOEFtQ3reK4LNntirpjkejM7Fmoi3QKljsV989
- wDAoT9A8p67VX5/GOKO0u85i2CCCI4rMAEESlIYMIfd6AOQxRIWHw44kCtnWqWhBwISM
- UZKR0xXX8EvUrbYf8cRTmiwKvI74hHP1Pr/+Gf22dgBsJ8Q7n6UKjQECn1XcZLeylSwN
- XvOQ==
+ bh=Q8SeRNxqA0kdGYXuMPPKRU3j4MVX/4+712bEYl1oABA=;
+ b=nipOaqizqXm11mnpxNboXbor4g8QTL2gb8cvF+QoxZvzpbylFWx12eDVx5+byx3OMx
+ QWMYhl8/klIsYLwTqJDvdfmVvA0CayeB6ZWH4y+M6GXGeBw+vD0K0ZBVSlMwXjXR4Qxw
+ hH4/YrEDvv0RIeoI5LM8j2KfqHcdrh8EnUr1w9WnuhluXlP7Qf0lIF/s9ozEDKkox3Y+
+ TfHpTuirXU/ziOuZ7X4Y9Ss7mLIIpn1CEuz74DjundQqwxYNytidhuJlxSBHxMgnfhDa
+ 9po71w1GeK8SWmHkIqFiwFYO+MrMaI8pPlEuXHrTIj9pzvA73zN1+dd+LJA8T47EYIb7
+ 2zXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724838781; x=1725443581;
+ d=1e100.net; s=20230601; t=1724838784; x=1725443584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=T71bAWZ5le2Naj8DZ0ljjvL8S+u/egKAPUIr3/tluJ8=;
- b=C/lIhaJZAo5ww+jZ8P2/PML+ILKk63wCKfaau+6stJrAZTU34gD8T8bSBIuIZ+Nvx4
- CH/UyxdAxRyhC4IOKXsT1r/2z6GUy5Bro/gFJlpi/kiUeG8wh5LDGBlpBtOGtaOQmDyx
- be6DvF967YbVzV7yJsarUbCwDVqtYlLVG1O++9kTC7tR5pfLnw8cNeOBdEJzDWK360Tt
- hs/L2Yvx976YOwMdj/RDfUHPUJmp9mcb9FXxp+RjBi3BoUdoK73jp92e3CcTx3XDS/aO
- j71Cr08ZHKMLbYhN+Q4cE0lY/zSEOZPP7AmlqNVCxTrvDePg3V4gsZIfB/3jLdTL/Jke
- rZTw==
-X-Gm-Message-State: AOJu0Yya+7g2jvJH9ha+NJpJc4zGB71GbMU+FHoUyky00mxHfmd2roaL
- wvMyrCSqu5IvvFiKdyOBO7oNpQsQOH529WFGdW0CqFAIHVosHf6aROvDwWef
-X-Google-Smtp-Source: AGHT+IH4OD8zAfPcwO53guP+mNee6d6qN8ggHvB5WTMqp92jh4ZTGGGSlERXbhhlQrsS0DBfHwEUzQ==
-X-Received: by 2002:a05:6358:109:b0:1ac:f2a5:e79e with SMTP id
- e5c5f4694b2df-1b5c215c92bmr1934193155d.16.1724838781428; 
- Wed, 28 Aug 2024 02:53:01 -0700 (PDT)
+ bh=Q8SeRNxqA0kdGYXuMPPKRU3j4MVX/4+712bEYl1oABA=;
+ b=WjlIEREJnSPNQGzGnCC1xUe2ia3gpe1+ccxgXcfaun2+L43m1ZAHzfh7fDAzCqHOHD
+ He39WpFMN2oMy3YC6b/BlzXQvVkwJEmlv9hzW5F2wpJj1S/lEn4uyPbu7eCASs0H7oEH
+ O7bslyWR5Ps9XI8An6JvaiEru5FQM4br6n3AlfY7GipVTD/nzkeour5YSEtW7Vos4SE3
+ 0gBp5GcSO545xbU8qQ50psKHpblNeCBPxe71vxr0K1xU2dLD1lZUHaQYbzzmqnHn/TeR
+ X/viuM0yZtIsl/d3nYFkSV+JO3Ns42Do4M+UcjG1uh0bEpx0ru8Wc+dJ2IfGl+ZnqsCC
+ FgKw==
+X-Gm-Message-State: AOJu0YxjZ63KlWSjCgSZlsB6pqB4rM2tFwAuaGiXLpNySq/G9CZjIZ7a
+ JJ0eMV0aZgvDVKJSybuwPo+me+ghYe7YH+MQ6fPFS1RSooGOrHgvooHZup8z
+X-Google-Smtp-Source: AGHT+IHE7ZCAZdcCsTYcgpVVGoE19yB+ZVfV1AbPLA61aNJH4aSfN3AI0BltMdJB5IENWucm7JzCeQ==
+X-Received: by 2002:a05:6a21:1584:b0:1ca:cbf5:5b0 with SMTP id
+ adf61e73a8af0-1cc8b459221mr15988881637.21.1724838783884; 
+ Wed, 28 Aug 2024 02:53:03 -0700 (PDT)
 Received: from localhost.localdomain ([220.253.126.131])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7143430f6e7sm9787508b3a.160.2024.08.28.02.52.59
+ d2e1a72fcca58-7143430f6e7sm9787508b3a.160.2024.08.28.02.53.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Aug 2024 02:53:01 -0700 (PDT)
+ Wed, 28 Aug 2024 02:53:03 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Corbin <mark@dibsco.co.uk>, Warner Losh <imp@bsdimp.com>,
  Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v4 03/17] bsd-user: Implement RISC-V CPU register cloning and
- reset functions
-Date: Wed, 28 Aug 2024 19:52:29 +1000
-Message-Id: <20240828095243.90491-4-itachis@FreeBSD.org>
+Subject: [PATCH v4 04/17] bsd-user: Implement RISC-V TLS register setup
+Date: Wed, 28 Aug 2024 19:52:30 +1000
+Message-Id: <20240828095243.90491-5-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240828095243.90491-1-itachis@FreeBSD.org>
 References: <20240828095243.90491-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
- envelope-from=itachis6234@gmail.com; helo=mail-oo1-xc34.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=itachis6234@gmail.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,39 +97,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Corbin <mark@dibsco.co.uk>
 
-Added functions for cloning CPU registers and resetting the CPU state
-for RISC-V architecture.
+Included the prototype for the 'target_cpu_set_tls' function in the
+'target_arch.h' header file. This function is responsible for setting
+the Thread Local Storage (TLS) register for RISC-V architecture.
 
 Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/riscv/target_arch_cpu.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ bsd-user/riscv/target_arch.h     | 27 +++++++++++++++++++++++++++
+ bsd-user/riscv/target_arch_cpu.c | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 56 insertions(+)
+ create mode 100644 bsd-user/riscv/target_arch.h
+ create mode 100644 bsd-user/riscv/target_arch_cpu.c
 
-diff --git a/bsd-user/riscv/target_arch_cpu.h b/bsd-user/riscv/target_arch_cpu.h
-index ba589909e2..b1575aab20 100644
---- a/bsd-user/riscv/target_arch_cpu.h
-+++ b/bsd-user/riscv/target_arch_cpu.h
-@@ -130,4 +130,18 @@ static inline void target_cpu_loop(CPURISCVState *env)
-     }
- }
- 
-+static inline void target_cpu_clone_regs(CPURISCVState *env, target_ulong newsp)
+diff --git a/bsd-user/riscv/target_arch.h b/bsd-user/riscv/target_arch.h
+new file mode 100644
+index 0000000000..26ce07f343
+--- /dev/null
++++ b/bsd-user/riscv/target_arch.h
+@@ -0,0 +1,27 @@
++/*
++ * RISC-V specific prototypes
++ *
++ * Copyright (c) 2019 Mark Corbin <mark.corbin@embecsom.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef TARGET_ARCH_H
++#define TARGET_ARCH_H
++
++#include "qemu.h"
++
++void target_cpu_set_tls(CPURISCVState *env, target_ulong newtls);
++
++#endif /* TARGET_ARCH_H */
+diff --git a/bsd-user/riscv/target_arch_cpu.c b/bsd-user/riscv/target_arch_cpu.c
+new file mode 100644
+index 0000000000..44e25d2ddf
+--- /dev/null
++++ b/bsd-user/riscv/target_arch_cpu.c
+@@ -0,0 +1,29 @@
++/*
++ *  RISC-V CPU related code
++ *
++ *  Copyright (c) 2019 Mark Corbin
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++#include "qemu/osdep.h"
++
++#include "target_arch.h"
++
++#define TP_OFFSET       16
++
++/* Compare with cpu_set_user_tls() in riscv/riscv/vm_machdep.c */
++void target_cpu_set_tls(CPURISCVState *env, target_ulong newtls)
 +{
-+    if (newsp) {
-+        env->gpr[xSP] = newsp;
-+    }
-+
-+    env->gpr[xA0] = 0; 
-+    env->gpr[xT0] = 0; 
++    env->gpr[xTP] = newtls + TP_OFFSET;
 +}
-+
-+static inline void target_cpu_reset(CPUArchState *env)
-+{
-+}
-+
- #endif /* TARGET_ARCH_CPU_H */
 -- 
 2.34.1
 
