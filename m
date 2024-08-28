@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C12961DAA
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 06:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2B2961E3E
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 07:35:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjANd-0000cR-FQ; Wed, 28 Aug 2024 00:34:01 -0400
+	id 1sjBJs-0000v3-WE; Wed, 28 Aug 2024 01:34:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1sjANZ-0000UY-Tl
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 00:33:57 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1sjANW-0002dr-90
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 00:33:57 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2025031eb60so55112375ad.3
- for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 21:33:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724819633; x=1725424433; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2zdwiYqr0w43Mh87Wpao4Jr5QC0LLctdaAixHY2H6x0=;
- b=YhIstGaSHMGvaNnY79jMN+EuraAGwUV3AQMvlXVUvTfb9TWHFPfGC4zNugCTuy2+Nm
- VFOPKEBloi86sQtehZlj1fdniZeDZ2DcFADWhdkx5lEvI+yE2eDcFLB618VTmZGf5PMs
- wC0ErXDm5Vls8yoAoYG4F1RcEvXkyLQA0K/9O4RXYiFlkhgJ6IAtcedOPrXgZByg6S/E
- AgHOPC/xC1QbGwaJKx7qwN6tv5suZFu/dHM+yJBct7iHAUaNSOnlCkXljF3AS3JCNSVo
- YWg+PjW4Ze8Fnq6Z3HKM2fR7QOpDzxSC0kzXUEhUzIfH10EPs5JvB8BjXRax/0ucnEU7
- 2xmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724819633; x=1725424433;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2zdwiYqr0w43Mh87Wpao4Jr5QC0LLctdaAixHY2H6x0=;
- b=UYq+T0GJFgiAIbzuZX3bE0rdEYTLKjQDGJWg/Z7nXwVpqVmgoQ7U0UBFxsm57DBMEy
- 7abm6TO1yoh8cM5DQ/FHKXbrqYLykxKHqt4DgdpZ49mzPA47jDOwDON4Vp84Kl0ZL1o9
- e+2yQMnLNmw3TjPEDuJLP1bh53AKCQ7keui/D5VTC/pAoLFDHc+8RDKmZzI+riqdPdWI
- FmPebZjc9GbPwjxqiQ1kpZGWtj8tubV5LB18owjbUiZAQCWZzN7NybHuojibc2EgkKnG
- OXQ1yhsOq8WIkW5rAPIYTo6fvIdFrS8f3wXv2HRR8HRpp7ZJVLEj84B2G3+lf8V1nZSY
- RXbg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWgEobRSoq/7uKFPJNebIzLxGvh9A/xOx2TgwVWOUjLgKJ38HO2ejzGOCArP1cAIP1PdIQaycy8bfo3@nongnu.org
-X-Gm-Message-State: AOJu0Yz1/szWQY7oS9/eJsrDyVybuGPbc9gsE2SqDws578lMbeT4qdp6
- 0LmlLTxQYfGuRq+2yjaOx5IaS49NXg5Bx9jvfUV3xScr9W51dK7yKmznKg==
-X-Google-Smtp-Source: AGHT+IFZA5Iy+G9nCiHF97A2dmNLj29tq3TCYXByNxHVlAcV8NNtXxAY+lmKBMcRTX95kK1hz2Xnzg==
-X-Received: by 2002:a17:902:d509:b0:201:f409:ce73 with SMTP id
- d9443c01a7336-2039e545857mr147447095ad.65.1724819633014; 
- Tue, 27 Aug 2024 21:33:53 -0700 (PDT)
-Received: from wheely.local0.net ([1.146.81.12])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2038557f093sm90342325ad.63.2024.08.27.21.33.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2024 21:33:52 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Subject: [PATCH 2/2] chardev: Remove __-prefixed names
-Date: Wed, 28 Aug 2024 14:33:35 +1000
-Message-ID: <20240828043337.14587-3-npiggin@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240828043337.14587-1-npiggin@gmail.com>
-References: <20240828043337.14587-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sjBJr-0000sJ-Gy
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 01:34:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sjBJp-0000AL-5i
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 01:34:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1724823247;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UA/+RqDrOCk+oYc+QQr8ZQ8csnbYVHT3jQysDSl4/yg=;
+ b=FRCmlcK6cEpTnIVen4RAdv525cbKtkQI3OmDTyNEmfVgyJds74znaH5xu4DOWnSQR+3j8+
+ SPMdcl6vocJfBemn+0d/U15JkfRu1D97IaBF8F39lk2eamsLHjuA1i1rvHd4Kgo0zTIw0z
+ WyE+wPCgiDviWkfBlOdOhwWYOHu2QFg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-602-1nMCIYwaP1-Zu7m_jpaKmw-1; Wed,
+ 28 Aug 2024 01:34:00 -0400
+X-MC-Unique: 1nMCIYwaP1-Zu7m_jpaKmw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8B1111955D4B; Wed, 28 Aug 2024 05:33:59 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.112])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 89BFE1955D42; Wed, 28 Aug 2024 05:33:57 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 54B6221E6A28; Wed, 28 Aug 2024 07:33:55 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Zhao Liu <zhao1.liu@intel.com>,  cfontana@suse.de,
+ qemu-trivial@nongnu.org,  kvm@vger.kernel.org,  qemu-devel
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v4 2/2] kvm: refactor core virtual machine creation into
+ its own function
+In-Reply-To: <CAK3XEhPPWvRuzc=DZiP0ni-c9-KsT6=R+9_XAM5224KsiARh=g@mail.gmail.com>
+ (Ani Sinha's message of "Tue, 27 Aug 2024 21:05:41 +0530")
+References: <20240827151022.37992-1-anisinha@redhat.com>
+ <20240827151022.37992-3-anisinha@redhat.com>
+ <CAFEAcA9Xq7S6_-hYkNYdv6-z7tM7xSgDGyC92L19kTm02qScAw@mail.gmail.com>
+ <CAK3XEhPPWvRuzc=DZiP0ni-c9-KsT6=R+9_XAM5224KsiARh=g@mail.gmail.com>
+Date: Wed, 28 Aug 2024 07:33:55 +0200
+Message-ID: <87a5gxgqik.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,77 +89,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter points out double underscore prefix names tend to be reserved
-for the system. Clean these up.
+Ani Sinha <anisinha@redhat.com> writes:
 
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- chardev/char.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+> On Tue, 27 Aug, 2024, 8:59 pm Peter Maydell, <peter.maydell@linaro.org>
+> wrote:
+>
+>> On Tue, 27 Aug 2024 at 16:11, Ani Sinha <anisinha@redhat.com> wrote:
+>> >
+>> > Refactoring the core logic around KVM_CREATE_VM into its own separate
+>> function
+>> > so that it can be called from other functions in subsequent patches.
+>> There is
+>> > no functional change in this patch.
+>>
+>> What subsequent patches? This is patch 2 of 2...
+>
+> I intend to post them later as a part of a larger patch series when my
+> changes have stabilized.
 
-diff --git a/chardev/char.c b/chardev/char.c
-index 47a744ebeb..46d4798e4e 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -628,8 +628,8 @@ static void qemu_chardev_set_replay(Chardev *chr, Error **errp)
-     }
- }
- 
--static Chardev *__qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
--                                         bool replay, Error **errp)
-+static Chardev *do_qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
-+                                          bool replay, Error **errp)
- {
-     const ChardevClass *cc;
-     Chardev *base = NULL, *chr = NULL;
-@@ -707,12 +707,12 @@ Chardev *qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
-                                 Error **errp)
- {
-     /* XXX: should this really not record/replay? */
--    return __qemu_chr_new_from_opts(opts, context, false, errp);
-+    return do_qemu_chr_new_from_opts(opts, context, false, errp);
- }
- 
--static Chardev *__qemu_chr_new(const char *label, const char *filename,
--                               bool permit_mux_mon, GMainContext *context,
--                               bool replay)
-+static Chardev *qemu_chr_new_from_name(const char *label, const char *filename,
-+                                       bool permit_mux_mon,
-+                                       GMainContext *context, bool replay)
- {
-     const char *p;
-     Chardev *chr;
-@@ -735,7 +735,7 @@ static Chardev *__qemu_chr_new(const char *label, const char *filename,
-     if (!opts)
-         return NULL;
- 
--    chr = __qemu_chr_new_from_opts(opts, context, replay, &err);
-+    chr = do_qemu_chr_new_from_opts(opts, context, replay, &err);
-     if (!chr) {
-         error_report_err(err);
-         goto out;
-@@ -760,7 +760,8 @@ out:
- Chardev *qemu_chr_new_noreplay(const char *label, const char *filename,
-                                bool permit_mux_mon, GMainContext *context)
- {
--    return __qemu_chr_new(label, filename, permit_mux_mon, context, false);
-+    return qemu_chr_new_from_name(label, filename, permit_mux_mon, context,
-+                                  false);
- }
- 
- static Chardev *qemu_chr_new_permit_mux_mon(const char *label,
-@@ -768,7 +769,8 @@ static Chardev *qemu_chr_new_permit_mux_mon(const char *label,
-                                           bool permit_mux_mon,
-                                           GMainContext *context)
- {
--    return __qemu_chr_new(label, filename, permit_mux_mon, context, true);
-+    return qemu_chr_new_from_name(label, filename, permit_mux_mon, context,
-+                                  true);
- }
- 
- Chardev *qemu_chr_new(const char *label, const char *filename,
--- 
-2.45.2
+Call them "future patches" then :)
 
 
