@@ -2,64 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87B79628C4
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 15:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3639962910
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 15:45:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjIoa-0006pN-VK; Wed, 28 Aug 2024 09:34:25 -0400
+	id 1sjIxT-0004Hc-Uf; Wed, 28 Aug 2024 09:43:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sjIoX-0006o5-7c; Wed, 28 Aug 2024 09:34:21 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sjIoT-00017i-Qv; Wed, 28 Aug 2024 09:34:20 -0400
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c00:2588:0:640:36aa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 69BD960A01;
- Wed, 28 Aug 2024 16:34:08 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:1221::1:27] (unknown
- [2a02:6b8:b081:1221::1:27])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 5YV5qr0XqeA0-gJCqX7bP; Wed, 28 Aug 2024 16:34:06 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1724852046;
- bh=yL0Z8V+YnfU5bycxhsxPrRIZkNV4V+iHlfQvAsGG5LI=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=TG2uMv1TsvvAqclpS/x4BW1e/8MiLfCxhzcYu2L3hEZeci/oPpzw6PV1UGHZbqPvY
- L5CGne25Vrknynrk0u1B3rd+fEDh0WugwuY8FlstApL0o8hrnr5g40e0NeRcPSSQA7
- hd2uq0Hb/S6Pv3W0h64h+6uO40SyEiIjNKV9xucA=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <156a5657-25d3-435c-b212-8f42f3ffb786@yandex-team.ru>
-Date: Wed, 28 Aug 2024 16:34:05 +0300
+ (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
+ id 1sjIxR-0004GY-Mr
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 09:43:33 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
+ id 1sjIxQ-0002KZ-1t
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 09:43:33 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4281d812d3eso74553845e9.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 06:43:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1724852610; x=1725457410; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cnpFdezWBkNzeCUXHokhn/eMQxpgjho0h8lR/o8L3Rk=;
+ b=TGBU/Yy6kJM58emu0pSmIUCEONjv5NY97CIVMbpWdB8C72SDLoL0gpHqWePcdePhpY
+ ZMyXpZ52WsDttUG6iUH/l5aJiOI9A13nT+pKYTvZe2oqqFqJLNr586OQble0WSZEJb6w
+ 6RYKArOQjCG4VHQJ5vu19ScwG5VbTvLJY3junt37VqYJuR0DOHiCw+uGU7wvHloJhl+M
+ 7q56p4IuTdiCtIDyBVv/mMrJbgHrgCwGEZ8V21b+GE8pTCsOr2GBxmTKu+XnuerZ/t84
+ j5XI22LuEh7QuptHYQI7N2Vma3a0V4oMfyI5pD/fnTTwz3bjo+WA75ycsCPFrEuqtYyR
+ dJjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724852610; x=1725457410;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cnpFdezWBkNzeCUXHokhn/eMQxpgjho0h8lR/o8L3Rk=;
+ b=CYK4nJm4E6NEQFMuaduFVQAkXq0/haSS9DOQcthWTQQRJp4cHuH65es9FFiQS8rg+K
+ j5QirxRbshIy3SLsihEDVou1VUY7dXEfgpLQrRMixOQcWErPTf04VdNY/WIyqkvn1RRd
+ y93mHFEYGe8LBJ7gOlAUe+fqjYqIQCqwVhbSTgfxFelID9Tnc2mdXIEsNsOENnXVeSgL
+ 3RTcwwlvqvj3WVD9q8Fjzy/trxLR/D9ohV7lM4BadasX4UoUlQwTMYwe3ci2+fiQfkRR
+ Bh+60JKpjtEeQOWR5dQdSYjrdcXB+A6rjIPPJ2+XjRXhC0JMvtWa1dmDV7GcXOUbo8dU
+ +L3g==
+X-Gm-Message-State: AOJu0Yy8OR2pqCf4YANko3hgFEZIBch/YS+bpRND38igPJvLoRTsBBZn
+ JD/SOsQm39nwCLypN3bJnQPW1E4aDoFU1I34JwX72Po1mDHNO3DlgaPouw==
+X-Google-Smtp-Source: AGHT+IGvzbCjFRhJ8g9uyDVNE4EwX6DEwKB+VjNVPuRTrtmGVFyj/j0ulILummyKsy2tN3xKQWWfiQ==
+X-Received: by 2002:a05:6000:1081:b0:368:4e35:76f9 with SMTP id
+ ffacd0b85a97d-37311864df1mr13011911f8f.37.1724852609971; 
+ Wed, 28 Aug 2024 06:43:29 -0700 (PDT)
+Received: from corvink-nb.beckhoff.com ([195.226.174.194])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a88a48d4a39sm32606766b.12.2024.08.28.06.43.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Aug 2024 06:43:29 -0700 (PDT)
+From: "=?UTF-8?q?Corvin=20K=C3=B6hne?=" <corvin.koehne@gmail.com>
+X-Google-Original-From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
+To: qemu-devel@nongnu.org,
+	c.koehne@beckhoff.com
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH v3 0/7] vfio/igd: add passthrough support for IGDs of gen 11
+ and later
+Date: Wed, 28 Aug 2024 15:43:21 +0200
+Message-ID: <20240828134328.94528-1-c.koehne@beckhoff.com>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] block/reqlist: allow adding overlapping requests
-To: Michael Tokarev <mjt@tls.msk.ru>, Fiona Ebner <f.ebner@proxmox.com>,
- qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, qemu-stable@nongnu.org, hreitz@redhat.com,
- kwolf@redhat.com, jsnow@redhat.com
-References: <20240712140716.517911-1-f.ebner@proxmox.com>
- <fb94e606-73be-4af9-8cb3-52c661fe320e@tls.msk.ru>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <fb94e606-73be-4af9-8cb3-52c661fe320e@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,84 +93,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11.08.24 20:55, Michael Tokarev wrote:
-> 12.07.2024 17:07, Fiona Ebner wrote:
->> Allow overlapping request by removing the assert that made it
->> impossible. There are only two callers:
->>
->> 1. block_copy_task_create()
->>
->> It already asserts the very same condition before calling
->> reqlist_init_req().
->>
->> 2. cbw_snapshot_read_lock()
->>
->> There is no need to have read requests be non-overlapping in
->> copy-before-write when used for snapshot-access. In fact, there was no
->> protection against two callers of cbw_snapshot_read_lock() calling
->> reqlist_init_req() with overlapping ranges and this could lead to an
->> assertion failure [1].
->>
->> In particular, with the reproducer script below [0], two
->> cbw_co_snapshot_block_status() callers could race, with the second
->> calling reqlist_init_req() before the first one finishes and removes
->> its conflicting request.
->>
->> [0]:
->>
->>> #!/bin/bash -e
->>> dd if=/dev/urandom of=/tmp/disk.raw bs=1M count=1024
->>> ./qemu-img create /tmp/fleecing.raw -f raw 1G
->>> (
->>> ./qemu-system-x86_64 --qmp stdio \
->>> --blockdev raw,node-name=node0,file.driver=file,file.filename=/tmp/disk.raw \
->>> --blockdev raw,node-name=node1,file.driver=file,file.filename=/tmp/fleecing.raw \
->>> <<EOF
->>> {"execute": "qmp_capabilities"}
->>> {"execute": "blockdev-add", "arguments": { "driver": "copy-before-write", "file": "node0", "target": "node1", "node-name": "node3" } }
->>> {"execute": "blockdev-add", "arguments": { "driver": "snapshot-access", "file": "node3", "node-name": "snap0" } }
->>> {"execute": "nbd-server-start", "arguments": {"addr": { "type": "unix", "data": { "path": "/tmp/nbd.socket" } } } }
->>> {"execute": "block-export-add", "arguments": {"id": "exp0", "node-name": "snap0", "type": "nbd", "name": "exp0"}}
->>> EOF
->>> ) &
->>> sleep 5
->>> while true; do
->>> ./qemu-nbd -d /dev/nbd0
->>> ./qemu-nbd -c /dev/nbd0 nbd:unix:/tmp/nbd.socket:exportname=exp0 -f raw -r
->>> nbdinfo --map 'nbd+unix:///exp0?socket=/tmp/nbd.socket'
->>> done
->>
->> [1]:
->>
->>> #5  0x000071e5f0088eb2 in __GI___assert_fail (...) at ./assert/assert.c:101
->>> #6  0x0000615285438017 in reqlist_init_req (...) at ../block/reqlist.c:23
->>> #7  0x00006152853e2d98 in cbw_snapshot_read_lock (...) at ../block/copy-before-write.c:237
->>> #8  0x00006152853e3068 in cbw_co_snapshot_block_status (...) at ../block/copy-before-write.c:304
->>> #9  0x00006152853f4d22 in bdrv_co_snapshot_block_status (...) at ../block/io.c:3726
->>> #10 0x000061528543a63e in snapshot_access_co_block_status (...) at ../block/snapshot-access.c:48
->>> #11 0x00006152853f1a0a in bdrv_co_do_block_status (...) at ../block/io.c:2474
->>> #12 0x00006152853f2016 in bdrv_co_common_block_status_above (...) at ../block/io.c:2652
->>> #13 0x00006152853f22cf in bdrv_co_block_status_above (...) at ../block/io.c:2732
->>> #14 0x00006152853d9a86 in blk_co_block_status_above (...) at ../block/block-backend.c:1473
->>> #15 0x000061528538da6c in blockstatus_to_extents (...) at ../nbd/server.c:2374
->>> #16 0x000061528538deb1 in nbd_co_send_block_status (...) at ../nbd/server.c:2481
->>> #17 0x000061528538f424 in nbd_handle_request (...) at ../nbd/server.c:2978
->>> #18 0x000061528538f906 in nbd_trip (...) at ../nbd/server.c:3121
->>> #19 0x00006152855a7caf in coroutine_trampoline (...) at ../util/coroutine-ucontext.c:175
->>
->> Cc: qemu-stable@nongnu.org
->> Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> 
-> Hi!
-> 
-> Has this been forgotten or is it not needed for 9.1?
-> 
+Hi,
 
-My apologies, this is forgotten. I think rc4 is too late, I'll send Pull request as soon as 9.2 window open.
+Qemu has experimental support for GPU passthrough of Intels integrated graphic
+devices. Unfortunately, Intel has changed some bits for their gen 11 devices
+and later. To support these devices, we have to account for those changes. This
+patch series adds the missing bits on the Qemu side.
+
+I've tested the patch series on an ElkhartLake and TigerLake device. On the
+guest side, I've tested an EFI environment (GOP driver), a Linux guest and a
+Windows VM. The driver of all guests are able to use the GPU and produce an
+output on the connected display.
+
+Corvin Köhne (7):
+  vfio/igd: return an invalid generation for unknown devices
+  vfio/igd: support legacy mode for all known generations
+  vfio/igd: use new BDSM register location and size for gen 11 and later
+  vfio/igd: add new bar0 quirk to emulate BDSM mirror
+  vfio/igd: add ID's for ElkhartLake and TigerLake
+  vfio/igd: don't set stolen memory size to zero
+  vfio/igd: correctly calculate stolen memory size for gen 9 and later
+
+ hw/vfio/igd.c        | 185 +++++++++++++++++++++++++++++++++++++------
+ hw/vfio/pci-quirks.c |   1 +
+ hw/vfio/pci.h        |   1 +
+ 3 files changed, 161 insertions(+), 26 deletions(-)
 
 -- 
-Best regards,
-Vladimir
+2.46.0
 
 
