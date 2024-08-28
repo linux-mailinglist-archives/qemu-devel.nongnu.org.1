@@ -2,49 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE24962740
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 14:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9FA96273D
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 14:37:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjHuR-0006QW-Na; Wed, 28 Aug 2024 08:36:23 -0400
+	id 1sjHuM-0005lq-7u; Wed, 28 Aug 2024 08:36:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1sjHu9-0005Jc-ME
+ id 1sjHu9-0005Jb-Lp
  for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:36:07 -0400
 Received: from internet2.beckhoff.com ([194.25.186.210])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1sjHu4-0003A4-OI
+ id 1sjHu5-0003AE-4q
  for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:36:04 -0400
 Received: from 172.17.5.170 by INTERNET2.beckhoff.com (Tls12, Aes256, Sha384, 
  DiffieHellmanEllipticKey384); Wed, 28 Aug 2024 12:35:57 GMT
 DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022e; 
- t=1724848557; bh=Zc20bNnH6fxi+zm1bGTgtARrzIvCIziEw3eZSEmzxEc=; h=
+ t=1724848557; bh=dw5PZHWoP2rzADIQR+kXL/3fIW9nweVv3qfNfRdXkvc=; h=
  Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
  a=ed25519-sha256; b=
- tSdq34iYmj2+DZ9vFLP8MgHjt/a4D0CFRvawasucRMN62+iW8TYZNLtzU69LwXkzuO1yjeINXbFtB0UAPxzEAA==
+ aulXHQteHcrI1BCGTPLKbUBPk2jciTXXqbuWVEaitvf8zBwHpD+AO7Oxy/c9qb1eJbNvpyl6ATzdSAtfiIChCA==
 DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022r; 
- t=1724848557; bh=Zc20bNnH6fxi+zm1bGTgtARrzIvCIziEw3eZSEmzxEc=; h=
+ t=1724848557; bh=dw5PZHWoP2rzADIQR+kXL/3fIW9nweVv3qfNfRdXkvc=; h=
  Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
  a=rsa-sha256; b=
- BtbzthWh1rHMoIzjaAD79c7Nz7Nk6DHIt/UF4+A0i6S/IXrzuC5zuJcksMlQqf0+r5O075x2luS2XispuoQiYYM8Z+8l6iATde2u3ZTFQ4LkEuCCvLoAvhzVRMO+NrI5nLkIhLj0n7Hl91RSlFI6JfDNa0udNTWhkZDkB/P1UYBBVf5oIkT+d2YkeVId9O6E2ZCIzEqD4GBOEexxRhYPtfQ/uFefyUkCoJ/X2Fh1IMRix20m14ytxzaHa9u4yviMV5+pc04k706Bi6N6CIzFUqXf3Qqi1X6L4fpLUs9lkMTdITeU73OEXDvvB70peE1H9QfsR2z0fCa1dIKLZeumcA==
+ hWkMCfUKZVlC5WP/zF1rKcv3IKZaEF7Z3Xr2tla2SVCkAoP/M4WwqqrF6fiyGJwWR09/IuBZPpL7NOFh95MMvlkGlcXKKbKiicERMNDTrNEXeHrrMSTL2fe1xG13WP3TDiHHxsGpBkOOAPziUViPOGEShuK7x7ZuAewWHu7kLzCthgTCeY5/ooYAXVMYQW0+pZ8rV34w3cfbaezFaiL2AVMsnoi2zsipZVDhzHrTIunja/lxD2Hcibw264Ugl2abOl3MTBwZ5ZZ8Ami8Q8gC5Aupo/vz6/7QQVky29+DsnirSuWS0sVUI/yCRJgBh6iE9NTMBqkmtvknhRzErUZAcA==
 Received: from corvink-nb.beckhoff.com (172.17.128.201) by ex04.beckhoff.com
  (172.17.5.170) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 28 Aug
- 2024 14:35:54 +0200
+ 2024 14:35:55 +0200
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
 To: <qemu-devel@nongnu.org>, <c.koehne@beckhoff.com>
 CC: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Alex Williamson
  <alex.williamson@redhat.com>
-Subject: [PATCH v2 0/7] vfio/igd: add passthrough support for IGDs of gen 11
- and later
-Date: Wed, 28 Aug 2024 14:35:42 +0200
-Message-ID: <20240828123549.83293-1-c.koehne@beckhoff.com>
+Subject: [PATCH v2 1/7] vfio/igd: return an invalid generation for unknown
+ devices
+Date: Wed, 28 Aug 2024 14:35:43 +0200
+Message-ID: <20240828123549.83293-2-c.koehne@beckhoff.com>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240828123549.83293-1-c.koehne@beckhoff.com>
+References: <20240828123549.83293-1-c.koehne@beckhoff.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Originating-IP: [172.17.128.201]
 X-ClientProxiedBy: ex03.beckhoff.com (172.17.2.169) To ex04.beckhoff.com
@@ -75,36 +77,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=EF=BB=BFHi,
+=EF=BB=BFIntel changes it's specification quite often e.g. the location and=
+ size
+of the BDSM register has change for gen 11 devices and later. This
+causes our emulation to fail on those devices. So, it's impossible for
+us to use a suitable default value for unknown devices. Instead of
+returning a random generation value and hoping that everthing works
+fine, we should verify that different devices are working and add them
+to our list of known devices.
 
-Qemu has experimental support for GPU passthrough of Intels integrated grap=
-hic
-devices. Unfortunately, Intel has changed some bits for their gen 11 device=
-s
-and later. To support these devices, we have to account for those changes. =
-This
-patch series adds the missing bits on the Qemu side.
+Signed-off-by: Corvin K=C3=B6hne <c.koehne@beckhoff.com>
+---
+ hw/vfio/igd.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-I've tested the patch series on an ElkhartLake and TigerLake device. On the
-guest side, I've tested an EFI environment (GOP driver), a Linux guest and =
-a
-Windows VM. The driver of all guests are able to use the GPU and produce an
-output on the connected display.
-
-Corvin K=C3=B6hne (7):
-  vfio/igd: return an invalid generation for unknown devices
-  vfio/igd: support legacy mode for all known generations
-  vfio/igd: use new BDSM register location and size for gen 11 and later
-  vfio/igd: add new bar0 quirk to emulate BDSM mirror
-  vfio/igd: add ID's for ElkhartLake and TigerLake
-  vfio/igd: don't set stolen memory size to zero
-  vfio/igd: correctly calculate stolen memory size for gen 9 and later
-
- hw/vfio/igd.c        | 185 +++++++++++++++++++++++++++++++++++++------
- hw/vfio/pci-quirks.c |   1 +
- hw/vfio/pci.h        |   1 +
- 3 files changed, 161 insertions(+), 26 deletions(-)
-
+diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+index d320d032a7..650a323dda 100644
+--- a/hw/vfio/igd.c
++++ b/hw/vfio/igd.c
+@@ -90,7 +90,11 @@ static int igd_gen(VFIOPCIDevice *vdev)
+         return 8;
+     }
+=20
+-    return 8; /* Assume newer is compatible */
++    /*
++     * Unfortunately, Intel changes it's specification quite often. This m=
+akes
++     * it impossible to use a suitable default value for unknown devices.
++     */
++    return -1;
+ }
+=20
+ typedef struct VFIOIGDQuirk {
 --=20
 2.46.0
 
