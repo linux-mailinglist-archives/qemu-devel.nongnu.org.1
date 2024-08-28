@@ -2,58 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D80962E0F
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 19:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 933A1962E44
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 19:14:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjM2C-0005In-96; Wed, 28 Aug 2024 13:00:40 -0400
+	id 1sjMEN-0005o2-1u; Wed, 28 Aug 2024 13:13:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sjM24-0005Fx-E8
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 13:00:33 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1sjMEK-0005mh-OP
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 13:13:12 -0400
+Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sjM21-0007xl-Bx
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 13:00:32 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wv9Y223pTz6K6SY;
- Thu, 29 Aug 2024 00:56:22 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 3AFEE140A87;
- Thu, 29 Aug 2024 01:00:24 +0800 (CST)
-Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 28 Aug
- 2024 18:00:23 +0100
-Date: Wed, 28 Aug 2024 18:00:22 +0100
-To: <mst@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- <qemu-devel@nongnu.org>, <linuxarm@huawei.com>
-CC: <linux-cxl@vger.kernel.org>, Dave Jiang <dave.jiang@intel.com>, "Huang
- Ying" <ying.huang@intel.com>, Michael Roth <michael.roth@amd.com>,
- <fan.ni@samsung.com>
-Subject: Re: [RFC qemu 0/6] hw/cxl: Link speed and width control
-Message-ID: <20240828175943.00001ff3@huawei.com>
-In-Reply-To: <20240712122414.1448284-1-Jonathan.Cameron@huawei.com>
-References: <20240712122414.1448284-1-Jonathan.Cameron@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1sjMEJ-0000se-0C
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 13:13:12 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id 219A8A40885;
+ Wed, 28 Aug 2024 17:12:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69F6C4CEC0;
+ Wed, 28 Aug 2024 17:13:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1724865182;
+ bh=tDtYbwB/YhvyKuU+oVhSe84C7DG/yQsQ73QFdvJXmLk=;
+ h=Date:From:To:Subject:From;
+ b=XpoYtJG9Lgv8VgRTtlw34mJFzufjAJ24j/Ju28eyQeKbYse8onVdcm1UuXPtx6mNK
+ R6s9e5NY7uOWnNiDHCuTKDK4shj/YP4MfjC2btatmt1aq6r5jtQ90NeP6B9PYMAgmE
+ J9price2mVCEXlEvHT/41Ku2DbYWvsDVtV5bJ6KUQgPlq+YJ/kevpywEW6jEbs+VWa
+ jB5Ep3sfqmJWi2T9Mqv0zgU63ezEK/ISkdiq7HhKlT3M1w9oVavQcGwA4PcRGS7/7w
+ /6clqbmXbHe2K5usafUea2m2uqYQtsyNmxhnTfhEZmmiD8m0s8ChgXmZxEJVW8lmrw
+ +zE238Px09A9A==
+Date: Wed, 28 Aug 2024 19:12:59 +0200
+From: Helge Deller <deller@kernel.org>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Subject: qemu-hppa-user: crashes immediately in hppa chroot
+Message-ID: <Zs9am5fIuo3eXoKF@p100>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
+ envelope-from=deller@kernel.org; helo=nyc.source.kernel.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,232 +60,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 12 Jul 2024 13:24:08 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+Hi Richard,
 
-> Based-on: [PATCH v5 00/13] acpi: NUMA nodes for CXL HB as GP + complex NUMA test
-> Based-on: Message-ID: 20240712110837.1439736-1-Jonathan.Cameron@huawei.com
+I tested qemu-user from v9.1-rc4 for hppa and noticed that it crashes
+immediately when starting a hppa chroot.
 
-Hi All,
+I was able to bisect the segfault back to
+commit 081a0ed188d8d9d9038f00337d331d185a7ae331
+Author: Richard Henderson <richard.henderson@linaro.org>
+Date:   Wed Mar 27 13:04:00 2024 -1000
+    target/hppa: Do not mask in copy_iaoq_entry
 
-I'd like to get this missing piece in 9.2.  So if anyone has time to give
-it a quick look that would be much appreciated as then it may be
-in a good state nice and early in the cycle. In particular the question
-below.
+This commit does not apply to git head any longer, but when I instead
+apply this (modified) patch the segfault vanishes:
 
-If not I'll send a non RFC version early in the 9.2 cycle and see if that
-gets more reaction.  I fully appreciate people are busy!
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -664,6 +664,11 @@ static void copy_iaoq_entry(DisasContext *ctx, TCGv_i64 dest,
+                             const DisasIAQE *src)
+ {
+     tcg_gen_addi_i64(dest, src->base ? : cpu_iaoq_f, src->disp);
++
++#if CONFIG_USER_ONLY
++    uint64_t mask = gva_offset_mask(ctx->tb_flags);
++    tcg_gen_andi_i64(dest, dest, mask);
++#endif
+ }
+ 
+Any idea or suggestion to fix it?
 
-This support is proving helpful for testing the improved kernel handling
-to deal with bottlenecks in shared links and I'd like to have an upstream
-QEMU path for testing the full discoverable latency + bandwidth from
-CPUs (and similar) part of CXL that's needed for tiered memory management.
-
-Jonathan
-> 
-> The Generic Ports support added the ability to describe the bandwidth and
-> Latency within a host to a CXL host bridge.  To be able to test the of the
-> discovery path used by Linux [1] we also need to be able to create
-> bottlenecks at difference places in the topology. There are two parts to
-> this
-> * CXL link characteristics as described by PCI Express Capability Link
->   status etc.
-> * Bandwidth and latency across CXL Switches (via CDAT data from the switch
->   USP)
-> * Bandwidth and latency from the CXL type 3 device port to the actual
->   memory (Via CDAT data from the EP).
-> 
-> Currently we have fixed values for the CXL CDAT tables, and to test this
-> I recommend changing those as per the patch at the end of this cover letter
-> (so they aren't always the bottleneck). Making those configurable will be
-> handled in a future patch set.
-> 
-> RFC question:
-> - I could enable this for all PCIe device (including ports).
->   Does that makes sense, or is it better to limit this to my cases.
->   It is quite easy to build broken setups (downstream device reports
->   faster link than the port etc) because QEMU 'link' training' is
->   simplistic.  I'm not sure it is worth making it more clever.
-> 
-> Test case snippets I promised Dave Jiang. These rely on the tweaks to
-> CDAT at end of this cover letter.
-> 
-> Case 1:  Direct connected pair of type 3 nodes on same HB - type 3 limited
-> ==========================================================================
-> 
->  -object memory-backend-file,id=cxl-mem1,share=on,mem-path=/tmp/t3_cxl1.raw,size=1G,align=256M \
->  -object memory-backend-file,id=cxl-mem2,share=on,mem-path=/tmp/t3_cxl2.raw,size=1G,align=256M \
->  -object memory-backend-file,id=cxl-lsa1,share=on,mem-path=/tmp/t3_lsa1.raw,size=1M,align=1M \
->  -object memory-backend-file,id=cxl-mem3,share=on,mem-path=/tmp/t3_cxl3.raw,size=1G,align=256M \
->  -object memory-backend-file,id=cxl-mem4,share=on,mem-path=/tmp/t3_cxl4.raw,size=1G,align=256M \
->  -object memory-backend-file,id=cxl-lsa2,share=on,mem-path=/tmp/t3_lsa2.raw,size=1M,align=1M \
->  -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1,hdm_for_passthrough=true,numa_node=0 \
->  -device cxl-rp,port=0,bus=cxl.1,id=cxl_rp_port0,chassis=0,slot=2 \
->  -device cxl-rp,port=1,bus=cxl.1,id=cxl_rp_port1,chassis=0,slot=3 \
->  -device cxl-type3,bus=cxl_rp_port0,volatile-memdev=cxl-mem1,id=cxl-pmem1,lsa=cxl-lsa1,sn=3,x-speed=32,x-width=16 \
->  -device cxl-type3,bus=cxl_rp_port1,volatile-memdev=cxl-mem3,id=cxl-pmem2,lsa=cxl-lsa2,sn=5,x-speed=32,x-width=16 \
->  -machine cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=8G,cxl-fmw.0.interleave-granularity=1k \
->  -numa node,nodeid=0,cpus=0-3,memdev=mem0 \
->  -numa node,nodeid=1 \
->  -object acpi-generic-initiator,id=bob2,pci-dev=bob,node=1 \
->  -numa node,nodeid=2 \
->  -object acpi-generic-port,id=bob11,pci-bus=cxl.1,node=2 \
->  -numa dist,src=0,dst=0,val=10 -numa dist,src=0,dst=1,val=21 -numa dist,src=0,dst=2,val=21 \
->  -numa dist,src=1,dst=0,val=21 -numa dist,src=1,dst=1,val=10 -numa dist,src=1,dst=2,val=21 \
->  -numa dist,src=2,dst=0,val=21 -numa dist,src=2,dst=1,val=21 -numa dist,src=2,dst=2,val=10 \
->  -numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-latency,latency=10 \
->  -numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-bandwidth,bandwidth=3G \
->  -numa hmat-lb,initiator=0,target=2,hierarchy=memory,data-type=access-latency,latency=100 \
->  -numa hmat-lb,initiator=0,target=2,hierarchy=memory,data-type=access-bandwidth,bandwidth=100G \
->  -numa hmat-lb,initiator=1,target=0,hierarchy=memory,data-type=access-latency,latency=500 \
->  -numa hmat-lb,initiator=1,target=0,hierarchy=memory,data-type=access-bandwidth,bandwidth=100M \
->  -numa hmat-lb,initiator=1,target=2,hierarchy=memory,data-type=access-latency,latency=50 \
->  -numa hmat-lb,initiator=1,target=2,hierarchy=memory,data-type=access-bandwidth,bandwidth=100G
-> 
-> Set x-width to 2 and it will be link limited.
-> 
->  -device cxl-type3,bus=cxl_rp_port0,volatile-memdev=cxl-mem1,id=cxl-pmem1,lsa=cxl-lsa1,sn=3,x-speed=32,x-width=2 \
->  -device cxl-type3,bus=cxl_rp_port1,volatile-memdev=cxl-mem3,id=cxl-pmem2,lsa=cxl-lsa2,sn=5,x-speed=32,x-width=2 \
-> 
-> Case 2: Switch connected type 3.
-> ================================
-> 
->  -object memory-backend-file,id=cxl-mem1,share=on,mem-path=/tmp/t3_cxl1.raw,size=1G,align=256M \
->  -object memory-backend-file,id=cxl-mem3,share=on,mem-path=/tmp/t3_cxl3.raw,size=1G,align=256M \
->  -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1,hdm_for_passthrough=true \
->  -device cxl-rp,port=0,bus=cxl.1,id=cxl_rp_port0,chassis=0,slot=2,mem-reserve=128M,hotplug=true \
->  -device cxl-upstream,port=33,bus=cxl_rp_port0,id=us0,multifunction=on,addr=0.0,sn=33,x-speed=64,x-width=16 \
->  -device cxl-downstream,port=0,bus=us0,id=swport0,chassis=0,slot=4,hotplug=true \
->  -device cxl-downstream,port=1,bus=us0,id=swport1,chassis=0,slot=5,hotplug=true \
->  -device cxl-type3,bus=swport0,volatile-memdev=cxl-mem1,id=cxl-pmem1,sn=3,x-speed=32,x-width=16 \
->  -device cxl-type3,bus=swport1,volatile-memdev=cxl-mem3,id=cxl-pmem2,sn=5,x-speed=32,x-width=16 \
->  -machine cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=1k \
->  -numa node,nodeid=0,cpus=0-3,memdev=mem0 \
->  -numa node,nodeid=1 \
->  -object acpi-generic-initiator,id=bob2,pci-dev=bob,node=1 \
->  -numa node,nodeid=2 \
->  -object acpi-generic-port,id=bob11,pci-bus=cxl.1,node=2 \
->  -numa dist,src=0,dst=0,val=10 -numa dist,src=0,dst=1,val=21 -numa dist,src=0,dst=2,val=21 \
->  -numa dist,src=1,dst=0,val=21 -numa dist,src=1,dst=1,val=10 -numa dist,src=1,dst=2,val=21 \
->  -numa dist,src=2,dst=0,val=21 -numa dist,src=2,dst=1,val=21 -numa dist,src=2,dst=2,val=10 \
->  -numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-latency,latency=10 \
->  -numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-bandwidth,bandwidth=800M \
->  -numa hmat-lb,initiator=0,target=2,hierarchy=memory,data-type=access-latency,latency=100 \
->  -numa hmat-lb,initiator=0,target=2,hierarchy=memory,data-type=access-bandwidth,bandwidth=200G \
->  -numa hmat-lb,initiator=1,target=0,hierarchy=memory,data-type=access-latency,latency=500 \
->  -numa hmat-lb,initiator=1,target=0,hierarchy=memory,data-type=access-bandwidth,bandwidth=100M \
->  -numa hmat-lb,initiator=1,target=2,hierarchy=memory,data-type=access-latency,latency=50 \
->  -numa hmat-lb,initiator=1,target=2,hierarchy=memory,data-type=access-bandwidth,bandwidth=200G
-> 
-> Starting from this and...
-> * Changing links for the two type 3 devices to x-speed=16,x-width=4 will make it leaf
->   link limited.
-> * Changing link for the USP to x-speed=32,x-width=8 will make it head link limited.
-> 
-> Case 3: 2 GP, 2 HB, direct connected type 3.
-> ============================================
-> 
-> GP limited configuration (found bug in v6 of kernel series)
-> 
->  -object memory-backend-file,id=cxl-mem1,share=on,mem-path=/tmp/t3_cxl1.raw,size=1G,align=256M \
->  -object memory-backend-file,id=cxl-mem2,share=on,mem-path=/tmp/t3_cxl2.raw,size=1G,align=256M \
->  -object memory-backend-file,id=cxl-lsa1,share=on,mem-path=/tmp/t3_lsa1.raw,size=1M,align=1M \
->  -object memory-backend-file,id=cxl-mem3,share=on,mem-path=/tmp/t3_cxl3.raw,size=1G,align=256M \
->  -object memory-backend-file,id=cxl-mem4,share=on,mem-path=/tmp/t3_cxl4.raw,size=1G,align=256M \
->  -object memory-backend-file,id=cxl-lsa2,share=on,mem-path=/tmp/t3_lsa2.raw,size=1M,align=1M \
->  -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1,hdm_for_passthrough=true,numa_node=2 \
->  -device pxb-cxl,bus_nr=22,bus=pcie.0,id=cxl.2,hdm_for_passthrough=true,numa_node=3 \
->  -device cxl-rp,port=0,bus=cxl.1,id=cxl_rp_port0,chassis=0,slot=2 \
->  -device cxl-rp,port=1,bus=cxl.2,id=cxl_rp_port1,chassis=0,slot=3 \
->  -device cxl-type3,bus=cxl_rp_port0,volatile-memdev=cxl-mem1,id=cxl-pmem1,lsa=cxl-lsa1,sn=3,x-speed=32,x-width=16 \
->  -device cxl-type3,bus=cxl_rp_port1,volatile-memdev=cxl-mem3,id=cxl-pmem2,lsa=cxl-lsa2,sn=5,x-speed=32,x-width=16 \
->  -machine cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.targets.1=cxl.2,cxl-fmw.0.size=8G,cxl-fmw.0.interleave-granularity=1k \
->  -numa node,nodeid=0,cpus=0-3,memdev=mem0 \
->  -numa node,nodeid=1 \
->  -object acpi-generic-initiator,id=bob2,pci-dev=bob,node=1 \
->  -numa node,nodeid=2 \
->  -object acpi-generic-port,id=bob11,pci-bus=cxl.1,node=2 \
->  -numa node,nodeid=3 \
->  -object acpi-generic-port,id=bob12,pci-bus=cxl.2,node=3 \
->  -numa dist,src=0,dst=0,val=10 -numa dist,src=0,dst=1,val=21 -numa dist,src=0,dst=2,val=21 -numa dist,src=0,dst=3,val=21 \
->  -numa dist,src=1,dst=0,val=21 -numa dist,src=1,dst=1,val=10 -numa dist,src=1,dst=2,val=21 -numa dist,src=1,dst=3,val=21 \
->  -numa dist,src=2,dst=0,val=21 -numa dist,src=2,dst=1,val=21 -numa dist,src=2,dst=2,val=10 -numa dist,src=2,dst=3,val=21 \
->  -numa dist,src=3,dst=0,val=21 -numa dist,src=3,dst=1,val=21 -numa dist,src=3,dst=2,val=21 -numa dist,src=3,dst=3,val=10 \
->  -numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-latency,latency=10 \
->  -numa hmat-lb,initiator=0,target=0,hierarchy=memory,data-type=access-bandwidth,bandwidth=3G \
->  -numa hmat-lb,initiator=0,target=2,hierarchy=memory,data-type=access-latency,latency=100 \
->  -numa hmat-lb,initiator=0,target=2,hierarchy=memory,data-type=access-bandwidth,bandwidth=13G \
->  -numa hmat-lb,initiator=0,target=3,hierarchy=memory,data-type=access-latency,latency=100 \
->  -numa hmat-lb,initiator=0,target=3,hierarchy=memory,data-type=access-bandwidth,bandwidth=13G \
->  -numa hmat-lb,initiator=1,target=0,hierarchy=memory,data-type=access-latency,latency=500 \
->  -numa hmat-lb,initiator=1,target=0,hierarchy=memory,data-type=access-bandwidth,bandwidth=100M \
->  -numa hmat-lb,initiator=1,target=2,hierarchy=memory,data-type=access-latency,latency=50 \
->  -numa hmat-lb,initiator=1,target=2,hierarchy=memory,data-type=access-bandwidth,bandwidth=20G \
->  -numa hmat-lb,initiator=1,target=3,hierarchy=memory,data-type=access-latency,latency=50 \
->  -numa hmat-lb,initiator=1,target=3,hierarchy=memory,data-type=access-bandwidth,bandwidth=20G \
-> 
-> 
-> [1] https://lore.kernel.org/linux-cxl/20240710222716.797267-1-dave.jiang@intel.com
-> 
-> Suggested tweaks to the CDAT values.
-> 
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index 88f117576d..fe5fc8cb6c 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -109,7 +109,7 @@ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
->          .flags = HMAT_LB_MEM_MEMORY,
->          .data_type = HMAT_LB_DATA_READ_BANDWIDTH,
->          .entry_base_unit = 1000, /* GB/s */
-> -        .entry[0] = 16,
-> +        .entry[0] = 48,
->      };
-> 
->      dslbis3 = g_malloc(sizeof(*dslbis3));
-> @@ -122,7 +122,7 @@ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
->          .flags = HMAT_LB_MEM_MEMORY,
->          .data_type = HMAT_LB_DATA_WRITE_BANDWIDTH,
->          .entry_base_unit = 1000, /* GB/s */
-> -        .entry[0] = 16,
-> +        .entry[0] = 48,
->      };
-> 
->      dsemts = g_malloc(sizeof(*dsemts));
-> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-> index 70cb06436d..85b114d3ce 100644
-> --- a/hw/pci-bridge/cxl_upstream.c
-> +++ b/hw/pci-bridge/cxl_upstream.c
-> @@ -319,5 +319,5 @@ static int build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
->          sslbis_bandwidth->sslbe[i] = (CDATSslbe) {
->              .port_x_id = CDAT_PORT_ID_USP,
->              .port_y_id = port_ids[i],
-> -            .latency_bandwidth = 16, /* 16 GB/s */
-> +            .latency_bandwidth = 128, /* 128 GB/s */
->          };
-> 
-> Jonathan Cameron (6):
->   hw/pci-bridge/cxl_root_port: Provide x-speed and x-width properties.
->   hw/pci-bridge/cxl_upstream: Provide x-speed and x-width properties.
->   hw/pcie: Factor out PCI Express link register filing common to EP.
->   hw/pcie: Provide a utility function for control of EP / SW USP link
->   hw/mem/cxl-type3: Add properties to control link speed and width
->   hw/pci-bridge/cxl-upstream: Add properties to control link speed and
->     width
-> 
->  include/hw/cxl/cxl_device.h               |   4 +
->  include/hw/pci-bridge/cxl_upstream_port.h |   4 +
->  include/hw/pci/pcie.h                     |   2 +
->  hw/mem/cxl_type3.c                        |   6 ++
->  hw/pci-bridge/cxl_downstream.c            |  23 +++--
->  hw/pci-bridge/cxl_root_port.c             |   5 ++
->  hw/pci-bridge/cxl_upstream.c              |   6 ++
->  hw/pci/pcie.c                             | 105 ++++++++++++++--------
->  8 files changed, 103 insertions(+), 52 deletions(-)
-> 
-
+Helge
 
