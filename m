@@ -2,94 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A11939621E4
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 09:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BCB996221A
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 10:15:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjDXx-0003qd-Em; Wed, 28 Aug 2024 03:56:53 -0400
+	id 1sjDoV-0005UC-LP; Wed, 28 Aug 2024 04:13:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1sjDXv-0003kd-Ha
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 03:56:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <nrb@linux.ibm.com>)
+ id 1sjDoS-0005St-N8; Wed, 28 Aug 2024 04:13:57 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1sjDXt-00063P-TH
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 03:56:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724831809;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zYl3uaCkxHjT2nDUPL1WDle3wL/fOkENv7M02v+JPJY=;
- b=gKUQIaDN87zxthEiqYIYbBSEqQwloMn60Fxtbv0sMIJcszFEEOSQ+clgybuHEzIg4/7+H3
- ZYfi4q+Ha/a/sd47dDjGFccjOJapRZdxtbGi3tgoPVeksH3AaoCT75laGVjhpApjv8RRoT
- dFgocKvPQShPJBMqkjozIto3vxE8yn8=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-_kZeOcCDNsGjIvYf3daHUA-1; Wed, 28 Aug 2024 03:56:46 -0400
-X-MC-Unique: _kZeOcCDNsGjIvYf3daHUA-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-2d441cdb503so7307789a91.1
- for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 00:56:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724831805; x=1725436605;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zYl3uaCkxHjT2nDUPL1WDle3wL/fOkENv7M02v+JPJY=;
- b=R9fwfj+XcjCkDROh6dLjyiWbidr68apeoNtQjBRdBzLo9tx+X6s6d8zM72HfObphmI
- LoD2bpQBVIjzTDU2D9eOXD1gbzRrCnFlmXoI5rxlz11U6FBZsQlCHYFa1pCGKBmnSjTq
- w7fLbKg+xZu76TFANWnDfxYDoUAQYD6iF8GQgSm/WjyE8LkdNLBaKqr1vU9FCCOGmEd+
- 7bQZ/5I/2hQkRZOLPBDzSHnc9wD4WNJczHPoziyyaKj/1epONuz8JKqQDf5wWgnvUICP
- miAHAWNvlQVN4gb2owo4jeDvThwKGTQazy7GhvDteaCDbjyX8mspJmYn9cHKPkEBefyr
- LPxA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWDjak40Hq1V/VqiPEZAb0Oz1X3sY7jn7jdVJWtbcEcvUvY8l/f/oDxTfEyMW+72sW7BmDo2S/DFx4P@nongnu.org
-X-Gm-Message-State: AOJu0YzOXaFBb7N/QrxJU0/k00qgnWJ/corloWLap+kKhis5lOWYvuH9
- IpZgoJEi77+rZCbUuHoW5iUsUIIqBVAc1oP0lka2FngqAQluFh7yMYLK1Q4WuWdTpW0dpO5yRA9
- j5kO6AKOwy+QJYcbykF0hquN5MdRAUVqF/dHi/Oyl3+tSNOfPqUUR
-X-Received: by 2002:a17:90a:7408:b0:2d3:cc3e:4d6d with SMTP id
- 98e67ed59e1d1-2d646b91092mr14510028a91.9.1724831805447; 
- Wed, 28 Aug 2024 00:56:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHnS9wmiNKpmg/gLxiSQVdrbd8UyjUO09X7ptuxTKXWPb9mBB1kZo5ol5VgojZc/qD+8UvY6w==
-X-Received: by 2002:a17:90a:7408:b0:2d3:cc3e:4d6d with SMTP id
- 98e67ed59e1d1-2d646b91092mr14510013a91.9.1724831805035; 
- Wed, 28 Aug 2024 00:56:45 -0700 (PDT)
-Received: from localhost.localdomain ([115.96.157.236])
- by smtp.googlemail.com with ESMTPSA id
- 98e67ed59e1d1-2d8445fbf0dsm1013534a91.19.2024.08.28.00.56.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Aug 2024 00:56:44 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, zhao1.liu@intel.com, cfontana@suse.de,
- armbru@redhat.com, qemu-trivial@nongnu.org, kvm@vger.kernel.org,
- qemu-devel@nongnu.org
-Subject: [PATCH v5 2/2] kvm: refactor core virtual machine creation into its
- own function
-Date: Wed, 28 Aug 2024 13:26:29 +0530
-Message-ID: <20240828075630.7754-3-anisinha@redhat.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240828075630.7754-1-anisinha@redhat.com>
-References: <20240828075630.7754-1-anisinha@redhat.com>
+ (Exim 4.90_1) (envelope-from <nrb@linux.ibm.com>)
+ id 1sjDoQ-0007tt-CV; Wed, 28 Aug 2024 04:13:56 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47RM3BZe015468;
+ Wed, 28 Aug 2024 08:13:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ content-type:mime-version:content-transfer-encoding:in-reply-to
+ :references:subject:from:cc:to:date:message-id; s=pp1; bh=rgXg5F
+ cN8H2xISESNhPmRk1dppp215brJ5LQqkEvcoY=; b=YQt1zK74P4SP3K2LCYchna
+ BDNrQo1p0ApkEJpeZ4+OMV+Fq8fqlVLN7v58EbFHFyKK3MTnoR26573eCzSdlzcz
+ ont4oPkuzcm/kx5VGbXGO5VZhKTX3cMRzhUOiUe3fV4zuHDixDc+spiLfNlFyZdd
+ 47tHfV7B8vsL1tRZCS9C9x5WH4yXvvEr5VPNHxBJ7250GSWsjEYaWTSmatS1EqdD
+ A07zuJLgGv+VkrZBLsr7qlFE2P7DMU+sUhiel5Vm9tAnfjXys8okh8pjljXqdWkU
+ ZNDv5nrJJd244WB9GZBBZaBmFk+xKDx0yDOkmWhV8ipTymu1G05OYn5bKE6VdLzg
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8q1qx3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Aug 2024 08:13:50 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47S8Dn3h021097;
+ Wed, 28 Aug 2024 08:13:50 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8q1qwp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Aug 2024 08:13:49 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47S6MjZn027950;
+ Wed, 28 Aug 2024 08:13:49 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 417ubn6gpp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Aug 2024 08:13:49 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 47S8Djgx49807860
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 28 Aug 2024 08:13:45 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3303D20065;
+ Wed, 28 Aug 2024 08:13:45 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 14BF220040;
+ Wed, 28 Aug 2024 08:13:45 +0000 (GMT)
+Received: from t14-nrb (unknown [9.171.80.251])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 28 Aug 2024 08:13:45 +0000 (GMT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <172467410002.31767.12365606864399178508@t14-nrb.local>
+References: <20240813165250.2717650-1-peter.maydell@linaro.org>
+ <14c38495-131f-4798-bf41-da442ede23eb@linux.ibm.com>
+ <CAFEAcA8FFiiMXTcMR0WRP=Nhw3-+LYoP=X4OYrm5tnrp4L-wGQ@mail.gmail.com>
+ <8050216dbbdd0762347d8e14f17d030ff8874283.camel@linux.ibm.com>
+ <172467410002.31767.12365606864399178508@t14-nrb.local>
+Subject: Re: [PATCH for-9.2 00/10] s390: Convert virtio-ccw,
+ cpu to three-phase reset, and followup cleanup
+From: Nico Boehr <nrb@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Michael Mueller <mimu@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 28 Aug 2024 10:13:43 +0200
+Message-ID: <172483282308.162301.11735420619446380771@t14-nrb.local>
+User-Agent: alot/0.10
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: aJDjJ2vp8jOyR29Z_7BBxJWXTXDkokbY
+X-Proofpoint-ORIG-GUID: ZDLVOL5AD39Y3nInuRebjYj0eZN_1p8P
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-28_03,2024-08-27_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ clxscore=1015 lowpriorityscore=0 impostorscore=0 suspectscore=0
+ adultscore=0 bulkscore=0 malwarescore=0 spamscore=0 phishscore=0
+ mlxlogscore=999 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408280057
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=nrb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,139 +125,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refactoring the core logic around KVM_CREATE_VM into its own separate function
-so that it can be called from other functions in future patches. There is
-no functional change in this patch.
+Quoting Nico Boehr (2024-08-26 14:08:20)
+> There was a little hickup without the fixup to patch 2, but after Nina
+> pushed the fixup, we did not observe any failures related to your
+> changes in our CI. Thanks!
 
-CC: pbonzini@redhat.com
-CC: zhao1.liu@intel.com
-CC: cfontana@suse.de
-CC: armbru@redhat.com
-CC: qemu-trivial@nongnu.org
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Claudio Fontana <cfontana@suse.de>
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- accel/kvm/kvm-all.c | 86 ++++++++++++++++++++++++++++-----------------
- 1 file changed, 53 insertions(+), 33 deletions(-)
+Peter, after a few CI runs, we unfortunately did find some issues with your
+patch :-(
 
-v2: s/fprintf/warn_report as suggested by zhao
-v3: s/warn_report/error_report. function names adjusted to conform to
-other names. fprintf -> error_report() moved to its own patch.
-v4: added tags and rebased.
-v5: rebased.
+Rebooting a guest in a loop sometimes fails. Michael was able to bisect it
+to your series.
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index fcc157f0e6..cf3d820b94 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2385,6 +2385,57 @@ uint32_t kvm_dirty_ring_size(void)
-     return kvm_state->kvm_dirty_ring_size;
- }
- 
-+static int kvm_create_vm(MachineState *ms, KVMState *s, int type)
-+{
-+    int ret;
-+
-+    do {
-+        ret = kvm_ioctl(s, KVM_CREATE_VM, type);
-+    } while (ret == -EINTR);
-+
-+    if (ret < 0) {
-+        error_report("ioctl(KVM_CREATE_VM) failed: %s", strerror(-ret));
-+
-+#ifdef TARGET_S390X
-+        if (ret == -EINVAL) {
-+            error_printf("Host kernel setup problem detected."
-+                         " Please verify:\n");
-+            error_printf("- for kernels supporting the"
-+                        " switch_amode or user_mode parameters, whether");
-+            error_printf(" user space is running in primary address space\n");
-+            error_printf("- for kernels supporting the vm.allocate_pgste"
-+                         " sysctl, whether it is enabled\n");
-+        }
-+#elif defined(TARGET_PPC)
-+        if (ret == -EINVAL) {
-+            error_printf("PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
-+                         (type == 2) ? "pr" : "hv");
-+        }
-+#endif
-+    }
-+
-+    return ret;
-+}
-+
-+static int kvm_machine_type(MachineState *ms)
-+{
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
-+    int type;
-+
-+    if (object_property_find(OBJECT(current_machine), "kvm-type")) {
-+        g_autofree char *kvm_type;
-+        kvm_type = object_property_get_str(OBJECT(current_machine),
-+                                           "kvm-type",
-+                                           &error_abort);
-+        type = mc->kvm_type(ms, kvm_type);
-+    } else if (mc->kvm_type) {
-+        type = mc->kvm_type(ms, NULL);
-+    } else {
-+        type = kvm_arch_get_default_type(ms);
-+    }
-+    return type;
-+}
-+
- static int kvm_init(MachineState *ms)
- {
-     MachineClass *mc = MACHINE_GET_CLASS(ms);
-@@ -2467,45 +2518,14 @@ static int kvm_init(MachineState *ms)
-     }
-     s->as = g_new0(struct KVMAs, s->nr_as);
- 
--    if (object_property_find(OBJECT(current_machine), "kvm-type")) {
--        g_autofree char *kvm_type = object_property_get_str(OBJECT(current_machine),
--                                                            "kvm-type",
--                                                            &error_abort);
--        type = mc->kvm_type(ms, kvm_type);
--    } else if (mc->kvm_type) {
--        type = mc->kvm_type(ms, NULL);
--    } else {
--        type = kvm_arch_get_default_type(ms);
--    }
--
-+    type = kvm_machine_type(ms);
-     if (type < 0) {
-         ret = -EINVAL;
-         goto err;
-     }
- 
--    do {
--        ret = kvm_ioctl(s, KVM_CREATE_VM, type);
--    } while (ret == -EINTR);
--
-+    ret = kvm_create_vm(ms, s, type);
-     if (ret < 0) {
--        error_report("ioctl(KVM_CREATE_VM) failed: %s", strerror(-ret));
--
--#ifdef TARGET_S390X
--        if (ret == -EINVAL) {
--            error_printf("Host kernel setup problem detected."
--                         " Please verify:\n");
--            error_printf("- for kernels supporting the"
--                        " switch_amode or user_mode parameters, whether");
--            error_printf(" user space is running in primary address space\n");
--            error_printf("- for kernels supporting the vm.allocate_pgste"
--                         " sysctl, whether it is enabled\n");
--        }
--#elif defined(TARGET_PPC)
--        if (ret == -EINVAL) {
--            error_printf("PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
--                         (type == 2) ? "pr" : "hv");
--        }
--#endif
-         goto err;
-     }
- 
--- 
-2.42.0
+The problem is intermittent. The guest is unable to load its initramfs:
 
+  [    0.560674] rootfs image is not initramfs (no cpio magic); looks like =
+an initrd
+  [    0.588605] Freeing initrd memory: 95680K
+  [    0.593143] md: Waiting for all devices to be available before autodet=
+ect
+  [    0.593144] md: If you don't use raid, use raid=3Dnoautodetect
+  [    0.593145] md: Autodetecting RAID arrays.
+  [    0.593146] md: autorun ...
+  [    0.593147] md: ... autorun DONE.
+  [    0.593156] RAMDISK: gzip image found at block 0
+  [    0.609110] RAMDISK: incomplete write (29120 !=3D 32768)
+  [    0.609113] write error
+
+...and then a panic because the kernel doesn't find a rootfs.
+
+It seems like the compressed initramfs is corrupted somehow, since "rootfs
+image is not initramfs" doesn't appear on a successful boot.
+
+initramfs and kernel are loaded via direct kernel boot. Running under KVM.
+
+Some vhost error messages do appear before the guest panics, but it is not
+entirely clear to me whether they are related:
+
+  [...]
+  2024-08-28T06:56:29.765324Z qemu-system-s390x: vhost vring error in virtq=
+ueue 0: Invalid argument (22)
+  2024-08-28T06:56:32.210982Z qemu-system-s390x: vhost vring error in virtq=
+ueue 0: Invalid argument (22)
+  2024-08-28 06:56:35.430+0000: panic s390: core=3D'0' psw-mask=3D'0x000200=
+0180000000' psw-addr=3D'0x00000387b028c67e' reason=3D'disabled-wait'
+
+Any idea?
 
