@@ -2,68 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E243961D79
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 06:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA32961D7C
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 06:14:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjA2y-0006MG-Nt; Wed, 28 Aug 2024 00:12:40 -0400
+	id 1sjA2y-0006KW-Jp; Wed, 28 Aug 2024 00:12:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sjA2v-0006BC-Cg
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 00:12:37 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1sjA2t-00064a-FZ
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 00:12:35 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sjA2q-0000mM-89
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 00:12:36 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5bed0a2ae0fso7798258a12.1
- for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 21:12:30 -0700 (PDT)
+ id 1sjA2r-0000mU-1y
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 00:12:35 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5a10835487fso9291766a12.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 21:12:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1724818349; x=1725423149; darn=nongnu.org;
+ d=linaro.org; s=google; t=1724818351; x=1725423151; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=D+2125XN2k4UAK4IVwcG/R+FKK4RRBoX0YoCGazraC0=;
- b=xzQqaxRJhjl44poSht/JscbEGz91FBWgjOWInulqSIFVPCnQ6hEA+r/fVZHfPuzP/m
- 7WPj4keXq0WDNYC5y/1YZq+car1/UHP3ELArE9Sk+1fh5A29dfg3fQBKmYke8uEcG43c
- EUu+lYxNRPDhkKUdnLwyEy1mNhTTO2WLd2crAx3Dyu6XtEHtlqurdouZKg3VEgxUjaUU
- CMc6dT1MTXrvZTMUHP/+r6g+G+6ScKgy0zr2A1oO+OllO5Y4BCEyV5FPeZL+0hWhOL8z
- 0tXZ5vDAVP4amhutUZXTX+vYPpGF37mgmUR5RFY0YWnSPyAyM+JZ3XUIt5lI53I+AvV6
- uCJg==
+ :reply-to; bh=PS8BB3FWvG/qWytireMjd1erjq7vy7tFLolrwsIWluI=;
+ b=HqNUkX+lovLV6UcUj8TFSu1GS2B4nIXOTtCorl/xZY6xZZ3kahS41UcuYemUa9qDuP
+ 7tsJnocuP5t189i1j9T15R0pPXW9a/pWgXsQSXOypdiWcUDHaG7TF/hbUO9YE894oPfV
+ N04LjVTVQwsm2Sw2KPXu/ddmv/0TYjl59a2pNcogm9UDPHM9r/ZWp77/hps6rM3X+Pul
+ zuH/sM2I43y+67AhsFe1U5ZzyvEhsw+Yt6pqAsvbbdU8b+Pnu0eVNLfGm4p1bixdx1ed
+ rSiqQKzz7/3109aEiK17fcquUg8VjUUXBj71lnBeWthwPL4H4OhUjQ9RY3d/KRpX2LBP
+ eL6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724818349; x=1725423149;
+ d=1e100.net; s=20230601; t=1724818351; x=1725423151;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D+2125XN2k4UAK4IVwcG/R+FKK4RRBoX0YoCGazraC0=;
- b=dAGSZTFjxCa+G1wVAoIpdd7/RRfia5gV1AqibXjFq1KGrf6bbqCpqGWafF8ksrHYeB
- Gr0GYwGaRBU60sxZDcsqrdK9Xyv4nCTRvUCnfoeY/1px3Ziemh+5qeVnx75EnwrxFmr0
- ySU3E4x4LTsV7Rmd84rtvb0UwD5cdXQPDqwShvC/jtn3WXRSAtLZVXSadiv/pW8w0fFV
- qLlsZ2dMC+TE5FF9Ou5INaayL7W/G3rAweD3bd5X55RfrOZJ99t0Jlg7kdwvyzP1R58t
- HKFRm/pdUhd0eAUaM4iV9RRJ5ygxhYG0YXCHt1zR1TBGKm+1pgbDZ2TZqBJ8tEPh5q+r
- vXUQ==
-X-Gm-Message-State: AOJu0Yyl474pd8PQu8wNO9q4pVg3toxqispVWbBBNgbs1VzQYwgpI8+1
- j8lF7+Hrh+1+j8rn9JEUKE/pkVrWVAlYFFUjJJlOsFwYEHLCg7aTMCtXy1AAeIz+3+KdMB4g3N2
- aALM=
-X-Google-Smtp-Source: AGHT+IG4atA9IZeG9D1/lDzLiWPuhorNDYsNDEY5ExBMIMhWGM7WcdCJB6exi7E4KE42SQU5LvrSzg==
-X-Received: by 2002:a05:6402:3581:b0:5be:c8ad:af9a with SMTP id
- 4fb4d7f45d1cf-5c089164a15mr11477993a12.11.1724818348496; 
- Tue, 27 Aug 2024 21:12:28 -0700 (PDT)
+ bh=PS8BB3FWvG/qWytireMjd1erjq7vy7tFLolrwsIWluI=;
+ b=v+DwFzL1Mlb46yZNKZp1NKZqXrW1PEcbtRE5AbkDlrlPHGNA3KWXfO+3H5FQVsdAig
+ dLMpD5PF1bxRT7oYZjcb/5mUyioTyhmJK/2PUNuvkt+FFTidiJab1AUDt7pGu01HGbwO
+ 0iwKKleGR9OEnDf4ykAfATZpcn/By7sLqkeJntNbveDoCIHNdbh8cuVeuT5eQLBvdBf5
+ f8T9lyrljK2zvUn1E/hUw/jgrla27hmIswJrwzwWA96SrpVKWVpHwbSD4cnmeUK9gRqZ
+ JNsOdUyxIV55JZYYX0Iq7EgsAHHE9gli3h5yfR+m5l3FbHU6A/qoc43XAHgLP9Magcr/
+ xzWA==
+X-Gm-Message-State: AOJu0YyhDijhZ4MgbotgCzpoPkV6iTRf6gsqJh6xMDwv4RAfy6IcWkza
+ pXNfBYLtaJiTempY6wZzOaavWTlcAR+++L7xFa8tlehBoZVPaX1lICZ0LslPkcA=
+X-Google-Smtp-Source: AGHT+IG0F+v9RLfkDxmCogKyohbRv4HN/JSfXRuG/k5c7DYt81vKAXl+hJXm5aWNs9OgY5xMKmIKag==
+X-Received: by 2002:a05:6402:1941:b0:5bf:dd0:93ad with SMTP id
+ 4fb4d7f45d1cf-5c0891a293amr8774775a12.27.1724818351072; 
+ Tue, 27 Aug 2024 21:12:31 -0700 (PDT)
 Received: from [127.0.1.1] (adsl-98.109.242.227.tellas.gr. [109.242.227.98])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c0bb1c29b9sm1712814a12.18.2024.08.27.21.12.25
+ 4fb4d7f45d1cf-5c0bb1c29b9sm1712814a12.18.2024.08.27.21.12.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2024 21:12:27 -0700 (PDT)
+ Tue, 27 Aug 2024 21:12:30 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Wed, 28 Aug 2024 07:11:48 +0300
-Subject: [PATCH RESEND v9 7/9] rust: add crate to expose bindings and
- interfaces
+Date: Wed, 28 Aug 2024 07:11:49 +0300
+Subject: [PATCH RESEND v9 8/9] rust: add utility procedural macro crate
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240828-rust-pl011-v9-7-35579191f17c@linaro.org>
+Message-Id: <20240828-rust-pl011-v9-8-35579191f17c@linaro.org>
 References: <20240828-rust-pl011-v9-0-35579191f17c@linaro.org>
 In-Reply-To: <20240828-rust-pl011-v9-0-35579191f17c@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,30 +78,30 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>, 
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 X-Mailer: b4 0.15-dev-c2c95
-X-Developer-Signature: v=1; a=openpgp-sha256; l=22242;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7543;
  i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=AZEGhKKQxL64kTo3gPkBVHNXbPu+xlUEjOX6RXtEd7M=;
+ bh=ZxB9ieSoYRaqCxkSAitiBS3RFAT8Cug415DHJ1Rmjvo=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm16cU9MSEtnVjY4K0l6WFJjOHJYdXJhV3U5bUxwCnNNOU85OGFNTm00eTFLZDVT
- TldKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKWnM2aml3QUt
- DUkIzS2Nkd2YzNEowRVpGRC8wUTk5R1Y4UWw1TjdRbXZCY21VNUxpUXpteFVGcVVYQmNSSFI0Sg
- pGd3VBU0tROHZyZ0xKN1h3c29EZHRaUm9GV1RISmFGNWxLNURYY2lTenlXMFM5eGZVT3dOWTJQW
- DYxQkh0SzR5CmxyMFhRc24yQjJYeWR1VXAzWmh6eFdhU0RxMlNIeDVPMTJkR24wdmU2N3o3U1pr
- NENhVURKdmphS25YVDRGUFIKMmU3eUZDTE1Hd2lDUWpFRWY0WWdNSnJrOTh5UU1WOWdreHZiMjF
- wQVhpN2hOMEd3d0VaSDlNYkVtd1pwaWRkdApDdGJJRWprWXR0WXpOd084R1l4TFJLVzBsa0xFdn
- orOWlvMExpT3IrbjArTHZKMVpzcXFyVnhuaEJCQ2dIK3pNCmgyQUlGc2U0NzVoZ2tCM1o4QW5RM
- DhyUGpaaU5QeG9wcGRlODFuM3VYeThDcjZsZG1xZ3VIZG11U1dxTHZOVFIKRHZpbS9IeG5ReUZM
- Q3RTVXpQYmswdmV6NkxXbFBFd3NwYjYwNDdmcG1PSW93L0VPUEE2ZmlEcjVSYmJyK0ViSgpmOXp
- YMW1KOWxUdjhnK0EzdEREaE8xNEMwSHpuVnVrSUE2eCt1UmRsb29LeDdQcHYwTnNFQnBwZkU0ZT
- dYMUFECkZNSnc1WmNMVmFCU1hLQTRHend1U0FHa2I3M2t1MTRnUmpoZis4b2pDOC9KRG1Ib2NuU
- llsNGp0YVFmb3dvck0KVTdNLzVzZERaanFJWGN5MmQ1dDg0R1VuaXlwTldobExjZEpwNkJVK3dh
- N2d2dlBoQllYM05nK0VRQW5qdTk1ZgpHTFQxaTVUSXV3cldhVmJwc3UzcFJITWtoSm9SQUQxKzg
- waXhRcDFIdDM2eGt1RmR6b3JPaStoZWhzaWcwcGFjCmdoU3FDdz09Cj1jS2dHCi0tLS0tRU5EIF
+ 25RQWNzbVlnQm16cU9MMXF0N2hzU0FDUXgrQjFOL3oxZ3pzQW9rCkJzQXlMd3RXMXluU0dncUhx
+ YStKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKWnM2aml3QUt
+ DUkIzS2Nkd2YzNEowRm5KRUFDWFRKblpoODl6S2NBNjhRTkdKNFBuNkIzbm10UTE4NmlzZSsyMw
+ pFUDE0V3pYQlhNcWd4azEySjdHTGlYdEJBT2Fpdm9ldk5RNDdBT1NzWWdiNFZaSXVpV2lNUGJsN
+ 3E1UGJhbXMzCkVkdTVJNnNvVDV4V1JwanNyUnVYUFZ5UVUrQjdrQnB4VW8vL3N5dFA3U1dTS3NQ
+ VGErWU1SSmdoZmU1bFNvMUgKRmVzY1pXM0FRSFJIME9IUWMrYmtqQk5kaXZla082a095Z0pxSFh
+ IS3pkdGNSeEROV0grb3RQMFNLdmpaWEJvVQpQSDkxOHlWTUNQQXhuVnZOemdGT2ZFOEtkblQvVF
+ gwanVSSU1Ua0NNT2tnZUJyeUNGNTU0aGlLNWllbXpBNzBhCmJDenRTY2VmVjJ6RkUwT00xbjVpN
+ TQ5U1BxQXpUWVRUNjZmTklsbnlSOStmRjRIa253R3FKeE9RR2NUYTVLT2MKR3IvMmtMNFlTellj
+ ZHZhcW1ONmZzMDB4MC83RnAyTU15Q3ZkS3pVT0V2RzFaWjFjWVo5UmFiSUJRamVVWms2TApnOEV
+ UNkI1Mm5YSldRdTV3RkNOMzl1VHpTN3ZBNFVrSlNsd04vQktwbS8ycTN6bkhjWGdwLzY3M3NFUV
+ EwSGdkCnNIeGEzK0hubmNNV09WQ1hKU3htRDBVSndPcjBTdXE4Z3ZMMVR2UXY3bGVqL2RZSEY3R
+ UhZejY2Qnd0Z1laVUwKNWZHOUJWcGNRMDJWVkJxZkc3dUZkN2N2YlVwQTR3b1hQbjNkR0JlY3My
+ d3lueVZtK0tFcTYvdGxQWEJndzRJKwpEWEFwQUNmVXNRL2dCUHlXVVhSVHo5M202cXRUYzFMaSt
+ hai96MTM0Q05VQVVYbTJ6RVV5RzVvZDRvRjVXdG0rCnhlSHFhQT09Cj1VdnRrCi0tLS0tRU5EIF
  BHUCBNRVNTQUdFLS0tLS0K
 X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
  fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -126,259 +124,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add rust/qemu-api, which exposes rust-bindgen generated FFI bindings and
-provides some declaration macros for symbols visible to the rest of
-QEMU.
+This commit adds a helper crate library, qemu-api-macros for derive (and
+other procedural) macros to be used along qemu-api.
 
-Co-authored-by: Junjie Mao <junjie.mao@intel.com>
-Co-authored-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Junjie Mao <junjie.mao@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+It needs to be a separate library because in Rust, procedural macros, or
+macros that can generate arbitrary code, need to be special separate
+compilation units.
+
+Only one macro is introduced in this patch, #[derive(Object)]. It
+generates a constructor to register a QOM TypeInfo on init and it must
+be used on types that implement qemu_api::definitions::ObjectImpl trait.
+
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- MAINTAINERS                       |   6 ++
- rust/meson.build                  |   1 +
- rust/qemu-api/.gitignore          |   2 +
- rust/qemu-api/Cargo.lock          |   7 ++
- rust/qemu-api/Cargo.toml          |  26 +++++++
- rust/qemu-api/README.md           |  17 +++++
- rust/qemu-api/build.rs            |  14 ++++
- rust/qemu-api/meson.build         |  21 ++++++
- rust/qemu-api/src/definitions.rs  | 109 +++++++++++++++++++++++++++
- rust/qemu-api/src/device_class.rs | 128 +++++++++++++++++++++++++++++++
- rust/qemu-api/src/lib.rs          | 154 ++++++++++++++++++++++++++++++++++++++
- rust/qemu-api/src/tests.rs        |  49 ++++++++++++
- rust/rustfmt.toml                 |   7 ++
- 13 files changed, 541 insertions(+)
+ MAINTAINERS                      |  1 +
+ rust/meson.build                 |  1 +
+ rust/qemu-api-macros/Cargo.lock  | 47 ++++++++++++++++++++++++++++++++++++++++
+ rust/qemu-api-macros/Cargo.toml  | 25 +++++++++++++++++++++
+ rust/qemu-api-macros/README.md   |  1 +
+ rust/qemu-api-macros/meson.build | 25 +++++++++++++++++++++
+ rust/qemu-api-macros/src/lib.rs  | 43 ++++++++++++++++++++++++++++++++++++
+ rust/qemu-api/meson.build        |  3 +++
+ 8 files changed, 146 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 642c07a9ff2ed2422ac50d1419751f92f81690bd..d35e9f6b20bb23c7580de488ebaabc6c031343d2 100644
+index d35e9f6b20bb23c7580de488ebaabc6c031343d2..727f3a7a2cfe600ffdb861bafada7db415d020e5 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -3348,6 +3348,12 @@ F: hw/core/register.c
- F: include/hw/register.h
- F: include/hw/registerfields.h
- 
-+Rust
-+M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+S: Maintained
-+F: rust/qemu-api
-+F: rust/rustfmt.toml
-+
- SLIRP
- M: Samuel Thibault <samuel.thibault@ens-lyon.org>
+@@ -3352,6 +3352,7 @@ Rust
+ M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
  S: Maintained
+ F: rust/qemu-api
++F: rust/qemu-api-macros
+ F: rust/rustfmt.toml
+ 
+ SLIRP
 diff --git a/rust/meson.build b/rust/meson.build
-index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..4a58d106b1dd1d7bee39dd129f57ddb5a95bd9b7 100644
+index 4a58d106b1dd1d7bee39dd129f57ddb5a95bd9b7..7a32b1b195083571931ad589965c10ddaf6383b1 100644
 --- a/rust/meson.build
 +++ b/rust/meson.build
-@@ -0,0 +1 @@
-+subdir('qemu-api')
-diff --git a/rust/qemu-api/.gitignore b/rust/qemu-api/.gitignore
+@@ -1 +1,2 @@
++subdir('qemu-api-macros')
+ subdir('qemu-api')
+diff --git a/rust/qemu-api-macros/Cargo.lock b/rust/qemu-api-macros/Cargo.lock
 new file mode 100644
-index 0000000000000000000000000000000000000000..b9e7e004c867bd1b5d44e69634d78fdafbfc1306
+index 0000000000000000000000000000000000000000..fdc0fce116c795da63fff3cfcddab164c98d47fa
 --- /dev/null
-+++ b/rust/qemu-api/.gitignore
-@@ -0,0 +1,2 @@
-+# Ignore generated bindings file overrides.
-+src/bindings.rs
-diff --git a/rust/qemu-api/Cargo.lock b/rust/qemu-api/Cargo.lock
-new file mode 100644
-index 0000000000000000000000000000000000000000..e9c51a243a85499cfa3ce2f9da225184ddf05d24
---- /dev/null
-+++ b/rust/qemu-api/Cargo.lock
-@@ -0,0 +1,7 @@
++++ b/rust/qemu-api-macros/Cargo.lock
+@@ -0,0 +1,47 @@
 +# This file is automatically @generated by Cargo.
 +# It is not intended for manual editing.
 +version = 3
 +
 +[[package]]
-+name = "qemu_api"
++name = "proc-macro2"
++version = "1.0.86"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5e719e8df665df0d1c8fbfd238015744736151d4445ec0836b8e628aae103b77"
++dependencies = [
++ "unicode-ident",
++]
++
++[[package]]
++name = "qemu_api_macros"
 +version = "0.1.0"
-diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn",
++]
++
++[[package]]
++name = "quote"
++version = "1.0.36"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
++dependencies = [
++ "proc-macro2",
++]
++
++[[package]]
++name = "syn"
++version = "2.0.72"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "dc4b9b9bf2add8093d3f2c0204471e951b2285580335de42f9d2534f3ae7a8af"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "unicode-ident",
++]
++
++[[package]]
++name = "unicode-ident"
++version = "1.0.12"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
+diff --git a/rust/qemu-api-macros/Cargo.toml b/rust/qemu-api-macros/Cargo.toml
 new file mode 100644
-index 0000000000000000000000000000000000000000..efc369e5ae926fd5c63e38a68e621ff3ad3b6e3b
+index 0000000000000000000000000000000000000000..144cc3650fa04b2fa35a1185d970e1bab210a4eb
 --- /dev/null
-+++ b/rust/qemu-api/Cargo.toml
-@@ -0,0 +1,26 @@
++++ b/rust/qemu-api-macros/Cargo.toml
+@@ -0,0 +1,25 @@
 +[package]
-+name = "qemu_api"
++name = "qemu_api_macros"
 +version = "0.1.0"
 +edition = "2021"
 +authors = ["Manos Pitsidianakis <manos.pitsidianakis@linaro.org>"]
 +license = "GPL-2.0-or-later"
 +readme = "README.md"
 +homepage = "https://www.qemu.org"
-+description = "Rust bindings for QEMU"
++description = "Rust bindings for QEMU - Utility macros"
 +repository = "https://gitlab.com/qemu-project/qemu/"
 +resolver = "2"
 +publish = false
 +keywords = []
 +categories = []
 +
-+[dependencies]
++[lib]
++proc-macro = true
 +
-+[features]
-+default = ["allocator"]
-+allocator = []
++[dependencies]
++proc-macro2 = "1"
++quote = "1"
++syn = "2"
 +
 +# Do not include in any global workspace
 +[workspace]
-+
-+[lints.rust]
-+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(MESON)', 'cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)'] }
-diff --git a/rust/qemu-api/README.md b/rust/qemu-api/README.md
+diff --git a/rust/qemu-api-macros/README.md b/rust/qemu-api-macros/README.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..7588fa29ef37e29d424fc7c333ea1c9c6139181b
+index 0000000000000000000000000000000000000000..f60f54ac4be08ccfbcfea8e21ceb15d25012dfc3
 --- /dev/null
-+++ b/rust/qemu-api/README.md
-@@ -0,0 +1,17 @@
-+# QEMU bindings and API wrappers
-+
-+This library exports helper Rust types, Rust macros and C FFI bindings for internal QEMU APIs.
-+
-+The C bindings can be generated with `bindgen`, using this build target:
-+
-+```console
-+$ ninja bindings.rs
-+```
-+
-+## Generate Rust documentation
-+
-+To generate docs for this crate, including private items:
-+
-+```sh
-+cargo doc --no-deps --document-private-items
-+```
-diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
++++ b/rust/qemu-api-macros/README.md
+@@ -0,0 +1 @@
++# `qemu-api-macros` - Utility macros for defining QEMU devices
+diff --git a/rust/qemu-api-macros/meson.build b/rust/qemu-api-macros/meson.build
 new file mode 100644
-index 0000000000000000000000000000000000000000..419b154c2d267a4b067b66f17b882bed0e65493a
+index 0000000000000000000000000000000000000000..48af91ed389120ddd6e15f6ee002f5da7063e329
 --- /dev/null
-+++ b/rust/qemu-api/build.rs
-@@ -0,0 +1,14 @@
-+// Copyright 2024, Linaro Limited
-+// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+// SPDX-License-Identifier: GPL-2.0-or-later
++++ b/rust/qemu-api-macros/meson.build
+@@ -0,0 +1,25 @@
++add_languages('rust', required: true, native: true)
 +
-+use std::path::Path;
++quote_dep = dependency('quote-1-rs', native: true)
++syn_dep = dependency('syn-2-rs', native: true)
++proc_macro2_dep = dependency('proc-macro2-1-rs', native: true)
 +
-+fn main() {
-+    if !Path::new("src/bindings.rs").exists() {
-+        panic!(
-+            "No generated C bindings found! Either build them manually with bindgen or with meson \
-+             (`ninja bindings.rs`) and copy them to src/bindings.rs, or build through meson."
-+        );
-+    }
-+}
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-new file mode 100644
-index 0000000000000000000000000000000000000000..cf2b465e9f7cc7fb10af0d3aac469b58211cd64e
---- /dev/null
-+++ b/rust/qemu-api/meson.build
-@@ -0,0 +1,21 @@
-+_qemu_api_rs = static_library(
-+  'qemu_api',
-+  structured_sources(
-+    [
-+      'src/lib.rs',
-+      'src/definitions.rs',
-+      'src/device_class.rs',
-+    ],
-+    {'.' : bindings_rs},
-+  ),
++_qemu_api_macros_rs = import('rust').proc_macro(
++  'qemu_api_macros',
++  files('src/lib.rs'),
 +  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-+  rust_abi: 'rust',
-+  rust_args: rustc_config_args + [
-+    '--cfg', 'MESON',
-+    '--cfg', 'feature="allocator"',
++  rust_args: [
++    '--cfg', 'use_fallback',
++    '--cfg', 'feature="syn-error"',
++    '--cfg', 'feature="proc-macro"',
++  ],
++  dependencies: [
++    proc_macro2_dep,
++    quote_dep,
++    syn_dep,
 +  ],
 +)
 +
-+qemu_api = declare_dependency(
-+  link_with: _qemu_api_rs,
++qemu_api_macros = declare_dependency(
++  link_with: _qemu_api_macros_rs,
 +)
-diff --git a/rust/qemu-api/src/definitions.rs b/rust/qemu-api/src/definitions.rs
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
 new file mode 100644
-index 0000000000000000000000000000000000000000..4abd0253bd1ff4f3f2e11528329709ef54a43c24
+index 0000000000000000000000000000000000000000..331bc9e215e0115191865cb8a29c4605e03fdaa8
 --- /dev/null
-+++ b/rust/qemu-api/src/definitions.rs
-@@ -0,0 +1,109 @@
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -0,0 +1,43 @@
 +// Copyright 2024, Linaro Limited
 +// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +
-+//! Definitions required by QEMU when registering a device.
++use proc_macro::TokenStream;
++use quote::{format_ident, quote};
++use syn::{parse_macro_input, DeriveInput};
 +
-+/// Trait a type must implement to be registered with QEMU.
-+pub trait ObjectImpl {
-+    type Class;
-+    const TYPE_INFO: crate::bindings::TypeInfo;
-+    const TYPE_NAME: &'static ::core::ffi::CStr;
-+    const PARENT_TYPE_NAME: Option<&'static ::core::ffi::CStr>;
-+    const INSTANCE_INIT: ::core::option::Option<
-+        unsafe extern "C" fn(obj: *mut crate::bindings::Object),
-+    >;
-+    const INSTANCE_POST_INIT: ::core::option::Option<
-+        unsafe extern "C" fn(obj: *mut crate::bindings::Object),
-+    >;
-+    const INSTANCE_FINALIZE: ::core::option::Option<
-+        unsafe extern "C" fn(obj: *mut crate::bindings::Object),
-+    >;
-+    const ABSTRACT: bool;
-+}
++#[proc_macro_derive(Object)]
++pub fn derive_object(input: TokenStream) -> TokenStream {
++    let input = parse_macro_input!(input as DeriveInput);
 +
-+pub trait Class {
-+    const CLASS_INIT: ::core::option::Option<
-+        unsafe extern "C" fn(
-+            klass: *mut crate::bindings::ObjectClass,
-+            data: *mut core::ffi::c_void,
-+        ),
-+    >;
-+    const CLASS_BASE_INIT: ::core::option::Option<
-+        unsafe extern "C" fn(
-+            klass: *mut crate::bindings::ObjectClass,
-+            data: *mut core::ffi::c_void,
-+        ),
-+    >;
-+}
++    let name = input.ident;
++    let module_static = format_ident!("__{}_LOAD_MODULE", name);
 +
-+#[macro_export]
-+macro_rules! module_init {
-+    ($func:expr, $type:expr) => {
++    let expanded = quote! {
++        #[allow(non_upper_case_globals)]
 +        #[used]
 +        #[cfg_attr(target_os = "linux", link_section = ".ctors")]
 +        #[cfg_attr(target_os = "macos", link_section = "__DATA,__mod_init_func")]
 +        #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
-+        pub static LOAD_MODULE: extern "C" fn() = {
-+            assert!($type < $crate::bindings::module_init_type_MODULE_INIT_MAX);
-+
-+            extern "C" fn __load() {
++        pub static #module_static: extern "C" fn() = {
++            extern "C" fn __register() {
 +                unsafe {
-+                    $crate::bindings::register_module_init(Some($func), $type);
++                    ::qemu_api::bindings::type_register_static(&<#name as ::qemu_api::definitions::ObjectImpl>::TYPE_INFO);
 +                }
 +            }
 +
-+            __load
-+        };
-+    };
-+    (qom: $func:ident => $body:block) => {
-+        // NOTE: To have custom identifiers for the ctor func we need to either supply
-+        // them directly as a macro argument or create them with a proc macro.
-+        #[used]
-+        #[cfg_attr(target_os = "linux", link_section = ".ctors")]
-+        #[cfg_attr(target_os = "macos", link_section = "__DATA,__mod_init_func")]
-+        #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU")]
-+        pub static LOAD_MODULE: extern "C" fn() = {
 +            extern "C" fn __load() {
-+                #[no_mangle]
-+                unsafe extern "C" fn $func() {
-+                    $body
-+                }
-+
 +                unsafe {
-+                    $crate::bindings::register_module_init(
-+                        Some($func),
-+                        $crate::bindings::module_init_type_MODULE_INIT_QOM,
++                    ::qemu_api::bindings::register_module_init(
++                        Some(__register),
++                        ::qemu_api::bindings::module_init_type_MODULE_INIT_QOM
 +                    );
 +                }
 +            }
@@ -386,394 +334,23 @@ index 0000000000000000000000000000000000000000..4abd0253bd1ff4f3f2e11528329709ef
 +            __load
 +        };
 +    };
++
++    TokenStream::from(expanded)
 +}
-+
-+#[macro_export]
-+macro_rules! type_info {
-+    ($t:ty) => {
-+        $crate::bindings::TypeInfo {
-+            name: <$t as $crate::definitions::ObjectImpl>::TYPE_NAME.as_ptr(),
-+            parent: if let Some(pname) = <$t as $crate::definitions::ObjectImpl>::PARENT_TYPE_NAME {
-+                pname.as_ptr()
-+            } else {
-+                ::core::ptr::null_mut()
-+            },
-+            instance_size: ::core::mem::size_of::<$t>(),
-+            instance_align: ::core::mem::align_of::<$t>(),
-+            instance_init: <$t as $crate::definitions::ObjectImpl>::INSTANCE_INIT,
-+            instance_post_init: <$t as $crate::definitions::ObjectImpl>::INSTANCE_POST_INIT,
-+            instance_finalize: <$t as $crate::definitions::ObjectImpl>::INSTANCE_FINALIZE,
-+            abstract_: <$t as $crate::definitions::ObjectImpl>::ABSTRACT,
-+            class_size:  ::core::mem::size_of::<<$t as $crate::definitions::ObjectImpl>::Class>(),
-+            class_init: <<$t as $crate::definitions::ObjectImpl>::Class as $crate::definitions::Class>::CLASS_INIT,
-+            class_base_init: <<$t as $crate::definitions::ObjectImpl>::Class as $crate::definitions::Class>::CLASS_BASE_INIT,
-+            class_data: ::core::ptr::null_mut(),
-+            interfaces: ::core::ptr::null_mut(),
-+        };
-+    }
-+}
-diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..69ee912c333c3dce8bc127a286acaadd57ca20b3
---- /dev/null
-+++ b/rust/qemu-api/src/device_class.rs
-@@ -0,0 +1,128 @@
-+// Copyright 2024, Linaro Limited
-+// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+use std::sync::OnceLock;
-+
-+use crate::bindings::Property;
-+
-+#[macro_export]
-+macro_rules! device_class_init {
-+    ($func:ident, props => $props:ident, realize_fn => $realize_fn:expr, reset_fn => $reset_fn:expr, vmsd => $vmsd:ident$(,)*) => {
-+        #[no_mangle]
-+        pub unsafe extern "C" fn $func(
-+            klass: *mut $crate::bindings::ObjectClass,
-+            _: *mut ::core::ffi::c_void,
-+        ) {
-+            let mut dc =
-+                ::core::ptr::NonNull::new(klass.cast::<$crate::bindings::DeviceClass>()).unwrap();
-+            dc.as_mut().realize = $realize_fn;
-+            dc.as_mut().reset = $reset_fn;
-+            dc.as_mut().vmsd = &$vmsd;
-+            $crate::bindings::device_class_set_props(dc.as_mut(), $props.as_mut_ptr());
-+        }
-+    };
-+}
-+
-+#[macro_export]
-+macro_rules! define_property {
-+    ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr, default = $defval:expr$(,)*) => {
-+        $crate::bindings::Property {
-+            name: {
-+                #[used]
-+                static _TEMP: &::core::ffi::CStr = $name;
-+                _TEMP.as_ptr()
-+            },
-+            info: $prop,
-+            offset: ::core::mem::offset_of!($state, $field)
-+                .try_into()
-+                .expect("Could not fit offset value to type"),
-+            bitnr: 0,
-+            bitmask: 0,
-+            set_default: true,
-+            defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval.into() },
-+            arrayoffset: 0,
-+            arrayinfo: ::core::ptr::null(),
-+            arrayfieldsize: 0,
-+            link_type: ::core::ptr::null(),
-+        }
-+    };
-+    ($name:expr, $state:ty, $field:expr, $prop:expr, $type:expr$(,)*) => {
-+        $crate::bindings::Property {
-+            name: {
-+                #[used]
-+                static _TEMP: &::core::ffi::CStr = $name;
-+                _TEMP.as_ptr()
-+            },
-+            info: $prop,
-+            offset: ::core::mem::offset_of!($state, $field)
-+                .try_into()
-+                .expect("Could not fit offset value to type"),
-+            bitnr: 0,
-+            bitmask: 0,
-+            set_default: false,
-+            defval: $crate::bindings::Property__bindgen_ty_1 { i: 0 },
-+            arrayoffset: 0,
-+            arrayinfo: ::core::ptr::null(),
-+            arrayfieldsize: 0,
-+            link_type: ::core::ptr::null(),
-+        }
-+    };
-+}
-+
-+#[repr(C)]
-+pub struct Properties<const N: usize>(pub OnceLock<[Property; N]>, pub fn() -> [Property; N]);
-+
-+impl<const N: usize> Properties<N> {
-+    pub fn as_mut_ptr(&mut self) -> *mut Property {
-+        _ = self.0.get_or_init(self.1);
-+        self.0.get_mut().unwrap().as_mut_ptr()
-+    }
-+}
-+
-+#[macro_export]
-+macro_rules! declare_properties {
-+    ($ident:ident, $($prop:expr),*$(,)*) => {
-+
-+        const fn _calc_prop_len() -> usize {
-+            let mut len = 1;
-+            $({
-+                _ = stringify!($prop);
-+                len += 1;
-+            })*
-+            len
-+        }
-+        const PROP_LEN: usize = _calc_prop_len();
-+
-+        fn _make_properties() -> [$crate::bindings::Property; PROP_LEN] {
-+            [
-+                $($prop),*,
-+                    unsafe { ::core::mem::MaybeUninit::<$crate::bindings::Property>::zeroed().assume_init() },
-+            ]
-+        }
-+
-+        #[no_mangle]
-+        pub static mut $ident: $crate::device_class::Properties<PROP_LEN> = $crate::device_class::Properties(::std::sync::OnceLock::new(), _make_properties);
-+    };
-+}
-+
-+#[macro_export]
-+macro_rules! vm_state_description {
-+    ($(#[$outer:meta])*
-+     $name:ident,
-+     $(name: $vname:expr,)*
-+     $(unmigratable: $um_val:expr,)*
-+    ) => {
-+        #[used]
-+        $(#[$outer])*
-+        pub static $name: $crate::bindings::VMStateDescription = $crate::bindings::VMStateDescription {
-+            $(name: {
-+                #[used]
-+                static VMSTATE_NAME: &::core::ffi::CStr = $vname;
-+                $vname.as_ptr()
-+            },)*
-+            unmigratable: true,
-+            ..unsafe { ::core::mem::MaybeUninit::<$crate::bindings::VMStateDescription>::zeroed().assume_init() }
-+        };
-+    }
-+}
-diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..26637024907dc23d5ca81a8ce21cd9c307c022ea
---- /dev/null
-+++ b/rust/qemu-api/src/lib.rs
-@@ -0,0 +1,154 @@
-+// Copyright 2024, Linaro Limited
-+// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#![cfg_attr(not(MESON), doc = include_str!("../README.md"))]
-+
-+#[allow(
-+    dead_code,
-+    improper_ctypes_definitions,
-+    improper_ctypes,
-+    non_camel_case_types,
-+    non_snake_case,
-+    non_upper_case_globals,
-+    clippy::missing_const_for_fn,
-+    clippy::too_many_arguments,
-+    clippy::approx_constant,
-+    clippy::use_self,
-+    clippy::useless_transmute,
-+    clippy::missing_safety_doc,
-+)]
-+#[rustfmt::skip]
-+pub mod bindings;
-+
-+unsafe impl Send for bindings::Property {}
-+unsafe impl Sync for bindings::Property {}
-+unsafe impl Sync for bindings::TypeInfo {}
-+unsafe impl Sync for bindings::VMStateDescription {}
-+
-+pub mod definitions;
-+pub mod device_class;
-+
-+#[cfg(test)]
-+mod tests;
-+
-+use std::alloc::{GlobalAlloc, Layout};
-+
-+#[cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)]
-+extern "C" {
-+    fn g_aligned_alloc0(
-+        n_blocks: bindings::gsize,
-+        n_block_bytes: bindings::gsize,
-+        alignment: bindings::gsize,
-+    ) -> bindings::gpointer;
-+    fn g_aligned_free(mem: bindings::gpointer);
-+}
-+
-+#[cfg(not(HAVE_GLIB_WITH_ALIGNED_ALLOC))]
-+extern "C" {
-+    fn qemu_memalign(alignment: usize, size: usize) -> *mut ::core::ffi::c_void;
-+    fn qemu_vfree(ptr: *mut ::core::ffi::c_void);
-+}
-+
-+extern "C" {
-+    fn g_malloc0(n_bytes: bindings::gsize) -> bindings::gpointer;
-+    fn g_free(mem: bindings::gpointer);
-+}
-+
-+/// An allocator that uses the same allocator as QEMU in C.
-+///
-+/// It is enabled by default with the `allocator` feature.
-+///
-+/// To set it up manually as a global allocator in your crate:
-+///
-+/// ```ignore
-+/// use qemu_api::QemuAllocator;
-+///
-+/// #[global_allocator]
-+/// static GLOBAL: QemuAllocator = QemuAllocator::new();
-+/// ```
-+#[derive(Clone, Copy, Debug)]
-+#[repr(C)]
-+pub struct QemuAllocator {
-+    _unused: [u8; 0],
-+}
-+
-+#[cfg_attr(all(feature = "allocator", not(test)), global_allocator)]
-+pub static GLOBAL: QemuAllocator = QemuAllocator::new();
-+
-+impl QemuAllocator {
-+    // From the glibc documentation, on GNU systems, malloc guarantees 16-byte
-+    // alignment on 64-bit systems and 8-byte alignment on 32-bit systems. See
-+    // https://www.gnu.org/software/libc/manual/html_node/Malloc-Examples.html.
-+    // This alignment guarantee also applies to Windows and Android. On Darwin
-+    // and OpenBSD, the alignment is 16 bytes on both 64-bit and 32-bit systems.
-+    #[cfg(all(
-+        target_pointer_width = "32",
-+        not(any(target_os = "macos", target_os = "openbsd"))
-+    ))]
-+    pub const DEFAULT_ALIGNMENT_BYTES: Option<usize> = Some(8);
-+    #[cfg(all(
-+        target_pointer_width = "64",
-+        not(any(target_os = "macos", target_os = "openbsd"))
-+    ))]
-+    pub const DEFAULT_ALIGNMENT_BYTES: Option<usize> = Some(16);
-+    #[cfg(all(
-+        any(target_pointer_width = "32", target_pointer_width = "64"),
-+        any(target_os = "macos", target_os = "openbsd")
-+    ))]
-+    pub const DEFAULT_ALIGNMENT_BYTES: Option<usize> = Some(16);
-+    #[cfg(not(any(target_pointer_width = "32", target_pointer_width = "64")))]
-+    pub const DEFAULT_ALIGNMENT_BYTES: Option<usize> = None;
-+
-+    pub const fn new() -> Self {
-+        Self { _unused: [] }
-+    }
-+}
-+
-+impl Default for QemuAllocator {
-+    fn default() -> Self {
-+        Self::new()
-+    }
-+}
-+
-+// Sanity check.
-+const _: [(); 8] = [(); ::core::mem::size_of::<*mut ::core::ffi::c_void>()];
-+
-+unsafe impl GlobalAlloc for QemuAllocator {
-+    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-+        if matches!(Self::DEFAULT_ALIGNMENT_BYTES, Some(default) if default.checked_rem(layout.align()) == Some(0))
-+        {
-+            g_malloc0(layout.size().try_into().unwrap()).cast::<u8>()
-+        } else {
-+            #[cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)]
-+            {
-+                g_aligned_alloc0(
-+                    layout.size().try_into().unwrap(),
-+                    1,
-+                    (8 * layout.align()).try_into().unwrap(),
-+                )
-+                .cast::<u8>()
-+            }
-+            #[cfg(not(HAVE_GLIB_WITH_ALIGNED_ALLOC))]
-+            {
-+                qemu_memalign(8 * layout.align(), layout.size()).cast::<u8>()
-+            }
-+        }
-+    }
-+
-+    unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
-+        if matches!(Self::DEFAULT_ALIGNMENT_BYTES, Some(default) if default.checked_rem(layout.align()) == Some(0))
-+        {
-+            g_free(ptr.cast::<_>())
-+        } else {
-+            #[cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)]
-+            {
-+                g_aligned_free(ptr.cast::<_>())
-+            }
-+            #[cfg(not(HAVE_GLIB_WITH_ALIGNED_ALLOC))]
-+            {
-+                qemu_vfree(ptr.cast::<_>())
-+            }
-+        }
-+    }
-+}
-diff --git a/rust/qemu-api/src/tests.rs b/rust/qemu-api/src/tests.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..df54edbd4e27e7d2aafc243355d1826d52497c21
---- /dev/null
-+++ b/rust/qemu-api/src/tests.rs
-@@ -0,0 +1,49 @@
-+// Copyright 2024, Linaro Limited
-+// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+use crate::{
-+    bindings::*, declare_properties, define_property, device_class_init, vm_state_description,
-+};
-+
-+#[test]
-+fn test_device_decl_macros() {
-+    // Test that macros can compile.
-+    vm_state_description! {
-+        VMSTATE,
-+        name: c"name",
-+        unmigratable: true,
-+    }
-+
-+    #[repr(C)]
-+    pub struct DummyState {
-+        pub char_backend: CharBackend,
-+        pub migrate_clock: bool,
-+    }
-+
-+    declare_properties! {
-+        DUMMY_PROPERTIES,
-+            define_property!(
-+                c"chardev",
-+                DummyState,
-+                char_backend,
-+                unsafe { &qdev_prop_chr },
-+                CharBackend
-+            ),
-+            define_property!(
-+                c"migrate-clk",
-+                DummyState,
-+                migrate_clock,
-+                unsafe { &qdev_prop_bool },
-+                bool
-+            ),
-+    }
-+
-+    device_class_init! {
-+        dummy_class_init,
-+        props => DUMMY_PROPERTIES,
-+        realize_fn => None,
-+        reset_fn => None,
-+        vmsd => VMSTATE,
-+    }
-+}
-diff --git a/rust/rustfmt.toml b/rust/rustfmt.toml
-new file mode 100644
-index 0000000000000000000000000000000000000000..ebecb99fe09e010d66c06b324f43d77b8ee00ea9
---- /dev/null
-+++ b/rust/rustfmt.toml
-@@ -0,0 +1,7 @@
-+edition = "2021"
-+format_generated_files = false
-+format_code_in_doc_comments = true
-+format_strings = true
-+imports_granularity = "Crate"
-+group_imports = "StdExternalCrate"
-+wrap_comments = true
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index cf2b465e9f7cc7fb10af0d3aac469b58211cd64e..2030c24ed980596da0d53944252409e535510195 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -14,6 +14,9 @@ _qemu_api_rs = static_library(
+     '--cfg', 'MESON',
+     '--cfg', 'feature="allocator"',
+   ],
++  dependencies: [
++    qemu_api_macros,
++  ],
+ )
+ 
+ qemu_api = declare_dependency(
 
 -- 
 2.45.2
