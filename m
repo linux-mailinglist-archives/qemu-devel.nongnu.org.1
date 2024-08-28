@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D536A9626F2
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 14:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B81E296270A
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 14:26:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjHiG-0007YY-PI; Wed, 28 Aug 2024 08:23:48 -0400
+	id 1sjHiL-0007j8-JQ; Wed, 28 Aug 2024 08:23:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sjHiA-0007S8-J9
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:23:42 -0400
+ id 1sjHiH-0007f3-Ph
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:23:49 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sjHi9-0001CW-53
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:23:42 -0400
+ id 1sjHiG-0001DO-BC
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:23:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=iDYp5gaIqo5J6zZ1j+lA7kex8q6EDB2TjHYn/k4kYzg=; b=a90FM8UQIokhtJjW6rY/VneWto
- +rVb0LxtKHzBql7hXC9TrWklNMkIeRcEeGK1iiAKxpAUNN1VK/B8kdf2fx+VV1tndz3t/ZfzpfltB
- 0GNVqmTni2cwOjjqn8hb/tZrgO4WlnDbPk58S9P2+53dWGqP9Evgar1rvy5ct0ziZTZZ9YROne1fw
- K1cN0dNl/egywluwFbJ8eKTHLY/w7OaWTKWee63BpnY3Dp1L6XaiHt1FoK6FY222QsHeRtCFR9xCq
- Hegmve8BdYL8UFSshDdPV1k04CjtAZIxTjY6rAo9ZBd24YnEWzUvP0bhMGcfPaM7H3OpoNQr2xYZV
- IXXk97b/JzUrzv2QeJOLa/v40xDMuFEQ29+83cEkRhHUBCiGXDYms7uYV1l2SboISYo9J/mwcVh9e
- GDU6pIyhy2t3PupTyNSYyr9bYdHDrEPEUX6dppTu5QDZn5psl54C/feaR5ZFmFgiG0crE7iz/TQiI
- 2UDbjVDBMIIWszWqtl2cCdR55p88Xdllejc4PW1yKF5XR7N3xky/2FwVipH6TpQwzWr8lU8HyEtLK
- D38MO7Mo4w5OHetTGYa1p445rNxJ4CzTVw7WO5wnU+D3P7qKNRkQpCsKSfENCHqmnE6DRjtb2P4Ip
- PPGAZfX9rgIPYDQ0PxeDvkOUNgqevHYP48Y6ZnN8c=;
+ bh=8A2FICmUmjowEj9RLWXSg7/Kx8EQAw4oc04eFwo72Js=; b=rSZEKM8DBeC5Slg1ILZ2eBVoNg
+ p6jsOBm6e4VQe3tAlI7sC75ihGSkJ3ncO/BIiYCaYDd9jwHpCwok+lstzaPJhSZ9C7bNwP3upJSSS
+ XIOpXJ/NVYwxvmrlBDDdUcVlG9HrbzFAap34aE/r2LLXTet8ePJZhhoxQKG2w4sztJDbcDK43+q2y
+ 9EeaKWfnun8B/6eefn2A/hlcyv8PbZgZ1Joow7onAdTp0xyjo4hewSyQIVruM12/TMcCmNNpMPvLq
+ 8apwfXUffFCTuHtqQo8xppbDbyjAW+vz7D49r7IPJLklttxo7//XBum973i7vrrlwLyVp6veYOxVF
+ sQ7f9DKXMZ/5GO83PTLCwJGZzTZ7Fc26DjjB60T4FshrtrwInMOy8NS0srznWu30i8lsJ0KPETDWH
+ cGCGeYgn64J1nkSkQs3yY1a6ai4x0R9pjurVO9F6KiQniJWPVvoPXta8mf3tmQqSeD0nW3HmEZV+M
+ oG0hX0QmOP1BcLYEeNdLRL2JAlMYkyyj2vR6Fi2qv6HLc0A8Udx4LlVTYhTak3I23nsmIMJWit6HJ
+ 8/PFUZCs/1XMNfyqGfoC4UrZyDYcDFtKfJyyXPHM0ibK4VgMy58YQVp51Uv+DxXKnq2o7657xCECO
+ 554uBduUFf8S9g8EBRFeuke7HTFyNvWPBLd52T394=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sjHhq-000B8d-RS; Wed, 28 Aug 2024 13:23:26 +0100
+ id 1sjHhv-000B8d-1O; Wed, 28 Aug 2024 13:23:31 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: philmd@linaro.org, Alistair.Francis@wdc.com, tavip@google.com,
  qemu-devel@nongnu.org
-Date: Wed, 28 Aug 2024 13:22:56 +0100
-Message-Id: <20240828122258.928947-8-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 28 Aug 2024 13:22:57 +0100
+Message-Id: <20240828122258.928947-9-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240828122258.928947-1-mark.cave-ayland@ilande.co.uk>
 References: <20240828122258.928947-1-mark.cave-ayland@ilande.co.uk>
@@ -50,7 +50,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 7/9] fifo8: add fifo8_peek_buf() function
+Subject: [PATCH 8/9] fifo8: introduce fifo8_peek() function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,57 +76,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a wrapper function around fifo8_peekpop_buf() that allows the caller to
-peek into FIFO, including handling the case where there is a wraparound of the
-internal FIFO buffer.
+This allows uses to peek the byte at the current head of the FIFO.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- include/qemu/fifo8.h | 14 ++++++++++++++
- util/fifo8.c         |  5 +++++
- 2 files changed, 19 insertions(+)
+ include/qemu/fifo8.h | 11 +++++++++++
+ util/fifo8.c         |  6 ++++++
+ 2 files changed, 17 insertions(+)
 
 diff --git a/include/qemu/fifo8.h b/include/qemu/fifo8.h
-index d1d06754d8..d09984b146 100644
+index d09984b146..4f768d4ee3 100644
 --- a/include/qemu/fifo8.h
 +++ b/include/qemu/fifo8.h
-@@ -76,6 +76,20 @@ uint8_t fifo8_pop(Fifo8 *fifo);
+@@ -62,6 +62,17 @@ void fifo8_push_all(Fifo8 *fifo, const uint8_t *data, uint32_t num);
   */
- uint32_t fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen);
+ uint8_t fifo8_pop(Fifo8 *fifo);
  
 +/**
-+ * fifo8_peek_buf:
-+ * @fifo: FIFO to read from
-+ * @dest: the buffer to write the data into (can be NULL)
-+ * @destlen: size of @dest and maximum number of bytes to peek
++ * fifo8_peek:
++ * @fifo: fifo to peek from
 + *
-+ * Peek a number of elements from the FIFO up to a maximum of @destlen.
-+ * The peeked data is copied into the @dest buffer.
-+ * Care is taken when the data wraps around in the ring buffer.
++ * Peek the data byte at the current head of the FIFO. Clients are responsible
++ * for checking for emptyness using fifo8_is_empty().
 + *
-+ * Returns: number of bytes peeked.
++ * Returns: The peeked data byte.
 + */
-+uint32_t fifo8_peek_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen);
++uint8_t fifo8_peek(Fifo8 *fifo);
 +
  /**
-  * fifo8_pop_bufptr:
+  * fifo8_pop_buf:
   * @fifo: FIFO to pop from
 diff --git a/util/fifo8.c b/util/fifo8.c
-index 1031ffbe7e..a8f5cea158 100644
+index a8f5cea158..a26da66ad2 100644
 --- a/util/fifo8.c
 +++ b/util/fifo8.c
-@@ -140,6 +140,11 @@ uint32_t fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen)
-     return fifo8_peekpop_buf(fifo, dest, destlen, true);
+@@ -71,6 +71,12 @@ uint8_t fifo8_pop(Fifo8 *fifo)
+     return ret;
  }
  
-+uint32_t fifo8_peek_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen)
++uint8_t fifo8_peek(Fifo8 *fifo)
 +{
-+    return fifo8_peekpop_buf(fifo, dest, destlen, false);
++    assert(fifo->num > 0);
++    return fifo->data[fifo->head];
 +}
 +
- void fifo8_drop(Fifo8 *fifo, uint32_t len)
- {
-     len -= fifo8_pop_buf(fifo, NULL, len);
+ static const uint8_t *fifo8_peekpop_bufptr(Fifo8 *fifo, uint32_t max,
+                                            uint32_t skip, uint32_t *numptr,
+                                            bool do_pop)
 -- 
 2.39.2
 
