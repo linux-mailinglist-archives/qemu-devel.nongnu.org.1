@@ -2,145 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5F9962AE5
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 16:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2508C96299D
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 16:03:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjK6F-0002B9-E3; Wed, 28 Aug 2024 10:56:43 -0400
+	id 1sjJFf-00012O-ET; Wed, 28 Aug 2024 10:02:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbonham@nicmangroup.com>)
- id 1sjJ9F-0006iS-Ae
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 09:55:45 -0400
-Received: from mail-dm6nam11on2102.outbound.protection.outlook.com
- ([40.107.223.102] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbonham@nicmangroup.com>)
- id 1sjJ9C-0003zY-9r
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 09:55:44 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OtHcOrsL8WfX1VbRWpRrLbuSJI93qAxwSkE3Zxc1BcWDkYa0qV9J4GEi6CxXotGFCQOzRP+bT/B8aCWMiMhLswICFtFS91u6s0GfZNQHs0r6oHfhXrlZ5ZV9GMpG8vA6DGk6UMOHhFkH9AIL7COuS5E6E0NVySKuS/FgKFz6IReKwPGSSGv+jkbVTyq2xXeudSk3Ye2S39/5aBoHU9pC+eKskk6eZBS0GdE4FNt7+T6yAYzD6nDTcU9oFJaZDR82YO89KY0nC/bnWDr662Q2RSdhzn/BE5AENi9nfvny9UTTqsNxqSwJ8BprP0sz44TjYAS7hJ3jFyCq0i/lIdSw+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VnzhXjG5B+ZIdNrXG8hxIFizdmjCoPLtg4Mmfd1xf5w=;
- b=vP++m3EczM6LeffIR0EqA/vOzf5UV5SePvHU9RayiyIp3f7ggAg00zdtpO0cgJm1u4LvRNgJvDe2fEsrLXPqHHHVSLik1TxQHD7bJx0y0CeNWxYLcOoJCgBqWZYUQ5xd8O8RvtYivNBwK2jV/TxpVVa33IV766u+Lzt6K19tdMUK5xEZZzFTsVIx3nwcOH4VxtDXXs5Qpe1khTUm/XzIVUgkWTeRkhtvdupAk5/Ip9EtN2fXDBK7W+hFi1Y0l0Y4FXXUGFrX73ObWm270sxYS4e0kn9ZKrCXcoS1iEkNPyjafXgF8Mim6TAiABxJpNZTBkjhXzq7/52oNE4r4O2BYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nicmangroup.com; dmarc=pass action=none
- header.from=nicmangroup.com; dkim=pass header.d=nicmangroup.com; arc=none
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sjJFZ-000115-UI
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 10:02:18 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sjJFX-0004rX-Cf
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 10:02:17 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-7140ff4b1e9so5362371b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 07:02:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=nicmangroup.onmicrosoft.com; s=selector2-nicmangroup-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VnzhXjG5B+ZIdNrXG8hxIFizdmjCoPLtg4Mmfd1xf5w=;
- b=lKkbYGhiWgNsapZN1RalSVty5LYPFD3ccgU83KDvDo7m928R4UXZ5OpQrORI79pgPjDzsRRcNllMoHjiLprIf0jDWMtUfbDE21KtEGTYyiYMYSpe+yg0cqEcHwiHAZMxLRW3yJHiPV/3gg2M0feNXIyy/iE86MQngyao6ef4oVM=
-Received: from IA0PR17MB6394.namprd17.prod.outlook.com (2603:10b6:208:431::12)
- by LV3PR17MB7190.namprd17.prod.outlook.com (2603:10b6:408:199::16)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.25; Wed, 28 Aug
- 2024 13:50:34 +0000
-Received: from IA0PR17MB6394.namprd17.prod.outlook.com
- ([fe80::5de9:b280:9583:1b5e]) by IA0PR17MB6394.namprd17.prod.outlook.com
- ([fe80::5de9:b280:9583:1b5e%4]) with mapi id 15.20.7875.019; Wed, 28 Aug 2024
- 13:50:34 +0000
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: qemu-system-hppa HP-UX 64 bit working?
-Thread-Topic: qemu-system-hppa HP-UX 64 bit working?
-Thread-Index: Adr5TamyeV2Y4iZwQleiIY/+4CoFTw==
-Date: Wed, 28 Aug 2024 13:50:34 +0000
-Message-ID: <IA0PR17MB6394A0C12D4FB7904DA116D2AF952@IA0PR17MB6394.namprd17.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nicmangroup.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA0PR17MB6394:EE_|LV3PR17MB7190:EE_
-x-ms-office365-filtering-correlation-id: 3f596697-2bf4-4336-8d08-08dcc76863ed
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?r6AqMFb25f423jYhmMoA+cDPeIXOtsn32/nC3S3yYxwToNhPgwMK83YzHafu?=
- =?us-ascii?Q?0DXhEywcrWYFXgkOsxsLz/tmzG3Z6cvF08jI7CswXAE6VSrImUvW1P/qo45m?=
- =?us-ascii?Q?8i5emNJiKzyRCngyE7LcV9vPrKY30snJNjX6ndT8aZ0efeT58K507aoa1hA3?=
- =?us-ascii?Q?aN85jjPoRYDdBDEtCefRCSI0JPtNPc7z8wSrPjh2GYy4hYQ87lD2m2V3Mgwk?=
- =?us-ascii?Q?eMbB/Xfc61vrftcNZU9p7oqJt52T0UMTSridMMruJ9ron0vquWkptDoIQUtX?=
- =?us-ascii?Q?oJVfW1vG83/T9goeCQfl08qJ8R8WZGyq0BXBztEl8GnGWgRQKMgacQPUqR1F?=
- =?us-ascii?Q?Q1kvVONlzyIoZWitx4YXQWR8LDiwrzsW6DKtYBixu7RrMmyfbIDJp2/JXI7k?=
- =?us-ascii?Q?K+uHgYBeHUwrX1arAoG++ZcTlkNwY6Yx878oqpjuo2xDfUi5iyv48YG5YVzU?=
- =?us-ascii?Q?/yWTIqTJvxn8tUrLIvsVTo7hCseyNQnaeWhsf1ZhwJy3Ut/7tJ+GtkXZgEFM?=
- =?us-ascii?Q?NNHx3xbOlo5lxEU8jcLxDsVPgaK7pGG4lpWz6cMF/O7yImmxLBNeI60GLWEk?=
- =?us-ascii?Q?o7WsT1U9A62rJWd390QNs7DsL41sS41Qee5S3/C5vE+gbeC3RS0N0CYX8Idl?=
- =?us-ascii?Q?q7AJvU48bnfJnqtFiw73bJ0ymLgfsAuq/sOH9d9+6tGen0VV8OcfAolz5Gv1?=
- =?us-ascii?Q?c0uNICjrIdm7Qy6jCMrT0oFvexgOcQc9JWAHt2hwemrX0Et/+dTyR5++UXMq?=
- =?us-ascii?Q?hdToacZNugEBVgsN6VJJxBcOCEzKb3YujiQ07Hd59NboikNaiqBROMF4n7/v?=
- =?us-ascii?Q?coG5oI26/OCtfsbFs3FWs7aRx+zDwCE3TRRiOgIhFJf08F4UpEnshTuNBSXJ?=
- =?us-ascii?Q?1Y93Dddw+aqfvNoJDWzsxHoIM69Dh9QzIfJtAvNZwPUbN2y7O8hAd9RIoc+P?=
- =?us-ascii?Q?R9WuGT+SMHuMtu5AohJbwnEiaKlmWNp1AGxRvM3phIwC44wzsNWNmZNwexgv?=
- =?us-ascii?Q?IyUZhfzNKJKw38aO3FGJcJM2VD0qXb50iYyZs/8QnHt4I1GYkxybmfRYJodV?=
- =?us-ascii?Q?jGdfPuV6lrZ1vuHVPdEl9oDiA9heYVAjn8co2D06NOXphcspsvJ7HSV5QgPc?=
- =?us-ascii?Q?K0+DPxZ+84bqlCsse7+ALIls/bUXevdIvIXo8NH1lcS8RdTkmoyxgUZ1Ucou?=
- =?us-ascii?Q?fSgPzmuSim+2JKj/jg5M1Ik8NK31//JsentCLHYsbpMdlrD7UswdcewX5NPp?=
- =?us-ascii?Q?khNTIOHpEcJ0dI2rqg2o6Yy/EmCLnnn0bS94Y6+V78S7JupWLYBMaetv92cw?=
- =?us-ascii?Q?i6zq0vZ70u3R2QChhRLLewSEW+AckJZ+SLEAvYWYqx/jNA=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA0PR17MB6394.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?xyGB9MTy/yrQ3GkxdlSktsL58vF6XM8EjXzxXy+GpIMow7KRJ+duF86FU5R5?=
- =?us-ascii?Q?guRFESqTPAHJYYQxY65ZoI+9eE1VT8eOf4BTI1VwPmmnE35w34cLuAVQYw1w?=
- =?us-ascii?Q?kd+XyTIZ2om10rood64TYnPWgGeIHY3sGEgImvktb7N17NJUEzZzTeC1Q4At?=
- =?us-ascii?Q?xw+p5irJz5oHVifqsRnKcc1AjeL2rtMQke/HgA0RHK0NhJy9bzbmUrj1njjV?=
- =?us-ascii?Q?fsQcBOKhO9YSA0CBHwFCnATNsuB/yjhab1Awmdj2nHf/wy1T9jBsupjLJNF2?=
- =?us-ascii?Q?P6d0VhRs0TbDKZgNO83R04cz9ZbxsPw61s+ScxXBw5woFisOKAPmYiGEFiEA?=
- =?us-ascii?Q?HSnLiIxXG2XudutuwpM6C8QWxzXjk3pDD8LmwDRL5Yz8hwFigwKCFRc+F3uz?=
- =?us-ascii?Q?V7xSo1Dq4hkmv7l7eQusjaavA7nTg8ONytdHE6iWfppr3zuOQrWT/hvCTOgq?=
- =?us-ascii?Q?tkKGvqDp/n2PVxp2ll3RIL++UpaR8O8VQmabbjYewjU2jmfxIeAloROBnfKo?=
- =?us-ascii?Q?xZ2wwO48H4GDVpvwl6NZwZA6sMkV6OcmgmVI0WiATfCVv6aypwSZiHkuuRfc?=
- =?us-ascii?Q?pCy/TC3TJWGc4Ujmucl44MHT0vDKKwowlsDUQ/yzftKGiDGznlVboCWMyXpS?=
- =?us-ascii?Q?WI5fFkLCC+KMLEwvFSZD9BosvKfsKw8o+mnF6/uyPa8PxmjkkfP+wj5BLkpS?=
- =?us-ascii?Q?dHYILcC5d1xGX+3bPRcjx0q/LCalRsn5/+g7j4uopJyDGauKmtAf7gcymJfX?=
- =?us-ascii?Q?FPg1dm0QzujkfHrTgmGYuxE3nf0NF8HWd9tTzf73cLZm+xZ4obL32Yox7pjr?=
- =?us-ascii?Q?TQeVKxN8L/31Sil/zalMRlqWtQKHsNWl0GvMoya4ehh+1wSZ4nW8RkijAAek?=
- =?us-ascii?Q?zQGhq8wl5WdehsPLWkU5XmRryAcM4n3ZRm6zUfNgHGnnsnARd+9+WmSUDmvz?=
- =?us-ascii?Q?rL6ZDlUVfc8vvyJ+iX2lj8lw62qa0H/3uZbC/FkMnxC1zBm8SmDvtZyYEQ+A?=
- =?us-ascii?Q?oreBIS3BW2GrRdpEvLC8O/jHuKO7c6Dt8Tv1qpl8YSVh+QFjAyRJWl+vjQos?=
- =?us-ascii?Q?XEYAgHmmzJyZ3pSvqHvI8rB+SQfZrx+GXCh+32dO8gUKx4me5bTRagPh1kU3?=
- =?us-ascii?Q?m89TsVwUExdPlja4OVIWywC2rCm2Rb8GGS4TEM2KhG8jSfm6vhO6CTphwGhW?=
- =?us-ascii?Q?Xedf8THMbs/P0p3EyszHDrIEh4tPrL/hjFHKJBp5g33JTczNse7fOupfqDET?=
- =?us-ascii?Q?+b77Lr3jKzYRLuUUXhkujbD3QUmZkI5BIPOWe44xrJjKTLg9p+QXpo4L+30s?=
- =?us-ascii?Q?tCK2tPyq+uoclWX4B+CQjsWG6qSuR/U5gFjD8G5yZs6h0pNmBJ6iwybwD+wS?=
- =?us-ascii?Q?Q++g3gYb3ks2j0q8wl9Z9Yaw8td27aVuoCYlzG6fy1ow1RgSS8Nx6JqQCjey?=
- =?us-ascii?Q?8rKruGo/eBfegjdwbR8P8CIYlpC6xhI0T7F1Iy265unwoqCwpoz4dGPbQtlO?=
- =?us-ascii?Q?Orgyez4fAVXI0c0QZP7F5mb+0ZGeGgsBLyjDNhuy4NwATmJfUd1PsrdxHrMj?=
- =?us-ascii?Q?+1n2slIiPEoG+f5/2yzJG6UJxsjNRZNoL1vOpz4T?=
-Content-Type: multipart/alternative;
- boundary="_000_IA0PR17MB6394A0C12D4FB7904DA116D2AF952IA0PR17MB6394namp_"
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1724853734; x=1725458534;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bnz04ZWytc/qsqEDSCSyscBZjTtc9cESk8TtYVw3VL0=;
+ b=QleVvVhAQWKSMme7R0oyp31JosA313J+oE03buG3Axf5oFjlz8DCYJYWRd2/HesK40
+ 6njN0HpY/lkVB1SX3ouqjJxkEPWt9C1n8rmMwF5kn1XSMr7fziwaulTvzmPlbddRoMVe
+ CfRbPTYiXuoap1d3TPgwcj1wGITWQrsLAg/XppYvqFnn9Vu7BzxwJQo8I3bPzoBWjuWZ
+ NalVoLrLC4JAs+ulcdrqTRNOSGMRKJioTqTooiOeexyVUL3Ir8XeEPuusqs/rb6U7pIo
+ 86YJwEPWHlOXx9Jx5f78OR19OC8qaQiyYpyowoi/0W/UGPr5Rp55+sRE6XiEUcWyKA24
+ neBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724853734; x=1725458534;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bnz04ZWytc/qsqEDSCSyscBZjTtc9cESk8TtYVw3VL0=;
+ b=mG2kITtnlAY0M7rvfb80nequd7u/e9n2I8CvNt+BcF8PglABSOKhok7ZU1DvNBs5QH
+ QTq/2nmFVKdbv2aju4Ch4Lrr3fbv9ARvgKnx3Tvxwxdohh8JmHwaPC3yilgabrX7+m2F
+ V2o51FPW6nwTO8n3t0Q6sFMQzPYuTVXBfn4QFTrzDwnEMx5KfopLVQTOKTqV8CaPTgnp
+ ZotmTAR8B5TRikRaehurmWTk0vGYec2L8LCGoz3TxCCrRZJEdH/1l6MbH/ioJNuRf5Zs
+ HoJb/DjHRlsYW0G3k7LEvQv5VcThSwcI4RtwbjurdKI7UNPw0adSavIKIrx46X6+ZpLV
+ Rq7g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVJK1ACNVzoKgfxyGgGq/8N+RqP8XmeO8vBh2nlcw0s+hNJLDhjnGpHw8jn2BcLESflhT3uKxFqHKjc@nongnu.org
+X-Gm-Message-State: AOJu0YxxTTE1D3HzYDgeLEkERxl8Xqj9YLE2+DGAJaKsNdwMo5bcU+Uv
+ i0ruR7CWCCJ8Cd/psHo0Tx/mDFDEFCtGdj96lqa9dqkBvruFLkVJ8fsExlqvcKE=
+X-Google-Smtp-Source: AGHT+IFZeV8BNEmXbTyyKiFidX6LX0x7JTs5vxUPD6MlyrOjglDv2xL1ce1WkI4nwKDdhlLSG9aGqw==
+X-Received: by 2002:a05:6a21:150b:b0:1c4:8293:76db with SMTP id
+ adf61e73a8af0-1ccd28a281amr2024996637.29.1724853733595; 
+ Wed, 28 Aug 2024 07:02:13 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:32ed:25ae:21b1:72d6?
+ ([2400:4050:a840:1e00:32ed:25ae:21b1:72d6])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71434235f77sm10515850b3a.13.2024.08.28.07.02.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 Aug 2024 07:02:13 -0700 (PDT)
+Message-ID: <eb79a40f-f9c9-47b3-bfd0-0198e6036714@daynix.com>
+Date: Wed, 28 Aug 2024 23:02:06 +0900
 MIME-Version: 1.0
-X-OriginatorOrg: nicmangroup.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR17MB6394.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f596697-2bf4-4336-8d08-08dcc76863ed
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2024 13:50:34.6202 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e171ef-379d-491c-b8b0-d4befbee7c6b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WjjYGbZRFwLwlfNoPUv9n22g1mUoWU4SS9DESreOqLeJuQnJ4OCF0ERI+FSKxg77j3SEUxLJVM4U4TVnAF+ngA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR17MB7190
-Received-SPF: pass client-ip=40.107.223.102;
- envelope-from=dbonham@nicmangroup.com;
- helo=NAM11-DM6-obe.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 6/7] memory: Do not create circular reference with
+ subregion
+To: Peter Xu <peterx@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, qemu-ppc@nongnu.org
+References: <20240823-san-v4-0-a24c6dfa4ceb@daynix.com>
+ <20240823-san-v4-6-a24c6dfa4ceb@daynix.com> <Zsydli9ME1u79A9X@x1n>
+ <CAFEAcA_uT3Db22V=Anqci_k6zOaAV7Qua2S1OVFxW_DQyh3bAA@mail.gmail.com>
+ <Zszain3SH5cl9ohH@x1n> <161cb8ff-1479-4fc4-8803-d665e757007a@daynix.com>
+ <Zs36od036pyxvQlZ@x1n> <de2229bc-876e-47b2-8a59-18fe7ffe3936@daynix.com>
+ <Zs8hcLPU62Hj8x-W@x1n>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <Zs8hcLPU62Hj8x-W@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::432;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 28 Aug 2024 10:56:41 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -152,251 +114,204 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  David Bonham <dbonham@nicmangroup.com>
-From:  David Bonham via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_IA0PR17MB6394A0C12D4FB7904DA116D2AF952IA0PR17MB6394namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+On 2024/08/28 22:09, Peter Xu wrote:
+> On Wed, Aug 28, 2024 at 02:33:59PM +0900, Akihiko Odaki wrote:
+>> On 2024/08/28 1:11, Peter Xu wrote:
+>>> On Tue, Aug 27, 2024 at 01:14:51PM +0900, Akihiko Odaki wrote:
+>>>> On 2024/08/27 4:42, Peter Xu wrote:
+>>>>> On Mon, Aug 26, 2024 at 06:10:25PM +0100, Peter Maydell wrote:
+>>>>>> On Mon, 26 Aug 2024 at 16:22, Peter Xu <peterx@redhat.com> wrote:
+>>>>>>>
+>>>>>>> On Fri, Aug 23, 2024 at 03:13:11PM +0900, Akihiko Odaki wrote:
+>>>>>>>> memory_region_update_container_subregions() used to call
+>>>>>>>> memory_region_ref(), which creates a reference to the owner of the
+>>>>>>>> subregion, on behalf of the owner of the container. This results in a
+>>>>>>>> circular reference if the subregion and container have the same owner.
+>>>>>>>>
+>>>>>>>> memory_region_ref() creates a reference to the owner instead of the
+>>>>>>>> memory region to match the lifetime of the owner and memory region. We
+>>>>>>>> do not need such a hack if the subregion and container have the same
+>>>>>>>> owner because the owner will be alive as long as the container is.
+>>>>>>>> Therefore, create a reference to the subregion itself instead ot its
+>>>>>>>> owner in such a case; the reference to the subregion is still necessary
+>>>>>>>> to ensure that the subregion gets finalized after the container.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>>>>>> ---
+>>>>>>>>     system/memory.c | 8 ++++++--
+>>>>>>>>     1 file changed, 6 insertions(+), 2 deletions(-)
+>>>>>>>>
+>>>>>>>> diff --git a/system/memory.c b/system/memory.c
+>>>>>>>> index 5e6eb459d5de..e4d3e9d1f427 100644
+>>>>>>>> --- a/system/memory.c
+>>>>>>>> +++ b/system/memory.c
+>>>>>>>> @@ -2612,7 +2612,9 @@ static void memory_region_update_container_subregions(MemoryRegion *subregion)
+>>>>>>>>
+>>>>>>>>         memory_region_transaction_begin();
+>>>>>>>>
+>>>>>>>> -    memory_region_ref(subregion);
+>>>>>>>> +    object_ref(mr->owner == subregion->owner ?
+>>>>>>>> +               OBJECT(subregion) : subregion->owner);
+>>>>>>>
+>>>>>>> The only place that mr->refcount is used so far is the owner with the
+>>>>>>> object property attached to the mr, am I right (ignoring name-less MRs)?
+>>>>>>>
+>>>>>>> I worry this will further complicate refcounting, now we're actively using
+>>>>>>> two refcounts for MRs..
+>>>>
+>>>> The actor of object_ref() is the owner of the memory region also in this
+>>>> case. We are calling object_ref() on behalf of mr->owner so we use
+>>>> mr->refcount iff mr->owner == subregion->owner. In this sense there is only
+>>>> one user of mr->refcount even after this change.
+>>>
+>>> Yes it's still one user, but it's not that straightforward to see, also
+>>> it's still an extension to how we use mr->refcount right now.  Currently
+>>> it's about "true / false" just to describe, now it's a real counter.
+>>>
+>>> I wished that counter doesn't even exist if we'd like to stick with device
+>>> / owner's counter.  Adding this can definitely also make further effort
+>>> harder if we want to remove mr->refcount.
+>>
+>> I don't think it will make removing mr->refcount harder. With this change,
+>> mr->refcount will count the parent and container. If we remove mr->refcount,
+>> we need to trigger object_finalize() in a way other than checking
+>> mr->refcount, which can be achieved by simply evaluating OBJECT(mr)->parent
+>> && mr->container.
+>>
+>>>
+>>>>
+>>>>>>>
+>>>>>>> Continue discussion there:
+>>>>>>>
+>>>>>>> https://lore.kernel.org/r/067b17a4-cdfc-4f7e-b7e4-28c38e1c10f0@daynix.com
+>>>>>>>
+>>>>>>> What I don't see is how mr->subregions differs from mr->container, so we
+>>>>>>> allow subregions to be attached but not the container when finalize()
+>>>>>>> (which is, afaict, the other way round).
+>>>>>>>
+>>>>>>> It seems easier to me that we allow both container and subregions to exist
+>>>>>>> as long as within the owner itself, rather than start heavier use of
+>>>>>>> mr->refcount.
+>>>>>>
+>>>>>> I don't think just "same owner" necessarily will be workable --
+>>>>>> you can have a setup like:
+>>>>>>      * device A has a container C_A
+>>>>>>      * device A has a child-device B
+>>>>>>      * device B has a memory region R_B
+>>>>>>      * device A's realize method puts R_B into C_A
+>>>>>>
+>>>>>> R_B's owner is B, and the container's owner is A,
+>>>>>> but we still want to be able to get rid of A (in the process
+>>>>>> getting rid of B because it gets unparented and unreffed,
+>>>>>> and R_B and C_A also).
+>>>>>
+>>>>> For cross-device references, should we rely on an explicit call to
+>>>>> memory_region_del_subregion(), so as to detach the link between C_A and
+>>>>> R_B?
+>>>>
+>>>> Yes, I agree.
+>>>>
+>>>>>
+>>>>> My understanding so far: logically when MR finalize() it should guarantee
+>>>>> both (1) mr->container==NULL, and (2) mr->subregions empty.  That's before
+>>>>> commit 2e2b8eb70fdb7dfb and could be the ideal world (though at the very
+>>>>> beginning we don't assert on ->container==NULL yet).  It requires all
+>>>>> device emulations to do proper unrealize() to unlink all the MRs.
+>>>>>
+>>>>> However what I'm guessing is QEMU probably used to have lots of devices
+>>>>> that are not following the rules and leaking these links.  Hence we have
+>>>>> had 2e2b8eb70fdb7dfb, allowing that to happen as long as it's safe, and
+>>>>> it's justified by comment in 2e2b8eb70fdb7dfb on why it's safe.
+>>>>>
+>>>>> What I was thinking is this comment seems to apply too to mr->container, so
+>>>>> that it should be safe too to unlink ->container the same way as its own
+>>>>> subregions. >
+>>>>> IIUC that means for device-internal MR links we should be fine leaving
+>>>>> whatever link between MRs owned by such device; the device->refcount
+>>>>> guarantees none of them will be visible in any AS.  But then we need to
+>>>>> always properly unlink the MRs when the link is across >1 device owners,
+>>>>> otherwise it's prone to leak.
+>>>>
+>>>> There is one principle we must satisfy in general: keep a reference to a
+>>>> memory region if it is visible to the guest.
+>>>>
+>>>> It is safe to call memory_region_del_subregion() and to trigger the
+>>>> finalization of subregions when the container is not referenced because they
+>>>> are no longer visible. This is not true for the other way around; even when
+>>>> subregions are not referenced by anyone else, they are still visible to the
+>>>> guest as long as the container is visible to the guest. It is not safe to
+>>>> unref and finalize them in such a case.
+>>>>
+>>>> A memory region and its owner will leak if a memory region kept visible for
+>>>> a too long period whether the chain of reference contains a
+>>>> container/subregion relationship or not.
+>>>
+>>> Could you elaborate why it's still visible to the guest if
+>>> owner->refcount==0 && mr->container!=NULL?
+>>>
+>>> Firstly, mr->container != NULL means the MR has an user indeed.  It's the
+>>> matter of who's using it.  If that came from outside this device, it should
+>>> require memory_region_ref(mr) before hand when adding the subregion, and
+>>> that will hold one reference on the owner->refcount.
+>>>
+>>> Here owner->refcount==0 means there's no such reference, so it seems to me
+>>> it's guaranteed to not be visible to anything outside of this device / owner.
+>>> Then from that POV it's safe to unlink when the owner is finalizing just
+>>> like what we do with mr->subregions, no?
+>>
+>> An object is alive during instance_finalize even though its refcount == 0.
+>> We can't assume all memory regions are dead even if owner->refcount == 0
+>> because of that.
+> 
+> When you referred to "an object", do you mean the MR being finalized here?
+> 
+> IIUC when the MR reaches its finalize(), it should mean it's not live
+> anymore.
+> 
+> We have two forms of MR usages right now: either embeded in another Object
+> / Device, or dynamically, like VFIOQuirk.
+> 
+> When used embeded, the MR is only finalized when being removed from the
+> object's property list, that should only happen when the object / device
+> triggered finalize().  Since the MR will use the owner->refcount so I
+> suppose it means the MR is not live anymore.
+> 
+> When used dynamically, object_unparent() is needed but that should only
+> happen when the object / owner is during finalize(), per document:
+> 
+>          If however the memory region is part of a dynamically allocated
+>          data structure, you should call object_unparent() to destroy the
+>          memory region before the data structure is freed.  For an example
+>          see VFIOMSIXInfo and VFIOQuirk in hw/vfio/pci.c.
+> 
+> Then the MR is also not live.
+> 
+>> In particular, docs/devel/memory.rst says you can call object_unparent()
+>> in the instance_finalize of the owner. This assumes a memory region will
+>> not vanish during the execution of the function unless object_unparent()
+>> is already called for the memory region.
+> 
+> Yes, the MR will not vanish during finalize() of the owner object. However
+> I don't think it's "live"?  Again, it's based on my definition of
+> "liveness" as "taking one refcount of its owner", here the owner refcount
+> is zero.  IOW, I don't expect it to be accessible anywhere from any address
+> space (e.g. address_space_map()), because they'll all use
+> memory_region_ref() and that'll ultimately stops the owner from being
+> finalized.
 
-Documented here:
-https://github.com/hdeller/qemu-hppa/issues/2
+I am calling the fact that embedded memory regions are accessible in 
+instance_finalize() "live". A device can perform operations on its 
+memory regions during instance_finalize() and we should be aware of that.
 
-I'm unable to get the master version of qemu-system-hppa 9.0.5 which was co=
-mpiled from source to boot the HP-UX 11.23 or 11.31 install disk.  But HP-U=
-X 11.11 install starts, but does a panic:
+object_unparent() is such an example. instance_finalize() of a device 
+can call object_unparent() for a subregion and for its container. If we 
+automatically finalize the container when calling object_unparent() for 
+the subregion, calling object_unparent() for its container will result 
+in the second finalization, which is not good.
 
-again using -machine C3700, using an 11.11 CD, it will at least load the IN=
-STALL file, but does a Kernel panic:
-
-SOFT Booted.
-
-ISL Revision A.00.43 Apr 12, 2000
-
-ISL booting hpux (;0):INSTALL
-
-Boot
-: disk(10/0/0/0.2.0.0.0.0.0;0):INSTALL
-9793660 + 1126400 + 702592 start 0x152868
-
-Stored message buffer up to panic:
-
-System Panic:
-
-linkstamp: Wed Aug 17 15:13:25 MDT 2005
-_release_version: @(#) $Revision: vmunix: vw: -proj selectors: CUPI80_BL200=
-0_1108 -c 'Vw for CUPI80_BL2000_1108 build' -- cupi80_bl2000_1108 'CUPI80_B=
-L2000_1108' Wed Nov 8 19:05:38 PST 2000 $
-panic: set_machine_parameters_32: Unidentified cpu type returned from PDC_M=
-ODEL
-
-PC-Offset Stack Trace (read across, top of stack is 1st):
-0x0015f43c 0x001ab404 0x001ab938 0x003d4e50 0x00156f68 0x00152ae0
-End Of Stack
-
-
-
-David Bonham - IT Consultant | dbonham@nicmangroup.com<mailto:dbonham@nicma=
-ngroup.com>
-m: 850.830.6428 | f: 303.500.0655
-NICMAN GROUP | 304 Inverness Way - South TL-25| Englewood, CO 80112 |  www.=
-nicmangroup.com<http://www.nicmangroup.com/> and www.hpuxhosting.com<http:/=
-/www.hpuxhosting.com/>
----------------------------------------------------------------------------=
--------
-This email and any files transmitted with it are confidential and intended =
-solely for the use of the individual or entity to whom they are addressed. =
-If you have received this email in error please notify the system manager
-
- #SaveSoil https://savesoil.com
-
-
---_000_IA0PR17MB6394A0C12D4FB7904DA116D2AF952IA0PR17MB6394namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-@font-face
-	{font-family:"Segoe UI";
-	panose-1:2 11 5 2 4 2 4 2 2 3;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	margin-bottom:.0001pt;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:#0563C1;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{mso-style-priority:99;
-	color:#954F72;
-	text-decoration:underline;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Calibri",sans-serif;
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-family:"Calibri",sans-serif;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"EN-US" link=3D"#0563C1" vlink=3D"#954F72">
-<div class=3D"WordSection1">
-<p style=3D"margin-top:0in;background:#0D1117">Documented here:<br>
-https://github.com/hdeller/qemu-hppa/issues/2<br>
-<br>
-I&#8217;m unable to get the master version of qemu-system-hppa 9.0.5 which =
-was compiled from source to boot the HP-UX 11.23 or 11.31 install disk.&nbs=
-p; But HP-UX 11.11 install starts, but does a panic:<br>
-<br>
-<span style=3D"font-size:10.5pt;font-family:&quot;Segoe UI&quot;,sans-serif=
-;color:#E6EDF3">again using -machine C3700, using an 11.11 CD, it will at l=
-east load the INSTALL file, but does a Kernel panic:<o:p></o:p></span></p>
-<p style=3D"margin-top:0in;background:#0D1117;box-sizing: border-box;margin=
--bottom:var(--base-size-16);font-variant-ligatures: normal;font-variant-cap=
-s: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: =
-0px;text-decoration-thickness: initial;text-decoration-style: initial;text-=
-decoration-color: initial;word-spacing:0px">
-<span style=3D"font-size:10.5pt;font-family:&quot;Segoe UI&quot;,sans-serif=
-;color:#E6EDF3">SOFT Booted.<o:p></o:p></span></p>
-<p style=3D"margin-top:0in;background:#0D1117;box-sizing: border-box;margin=
--bottom:var(--base-size-16);font-variant-ligatures: normal;font-variant-cap=
-s: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: =
-0px;text-decoration-thickness: initial;text-decoration-style: initial;text-=
-decoration-color: initial;word-spacing:0px">
-<span style=3D"font-size:10.5pt;font-family:&quot;Segoe UI&quot;,sans-serif=
-;color:#E6EDF3">ISL Revision A.00.43 Apr 12, 2000<o:p></o:p></span></p>
-<p style=3D"margin-top:0in;background:#0D1117;box-sizing: border-box;margin=
--bottom:var(--base-size-16);font-variant-ligatures: normal;font-variant-cap=
-s: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: =
-0px;text-decoration-thickness: initial;text-decoration-style: initial;text-=
-decoration-color: initial;word-spacing:0px">
-<span style=3D"font-size:10.5pt;font-family:&quot;Segoe UI&quot;,sans-serif=
-;color:#E6EDF3">ISL booting hpux (;0):INSTALL<o:p></o:p></span></p>
-<p style=3D"margin-top:0in;background:#0D1117;box-sizing: border-box;margin=
--bottom:var(--base-size-16);font-variant-ligatures: normal;font-variant-cap=
-s: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: =
-0px;text-decoration-thickness: initial;text-decoration-style: initial;text-=
-decoration-color: initial;word-spacing:0px">
-<span style=3D"font-size:10.5pt;font-family:&quot;Segoe UI&quot;,sans-serif=
-;color:#E6EDF3">Boot<br>
-: disk(10/0/0/0.2.0.0.0.0.0;0):INSTALL<br>
-9793660 + 1126400 + 702592 start 0x152868<o:p></o:p></span></p>
-<p style=3D"margin-top:0in;background:#0D1117;box-sizing: border-box;margin=
--bottom:var(--base-size-16);font-variant-ligatures: normal;font-variant-cap=
-s: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: =
-0px;text-decoration-thickness: initial;text-decoration-style: initial;text-=
-decoration-color: initial;word-spacing:0px">
-<span style=3D"font-size:10.5pt;font-family:&quot;Segoe UI&quot;,sans-serif=
-;color:#E6EDF3">Stored message buffer up to panic:<o:p></o:p></span></p>
-<p style=3D"margin-top:0in;background:#0D1117;box-sizing: border-box;margin=
--bottom:var(--base-size-16);font-variant-ligatures: normal;font-variant-cap=
-s: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: =
-0px;text-decoration-thickness: initial;text-decoration-style: initial;text-=
-decoration-color: initial;word-spacing:0px">
-<span style=3D"font-size:10.5pt;font-family:&quot;Segoe UI&quot;,sans-serif=
-;color:#E6EDF3">System Panic:<o:p></o:p></span></p>
-<p style=3D"margin-top:0in;background:#0D1117;box-sizing: border-box;margin=
--bottom:var(--base-size-16);font-variant-ligatures: normal;font-variant-cap=
-s: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: =
-0px;text-decoration-thickness: initial;text-decoration-style: initial;text-=
-decoration-color: initial;word-spacing:0px">
-<span style=3D"font-size:10.5pt;font-family:&quot;Segoe UI&quot;,sans-serif=
-;color:#E6EDF3">linkstamp: Wed Aug 17 15:13:25 MDT 2005<br>
-_release_version: @(#) $Revision: vmunix: vw: -proj selectors: CUPI80_BL200=
-0_1108 -c 'Vw for CUPI80_BL2000_1108 build' -- cupi80_bl2000_1108 'CUPI80_B=
-L2000_1108' Wed Nov 8 19:05:38 PST 2000 $<br>
-panic: set_machine_parameters_32: Unidentified cpu type returned from PDC_M=
-ODEL<o:p></o:p></span></p>
-<p style=3D"margin-top:0in;background:#0D1117;box-sizing: border-box;font-v=
-ariant-ligatures: normal;font-variant-caps: normal;orphans: 2;text-align:st=
-art;widows: 2;-webkit-text-stroke-width: 0px;text-decoration-thickness: ini=
-tial;text-decoration-style: initial;text-decoration-color: initial;word-spa=
-cing:0px">
-<span style=3D"font-size:10.5pt;font-family:&quot;Segoe UI&quot;,sans-serif=
-;color:#E6EDF3">PC-Offset Stack Trace (read across, top of stack is 1st):<b=
-r>
-0x0015f43c 0x001ab404 0x001ab938 0x003d4e50 0x00156f68 0x00152ae0<br>
-End Of Stack<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><br>
-<br>
-<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal" style=3D"background:white"><b><span style=3D"font-si=
-ze:10.0pt;color:#1F497D">David Bonham&nbsp;</span></b><span style=3D"font-s=
-ize:10.0pt;color:#1F497D">&#8211;&nbsp;<i>IT Consultant</i>&nbsp;|&nbsp;</s=
-pan><u><span style=3D"font-size:10.0pt;color:#0563C1"><a href=3D"mailto:dbo=
-nham@nicmangroup.com" target=3D"_blank"><span style=3D"color:blue">dbonham@=
-nicmangroup.com</span></a></span></u><span style=3D"font-size:12.0pt;font-f=
-amily:&quot;Times New Roman&quot;,serif;color:#201F1E"><o:p></o:p></span></=
-p>
-<p class=3D"MsoNormal" style=3D"background:white"><b><span style=3D"font-si=
-ze:10.0pt;color:#4D1107">m:</span></b><span style=3D"font-size:10.0pt;color=
-:#4D1107">&nbsp;</span><span style=3D"font-size:10.0pt;color:#1F497D">850.8=
-30.6428 |<b>&nbsp;</b></span><b><span style=3D"font-size:10.0pt;color:#4D11=
-07">f:</span></b><i><span style=3D"font-size:10.0pt;color:#4D1107">&nbsp;</=
-span></i><span style=3D"font-size:10.0pt;color:#1F497D">303.500.0655</span>=
-<span style=3D"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,ser=
-if;color:#201F1E"><o:p></o:p></span></p>
-<p class=3D"MsoNormal" style=3D"background:white"><span style=3D"font-size:=
-10.0pt;color:gray">NICMAN GROUP&nbsp;|&nbsp;<span style=3D"border:none wind=
-owtext 1.0pt;padding:0in">304 Inverness Way - South TL-25</span>|&nbsp;Engl=
-ewood, CO 80112 |&nbsp;&nbsp;</span><span style=3D"font-size:10.0pt;color:#=
-1F497D"><a href=3D"http://www.nicmangroup.com/" target=3D"_blank"><span sty=
-le=3D"color:blue">www.nicmangroup.com</span></a>&nbsp;and&nbsp;<a href=3D"h=
-ttp://www.hpuxhosting.com/" target=3D"_blank"><span style=3D"color:blue">ww=
-w.hpuxhosting.com</span></a></span><span style=3D"font-size:12.0pt;font-fam=
-ily:&quot;Times New Roman&quot;,serif;color:#201F1E"><o:p></o:p></span></p>
-<p class=3D"MsoNormal" style=3D"background:white"><span style=3D"color:#1F4=
-97D">----------------------------------------------------------------------=
-------------<br>
-</span><span style=3D"font-size:8.0pt;color:#1F497D">This email and any fil=
-es transmitted with it are confidential and intended solely for the use of =
-the individual or entity to whom they are addressed. If you have received t=
-his email in error please notify the
- system manager</span><span style=3D"font-size:12.0pt;font-family:&quot;Tim=
-es New Roman&quot;,serif;color:#201F1E"><o:p></o:p></span></p>
-<p class=3D"MsoNormal" style=3D"background:white"><span style=3D"font-size:=
-12.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#201F1E"><o:p>&n=
-bsp;</o:p></span></p>
-<p class=3D"MsoNormal" style=3D"background:white"><span style=3D"color:#1F4=
-97D">&nbsp;#SaveSoil
-<a href=3D"https://savesoil.com"><span style=3D"color:blue">https://savesoi=
-l.com</span></a></span><span style=3D"font-size:12.0pt;font-family:&quot;Ti=
-mes New Roman&quot;,serif;color:#201F1E"><o:p></o:p></span></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-</div>
-</body>
-</html>
-
---_000_IA0PR17MB6394A0C12D4FB7904DA116D2AF952IA0PR17MB6394namp_--
+Regards,
+Akihiko Odaki
 
