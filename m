@@ -2,143 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8314A9620C6
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5F29620C7
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 09:22:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjCzI-0007bf-Bn; Wed, 28 Aug 2024 03:21:04 -0400
+	id 1sjCzp-0000GC-A4; Wed, 28 Aug 2024 03:21:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sjCzF-0007aj-U8
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 03:21:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sjCzB-0002Wg-L4
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 03:21:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724829656;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=+UlQWMuDSPFkQU58/7kHu/8TAloY2huQtCJkmUTkQJs=;
- b=N3yos0GcM50Zc8GVrfbIe0pF0pR4itz9pXmLmDazxgaQVG5ZSgOwl41IawaNQU1EgCQhv9
- hDrniovgVIdmzEkRyEKeg0xyIoi3CDW9/cTTgjgVCB5LTXTPvYv4yWH9QFRfueo7LsKsSS
- hWcKidJx6q8uMpDnirvkoxzS88hRlqE=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-KbsuMLCbPqyqSzEz8CvNiA-1; Wed, 28 Aug 2024 03:20:54 -0400
-X-MC-Unique: KbsuMLCbPqyqSzEz8CvNiA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37193ed09b2so189146f8f.1
- for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 00:20:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724829653; x=1725434453;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1sjCzi-0008LX-9o
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 03:21:30 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1sjCzc-0002Y3-0T
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 03:21:30 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2d3bae081efso4990587a91.1
+ for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 00:21:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=adacore.com; s=google; t=1724829682; x=1725434482; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+UlQWMuDSPFkQU58/7kHu/8TAloY2huQtCJkmUTkQJs=;
- b=sJQNcbbF/SeznJrnabjE7R3jwYS4kZHtJuMThT+CRljXYeqOpJZ9kvEm8nY0y+6cZy
- 83t17d6oIuGB2pkWSQI+SCmCv+Co/U25QXhsSUcrJ0hMoBcHCZKOOT62azYqHTdvF3o7
- EE0AHlyYhNvgJuWJRag5NTZNGV2RWuBczx1QgOEuBqoxhJ95vuSL6vnkO+oXtFP4WrsV
- L0JrBuIDc0c0Aca0kZfMjSqAGEN7Wngmmtph/YyT6zaS2akkhEd9BEjBr5kTw0KxdqXl
- ZSf+Z5CbfOt6OPucnDKS7OweBZXgX4UHTFtEHN5Y5bUOBwecyns6LlbPAHtL54qfoWuG
- AE6Q==
-X-Gm-Message-State: AOJu0YzvG/711m4hqj4jmtWc2aeT8Vm8z5oK1BQvGxkjGvOTRFjRU9kB
- dZCZvW5A5K5MaFO2uMutb2hiHIXi3OLHDoXD+u/kbfMt1Aa6Uwnp05/F6AirXZuGYFRjcfG/8Ip
- 2Iq79NLBCI1ryNyj3fY83PixskH+xf2Rm9e8AyFP9H7ows+0bx9vy
-X-Received: by 2002:a05:6000:dc7:b0:371:6fcf:5256 with SMTP id
- ffacd0b85a97d-37495f49a63mr632410f8f.18.1724829652973; 
- Wed, 28 Aug 2024 00:20:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQ81erZkaHbDzJhLmEjWu1fj3Q+gKZsxUU2ly/id+iPEpJBvKjM0X1b6iJzM9IdCEJHvfoZQ==
-X-Received: by 2002:a05:6000:dc7:b0:371:6fcf:5256 with SMTP id
- ffacd0b85a97d-37495f49a63mr632382f8f.18.1724829652102; 
- Wed, 28 Aug 2024 00:20:52 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c706:1700:6b81:27cb:c9e2:a09a?
- (p200300cbc70617006b8127cbc9e2a09a.dip0.t-ipconnect.de.
- [2003:cb:c706:1700:6b81:27cb:c9e2:a09a])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37308141dc3sm14926110f8f.41.2024.08.28.00.20.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Aug 2024 00:20:51 -0700 (PDT)
-Message-ID: <867871d8-890e-4859-9c5e-20d816d97539@redhat.com>
-Date: Wed, 28 Aug 2024 09:20:50 +0200
+ bh=Jqeix1skPtALjiDJbkIsc7n6IBQ36vPKsvgZoH9TSVE=;
+ b=RM7vDozGz9PqfB9lojAdvvWbcxwcyv3jpV6zUhDjIVWma5AIEs2pccXEp8+OmBEMKS
+ QqoAXukAqbWUajJq8pCiWOvxfeua1zCnnKOAsE5IyKqlW20yp9mTpyKPmI0PM/5axcnC
+ v8oh2wC8980PTqWP4G+4FKV95ApSjLIfoZg1LzUM9F5K6UT0MiA7GAuNmBZrISzxIC83
+ PTUEBvAj0NVSIjc0m84bmUte3ZA53ewQqfc8NQnK0YO4A261p8qYYI1mBLKJOlgKrmX8
+ OT7ud9Fqi4xqLrm6HL1Elxh3cOugf1LQjbqC348UJMk1HlPbM1+BHQLguuid0Uy/lW+b
+ 0XWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724829682; x=1725434482;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Jqeix1skPtALjiDJbkIsc7n6IBQ36vPKsvgZoH9TSVE=;
+ b=b87PgWaKohlNf4aSda1Fa0jRKK6X9wwQtiaeesJOcev3gN3epnB/hJIeosvZwq+RJc
+ bCidzazi1Bt48+qEOabf8cx5srsHd2wbJqYbiU/7fN+np3PHRbxV3IUsj3e4skDiLbKB
+ efL3jwBT2rMHtAKGIDXB4GsZwxzKLVTgg618wx1YtHnKnJJfAo0XEFPdleNcDBDOvIyI
+ ARk3tVbCpdKVnT3F9/z6c6XpbxWy023bFkY3wSHfgr1yGs60HhPQ/G6fyObkcd4pe6E+
+ MwAxDLVgHnWC4wlB2UqtC/4qq1/ywPxuYqL7Pl0piYn00qvaMUFAB+tPQ1yE/LcOTIXn
+ Zm6A==
+X-Gm-Message-State: AOJu0YwZomf1N0QkTxUzWT4mEaTCssEoe469JippOHEJjinhVo6dhzME
+ T+aEDBbkiDL5c56DU9kzhW7HfLFEQ4gIgxjaVXP/IMvVXRSoekLIOcutB8bJBe1xxhkvPPaLKVw
+ RatSFIAoIrnKCCjXLrZuxTYYpyADynCR7US73
+X-Google-Smtp-Source: AGHT+IGgIuaDfwIZxXDe+fUNxOEFCDVmo9sLn/9b1ayA5YPwYKpQe5ntBDvNNl3frhLzHRP0K4YmBvxDk8oaH42x08s=
+X-Received: by 2002:a17:90a:780b:b0:2c9:5a87:f17c with SMTP id
+ 98e67ed59e1d1-2d646bf9f21mr16175477a91.15.1724829682112; Wed, 28 Aug 2024
+ 00:21:22 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] softmmu/physmem: fix memory leak in
- dirty_memory_extend()
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- qemu-stable@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20240827083715.257768-1-david@redhat.com> <Zs4TcHvfwhBFSWvQ@x1n>
- <03dfba8f-19b3-4ff4-9de7-9211c2a26f56@redhat.com>
- <Zs4dwmYdZ8wmu8WE@x1n>
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <Zs4dwmYdZ8wmu8WE@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20240715084639.983127-1-chigot@adacore.com>
+ <42fe0e65-e1c1-47be-9ba1-9a43e4a05192@kaod.org>
+In-Reply-To: <42fe0e65-e1c1-47be-9ba1-9a43e4a05192@kaod.org>
+From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Date: Wed, 28 Aug 2024 09:21:11 +0200
+Message-ID: <CAJ307Eg_w1K63Q7YmsAw6mSnwgPrC9R2UOvi+fUDjam4n0mvDg@mail.gmail.com>
+Subject: Re: [PATCH] hw/ppc: fix decrementer with BookE timers
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: qemu-devel@nongnu.org, npiggin@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=chigot@adacore.com; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,61 +88,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27.08.24 20:41, Peter Xu wrote:
-> On Tue, Aug 27, 2024 at 08:00:07PM +0200, David Hildenbrand wrote:
->> On 27.08.24 19:57, Peter Xu wrote:
->>> On Tue, Aug 27, 2024 at 10:37:15AM +0200, David Hildenbrand wrote:
->>>>    /* Called with ram_list.mutex held */
->>>> -static void dirty_memory_extend(ram_addr_t old_ram_size,
->>>> -                                ram_addr_t new_ram_size)
->>>> +static void dirty_memory_extend(ram_addr_t new_ram_size)
->>>>    {
->>>> -    ram_addr_t old_num_blocks = DIV_ROUND_UP(old_ram_size,
->>>> -                                             DIRTY_MEMORY_BLOCK_SIZE);
->>>>        ram_addr_t new_num_blocks = DIV_ROUND_UP(new_ram_size,
->>>>                                                 DIRTY_MEMORY_BLOCK_SIZE);
->>>>        int i;
->>>> -    /* Only need to extend if block count increased */
->>>> -    if (new_num_blocks <= old_num_blocks) {
->>>> -        return;
->>>> -    }
->>>
->>> One nitpick here: IMHO we could move the n_blocks cache in ram_list
->>> instead, then we keep the check here and avoid caching it three times with
->>> the same value.
->>
->> yes, as written in the patch description: "We'll store the number of blocks
->> along with the actual pointer to keep it simple."
->>
->> It's cleaner to me to store it along the RCU-freed data structure that has
->> this size.
-> 
-> Yep, I can get that.
-> 
-> I think one reason I had my current preference is to avoid things like:
-> 
->    for (...) {
->      if (...)
->         return;
->    }
-> 
-> I'd at least want to sanity check before "return" to make sure all three
-> bitmap chunks are having the same size.  It gave me the feeling that we
-> could process "blocks[]" differently but we actually couldn't - In our case
-> it has the ram_list mutex when update, so it must be guaranteed.  However
-> due to the same reason, I see it cleaner to just keep the counter there
-> too.
+On Tue, Aug 27, 2024 at 7:40=E2=80=AFPM C=C3=A9dric Le Goater <clg@kaod.org=
+> wrote:
+>
+> Hello Cl=C3=A9ment,
+>
+> On 7/15/24 10:46, Cl=C3=A9ment Chigot wrote:
+> > The BookE decrementer stops at 0, meaning that it won't decremented
+> > towards "negative" values.
+> > However, the current logic is inverted: decr is updated solely when
+> > the resulting value would be negative.
+>
+> How did you hit the issue ? which machine ? I didn't see any error
+> when booting Linux 6.6.3 on mpc8544ds, e500mc, e5500 and e6500.
 
-I'll move it to the higher level because I have more important stuff to 
-work on and want to get this off my plate.
+I hit this issue while running some version of VxWorks on a custom
+machine: p3041ds (description [1] and our local implementation [2]).
+So, I'm not that surprised you were not able to reproduce.
 
-"num_blocks" does not quite make sense in RAMList (where we have a 
-different "blocks" variable) so I'll call it "num_dirty_blocks" or sth 
-like that.
+> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+> > Fixed: 8e0a5ac87800 ("hw/ppc: Avoid decrementer rounding errors")
+>
+> LGTM,
+>
+> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
+>
+> We have some automated tests with the ppce500 machine which it would be
+> interesting  to extend to have a better coverage of booke.
 
--- 
-Cheers,
+Thanks for the pointer, I'll see if I can extend them.
 
-David / dhildenb
+> Thanks,
+>
+> C.
+>
 
+[1] https://www.nxp.com/design/design-center/software/qoriq-developer-resou=
+rces/p3041-qoriq-development-system:P3041DS
+[2] https://github.com/AdaCore/qemu/blob/qemu-stable-9.0.0/hw/ppc/p3041ds.c
+
+>
+> > ---
+> >   hw/ppc/ppc.c | 4 +++-
+> >   1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+> > index e6fa5580c0..9fc85c7de0 100644
+> > --- a/hw/ppc/ppc.c
+> > +++ b/hw/ppc/ppc.c
+> > @@ -729,7 +729,9 @@ static inline int64_t __cpu_ppc_load_decr(CPUPPCSta=
+te *env, int64_t now,
+> >       int64_t decr;
+> >
+> >       n =3D ns_to_tb(tb_env->decr_freq, now);
+> > -    if (next > n && tb_env->flags & PPC_TIMER_BOOKE) {
+> > +
+> > +    /* BookE timers stop when reaching 0.  */
+> > +    if (next < n && tb_env->flags & PPC_TIMER_BOOKE) {
+> >           decr =3D 0;
+> >       } else {
+> >           decr =3D next - n;
+>
+>
 
