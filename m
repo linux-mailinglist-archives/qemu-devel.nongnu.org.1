@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CCF962EFC
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 19:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D787D962F0C
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 19:53:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjMmJ-0007yT-Ea; Wed, 28 Aug 2024 13:48:19 -0400
+	id 1sjMmH-0007tb-8p; Wed, 28 Aug 2024 13:48:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sjMmF-0007pw-Mf
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 13:48:15 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1sjMmE-0007mM-Sh
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 13:48:14 -0400
+Received: from mail-il1-x130.google.com ([2607:f8b0:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sjMmC-0004XF-SD
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 13:48:15 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-70b2421471aso4316787a12.0
+ id 1sjMmC-0004XW-Lh
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 13:48:14 -0400
+Received: by mail-il1-x130.google.com with SMTP id
+ e9e14a558f8ab-39d2cea1239so25652075ab.3
  for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 10:48:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724867290; x=1725472090;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724867291; x=1725472091;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SjZWcB+IcGQyCSoIg5tycoGHZJtgwFG54PQXYRnVDCY=;
- b=v6nrBEXJ+HGXBjS8K19uLXxuF8n2jslniYwwiWVistbvuWrVEEWh6wE1zVysIQl/rP
- NtVX6SAeYZZ7tROoj5WBdaB4wo+yUsqCeFP50MyvfGnfdAb3bJGxMVzfRLozccSB0KbW
- ehod9rNdc8ItITLjzse5ripQlmbi7JFfR267BFZSabm3xybSJVMLD1GzM4I//BpUnp1E
- tAVHK5LbZ3hReFTTLEZ+H2OALoh+nHZ4VpK2uErT56PqqCxb4xD1FDSgXVmdJzOVdM0e
- PaYQRY3+gwA/xlifrZIDJ4Pt5I98Tc+8myM1uJMJ2Y6Hj6QIKEpxFamwN12DfGuxrllF
- sgNg==
+ bh=j2fFk/aYqmhVjT/Hd90cJPr3RLS/W89IWIZ3I+253Z8=;
+ b=q7hTgrqy9NF54rpj1cq483vYsC9FX+Z854KaDxdUPHfBU1S5q1OVf8PxpONf/uYuzl
+ oHUOe0jiKVm6lJ5+KjyAdBj/fONuXJATsMlmiS6N++sncSFd8WNPSiWgRNfid5o5VkiO
+ M1uaNBpE7GJjNuVWGpQBA1ijSzfLc5KYJQg/F3cq6oVNiZAKQs2adnAnuO6U9eJDBjfK
+ YLdn40tCOfsGscuoFpBPl2c79/mc/75jiwpJ72hPSeYupF19MqsZ3b6kzyoFzRnBlNrE
+ 0Ii7QnNtQVrEj3dGFrx9Luh1cz0KMJG7nozO89/KoZtFkZYHfa66Ak2tqOtpSigwGxDf
+ Bppw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724867290; x=1725472090;
+ d=1e100.net; s=20230601; t=1724867291; x=1725472091;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SjZWcB+IcGQyCSoIg5tycoGHZJtgwFG54PQXYRnVDCY=;
- b=ImvZqiGk20rUrLyPj+lpfUrclWdDa94uSfejmhlZuBt8pgE+C4au0xnzaHLZzADoDu
- DWLLKo0xf1CsvoQIs8lqeBEq13Y88PNBZIXLUTpwQ8nm7w+ImDrn7Xvt9iq8dfTojUEB
- lmHbPmXAovuOAAWQfRKlSIhs/5IdarnRRYkfG8k0q31HuEVXLw7HIx8BhCRPz1/NCcUH
- ZI+SRwaIXMDULdEaYXaZrIwzf25tXKsbTHF89eLrvS4ICi9oif1av/fc5DDJN/V+7f92
- aYz4a9ipy2NTrG0/mMQfvJhuBrxZAm+wHLT5MBRQobh43VKJ3hNwcztiUvz+X/MsFC73
- 7UMg==
+ bh=j2fFk/aYqmhVjT/Hd90cJPr3RLS/W89IWIZ3I+253Z8=;
+ b=IJd7zRowULU6hOdI6Xy03jrQh5b80/bYdAcV/SrRrIqXyfSAW6C2x6KkhSlpYZPhyh
+ 3oo2ZNJqoJqzRkytrgyY1HsBtuXPRoTLo1utA1Bh541mq5v0EiDF0mlmZQzs8iEXss0i
+ nNiVmPSq+qq8WNlG7ag2esUlokepghiEm/ItzWoopm9Dm+y5NbnZrKGeq5AEbXxoJK3V
+ J/jCClcs0JIAwbG1bKT8rO3xRZ1YTyUmYwX67y1quDQ+XPKZZHGtt4Ze6FQqpm1dkyjL
+ M9mxOSkJIPdaxne+g+6SFkaHh4S8EGouxZq36dNT4NESBVQeGQZGIL2a8PiooOLNofYN
+ KHEA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUzgI3m2QZi9nJc6N0CtEPbicmY1C/Gs7inL0zvNS01ABQJhnDAEfXXsCW2irJfCNOepzmcgR0SgoWQ@nongnu.org
-X-Gm-Message-State: AOJu0YzXP9HjyJvrjovIJl88gD2BqQOHT4JHXt8nCYU7xNAIpHrTjqnh
- XnTdOyaeDxyknjsevxcNHfjAehGEZ62F2HXf4lFEzzQTPbBKlnetdq0XpysCEUQ=
-X-Google-Smtp-Source: AGHT+IEyubFVdbx/5paLRLvFN8dEd2OyPLHUBfccQDMrMaPltMRIOTiiIqSKXqDN0KPiCfGRyB4MXw==
-X-Received: by 2002:a05:6a20:4394:b0:1c6:9fe9:c425 with SMTP id
- adf61e73a8af0-1cce10ebbc5mr79928637.45.1724867290034; 
- Wed, 28 Aug 2024 10:48:10 -0700 (PDT)
+ AJvYcCWEBGALfM7XbTbfH5hIqCu0wnUOQ3RhucJ1De31ZUrVDmpEq6+XomztNAfFfFuOA7AjRAjjcTBICUZ3@nongnu.org
+X-Gm-Message-State: AOJu0YyNnvHfWejJEKubTPIH9GKMS8IGgZfl7l3xHAHK0ay1Jf/nJStn
+ w6x0PajvG+Cil24/S0j7e3E/meg7+kiMV5JcyBHHguYHVtTlMO4zeWSDpfXLqi0=
+X-Google-Smtp-Source: AGHT+IEVrS9mK4B2xIT5n2AvNhtn5N5YyMsyObB+8GIvmy8iCcaebVhnvo25NvvpeqGM6gzfqOgPRQ==
+X-Received: by 2002:a92:cda9:0:b0:39a:ea4c:2982 with SMTP id
+ e9e14a558f8ab-39f377fdb6fmr7471345ab.10.1724867291225; 
+ Wed, 28 Aug 2024 10:48:11 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7cd9acdcf7dsm9778316a12.50.2024.08.28.10.48.08
+ 41be03b00d2f7-7cd9acdcf7dsm9778316a12.50.2024.08.28.10.48.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Aug 2024 10:48:09 -0700 (PDT)
+ Wed, 28 Aug 2024 10:48:10 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -66,17 +66,17 @@ Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, laurent@vivier.eu,
  bmeng.cn@gmail.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, andy.chiu@sifive.com,
  kito.cheng@sifive.com, Deepak Gupta <debug@rivosinc.com>
-Subject: [PATCH v11 19/20] disas/riscv: enable disassembly for compressed
- sspush/sspopchk
-Date: Wed, 28 Aug 2024 10:47:37 -0700
-Message-ID: <20240828174739.714313-20-debug@rivosinc.com>
+Subject: [PATCH v11 20/20] target/riscv: Expose zicfiss extension as a cpu
+ property
+Date: Wed, 28 Aug 2024 10:47:38 -0700
+Message-ID: <20240828174739.714313-21-debug@rivosinc.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240828174739.714313-1-debug@rivosinc.com>
 References: <20240828174739.714313-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=debug@rivosinc.com; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::130;
+ envelope-from=debug@rivosinc.com; helo=mail-il1-x130.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,79 +99,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sspush and sspopchk have equivalent compressed encoding taken from zcmop.
-cmop.1 is sspush x1 while cmop.5 is sspopchk x5. Due to unusual encoding
-for both rs1 and rs2 from space bitfield, this required a new codec.
-
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- disas/riscv.c | 19 ++++++++++++++++++-
- disas/riscv.h |  1 +
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ target/riscv/cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index 5eafb7f7f3..6e9ba42edd 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -980,6 +980,8 @@ typedef enum {
-     rv_op_ssrdp = 949,
-     rv_op_ssamoswap_w = 950,
-     rv_op_ssamoswap_d = 951,
-+    rv_op_c_sspush = 952,
-+    rv_op_c_sspopchk = 953,
- } rv_op;
- 
- /* register names */
-@@ -2244,6 +2246,10 @@ const rv_opcode_data rvi_opcode_data[] = {
-     { "ssrdp", rv_codec_r, rv_fmt_rd, NULL, 0, 0, 0 },
-     { "ssamoswap.w", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-     { "ssamoswap.d", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-+    { "c.sspush", rv_codec_cmop_ss, rv_fmt_rs2, NULL, rv_op_sspush,
-+      rv_op_sspush, 0 },
-+    { "c.sspopchk", rv_codec_cmop_ss, rv_fmt_rs1, NULL, rv_op_sspopchk,
-+      rv_op_sspopchk, 0 },
- };
- 
- /* CSR names */
-@@ -2604,7 +2610,13 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-             if (dec->cfg->ext_zcmop) {
-                 if ((((inst >> 2) & 0b111111) == 0b100000) &&
-                     (((inst >> 11) & 0b11) == 0b0)) {
--                    op = rv_c_mop_1 + ((inst >> 8) & 0b111);
-+                    unsigned int cmop_code = 0;
-+                    cmop_code = ((inst >> 8) & 0b111);
-+                    op = rv_c_mop_1 + cmop_code;
-+                    if (dec->cfg->ext_zicfiss) {
-+                        op = (cmop_code == 0) ? rv_op_c_sspush : op;
-+                        op = (cmop_code == 2) ? rv_op_c_sspopchk : op;
-+                    }
-                     break;
-                 }
-             }
-@@ -4923,6 +4935,11 @@ static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-     case rv_codec_lp:
-         dec->imm = operand_lpl(inst);
-         break;
-+    case rv_codec_cmop_ss:
-+        dec->rd = rv_ireg_zero;
-+        dec->rs1 = dec->rs2 = operand_crs1(inst);
-+        dec->imm = 0;
-+        break;
-     };
- }
- 
-diff --git a/disas/riscv.h b/disas/riscv.h
-index 4895c5a301..6a3b371cd3 100644
---- a/disas/riscv.h
-+++ b/disas/riscv.h
-@@ -167,6 +167,7 @@ typedef enum {
-     rv_codec_r2_imm2_imm5,
-     rv_codec_fli,
-     rv_codec_lp,
-+    rv_codec_cmop_ss,
- } rv_codec;
- 
- /* structures */
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index c5ebcefeb5..2592465e24 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1485,6 +1485,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
+     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
+     MULTI_EXT_CFG_BOOL("zicfilp", ext_zicfilp, false),
++    MULTI_EXT_CFG_BOOL("zicfiss", ext_zicfiss, false),
+     MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
+     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
+     MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
 -- 
 2.44.0
 
