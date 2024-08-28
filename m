@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9FA96273D
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 14:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C22B96273E
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 14:37:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjHuM-0005lq-7u; Wed, 28 Aug 2024 08:36:18 -0400
+	id 1sjHuF-0005M0-Ld; Wed, 28 Aug 2024 08:36:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1sjHu9-0005Jb-Lp
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:36:07 -0400
+ id 1sjHu7-00059c-0i
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:36:03 -0400
 Received: from internet2.beckhoff.com ([194.25.186.210])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <C.Koehne@beckhoff.com>)
- id 1sjHu5-0003AE-4q
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:36:04 -0400
+ id 1sjHu4-0003Af-Qn
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:36:02 -0400
 Received: from 172.17.5.170 by INTERNET2.beckhoff.com (Tls12, Aes256, Sha384, 
  DiffieHellmanEllipticKey384); Wed, 28 Aug 2024 12:35:57 GMT
 DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022e; 
- t=1724848557; bh=dw5PZHWoP2rzADIQR+kXL/3fIW9nweVv3qfNfRdXkvc=; h=
+ t=1724848557; bh=AWbZyhEyhRSnXlYcrTmec6OE0eilRfZnjfvknaWGikc=; h=
  Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
  a=ed25519-sha256; b=
- aulXHQteHcrI1BCGTPLKbUBPk2jciTXXqbuWVEaitvf8zBwHpD+AO7Oxy/c9qb1eJbNvpyl6ATzdSAtfiIChCA==
+ S/kAuLA/a0MR1U7EZo/bEENTMUn47zBCwcZKcWLCQIU9yNVZkSj/4DJCZiL2vXf6ulQTo4wtdQaUq5jrr6JhDg==
 DKIM-Signature: v=1; c=relaxed/relaxed; d=beckhoff.com; s=mail2022r; 
- t=1724848557; bh=dw5PZHWoP2rzADIQR+kXL/3fIW9nweVv3qfNfRdXkvc=; h=
+ t=1724848557; bh=AWbZyhEyhRSnXlYcrTmec6OE0eilRfZnjfvknaWGikc=; h=
  Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id;
  a=rsa-sha256; b=
- hWkMCfUKZVlC5WP/zF1rKcv3IKZaEF7Z3Xr2tla2SVCkAoP/M4WwqqrF6fiyGJwWR09/IuBZPpL7NOFh95MMvlkGlcXKKbKiicERMNDTrNEXeHrrMSTL2fe1xG13WP3TDiHHxsGpBkOOAPziUViPOGEShuK7x7ZuAewWHu7kLzCthgTCeY5/ooYAXVMYQW0+pZ8rV34w3cfbaezFaiL2AVMsnoi2zsipZVDhzHrTIunja/lxD2Hcibw264Ugl2abOl3MTBwZ5ZZ8Ami8Q8gC5Aupo/vz6/7QQVky29+DsnirSuWS0sVUI/yCRJgBh6iE9NTMBqkmtvknhRzErUZAcA==
+ vqq5rM1bfJCkWRpkMGeP0jkoILDqeF7WGJyuZSpvxGvG2weuvWtHMwE6dUNZy8cVwErtQZvxD4S4By/OlfYN6NUux7s1yePsJN7gyXXhK8y3xoVJDl1GOMeMsCjr4xchFQ9QmEGt/OH5/ojpNHIAXGELnVGGict7BCvqZdjiBjycfGk1skfX3LLnmKB11phHp9JH/M9vBhdPj0ss7ihN7N2WeYBh5n+krDS9A8pvA12VEcSh1hEkHKMXdAaatECh3Ja502s8KDFU/AXLuLC980HkTPtFukjRv5tGtcQzz2tEzTgUQhBYBXkwZXNh/8i85g29wkJuqdnIGp7KYnzM0A==
 Received: from corvink-nb.beckhoff.com (172.17.128.201) by ex04.beckhoff.com
  (172.17.5.170) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 28 Aug
@@ -38,10 +38,9 @@ From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
 To: <qemu-devel@nongnu.org>, <c.koehne@beckhoff.com>
 CC: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Alex Williamson
  <alex.williamson@redhat.com>
-Subject: [PATCH v2 1/7] vfio/igd: return an invalid generation for unknown
- devices
-Date: Wed, 28 Aug 2024 14:35:43 +0200
-Message-ID: <20240828123549.83293-2-c.koehne@beckhoff.com>
+Subject: [PATCH v2 2/7] vfio/igd: support legacy mode for all known generations
+Date: Wed, 28 Aug 2024 14:35:44 +0200
+Message-ID: <20240828123549.83293-3-c.koehne@beckhoff.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240828123549.83293-1-c.koehne@beckhoff.com>
 References: <20240828123549.83293-1-c.koehne@beckhoff.com>
@@ -77,38 +76,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=EF=BB=BFIntel changes it's specification quite often e.g. the location and=
- size
-of the BDSM register has change for gen 11 devices and later. This
-causes our emulation to fail on those devices. So, it's impossible for
-us to use a suitable default value for unknown devices. Instead of
-returning a random generation value and hoping that everthing works
-fine, we should verify that different devices are working and add them
-to our list of known devices.
+=EF=BB=BFWe're soon going to add support for legacy mode to ElkhartLake and
+TigerLake devices. Those are gen 11 and 12 devices. At the moment, all
+devices identified by our igd_gen function do support legacy mode. This
+won't change when adding our new devices of gen 11 and 12. Therefore, it
+makes more sense to accept legacy mode for all known devices instead of
+maintaining a long list of known good generations. If we add a new
+generation to igd_gen which doesn't support legacy mode for some reason,
+it'll be easy to advance the check to reject legacy mode for this
+specific generation.
 
 Signed-off-by: Corvin K=C3=B6hne <c.koehne@beckhoff.com>
 ---
- hw/vfio/igd.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ hw/vfio/igd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index d320d032a7..650a323dda 100644
+index 650a323dda..d5e57656a8 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -90,7 +90,11 @@ static int igd_gen(VFIOPCIDevice *vdev)
-         return 8;
-     }
-=20
--    return 8; /* Assume newer is compatible */
-+    /*
-+     * Unfortunately, Intel changes it's specification quite often. This m=
-akes
-+     * it impossible to use a suitable default value for unknown devices.
-+     */
-+    return -1;
- }
-=20
- typedef struct VFIOIGDQuirk {
+@@ -416,7 +416,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int=
+ nr)
+      * devices maintain compatibility with generation 8.
+      */
+     gen =3D igd_gen(vdev);
+-    if (gen !=3D 6 && gen !=3D 8) {
++    if (gen =3D=3D -1) {
+         error_report("IGD device %s is unsupported in legacy mode, "
+                      "try SandyBridge or newer", vdev->vbasedev.name);
+         return;
 --=20
 2.46.0
 
