@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98626961F1A
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 08:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F22D0961F5A
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 08:17:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjBtR-00018D-FX; Wed, 28 Aug 2024 02:10:57 -0400
+	id 1sjByp-0007UT-Lh; Wed, 28 Aug 2024 02:16:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1sjBtP-00015E-91; Wed, 28 Aug 2024 02:10:55 -0400
-Received: from fout7-smtp.messagingengine.com ([103.168.172.150])
+ id 1sjByn-0007SA-U2; Wed, 28 Aug 2024 02:16:30 -0400
+Received: from fout1-smtp.messagingengine.com ([103.168.172.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1sjBtN-0003qL-Kp; Wed, 28 Aug 2024 02:10:55 -0400
+ id 1sjBym-0004Rj-5V; Wed, 28 Aug 2024 02:16:29 -0400
 Received: from phl-compute-05.internal (phl-compute-05.nyi.internal
  [10.202.2.45])
  by mailfout.nyi.internal (Postfix) with ESMTP id C3A7A13900BA;
@@ -90,17 +90,16 @@ Content-Type: multipart/signed; micalg=pgp-sha512;
  protocol="application/pgp-signature"; boundary="Hy24UAIhgH01a9XR"
 Content-Disposition: inline
 In-Reply-To: <20240712023650.45626-10-luchangqi.123@bytedance.com>
-Received-SPF: pass client-ip=103.168.172.150; envelope-from=its@irrelevant.dk;
- helo=fout7-smtp.messagingengine.com
+Received-SPF: pass client-ip=103.168.172.144; envelope-from=its@irrelevant.dk;
+ helo=fout1-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
