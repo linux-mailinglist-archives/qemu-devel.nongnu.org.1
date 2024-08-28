@@ -2,104 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DF2962009
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 08:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 951849620C8
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 09:22:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjCWc-0001m8-Jc; Wed, 28 Aug 2024 02:51:26 -0400
+	id 1sjCz1-0007Li-Ob; Wed, 28 Aug 2024 03:20:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1sjCWV-0001bk-IS; Wed, 28 Aug 2024 02:51:20 -0400
-Received: from fhigh3-smtp.messagingengine.com ([103.168.172.154])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1sjCWS-0007bi-Ad; Wed, 28 Aug 2024 02:51:19 -0400
-Received: from phl-compute-07.internal (phl-compute-07.nyi.internal
- [10.202.2.47])
- by mailfhigh.nyi.internal (Postfix) with ESMTP id B19721151CDB;
- Wed, 28 Aug 2024 02:51:14 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-07.internal (MEProxy); Wed, 28 Aug 2024 02:51:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm3; t=1724827874; x=
- 1724914274; bh=uv/ZGDaOiF3z8n0k3m+c6M8nD8GB5EXQovB8/GJhA1o=; b=f
- YXhx+J5naKvJ3LnkwtR7opynAFtqiO+C4jblu6rbTpOhnkl/31GOSwfubyaT8v1q
- clY9dslJiejJLd8bjXo1UMWg3lIAG5Podpd/Cr2Th29shDSKBR75hKokd2L98DfC
- /xFeaF5/RkW7ePdI2wW4u6ycraNVXX5MGe9IVGW3oSRMmAR6RTASbb+wmVqEhH/C
- gtTfksxTCfRO0TNhV9RCEzCffOuFDekdVk1K1smWQ1AFFnY5gCXoIgwCvQDkARbo
- GIg8DL2G5gzeARbPzmym50n9Qr+JNJ2HVeDsZP68/jSgsNTqDD2Ixa6GXy8QcC2I
- J4YiI12LDlu3TnE22aS/w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm1; t=1724827874; x=1724914274; bh=uv/ZGDaOiF3z8n0k3m+c6M8nD8GB
- 5EXQovB8/GJhA1o=; b=QmS1r5rzyZ2GipPN8OYtKzdtHfLDQIg1p1iBAad9aoDB
- 0561t9p/4axmZYuYpW74LFeMSssYs6utMTQvT1fnkx09rmYZlNtANXxS57Hg2eoh
- J8aCbCR/kyAHJ0cVCTfv9wxZlutsA7v9yp09CL48PXR216JN6GjbZhzyU5W2I/8U
- 7uqAeYPsQ7RaYLUTrSqcvZRjDrH6TB6XDzisyjvWiiw5fCaZhtTslr9dZ8toVqbv
- g4eskKSlRCX6ZATos/2LK/IMIXPXpITkNxEikulQI24tvW2GKrbxgxCLR2CcYmHR
- Du6cNsNQkbZT8AmQq7QSJkQdBWmvMye+ZeyYhhHhpg==
-X-ME-Sender: <xms:4cjOZjpSomb6NDOa2NBoBl-xhExLIN4vzHQcdZ6y8tE9KHU4FZYe6Q>
- <xme:4cjOZto6a-pJXBX48m7bh1LnM5lX65df_XXy-b3X0OIMAtqCq0wa1SuEZVl2bgcgR
- xKV6FbtJnsKQguOou8>
-X-ME-Received: <xmr:4cjOZgND4GobwRz9ZknZ2XM8trl82YrXNgZfrey6Q8wKUHyIXm3twBNlf4zs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudefuddguddugecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
- uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
- hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdej
- necuhfhrohhmpefmlhgruhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnth
- drughkqeenucggtffrrghtthgvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeev
- jeevtdduudegieegteffffejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
- epmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughkpdhnsggprhgtphht
- thhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhutghhrghnghhqih
- druddvfeessgihthgvuggrnhgtvgdrtghomhdprhgtphhtthhopehqvghmuhdqsghlohgt
- khesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhngh
- hnuhdrohhrghdprhgtphhtthhopehkfiholhhfsehrvgguhhgrthdrtghomhdprhgtphht
- thhopehhrhgvihhtiiesrhgvughhrghtrdgtohhmpdhrtghpthhtohepshhtvghfrghnhh
- grsehrvgguhhgrthdrtghomhdprhgtphhtthhopehfrghmsegvuhhphhhonhdrnhgvthdp
- rhgtphhtthhopehrohhnnhhivghsrghhlhgsvghrghesghhmrghilhdrtghomhdprhgtph
- htthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:4cjOZm6mWKPVg7ztWFq1M3T_F2wjvUjZs4lMZ_Zu_D2EVvXUFN7mPg>
- <xmx:4cjOZi518T9oJyu0uapfk2WajchoNVtT8j2mj980lMkAKfzn08ZQCQ>
- <xmx:4cjOZujUZJSYUcLlUYXNRfZbUy5IcT3brRWLB5JKzRmR_H533SVyOg>
- <xmx:4cjOZk6otK7fmA5KZn6hZECo-unR3CIVHopqYIkuFyenirfk6TmgJw>
- <xmx:4sjOZuo6ulkxj8dHhsdNitLX1SyGVH4HpfzD1Wn5R3DEkQmtUv6nelII>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Aug 2024 02:51:13 -0400 (EDT)
-Date: Wed, 28 Aug 2024 08:51:08 +0200
-From: Klaus Jensen <its@irrelevant.dk>
-To: Changqi Lu <luchangqi.123@bytedance.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com,
- hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
- ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de,
- kbusch@kernel.org, foss@defmacro.it, philmd@linaro.org,
- pizhenwei@bytedance.com, Klaus Jensen <k.jensen@samsung.com>
-Subject: Re: [PATCH v9 09/10] hw/nvme: add reservation protocal command
-Message-ID: <Zs7I3AAzsO2Xe5iG@cormorant.local>
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1sjCyz-0007Kk-9i
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 03:20:45 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1sjCyv-0002Vl-2L
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 03:20:44 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5a10835487fso9459796a12.1
+ for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 00:20:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1724829637; x=1725434437; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:user-agent:references:in-reply-to
+ :mime-version:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vFYD4ziIDjeJF7mJEr9KZRKnmyuzkJD2ty60MjJeveI=;
+ b=MUgZg2d3w2n7kApa95cM7/nPULm3jyg9wcNWnwOyD9kBqER+m4rtM7odi+5rbhNR/L
+ ydhbG9GCTfB7PoydqLU7rVLWS/E5d0mD8lgUHLanYYoZobz8pUnBkNZPsP5QL2tRG+Rn
+ 8qFTCH81RjnlQuSnC0LNyzheGqckQ3b8Ded9K3vJyVxAz5L+1HTdQ99dRqDe6Hk+Bp4z
+ zUJzvydMNzYd+aUpnLqONdzpF5IMZu5srUJLkNPCxrmeSReSGyYTypSma9xuFPxiwuhI
+ 3tlXwN0U0kfFCEGitbDCnEvRuLEd/4RiQlSWeBFN3ead1Z4lTWb8gjf+5h2a/evUTL2O
+ qfpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724829637; x=1725434437;
+ h=cc:to:subject:message-id:date:user-agent:references:in-reply-to
+ :mime-version:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vFYD4ziIDjeJF7mJEr9KZRKnmyuzkJD2ty60MjJeveI=;
+ b=W5pOIpkPCGhnJ2oStO1ciBtlIzA+7PKdf0ASJYeWGf7VMzPTkwFKb1BA0CW+eRjgBF
+ B2GjViP87LbMJuTl0m1I0elZ8UGiFBuhFXm9u/Dsw1etXbl2ciM8oKF3WrJDVbz/PeLc
+ HeeaOf7Ha8y5HHdtxakeoi538CXcfnatjwvDRaa5lQYq0Zw05EuclH5LtSN2vzoNeja4
+ eGX5yTYOZ1XdF1SXGkfklbmoLcmdTxl3nqg+wkHJ0/ekSt/ni5HmfIyNpc9kec9p9dzH
+ oADbi/8T3CvT99eoUkaDejHQ1ZZl6+9ld8DqG6qhCV1Cf3ri+6G8ROHXZ7pWqay7+5ZP
+ iskA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWtrC52/GLBXKDiMF4QPGNyheEsIhPDucFhs449lEBQXzFRCh60kvzwKhtPfgywDQBh6iEz9isSuZ5V@nongnu.org
+X-Gm-Message-State: AOJu0Yyirha3Fo7QPqoyXjk/ifR1kJs6fatupWQNfXhwvAqg7bW03fd5
+ 9XCXwM4w82iAYcS9o3eXOkozthqkOhgvK2KMsDXc18ulOcNAmtd+HH4MlZy24eUl12pECiIAkgv
+ mcEp3sjhZ3OytQuulxOSg83+6UENcX50rz0h3aQ==
+X-Google-Smtp-Source: AGHT+IGJGH/+Q9j/mi5ZAdoU9Hv2fT+60pPxjve+n3FYpFqXJoWqaB37DIU73+hB51We2NChxFwuzvpkwIwPLQM93nM=
+X-Received: by 2002:a05:6402:50cf:b0:5be:ef1f:c679 with SMTP id
+ 4fb4d7f45d1cf-5c0891a2702mr10877617a12.23.1724829637133; Wed, 28 Aug 2024
+ 00:20:37 -0700 (PDT)
+Received: from 44278815321 named unknown by gmailapi.google.com with HTTPREST; 
+ Wed, 28 Aug 2024 00:20:36 -0700
+From: =?UTF-8?B?5Y2i6ZW/5aWH?= <luchangqi.123@bytedance.com>
+X-Original-From: =?UTF-8?B?5Y2i6ZW/5aWHIDxsdWNoYW5ncWkuMTIzQGJ5dGVkYW5jZS5jb20+?=
+Mime-Version: 1.0
+In-Reply-To: <Zs7I3AAzsO2Xe5iG@cormorant.local>
 References: <20240712023650.45626-1-luchangqi.123@bytedance.com>
  <20240712023650.45626-10-luchangqi.123@bytedance.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="tRwxhxil8cQ/AHCd"
-Content-Disposition: inline
-In-Reply-To: <20240712023650.45626-10-luchangqi.123@bytedance.com>
-Received-SPF: pass client-ip=103.168.172.154; envelope-from=its@irrelevant.dk;
- helo=fhigh3-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ <Zs7I3AAzsO2Xe5iG@cormorant.local>
+User-Agent: Mozilla Thunderbird
+Date: Wed, 28 Aug 2024 00:20:36 -0700
+Message-ID: <CAO5cSZCkHCM0nrgQO4ykJ808UCxF-TEy7_0zkA3LDaZ0S8zyCg@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v9 09/10] hw/nvme: add reservation protocal
+ command
+To: Klaus Jensen <its@irrelevant.dk>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com, 
+ hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net, 
+ ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de, 
+ kbusch@kernel.org, foss@defmacro.it, philmd@linaro.org, 
+ pizhenwei@bytedance.com, Klaus Jensen <k.jensen@samsung.com>
+Content-Type: multipart/alternative; boundary="000000000000d1e1b30620b931e0"
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=luchangqi.123@bytedance.com; helo=mail-ed1-x535.google.com
+X-Spam_score_int: 2
+X-Spam_score: 0.2
+X-Spam_bar: /
+X-Spam_report: (0.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_MUA_MOZILLA=2.309,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,108 +98,275 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--000000000000d1e1b30620b931e0
+Content-Type: text/plain; charset="UTF-8"
 
---tRwxhxil8cQ/AHCd
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On Jul 12 10:36, Changqi Lu wrote:
-> Add reservation acquire, reservation register,
-> reservation release and reservation report commands
-> in the nvme device layer.
->=20
-> By introducing these commands, this enables the nvme
-> device to perform reservation-related tasks, including
-> querying keys, querying reservation status, registering
-> reservation keys, initiating and releasing reservations,
-> as well as clearing and preempting reservations held by
-> other keys.
->=20
-> These commands are crucial for management and control of
-> shared storage resources in a persistent manner.
-> Signed-off-by: Changqi Lu <luchangqi.123@bytedance.com>
-> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-> Acked-by: Klaus Jensen <k.jensen@samsung.com>
-> ---
->  hw/nvme/ctrl.c       | 318 +++++++++++++++++++++++++++++++++++++++++++
->  hw/nvme/nvme.h       |   4 +
->  include/block/nvme.h |  37 +++++
->  3 files changed, 359 insertions(+)
->=20
+I want to know if I understand it correctly.
 
-> +static uint16_t nvme_resv_register(NvmeCtrl *n, NvmeRequest *req)
-> +{
-> +    int ret;
-> +    NvmeKeyInfo key_info;
-> +    NvmeNamespace *ns =3D req->ns;
-> +    uint32_t cdw10 =3D le32_to_cpu(req->cmd.cdw10);
-> +    bool ignore_key =3D cdw10 >> 3 & 0x1;
-> +    uint8_t action =3D cdw10 & 0x7;
-> +    uint8_t ptpl =3D cdw10 >> 30 & 0x3;
-> +    bool aptpl;
-> +
-> +    switch (ptpl) {
-> +    case NVME_RESV_PTPL_NO_CHANGE:
-> +        aptpl =3D (ns->id_ns.rescap & NVME_PR_CAP_PTPL) ? true : false;
-> +        break;
-> +    case NVME_RESV_PTPL_DISABLE:
-> +        aptpl =3D false;
-> +        break;
-> +    case NVME_RESV_PTPL_ENABLE:
-> +        aptpl =3D true;
-> +        break;
-> +    default:
-> +        return NVME_INVALID_FIELD;
-> +    }
-> +
-> +    ret =3D nvme_h2c(n, (uint8_t *)&key_info, sizeof(NvmeKeyInfo), req);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
-> +    switch (action) {
-> +    case NVME_RESV_REGISTER_ACTION_REGISTER:
-> +        req->aiocb =3D blk_aio_pr_register(ns->blkconf.blk, 0,
-> +                                         key_info.nr_key, 0, aptpl,
-> +                                         ignore_key, nvme_misc_cb,
-> +                                         req);
-> +        break;
-> +    case NVME_RESV_REGISTER_ACTION_UNREGISTER:
-> +        req->aiocb =3D blk_aio_pr_register(ns->blkconf.blk, key_info.cr_=
-key, 0,
-> +                                         0, aptpl, ignore_key,
-> +                                         nvme_misc_cb, req);
-> +        break;
-> +    case NVME_RESV_REGISTER_ACTION_REPLACE:
-> +        req->aiocb =3D blk_aio_pr_register(ns->blkconf.blk, key_info.cr_=
-key,
-> +                                         key_info.nr_key, 0, aptpl, igno=
-re_key,
-> +                                         nvme_misc_cb, req);
-> +        break;
+```
+static void nvme_aio_err(NvmeRequest *req, int ret)
+{
+uint16_t status = NVME_SUCCESS;
+Error *local_err = NULL;
 
-There should be some check on rescap I think. On a setup without
-reservation support from the block layer, these functions ends up
-returning ENOTSUP which causes hw/nvme to end up returning a Write Fault
-(which is a little wonky).
+switch (req->cmd.opcode) {
+case NVME_CMD_READ:
+case NVME_CMD_RESV_REPORT:
+status = NVME_UNRECOVERED_READ;
+break;
+case NVME_CMD_FLUSH:
+case NVME_CMD_WRITE:
+case NVME_CMD_WRITE_ZEROES:
+case NVME_CMD_ZONE_APPEND:
+case NVME_CMD_COPY:
+case NVME_CMD_RESV_REGISTER:
+case NVME_CMD_RESV_ACQUIRE:
+case NVME_CMD_RESV_RELEASE:
+status = NVME_WRITE_FAULT;
+break;
+default:
+status = NVME_INTERNAL_DEV_ERROR;
+break;
+}
 
-Should they return invalid field, invalid opcode?
+trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), status);
 
---tRwxhxil8cQ/AHCd
-Content-Type: application/pgp-signature; name="signature.asc"
+error_setg_errno(&local_err, -ret, "aio failed");
+error_report_err(local_err);
 
------BEGIN PGP SIGNATURE-----
+/*
+* Set the command status code to the first encountered error but
+allow a
+* subsequent Internal Device Error to trump it.
+*/
+if (req->status && status != NVME_INTERNAL_DEV_ERROR) {
+return;
+}
 
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmbOyNsACgkQTeGvMW1P
-Dekk0Af+LMK7+YNLMqrQjVO9vodA++9IBaGMtEeLlP1JG2V8ZWvAfvIxHl47556o
-ucw6b1OGgz1xL7B7dtydVUYmWS+WtOdmHwRpds+vUV8/AIDc5FVSR3GrvwhBEsLI
-lLxqdJxBnoz29p0Hu0j5WYu4ZcXM92w+aukCNnKinBntm6/kp+KYPFHD3dIE/Bii
-r5i0txqJIZBaYLRyla2Q6ki3gyMBFNNNczU7znYrvNwaFuhgRzN3AsbPWTVPX/ng
-99dvz7xvzugDR93IjQ1BPTJnMgy3WX2+rAcPlfmv1Tgv3iDHsVtzqJZFzv2duhhT
-O2c/GdAKDUSSc7x61e5Z610qApHfiA==
-=Ln5+
------END PGP SIGNATURE-----
+req->status = status;
+}
+```
+In the above use case, if it is a pr-related command and the error code
+is not supported, the invalid error code should be returned instead of
+the Fault error code.
 
---tRwxhxil8cQ/AHCd--
+
+On 2024/8/28 14:51, Klaus Jensen wrote:
+> On Jul 12 10:36, Changqi Lu wrote:
+>> Add reservation acquire, reservation register,
+>> reservation release and reservation report commands
+>> in the nvme device layer.
+>>
+>> By introducing these commands, this enables the nvme
+>> device to perform reservation-related tasks, including
+>> querying keys, querying reservation status, registering
+>> reservation keys, initiating and releasing reservations,
+>> as well as clearing and preempting reservations held by
+>> other keys.
+>>
+>> These commands are crucial for management and control of
+>> shared storage resources in a persistent manner.
+>> Signed-off-by: Changqi Lu
+>> Signed-off-by: zhenwei pi
+>> Acked-by: Klaus Jensen
+>> ---
+>> hw/nvme/ctrl.c | 318 +++++++++++++++++++++++++++++++++++++++++++
+>> hw/nvme/nvme.h | 4 +
+>> include/block/nvme.h | 37 +++++
+>> 3 files changed, 359 insertions(+)
+>>
+>
+>> +static uint16_t nvme_resv_register(NvmeCtrl *n, NvmeRequest *req)
+>> +{
+>> + int ret;
+>> + NvmeKeyInfo key_info;
+>> + NvmeNamespace *ns = req->ns;
+>> + uint32_t cdw10 = le32_to_cpu(req->cmd.cdw10);
+>> + bool ignore_key = cdw10 >> 3 & 0x1;
+>> + uint8_t action = cdw10 & 0x7;
+>> + uint8_t ptpl = cdw10 >> 30 & 0x3;
+>> + bool aptpl;
+>> +
+>> + switch (ptpl) {
+>> + case NVME_RESV_PTPL_NO_CHANGE:
+>> + aptpl = (ns->id_ns.rescap & NVME_PR_CAP_PTPL) ? true : false;
+>> + break;
+>> + case NVME_RESV_PTPL_DISABLE:
+>> + aptpl = false;
+>> + break;
+>> + case NVME_RESV_PTPL_ENABLE:
+>> + aptpl = true;
+>> + break;
+>> + default:
+>> + return NVME_INVALID_FIELD;
+>> + }
+>> +
+>> + ret = nvme_h2c(n, (uint8_t *)&key_info, sizeof(NvmeKeyInfo), req);
+>> + if (ret) {
+>> + return ret;
+>> + }
+>> +
+>> + switch (action) {
+>> + case NVME_RESV_REGISTER_ACTION_REGISTER:
+>> + req->aiocb = blk_aio_pr_register(ns->blkconf.blk, 0,
+>> + key_info.nr_key, 0, aptpl,
+>> + ignore_key, nvme_misc_cb,
+>> + req);
+>> + break;
+>> + case NVME_RESV_REGISTER_ACTION_UNREGISTER:
+>> + req->aiocb = blk_aio_pr_register(ns->blkconf.blk, key_info.cr_key, 0,
+>> + 0, aptpl, ignore_key,
+>> + nvme_misc_cb, req);
+>> + break;
+>> + case NVME_RESV_REGISTER_ACTION_REPLACE:
+>> + req->aiocb = blk_aio_pr_register(ns->blkconf.blk, key_info.cr_key,
+>> + key_info.nr_key, 0, aptpl, ignore_key,
+>> + nvme_misc_cb, req);
+>> + break;
+>
+> There should be some check on rescap I think. On a setup without
+> reservation support from the block layer, these functions ends up
+> returning ENOTSUP which causes hw/nvme to end up returning a Write Fault
+> (which is a little wonky).
+>
+> Should they return invalid field, invalid opcode?
+
+--000000000000d1e1b30620b931e0
+Content-Type: text/html; charset="UTF-8"
+
+<p>Hi,
+<br>
+<br>I want to know if I understand it correctly.
+<br>
+<br>```
+<br>static void nvme_aio_err(NvmeRequest *req, int ret)
+<br>{
+<br>    uint16_t status = NVME_SUCCESS;
+<br>    Error *local_err = NULL;
+<br>
+<br>    switch (req-&gt;cmd.opcode) {
+<br>    case NVME_CMD_READ:
+<br>    case NVME_CMD_RESV_REPORT:
+<br>        status = NVME_UNRECOVERED_READ;
+<br>        break;
+<br>    case NVME_CMD_FLUSH:
+<br>    case NVME_CMD_WRITE:
+<br>    case NVME_CMD_WRITE_ZEROES:
+<br>    case NVME_CMD_ZONE_APPEND:
+<br>    case NVME_CMD_COPY:
+<br>    case NVME_CMD_RESV_REGISTER:
+<br>    case NVME_CMD_RESV_ACQUIRE:
+<br>    case NVME_CMD_RESV_RELEASE:
+<br>        status = NVME_WRITE_FAULT;
+<br>        break;
+<br>    default:
+<br>        status = NVME_INTERNAL_DEV_ERROR;
+<br>        break;
+<br>    }
+<br>
+<br>    trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), status);
+<br>
+<br>    error_setg_errno(&amp;local_err, -ret, &quot;aio failed&quot;);
+<br>    error_report_err(local_err);
+<br>
+<br>    /*
+<br>     * Set the command status code to the first encountered error but
+<br>allow a
+<br>     * subsequent Internal Device Error to trump it.
+<br>     */
+<br>    if (req-&gt;status &amp;&amp; status != NVME_INTERNAL_DEV_ERROR) {
+<br>        return;
+<br>    }
+<br>
+<br>    req-&gt;status = status;
+<br>}
+<br>```
+<br>In the above use case, if it is a pr-related command and the error code
+<br>is not supported, the invalid error code should be returned instead of
+<br>the Fault error code.
+<br>
+<br>
+<br>On 2024/8/28 14:51, Klaus Jensen wrote:
+<br>&gt; On Jul 12 10:36, Changqi Lu wrote:
+<br>&gt;&gt; Add reservation acquire, reservation register,
+<br>&gt;&gt; reservation release and reservation report commands
+<br>&gt;&gt; in the nvme device layer.
+<br>&gt;&gt;
+<br>&gt;&gt; By introducing these commands, this enables the nvme
+<br>&gt;&gt; device to perform reservation-related tasks, including
+<br>&gt;&gt; querying keys, querying reservation status, registering
+<br>&gt;&gt; reservation keys, initiating and releasing reservations,
+<br>&gt;&gt; as well as clearing and preempting reservations held by
+<br>&gt;&gt; other keys.
+<br>&gt;&gt;
+<br>&gt;&gt; These commands are crucial for management and control of
+<br>&gt;&gt; shared storage resources in a persistent manner.
+<br>&gt;&gt; Signed-off-by: Changqi Lu 
+<br>&gt;&gt; Signed-off-by: zhenwei pi 
+<br>&gt;&gt; Acked-by: Klaus Jensen 
+<br>&gt;&gt; ---
+<br>&gt;&gt;  hw/nvme/ctrl.c       | 318 +++++++++++++++++++++++++++++++++++++++++++
+<br>&gt;&gt;  hw/nvme/nvme.h       |   4 +
+<br>&gt;&gt;  include/block/nvme.h |  37 +++++
+<br>&gt;&gt;  3 files changed, 359 insertions(+)
+<br>&gt;&gt;
+<br>&gt; 
+<br>&gt;&gt; +static uint16_t nvme_resv_register(NvmeCtrl *n, NvmeRequest *req)
+<br>&gt;&gt; +{
+<br>&gt;&gt; +    int ret;
+<br>&gt;&gt; +    NvmeKeyInfo key_info;
+<br>&gt;&gt; +    NvmeNamespace *ns = req-&gt;ns;
+<br>&gt;&gt; +    uint32_t cdw10 = le32_to_cpu(req-&gt;cmd.cdw10);
+<br>&gt;&gt; +    bool ignore_key = cdw10 &gt;&gt; 3 &amp; 0x1;
+<br>&gt;&gt; +    uint8_t action = cdw10 &amp; 0x7;
+<br>&gt;&gt; +    uint8_t ptpl = cdw10 &gt;&gt; 30 &amp; 0x3;
+<br>&gt;&gt; +    bool aptpl;
+<br>&gt;&gt; +
+<br>&gt;&gt; +    switch (ptpl) {
+<br>&gt;&gt; +    case NVME_RESV_PTPL_NO_CHANGE:
+<br>&gt;&gt; +        aptpl = (ns-&gt;id_ns.rescap &amp; NVME_PR_CAP_PTPL) ? true : false;
+<br>&gt;&gt; +        break;
+<br>&gt;&gt; +    case NVME_RESV_PTPL_DISABLE:
+<br>&gt;&gt; +        aptpl = false;
+<br>&gt;&gt; +        break;
+<br>&gt;&gt; +    case NVME_RESV_PTPL_ENABLE:
+<br>&gt;&gt; +        aptpl = true;
+<br>&gt;&gt; +        break;
+<br>&gt;&gt; +    default:
+<br>&gt;&gt; +        return NVME_INVALID_FIELD;
+<br>&gt;&gt; +    }
+<br>&gt;&gt; +
+<br>&gt;&gt; +    ret = nvme_h2c(n, (uint8_t *)&amp;key_info, sizeof(NvmeKeyInfo), req);
+<br>&gt;&gt; +    if (ret) {
+<br>&gt;&gt; +        return ret;
+<br>&gt;&gt; +    }
+<br>&gt;&gt; +
+<br>&gt;&gt; +    switch (action) {
+<br>&gt;&gt; +    case NVME_RESV_REGISTER_ACTION_REGISTER:
+<br>&gt;&gt; +        req-&gt;aiocb = blk_aio_pr_register(ns-&gt;blkconf.blk, 0,
+<br>&gt;&gt; +                                         key_info.nr_key, 0, aptpl,
+<br>&gt;&gt; +                                         ignore_key, nvme_misc_cb,
+<br>&gt;&gt; +                                         req);
+<br>&gt;&gt; +        break;
+<br>&gt;&gt; +    case NVME_RESV_REGISTER_ACTION_UNREGISTER:
+<br>&gt;&gt; +        req-&gt;aiocb = blk_aio_pr_register(ns-&gt;blkconf.blk, key_info.cr_key, 0,
+<br>&gt;&gt; +                                         0, aptpl, ignore_key,
+<br>&gt;&gt; +                                         nvme_misc_cb, req);
+<br>&gt;&gt; +        break;
+<br>&gt;&gt; +    case NVME_RESV_REGISTER_ACTION_REPLACE:
+<br>&gt;&gt; +        req-&gt;aiocb = blk_aio_pr_register(ns-&gt;blkconf.blk, key_info.cr_key,
+<br>&gt;&gt; +                                         key_info.nr_key, 0, aptpl, ignore_key,
+<br>&gt;&gt; +                                         nvme_misc_cb, req);
+<br>&gt;&gt; +        break;
+<br>&gt; 
+<br>&gt; There should be some check on rescap I think. On a setup without
+<br>&gt; reservation support from the block layer, these functions ends up
+<br>&gt; returning ENOTSUP which causes hw/nvme to end up returning a Write Fault
+<br>&gt; (which is a little wonky).
+<br>&gt; 
+<br>&gt; Should they return invalid field, invalid opcode?</p>
+
+--000000000000d1e1b30620b931e0--
 
