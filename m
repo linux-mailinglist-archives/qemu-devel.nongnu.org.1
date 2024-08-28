@@ -2,95 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E529625C7
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 13:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C63759625F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 13:24:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjGf2-0000SN-Gc; Wed, 28 Aug 2024 07:16:26 -0400
+	id 1sjGll-0006bk-94; Wed, 28 Aug 2024 07:23:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danny_canter@apple.com>)
- id 1sjGf0-0000OB-TB
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 07:16:22 -0400
-Received: from rn-mailsvcp-mx-lapp01.apple.com ([17.179.253.22])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danny_canter@apple.com>)
- id 1sjGex-0001yV-Nh
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 07:16:22 -0400
-Received: from rn-mailsvcp-mta-lapp04.rno.apple.com
- (rn-mailsvcp-mta-lapp04.rno.apple.com [10.225.203.152])
- by rn-mailsvcp-mx-lapp01.rno.apple.com
- (Oracle Communications Messaging Server 8.1.0.23.20230328 64bit (built Mar 28
- 2023)) with ESMTPS id <0SIX00R2ZDZ3NP00@rn-mailsvcp-mx-lapp01.rno.apple.com>
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 04:16:16 -0700 (PDT)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-28_03,2024-08-27_01,2024-05-17_01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=apple.com; h=cc :
- content-transfer-encoding : date : from : in-reply-to : message-id :
- mime-version : references : subject : to; s=20180706;
- bh=sOr9SXANZBasTOCdfSIuUykxw+BHWqrfQ9hmECDwWPQ=;
- b=QWqUMWjo7QvXmrFovHBKiPierXZLeFGJkX06tGXQzocHJxlh5wnUIZMkXJoiqJO+6PVb
- iIUkGB/Dlg7LsUpdDGaim2z12pW0FGI8NjbCNa3HuwnPOQMTyB//4fUc1FYLBjsU8j2k
- ULBQUI3Z62gio5R9f9IIuRMUdd/v8Sd278ZN8D1Ulp95pdzrd+W83KDcPixjG9l931WL
- ckDoWO5qGYnmpM7EO+guexpixk6SY5h2TM+cVrq3lve77Ra3ie0NUCJH8OuttsBFW53I
- TzGBCfsuUMpuE9izilp/jsbfapvVoyLlcd7+CpAXiViu+E0YMC0fUZ91o41MygaV0e++ 6w==
-Received: from mr55p01nt-mmpp02.apple.com
- (mr55p01nt-mmpp02.apple.com [10.170.185.213])
- by rn-mailsvcp-mta-lapp04.rno.apple.com
- (Oracle Communications Messaging Server 8.1.0.23.20230328 64bit (built Mar 28
- 2023)) with ESMTPS id <0SIX00H9RDZ35M00@rn-mailsvcp-mta-lapp04.rno.apple.com>; 
- Wed, 28 Aug 2024 04:16:15 -0700 (PDT)
-Received: from process_milters-daemon.mr55p01nt-mmpp02.apple.com by
- mr55p01nt-mmpp02.apple.com
- (Oracle Communications Messaging Server 8.1.0.23.20230328 64bit (built Mar 28
- 2023)) id <0SIX2GG00DAAEB00@mr55p01nt-mmpp02.apple.com>; Wed,
- 28 Aug 2024 11:16:15 +0000 (GMT)
-X-Va-A: 
-X-Va-T-CD: 18a8a04ab20a1763aa377ff80017b310
-X-Va-E-CD: cf443eeeda88520596c661908908994e
-X-Va-R-CD: 234d7789dec848a652f3cdc64dff37cf
-X-Va-ID: 18e3a4c3-5490-44b2-ad7f-3fdafced04e4
-X-Va-CD: 0
-X-V-A: 
-X-V-T-CD: 18a8a04ab20a1763aa377ff80017b310
-X-V-E-CD: cf443eeeda88520596c661908908994e
-X-V-R-CD: 234d7789dec848a652f3cdc64dff37cf
-X-V-ID: 68e10ae8-ceaf-45ae-b5a2-04222b38c1a6
-X-V-CD: 0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-28_03,2024-08-27_01,2024-05-17_01
-Received: from Mac.apple.com ([17.11.139.69]) by mr55p01nt-mmpp02.apple.com
- (Oracle Communications Messaging Server 8.1.0.23.20230328 64bit (built Mar 28
- 2023)) with ESMTPSA id <0SIX2GJ1IDYJB800@mr55p01nt-mmpp02.apple.com>; Wed,
- 28 Aug 2024 11:16:14 +0000 (GMT)
-From: Danny Canter <danny_canter@apple.com>
-To: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: dirty@apple.com, rbolshakov@ddn.com, agraf@csgraf.de,
- peter.maydell@linaro.org, pbonzini@redhat.com, richard.henderson@linaro.org,
- eduardo@habkost.net, mst@redhat.com, marcel.apfelbaum@gmail.com,
- philmd@linaro.org, wangyanan55@huawei.com, zhao1.liu@intel.com,
- danny_canter@apple.com
-Subject: [PATCH v2 3/3] hvf: arm: Implement and use
- hvf_get_physical_address_range
-Date: Wed, 28 Aug 2024 04:15:52 -0700
-Message-id: <20240828111552.93482-4-danny_canter@apple.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-reply-to: <20240828111552.93482-1-danny_canter@apple.com>
-References: <20240828111552.93482-1-danny_canter@apple.com>
-MIME-version: 1.0
-Content-transfer-encoding: 8bit
-Received-SPF: pass client-ip=17.179.253.22;
- envelope-from=danny_canter@apple.com; helo=rn-mailsvcp-mx-lapp01.apple.com
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sjGlj-0006YL-Ai
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 07:23:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sjGlh-0002dT-Nf
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 07:23:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1724844197;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=sjPscny8RpBp/Hq/MF0Txq0RsmBmvhMA9j1IvksC6Zg=;
+ b=DYBwdJZik06WcAWULhLhPjdfZG835oO/PYABzPkV19pDnYQqWSs3//6zshfIffymHKO4ql
+ faciYn7b382XH5GVULILzzHcM9oOB+KcsVzHpZo0cWRNLKRCa+i6XOCShJHH8lFjsdGoB6
+ RVRKTib7ljhPbVxieKV+D1Wqy647at0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-VVMG9EtQNq6uKZ4tlwC9Sw-1; Wed,
+ 28 Aug 2024 07:23:13 -0400
+X-MC-Unique: VVMG9EtQNq6uKZ4tlwC9Sw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0AB3F1955F4A; Wed, 28 Aug 2024 11:23:12 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.112])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 151FE19560A3; Wed, 28 Aug 2024 11:23:11 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E498221E6A28; Wed, 28 Aug 2024 13:23:08 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  qemu-trivial@nongnu.org,
+ zhao1.liu@intel.com,  kvm@vger.kernel.org,  qemu-devel@nongnu.org
+Subject: Re: [PATCH v5 1/2] kvm: replace fprintf with
+ error_report()/printf() in kvm_init()
+In-Reply-To: <20240828075630.7754-2-anisinha@redhat.com> (Ani Sinha's message
+ of "Wed, 28 Aug 2024 13:26:28 +0530")
+References: <20240828075630.7754-1-anisinha@redhat.com>
+ <20240828075630.7754-2-anisinha@redhat.com>
+Date: Wed, 28 Aug 2024 13:23:08 +0200
+Message-ID: <87ikvkriw3.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,322 +85,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch's main focus is to use the previously added
-hvf_get_physical_address_range to inform VM creation
-about the IPA size we need for the VM, so we can extend
-the default 36b IPA size and support VMs with 64+GB of
-RAM. This is done by freezing the memory map, computing
-the highest GPA and then (depending on if the platform
-supports an IPA size that large) telling the kernel to
-use a size >= for the VM. In pursuit of this a couple of
-things related to how we handle the physical address range
-we expose to guests were altered, but for an explanation of
-what we were doing:
+Ani Sinha <anisinha@redhat.com> writes:
 
-Today, to get the IPA size we were reading id_aa64mmfr0_el1's
-PARange field from a newly made vcpu. Unfortunately, HVF just
-returns the hosts PARange directly for the initial value and
-not the IPA size that will actually back the VM, so we believe
-we have much more address space than we actually do today it seems.
+> error_report() is more appropriate for error situations. Replace fprintf with
+> error_report() and error_printf() as appropriate. Cosmetic. No functional
+> change.
 
-Starting in macOS 13.0 some APIs were introduced to be able to
-query the maximum IPA size the kernel supports, and to set the IPA
-size for a given VM. However, this still has a couple of issues
-on < macOS 15. Up until macOS 15 (and if the hardware supported
-it) the max IPA size was 39 bits which is not a valid PARange
-value, so we can't clamp down what we advertise in the vcpu's
-id_aa64mmfr0_el1 to our IPA size. Starting in macOS 15 however,
-the maximum IPA size is 40 bits (if it's supported in the hardware
-as well) which is also a valid PARange value so we can set our IPA
-size to the maximum as well as clamp down the PARange we advertise
-to the guest. This allows VMs with 64+ GB of RAM and should fix the
-oddness of the PARange situation as well.
+Uh, I missed this last time around: the change is more than just
+cosmetics!  The error messages change, e.g. from
 
-Signed-off-by: Danny Canter <danny_canter@apple.com>
----
- accel/hvf/hvf-accel-ops.c | 12 ++++++++-
- hw/arm/virt.c             | 31 +++++++++++++++++++++-
- target/arm/hvf/hvf.c      | 56 ++++++++++++++++++++++++++++++++++++++-
- target/arm/hvf_arm.h      | 19 +++++++++++++
- target/arm/internals.h    | 19 +++++++++++++
- target/arm/ptw.c          | 15 +++++++++++
- 6 files changed, 149 insertions(+), 3 deletions(-)
+    $ qemu-system-x86_64 -nodefaults -S -display none --accel kvm
+    qemu-system-x86_64: --accel kvm: Could not access KVM kernel module: Permission denied
+    qemu-system-x86_64: --accel kvm: failed to initialize kvm: Permission denied
 
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index dbebf209f4..d60874d3e6 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -53,6 +53,7 @@
- #include "exec/address-spaces.h"
- #include "exec/exec-all.h"
- #include "gdbstub/enums.h"
-+#include "hw/boards.h"
- #include "sysemu/cpus.h"
- #include "sysemu/hvf.h"
- #include "sysemu/hvf_int.h"
-@@ -319,8 +320,17 @@ static int hvf_accel_init(MachineState *ms)
-     int x;
-     hv_return_t ret;
-     HVFState *s;
-+    int pa_range = 36;
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
- 
--    ret = hvf_arch_vm_create(ms, 0);
-+    if (mc->hvf_get_physical_address_range) {
-+        pa_range = mc->hvf_get_physical_address_range(ms);
-+        if (pa_range < 0) {
-+            return -EINVAL;
-+        }
-+    }
-+
-+    ret = hvf_arch_vm_create(ms, (uint32_t)pa_range);
-     assert_hvf_ok(ret);
- 
-     s = g_new0(HVFState, 1);
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 62ee5f849b..b39c7924a0 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -66,6 +66,7 @@
- #include "hw/intc/arm_gicv3_its_common.h"
- #include "hw/irq.h"
- #include "kvm_arm.h"
-+#include "hvf_arm.h"
- #include "hw/firmware/smbios.h"
- #include "qapi/visitor.h"
- #include "qapi/qapi-visit-common.h"
-@@ -3030,7 +3031,35 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
- 
- static int virt_hvf_get_physical_address_range(MachineState *ms)
- {
--    return 0;
-+    VirtMachineState *vms = VIRT_MACHINE(ms);
-+
-+    int default_ipa_size = hvf_arm_get_default_ipa_bit_size();
-+    int max_ipa_size = hvf_arm_get_max_ipa_bit_size();
-+
-+    /* We freeze the memory map to compute the highest gpa */
-+    virt_set_memmap(vms, max_ipa_size);
-+
-+    int requested_ipa_size = 64 - clz64(vms->highest_gpa);
-+
-+    /*
-+     * If we're <= the default IPA size just use the default.
-+     * If we're above the default but below the maximum, round up to
-+     * the maximum. hvf_arm_get_max_ipa_bit_size() conveniently only
-+     * returns values that are valid ARM PARange values.
-+     */
-+    if (requested_ipa_size <= default_ipa_size) {
-+        requested_ipa_size = default_ipa_size;
-+    } else if (requested_ipa_size <= max_ipa_size) {
-+        requested_ipa_size = max_ipa_size;
-+    } else {
-+        error_report("-m and ,maxmem option values "
-+                     "require an IPA range (%d bits) larger than "
-+                     "the one supported by the host (%d bits)",
-+                     requested_ipa_size, max_ipa_size);
-+        return -1;
-+    }
-+
-+    return requested_ipa_size;
- }
- 
- static void virt_machine_class_init(ObjectClass *oc, void *data)
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 19964d241e..6cea483d42 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -22,6 +22,7 @@
- #include <mach/mach_time.h>
- 
- #include "exec/address-spaces.h"
-+#include "hw/boards.h"
- #include "hw/irq.h"
- #include "qemu/main-loop.h"
- #include "sysemu/cpus.h"
-@@ -297,6 +298,8 @@ void hvf_arm_init_debug(void)
- 
- static void hvf_wfi(CPUState *cpu);
- 
-+static uint32_t chosen_ipa_bit_size;
-+
- typedef struct HVFVTimer {
-     /* Vtimer value during migration and paused state */
-     uint64_t vtimer_val;
-@@ -839,6 +842,16 @@ static uint64_t hvf_get_reg(CPUState *cpu, int rt)
-     return val;
- }
- 
-+static void clamp_id_aa64mmfr0_parange_to_ipa_size(uint64_t *id_aa64mmfr0)
-+{
-+    uint32_t ipa_size = chosen_ipa_bit_size ?
-+            chosen_ipa_bit_size : hvf_arm_get_max_ipa_bit_size();
-+
-+    /* Clamp down the PARange to the IPA size the kernel supports. */
-+    uint8_t index = round_down_to_parange_index(ipa_size);
-+    *id_aa64mmfr0 = (*id_aa64mmfr0 & ~R_ID_AA64MMFR0_PARANGE_MASK) | index;
-+}
-+
- static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
- {
-     ARMISARegisters host_isar = {};
-@@ -882,6 +895,8 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     r |= hv_vcpu_get_sys_reg(fd, HV_SYS_REG_MIDR_EL1, &ahcf->midr);
-     r |= hv_vcpu_destroy(fd);
- 
-+    clamp_id_aa64mmfr0_parange_to_ipa_size(&host_isar.id_aa64mmfr0);
-+
-     ahcf->isar = host_isar;
- 
-     /*
-@@ -904,6 +919,30 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     return r == HV_SUCCESS;
- }
- 
-+uint32_t hvf_arm_get_default_ipa_bit_size(void)
-+{
-+    uint32_t default_ipa_size;
-+    hv_return_t ret = hv_vm_config_get_default_ipa_size(&default_ipa_size);
-+    assert_hvf_ok(ret);
-+
-+    return default_ipa_size;
-+}
-+
-+uint32_t hvf_arm_get_max_ipa_bit_size(void)
-+{
-+    uint32_t max_ipa_size;
-+    hv_return_t ret = hv_vm_config_get_max_ipa_size(&max_ipa_size);
-+    assert_hvf_ok(ret);
-+
-+    /*
-+     * We clamp any IPA size we want to back the VM with to a valid PARange
-+     * value so the guest doesn't try and map memory outside of the valid range.
-+     * This logic just clamps the passed in IPA bit size to the first valid
-+     * PARange value <= to it.
-+     */
-+    return round_down_to_parange_bit_size(max_ipa_size);
-+}
-+
- void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu)
- {
-     if (!arm_host_cpu_features.dtb_compatible) {
-@@ -931,8 +970,18 @@ void hvf_arch_vcpu_destroy(CPUState *cpu)
- 
- hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
- {
-+    hv_return_t ret;
-     hv_vm_config_t config = hv_vm_config_create();
--    hv_return_t ret = hv_vm_create(config);
-+
-+    ret = hv_vm_config_set_ipa_size(config, pa_range);
-+    if (ret != HV_SUCCESS) {
-+        goto cleanup;
-+    }
-+    chosen_ipa_bit_size = pa_range;
-+
-+    ret = hv_vm_create(config);
-+
-+cleanup:
-     os_release(config);
- 
-     return ret;
-@@ -1004,6 +1053,11 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-                               &arm_cpu->isar.id_aa64mmfr0);
-     assert_hvf_ok(ret);
- 
-+    clamp_id_aa64mmfr0_parange_to_ipa_size(&arm_cpu->isar.id_aa64mmfr0);
-+    ret = hv_vcpu_set_sys_reg(cpu->accel->fd, HV_SYS_REG_ID_AA64MMFR0_EL1,
-+                              arm_cpu->isar.id_aa64mmfr0);
-+    assert_hvf_ok(ret);
-+
-     return 0;
- }
- 
-diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
-index e848c1d27d..26c717b382 100644
---- a/target/arm/hvf_arm.h
-+++ b/target/arm/hvf_arm.h
-@@ -22,4 +22,23 @@ void hvf_arm_init_debug(void);
- 
- void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
- 
-+#ifdef CONFIG_HVF
-+
-+uint32_t hvf_arm_get_default_ipa_bit_size(void);
-+uint32_t hvf_arm_get_max_ipa_bit_size(void);
-+
-+#else
-+
-+static inline uint32_t hvf_arm_get_default_ipa_bit_size(void)
-+{
-+    return 0;
-+}
-+
-+static inline uint32_t hvf_arm_get_max_ipa_bit_size(void)
-+{
-+    return 0;
-+}
-+
-+#endif
-+
- #endif
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 203a2dae14..c5d7b0b492 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -450,6 +450,25 @@ static inline void update_spsel(CPUARMState *env, uint32_t imm)
-  */
- unsigned int arm_pamax(ARMCPU *cpu);
- 
-+/*
-+ * round_down_to_parange_index
-+ * @bit_size: uint8_t
-+ *
-+ * Rounds down the bit_size supplied to the first supported ARM physical
-+ * address range and returns the index for this. The index is intended to
-+ * be used to set ID_AA64MMFR0_EL1's PARANGE bits.
-+ */
-+uint8_t round_down_to_parange_index(uint8_t bit_size);
-+
-+/*
-+ * round_down_to_parange_bit_size
-+ * @bit_size: uint8_t
-+ *
-+ * Rounds down the bit_size supplied to the first supported ARM physical
-+ * address range bit size and returns this.
-+ */
-+uint8_t round_down_to_parange_bit_size(uint8_t bit_size);
-+
- /* Return true if extended addresses are enabled.
-  * This is always the case if our translation regime is 64 bit,
-  * but depends on TTBCR.EAE for 32 bit.
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 278004661b..defd6b84de 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -96,6 +96,21 @@ static const uint8_t pamax_map[] = {
-     [6] = 52,
- };
- 
-+uint8_t round_down_to_parange_index(uint8_t bit_size)
-+{
-+    for (int i = ARRAY_SIZE(pamax_map) - 1; i >= 0; i--) {
-+        if (pamax_map[i] <= bit_size) {
-+            return i;
-+        }
-+    }
-+    g_assert_not_reached();
-+}
-+
-+uint8_t round_down_to_parange_bit_size(uint8_t bit_size)
-+{
-+    return pamax_map[round_down_to_parange_index(bit_size)];
-+}
-+
- /*
-  * The cpu-specific constant value of PAMax; also used by hw/arm/virt.
-  * Note that machvirt_init calls this on a CPU that is inited but not realized!
--- 
-2.39.5 (Apple Git-154)
+to
+
+    $ qemu-system-x86_64 -nodefaults -S -display none --accel kvm
+    Could not access KVM kernel module: Permission denied
+    qemu-system-x86_64: --accel kvm: failed to initialize kvm: Permission denied
+
+Note: the second message is from kvm_init()'s caller.  Reporting the
+same error twice is wrong, but not this patch's problem.
+
+Moreover, the patch tweaks an error message at [*].
+
+Suggest something like
+
+  Replace fprintf() with error_report() and error_printf() where
+  appropriate.  Error messages improve, e.g. from
+
+      Could not access KVM kernel module: Permission denied
+
+  to
+
+      qemu-system-x86_64: --accel kvm: Could not access KVM kernel module: Permission denied
+
+> CC: qemu-trivial@nongnu.org
+> CC: zhao1.liu@intel.com
+> CC: armbru@redhat.com
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  accel/kvm/kvm-all.c | 40 ++++++++++++++++++----------------------
+>  1 file changed, 18 insertions(+), 22 deletions(-)
+>
+> changelog:
+> v2: fix a bug.
+> v3: replace one instance of error_report() with error_printf(). added tags.
+> v4: changes suggested by Markus.
+> v5: more changes from Markus's comments on v4.
+>
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 75d11a07b2..fcc157f0e6 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2427,7 +2427,7 @@ static int kvm_init(MachineState *ms)
+>      QLIST_INIT(&s->kvm_parked_vcpus);
+>      s->fd = qemu_open_old(s->device ?: "/dev/kvm", O_RDWR);
+>      if (s->fd == -1) {
+> -        fprintf(stderr, "Could not access KVM kernel module: %m\n");
+> +        error_report("Could not access KVM kernel module: %m");
+>          ret = -errno;
+>          goto err;
+>      }
+> @@ -2437,13 +2437,13 @@ static int kvm_init(MachineState *ms)
+>          if (ret >= 0) {
+>              ret = -EINVAL;
+>          }
+> -        fprintf(stderr, "kvm version too old\n");
+> +        error_report("kvm version too old");
+>          goto err;
+>      }
+>  
+>      if (ret > KVM_API_VERSION) {
+>          ret = -EINVAL;
+> -        fprintf(stderr, "kvm version not supported\n");
+> +        error_report("kvm version not supported");
+>          goto err;
+>      }
+>  
+> @@ -2488,26 +2488,22 @@ static int kvm_init(MachineState *ms)
+>      } while (ret == -EINTR);
+>  
+>      if (ret < 0) {
+> -        fprintf(stderr, "ioctl(KVM_CREATE_VM) failed: %d %s\n", -ret,
+> -                strerror(-ret));
+> +        error_report("ioctl(KVM_CREATE_VM) failed: %s", strerror(-ret));
+
+[*] This is where you change an error message.
+
+>  
+>  #ifdef TARGET_S390X
+>          if (ret == -EINVAL) {
+> -            fprintf(stderr,
+> -                    "Host kernel setup problem detected. Please verify:\n");
+> -            fprintf(stderr, "- for kernels supporting the switch_amode or"
+> -                    " user_mode parameters, whether\n");
+> -            fprintf(stderr,
+> -                    "  user space is running in primary address space\n");
+> -            fprintf(stderr,
+> -                    "- for kernels supporting the vm.allocate_pgste sysctl, "
+> -                    "whether it is enabled\n");
+> +            error_printf("Host kernel setup problem detected."
+> +                         " Please verify:\n");
+> +            error_printf("- for kernels supporting the"
+> +                        " switch_amode or user_mode parameters, whether");
+> +            error_printf(" user space is running in primary address space\n");
+> +            error_printf("- for kernels supporting the vm.allocate_pgste"
+> +                         " sysctl, whether it is enabled\n");
+>          }
+>  #elif defined(TARGET_PPC)
+>          if (ret == -EINVAL) {
+> -            fprintf(stderr,
+> -                    "PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
+> -                    (type == 2) ? "pr" : "hv");
+> +            error_printf("PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
+> +                         (type == 2) ? "pr" : "hv");
+>          }
+>  #endif
+>          goto err;
+> @@ -2526,9 +2522,9 @@ static int kvm_init(MachineState *ms)
+>                          nc->name, nc->num, soft_vcpus_limit);
+>  
+>              if (nc->num > hard_vcpus_limit) {
+> -                fprintf(stderr, "Number of %s cpus requested (%d) exceeds "
+> -                        "the maximum cpus supported by KVM (%d)\n",
+> -                        nc->name, nc->num, hard_vcpus_limit);
+> +                error_report("Number of %s cpus requested (%d) exceeds "
+> +                             "the maximum cpus supported by KVM (%d)",
+> +                             nc->name, nc->num, hard_vcpus_limit);
+>                  exit(1);
+>              }
+>          }
+> @@ -2542,8 +2538,8 @@ static int kvm_init(MachineState *ms)
+>      }
+>      if (missing_cap) {
+>          ret = -EINVAL;
+> -        fprintf(stderr, "kvm does not support %s\n%s",
+> -                missing_cap->name, upgrade_note);
+> +        error_report("kvm does not support %s", missing_cap->name);
+> +        error_printf("%s", upgrade_note);
+>          goto err;
+>      }
+
+With the commit message corrected:
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
 
