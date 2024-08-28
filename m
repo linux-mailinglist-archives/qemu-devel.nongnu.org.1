@@ -2,130 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7984B96289C
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 15:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B72962835
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 15:06:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjIhD-0005ez-Dc; Wed, 28 Aug 2024 09:26:47 -0400
+	id 1sjIM6-0005uz-3N; Wed, 28 Aug 2024 09:04:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1sjI85-0003wC-T8
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:50:29 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sjIM4-0005u1-PO
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 09:04:56 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1sjI84-00052H-73
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:50:29 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a86acbaddb4so618629866b.1
- for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 05:50:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724849426; x=1725454226; darn=nongnu.org;
- h=mime-version:user-agent:content-transfer-encoding:autocrypt
- :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=02ptqi7SUr5ZLauUSAynEV+niDo0wYMb2imjWzIfsos=;
- b=cqKK4bqsykxOzaj6MfaZcs4c+nPGDdJ8TMUeLJbpqIQ8NOnQ4G0fDGg8oN0sNrqWSC
- BuKLhJYP8Vx4yvne9n5dnWLaia5g9E8QjgYFV2C/KM/vWT4C4fHA3ec07AFht26OFe/8
- S2opUKBGWhs011cBl3B37hFR4DsW9vYiUoXWqD3V67tk/pQoVXHMEnqJzE+S7EZM0MxL
- bj/VWis4XSv4NsXHN8nDZX9b4AgwYK15X13kjbKijQWIg61C4DWL9rCEMMn0GgvY1P1k
- 2MdpwH1KgXW7JqFgv1m8iJnQK+dsQDwX9rQU3tjcH9wJl7WBiRvPPkqSq8Lo4tmwZxQo
- +5OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724849426; x=1725454226;
- h=mime-version:user-agent:content-transfer-encoding:autocrypt
- :references:in-reply-to:date:cc:to:from:subject:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=02ptqi7SUr5ZLauUSAynEV+niDo0wYMb2imjWzIfsos=;
- b=F7QPXLkMv1HCc2BVhyYyVkxu5hahTevL7O0HiBXPelYmdCDcy7G5n22a+UhBl90DTZ
- IExlFMBTB6a3Mi5ZmH4NcS3xrhA1daqxI411dFBp/jmbr90lvVsjGxPrX5LQD7zU29zo
- 5vTa6o9CZa6Md9/AwRSv0XO62cHOp30z+OLuiOnf3ucT3kDYvgGVvD8Cc7QzC9fOZZZK
- BwU1s/k6e5R7LFRRzoeKBrdkY61xWuOM7ryqsxKrfLGhgFSDdeBzkvsjiDg6FSoQDfbj
- WSh2nxT4A2HIJTDmckBNqDmRfhfzn+aze54Xn5D64+e8rdXOSkh9O903CBJaL1X4AJYx
- cthA==
-X-Gm-Message-State: AOJu0YyxR4JK0uVgjC9HVB9Wa5vVY4Ph9Zu681oAe+UL2928TXd5uTQs
- gnlTbKI10deqaZiV/Ve0u8CR/qxEI35WUTE545AxkEXghAFeJhAD8xVIyA==
-X-Google-Smtp-Source: AGHT+IE29WBq7kuECyXBSnYy5BOdM5UYyHmOqSLSaXwoEhv5nCtwXNbP/Z67Hh34aQ5rzIHHSkE9DA==
-X-Received: by 2002:a17:906:f59a:b0:a86:9880:183 with SMTP id
- a640c23a62f3a-a870a94fe3amr152284566b.10.1724849425906; 
- Wed, 28 Aug 2024 05:50:25 -0700 (PDT)
-Received: from [172.21.179.178] ([195.226.174.194])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a86e5878a4asm243765266b.177.2024.08.28.05.50.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Aug 2024 05:50:25 -0700 (PDT)
-Message-ID: <d9a3044bf7d9c059fd7cbdb4e12400c11003ae28.camel@gmail.com>
-Subject: Re: [PATCH 4/7] vfio/igd: add new bar0 quirk to emulate BDSM mirror
-From: Corvin =?ISO-8859-1?Q?K=F6hne?= <corvin.koehne@gmail.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: qemu-devel@nongnu.org, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
-Date: Wed, 28 Aug 2024 14:50:24 +0200
-In-Reply-To: <216d3028301937887bc684ac905c7088272930ab.camel@gmail.com>
-References: <20240822111819.34306-1-c.koehne@beckhoff.com>
- <20240822111819.34306-5-c.koehne@beckhoff.com>
- <20240826103513.082360bd.alex.williamson@redhat.com>
- <216d3028301937887bc684ac905c7088272930ab.camel@gmail.com>
-Autocrypt: addr=corvin.koehne@gmail.com; prefer-encrypt=mutual;
- keydata=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
- LwksVmgc9s79+9pSpeP5DbIeMzhrIK
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sjIM1-0006ZC-3B
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 09:04:56 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id F1C8C21B6C;
+ Wed, 28 Aug 2024 13:04:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724850291; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uVzEXbwSELz5xdfduq1kH97SG0HM2AGjrcE5MOHazKM=;
+ b=amK5cTPx82ChQ47YwmkJXNV8h2aJHS2tpJhLp6IPH6vWkA2+irxDJitWaSVzbtxo4auySC
+ Gq6lIPGWSfS+KzlsuuxPHcF5AIFQ00bssuz7y0/3otUFK5YN2piRBUaQGuz+2y3uVjkeiu
+ ACXpLEExD2e9AL6UQEmhUmOlNuHynxY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724850291;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uVzEXbwSELz5xdfduq1kH97SG0HM2AGjrcE5MOHazKM=;
+ b=XQHIdmcNm00Dt6kbJQfjZS7BnV9uQ5i/OacpnGx7CR6N/WiKD08a8/KwYQHunr/f0w3yEE
+ AkHwZcRU5PgOE0Cw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1724850290; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uVzEXbwSELz5xdfduq1kH97SG0HM2AGjrcE5MOHazKM=;
+ b=K++agt+MfFLhmhZbFcaRgMs78IM1uK/WAy7hHlR69VXiSL3K4tFvjb3YxH/iQqJw2kbC+T
+ f9hvq1rdUdO1m5DRDckY7hSSfjsNR0WPaH/RG3h32yR0RlKzYVdMXc8KSgrBMWRkFbaD8h
+ CEwuZf3982uDVu5hAfXqjF4yLZxQWBo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1724850290;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uVzEXbwSELz5xdfduq1kH97SG0HM2AGjrcE5MOHazKM=;
+ b=fUJMX3xCW6kZ0VsnWcJaK1xy1y4n2DzGMEZMmEPVEDhAmG5LaWa5spapm29d3daNElmqJU
+ U+0ukNNcSs75gKDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7B0C8138D2;
+ Wed, 28 Aug 2024 13:04:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id Ym2DEHIgz2ZwHwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 28 Aug 2024 13:04:50 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, "Maciej S . Szmigiero"
+ <mail@maciej.szmigiero.name>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH v6 19/19] migration/multifd: Add documentation for
+ multifd methods
+In-Reply-To: <Zs5H3TtkFfLFDrTw@x1n>
+References: <20240827174606.10352-1-farosas@suse.de>
+ <20240827174606.10352-20-farosas@suse.de> <Zs4bL_lRURD7cV_N@x1n>
+ <87mskxx0ck.fsf@suse.de> <Zs4ka2-q6JJbL1KA@x1n> <87jzg1wza0.fsf@suse.de>
+ <Zs4spTkGlJJuB7LT@x1n> <87zfoxogvr.fsf@suse.de> <Zs5H3TtkFfLFDrTw@x1n>
+Date: Wed, 28 Aug 2024 10:04:47 -0300
+Message-ID: <87wmk0ol1s.fsf@suse.de>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ RCPT_COUNT_THREE(0.00)[4]; MISSING_XM_UA(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email, suse.de:mid,
+ imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 28 Aug 2024 09:26:40 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -140,24 +120,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2024-08-28 at 12:40 +0200, Corvin K=C3=B6hne wrote:
-> On Mon, 2024-08-26 at 10:35 -0600, Alex Williamson wrote:
-> >=20
-> > PS - please drop the confidential email warning signature when
-> > posting
-> > to public lists.
-> >=20
->=20
-> Sry for the noise. I can't drop it, so I'm going to use another mail
-> address to post my patches.
->=20
-> >=20
+Peter Xu <peterx@redhat.com> writes:
 
-Argh, forgot updating my send-email config when resending the patch
-series. Should I resend it again?
+> On Tue, Aug 27, 2024 at 05:22:32PM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>> 
+>> > On Tue, Aug 27, 2024 at 04:17:59PM -0300, Fabiano Rosas wrote:
+>> >> Peter Xu <peterx@redhat.com> writes:
+>> >> 
+>> >> > On Tue, Aug 27, 2024 at 03:54:51PM -0300, Fabiano Rosas wrote:
+>> >> >> Peter Xu <peterx@redhat.com> writes:
+>> >> >> 
+>> >> >> > On Tue, Aug 27, 2024 at 02:46:06PM -0300, Fabiano Rosas wrote:
+>> >> >> >> Add documentation clarifying the usage of the multifd methods. The
+>> >> >> >> general idea is that the client code calls into multifd to trigger
+>> >> >> >> send/recv of data and multifd then calls these hooks back from the
+>> >> >> >> worker threads at opportune moments so the client can process a
+>> >> >> >> portion of the data.
+>> >> >> >> 
+>> >> >> >> Suggested-by: Peter Xu <peterx@redhat.com>
+>> >> >> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> >> >> >> ---
+>> >> >> >> Note that the doc is not symmetrical among send/recv because the recv
+>> >> >> >> side is still wonky. It doesn't give the packet to the hooks, which
+>> >> >> >> forces the p->normal, p->zero, etc. to be processed at the top level
+>> >> >> >> of the threads, where no client-specific information should be.
+>> >> >> >> ---
+>> >> >> >>  migration/multifd.h | 76 +++++++++++++++++++++++++++++++++++++++++----
+>> >> >> >>  1 file changed, 70 insertions(+), 6 deletions(-)
+>> >> >> >> 
+>> >> >> >> diff --git a/migration/multifd.h b/migration/multifd.h
+>> >> >> >> index 13e7a88c01..ebb17bdbcf 100644
+>> >> >> >> --- a/migration/multifd.h
+>> >> >> >> +++ b/migration/multifd.h
+>> >> >> >> @@ -229,17 +229,81 @@ typedef struct {
+>> >> >> >>  } MultiFDRecvParams;
+>> >> >> >>  
+>> >> >> >>  typedef struct {
+>> >> >> >> -    /* Setup for sending side */
+>> >> >> >> +    /*
+>> >> >> >> +     * The send_setup, send_cleanup, send_prepare are only called on
+>> >> >> >> +     * the QEMU instance at the migration source.
+>> >> >> >> +     */
+>> >> >> >> +
+>> >> >> >> +    /*
+>> >> >> >> +     * Setup for sending side. Called once per channel during channel
+>> >> >> >> +     * setup phase.
+>> >> >> >> +     *
+>> >> >> >> +     * Must allocate p->iov. If packets are in use (default), one
+>> >> >> >
+>> >> >> > Pure thoughts: wonder whether we can assert(p->iov) that after the hook
+>> >> >> > returns in code to match this line.
+>> >> >> 
+>> >> >> Not worth the extra instructions in my opinion. It would crash
+>> >> >> immediately once the thread touches p->iov anyway.
+>> >> >
+>> >> > It might still be good IMHO to have that assert(), not only to abort
+>> >> > earlier, but also as a code-styled comment.  Your call when resend.
+>> >> >
+>> >> > PS: feel free to queue existing patches into your own tree without
+>> >> > resending the whole series!
+>> >> >
+>> >> >> 
+>> >> >> >
+>> >> >> >> +     * extra iovec must be allocated for the packet header. Any memory
+>> >> >> >> +     * allocated in this hook must be released at send_cleanup.
+>> >> >> >> +     *
+>> >> >> >> +     * p->write_flags may be used for passing flags to the QIOChannel.
+>> >> >> >> +     *
+>> >> >> >> +     * p->compression_data may be used by compression methods to store
+>> >> >> >> +     * compression data.
+>> >> >> >> +     */
+>> >> >> >>      int (*send_setup)(MultiFDSendParams *p, Error **errp);
+>> >> >> >> -    /* Cleanup for sending side */
+>> >> >> >> +
+>> >> >> >> +    /*
+>> >> >> >> +     * Cleanup for sending side. Called once per channel during
+>> >> >> >> +     * channel cleanup phase. May be empty.
+>> >> >> >
+>> >> >> > Hmm, if we require p->iov allocation per-ops, then they must free it here?
+>> >> >> > I wonder whether we leaked it in most compressors.
+>> >> >> 
+>> >> >> Sorry, this one shouldn't have that text.
+>> >> >
+>> >> > I still want to double check with you: we leaked iov[] in most compressors
+>> >> > here, or did I overlook something?
+>> >> 
+>> >> They have their own send_cleanup function where p->iov is freed.
+>> >
+>> > Oh, so I guess I just accidentally stumbled upon
+>> > multifd_uadk_send_cleanup() when looking..
+>> 
+>> Yeah, this is a bit worrying. The reason this has not shown on valgrind
+>> or the asan that Peter ran recently is that uadk, qpl and soon qat are
+>> never enabled in a regular build. I have myself introduced compilation
+>> errors in those files that I only caught by accident at a later point
+>> (before sending to the ml).
+>
+> I tried to manually install qpl and uadk just now but neither of them is
+> trivial to compile and install..  I hit random errors here and there in my
+> first shot.
+>
+> OTOH, qatzip packages are around at least in Fedora repositories, so that
+> might be the easiest to reach.  Not sure how's that when with OpenSUSE.
+>
+> Shall we perhaps draft an email and check with them? E.g., would that be
+> better if there's plan they would at some point provide RPMs for libraries
+> at some point so that we could somehow integrate that into CI routines?
 
+We merged most of these things already. Now even if rpms show up at some
+point we still have to deal with not being able to build that code until
+then. Perhaps we could have a container that has all of these
+pre-installed just to exercize the code a bit. But it still wouldn't
+catch some issues becase we cannot run the code due to the lack of
+hardware.
 
---=20
-Kind regards,
-Corvin
+>
+>> 
+>> >
+>> > I thought I looked a few more but now when I check most of them are indeed
+>> > there but looks like uadk is missing that.
+>> >
+>> > I think it might still be a good idea to assert(iov==NULL) after the
+>> > cleanup..
+>> 
+>> Should we maybe just free p->iov at the top level then?
+>
+> We could, but if so it might be good to also allocate at the top level so
+> the hooks are paired up on these allocations/frees.
+>
+> IMHO we could already always allocate iov[] to page_count+2 which is the
+> maximum of all compressors - currently we've got 128 pages per packet by
+> default, which is 128*16=2KB iov[] per channel.  Not so bad when only used
+> during migrations.
+>
+> Or we can perhaps do send_setup(..., &iovs_needed), returns how many iovs
+> are needed, then multifd allocates them.
+
+Let me play around with these a bit. I might just fix uadk and leave
+everything else as it is for now.
 
