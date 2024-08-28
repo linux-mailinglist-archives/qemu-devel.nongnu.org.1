@@ -2,78 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D938B9627B1
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 14:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7984B96289C
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 15:27:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjI6o-0008E9-1y; Wed, 28 Aug 2024 08:49:10 -0400
+	id 1sjIhD-0005ez-Dc; Wed, 28 Aug 2024 09:26:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sjI6l-0008Cw-Bp
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:49:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sjI6j-0004m0-AZ
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:49:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1724849344;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RXr66m8jBNsSGXQJKi0J1t9v2nb3kkzqh4XO2iHMzcs=;
- b=Jf+KPBEfLUypTHMlapWFRvadLlU+C2rOx1y/DcHmpdeZ2qujCPktMMrRV4Xrm1N0WQYXv/
- BlodaxqjgnlaxLh4vuC39zW4M0x95g9yjcNkCzvF5fiTcoz0mlO5iUfUxhUMe6VkRp5HRk
- vyyekNHIbi7bDZE1XO/6cgPHR7iH2rI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-a0HQOUxHMBSI9nPLX9ohLA-1; Wed,
- 28 Aug 2024 08:49:02 -0400
-X-MC-Unique: a0HQOUxHMBSI9nPLX9ohLA-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C38251918164; Wed, 28 Aug 2024 12:49:00 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.92])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B452619560AA; Wed, 28 Aug 2024 12:48:58 +0000 (UTC)
-Date: Wed, 28 Aug 2024 13:48:55 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
-Subject: Re: [PULL 3/6] qemu/osdep: Split qemu_close_all_open_fd() and add
- fallback
-Message-ID: <Zs8ctyVxQz3iLDmM@redhat.com>
-References: <20240805003130.1421051-1-richard.henderson@linaro.org>
- <20240805003130.1421051-5-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
+ id 1sjI85-0003wC-T8
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:50:29 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
+ id 1sjI84-00052H-73
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 08:50:29 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a86acbaddb4so618629866b.1
+ for <qemu-devel@nongnu.org>; Wed, 28 Aug 2024 05:50:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1724849426; x=1725454226; darn=nongnu.org;
+ h=mime-version:user-agent:content-transfer-encoding:autocrypt
+ :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=02ptqi7SUr5ZLauUSAynEV+niDo0wYMb2imjWzIfsos=;
+ b=cqKK4bqsykxOzaj6MfaZcs4c+nPGDdJ8TMUeLJbpqIQ8NOnQ4G0fDGg8oN0sNrqWSC
+ BuKLhJYP8Vx4yvne9n5dnWLaia5g9E8QjgYFV2C/KM/vWT4C4fHA3ec07AFht26OFe/8
+ S2opUKBGWhs011cBl3B37hFR4DsW9vYiUoXWqD3V67tk/pQoVXHMEnqJzE+S7EZM0MxL
+ bj/VWis4XSv4NsXHN8nDZX9b4AgwYK15X13kjbKijQWIg61C4DWL9rCEMMn0GgvY1P1k
+ 2MdpwH1KgXW7JqFgv1m8iJnQK+dsQDwX9rQU3tjcH9wJl7WBiRvPPkqSq8Lo4tmwZxQo
+ +5OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724849426; x=1725454226;
+ h=mime-version:user-agent:content-transfer-encoding:autocrypt
+ :references:in-reply-to:date:cc:to:from:subject:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=02ptqi7SUr5ZLauUSAynEV+niDo0wYMb2imjWzIfsos=;
+ b=F7QPXLkMv1HCc2BVhyYyVkxu5hahTevL7O0HiBXPelYmdCDcy7G5n22a+UhBl90DTZ
+ IExlFMBTB6a3Mi5ZmH4NcS3xrhA1daqxI411dFBp/jmbr90lvVsjGxPrX5LQD7zU29zo
+ 5vTa6o9CZa6Md9/AwRSv0XO62cHOp30z+OLuiOnf3ucT3kDYvgGVvD8Cc7QzC9fOZZZK
+ BwU1s/k6e5R7LFRRzoeKBrdkY61xWuOM7ryqsxKrfLGhgFSDdeBzkvsjiDg6FSoQDfbj
+ WSh2nxT4A2HIJTDmckBNqDmRfhfzn+aze54Xn5D64+e8rdXOSkh9O903CBJaL1X4AJYx
+ cthA==
+X-Gm-Message-State: AOJu0YyxR4JK0uVgjC9HVB9Wa5vVY4Ph9Zu681oAe+UL2928TXd5uTQs
+ gnlTbKI10deqaZiV/Ve0u8CR/qxEI35WUTE545AxkEXghAFeJhAD8xVIyA==
+X-Google-Smtp-Source: AGHT+IE29WBq7kuECyXBSnYy5BOdM5UYyHmOqSLSaXwoEhv5nCtwXNbP/Z67Hh34aQ5rzIHHSkE9DA==
+X-Received: by 2002:a17:906:f59a:b0:a86:9880:183 with SMTP id
+ a640c23a62f3a-a870a94fe3amr152284566b.10.1724849425906; 
+ Wed, 28 Aug 2024 05:50:25 -0700 (PDT)
+Received: from [172.21.179.178] ([195.226.174.194])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a86e5878a4asm243765266b.177.2024.08.28.05.50.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Aug 2024 05:50:25 -0700 (PDT)
+Message-ID: <d9a3044bf7d9c059fd7cbdb4e12400c11003ae28.camel@gmail.com>
+Subject: Re: [PATCH 4/7] vfio/igd: add new bar0 quirk to emulate BDSM mirror
+From: Corvin =?ISO-8859-1?Q?K=F6hne?= <corvin.koehne@gmail.com>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: qemu-devel@nongnu.org, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
+Date: Wed, 28 Aug 2024 14:50:24 +0200
+In-Reply-To: <216d3028301937887bc684ac905c7088272930ab.camel@gmail.com>
+References: <20240822111819.34306-1-c.koehne@beckhoff.com>
+ <20240822111819.34306-5-c.koehne@beckhoff.com>
+ <20240826103513.082360bd.alex.williamson@redhat.com>
+ <216d3028301937887bc684ac905c7088272930ab.camel@gmail.com>
+Autocrypt: addr=corvin.koehne@gmail.com; prefer-encrypt=mutual;
+ keydata=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
+ LwksVmgc9s79+9pSpeP5DbIeMzhrIK
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240805003130.1421051-5-richard.henderson@linaro.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 28 Aug 2024 09:26:40 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,131 +137,27 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is already merged, but I have two comments - one improvement
-and one bug which we should probably fix before release.
+On Wed, 2024-08-28 at 12:40 +0200, Corvin K=C3=B6hne wrote:
+> On Mon, 2024-08-26 at 10:35 -0600, Alex Williamson wrote:
+> >=20
+> > PS - please drop the confidential email warning signature when
+> > posting
+> > to public lists.
+> >=20
+>=20
+> Sry for the noise. I can't drop it, so I'm going to use another mail
+> address to post my patches.
+>=20
+> >=20
 
-On Mon, Aug 05, 2024 at 10:31:26AM +1000, Richard Henderson wrote:
-> From: Clément Léger <cleger@rivosinc.com>
-> 
-> In order to make it cleaner, split qemu_close_all_open_fd() logic into
-> multiple subfunctions (close with close_range(), with /proc/self/fd and
-> fallback).
-> 
-> Signed-off-by: Clément Léger <cleger@rivosinc.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-ID: <20240802145423.3232974-3-cleger@rivosinc.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  util/oslib-posix.c | 50 ++++++++++++++++++++++++++++++++++------------
->  1 file changed, 37 insertions(+), 13 deletions(-)
-> 
-> diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-> index 1e867efa47..9b79fc7cff 100644
-> --- a/util/oslib-posix.c
-> +++ b/util/oslib-posix.c
-> @@ -808,27 +808,16 @@ int qemu_msync(void *addr, size_t length, int fd)
->      return msync(addr, length, MS_SYNC);
->  }
->  
-> -/*
-> - * Close all open file descriptors.
-> - */
-> -void qemu_close_all_open_fd(void)
-> +static bool qemu_close_all_open_fd_proc(void)
->  {
->      struct dirent *de;
->      int fd, dfd;
->      DIR *dir;
->  
-> -#ifdef CONFIG_CLOSE_RANGE
-> -    int r = close_range(0, ~0U, 0);
-> -    if (!r) {
-> -        /* Success, no need to try other ways. */
-> -        return;
-> -    }
-> -#endif
-> -
->      dir = opendir("/proc/self/fd");
-
-IIUC from previous threads this is valid on Linux and on Solaris.
-
-On FreeBSD & macOS, you need /dev/fd though.
-
->      if (!dir) {
->          /* If /proc is not mounted, there is nothing that can be done. */
-> -        return;
-> +        return false;
->      }
->      /* Avoid closing the directory. */
->      dfd = dirfd(dir);
-> @@ -840,4 +829,39 @@ void qemu_close_all_open_fd(void)
->          }
->      }
->      closedir(dir);
-> +
-> +    return true;
-> +}
-> +
-> +static bool qemu_close_all_open_fd_close_range(void)
-> +{
-> +#ifdef CONFIG_CLOSE_RANGE
-> +    int r = close_range(0, ~0U, 0);
-> +    if (!r) {
-> +        /* Success, no need to try other ways. */
-> +        return true;
-> +    }
-> +#endif
-> +    return false;
-> +}
-> +
-> +static void qemu_close_all_open_fd_fallback(void)
-> +{
-> +    int open_max = sysconf(_SC_OPEN_MAX), i;
-> +
-> +    /* Fallback */
-> +    for (i = 0; i < open_max; i++) {
-> +        close(i);
-> +    }
-
-I'm told that sysconf(_SC_OPEN_MAX) returns -1 on some versions of
-macOS. "Luckily" since we assigned to 'int' rather than 'unsigned int'
-this will result in us not closing any FDs in this fallback path,
-rather than trying to close several billion FDs (an effective hang).
-
-If _SC_OPEN_MAX returns -1, we should fallback to the OPEN_MAX
-constant on macOS (see commit de448e0f26e710e9d2b7fc91393c40ac24b75847
-which tackled a similar issue wrt getrlimit), and fallback to perhaps
-a hardcoded 1024 on non-macOS.
+Argh, forgot updating my send-email config when resending the patch
+series. Should I resend it again?
 
 
-> +}
-> +
-> +/*
-> + * Close all open file descriptors.
-> + */
-> +void qemu_close_all_open_fd(void)
-> +{
-> +    if (!qemu_close_all_open_fd_close_range() &&
-> +        !qemu_close_all_open_fd_proc()) {
-> +        qemu_close_all_open_fd_fallback();
-> +    }
->  }
-> -- 
-> 2.43.0
-> 
-> 
-
-With regards,
-Daniel
-
-[1] https://github.com/open-mpi/ompi/issues/10358
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--=20
+Kind regards,
+Corvin
 
