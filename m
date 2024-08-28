@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F85961DAB
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 06:35:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C12961DAA
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Aug 2024 06:35:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjANZ-0000Rv-Pl; Wed, 28 Aug 2024 00:33:57 -0400
+	id 1sjANd-0000cR-FQ; Wed, 28 Aug 2024 00:34:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1sjANU-0000JM-6d
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 00:33:53 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1sjANZ-0000UY-Tl
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 00:33:57 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1sjANS-0002dM-Nk
- for qemu-devel@nongnu.org; Wed, 28 Aug 2024 00:33:51 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-202089e57d8so1449805ad.0
- for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 21:33:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1sjANW-0002dr-90
+ for qemu-devel@nongnu.org; Wed, 28 Aug 2024 00:33:57 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-2025031eb60so55112375ad.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Aug 2024 21:33:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724819629; x=1725424429; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1724819633; x=1725424433; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GmKSAgPdEuaidN129B+a5rF+PXzuWPo3dTfBM5ZgjWs=;
- b=kQt11aAOScD633YQwvKEhRWWGmXj65F9S7g3TMhgNjzdS1w6Lcvr//hhs/iyaA27lQ
- O/iosPwMcCQVW4OAlTubBpJArXJmyfMaBmt4hmOWJyWjQKWbkh8v55GyAsD2tPmCGljp
- 7qRL2qPi9XWf0HXx7ppS/7yWpy3mugpxr+U5MWB2uL8XmxiOeZ03hPJ9ugeQuadSjuud
- q8Oas05tTMuFAA8KBlKfwjD94nzK0wcCUmkCF084vg8J4Y1sJspMwuZWLISXk9ED35aA
- +dhBuRj3RVKGXlzE4E4QnOJ2b1PUNdSAuMsO22M/1qINFUr9GMUvhOBcuv4zPxzxy/3d
- wFqg==
+ bh=2zdwiYqr0w43Mh87Wpao4Jr5QC0LLctdaAixHY2H6x0=;
+ b=YhIstGaSHMGvaNnY79jMN+EuraAGwUV3AQMvlXVUvTfb9TWHFPfGC4zNugCTuy2+Nm
+ VFOPKEBloi86sQtehZlj1fdniZeDZ2DcFADWhdkx5lEvI+yE2eDcFLB618VTmZGf5PMs
+ wC0ErXDm5Vls8yoAoYG4F1RcEvXkyLQA0K/9O4RXYiFlkhgJ6IAtcedOPrXgZByg6S/E
+ AgHOPC/xC1QbGwaJKx7qwN6tv5suZFu/dHM+yJBct7iHAUaNSOnlCkXljF3AS3JCNSVo
+ YWg+PjW4Ze8Fnq6Z3HKM2fR7QOpDzxSC0kzXUEhUzIfH10EPs5JvB8BjXRax/0ucnEU7
+ 2xmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724819629; x=1725424429;
+ d=1e100.net; s=20230601; t=1724819633; x=1725424433;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GmKSAgPdEuaidN129B+a5rF+PXzuWPo3dTfBM5ZgjWs=;
- b=RVIOwGI6W4lFZxW9j2FH8M/kiATygiHAUcAxcnlYTizbU7d302QRXr3oK0N1w+7t9i
- DZMVqp/vDxjjBccSV47cs7EPS3dsmCvs7XiY9rsSV54Z9Jtbi8acfX7I3I5NCEfunLPl
- jSq7fAsx5I8wGhoU+KEYgwKhoQH4aLJPBx+TDU09ht6SfZ4U7CfdeZxp3mkPTldierh1
- dfKl++I1Vo4V/cFahAsDr3pOHKlR8GdaVqWudic5p4Mrh+9ccz7AmXzFCxV8phxfD6p2
- +fdg46XwDBZxYRvhFsBDjLexw7VYtVpsWBtIE8CzqcoSNEXrZgo4v8p8JLdZtcxBqaOX
- Eihg==
+ bh=2zdwiYqr0w43Mh87Wpao4Jr5QC0LLctdaAixHY2H6x0=;
+ b=UYq+T0GJFgiAIbzuZX3bE0rdEYTLKjQDGJWg/Z7nXwVpqVmgoQ7U0UBFxsm57DBMEy
+ 7abm6TO1yoh8cM5DQ/FHKXbrqYLykxKHqt4DgdpZ49mzPA47jDOwDON4Vp84Kl0ZL1o9
+ e+2yQMnLNmw3TjPEDuJLP1bh53AKCQ7keui/D5VTC/pAoLFDHc+8RDKmZzI+riqdPdWI
+ FmPebZjc9GbPwjxqiQ1kpZGWtj8tubV5LB18owjbUiZAQCWZzN7NybHuojibc2EgkKnG
+ OXQ1yhsOq8WIkW5rAPIYTo6fvIdFrS8f3wXv2HRR8HRpp7ZJVLEj84B2G3+lf8V1nZSY
+ RXbg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW7LF9SB01FGFeiyUv06Jo2fBuLd2eAI/g/Z0zDNlKcZru0mNWtxmAqKG8/Ad/NaRCmgbtkipUXT5VA@nongnu.org
-X-Gm-Message-State: AOJu0YwNzsJcml7sVlzzWsdyEf+Wb47XgAG19dnrPuykaI8P0h9H3cPP
- E1LpGKgGwwBAidf+kJrdmv0WEZ0klhIXomzg94JOuR88U0VEO/Le8wcHxg==
-X-Google-Smtp-Source: AGHT+IHQ0pMWGdx7R1XbhTeblGbSI5nEVdA5B7wefCynXbSADfKkbdv3jVHfz82jlKKiVYNmtui0Tg==
-X-Received: by 2002:a17:902:e542:b0:1fb:77e7:27b2 with SMTP id
- d9443c01a7336-204f9bd573bmr11133225ad.18.1724819629299; 
- Tue, 27 Aug 2024 21:33:49 -0700 (PDT)
+ AJvYcCWgEobRSoq/7uKFPJNebIzLxGvh9A/xOx2TgwVWOUjLgKJ38HO2ejzGOCArP1cAIP1PdIQaycy8bfo3@nongnu.org
+X-Gm-Message-State: AOJu0Yz1/szWQY7oS9/eJsrDyVybuGPbc9gsE2SqDws578lMbeT4qdp6
+ 0LmlLTxQYfGuRq+2yjaOx5IaS49NXg5Bx9jvfUV3xScr9W51dK7yKmznKg==
+X-Google-Smtp-Source: AGHT+IFZA5Iy+G9nCiHF97A2dmNLj29tq3TCYXByNxHVlAcV8NNtXxAY+lmKBMcRTX95kK1hz2Xnzg==
+X-Received: by 2002:a17:902:d509:b0:201:f409:ce73 with SMTP id
+ d9443c01a7336-2039e545857mr147447095ad.65.1724819633014; 
+ Tue, 27 Aug 2024 21:33:53 -0700 (PDT)
 Received: from wheely.local0.net ([1.146.81.12])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2038557f093sm90342325ad.63.2024.08.27.21.33.46
+ d9443c01a7336-2038557f093sm90342325ad.63.2024.08.27.21.33.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Aug 2024 21:33:49 -0700 (PDT)
+ Tue, 27 Aug 2024 21:33:52 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
-Subject: [PATCH 1/2] chardev: Fix record/replay error path NULL deref in
- device creation
-Date: Wed, 28 Aug 2024 14:33:34 +1000
-Message-ID: <20240828043337.14587-2-npiggin@gmail.com>
+Subject: [PATCH 2/2] chardev: Remove __-prefixed names
+Date: Wed, 28 Aug 2024 14:33:35 +1000
+Message-ID: <20240828043337.14587-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240828043337.14587-1-npiggin@gmail.com>
 References: <20240828043337.14587-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,35 +93,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_chardev_set_replay() was being called in chardev creation to
-set up replay parameters even if the chardev is NULL.
+Peter points out double underscore prefix names tend to be reserved
+for the system. Clean these up.
 
-A segfault can be reproduced by specifying '-serial chardev:bad' with
-an rr=record mode.
-
-Fix this with a NULL pointer check.
-
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Resolves: Coverity CID 1559470
-Fixes: 4c193bb129dae ("chardev: set record/replay on the base device of a muxed device")
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- chardev/char.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ chardev/char.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
 diff --git a/chardev/char.c b/chardev/char.c
-index ba847b6e9e..47a744ebeb 100644
+index 47a744ebeb..46d4798e4e 100644
 --- a/chardev/char.c
 +++ b/chardev/char.c
-@@ -721,7 +721,7 @@ static Chardev *__qemu_chr_new(const char *label, const char *filename,
+@@ -628,8 +628,8 @@ static void qemu_chardev_set_replay(Chardev *chr, Error **errp)
+     }
+ }
  
-     if (strstart(filename, "chardev:", &p)) {
-         chr = qemu_chr_find(p);
--        if (replay) {
-+        if (replay && chr) {
-             qemu_chardev_set_replay(chr, &err);
-             if (err) {
-                 error_report_err(err);
+-static Chardev *__qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
+-                                         bool replay, Error **errp)
++static Chardev *do_qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
++                                          bool replay, Error **errp)
+ {
+     const ChardevClass *cc;
+     Chardev *base = NULL, *chr = NULL;
+@@ -707,12 +707,12 @@ Chardev *qemu_chr_new_from_opts(QemuOpts *opts, GMainContext *context,
+                                 Error **errp)
+ {
+     /* XXX: should this really not record/replay? */
+-    return __qemu_chr_new_from_opts(opts, context, false, errp);
++    return do_qemu_chr_new_from_opts(opts, context, false, errp);
+ }
+ 
+-static Chardev *__qemu_chr_new(const char *label, const char *filename,
+-                               bool permit_mux_mon, GMainContext *context,
+-                               bool replay)
++static Chardev *qemu_chr_new_from_name(const char *label, const char *filename,
++                                       bool permit_mux_mon,
++                                       GMainContext *context, bool replay)
+ {
+     const char *p;
+     Chardev *chr;
+@@ -735,7 +735,7 @@ static Chardev *__qemu_chr_new(const char *label, const char *filename,
+     if (!opts)
+         return NULL;
+ 
+-    chr = __qemu_chr_new_from_opts(opts, context, replay, &err);
++    chr = do_qemu_chr_new_from_opts(opts, context, replay, &err);
+     if (!chr) {
+         error_report_err(err);
+         goto out;
+@@ -760,7 +760,8 @@ out:
+ Chardev *qemu_chr_new_noreplay(const char *label, const char *filename,
+                                bool permit_mux_mon, GMainContext *context)
+ {
+-    return __qemu_chr_new(label, filename, permit_mux_mon, context, false);
++    return qemu_chr_new_from_name(label, filename, permit_mux_mon, context,
++                                  false);
+ }
+ 
+ static Chardev *qemu_chr_new_permit_mux_mon(const char *label,
+@@ -768,7 +769,8 @@ static Chardev *qemu_chr_new_permit_mux_mon(const char *label,
+                                           bool permit_mux_mon,
+                                           GMainContext *context)
+ {
+-    return __qemu_chr_new(label, filename, permit_mux_mon, context, true);
++    return qemu_chr_new_from_name(label, filename, permit_mux_mon, context,
++                                  true);
+ }
+ 
+ Chardev *qemu_chr_new(const char *label, const char *filename,
 -- 
 2.45.2
 
