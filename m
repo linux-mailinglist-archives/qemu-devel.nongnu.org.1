@@ -2,115 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D28964443
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Aug 2024 14:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0EDD964460
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Aug 2024 14:26:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sje8M-00069w-Cv; Thu, 29 Aug 2024 08:20:14 -0400
+	id 1sjeEC-0002dU-5s; Thu, 29 Aug 2024 08:26:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nrb@linux.ibm.com>)
- id 1sje8I-00068K-9h; Thu, 29 Aug 2024 08:20:11 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nrb@linux.ibm.com>)
- id 1sje8G-0008OI-9R; Thu, 29 Aug 2024 08:20:10 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47T1xVg6032371;
- Thu, 29 Aug 2024 12:20:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- content-type:mime-version:content-transfer-encoding:in-reply-to
- :references:subject:from:cc:to:date:message-id; s=pp1; bh=uVycpn
- gdC48HsBpEtwrW5i/EJXnfgl9rxxUY5kGlcUU=; b=ePpUCcixQv8/DEUzr4vVSA
- gFOVarOkEJYe2MGqoL7A0OR/VO1nszNKXhYhd+VLkowUAKkPEnp9xPw2SAPt9vy1
- nkp/5nD90Ip18zt3jeRhY93zs7jr1C10OE1z7HNxJ5nklL0g7jcUe0gXStgTBYOI
- GjTAe6Ylf6nIc+nJXfbdnn/KeII0mbQVM2owzMvdpQUQ7JXjDqgBaoySpsM7zQPB
- tV0gmK1XmTDiGhO9FkbTzCBRLAN/nNMs62uauGK6/US742h/qtx8NmCXU6P6Y44I
- QHD/5A+IVHEKu+s246iDVsQEe4+dj6SQ4BtjOLkg50RqC+14OqIM7K8maKFpcgoQ
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8u7u1x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Aug 2024 12:20:03 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47TCK3mH027275;
- Thu, 29 Aug 2024 12:20:03 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8u7u1t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Aug 2024 12:20:03 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47TAMuQ7030991;
- Thu, 29 Aug 2024 12:20:02 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 417t814pdm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Aug 2024 12:20:02 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 47TCJwPB56295934
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Aug 2024 12:19:59 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D898720043;
- Thu, 29 Aug 2024 12:19:58 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AEA9220040;
- Thu, 29 Aug 2024 12:19:58 +0000 (GMT)
-Received: from t14-nrb (unknown [9.171.78.87])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 29 Aug 2024 12:19:58 +0000 (GMT)
-Content-Type: text/plain; charset="utf-8"
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sjeE2-0002ck-GF
+ for qemu-devel@nongnu.org; Thu, 29 Aug 2024 08:26:06 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sjeDy-0000ZS-Bu
+ for qemu-devel@nongnu.org; Thu, 29 Aug 2024 08:26:05 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5c0abaae174so609929a12.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Aug 2024 05:26:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1724934360; x=1725539160; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=I+bFiiWHwg+S1SlMlqQlidd45CJKeyXad20DDKqFU2o=;
+ b=D02+DVOD2tOZpelR2kx/c65dA4ftWR/yytSxLb5vYekr3Z6FoosKSGioe1++SxbKK+
+ 7MekJpJOH4t0QrRnbc9cb9IyRDd4JgFhv2k5mhNEhc/8yaNrmyXdfPU04//lIgL42OUD
+ 3tV3Ugqdk4LPiRMSpNqKI3GyfeJXlGcZhIGNnTV5CyaPA5bY5SKMn+9uH2wWOPewZzE+
+ 5ujCwonDAaZe5In0P7tP1aob0wys31guLN1tyrbnO40vN/SkUmAgDX66WieOs8WU1Xal
+ oF+eqHDgGNanvwaLvGj/G8IA5EwX79ItRbQVtNgH30niQNNGXWR5pBt50jx/JCN6Jx0o
+ jmKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724934360; x=1725539160;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=I+bFiiWHwg+S1SlMlqQlidd45CJKeyXad20DDKqFU2o=;
+ b=Q8dPTBM1SPfFZAyY9H/GI9tN5GK3YEpRfw7HYx3o7eOdA6L0NDTIV9CKIRjilPQMMp
+ N8Ao93Gkec/K4hGKLqT1qZ81ta6DoibuSg26qyjs7eYb96YvBAAjjbz7bIg+4ZvyuJCm
+ yZgYRvTvSicgRC/SwquzHi5AEglcePCH8JqDbV3bG331Apj0VYCsXpiWR5Ndb3qUfueB
+ 4/QbqJ+4qI9zaH9Pt5GptOk5wLoC1UhCi/4Ae08+8iRc+gFp4CE7BPxG8nACCz6WzvKz
+ P+by23P59gY6STcOxCQRG1+f8+98S4UYcHlfIZUTwcHYsDRy7d/mvpb+DSKSYF1W/r7z
+ TmGA==
+X-Gm-Message-State: AOJu0Yz6sOz4ITPRS87/5cAOIOv6mpZ1oOJ1K5cL8VNeQBN8x82Wa/14
+ wwRrKEu+YLo8/EoXYN8qQeRNGF+6ezwBjwchqKhnn+yju2lnAVz3nybKtcc4qnx46mdebRZVsJv
+ X6L6NxueyIESBewj5HWaTRfdTLsI4TkrXG8apdF+78NUQOzUN
+X-Google-Smtp-Source: AGHT+IHC8/wXa5Syp5YUDA4i4v4b/T3UR2z7j5XDJpD9BUpAwwScn3hMSIRWt7IBA2VKCqIOiJ9kmdi/0tn7hSDDYek=
+X-Received: by 2002:a17:907:7e94:b0:a7a:a3f7:389e with SMTP id
+ a640c23a62f3a-a897f78daccmr246547066b.6.1724934359916; Thu, 29 Aug 2024
+ 05:25:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAFEAcA-wVqbuW1aG2fd6O9BwMKrFXTLzcvuF4xd6j_4x5WUQ+Q@mail.gmail.com>
-References: <20240813165250.2717650-1-peter.maydell@linaro.org>
- <14c38495-131f-4798-bf41-da442ede23eb@linux.ibm.com>
- <CAFEAcA8FFiiMXTcMR0WRP=Nhw3-+LYoP=X4OYrm5tnrp4L-wGQ@mail.gmail.com>
- <8050216dbbdd0762347d8e14f17d030ff8874283.camel@linux.ibm.com>
- <172467410002.31767.12365606864399178508@t14-nrb.local>
- <172483282308.162301.11735420619446380771@t14-nrb.local>
- <CAFEAcA-wVqbuW1aG2fd6O9BwMKrFXTLzcvuF4xd6j_4x5WUQ+Q@mail.gmail.com>
-Subject: Re: [PATCH for-9.2 00/10] s390: Convert virtio-ccw,
- cpu to three-phase reset, and followup cleanup
-From: Nico Boehr <nrb@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-devel@nongnu.org,
- Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Michael Mueller <mimu@linux.ibm.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 29 Aug 2024 14:19:57 +0200
-Message-ID: <172493399778.162301.4960007495977124327@t14-nrb.local>
-User-Agent: alot/0.10
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: j9MrIOpTuYjNFnE5NCDjN5TZ_87nr8YK
-X-Proofpoint-ORIG-GUID: n6iIst2dKGox8ir2axfRnj2h1O_QuKZL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-29_02,2024-08-29_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 phishscore=0 mlxscore=0
- malwarescore=0 mlxlogscore=999 spamscore=0 priorityscore=1501 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408290085
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=nrb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20240815122747.3053871-1-peter.maydell@linaro.org>
+In-Reply-To: <20240815122747.3053871-1-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 29 Aug 2024 13:25:48 +0100
+Message-ID: <CAFEAcA8avK960jpseD-QUb8Ef_hGem1LDstF=bxgb0Beb53YFg@mail.gmail.com>
+Subject: Re: [PATCH for-9.2] kvm: Use 'unsigned long' for request argument in
+ functions wrapping ioctl()
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Johannes Stoelp <johannes.stoelp@googlemail.com>,
+ Eric Blake <eblake@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -127,60 +88,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Quoting Peter Maydell (2024-08-28 17:46:42)
-[...]
-> Well, the series is *supposed* to be just a refactoring, not a change of
-> behaviour, so I'm not sure. I don't suppose you have a reproduce case
-> that I can run? (I do have access to an s390 machine if that helps.)
+Ping for code review, please?
 
-Well, it's on an internal testing framework which we do not release
-publicly. :-(
+thanks
+-- PMM
 
-Luckily, it's not that difficult to reproduce.  It seems like this only
-happens when a reboot is initiated over SSH connection via vsock. Here are
-some instructions on how to reproduce (with mkosi and Fedora):
-
-1. Craft an mkosi.conf like this:
-   [Distribution]
-   Distribution=3Dfedora
-   Architecture=3Ds390x
-  =20
-   [Output]
-   Format=3Dcpio
-   CompressOutput=3Dxz
-  =20
-   [Content]
-   Packages=3Dopenssh-server
-   Packages=3Dkernel-modules-core-6.8.5-301.fc40.s390x
-   Bootloader=3Dnone
-   MakeInitrd=3Dno
-   Ssh=3Dyes
-   Autologin=3Dyes
-   RootPassword=3Dhunter
-   Timezone=3DEtc/UTC
-   Locale=3DC.UTF-8
-2. Generate SSH host key:
-   mkdir -p mkosi.extra/etc/ssh && ssh-keygen -t ed25519 -f mkosi.extra/etc=
-/ssh/ssh_host_ed25519_key
-3. Build image:
-   mkosi
-4. Boot with QEMU:
-   qemu-system-s390x -machine s390-ccw-virtio,accel=3Dkvm -nodefaults -nogr=
-aphic -chardev stdio,id=3Dcon0 -device sclpconsole,chardev=3Dcon0 -m 2048 -=
-kernel image.vmlinuz -initrd image.cpio.xz -device vhost-vsock-ccw,guest-ci=
-d=3D3
-5. In a different terminal, run a reboot loop:
-   i=3D0; while true; do ssh -o ProxyCommand=3D'socat VSOCK-CONNECT:3:22 -'=
- localhost -l root reboot; echo $i; let i=3Di+1; done
-
-After a while (10 minutes, sometimes longer) you should see the quest crash
-either with "Attempted to kill init" or "Unable to mount rootfs" and a mess=
-age
-about corrupted initramfs:
-[    1.599082] Initramfs unpacking failed: XZ-compressed data is corrupt
-
-I had this run without your series for 45 minutes, while with your series
-this crashed within ~5-10 minutes.
-
-Thanks!
+On Thu, 15 Aug 2024 at 13:27, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> From: Johannes Stoelp <johannes.stoelp@googlemail.com>
+>
+> Change the data type of the ioctl _request_ argument from 'int' to
+> 'unsigned long' for the various accel/kvm functions which are
+> essentially wrappers around the ioctl() syscall.
+>
+> The correct type for ioctl()'s 'request' argument is confused:
+>  * POSIX defines the request argument as 'int'
+>  * glibc uses 'unsigned long' in the prototype in sys/ioctl.h
+>  * the glibc info documentation uses 'int'
+>  * the Linux manpage uses 'unsigned long'
+>  * the Linux implementation of the syscall uses 'unsigned int'
+>
+> If we wrap ioctl() with another function which uses 'int' as the
+> type for the request argument, then requests with the 0x8000_0000
+> bit set will be sign-extended when the 'int' is cast to
+> 'unsigned long' for the call to ioctl().
+>
+> On x86_64 one such example is the KVM_IRQ_LINE_STATUS request.
+> Bit requests with the _IOC_READ direction bit set, will have the high
+> bit set.
+>
+> Fortunately the Linux Kernel truncates the upper 32bit of the request
+> on 64bit machines (because it uses 'unsigned int', and see also Linus
+> Torvalds' comments in
+>   https://sourceware.org/bugzilla/show_bug.cgi?id=14362 )
+> so this doesn't cause active problems for us.  However it is more
+> consistent to follow the glibc ioctl() prototype when we define
+> functions that are essentially wrappers around ioctl().
+>
+> This resolves a Coverity issue where it points out that in
+> kvm_get_xsave() we assign a value (KVM_GET_XSAVE or KVM_GET_XSAVE2)
+> to an 'int' variable which can't hold it without overflow.
+>
+> Resolves: Coverity CID 1547759
+> Signed-off-by: Johannes Stoelp <johannes.stoelp@gmail.com>
+> [PMM: Rebased patch, adjusted commit message, included note about
+>  Coverity fix, updated the type of the local var in kvm_get_xsave,
+>  updated the comment in the KVMState struct definition]
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+> This is a patch that was posted back in 2021, and I reviewed it
+> at the time
+> https://lore.kernel.org/qemu-devel/20210901213426.360748-1-johannes.stoelp@gmail.com/
+> but we never actually took it into the tree. I was reminded of it
+> by the Coverity issue, where a change to Coverity means it now
+> complains about the potential integer overflow when we put one
+> of these high-bit-set ioctls into an "int". So I thought it would
+> be worth dusting this off and getting it upstream.
+>
+> For more discussion of the ioctl request datatype see also the
+> review thread on the previous version of the patch:
+> https://lore.kernel.org/qemu-devel/CAFEAcA8TRQdj33Ycm=XzmuUUNApaXVgeDexfS+3Ycg6kLnpmyg@mail.gmail.com/
+>
+> Since this doesn't actually cause any incorrect behaviour this
+> is obviously for-9.2 material.
+> ---
+>  include/sysemu/kvm.h     |  8 ++++----
+>  include/sysemu/kvm_int.h | 16 ++++++++++++----
+>  accel/kvm/kvm-all.c      |  8 ++++----
+>  target/i386/kvm/kvm.c    |  3 ++-
+>  accel/kvm/trace-events   |  8 ++++----
+>  5 files changed, 26 insertions(+), 17 deletions(-)
+>
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index 9cf14ca3d5b..613d3f7581f 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -235,11 +235,11 @@ static inline int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_t
+>
+>  /* internal API */
+>
+> -int kvm_ioctl(KVMState *s, int type, ...);
+> +int kvm_ioctl(KVMState *s, unsigned long type, ...);
+>
+> -int kvm_vm_ioctl(KVMState *s, int type, ...);
+> +int kvm_vm_ioctl(KVMState *s, unsigned long type, ...);
+>
+> -int kvm_vcpu_ioctl(CPUState *cpu, int type, ...);
+> +int kvm_vcpu_ioctl(CPUState *cpu, unsigned long type, ...);
+>
+>  /**
+>   * kvm_device_ioctl - call an ioctl on a kvm device
+> @@ -248,7 +248,7 @@ int kvm_vcpu_ioctl(CPUState *cpu, int type, ...);
+>   *
+>   * Returns: -errno on error, nonnegative on success
+>   */
+> -int kvm_device_ioctl(int fd, int type, ...);
+> +int kvm_device_ioctl(int fd, unsigned long type, ...);
+>
+>  /**
+>   * kvm_vm_check_attr - check for existence of a specific vm attribute
+> diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+> index 1d8fb1473bd..b52e3483511 100644
+> --- a/include/sysemu/kvm_int.h
+> +++ b/include/sysemu/kvm_int.h
+> @@ -122,10 +122,18 @@ struct KVMState
+>      bool sync_mmu;
+>      bool guest_state_protected;
+>      uint64_t manual_dirty_log_protect;
+> -    /* The man page (and posix) say ioctl numbers are signed int, but
+> -     * they're not.  Linux, glibc and *BSD all treat ioctl numbers as
+> -     * unsigned, and treating them as signed here can break things */
+> -    unsigned irq_set_ioctl;
+> +    /*
+> +     * POSIX says that ioctl numbers are signed int, but in practice
+> +     * they are not. Linux, glibc and *BSD all treat ioctl numbers as
+> +     * unsigned, and real-world ioctl values like KVM_GET_XSAVE have
+> +     * bit 31 set, which means that passing them via an 'int' will
+> +     * result in sign-extension when they get converted back to the
+> +     * 'unsigned long' which the ioctl() prototype uses. Luckily Linux
+> +     * always treats the argument as an unsigned 32-bit int, so any
+> +     * possible sign-extension is deliberately ignored, but for
+> +     * consistency we keep to the same type that glibc is using.
+> +     */
+> +    unsigned long irq_set_ioctl;
+>      unsigned int sigmask_len;
+>      GHashTable *gsimap;
+>  #ifdef KVM_CAP_IRQ_ROUTING
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 75d11a07b2b..beb1988d12c 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -3170,7 +3170,7 @@ int kvm_cpu_exec(CPUState *cpu)
+>      return ret;
+>  }
+>
+> -int kvm_ioctl(KVMState *s, int type, ...)
+> +int kvm_ioctl(KVMState *s, unsigned long type, ...)
+>  {
+>      int ret;
+>      void *arg;
+> @@ -3188,7 +3188,7 @@ int kvm_ioctl(KVMState *s, int type, ...)
+>      return ret;
+>  }
+>
+> -int kvm_vm_ioctl(KVMState *s, int type, ...)
+> +int kvm_vm_ioctl(KVMState *s, unsigned long type, ...)
+>  {
+>      int ret;
+>      void *arg;
+> @@ -3208,7 +3208,7 @@ int kvm_vm_ioctl(KVMState *s, int type, ...)
+>      return ret;
+>  }
+>
+> -int kvm_vcpu_ioctl(CPUState *cpu, int type, ...)
+> +int kvm_vcpu_ioctl(CPUState *cpu, unsigned long type, ...)
+>  {
+>      int ret;
+>      void *arg;
+> @@ -3228,7 +3228,7 @@ int kvm_vcpu_ioctl(CPUState *cpu, int type, ...)
+>      return ret;
+>  }
+>
+> -int kvm_device_ioctl(int fd, int type, ...)
+> +int kvm_device_ioctl(int fd, unsigned long type, ...)
+>  {
+>      int ret;
+>      void *arg;
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 2fa88ef1e37..ada581c5d6e 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -4102,7 +4102,8 @@ static int kvm_get_xsave(X86CPU *cpu)
+>  {
+>      CPUX86State *env = &cpu->env;
+>      void *xsave = env->xsave_buf;
+> -    int type, ret;
+> +    unsigned long type;
+> +    int ret;
+>
+>      type = has_xsave2 ? KVM_GET_XSAVE2 : KVM_GET_XSAVE;
+>      ret = kvm_vcpu_ioctl(CPU(cpu), type, xsave);
+> diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+> index 37626c1ac5d..82c65fd2ab8 100644
+> --- a/accel/kvm/trace-events
+> +++ b/accel/kvm/trace-events
+> @@ -1,11 +1,11 @@
+>  # See docs/devel/tracing.rst for syntax documentation.
+>
+>  # kvm-all.c
+> -kvm_ioctl(int type, void *arg) "type 0x%x, arg %p"
+> -kvm_vm_ioctl(int type, void *arg) "type 0x%x, arg %p"
+> -kvm_vcpu_ioctl(int cpu_index, int type, void *arg) "cpu_index %d, type 0x%x, arg %p"
+> +kvm_ioctl(unsigned long type, void *arg) "type 0x%lx, arg %p"
+> +kvm_vm_ioctl(unsigned long type, void *arg) "type 0x%lx, arg %p"
+> +kvm_vcpu_ioctl(int cpu_index, unsigned long type, void *arg) "cpu_index %d, type 0x%lx, arg %p"
+>  kvm_run_exit(int cpu_index, uint32_t reason) "cpu_index %d, reason %d"
+> -kvm_device_ioctl(int fd, int type, void *arg) "dev fd %d, type 0x%x, arg %p"
+> +kvm_device_ioctl(int fd, unsigned long type, void *arg) "dev fd %d, type 0x%lx, arg %p"
+>  kvm_failed_reg_get(uint64_t id, const char *msg) "Warning: Unable to retrieve ONEREG %" PRIu64 " from KVM: %s"
+>  kvm_failed_reg_set(uint64_t id, const char *msg) "Warning: Unable to set ONEREG %" PRIu64 " to KVM: %s"
+>  kvm_init_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+> --
+> 2.34.1
 
