@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496F8963DBE
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Aug 2024 09:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 248AD963DBD
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Aug 2024 09:54:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjZxi-0006Kw-Jx; Thu, 29 Aug 2024 03:52:58 -0400
+	id 1sjZxm-0006bM-PO; Thu, 29 Aug 2024 03:53:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sjZxf-0006DN-KQ
- for qemu-devel@nongnu.org; Thu, 29 Aug 2024 03:52:55 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sjZxj-0006Tu-SD
+ for qemu-devel@nongnu.org; Thu, 29 Aug 2024 03:52:59 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sjZxd-00038j-HM
- for qemu-devel@nongnu.org; Thu, 29 Aug 2024 03:52:55 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sjZxh-000391-Ut
+ for qemu-devel@nongnu.org; Thu, 29 Aug 2024 03:52:59 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2C5DD89ADF
- for <qemu-devel@nongnu.org>; Thu, 29 Aug 2024 10:51:41 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 34E9989AE0
+ for <qemu-devel@nongnu.org>; Thu, 29 Aug 2024 10:51:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A497212ED27;
- Thu, 29 Aug 2024 10:52:46 +0300 (MSK)
-Received: (nullmailer pid 511566 invoked by uid 1000);
- Thu, 29 Aug 2024 07:52:46 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id A2C8B12ED28;
+ Thu, 29 Aug 2024 10:52:56 +0300 (MSK)
+Received: (nullmailer pid 511572 invoked by uid 1000);
+ Thu, 29 Aug 2024 07:52:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH] mark <zlib.h> with for-crc32 in a consistent manner
-Date: Thu, 29 Aug 2024 10:52:41 +0300
-Message-Id: <20240829075242.511534-3-mjt@tls.msk.ru>
+Subject: [PATCH 2/2] linux-user/syscall.c: eliminate other explicit LFS usages
+Date: Thu, 29 Aug 2024 10:52:42 +0300
+Message-Id: <20240829075242.511534-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240829075242.511534-1-mjt@tls.msk.ru>
 References: <20240829075242.511534-1-mjt@tls.msk.ru>
@@ -59,240 +59,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-in many cases, <zlib.h> is only included for crc32 function,
-and in some of them, there's a comment saying that, but in
-a different way.  In one place (hw/net/rtl8139.c), there was
-another #include added between the comment and <zlib.h> include.
+Since we alwasy build with LFS enabled, and with -D_FILE_OFFSET_BITS=64
+in particular, there is no need to use 64bit versions of various system
+calls and constants, regular ones will do just fine.  Eliminate a few
+last uses of the following constructs in linux-user/syscall.c:
+  off64_t
+  ftruncate64()
+  lseek64()
+  pread64()
+  pwrite64()
 
-Make all such comments to be on the same line as #include, make
-it consistent, and also add a few missing comments, including
-hw/nvram/mac_nvram.c which uses adler32 instead.
+This way it can be built on systems where the 64bit variants of
+everything is not defined (since the system always uses 64bit
+variants), such as on recent MUSL.
 
-There's no code changes.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2215
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/net/cadence_gem.c             | 2 +-
- hw/net/dp8393x.c                 | 2 +-
- hw/net/ftgmac100.c               | 3 +--
- hw/net/i82596.c                  | 2 +-
- hw/net/imx_fec.c                 | 3 +--
- hw/net/lan9118.c                 | 3 +--
- hw/net/mcf_fec.c                 | 3 +--
- hw/net/npcm7xx_emc.c             | 3 +--
- hw/net/rtl8139.c                 | 4 +---
- hw/net/smc91c111.c               | 3 +--
- hw/net/stellaris_enet.c          | 2 +-
- hw/nvram/mac_nvram.c             | 2 +-
- target/arm/helper.c              | 2 +-
- target/arm/tcg/helper-a64.c      | 2 +-
- target/loongarch/tcg/op_helper.c | 2 +-
- 15 files changed, 15 insertions(+), 23 deletions(-)
+ linux-user/syscall.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
-index ec7bf562e5..12857d9d7d 100644
---- a/hw/net/cadence_gem.c
-+++ b/hw/net/cadence_gem.c
-@@ -23,7 +23,7 @@
-  */
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 7ae4980e27..d418e2864a 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -7265,7 +7265,7 @@ static inline abi_long target_truncate64(CPUArchState *cpu_env, const char *arg1
+         arg2 = arg3;
+         arg3 = arg4;
+     }
+-    return get_errno(truncate64(arg1, target_offset64(arg2, arg3)));
++    return get_errno(truncate(arg1, target_offset64(arg2, arg3)));
+ }
+ #endif
  
- #include "qemu/osdep.h"
--#include <zlib.h> /* For crc32 */
-+#include <zlib.h> /* for crc32 */
+@@ -7279,7 +7279,7 @@ static inline abi_long target_ftruncate64(CPUArchState *cpu_env, abi_long arg1,
+         arg2 = arg3;
+         arg3 = arg4;
+     }
+-    return get_errno(ftruncate64(arg1, target_offset64(arg2, arg3)));
++    return get_errno(ftruncate(arg1, target_offset64(arg2, arg3)));
+ }
+ #endif
  
- #include "hw/irq.h"
- #include "hw/net/cadence_gem.h"
-diff --git a/hw/net/dp8393x.c b/hw/net/dp8393x.c
-index bf0652da1b..6d143bac5c 100644
---- a/hw/net/dp8393x.c
-+++ b/hw/net/dp8393x.c
-@@ -27,7 +27,7 @@
- #include "qapi/error.h"
- #include "qemu/module.h"
- #include "qemu/timer.h"
--#include <zlib.h>
-+#include <zlib.h> /* for crc32 */
- #include "qom/object.h"
- #include "trace.h"
+@@ -8664,7 +8664,7 @@ static int do_getdents(abi_long dirfd, abi_long arg2, abi_long count)
+     void *tdirp;
+     int hlen, hoff, toff;
+     int hreclen, treclen;
+-    off64_t prev_diroff = 0;
++    off_t prev_diroff = 0;
  
-diff --git a/hw/net/ftgmac100.c b/hw/net/ftgmac100.c
-index 80f9cd56d5..c68db4e15f 100644
---- a/hw/net/ftgmac100.c
-+++ b/hw/net/ftgmac100.c
-@@ -24,8 +24,7 @@
- #include "hw/qdev-properties.h"
- #include "migration/vmstate.h"
+     hdirp = g_try_malloc(count);
+     if (!hdirp) {
+@@ -8717,7 +8717,7 @@ static int do_getdents(abi_long dirfd, abi_long arg2, abi_long count)
+              * Return what we have, resetting the file pointer to the
+              * location of the first record not returned.
+              */
+-            lseek64(dirfd, prev_diroff, SEEK_SET);
++            lseek(dirfd, prev_diroff, SEEK_SET);
+             break;
+         }
  
--/* For crc32 */
--#include <zlib.h>
-+#include <zlib.h> /* for crc32 */
+@@ -8751,7 +8751,7 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
+     void *tdirp;
+     int hlen, hoff, toff;
+     int hreclen, treclen;
+-    off64_t prev_diroff = 0;
++    off_t prev_diroff = 0;
  
- /*
-  * FTGMAC100 registers
-diff --git a/hw/net/i82596.c b/hw/net/i82596.c
-index 6cc8292a65..d786086a51 100644
---- a/hw/net/i82596.c
-+++ b/hw/net/i82596.c
-@@ -19,7 +19,7 @@
- #include "qemu/module.h"
- #include "trace.h"
- #include "i82596.h"
--#include <zlib.h>       /* For crc32 */
-+#include <zlib.h> /* for crc32 */
+     hdirp = g_try_malloc(count);
+     if (!hdirp) {
+@@ -8793,7 +8793,7 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
+              * Return what we have, resetting the file pointer to the
+              * location of the first record not returned.
+              */
+-            lseek64(dirfd, prev_diroff, SEEK_SET);
++            lseek(dirfd, prev_diroff, SEEK_SET);
+             break;
+         }
  
- #if defined(ENABLE_DEBUG)
- #define DBG(x)          x
-diff --git a/hw/net/imx_fec.c b/hw/net/imx_fec.c
-index 8c91d20d44..dfc3fb0d9a 100644
---- a/hw/net/imx_fec.c
-+++ b/hw/net/imx_fec.c
-@@ -33,8 +33,7 @@
- #include "net/eth.h"
- #include "trace.h"
- 
--/* For crc32 */
--#include <zlib.h>
-+#include <zlib.h> /* for crc32 */
- 
- #define IMX_MAX_DESC    1024
- 
-diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
-index 91d81b410b..c38ea40ada 100644
---- a/hw/net/lan9118.c
-+++ b/hw/net/lan9118.c
-@@ -22,8 +22,7 @@
- #include "qapi/error.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
--/* For crc32 */
--#include <zlib.h>
-+#include <zlib.h> /* for crc32 */
- #include "qom/object.h"
- 
- //#define DEBUG_LAN9118
-diff --git a/hw/net/mcf_fec.c b/hw/net/mcf_fec.c
-index e6902716bd..9db64f08c5 100644
---- a/hw/net/mcf_fec.c
-+++ b/hw/net/mcf_fec.c
-@@ -16,8 +16,7 @@
- #include "hw/net/mii.h"
- #include "hw/qdev-properties.h"
- #include "hw/sysbus.h"
--/* For crc32 */
--#include <zlib.h>
-+#include <zlib.h> /* for crc32 */
- 
- //#define DEBUG_FEC 1
- 
-diff --git a/hw/net/npcm7xx_emc.c b/hw/net/npcm7xx_emc.c
-index d1583b6f9b..7f25bca448 100644
---- a/hw/net/npcm7xx_emc.c
-+++ b/hw/net/npcm7xx_emc.c
-@@ -29,8 +29,7 @@
- 
- #include "qemu/osdep.h"
- 
--/* For crc32 */
--#include <zlib.h>
-+#include <zlib.h> /* for crc32 */
- 
- #include "hw/irq.h"
- #include "hw/qdev-clock.h"
-diff --git a/hw/net/rtl8139.c b/hw/net/rtl8139.c
-index 03a204ef8a..69a78ad677 100644
---- a/hw/net/rtl8139.c
-+++ b/hw/net/rtl8139.c
-@@ -48,10 +48,8 @@
-  *  2011-Mar-22  Benjamin Poirier:  Implemented VLAN offloading
-  */
- 
--/* For crc32 */
--
- #include "qemu/osdep.h"
--#include <zlib.h>
-+#include <zlib.h> /* for crc32 */
- 
- #include "hw/pci/pci_device.h"
- #include "hw/qdev-properties.h"
-diff --git a/hw/net/smc91c111.c b/hw/net/smc91c111.c
-index 702d0e8e83..a00a76009e 100644
---- a/hw/net/smc91c111.c
-+++ b/hw/net/smc91c111.c
-@@ -17,8 +17,7 @@
- #include "qapi/error.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
--/* For crc32 */
--#include <zlib.h>
-+#include <zlib.h> /* for crc32 */
- #include "qom/object.h"
- 
- /* Number of 2k memory pages available.  */
-diff --git a/hw/net/stellaris_enet.c b/hw/net/stellaris_enet.c
-index db95766e29..8e2ce3bf29 100644
---- a/hw/net/stellaris_enet.c
-+++ b/hw/net/stellaris_enet.c
-@@ -15,7 +15,7 @@
- #include "net/net.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
--#include <zlib.h>
-+#include <zlib.h> /* for crc32 */
- #include "qom/object.h"
- 
- //#define DEBUG_STELLARIS_ENET 1
-diff --git a/hw/nvram/mac_nvram.c b/hw/nvram/mac_nvram.c
-index fe9df9fa35..83c6724c0a 100644
---- a/hw/nvram/mac_nvram.c
-+++ b/hw/nvram/mac_nvram.c
-@@ -35,7 +35,7 @@
- #include "qemu/module.h"
- #include "qemu/error-report.h"
- #include "trace.h"
--#include <zlib.h>
-+#include <zlib.h> /* for adler32 */
- 
- #define DEF_SYSTEM_SIZE 0xc10
- 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 0a582c1cd3..3f77b40734 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -19,7 +19,7 @@
- #include "qemu/crc32c.h"
- #include "qemu/qemu-print.h"
- #include "exec/exec-all.h"
--#include <zlib.h> /* For crc32 */
-+#include <zlib.h> /* for crc32 */
- #include "hw/irq.h"
- #include "sysemu/cpu-timers.h"
- #include "sysemu/kvm.h"
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 21a9abd90a..56b431faf5 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -33,7 +33,7 @@
- #include "qemu/int128.h"
- #include "qemu/atomic128.h"
- #include "fpu/softfloat.h"
--#include <zlib.h> /* For crc32 */
-+#include <zlib.h> /* for crc32 */
- 
- /* C2.4.7 Multiply and divide */
- /* special cases for 0 and LLONG_MIN are mandated by the standard */
-diff --git a/target/loongarch/tcg/op_helper.c b/target/loongarch/tcg/op_helper.c
-index fe79c62fa4..b17208e5b9 100644
---- a/target/loongarch/tcg/op_helper.c
-+++ b/target/loongarch/tcg/op_helper.c
-@@ -14,7 +14,7 @@
- #include "exec/cpu_ldst.h"
- #include "internals.h"
- #include "qemu/crc32c.h"
--#include <zlib.h>
-+#include <zlib.h> /* for crc32 */
- #include "cpu-csr.h"
- 
- /* Exceptions helpers */
+@@ -11524,7 +11524,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+                 return -TARGET_EFAULT;
+             }
+         }
+-        ret = get_errno(pread64(arg1, p, arg3, target_offset64(arg4, arg5)));
++        ret = get_errno(pread(arg1, p, arg3, target_offset64(arg4, arg5)));
+         unlock_user(p, arg2, ret);
+         return ret;
+     case TARGET_NR_pwrite64:
+@@ -11541,7 +11541,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+                 return -TARGET_EFAULT;
+             }
+         }
+-        ret = get_errno(pwrite64(arg1, p, arg3, target_offset64(arg4, arg5)));
++        ret = get_errno(pwrite(arg1, p, arg3, target_offset64(arg4, arg5)));
+         unlock_user(p, arg2, 0);
+         return ret;
+ #endif
 -- 
 2.39.2
 
