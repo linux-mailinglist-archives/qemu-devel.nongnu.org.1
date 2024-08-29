@@ -2,39 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248AD963DBD
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Aug 2024 09:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A31CD963DBF
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Aug 2024 09:54:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjZxm-0006bM-PO; Thu, 29 Aug 2024 03:53:02 -0400
+	id 1sjZyh-0000e7-Ao; Thu, 29 Aug 2024 03:53:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sjZxj-0006Tu-SD
- for qemu-devel@nongnu.org; Thu, 29 Aug 2024 03:52:59 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sjZyd-0000Pa-Tm
+ for qemu-devel@nongnu.org; Thu, 29 Aug 2024 03:53:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sjZxh-000391-Ut
- for qemu-devel@nongnu.org; Thu, 29 Aug 2024 03:52:59 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sjZyc-0003Dk-7O
+ for qemu-devel@nongnu.org; Thu, 29 Aug 2024 03:53:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 34E9989AE0
- for <qemu-devel@nongnu.org>; Thu, 29 Aug 2024 10:51:51 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A2C8B12ED28;
- Thu, 29 Aug 2024 10:52:56 +0300 (MSK)
-Received: (nullmailer pid 511572 invoked by uid 1000);
- Thu, 29 Aug 2024 07:52:56 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 2/2] linux-user/syscall.c: eliminate other explicit LFS usages
-Date: Thu, 29 Aug 2024 10:52:42 +0300
-Message-Id: <20240829075242.511534-4-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240829075242.511534-1-mjt@tls.msk.ru>
-References: <20240829075242.511534-1-mjt@tls.msk.ru>
+ by isrv.corpit.ru (Postfix) with ESMTP id 61E2289AE1
+ for <qemu-devel@nongnu.org>; Thu, 29 Aug 2024 10:52:47 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id DA54E12ED29
+ for <qemu-devel@nongnu.org>; Thu, 29 Aug 2024 10:53:52 +0300 (MSK)
+Message-ID: <1cac713b-7540-4953-8890-feeb32a1205d@tls.msk.ru>
+Date: Thu, 29 Aug 2024 10:53:52 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mark <zlib.h> with for-crc32 in a consistent manner
+To: qemu-devel@nongnu.org
+References: <20240829075242.511534-1-mjt@tls.msk.ru>
+ <20240829075242.511534-3-mjt@tls.msk.ru>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240829075242.511534-3-mjt@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -59,104 +83,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we alwasy build with LFS enabled, and with -D_FILE_OFFSET_BITS=64
-in particular, there is no need to use 64bit versions of various system
-calls and constants, regular ones will do just fine.  Eliminate a few
-last uses of the following constructs in linux-user/syscall.c:
-  off64_t
-  ftruncate64()
-  lseek64()
-  pread64()
-  pwrite64()
+29.08.2024 10:52, Michael Tokarev wrote:
+...
 
-This way it can be built on systems where the 64bit variants of
-everything is not defined (since the system always uses 64bit
-variants), such as on recent MUSL.
+This is a resent which shouldn't be here (a forgotten 0001-foo.patch
+in the working dir).  Please ignore :)
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2215
-
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- linux-user/syscall.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 7ae4980e27..d418e2864a 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7265,7 +7265,7 @@ static inline abi_long target_truncate64(CPUArchState *cpu_env, const char *arg1
-         arg2 = arg3;
-         arg3 = arg4;
-     }
--    return get_errno(truncate64(arg1, target_offset64(arg2, arg3)));
-+    return get_errno(truncate(arg1, target_offset64(arg2, arg3)));
- }
- #endif
- 
-@@ -7279,7 +7279,7 @@ static inline abi_long target_ftruncate64(CPUArchState *cpu_env, abi_long arg1,
-         arg2 = arg3;
-         arg3 = arg4;
-     }
--    return get_errno(ftruncate64(arg1, target_offset64(arg2, arg3)));
-+    return get_errno(ftruncate(arg1, target_offset64(arg2, arg3)));
- }
- #endif
- 
-@@ -8664,7 +8664,7 @@ static int do_getdents(abi_long dirfd, abi_long arg2, abi_long count)
-     void *tdirp;
-     int hlen, hoff, toff;
-     int hreclen, treclen;
--    off64_t prev_diroff = 0;
-+    off_t prev_diroff = 0;
- 
-     hdirp = g_try_malloc(count);
-     if (!hdirp) {
-@@ -8717,7 +8717,7 @@ static int do_getdents(abi_long dirfd, abi_long arg2, abi_long count)
-              * Return what we have, resetting the file pointer to the
-              * location of the first record not returned.
-              */
--            lseek64(dirfd, prev_diroff, SEEK_SET);
-+            lseek(dirfd, prev_diroff, SEEK_SET);
-             break;
-         }
- 
-@@ -8751,7 +8751,7 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
-     void *tdirp;
-     int hlen, hoff, toff;
-     int hreclen, treclen;
--    off64_t prev_diroff = 0;
-+    off_t prev_diroff = 0;
- 
-     hdirp = g_try_malloc(count);
-     if (!hdirp) {
-@@ -8793,7 +8793,7 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
-              * Return what we have, resetting the file pointer to the
-              * location of the first record not returned.
-              */
--            lseek64(dirfd, prev_diroff, SEEK_SET);
-+            lseek(dirfd, prev_diroff, SEEK_SET);
-             break;
-         }
- 
-@@ -11524,7 +11524,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 return -TARGET_EFAULT;
-             }
-         }
--        ret = get_errno(pread64(arg1, p, arg3, target_offset64(arg4, arg5)));
-+        ret = get_errno(pread(arg1, p, arg3, target_offset64(arg4, arg5)));
-         unlock_user(p, arg2, ret);
-         return ret;
-     case TARGET_NR_pwrite64:
-@@ -11541,7 +11541,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 return -TARGET_EFAULT;
-             }
-         }
--        ret = get_errno(pwrite64(arg1, p, arg3, target_offset64(arg4, arg5)));
-+        ret = get_errno(pwrite(arg1, p, arg3, target_offset64(arg4, arg5)));
-         unlock_user(p, arg2, 0);
-         return ret;
- #endif
--- 
-2.39.2
-
+/mjt
 
