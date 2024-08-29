@@ -2,116 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390E5964690
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Aug 2024 15:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB29C96445F
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Aug 2024 14:26:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjfD4-0003nB-Mz; Thu, 29 Aug 2024 09:29:11 -0400
+	id 1sjeDg-0002Q7-ND; Thu, 29 Aug 2024 08:25:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amachhiw@linux.ibm.com>)
- id 1sje7d-0003xB-Iz; Thu, 29 Aug 2024 08:19:29 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1sjeDd-0002PV-VC
+ for qemu-devel@nongnu.org; Thu, 29 Aug 2024 08:25:41 -0400
+Received: from mail-bn8nam11on2071.outbound.protection.outlook.com
+ ([40.107.236.71] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amachhiw@linux.ibm.com>)
- id 1sje7a-0008AM-TW; Thu, 29 Aug 2024 08:19:29 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47T3Poa8015583;
- Thu, 29 Aug 2024 12:19:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
- :from:to:cc:subject:message-id:references:content-type
- :in-reply-to:mime-version; s=pp1; bh=elXBKp3D9qMlFIbftT+K2XigBxw
- V9bQ16hHoYPke5ds=; b=nEz4MYCLwIH3wjL3nfK4N7l9siaXUgJOLhmcPyfxorA
- GRi1zPGvQgKkq7x2L2UlC+tEj373PuJwyjvhzq9nWIiOK6wdbcnMwfi0Fv/PlaSD
- 85QFtCa9pUQLDNc+bNgNIIWNPFEU33BVq44at+6RiwVpFU5I4IT7EO7w26ESc4WU
- 8+ycSre7rwnDa7qXxdXW/ONtPTOAWXVadd4diIGpDI8qu0d2aGHISD8hMaMGt61R
- Z1gOSwQCxwn2RVhXIzGlvGBHFENmvCIvDUTmEMMMN++RiZjrD/CrP8A1ZdtqrRQH
- fb7K+bZKhE+7tV41gh9jfSmNTFkbEW3ZC/Wlecy0crw==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8q7vry-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Aug 2024 12:19:22 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47TCJMRj031628;
- Thu, 29 Aug 2024 12:19:22 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8q7vru-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Aug 2024 12:19:22 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47TAXM3Q003100;
- Thu, 29 Aug 2024 12:19:21 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 417tuq4k35-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Aug 2024 12:19:21 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 47TCJHwS15794540
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Aug 2024 12:19:17 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6A00B20040;
- Thu, 29 Aug 2024 12:19:17 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CB08F2004B;
- Thu, 29 Aug 2024 12:19:15 +0000 (GMT)
-Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown
- [9.124.208.246])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 29 Aug 2024 12:19:15 +0000 (GMT)
-Date: Thu, 29 Aug 2024 17:49:10 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Aditya Gupta <adityag@linux.ibm.com>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Subject: Re: [PATCH v6 RESEND 0/5] Power11 support for QEMU [PSeries]
-Message-ID: <20240829174443.06c0b2ae-eb-amachhiw@linux.ibm.com>
-Mail-Followup-To: Aditya Gupta <adityag@linux.ibm.com>, 
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Nicholas Piggin <npiggin@gmail.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-References: <20240731055022.696051-1-adityag@linux.ibm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240731055022.696051-1-adityag@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: JJGMGPiLj_C1L7qQn7qPdFOUMcG6DbDC
-X-Proofpoint-ORIG-GUID: qE27b-IviDFnSEHpPsE_kj3PuKUnBOc9
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1sjeDZ-0000W5-6w
+ for qemu-devel@nongnu.org; Thu, 29 Aug 2024 08:25:41 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bYnpVUuq7Pgd3adO6fo3YTLPM0zfn1PcZpex6DO0GEsFU/aNmzvTv258Lm6j6x/l+wrXYhNVhwXFqpNLNKLE3+tZ4dqAZM4coU/XGa3ihgv4jyUHQPeIFAHW1zJyKwVE91ifMT9xFNNuTqxLHWw7382Rx3hKpaAwpIE1vXzFrCNRV1yVusvT8EGWJDQ+U2QSMXT4RgH5JFRxv92XlqlfvAdlRffiZA/V7aKN72f48BCj6SSId9Hzc8a6deYiTDUpcsEyg5hWDUdYSVH+5F90hWkpieL1/IIRzMqWb6DNPtUL55H3dfjj3KFAdnsnDnSzKbb4/emrx8fT3JMci4u0vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wecPkW1Su38h4e5heNvvaGqUYkIxzGHUeoR8MtCoP3I=;
+ b=nNSAlibftYljz9FCfXQsZtTD+gV65gygY5qpoLE8OYdx7Kn+EuuwRJ1xN9Ajps5buMtZ7GgY6k/NY3iZtXAG9ms0eCsBALV5IocojTwTxQyLerPtiOCLHvuh383QesHwmsjyBx8lqB6gaMiYnipTyE1OSS6OvJ0FzQbLeCIxhzrCe2K00qCac7dXw2erWPZGr9HP5IwIC9pd097Ze429nOZq5ceXjOs9eSP3SM7W3AdSFVTHnenQq4ExFa7VFN67wH+ZX6tfATWeCchl2HEZwnSJbrXdjVsJKFqgvvLqg53MqTnQEdUvO7LlJnYNqw21dGeY0ekpLgN0jAOeMoALhg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wecPkW1Su38h4e5heNvvaGqUYkIxzGHUeoR8MtCoP3I=;
+ b=0cwM1f0tjrxgjN/HqdeFMWS/kxNQXENHIb1gvzRBSEQhDXIQU7odyscpwHoLUfNxb1xnREbKiGB7Fgw7kks97Rmf0ALXK7n17wJMHCMMw2BJGJUmzAmObdqNPWLHzEmk/C4D1/RohDg4MlXboJKfgd6rWMlQ2stdY/A0gJQkKvQ=
+Received: from BN9PR03CA0589.namprd03.prod.outlook.com (2603:10b6:408:10d::24)
+ by PH7PR12MB6658.namprd12.prod.outlook.com (2603:10b6:510:211::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.28; Thu, 29 Aug
+ 2024 12:20:29 +0000
+Received: from BL6PEPF0001AB50.namprd04.prod.outlook.com
+ (2603:10b6:408:10d:cafe::78) by BN9PR03CA0589.outlook.office365.com
+ (2603:10b6:408:10d::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.28 via Frontend
+ Transport; Thu, 29 Aug 2024 12:20:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL6PEPF0001AB50.mail.protection.outlook.com (10.167.242.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7918.13 via Frontend Transport; Thu, 29 Aug 2024 12:20:28 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 29 Aug
+ 2024 07:20:28 -0500
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-29_02,2024-08-29_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
- score=100 priorityscore=1501
- clxscore=1011 lowpriorityscore=0 impostorscore=0 suspectscore=0
- adultscore=0 bulkscore=0 malwarescore=0 spamscore=100 phishscore=0
- mlxlogscore=-999 mlxscore=100 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2408290085
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=amachhiw@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: quoted-printable
+Subject: [ANNOUNCE] QEMU 9.1.0-rc4 is now available
+From: Michael Roth <michael.roth@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: Richard Henderson <richard.henderson@linaro.org>
+Date: Thu, 29 Aug 2024 07:19:37 -0500
+Message-ID: <172493397792.2948649.489614605350422137@amd.com>
+User-Agent: alot/0.9
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB50:EE_|PH7PR12MB6658:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2d80f97-6c02-4897-8e62-08dcc824f86d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|82310400026|36860700013|376014; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?cmEvMkdzNCsvNVBDa3RPZ0RFeEJ6bnZ3bmV5eGNDVWhxU0tROWtoRnloN2k3?=
+ =?utf-8?B?MkRHd2VDZ1JhU3ZGSWpLdC8xQVhsOGRWNEJjdmhuMkpzdEZORE5QZFlZSHNV?=
+ =?utf-8?B?RHdBMGRHb2pnVzFvT0FTSWdQdGRkc1pyaUxBaUlWaFNwZlIxYnRNM0RMSi94?=
+ =?utf-8?B?UDIrbDlYTGE1ZzB1ZUVSN2VMeStueDNnalI4OHNoS0xxajBQWFA5Z1NsLzZu?=
+ =?utf-8?B?RzBjZnBTMnpRQTF1dEZ5SDhoRXFiQlNQa21HYklhVHF3QVdEM2hjY2FPTyt2?=
+ =?utf-8?B?T1BGVDRsRzRxUGNEYU9hdTc4bWcvVllibisyZ2gzcERkazZoNytrVTd4dUV2?=
+ =?utf-8?B?WmxxQXB1NnhOMGdyTWhPa09UblBMU2tGdDlSa3pNWHQrNVNjZU80N2lOS0wr?=
+ =?utf-8?B?WmJGVnJteG9RU3ZpVklIUll6cC9aMTFxRlMrRFBFczB2MzR0WHlCOGVlbTVo?=
+ =?utf-8?B?RDlFZWJMNG41RVovNW5vb1Y1Nm01RWdVMmZKb0FtbEl2QkxKd2hwQ0taT2JO?=
+ =?utf-8?B?dXJHZVMvUjdHMmkrODNZSjhsUkloWGxNWVh6RXl3cGNrRit1UHA2alV6SFJu?=
+ =?utf-8?B?amdWYlo2TmVUUkdWVzA4OTZXNWlTU2pYZE8wY0pzN3o3bHNVcUxrRFJrNUVn?=
+ =?utf-8?B?c29JdmMyalp3LzBDempadFFBTG91ZnhScjUvODNKWUpRZ0tZYmVGenkzeDRo?=
+ =?utf-8?B?UUJFUVY1Zmtodis4bUtZai9rSmtHelpEbjlrbnBaZEE0aHhjSkRsbEl2U0Nn?=
+ =?utf-8?B?RjJlU2s0UW9LQUJZMFZBM09yK0dReFFybC9GbUN4RGhkNWNoNFp6NFBsMGVk?=
+ =?utf-8?B?QjBZUyt2U2VEdFM5cW8ycWd1eVNJTTVSeWJEN011R0t1QnBGNTl6YTBDWVoz?=
+ =?utf-8?B?Z1JuenorcWU5elZYaDhKK253cFhzYldDYU55eEtRUWdVMmRoZk5HTnBhcVJD?=
+ =?utf-8?B?Y254MGNqeGNJTFdBYmZiNEdQNENQOXFyODV3L25sNFF3QWFUVFpVUjNhcURy?=
+ =?utf-8?B?bk9kcW1OZ3llaWEycjBWWlhqM0NuU3dJMGowT0pNK0JjK1VNaDFNUHAycE5X?=
+ =?utf-8?B?cnhHbU9NWVZyRVI1dGJrQVFScXdpSlJ0M1JzNU93UXdZZzEwelg1eVRZYmZQ?=
+ =?utf-8?B?emxQVWF5cjZCODMyS051a2dCRjFEenUwRTlSTTYzT2l5eml4dGMzeVlFWUhG?=
+ =?utf-8?B?VVZJWVFaWkVESWpGaktkZ3duNWtrZGNwTk44OVZIOUFUbDRZS0EvZzJjZWdX?=
+ =?utf-8?B?L1RxcFdUVG9Vc2RHSEtkdVF5aFoxNERRcUhkUWR3K2N3WDd5TlFOZlk0dkdZ?=
+ =?utf-8?B?S0JPMFY0RUhVNUxrbEQ2RjBXOGVjbm9YNzFSQXREMDliczlBNURFWkp0THdL?=
+ =?utf-8?B?K3dWMFozTVhiMDJGOXZZc2IzYStESE83VWNRTDhwdnNLSUlGS0hMWkhMdlRr?=
+ =?utf-8?B?bURkdkdZdTB2dmVsamFMblFKbzlGaXhOYWxYclBQTStrMTJReWZPelRUMWw3?=
+ =?utf-8?B?ZGpCWHFwYnIvOUdaTmtjdFAvTG1uTE9GNEtxcWpMcFhaTy81QSt3TDhhOFJS?=
+ =?utf-8?B?RUxMNUdzcVQyZWQxNzcrKytqMHNpK2JCbVlOMktVeXhUOEJmSWpiSEY4b282?=
+ =?utf-8?B?eEhyTlhObSsyTTFxaXh1UHRBSDREaklmbHZRVjN4dGt6UmdDWTNkblZGZ1c5?=
+ =?utf-8?B?TzVKTENBTkExYnFONDM0cGVDQnhyV09PeWEzV3ZXYm82ekQza3UvVGt2WjVY?=
+ =?utf-8?B?RWhLdjFUNGpaQ0FwcGl1Y21kTmI2SE1oK3h3VThSdzZ5eFJXMUNZMEt0QnNu?=
+ =?utf-8?B?cVhldEhJYmwxOWdSWC85clpHd3piblpPcjAzOXY5K04xWWVhTEZPUmF2bWFw?=
+ =?utf-8?Q?9IvGLC8viPOMb?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2024 12:20:28.9887 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2d80f97-6c02-4897-8e62-08dcc824f86d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB50.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6658
+Received-SPF: permerror client-ip=40.107.236.71;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 29 Aug 2024 09:29:04 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,121 +151,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Aditya,
+Hello,
 
-On 2024/07/31 11:20 AM, Aditya Gupta wrote:
-> Overview
-> ============
-> 
-> Split "Power11 support for QEMU" into 2 patch series: pseries & powernv.
-> 
-> This patch series is for pseries support for Power11.
-> 
-> As Power11 core is same as Power10, hence much of the code has been reused from
-> Power10.
-> 
-> Power11 was added in Linux in:
->   commit c2ed087ed35c ("powerpc: Add Power11 architected and raw mode")
-> 
-> Git Tree for Testing
-> ====================
-> 
-> QEMU: https://github.com/adi-g15-ibm/qemu/tree/p11-v6-pseries
-> 
-> Has been tested with following cases:
-> * '-M pseries' / '-M pseries -cpu Power11'
+On behalf of the QEMU Team, I'd like to announce the availability of the
+fifth release candidate for the QEMU 9.1 release. This release is meant
+for testing purposes and should not be used in a production environment.
 
-I tried the below command with mailine QEMU and this patch series applied. I
-could boot the guest with -cpu Power11 option but when I check inside the guest
-with `lscpu`, I can still see the Model name being reported as "Power 10" while
-the PVR value looks fine corresponding to Power11.
+  http://download.qemu.org/qemu-9.1.0-rc4.tar.xz
+  http://download.qemu.org/qemu-9.1.0-rc4.tar.xz.sig
 
-Did you see "Power 11" while you were testing this?
+You can help improve the quality of the QEMU 9.1 release by testing this
+release and reporting bugs using our GitLab issue tracker:
 
-  $ qemu-system-ppc64 -m 4G -smp 4 -nographic -drive file=/root/testing/debian-12-generic-ppc64el.qcow2,format=qcow2 -accel tcg -cpu Power11
+  https://gitlab.com/qemu-project/qemu/-/milestones/13
 
-  root@localhost:~# lscpu
-  Architecture:             ppc64le
-    Byte Order:             Little Endian
-  CPU(s):                   4
-    On-line CPU(s) list:    0-3
-  Model name:               POWER10 (architected), altivec supported
-    Model:                  18.0 (pvr 0082 1200)
+The release plan, as well a documented known issues for release
+candidates, are available at:
 
-Thanks,
-Amit
+  http://wiki.qemu.org/Planning/9.1
 
-> * '-smp' option tested
-> * with compat mode: 'max-cpu-compat=power10' and 'max-cpu-compat=power9'
-> * with/without device 'virtio-scsi-pci'
-> * with/without -kernel and -drive with qcow_file
-> 
-> Linux with Power11 support: https://github.com/torvalds/linux, since v6.9-rc1
-> 
-> Changelog
-> =========
-> v6 RESEND:
->   + added my initials instead of PMM in patch #1 description
-> 
-> v6: 
->   + reorganised patches such that Power11 introduction is at end, and
->   cleanups and fixes is done before
->   + patch #1: renamed macros from POWER_* to PCC_*
->   + patch #2: rename 'logical_pvr' to 'spapr_logical_pvr' to better convey
->   the context
-> 
-> v5:
->   + split patch series into pseries+powernv
->   + patch #1: apply harsh's patch to reduce duplication
->   + patch #2: simplified, by removing duplication
->   + patch #3: update docs, according to harsh's suggestion
->   + patch #4: no functional change, #define used for P9 & P10 pcr_supported
->   + patch #5: no change
-> 
-> v4:
->   + patch #5: fix memory leak in pnv_chip_power10_quad_realize
->   - no change in other patches
-> 
-> v3:
->   + patch #1: version power11 as power11_v2.0
->   + patch #2: split target hw/pseries code into patch #2
->   + patch #3,#4: fix regression due to Power10 and Power11 having same PCR
->   + patch #5: create pnv_chip_power11_dt_populate and split pnv_chip_power10_common_realize as per review
->   + patch #6-#11: no change
->   - remove commit to make Power11 as default
-> 
-> v2:
->   + split powernv patch into homer,lpc,occ,psi,sbe
->   + reduce code duplication by reusing power10 code
->   + make power11 as default
->   + rebase on qemu upstream/master
->   + add more information in commit descriptions
->   + update docs
->   + update skiboot.lid
-> 
-> 
-> Aditya Gupta (4):
->   target/ppc: Introduce 'PowerPCCPUClass::spapr_logical_pvr'
->   target/ppc: Fix regression due to Power10 and Power11 having same PCR
->   target/ppc: Add Power11 DD2.0 processor
->   ppc/pseries: Add Power11 cpu type
-> 
-> Harsh Prateek Bora (1):
->   target/ppc: Reduce code duplication across Power9/10 init code
-> 
->  docs/system/ppc/pseries.rst |  17 +++-
->  hw/ppc/spapr_cpu_core.c     |   1 +
->  target/ppc/compat.c         |  11 +++
->  target/ppc/cpu-models.c     |   3 +
->  target/ppc/cpu-models.h     |   3 +
->  target/ppc/cpu.h            |   3 +
->  target/ppc/cpu_init.c       | 188 +++++++++++++++---------------------
->  target/ppc/cpu_init.h       |  92 ++++++++++++++++++
->  8 files changed, 205 insertions(+), 113 deletions(-)
->  create mode 100644 target/ppc/cpu_init.h
-> 
-> -- 
-> 2.45.2
-> 
-> 
+Please add entries to the ChangeLog for the 9.1 release below:
+
+  http://wiki.qemu.org/ChangeLog/9.1
+
+Thank you to everyone involved!
+
+Changes since rc3:
+
+cec9917193: Update version for v9.1.0-rc4 release (Richard Henderson)
+43e0d14ee0: docs/sphinx: fix extra stuff in TOC after freeform QMP sections=
+ (John Snow)
+3874f5f73c: nbd/server: CVE-2024-7409: Avoid use-after-free when closing se=
+rver (Eric Blake)
+aee07f2563: tests/qtest: Delete previous boot file (Akihiko Odaki)
+8f97deb99c: .gitlab-ci.d/windows.yml: Disable the qtests in the MSYS2 job (=
+Thomas Huth)
+eb9ca730da: gitlab-ci: Replace build_script -> step_script in Cirrus jobs (=
+Philippe Mathieu-Daud=C3=A9)
+d6192f3f75: hw/display/vhost-user-gpu.c: fix vhost_user_gpu_chr_read() (Hao=
+ran Zhang)
+d53bb908b5: system/vl.c: Print machine name, not "(null)", for unknown mach=
+ine types (Peter Maydell)
+80e3541282: hw/x86: add a couple of comments explaining how the kernel imag=
+e is parsed (Ani Sinha)
 
