@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F359E966815
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 19:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE73966816
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 19:35:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sk5WW-0004vE-LR; Fri, 30 Aug 2024 13:35:00 -0400
+	id 1sk5WX-0004y0-Mr; Fri, 30 Aug 2024 13:35:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sk5WU-0004tB-KL
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 13:34:58 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1sk5WU-0004tY-WD
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 13:34:59 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sk5WS-0003O4-3c
+ id 1sk5WS-0003O6-Dm
  for qemu-devel@nongnu.org; Fri, 30 Aug 2024 13:34:58 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4280bca3960so18080295e9.3
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-42bbf138477so3879995e9.2
  for <qemu-devel@nongnu.org>; Fri, 30 Aug 2024 10:34:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725039294; x=1725644094; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=H5TolmHItSaUT9hOvsjRNnuWQE0yYjs/BM9Yo7vZ56M=;
- b=qy1d6AgJcu71SwTMZoPNFYO2A4ZGEChpoa3WDdR/wVM8yyaMcM4mngRKwKS8ECYV5d
- S77ZWvFH1WI8/yRBjaqzakEsUpOWJ3gx3dNQZwdGSdIcgpQZCEj2Y2JYW73CFGF6x61O
- 1EKBNgRdPzlrypfJ0YZ5SleIFK+4j6to2sKhax7ufBxCHr0p/GOBXMZAhTwtRs7bMQmJ
- rL5aXmqxwMRkMNhLhgkR0IfAJce1tOCq5TJfUx9rMAZVnuOkaBx+T7yQK3hzeNvyfpee
- mlYrdK2eD2Ybdsl2ax6X0p6lymgBRa1BPxbxJkJCnUPSDXZIvwWVgn419bGC5FwyE33G
- ZrCg==
+ d=linaro.org; s=google; t=1725039295; x=1725644095; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hTjpBg36zHF05SzURNvPqThL65TJ1O2Awt657MNLYHU=;
+ b=xfeemnDMuDYtIgYKwmyY0tFEb3fXnUlCDuComNRgG7WlJk5HnFuaxGrT0/QWlDZgwe
+ 7DxcP9mI88A6HQOBrqt/Opl/tPIo/AXdQE+KjuRW78dJowb+o9v9KmzVsrVacde5E28U
+ 3/Bt34M3rBvApMkLx8ybcBRWBGCihiee1ikYcOn13JzMSCzdc+n9dmXv6oGoZ6McqaLm
+ n0oXs3g5U81L1D8qvO0CX1fcFPMF3ka5r0Tt1Ii5LApjkaDe5iSJRh0R9GALXlj410Kc
+ etf9dubqcxzSqf1Zg+f1uVH0Wctq9iOfvkZ8CKsqbk94JHVtgH5LY6PfjlFEqEvb69rC
+ 8owQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725039294; x=1725644094;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=H5TolmHItSaUT9hOvsjRNnuWQE0yYjs/BM9Yo7vZ56M=;
- b=u++BtRrPZNjSWyliK4ZvpQ+3AsGW1X1Mhxa6YheuM/0jqLyLAvAzW9i5nKdnHykIn9
- VgFT3/iPgBOjgmttYLbZI1/QoKMj10U/8mDUjmaRkYD7AvlrqWLJrsA34n9FJoKRDa/Y
- RKpKzB+bUWvhKw7BGDAHnMoinVKLay+zpEhLLtkFqwfYoCtKNMTQja/aza6IYlmtElJ+
- AvQdkCxq5sNHpC6KxfgQrc0cRLYjM12wZwGCsmZq7p/CNHqk+yr1iCQ37XeA0B/vTncW
- A5K4/eAZqAU3zIhMx6ldGxHyh4mskSGRh19eBLR2KEcinnO6glhGNeKAXeDy6wD06jEj
- 25Dg==
-X-Gm-Message-State: AOJu0Yy+UQ6kSQJBzVby5KqLmxAI9sxYKaL1+exaoGmmEM0OtkJ5OIkf
- q0y2fcy2IcrBun8sYFYQ93EcAApp453cO3h0M3US1fQN0BxbhPbG3iVdnug5ULupsaByUazrhCb
- 4
-X-Google-Smtp-Source: AGHT+IG/UkIusFEk/aL9dXQ/kOvHMmwbHMZ9qsbkbdFNDppdNo9YKqC+LoHO8M+zI8Udtbtu9o+0ag==
-X-Received: by 2002:a05:600c:1c89:b0:426:66a2:b200 with SMTP id
- 5b1f17b1804b1-42bd052b0f6mr3284395e9.0.1725039294139; 
+ d=1e100.net; s=20230601; t=1725039295; x=1725644095;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hTjpBg36zHF05SzURNvPqThL65TJ1O2Awt657MNLYHU=;
+ b=XFfrbMWx94C21DObZcfFs6bY2VSpMAqR2EaNxof/k991+qcCoJNnMmCmj81naaINE/
+ fiWpWKkJY6Oal1kspJeGkSdTYqyPV/yi9f6x709HC7HsnstpaWlXYTFBZijfLnHD3wNz
+ s+NM8F7Tt4KSkikByLktxBHHpgTYis9wNQZg9cx3g5aWCdn1nT4+oWF3RgPnKrZfd5Ck
+ 2TIJ3eziBbaFPjp4ZQeiEZOLLxCkhbn89Y7hwERdnFr3HNFLYmjVpxXAMcLW9w8l3vxB
+ Q5VpJj2HpX/+aEbqsxlFP219UrHVjnSpbmw5+vhJbFSg+buqoAMSYabL9HbtaoJ8mREX
+ NDHw==
+X-Gm-Message-State: AOJu0YwX3K+DVUOEhPYw25rdW3WUpEUdku6r1LYoinpR2GEewRvWqAAc
+ yhw1Z2gvxJv6vDTc1Uh6A3MWbpZaeUbg1CyewLRgn/vHBAd5O4eK29tRxaQTZwE3Fn7H2AfzbJn
+ W
+X-Google-Smtp-Source: AGHT+IEw7nXy7wC/HQOd12xidkxs57afPG8TDJsTaSB0YKYKddP7cBAZJ/NvBWEUhIN5aT7B8K+VMA==
+X-Received: by 2002:a05:600c:4f42:b0:42b:b016:94a3 with SMTP id
+ 5b1f17b1804b1-42bb0343a6amr56735035e9.31.1725039294637; 
  Fri, 30 Aug 2024 10:34:54 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb37f7849sm58471775e9.7.2024.08.30.10.34.53
+ 5b1f17b1804b1-42bb37f7849sm58471775e9.7.2024.08.30.10.34.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Aug 2024 10:34:53 -0700 (PDT)
+ Fri, 30 Aug 2024 10:34:54 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <huth@tuxfamily.org>,
 	Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 0/3] m68k: Fix a couple of Coverity nits
-Date: Fri, 30 Aug 2024 18:34:49 +0100
-Message-Id: <20240830173452.2086140-1-peter.maydell@linaro.org>
+Subject: [PATCH 1/3] hw/m68k/mcf5208: Avoid shifting off end of integer
+Date: Fri, 30 Aug 2024 18:34:50 +0100
+Message-Id: <20240830173452.2086140-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240830173452.2086140-1-peter.maydell@linaro.org>
+References: <20240830173452.2086140-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,27 +93,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset fixes a couple of very minor Coverity issues: one
-"shift off top of integer", and one "overflow in multiplication". 
-Neither will happen in normal use. I would not bother backporting
-either fix to stable.
+In m5208_sys_read(), we have a loop of n from 0 to 31, and we
+calculate (2u << n).  For the n == 31 iteration this will shift off
+the top of the unsigned 32 bit integer.
 
-I threw in also a patch adding a comment to mcf5208.c giving the URLs
-of the datasheets, since I had to go find them to check the fix in
-patch 1.
+This is harmless, because we're going to stop the loop with n == 31
+anyway, but we can avoid the error by using 64-bit arithmetic here.
 
-thanks
--- PMM
+(The SDCS0 register is documented at
+https://www.nxp.com/docs/en/reference-manual/MCF5208RM.pdf
+section 18.4.5; we want the lower 5 bits to indicate the
+RAM size, where 31 == 4GB, 30 == 2GB, and so on down.
+As it happens, the layout of the mcf5208evb board memory map
+means it doesn't make sense to have more than 1GB of RAM
+in any case.)
 
-Peter Maydell (3):
-  hw/m68k/mcf5208: Avoid shifting off end of integer
-  hw/m68k/mcf5208: Add URLs for datasheets
-  hw/nubus/nubus-device: Range check 'slot' property
+Resolves: Coverity CID 1547727
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/m68k/mcf5208.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- hw/m68k/mcf5208.c       | 10 +++++++++-
- hw/nubus/nubus-device.c |  7 +++++++
- 2 files changed, 16 insertions(+), 1 deletion(-)
-
+diff --git a/hw/m68k/mcf5208.c b/hw/m68k/mcf5208.c
+index ec14096aa43..0ad347dfa81 100644
+--- a/hw/m68k/mcf5208.c
++++ b/hw/m68k/mcf5208.c
+@@ -158,7 +158,7 @@ static uint64_t m5208_sys_read(void *opaque, hwaddr addr,
+         {
+             int n;
+             for (n = 0; n < 32; n++) {
+-                if (current_machine->ram_size < (2u << n)) {
++                if (current_machine->ram_size < (2ULL << n)) {
+                     break;
+                 }
+             }
 -- 
 2.34.1
 
