@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDE4966332
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 15:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C7C96634B
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 15:45:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sk1sh-0002MY-BB; Fri, 30 Aug 2024 09:41:39 -0400
+	id 1sk1t0-0003lX-Ah; Fri, 30 Aug 2024 09:41:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1sd-0001vv-L5
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:41:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1sl-00031T-HD
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:41:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1sb-0005eI-8N
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:41:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1sj-0005eb-Br
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:41:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725025292;
+ s=mimecast20190719; t=1725025299;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Xhy1BSCohpIoQg+VSoYYxiPc5WzgWchrjchDtLPRrd8=;
- b=HdgnZ3+YOfs+H3WQMZBOWdSwtwE3vtWtnNB58pufBZV6G2qsf23ZMLewygC+kI4LmnKCpb
- n+T9xoxfyXjJ3nKaGXfMc+mtFgBUUk4oDTxxyeqybjQkoCZ1qyE+V7/uXuf/zCn3ftuMzP
- KqmBq0AQIhEs+Z2aIlWUYwi6jCeVu/w=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=rD08ZnMTN0VvxHk60UxwJ6iH60cIkpG/1tMMITmmOvQ=;
+ b=NIPi/j2N4m7qhYvv1NI5qyQsNuJOJ08S5YefLMJL86nkw1ZhXDCJfQ545PyZUzeexbvfXD
+ ALntPRTrxH32T6w4wKAg7gpSopPu76p70YlYz3GPvbbKuFe46USnNyWpfNt2uI20Mth2xd
+ pWNTQMGKKCXT63azXPMv06vZry2OoCQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-79-pEkHzIXhMfGUtgtG5RdCYw-1; Fri,
- 30 Aug 2024 09:41:29 -0400
-X-MC-Unique: pEkHzIXhMfGUtgtG5RdCYw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-179-FfptHt0DOI2CIdlRhtrmog-1; Fri,
+ 30 Aug 2024 09:41:36 -0400
+X-MC-Unique: FfptHt0DOI2CIdlRhtrmog-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5805619560B4; Fri, 30 Aug 2024 13:41:28 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 672391955BFA; Fri, 30 Aug 2024 13:41:32 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.7])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 48D57300019C; Fri, 30 Aug 2024 13:41:24 +0000 (UTC)
+ id EBFDF300019C; Fri, 30 Aug 2024 13:41:28 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -50,10 +50,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ani Sinha <anisinha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v5 36/44] tests/functional: Convert mips64el Fuloong2e avocado
- test (1/2)
-Date: Fri, 30 Aug 2024 15:38:30 +0200
-Message-ID: <20240830133841.142644-37-thuth@redhat.com>
+Subject: [PATCH v5 37/44] tests/functional: Add QemuUserTest class
+Date: Fri, 30 Aug 2024 15:38:31 +0200
+Message-ID: <20240830133841.142644-38-thuth@redhat.com>
 In-Reply-To: <20240830133841.142644-1-thuth@redhat.com>
 References: <20240830133841.142644-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -88,126 +87,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Straight forward conversion. Update the SHA1 hashes to
-SHA256 hashes since SHA1 should not be used anymore nowadays.
+Per commit 5334df4822 ("tests/avocado: Introduce
+QemuUserTest base class"):
 
-Since the asset is expected locally and the test is guarded
-with RESCUE_YL_PATH, keep it under the 'quick' category.
-
-  $ RESCUE_YL_PATH=/path/to/rescue-yl QEMU_TEST_ALLOW_UNTRUSTED_CODE=1 \
-    make check-functional-mips64el
-  1/4 qemu:func-quick+func-mips64el / func-mips64el-empty_cpu_model      OK   0.12s   1 subtests passed
-  2/4 qemu:func-quick+func-mips64el / func-mips64el-version              OK   0.13s   1 subtests passed
-  3/4 qemu:func-quick+func-mips64el / func-mips64el-info_usernet         OK   0.15s   1 subtests passed
-  4/4 qemu:func-quick+func-mips64el / func-mips64el-mips64el_fuloong2e   OK   0.19s   1 subtests passed
+  Similarly to the 'System' Test base class with methods
+  for testing system emulation, the QemuUserTest class
+  contains methods useful to test user-mode emulation.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240827094905.80648-2-philmd@linaro.org>
+Message-ID: <20240822104238.75045-2-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                                   |  2 +-
- tests/functional/meson.build                  |  4 +++
- .../test_mips64el_fuloong2e.py}               | 33 ++++++++++---------
- 3 files changed, 23 insertions(+), 16 deletions(-)
- rename tests/{avocado/machine_mips_fuloong2e.py => functional/test_mips64el_fuloong2e.py} (58%)
- mode change 100644 => 100755
+ tests/functional/qemu_test/__init__.py |  2 +-
+ tests/functional/qemu_test/testcase.py | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cbdf2863fa..f6e6e5ebf5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1384,7 +1384,7 @@ S: Odd Fixes
- F: hw/mips/fuloong2e.c
- F: hw/pci-host/bonito.c
- F: include/hw/pci-host/bonito.h
--F: tests/avocado/machine_mips_fuloong2e.py
-+F: tests/functional/test_mips64el_fuloong2e.py
+diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+index 1d87d7122f..f33282efe8 100644
+--- a/tests/functional/qemu_test/__init__.py
++++ b/tests/functional/qemu_test/__init__.py
+@@ -11,4 +11,4 @@
+ from .cmd import has_cmd, has_cmds, run_cmd, is_readable_executable_file, \
+     interrupt_interactive_console_until_pattern, wait_for_console_pattern, \
+     exec_command, exec_command_and_wait_for_pattern, get_qemu_img
+-from .testcase import QemuSystemTest, QemuBaseTest
++from .testcase import QemuBaseTest, QemuUserTest, QemuSystemTest
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 18314be9d1..aa0146265a 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -13,6 +13,7 @@
  
- Loongson-3 virtual platforms
- M: Huacai Chen <chenhuacai@kernel.org>
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 4154b1cbcd..dcede9733e 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -65,6 +65,10 @@ tests_microblazeel_system_thorough = [
-   'microblazeel_s3adsp1800'
- ]
- 
-+tests_mips64el_system_quick = [
-+  'mips64el_fuloong2e',
-+]
-+
- tests_mips64el_system_thorough = [
-   'mips64el_loongson3v',
- ]
-diff --git a/tests/avocado/machine_mips_fuloong2e.py b/tests/functional/test_mips64el_fuloong2e.py
-old mode 100644
-new mode 100755
-similarity index 58%
-rename from tests/avocado/machine_mips_fuloong2e.py
-rename to tests/functional/test_mips64el_fuloong2e.py
-index 89291f47b2..7688a32713
---- a/tests/avocado/machine_mips_fuloong2e.py
-+++ b/tests/functional/test_mips64el_fuloong2e.py
-@@ -1,3 +1,5 @@
-+#!/usr/bin/env python3
-+#
- # Functional tests for the Lemote Fuloong-2E machine.
- #
- # Copyright (c) 2019 Philippe Mathieu-Daudé <f4bug@amsat.org>
-@@ -8,35 +10,36 @@
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
+ import logging
  import os
 +import subprocess
+ import pycotap
+ import sys
+ import unittest
+@@ -70,6 +71,22 @@ def main():
+         unittest.main(module = None, testRunner = tr, argv=["__dummy__", path])
  
--from avocado import skipUnless
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import wait_for_console_pattern
-+from qemu_test import QemuSystemTest
-+from qemu_test import wait_for_console_pattern
-+from unittest import skipUnless
  
- class MipsFuloong2e(QemuSystemTest):
- 
-     timeout = 60
- 
--    @skipUnless(os.getenv('AVOCADO_ALLOW_UNTRUSTED_CODE'), 'untrusted code')
-+    @skipUnless(os.getenv('QEMU_TEST_ALLOW_UNTRUSTED_CODE'), 'untrusted code')
-     @skipUnless(os.getenv('RESCUE_YL_PATH'), 'RESCUE_YL_PATH not available')
--    def test_linux_kernel_isa_serial(self):
--        """
--        :avocado: tags=arch:mips64el
--        :avocado: tags=machine:fuloong2e
--        :avocado: tags=endian:little
--        :avocado: tags=device:bonito64
--        :avocado: tags=device:via686b
--        """
-+    def test_linux_kernel_2_6_27_isa_serial(self):
-         # Recovery system for the Yeeloong laptop
-         # (enough to test the fuloong2e southbridge, accessing its ISA bus)
-         # http://dev.lemote.com/files/resource/download/rescue/rescue-yl
--        kernel_hash = 'ec4d1bd89a8439c41033ca63db60160cc6d6f09a'
--        kernel_path = self.fetch_asset('file://' + os.getenv('RESCUE_YL_PATH'),
--                                       asset_hash=kernel_hash)
-+        sha = 'ab588d3316777c62cc81baa20ac92e98b01955c244dff3794b711bc34e26e51d'
-+        kernel_path = os.getenv('RESCUE_YL_PATH')
-+        output = subprocess.check_output(['sha256sum', kernel_path])
-+        checksum = output.split()[0]
-+        assert checksum.decode("utf-8") == sha
- 
-+        self.set_machine('fuloong2e')
-         self.vm.set_console()
-         self.vm.add_args('-kernel', kernel_path)
-         self.vm.launch()
-         wait_for_console_pattern(self, 'Linux version 2.6.27.7lemote')
-         cpu_revision = 'CPU revision is: 00006302 (ICT Loongson-2)'
-         wait_for_console_pattern(self, cpu_revision)
++class QemuUserTest(QemuBaseTest):
 +
++    def setUp(self):
++        super().setUp('qemu-')
++        self._ldpath = []
 +
-+if __name__ == '__main__':
-+    QemuSystemTest.main()
++    def add_ldpath(self, ldpath):
++        self._ldpath.append(os.path.abspath(ldpath))
++
++    def run_cmd(self, bin_path, args=[]):
++        return subprocess.run([self.qemu_bin]
++                              + ["-L %s" % ldpath for ldpath in self._ldpath]
++                              + [bin_path]
++                              + args,
++                              text=True, capture_output=True)
++
+ class QemuSystemTest(QemuBaseTest):
+     """Facilitates system emulation tests."""
+ 
 -- 
 2.46.0
 
