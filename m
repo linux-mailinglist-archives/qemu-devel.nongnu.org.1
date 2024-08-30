@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 272DA96634A
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 15:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F796632C
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 15:42:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sk1rH-0000Ot-H8; Fri, 30 Aug 2024 09:40:11 -0400
+	id 1sk1rM-0000rg-H6; Fri, 30 Aug 2024 09:40:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1rC-0000JF-NY
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:40:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1rH-0000dp-Qr
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:40:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1rA-0005QS-DN
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:40:06 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1rF-0005Ud-PJ
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:40:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725025203;
+ s=mimecast20190719; t=1725025208;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dJbQZJGwqu7BKGegMKr2BErsIPZVL+r3Bfkwsv4GRx8=;
- b=GzHtzrsn1vyuX5SG23Xk2GVoqu8jePd5JVpM5mXPKbf4f0pSOGB7i5+V3++zFyxB7/sgNL
- AkbVeK9hdB+HgXTc4qOD4enY8HKwgXd6z3WkhMcRQ2h4McGn6YOBAEefZXzNQBfz+a7MMo
- 10JwNBn+jCgGVcNuyclTiIDN6wRn3K0=
+ bh=t0yj/K7Piv+Pfe1AqD43B1EX2IY/geuILA4GSFmvF50=;
+ b=D16iQz4eLBQSx0PvPds+HEwhhmQHdbcPoamPi3xcfrp4anWpeyYHFrA+fHpiArjOhpP9cP
+ rlNERQ9UAXaYbemjYV2fS71S/ruvr8IqQpcq35GUnLhaGJA0bkF6CNyzbjevclclb79iqr
+ GgBEgwke4SgjRn5fU6qEwx0jGCHI0KY=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-Phv6HJwLNLuNO2Fk1YwucQ-1; Fri,
- 30 Aug 2024 09:40:02 -0400
-X-MC-Unique: Phv6HJwLNLuNO2Fk1YwucQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-491-rvc0OQWHMZSCcYwyI_05dA-1; Fri,
+ 30 Aug 2024 09:40:05 -0400
+X-MC-Unique: rvc0OQWHMZSCcYwyI_05dA-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 832741955D4A; Fri, 30 Aug 2024 13:40:01 +0000 (UTC)
+ id D309B19560B4; Fri, 30 Aug 2024 13:40:04 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.7])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 848C83001FC3; Fri, 30 Aug 2024 13:39:56 +0000 (UTC)
+ id 97678300019C; Fri, 30 Aug 2024 13:40:01 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -50,24 +50,23 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ani Sinha <anisinha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v5 15/44] tests/functional: enable pre-emptive caching of
- assets
-Date: Fri, 30 Aug 2024 15:38:09 +0200
-Message-ID: <20240830133841.142644-16-thuth@redhat.com>
+Subject: [PATCH v5 16/44] tests/functional: Allow asset downloading with
+ concurrent threads
+Date: Fri, 30 Aug 2024 15:38:10 +0200
+Message-ID: <20240830133841.142644-17-thuth@redhat.com>
 In-Reply-To: <20240830133841.142644-1-thuth@redhat.com>
 References: <20240830133841.142644-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -86,207 +85,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+When running "make -j$(nproc) check-functional", tests that use the
+same asset might be running in parallel. Improve the downloading to
+detect this situation and wait for the other thread to finish the
+download.
 
-Many tests need to access assets stored on remote sites. We don't want
-to download these during test execution when run by meson, since this
-risks hitting test timeouts when data transfers are slow.
-
-Add support for pre-emptive caching of assets by setting the env var
-QEMU_TEST_PRECACHE to point to a timestamp file. When this is set,
-instead of running the test, the assets will be downloaded and saved
-to the cache, then the timestamp file created.
-
-A meson custom target is created as a dependency of each test suite
-to trigger the pre-emptive caching logic before the test runs.
-
-When run in caching mode, it will locate assets by looking for class
-level variables with a name prefix "ASSET_", and type "Asset".
-
-At the ninja level
-
-   ninja test --suite functional
-
-will speculatively download any assets that are not already cached,
-so it is advisable to set a timeout multiplier.
-
-   QEMU_TEST_NO_DOWNLOAD=1 ninja test --suite functional
-
-will fail the test if a required asset is not already cached
-
-   ninja precache-functional
-
-will download and cache all assets required by the functional
-tests
-
-At the make level, precaching is always done by
-
-   make check-functional
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Tested-by: Richard Henderson <richard.henderson@linaro.org>
-[thuth: Remove the duplicated "path = os.path.basename(...)" line]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/Makefile.include                 |  3 ++-
- tests/functional/meson.build           | 33 +++++++++++++++++++++++--
- tests/functional/qemu_test/asset.py    | 34 ++++++++++++++++++++++++++
- tests/functional/qemu_test/testcase.py |  7 ++++++
- 4 files changed, 74 insertions(+), 3 deletions(-)
+ tests/functional/qemu_test/asset.py | 62 ++++++++++++++++++++++++-----
+ 1 file changed, 51 insertions(+), 11 deletions(-)
 
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index 66c8cc3123..010369bd3a 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -161,7 +161,8 @@ $(FUNCTIONAL_TARGETS):
- 
- .PHONY: check-functional
- check-functional:
--	@$(MAKE) SPEED=thorough check-func check-func-quick
-+	@$(NINJA) precache-functional
-+	@QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func check-func-quick
- 
- # Consolidated targets
- 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index f1f344f860..df79775df3 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -39,6 +39,7 @@ tests_x86_64_system_quick = [
- tests_x86_64_system_thorough = [
- ]
- 
-+precache_all = []
- foreach speed : ['quick', 'thorough']
-   foreach dir : target_dirs
- 
-@@ -78,11 +79,35 @@ foreach speed : ['quick', 'thorough']
-                                meson.current_source_dir())
- 
-     foreach test : target_tests
--      test('func-@0@/@1@'.format(target_base, test),
-+      testname = '@0@-@1@'.format(target_base, test)
-+      testfile = 'test_' + test + '.py'
-+      testpath = meson.current_source_dir() / testfile
-+      teststamp = testname + '.tstamp'
-+      test_precache_env = environment()
-+      test_precache_env.set('QEMU_TEST_PRECACHE', meson.current_build_dir() / teststamp)
-+      test_precache_env.set('PYTHONPATH', meson.project_source_root() / 'python:' +
-+                                          meson.current_source_dir())
-+      precache = custom_target('func-precache-' + testname,
-+                               output: teststamp,
-+                               command: [python, testpath],
-+                               depend_files: files(testpath),
-+                               build_by_default: false,
-+                               env: test_precache_env)
-+      precache_all += precache
-+
-+      # Ideally we would add 'precache' to 'depends' here, such that
-+      # 'build_by_default: false' lets the pre-caching automatically
-+      # run immediately before the test runs. In practice this is
-+      # broken in meson, with it running the pre-caching in the normal
-+      # compile phase https://github.com/mesonbuild/meson/issues/2518
-+      # If the above bug ever gets fixed, when QEMU changes the min
-+      # meson version, add the 'depends' and remove the custom
-+      # 'run_target' logic below & in Makefile.include
-+      test('func-' + testname,
-            python,
-            depends: [test_deps, test_emulator, emulator_modules],
-            env: test_env,
--           args: [meson.current_source_dir() / 'test_' + test + '.py'],
-+           args: [testpath],
-            protocol: 'tap',
-            timeout: test_timeouts.get(test, 60),
-            priority: test_timeouts.get(test, 60),
-@@ -90,3 +115,7 @@ foreach speed : ['quick', 'thorough']
-     endforeach
-   endforeach
- endforeach
-+
-+run_target('precache-functional',
-+           depends: precache_all,
-+           command: ['true'])
 diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-index c0e675d847..b329ab7dbe 100644
+index b329ab7dbe..d3be2aff82 100644
 --- a/tests/functional/qemu_test/asset.py
 +++ b/tests/functional/qemu_test/asset.py
-@@ -9,6 +9,8 @@
- import logging
- import os
- import subprocess
-+import sys
-+import unittest
+@@ -12,6 +12,7 @@
+ import sys
+ import unittest
  import urllib.request
++from time import sleep
  from pathlib import Path
  from shutil import copyfileobj
-@@ -62,6 +64,9 @@ def fetch(self):
-                            self.cache_file, self.url)
-             return str(self.cache_file)
  
-+        if os.environ.get("QEMU_TEST_NO_DOWNLOAD", False):
-+            raise Exception("Asset cache is invalid and downloads disabled")
+@@ -55,6 +56,35 @@ def _check(self, cache_file):
+     def valid(self):
+         return self.cache_file.exists() and self._check(self.cache_file)
+ 
++    def _wait_for_other_download(self, tmp_cache_file):
++        # Another thread already seems to download the asset, so wait until
++        # it is done, while also checking the size to see whether it is stuck
++        try:
++            current_size = tmp_cache_file.stat().st_size
++            new_size = current_size
++        except:
++            if os.path.exists(self.cache_file):
++                return True
++            raise
++        waittime = lastchange = 600
++        while waittime > 0:
++            sleep(1)
++            waittime -= 1
++            try:
++                new_size = tmp_cache_file.stat().st_size
++            except:
++                if os.path.exists(self.cache_file):
++                    return True
++                raise
++            if new_size != current_size:
++                lastchange = waittime
++                current_size = new_size
++            elif lastchange - waittime > 90:
++                return False
 +
++        self.log.debug("Time out while waiting for %s!", tmp_cache_file)
++        raise
++
+     def fetch(self):
+         if not self.cache_dir.exists():
+             self.cache_dir.mkdir(parents=True, exist_ok=True)
+@@ -70,18 +100,28 @@ def fetch(self):
          self.log.info("Downloading %s to %s...", self.url, self.cache_file)
          tmp_cache_file = self.cache_file.with_suffix(".download")
  
-@@ -95,3 +100,32 @@ def fetch(self):
+-        try:
+-            resp = urllib.request.urlopen(self.url)
+-        except Exception as e:
+-            self.log.error("Unable to download %s: %s", self.url, e)
+-            raise
++        for retries in range(3):
++            try:
++                with tmp_cache_file.open("xb") as dst:
++                    with urllib.request.urlopen(self.url) as resp:
++                        copyfileobj(resp, dst)
++                break
++            except FileExistsError:
++                self.log.debug("%s already exists, "
++                               "waiting for other thread to finish...",
++                               tmp_cache_file)
++                if self._wait_for_other_download(tmp_cache_file):
++                    return str(self.cache_file)
++                self.log.debug("%s seems to be stale, "
++                               "deleting and retrying download...",
++                               tmp_cache_file)
++                tmp_cache_file.unlink()
++                continue
++            except Exception as e:
++                self.log.error("Unable to download %s: %s", self.url, e)
++                tmp_cache_file.unlink()
++                raise
  
-         self.log.info("Cached %s at %s" % (self.url, self.cache_file))
-         return str(self.cache_file)
-+
-+    def precache_test(test):
-+        log = logging.getLogger('qemu-test')
-+        log.setLevel(logging.DEBUG)
-+        handler = logging.StreamHandler(sys.stdout)
-+        handler.setLevel(logging.DEBUG)
-+        formatter = logging.Formatter(
-+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-+        handler.setFormatter(formatter)
-+        log.addHandler(handler)
-+        for name, asset in vars(test.__class__).items():
-+            if name.startswith("ASSET_") and type(asset) == Asset:
-+                log.info("Attempting to cache '%s'" % asset)
-+                asset.fetch()
-+        log.removeHandler(handler)
-+
-+    def precache_suite(suite):
-+        for test in suite:
-+            if isinstance(test, unittest.TestSuite):
-+                Asset.precache_suite(test)
-+            elif isinstance(test, unittest.TestCase):
-+                Asset.precache_test(test)
-+
-+    def precache_suites(path, cacheTstamp):
-+        loader = unittest.loader.defaultTestLoader
-+        tests = loader.loadTestsFromNames([path], None)
-+
-+        with open(cacheTstamp, "w") as fh:
-+            Asset.precache_suite(tests)
-diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
-index b2dd863c6e..18314be9d1 100644
---- a/tests/functional/qemu_test/testcase.py
-+++ b/tests/functional/qemu_test/testcase.py
-@@ -21,6 +21,7 @@
- from qemu.machine import QEMUMachine
- from qemu.utils import kvm_available, tcg_available
- 
-+from .asset import Asset
- from .cmd import run_cmd
- from .config import BUILD_DIR
- 
-@@ -58,6 +59,12 @@ def tearDown(self):
- 
-     def main():
-         path = os.path.basename(sys.argv[0])[:-3]
-+
-+        cache = os.environ.get("QEMU_TEST_PRECACHE", None)
-+        if cache is not None:
-+            Asset.precache_suites(path, cache)
-+            return
-+
-         tr = pycotap.TAPTestRunner(message_log = pycotap.LogMode.LogToError,
-                                    test_output_log = pycotap.LogMode.LogToError)
-         unittest.main(module = None, testRunner = tr, argv=["__dummy__", path])
+-        try:
+-            with tmp_cache_file.open("wb+") as dst:
+-                copyfileobj(resp, dst)
+-        except:
+-            tmp_cache_file.unlink()
+-            raise
+         try:
+             # Set these just for informational purposes
+             os.setxattr(str(tmp_cache_file), "user.qemu-asset-url",
 -- 
 2.46.0
 
