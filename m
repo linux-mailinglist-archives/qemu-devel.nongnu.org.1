@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684EF966325
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 15:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD0E966348
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 15:44:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sk1sF-00068E-Mz; Fri, 30 Aug 2024 09:41:11 -0400
+	id 1sk1sH-0006SY-Ew; Fri, 30 Aug 2024 09:41:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1s8-0005dz-RL
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:41:05 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1sB-0005rg-Pg
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:41:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1s5-0005Zh-Hf
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:41:04 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sk1s8-0005aB-OO
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 09:41:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725025260;
+ s=mimecast20190719; t=1725025263;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wZxKg14rh0yxMkEsXaaPd4X7q8JDRrbuFoST72D7jxk=;
- b=LnORaHdbO24ooZZx5/wfy1tqS3wQbPnCLnFZ0EqgyM+isuXWdQy0IgKCi//hUN5KKjg99W
- Q4Z5eUQ1fk1hMHRUm0Uzh3Bm9v2ERuFR1IYzYifiFump73eTn8Gqemk8luQb7+fR7lLai1
- eWco8NOa7saRnW5E2S7jyLDCY1wdxvk=
+ bh=k9YcrFsn6OY3zZLl0mlkCAAdJi4a8ezPpL8w14c8Xmg=;
+ b=F9Lw8PQqWuF9TdeCWQEu+G6IfIGTEyw/Ep88WJa15UPPgiaPbkxGCTmDwuxrMx8JI4wp9f
+ sUq3Dv63YrduWlmh8xhszeWZNEoNYny+5V0J8FZEUwotHX/wbBCxvMYHNa088z2IE0P8Be
+ jBMw2Z2yL06GHv7EbhahYCigqMfRwGw=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-ox6i0WZiOUuxML3X3ny2mw-1; Fri,
- 30 Aug 2024 09:40:56 -0400
-X-MC-Unique: ox6i0WZiOUuxML3X3ny2mw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-HZaB4lcrM926tEAmQeR-yw-1; Fri,
+ 30 Aug 2024 09:41:00 -0400
+X-MC-Unique: HZaB4lcrM926tEAmQeR-yw-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C672319560B0; Fri, 30 Aug 2024 13:40:55 +0000 (UTC)
+ id 8212E1955D54; Fri, 30 Aug 2024 13:40:59 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.7])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 930D5300019C; Fri, 30 Aug 2024 13:40:52 +0000 (UTC)
+ id 2B579300019C; Fri, 30 Aug 2024 13:40:55 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -50,10 +50,10 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ani Sinha <anisinha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v5 28/44] tests/functional: Convert the m68k nextcube test
- with tesseract
-Date: Fri, 30 Aug 2024 15:38:22 +0200
-Message-ID: <20240830133841.142644-29-thuth@redhat.com>
+Subject: [PATCH v5 29/44] tests/functional: Convert the acpi-bits test into a
+ standalone test
+Date: Fri, 30 Aug 2024 15:38:23 +0200
+Message-ID: <20240830133841.142644-30-thuth@redhat.com>
 In-Reply-To: <20240830133841.142644-1-thuth@redhat.com>
 References: <20240830133841.142644-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,225 +86,411 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The code that handles running of tesseract needs to be tweaked a little
-bit to be able to run without the functions from avocado.utils, and
-while we're at it, drop some legacy stuff that was still there due to
-Tesseract 3 support that we already dropped a while ago.
+Mostly a straight-forward conversion. Looks like we can simply drop
+the avocado datadrainer stuff when not using the avocado framework
+anymore.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                                   |  1 +
- tests/avocado/tesseract_utils.py              | 46 -------------------
- tests/functional/meson.build                  |  4 ++
- tests/functional/qemu_test/tesseract.py       | 35 ++++++++++++++
- .../test_m68k_nextcube.py}                    | 29 ++++++------
- 5 files changed, 56 insertions(+), 59 deletions(-)
- delete mode 100644 tests/avocado/tesseract_utils.py
- create mode 100644 tests/functional/qemu_test/tesseract.py
- rename tests/{avocado/machine_m68k_nextcube.py => functional/test_m68k_nextcube.py} (75%)
+ MAINTAINERS                                   |  4 +-
+ docs/devel/acpi-bits.rst                      | 62 ++++++--------
+ .../acpi-bits/bits-config/bits-cfg.txt        |  0
+ .../acpi-bits/bits-tests/smbios.py2           |  0
+ .../acpi-bits/bits-tests/smilatency.py2       |  0
+ .../acpi-bits/bits-tests/testacpi.py2         |  0
+ .../acpi-bits/bits-tests/testcpuid.py2        |  0
+ tests/functional/meson.build                  |  2 +
+ .../test_acpi_bits.py}                        | 83 ++++++++++---------
+ 9 files changed, 71 insertions(+), 80 deletions(-)
+ rename tests/{avocado => functional}/acpi-bits/bits-config/bits-cfg.txt (100%)
+ rename tests/{avocado => functional}/acpi-bits/bits-tests/smbios.py2 (100%)
+ rename tests/{avocado => functional}/acpi-bits/bits-tests/smilatency.py2 (100%)
+ rename tests/{avocado => functional}/acpi-bits/bits-tests/testacpi.py2 (100%)
+ rename tests/{avocado => functional}/acpi-bits/bits-tests/testcpuid.py2 (100%)
+ rename tests/{avocado/acpi-bits.py => functional/test_acpi_bits.py} (86%)
  mode change 100644 => 100755
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index cca48683ce..394d704515 100644
+index 394d704515..c2dfb3dad3 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1283,6 +1283,7 @@ S: Odd Fixes
- F: hw/m68k/next-*.c
- F: hw/display/next-fb.c
- F: include/hw/m68k/next-cube.h
-+F: tests/functional/test_m68k_nextcube.py
+@@ -2075,8 +2075,8 @@ ACPI/AVOCADO/BIOSBITS
+ M: Ani Sinha <anisinha@redhat.com>
+ M: Michael S. Tsirkin <mst@redhat.com>
+ S: Supported
+-F: tests/avocado/acpi-bits/*
+-F: tests/avocado/acpi-bits.py
++F: tests/functional/acpi-bits/*
++F: tests/functional/test_acpi_bits.py
+ F: docs/devel/acpi-bits.rst
  
- q800
- M: Laurent Vivier <laurent@vivier.eu>
-diff --git a/tests/avocado/tesseract_utils.py b/tests/avocado/tesseract_utils.py
-deleted file mode 100644
-index 476f528147..0000000000
---- a/tests/avocado/tesseract_utils.py
-+++ /dev/null
-@@ -1,46 +0,0 @@
--# ...
--#
--# Copyright (c) 2019 Philippe Mathieu-Daudé <f4bug@amsat.org>
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or
--# later. See the COPYING file in the top-level directory.
+ ACPI/HEST/GHES
+diff --git a/docs/devel/acpi-bits.rst b/docs/devel/acpi-bits.rst
+index 1ec394f5fb..78aeb6aa3c 100644
+--- a/docs/devel/acpi-bits.rst
++++ b/docs/devel/acpi-bits.rst
+@@ -1,6 +1,6 @@
+-=============================================================================
+-ACPI/SMBIOS avocado tests using biosbits
+-=============================================================================
++==================================
++ACPI/SMBIOS testing using biosbits
++==================================
+ ************
+ Introduction
+ ************
+@@ -35,7 +35,7 @@ for developing biosbits and its real life uses can be found in [#a]_ and [#b]_.
+ For QEMU, we maintain a fork of bios bits in gitlab along with all the
+ dependent submodules `here <https://gitlab.com/qemu-project/biosbits-bits>`__.
+ This fork contains numerous fixes, a newer acpica and changes specific to
+-running this avocado QEMU tests using bits. The author of this document
++running these functional QEMU tests using bits. The author of this document
+ is the sole maintainer of the QEMU fork of bios bits repository. For more
+ information, please see author's `FOSDEM talk on this bios-bits based test
+ framework <https://fosdem.org/2024/schedule/event/fosdem-2024-2262-exercising-qemu-generated-acpi-smbios-tables-using-biosbits-from-within-a-guest-vm-/>`__.
+@@ -44,12 +44,12 @@ framework <https://fosdem.org/2024/schedule/event/fosdem-2024-2262-exercising-qe
+ Description of the test framework
+ *********************************
+ 
+-Under the directory ``tests/avocado/``, ``acpi-bits.py`` is a QEMU avocado
+-test that drives all this.
++Under the directory ``tests/functional/``, ``test_acpi_bits.py`` is a QEMU
++functional test that drives all this.
+ 
+ A brief description of the various test files follows.
+ 
+-Under ``tests/avocado/`` as the root we have:
++Under ``tests/functional/`` as the root we have:
+ 
+ ::
+ 
+@@ -60,12 +60,12 @@ Under ``tests/avocado/`` as the root we have:
+    │   ├── smbios.py2
+    │   ├── testacpi.py2
+    │   └── testcpuid.py2
+-   ├── acpi-bits.py
++   ├── test_acpi_bits.py
+ 
+-* ``tests/avocado``:
++* ``tests/functional``:
+ 
+-   ``acpi-bits.py``:
+-   This is the main python avocado test script that generates a
++   ``test_acpi_bits.py``:
++   This is the main python functional test script that generates a
+    biosbits iso. It then spawns a QEMU VM with it, collects the log and reports
+    test failures. This is the script one would be interested in if they wanted
+    to add or change some component of the log parsing, add a new command line
+@@ -79,35 +79,22 @@ Under ``tests/avocado/`` as the root we have:
+    you to inspect and run the specific commands manually.
+ 
+    In order to run this test, please perform the following steps from the QEMU
+-   build directory:
++   build directory (assuming that the sources are in ".."):
+    ::
+ 
+-     $ make check-venv (needed only the first time to create the venv)
+-     $ ./pyvenv/bin/avocado run -t acpi tests/avocado
++     $ export PYTHONPATH=../python:../tests/functional
++     $ export QEMU_TEST_QEMU_BINARY=$PWD/qemu-system-x86_64
++     $ python3 ../tests/functional/test_acpi_bits.py
+ 
+-   The above will run all acpi avocado tests including this one.
+-   In order to run the individual tests, perform the following:
+-   ::
 -
--import re
--import logging
+-     $ ./pyvenv/bin/avocado run tests/avocado/acpi-bits.py --tap -
 -
--from avocado.utils import process
--from avocado.utils.path import find_command, CmdNotFoundError
+-   The above will produce output in tap format. You can omit "--tap -" in the
+-   end and it will produce output like the following:
+-   ::
 -
--def tesseract_available(expected_version):
--    try:
--        find_command('tesseract')
--    except CmdNotFoundError:
--        return False
--    res = process.run('tesseract --version')
--    try:
--        version = res.stdout_text.split()[1]
--    except IndexError:
--        version = res.stderr_text.split()[1]
--    return int(version.split('.')[0]) >= expected_version
--
--    match = re.match(r'tesseract\s(\d)', res)
--    if match is None:
--        return False
--    # now this is guaranteed to be a digit
--    return int(match.groups()[0]) >= expected_version
--
--
--def tesseract_ocr(image_path, tesseract_args='', tesseract_version=3):
--    console_logger = logging.getLogger('tesseract')
--    console_logger.debug(image_path)
--    if tesseract_version == 4:
--        tesseract_args += ' --oem 1'
--    proc = process.run("tesseract {} {} stdout".format(tesseract_args,
--                                                       image_path))
--    lines = []
--    for line in proc.stdout_text.split('\n'):
--        sline = line.strip()
--        if len(sline):
--            console_logger.debug(sline)
--            lines += [sline]
--    return lines
+-      $ ./pyvenv/bin/avocado run tests/avocado/acpi-bits.py
+-      Fetching asset from tests/avocado/acpi-bits.py:AcpiBitsTest.test_acpi_smbios_bits
+-      JOB ID     : eab225724da7b64c012c65705dc2fa14ab1defef
+-      JOB LOG    : /home/anisinha/avocado/job-results/job-2022-10-10T17.58-eab2257/job.log
+-      (1/1) tests/avocado/acpi-bits.py:AcpiBitsTest.test_acpi_smbios_bits: PASS (33.09 s)
+-      RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+-      JOB TIME   : 39.22 s
++   The above will run all acpi-bits functional tests (producing output in
++   tap format).
+ 
+-   You can inspect the log file for more information about the run or in order
+-   to diagnoze issues. If you pass V=1 in the environment, more diagnostic logs
+-   would be found in the test log.
++   You can inspect the log files in tests/functional/x86_64/test_acpi_bits.*/
++   for more information about the run or in order to diagnoze issues.
++   If you pass V=1 in the environment, more diagnostic logs will be put into
++   the test log.
+ 
+-* ``tests/avocado/acpi-bits/bits-config``:
++* ``tests/functional/acpi-bits/bits-config``:
+ 
+    This location contains biosbits configuration files that determine how the
+    software runs the tests.
+@@ -117,7 +104,7 @@ Under ``tests/avocado/`` as the root we have:
+    or actions are performed by bits. The description of the config options are
+    provided in the file itself.
+ 
+-* ``tests/avocado/acpi-bits/bits-tests``:
++* ``tests/functional/acpi-bits/bits-tests``:
+ 
+    This directory contains biosbits python based tests that are run from within
+    the biosbits environment in the spawned VM. New additions of test cases can
+@@ -155,7 +142,8 @@ Under ``tests/avocado/`` as the root we have:
+    (a) They are python2.7 based scripts and not python 3 scripts.
+    (b) They are run from within the bios bits VM and is not subjected to QEMU
+        build/test python script maintenance and dependency resolutions.
+-   (c) They need not be loaded by avocado framework when running tests.
++   (c) They need not be loaded by the test framework by accident when running
++       tests.
+ 
+ 
+ Author: Ani Sinha <anisinha@redhat.com>
+diff --git a/tests/avocado/acpi-bits/bits-config/bits-cfg.txt b/tests/functional/acpi-bits/bits-config/bits-cfg.txt
+similarity index 100%
+rename from tests/avocado/acpi-bits/bits-config/bits-cfg.txt
+rename to tests/functional/acpi-bits/bits-config/bits-cfg.txt
+diff --git a/tests/avocado/acpi-bits/bits-tests/smbios.py2 b/tests/functional/acpi-bits/bits-tests/smbios.py2
+similarity index 100%
+rename from tests/avocado/acpi-bits/bits-tests/smbios.py2
+rename to tests/functional/acpi-bits/bits-tests/smbios.py2
+diff --git a/tests/avocado/acpi-bits/bits-tests/smilatency.py2 b/tests/functional/acpi-bits/bits-tests/smilatency.py2
+similarity index 100%
+rename from tests/avocado/acpi-bits/bits-tests/smilatency.py2
+rename to tests/functional/acpi-bits/bits-tests/smilatency.py2
+diff --git a/tests/avocado/acpi-bits/bits-tests/testacpi.py2 b/tests/functional/acpi-bits/bits-tests/testacpi.py2
+similarity index 100%
+rename from tests/avocado/acpi-bits/bits-tests/testacpi.py2
+rename to tests/functional/acpi-bits/bits-tests/testacpi.py2
+diff --git a/tests/avocado/acpi-bits/bits-tests/testcpuid.py2 b/tests/functional/acpi-bits/bits-tests/testcpuid.py2
+similarity index 100%
+rename from tests/avocado/acpi-bits/bits-tests/testcpuid.py2
+rename to tests/functional/acpi-bits/bits-tests/testcpuid.py2
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 1b2e6d142c..3a71e02e74 100644
+index 3a71e02e74..76eb00ef46 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -44,6 +44,10 @@ tests_loongarch64_system_thorough = [
-   'loongarch64_virt',
+@@ -11,6 +11,7 @@ endif
+ 
+ # Timeouts for individual tests that can be slow e.g. with debugging enabled
+ test_timeouts = {
++  'acpi_bits' : 240,
+   'netdev_ethtool' : 180,
+   'ppc_40p' : 240,
+   'ppc64_hv' : 1000,
+@@ -105,6 +106,7 @@ tests_x86_64_system_quick = [
  ]
  
-+tests_m68k_system_thorough = [
-+  'm68k_nextcube'
-+]
-+
- tests_microblaze_system_thorough = [
-   'microblaze_s3adsp1800'
+ tests_x86_64_system_thorough = [
++  'acpi_bits',
+   'netdev_ethtool',
+   'virtio_gpu',
  ]
-diff --git a/tests/functional/qemu_test/tesseract.py b/tests/functional/qemu_test/tesseract.py
-new file mode 100644
-index 0000000000..c4087b7c11
---- /dev/null
-+++ b/tests/functional/qemu_test/tesseract.py
-@@ -0,0 +1,35 @@
-+# ...
-+#
-+# Copyright (c) 2019 Philippe Mathieu-Daudé <f4bug@amsat.org>
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later. See the COPYING file in the top-level directory.
-+
-+import re
-+import logging
-+
-+from . import has_cmd, run_cmd
-+
-+def tesseract_available(expected_version):
-+    if not has_cmd('tesseract'):
-+        return False
-+    (stdout, stderr, ret) = run_cmd([ 'tesseract', '--version'])
-+    if ret:
-+        return False
-+    version = stdout.split()[1]
-+    return int(version.split('.')[0]) >= expected_version
-+
-+def tesseract_ocr(image_path, tesseract_args=''):
-+    console_logger = logging.getLogger('console')
-+    console_logger.debug(image_path)
-+    (stdout, stderr, ret) = run_cmd(['tesseract', image_path,
-+                                     'stdout'])
-+    if ret:
-+        return None
-+    lines = []
-+    for line in stdout.split('\n'):
-+        sline = line.strip()
-+        if len(sline):
-+            console_logger.debug(sline)
-+            lines += [sline]
-+    return lines
-diff --git a/tests/avocado/machine_m68k_nextcube.py b/tests/functional/test_m68k_nextcube.py
+diff --git a/tests/avocado/acpi-bits.py b/tests/functional/test_acpi_bits.py
 old mode 100644
 new mode 100755
-similarity index 75%
-rename from tests/avocado/machine_m68k_nextcube.py
-rename to tests/functional/test_m68k_nextcube.py
-index 1f3c883910..89385a134a
---- a/tests/avocado/machine_m68k_nextcube.py
-+++ b/tests/functional/test_m68k_nextcube.py
-@@ -1,3 +1,5 @@
-+#!/usr/bin/env python3
+similarity index 86%
+rename from tests/avocado/acpi-bits.py
+rename to tests/functional/test_acpi_bits.py
+index efe4f52ee0..ee40647d5b
+--- a/tests/avocado/acpi-bits.py
++++ b/tests/functional/test_acpi_bits.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-# group: rw quick
 +#
- # Functional test that boots a VM and run OCR on the framebuffer
+ # Exercise QEMU generated ACPI/SMBIOS tables using biosbits,
+ # https://biosbits.org/
  #
- # Copyright (c) 2019 Philippe Mathieu-Daudé <f4bug@amsat.org>
-@@ -8,10 +10,10 @@
- import os
+@@ -24,7 +24,7 @@
+ # pylint: disable=consider-using-f-string
+ 
+ """
+-This is QEMU ACPI/SMBIOS avocado tests using biosbits.
++This is QEMU ACPI/SMBIOS functional tests using biosbits.
+ Biosbits is available originally at https://biosbits.org/.
+ This test uses a fork of the upstream bits and has numerous fixes
+ including an upgraded acpica. The fork is located here:
+@@ -41,15 +41,16 @@
+ import tempfile
  import time
- 
--from avocado_qemu import QemuSystemTest
--from avocado import skipUnless
-+from qemu_test import QemuSystemTest, Asset
-+from unittest import skipUnless
- 
--from tesseract_utils import tesseract_available, tesseract_ocr
-+from qemu_test.tesseract import tesseract_available, tesseract_ocr
- 
- PIL_AVAILABLE = True
- try:
-@@ -21,19 +23,15 @@
- 
- 
- class NextCubeMachine(QemuSystemTest):
--    """
--    :avocado: tags=arch:m68k
--    :avocado: tags=machine:next-cube
--    :avocado: tags=device:framebuffer
--    """
- 
-     timeout = 15
- 
-+    ASSET_ROM = Asset(('https://sourceforge.net/p/previous/code/1350/tree/'
-+                       'trunk/src/Rev_2.5_v66.BIN?format=raw'),
-+                      '1b753890b67095b73e104c939ddf62eca9e7d0aedde5108e3893b0ed9d8000a4')
+ import zipfile
 +
-     def check_bootrom_framebuffer(self, screenshot_path):
--        rom_url = ('https://sourceforge.net/p/previous/code/1350/tree/'
--                   'trunk/src/Rev_2.5_v66.BIN?format=raw')
--        rom_hash = 'b3534796abae238a0111299fc406a9349f7fee24'
--        rom_path = self.fetch_asset(rom_url, asset_hash=rom_hash)
-+        rom_path = self.ASSET_ROM.fetch()
++from pathlib import Path
+ from typing import (
+     List,
+     Optional,
+     Sequence,
+ )
+ from qemu.machine import QEMUMachine
+-from avocado import skipIf
+-from avocado.utils import datadrainer as drainer
+-from avocado_qemu import QemuBaseTest
++from unittest import skipIf
++from qemu_test import QemuBaseTest, Asset
  
-         self.vm.add_args('-bios', rom_path)
-         self.vm.launch()
-@@ -48,6 +46,7 @@ def check_bootrom_framebuffer(self, screenshot_path):
+ deps = ["xorriso", "mformat"] # dependent tools needed in the test setup/box.
+ supported_platforms = ['x86_64'] # supported test platforms.
+@@ -129,34 +130,32 @@ def base_args(self):
+ class AcpiBitsTest(QemuBaseTest): #pylint: disable=too-many-instance-attributes
+     """
+     ACPI and SMBIOS tests using biosbits.
+-
+-    :avocado: tags=arch:x86_64
+-    :avocado: tags=acpi
+-
+     """
+     # in slower systems the test can take as long as 3 minutes to complete.
+     timeout = BITS_TIMEOUT
  
-     @skipUnless(PIL_AVAILABLE, 'Python PIL not installed')
-     def test_bootrom_framebuffer_size(self):
-+        self.set_machine('next-cube')
-         screenshot_path = os.path.join(self.workdir, "dump.ppm")
-         self.check_bootrom_framebuffer(screenshot_path)
++    # following are some standard configuration constants
++    # gitlab CI does shallow clones of depth 20
++    BITS_INTERNAL_VER = 2020
++    # commit hash must match the artifact tag below
++    BITS_COMMIT_HASH = 'c7920d2b'
++    # this is the latest bits release as of today.
++    BITS_TAG = "qemu-bits-10262023"
++
++    ASSET_BITS = Asset(("https://gitlab.com/qemu-project/"
++                        "biosbits-bits/-/jobs/artifacts/%s/"
++                        "download?job=qemu-bits-build" % BITS_TAG),
++                       '1b8dd612c6831a6b491716a77acc486666aaa867051cdc34f7ce169c2e25f487')
++
+     def __init__(self, *args, **kwargs):
+         super().__init__(*args, **kwargs)
+         self._vm = None
+         self._workDir = None
+         self._baseDir = None
  
-@@ -60,11 +59,15 @@ def test_bootrom_framebuffer_size(self):
-     # that it is still alpha-level software.
-     @skipUnless(tesseract_available(4), 'tesseract OCR tool not available')
-     def test_bootrom_framebuffer_ocr_with_tesseract(self):
-+        self.set_machine('next-cube')
-         screenshot_path = os.path.join(self.workdir, "dump.ppm")
-         self.check_bootrom_framebuffer(screenshot_path)
--        lines = tesseract_ocr(screenshot_path, tesseract_version=4)
-+        lines = tesseract_ocr(screenshot_path)
-         text = '\n'.join(lines)
-         self.assertIn('Testing the FPU', text)
-         self.assertIn('System test failed. Error code', text)
-         self.assertIn('Boot command', text)
-         self.assertIn('Next>', text)
+-        # following are some standard configuration constants
+-        self._bitsInternalVer = 2020 # gitlab CI does shallow clones of depth 20
+-        self._bitsCommitHash = 'c7920d2b' # commit hash must match
+-                                          # the artifact tag below
+-        self._bitsTag = "qemu-bits-10262023" # this is the latest bits
+-                                             # release as of today.
+-        self._bitsArtSHA1Hash = 'b22cdfcfc7453875297d06d626f5474ee36a343f'
+-        self._bitsArtURL = ("https://gitlab.com/qemu-project/"
+-                            "biosbits-bits/-/jobs/artifacts/%s/"
+-                            "download?job=qemu-bits-build" %self._bitsTag)
+         self._debugcon_addr = '0x403'
+         self._debugcon_log = 'debugcon-log.txt'
+-        logging.basicConfig(level=logging.INFO)
+-        self.logger = logging.getLogger('acpi-bits')
++        self.logger = self.log
+ 
+     def _print_log(self, log):
+         self.logger.info('\nlogs from biosbits follows:')
+@@ -171,7 +170,7 @@ def copy_bits_config(self):
+         bits_config_dir = os.path.join(self._baseDir, 'acpi-bits',
+                                        'bits-config')
+         target_config_dir = os.path.join(self._workDir,
+-                                         'bits-%d' %self._bitsInternalVer,
++                                         'bits-%d' %self.BITS_INTERNAL_VER,
+                                          'boot')
+         self.assertTrue(os.path.exists(bits_config_dir))
+         self.assertTrue(os.path.exists(target_config_dir))
+@@ -188,7 +187,7 @@ def copy_test_scripts(self):
+         bits_test_dir = os.path.join(self._baseDir, 'acpi-bits',
+                                      'bits-tests')
+         target_test_dir = os.path.join(self._workDir,
+-                                       'bits-%d' %self._bitsInternalVer,
++                                       'bits-%d' %self.BITS_INTERNAL_VER,
+                                        'boot', 'python')
+ 
+         self.assertTrue(os.path.exists(bits_test_dir))
+@@ -248,9 +247,9 @@ def generate_bits_iso(self):
+             test scripts
+         """
+         bits_dir = os.path.join(self._workDir,
+-                                'bits-%d' %self._bitsInternalVer)
++                                'bits-%d' %self.BITS_INTERNAL_VER)
+         iso_file = os.path.join(self._workDir,
+-                                'bits-%d.iso' %self._bitsInternalVer)
++                                'bits-%d.iso' %self.BITS_INTERNAL_VER)
+         mkrescue_script = os.path.join(self._workDir,
+                                        'grub-inst-x86_64-efi', 'bin',
+                                        'grub-mkrescue')
+@@ -264,8 +263,12 @@ def generate_bits_iso(self):
+ 
+         try:
+             if os.getenv('V') or os.getenv('BITS_DEBUG'):
+-                subprocess.check_call([mkrescue_script, '-o', iso_file,
+-                                       bits_dir], stderr=subprocess.STDOUT)
++                proc = subprocess.run([mkrescue_script, '-o', iso_file,
++                                       bits_dir],
++                                      stdout=subprocess.PIPE,
++                                      stderr=subprocess.STDOUT,
++                                      check=True)
++                self.logger.info("grub-mkrescue output %s" % proc.stdout)
+             else:
+                 subprocess.check_call([mkrescue_script, '-o',
+                                       iso_file, bits_dir],
+@@ -282,8 +285,9 @@ def generate_bits_iso(self):
+ 
+     def setUp(self): # pylint: disable=arguments-differ
+         super().setUp('qemu-system-')
++        self.logger = self.log
+ 
+-        self._baseDir = os.getenv('AVOCADO_TEST_BASEDIR')
++        self._baseDir = Path(__file__).parent
+ 
+         # workdir could also be avocado's own workdir in self.workdir.
+         # At present, I prefer to maintain my own temporary working
+@@ -300,15 +304,14 @@ def setUp(self): # pylint: disable=arguments-differ
+             os.mkdir(prebuiltDir, mode=0o775)
+ 
+         bits_zip_file = os.path.join(prebuiltDir, 'bits-%d-%s.zip'
+-                                     %(self._bitsInternalVer,
+-                                       self._bitsCommitHash))
++                                     %(self.BITS_INTERNAL_VER,
++                                       self.BITS_COMMIT_HASH))
+         grub_tar_file = os.path.join(prebuiltDir,
+                                      'bits-%d-%s-grub.tar.gz'
+-                                     %(self._bitsInternalVer,
+-                                       self._bitsCommitHash))
++                                     %(self.BITS_INTERNAL_VER,
++                                       self.BITS_COMMIT_HASH))
+ 
+-        bitsLocalArtLoc = self.fetch_asset(self._bitsArtURL,
+-                                           asset_hash=self._bitsArtSHA1Hash)
++        bitsLocalArtLoc = self.ASSET_BITS.fetch()
+         self.logger.info("downloaded bits artifacts to %s", bitsLocalArtLoc)
+ 
+         # extract the bits artifact in the temp working directory
+@@ -369,7 +372,7 @@ def test_acpi_smbios_bits(self):
+         """The main test case implementation."""
+ 
+         iso_file = os.path.join(self._workDir,
+-                                'bits-%d.iso' %self._bitsInternalVer)
++                                'bits-%d.iso' %self.BITS_INTERNAL_VER)
+ 
+         self.assertTrue(os.access(iso_file, os.R_OK))
+ 
+@@ -393,12 +396,6 @@ def test_acpi_smbios_bits(self):
+         self._vm.set_console()
+         self._vm.launch()
+ 
+-        self.logger.debug("Console output from bits VM follows ...")
+-        c_drainer = drainer.LineLogger(self._vm.console_socket.fileno(),
+-                                       logger=self.logger.getChild("console"),
+-                                       stop_check=(lambda :
+-                                                   not self._vm.is_running()))
+-        c_drainer.start()
+ 
+         # biosbits has been configured to run all the specified test suites
+         # in batch mode and then automatically initiate a vm shutdown.
+@@ -406,4 +403,8 @@ def test_acpi_smbios_bits(self):
+         # with the avocado test timeout.
+         self._vm.event_wait('SHUTDOWN', timeout=BITS_TIMEOUT)
+         self._vm.wait(timeout=None)
++        self.logger.debug("Checking console output ...")
+         self.parse_log()
 +
 +if __name__ == '__main__':
-+    QemuSystemTest.main()
++    QemuBaseTest.main()
 -- 
 2.46.0
 
