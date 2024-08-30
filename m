@@ -2,88 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F592966759
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 18:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D044D96679E
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 19:08:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sk4ne-0001xg-Oj; Fri, 30 Aug 2024 12:48:38 -0400
+	id 1sk55R-0003K8-AA; Fri, 30 Aug 2024 13:07:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sk4nc-0001qM-5c
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 12:48:36 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sk4nX-00073e-Pu
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 12:48:35 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-6c5bcb8e8edso1524346a12.2
- for <qemu-devel@nongnu.org>; Fri, 30 Aug 2024 09:48:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1725036510; x=1725641310;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6cUqXMdRltulPpZ8kSqOomp97N4/g9EkAE49D3ogDzs=;
- b=nWUtMPq5VVekcTrjNuYvzLTl41s3/BqT1B3vplzRsbHWhcQRPQ5lhrDLJbFZhEdDjV
- KzsFGV7g+WAcsso5KQ/N9wUfk4oMWGaDpvbM2FNl0Jj762djjoLDGutLkmj8mZHt7NYI
- bEqcIX9BegOslooXY/Nx2G1qdJKd79nV4iUM+7VNKLeslYSGh2V9tsltf8ggiZgcjm8k
- a3RWF+vzeTnJdwQERd/uqqOOhpeId8syKGN3EJfpfLedS0QyZe9eMu364knHSkGZ2pPq
- zRni4Wq+BGTrFggnODhBm/3xRiUCC6qWip5s+1lDia4Pyy/6GJk/TLV697fq7FDPQClw
- zE8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725036510; x=1725641310;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6cUqXMdRltulPpZ8kSqOomp97N4/g9EkAE49D3ogDzs=;
- b=lghk/GsthAlLIQYRQSE2ASPt33b2DTVhrhqZ6dhiF3msw7MFoS4OszkTAP2Np//oE+
- mrztnNWTQRyN57Y2fncC6lURKq6JdKk2ePiNOxfqQtiqhGHBW89WC1dW/oTkWjUqoDim
- 6Fd79aCQ2DJJJ/KrkaPq4etSz8fTm2hfTuyWfpl8hSw3fWZkFDokU2r8W+2fxvSHpEtC
- YZi0L2v1mNpJlIKER3LEA/jKJct0Aq8Z2dDURoG+KHW8GnculiGSYhpuRw7HpBcHAZmU
- 1YNB33GypP/+oZzTeAGEMHyqjwKk4O9kRGfE+9j6nQuv6UFuS2Q4UWtX7KlmdU//UOP1
- yQCQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWjiXYPIKMuGaJYoZLEMYJuqNShKR3TQaupx6wHj0ErlOSVK49UV7JS9SCi/KHyTM/veg3R+K+5tHkK@nongnu.org
-X-Gm-Message-State: AOJu0YzGOXIOJo/Mo0XlNugoqnk0AZcG+v2gvjiREPsoiM9TT2t9e9O7
- LFTOErilKMwUgC5pw5CZKghZv00e7C+g6vhcefz4o5n/FwsXYmv0i5Mo4c6Ws5A=
-X-Google-Smtp-Source: AGHT+IEDxAnnPI2PqHwm3Zzxm2wpet+qWcZO9YRIuQ7jGTBR8ETingawDXitVBLgVugXXN1Jrrg4Kg==
-X-Received: by 2002:a17:90a:6fa2:b0:2d3:bfc3:3ef3 with SMTP id
- 98e67ed59e1d1-2d88d6af3dcmr355262a91.12.1725036510211; 
- Fri, 30 Aug 2024 09:48:30 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d8445e813dsm6591257a91.17.2024.08.30.09.48.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Aug 2024 09:48:29 -0700 (PDT)
-From: Deepak Gupta <debug@rivosinc.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, bmeng.cn@gmail.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, andy.chiu@sifive.com,
- kito.cheng@sifive.com, Deepak Gupta <debug@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v13 20/20] target/riscv: Expose zicfiss extension as a cpu
- property
-Date: Fri, 30 Aug 2024 09:47:56 -0700
-Message-ID: <20240830164756.1154517-21-debug@rivosinc.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240830164756.1154517-1-debug@rivosinc.com>
-References: <20240830164756.1154517-1-debug@rivosinc.com>
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1sk55N-00037i-DX; Fri, 30 Aug 2024 13:06:57 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1sk55L-0000XH-33; Fri, 30 Aug 2024 13:06:57 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47UFo6iw018292;
+ Fri, 30 Aug 2024 17:06:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:date:mime-version:subject:to:cc:references:from
+ :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=U
+ z4NoSBBs6o4DSgatSi+xDxQp4qB0CPpZJull+pRkPY=; b=dlzItnQVgbE+fQsEn
+ O/9NUKo8XgMOIvVXt3JiKa5XIrwQsANRG89S/5aBGrAjSOmXdHFP3CCVHWOM7wE/
+ ZYCeBj5UGcY7k61UYVfH8OK7OvPO4ZFqBGUnfL+wUTQoIRE/HyAt4f1TklzXFMJ5
+ PSHOfvLHeZn+KvWcyfU/bZ8K83MLx9TmNsTezicGRCOKEdSDSDTjtjzcA6ZXzBOT
+ QgQAReq29ZG1sLt5yP/SHwZjr+1Q5vuExoQnAV599r9hywKbQPdR8OkK/+C0Ob++
+ n3oXMTvuQZvFeBqz7mMTyMMJsxk0oBTk5o4DfhMhfjQZyl/4J6RywLCi+rNAAD0M
+ o7PnQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8q0yyh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Aug 2024 17:06:43 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47UH6haU016486;
+ Fri, 30 Aug 2024 17:06:43 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8q0yyd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Aug 2024 17:06:42 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47UGSRlr021748;
+ Fri, 30 Aug 2024 17:06:42 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 417suuw9dv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Aug 2024 17:06:42 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 47UH6fiN46661960
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 30 Aug 2024 17:06:41 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2B9655805D;
+ Fri, 30 Aug 2024 17:06:41 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E1D9358057;
+ Fri, 30 Aug 2024 17:06:40 +0000 (GMT)
+Received: from [9.10.80.165] (unknown [9.10.80.165])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 30 Aug 2024 17:06:40 +0000 (GMT)
+Message-ID: <6527910d-aa34-4abb-a57f-e5c1789d059c@linux.ibm.com>
+Date: Fri, 30 Aug 2024 12:06:40 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 11/13] pnv/xive: Update PIPR when updating CPPR
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ milesg@linux.ibm.com
+References: <20240801203008.11224-1-kowal@linux.ibm.com>
+ <20240801203008.11224-12-kowal@linux.ibm.com>
+ <5dad962a-0815-40b8-b62a-d0c67612fa5f@kaod.org>
+ <16bbfc74-e7c0-41b6-a91f-c2d121296986@linux.ibm.com>
+ <cd6dee9a-8a98-49c8-832d-692a55dba909@kaod.org>
+Content-Language: en-US
+From: Mike Kowal <kowal@linux.ibm.com>
+In-Reply-To: <cd6dee9a-8a98-49c8-832d-692a55dba909@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=debug@rivosinc.com; helo=mail-pg1-x535.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: _WrcI2TrmWUrNihN7v8FnWi6015cTCtW
+X-Proofpoint-GUID: xhQEzgN2rBvPPsuLsjL5WxT76IrtF1Md
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-30_10,2024-08-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ priorityscore=1501 adultscore=0 impostorscore=0 suspectscore=0
+ clxscore=1015 mlxlogscore=999 bulkscore=0 spamscore=0 mlxscore=0
+ lowpriorityscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2407110000 definitions=main-2408300127
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=kowal@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,25 +119,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index c5ebcefeb5..2592465e24 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1485,6 +1485,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
-     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
-     MULTI_EXT_CFG_BOOL("zicfilp", ext_zicfilp, false),
-+    MULTI_EXT_CFG_BOOL("zicfiss", ext_zicfiss, false),
-     MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
-     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
-     MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
--- 
-2.44.0
+On 8/30/2024 3:25 AM, Cédric Le Goater wrote:
+> On 8/29/24 22:35, Mike Kowal wrote:
+>>
+>> On 8/29/2024 7:29 AM, Cédric Le Goater wrote:
+>>> On 8/1/24 22:30, Michael Kowal wrote:
+>>>> From: Glenn Miles <milesg@linux.vnet.ibm.com>
+>>>>
+>>>> Current code was updating the PIPR inside the xive_tctx_accept() 
+>>>> function
+>>>> instead of the xive_tctx_set_cppr function, which is where the HW 
+>>>> would
+>>>> have it updated.
+>>>
+>>> Did you confirm with the HW designer ?
+>>>
+>>> AFAIR, the PIPR is constructed from the IPB and the later is it updated
+>>> the better. However, if now, both PIPR (HW and Pool) are required to
+>>> identify the ctx to notify, I agree set_cppr() needs a change but what
+>>> about xive_tctx_ipb_update() which is called when an interrupt
+>>> needs a resend ?
+>>
+>>
+>> This was fix to a bug and matches what  is specified in the XIVE2 
+>> architecture document CPPR flows (MMIO CPPR xxx processing).
+>
+> ok. I was also wondering if this was fixing a bug. Do you think this
+> is the correct commit id ?
+>
+>  cdd4de68edb6 ("ppc/xive: notify the CPU when the interrupt priority 
+> is more privileged")
+>
+> If so, could you please add a Fixes tags ?
+>
+> Thanks,
+>
+> C.
+>
 
+Many of these parts have been changed multiple time for different 
+things.   I am not sure which commit this fixes.  I am upstreaming other 
+peoples work  that was done over the last couple of years so it hard to 
+tell.  Also,  the original xive support was only complete enough to 
+support Linux.   Much of this I would consider 'new development' 
+expanding XIVE support for Power VM.   If you think it should still have 
+a fixes-tag, I will add it.
+
+MAK
+
+
+>
+>
+>>
+>>
+>>>
+>>>
+>>> Thanks,
+>>>
+>>> C.
+>>>
+>>>
+>>>
+>>>> Moved the update to the xive_tctx_set_cppr function which required
+>>>> additional support for pool interrupts.
+>>>>
+>>>> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+>>>> Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
+>>>> ---
+>>>>   hw/intc/xive.c | 34 ++++++++++++++++++++++++++++++++--
+>>>>   1 file changed, 32 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+>>>> index 5c4ca7f6e0..d951aac3a0 100644
+>>>> --- a/hw/intc/xive.c
+>>>> +++ b/hw/intc/xive.c
+>>>> @@ -89,7 +89,6 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, 
+>>>> uint8_t ring)
+>>>>             /* Reset the pending buffer bit */
+>>>>           aregs[TM_IPB] &= ~xive_priority_to_ipb(cppr);
+>>>> -        regs[TM_PIPR] = ipb_to_pipr(aregs[TM_IPB]);
+>>>>             /* Drop Exception bit */
+>>>>           regs[TM_NSR] &= ~mask;
+>>>> @@ -143,6 +142,8 @@ void xive_tctx_reset_signal(XiveTCTX *tctx, 
+>>>> uint8_t ring)
+>>>>   static void xive_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, 
+>>>> uint8_t cppr)
+>>>>   {
+>>>>       uint8_t *regs = &tctx->regs[ring];
+>>>> +    uint8_t pipr_min;
+>>>> +    uint8_t ring_min;
+>>>>         trace_xive_tctx_set_cppr(tctx->cs->cpu_index, ring,
+>>>>                                regs[TM_IPB], regs[TM_PIPR],
+>>>> @@ -154,8 +155,37 @@ static void xive_tctx_set_cppr(XiveTCTX *tctx, 
+>>>> uint8_t ring, uint8_t cppr)
+>>>>         tctx->regs[ring + TM_CPPR] = cppr;
+>>>>   +    /*
+>>>> +     * Recompute the PIPR based on local pending interrupts. The PHYS
+>>>> +     * ring must take the minimum of both the PHYS and POOL PIPR 
+>>>> values.
+>>>> +     */
+>>>> +    pipr_min = ipb_to_pipr(regs[TM_IPB]);
+>>>> +    ring_min = ring;
+>>>> +
+>>>> +    /* PHYS updates also depend on POOL values */
+>>>> +    if (ring == TM_QW3_HV_PHYS) {
+>>>> +        uint8_t *pregs = &tctx->regs[TM_QW2_HV_POOL];
+>>>> +
+>>>> +        /* POOL values only matter if POOL ctx is valid */
+>>>> +        if (pregs[TM_WORD2] & 0x80) {
+>>>> +
+>>>> +            uint8_t pool_pipr = ipb_to_pipr(pregs[TM_IPB]);
+>>>> +
+>>>> +            /*
+>>>> +             * Determine highest priority interrupt and
+>>>> +             * remember which ring has it.
+>>>> +             */
+>>>> +            if (pool_pipr < pipr_min) {
+>>>> +                pipr_min = pool_pipr;
+>>>> +                ring_min = TM_QW2_HV_POOL;
+>>>> +            }
+>>>> +        }
+>>>> +    }
+>>>> +
+>>>> +    regs[TM_PIPR] = pipr_min;
+>>>> +
+>>>>       /* CPPR has changed, check if we need to raise a pending 
+>>>> exception */
+>>>> -    xive_tctx_notify(tctx, ring);
+>>>> +    xive_tctx_notify(tctx, ring_min);
+>>>>   }
+>>>>     void xive_tctx_ipb_update(XiveTCTX *tctx, uint8_t ring, uint8_t 
+>>>> ipb)
+>>>
+>
 
