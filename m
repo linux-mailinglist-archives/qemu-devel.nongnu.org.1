@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C7296611F
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 13:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6AA966127
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 13:58:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sk0FM-0007bw-Dd; Fri, 30 Aug 2024 07:56:56 -0400
+	id 1sk0FI-0007Nh-HQ; Fri, 30 Aug 2024 07:56:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sk0FI-0007N9-KI
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 07:56:52 -0400
+ id 1sk0FD-0007JK-JQ
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 07:56:47 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sk0FF-0002rB-Oz
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 07:56:51 -0400
+ id 1sk0FA-0002rI-Aq
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 07:56:47 -0400
 Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47U7tVM5014619;
- Fri, 30 Aug 2024 11:56:40 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47U8J4QJ024207;
+ Fri, 30 Aug 2024 11:56:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=lTkdRg+GBBI4tZWpYzx20rweRuoFZnawHnP0zLPVa+0=; b=
- EBqQfFVUGFeavupf7pa2syaeY9MGcRFJU4tGtnP5uJB0LvINND+i/W50DJhApLWo
- 3w6CwImhgh7ksH5jvRY7TNj9gdDmj7OLQTun5xEdikgEtGRQgwcFqSKJV/v09l4O
- iILWspN3kIXQ4fOML1ZSZ+iP5qbhfbhOK5kpWJlvoEMjD7q8+ene8B7yEsMcsF7q
- W1FzVgY4hnAk/wPGYYrkTpyg4JYcudBkTWP1Lm9LOIKVOhQsKjU0VK5NiUXGC29t
- SNpPwSh2Jxgh4ReiFucMLESMk829GHuo+l831VsVcFyCYgHo9PJR/ryOSTZcY/NH
- nFYghu3ZS4O3QY3lPJpU1A==
+ corp-2023-11-20; bh=YykiUFUS3fjKKIu1+BZQB3cUpbX+vd0IQVv6qwmtIgE=; b=
+ fH6eIu9dEx6BwCD4cyxN6lO4p+APhwqF/V8i/0v69KoX5FykkPNMsWvMBKQ36Hfh
+ 7LOBqQAkYPKWwIFXpkAx1Zda3BMRPWQRj5wB341smNaic/YZvSu48lnO4ZhgskgA
+ cKpPapkSOJpfxG7eM1huW0d8tcgE5m/y3ir+4gylZ7qZd2tXAmhiu98Ce3dCiC9e
+ Vb/zys3UpnCxls84vDFtSImSQWjfvOQk0ntAmDjbssXzBvVmI/JFpL1lnbSo+C+z
+ Sz7pNYN9tN+60UzyzfRmWjZK9gJETG6Vhhn8fzEx/yhU1lzt5GSu5Wq3JFXzMXRu
+ Hu3/lZEn9fKEaQSJJWhXBQ==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 419pugxg18-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 419pugxg19-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Aug 2024 11:56:40 +0000 (GMT)
+ Fri, 30 Aug 2024 11:56:41 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 47UA5gQc036621; Fri, 30 Aug 2024 11:56:40 GMT
+ with ESMTP id 47UBTMmO036757; Fri, 30 Aug 2024 11:56:41 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 4189jpg9b9-1
+ 4189jpg9bn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Aug 2024 11:56:39 +0000
+ Fri, 30 Aug 2024 11:56:40 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47UBucxI028887;
- Fri, 30 Aug 2024 11:56:39 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47UBucxK028887;
+ Fri, 30 Aug 2024 11:56:40 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 4189jpg9ae-2; Fri, 30 Aug 2024 11:56:39 +0000
+ ESMTP id 4189jpg9ae-3; Fri, 30 Aug 2024 11:56:40 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Euan Turner <euan.turner@nutanix.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 1/6] Revert "vhost-backend: remove
- vhost_kernel_reset_device()"
-Date: Fri, 30 Aug 2024 04:56:32 -0700
-Message-Id: <1725018997-363706-2-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 2/6] tap: common return label
+Date: Fri, 30 Aug 2024 04:56:33 -0700
+Message-Id: <1725018997-363706-3-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1725018997-363706-1-git-send-email-steven.sistare@oracle.com>
 References: <1725018997-363706-1-git-send-email-steven.sistare@oracle.com>
@@ -72,8 +71,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  phishscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
  definitions=main-2408300090
-X-Proofpoint-GUID: 2p8eCbpzXUOL3tlXJerM-UIXTz5--a0y
-X-Proofpoint-ORIG-GUID: 2p8eCbpzXUOL3tlXJerM-UIXTz5--a0y
+X-Proofpoint-GUID: Cx-TmqVeJ5LluYpH3yQJxGrHt7HkuqUD
+X-Proofpoint-ORIG-GUID: Cx-TmqVeJ5LluYpH3yQJxGrHt7HkuqUD
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -100,38 +99,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit e6383293eb01928692047e617665a742cca87e23.
-The reset function is needed for CPR.
+Modify net_init_tap so every return branches to a common label, for
+common cleanup in a subsequent patch.  No functional change.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/virtio/vhost-backend.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/tap.c | 54 ++++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 36 insertions(+), 18 deletions(-)
 
-diff --git a/hw/virtio/vhost-backend.c b/hw/virtio/vhost-backend.c
-index 833804d..9b75141 100644
---- a/hw/virtio/vhost-backend.c
-+++ b/hw/virtio/vhost-backend.c
-@@ -221,6 +221,11 @@ static int vhost_kernel_set_owner(struct vhost_dev *dev)
-     return vhost_kernel_call(dev, VHOST_SET_OWNER, NULL);
+diff --git a/net/tap.c b/net/tap.c
+index 51f7aec..8deabcb 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -774,7 +774,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
+      * For -netdev, peer is always NULL. */
+     if (peer && (tap->has_queues || tap->fds || tap->vhostfds)) {
+         error_setg(errp, "Multiqueue tap cannot be used with hubs");
+-        return -1;
++        ret = -1;
++        goto out;
+     }
+ 
+     if (tap->fd) {
+@@ -784,25 +785,29 @@ int net_init_tap(const Netdev *netdev, const char *name,
+             error_setg(errp, "ifname=, script=, downscript=, vnet_hdr=, "
+                        "helper=, queues=, fds=, and vhostfds= "
+                        "are invalid with fd=");
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+ 
+         fd = monitor_fd_param(monitor_cur(), tap->fd, errp);
+         if (fd == -1) {
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+ 
+         if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
+             error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
+                              name, fd);
+             close(fd);
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+ 
+         vnet_hdr = tap_probe_vnet_hdr(fd, errp);
+         if (vnet_hdr < 0) {
+             close(fd);
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+ 
+         net_init_tap_one(tap, peer, "tap", name, NULL,
+@@ -811,7 +816,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
+         if (err) {
+             error_propagate(errp, err);
+             close(fd);
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+     } else if (tap->fds) {
+         char **fds;
+@@ -824,7 +830,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
+             error_setg(errp, "ifname=, script=, downscript=, vnet_hdr=, "
+                        "helper=, queues=, and vhostfd= "
+                        "are invalid with fds=");
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+ 
+         fds = g_new0(char *, MAX_TAP_QUEUES);
+@@ -888,30 +895,35 @@ free_fail:
+         }
+         g_free(fds);
+         g_free(vhost_fds);
+-        return ret;
++        goto out;
++
+     } else if (tap->helper) {
+         if (tap->ifname || tap->script || tap->downscript ||
+             tap->has_vnet_hdr || tap->has_queues || tap->vhostfds) {
+             error_setg(errp, "ifname=, script=, downscript=, vnet_hdr=, "
+                        "queues=, and vhostfds= are invalid with helper=");
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+ 
+         fd = net_bridge_run_helper(tap->helper,
+                                    tap->br ?: DEFAULT_BRIDGE_INTERFACE,
+                                    errp);
+         if (fd == -1) {
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+ 
+         if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
+             error_setg_errno(errp, errno, "Failed to set FD nonblocking");
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+         vnet_hdr = tap_probe_vnet_hdr(fd, errp);
+         if (vnet_hdr < 0) {
+             close(fd);
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+ 
+         net_init_tap_one(tap, peer, "bridge", name, ifname,
+@@ -920,14 +932,16 @@ free_fail:
+         if (err) {
+             error_propagate(errp, err);
+             close(fd);
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+     } else {
+         g_autofree char *default_script = NULL;
+         g_autofree char *default_downscript = NULL;
+         if (tap->vhostfds) {
+             error_setg(errp, "vhostfds= is invalid if fds= wasn't specified");
+-            return -1;
++            ret = -1;
++            goto out;
+         }
+ 
+         if (!script) {
+@@ -948,14 +962,16 @@ free_fail:
+             fd = net_tap_init(tap, &vnet_hdr, i >= 1 ? "no" : script,
+                               ifname, sizeof ifname, queues > 1, errp);
+             if (fd == -1) {
+-                return -1;
++                ret = -1;
++                goto out;
+             }
+ 
+             if (queues > 1 && i == 0 && !tap->ifname) {
+                 if (tap_fd_get_ifname(fd, ifname)) {
+                     error_setg(errp, "Fail to get ifname");
+                     close(fd);
+-                    return -1;
++                    ret = -1;
++                    goto out;
+                 }
+             }
+ 
+@@ -966,12 +982,14 @@ free_fail:
+             if (err) {
+                 error_propagate(errp, err);
+                 close(fd);
+-                return -1;
++                ret = -1;
++                goto out;
+             }
+         }
+     }
+ 
+-    return 0;
++out:
++    return ret;
  }
  
-+static int vhost_kernel_reset_device(struct vhost_dev *dev)
-+{
-+    return vhost_kernel_call(dev, VHOST_RESET_OWNER, NULL);
-+}
-+
- static int vhost_kernel_get_vq_index(struct vhost_dev *dev, int idx)
- {
-     assert(idx >= dev->vq_index && idx < dev->vq_index + dev->nvqs);
-@@ -345,6 +350,7 @@ const VhostOps kernel_ops = {
-         .vhost_get_features = vhost_kernel_get_features,
-         .vhost_set_backend_cap = vhost_kernel_set_backend_cap,
-         .vhost_set_owner = vhost_kernel_set_owner,
-+        .vhost_reset_device = vhost_kernel_reset_device,
-         .vhost_get_vq_index = vhost_kernel_get_vq_index,
-         .vhost_vsock_set_guest_cid = vhost_kernel_vsock_set_guest_cid,
-         .vhost_vsock_set_running = vhost_kernel_vsock_set_running,
+ VHostNetState *tap_get_vhost_net(NetClientState *nc)
 -- 
 1.8.3.1
 
