@@ -2,85 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FF39660E2
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 13:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE5096610E
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 13:54:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sjzx4-0002Qg-QO; Fri, 30 Aug 2024 07:38:02 -0400
+	id 1sk0C3-0002DF-Es; Fri, 30 Aug 2024 07:53:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sjzx3-0002QD-E4
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 07:38:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sk0Bz-0002Bh-RC; Fri, 30 Aug 2024 07:53:27 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sjzx1-0000fp-9X
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 07:38:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725017878;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=H3X8fjKmIYuQzjY3t9BsODEAEaRNiip9ABd5gQ3Mg1c=;
- b=J5s6Kol1fjZ0jOeMMU/WBSXO8gy7lKpaEfqwIqw9FrLB6Xc+e3A1iBYGG5RxVlavETnRSr
- 8DjElf8z9zPCtcK0HftXdymki4EvgllaYtrg+/GkTtOznbOCGJQT+44Vd6iN31M9jFcCW0
- b3p0FYXxsZA0NnQgTG9l5s+IPOLs1io=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-pafCGh8COsO3u8xvRogGDg-1; Fri,
- 30 Aug 2024 07:37:56 -0400
-X-MC-Unique: pafCGh8COsO3u8xvRogGDg-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 300201954B34; Fri, 30 Aug 2024 11:37:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.49])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CFDC019560A3; Fri, 30 Aug 2024 11:37:50 +0000 (UTC)
-Date: Fri, 30 Aug 2024 12:37:47 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH v4 15/35] tests/functional: enable pre-emptive caching of
- assets
-Message-ID: <ZtGvCzgqN9SksvFp@redhat.com>
-References: <20240821082748.65853-1-thuth@redhat.com>
- <20240821082748.65853-16-thuth@redhat.com>
- <3a435391-f485-4223-93aa-b937a141db16@linaro.org>
- <2e2c6480-8a43-4606-b500-2e60bf583d00@redhat.com>
- <f126030e-faf9-429e-957d-db503f7e5e33@redhat.com>
- <ZtBKR205LUm9qvgu@redhat.com>
- <c6d6f31d-d507-437f-9f7e-7857ed415fea@redhat.com>
- <ZtF366lfxm1gNR_Z@redhat.com>
- <aa7edbf3-d615-4f00-9e5f-2c675fa3a01c@redhat.com>
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sk0Bx-0002S5-9F; Fri, 30 Aug 2024 07:53:27 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47U8DiwY021313;
+ Fri, 30 Aug 2024 11:53:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:date:subject:to:references:from:in-reply-to
+ :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+ gbX1YTkXO/Z7vgobBnnOePUtvkkIhKJIOp487VLEbb8=; b=eG5m+084Qf0GrcxX
+ gPpq+SYFaw6xNU81991gf1epDGHgxes3N+uAuMaOLTs/pYbT5YjR9mPite0lq9Td
+ UG0brCYnRER/jiMoIe0xykW9xQ0Nzo1+XxTxksIH8ddfgbbN8eYD0DnBXT3DlrMc
+ YTAglCdhFRgOlPVSt6AJYCVxRwIaXxFcyjmVL/3IakUYGia0UcMgvRKCa0acvPLQ
+ 3SdsdR/r/AbM4d5+SIeoIs4ku8/XvhJxrTMXW45cne/cHypJckojCsEE8opGr6Y3
+ IRk5gSesNQa3XnsFmvwF/jg2atmy13pZjJluzSbrLrFDwKCeytxMTJICZOaksMIY
+ oOi5CA==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8p74wr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Aug 2024 11:53:13 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47UBrC1w009724;
+ Fri, 30 Aug 2024 11:53:12 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8p74wp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Aug 2024 11:53:12 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47UAuh33003100;
+ Fri, 30 Aug 2024 11:53:11 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 417tuqbjb7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Aug 2024 11:53:11 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 47UBr7nt20709814
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 30 Aug 2024 11:53:07 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C67F12004B;
+ Fri, 30 Aug 2024 11:53:07 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A88E920049;
+ Fri, 30 Aug 2024 11:53:04 +0000 (GMT)
+Received: from [9.195.47.18] (unknown [9.195.47.18])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 30 Aug 2024 11:53:04 +0000 (GMT)
+Message-ID: <d658080e-e23c-4213-a6f6-35d4d4bd21ad@linux.ibm.com>
+Date: Fri, 30 Aug 2024 17:23:02 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 RESEND 0/5] Power11 support for QEMU [PSeries]
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20240731055022.696051-1-adityag@linux.ibm.com>
+ <20240829174443.06c0b2ae-eb-amachhiw@linux.ibm.com>
+Content-Language: en-US
+From: Aditya Gupta <adityag@linux.ibm.com>
+In-Reply-To: <20240829174443.06c0b2ae-eb-amachhiw@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: i4voK4S3b5y9CIgKNFj7jCksAkQZTSvN
+X-Proofpoint-ORIG-GUID: RRWA8OiFNhVVFHod2jyrllcSX2RXy7XL
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aa7edbf3-d615-4f00-9e5f-2c675fa3a01c@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-30_06,2024-08-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 clxscore=1011
+ spamscore=0 impostorscore=0 phishscore=0 suspectscore=0 mlxlogscore=999
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408300087
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -96,196 +112,147 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 30, 2024 at 01:27:15PM +0200, Thomas Huth wrote:
-> On 30/08/2024 09.42, Daniel P. Berrangé wrote:
-> > On Fri, Aug 30, 2024 at 09:38:17AM +0200, Thomas Huth wrote:
-> > > On 29/08/2024 12.15, Daniel P. Berrangé wrote:
-> > > > On Tue, Aug 27, 2024 at 04:24:59PM +0200, Thomas Huth wrote:
-> > > > > On 27/08/2024 15.16, Thomas Huth wrote:
-> > > > > > On 23/08/2024 09.28, Philippe Mathieu-Daudé wrote:
-> > > > > > > Hi,
-> > > > > > > 
-> > > > > > > On 21/8/24 10:27, Thomas Huth wrote:
-> > > > > > > > From: Daniel P. Berrangé <berrange@redhat.com>
-> > > > > > > > 
-> > > > > > > > Many tests need to access assets stored on remote sites. We don't want
-> > > > > > > > to download these during test execution when run by meson, since this
-> > > > > > > > risks hitting test timeouts when data transfers are slow.
-> > > > > > > > 
-> > > > > > > > Add support for pre-emptive caching of assets by setting the env var
-> > > > > > > > QEMU_TEST_PRECACHE to point to a timestamp file. When this is set,
-> > > > > > > > instead of running the test, the assets will be downloaded and saved
-> > > > > > > > to the cache, then the timestamp file created.
-> > > ...
-> > > > > > > 
-> > > > > > > When using multiple jobs (-jN) I'm observing some hangs,
-> > > > > > > apparently multiple threads trying to download the same file.
-> > > > > > > The files are eventually downloaded successfully but it takes
-> > > > > > > longer. Should we acquire some exclusive lock somewhere?
-> > > > > > 
-> > > > > > I haven't seen that yet ... what did you exactly run? "make
-> > > > > > check-functional -jN" ? Or "make check-functional-<target> -jN" ?
-> > > > > 
-> > > > > After applying some of your patches, I think I've run now into this problem,
-> > > > > too: It's because test_aarch64_sbsaref.py and test_aarch64_virt.py try to
-> > > > > download the same asset in parallel (alpine-standard-3.17.2-aarch64.iso).
-> > > > > 
-> > > > > Daniel, any ideas how to fix this in the Asset code?
-> > > > 
-> > > > So when downloading we open a file with a ".download" suffix, write to
-> > > > that, and then rename it to the final filename.
-> > > > 
-> > > > If we have concurrent usage, both will open the same file and try to
-> > > > write to it. Assuming both are downloading the same content we would
-> > > > probably "get lucky" and have a consistent file at the end, but clearly
-> > > > it is bad to rely on luck.
-> > > > 
-> > > > The lame option is to use NamedTemporaryFile for the teporary file.
-> > > > This ensures both processes will write to different temp files, and
-> > > > the final rename is atomic. This guarantees safety, but still has
-> > > > the double download penalty.
-> > > > 
-> > > > The serious option is to use fcntl.lockf(..., fcntl.LOCK_EX) on the
-> > > > temp file. If we can't acquire the lock then just immediately close
-> > > > the temp file (don't delete it) and assume another thread is going to
-> > > > finish its download.
-> > > > 
-> > > > On windows  we'll need msvcrt.locking(..., msvcrt.LK_WLCK, ...)
-> > > > instead of fcntl.
-> > > 
-> > > While looking for portable solutions, I noticed that newer versions
-> > > of Python have a "x" mode for creating files only if they do not
-> > > exist yet. So I think something like this could be a solution:
-> > > 
-> > > @@ -71,17 +72,26 @@ def fetch(self):
-> > >           tmp_cache_file = self.cache_file.with_suffix(".download")
-> > >           try:
-> > > -            resp = urllib.request.urlopen(self.url)
-> > > +            with tmp_cache_file.open("xb") as dst:
-> > > +                with urllib.request.urlopen(self.url) as resp:
-> > > +                    copyfileobj(resp, dst)
-> > > +        except FileExistsError:
-> > > +            # Another thread already seems to download this asset,
-> > > +            # so wait until it is done
-> > > +            self.log.debug("%s already exists, waiting for other thread to finish...",
-> > > +                           tmp_cache_file)
-> > > +            i = 0
-> > > +            while i < 600 and os.path.exists(tmp_cache_file):
-> > > +                sleep(1)
-> > > +                i += 1
-> > > +            if os.path.exists(self.cache_file):
-> > > +                return str(self.cache_file)
-> > > +            raise
-> > >           except Exception as e:
-> > >               self.log.error("Unable to download %s: %s", self.url, e)
-> > > -            raise
-> > > -
-> > > -        try:
-> > > -            with tmp_cache_file.open("wb+") as dst:
-> > > -                copyfileobj(resp, dst)
-> > > -        except:
-> > >               tmp_cache_file.unlink()
-> > >               raise
-> > > +
-> > >           try:
-> > >               # Set these just for informational purposes
-> > >               os.setxattr(str(tmp_cache_file), "user.qemu-asset-url",
-> > > 
-> > > What do you think, does it look reasonable?
-> > 
-> > The main risk with this, as opposed to fcntl locking, is that it is not
-> > crash-safe. If a download is interrupted, subsequent cache runs will
-> > wait for a process that doesn't exist to finish downloading and then
-> > raise an exception, requiring manual user cleanup of the partial
-> > download.
-> > 
-> > Perhaps if we see the tmp_cache_file, and it doesn't change in size
-> > after N seconds, we could force unlink it, and create a new download,
-> > so we gracefully recover ?
-> 
-> Sounds like a plan ... does this look acceptable:
-> 
-> @@ -70,18 +71,52 @@ def fetch(self):
->          self.log.info("Downloading %s to %s...", self.url, self.cache_file)
->          tmp_cache_file = self.cache_file.with_suffix(".download")
-> 
-> -        try:
-> -            resp = urllib.request.urlopen(self.url)
-> -        except Exception as e:
-> -            self.log.error("Unable to download %s: %s", self.url, e)
-> -            raise
-> +        for retries in range(3):
-> +            try:
-> +                with tmp_cache_file.open("xb") as dst:
-> +                    with urllib.request.urlopen(self.url) as resp:
-> +                        copyfileobj(resp, dst)
-> +                break
-> +            except FileExistsError:
-> +                # Another thread already seems to download this asset,
-> +                # so wait until it is done
-> +                self.log.debug("%s already exists, "
-> +                               "waiting for other thread to finish...",
-> +                               tmp_cache_file)
-> +                try:
-> +                    current_size = tmp_cache_file.stat().st_size
-> +                    new_size = current_size
-> +                except:
-> +                    if os.path.exists(self.cache_file):
-> +                        return str(self.cache_file)
-> +                    raise
-> +                waittime = lastchange = 600
-> +                while waittime > 0:
-> +                    sleep(1)
-> +                    waittime -= 1
-> +                    try:
-> +                        new_size = tmp_cache_file.stat().st_size
-> +                    except:
-> +                        if os.path.exists(self.cache_file):
-> +                            return str(self.cache_file)
-> +                        raise
-> +                    if new_size != current_size:
-> +                        lastchange = waittime
-> +                        current_size = new_size
-> +                    elif lastchange - waittime > 90:
-> +                       self.log.debug("%s seems to be stale ... "
-> +                                      "deleting and retrying download...",
-> +                                      tmp_cache_file)
-> +                       tmp_cache_file.unlink()
-> +                       break
-> +                if waittime > 0:
-> +                    continue
-> +                raise
-> +            except Exception as e:
-> +                self.log.error("Unable to download %s: %s", self.url, e)
-> +                tmp_cache_file.unlink()
-> +                raise
-> 
-> -        try:
-> -            with tmp_cache_file.open("wb+") as dst:
-> -                copyfileobj(resp, dst)
-> -        except:
-> -            tmp_cache_file.unlink()
-> -            raise
->          try:
->              # Set these just for informational purposes
->              os.setxattr(str(tmp_cache_file), "user.qemu-asset-url",
-> 
-> ?
-> 
-> I tried it with a stale file in my cache, and it seems to work - after 90
-> seconds, one of the threads is properly trying to redownload the file.
+Hi Amit,
 
-Yeah, I think that'll work ok 
+On 29/08/24 17:49, Amit Machhiwal wrote:
+> Hi Aditya,
+>
+> On 2024/07/31 11:20 AM, Aditya Gupta wrote:
+>> Overview
+>> ============
+>>
+>> Split "Power11 support for QEMU" into 2 patch series: pseries & powernv.
+>>
+>> This patch series is for pseries support for Power11.
+>>
+>> As Power11 core is same as Power10, hence much of the code has been reused from
+>> Power10.
+>>
+>> Power11 was added in Linux in:
+>>    commit c2ed087ed35c ("powerpc: Add Power11 architected and raw mode")
+>>
+>> Git Tree for Testing
+>> ====================
+>>
+>> QEMU: https://github.com/adi-g15-ibm/qemu/tree/p11-v6-pseries
+>>
+>> Has been tested with following cases:
+>> * '-M pseries' / '-M pseries -cpu Power11'
+> I tried the below command with mailine QEMU and this patch series applied. I
+> could boot the guest with -cpu Power11 option but when I check inside the guest
+> with `lscpu`, I can still see the Model name being reported as "Power 10" while
+> the PVR value looks fine corresponding to Power11.
+>
+> Did you see "Power 11" while you were testing this?
+>
+>    $ qemu-system-ppc64 -m 4G -smp 4 -nographic -drive file=/root/testing/debian-12-generic-ppc64el.qcow2,format=qcow2 -accel tcg -cpu Power11
+>
+>    root@localhost:~# lscpu
+>    Architecture:             ppc64le
+>      Byte Order:             Little Endian
+>    CPU(s):                   4
+>      On-line CPU(s) list:    0-3
+>    Model name:               POWER10 (architected), altivec supported
+>      Model:                  18.0 (pvr 0082 1200)
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Yes.
 
+Above system's kernel is probably older, and doesn't know about Power11.
+
+Power11 support was added in upstream linux, with commit c2ed087ed35c 
+("powerpc: Add Power11 architected and raw mode").
+
+Also, if you notice the model is being printed as 0x00821200, it is the 
+Processor version register (PVR), the 0x82 in it is for Power11. If it 
+had been Power10, it would be 0x80. You can try that with -cpu Power10.
+
+
+You will need to use a kernel newer than v6.9-rc1, which contains the 
+commit adding Power11 support to the kernel.
+
+
+Thanks,
+
+Aditya Gupta
+
+>
+> Thanks,
+> Amit
+>
+>> * '-smp' option tested
+>> * with compat mode: 'max-cpu-compat=power10' and 'max-cpu-compat=power9'
+>> * with/without device 'virtio-scsi-pci'
+>> * with/without -kernel and -drive with qcow_file
+>>
+>> Linux with Power11 support: https://github.com/torvalds/linux, since v6.9-rc1
+>>
+>> Changelog
+>> =========
+>> v6 RESEND:
+>>    + added my initials instead of PMM in patch #1 description
+>>
+>> v6:
+>>    + reorganised patches such that Power11 introduction is at end, and
+>>    cleanups and fixes is done before
+>>    + patch #1: renamed macros from POWER_* to PCC_*
+>>    + patch #2: rename 'logical_pvr' to 'spapr_logical_pvr' to better convey
+>>    the context
+>>
+>> v5:
+>>    + split patch series into pseries+powernv
+>>    + patch #1: apply harsh's patch to reduce duplication
+>>    + patch #2: simplified, by removing duplication
+>>    + patch #3: update docs, according to harsh's suggestion
+>>    + patch #4: no functional change, #define used for P9 & P10 pcr_supported
+>>    + patch #5: no change
+>>
+>> v4:
+>>    + patch #5: fix memory leak in pnv_chip_power10_quad_realize
+>>    - no change in other patches
+>>
+>> v3:
+>>    + patch #1: version power11 as power11_v2.0
+>>    + patch #2: split target hw/pseries code into patch #2
+>>    + patch #3,#4: fix regression due to Power10 and Power11 having same PCR
+>>    + patch #5: create pnv_chip_power11_dt_populate and split pnv_chip_power10_common_realize as per review
+>>    + patch #6-#11: no change
+>>    - remove commit to make Power11 as default
+>>
+>> v2:
+>>    + split powernv patch into homer,lpc,occ,psi,sbe
+>>    + reduce code duplication by reusing power10 code
+>>    + make power11 as default
+>>    + rebase on qemu upstream/master
+>>    + add more information in commit descriptions
+>>    + update docs
+>>    + update skiboot.lid
+>>
+>>
+>> Aditya Gupta (4):
+>>    target/ppc: Introduce 'PowerPCCPUClass::spapr_logical_pvr'
+>>    target/ppc: Fix regression due to Power10 and Power11 having same PCR
+>>    target/ppc: Add Power11 DD2.0 processor
+>>    ppc/pseries: Add Power11 cpu type
+>>
+>> Harsh Prateek Bora (1):
+>>    target/ppc: Reduce code duplication across Power9/10 init code
+>>
+>>   docs/system/ppc/pseries.rst |  17 +++-
+>>   hw/ppc/spapr_cpu_core.c     |   1 +
+>>   target/ppc/compat.c         |  11 +++
+>>   target/ppc/cpu-models.c     |   3 +
+>>   target/ppc/cpu-models.h     |   3 +
+>>   target/ppc/cpu.h            |   3 +
+>>   target/ppc/cpu_init.c       | 188 +++++++++++++++---------------------
+>>   target/ppc/cpu_init.h       |  92 ++++++++++++++++++
+>>   8 files changed, 205 insertions(+), 113 deletions(-)
+>>   create mode 100644 target/ppc/cpu_init.h
+>>
+>> -- 
+>> 2.45.2
+>>
+>>
 
