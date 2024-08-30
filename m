@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBEC296676C
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 18:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 573D296674B
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 18:49:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sk4nN-0000td-Gw; Fri, 30 Aug 2024 12:48:21 -0400
+	id 1sk4nO-0000yV-PK; Fri, 30 Aug 2024 12:48:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sk4nL-0000oj-FR
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 12:48:19 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1sk4nM-0000tZ-M9
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 12:48:20 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sk4nJ-0006yH-N6
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 12:48:19 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2d8815ef6d2so399236a91.0
- for <qemu-devel@nongnu.org>; Fri, 30 Aug 2024 09:48:17 -0700 (PDT)
+ id 1sk4nL-0006yh-3C
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 12:48:20 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-7cd9e4f550dso692542a12.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Aug 2024 09:48:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1725036496; x=1725641296;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1725036497; x=1725641297;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gJJt5Z8SJGSqiOcjU4U+2C4uQqhkjvrrqsHIDsZi2XU=;
- b=nD3g8cX55hoc1VNLtiRV0VJ2g7Iml9LbaNfz+n1ndga0rwrg5qAfWicvfD7pM84JAQ
- TcvloUHR0lPHNWYu8pqJv7gIstglhQ8EbVR16jG3b+JlHW689k5MJmjvp3k583A4hFww
- 3hsa13QYNqD3iWJaTCddn3AqCezXggSa+5qG4+gseJSfRpyTW05Z+/tuF0c5KZB2/XL9
- iYTJpLuiztyEH6c5vwu4KDFXFmKcD5PaOipX1lIwvx2ccYyN5KiBE4fJtv0k8S6Q9xs1
- mIbhpGv1i5T3kZ+q0YCGhnMWzALA9Cw+L/rU8n65IO+l40F91pS6iG/vx9Jf6WN7/OLw
- QoLw==
+ bh=tVrxnpz839aLLYnBnHuqeTltn+xpAuxyl7GsFPJsO10=;
+ b=xWMXYNxa3n7GucP5TMTZMfGD+5cIMKmSWwLI+vIpkTbcTgbUBdGgXa0NleknVZJjyU
+ CTpuKVbchlhUUryd5PXqnxIj16SxhgzhFZU2ZJk9kusU6Jw/Qp/+huBQ/rIu8eDC6LVz
+ Jp+DyrtSKxMnkNwTWguyrGQpNMilBdvIoPsO2J6/uSc8e6zu7cRnHsE1C4ZFr9tB3jir
+ z2d3+Xb21m/r92ZaJiHDPLUnfVid42kAptGHV3CPjA8dL1LgNjGpiF5innzie89gbj41
+ Y+JyAgQKIc8fGh1jjziuqsSdZOVQ2Qw/ZR4JZDGKTQHooicDjyobE5iFv96PbQU9OXVP
+ FxzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725036496; x=1725641296;
+ d=1e100.net; s=20230601; t=1725036497; x=1725641297;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gJJt5Z8SJGSqiOcjU4U+2C4uQqhkjvrrqsHIDsZi2XU=;
- b=DIJJ5gCf1C7RBDX/Rd8VnzmySeR6aaSlTX9oRolA9zIPJwN5xQcPOf1r/WjZcab5oW
- uG3CzT6afo2hibj5JKLmlY1RQQFjM4sgmw0e2azXGbtI4eU3B11QRKnF1FRAFbO01KvF
- EKViy+GqY3gW8+Gvm9gatj84jDsYrGgPEkoGhjsSKkSnWXytW+n/a0E/FlrulS8vrdbX
- CdQxDv0EJc1d0DP52JhR95MAGdBC4MKHWFUtRc4/AM1Y7RKLLSgDH9S7nW3HNVm0NDgT
- uZFlf+6OjURAAhWuxld7bxGvfZZ94jTT6ss5dvSM3FCcRbsektAImM7N3mwNuJBlS8es
- 9eOA==
+ bh=tVrxnpz839aLLYnBnHuqeTltn+xpAuxyl7GsFPJsO10=;
+ b=KQu22jN4XxDEyfPWy+K9ZHfrsPksFsoCUcCxp3nYk+mmHQlmgDnE3UYLUXMF2D7BSo
+ YvuYmFnMBfTo5kmZu/mgtWviWjUbnI4264m6asOr+tM6mFuGWzrDf+0ZXYHhqqQQN8J+
+ kHGQgfuHycjNp3/FPoXIBqKQB245uazOj2HlrvtzCj+nLFFG2edRBu8EHM6GOO6TziOS
+ Zwy3onIeBHsaDA+mXdSGpXGcLX3+LW2mSgfZ5DPvlTiIe+NPB+asmyYTOfEBwVjkGV4k
+ WFPYFlH/se9jCeJzrO0VpJ+0PgTYyxWIDAwD02BVLEjUWVSpfluQUFQt4P866KkB8fVh
+ JPpw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXHRO6qIwZnrU7uq3IgPPQxNVEpOYe1315hiJNfytawUYEJdertouBlM9t5zwqFyGC91lFZtvFIm0vN@nongnu.org
-X-Gm-Message-State: AOJu0Yw4Xdim5+MogRZgZ1RIhi2dKgVS5cNBs9JKIl84jDcgkwfnzPS0
- 5eSOdjmwF0/71rTkZyeVPcu8Yl9JylUPKY77bJUOtxktTu0HRSDoPDOy9CjBZYE=
-X-Google-Smtp-Source: AGHT+IEmFBOJ1hEEjHgq1Ht8xea0riG7z9fgHG5emgXract1Txv0+8m5H2CdIL+mnDmFUQ2flhsxJw==
-X-Received: by 2002:a17:90b:524a:b0:2d3:90e1:41c7 with SMTP id
- 98e67ed59e1d1-2d85638414emr6934635a91.31.1725036496271; 
- Fri, 30 Aug 2024 09:48:16 -0700 (PDT)
+ AJvYcCWh8Dh3XtR0nIVR8st2mhSAZtzXgV28aNFopdygzlZkAlqbqvg2k+seVpztI5Lc8kh12P0qt7zMn6O9@nongnu.org
+X-Gm-Message-State: AOJu0YycXGvrrd3DPA26JaKpglNvLEgkTCatIURFX9atkf3S4SoCeJp0
+ PUKZxqjyFx+jcige0dzZ5q2Rb9srXZVdOcGhA3zLvQ5MnVlVOoqwMD04/AR9koY=
+X-Google-Smtp-Source: AGHT+IEnLXzEHBCXXMwhrd3WkM1niPey8NG6Ui+wXmAK4ahG/q3vVVZeoJXinuCntIBoLo83KY7ocw==
+X-Received: by 2002:a17:90a:a10f:b0:2d3:c0e5:cbac with SMTP id
+ 98e67ed59e1d1-2d856173cb8mr6966223a91.7.1725036497400; 
+ Fri, 30 Aug 2024 09:48:17 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d8445e813dsm6591257a91.17.2024.08.30.09.48.15
+ 98e67ed59e1d1-2d8445e813dsm6591257a91.17.2024.08.30.09.48.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Aug 2024 09:48:16 -0700 (PDT)
+ Fri, 30 Aug 2024 09:48:17 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -66,18 +66,18 @@ Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, bmeng.cn@gmail.com,
  liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, andy.chiu@sifive.com,
  kito.cheng@sifive.com, Deepak Gupta <debug@rivosinc.com>,
- Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v13 08/20] disas/riscv: enable `lpad` disassembly
-Date: Fri, 30 Aug 2024 09:47:44 -0700
-Message-ID: <20240830164756.1154517-9-debug@rivosinc.com>
+Subject: [PATCH v13 09/20] target/riscv: Expose zicfilp extension as a cpu
+ property
+Date: Fri, 30 Aug 2024 09:47:45 -0700
+Message-ID: <20240830164756.1154517-10-debug@rivosinc.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240830164756.1154517-1-debug@rivosinc.com>
 References: <20240830164756.1154517-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=debug@rivosinc.com; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=debug@rivosinc.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,92 +100,23 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Co-developed-by: Jim Shu <jim.shu@sifive.com>
-Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- disas/riscv.c | 18 +++++++++++++++++-
- disas/riscv.h |  2 ++
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ target/riscv/cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index c8364c2b07..c7c92acef7 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -974,6 +974,7 @@ typedef enum {
-     rv_op_amomaxu_h = 943,
-     rv_op_amocas_b  = 944,
-     rv_op_amocas_h  = 945,
-+    rv_op_lpad = 946,
- } rv_op;
- 
- /* register names */
-@@ -2232,6 +2233,7 @@ const rv_opcode_data rvi_opcode_data[] = {
-     { "amomaxu.h", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-     { "amocas.b", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-     { "amocas.h", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-+    { "lpad", rv_codec_lp, rv_fmt_imm, NULL, 0, 0, 0 },
- };
- 
- /* CSR names */
-@@ -2925,7 +2927,13 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-             case 7: op = rv_op_andi; break;
-             }
-             break;
--        case 5: op = rv_op_auipc; break;
-+        case 5:
-+            op = rv_op_auipc;
-+            if (dec->cfg->ext_zicfilp &&
-+                (((inst >> 7) & 0b11111) == 0b00000)) {
-+                op = rv_op_lpad;
-+            }
-+            break;
-         case 6:
-             switch ((inst >> 12) & 0b111) {
-             case 0: op = rv_op_addiw; break;
-@@ -4482,6 +4490,11 @@ static uint32_t operand_tbl_index(rv_inst inst)
-     return ((inst << 54) >> 56);
- }
- 
-+static uint32_t operand_lpl(rv_inst inst)
-+{
-+    return inst >> 12;
-+}
-+
- /* decode operands */
- 
- static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-@@ -4869,6 +4882,9 @@ static void decode_inst_operands(rv_decode *dec, rv_isa isa)
-         dec->imm = sextract32(operand_rs2(inst), 0, 5);
-         dec->imm1 = operand_imm2(inst);
-         break;
-+    case rv_codec_lp:
-+        dec->imm = operand_lpl(inst);
-+        break;
-     };
- }
- 
-diff --git a/disas/riscv.h b/disas/riscv.h
-index 16a08e4895..1182457aff 100644
---- a/disas/riscv.h
-+++ b/disas/riscv.h
-@@ -166,6 +166,7 @@ typedef enum {
-     rv_codec_r2_immhl,
-     rv_codec_r2_imm2_imm5,
-     rv_codec_fli,
-+    rv_codec_lp,
- } rv_codec;
- 
- /* structures */
-@@ -228,6 +229,7 @@ enum {
- #define rv_fmt_rs1_rs2                "O\t1,2"
- #define rv_fmt_rd_imm                 "O\t0,i"
- #define rv_fmt_rd_uimm                "O\t0,Ui"
-+#define rv_fmt_imm                    "O\ti"
- #define rv_fmt_rd_offset              "O\t0,o"
- #define rv_fmt_rd_uoffset             "O\t0,Uo"
- #define rv_fmt_rd_rs1_rs2             "O\t0,1,2"
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 55754cb374..c9aeffee4e 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1481,6 +1481,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     /* Defaults for standard extensions */
+     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
+     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
++    MULTI_EXT_CFG_BOOL("zicfilp", ext_zicfilp, false),
+     MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
+     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
+     MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
 -- 
 2.44.0
 
