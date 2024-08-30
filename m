@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5C4966818
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 19:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3F8966862
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 19:49:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sk5WX-0004y7-Ou; Fri, 30 Aug 2024 13:35:01 -0400
+	id 1sk5j6-0006WV-Hk; Fri, 30 Aug 2024 13:48:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sk5WV-0004uO-9g
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 13:34:59 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sk5WT-0003OI-Nn
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 13:34:59 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-42bb9d719d4so11477475e9.3
- for <qemu-devel@nongnu.org>; Fri, 30 Aug 2024 10:34:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725039296; x=1725644096; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iYtUTT0TIbHg3HS+ud7uRweJ2SSTTNwBbnoH0NdYWvc=;
- b=jeDWUsLOADrSOTOFssZr0iytFfOWu0LwEpagJDuM1BTS7ZgtVGDbPoU6nyqwUfbR+a
- +cKM6RbBRavoy5yFmqvdKA7PnwrSwokRea0N345m2/0EO9Y2d6dmOalGMYMz1/xOUNq4
- eGvbhbq5Ypc2olo7AOD9VLv1HDm16KDPYpTuoiaG+qU3QBj381bA5wB327mpiOpkkkC1
- XaYMeLYAhmpJM71Ibm9OaFsQO/NfwazcE/YdcUvgV6r23eB7NV+4L0k52LsUds/MMOyY
- QvawA6DgihfLTfNBg2q9kAiJwewdILp3ewP9uirpMjlJ/HFOtR+JmemrX7juckRPp1CC
- 4WEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725039296; x=1725644096;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iYtUTT0TIbHg3HS+ud7uRweJ2SSTTNwBbnoH0NdYWvc=;
- b=uqhwH4ztExyUYi/ZmfxXIXIn5LlAbFfHWNU0upC/GNXEbIw9jlHRjZPB2b6quJa4xA
- O2Y/mLhWK694A72S2AM655W2YI8aGpw9Tcrz8GeajmxSYGK9omgjW330RPXiCDplArRU
- aS5OuPSTtL9cd20+c53VhcIFR9M47/EMn0GIo2+FhO00whnYZGEz7GazxVRV4zVYCfL3
- JLkEEgT75v9UoMAXS7IkXlF0Vf8AO96RQlhW6lUKuZXhVI3oqkAmKzm/C8llEjDYyuMP
- /ssJZwPHfEe3A5bnjHTsD09qbjSCulOD0HAxL5BYHI7vUmnaEFTUfQS5lEcWjzDEhKqY
- O7+g==
-X-Gm-Message-State: AOJu0YxE35HAZfOV32pqBPgAYNqX9fUbCSMx3/LYOmHFDr1nQFnkPDCC
- D10PzLsaXJqI9vo3YKcfTg1V7VtKsUY0seKsDG8y6e2Kb1xWCO0+1/6qA71mDTlSCAqnh3AZFQ9
- X
-X-Google-Smtp-Source: AGHT+IEmExZPBL/8VPxrKfpAgmuDzp9PdBcQJttyaZhOrK6wQl70Rzk9vQkvtSquN4xBJ4x5wKXUdA==
-X-Received: by 2002:a5d:66cb:0:b0:373:b44:675 with SMTP id
- ffacd0b85a97d-3749b544813mr4812902f8f.20.1725039295945; 
- Fri, 30 Aug 2024 10:34:55 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb37f7849sm58471775e9.7.2024.08.30.10.34.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Aug 2024 10:34:55 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <huth@tuxfamily.org>,
-	Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 3/3] hw/nubus/nubus-device: Range check 'slot' property
-Date: Fri, 30 Aug 2024 18:34:52 +0100
-Message-Id: <20240830173452.2086140-4-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240830173452.2086140-1-peter.maydell@linaro.org>
-References: <20240830173452.2086140-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <vladimir.isaev@syntacore.com>)
+ id 1sk5iz-0006Uk-IS; Fri, 30 Aug 2024 13:47:55 -0400
+Received: from mta-04.yadro.com ([89.207.88.248])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vladimir.isaev@syntacore.com>)
+ id 1sk5ix-0004hi-DM; Fri, 30 Aug 2024 13:47:53 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 3E220C0003
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-04; t=1725040065;
+ bh=8+sN9E4YHy9w0jcJOPwRC3fIN153meNkMETDm6Cm5SQ=;
+ h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+ b=dZi0SWGKZWaVfIuR4+vcegAwhiZx3zgdkcFvOOqzn2TyAheFxVxn71/nyWUEfKXBl
+ bx01DWIbKtLZzgo4E0HroVomVZFnPo7cPOIhQ9k3UgNza5qzheLOzffTXew+ti/O+y
+ VuHbZbXvpf9xB2EdfPhWrdxuyauaYUPCkHzCjIb0LzvqGbC8C0Afpvora0A7Kh3piF
+ Hx4KK4PG5Eodbz1kYhl7xhNoZ6rXnHAFi2IBTkLw0ZV9WFodh6nYZF1/nwXueEu7wQ
+ 3Jpdw/AzPnhnECVSuc0lr8FJMyIl9PPWEoU3ZNQCxrjLyo7trrTfr1bQthUGLNGoM0
+ rYg0Ym7TkDIVw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-03; t=1725040065;
+ bh=8+sN9E4YHy9w0jcJOPwRC3fIN153meNkMETDm6Cm5SQ=;
+ h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+ b=acyYjkJ1JT7oLt2GuCLX1uZG6a+6eG5/F+O0fLYhz9anLMEPW+CxUEWJXFMeM4eXo
+ tiIDgV44dBSUjPWYJJRnSG7cDMhlX0bZeogJq0SHzEuEHhkCQXuNeSpXOpCQcWQFwK
+ H2j3tA8J66Q6ufhiahOcwCkIka8/zYmz4IA2YcuO9IETf4kLfr0QcJaHYDwk5nhSKT
+ CmSDR2z+J0DA4ps2+ZCI6dz3ZhNCYyKf9BJ8DuKcbzH73nmxycmfbkwGQKYAr6zmtD
+ NIjs0AMNG1vHcKT1PP7nWVwbY+STLm1DP4ROy/j6rqOlOgTgD2jKRlUblQOP5P7ud9
+ QmGjLXoQ+7I/g==
+Message-ID: <f26253a4-8b34-4cd7-8375-e49b8d1842a4@syntacore.com>
+Date: Fri, 30 Aug 2024 20:47:37 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/riscv: Stop timer with infinite timecmp
+To: Andrew Jones <ajones@ventanamicro.com>
+CC: <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>, Anup Patel
+ <apatel@ventanamicro.com>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
+ <bmeng.cn@gmail.com>, <liwei1518@gmail.com>, <zhiwei_liu@linux.alibaba.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, <atishp@rivosinc.com>
+References: <20240829084002.1805006-2-ajones@ventanamicro.com>
+ <5f547cd8-2068-4499-af7e-04f3f27ea617@syntacore.com>
+ <20240830-f7e2039c7d1cc5e33bd1f5b2@orel>
+Content-Language: en-US, ru-RU
+From: Vladimir Isaev <vladimir.isaev@syntacore.com>
+In-Reply-To: <20240830-f7e2039c7d1cc5e33bd1f5b2@orel>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+X-ClientProxiedBy: T-EXCH-06.corp.yadro.com (172.17.10.110) To
+ S-Exch-01.corp.yadro.com (10.78.5.241)
+Received-SPF: permerror client-ip=89.207.88.248;
+ envelope-from=vladimir.isaev@syntacore.com; helo=mta-04.yadro.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,39 +82,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TYPE_NUBUS_DEVICE class lets the user specify the nubus slot
-using an int32 "slot" QOM property.  Its realize method doesn't do
-any range checking on this value, which Coverity notices by way of
-the possibility that 'nd->slot * NUBUS_SUPER_SLOT_SIZE' might
-overflow the 32-bit arithmetic it is using.
 
-Constrain the slot value to be less than NUBUS_SLOT_NB (16).
 
-Resolves: Coverity CID 1464070
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/nubus/nubus-device.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+30.08.2024 17:50, Andrew Jones пишет:
+> On Fri, Aug 30, 2024 at 02:05:05PM GMT, Vladimir Isaev wrote:
+>> Hi Andrew,
+>>
+>> 29.08.2024 11:40, Andrew Jones wrote:
+>>> While the spec doesn't state it, setting timecmp to UINT64_MAX is
+>>> another way to stop a timer, as it's considered setting the next
+>>> timer event to occur at infinity. 
+>>
+>> I think this should be explicitly stated in the spec, since some software
+>> may initially set time and timecmp to big values just to check how overflow
+>> is handled. And without it no chance that all HW implementations will interpret
+>> UINT64_MAX as 'stop timer'.
+>>
+>> Do we need github issue on SSTC/privileged?
+> 
+> Hi Vladimir,
+> 
+> I don't think we need to update the spec, so hardware is free to make the
+> interrupt pending if time ever reaches UINT64_MAX. However, the hardware
+> will then need to clear the pending interrupt on the very next increment
+> of time. This means even if the interrupt is raised it will most likely
+> look spurious to the handler. I think we can leave this to software. If
+> the software wants to use UINT64_MAX to stop timers, then it may also want
+> to add a check in its timer handlers for timecmp == UINT64_MAX, and, under
+> that condition, just ignore the interrupt.
+> 
 
-diff --git a/hw/nubus/nubus-device.c b/hw/nubus/nubus-device.c
-index be4cb246966..26fbcf29a2b 100644
---- a/hw/nubus/nubus-device.c
-+++ b/hw/nubus/nubus-device.c
-@@ -35,6 +35,13 @@ static void nubus_device_realize(DeviceState *dev, Error **errp)
-     uint8_t *rom_ptr;
-     int ret;
- 
-+    if (nd->slot < 0 || nd->slot >= NUBUS_SLOT_NB) {
-+        error_setg(errp,
-+                   "'slot' value %d out of range (must be between 0 and %d)",
-+                   nd->slot, NUBUS_SLOT_NB - 1);
-+        return;
-+    }
-+
-     /* Super */
-     slot_offset = nd->slot * NUBUS_SUPER_SLOT_SIZE;
- 
--- 
-2.34.1
+oh, I got it, thank you for explanation!
+
+> Thanks,
+> drew
+> 
+>>
+>> Thank you,
+>> Vladimir Isaev
+>>
+>>> And, even if the time CSR does
+>>> eventually reach UINT64_MAX, the very next tick will bring it back to
+>>> zero, once again less than timecmp. For this reason
+>>> riscv_timer_write_timecmp() special cases UINT64_MAX. However, if a
+>>> previously set timecmp has not yet expired, then setting timecmp to
+>>> UINT64_MAX to disable / stop it would not work, as the special case
+>>> left the previous QEMU timer active, which would then still deliver
+>>> an interrupt at that previous timecmp time. Ensure the stopped timer
+>>> will not still deliver an interrupt by also deleting the QEMU timer
+>>> in the UINT64_MAX special case.
+>>>
+>>> Fixes: ae0edf2188b3 ("target/riscv: No need to re-start QEMU timer when timecmp == UINT64_MAX")
+>>> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+>>> ---
+>>>  target/riscv/time_helper.c | 1 +
+>>>  1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/target/riscv/time_helper.c b/target/riscv/time_helper.c
+>>> index 8d245bed3ae3..bc0d9a0c4c35 100644
+>>> --- a/target/riscv/time_helper.c
+>>> +++ b/target/riscv/time_helper.c
+>>> @@ -92,6 +92,7 @@ void riscv_timer_write_timecmp(CPURISCVState *env, QEMUTimer *timer,
+>>>       * equals UINT64_MAX.
+>>>       */
+>>>      if (timecmp == UINT64_MAX) {
+>>> +        timer_del(timer);
+>>>          return;
+>>>      }
+>>>  
+>>
+>>
+>>
 
 
