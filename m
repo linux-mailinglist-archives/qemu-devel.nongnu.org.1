@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38213966128
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 13:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 087C1966126
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Aug 2024 13:58:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sk0FI-0007JV-5M; Fri, 30 Aug 2024 07:56:52 -0400
+	id 1sk0FK-0007VK-G0; Fri, 30 Aug 2024 07:56:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sk0FC-0007I6-17
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 07:56:46 -0400
+ id 1sk0FD-0007JJ-Al
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 07:56:47 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sk0FA-0002rR-Aq
- for qemu-devel@nongnu.org; Fri, 30 Aug 2024 07:56:45 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47U7tZTw031532;
+ id 1sk0FA-0002rV-Fz
+ for qemu-devel@nongnu.org; Fri, 30 Aug 2024 07:56:46 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47U7tVM6014619;
  Fri, 30 Aug 2024 11:56:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=ROwlq54X8+1gliWKwzPqTLa3CsUyWttmLlk2LsjV5yk=; b=
- M3nA2L4CEEfIb+hUn3tA8/8rKmptI/LfUTgxi8N7p3b+8MVInL1fHoVSZhxhOk0z
- YmTX7JVuUBGRNkbc8b4tjC6EHuaRx3jIubSDmqeKYnZBfF/kXUHbFPBM567Teb1d
- QeIZ3DdedDlroFz59B7fxDTEbolWxEKbFx29xbWHbuyNo4ftlf6+n1P4RndWFRNe
- h/EQZ1rFJxOKvtqOY6Q8Q4wXb/HuBCN0lGuOJnI7CHLkVH2228NuwVuHl01dagSd
- 1DGdJ1O0vYqF59ZqWRKrtH3d4QNP6cUw+AMHsyR9LHraAliEbba1zyU7vG1+nURw
- q5qgGoPvJlGoYpF62ZPquw==
+ corp-2023-11-20; bh=t08mOsZ64EUWO6kYmUjbH59vvPkEfVV+gDSxH4efXhI=; b=
+ aK4x0cbd807BAqsayROfyft/tRCO3/ToFqnrNyLw8vlriKkzG0TgKh9EzMTAIrGk
+ 8PJPscjGmeH/yj5TFq6rXkrZDtsBx4Sgt3nz9Niy4SqSIkEpthxa6jsF01PgaR1a
+ gGUb4dXbfZ+fP0r+VtLcOpHhh66r2BwdF9FMUP5wi989qmUVZfWXZTEtJl5gImlV
+ ZDDWwzRVREcUB0SLmNuYCauGXMEDsUwoxT9xGGKBIeGxGfqzGF9BP3+z0H9cm8xe
+ EmKNGPpAIaIH17K5J+J5NFuG+3tz+LoXxf5dUgRefPM+N/zZOBLl2FYxLq7XYqQj
+ eDtiyatTxM0+wLMB9AYe/Q==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41b9v7gdmf-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 419pugxg1b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Aug 2024 11:56:42 +0000 (GMT)
+ Fri, 30 Aug 2024 11:56:43 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 47UA25Ga036638; Fri, 30 Aug 2024 11:56:41 GMT
+ with ESMTP id 47UArKZo036567; Fri, 30 Aug 2024 11:56:42 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 4189jpg9ca-1
+ 4189jpg9d0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Aug 2024 11:56:41 +0000
+ Fri, 30 Aug 2024 11:56:42 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47UBucxM028887;
- Fri, 30 Aug 2024 11:56:41 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47UBucxO028887;
+ Fri, 30 Aug 2024 11:56:42 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 4189jpg9ae-4; Fri, 30 Aug 2024 11:56:41 +0000
+ ESMTP id 4189jpg9ae-5; Fri, 30 Aug 2024 11:56:42 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Euan Turner <euan.turner@nutanix.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [RFC V1 3/6] tap: fix net_init_tap() return code
-Date: Fri, 30 Aug 2024 04:56:34 -0700
-Message-Id: <1725018997-363706-4-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 4/6] migration: cpr_get_fd_param helper
+Date: Fri, 30 Aug 2024 04:56:35 -0700
+Message-Id: <1725018997-363706-5-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1725018997-363706-1-git-send-email-steven.sistare@oracle.com>
 References: <1725018997-363706-1-git-send-email-steven.sistare@oracle.com>
@@ -71,8 +71,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  phishscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
  definitions=main-2408300090
-X-Proofpoint-GUID: NFb72nmgwvntJ81V_2PunCe6wkYbQ0ke
-X-Proofpoint-ORIG-GUID: NFb72nmgwvntJ81V_2PunCe6wkYbQ0ke
+X-Proofpoint-GUID: At_FfmOTgp4eWg-cOiJQuDg-B1ZSf7SZ
+X-Proofpoint-ORIG-GUID: At_FfmOTgp4eWg-cOiJQuDg-B1ZSf7SZ
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -99,39 +99,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When net_init_tap() succeeds for a multi-queue device, it returns a
-non-zero ret=1 code to its caller, because of this code where ret becomes
-1 when g_unix_set_fd_nonblocking succeeds.  Luckily, the only current call
-site checks for negative, rather than non-zero.
-
-    ret = g_unix_set_fd_nonblocking(fd, true, NULL);
-    if (!ret) {
-        ...
-        goto free_fail;
-
-Also, if g_unix_set_fd_nonblocking fails (though unlikely), ret=0 is
-returned, and the caller will use a broken interface.
+Add the helper function cpr_get_fd_param, for use by tap and vdpa.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- net/tap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/migration/cpr.h |  2 ++
+ migration/cpr.c         | 26 ++++++++++++++++++++++++++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/net/tap.c b/net/tap.c
-index 8deabcb..20e4dae 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -855,8 +855,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
-                 goto free_fail;
-             }
+diff --git a/include/migration/cpr.h b/include/migration/cpr.h
+index 9a76365..b5fa264 100644
+--- a/include/migration/cpr.h
++++ b/include/migration/cpr.h
+@@ -27,6 +27,8 @@ void cpr_set_cpr_uri(const char *uri);
+ int cpr_state_save(Error **errp);
+ int cpr_state_load(Error **errp);
+ bool cpr_needed_for_reuse(void *opaque);
++int cpr_get_fd_param(const char *name, const char *fdname,
++                     int index, Error **errp);
  
--            ret = g_unix_set_fd_nonblocking(fd, true, NULL);
--            if (!ret) {
-+            if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
-+                ret = -1;
-                 error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
-                                  name, fd);
-                 goto free_fail;
+ QEMUFile *cpr_exec_output(Error **errp);
+ QEMUFile *cpr_exec_input(Error **errp);
+diff --git a/migration/cpr.c b/migration/cpr.c
+index 096d684..0940ee2 100644
+--- a/migration/cpr.c
++++ b/migration/cpr.c
+@@ -13,6 +13,7 @@
+ #include "migration/qemu-file.h"
+ #include "migration/savevm.h"
+ #include "migration/vmstate.h"
++#include "monitor/monitor.h"
+ #include "sysemu/runstate.h"
+ #include "trace.h"
+ 
+@@ -268,3 +269,28 @@ bool cpr_needed_for_reuse(void *opaque)
+     MigMode mode = migrate_mode();
+     return mode == MIG_MODE_CPR_EXEC || mode == MIG_MODE_CPR_TRANSFER;
+ }
++
++int cpr_get_fd_param(const char *name, const char *fdname, int index,
++                     Error **errp)
++{
++    int fd;
++
++    /*
++     * fd's are passed by name to the monitor when a NIC is hot plugged, but
++     * the name is not known to qemu after cpr.  The manager can pass -1 for
++     * the fd "name" in the new qemu args to indicate that qemu should search
++     * for a saved name.
++     */
++    if (!strcmp(fdname, "-1")) {
++        fd = cpr_find_fd(name, index);
++        if (fd < 0) {
++            error_setg(errp, "cannot find saved value for fd %s", fdname);
++        }
++    } else {
++        fd = monitor_fd_param(monitor_cur(), fdname, errp);
++    }
++    if (fd >= 0) {
++        cpr_resave_fd(name, index, fd);
++    }
++    return fd;
++}
 -- 
 1.8.3.1
 
