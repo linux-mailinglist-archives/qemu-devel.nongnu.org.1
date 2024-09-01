@@ -2,52 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237FD967696
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Sep 2024 15:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9320D967714
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Sep 2024 16:27:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1skkaX-00081J-N5; Sun, 01 Sep 2024 09:25:53 -0400
+	id 1sklWI-0002Lo-4l; Sun, 01 Sep 2024 10:25:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1skkaV-0007z3-L6; Sun, 01 Sep 2024 09:25:51 -0400
-Received: from mailout01.t-online.de ([194.25.134.80])
+ (Exim 4.90_1) (envelope-from <libvirt-e6954efa@volkihar.be>)
+ id 1sklWE-0002Dk-I2; Sun, 01 Sep 2024 10:25:30 -0400
+Received: from icts-p-cavuit-2.kulnet.kuleuven.be ([134.58.240.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1skkaT-0003SI-J3; Sun, 01 Sep 2024 09:25:51 -0400
-Received: from fwd76.aul.t-online.de (fwd76.aul.t-online.de [10.223.144.102])
- by mailout01.t-online.de (Postfix) with SMTP id 0C11326E20;
- Sun,  1 Sep 2024 15:25:45 +0200 (CEST)
-Received: from [192.168.211.200] ([93.236.144.183]) by fwd76.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1skkaN-4IHwOn0; Sun, 1 Sep 2024 15:25:43 +0200
-Message-ID: <d006d238-52b3-4b73-8046-f22d2a9b9ae3@t-online.de>
-Date: Sun, 1 Sep 2024 15:25:43 +0200
+ (Exim 4.90_1) (envelope-from <libvirt-e6954efa@volkihar.be>)
+ id 1sklWB-0003XL-NJ; Sun, 01 Sep 2024 10:25:30 -0400
+X-KULeuven-Envelope-From: libvirt-e6954efa@volkihar.be
+X-KULeuven-Scanned: Found to be clean
+X-KULeuven-ID: BDF4B20056.AF1A7
+X-KULeuven-Information: Katholieke Universiteit Leuven
+Received: from icts-p-ceifnet-smtps-1.kuleuven.be
+ (icts-p-ceifnet-smtps.service.icts.svcd
+ [IPv6:2a02:2c40:0:51:130:242:ac11:10])
+ by icts-p-cavuit-2.kulnet.kuleuven.be (Postfix) with ESMTP id BDF4B20056;
+ Sun,  1 Sep 2024 16:25:21 +0200 (CEST)
+BCmilterd-Mark-Subject: no
+BCmilterd-Errors: 
+BCmilterd-Report: 
+X-CAV-Cluster: smtps
+Received: from flutterbat.volkihar.be (236.58-240-81.adsl-dyn.isp.belgacom.be
+ [81.240.58.236])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by icts-p-ceifnet-smtps-1.kuleuven.be (Postfix) with ESMTPSA id 993DDD4F7A27F; 
+ Sun,  1 Sep 2024 16:25:21 +0200 (CEST)
+Received: by flutterbat.volkihar.be (Postfix, from userid 1000)
+ id 5156C16DCFA; Sun, 01 Sep 2024 16:25:21 +0200 (CEST)
+X-Kuleuven: This mail passed the K.U.Leuven mailcluster
+From: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
+To: qemu-devel@nongnu.org
+Cc: John Snow <jsnow@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>,
+ Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
+Subject: [PATCH v3 0/5] block: allow commit to unmap zero blocks
+Date: Sun,  1 Sep 2024 16:24:00 +0200
+Message-ID: <20240901142405.3183874-1-libvirt-e6954efa@volkihar.be>
+X-Mailer: git-send-email 2.44.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/4] virtio_snd_set_config: Fix #2296
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Zheyu Ma <zheyuma97@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-References: <cover.1713789200.git.manos.pitsidianakis@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <cover.1713789200.git.manos.pitsidianakis@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TOI-EXPURGATEID: 150726::1725197143-BE7FB9C6-5B9E3B55/0/0 CLEAN NORMAL
-X-TOI-MSGID: d1e4bb29-1593-4699-9b33-94e642209147
-Received-SPF: pass client-ip=194.25.134.80; envelope-from=vr_qemu@t-online.de;
- helo=mailout01.t-online.de
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=134.58.240.131;
+ envelope-from=libvirt-e6954efa@volkihar.be;
+ helo=icts-p-cavuit-2.kulnet.kuleuven.be
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,32 +76,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 22.04.24 um 14:52 schrieb Manos Pitsidianakis:
-> Changing the number of streams via virtio_snd_set_config() did not
-> re-configure the audio card, leaving it in an invalid state.
->
-> Reported in https://gitlab.com/qemu-project/qemu/-/issues/2296
->
-> Manos Pitsidianakis (4):
->   virtio-snd: add virtio_snd_is_config_valid()
->   virtio-snd: factor card setup out of realize func
->   virtio-snd: factor card removal out of unrealize()
->   virtio_snd_set_config: validate and re-setup card
->
->  hw/audio/virtio-snd.c | 174 +++++++++++++++++++++++++-----------------
->  1 file changed, 105 insertions(+), 69 deletions(-)
->
->
-> base-commit: 62dbe54c24dbf77051bafe1039c31ddc8f37602d
+This patch series adds support for zero blocks in non-active commits.
+The first three patches in the series contains the actual changes to the
+commit code, the last patch adds a test for the new functionality.
 
-Hi Manos,
+---
 
-I don't think the virtio_snd_set_config function is necessary. The
-virtio sound device specification in chapter 5.14.4 states that all
-fields in the configuration space are driver-read-only. I wrote a patch
-to remove the virtio_snd_set_config function. The patch can be found at
-https://lists.nongnu.org/archive/html/qemu-devel/2024-09/msg00003.html.
+Changes since v2:
+- moved main loop of commit_run to a separate function and refactored
+  the error handling.
+- call blk_co_pwrite_zero even if the size of the zero region does not
+  align with the sectors of the base image. This removes the need for
+  the CommitMethod enum
 
-With best regards,
-Volker
+Changes since v1:
+- split up the implementation in three separate commits
+- removed accidentally left over includes from testing
+
+Vincent Vanlaer (5):
+  block: get type of block allocation in commit_run
+  block: move commit_run loop to separate function
+  block: refactor error handling of commit_iteration
+  block: allow commit to unmap zero blocks
+  block: add test non-active commit with zeroed data
+
+ block/commit.c             | 108 +++++++++++++++++++++++++------------
+ tests/qemu-iotests/315     |  95 ++++++++++++++++++++++++++++++++
+ tests/qemu-iotests/315.out |  54 +++++++++++++++++++
+ 3 files changed, 223 insertions(+), 34 deletions(-)
+ create mode 100755 tests/qemu-iotests/315
+ create mode 100644 tests/qemu-iotests/315.out
+
+-- 
+2.44.1
+
 
