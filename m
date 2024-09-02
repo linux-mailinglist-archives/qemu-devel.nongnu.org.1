@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2CF968EC2
+	by mail.lfdr.de (Postfix) with ESMTPS id 65297968EC1
 	for <lists+qemu-devel@lfdr.de>; Mon,  2 Sep 2024 22:12:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slDOf-0005no-6n; Mon, 02 Sep 2024 16:11:33 -0400
+	id 1slDOt-00060Z-Ew; Mon, 02 Sep 2024 16:11:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1slDOb-0005nG-3W
- for qemu-devel@nongnu.org; Mon, 02 Sep 2024 16:11:29 -0400
+ id 1slDOr-0005z5-5G
+ for qemu-devel@nongnu.org; Mon, 02 Sep 2024 16:11:45 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1slDOZ-00089w-7C
- for qemu-devel@nongnu.org; Mon, 02 Sep 2024 16:11:28 -0400
+ id 1slDOm-0008An-Vs
+ for qemu-devel@nongnu.org; Mon, 02 Sep 2024 16:11:44 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1slDOG-0003Os-Ul; Mon, 02 Sep 2024 22:11:08 +0200
-Message-ID: <93336ae5-e0e4-4066-9a1b-9577046f4d07@maciej.szmigiero.name>
-Date: Mon, 2 Sep 2024 22:11:03 +0200
+ id 1slDOb-0003PF-JE; Mon, 02 Sep 2024 22:11:29 +0200
+Message-ID: <4aaad112-5fdf-4172-bfb4-65dd7880202d@maciej.szmigiero.name>
+Date: Mon, 2 Sep 2024 22:11:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/17] migration/multifd: Convert
- multifd_send()::next_channel to atomic
+Subject: Re: [PATCH v2 13/17] migration/multifd: Add
+ migration_has_device_state_support()
 To: Fabiano Rosas <farosas@suse.de>
 Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
  <peterx@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
@@ -36,8 +36,8 @@ Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
  Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
  qemu-devel@nongnu.org
 References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
- <76dc3ad69fa457fd1e358ad3de874474f9f64716.1724701542.git.maciej.szmigiero@oracle.com>
- <875xrhop4f.fsf@suse.de>
+ <8407eb455dfc1dea3cabf065f90833fab337eb98.1724701542.git.maciej.szmigiero@oracle.com>
+ <8734mlon65.fsf@suse.de>
 Content-Language: en-US, pl-PL
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
@@ -81,7 +81,7 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  xNT833IQSNqyuEnxG9/M82yYa+9ClBiRKM2JyvgnBEbiWA15rAQkOqZGJfFJ3bmTFePx4R/I
  ZVehUxCRY5IS1FLe16tymf9lCASrPXnkO2+hkHpBCwt75wnccS3DwtIGqwagVVmciCxAFg9E
  WZ4dI5B0IUziKtBxgwJG4xY5rp7WbzywjCeaaKubtcLQ9bSBkkK4U8Fu58g6Hg==
-In-Reply-To: <875xrhop4f.fsf@suse.de>
+In-Reply-To: <8734mlon65.fsf@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=37.28.154.113;
@@ -108,95 +108,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.08.2024 20:13, Fabiano Rosas wrote:
+On 30.08.2024 20:55, Fabiano Rosas wrote:
 > "Maciej S. Szmigiero" <mail@maciej.szmigiero.name> writes:
 > 
 >> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 >>
->> This is necessary for multifd_send() to be able to be called
->> from multiple threads.
+>> Since device state transfer via multifd channels requires multifd
+>> channels with packets and is currently not compatible with multifd
+>> compression add an appropriate query function so device can learn
+>> whether it can actually make use of it.
 >>
 >> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
->> ---
->>   migration/multifd.c | 24 ++++++++++++++++++------
->>   1 file changed, 18 insertions(+), 6 deletions(-)
->>
->> diff --git a/migration/multifd.c b/migration/multifd.c
->> index d5a8e5a9c9b5..b25789dde0b3 100644
->> --- a/migration/multifd.c
->> +++ b/migration/multifd.c
->> @@ -343,26 +343,38 @@ bool multifd_send(MultiFDSendData **send_data)
->>           return false;
->>       }
->>   
->> -    /* We wait here, until at least one channel is ready */
->> -    qemu_sem_wait(&multifd_send_state->channels_ready);
->> -
->>       /*
->>        * next_channel can remain from a previous migration that was
->>        * using more channels, so ensure it doesn't overflow if the
->>        * limit is lower now.
->>        */
->> -    next_channel %= migrate_multifd_channels();
->> -    for (i = next_channel;; i = (i + 1) % migrate_multifd_channels()) {
->> +    i = qatomic_load_acquire(&next_channel);
->> +    if (unlikely(i >= migrate_multifd_channels())) {
->> +        qatomic_cmpxchg(&next_channel, i, 0);
->> +    }
 > 
-> Do we still need this? It seems not, because the mod down below would
-> already truncate to a value less than the number of channels. We don't
-> need it to start at 0 always, the channels are equivalent.
-
-The "modulo" operation below forces i_next to be in the proper range,
-not i.
-
-If the qatomic_cmpxchg() ends up succeeding then we use the (now out of
-bounds) i value to index multifd_send_state->params[].
-
->> +
->> +    /* We wait here, until at least one channel is ready */
->> +    qemu_sem_wait(&multifd_send_state->channels_ready);
->> +
->> +    while (true) {
->> +        int i_next;
->> +
->>           if (multifd_send_should_exit()) {
->>               return false;
->>           }
->> +
->> +        i = qatomic_load_acquire(&next_channel);
->> +        i_next = (i + 1) % migrate_multifd_channels();
->> +        if (qatomic_cmpxchg(&next_channel, i, i_next) != i) {
->> +            continue;
->> +        }
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
 > 
-> Say channel 'i' is the only one that's idle. What's stopping the other
-> thread(s) to race at this point and loop around to the same index?
-
-See the reply below.
-
->> +
->>           p = &multifd_send_state->params[i];
->>           /*
->>            * Lockless read to p->pending_job is safe, because only multifd
->>            * sender thread can clear it.
->>            */
->>           if (qatomic_read(&p->pending_job) == false) {
+> Out of curiosity, what do you see as a blocker for migrating to a file?
 > 
-> With the cmpxchg your other patch adds here, then the race I mentioned
-> above should be harmless. But we'd need to bring that code into this
-> patch.
-> 
+> We would just need to figure out a mapping from file offset some unit of
+> data to be able to write in parallel like with ram (of which the page
+> offset is mapped to the file offset).
 
-You're right - the sender code with this patch alone isn't thread safe
-yet but this commit is only literally about "converting
-multifd_send()::next_channel to atomic".
+I'm not sure whether there's a point in that since VFIO devices
+just provide a raw device state stream - there's no way to know
+that some buffer is no longer needed because it consisted of
+dirty data that was completely overwritten by a later buffer.
 
-At the time of this patch there aren't any multifd_send() calls from
-multiple threads, and the commit that introduces such possible call
-site (multifd_queue_device_state()) also modifies multifd_send()
-to be fully thread safe by introducing p->pending_job_preparing.
+Also, the device type that the code was developed against - a (smart)
+NIC - has so large device state because (more or less) it keeps a lot
+of data about network connections passing / made through it.
+
+It doesn't really make sense to make snapshot of such device for later
+reload since these connections will be long dropped by their remote
+peers by this point.
+
+Such snapshotting might make more sense with GPU VFIO devices though.
+
+If such file migration support is desired at some later point then for
+sure the whole code would need to be carefully re-checked for implicit
+assumptions.
 
 Thanks,
 Maciej
