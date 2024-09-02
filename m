@@ -2,69 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A039682E6
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Sep 2024 11:16:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2301E96836C
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Sep 2024 11:37:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sl39g-0006ou-1N; Mon, 02 Sep 2024 05:15:24 -0400
+	id 1sl3UO-0006TN-OH; Mon, 02 Sep 2024 05:36:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1sl39d-0006o0-B2
- for qemu-devel@nongnu.org; Mon, 02 Sep 2024 05:15:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1sl39b-000850-8K
- for qemu-devel@nongnu.org; Mon, 02 Sep 2024 05:15:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725268517;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=UGORFKBEhSmSi0Zwf86Tf0fkHZiFDdV+gHc+zOUAGYU=;
- b=fC+VbEhmzI7nvx9LqZDCnBddRWM3/g7s0mZ/0l/z2O+bTz7cUjTlOXpcoTv6QQ/PMgAIOE
- NSbnVhqXOGjPYddBuPLxKp0phyqTwd5ia5O4FXLNW1gEExoXvZtsn2L5tVvXqJa8sEchH4
- C8fB8znaSTvKfRlk938rReosZOJRw8k=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-403-siDpQaW3M16LU2UHTX_Dxg-1; Mon,
- 02 Sep 2024 05:15:13 -0400
-X-MC-Unique: siDpQaW3M16LU2UHTX_Dxg-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 728E11955D47
- for <qemu-devel@nongnu.org>; Mon,  2 Sep 2024 09:15:12 +0000 (UTC)
-Received: from localhost (unknown [10.42.28.10])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A12421955BE3; Mon,  2 Sep 2024 09:15:11 +0000 (UTC)
-Date: Mon, 2 Sep 2024 10:15:10 +0100
-From: "Richard W.M. Jones" <rjones@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] tests/unit: remove block layer code from
- test-nested-aio-poll
-Message-ID: <20240902091510.GB1450@redhat.com>
-References: <20240902000343.54021-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sl3UL-0006HK-Qq
+ for qemu-devel@nongnu.org; Mon, 02 Sep 2024 05:36:46 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sl3UJ-0001n4-Vp
+ for qemu-devel@nongnu.org; Mon, 02 Sep 2024 05:36:45 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-374c5bab490so653609f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 02 Sep 2024 02:36:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725269802; x=1725874602; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ZXuWsHW6/LxNc0n38ynd4lMvu+4T0fp2E59f4Kww/XM=;
+ b=VtV7KmYpiimlyDHZyWEwg6ibbB2ItEyp7vA3Xzb02oYkroUbdPsddPe9o1Qq9lDr8l
+ AGheuPhPw/B13ub1XtMuOEszn+AxI7mUnJRewJSROr5Y6P8/Jrwgw1/o8AYLrcFukD4K
+ ZBPQxLUYfGlDV1upVldp8ticHER09Kl7rCt7y8tAS4P2YFT83CM33U9p8Zj/l9G44vAB
+ ZQmwzBicyJ2NYPIJFxfZ8es9u1s0kCnV6OLvTU7/4d8JVWW4n8O+IRS2gqCWdAH2ojhX
+ NzkOTfVKAc+a9RuXib1HCooRwQNQNDED8SdvVS8KuwgOLKeJOq5dgfuNg0MqxQ+KJp6Z
+ W+5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725269802; x=1725874602;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZXuWsHW6/LxNc0n38ynd4lMvu+4T0fp2E59f4Kww/XM=;
+ b=NtvmchuaVpZPwoqVH0yGTKeSbQQmqVQhnI2TRcxhZMLrwcqO0ghIhzzRHa1CECcicE
+ 95+TAOH6vLE3Cs+Gr9CD3sRAnSyO/RT8HikbNAlNuXTOzvJN1A1+T5AMqd3Ix4qtyZBw
+ 6OnvJy43DgiLT52V1MjcNbe9UJPoxCiKaJKl819v9mMBRm1iIYZAsTtzb8ZYgBtigR8q
+ k28o2S4agl6rE6dem7BjhRhIqC+3vBNviRg+dQuriQ3ueKCYI4KrutKAoQuh9cQ5oZXL
+ 4ZFprF81ODxJQBBqFFQEhL4+8OcwF1lS3QL7fFt6nULW/QMazLuWvwYXbmHd91FpylbB
+ 4uGA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXTyd/5p84SpSytXvaWcn8F7kQvCGkdU/J00q+nMmA32gwpRp0VzuTZmav94NfWj4JdvCNbplJSg8cn@nongnu.org
+X-Gm-Message-State: AOJu0Yyhr3C3DrxuCpHbqorin1Jv6qrsyjHgPJFCNqUOCqGyO8g6Rz/x
+ YStFvEjB/GnRJVFaCFec3MoYt4CMGvm1UsxRJNG9m9bqPuyJM2QMw/fvOyrI53w=
+X-Google-Smtp-Source: AGHT+IFw7oyycpgWXbvsfWXuL7FBTCAvfJxQJNl4jUthDL2bGLozkC2t7/RsKZ2IqnYxSjYzdOGYaQ==
+X-Received: by 2002:a5d:4f0a:0:b0:374:c2bb:8387 with SMTP id
+ ffacd0b85a97d-374c2bb848bmr3642316f8f.30.1725269801991; 
+ Mon, 02 Sep 2024 02:36:41 -0700 (PDT)
+Received: from [192.168.89.175] (104.165.185.81.rev.sfr.net. [81.185.165.104])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3749ee71650sm10832340f8f.40.2024.09.02.02.36.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 02 Sep 2024 02:36:41 -0700 (PDT)
+Message-ID: <731e1b48-096e-44a4-be4c-82b9fa0444cd@linaro.org>
+Date: Mon, 2 Sep 2024 11:33:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240902000343.54021-1-pbonzini@redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=rjones@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 25/44] tests/functional: Convert most ppc avocado tests
+ into standalone tests
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ "Daniel P . Berrange" <berrange@redhat.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>
+References: <20240830133841.142644-1-thuth@redhat.com>
+ <20240830133841.142644-26-thuth@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240830133841.142644-26-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,52 +99,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 02, 2024 at 02:03:43AM +0200, Paolo Bonzini wrote:
-> GCC is reporting a NULL pointer dereference when compiling aio_wait_kick()
-> with LTO.
+On 30/8/24 15:38, Thomas Huth wrote:
+> Nothing thrilling in here, just straight forward conversions.
 > 
-> The issue is that test-nested-aio-poll.c does not call qemu_init_main_loop().
-> It doesn't _need_ to because it never calls AIO_WAIT_WHILE(), but it seems
-> that LTO does not do enough dead-code elimination to catch that.
-> 
-> Fortunately aio_wait_kick() is only used in few places, and only in block
-> layer or system emulation code; and this test only needs the core event loop
-> functionality.  It does not even need iothreads.   So remove everything that
-> calls aio_wait_kick(), which is nice for coverage compared to adding the call
-> to qemu_init_main_loop().
-> 
-> Reported-by: Richard W.M. Jones <rjones@redhat.com>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2434
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  tests/unit/meson.build | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-> index 490ab8182dc..6c377917636 100644
-> --- a/tests/unit/meson.build
-> +++ b/tests/unit/meson.build
-> @@ -115,7 +115,7 @@ if have_block
->    if host_os != 'windows'
->      tests += {
->        'test-image-locking': [testblock],
-> -      'test-nested-aio-poll': [testblock],
-> +      'test-nested-aio-poll': [],
->      }
->    endif
->    if config_host_data.get('CONFIG_REPLICATION')
+>   MAINTAINERS                                   |  9 +--
+>   tests/functional/meson.build                  | 11 ++++
+>   .../test_ppc64_powernv.py}                    | 56 +++++-----------
+>   .../test_ppc64_pseries.py}                    | 56 +++++-----------
+>   .../test_ppc_40p.py}                          | 65 +++++++++----------
+>   .../test_ppc_mpc8544ds.py}                    | 29 +++++----
+>   .../test_ppc_virtex_ml507.py}                 | 29 +++++----
+>   7 files changed, 113 insertions(+), 142 deletions(-)
+>   rename tests/{avocado/ppc_powernv.py => functional/test_ppc64_powernv.py} (71%)
+>   mode change 100644 => 100755
+>   rename tests/{avocado/ppc_pseries.py => functional/test_ppc64_pseries.py} (76%)
+>   mode change 100644 => 100755
+>   rename tests/{avocado/ppc_prep_40p.py => functional/test_ppc_40p.py} (51%)
+>   mode change 100644 => 100755
+>   rename tests/{avocado/ppc_mpc8544ds.py => functional/test_ppc_mpc8544ds.py} (55%)
+>   mode change 100644 => 100755
+>   rename tests/{avocado/ppc_virtex_ml507.py => functional/test_ppc_virtex_ml507.py} (60%)
+>   mode change 100644 => 100755
 
-I tested this patch & it fixes the build problem here, thanks!
-
-Tested-by: Richard W.M. Jones <rjones@redhat.com>
-
-Rich.
-
--- 
-Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
-Read my programming and virtualization blog: http://rwmj.wordpress.com
-Fedora Windows cross-compiler. Compile Windows programs, test, and
-build Windows installers. Over 100 libraries supported.
-http://fedoraproject.org/wiki/MinGW
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
