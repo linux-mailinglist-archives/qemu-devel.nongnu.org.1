@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65297968EC1
+	by mail.lfdr.de (Postfix) with ESMTPS id 926C2968EC3
 	for <lists+qemu-devel@lfdr.de>; Mon,  2 Sep 2024 22:12:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slDOt-00060Z-Ew; Mon, 02 Sep 2024 16:11:47 -0400
+	id 1slDPQ-0006qh-LI; Mon, 02 Sep 2024 16:12:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1slDOr-0005z5-5G
- for qemu-devel@nongnu.org; Mon, 02 Sep 2024 16:11:45 -0400
+ id 1slDPN-0006kg-J3
+ for qemu-devel@nongnu.org; Mon, 02 Sep 2024 16:12:17 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1slDOm-0008An-Vs
- for qemu-devel@nongnu.org; Mon, 02 Sep 2024 16:11:44 -0400
+ id 1slDPL-0008Dw-KG
+ for qemu-devel@nongnu.org; Mon, 02 Sep 2024 16:12:17 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1slDOb-0003PF-JE; Mon, 02 Sep 2024 22:11:29 +0200
-Message-ID: <4aaad112-5fdf-4172-bfb4-65dd7880202d@maciej.szmigiero.name>
-Date: Mon, 2 Sep 2024 22:11:24 +0200
+ id 1slDPC-0003Pf-Mc; Mon, 02 Sep 2024 22:12:06 +0200
+Message-ID: <00eeacd5-ad27-4899-8526-0941b30e759d@maciej.szmigiero.name>
+Date: Mon, 2 Sep 2024 22:12:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/17] migration/multifd: Add
- migration_has_device_state_support()
+Subject: Re: [PATCH v2 09/17] migration/multifd: Device state transfer support
+ - receive side
 To: Fabiano Rosas <farosas@suse.de>
-Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
- <peterx@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
- qemu-devel@nongnu.org
+ qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>
 References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
- <8407eb455dfc1dea3cabf065f90833fab337eb98.1724701542.git.maciej.szmigiero@oracle.com>
- <8734mlon65.fsf@suse.de>
+ <84141182083a8417c25b4d82a9c4b6228b22ac67.1724701542.git.maciej.szmigiero@oracle.com>
+ <87ttf1n4lm.fsf@suse.de>
 Content-Language: en-US, pl-PL
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
@@ -81,7 +81,7 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  xNT833IQSNqyuEnxG9/M82yYa+9ClBiRKM2JyvgnBEbiWA15rAQkOqZGJfFJ3bmTFePx4R/I
  ZVehUxCRY5IS1FLe16tymf9lCASrPXnkO2+hkHpBCwt75wnccS3DwtIGqwagVVmciCxAFg9E
  WZ4dI5B0IUziKtBxgwJG4xY5rp7WbzywjCeaaKubtcLQ9bSBkkK4U8Fu58g6Hg==
-In-Reply-To: <8734mlon65.fsf@suse.de>
+In-Reply-To: <87ttf1n4lm.fsf@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=37.28.154.113;
@@ -108,44 +108,228 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.08.2024 20:55, Fabiano Rosas wrote:
+On 30.08.2024 22:22, Fabiano Rosas wrote:
 > "Maciej S. Szmigiero" <mail@maciej.szmigiero.name> writes:
 > 
 >> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 >>
->> Since device state transfer via multifd channels requires multifd
->> channels with packets and is currently not compatible with multifd
->> compression add an appropriate query function so device can learn
->> whether it can actually make use of it.
+>> Add a basic support for receiving device state via multifd channels -
+>> channels that are shared with RAM transfers.
+>>
+>> To differentiate between a device state and a RAM packet the packet
+>> header is read first.
+>>
+>> Depending whether MULTIFD_FLAG_DEVICE_STATE flag is present or not in the
+>> packet header either device state (MultiFDPacketDeviceState_t) or RAM
+>> data (existing MultiFDPacket_t) is then read.
+>>
+>> The received device state data is provided to
+>> qemu_loadvm_load_state_buffer() function for processing in the
+>> device's load_state_buffer handler.
 >>
 >> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>> ---
+>>   migration/multifd.c | 127 +++++++++++++++++++++++++++++++++++++-------
+>>   migration/multifd.h |  31 ++++++++++-
+>>   2 files changed, 138 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/migration/multifd.c b/migration/multifd.c
+>> index b06a9fab500e..d5a8e5a9c9b5 100644
+>> --- a/migration/multifd.c
+>> +++ b/migration/multifd.c
+(..)
+>>       g_free(p->zero);
+>> @@ -1126,8 +1159,13 @@ static void *multifd_recv_thread(void *opaque)
+>>       rcu_register_thread();
+>>   
+>>       while (true) {
+>> +        MultiFDPacketHdr_t hdr;
+>>           uint32_t flags = 0;
+>> +        bool is_device_state = false;
+>>           bool has_data = false;
+>> +        uint8_t *pkt_buf;
+>> +        size_t pkt_len;
+>> +
+>>           p->normal_num = 0;
+>>   
+>>           if (use_packets) {
+>> @@ -1135,8 +1173,28 @@ static void *multifd_recv_thread(void *opaque)
+>>                   break;
+>>               }
+>>   
+>> -            ret = qio_channel_read_all_eof(p->c, (void *)p->packet,
+>> -                                           p->packet_len, &local_err);
+>> +            ret = qio_channel_read_all_eof(p->c, (void *)&hdr,
+>> +                                           sizeof(hdr), &local_err);
+>> +            if (ret == 0 || ret == -1) {   /* 0: EOF  -1: Error */
+>> +                break;
+>> +            }
+>> +
+>> +            ret = multifd_recv_unfill_packet_header(p, &hdr, &local_err);
+>> +            if (ret) {
+>> +                break;
+>> +            }
+>> +
+>> +            is_device_state = p->flags & MULTIFD_FLAG_DEVICE_STATE;
+>> +            if (is_device_state) {
+>> +                pkt_buf = (uint8_t *)p->packet_dev_state + sizeof(hdr);
+>> +                pkt_len = sizeof(*p->packet_dev_state) - sizeof(hdr);
+>> +            } else {
+>> +                pkt_buf = (uint8_t *)p->packet + sizeof(hdr);
+>> +                pkt_len = p->packet_len - sizeof(hdr);
+>> +            }
 > 
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> Should we have made the packet an union as well? Would simplify these
+> sorts of operations. Not sure I want to start messing with that at this
+> point to be honest. But OTOH, look at this...
+
+RAM packet length is not constant (at least from the viewpoint of the
+migration code) so the union allocation would need some kind of a
+"multifd_ram_packet_size()" runtime size determination.
+
+Also, since RAM and device state packet body size is different then
+for the extra complexity introduced by that union we'll just get rid of
+that single pkt_buf assignment.
+
+>> +
+>> +            ret = qio_channel_read_all_eof(p->c, (char *)pkt_buf, pkt_len,
+>> +                                           &local_err);
+>>               if (ret == 0 || ret == -1) {   /* 0: EOF  -1: Error */
+>>                   break;
+>>               }
+>> @@ -1181,8 +1239,33 @@ static void *multifd_recv_thread(void *opaque)
+>>               has_data = !!p->data->size;
+>>           }
+>>   
+>> -        if (has_data) {
+>> -            ret = multifd_recv_state->ops->recv(p, &local_err);
+>> +        if (!is_device_state) {
+>> +            if (has_data) {
+>> +                ret = multifd_recv_state->ops->recv(p, &local_err);
+>> +                if (ret != 0) {
+>> +                    break;
+>> +                }
+>> +            }
+>> +        } else {
+>> +            g_autofree char *idstr = NULL;
+>> +            g_autofree char *dev_state_buf = NULL;
+>> +
+>> +            assert(use_packets);
+>> +
+>> +            if (p->next_packet_size > 0) {
+>> +                dev_state_buf = g_malloc(p->next_packet_size);
+>> +
+>> +                ret = qio_channel_read_all(p->c, dev_state_buf, p->next_packet_size, &local_err);
+>> +                if (ret != 0) {
+>> +                    break;
+>> +                }
+>> +            }
 > 
-> Out of curiosity, what do you see as a blocker for migrating to a file?
+> What's the use case for !next_packet_size and still call
+> load_state_buffer below? I can't see it.
+
+Currently, next_packet_size == 0 has not usage indeed - it is
+a leftover from an early version of the patch set (not public)
+that had device state packet (chunk) indexing done by
+the common migration code, rather than by the VFIO consumer.
+
+And then an empty packet could be used to mark the stream
+boundary - like the max chunk number to expect.
+
+> ...because I would suggest to set has_data up there with
+> p->next_packet_size:
 > 
-> We would just need to figure out a mapping from file offset some unit of
-> data to be able to write in parallel like with ram (of which the page
-> offset is mapped to the file offset).
+> if (use_packets) {
+>     ...
+>     has_data = p->next_packet_size || p->zero_num;
+> } else {
+>     ...
+>     has_data = !!p->data_size;
+> }
+> 
+> and this whole block would be:
+> 
+> if (has_data) {
+>     if (is_device_state) {
+>         multifd_device_state_recv(p, &local_err);
+>     } else {
+>         ret = multifd_recv_state->ops->recv(p, &local_err);
+>     }
+> }
 
-I'm not sure whether there's a point in that since VFIO devices
-just provide a raw device state stream - there's no way to know
-that some buffer is no longer needed because it consisted of
-dirty data that was completely overwritten by a later buffer.
+The above block makes sense to me with two caveats:
+1) If empty device state packets (next_packet_size == 0) were
+to be unsupported they need to be rejected cleanly rather
+than silently skipped,
 
-Also, the device type that the code was developed against - a (smart)
-NIC - has so large device state because (more or less) it keeps a lot
-of data about network connections passing / made through it.
+2) has_data has to have its value computed depending on whether
+this is a RAM or a device state packet since looking at
+p->normal_num and p->zero_num makes no sense for a device state
+packet while I am not sure that looking at p->next_packet_size
+for a RAM packet won't introduce some subtle regression.
 
-It doesn't really make sense to make snapshot of such device for later
-reload since these connections will be long dropped by their remote
-peers by this point.
+>> +
+>> +            idstr = g_strndup(p->packet_dev_state->idstr, sizeof(p->packet_dev_state->idstr));
+>> +            ret = qemu_loadvm_load_state_buffer(idstr,
+>> +                                                p->packet_dev_state->instance_id,
+>> +                                                dev_state_buf, p->next_packet_size,
+>> +                                                &local_err);
+>>               if (ret != 0) {
+>>                   break;
+>>               }
+>> @@ -1190,6 +1273,11 @@ static void *multifd_recv_thread(void *opaque)
+>>   
+>>           if (use_packets) {
+>>               if (flags & MULTIFD_FLAG_SYNC) {
+>> +                if (is_device_state) {
+>> +                    error_setg(&local_err, "multifd: received SYNC device state packet");
+>> +                    break;
+>> +                }
+> 
+> assert(!is_device_state) enough?
 
-Such snapshotting might make more sense with GPU VFIO devices though.
+It's not bug in the receiver code but rather an issue with the
+remote QEMU sending us wrong data if we get a SYNC device state
+packet.
 
-If such file migration support is desired at some later point then for
-sure the whole code would need to be carefully re-checked for implicit
-assumptions.
+So I think returning an error is more appropriate than triggering
+an assert() failure for that.
+
+>> +
+>>                   qemu_sem_post(&multifd_recv_state->sem_sync);
+>>                   qemu_sem_wait(&p->sem_sync);
+>>               }
+>> @@ -1258,6 +1346,7 @@ int multifd_recv_setup(Error **errp)
+>>               p->packet_len = sizeof(MultiFDPacket_t)
+>>                   + sizeof(uint64_t) * page_count;
+>>               p->packet = g_malloc0(p->packet_len);
+>> +            p->packet_dev_state = g_malloc0(sizeof(*p->packet_dev_state));
+>>           }
+>>           p->name = g_strdup_printf("mig/dst/recv_%d", i);
+>>           p->normal = g_new0(ram_addr_t, page_count);
+>> diff --git a/migration/multifd.h b/migration/multifd.h
+>> index a3e35196d179..a8f3e4838c01 100644
+>> --- a/migration/multifd.h
+>> +++ b/migration/multifd.h
+>> @@ -45,6 +45,12 @@ MultiFDRecvData *multifd_get_recv_data(void);
+>>   #define MULTIFD_FLAG_QPL (4 << 1)
+>>   #define MULTIFD_FLAG_UADK (8 << 1)
+>>   
+>> +/*
+>> + * If set it means that this packet contains device state
+>> + * (MultiFDPacketDeviceState_t), not RAM data (MultiFDPacket_t).
+>> + */
+>> +#define MULTIFD_FLAG_DEVICE_STATE (1 << 4)
+> 
+> Overlaps with UADK. I assume on purpose because device_state doesn't
+> support compression? Might be worth a comment.
+> 
+
+Yes, the device state transfer bit stream does not support compression
+so it is not a problem since these "compression type" flags will never
+be set in such bit stream anyway.
+
+Will add a relevant comment here.
 
 Thanks,
 Maciej
