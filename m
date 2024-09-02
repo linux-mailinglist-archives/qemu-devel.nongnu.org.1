@@ -2,59 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0B29685D2
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Sep 2024 13:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A7729686A9
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Sep 2024 13:51:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sl4xR-0004xK-OG; Mon, 02 Sep 2024 07:10:53 -0400
+	id 1sl5ZI-0003Km-OZ; Mon, 02 Sep 2024 07:50:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1sl4x7-0004f8-EO; Mon, 02 Sep 2024 07:10:36 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1sl4x2-0005E2-R7; Mon, 02 Sep 2024 07:10:33 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wy5Yc3LFTz6LDBK;
- Mon,  2 Sep 2024 19:07:00 +0800 (CST)
-Received: from lhrpeml500006.china.huawei.com (unknown [7.191.161.198])
- by mail.maildlp.com (Postfix) with ESMTPS id 1FF2E140A35;
- Mon,  2 Sep 2024 19:10:24 +0800 (CST)
-Received: from localhost (10.47.78.245) by lhrpeml500006.china.huawei.com
- (7.191.161.198) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 2 Sep
- 2024 12:10:23 +0100
-Date: Mon, 2 Sep 2024 12:10:18 +0100
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <linuxarm@huawei.com>,
- <richard.henderson@linaro.org>, <shameerali.kolothum.thodi@huawei.com>,
- <Jonathan.Cameron@huawei.com>, <jiangkunkun@huawei.com>
-Subject: Re: [PATCH v2] target/arm/tcg: refine cache descriptions with a
- wrapper
-Message-ID: <20240902121018.00006eb6@huawei.com>
-In-Reply-To: <CAFEAcA90iqLv0OYs5U0L474C1vP0qvh57i8XWe+=WVfOGshQbQ@mail.gmail.com>
-References: <20240830184713.224-1-alireza.sanaee@huawei.com>
- <6bed13cc-fe6e-40ec-93af-1723bf46a6c3@linaro.org>
- <CAFEAcA90iqLv0OYs5U0L474C1vP0qvh57i8XWe+=WVfOGshQbQ@mail.gmail.com>
-Organization: Huawei
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1sl5ZE-0003KB-Eu
+ for qemu-devel@nongnu.org; Mon, 02 Sep 2024 07:49:56 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1sl5ZC-0002TH-7z
+ for qemu-devel@nongnu.org; Mon, 02 Sep 2024 07:49:56 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2f3f0a31ab2so46813001fa.0
+ for <qemu-devel@nongnu.org>; Mon, 02 Sep 2024 04:49:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725277792; x=1725882592; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :from:references:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=n3RBm/4+x8Ii6qMbo3OkaDPBp3dY/M41qpdpEswMicY=;
+ b=CFwAG70s32Zaqa0mNZm5K4gKL4LI5Q4Gio+sDyH3ERG5MnHS2EcZjqu3/+njY7b3Dr
+ Fz6Mw/s/Q6TbEt0YtV9g/mRKTW67tORR5jGaasi2JcbPWgl1LSOMD5v1h+Ie6p6sGORA
+ m/vbDJ9tyhsijwRYyvqKYgGRV9Vl94Pl1a/3zCytighQsozjy+OG4qUPzJW1w/+Z2cNE
+ YSUFyQY4RXJK8ckZbllTA5lOG3kwTj/syuMVAdrupvbF91lg5AaP6Cq8gxMxTx61I+EH
+ G3ALhWvsknaf5bzQOelohZeFzZPVlGa1YHrJCqI+1Kmp+ZETkim/08SVkhefm174KQTJ
+ fhxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725277792; x=1725882592;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :from:references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=n3RBm/4+x8Ii6qMbo3OkaDPBp3dY/M41qpdpEswMicY=;
+ b=ADhmdIAkJgbW9A79GjS5Jd7NnB9EUdFgsGzynbUz16qShKfBJV2nNgL+frqT7fIaQl
+ gDWIBmq+rRMdA7VXLQiGWO0/FJKgBBDtXyI+KRqdtPBagfxvvkPgAMOCysHz56F6Mlaa
+ b2LJtqdif/EwR0MV1qRoqlEFMAHwa6ms8RRL+eQNMgkYb+wha5C6p8qBHlS+mqQMX26+
+ 7kjXPeXFIQj9Q7pxIBQVo7jddjeiMyT9YGneaE22C0cZYsAO1XKlw7P/y7RSTgcTQoZ3
+ xCm/54yrUk0TqjQPyUFr0pZhYRzox/ZNZLGhQUxPND6l/whYai5jZUW516OAETTsdgTf
+ EdQA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVF8wLXirHN7QB2im6G9aiGm5YLASDHsXOW7IpnC81ByCei4LSays57ct8dtB1XQIfBh7EPwSfEYuti@nongnu.org
+X-Gm-Message-State: AOJu0Ywxo3hLVoqMWKLcJrof8rto6ORRK9SCjcUgSkQe6qeWDV5OhU7V
+ wguVe5+BhRuexgaFMBEA0hgD5AVweUZiC96sC+YoUtbmbElVIEg073Zy5gta0us=
+X-Google-Smtp-Source: AGHT+IFPbTGN8wQrTdgxgRdd8aBE2U+HlnHt9E7YI/BPVlZaHfBZN0+kGeodvyMHIWhnigidhmRPEQ==
+X-Received: by 2002:a05:6512:ad1:b0:52e:9f76:53dc with SMTP id
+ 2adb3069b0e04-53546a59f62mr6619177e87.0.1725277790944; 
+ Mon, 02 Sep 2024 04:49:50 -0700 (PDT)
+Received: from [192.168.200.25] (83.11.24.101.ipv4.supernova.orange.pl.
+ [83.11.24.101]) by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-53540828d77sm1609267e87.180.2024.09.02.04.49.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 02 Sep 2024 04:49:50 -0700 (PDT)
+Message-ID: <d457014f-104a-4fe3-8896-d22425a007e8@linaro.org>
+Date: Mon, 2 Sep 2024 13:49:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.47.78.245]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500006.china.huawei.com (7.191.161.198)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/2] Specifying cache topology on ARM
+To: Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+References: <20240823125446.721-1-alireza.sanaee@huawei.com>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Content-Language: pl-PL, en-GB
+Organization: Linaro
+In-Reply-To: <20240823125446.721-1-alireza.sanaee@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lj1-x235.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,166 +93,84 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
-From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2 Sep 2024 11:25:36 +0100
-Peter Maydell <peter.maydell@linaro.org> wrote:
+On 23.08.2024 14:54, Alireza Sanaee via wrote:
 
-> On Mon, 2 Sept 2024 at 11:07, Philippe Mathieu-Daud=E9
-> <philmd@linaro.org> wrote:
-> >
-> > Hi Alireza,
-> >
-> > On 30/8/24 20:47, Alireza Sanaee via wrote: =20
-> > > This patch allows for easier manipulation of the cache description
-> > > register, CCSIDR. Which is helpful for testing as well. Currently
-> > > numbers get hard-coded and might be prone to errors.
-> > >
-> > > Therefore, this patch adds wrappers for different types of CPUs
-> > > available in tcg to decribe caches. Two functions `make_ccsidr32`
-> > > and `make_ccsidr64` describing descriptions. The 32 bit version
-> > > receives extra parameters that became unknown later in 64 bit.
-> > >
-> > > For CCSIDR register, 32 bit version follows specification [1].
-> > > Conversely, 64 bit version follows specification [2].
-> > >
-> > > [1] B4.1.19, ARM Architecture Reference Manual ARMv7-A and ARMv7-R
-> > > edition, https://developer.arm.com/documentation/ddi0406
-> > > [2] D23.2.29, ARM Architecture Reference Manual for A-profile
-> > > Architecture, https://developer.arm.com/documentation/ddi0487/latest/
-> > >
-> > > Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-> > > ---
-> > >   target/arm/cpu-features.h | 53 ++++++++++++++++++++++++
-> > >   target/arm/cpu64.c        | 19 ++++++---
-> > >   target/arm/tcg/cpu64.c    | 86
-> > > ++++++++++++++++++--------------------- 3 files changed, 105
-> > > insertions(+), 53 deletions(-)
-> > >
-> > > diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-> > > index c59ca104fe..00a0f0d963 100644
-> > > --- a/target/arm/cpu-features.h
-> > > +++ b/target/arm/cpu-features.h
-> > > @@ -1022,6 +1022,59 @@ static inline bool
-> > > isar_feature_any_evt(const ARMISARegisters *id) return
-> > > isar_feature_aa64_evt(id) || isar_feature_aa32_evt(id); }
-> > >
-> > > +static inline uint64_t make_ccsidr32(unsigned assoc, unsigned
-> > > linesize,
-> > > +                                     unsigned cachesize, uint8_t
-> > > flags) +{
-> > > +    unsigned lg_linesize =3D ctz32(linesize);
-> > > +    unsigned sets;
-> > > +
-> > > +    /*
-> > > +     * The 32-bit CCSIDR_EL1 format is:
-> > > +     *   [27:13] number of sets - 1
-> > > +     *   [12:3]  associativity - 1
-> > > +     *   [2:0]   log2(linesize) - 4
-> > > +     *           so 0 =3D=3D 16 bytes, 1 =3D=3D 32 bytes, 2 =3D=3D 6=
-4 bytes,
-> > > etc
-> > > +     */
-> > > +    assert(assoc !=3D 0);
-> > > +    assert(is_power_of_2(linesize));
-> > > +    assert(lg_linesize >=3D 4 && lg_linesize <=3D 7 + 4);
-> > > +
-> > > +    /* sets * associativity * linesize =3D=3D cachesize. */
-> > > +    sets =3D cachesize / (assoc * linesize);
-> > > +    assert(cachesize % (assoc * linesize) =3D=3D 0);
-> > > +
-> > > +    return ((uint64_t)(flags) << 28)
-> > > +        | ((sets - 1) << 13)
-> > > +        | ((assoc - 1) << 3)
-> > > +        | (lg_linesize - 4);
-> > > +}
-> > > +
-> > > +static inline uint64_t make_ccsidr64(unsigned assoc, unsigned
-> > > linesize,
-> > > +                              unsigned cachesize)
-> > > +{
-> > > +    unsigned lg_linesize =3D ctz32(linesize);
-> > > +    unsigned sets;
-> > > +
-> > > +    /*
-> > > +     * The 64-bit CCSIDR_EL1 format is:
-> > > +     *   [55:32] number of sets - 1
-> > > +     *   [23:3]  associativity - 1
-> > > +     *   [2:0]   log2(linesize) - 4
-> > > +     *           so 0 =3D=3D 16 bytes, 1 =3D=3D 32 bytes, 2 =3D=3D 6=
-4 bytes,
-> > > etc
-> > > +     */
-> > > +    assert(assoc !=3D 0);
-> > > +    assert(is_power_of_2(linesize));
-> > > +    assert(lg_linesize >=3D 4 && lg_linesize <=3D 7 + 4);
-> > > +
-> > > +    /* sets * associativity * linesize =3D=3D cachesize. */
-> > > +    sets =3D cachesize / (assoc * linesize);
-> > > +    assert(cachesize % (assoc * linesize) =3D=3D 0);
-> > > +
-> > > +    return ((uint64_t)(sets - 1) << 32)
-> > > +         | ((assoc - 1) << 3)
-> > > +         | (lg_linesize - 4);
-> > > +}
-> > > +
-> > >   /*
-> > >    * Forward to the above feature tests given an ARMCPU pointer.
-> > >    */
-> > > diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-> > > index 262a1d6c0b..57ebc1b979 100644
-> > > --- a/target/arm/cpu64.c
-> > > +++ b/target/arm/cpu64.c
-> > > @@ -23,6 +23,7 @@
-> > >   #include "cpu.h"
-> > >   #include "cpregs.h"
-> > >   #include "qemu/module.h"
-> > > +#include "qemu/units.h"
-> > >   #include "sysemu/kvm.h"
-> > >   #include "sysemu/hvf.h"
-> > >   #include "sysemu/qtest.h"
-> > > @@ -642,9 +643,12 @@ static void aarch64_a57_initfn(Object *obj)
-> > >       cpu->isar.dbgdevid1 =3D 0x2;
-> > >       cpu->isar.reset_pmcr_el0 =3D 0x41013000;
-> > >       cpu->clidr =3D 0x0a200023;
-> > > -    cpu->ccsidr[0] =3D 0x701fe00a; /* 32KB L1 dcache */
-> > > -    cpu->ccsidr[1] =3D 0x201fe012; /* 48KB L1 icache */
-> > > -    cpu->ccsidr[2] =3D 0x70ffe07a; /* 2048KB L2 cache */
-> > > +    /* 32KB L1 dcache */
-> > > +    cpu->ccsidr[0] =3D make_ccsidr32(4, 64, 32 * KiB, 7);
-> > > +    /* 48KB L1 icache */
-> > > +    cpu->ccsidr[1] =3D make_ccsidr32(3, 64, 48 * KiB, 2);
-> > > +    /* 2048KB L2 cache */
-> > > +    cpu->ccsidr[2] =3D make_ccsidr32(16, 64, 2 * MiB, 7); =20
-> >
-> > I like the uses of make_ccsidrXX() instead of the magic values.
-> >
-> > I don't like much the code duplication between make_ccsidrXX()
-> > definitions, I'd prefer both call a common (static?) one. =20
->=20
-> How about we have
-> typedef enum {
->     CCSIDR_FORMAT_LEGACY,
->     CCSIDR_FORMAT_CCIDX,
-> } CCSIDRFormat;
->=20
-> and a single
-> uint64_t make_ccsidr(CCSIDRFormat format, unsigned assoc, unsigned
->                      linesize, unsigned cachesize, unsigned flags);
->=20
-> ? Since the only difference between the two functions is the final
-> line that assembles the return value, that seems like maybe
-> a better way to avoid the code duplication than a common
-> sub-function.
->=20
-> -- PMM
+> Failure cases:
+>      1) there are cases where QEMU might not have any clusters selected in the
+>      -smp option, while user specifies caches to be shared at cluster level. In
+>      this situations, qemu returns error.
+> 
+>      2) There are other scenarios where caches exist in systems' registers but
+>      not left unspecified by users. In this case qemu returns failure.
 
-I like this suggestion. I can address Philippe's concern too if I move
-functions around. I thought a bit how to avoid duplication then I ended
-up saying let's see what others might say.
+Sockets, clusters, cores, threads. And then caches. Sounds like more fun
+than it is already.
 
-Alireza
+IIRC Arm hardware can have up to 16 cores per cluster (virt uses 16,
+sbsa-ref uses 8) as this is GIC limitation.
+
+I have a script to visualize Arm topology:
+
+https://github.com/hrw/sbsa-ref-status/blob/main/parse-pptt-log.py
+
+It uses 'EFIShell> acpiview -s PPTT' output and gives something like this:
+
+-smp 24,sockets=1,clusters=2,cores=3,threads=4
+socket:        offset: 0x24 parent: 0x0
+   cluster:     offset: 0x38 parent: 0x24
+     core:      offset: 0x4C parent: 0x38 cpuId: 0x0 L1i: 0x68 L1d: 0x84
+       cache:   offset: 0x68 cacheId: 1 size: 0x10000 next: 0xA0
+       cache:   offset: 0x84 cacheId: 2 size: 0x10000 next: 0xA0
+       cache:   offset: 0xA0 cacheId: 3 size: 0x80000
+       thread:  offset: 0xBC parent: 0x4C cpuId: 0x0
+       thread:  offset: 0xD0 parent: 0x4C cpuId: 0x1
+       thread:  offset: 0xE4 parent: 0x4C cpuId: 0x2
+       thread:  offset: 0xF8 parent: 0x4C cpuId: 0x3
+     core:      offset: 0x10C parent: 0x38 cpuId: 0x0 L1i: 0x128 L1d: 0x144
+       cache:   offset: 0x128 cacheId: 4 size: 0x10000 next: 0x160
+       cache:   offset: 0x144 cacheId: 5 size: 0x10000 next: 0x160
+       cache:   offset: 0x160 cacheId: 6 size: 0x80000
+       thread:  offset: 0x17C parent: 0x10C cpuId: 0x4
+       thread:  offset: 0x190 parent: 0x10C cpuId: 0x5
+       thread:  offset: 0x1A4 parent: 0x10C cpuId: 0x6
+       thread:  offset: 0x1B8 parent: 0x10C cpuId: 0x7
+     core:      offset: 0x1CC parent: 0x38 cpuId: 0x0 L1i: 0x1E8 L1d: 0x204
+       cache:   offset: 0x1E8 cacheId: 7 size: 0x10000 next: 0x220
+       cache:   offset: 0x204 cacheId: 8 size: 0x10000 next: 0x220
+       cache:   offset: 0x220 cacheId: 9 size: 0x80000
+       thread:  offset: 0x23C parent: 0x1CC cpuId: 0x8
+       thread:  offset: 0x250 parent: 0x1CC cpuId: 0x9
+       thread:  offset: 0x264 parent: 0x1CC cpuId: 0xA
+       thread:  offset: 0x278 parent: 0x1CC cpuId: 0xB
+   cluster:     offset: 0x28C parent: 0x24
+     core:      offset: 0x2A0 parent: 0x28C cpuId: 0x0 L1i: 0x2BC L1d: 0x2D8
+       cache:   offset: 0x2BC cacheId: 10 size: 0x10000 next: 0x2F4
+       cache:   offset: 0x2D8 cacheId: 11 size: 0x10000 next: 0x2F4
+       cache:   offset: 0x2F4 cacheId: 12 size: 0x80000
+       thread:  offset: 0x310 parent: 0x2A0 cpuId: 0xC
+       thread:  offset: 0x324 parent: 0x2A0 cpuId: 0xD
+       thread:  offset: 0x338 parent: 0x2A0 cpuId: 0xE
+       thread:  offset: 0x34C parent: 0x2A0 cpuId: 0xF
+     core:      offset: 0x360 parent: 0x28C cpuId: 0x0 L1i: 0x37C L1d: 0x398
+       cache:   offset: 0x37C cacheId: 13 size: 0x10000 next: 0x3B4
+       cache:   offset: 0x398 cacheId: 14 size: 0x10000 next: 0x3B4
+       cache:   offset: 0x3B4 cacheId: 15 size: 0x80000
+       thread:  offset: 0x3D0 parent: 0x360 cpuId: 0x10
+       thread:  offset: 0x3E4 parent: 0x360 cpuId: 0x11
+       thread:  offset: 0x3F8 parent: 0x360 cpuId: 0x12
+       thread:  offset: 0x40C parent: 0x360 cpuId: 0x13
+     core:      offset: 0x420 parent: 0x28C cpuId: 0x0 L1i: 0x43C L1d: 0x458
+       cache:   offset: 0x43C cacheId: 16 size: 0x10000 next: 0x474
+       cache:   offset: 0x458 cacheId: 17 size: 0x10000 next: 0x474
+       cache:   offset: 0x474 cacheId: 18 size: 0x80000
+       thread:  offset: 0x490 parent: 0x420 cpuId: 0x14
+       thread:  offset: 0x4A4 parent: 0x420 cpuId: 0x15
+       thread:  offset: 0x4B8 parent: 0x420 cpuId: 0x16
+       thread:  offset: 0x4CC parent: 0x420 cpuId: 0x17
+
+You may find it useful. I tested it only with cache at either core or
+cluster level.
 
