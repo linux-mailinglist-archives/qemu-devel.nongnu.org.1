@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DB0969965
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 11:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 193A7969971
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 11:45:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slQ1s-0004mS-4h; Tue, 03 Sep 2024 05:40:52 -0400
+	id 1slQ6L-0008Kq-0D; Tue, 03 Sep 2024 05:45:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1slQ1l-0004Y7-E2
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 05:40:45 -0400
+ id 1slQ6E-0008Ik-R3
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 05:45:22 -0400
 Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1slQ1h-0005fF-S0
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 05:40:43 -0400
+ id 1slQ6D-0005uj-7K
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 05:45:22 -0400
 Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 62E0C40FDD
- for <qemu-devel@nongnu.org>; Tue,  3 Sep 2024 09:40:39 +0000 (UTC)
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id DCC1340F70
+ for <qemu-devel@nongnu.org>; Tue,  3 Sep 2024 09:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1725356439;
- bh=OIKsO8a/Ji3TYcQ00bilEoaMg12/NBOeid94ZEHW/GQ=;
+ s=20210803; t=1725356719;
+ bh=FpJkSeFYGuWtgrrS7c7ed16368W6UNK1OoE9sx3NQfQ=;
  h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
  Message-Id:Subject;
- b=Qc5IUYM9J/G1VLabzZaH7s3wD+vM/1loPTE4w6X2o/Fq160M4T/nvLgi9yq9pacpo
- BVlaESaTNsDUj/QobAQGwzx55aC1TN+ZK7VyFwIqTD4LW/9qMtlaTBkwJ2deZdJmM4
- hWVcYy/Jn8U9xvilfsb8dMwaTGjXsSWIQ0oq3ICl3BQMeWZlzBkWp/OzGCi8rgzDeB
- il8SpfZJbnMi9RzzcRYN9Nt1NJDjY2aqQctxUrM2l+/SE7JGnnkkeRxCBkVJAP5/CZ
- hNr5KXA+faqKYqHksKvmv3F/vnRXuF9Wo5YtrNEexC8JFfrOH6zx/eBz7dFKeTDbAD
- C8AjgtVw3u7cA==
+ b=GdlOBvzFc6Y8rM0RJ762KgwBD/NQe0nFmnuN4jOP/X3PC5YqX4e6JW+CVGqIwiQcz
+ 2K+2jhBlwWFp6gP/bPCDNWTYG+DSjUrdX9YiyUJLGcR9NlAmdmADa8ICqpo5IF6/Lf
+ x0xLLWs8OaWjaoEyRaGnnI7Befs1iodm8mjUi2mO1HgClGIPaABjccbnk7bCIIAe36
+ KxfdqvwB54/dyK0jg5d0/eNqY6auPZgC4PA664vp18snEQAWpK6WSnP+CBs8CIFO6E
+ 4In/3LNmKfJynFh+LsOpdf/yl9YWDWOciOVkD6tEn117kCtdkJ3967PV/8Qn/ExTbM
+ WjX+Wyn3dQUeQ==
 Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id 5939E7E396
- for <qemu-devel@nongnu.org>; Tue,  3 Sep 2024 09:40:39 +0000 (UTC)
+ by scripts.lp.internal (Postfix) with ESMTP id D21B07E088
+ for <qemu-devel@nongnu.org>; Tue,  3 Sep 2024 09:45:19 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Sep 2024 09:35:08 -0000
-From: Mehmet Basaran <2078790@bugs.launchpad.net>
+Date: Tue, 03 Sep 2024 09:37:16 -0000
+From: Thomas Huth <2078790@bugs.launchpad.net>
 To: qemu-devel@nongnu.org
 X-Launchpad-Notification-Type: bug
 X-Launchpad-Bug: distribution=ubuntu; sourcepackage=linux-lowlatency-hwe-6.8;
@@ -55,9 +55,9 @@ X-Launchpad-Bug-Private: no
 X-Launchpad-Bug-Security-Vulnerability: no
 X-Launchpad-Bug-Commenters: mehmetbasaran
 X-Launchpad-Bug-Reporter: Mehmet Basaran (mehmetbasaran)
-X-Launchpad-Bug-Modifier: Mehmet Basaran (mehmetbasaran)
+X-Launchpad-Bug-Modifier: Thomas Huth (th-huth)
 References: <172535521411.2600491.6207708752026464339.malonedeb@juju-98d295-prod-launchpad-3>
-Message-Id: <172535610933.1159921.6138904713448565637.malone@juju-98d295-prod-launchpad-7>
+Message-Id: <172535623812.505620.5354836599527749586.launchpad@juju-98d295-prod-launchpad-4>
 Subject: [Bug 2078790] Re: jammy qemu x86 int3: 0000 [#1] SMP NOPTI 
 X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
 X-Launchpad-Message-For: qemu-devel-ml
@@ -65,7 +65,7 @@ Precedence: bulk
 X-Generated-By: Launchpad (canonical.com);
  Revision="1b1ed1ad2dbfc71ee62b5c5491c975135a771bf0";
  Instance="launchpad-scripts"
-X-Launchpad-Hash: 9bf1eab28aca44fe7ab4d1f9ddd5f7d113e8b5a3
+X-Launchpad-Hash: 49bef7c4b9af54dac5264e67aedaa5dfb0c314a5
 Received-SPF: pass client-ip=185.125.188.251;
  envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
 X-Spam_score_int: -42
@@ -91,7 +91,7 @@ Reply-To: Bug 2078790 <2078790@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only seen this with x86.
+** Project changed: qemu =3D> qemu (Ubuntu)
 
 --=20
 You received this bug notification because you are a member of qemu-
