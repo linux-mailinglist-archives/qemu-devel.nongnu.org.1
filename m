@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6285C96A3E7
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0022496A400
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:15:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slW5n-0002iq-7U; Tue, 03 Sep 2024 12:09:19 -0400
+	id 1slWAu-000154-5u; Tue, 03 Sep 2024 12:14:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5i-0002Em-67
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:09:14 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1slWAa-0008NW-Fg
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:14:17 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5e-000310-LT
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:09:13 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4280ca0791bso48030605e9.1
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 09:09:10 -0700 (PDT)
+ id 1slWAW-0003ju-PP
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:14:15 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42c2e50ec13so30067105e9.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 09:14:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725379749; x=1725984549; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BHpxQn1TGhAqZw6zjbWv+7WsRHUItP5jTjUdlJjduF0=;
- b=l8/AWBYHV0nvJ1zAFJP472lk4t36hiBCg5e4v/GsdOzeGFjuc7eXMx99MQfcGEz1sb
- jdDun4t2t0TiS2x5GEWxJ1ywF2HiEHDpsLxYUqPMCTLg7hZWtYholTRSM1FN0eLXxWi6
- v8XpfVCYJBEedxrLMkQQvVx218Fzwu1u2RoZZAlkTlglgsGaJJwTNSv7XMiAutoKsULh
- WFKeep/WfZktUYqk/x6qhZo+v9PZ6FzCoXtVH5mPHhp48PQ/a7u6FAO2+yHqox66gBxc
- TyC6x9+36YwvS+2N89/MhUihDp78sOZaLGnoGuSow1M0PI1gjzMHCUoHsWySAp51o03R
- 3xLw==
+ d=linaro.org; s=google; t=1725380051; x=1725984851; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MhqQa99Ggu1rFojrVVBskbQrh44U6gQnOde+YvFWUHE=;
+ b=uRI/0m3mWvWAsy1aMStKjBVtlRiHr9UopO8NMfzJ3+5PME2SG/0PcVIydwkhky47cn
+ MNRhT7MUXSQ4OyCKLGPoszTTwaS9tK+Wgqb5YNAGuALjKSF+wiyhGpMeC9geQylWHElQ
+ 8CXw9N8fm2M75/ux+1Cw8JadhFHkjsjGxCHWOnX9LKAO2I1Er2e3ahWNz1Lr5/zslyUi
+ Jxyqh5GGg5UPiDim1Zf6MTeqG7VcUcsUv3RZcmlvVHjbWre53jHiiqOMM7HVwpExGoAy
+ hwdPGQ0QzDOIMUynHuOeWx3GbY/ThC7lZ8jqHGrOKupuxlXPbI4N0naS2ANnpbCbsdg3
+ SKzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725379749; x=1725984549;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1725380051; x=1725984851;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BHpxQn1TGhAqZw6zjbWv+7WsRHUItP5jTjUdlJjduF0=;
- b=Zb4OqWIkCAohAzPaQkhiQ6pmGuARX8SS0XV6qOaUTQezc3vR9hgcp5wC+nNKSbLei7
- vpsdQOn+wzFF+Lx6o5O3ay1Ar4DwE0G2prxWEAXZskCZXJQws+ktwH5YcEdEQ5o7FPVD
- 5i5V+NS7/SF2TH4xkpUujsb6lYqqcdc1aorlB2/gMqIZrTW8b/gt32pOZFNAbsMACkUf
- HTPRwDSJD/+d4lfPaYOokxRhxVpagA+hKrmrEBPa5loHPz3mZJ03k+Fir7EswgBP0q89
- e1ShV1+B/Y5U7e3eYnHDl+x6aLNv7Yq+pzZq5GWo3bwPUKgesFXsekN18yFqSd7wEEVB
- 1tlw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWZNwQtbBOkyMFZYrvt8INbqUwXLAEAZ77wkJf9lJBE2/UXwKqNyLWPvx73abtIJrS6mnLy4iZF/xIA@nongnu.org
-X-Gm-Message-State: AOJu0YzhSwn7RAj+3hb3mQmDix8zi5qbL+SUUid9NHeahsuluMmurfuC
- GQIjWC/3Yj29rrbRCCZsRormNHGgNYOvLLhng8mxbyEJCnzAObTydhyTdgODvEidXNxswZEeQ+2
- U
-X-Google-Smtp-Source: AGHT+IEmqCJXnnYiawV2HKscqyV9zypoMDynM+qpC9mgd2mgSq91z9MDra0KRAYMQNU08vS1/EMWGg==
-X-Received: by 2002:a5d:5f93:0:b0:374:c7a3:3349 with SMTP id
- ffacd0b85a97d-376df004a84mr1104975f8f.51.1725379749202; 
- Tue, 03 Sep 2024 09:09:09 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb6df1066sm175123065e9.18.2024.09.03.09.09.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2024 09:09:08 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH for-9.2 53/53] hw: Remove omap2 specific defines and enums
-Date: Tue,  3 Sep 2024 17:07:51 +0100
-Message-Id: <20240903160751.4100218-54-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240903160751.4100218-1-peter.maydell@linaro.org>
-References: <20240903160751.4100218-1-peter.maydell@linaro.org>
+ bh=MhqQa99Ggu1rFojrVVBskbQrh44U6gQnOde+YvFWUHE=;
+ b=UtbMQojjkkhpvH3EyA48VhGSX4yI3yAZUNZXqgI9POILyFw3DeBjIBjuwyT52rLRTn
+ zXIjSYJu2K25LyajNUi92a2HFtBKZQe0SeHZr2dvkGkm1loPIBIued/Gtq8AQ3Y0xBh4
+ 523aIa/YCEXSE/dg+o4gl3eIP8S5El92wBy9lfaJpziXW9qiJvlnYfgIztsn601FDAWM
+ tfg+PfZxMZpo3NJ6j7vcpcRNIEs4an8uWjgX+/VS5Iql23pYP9tD8iBZBzL95nU9vj4D
+ mFi9p0fUnUrlDz3l6cH+dcOc9URg4HuoZgMkYjE92PvNZUF7HviZn6uonNPh21MVz4/L
+ yw4Q==
+X-Gm-Message-State: AOJu0YwhPXxbwuMcCoL5A/KV4st+vgiPzUasuNF4jgdbiPO+HQv4t+8R
+ YNkMMMAr2X98/8JT1jHO+7w54wlTnEz8E61VHwjQf8XIqtIUOpqk77Q/GUaIi91MYo/qkSR1j6O
+ t1ne/AJpSNgPI+UZGLR9nND57mnJRGYhi5Afv7w==
+X-Google-Smtp-Source: AGHT+IHKfd2oS0R6ug7lK8hK2GjMJS/Qd91ngzP2h5GA0SSvc2NNkP+KyY/GLr6rQmvd52IWMAKjgsmNJWvStMRMIKU=
+X-Received: by 2002:a05:600c:3b9f:b0:426:6e8b:3dc5 with SMTP id
+ 5b1f17b1804b1-42bbb440c8bmr117999105e9.32.1725380050837; Tue, 03 Sep 2024
+ 09:14:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+References: <20240903152757.17935-1-philmd@linaro.org>
+In-Reply-To: <20240903152757.17935-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 3 Sep 2024 17:13:50 +0100
+Message-ID: <CAFEAcA-EquoUoNNtbwMu7tW_VDHKHVuEuAsDWBVbD8hnDocz-g@mail.gmail.com>
+Subject: Re: [PATCH] target/cris: Remove the deprecated CRIS target
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ devel@lists.libvirt.org, Rabin Vincent <rabinv@axis.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,286 +91,379 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove some defines and enums that are OMAP2 specific and
-no longer used anywhere.
+On Tue, 3 Sept 2024 at 16:28, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> The CRIS target is deprecated since v9.0 (commit c7bbef40234
+> "docs: mark CRIS support as deprecated").
+>
+> Remove:
+> - Buildsys / CI infra
+> - User emulation
+> - System emulation (axis-dev88 machine and ETRAX devices)
+> - Tests
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> Cc: Rabin Vincent <rabinv@axis.com>
+> Cc: Edgar E. Iglesias <edgar.iglesias@gmail.com>
+> ---
+>  MAINTAINERS                                   |   17 -
+>  docs/about/deprecated.rst                     |    8 -
+>  docs/about/emulation.rst                      |    4 -
+>  docs/about/removed-features.rst               |    7 +
+>  docs/user/main.rst                            |    4 -
+>  configure                                     |    4 -
+>  configs/devices/cris-softmmu/default.mak      |    4 -
+>  configs/targets/cris-linux-user.mak           |    1 -
+>  configs/targets/cris-softmmu.mak              |    1 -
+>  meson.build                                   |    1 -
+>  qapi/machine.json                             |    2 +-
+>  hw/cris/boot.h                                |   16 -
+>  include/disas/dis-asm.h                       |    6 -
+>  include/exec/poison.h                         |    2 -
+>  include/hw/cris/etraxfs.h                     |   54 -
+>  include/hw/cris/etraxfs_dma.h                 |   36 -
+>  include/sysemu/arch_init.h                    |    1 -
+>  include/user/abitypes.h                       |    7 -
+>  linux-user/cris/sockbits.h                    |    1 -
+>  linux-user/cris/syscall_nr.h                  |  367 --
+>  linux-user/cris/target_cpu.h                  |   45 -
+>  linux-user/cris/target_elf.h                  |   14 -
+>  linux-user/cris/target_errno_defs.h           |    7 -
+>  linux-user/cris/target_fcntl.h                |   11 -
+>  linux-user/cris/target_mman.h                 |   13 -
+>  linux-user/cris/target_prctl.h                |    1 -
+>  linux-user/cris/target_proc.h                 |    1 -
+>  linux-user/cris/target_resource.h             |    1 -
+>  linux-user/cris/target_signal.h               |    9 -
+>  linux-user/cris/target_structs.h              |    1 -
+>  linux-user/cris/target_syscall.h              |   46 -
+>  linux-user/cris/termbits.h                    |  225 --
+>  linux-user/syscall_defs.h                     |    7 +-
+>  target/cris/cpu-param.h                       |   16 -
+>  target/cris/cpu-qom.h                         |   32 -
+>  target/cris/cpu.h                             |  286 --
+>  target/cris/crisv10-decode.h                  |  112 -
+>  target/cris/crisv32-decode.h                  |  133 -
+>  target/cris/helper.h                          |   23 -
+>  target/cris/mmu.h                             |   22 -
+>  target/cris/opcode-cris.h                     |  355 --
+>  tests/tcg/cris/libc/crisutils.h               |   76 -
+>  tests/tcg/cris/libc/sys.h                     |   18 -
+>  disas/cris.c                                  | 2863 ---------------
+>  hw/char/etraxfs_ser.c                         |  267 --
+>  hw/cris/axis_dev88.c                          |  351 --
+>  hw/cris/boot.c                                |  102 -
+>  hw/dma/etraxfs_dma.c                          |  781 ----
+>  hw/intc/etraxfs_pic.c                         |  172 -
+>  hw/net/etraxfs_eth.c                          |  688 ----
+>  hw/timer/etraxfs_timer.c                      |  407 ---
+>  linux-user/cris/cpu_loop.c                    |   95 -
+>  linux-user/cris/signal.c                      |  194 -
+>  linux-user/elfload.c                          |   15 -
+>  linux-user/syscall.c                          |   10 +-
+>  system/qemu-seccomp.c                         |    2 +-
+>  target/cris/cpu.c                             |  323 --
+>  target/cris/gdbstub.c                         |  127 -
+>  target/cris/helper.c                          |  287 --
+>  target/cris/machine.c                         |   93 -
+>  target/cris/mmu.c                             |  356 --
+>  target/cris/op_helper.c                       |  580 ---
+>  target/cris/translate.c                       | 3252 -----------------
+>  tests/qtest/machine-none-test.c               |    1 -
+>  tests/tcg/cris/bare/sys.c                     |   63 -
+>  tests/tcg/cris/libc/check_abs.c               |   40 -
+>  tests/tcg/cris/libc/check_addc.c              |   58 -
+>  tests/tcg/cris/libc/check_addcm.c             |   85 -
+>  tests/tcg/cris/libc/check_addo.c              |  125 -
+>  tests/tcg/cris/libc/check_addoq.c             |   44 -
+>  tests/tcg/cris/libc/check_bound.c             |  142 -
+>  tests/tcg/cris/libc/check_ftag.c              |   37 -
+>  .../cris/libc/check_gcctorture_pr28634-1.c    |   15 -
+>  .../tcg/cris/libc/check_gcctorture_pr28634.c  |   15 -
+>  .../tcg/cris/libc/check_glibc_kernelversion.c |  116 -
+>  tests/tcg/cris/libc/check_hello.c             |    7 -
+>  tests/tcg/cris/libc/check_int64.c             |   47 -
+>  tests/tcg/cris/libc/check_lz.c                |   49 -
+>  tests/tcg/cris/libc/check_mapbrk.c            |   39 -
+>  tests/tcg/cris/libc/check_mmap1.c             |   48 -
+>  tests/tcg/cris/libc/check_mmap2.c             |   48 -
+>  tests/tcg/cris/libc/check_mmap3.c             |   33 -
+>  tests/tcg/cris/libc/check_moveq.c             |   51 -
+>  tests/tcg/cris/libc/check_openpf1.c           |   38 -
+>  tests/tcg/cris/libc/check_openpf2.c           |   16 -
+>  tests/tcg/cris/libc/check_openpf3.c           |   49 -
+>  tests/tcg/cris/libc/check_openpf5.c           |   56 -
+>  tests/tcg/cris/libc/check_settls1.c           |   45 -
+>  tests/tcg/cris/libc/check_sigalrm.c           |   26 -
+>  tests/tcg/cris/libc/check_stat1.c             |   16 -
+>  tests/tcg/cris/libc/check_stat2.c             |   20 -
+>  tests/tcg/cris/libc/check_stat3.c             |   25 -
+>  tests/tcg/cris/libc/check_stat4.c             |   27 -
+>  tests/tcg/cris/libc/check_swap.c              |   76 -
+>  tests/tcg/cris/libc/check_time2.c             |   18 -
+>  fpu/softfloat-specialize.c.inc                |    4 +-
+>  target/cris/translate_v10.c.inc               | 1262 -------
+>  .gitlab-ci.d/buildtest.yml                    |    2 +-
+>  .gitlab-ci.d/container-cross.yml              |    5 -
+>  .gitlab-ci.d/crossbuild-template.yml          |    4 +-
+>  disas/meson.build                             |    1 -
+>  hw/Kconfig                                    |    1 -
+>  hw/char/meson.build                           |    1 -
+>  hw/cris/Kconfig                               |   11 -
+>  hw/cris/meson.build                           |    5 -
+>  hw/dma/meson.build                            |    1 -
+>  hw/intc/meson.build                           |    1 -
+>  hw/meson.build                                |    1 -
+>  hw/net/meson.build                            |    1 -
+>  hw/net/trace-events                           |    5 -
+>  hw/timer/meson.build                          |    1 -
+>  scripts/coverity-scan/COMPONENTS.md           |    3 -
+>  scripts/probe-gdb-support.py                  |    1 -
+>  target/Kconfig                                |    1 -
+>  target/cris/Kconfig                           |    2 -
+>  target/cris/meson.build                       |   17 -
+>  target/meson.build                            |    1 -
+>  tests/data/qobject/qdict.txt                  |    6 -
+>  tests/docker/Makefile.include                 |    1 -
+>  .../dockerfiles/fedora-cris-cross.docker      |   14 -
+>  tests/tcg/cris/.gdbinit                       |   11 -
+>  tests/tcg/cris/Makefile.target                |   62 -
+>  tests/tcg/cris/README                         |    1 -
+>  tests/tcg/cris/bare/check_addcv17.s           |   65 -
+>  tests/tcg/cris/bare/check_addi.s              |   57 -
+>  tests/tcg/cris/bare/check_addiv32.s           |   62 -
+>  tests/tcg/cris/bare/check_addm.s              |   96 -
+>  tests/tcg/cris/bare/check_addq.s              |   47 -
+>  tests/tcg/cris/bare/check_addr.s              |   96 -
+>  tests/tcg/cris/bare/check_addxc.s             |   91 -
+>  tests/tcg/cris/bare/check_addxm.s             |  106 -
+>  tests/tcg/cris/bare/check_addxr.s             |   96 -
+>  tests/tcg/cris/bare/check_andc.s              |   80 -
+>  tests/tcg/cris/bare/check_andm.s              |   90 -
+>  tests/tcg/cris/bare/check_andq.s              |   46 -
+>  tests/tcg/cris/bare/check_andr.s              |   95 -
+>  tests/tcg/cris/bare/check_asr.s               |  230 --
+>  tests/tcg/cris/bare/check_ba.s                |   93 -
+>  tests/tcg/cris/bare/check_bas.s               |  102 -
+>  tests/tcg/cris/bare/check_bcc.s               |  197 -
+>  tests/tcg/cris/bare/check_boundc.s            |  101 -
+>  tests/tcg/cris/bare/check_boundr.s            |  125 -
+>  tests/tcg/cris/bare/check_btst.s              |   96 -
+>  tests/tcg/cris/bare/check_clearfv32.s         |   19 -
+>  tests/tcg/cris/bare/check_clrjmp1.s           |   36 -
+>  tests/tcg/cris/bare/check_cmp-2.s             |   15 -
+>  tests/tcg/cris/bare/check_cmpc.s              |   86 -
+>  tests/tcg/cris/bare/check_cmpm.s              |   96 -
+>  tests/tcg/cris/bare/check_cmpq.s              |   75 -
+>  tests/tcg/cris/bare/check_cmpr.s              |  102 -
+>  tests/tcg/cris/bare/check_cmpxc.s             |   92 -
+>  tests/tcg/cris/bare/check_cmpxm.s             |  106 -
+>  tests/tcg/cris/bare/check_dstep.s             |   42 -
+>  tests/tcg/cris/bare/check_jsr.s               |   85 -
+>  tests/tcg/cris/bare/check_lapc.s              |   78 -
+>  tests/tcg/cris/bare/check_lsl.s               |  217 --
+>  tests/tcg/cris/bare/check_lsr.s               |  218 --
+>  tests/tcg/cris/bare/check_mcp.s               |   49 -
+>  tests/tcg/cris/bare/check_movdelsr1.s         |   33 -
+>  tests/tcg/cris/bare/check_movecr.s            |   37 -
+>  tests/tcg/cris/bare/check_movei.s             |   50 -
+>  tests/tcg/cris/bare/check_movemr.s            |   78 -
+>  tests/tcg/cris/bare/check_movemrv32.s         |   96 -
+>  tests/tcg/cris/bare/check_mover.s             |   28 -
+>  tests/tcg/cris/bare/check_moverm.s            |   45 -
+>  tests/tcg/cris/bare/check_movmp.s             |  131 -
+>  tests/tcg/cris/bare/check_movpmv32.s          |   35 -
+>  tests/tcg/cris/bare/check_movpr.s             |   28 -
+>  tests/tcg/cris/bare/check_movprv32.s          |   21 -
+>  tests/tcg/cris/bare/check_movscr.s            |   29 -
+>  tests/tcg/cris/bare/check_movsm.s             |   44 -
+>  tests/tcg/cris/bare/check_movsr.s             |   46 -
+>  tests/tcg/cris/bare/check_movucr.s            |   33 -
+>  tests/tcg/cris/bare/check_movum.s             |   40 -
+>  tests/tcg/cris/bare/check_movur.s             |   45 -
+>  tests/tcg/cris/bare/check_mulv32.s            |   51 -
+>  tests/tcg/cris/bare/check_mulx.s              |  257 --
+>  tests/tcg/cris/bare/check_neg.s               |  104 -
+>  tests/tcg/cris/bare/check_not.s               |   31 -
+>  tests/tcg/cris/bare/check_orc.s               |   71 -
+>  tests/tcg/cris/bare/check_orm.s               |   75 -
+>  tests/tcg/cris/bare/check_orq.s               |   41 -
+>  tests/tcg/cris/bare/check_orr.s               |   84 -
+>  tests/tcg/cris/bare/check_ret.s               |   25 -
+>  tests/tcg/cris/bare/check_scc.s               |   95 -
+>  tests/tcg/cris/bare/check_subc.s              |   87 -
+>  tests/tcg/cris/bare/check_subm.s              |   96 -
+>  tests/tcg/cris/bare/check_subq.s              |   52 -
+>  tests/tcg/cris/bare/check_subr.s              |  102 -
+>  tests/tcg/cris/bare/check_xarith.s            |   72 -
+>  tests/tcg/cris/bare/crt.s                     |   13 -
+>  tests/tcg/cris/bare/testutils.inc             |  117 -
+>  192 files changed, 18 insertions(+), 21324 deletions(-)
+>  delete mode 100644 configs/devices/cris-softmmu/default.mak
+>  delete mode 100644 configs/targets/cris-linux-user.mak
+>  delete mode 100644 configs/targets/cris-softmmu.mak
+>  delete mode 100644 hw/cris/boot.h
+>  delete mode 100644 include/hw/cris/etraxfs.h
+>  delete mode 100644 include/hw/cris/etraxfs_dma.h
+>  delete mode 100644 linux-user/cris/sockbits.h
+>  delete mode 100644 linux-user/cris/syscall_nr.h
+>  delete mode 100644 linux-user/cris/target_cpu.h
+>  delete mode 100644 linux-user/cris/target_elf.h
+>  delete mode 100644 linux-user/cris/target_errno_defs.h
+>  delete mode 100644 linux-user/cris/target_fcntl.h
+>  delete mode 100644 linux-user/cris/target_mman.h
+>  delete mode 100644 linux-user/cris/target_prctl.h
+>  delete mode 100644 linux-user/cris/target_proc.h
+>  delete mode 100644 linux-user/cris/target_resource.h
+>  delete mode 100644 linux-user/cris/target_signal.h
+>  delete mode 100644 linux-user/cris/target_structs.h
+>  delete mode 100644 linux-user/cris/target_syscall.h
+>  delete mode 100644 linux-user/cris/termbits.h
+>  delete mode 100644 target/cris/cpu-param.h
+>  delete mode 100644 target/cris/cpu-qom.h
+>  delete mode 100644 target/cris/cpu.h
+>  delete mode 100644 target/cris/crisv10-decode.h
+>  delete mode 100644 target/cris/crisv32-decode.h
+>  delete mode 100644 target/cris/helper.h
+>  delete mode 100644 target/cris/mmu.h
+>  delete mode 100644 target/cris/opcode-cris.h
+>  delete mode 100644 tests/tcg/cris/libc/crisutils.h
+>  delete mode 100644 tests/tcg/cris/libc/sys.h
+>  delete mode 100644 disas/cris.c
+>  delete mode 100644 hw/char/etraxfs_ser.c
+>  delete mode 100644 hw/cris/axis_dev88.c
+>  delete mode 100644 hw/cris/boot.c
+>  delete mode 100644 hw/dma/etraxfs_dma.c
+>  delete mode 100644 hw/intc/etraxfs_pic.c
+>  delete mode 100644 hw/net/etraxfs_eth.c
+>  delete mode 100644 hw/timer/etraxfs_timer.c
+>  delete mode 100644 linux-user/cris/cpu_loop.c
+>  delete mode 100644 linux-user/cris/signal.c
+>  delete mode 100644 target/cris/cpu.c
+>  delete mode 100644 target/cris/gdbstub.c
+>  delete mode 100644 target/cris/helper.c
+>  delete mode 100644 target/cris/machine.c
+>  delete mode 100644 target/cris/mmu.c
+>  delete mode 100644 target/cris/op_helper.c
+>  delete mode 100644 target/cris/translate.c
+>  delete mode 100644 tests/tcg/cris/bare/sys.c
+>  delete mode 100644 tests/tcg/cris/libc/check_abs.c
+>  delete mode 100644 tests/tcg/cris/libc/check_addc.c
+>  delete mode 100644 tests/tcg/cris/libc/check_addcm.c
+>  delete mode 100644 tests/tcg/cris/libc/check_addo.c
+>  delete mode 100644 tests/tcg/cris/libc/check_addoq.c
+>  delete mode 100644 tests/tcg/cris/libc/check_bound.c
+>  delete mode 100644 tests/tcg/cris/libc/check_ftag.c
+>  delete mode 100644 tests/tcg/cris/libc/check_gcctorture_pr28634-1.c
+>  delete mode 100644 tests/tcg/cris/libc/check_gcctorture_pr28634.c
+>  delete mode 100644 tests/tcg/cris/libc/check_glibc_kernelversion.c
+>  delete mode 100644 tests/tcg/cris/libc/check_hello.c
+>  delete mode 100644 tests/tcg/cris/libc/check_int64.c
+>  delete mode 100644 tests/tcg/cris/libc/check_lz.c
+>  delete mode 100644 tests/tcg/cris/libc/check_mapbrk.c
+>  delete mode 100644 tests/tcg/cris/libc/check_mmap1.c
+>  delete mode 100644 tests/tcg/cris/libc/check_mmap2.c
+>  delete mode 100644 tests/tcg/cris/libc/check_mmap3.c
+>  delete mode 100644 tests/tcg/cris/libc/check_moveq.c
+>  delete mode 100644 tests/tcg/cris/libc/check_openpf1.c
+>  delete mode 100644 tests/tcg/cris/libc/check_openpf2.c
+>  delete mode 100644 tests/tcg/cris/libc/check_openpf3.c
+>  delete mode 100644 tests/tcg/cris/libc/check_openpf5.c
+>  delete mode 100644 tests/tcg/cris/libc/check_settls1.c
+>  delete mode 100644 tests/tcg/cris/libc/check_sigalrm.c
+>  delete mode 100644 tests/tcg/cris/libc/check_stat1.c
+>  delete mode 100644 tests/tcg/cris/libc/check_stat2.c
+>  delete mode 100644 tests/tcg/cris/libc/check_stat3.c
+>  delete mode 100644 tests/tcg/cris/libc/check_stat4.c
+>  delete mode 100644 tests/tcg/cris/libc/check_swap.c
+>  delete mode 100644 tests/tcg/cris/libc/check_time2.c
+>  delete mode 100644 target/cris/translate_v10.c.inc
+>  delete mode 100644 hw/cris/Kconfig
+>  delete mode 100644 hw/cris/meson.build
+>  delete mode 100644 target/cris/Kconfig
+>  delete mode 100644 target/cris/meson.build
+>  delete mode 100644 tests/docker/dockerfiles/fedora-cris-cross.docker
+>  delete mode 100644 tests/tcg/cris/.gdbinit
+>  delete mode 100644 tests/tcg/cris/Makefile.target
+>  delete mode 100644 tests/tcg/cris/README
+>  delete mode 100644 tests/tcg/cris/bare/check_addcv17.s
+>  delete mode 100644 tests/tcg/cris/bare/check_addi.s
+>  delete mode 100644 tests/tcg/cris/bare/check_addiv32.s
+>  delete mode 100644 tests/tcg/cris/bare/check_addm.s
+>  delete mode 100644 tests/tcg/cris/bare/check_addq.s
+>  delete mode 100644 tests/tcg/cris/bare/check_addr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_addxc.s
+>  delete mode 100644 tests/tcg/cris/bare/check_addxm.s
+>  delete mode 100644 tests/tcg/cris/bare/check_addxr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_andc.s
+>  delete mode 100644 tests/tcg/cris/bare/check_andm.s
+>  delete mode 100644 tests/tcg/cris/bare/check_andq.s
+>  delete mode 100644 tests/tcg/cris/bare/check_andr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_asr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_ba.s
+>  delete mode 100644 tests/tcg/cris/bare/check_bas.s
+>  delete mode 100644 tests/tcg/cris/bare/check_bcc.s
+>  delete mode 100644 tests/tcg/cris/bare/check_boundc.s
+>  delete mode 100644 tests/tcg/cris/bare/check_boundr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_btst.s
+>  delete mode 100644 tests/tcg/cris/bare/check_clearfv32.s
+>  delete mode 100644 tests/tcg/cris/bare/check_clrjmp1.s
+>  delete mode 100644 tests/tcg/cris/bare/check_cmp-2.s
+>  delete mode 100644 tests/tcg/cris/bare/check_cmpc.s
+>  delete mode 100644 tests/tcg/cris/bare/check_cmpm.s
+>  delete mode 100644 tests/tcg/cris/bare/check_cmpq.s
+>  delete mode 100644 tests/tcg/cris/bare/check_cmpr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_cmpxc.s
+>  delete mode 100644 tests/tcg/cris/bare/check_cmpxm.s
+>  delete mode 100644 tests/tcg/cris/bare/check_dstep.s
+>  delete mode 100644 tests/tcg/cris/bare/check_jsr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_lapc.s
+>  delete mode 100644 tests/tcg/cris/bare/check_lsl.s
+>  delete mode 100644 tests/tcg/cris/bare/check_lsr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_mcp.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movdelsr1.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movecr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movei.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movemr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movemrv32.s
+>  delete mode 100644 tests/tcg/cris/bare/check_mover.s
+>  delete mode 100644 tests/tcg/cris/bare/check_moverm.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movmp.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movpmv32.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movpr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movprv32.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movscr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movsm.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movsr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movucr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movum.s
+>  delete mode 100644 tests/tcg/cris/bare/check_movur.s
+>  delete mode 100644 tests/tcg/cris/bare/check_mulv32.s
+>  delete mode 100644 tests/tcg/cris/bare/check_mulx.s
+>  delete mode 100644 tests/tcg/cris/bare/check_neg.s
+>  delete mode 100644 tests/tcg/cris/bare/check_not.s
+>  delete mode 100644 tests/tcg/cris/bare/check_orc.s
+>  delete mode 100644 tests/tcg/cris/bare/check_orm.s
+>  delete mode 100644 tests/tcg/cris/bare/check_orq.s
+>  delete mode 100644 tests/tcg/cris/bare/check_orr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_ret.s
+>  delete mode 100644 tests/tcg/cris/bare/check_scc.s
+>  delete mode 100644 tests/tcg/cris/bare/check_subc.s
+>  delete mode 100644 tests/tcg/cris/bare/check_subm.s
+>  delete mode 100644 tests/tcg/cris/bare/check_subq.s
+>  delete mode 100644 tests/tcg/cris/bare/check_subr.s
+>  delete mode 100644 tests/tcg/cris/bare/check_xarith.s
+>  delete mode 100644 tests/tcg/cris/bare/crt.s
+>  delete mode 100644 tests/tcg/cris/bare/testutils.inc
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- include/hw/arm/omap.h | 207 ------------------------------------------
- 1 file changed, 207 deletions(-)
+This is an enormous diffstat for a single patch, even if it
+is basically all deletions. (It took me ages just to select
+and delete the patch text so I could make this reply, let
+alone actually doing anything like review of it.) Could
+you split it up a bit, please?
 
-diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index 3f9860070b9..cf5f0219a2f 100644
---- a/include/hw/arm/omap.h
-+++ b/include/hw/arm/omap.h
-@@ -26,7 +26,6 @@
- #include "qom/object.h"
- 
- # define OMAP_EMIFS_BASE	0x00000000
--# define OMAP2_Q0_BASE		0x00000000
- # define OMAP_CS0_BASE		0x00000000
- # define OMAP_CS1_BASE		0x04000000
- # define OMAP_CS2_BASE		0x08000000
-@@ -34,20 +33,12 @@
- # define OMAP_EMIFF_BASE	0x10000000
- # define OMAP_IMIF_BASE		0x20000000
- # define OMAP_LOCALBUS_BASE	0x30000000
--# define OMAP2_Q1_BASE		0x40000000
--# define OMAP2_L4_BASE		0x48000000
--# define OMAP2_SRAM_BASE	0x40200000
--# define OMAP2_L3_BASE		0x68000000
--# define OMAP2_Q2_BASE		0x80000000
--# define OMAP2_Q3_BASE		0xc0000000
- # define OMAP_MPUI_BASE		0xe1000000
- 
- # define OMAP730_SRAM_SIZE	0x00032000
- # define OMAP15XX_SRAM_SIZE	0x00030000
- # define OMAP16XX_SRAM_SIZE	0x00004000
- # define OMAP1611_SRAM_SIZE	0x0003e800
--# define OMAP242X_SRAM_SIZE	0x000a0000
--# define OMAP243X_SRAM_SIZE	0x00010000
- # define OMAP_CS0_SIZE		0x04000000
- # define OMAP_CS1_SIZE		0x04000000
- # define OMAP_CS2_SIZE		0x04000000
-@@ -335,87 +326,6 @@ void omap_gpio_set_clk(Omap1GpioState *gpio, omap_clk clk);
- # define OMAP_INT_730_DMA_CH15		62
- # define OMAP_INT_730_NAND		63
- 
--/*
-- * OMAP-24xx common IRQ numbers
-- */
--# define OMAP_INT_24XX_STI		4
--# define OMAP_INT_24XX_SYS_NIRQ		7
--# define OMAP_INT_24XX_L3_IRQ		10
--# define OMAP_INT_24XX_PRCM_MPU_IRQ	11
--# define OMAP_INT_24XX_SDMA_IRQ0	12
--# define OMAP_INT_24XX_SDMA_IRQ1	13
--# define OMAP_INT_24XX_SDMA_IRQ2	14
--# define OMAP_INT_24XX_SDMA_IRQ3	15
--# define OMAP_INT_243X_MCBSP2_IRQ	16
--# define OMAP_INT_243X_MCBSP3_IRQ	17
--# define OMAP_INT_243X_MCBSP4_IRQ	18
--# define OMAP_INT_243X_MCBSP5_IRQ	19
--# define OMAP_INT_24XX_GPMC_IRQ		20
--# define OMAP_INT_24XX_GUFFAW_IRQ	21
--# define OMAP_INT_24XX_IVA_IRQ		22
--# define OMAP_INT_24XX_EAC_IRQ		23
--# define OMAP_INT_24XX_CAM_IRQ		24
--# define OMAP_INT_24XX_DSS_IRQ		25
--# define OMAP_INT_24XX_MAIL_U0_MPU	26
--# define OMAP_INT_24XX_DSP_UMA		27
--# define OMAP_INT_24XX_DSP_MMU		28
--# define OMAP_INT_24XX_GPIO_BANK1	29
--# define OMAP_INT_24XX_GPIO_BANK2	30
--# define OMAP_INT_24XX_GPIO_BANK3	31
--# define OMAP_INT_24XX_GPIO_BANK4	32
--# define OMAP_INT_243X_GPIO_BANK5	33
--# define OMAP_INT_24XX_MAIL_U3_MPU	34
--# define OMAP_INT_24XX_WDT3		35
--# define OMAP_INT_24XX_WDT4		36
--# define OMAP_INT_24XX_GPTIMER1		37
--# define OMAP_INT_24XX_GPTIMER2		38
--# define OMAP_INT_24XX_GPTIMER3		39
--# define OMAP_INT_24XX_GPTIMER4		40
--# define OMAP_INT_24XX_GPTIMER5		41
--# define OMAP_INT_24XX_GPTIMER6		42
--# define OMAP_INT_24XX_GPTIMER7		43
--# define OMAP_INT_24XX_GPTIMER8		44
--# define OMAP_INT_24XX_GPTIMER9		45
--# define OMAP_INT_24XX_GPTIMER10	46
--# define OMAP_INT_24XX_GPTIMER11	47
--# define OMAP_INT_24XX_GPTIMER12	48
--# define OMAP_INT_24XX_PKA_IRQ		50
--# define OMAP_INT_24XX_SHA1MD5_IRQ	51
--# define OMAP_INT_24XX_RNG_IRQ		52
--# define OMAP_INT_24XX_MG_IRQ		53
--# define OMAP_INT_24XX_I2C1_IRQ		56
--# define OMAP_INT_24XX_I2C2_IRQ		57
--# define OMAP_INT_24XX_MCBSP1_IRQ_TX	59
--# define OMAP_INT_24XX_MCBSP1_IRQ_RX	60
--# define OMAP_INT_24XX_MCBSP2_IRQ_TX	62
--# define OMAP_INT_24XX_MCBSP2_IRQ_RX	63
--# define OMAP_INT_243X_MCBSP1_IRQ	64
--# define OMAP_INT_24XX_MCSPI1_IRQ	65
--# define OMAP_INT_24XX_MCSPI2_IRQ	66
--# define OMAP_INT_24XX_SSI1_IRQ0	67
--# define OMAP_INT_24XX_SSI1_IRQ1	68
--# define OMAP_INT_24XX_SSI2_IRQ0	69
--# define OMAP_INT_24XX_SSI2_IRQ1	70
--# define OMAP_INT_24XX_SSI_GDD_IRQ	71
--# define OMAP_INT_24XX_UART1_IRQ	72
--# define OMAP_INT_24XX_UART2_IRQ	73
--# define OMAP_INT_24XX_UART3_IRQ	74
--# define OMAP_INT_24XX_USB_IRQ_GEN	75
--# define OMAP_INT_24XX_USB_IRQ_NISO	76
--# define OMAP_INT_24XX_USB_IRQ_ISO	77
--# define OMAP_INT_24XX_USB_IRQ_HGEN	78
--# define OMAP_INT_24XX_USB_IRQ_HSOF	79
--# define OMAP_INT_24XX_USB_IRQ_OTG	80
--# define OMAP_INT_24XX_VLYNQ_IRQ	81
--# define OMAP_INT_24XX_MMC_IRQ		83
--# define OMAP_INT_24XX_MS_IRQ		84
--# define OMAP_INT_24XX_FAC_IRQ		85
--# define OMAP_INT_24XX_MCSPI3_IRQ	91
--# define OMAP_INT_243X_HS_USB_MC	92
--# define OMAP_INT_243X_HS_USB_DMA	93
--# define OMAP_INT_243X_CARKIT		94
--# define OMAP_INT_34XX_GPTIMER12	95
--
- /* omap_dma.c */
- enum omap_dma_model {
-     omap_dma_3_0,
-@@ -568,74 +478,6 @@ struct omap_dma_lcd_channel_s {
- # define OMAP_DMA_MMC2_RX		55
- # define OMAP_DMA_CRYPTO_DES_OUT	56
- 
--/*
-- * DMA request numbers for the OMAP2
-- */
--# define OMAP24XX_DMA_NO_DEVICE		0
--# define OMAP24XX_DMA_XTI_DMA		1	/* Not in OMAP2420 */
--# define OMAP24XX_DMA_EXT_DMAREQ0	2
--# define OMAP24XX_DMA_EXT_DMAREQ1	3
--# define OMAP24XX_DMA_GPMC		4
--# define OMAP24XX_DMA_GFX		5	/* Not in OMAP2420 */
--# define OMAP24XX_DMA_DSS		6
--# define OMAP24XX_DMA_VLYNQ_TX		7	/* Not in OMAP2420 */
--# define OMAP24XX_DMA_CWT		8	/* Not in OMAP2420 */
--# define OMAP24XX_DMA_AES_TX		9	/* Not in OMAP2420 */
--# define OMAP24XX_DMA_AES_RX		10	/* Not in OMAP2420 */
--# define OMAP24XX_DMA_DES_TX		11	/* Not in OMAP2420 */
--# define OMAP24XX_DMA_DES_RX		12	/* Not in OMAP2420 */
--# define OMAP24XX_DMA_SHA1MD5_RX	13	/* Not in OMAP2420 */
--# define OMAP24XX_DMA_EXT_DMAREQ2	14
--# define OMAP24XX_DMA_EXT_DMAREQ3	15
--# define OMAP24XX_DMA_EXT_DMAREQ4	16
--# define OMAP24XX_DMA_EAC_AC_RD		17
--# define OMAP24XX_DMA_EAC_AC_WR		18
--# define OMAP24XX_DMA_EAC_MD_UL_RD	19
--# define OMAP24XX_DMA_EAC_MD_UL_WR	20
--# define OMAP24XX_DMA_EAC_MD_DL_RD	21
--# define OMAP24XX_DMA_EAC_MD_DL_WR	22
--# define OMAP24XX_DMA_EAC_BT_UL_RD	23
--# define OMAP24XX_DMA_EAC_BT_UL_WR	24
--# define OMAP24XX_DMA_EAC_BT_DL_RD	25
--# define OMAP24XX_DMA_EAC_BT_DL_WR	26
--# define OMAP24XX_DMA_I2C1_TX		27
--# define OMAP24XX_DMA_I2C1_RX		28
--# define OMAP24XX_DMA_I2C2_TX		29
--# define OMAP24XX_DMA_I2C2_RX		30
--# define OMAP24XX_DMA_MCBSP1_TX		31
--# define OMAP24XX_DMA_MCBSP1_RX		32
--# define OMAP24XX_DMA_MCBSP2_TX		33
--# define OMAP24XX_DMA_MCBSP2_RX		34
--# define OMAP24XX_DMA_SPI1_TX0		35
--# define OMAP24XX_DMA_SPI1_RX0		36
--# define OMAP24XX_DMA_SPI1_TX1		37
--# define OMAP24XX_DMA_SPI1_RX1		38
--# define OMAP24XX_DMA_SPI1_TX2		39
--# define OMAP24XX_DMA_SPI1_RX2		40
--# define OMAP24XX_DMA_SPI1_TX3		41
--# define OMAP24XX_DMA_SPI1_RX3		42
--# define OMAP24XX_DMA_SPI2_TX0		43
--# define OMAP24XX_DMA_SPI2_RX0		44
--# define OMAP24XX_DMA_SPI2_TX1		45
--# define OMAP24XX_DMA_SPI2_RX1		46
--
--# define OMAP24XX_DMA_UART1_TX		49
--# define OMAP24XX_DMA_UART1_RX		50
--# define OMAP24XX_DMA_UART2_TX		51
--# define OMAP24XX_DMA_UART2_RX		52
--# define OMAP24XX_DMA_UART3_TX		53
--# define OMAP24XX_DMA_UART3_RX		54
--# define OMAP24XX_DMA_USB_W2FC_TX0	55
--# define OMAP24XX_DMA_USB_W2FC_RX0	56
--# define OMAP24XX_DMA_USB_W2FC_TX1	57
--# define OMAP24XX_DMA_USB_W2FC_RX1	58
--# define OMAP24XX_DMA_USB_W2FC_TX2	59
--# define OMAP24XX_DMA_USB_W2FC_RX2	60
--# define OMAP24XX_DMA_MMC1_TX		61
--# define OMAP24XX_DMA_MMC1_RX		62
--# define OMAP24XX_DMA_MS		63	/* Not in OMAP2420 */
--# define OMAP24XX_DMA_EXT_DMAREQ5	64
--
- struct omap_uart_s;
- struct omap_uart_s *omap_uart_init(hwaddr base,
-                 qemu_irq irq, omap_clk fclk, omap_clk iclk,
-@@ -709,24 +551,11 @@ I2CBus *omap_i2c_bus(DeviceState *omap_i2c);
- # define cpu_is_omap1510(cpu)		(cpu->mpu_model == omap1510)
- # define cpu_is_omap1610(cpu)		(cpu->mpu_model == omap1610)
- # define cpu_is_omap1710(cpu)		(cpu->mpu_model == omap1710)
--# define cpu_is_omap2410(cpu)		(cpu->mpu_model == omap2410)
--# define cpu_is_omap2420(cpu)		(cpu->mpu_model == omap2420)
--# define cpu_is_omap2430(cpu)		(cpu->mpu_model == omap2430)
--# define cpu_is_omap3430(cpu)		(cpu->mpu_model == omap3430)
--# define cpu_is_omap3630(cpu)           (cpu->mpu_model == omap3630)
- 
- # define cpu_is_omap15xx(cpu)		\
-         (cpu_is_omap310(cpu) || cpu_is_omap1510(cpu))
- # define cpu_is_omap16xx(cpu)		\
-         (cpu_is_omap1610(cpu) || cpu_is_omap1710(cpu))
--# define cpu_is_omap24xx(cpu)		\
--        (cpu_is_omap2410(cpu) || cpu_is_omap2420(cpu) || cpu_is_omap2430(cpu))
--
--# define cpu_class_omap1(cpu)		\
--        (cpu_is_omap15xx(cpu) || cpu_is_omap16xx(cpu))
--# define cpu_class_omap2(cpu)		cpu_is_omap24xx(cpu)
--# define cpu_class_omap3(cpu) \
--        (cpu_is_omap3430(cpu) || cpu_is_omap3630(cpu))
- 
- struct omap_mpu_state_s {
-     enum omap_mpu_model {
-@@ -734,13 +563,6 @@ struct omap_mpu_state_s {
-         omap1510,
-         omap1610,
-         omap1710,
--        omap2410,
--        omap2420,
--        omap2422,
--        omap2423,
--        omap2430,
--        omap3430,
--        omap3630,
-     } mpu_model;
- 
-     ARMCPU *cpu;
-@@ -876,35 +698,6 @@ void omap_mpu_wakeup(void *opaque, int irq, int req);
-                                        HWADDR_PRIx "\n", \
-                       __func__, paddr)
- 
--/* OMAP-specific Linux bootloader tags for the ATAG_BOARD area
-- * (Board-specific tags are not here)
-- */
--#define OMAP_TAG_CLOCK		0x4f01
--#define OMAP_TAG_MMC		0x4f02
--#define OMAP_TAG_SERIAL_CONSOLE	0x4f03
--#define OMAP_TAG_USB		0x4f04
--#define OMAP_TAG_LCD		0x4f05
--#define OMAP_TAG_GPIO_SWITCH	0x4f06
--#define OMAP_TAG_UART		0x4f07
--#define OMAP_TAG_FBMEM		0x4f08
--#define OMAP_TAG_STI_CONSOLE	0x4f09
--#define OMAP_TAG_CAMERA_SENSOR	0x4f0a
--#define OMAP_TAG_PARTITION	0x4f0b
--#define OMAP_TAG_TEA5761	0x4f10
--#define OMAP_TAG_TMP105		0x4f11
--#define OMAP_TAG_BOOT_REASON	0x4f80
--#define OMAP_TAG_FLASH_PART_STR	0x4f81
--#define OMAP_TAG_VERSION_STR	0x4f82
--
--enum {
--    OMAP_GPIOSW_TYPE_COVER	= 0 << 4,
--    OMAP_GPIOSW_TYPE_CONNECTION	= 1 << 4,
--    OMAP_GPIOSW_TYPE_ACTIVITY	= 2 << 4,
--};
--
--#define OMAP_GPIOSW_INVERTED	0x0001
--#define OMAP_GPIOSW_OUTPUT	0x0002
--
- # define OMAP_MPUI_REG_MASK		0x000007ff
- 
- #endif
--- 
-2.34.1
-
+thanks
+-- PMM
 
