@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6F796A3C5
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E7B796A3F6
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:14:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slW5c-0001Zn-Np; Tue, 03 Sep 2024 12:09:08 -0400
+	id 1slW5f-0001nS-Ar; Tue, 03 Sep 2024 12:09:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5Z-0001QU-Tx
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:09:05 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1slW5c-0001br-DH
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:09:08 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5W-0002yM-Eo
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:09:05 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-42bb8cf8abeso44423155e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 09:09:01 -0700 (PDT)
+ id 1slW5Z-0002zD-T7
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:09:07 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-42bb885f97eso27867685e9.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 09:09:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725379741; x=1725984541; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725379744; x=1725984544; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=slM94TULEewYKeVq6sh2hQIHzbNpZcOVLQjaenOMVd4=;
- b=nvAt0IyBHNVh0Z+Y8z46IQSp0kHC5eh8yNE68f/sLeL1nJAg2L13hteRB4Yy3UdZUd
- YUiW8Md3IAHb2cIlZC7pdA79OdQakme/xFORRKjxgfmwGBKFdba5C+NNgD3mdpi4EeO+
- EBWJv3ahplbNBcqK/IKgzeW1CwHMtnsNVvRTnBWar3HhDh6f1sILTIDDf2gkbst9BWYc
- SLHrMPVx7VK0UZukOFEPNIf2/F/wdznT0BZomALjPZS+nzxJhGJ6c+vBTeTHLE6r0XHc
- qzA7rP2TInxoX6Qbva35DnUShA3hg/avgj7irobqXAsUYg4sANqY2a0UGHSWjPZ+R09z
- laAg==
+ :reply-to; bh=XSUXLx8RymjZoH3CUxgDuuHRurRfQuokj7VlT6LUHv4=;
+ b=rTL7waw7sFmpNRf9INKP5bxBEcy9CAA5ggb0MpdAS+tMjg1oQY00hP8T6riRZTs9sc
+ 3XwYUJc9eIRtI652Te0Fjfgv7ofQLTWW81SL0/DJxsbjVyEY8e2gpZuf1QkmUfbu8QBo
+ ePQfUnY5qLEDd3jG8Uarj8s1llJ7bW11ZSnzHTNEWbBbwC6W7cRQuSrRcSE3V+gWPsb7
+ icANAlpjbEQMSa9b7V4yiCfuUHXaqGlpK+1F8XM1eaBjK45RRRTAAQKOYkUkOxSWOU87
+ Ce86kh6+gKZiOViIMc6fqEGu6HYFWpsFyMUzNP5xoh0i7pEG3BclCZTOgcEgCtyydJ57
+ b/1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725379741; x=1725984541;
+ d=1e100.net; s=20230601; t=1725379744; x=1725984544;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=slM94TULEewYKeVq6sh2hQIHzbNpZcOVLQjaenOMVd4=;
- b=KikrXdxoVynYhcWqjEeefI1jtAkjsn7ae3f94kR12uRUDMQj70oF1pS792oBdxhrvN
- HbGGlrecah08PfRHNoFmOjnspxdIYoaLvQQgb/ajccgijX/m3zY6fucOS5rYn6qizcd0
- E/jXoFWXI8QU/fIashPR0vzm8L2cnSHqmGx0cJiR35TyKwXOCMAnKvvM7LlXq4P4DB0E
- Utm/ouilpn8GTCafxvzuEjTH1MeO5Zk5vPoggJcsd9/vXlelufYnqitLL8oA8TMNLTpg
- 3abDeKTdtHXUzUR4AFqKXkmNLZ8hIAJODUXTZ4bg8EOh/Mw3uvEZEyOTtOidiL/RYidh
- RQYQ==
+ bh=XSUXLx8RymjZoH3CUxgDuuHRurRfQuokj7VlT6LUHv4=;
+ b=YGACZq/RPzgdA9J7KdKwFRsY+BeCRtSsb107pBvgxeDVBHUBBZrA7SCefWT0zfayL3
+ KvV7MZGan23YGd4l8ATsm4p8ZEMxT56csdopat36Escj1jEJEhrhcPgt9hgUgY+Rmrgc
+ lbrJGZZfQK7J78SGJuoXLBNWiaJ+/ElEl/rjx2Pd09lHh94WelOiPZATc+xvVGpqWXd9
+ gNEyLKFGOcjlr8gK7mheFyrQI6Qe34MFn0NjZxWuggJTl2s7283mGFja+Ja29CaBkfJz
+ +eV6Wfvn2+kqxwXDTPLm+ExMHgrR39+3H8yemSLPm0JsZLYUcQPb8Zp/6wJUte8Fhizt
+ qShg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXH7dZZ4zILboffbb2t1HP0SiJwxrOes0u+2RqhBfrbisY1IZGk9v1a75OPtwQi8JIF35kLg4n9jf2w@nongnu.org
-X-Gm-Message-State: AOJu0Yygsr1qmlMr4igkXc9+eIYFzBFuWIWXOYYMjyxFT7rIdT4V44rB
- yKbZdJrbXCIp4HI9UVS7xNuPdmKZEFV7v7z6uWNxWp9f78dTCgdgJvTD94cMsCpBEY1HNYRWGtk
- P
-X-Google-Smtp-Source: AGHT+IGuphinHyFAAa2c3Qe9qbJW4GfPgA+UFsVSNWItLDdUagVSOiOPUmrrEMO2QfKSZJTY1H7Qzg==
-X-Received: by 2002:a05:600c:3b85:b0:426:602d:a246 with SMTP id
- 5b1f17b1804b1-42c8dea66b1mr10526295e9.32.1725379740805; 
- Tue, 03 Sep 2024 09:09:00 -0700 (PDT)
+ AJvYcCU9B57PtuYakzUQ+U6GHQS1AxpdAwuwQYlU/Nd7iD5eaQkdlv38810WQK/sDXsxjptc8Evhg4B8hVu2@nongnu.org
+X-Gm-Message-State: AOJu0Yxheex95k++9HbuN9PY/+j0U1tiUfLQ9kFFhx1E9r7LrB7kFHlg
+ /1+wOU1BxfcpNjD+0Hgk9UaLq5CJqEj+p+ODGLnjRrKxikZ/lsAcuAyMVVDQVucX4Y9wg2eTR1T
+ t
+X-Google-Smtp-Source: AGHT+IG+Q/rDCSPqC2utYdSAYBJtxzkfKX8N29Il5he5SXMciHb8LUuA7aaoiqTK0JMxmRWwYk9HtQ==
+X-Received: by 2002:a05:600c:3510:b0:429:ea2e:36e1 with SMTP id
+ 5b1f17b1804b1-42bb4caa0c2mr106323075e9.13.1725379744333; 
+ Tue, 03 Sep 2024 09:09:04 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-42bb6df1066sm175123065e9.18.2024.09.03.09.09.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2024 09:09:00 -0700 (PDT)
+ Tue, 03 Sep 2024 09:09:01 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH for-9.2 46/53] hw/block: Remove ecc
-Date: Tue,  3 Sep 2024 17:07:44 +0100
-Message-Id: <20240903160751.4100218-47-peter.maydell@linaro.org>
+Subject: [PATCH for-9.2 47/53] hw/ssi: Remove omap_mcspi
+Date: Tue,  3 Sep 2024 17:07:45 +0100
+Message-Id: <20240903160751.4100218-48-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240903160751.4100218-1-peter.maydell@linaro.org>
 References: <20240903160751.4100218-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,192 +93,444 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ecc.c code was used only by the PXA2xx and OMAP2 SoC devices,
-which we have removed, so it is now completely unused.
-
-Note that hw/misc/eccmemctl.c does not in fact use any of the
-code frome ecc.c, so that KConfig dependency was incorrect.
+The omap_mcspi device is used only in the OMAP2 SoC, which we
+are removing.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/block/flash.h | 11 -----
- hw/block/ecc.c           | 91 ----------------------------------------
- hw/arm/Kconfig           |  1 -
- hw/block/Kconfig         |  3 --
- hw/block/meson.build     |  1 -
- hw/misc/Kconfig          |  1 -
- 6 files changed, 108 deletions(-)
- delete mode 100644 hw/block/ecc.c
+ include/hw/arm/omap.h |  11 --
+ hw/ssi/omap_spi.c     | 380 ------------------------------------------
+ hw/ssi/meson.build    |   1 -
+ 3 files changed, 392 deletions(-)
+ delete mode 100644 hw/ssi/omap_spi.c
 
-diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
-index b985c825a01..5fd67f5bb79 100644
---- a/include/hw/block/flash.h
-+++ b/include/hw/block/flash.h
-@@ -62,17 +62,6 @@ uint32_t nand_getbuswidth(DeviceState *dev);
- #define NAND_MFR_HYNIX      0xad
- #define NAND_MFR_MICRON     0x2c
+diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
+index 982341d0079..118874d8775 100644
+--- a/include/hw/arm/omap.h
++++ b/include/hw/arm/omap.h
+@@ -698,15 +698,6 @@ struct omap_uwire_s;
+ void omap_uwire_attach(struct omap_uwire_s *s,
+                 uWireSlave *slave, int chipselect);
  
--/* ecc.c */
--typedef struct {
--    uint8_t cp;     /* Column parity */
--    uint16_t lp[2]; /* Line parity */
--    uint16_t count;
--} ECCState;
+-/* OMAP2 spi */
+-struct omap_mcspi_s;
+-struct omap_mcspi_s *omap_mcspi_init(struct omap_target_agent_s *ta, int chnum,
+-                qemu_irq irq, qemu_irq *drq, omap_clk fclk, omap_clk iclk);
+-void omap_mcspi_attach(struct omap_mcspi_s *s,
+-                uint32_t (*txrx)(void *opaque, uint32_t, int), void *opaque,
+-                int chipselect);
+-void omap_mcspi_reset(struct omap_mcspi_s *s);
 -
--uint8_t ecc_digest(ECCState *s, uint8_t sample);
--void ecc_reset(ECCState *s);
--extern const VMStateDescription vmstate_ecc_state;
--
- /* m25p80.c */
+ struct I2SCodec {
+     void *opaque;
  
- #define TYPE_M25P80 "m25p80-generic"
-diff --git a/hw/block/ecc.c b/hw/block/ecc.c
+@@ -923,8 +914,6 @@ struct omap_mpu_state_s {
+     /* OMAP2-only peripherals */
+     struct omap_l4_s *l4;
+ 
+-    struct omap_mcspi_s *mcspi[2];
+-
+     struct omap_dss_s *dss;
+ };
+ 
+diff --git a/hw/ssi/omap_spi.c b/hw/ssi/omap_spi.c
 deleted file mode 100644
-index ed889a4184f..00000000000
---- a/hw/block/ecc.c
+index 8f85c3e3918..00000000000
+--- a/hw/ssi/omap_spi.c
 +++ /dev/null
-@@ -1,91 +0,0 @@
+@@ -1,380 +0,0 @@
 -/*
-- * Calculate Error-correcting Codes. Used by NAND Flash controllers
-- * (not by NAND chips).
+- * TI OMAP processor's Multichannel SPI emulation.
 - *
-- * Copyright (c) 2006 Openedhand Ltd.
-- * Written by Andrzej Zaborowski <balrog@zabor.org>
+- * Copyright (C) 2007-2009 Nokia Corporation
 - *
-- * This code is licensed under the GNU GPL v2.
+- * Original code for OMAP2 by Andrzej Zaborowski <andrew@openedhand.com>
 - *
-- * Contributions after 2012-01-13 are licensed under the terms of the
-- * GNU GPL, version 2 or (at your option) any later version.
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 or
+- * (at your option) any later version of the License.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 - */
 -
 -#include "qemu/osdep.h"
--#include "migration/vmstate.h"
--#include "hw/block/flash.h"
+-#include "qemu/log.h"
+-#include "hw/hw.h"
+-#include "hw/irq.h"
+-#include "hw/arm/omap.h"
 -
--/*
-- * Pre-calculated 256-way 1 byte column parity.  Table borrowed from Linux.
-- */
--static const uint8_t nand_ecc_precalc_table[] = {
--    0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a,
--    0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00,
--    0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f,
--    0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
--    0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c,
--    0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
--    0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59,
--    0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
--    0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33,
--    0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
--    0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56,
--    0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
--    0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55,
--    0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
--    0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30,
--    0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
--    0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30,
--    0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
--    0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55,
--    0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
--    0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56,
--    0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
--    0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33,
--    0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
--    0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59,
--    0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
--    0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c,
--    0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
--    0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f,
--    0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
--    0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a,
--    0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00,
+-/* Multichannel SPI */
+-struct omap_mcspi_s {
+-    MemoryRegion iomem;
+-    qemu_irq irq;
+-    int chnum;
+-
+-    uint32_t sysconfig;
+-    uint32_t systest;
+-    uint32_t irqst;
+-    uint32_t irqen;
+-    uint32_t wken;
+-    uint32_t control;
+-
+-    struct omap_mcspi_ch_s {
+-        qemu_irq txdrq;
+-        qemu_irq rxdrq;
+-        uint32_t (*txrx)(void *opaque, uint32_t, int);
+-        void *opaque;
+-
+-        uint32_t tx;
+-        uint32_t rx;
+-
+-        uint32_t config;
+-        uint32_t status;
+-        uint32_t control;
+-    } ch[4];
 -};
 -
--/* Update ECC parity count.  */
--uint8_t ecc_digest(ECCState *s, uint8_t sample)
+-static inline void omap_mcspi_interrupt_update(struct omap_mcspi_s *s)
 -{
--    uint8_t idx = nand_ecc_precalc_table[sample];
+-    qemu_set_irq(s->irq, s->irqst & s->irqen);
+-}
 -
--    s->cp ^= idx & 0x3f;
--    if (idx & 0x40) {
--        s->lp[0] ^= ~s->count;
--        s->lp[1] ^= s->count;
+-static inline void omap_mcspi_dmarequest_update(struct omap_mcspi_ch_s *ch)
+-{
+-    qemu_set_irq(ch->txdrq,
+-                    (ch->control & 1) &&		/* EN */
+-                    (ch->config & (1 << 14)) &&		/* DMAW */
+-                    (ch->status & (1 << 1)) &&		/* TXS */
+-                    ((ch->config >> 12) & 3) != 1);	/* TRM */
+-    qemu_set_irq(ch->rxdrq,
+-                    (ch->control & 1) &&		/* EN */
+-                    (ch->config & (1 << 15)) &&		/* DMAW */
+-                    (ch->status & (1 << 0)) &&		/* RXS */
+-                    ((ch->config >> 12) & 3) != 2);	/* TRM */
+-}
+-
+-static void omap_mcspi_transfer_run(struct omap_mcspi_s *s, int chnum)
+-{
+-    struct omap_mcspi_ch_s *ch = s->ch + chnum;
+-
+-    if (!(ch->control & 1))				/* EN */
+-        return;
+-    if ((ch->status & (1 << 0)) &&			/* RXS */
+-                    ((ch->config >> 12) & 3) != 2 &&	/* TRM */
+-                    !(ch->config & (1 << 19)))		/* TURBO */
+-        goto intr_update;
+-    if ((ch->status & (1 << 1)) &&			/* TXS */
+-                    ((ch->config >> 12) & 3) != 1)	/* TRM */
+-        goto intr_update;
+-
+-    if (!(s->control & 1) ||				/* SINGLE */
+-                    (ch->config & (1 << 20))) {		/* FORCE */
+-        if (ch->txrx)
+-            ch->rx = ch->txrx(ch->opaque, ch->tx,	/* WL */
+-                            1 + (0x1f & (ch->config >> 7)));
 -    }
--    s->count ++;
 -
--    return sample;
+-    ch->tx = 0;
+-    ch->status |= 1 << 2;				/* EOT */
+-    ch->status |= 1 << 1;				/* TXS */
+-    if (((ch->config >> 12) & 3) != 2)			/* TRM */
+-        ch->status |= 1 << 0;				/* RXS */
+-
+-intr_update:
+-    if ((ch->status & (1 << 0)) &&			/* RXS */
+-                    ((ch->config >> 12) & 3) != 2 &&	/* TRM */
+-                    !(ch->config & (1 << 19)))		/* TURBO */
+-        s->irqst |= 1 << (2 + 4 * chnum);		/* RX_FULL */
+-    if ((ch->status & (1 << 1)) &&			/* TXS */
+-                    ((ch->config >> 12) & 3) != 1)	/* TRM */
+-        s->irqst |= 1 << (0 + 4 * chnum);		/* TX_EMPTY */
+-    omap_mcspi_interrupt_update(s);
+-    omap_mcspi_dmarequest_update(ch);
 -}
 -
--/* Reinitialise the counters.  */
--void ecc_reset(ECCState *s)
+-void omap_mcspi_reset(struct omap_mcspi_s *s)
 -{
--    s->lp[0] = 0x0000;
--    s->lp[1] = 0x0000;
--    s->cp = 0x00;
--    s->count = 0;
+-    int ch;
+-
+-    s->sysconfig = 0;
+-    s->systest = 0;
+-    s->irqst = 0;
+-    s->irqen = 0;
+-    s->wken = 0;
+-    s->control = 4;
+-
+-    for (ch = 0; ch < 4; ch ++) {
+-        s->ch[ch].config = 0x060000;
+-        s->ch[ch].status = 2;				/* TXS */
+-        s->ch[ch].control = 0;
+-
+-        omap_mcspi_dmarequest_update(s->ch + ch);
+-    }
+-
+-    omap_mcspi_interrupt_update(s);
 -}
 -
--/* Save/restore */
--const VMStateDescription vmstate_ecc_state = {
--    .name = "ecc-state",
--    .version_id = 0,
--    .minimum_version_id = 0,
--    .fields = (const VMStateField[]) {
--        VMSTATE_UINT8(cp, ECCState),
--        VMSTATE_UINT16_ARRAY(lp, ECCState, 2),
--        VMSTATE_UINT16(count, ECCState),
--        VMSTATE_END_OF_LIST(),
--    },
--};
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index a70ceff504b..7b19a9559f6 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -146,7 +146,6 @@ config OMAP
-     bool
-     select FRAMEBUFFER
-     select I2C
--    select ECC
-     select NAND
-     select PFLASH_CFI01
-     select SD
-diff --git a/hw/block/Kconfig b/hw/block/Kconfig
-index 002d255dced..741390742c2 100644
---- a/hw/block/Kconfig
-+++ b/hw/block/Kconfig
-@@ -22,9 +22,6 @@ config PFLASH_CFI01
- config PFLASH_CFI02
-     bool
- 
--config ECC
--    bool
+-static uint64_t omap_mcspi_read(void *opaque, hwaddr addr, unsigned size)
+-{
+-    struct omap_mcspi_s *s = opaque;
+-    int ch = 0;
+-    uint32_t ret;
 -
- config TC58128
-     bool
- 
-diff --git a/hw/block/meson.build b/hw/block/meson.build
-index 74c8eb9e735..3735065631a 100644
---- a/hw/block/meson.build
-+++ b/hw/block/meson.build
-@@ -3,7 +3,6 @@ system_ss.add(files(
-   'cdrom.c',
-   'hd-geometry.c'
- ))
--system_ss.add(when: 'CONFIG_ECC', if_true: files('ecc.c'))
- system_ss.add(when: 'CONFIG_FDC', if_true: files('fdc.c'))
- system_ss.add(when: 'CONFIG_FDC_ISA', if_true: files('fdc-isa.c'))
- system_ss.add(when: 'CONFIG_FDC_SYSBUS', if_true: files('fdc-sysbus.c'))
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index 1e08785b832..8568aaa2293 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -74,7 +74,6 @@ config IVSHMEM_DEVICE
- 
- config ECCMEMCTL
-     bool
--    select ECC
- 
- config IMX
-     bool
+-    if (size != 4) {
+-        return omap_badwidth_read32(opaque, addr);
+-    }
+-
+-    switch (addr) {
+-    case 0x00:	/* MCSPI_REVISION */
+-        return 0x91;
+-
+-    case 0x10:	/* MCSPI_SYSCONFIG */
+-        return s->sysconfig;
+-
+-    case 0x14:	/* MCSPI_SYSSTATUS */
+-        return 1;					/* RESETDONE */
+-
+-    case 0x18:	/* MCSPI_IRQSTATUS */
+-        return s->irqst;
+-
+-    case 0x1c:	/* MCSPI_IRQENABLE */
+-        return s->irqen;
+-
+-    case 0x20:	/* MCSPI_WAKEUPENABLE */
+-        return s->wken;
+-
+-    case 0x24:	/* MCSPI_SYST */
+-        return s->systest;
+-
+-    case 0x28:	/* MCSPI_MODULCTRL */
+-        return s->control;
+-
+-    case 0x68: ch ++;
+-        /* fall through */
+-    case 0x54: ch ++;
+-        /* fall through */
+-    case 0x40: ch ++;
+-        /* fall through */
+-    case 0x2c:	/* MCSPI_CHCONF */
+-        return s->ch[ch].config;
+-
+-    case 0x6c: ch ++;
+-        /* fall through */
+-    case 0x58: ch ++;
+-        /* fall through */
+-    case 0x44: ch ++;
+-        /* fall through */
+-    case 0x30:	/* MCSPI_CHSTAT */
+-        return s->ch[ch].status;
+-
+-    case 0x70: ch ++;
+-        /* fall through */
+-    case 0x5c: ch ++;
+-        /* fall through */
+-    case 0x48: ch ++;
+-        /* fall through */
+-    case 0x34:	/* MCSPI_CHCTRL */
+-        return s->ch[ch].control;
+-
+-    case 0x74: ch ++;
+-        /* fall through */
+-    case 0x60: ch ++;
+-        /* fall through */
+-    case 0x4c: ch ++;
+-        /* fall through */
+-    case 0x38:	/* MCSPI_TX */
+-        return s->ch[ch].tx;
+-
+-    case 0x78: ch ++;
+-        /* fall through */
+-    case 0x64: ch ++;
+-        /* fall through */
+-    case 0x50: ch ++;
+-        /* fall through */
+-    case 0x3c:	/* MCSPI_RX */
+-        s->ch[ch].status &= ~(1 << 0);			/* RXS */
+-        ret = s->ch[ch].rx;
+-        omap_mcspi_transfer_run(s, ch);
+-        return ret;
+-    }
+-
+-    OMAP_BAD_REG(addr);
+-    return 0;
+-}
+-
+-static void omap_mcspi_write(void *opaque, hwaddr addr,
+-                             uint64_t value, unsigned size)
+-{
+-    struct omap_mcspi_s *s = opaque;
+-    int ch = 0;
+-
+-    if (size != 4) {
+-        omap_badwidth_write32(opaque, addr, value);
+-        return;
+-    }
+-
+-    switch (addr) {
+-    case 0x00:	/* MCSPI_REVISION */
+-    case 0x14:	/* MCSPI_SYSSTATUS */
+-    case 0x30:	/* MCSPI_CHSTAT0 */
+-    case 0x3c:	/* MCSPI_RX0 */
+-    case 0x44:	/* MCSPI_CHSTAT1 */
+-    case 0x50:	/* MCSPI_RX1 */
+-    case 0x58:	/* MCSPI_CHSTAT2 */
+-    case 0x64:	/* MCSPI_RX2 */
+-    case 0x6c:	/* MCSPI_CHSTAT3 */
+-    case 0x78:	/* MCSPI_RX3 */
+-        OMAP_RO_REG(addr);
+-        return;
+-
+-    case 0x10:	/* MCSPI_SYSCONFIG */
+-        if (value & (1 << 1))				/* SOFTRESET */
+-            omap_mcspi_reset(s);
+-        s->sysconfig = value & 0x31d;
+-        break;
+-
+-    case 0x18:	/* MCSPI_IRQSTATUS */
+-        if (!((s->control & (1 << 3)) && (s->systest & (1 << 11)))) {
+-            s->irqst &= ~value;
+-            omap_mcspi_interrupt_update(s);
+-        }
+-        break;
+-
+-    case 0x1c:	/* MCSPI_IRQENABLE */
+-        s->irqen = value & 0x1777f;
+-        omap_mcspi_interrupt_update(s);
+-        break;
+-
+-    case 0x20:	/* MCSPI_WAKEUPENABLE */
+-        s->wken = value & 1;
+-        break;
+-
+-    case 0x24:	/* MCSPI_SYST */
+-        if (s->control & (1 << 3))			/* SYSTEM_TEST */
+-            if (value & (1 << 11)) {			/* SSB */
+-                s->irqst |= 0x1777f;
+-                omap_mcspi_interrupt_update(s);
+-            }
+-        s->systest = value & 0xfff;
+-        break;
+-
+-    case 0x28:	/* MCSPI_MODULCTRL */
+-        if (value & (1 << 3))				/* SYSTEM_TEST */
+-            if (s->systest & (1 << 11)) {		/* SSB */
+-                s->irqst |= 0x1777f;
+-                omap_mcspi_interrupt_update(s);
+-            }
+-        s->control = value & 0xf;
+-        break;
+-
+-    case 0x68: ch ++;
+-        /* fall through */
+-    case 0x54: ch ++;
+-        /* fall through */
+-    case 0x40: ch ++;
+-        /* fall through */
+-    case 0x2c:	/* MCSPI_CHCONF */
+-        if ((value ^ s->ch[ch].config) & (3 << 14))	/* DMAR | DMAW */
+-            omap_mcspi_dmarequest_update(s->ch + ch);
+-        if (((value >> 12) & 3) == 3) { /* TRM */
+-            qemu_log_mask(LOG_GUEST_ERROR, "%s: invalid TRM value (3)\n",
+-                          __func__);
+-        }
+-        if (((value >> 7) & 0x1f) < 3) { /* WL */
+-            qemu_log_mask(LOG_GUEST_ERROR,
+-                          "%s: invalid WL value (%" PRIx64 ")\n",
+-                          __func__, (value >> 7) & 0x1f);
+-        }
+-        s->ch[ch].config = value & 0x7fffff;
+-        break;
+-
+-    case 0x70: ch ++;
+-        /* fall through */
+-    case 0x5c: ch ++;
+-        /* fall through */
+-    case 0x48: ch ++;
+-        /* fall through */
+-    case 0x34:	/* MCSPI_CHCTRL */
+-        if (value & ~s->ch[ch].control & 1) {		/* EN */
+-            s->ch[ch].control |= 1;
+-            omap_mcspi_transfer_run(s, ch);
+-        } else
+-            s->ch[ch].control = value & 1;
+-        break;
+-
+-    case 0x74: ch ++;
+-        /* fall through */
+-    case 0x60: ch ++;
+-        /* fall through */
+-    case 0x4c: ch ++;
+-        /* fall through */
+-    case 0x38:	/* MCSPI_TX */
+-        s->ch[ch].tx = value;
+-        s->ch[ch].status &= ~(1 << 1);			/* TXS */
+-        omap_mcspi_transfer_run(s, ch);
+-        break;
+-
+-    default:
+-        OMAP_BAD_REG(addr);
+-        return;
+-    }
+-}
+-
+-static const MemoryRegionOps omap_mcspi_ops = {
+-    .read = omap_mcspi_read,
+-    .write = omap_mcspi_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
+-};
+-
+-struct omap_mcspi_s *omap_mcspi_init(struct omap_target_agent_s *ta, int chnum,
+-                qemu_irq irq, qemu_irq *drq, omap_clk fclk, omap_clk iclk)
+-{
+-    struct omap_mcspi_s *s = g_new0(struct omap_mcspi_s, 1);
+-    struct omap_mcspi_ch_s *ch = s->ch;
+-
+-    s->irq = irq;
+-    s->chnum = chnum;
+-    while (chnum --) {
+-        ch->txdrq = *drq ++;
+-        ch->rxdrq = *drq ++;
+-        ch ++;
+-    }
+-    omap_mcspi_reset(s);
+-
+-    memory_region_init_io(&s->iomem, NULL, &omap_mcspi_ops, s, "omap.mcspi",
+-                          omap_l4_region_size(ta, 0));
+-    omap_l4_attach(ta, 0, &s->iomem);
+-
+-    return s;
+-}
+-
+-void omap_mcspi_attach(struct omap_mcspi_s *s,
+-                uint32_t (*txrx)(void *opaque, uint32_t, int), void *opaque,
+-                int chipselect)
+-{
+-    if (chipselect < 0 || chipselect >= s->chnum)
+-        hw_error("%s: Bad chipselect %i\n", __func__, chipselect);
+-
+-    s->ch[chipselect].txrx = txrx;
+-    s->ch[chipselect].opaque = opaque;
+-}
+diff --git a/hw/ssi/meson.build b/hw/ssi/meson.build
+index b7ad7fca3b3..23cd425ab00 100644
+--- a/hw/ssi/meson.build
++++ b/hw/ssi/meson.build
+@@ -9,7 +9,6 @@ system_ss.add(when: 'CONFIG_XILINX_SPI', if_true: files('xilinx_spi.c'))
+ system_ss.add(when: 'CONFIG_XILINX_SPIPS', if_true: files('xilinx_spips.c'))
+ system_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal-ospi.c'))
+ system_ss.add(when: 'CONFIG_IMX', if_true: files('imx_spi.c'))
+-system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_spi.c'))
+ system_ss.add(when: 'CONFIG_IBEX', if_true: files('ibex_spi_host.c'))
+ system_ss.add(when: 'CONFIG_BCM2835_SPI', if_true: files('bcm2835_spi.c'))
+ system_ss.add(when: 'CONFIG_PNV_SPI', if_true: files('pnv_spi.c'))
 -- 
 2.34.1
 
