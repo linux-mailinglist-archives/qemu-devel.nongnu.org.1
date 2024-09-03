@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C8196A3CE
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6F796A3C5
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:10:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slW5f-0001qA-Fs; Tue, 03 Sep 2024 12:09:11 -0400
+	id 1slW5c-0001Zn-Np; Tue, 03 Sep 2024 12:09:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5Z-0001Pl-P6
+ id 1slW5Z-0001QU-Tx
  for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:09:05 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5V-0002xt-KZ
+ id 1slW5W-0002yM-Eo
  for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:09:05 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-374c84dcc90so1626730f8f.1
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-42bb8cf8abeso44423155e9.2
  for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 09:09:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725379740; x=1725984540; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725379741; x=1725984541; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Ke08yY4/dopOYtA2QapUAC0xejTJLaqgAeW0nPXO+d4=;
- b=f1gtZ1nrWpZ70GVrb/EJx00c/7VxiK+4R1AIK9Z9sUv5REtGjJEKAKOOXFP1nfqJq9
- zKTSRFLbbA/UJQSweilHP5PNEz+dMKHEAu2SZm4Y64ZCdZh7s+XJUVjeZD+scGwR5WMo
- 7xqzqjs3pLwtFBvApH0Sv/XHW5/CHQ1WY9btHpFpj+U560gc4sheNBiaIPLZTDVnkS7t
- 74om1KN1QriDnrk1eaUrkWGQO4CP92JQj3DA94sWMS4mleRZ2/ynKKhrEHwhLLclILY5
- ofY+j1dfPeBNBDBG9RXJri1Te4bv7TL8SrBC3hLnwZ59XPrYhckHmFxl53XZXLQKTffG
- m49A==
+ :reply-to; bh=slM94TULEewYKeVq6sh2hQIHzbNpZcOVLQjaenOMVd4=;
+ b=nvAt0IyBHNVh0Z+Y8z46IQSp0kHC5eh8yNE68f/sLeL1nJAg2L13hteRB4Yy3UdZUd
+ YUiW8Md3IAHb2cIlZC7pdA79OdQakme/xFORRKjxgfmwGBKFdba5C+NNgD3mdpi4EeO+
+ EBWJv3ahplbNBcqK/IKgzeW1CwHMtnsNVvRTnBWar3HhDh6f1sILTIDDf2gkbst9BWYc
+ SLHrMPVx7VK0UZukOFEPNIf2/F/wdznT0BZomALjPZS+nzxJhGJ6c+vBTeTHLE6r0XHc
+ qzA7rP2TInxoX6Qbva35DnUShA3hg/avgj7irobqXAsUYg4sANqY2a0UGHSWjPZ+R09z
+ laAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725379740; x=1725984540;
+ d=1e100.net; s=20230601; t=1725379741; x=1725984541;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ke08yY4/dopOYtA2QapUAC0xejTJLaqgAeW0nPXO+d4=;
- b=ipbsf++Bl9zt5Xbo5vGN9Ydik09mMLu3abtAHz8Aanwivx85HTMmXkAMnqtHOlfbQ6
- q2J08OCbbV03R6b9GRDrn6klgp8n1wwJwr71bYUQCR00S++/J560XPxb6wEH6Kfj7TDT
- /fG6iVbkcTzH4tRHHp0/5XlexVQ8qdtYlbzuLKsssy7B+K9l5OwtpmqugI+bXxgNYu+X
- 0oQ7wsd6xGWYTOfTnW39JjjQJJjDgl6w/fAEOSApuk/zJ+KtG2X9R/Lm3UrYbrGfsf5D
- lYOXPzwbyBYUKIRM8EGP0fuyxAW8U7yRbzsDEOtC8LdEHmMg59jNsLuLY9JKnWkB4Bwp
- 2V1Q==
+ bh=slM94TULEewYKeVq6sh2hQIHzbNpZcOVLQjaenOMVd4=;
+ b=KikrXdxoVynYhcWqjEeefI1jtAkjsn7ae3f94kR12uRUDMQj70oF1pS792oBdxhrvN
+ HbGGlrecah08PfRHNoFmOjnspxdIYoaLvQQgb/ajccgijX/m3zY6fucOS5rYn6qizcd0
+ E/jXoFWXI8QU/fIashPR0vzm8L2cnSHqmGx0cJiR35TyKwXOCMAnKvvM7LlXq4P4DB0E
+ Utm/ouilpn8GTCafxvzuEjTH1MeO5Zk5vPoggJcsd9/vXlelufYnqitLL8oA8TMNLTpg
+ 3abDeKTdtHXUzUR4AFqKXkmNLZ8hIAJODUXTZ4bg8EOh/Mw3uvEZEyOTtOidiL/RYidh
+ RQYQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVDg90N1Fu+bt+A5RokA8w78aStROY2v5IQa0uRmYeGsc3KANfgbj4hAOwC5pFj0wiAKGZnJ888fkkd@nongnu.org
-X-Gm-Message-State: AOJu0YzmBz2GRJPwkaexqHD335B6rz0Q7ZWujLri2/A5dPyoEczvgAK2
- to6Kcuoa0ObgFnPtzDw/9BsY8HAwkl//CAHp8SCvf2VzTfS+sFZVInlKJuPdeDFULOPC4y9Qcxw
- C
-X-Google-Smtp-Source: AGHT+IGF5RMPbu9V1C4CbduAsqSU6Vs1Xkm4JhjaGKmENWuy0aaQjfqxoMlWPSpwzlMWULvJHSdOIg==
-X-Received: by 2002:a5d:40c5:0:b0:371:87d4:8f12 with SMTP id
- ffacd0b85a97d-374c945c787mr5338156f8f.17.1725379739932; 
- Tue, 03 Sep 2024 09:08:59 -0700 (PDT)
+ AJvYcCXH7dZZ4zILboffbb2t1HP0SiJwxrOes0u+2RqhBfrbisY1IZGk9v1a75OPtwQi8JIF35kLg4n9jf2w@nongnu.org
+X-Gm-Message-State: AOJu0Yygsr1qmlMr4igkXc9+eIYFzBFuWIWXOYYMjyxFT7rIdT4V44rB
+ yKbZdJrbXCIp4HI9UVS7xNuPdmKZEFV7v7z6uWNxWp9f78dTCgdgJvTD94cMsCpBEY1HNYRWGtk
+ P
+X-Google-Smtp-Source: AGHT+IGuphinHyFAAa2c3Qe9qbJW4GfPgA+UFsVSNWItLDdUagVSOiOPUmrrEMO2QfKSZJTY1H7Qzg==
+X-Received: by 2002:a05:600c:3b85:b0:426:602d:a246 with SMTP id
+ 5b1f17b1804b1-42c8dea66b1mr10526295e9.32.1725379740805; 
+ Tue, 03 Sep 2024 09:09:00 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb6df1066sm175123065e9.18.2024.09.03.09.08.59
+ 5b1f17b1804b1-42bb6df1066sm175123065e9.18.2024.09.03.09.09.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2024 09:08:59 -0700 (PDT)
+ Tue, 03 Sep 2024 09:09:00 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH for-9.2 45/53] hw/timer: Remove omap_synctimer
-Date: Tue,  3 Sep 2024 17:07:43 +0100
-Message-Id: <20240903160751.4100218-46-peter.maydell@linaro.org>
+Subject: [PATCH for-9.2 46/53] hw/block: Remove ecc
+Date: Tue,  3 Sep 2024 17:07:44 +0100
+Message-Id: <20240903160751.4100218-47-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240903160751.4100218-1-peter.maydell@linaro.org>
 References: <20240903160751.4100218-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,170 +93,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the omap_synctimer device, which is only in the OMAP2 SoC.
+The ecc.c code was used only by the PXA2xx and OMAP2 SoC devices,
+which we have removed, so it is now completely unused.
+
+Note that hw/misc/eccmemctl.c does not in fact use any of the
+code frome ecc.c, so that KConfig dependency was incorrect.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/omap.h     |   8 ---
- hw/timer/omap_synctimer.c | 110 --------------------------------------
- hw/timer/meson.build      |   1 -
- 3 files changed, 119 deletions(-)
- delete mode 100644 hw/timer/omap_synctimer.c
+ include/hw/block/flash.h | 11 -----
+ hw/block/ecc.c           | 91 ----------------------------------------
+ hw/arm/Kconfig           |  1 -
+ hw/block/Kconfig         |  3 --
+ hw/block/meson.build     |  1 -
+ hw/misc/Kconfig          |  1 -
+ 6 files changed, 108 deletions(-)
+ delete mode 100644 hw/block/ecc.c
 
-diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index cced3d28605..982341d0079 100644
---- a/include/hw/arm/omap.h
-+++ b/include/hw/arm/omap.h
-@@ -676,12 +676,6 @@ struct omap_dma_lcd_channel_s {
- # define OMAP24XX_DMA_MS		63	/* Not in OMAP2420 */
- # define OMAP24XX_DMA_EXT_DMAREQ5	64
+diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
+index b985c825a01..5fd67f5bb79 100644
+--- a/include/hw/block/flash.h
++++ b/include/hw/block/flash.h
+@@ -62,17 +62,6 @@ uint32_t nand_getbuswidth(DeviceState *dev);
+ #define NAND_MFR_HYNIX      0xad
+ #define NAND_MFR_MICRON     0x2c
  
--/* OMAP2 sysctimer */
--struct omap_synctimer_s;
--struct omap_synctimer_s *omap_synctimer_init(struct omap_target_agent_s *ta,
--                struct omap_mpu_state_s *mpu, omap_clk fclk, omap_clk iclk);
--void omap_synctimer_reset(struct omap_synctimer_s *s);
+-/* ecc.c */
+-typedef struct {
+-    uint8_t cp;     /* Column parity */
+-    uint16_t lp[2]; /* Line parity */
+-    uint16_t count;
+-} ECCState;
 -
- struct omap_uart_s;
- struct omap_uart_s *omap_uart_init(hwaddr base,
-                 qemu_irq irq, omap_clk fclk, omap_clk iclk,
-@@ -929,8 +923,6 @@ struct omap_mpu_state_s {
-     /* OMAP2-only peripherals */
-     struct omap_l4_s *l4;
- 
--    struct omap_synctimer_s *synctimer;
+-uint8_t ecc_digest(ECCState *s, uint8_t sample);
+-void ecc_reset(ECCState *s);
+-extern const VMStateDescription vmstate_ecc_state;
 -
-     struct omap_mcspi_s *mcspi[2];
+ /* m25p80.c */
  
-     struct omap_dss_s *dss;
-diff --git a/hw/timer/omap_synctimer.c b/hw/timer/omap_synctimer.c
+ #define TYPE_M25P80 "m25p80-generic"
+diff --git a/hw/block/ecc.c b/hw/block/ecc.c
 deleted file mode 100644
-index d93a9344ede..00000000000
---- a/hw/timer/omap_synctimer.c
+index ed889a4184f..00000000000
+--- a/hw/block/ecc.c
 +++ /dev/null
-@@ -1,110 +0,0 @@
+@@ -1,91 +0,0 @@
 -/*
-- * TI OMAP2 32kHz sync timer emulation.
+- * Calculate Error-correcting Codes. Used by NAND Flash controllers
+- * (not by NAND chips).
 - *
-- * Copyright (C) 2007-2008 Nokia Corporation
-- * Written by Andrzej Zaborowski <andrew@openedhand.com>
+- * Copyright (c) 2006 Openedhand Ltd.
+- * Written by Andrzej Zaborowski <balrog@zabor.org>
 - *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 or
-- * (at your option) any later version of the License.
+- * This code is licensed under the GNU GPL v2.
 - *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License along
-- * with this program; if not, see <http://www.gnu.org/licenses/>.
+- * Contributions after 2012-01-13 are licensed under the terms of the
+- * GNU GPL, version 2 or (at your option) any later version.
 - */
+-
 -#include "qemu/osdep.h"
--#include "qemu/timer.h"
--#include "hw/arm/omap.h"
--struct omap_synctimer_s {
--    MemoryRegion iomem;
--    uint32_t val;
--    uint16_t readh;
+-#include "migration/vmstate.h"
+-#include "hw/block/flash.h"
+-
+-/*
+- * Pre-calculated 256-way 1 byte column parity.  Table borrowed from Linux.
+- */
+-static const uint8_t nand_ecc_precalc_table[] = {
+-    0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a,
+-    0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00,
+-    0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f,
+-    0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
+-    0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c,
+-    0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
+-    0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59,
+-    0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
+-    0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33,
+-    0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
+-    0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56,
+-    0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
+-    0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55,
+-    0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
+-    0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30,
+-    0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
+-    0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30,
+-    0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
+-    0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55,
+-    0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
+-    0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56,
+-    0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
+-    0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33,
+-    0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
+-    0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59,
+-    0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
+-    0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c,
+-    0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
+-    0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f,
+-    0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
+-    0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a,
+-    0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00,
 -};
 -
--/* 32-kHz Sync Timer of the OMAP2 */
--static uint32_t omap_synctimer_read(struct omap_synctimer_s *s) {
--    return muldiv64(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), 0x8000,
--                    NANOSECONDS_PER_SECOND);
--}
--
--void omap_synctimer_reset(struct omap_synctimer_s *s)
+-/* Update ECC parity count.  */
+-uint8_t ecc_digest(ECCState *s, uint8_t sample)
 -{
--    s->val = omap_synctimer_read(s);
--}
+-    uint8_t idx = nand_ecc_precalc_table[sample];
 -
--static uint32_t omap_synctimer_readw(void *opaque, hwaddr addr)
--{
--    struct omap_synctimer_s *s = opaque;
--
--    switch (addr) {
--    case 0x00:	/* 32KSYNCNT_REV */
--        return 0x21;
--
--    case 0x10:	/* CR */
--        return omap_synctimer_read(s) - s->val;
+-    s->cp ^= idx & 0x3f;
+-    if (idx & 0x40) {
+-        s->lp[0] ^= ~s->count;
+-        s->lp[1] ^= s->count;
 -    }
+-    s->count ++;
 -
--    OMAP_BAD_REG(addr);
--    return 0;
+-    return sample;
 -}
 -
--static uint32_t omap_synctimer_readh(void *opaque, hwaddr addr)
+-/* Reinitialise the counters.  */
+-void ecc_reset(ECCState *s)
 -{
--    struct omap_synctimer_s *s = opaque;
--    uint32_t ret;
--
--    if (addr & 2)
--        return s->readh;
--    else {
--        ret = omap_synctimer_readw(opaque, addr);
--        s->readh = ret >> 16;
--        return ret & 0xffff;
--    }
+-    s->lp[0] = 0x0000;
+-    s->lp[1] = 0x0000;
+-    s->cp = 0x00;
+-    s->count = 0;
 -}
 -
--static uint64_t omap_synctimer_readfn(void *opaque, hwaddr addr,
--                                      unsigned size)
--{
--    switch (size) {
--    case 1:
--        return omap_badwidth_read32(opaque, addr);
--    case 2:
--        return omap_synctimer_readh(opaque, addr);
--    case 4:
--        return omap_synctimer_readw(opaque, addr);
--    default:
--        g_assert_not_reached();
--    }
--}
--
--static void omap_synctimer_writefn(void *opaque, hwaddr addr,
--                                   uint64_t value, unsigned size)
--{
--    OMAP_BAD_REG(addr);
--}
--
--static const MemoryRegionOps omap_synctimer_ops = {
--    .read = omap_synctimer_readfn,
--    .write = omap_synctimer_writefn,
--    .valid.min_access_size = 1,
--    .valid.max_access_size = 4,
--    .endianness = DEVICE_NATIVE_ENDIAN,
+-/* Save/restore */
+-const VMStateDescription vmstate_ecc_state = {
+-    .name = "ecc-state",
+-    .version_id = 0,
+-    .minimum_version_id = 0,
+-    .fields = (const VMStateField[]) {
+-        VMSTATE_UINT8(cp, ECCState),
+-        VMSTATE_UINT16_ARRAY(lp, ECCState, 2),
+-        VMSTATE_UINT16(count, ECCState),
+-        VMSTATE_END_OF_LIST(),
+-    },
 -};
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index a70ceff504b..7b19a9559f6 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -146,7 +146,6 @@ config OMAP
+     bool
+     select FRAMEBUFFER
+     select I2C
+-    select ECC
+     select NAND
+     select PFLASH_CFI01
+     select SD
+diff --git a/hw/block/Kconfig b/hw/block/Kconfig
+index 002d255dced..741390742c2 100644
+--- a/hw/block/Kconfig
++++ b/hw/block/Kconfig
+@@ -22,9 +22,6 @@ config PFLASH_CFI01
+ config PFLASH_CFI02
+     bool
+ 
+-config ECC
+-    bool
 -
--struct omap_synctimer_s *omap_synctimer_init(struct omap_target_agent_s *ta,
--                struct omap_mpu_state_s *mpu, omap_clk fclk, omap_clk iclk)
--{
--    struct omap_synctimer_s *s = g_malloc0(sizeof(*s));
--
--    omap_synctimer_reset(s);
--    memory_region_init_io(&s->iomem, NULL, &omap_synctimer_ops, s, "omap.synctimer",
--                          omap_l4_region_size(ta, 0));
--    omap_l4_attach(ta, 0, &s->iomem);
--
--    return s;
--}
-diff --git a/hw/timer/meson.build b/hw/timer/meson.build
-index 1292d9530ca..fe131666b17 100644
---- a/hw/timer/meson.build
-+++ b/hw/timer/meson.build
-@@ -22,7 +22,6 @@ system_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_gictimer.c'))
- system_ss.add(when: 'CONFIG_MSF2', if_true: files('mss-timer.c'))
- system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_timer.c'))
- system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_timer.c'))
--system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_synctimer.c'))
- system_ss.add(when: 'CONFIG_PXA2XX_TIMER', if_true: files('pxa2xx_timer.c'))
- system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_systmr.c'))
- system_ss.add(when: 'CONFIG_SH_TIMER', if_true: files('sh_timer.c'))
+ config TC58128
+     bool
+ 
+diff --git a/hw/block/meson.build b/hw/block/meson.build
+index 74c8eb9e735..3735065631a 100644
+--- a/hw/block/meson.build
++++ b/hw/block/meson.build
+@@ -3,7 +3,6 @@ system_ss.add(files(
+   'cdrom.c',
+   'hd-geometry.c'
+ ))
+-system_ss.add(when: 'CONFIG_ECC', if_true: files('ecc.c'))
+ system_ss.add(when: 'CONFIG_FDC', if_true: files('fdc.c'))
+ system_ss.add(when: 'CONFIG_FDC_ISA', if_true: files('fdc-isa.c'))
+ system_ss.add(when: 'CONFIG_FDC_SYSBUS', if_true: files('fdc-sysbus.c'))
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 1e08785b832..8568aaa2293 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -74,7 +74,6 @@ config IVSHMEM_DEVICE
+ 
+ config ECCMEMCTL
+     bool
+-    select ECC
+ 
+ config IMX
+     bool
 -- 
 2.34.1
 
