@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87CCE96A801
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 22:06:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B11F96A804
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 22:06:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slZlt-0001AA-V8; Tue, 03 Sep 2024 16:05:01 -0400
+	id 1slZlx-0001Un-Jd; Tue, 03 Sep 2024 16:05:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slZlp-0000zi-4l
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 16:04:57 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slZlv-0001Ot-KO
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 16:05:03 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slZln-0003P5-IJ
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 16:04:56 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-428e1915e18so47840395e9.1
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 13:04:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slZlt-0003Pa-5Y
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 16:05:03 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-42bbdf7f860so39314065e9.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 13:05:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725393894; x=1725998694; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725393898; x=1725998698; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ydW/DUmoEhTycpzh2ZqhDuCiUbu+QsaUgEgBthr/XBE=;
- b=tmJz+0iaAR2OskddzQDBGF3OchDkNScHMkRq7LBsDyiuju7bVvm6dXTl/Fo6PCyiW2
- 2NKKXUSukgYOvcLmLe0NkySY0pORIMNitSeD5ikZx4AxPJAapcposE3C/MVXjp37TzPl
- rZjNsAAHDk9Qo71CZ11Ifx0ae+EnBdS/X3ToldViV10l0UhykvyJgDMe+zGJcOPAn5s5
- MFarTn2+eo1EOsKzZBvqLz+SDN2JjaGv6WBhtUrKY73uFRkMnyEAgIgN0ddg4oQ0imnW
- m3/nIWECOLdvlpZM7/AlVTp2DUvlPk+v/OA67dkEJ+dcQhcsNJbs1lEkhLTDWTCEbvz5
- qVPg==
+ bh=xAxEM68rZRReOy0Hx27Eldyt4CC8Kb4K0r03wDQB1D4=;
+ b=T1+t2bKdpyqGtiEiM/Yz6HNXQ4jmykdUsxAUKGu+0ZrxAknQ2+9gBmGs+rRAwXyHDQ
+ CYQ4t15IgPtwdb4aNDttYjDaB5j3aTTddOl79Ff8esBUYn8vnTwrj4P6G7CO9TkbDfBW
+ gMERf+ydgrtnqhnYCEiNeFb8ndtBWFbkODyi/TAfbB2qjo85EzWEG1wfXMJfvwckg1S5
+ YieqHM+7YFZLVxPyaNZTl7FvaYcOxHyLvHPtOHdWsIW+3HcsUfPmcyCIMw4nciAq4jU8
+ Ruu4PO6vIhnG/BYZR8i+1sCpTJAgYNglJMCBTyN/wSWSjQuDtZXI7OmChBtUgFwAoaoa
+ 081Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725393894; x=1725998694;
+ d=1e100.net; s=20230601; t=1725393898; x=1725998698;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ydW/DUmoEhTycpzh2ZqhDuCiUbu+QsaUgEgBthr/XBE=;
- b=QpzmP5L4il6Cv5N0XwE1p52XwmHlbG2WKh5Laj+P3s7Vx9ecc3Rm0Qtp+MXnJU08NL
- A07pab/mrE4paSqNCDilRZylUDVRIwXNkdsyOiL6mT4zjkjXZLK8wVVTlWThJOzaRfde
- o+eO3toWAjdhV5uu4lW0pd//r/cBN6Oyn9y33r52JgMY22dAsdXbUcVuID/zLKL28b6D
- vvT4AqyK0mtqWTO0W3Lbv3ijz1I2tUAYUjoqOZnzdEBUcZcC5aPGmMV7lwVxWezoJqfO
- kBN0drl2roCdxC1bI8tFDuKKa2BY7en+zwHiQUbhpzcwAndo3bXDWlbxH3MIVmt9b/TX
- hUBg==
-X-Gm-Message-State: AOJu0YyYpWGlRu3efKuc8YDcIL8yilHnaGMbSjwCZzbcy+vh6lVjrtIz
- 6rtPJjNLfD3+HX94pDjJ6RVKQWxorBoC2bldk7r4yu++MVXouDRl0zfdcy66ZEH4txlvS37gjXx
- S
-X-Google-Smtp-Source: AGHT+IEmKb/zUkaHjfxBhhWhFAZ/Vtm8EHLqzdNDMJPuDMAKsxSYFsS9atOljl3M6RKrBDMR0tVjCg==
-X-Received: by 2002:a05:600c:5493:b0:428:52a:3580 with SMTP id
- 5b1f17b1804b1-42c7b59e329mr72825255e9.3.1725393893472; 
- Tue, 03 Sep 2024 13:04:53 -0700 (PDT)
+ bh=xAxEM68rZRReOy0Hx27Eldyt4CC8Kb4K0r03wDQB1D4=;
+ b=hlcwE4KPhMVk30MXzqZzCpJd0s757bza1jOVoSa7R4WxqZsjXpe154ykh8eeNgrinh
+ gj7mJBKkdWf1myGfJjUiPrImUJAemtok/+wsk/LQyMg2IvQOCYVubd93ibcsq3TEUtQ9
+ TmuLD2wZFeBKoCd72RM6nxkQoUuX5YwMBsvt6qUSSbOZ1MWQ6oCPpCaB+ypZ41bMq0WR
+ WE6lStFJ0ng4o6pGkY5/o2/nDgZtzU7HtbY0TW9Jh46kogEOQrs46U6HNUl9whkV6Twe
+ kY1s8Tmtz46/e5wrW/syRFfPCgVZnNB1kTX7WoNg3DTH8H0a0b0griB281m6WOLkLkA6
+ 3sjw==
+X-Gm-Message-State: AOJu0YwfAAIpt4ceLuOgjoN4yQVmiFXaVWIurHgQRUR9kS3LfVkCIXoB
+ LsHpImh+yj1qt3sx6YZVeUFeC/vaHzNlqHIeGCGQHAxb31XlVAgXlGt0Tc8VH5sPghWVzTnFFa0
+ f
+X-Google-Smtp-Source: AGHT+IHPH3vMf1GwR5SZ1/kYdugc/s4ilrGaNvDiff8BRWwF1YOAocvc725Dcbf4La8REuZ1fhgo6g==
+X-Received: by 2002:a5d:6d08:0:b0:374:cd1b:e10d with SMTP id
+ ffacd0b85a97d-374cd1be31bmr4002534f8f.61.1725393898312; 
+ Tue, 03 Sep 2024 13:04:58 -0700 (PDT)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb6deb1ebsm181070985e9.3.2024.09.03.13.04.52
+ ffacd0b85a97d-374c8e4f1b3sm7407458f8f.27.2024.09.03.13.04.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Sep 2024 13:04:53 -0700 (PDT)
+ Tue, 03 Sep 2024 13:04:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-block@nongnu.org, Bin Meng <bmeng.cn@gmail.com>
-Subject: [PATCH 1/2] hw/sd: Remove legacy sd_set_cb()
-Date: Tue,  3 Sep 2024 22:04:45 +0200
-Message-ID: <20240903200446.25921-2-philmd@linaro.org>
+Subject: [PATCH 2/2] hw/sd: Remove legacy sd_enable()
+Date: Tue,  3 Sep 2024 22:04:46 +0200
+Message-ID: <20240903200446.25921-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240903200446.25921-1-philmd@linaro.org>
 References: <20240903200446.25921-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,95 +94,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sd_set_cb() was only used by omap2_mmc_init() which
-got recently removed. Time to remove it. For historical
-background on the me_no_qdev_me_kill_mammoth_with_rocks
-kludge, see commit 007d1dbf72 ("sd: Hide the qdev-but-not-quite
-thing created by sd_init()").
+sd_enable() was only used by omap_mmc_enable() which
+got recently removed. Time to remove it.
+
+Since the SDState::enable boolean is now always %true,
+we can remove it and simplify.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/sd/sdcard_legacy.h |  1 -
- hw/sd/sd.c                    | 30 ++++--------------------------
- 2 files changed, 4 insertions(+), 27 deletions(-)
+ include/hw/sd/sd.h            |  1 -
+ include/hw/sd/sdcard_legacy.h |  9 ---------
+ hw/sd/sd.c                    | 20 ++++++--------------
+ 3 files changed, 6 insertions(+), 24 deletions(-)
 
+diff --git a/include/hw/sd/sd.h b/include/hw/sd/sd.h
+index d35a839f5e..aa0f229747 100644
+--- a/include/hw/sd/sd.h
++++ b/include/hw/sd/sd.h
+@@ -127,7 +127,6 @@ struct SDCardClass {
+     void (*set_voltage)(SDState *sd, uint16_t millivolts);
+     uint8_t (*get_dat_lines)(SDState *sd);
+     bool (*get_cmd_line)(SDState *sd);
+-    void (*enable)(SDState *sd, bool enable);
+     bool (*get_inserted)(SDState *sd);
+     bool (*get_readonly)(SDState *sd);
+     void (*set_cid)(SDState *sd);
 diff --git a/include/hw/sd/sdcard_legacy.h b/include/hw/sd/sdcard_legacy.h
-index 0dc3889555..a121232560 100644
+index a121232560..82b62e87d1 100644
 --- a/include/hw/sd/sdcard_legacy.h
 +++ b/include/hw/sd/sdcard_legacy.h
-@@ -36,7 +36,6 @@ SDState *sd_init(BlockBackend *blk, bool is_spi);
- int sd_do_command(SDState *card, SDRequest *request, uint8_t *response);
+@@ -37,13 +37,4 @@ int sd_do_command(SDState *card, SDRequest *request, uint8_t *response);
  void sd_write_byte(SDState *card, uint8_t value);
  uint8_t sd_read_byte(SDState *card);
--void sd_set_cb(SDState *card, qemu_irq readonly, qemu_irq insert);
  
- /* sd_enable should not be used -- it is only used on the nseries boards,
-  * where it is part of a broken implementation of the MMC card slot switch
+-/* sd_enable should not be used -- it is only used on the nseries boards,
+- * where it is part of a broken implementation of the MMC card slot switch
+- * (there should be two card slots which are multiplexed to a single MMC
+- * controller, but instead we model it with one card and controller and
+- * disable the card when the second slot is selected, so it looks like the
+- * second slot is always empty).
+- */
+-void sd_enable(SDState *card, bool enable);
+-
+ #endif /* HW_SDCARD_LEGACY_H */
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index a140a32ccd..8a30c61ce0 100644
+index 8a30c61ce0..0c681da432 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -112,10 +112,6 @@ typedef struct SDProto {
- struct SDState {
-     DeviceState parent_obj;
- 
--    /* If true, created by sd_init() for a non-qdevified caller */
--    /* TODO purge them with fire */
--    bool me_no_qdev_me_kill_mammoth_with_rocks;
--
-     /* SD Memory Card Registers */
-     uint32_t ocr;
-     uint8_t scr[8];
-@@ -169,8 +165,6 @@ struct SDState {
-     uint32_t data_offset;
+@@ -166,7 +166,6 @@ struct SDState {
      size_t data_size;
      uint8_t data[512];
--    qemu_irq readonly_cb;
--    qemu_irq inserted_cb;
      QEMUTimer *ocr_power_timer;
-     bool enable;
+-    bool enable;
      uint8_t dat_lines;
-@@ -889,17 +883,10 @@ static void sd_cardchange(void *opaque, bool load, Error **errp)
-         trace_sdcard_ejected();
-     }
+     bool cmd_line;
+ };
+@@ -285,12 +284,12 @@ static const char *sd_acmd_name(SDState *sd, uint8_t cmd)
  
--    if (sd->me_no_qdev_me_kill_mammoth_with_rocks) {
--        qemu_set_irq(sd->inserted_cb, inserted);
--        if (inserted) {
--            qemu_set_irq(sd->readonly_cb, readonly);
--        }
--    } else {
--        sdbus = SD_BUS(qdev_get_parent_bus(dev));
--        sdbus_set_inserted(sdbus, inserted);
--        if (inserted) {
--            sdbus_set_readonly(sdbus, readonly);
--        }
-+    sdbus = SD_BUS(qdev_get_parent_bus(dev));
-+    sdbus_set_inserted(sdbus, inserted);
-+    if (inserted) {
-+        sdbus_set_readonly(sdbus, readonly);
-     }
+ static uint8_t sd_get_dat_lines(SDState *sd)
+ {
+-    return sd->enable ? sd->dat_lines : 0;
++    return sd->dat_lines;
  }
  
-@@ -1027,18 +1014,9 @@ SDState *sd_init(BlockBackend *blk, bool is_spi)
-     }
- 
-     sd = SD_CARD(dev);
--    sd->me_no_qdev_me_kill_mammoth_with_rocks = true;
-     return sd;
+ static bool sd_get_cmd_line(SDState *sd)
+ {
+-    return sd->enable ? sd->cmd_line : false;
++    return sd->cmd_line;
  }
  
--void sd_set_cb(SDState *sd, qemu_irq readonly, qemu_irq insert)
+ static void sd_set_voltage(SDState *sd, uint16_t millivolts)
+@@ -974,7 +973,7 @@ static const VMStateDescription sd_vmstate = {
+         VMSTATE_UINT32(data_offset, SDState),
+         VMSTATE_UINT8_ARRAY(data, SDState, 512),
+         VMSTATE_UNUSED_V(1, 512),
+-        VMSTATE_BOOL(enable, SDState),
++        VMSTATE_UNUSED(sizeof(bool)),
+         VMSTATE_END_OF_LIST()
+     },
+     .subsections = (const VMStateDescription * const []) {
+@@ -2177,7 +2176,7 @@ int sd_do_command(SDState *sd, SDRequest *req,
+     sd_rsp_type_t rtype;
+     int rsplen;
+ 
+-    if (!sd->blk || !blk_is_inserted(sd->blk) || !sd->enable) {
++    if (!sd->blk || !blk_is_inserted(sd->blk)) {
+         return 0;
+     }
+ 
+@@ -2328,7 +2327,7 @@ void sd_write_byte(SDState *sd, uint8_t value)
+ {
+     int i;
+ 
+-    if (!sd->blk || !blk_is_inserted(sd->blk) || !sd->enable)
++    if (!sd->blk || !blk_is_inserted(sd->blk))
+         return;
+ 
+     if (sd->state != sd_receivingdata_state) {
+@@ -2460,7 +2459,7 @@ uint8_t sd_read_byte(SDState *sd)
+     uint8_t ret;
+     uint32_t io_len;
+ 
+-    if (!sd->blk || !blk_is_inserted(sd->blk) || !sd->enable)
++    if (!sd->blk || !blk_is_inserted(sd->blk))
+         return dummy_byte;
+ 
+     if (sd->state != sd_sendingdata_state) {
+@@ -2536,11 +2535,6 @@ static bool sd_data_ready(SDState *sd)
+     return sd->state == sd_sendingdata_state;
+ }
+ 
+-void sd_enable(SDState *sd, bool enable)
 -{
--    sd->readonly_cb = readonly;
--    sd->inserted_cb = insert;
--    qemu_set_irq(readonly, sd->blk ? !blk_is_writable(sd->blk) : 0);
--    qemu_set_irq(insert, sd->blk ? blk_is_inserted(sd->blk) : 0);
+-    sd->enable = enable;
 -}
 -
- static void sd_blk_read(SDState *sd, uint64_t addr, uint32_t len)
- {
-     trace_sdcard_read_block(addr, len);
+ static const SDProto sd_proto_spi = {
+     .name = "SPI",
+     .cmd = {
+@@ -2700,7 +2694,6 @@ static void sd_instance_init(Object *obj)
+ 
+     sd->proto = sc->proto;
+     sd->last_cmd_name = "UNSET";
+-    sd->enable = true;
+     sd->ocr_power_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sd_ocr_powerup, sd);
+ }
+ 
+@@ -2809,7 +2802,6 @@ static void sdmmc_common_class_init(ObjectClass *klass, void *data)
+     sc->read_byte = sd_read_byte;
+     sc->receive_ready = sd_receive_ready;
+     sc->data_ready = sd_data_ready;
+-    sc->enable = sd_enable;
+     sc->get_inserted = sd_get_inserted;
+     sc->get_readonly = sd_get_readonly;
+ }
 -- 
 2.45.2
 
