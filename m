@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F3C969747
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 10:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D60DE96974D
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 10:37:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slP1c-0006ea-50; Tue, 03 Sep 2024 04:36:32 -0400
+	id 1slP1W-0005lk-1g; Tue, 03 Sep 2024 04:36:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1slP19-0004PF-Uh; Tue, 03 Sep 2024 04:36:04 -0400
+ id 1slP1E-0004mX-Ct; Tue, 03 Sep 2024 04:36:08 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1slP18-00084x-IA; Tue, 03 Sep 2024 04:36:03 -0400
+ id 1slP1D-0008A7-01; Tue, 03 Sep 2024 04:36:08 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 3 Sep
@@ -34,9 +34,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
  <clg@redhat.com>
-Subject: [PATCH v3 10/11] aspeed: Add tmp105 in i2c bus 0 for AST2700
-Date: Tue, 3 Sep 2024 16:35:27 +0800
-Message-ID: <20240903083528.2182190-11-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 11/11] machine_aspeed.py: Update to test I2C for AST2700
+Date: Tue, 3 Sep 2024 16:35:28 +0800
+Message-ID: <20240903083528.2182190-12-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240903083528.2182190-1-jamin_lin@aspeedtech.com>
 References: <20240903083528.2182190-1-jamin_lin@aspeedtech.com>
@@ -69,46 +69,44 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ASPEED SDK add lm75 in i2c bus 0 for AST2700.
-LM75 is compatible with TMP105 driver.
-
-Introduce a new i2c init function and
-add tmp105 device model in i2c bus 0.
+Update test case to test lm75 temperature sensor.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/aspeed.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/avocado/machine_aspeed.py | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index fd5603f7aa..3d13b16768 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -1650,6 +1650,15 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
- }
+diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
+index c0b01e8f1f..4e144bde91 100644
+--- a/tests/avocado/machine_aspeed.py
++++ b/tests/avocado/machine_aspeed.py
+@@ -433,9 +433,25 @@ def test_aarch64_ast2700_evb_sdk_v09_02(self):
+                              f'loader,addr=0x430000000,cpu-num={i}')
  
- #ifdef TARGET_AARCH64
-+static void ast2700_evb_i2c_init(AspeedMachineState *bmc)
-+{
-+    AspeedSoCState *soc = bmc->soc;
+         self.vm.add_args('-smp', str(num_cpu))
++        self.vm.add_args('-device',
++                         'tmp105,bus=aspeed.i2c.bus.1,address=0x4d,id=tmp-test')
+         self.do_test_aarch64_aspeed_sdk_start(image_dir + 'image-bmc')
+         self.wait_for_console_pattern('nodistro.0 ast2700-default ttyS12')
 +
-+    /* LM75 is compatible with TMP105 driver */
-+    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 0),
-+                            TYPE_TMP105, 0x4d);
-+}
+         self.ssh_connect('root', '0penBmc', False)
++        self.ssh_command('dmesg -c > /dev/null')
 +
- static void aspeed_machine_ast2700_evb_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -1664,6 +1673,7 @@ static void aspeed_machine_ast2700_evb_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 2;
-     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
-     amc->uart_default = ASPEED_DEV_UART12;
-+    amc->i2c_init  = ast2700_evb_i2c_init;
-     mc->default_ram_size = 1 * GiB;
-     aspeed_machine_class_init_cpus_defaults(mc);
- }
++        self.ssh_command_output_contains(
++            'echo lm75 0x4d > /sys/class/i2c-dev/i2c-1/device/new_device '
++            '&& dmesg -c',
++            'i2c i2c-1: new_device: Instantiated device lm75 at 0x4d');
++
++        self.ssh_command_output_contains(
++            'cat /sys/class/hwmon/hwmon20/temp1_input', '0')
++        self.vm.cmd('qom-set', path='/machine/peripheral/tmp-test',
++                    property='temperature', value=18000)
++        self.ssh_command_output_contains(
++            'cat /sys/class/hwmon/hwmon20/temp1_input', '18000')
+ 
+ class AST2x00MachineMMC(QemuSystemTest):
+ 
 -- 
 2.34.1
 
