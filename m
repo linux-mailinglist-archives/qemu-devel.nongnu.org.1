@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6D196A135
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4420E96A13C
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:53:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slUtF-0002Z0-Ns; Tue, 03 Sep 2024 10:52:17 -0400
+	id 1slUtw-0006XZ-2I; Tue, 03 Sep 2024 10:53:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slUtD-0002S8-MA
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:52:15 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1slUtt-0006Nq-O4
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:52:57 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slUtA-00068l-Qx
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:52:15 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-42bfb50e4e6so28792215e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 07:52:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1slUts-0006EO-9p
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:52:57 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-7b0c9bbddb4so3731100a12.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 07:52:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725375131; x=1725979931; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725375175; x=1725979975; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9N+VMEEXi1hOi8cR4i3iZyxOIBADPozV3ZzCoQMrfYo=;
- b=NgfLyq2n87InmrsxBSLgUUNOgNGJT8HeTVClsAfcREd33TaEtiXdN1n/Tc9k7pTyJ+
- gAauESOUMXjSeqaSN5MuYmvqh9KQlxA8t6I2dJohVLHWMl7pdUjjsF3vzcCiC5EMoYQW
- 9p7YgRqeEOpn+oGLNYxL/ZO0T9cSwCx/LbnEyzKwmffY3tQIXOGzu/Ik3SJ6iCBfab2t
- m5XjkOTNfCbKvcZPAwtrS0o2ebHrkZeCpvJs7dC7mnsVvueMeC34sCR17pSDMYzruQQB
- FTE4WdC355XCpL6SlanKlLgCRNmQ+c6LeOF76hxbX1vkqdVMbTlC8Piy1Cmn2GhhXibk
- eDkg==
+ bh=MkIQoxz2FwuirHNqETpJJv7XZpiekPTSuxHDCNyh+08=;
+ b=Nk6RChCd8mrBWJmFaRZqAUY7KXW1njloamH3rvNR5qlIlwsNLtbdx9gTRMC0psc3tW
+ /ni1umF798Ok5q04CPJgY1FLwdpT8fMr10jHbZyCB/PVFhRYaY/2nCSRxANwgVfA1pwA
+ Nq2IOpaHYdx02aFB/Igs6LKGmz1IE0m6wmLG3wvn/NptV3UHhiXaHjG8vhowbdOgQ4Bf
+ jhIBRv7m/u1Ze+WJZGWcyCqCBAfz5D7AuoV7Jri2pZpk4AA8u0Rpt4u+icDclrzWL6GB
+ z1o7PAhD8+IGJL4DxqvwhfjbNurtyPFdDIfxCBqVxtJUjYe3YK3/N1RC2lZKA3qrnpSf
+ sZQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725375131; x=1725979931;
+ d=1e100.net; s=20230601; t=1725375175; x=1725979975;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9N+VMEEXi1hOi8cR4i3iZyxOIBADPozV3ZzCoQMrfYo=;
- b=NxXNNLAAvPnxxXdaJCybfy6+AnVbfOQkYPjRDx9QsSk/RN6vmihziSkPEcf5o6sDTH
- thWAeUTiLb7On+/1DG7wXk2t/zkQw1PdC/Pv11r01yF5JdiqshJX1wpQA3O3ySa8Ldvk
- Ao2V+mQgChy2148L/1jXTRR/9fpzsA/1hiWxX0ynmoJgap3N+IumpVVhqBNJ2rUtI7Eu
- stg+b5+PCvlhG5+N+y/MxzPjamLYZB570V1NQZenVicO2reclKYt3GeGEhGqnx6RJQ/q
- aIJBMoD9SPpdwjthr8rqOqB72FV1bcFFlKoT6P/XdL+H+yXPN3Nu1GWVUo2Vnj0cIOdk
- SHNw==
+ bh=MkIQoxz2FwuirHNqETpJJv7XZpiekPTSuxHDCNyh+08=;
+ b=QfhXIVpjUzhGLEQk0ifyV+rxwoKbpdj/yGN4bIT8dw4pd8wEKp9xBI7Etwc/Ipi4zU
+ M1r1C0ec7ZhXNiTSfOAWudhWjIEFSbEOfBxGmWJCezgR+kIorXHOB7z7kkSn2Cd5TUCY
+ Q8g3QP/AINrFFTXUBY6AdB4//grd1j0WInQg9rTfVyAwzPPsS//xa7knXnLm5XT85SlP
+ XiE0Mylw4rfxlhdgwcZozjiM3BYk33i9kQPpkO737z6rT44JCaWIh6bTz+7LFI3LqzVj
+ rj9TbkX6yb7y9QV17QKP2tMmunQ+95ZD6qShq/tFVYrqn8ufb3DCU1NZc8hxTwxzEuFl
+ cklw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVzxlqwKUsgx4dlQaOPL1azi4hUY5TMqx1SgEUwbp76XFgFjdoyfqqohda+hgqkbYWXLNywQJ0A/Ya2@nongnu.org
-X-Gm-Message-State: AOJu0YwZ6K1xn+Dkic4S7DpY9VcWgl1Ox+QKeZb5yznXkGY8JP5bj0JG
- ov2XAflZoSLXecu2eatZgHKJhqLQNXBRW1Vkx7tBYneoDX4d8kmOvd5CyNNOFNo=
-X-Google-Smtp-Source: AGHT+IFrzFFKzbDmCXZpwvOGSUF/IEBrtC40AW7GTPuhJ0ZjZicMYjk8BRK0DxFY76bfPo9KDc7boQ==
-X-Received: by 2002:a5d:64c4:0:b0:374:ba34:d2fb with SMTP id
- ffacd0b85a97d-374ba34d390mr8145444f8f.27.1725375131144; 
- Tue, 03 Sep 2024 07:52:11 -0700 (PDT)
-Received: from [192.168.1.67] ([78.196.4.158])
+ AJvYcCUuGjKsy/HGSYLPVqq39Cx1b2tAdDWHnE7sfnVdzDtlGjeOMnaARgvt0+FQ3yDFy5a73pv7U2jLkAHz@nongnu.org
+X-Gm-Message-State: AOJu0YzQPuclQMNpjH6FwfKObAXL/NbqfZ/uOhZigvaknrnvxLdlYjOW
+ q/CsRexEe1RGAEbpZMMzCC2CHNnoDEwtRSlKQB7G7d0xVlHAz7KR9XYNS5v3E6c=
+X-Google-Smtp-Source: AGHT+IH4eUO/mvYfMZ6faqzDFDUoj3JEbJppfRgFZvqNQuytFuAhdNaj9z5Rl2gGHRVdg0E8ZtF9nQ==
+X-Received: by 2002:a17:90a:cf0b:b0:2d4:6ef:cb14 with SMTP id
+ 98e67ed59e1d1-2d8563916e5mr17383205a91.28.1725375174789; 
+ Tue, 03 Sep 2024 07:52:54 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-374b960ef94sm11358572f8f.103.2024.09.03.07.52.10
+ 98e67ed59e1d1-2d8445d5ba3sm13966975a91.11.2024.09.03.07.52.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Sep 2024 07:52:10 -0700 (PDT)
-Message-ID: <a975d672-d1aa-4a7d-96a9-763cc2dc5b85@linaro.org>
-Date: Tue, 3 Sep 2024 16:52:09 +0200
+ Tue, 03 Sep 2024 07:52:54 -0700 (PDT)
+Message-ID: <f78a75e9-0ed5-4b0e-ad38-54f4541c4e7d@linaro.org>
+Date: Tue, 3 Sep 2024 07:52:51 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/11] hw/core/resettable: Remove transitional_function
- machinery
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Nico Boehr <nrb@linux.ibm.com>, Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-References: <20240830145812.1967042-1-peter.maydell@linaro.org>
- <20240830145812.1967042-12-peter.maydell@linaro.org>
+Subject: Re: [PATCH v2 10/14] tcg/riscv: Implement vector sat/mul ops
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
+ TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+References: <20240830061607.1940-1-zhiwei_liu@linux.alibaba.com>
+ <20240830061607.1940-11-zhiwei_liu@linux.alibaba.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240830145812.1967042-12-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240830061607.1940-11-zhiwei_liu@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,47 +98,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/8/24 16:58, Peter Maydell wrote:
-> We used to need the transitional_function machinery to handle bus
-> classes and device classes which still used their legacy reset
-> handling.  We have now converted all bus classes to three phase
-> reset, and simplified the device class legacy reset so it is just an
-> adapting wrapper function around registration of a hold phase method.
-> There are therefore no more users of the transitional_function
-> machinery and we can remove it.
+On 8/29/24 23:16, LIU Zhiwei wrote:
+> From: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
+> Reviewed-by: Liu Zhiwei<zhiwei_liu@linux.alibaba.com>
 > ---
->   include/hw/resettable.h | 13 -------------
->   hw/core/resettable.c    | 24 +++---------------------
->   2 files changed, 3 insertions(+), 34 deletions(-)
+>   tcg/riscv/tcg-target.c.inc | 36 ++++++++++++++++++++++++++++++++++++
+>   tcg/riscv/tcg-target.h     |  4 ++--
+>   2 files changed, 38 insertions(+), 2 deletions(-)
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> @@ -171,12 +157,8 @@ static void resettable_phase_hold(Object *obj, void *opaque, ResetType type)
->       /* exec hold phase */
->       if (s->hold_phase_pending) {
->           s->hold_phase_pending = false;
-> -        ResettableTrFunction tr_func = resettable_get_tr_func(rc, obj);
->           trace_resettable_phase_hold_exec(obj, obj_typename, !!rc->phases.hold);
-> -        if (tr_func) {
-> -            trace_resettable_transitional_function(obj, obj_typename);
-
-Squashing:
-
--- >8 --
-diff --git a/hw/core/trace-events b/hw/core/trace-events
-index 2cf085ac66..5cf89da51d 100644
---- a/hw/core/trace-events
-+++ b/hw/core/trace-events
-@@ -22,3 +22,2 @@ resettable_phase_exit_exec(void *obj, const char 
-*objtype, int has_method) "obj=
-  resettable_phase_exit_end(void *obj, const char *objtype, unsigned 
-count) "obj=%p(%s) count=%d"
--resettable_transitional_function(void *obj, const char *objtype) 
-"obj=%p(%s)"
----
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Nice cleanup.
+r~
 
