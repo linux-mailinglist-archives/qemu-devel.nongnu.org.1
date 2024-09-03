@@ -2,105 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C23969DAD
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 14:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD15A969DF8
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 14:43:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slSii-00047D-Ts; Tue, 03 Sep 2024 08:33:17 -0400
+	id 1slSrP-0000WV-OP; Tue, 03 Sep 2024 08:42:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1slSig-00046K-2W; Tue, 03 Sep 2024 08:33:14 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1slSrN-0000VD-OQ
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 08:42:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1slSid-0006Mw-MU; Tue, 03 Sep 2024 08:33:13 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 483BqSYh031122;
- Tue, 3 Sep 2024 12:33:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
- ry2LPYS3V9WJ9Kh++RuKMd1dC94w5RyMH9hA/ahPYPo=; b=PnLzWehlpgAN2GB/
- hzeA9xAppyu4660x32IWl23zgcVHUjFnqZ3hSrGXwo8/HctrKQGxfn2udcuKNOHM
- jeP0IWo3yE6B1cLdIwVzAhscOnfmdRmLH7vyJc9LLtY0TOSKWssEvywgli1ei8KW
- 4ZDI2McvxrnWmWeg9XDfwOFXVUugODRbWiIGl0pV0+t9DKdNRzvj2q+qVWS8FaM2
- e9EJHD6sgAV1d0hFHZEsEJYdDA+qp3H9EDHXysYvRx6gWxD6+amisrg7aolKMEdo
- EOwmET1542I8YDgfgXtfVn0YICQBCcphlrUqPa7lrCdQ6fypiDCE0WNk1yxD5CC8
- xn6Qdw==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqp0tg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 Sep 2024 12:33:06 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 483CX6BA020145;
- Tue, 3 Sep 2024 12:33:06 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqp0td-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 Sep 2024 12:33:06 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 483BI6ng012045;
- Tue, 3 Sep 2024 12:33:05 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41cegptq23-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 Sep 2024 12:33:05 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 483CX10l18481638
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 Sep 2024 12:33:01 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 843862004F;
- Tue,  3 Sep 2024 12:33:01 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B769D2004B;
- Tue,  3 Sep 2024 12:33:00 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.171.92.164]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  3 Sep 2024 12:33:00 +0000 (GMT)
-Message-ID: <1e9ecbc18d3afcf8199e80dd041cd8414678b9bd.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 01/11] hw/s390/ccw-device: Convert to three-phase reset
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, David Hildenbrand <david@redhat.com>, Ilya Leoshkevich
- <iii@linux.ibm.com>, Cornelia Huck <cohuck@redhat.com>, Halil Pasic
- <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Christian
- Borntraeger <borntraeger@linux.ibm.com>, Nico Boehr <nrb@linux.ibm.com>
-Date: Tue, 03 Sep 2024 14:33:00 +0200
-In-Reply-To: <20240830145812.1967042-2-peter.maydell@linaro.org>
-References: <20240830145812.1967042-1-peter.maydell@linaro.org>
- <20240830145812.1967042-2-peter.maydell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1slSrL-0007Mt-Iu
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 08:42:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1725367329;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=w1GemxTFsONEv2KjJqE+TTM5MVbTvqBJMVyVZjkkY+I=;
+ b=JD23d3U34bvAtiVsH6hhAKiSOJOasNrs4qLYXGE2dmdf+UTomeh/B1lSzF1kB+j6B1lyIK
+ ltbNM+mkKiteBJw6ZKBmQ8TAut3vflqv7RmqTefXA9Xgi0OHe+ZVphby6LnqYIrZDoRyfS
+ 1CLVhKQXH44/yd6YISM/whvdDkK5Viw=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-158-ou4EazeNP26vdawYnafg3Q-1; Tue, 03 Sep 2024 08:42:08 -0400
+X-MC-Unique: ou4EazeNP26vdawYnafg3Q-1
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-2052e7836a0so30145585ad.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 05:42:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725367327; x=1725972127;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=w1GemxTFsONEv2KjJqE+TTM5MVbTvqBJMVyVZjkkY+I=;
+ b=wCYoDpz5Y+Jpt4+WWzwkveMDSKcUi4SaSBnAjJTZwYXDb75E1MLROavKbvKCvTV3B8
+ G2fQFAdo1vExIjoKGEQ6BGCwxINqmcCAoZLTNBojDNmIvBV23EVI+ctURBhjz38W8wln
+ Hgqfp2f8fZEFDzqlfuYGxiaaSF8S+K0BCm+3PjOHbsIM9Bz7o0ub/yUr408RstiOwabB
+ nKXqg/HuviXRLd1gPho7HOm2rB0ViVi2SbLrDvSYmceJm05hPz50cbkD+ybA4FdStcCk
+ QnHImCvlVrzzUELqN+xUk0sBuT+Z22zozhsempTRhGlTIFpIICfWZmXcEqs+fO6gS/Py
+ uIAg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVLAhdlfCgMpKCG+mIMc8lGDLDJXzkXG0P7MQCD/VfxB47Ai8lFwhs+nWb1ZB7V4QpaxFDgXZhuXePl@nongnu.org
+X-Gm-Message-State: AOJu0Ywku5U4Cj59/JIfJIsMXR9RY/E6sDLQC423BPEWUKnAhLnApY5j
+ crhIMgf/Tn4VT8A6Abufp88dYAQbNRuOKPKL1ARUDRkR7YGlUcXdhTOXnSvyySp0v4ucUBdoyVX
+ 1FADk05RYkr5GLV0wCagazGYDvuAs7nNvZ3NZqVNWu6sePbLKVV9c
+X-Received: by 2002:a17:902:c40a:b0:205:63c5:74be with SMTP id
+ d9443c01a7336-20563c57554mr62196405ad.49.1725367327626; 
+ Tue, 03 Sep 2024 05:42:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDVJd/djxcrdfjh3cgK32uLwt43rMXO02RJFmG7Ytq7U9kEcnE5saN7Wt4NsiBzfaCahodZQ==
+X-Received: by 2002:a17:902:c40a:b0:205:63c5:74be with SMTP id
+ d9443c01a7336-20563c57554mr62196245ad.49.1725367327229; 
+ Tue, 03 Sep 2024 05:42:07 -0700 (PDT)
+Received: from localhost.localdomain ([115.96.207.26])
+ by smtp.googlemail.com with ESMTPSA id
+ d9443c01a7336-20515542350sm80222025ad.213.2024.09.03.05.42.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Sep 2024 05:42:06 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: 
+Cc: Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH 0/2] kvm/i386: Some code refactoring and cleanups for
+ kvm_arch_init 
+Date: Tue,  3 Sep 2024 18:11:41 +0530
+Message-ID: <20240903124143.39345-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SjPKuw4uen53Etf5yC-U8QXvS46v0IXA
-X-Proofpoint-ORIG-GUID: DpUjjDrCkiM_H1gJ-Cj_46vSnfu66Sgt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-02_06,2024-09-03_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- clxscore=1015 mlxscore=0 impostorscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 adultscore=0 mlxlogscore=999 bulkscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2409030102
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -119,49 +102,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2024-08-30 at 15:58 +0100, Peter Maydell wrote:
-> Convert the TYPE_CCW_DEVICE to three-phase reset. This is a
-> device class which is subclassed, so it needs to be three-phase
-> before we can convert the subclass.
->=20
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Some cleanups. Should be no functional impact.
 
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>
+CC: Marcelo Tosatti <mtosatti@redhat.com>
+CC: kvm@vger.kernel.org
+CC: qemu-devel@nongnu.org
 
-> ---
->  hw/s390x/ccw-device.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->=20
-> diff --git a/hw/s390x/ccw-device.c b/hw/s390x/ccw-device.c
-> index a7d682e5af9..14c24e38904 100644
-> --- a/hw/s390x/ccw-device.c
-> +++ b/hw/s390x/ccw-device.c
-> @@ -44,9 +44,9 @@ static Property ccw_device_properties[] =3D {
->      DEFINE_PROP_END_OF_LIST(),
->  };
-> =20
-> -static void ccw_device_reset(DeviceState *d)
-> +static void ccw_device_reset_hold(Object *obj, ResetType type)
->  {
-> -    CcwDevice *ccw_dev =3D CCW_DEVICE(d);
-> +    CcwDevice *ccw_dev =3D CCW_DEVICE(obj);
-> =20
->      css_reset_sch(ccw_dev->sch);
->  }
-> @@ -55,11 +55,12 @@ static void ccw_device_class_init(ObjectClass *klass,=
- void *data)
->  {
->      DeviceClass *dc =3D DEVICE_CLASS(klass);
->      CCWDeviceClass *k =3D CCW_DEVICE_CLASS(klass);
-> +    ResettableClass *rc =3D RESETTABLE_CLASS(klass);
-> =20
->      k->realize =3D ccw_device_realize;
->      k->refill_ids =3D ccw_device_refill_ids;
->      device_class_set_props(dc, ccw_device_properties);
-> -    dc->reset =3D ccw_device_reset;
-> +    rc->phases.hold =3D ccw_device_reset_hold;
->      dc->bus_type =3D TYPE_VIRTUAL_CSS_BUS;
->  }
-> =20
+Ani Sinha (2):
+  kvm/i386: refactor kvm_arch_init and split it into smaller functions
+  kvm/i386: do not initialize identity_base variable
+
+ target/i386/kvm/kvm.c | 339 ++++++++++++++++++++++++++----------------
+ 1 file changed, 212 insertions(+), 127 deletions(-)
+
+-- 
+2.42.0
 
 
