@@ -2,59 +2,123 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A9596A16E
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 354F396A180
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 17:01:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slUzm-0008Ca-PT; Tue, 03 Sep 2024 10:59:02 -0400
+	id 1slV2B-0001Rx-Rh; Tue, 03 Sep 2024 11:01:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1slUzk-00082g-Av; Tue, 03 Sep 2024 10:59:00 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1slUzh-0007U3-8E; Tue, 03 Sep 2024 10:59:00 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WypZX66L3z6HJcx;
- Tue,  3 Sep 2024 22:55:16 +0800 (CST)
-Received: from lhrpeml500006.china.huawei.com (unknown [7.191.161.198])
- by mail.maildlp.com (Postfix) with ESMTPS id 2D30F1408FC;
- Tue,  3 Sep 2024 22:58:53 +0800 (CST)
-Received: from localhost (10.47.29.115) by lhrpeml500006.china.huawei.com
- (7.191.161.198) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 3 Sep
- 2024 15:58:52 +0100
-Date: Tue, 3 Sep 2024 15:58:47 +0100
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <linuxarm@huawei.com>,
- <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
- <shameerali.kolothum.thodi@huawei.com>, <Jonathan.Cameron@Huawei.com>,
- <alex.bennee@linaro.org>, <jiangkunkun@huawei.com>
-Subject: Re: [PATCH v4] target/arm/tcg: refine cache descriptions with a
- wrapper
-Message-ID: <20240903155847.00000379@huawei.com>
-In-Reply-To: <7fda2f7c-091f-4b8b-bd61-5f8fcbbcf8ba@linaro.org>
-References: <20240903083520.209-1-alireza.sanaee@huawei.com>
- <7fda2f7c-091f-4b8b-bd61-5f8fcbbcf8ba@linaro.org>
-Organization: Huawei
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slV20-00010L-Pv
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 11:01:21 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slV1y-0008BX-MV
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 11:01:20 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id A56961F397;
+ Tue,  3 Sep 2024 15:01:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1725375676; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=IXg3KmjO6g8uo/J7ZcYD+a2MRAS1YpU3Iunyc/3i0vs=;
+ b=HVmYHIRC6D2lqQv0/CRymcilg42zZ+uQh69SUbbMzTsiWrxgw76xG50na64XXazMQojJ/J
+ Jsf7Js9mKJW7vw+OzqbjeAhGsxk9ClDATt2scvKvI5A7cTB8lwYMuyg6lUozdI8r69a5+b
+ YWq+zA7Lk20VGpC6eWaNANru/xBYYaw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1725375676;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=IXg3KmjO6g8uo/J7ZcYD+a2MRAS1YpU3Iunyc/3i0vs=;
+ b=s0kOrhwt5d4rjWqQ2Z1T1s7VE+Pnx0HillxZf7GM08HZBy/yu9I+dmy3Di/JuPAQViEFiq
+ p0FecCzqFz8bsLBw==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HVmYHIRC;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=s0kOrhwt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1725375676; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=IXg3KmjO6g8uo/J7ZcYD+a2MRAS1YpU3Iunyc/3i0vs=;
+ b=HVmYHIRC6D2lqQv0/CRymcilg42zZ+uQh69SUbbMzTsiWrxgw76xG50na64XXazMQojJ/J
+ Jsf7Js9mKJW7vw+OzqbjeAhGsxk9ClDATt2scvKvI5A7cTB8lwYMuyg6lUozdI8r69a5+b
+ YWq+zA7Lk20VGpC6eWaNANru/xBYYaw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1725375676;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=IXg3KmjO6g8uo/J7ZcYD+a2MRAS1YpU3Iunyc/3i0vs=;
+ b=s0kOrhwt5d4rjWqQ2Z1T1s7VE+Pnx0HillxZf7GM08HZBy/yu9I+dmy3Di/JuPAQViEFiq
+ p0FecCzqFz8bsLBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3034413A80;
+ Tue,  3 Sep 2024 15:01:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id xCjpObsk12YeZgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 03 Sep 2024 15:01:15 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Alex Williamson <alex.williamson@redhat.com>, Peter Xu
+ <peterx@redhat.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Eric Blake
+ <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, =?utf-8?Q?Dan?=
+ =?utf-8?Q?iel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, Avihai Horon
+ <avihaih@nvidia.com>, Joao
+ Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 10/17] migration/multifd: Convert
+ multifd_send()::next_channel to atomic
+In-Reply-To: <93336ae5-e0e4-4066-9a1b-9577046f4d07@maciej.szmigiero.name>
+References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
+ <76dc3ad69fa457fd1e358ad3de874474f9f64716.1724701542.git.maciej.szmigiero@oracle.com>
+ <875xrhop4f.fsf@suse.de>
+ <93336ae5-e0e4-4066-9a1b-9577046f4d07@maciej.szmigiero.name>
+Date: Tue, 03 Sep 2024 12:01:13 -0300
+Message-ID: <87cylkn5mu.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.47.29.115]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500006.china.huawei.com (7.191.161.198)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Rspamd-Queue-Id: A56961F397
+X-Spamd-Result: default: False [-6.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; FROM_HAS_DN(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ ARC_NA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ MIME_TRACE(0.00)[0:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ DKIM_TRACE(0.00)[suse.de:+]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ TO_DN_SOME(0.00)[]; RCPT_COUNT_SEVEN(0.00)[10];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ MISSING_XM_UA(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim, suse.de:mid,
+ imap1.dmz-prg2.suse.org:helo, imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -6.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,77 +131,116 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
-From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 3 Sep 2024 15:18:41 +0200
-Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
+"Maciej S. Szmigiero" <mail@maciej.szmigiero.name> writes:
 
-> On 3/9/24 10:35, Alireza Sanaee wrote:
-> > This patch allows for easier manipulation of the cache description
-> > register, CCSIDR. Which is helpful for testing as well. Currently,
-> > numbers get hard-coded and might be prone to errors.
-> >=20
-> > Therefore, this patch adds a wrapper for different types of CPUs
-> > available in tcg to decribe caches. One function `make_ccsidr`
-> > supports two cases by carrying a parameter as FORMAT that can be
-> > LEGACY and CCIDX which determines the specification of the register.
-> >=20
-> > For CCSIDR register, 32 bit version follows specification [1].
-> > Conversely, 64 bit version follows specification [2]. =20
->=20
-> This is the commit description,
->=20
-> ---
->=20
-> this part is not relevant in the git history and can go
-> (hopefully the maintainer can do that for you),
->=20
-> >=20
-> > Changes from v2 [3] -> v3:
-> >=20
-> > 1) add only one function instead of ccsidr32 and ccsidr64
-> > 2) use deposit32 and deposit64 in ccsidr function
-> >=20
-> > Chnages from v3 [4] -> v4:
-> > 1) Use only one variable in the make_ccsidr function.
-> > 2) Include qemu/host-utils.h to get is_power_of_2() declaration.
-> >  =20
-> ---
->=20
-> keeping these references,
->=20
-> > [1] B4.1.19, ARM Architecture Reference Manual ARMv7-A and ARMv7-R
-> > edition, https://developer.arm.com/documentation/ddi0406
-> > [2] D23.2.29, ARM Architecture Reference Manual for A-profile
-> > Architecture, https://developer.arm.com/documentation/ddi0487/latest/ =
-=20
->=20
-> ---
->=20
-> and dropping these ones.
->=20
-> > [3] https://lore.kernel.org/qemu-devel/20240830184713.224-1-alireza.san=
-aee@huawei.com/
-> > [4] https://lore.kernel.org/qemu-devel/20240902203211.270-1-alireza.san=
-aee@huawei.com/
-> >=20
-> > Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-> > ---
-> >   target/arm/cpu-features.h |  50 ++++++++++++++++++
-> >   target/arm/cpu64.c        |  19 ++++---
-> >   target/arm/tcg/cpu64.c    | 108
-> > +++++++++++++++++++------------------- 3 files changed, 117
-> > insertions(+), 60 deletions(-) =20
->=20
-> Thanks for the iterations.
->=20
-> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
->=20
+> On 30.08.2024 20:13, Fabiano Rosas wrote:
+>> "Maciej S. Szmigiero" <mail@maciej.szmigiero.name> writes:
+>> 
+>>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>>
+>>> This is necessary for multifd_send() to be able to be called
+>>> from multiple threads.
+>>>
+>>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>>> ---
+>>>   migration/multifd.c | 24 ++++++++++++++++++------
+>>>   1 file changed, 18 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/migration/multifd.c b/migration/multifd.c
+>>> index d5a8e5a9c9b5..b25789dde0b3 100644
+>>> --- a/migration/multifd.c
+>>> +++ b/migration/multifd.c
+>>> @@ -343,26 +343,38 @@ bool multifd_send(MultiFDSendData **send_data)
+>>>           return false;
+>>>       }
+>>>   
+>>> -    /* We wait here, until at least one channel is ready */
+>>> -    qemu_sem_wait(&multifd_send_state->channels_ready);
+>>> -
+>>>       /*
+>>>        * next_channel can remain from a previous migration that was
+>>>        * using more channels, so ensure it doesn't overflow if the
+>>>        * limit is lower now.
+>>>        */
+>>> -    next_channel %= migrate_multifd_channels();
+>>> -    for (i = next_channel;; i = (i + 1) % migrate_multifd_channels()) {
+>>> +    i = qatomic_load_acquire(&next_channel);
+>>> +    if (unlikely(i >= migrate_multifd_channels())) {
+>>> +        qatomic_cmpxchg(&next_channel, i, 0);
+>>> +    }
+>> 
+>> Do we still need this? It seems not, because the mod down below would
+>> already truncate to a value less than the number of channels. We don't
+>> need it to start at 0 always, the channels are equivalent.
+>
+> The "modulo" operation below forces i_next to be in the proper range,
+> not i.
+>
+> If the qatomic_cmpxchg() ends up succeeding then we use the (now out of
+> bounds) i value to index multifd_send_state->params[].
 
-Thanks for the feedback.
+Indeed.
 
-v5 sent. hopefully that's OK.
+>
+>>> +
+>>> +    /* We wait here, until at least one channel is ready */
+>>> +    qemu_sem_wait(&multifd_send_state->channels_ready);
+>>> +
+>>> +    while (true) {
+>>> +        int i_next;
+>>> +
+>>>           if (multifd_send_should_exit()) {
+>>>               return false;
+>>>           }
+>>> +
+>>> +        i = qatomic_load_acquire(&next_channel);
+>>> +        i_next = (i + 1) % migrate_multifd_channels();
+>>> +        if (qatomic_cmpxchg(&next_channel, i, i_next) != i) {
+>>> +            continue;
+>>> +        }
+>> 
+>> Say channel 'i' is the only one that's idle. What's stopping the other
+>> thread(s) to race at this point and loop around to the same index?
+>
+> See the reply below.
+>
+>>> +
+>>>           p = &multifd_send_state->params[i];
+>>>           /*
+>>>            * Lockless read to p->pending_job is safe, because only multifd
+>>>            * sender thread can clear it.
+>>>            */
+>>>           if (qatomic_read(&p->pending_job) == false) {
+>> 
+>> With the cmpxchg your other patch adds here, then the race I mentioned
+>> above should be harmless. But we'd need to bring that code into this
+>> patch.
+>> 
+>
+> You're right - the sender code with this patch alone isn't thread safe
+> yet but this commit is only literally about "converting
+> multifd_send()::next_channel to atomic".
+>
+> At the time of this patch there aren't any multifd_send() calls from
+> multiple threads, and the commit that introduces such possible call
+> site (multifd_queue_device_state()) also modifies multifd_send()
+> to be fully thread safe by introducing p->pending_job_preparing.
+
+In general this would be a bad practice because this commit can end up
+being moved around due to backporting or bisecting. It would be better
+if it were complete from the start. It also affects backporting due to
+ambiguity on where the Fixes tag should point to if someone eventually
+finds a bug.
+
+I already asked you to extract the other code into a separate patch, so
+it's not that bad. If you prefer to keep both changes separate for
+clarity, please note on the commit message that the next patch is
+necessary for correctness.
+
+>
+> Thanks,
+> Maciej
 
