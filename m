@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C25996A021
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:15:50 +0200 (CEST)
-Received: from localhost ([::1] helo=lists1p.gnu.org)
+	by mail.lfdr.de (Postfix) with ESMTPS id E19F2969FD7
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:07:03 +0200 (CEST)
+Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slUJt-00089p-KA; Tue, 03 Sep 2024 10:15:45 -0400
+	id 1slU4p-0008Ow-3E; Tue, 03 Sep 2024 10:00:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slUJr-00081s-QF
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:15:43 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slU3t-0008Dd-US
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 09:59:19 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slUJp-00013S-2Y
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:15:43 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-42bac9469e8so44458285e9.3
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 07:15:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slU3H-0006i3-Ox
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 09:59:07 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-42bb8cf8abeso42952785e9.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 06:57:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725372939; x=1725977739; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725371825; x=1725976625; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3sE49CX3Ia22xbpTNXwA/nIQ0+NOwZ73kDBYhYhSInA=;
- b=RVUN70u9W3vylc9uEtFtY5rxlEAFy2i9bKXQqhSYTQ3O5NZL+hYv45XSwUOfPRDTkl
- WodXvPD93CXIZ083mLAQSpS3T0ajfxFik1yg2zrrAq+z1joq0iWzH/lNu3Ybq05fRkUv
- ohJzRu2y8P8yesdOkTRBKLBUY6rIjHaowxhW1VZ9ugUhMaw2TNOfNMMIMttmELEjvc3F
- iFtGFS4axS629Q9eHps2NfAlxbZnjfjrSiRQWo1oCdUze/pOxKy1OkV8U5ed9HMGkcO4
- gCSExA4+eMLJ8JuCT0/vPm4+/GslKbGUGhODt0AHzKDlkuKE4PiOCYTqb4jhgM6G+Psr
- BrYA==
+ bh=F/J3s1WCd5IHhbCw5NkWJ0Lag6fROvedX/tz/g1GSR4=;
+ b=DI8ZOcpPLkCKqPlEJ4qAZYvGZAXYK/uEqEGJbtbfYCT3uACGwr2heGzT2zPj/XejM4
+ 7xKh6E18Iq0V3XykbwKsElt15vkgHdiyay66ONuiXKDABVoDugztoVk5DSfzvTustYGw
+ 0Eq7joH/aNOTLHOmy+8zEcrkTAMX+KV+pp98mpXpvT3mR2jSY8tUuxWmhdivXMinf+fy
+ qcifvI7ZYQJosn6WMT5ykdH8m8DnbaSzG6MXg08mQQkF8E3UdWGEJT6riLQuVUI7kfpx
+ yb79QMxeN+SKz4rxyDw8iERyHz69tBTrBkbv6+CfqmHKhmiaIxCT6SWRbSSK21YBeB7l
+ dmmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725372939; x=1725977739;
+ d=1e100.net; s=20230601; t=1725371825; x=1725976625;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3sE49CX3Ia22xbpTNXwA/nIQ0+NOwZ73kDBYhYhSInA=;
- b=K9XsZDRgac6GTXjwi3LuLASVjgQzFxG0n7Lohr4aRIicBOacVMlJ7e7cXAb3r67a8L
- HG2eFAt75Xy77z9XocGok2KtKnIwYArfNKibBZ5LCmhxB9CYrUU55GZLhpNPLLsn7r29
- GcnRyOF1Q8BDMtPgrUCPKJRMvG9FVBKn7qQrpnYoP3o00s7JxluGY1Uw7/RuCNTAWS6X
- QeVOFFA+5eFxw/p1cxNMymWqWkr7s9RxRPaLs/rJCP56n95scU7dWxDjnINWUVjc/MzV
- h7FdaRW+HoJcwzk23GDWOYMob+aVCK5+cpfvghMwwp2uR5TYdo2x/zwHoW8C0tsCKVDA
- vMaw==
+ bh=F/J3s1WCd5IHhbCw5NkWJ0Lag6fROvedX/tz/g1GSR4=;
+ b=j+N6aUhNHFNlI3w6VEleUG8CcJmchEf/W5s9bqOI41JdNHB+aT8FVITBFlwoiJTwsQ
+ Yfen68hz+5FXCLQUfnoJCPUGS9+M9ccEYjUoAbXJ4Pa7Rbk+FNIaQllxByZzry7+EYSV
+ dVKvSmXRbxKLCXS844EVRIT3YeOG7X4ID8jmIGVYhP1g24Hj+NLVAgYR+z6HukRUOzVS
+ Z48F288YDtmBE8LwgvsxNv/ochfyhX4Qw36IsAL0GOzGO5/n8wKbIwWnLLzrROPRbkYa
+ uHrxGk9R3gortrw+snv4+o3O8Nu+jhgozaYVkH1KmLAPQikck/k0MhWztqwhzafrp+j+
+ 2X/w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWkDGuKG/eamg7A1qFD4hjdamvxTyLM6VrKJp5YID/+yqOYIwbLcWNWVyuWK4Qaj0leiEwbbjvQ4mzr@nongnu.org
-X-Gm-Message-State: AOJu0YyB9UoRqYLHPcXCJ5gjEu5BpRqFe/1G2dVYe3o+n7ryWkXLZoWt
- bpUXlXnrCnj3EySNNKuFXCn13b/zopNJBO1pEbxXhjLCNjJF6KgHNP5zBqdbW++TTloAmxmd4fj
- R
-X-Google-Smtp-Source: AGHT+IFECFyz3ddJyEpC4epqmSydLdklmPQgk3MPgzehrhNQ6swcmK3K+Nn0YVphfsRcjKsBGIhCiQ==
-X-Received: by 2002:a05:600c:4fcf:b0:426:5269:9838 with SMTP id
- 5b1f17b1804b1-42c82f47db9mr58389635e9.4.1725371117332; 
- Tue, 03 Sep 2024 06:45:17 -0700 (PDT)
+ AJvYcCXRH+DIoE6jw7RTsZcjyuuHQ+WYJLfSalk0LASKSqn3qg6quzGAI+TIdWyxdCFAHxb5YJ2FBM0O7wl3@nongnu.org
+X-Gm-Message-State: AOJu0Yy6exVaCv5+vomCCXnDh7CCbgcWYC2dQG08OFZAx2Cg4H6ce8f3
+ dYr1CnVt2jcFmU9PiPmEyCLNBuBSVIKxD3A7ATQTEjn9kB8uDUaVE7nJufG6n0Mn9IfODGbOmM6
+ b
+X-Google-Smtp-Source: AGHT+IG4ZgE5qyHBuzMeaI7ScNcsMJYwiYR/FGDB0KfWaK1LkgabWDxjiGiWIpv9zGn/4Wf09ld6Ig==
+X-Received: by 2002:adf:cd0a:0:b0:374:ba7b:42af with SMTP id
+ ffacd0b85a97d-376dd15b687mr652456f8f.26.1725371462325; 
+ Tue, 03 Sep 2024 06:51:02 -0700 (PDT)
 Received: from [192.168.1.67] ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb6deb1ebsm172108855e9.3.2024.09.03.06.45.16
+ ffacd0b85a97d-374bdcbe0f0sm9857061f8f.117.2024.09.03.06.51.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Sep 2024 06:45:16 -0700 (PDT)
-Message-ID: <c16b29e3-0d4b-4e3c-af58-240d29d13d8f@linaro.org>
-Date: Tue, 3 Sep 2024 15:45:15 +0200
+ Tue, 03 Sep 2024 06:51:01 -0700 (PDT)
+Message-ID: <df273147-17f9-4333-a357-5f032e652fb4@linaro.org>
+Date: Tue, 3 Sep 2024 15:51:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 32/44] tests/functional: Convert the vnc test
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- "Daniel P . Berrange" <berrange@redhat.com>
+Subject: Re: [PATCH v5 34/44] tests/functional: Convert Aarch64 SBSA-Ref
+ avocado tests
+To: Thomas Huth <thuth@redhat.com>
 Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ani Sinha <anisinha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>
+ John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ "Daniel P . Berrange" <berrange@redhat.com>, qemu-devel@nongnu.org
 References: <20240830133841.142644-1-thuth@redhat.com>
- <20240830133841.142644-33-thuth@redhat.com>
- <a11813f6-6a11-4467-8f4f-1435f5284f28@linaro.org>
- <d72b302a-ec99-4eed-bd7b-cb79ec714a49@redhat.com>
+ <20240830133841.142644-35-thuth@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <d72b302a-ec99-4eed-bd7b-cb79ec714a49@redhat.com>
+In-Reply-To: <20240830133841.142644-35-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,104 +99,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/9/24 12:23, Thomas Huth wrote:
-> On 02/09/2024 11.48, Philippe Mathieu-Daudé wrote:
->> On 30/8/24 15:38, Thomas Huth wrote:
->>> Nothing thrilling in here, it's just a straight forward conversion.
->>>
->>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>> ---
->>>   tests/functional/meson.build                     |  1 +
->>>   tests/{avocado/vnc.py => functional/test_vnc.py} | 12 +++++++-----
->>>   2 files changed, 8 insertions(+), 5 deletions(-)
->>>   rename tests/{avocado/vnc.py => functional/test_vnc.py} (97%)
->>>   mode change 100644 => 100755
->>>
->>> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
->>> index 34a9b277f8..58f6bcf95d 100644
->>> --- a/tests/functional/meson.build
->>> +++ b/tests/functional/meson.build
->>> @@ -107,6 +107,7 @@ tests_x86_64_system_quick = [
->>>     'pc_cpu_hotplug_props',
->>>     'virtio_version',
->>>     'x86_cpu_model_versions',
->>> +  'vnc',
->>>   ]
->>>   tests_x86_64_system_thorough = [
->>> diff --git a/tests/avocado/vnc.py b/tests/functional/test_vnc.py
->>> old mode 100644
->>> new mode 100755
->>> similarity index 97%
->>> rename from tests/avocado/vnc.py
->>> rename to tests/functional/test_vnc.py
->>> index 862c8996a8..b769d3b268
->>> --- a/tests/avocado/vnc.py
->>> +++ b/tests/functional/test_vnc.py
->>> @@ -1,3 +1,5 @@
->>> +#!/usr/bin/env python3
->>> +#
->>>   # Simple functional tests for VNC functionality
->>>   #
->>>   # Copyright (c) 2018 Red Hat, Inc.
->>> @@ -11,7 +13,7 @@
->>>   import socket
->>>   from typing import List
->>> -from avocado_qemu import QemuSystemTest
->>> +from qemu_test import QemuSystemTest
->>>   VNC_ADDR = '127.0.0.1'
->>> @@ -51,10 +53,7 @@ def find_free_ports(count: int) -> List[int]:
->>>   class Vnc(QemuSystemTest):
->>> -    """
->>> -    :avocado: tags=vnc,quick
->>> -    :avocado: tags=machine:none
->>> -    """
->>> +
->>>       def test_no_vnc(self):
->>>           self.vm.add_args('-nodefaults', '-S')
->>>           self.vm.launch()
->>> @@ -113,3 +112,6 @@ def test_change_listen(self):
->>>           self.assertFalse(check_connect(a))
->>>           self.assertTrue(check_connect(b))
->>>           self.assertTrue(check_connect(c))
->>> +
->>> +if __name__ == '__main__':
->>> +    QemuSystemTest.main()
->>
->> For a faithful conversion we need to squash:
->>
->> -- >8 --
->> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
->> index 6b00d240dd..a590646adc 100644
->> --- a/tests/functional/meson.build
->> +++ b/tests/functional/meson.build
->> @@ -26,6 +26,7 @@ tests_generic_system = [
->>     'empty_cpu_model',
->>     'info_usernet',
->>     'version',
->> +  'vnc',
->>   ]
->>
->>   tests_generic_linuxuser = [
->> @@ -123,7 +124,6 @@ tests_x86_64_system_quick = [
->>     'pc_cpu_hotplug_props',
->>     'virtio_version',
->>     'x86_cpu_model_versions',
->> -  'vnc',
->>   ]
->>
->> ---
->>
->> (each test is <1s so I'd keep it generic).
+On 30/8/24 15:38, Thomas Huth wrote:
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
-> Unfortunately that doesn't really work - the test cannot be really be 
-> run in parallel since the find_free_ports() stuff here is racy.
+> Straight forward conversion. Since SBSA_FLASH files are not
+> tarballs, use lzma_uncompress() method.
+> 
+> Avocado used to set a timeout of 11 tests * 180s = 1980s.
+> Hopefully 600s should be sufficient.
+> 
+> Running on macOS Sonoma / Apple silicon M1:
+> 
+>    $ QEMU_TEST_TIMEOUT_EXPECTED=1 make check-functional-aarch64 V=1
+>    ▶ 1/5 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_alpine_linux_max              OK
+>    ▶ 1/5 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_alpine_linux_max_pauth_impdef OK
+>    ▶ 1/5 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_alpine_linux_max_pauth_off    OK
+>    ▶ 1/5 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_alpine_linux_neoverse_n1      OK
+>    ▶ 1/5 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_edk2_firmware                 OK
+>    ▶ 1/5 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_openbsd73_cortex_a57          OK
+>    ▶ 1/5 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_openbsd73_max                 OK
+>    ▶ 1/5 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_openbsd73_max_pauth_impdef    OK
+>    ▶ 1/5 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_openbsd73_max_pauth_off       OK
+>    ▶ 1/5 test_aarch64_sbsaref.Aarch64SbsarefMachine.test_sbsaref_openbsd73_neoverse_n1         OK
+>    1/5 qemu:func-thorough+func-aarch64-thorough+thorough / func-aarch64-aarch64_sbsaref        OK   241.79s  11 subtests passed
+>    ...
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Reviewed-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> Message-ID: <20240823131614.10269-1-philmd@linaro.org>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS                                   |   2 +-
+>   tests/functional/meson.build                  |   5 +
+>   .../test_aarch64_sbsaref.py}                  | 144 ++++++------------
+>   3 files changed, 55 insertions(+), 96 deletions(-)
+>   rename tests/{avocado/machine_aarch64_sbsaref.py => functional/test_aarch64_sbsaref.py} (56%)
+>   mode change 100644 => 100755
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 14500cf8a5..e9aa174dc7 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -971,7 +971,7 @@ F: hw/misc/sbsa_ec.c
+>   F: hw/watchdog/sbsa_gwdt.c
+>   F: include/hw/watchdog/sbsa_gwdt.h
+>   F: docs/system/arm/sbsa.rst
+> -F: tests/avocado/machine_aarch64_sbsaref.py
+> +F: tests/functional/test_aarch64_sbsaref.py
+>   
+>   Sharp SL-5500 (Collie) PDA
+>   M: Peter Maydell <peter.maydell@linaro.org>
+> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+> index 182d40e052..bfa04818cc 100644
+> --- a/tests/functional/meson.build
+> +++ b/tests/functional/meson.build
+> @@ -11,6 +11,7 @@ endif
+>   
+>   # Timeouts for individual tests that can be slow e.g. with debugging enabled
+>   test_timeouts = {
+> +  'aarch64_sbsaref' : 600,
+>     'acpi_bits' : 240,
+>     'netdev_ethtool' : 180,
+>     'ppc_40p' : 240,
+> @@ -32,6 +33,10 @@ tests_generic_linuxuser = [
+>   tests_generic_bsduser = [
+>   ]
+>   
+> +tests_aarch64_system_thorough = [
+> +  'aarch64_sbsaref',
+> +]
+> +
+>   tests_arm_system_thorough = [
+>     'arm_canona1100',
+>     'arm_integratorcp',
+> diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/functional/test_aarch64_sbsaref.py
+> old mode 100644
+> new mode 100755
+> similarity index 56%
+> rename from tests/avocado/machine_aarch64_sbsaref.py
+> rename to tests/functional/test_aarch64_sbsaref.py
+> index f8bf40c192..e90566cdb8
+> --- a/tests/avocado/machine_aarch64_sbsaref.py
+> +++ b/tests/functional/test_aarch64_sbsaref.py
+> @@ -1,3 +1,5 @@
+> +#!/usr/bin/env python3
+> +#
+>   # Functional test that boots a Linux kernel and checks the console
+>   #
+>   # SPDX-FileCopyrightText: 2023-2024 Linaro Ltd.
+> @@ -8,12 +10,11 @@
+>   
+>   import os
+>   
+> -from avocado import skipUnless
+> -from avocado.utils import archive
+> -
+> -from avocado_qemu import QemuSystemTest
+> -from avocado_qemu import wait_for_console_pattern
+> -from avocado_qemu import interrupt_interactive_console_until_pattern
+> +from qemu_test import QemuSystemTest, Asset
+> +from qemu_test import wait_for_console_pattern
+> +from qemu_test import interrupt_interactive_console_until_pattern
+> +from qemu_test.utils import lzma_uncompress
+> +from unittest import skipUnless
+>   
+>   
+>   class Aarch64SbsarefMachine(QemuSystemTest):
 
-Oh right, I ran check-functional-{arm,mips,...} with at most 3 targets
-but never tried the full 'check-functional'.
+Oops, I forgot to squash:
 
-> 
->   Thomas
-> 
-> 
+-- >8 --
+diff --git a/tests/functional/test_aarch64_sbsaref.py 
+b/tests/functional/test_aarch64_sbsaref.py
+index e90566cdb8..f31c2a60b6 100755
+--- a/tests/functional/test_aarch64_sbsaref.py
++++ b/tests/functional/test_aarch64_sbsaref.py
+@@ -20,8 +20,4 @@
+  class Aarch64SbsarefMachine(QemuSystemTest):
+      """
+-    :avocado: tags=arch:aarch64
+-    :avocado: tags=machine:sbsa-ref
+-    :avocado: tags=accel:tcg
+-
+      As firmware runs at a higher privilege level than the hypervisor we
+      can only run these tests under TCG emulation.
+---
+
+> @@ -28,6 +29,16 @@ class Aarch64SbsarefMachine(QemuSystemTest):
+>   
+>       timeout = 180
 
 
