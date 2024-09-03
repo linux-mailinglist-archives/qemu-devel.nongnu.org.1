@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81EB969377
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 08:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D51E96937F
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 08:16:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slMoK-0005Np-GL; Tue, 03 Sep 2024 02:14:40 -0400
+	id 1slMog-0005pZ-0J; Tue, 03 Sep 2024 02:15:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1slMoH-0005Fy-JW
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 02:14:37 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1slMoR-0005mv-QX
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 02:14:47 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1slMoF-0002Fd-PJ
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 02:14:37 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-7c6aee8e8daso3486618a12.0
- for <qemu-devel@nongnu.org>; Mon, 02 Sep 2024 23:14:35 -0700 (PDT)
+ id 1slMoQ-0002GJ-Ax
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 02:14:47 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-7142a30e3bdso4271244b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 02 Sep 2024 23:14:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1725344074; x=1725948874; darn=nongnu.org;
+ d=sifive.com; s=google; t=1725344085; x=1725948885; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=folyLjZC+gAsCGvjBm1lXgO8dCUSFEawIl5b8lF+iF0=;
- b=L+cAzWebSa6ky2pLasS1h8A2ykF0ftPqYZxqJC1wSKiw3V2L3h12sFV6FCh1HHphSS
- ub4lE/gqYua/wl3P7dfC47QuDE3THXPZrdpi86Ror58bwvJ48lz9OIB0DhXqfl8E/aC0
- 4S8qFd0vutxesAQT9V+fkZyABHdBFQrUBMLDMCyUs9d+krkKWRnEpQzqJk6cscH9PIid
- 20CY4y2ON2VfOgGGw3Jao65ekD18mHcRgWu+n3kz4ndbmDo15ANLOzhQU6LZ5BKLui6R
- dwBt0yldcOKrmKmGPzg4lsc/3fyWKKAHszdFv1UZZZG9X+1RenB4RytmkkPPTvlprvKj
- YCAg==
+ bh=wR1GACgrZzM7YYzeZtxjDqa8lje9TmssIu2+ZZwLLUw=;
+ b=WB6HxnHTIqMvpSEwd18xTkuvzGbBYCHALt9NV5uUrxMoX0XUj+GjY07ESuRXBNe0D5
+ oC/nKN/CHBf2a89Xf4U0PoTMaUOVJMmFPwdCJ5cz38M5wZ9/FgN6N1XsG9R1VQ3YAWKn
+ hQGUHZ7qMPQYaLTSACjCXr8jKfI9ZNXuk2vl8SWW27SzvcqL3l2EGcI2VHzOZc9HzsKr
+ jiUBWyVjAYieEoLYfCAtoB3fEA2XlZJvtZU+Ld+aQoj+jztWrEQ5rZvaLEb5Uo+5nikq
+ p4gCtehLuJLTQZApGtViP87GGXyP2PNFDfN74pS+bPPceCugNSDSDet8t/vqHzBio3qT
+ NwJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725344074; x=1725948874;
+ d=1e100.net; s=20230601; t=1725344085; x=1725948885;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=folyLjZC+gAsCGvjBm1lXgO8dCUSFEawIl5b8lF+iF0=;
- b=kENaVYlqZpbjiPQb8amiEfFG0ijeKvDeHXjcRBvwf04JKSeNceLiOxXhkKBAle0ZXY
- AM0MyVPWqoKFyBd4FlnuF+gRTyVo7qloiphdp1ol920CZDJ+VSgvBAoE3/BsLyKhHkaq
- vvHaDp5SVPtyyIA9kYy8aff5I6gQPm7HEFjcyC7ID7U+gG7kMKkezcjjW0hkFUpXrpbz
- oXDAJvlfUK/9Ek0jBrdvC9z3FdA4G959fr0ph5K9PM+Ywq1EPfKdAC088Pq8RTa+QYx5
- yfih6XERBRCVz6cV4YjwBALQG+4hRn83iGr0UaWMMs6IeWceNu7ZKuO09E0QZgfKSN1Y
- s/Hg==
-X-Gm-Message-State: AOJu0YzkpvRA0Nue3rQBrMLD/b4uUkikC2w4GU8ECtpKmBwznUtul9qO
- RtWDAbv/MIRb1Sfs2TxdMe115N5KfV91CKdUeczacwRFaYxCF2FU+qpdz0nEuh0j6D5UJhPIwhN
- FCjHvQNEdUpDMoq9Z2IZc016v+kbbqYRFBeA9OtsVhLj/HfDBZzJomvARyBh7zumyncrq+otczt
- CmfgpmtOVqJ13mNygakL2weC3K56knOe6SETg=
-X-Google-Smtp-Source: AGHT+IEyN2rUfbGr134wm+tqxlU2vIVN3oo6zzz+Zv6lMjPNdnPHz/LRLxMnKc9te3n3Yelt2JN9hQ==
-X-Received: by 2002:a05:6a20:c88b:b0:1c4:ba7c:741c with SMTP id
- adf61e73a8af0-1cecdf0fb58mr11741360637.21.1725344073713; 
- Mon, 02 Sep 2024 23:14:33 -0700 (PDT)
+ bh=wR1GACgrZzM7YYzeZtxjDqa8lje9TmssIu2+ZZwLLUw=;
+ b=SSH0btEA1DFTnvNBjIDkrE2QRJOzdtkKx3zTUmk2UsWSrbXz3qCmqydbtGrfRGkw9Q
+ BpQGY8e1w6UiBbLy5/nrgbNUo58SmO2Z5ER29KmfjAAEd9XP370nJ0BG/tWJSsG6qGL/
+ 9S6VmAUoz7PS4QrssC1iMBW59II9RGveNSuDZL2XH7Qy4Ux1bwn0l4KtvLZzkGH5BUox
+ rZcUOtl42f7LMBMwCsh08hEWX4VR+USFfWtCXz6hh1uD90O3l7h0yoTRwN1U6lukNSgC
+ TD/GFIrCz0Zi2JSvkL+L1Zxkz2hs3g8Xdcg1gssvw5xBi9Hx7jYVYBHrQGLT/lMBcRfJ
+ rpBg==
+X-Gm-Message-State: AOJu0YxS1N/3W3TPkW6qwqiP17COH4dLg86Ws5Rm8Mda1KysCSVMe8s+
+ d60IBlMTczkior8KVG1Y6dvk1Snp+ejvAjJxOgRA2GkgNnCM8heC5B7GXVyoidWDIxMSorXcJcn
+ X4A+HT0D5s8ab4Zj86Ac1xTdcnzCvXYg4Q3/bVL0zjM7Wl6azoCFd3Gsf1IEBJpswnGOVVeTbEX
+ NCWlMFV0KmubRPG0ydC0D32n1wS/4VneCELeY=
+X-Google-Smtp-Source: AGHT+IHnrqov/tdCdxu/H9D4C2PmIbQlFgcZjWjC/5cJOCXrVSACI+28gYp7QCRK+CCzgoZlqmfGtg==
+X-Received: by 2002:a17:902:e551:b0:205:753e:e2e6 with SMTP id
+ d9443c01a7336-205753ee47emr102309515ad.16.1725344084629; 
+ Mon, 02 Sep 2024 23:14:44 -0700 (PDT)
 Received: from hsinchu36-syssw02.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20524c16145sm60467145ad.98.2024.09.02.23.14.31
+ d9443c01a7336-20524c16145sm60467145ad.98.2024.09.02.23.14.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Sep 2024 23:14:33 -0700 (PDT)
+ Mon, 02 Sep 2024 23:14:44 -0700 (PDT)
 From: "Fea.Wang" <fea.wang@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -69,16 +69,16 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  "Fea.Wang" <fea.wang@sifive.com>, Frank Chang <frank.chang@sifive.com>,
  Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH 4/5] target/riscv: Check memory access to meet svuket rule
-Date: Tue,  3 Sep 2024 14:17:56 +0800
-Message-Id: <20240903061757.1114957-5-fea.wang@sifive.com>
+Subject: [PATCH 5/5] target/riscv: Expose svukte ISA extension
+Date: Tue,  3 Sep 2024 14:17:57 +0800
+Message-Id: <20240903061757.1114957-6-fea.wang@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240903061757.1114957-1-fea.wang@sifive.com>
 References: <20240903061757.1114957-1-fea.wang@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=fea.wang@sifive.com; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=fea.wang@sifive.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,103 +101,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Follow the Svukte spec, do the memory access address checking
+Add "svukte" in the ISA string when svukte extension is enabled.
 
-1. Include instruction fetches or explicit memory accesses
-2. System run in effective privilege U or VU
-3. Check senvcfg[UKTE] being set, or hstatus[HUKTE] being set if
-   instruction is HLV, HLVX, HSV and excute from U mode to VU mode
-4. Depend on Sv39 and check virtual addresses bit[SXLEN-1]
-5. Raises a page-fault exception corresponding to the original access
-   type.
-
-Ref: https://github.com/riscv/riscv-isa-manual/pull/1564/files
-
-Signed-off-by: Frank Chang <frank.chang@sifive.com>
 Signed-off-by: Fea.Wang <fea.wang@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
 Reviewed-by: Jim Shu <jim.shu@sifive.com>
 ---
- target/riscv/cpu_helper.c | 55 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ target/riscv/cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 395a1d9140..db65ed14b9 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -777,6 +777,54 @@ static int get_physical_address_pmp(CPURISCVState *env, int *prot, hwaddr addr,
-     return TRANSLATE_SUCCESS;
- }
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index fc3f75e826..a568194317 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -197,6 +197,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+     ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
+     ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
++    ISA_EXT_DATA_ENTRY(svukte, PRIV_VERSION_1_13_0, ext_svukte),
+     ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
+     ISA_EXT_DATA_ENTRY(xtheadbb, PRIV_VERSION_1_11_0, ext_xtheadbb),
+     ISA_EXT_DATA_ENTRY(xtheadbs, PRIV_VERSION_1_11_0, ext_xtheadbs),
+@@ -1597,6 +1598,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
  
-+/*
-+ * Return 'true' means no need to do svukte check, or need to do svukte and the
-+ * address is valid. Return 'false' means need to do svukte check but address
-+ * is invalid.
-+ */
-+static bool check_svukte_valid(CPURISCVState *env, vaddr addr,
-+                               int mode, bool virt)
-+{
-+    if (VM_1_10_SV39 != get_field(env->satp, SATP64_MODE))  {
-+        /* Svukte extension depends on Sv39. */
-+        return true;
-+    }
-+
-+    /*
-+     * Svukte extension is qualified only in U or VU-mode.
-+     *
-+     * Effective mode can be switched to U or VU-mode by:
-+     *   - M-mode + mstatus.MPRV=1 + mstatus.MPP=U-mode.
-+     *   - Execute HLV/HLVX/HSV from HS-mode + hstatus.SPVP=0.
-+     *   - U-mode.
-+     *   - VU-mode.
-+     *   - Execute HLV/HLVX/HSV from U-mode + hstatus.HU=1.
-+     */
-+    if (mode != PRV_U) {
-+        return true;
-+    }
-+
-+    /*
-+     * Check hstatus.HUKTE if the effective mode is switched to VU-mode by
-+     * executing HLV/HLVX/HSV in U-mode.
-+     * For other cases, check senvcfg.UKTE.
-+     */
-+    bool ukte = (env->priv == PRV_U && !env->virt_enabled && virt) ?
-+                                           !!(env->hstatus & HSTATUS_HUKTE) :
-+                                           !!(env->senvcfg & SENVCFG_UKTE);
-+
-+    if (!ukte) {
-+        return true;
-+    }
-+
-+    uint32_t sxl = riscv_cpu_sxl(env);
-+    sxl = (sxl == 0) ? MXL_RV32 : sxl;
-+    uint32_t sxlen = 32 * sxl;
-+    uint64_t high_bit = addr & (1UL << (sxlen - 1));
-+
-+    return !high_bit;
-+}
-+
- /*
-  * get_physical_address - get the physical address for this virtual address
-  *
-@@ -814,11 +862,18 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
-     MemTxResult res;
-     MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
-     int mode = mmuidx_priv(mmu_idx);
-+    bool virt = mmuidx_2stage(mmu_idx);
-     bool use_background = false;
-     hwaddr ppn;
-     int napot_bits = 0;
-     target_ulong napot_mask;
+ /* These are experimental so mark with 'x-' */
+ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
++    MULTI_EXT_CFG_BOOL("x-svukte", ext_svukte, false),
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
-+    if (first_stage) {
-+        if (!check_svukte_valid(env, addr, mode, virt)) {
-+            return TRANSLATE_FAIL;
-+        }
-+    }
-+
-     /*
-      * Check if we should use the background registers for the two
-      * stage translation. We don't need to check if we actually need
 -- 
 2.34.1
 
