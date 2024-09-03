@@ -2,94 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800F7969A27
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 12:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE353969D8A
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 14:28:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slQY4-0002Qs-C5; Tue, 03 Sep 2024 06:14:11 -0400
+	id 1slSck-0003BN-Iq; Tue, 03 Sep 2024 08:27:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1slQX2-0002Mt-75
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 06:13:05 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1slScj-0003Au-Fe
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 08:27:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1slQWQ-00082c-Px
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 06:12:56 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1slScg-0005h6-1y
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 08:27:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725358291;
+ s=mimecast20190719; t=1725366420;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=txwN6RjZve6g0ayM7naxYo4Xm12eUr5K9g2/bl2gMXI=;
- b=ChE7QARDu6rBVft+mFrglpj0S1e28hRJJrdRYA9JQwM2Dys3d40HMue7WiYq0avTgxVLYm
- Ih5yqsqGdi46nn/B+xNsJtC69ZJQfzalWKqIEjITIW9pK7oU9MHbfQxrGvq8dgq3bmU3zR
- CAZx1caA9nGYKj/a0jlHKh/LreRzp/0=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GF1AvVkZJ/yxNG73qXOy8cgo6Vg+HB1+fH5AqyVbd8E=;
+ b=CTb8UDFprKvgxMkqlppSouxJctFYm2n2HrCDp4r8B+OxYZybM8lsKCP9cFaqogHvm5aTrp
+ aVHyzaAtF5QI0RQ/KtvGoQDo0AzInjO36eHxLWSz/d3gM/5JRF8r81Wa3BqUHvmGOau2ts
+ AqEqE6GUKMYR0RjqUgN9KrGIbbGrlkQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-a4_X68tZMra8AoAkuIIs_g-1; Tue, 03 Sep 2024 06:11:29 -0400
-X-MC-Unique: a4_X68tZMra8AoAkuIIs_g-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6c358223647so33482876d6.3
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 03:11:29 -0700 (PDT)
+ us-mta-84-uX-Hp9XYPBOZAvoT56eB6g-1; Tue, 03 Sep 2024 06:19:20 -0400
+X-MC-Unique: uX-Hp9XYPBOZAvoT56eB6g-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-374c3a31ebcso1556269f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 03:19:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725358289; x=1725963089;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=txwN6RjZve6g0ayM7naxYo4Xm12eUr5K9g2/bl2gMXI=;
- b=NuMLmtc+NKpCSLoUmYZ/ABMAhfWffNUs79xe3fi7TY3xNsaM/lI2Hr2QeKYZDuVxCq
- jYhf8TasG9TczIi/03U7EBtxzL8AYFil7aUvyFZN+Zm60zKZeaZCMxonyHjjnKKbekui
- jxcnMrs4jpvGOjdGNmpdudGJOjyQ97HR2QAdBeTt6NJSzsCLokY9yMULZZWFqFze+roe
- U7abGMqHh/wfhBoeTv3qk/GuDKw5nQZyepQ4RII7AHv+mx16TDYKxIZLfRvDdvfcZNxT
- DcUCKnorFAEcRxMyqtxLH3fwzy1DVSRfmCsBbK+v20Y/s6NJdP50aLSDwXQGhyQjZdxN
- iiYg==
+ d=1e100.net; s=20230601; t=1725358759; x=1725963559;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GF1AvVkZJ/yxNG73qXOy8cgo6Vg+HB1+fH5AqyVbd8E=;
+ b=QX9x+jLZPFNYeR+3aj5Q5FyZ5O8qh8a2iGTHW8DUUzLlW/a6a7FegClviM9bg43/sA
+ GwVCmt0f+e4gPk1Fq52sOzKCSJdcLEZdQAaLQvPmjKON5BrT/GiJngsfs5Ys033CzlUI
+ R37fuFYSHXs/Inv2DU9cQK5ha0llSyTADo2c2vIPWdDznCkI8+qYIHAE4c/N3FPe72lJ
+ GU7wO6NhRiOyoWkv5HEscrpM6KZrBUPxIfc4vGMOUDDgOFUImkrRhwbnKSbAFArytVwV
+ S8twY1ulF2J3QgEyHXgjepCjV9ApjCI+bfWoDCUZMTfRIyK9QxWWl5juVbN6DxOpn9HW
+ MjMw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWVHNYExErIVjpM4J1d37L+12si19gX4z90ISu5kHwkIxgMmglz3m00HrmDpp4uciID0kOVrKgKRogU@nongnu.org
-X-Gm-Message-State: AOJu0Ywsy6L1gGBzFgW4RiBqsE2zTo3Tbw1W6mo0qheHxj5irIwlPFGM
- w670fG6CN7nROSLAFhlrFZAsYvt46qjOOc2EPeGlhDFRqZrITOHGL6ufnqcH+pSxiY2cOSDJT/X
- jJDo9s8gANTdK+gZA16hKgm7yKoCZ2+Vfzs9Wma9heUivYYN6uAwS
-X-Received: by 2002:a05:6214:5d91:b0:6bf:9076:3315 with SMTP id
- 6a1803df08f44-6c355684c93mr90718066d6.13.1725358289499; 
- Tue, 03 Sep 2024 03:11:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGglw/2Y1dO2dHZsvR3pT5+KwqmJ1lLK1dBt3hDJRJv1Rabpj+WffQV1m58gWaonyyhhmlJYw==
-X-Received: by 2002:a05:6214:5d91:b0:6bf:9076:3315 with SMTP id
- 6a1803df08f44-6c355684c93mr90717836d6.13.1725358289053; 
- Tue, 03 Sep 2024 03:11:29 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.98.235])
+ AJvYcCUZovO3Lz3OQ19Ote04qTcQXMlPrcyikFC736dhMs9wWwpce8jyxQydimHRGZzkvcUQg4SNOmmFTYGT@nongnu.org
+X-Gm-Message-State: AOJu0YwpBBdhmJQoCmEn8U5+86NxIZLEA/5OeascuO1TTPqHOmGOzo5o
+ lXmuumYPBbVC/b6//Zy1fwBoQYUJBAXssQDyIznvnfsSvL+SZnrA82xxXsAKEnioQtIp4YcZnC3
+ 6wzdhIg+q31+x1Mqq7aBQ04/ggZmgo5/f0GaiZV1rwo2zgW4yRlZY
+X-Received: by 2002:adf:9b02:0:b0:374:c0f5:79f4 with SMTP id
+ ffacd0b85a97d-376dcc8b82dmr186919f8f.7.1725358759372; 
+ Tue, 03 Sep 2024 03:19:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFNdrXkMxrzzTevbRReSfq7f2AUvnATqt+U6xVFSDTFfd5Z9cN5M9vTcLKJLcLQNX2/v0fnMg==
+X-Received: by 2002:adf:9b02:0:b0:374:c0f5:79f4 with SMTP id
+ ffacd0b85a97d-376dcc8b82dmr186897f8f.7.1725358758493; 
+ Tue, 03 Sep 2024 03:19:18 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc7:441:95c6:9977:c577:f3d1:99e1])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c35129ed82sm39043866d6.66.2024.09.03.03.11.27
+ ffacd0b85a97d-374bdcbe0f0sm9345802f8f.117.2024.09.03.03.19.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2024 03:11:28 -0700 (PDT)
-Date: Tue, 3 Sep 2024 12:11:22 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: "Gao,Shiyuan" <gaoshiyuan@baidu.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
- Jason Wang <jasowang@redhat.com>, "Zuo,Boqun" <zuoboqun@baidu.com>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+ Tue, 03 Sep 2024 03:19:17 -0700 (PDT)
+Date: Tue, 3 Sep 2024 06:19:10 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Gao Shiyuan <gaoshiyuan@baidu.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, zuoboqun@baidu.com, qemu-devel@nongnu.org
 Subject: Re: [PATCH V2 1/1] virtio-pci: Add lookup subregion of
  VirtIOPCIRegion MR
-Message-ID: <mu4hif4l5f2di4yk3asmyoloeqdexm2wgxfsna6ddaukfztec7@6lzpcwyctveh>
+Message-ID: <20240903061829-mutt-send-email-mst@kernel.org>
 References: <20240820115631.52522-1-gaoshiyuan@baidu.com>
- <qrb7lbdypu2ctim57dxn7copcbmclpxnb4k2uadnm5v6ehawwc@xzhkhvs46xhw>
- <9766b5a2ca8c43f3be60b2bfd0fc5226@baidu.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9766b5a2ca8c43f3be60b2bfd0fc5226@baidu.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+In-Reply-To: <20240820115631.52522-1-gaoshiyuan@baidu.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, T_SCC_BODY_TEXT_LINE=-0.01, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,95 +101,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 29, 2024 at 01:13:43PM GMT, Gao,Shiyuan wrote:
->> >--- a/hw/virtio/virtio-pci.c
->> >+++ b/hw/virtio/virtio-pci.c
->> >@@ -610,19 +610,29 @@ static MemoryRegion *virtio_address_space_lookup(VirtIOPCIProxy *proxy,
->> > {
->> >     int i;
->> >     VirtIOPCIRegion *reg;
->> >+    MemoryRegion *mr = NULL;
->>
->> `mr` looks unused.
->>
->> >+    MemoryRegionSection mrs;
->>
->> Please, can you move this declaration in the inner block where it's
->> used?
->
->ok, I will move to inner block and remove unused `mr`.
->
->>
->> >
->> >     for (i = 0; i < ARRAY_SIZE(proxy->regs); ++i) {
->> >         reg = &proxy->regs[i];
->> >         if (*off >= reg->offset &&
->> >             *off + len <= reg->offset + reg->size) {
->> >-            *off -= reg->offset;
->> >-            return &reg->mr;
->> >+            mrs = memory_region_find(&reg->mr, *off - reg->offset,
->> >len);
->> >+            if (!mrs.mr) {
->> >+                error_report("Failed to find memory region for address"
->> >+                             "0x%" PRIx64 "", *off);
->> >+                return NULL;
->> >+            }
->> >+            *off = mrs.offset_within_region;
->> >+            memory_region_unref(mrs.mr);
->> >+            return mrs.mr;
->> >         }
->> >     }
->> >
->> >     return NULL;
->> > }
->> >
->> >+
->>
->> Unrelated change.
->
->Perhaps this would be clearer but not universal in Version 1.
->
->Without this patch, Only lookup common/isr/device/notify MR and
->exclude their subregions.
->
->When VHOST_USER_PROTOCOL_F_HOST_NOTIFIER enable, the notify MR has
->host-notifier subregions and we need use host-notifier MR to
->notify the hardware accelerator directly.
->
->Further more, maybe common/isr/device MR also has subregions in
->the future, so need memory_region_find for each MR incluing
->their subregions and this will be more universal.
+On Tue, Aug 20, 2024 at 07:56:31PM +0800, Gao Shiyuan wrote:
+> When VHOST_USER_PROTOCOL_F_HOST_NOTIFIER feature negotiated and
+> virtio_queue_set_host_notifier_mr success on system blk
+> device's queue, the VM can't load MBR if the notify region's
+> address above 4GB.
+> 
+> Assign the address of notify region in the modern bar above 4G, the vp_notify
+> in SeaBIOS will use PCI Cfg Capability to write notify region. This will trap
+> into QEMU and be handled by the host bridge when we don't enable mmconfig.
+> QEMU will call virtio_write_config and since it writes to the BAR region
+> through the PCI Cfg Capability, it will call virtio_address_space_write.
+> 
+> virtio_queue_set_host_notifier_mr add host notifier subregion of notify region
+> MR, QEMU need write the mmap address instead of eventfd notify the hardware
+> accelerator at the vhost-user backend. So virtio_address_space_lookup in
+> virtio_address_space_write need return a host-notifier subregion of notify MR
+> instead of notify MR.
+> 
+> Add lookup subregion of VirtIOPCIRegion MR instead of only lookup container MR.
+> 
+> Fixes: a93c8d8 ("virtio-pci: Replace modern_as with direct access to modern_bar")
+> 
+> Co-developed-by: Zuo Boqun <zuoboqun@baidu.com>
+> Signed-off-by: Gao Shiyuan <gaoshiyuan@baidu.com>
+> Signed-off-by: Zuo Boqun <zuoboqun@baidu.com>
+> ---
+>  hw/virtio/virtio-pci.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> ---
+> v1 -> v2:
+> * modify commit message
+> * replace direct iteration over subregions with memory_region_find.
+> 
+> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+> index 9534730bba..5d2d27a6a3 100644
+> --- a/hw/virtio/virtio-pci.c
+> +++ b/hw/virtio/virtio-pci.c
+> @@ -610,19 +610,29 @@ static MemoryRegion *virtio_address_space_lookup(VirtIOPCIProxy *proxy,
+>  {
+>      int i;
+>      VirtIOPCIRegion *reg;
+> +    MemoryRegion *mr = NULL;
+> +    MemoryRegionSection mrs;
+>  
+>      for (i = 0; i < ARRAY_SIZE(proxy->regs); ++i) {
+>          reg = &proxy->regs[i];
+>          if (*off >= reg->offset &&
+>              *off + len <= reg->offset + reg->size) {
+> -            *off -= reg->offset;
+> -            return &reg->mr;
+> +            mrs = memory_region_find(&reg->mr, *off - reg->offset, len);
+> +            if (!mrs.mr) {
+> +                error_report("Failed to find memory region for address"
+> +                             "0x%" PRIx64 "", *off);
+> +                return NULL;
+> +            }
 
-I see, I don't have much experience with this, but what you say I think
-makes sense. I would wait for a comment from Michael or Jason.
 
-Thanks,
-Stefano
+I'm not sure when can this happen. If it can't assert will do.
 
->
->@@ -610,13 +610,22 @@ static MemoryRegion *virtio_address_space_lookup(VirtIOPCIProxy *proxy,
-> {
->     int i;
->     VirtIOPCIRegion *reg;
->+    MemoryRegion *mr, *submr;
->
->     for (i = 0; i < ARRAY_SIZE(proxy->regs); ++i) {
->         reg = &proxy->regs[i];
->         if (*off >= reg->offset &&
->             *off + len <= reg->offset + reg->size) {
->             *off -= reg->offset;
->-            return &reg->mr;
->+            mr = &reg->mr;
->+            QTAILQ_FOREACH(submr, &mr->subregions, subregions_link) {
->+                if (*off >= submr->addr &&
->+                    *off + len < submr->addr + submr->size) {
->+                    *off -= submr->addr;
->+                    return submr;
->+                }
->+            }
->+            return mr;
->         }
->     }
->
+
+> +            *off = mrs.offset_within_region;
+> +            memory_region_unref(mrs.mr);
+> +            return mrs.mr;
+>          }
+>      }
+>  
+>      return NULL;
+>  }
+>  
+> +
+>  /* Below are generic functions to do memcpy from/to an address space,
+>   * without byteswaps, with input validation.
+>   *
+> -- 
+> 2.39.3 (Apple Git-146)
 
 
