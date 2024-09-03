@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B9F96A3FE
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA95F96A3D8
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:12:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slW5P-0000Ue-Rk; Tue, 03 Sep 2024 12:08:55 -0400
+	id 1slW5U-0000nI-E4; Tue, 03 Sep 2024 12:09:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5N-0000Lq-Mc
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:08:53 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1slW5P-0000UG-7k
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:08:55 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5L-0002u2-PQ
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:08:53 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-42c7a384b18so26509445e9.0
+ id 1slW5M-0002uW-Bm
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:08:54 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-428e1915e18so46256375e9.1
  for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 09:08:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725379730; x=1725984530; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725379731; x=1725984531; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fmZw44UFxtNmu5XvjUhvfl85V31SothT2rfnjTZFuAs=;
- b=sTlZn3aw6pMOqOf//5jDyOls/ect+KjCVvTuttQ8lfzFQ4hkZ2f2o3p/aH0S0gIkGF
- +0mbkZQi1jGK2NeVN43KVcimuw0pReKjXxY/TVxejzwCvysF8ND0wnHHJr1s9Ag9ZF6f
- 8DqfXi/uRxSpRkm7XufoplPqktfxU3G5p/RlGz0iPvCdYxd1yPePXbb5wq5WXDiKLqOg
- /deQTkAydElW5tJGb+rwBYnInwXhLhLKSKoChkpZ5lWL7GoGiZtErbd/NWa0vILIx+Kb
- 8NBAkpvVlW3LU2C4Zt/thPfsh1FyZdzb7mDM6CRFocz+cMER5SX0aIWdq1I/NxvziLpl
- b89g==
+ :reply-to; bh=UBzlCb7RRPjVLBJHnDbcvnTn6N5F9W9Gb8kEyuiORpw=;
+ b=VoTTviFQzXA0YY9udNTSO3NegGy61AV1fMePZP2uGAdMc7e8NUe96Ruu3b2RkX/ths
+ wJSFhIxIuqclyYBwLI5r+vRZFYzmPKfsWmvE0nzgQvy6eW0xURvmPrWKmk+xU6Is1SH0
+ hRw+/iA0W9rb94cR+82drgKJ8DWem4JRMEDLoD88SfTzHhE/OIglpjFw9JTaRrhcTi/0
+ v39Gyh30aspOjrb1V+TQG4AwBaY/43GAaoALb9xBOLxzR8USP4nsYahStLKfiTR8Le7P
+ zcc86UqMjQt69fOr7htg4Mn/PG2U3j/awSC2P8rNtsxhpsNWcZplEzJNZI5e+z32U0Hd
+ /wvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725379730; x=1725984530;
+ d=1e100.net; s=20230601; t=1725379731; x=1725984531;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fmZw44UFxtNmu5XvjUhvfl85V31SothT2rfnjTZFuAs=;
- b=jXxtmW/16C6JjKlD5uU0px5noEdovtt70tqCIbGPvU3lHNoKLh0MrVJ5Uxz2a1Aqb2
- bJT8p0KjcB/9Lo+PN3xiQu1tciBWWuBFJF1ORmePDRHlcRwmC8NvsmLUZqsdGPDHDht6
- qQ2/4DrM+YiDFHHSQ4EU5koxM2I2SN1men7IIrhFFN81M9t4HCaPLOMNQ866Fp3hOKvn
- R1Xbmx5ur+0FIu3tzHyqyr4L6Z2cDOJTO5jywh7ekmFAHNCbnFDEW1ypcyVMvQEzy9vl
- PLVzm8t0zpF6v42B00dCseILqkh1bb1+54MBwetf+FKEOP7z7WONHmzP2u4DmbvnoK1p
- NQNA==
+ bh=UBzlCb7RRPjVLBJHnDbcvnTn6N5F9W9Gb8kEyuiORpw=;
+ b=V+xXfz1YY0/lzh8E8ZIP/qmjutgJ3lgT23Xeo6cutMQYIOLJzfPiZs0nPlKzfbej1v
+ oGG/9NnQKKakIPQRjj27I5Z3kkssNXz2uhgLKRHRoawYlUVpuNSfM/3JCMAI1hjbRdU7
+ KCv5HeKskV+ClalWkb0+rTsF7KNF7UVVvHxL7ekyTFmwL00VDdB7pdQrhpHIX091gN0u
+ F8/dNs3m60xaO33hcBJ8WxUjMvYdyL39mwQAHvbRMunDX/Jthx55AUJBCvmH1ug8rJ6X
+ 6cbnvZzHOU55nZ3TQrd1cebyuSzUl0kGqel8xh5T7/+MfnBzGTjdU9gG5sDmD5+aoVjc
+ 9MOg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUxxfdB167dyb4OyBztc109Wh3hYsMVtES/Wrgg2piP329D/AjyyM7sGLW0+3+pidBy/wHSjN6VCkEb@nongnu.org
-X-Gm-Message-State: AOJu0Yz+rIgF4YmFFxM0LHqJp7P1aVXco5Kg6tMtMIGLVHzfnGECmSlh
- dhUaKe2r+QTtCJx4FH0nllv2UKuKa7RCiQFyvIEwpBm5LDnnkT86fvTFrIW9JKleM5O36UgQdsY
- M
-X-Google-Smtp-Source: AGHT+IGvW5DHlTpOR59xDYnTIUmLizi9phfFG9JyL0qqIOlTUw8OgLBqCGcObJZLynZgsitWhYDv1Q==
-X-Received: by 2002:a05:600c:1c89:b0:426:66a2:b200 with SMTP id
- 5b1f17b1804b1-42bd052b0f6mr84809015e9.0.1725379730219; 
+ AJvYcCUEl4jw9jA021xiip2ZMu1FU80+Irs55PiL2bR36UJDEg0k8kzftMYNft3FP7H0TjYE05itWLriHlN0@nongnu.org
+X-Gm-Message-State: AOJu0Yy9/OltOUxAh2HJLWTklV5O9Dd7N8zqObi4+zoj9fw+B6qy70Gk
+ 5V/e+JY3z0/KYUdL6aVOuuatEuaET09kw1l+SQlfHqDfHUuv4xy/B7bk1BYd2rA=
+X-Google-Smtp-Source: AGHT+IGRHvvaqmg/h3YQmAJsNywrFCHoo6G7aZe/YGlrU+D1BDpIWowybMN63iIj8V50r8LSPTt1Ag==
+X-Received: by 2002:a05:600c:190f:b0:426:6f0e:a60 with SMTP id
+ 5b1f17b1804b1-42c7b5b3ed4mr68767465e9.17.1725379730764; 
  Tue, 03 Sep 2024 09:08:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb6df1066sm175123065e9.18.2024.09.03.09.08.41
+ 5b1f17b1804b1-42bb6df1066sm175123065e9.18.2024.09.03.09.08.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2024 09:08:41 -0700 (PDT)
+ Tue, 03 Sep 2024 09:08:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH for-9.2 35/53] hw: Remove PCMCIA subsystem
-Date: Tue,  3 Sep 2024 17:07:33 +0100
-Message-Id: <20240903160751.4100218-36-peter.maydell@linaro.org>
+Subject: [PATCH for-9.2 36/53] docs: Document removal of old Arm boards
+Date: Tue,  3 Sep 2024 17:07:34 +0100
+Message-Id: <20240903160751.4100218-37-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240903160751.4100218-1-peter.maydell@linaro.org>
 References: <20240903160751.4100218-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,169 +92,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The only PCMCIA subsystem was the PXA2xx SoC and the machines
-using it, which have now been removed. Although in theory
-we have a few machine types which have PCMCIA (e.g. kzm,
-the strongarm machines, sh4's sh7750), none of those machines
-implement their PCMCIA controller, and they're all old and
-no longer very interesting machine types.
-
-Rather than keeping all the PCMCIA code in-tree without any
-active users of it, delete it. If we need PCMCIA in future
-we can always resurrect it.
+Now we have removed all the board types that it covers, we can move
+the text about old Arm boards from deprecated.rst to
+removed-features.rst, tweaking it appropriately.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/pcmcia.h   | 63 -------------------------------------------
- hw/pcmcia/pcmcia.c    | 24 -----------------
- hw/Kconfig            |  1 -
- hw/meson.build        |  1 -
- hw/pcmcia/Kconfig     |  2 --
- hw/pcmcia/meson.build |  1 -
- 6 files changed, 92 deletions(-)
- delete mode 100644 include/hw/pcmcia.h
- delete mode 100644 hw/pcmcia/pcmcia.c
- delete mode 100644 hw/pcmcia/Kconfig
- delete mode 100644 hw/pcmcia/meson.build
+ docs/about/deprecated.rst       | 15 ---------------
+ docs/about/removed-features.rst | 15 +++++++++++++++
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/include/hw/pcmcia.h b/include/hw/pcmcia.h
-deleted file mode 100644
-index 6c08ad616a5..00000000000
---- a/include/hw/pcmcia.h
-+++ /dev/null
-@@ -1,63 +0,0 @@
--#ifndef HW_PCMCIA_H
--#define HW_PCMCIA_H
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 88f0f037865..bb04daa52b3 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -246,21 +246,6 @@ to correct issues, mostly regarding migration compatibility. These are
+ no longer maintained and removing them will make the code easier to
+ read and maintain. Use versions 3.0 and above as a replacement.
+ 
+-Arm machines ``akita``, ``borzoi``, ``cheetah``, ``connex``, ``mainstone``, ``n800``, ``n810``, ``spitz``, ``terrier``, ``tosa``, ``verdex``, ``z2`` (since 9.0)
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 -
--/* PCMCIA/Cardbus */
+-QEMU includes models of some machine types where the QEMU code that
+-emulates their SoCs is very old and unmaintained. This code is now
+-blocking our ability to move forward with various changes across
+-the codebase, and over many years nobody has been interested in
+-trying to modernise it. We don't expect any of these machines to have
+-a large number of users, because they're all modelling hardware that
+-has now passed away into history. We are therefore dropping support
+-for all machine types using the PXA2xx and OMAP2 SoCs. We are also
+-dropping the ``cheetah`` OMAP1 board, because we don't have any
+-test images for it and don't know of anybody who does; the ``sx1``
+-and ``sx1-v1`` OMAP1 machines remain supported for now.
 -
--#include "hw/qdev-core.h"
--#include "qom/object.h"
--
--typedef struct PCMCIASocket {
--    qemu_irq irq;
--    bool attached;
--} PCMCIASocket;
--
--#define TYPE_PCMCIA_CARD "pcmcia-card"
--OBJECT_DECLARE_TYPE(PCMCIACardState, PCMCIACardClass, PCMCIA_CARD)
--
--struct PCMCIACardState {
--    /*< private >*/
--    DeviceState parent_obj;
--    /*< public >*/
--
--    PCMCIASocket *slot;
--};
--
--struct PCMCIACardClass {
--    /*< private >*/
--    DeviceClass parent_class;
--    /*< public >*/
--
--    int (*attach)(PCMCIACardState *state);
--    int (*detach)(PCMCIACardState *state);
--
--    const uint8_t *cis;
--    int cis_len;
--
--    /* Only valid if attached */
--    uint8_t (*attr_read)(PCMCIACardState *card, uint32_t address);
--    void (*attr_write)(PCMCIACardState *card, uint32_t address, uint8_t value);
--    uint16_t (*common_read)(PCMCIACardState *card, uint32_t address);
--    void (*common_write)(PCMCIACardState *card,
--                         uint32_t address, uint16_t value);
--    uint16_t (*io_read)(PCMCIACardState *card, uint32_t address);
--    void (*io_write)(PCMCIACardState *card, uint32_t address, uint16_t value);
--};
--
--#define CISTPL_DEVICE         0x01  /* 5V Device Information Tuple */
--#define CISTPL_NO_LINK        0x14  /* No Link Tuple */
--#define CISTPL_VERS_1         0x15  /* Level 1 Version Tuple */
--#define CISTPL_JEDEC_C        0x18  /* JEDEC ID Tuple */
--#define CISTPL_JEDEC_A        0x19  /* JEDEC ID Tuple */
--#define CISTPL_CONFIG         0x1a  /* Configuration Tuple */
--#define CISTPL_CFTABLE_ENTRY  0x1b  /* 16-bit PCCard Configuration */
--#define CISTPL_DEVICE_OC      0x1c  /* Additional Device Information */
--#define CISTPL_DEVICE_OA      0x1d  /* Additional Device Information */
--#define CISTPL_DEVICE_GEO     0x1e  /* Additional Device Information */
--#define CISTPL_DEVICE_GEO_A   0x1f  /* Additional Device Information */
--#define CISTPL_MANFID         0x20  /* Manufacture ID Tuple */
--#define CISTPL_FUNCID         0x21  /* Function ID Tuple */
--#define CISTPL_FUNCE          0x22  /* Function Extension Tuple */
--#define CISTPL_END            0xff  /* Tuple End */
--#define CISTPL_ENDMARK        0xff
--
--#endif
-diff --git a/hw/pcmcia/pcmcia.c b/hw/pcmcia/pcmcia.c
-deleted file mode 100644
-index 03d13e7d670..00000000000
---- a/hw/pcmcia/pcmcia.c
-+++ /dev/null
-@@ -1,24 +0,0 @@
--/*
-- * PCMCIA emulation
-- *
-- * Copyright 2013 SUSE LINUX Products GmbH
-- */
--
--#include "qemu/osdep.h"
--#include "qemu/module.h"
--#include "hw/pcmcia.h"
--
--static const TypeInfo pcmcia_card_type_info = {
--    .name = TYPE_PCMCIA_CARD,
--    .parent = TYPE_DEVICE,
--    .instance_size = sizeof(PCMCIACardState),
--    .abstract = true,
--    .class_size = sizeof(PCMCIACardClass),
--};
--
--static void pcmcia_register_types(void)
--{
--    type_register_static(&pcmcia_card_type_info);
--}
--
--type_init(pcmcia_register_types)
-diff --git a/hw/Kconfig b/hw/Kconfig
-index f7866e76f73..72aea9b8b73 100644
---- a/hw/Kconfig
-+++ b/hw/Kconfig
-@@ -27,7 +27,6 @@ source nvme/Kconfig
- source nvram/Kconfig
- source pci-bridge/Kconfig
- source pci-host/Kconfig
--source pcmcia/Kconfig
- source pci/Kconfig
- source remote/Kconfig
- source rtc/Kconfig
-diff --git a/hw/meson.build b/hw/meson.build
-index 1c6308fe957..b871cdca75c 100644
---- a/hw/meson.build
-+++ b/hw/meson.build
-@@ -27,7 +27,6 @@ subdir('nvram')
- subdir('pci')
- subdir('pci-bridge')
- subdir('pci-host')
--subdir('pcmcia')
- subdir('rtc')
- subdir('scsi')
- subdir('sd')
-diff --git a/hw/pcmcia/Kconfig b/hw/pcmcia/Kconfig
-deleted file mode 100644
-index 41f2df91366..00000000000
---- a/hw/pcmcia/Kconfig
-+++ /dev/null
-@@ -1,2 +0,0 @@
--config PCMCIA
--    bool
-diff --git a/hw/pcmcia/meson.build b/hw/pcmcia/meson.build
-deleted file mode 100644
-index edcb7f5d263..00000000000
---- a/hw/pcmcia/meson.build
-+++ /dev/null
-@@ -1 +0,0 @@
--system_ss.add(when: 'CONFIG_PCMCIA', if_true: files('pcmcia.c'))
+ PPC 405 ``ref405ep`` machine (since 9.1)
+ ''''''''''''''''''''''''''''''''''''''''
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index fc7b28e6373..815d63f5941 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -978,6 +978,21 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (removed in 9.1)
+ 
+ The Nios II architecture was orphan.
+ 
++Arm machines ``akita``, ``borzoi``, ``cheetah``, ``connex``, ``mainstone``, ``n800``, ``n810``, ``spitz``, ``terrier``, ``tosa``, ``verdex``, ``z2`` (removed in 9.2)
++'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++
++QEMU included models of some machine types where the QEMU code that
++emulates their SoCs was very old and unmaintained. This code was
++blocking our ability to move forward with various changes across
++the codebase, and over many years nobody has been interested in
++trying to modernise it. We don't expect any of these machines to have
++a large number of users, because they're all modelling hardware that
++has now passed away into history. We are therefore dropping support
++for all machine types using the PXA2xx and OMAP2 SoCs. We are also
++dropping the ``cheetah`` OMAP1 board, because we don't have any
++test images for it and don't know of anybody who does; the ``sx1``
++and ``sx1-v1`` OMAP1 machines remain supported for now.
++
+ linux-user mode CPUs
+ --------------------
+ 
 -- 
 2.34.1
 
