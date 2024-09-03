@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E5B969FD6
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C25996A021
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:15:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slUB3-0002S6-SA; Tue, 03 Sep 2024 10:06:37 -0400
+	id 1slUJt-00089p-KA; Tue, 03 Sep 2024 10:15:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1slUB1-0002Qv-Bo
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:06:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1slUAb-0007HD-Fi
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:06:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725372241;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=51dTN7MmTiEpTD17LoLSRBqs9+ZPE1zu8h5Dd7a9Uh4=;
- b=XrRt1eLoU/h8Pdc/e9a+DIqRXjADMi7ldthBBVsgZtT4ebEhSsJG7W3+h7cCAUfH6oN8dA
- Ihkrr4uttW7q7OOedKNBoCBD/2Zbqqd6OF73xfbQ2Odj4PjFPd2QzoXDhwqzH7wOMTtTF8
- rcYB1+RV2A0YL69YKC6Q5Uamv/Ku4hA=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-271-aQIiQYxiPsiQMZNcTfj00w-1; Tue, 03 Sep 2024 09:44:56 -0400
-X-MC-Unique: aQIiQYxiPsiQMZNcTfj00w-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-205428e6facso37645545ad.2
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 06:44:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slUJr-00081s-QF
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:15:43 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slUJp-00013S-2Y
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:15:43 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-42bac9469e8so44458285e9.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 07:15:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725372939; x=1725977739; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3sE49CX3Ia22xbpTNXwA/nIQ0+NOwZ73kDBYhYhSInA=;
+ b=RVUN70u9W3vylc9uEtFtY5rxlEAFy2i9bKXQqhSYTQ3O5NZL+hYv45XSwUOfPRDTkl
+ WodXvPD93CXIZ083mLAQSpS3T0ajfxFik1yg2zrrAq+z1joq0iWzH/lNu3Ybq05fRkUv
+ ohJzRu2y8P8yesdOkTRBKLBUY6rIjHaowxhW1VZ9ugUhMaw2TNOfNMMIMttmELEjvc3F
+ iFtGFS4axS629Q9eHps2NfAlxbZnjfjrSiRQWo1oCdUze/pOxKy1OkV8U5ed9HMGkcO4
+ gCSExA4+eMLJ8JuCT0/vPm4+/GslKbGUGhODt0AHzKDlkuKE4PiOCYTqb4jhgM6G+Psr
+ BrYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725371095; x=1725975895;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=51dTN7MmTiEpTD17LoLSRBqs9+ZPE1zu8h5Dd7a9Uh4=;
- b=Fv71dqTd4fqNTmQHutVEW4myoHhzbPulFmur2Y4RRq1ZXtZoZkxrvrTKQr4kCpvD+W
- RcUuthAdnJpt8l81wagFbo0XfRZG2ge089vvBn4andIPcKXhKOu/iBw2TtPrnYNpqBZn
- YzR8zvpRBG90YX1mXctafGvPHeTkvnmod5msw2xsTEaHVOaX/Obai7PtoB+MBnK7o5iI
- PwgDsH9UmJ0kHU13+l+xJ6BzgmFi3gVw4GsSPFmpUfcFb1SXtbZ3M/UKZ5eKD/ip4ecb
- +avhOf5IBQwzlHLuGPnztFT4GlToUfynjVLxZ4uXf1c1vJoXog2JZz1pGdUg+ZF3pBvv
- qlWw==
+ d=1e100.net; s=20230601; t=1725372939; x=1725977739;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3sE49CX3Ia22xbpTNXwA/nIQ0+NOwZ73kDBYhYhSInA=;
+ b=K9XsZDRgac6GTXjwi3LuLASVjgQzFxG0n7Lohr4aRIicBOacVMlJ7e7cXAb3r67a8L
+ HG2eFAt75Xy77z9XocGok2KtKnIwYArfNKibBZ5LCmhxB9CYrUU55GZLhpNPLLsn7r29
+ GcnRyOF1Q8BDMtPgrUCPKJRMvG9FVBKn7qQrpnYoP3o00s7JxluGY1Uw7/RuCNTAWS6X
+ QeVOFFA+5eFxw/p1cxNMymWqWkr7s9RxRPaLs/rJCP56n95scU7dWxDjnINWUVjc/MzV
+ h7FdaRW+HoJcwzk23GDWOYMob+aVCK5+cpfvghMwwp2uR5TYdo2x/zwHoW8C0tsCKVDA
+ vMaw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUUM7rtHcjdgHtteQo2Vc3qgyPmn55MAU6AYpy4cYs8acsR0oOf6dm+mQDypeJCt2xqBZGfTmM9F79h@nongnu.org
-X-Gm-Message-State: AOJu0Yx48svWAtnMApVzBHUgREhDp5m5DQC9Q66AIazHUfU4agTIM183
- gF8LJVrvXuVFjJY9R2t8ttkV34CcO9IxDbBVsdTQUMRsrSlT+B0nTNHaMSbml9ZQbAFju/LybM4
- bJvhPPUrzN0mMKibS8D+RzDQCfPYPK5a3CYhjzu9HkZqETmlTEGfp
-X-Received: by 2002:a17:902:dacb:b0:205:5136:b2fb with SMTP id
- d9443c01a7336-205841a4376mr63797755ad.23.1725371095172; 
- Tue, 03 Sep 2024 06:44:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHkgI5zV7G/OfX9mZdLAgTTnOsa1DlSYl0W1zMp7fZyMcYyBFePdiPohhZh6ka7KNNAEWdSZA==
-X-Received: by 2002:a17:902:dacb:b0:205:5136:b2fb with SMTP id
- d9443c01a7336-205841a4376mr63797535ad.23.1725371094763; 
- Tue, 03 Sep 2024 06:44:54 -0700 (PDT)
-Received: from localhost.localdomain ([115.96.207.26])
- by smtp.googlemail.com with ESMTPSA id
- d9443c01a7336-2051554407bsm81030575ad.217.2024.09.03.06.44.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2024 06:44:54 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, philmd@linaro.org, kvm@vger.kernel.org,
- qemu-devel@nongnu.org
-Subject: [PATCH v2] kvm/i386: make kvm_filter_msr() and related definitions
- private to kvm module
-Date: Tue,  3 Sep 2024 19:14:41 +0530
-Message-ID: <20240903134441.40549-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.42.0
+ AJvYcCWkDGuKG/eamg7A1qFD4hjdamvxTyLM6VrKJp5YID/+yqOYIwbLcWNWVyuWK4Qaj0leiEwbbjvQ4mzr@nongnu.org
+X-Gm-Message-State: AOJu0YyB9UoRqYLHPcXCJ5gjEu5BpRqFe/1G2dVYe3o+n7ryWkXLZoWt
+ bpUXlXnrCnj3EySNNKuFXCn13b/zopNJBO1pEbxXhjLCNjJF6KgHNP5zBqdbW++TTloAmxmd4fj
+ R
+X-Google-Smtp-Source: AGHT+IFECFyz3ddJyEpC4epqmSydLdklmPQgk3MPgzehrhNQ6swcmK3K+Nn0YVphfsRcjKsBGIhCiQ==
+X-Received: by 2002:a05:600c:4fcf:b0:426:5269:9838 with SMTP id
+ 5b1f17b1804b1-42c82f47db9mr58389635e9.4.1725371117332; 
+ Tue, 03 Sep 2024 06:45:17 -0700 (PDT)
+Received: from [192.168.1.67] ([78.196.4.158])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42bb6deb1ebsm172108855e9.3.2024.09.03.06.45.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Sep 2024 06:45:16 -0700 (PDT)
+Message-ID: <c16b29e3-0d4b-4e3c-af58-240d29d13d8f@linaro.org>
+Date: Tue, 3 Sep 2024 15:45:15 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 32/44] tests/functional: Convert the vnc test
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ "Daniel P . Berrange" <berrange@redhat.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>
+References: <20240830133841.142644-1-thuth@redhat.com>
+ <20240830133841.142644-33-thuth@redhat.com>
+ <a11813f6-6a11-4467-8f4f-1435f5284f28@linaro.org>
+ <d72b302a-ec99-4eed-bd7b-cb79ec714a49@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <d72b302a-ec99-4eed-bd7b-cb79ec714a49@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, T_SCC_BODY_TEXT_LINE=-0.01, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,75 +101,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-kvm_filer_msr() is only used from i386 kvm module. Make it static so that its
-easy for developers to understand that its not used anywhere else.
-Same for QEMURDMSRHandler, QEMUWRMSRHandler and KVMMSRHandlers defintions.
+On 2/9/24 12:23, Thomas Huth wrote:
+> On 02/09/2024 11.48, Philippe Mathieu-Daudé wrote:
+>> On 30/8/24 15:38, Thomas Huth wrote:
+>>> Nothing thrilling in here, it's just a straight forward conversion.
+>>>
+>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>> ---
+>>>   tests/functional/meson.build                     |  1 +
+>>>   tests/{avocado/vnc.py => functional/test_vnc.py} | 12 +++++++-----
+>>>   2 files changed, 8 insertions(+), 5 deletions(-)
+>>>   rename tests/{avocado/vnc.py => functional/test_vnc.py} (97%)
+>>>   mode change 100644 => 100755
+>>>
+>>> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+>>> index 34a9b277f8..58f6bcf95d 100644
+>>> --- a/tests/functional/meson.build
+>>> +++ b/tests/functional/meson.build
+>>> @@ -107,6 +107,7 @@ tests_x86_64_system_quick = [
+>>>     'pc_cpu_hotplug_props',
+>>>     'virtio_version',
+>>>     'x86_cpu_model_versions',
+>>> +  'vnc',
+>>>   ]
+>>>   tests_x86_64_system_thorough = [
+>>> diff --git a/tests/avocado/vnc.py b/tests/functional/test_vnc.py
+>>> old mode 100644
+>>> new mode 100755
+>>> similarity index 97%
+>>> rename from tests/avocado/vnc.py
+>>> rename to tests/functional/test_vnc.py
+>>> index 862c8996a8..b769d3b268
+>>> --- a/tests/avocado/vnc.py
+>>> +++ b/tests/functional/test_vnc.py
+>>> @@ -1,3 +1,5 @@
+>>> +#!/usr/bin/env python3
+>>> +#
+>>>   # Simple functional tests for VNC functionality
+>>>   #
+>>>   # Copyright (c) 2018 Red Hat, Inc.
+>>> @@ -11,7 +13,7 @@
+>>>   import socket
+>>>   from typing import List
+>>> -from avocado_qemu import QemuSystemTest
+>>> +from qemu_test import QemuSystemTest
+>>>   VNC_ADDR = '127.0.0.1'
+>>> @@ -51,10 +53,7 @@ def find_free_ports(count: int) -> List[int]:
+>>>   class Vnc(QemuSystemTest):
+>>> -    """
+>>> -    :avocado: tags=vnc,quick
+>>> -    :avocado: tags=machine:none
+>>> -    """
+>>> +
+>>>       def test_no_vnc(self):
+>>>           self.vm.add_args('-nodefaults', '-S')
+>>>           self.vm.launch()
+>>> @@ -113,3 +112,6 @@ def test_change_listen(self):
+>>>           self.assertFalse(check_connect(a))
+>>>           self.assertTrue(check_connect(b))
+>>>           self.assertTrue(check_connect(c))
+>>> +
+>>> +if __name__ == '__main__':
+>>> +    QemuSystemTest.main()
+>>
+>> For a faithful conversion we need to squash:
+>>
+>> -- >8 --
+>> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+>> index 6b00d240dd..a590646adc 100644
+>> --- a/tests/functional/meson.build
+>> +++ b/tests/functional/meson.build
+>> @@ -26,6 +26,7 @@ tests_generic_system = [
+>>     'empty_cpu_model',
+>>     'info_usernet',
+>>     'version',
+>> +  'vnc',
+>>   ]
+>>
+>>   tests_generic_linuxuser = [
+>> @@ -123,7 +124,6 @@ tests_x86_64_system_quick = [
+>>     'pc_cpu_hotplug_props',
+>>     'virtio_version',
+>>     'x86_cpu_model_versions',
+>> -  'vnc',
+>>   ]
+>>
+>> ---
+>>
+>> (each test is <1s so I'd keep it generic).
+> 
+> Unfortunately that doesn't really work - the test cannot be really be 
+> run in parallel since the find_free_ports() stuff here is racy.
 
-CC: philmd@linaro.org
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- target/i386/kvm/kvm.c      | 12 +++++++++++-
- target/i386/kvm/kvm_i386.h | 11 -----------
- 2 files changed, 11 insertions(+), 12 deletions(-)
+Oh right, I ran check-functional-{arm,mips,...} with at most 3 targets
+but never tried the full 'check-functional'.
 
-changelog:
-v2: make QEMURDMSRHandler, QEMUWRMSRHandler and KVMMSRHandlers private
-to kvm.c
-
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 2fa88ef1e3..d714f54ee4 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -92,7 +92,17 @@
-  * 255 kvm_msr_entry structs */
- #define MSR_BUF_SIZE 4096
- 
-+typedef bool QEMURDMSRHandler(X86CPU *cpu, uint32_t msr, uint64_t *val);
-+typedef bool QEMUWRMSRHandler(X86CPU *cpu, uint32_t msr, uint64_t val);
-+typedef struct kvm_msr_handlers {
-+    uint32_t msr;
-+    QEMURDMSRHandler *rdmsr;
-+    QEMUWRMSRHandler *wrmsr;
-+} KVMMSRHandlers;
-+
- static void kvm_init_msrs(X86CPU *cpu);
-+static bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
-+                           QEMUWRMSRHandler *wrmsr);
- 
- const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
-     KVM_CAP_INFO(SET_TSS_ADDR),
-@@ -5728,7 +5738,7 @@ static bool kvm_install_msr_filters(KVMState *s)
-     return true;
- }
- 
--bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
-+static bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
-                     QEMUWRMSRHandler *wrmsr)
- {
-     int i;
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 34fc60774b..9de9c0d303 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -66,17 +66,6 @@ uint64_t kvm_swizzle_msi_ext_dest_id(uint64_t address);
- void kvm_update_msi_routes_all(void *private, bool global,
-                                uint32_t index, uint32_t mask);
- 
--typedef bool QEMURDMSRHandler(X86CPU *cpu, uint32_t msr, uint64_t *val);
--typedef bool QEMUWRMSRHandler(X86CPU *cpu, uint32_t msr, uint64_t val);
--typedef struct kvm_msr_handlers {
--    uint32_t msr;
--    QEMURDMSRHandler *rdmsr;
--    QEMUWRMSRHandler *wrmsr;
--} KVMMSRHandlers;
--
--bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
--                    QEMUWRMSRHandler *wrmsr);
--
- #endif /* CONFIG_KVM */
- 
- void kvm_pc_setup_irq_routing(bool pci_enabled);
--- 
-2.42.0
+> 
+>   Thomas
+> 
+> 
 
 
