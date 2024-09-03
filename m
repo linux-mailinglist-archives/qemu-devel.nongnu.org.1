@@ -2,132 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C09896A018
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE36196A020
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:15:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slUIX-0002Yt-5A; Tue, 03 Sep 2024 10:14:21 -0400
+	id 1slUJE-00057M-6K; Tue, 03 Sep 2024 10:15:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1slUIS-0002WS-FL
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:14:17 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slUJ9-0004zk-UU
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:15:00 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1slUIQ-0000jW-FT
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:14:16 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-2054feabfc3so23340095ad.1
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 07:14:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slUJ6-0000nd-Qr
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:14:59 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-42bbd16fcf2so37196605e9.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 07:14:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1725372851; x=1725977651; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
- bh=7LimD1oBBblZ4j/SoWtnueHneYKrf+ci3puwCb7d9jg=;
- b=GiLN0qznT2N/Phq+3dm9RWIXAcLySJmggXDJ5NPtWzblfx7ySl2QVmf1knyMBFbARX
- IHkdA8+tkM2AfSmVXrHXuVcWcSa95d7byBTrgscsEKIN6uqpZXwexyosTQD30z6Wp0j6
- 6bl1IrPtuKyYZCbC0uscBpV/lPO9Vy0YdB0VPL6+g43EUoo4rPzI8zfSCYv1Queyrk0N
- JkJs4Jeswf9ozrf8VY3ThuvNpgQKSEZfTvyHsG2B4bpRZrruD/AIflNqNq8Aus3noR9n
- 9KzucaPvqqIBt+YbhsiPnEucdk0qTHzVnBZJeJdA+XmAZCpSDKsFhk8l4T9Hk3WMZ/Hf
- OZRA==
+ d=linaro.org; s=google; t=1725372895; x=1725977695; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ICqKvs+VaoNNZ4rmNaZLPPb3oqph3mMZod2yLficrk4=;
+ b=PBYFf1y4j8GrMCIR7KgcxsHT1Wv7+REpMP3k1G9N50WZtQ8li0vq/fd2nydNFnMHV3
+ Tz84r1hEjXAtK/Ekyk48odS0VPgOOES6djBTxdvAe2RPgQq3PRbciNRYKymWSAOrxxA8
+ Km3KKCRZzSRBXnH2zh/wtpRrhSNDPd4cReCzpjPwMatfINKPCw4AFZBDf80XHIuknBXe
+ xUsnivBdGo/Z44ZAW824hyFkfiFaPMeJUfUeIA+PLKA2IZ7ITpqjWn2OepjR154A4xUy
+ 1kyGitqbZ3cMUCBSkG+JRBujVxfCWuR0FoF0Uo2OL5mi2jLZFVhNCYjLw4cgg3I5gGem
+ uN0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725372851; x=1725977651;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7LimD1oBBblZ4j/SoWtnueHneYKrf+ci3puwCb7d9jg=;
- b=fOxmsm5S7xEN7OAxZCW0FxEoIeeSi+7LXPc7amkDNIjkxkNLoGYzUcipOCmyF6de5o
- 7woj5GQkT7ziAm4BXtIOT2qQUDeeEoGE89+R9sPe3XQo6e+QlaPB6ZQtKs58rwo0qEqp
- hABi+jeYPcLcypyc7RBYJnN9cFLuY3ipbhEj5GtqokV/11z+8fgoDiFXLERDYwEpk/bg
- +0wIjiuR6Ttij2u8A+jwrCCO8ZzcTtzsb2iutOJrij1i690MqczyX2jAqTRZu3aJ0bLe
- Y4Z/imunSEao8DPPrdOM2sBuB1uSc+Gkpuh8oesfrAu/8cC0Ul2QFmg1eYtI66uVAwSl
- ctdA==
+ d=1e100.net; s=20230601; t=1725372895; x=1725977695;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ICqKvs+VaoNNZ4rmNaZLPPb3oqph3mMZod2yLficrk4=;
+ b=YxdbmbaWETZ0HgbUsSh2J2bO1+2yxegyuLT1qI53AaJ3ePnBsKa1Csx6EtUbqTplA5
+ LcAxgGPwBPv6n4fscfCO3h7By22bnEORMx+Mj4+RezPAOfRDm5MVnxhBOEKjuKUPWPtc
+ 4GGYgadr36L4XZU9qKRphl2Ng3MmmOGnRbCg4fIkJ477F+a6lOFNVx+mIOCIKK0RRS81
+ cF5mVnYKHDKIEQ82wDOZ9ibqzntfbntmXFSPRIyh2vwjM9/tWt/ZyJBlqE3kKIcTwAVf
+ W/dAMkGb9+VXctQBuzwRMo+OcqvZTmvRyQpqAUuPFZedYyKGXlFr5OnrlELYHXxX0tyH
+ 6tLw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXywbi97wNOYWkd7kXb+tD6y/NSJ4qWsncMV2tFBh7xe8ubGsitNLbSnomxH+QX+2mWdjnlU8+AcD9R@nongnu.org
-X-Gm-Message-State: AOJu0YxSnzEAkuD2xsCvCy6hTLTGsgX28LdNgOxdixBNnc55fIVjcRtf
- OWeAmW8mHo/d07C3dUJ8EgmHJ52fP0+CHyLU4obxcaEcVCJ9I7ur
-X-Google-Smtp-Source: AGHT+IG3mdeTSQkOJAFXZRk1VbxX+sv1V6yDP79LZ9gyZwzvHvoyTt1MReyK441jMm0QoDHNSXJMNQ==
-X-Received: by 2002:a17:903:32cf:b0:206:ac11:f3fd with SMTP id
- d9443c01a7336-206ac11f571mr4253275ad.30.1725372850879; 
- Tue, 03 Sep 2024 07:14:10 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c?
- ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ AJvYcCXpLPna4yqvo6+m9bYRNR4jpHxwhHLLwtWwidlMJ3UUzbjxxwi/AY7x2njKU0kocjNvDUvGto7V1XDE@nongnu.org
+X-Gm-Message-State: AOJu0Yw2cC0B1946/eR07e5xydrdTEYIIYNl8GxZAKUbexZt9EjTaNkI
+ 3cjuFEcMDlxGhP4IAEEnGH+v3J3CayzJq6U8QxVqwvV0368A9LPWlsQydfqkk4U=
+X-Google-Smtp-Source: AGHT+IE9TkMMbifu1of1vOTn0lRQmANRKYo0/EwToSp8RzVVwq0h3fmUFpSgRejgCfIDSscnnzC6hw==
+X-Received: by 2002:a05:600c:4455:b0:425:5ec3:570b with SMTP id
+ 5b1f17b1804b1-42bb01fcfb6mr122508085e9.35.1725372894932; 
+ Tue, 03 Sep 2024 07:14:54 -0700 (PDT)
+Received: from [192.168.1.67] ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-205667dbe18sm37696015ad.261.2024.09.03.07.14.09
+ ffacd0b85a97d-374c29aa150sm8681832f8f.101.2024.09.03.07.14.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Sep 2024 07:14:10 -0700 (PDT)
-Message-ID: <84a4e63c-4a68-4061-86f8-647c24a3f617@roeck-us.net>
-Date: Tue, 3 Sep 2024 07:14:09 -0700
+ Tue, 03 Sep 2024 07:14:54 -0700 (PDT)
+Message-ID: <61555865-3bfb-4586-9f67-23110839f4ea@linaro.org>
+Date: Tue, 3 Sep 2024 16:14:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/hppa: Fix PSW V-bit packaging in cpu_hppa_get for
- hppa64
-To: Helge Deller <deller@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
-Cc: linux-parisc@vger.kernel.org
-References: <Ztbk0Vk35dDGLoCd@p100>
+Subject: Re: [PATCH v5 32/44] tests/functional: Convert the vnc test
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ "Daniel P . Berrange" <berrange@redhat.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>
+References: <20240830133841.142644-1-thuth@redhat.com>
+ <20240830133841.142644-33-thuth@redhat.com>
+ <a11813f6-6a11-4467-8f4f-1435f5284f28@linaro.org>
+ <d72b302a-ec99-4eed-bd7b-cb79ec714a49@redhat.com>
+ <c16b29e3-0d4b-4e3c-af58-240d29d13d8f@linaro.org>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <Ztbk0Vk35dDGLoCd@p100>
+In-Reply-To: <c16b29e3-0d4b-4e3c-af58-240d29d13d8f@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=groeck7@gmail.com; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -143,39 +101,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/3/24 03:28, Helge Deller wrote:
-> While adding hppa64 support, the psw_v variable got extended from 32 to 64
-> bits.  So, when packaging the PSW-V bit from the psw_v variable for interrupt
-> processing, check bit 31 instead the 63th (sign) bit.
+On 3/9/24 15:45, Philippe Mathieu-Daudé wrote:
+> On 2/9/24 12:23, Thomas Huth wrote:
+>> On 02/09/2024 11.48, Philippe Mathieu-Daudé wrote:
+>>> On 30/8/24 15:38, Thomas Huth wrote:
+>>>> Nothing thrilling in here, it's just a straight forward conversion.
+>>>>
+>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>>> ---
+>>>>   tests/functional/meson.build                     |  1 +
+>>>>   tests/{avocado/vnc.py => functional/test_vnc.py} | 12 +++++++-----
+>>>>   2 files changed, 8 insertions(+), 5 deletions(-)
+>>>>   rename tests/{avocado/vnc.py => functional/test_vnc.py} (97%)
+>>>>   mode change 100644 => 100755
+>>>>
+>>>> diff --git a/tests/functional/meson.build 
+>>>> b/tests/functional/meson.build
+>>>> index 34a9b277f8..58f6bcf95d 100644
+>>>> --- a/tests/functional/meson.build
+>>>> +++ b/tests/functional/meson.build
+>>>> @@ -107,6 +107,7 @@ tests_x86_64_system_quick = [
+>>>>     'pc_cpu_hotplug_props',
+>>>>     'virtio_version',
+>>>>     'x86_cpu_model_versions',
+>>>> +  'vnc',
+>>>>   ]
+>>>>   tests_x86_64_system_thorough = [
+>>>> diff --git a/tests/avocado/vnc.py b/tests/functional/test_vnc.py
+>>>> old mode 100644
+>>>> new mode 100755
+>>>> similarity index 97%
+>>>> rename from tests/avocado/vnc.py
+>>>> rename to tests/functional/test_vnc.py
+>>>> index 862c8996a8..b769d3b268
+>>>> --- a/tests/avocado/vnc.py
+>>>> +++ b/tests/functional/test_vnc.py
+>>>> @@ -1,3 +1,5 @@
+>>>> +#!/usr/bin/env python3
+>>>> +#
+>>>>   # Simple functional tests for VNC functionality
+>>>>   #
+>>>>   # Copyright (c) 2018 Red Hat, Inc.
+>>>> @@ -11,7 +13,7 @@
+>>>>   import socket
+>>>>   from typing import List
+>>>> -from avocado_qemu import QemuSystemTest
+>>>> +from qemu_test import QemuSystemTest
+>>>>   VNC_ADDR = '127.0.0.1'
+>>>> @@ -51,10 +53,7 @@ def find_free_ports(count: int) -> List[int]:
+>>>>   class Vnc(QemuSystemTest):
+>>>> -    """
+>>>> -    :avocado: tags=vnc,quick
+>>>> -    :avocado: tags=machine:none
+>>>> -    """
+>>>> +
+>>>>       def test_no_vnc(self):
+>>>>           self.vm.add_args('-nodefaults', '-S')
+>>>>           self.vm.launch()
+>>>> @@ -113,3 +112,6 @@ def test_change_listen(self):
+>>>>           self.assertFalse(check_connect(a))
+>>>>           self.assertTrue(check_connect(b))
+>>>>           self.assertTrue(check_connect(c))
+>>>> +
+>>>> +if __name__ == '__main__':
+>>>> +    QemuSystemTest.main()
+>>>
+>>> For a faithful conversion we need to squash:
+>>>
+>>> -- >8 --
+>>> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+>>> index 6b00d240dd..a590646adc 100644
+>>> --- a/tests/functional/meson.build
+>>> +++ b/tests/functional/meson.build
+>>> @@ -26,6 +26,7 @@ tests_generic_system = [
+>>>     'empty_cpu_model',
+>>>     'info_usernet',
+>>>     'version',
+>>> +  'vnc',
+>>>   ]
+>>>
+>>>   tests_generic_linuxuser = [
+>>> @@ -123,7 +124,6 @@ tests_x86_64_system_quick = [
+>>>     'pc_cpu_hotplug_props',
+>>>     'virtio_version',
+>>>     'x86_cpu_model_versions',
+>>> -  'vnc',
+>>>   ]
+>>>
+>>> ---
+>>>
+>>> (each test is <1s so I'd keep it generic).
+>>
+>> Unfortunately that doesn't really work - the test cannot be really be 
+>> run in parallel since the find_free_ports() stuff here is racy.
 > 
-> This fixes a hard to find Linux kernel boot issue where the loss of the PSW-V
-> bit due to an ITLB interruption in the middle of a series of ds/addc
-> instructions (from the divU milicode library) generated the wrong division
-> result and thus triggered a Linux kernel crash.
-> 
-> Link: https://lore.kernel.org/lkml/718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net/
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Fixes: 931adff31478 ("target/hppa: Update cpu_hppa_get/put_psw for hppa64")
+> Oh right, I ran check-functional-{arm,mips,...} with at most 3 targets
+> but never tried the full 'check-functional'.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Also I just noticed this test doesn't explicit machine, so when
+a target don't have a default we get:
 
-Thanks!
-Guenter
-
-> 
-> diff --git a/target/hppa/helper.c b/target/hppa/helper.c
-> index b79ddd8184..d4b1a3cd5a 100644
-> --- a/target/hppa/helper.c
-> +++ b/target/hppa/helper.c
-> @@ -53,7 +53,7 @@ target_ulong cpu_hppa_get_psw(CPUHPPAState *env)
->       }
->   
->       psw |= env->psw_n * PSW_N;
-> -    psw |= (env->psw_v < 0) * PSW_V;
-> +    psw |= ((env->psw_v >> 31) & 1) * PSW_V;
->       psw |= env->psw | env->psw_xb;
->   
->       return psw;
-
+  Exit code: 1
+  Command: qemu-system-arm -display none -vga none -chardev 
+socket,id=mon,fd=14 -mon chardev=mon,mode=control -nodefaults -S
+  Output: qemu-system-arm: No machine specified, and there is no default
 
