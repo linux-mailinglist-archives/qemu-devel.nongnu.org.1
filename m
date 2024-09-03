@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD3996A3DF
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:13:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E36196A3E2
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:13:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slW5N-0000I4-IM; Tue, 03 Sep 2024 12:08:53 -0400
+	id 1slW5O-0000Ms-FH; Tue, 03 Sep 2024 12:08:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5L-00009A-Hf
+ id 1slW5L-00008i-FV
  for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:08:51 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5A-0002re-Jm
+ id 1slW5B-0002rp-9u
  for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:08:51 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-42bb81e795bso45462325e9.1
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42bbc70cc19so35909225e9.0
  for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 09:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725379719; x=1725984519; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725379720; x=1725984520; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=S5c89sKQbPl5fIjq2ETHtRbYiVtxAIAEgqCXSPrAcUc=;
- b=jokZzNrO+JscMvRcnK5JitShQX3hPpE/RJWz+ogHGQH4MuAFcMeIZN5EsTjOpGQVCO
- aeRH+C59aPenYW9ay/VuZsr7e5FpLnZIsvJV0wuhQ7vTpGNUXJZfO+HTIxngRsXZ0+cX
- t07/OwHFbY08NLfKwDt2SvPbpiX5at/6IdvnMx64N9CJF3s+ww2qsHIlTBgEHQMhiPyF
- qLk3BSxnoGdSyIcHyW/8k5DsYJd60BK5FsF/LX/9+ThDqdMx/oYU9115kJ0WyitaBeAt
- iISIpkz9SHm1/6Ya8ds5xMcNwxzgPwqj6lBzqIbwsTdI5lmrWWuGgTfblXCxkeO3v731
- HSQg==
+ :reply-to; bh=8GP3hSJyyADC1nhk4Kc4pZutIlQPEMrmLicJiY2bj00=;
+ b=wDNAfIW2uEkDU2cd+4M4dXn4TRxs5vHn2SS417ZMX6KqMVaZLz2JUfHkZuRzHPzhbG
+ n5vAPRi3aZ2rL6KjFmPksvQyksL6/GG3dgof6Z5VKSdikW4d+qx6Axtz9LeuZe5402bJ
+ vacMFJNVebsgujRM3VfaJ3Glmd4zc4qPT14MikZwZHtShuhIe7/C9vBKLr9Ojx3ngu80
+ sNEPUgHm1VWWl9CYjHUGMU+vVKd/dzTBji7dN/Q/RlYlvUYu5z8OLHR1k4ydyn3w+6jr
+ u247YZL7qRy/A9lNUA5jtF//4KegcWx7sdrdFjhXH4z6EbDGQVDsrMCI/A1+mJ5qMje7
+ g93Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725379719; x=1725984519;
+ d=1e100.net; s=20230601; t=1725379720; x=1725984520;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S5c89sKQbPl5fIjq2ETHtRbYiVtxAIAEgqCXSPrAcUc=;
- b=C3eXMOLezY0qwclwfq+PC/9As5HXbMPOYx4MA9ik+IB06rcczQfG3bl2itSOu3MzSa
- qtaO0Mc26PMV55b9PehZlL2SG0jUVycJVTLjymvmeWXXuwsjVfSBpQIAn4b9n/X+MMeX
- 25A6DdhCMOfr4kkYbFy2xs0Il9Z6MEJFO2EJvlulBEkw86pDw5EUphdf+BYH48Iu2/gO
- v2FYOPNLERx1ZebJLvniroOWdJ1O6P0TATiAk1YQ7AV9w4fl97cxt+581idUNKPVuaT8
- nBVkK4LTW6ctG99AjfWafBaZjjTzNvWN5nbCo+qqgq8nqJRYQb8+GYwe1uM1dfAnSS5d
- hHIQ==
+ bh=8GP3hSJyyADC1nhk4Kc4pZutIlQPEMrmLicJiY2bj00=;
+ b=FWBKgmvaHGd6hFWvbwpR+ett0BeP69h0MtrjZ5xHC0GWuL8z78Z9MIjGUKQO2mbJQ9
+ Z1ViY6j2GwCgJTpuc/ufbXEPvgI8Bvi/l0E1Rk9KzdfSS0fccMr5PHSIMU3hR4KKWkJP
+ 2mnNnQSUXAutXr3JuKIbmjYLk9WwLht6s/xtY9ikePfMx9Cb4lx2nrZJzf5oajenzHba
+ Qp19pvCad+0+9EF7eRNkmt5yGP6a3BFmbmzfbmBDwbo8f0B0uHrXXbzAnbFXw9oKGfk4
+ eqah4OnUH2c7VEi93HcHM9nysqSgowQ+Wm/dqUjSJ4xyt6flm6sTxSETqsW2O9uvuS5Q
+ NRwA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVfMZewueOwIqtYikrYoOcH2zeqQcRLoMj3uKy3BpctRHaTLBRjRTGpw6AvVguLrQ74ZOJ11XTq2Ulx@nongnu.org
-X-Gm-Message-State: AOJu0YxSZXPXJVWrkydO+3A+5Rk+KGGzs8cRSp9nCxwtQn3+jD7PEQeM
- Ymw9epWoUB9hrlPkh8goSlLQwYYCs17bCwfYmruU6+o1aJXsyZjaQxzve9G4h5Q=
-X-Google-Smtp-Source: AGHT+IFnHNAinU8LWdvnumAIbNjCiYLk8Sa5IgPfNMJOHjRqsx0Rcw8VYEKqQIb734+Q2+JXTAHhEg==
-X-Received: by 2002:a05:600c:1914:b0:426:647b:1bfc with SMTP id
- 5b1f17b1804b1-42bbb440222mr89442075e9.30.1725379718888; 
- Tue, 03 Sep 2024 09:08:38 -0700 (PDT)
+ AJvYcCVbk7RFJLQQlJ0+Ah1BUKzSCArO4qSMVc9byNwkZ97Z8FuHUsOnwWMPEdmBM5l9mVFdmcGImpPWDEj1@nongnu.org
+X-Gm-Message-State: AOJu0Yy1X5/mItJIAatHx7NqKc1x3VyiC0H7vHQxmpc1BNbQGB25J6/P
+ NFF5o3v2D9HvYJ0Jf7M9AVh3UlcdMabTAHBESs/YcqjztTVOWsaK3SdyN6zXSSc=
+X-Google-Smtp-Source: AGHT+IEy/1Wv1c6na6KMz3RWzEtnNcOodA8Plr+ItBek+Xdmv8QqAbvaomW5d2tuhPsux7VOe9TSow==
+X-Received: by 2002:a05:600c:190f:b0:426:6f0e:a60 with SMTP id
+ 5b1f17b1804b1-42c7b5b3ed4mr68763455e9.17.1725379719657; 
+ Tue, 03 Sep 2024 09:08:39 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb6df1066sm175123065e9.18.2024.09.03.09.08.38
+ 5b1f17b1804b1-42bb6df1066sm175123065e9.18.2024.09.03.09.08.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2024 09:08:38 -0700 (PDT)
+ Tue, 03 Sep 2024 09:08:39 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH for-9.2 32/53] hw/block: Remove OneNAND device
-Date: Tue,  3 Sep 2024 17:07:30 +0100
-Message-Id: <20240903160751.4100218-33-peter.maydell@linaro.org>
+Subject: [PATCH for-9.2 33/53] hw/usb: Remove tusb6010 USB controller
+Date: Tue,  3 Sep 2024 17:07:31 +0100
+Message-Id: <20240903160751.4100218-34-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240903160751.4100218-1-peter.maydell@linaro.org>
 References: <20240903160751.4100218-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,40 +92,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The OneNAND devices were only used by n800/n810, so they
+The tusb6010 was only used by the n800/n810 machines, so it
 can be removed now.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/block/flash.h |   3 -
- hw/block/onenand.c       | 872 ---------------------------------------
- hw/block/Kconfig         |   3 -
- hw/block/meson.build     |   1 -
- 4 files changed, 879 deletions(-)
- delete mode 100644 hw/block/onenand.c
+ hw/usb/tusb6010.c  | 850 ---------------------------------------------
+ hw/usb/Kconfig     |   4 -
+ hw/usb/meson.build |   1 -
+ 3 files changed, 855 deletions(-)
+ delete mode 100644 hw/usb/tusb6010.c
 
-diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
-index 2b5ccd92f46..b985c825a01 100644
---- a/include/hw/block/flash.h
-+++ b/include/hw/block/flash.h
-@@ -62,9 +62,6 @@ uint32_t nand_getbuswidth(DeviceState *dev);
- #define NAND_MFR_HYNIX      0xad
- #define NAND_MFR_MICRON     0x2c
- 
--/* onenand.c */
--void *onenand_raw_otp(DeviceState *onenand_device);
--
- /* ecc.c */
- typedef struct {
-     uint8_t cp;     /* Column parity */
-diff --git a/hw/block/onenand.c b/hw/block/onenand.c
+diff --git a/hw/usb/tusb6010.c b/hw/usb/tusb6010.c
 deleted file mode 100644
-index d8a6944027a..00000000000
---- a/hw/block/onenand.c
+index 1dd4071e683..00000000000
+--- a/hw/usb/tusb6010.c
 +++ /dev/null
-@@ -1,872 +0,0 @@
+@@ -1,850 +0,0 @@
 -/*
-- * OneNAND flash memories emulation.
+- * Texas Instruments TUSB6010 emulation.
+- * Based on reverse-engineering of a linux driver.
 - *
 - * Copyright (C) 2008 Nokia Corporation
 - * Written by Andrzej Zaborowski <andrew@openedhand.com>
@@ -145,883 +131,861 @@ index d8a6944027a..00000000000
 - */
 -
 -#include "qemu/osdep.h"
--#include "qapi/error.h"
--#include "hw/hw.h"
--#include "hw/block/flash.h"
--#include "hw/irq.h"
--#include "hw/qdev-properties.h"
--#include "hw/qdev-properties-system.h"
--#include "sysemu/block-backend.h"
--#include "exec/memory.h"
--#include "hw/sysbus.h"
--#include "migration/vmstate.h"
--#include "qemu/error-report.h"
--#include "qemu/log.h"
 -#include "qemu/module.h"
+-#include "qemu/timer.h"
+-#include "hw/usb.h"
+-#include "hw/usb/hcd-musb.h"
+-#include "hw/arm/omap.h"
+-#include "hw/hw.h"
+-#include "hw/irq.h"
+-#include "hw/sysbus.h"
 -#include "qom/object.h"
 -
--/* 11 for 2kB-page OneNAND ("2nd generation") and 10 for 1kB-page chips */
--#define PAGE_SHIFT 11
+-#define TYPE_TUSB6010 "tusb6010"
+-OBJECT_DECLARE_SIMPLE_TYPE(TUSBState, TUSB6010)
 -
--/* Fixed */
--#define BLOCK_SHIFT (PAGE_SHIFT + 6)
--
--#define TYPE_ONE_NAND "onenand"
--OBJECT_DECLARE_SIMPLE_TYPE(OneNANDState, ONE_NAND)
--
--struct OneNANDState {
+-struct TUSBState {
 -    SysBusDevice parent_obj;
 -
--    struct {
--        uint16_t man;
--        uint16_t dev;
--        uint16_t ver;
--    } id;
--    int shift;
--    hwaddr base;
--    qemu_irq intr;
--    qemu_irq rdy;
--    BlockBackend *blk;
--    BlockBackend *blk_cur;
--    uint8_t *image;
--    uint8_t *otp;
--    uint8_t *current;
--    MemoryRegion ram;
--    MemoryRegion mapped_ram;
--    uint8_t current_direction;
--    uint8_t *boot[2];
--    uint8_t *data[2][2];
--    MemoryRegion iomem;
--    MemoryRegion container;
--    int cycle;
--    int otpmode;
+-    MemoryRegion iomem[2];
+-    qemu_irq irq;
+-    MUSBState *musb;
+-    QEMUTimer *otg_timer;
+-    QEMUTimer *pwr_timer;
 -
--    uint16_t addr[8];
--    uint16_t unladdr[8];
--    int bufaddr;
--    int count;
--    uint16_t command;
--    uint16_t config[2];
--    uint16_t status;
--    uint16_t intstatus;
--    uint16_t wpstatus;
--
--    ECCState ecc;
--
--    int density_mask;
--    int secs;
--    int secs_cur;
--    int blocks;
--    uint8_t *blockwp;
+-    int power;
+-    uint32_t scratch;
+-    uint16_t test_reset;
+-    uint32_t prcm_config;
+-    uint32_t prcm_mngmt;
+-    uint16_t otg_status;
+-    uint32_t dev_config;
+-    int host_mode;
+-    uint32_t intr;
+-    uint32_t intr_ok;
+-    uint32_t mask;
+-    uint32_t usbip_intr;
+-    uint32_t usbip_mask;
+-    uint32_t gpio_intr;
+-    uint32_t gpio_mask;
+-    uint32_t gpio_config;
+-    uint32_t dma_intr;
+-    uint32_t dma_mask;
+-    uint32_t dma_map;
+-    uint32_t dma_config;
+-    uint32_t ep0_config;
+-    uint32_t rx_config[15];
+-    uint32_t tx_config[15];
+-    uint32_t wkup_mask;
+-    uint32_t pullup[2];
+-    uint32_t control_config;
+-    uint32_t otg_timer_val;
 -};
 -
--enum {
--    ONEN_BUF_BLOCK = 0,
--    ONEN_BUF_BLOCK2 = 1,
--    ONEN_BUF_DEST_BLOCK = 2,
--    ONEN_BUF_DEST_PAGE = 3,
--    ONEN_BUF_PAGE = 7,
--};
+-#define TUSB_DEVCLOCK			60000000	/* 60 MHz */
 -
--enum {
--    ONEN_ERR_CMD = 1 << 10,
--    ONEN_ERR_ERASE = 1 << 11,
--    ONEN_ERR_PROG = 1 << 12,
--    ONEN_ERR_LOAD = 1 << 13,
--};
+-#define TUSB_VLYNQ_CTRL			0x004
 -
--enum {
--    ONEN_INT_RESET = 1 << 4,
--    ONEN_INT_ERASE = 1 << 5,
--    ONEN_INT_PROG = 1 << 6,
--    ONEN_INT_LOAD = 1 << 7,
--    ONEN_INT = 1 << 15,
--};
+-/* Mentor Graphics OTG core registers.  */
+-#define TUSB_BASE_OFFSET		0x400
 -
--enum {
--    ONEN_LOCK_LOCKTIGHTEN = 1 << 0,
--    ONEN_LOCK_LOCKED = 1 << 1,
--    ONEN_LOCK_UNLOCKED = 1 << 2,
--};
+-/* FIFO registers, 32-bit.  */
+-#define TUSB_FIFO_BASE			0x600
 -
--static void onenand_mem_setup(OneNANDState *s)
+-/* Device System & Control registers, 32-bit.  */
+-#define TUSB_SYS_REG_BASE		0x800
+-
+-#define TUSB_DEV_CONF			(TUSB_SYS_REG_BASE + 0x000)
+-#define	TUSB_DEV_CONF_USB_HOST_MODE	(1 << 16)
+-#define	TUSB_DEV_CONF_PROD_TEST_MODE	(1 << 15)
+-#define	TUSB_DEV_CONF_SOFT_ID		(1 << 1)
+-#define	TUSB_DEV_CONF_ID_SEL		(1 << 0)
+-
+-#define TUSB_PHY_OTG_CTRL_ENABLE	(TUSB_SYS_REG_BASE + 0x004)
+-#define TUSB_PHY_OTG_CTRL		(TUSB_SYS_REG_BASE + 0x008)
+-#define	TUSB_PHY_OTG_CTRL_WRPROTECT	(0xa5 << 24)
+-#define	TUSB_PHY_OTG_CTRL_O_ID_PULLUP	(1 << 23)
+-#define	TUSB_PHY_OTG_CTRL_O_VBUS_DET_EN	(1 << 19)
+-#define	TUSB_PHY_OTG_CTRL_O_SESS_END_EN	(1 << 18)
+-#define	TUSB_PHY_OTG_CTRL_TESTM2	(1 << 17)
+-#define	TUSB_PHY_OTG_CTRL_TESTM1	(1 << 16)
+-#define	TUSB_PHY_OTG_CTRL_TESTM0	(1 << 15)
+-#define	TUSB_PHY_OTG_CTRL_TX_DATA2	(1 << 14)
+-#define	TUSB_PHY_OTG_CTRL_TX_GZ2	(1 << 13)
+-#define	TUSB_PHY_OTG_CTRL_TX_ENABLE2	(1 << 12)
+-#define	TUSB_PHY_OTG_CTRL_DM_PULLDOWN	(1 << 11)
+-#define	TUSB_PHY_OTG_CTRL_DP_PULLDOWN	(1 << 10)
+-#define	TUSB_PHY_OTG_CTRL_OSC_EN	(1 << 9)
+-#define	TUSB_PHY_OTG_CTRL_PHYREF_CLK(v)	(((v) & 3) << 7)
+-#define	TUSB_PHY_OTG_CTRL_PD		(1 << 6)
+-#define	TUSB_PHY_OTG_CTRL_PLL_ON	(1 << 5)
+-#define	TUSB_PHY_OTG_CTRL_EXT_RPU	(1 << 4)
+-#define	TUSB_PHY_OTG_CTRL_PWR_GOOD	(1 << 3)
+-#define	TUSB_PHY_OTG_CTRL_RESET		(1 << 2)
+-#define	TUSB_PHY_OTG_CTRL_SUSPENDM	(1 << 1)
+-#define	TUSB_PHY_OTG_CTRL_CLK_MODE	(1 << 0)
+-
+-/* OTG status register */
+-#define TUSB_DEV_OTG_STAT		(TUSB_SYS_REG_BASE + 0x00c)
+-#define	TUSB_DEV_OTG_STAT_PWR_CLK_GOOD	(1 << 8)
+-#define	TUSB_DEV_OTG_STAT_SESS_END	(1 << 7)
+-#define	TUSB_DEV_OTG_STAT_SESS_VALID	(1 << 6)
+-#define	TUSB_DEV_OTG_STAT_VBUS_VALID	(1 << 5)
+-#define	TUSB_DEV_OTG_STAT_VBUS_SENSE	(1 << 4)
+-#define	TUSB_DEV_OTG_STAT_ID_STATUS	(1 << 3)
+-#define	TUSB_DEV_OTG_STAT_HOST_DISCON	(1 << 2)
+-#define	TUSB_DEV_OTG_STAT_LINE_STATE	(3 << 0)
+-#define	TUSB_DEV_OTG_STAT_DP_ENABLE	(1 << 1)
+-#define	TUSB_DEV_OTG_STAT_DM_ENABLE	(1 << 0)
+-
+-#define TUSB_DEV_OTG_TIMER		(TUSB_SYS_REG_BASE + 0x010)
+-#define TUSB_DEV_OTG_TIMER_ENABLE	(1 << 31)
+-#define TUSB_DEV_OTG_TIMER_VAL(v)	((v) & 0x07ffffff)
+-#define TUSB_PRCM_REV			(TUSB_SYS_REG_BASE + 0x014)
+-
+-/* PRCM configuration register */
+-#define TUSB_PRCM_CONF			(TUSB_SYS_REG_BASE + 0x018)
+-#define	TUSB_PRCM_CONF_SFW_CPEN		(1 << 24)
+-#define	TUSB_PRCM_CONF_SYS_CLKSEL(v)	(((v) & 3) << 16)
+-
+-/* PRCM management register */
+-#define TUSB_PRCM_MNGMT			(TUSB_SYS_REG_BASE + 0x01c)
+-#define	TUSB_PRCM_MNGMT_SRP_FIX_TMR(v)	(((v) & 0xf) << 25)
+-#define	TUSB_PRCM_MNGMT_SRP_FIX_EN	(1 << 24)
+-#define	TUSB_PRCM_MNGMT_VBUS_VAL_TMR(v)	(((v) & 0xf) << 20)
+-#define	TUSB_PRCM_MNGMT_VBUS_VAL_FLT_EN	(1 << 19)
+-#define	TUSB_PRCM_MNGMT_DFT_CLK_DIS	(1 << 18)
+-#define	TUSB_PRCM_MNGMT_VLYNQ_CLK_DIS	(1 << 17)
+-#define	TUSB_PRCM_MNGMT_OTG_SESS_END_EN	(1 << 10)
+-#define	TUSB_PRCM_MNGMT_OTG_VBUS_DET_EN	(1 << 9)
+-#define	TUSB_PRCM_MNGMT_OTG_ID_PULLUP	(1 << 8)
+-#define	TUSB_PRCM_MNGMT_15_SW_EN	(1 << 4)
+-#define	TUSB_PRCM_MNGMT_33_SW_EN	(1 << 3)
+-#define	TUSB_PRCM_MNGMT_5V_CPEN		(1 << 2)
+-#define	TUSB_PRCM_MNGMT_PM_IDLE		(1 << 1)
+-#define	TUSB_PRCM_MNGMT_DEV_IDLE	(1 << 0)
+-
+-/* Wake-up source clear and mask registers */
+-#define TUSB_PRCM_WAKEUP_SOURCE		(TUSB_SYS_REG_BASE + 0x020)
+-#define TUSB_PRCM_WAKEUP_CLEAR		(TUSB_SYS_REG_BASE + 0x028)
+-#define TUSB_PRCM_WAKEUP_MASK		(TUSB_SYS_REG_BASE + 0x02c)
+-#define	TUSB_PRCM_WAKEUP_RESERVED_BITS	(0xffffe << 13)
+-#define	TUSB_PRCM_WGPIO_7		(1 << 12)
+-#define	TUSB_PRCM_WGPIO_6		(1 << 11)
+-#define	TUSB_PRCM_WGPIO_5		(1 << 10)
+-#define	TUSB_PRCM_WGPIO_4		(1 << 9)
+-#define	TUSB_PRCM_WGPIO_3		(1 << 8)
+-#define	TUSB_PRCM_WGPIO_2		(1 << 7)
+-#define	TUSB_PRCM_WGPIO_1		(1 << 6)
+-#define	TUSB_PRCM_WGPIO_0		(1 << 5)
+-#define	TUSB_PRCM_WHOSTDISCON		(1 << 4)	/* Host disconnect */
+-#define	TUSB_PRCM_WBUS			(1 << 3)	/* USB bus resume */
+-#define	TUSB_PRCM_WNORCS		(1 << 2)	/* NOR chip select */
+-#define	TUSB_PRCM_WVBUS			(1 << 1)	/* OTG PHY VBUS */
+-#define	TUSB_PRCM_WID			(1 << 0)	/* OTG PHY ID detect */
+-
+-#define TUSB_PULLUP_1_CTRL		(TUSB_SYS_REG_BASE + 0x030)
+-#define TUSB_PULLUP_2_CTRL		(TUSB_SYS_REG_BASE + 0x034)
+-#define TUSB_INT_CTRL_REV		(TUSB_SYS_REG_BASE + 0x038)
+-#define TUSB_INT_CTRL_CONF		(TUSB_SYS_REG_BASE + 0x03c)
+-#define TUSB_USBIP_INT_SRC		(TUSB_SYS_REG_BASE + 0x040)
+-#define TUSB_USBIP_INT_SET		(TUSB_SYS_REG_BASE + 0x044)
+-#define TUSB_USBIP_INT_CLEAR		(TUSB_SYS_REG_BASE + 0x048)
+-#define TUSB_USBIP_INT_MASK		(TUSB_SYS_REG_BASE + 0x04c)
+-#define TUSB_DMA_INT_SRC		(TUSB_SYS_REG_BASE + 0x050)
+-#define TUSB_DMA_INT_SET		(TUSB_SYS_REG_BASE + 0x054)
+-#define TUSB_DMA_INT_CLEAR		(TUSB_SYS_REG_BASE + 0x058)
+-#define TUSB_DMA_INT_MASK		(TUSB_SYS_REG_BASE + 0x05c)
+-#define TUSB_GPIO_INT_SRC		(TUSB_SYS_REG_BASE + 0x060)
+-#define TUSB_GPIO_INT_SET		(TUSB_SYS_REG_BASE + 0x064)
+-#define TUSB_GPIO_INT_CLEAR		(TUSB_SYS_REG_BASE + 0x068)
+-#define TUSB_GPIO_INT_MASK		(TUSB_SYS_REG_BASE + 0x06c)
+-
+-/* NOR flash interrupt source registers */
+-#define TUSB_INT_SRC			(TUSB_SYS_REG_BASE + 0x070)
+-#define TUSB_INT_SRC_SET		(TUSB_SYS_REG_BASE + 0x074)
+-#define TUSB_INT_SRC_CLEAR		(TUSB_SYS_REG_BASE + 0x078)
+-#define TUSB_INT_MASK			(TUSB_SYS_REG_BASE + 0x07c)
+-#define	TUSB_INT_SRC_TXRX_DMA_DONE	(1 << 24)
+-#define	TUSB_INT_SRC_USB_IP_CORE	(1 << 17)
+-#define	TUSB_INT_SRC_OTG_TIMEOUT	(1 << 16)
+-#define	TUSB_INT_SRC_VBUS_SENSE_CHNG	(1 << 15)
+-#define	TUSB_INT_SRC_ID_STATUS_CHNG	(1 << 14)
+-#define	TUSB_INT_SRC_DEV_WAKEUP		(1 << 13)
+-#define	TUSB_INT_SRC_DEV_READY		(1 << 12)
+-#define	TUSB_INT_SRC_USB_IP_TX		(1 << 9)
+-#define	TUSB_INT_SRC_USB_IP_RX		(1 << 8)
+-#define	TUSB_INT_SRC_USB_IP_VBUS_ERR	(1 << 7)
+-#define	TUSB_INT_SRC_USB_IP_VBUS_REQ	(1 << 6)
+-#define	TUSB_INT_SRC_USB_IP_DISCON	(1 << 5)
+-#define	TUSB_INT_SRC_USB_IP_CONN	(1 << 4)
+-#define	TUSB_INT_SRC_USB_IP_SOF		(1 << 3)
+-#define	TUSB_INT_SRC_USB_IP_RST_BABBLE	(1 << 2)
+-#define	TUSB_INT_SRC_USB_IP_RESUME	(1 << 1)
+-#define	TUSB_INT_SRC_USB_IP_SUSPEND	(1 << 0)
+-
+-#define TUSB_GPIO_REV			(TUSB_SYS_REG_BASE + 0x080)
+-#define TUSB_GPIO_CONF			(TUSB_SYS_REG_BASE + 0x084)
+-#define TUSB_DMA_CTRL_REV		(TUSB_SYS_REG_BASE + 0x100)
+-#define TUSB_DMA_REQ_CONF		(TUSB_SYS_REG_BASE + 0x104)
+-#define TUSB_EP0_CONF			(TUSB_SYS_REG_BASE + 0x108)
+-#define TUSB_EP_IN_SIZE			(TUSB_SYS_REG_BASE + 0x10c)
+-#define TUSB_DMA_EP_MAP			(TUSB_SYS_REG_BASE + 0x148)
+-#define TUSB_EP_OUT_SIZE		(TUSB_SYS_REG_BASE + 0x14c)
+-#define TUSB_EP_MAX_PACKET_SIZE_OFFSET	(TUSB_SYS_REG_BASE + 0x188)
+-#define TUSB_SCRATCH_PAD		(TUSB_SYS_REG_BASE + 0x1c4)
+-#define TUSB_WAIT_COUNT			(TUSB_SYS_REG_BASE + 0x1c8)
+-#define TUSB_PROD_TEST_RESET		(TUSB_SYS_REG_BASE + 0x1d8)
+-
+-#define TUSB_DIDR1_LO			(TUSB_SYS_REG_BASE + 0x1f8)
+-#define TUSB_DIDR1_HI			(TUSB_SYS_REG_BASE + 0x1fc)
+-
+-/* Device System & Control register bitfields */
+-#define TUSB_INT_CTRL_CONF_INT_RLCYC(v)	(((v) & 0x7) << 18)
+-#define TUSB_INT_CTRL_CONF_INT_POLARITY	(1 << 17)
+-#define TUSB_INT_CTRL_CONF_INT_MODE	(1 << 16)
+-#define TUSB_GPIO_CONF_DMAREQ(v)	(((v) & 0x3f) << 24)
+-#define TUSB_DMA_REQ_CONF_BURST_SIZE(v)	(((v) & 3) << 26)
+-#define TUSB_DMA_REQ_CONF_DMA_RQ_EN(v)	(((v) & 0x3f) << 20)
+-#define TUSB_DMA_REQ_CONF_DMA_RQ_ASR(v)	(((v) & 0xf) << 16)
+-#define TUSB_EP0_CONFIG_SW_EN		(1 << 8)
+-#define TUSB_EP0_CONFIG_DIR_TX		(1 << 7)
+-#define TUSB_EP0_CONFIG_XFR_SIZE(v)	((v) & 0x7f)
+-#define TUSB_EP_CONFIG_SW_EN		(1 << 31)
+-#define TUSB_EP_CONFIG_XFR_SIZE(v)	((v) & 0x7fffffff)
+-#define TUSB_PROD_TEST_RESET_VAL	0xa596
+-
+-static void tusb_intr_update(TUSBState *s)
 -{
--    /* XXX: We should use IO_MEM_ROMD but we broke it earlier...
--     * Both 0x0000 ... 0x01ff and 0x8000 ... 0x800f can be used to
--     * write boot commands.  Also take note of the BWPS bit.  */
--    memory_region_init(&s->container, OBJECT(s), "onenand",
--                       0x10000 << s->shift);
--    memory_region_add_subregion(&s->container, 0, &s->iomem);
--    memory_region_init_alias(&s->mapped_ram, OBJECT(s), "onenand-mapped-ram",
--                             &s->ram, 0x0200 << s->shift,
--                             0xbe00 << s->shift);
--    memory_region_add_subregion_overlap(&s->container,
--                                        0x0200 << s->shift,
--                                        &s->mapped_ram,
--                                        1);
+-    if (s->control_config & TUSB_INT_CTRL_CONF_INT_POLARITY)
+-        qemu_set_irq(s->irq, s->intr & ~s->mask & s->intr_ok);
+-    else
+-        qemu_set_irq(s->irq, (!(s->intr & ~s->mask)) & s->intr_ok);
 -}
 -
--static void onenand_intr_update(OneNANDState *s)
+-static void tusb_usbip_intr_update(TUSBState *s)
 -{
--    qemu_set_irq(s->intr, ((s->intstatus >> 15) ^ (~s->config[0] >> 6)) & 1);
+-    /* TX interrupt in the MUSB */
+-    if (s->usbip_intr & 0x0000ffff & ~s->usbip_mask)
+-        s->intr |= TUSB_INT_SRC_USB_IP_TX;
+-    else
+-        s->intr &= ~TUSB_INT_SRC_USB_IP_TX;
+-
+-    /* RX interrupt in the MUSB */
+-    if (s->usbip_intr & 0xffff0000 & ~s->usbip_mask)
+-        s->intr |= TUSB_INT_SRC_USB_IP_RX;
+-    else
+-        s->intr &= ~TUSB_INT_SRC_USB_IP_RX;
+-
+-    /* XXX: What about TUSB_INT_SRC_USB_IP_CORE?  */
+-
+-    tusb_intr_update(s);
 -}
 -
--static int onenand_pre_save(void *opaque)
+-static void tusb_dma_intr_update(TUSBState *s)
 -{
--    OneNANDState *s = opaque;
--    if (s->current == s->otp) {
--        s->current_direction = 1;
--    } else if (s->current == s->image) {
--        s->current_direction = 2;
--    } else {
--        s->current_direction = 0;
+-    if (s->dma_intr & ~s->dma_mask)
+-        s->intr |= TUSB_INT_SRC_TXRX_DMA_DONE;
+-    else
+-        s->intr &= ~TUSB_INT_SRC_TXRX_DMA_DONE;
+-
+-    tusb_intr_update(s);
+-}
+-
+-static void tusb_gpio_intr_update(TUSBState *s)
+-{
+-    /* TODO: How is this signalled?  */
+-}
+-
+-static uint32_t tusb_async_readb(void *opaque, hwaddr addr)
+-{
+-    TUSBState *s = (TUSBState *) opaque;
+-
+-    switch (addr & 0xfff) {
+-    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
+-        return musb_read[0](s->musb, addr & 0x1ff);
+-
+-    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
+-        return musb_read[0](s->musb, 0x20 + ((addr >> 3) & 0x3c));
 -    }
 -
+-    printf("%s: unknown register at %03x\n",
+-                    __func__, (int) (addr & 0xfff));
 -    return 0;
 -}
 -
--static int onenand_post_load(void *opaque, int version_id)
+-static uint32_t tusb_async_readh(void *opaque, hwaddr addr)
 -{
--    OneNANDState *s = opaque;
--    switch (s->current_direction) {
--    case 0:
+-    TUSBState *s = (TUSBState *) opaque;
+-
+-    switch (addr & 0xfff) {
+-    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
+-        return musb_read[1](s->musb, addr & 0x1ff);
+-
+-    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
+-        return musb_read[1](s->musb, 0x20 + ((addr >> 3) & 0x3c));
+-    }
+-
+-    printf("%s: unknown register at %03x\n",
+-                    __func__, (int) (addr & 0xfff));
+-    return 0;
+-}
+-
+-static uint32_t tusb_async_readw(void *opaque, hwaddr addr)
+-{
+-    TUSBState *s = (TUSBState *) opaque;
+-    int offset = addr & 0xfff;
+-    int epnum;
+-    uint32_t ret;
+-
+-    switch (offset) {
+-    case TUSB_DEV_CONF:
+-        return s->dev_config;
+-
+-    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
+-        return musb_read[2](s->musb, offset & 0x1ff);
+-
+-    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
+-        return musb_read[2](s->musb, 0x20 + ((addr >> 3) & 0x3c));
+-
+-    case TUSB_PHY_OTG_CTRL_ENABLE:
+-    case TUSB_PHY_OTG_CTRL:
+-        return 0x00;	/* TODO */
+-
+-    case TUSB_DEV_OTG_STAT:
+-        ret = s->otg_status;
+-#if 0
+-        if (!(s->prcm_mngmt & TUSB_PRCM_MNGMT_OTG_VBUS_DET_EN))
+-            ret &= ~TUSB_DEV_OTG_STAT_VBUS_VALID;
+-#endif
+-        return ret;
+-    case TUSB_DEV_OTG_TIMER:
+-        return s->otg_timer_val;
+-
+-    case TUSB_PRCM_REV:
+-        return 0x20;
+-    case TUSB_PRCM_CONF:
+-        return s->prcm_config;
+-    case TUSB_PRCM_MNGMT:
+-        return s->prcm_mngmt;
+-    case TUSB_PRCM_WAKEUP_SOURCE:
+-    case TUSB_PRCM_WAKEUP_CLEAR:	/* TODO: What does this one return?  */
+-        return 0x00000000;
+-    case TUSB_PRCM_WAKEUP_MASK:
+-        return s->wkup_mask;
+-
+-    case TUSB_PULLUP_1_CTRL:
+-        return s->pullup[0];
+-    case TUSB_PULLUP_2_CTRL:
+-        return s->pullup[1];
+-
+-    case TUSB_INT_CTRL_REV:
+-        return 0x20;
+-    case TUSB_INT_CTRL_CONF:
+-        return s->control_config;
+-
+-    case TUSB_USBIP_INT_SRC:
+-    case TUSB_USBIP_INT_SET:	/* TODO: What do these two return?  */
+-    case TUSB_USBIP_INT_CLEAR:
+-        return s->usbip_intr;
+-    case TUSB_USBIP_INT_MASK:
+-        return s->usbip_mask;
+-
+-    case TUSB_DMA_INT_SRC:
+-    case TUSB_DMA_INT_SET:	/* TODO: What do these two return?  */
+-    case TUSB_DMA_INT_CLEAR:
+-        return s->dma_intr;
+-    case TUSB_DMA_INT_MASK:
+-        return s->dma_mask;
+-
+-    case TUSB_GPIO_INT_SRC:	/* TODO: What do these two return?  */
+-    case TUSB_GPIO_INT_SET:
+-    case TUSB_GPIO_INT_CLEAR:
+-        return s->gpio_intr;
+-    case TUSB_GPIO_INT_MASK:
+-        return s->gpio_mask;
+-
+-    case TUSB_INT_SRC:
+-    case TUSB_INT_SRC_SET:	/* TODO: What do these two return?  */
+-    case TUSB_INT_SRC_CLEAR:
+-        return s->intr;
+-    case TUSB_INT_MASK:
+-        return s->mask;
+-
+-    case TUSB_GPIO_REV:
+-        return 0x30;
+-    case TUSB_GPIO_CONF:
+-        return s->gpio_config;
+-
+-    case TUSB_DMA_CTRL_REV:
+-        return 0x30;
+-    case TUSB_DMA_REQ_CONF:
+-        return s->dma_config;
+-    case TUSB_EP0_CONF:
+-        return s->ep0_config;
+-    case TUSB_EP_IN_SIZE ... (TUSB_EP_IN_SIZE + 0x3b):
+-        epnum = (offset - TUSB_EP_IN_SIZE) >> 2;
+-        return s->tx_config[epnum];
+-    case TUSB_DMA_EP_MAP:
+-        return s->dma_map;
+-    case TUSB_EP_OUT_SIZE ... (TUSB_EP_OUT_SIZE + 0x3b):
+-        epnum = (offset - TUSB_EP_OUT_SIZE) >> 2;
+-        return s->rx_config[epnum];
+-    case TUSB_EP_MAX_PACKET_SIZE_OFFSET ...
+-            (TUSB_EP_MAX_PACKET_SIZE_OFFSET + 0x3b):
+-        return 0x00000000;	/* TODO */
+-    case TUSB_WAIT_COUNT:
+-        return 0x00;		/* TODO */
+-
+-    case TUSB_SCRATCH_PAD:
+-        return s->scratch;
+-
+-    case TUSB_PROD_TEST_RESET:
+-        return s->test_reset;
+-
+-    /* DIE IDs */
+-    case TUSB_DIDR1_LO:
+-        return 0xa9453c59;
+-    case TUSB_DIDR1_HI:
+-        return 0x54059adf;
+-    }
+-
+-    printf("%s: unknown register at %03x\n", __func__, offset);
+-    return 0;
+-}
+-
+-static void tusb_async_writeb(void *opaque, hwaddr addr,
+-                uint32_t value)
+-{
+-    TUSBState *s = (TUSBState *) opaque;
+-
+-    switch (addr & 0xfff) {
+-    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
+-        musb_write[0](s->musb, addr & 0x1ff, value);
 -        break;
+-
+-    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
+-        musb_write[0](s->musb, 0x20 + ((addr >> 3) & 0x3c), value);
+-        break;
+-
+-    default:
+-        printf("%s: unknown register at %03x\n",
+-                        __func__, (int) (addr & 0xfff));
+-        return;
+-    }
+-}
+-
+-static void tusb_async_writeh(void *opaque, hwaddr addr,
+-                uint32_t value)
+-{
+-    TUSBState *s = (TUSBState *) opaque;
+-
+-    switch (addr & 0xfff) {
+-    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
+-        musb_write[1](s->musb, addr & 0x1ff, value);
+-        break;
+-
+-    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
+-        musb_write[1](s->musb, 0x20 + ((addr >> 3) & 0x3c), value);
+-        break;
+-
+-    default:
+-        printf("%s: unknown register at %03x\n",
+-                        __func__, (int) (addr & 0xfff));
+-        return;
+-    }
+-}
+-
+-static void tusb_async_writew(void *opaque, hwaddr addr,
+-                uint32_t value)
+-{
+-    TUSBState *s = (TUSBState *) opaque;
+-    int offset = addr & 0xfff;
+-    int epnum;
+-
+-    switch (offset) {
+-    case TUSB_VLYNQ_CTRL:
+-        break;
+-
+-    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
+-        musb_write[2](s->musb, offset & 0x1ff, value);
+-        break;
+-
+-    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
+-        musb_write[2](s->musb, 0x20 + ((addr >> 3) & 0x3c), value);
+-        break;
+-
+-    case TUSB_DEV_CONF:
+-        s->dev_config = value;
+-        s->host_mode = (value & TUSB_DEV_CONF_USB_HOST_MODE);
+-        if (value & TUSB_DEV_CONF_PROD_TEST_MODE)
+-            hw_error("%s: Product Test mode not allowed\n", __func__);
+-        break;
+-
+-    case TUSB_PHY_OTG_CTRL_ENABLE:
+-    case TUSB_PHY_OTG_CTRL:
+-        return;		/* TODO */
+-    case TUSB_DEV_OTG_TIMER:
+-        s->otg_timer_val = value;
+-        if (value & TUSB_DEV_OTG_TIMER_ENABLE)
+-            timer_mod(s->otg_timer, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
+-                            muldiv64(TUSB_DEV_OTG_TIMER_VAL(value),
+-                                     NANOSECONDS_PER_SECOND, TUSB_DEVCLOCK));
+-        else
+-            timer_del(s->otg_timer);
+-        break;
+-
+-    case TUSB_PRCM_CONF:
+-        s->prcm_config = value;
+-        break;
+-    case TUSB_PRCM_MNGMT:
+-        s->prcm_mngmt = value;
+-        break;
+-    case TUSB_PRCM_WAKEUP_CLEAR:
+-        break;
+-    case TUSB_PRCM_WAKEUP_MASK:
+-        s->wkup_mask = value;
+-        break;
+-
+-    case TUSB_PULLUP_1_CTRL:
+-        s->pullup[0] = value;
+-        break;
+-    case TUSB_PULLUP_2_CTRL:
+-        s->pullup[1] = value;
+-        break;
+-    case TUSB_INT_CTRL_CONF:
+-        s->control_config = value;
+-        tusb_intr_update(s);
+-        break;
+-
+-    case TUSB_USBIP_INT_SET:
+-        s->usbip_intr |= value;
+-        tusb_usbip_intr_update(s);
+-        break;
+-    case TUSB_USBIP_INT_CLEAR:
+-        s->usbip_intr &= ~value;
+-        tusb_usbip_intr_update(s);
+-        musb_core_intr_clear(s->musb, ~value);
+-        break;
+-    case TUSB_USBIP_INT_MASK:
+-        s->usbip_mask = value;
+-        tusb_usbip_intr_update(s);
+-        break;
+-
+-    case TUSB_DMA_INT_SET:
+-        s->dma_intr |= value;
+-        tusb_dma_intr_update(s);
+-        break;
+-    case TUSB_DMA_INT_CLEAR:
+-        s->dma_intr &= ~value;
+-        tusb_dma_intr_update(s);
+-        break;
+-    case TUSB_DMA_INT_MASK:
+-        s->dma_mask = value;
+-        tusb_dma_intr_update(s);
+-        break;
+-
+-    case TUSB_GPIO_INT_SET:
+-        s->gpio_intr |= value;
+-        tusb_gpio_intr_update(s);
+-        break;
+-    case TUSB_GPIO_INT_CLEAR:
+-        s->gpio_intr &= ~value;
+-        tusb_gpio_intr_update(s);
+-        break;
+-    case TUSB_GPIO_INT_MASK:
+-        s->gpio_mask = value;
+-        tusb_gpio_intr_update(s);
+-        break;
+-
+-    case TUSB_INT_SRC_SET:
+-        s->intr |= value;
+-        tusb_intr_update(s);
+-        break;
+-    case TUSB_INT_SRC_CLEAR:
+-        s->intr &= ~value;
+-        tusb_intr_update(s);
+-        break;
+-    case TUSB_INT_MASK:
+-        s->mask = value;
+-        tusb_intr_update(s);
+-        break;
+-
+-    case TUSB_GPIO_CONF:
+-        s->gpio_config = value;
+-        break;
+-    case TUSB_DMA_REQ_CONF:
+-        s->dma_config = value;
+-        break;
+-    case TUSB_EP0_CONF:
+-        s->ep0_config = value & 0x1ff;
+-        musb_set_size(s->musb, 0, TUSB_EP0_CONFIG_XFR_SIZE(value),
+-                        value & TUSB_EP0_CONFIG_DIR_TX);
+-        break;
+-    case TUSB_EP_IN_SIZE ... (TUSB_EP_IN_SIZE + 0x3b):
+-        epnum = (offset - TUSB_EP_IN_SIZE) >> 2;
+-        s->tx_config[epnum] = value;
+-        musb_set_size(s->musb, epnum + 1, TUSB_EP_CONFIG_XFR_SIZE(value), 1);
+-        break;
+-    case TUSB_DMA_EP_MAP:
+-        s->dma_map = value;
+-        break;
+-    case TUSB_EP_OUT_SIZE ... (TUSB_EP_OUT_SIZE + 0x3b):
+-        epnum = (offset - TUSB_EP_OUT_SIZE) >> 2;
+-        s->rx_config[epnum] = value;
+-        musb_set_size(s->musb, epnum + 1, TUSB_EP_CONFIG_XFR_SIZE(value), 0);
+-        break;
+-    case TUSB_EP_MAX_PACKET_SIZE_OFFSET ...
+-            (TUSB_EP_MAX_PACKET_SIZE_OFFSET + 0x3b):
+-        return;		/* TODO */
+-    case TUSB_WAIT_COUNT:
+-        return;		/* TODO */
+-
+-    case TUSB_SCRATCH_PAD:
+-        s->scratch = value;
+-        break;
+-
+-    case TUSB_PROD_TEST_RESET:
+-        s->test_reset = value;
+-        break;
+-
+-    default:
+-        printf("%s: unknown register at %03x\n", __func__, offset);
+-        return;
+-    }
+-}
+-
+-static uint64_t tusb_async_readfn(void *opaque, hwaddr addr, unsigned size)
+-{
+-    switch (size) {
 -    case 1:
--        s->current = s->otp;
+-        return tusb_async_readb(opaque, addr);
+-    case 2:
+-        return tusb_async_readh(opaque, addr);
+-    case 4:
+-        return tusb_async_readw(opaque, addr);
+-    default:
+-        g_assert_not_reached();
+-    }
+-}
+-
+-static void tusb_async_writefn(void *opaque, hwaddr addr,
+-                               uint64_t value, unsigned size)
+-{
+-    switch (size) {
+-    case 1:
+-        tusb_async_writeb(opaque, addr, value);
 -        break;
 -    case 2:
--        s->current = s->image;
+-        tusb_async_writeh(opaque, addr, value);
+-        break;
+-    case 4:
+-        tusb_async_writew(opaque, addr, value);
 -        break;
 -    default:
--        return -1;
--    }
--    onenand_intr_update(s);
--    return 0;
--}
--
--static const VMStateDescription vmstate_onenand = {
--    .name = "onenand",
--    .version_id = 1,
--    .minimum_version_id = 1,
--    .pre_save = onenand_pre_save,
--    .post_load = onenand_post_load,
--    .fields = (const VMStateField[]) {
--        VMSTATE_UINT8(current_direction, OneNANDState),
--        VMSTATE_INT32(cycle, OneNANDState),
--        VMSTATE_INT32(otpmode, OneNANDState),
--        VMSTATE_UINT16_ARRAY(addr, OneNANDState, 8),
--        VMSTATE_UINT16_ARRAY(unladdr, OneNANDState, 8),
--        VMSTATE_INT32(bufaddr, OneNANDState),
--        VMSTATE_INT32(count, OneNANDState),
--        VMSTATE_UINT16(command, OneNANDState),
--        VMSTATE_UINT16_ARRAY(config, OneNANDState, 2),
--        VMSTATE_UINT16(status, OneNANDState),
--        VMSTATE_UINT16(intstatus, OneNANDState),
--        VMSTATE_UINT16(wpstatus, OneNANDState),
--        VMSTATE_INT32(secs_cur, OneNANDState),
--        VMSTATE_PARTIAL_VBUFFER(blockwp, OneNANDState, blocks),
--        VMSTATE_UINT8(ecc.cp, OneNANDState),
--        VMSTATE_UINT16_ARRAY(ecc.lp, OneNANDState, 2),
--        VMSTATE_UINT16(ecc.count, OneNANDState),
--        VMSTATE_BUFFER_POINTER_UNSAFE(otp, OneNANDState, 0,
--            ((64 + 2) << PAGE_SHIFT)),
--        VMSTATE_END_OF_LIST()
--    }
--};
--
--/* Hot reset (Reset OneNAND command) or warm reset (RP pin low) */
--static void onenand_reset(OneNANDState *s, int cold)
--{
--    memset(&s->addr, 0, sizeof(s->addr));
--    s->command = 0;
--    s->count = 1;
--    s->bufaddr = 0;
--    s->config[0] = 0x40c0;
--    s->config[1] = 0x0000;
--    onenand_intr_update(s);
--    qemu_irq_raise(s->rdy);
--    s->status = 0x0000;
--    s->intstatus = cold ? 0x8080 : 0x8010;
--    s->unladdr[0] = 0;
--    s->unladdr[1] = 0;
--    s->wpstatus = 0x0002;
--    s->cycle = 0;
--    s->otpmode = 0;
--    s->blk_cur = s->blk;
--    s->current = s->image;
--    s->secs_cur = s->secs;
--
--    if (cold) {
--        /* Lock the whole flash */
--        memset(s->blockwp, ONEN_LOCK_LOCKED, s->blocks);
--
--        if (s->blk_cur && blk_pread(s->blk_cur, 0, 8 << BDRV_SECTOR_BITS,
--                                    s->boot[0], 0) < 0) {
--            hw_error("%s: Loading the BootRAM failed.\n", __func__);
--        }
+-        g_assert_not_reached();
 -    }
 -}
 -
--static void onenand_system_reset(DeviceState *dev)
--{
--    OneNANDState *s = ONE_NAND(dev);
--
--    onenand_reset(s, 1);
--}
--
--static inline int onenand_load_main(OneNANDState *s, int sec, int secn,
--                void *dest)
--{
--    assert(UINT32_MAX >> BDRV_SECTOR_BITS > sec);
--    assert(UINT32_MAX >> BDRV_SECTOR_BITS > secn);
--    if (s->blk_cur) {
--        return blk_pread(s->blk_cur, sec << BDRV_SECTOR_BITS,
--                         secn << BDRV_SECTOR_BITS, dest, 0) < 0;
--    } else if (sec + secn > s->secs_cur) {
--        return 1;
--    }
--
--    memcpy(dest, s->current + (sec << 9), secn << 9);
--
--    return 0;
--}
--
--static inline int onenand_prog_main(OneNANDState *s, int sec, int secn,
--                void *src)
--{
--    int result = 0;
--
--    if (secn > 0) {
--        uint32_t size = secn << BDRV_SECTOR_BITS;
--        uint32_t offset = sec << BDRV_SECTOR_BITS;
--        assert(UINT32_MAX >> BDRV_SECTOR_BITS > sec);
--        assert(UINT32_MAX >> BDRV_SECTOR_BITS > secn);
--        const uint8_t *sp = (const uint8_t *)src;
--        uint8_t *dp = 0;
--        if (s->blk_cur) {
--            dp = g_malloc(size);
--            if (!dp || blk_pread(s->blk_cur, offset, size, dp, 0) < 0) {
--                result = 1;
--            }
--        } else {
--            if (sec + secn > s->secs_cur) {
--                result = 1;
--            } else {
--                dp = (uint8_t *)s->current + offset;
--            }
--        }
--        if (!result) {
--            uint32_t i;
--            for (i = 0; i < size; i++) {
--                dp[i] &= sp[i];
--            }
--            if (s->blk_cur) {
--                result = blk_pwrite(s->blk_cur, offset, size, dp, 0) < 0;
--            }
--        }
--        if (dp && s->blk_cur) {
--            g_free(dp);
--        }
--    }
--
--    return result;
--}
--
--static inline int onenand_load_spare(OneNANDState *s, int sec, int secn,
--                void *dest)
--{
--    uint8_t buf[512];
--
--    if (s->blk_cur) {
--        uint32_t offset = (s->secs_cur + (sec >> 5)) << BDRV_SECTOR_BITS;
--        if (blk_pread(s->blk_cur, offset, BDRV_SECTOR_SIZE, buf, 0) < 0) {
--            return 1;
--        }
--        memcpy(dest, buf + ((sec & 31) << 4), secn << 4);
--    } else if (sec + secn > s->secs_cur) {
--        return 1;
--    } else {
--        memcpy(dest, s->current + (s->secs_cur << 9) + (sec << 4), secn << 4);
--    }
--
--    return 0;
--}
--
--static inline int onenand_prog_spare(OneNANDState *s, int sec, int secn,
--                void *src)
--{
--    int result = 0;
--    if (secn > 0) {
--        const uint8_t *sp = (const uint8_t *)src;
--        uint8_t *dp = 0, *dpp = 0;
--        uint32_t offset = (s->secs_cur + (sec >> 5)) << BDRV_SECTOR_BITS;
--        assert(UINT32_MAX >> BDRV_SECTOR_BITS > s->secs_cur + (sec >> 5));
--        if (s->blk_cur) {
--            dp = g_malloc(512);
--            if (!dp
--                || blk_pread(s->blk_cur, offset, BDRV_SECTOR_SIZE, dp, 0) < 0) {
--                result = 1;
--            } else {
--                dpp = dp + ((sec & 31) << 4);
--            }
--        } else {
--            if (sec + secn > s->secs_cur) {
--                result = 1;
--            } else {
--                dpp = s->current + (s->secs_cur << 9) + (sec << 4);
--            }
--        }
--        if (!result) {
--            uint32_t i;
--            for (i = 0; i < (secn << 4); i++) {
--                dpp[i] &= sp[i];
--            }
--            if (s->blk_cur) {
--                result = blk_pwrite(s->blk_cur, offset, BDRV_SECTOR_SIZE, dp,
--                                    0) < 0;
--            }
--        }
--        g_free(dp);
--    }
--    return result;
--}
--
--static inline int onenand_erase(OneNANDState *s, int sec, int num)
--{
--    uint8_t *blankbuf, *tmpbuf;
--
--    blankbuf = g_malloc(512);
--    tmpbuf = g_malloc(512);
--    memset(blankbuf, 0xff, 512);
--    for (; num > 0; num--, sec++) {
--        if (s->blk_cur) {
--            int erasesec = s->secs_cur + (sec >> 5);
--            if (blk_pwrite(s->blk_cur, sec << BDRV_SECTOR_BITS,
--                           BDRV_SECTOR_SIZE, blankbuf, 0) < 0) {
--                goto fail;
--            }
--            if (blk_pread(s->blk_cur, erasesec << BDRV_SECTOR_BITS,
--                          BDRV_SECTOR_SIZE, tmpbuf, 0) < 0) {
--                goto fail;
--            }
--            memcpy(tmpbuf + ((sec & 31) << 4), blankbuf, 1 << 4);
--            if (blk_pwrite(s->blk_cur, erasesec << BDRV_SECTOR_BITS,
--                           BDRV_SECTOR_SIZE, tmpbuf, 0) < 0) {
--                goto fail;
--            }
--        } else {
--            if (sec + 1 > s->secs_cur) {
--                goto fail;
--            }
--            memcpy(s->current + (sec << 9), blankbuf, 512);
--            memcpy(s->current + (s->secs_cur << 9) + (sec << 4),
--                   blankbuf, 1 << 4);
--        }
--    }
--
--    g_free(tmpbuf);
--    g_free(blankbuf);
--    return 0;
--
--fail:
--    g_free(tmpbuf);
--    g_free(blankbuf);
--    return 1;
--}
--
--static void onenand_command(OneNANDState *s)
--{
--    int b;
--    int sec;
--    void *buf;
--#define SETADDR(block, page)                                \
--    sec = (s->addr[page] & 3) +                             \
--          ((((s->addr[page] >> 2) & 0x3f) +                 \
--            (((s->addr[block] & 0xfff) |                    \
--              (s->addr[block] >> 15 ? s->density_mask : 0)) \
--             << 6))                                         \
--           << (PAGE_SHIFT - 9));
--#define SETBUF_M()                                                           \
--    buf = (s->bufaddr & 8) ? s->data[(s->bufaddr >> 2) & 1][0] : s->boot[0]; \
--    buf += (s->bufaddr & 3) << 9;
--#define SETBUF_S()                                          \
--    buf = (s->bufaddr & 8) ?                                \
--            s->data[(s->bufaddr >> 2) & 1][1] : s->boot[1]; \
--    buf += (s->bufaddr & 3) << 4;
--
--    switch (s->command) {
--    case 0x00:  /* Load single/multiple sector data unit into buffer */
--        SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
--
--        SETBUF_M()
--        if (onenand_load_main(s, sec, s->count, buf))
--            s->status |= ONEN_ERR_CMD | ONEN_ERR_LOAD;
--
--#if 0
--        SETBUF_S()
--        if (onenand_load_spare(s, sec, s->count, buf))
--            s->status |= ONEN_ERR_CMD | ONEN_ERR_LOAD;
--#endif
--
--        /* TODO: if (s->bufaddr & 3) + s->count was > 4 (2k-pages)
--         * or    if (s->bufaddr & 1) + s->count was > 2 (1k-pages)
--         * then we need two split the read/write into two chunks.
--         */
--        s->intstatus |= ONEN_INT | ONEN_INT_LOAD;
--        break;
--    case 0x13:  /* Load single/multiple spare sector into buffer */
--        SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
--
--        SETBUF_S()
--        if (onenand_load_spare(s, sec, s->count, buf))
--            s->status |= ONEN_ERR_CMD | ONEN_ERR_LOAD;
--
--        /* TODO: if (s->bufaddr & 3) + s->count was > 4 (2k-pages)
--         * or    if (s->bufaddr & 1) + s->count was > 2 (1k-pages)
--         * then we need two split the read/write into two chunks.
--         */
--        s->intstatus |= ONEN_INT | ONEN_INT_LOAD;
--        break;
--    case 0x80:  /* Program single/multiple sector data unit from buffer */
--        SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
--
--        SETBUF_M()
--        if (onenand_prog_main(s, sec, s->count, buf))
--            s->status |= ONEN_ERR_CMD | ONEN_ERR_PROG;
--
--#if 0
--        SETBUF_S()
--        if (onenand_prog_spare(s, sec, s->count, buf))
--            s->status |= ONEN_ERR_CMD | ONEN_ERR_PROG;
--#endif
--
--        /* TODO: if (s->bufaddr & 3) + s->count was > 4 (2k-pages)
--         * or    if (s->bufaddr & 1) + s->count was > 2 (1k-pages)
--         * then we need two split the read/write into two chunks.
--         */
--        s->intstatus |= ONEN_INT | ONEN_INT_PROG;
--        break;
--    case 0x1a:  /* Program single/multiple spare area sector from buffer */
--        SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
--
--        SETBUF_S()
--        if (onenand_prog_spare(s, sec, s->count, buf))
--            s->status |= ONEN_ERR_CMD | ONEN_ERR_PROG;
--
--        /* TODO: if (s->bufaddr & 3) + s->count was > 4 (2k-pages)
--         * or    if (s->bufaddr & 1) + s->count was > 2 (1k-pages)
--         * then we need two split the read/write into two chunks.
--         */
--        s->intstatus |= ONEN_INT | ONEN_INT_PROG;
--        break;
--    case 0x1b:  /* Copy-back program */
--        SETBUF_S()
--
--        SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
--        if (onenand_load_main(s, sec, s->count, buf))
--            s->status |= ONEN_ERR_CMD | ONEN_ERR_PROG;
--
--        SETADDR(ONEN_BUF_DEST_BLOCK, ONEN_BUF_DEST_PAGE)
--        if (onenand_prog_main(s, sec, s->count, buf))
--            s->status |= ONEN_ERR_CMD | ONEN_ERR_PROG;
--
--        /* TODO: spare areas */
--
--        s->intstatus |= ONEN_INT | ONEN_INT_PROG;
--        break;
--
--    case 0x23:  /* Unlock NAND array block(s) */
--        s->intstatus |= ONEN_INT;
--
--        /* XXX the previous (?) area should be locked automatically */
--        for (b = s->unladdr[0]; b <= s->unladdr[1]; b ++) {
--            if (b >= s->blocks) {
--                s->status |= ONEN_ERR_CMD;
--                break;
--            }
--            if (s->blockwp[b] == ONEN_LOCK_LOCKTIGHTEN)
--                break;
--
--            s->wpstatus = s->blockwp[b] = ONEN_LOCK_UNLOCKED;
--        }
--        break;
--    case 0x27:  /* Unlock All NAND array blocks */
--        s->intstatus |= ONEN_INT;
--
--        for (b = 0; b < s->blocks; b ++) {
--            if (s->blockwp[b] == ONEN_LOCK_LOCKTIGHTEN)
--                break;
--
--            s->wpstatus = s->blockwp[b] = ONEN_LOCK_UNLOCKED;
--        }
--        break;
--
--    case 0x2a:  /* Lock NAND array block(s) */
--        s->intstatus |= ONEN_INT;
--
--        for (b = s->unladdr[0]; b <= s->unladdr[1]; b ++) {
--            if (b >= s->blocks) {
--                s->status |= ONEN_ERR_CMD;
--                break;
--            }
--            if (s->blockwp[b] == ONEN_LOCK_LOCKTIGHTEN)
--                break;
--
--            s->wpstatus = s->blockwp[b] = ONEN_LOCK_LOCKED;
--        }
--        break;
--    case 0x2c:  /* Lock-tight NAND array block(s) */
--        s->intstatus |= ONEN_INT;
--
--        for (b = s->unladdr[0]; b <= s->unladdr[1]; b ++) {
--            if (b >= s->blocks) {
--                s->status |= ONEN_ERR_CMD;
--                break;
--            }
--            if (s->blockwp[b] == ONEN_LOCK_UNLOCKED)
--                continue;
--
--            s->wpstatus = s->blockwp[b] = ONEN_LOCK_LOCKTIGHTEN;
--        }
--        break;
--
--    case 0x71:  /* Erase-Verify-Read */
--        s->intstatus |= ONEN_INT;
--        break;
--    case 0x95:  /* Multi-block erase */
--        qemu_irq_pulse(s->intr);
--        /* Fall through.  */
--    case 0x94:  /* Block erase */
--        sec = ((s->addr[ONEN_BUF_BLOCK] & 0xfff) |
--                        (s->addr[ONEN_BUF_BLOCK] >> 15 ? s->density_mask : 0))
--                << (BLOCK_SHIFT - 9);
--        if (onenand_erase(s, sec, 1 << (BLOCK_SHIFT - 9)))
--            s->status |= ONEN_ERR_CMD | ONEN_ERR_ERASE;
--
--        s->intstatus |= ONEN_INT | ONEN_INT_ERASE;
--        break;
--    case 0xb0:  /* Erase suspend */
--        break;
--    case 0x30:  /* Erase resume */
--        s->intstatus |= ONEN_INT | ONEN_INT_ERASE;
--        break;
--
--    case 0xf0:  /* Reset NAND Flash core */
--        onenand_reset(s, 0);
--        break;
--    case 0xf3:  /* Reset OneNAND */
--        onenand_reset(s, 0);
--        break;
--
--    case 0x65:  /* OTP Access */
--        s->intstatus |= ONEN_INT;
--        s->blk_cur = NULL;
--        s->current = s->otp;
--        s->secs_cur = 1 << (BLOCK_SHIFT - 9);
--        s->addr[ONEN_BUF_BLOCK] = 0;
--        s->otpmode = 1;
--        break;
--
--    default:
--        s->status |= ONEN_ERR_CMD;
--        s->intstatus |= ONEN_INT;
--        qemu_log_mask(LOG_GUEST_ERROR, "unknown OneNAND command %x\n",
--                      s->command);
--    }
--
--    onenand_intr_update(s);
--}
--
--static uint64_t onenand_read(void *opaque, hwaddr addr,
--                             unsigned size)
--{
--    OneNANDState *s = (OneNANDState *) opaque;
--    int offset = addr >> s->shift;
--
--    switch (offset) {
--    case 0x0000 ... 0xbffe:
--        return lduw_le_p(s->boot[0] + addr);
--
--    case 0xf000:  /* Manufacturer ID */
--        return s->id.man;
--    case 0xf001:  /* Device ID */
--        return s->id.dev;
--    case 0xf002:  /* Version ID */
--        return s->id.ver;
--    /* TODO: get the following values from a real chip!  */
--    case 0xf003:  /* Data Buffer size */
--        return 1 << PAGE_SHIFT;
--    case 0xf004:  /* Boot Buffer size */
--        return 0x200;
--    case 0xf005:  /* Amount of buffers */
--        return 1 | (2 << 8);
--    case 0xf006:  /* Technology */
--        return 0;
--
--    case 0xf100 ... 0xf107:  /* Start addresses */
--        return s->addr[offset - 0xf100];
--
--    case 0xf200:  /* Start buffer */
--        return (s->bufaddr << 8) | ((s->count - 1) & (1 << (PAGE_SHIFT - 10)));
--
--    case 0xf220:  /* Command */
--        return s->command;
--    case 0xf221:  /* System Configuration 1 */
--        return s->config[0] & 0xffe0;
--    case 0xf222:  /* System Configuration 2 */
--        return s->config[1];
--
--    case 0xf240:  /* Controller Status */
--        return s->status;
--    case 0xf241:  /* Interrupt */
--        return s->intstatus;
--    case 0xf24c:  /* Unlock Start Block Address */
--        return s->unladdr[0];
--    case 0xf24d:  /* Unlock End Block Address */
--        return s->unladdr[1];
--    case 0xf24e:  /* Write Protection Status */
--        return s->wpstatus;
--
--    case 0xff00:  /* ECC Status */
--        return 0x00;
--    case 0xff01:  /* ECC Result of main area data */
--    case 0xff02:  /* ECC Result of spare area data */
--    case 0xff03:  /* ECC Result of main area data */
--    case 0xff04:  /* ECC Result of spare area data */
--        qemu_log_mask(LOG_UNIMP,
--                      "onenand: ECC result registers unimplemented\n");
--        return 0x0000;
--    }
--
--    qemu_log_mask(LOG_GUEST_ERROR, "read of unknown OneNAND register 0x%x\n",
--                  offset);
--    return 0;
--}
--
--static void onenand_write(void *opaque, hwaddr addr,
--                          uint64_t value, unsigned size)
--{
--    OneNANDState *s = (OneNANDState *) opaque;
--    int offset = addr >> s->shift;
--    int sec;
--
--    switch (offset) {
--    case 0x0000 ... 0x01ff:
--    case 0x8000 ... 0x800f:
--        if (s->cycle) {
--            s->cycle = 0;
--
--            if (value == 0x0000) {
--                SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
--                onenand_load_main(s, sec,
--                                1 << (PAGE_SHIFT - 9), s->data[0][0]);
--                s->addr[ONEN_BUF_PAGE] += 4;
--                s->addr[ONEN_BUF_PAGE] &= 0xff;
--            }
--            break;
--        }
--
--        switch (value) {
--        case 0x00f0:  /* Reset OneNAND */
--            onenand_reset(s, 0);
--            break;
--
--        case 0x00e0:  /* Load Data into Buffer */
--            s->cycle = 1;
--            break;
--
--        case 0x0090:  /* Read Identification Data */
--            memset(s->boot[0], 0, 3 << s->shift);
--            s->boot[0][0 << s->shift] = s->id.man & 0xff;
--            s->boot[0][1 << s->shift] = s->id.dev & 0xff;
--            s->boot[0][2 << s->shift] = s->wpstatus & 0xff;
--            break;
--
--        default:
--            qemu_log_mask(LOG_GUEST_ERROR,
--                          "unknown OneNAND boot command %" PRIx64 "\n",
--                          value);
--        }
--        break;
--
--    case 0xf100 ... 0xf107:  /* Start addresses */
--        s->addr[offset - 0xf100] = value;
--        break;
--
--    case 0xf200:  /* Start buffer */
--        s->bufaddr = (value >> 8) & 0xf;
--        if (PAGE_SHIFT == 11)
--            s->count = (value & 3) ?: 4;
--        else if (PAGE_SHIFT == 10)
--            s->count = (value & 1) ?: 2;
--        break;
--
--    case 0xf220:  /* Command */
--        if (s->intstatus & (1 << 15))
--            break;
--        s->command = value;
--        onenand_command(s);
--        break;
--    case 0xf221:  /* System Configuration 1 */
--        s->config[0] = value;
--        onenand_intr_update(s);
--        qemu_set_irq(s->rdy, (s->config[0] >> 7) & 1);
--        break;
--    case 0xf222:  /* System Configuration 2 */
--        s->config[1] = value;
--        break;
--
--    case 0xf241:  /* Interrupt */
--        s->intstatus &= value;
--        if ((1 << 15) & ~s->intstatus)
--            s->status &= ~(ONEN_ERR_CMD | ONEN_ERR_ERASE |
--                            ONEN_ERR_PROG | ONEN_ERR_LOAD);
--        onenand_intr_update(s);
--        break;
--    case 0xf24c:  /* Unlock Start Block Address */
--        s->unladdr[0] = value & (s->blocks - 1);
--        /* For some reason we have to set the end address to by default
--         * be same as start because the software forgets to write anything
--         * in there.  */
--        s->unladdr[1] = value & (s->blocks - 1);
--        break;
--    case 0xf24d:  /* Unlock End Block Address */
--        s->unladdr[1] = value & (s->blocks - 1);
--        break;
--
--    default:
--        qemu_log_mask(LOG_GUEST_ERROR,
--                      "write to unknown OneNAND register 0x%x\n",
--                      offset);
--    }
--}
--
--static const MemoryRegionOps onenand_ops = {
--    .read = onenand_read,
--    .write = onenand_write,
+-static const MemoryRegionOps tusb_async_ops = {
+-    .read = tusb_async_readfn,
+-    .write = tusb_async_writefn,
+-    .valid.min_access_size = 1,
+-    .valid.max_access_size = 4,
 -    .endianness = DEVICE_NATIVE_ENDIAN,
 -};
 -
--static void onenand_realize(DeviceState *dev, Error **errp)
+-static void tusb_otg_tick(void *opaque)
 -{
--    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
--    OneNANDState *s = ONE_NAND(dev);
--    uint32_t size = 1 << (24 + ((s->id.dev >> 4) & 7));
--    void *ram;
--    Error *local_err = NULL;
+-    TUSBState *s = (TUSBState *) opaque;
 -
--    s->base = (hwaddr)-1;
--    s->rdy = NULL;
--    s->blocks = size >> BLOCK_SHIFT;
--    s->secs = size >> 9;
--    s->blockwp = g_malloc(s->blocks);
--    s->density_mask = (s->id.dev & 0x08)
--        ? (1 << (6 + ((s->id.dev >> 4) & 7))) : 0;
--    memory_region_init_io(&s->iomem, OBJECT(s), &onenand_ops, s, "onenand",
--                          0x10000 << s->shift);
--    if (!s->blk) {
--        s->image = memset(g_malloc(size + (size >> 5)),
--                          0xff, size + (size >> 5));
--    } else {
--        if (!blk_supports_write_perm(s->blk)) {
--            error_setg(errp, "Can't use a read-only drive");
--            return;
--        }
--        blk_set_perm(s->blk, BLK_PERM_CONSISTENT_READ | BLK_PERM_WRITE,
--                     BLK_PERM_ALL, &local_err);
--        if (local_err) {
--            error_propagate(errp, local_err);
--            return;
--        }
--        s->blk_cur = s->blk;
--    }
--    s->otp = memset(g_malloc((64 + 2) << PAGE_SHIFT),
--                    0xff, (64 + 2) << PAGE_SHIFT);
--    memory_region_init_ram_nomigrate(&s->ram, OBJECT(s), "onenand.ram",
--                           0xc000 << s->shift, &error_fatal);
--    vmstate_register_ram_global(&s->ram);
--    ram = memory_region_get_ram_ptr(&s->ram);
--    s->boot[0] = ram + (0x0000 << s->shift);
--    s->boot[1] = ram + (0x8000 << s->shift);
--    s->data[0][0] = ram + ((0x0200 + (0 << (PAGE_SHIFT - 1))) << s->shift);
--    s->data[0][1] = ram + ((0x8010 + (0 << (PAGE_SHIFT - 6))) << s->shift);
--    s->data[1][0] = ram + ((0x0200 + (1 << (PAGE_SHIFT - 1))) << s->shift);
--    s->data[1][1] = ram + ((0x8010 + (1 << (PAGE_SHIFT - 6))) << s->shift);
--    onenand_mem_setup(s);
--    sysbus_init_irq(sbd, &s->intr);
--    sysbus_init_mmio(sbd, &s->container);
--    vmstate_register(VMSTATE_IF(dev),
--                     ((s->shift & 0x7f) << 24)
--                     | ((s->id.man & 0xff) << 16)
--                     | ((s->id.dev & 0xff) << 8)
--                     | (s->id.ver & 0xff),
--                     &vmstate_onenand, s);
+-    s->otg_timer_val = 0;
+-    s->intr |= TUSB_INT_SRC_OTG_TIMEOUT;
+-    tusb_intr_update(s);
 -}
 -
--static Property onenand_properties[] = {
--    DEFINE_PROP_UINT16("manufacturer_id", OneNANDState, id.man, 0),
--    DEFINE_PROP_UINT16("device_id", OneNANDState, id.dev, 0),
--    DEFINE_PROP_UINT16("version_id", OneNANDState, id.ver, 0),
--    DEFINE_PROP_INT32("shift", OneNANDState, shift, 0),
--    DEFINE_PROP_DRIVE("drive", OneNANDState, blk),
--    DEFINE_PROP_END_OF_LIST(),
--};
+-static void tusb_power_tick(void *opaque)
+-{
+-    TUSBState *s = (TUSBState *) opaque;
 -
--static void onenand_class_init(ObjectClass *klass, void *data)
+-    if (s->power) {
+-        s->intr_ok = ~0;
+-        tusb_intr_update(s);
+-    }
+-}
+-
+-static void tusb_musb_core_intr(void *opaque, int source, int level)
+-{
+-    TUSBState *s = (TUSBState *) opaque;
+-    uint16_t otg_status = s->otg_status;
+-
+-    switch (source) {
+-    case musb_set_vbus:
+-        if (level)
+-            otg_status |= TUSB_DEV_OTG_STAT_VBUS_VALID;
+-        else
+-            otg_status &= ~TUSB_DEV_OTG_STAT_VBUS_VALID;
+-
+-        /* XXX: only if TUSB_PHY_OTG_CTRL_OTG_VBUS_DET_EN set?  */
+-        /* XXX: only if TUSB_PRCM_MNGMT_OTG_VBUS_DET_EN set?  */
+-        if (s->otg_status != otg_status) {
+-            s->otg_status = otg_status;
+-            s->intr |= TUSB_INT_SRC_VBUS_SENSE_CHNG;
+-            tusb_intr_update(s);
+-        }
+-        break;
+-
+-    case musb_set_session:
+-        /* XXX: only if TUSB_PHY_OTG_CTRL_OTG_SESS_END_EN set?  */
+-        /* XXX: only if TUSB_PRCM_MNGMT_OTG_SESS_END_EN set?  */
+-        if (level) {
+-            s->otg_status |= TUSB_DEV_OTG_STAT_SESS_VALID;
+-            s->otg_status &= ~TUSB_DEV_OTG_STAT_SESS_END;
+-        } else {
+-            s->otg_status &= ~TUSB_DEV_OTG_STAT_SESS_VALID;
+-            s->otg_status |= TUSB_DEV_OTG_STAT_SESS_END;
+-        }
+-
+-        /* XXX: some IRQ or anything?  */
+-        break;
+-
+-    case musb_irq_tx:
+-    case musb_irq_rx:
+-        s->usbip_intr = musb_core_intr_get(s->musb);
+-        /* Fall through.  */
+-    default:
+-        if (level)
+-            s->intr |= 1 << source;
+-        else
+-            s->intr &= ~(1 << source);
+-        tusb_intr_update(s);
+-        break;
+-    }
+-}
+-
+-static void tusb6010_power(TUSBState *s, int on)
+-{
+-    if (!on) {
+-        s->power = 0;
+-    } else if (!s->power && on) {
+-        s->power = 1;
+-        /* Pull the interrupt down after TUSB6010 comes up.  */
+-        s->intr_ok = 0;
+-        tusb_intr_update(s);
+-        timer_mod(s->pwr_timer, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
+-                  NANOSECONDS_PER_SECOND / 2);
+-    }
+-}
+-
+-static void tusb6010_irq(void *opaque, int source, int level)
+-{
+-    if (source) {
+-        tusb_musb_core_intr(opaque, source - 1, level);
+-    } else {
+-        tusb6010_power(opaque, level);
+-    }
+-}
+-
+-static void tusb6010_reset(DeviceState *dev)
+-{
+-    TUSBState *s = TUSB6010(dev);
+-    int i;
+-
+-    s->test_reset = TUSB_PROD_TEST_RESET_VAL;
+-    s->host_mode = 0;
+-    s->dev_config = 0;
+-    s->otg_status = 0;	/* !TUSB_DEV_OTG_STAT_ID_STATUS means host mode */
+-    s->power = 0;
+-    s->mask = 0xffffffff;
+-    s->intr = 0x00000000;
+-    s->otg_timer_val = 0;
+-    s->scratch = 0;
+-    s->prcm_config = 0;
+-    s->prcm_mngmt = 0;
+-    s->intr_ok = 0;
+-    s->usbip_intr = 0;
+-    s->usbip_mask = 0;
+-    s->gpio_intr = 0;
+-    s->gpio_mask = 0;
+-    s->gpio_config = 0;
+-    s->dma_intr = 0;
+-    s->dma_mask = 0;
+-    s->dma_map = 0;
+-    s->dma_config = 0;
+-    s->ep0_config = 0;
+-    s->wkup_mask = 0;
+-    s->pullup[0] = s->pullup[1] = 0;
+-    s->control_config = 0;
+-    for (i = 0; i < 15; i++) {
+-        s->rx_config[i] = s->tx_config[i] = 0;
+-    }
+-    musb_reset(s->musb);
+-}
+-
+-static void tusb6010_realize(DeviceState *dev, Error **errp)
+-{
+-    TUSBState *s = TUSB6010(dev);
+-    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+-
+-    s->otg_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, tusb_otg_tick, s);
+-    s->pwr_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, tusb_power_tick, s);
+-    memory_region_init_io(&s->iomem[1], OBJECT(s), &tusb_async_ops, s,
+-                          "tusb-async", UINT32_MAX);
+-    sysbus_init_mmio(sbd, &s->iomem[0]);
+-    sysbus_init_mmio(sbd, &s->iomem[1]);
+-    sysbus_init_irq(sbd, &s->irq);
+-    qdev_init_gpio_in(dev, tusb6010_irq, musb_irq_max + 1);
+-    s->musb = musb_init(dev, 1);
+-}
+-
+-static void tusb6010_class_init(ObjectClass *klass, void *data)
 -{
 -    DeviceClass *dc = DEVICE_CLASS(klass);
 -
--    dc->realize = onenand_realize;
--    dc->reset = onenand_system_reset;
--    device_class_set_props(dc, onenand_properties);
+-    dc->realize = tusb6010_realize;
+-    dc->reset = tusb6010_reset;
 -}
 -
--static const TypeInfo onenand_info = {
--    .name          = TYPE_ONE_NAND,
+-static const TypeInfo tusb6010_info = {
+-    .name          = TYPE_TUSB6010,
 -    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(OneNANDState),
--    .class_init    = onenand_class_init,
+-    .instance_size = sizeof(TUSBState),
+-    .class_init    = tusb6010_class_init,
 -};
 -
--static void onenand_register_types(void)
+-static void tusb6010_register_types(void)
 -{
--    type_register_static(&onenand_info);
+-    type_register_static(&tusb6010_info);
 -}
 -
--void *onenand_raw_otp(DeviceState *onenand_device)
--{
--    OneNANDState *s = ONE_NAND(onenand_device);
--
--    return s->otp;
--}
--
--type_init(onenand_register_types)
-diff --git a/hw/block/Kconfig b/hw/block/Kconfig
-index 9e8f28f9824..002d255dced 100644
---- a/hw/block/Kconfig
-+++ b/hw/block/Kconfig
-@@ -25,9 +25,6 @@ config PFLASH_CFI02
- config ECC
+-type_init(tusb6010_register_types)
+diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
+index 84bc7fbe36c..0bffcda1b19 100644
+--- a/hw/usb/Kconfig
++++ b/hw/usb/Kconfig
+@@ -61,10 +61,6 @@ config USB_DWC2
      bool
+     select USB
  
--config ONENAND
+-config TUSB6010
 -    bool
+-    select USB_MUSB
 -
- config TC58128
+ config USB_HUB
      bool
+     default y
+diff --git a/hw/usb/meson.build b/hw/usb/meson.build
+index d7de1003e3d..ae901481597 100644
+--- a/hw/usb/meson.build
++++ b/hw/usb/meson.build
+@@ -27,7 +27,6 @@ system_ss.add(when: 'CONFIG_USB_MUSB', if_true: files('hcd-musb.c'))
+ system_ss.add(when: 'CONFIG_USB_DWC2', if_true: files('hcd-dwc2.c'))
+ system_ss.add(when: 'CONFIG_USB_DWC3', if_true: files('hcd-dwc3.c'))
  
-diff --git a/hw/block/meson.build b/hw/block/meson.build
-index 8aa4dc3893c..74c8eb9e735 100644
---- a/hw/block/meson.build
-+++ b/hw/block/meson.build
-@@ -8,7 +8,6 @@ system_ss.add(when: 'CONFIG_FDC', if_true: files('fdc.c'))
- system_ss.add(when: 'CONFIG_FDC_ISA', if_true: files('fdc-isa.c'))
- system_ss.add(when: 'CONFIG_FDC_SYSBUS', if_true: files('fdc-sysbus.c'))
- system_ss.add(when: 'CONFIG_NAND', if_true: files('nand.c'))
--system_ss.add(when: 'CONFIG_ONENAND', if_true: files('onenand.c'))
- system_ss.add(when: 'CONFIG_PFLASH_CFI01', if_true: files('pflash_cfi01.c'))
- system_ss.add(when: 'CONFIG_PFLASH_CFI02', if_true: files('pflash_cfi02.c'))
- system_ss.add(when: 'CONFIG_SSI_M25P80', if_true: files('m25p80.c'))
+-system_ss.add(when: 'CONFIG_TUSB6010', if_true: files('tusb6010.c'))
+ system_ss.add(when: 'CONFIG_IMX', if_true: files('chipidea.c'))
+ system_ss.add(when: 'CONFIG_IMX_USBPHY', if_true: files('imx-usb-phy.c'))
+ system_ss.add(when: 'CONFIG_VT82C686', if_true: files('vt82c686-uhci-pci.c'))
 -- 
 2.34.1
 
