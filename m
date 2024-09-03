@@ -2,86 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EDE96A146
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A9596A16E
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:59:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slUvN-0005W5-Fb; Tue, 03 Sep 2024 10:54:29 -0400
+	id 1slUzm-0008Ca-PT; Tue, 03 Sep 2024 10:59:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1slUvG-0005Ay-ST
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:54:23 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1slUvD-0006QO-0U
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:54:20 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-714287e4083so4841494b3a.2
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 07:54:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725375258; x=1725980058; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9k5/HOvNk/2TbU1XSW1ya0E8gidJE236U4uoiUI92lM=;
- b=P5IN7Xqu0LXbcVC8nS4YmhGzic56CPlhMD5wiy/rFo0fGbkRs3uRd1UJe3OS9dLMgc
- 205ylqJ0NgvyFUG+uKrtetj49p151ueqWLeAtHbbtu4L6AT+3CMnVFp9jalz5GXGHWL3
- UyDZGKlL9m14AQClPMRM1pgdzrx7kg/zBUjvSxcbjLXWb+FLJ2PHAa4ztEt+kLtxu9YO
- VeqPEHgsCMIlCrts8gkYM/HOdrMlHQ6tBPbHyQNAO3mwkQKkv8BOSGyIuYz0Jde+PpVd
- 2vjpZcSandhxek3EeYUmQ2ZoZirR+hgcOTGRYhD5EQJhs1xd5NFm3y5KzBQjaYsg/IwY
- 8z/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725375258; x=1725980058;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9k5/HOvNk/2TbU1XSW1ya0E8gidJE236U4uoiUI92lM=;
- b=ZmAL9gGHgFrc0oS/hx0iBgaRN3/hhiJzM3Bw90+VpAGB1BUVXZ+lWR9Tw/rG6MI8L7
- oyw472/Pg1QYgI6BUqr+oSrYSSCbhSk8N1PXY+AMtefqBWEivZfhyEGCIFiewx+/SCCr
- 1OsP1ecyEQcBKVD6Jr4i8/gqJm1Mx6NY7mqlA5LePksOuGA5773+MYTrQPkOE3qqP8rf
- hRjCq+1xP6L8u26mIle6xPvycXszPevGyTbWuSZAt8uMhHK+GYHNrTyud+tlnoHTK8FN
- X3e/C9Fc1KaDOZMY/VIAuSeIO43325aaeN/uP7jl0tD920MPwjSctvhio3WVfjOU+JMk
- wuMg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXANWhQiHR2ptyWURbJvKC7ij9qaq/e1PCQjOm/aVeY4Mrmg0e2u2dXafOmsnk9SqLXQNchqT6p0W09@nongnu.org
-X-Gm-Message-State: AOJu0YyCbJjzpoacS+M+u2dncE2d2xGpXvKxYGil8MFcfomU1MLuFovB
- sq34tNfAxpY5u4afSkI+j2i1/6oGuMaNdS4ZzEVwxeWbnL26B4cIJwxQumRF/m4=
-X-Google-Smtp-Source: AGHT+IHOpNmFPXUhIo7Eam8HYpE01pEFtzCKfC3BcQvDtzfVyFz1aHjtI8bJB3/pa2WVEIsslekICA==
-X-Received: by 2002:a05:6a00:3a1f:b0:70d:2796:bce8 with SMTP id
- d2e1a72fcca58-7173b69111cmr15400940b3a.20.1725375257444; 
- Tue, 03 Sep 2024 07:54:17 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-715e55a3b61sm8587921b3a.48.2024.09.03.07.54.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Sep 2024 07:54:17 -0700 (PDT)
-Message-ID: <d268543f-3453-48ae-befa-c415b1de4a29@linaro.org>
-Date: Tue, 3 Sep 2024 07:54:14 -0700
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1slUzk-00082g-Av; Tue, 03 Sep 2024 10:59:00 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
+ id 1slUzh-0007U3-8E; Tue, 03 Sep 2024 10:59:00 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WypZX66L3z6HJcx;
+ Tue,  3 Sep 2024 22:55:16 +0800 (CST)
+Received: from lhrpeml500006.china.huawei.com (unknown [7.191.161.198])
+ by mail.maildlp.com (Postfix) with ESMTPS id 2D30F1408FC;
+ Tue,  3 Sep 2024 22:58:53 +0800 (CST)
+Received: from localhost (10.47.29.115) by lhrpeml500006.china.huawei.com
+ (7.191.161.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 3 Sep
+ 2024 15:58:52 +0100
+Date: Tue, 3 Sep 2024 15:58:47 +0100
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <linuxarm@huawei.com>,
+ <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
+ <shameerali.kolothum.thodi@huawei.com>, <Jonathan.Cameron@Huawei.com>,
+ <alex.bennee@linaro.org>, <jiangkunkun@huawei.com>
+Subject: Re: [PATCH v4] target/arm/tcg: refine cache descriptions with a
+ wrapper
+Message-ID: <20240903155847.00000379@huawei.com>
+In-Reply-To: <7fda2f7c-091f-4b8b-bd61-5f8fcbbcf8ba@linaro.org>
+References: <20240903083520.209-1-alireza.sanaee@huawei.com>
+ <7fda2f7c-091f-4b8b-bd61-5f8fcbbcf8ba@linaro.org>
+Organization: Huawei
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/14] tcg/riscv: Implement vector shs/v ops
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
- TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-References: <20240830061607.1940-1-zhiwei_liu@linux.alibaba.com>
- <20240830061607.1940-13-zhiwei_liu@linux.alibaba.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240830061607.1940-13-zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.47.29.115]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500006.china.huawei.com (7.191.161.198)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,21 +67,77 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
+From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/29/24 23:16, LIU Zhiwei wrote:
-> From: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
-> 
-> Signed-off-by: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
-> Reviewed-by: Liu Zhiwei<zhiwei_liu@linux.alibaba.com>
+On Tue, 3 Sep 2024 15:18:41 +0200
+Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
+
+> On 3/9/24 10:35, Alireza Sanaee wrote:
+> > This patch allows for easier manipulation of the cache description
+> > register, CCSIDR. Which is helpful for testing as well. Currently,
+> > numbers get hard-coded and might be prone to errors.
+> >=20
+> > Therefore, this patch adds a wrapper for different types of CPUs
+> > available in tcg to decribe caches. One function `make_ccsidr`
+> > supports two cases by carrying a parameter as FORMAT that can be
+> > LEGACY and CCIDX which determines the specification of the register.
+> >=20
+> > For CCSIDR register, 32 bit version follows specification [1].
+> > Conversely, 64 bit version follows specification [2]. =20
+>=20
+> This is the commit description,
+>=20
 > ---
->   tcg/riscv/tcg-target-con-set.h |  1 +
->   tcg/riscv/tcg-target.c.inc     | 44 ++++++++++++++++++++++++++++++++++
->   tcg/riscv/tcg-target.h         |  4 ++--
->   3 files changed, 47 insertions(+), 2 deletions(-)
+>=20
+> this part is not relevant in the git history and can go
+> (hopefully the maintainer can do that for you),
+>=20
+> >=20
+> > Changes from v2 [3] -> v3:
+> >=20
+> > 1) add only one function instead of ccsidr32 and ccsidr64
+> > 2) use deposit32 and deposit64 in ccsidr function
+> >=20
+> > Chnages from v3 [4] -> v4:
+> > 1) Use only one variable in the make_ccsidr function.
+> > 2) Include qemu/host-utils.h to get is_power_of_2() declaration.
+> >  =20
+> ---
+>=20
+> keeping these references,
+>=20
+> > [1] B4.1.19, ARM Architecture Reference Manual ARMv7-A and ARMv7-R
+> > edition, https://developer.arm.com/documentation/ddi0406
+> > [2] D23.2.29, ARM Architecture Reference Manual for A-profile
+> > Architecture, https://developer.arm.com/documentation/ddi0487/latest/ =
+=20
+>=20
+> ---
+>=20
+> and dropping these ones.
+>=20
+> > [3] https://lore.kernel.org/qemu-devel/20240830184713.224-1-alireza.san=
+aee@huawei.com/
+> > [4] https://lore.kernel.org/qemu-devel/20240902203211.270-1-alireza.san=
+aee@huawei.com/
+> >=20
+> > Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
+> > ---
+> >   target/arm/cpu-features.h |  50 ++++++++++++++++++
+> >   target/arm/cpu64.c        |  19 ++++---
+> >   target/arm/tcg/cpu64.c    | 108
+> > +++++++++++++++++++------------------- 3 files changed, 117
+> > insertions(+), 60 deletions(-) =20
+>=20
+> Thanks for the iterations.
+>=20
+> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
+>=20
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Thanks for the feedback.
 
-r~
+v5 sent. hopefully that's OK.
 
