@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05A196974A
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 10:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB6E969743
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 10:36:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slP1W-0005Zi-0t; Tue, 03 Sep 2024 04:36:26 -0400
+	id 1slP1a-00061j-NA; Tue, 03 Sep 2024 04:36:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1slP15-000466-7x; Tue, 03 Sep 2024 04:36:00 -0400
+ id 1slP17-0004FQ-FK; Tue, 03 Sep 2024 04:36:01 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1slP13-00084x-Qx; Tue, 03 Sep 2024 04:35:58 -0400
+ id 1slP16-00084x-00; Tue, 03 Sep 2024 04:36:01 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 3 Sep
- 2024 16:35:30 +0800
+ 2024 16:35:31 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
  Transport; Tue, 3 Sep 2024 16:35:30 +0800
@@ -33,9 +33,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v3 08/11] aspeed/soc: Introduce a new API to get the device irq
-Date: Tue, 3 Sep 2024 16:35:25 +0800
-Message-ID: <20240903083528.2182190-9-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 09/11] aspeed/soc: Support I2C for AST2700
+Date: Tue, 3 Sep 2024 16:35:26 +0800
+Message-ID: <20240903083528.2182190-10-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240903083528.2182190-1-jamin_lin@aspeedtech.com>
 References: <20240903083528.2182190-1-jamin_lin@aspeedtech.com>
@@ -68,50 +68,77 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, users can set the INTC mapping table with
-enumerated device id and device irq to get the INTC orgate
-input pins. However, some devices use the continuous source numbers in the
-same INTC orgate. To reduce the enumerated device id definition,
-create a new API to get the INTC orgate input pin
-if users only provide the device id with its bus number index.
+Add I2C model for AST2700 I2C support.
+The I2C controller registers base address is start at
+0x14C0_F000 and its address space is 0x2000.
+
+The AST2700 I2C controller has one source INTC per bus.
+I2C buses interrupt are connected to GICINT130_INTC
+from bit 0 to bit 15.
+I2C bus 0 is connected to GICINT130_INTC at bit 0.
+I2C bus 15 is connected to GICINT130_INTC at bit 15.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ hw/arm/aspeed_ast27x0.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 4257b5e8af..a5eb78524f 100644
+index a5eb78524f..761ee11657 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -193,6 +193,27 @@ static qemu_irq aspeed_soc_ast2700_get_irq(AspeedSoCState *s, int dev)
-     return qdev_get_gpio_in(DEVICE(&a->gic), sc->irqmap[dev]);
+@@ -61,6 +61,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+     [ASPEED_GIC_DIST]      =  0x12200000,
+     [ASPEED_GIC_REDIST]    =  0x12280000,
+     [ASPEED_DEV_ADC]       =  0x14C00000,
++    [ASPEED_DEV_I2C]       =  0x14C0F000,
+ };
+ 
+ #define AST2700_MAX_IRQ 288
+@@ -369,6 +370,9 @@ static void aspeed_soc_ast2700_init(Object *obj)
+ 
+     snprintf(typename, sizeof(typename), "aspeed.adc-%s", socname);
+     object_initialize_child(obj, "adc", &s->adc, typename);
++
++    snprintf(typename, sizeof(typename), "aspeed.i2c-%s", socname);
++    object_initialize_child(obj, "i2c", &s->i2c, typename);
  }
  
-+static qemu_irq aspeed_soc_ast2700_get_irq_index(AspeedSoCState *s, int dev,
-+                                                 int index)
-+{
-+    Aspeed27x0SoCState *a = ASPEED27X0_SOC(s);
-+    AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
-+    int i;
-+
-+    for (i = 0; i < ARRAY_SIZE(aspeed_soc_ast2700_gic_intcmap); i++) {
-+        if (sc->irqmap[dev] == aspeed_soc_ast2700_gic_intcmap[i].irq) {
-+            assert(aspeed_soc_ast2700_gic_intcmap[i].ptr);
-+            return qdev_get_gpio_in(DEVICE(&a->intc.orgates[i]),
-+                aspeed_soc_ast2700_gic_intcmap[i].ptr[dev] + index);
-+        }
+ /*
+@@ -452,6 +456,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+     AspeedINTCClass *ic = ASPEED_INTC_GET_CLASS(&a->intc);
+     g_autofree char *sram_name = NULL;
++    qemu_irq irq;
+ 
+     /* Default boot region (SPI memory or ROMs) */
+     memory_region_init(&s->spi_boot_container, OBJECT(s),
+@@ -634,6 +639,25 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->adc), 0,
+                        aspeed_soc_get_irq(s, ASPEED_DEV_ADC));
+ 
++    /* I2C */
++    object_property_set_link(OBJECT(&s->i2c), "dram", OBJECT(s->dram_mr),
++                             &error_abort);
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->i2c), errp)) {
++        return;
++    }
++    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->i2c), 0, sc->memmap[ASPEED_DEV_I2C]);
++    for (i = 0; i < ASPEED_I2C_GET_CLASS(&s->i2c)->num_busses; i++) {
++        /*
++         * The AST2700 I2C controller has one source INTC per bus.
++         * I2C buses interrupt are connected to GICINT130_INTC
++         * from bit 0 to bit 15.
++         * I2C bus 0 is connected to GICINT130_INTC at bit 0.
++         * I2C bus 15 is connected to GICINT130_INTC at bit 15.
++         */
++        irq = aspeed_soc_ast2700_get_irq_index(s, ASPEED_DEV_I2C, i);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c.busses[i]), 0, irq);
 +    }
 +
-+    /*
-+     * Invalid orgate index, device irq should be 128 to 136.
-+     */
-+    g_assert_not_reached();
-+}
-+
- static uint64_t aspeed_ram_capacity_read(void *opaque, hwaddr addr,
-                                                     unsigned int size)
- {
+     create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
+     create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
+     create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
 -- 
 2.34.1
 
