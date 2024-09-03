@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4420E96A13C
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:53:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EA2896A13B
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:53:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slUtw-0006XZ-2I; Tue, 03 Sep 2024 10:53:00 -0400
+	id 1slUtx-0006gL-Ff; Tue, 03 Sep 2024 10:53:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1slUtt-0006Nq-O4
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:52:57 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slUtv-0006VW-2z
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:52:59 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1slUts-0006EO-9p
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:52:57 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-7b0c9bbddb4so3731100a12.3
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 07:52:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slUtt-0006EZ-1u
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:52:58 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-42c7856ed66so27496315e9.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 07:52:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1725375175; x=1725979975; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=MkIQoxz2FwuirHNqETpJJv7XZpiekPTSuxHDCNyh+08=;
- b=Nk6RChCd8mrBWJmFaRZqAUY7KXW1njloamH3rvNR5qlIlwsNLtbdx9gTRMC0psc3tW
- /ni1umF798Ok5q04CPJgY1FLwdpT8fMr10jHbZyCB/PVFhRYaY/2nCSRxANwgVfA1pwA
- Nq2IOpaHYdx02aFB/Igs6LKGmz1IE0m6wmLG3wvn/NptV3UHhiXaHjG8vhowbdOgQ4Bf
- jhIBRv7m/u1Ze+WJZGWcyCqCBAfz5D7AuoV7Jri2pZpk4AA8u0Rpt4u+icDclrzWL6GB
- z1o7PAhD8+IGJL4DxqvwhfjbNurtyPFdDIfxCBqVxtJUjYe3YK3/N1RC2lZKA3qrnpSf
- sZQA==
+ bh=0hANxtOkOyI0XBBTsVegCNH0dy+uSmaqAF1psQ3KvJk=;
+ b=eaClv8ERL+OEXLoslogZyRWWSzsXTbaczM5b4h0j90AHQhxtO/LSc4WZ3XHWhbtomy
+ d9YS+CSLicUDy3Ke97TUVFo6CDxO3RHQniVJ38unqBmz+FKhsG/FeadLws0WOq8Q9EYn
+ L86k8jyzRTpAyvF8TuDcBg7MSSD5IL9NL7JKb2gLPYqFbmofFZEau/1ZnWyz2EYKi2zh
+ FMm5PQ07u6ZlkJ0NmVGbMCn2U8UP4qYWjuR69g/6RnRCefXyXH5X8MEA9VIhJ/YXDxmv
+ TDWK0WrybnTFlXo+rIBFUz2Tqh+nmU+K8X3LOHawzbtQryJIfL6AzgTDY3Ib5gmVJW3i
+ 7jGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1725375175; x=1725979975;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MkIQoxz2FwuirHNqETpJJv7XZpiekPTSuxHDCNyh+08=;
- b=QfhXIVpjUzhGLEQk0ifyV+rxwoKbpdj/yGN4bIT8dw4pd8wEKp9xBI7Etwc/Ipi4zU
- M1r1C0ec7ZhXNiTSfOAWudhWjIEFSbEOfBxGmWJCezgR+kIorXHOB7z7kkSn2Cd5TUCY
- Q8g3QP/AINrFFTXUBY6AdB4//grd1j0WInQg9rTfVyAwzPPsS//xa7knXnLm5XT85SlP
- XiE0Mylw4rfxlhdgwcZozjiM3BYk33i9kQPpkO737z6rT44JCaWIh6bTz+7LFI3LqzVj
- rj9TbkX6yb7y9QV17QKP2tMmunQ+95ZD6qShq/tFVYrqn8ufb3DCU1NZc8hxTwxzEuFl
- cklw==
+ bh=0hANxtOkOyI0XBBTsVegCNH0dy+uSmaqAF1psQ3KvJk=;
+ b=Uo8otXonhY+pYcZrA1OenRh5u3KULfAgYbRCYEzxG5dMoDswg3VDxeGpYF6nWaD/IG
+ Waj+ApB7bFIyU6haguCQEserQAaCIKkgGz3APmvwmatfkq+//7WaB/vq+1kueGkceBcy
+ Z3iPkSFvVE5HlYt7s87ILpPh6xMnARVb9ndhBVXgs7zgdX5VjCDQCoQkSi/j8Y131nm1
+ 6sI8ZrUyf2PwQLYwmIUzyBF8YWG3ti3BUuaEhwNmvKaEJFeNWoyOJEGFJ1DRFGADRoPN
+ O8iHeae5MY/Qyijg4hfkC1tSAfN6JsnSoL1l3Q9kH6kVhEvvIotwyFRbQkrZianvSNlK
+ +xtw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUuGjKsy/HGSYLPVqq39Cx1b2tAdDWHnE7sfnVdzDtlGjeOMnaARgvt0+FQ3yDFy5a73pv7U2jLkAHz@nongnu.org
-X-Gm-Message-State: AOJu0YzQPuclQMNpjH6FwfKObAXL/NbqfZ/uOhZigvaknrnvxLdlYjOW
- q/CsRexEe1RGAEbpZMMzCC2CHNnoDEwtRSlKQB7G7d0xVlHAz7KR9XYNS5v3E6c=
-X-Google-Smtp-Source: AGHT+IH4eUO/mvYfMZ6faqzDFDUoj3JEbJppfRgFZvqNQuytFuAhdNaj9z5Rl2gGHRVdg0E8ZtF9nQ==
-X-Received: by 2002:a17:90a:cf0b:b0:2d4:6ef:cb14 with SMTP id
- 98e67ed59e1d1-2d8563916e5mr17383205a91.28.1725375174789; 
- Tue, 03 Sep 2024 07:52:54 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
+ AJvYcCUo7xm1WbuN7Zk9TCNiEO3oa2iHcgdD0vRorOF4avHZN+Y6NCERstxdWCE84bPs0nnKq7NU4lGtsdFU@nongnu.org
+X-Gm-Message-State: AOJu0YwBJ4WdHpB6lDmRdLG67R4qBqFHVeYm0ZFlxAwhhu8u0yMASwY5
+ T5CZVMDA0lqwwwaLgC/rmJuqEZuPPn7PUNeb982XYJWO+veKyAMvvcm6ShYnC5g=
+X-Google-Smtp-Source: AGHT+IEbM5x6GRmqsHAmN2IKar00ZSl/CNUAFDBhHIVjkf4V34JNJQ4ibuM+1l5Lw5kyfZjyyW4zrw==
+X-Received: by 2002:a05:600c:3ba7:b0:425:7c5f:1bac with SMTP id
+ 5b1f17b1804b1-42bb0306f94mr146564655e9.21.1725375175465; 
+ Tue, 03 Sep 2024 07:52:55 -0700 (PDT)
+Received: from [192.168.1.67] ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2d8445d5ba3sm13966975a91.11.2024.09.03.07.52.54
+ 5b1f17b1804b1-42ba6425a77sm211848965e9.45.2024.09.03.07.52.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Sep 2024 07:52:54 -0700 (PDT)
-Message-ID: <f78a75e9-0ed5-4b0e-ad38-54f4541c4e7d@linaro.org>
-Date: Tue, 3 Sep 2024 07:52:51 -0700
+ Tue, 03 Sep 2024 07:52:55 -0700 (PDT)
+Message-ID: <c8d76402-b578-44c2-8e37-c2fd259ccfe0@linaro.org>
+Date: Tue, 3 Sep 2024 16:52:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/14] tcg/riscv: Implement vector sat/mul ops
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
- TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-References: <20240830061607.1940-1-zhiwei_liu@linux.alibaba.com>
- <20240830061607.1940-11-zhiwei_liu@linux.alibaba.com>
+Subject: Re: [PATCH v2 10/11] hw/core/qdev: Simplify legacy_reset handling
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Nico Boehr <nrb@linux.ibm.com>, Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+References: <20240830145812.1967042-1-peter.maydell@linaro.org>
+ <20240830145812.1967042-11-peter.maydell@linaro.org>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240830061607.1940-11-zhiwei_liu@linux.alibaba.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240830145812.1967042-11-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,17 +100,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/29/24 23:16, LIU Zhiwei wrote:
-> From: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
+On 30/8/24 16:58, Peter Maydell wrote:
+> Now that all devices which still implement a the legacy reset method
+> register it via device_class_legacy_reset(), we can simplify the
+> handling of these devices.  Instead of using the complex
+> Resettable::get_transitional_function machinery, we register a hold
+> phase method which invokes the DeviceClass::legacy_reset method.
 > 
-> Signed-off-by: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
-> Reviewed-by: Liu Zhiwei<zhiwei_liu@linux.alibaba.com>
+> This will allow us to remove all the get_transitional_function
+> handling from resettable.c.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   tcg/riscv/tcg-target.c.inc | 36 ++++++++++++++++++++++++++++++++++++
->   tcg/riscv/tcg-target.h     |  4 ++--
->   2 files changed, 38 insertions(+), 2 deletions(-)
+>   hw/core/qdev.c | 55 ++++++++++++++++++++------------------------------
+>   1 file changed, 22 insertions(+), 33 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-r~
 
