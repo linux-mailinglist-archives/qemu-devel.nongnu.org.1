@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D26896A3E4
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE1996A402
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 18:15:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slW5W-0000td-1t; Tue, 03 Sep 2024 12:09:02 -0400
+	id 1slW5Z-0001LG-Kz; Tue, 03 Sep 2024 12:09:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5T-0000lV-7A
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:08:59 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1slW5U-0000pw-9l
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:09:00 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1slW5O-0002vB-Ke
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:08:58 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-374ca7a10d4so1350215f8f.3
- for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 09:08:54 -0700 (PDT)
+ id 1slW5P-0002vk-Ul
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 12:09:00 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-42c7a49152aso36171775e9.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Sep 2024 09:08:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725379733; x=1725984533; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725379734; x=1725984534; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=6KZWNBjhhzjYgLlW+2QJ75y9er/DhS+ckZ21pfSiKUs=;
- b=IofOdgyzqc6pJWcJRxFCRiBlrsloL6Wk6RIz4BA9Vv1PSfFIGoOFPpLZs5+vGKCU0U
- Be1RzkCpTY80oquR/PBEH1UMlwLZIIQJgg03y/+8DPcRH7ToW0e8iOJeMxlRSovIdd9D
- 3quNR7hqOV7kf2ImNC2KY/PJDl5r/scD6WEBEbS5roCH6ieAtNqYgZlvqST+Nd2+FGlX
- 4xVjI658JMXUwOj3xdks83baZ9NKJ7uGA543Lfe7LJX6vgnkT2O72IXg0n0prhfoJOW1
- Edd5agCvzMDmmdncLSuvt3FUaAdJmb+T8Zz9v4ldpO4w+NxxRGj+Mvbckr1veCk3u0dM
- 6taA==
+ :reply-to; bh=DBc/bJy+JM7lDQDRwxqLPG14xFZM1slW+0SGy2bjs2k=;
+ b=Kab+6SPql0RnCcKZUjgmSa0mDb/ukAGx/SNmovemAAX4uadp3IYPiTNOFtL+ymMtQF
+ JHvHWTIZnCxHe7OqoTWLgnOxA3RtZoqk62xv0IUPXqVSoYENLRtadgyr1V+dT/Y8FKkC
+ AszI+YDfIe7+iEOli7+uBRAGUay54urn+Fw3+uPEe84J9dris+ifq4D2Iw0z1jeGBB3z
+ YqYTTzjknCpd4lSoUTjyZeC60DDzgRcwBNlhMln6C5swVkMN2m7arpyMIa8UlLl0ndsa
+ y7AL2dbntX6A8y0SExc9B3wBxDUDQpATmvDiSslxo55+KQMvzHwNPW+/Bu23COvEdzlH
+ Wgpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725379733; x=1725984533;
+ d=1e100.net; s=20230601; t=1725379734; x=1725984534;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6KZWNBjhhzjYgLlW+2QJ75y9er/DhS+ckZ21pfSiKUs=;
- b=R7zwtBpn1/6xVUYmsd0HNgqXnFf6xfVTTr8sTu3uFa7q2k7qoePbhBFrTsk8mxScqP
- uA9vwMh77qrTklufmTVF+i6Rdrq85Llutzge8tGVNe8gGXL75c26pBEuK0zsRtsKjp35
- un4W7F5X7yaIwQElzN7UlTRrqfFuAmNID/wv96O+soIejbMeUbYWLZMC3DJYakiZAa2q
- AN/RZjznmFj8PF9nceY64sl6vuI2M/Wf+S3Cdxtvs7H3zBsMcsFj5Ml/7y9mfJmJOL/R
- 7sKYtOa1d+SR4H3vKPF0R9qOHE5oLjl6ORrFBX1k5eC21l3A9yA0F3ahLI7YE86Jv79a
- 3YaA==
+ bh=DBc/bJy+JM7lDQDRwxqLPG14xFZM1slW+0SGy2bjs2k=;
+ b=ErSNJbmhXRL1F/m64BWGRiNRQ+sO+GGLca91wPiVZINDqq45jJXeW9skXg0KcuBpH+
+ Uz0/dUamRvKx3w/iw1tYhrCwFRSYsDK1+dART5+HIEve7bxCqxbFiDy54F5/1yjCtUIr
+ 3qDM0s6C5yB1m/OghGRNV3t5oO3SfDAXzTQqQvo7iFqay7x8ODl113W0WuLn5prdZDvM
+ KLLuzxATGlq9zXSfdZY7eJQmX+EBR8vXziMPu3dW2J58I9DIOiwtSvKmc6ovSgBTEpSv
+ J/tRQmpOQ+ohf7x7W6OBpQh4VwA5Pb/l+3joUE4+rAAAd0XgJxZvfOl56YE5Xo5sre+m
+ FDsw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVy2onuQMxgsTSM72ungVATYdio2+V0uiFcWUd9NAUZy2CnxDl2BMNig4bshOPgoa/NBIAT8nkYw44r@nongnu.org
-X-Gm-Message-State: AOJu0YzTEJ1obOM6t4ed6ONeDKHFPg4XHnXdW/j3FHzoqWosBVNmH5b4
- Tc7rTRNEMoQ8vTFbjJ+rmVUm0AQSli0DNLqGGdPkM1IpHVElB+cEOhBaKN5QbTs=
-X-Google-Smtp-Source: AGHT+IGLSy9KpfY1okcyiikC/zGAUI4aPdmkBYZiL/QBxKdzKbonoF5n2Vrtlh7PepyAhK//lvvFuQ==
-X-Received: by 2002:a5d:4608:0:b0:374:c31e:971a with SMTP id
- ffacd0b85a97d-374c31e991emr6538557f8f.0.1725379732903; 
- Tue, 03 Sep 2024 09:08:52 -0700 (PDT)
+ AJvYcCXiHmonX3JeTR+83gTjZOh1ulU+s0tNxhq3tmc6Q+yv2I1i7eT5Fq0plVpf//DQpOqTS0tm25ukCJzF@nongnu.org
+X-Gm-Message-State: AOJu0YzH/EBDPTN1ULpggkaNX7ndgKBhBGF1AJjSoYBAoAiwOdvMw+4k
+ lmMFml0Y2LCVgBa4aZb2Wi4qNzUQgzOYKqKf9stKCPZsHiuPtHh2U2YX+0qv7ao=
+X-Google-Smtp-Source: AGHT+IGVLC7oZTaQNZ1zgMcusgInMSTnHktRIpj32Nj3Yqz6jgtY79H6CRWfklLBGC7/IvlBk873eQ==
+X-Received: by 2002:a05:600c:4586:b0:426:61fc:fc1a with SMTP id
+ 5b1f17b1804b1-42bb01ae2a7mr162606245e9.3.1725379734319; 
+ Tue, 03 Sep 2024 09:08:54 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb6df1066sm175123065e9.18.2024.09.03.09.08.52
+ 5b1f17b1804b1-42bb6df1066sm175123065e9.18.2024.09.03.09.08.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Sep 2024 09:08:52 -0700 (PDT)
+ Tue, 03 Sep 2024 09:08:53 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH for-9.2 39/53] hw/char: Remove omap2_uart
-Date: Tue,  3 Sep 2024 17:07:37 +0100
-Message-Id: <20240903160751.4100218-40-peter.maydell@linaro.org>
+Subject: [PATCH for-9.2 40/53] hw/intc: Remove omap2-intc device
+Date: Tue,  3 Sep 2024 17:07:38 +0100
+Message-Id: <20240903160751.4100218-41-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240903160751.4100218-1-peter.maydell@linaro.org>
 References: <20240903160751.4100218-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,165 +92,321 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the OMAP2 specific code from omap_uart.c.
+Remove the OMAP2 specific code from omap_intc.c.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/omap.h |   5 --
- hw/char/omap_uart.c   | 113 ------------------------------------------
- 2 files changed, 118 deletions(-)
+ hw/intc/omap_intc.c | 276 --------------------------------------------
+ 1 file changed, 276 deletions(-)
 
-diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index b569580b09e..67bb83dff5d 100644
---- a/include/hw/arm/omap.h
-+++ b/include/hw/arm/omap.h
-@@ -709,11 +709,6 @@ struct omap_uart_s *omap_uart_init(hwaddr base,
-                 qemu_irq irq, omap_clk fclk, omap_clk iclk,
-                 qemu_irq txdma, qemu_irq rxdma,
-                 const char *label, Chardev *chr);
--struct omap_uart_s *omap2_uart_init(MemoryRegion *sysmem,
--                struct omap_target_agent_s *ta,
--                qemu_irq irq, omap_clk fclk, omap_clk iclk,
--                qemu_irq txdma, qemu_irq rxdma,
--                const char *label, Chardev *chr);
- void omap_uart_reset(struct omap_uart_s *s);
+diff --git a/hw/intc/omap_intc.c b/hw/intc/omap_intc.c
+index 435c47600fc..c14b22d3819 100644
+--- a/hw/intc/omap_intc.c
++++ b/hw/intc/omap_intc.c
+@@ -50,8 +50,6 @@ struct OMAPIntcState {
+     int level_only;
+     uint32_t size;
  
- struct omap_mpuio_s;
-diff --git a/hw/char/omap_uart.c b/hw/char/omap_uart.c
-index c2ef4c137e1..d789c253b49 100644
---- a/hw/char/omap_uart.c
-+++ b/hw/char/omap_uart.c
-@@ -28,7 +28,6 @@ struct omap_uart_s {
-     MemoryRegion iomem;
-     hwaddr base;
-     SerialMM *serial; /* TODO */
--    struct omap_target_agent_s *ta;
-     omap_clk fclk;
-     qemu_irq irq;
+-    uint8_t revision;
+-
+     /* state */
+     uint32_t new_agr[2];
+     int sir_intr[2];
+@@ -133,26 +131,6 @@ static void omap_set_intr(void *opaque, int irq, int req)
+     }
+ }
  
-@@ -36,8 +35,6 @@ struct omap_uart_s {
-     uint8_t syscontrol;
-     uint8_t wkup;
-     uint8_t cfps;
--    uint8_t mdr[2];
--    uint8_t scr;
-     uint8_t clksel;
+-/* Simplified version with no edge detection */
+-static void omap_set_intr_noedge(void *opaque, int irq, int req)
+-{
+-    OMAPIntcState *ih = opaque;
+-    uint32_t rise;
+-
+-    struct omap_intr_handler_bank_s *bank = &ih->bank[irq >> 5];
+-    int n = irq & 31;
+-
+-    if (req) {
+-        rise = ~bank->inputs & (1 << n);
+-        if (rise) {
+-            bank->irqs |= bank->inputs |= rise;
+-            omap_inth_update(ih, 0);
+-            omap_inth_update(ih, 1);
+-        }
+-    } else
+-        bank->irqs = (bank->inputs &= ~(1 << n)) | bank->swi;
+-}
+-
+ static uint64_t omap_inth_read(void *opaque, hwaddr addr,
+                                unsigned size)
+ {
+@@ -420,259 +398,6 @@ static const TypeInfo omap_intc_info = {
+     .class_init    = omap_intc_class_init,
  };
  
-@@ -66,113 +63,3 @@ struct omap_uart_s *omap_uart_init(hwaddr base,
-                                DEVICE_NATIVE_ENDIAN);
-     return s;
- }
--
--static uint64_t omap_uart_read(void *opaque, hwaddr addr, unsigned size)
+-static uint64_t omap2_inth_read(void *opaque, hwaddr addr,
+-                                unsigned size)
 -{
--    struct omap_uart_s *s = opaque;
+-    OMAPIntcState *s = opaque;
+-    int offset = addr;
+-    int bank_no, line_no;
+-    struct omap_intr_handler_bank_s *bank = NULL;
 -
--    if (size == 4) {
--        return omap_badwidth_read8(opaque, addr);
+-    if ((offset & 0xf80) == 0x80) {
+-        bank_no = (offset & 0x60) >> 5;
+-        if (bank_no < s->nbanks) {
+-            offset &= ~0x60;
+-            bank = &s->bank[bank_no];
+-        } else {
+-            OMAP_BAD_REG(addr);
+-            return 0;
+-        }
 -    }
 -
--    switch (addr) {
--    case 0x20:  /* MDR1 */
--        return s->mdr[0];
--    case 0x24:  /* MDR2 */
--        return s->mdr[1];
--    case 0x40:  /* SCR */
--        return s->scr;
--    case 0x44:  /* SSR */
--        return 0x0;
--    case 0x48:  /* EBLR (OMAP2) */
--        return s->eblr;
--    case 0x4C:  /* OSC_12M_SEL (OMAP1) */
--        return s->clksel;
--    case 0x50:  /* MVR */
--        return 0x30;
--    case 0x54:  /* SYSC (OMAP2) */
--        return s->syscontrol;
--    case 0x58:  /* SYSS (OMAP2) */
--        return 1;
--    case 0x5c:  /* WER (OMAP2) */
--        return s->wkup;
--    case 0x60:  /* CFPS (OMAP2) */
--        return s->cfps;
--    }
+-    switch (offset) {
+-    case 0x00:	/* INTC_REVISION */
+-        return s->revision;
 -
+-    case 0x10:	/* INTC_SYSCONFIG */
+-        return (s->autoidle >> 2) & 1;
+-
+-    case 0x14:	/* INTC_SYSSTATUS */
+-        return 1;						/* RESETDONE */
+-
+-    case 0x40:	/* INTC_SIR_IRQ */
+-        return s->sir_intr[0];
+-
+-    case 0x44:	/* INTC_SIR_FIQ */
+-        return s->sir_intr[1];
+-
+-    case 0x48:	/* INTC_CONTROL */
+-        return (!s->mask) << 2;					/* GLOBALMASK */
+-
+-    case 0x4c:	/* INTC_PROTECTION */
+-        return 0;
+-
+-    case 0x50:	/* INTC_IDLE */
+-        return s->autoidle & 3;
+-
+-    /* Per-bank registers */
+-    case 0x80:	/* INTC_ITR */
+-        return bank->inputs;
+-
+-    case 0x84:	/* INTC_MIR */
+-        return bank->mask;
+-
+-    case 0x88:	/* INTC_MIR_CLEAR */
+-    case 0x8c:	/* INTC_MIR_SET */
+-        return 0;
+-
+-    case 0x90:	/* INTC_ISR_SET */
+-        return bank->swi;
+-
+-    case 0x94:	/* INTC_ISR_CLEAR */
+-        return 0;
+-
+-    case 0x98:	/* INTC_PENDING_IRQ */
+-        return bank->irqs & ~bank->mask & ~bank->fiq;
+-
+-    case 0x9c:	/* INTC_PENDING_FIQ */
+-        return bank->irqs & ~bank->mask & bank->fiq;
+-
+-    /* Per-line registers */
+-    case 0x100 ... 0x300:	/* INTC_ILR */
+-        bank_no = (offset - 0x100) >> 7;
+-        if (bank_no > s->nbanks)
+-            break;
+-        bank = &s->bank[bank_no];
+-        line_no = (offset & 0x7f) >> 2;
+-        return (bank->priority[line_no] << 2) |
+-                ((bank->fiq >> line_no) & 1);
+-    }
 -    OMAP_BAD_REG(addr);
 -    return 0;
 -}
 -
--static void omap_uart_write(void *opaque, hwaddr addr,
--                            uint64_t value, unsigned size)
+-static void omap2_inth_write(void *opaque, hwaddr addr,
+-                             uint64_t value, unsigned size)
 -{
--    struct omap_uart_s *s = opaque;
+-    OMAPIntcState *s = opaque;
+-    int offset = addr;
+-    int bank_no, line_no;
+-    struct omap_intr_handler_bank_s *bank = NULL;
 -
--    if (size == 4) {
--        omap_badwidth_write8(opaque, addr, value);
+-    if ((offset & 0xf80) == 0x80) {
+-        bank_no = (offset & 0x60) >> 5;
+-        if (bank_no < s->nbanks) {
+-            offset &= ~0x60;
+-            bank = &s->bank[bank_no];
+-        } else {
+-            OMAP_BAD_REG(addr);
+-            return;
+-        }
+-    }
+-
+-    switch (offset) {
+-    case 0x10:	/* INTC_SYSCONFIG */
+-        s->autoidle &= 4;
+-        s->autoidle |= (value & 1) << 2;
+-        if (value & 2) {                                        /* SOFTRESET */
+-            omap_inth_reset(DEVICE(s));
+-        }
+-        return;
+-
+-    case 0x48:	/* INTC_CONTROL */
+-        s->mask = (value & 4) ? 0 : ~0;				/* GLOBALMASK */
+-        if (value & 2) {					/* NEWFIQAGR */
+-            qemu_set_irq(s->parent_intr[1], 0);
+-            s->new_agr[1] = ~0;
+-            omap_inth_update(s, 1);
+-        }
+-        if (value & 1) {					/* NEWIRQAGR */
+-            qemu_set_irq(s->parent_intr[0], 0);
+-            s->new_agr[0] = ~0;
+-            omap_inth_update(s, 0);
+-        }
+-        return;
+-
+-    case 0x4c:	/* INTC_PROTECTION */
+-        /* TODO: Make a bitmap (or sizeof(char)map) of access privileges
+-         * for every register, see Chapter 3 and 4 for privileged mode.  */
+-        if (value & 1)
+-            fprintf(stderr, "%s: protection mode enable attempt\n",
+-                            __func__);
+-        return;
+-
+-    case 0x50:	/* INTC_IDLE */
+-        s->autoidle &= ~3;
+-        s->autoidle |= value & 3;
+-        return;
+-
+-    /* Per-bank registers */
+-    case 0x84:	/* INTC_MIR */
+-        bank->mask = value;
+-        omap_inth_update(s, 0);
+-        omap_inth_update(s, 1);
+-        return;
+-
+-    case 0x88:	/* INTC_MIR_CLEAR */
+-        bank->mask &= ~value;
+-        omap_inth_update(s, 0);
+-        omap_inth_update(s, 1);
+-        return;
+-
+-    case 0x8c:	/* INTC_MIR_SET */
+-        bank->mask |= value;
+-        return;
+-
+-    case 0x90:	/* INTC_ISR_SET */
+-        bank->irqs |= bank->swi |= value;
+-        omap_inth_update(s, 0);
+-        omap_inth_update(s, 1);
+-        return;
+-
+-    case 0x94:	/* INTC_ISR_CLEAR */
+-        bank->swi &= ~value;
+-        bank->irqs = bank->swi & bank->inputs;
+-        return;
+-
+-    /* Per-line registers */
+-    case 0x100 ... 0x300:	/* INTC_ILR */
+-        bank_no = (offset - 0x100) >> 7;
+-        if (bank_no > s->nbanks)
+-            break;
+-        bank = &s->bank[bank_no];
+-        line_no = (offset & 0x7f) >> 2;
+-        bank->priority[line_no] = (value >> 2) & 0x3f;
+-        bank->fiq &= ~(1 << line_no);
+-        bank->fiq |= (value & 1) << line_no;
+-        return;
+-
+-    case 0x00:	/* INTC_REVISION */
+-    case 0x14:	/* INTC_SYSSTATUS */
+-    case 0x40:	/* INTC_SIR_IRQ */
+-    case 0x44:	/* INTC_SIR_FIQ */
+-    case 0x80:	/* INTC_ITR */
+-    case 0x98:	/* INTC_PENDING_IRQ */
+-    case 0x9c:	/* INTC_PENDING_FIQ */
+-        OMAP_RO_REG(addr);
 -        return;
 -    }
+-    OMAP_BAD_REG(addr);
+-}
 -
--    switch (addr) {
--    case 0x20:  /* MDR1 */
--        s->mdr[0] = value & 0x7f;
--        break;
--    case 0x24:  /* MDR2 */
--        s->mdr[1] = value & 0xff;
--        break;
--    case 0x40:  /* SCR */
--        s->scr = value & 0xff;
--        break;
--    case 0x48:  /* EBLR (OMAP2) */
--        s->eblr = value & 0xff;
--        break;
--    case 0x4C:  /* OSC_12M_SEL (OMAP1) */
--        s->clksel = value & 1;
--        break;
--    case 0x44:  /* SSR */
--    case 0x50:  /* MVR */
--    case 0x58:  /* SYSS (OMAP2) */
--        OMAP_RO_REG(addr);
--        break;
--    case 0x54:  /* SYSC (OMAP2) */
--        s->syscontrol = value & 0x1d;
--        if (value & 2) {
--            omap_uart_reset(s);
--        }
--        break;
--    case 0x5c:  /* WER (OMAP2) */
--        s->wkup = value & 0x7f;
--        break;
--    case 0x60:  /* CFPS (OMAP2) */
--        s->cfps = value & 0xff;
--        break;
--    default:
--        OMAP_BAD_REG(addr);
+-static const MemoryRegionOps omap2_inth_mem_ops = {
+-    .read = omap2_inth_read,
+-    .write = omap2_inth_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
+-    .valid = {
+-        .min_access_size = 4,
+-        .max_access_size = 4,
+-    },
+-};
+-
+-static void omap2_intc_init(Object *obj)
+-{
+-    DeviceState *dev = DEVICE(obj);
+-    OMAPIntcState *s = OMAP_INTC(obj);
+-    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
+-
+-    s->level_only = 1;
+-    s->nbanks = 3;
+-    sysbus_init_irq(sbd, &s->parent_intr[0]);
+-    sysbus_init_irq(sbd, &s->parent_intr[1]);
+-    qdev_init_gpio_in(dev, omap_set_intr_noedge, s->nbanks * 32);
+-    memory_region_init_io(&s->mmio, obj, &omap2_inth_mem_ops, s,
+-                          "omap2-intc", 0x1000);
+-    sysbus_init_mmio(sbd, &s->mmio);
+-}
+-
+-static void omap2_intc_realize(DeviceState *dev, Error **errp)
+-{
+-    OMAPIntcState *s = OMAP_INTC(dev);
+-
+-    if (!s->iclk) {
+-        error_setg(errp, "omap2-intc: iclk not connected");
+-        return;
+-    }
+-    if (!s->fclk) {
+-        error_setg(errp, "omap2-intc: fclk not connected");
+-        return;
 -    }
 -}
 -
--static const MemoryRegionOps omap_uart_ops = {
--    .read = omap_uart_read,
--    .write = omap_uart_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
+-static Property omap2_intc_properties[] = {
+-    DEFINE_PROP_UINT8("revision", OMAPIntcState,
+-    revision, 0x21),
+-    DEFINE_PROP_END_OF_LIST(),
 -};
 -
--struct omap_uart_s *omap2_uart_init(MemoryRegion *sysmem,
--                struct omap_target_agent_s *ta,
--                qemu_irq irq, omap_clk fclk, omap_clk iclk,
--                qemu_irq txdma, qemu_irq rxdma,
--                const char *label, Chardev *chr)
+-static void omap2_intc_class_init(ObjectClass *klass, void *data)
 -{
--    hwaddr base = omap_l4_attach(ta, 0, NULL);
--    struct omap_uart_s *s = omap_uart_init(base, irq,
--                    fclk, iclk, txdma, rxdma, label, chr);
+-    DeviceClass *dc = DEVICE_CLASS(klass);
 -
--    memory_region_init_io(&s->iomem, NULL, &omap_uart_ops, s, "omap.uart", 0x100);
--
--    s->ta = ta;
--
--    memory_region_add_subregion(sysmem, base + 0x20, &s->iomem);
--
--    return s;
+-    dc->reset = omap_inth_reset;
+-    device_class_set_props(dc, omap2_intc_properties);
+-    /* Reason: pointer property "iclk", "fclk" */
+-    dc->user_creatable = false;
+-    dc->realize = omap2_intc_realize;
 -}
+-
+-static const TypeInfo omap2_intc_info = {
+-    .name          = "omap2-intc",
+-    .parent        = TYPE_OMAP_INTC,
+-    .instance_init = omap2_intc_init,
+-    .class_init    = omap2_intc_class_init,
+-};
+-
+ static const TypeInfo omap_intc_type_info = {
+     .name          = TYPE_OMAP_INTC,
+     .parent        = TYPE_SYS_BUS_DEVICE,
+@@ -684,7 +409,6 @@ static void omap_intc_register_types(void)
+ {
+     type_register_static(&omap_intc_type_info);
+     type_register_static(&omap_intc_info);
+-    type_register_static(&omap2_intc_info);
+ }
+ 
+ type_init(omap_intc_register_types)
 -- 
 2.34.1
 
