@@ -2,68 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC3A969FD4
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4926C969FD5
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 16:07:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slU5f-0000eV-Gb; Tue, 03 Sep 2024 10:01:03 -0400
-Received: from eggs.gnu.org ([209.51.188.92])
+	id 1slU5n-0000kc-SX; Tue, 03 Sep 2024 10:01:23 -0400
+Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <changbin.du@huawei.com>)
- id 1slU5G-0000Ua-Pq
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:00:42 -0400
-Received: from [45.249.212.191] (helo=szxga05-in.huawei.com)
+ id 1slU5L-0000bJ-4A
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:00:43 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <changbin.du@huawei.com>)
- id 1slU4P-0006iU-A6
- for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:00:21 -0400
-Received: from mail.maildlp.com (unknown [172.19.163.44])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Wymq44wrzz1HJCP;
- Tue,  3 Sep 2024 21:36:00 +0800 (CST)
+ id 1slU4c-0006ob-Ca
+ for qemu-devel@nongnu.org; Tue, 03 Sep 2024 10:00:33 -0400
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WymsH5K8mzgYmH;
+ Tue,  3 Sep 2024 21:37:55 +0800 (CST)
 Received: from kwepemd100011.china.huawei.com (unknown [7.221.188.204])
- by mail.maildlp.com (Postfix) with ESMTPS id 321F51400D7;
- Tue,  3 Sep 2024 21:39:27 +0800 (CST)
-Received: from kwepemd100011.china.huawei.com (7.221.188.204) by
+ by mail.maildlp.com (Postfix) with ESMTPS id 829031800FE;
+ Tue,  3 Sep 2024 21:40:02 +0800 (CST)
+Received: from M910t.huawei.com (10.110.54.157) by
  kwepemd100011.china.huawei.com (7.221.188.204) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Tue, 3 Sep 2024 21:39:26 +0800
-Received: from kwepemd100011.china.huawei.com ([7.221.188.204]) by
- kwepemd100011.china.huawei.com ([7.221.188.204]) with mapi id 15.02.1258.034; 
- Tue, 3 Sep 2024 21:39:26 +0800
-To: =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-CC: duchangbin <changbin.du@huawei.com>, Peter Maydell
- <peter.maydell@linaro.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v2] hw/arm/boot: Report error msg if loading elf/dtb failed
-Thread-Topic: [PATCH v2] hw/arm/boot: Report error msg if loading elf/dtb
- failed
-Thread-Index: AQHa+srYcUaTo3na7EqowavTo5/fzrJEaGGAgAGu7IA=
-Date: Tue, 3 Sep 2024 13:39:26 +0000
-Message-ID: <263aa8df87ff461d96fdc55763aeac79@huawei.com>
-References: <20240830105304.2547406-1-changbin.du@huawei.com>
- <7c67704e-a067-4b6e-8acb-51b33cf17ee0@linaro.org>
-In-Reply-To: <7c67704e-a067-4b6e-8acb-51b33cf17ee0@linaro.org>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-imapappendstamp: kwepemd100011.china.huawei.com (15.02.1258.034)
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [10.110.54.75]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <86EEC0691B7FFA40A984F4780746E21C@huawei.com>
-Content-Transfer-Encoding: base64
+ 15.2.1258.34; Tue, 3 Sep 2024 21:40:01 +0800
+From: Changbin Du <changbin.du@huawei.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, Changbin Du
+ <changbin.du@huawei.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: [PATCH v3] hw/arm/boot: Report error msg if loading elf/dtb failed
+Date: Tue, 3 Sep 2024 21:39:40 +0800
+Message-ID: <20240903133940.3447430-1-changbin.du@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 45.249.212.191 (deferred)
-Received-SPF: pass client-ip=45.249.212.191;
- envelope-from=changbin.du@huawei.com; helo=szxga05-in.huawei.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, RDNS_NONE=0.793,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.110.54.157]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemd100011.china.huawei.com (7.221.188.204)
+Received-SPF: pass client-ip=45.249.212.188;
+ envelope-from=changbin.du@huawei.com; helo=szxga02-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,45 +64,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  duchangbin <changbin.du@huawei.com>
-From:  duchangbin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gTW9uLCBTZXAgMDIsIDIwMjQgYXQgMDk6NTU6MTlQTSArMDIwMCwgUGhpbGlwcGUgTWF0aGll
-dS1EYXVkw6kgd3JvdGU6DQo+IEhpIENoYW5nYmluLA0KPiANCj4gT24gMzAvOC8yNCAxMjo1Mywg
-Q2hhbmdiaW4gRHUgdmlhIHdyb3RlOg0KPiA+IFByaW50IGVycm9ycyBiZWZvcmUgZXhpdC4gRG8g
-bm90IGV4aXQgc2lsZW50bHkuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogQ2hhbmdiaW4gRHUg
-PGNoYW5nYmluLmR1QGh1YXdlaS5jb20+DQo+ID4gDQo+ID4gLS0tDQo+ID4gdjI6IHJlbW92ZSBt
-c2cgZm9yIGFybV9sb2FkX2R0Yi4NCj4gPiAtLS0NCj4gPiAgIGh3L2FybS9ib290LmMgfCAxICsN
-Cj4gPiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQ0KPiA+IA0KPiA+IGRpZmYgLS1n
-aXQgYS9ody9hcm0vYm9vdC5jIGIvaHcvYXJtL2Jvb3QuYw0KPiA+IGluZGV4IGQ0ODBhN2RhMDJj
-Zi4uZTE1YmYwOTdhNTU5IDEwMDY0NA0KPiA+IC0tLSBhL2h3L2FybS9ib290LmMNCj4gPiArKysg
-Yi9ody9hcm0vYm9vdC5jDQo+ID4gQEAgLTgzOSw2ICs4MzksNyBAQCBzdGF0aWMgc3NpemVfdCBh
-cm1fbG9hZF9lbGYoc3RydWN0IGFybV9ib290X2luZm8gKmluZm8sIHVpbnQ2NF90ICpwZW50cnks
-DQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgMSwgZGF0YV9zd2FiLCBhcyk7DQo+ID4gICAg
-ICAgaWYgKHJldCA8PSAwKSB7DQo+ID4gICAgICAgICAgIC8qIFRoZSBoZWFkZXIgbG9hZGVkIGJ1
-dCB0aGUgaW1hZ2UgZGlkbid0ICovDQo+ID4gKyAgICAgICAgZXJyb3JfcmVwb3J0KCJjb3VsZCBu
-b3QgbG9hZCBlbGYgJyVzJyIsIGluZm8tPmtlcm5lbF9maWxlbmFtZSk7DQo+IA0KPiAiQ291bGQg
-Li4uIiAoY2FwcykNCj4gDQo+ICJody9sb2FkZXIuaCIgaXMgbm90IHdlbGwgZG9jdW1lbnRlZCwg
-YnV0IGl0IHNlZW1zIGxvYWRfZWxmKigpIHJldHVybnM6DQo+IA0KPiAgICNkZWZpbmUgRUxGX0xP
-QURfRkFJTEVEICAgICAgIC0xDQo+ICAgI2RlZmluZSBFTEZfTE9BRF9OT1RfRUxGICAgICAgLTIN
-Cj4gICAjZGVmaW5lIEVMRl9MT0FEX1dST05HX0FSQ0ggICAtMw0KPiAgICNkZWZpbmUgRUxGX0xP
-QURfV1JPTkdfRU5ESUFOIC00DQo+ICAgI2RlZmluZSBFTEZfTE9BRF9UT09fQklHICAgICAgLTUN
-Cj4gDQo+IEFuZCB3ZSBjYW4gZGlzcGxheSB0aGlzIGVycm9yIGNhbGxpbmc6DQo+IA0KPiAgIGNv
-bnN0IGNoYXIgKmxvYWRfZWxmX3N0cmVycm9yKHNzaXplX3QgZXJyb3IpOw0KPiANCj4gU28gd2Ug
-Y2FuIGJlIG1vcmUgcHJlY2lzZSBoZXJlIHVzaW5nOg0KPiANCj4gICBlcnJvcl9yZXBvcnQoIkNv
-dWxkIG5vdCBsb2FkIGVsZiAnJXMnIiwgaW5mby0+a2VybmVsX2ZpbGVuYW1lLA0KPiAgICAgICAg
-ICAgICAgICBsb2FkX2VsZl9zdHJlcnJvcihyZXQpKTsNCj4gDQo+ID4gICAgICAgICAgIGV4aXQo
-MSk7DQo+ID4gICAgICAgfQ0KPiANCj4gQmV0dGVyIChidXQgb3V0IG9mIHNjb3BlIG9mIHRoaXMg
-cGF0Y2gpIGNvdWxkIGJlIHRvIHBhc3MgYW4gRXJyb3IgKmVycnANCj4gYXJndW1lbnQgdG8gdGhl
-IGxvYWRfZWxmKigpIGZhbWlseSBvZiBmdW5jdGlvbnMsIGFuZCBmaWxsIGl0IHdpdGggdGhlDQo+
-IGFwcHJvcHJpYXRlIGVycm9yIG1lc3NhZ2UuDQo+DQpUaGFua3MgZm9yIHlvdXIgc3VnZ2VzdGlv
-bi4gSSBjaGFuZ2VkIGl0IGFzIGJlbG93Og0KKyAgICAgICAgZXJyb3JfcmVwb3J0KCJDb3VsZG4n
-dCBsb2FkIGVsZiAnJXMnOiAlcyIsDQorICAgICAgICAgICAgICAgICAgICAgaW5mby0+a2VybmVs
-X2ZpbGVuYW1lLCBsb2FkX2VsZl9zdHJlcnJvcihyZXQpKTsNCg0KJCBxZW11LXN5c3RlbS1hYXJj
-aDY0IC1NIHZpcnQgLWtlcm5lbCAvd29yay9saW51eC92bWxpbnV4DQpxZW11LXN5c3RlbS1hYXJj
-aDY0OiBDb3VsZG4ndCBsb2FkIGVsZiAnL3dvcmsvbGludXgvdm1saW51eCc6IFRoZSBpbWFnZSBp
-cyBmcm9tIGluY29tcGF0aWJsZSBhcmNoaXRlY3R1cmUNCg0KPiBSZWdhcmRzLA0KPiANCj4gUGhp
-bC4NCg0KLS0gDQpDaGVlcnMsDQpDaGFuZ2JpbiBEdQ0K
+Print errors before exit. Do not exit silently.
+
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Changbin Du <changbin.du@huawei.com>
+
+---
+v3: use load_elf_strerror() to format errno.
+v2: remove msg for arm_load_dtb.
+---
+ hw/arm/boot.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index d480a7da02cf..6c895e05cbc0 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -839,6 +839,8 @@ static ssize_t arm_load_elf(struct arm_boot_info *info, uint64_t *pentry,
+                       1, data_swab, as);
+     if (ret <= 0) {
+         /* The header loaded but the image didn't */
++        error_report("Couldn't load elf '%s': %s",
++                     info->kernel_filename, load_elf_strerror(ret));
+         exit(1);
+     }
+ 
+-- 
+2.34.1
+
 
