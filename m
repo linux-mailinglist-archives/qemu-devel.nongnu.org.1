@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB397969748
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 10:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A05A196974A
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Sep 2024 10:37:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slP1E-0004fu-Cg; Tue, 03 Sep 2024 04:36:08 -0400
+	id 1slP1W-0005Zi-0t; Tue, 03 Sep 2024 04:36:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1slP13-0003wv-0R; Tue, 03 Sep 2024 04:35:58 -0400
+ id 1slP15-000466-7x; Tue, 03 Sep 2024 04:36:00 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1slP11-00084x-EY; Tue, 03 Sep 2024 04:35:56 -0400
+ id 1slP13-00084x-Qx; Tue, 03 Sep 2024 04:35:58 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 3 Sep
@@ -33,15 +33,15 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v3 07/11] hw/i2c/aspeed: Add support for 64 bit addresses
-Date: Tue, 3 Sep 2024 16:35:24 +0800
-Message-ID: <20240903083528.2182190-8-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 08/11] aspeed/soc: Introduce a new API to get the device irq
+Date: Tue, 3 Sep 2024 16:35:25 +0800
+Message-ID: <20240903083528.2182190-9-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240903083528.2182190-1-jamin_lin@aspeedtech.com>
 References: <20240903083528.2182190-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -68,75 +68,50 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ASPEED AST2700 SOC is a 64 bits quad core CPUs (Cortex-a35)
-and the base address of dram is "0x4 00000000" which
-is 64bits address.
-
-The AST2700 support the maximum DRAM size is 8 GB.
-The DRAM physical address range is from "0x4_0000_0000" to
-"0x5_FFFF_FFFF".
-
-The DRAM offset range is from "0x0_0000_0000" to
-"0x1_FFFF_FFFF" and it is enough to use bits [33:0]
-saving the dram offset.
-
-Therefore, save the high part physical address bit[1:0]
-of Tx/Rx buffer address as dma_dram_offset bit[33:32].
-It does not need to decrease the dram physical
-high part address for DMA operation.
-(high part physical address bit[7:0] – 4)
+Currently, users can set the INTC mapping table with
+enumerated device id and device irq to get the INTC orgate
+input pins. However, some devices use the continuous source numbers in the
+same INTC orgate. To reduce the enumerated device id definition,
+create a new API to get the INTC orgate input pin
+if users only provide the device id with its bus number index.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/i2c/aspeed_i2c.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ hw/arm/aspeed_ast27x0.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
-index c1ff80b1cf..44c3c39233 100644
---- a/hw/i2c/aspeed_i2c.c
-+++ b/hw/i2c/aspeed_i2c.c
-@@ -743,6 +743,14 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
-                       __func__);
-         break;
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index 4257b5e8af..a5eb78524f 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -193,6 +193,27 @@ static qemu_irq aspeed_soc_ast2700_get_irq(AspeedSoCState *s, int dev)
+     return qdev_get_gpio_in(DEVICE(&a->gic), sc->irqmap[dev]);
+ }
  
++static qemu_irq aspeed_soc_ast2700_get_irq_index(AspeedSoCState *s, int dev,
++                                                 int index)
++{
++    Aspeed27x0SoCState *a = ASPEED27X0_SOC(s);
++    AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(aspeed_soc_ast2700_gic_intcmap); i++) {
++        if (sc->irqmap[dev] == aspeed_soc_ast2700_gic_intcmap[i].irq) {
++            assert(aspeed_soc_ast2700_gic_intcmap[i].ptr);
++            return qdev_get_gpio_in(DEVICE(&a->intc.orgates[i]),
++                aspeed_soc_ast2700_gic_intcmap[i].ptr[dev] + index);
++        }
++    }
++
 +    /*
-+     * The AST2700 support the maximum DRAM size is 8 GB.
-+     * The DRAM offset range is from 0x0_0000_0000 to
-+     * 0x1_FFFF_FFFF and it is enough to use bits [33:0]
-+     * saving the dram offset.
-+     * Therefore, save the high part physical address bit[1:0]
-+     * of Tx/Rx buffer address as dma_dram_offset bit[33:32].
++     * Invalid orgate index, device irq should be 128 to 136.
 +     */
-     case A_I2CM_DMA_TX_ADDR_HI:
-         if (!aic->has_dma64) {
-             qemu_log_mask(LOG_GUEST_ERROR, "%s: No DMA 64 bits support\n",
-@@ -752,6 +760,8 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
-         bus->regs[R_I2CM_DMA_TX_ADDR_HI] = FIELD_EX32(value,
-                                                       I2CM_DMA_TX_ADDR_HI,
-                                                       ADDR_HI);
-+        bus->dma_dram_offset = deposit64(bus->dma_dram_offset, 32, 32,
-+                                         extract32(value, 0, 2));
-         break;
-     case A_I2CM_DMA_RX_ADDR_HI:
-         if (!aic->has_dma64) {
-@@ -762,6 +772,8 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
-         bus->regs[R_I2CM_DMA_RX_ADDR_HI] = FIELD_EX32(value,
-                                                       I2CM_DMA_RX_ADDR_HI,
-                                                       ADDR_HI);
-+        bus->dma_dram_offset = deposit64(bus->dma_dram_offset, 32, 32,
-+                                         extract32(value, 0, 2));
-         break;
-     case A_I2CS_DMA_TX_ADDR_HI:
-         qemu_log_mask(LOG_UNIMP,
-@@ -777,6 +789,8 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
-         bus->regs[R_I2CS_DMA_RX_ADDR_HI] = FIELD_EX32(value,
-                                                       I2CS_DMA_RX_ADDR_HI,
-                                                       ADDR_HI);
-+        bus->dma_dram_offset = deposit64(bus->dma_dram_offset, 32, 32,
-+                                         extract32(value, 0, 2));
-         break;
-     default:
-         qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIx "\n",
++    g_assert_not_reached();
++}
++
+ static uint64_t aspeed_ram_capacity_read(void *opaque, hwaddr addr,
+                                                     unsigned int size)
+ {
 -- 
 2.34.1
 
