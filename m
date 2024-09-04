@@ -2,70 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5CA96B8A1
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A36A96B80A
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:15:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slnIV-0003t4-W8; Wed, 04 Sep 2024 06:31:36 -0400
+	id 1sln2W-0004Kq-8Q; Wed, 04 Sep 2024 06:15:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1slnIT-0003sR-QP
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:31:33 -0400
-Received: from dedi548.your-server.de ([85.10.215.148])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1sln2K-0003nZ-Sz
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:14:54 -0400
+Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1slnIR-0002Ch-Sj
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:31:33 -0400
-Received: from sslproxy05.your-server.de ([78.46.172.2])
- by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1slmzS-0001Jx-2h for qemu-devel@nongnu.org;
- Wed, 04 Sep 2024 12:11:55 +0200
-Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
- by sslproxy05.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1slmzT-000B56-1x for qemu-devel@nongnu.org;
- Wed, 04 Sep 2024 12:11:54 +0200
-Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 735234800A3
- for <qemu-devel@nongnu.org>; Wed,  4 Sep 2024 12:11:54 +0200 (CEST)
-Received: from mail.embedded-brains.de ([127.0.0.1])
- by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
- with ESMTP id pxS_DPTZL5yF for <qemu-devel@nongnu.org>;
- Wed,  4 Sep 2024 12:11:54 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 228FD48017F
- for <qemu-devel@nongnu.org>; Wed,  4 Sep 2024 12:11:54 +0200 (CEST)
-X-Virus-Scanned: amavis at zimbra.eb.localhost
-Received: from mail.embedded-brains.de ([127.0.0.1])
- by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
- with ESMTP id X6HBgPiXxMeW for <qemu-devel@nongnu.org>;
- Wed,  4 Sep 2024 12:11:53 +0200 (CEST)
-Received: from zimbra.eb.localhost (zimbra.eb.localhost [192.168.96.204])
- by mail.embedded-brains.de (Postfix) with ESMTP id EDFDA4800A3
- for <qemu-devel@nongnu.org>; Wed,  4 Sep 2024 12:11:53 +0200 (CEST)
-Date: Wed, 4 Sep 2024 12:11:53 +0200 (CEST)
-From: Sebastian Huber <sebastian.huber@embedded-brains.de>
-To: qemu-devel <qemu-devel@nongnu.org>
-Message-ID: <1832886563.20496.1725444713946.JavaMail.zimbra@embedded-brains.de>
-Subject: Are floating-point exceptions usable on AArch64?
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1sln2I-0002i0-Te
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:14:52 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id A333BA433EA;
+ Wed,  4 Sep 2024 10:14:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F023C4CEC2;
+ Wed,  4 Sep 2024 10:14:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1725444888;
+ bh=UC+3IEx5gs1MfUJ8Bog5XUNNG27DXXhGPJ5UOUWDZiY=;
+ h=From:To:Cc:Subject:Date:From;
+ b=V0o1yAz93xI+EopXxOPex6oCBgc8DA+Nud2Exxp6m+jDm/mTtB1y8gV/9fMqRIjQv
+ unn4Hh3GwdiRN2Cnr9BpqYcmJ6dCt3Y3s8Wz+fRi5UFfnZDVK9Fh2T/S3a4TcJsm5U
+ xlY/H04RtstfI4CbZKx25NXpmOFW4miFQpAOysUacWREX/9mLHerx6pvYDswO9ZyvB
+ G5ymVrr8TTkWIVbDURL0YHAotpLkshO+FZP0lwSaHDnFNmIslqaxFJSOslq6z+nMtb
+ NOGCjhd/X+Kz9rixzIZDItXoNFgu7U0w7O50N4R48C4AzOMi1C5uHcAFKSWuXi4EM9
+ fTno6Ktoc/imw==
+From: deller@kernel.org
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: deller@gmx.de
+Subject: [PULL 0/2] Hppa v9.1 fixes patches
+Date: Wed,  4 Sep 2024 12:14:43 +0200
+Message-ID: <20240904101445.4127-1-deller@kernel.org>
+X-Mailer: git-send-email 2.46.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [192.168.96.204]
-X-Mailer: Zimbra 9.0.0_GA_4615 (ZimbraWebClient - FF128 (Linux)/9.0.0_GA_4615)
-Thread-Index: 9coovJvrd0AO0HcKDIyxuH2twUXlpA==
-Thread-Topic: Are floating-point exceptions usable on AArch64?
-X-Authenticated-Sender: smtp-embedded@poldi-networks.de
-X-Virus-Scanned: Clear (ClamAV 1.0.5/27388/Wed Sep  4 10:40:46 2024)
-Received-SPF: pass client-ip=85.10.215.148;
- envelope-from=sebastian.huber@embedded-brains.de; helo=dedi548.your-server.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=147.75.193.91; envelope-from=deller@kernel.org;
+ helo=nyc.source.kernel.org
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -84,37 +67,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+From: Helge Deller <deller@gmx.de>
 
-I tried to provoke a division-by-zero exception on AArch64 using:
+The following changes since commit fd1952d814da738ed107e05583b3e02ac11e88ff:
 
-    uint64_t value;
-    __asm__ volatile (
-      "mrs %0, FPCR\n"
-      "orr %0, %0, 0x200\n"
-      "msr FPCR, %0" :  "=3D&r" ( value ) : : "memory"
-    );
-    volatile double x =3D 0x0;
-    volatile double y =3D 0x0;
-    x /=3D y;
+  Update version for v9.1.0 release (2024-09-03 09:18:26 -0700)
 
-When I look with the debugger at $fpcr it still says 0x0 after the msr. Are=
- floating-point exceptions usable on AArch64 in general?
+are available in the Git repository at:
 
---=20
-embedded brains GmbH & Co. KG
-Herr Sebastian HUBER
-Dornierstr. 4
-82178 Puchheim
-Germany
-email: sebastian.huber@embedded-brains.de
-phone: +49-89-18 94 741 - 16
-fax:   +49-89-18 94 741 - 08
+  https://github.com/hdeller/qemu-hppa.git tags/hppa-v9.1-fixes-pull-request
 
-Registergericht: Amtsgericht M=C3=BCnchen
-Registernummer: HRB 157899
-Vertretungsberechtigte Gesch=C3=A4ftsf=C3=BChrer: Peter Rasmussen, Thomas D=
-=C3=B6rfler
-Unsere Datenschutzerkl=C3=A4rung finden Sie hier:
-https://embedded-brains.de/datenschutzerklaerung/
+for you to fetch changes up to d33d3adb573794903380e03e767e06470514cefe:
+
+  target/hppa: Fix random 32-bit linux-user crashes (2024-09-03 22:08:22 +0200)
+
+----------------------------------------------------------------
+hppa target fixes
+
+Two important patches for the hppa target which missed qemu-v9.1:
+- One fix for random linux-user crashes
+- One fix for random issues due to loosing the division V-bit
+  during delivery of hardware interrupts. This triggers all sorts
+  of random faults when running in system mode.
+
+Helge
+
+----------------------------------------------------------------
+
+Helge Deller (2):
+  target/hppa: Fix PSW V-bit packaging in cpu_hppa_get for hppa64
+  target/hppa: Fix random 32-bit linux-user crashes
+
+ target/hppa/cpu.h    | 4 ++--
+ target/hppa/helper.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+-- 
+2.46.0
+
 
