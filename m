@@ -2,90 +2,128 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82EE596C3D6
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 18:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 205D996C3E3
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 18:19:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slsgK-0003pk-Vt; Wed, 04 Sep 2024 12:16:33 -0400
+	id 1slsi4-000549-AL; Wed, 04 Sep 2024 12:18:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1slsgD-0002vF-62
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:16:25 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slshv-0004Yh-II
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:18:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1slsgA-0002O8-QY
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:16:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slshu-0003T2-5t
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:18:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725466580;
+ s=mimecast20190719; t=1725466687;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yjvVdaCKp/cHkf/5evnSeHUSGPMrlt8w2c4AH5U6j0Y=;
- b=XaVGtNRh6B6amuYk6h3txDvTvQSkAha5AXBooOTE5KwCSs6QpeTtEcdrVvSZX5k7DgTVu8
- /0A57gM3herD5eC9qWmpsmSgFmSdjylSi8Dqg1bSC5WaU2NDdJumlF9Hpbuz+yO965J8+6
- RAhCQLBxHcQsgM3jfviZC1oZ8NT5cEI=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=MHBrLjpahhT9zdOwBSNzCLgHcj5d5PZc7PeoXAOahiw=;
+ b=GmqgckW4jOnLKMXV9+MmK/vXesXVoQpNSIiB4U/4s7T2GCMSy/Q+FOac22ff/DiRe2kOOG
+ E+G9bWMIbnlS7xHD8BRSpYklwBV36GddK120yni/QWkosxMYqvK2mQ52EFNNaa7MUbo+rB
+ ozXXs6pIF2HGHD2W3PjikRhtqN/cJPA=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-43-l2AAhZxFNha7QlpHs-KHVQ-1; Wed, 04 Sep 2024 12:16:18 -0400
-X-MC-Unique: l2AAhZxFNha7QlpHs-KHVQ-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-457d015a9d2so52113781cf.0
- for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 09:16:18 -0700 (PDT)
+ us-mta-303-Tz0Fqgr6OC6O1H4DCt8D3w-1; Wed, 04 Sep 2024 12:18:06 -0400
+X-MC-Unique: Tz0Fqgr6OC6O1H4DCt8D3w-1
+Received: by mail-ot1-f70.google.com with SMTP id
+ 46e09a7af769-70f65141ea1so7474375a34.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 09:18:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725466578; x=1726071378;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20230601; t=1725466686; x=1726071486;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yjvVdaCKp/cHkf/5evnSeHUSGPMrlt8w2c4AH5U6j0Y=;
- b=JdrPqHs1H3Ltr8CQUIaH6bSDDWprwnM2zYZ/2I0JzFD+d40FbLqwzk6qxPShw62B9h
- qNQHmWBdGZ4YQxqHIoadN9TEOw/6xieGnLrnn1pvCOT1nOP+PaZvLXpFmdGJwC71EAvP
- Hd7EpwR3jzBInpiAp2+sJizdTSkMMOwXJljZOsr0sYvfnJw1QqjDwp23zt+rBmmO0tcC
- kzm3AFTAJ+7C6NsVLSgdQYg9BscCEVEHGGBIVPsoGKbbtOMSQOxIvwZ/UX2Qs5YSNiVV
- eOR0xPlaLn2HMCbTzCqbDV9OG14Tehzwe1qdXjg+QCZnmKAJqnUGigW63LsYSOdv54Un
- bpzw==
-X-Gm-Message-State: AOJu0YxIEMnZDj3loO4yVsF/20kf7icWD9Lwy+rcJSpJwMp5MjoMmQPZ
- 9ujVncvs/BDcb8oDTNISJaWQ7usQ+KkN58sThfiPs5FBPBHB2zTK1PP3IFAfdZaP28zTDsXI/JA
- egh/LhNQrxCsFwH7MshOiU+8pMMQpVagwj2NN36cdw28YQ7lA6qzh
-X-Received: by 2002:a05:622a:408b:b0:455:9ee:fe60 with SMTP id
- d75a77b69052e-4567f4e2ba9mr287172141cf.8.1725466577890; 
- Wed, 04 Sep 2024 09:16:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxUyN87y+vIO22XdSuScOjrZMfVSmPoRDEnISvNx/WwjpYObYAXlxyK5oi3qzTWTqCzaG6RQ==
-X-Received: by 2002:a05:622a:408b:b0:455:9ee:fe60 with SMTP id
- d75a77b69052e-4567f4e2ba9mr287171691cf.8.1725466577165; 
- Wed, 04 Sep 2024 09:16:17 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-45682c82a52sm59718781cf.16.2024.09.04.09.16.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Sep 2024 09:16:16 -0700 (PDT)
-Date: Wed, 4 Sep 2024 12:16:13 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Maor Gottlieb <maorg@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>,
- Tarun Gupta <targupta@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- Fabiano Rosas <farosas@suse.de>, Zhiyi Guo <zhguo@redhat.com>
-Subject: Re: [PATCH v11 08/11] vfio/migration: Implement VFIO migration
- protocol v2
-Message-ID: <ZtiHzQHJ4PgWc21e@x1n>
-References: <20230216143630.25610-1-avihaih@nvidia.com>
- <20230216143630.25610-9-avihaih@nvidia.com> <ZthZ1aW_JmO3V9dr@x1n>
- <95d10ed3-33ef-48a9-9684-3a8c402c5db9@nvidia.com>
+ bh=MHBrLjpahhT9zdOwBSNzCLgHcj5d5PZc7PeoXAOahiw=;
+ b=slX6s+q74Kh2B6bTIjfA3Redb5l5GH6V+yGgwFwfO8crz7ybTXlPD7Spe+rCtqoLWb
+ 80iJV8tox3qRMlxcWtFToYhdoS3uVXXFMUwhWgqsgqy+0WZiwkPFMZC4WWKxyJNgQa36
+ JdDPuOvPKy0VRfAQt89fo0xMhCcIiIgxSgcLJDKC2gT0KrwYLkkGALexcHmVUkg9G6zp
+ Oo+WvsmghdGgPFjXQcNmWr67r2862cUcQmAEvRPtx19Zjv+udfyOrS5c55qMcKoMNgjU
+ F6F0cCCWECpSHoJn2JQl5oQLL1rUPFfkxa6TqplXSOuo3+agTb4NQ5EwxsFydmhYiqXm
+ S9Hg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWcdqDRGFLOFfz1FtY3pXKp1BnASjKfORSAufkTAHV75hrslye+CYRe5akdH0XnuPGu8x8d9VGPgw1G@nongnu.org
+X-Gm-Message-State: AOJu0Yx/oSNEz6KvQyHKAtWgVLM4Cucc5gseVFv5Osym7IeWUA4z6oqN
+ X6Qj+77U9qQUIpdqG8vMO+pVcc/sNb6PMDATPtZ12gV8aHY/nsecJjrmRc4IQ6nBdeR4VxPgKxb
+ YhXPk113MXQc5FszxBovERQWtjMIKiiXSK+o8UZkE8ElujFryo7vU
+X-Received: by 2002:a05:6358:e4a9:b0:1ad:282:126d with SMTP id
+ e5c5f4694b2df-1b7ef6c80cfmr1834207555d.12.1725466685801; 
+ Wed, 04 Sep 2024 09:18:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEEK3FIsbrQDnxuzrC/EUK7yvqFwQg5QZ/OHLwmT7xVM2F73TyhemDB0twP3G4DH0EMm7h25w==
+X-Received: by 2002:a05:6358:e4a9:b0:1ad:282:126d with SMTP id
+ e5c5f4694b2df-1b7ef6c80cfmr1834204455d.12.1725466685465; 
+ Wed, 04 Sep 2024 09:18:05 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-43-176-181.web.vodafone.de.
+ [109.43.176.181]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6c512ea989fsm15405706d6.146.2024.09.04.09.18.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Sep 2024 09:18:05 -0700 (PDT)
+Message-ID: <f5318ae8-71d2-44b9-943c-678f36d30479@redhat.com>
+Date: Wed, 4 Sep 2024 18:18:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <95d10ed3-33ef-48a9-9684-3a8c402c5db9@nvidia.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 15/15] seccomp: Remove check for CRIS host
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Riku Voipio <riku.voipio@iki.fi>,
+ Peter Maydell <peter.maydell@linaro.org>, devel@lists.libvirt.org
+References: <20240904143603.52934-1-philmd@linaro.org>
+ <20240904143603.52934-16-philmd@linaro.org>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240904143603.52934-16-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -110,164 +148,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 04, 2024 at 06:41:03PM +0300, Avihai Horon wrote:
+On 04/09/2024 16.36, Philippe Mathieu-Daudé wrote:
+> As per the deprecation notice in commit c7bbef4023:
 > 
-> On 04/09/2024 16:00, Peter Xu wrote:
-> > External email: Use caution opening links or attachments
-> > 
-> > 
-> > Hello, Avihai,
-> > 
-> > Reviving this thread just to discuss one issue below..
-> > 
-> > On Thu, Feb 16, 2023 at 04:36:27PM +0200, Avihai Horon wrote:
-> > > +/*
-> > > + * Migration size of VFIO devices can be as little as a few KBs or as big as
-> > > + * many GBs. This value should be big enough to cover the worst case.
-> > > + */
-> > > +#define VFIO_MIG_STOP_COPY_SIZE (100 * GiB)
-> > > +
-> > > +/*
-> > > + * Only exact function is implemented and not estimate function. The reason is
-> > > + * that during pre-copy phase of migration the estimate function is called
-> > > + * repeatedly while pending RAM size is over the threshold, thus migration
-> > > + * can't converge and querying the VFIO device pending data size is useless.
-> > > + */
-> > > +static void vfio_state_pending_exact(void *opaque, uint64_t *must_precopy,
-> > > +                                     uint64_t *can_postcopy)
-> > > +{
-> > > +    VFIODevice *vbasedev = opaque;
-> > > +    uint64_t stop_copy_size = VFIO_MIG_STOP_COPY_SIZE;
-> > > +
-> > > +    /*
-> > > +     * If getting pending migration size fails, VFIO_MIG_STOP_COPY_SIZE is
-> > > +     * reported so downtime limit won't be violated.
-> > > +     */
-> > > +    vfio_query_stop_copy_size(vbasedev, &stop_copy_size);
-> > > +    *must_precopy += stop_copy_size;
-> > Is this the chunk of data only can be copied during VM stopped?  If so, I
-> > wonder why it's reported as "must precopy" if we know precopy won't ever
-> > move them..
+>    The CRIS architecture was pulled from Linux in 4.17 and
+>    the compiler is no longer packaged in any distro [...].
 > 
-> A VFIO device that doesn't support precopy will send this data only when VM
-> is stopped.
-> A VFIO device that supports precopy may or may not send this data (or part
-> of it) during precopy, and it depends on the specific VFIO device.
+> It is now unlikely QEMU is build on CRIS host.
 > 
-> According to state_pending_{estimate,exact} documentation, must_precopy is
-> the amount of data that must be migrated before target starts, and indeed
-> this VFIO data must be migrated before target starts.
-
-Correct.  It's just that estimate/exact API will be more suitable when the
-exact() gets the report closer to estimate(), while the estimate() is only
-a fast-path of exact().  It'll cause some chaos like this if it doesn't do
-as so.
-
-Since we have discussion elsewhere on the fact that we currently ignore
-non-iterative device states during migration decides to switchover, I was
-wondering when reply on whether this stop-size could be the first thing
-that will start to provide such non-iterable pending data.  But that might
-indeed need more thoughts, at least we may want to collect more outliers of
-non-iterative device states outside VFIO that can cause downtime to be too
-large.
-
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   system/qemu-seccomp.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> > 
-> > The issue is if with such reporting (and now in latest master branch we do
-> > have the precopy size too, which was reported both in exact() and
-> > estimate()), we can observe weird reports like this:
-> > 
-> > 23411@1725380798968696657 migrate_pending_estimate estimate pending size 0 (pre = 0 post=0)
-> > 23411@1725380799050766000 migrate_pending_exact exact pending size 21038628864 (pre = 21038628864 post=0)
-> > 23411@1725380799050896975 migrate_pending_estimate estimate pending size 0 (pre = 0 post=0)
-> > 23411@1725380799138657103 migrate_pending_exact exact pending size 21040144384 (pre = 21040144384 post=0)
-> > 23411@1725380799140166709 migrate_pending_estimate estimate pending size 0 (pre = 0 post=0)
-> > 23411@1725380799217246861 migrate_pending_exact exact pending size 21038628864 (pre = 21038628864 post=0)
-> > 23411@1725380799217384969 migrate_pending_estimate estimate pending size 0 (pre = 0 post=0)
-> > 23411@1725380799305147722 migrate_pending_exact exact pending size 21039976448 (pre = 21039976448 post=0)
-> > 23411@1725380799306639956 migrate_pending_estimate estimate pending size 0 (pre = 0 post=0)
-> > 23411@1725380799385118245 migrate_pending_exact exact pending size 21038796800 (pre = 21038796800 post=0)
-> > 23411@1725380799385709382 migrate_pending_estimate estimate pending size 0 (pre = 0 post=0)
-> > 
-> > So estimate() keeps reporting zero but the exact() reports much larger, and
-> > it keeps spinning like this.  I think that's not how it was designed to be
-> > used..
-> 
-> It keeps spinning and migration doesn't converge?
-> If so, configuring a higher downtime limit or the avail-switchover-bandwidth
-> parameter may solve it.
+> diff --git a/system/qemu-seccomp.c b/system/qemu-seccomp.c
+> index 98ffce075c..a14a0c0635 100644
+> --- a/system/qemu-seccomp.c
+> +++ b/system/qemu-seccomp.c
+> @@ -50,7 +50,7 @@ const struct scmp_arg_cmp sched_setscheduler_arg[] = {
+>    * See 'NOTES' in 'man 2 clone' - s390 & cross have 'flags' in
+>    *  different position to other architectures
+>    */
+> -#if defined(HOST_S390X) || defined(HOST_S390) || defined(HOST_CRIS)
+> +#if defined(HOST_S390X) || defined(HOST_S390)
+>   #define CLONE_FLAGS_ARG 1
+>   #else
+>   #define CLONE_FLAGS_ARG 0
 
-Yes, this is the only way to go, but it's a separate issue on reportings of
-estimate()/exact().  More below.
-
-> 
-> > 
-> > Does this stop copy size change for a VFIO device or not?
-> 
-> It depends on the specific VFIO device.
-> If the device supports precopy and all (or part) of its data is
-> precopy-able, then stopcopy size will change.
-> Besides that, the amount of resources currently used by the VFIO device can
-> also affect the stopcopy size, and it may increase or decrease as resources
-> are created or destroyed.
-
-I see, thanks.
-
-> 
-> > IIUC, we may want some other mechanism to report stop copy size for a
-> > device, rather than reporting it with the current exact()/estimate() api.
-> > That's, per my undertanding, only used for iterable data, while
-> > stop-copy-size may not fall into that category if so.
-> 
-> The above situation is caused by the fact that VFIO data may not be fully
-> precopy-able (as opposed to RAM data).
-> I don't think reporting the stop-copy-size in a different API will help the
-> above situation -- we would still have to take stop-copy-size into account
-> before converging, to not violate downtime.
-
-It will help some other situation, though.
-
-One issue with above freqeunt estimate()/exact() call is that QEMU will go
-into madness loop thinking "we're close" and "we're far away from converge"
-even if the reality is "we're far away". The bad side effect is when this
-loop happens it'll not only affect VFIO but also other devices (e.g. KVM,
-vhost, etc.) so we'll do high overhead sync() in an extremely frequent
-manner.  IMHO they're totally a waste of resource, because all the rest of
-the modules are following the default rules of estimate()/exact().
-
-One simple but efficient fix for VFIO, IMHO, is at least VFIO should also
-cache the stop-size internally and report in estimate(), e.g.:
-
-/* Give an estimate of the amount left to be transferred,
- * the result is split into the amount for units that can and
- * for units that can't do postcopy.
- */
-void qemu_savevm_state_pending_estimate(uint64_t *must_precopy,
-                                        uint64_t *can_postcopy)
-{
-}
-
-If it's justified that the stop-size to be reported in exact(), it should
-also be reported in estimate() per the comment above.  It should also fall
-into precopy category in this case.
-
-Then with that we should avoid calling exact() frequently for not only VFIO
-but also others (especially, KVM GET_DIRTY_LOG / CLEAR_DIRTY_LOG ioctls),
-then we know it won't converge anyway without the help of tuning downtime
-upper, or adjust avail-switchover-bandwidth.
-
-This may improve situation but still leave one other issue, that IIUC even
-with above change and even if we can avoid sync dirty bitmap frequently,
-the migration thread can still spinning 100% calling estimate() and keep
-seeing data (which is not iterable...).  For the longer term we may still
-need to report non-iterable stop-size in another way so QEMU knows that
-iterate() over all the VMState registers won't help in this case, so it
-should go into sleep without eating the cores.  I hope that explains why I
-think a new API should be still needed for the long run.
-
-Thanks,
-
--- 
-Peter Xu
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
