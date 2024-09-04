@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B5D96B8BE
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2A296B8BB
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:42:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slnQc-000170-1x; Wed, 04 Sep 2024 06:39:58 -0400
+	id 1slnQb-000151-GV; Wed, 04 Sep 2024 06:39:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnQU-0000rk-DT
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:39:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnQW-0000v2-Vw
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:39:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnQS-0008Bk-Vb
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:39:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnQU-0008FE-33
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:39:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725446387;
+ s=mimecast20190719; t=1725446389;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IHhAutENwNIWMcm6eInK4QrrHZ098n4FXpUYRbdIsVc=;
- b=CktvWscGDiefUBOy7VKFL3mxmJJT+PnJ1n/E8/2krYuOiEjCoE6BTrfGL49Nsx2y+XHwi2
- q3YXnalF6EyEv9cpj/JDGliLL6KbgX96BaLZkcQucL/uBsJjVTbRerIf8/jfNpD+C+2sx7
- /19BT6iG+9GDD3Vjw4LEyi8OD3eHhuE=
+ bh=BMmbydglAELKpmk+ohQFujCo7ibecsv4RofmDD8GiRk=;
+ b=gy/VreAaXiE1iz7psBDs5ne2iS5ZWk6nXjOI6tvNqgiaW73RXsdz7YHBg/DujmB8xIakxW
+ h8kokB5vAuvteg9/L+M2PhaTHC/ASYBPDAwuxIvFxTY7K6sHyrNQ+mPXa5bcO1LGPktl3M
+ Gx+dnMQG1f8slRuUSJEavy87EZmCTkw=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-271-jnnDYW17OS6HF0Jo8SRRzw-1; Wed,
- 04 Sep 2024 06:39:46 -0400
-X-MC-Unique: jnnDYW17OS6HF0Jo8SRRzw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-407-ETdytfNiORuc5KNcJ4FDSA-1; Wed,
+ 04 Sep 2024 06:39:48 -0400
+X-MC-Unique: ETdytfNiORuc5KNcJ4FDSA-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 318501956048; Wed,  4 Sep 2024 10:39:45 +0000 (UTC)
+ id 1CCEA19560AB; Wed,  4 Sep 2024 10:39:47 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.48])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1D355195605A; Wed,  4 Sep 2024 10:39:41 +0000 (UTC)
+ id B6D27195605A; Wed,  4 Sep 2024 10:39:45 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/42] tests/avocado/avocado_qemu: Fix the "from" statements in
- linuxtest.py
-Date: Wed,  4 Sep 2024 12:38:40 +0200
-Message-ID: <20240904103923.451847-6-thuth@redhat.com>
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 06/42] tests/avocado/boot_linux_console: Remove the s390x
+ subtest
+Date: Wed,  4 Sep 2024 12:38:41 +0200
+Message-ID: <20240904103923.451847-7-thuth@redhat.com>
 In-Reply-To: <20240904103923.451847-1-thuth@redhat.com>
 References: <20240904103923.451847-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,32 +83,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Without this change, the new Avocado v103 fails to find the tests
-that are based on the LinuxTest class.
+We've got a much more sophisticated, Fedora-based test for s390x
+("test_s390x_fedora" in another file) already, so the test in
+boot_linux_console.py seems to be rather a waste of precious test
+cycles. Thus move the command line check and delete the s390x
+test in boot_linux_console.py.
 
-Suggested-by: Cleber Rosa <crosa@redhat.com>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240830133841.142644-6-thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20240830133841.142644-7-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/avocado_qemu/linuxtest.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/avocado/boot_linux_console.py      | 20 --------------------
+ tests/avocado/machine_s390_ccw_virtio.py |  2 ++
+ 2 files changed, 2 insertions(+), 20 deletions(-)
 
-diff --git a/tests/avocado/avocado_qemu/linuxtest.py b/tests/avocado/avocado_qemu/linuxtest.py
-index e1dc838b1c..66fb9f1507 100644
---- a/tests/avocado/avocado_qemu/linuxtest.py
-+++ b/tests/avocado/avocado_qemu/linuxtest.py
-@@ -13,8 +13,8 @@
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index cffdd6b5a2..18c69d6acc 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -1304,26 +1304,6 @@ def test_aarch64_raspi3_atf(self):
+         self.vm.launch()
+         self.wait_for_console_pattern('version UEFI Firmware v1.15')
  
- from avocado.utils import cloudinit, datadrainer, process, vmimage
+-    def test_s390x_s390_ccw_virtio(self):
+-        """
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+-        """
+-        kernel_url = ('https://archives.fedoraproject.org/pub/archive'
+-                      '/fedora-secondary/releases/29/Everything/s390x/os/images'
+-                      '/kernel.img')
+-        kernel_hash = 'e8e8439103ef8053418ef062644ffd46a7919313'
+-        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-
+-        self.vm.set_console()
+-        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=sclp0'
+-        self.vm.add_args('-nodefaults',
+-                         '-kernel', kernel_path,
+-                         '-append', kernel_command_line)
+-        self.vm.launch()
+-        console_pattern = 'Kernel command line: %s' % kernel_command_line
+-        self.wait_for_console_pattern(console_pattern)
+-
+     def test_alpha_clipper(self):
+         """
+         :avocado: tags=arch:alpha
+diff --git a/tests/avocado/machine_s390_ccw_virtio.py b/tests/avocado/machine_s390_ccw_virtio.py
+index 26e938c9e9..7a214110fc 100644
+--- a/tests/avocado/machine_s390_ccw_virtio.py
++++ b/tests/avocado/machine_s390_ccw_virtio.py
+@@ -200,6 +200,8 @@ def test_s390x_fedora(self):
+                          '-device', 'virtio-rng-ccw,devno=fe.1.9876',
+                          '-device', 'virtio-gpu-ccw,devno=fe.2.5432')
+         self.vm.launch()
++        self.wait_for_console_pattern('Kernel command line: %s'
++                                      % kernel_command_line)
+         self.wait_for_console_pattern('Entering emergency mode')
  
--from . import LinuxSSHMixIn
--from . import QemuSystemTest
-+from avocado_qemu import LinuxSSHMixIn
-+from avocado_qemu import QemuSystemTest
- 
- if os.path.islink(os.path.dirname(os.path.dirname(__file__))):
-     # The link to the avocado tests dir in the source code directory
+         # Some tests to see whether the CLI options have been considered:
 -- 
 2.46.0
 
