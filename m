@@ -2,99 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8F3096BCBA
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AB396BCCD
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:47:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slpNN-00044b-Te; Wed, 04 Sep 2024 08:44:45 -0400
+	id 1slpNS-0004JL-8l; Wed, 04 Sep 2024 08:44:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNI-0003v2-FM
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:40 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNL-00045r-8Z
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:43 -0400
 Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNG-0005Ut-Mr
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:40 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNJ-0005Vc-Ld
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:43 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6CD212119F;
- Wed,  4 Sep 2024 12:44:37 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 456692191F;
+ Wed,  4 Sep 2024 12:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453877; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453879; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Z2Ri8HctTIXsXSaBfIqxljhxeFAgkjIWbGYXT0sfccc=;
- b=dfs6ckQVBxMw6kI4JyxWrA3OXTZTFWHeaMPPhzyp0hdc6jyFQHADox4cuwiErz9pLuU2M/
- irnbjy+MlsfB3ScQdQ9cK1Wn9jibDonERQZZHpIbAcX3XVPf4feaXYA0AtoXZ0Y8t9QEY/
- Hrlsl4w8tcsAQO6FnYF6weo/FdItPJE=
+ bh=EBCOf/JUetC7ZUytRZGZMdkk3yEjJLBkIUqiPgUQdVY=;
+ b=ITlBQOMmQzY+C+7L5D4BTNfGCQ08+MEmTt+Qr5dSSrlSa3wk3AW42TF6MquuxxAEEiff8K
+ JQNxDX4kJI41NZ3fPpgGuExEfPfdK4Yetskq43ZDGIoaIKpu/sv6AJNIu7EQiuL7Da0bqx
+ jMRonMWmaQzNR3NengHTAlVF0V3+2Uo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453877;
+ s=susede2_ed25519; t=1725453879;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Z2Ri8HctTIXsXSaBfIqxljhxeFAgkjIWbGYXT0sfccc=;
- b=N9F48+vfk7EG5HpLcJxrHl7o1+/0mYmy/kv2EZrFdjZ+CtAiw6tv5RSLCGEdPrl0s9Tmy/
- +sOL0YgaUxIQz5DA==
+ bh=EBCOf/JUetC7ZUytRZGZMdkk3yEjJLBkIUqiPgUQdVY=;
+ b=b+V6By0CsCcwmQ9BzGUYlzYJGZm2T4k3xr9aS1C6v4eeS7UTN02T/pCTDx4vGObPqkl1K4
+ Ky2QT+ZMyJtrNtDA==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453877; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453879; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Z2Ri8HctTIXsXSaBfIqxljhxeFAgkjIWbGYXT0sfccc=;
- b=dfs6ckQVBxMw6kI4JyxWrA3OXTZTFWHeaMPPhzyp0hdc6jyFQHADox4cuwiErz9pLuU2M/
- irnbjy+MlsfB3ScQdQ9cK1Wn9jibDonERQZZHpIbAcX3XVPf4feaXYA0AtoXZ0Y8t9QEY/
- Hrlsl4w8tcsAQO6FnYF6weo/FdItPJE=
+ bh=EBCOf/JUetC7ZUytRZGZMdkk3yEjJLBkIUqiPgUQdVY=;
+ b=ITlBQOMmQzY+C+7L5D4BTNfGCQ08+MEmTt+Qr5dSSrlSa3wk3AW42TF6MquuxxAEEiff8K
+ JQNxDX4kJI41NZ3fPpgGuExEfPfdK4Yetskq43ZDGIoaIKpu/sv6AJNIu7EQiuL7Da0bqx
+ jMRonMWmaQzNR3NengHTAlVF0V3+2Uo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453877;
+ s=susede2_ed25519; t=1725453879;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Z2Ri8HctTIXsXSaBfIqxljhxeFAgkjIWbGYXT0sfccc=;
- b=N9F48+vfk7EG5HpLcJxrHl7o1+/0mYmy/kv2EZrFdjZ+CtAiw6tv5RSLCGEdPrl0s9Tmy/
- +sOL0YgaUxIQz5DA==
+ bh=EBCOf/JUetC7ZUytRZGZMdkk3yEjJLBkIUqiPgUQdVY=;
+ b=b+V6By0CsCcwmQ9BzGUYlzYJGZm2T4k3xr9aS1C6v4eeS7UTN02T/pCTDx4vGObPqkl1K4
+ Ky2QT+ZMyJtrNtDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0D43F139D2;
- Wed,  4 Sep 2024 12:44:35 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D6ACC139D2;
+ Wed,  4 Sep 2024 12:44:37 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id kEFXMTNW2GZuVQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:44:35 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id gIjaJjVW2GZuVQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:44:37 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 09/34] tests/qtest/migration-helpers: Don't dup argument to
- qdict_put_str()
-Date: Wed,  4 Sep 2024 09:43:52 -0300
-Message-Id: <20240904124417.14565-10-farosas@suse.de>
+Subject: [PULL 10/34] tests/qtest/migration-test: Don't strdup in
+ get_dirty_rate()
+Date: Wed,  4 Sep 2024 09:43:53 -0300
+Message-Id: <20240904124417.14565-11-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240904124417.14565-1-farosas@suse.de>
 References: <20240904124417.14565-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.79
 X-Spamd-Result: default: False [-2.79 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.19)[-0.927];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.19)[-0.925];
  MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
  TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:mid,suse.de:email];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:email,suse.de:mid];
  RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.79
 Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
  helo=smtp-out1.suse.de
 X-Spam_score_int: -43
@@ -121,42 +121,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In migrate_set_ports() we call qdict_put_str() with a value string
-which we g_strdup(). However qdict_put_str() takes a copy of the
-value string, it doesn't take ownership of it, so the g_strdup()
-only results in a leak:
+We g_strdup() the "status" string we get out of the qdict in
+get_dirty_rate(), but we never free it.  Since we only use this
+string while the dictionary is still valid, we don't need to strdup
+at all; drop the unnecessary call to avoid this leak:
 
-Direct leak of 6 byte(s) in 1 object(s) allocated from:
-    #0 0x56298023713e in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/tests/qtest/migration-test+0x22f13e) (BuildId: b2b9174a5a54707a7f76bca51cdc95d2aa08bac1)
-    #1 0x7fba0ad39738 in g_malloc debian/build/deb/../../../glib/gmem.c:128:13
-    #2 0x7fba0ad4e583 in g_strdup debian/build/deb/../../../glib/gstrfuncs.c:361:17
-    #3 0x56298036b16e in migrate_set_ports tests/qtest/migration-helpers.c:145:49
-    #4 0x56298036ad1c in migrate_qmp tests/qtest/migration-helpers.c:228:9
-    #5 0x56298035b3dd in test_precopy_common tests/qtest/migration-test.c:1820:5
-    #6 0x5629803549dc in test_multifd_tcp_channels_none tests/qtest/migration-test.c:3077:5
-    #7 0x56298036d427 in migration_test_wrapper tests/qtest/migration-helpers.c:456:5
-
-Drop the unnecessary g_strdup() call.
+Direct leak of 18 byte(s) in 2 object(s) allocated from:
+    #0 0x564b3e01913e in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/tests/qtest/migration-test+0x22f13e) (BuildId: d6403a811332fcc846f93c45e23abfd06d1e67c4)
+    #1 0x7f2f278ff738 in g_malloc debian/build/deb/../../../glib/gmem.c:128:13
+    #2 0x7f2f27914583 in g_strdup debian/build/deb/../../../glib/gstrfuncs.c:361:17
+    #3 0x564b3e14bb5b in get_dirty_rate tests/qtest/migration-test.c:3447:14
+    #4 0x564b3e138e00 in test_vcpu_dirty_limit tests/qtest/migration-test.c:3565:16
+    #5 0x564b3e14f417 in migration_test_wrapper tests/qtest/migration-helpers.c:456:5
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-helpers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/migration-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-index 7cbb9831e7..a43d180c80 100644
---- a/tests/qtest/migration-helpers.c
-+++ b/tests/qtest/migration-helpers.c
-@@ -142,7 +142,7 @@ static void migrate_set_ports(QTestState *to, QList *channel_list)
-             qdict_haskey(addr, "port") &&
-             (strcmp(qdict_get_str(addrdict, "port"), "0") == 0)) {
-                 addr_port = qdict_get_str(addr, "port");
--                qdict_put_str(addrdict, "port", g_strdup(addr_port));
-+                qdict_put_str(addrdict, "port", addr_port);
-         }
-     }
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index f0f0335c6b..3818595040 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -3355,7 +3355,7 @@ static void wait_for_calc_dirtyrate_complete(QTestState *who,
+ static int64_t get_dirty_rate(QTestState *who)
+ {
+     QDict *rsp_return;
+-    gchar *status;
++    const char *status;
+     QList *rates;
+     const QListEntry *entry;
+     QDict *rate;
+@@ -3364,7 +3364,7 @@ static int64_t get_dirty_rate(QTestState *who)
+     rsp_return = query_dirty_rate(who);
+     g_assert(rsp_return);
+ 
+-    status = g_strdup(qdict_get_str(rsp_return, "status"));
++    status = qdict_get_str(rsp_return, "status");
+     g_assert(status);
+     g_assert_cmpstr(status, ==, "measured");
  
 -- 
 2.35.3
