@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2307796B8B6
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5589E96B8B0
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:41:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slnRM-0003no-VR; Wed, 04 Sep 2024 06:40:45 -0400
+	id 1slnRM-0003Q3-24; Wed, 04 Sep 2024 06:40:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRE-00030P-28
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRE-00030Q-2A
  for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:40:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRA-0000IJ-1u
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRA-0000IS-2n
  for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:40:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725446430;
+ s=mimecast20190719; t=1725446431;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=i0aIQcxCkQS40WV8z9O4r/5xnAkpl6TsL0dTNr/ITcs=;
- b=hLa93w+3WjSnH/NHlGrdvWmQ3930L16U118txHWQNti/C3vKaKhMJi29Zse0jzKDoTE2Nm
- a0F+lD3paVZExnfBlRyfYmjbfvneoh6OzQEo1PTM0RpdRJOQV6zuY/Dnvv6piQ4l6jz3MZ
- yvizJ/6guptZvvWha5ZP0ZYmC3DNNVE=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=oC1h0m+euPoDl0033bV02wlv3YjLDdIehkp1DRWNoj0=;
+ b=fGuXMeV8dG7W7NbWoW5VHpvxUiZ2FwYGLbRmWME76d4wxzkwDv7TRQAxGiYL/WiEixMddj
+ KQlpHpnLGVX28Kpa97xVKCjhsbryLZ0sA+ZQ4s3/gBDEEyYQRLhImTmOWb59NgfBAFHN8+
+ lUh/qTRFvppJ3CsPsHpp/GXGtPY6iYc=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-zcu_FHl8Pry2hj3dtT5pdQ-1; Wed,
- 04 Sep 2024 06:40:27 -0400
-X-MC-Unique: zcu_FHl8Pry2hj3dtT5pdQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-449-hEWJMmxjOrCtxAuNUc736g-1; Wed,
+ 04 Sep 2024 06:40:29 -0400
+X-MC-Unique: hEWJMmxjOrCtxAuNUc736g-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 92C5819560AD; Wed,  4 Sep 2024 10:40:26 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B812C195608C; Wed,  4 Sep 2024 10:40:28 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.48])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 633F1195605A; Wed,  4 Sep 2024 10:40:24 +0000 (UTC)
+ id E4F8D195605A; Wed,  4 Sep 2024 10:40:26 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 20/42] tests/functional: Convert the s390x avocado tests into
- standalone tests
-Date: Wed,  4 Sep 2024 12:38:55 +0200
-Message-ID: <20240904103923.451847-21-thuth@redhat.com>
+Subject: [PULL 21/42] tests/functional: Convert the x86_cpu_model_versions test
+Date: Wed,  4 Sep 2024 12:38:56 +0200
+Message-ID: <20240904103923.451847-22-thuth@redhat.com>
 In-Reply-To: <20240904103923.451847-1-thuth@redhat.com>
 References: <20240904103923.451847-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
 X-Spam_bar: +
 X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
@@ -83,435 +82,222 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These tests use archive.lzma_uncompress() from the Avocado utils,
-so provide a small helper function for this, based on the
-standard lzma module from Python instead.
-
-And while we're at it, replace the MD5 hashes in the topology test
-with proper SHA256 hashes, since MD5 should not be used anymore
-nowadays.
+Nothing thrilling in here, it's just a straight forward conversion.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240830133841.142644-21-thuth@redhat.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240830133841.142644-22-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                                   |  4 +-
- tests/functional/meson.build                  |  6 ++
- tests/functional/qemu_test/utils.py           | 14 +++
- .../test_s390x_ccw_virtio.py}                 | 79 ++++++++---------
- .../test_s390x_topology.py}                   | 86 ++++++++-----------
- 5 files changed, 94 insertions(+), 95 deletions(-)
- rename tests/{avocado/machine_s390_ccw_virtio.py => functional/test_s390x_ccw_virtio.py} (85%)
- mode change 100644 => 100755
- rename tests/{avocado/s390_topology.py => functional/test_s390x_topology.py} (88%)
+ MAINTAINERS                                   |  1 +
+ tests/functional/meson.build                  |  1 +
+ .../test_x86_cpu_model_versions.py}           | 65 ++++++-------------
+ 3 files changed, 21 insertions(+), 46 deletions(-)
+ rename tests/{avocado/x86_cpu_model_versions.py => functional/test_x86_cpu_model_versions.py} (92%)
  mode change 100644 => 100755
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 92e6166df1..03e5d7e233 100644
+index 03e5d7e233..8abbc7d861 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1743,7 +1743,7 @@ S: Supported
- F: hw/s390x/
- F: include/hw/s390x/
- F: configs/devices/s390x-softmmu/default.mak
--F: tests/avocado/machine_s390_ccw_virtio.py
-+F: tests/functional/test_s390x_ccw_virtio.py
- T: git https://github.com/borntraeger/qemu.git s390-next
- L: qemu-s390x@nongnu.org
+@@ -1836,6 +1836,7 @@ F: tests/unit/test-x86-topo.c
+ F: tests/qtest/test-x86-cpuid-compat.c
+ F: tests/functional/test_mem_addr_space.py
+ F: tests/functional/test_pc_cpu_hotplug_props.py
++F: tests/functional/test_x86_cpu_model_versions.py
  
-@@ -1806,7 +1806,7 @@ F: hw/s390x/cpu-topology.c
- F: target/s390x/kvm/stsi-topology.c
- F: docs/devel/s390-cpu-topology.rst
- F: docs/system/s390x/cpu-topology.rst
--F: tests/avocado/s390_topology.py
-+F: tests/functional/test_s390x_topology.py
- 
- X86 Machines
- ------------
+ PC Chipset
+ M: Michael S. Tsirkin <mst@redhat.com>
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index eebb4558d3..99bef77c3a 100644
+index 99bef77c3a..6d2e9321eb 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -12,6 +12,7 @@ endif
- # Timeouts for individual tests that can be slow e.g. with debugging enabled
- test_timeouts = {
-   'netdev_ethtool' : 180,
-+  's390x_ccw_virtio' : 180,
- }
- 
- tests_generic_system = [
-@@ -51,6 +52,11 @@ tests_ppc_system_thorough = [
-   'ppc_bamboo',
+@@ -66,6 +66,7 @@ tests_x86_64_system_quick = [
+   'mem_addr_space',
+   'pc_cpu_hotplug_props',
+   'virtio_version',
++  'x86_cpu_model_versions',
  ]
  
-+tests_s390x_system_thorough = [
-+  's390x_ccw_virtio',
-+  's390x_topology',
-+]
-+
- tests_sparc64_system_thorough = [
-   'sparc64_sun4u',
- ]
-diff --git a/tests/functional/qemu_test/utils.py b/tests/functional/qemu_test/utils.py
-index 4eb5e5d5e5..a12dac51b6 100644
---- a/tests/functional/qemu_test/utils.py
-+++ b/tests/functional/qemu_test/utils.py
-@@ -8,6 +8,9 @@
- # This work is licensed under the terms of the GNU GPL, version 2 or
- # later.  See the COPYING file in the top-level directory.
- 
-+import lzma
-+import os
-+import shutil
- import tarfile
- 
- def archive_extract(archive, dest_dir, member=None):
-@@ -19,3 +22,14 @@ def archive_extract(archive, dest_dir, member=None):
-             tf.extract(member=member, path=dest_dir)
-         else:
-             tf.extractall(path=dest_dir)
-+
-+def lzma_uncompress(xz_path, output_path):
-+    if os.path.exists(output_path):
-+        return
-+    with lzma.open(xz_path, 'rb') as lzma_in:
-+        try:
-+            with open(output_path, 'wb') as raw_out:
-+                shutil.copyfileobj(lzma_in, raw_out)
-+        except:
-+            os.remove(output_path)
-+            raise
-diff --git a/tests/avocado/machine_s390_ccw_virtio.py b/tests/functional/test_s390x_ccw_virtio.py
+ tests_x86_64_system_thorough = [
+diff --git a/tests/avocado/x86_cpu_model_versions.py b/tests/functional/test_x86_cpu_model_versions.py
 old mode 100644
 new mode 100755
-similarity index 85%
-rename from tests/avocado/machine_s390_ccw_virtio.py
-rename to tests/functional/test_s390x_ccw_virtio.py
-index 7a214110fc..f7acd90a89
---- a/tests/avocado/machine_s390_ccw_virtio.py
-+++ b/tests/functional/test_s390x_ccw_virtio.py
-@@ -1,3 +1,5 @@
+similarity index 92%
+rename from tests/avocado/x86_cpu_model_versions.py
+rename to tests/functional/test_x86_cpu_model_versions.py
+index 11101e02b9..bd18acd44f
+--- a/tests/avocado/x86_cpu_model_versions.py
++++ b/tests/functional/test_x86_cpu_model_versions.py
+@@ -1,3 +1,4 @@
 +#!/usr/bin/env python3
-+#
- # Functional test that boots an s390x Linux guest with ccw and PCI devices
- # attached and checks whether the devices are recognized by Linux
  #
-@@ -12,17 +14,38 @@
- import os
- import tempfile
- 
--from avocado import skipUnless
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import exec_command_and_wait_for_pattern
--from avocado_qemu import wait_for_console_pattern
--from avocado.utils import archive
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import exec_command_and_wait_for_pattern
-+from qemu_test import wait_for_console_pattern
-+from qemu_test.utils import lzma_uncompress
- 
- class S390CCWVirtioMachine(QemuSystemTest):
-     KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
- 
-     timeout = 120
- 
-+    ASSET_BUSTER_KERNEL = Asset(
-+        ('https://snapshot.debian.org/archive/debian/'
-+         '20201126T092837Z/dists/buster/main/installer-s390x/'
-+         '20190702+deb10u6/images/generic/kernel.debian'),
-+        'd411d17c39ae7ad38d27534376cbe88b68b403c325739364122c2e6f1537e818')
-+    ASSET_BUSTER_INITRD = Asset(
-+        ('https://snapshot.debian.org/archive/debian/'
-+         '20201126T092837Z/dists/buster/main/installer-s390x/'
-+         '20190702+deb10u6/images/generic/initrd.debian'),
-+        '836bbd0fe6a5ca81274c28c2b063ea315ce1868660866e9b60180c575fef9fd5')
-+
-+    ASSET_F31_KERNEL = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive'
-+         '/fedora-secondary/releases/31/Server/s390x/os'
-+         '/images/kernel.img'),
-+        '480859574f3f44caa6cd35c62d70e1ac0609134e22ce2a954bbed9b110c06e0b')
-+    ASSET_F31_INITRD = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive'
-+         '/fedora-secondary/releases/31/Server/s390x/os'
-+         '/images/initrd.img'),
-+        '04c46095b2c49020b1c2327158898b7db747e4892ae319726192fb949716aa9c')
-+
-     def wait_for_console_pattern(self, success_message, vm=None):
-         wait_for_console_pattern(self, success_message,
-                                  failure_message='Kernel panic - not syncing',
-@@ -41,23 +64,10 @@ def clear_guest_dmesg(self):
-         self.dmesg_clear_count += 1
- 
-     def test_s390x_devices(self):
-+        self.set_machine('s390-ccw-virtio')
- 
--        """
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
--        """
--
--        kernel_url = ('https://snapshot.debian.org/archive/debian/'
--                      '20201126T092837Z/dists/buster/main/installer-s390x/'
--                      '20190702+deb10u6/images/generic/kernel.debian')
--        kernel_hash = '5821fbee57d6220a067a8b967d24595621aa1eb6'
--        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
--
--        initrd_url = ('https://snapshot.debian.org/archive/debian/'
--                      '20201126T092837Z/dists/buster/main/installer-s390x/'
--                      '20190702+deb10u6/images/generic/initrd.debian')
--        initrd_hash = '81ba09c97bef46e8f4660ac25b4ac0a5be3a94d6'
--        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
-+        kernel_path = self.ASSET_BUSTER_KERNEL.fetch()
-+        initrd_path = self.ASSET_BUSTER_INITRD.fetch()
- 
-         self.vm.set_console()
-         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-@@ -160,29 +170,13 @@ def test_s390x_devices(self):
- 
- 
-     def test_s390x_fedora(self):
-+        self.set_machine('s390-ccw-virtio')
- 
--        """
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
--        :avocado: tags=device:virtio-gpu
--        :avocado: tags=device:virtio-crypto
--        :avocado: tags=device:virtio-net
--        :avocado: tags=flaky
--        """
--
--        kernel_url = ('https://archives.fedoraproject.org/pub/archive'
--                      '/fedora-secondary/releases/31/Server/s390x/os'
--                      '/images/kernel.img')
--        kernel_hash = 'b93d1efcafcf29c1673a4ce371a1f8b43941cfeb'
--        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-+        kernel_path = self.ASSET_F31_KERNEL.fetch()
- 
--        initrd_url = ('https://archives.fedoraproject.org/pub/archive'
--                      '/fedora-secondary/releases/31/Server/s390x/os'
--                      '/images/initrd.img')
--        initrd_hash = '3de45d411df5624b8d8ef21cd0b44419ab59b12f'
--        initrd_path_xz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
-+        initrd_path_xz = self.ASSET_F31_INITRD.fetch()
-         initrd_path = os.path.join(self.workdir, 'initrd-raw.img')
--        archive.lzma_uncompress(initrd_path_xz, initrd_path)
-+        lzma_uncompress(initrd_path_xz, initrd_path)
- 
-         self.vm.set_console()
-         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE + ' audit=0 '
-@@ -277,3 +271,6 @@ def test_s390x_fedora(self):
-         exec_command_and_wait_for_pattern(self,
-                         'while ! (dmesg -c | grep Start.virtcrypto_remove) ; do'
-                         ' sleep 1 ; done', 'Start virtcrypto_remove.')
-+
-+if __name__ == '__main__':
-+    QemuSystemTest.main()
-diff --git a/tests/avocado/s390_topology.py b/tests/functional/test_s390x_topology.py
-old mode 100644
-new mode 100755
-similarity index 88%
-rename from tests/avocado/s390_topology.py
-rename to tests/functional/test_s390x_topology.py
-index 9154ac8776..20727f6bdf
---- a/tests/avocado/s390_topology.py
-+++ b/tests/functional/test_s390x_topology.py
-@@ -1,3 +1,5 @@
-+#!/usr/bin/env python3
-+#
- # Functional test that boots a Linux kernel and checks the console
+ # Basic validation of x86 versioned CPU models and CPU model aliases
  #
- # Copyright IBM Corp. 2023
-@@ -9,16 +11,13 @@
- # later.  See the COPYING file in the top-level directory.
+@@ -20,15 +21,13 @@
+ # License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ #
  
- import os
--import shutil
- import time
+-
+-import avocado_qemu
+ import re
  
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import exec_command
--from avocado_qemu import exec_command_and_wait_for_pattern
--from avocado_qemu import interrupt_interactive_console_until_pattern
--from avocado_qemu import wait_for_console_pattern
--from avocado.utils import process
--from avocado.utils import archive
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import exec_command
-+from qemu_test import exec_command_and_wait_for_pattern
-+from qemu_test import wait_for_console_pattern
-+from qemu_test.utils import lzma_uncompress
- 
- 
- class S390CPUTopology(QemuSystemTest):
-@@ -47,6 +46,17 @@ class S390CPUTopology(QemuSystemTest):
-                                   'root=/dev/ram '
-                                   'selinux=0 '
-                                   'rdinit=/bin/sh')
-+    ASSET_F35_KERNEL = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive'
-+         '/fedora-secondary/releases/35/Server/s390x/os'
-+         '/images/kernel.img'),
-+        '1f2dddfd11bb1393dd2eb2e784036fbf6fc11057a6d7d27f9eb12d3edc67ef73')
+-class X86CPUModelAliases(avocado_qemu.QemuSystemTest):
++from qemu_test import QemuSystemTest
 +
-+    ASSET_F35_INITRD = Asset(
-+        ('https://archives.fedoraproject.org/pub/archive'
-+         '/fedora-secondary/releases/35/Server/s390x/os'
-+         '/images/initrd.img'),
-+        '1100145fbca00240c8c372ae4b89b48c99844bc189b3dfbc3f481dc60055ca46')
++class X86CPUModelAliases(QemuSystemTest):
+     """
+     Validation of PC CPU model versions and CPU model aliases
+-
+-    :avocado: tags=arch:x86_64
+     """
+     def validate_aliases(self, cpus):
+         for c in cpus.values():
+@@ -76,9 +75,8 @@ def validate_variant_aliases(self, cpus):
+     def test_4_0_alias_compatibility(self):
+         """
+         Check if pc-*-4.0 unversioned CPU model won't be reported as aliases
+-
+-        :avocado: tags=machine:pc-i440fx-4.0
+         """
++        self.set_machine('pc-i440fx-4.0')
+         # pc-*-4.0 won't expose non-versioned CPU models as aliases
+         # We do this to help management software to keep compatibility
+         # with older QEMU versions that didn't have the versioned CPU model
+@@ -110,9 +108,8 @@ def test_4_0_alias_compatibility(self):
+     def test_4_1_alias(self):
+         """
+         Check if unversioned CPU model is an alias pointing to right version
+-
+-        :avocado: tags=machine:pc-i440fx-4.1
+         """
++        self.set_machine('pc-i440fx-4.1')
+         self.vm.add_args('-S')
+         self.vm.launch()
  
-     def wait_until_booted(self):
-         wait_for_console_pattern(self, 'no job control',
-@@ -78,21 +88,10 @@ def kernel_init(self):
-         We need a minimal root filesystem with a shell.
+@@ -217,9 +214,8 @@ def test_4_1_alias(self):
+     def test_none_alias(self):
          """
-         self.require_accelerator("kvm")
--        kernel_url = ('https://archives.fedoraproject.org/pub/archive'
--                      '/fedora-secondary/releases/35/Server/s390x/os'
--                      '/images/kernel.img')
--        kernel_hash = '0d1aaaf303f07cf0160c8c48e56fe638'
--        kernel_path = self.fetch_asset(kernel_url, algorithm='md5',
--                                       asset_hash=kernel_hash)
+         Check if unversioned CPU model is an alias pointing to some version
 -
--        initrd_url = ('https://archives.fedoraproject.org/pub/archive'
--                      '/fedora-secondary/releases/35/Server/s390x/os'
--                      '/images/initrd.img')
--        initrd_hash = 'a122057d95725ac030e2ec51df46e172'
--        initrd_path_xz = self.fetch_asset(initrd_url, algorithm='md5',
--                                          asset_hash=initrd_hash)
-+        kernel_path = self.ASSET_F35_KERNEL.fetch()
-+        initrd_path_xz = self.ASSET_F35_INITRD.fetch()
-         initrd_path = os.path.join(self.workdir, 'initrd-raw.img')
--        archive.lzma_uncompress(initrd_path_xz, initrd_path)
-+        lzma_uncompress(initrd_path_xz, initrd_path)
+-        :avocado: tags=machine:none
+         """
++        self.set_machine('none')
+         self.vm.add_args('-S')
+         self.vm.launch()
  
-         self.vm.set_console()
-         kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
-@@ -115,10 +114,8 @@ def system_init(self):
-     def test_single(self):
-         """
-         This test checks the simplest topology with a single CPU.
--
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
-         """
-+        self.set_machine('s390-ccw-virtio')
-         self.kernel_init()
-         self.vm.launch()
-         self.wait_until_booted()
-@@ -127,10 +124,8 @@ def test_single(self):
-     def test_default(self):
-         """
-         This test checks the implicit topology.
--
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
-         """
-+        self.set_machine('s390-ccw-virtio')
-         self.kernel_init()
-         self.vm.add_args('-smp',
-                          '13,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
-@@ -154,10 +149,8 @@ def test_move(self):
-         """
-         This test checks the topology modification by moving a CPU
-         to another socket: CPU 0 is moved from socket 0 to socket 2.
--
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
-         """
-+        self.set_machine('s390-ccw-virtio')
-         self.kernel_init()
-         self.vm.add_args('-smp',
-                          '1,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
-@@ -174,10 +167,8 @@ def test_dash_device(self):
-         """
-         This test verifies that a CPU defined with the '-device'
-         command line option finds its right place inside the topology.
--
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
-         """
-+        self.set_machine('s390-ccw-virtio')
-         self.kernel_init()
-         self.vm.add_args('-smp',
-                          '1,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
-@@ -221,10 +212,8 @@ def test_polarization(self):
-         """
-         This test verifies that QEMU modifies the entitlement change after
-         several guest polarization change requests.
--
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
-         """
-+        self.set_machine('s390-ccw-virtio')
-         self.kernel_init()
-         self.vm.launch()
-         self.wait_until_booted()
-@@ -267,10 +256,8 @@ def test_entitlement(self):
-         """
-         This test verifies that QEMU modifies the entitlement
-         after a guest request and that the guest sees the change.
--
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
-         """
-+        self.set_machine('s390-ccw-virtio')
-         self.kernel_init()
-         self.vm.launch()
-         self.wait_until_booted()
-@@ -313,10 +300,8 @@ def test_dedicated(self):
-         CPU is made dedicated.
-         QEMU retains the entitlement value when horizontal polarization is in effect.
-         For the guest, the field shows the effective value of the entitlement.
--
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
-         """
-+        self.set_machine('s390-ccw-virtio')
-         self.kernel_init()
-         self.vm.launch()
-         self.wait_until_booted()
-@@ -345,10 +330,8 @@ def test_socket_full(self):
-         This test verifies that QEMU does not accept to overload a socket.
-         The socket-id 0 on book-id 0 already contains CPUs 0 and 1 and can
-         not accept any new CPU while socket-id 0 on book-id 1 is free.
--
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
-         """
-+        self.set_machine('s390-ccw-virtio')
-         self.kernel_init()
-         self.vm.add_args('-smp',
-                          '3,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
-@@ -369,10 +352,8 @@ def test_dedicated_error(self):
-         """
-         This test verifies that QEMU refuses to lower the entitlement
-         of a dedicated CPU
--
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
-         """
-+        self.set_machine('s390-ccw-virtio')
-         self.kernel_init()
-         self.vm.launch()
-         self.wait_until_booted()
-@@ -417,10 +398,8 @@ def test_move_error(self):
-         """
-         This test verifies that QEMU refuses to move a CPU to an
-         nonexistent location
--
--        :avocado: tags=arch:s390x
--        :avocado: tags=machine:s390-ccw-virtio
-         """
-+        self.set_machine('s390-ccw-virtio')
-         self.kernel_init()
-         self.vm.launch()
-         self.wait_until_booted()
-@@ -437,3 +416,6 @@ def test_move_error(self):
-         self.assertEqual(res['error']['class'], 'GenericError')
+@@ -243,21 +239,16 @@ def test_none_alias(self):
+         self.validate_aliases(cpus)
  
-         self.check_topology(0, 0, 0, 0, 'medium', False)
+ 
+-class CascadelakeArchCapabilities(avocado_qemu.QemuSystemTest):
++class CascadelakeArchCapabilities(QemuSystemTest):
+     """
+     Validation of Cascadelake arch-capabilities
+-
+-    :avocado: tags=arch:x86_64
+     """
+     def get_cpu_prop(self, prop):
+         cpu_path = self.vm.cmd('query-cpus-fast')[0].get('qom-path')
+         return self.vm.cmd('qom-get', path=cpu_path, property=prop)
+ 
+     def test_4_1(self):
+-        """
+-        :avocado: tags=machine:pc-i440fx-4.1
+-        :avocado: tags=cpu:Cascadelake-Server
+-        """
++        self.set_machine('pc-i440fx-4.1')
+         # machine-type only:
+         self.vm.add_args('-S')
+         self.set_vm_arg('-cpu',
+@@ -268,10 +259,7 @@ def test_4_1(self):
+                          'pc-i440fx-4.1 + Cascadelake-Server should not have arch-capabilities')
+ 
+     def test_4_0(self):
+-        """
+-        :avocado: tags=machine:pc-i440fx-4.0
+-        :avocado: tags=cpu:Cascadelake-Server
+-        """
++        self.set_machine('pc-i440fx-4.0')
+         self.vm.add_args('-S')
+         self.set_vm_arg('-cpu',
+                         'Cascadelake-Server,x-force-features=on,check=off,'
+@@ -281,10 +269,7 @@ def test_4_0(self):
+                          'pc-i440fx-4.0 + Cascadelake-Server should not have arch-capabilities')
+ 
+     def test_set_4_0(self):
+-        """
+-        :avocado: tags=machine:pc-i440fx-4.0
+-        :avocado: tags=cpu:Cascadelake-Server
+-        """
++        self.set_machine('pc-i440fx-4.0')
+         # command line must override machine-type if CPU model is not versioned:
+         self.vm.add_args('-S')
+         self.set_vm_arg('-cpu',
+@@ -295,10 +280,7 @@ def test_set_4_0(self):
+                         'pc-i440fx-4.0 + Cascadelake-Server,+arch-capabilities should have arch-capabilities')
+ 
+     def test_unset_4_1(self):
+-        """
+-        :avocado: tags=machine:pc-i440fx-4.1
+-        :avocado: tags=cpu:Cascadelake-Server
+-        """
++        self.set_machine('pc-i440fx-4.1')
+         self.vm.add_args('-S')
+         self.set_vm_arg('-cpu',
+                         'Cascadelake-Server,x-force-features=on,check=off,'
+@@ -308,10 +290,7 @@ def test_unset_4_1(self):
+                          'pc-i440fx-4.1 + Cascadelake-Server,-arch-capabilities should not have arch-capabilities')
+ 
+     def test_v1_4_0(self):
+-        """
+-        :avocado: tags=machine:pc-i440fx-4.0
+-        :avocado: tags=cpu:Cascadelake-Server
+-        """
++        self.set_machine('pc-i440fx-4.0')
+         # versioned CPU model overrides machine-type:
+         self.vm.add_args('-S')
+         self.set_vm_arg('-cpu',
+@@ -322,10 +301,7 @@ def test_v1_4_0(self):
+                          'pc-i440fx-4.0 + Cascadelake-Server-v1 should not have arch-capabilities')
+ 
+     def test_v2_4_0(self):
+-        """
+-        :avocado: tags=machine:pc-i440fx-4.0
+-        :avocado: tags=cpu:Cascadelake-Server
+-        """
++        self.set_machine('pc-i440fx-4.0')
+         self.vm.add_args('-S')
+         self.set_vm_arg('-cpu',
+                         'Cascadelake-Server-v2,x-force-features=on,check=off,'
+@@ -335,10 +311,7 @@ def test_v2_4_0(self):
+                         'pc-i440fx-4.0 + Cascadelake-Server-v2 should have arch-capabilities')
+ 
+     def test_v1_set_4_0(self):
+-        """
+-        :avocado: tags=machine:pc-i440fx-4.0
+-        :avocado: tags=cpu:Cascadelake-Server
+-        """
++        self.set_machine('pc-i440fx-4.0')
+         # command line must override machine-type and versioned CPU model:
+         self.vm.add_args('-S')
+         self.set_vm_arg('-cpu',
+@@ -349,10 +322,7 @@ def test_v1_set_4_0(self):
+                         'pc-i440fx-4.0 + Cascadelake-Server-v1,+arch-capabilities should have arch-capabilities')
+ 
+     def test_v2_unset_4_1(self):
+-        """
+-        :avocado: tags=machine:pc-i440fx-4.1
+-        :avocado: tags=cpu:Cascadelake-Server
+-        """
++        self.set_machine('pc-i440fx-4.1')
+         self.vm.add_args('-S')
+         self.set_vm_arg('-cpu',
+                         'Cascadelake-Server-v2,x-force-features=on,check=off,'
+@@ -360,3 +330,6 @@ def test_v2_unset_4_1(self):
+         self.vm.launch()
+         self.assertFalse(self.get_cpu_prop('arch-capabilities'),
+                          'pc-i440fx-4.1 + Cascadelake-Server-v2,-arch-capabilities should not have arch-capabilities')
 +
 +if __name__ == '__main__':
 +    QemuSystemTest.main()
