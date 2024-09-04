@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C3996BA7E
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 13:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 100D596BA6A
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 13:26:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slo94-0007pj-Ow; Wed, 04 Sep 2024 07:25:54 -0400
+	id 1slo8U-0005N3-JK; Wed, 04 Sep 2024 07:25:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1slo8Z-0005mc-GB
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 07:25:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1slo8R-0005EB-Gc
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 07:25:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1slo8V-0004UV-Jp
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 07:25:22 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1slo8N-0004Q8-Uk
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 07:25:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725449118;
+ s=mimecast20190719; t=1725449109;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AOXOx69AjXFnVeSXCiUEnvi9+g/XRHvEVNlHUQEOkmw=;
- b=PBFTwjXofXPKv1dGdMWPMw8/CAXCNF7fHwduLysO0WddfGEW62ZCfy02x/1dQXBKobAURa
- t9YfDsXJ/OHHevoh54CpOdDSOsAw0ieN3aOjsvKDzVzujeFeaSxCPGLdsY0ZkYwhNjhZ31
- f5Jz9ZxA9U0yF/JIXFSGJvBMkfjucxY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=nUroX0vXvKhL/8z7tcNdIRkDute+jOG+hDXiUvRu6WU=;
+ b=PtGyxMm0YePFN+L6iL1iza941p9kujgYv3G44BwSiOYznwaWTUyub3T8+9cF1viR/ZwjFN
+ s0moJNqJ2EwvjwLhtC18WTqq4OHTzt6CdEbCQoY5uQH8MruOG7NRKZ4XJbdGqlxQuHt4fB
+ ww1SXgrGODACBgbJBhvSuOl3ifb09s0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-ofAYSMSyOQ-lOH4Y7zlY6Q-1; Wed,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-iYG9wXhTNGKOqN7f6QET-Q-1; Wed,
  04 Sep 2024 07:18:50 -0400
-X-MC-Unique: ofAYSMSyOQ-lOH4Y7zlY6Q-1
+X-MC-Unique: iYG9wXhTNGKOqN7f6QET-Q-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C6CEF1955D45; Wed,  4 Sep 2024 11:18:41 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AF1DD1955F25; Wed,  4 Sep 2024 11:18:46 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.112])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9702119560A3; Wed,  4 Sep 2024 11:18:38 +0000 (UTC)
+ id BCA411956052; Wed,  4 Sep 2024 11:18:43 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9C53021E6889; Wed,  4 Sep 2024 13:18:36 +0200 (CEST)
+ id A118621E688F; Wed,  4 Sep 2024 13:18:36 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, andrew@codeconstruct.com.au, andrew@daynix.com,
@@ -62,24 +62,24 @@ Cc: alex.williamson@redhat.com, andrew@codeconstruct.com.au, andrew@daynix.com,
  vsementsov@yandex-team.ru, wangyanan55@huawei.com,
  yuri.benditovich@daynix.com, zhao1.liu@intel.com, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, qemu-s390x@nongnu.org, kvm@vger.kernel.org,
- avihaih@nvidia.com, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 04/19] qapi/common: Drop temporary 'prefix'
-Date: Wed,  4 Sep 2024 13:18:21 +0200
-Message-ID: <20240904111836.3273842-5-armbru@redhat.com>
+ avihaih@nvidia.com
+Subject: [PATCH v2 05/19] qapi/crypto: Drop temporary 'prefix'
+Date: Wed,  4 Sep 2024 13:18:22 +0200
+Message-ID: <20240904111836.3273842-6-armbru@redhat.com>
 In-Reply-To: <20240904111836.3273842-1-armbru@redhat.com>
 References: <20240904111836.3273842-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
 X-Spam_bar: +
 X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
@@ -98,80 +98,246 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Recent commit "qapi: Smarter camel_to_upper() to reduce need for
-'prefix'" added a temporary 'prefix' to delay changing the generated
+'prefix'" added two temporary 'prefix' to delay changing the generated
 code.
 
-Revert it.  This improves OffAutoPCIBAR's generated enumeration
-constant prefix from OFF_AUTOPCIBAR to OFF_AUTO_PCIBAR.
+Revert them.  This improves QCryptoBlockFormat's generated enumeration
+constant prefix from Q_CRYPTO_BLOCK_FORMAT to QCRYPTO_BLOCK_FORMAT,
+and QCryptoBlockLUKSKeyslotState's from
+Q_CRYPTO_BLOCKLUKS_KEYSLOT_STATE to QCRYPTO_BLOCK_LUKS_KEYSLOT_STATE.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Acked-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qapi/common.json |  1 -
- hw/vfio/pci.c    | 10 +++++-----
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ qapi/crypto.json               |  2 --
+ block/crypto.c                 | 10 +++++-----
+ block/qcow.c                   |  2 +-
+ block/qcow2.c                  | 10 +++++-----
+ crypto/block-luks.c            |  4 ++--
+ crypto/block.c                 |  4 ++--
+ tests/unit/test-crypto-block.c | 14 +++++++-------
+ 7 files changed, 22 insertions(+), 24 deletions(-)
 
-diff --git a/qapi/common.json b/qapi/common.json
-index 25726d3113..7558ce5430 100644
---- a/qapi/common.json
-+++ b/qapi/common.json
-@@ -92,7 +92,6 @@
- # Since: 2.12
+diff --git a/qapi/crypto.json b/qapi/crypto.json
+index a192641a03..fb00c706b2 100644
+--- a/qapi/crypto.json
++++ b/qapi/crypto.json
+@@ -157,7 +157,6 @@
+ # Since: 2.6
  ##
- { 'enum': 'OffAutoPCIBAR',
--  'prefix': 'OFF_AUTOPCIBAR',   # TODO drop
-   'data': [ 'off', 'auto', 'bar0', 'bar1', 'bar2', 'bar3', 'bar4', 'bar5' ] }
+ { 'enum': 'QCryptoBlockFormat',
+-  'prefix': 'Q_CRYPTO_BLOCK_FORMAT', # TODO drop
+   'data': ['qcow', 'luks']}
  
  ##
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 2407720c35..0a99e55247 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -1452,7 +1452,7 @@ static bool vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
-     int target_bar = -1;
-     size_t msix_sz;
+@@ -360,7 +359,6 @@
+ # Since: 5.1
+ ##
+ { 'enum': 'QCryptoBlockLUKSKeyslotState',
+-  'prefix': 'Q_CRYPTO_BLOCKLUKS_KEYSLOT_STATE', # TODO drop
+   'data': [ 'active', 'inactive' ] }
  
--    if (!vdev->msix || vdev->msix_relo == OFF_AUTOPCIBAR_OFF) {
-+    if (!vdev->msix || vdev->msix_relo == OFF_AUTO_PCIBAR_OFF) {
-         return true;
+ ##
+diff --git a/block/crypto.c b/block/crypto.c
+index 4eed3ffa6a..80b2dba17a 100644
+--- a/block/crypto.c
++++ b/block/crypto.c
+@@ -682,7 +682,7 @@ err:
+ static int block_crypto_probe_luks(const uint8_t *buf,
+                                    int buf_size,
+                                    const char *filename) {
+-    return block_crypto_probe_generic(Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    return block_crypto_probe_generic(QCRYPTO_BLOCK_FORMAT_LUKS,
+                                       buf, buf_size, filename);
+ }
+ 
+@@ -691,7 +691,7 @@ static int block_crypto_open_luks(BlockDriverState *bs,
+                                   int flags,
+                                   Error **errp)
+ {
+-    return block_crypto_open_generic(Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    return block_crypto_open_generic(QCRYPTO_BLOCK_FORMAT_LUKS,
+                                      &block_crypto_runtime_opts_luks,
+                                      bs, options, flags, errp);
+ }
+@@ -724,7 +724,7 @@ block_crypto_co_create_luks(BlockdevCreateOptions *create_options, Error **errp)
      }
  
-@@ -1464,7 +1464,7 @@ static bool vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
-     /* PCI BARs must be a power of 2 */
-     msix_sz = pow2ceil(msix_sz);
+     create_opts = (QCryptoBlockCreateOptions) {
+-        .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++        .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+         .u.luks = *qapi_BlockdevCreateOptionsLUKS_base(luks_opts),
+     };
  
--    if (vdev->msix_relo == OFF_AUTOPCIBAR_AUTO) {
-+    if (vdev->msix_relo == OFF_AUTO_PCIBAR_AUTO) {
-         /*
-          * TODO: Lookup table for known devices.
-          *
-@@ -1479,7 +1479,7 @@ static bool vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
-             return false;
+@@ -889,7 +889,7 @@ block_crypto_get_specific_info_luks(BlockDriverState *bs, Error **errp)
+     if (!info) {
+         return NULL;
+     }
+-    assert(info->format == Q_CRYPTO_BLOCK_FORMAT_LUKS);
++    assert(info->format == QCRYPTO_BLOCK_FORMAT_LUKS);
+ 
+     spec_info = g_new(ImageInfoSpecific, 1);
+     spec_info->type = IMAGE_INFO_SPECIFIC_KIND_LUKS;
+@@ -1002,7 +1002,7 @@ coroutine_fn block_crypto_co_amend_luks(BlockDriverState *bs,
+     QCryptoBlockAmendOptions amend_opts;
+ 
+     amend_opts = (QCryptoBlockAmendOptions) {
+-        .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++        .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+         .u.luks = *qapi_BlockdevAmendOptionsLUKS_base(&opts->u.luks),
+     };
+     return block_crypto_amend_options_generic_luks(bs, &amend_opts,
+diff --git a/block/qcow.c b/block/qcow.c
+index c2f89db055..84d1cca296 100644
+--- a/block/qcow.c
++++ b/block/qcow.c
+@@ -831,7 +831,7 @@ qcow_co_create(BlockdevCreateOptions *opts, Error **errp)
+     }
+ 
+     if (qcow_opts->encrypt &&
+-        qcow_opts->encrypt->format != Q_CRYPTO_BLOCK_FORMAT_QCOW)
++        qcow_opts->encrypt->format != QCRYPTO_BLOCK_FORMAT_QCOW)
+     {
+         error_setg(errp, "Unsupported encryption format");
+         return -EINVAL;
+diff --git a/block/qcow2.c b/block/qcow2.c
+index 70b19730a3..dd359d241b 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -3214,10 +3214,10 @@ qcow2_set_up_encryption(BlockDriverState *bs,
+     int fmt, ret;
+ 
+     switch (cryptoopts->format) {
+-    case Q_CRYPTO_BLOCK_FORMAT_LUKS:
++    case QCRYPTO_BLOCK_FORMAT_LUKS:
+         fmt = QCOW_CRYPT_LUKS;
+         break;
+-    case Q_CRYPTO_BLOCK_FORMAT_QCOW:
++    case QCRYPTO_BLOCK_FORMAT_QCOW:
+         fmt = QCOW_CRYPT_AES;
+         break;
+     default:
+@@ -5306,10 +5306,10 @@ qcow2_get_specific_info(BlockDriverState *bs, Error **errp)
+         ImageInfoSpecificQCow2Encryption *qencrypt =
+             g_new(ImageInfoSpecificQCow2Encryption, 1);
+         switch (encrypt_info->format) {
+-        case Q_CRYPTO_BLOCK_FORMAT_QCOW:
++        case QCRYPTO_BLOCK_FORMAT_QCOW:
+             qencrypt->format = BLOCKDEV_QCOW2_ENCRYPTION_FORMAT_AES;
+             break;
+-        case Q_CRYPTO_BLOCK_FORMAT_LUKS:
++        case QCRYPTO_BLOCK_FORMAT_LUKS:
+             qencrypt->format = BLOCKDEV_QCOW2_ENCRYPTION_FORMAT_LUKS;
+             qencrypt->u.luks = encrypt_info->u.luks;
+             break;
+@@ -5948,7 +5948,7 @@ static int coroutine_fn qcow2_co_amend(BlockDriverState *bs,
+             return -EOPNOTSUPP;
          }
-     } else {
--        target_bar = (int)(vdev->msix_relo - OFF_AUTOPCIBAR_BAR0);
-+        target_bar = (int)(vdev->msix_relo - OFF_AUTO_PCIBAR_BAR0);
-     }
  
-     /* I/O port BARs cannot host MSI-X structures */
-@@ -1624,7 +1624,7 @@ static bool vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
-         } else if (vfio_pci_is(vdev, PCI_VENDOR_ID_BAIDU,
-                                PCI_DEVICE_ID_KUNLUN_VF)) {
-             msix->pba_offset = 0xb400;
--        } else if (vdev->msix_relo == OFF_AUTOPCIBAR_OFF) {
-+        } else if (vdev->msix_relo == OFF_AUTO_PCIBAR_OFF) {
-             error_setg(errp, "hardware reports invalid configuration, "
-                        "MSIX PBA outside of specified BAR");
-             g_free(msix);
-@@ -3403,7 +3403,7 @@ static Property vfio_pci_dev_properties[] = {
-                                    nv_gpudirect_clique,
-                                    qdev_prop_nv_gpudirect_clique, uint8_t),
-     DEFINE_PROP_OFF_AUTO_PCIBAR("x-msix-relocation", VFIOPCIDevice, msix_relo,
--                                OFF_AUTOPCIBAR_OFF),
-+                                OFF_AUTO_PCIBAR_OFF),
- #ifdef CONFIG_IOMMUFD
-     DEFINE_PROP_LINK("iommufd", VFIOPCIDevice, vbasedev.iommufd,
-                      TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
+-        if (qopts->encrypt->format != Q_CRYPTO_BLOCK_FORMAT_LUKS) {
++        if (qopts->encrypt->format != QCRYPTO_BLOCK_FORMAT_LUKS) {
+             error_setg(errp,
+                        "Amend can't be used to change the qcow2 encryption format");
+             return -EOPNOTSUPP;
+diff --git a/crypto/block-luks.c b/crypto/block-luks.c
+index 45347adeeb..7b9c7b292d 100644
+--- a/crypto/block-luks.c
++++ b/crypto/block-luks.c
+@@ -1861,11 +1861,11 @@ qcrypto_block_luks_amend_options(QCryptoBlock *block,
+     QCryptoBlockAmendOptionsLUKS *opts_luks = &options->u.luks;
+ 
+     switch (opts_luks->state) {
+-    case Q_CRYPTO_BLOCKLUKS_KEYSLOT_STATE_ACTIVE:
++    case QCRYPTO_BLOCK_LUKS_KEYSLOT_STATE_ACTIVE:
+         return qcrypto_block_luks_amend_add_keyslot(block, readfunc,
+                                                     writefunc, opaque,
+                                                     opts_luks, force, errp);
+-    case Q_CRYPTO_BLOCKLUKS_KEYSLOT_STATE_INACTIVE:
++    case QCRYPTO_BLOCK_LUKS_KEYSLOT_STATE_INACTIVE:
+         return qcrypto_block_luks_amend_erase_keyslots(block, readfunc,
+                                                        writefunc, opaque,
+                                                        opts_luks, force, errp);
+diff --git a/crypto/block.c b/crypto/block.c
+index 3bcc4270c3..899561a080 100644
+--- a/crypto/block.c
++++ b/crypto/block.c
+@@ -26,8 +26,8 @@
+ #include "block-luks.h"
+ 
+ static const QCryptoBlockDriver *qcrypto_block_drivers[] = {
+-    [Q_CRYPTO_BLOCK_FORMAT_QCOW] = &qcrypto_block_driver_qcow,
+-    [Q_CRYPTO_BLOCK_FORMAT_LUKS] = &qcrypto_block_driver_luks,
++    [QCRYPTO_BLOCK_FORMAT_QCOW] = &qcrypto_block_driver_qcow,
++    [QCRYPTO_BLOCK_FORMAT_LUKS] = &qcrypto_block_driver_luks,
+ };
+ 
+ 
+diff --git a/tests/unit/test-crypto-block.c b/tests/unit/test-crypto-block.c
+index 42cfab6067..2a6c6e99e5 100644
+--- a/tests/unit/test-crypto-block.c
++++ b/tests/unit/test-crypto-block.c
+@@ -39,14 +39,14 @@
+ #endif
+ 
+ static QCryptoBlockCreateOptions qcow_create_opts = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_QCOW,
++    .format = QCRYPTO_BLOCK_FORMAT_QCOW,
+     .u.qcow = {
+         .key_secret = (char *)"sec0",
+     },
+ };
+ 
+ static QCryptoBlockOpenOptions qcow_open_opts = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_QCOW,
++    .format = QCRYPTO_BLOCK_FORMAT_QCOW,
+     .u.qcow = {
+         .key_secret = (char *)"sec0",
+     },
+@@ -55,7 +55,7 @@ static QCryptoBlockOpenOptions qcow_open_opts = {
+ 
+ #ifdef TEST_LUKS
+ static QCryptoBlockOpenOptions luks_open_opts = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+     .u.luks = {
+         .key_secret = (char *)"sec0",
+     },
+@@ -64,7 +64,7 @@ static QCryptoBlockOpenOptions luks_open_opts = {
+ 
+ /* Creation with all default values */
+ static QCryptoBlockCreateOptions luks_create_opts_default = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+     .u.luks = {
+         .key_secret = (char *)"sec0",
+     },
+@@ -73,7 +73,7 @@ static QCryptoBlockCreateOptions luks_create_opts_default = {
+ 
+ /* ...and with explicit values */
+ static QCryptoBlockCreateOptions luks_create_opts_aes256_cbc_plain64 = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+     .u.luks = {
+         .key_secret = (char *)"sec0",
+         .has_cipher_alg = true,
+@@ -87,7 +87,7 @@ static QCryptoBlockCreateOptions luks_create_opts_aes256_cbc_plain64 = {
+ 
+ 
+ static QCryptoBlockCreateOptions luks_create_opts_aes256_cbc_essiv = {
+-    .format = Q_CRYPTO_BLOCK_FORMAT_LUKS,
++    .format = QCRYPTO_BLOCK_FORMAT_LUKS,
+     .u.luks = {
+         .key_secret = (char *)"sec0",
+         .has_cipher_alg = true,
+@@ -572,7 +572,7 @@ int main(int argc, char **argv)
+     g_assert(qcrypto_init(NULL) == 0);
+ 
+     for (i = 0; i < G_N_ELEMENTS(test_data); i++) {
+-        if (test_data[i].open_opts->format == Q_CRYPTO_BLOCK_FORMAT_LUKS &&
++        if (test_data[i].open_opts->format == QCRYPTO_BLOCK_FORMAT_LUKS &&
+             !qcrypto_hash_supports(test_data[i].hash_alg)) {
+             continue;
+         }
 -- 
 2.46.0
 
