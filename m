@@ -2,136 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205D996C3E3
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 18:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85BC396C422
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 18:29:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slsi4-000549-AL; Wed, 04 Sep 2024 12:18:20 -0400
+	id 1slsrv-0000RM-Aw; Wed, 04 Sep 2024 12:28:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slshv-0004Yh-II
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:18:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slshu-0003T2-5t
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:18:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725466687;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=MHBrLjpahhT9zdOwBSNzCLgHcj5d5PZc7PeoXAOahiw=;
- b=GmqgckW4jOnLKMXV9+MmK/vXesXVoQpNSIiB4U/4s7T2GCMSy/Q+FOac22ff/DiRe2kOOG
- E+G9bWMIbnlS7xHD8BRSpYklwBV36GddK120yni/QWkosxMYqvK2mQ52EFNNaa7MUbo+rB
- ozXXs6pIF2HGHD2W3PjikRhtqN/cJPA=
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
- [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-303-Tz0Fqgr6OC6O1H4DCt8D3w-1; Wed, 04 Sep 2024 12:18:06 -0400
-X-MC-Unique: Tz0Fqgr6OC6O1H4DCt8D3w-1
-Received: by mail-ot1-f70.google.com with SMTP id
- 46e09a7af769-70f65141ea1so7474375a34.2
- for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 09:18:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725466686; x=1726071486;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1slsre-0007ur-7c
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:28:17 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1slsrZ-0008G8-Th
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:28:13 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5c255e3c327so1072726a12.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 09:28:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725467288; x=1726072088; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MHBrLjpahhT9zdOwBSNzCLgHcj5d5PZc7PeoXAOahiw=;
- b=slX6s+q74Kh2B6bTIjfA3Redb5l5GH6V+yGgwFwfO8crz7ybTXlPD7Spe+rCtqoLWb
- 80iJV8tox3qRMlxcWtFToYhdoS3uVXXFMUwhWgqsgqy+0WZiwkPFMZC4WWKxyJNgQa36
- JdDPuOvPKy0VRfAQt89fo0xMhCcIiIgxSgcLJDKC2gT0KrwYLkkGALexcHmVUkg9G6zp
- Oo+WvsmghdGgPFjXQcNmWr67r2862cUcQmAEvRPtx19Zjv+udfyOrS5c55qMcKoMNgjU
- F6F0cCCWECpSHoJn2JQl5oQLL1rUPFfkxa6TqplXSOuo3+agTb4NQ5EwxsFydmhYiqXm
- S9Hg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWcdqDRGFLOFfz1FtY3pXKp1BnASjKfORSAufkTAHV75hrslye+CYRe5akdH0XnuPGu8x8d9VGPgw1G@nongnu.org
-X-Gm-Message-State: AOJu0Yx/oSNEz6KvQyHKAtWgVLM4Cucc5gseVFv5Osym7IeWUA4z6oqN
- X6Qj+77U9qQUIpdqG8vMO+pVcc/sNb6PMDATPtZ12gV8aHY/nsecJjrmRc4IQ6nBdeR4VxPgKxb
- YhXPk113MXQc5FszxBovERQWtjMIKiiXSK+o8UZkE8ElujFryo7vU
-X-Received: by 2002:a05:6358:e4a9:b0:1ad:282:126d with SMTP id
- e5c5f4694b2df-1b7ef6c80cfmr1834207555d.12.1725466685801; 
- Wed, 04 Sep 2024 09:18:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEK3FIsbrQDnxuzrC/EUK7yvqFwQg5QZ/OHLwmT7xVM2F73TyhemDB0twP3G4DH0EMm7h25w==
-X-Received: by 2002:a05:6358:e4a9:b0:1ad:282:126d with SMTP id
- e5c5f4694b2df-1b7ef6c80cfmr1834204455d.12.1725466685465; 
- Wed, 04 Sep 2024 09:18:05 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-176-181.web.vodafone.de.
- [109.43.176.181]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c512ea989fsm15405706d6.146.2024.09.04.09.18.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Sep 2024 09:18:05 -0700 (PDT)
-Message-ID: <f5318ae8-71d2-44b9-943c-678f36d30479@redhat.com>
-Date: Wed, 4 Sep 2024 18:18:02 +0200
+ bh=fXXhl4CJXDtlxvl2crNT0P+bjEEaqNFUweTP6XymyCU=;
+ b=n848wT47o9dtUOacwEFLVt4zU2G3JtMyEUD5FoKMtSXYIrZnbES8lM/W7TYyQVYAwN
+ Vwt/FJxP77ck95MtmznC/P7tr7eHfuZPJCbtr0WNmo9eWDuWwsecFvgNXj/W2XYov2VR
+ HZxwPmQmZVAGwG+2+tt68gNSzxNalnqz1d9xMP1Z/8Mcmcpah17dnNQKWqxQXdy51MOu
+ aRSoUZP+cXaxgGNWb4RSAxjIuUUJv2Sz+jgZaN/k6fbkfbbeZ9eJ42ID/ByBqJFfb911
+ TtOXtwvVOmB6MTJISuEyfKqtm98o92p5VZPkxAmLCaGV3ejv5CCBKI6/diMMXjhne44F
+ yrEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725467288; x=1726072088;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=fXXhl4CJXDtlxvl2crNT0P+bjEEaqNFUweTP6XymyCU=;
+ b=vbf0wqo2f0qNEWa4qXwgj6I3/78FFoBJLIXfI7wVo20ZPBE5rghKb8w5Rej9vPOQwQ
+ YZYUEXXj9c6LDshGj17Nqn36IUiQlIta17XCEI37gKjU1RXrqktCdADAZlU36oGlAybr
+ nbl4qEoJBqVFSS29LEUs4FGHNUKuYMn/ybJQ2nO6uQSuaK0xnPjRYgL7bpRSOViiIN+5
+ GuSotEI0Ekd3z9ETuNZZlzxQ5gIM8Hft5QQagW/2919I3VlEE8BBlHUsOjfU6gz4uU1l
+ ojkhMULZ+R49kuabAzzdwz8RWDGi2S8Bm+QDO+tZ06Jdidp1Tsb5gQUKStsnr74mAGjE
+ KZZQ==
+X-Gm-Message-State: AOJu0YyaanLctA7PtXKhbPGkQy1fr8422Q94x5F8jk/DnFxHFDSx1ZDs
+ yWO7pTviKQLGwlJP0RNjlddRWLyTtHkNdnPZ3UpiIOOhNhYkoIiAJgfZ0b9hJIA=
+X-Google-Smtp-Source: AGHT+IE+a04CMF5mIPgjMeSDWgKqe3dkJ48b/JodS4r+2C99Se4PrMwU7wW3sGQnlL5h+BsM5vuRTA==
+X-Received: by 2002:a05:6402:2549:b0:5c2:2b1d:31e6 with SMTP id
+ 4fb4d7f45d1cf-5c2caf311a6mr1987152a12.29.1725467286859; 
+ Wed, 04 Sep 2024 09:28:06 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5c3cc698132sm94729a12.76.2024.09.04.09.28.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Sep 2024 09:28:06 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 37ECA5FA1C;
+ Wed,  4 Sep 2024 17:28:05 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org,  Alexandre Iooss <erdnaxe@crans.org>,  Zhao Liu
+ <zhao1.liu@intel.com>,  Mahmoud Mandour <ma.mandourr@gmail.com>,  Yanan
+ Wang <wangyanan55@huawei.com>,  Eduardo Habkost <eduardo@habkost.net>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?=
+ <philmd@linaro.org>,  Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Xingtao Yao
+ <yaoxt.fnst@fujitsu.com>
+Subject: Re: [PATCH v7 6/6] tests/tcg/multiarch: add test for plugin memory
+ access
+In-Reply-To: <87seuftoif.fsf@draig.linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9?=
+ =?utf-8?Q?e=22's?= message of "Wed, 04 Sep 2024 16:41:28 +0100")
+References: <20240724194708.1843704-1-pierrick.bouvier@linaro.org>
+ <20240724194708.1843704-7-pierrick.bouvier@linaro.org>
+ <87seuftoif.fsf@draig.linaro.org>
+User-Agent: mu4e 1.12.6; emacs 29.4
+Date: Wed, 04 Sep 2024 17:28:05 +0100
+Message-ID: <87jzfrtmcq.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/15] seccomp: Remove check for CRIS host
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Riku Voipio <riku.voipio@iki.fi>,
- Peter Maydell <peter.maydell@linaro.org>, devel@lists.libvirt.org
-References: <20240904143603.52934-1-philmd@linaro.org>
- <20240904143603.52934-16-philmd@linaro.org>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
- yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
- 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
- tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
- 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
- O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
- 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
- gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
- 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
- zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
- aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
- QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
- EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
- 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
- eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
- ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
- zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
- tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
- WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
- UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
- BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
- 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
- +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
- 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
- gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
- WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
- VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
- knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
- cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
- X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
- AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
- ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
- fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
- 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
- cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
- ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
- Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
- oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
- IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
- yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240904143603.52934-16-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -148,33 +105,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04/09/2024 16.36, Philippe Mathieu-Daudé wrote:
-> As per the deprecation notice in commit c7bbef4023:
-> 
->    The CRIS architecture was pulled from Linux in 4.17 and
->    the compiler is no longer packaged in any distro [...].
-> 
-> It is now unlikely QEMU is build on CRIS host.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   system/qemu-seccomp.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/system/qemu-seccomp.c b/system/qemu-seccomp.c
-> index 98ffce075c..a14a0c0635 100644
-> --- a/system/qemu-seccomp.c
-> +++ b/system/qemu-seccomp.c
-> @@ -50,7 +50,7 @@ const struct scmp_arg_cmp sched_setscheduler_arg[] = {
->    * See 'NOTES' in 'man 2 clone' - s390 & cross have 'flags' in
->    *  different position to other architectures
->    */
-> -#if defined(HOST_S390X) || defined(HOST_S390) || defined(HOST_CRIS)
-> +#if defined(HOST_S390X) || defined(HOST_S390)
->   #define CLONE_FLAGS_ARG 1
->   #else
->   #define CLONE_FLAGS_ARG 0
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+>
+>> Add an explicit test to check expected memory values are read/written.
+>> 8,16,32 load/store are tested for all arch.
+>> 64,128 load/store are tested for aarch64/x64.
+>> atomic operations (8,16,32,64) are tested for x64 only.
+>>
+>> By default, atomic accesses are non atomic if a single cpu is running,
+>> so we force creation of a second one by creating a new thread first.
+>>
+>> load/store helpers code path can't be triggered easily in user mode (no
+>> softmmu), so we can't test it here.
+>>
+>> Output of test-plugin-mem-access.c is the list of expected patterns in
+>> plugin output. By reading stdout, we can compare to plugins output and
+>> have a multiarch test.
+>>
+>> Can be run with:
+>> make -C build/tests/tcg/$ARCH-linux-user run-plugin-test-plugin-mem-acce=
+ss-with-libmem.so
+>>
+>> Tested-by: Xingtao Yao <yaoxt.fnst@fujitsu.com>
+>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> ---
+>>  tests/tcg/multiarch/test-plugin-mem-access.c  | 175 ++++++++++++++++++
+>>  tests/tcg/multiarch/Makefile.target           |   7 +
+>>  .../tcg/multiarch/check-plugin-mem-access.sh  |  30 +++
+>>  3 files changed, 212 insertions(+)
+>>  create mode 100644 tests/tcg/multiarch/test-plugin-mem-access.c
+>>  create mode 100755 tests/tcg/multiarch/check-plugin-mem-access.sh
+>>
+>> diff --git a/tests/tcg/multiarch/test-plugin-mem-access.c b/tests/tcg/mu=
+ltiarch/test-plugin-mem-access.c
+>> new file mode 100644
+>> index 00000000000..09d1fa22e35
+> <snip>
+>> diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/M=
+akefile.target
+>> index 5e3391ec9d2..d90cbd3e521 100644
+>> --- a/tests/tcg/multiarch/Makefile.target
+>> +++ b/tests/tcg/multiarch/Makefile.target
+>> @@ -170,5 +170,12 @@ run-plugin-semiconsole-with-%:
+>>  TESTS +=3D semihosting semiconsole
+>>  endif
+>>
+>
+> Also you need:
+>
+> test-plugin-mem-access: CFLAGS+=3D-pthread
+> test-plugin-mem-access: LDFLAGS+=3D-pthread
+>
+> So less tolerant gcc's include pthread (otherwise the alpha-linux-user
+> fails), with that fix I get:
+>
+>    TEST    check plugin libmem.so output with test-plugin-mem-access
+>   ",store_u8,.*,8,store,0xf1" not found in test-plugin-mem-access-with-li=
+bmem.so.pout
+>   make[1]: *** [Makefile:181: run-plugin-test-plugin-mem-access-with-libm=
+em.so] Error 1
+>   make: *** [/home/alex/lsrc/qemu.git/tests/Makefile.include:56: run-tcg-=
+tests-alpha-linux-user] Error 2
 
+And ensure we enable BWX for alpha so it emits bytes stores instead of
+faking it with masking:
+
+modified   tests/tcg/alpha/Makefile.target
+@@ -13,3 +13,5 @@ test-cmov: test-cond.c
+ 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+=20
+ run-test-cmov: test-cmov
++
++test-plugin-mem-access: CFLAGS+=3D-mbwx
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
