@@ -2,101 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFED96BCBB
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6279096BCDB
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:48:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slpNB-0003S7-KM; Wed, 04 Sep 2024 08:44:33 -0400
+	id 1slpNC-0003WP-Oc; Wed, 04 Sep 2024 08:44:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpN9-0003LM-Dk
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:31 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNB-0003SQ-8Z
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:33 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpN7-0005Qs-Lj
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:31 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpN9-0005Rm-JI
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:32 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 48495219D2;
- Wed,  4 Sep 2024 12:44:28 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 1EE961F38E;
+ Wed,  4 Sep 2024 12:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453870; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mXVgqh4miadmpincum38z66yhal5qVKzuhQP668uObs=;
- b=Xx76rvF3WSt/BYG5eikgXrTUYHjmqAz4F5WeZW96Ty07F/GmnCjR53fKmsGcujqRJe8Xfq
- wiqZOGvlA5e8evz80hrEBOBKy4XWiAdos3fZlfTv5ttaFXqAyXlNmwU3/cTaSArjzy6SLu
- RUD2XUg0oNkkHSYrUA0UHt/cmZ0ZeOg=
+ bh=GqaP/FCR+HWdzVs0QVMLDNAsRWxwmc3xCegKzUxtsN8=;
+ b=Ava6dQEZiRDFXQSAJ+BEw20Uudp8LvvzCFGd0ZkIZVy+GwJJijHcrLhqHpnFKTGyXrG+Sm
+ pGpDxygFhrNmylXu1VFMPkrXZuzMX9TMupCGDO/EwmFnfv5Zj/AphAc5AZDvIAHRSTC3pz
+ +mR8XPfmPUzPnngJ7Es2KrPrARn2hH4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453868;
+ s=susede2_ed25519; t=1725453870;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mXVgqh4miadmpincum38z66yhal5qVKzuhQP668uObs=;
- b=f8Mu4F4AhYTQOncVOYZzyz6OapkzgsXs4b3ZK11rnKAVKHdZlWzkQQ8FakSgIi+zZvE216
- 91c/D1P+WnNA7+Cw==
-Authentication-Results: smtp-out1.suse.de;
+ bh=GqaP/FCR+HWdzVs0QVMLDNAsRWxwmc3xCegKzUxtsN8=;
+ b=KYenGYCetC5k6R9d8w6qRLVX4Uv/FkN2E+Hj+jHiem+/3t6pyCk0t1IH0eF/J291+IKv3E
+ wMY/Wgf18K4tj7BA==
+Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453870; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mXVgqh4miadmpincum38z66yhal5qVKzuhQP668uObs=;
- b=Xx76rvF3WSt/BYG5eikgXrTUYHjmqAz4F5WeZW96Ty07F/GmnCjR53fKmsGcujqRJe8Xfq
- wiqZOGvlA5e8evz80hrEBOBKy4XWiAdos3fZlfTv5ttaFXqAyXlNmwU3/cTaSArjzy6SLu
- RUD2XUg0oNkkHSYrUA0UHt/cmZ0ZeOg=
+ bh=GqaP/FCR+HWdzVs0QVMLDNAsRWxwmc3xCegKzUxtsN8=;
+ b=Ava6dQEZiRDFXQSAJ+BEw20Uudp8LvvzCFGd0ZkIZVy+GwJJijHcrLhqHpnFKTGyXrG+Sm
+ pGpDxygFhrNmylXu1VFMPkrXZuzMX9TMupCGDO/EwmFnfv5Zj/AphAc5AZDvIAHRSTC3pz
+ +mR8XPfmPUzPnngJ7Es2KrPrARn2hH4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453868;
+ s=susede2_ed25519; t=1725453870;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mXVgqh4miadmpincum38z66yhal5qVKzuhQP668uObs=;
- b=f8Mu4F4AhYTQOncVOYZzyz6OapkzgsXs4b3ZK11rnKAVKHdZlWzkQQ8FakSgIi+zZvE216
- 91c/D1P+WnNA7+Cw==
+ bh=GqaP/FCR+HWdzVs0QVMLDNAsRWxwmc3xCegKzUxtsN8=;
+ b=KYenGYCetC5k6R9d8w6qRLVX4Uv/FkN2E+Hj+jHiem+/3t6pyCk0t1IH0eF/J291+IKv3E
+ wMY/Wgf18K4tj7BA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DA47213A5F;
- Wed,  4 Sep 2024 12:44:26 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B38F5139D2;
+ Wed,  4 Sep 2024 12:44:28 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id wJzBJypW2GZuVQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:44:26 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id WBwxHixW2GZuVQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:44:28 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 04/34] tests/qtest/migration-test: Don't leak resp in
- multifd_mapped_ram_fdset_end()
-Date: Wed,  4 Sep 2024 09:43:47 -0300
-Message-Id: <20240904124417.14565-5-farosas@suse.de>
+Subject: [PULL 05/34] tests/qtest/migration-test: Fix leaks in
+ calc_dirtyrate_ready()
+Date: Wed,  4 Sep 2024 09:43:48 -0300
+Message-Id: <20240904124417.14565-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240904124417.14565-1-farosas@suse.de>
 References: <20240904124417.14565-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.79
-X-Spamd-Result: default: False [-2.79 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-2.78 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.19)[-0.927];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.18)[-0.925];
  MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
  TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:mid,suse.de:email];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,linaro.org:email];
  RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+X-Spam-Score: -2.78
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -121,63 +121,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In multifd_mapped_ram_fdset_end() we call qtest_qmp() but forgot
-to unref the response QDict we get back, which means it is leaked:
+In calc_dirtyrate_ready() we g_strdup() a string but then never free it:
 
-Indirect leak of 4120 byte(s) in 1 object(s) allocated from:
-    #0 0x55c0c095d318 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/tests/qtest/migration-test+0x22f318) (BuildI
-d: 07f667506452d6c467dbc06fd95191966d3e91b4)
-    #1 0x7f186f939c50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:161:13
-    #2 0x55c0c0ae9b01 in qdict_new qobject/qdict.c:30:13
-    #3 0x55c0c0afc16c in parse_object qobject/json-parser.c:317:12
-    #4 0x55c0c0afb90f in parse_value qobject/json-parser.c:545:16
-    #5 0x55c0c0afb579 in json_parser_parse qobject/json-parser.c:579:14
-    #6 0x55c0c0afa21d in json_message_process_token qobject/json-streamer.c:92:12
-    #7 0x55c0c0bca2e5 in json_lexer_feed_char qobject/json-lexer.c:313:13
-    #8 0x55c0c0bc97ce in json_lexer_feed qobject/json-lexer.c:350:9
-    #9 0x55c0c0afabbc in json_message_parser_feed qobject/json-streamer.c:121:5
-    #10 0x55c0c09cbd52 in qmp_fd_receive tests/qtest/libqmp.c:86:9
-    #11 0x55c0c09be69b in qtest_qmp_receive_dict tests/qtest/libqtest.c:760:12
-    #12 0x55c0c09bca77 in qtest_qmp_receive tests/qtest/libqtest.c:741:27
-    #13 0x55c0c09bee9d in qtest_vqmp tests/qtest/libqtest.c:812:12
-    #14 0x55c0c09bd257 in qtest_qmp tests/qtest/libqtest.c:835:16
-    #15 0x55c0c0a87747 in multifd_mapped_ram_fdset_end tests/qtest/migration-test.c:2393:12
-    #16 0x55c0c0a85eb3 in test_file_common tests/qtest/migration-test.c:1978:9
-    #17 0x55c0c0a746a3 in test_multifd_file_mapped_ram_fdset tests/qtest/migration-test.c:2437:5
-    #18 0x55c0c0a93237 in migration_test_wrapper tests/qtest/migration-helpers.c:458:5
-    #19 0x7f186f958aed in test_case_run debian/build/deb/../../../glib/gtestutils.c:2930:15
-    #20 0x7f186f958aed in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3018:16
-    #21 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
-    #22 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
-    #23 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
-    #24 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
-    #25 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
-    #26 0x7f186f958faa in g_test_run_suite debian/build/deb/../../../glib/gtestutils.c:3109:18
-    #27 0x7f186f959055 in g_test_run debian/build/deb/../../../glib/gtestutils.c:2231:7
-    #28 0x7f186f959055 in g_test_run debian/build/deb/../../../glib/gtestutils.c:2218:1
-    #29 0x55c0c0a6e427 in main tests/qtest/migration-test.c:4033:11
+Direct leak of 19 byte(s) in 2 object(s) allocated from:
+    #0 0x55ead613413e in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/tests/qtest/migration-test+0x22f13e) (BuildId: e7cd5c37b2987a1af682b43ee5240b98bb316737)
+    #1 0x7f7a13d39738 in g_malloc debian/build/deb/../../../glib/gmem.c:128:13
+    #2 0x7f7a13d4e583 in g_strdup debian/build/deb/../../../glib/gstrfuncs.c:361:17
+    #3 0x55ead6266f48 in calc_dirtyrate_ready tests/qtest/migration-test.c:3409:14
+    #4 0x55ead62669fe in wait_for_calc_dirtyrate_complete tests/qtest/migration-test.c:3422:13
+    #5 0x55ead6253df7 in test_vcpu_dirty_limit tests/qtest/migration-test.c:3562:9
+    #6 0x55ead626a407 in migration_test_wrapper tests/qtest/migration-helpers.c:456:5
 
-Unref the object after we've confirmed that it is what we expect.
+We also fail to unref the QMP rsp_return, so we leak that also.
+
+Rather than duplicating the string, use the in-place value from
+the qdict, and then unref the qdict.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/qtest/migration-test.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 37ef99c980..b775ffed81 100644
+index b775ffed81..97f99c1316 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -2315,6 +2315,7 @@ static void multifd_mapped_ram_fdset_end(QTestState *from, QTestState *to,
-     g_assert(qdict_haskey(resp, "return"));
-     fdsets = qdict_get_qlist(resp, "return");
-     g_assert(fdsets && qlist_empty(fdsets));
-+    qobject_unref(resp);
+@@ -3318,15 +3318,18 @@ static QDict *query_vcpu_dirty_limit(QTestState *who)
+ static bool calc_dirtyrate_ready(QTestState *who)
+ {
+     QDict *rsp_return;
+-    gchar *status;
++    const char *status;
++    bool ready;
+ 
+     rsp_return = query_dirty_rate(who);
+     g_assert(rsp_return);
+ 
+-    status = g_strdup(qdict_get_str(rsp_return, "status"));
++    status = qdict_get_str(rsp_return, "status");
+     g_assert(status);
++    ready = g_strcmp0(status, "measuring");
++    qobject_unref(rsp_return);
+ 
+-    return g_strcmp0(status, "measuring");
++    return ready;
  }
  
- static void *multifd_mapped_ram_fdset_dio(QTestState *from, QTestState *to)
+ static void wait_for_calc_dirtyrate_complete(QTestState *who,
 -- 
 2.35.3
 
