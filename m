@@ -2,115 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE53A96BCC9
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFED96BCBB
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:45:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slpNB-0003OI-1S; Wed, 04 Sep 2024 08:44:33 -0400
+	id 1slpNB-0003S7-KM; Wed, 04 Sep 2024 08:44:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpN8-0003Ha-Hg
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:30 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpN9-0003LM-Dk
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:31 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpN6-0005QW-Rn
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:30 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpN7-0005Qs-Lj
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:31 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6DFE6219FF;
- Wed,  4 Sep 2024 12:44:26 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 48495219D2;
+ Wed,  4 Sep 2024 12:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453867; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h8BaQiVelmckmlwaMiq3JJV9tWP+l6Wiavo1PrlqEfw=;
- b=TXMwhzjc6XjAnKmQWevCL9x7gsVm2nJkZ1mPlNnuL/Bb9LxhPkfpZuMU65r0gTUyZ2Y0/J
- CASTTx1emWxVelEFKYTM578Nknr3Gf5Ila9et4HWYATmZI3zIaXAUDKRrUJGEemJ7iYkPr
- 1OMACx+ai6KHXNgvZxZSX31aMiAICwI=
+ bh=mXVgqh4miadmpincum38z66yhal5qVKzuhQP668uObs=;
+ b=Xx76rvF3WSt/BYG5eikgXrTUYHjmqAz4F5WeZW96Ty07F/GmnCjR53fKmsGcujqRJe8Xfq
+ wiqZOGvlA5e8evz80hrEBOBKy4XWiAdos3fZlfTv5ttaFXqAyXlNmwU3/cTaSArjzy6SLu
+ RUD2XUg0oNkkHSYrUA0UHt/cmZ0ZeOg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453867;
+ s=susede2_ed25519; t=1725453868;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h8BaQiVelmckmlwaMiq3JJV9tWP+l6Wiavo1PrlqEfw=;
- b=w9HCwqbdpgXzirw/4eef7ZeqXWDvkeyTr+YhJ16IfQje4C1sORCwwlnK7PXAluEii7A2yu
- 1I74HcJlADDIrhDQ==
+ bh=mXVgqh4miadmpincum38z66yhal5qVKzuhQP668uObs=;
+ b=f8Mu4F4AhYTQOncVOYZzyz6OapkzgsXs4b3ZK11rnKAVKHdZlWzkQQ8FakSgIi+zZvE216
+ 91c/D1P+WnNA7+Cw==
 Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=sHloRYph;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="slt3SS/x"
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453866; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h8BaQiVelmckmlwaMiq3JJV9tWP+l6Wiavo1PrlqEfw=;
- b=sHloRYphbcPcSKqiucih/yLSUL36w/BhSkj2ll+Drz7CYdY+4s17bctErs09S4Y1g0sGnr
- h/payUctl4j0P6CQF99VFJVa8DK8q0qrvXPFpOMBRkvBkyjWV3UAV7IxvVHSamU8xGeAa1
- V9N8SrRPC9me3WSqvbFybnxgIazJH7k=
+ bh=mXVgqh4miadmpincum38z66yhal5qVKzuhQP668uObs=;
+ b=Xx76rvF3WSt/BYG5eikgXrTUYHjmqAz4F5WeZW96Ty07F/GmnCjR53fKmsGcujqRJe8Xfq
+ wiqZOGvlA5e8evz80hrEBOBKy4XWiAdos3fZlfTv5ttaFXqAyXlNmwU3/cTaSArjzy6SLu
+ RUD2XUg0oNkkHSYrUA0UHt/cmZ0ZeOg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453866;
+ s=susede2_ed25519; t=1725453868;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h8BaQiVelmckmlwaMiq3JJV9tWP+l6Wiavo1PrlqEfw=;
- b=slt3SS/xGT0eN2SRZjmTlV1Id1gj9yhgikuZce9b9GxLfQl9OB50J6XXm+UzW0MkGzbRlw
- yikVVqlXrEycq4BQ==
+ bh=mXVgqh4miadmpincum38z66yhal5qVKzuhQP668uObs=;
+ b=f8Mu4F4AhYTQOncVOYZzyz6OapkzgsXs4b3ZK11rnKAVKHdZlWzkQQ8FakSgIi+zZvE216
+ 91c/D1P+WnNA7+Cw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 10AF0139D2;
- Wed,  4 Sep 2024 12:44:24 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DA47213A5F;
+ Wed,  4 Sep 2024 12:44:26 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id qL0SMihW2GZuVQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:44:24 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id wJzBJypW2GZuVQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:44:26 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 03/34] tests/qtest/migration-test: Fix bootfile cleanup handling
-Date: Wed,  4 Sep 2024 09:43:46 -0300
-Message-Id: <20240904124417.14565-4-farosas@suse.de>
+Subject: [PULL 04/34] tests/qtest/migration-test: Don't leak resp in
+ multifd_mapped_ram_fdset_end()
+Date: Wed,  4 Sep 2024 09:43:47 -0300
+Message-Id: <20240904124417.14565-5-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240904124417.14565-1-farosas@suse.de>
 References: <20240904124417.14565-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6DFE6219FF
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,linaro.org:email];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
+X-Spam-Score: -2.79
+X-Spamd-Result: default: False [-2.79 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.19)[-0.927];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
- RCPT_COUNT_THREE(0.00)[4]; DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:mid,suse.de:email];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,56 +121,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-If you invoke the migration-test binary in such a way that it doesn't run
-any tests, then we never call bootfile_create(), and at the end of
-main() bootfile_delete() will try to unlink(NULL), which is not valid.
-This can happen if for instance you tell the test binary to run a
-subset of tests that turns out to be empty, like this:
+In multifd_mapped_ram_fdset_end() we call qtest_qmp() but forgot
+to unref the response QDict we get back, which means it is leaked:
 
- (cd build/asan && QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test --tap -k -p bang)
- # random seed: R02S6501b289ff8ced4231ba452c3a87bc6f
- # Skipping test: userfaultfd not available
- 1..0
- ../../tests/qtest/migration-test.c:182:12: runtime error: null pointer passed as argument 1, which is declared to never be null
- /usr/include/unistd.h:858:48: note: nonnull attribute specified here
+Indirect leak of 4120 byte(s) in 1 object(s) allocated from:
+    #0 0x55c0c095d318 in __interceptor_calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/tests/qtest/migration-test+0x22f318) (BuildI
+d: 07f667506452d6c467dbc06fd95191966d3e91b4)
+    #1 0x7f186f939c50 in g_malloc0 debian/build/deb/../../../glib/gmem.c:161:13
+    #2 0x55c0c0ae9b01 in qdict_new qobject/qdict.c:30:13
+    #3 0x55c0c0afc16c in parse_object qobject/json-parser.c:317:12
+    #4 0x55c0c0afb90f in parse_value qobject/json-parser.c:545:16
+    #5 0x55c0c0afb579 in json_parser_parse qobject/json-parser.c:579:14
+    #6 0x55c0c0afa21d in json_message_process_token qobject/json-streamer.c:92:12
+    #7 0x55c0c0bca2e5 in json_lexer_feed_char qobject/json-lexer.c:313:13
+    #8 0x55c0c0bc97ce in json_lexer_feed qobject/json-lexer.c:350:9
+    #9 0x55c0c0afabbc in json_message_parser_feed qobject/json-streamer.c:121:5
+    #10 0x55c0c09cbd52 in qmp_fd_receive tests/qtest/libqmp.c:86:9
+    #11 0x55c0c09be69b in qtest_qmp_receive_dict tests/qtest/libqtest.c:760:12
+    #12 0x55c0c09bca77 in qtest_qmp_receive tests/qtest/libqtest.c:741:27
+    #13 0x55c0c09bee9d in qtest_vqmp tests/qtest/libqtest.c:812:12
+    #14 0x55c0c09bd257 in qtest_qmp tests/qtest/libqtest.c:835:16
+    #15 0x55c0c0a87747 in multifd_mapped_ram_fdset_end tests/qtest/migration-test.c:2393:12
+    #16 0x55c0c0a85eb3 in test_file_common tests/qtest/migration-test.c:1978:9
+    #17 0x55c0c0a746a3 in test_multifd_file_mapped_ram_fdset tests/qtest/migration-test.c:2437:5
+    #18 0x55c0c0a93237 in migration_test_wrapper tests/qtest/migration-helpers.c:458:5
+    #19 0x7f186f958aed in test_case_run debian/build/deb/../../../glib/gtestutils.c:2930:15
+    #20 0x7f186f958aed in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3018:16
+    #21 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
+    #22 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
+    #23 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
+    #24 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
+    #25 0x7f186f95880a in g_test_run_suite_internal debian/build/deb/../../../glib/gtestutils.c:3035:18
+    #26 0x7f186f958faa in g_test_run_suite debian/build/deb/../../../glib/gtestutils.c:3109:18
+    #27 0x7f186f959055 in g_test_run debian/build/deb/../../../glib/gtestutils.c:2231:7
+    #28 0x7f186f959055 in g_test_run debian/build/deb/../../../glib/gtestutils.c:2218:1
+    #29 0x55c0c0a6e427 in main tests/qtest/migration-test.c:4033:11
 
-Handle this by making bootfile_delete() not needing to do anything
-because bootfile_create() was never called.
+Unref the object after we've confirmed that it is what we expect.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-[fixed conflict with aee07f2563]
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/qtest/migration-test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 334b63cbaa..37ef99c980 100644
+index 37ef99c980..b775ffed81 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -145,6 +145,9 @@ static char *bootpath;
+@@ -2315,6 +2315,7 @@ static void multifd_mapped_ram_fdset_end(QTestState *from, QTestState *to,
+     g_assert(qdict_haskey(resp, "return"));
+     fdsets = qdict_get_qlist(resp, "return");
+     g_assert(fdsets && qlist_empty(fdsets));
++    qobject_unref(resp);
+ }
  
- static void bootfile_delete(void)
- {
-+    if (!bootpath) {
-+        return;
-+    }
-     unlink(bootpath);
-     g_free(bootpath);
-     bootpath = NULL;
-@@ -156,10 +159,7 @@ static void bootfile_create(char *dir, bool suspend_me)
-     unsigned char *content;
-     size_t len;
- 
--    if (bootpath) {
--        bootfile_delete();
--    }
--
-+    bootfile_delete();
-     bootpath = g_strdup_printf("%s/bootsect", dir);
-     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
-         /* the assembled x86 boot sector should be exactly one sector large */
+ static void *multifd_mapped_ram_fdset_dio(QTestState *from, QTestState *to)
 -- 
 2.35.3
 
