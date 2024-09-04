@@ -2,139 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C4A96B61A
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 11:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B58896B676
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 11:24:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slm0j-0004Wn-Uv; Wed, 04 Sep 2024 05:09:10 -0400
+	id 1slmDx-00062O-CA; Wed, 04 Sep 2024 05:22:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slm0K-0004Vi-NX
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 05:08:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slm0H-0008H0-6y
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 05:08:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725440919;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=cx1VIch842EHOJauotcsmFvQ/p4ddC4bBmgsx/zUoqs=;
- b=X/wNlJswl/kqrELX3dIUnNEulqO4ETDQyvxcqnyNmpv+vX8r1XEGDe7Igcz0zpDYZcUbti
- o/JZ/LfEOHOfq0MXDgilCphnNAUJLg9jjHY5lz5u0aN0LaRiyxjEA43iwfxabCuSm5Z0Ds
- nSM2YsY6sSiS4S8t32vL9tuzqyCK1w0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-547-4OXcr1xBOcqO3sF4tFxfAg-1; Wed, 04 Sep 2024 05:08:38 -0400
-X-MC-Unique: 4OXcr1xBOcqO3sF4tFxfAg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42c7b6358a6so5672885e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 02:08:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1slmDu-000617-Iy
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 05:22:46 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1slmDs-0001Fx-O2
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 05:22:46 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5c0ba8c7c17so2813664a12.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 02:22:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725441761; x=1726046561; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6XkE1raRaz+7qmkHF821LkX9BHPx5zoXet1RsVnWVAg=;
+ b=J3PJOJ+n5ZhSwGMnLqZB8MAxILUFfp3Jd63NFDswUOhHbc24I20GAModRTniTqyfsU
+ +iN1fRZmAqRIrsFrmP0Pr7jl7b9jrEz/0kBL2FcOmyxrqetcey+vNZIEfqyE7WRyds55
+ ss5BoloUOinXhhDDljZrUuaqOcvlLlPVh50eJC8uwQ5vND1KOHQudPNmhRhG3lwEu66p
+ MR62wgnKJl97oiLS/KBri2UrjxTIAhHrIZZu7otFmR5zOvirXyNgaHv6MApSrEEb9wWw
+ PYnSl33nGXqv3lzH15c5BFSebIpefLsiKqXqML36gG76kMf/LQ4Jjf9FwTRfbTZnES98
+ qPcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725440917; x=1726045717;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :references:cc:to:from:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cx1VIch842EHOJauotcsmFvQ/p4ddC4bBmgsx/zUoqs=;
- b=i982tw0jR1rOY69Fl3B/9/ZQpnj0vWQiy4VxQmieh/aUSmSL2XnqqJqzCUcVK97W31
- BnEusdnC2hHE+AaZl7LEhOCAoiZujiM9p9gbYDxhjhv+mAiM2RjXzsODlXpOr7bz3tuO
- KkicApjl2ljqXVp0Jjbt3aYnfChu4pSkbgfh/SeF4AX5Laub7yoHYfo5Zul9QAGTUTE9
- ATWCm6oJqP1ZUil2BmUo0cUCDie+vvdpJ8sIenQ+kxWW/+oG568ry9S1pShSeAmahlXc
- aZ1PqgfIaVxXIPTLGQOWNgfsH17AcSxcqES2VG7067recr2UdXODSZivRNy9EfcwfG0H
- fbCQ==
-X-Gm-Message-State: AOJu0YzA5XEAquEQec9Q0fsTFoqt6Dm3pD7Ruip/G0nY9WcY/gnD5Ro8
- LBHwd7hh7l7LaPZ8JUtFbxWqyk7cx3MJkrRqOJXT9XYsgJ/9plxzxeUtbZeJeNfj7ZFUP+HFAbP
- UDJYDG5WrDBA9I77LtfJjE2Ij6Zl9QHJ0+4ndErKGosup/3HbyUnujPcNBiw8Q2r/BkHgHXJ+xl
- 6IHDJMNJBF4qIRIbbM/Efn5wODFJl1s/YZ
-X-Received: by 2002:a05:6000:184f:b0:374:8f90:b78b with SMTP id
- ffacd0b85a97d-37770c704c9mr1593410f8f.44.1725440917088; 
- Wed, 04 Sep 2024 02:08:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE8kLOajB653B5hxLHInCkb+I3jlHizjr81peFuA87aDKW+mTrlsQc9G7h1Uz/e5mWRXmOHLg==
-X-Received: by 2002:a05:6000:184f:b0:374:8f90:b78b with SMTP id
- ffacd0b85a97d-37770c704c9mr1593371f8f.44.1725440916419; 
- Wed, 04 Sep 2024 02:08:36 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-176-181.web.vodafone.de.
- [109.43.176.181]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-374c554f0c2sm9858742f8f.43.2024.09.04.02.08.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Sep 2024 02:08:35 -0700 (PDT)
-Message-ID: <991b81be-7728-44e6-9763-4e91434a9229@redhat.com>
-Date: Wed, 4 Sep 2024 11:08:34 +0200
+ d=1e100.net; s=20230601; t=1725441761; x=1726046561;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6XkE1raRaz+7qmkHF821LkX9BHPx5zoXet1RsVnWVAg=;
+ b=HCZ6kZeJztipSThZyMt7FDcdoL2n104HcwlRHoQ3KQcOQmuczAS17dUIc3GEO2PGtF
+ n0/xPOT12ShPYc/2KiQO4gX/IU+mS2+zTR15lq7kDRvT9s0JFQYdwEmLPwfAipSKFoqW
+ e/fIJ6s3GJy6CwVkJJ+nDRRdukqtcP12MlWANcgYpCk2mwXNwnSO/RfD58iTm+CXRWKE
+ GcLmQ2MjWs/NpL7krQN0SbRN2bXugx2BAr7H8LkNI6RExdcmL4gwl9L0EtnMUoLdY197
+ qwYMnyMgY5a/1ErzgTnl+BgvHvdr7L0oCmF8GD9uWM2srXjF8xWO9nnFXJctTBpEj5A5
+ NmRQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVX++eNd8Nthub4GE+uFfvXmdRLTqoVk7UgHek+yBVIGqp9ot2o16b8PlYxsCp9I7zKB4B42uSpQzh+@nongnu.org
+X-Gm-Message-State: AOJu0YxKODLzvS2yg1X2/Btnhs5N+RwDktt1bAyaQluuesMWvpkTrTSq
+ pWnIfSHG5vMNnDFcusO1w/wKJCJgO+y6wOZHgszUi9d3ZX9VVCN0hji3u50vvw8PiFgZabQS7ug
+ HLRSGcYiTXLnEUf8aAIUtoi1Po40U8OghGG7ocg==
+X-Google-Smtp-Source: AGHT+IGyX6T6DE6PQ3P5xXe9/1bzWKPcc17GcVtpG6H7lrHCFTzrWadDi3XN2qRgx0EDNsMf38ios3l2jn9tIQdVMjE=
+X-Received: by 2002:a05:6402:2803:b0:5c2:5f09:bb9c with SMTP id
+ 4fb4d7f45d1cf-5c25f09bc03mr7264760a12.30.1725441761103; Wed, 04 Sep 2024
+ 02:22:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 17/44] tests/functional: Convert some tests that
- download files via fetch_asset()
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, "Daniel P . Berrange" <berrange@redhat.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Ani Sinha <anisinha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20240830133841.142644-1-thuth@redhat.com>
- <20240830133841.142644-18-thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240830133841.142644-18-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240903160751.4100218-1-peter.maydell@linaro.org>
+ <20240903160751.4100218-27-peter.maydell@linaro.org>
+ <f65053b7-f909-4ff3-b938-05cff490548c@linaro.org>
+In-Reply-To: <f65053b7-f909-4ff3-b938-05cff490548c@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 4 Sep 2024 10:22:29 +0100
+Message-ID: <CAFEAcA-U+YAg7qqAu9LYmQ-YbNsxMB4AYCdQrm-r=pUe-O2=fA@mail.gmail.com>
+Subject: Re: [PATCH for-9.2 26/53] hw/misc: Remove cbus
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -151,26 +91,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/08/2024 15.38, Thomas Huth wrote:
-> Now that we've got the Asset class with pre-caching, we can convert
-> some Avocado tests that use fetch_asset() for downloading their
-> required files.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS                                   | 12 ++---
->   tests/avocado/machine_mips_loongson3v.py      | 39 --------------
->   tests/functional/meson.build                  | 30 +++++++++--
->   .../test_arm_n8x0.py}                         | 36 ++++++-------
+On Tue, 3 Sept 2024 at 22:37, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> On 3/9/24 18:07, Peter Maydell wrote:
+> > The devices in hw/misc/cbus.c were used only by the
+> > now-removed nseries machine types, so they can be removed.
+> >
+> > As this is the last use of the CONFIG_NSERIES define we
+> > can remove that from KConfig now.
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > ---
+> >   MAINTAINERS            |   2 -
+> >   include/hw/misc/cbus.h |  31 ---
+> >   hw/misc/cbus.c         | 619 ----------------------------------------=
+-
+> >   hw/arm/Kconfig         |  14 -
+> >   hw/misc/meson.build    |   1 -
+> >   5 files changed, 667 deletions(-)
+> >   delete mode 100644 include/hw/misc/cbus.h
+> >   delete mode 100644 hw/misc/cbus.c
+>
+>
+> > diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> > index d33d59bee90..a70ceff504b 100644
+> > --- a/hw/arm/Kconfig
+> > +++ b/hw/arm/Kconfig
+> > @@ -142,20 +142,6 @@ config OLIMEX_STM32_H405
+> >       depends on TCG && ARM
+> >       select STM32F405_SOC
+> >
+> > -config NSERIES
+> > -    bool
+> > -    default y
+> > -    depends on TCG && ARM
+>
+> Maybe squash this ...
+>
+> > -    select OMAP
+> > -    select TMP105   # temperature sensor
+> > -    select BLIZZARD # LCD/TV controller
+> > -    select ONENAND
+> > -    select TSC210X  # touchscreen/sensors/audio
+> > -    select TSC2005  # touchscreen/sensors/keypad
+> > -    select LM832X   # GPIO keyboard chip
+> > -    select TWL92230 # energy-management
+> > -    select TUSB6010
+>
+> ... in the previous patch?
 
-FWIW: I'm going to drop the arm_n8x0 part from this patch since Peter is 
-currently preparing for removing the n800 and n810 machines (and his series 
-removes this test:
+I left it til this one because it's only in this patch that
+we get rid of the last user of the CONFIG_NSERIES define:
 
- 
-https://lore.kernel.org/qemu-devel/20240903160751.4100218-26-peter.maydell@linaro.org/
+-system_ss.add(when: 'CONFIG_NSERIES', if_true: files('cbus.c'))
 
-  Thomas
-
-
+-- PMM
 
