@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D5796B8CF
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2307796B8B6
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:41:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slnRI-0003Ho-Nz; Wed, 04 Sep 2024 06:40:40 -0400
+	id 1slnRM-0003no-VR; Wed, 04 Sep 2024 06:40:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRA-0002yx-SR
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:40:34 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRE-00030P-28
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:40:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnR7-0000Hz-Kz
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:40:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRA-0000IJ-1u
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:40:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725446428;
+ s=mimecast20190719; t=1725446430;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tLb5+RMM9wchgNmwYqn6xnB+mmgiiSIYphJX3OD1MaE=;
- b=U28NibeYeY5erN5QnMGSatwSfpgK3nI63xd8dP1SQJn/1zBHZpk2q9fy9t2o+Xz1hJA+uC
- RAgzFJTPzv19Y0QHbLfcaJtwWnzOVSNe5xIfjX9q7fOwK5q0OTno1GdLm6ZJigKgOsWJ7Q
- gre9k++iVib1shP6NMqsA6MZQX0zouc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=i0aIQcxCkQS40WV8z9O4r/5xnAkpl6TsL0dTNr/ITcs=;
+ b=hLa93w+3WjSnH/NHlGrdvWmQ3930L16U118txHWQNti/C3vKaKhMJi29Zse0jzKDoTE2Nm
+ a0F+lD3paVZExnfBlRyfYmjbfvneoh6OzQEo1PTM0RpdRJOQV6zuY/Dnvv6piQ4l6jz3MZ
+ yvizJ/6guptZvvWha5ZP0ZYmC3DNNVE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-664-6NoTKrWEP32W1jLzAogpvw-1; Wed,
- 04 Sep 2024 06:40:24 -0400
-X-MC-Unique: 6NoTKrWEP32W1jLzAogpvw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-zcu_FHl8Pry2hj3dtT5pdQ-1; Wed,
+ 04 Sep 2024 06:40:27 -0400
+X-MC-Unique: zcu_FHl8Pry2hj3dtT5pdQ-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ECBAB1955F0D; Wed,  4 Sep 2024 10:40:23 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 92C5819560AD; Wed,  4 Sep 2024 10:40:26 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.48])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C4D87195605A; Wed,  4 Sep 2024 10:40:21 +0000 (UTC)
+ id 633F1195605A; Wed,  4 Sep 2024 10:40:24 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 19/42] tests/functional: Convert some avocado tests that needed
- avocado.utils.archive
-Date: Wed,  4 Sep 2024 12:38:54 +0200
-Message-ID: <20240904103923.451847-20-thuth@redhat.com>
+Subject: [PULL 20/42] tests/functional: Convert the s390x avocado tests into
+ standalone tests
+Date: Wed,  4 Sep 2024 12:38:55 +0200
+Message-ID: <20240904103923.451847-21-thuth@redhat.com>
 In-Reply-To: <20240904103923.451847-1-thuth@redhat.com>
 References: <20240904103923.451847-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,298 +83,435 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of using the "archive" module from avocado.utils, switch
-these tests to use the new wrapper function that is based on the
-"tarfile" module instead.
+These tests use archive.lzma_uncompress() from the Avocado utils,
+so provide a small helper function for this, based on the
+standard lzma module from Python instead.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+And while we're at it, replace the MD5 hashes in the topology test
+with proper SHA256 hashes, since MD5 should not be used anymore
+nowadays.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240830133841.142644-20-thuth@redhat.com>
+Message-ID: <20240830133841.142644-21-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                                   |  6 +--
- tests/avocado/machine_sparc64_sun4u.py        | 36 ----------------
- tests/functional/meson.build                  |  9 ++++
- .../test_arm_canona1100.py}                   | 30 ++++++++------
- .../test_ppc_bamboo.py}                       | 33 +++++++--------
- tests/functional/test_sparc64_sun4u.py        | 41 +++++++++++++++++++
- 6 files changed, 87 insertions(+), 68 deletions(-)
- delete mode 100644 tests/avocado/machine_sparc64_sun4u.py
- rename tests/{avocado/machine_arm_canona1100.py => functional/test_arm_canona1100.py} (51%)
+ MAINTAINERS                                   |  4 +-
+ tests/functional/meson.build                  |  6 ++
+ tests/functional/qemu_test/utils.py           | 14 +++
+ .../test_s390x_ccw_virtio.py}                 | 79 ++++++++---------
+ .../test_s390x_topology.py}                   | 86 ++++++++-----------
+ 5 files changed, 94 insertions(+), 95 deletions(-)
+ rename tests/{avocado/machine_s390_ccw_virtio.py => functional/test_s390x_ccw_virtio.py} (85%)
  mode change 100644 => 100755
- rename tests/{avocado/ppc_bamboo.py => functional/test_ppc_bamboo.py} (60%)
+ rename tests/{avocado/s390_topology.py => functional/test_s390x_topology.py} (88%)
  mode change 100644 => 100755
- create mode 100755 tests/functional/test_sparc64_sun4u.py
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 172ccb084e..92e6166df1 100644
+index 92e6166df1..03e5d7e233 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -733,7 +733,7 @@ S: Odd Fixes
- F: include/hw/arm/digic.h
- F: hw/*/digic*
- F: include/hw/*/digic*
--F: tests/avocado/machine_arm_canona1100.py
-+F: tests/functional/test_arm_canona1100.py
- F: docs/system/arm/digic.rst
+@@ -1743,7 +1743,7 @@ S: Supported
+ F: hw/s390x/
+ F: include/hw/s390x/
+ F: configs/devices/s390x-softmmu/default.mak
+-F: tests/avocado/machine_s390_ccw_virtio.py
++F: tests/functional/test_s390x_ccw_virtio.py
+ T: git https://github.com/borntraeger/qemu.git s390-next
+ L: qemu-s390x@nongnu.org
  
- Goldfish RTC
-@@ -1430,7 +1430,7 @@ L: qemu-ppc@nongnu.org
- S: Orphan
- F: hw/ppc/ppc440_bamboo.c
- F: hw/pci-host/ppc4xx_pci.c
--F: tests/avocado/ppc_bamboo.py
-+F: tests/functional/test_ppc_bamboo.py
+@@ -1806,7 +1806,7 @@ F: hw/s390x/cpu-topology.c
+ F: target/s390x/kvm/stsi-topology.c
+ F: docs/devel/s390-cpu-topology.rst
+ F: docs/system/s390x/cpu-topology.rst
+-F: tests/avocado/s390_topology.py
++F: tests/functional/test_s390x_topology.py
  
- e500
- L: qemu-ppc@nongnu.org
-@@ -1716,7 +1716,7 @@ F: include/hw/pci-host/sabre.h
- F: hw/pci-bridge/simba.c
- F: include/hw/pci-bridge/simba.h
- F: pc-bios/openbios-sparc64
--F: tests/avocado/machine_sparc64_sun4u.py
-+F: tests/functional/test_sparc64_sun4u.py
- 
- Sun4v
- M: Artyom Tarasenko <atar4qemu@gmail.com>
-diff --git a/tests/avocado/machine_sparc64_sun4u.py b/tests/avocado/machine_sparc64_sun4u.py
-deleted file mode 100644
-index d333c0ae91..0000000000
---- a/tests/avocado/machine_sparc64_sun4u.py
-+++ /dev/null
-@@ -1,36 +0,0 @@
--# Functional test that boots a Linux kernel and checks the console
--#
--# Copyright (c) 2020 Red Hat, Inc.
--#
--# Author:
--#  Thomas Huth <thuth@redhat.com>
--#
--# This work is licensed under the terms of the GNU GPL, version 2 or
--# later. See the COPYING file in the top-level directory.
--
--import os
--
--from avocado_qemu import wait_for_console_pattern
--from avocado.utils import archive
--from boot_linux_console import LinuxKernelTest
--
--class Sun4uMachine(LinuxKernelTest):
--    """Boots the Linux kernel and checks that the console is operational"""
--
--    timeout = 90
--
--    def test_sparc64_sun4u(self):
--        """
--        :avocado: tags=arch:sparc64
--        :avocado: tags=machine:sun4u
--        """
--        tar_url = ('https://qemu-advcal.gitlab.io'
--                   '/qac-best-of-multiarch/download/day23.tar.xz')
--        tar_hash = '142db83cd974ffadc4f75c8a5cad5bcc5722c240'
--        file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
--        archive.extract(file_path, self.workdir)
--        self.vm.set_console()
--        self.vm.add_args('-kernel', self.workdir + '/day23/vmlinux',
--                         '-append', self.KERNEL_COMMON_COMMAND_LINE)
--        self.vm.launch()
--        wait_for_console_pattern(self, 'Starting logging: OK')
+ X86 Machines
+ ------------
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 88ec81a2e5..eebb4558d3 100644
+index eebb4558d3..99bef77c3a 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -26,6 +26,10 @@ tests_generic_linuxuser = [
- tests_generic_bsduser = [
+@@ -12,6 +12,7 @@ endif
+ # Timeouts for individual tests that can be slow e.g. with debugging enabled
+ test_timeouts = {
+   'netdev_ethtool' : 180,
++  's390x_ccw_virtio' : 180,
+ }
+ 
+ tests_generic_system = [
+@@ -51,6 +52,11 @@ tests_ppc_system_thorough = [
+   'ppc_bamboo',
  ]
  
-+tests_arm_system_thorough = [
-+  'arm_canona1100',
++tests_s390x_system_thorough = [
++  's390x_ccw_virtio',
++  's390x_topology',
 +]
 +
- tests_avr_system_thorough = [
-   'avr_mega2560',
+ tests_sparc64_system_thorough = [
+   'sparc64_sun4u',
  ]
-@@ -44,6 +48,11 @@ tests_ppc_system_quick = [
- 
- tests_ppc_system_thorough = [
-   'ppc_405',
-+  'ppc_bamboo',
-+]
-+
-+tests_sparc64_system_thorough = [
-+  'sparc64_sun4u',
- ]
- 
- tests_x86_64_system_quick = [
-diff --git a/tests/avocado/machine_arm_canona1100.py b/tests/functional/test_arm_canona1100.py
-old mode 100644
-new mode 100755
-similarity index 51%
-rename from tests/avocado/machine_arm_canona1100.py
-rename to tests/functional/test_arm_canona1100.py
-index a42d8b0f2b..65f1228296
---- a/tests/avocado/machine_arm_canona1100.py
-+++ b/tests/functional/test_arm_canona1100.py
-@@ -1,3 +1,5 @@
-+#!/usr/bin/env python3
-+#
- # Functional test that boots the canon-a1100 machine with firmware
- #
- # Copyright (c) 2020 Red Hat, Inc.
-@@ -8,28 +10,30 @@
+diff --git a/tests/functional/qemu_test/utils.py b/tests/functional/qemu_test/utils.py
+index 4eb5e5d5e5..a12dac51b6 100644
+--- a/tests/functional/qemu_test/utils.py
++++ b/tests/functional/qemu_test/utils.py
+@@ -8,6 +8,9 @@
  # This work is licensed under the terms of the GNU GPL, version 2 or
  # later.  See the COPYING file in the top-level directory.
  
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import wait_for_console_pattern
--from avocado.utils import archive
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import wait_for_console_pattern
-+from qemu_test.utils import archive_extract
- 
- class CanonA1100Machine(QemuSystemTest):
-     """Boots the barebox firmware and checks that the console is operational"""
- 
-     timeout = 90
- 
-+    ASSET_BIOS = Asset(('https://qemu-advcal.gitlab.io'
-+                        '/qac-best-of-multiarch/download/day18.tar.xz'),
-+                       '28e71874ce985be66b7fd1345ed88cb2523b982f899c8d2900d6353054a1be49')
-+
-     def test_arm_canona1100(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:canon-a1100
--        :avocado: tags=device:pflash_cfi02
--        """
--        tar_url = ('https://qemu-advcal.gitlab.io'
--                   '/qac-best-of-multiarch/download/day18.tar.xz')
--        tar_hash = '068b5fc4242b29381acee94713509f8a876e9db6'
--        file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
--        archive.extract(file_path, self.workdir)
-+        self.set_machine('canon-a1100')
-+
-+        file_path = self.ASSET_BIOS.fetch()
-+        archive_extract(file_path, dest_dir=self.workdir,
-+                        member="day18/barebox.canon-a1100.bin")
-         self.vm.set_console()
-         self.vm.add_args('-bios',
-                          self.workdir + '/day18/barebox.canon-a1100.bin')
-         self.vm.launch()
-         wait_for_console_pattern(self, 'running /env/bin/init')
-+
-+if __name__ == '__main__':
-+    QemuSystemTest.main()
-diff --git a/tests/avocado/ppc_bamboo.py b/tests/functional/test_ppc_bamboo.py
-old mode 100644
-new mode 100755
-similarity index 60%
-rename from tests/avocado/ppc_bamboo.py
-rename to tests/functional/test_ppc_bamboo.py
-index a81be3d608..e72cbdee12
---- a/tests/avocado/ppc_bamboo.py
-+++ b/tests/functional/test_ppc_bamboo.py
-@@ -1,3 +1,5 @@
-+#!/usr/bin/env python3
-+#
- # Test that Linux kernel boots on the ppc bamboo board and check the console
- #
- # Copyright (c) 2021 Red Hat
-@@ -5,30 +7,26 @@
- # This work is licensed under the terms of the GNU GPL, version 2 or
- # later.  See the COPYING file in the top-level directory.
- 
--from avocado.utils import archive
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import wait_for_console_pattern
--from avocado_qemu import exec_command_and_wait_for_pattern
-+from qemu_test.utils import archive_extract
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import wait_for_console_pattern
-+from qemu_test import exec_command_and_wait_for_pattern
- 
- class BambooMachine(QemuSystemTest):
- 
-     timeout = 90
- 
-+    ASSET_IMAGE = Asset(
-+        ('http://landley.net/aboriginal/downloads/binaries/'
-+         'system-image-powerpc-440fp.tar.gz'),
-+        'c12b58f841c775a0e6df4832a55afe6b74814d1565d08ddeafc1fb949a075c5e')
-+
-     def test_ppc_bamboo(self):
--        """
--        :avocado: tags=arch:ppc
--        :avocado: tags=machine:bamboo
--        :avocado: tags=cpu:440epb
--        :avocado: tags=device:rtl8139
--        :avocado: tags=accel:tcg
--        """
-+        self.set_machine('bamboo')
-         self.require_accelerator("tcg")
-         self.require_netdev('user')
--        tar_url = ('http://landley.net/aboriginal/downloads/binaries/'
--                   'system-image-powerpc-440fp.tar.gz')
--        tar_hash = '53e5f16414b195b82d2c70272f81c2eedb39bad9'
--        file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
--        archive.extract(file_path, self.workdir)
-+        file_path = self.ASSET_IMAGE.fetch()
-+        archive_extract(file_path, self.workdir)
-         self.vm.set_console()
-         self.vm.add_args('-kernel', self.workdir +
-                                    '/system-image-powerpc-440fp/linux',
-@@ -40,3 +38,6 @@ def test_ppc_bamboo(self):
-         exec_command_and_wait_for_pattern(self, 'ping 10.0.2.2',
-                                           '10.0.2.2 is alive!')
-         exec_command_and_wait_for_pattern(self, 'halt', 'System Halted')
-+
-+if __name__ == '__main__':
-+    QemuSystemTest.main()
-diff --git a/tests/functional/test_sparc64_sun4u.py b/tests/functional/test_sparc64_sun4u.py
-new file mode 100755
-index 0000000000..32e245f4ad
---- /dev/null
-+++ b/tests/functional/test_sparc64_sun4u.py
-@@ -0,0 +1,41 @@
-+#!/usr/bin/env python3
-+#
-+# Functional test that boots a Linux kernel and checks the console
-+#
-+# Copyright (c) 2020 Red Hat, Inc.
-+#
-+# Author:
-+#  Thomas Huth <thuth@redhat.com>
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later. See the COPYING file in the top-level directory.
-+
++import lzma
 +import os
++import shutil
+ import tarfile
+ 
+ def archive_extract(archive, dest_dir, member=None):
+@@ -19,3 +22,14 @@ def archive_extract(archive, dest_dir, member=None):
+             tf.extract(member=member, path=dest_dir)
+         else:
+             tf.extractall(path=dest_dir)
 +
++def lzma_uncompress(xz_path, output_path):
++    if os.path.exists(output_path):
++        return
++    with lzma.open(xz_path, 'rb') as lzma_in:
++        try:
++            with open(output_path, 'wb') as raw_out:
++                shutil.copyfileobj(lzma_in, raw_out)
++        except:
++            os.remove(output_path)
++            raise
+diff --git a/tests/avocado/machine_s390_ccw_virtio.py b/tests/functional/test_s390x_ccw_virtio.py
+old mode 100644
+new mode 100755
+similarity index 85%
+rename from tests/avocado/machine_s390_ccw_virtio.py
+rename to tests/functional/test_s390x_ccw_virtio.py
+index 7a214110fc..f7acd90a89
+--- a/tests/avocado/machine_s390_ccw_virtio.py
++++ b/tests/functional/test_s390x_ccw_virtio.py
+@@ -1,3 +1,5 @@
++#!/usr/bin/env python3
++#
+ # Functional test that boots an s390x Linux guest with ccw and PCI devices
+ # attached and checks whether the devices are recognized by Linux
+ #
+@@ -12,17 +14,38 @@
+ import os
+ import tempfile
+ 
+-from avocado import skipUnless
+-from avocado_qemu import QemuSystemTest
+-from avocado_qemu import exec_command_and_wait_for_pattern
+-from avocado_qemu import wait_for_console_pattern
+-from avocado.utils import archive
 +from qemu_test import QemuSystemTest, Asset
++from qemu_test import exec_command_and_wait_for_pattern
 +from qemu_test import wait_for_console_pattern
-+from qemu_test.utils import archive_extract
++from qemu_test.utils import lzma_uncompress
+ 
+ class S390CCWVirtioMachine(QemuSystemTest):
+     KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
+ 
+     timeout = 120
+ 
++    ASSET_BUSTER_KERNEL = Asset(
++        ('https://snapshot.debian.org/archive/debian/'
++         '20201126T092837Z/dists/buster/main/installer-s390x/'
++         '20190702+deb10u6/images/generic/kernel.debian'),
++        'd411d17c39ae7ad38d27534376cbe88b68b403c325739364122c2e6f1537e818')
++    ASSET_BUSTER_INITRD = Asset(
++        ('https://snapshot.debian.org/archive/debian/'
++         '20201126T092837Z/dists/buster/main/installer-s390x/'
++         '20190702+deb10u6/images/generic/initrd.debian'),
++        '836bbd0fe6a5ca81274c28c2b063ea315ce1868660866e9b60180c575fef9fd5')
 +
-+class Sun4uMachine(QemuSystemTest):
-+    """Boots the Linux kernel and checks that the console is operational"""
++    ASSET_F31_KERNEL = Asset(
++        ('https://archives.fedoraproject.org/pub/archive'
++         '/fedora-secondary/releases/31/Server/s390x/os'
++         '/images/kernel.img'),
++        '480859574f3f44caa6cd35c62d70e1ac0609134e22ce2a954bbed9b110c06e0b')
++    ASSET_F31_INITRD = Asset(
++        ('https://archives.fedoraproject.org/pub/archive'
++         '/fedora-secondary/releases/31/Server/s390x/os'
++         '/images/initrd.img'),
++        '04c46095b2c49020b1c2327158898b7db747e4892ae319726192fb949716aa9c')
 +
-+    timeout = 90
+     def wait_for_console_pattern(self, success_message, vm=None):
+         wait_for_console_pattern(self, success_message,
+                                  failure_message='Kernel panic - not syncing',
+@@ -41,23 +64,10 @@ def clear_guest_dmesg(self):
+         self.dmesg_clear_count += 1
+ 
+     def test_s390x_devices(self):
++        self.set_machine('s390-ccw-virtio')
+ 
+-        """
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+-        """
+-
+-        kernel_url = ('https://snapshot.debian.org/archive/debian/'
+-                      '20201126T092837Z/dists/buster/main/installer-s390x/'
+-                      '20190702+deb10u6/images/generic/kernel.debian')
+-        kernel_hash = '5821fbee57d6220a067a8b967d24595621aa1eb6'
+-        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+-
+-        initrd_url = ('https://snapshot.debian.org/archive/debian/'
+-                      '20201126T092837Z/dists/buster/main/installer-s390x/'
+-                      '20190702+deb10u6/images/generic/initrd.debian')
+-        initrd_hash = '81ba09c97bef46e8f4660ac25b4ac0a5be3a94d6'
+-        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
++        kernel_path = self.ASSET_BUSTER_KERNEL.fetch()
++        initrd_path = self.ASSET_BUSTER_INITRD.fetch()
+ 
+         self.vm.set_console()
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+@@ -160,29 +170,13 @@ def test_s390x_devices(self):
+ 
+ 
+     def test_s390x_fedora(self):
++        self.set_machine('s390-ccw-virtio')
+ 
+-        """
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+-        :avocado: tags=device:virtio-gpu
+-        :avocado: tags=device:virtio-crypto
+-        :avocado: tags=device:virtio-net
+-        :avocado: tags=flaky
+-        """
+-
+-        kernel_url = ('https://archives.fedoraproject.org/pub/archive'
+-                      '/fedora-secondary/releases/31/Server/s390x/os'
+-                      '/images/kernel.img')
+-        kernel_hash = 'b93d1efcafcf29c1673a4ce371a1f8b43941cfeb'
+-        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
++        kernel_path = self.ASSET_F31_KERNEL.fetch()
+ 
+-        initrd_url = ('https://archives.fedoraproject.org/pub/archive'
+-                      '/fedora-secondary/releases/31/Server/s390x/os'
+-                      '/images/initrd.img')
+-        initrd_hash = '3de45d411df5624b8d8ef21cd0b44419ab59b12f'
+-        initrd_path_xz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
++        initrd_path_xz = self.ASSET_F31_INITRD.fetch()
+         initrd_path = os.path.join(self.workdir, 'initrd-raw.img')
+-        archive.lzma_uncompress(initrd_path_xz, initrd_path)
++        lzma_uncompress(initrd_path_xz, initrd_path)
+ 
+         self.vm.set_console()
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE + ' audit=0 '
+@@ -277,3 +271,6 @@ def test_s390x_fedora(self):
+         exec_command_and_wait_for_pattern(self,
+                         'while ! (dmesg -c | grep Start.virtcrypto_remove) ; do'
+                         ' sleep 1 ; done', 'Start virtcrypto_remove.')
 +
-+    ASSET_IMAGE = Asset(
-+        ('https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/'
-+         'day23.tar.xz'),
-+        'a3ed92450704af244178351afd0e769776e7decb298e95a63abfd9a6e3f6c854')
++if __name__ == '__main__':
++    QemuSystemTest.main()
+diff --git a/tests/avocado/s390_topology.py b/tests/functional/test_s390x_topology.py
+old mode 100644
+new mode 100755
+similarity index 88%
+rename from tests/avocado/s390_topology.py
+rename to tests/functional/test_s390x_topology.py
+index 9154ac8776..20727f6bdf
+--- a/tests/avocado/s390_topology.py
++++ b/tests/functional/test_s390x_topology.py
+@@ -1,3 +1,5 @@
++#!/usr/bin/env python3
++#
+ # Functional test that boots a Linux kernel and checks the console
+ #
+ # Copyright IBM Corp. 2023
+@@ -9,16 +11,13 @@
+ # later.  See the COPYING file in the top-level directory.
+ 
+ import os
+-import shutil
+ import time
+ 
+-from avocado_qemu import QemuSystemTest
+-from avocado_qemu import exec_command
+-from avocado_qemu import exec_command_and_wait_for_pattern
+-from avocado_qemu import interrupt_interactive_console_until_pattern
+-from avocado_qemu import wait_for_console_pattern
+-from avocado.utils import process
+-from avocado.utils import archive
++from qemu_test import QemuSystemTest, Asset
++from qemu_test import exec_command
++from qemu_test import exec_command_and_wait_for_pattern
++from qemu_test import wait_for_console_pattern
++from qemu_test.utils import lzma_uncompress
+ 
+ 
+ class S390CPUTopology(QemuSystemTest):
+@@ -47,6 +46,17 @@ class S390CPUTopology(QemuSystemTest):
+                                   'root=/dev/ram '
+                                   'selinux=0 '
+                                   'rdinit=/bin/sh')
++    ASSET_F35_KERNEL = Asset(
++        ('https://archives.fedoraproject.org/pub/archive'
++         '/fedora-secondary/releases/35/Server/s390x/os'
++         '/images/kernel.img'),
++        '1f2dddfd11bb1393dd2eb2e784036fbf6fc11057a6d7d27f9eb12d3edc67ef73')
 +
-+    def test_sparc64_sun4u(self):
-+        self.set_machine('sun4u')
-+        file_path = self.ASSET_IMAGE.fetch()
-+        kernel_name = 'day23/vmlinux'
-+        archive_extract(file_path, self.workdir, kernel_name)
-+        self.vm.set_console()
-+        self.vm.add_args('-kernel', os.path.join(self.workdir, kernel_name),
-+                         '-append', 'printk.time=0')
-+        self.vm.launch()
-+        wait_for_console_pattern(self, 'Starting logging: OK')
++    ASSET_F35_INITRD = Asset(
++        ('https://archives.fedoraproject.org/pub/archive'
++         '/fedora-secondary/releases/35/Server/s390x/os'
++         '/images/initrd.img'),
++        '1100145fbca00240c8c372ae4b89b48c99844bc189b3dfbc3f481dc60055ca46')
+ 
+     def wait_until_booted(self):
+         wait_for_console_pattern(self, 'no job control',
+@@ -78,21 +88,10 @@ def kernel_init(self):
+         We need a minimal root filesystem with a shell.
+         """
+         self.require_accelerator("kvm")
+-        kernel_url = ('https://archives.fedoraproject.org/pub/archive'
+-                      '/fedora-secondary/releases/35/Server/s390x/os'
+-                      '/images/kernel.img')
+-        kernel_hash = '0d1aaaf303f07cf0160c8c48e56fe638'
+-        kernel_path = self.fetch_asset(kernel_url, algorithm='md5',
+-                                       asset_hash=kernel_hash)
+-
+-        initrd_url = ('https://archives.fedoraproject.org/pub/archive'
+-                      '/fedora-secondary/releases/35/Server/s390x/os'
+-                      '/images/initrd.img')
+-        initrd_hash = 'a122057d95725ac030e2ec51df46e172'
+-        initrd_path_xz = self.fetch_asset(initrd_url, algorithm='md5',
+-                                          asset_hash=initrd_hash)
++        kernel_path = self.ASSET_F35_KERNEL.fetch()
++        initrd_path_xz = self.ASSET_F35_INITRD.fetch()
+         initrd_path = os.path.join(self.workdir, 'initrd-raw.img')
+-        archive.lzma_uncompress(initrd_path_xz, initrd_path)
++        lzma_uncompress(initrd_path_xz, initrd_path)
+ 
+         self.vm.set_console()
+         kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
+@@ -115,10 +114,8 @@ def system_init(self):
+     def test_single(self):
+         """
+         This test checks the simplest topology with a single CPU.
+-
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+         """
++        self.set_machine('s390-ccw-virtio')
+         self.kernel_init()
+         self.vm.launch()
+         self.wait_until_booted()
+@@ -127,10 +124,8 @@ def test_single(self):
+     def test_default(self):
+         """
+         This test checks the implicit topology.
+-
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+         """
++        self.set_machine('s390-ccw-virtio')
+         self.kernel_init()
+         self.vm.add_args('-smp',
+                          '13,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
+@@ -154,10 +149,8 @@ def test_move(self):
+         """
+         This test checks the topology modification by moving a CPU
+         to another socket: CPU 0 is moved from socket 0 to socket 2.
+-
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+         """
++        self.set_machine('s390-ccw-virtio')
+         self.kernel_init()
+         self.vm.add_args('-smp',
+                          '1,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
+@@ -174,10 +167,8 @@ def test_dash_device(self):
+         """
+         This test verifies that a CPU defined with the '-device'
+         command line option finds its right place inside the topology.
+-
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+         """
++        self.set_machine('s390-ccw-virtio')
+         self.kernel_init()
+         self.vm.add_args('-smp',
+                          '1,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
+@@ -221,10 +212,8 @@ def test_polarization(self):
+         """
+         This test verifies that QEMU modifies the entitlement change after
+         several guest polarization change requests.
+-
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+         """
++        self.set_machine('s390-ccw-virtio')
+         self.kernel_init()
+         self.vm.launch()
+         self.wait_until_booted()
+@@ -267,10 +256,8 @@ def test_entitlement(self):
+         """
+         This test verifies that QEMU modifies the entitlement
+         after a guest request and that the guest sees the change.
+-
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+         """
++        self.set_machine('s390-ccw-virtio')
+         self.kernel_init()
+         self.vm.launch()
+         self.wait_until_booted()
+@@ -313,10 +300,8 @@ def test_dedicated(self):
+         CPU is made dedicated.
+         QEMU retains the entitlement value when horizontal polarization is in effect.
+         For the guest, the field shows the effective value of the entitlement.
+-
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+         """
++        self.set_machine('s390-ccw-virtio')
+         self.kernel_init()
+         self.vm.launch()
+         self.wait_until_booted()
+@@ -345,10 +330,8 @@ def test_socket_full(self):
+         This test verifies that QEMU does not accept to overload a socket.
+         The socket-id 0 on book-id 0 already contains CPUs 0 and 1 and can
+         not accept any new CPU while socket-id 0 on book-id 1 is free.
+-
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+         """
++        self.set_machine('s390-ccw-virtio')
+         self.kernel_init()
+         self.vm.add_args('-smp',
+                          '3,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
+@@ -369,10 +352,8 @@ def test_dedicated_error(self):
+         """
+         This test verifies that QEMU refuses to lower the entitlement
+         of a dedicated CPU
+-
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+         """
++        self.set_machine('s390-ccw-virtio')
+         self.kernel_init()
+         self.vm.launch()
+         self.wait_until_booted()
+@@ -417,10 +398,8 @@ def test_move_error(self):
+         """
+         This test verifies that QEMU refuses to move a CPU to an
+         nonexistent location
+-
+-        :avocado: tags=arch:s390x
+-        :avocado: tags=machine:s390-ccw-virtio
+         """
++        self.set_machine('s390-ccw-virtio')
+         self.kernel_init()
+         self.vm.launch()
+         self.wait_until_booted()
+@@ -437,3 +416,6 @@ def test_move_error(self):
+         self.assertEqual(res['error']['class'], 'GenericError')
+ 
+         self.check_topology(0, 0, 0, 0, 'medium', False)
 +
 +if __name__ == '__main__':
 +    QemuSystemTest.main()
