@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3472A96B7C8
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 107D696B7E7
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slmtd-0000Yq-IY; Wed, 04 Sep 2024 06:05:53 -0400
+	id 1slmwB-0002iO-IC; Wed, 04 Sep 2024 06:08:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slmtb-0000Tj-Si
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:05:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slmwA-0002fe-Gs
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:08:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slmtZ-0006ld-U1
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:05:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slmw9-0007iV-14
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:08:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725444348;
+ s=mimecast20190719; t=1725444508;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=7lSGydRYXFCmXlYXF6vh7kwKzllp4zk8QKaHYt0pgso=;
- b=FXbEqugc0HSZdKO32ljazeyTqw/3Sf5UnQyAjsDArWxwWRiKvIqO2JbMSoZYp0TJl3VGXD
- qunT6LMWBrT6X8k40z0qCCihI0juPpHUtTW45JN2+I4uR2+kcdh6YvXqOqptPa8//iOWvT
- 5CizEfTsk2DhZTcNr86TRnCcLymSuQg=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Y4X22Kb7WFUp6Jn1fD8mlHLZx7usSXci3bTjbeK99O4=;
+ b=CfGdWP7wexQ7hdnyCI53O1HllERPFGmlN2I/d55RFf6TAwcURy6kR3zhXnDjRR513ZQhd/
+ 0mOA9sg3TAaMndQqK5Bi7FebDw2KEotbcwb6qrAJKcgLAvkwxj2O60rtv0T4FJ3z0Zg+bd
+ 2soEaKlTZqhy76edAAnc0KQ1UHL/yLc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-qCvuwd7FPyaRYSujdUmPZg-1; Wed, 04 Sep 2024 06:05:47 -0400
-X-MC-Unique: qCvuwd7FPyaRYSujdUmPZg-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7a80b569384so731484785a.2
- for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 03:05:47 -0700 (PDT)
+ us-mta-288-WXwdAdmmOquniVv86cay1Q-1; Wed, 04 Sep 2024 06:08:27 -0400
+X-MC-Unique: WXwdAdmmOquniVv86cay1Q-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-42bb2899d57so6152195e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 03:08:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725444347; x=1726049147;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7lSGydRYXFCmXlYXF6vh7kwKzllp4zk8QKaHYt0pgso=;
- b=bORJC1k8+FfPAWjYwtjmZh/HYZL0qNDfkKFvjJm14GWUS4ciEW5774FKjQ+S3kpAsq
- BlQIAHg82YOFkfwo69KdIht3fA5LUggRW2tZ6kAiFjoQ6TKIhGy9nKdLgDeANJQ5LqA0
- Wu8lyJBxrzobgBKOYAzys029yDZnPrnq9Uyts7rJacKP+MAGE521BYOwvw8/OM+aPRfT
- 8xdcyN6tyfbBhzGIRV+HNT6FIWeYrmttwASsso2AiNUNKTxhMt19nq2Y2pNzoAKRg4Br
- J9efkzRqn+GIDySi2CJ2aqc60u7j18myMGp6djSBmGSyHc8kBHNuoWmfaDrbiGmA+DxM
- 2yAA==
+ d=1e100.net; s=20230601; t=1725444506; x=1726049306;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Y4X22Kb7WFUp6Jn1fD8mlHLZx7usSXci3bTjbeK99O4=;
+ b=JRGMwiB15d9t0EXunSrF6uGDg/r954ctScj00YREWSuCQEJ0ng2LwemkKRMUiE9fbr
+ j1oQRfAu8AXSKfZi06c9pEqMnwQveERRzRt52Q89jT4ZmLni1XZT8DGRO04ReVHy6FTH
+ PrT4gYMGvl1530e6ax/DTUHeD03Dpi1OlccWUgCz9imXWrIwTdVVOv7msc+K8b3VaFnN
+ XtlBxlMGdZuf4X+zFhwk7RSbbF1umWAeq3vMWjd8RByce0yQDQNSjr8ll7XmrFmX3ml+
+ IZmybsdpSODlYNeTQ8xMmEaqpMveqPRxVCZl7FnCNwuxl9FaM1HSZVqZTKhKxhh9Km36
+ xslg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWMD2LVtlUSXhC1oLhh8A66IdYjMf1apPOX7MqADibZ6QEDNHtYrKksCHlNGWuWAP85EHGdr67iqJHu@nongnu.org
-X-Gm-Message-State: AOJu0YyLYLzD2P47L3atR1ghkhItwwVHum1YSJnajoVKtYyKC/CfsaFN
- vo/5c4z1hU/BaN8DMEbSuVQZ0WrI2AnYuUVyrMVV/nf/ZNaIa54rT4K4DS+LjC8ooihidQExd6k
- DUjqfvzYRNBW+sf+IKSGLuIIUn99TN/lr7IvFd28uZwQOeNaW8VSh
-X-Received: by 2002:a05:6214:18e6:b0:6c3:55e8:e291 with SMTP id
- 6a1803df08f44-6c355e8e3b3mr116852266d6.1.1725444347149; 
- Wed, 04 Sep 2024 03:05:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWl3DctEp+DSPe5GxJTQ92qAJPzaIPSG00uLg6ooX9YBW17ZEDvyBqZLB7+YHhzfxs9KmTFA==
-X-Received: by 2002:a05:6214:18e6:b0:6c3:55e8:e291 with SMTP id
- 6a1803df08f44-6c355e8e3b3mr116852116d6.1.1725444346809; 
- Wed, 04 Sep 2024 03:05:46 -0700 (PDT)
+ AJvYcCVW4oYPcYPPZH3tJ0H1rSnFAZktOilUT25skL0xchPDt0E8qLc7vcGP7INZCUvvw71InKEU9lXDZcbp@nongnu.org
+X-Gm-Message-State: AOJu0YzGo7g9B5SwnGbL94idVeRX9ehdaikWxhfibvEjoGlGx36yMYQM
+ tEAgCL+DND8MHMiXZrlFN92tYVTbRCqGGkLmWjP9IM8Qz5jQRiRoXLjNxu6z4yPX/JM2UM5YGs+
+ /XU4mDPTORB3naLVcyYqV6Y/Mxj/CdIUmcm10o7kPdOfN03QEfGr9
+X-Received: by 2002:a05:600c:3b1d:b0:426:629f:154e with SMTP id
+ 5b1f17b1804b1-42c95497b1emr13895805e9.30.1725444505791; 
+ Wed, 04 Sep 2024 03:08:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH5YMnLQFj1c6K/0/2ok1AqvyCHJ8IlI158JGoUN2KqYGsjg3piek+VvWJtb4qHgldtR5LPxA==
+X-Received: by 2002:a05:600c:3b1d:b0:426:629f:154e with SMTP id
+ 5b1f17b1804b1-42c95497b1emr13895685e9.30.1725444505330; 
+ Wed, 04 Sep 2024 03:08:25 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-43-176-181.web.vodafone.de.
  [109.43.176.181]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c340c967d8sm62229996d6.91.2024.09.04.03.05.45
+ 5b1f17b1804b1-42bb6da24bbsm199719045e9.0.2024.09.04.03.08.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Sep 2024 03:05:46 -0700 (PDT)
-Message-ID: <3efe0231-2df1-439d-ae50-84a510c5fcdb@redhat.com>
-Date: Wed, 4 Sep 2024 12:05:44 +0200
+ Wed, 04 Sep 2024 03:08:24 -0700 (PDT)
+Message-ID: <db847fb1-7af2-4383-bab0-a5320eeedd07@redhat.com>
+Date: Wed, 4 Sep 2024 12:08:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.2 31/53] hw/input: Remove lm832x device
+Subject: Re: [PATCH for-9.2 32/53] hw/block: Remove OneNAND device
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20240903160751.4100218-1-peter.maydell@linaro.org>
- <20240903160751.4100218-32-peter.maydell@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
+ <20240903160751.4100218-33-peter.maydell@linaro.org>
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -116,7 +117,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240903160751.4100218-32-peter.maydell@linaro.org>
+In-Reply-To: <20240903160751.4100218-33-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -146,26 +147,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 03/09/2024 18.07, Peter Maydell wrote:
-> Remove the lm832x keyboard-and-pwm i2c device model. This
-> was only used by the n800 and n810 machines.
-> 
-> (Although this is an i2c device and so in theory available to create
-> on the command line, in practice it has an outbound IRQ line that the
-> machine model needs to wire up, and the only way to inject keys events
-> into it is to call the lm832x_key_event() function, so it isn't
-> in practice possible to use it separately from the n800/n810.)
+> The OneNAND devices were only used by n800/n810, so they
+> can be removed now.
 > 
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   MAINTAINERS               |   7 -
->   include/hw/input/lm832x.h |  28 --
->   hw/input/lm832x.c         | 528 --------------------------------------
->   hw/input/Kconfig          |   4 -
->   hw/input/meson.build      |   1 -
->   5 files changed, 568 deletions(-)
->   delete mode 100644 include/hw/input/lm832x.h
->   delete mode 100644 hw/input/lm832x.c
+>   include/hw/block/flash.h |   3 -
+>   hw/block/onenand.c       | 872 ---------------------------------------
+>   hw/block/Kconfig         |   3 -
+>   hw/block/meson.build     |   1 -
+>   4 files changed, 879 deletions(-)
+>   delete mode 100644 hw/block/onenand.c
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
