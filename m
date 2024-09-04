@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E88696B7BF
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3472A96B7C8
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:06:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slmsE-00012D-JB; Wed, 04 Sep 2024 06:04:26 -0400
+	id 1slmtd-0000Yq-IY; Wed, 04 Sep 2024 06:05:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slmsB-0000vC-Sj
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:04:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slmtb-0000Tj-Si
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:05:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slms8-00069D-N4
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:04:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slmtZ-0006ld-U1
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:05:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725444257;
+ s=mimecast20190719; t=1725444348;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Jjzop/srvHm0h25kmQhlzo0tw4k5Y3gFI8C0it+8WQM=;
- b=ES7ccjbEto0rn/dQh0FF0yMgibMyBEUMz3Pp+T8s++Io8BGY2Zzj17lPwIQ+c4nnTg/Nbj
- RuEuyRSVio0ZFp43rqCTmQXrMVIMRzpBCuL772cFwVc8loFOzsa3A5M4kCtdTTTx6HYmzf
- 8rbWfIFxZgAFHTjaxQ5Kb8MrbTA85Rk=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7lSGydRYXFCmXlYXF6vh7kwKzllp4zk8QKaHYt0pgso=;
+ b=FXbEqugc0HSZdKO32ljazeyTqw/3Sf5UnQyAjsDArWxwWRiKvIqO2JbMSoZYp0TJl3VGXD
+ qunT6LMWBrT6X8k40z0qCCihI0juPpHUtTW45JN2+I4uR2+kcdh6YvXqOqptPa8//iOWvT
+ 5CizEfTsk2DhZTcNr86TRnCcLymSuQg=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-114-XlcTjHK8O5WrNJXKTsNdOQ-1; Wed, 04 Sep 2024 06:04:15 -0400
-X-MC-Unique: XlcTjHK8O5WrNJXKTsNdOQ-1
-Received: by mail-oi1-f199.google.com with SMTP id
- 5614622812f47-3df3ced2691so3371666b6e.0
- for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 03:04:15 -0700 (PDT)
+ us-mta-638-qCvuwd7FPyaRYSujdUmPZg-1; Wed, 04 Sep 2024 06:05:47 -0400
+X-MC-Unique: qCvuwd7FPyaRYSujdUmPZg-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7a80b569384so731484785a.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 03:05:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725444255; x=1726049055;
+ d=1e100.net; s=20230601; t=1725444347; x=1726049147;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Jjzop/srvHm0h25kmQhlzo0tw4k5Y3gFI8C0it+8WQM=;
- b=jTPqCsJ5Ugc4j/htr46tKNOcyDrzjWQpfAQ2UFTSegRRgH1xgDx4kqjQazBDPG1hl2
- cmTvOG50DIe6Y49hY/IX005EILrZWuVmp1TudPRCUtaxDIA5zv5qFesmigamBD/PsY36
- IN0YJu+Yt70RmAE6mDUOoP+hFsD4J5fEEkaSiP3jykzg9Yh1Cjek1JTMyYx8SC7rjJ32
- Zqo0xRfs7ubfKoV7MOkQG1SiG2L9nExmsLSmx0t8B604uyg+G9LIRfa8uKn6Y6atLUX3
- joD4wYs/PRE9POezNlx6wfS5CdqGUh1pj7MUsqJsnMeVEHkTFjHCrhTLzsIO+eJrqzs+
- JLKQ==
+ bh=7lSGydRYXFCmXlYXF6vh7kwKzllp4zk8QKaHYt0pgso=;
+ b=bORJC1k8+FfPAWjYwtjmZh/HYZL0qNDfkKFvjJm14GWUS4ciEW5774FKjQ+S3kpAsq
+ BlQIAHg82YOFkfwo69KdIht3fA5LUggRW2tZ6kAiFjoQ6TKIhGy9nKdLgDeANJQ5LqA0
+ Wu8lyJBxrzobgBKOYAzys029yDZnPrnq9Uyts7rJacKP+MAGE521BYOwvw8/OM+aPRfT
+ 8xdcyN6tyfbBhzGIRV+HNT6FIWeYrmttwASsso2AiNUNKTxhMt19nq2Y2pNzoAKRg4Br
+ J9efkzRqn+GIDySi2CJ2aqc60u7j18myMGp6djSBmGSyHc8kBHNuoWmfaDrbiGmA+DxM
+ 2yAA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXwcIIkbmf6qoW2sB/CAV9KFngFwM8y7cenWQQjnFleMfZ9TEUtPPb32S+oDyYsRjmRBIDmuhnxPHjK@nongnu.org
-X-Gm-Message-State: AOJu0YyCimsGKJ7Wj86ENLtczHkHLgvxGBvcVBuaz9S07tvRxTDyHfd/
- 5iHsmhD1Lyf3fiIC7wZkuXuE9OHkaDOzcQGTbB8SYg4w/QmQxf6W1gpuecotc/RtX8xdMju4/y7
- /ZTI9BlT48p3ADkUeJyFi3l+f6svazM7KzZmCQisYxtDjtnPtbud1
-X-Received: by 2002:a05:6808:11c1:b0:3db:331:9d41 with SMTP id
- 5614622812f47-3df2211090emr13707770b6e.23.1725444255209; 
- Wed, 04 Sep 2024 03:04:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxc9Jkhwe6TWFbW5BSZSDH6xW5+0MxZ/kFOXtBSqEY7ikm8EHSXafXqCyujeEuKaCH4CXdjw==
-X-Received: by 2002:a05:6808:11c1:b0:3db:331:9d41 with SMTP id
- 5614622812f47-3df2211090emr13707735b6e.23.1725444254809; 
- Wed, 04 Sep 2024 03:04:14 -0700 (PDT)
+ AJvYcCWMD2LVtlUSXhC1oLhh8A66IdYjMf1apPOX7MqADibZ6QEDNHtYrKksCHlNGWuWAP85EHGdr67iqJHu@nongnu.org
+X-Gm-Message-State: AOJu0YyLYLzD2P47L3atR1ghkhItwwVHum1YSJnajoVKtYyKC/CfsaFN
+ vo/5c4z1hU/BaN8DMEbSuVQZ0WrI2AnYuUVyrMVV/nf/ZNaIa54rT4K4DS+LjC8ooihidQExd6k
+ DUjqfvzYRNBW+sf+IKSGLuIIUn99TN/lr7IvFd28uZwQOeNaW8VSh
+X-Received: by 2002:a05:6214:18e6:b0:6c3:55e8:e291 with SMTP id
+ 6a1803df08f44-6c355e8e3b3mr116852266d6.1.1725444347149; 
+ Wed, 04 Sep 2024 03:05:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEWl3DctEp+DSPe5GxJTQ92qAJPzaIPSG00uLg6ooX9YBW17ZEDvyBqZLB7+YHhzfxs9KmTFA==
+X-Received: by 2002:a05:6214:18e6:b0:6c3:55e8:e291 with SMTP id
+ 6a1803df08f44-6c355e8e3b3mr116852116d6.1.1725444346809; 
+ Wed, 04 Sep 2024 03:05:46 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-43-176-181.web.vodafone.de.
  [109.43.176.181]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-45682c99509sm57395581cf.24.2024.09.04.03.04.13
+ 6a1803df08f44-6c340c967d8sm62229996d6.91.2024.09.04.03.05.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Sep 2024 03:04:14 -0700 (PDT)
-Message-ID: <b5330a1d-3a52-4894-93ce-99508788a901@redhat.com>
-Date: Wed, 4 Sep 2024 12:04:11 +0200
+ Wed, 04 Sep 2024 03:05:46 -0700 (PDT)
+Message-ID: <3efe0231-2df1-439d-ae50-84a510c5fcdb@redhat.com>
+Date: Wed, 4 Sep 2024 12:05:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.2 30/53] hw/rtc: Remove twl92230 device
+Subject: Re: [PATCH for-9.2 31/53] hw/input: Remove lm832x device
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20240903160751.4100218-1-peter.maydell@linaro.org>
- <20240903160751.4100218-31-peter.maydell@linaro.org>
+ <20240903160751.4100218-32-peter.maydell@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -116,7 +116,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240903160751.4100218-31-peter.maydell@linaro.org>
+In-Reply-To: <20240903160751.4100218-32-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -146,16 +146,25 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 03/09/2024 18.07, Peter Maydell wrote:
-> Remove the TWL92230 RTC device, which was used only by the n800 and n810.
+> Remove the lm832x keyboard-and-pwm i2c device model. This
+> was only used by the n800 and n810 machines.
+> 
+> (Although this is an i2c device and so in theory available to create
+> on the command line, in practice it has an outbound IRQ line that the
+> machine model needs to wire up, and the only way to inject keys events
+> into it is to call the lm832x_key_event() function, so it isn't
+> in practice possible to use it separately from the n800/n810.)
 > 
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   MAINTAINERS        |   1 -
->   hw/rtc/twl92230.c  | 882 ---------------------------------------------
->   hw/rtc/Kconfig     |   4 -
->   hw/rtc/meson.build |   1 -
->   4 files changed, 888 deletions(-)
->   delete mode 100644 hw/rtc/twl92230.c
+>   MAINTAINERS               |   7 -
+>   include/hw/input/lm832x.h |  28 --
+>   hw/input/lm832x.c         | 528 --------------------------------------
+>   hw/input/Kconfig          |   4 -
+>   hw/input/meson.build      |   1 -
+>   5 files changed, 568 deletions(-)
+>   delete mode 100644 include/hw/input/lm832x.h
+>   delete mode 100644 hw/input/lm832x.c
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
