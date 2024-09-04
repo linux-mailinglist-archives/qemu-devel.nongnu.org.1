@@ -2,103 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF5B96BCCA
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5306396BCE7
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:49:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slpP9-00030B-EE; Wed, 04 Sep 2024 08:46:35 -0400
+	id 1slpP7-0002Eb-6a; Wed, 04 Sep 2024 08:46:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1slpNy-0006n8-9t; Wed, 04 Sep 2024 08:45:22 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNz-0006tw-Jh
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:45:24 -0400
 Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1slpNw-0005uU-93; Wed, 04 Sep 2024 08:45:22 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNx-0005uy-6x
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:45:23 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 1996E219AE;
- Wed,  4 Sep 2024 12:45:18 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id DFBA92119F;
+ Wed,  4 Sep 2024 12:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FsP7vs9wLXy+/Qf4dErPzeH4vBCbn1FKP69bjd7sNkE=;
- b=0zr1qR8k9vAiHLBRnhCLjZFrHjgQB7KK0qVJo2EhicPJyO2axUqGf9ADDvbyc19E3LW0mZ
- je4L55RyGyXoVyAbcS8B2ToSfFNOeCPQHeIQpmCm63FFkOCA180GtvOX/2cAShZZuDzlpm
- LBMZLVH29kCxdWW2gK2ZLRhIcOCEntM=
+ bh=MMW5DoYt/OXE6ijsDBvuukEAH9fCu8UyO1E91FfUEXs=;
+ b=V57zSILIGHQMfnWHNXCqeDFnkK971K9cHwButqiwJ6/B68XYp8s8DDyySTGPds+iSlhNnS
+ Yn48p+H7e98yRjX9MrpvubTF3aTLTNr5CtOPsYTkgy8xFl3ggXoTsqdQ84DmnisnmT63SE
+ MkXsFTcP/AgY5eKpuzYpkv5j5lZwF38=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453918;
+ s=susede2_ed25519; t=1725453919;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FsP7vs9wLXy+/Qf4dErPzeH4vBCbn1FKP69bjd7sNkE=;
- b=/NzjHL2Rc4zco/UGgV/b+Vk1kct8dx4yeDOHUZns2P2wGnzPu9vRIkwurR7LTJkOwV0mTH
- 87QWtb5k/ttc73BA==
+ bh=MMW5DoYt/OXE6ijsDBvuukEAH9fCu8UyO1E91FfUEXs=;
+ b=URnrHXzw1L3p6T8uFXve++XZehNHbmlYssJPsK18+7h3LX5codfyQTcN64ukZL7z2f2q+y
+ BKPY/r3HJWzYiNCw==
 Authentication-Results: smtp-out1.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=V57zSILI;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=URnrHXzw
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FsP7vs9wLXy+/Qf4dErPzeH4vBCbn1FKP69bjd7sNkE=;
- b=0zr1qR8k9vAiHLBRnhCLjZFrHjgQB7KK0qVJo2EhicPJyO2axUqGf9ADDvbyc19E3LW0mZ
- je4L55RyGyXoVyAbcS8B2ToSfFNOeCPQHeIQpmCm63FFkOCA180GtvOX/2cAShZZuDzlpm
- LBMZLVH29kCxdWW2gK2ZLRhIcOCEntM=
+ bh=MMW5DoYt/OXE6ijsDBvuukEAH9fCu8UyO1E91FfUEXs=;
+ b=V57zSILIGHQMfnWHNXCqeDFnkK971K9cHwButqiwJ6/B68XYp8s8DDyySTGPds+iSlhNnS
+ Yn48p+H7e98yRjX9MrpvubTF3aTLTNr5CtOPsYTkgy8xFl3ggXoTsqdQ84DmnisnmT63SE
+ MkXsFTcP/AgY5eKpuzYpkv5j5lZwF38=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453918;
+ s=susede2_ed25519; t=1725453919;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FsP7vs9wLXy+/Qf4dErPzeH4vBCbn1FKP69bjd7sNkE=;
- b=/NzjHL2Rc4zco/UGgV/b+Vk1kct8dx4yeDOHUZns2P2wGnzPu9vRIkwurR7LTJkOwV0mTH
- 87QWtb5k/ttc73BA==
+ bh=MMW5DoYt/OXE6ijsDBvuukEAH9fCu8UyO1E91FfUEXs=;
+ b=URnrHXzw1L3p6T8uFXve++XZehNHbmlYssJPsK18+7h3LX5codfyQTcN64ukZL7z2f2q+y
+ BKPY/r3HJWzYiNCw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F629139D2;
- Wed,  4 Sep 2024 12:45:16 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 83D2E139D2;
+ Wed,  4 Sep 2024 12:45:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id AAD0AVxW2GZuVQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:45:16 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 6NKqEl5W2GZuVQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:45:18 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Arman Nabiev <nabiev.arman13@gmail.com>, qemu-stable@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 33/34] target/ppc: Fix migration of CPUs with TLB_EMB TLB type
-Date: Wed,  4 Sep 2024 09:44:16 -0300
-Message-Id: <20240904124417.14565-34-farosas@suse.de>
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 34/34] tests/qtest/migration: Add a check for the availability
+ of the "pc" machine
+Date: Wed,  4 Sep 2024 09:44:17 -0300
+Message-Id: <20240904124417.14565-35-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240904124417.14565-1-farosas@suse.de>
 References: <20240904124417.14565-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.20 / 50.00]; MID_CONTAINS_FROM(1.00)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- BAYES_HAM(-0.00)[41.71%]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TAGGED_RCPT(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:email,suse.de:mid];
- ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
- FREEMAIL_CC(0.00)[redhat.com,linaro.org,gmail.com,nongnu.org];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
- FROM_EQ_ENVFROM(0.00)[];
+X-Rspamd-Queue-Id: DFBA92119F
+X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; TO_DN_SOME(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Score: 0.20
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[];
+ DKIM_TRACE(0.00)[suse.de:+]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCPT_COUNT_THREE(0.00)[4];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
  helo=smtp-out1.suse.de
 X-Spam_score_int: -43
@@ -123,53 +131,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Arman Nabiev <nabiev.arman13@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
 
-In vmstate_tlbemb a cut-and-paste error meant we gave
-this vmstate subsection the same "cpu/tlb6xx" name as
-the vmstate_tlb6xx subsection. This breaks migration load
-for any CPU using the TLB_EMB CPU type, because when we
-see the "tlb6xx" name in the incoming data we try to
-interpret it as a vmstate_tlb6xx subsection, which it
-isn't the right format for:
+The test_vcpu_dirty_limit is the only test that does not check for the
+availability of the machine before starting the test, so it fails when
+QEMU has been configured with --without-default-devices. Add a check for
+the "pc" machine type to fix it.
 
- $ qemu-system-ppc -drive
- if=none,format=qcow2,file=/home/petmay01/test-images/virt/dummy.qcow2
- -monitor stdio -M bamboo
- QEMU 9.0.92 monitor - type 'help' for more information
- (qemu) savevm foo
- (qemu) loadvm foo
- Missing section footer for cpu
- Error: Error -22 while loading VM state
-
-Correct the incorrect vmstate section name. Since migration
-for these CPU types was completely broken before, we don't
-need to care that this is a migration compatibility break.
-
-This affects the PPC 405, 440, 460 and e200 CPU families.
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2522
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Arman Nabiev <nabiev.arman13@gmail.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- target/ppc/machine.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/migration-test.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-index 731dd8df35..d433fd45fc 100644
---- a/target/ppc/machine.c
-+++ b/target/ppc/machine.c
-@@ -621,7 +621,7 @@ static bool tlbemb_needed(void *opaque)
- }
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 6aca6760ef..9d08101643 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -3952,8 +3952,10 @@ int main(int argc, char **argv)
+     if (g_str_equal(arch, "x86_64") && has_kvm && kvm_dirty_ring_supported()) {
+         migration_test_add("/migration/dirty_ring",
+                            test_precopy_unix_dirty_ring);
+-        migration_test_add("/migration/vcpu_dirty_limit",
+-                           test_vcpu_dirty_limit);
++        if (qtest_has_machine("pc")) {
++            migration_test_add("/migration/vcpu_dirty_limit",
++                               test_vcpu_dirty_limit);
++        }
+     }
  
- static const VMStateDescription vmstate_tlbemb = {
--    .name = "cpu/tlb6xx",
-+    .name = "cpu/tlbemb",
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = tlbemb_needed,
+     ret = g_test_run();
 -- 
 2.35.3
 
