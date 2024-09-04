@@ -2,134 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2416096B7F8
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:11:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5CA96B8A1
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:32:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slmyw-0006Iz-Jl; Wed, 04 Sep 2024 06:11:22 -0400
+	id 1slnIV-0003t4-W8; Wed, 04 Sep 2024 06:31:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slmyq-00062e-SP
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:11:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
+ id 1slnIT-0003sR-QP
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:31:33 -0400
+Received: from dedi548.your-server.de ([85.10.215.148])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slmyp-0001SD-EI
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:11:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725444674;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=2ZPdNciBE65ElgRIxJc7LxDi4AspYkkrfuaGnmXwUQE=;
- b=bsKTI5CtT8AB9o7tAlk9tDyWxn6LQqXAtCA1HE3UjV+xWz+zjAuIc1qHSsby3w/GGwdYh9
- H91GLx4CS0GMMFqh8RExVpzB58OigEBujwF5UXmI8vSw+PnshGBUtFUKuvc9ZUvrXylppA
- W8DoPJ13XcykZMi5UCR/OhmCPBI2lTg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-206-dIUJll4uOTqwxrlsMT4r8A-1; Wed, 04 Sep 2024 06:11:12 -0400
-X-MC-Unique: dIUJll4uOTqwxrlsMT4r8A-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3771b6da3ceso626563f8f.3
- for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 03:11:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725444671; x=1726049471;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2ZPdNciBE65ElgRIxJc7LxDi4AspYkkrfuaGnmXwUQE=;
- b=rXKu2KogXBfqsz3ljbbrDTPDtqRSUQS7wnrjU6FL6ewkGAeCQRlRvgVQK6/VCoNnks
- IQXETFAbRaqiqT1UlHO8EYJNKtERk81WvV5VfffdRolXJtmOYh9+AflQ4/dJrQqfNg5a
- 0Nbqw3iVE3QVapcT+Sn555pYS56cfKjQ8os/tzPfnCrdxxarItN6HG06ZeVrukYDixgP
- S9dhNM3uzRxPT4C2gpDVDFIpp8pm6XlYuy4mqRB10IUCLPVEBxQ52+X1ZWy5mR0celsl
- SM09OrrAXJvUoE9PMrDoZNjTMXqJqgJH4ilsjwvBw4CrWZl6GdRafS88R6CTJZYR0Hjm
- X26Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVJgpIEd3tn23EdABbKigoQOO1ekb/TubiWSnX7DLDnec82Hois+eibq6nCc9Y87PN6t4+KJhZTN01e@nongnu.org
-X-Gm-Message-State: AOJu0YxFXBWtiYcjhB0rgoBjeejSOxg1ksQfO8d6hUPXrID/copIwRAk
- dDK6oIJc4lF016LuXKML8U1xY5snIm8fjG2qnW5bK2+jxRXMrg/gkFur3SBsYrkeJoDY560dHej
- ytAL8rRPq85abc48FSGeKsp0+c2xETrCDDgRBolfkCc54pTiipKje
-X-Received: by 2002:adf:f7c8:0:b0:374:c122:e8b8 with SMTP id
- ffacd0b85a97d-374c122e9e6mr7834458f8f.11.1725444671511; 
- Wed, 04 Sep 2024 03:11:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZ+p3T1wy8Whbc/4XqrWvEzbLuf8AnkJPOzbk0/N/K3kkVPmftcN+7ehhkEYBCwCwC4Bet0w==
-X-Received: by 2002:adf:f7c8:0:b0:374:c122:e8b8 with SMTP id
- ffacd0b85a97d-374c122e9e6mr7834435f8f.11.1725444670975; 
- Wed, 04 Sep 2024 03:11:10 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-176-181.web.vodafone.de.
- [109.43.176.181]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-375f59f3d5esm4537053f8f.96.2024.09.04.03.11.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Sep 2024 03:11:10 -0700 (PDT)
-Message-ID: <c63302c2-be1d-498d-8d81-fce6d068e08b@redhat.com>
-Date: Wed, 4 Sep 2024 12:11:09 +0200
+ (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
+ id 1slnIR-0002Ch-Sj
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:31:33 -0400
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+ by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
+ id 1slmzS-0001Jx-2h for qemu-devel@nongnu.org;
+ Wed, 04 Sep 2024 12:11:55 +0200
+Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
+ by sslproxy05.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
+ id 1slmzT-000B56-1x for qemu-devel@nongnu.org;
+ Wed, 04 Sep 2024 12:11:54 +0200
+Received: from localhost (localhost [127.0.0.1])
+ by mail.embedded-brains.de (Postfix) with ESMTP id 735234800A3
+ for <qemu-devel@nongnu.org>; Wed,  4 Sep 2024 12:11:54 +0200 (CEST)
+Received: from mail.embedded-brains.de ([127.0.0.1])
+ by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id pxS_DPTZL5yF for <qemu-devel@nongnu.org>;
+ Wed,  4 Sep 2024 12:11:54 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.embedded-brains.de (Postfix) with ESMTP id 228FD48017F
+ for <qemu-devel@nongnu.org>; Wed,  4 Sep 2024 12:11:54 +0200 (CEST)
+X-Virus-Scanned: amavis at zimbra.eb.localhost
+Received: from mail.embedded-brains.de ([127.0.0.1])
+ by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id X6HBgPiXxMeW for <qemu-devel@nongnu.org>;
+ Wed,  4 Sep 2024 12:11:53 +0200 (CEST)
+Received: from zimbra.eb.localhost (zimbra.eb.localhost [192.168.96.204])
+ by mail.embedded-brains.de (Postfix) with ESMTP id EDFDA4800A3
+ for <qemu-devel@nongnu.org>; Wed,  4 Sep 2024 12:11:53 +0200 (CEST)
+Date: Wed, 4 Sep 2024 12:11:53 +0200 (CEST)
+From: Sebastian Huber <sebastian.huber@embedded-brains.de>
+To: qemu-devel <qemu-devel@nongnu.org>
+Message-ID: <1832886563.20496.1725444713946.JavaMail.zimbra@embedded-brains.de>
+Subject: Are floating-point exceptions usable on AArch64?
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.2 34/53] hw/usb: Remove MUSB USB host controller
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20240903160751.4100218-1-peter.maydell@linaro.org>
- <20240903160751.4100218-35-peter.maydell@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240903160751.4100218-35-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [192.168.96.204]
+X-Mailer: Zimbra 9.0.0_GA_4615 (ZimbraWebClient - FF128 (Linux)/9.0.0_GA_4615)
+Thread-Index: 9coovJvrd0AO0HcKDIyxuH2twUXlpA==
+Thread-Topic: Are floating-point exceptions usable on AArch64?
+X-Authenticated-Sender: smtp-embedded@poldi-networks.de
+X-Virus-Scanned: Clear (ClamAV 1.0.5/27388/Wed Sep  4 10:40:46 2024)
+Received-SPF: pass client-ip=85.10.215.148;
+ envelope-from=sebastian.huber@embedded-brains.de; helo=dedi548.your-server.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,22 +84,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/09/2024 18.07, Peter Maydell wrote:
-> Remove the MUSB USB2.0 OTG-compliant USB host controller
-> device model. This was only used by the tusb6010 USB
-> controller in the n800/n810 machines.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   include/hw/usb/hcd-musb.h |   49 --
->   hw/usb/hcd-musb.c         | 1553 -------------------------------------
->   hw/usb/Kconfig            |    4 -
->   hw/usb/meson.build        |    1 -
->   4 files changed, 1607 deletions(-)
->   delete mode 100644 include/hw/usb/hcd-musb.h
->   delete mode 100644 hw/usb/hcd-musb.c
+Hello,
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+I tried to provoke a division-by-zero exception on AArch64 using:
 
+    uint64_t value;
+    __asm__ volatile (
+      "mrs %0, FPCR\n"
+      "orr %0, %0, 0x200\n"
+      "msr FPCR, %0" :  "=3D&r" ( value ) : : "memory"
+    );
+    volatile double x =3D 0x0;
+    volatile double y =3D 0x0;
+    x /=3D y;
 
+When I look with the debugger at $fpcr it still says 0x0 after the msr. Are=
+ floating-point exceptions usable on AArch64 in general?
+
+--=20
+embedded brains GmbH & Co. KG
+Herr Sebastian HUBER
+Dornierstr. 4
+82178 Puchheim
+Germany
+email: sebastian.huber@embedded-brains.de
+phone: +49-89-18 94 741 - 16
+fax:   +49-89-18 94 741 - 08
+
+Registergericht: Amtsgericht M=C3=BCnchen
+Registernummer: HRB 157899
+Vertretungsberechtigte Gesch=C3=A4ftsf=C3=BChrer: Peter Rasmussen, Thomas D=
+=C3=B6rfler
+Unsere Datenschutzerkl=C3=A4rung finden Sie hier:
+https://embedded-brains.de/datenschutzerklaerung/
 
