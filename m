@@ -2,136 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F7B96C3AC
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 18:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 114F596C3CE
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 18:16:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slsdv-0005Wh-MN; Wed, 04 Sep 2024 12:14:04 -0400
+	id 1slsg2-0001Jj-4r; Wed, 04 Sep 2024 12:16:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slsdl-0005WA-NE
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:13:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slsdj-0001gx-TM
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:13:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725466430;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=SdcT0PP/Z9zalNeW0GzXZ4o+/MLnZP8j0/JGBnmzBvM=;
- b=g3U+AZXsraVPRfU0vuHbR3KFvcvtIpUVG0pyFCGYRKq6osCXhQ0wYOO1s36OVqwekxKMmp
- eRi6Zo97J9hJOwmhIL8MsPwD3bjD+S4oUXHLfi2WePyiQuQHFtKMpBboTHIwQpJafaMiIt
- nrv2tBAEQJHwx1vSLl/hmMVdog/dFv4=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-375-7rNEFv-YOniHDN0fqbR17w-1; Wed, 04 Sep 2024 12:13:48 -0400
-X-MC-Unique: 7rNEFv-YOniHDN0fqbR17w-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7a803adfe52so130616785a.1
- for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 09:13:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1slsfc-0001C8-R2
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:15:50 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1slsfY-0002G6-Jm
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 12:15:47 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-533496017f8so8974353e87.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 09:15:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1725466541; x=1726071341; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=UPov3bEaYQETs3cfkL+hd+7yzj0MCF4STSdQusQLNLk=;
+ b=Mf+r/strryq0aIJSK0LKxBcMlmbnd8iPCMi4fAP+i3E+EM8RXyEgEd5Th3dk7+laFe
+ jpM1DC/2e0mUxn5EHg4dFxw1TSc+4OFhfx2NSDNcFv7Vp0wrpgagCoHwsKdDptDe32ux
+ z2BMkV4w/3zw2gnhMWhL4vLXNSA0CEN9DjuiSyrY7Y34HscY1X0g3o/40mXPFhE/uNav
+ 3o0ifQeQ8/kuraum5pBwaH7eWCJalA9EnLS/0glgAI7P/onFkwDyhee2Us1EYGD9WQiz
+ WyfcQmdQccahVQmcEcgB42HbQbOZfPxrzUqTGIt2oPmXTY7dZDrLu4jXP9JjqHqf7gRN
+ wdqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725466428; x=1726071228;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1725466541; x=1726071341;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=SdcT0PP/Z9zalNeW0GzXZ4o+/MLnZP8j0/JGBnmzBvM=;
- b=Wzez28qNP/U1mSNNXepK5dUTYCb6+PxfqxZ0DMBgpUuaY3m8PfC36ojSPmI+eBKqx6
- RhiYhDvNq3ieboL4ynHdtcpBPhm6nJOAxcgBL04H0SfFlBNCg9lFypXrvYHLoTquFXQ7
- 5m32h83ZlarhxEhC8XmST+JOz4Agn7qRsyhRLtBAhple6zuNcKEIUgZctux3bpyZTh2M
- 7bCFrjBzzdXiCrsCNuJloSPs9lVtKLxGznuxS03Ad3lzum8DCL5UnIMOB7lmgRne90HH
- xcgpFZXum+clv0P2qF6FcM+HCskkpr8uU6XcgyKQAVSk8vb0BYn2ZEZ0ZH9+20c1MBws
- 13iA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVIgPT8+8R4J3gn2Y0q+2lGibTdRUXwSPrNo4kVkGys96pLSGHhmbPFi+/T+RKYITEVFHPHB66aaVKm@nongnu.org
-X-Gm-Message-State: AOJu0Yz5GvHMKIqtauC/+UsXz2xHUo9qTb3Yo1577dJpwvLzzyzHqZK9
- kfrJFHDu7WuoIWwU6rMuoT6BJhszz9Zn+zcnyaRw0u9TsyUaaUN05HzqXIjs1OGD6Htlu4/MLln
- V2U5xsFjkHb+11rZN6/zom8nEQnR5tzvXax44humvGtV1Z4qTyIcv
-X-Received: by 2002:a05:620a:2807:b0:7a1:d8df:c0d7 with SMTP id
- af79cd13be357-7a8041af4c3mr1825172885a.23.1725466427731; 
- Wed, 04 Sep 2024 09:13:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGVUTkOVDBfu9eLVZRA59rzrMluwT7f2lAZr4uj4t7qe9Z2qH78ujOPUYoFWsXN9YD0oYFrtg==
-X-Received: by 2002:a05:620a:2807:b0:7a1:d8df:c0d7 with SMTP id
- af79cd13be357-7a8041af4c3mr1825170185a.23.1725466427368; 
- Wed, 04 Sep 2024 09:13:47 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-176-181.web.vodafone.de.
- [109.43.176.181]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7a806d390c4sm632429885a.95.2024.09.04.09.13.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Sep 2024 09:13:47 -0700 (PDT)
-Message-ID: <789b890f-837e-4157-afe4-9f91c31a2083@redhat.com>
-Date: Wed, 4 Sep 2024 18:13:42 +0200
+ bh=UPov3bEaYQETs3cfkL+hd+7yzj0MCF4STSdQusQLNLk=;
+ b=angZbboOjd+vS5Iv1+ZQqDML08BdUBTUo8+AlxsPyWrMaIy7m1dRxqEXVtt/tCKjIn
+ xEXK/CRNPCfmOo2pas9CknY9CRH7mDev41LSBv6+7ewZRApXl6JNOS9LvIsTHMn06Lvz
+ O+qgG6s/VG/fgI2MYsSE9zZWeJ+LWRYhWMlrcBMCmnSs0AAEzXiknkA9wdD/tM2gUAzE
+ 8elRLA5vhyghbIVVrR7ieR/PCcbORGFkmCms+vQ9qDRC/D58WDncszvX1QPLgrJQOw0b
+ BGBwCceJkYXnZjzNm+YvS491cDQrufVQn0H1joqGM6GbnvdidfPYuEb522jNdCqPPEJ0
+ MvCA==
+X-Gm-Message-State: AOJu0YzJmcqCoFeH7hTV48jIZ7HwKGGSYV3wB+L6IYLQql8oMjM8/B3Y
+ W00s0Efb/4jzL1+Yof83N7c2yYTK8d2HQsWfBm64bMfXNTbnRdMNK5QPHJEr
+X-Google-Smtp-Source: AGHT+IGGxyXV1DHmwVIe0OpCvVwm03kby7sZoJZm7dAyldQigQIQwsvNJl64iMUk2nMzo9AdvWIDKg==
+X-Received: by 2002:ac2:4c41:0:b0:533:4191:fa47 with SMTP id
+ 2adb3069b0e04-53546b69167mr10896281e87.47.1725466540471; 
+ Wed, 04 Sep 2024 09:15:40 -0700 (PDT)
+Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-5354084c9cfsm2388903e87.244.2024.09.04.09.15.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Sep 2024 09:15:39 -0700 (PDT)
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
+ peter.maydell@linaro.org, alex.bennee@linaro.org, xenia.ragiadakou@amd.com,
+ jason.andryuk@amd.com, edgar.iglesias@amd.com,
+ xen-devel@lists.xenproject.org
+Subject: [PULL v1 00/12] Xen queue
+Date: Wed,  4 Sep 2024 18:15:24 +0200
+Message-ID: <20240904161537.664189-1-edgar.iglesias@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/15] target/cris: Remove the deprecated CRIS target
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Riku Voipio <riku.voipio@iki.fi>,
- Peter Maydell <peter.maydell@linaro.org>, devel@lists.libvirt.org
-References: <20240904143603.52934-1-philmd@linaro.org>
- <20240904143603.52934-14-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
- yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
- 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
- tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
- 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
- O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
- 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
- gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
- 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
- zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
- aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
- QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
- EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
- 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
- eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
- ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
- zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
- tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
- WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
- UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
- BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
- 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
- +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
- 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
- gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
- WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
- VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
- knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
- cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
- X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
- AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
- ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
- fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
- 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
- cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
- ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
- Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
- oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
- IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
- yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240904143603.52934-14-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -148,43 +91,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04/09/2024 16.36, Philippe Mathieu-Daudé wrote:
-> The CRIS target is deprecated since v9.0 (commit c7bbef40234
-> "docs: mark CRIS support as deprecated").
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   MAINTAINERS                         |    1 -
->   docs/about/deprecated.rst           |    8 -
->   docs/about/emulation.rst            |    4 -
->   docs/about/removed-features.rst     |    7 +
->   include/exec/poison.h               |    1 -
->   target/cris/cpu-param.h             |   16 -
->   target/cris/cpu-qom.h               |   32 -
->   target/cris/cpu.h                   |  286 ---
->   target/cris/crisv10-decode.h        |  112 -
->   target/cris/crisv32-decode.h        |  133 --
->   target/cris/helper.h                |   23 -
->   target/cris/mmu.h                   |   22 -
->   target/cris/opcode-cris.h           |  355 ---
->   target/cris/cpu.c                   |  323 ---
->   target/cris/gdbstub.c               |  127 --
->   target/cris/helper.c                |  287 ---
->   target/cris/machine.c               |   93 -
->   target/cris/mmu.c                   |  356 ---
->   target/cris/op_helper.c             |  580 -----
->   target/cris/translate.c             | 3252 ---------------------------
->   tests/qtest/machine-none-test.c     |    1 -
->   fpu/softfloat-specialize.c.inc      |    4 +-
->   target/cris/translate_v10.c.inc     | 1262 -----------
->   scripts/coverity-scan/COMPONENTS.md |    3 -
->   target/Kconfig                      |    1 -
->   target/cris/Kconfig                 |    2 -
->   target/cris/meson.build             |   17 -
->   target/meson.build                  |    1 -
->   tests/data/qobject/qdict.txt        |    6 -
->   29 files changed, 9 insertions(+), 7306 deletions(-)
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+The following changes since commit e638d685ec2a0700fb9529cbd1b2823ac4120c53:
+
+  Open 9.2 development tree (2024-09-03 09:18:43 -0700)
+
+are available in the Git repository at:
+
+  https://gitlab.com/edgar.iglesias/qemu.git tags/edgar/xen-queue-2024-09-04.for-upstream
+
+for you to fetch changes up to 0b57c8160a2a6c833cfb1d958f08385c4391ab70:
+
+  docs/system/i386: xenpvh: Add a basic description (2024-09-04 16:50:43 +0200)
+
+----------------------------------------------------------------
+Edgars Xen queue.
+
+----------------------------------------------------------------
+Edgar E. Iglesias (12):
+      MAINTAINERS: Add docs/system/arm/xenpvh.rst
+      hw/arm: xenpvh: Update file header to use SPDX
+      hw/arm: xenpvh: Tweak machine description
+      hw/arm: xenpvh: Add support for SMP guests
+      hw/arm: xenpvh: Remove double-negation in warning
+      hw/arm: xenpvh: Move stubbed functions to xen-stubs.c
+      hw/arm: xenpvh: Break out a common PVH machine
+      hw/arm: xenpvh: Rename xen_arm.c -> xen-pvh.c
+      hw/arm: xenpvh: Reverse virtio-mmio creation order
+      hw/xen: pvh-common: Add support for creating PCIe/GPEX
+      hw/i386/xen: Add a Xen PVH x86 machine
+      docs/system/i386: xenpvh: Add a basic description
+
+ MAINTAINERS                     |   2 +
+ docs/system/i386/xenpvh.rst     |  49 ++++++
+ docs/system/target-i386.rst     |   1 +
+ hw/arm/meson.build              |   5 +-
+ hw/arm/trace-events             |   5 -
+ hw/arm/xen-pvh.c                |  89 ++++++++++
+ hw/arm/xen-stubs.c              |  32 ++++
+ hw/arm/xen_arm.c                | 267 -----------------------------
+ hw/i386/xen/meson.build         |   1 +
+ hw/i386/xen/xen-pvh.c           | 121 ++++++++++++++
+ hw/xen/meson.build              |   1 +
+ hw/xen/trace-events             |   4 +
+ hw/xen/xen-pvh-common.c         | 362 ++++++++++++++++++++++++++++++++++++++++
+ include/hw/xen/xen-pvh-common.h |  88 ++++++++++
+ 14 files changed, 754 insertions(+), 273 deletions(-)
+ create mode 100644 docs/system/i386/xenpvh.rst
+ create mode 100644 hw/arm/xen-pvh.c
+ create mode 100644 hw/arm/xen-stubs.c
+ delete mode 100644 hw/arm/xen_arm.c
+ create mode 100644 hw/i386/xen/xen-pvh.c
+ create mode 100644 hw/xen/xen-pvh-common.c
+ create mode 100644 include/hw/xen/xen-pvh-common.h
+
+-- 
+2.43.0
 
 
