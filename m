@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D2E396C0E6
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 16:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A885696C0EA
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 16:39:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slr9l-0000ON-RP; Wed, 04 Sep 2024 10:38:49 -0400
+	id 1slr9v-00015F-9B; Wed, 04 Sep 2024 10:39:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slr9O-0007YF-Qj
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 10:38:26 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slr9X-00088l-Li
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 10:38:38 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slr9F-0005rZ-VO
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 10:38:26 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-42bb81e795bso54529135e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 07:38:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1slr9R-0005z8-A3
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 10:38:34 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-375e5c12042so1282420f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Sep 2024 07:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725460696; x=1726065496; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725460707; x=1726065507; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e9hlTIaGCxwIlU8SmH1ZgFyvi18BahJ0hwTrE22b96k=;
- b=xWGjmnmXp/Ie6jU+eCT7U2+yAz8SjyYsgOJ9IGqCnEUaAtlJ6PhApGEe76oSLZn+yY
- 4ZzWDXgEpvMOh2kbS9I3uRkul51a9BVvFjpwxak2CG3LOYpBHGEhM44L+5tS5vfrP02A
- GahdkYGhvWNykmGrzqF8qNHi9DPDMmBDWAKTdp4jR5Ob2rdgR/9wsF5FRcr9VtfoHdG9
- /MrCRvlTmpkZg6MkpZgJblu4OXOaM2SVDY3ktuMEQH7cicNgUvhz1bzYHnReif8EhXmI
- VJJlP63OvxKrxfM2liMq9gehhNNyKlNiTT5UYZ9j3zQ8lfUPBqPPpy3Tgwxa0YrrWwpA
- +E9w==
+ bh=m6Ao9sPCdzaN16xp83gmpzJocjbyi1XBJ5amjDINxlg=;
+ b=f32kS3ulLbnaGvfrLZt+9BY0RWpJfdF1/Hc2m2J8cwZ+cI1NAc4cGbo0Pii8Xwoesv
+ 9QIY4zFjl/OZp1D5x/TZ5d/fRTxFOgpCkggaL0lV0Z6JDZV2VKrRv12uEcu4albS+X7e
+ gEoLkuqmxrnO4NtQFx3qdDKoQyCZNfxzkcz0aAd4Gvrn2V5q1/fRlCpZXbQ9tgKVFNOZ
+ HyHeUcMU5hKkU/OLh1RDvU9MUchZNhQYYR4/TXmJqE18dONZfGhWfhewAuKVuy46+GKo
+ 0Y2Qz2WNcze6OlUtRJbalKl5Xzee66VhF28OgzQP732X6Y3KDyzMW1nzcQYEveqHOBE9
+ CejA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725460696; x=1726065496;
+ d=1e100.net; s=20230601; t=1725460707; x=1726065507;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e9hlTIaGCxwIlU8SmH1ZgFyvi18BahJ0hwTrE22b96k=;
- b=APCnpF+WEG2m9CIFu9nsOwS8ncq3y8QMvqiPIC3oXGgDrsWgcL17nn1DKR3GibkDm1
- piMlx7ms181aq6LL6b4cDJ9vTQTNKO0XckJFagOCydIH0d5HbWLnXLub11dZYF1RWTt/
- qHjsyXvEcA1H+3QEkAn7pyyLwqChLhhNZaMfUYYL7VGRoi8VIjS0ody4f8nEXEG5O8v0
- HWgHaq3h0wjI5sMTRlI6y7s424KMX1YVL2NpT0Gy9mUnfVf/YyL99jm2JTHfd/EoM4wt
- Et+DCSdxzl+IRrorpA5UYmEf3c+c5TYHG/CTlm54exo1rJJhpa5EYN0nTvrXAolYBGtB
- ufrg==
+ bh=m6Ao9sPCdzaN16xp83gmpzJocjbyi1XBJ5amjDINxlg=;
+ b=WL2p+oZFRg1ZBTrZq7o5ny8eUpmu7JiuQS6ZztqBmFPrlfq0gpvofbiC65GBGFHmV5
+ IDcEKCuEyFJjQPyZkAa+vyp9UdKpNw4rGtt4WlHvTDsMZarHMHaoRrDlkskhb7xWNZZ8
+ C8mtKu6bsYD7jdDLhSg3kFM8gWJvTprzfoQVnKcTJ4nPlV9VrcxVBv4xcuR4CeK3tvCM
+ bK4rzaqf/J4DNkAgC/UR/xVldZJMKhssooW2ZdkfkB2O+8hk4hDDL9+hLUYQiLDlNLUt
+ dGoqfGES49MmSv2C50iwMC3Eits2ldCHZmw5CqBdw09dcXgloIMQS7NN6TtHeiXMGa0/
+ Rg5g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXcMjEZROF+4FRwL8xTSTtOaOJySnXLHOiFda1s1+eh1wrsP9StemUVTMYo5lU7GVLrdDqL29w+HL/L@nongnu.org
-X-Gm-Message-State: AOJu0YwH2B7MYIBFCFo7P2WEM9FNQOxDUcd3jLD/baulLZTNOnQEv9Lc
- HzvqSZtT43IvQ6Vd402wJ00kIj3pzbjro9hQzaG2yJIIbo6rH1lrUxHfDFtBvTHy2ThhDKcp7cU
- 1/N4=
-X-Google-Smtp-Source: AGHT+IH9arns/pOFMTqaWm0eDH2ktSRUh+skrDtB2iKm3AF3AsHClkSgOlx/Gf1LH5jubBmMUrN4dQ==
-X-Received: by 2002:a05:600c:1d1d:b0:426:5269:1a50 with SMTP id
- 5b1f17b1804b1-42bbb205a6bmr122767655e9.11.1725460694777; 
- Wed, 04 Sep 2024 07:38:14 -0700 (PDT)
+ AJvYcCXp3r4ND4dn8g5U/poIuCj/UBHmsa9QI9D7ogmD5ReboO0HgPBLT9D3MMRY1tw97/JupTd/b5UsKdIi@nongnu.org
+X-Gm-Message-State: AOJu0Yynmh/4IomWD+Jxlp76QH7Rtg1HI5qSpyA0pXVSpjQ2W7qFvXzL
+ aHFSCDNcnSnIiq9EFB5tKtyRyP5vq0uYEUit176s4LnfblbJpqHQPFlFpb4D8VE=
+X-Google-Smtp-Source: AGHT+IEjoGm8EoWdahi4q+IhveBa5TcC7uz+ewu/fi7pGOrtXu+U4IMIjDptH4qC50/WTQpB/cRrvA==
+X-Received: by 2002:adf:fd0d:0:b0:374:c08c:1046 with SMTP id
+ ffacd0b85a97d-374ecc8f6aemr4532150f8f.20.1725460705730; 
+ Wed, 04 Sep 2024 07:38:25 -0700 (PDT)
 Received: from localhost.localdomain (56.red-95-127-44.staticip.rima-tde.net.
  [95.127.44.56]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42ba639671dsm243909885e9.5.2024.09.04.07.38.07
+ 5b1f17b1804b1-42bbc127ec5sm179268535e9.19.2024.09.04.07.38.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Sep 2024 07:38:13 -0700 (PDT)
+ Wed, 04 Sep 2024 07:38:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
 	qemu-devel@nongnu.org
@@ -65,24 +64,24 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  devel@lists.libvirt.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 13/15] target/cris: Remove the deprecated CRIS target
-Date: Wed,  4 Sep 2024 16:36:01 +0200
-Message-ID: <20240904143603.52934-14-philmd@linaro.org>
+Subject: [PATCH v2 14/15] disas: Remove CRIS disassembler
+Date: Wed,  4 Sep 2024 16:36:02 +0200
+Message-ID: <20240904143603.52934-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240904143603.52934-1-philmd@linaro.org>
 References: <20240904143603.52934-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,813 +97,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CRIS target is deprecated since v9.0 (commit c7bbef40234
-"docs: mark CRIS support as deprecated").
+We just removed the CRIS target, the disassembler is now dead code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS                         |    1 -
- docs/about/deprecated.rst           |    8 -
- docs/about/emulation.rst            |    4 -
- docs/about/removed-features.rst     |    7 +
- include/exec/poison.h               |    1 -
- target/cris/cpu-param.h             |   16 -
- target/cris/cpu-qom.h               |   32 -
- target/cris/cpu.h                   |  286 ---
- target/cris/crisv10-decode.h        |  112 -
- target/cris/crisv32-decode.h        |  133 --
- target/cris/helper.h                |   23 -
- target/cris/mmu.h                   |   22 -
- target/cris/opcode-cris.h           |  355 ---
- target/cris/cpu.c                   |  323 ---
- target/cris/gdbstub.c               |  127 --
- target/cris/helper.c                |  287 ---
- target/cris/machine.c               |   93 -
- target/cris/mmu.c                   |  356 ---
- target/cris/op_helper.c             |  580 -----
- target/cris/translate.c             | 3252 ---------------------------
- tests/qtest/machine-none-test.c     |    1 -
- fpu/softfloat-specialize.c.inc      |    4 +-
- target/cris/translate_v10.c.inc     | 1262 -----------
- scripts/coverity-scan/COMPONENTS.md |    3 -
- target/Kconfig                      |    1 -
- target/cris/Kconfig                 |    2 -
- target/cris/meson.build             |   17 -
- target/meson.build                  |    1 -
- tests/data/qobject/qdict.txt        |    6 -
- 29 files changed, 9 insertions(+), 7306 deletions(-)
- delete mode 100644 target/cris/cpu-param.h
- delete mode 100644 target/cris/cpu-qom.h
- delete mode 100644 target/cris/cpu.h
- delete mode 100644 target/cris/crisv10-decode.h
- delete mode 100644 target/cris/crisv32-decode.h
- delete mode 100644 target/cris/helper.h
- delete mode 100644 target/cris/mmu.h
- delete mode 100644 target/cris/opcode-cris.h
- delete mode 100644 target/cris/cpu.c
- delete mode 100644 target/cris/gdbstub.c
- delete mode 100644 target/cris/helper.c
- delete mode 100644 target/cris/machine.c
- delete mode 100644 target/cris/mmu.c
- delete mode 100644 target/cris/op_helper.c
- delete mode 100644 target/cris/translate.c
- delete mode 100644 target/cris/translate_v10.c.inc
- delete mode 100644 target/cris/Kconfig
- delete mode 100644 target/cris/meson.build
+ MAINTAINERS             |    5 -
+ meson.build             |    1 -
+ include/disas/dis-asm.h |    6 -
+ include/exec/poison.h   |    1 -
+ disas/cris.c            | 2863 ---------------------------------------
+ disas/meson.build       |    1 -
+ 6 files changed, 2877 deletions(-)
+ delete mode 100644 disas/cris.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 492c7aa641..6567f151c3 100644
+index 6567f151c3..e13a2c9675 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -227,7 +227,6 @@ F: tests/avocado/machine_avr6.py
- CRIS TCG CPUs
- M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
- S: Maintained
--F: target/cris/
- F: disas/cris.c
+@@ -224,11 +224,6 @@ F: gdb-xml/avr-cpu.xml
+ F: target/avr/
+ F: tests/avocado/machine_avr6.py
  
+-CRIS TCG CPUs
+-M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
+-S: Maintained
+-F: disas/cris.c
+-
  Hexagon TCG CPUs
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 88f0f03786..e4e7e852c3 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -206,14 +206,6 @@ in the QEMU object model anymore. ``Sun-UltraSparc-IIIi+`` and
- but for consistency these will get removed in a future release, too.
- Use ``Sun-UltraSparc-IIIi-plus`` and ``Sun-UltraSparc-IV-plus`` instead.
- 
--CRIS CPU architecture (since 9.0)
--'''''''''''''''''''''''''''''''''
--
--The CRIS architecture was pulled from Linux in 4.17 and the compiler
--is no longer packaged in any distro making it harder to run the
--``check-tcg`` tests. Unless we can improve the testing situation there
--is a chance the code will bitrot without anyone noticing.
--
- System emulator machines
- ------------------------
- 
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index eea1261baa..05f54d3f27 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -26,10 +26,6 @@ depending on the guest architecture.
-     - :ref:`Yes<AVR-System-emulator>`
-     - No
-     - 8 bit micro controller, often used in maker projects
--  * - Cris
--    - Yes
--    - Yes
--    - Embedded RISC chip developed by AXIS
-   * - Hexagon
-     - No
-     - Yes
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index fc7b28e637..a0a5ec23c6 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -889,6 +889,13 @@ Nios II CPU (removed in 9.1)
- QEMU Nios II architecture was orphan; Intel has EOL'ed the Nios II
- processor IP (see `Intel discontinuance notification`_).
- 
-+CRIS CPU architecture (removed in 9.2)
-+''''''''''''''''''''''''''''''''''''''
-+
-+The CRIS architecture was pulled from Linux in 4.17 and the compiler
-+was no longer packaged in any distro making it harder to run the
-+``check-tcg`` tests.
-+
- System accelerators
- -------------------
- 
+ M: Brian Cain <bcain@quicinc.com>
+ S: Supported
+diff --git a/meson.build b/meson.build
+index fbda17c987..27ff8b5bf4 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3045,7 +3045,6 @@ config_target_mak = {}
+ disassemblers = {
+   'alpha' : ['CONFIG_ALPHA_DIS'],
+   'avr' : ['CONFIG_AVR_DIS'],
+-  'cris' : ['CONFIG_CRIS_DIS'],
+   'hexagon' : ['CONFIG_HEXAGON_DIS'],
+   'hppa' : ['CONFIG_HPPA_DIS'],
+   'i386' : ['CONFIG_I386_DIS'],
+diff --git a/include/disas/dis-asm.h b/include/disas/dis-asm.h
+index a1d26ce903..3b50ecfb54 100644
+--- a/include/disas/dis-asm.h
++++ b/include/disas/dis-asm.h
+@@ -232,10 +232,6 @@ enum bfd_architecture
+ #define bfd_mach_avrxmega5  105
+ #define bfd_mach_avrxmega6  106
+ #define bfd_mach_avrxmega7  107
+-  bfd_arch_cris,       /* Axis CRIS */
+-#define bfd_mach_cris_v0_v10   255
+-#define bfd_mach_cris_v32      32
+-#define bfd_mach_cris_v10_v32  1032
+   bfd_arch_microblaze, /* Xilinx MicroBlaze.  */
+   bfd_arch_moxie,      /* The Moxie core.  */
+   bfd_arch_ia64,      /* HP/Intel ia64 */
+@@ -448,8 +444,6 @@ int print_insn_w65              (bfd_vma, disassemble_info*);
+ int print_insn_d10v             (bfd_vma, disassemble_info*);
+ int print_insn_v850             (bfd_vma, disassemble_info*);
+ int print_insn_tic30            (bfd_vma, disassemble_info*);
+-int print_insn_crisv32          (bfd_vma, disassemble_info*);
+-int print_insn_crisv10          (bfd_vma, disassemble_info*);
+ int print_insn_microblaze       (bfd_vma, disassemble_info*);
+ int print_insn_ia64             (bfd_vma, disassemble_info*);
+ int print_insn_xtensa           (bfd_vma, disassemble_info*);
 diff --git a/include/exec/poison.h b/include/exec/poison.h
-index 792a83f493..79d7930e73 100644
+index 79d7930e73..f4283f693a 100644
 --- a/include/exec/poison.h
 +++ b/include/exec/poison.h
-@@ -11,7 +11,6 @@
- #pragma GCC poison TARGET_AARCH64
- #pragma GCC poison TARGET_ALPHA
- #pragma GCC poison TARGET_ARM
--#pragma GCC poison TARGET_CRIS
- #pragma GCC poison TARGET_HEXAGON
- #pragma GCC poison TARGET_HPPA
- #pragma GCC poison TARGET_LOONGARCH64
-diff --git a/target/cris/cpu-param.h b/target/cris/cpu-param.h
+@@ -63,7 +63,6 @@
+ #pragma GCC poison CPU_INTERRUPT_TGT_INT_2
+ 
+ #pragma GCC poison CONFIG_ALPHA_DIS
+-#pragma GCC poison CONFIG_CRIS_DIS
+ #pragma GCC poison CONFIG_HPPA_DIS
+ #pragma GCC poison CONFIG_I386_DIS
+ #pragma GCC poison CONFIG_HEXAGON_DIS
+diff --git a/disas/cris.c b/disas/cris.c
 deleted file mode 100644
-index b31b742c0d..0000000000
---- a/target/cris/cpu-param.h
+index 409a224c5d..0000000000
+--- a/disas/cris.c
 +++ /dev/null
-@@ -1,16 +0,0 @@
--/*
-- * CRIS cpu parameters for qemu.
-- *
-- * Copyright (c) 2007 AXIS Communications AB
-- * SPDX-License-Identifier: LGPL-2.0+
-- */
--
--#ifndef CRIS_CPU_PARAM_H
--#define CRIS_CPU_PARAM_H
--
--#define TARGET_LONG_BITS 32
--#define TARGET_PAGE_BITS 13
--#define TARGET_PHYS_ADDR_SPACE_BITS 32
--#define TARGET_VIRT_ADDR_SPACE_BITS 32
--
--#endif
-diff --git a/target/cris/cpu-qom.h b/target/cris/cpu-qom.h
-deleted file mode 100644
-index 741ca97a1b..0000000000
---- a/target/cris/cpu-qom.h
-+++ /dev/null
-@@ -1,32 +0,0 @@
--/*
-- * QEMU CRIS CPU QOM header (target agnostic)
-- *
-- * Copyright (c) 2012 SUSE LINUX Products GmbH
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see
-- * <http://www.gnu.org/licenses/lgpl-2.1.html>
-- */
--#ifndef QEMU_CRIS_CPU_QOM_H
--#define QEMU_CRIS_CPU_QOM_H
--
--#include "hw/core/cpu.h"
--
--#define TYPE_CRIS_CPU "cris-cpu"
--
--OBJECT_DECLARE_CPU_TYPE(CRISCPU, CRISCPUClass, CRIS_CPU)
--
--#define CRIS_CPU_TYPE_SUFFIX "-" TYPE_CRIS_CPU
--#define CRIS_CPU_TYPE_NAME(name) (name CRIS_CPU_TYPE_SUFFIX)
--
--#endif
-diff --git a/target/cris/cpu.h b/target/cris/cpu.h
-deleted file mode 100644
-index 3904e5448c..0000000000
---- a/target/cris/cpu.h
-+++ /dev/null
-@@ -1,286 +0,0 @@
--/*
-- *  CRIS virtual CPU header
-- *
-- *  Copyright (c) 2007 AXIS Communications AB
-- *  Written by Edgar E. Iglesias
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
--
--#ifndef CRIS_CPU_H
--#define CRIS_CPU_H
--
--#include "cpu-qom.h"
--#include "exec/cpu-defs.h"
--
--#define EXCP_NMI        1
--#define EXCP_GURU       2
--#define EXCP_BUSFAULT   3
--#define EXCP_IRQ        4
--#define EXCP_BREAK      5
--
--/* CRIS-specific interrupt pending bits.  */
--#define CPU_INTERRUPT_NMI       CPU_INTERRUPT_TGT_EXT_3
--
--/* CRUS CPU device objects interrupt lines.  */
--/* PIC passes the vector for the IRQ as the value of it sends over qemu_irq */
--#define CRIS_CPU_IRQ 0
--#define CRIS_CPU_NMI 1
--
--/* Register aliases. R0 - R15 */
--#define R_FP  8
--#define R_SP  14
--#define R_ACR 15
--
--/* Support regs, P0 - P15  */
--#define PR_BZ  0
--#define PR_VR  1
--#define PR_PID 2
--#define PR_SRS 3
--#define PR_WZ  4
--#define PR_EXS 5
--#define PR_EDA 6
--#define PR_PREFIX 6    /* On CRISv10 P6 is reserved, we use it as prefix.  */
--#define PR_MOF 7
--#define PR_DZ  8
--#define PR_EBP 9
--#define PR_ERP 10
--#define PR_SRP 11
--#define PR_NRP 12
--#define PR_CCS 13
--#define PR_USP 14
--#define PRV10_BRP 14
--#define PR_SPC 15
--
--/* CPU flags.  */
--#define Q_FLAG 0x80000000
--#define M_FLAG_V32 0x40000000
--#define PFIX_FLAG 0x800      /* CRISv10 Only.  */
--#define F_FLAG_V10 0x400
--#define P_FLAG_V10 0x200
--#define S_FLAG 0x200
--#define R_FLAG 0x100
--#define P_FLAG 0x80
--#define M_FLAG_V10 0x80
--#define U_FLAG 0x40
--#define I_FLAG 0x20
--#define X_FLAG 0x10
--#define N_FLAG 0x08
--#define Z_FLAG 0x04
--#define V_FLAG 0x02
--#define C_FLAG 0x01
--#define ALU_FLAGS 0x1F
--
--/* Condition codes.  */
--#define CC_CC   0
--#define CC_CS   1
--#define CC_NE   2
--#define CC_EQ   3
--#define CC_VC   4
--#define CC_VS   5
--#define CC_PL   6
--#define CC_MI   7
--#define CC_LS   8
--#define CC_HI   9
--#define CC_GE  10
--#define CC_LT  11
--#define CC_GT  12
--#define CC_LE  13
--#define CC_A   14
--#define CC_P   15
--
--typedef struct {
--    uint32_t hi;
--    uint32_t lo;
--} TLBSet;
--
--typedef struct CPUArchState {
--	uint32_t regs[16];
--	/* P0 - P15 are referred to as special registers in the docs.  */
--	uint32_t pregs[16];
--
--	/* Pseudo register for the PC. Not directly accessible on CRIS.  */
--	uint32_t pc;
--
--	/* Pseudo register for the kernel stack.  */
--	uint32_t ksp;
--
--	/* Branch.  */
--	int dslot;
--	int btaken;
--	uint32_t btarget;
--
--	/* Condition flag tracking.  */
--	uint32_t cc_op;
--	uint32_t cc_mask;
--	uint32_t cc_dest;
--	uint32_t cc_src;
--	uint32_t cc_result;
--	/* size of the operation, 1 = byte, 2 = word, 4 = dword.  */
--	int cc_size;
--	/* X flag at the time of cc snapshot.  */
--	int cc_x;
--
--	/* CRIS has certain insns that lockout interrupts.  */
--	int locked_irq;
--	int interrupt_vector;
--	int fault_vector;
--	int trap_vector;
--
--	/* FIXME: add a check in the translator to avoid writing to support
--	   register sets beyond the 4th. The ISA allows up to 256! but in
--	   practice there is no core that implements more than 4.
--
--	   Support function registers are used to control units close to the
--	   core. Accesses do not pass down the normal hierarchy.
--	*/
--	uint32_t sregs[4][16];
--
--	/* Linear feedback shift reg in the mmu. Used to provide pseudo
--	   randomness for the 'hint' the mmu gives to sw for choosing valid
--	   sets on TLB refills.  */
--	uint32_t mmu_rand_lfsr;
--
--	/*
--	 * We just store the stores to the tlbset here for later evaluation
--	 * when the hw needs access to them.
--	 *
--	 * One for I and another for D.
--	 */
--        TLBSet tlbsets[2][4][16];
--
--        /* Fields up to this point are cleared by a CPU reset */
--        struct {} end_reset_fields;
--
--        /* Members from load_info on are preserved across resets.  */
--        void *load_info;
--} CPUCRISState;
--
--/**
-- * CRISCPU:
-- * @env: #CPUCRISState
-- *
-- * A CRIS CPU.
-- */
--struct ArchCPU {
--    CPUState parent_obj;
--
--    CPUCRISState env;
--};
--
--/**
-- * CRISCPUClass:
-- * @parent_realize: The parent class' realize handler.
-- * @parent_phases: The parent class' reset phase handlers.
-- * @vr: Version Register value.
-- *
-- * A CRIS CPU model.
-- */
--struct CRISCPUClass {
--    CPUClass parent_class;
--
--    DeviceRealize parent_realize;
--    ResettablePhases parent_phases;
--
--    uint32_t vr;
--};
--
--#ifndef CONFIG_USER_ONLY
--extern const VMStateDescription vmstate_cris_cpu;
--
--void cris_cpu_do_interrupt(CPUState *cpu);
--void crisv10_cpu_do_interrupt(CPUState *cpu);
--bool cris_cpu_exec_interrupt(CPUState *cpu, int int_req);
--
--bool cris_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
--                       MMUAccessType access_type, int mmu_idx,
--                       bool probe, uintptr_t retaddr);
--hwaddr cris_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
--#endif
--
--void cris_cpu_dump_state(CPUState *cs, FILE *f, int flags);
--
--int crisv10_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
--int cris_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
--int cris_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
--
--void cris_initialize_tcg(void);
--void cris_initialize_crisv10_tcg(void);
--
--/* Instead of computing the condition codes after each CRIS instruction,
-- * QEMU just stores one operand (called CC_SRC), the result
-- * (called CC_DEST) and the type of operation (called CC_OP). When the
-- * condition codes are needed, the condition codes can be calculated
-- * using this information. Condition codes are not generated if they
-- * are only needed for conditional branches.
-- */
--enum {
--    CC_OP_DYNAMIC, /* Use env->cc_op  */
--    CC_OP_FLAGS,
--    CC_OP_CMP,
--    CC_OP_MOVE,
--    CC_OP_ADD,
--    CC_OP_ADDC,
--    CC_OP_MCP,
--    CC_OP_ADDU,
--    CC_OP_SUB,
--    CC_OP_SUBU,
--    CC_OP_NEG,
--    CC_OP_BTST,
--    CC_OP_MULS,
--    CC_OP_MULU,
--    CC_OP_DSTEP,
--    CC_OP_MSTEP,
--    CC_OP_BOUND,
--
--    CC_OP_OR,
--    CC_OP_AND,
--    CC_OP_XOR,
--    CC_OP_LSL,
--    CC_OP_LSR,
--    CC_OP_ASR,
--    CC_OP_LZ
--};
--
--/* CRIS uses 8k pages.  */
--#define MMAP_SHIFT TARGET_PAGE_BITS
--
--#define CPU_RESOLVING_TYPE TYPE_CRIS_CPU
--
--/* MMU modes definitions */
--#define MMU_USER_IDX 1
--
--/* Support function regs.  */
--#define SFR_RW_GC_CFG      0][0
--#define SFR_RW_MM_CFG      env->pregs[PR_SRS]][0
--#define SFR_RW_MM_KBASE_LO env->pregs[PR_SRS]][1
--#define SFR_RW_MM_KBASE_HI env->pregs[PR_SRS]][2
--#define SFR_R_MM_CAUSE     env->pregs[PR_SRS]][3
--#define SFR_RW_MM_TLB_SEL  env->pregs[PR_SRS]][4
--#define SFR_RW_MM_TLB_LO   env->pregs[PR_SRS]][5
--#define SFR_RW_MM_TLB_HI   env->pregs[PR_SRS]][6
--
--#include "exec/cpu-all.h"
--
--static inline void cpu_get_tb_cpu_state(CPUCRISState *env, vaddr *pc,
--                                        uint64_t *cs_base, uint32_t *flags)
--{
--    *pc = env->pc;
--    *cs_base = 0;
--    *flags = env->dslot |
--            (env->pregs[PR_CCS] & (S_FLAG | P_FLAG | U_FLAG
--				     | X_FLAG | PFIX_FLAG));
--}
--
--#endif
-diff --git a/target/cris/crisv10-decode.h b/target/cris/crisv10-decode.h
-deleted file mode 100644
-index 9c531f36b4..0000000000
---- a/target/cris/crisv10-decode.h
-+++ /dev/null
-@@ -1,112 +0,0 @@
--/*
-- *  CRISv10 insn decoding macros.
-- *
-- *  Copyright (c) 2010 AXIS Communications AB
-- *  Written by Edgar E. Iglesias.
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
--
--#ifndef TARGET_CRIS_CRISV10_DECODE_H
--#define TARGET_CRIS_CRISV10_DECODE_H
--
--#define CRISV10_MODE_QIMMEDIATE  0
--#define CRISV10_MODE_REG         1
--#define CRISV10_MODE_INDIRECT    2
--#define CRISV10_MODE_AUTOINC     3
--
--/* Quick Immediate.  */
--#define CRISV10_QIMM_BCC_R0      0
--#define CRISV10_QIMM_BCC_R1      1
--#define CRISV10_QIMM_BCC_R2      2
--#define CRISV10_QIMM_BCC_R3      3
--
--#define CRISV10_QIMM_BDAP_R0     4
--#define CRISV10_QIMM_BDAP_R1     5
--#define CRISV10_QIMM_BDAP_R2     6
--#define CRISV10_QIMM_BDAP_R3     7
--
--#define CRISV10_QIMM_ADDQ        8
--#define CRISV10_QIMM_MOVEQ       9
--#define CRISV10_QIMM_SUBQ       10
--#define CRISV10_QIMM_CMPQ       11
--#define CRISV10_QIMM_ANDQ       12
--#define CRISV10_QIMM_ORQ        13
--#define CRISV10_QIMM_ASHQ       14
--#define CRISV10_QIMM_LSHQ       15
--
--
--#define CRISV10_REG_ADDX         0
--#define CRISV10_REG_MOVX         1
--#define CRISV10_REG_SUBX         2
--#define CRISV10_REG_LSL          3
--#define CRISV10_REG_ADDI         4
--#define CRISV10_REG_BIAP         5
--#define CRISV10_REG_NEG          6
--#define CRISV10_REG_BOUND        7
--#define CRISV10_REG_ADD          8
--#define CRISV10_REG_MOVE_R       9
--#define CRISV10_REG_MOVE_SPR_R   9
--#define CRISV10_REG_MOVE_R_SPR   8
--#define CRISV10_REG_SUB         10
--#define CRISV10_REG_CMP         11
--#define CRISV10_REG_AND         12
--#define CRISV10_REG_OR          13
--#define CRISV10_REG_ASR         14
--#define CRISV10_REG_LSR         15
--
--#define CRISV10_REG_BTST         3
--#define CRISV10_REG_SCC          4
--#define CRISV10_REG_SETF         6
--#define CRISV10_REG_CLEARF       7
--#define CRISV10_REG_BIAP         5
--#define CRISV10_REG_ABS         10
--#define CRISV10_REG_DSTEP       11
--#define CRISV10_REG_LZ          12
--#define CRISV10_REG_NOT         13
--#define CRISV10_REG_SWAP        13
--#define CRISV10_REG_XOR         14
--#define CRISV10_REG_MSTEP       15
--
--/* Indirect, var size.  */
--#define CRISV10_IND_TEST        14
--#define CRISV10_IND_MUL          4
--#define CRISV10_IND_BDAP_M       5
--#define CRISV10_IND_ADD          8
--#define CRISV10_IND_MOVE_M_R     9
--
--
--/* indirect fixed size.  */
--#define CRISV10_IND_ADDX         0
--#define CRISV10_IND_MOVX         1
--#define CRISV10_IND_SUBX         2
--#define CRISV10_IND_CMPX         3
--#define CRISV10_IND_JUMP_M       4
--#define CRISV10_IND_DIP          5
--#define CRISV10_IND_JUMP_R       6
--#define CRISV17_IND_ADDC         6
--#define CRISV10_IND_BOUND        7
--#define CRISV10_IND_BCC_M        7
--#define CRISV10_IND_MOVE_M_SPR   8
--#define CRISV10_IND_MOVE_SPR_M   9
--#define CRISV10_IND_SUB         10
--#define CRISV10_IND_CMP         11
--#define CRISV10_IND_AND         12
--#define CRISV10_IND_OR          13
--#define CRISV10_IND_MOVE_R_M    15
--
--#define CRISV10_IND_MOVEM_M_R    14
--#define CRISV10_IND_MOVEM_R_M    15
--
--#endif
-diff --git a/target/cris/crisv32-decode.h b/target/cris/crisv32-decode.h
-deleted file mode 100644
-index fa0a7f0d63..0000000000
---- a/target/cris/crisv32-decode.h
-+++ /dev/null
-@@ -1,133 +0,0 @@
--/*
-- *  CRIS insn decoding macros.
-- *
-- *  Copyright (c) 2007 AXIS Communications AB
-- *  Written by Edgar E. Iglesias.
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
--
--#ifndef CRISV32_DECODE_H
--#define CRISV32_DECODE_H
--
--/* Convenient binary macros.  */
--#define HEX__(n) 0x##n##LU
--#define B8__(x) ((x&0x0000000FLU)?1:0) \
--                 + ((x&0x000000F0LU)?2:0) \
--                 + ((x&0x00000F00LU)?4:0) \
--                 + ((x&0x0000F000LU)?8:0) \
--                 + ((x&0x000F0000LU)?16:0) \
--                 + ((x&0x00F00000LU)?32:0) \
--                 + ((x&0x0F000000LU)?64:0) \
--                 + ((x&0xF0000000LU)?128:0)
--#define B8(d) ((unsigned char)B8__(HEX__(d)))
--
--/* Quick imm.  */
--#define DEC_BCCQ     {B8(00000000), B8(11110000)}
--#define DEC_ADDOQ    {B8(00010000), B8(11110000)}
--#define DEC_ADDQ     {B8(00100000), B8(11111100)}
--#define DEC_MOVEQ    {B8(00100100), B8(11111100)}
--#define DEC_SUBQ     {B8(00101000), B8(11111100)}
--#define DEC_CMPQ     {B8(00101100), B8(11111100)}
--#define DEC_ANDQ     {B8(00110000), B8(11111100)}
--#define DEC_ORQ      {B8(00110100), B8(11111100)}
--#define DEC_BTSTQ    {B8(00111000), B8(11111110)}
--#define DEC_ASRQ     {B8(00111010), B8(11111110)}
--#define DEC_LSLQ     {B8(00111100), B8(11111110)}
--#define DEC_LSRQ     {B8(00111110), B8(11111110)}
--
--/* Register.  */
--#define DEC_MOVU_R   {B8(01000100), B8(11111110)}
--#define DEC_MOVU_R   {B8(01000100), B8(11111110)}
--#define DEC_MOVS_R   {B8(01000110), B8(11111110)}
--#define DEC_MOVE_R   {B8(01100100), B8(11111100)}
--#define DEC_MOVE_RP  {B8(01100011), B8(11111111)}
--#define DEC_MOVE_PR  {B8(01100111), B8(11111111)}
--#define DEC_DSTEP_R  {B8(01101111), B8(11111111)}
--#define DEC_MOVE_RS  {B8(10110111), B8(11111111)}
--#define DEC_MOVE_SR  {B8(11110111), B8(11111111)}
--#define DEC_ADDU_R   {B8(01000000), B8(11111110)}
--#define DEC_ADDS_R   {B8(01000010), B8(11111110)}
--#define DEC_ADD_R    {B8(01100000), B8(11111100)}
--#define DEC_ADDI_R   {B8(01010000), B8(11111100)}
--#define DEC_MULS_R   {B8(11010000), B8(11111100)}
--#define DEC_MULU_R   {B8(10010000), B8(11111100)}
--#define DEC_ADDI_ACR {B8(01010100), B8(11111100)}
--#define DEC_NEG_R    {B8(01011000), B8(11111100)}
--#define DEC_BOUND_R  {B8(01011100), B8(11111100)}
--#define DEC_SUBU_R   {B8(01001000), B8(11111110)}
--#define DEC_SUBS_R   {B8(01001010), B8(11111110)}
--#define DEC_SUB_R    {B8(01101000), B8(11111100)}
--#define DEC_CMP_R    {B8(01101100), B8(11111100)}
--#define DEC_AND_R    {B8(01110000), B8(11111100)}
--#define DEC_ABS_R    {B8(01101011), B8(11111111)}
--#define DEC_LZ_R     {B8(01110011), B8(11111111)}
--#define DEC_MCP_R    {B8(01111111), B8(11111111)}
--#define DEC_SWAP_R   {B8(01110111), B8(11111111)}
--#define DEC_XOR_R    {B8(01111011), B8(11111111)}
--#define DEC_LSL_R    {B8(01001100), B8(11111100)}
--#define DEC_LSR_R    {B8(01111100), B8(11111100)}
--#define DEC_ASR_R    {B8(01111000), B8(11111100)}
--#define DEC_OR_R     {B8(01110100), B8(11111100)}
--#define DEC_BTST_R   {B8(01001111), B8(11111111)}
--
--/* Fixed.  */
--#define DEC_SETF     {B8(01011011), B8(11111111)}
--#define DEC_CLEARF   {B8(01011111), B8(11111111)}
--
--/* Memory.  */
--#define DEC_ADDU_M   {B8(10000000), B8(10111110)}
--#define DEC_ADDS_M   {B8(10000010), B8(10111110)}
--#define DEC_MOVU_M   {B8(10000100), B8(10111110)}
--#define DEC_MOVS_M   {B8(10000110), B8(10111110)}
--#define DEC_SUBU_M   {B8(10001000), B8(10111110)}
--#define DEC_SUBS_M   {B8(10001010), B8(10111110)}
--#define DEC_CMPU_M   {B8(10001100), B8(10111110)}
--#define DEC_CMPS_M   {B8(10001110), B8(10111110)}
--#define DEC_ADDO_M   {B8(10010100), B8(10111100)}
--#define DEC_BOUND_M  {B8(10011100), B8(10111100)}
--#define DEC_ADD_M    {B8(10100000), B8(10111100)}
--#define DEC_MOVE_MR  {B8(10100100), B8(10111100)}
--#define DEC_SUB_M    {B8(10101000), B8(10111100)}
--#define DEC_CMP_M    {B8(10101100), B8(10111100)}
--#define DEC_AND_M    {B8(10110000), B8(10111100)}
--#define DEC_OR_M     {B8(10110100), B8(10111100)}
--#define DEC_TEST_M   {B8(10111000), B8(10111100)}
--#define DEC_MOVE_RM  {B8(10111100), B8(10111100)}
--
--#define DEC_ADDC_R   {B8(01010111), B8(11111111)}
--#define DEC_ADDC_MR  {B8(10011010), B8(10111111)}
--#define DEC_LAPCQ    {B8(10010111), B8(11111111)}
--#define DEC_LAPC_IM  {B8(11010111), B8(11111111)}
--
--#define DEC_MOVE_MP  {B8(10100011), B8(10111111)}
--#define DEC_MOVE_PM  {B8(10100111), B8(10111111)}
--
--#define DEC_SCC_R    {B8(01010011), B8(11111111)}
--#define DEC_RFE_ETC  {B8(10010011), B8(11111111)}
--#define DEC_JUMP_P   {B8(10011111), B8(11111111)}
--#define DEC_BCC_IM   {B8(11011111), B8(11111111)}
--#define DEC_JAS_R    {B8(10011011), B8(11111111)}
--#define DEC_JASC_R   {B8(10110011), B8(11111111)}
--#define DEC_JAS_IM   {B8(11011011), B8(11111111)}
--#define DEC_JASC_IM  {B8(11110011), B8(11111111)}
--#define DEC_BAS_IM   {B8(11101011), B8(11111111)}
--#define DEC_BASC_IM  {B8(11101111), B8(11111111)}
--#define DEC_MOVEM_MR {B8(10111011), B8(10111111)}
--#define DEC_MOVEM_RM {B8(10111111), B8(10111111)}
--
--#define DEC_FTAG_FIDX_D_M {B8(10101011), B8(11111111)}
--#define DEC_FTAG_FIDX_I_M {B8(11010011), B8(11111111)}
--
--#endif
-diff --git a/target/cris/helper.h b/target/cris/helper.h
-deleted file mode 100644
-index 3abf608682..0000000000
---- a/target/cris/helper.h
-+++ /dev/null
-@@ -1,23 +0,0 @@
--DEF_HELPER_2(raise_exception, noreturn, env, i32)
--DEF_HELPER_2(tlb_flush_pid, void, env, i32)
--DEF_HELPER_2(spc_write, void, env, i32)
--DEF_HELPER_1(rfe, void, env)
--DEF_HELPER_1(rfn, void, env)
--
--DEF_HELPER_3(movl_sreg_reg, void, env, i32, i32)
--DEF_HELPER_3(movl_reg_sreg, void, env, i32, i32)
--
--DEF_HELPER_FLAGS_4(btst, TCG_CALL_NO_SE, i32, env, i32, i32, i32)
--
--DEF_HELPER_FLAGS_4(evaluate_flags_muls, TCG_CALL_NO_SE, i32, env, i32, i32, i32)
--DEF_HELPER_FLAGS_4(evaluate_flags_mulu, TCG_CALL_NO_SE, i32, env, i32, i32, i32)
--DEF_HELPER_FLAGS_5(evaluate_flags_mcp, TCG_CALL_NO_SE, i32, env,
--                                                      i32, i32, i32, i32)
--DEF_HELPER_FLAGS_5(evaluate_flags_alu_4, TCG_CALL_NO_SE, i32, env,
--                                                        i32, i32, i32, i32)
--DEF_HELPER_FLAGS_5(evaluate_flags_sub_4, TCG_CALL_NO_SE, i32, env,
--                                                        i32, i32, i32, i32)
--DEF_HELPER_FLAGS_3(evaluate_flags_move_4, TCG_CALL_NO_SE, i32, env, i32, i32)
--DEF_HELPER_FLAGS_3(evaluate_flags_move_2, TCG_CALL_NO_SE, i32, env, i32, i32)
--DEF_HELPER_1(evaluate_flags, void, env)
--DEF_HELPER_1(top_evaluate_flags, void, env)
-diff --git a/target/cris/mmu.h b/target/cris/mmu.h
-deleted file mode 100644
-index d57386ec6c..0000000000
---- a/target/cris/mmu.h
-+++ /dev/null
-@@ -1,22 +0,0 @@
--#ifndef TARGET_CRIS_MMU_H
--#define TARGET_CRIS_MMU_H
--
--#define CRIS_MMU_ERR_EXEC  0
--#define CRIS_MMU_ERR_READ  1
--#define CRIS_MMU_ERR_WRITE 2
--#define CRIS_MMU_ERR_FLUSH 3
--
--struct cris_mmu_result
--{
--        uint32_t phy;
--        int prot;
--        int bf_vec;
--};
--
--void cris_mmu_init(CPUCRISState *env);
--void cris_mmu_flush_pid(CPUCRISState *env, uint32_t pid);
--int cris_mmu_translate(struct cris_mmu_result *res,
--                       CPUCRISState *env, uint32_t vaddr,
--                       MMUAccessType access_type, int mmu_idx, int debug);
--
--#endif
-diff --git a/target/cris/opcode-cris.h b/target/cris/opcode-cris.h
-deleted file mode 100644
-index 40509c88db..0000000000
---- a/target/cris/opcode-cris.h
-+++ /dev/null
-@@ -1,355 +0,0 @@
--/* cris.h -- Header file for CRIS opcode and register tables.
--   Copyright (C) 2000, 2001, 2004 Free Software Foundation, Inc.
+@@ -1,2863 +0,0 @@
+-/* Disassembler code for CRIS.
+-   Copyright 2000, 2001, 2002, 2004, 2005, 2006 Free Software Foundation, Inc.
+-   Contributed by Axis Communications AB, Lund, Sweden.
+-   Written by Hans-Peter Nilsson.
+-
+-   This file is part of the GNU binutils and GDB, the GNU debugger.
+-
+-   This program is free software; you can redistribute it and/or modify it
+-   under the terms of the GNU General Public License as published by the
+-   Free Software Foundation; either version 2, or (at your option) any later
+-   version.
+-
+-   This program is distributed in the hope that it will be useful, but WITHOUT
+-   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+-   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+-   more details.
+-
+-   You should have received a copy of the GNU General Public License
+-   along with this program; if not, see <http://www.gnu.org/licenses/>. */
+-
+-#include "qemu/osdep.h"
+-#include "disas/dis-asm.h"
+-#include "target/cris/opcode-cris.h"
+-
+-#define CONST_STRNEQ(STR1,STR2) (strncmp ((STR1), (STR2), sizeof (STR2) - 1) == 0)
+-
+-/* cris-opc.c -- Table of opcodes for the CRIS processor.
+-   Copyright 2000, 2001, 2004 Free Software Foundation, Inc.
 -   Contributed by Axis Communications AB, Lund, Sweden.
 -   Originally written for GAS 1.38.1 by Mikael Asker.
--   Updated, BFDized and GNUified by Hans-Peter Nilsson.
+-   Reorganized by Hans-Peter Nilsson.
 -
 -This file is part of GAS, GDB and the GNU binutils.
 -
@@ -921,333 +227,1172 @@ index 40509c88db..0000000000
 -You should have received a copy of the GNU General Public License
 -along with this program; if not, see <http://www.gnu.org/licenses/>.  */
 -
--#ifndef TARGET_CRIS_OPCODE_CRIS_H
--#define TARGET_CRIS_OPCODE_CRIS_H
--
--#if !defined(__STDC__) && !defined(const)
--#define const
+-#ifndef NULL
+-#define NULL (0)
 -#endif
 -
--
--/* Registers.  */
--#define MAX_REG (15)
--#define CRIS_REG_SP (14)
--#define CRIS_REG_PC (15)
--
--/* CPU version control of disassembly and assembly of instructions.
--   May affect how the instruction is assembled, at least the size of
--   immediate operands.  */
--enum cris_insn_version_usage
+-/* This table isn't used for CRISv32 and the size of immediate operands.  */
+-const struct cris_spec_reg
+-cris_spec_regs[] =
 -{
--  /* Any version.  */
--  cris_ver_version_all=0,
--
--  /* Indeterminate (intended for disassembly only, or obsolete).  */
--  cris_ver_warning,
--
--  /* Only for v0..3 (Etrax 1..4).  */
--  cris_ver_v0_3,
--
--  /* Only for v3 or higher (ETRAX 4 and beyond).  */
--  cris_ver_v3p,
--
--  /* Only for v8 (Etrax 100).  */
--  cris_ver_v8,
--
--  /* Only for v8 or higher (ETRAX 100, ETRAX 100 LX).  */
--  cris_ver_v8p,
--
--  /* Only for v0..10.  FIXME: Not sure what to do with this.  */
--  cris_ver_sim_v0_10,
--
--  /* Only for v0..10.  */
--  cris_ver_v0_10,
--
--  /* Only for v3..10.  (ETRAX 4, ETRAX 100 and ETRAX 100 LX).  */
--  cris_ver_v3_10,
--
--  /* Only for v8..10 (ETRAX 100 and ETRAX 100 LX).  */
--  cris_ver_v8_10,
--
--  /* Only for v10 (ETRAX 100 LX) and same series.  */
--  cris_ver_v10,
--
--  /* Only for v10 (ETRAX 100 LX) and same series.  */
--  cris_ver_v10p,
--
--  /* Only for v32 or higher (codename GUINNESS).
--     Of course some or all these of may change to cris_ver_v32p if/when
--     there's a new revision. */
--  cris_ver_v32p
+-  {"bz",  0,  1, cris_ver_v32p,	   NULL},
+-  {"p0",  0,  1, 0,		   NULL},
+-  {"vr",  1,  1, 0,		   NULL},
+-  {"p1",  1,  1, 0,		   NULL},
+-  {"pid", 2,  1, cris_ver_v32p,    NULL},
+-  {"p2",  2,  1, cris_ver_v32p,	   NULL},
+-  {"p2",  2,  1, cris_ver_warning, NULL},
+-  {"srs", 3,  1, cris_ver_v32p,    NULL},
+-  {"p3",  3,  1, cris_ver_v32p,	   NULL},
+-  {"p3",  3,  1, cris_ver_warning, NULL},
+-  {"wz",  4,  2, cris_ver_v32p,	   NULL},
+-  {"p4",  4,  2, 0,		   NULL},
+-  {"ccr", 5,  2, cris_ver_v0_10,   NULL},
+-  {"exs", 5,  4, cris_ver_v32p,	   NULL},
+-  {"p5",  5,  2, cris_ver_v0_10,   NULL},
+-  {"p5",  5,  4, cris_ver_v32p,	   NULL},
+-  {"dcr0",6,  2, cris_ver_v0_3,	   NULL},
+-  {"eda", 6,  4, cris_ver_v32p,	   NULL},
+-  {"p6",  6,  2, cris_ver_v0_3,	   NULL},
+-  {"p6",  6,  4, cris_ver_v32p,	   NULL},
+-  {"dcr1/mof", 7, 4, cris_ver_v10p,
+-   "Register `dcr1/mof' with ambiguous size specified.  Guessing 4 bytes"},
+-  {"dcr1/mof", 7, 2, cris_ver_v0_3,
+-   "Register `dcr1/mof' with ambiguous size specified.  Guessing 2 bytes"},
+-  {"mof", 7,  4, cris_ver_v10p,	   NULL},
+-  {"dcr1",7,  2, cris_ver_v0_3,	   NULL},
+-  {"p7",  7,  4, cris_ver_v10p,	   NULL},
+-  {"p7",  7,  2, cris_ver_v0_3,	   NULL},
+-  {"dz",  8,  4, cris_ver_v32p,	   NULL},
+-  {"p8",  8,  4, 0,		   NULL},
+-  {"ibr", 9,  4, cris_ver_v0_10,   NULL},
+-  {"ebp", 9,  4, cris_ver_v32p,	   NULL},
+-  {"p9",  9,  4, 0,		   NULL},
+-  {"irp", 10, 4, cris_ver_v0_10,   NULL},
+-  {"erp", 10, 4, cris_ver_v32p,	   NULL},
+-  {"p10", 10, 4, 0,		   NULL},
+-  {"srp", 11, 4, 0,		   NULL},
+-  {"p11", 11, 4, 0,		   NULL},
+-  /* For disassembly use only.  Accept at assembly with a warning.  */
+-  {"bar/dtp0", 12, 4, cris_ver_warning,
+-   "Ambiguous register `bar/dtp0' specified"},
+-  {"nrp", 12, 4, cris_ver_v32p,	   NULL},
+-  {"bar", 12, 4, cris_ver_v8_10,   NULL},
+-  {"dtp0",12, 4, cris_ver_v0_3,	   NULL},
+-  {"p12", 12, 4, 0,		   NULL},
+-  /* For disassembly use only.  Accept at assembly with a warning.  */
+-  {"dccr/dtp1",13, 4, cris_ver_warning,
+-   "Ambiguous register `dccr/dtp1' specified"},
+-  {"ccs", 13, 4, cris_ver_v32p,	   NULL},
+-  {"dccr",13, 4, cris_ver_v8_10,   NULL},
+-  {"dtp1",13, 4, cris_ver_v0_3,	   NULL},
+-  {"p13", 13, 4, 0,		   NULL},
+-  {"brp", 14, 4, cris_ver_v3_10,   NULL},
+-  {"usp", 14, 4, cris_ver_v32p,	   NULL},
+-  {"p14", 14, 4, cris_ver_v3p,	   NULL},
+-  {"usp", 15, 4, cris_ver_v10,	   NULL},
+-  {"spc", 15, 4, cris_ver_v32p,	   NULL},
+-  {"p15", 15, 4, cris_ver_v10p,	   NULL},
+-  {NULL, 0, 0, cris_ver_version_all, NULL}
 -};
 -
--
--/* Special registers.  */
--struct cris_spec_reg
+-/* Add version specifiers to this table when necessary.
+-   The (now) regular coding of register names suggests a simpler
+-   implementation.  */
+-const struct cris_support_reg cris_support_regs[] =
 -{
--  const char *const name;
--  unsigned int number;
--
--  /* The size of the register.  */
--  unsigned int reg_size;
--
--  /* What CPU version the special register of that name is implemented
--     in.  If cris_ver_warning, emit an unimplemented-warning.  */
--  enum cris_insn_version_usage applicable_version;
--
--  /* There might be a specific warning for using a special register
--     here.  */
--  const char *const warning;
--};
--extern const struct cris_spec_reg cris_spec_regs[];
--
--
--/* Support registers (kind of special too, but not named as such).  */
--struct cris_support_reg
--{
--  const char *const name;
--  unsigned int number;
--};
--extern const struct cris_support_reg cris_support_regs[];
--
--/* Opcode-dependent constants.  */
--#define AUTOINCR_BIT (0x04)
--
--/* Prefixes.  */
--#define BDAP_QUICK_OPCODE (0x0100)
--#define BDAP_QUICK_Z_BITS (0x0e00)
--
--#define BIAP_OPCODE	  (0x0540)
--#define BIAP_Z_BITS	  (0x0a80)
--
--#define DIP_OPCODE	  (0x0970)
--#define DIP_Z_BITS	  (0xf280)
--
--#define BDAP_INDIR_LOW	  (0x40)
--#define BDAP_INDIR_LOW_Z  (0x80)
--#define BDAP_INDIR_HIGH	  (0x09)
--#define BDAP_INDIR_HIGH_Z (0x02)
--
--#define BDAP_INDIR_OPCODE (BDAP_INDIR_HIGH * 0x0100 + BDAP_INDIR_LOW)
--#define BDAP_INDIR_Z_BITS (BDAP_INDIR_HIGH_Z * 0x100 + BDAP_INDIR_LOW_Z)
--#define BDAP_PC_LOW	  (BDAP_INDIR_LOW + CRIS_REG_PC)
--#define BDAP_INCR_HIGH	  (BDAP_INDIR_HIGH + AUTOINCR_BIT)
--
--/* No prefix must have this code for its "match" bits in the
--   opcode-table.  "BCC .+2" will do nicely.  */
--#define NO_CRIS_PREFIX 0
--
--/* Definitions for condition codes.  */
--#define CC_CC  0x0
--#define CC_HS  0x0
--#define CC_CS  0x1
--#define CC_LO  0x1
--#define CC_NE  0x2
--#define CC_EQ  0x3
--#define CC_VC  0x4
--#define CC_VS  0x5
--#define CC_PL  0x6
--#define CC_MI  0x7
--#define CC_LS  0x8
--#define CC_HI  0x9
--#define CC_GE  0xA
--#define CC_LT  0xB
--#define CC_GT  0xC
--#define CC_LE  0xD
--#define CC_A   0xE
--#define CC_EXT 0xF
--
--/* A table of strings "cc", "cs"... indexed with condition code
--   values as above.  */
--extern const char *const cris_cc_strings[];
--
--/* Bcc quick.  */
--#define BRANCH_QUICK_LOW  (0)
--#define BRANCH_QUICK_HIGH (0)
--#define BRANCH_QUICK_OPCODE (BRANCH_QUICK_HIGH * 0x0100 + BRANCH_QUICK_LOW)
--#define BRANCH_QUICK_Z_BITS (0x0F00)
--
--/* BA quick.  */
--#define BA_QUICK_HIGH (BRANCH_QUICK_HIGH + CC_A * 0x10)
--#define BA_QUICK_OPCODE (BA_QUICK_HIGH * 0x100 + BRANCH_QUICK_LOW)
--
--/* Bcc [PC+].  */
--#define BRANCH_PC_LOW	 (0xFF)
--#define BRANCH_INCR_HIGH (0x0D)
--#define BA_PC_INCR_OPCODE \
-- ((BRANCH_INCR_HIGH + CC_A * 0x10) * 0x0100 + BRANCH_PC_LOW)
--
--/* Jump.  */
--/* Note that old versions generated special register 8 (in high bits)
--   and not-that-old versions recognized it as a jump-instruction.
--   That opcode now belongs to JUMPU.  */
--#define JUMP_INDIR_OPCODE (0x0930)
--#define JUMP_INDIR_Z_BITS (0xf2c0)
--#define JUMP_PC_INCR_OPCODE \
-- (JUMP_INDIR_OPCODE + AUTOINCR_BIT * 0x0100 + CRIS_REG_PC)
--
--#define MOVE_M_TO_PREG_OPCODE 0x0a30
--#define MOVE_M_TO_PREG_ZBITS 0x01c0
--
--/* BDAP.D N,PC.  */
--#define MOVE_PC_INCR_OPCODE_PREFIX \
-- (((BDAP_INCR_HIGH | (CRIS_REG_PC << 4)) << 8) | BDAP_PC_LOW | (2 << 4))
--#define MOVE_PC_INCR_OPCODE_SUFFIX \
-- (MOVE_M_TO_PREG_OPCODE | CRIS_REG_PC | (AUTOINCR_BIT << 8))
--
--#define JUMP_PC_INCR_OPCODE_V32 (0x0DBF)
--
--/* BA DWORD (V32).  */
--#define BA_DWORD_OPCODE (0x0EBF)
--
--/* Nop.  */
--#define NOP_OPCODE (0x050F)
--#define NOP_Z_BITS (0xFFFF ^ NOP_OPCODE)
--
--#define NOP_OPCODE_V32 (0x05B0)
--#define NOP_Z_BITS_V32 (0xFFFF ^ NOP_OPCODE_V32)
--
--/* For the compatibility mode, let's use "MOVE R0,P0".  Doesn't affect
--   registers or flags.  Unfortunately shuts off interrupts for one cycle
--   for < v32, but there doesn't seem to be any alternative without that
--   effect.  */
--#define NOP_OPCODE_COMMON (0x630)
--#define NOP_OPCODE_ZBITS_COMMON (0xffff & ~NOP_OPCODE_COMMON)
--
--/* LAPC.D  */
--#define LAPC_DWORD_OPCODE (0x0D7F)
--#define LAPC_DWORD_Z_BITS (0x0fff & ~LAPC_DWORD_OPCODE)
--
--/* Structure of an opcode table entry.  */
--enum cris_imm_oprnd_size_type
--{
--  /* No size is applicable.  */
--  SIZE_NONE,
--
--  /* Always 32 bits.  */
--  SIZE_FIX_32,
--
--  /* Indicated by size of special register.  */
--  SIZE_SPEC_REG,
--
--  /* Indicated by size field, signed.  */
--  SIZE_FIELD_SIGNED,
--
--  /* Indicated by size field, unsigned.  */
--  SIZE_FIELD_UNSIGNED,
--
--  /* Indicated by size field, no sign implied.  */
--  SIZE_FIELD
+-  {"s0", 0},
+-  {"s1", 1},
+-  {"s2", 2},
+-  {"s3", 3},
+-  {"s4", 4},
+-  {"s5", 5},
+-  {"s6", 6},
+-  {"s7", 7},
+-  {"s8", 8},
+-  {"s9", 9},
+-  {"s10", 10},
+-  {"s11", 11},
+-  {"s12", 12},
+-  {"s13", 13},
+-  {"s14", 14},
+-  {"s15", 15},
+-  {NULL, 0}
 -};
 -
--/* For GDB.  FIXME: Is this the best way to handle opcode
--   interpretation?  */
--enum cris_op_type
+-/* All CRIS opcodes are 16 bits.
+-
+-   - The match component is a mask saying which bits must match a
+-     particular opcode in order for an instruction to be an instance
+-     of that opcode.
+-
+-   - The args component is a string containing characters symbolically
+-     matching the operands of an instruction.  Used for both assembly
+-     and disassembly.
+-
+-     Operand-matching characters:
+-     [ ] , space
+-        Verbatim.
+-     A	The string "ACR" (case-insensitive).
+-     B	Not really an operand.  It causes a "BDAP -size,SP" prefix to be
+-	output for the PUSH alias-instructions and recognizes a push-
+-	prefix at disassembly.  This letter isn't recognized for v32.
+-	Must be followed by a R or P letter.
+-     !	Non-match pattern, will not match if there's a prefix insn.
+-     b	Non-matching operand, used for branches with 16-bit
+-	displacement. Only recognized by the disassembler.
+-     c	5-bit unsigned immediate in bits <4:0>.
+-     C	4-bit unsigned immediate in bits <3:0>.
+-     d  At assembly, optionally (as in put other cases before this one)
+-	".d" or ".D" at the start of the operands, followed by one space
+-	character.  At disassembly, nothing.
+-     D	General register in bits <15:12> and <3:0>.
+-     f	List of flags in bits <15:12> and <3:0>.
+-     i	6-bit signed immediate in bits <5:0>.
+-     I	6-bit unsigned immediate in bits <5:0>.
+-     M	Size modifier (B, W or D) for CLEAR instructions.
+-     m	Size modifier (B, W or D) in bits <5:4>
+-     N  A 32-bit dword, like in the difference between s and y.
+-        This has no effect on bits in the opcode.  Can also be expressed
+-	as "[pc+]" in input.
+-     n  As N, but PC-relative (to the start of the instruction).
+-     o	[-128..127] word offset in bits <7:1> and <0>.  Used by 8-bit
+-	branch instructions.
+-     O	[-128..127] offset in bits <7:0>.  Also matches a comma and a
+-	general register after the expression, in bits <15:12>.  Used
+-	only for the BDAP prefix insn (in v32 the ADDOQ insn; same opcode).
+-     P	Special register in bits <15:12>.
+-     p	Indicates that the insn is a prefix insn.  Must be first
+-	character.
+-     Q  As O, but don't relax; force an 8-bit offset.
+-     R	General register in bits <15:12>.
+-     r	General register in bits <3:0>.
+-     S	Source operand in bit <10> and a prefix; a 3-operand prefix
+-	without side-effect.
+-     s	Source operand in bits <10> and <3:0>, optionally with a
+-	side-effect prefix, except [pc] (the name, not R15 as in ACR)
+-	isn't allowed for v32 and higher.
+-     T  Support register in bits <15:12>.
+-     u  4-bit (PC-relative) unsigned immediate word offset in bits <3:0>.
+-     U  Relaxes to either u or n, instruction is assumed LAPCQ or LAPC.
+-	Not recognized at disassembly.
+-     x	Register-dot-modifier, for example "r5.w" in bits <15:12> and <5:4>.
+-     y	Like 's' but do not allow an integer at assembly.
+-     Y	The difference s-y; only an integer is allowed.
+-     z	Size modifier (B or W) in bit <4>.  */
+-
+-
+-/* Please note the order of the opcodes in this table is significant.
+-   The assembler requires that all instances of the same mnemonic must
+-   be consecutive.  If they aren't, the assembler might not recognize
+-   them, or may indicate an internal error.
+-
+-   The disassembler should not normally care about the order of the
+-   opcodes, but will prefer an earlier alternative if the "match-score"
+-   (see cris-dis.c) is computed as equal.
+-
+-   It should not be significant for proper execution that this table is
+-   in alphabetical order, but please follow that convention for an easy
+-   overview.  */
+-
+-const struct cris_opcode
+-cris_opcodes[] =
 -{
--  cris_not_implemented_op = 0,
--  cris_abs_op,
--  cris_addi_op,
--  cris_asr_op,
--  cris_asrq_op,
--  cris_ax_ei_setf_op,
--  cris_bdap_prefix,
--  cris_biap_prefix,
--  cris_break_op,
--  cris_btst_nop_op,
--  cris_clearf_di_op,
--  cris_dip_prefix,
--  cris_dstep_logshift_mstep_neg_not_op,
--  cris_eight_bit_offset_branch_op,
--  cris_move_mem_to_reg_movem_op,
--  cris_move_reg_to_mem_movem_op,
--  cris_move_to_preg_op,
--  cris_muls_op,
--  cris_mulu_op,
--  cris_none_reg_mode_add_sub_cmp_and_or_move_op,
--  cris_none_reg_mode_clear_test_op,
--  cris_none_reg_mode_jump_op,
--  cris_none_reg_mode_move_from_preg_op,
--  cris_quick_mode_add_sub_op,
--  cris_quick_mode_and_cmp_move_or_op,
--  cris_quick_mode_bdap_prefix,
--  cris_reg_mode_add_sub_cmp_and_or_move_op,
--  cris_reg_mode_clear_op,
--  cris_reg_mode_jump_op,
--  cris_reg_mode_move_from_preg_op,
--  cris_reg_mode_test_op,
--  cris_scc_op,
--  cris_sixteen_bit_offset_branch_op,
--  cris_three_operand_add_sub_cmp_and_or_op,
--  cris_three_operand_bound_op,
--  cris_two_operand_bound_op,
--  cris_xor_op
+-  {"abs",     0x06B0, 0x0940,		  "r,R",     0, SIZE_NONE,     0,
+-   cris_abs_op},
+-
+-  {"add",     0x0600, 0x09c0,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"add",     0x0A00, 0x01c0,		  "m s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"add",     0x0A00, 0x01c0,		  "m S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"add",     0x0a00, 0x05c0,		  "m S,R,r", 0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_three_operand_add_sub_cmp_and_or_op},
+-
+-  {"add",     0x0A00, 0x01c0,		  "m s,R",   0, SIZE_FIELD,
+-   cris_ver_v32p,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"addc",    0x0570, 0x0A80,		  "r,R",     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"addc",    0x09A0, 0x0250,		  "s,R",     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"addi",    0x0540, 0x0A80,		  "x,r,A",   0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_addi_op},
+-
+-  {"addi",    0x0500, 0x0Ac0,		  "x,r",     0, SIZE_NONE,     0,
+-   cris_addi_op},
+-
+-  /* This collates after "addo", but we want to disassemble as "addoq",
+-     not "addo".  */
+-  {"addoq",   0x0100, 0x0E00,		  "Q,A",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"addo",    0x0940, 0x0280,		  "m s,R,A", 0, SIZE_FIELD_SIGNED,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  /* This must be located after the insn above, lest we misinterpret
+-     "addo.b -1,r0,acr" as "addo .b-1,r0,acr".  FIXME: Sounds like a
+-     parser bug.  */
+-  {"addo",   0x0100, 0x0E00,		  "O,A",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"addq",    0x0200, 0x0Dc0,		  "I,R",     0, SIZE_NONE,     0,
+-   cris_quick_mode_add_sub_op},
+-
+-  {"adds",    0x0420, 0x0Bc0,		  "z r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  /* FIXME: SIZE_FIELD_SIGNED and all necessary changes.  */
+-  {"adds",    0x0820, 0x03c0,		  "z s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"adds",    0x0820, 0x03c0,		  "z S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"adds",    0x0820, 0x07c0,		  "z S,R,r", 0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_three_operand_add_sub_cmp_and_or_op},
+-
+-  {"addu",    0x0400, 0x0be0,		  "z r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  /* FIXME: SIZE_FIELD_UNSIGNED and all necessary changes.  */
+-  {"addu",    0x0800, 0x03e0,		  "z s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"addu",    0x0800, 0x03e0,		  "z S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"addu",    0x0800, 0x07e0,		  "z S,R,r", 0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_three_operand_add_sub_cmp_and_or_op},
+-
+-  {"and",     0x0700, 0x08C0,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"and",     0x0B00, 0x00C0,		  "m s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"and",     0x0B00, 0x00C0,		  "m S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"and",     0x0B00, 0x04C0,		  "m S,R,r", 0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_three_operand_add_sub_cmp_and_or_op},
+-
+-  {"andq",    0x0300, 0x0CC0,		  "i,R",     0, SIZE_NONE,     0,
+-   cris_quick_mode_and_cmp_move_or_op},
+-
+-  {"asr",     0x0780, 0x0840,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_asr_op},
+-
+-  {"asrq",    0x03a0, 0x0c40,		  "c,R",     0, SIZE_NONE,     0,
+-   cris_asrq_op},
+-
+-  {"ax",      0x15B0, 0xEA4F,		  "",	     0, SIZE_NONE,     0,
+-   cris_ax_ei_setf_op},
+-
+-  /* FIXME: Should use branch #defines.  */
+-  {"b",	      0x0dff, 0x0200,		  "b",	     1, SIZE_NONE,     0,
+-   cris_sixteen_bit_offset_branch_op},
+-
+-  {"ba",
+-   BA_QUICK_OPCODE,
+-   0x0F00+(0xF-CC_A)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  /* Needs to come after the usual "ba o", which might be relaxed to
+-     this one.  */
+-  {"ba",     BA_DWORD_OPCODE,
+-   0xffff & (~BA_DWORD_OPCODE),		  "n",	     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"bas",     0x0EBF, 0x0140,		  "n,P",     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"basc",     0x0EFF, 0x0100,		  "n,P",     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"bcc",
+-   BRANCH_QUICK_OPCODE+CC_CC*0x1000,
+-   0x0f00+(0xF-CC_CC)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bcs",
+-   BRANCH_QUICK_OPCODE+CC_CS*0x1000,
+-   0x0f00+(0xF-CC_CS)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bdap",
+-   BDAP_INDIR_OPCODE, BDAP_INDIR_Z_BITS,  "pm s,R",  0, SIZE_FIELD_SIGNED,
+-   cris_ver_v0_10,
+-   cris_bdap_prefix},
+-
+-  {"bdap",
+-   BDAP_QUICK_OPCODE, BDAP_QUICK_Z_BITS,  "pO",	     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_quick_mode_bdap_prefix},
+-
+-  {"beq",
+-   BRANCH_QUICK_OPCODE+CC_EQ*0x1000,
+-   0x0f00+(0xF-CC_EQ)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  /* This is deliberately put before "bext" to trump it, even though not
+-     in alphabetical order, since we don't do excluding version checks
+-     for v0..v10.  */
+-  {"bwf",
+-   BRANCH_QUICK_OPCODE+CC_EXT*0x1000,
+-   0x0f00+(0xF-CC_EXT)*0x1000,		  "o",	     1, SIZE_NONE,
+-   cris_ver_v10,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bext",
+-   BRANCH_QUICK_OPCODE+CC_EXT*0x1000,
+-   0x0f00+(0xF-CC_EXT)*0x1000,		  "o",	     1, SIZE_NONE,
+-   cris_ver_v0_3,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bge",
+-   BRANCH_QUICK_OPCODE+CC_GE*0x1000,
+-   0x0f00+(0xF-CC_GE)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bgt",
+-   BRANCH_QUICK_OPCODE+CC_GT*0x1000,
+-   0x0f00+(0xF-CC_GT)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bhi",
+-   BRANCH_QUICK_OPCODE+CC_HI*0x1000,
+-   0x0f00+(0xF-CC_HI)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bhs",
+-   BRANCH_QUICK_OPCODE+CC_HS*0x1000,
+-   0x0f00+(0xF-CC_HS)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"biap", BIAP_OPCODE, BIAP_Z_BITS,	  "pm r,R",  0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_biap_prefix},
+-
+-  {"ble",
+-   BRANCH_QUICK_OPCODE+CC_LE*0x1000,
+-   0x0f00+(0xF-CC_LE)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"blo",
+-   BRANCH_QUICK_OPCODE+CC_LO*0x1000,
+-   0x0f00+(0xF-CC_LO)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bls",
+-   BRANCH_QUICK_OPCODE+CC_LS*0x1000,
+-   0x0f00+(0xF-CC_LS)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"blt",
+-   BRANCH_QUICK_OPCODE+CC_LT*0x1000,
+-   0x0f00+(0xF-CC_LT)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bmi",
+-   BRANCH_QUICK_OPCODE+CC_MI*0x1000,
+-   0x0f00+(0xF-CC_MI)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bmod",    0x0ab0, 0x0140,		  "s,R",     0, SIZE_FIX_32,
+-   cris_ver_sim_v0_10,
+-   cris_not_implemented_op},
+-
+-  {"bmod",    0x0ab0, 0x0140,		  "S,D",     0, SIZE_NONE,
+-   cris_ver_sim_v0_10,
+-   cris_not_implemented_op},
+-
+-  {"bmod",    0x0ab0, 0x0540,		  "S,R,r",   0, SIZE_NONE,
+-   cris_ver_sim_v0_10,
+-   cris_not_implemented_op},
+-
+-  {"bne",
+-   BRANCH_QUICK_OPCODE+CC_NE*0x1000,
+-   0x0f00+(0xF-CC_NE)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bound",   0x05c0, 0x0A00,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_two_operand_bound_op},
+-  /* FIXME: SIZE_FIELD_UNSIGNED and all necessary changes.  */
+-  {"bound",   0x09c0, 0x0200,		  "m s,R",   0, SIZE_FIELD,
+-   cris_ver_v0_10,
+-   cris_two_operand_bound_op},
+-  /* FIXME: SIZE_FIELD_UNSIGNED and all necessary changes.  */
+-  {"bound",   0x0dcf, 0x0200,		  "m Y,R",   0, SIZE_FIELD,    0,
+-   cris_two_operand_bound_op},
+-  {"bound",   0x09c0, 0x0200,		  "m S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_two_operand_bound_op},
+-  {"bound",   0x09c0, 0x0600,		  "m S,R,r", 0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_three_operand_bound_op},
+-
+-  {"bpl",
+-   BRANCH_QUICK_OPCODE+CC_PL*0x1000,
+-   0x0f00+(0xF-CC_PL)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"break",   0xe930, 0x16c0,		  "C",	     0, SIZE_NONE,
+-   cris_ver_v3p,
+-   cris_break_op},
+-
+-  {"bsb",
+-   BRANCH_QUICK_OPCODE+CC_EXT*0x1000,
+-   0x0f00+(0xF-CC_EXT)*0x1000,		  "o",	     1, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bsr",     0xBEBF, 0x4140,		  "n",	     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"bsrc",     0xBEFF, 0x4100,		  "n",	     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"bstore",  0x0af0, 0x0100,		  "s,R",     0, SIZE_FIX_32,
+-   cris_ver_warning,
+-   cris_not_implemented_op},
+-
+-  {"bstore",  0x0af0, 0x0100,		  "S,D",     0, SIZE_NONE,
+-   cris_ver_warning,
+-   cris_not_implemented_op},
+-
+-  {"bstore",  0x0af0, 0x0500,		  "S,R,r",   0, SIZE_NONE,
+-   cris_ver_warning,
+-   cris_not_implemented_op},
+-
+-  {"btst",    0x04F0, 0x0B00,		  "r,R",     0, SIZE_NONE,     0,
+-   cris_btst_nop_op},
+-  {"btstq",   0x0380, 0x0C60,		  "c,R",     0, SIZE_NONE,     0,
+-   cris_btst_nop_op},
+-
+-  {"bvc",
+-   BRANCH_QUICK_OPCODE+CC_VC*0x1000,
+-   0x0f00+(0xF-CC_VC)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"bvs",
+-   BRANCH_QUICK_OPCODE+CC_VS*0x1000,
+-   0x0f00+(0xF-CC_VS)*0x1000,		  "o",	     1, SIZE_NONE,     0,
+-   cris_eight_bit_offset_branch_op},
+-
+-  {"clear",   0x0670, 0x3980,		  "M r",     0, SIZE_NONE,     0,
+-   cris_reg_mode_clear_op},
+-
+-  {"clear",   0x0A70, 0x3180,		  "M y",     0, SIZE_NONE,     0,
+-   cris_none_reg_mode_clear_test_op},
+-
+-  {"clear",   0x0A70, 0x3180,		  "M S",     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_clear_test_op},
+-
+-  {"clearf",  0x05F0, 0x0A00,		  "f",	     0, SIZE_NONE,     0,
+-   cris_clearf_di_op},
+-
+-  {"cmp",     0x06C0, 0x0900,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"cmp",     0x0Ac0, 0x0100,		  "m s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"cmp",     0x0Ac0, 0x0100,		  "m S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"cmpq",    0x02C0, 0x0D00,		  "i,R",     0, SIZE_NONE,     0,
+-   cris_quick_mode_and_cmp_move_or_op},
+-
+-  /* FIXME: SIZE_FIELD_SIGNED and all necessary changes.  */
+-  {"cmps",    0x08e0, 0x0300,		  "z s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"cmps",    0x08e0, 0x0300,		  "z S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  /* FIXME: SIZE_FIELD_UNSIGNED and all necessary changes.  */
+-  {"cmpu",    0x08c0, 0x0320,		  "z s,R" ,  0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"cmpu",    0x08c0, 0x0320,		  "z S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"di",      0x25F0, 0xDA0F,		  "",	     0, SIZE_NONE,     0,
+-   cris_clearf_di_op},
+-
+-  {"dip",     DIP_OPCODE, DIP_Z_BITS,	  "ps",	     0, SIZE_FIX_32,
+-   cris_ver_v0_10,
+-   cris_dip_prefix},
+-
+-  {"div",     0x0980, 0x0640,		  "m R,r",   0, SIZE_FIELD,    0,
+-   cris_not_implemented_op},
+-
+-  {"dstep",   0x06f0, 0x0900,		  "r,R",     0, SIZE_NONE,     0,
+-   cris_dstep_logshift_mstep_neg_not_op},
+-
+-  {"ei",      0x25B0, 0xDA4F,		  "",	     0, SIZE_NONE,     0,
+-   cris_ax_ei_setf_op},
+-
+-  {"fidxd",    0x0ab0, 0xf540,		  "[r]",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"fidxi",    0x0d30, 0xF2C0,		  "[r]",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"ftagd",    0x1AB0, 0xE540,		  "[r]",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"ftagi",    0x1D30, 0xE2C0,		  "[r]",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"halt",    0xF930, 0x06CF,		  "",	     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"jas",    0x09B0, 0x0640,		  "r,P",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_reg_mode_jump_op},
+-
+-  {"jas",    0x0DBF, 0x0240,		  "N,P",     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_reg_mode_jump_op},
+-
+-  {"jasc",    0x0B30, 0x04C0,		  "r,P",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_reg_mode_jump_op},
+-
+-  {"jasc",    0x0F3F, 0x00C0,		  "N,P",     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_reg_mode_jump_op},
+-
+-  {"jbrc",    0x69b0, 0x9640,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8_10,
+-   cris_reg_mode_jump_op},
+-
+-  {"jbrc",    0x6930, 0x92c0,		  "s",	     0, SIZE_FIX_32,
+-   cris_ver_v8_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jbrc",    0x6930, 0x92c0,		  "S",	     0, SIZE_NONE,
+-   cris_ver_v8_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jir",     0xA9b0, 0x5640,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8_10,
+-   cris_reg_mode_jump_op},
+-
+-  {"jir",     0xA930, 0x52c0,		  "s",	     0, SIZE_FIX_32,
+-   cris_ver_v8_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jir",     0xA930, 0x52c0,		  "S",	     0, SIZE_NONE,
+-   cris_ver_v8_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jirc",    0x29b0, 0xd640,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8_10,
+-   cris_reg_mode_jump_op},
+-
+-  {"jirc",    0x2930, 0xd2c0,		  "s",	     0, SIZE_FIX_32,
+-   cris_ver_v8_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jirc",    0x2930, 0xd2c0,		  "S",	     0, SIZE_NONE,
+-   cris_ver_v8_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jsr",     0xB9b0, 0x4640,		  "r",	     0, SIZE_NONE,     0,
+-   cris_reg_mode_jump_op},
+-
+-  {"jsr",     0xB930, 0x42c0,		  "s",	     0, SIZE_FIX_32,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jsr",     0xBDBF, 0x4240,		  "N",	     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jsr",     0xB930, 0x42c0,		  "S",	     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jsrc",    0x39b0, 0xc640,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8_10,
+-   cris_reg_mode_jump_op},
+-
+-  {"jsrc",    0x3930, 0xc2c0,		  "s",	     0, SIZE_FIX_32,
+-   cris_ver_v8_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jsrc",    0x3930, 0xc2c0,		  "S",	     0, SIZE_NONE,
+-   cris_ver_v8_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jsrc",    0xBB30, 0x44C0,		  "r",       0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_reg_mode_jump_op},
+-
+-  {"jsrc",    0xBF3F, 0x40C0,		  "N",	     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_reg_mode_jump_op},
+-
+-  {"jump",    0x09b0, 0xF640,		  "r",	     0, SIZE_NONE,     0,
+-   cris_reg_mode_jump_op},
+-
+-  {"jump",
+-   JUMP_INDIR_OPCODE, JUMP_INDIR_Z_BITS,  "s",	     0, SIZE_FIX_32,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jump",
+-   JUMP_INDIR_OPCODE, JUMP_INDIR_Z_BITS,  "S",	     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jump",    0x09F0, 0x060F,		  "P",	     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jump",
+-   JUMP_PC_INCR_OPCODE_V32,
+-   (0xffff & ~JUMP_PC_INCR_OPCODE_V32),	  "N",	     0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jmpu",    0x8930, 0x72c0,		  "s",	     0, SIZE_FIX_32,
+-   cris_ver_v10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"jmpu",    0x8930, 0x72c0,		   "S",	     0, SIZE_NONE,
+-   cris_ver_v10,
+-   cris_none_reg_mode_jump_op},
+-
+-  {"lapc",    0x0970, 0x0680,		  "U,R",    0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"lapc",    0x0D7F, 0x0280,		  "dn,R",    0, SIZE_FIX_32,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"lapcq",   0x0970, 0x0680,		  "u,R",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_addi_op},
+-
+-  {"lsl",     0x04C0, 0x0B00,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_dstep_logshift_mstep_neg_not_op},
+-
+-  {"lslq",    0x03c0, 0x0C20,		  "c,R",     0, SIZE_NONE,     0,
+-   cris_dstep_logshift_mstep_neg_not_op},
+-
+-  {"lsr",     0x07C0, 0x0800,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_dstep_logshift_mstep_neg_not_op},
+-
+-  {"lsrq",    0x03e0, 0x0C00,		  "c,R",     0, SIZE_NONE,     0,
+-   cris_dstep_logshift_mstep_neg_not_op},
+-
+-  {"lz",      0x0730, 0x08C0,		  "r,R",     0, SIZE_NONE,
+-   cris_ver_v3p,
+-   cris_not_implemented_op},
+-
+-  {"mcp",      0x07f0, 0x0800,		  "P,r",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"move",    0x0640, 0x0980,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"move",    0x0A40, 0x0180,		  "m s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"move",    0x0A40, 0x0180,		  "m S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"move",    0x0630, 0x09c0,		  "r,P",     0, SIZE_NONE,     0,
+-   cris_move_to_preg_op},
+-
+-  {"move",    0x0670, 0x0980,		  "P,r",     0, SIZE_NONE,     0,
+-   cris_reg_mode_move_from_preg_op},
+-
+-  {"move",    0x0BC0, 0x0000,		  "m R,y",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"move",    0x0BC0, 0x0000,		  "m D,S",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"move",
+-   MOVE_M_TO_PREG_OPCODE, MOVE_M_TO_PREG_ZBITS,
+-   "s,P",   0, SIZE_SPEC_REG, 0,
+-   cris_move_to_preg_op},
+-
+-  {"move",    0x0A30, 0x01c0,		  "S,P",     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_move_to_preg_op},
+-
+-  {"move",    0x0A70, 0x0180,		  "P,y",     0, SIZE_SPEC_REG, 0,
+-   cris_none_reg_mode_move_from_preg_op},
+-
+-  {"move",    0x0A70, 0x0180,		  "P,S",     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_move_from_preg_op},
+-
+-  {"move",    0x0B70, 0x0480,		  "r,T",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"move",    0x0F70, 0x0080,		  "T,r",     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"movem",   0x0BF0, 0x0000,		  "R,y",     0, SIZE_FIX_32,   0,
+-   cris_move_reg_to_mem_movem_op},
+-
+-  {"movem",   0x0BF0, 0x0000,		  "D,S",     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_move_reg_to_mem_movem_op},
+-
+-  {"movem",   0x0BB0, 0x0040,		  "s,R",     0, SIZE_FIX_32,   0,
+-   cris_move_mem_to_reg_movem_op},
+-
+-  {"movem",   0x0BB0, 0x0040,		  "S,D",     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_move_mem_to_reg_movem_op},
+-
+-  {"moveq",   0x0240, 0x0D80,		  "i,R",     0, SIZE_NONE,     0,
+-   cris_quick_mode_and_cmp_move_or_op},
+-
+-  {"movs",    0x0460, 0x0B80,		  "z r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  /* FIXME: SIZE_FIELD_SIGNED and all necessary changes.  */
+-  {"movs",    0x0860, 0x0380,		  "z s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"movs",    0x0860, 0x0380,		  "z S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"movu",    0x0440, 0x0Ba0,		  "z r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  /* FIXME: SIZE_FIELD_UNSIGNED and all necessary changes.  */
+-  {"movu",    0x0840, 0x03a0,		  "z s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"movu",    0x0840, 0x03a0,		  "z S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"mstep",   0x07f0, 0x0800,		  "r,R",     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_dstep_logshift_mstep_neg_not_op},
+-
+-  {"muls",    0x0d00, 0x02c0,		  "m r,R",   0, SIZE_NONE,
+-   cris_ver_v10p,
+-   cris_muls_op},
+-
+-  {"mulu",    0x0900, 0x06c0,		  "m r,R",   0, SIZE_NONE,
+-   cris_ver_v10p,
+-   cris_mulu_op},
+-
+-  {"neg",     0x0580, 0x0A40,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_dstep_logshift_mstep_neg_not_op},
+-
+-  {"nop",     NOP_OPCODE, NOP_Z_BITS,	  "",	     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_btst_nop_op},
+-
+-  {"nop",     NOP_OPCODE_V32, NOP_Z_BITS_V32, "",    0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_btst_nop_op},
+-
+-  {"not",     0x8770, 0x7880,		  "r",	     0, SIZE_NONE,     0,
+-   cris_dstep_logshift_mstep_neg_not_op},
+-
+-  {"or",      0x0740, 0x0880,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"or",      0x0B40, 0x0080,		  "m s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"or",      0x0B40, 0x0080,		  "m S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"or",      0x0B40, 0x0480,		  "m S,R,r", 0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_three_operand_add_sub_cmp_and_or_op},
+-
+-  {"orq",     0x0340, 0x0C80,		  "i,R",     0, SIZE_NONE,     0,
+-   cris_quick_mode_and_cmp_move_or_op},
+-
+-  {"pop",     0x0E6E, 0x0191,		  "!R",	     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"pop",     0x0e3e, 0x01c1,		  "!P",	     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_move_from_preg_op},
+-
+-  {"push",    0x0FEE, 0x0011,		  "BR",	     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"push",    0x0E7E, 0x0181,		  "BP",	     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_move_to_preg_op},
+-
+-  {"rbf",     0x3b30, 0xc0c0,		  "y",	     0, SIZE_NONE,
+-   cris_ver_v10,
+-   cris_not_implemented_op},
+-
+-  {"rbf",     0x3b30, 0xc0c0,		  "S",	     0, SIZE_NONE,
+-   cris_ver_v10,
+-   cris_not_implemented_op},
+-
+-  {"rfe",     0x2930, 0xD6CF,		  "",	     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"rfg",     0x4930, 0xB6CF,		  "",	     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"rfn",     0x5930, 0xA6CF,		  "",	     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  {"ret",     0xB67F, 0x4980,		  "",	     1, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_reg_mode_move_from_preg_op},
+-
+-  {"ret",     0xB9F0, 0x460F,		  "",	     1, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_reg_mode_move_from_preg_op},
+-
+-  {"retb",    0xe67f, 0x1980,		  "",	     1, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_reg_mode_move_from_preg_op},
+-
+-  {"rete",     0xA9F0, 0x560F,		  "",	     1, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_reg_mode_move_from_preg_op},
+-
+-  {"reti",    0xA67F, 0x5980,		  "",	     1, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_reg_mode_move_from_preg_op},
+-
+-  {"retn",     0xC9F0, 0x360F,		  "",	     1, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_reg_mode_move_from_preg_op},
+-
+-  {"sbfs",    0x3b70, 0xc080,		  "y",	     0, SIZE_NONE,
+-   cris_ver_v10,
+-   cris_not_implemented_op},
+-
+-  {"sbfs",    0x3b70, 0xc080,		  "S",	     0, SIZE_NONE,
+-   cris_ver_v10,
+-   cris_not_implemented_op},
+-
+-  {"sa",
+-   0x0530+CC_A*0x1000,
+-   0x0AC0+(0xf-CC_A)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"ssb",
+-   0x0530+CC_EXT*0x1000,
+-   0x0AC0+(0xf-CC_EXT)*0x1000,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_scc_op},
+-
+-  {"scc",
+-   0x0530+CC_CC*0x1000,
+-   0x0AC0+(0xf-CC_CC)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"scs",
+-   0x0530+CC_CS*0x1000,
+-   0x0AC0+(0xf-CC_CS)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"seq",
+-   0x0530+CC_EQ*0x1000,
+-   0x0AC0+(0xf-CC_EQ)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"setf",    0x05b0, 0x0A40,		  "f",	     0, SIZE_NONE,     0,
+-   cris_ax_ei_setf_op},
+-
+-  {"sfe",    0x3930, 0xC6CF,		  "",	     0, SIZE_NONE,
+-   cris_ver_v32p,
+-   cris_not_implemented_op},
+-
+-  /* Need to have "swf" in front of "sext" so it is the one displayed in
+-     disassembly.  */
+-  {"swf",
+-   0x0530+CC_EXT*0x1000,
+-   0x0AC0+(0xf-CC_EXT)*0x1000,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v10,
+-   cris_scc_op},
+-
+-  {"sext",
+-   0x0530+CC_EXT*0x1000,
+-   0x0AC0+(0xf-CC_EXT)*0x1000,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v0_3,
+-   cris_scc_op},
+-
+-  {"sge",
+-   0x0530+CC_GE*0x1000,
+-   0x0AC0+(0xf-CC_GE)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"sgt",
+-   0x0530+CC_GT*0x1000,
+-   0x0AC0+(0xf-CC_GT)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"shi",
+-   0x0530+CC_HI*0x1000,
+-   0x0AC0+(0xf-CC_HI)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"shs",
+-   0x0530+CC_HS*0x1000,
+-   0x0AC0+(0xf-CC_HS)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"sle",
+-   0x0530+CC_LE*0x1000,
+-   0x0AC0+(0xf-CC_LE)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"slo",
+-   0x0530+CC_LO*0x1000,
+-   0x0AC0+(0xf-CC_LO)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"sls",
+-   0x0530+CC_LS*0x1000,
+-   0x0AC0+(0xf-CC_LS)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"slt",
+-   0x0530+CC_LT*0x1000,
+-   0x0AC0+(0xf-CC_LT)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"smi",
+-   0x0530+CC_MI*0x1000,
+-   0x0AC0+(0xf-CC_MI)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"sne",
+-   0x0530+CC_NE*0x1000,
+-   0x0AC0+(0xf-CC_NE)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"spl",
+-   0x0530+CC_PL*0x1000,
+-   0x0AC0+(0xf-CC_PL)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"sub",     0x0680, 0x0940,		  "m r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"sub",     0x0a80, 0x0140,		  "m s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"sub",     0x0a80, 0x0140,		  "m S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"sub",     0x0a80, 0x0540,		  "m S,R,r", 0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_three_operand_add_sub_cmp_and_or_op},
+-
+-  {"subq",    0x0280, 0x0d40,		  "I,R",     0, SIZE_NONE,     0,
+-   cris_quick_mode_add_sub_op},
+-
+-  {"subs",    0x04a0, 0x0b40,		  "z r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  /* FIXME: SIZE_FIELD_SIGNED and all necessary changes.  */
+-  {"subs",    0x08a0, 0x0340,		  "z s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"subs",    0x08a0, 0x0340,		  "z S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"subs",    0x08a0, 0x0740,		  "z S,R,r", 0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_three_operand_add_sub_cmp_and_or_op},
+-
+-  {"subu",    0x0480, 0x0b60,		  "z r,R",   0, SIZE_NONE,     0,
+-   cris_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  /* FIXME: SIZE_FIELD_UNSIGNED and all necessary changes.  */
+-  {"subu",    0x0880, 0x0360,		  "z s,R",   0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"subu",    0x0880, 0x0360,		  "z S,D",   0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_add_sub_cmp_and_or_move_op},
+-
+-  {"subu",    0x0880, 0x0760,		  "z S,R,r", 0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_three_operand_add_sub_cmp_and_or_op},
+-
+-  {"svc",
+-   0x0530+CC_VC*0x1000,
+-   0x0AC0+(0xf-CC_VC)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  {"svs",
+-   0x0530+CC_VS*0x1000,
+-   0x0AC0+(0xf-CC_VS)*0x1000,		  "r",	     0, SIZE_NONE,     0,
+-   cris_scc_op},
+-
+-  /* The insn "swapn" is the same as "not" and will be disassembled as
+-     such, but the swap* family of mnmonics are generally v8-and-higher
+-     only, so count it in.  */
+-  {"swapn",   0x8770, 0x7880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapw",   0x4770, 0xb880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapnw",  0xc770, 0x3880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapb",   0x2770, 0xd880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapnb",  0xA770, 0x5880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapwb",  0x6770, 0x9880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapnwb", 0xE770, 0x1880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapr",   0x1770, 0xe880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapnr",  0x9770, 0x6880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapwr",  0x5770, 0xa880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapnwr", 0xd770, 0x2880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapbr",  0x3770, 0xc880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapnbr", 0xb770, 0x4880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapwbr", 0x7770, 0x8880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"swapnwbr", 0xf770, 0x0880,		  "r",	     0, SIZE_NONE,
+-   cris_ver_v8p,
+-   cris_not_implemented_op},
+-
+-  {"test",    0x0640, 0x0980,		  "m D",     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_reg_mode_test_op},
+-
+-  {"test",    0x0b80, 0xf040,		  "m y",     0, SIZE_FIELD,    0,
+-   cris_none_reg_mode_clear_test_op},
+-
+-  {"test",    0x0b80, 0xf040,		  "m S",     0, SIZE_NONE,
+-   cris_ver_v0_10,
+-   cris_none_reg_mode_clear_test_op},
+-
+-  {"xor",     0x07B0, 0x0840,		  "r,R",     0, SIZE_NONE,     0,
+-   cris_xor_op},
+-
+-  {NULL, 0, 0, NULL, 0, 0, 0, cris_not_implemented_op}
 -};
 -
--struct cris_opcode
+-/* Condition-names, indexed by the CC_* numbers as found in cris.h. */
+-const char * const
+-cris_cc_strings[] =
 -{
--  /* The name of the insn.  */
--  const char *name;
--
--  /* Bits that must be 1 for a match.  */
--  unsigned int match;
--
--  /* Bits that must be 0 for a match.  */
--  unsigned int lose;
--
--  /* See the table in "opcodes/cris-opc.c".  */
--  const char *args;
--
--  /* Nonzero if this is a delayed branch instruction.  */
--  char delayed;
--
--  /* Size of immediate operands.  */
--  enum cris_imm_oprnd_size_type imm_oprnd_size;
--
--  /* Indicates which version this insn was first implemented in.  */
--  enum cris_insn_version_usage applicable_version;
--
--  /* What kind of operation this is.  */
--  enum cris_op_type op;
+-  "hs",
+-  "lo",
+-  "ne",
+-  "eq",
+-  "vc",
+-  "vs",
+-  "pl",
+-  "mi",
+-  "ls",
+-  "hi",
+-  "ge",
+-  "lt",
+-  "gt",
+-  "le",
+-  "a",
+-  /* This is a placeholder.  In v0, this would be "ext".  In v32, this
+-     is "sb". */
+-  "wf"
 -};
--extern const struct cris_opcode cris_opcodes[];
--
--
--/* These macros are for the target-specific flags in disassemble_info
--   used at disassembly.  */
--
--/* This insn accesses memory.  This flag is more trustworthy than
--   checking insn_type for "dis_dref" which does not work for
--   e.g. "JSR [foo]".  */
--#define CRIS_DIS_FLAG_MEMREF (1 << 0)
--
--/* The "target" field holds a register number.  */
--#define CRIS_DIS_FLAG_MEM_TARGET_IS_REG (1 << 1)
--
--/* The "target2" field holds a register number; add it to "target".  */
--#define CRIS_DIS_FLAG_MEM_TARGET2_IS_REG (1 << 2)
--
--/* Yet another add-on: the register in "target2" must be multiplied
--   by 2 before adding to "target".  */
--#define CRIS_DIS_FLAG_MEM_TARGET2_MULT2 (1 << 3)
--
--/* Yet another add-on: the register in "target2" must be multiplied
--   by 4 (mutually exclusive with .._MULT2).  */
--#define CRIS_DIS_FLAG_MEM_TARGET2_MULT4 (1 << 4)
--
--/* The register in "target2" is an indirect memory reference (of the
--   register there), add to "target".  Assumed size is dword (mutually
--   exclusive with .._MULT[24]).  */
--#define CRIS_DIS_FLAG_MEM_TARGET2_MEM (1 << 5)
--
--/* Add-on to CRIS_DIS_FLAG_MEM_TARGET2_MEM; the memory access is "byte";
--   sign-extended before adding to "target".  */
--#define CRIS_DIS_FLAG_MEM_TARGET2_MEM_BYTE (1 << 6)
--
--/* Add-on to CRIS_DIS_FLAG_MEM_TARGET2_MEM; the memory access is "word";
--   sign-extended before adding to "target".  */
--#define CRIS_DIS_FLAG_MEM_TARGET2_MEM_WORD (1 << 7)
--
--#endif /* TARGET_CRIS_OPCODE_CRIS_H */
 -
 -/*
 - * Local variables:
@@ -1255,6447 +1400,1659 @@ index 40509c88db..0000000000
 - * indent-tabs-mode: t
 - * End:
 - */
-diff --git a/target/cris/cpu.c b/target/cris/cpu.c
-deleted file mode 100644
-index ff31ca7fbc..0000000000
---- a/target/cris/cpu.c
-+++ /dev/null
-@@ -1,323 +0,0 @@
--/*
-- * QEMU CRIS CPU
-- *
-- * Copyright (c) 2008 AXIS Communications AB
-- * Written by Edgar E. Iglesias.
-- *
-- * Copyright (c) 2012 SUSE LINUX Products GmbH
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see
-- * <http://www.gnu.org/licenses/lgpl-2.1.html>
-- */
--
--#include "qemu/osdep.h"
--#include "qapi/error.h"
--#include "qemu/qemu-print.h"
--#include "cpu.h"
--#include "mmu.h"
 -
 -
--static void cris_cpu_set_pc(CPUState *cs, vaddr value)
--{
--    CRISCPU *cpu = CRIS_CPU(cs);
--
--    cpu->env.pc = value;
--}
--
--static vaddr cris_cpu_get_pc(CPUState *cs)
--{
--    CRISCPU *cpu = CRIS_CPU(cs);
--
--    return cpu->env.pc;
--}
--
--static void cris_restore_state_to_opc(CPUState *cs,
--                                      const TranslationBlock *tb,
--                                      const uint64_t *data)
--{
--    CRISCPU *cpu = CRIS_CPU(cs);
--
--    cpu->env.pc = data[0];
--}
--
--static bool cris_cpu_has_work(CPUState *cs)
--{
--    return cs->interrupt_request & (CPU_INTERRUPT_HARD | CPU_INTERRUPT_NMI);
--}
--
--static int cris_cpu_mmu_index(CPUState *cs, bool ifetch)
--{
--    return !!(cpu_env(cs)->pregs[PR_CCS] & U_FLAG);
--}
--
--static void cris_cpu_reset_hold(Object *obj, ResetType type)
--{
--    CPUState *cs = CPU(obj);
--    CRISCPUClass *ccc = CRIS_CPU_GET_CLASS(obj);
--    CPUCRISState *env = cpu_env(cs);
--    uint32_t vr;
--
--    if (ccc->parent_phases.hold) {
--        ccc->parent_phases.hold(obj, type);
--    }
--
--    vr = env->pregs[PR_VR];
--    memset(env, 0, offsetof(CPUCRISState, end_reset_fields));
--    env->pregs[PR_VR] = vr;
--
--#if defined(CONFIG_USER_ONLY)
--    /* start in user mode with interrupts enabled.  */
--    env->pregs[PR_CCS] |= U_FLAG | I_FLAG | P_FLAG;
--#else
--    cris_mmu_init(env);
--    env->pregs[PR_CCS] = 0;
--#endif
--}
--
--static ObjectClass *cris_cpu_class_by_name(const char *cpu_model)
--{
--    ObjectClass *oc;
--    char *typename;
--
--#if defined(CONFIG_USER_ONLY)
--    if (strcasecmp(cpu_model, "any") == 0) {
--        return object_class_by_name(CRIS_CPU_TYPE_NAME("crisv32"));
--    }
+-/* No instruction will be disassembled longer than this.  In theory, and
+-   in silicon, address prefixes can be cascaded.  In practice, cascading
+-   is not used by GCC, and not supported by the assembler.  */
+-#ifndef MAX_BYTES_PER_CRIS_INSN
+-#define MAX_BYTES_PER_CRIS_INSN 8
 -#endif
 -
--    typename = g_strdup_printf(CRIS_CPU_TYPE_NAME("%s"), cpu_model);
--    oc = object_class_by_name(typename);
--    g_free(typename);
--
--    return oc;
--}
--
--static void cris_cpu_realizefn(DeviceState *dev, Error **errp)
--{
--    CPUState *cs = CPU(dev);
--    CRISCPUClass *ccc = CRIS_CPU_GET_CLASS(dev);
--    Error *local_err = NULL;
--
--    cpu_exec_realizefn(cs, &local_err);
--    if (local_err != NULL) {
--        error_propagate(errp, local_err);
--        return;
--    }
--
--    cpu_reset(cs);
--    qemu_init_vcpu(cs);
--
--    ccc->parent_realize(dev, errp);
--}
--
--#ifndef CONFIG_USER_ONLY
--static void cris_cpu_set_irq(void *opaque, int irq, int level)
--{
--    CRISCPU *cpu = opaque;
--    CPUState *cs = CPU(cpu);
--    int type = irq == CRIS_CPU_IRQ ? CPU_INTERRUPT_HARD : CPU_INTERRUPT_NMI;
--
--    if (irq == CRIS_CPU_IRQ) {
--        /*
--         * The PIC passes us the vector for the IRQ as the value it sends
--         * over the qemu_irq line
--         */
--        cpu->env.interrupt_vector = level;
--    }
--
--    if (level) {
--        cpu_interrupt(cs, type);
--    } else {
--        cpu_reset_interrupt(cs, type);
--    }
--}
+-/* Whether or not to decode prefixes, folding it into the following
+-   instruction.  FIXME: Make this optional later.  */
+-#ifndef PARSE_PREFIX
+-#define PARSE_PREFIX 1
 -#endif
 -
--static void cris_disas_set_info(CPUState *cpu, disassemble_info *info)
--{
--    if (cpu_env(cpu)->pregs[PR_VR] != 32) {
--        info->mach = bfd_mach_cris_v0_v10;
--        info->print_insn = print_insn_crisv10;
--    } else {
--        info->mach = bfd_mach_cris_v32;
--        info->print_insn = print_insn_crisv32;
--    }
--}
+-/* Sometimes we prefix all registers with this character.  */
+-#define REGISTER_PREFIX_CHAR '$'
 -
--static void cris_cpu_initfn(Object *obj)
--{
--    CRISCPU *cpu = CRIS_CPU(obj);
--    CRISCPUClass *ccc = CRIS_CPU_GET_CLASS(obj);
--    CPUCRISState *env = &cpu->env;
+-/* Whether or not to trace the following sequence:
+-   sub* X,r%d
+-   bound* Y,r%d
+-   adds.w [pc+r%d.w],pc
 -
--    env->pregs[PR_VR] = ccc->vr;
+-   This is the assembly form of a switch-statement in C.
+-   The "sub is optional.  If there is none, then X will be zero.
+-   X is the value of the first case,
+-   Y is the number of cases (including default).
 -
--#ifndef CONFIG_USER_ONLY
--    /* IRQ and NMI lines.  */
--    qdev_init_gpio_in(DEVICE(cpu), cris_cpu_set_irq, 2);
--#endif
--}
+-   This results in case offsets printed on the form:
+-    case N: -> case_address
+-   where N is an estimation on the corresponding 'case' operand in C,
+-   and case_address is where execution of that case continues after the
+-   sequence presented above.
 -
--#ifndef CONFIG_USER_ONLY
--#include "hw/core/sysemu-cpu-ops.h"
+-   The old style of output was to print the offsets as instructions,
+-   which made it hard to follow "case"-constructs in the disassembly,
+-   and caused a lot of annoying warnings about undefined instructions.
 -
--static const struct SysemuCPUOps cris_sysemu_ops = {
--    .get_phys_page_debug = cris_cpu_get_phys_page_debug,
--};
+-   FIXME: Make this optional later.  */
+-#ifndef TRACE_CASE
+-#define TRACE_CASE (disdata->trace_case)
 -#endif
 -
--#include "hw/core/tcg-cpu-ops.h"
+-enum cris_disass_family
+- { cris_dis_v0_v10, cris_dis_common_v10_v32, cris_dis_v32 };
 -
--static const TCGCPUOps crisv10_tcg_ops = {
--    .initialize = cris_initialize_crisv10_tcg,
--    .restore_state_to_opc = cris_restore_state_to_opc,
+-/* Stored in the disasm_info->private_data member.  */
+-struct cris_disasm_data
+-{
+-  /* Whether to print something less confusing if we find something
+-     matching a switch-construct.  */
+-  bfd_boolean trace_case;
 -
--#ifndef CONFIG_USER_ONLY
--    .tlb_fill = cris_cpu_tlb_fill,
--    .cpu_exec_interrupt = cris_cpu_exec_interrupt,
--    .cpu_exec_halt = cris_cpu_has_work,
--    .do_interrupt = crisv10_cpu_do_interrupt,
--#endif /* !CONFIG_USER_ONLY */
+-  /* Whether this code is flagged as crisv32.  FIXME: Should be an enum
+-     that includes "compatible".  */
+-  enum cris_disass_family distype;
 -};
 -
--static const TCGCPUOps crisv32_tcg_ops = {
--    .initialize = cris_initialize_tcg,
--    .restore_state_to_opc = cris_restore_state_to_opc,
+-/* Value of first element in switch.  */
+-static long case_offset = 0;
 -
--#ifndef CONFIG_USER_ONLY
--    .tlb_fill = cris_cpu_tlb_fill,
--    .cpu_exec_interrupt = cris_cpu_exec_interrupt,
--    .cpu_exec_halt = cris_cpu_has_work,
--    .do_interrupt = cris_cpu_do_interrupt,
--#endif /* !CONFIG_USER_ONLY */
--};
+-/* How many more case-offsets to print.  */
+-static long case_offset_counter = 0;
 -
--static void crisv8_cpu_class_init(ObjectClass *oc, void *data)
+-/* Number of case offsets.  */
+-static long no_of_case_offsets = 0;
+-
+-/* Candidate for next case_offset.  */
+-static long last_immediate = 0;
+-
+-static int cris_constraint
+-  (const char *, unsigned, unsigned, struct cris_disasm_data *);
+-
+-/* Parse disassembler options and store state in info.  FIXME: For the
+-   time being, we abuse static variables.  */
+-
+-static void
+-cris_parse_disassembler_options (struct cris_disasm_data *disdata,
+-				 char *disassembler_options,
+-				 enum cris_disass_family distype)
 -{
--    CPUClass *cc = CPU_CLASS(oc);
--    CRISCPUClass *ccc = CRIS_CPU_CLASS(oc);
+-  /* Default true.  */
+-  disdata->trace_case
+-    = (disassembler_options == NULL
+-       || (strcmp (disassembler_options, "nocase") != 0));
 -
--    ccc->vr = 8;
--    cc->gdb_read_register = crisv10_cpu_gdb_read_register;
--    cc->tcg_ops = &crisv10_tcg_ops;
+-  disdata->distype = distype;
 -}
 -
--static void crisv9_cpu_class_init(ObjectClass *oc, void *data)
+-static const struct cris_spec_reg *
+-spec_reg_info (unsigned int sreg, enum cris_disass_family distype)
 -{
--    CPUClass *cc = CPU_CLASS(oc);
--    CRISCPUClass *ccc = CRIS_CPU_CLASS(oc);
+-  int i;
 -
--    ccc->vr = 9;
--    cc->gdb_read_register = crisv10_cpu_gdb_read_register;
--    cc->tcg_ops = &crisv10_tcg_ops;
--}
--
--static void crisv10_cpu_class_init(ObjectClass *oc, void *data)
--{
--    CPUClass *cc = CPU_CLASS(oc);
--    CRISCPUClass *ccc = CRIS_CPU_CLASS(oc);
--
--    ccc->vr = 10;
--    cc->gdb_read_register = crisv10_cpu_gdb_read_register;
--    cc->tcg_ops = &crisv10_tcg_ops;
--}
--
--static void crisv11_cpu_class_init(ObjectClass *oc, void *data)
--{
--    CPUClass *cc = CPU_CLASS(oc);
--    CRISCPUClass *ccc = CRIS_CPU_CLASS(oc);
--
--    ccc->vr = 11;
--    cc->gdb_read_register = crisv10_cpu_gdb_read_register;
--    cc->tcg_ops = &crisv10_tcg_ops;
--}
--
--static void crisv17_cpu_class_init(ObjectClass *oc, void *data)
--{
--    CPUClass *cc = CPU_CLASS(oc);
--    CRISCPUClass *ccc = CRIS_CPU_CLASS(oc);
--
--    ccc->vr = 17;
--    cc->gdb_read_register = crisv10_cpu_gdb_read_register;
--    cc->tcg_ops = &crisv10_tcg_ops;
--}
--
--static void crisv32_cpu_class_init(ObjectClass *oc, void *data)
--{
--    CPUClass *cc = CPU_CLASS(oc);
--    CRISCPUClass *ccc = CRIS_CPU_CLASS(oc);
--
--    ccc->vr = 32;
--    cc->tcg_ops = &crisv32_tcg_ops;
--}
--
--static void cris_cpu_class_init(ObjectClass *oc, void *data)
--{
--    DeviceClass *dc = DEVICE_CLASS(oc);
--    CPUClass *cc = CPU_CLASS(oc);
--    CRISCPUClass *ccc = CRIS_CPU_CLASS(oc);
--    ResettableClass *rc = RESETTABLE_CLASS(oc);
--
--    device_class_set_parent_realize(dc, cris_cpu_realizefn,
--                                    &ccc->parent_realize);
--
--    resettable_class_set_parent_phases(rc, NULL, cris_cpu_reset_hold, NULL,
--                                       &ccc->parent_phases);
--
--    cc->class_by_name = cris_cpu_class_by_name;
--    cc->has_work = cris_cpu_has_work;
--    cc->mmu_index = cris_cpu_mmu_index;
--    cc->dump_state = cris_cpu_dump_state;
--    cc->set_pc = cris_cpu_set_pc;
--    cc->get_pc = cris_cpu_get_pc;
--    cc->gdb_read_register = cris_cpu_gdb_read_register;
--    cc->gdb_write_register = cris_cpu_gdb_write_register;
--#ifndef CONFIG_USER_ONLY
--    dc->vmsd = &vmstate_cris_cpu;
--    cc->sysemu_ops = &cris_sysemu_ops;
--#endif
--
--    cc->gdb_num_core_regs = 49;
--    cc->gdb_stop_before_watchpoint = true;
--
--    cc->disas_set_info = cris_disas_set_info;
--}
--
--#define DEFINE_CRIS_CPU_TYPE(cpu_model, initfn) \
--     {                                          \
--         .parent = TYPE_CRIS_CPU,               \
--         .class_init = initfn,                  \
--         .name = CRIS_CPU_TYPE_NAME(cpu_model), \
--     }
--
--static const TypeInfo cris_cpu_model_type_infos[] = {
+-  for (i = 0; cris_spec_regs[i].name != NULL; i++)
 -    {
--        .name = TYPE_CRIS_CPU,
--        .parent = TYPE_CPU,
--        .instance_size = sizeof(CRISCPU),
--        .instance_align = __alignof(CRISCPU),
--        .instance_init = cris_cpu_initfn,
--        .abstract = true,
--        .class_size = sizeof(CRISCPUClass),
--        .class_init = cris_cpu_class_init,
--    },
--    DEFINE_CRIS_CPU_TYPE("crisv8", crisv8_cpu_class_init),
--    DEFINE_CRIS_CPU_TYPE("crisv9", crisv9_cpu_class_init),
--    DEFINE_CRIS_CPU_TYPE("crisv10", crisv10_cpu_class_init),
--    DEFINE_CRIS_CPU_TYPE("crisv11", crisv11_cpu_class_init),
--    DEFINE_CRIS_CPU_TYPE("crisv17", crisv17_cpu_class_init),
--    DEFINE_CRIS_CPU_TYPE("crisv32", crisv32_cpu_class_init),
--};
--
--DEFINE_TYPES(cris_cpu_model_type_infos)
-diff --git a/target/cris/gdbstub.c b/target/cris/gdbstub.c
-deleted file mode 100644
-index 9e87069da8..0000000000
---- a/target/cris/gdbstub.c
-+++ /dev/null
-@@ -1,127 +0,0 @@
--/*
-- * CRIS gdb server stub
-- *
-- * Copyright (c) 2003-2005 Fabrice Bellard
-- * Copyright (c) 2013 SUSE LINUX Products GmbH
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
--#include "qemu/osdep.h"
--#include "cpu.h"
--#include "gdbstub/helpers.h"
--
--int crisv10_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
--{
--    CPUCRISState *env = cpu_env(cs);
--
--    if (n < 15) {
--        return gdb_get_reg32(mem_buf, env->regs[n]);
+-      if (cris_spec_regs[i].number == sreg)
+-	{
+-	  if (distype == cris_dis_v32)
+-	    switch (cris_spec_regs[i].applicable_version)
+-	      {
+-	      case cris_ver_warning:
+-	      case cris_ver_version_all:
+-	      case cris_ver_v3p:
+-	      case cris_ver_v8p:
+-	      case cris_ver_v10p:
+-	      case cris_ver_v32p:
+-		/* No ambiguous sizes or register names with CRISv32.  */
+-		if (cris_spec_regs[i].warning == NULL)
+-		  return &cris_spec_regs[i];
+-	      default:
+-		;
+-	      }
+-	  else if (cris_spec_regs[i].applicable_version != cris_ver_v32p)
+-	    return &cris_spec_regs[i];
+-	}
 -    }
 -
--    if (n == 15) {
--        return gdb_get_reg32(mem_buf, env->pc);
--    }
--
--    if (n < 32) {
--        switch (n) {
--        case 16:
--            return gdb_get_reg8(mem_buf, env->pregs[n - 16]);
--        case 17:
--            return gdb_get_reg8(mem_buf, env->pregs[n - 16]);
--        case 20:
--        case 21:
--            return gdb_get_reg16(mem_buf, env->pregs[n - 16]);
--        default:
--            if (n >= 23) {
--                return gdb_get_reg32(mem_buf, env->pregs[n - 16]);
--            }
--            break;
--        }
--    }
--    return 0;
+-  return NULL;
 -}
 -
--int cris_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+-/* Return the number of bits in the argument.  */
+-
+-static int
+-number_of_bits (unsigned int val)
 -{
--    CPUCRISState *env = cpu_env(cs);
--    uint8_t srs;
+-  int bits;
 -
--    srs = env->pregs[PR_SRS];
--    if (n < 16) {
--        return gdb_get_reg32(mem_buf, env->regs[n]);
--    }
+-  for (bits = 0; val != 0; val &= val - 1)
+-    bits++;
 -
--    if (n >= 21 && n < 32) {
--        return gdb_get_reg32(mem_buf, env->pregs[n - 16]);
--    }
--    if (n >= 33 && n < 49) {
--        return gdb_get_reg32(mem_buf, env->sregs[srs][n - 33]);
--    }
--    switch (n) {
--    case 16:
--        return gdb_get_reg8(mem_buf, env->pregs[0]);
--    case 17:
--        return gdb_get_reg8(mem_buf, env->pregs[1]);
--    case 18:
--        return gdb_get_reg32(mem_buf, env->pregs[2]);
--    case 19:
--        return gdb_get_reg8(mem_buf, srs);
--    case 20:
--        return gdb_get_reg16(mem_buf, env->pregs[4]);
--    case 32:
--        return gdb_get_reg32(mem_buf, env->pc);
--    }
--
--    return 0;
+-  return bits;
 -}
 -
--int cris_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+-/* Get an entry in the opcode-table.  */
+-
+-static const struct cris_opcode *
+-get_opcode_entry (unsigned int insn,
+-		  unsigned int prefix_insn,
+-		  struct cris_disasm_data *disdata)
 -{
--    CPUCRISState *env = cpu_env(cs);
--    uint32_t tmp;
+-  /* For non-prefixed insns, we keep a table of pointers, indexed by the
+-     insn code.  Each entry is initialized when found to be NULL.  */
+-  static const struct cris_opcode **opc_table = NULL;
 -
--    if (n > 49) {
--        return 0;
+-  const struct cris_opcode *max_matchedp = NULL;
+-  const struct cris_opcode **prefix_opc_table = NULL;
+-
+-  /* We hold a table for each prefix that need to be handled differently.  */
+-  static const struct cris_opcode **dip_prefixes = NULL;
+-  static const struct cris_opcode **bdapq_m1_prefixes = NULL;
+-  static const struct cris_opcode **bdapq_m2_prefixes = NULL;
+-  static const struct cris_opcode **bdapq_m4_prefixes = NULL;
+-  static const struct cris_opcode **rest_prefixes = NULL;
+-
+-  /* Allocate and clear the opcode-table.  */
+-  if (opc_table == NULL)
+-    {
+-      opc_table = g_new0(const struct cris_opcode *, 65536);
+-      dip_prefixes = g_new0(const struct cris_opcode *, 65536);
+-      bdapq_m1_prefixes = g_new0(const struct cris_opcode *, 65536);
+-      bdapq_m2_prefixes = g_new0(const struct cris_opcode *, 65536);
+-      bdapq_m4_prefixes = g_new0(const struct cris_opcode *, 65536);
+-      rest_prefixes = g_new0(const struct cris_opcode *, 65536);
 -    }
 -
--    tmp = ldl_p(mem_buf);
+-  /* Get the right table if this is a prefix.
+-     This code is connected to cris_constraints in that it knows what
+-     prefixes play a role in recognition of patterns; the necessary
+-     state is reflected by which table is used.  If constraints
+-     involving match or non-match of prefix insns are changed, then this
+-     probably needs changing too.  */
+-  if (prefix_insn != NO_CRIS_PREFIX)
+-    {
+-      const struct cris_opcode *popcodep
+-	= (opc_table[prefix_insn] != NULL
+-	   ? opc_table[prefix_insn]
+-	   : get_opcode_entry (prefix_insn, NO_CRIS_PREFIX, disdata));
 -
--    if (n < 16) {
--        env->regs[n] = tmp;
+-      if (popcodep == NULL)
+-	return NULL;
+-
+-      if (popcodep->match == BDAP_QUICK_OPCODE)
+-	{
+-	  /* Since some offsets are recognized with "push" macros, we
+-	     have to have different tables for them.  */
+-	  int offset = (prefix_insn & 255);
+-
+-	  if (offset > 127)
+-	    offset -= 256;
+-
+-	  switch (offset)
+-	    {
+-	    case -4:
+-	      prefix_opc_table = bdapq_m4_prefixes;
+-	      break;
+-
+-	    case -2:
+-	      prefix_opc_table = bdapq_m2_prefixes;
+-	      break;
+-
+-	    case -1:
+-	      prefix_opc_table = bdapq_m1_prefixes;
+-	      break;
+-
+-	    default:
+-	      prefix_opc_table = rest_prefixes;
+-	      break;
+-	    }
+-	}
+-      else if (popcodep->match == DIP_OPCODE)
+-	/* We don't allow postincrement when the prefix is DIP, so use a
+-	   different table for DIP.  */
+-	prefix_opc_table = dip_prefixes;
+-      else
+-	prefix_opc_table = rest_prefixes;
 -    }
 -
--    if (n >= 21 && n < 32) {
--        env->pregs[n - 16] = tmp;
+-  if (prefix_insn != NO_CRIS_PREFIX
+-      && prefix_opc_table[insn] != NULL)
+-    max_matchedp = prefix_opc_table[insn];
+-  else if (prefix_insn == NO_CRIS_PREFIX && opc_table[insn] != NULL)
+-    max_matchedp = opc_table[insn];
+-  else
+-    {
+-      const struct cris_opcode *opcodep;
+-      int max_level_of_match = -1;
+-
+-      for (opcodep = cris_opcodes;
+-	   opcodep->name != NULL;
+-	   opcodep++)
+-	{
+-	  int level_of_match;
+-
+-	  if (disdata->distype == cris_dis_v32)
+-	    {
+-	      switch (opcodep->applicable_version)
+-		{
+-		case cris_ver_version_all:
+-		  break;
+-
+-		case cris_ver_v0_3:
+-		case cris_ver_v0_10:
+-		case cris_ver_v3_10:
+-		case cris_ver_sim_v0_10:
+-		case cris_ver_v8_10:
+-		case cris_ver_v10:
+-		case cris_ver_warning:
+-		  continue;
+-
+-		case cris_ver_v3p:
+-		case cris_ver_v8p:
+-		case cris_ver_v10p:
+-		case cris_ver_v32p:
+-		  break;
+-
+-		case cris_ver_v8:
+-		  abort ();
+-		default:
+-		  abort ();
+-		}
+-	    }
+-	  else
+-	    {
+-	      switch (opcodep->applicable_version)
+-		{
+-		case cris_ver_version_all:
+-		case cris_ver_v0_3:
+-		case cris_ver_v3p:
+-		case cris_ver_v0_10:
+-		case cris_ver_v8p:
+-		case cris_ver_v8_10:
+-		case cris_ver_v10:
+-		case cris_ver_sim_v0_10:
+-		case cris_ver_v10p:
+-		case cris_ver_warning:
+-		  break;
+-
+-		case cris_ver_v32p:
+-		  continue;
+-
+-		case cris_ver_v8:
+-		  abort ();
+-		default:
+-		  abort ();
+-		}
+-	    }
+-
+-	  /* We give a double lead for bits matching the template in
+-	     cris_opcodes.  Not even, because then "move p8,r10" would
+-	     be given 2 bits lead over "clear.d r10".  When there's a
+-	     tie, the first entry in the table wins.  This is
+-	     deliberate, to avoid a more complicated recognition
+-	     formula.  */
+-	  if ((opcodep->match & insn) == opcodep->match
+-	      && (opcodep->lose & insn) == 0
+-	      && ((level_of_match
+-		   = cris_constraint (opcodep->args,
+-				      insn,
+-				      prefix_insn,
+-				      disdata))
+-		  >= 0)
+-	      && ((level_of_match
+-		   += 2 * number_of_bits (opcodep->match
+-					  | opcodep->lose))
+-			  > max_level_of_match))
+-		    {
+-		      max_matchedp = opcodep;
+-		      max_level_of_match = level_of_match;
+-
+-		      /* If there was a full match, never mind looking
+-			 further.  */
+-		      if (level_of_match >= 2 * 16)
+-			break;
+-		    }
+-		}
+-      /* Fill in the new entry.
+-
+-	 If there are changes to the opcode-table involving prefixes, and
+-	 disassembly then does not work correctly, try removing the
+-	 else-clause below that fills in the prefix-table.  If that
+-	 helps, you need to change the prefix_opc_table setting above, or
+-	 something related.  */
+-      if (prefix_insn == NO_CRIS_PREFIX)
+-	opc_table[insn] = max_matchedp;
+-      else
+-	prefix_opc_table[insn] = max_matchedp;
 -    }
 -
--    /* FIXME: Should support function regs be writable?  */
--    switch (n) {
--    case 16:
--        return 1;
--    case 17:
--        return 1;
--    case 18:
--        env->pregs[PR_PID] = tmp;
--        break;
--    case 19:
--        return 1;
--    case 20:
--        return 2;
--    case 32:
--        env->pc = tmp;
--        break;
--    }
--
--    return 4;
+-  return max_matchedp;
 -}
-diff --git a/target/cris/helper.c b/target/cris/helper.c
-deleted file mode 100644
-index 1c3f86876f..0000000000
---- a/target/cris/helper.c
-+++ /dev/null
-@@ -1,287 +0,0 @@
--/*
-- *  CRIS helper routines.
-- *
-- *  Copyright (c) 2007 AXIS Communications AB
-- *  Written by Edgar E. Iglesias.
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
 -
--#include "qemu/osdep.h"
--#include "qemu/log.h"
--#include "cpu.h"
--#include "hw/core/tcg-cpu-ops.h"
--#include "mmu.h"
--#include "qemu/host-utils.h"
--#include "exec/exec-all.h"
--#include "exec/cpu_ldst.h"
--#include "exec/helper-proto.h"
+-/* Return -1 if the constraints of a bitwise-matched instruction say
+-   that there is no match.  Otherwise return a nonnegative number
+-   indicating the confidence in the match (higher is better).  */
 -
--
--//#define CRIS_HELPER_DEBUG
--
--
--#ifdef CRIS_HELPER_DEBUG
--#define D(x) x
--#define D_LOG(...) qemu_log(__VA_ARGS__)
--#else
--#define D(x)
--#define D_LOG(...) do { } while (0)
--#endif
--
--static void cris_shift_ccs(CPUCRISState *env)
+-static int
+-cris_constraint (const char *cs,
+-		 unsigned int insn,
+-		 unsigned int prefix_insn,
+-		 struct cris_disasm_data *disdata)
 -{
--    uint32_t ccs;
--    /* Apply the ccs shift.  */
--    ccs = env->pregs[PR_CCS];
--    ccs = ((ccs & 0xc0000000) | ((ccs << 12) >> 2)) & ~0x3ff;
--    env->pregs[PR_CCS] = ccs;
+-  int retval = 0;
+-  int tmp;
+-  int prefix_ok = 0;
+-  const char *s;
+-
+-  for (s = cs; *s; s++)
+-    switch (*s)
+-      {
+-      case '!':
+-	/* Do not recognize "pop" if there's a prefix and then only for
+-           v0..v10.  */
+-	if (prefix_insn != NO_CRIS_PREFIX
+-	    || disdata->distype != cris_dis_v0_v10)
+-	  return -1;
+-	break;
+-
+-      case 'U':
+-	/* Not recognized at disassembly.  */
+-	return -1;
+-
+-      case 'M':
+-	/* Size modifier for "clear", i.e. special register 0, 4 or 8.
+-	   Check that it is one of them.  Only special register 12 could
+-	   be mismatched, but checking for matches is more logical than
+-	   checking for mismatches when there are only a few cases.  */
+-	tmp = ((insn >> 12) & 0xf);
+-	if (tmp != 0 && tmp != 4 && tmp != 8)
+-	  return -1;
+-	break;
+-
+-      case 'm':
+-	if ((insn & 0x30) == 0x30)
+-	  return -1;
+-	break;
+-
+-      case 'S':
+-	/* A prefix operand without side-effect.  */
+-	if (prefix_insn != NO_CRIS_PREFIX && (insn & 0x400) == 0)
+-	  {
+-	    prefix_ok = 1;
+-	    break;
+-	  }
+-	else
+-	  return -1;
+-
+-      case 's':
+-      case 'y':
+-      case 'Y':
+-	/* If this is a prefixed insn with postincrement (side-effect),
+-	   the prefix must not be DIP.  */
+-	if (prefix_insn != NO_CRIS_PREFIX)
+-	  {
+-	    if (insn & 0x400)
+-	      {
+-		const struct cris_opcode *prefix_opcodep
+-		  = get_opcode_entry (prefix_insn, NO_CRIS_PREFIX, disdata);
+-
+-		if (prefix_opcodep->match == DIP_OPCODE)
+-		  return -1;
+-	      }
+-
+-	    prefix_ok = 1;
+-	  }
+-	break;
+-
+-      case 'B':
+-	/* If we don't fall through, then the prefix is ok.  */
+-	prefix_ok = 1;
+-
+-	/* A "push" prefix.  Check for valid "push" size.
+-	   In case of special register, it may be != 4.  */
+-	if (prefix_insn != NO_CRIS_PREFIX)
+-	  {
+-	    /* Match the prefix insn to BDAPQ.  */
+-	    const struct cris_opcode *prefix_opcodep
+-	      = get_opcode_entry (prefix_insn, NO_CRIS_PREFIX, disdata);
+-
+-	    if (prefix_opcodep->match == BDAP_QUICK_OPCODE)
+-	      {
+-		int pushsize = (prefix_insn & 255);
+-
+-		if (pushsize > 127)
+-		  pushsize -= 256;
+-
+-		if (s[1] == 'P')
+-		  {
+-		    unsigned int spec_reg = (insn >> 12) & 15;
+-		    const struct cris_spec_reg *sregp
+-		      = spec_reg_info (spec_reg, disdata->distype);
+-
+-		    /* For a special-register, the "prefix size" must
+-		       match the size of the register.  */
+-		    if (sregp && sregp->reg_size == (unsigned int) -pushsize)
+-		      break;
+-		  }
+-		else if (s[1] == 'R')
+-		  {
+-		    if ((insn & 0x30) == 0x20 && pushsize == -4)
+-		      break;
+-		  }
+-		/* FIXME:  Should abort here; next constraint letter
+-		   *must* be 'P' or 'R'.  */
+-	      }
+-	  }
+-	return -1;
+-
+-      case 'D':
+-	retval = (((insn >> 12) & 15) == (insn & 15));
+-	if (!retval)
+-	  return -1;
+-	else
+-	  retval += 4;
+-	break;
+-
+-      case 'P':
+-	{
+-	  const struct cris_spec_reg *sregp
+-	    = spec_reg_info ((insn >> 12) & 15, disdata->distype);
+-
+-	  /* Since we match four bits, we will give a value of 4-1 = 3
+-	     in a match.  If there is a corresponding exact match of a
+-	     special register in another pattern, it will get a value of
+-	     4, which will be higher.  This should be correct in that an
+-	     exact pattern would match better than a general pattern.
+-
+-	     Note that there is a reason for not returning zero; the
+-	     pattern for "clear" is partly  matched in the bit-pattern
+-	     (the two lower bits must be zero), while the bit-pattern
+-	     for a move from a special register is matched in the
+-	     register constraint.  */
+-
+-	  if (sregp != NULL)
+-	    {
+-	      retval += 3;
+-	      break;
+-	    }
+-	  else
+-	    return -1;
+-	}
+-      }
+-
+-  if (prefix_insn != NO_CRIS_PREFIX && ! prefix_ok)
+-    return -1;
+-
+-  return retval;
 -}
 -
--bool cris_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
--                       MMUAccessType access_type, int mmu_idx,
--                       bool probe, uintptr_t retaddr)
+-/* Format number as hex with a leading "0x" into outbuffer.  */
+-
+-static char *
+-format_hex (unsigned long number,
+-	    char *outbuffer,
+-	    struct cris_disasm_data *disdata)
 -{
--    CPUCRISState *env = cpu_env(cs);
--    struct cris_mmu_result res;
--    int prot, miss;
--    target_ulong phy;
+-  /* Truncate negative numbers on >32-bit hosts.  */
+-  number &= 0xffffffff;
 -
--    miss = cris_mmu_translate(&res, env, address & TARGET_PAGE_MASK,
--                              access_type, mmu_idx, 0);
--    if (likely(!miss)) {
--        /*
--         * Mask off the cache selection bit. The ETRAX busses do not
--         * see the top bit.
--         */
--        phy = res.phy & ~0x80000000;
--        prot = res.prot;
--        tlb_set_page(cs, address & TARGET_PAGE_MASK, phy,
--                     prot, mmu_idx, TARGET_PAGE_SIZE);
--        return true;
--    }
+-  sprintf (outbuffer, "0x%lx", number);
 -
--    if (probe) {
--        return false;
--    }
+-  /* Save this value for the "case" support.  */
+-  if (TRACE_CASE)
+-    last_immediate = number;
 -
--    if (cs->exception_index == EXCP_BUSFAULT) {
--        cpu_abort(cs, "CRIS: Illegal recursive bus fault."
--                      "addr=%" VADDR_PRIx " access_type=%d\n",
--                      address, access_type);
--    }
--
--    env->pregs[PR_EDA] = address;
--    cs->exception_index = EXCP_BUSFAULT;
--    env->fault_vector = res.bf_vec;
--    if (retaddr) {
--        if (cpu_restore_state(cs, retaddr)) {
--            /* Evaluate flags after retranslation. */
--            helper_top_evaluate_flags(env);
--        }
--    }
--    cpu_loop_exit(cs);
+-  return outbuffer + strlen (outbuffer);
 -}
 -
--void crisv10_cpu_do_interrupt(CPUState *cs)
+-/* Format number as decimal into outbuffer.  Parameter signedp says
+-   whether the number should be formatted as signed (!= 0) or
+-   unsigned (== 0).  */
+-
+-static char *
+-format_dec (long number, char *outbuffer, size_t outsize, int signedp)
 -{
--    CPUCRISState *env = cpu_env(cs);
--    int ex_vec = -1;
+-  last_immediate = number;
+-  snprintf (outbuffer, outsize, signedp ? "%ld" : "%lu", number);
 -
--    D_LOG("exception index=%d interrupt_req=%d\n",
--          cs->exception_index,
--          cs->interrupt_request);
+-  return outbuffer + strlen (outbuffer);
+-}
 -
--    if (env->dslot) {
--        /* CRISv10 never takes interrupts while in a delay-slot.  */
--        cpu_abort(cs, "CRIS: Interrupt on delay-slot\n");
--    }
+-/* Format the name of the general register regno into outbuffer.  */
 -
--    assert(!(env->pregs[PR_CCS] & PFIX_FLAG));
--    switch (cs->exception_index) {
--    case EXCP_BREAK:
--        /* These exceptions are generated by the core itself.
--           ERP should point to the insn following the brk.  */
--        ex_vec = env->trap_vector;
--        env->pregs[PRV10_BRP] = env->pc;
--        break;
+-static char *
+-format_reg (struct cris_disasm_data *disdata,
+-	    int regno,
+-	    char *outbuffer_start,
+-	    bfd_boolean with_reg_prefix)
+-{
+-  char *outbuffer = outbuffer_start;
 -
--    case EXCP_NMI:
--        /* NMI is hardwired to vector zero.  */
--        ex_vec = 0;
--        env->pregs[PR_CCS] &= ~M_FLAG_V10;
--        env->pregs[PRV10_BRP] = env->pc;
--        break;
+-  if (with_reg_prefix)
+-    *outbuffer++ = REGISTER_PREFIX_CHAR;
 -
--    case EXCP_BUSFAULT:
--        cpu_abort(cs, "Unhandled busfault");
--        break;
+-  switch (regno)
+-    {
+-    case 15:
+-      /* For v32, there is no context in which we output PC.  */
+-      if (disdata->distype == cris_dis_v32)
+-	strcpy (outbuffer, "acr");
+-      else
+-	strcpy (outbuffer, "pc");
+-      break;
+-
+-    case 14:
+-      strcpy (outbuffer, "sp");
+-      break;
 -
 -    default:
--        /* The interrupt controller gives us the vector.  */
--        ex_vec = env->interrupt_vector;
--        /* Normal interrupts are taken between
--           TB's.  env->pc is valid here.  */
--        env->pregs[PR_ERP] = env->pc;
--        break;
+-      sprintf (outbuffer, "r%d", regno);
+-      break;
 -    }
 -
--    if (env->pregs[PR_CCS] & U_FLAG) {
--        /* Swap stack pointers.  */
--        env->pregs[PR_USP] = env->regs[R_SP];
--        env->regs[R_SP] = env->ksp;
--    }
--
--    /* Now that we are in kernel mode, load the handlers address.  */
--    env->pc = cpu_ldl_code(env, env->pregs[PR_EBP] + ex_vec * 4);
--    env->locked_irq = 1;
--    env->pregs[PR_CCS] |= F_FLAG_V10; /* set F.  */
--
--    qemu_log_mask(CPU_LOG_INT, "%s isr=%x vec=%x ccs=%x pid=%d erp=%x\n",
--                  __func__, env->pc, ex_vec,
--                  env->pregs[PR_CCS],
--                  env->pregs[PR_PID],
--                  env->pregs[PR_ERP]);
+-  return outbuffer_start + strlen (outbuffer_start);
 -}
 -
--void cris_cpu_do_interrupt(CPUState *cs)
+-/* Format the name of a support register into outbuffer.  */
+-
+-static char *
+-format_sup_reg (unsigned int regno,
+-		char *outbuffer_start,
+-		bfd_boolean with_reg_prefix)
 -{
--    CPUCRISState *env = cpu_env(cs);
--    int ex_vec = -1;
+-  char *outbuffer = outbuffer_start;
+-  int i;
 -
--    D_LOG("exception index=%d interrupt_req=%d\n",
--          cs->exception_index,
--          cs->interrupt_request);
+-  if (with_reg_prefix)
+-    *outbuffer++ = REGISTER_PREFIX_CHAR;
 -
--    switch (cs->exception_index) {
--    case EXCP_BREAK:
--        /* These exceptions are generated by the core itself.
--           ERP should point to the insn following the brk.  */
--        ex_vec = env->trap_vector;
--        env->pregs[PR_ERP] = env->pc;
--        break;
+-  for (i = 0; cris_support_regs[i].name != NULL; i++)
+-    if (cris_support_regs[i].number == regno)
+-      {
+-	sprintf (outbuffer, "%s", cris_support_regs[i].name);
+-	return outbuffer_start + strlen (outbuffer_start);
+-      }
 -
--    case EXCP_NMI:
--        /* NMI is hardwired to vector zero.  */
--        ex_vec = 0;
--        env->pregs[PR_CCS] &= ~M_FLAG_V32;
--        env->pregs[PR_NRP] = env->pc;
--        break;
+-  /* There's supposed to be register names covering all numbers, though
+-     some may be generic names.  */
+-  sprintf (outbuffer, "format_sup_reg-BUG");
+-  return outbuffer_start + strlen (outbuffer_start);
+-}
 -
--    case EXCP_BUSFAULT:
--        ex_vec = env->fault_vector;
--        env->pregs[PR_ERP] = env->pc;
--        break;
+-/* Return the length of an instruction.  */
+-
+-static unsigned
+-bytes_to_skip (unsigned int insn,
+-	       const struct cris_opcode *matchedp,
+-	       enum cris_disass_family distype,
+-	       const struct cris_opcode *prefix_matchedp)
+-{
+-  /* Each insn is a word plus "immediate" operands.  */
+-  unsigned to_skip = 2;
+-  const char *template = matchedp->args;
+-  const char *s;
+-
+-  for (s = template; *s; s++)
+-    if ((*s == 's' || *s == 'N' || *s == 'Y')
+-	&& (insn & 0x400) && (insn & 15) == 15
+-	&& prefix_matchedp == NULL)
+-      {
+-	/* Immediate via [pc+], so we have to check the size of the
+-	   operand.  */
+-	int mode_size = 1 << ((insn >> 4) & (*template == 'z' ? 1 : 3));
+-
+-	if (matchedp->imm_oprnd_size == SIZE_FIX_32)
+-	  to_skip += 4;
+-	else if (matchedp->imm_oprnd_size == SIZE_SPEC_REG)
+-	  {
+-	    const struct cris_spec_reg *sregp
+-	      = spec_reg_info ((insn >> 12) & 15, distype);
+-
+-	    /* FIXME: Improve error handling; should have been caught
+-	       earlier.  */
+-	    if (sregp == NULL)
+-	      return 2;
+-
+-	    /* PC is incremented by two, not one, for a byte.  Except on
+-	       CRISv32, where constants are always DWORD-size for
+-	       special registers.  */
+-	    to_skip +=
+-	      distype == cris_dis_v32 ? 4 : (sregp->reg_size + 1) & ~1;
+-	  }
+-	else
+-	  to_skip += (mode_size + 1) & ~1;
+-      }
+-    else if (*s == 'n')
+-      to_skip += 4;
+-    else if (*s == 'b')
+-      to_skip += 2;
+-
+-  return to_skip;
+-}
+-
+-/* Print condition code flags.  */
+-
+-static char *
+-print_flags (struct cris_disasm_data *disdata, unsigned int insn, char *cp)
+-{
+-  /* Use the v8 (Etrax 100) flag definitions for disassembly.
+-     The differences with v0 (Etrax 1..4) vs. Svinto are:
+-      v0 'd' <=> v8 'm'
+-      v0 'e' <=> v8 'b'.
+-     FIXME: Emit v0..v3 flag names somehow.  */
+-  static const char v8_fnames[] = "cvznxibm";
+-  static const char v32_fnames[] = "cvznxiup";
+-  const char *fnames
+-    = disdata->distype == cris_dis_v32 ? v32_fnames : v8_fnames;
+-
+-  unsigned char flagbits = (((insn >> 8) & 0xf0) | (insn & 15));
+-  int i;
+-
+-  for (i = 0; i < 8; i++)
+-    if (flagbits & (1 << i))
+-      *cp++ = fnames[i];
+-
+-  return cp;
+-}
+-
+-#define FORMAT_DEC(number, tp, signedp)                      \
+-    format_dec (number, tp, ({                                \
+-            assert(tp >= temp && tp <= temp + sizeof(temp)); \
+-            temp + sizeof(temp) - tp;                        \
+-        }), signedp)
+-
+-/* Print out an insn with its operands, and update the info->insn_type
+-   fields.  The prefix_opcodep and the rest hold a prefix insn that is
+-   supposed to be output as an address mode.  */
+-
+-static void
+-print_with_operands (const struct cris_opcode *opcodep,
+-		     unsigned int insn,
+-		     unsigned char *buffer,
+-		     bfd_vma addr,
+-		     disassemble_info *info,
+-		     /* If a prefix insn was before this insn (and is supposed
+-			to be output as an address), here is a description of
+-			it.  */
+-		     const struct cris_opcode *prefix_opcodep,
+-		     unsigned int prefix_insn,
+-		     unsigned char *prefix_buffer,
+-		     bfd_boolean with_reg_prefix)
+-{
+-  /* Get a buffer of somewhat reasonable size where we store
+-     intermediate parts of the insn.  */
+-  char temp[sizeof (".d [$r13=$r12-2147483648],$r10") * 2];
+-  char *tp = temp;
+-  static const char mode_char[] = "bwd?";
+-  const char *s;
+-  const char *cs;
+-  struct cris_disasm_data *disdata
+-    = (struct cris_disasm_data *) info->private_data;
+-
+-  /* Print out the name first thing we do.  */
+-  (*info->fprintf_func) (info->stream, "%s", opcodep->name);
+-
+-  cs = opcodep->args;
+-  s = cs;
+-
+-  /* Ignore any prefix indicator.  */
+-  if (*s == 'p')
+-    s++;
+-
+-  if (*s == 'm' || *s == 'M' || *s == 'z')
+-    {
+-      *tp++ = '.';
+-
+-      /* Get the size-letter.  */
+-      *tp++ = *s == 'M'
+-	? (insn & 0x8000 ? 'd'
+-	   : insn & 0x4000 ? 'w' : 'b')
+-	: mode_char[(insn >> 4) & (*s == 'z' ? 1 : 3)];
+-
+-      /* Ignore the size and the space character that follows.  */
+-      s += 2;
+-    }
+-
+-  /* Add a space if this isn't a long-branch, because for those will add
+-     the condition part of the name later.  */
+-  if (opcodep->match != (BRANCH_PC_LOW + BRANCH_INCR_HIGH * 256))
+-    *tp++ = ' ';
+-
+-  /* Fill in the insn-type if deducible from the name (and there's no
+-     better way).  */
+-  if (opcodep->name[0] == 'j')
+-    {
+-      if (CONST_STRNEQ (opcodep->name, "jsr"))
+-	/* It's "jsr" or "jsrc".  */
+-	info->insn_type = dis_jsr;
+-      else
+-	/* Any other jump-type insn is considered a branch.  */
+-	info->insn_type = dis_branch;
+-    }
+-
+-  /* We might know some more fields right now.  */
+-  info->branch_delay_insns = opcodep->delayed;
+-
+-  /* Handle operands.  */
+-  for (; *s; s++)
+-    {
+-    switch (*s)
+-      {
+-      case 'T':
+-	tp = format_sup_reg ((insn >> 12) & 15, tp, with_reg_prefix);
+-	break;
+-
+-      case 'A':
+-	if (with_reg_prefix)
+-	  *tp++ = REGISTER_PREFIX_CHAR;
+-	*tp++ = 'a';
+-	*tp++ = 'c';
+-	*tp++ = 'r';
+-	break;
+-
+-      case '[':
+-      case ']':
+-      case ',':
+-	*tp++ = *s;
+-	break;
+-
+-      case '!':
+-	/* Ignore at this point; used at earlier stages to avoid
+-	   recognition if there's a prefix at something that in other
+-	   ways looks like a "pop".  */
+-	break;
+-
+-      case 'd':
+-	/* Ignore.  This is an optional ".d " on the large one of
+-	   relaxable insns.  */
+-	break;
+-
+-      case 'B':
+-	/* This was the prefix that made this a "push".  We've already
+-	   handled it by recognizing it, so signal that the prefix is
+-	   handled by setting it to NULL.  */
+-	prefix_opcodep = NULL;
+-	break;
+-
+-      case 'D':
+-      case 'r':
+-	tp = format_reg (disdata, insn & 15, tp, with_reg_prefix);
+-	break;
+-
+-      case 'R':
+-	tp = format_reg (disdata, (insn >> 12) & 15, tp, with_reg_prefix);
+-	break;
+-
+-      case 'n':
+-	{
+-	  /* Like N but pc-relative to the start of the insn.  */
+-	  uint32_t number
+-	    = (buffer[2] + buffer[3] * 256 + buffer[4] * 65536
+-	       + buffer[5] * 0x1000000 + addr);
+-
+-	  /* Finish off and output previous formatted bytes.  */
+-	  *tp = 0;
+-	  if (temp[0])
+-	    (*info->fprintf_func) (info->stream, "%s", temp);
+-	  tp = temp;
+-
+-	  (*info->print_address_func) ((bfd_vma) number, info);
+-	}
+-	break;
+-
+-      case 'u':
+-	{
+-	  /* Like n but the offset is bits <3:0> in the instruction.  */
+-	  unsigned long number = (buffer[0] & 0xf) * 2 + addr;
+-
+-	  /* Finish off and output previous formatted bytes.  */
+-	  *tp = 0;
+-	  if (temp[0])
+-	    (*info->fprintf_func) (info->stream, "%s", temp);
+-	  tp = temp;
+-
+-	  (*info->print_address_func) ((bfd_vma) number, info);
+-	}
+-	break;
+-
+-      case 'N':
+-      case 'y':
+-      case 'Y':
+-      case 'S':
+-      case 's':
+-	/* Any "normal" memory operand.  */
+-	if ((insn & 0x400) && (insn & 15) == 15 && prefix_opcodep == NULL)
+-	  {
+-	    /* We're looking at [pc+], i.e. we need to output an immediate
+-	       number, where the size can depend on different things.  */
+-	    int32_t number;
+-	    int signedp
+-	      = ((*cs == 'z' && (insn & 0x20))
+-		 || opcodep->match == BDAP_QUICK_OPCODE);
+-	    int nbytes;
+-
+-	    if (opcodep->imm_oprnd_size == SIZE_FIX_32)
+-	      nbytes = 4;
+-	    else if (opcodep->imm_oprnd_size == SIZE_SPEC_REG)
+-	      {
+-		const struct cris_spec_reg *sregp
+-		  = spec_reg_info ((insn >> 12) & 15, disdata->distype);
+-
+-		/* A NULL return should have been as a non-match earlier,
+-		   so catch it as an internal error in the error-case
+-		   below.  */
+-		if (sregp == NULL)
+-		  /* Whatever non-valid size.  */
+-		  nbytes = 42;
+-		else
+-		  /* PC is always incremented by a multiple of two.
+-		     For CRISv32, immediates are always 4 bytes for
+-		     special registers.  */
+-		  nbytes = disdata->distype == cris_dis_v32
+-		    ? 4 : (sregp->reg_size + 1) & ~1;
+-	      }
+-	    else
+-	      {
+-		int mode_size = 1 << ((insn >> 4) & (*cs == 'z' ? 1 : 3));
+-
+-		if (mode_size == 1)
+-		  nbytes = 2;
+-		else
+-		  nbytes = mode_size;
+-	      }
+-
+-	    switch (nbytes)
+-	      {
+-	      case 1:
+-		number = buffer[2];
+-		if (signedp && number > 127)
+-		  number -= 256;
+-		break;
+-
+-	      case 2:
+-		number = buffer[2] + buffer[3] * 256;
+-		if (signedp && number > 32767)
+-		  number -= 65536;
+-		break;
+-
+-	      case 4:
+-		number
+-		  = buffer[2] + buffer[3] * 256 + buffer[4] * 65536
+-		  + buffer[5] * 0x1000000;
+-		break;
+-
+-	      default:
+-		strcpy (tp, "bug");
+-		tp += 3;
+-		number = 42;
+-	      }
+-
+-	    if ((*cs == 'z' && (insn & 0x20))
+-		|| (opcodep->match == BDAP_QUICK_OPCODE
+-		    && (nbytes <= 2 || buffer[1 + nbytes] == 0)))
+-	      tp = FORMAT_DEC (number, tp, signedp);
+-	    else
+-	      {
+-		unsigned int highbyte = (number >> 24) & 0xff;
+-
+-		/* Either output this as an address or as a number.  If it's
+-		   a dword with the same high-byte as the address of the
+-		   insn, assume it's an address, and also if it's a non-zero
+-		   non-0xff high-byte.  If this is a jsr or a jump, then
+-		   it's definitely an address.  */
+-		if (nbytes == 4
+-		    && (highbyte == ((addr >> 24) & 0xff)
+-			|| (highbyte != 0 && highbyte != 0xff)
+-			|| info->insn_type == dis_branch
+-			|| info->insn_type == dis_jsr))
+-		  {
+-		    /* Finish off and output previous formatted bytes.  */
+-		    *tp = 0;
+-		    tp = temp;
+-		    if (temp[0])
+-		      (*info->fprintf_func) (info->stream, "%s", temp);
+-
+-		    (*info->print_address_func) ((bfd_vma) number, info);
+-
+-		    info->target = number;
+-		  }
+-		else
+-		  tp = format_hex (number, tp, disdata);
+-	      }
+-	  }
+-	else
+-	  {
+-	    /* Not an immediate number.  Then this is a (possibly
+-	       prefixed) memory operand.  */
+-	    if (info->insn_type != dis_nonbranch)
+-	      {
+-		int mode_size
+-		  = 1 << ((insn >> 4)
+-			  & (opcodep->args[0] == 'z' ? 1 : 3));
+-		int size;
+-		info->insn_type = dis_dref;
+-		info->flags |= CRIS_DIS_FLAG_MEMREF;
+-
+-		if (opcodep->imm_oprnd_size == SIZE_FIX_32)
+-		  size = 4;
+-		else if (opcodep->imm_oprnd_size == SIZE_SPEC_REG)
+-		  {
+-		    const struct cris_spec_reg *sregp
+-		      = spec_reg_info ((insn >> 12) & 15, disdata->distype);
+-
+-		    /* FIXME: Improve error handling; should have been caught
+-		       earlier.  */
+-		    if (sregp == NULL)
+-		      size = 4;
+-		    else
+-		      size = sregp->reg_size;
+-		  }
+-		else
+-		  size = mode_size;
+-
+-		info->data_size = size;
+-	      }
+-
+-	    *tp++ = '[';
+-
+-	    if (prefix_opcodep
+-		/* We don't match dip with a postincremented field
+-		   as a side-effect address mode.  */
+-		&& ((insn & 0x400) == 0
+-		    || prefix_opcodep->match != DIP_OPCODE))
+-	      {
+-		if (insn & 0x400)
+-		  {
+-		    tp = format_reg (disdata, insn & 15, tp, with_reg_prefix);
+-		    *tp++ = '=';
+-		  }
+-
+-
+-		/* We mainly ignore the prefix format string when the
+-		   address-mode syntax is output.  */
+-		switch (prefix_opcodep->match)
+-		  {
+-		  case DIP_OPCODE:
+-		    /* It's [r], [r+] or [pc+].  */
+-		    if ((prefix_insn & 0x400) && (prefix_insn & 15) == 15)
+-		      {
+-			/* It's [pc+].  This cannot possibly be anything
+-			   but an address.  */
+-			uint32_t number
+-			  = prefix_buffer[2] + prefix_buffer[3] * 256
+-			  + prefix_buffer[4] * 65536
+-			  + prefix_buffer[5] * 0x1000000;
+-
+-			info->target = (bfd_vma) number;
+-
+-			/* Finish off and output previous formatted
+-			   data.  */
+-			*tp = 0;
+-			tp = temp;
+-			if (temp[0])
+-			  (*info->fprintf_func) (info->stream, "%s", temp);
+-
+-			(*info->print_address_func) ((bfd_vma) number, info);
+-		      }
+-		    else
+-		      {
+-			/* For a memref in an address, we use target2.
+-			   In this case, target is zero.  */
+-			info->flags
+-			  |= (CRIS_DIS_FLAG_MEM_TARGET2_IS_REG
+-			      | CRIS_DIS_FLAG_MEM_TARGET2_MEM);
+-
+-			info->target2 = prefix_insn & 15;
+-
+-			*tp++ = '[';
+-			tp = format_reg (disdata, prefix_insn & 15, tp,
+-					 with_reg_prefix);
+-			if (prefix_insn & 0x400)
+-			  *tp++ = '+';
+-			*tp++ = ']';
+-		      }
+-		    break;
+-
+-		  case BDAP_QUICK_OPCODE:
+-		    {
+-		      int number;
+-
+-		      number = prefix_buffer[0];
+-		      if (number > 127)
+-			number -= 256;
+-
+-		      /* Output "reg+num" or, if num < 0, "reg-num".  */
+-		      tp = format_reg (disdata, (prefix_insn >> 12) & 15, tp,
+-				       with_reg_prefix);
+-		      if (number >= 0)
+-			*tp++ = '+';
+-		      tp = FORMAT_DEC (number, tp, 1);
+-
+-		      info->flags |= CRIS_DIS_FLAG_MEM_TARGET_IS_REG;
+-		      info->target = (prefix_insn >> 12) & 15;
+-		      info->target2 = (bfd_vma) number;
+-		      break;
+-		    }
+-
+-		  case BIAP_OPCODE:
+-		    /* Output "r+R.m".  */
+-		    tp = format_reg (disdata, prefix_insn & 15, tp,
+-				     with_reg_prefix);
+-		    *tp++ = '+';
+-		    tp = format_reg (disdata, (prefix_insn >> 12) & 15, tp,
+-				     with_reg_prefix);
+-		    *tp++ = '.';
+-		    *tp++ = mode_char[(prefix_insn >> 4) & 3];
+-
+-		    info->flags
+-		      |= (CRIS_DIS_FLAG_MEM_TARGET2_IS_REG
+-			  | CRIS_DIS_FLAG_MEM_TARGET_IS_REG
+-
+-			  | ((prefix_insn & 0x8000)
+-			     ? CRIS_DIS_FLAG_MEM_TARGET2_MULT4
+-			     : ((prefix_insn & 0x8000)
+-				? CRIS_DIS_FLAG_MEM_TARGET2_MULT2 : 0)));
+-
+-		    /* Is it the casejump?  It's a "adds.w [pc+r%d.w],pc".  */
+-		    if (insn == 0xf83f && (prefix_insn & ~0xf000) == 0x55f)
+-		      /* Then start interpreting data as offsets.  */
+-		      case_offset_counter = no_of_case_offsets;
+-		    break;
+-
+-		  case BDAP_INDIR_OPCODE:
+-		    /* Output "r+s.m", or, if "s" is [pc+], "r+s" or
+-		       "r-s".  */
+-		    tp = format_reg (disdata, (prefix_insn >> 12) & 15, tp,
+-				     with_reg_prefix);
+-
+-		    if ((prefix_insn & 0x400) && (prefix_insn & 15) == 15)
+-		      {
+-			int32_t number;
+-			unsigned int nbytes;
+-
+-			/* It's a value.  Get its size.  */
+-			int mode_size = 1 << ((prefix_insn >> 4) & 3);
+-
+-			if (mode_size == 1)
+-			  nbytes = 2;
+-			else
+-			  nbytes = mode_size;
+-
+-			switch (nbytes)
+-			  {
+-			  case 1:
+-			    number = prefix_buffer[2];
+-			    if (number > 127)
+-			      number -= 256;
+-			    break;
+-
+-			  case 2:
+-			    number = prefix_buffer[2] + prefix_buffer[3] * 256;
+-			    if (number > 32767)
+-			      number -= 65536;
+-			    break;
+-
+-			  case 4:
+-			    number
+-			      = prefix_buffer[2] + prefix_buffer[3] * 256
+-			      + prefix_buffer[4] * 65536
+-			      + prefix_buffer[5] * 0x1000000;
+-			    break;
+-
+-			  default:
+-			    strcpy (tp, "bug");
+-			    tp += 3;
+-			    number = 42;
+-			  }
+-
+-			info->flags |= CRIS_DIS_FLAG_MEM_TARGET_IS_REG;
+-			info->target2 = (bfd_vma) number;
+-
+-			/* If the size is dword, then assume it's an
+-			   address.  */
+-			if (nbytes == 4)
+-			  {
+-			    /* Finish off and output previous formatted
+-			       bytes.  */
+-			    *tp++ = '+';
+-			    *tp = 0;
+-			    tp = temp;
+-			    (*info->fprintf_func) (info->stream, "%s", temp);
+-
+-			    (*info->print_address_func) ((bfd_vma) number, info);
+-			  }
+-			else
+-			  {
+-			    if (number >= 0)
+-			      *tp++ = '+';
+-			    tp = FORMAT_DEC (number, tp, 1);
+-			  }
+-		      }
+-		    else
+-		      {
+-			/* Output "r+[R].m" or "r+[R+].m".  */
+-			*tp++ = '+';
+-			*tp++ = '[';
+-			tp = format_reg (disdata, prefix_insn & 15, tp,
+-					 with_reg_prefix);
+-			if (prefix_insn & 0x400)
+-			  *tp++ = '+';
+-			*tp++ = ']';
+-			*tp++ = '.';
+-			*tp++ = mode_char[(prefix_insn >> 4) & 3];
+-
+-			info->flags
+-			  |= (CRIS_DIS_FLAG_MEM_TARGET2_IS_REG
+-			      | CRIS_DIS_FLAG_MEM_TARGET2_MEM
+-			      | CRIS_DIS_FLAG_MEM_TARGET_IS_REG
+-
+-			      | (((prefix_insn >> 4) == 2)
+-				 ? 0
+-				 : (((prefix_insn >> 4) & 3) == 1
+-				    ? CRIS_DIS_FLAG_MEM_TARGET2_MEM_WORD
+-				    : CRIS_DIS_FLAG_MEM_TARGET2_MEM_BYTE)));
+-		      }
+-		    break;
+-
+-		  default:
+-		    (*info->fprintf_func) (info->stream, "?prefix-bug");
+-		  }
+-
+-		/* To mark that the prefix is used, reset it.  */
+-		prefix_opcodep = NULL;
+-	      }
+-	    else
+-	      {
+-		tp = format_reg (disdata, insn & 15, tp, with_reg_prefix);
+-
+-		info->flags |= CRIS_DIS_FLAG_MEM_TARGET_IS_REG;
+-		info->target = insn & 15;
+-
+-		if (insn & 0x400)
+-		  *tp++ = '+';
+-	      }
+-	    *tp++ = ']';
+-	  }
+-	break;
+-
+-      case 'x':
+-	tp = format_reg (disdata, (insn >> 12) & 15, tp, with_reg_prefix);
+-	*tp++ = '.';
+-	*tp++ = mode_char[(insn >> 4) & 3];
+-	break;
+-
+-      case 'I':
+-	tp = FORMAT_DEC (insn & 63, tp, 0);
+-	break;
+-
+-      case 'b':
+-	{
+-	  int where = buffer[2] + buffer[3] * 256;
+-
+-	  if (where > 32767)
+-	    where -= 65536;
+-
+-	  where += addr + ((disdata->distype == cris_dis_v32) ? 0 : 4);
+-
+-	  if (insn == BA_PC_INCR_OPCODE)
+-	    info->insn_type = dis_branch;
+-	  else
+-	    info->insn_type = dis_condbranch;
+-
+-	  info->target = (bfd_vma) where;
+-
+-	  *tp = 0;
+-	  tp = temp;
+-	  (*info->fprintf_func) (info->stream, "%s%s ",
+-				 temp, cris_cc_strings[insn >> 12]);
+-
+-	  (*info->print_address_func) ((bfd_vma) where, info);
+-	}
+-      break;
+-
+-    case 'c':
+-      tp = FORMAT_DEC (insn & 31, tp, 0);
+-      break;
+-
+-    case 'C':
+-      tp = FORMAT_DEC (insn & 15, tp, 0);
+-      break;
+-
+-    case 'o':
+-      {
+-	long offset = insn & 0xfe;
+-	bfd_vma target;
+-
+-	if (insn & 1)
+-	  offset |= ~0xff;
+-
+-	if (opcodep->match == BA_QUICK_OPCODE)
+-	  info->insn_type = dis_branch;
+-	else
+-	  info->insn_type = dis_condbranch;
+-
+-	target = addr + ((disdata->distype == cris_dis_v32) ? 0 : 2) + offset;
+-	info->target = target;
+-	*tp = 0;
+-	tp = temp;
+-	(*info->fprintf_func) (info->stream, "%s", temp);
+-	(*info->print_address_func) (target, info);
+-      }
+-      break;
+-
+-    case 'Q':
+-    case 'O':
+-      {
+-	long number = buffer[0];
+-
+-	if (number > 127)
+-	  number = number - 256;
+-
+-	tp = FORMAT_DEC (number, tp, 1);
+-	*tp++ = ',';
+-	tp = format_reg (disdata, (insn >> 12) & 15, tp, with_reg_prefix);
+-      }
+-      break;
+-
+-    case 'f':
+-      tp = print_flags (disdata, insn, tp);
+-      break;
+-
+-    case 'i':
+-      tp = FORMAT_DEC ((insn & 32) ? (insn & 31) | ~31L : insn & 31, tp, 1);
+-      break;
+-
+-    case 'P':
+-      {
+-	const struct cris_spec_reg *sregp
+-	  = spec_reg_info ((insn >> 12) & 15, disdata->distype);
+-
+-	if (sregp == NULL || sregp->name == NULL)
+-	  /* Should have been caught as a non-match earlier.  */
+-	  *tp++ = '?';
+-	else
+-	  {
+-	    if (with_reg_prefix)
+-	      *tp++ = REGISTER_PREFIX_CHAR;
+-	    strcpy (tp, sregp->name);
+-	    tp += strlen (tp);
+-	  }
+-      }
+-      break;
 -
 -    default:
--        /* The interrupt controller gives us the vector.  */
--        ex_vec = env->interrupt_vector;
--        /* Normal interrupts are taken between
--           TB's.  env->pc is valid here.  */
--        env->pregs[PR_ERP] = env->pc;
--        break;
--    }
--
--    /* Fill in the IDX field.  */
--    env->pregs[PR_EXS] = (ex_vec & 0xff) << 8;
--
--    if (env->dslot) {
--        D_LOG("excp isr=%x PC=%x ds=%d SP=%x"
--              " ERP=%x pid=%x ccs=%x cc=%d %x\n",
--              ex_vec, env->pc, env->dslot,
--              env->regs[R_SP],
--              env->pregs[PR_ERP], env->pregs[PR_PID],
--              env->pregs[PR_CCS],
--              env->cc_op, env->cc_mask);
--        /* We loose the btarget, btaken state here so rexec the
--           branch.  */
--        env->pregs[PR_ERP] -= env->dslot;
--        /* Exception starts with dslot cleared.  */
--        env->dslot = 0;
--    }
--
--    if (env->pregs[PR_CCS] & U_FLAG) {
--        /* Swap stack pointers.  */
--        env->pregs[PR_USP] = env->regs[R_SP];
--        env->regs[R_SP] = env->ksp;
--    }
--
--    /* Apply the CRIS CCS shift. Clears U if set.  */
--    cris_shift_ccs(env);
--
--    /* Now that we are in kernel mode, load the handlers address.
--       This load may not fault, real hw leaves that behaviour as
--       undefined.  */
--    env->pc = cpu_ldl_code(env, env->pregs[PR_EBP] + ex_vec * 4);
--
--    /* Clear the excption_index to avoid spurious hw_aborts for recursive
--       bus faults.  */
--    cs->exception_index = -1;
--
--    D_LOG("%s isr=%x vec=%x ccs=%x pid=%d erp=%x\n",
--          __func__, env->pc, ex_vec,
--          env->pregs[PR_CCS],
--          env->pregs[PR_PID],
--          env->pregs[PR_ERP]);
--}
--
--hwaddr cris_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
--{
--    CRISCPU *cpu = CRIS_CPU(cs);
--    uint32_t phy = addr;
--    struct cris_mmu_result res;
--    int miss;
--
--    miss = cris_mmu_translate(&res, &cpu->env, addr, MMU_DATA_LOAD, 0, 1);
--    /* If D TLB misses, try I TLB.  */
--    if (miss) {
--        miss = cris_mmu_translate(&res, &cpu->env, addr, MMU_INST_FETCH, 0, 1);
--    }
--
--    if (!miss) {
--        phy = res.phy;
--    }
--    D(fprintf(stderr, "%s %x -> %x\n", __func__, addr, phy));
--    return phy;
--}
--
--bool cris_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
--{
--    CPUClass *cc = CPU_GET_CLASS(cs);
--    CPUCRISState *env = cpu_env(cs);
--    bool ret = false;
--
--    if (interrupt_request & CPU_INTERRUPT_HARD
--        && (env->pregs[PR_CCS] & I_FLAG)
--        && !env->locked_irq) {
--        cs->exception_index = EXCP_IRQ;
--        cc->tcg_ops->do_interrupt(cs);
--        ret = true;
--    }
--    if (interrupt_request & CPU_INTERRUPT_NMI) {
--        unsigned int m_flag_archval;
--        if (env->pregs[PR_VR] < 32) {
--            m_flag_archval = M_FLAG_V10;
--        } else {
--            m_flag_archval = M_FLAG_V32;
--        }
--        if ((env->pregs[PR_CCS] & m_flag_archval)) {
--            cs->exception_index = EXCP_NMI;
--            cc->tcg_ops->do_interrupt(cs);
--            ret = true;
--        }
--    }
--
--    return ret;
--}
-diff --git a/target/cris/machine.c b/target/cris/machine.c
-deleted file mode 100644
-index 7b9bde872a..0000000000
---- a/target/cris/machine.c
-+++ /dev/null
-@@ -1,93 +0,0 @@
--/*
-- *  CRIS virtual CPU state save/load support
-- *
-- *  Copyright (c) 2012 Red Hat, Inc.
-- *  Written by Juan Quintela <quintela@redhat.com>
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
--
--#include "qemu/osdep.h"
--#include "cpu.h"
--#include "migration/cpu.h"
--
--static const VMStateDescription vmstate_tlbset = {
--    .name = "cpu/tlbset",
--    .version_id = 1,
--    .minimum_version_id = 1,
--    .fields = (const VMStateField[]) {
--        VMSTATE_UINT32(lo, TLBSet),
--        VMSTATE_UINT32(hi, TLBSet),
--        VMSTATE_END_OF_LIST()
--    }
--};
--
--static const VMStateDescription vmstate_cris_env = {
--    .name = "env",
--    .version_id = 2,
--    .minimum_version_id = 2,
--    .fields = (const VMStateField[]) {
--        VMSTATE_UINT32_ARRAY(regs, CPUCRISState, 16),
--        VMSTATE_UINT32_ARRAY(pregs, CPUCRISState, 16),
--        VMSTATE_UINT32(pc, CPUCRISState),
--        VMSTATE_UINT32(ksp, CPUCRISState),
--        VMSTATE_INT32(dslot, CPUCRISState),
--        VMSTATE_INT32(btaken, CPUCRISState),
--        VMSTATE_UINT32(btarget, CPUCRISState),
--        VMSTATE_UINT32(cc_op, CPUCRISState),
--        VMSTATE_UINT32(cc_mask, CPUCRISState),
--        VMSTATE_UINT32(cc_dest, CPUCRISState),
--        VMSTATE_UINT32(cc_src, CPUCRISState),
--        VMSTATE_UINT32(cc_result, CPUCRISState),
--        VMSTATE_INT32(cc_size, CPUCRISState),
--        VMSTATE_INT32(cc_x, CPUCRISState),
--        VMSTATE_INT32(locked_irq, CPUCRISState),
--        VMSTATE_INT32(interrupt_vector, CPUCRISState),
--        VMSTATE_INT32(fault_vector, CPUCRISState),
--        VMSTATE_INT32(trap_vector, CPUCRISState),
--        VMSTATE_UINT32_ARRAY(sregs[0], CPUCRISState, 16),
--        VMSTATE_UINT32_ARRAY(sregs[1], CPUCRISState, 16),
--        VMSTATE_UINT32_ARRAY(sregs[2], CPUCRISState, 16),
--        VMSTATE_UINT32_ARRAY(sregs[3], CPUCRISState, 16),
--        VMSTATE_UINT32(mmu_rand_lfsr, CPUCRISState),
--        VMSTATE_STRUCT_ARRAY(tlbsets[0][0], CPUCRISState, 16, 0,
--                             vmstate_tlbset, TLBSet),
--        VMSTATE_STRUCT_ARRAY(tlbsets[0][1], CPUCRISState, 16, 0,
--                             vmstate_tlbset, TLBSet),
--        VMSTATE_STRUCT_ARRAY(tlbsets[0][2], CPUCRISState, 16, 0,
--                             vmstate_tlbset, TLBSet),
--        VMSTATE_STRUCT_ARRAY(tlbsets[0][3], CPUCRISState, 16, 0,
--                             vmstate_tlbset, TLBSet),
--        VMSTATE_STRUCT_ARRAY(tlbsets[1][0], CPUCRISState, 16, 0,
--                             vmstate_tlbset, TLBSet),
--        VMSTATE_STRUCT_ARRAY(tlbsets[1][1], CPUCRISState, 16, 0,
--                             vmstate_tlbset, TLBSet),
--        VMSTATE_STRUCT_ARRAY(tlbsets[1][2], CPUCRISState, 16, 0,
--                             vmstate_tlbset, TLBSet),
--        VMSTATE_STRUCT_ARRAY(tlbsets[1][3], CPUCRISState, 16, 0,
--                             vmstate_tlbset, TLBSet),
--        VMSTATE_END_OF_LIST()
--    }
--};
--
--const VMStateDescription vmstate_cris_cpu = {
--    .name = "cpu",
--    .version_id = 1,
--    .minimum_version_id = 1,
--    .fields = (const VMStateField[]) {
--        VMSTATE_CPU(),
--        VMSTATE_STRUCT(env, CRISCPU, 1, vmstate_cris_env, CPUCRISState),
--        VMSTATE_END_OF_LIST()
--    }
--};
-diff --git a/target/cris/mmu.c b/target/cris/mmu.c
-deleted file mode 100644
-index d51008c541..0000000000
---- a/target/cris/mmu.c
-+++ /dev/null
-@@ -1,356 +0,0 @@
--/*
-- *  CRIS mmu emulation.
-- *
-- *  Copyright (c) 2007 AXIS Communications AB
-- *  Written by Edgar E. Iglesias.
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
--
--#include "qemu/osdep.h"
--#include "cpu.h"
--#include "exec/exec-all.h"
--#include "exec/page-protection.h"
--#include "mmu.h"
--
--#ifdef DEBUG
--#define D(x) x
--#define D_LOG(...) qemu_log(__VA_ARGS__)
--#else
--#define D(x) do { } while (0)
--#define D_LOG(...) do { } while (0)
--#endif
--
--void cris_mmu_init(CPUCRISState *env)
--{
--    env->mmu_rand_lfsr = 0xcccc;
--}
--
--#define SR_POLYNOM 0x8805
--static inline unsigned int compute_polynom(unsigned int sr)
--{
--    unsigned int i;
--    unsigned int f;
--
--    f = 0;
--    for (i = 0; i < 16; i++) {
--        f += ((SR_POLYNOM >> i) & 1) & ((sr >> i) & 1);
--    }
--
--    return f;
--}
--
--static void cris_mmu_update_rand_lfsr(CPUCRISState *env)
--{
--    unsigned int f;
--
--    /* Update lfsr at every fault.  */
--    f = compute_polynom(env->mmu_rand_lfsr);
--    env->mmu_rand_lfsr >>= 1;
--    env->mmu_rand_lfsr |= (f << 15);
--    env->mmu_rand_lfsr &= 0xffff;
--}
--
--static inline int cris_mmu_enabled(uint32_t rw_gc_cfg)
--{
--    return (rw_gc_cfg & 12) != 0;
--}
--
--static inline int cris_mmu_segmented_addr(int seg, uint32_t rw_mm_cfg)
--{
--    return (1 << seg) & rw_mm_cfg;
--}
--
--static uint32_t cris_mmu_translate_seg(CPUCRISState *env, int seg)
--{
--    uint32_t base;
--    int i;
--
--    if (seg < 8) {
--        base = env->sregs[SFR_RW_MM_KBASE_LO];
--    } else {
--        base = env->sregs[SFR_RW_MM_KBASE_HI];
--    }
--
--    i = seg & 7;
--    base >>= i * 4;
--    base &= 15;
--
--    base <<= 28;
--    return base;
--}
--
--/* Used by the tlb decoder.  */
--#define EXTRACT_FIELD(src, start, end)                  \
--    (((src) >> start) & ((1 << (end - start + 1)) - 1))
--
--static inline void set_field(uint32_t *dst, unsigned int val,
--			     unsigned int offset, unsigned int width)
--{
--    uint32_t mask;
--
--    mask = (1 << width) - 1;
--    mask <<= offset;
--    val <<= offset;
--
--    val &= mask;
--    *dst &= ~(mask);
--    *dst |= val;
--}
--
--#ifdef DEBUG
--static void dump_tlb(CPUCRISState *env, int mmu)
--{
--    int set;
--    int idx;
--    uint32_t hi, lo, tlb_vpn, tlb_pfn;
--
--    for (set = 0; set < 4; set++) {
--        for (idx = 0; idx < 16; idx++) {
--            lo = env->tlbsets[mmu][set][idx].lo;
--            hi = env->tlbsets[mmu][set][idx].hi;
--            tlb_vpn = EXTRACT_FIELD(hi, 13, 31);
--            tlb_pfn = EXTRACT_FIELD(lo, 13, 31);
--
--            printf("TLB: [%d][%d] hi=%x lo=%x v=%x p=%x\n",
--                   set, idx, hi, lo, tlb_vpn, tlb_pfn);
--        }
--    }
--}
--#endif
--
--static int cris_mmu_translate_page(struct cris_mmu_result *res,
--                                   CPUCRISState *env, uint32_t vaddr,
--                                   MMUAccessType access_type,
--                                   int usermode, int debug)
--{
--    unsigned int vpage;
--    unsigned int idx;
--    uint32_t pid, lo, hi;
--    uint32_t tlb_vpn, tlb_pfn = 0;
--    int tlb_pid, tlb_g, tlb_v, tlb_k, tlb_w, tlb_x;
--    int cfg_v, cfg_k, cfg_w, cfg_x;
--    int set, match = 0;
--    uint32_t r_cause;
--    uint32_t r_cfg;
--    int rwcause;
--    int mmu = 1; /* Data mmu is default.  */
--    int vect_base;
--
--    r_cause = env->sregs[SFR_R_MM_CAUSE];
--    r_cfg = env->sregs[SFR_RW_MM_CFG];
--    pid = env->pregs[PR_PID] & 0xff;
--
--    switch (access_type) {
--    case MMU_INST_FETCH:
--        rwcause = CRIS_MMU_ERR_EXEC;
--        mmu = 0;
--        break;
--    case MMU_DATA_STORE:
--        rwcause = CRIS_MMU_ERR_WRITE;
--        break;
--    default:
--    case MMU_DATA_LOAD:
--        rwcause = CRIS_MMU_ERR_READ;
--        break;
--    }
--
--    /* I exception vectors 4 - 7, D 8 - 11.  */
--    vect_base = (mmu + 1) * 4;
--
--    vpage = vaddr >> 13;
--
--    /*
--     * We know the index which to check on each set.
--     * Scan both I and D.
--     */
--    idx = vpage & 15;
--    for (set = 0; set < 4; set++) {
--        lo = env->tlbsets[mmu][set][idx].lo;
--        hi = env->tlbsets[mmu][set][idx].hi;
--
--        tlb_vpn = hi >> 13;
--        tlb_pid = EXTRACT_FIELD(hi, 0, 7);
--        tlb_g  = EXTRACT_FIELD(lo, 4, 4);
--
--        D_LOG("TLB[%d][%d][%d] v=%x vpage=%x lo=%x hi=%x\n",
--              mmu, set, idx, tlb_vpn, vpage, lo, hi);
--        if ((tlb_g || (tlb_pid == pid)) && tlb_vpn == vpage) {
--            match = 1;
--            break;
--        }
--    }
--
--    res->bf_vec = vect_base;
--    if (match) {
--        cfg_w  = EXTRACT_FIELD(r_cfg, 19, 19);
--        cfg_k  = EXTRACT_FIELD(r_cfg, 18, 18);
--        cfg_x  = EXTRACT_FIELD(r_cfg, 17, 17);
--        cfg_v  = EXTRACT_FIELD(r_cfg, 16, 16);
--
--        tlb_pfn = EXTRACT_FIELD(lo, 13, 31);
--        tlb_v = EXTRACT_FIELD(lo, 3, 3);
--        tlb_k = EXTRACT_FIELD(lo, 2, 2);
--        tlb_w = EXTRACT_FIELD(lo, 1, 1);
--        tlb_x = EXTRACT_FIELD(lo, 0, 0);
--
--        /*
--         * set_exception_vector(0x04, i_mmu_refill);
--         * set_exception_vector(0x05, i_mmu_invalid);
--         * set_exception_vector(0x06, i_mmu_access);
--         * set_exception_vector(0x07, i_mmu_execute);
--         * set_exception_vector(0x08, d_mmu_refill);
--         * set_exception_vector(0x09, d_mmu_invalid);
--         * set_exception_vector(0x0a, d_mmu_access);
--         * set_exception_vector(0x0b, d_mmu_write);
--         */
--        if (cfg_k && tlb_k && usermode) {
--            D(printf("tlb: kernel protected %x lo=%x pc=%x\n",
--                     vaddr, lo, env->pc));
--            match = 0;
--            res->bf_vec = vect_base + 2;
--        } else if (access_type == MMU_DATA_STORE && cfg_w && !tlb_w) {
--            D(printf("tlb: write protected %x lo=%x pc=%x\n",
--                     vaddr, lo, env->pc));
--            match = 0;
--            /* write accesses never go through the I mmu.  */
--            res->bf_vec = vect_base + 3;
--        } else if (access_type == MMU_INST_FETCH && cfg_x && !tlb_x) {
--            D(printf("tlb: exec protected %x lo=%x pc=%x\n",
--                     vaddr, lo, env->pc));
--            match = 0;
--            res->bf_vec = vect_base + 3;
--        } else if (cfg_v && !tlb_v) {
--            D(printf("tlb: invalid %x\n", vaddr));
--            match = 0;
--            res->bf_vec = vect_base + 1;
--        }
--
--        res->prot = 0;
--        if (match) {
--            res->prot |= PAGE_READ;
--            if (tlb_w) {
--                res->prot |= PAGE_WRITE;
--            }
--            if (mmu == 0 && (cfg_x || tlb_x)) {
--                res->prot |= PAGE_EXEC;
--            }
--        } else {
--            D(dump_tlb(env, mmu));
--        }
--    } else {
--        /* If refill, provide a randomized set.  */
--        set = env->mmu_rand_lfsr & 3;
--    }
--
--    if (!match && !debug) {
--        cris_mmu_update_rand_lfsr(env);
--
--        /* Compute index.  */
--        idx = vpage & 15;
--
--        /* Update RW_MM_TLB_SEL.  */
--        env->sregs[SFR_RW_MM_TLB_SEL] = 0;
--        set_field(&env->sregs[SFR_RW_MM_TLB_SEL], idx, 0, 4);
--        set_field(&env->sregs[SFR_RW_MM_TLB_SEL], set, 4, 2);
--
--        /* Update RW_MM_CAUSE.  */
--        set_field(&r_cause, rwcause, 8, 2);
--        set_field(&r_cause, vpage, 13, 19);
--        set_field(&r_cause, pid, 0, 8);
--        env->sregs[SFR_R_MM_CAUSE] = r_cause;
--        D(printf("refill vaddr=%x pc=%x\n", vaddr, env->pc));
--    }
--
--    D(printf("%s access=%u mtch=%d pc=%x va=%x vpn=%x tlbvpn=%x pfn=%x pid=%x"
--             " %x cause=%x sel=%x sp=%x %x %x\n",
--             __func__, access_type, match, env->pc,
--             vaddr, vpage,
--             tlb_vpn, tlb_pfn, tlb_pid,
--             pid,
--             r_cause,
--             env->sregs[SFR_RW_MM_TLB_SEL],
--             env->regs[R_SP], env->pregs[PR_USP], env->ksp));
--
--    res->phy = tlb_pfn << TARGET_PAGE_BITS;
--    return !match;
--}
--
--void cris_mmu_flush_pid(CPUCRISState *env, uint32_t pid)
--{
--    target_ulong vaddr;
--    unsigned int idx;
--    uint32_t lo, hi;
--    uint32_t tlb_vpn;
--    int tlb_pid, tlb_g, tlb_v;
--    unsigned int set;
--    unsigned int mmu;
--
--    pid &= 0xff;
--    for (mmu = 0; mmu < 2; mmu++) {
--        for (set = 0; set < 4; set++) {
--            for (idx = 0; idx < 16; idx++) {
--                lo = env->tlbsets[mmu][set][idx].lo;
--                hi = env->tlbsets[mmu][set][idx].hi;
--
--                tlb_vpn = EXTRACT_FIELD(hi, 13, 31);
--                tlb_pid = EXTRACT_FIELD(hi, 0, 7);
--                tlb_g  = EXTRACT_FIELD(lo, 4, 4);
--                tlb_v = EXTRACT_FIELD(lo, 3, 3);
--
--                if (tlb_v && !tlb_g && (tlb_pid == pid)) {
--                    vaddr = tlb_vpn << TARGET_PAGE_BITS;
--                    D_LOG("flush pid=%x vaddr=%x\n", pid, vaddr);
--                    tlb_flush_page(env_cpu(env), vaddr);
--                }
--            }
--        }
--    }
--}
--
--int cris_mmu_translate(struct cris_mmu_result *res,
--                       CPUCRISState *env, uint32_t vaddr,
--                       MMUAccessType access_type, int mmu_idx, int debug)
--{
--    int seg;
--    int miss = 0;
--    int is_user = mmu_idx == MMU_USER_IDX;
--    uint32_t old_srs;
--
--    old_srs = env->pregs[PR_SRS];
--
--    env->pregs[PR_SRS] = access_type == MMU_INST_FETCH ? 1 : 2;
--
--    if (!cris_mmu_enabled(env->sregs[SFR_RW_GC_CFG])) {
--        res->phy = vaddr;
--        res->prot = PAGE_RWX;
--        goto done;
--    }
--
--    seg = vaddr >> 28;
--    if (!is_user && cris_mmu_segmented_addr(seg, env->sregs[SFR_RW_MM_CFG])) {
--        uint32_t base;
--
--        miss = 0;
--        base = cris_mmu_translate_seg(env, seg);
--        res->phy = base | (0x0fffffff & vaddr);
--        res->prot = PAGE_RWX;
--    } else {
--        miss = cris_mmu_translate_page(res, env, vaddr, access_type,
--                                       is_user, debug);
--    }
-- done:
--    env->pregs[PR_SRS] = old_srs;
--    return miss;
--}
-diff --git a/target/cris/op_helper.c b/target/cris/op_helper.c
-deleted file mode 100644
-index 98a9aaf504..0000000000
---- a/target/cris/op_helper.c
-+++ /dev/null
-@@ -1,580 +0,0 @@
--/*
-- *  CRIS helper routines
-- *
-- *  Copyright (c) 2007 AXIS Communications
-- *  Written by Edgar E. Iglesias
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
--
--#include "qemu/osdep.h"
--#include "cpu.h"
--#include "mmu.h"
--#include "exec/helper-proto.h"
--#include "qemu/host-utils.h"
--#include "exec/exec-all.h"
--
--//#define CRIS_OP_HELPER_DEBUG
--
--
--#ifdef CRIS_OP_HELPER_DEBUG
--#define D(x) x
--#define D_LOG(...) qemu_log(__VA_ARGS__)
--#else
--#define D(x)
--#define D_LOG(...) do { } while (0)
--#endif
--
--void helper_raise_exception(CPUCRISState *env, uint32_t index)
--{
--    CPUState *cs = env_cpu(env);
--
--    cs->exception_index = index;
--    cpu_loop_exit(cs);
--}
--
--void helper_tlb_flush_pid(CPUCRISState *env, uint32_t pid)
--{
--#if !defined(CONFIG_USER_ONLY)
--    pid &= 0xff;
--    if (pid != (env->pregs[PR_PID] & 0xff)) {
--        cris_mmu_flush_pid(env, env->pregs[PR_PID]);
--    }
--#endif
--}
--
--void helper_spc_write(CPUCRISState *env, uint32_t new_spc)
--{
--#if !defined(CONFIG_USER_ONLY)
--    CPUState *cs = env_cpu(env);
--
--    tlb_flush_page(cs, env->pregs[PR_SPC]);
--    tlb_flush_page(cs, new_spc);
--#endif
--}
--
--/* Used by the tlb decoder.  */
--#define EXTRACT_FIELD(src, start, end)                  \
--    (((src) >> start) & ((1 << (end - start + 1)) - 1))
--
--void helper_movl_sreg_reg(CPUCRISState *env, uint32_t sreg, uint32_t reg)
--{
--    uint32_t srs;
--    srs = env->pregs[PR_SRS];
--    srs &= 3;
--    env->sregs[srs][sreg] = env->regs[reg];
--
--#if !defined(CONFIG_USER_ONLY)
--    if (srs == 1 || srs == 2) {
--        if (sreg == 6) {
--            /* Writes to tlb-hi write to mm_cause as a side effect.  */
--            env->sregs[SFR_RW_MM_TLB_HI] = env->regs[reg];
--            env->sregs[SFR_R_MM_CAUSE] = env->regs[reg];
--        } else if (sreg == 5) {
--            uint32_t set;
--            uint32_t idx;
--            uint32_t lo, hi;
--            uint32_t vaddr;
--            int tlb_v;
--
--            idx = set = env->sregs[SFR_RW_MM_TLB_SEL];
--            set >>= 4;
--            set &= 3;
--
--            idx &= 15;
--            /* We've just made a write to tlb_lo.  */
--            lo = env->sregs[SFR_RW_MM_TLB_LO];
--            /* Writes are done via r_mm_cause.  */
--            hi = env->sregs[SFR_R_MM_CAUSE];
--
--            vaddr = EXTRACT_FIELD(env->tlbsets[srs - 1][set][idx].hi, 13, 31);
--            vaddr <<= TARGET_PAGE_BITS;
--            tlb_v = EXTRACT_FIELD(env->tlbsets[srs - 1][set][idx].lo, 3, 3);
--            env->tlbsets[srs - 1][set][idx].lo = lo;
--            env->tlbsets[srs - 1][set][idx].hi = hi;
--
--            D_LOG("tlb flush vaddr=%x v=%d pc=%x\n",
--                  vaddr, tlb_v, env->pc);
--            if (tlb_v) {
--                tlb_flush_page(env_cpu(env), vaddr);
--            }
--        }
--    }
--#endif
--}
--
--void helper_movl_reg_sreg(CPUCRISState *env, uint32_t reg, uint32_t sreg)
--{
--    uint32_t srs;
--    env->pregs[PR_SRS] &= 3;
--    srs = env->pregs[PR_SRS];
--
--#if !defined(CONFIG_USER_ONLY)
--    if (srs == 1 || srs == 2) {
--        uint32_t set;
--        uint32_t idx;
--        uint32_t lo, hi;
--
--        idx = set = env->sregs[SFR_RW_MM_TLB_SEL];
--        set >>= 4;
--        set &= 3;
--        idx &= 15;
--
--        /* Update the mirror regs.  */
--        hi = env->tlbsets[srs - 1][set][idx].hi;
--        lo = env->tlbsets[srs - 1][set][idx].lo;
--        env->sregs[SFR_RW_MM_TLB_HI] = hi;
--        env->sregs[SFR_RW_MM_TLB_LO] = lo;
--    }
--#endif
--    env->regs[reg] = env->sregs[srs][sreg];
--}
--
--static void cris_ccs_rshift(CPUCRISState *env)
--{
--    uint32_t ccs;
--
--    /* Apply the ccs shift.  */
--    ccs = env->pregs[PR_CCS];
--    ccs = (ccs & 0xc0000000) | ((ccs & 0x0fffffff) >> 10);
--    if (ccs & U_FLAG) {
--        /* Enter user mode.  */
--        env->ksp = env->regs[R_SP];
--        env->regs[R_SP] = env->pregs[PR_USP];
--    }
--
--    env->pregs[PR_CCS] = ccs;
--}
--
--void helper_rfe(CPUCRISState *env)
--{
--    int rflag = env->pregs[PR_CCS] & R_FLAG;
--
--    D_LOG("rfe: erp=%x pid=%x ccs=%x btarget=%x\n",
--          env->pregs[PR_ERP], env->pregs[PR_PID],
--          env->pregs[PR_CCS],
--          env->btarget);
--
--    cris_ccs_rshift(env);
--
--    /* RFE sets the P_FLAG only if the R_FLAG is not set.  */
--    if (!rflag) {
--        env->pregs[PR_CCS] |= P_FLAG;
--    }
--}
--
--void helper_rfn(CPUCRISState *env)
--{
--    int rflag = env->pregs[PR_CCS] & R_FLAG;
--
--    D_LOG("rfn: erp=%x pid=%x ccs=%x btarget=%x\n",
--          env->pregs[PR_ERP], env->pregs[PR_PID],
--          env->pregs[PR_CCS],
--          env->btarget);
--
--    cris_ccs_rshift(env);
--
--    /* Set the P_FLAG only if the R_FLAG is not set.  */
--    if (!rflag) {
--        env->pregs[PR_CCS] |= P_FLAG;
--    }
--
--    /* Always set the M flag.  */
--    env->pregs[PR_CCS] |= M_FLAG_V32;
--}
--
--uint32_t helper_btst(CPUCRISState *env, uint32_t t0, uint32_t t1, uint32_t ccs)
--{
--    /* FIXME: clean this up.  */
--
--    /*
--     * des ref:
--     *  The N flag is set according to the selected bit in the dest reg.
--     *  The Z flag is set if the selected bit and all bits to the right are
--     *  zero.
--     *  The X flag is cleared.
--     *  Other flags are left untouched.
--     *  The destination reg is not affected.
--     */
--    unsigned int fz, sbit, bset, mask, masked_t0;
--
--    sbit = t1 & 31;
--    bset = !!(t0 & (1 << sbit));
--    mask = sbit == 31 ? -1 : (1 << (sbit + 1)) - 1;
--    masked_t0 = t0 & mask;
--    fz = !(masked_t0 | bset);
--
--    /* Clear the X, N and Z flags.  */
--    ccs = ccs & ~(X_FLAG | N_FLAG | Z_FLAG);
--    if (env->pregs[PR_VR] < 32) {
--        ccs &= ~(V_FLAG | C_FLAG);
--    }
--    /* Set the N and Z flags accordingly.  */
--    ccs |= (bset << 3) | (fz << 2);
--    return ccs;
--}
--
--static inline uint32_t evaluate_flags_writeback(CPUCRISState *env,
--                                                uint32_t flags, uint32_t ccs)
--{
--    unsigned int x, z, mask;
--
--    /* Extended arithmetic, leave the z flag alone.  */
--    x = env->cc_x;
--    mask = env->cc_mask | X_FLAG;
--    if (x) {
--        z = flags & Z_FLAG;
--        mask = mask & ~z;
--    }
--    flags &= mask;
--
--    /* all insn clear the x-flag except setf or clrf.  */
--    ccs &= ~mask;
--    ccs |= flags;
--    return ccs;
--}
--
--uint32_t helper_evaluate_flags_muls(CPUCRISState *env,
--                                    uint32_t ccs, uint32_t res, uint32_t mof)
--{
--    uint32_t flags = 0;
--    int64_t tmp;
--    int dneg;
--
--    dneg = ((int32_t)res) < 0;
--
--    tmp = mof;
--    tmp <<= 32;
--    tmp |= res;
--    if (tmp == 0) {
--        flags |= Z_FLAG;
--    } else if (tmp < 0) {
--        flags |= N_FLAG;
--    }
--    if ((dneg && mof != -1) || (!dneg && mof != 0)) {
--        flags |= V_FLAG;
--    }
--    return evaluate_flags_writeback(env, flags, ccs);
--}
--
--uint32_t helper_evaluate_flags_mulu(CPUCRISState *env,
--                                    uint32_t ccs, uint32_t res, uint32_t mof)
--{
--    uint32_t flags = 0;
--    uint64_t tmp;
--
--    tmp = mof;
--    tmp <<= 32;
--    tmp |= res;
--    if (tmp == 0) {
--        flags |= Z_FLAG;
--    } else if (tmp >> 63) {
--        flags |= N_FLAG;
--    }
--    if (mof) {
--        flags |= V_FLAG;
--    }
--
--    return evaluate_flags_writeback(env, flags, ccs);
--}
--
--uint32_t helper_evaluate_flags_mcp(CPUCRISState *env, uint32_t ccs,
--				   uint32_t src, uint32_t dst, uint32_t res)
--{
--    uint32_t flags = 0;
--
--    src = src & 0x80000000;
--    dst = dst & 0x80000000;
--
--    if ((res & 0x80000000L) != 0L) {
--        flags |= N_FLAG;
--        if (!src && !dst) {
--            flags |= V_FLAG;
--        } else if (src & dst) {
--            flags |= R_FLAG;
--        }
--    } else {
--        if (res == 0L) {
--            flags |= Z_FLAG;
--        }
--        if (src & dst) {
--            flags |= V_FLAG;
--        }
--        if (dst | src) {
--            flags |= R_FLAG;
--        }
--    }
--
--    return evaluate_flags_writeback(env, flags, ccs);
--}
--
--uint32_t helper_evaluate_flags_alu_4(CPUCRISState *env, uint32_t ccs,
--				     uint32_t src, uint32_t dst, uint32_t res)
--{
--    uint32_t flags = 0;
--
--    src = src & 0x80000000;
--    dst = dst & 0x80000000;
--
--    if ((res & 0x80000000L) != 0L) {
--        flags |= N_FLAG;
--        if (!src && !dst) {
--            flags |= V_FLAG;
--        } else if (src & dst) {
--            flags |= C_FLAG;
--        }
--    } else {
--        if (res == 0L) {
--            flags |= Z_FLAG;
--        }
--        if (src & dst) {
--            flags |= V_FLAG;
--        }
--        if (dst | src) {
--            flags |= C_FLAG;
--        }
--    }
--
--    return evaluate_flags_writeback(env, flags, ccs);
--}
--
--uint32_t helper_evaluate_flags_sub_4(CPUCRISState *env, uint32_t ccs,
--				     uint32_t src, uint32_t dst, uint32_t res)
--{
--    uint32_t flags = 0;
--
--    src = (~src) & 0x80000000;
--    dst = dst & 0x80000000;
--
--    if ((res & 0x80000000L) != 0L) {
--        flags |= N_FLAG;
--        if (!src && !dst) {
--            flags |= V_FLAG;
--        } else if (src & dst) {
--            flags |= C_FLAG;
--        }
--    } else {
--        if (res == 0L) {
--            flags |= Z_FLAG;
--        }
--        if (src & dst) {
--            flags |= V_FLAG;
--        }
--        if (dst | src) {
--            flags |= C_FLAG;
--        }
--    }
--
--    flags ^= C_FLAG;
--    return evaluate_flags_writeback(env, flags, ccs);
--}
--
--uint32_t helper_evaluate_flags_move_4(CPUCRISState *env,
--                                      uint32_t ccs, uint32_t res)
--{
--    uint32_t flags = 0;
--
--    if ((int32_t)res < 0) {
--        flags |= N_FLAG;
--    } else if (res == 0L) {
--        flags |= Z_FLAG;
--    }
--
--    return evaluate_flags_writeback(env, flags, ccs);
--}
--
--uint32_t helper_evaluate_flags_move_2(CPUCRISState *env,
--                                      uint32_t ccs, uint32_t res)
--{
--    uint32_t flags = 0;
--
--    if ((int16_t)res < 0L) {
--        flags |= N_FLAG;
--    } else if (res == 0) {
--        flags |= Z_FLAG;
--    }
--
--    return evaluate_flags_writeback(env, flags, ccs);
--}
--
--/*
-- * TODO: This is expensive. We could split things up and only evaluate part of
-- * CCR on a need to know basis. For now, we simply re-evaluate everything.
-- */
--void helper_evaluate_flags(CPUCRISState *env)
--{
--    uint32_t src, dst, res;
--    uint32_t flags = 0;
--
--    src = env->cc_src;
--    dst = env->cc_dest;
--    res = env->cc_result;
--
--    if (env->cc_op == CC_OP_SUB || env->cc_op == CC_OP_CMP) {
--        src = ~src;
--    }
--
--    /*
--     * Now, evaluate the flags. This stuff is based on
--     * Per Zander's CRISv10 simulator.
--     */
--    switch (env->cc_size) {
--    case 1:
--        if ((res & 0x80L) != 0L) {
--            flags |= N_FLAG;
--            if (((src & 0x80L) == 0L) && ((dst & 0x80L) == 0L)) {
--                flags |= V_FLAG;
--            } else if (((src & 0x80L) != 0L) && ((dst & 0x80L) != 0L)) {
--                flags |= C_FLAG;
--            }
--        } else {
--            if ((res & 0xFFL) == 0L) {
--                flags |= Z_FLAG;
--            }
--            if (((src & 0x80L) != 0L) && ((dst & 0x80L) != 0L)) {
--                flags |= V_FLAG;
--            }
--            if ((dst & 0x80L) != 0L || (src & 0x80L) != 0L) {
--                flags |= C_FLAG;
--            }
--        }
--        break;
--    case 2:
--        if ((res & 0x8000L) != 0L) {
--            flags |= N_FLAG;
--            if (((src & 0x8000L) == 0L) && ((dst & 0x8000L) == 0L)) {
--                flags |= V_FLAG;
--            } else if (((src & 0x8000L) != 0L) && ((dst & 0x8000L) != 0L)) {
--                flags |= C_FLAG;
--            }
--        } else {
--            if ((res & 0xFFFFL) == 0L) {
--                flags |= Z_FLAG;
--            }
--            if (((src & 0x8000L) != 0L) && ((dst & 0x8000L) != 0L)) {
--                flags |= V_FLAG;
--            }
--            if ((dst & 0x8000L) != 0L || (src & 0x8000L) != 0L) {
--                flags |= C_FLAG;
--            }
--        }
--        break;
--    case 4:
--        if ((res & 0x80000000L) != 0L) {
--            flags |= N_FLAG;
--            if (((src & 0x80000000L) == 0L) && ((dst & 0x80000000L) == 0L)) {
--                flags |= V_FLAG;
--            } else if (((src & 0x80000000L) != 0L) &&
--                       ((dst & 0x80000000L) != 0L)) {
--                flags |= C_FLAG;
--            }
--        } else {
--            if (res == 0L) {
--                flags |= Z_FLAG;
--            }
--            if (((src & 0x80000000L) != 0L) && ((dst & 0x80000000L) != 0L)) {
--                flags |= V_FLAG;
--            }
--            if ((dst & 0x80000000L) != 0L || (src & 0x80000000L) != 0L) {
--                flags |= C_FLAG;
--            }
--        }
--        break;
--    default:
--        break;
--    }
--
--    if (env->cc_op == CC_OP_SUB || env->cc_op == CC_OP_CMP) {
--        flags ^= C_FLAG;
--    }
--
--    env->pregs[PR_CCS] = evaluate_flags_writeback(env, flags,
--                                                  env->pregs[PR_CCS]);
--}
--
--void helper_top_evaluate_flags(CPUCRISState *env)
--{
--    switch (env->cc_op) {
--    case CC_OP_MCP:
--        env->pregs[PR_CCS]
--            = helper_evaluate_flags_mcp(env, env->pregs[PR_CCS],
--                                        env->cc_src, env->cc_dest,
--                                        env->cc_result);
--        break;
--    case CC_OP_MULS:
--        env->pregs[PR_CCS]
--            = helper_evaluate_flags_muls(env, env->pregs[PR_CCS],
--                                         env->cc_result, env->pregs[PR_MOF]);
--        break;
--    case CC_OP_MULU:
--        env->pregs[PR_CCS]
--            = helper_evaluate_flags_mulu(env, env->pregs[PR_CCS],
--                                         env->cc_result, env->pregs[PR_MOF]);
--        break;
--    case CC_OP_MOVE:
--    case CC_OP_AND:
--    case CC_OP_OR:
--    case CC_OP_XOR:
--    case CC_OP_ASR:
--    case CC_OP_LSR:
--    case CC_OP_LSL:
--        switch (env->cc_size) {
--        case 4:
--            env->pregs[PR_CCS] =
--                helper_evaluate_flags_move_4(env,
--                                             env->pregs[PR_CCS],
--                                             env->cc_result);
--            break;
--        case 2:
--            env->pregs[PR_CCS] =
--                helper_evaluate_flags_move_2(env,
--                                             env->pregs[PR_CCS],
--                                             env->cc_result);
--            break;
--        default:
--            helper_evaluate_flags(env);
--            break;
--        }
--        break;
--    case CC_OP_FLAGS:
--        /* live.  */
--        break;
--    case CC_OP_SUB:
--    case CC_OP_CMP:
--        if (env->cc_size == 4) {
--            env->pregs[PR_CCS] =
--                helper_evaluate_flags_sub_4(env,
--                                            env->pregs[PR_CCS],
--                                            env->cc_src, env->cc_dest,
--                                            env->cc_result);
--        } else {
--            helper_evaluate_flags(env);
--        }
--        break;
--    default:
--        switch (env->cc_size) {
--        case 4:
--            env->pregs[PR_CCS] =
--                helper_evaluate_flags_alu_4(env,
--                                            env->pregs[PR_CCS],
--                                            env->cc_src, env->cc_dest,
--                                            env->cc_result);
--            break;
--        default:
--            helper_evaluate_flags(env);
--            break;
--        }
--        break;
--    }
--}
-diff --git a/target/cris/translate.c b/target/cris/translate.c
-deleted file mode 100644
-index a30c67eb07..0000000000
---- a/target/cris/translate.c
-+++ /dev/null
-@@ -1,3252 +0,0 @@
--/*
-- *  CRIS emulation for qemu: main translation routines.
-- *
-- *  Copyright (c) 2008 AXIS Communications AB
-- *  Written by Edgar E. Iglesias.
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
--
--/*
-- * FIXME:
-- * The condition code translation is in need of attention.
-- */
--
--#include "qemu/osdep.h"
--#include "cpu.h"
--#include "exec/exec-all.h"
--#include "tcg/tcg-op.h"
--#include "exec/helper-proto.h"
--#include "mmu.h"
--#include "exec/translator.h"
--#include "crisv32-decode.h"
--#include "qemu/qemu-print.h"
--#include "exec/helper-gen.h"
--#include "exec/log.h"
--
--#define HELPER_H "helper.h"
--#include "exec/helper-info.c.inc"
--#undef  HELPER_H
--
--
--#define DISAS_CRIS 0
--#if DISAS_CRIS
--#  define LOG_DIS(...) qemu_log_mask(CPU_LOG_TB_IN_ASM, ## __VA_ARGS__)
--#else
--#  define LOG_DIS(...) do { } while (0)
--#endif
--
--#define D(x)
--#define BUG() (gen_BUG(dc, __FILE__, __LINE__))
--#define BUG_ON(x) ({if (x) BUG();})
--
--/*
-- * Target-specific is_jmp field values
-- */
--/* Only pc was modified dynamically */
--#define DISAS_JUMP          DISAS_TARGET_0
--/* Cpu state was modified dynamically, including pc */
--#define DISAS_UPDATE        DISAS_TARGET_1
--/* Cpu state was modified dynamically, excluding pc -- use npc */
--#define DISAS_UPDATE_NEXT   DISAS_TARGET_2
--/* PC update for delayed branch, see cpustate_changed otherwise */
--#define DISAS_DBRANCH       DISAS_TARGET_3
--
--/* Used by the decoder.  */
--#define EXTRACT_FIELD(src, start, end) \
--            (((src) >> start) & ((1 << (end - start + 1)) - 1))
--
--#define CC_MASK_NZ 0xc
--#define CC_MASK_NZV 0xe
--#define CC_MASK_NZVC 0xf
--#define CC_MASK_RNZV 0x10e
--
--static TCGv cpu_R[16];
--static TCGv cpu_PR[16];
--static TCGv cc_x;
--static TCGv cc_src;
--static TCGv cc_dest;
--static TCGv cc_result;
--static TCGv cc_op;
--static TCGv cc_size;
--static TCGv cc_mask;
--
--static TCGv env_btaken;
--static TCGv env_btarget;
--static TCGv env_pc;
--
--/* This is the state at translation time.  */
--typedef struct DisasContext {
--    DisasContextBase base;
--
--    CRISCPU *cpu;
--    target_ulong pc, ppc;
--    int mem_index;
--
--    /* Decoder.  */
--        unsigned int (*decoder)(CPUCRISState *env, struct DisasContext *dc);
--    uint32_t ir;
--    uint32_t opcode;
--    unsigned int op1;
--    unsigned int op2;
--    unsigned int zsize, zzsize;
--    unsigned int mode;
--    unsigned int postinc;
--
--    unsigned int size;
--    unsigned int src;
--    unsigned int dst;
--    unsigned int cond;
--
--    int update_cc;
--    int cc_op;
--    int cc_size;
--    uint32_t cc_mask;
--
--    int cc_size_uptodate; /* -1 invalid or last written value.  */
--
--    int cc_x_uptodate;  /* 1 - ccs, 2 - known | X_FLAG. 0 not up-to-date.  */
--    int flags_uptodate; /* Whether or not $ccs is up-to-date.  */
--    int flags_x;
--
--    int clear_x; /* Clear x after this insn?  */
--    int clear_prefix; /* Clear prefix after this insn?  */
--    int clear_locked_irq; /* Clear the irq lockout.  */
--    int cpustate_changed;
--    unsigned int tb_flags; /* tb dependent flags.  */
--
--#define JMP_NOJMP     0
--#define JMP_DIRECT    1
--#define JMP_DIRECT_CC 2
--#define JMP_INDIRECT  3
--    int jmp; /* 0=nojmp, 1=direct, 2=indirect.  */
--    uint32_t jmp_pc;
--
--    int delayed_branch;
--} DisasContext;
--
--static void gen_BUG(DisasContext *dc, const char *file, int line)
--{
--    cpu_abort(CPU(dc->cpu), "%s:%d pc=%x\n", file, line, dc->pc);
--}
--
--static const char * const regnames_v32[] =
--{
--    "$r0", "$r1", "$r2", "$r3",
--    "$r4", "$r5", "$r6", "$r7",
--    "$r8", "$r9", "$r10", "$r11",
--    "$r12", "$r13", "$sp", "$acr",
--};
--
--static const char * const pregnames_v32[] =
--{
--    "$bz", "$vr", "$pid", "$srs",
--    "$wz", "$exs", "$eda", "$mof",
--    "$dz", "$ebp", "$erp", "$srp",
--    "$nrp", "$ccs", "$usp", "$spc",
--};
--
--/* We need this table to handle preg-moves with implicit width.  */
--static const int preg_sizes[] = {
--    1, /* bz.  */
--    1, /* vr.  */
--    4, /* pid.  */
--    1, /* srs.  */
--    2, /* wz.  */
--    4, 4, 4,
--    4, 4, 4, 4,
--    4, 4, 4, 4,
--};
--
--#define t_gen_mov_TN_env(tn, member) \
--    tcg_gen_ld_tl(tn, tcg_env, offsetof(CPUCRISState, member))
--#define t_gen_mov_env_TN(member, tn) \
--    tcg_gen_st_tl(tn, tcg_env, offsetof(CPUCRISState, member))
--#define t_gen_movi_env_TN(member, c) \
--    t_gen_mov_env_TN(member, tcg_constant_tl(c))
--
--static inline void t_gen_mov_TN_preg(TCGv tn, int r)
--{
--    assert(r >= 0 && r <= 15);
--    if (r == PR_BZ || r == PR_WZ || r == PR_DZ) {
--        tcg_gen_movi_tl(tn, 0);
--    } else if (r == PR_VR) {
--        tcg_gen_movi_tl(tn, 32);
--    } else {
--        tcg_gen_mov_tl(tn, cpu_PR[r]);
--    }
--}
--static inline void t_gen_mov_preg_TN(DisasContext *dc, int r, TCGv tn)
--{
--    assert(r >= 0 && r <= 15);
--    if (r == PR_BZ || r == PR_WZ || r == PR_DZ) {
--        return;
--    } else if (r == PR_SRS) {
--        tcg_gen_andi_tl(cpu_PR[r], tn, 3);
--    } else {
--        if (r == PR_PID) {
--            gen_helper_tlb_flush_pid(tcg_env, tn);
--        }
--        if (dc->tb_flags & S_FLAG && r == PR_SPC) {
--            gen_helper_spc_write(tcg_env, tn);
--        } else if (r == PR_CCS) {
--            dc->cpustate_changed = 1;
--        }
--        tcg_gen_mov_tl(cpu_PR[r], tn);
--    }
--}
--
--/* Sign extend at translation time.  */
--static int sign_extend(unsigned int val, unsigned int width)
--{
--    int sval;
--
--    /* LSL.  */
--    val <<= 31 - width;
--    sval = val;
--    /* ASR.  */
--    sval >>= 31 - width;
--    return sval;
--}
--
--static int cris_fetch(CPUCRISState *env, DisasContext *dc, uint32_t addr,
--                      unsigned int size, bool sign)
--{
--    int r;
--
--    switch (size) {
--    case 4:
--        r = translator_ldl(env, &dc->base, addr);
--        break;
--    case 2:
--        r = translator_lduw(env, &dc->base, addr);
--        if (sign) {
--            r = (int16_t)r;
--        }
--        break;
--    case 1:
--        r = translator_ldub(env, &dc->base, addr);
--        if (sign) {
--            r = (int8_t)r;
--        }
--        break;
--    default:
--        g_assert_not_reached();
--    }
--    return r;
--}
--
--static void cris_lock_irq(DisasContext *dc)
--{
--    dc->clear_locked_irq = 0;
--    t_gen_movi_env_TN(locked_irq, 1);
--}
--
--static inline void t_gen_raise_exception(uint32_t index)
--{
--    gen_helper_raise_exception(tcg_env, tcg_constant_i32(index));
--}
--
--static void t_gen_lsl(TCGv d, TCGv a, TCGv b)
--{
--    TCGv t0, t_31;
--
--    t0 = tcg_temp_new();
--    t_31 = tcg_constant_tl(31);
--    tcg_gen_shl_tl(d, a, b);
--
--    tcg_gen_sub_tl(t0, t_31, b);
--    tcg_gen_sar_tl(t0, t0, t_31);
--    tcg_gen_and_tl(t0, t0, d);
--    tcg_gen_xor_tl(d, d, t0);
--}
--
--static void t_gen_lsr(TCGv d, TCGv a, TCGv b)
--{
--    TCGv t0, t_31;
--
--    t0 = tcg_temp_new();
--    t_31 = tcg_temp_new();
--    tcg_gen_shr_tl(d, a, b);
--
--    tcg_gen_movi_tl(t_31, 31);
--    tcg_gen_sub_tl(t0, t_31, b);
--    tcg_gen_sar_tl(t0, t0, t_31);
--    tcg_gen_and_tl(t0, t0, d);
--    tcg_gen_xor_tl(d, d, t0);
--}
--
--static void t_gen_asr(TCGv d, TCGv a, TCGv b)
--{
--    TCGv t0, t_31;
--
--    t0 = tcg_temp_new();
--    t_31 = tcg_temp_new();
--    tcg_gen_sar_tl(d, a, b);
--
--    tcg_gen_movi_tl(t_31, 31);
--    tcg_gen_sub_tl(t0, t_31, b);
--    tcg_gen_sar_tl(t0, t0, t_31);
--    tcg_gen_or_tl(d, d, t0);
--}
--
--static void t_gen_cris_dstep(TCGv d, TCGv a, TCGv b)
--{
--    TCGv t = tcg_temp_new();
--
--    /*
--     * d <<= 1
--     * if (d >= s)
--     *    d -= s;
--     */
--    tcg_gen_shli_tl(d, a, 1);
--    tcg_gen_sub_tl(t, d, b);
--    tcg_gen_movcond_tl(TCG_COND_GEU, d, d, b, t, d);
--}
--
--static void t_gen_cris_mstep(TCGv d, TCGv a, TCGv b, TCGv ccs)
--{
--    TCGv t;
--
--    /*
--     * d <<= 1
--     * if (n)
--     *    d += s;
--     */
--    t = tcg_temp_new();
--    tcg_gen_shli_tl(d, a, 1);
--    tcg_gen_shli_tl(t, ccs, 31 - 3);
--    tcg_gen_sari_tl(t, t, 31);
--    tcg_gen_and_tl(t, t, b);
--    tcg_gen_add_tl(d, d, t);
--}
--
--/* Extended arithmetic on CRIS.  */
--static inline void t_gen_add_flag(TCGv d, int flag)
--{
--    TCGv c;
--
--    c = tcg_temp_new();
--    t_gen_mov_TN_preg(c, PR_CCS);
--    /* Propagate carry into d.  */
--    tcg_gen_andi_tl(c, c, 1 << flag);
--    if (flag) {
--        tcg_gen_shri_tl(c, c, flag);
--    }
--    tcg_gen_add_tl(d, d, c);
--}
--
--static inline void t_gen_addx_carry(DisasContext *dc, TCGv d)
--{
--    if (dc->flags_x) {
--        TCGv c = tcg_temp_new();
--
--        t_gen_mov_TN_preg(c, PR_CCS);
--        /* C flag is already at bit 0.  */
--        tcg_gen_andi_tl(c, c, C_FLAG);
--        tcg_gen_add_tl(d, d, c);
--    }
--}
--
--static inline void t_gen_subx_carry(DisasContext *dc, TCGv d)
--{
--    if (dc->flags_x) {
--        TCGv c = tcg_temp_new();
--
--        t_gen_mov_TN_preg(c, PR_CCS);
--        /* C flag is already at bit 0.  */
--        tcg_gen_andi_tl(c, c, C_FLAG);
--        tcg_gen_sub_tl(d, d, c);
--    }
--}
--
--/* Swap the two bytes within each half word of the s operand.
--   T0 = ((T0 << 8) & 0xff00ff00) | ((T0 >> 8) & 0x00ff00ff)  */
--static inline void t_gen_swapb(TCGv d, TCGv s)
--{
--    TCGv t, org_s;
--
--    t = tcg_temp_new();
--    org_s = tcg_temp_new();
--
--    /* d and s may refer to the same object.  */
--    tcg_gen_mov_tl(org_s, s);
--    tcg_gen_shli_tl(t, org_s, 8);
--    tcg_gen_andi_tl(d, t, 0xff00ff00);
--    tcg_gen_shri_tl(t, org_s, 8);
--    tcg_gen_andi_tl(t, t, 0x00ff00ff);
--    tcg_gen_or_tl(d, d, t);
--}
--
--/* Swap the halfwords of the s operand.  */
--static inline void t_gen_swapw(TCGv d, TCGv s)
--{
--    TCGv t;
--    /* d and s refer the same object.  */
--    t = tcg_temp_new();
--    tcg_gen_mov_tl(t, s);
--    tcg_gen_shli_tl(d, t, 16);
--    tcg_gen_shri_tl(t, t, 16);
--    tcg_gen_or_tl(d, d, t);
--}
--
--/*
-- * Reverse the bits within each byte.
-- *
-- *  T0 = ((T0 << 7) & 0x80808080)
-- *     | ((T0 << 5) & 0x40404040)
-- *     | ((T0 << 3) & 0x20202020)
-- *     | ((T0 << 1) & 0x10101010)
-- *     | ((T0 >> 1) & 0x08080808)
-- *     | ((T0 >> 3) & 0x04040404)
-- *     | ((T0 >> 5) & 0x02020202)
-- *     | ((T0 >> 7) & 0x01010101);
-- */
--static void t_gen_swapr(TCGv d, TCGv s)
--{
--    static const struct {
--        int shift; /* LSL when positive, LSR when negative.  */
--        uint32_t mask;
--    } bitrev[] = {
--        {7, 0x80808080},
--        {5, 0x40404040},
--        {3, 0x20202020},
--        {1, 0x10101010},
--        {-1, 0x08080808},
--        {-3, 0x04040404},
--        {-5, 0x02020202},
--        {-7, 0x01010101}
--    };
--    int i;
--    TCGv t, org_s;
--
--    /* d and s refer the same object.  */
--    t = tcg_temp_new();
--    org_s = tcg_temp_new();
--    tcg_gen_mov_tl(org_s, s);
--
--    tcg_gen_shli_tl(t, org_s,  bitrev[0].shift);
--    tcg_gen_andi_tl(d, t,  bitrev[0].mask);
--    for (i = 1; i < ARRAY_SIZE(bitrev); i++) {
--        if (bitrev[i].shift >= 0) {
--            tcg_gen_shli_tl(t, org_s,  bitrev[i].shift);
--        } else {
--            tcg_gen_shri_tl(t, org_s,  -bitrev[i].shift);
--        }
--        tcg_gen_andi_tl(t, t,  bitrev[i].mask);
--        tcg_gen_or_tl(d, d, t);
--    }
--}
--
--static bool use_goto_tb(DisasContext *dc, target_ulong dest)
--{
--    return translator_use_goto_tb(&dc->base, dest);
--}
--
--static void gen_goto_tb(DisasContext *dc, int n, target_ulong dest)
--{
--    if (use_goto_tb(dc, dest)) {
--        tcg_gen_goto_tb(n);
--        tcg_gen_movi_tl(env_pc, dest);
--        tcg_gen_exit_tb(dc->base.tb, n);
--    } else {
--        tcg_gen_movi_tl(env_pc, dest);
--        tcg_gen_lookup_and_goto_ptr();
--    }
--}
--
--static inline void cris_clear_x_flag(DisasContext *dc)
--{
--    if (dc->flags_x) {
--        dc->flags_uptodate = 0;
--    }
--    dc->flags_x = 0;
--}
--
--static void cris_flush_cc_state(DisasContext *dc)
--{
--    if (dc->cc_size_uptodate != dc->cc_size) {
--        tcg_gen_movi_tl(cc_size, dc->cc_size);
--        dc->cc_size_uptodate = dc->cc_size;
--    }
--    tcg_gen_movi_tl(cc_op, dc->cc_op);
--    tcg_gen_movi_tl(cc_mask, dc->cc_mask);
--}
--
--static void cris_evaluate_flags(DisasContext *dc)
--{
--    if (dc->flags_uptodate) {
--        return;
--    }
--
--    cris_flush_cc_state(dc);
--
--    switch (dc->cc_op) {
--    case CC_OP_MCP:
--        gen_helper_evaluate_flags_mcp(cpu_PR[PR_CCS], tcg_env,
--                cpu_PR[PR_CCS], cc_src,
--                cc_dest, cc_result);
--        break;
--    case CC_OP_MULS:
--        gen_helper_evaluate_flags_muls(cpu_PR[PR_CCS], tcg_env,
--                cpu_PR[PR_CCS], cc_result,
--                cpu_PR[PR_MOF]);
--        break;
--    case CC_OP_MULU:
--        gen_helper_evaluate_flags_mulu(cpu_PR[PR_CCS], tcg_env,
--                cpu_PR[PR_CCS], cc_result,
--                cpu_PR[PR_MOF]);
--        break;
--    case CC_OP_MOVE:
--    case CC_OP_AND:
--    case CC_OP_OR:
--    case CC_OP_XOR:
--    case CC_OP_ASR:
--    case CC_OP_LSR:
--    case CC_OP_LSL:
--        switch (dc->cc_size) {
--        case 4:
--            gen_helper_evaluate_flags_move_4(cpu_PR[PR_CCS],
--                    tcg_env, cpu_PR[PR_CCS], cc_result);
--            break;
--        case 2:
--            gen_helper_evaluate_flags_move_2(cpu_PR[PR_CCS],
--                    tcg_env, cpu_PR[PR_CCS], cc_result);
--            break;
--        default:
--            gen_helper_evaluate_flags(tcg_env);
--            break;
--        }
--        break;
--    case CC_OP_FLAGS:
--        /* live.  */
--        break;
--    case CC_OP_SUB:
--    case CC_OP_CMP:
--        if (dc->cc_size == 4) {
--            gen_helper_evaluate_flags_sub_4(cpu_PR[PR_CCS], tcg_env,
--                    cpu_PR[PR_CCS], cc_src, cc_dest, cc_result);
--        } else {
--            gen_helper_evaluate_flags(tcg_env);
--        }
--
--        break;
--    default:
--        switch (dc->cc_size) {
--        case 4:
--            gen_helper_evaluate_flags_alu_4(cpu_PR[PR_CCS], tcg_env,
--                    cpu_PR[PR_CCS], cc_src, cc_dest, cc_result);
--            break;
--        default:
--            gen_helper_evaluate_flags(tcg_env);
--            break;
--        }
--        break;
--    }
--
--    if (dc->flags_x) {
--        tcg_gen_ori_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], X_FLAG);
--    } else if (dc->cc_op == CC_OP_FLAGS) {
--        tcg_gen_andi_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], ~X_FLAG);
--    }
--    dc->flags_uptodate = 1;
--}
--
--static void cris_cc_mask(DisasContext *dc, unsigned int mask)
--{
--    uint32_t ovl;
--
--    if (!mask) {
--        dc->update_cc = 0;
--        return;
--    }
--
--    /* Check if we need to evaluate the condition codes due to
--       CC overlaying.  */
--    ovl = (dc->cc_mask ^ mask) & ~mask;
--    if (ovl) {
--        /* TODO: optimize this case. It trigs all the time.  */
--        cris_evaluate_flags(dc);
--    }
--    dc->cc_mask = mask;
--    dc->update_cc = 1;
--}
--
--static void cris_update_cc_op(DisasContext *dc, int op, int size)
--{
--    dc->cc_op = op;
--    dc->cc_size = size;
--    dc->flags_uptodate = 0;
--}
--
--static inline void cris_update_cc_x(DisasContext *dc)
--{
--    /* Save the x flag state at the time of the cc snapshot.  */
--    if (dc->cc_x_uptodate == (2 | dc->flags_x)) {
--        return;
--    }
--    tcg_gen_movi_tl(cc_x, dc->flags_x);
--    dc->cc_x_uptodate = 2 | dc->flags_x;
--}
--
--/* Update cc prior to executing ALU op. Needs source operands untouched.  */
--static void cris_pre_alu_update_cc(DisasContext *dc, int op, 
--                   TCGv dst, TCGv src, int size)
--{
--    if (dc->update_cc) {
--        cris_update_cc_op(dc, op, size);
--        tcg_gen_mov_tl(cc_src, src);
--
--        if (op != CC_OP_MOVE
--            && op != CC_OP_AND
--            && op != CC_OP_OR
--            && op != CC_OP_XOR
--            && op != CC_OP_ASR
--            && op != CC_OP_LSR
--            && op != CC_OP_LSL) {
--            tcg_gen_mov_tl(cc_dest, dst);
--        }
--
--        cris_update_cc_x(dc);
--    }
--}
--
--/* Update cc after executing ALU op. needs the result.  */
--static inline void cris_update_result(DisasContext *dc, TCGv res)
--{
--    if (dc->update_cc) {
--        tcg_gen_mov_tl(cc_result, res);
--    }
--}
--
--/* Returns one if the write back stage should execute.  */
--static void cris_alu_op_exec(DisasContext *dc, int op, 
--                   TCGv dst, TCGv a, TCGv b, int size)
--{
--    /* Emit the ALU insns.  */
--    switch (op) {
--    case CC_OP_ADD:
--        tcg_gen_add_tl(dst, a, b);
--        /* Extended arithmetic.  */
--        t_gen_addx_carry(dc, dst);
--        break;
--    case CC_OP_ADDC:
--        tcg_gen_add_tl(dst, a, b);
--        t_gen_add_flag(dst, 0); /* C_FLAG.  */
--        break;
--    case CC_OP_MCP:
--        tcg_gen_add_tl(dst, a, b);
--        t_gen_add_flag(dst, 8); /* R_FLAG.  */
--        break;
--    case CC_OP_SUB:
--        tcg_gen_sub_tl(dst, a, b);
--        /* Extended arithmetic.  */
--        t_gen_subx_carry(dc, dst);
--        break;
--    case CC_OP_MOVE:
--        tcg_gen_mov_tl(dst, b);
--        break;
--    case CC_OP_OR:
--        tcg_gen_or_tl(dst, a, b);
--        break;
--    case CC_OP_AND:
--        tcg_gen_and_tl(dst, a, b);
--        break;
--    case CC_OP_XOR:
--        tcg_gen_xor_tl(dst, a, b);
--        break;
--    case CC_OP_LSL:
--        t_gen_lsl(dst, a, b);
--        break;
--    case CC_OP_LSR:
--        t_gen_lsr(dst, a, b);
--        break;
--    case CC_OP_ASR:
--        t_gen_asr(dst, a, b);
--        break;
--    case CC_OP_NEG:
--        tcg_gen_neg_tl(dst, b);
--        /* Extended arithmetic.  */
--        t_gen_subx_carry(dc, dst);
--        break;
--    case CC_OP_LZ:
--        tcg_gen_clzi_tl(dst, b, TARGET_LONG_BITS);
--        break;
--    case CC_OP_MULS:
--        tcg_gen_muls2_tl(dst, cpu_PR[PR_MOF], a, b);
--        break;
--    case CC_OP_MULU:
--        tcg_gen_mulu2_tl(dst, cpu_PR[PR_MOF], a, b);
--        break;
--    case CC_OP_DSTEP:
--        t_gen_cris_dstep(dst, a, b);
--        break;
--    case CC_OP_MSTEP:
--        t_gen_cris_mstep(dst, a, b, cpu_PR[PR_CCS]);
--        break;
--    case CC_OP_BOUND:
--        tcg_gen_movcond_tl(TCG_COND_LEU, dst, a, b, a, b);
--        break;
--    case CC_OP_CMP:
--        tcg_gen_sub_tl(dst, a, b);
--        /* Extended arithmetic.  */
--        t_gen_subx_carry(dc, dst);
--        break;
--    default:
--        qemu_log_mask(LOG_GUEST_ERROR, "illegal ALU op.\n");
--        BUG();
--        break;
--    }
--
--    if (size == 1) {
--        tcg_gen_andi_tl(dst, dst, 0xff);
--    } else if (size == 2) {
--        tcg_gen_andi_tl(dst, dst, 0xffff);
--    }
--}
--
--static void cris_alu(DisasContext *dc, int op,
--                   TCGv d, TCGv op_a, TCGv op_b, int size)
--{
--    TCGv tmp;
--    int writeback;
--
--    writeback = 1;
--
--    if (op == CC_OP_CMP) {
--        tmp = tcg_temp_new();
--        writeback = 0;
--    } else if (size == 4) {
--        tmp = d;
--        writeback = 0;
--    } else {
--        tmp = tcg_temp_new();
--    }
--
--
--    cris_pre_alu_update_cc(dc, op, op_a, op_b, size);
--    cris_alu_op_exec(dc, op, tmp, op_a, op_b, size);
--    cris_update_result(dc, tmp);
--
--    /* Writeback.  */
--    if (writeback) {
--        if (size == 1) {
--            tcg_gen_andi_tl(d, d, ~0xff);
--        } else {
--            tcg_gen_andi_tl(d, d, ~0xffff);
--        }
--        tcg_gen_or_tl(d, d, tmp);
--    }
--}
--
--static int arith_cc(DisasContext *dc)
--{
--    if (dc->update_cc) {
--        switch (dc->cc_op) {
--        case CC_OP_ADDC: return 1;
--        case CC_OP_ADD: return 1;
--        case CC_OP_SUB: return 1;
--        case CC_OP_DSTEP: return 1;
--        case CC_OP_LSL: return 1;
--        case CC_OP_LSR: return 1;
--        case CC_OP_ASR: return 1;
--        case CC_OP_CMP: return 1;
--        case CC_OP_NEG: return 1;
--        case CC_OP_OR: return 1;
--        case CC_OP_AND: return 1;
--        case CC_OP_XOR: return 1;
--        case CC_OP_MULU: return 1;
--        case CC_OP_MULS: return 1;
--        default:
--            return 0;
--        }
--    }
--    return 0;
--}
--
--static void gen_tst_cc (DisasContext *dc, TCGv cc, int cond)
--{
--    int arith_opt, move_opt;
--
--    /* TODO: optimize more condition codes.  */
--
--    /*
--     * If the flags are live, we've gotta look into the bits of CCS.
--     * Otherwise, if we just did an arithmetic operation we try to
--     * evaluate the condition code faster.
--     *
--     * When this function is done, T0 should be non-zero if the condition
--     * code is true.
--     */
--    arith_opt = arith_cc(dc) && !dc->flags_uptodate;
--    move_opt = (dc->cc_op == CC_OP_MOVE);
--    switch (cond) {
--    case CC_EQ:
--        if ((arith_opt || move_opt)
--                && dc->cc_x_uptodate != (2 | X_FLAG)) {
--            tcg_gen_setcondi_tl(TCG_COND_EQ, cc, cc_result, 0);
--        } else {
--            cris_evaluate_flags(dc);
--            tcg_gen_andi_tl(cc,
--                    cpu_PR[PR_CCS], Z_FLAG);
--        }
--        break;
--    case CC_NE:
--        if ((arith_opt || move_opt)
--                && dc->cc_x_uptodate != (2 | X_FLAG)) {
--            tcg_gen_mov_tl(cc, cc_result);
--        } else {
--            cris_evaluate_flags(dc);
--            tcg_gen_xori_tl(cc, cpu_PR[PR_CCS],
--                    Z_FLAG);
--            tcg_gen_andi_tl(cc, cc, Z_FLAG);
--        }
--        break;
--    case CC_CS:
--        cris_evaluate_flags(dc);
--        tcg_gen_andi_tl(cc, cpu_PR[PR_CCS], C_FLAG);
--        break;
--    case CC_CC:
--        cris_evaluate_flags(dc);
--        tcg_gen_xori_tl(cc, cpu_PR[PR_CCS], C_FLAG);
--        tcg_gen_andi_tl(cc, cc, C_FLAG);
--        break;
--    case CC_VS:
--        cris_evaluate_flags(dc);
--        tcg_gen_andi_tl(cc, cpu_PR[PR_CCS], V_FLAG);
--        break;
--    case CC_VC:
--        cris_evaluate_flags(dc);
--        tcg_gen_xori_tl(cc, cpu_PR[PR_CCS],
--                V_FLAG);
--        tcg_gen_andi_tl(cc, cc, V_FLAG);
--        break;
--    case CC_PL:
--        if (arith_opt || move_opt) {
--            int bits = 31;
--
--            if (dc->cc_size == 1) {
--                bits = 7;
--            } else if (dc->cc_size == 2) {
--                bits = 15;
--            }
--
--            tcg_gen_shri_tl(cc, cc_result, bits);
--            tcg_gen_xori_tl(cc, cc, 1);
--        } else {
--            cris_evaluate_flags(dc);
--            tcg_gen_xori_tl(cc, cpu_PR[PR_CCS],
--                    N_FLAG);
--            tcg_gen_andi_tl(cc, cc, N_FLAG);
--        }
--        break;
--    case CC_MI:
--        if (arith_opt || move_opt) {
--            int bits = 31;
--
--            if (dc->cc_size == 1) {
--                bits = 7;
--            } else if (dc->cc_size == 2) {
--                bits = 15;
--            }
--
--            tcg_gen_shri_tl(cc, cc_result, bits);
--            tcg_gen_andi_tl(cc, cc, 1);
--        } else {
--            cris_evaluate_flags(dc);
--            tcg_gen_andi_tl(cc, cpu_PR[PR_CCS],
--                    N_FLAG);
--        }
--        break;
--    case CC_LS:
--        cris_evaluate_flags(dc);
--        tcg_gen_andi_tl(cc, cpu_PR[PR_CCS],
--                C_FLAG | Z_FLAG);
--        break;
--    case CC_HI:
--        cris_evaluate_flags(dc);
--        {
--            TCGv tmp;
--
--            tmp = tcg_temp_new();
--            tcg_gen_xori_tl(tmp, cpu_PR[PR_CCS],
--                    C_FLAG | Z_FLAG);
--            /* Overlay the C flag on top of the Z.  */
--            tcg_gen_shli_tl(cc, tmp, 2);
--            tcg_gen_and_tl(cc, tmp, cc);
--            tcg_gen_andi_tl(cc, cc, Z_FLAG);
--        }
--        break;
--    case CC_GE:
--        cris_evaluate_flags(dc);
--        /* Overlay the V flag on top of the N.  */
--        tcg_gen_shli_tl(cc, cpu_PR[PR_CCS], 2);
--        tcg_gen_xor_tl(cc,
--                cpu_PR[PR_CCS], cc);
--        tcg_gen_andi_tl(cc, cc, N_FLAG);
--        tcg_gen_xori_tl(cc, cc, N_FLAG);
--        break;
--    case CC_LT:
--        cris_evaluate_flags(dc);
--        /* Overlay the V flag on top of the N.  */
--        tcg_gen_shli_tl(cc, cpu_PR[PR_CCS], 2);
--        tcg_gen_xor_tl(cc,
--                cpu_PR[PR_CCS], cc);
--        tcg_gen_andi_tl(cc, cc, N_FLAG);
--        break;
--    case CC_GT:
--        cris_evaluate_flags(dc);
--        {
--            TCGv n, z;
--
--            n = tcg_temp_new();
--            z = tcg_temp_new();
--
--            /* To avoid a shift we overlay everything on
--                   the V flag.  */
--            tcg_gen_shri_tl(n, cpu_PR[PR_CCS], 2);
--            tcg_gen_shri_tl(z, cpu_PR[PR_CCS], 1);
--            /* invert Z.  */
--            tcg_gen_xori_tl(z, z, 2);
--
--            tcg_gen_xor_tl(n, n, cpu_PR[PR_CCS]);
--            tcg_gen_xori_tl(n, n, 2);
--            tcg_gen_and_tl(cc, z, n);
--            tcg_gen_andi_tl(cc, cc, 2);
--        }
--        break;
--    case CC_LE:
--        cris_evaluate_flags(dc);
--        {
--            TCGv n, z;
--
--            n = tcg_temp_new();
--            z = tcg_temp_new();
--
--            /* To avoid a shift we overlay everything on
--                   the V flag.  */
--            tcg_gen_shri_tl(n, cpu_PR[PR_CCS], 2);
--            tcg_gen_shri_tl(z, cpu_PR[PR_CCS], 1);
--
--            tcg_gen_xor_tl(n, n, cpu_PR[PR_CCS]);
--            tcg_gen_or_tl(cc, z, n);
--            tcg_gen_andi_tl(cc, cc, 2);
--        }
--        break;
--    case CC_P:
--        cris_evaluate_flags(dc);
--        tcg_gen_andi_tl(cc, cpu_PR[PR_CCS], P_FLAG);
--        break;
--    case CC_A:
--        tcg_gen_movi_tl(cc, 1);
--        break;
--    default:
--        BUG();
--        break;
--    };
--}
--
--static void cris_store_direct_jmp(DisasContext *dc)
--{
--    /* Store the direct jmp state into the cpu-state.  */
--    if (dc->jmp == JMP_DIRECT || dc->jmp == JMP_DIRECT_CC) {
--        if (dc->jmp == JMP_DIRECT) {
--            tcg_gen_movi_tl(env_btaken, 1);
--        }
--        tcg_gen_movi_tl(env_btarget, dc->jmp_pc);
--        dc->jmp = JMP_INDIRECT;
--    }
--}
--
--static void cris_prepare_cc_branch (DisasContext *dc, 
--                    int offset, int cond)
--{
--    /* This helps us re-schedule the micro-code to insns in delay-slots
--       before the actual jump.  */
--    dc->delayed_branch = 2;
--    dc->jmp = JMP_DIRECT_CC;
--    dc->jmp_pc = dc->pc + offset;
--
--    gen_tst_cc(dc, env_btaken, cond);
--    tcg_gen_movi_tl(env_btarget, dc->jmp_pc);
--}
--
--
--/* jumps, when the dest is in a live reg for example. Direct should be set
--   when the dest addr is constant to allow tb chaining.  */
--static inline void cris_prepare_jmp (DisasContext *dc, unsigned int type)
--{
--    /* This helps us re-schedule the micro-code to insns in delay-slots
--       before the actual jump.  */
--    dc->delayed_branch = 2;
--    dc->jmp = type;
--    if (type == JMP_INDIRECT) {
--        tcg_gen_movi_tl(env_btaken, 1);
--    }
--}
--
--static void gen_load64(DisasContext *dc, TCGv_i64 dst, TCGv addr)
--{
--    /* If we get a fault on a delayslot we must keep the jmp state in
--       the cpu-state to be able to re-execute the jmp.  */
--    if (dc->delayed_branch == 1) {
--        cris_store_direct_jmp(dc);
--    }
--
--    tcg_gen_qemu_ld_i64(dst, addr, dc->mem_index, MO_TEUQ);
--}
--
--static void gen_load(DisasContext *dc, TCGv dst, TCGv addr, 
--             unsigned int size, int sign)
--{
--    /* If we get a fault on a delayslot we must keep the jmp state in
--       the cpu-state to be able to re-execute the jmp.  */
--    if (dc->delayed_branch == 1) {
--        cris_store_direct_jmp(dc);
--    }
--
--    tcg_gen_qemu_ld_tl(dst, addr, dc->mem_index,
--                       MO_TE + ctz32(size) + (sign ? MO_SIGN : 0));
--}
--
--static void gen_store (DisasContext *dc, TCGv addr, TCGv val,
--               unsigned int size)
--{
--    /* If we get a fault on a delayslot we must keep the jmp state in
--       the cpu-state to be able to re-execute the jmp.  */
--    if (dc->delayed_branch == 1) {
--        cris_store_direct_jmp(dc);
--    }
--
--
--    /* Conditional writes. We only support the kind were X and P are known
--       at translation time.  */
--    if (dc->flags_x && (dc->tb_flags & P_FLAG)) {
--        dc->postinc = 0;
--        cris_evaluate_flags(dc);
--        tcg_gen_ori_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], C_FLAG);
--        return;
--    }
--
--    tcg_gen_qemu_st_tl(val, addr, dc->mem_index, MO_TE + ctz32(size));
--
--    if (dc->flags_x) {
--        cris_evaluate_flags(dc);
--        tcg_gen_andi_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], ~C_FLAG);
--    }
--}
--
--static inline void t_gen_sext(TCGv d, TCGv s, int size)
--{
--    if (size == 1) {
--        tcg_gen_ext8s_i32(d, s);
--    } else if (size == 2) {
--        tcg_gen_ext16s_i32(d, s);
--    } else {
--        tcg_gen_mov_tl(d, s);
--    }
--}
--
--static inline void t_gen_zext(TCGv d, TCGv s, int size)
--{
--    if (size == 1) {
--        tcg_gen_ext8u_i32(d, s);
--    } else if (size == 2) {
--        tcg_gen_ext16u_i32(d, s);
--    } else {
--        tcg_gen_mov_tl(d, s);
--    }
--}
--
--#if DISAS_CRIS
--static char memsize_char(int size)
--{
--    switch (size) {
--    case 1: return 'b';
--    case 2: return 'w';
--    case 4: return 'd';
--    default:
--        return 'x';
--    }
--}
--#endif
--
--static inline unsigned int memsize_z(DisasContext *dc)
--{
--    return dc->zsize + 1;
--}
--
--static inline unsigned int memsize_zz(DisasContext *dc)
--{
--    switch (dc->zzsize) {
--    case 0: return 1;
--    case 1: return 2;
--    default:
--        return 4;
--    }
--}
--
--static inline void do_postinc (DisasContext *dc, int size)
--{
--    if (dc->postinc) {
--        tcg_gen_addi_tl(cpu_R[dc->op1], cpu_R[dc->op1], size);
--    }
--}
--
--static inline void dec_prep_move_r(DisasContext *dc, int rs, int rd,
--                   int size, int s_ext, TCGv dst)
--{
--    if (s_ext) {
--        t_gen_sext(dst, cpu_R[rs], size);
--    } else {
--        t_gen_zext(dst, cpu_R[rs], size);
--    }
--}
--
--/* Prepare T0 and T1 for a register alu operation.
--   s_ext decides if the operand1 should be sign-extended or zero-extended when
--   needed.  */
--static void dec_prep_alu_r(DisasContext *dc, int rs, int rd,
--              int size, int s_ext, TCGv dst, TCGv src)
--{
--    dec_prep_move_r(dc, rs, rd, size, s_ext, src);
--
--    if (s_ext) {
--        t_gen_sext(dst, cpu_R[rd], size);
--    } else {
--        t_gen_zext(dst, cpu_R[rd], size);
--    }
--}
--
--static int dec_prep_move_m(CPUCRISState *env, DisasContext *dc,
--                           int s_ext, int memsize, TCGv dst)
--{
--    unsigned int rs;
--    uint32_t imm;
--    int is_imm;
--    int insn_len = 2;
--
--    rs = dc->op1;
--    is_imm = rs == 15 && dc->postinc;
--
--    /* Load [$rs] onto T1.  */
--    if (is_imm) {
--        insn_len = 2 + memsize;
--        if (memsize == 1) {
--            insn_len++;
--        }
--
--        imm = cris_fetch(env, dc, dc->pc + 2, memsize, s_ext);
--        tcg_gen_movi_tl(dst, imm);
--        dc->postinc = 0;
--    } else {
--        cris_flush_cc_state(dc);
--        gen_load(dc, dst, cpu_R[rs], memsize, 0);
--        if (s_ext) {
--            t_gen_sext(dst, dst, memsize);
--        } else {
--            t_gen_zext(dst, dst, memsize);
--        }
--    }
--    return insn_len;
--}
--
--/* Prepare T0 and T1 for a memory + alu operation.
--   s_ext decides if the operand1 should be sign-extended or zero-extended when
--   needed.  */
--static int dec_prep_alu_m(CPUCRISState *env, DisasContext *dc,
--                          int s_ext, int memsize, TCGv dst, TCGv src)
--{
--    int insn_len;
--
--    insn_len = dec_prep_move_m(env, dc, s_ext, memsize, src);
--    tcg_gen_mov_tl(dst, cpu_R[dc->op2]);
--    return insn_len;
--}
--
--#if DISAS_CRIS
--static const char *cc_name(int cc)
--{
--    static const char * const cc_names[16] = {
--        "cc", "cs", "ne", "eq", "vc", "vs", "pl", "mi",
--        "ls", "hi", "ge", "lt", "gt", "le", "a", "p"
--    };
--    assert(cc < 16);
--    return cc_names[cc];
--}
--#endif
--
--/* Start of insn decoders.  */
--
--static int dec_bccq(CPUCRISState *env, DisasContext *dc)
--{
--    int32_t offset;
--    int sign;
--    uint32_t cond = dc->op2;
--
--    offset = EXTRACT_FIELD(dc->ir, 1, 7);
--    sign = EXTRACT_FIELD(dc->ir, 0, 0);
--
--    offset *= 2;
--    offset |= sign << 8;
--    offset = sign_extend(offset, 8);
--
--    LOG_DIS("b%s %x\n", cc_name(cond), dc->pc + offset);
--
--    /* op2 holds the condition-code.  */
--    cris_cc_mask(dc, 0);
--    cris_prepare_cc_branch(dc, offset, cond);
--    return 2;
--}
--static int dec_addoq(CPUCRISState *env, DisasContext *dc)
--{
--    int32_t imm;
--
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 7);
--    imm = sign_extend(dc->op1, 7);
--
--    LOG_DIS("addoq %d, $r%u\n", imm, dc->op2);
--    cris_cc_mask(dc, 0);
--    /* Fetch register operand,  */
--    tcg_gen_addi_tl(cpu_R[R_ACR], cpu_R[dc->op2], imm);
--
--    return 2;
--}
--static int dec_addq(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv c;
--    LOG_DIS("addq %u, $r%u\n", dc->op1, dc->op2);
--
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 5);
--
--    cris_cc_mask(dc, CC_MASK_NZVC);
--
--    c = tcg_constant_tl(dc->op1);
--    cris_alu(dc, CC_OP_ADD,
--            cpu_R[dc->op2], cpu_R[dc->op2], c, 4);
--    return 2;
--}
--static int dec_moveq(CPUCRISState *env, DisasContext *dc)
--{
--    uint32_t imm;
--
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 5);
--    imm = sign_extend(dc->op1, 5);
--    LOG_DIS("moveq %d, $r%u\n", imm, dc->op2);
--
--    tcg_gen_movi_tl(cpu_R[dc->op2], imm);
--    return 2;
--}
--static int dec_subq(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv c;
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 5);
--
--    LOG_DIS("subq %u, $r%u\n", dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    c = tcg_constant_tl(dc->op1);
--    cris_alu(dc, CC_OP_SUB,
--            cpu_R[dc->op2], cpu_R[dc->op2], c, 4);
--    return 2;
--}
--static int dec_cmpq(CPUCRISState *env, DisasContext *dc)
--{
--    uint32_t imm;
--    TCGv c;
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 5);
--    imm = sign_extend(dc->op1, 5);
--
--    LOG_DIS("cmpq %d, $r%d\n", imm, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--
--    c = tcg_constant_tl(imm);
--    cris_alu(dc, CC_OP_CMP,
--            cpu_R[dc->op2], cpu_R[dc->op2], c, 4);
--    return 2;
--}
--static int dec_andq(CPUCRISState *env, DisasContext *dc)
--{
--    uint32_t imm;
--    TCGv c;
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 5);
--    imm = sign_extend(dc->op1, 5);
--
--    LOG_DIS("andq %d, $r%d\n", imm, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZ);
--
--    c = tcg_constant_tl(imm);
--    cris_alu(dc, CC_OP_AND,
--            cpu_R[dc->op2], cpu_R[dc->op2], c, 4);
--    return 2;
--}
--static int dec_orq(CPUCRISState *env, DisasContext *dc)
--{
--    uint32_t imm;
--    TCGv c;
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 5);
--    imm = sign_extend(dc->op1, 5);
--    LOG_DIS("orq %d, $r%d\n", imm, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZ);
--
--    c = tcg_constant_tl(imm);
--    cris_alu(dc, CC_OP_OR,
--            cpu_R[dc->op2], cpu_R[dc->op2], c, 4);
--    return 2;
--}
--static int dec_btstq(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv c;
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 4);
--    LOG_DIS("btstq %u, $r%d\n", dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--    c = tcg_constant_tl(dc->op1);
--    cris_evaluate_flags(dc);
--    gen_helper_btst(cpu_PR[PR_CCS], tcg_env, cpu_R[dc->op2],
--            c, cpu_PR[PR_CCS]);
--    cris_alu(dc, CC_OP_MOVE,
--         cpu_R[dc->op2], cpu_R[dc->op2], cpu_R[dc->op2], 4);
--    cris_update_cc_op(dc, CC_OP_FLAGS, 4);
--    dc->flags_uptodate = 1;
--    return 2;
--}
--static int dec_asrq(CPUCRISState *env, DisasContext *dc)
--{
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 4);
--    LOG_DIS("asrq %u, $r%d\n", dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZ);
--
--    tcg_gen_sari_tl(cpu_R[dc->op2], cpu_R[dc->op2], dc->op1);
--    cris_alu(dc, CC_OP_MOVE,
--            cpu_R[dc->op2],
--            cpu_R[dc->op2], cpu_R[dc->op2], 4);
--    return 2;
--}
--static int dec_lslq(CPUCRISState *env, DisasContext *dc)
--{
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 4);
--    LOG_DIS("lslq %u, $r%d\n", dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--
--    tcg_gen_shli_tl(cpu_R[dc->op2], cpu_R[dc->op2], dc->op1);
--
--    cris_alu(dc, CC_OP_MOVE,
--            cpu_R[dc->op2],
--            cpu_R[dc->op2], cpu_R[dc->op2], 4);
--    return 2;
--}
--static int dec_lsrq(CPUCRISState *env, DisasContext *dc)
--{
--    dc->op1 = EXTRACT_FIELD(dc->ir, 0, 4);
--    LOG_DIS("lsrq %u, $r%d\n", dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--
--    tcg_gen_shri_tl(cpu_R[dc->op2], cpu_R[dc->op2], dc->op1);
--    cris_alu(dc, CC_OP_MOVE,
--            cpu_R[dc->op2],
--            cpu_R[dc->op2], cpu_R[dc->op2], 4);
--    return 2;
--}
--
--static int dec_move_r(CPUCRISState *env, DisasContext *dc)
--{
--    int size = memsize_zz(dc);
--
--    LOG_DIS("move.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--    if (size == 4) {
--        dec_prep_move_r(dc, dc->op1, dc->op2, size, 0, cpu_R[dc->op2]);
--        cris_cc_mask(dc, CC_MASK_NZ);
--        cris_update_cc_op(dc, CC_OP_MOVE, 4);
--        cris_update_cc_x(dc);
--        cris_update_result(dc, cpu_R[dc->op2]);
--    } else {
--        TCGv t0;
--
--        t0 = tcg_temp_new();
--        dec_prep_move_r(dc, dc->op1, dc->op2, size, 0, t0);
--        cris_alu(dc, CC_OP_MOVE,
--             cpu_R[dc->op2],
--             cpu_R[dc->op2], t0, size);
--    }
--    return 2;
--}
--
--static int dec_scc_r(CPUCRISState *env, DisasContext *dc)
--{
--    int cond = dc->op2;
--
--    LOG_DIS("s%s $r%u\n",
--            cc_name(cond), dc->op1);
--
--    gen_tst_cc(dc, cpu_R[dc->op1], cond);
--    tcg_gen_setcondi_tl(TCG_COND_NE, cpu_R[dc->op1], cpu_R[dc->op1], 0);
--
--    cris_cc_mask(dc, 0);
--    return 2;
--}
--
--static inline void cris_alu_alloc_temps(DisasContext *dc, int size, TCGv *t)
--{
--    if (size == 4) {
--        t[0] = cpu_R[dc->op2];
--        t[1] = cpu_R[dc->op1];
--    } else {
--        t[0] = tcg_temp_new();
--        t[1] = tcg_temp_new();
--    }
--}
--
--static int dec_and_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--
--    LOG_DIS("and.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 0, t[0], t[1]);
--    cris_alu(dc, CC_OP_AND, cpu_R[dc->op2], t[0], t[1], size);
--    return 2;
--}
--
--static int dec_lz_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    LOG_DIS("lz $r%u, $r%u\n",
--            dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    t0 = tcg_temp_new();
--    dec_prep_alu_r(dc, dc->op1, dc->op2, 4, 0, cpu_R[dc->op2], t0);
--    cris_alu(dc, CC_OP_LZ, cpu_R[dc->op2], cpu_R[dc->op2], t0, 4);
--    return 2;
--}
--
--static int dec_lsl_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--
--    LOG_DIS("lsl.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 0, t[0], t[1]);
--    tcg_gen_andi_tl(t[1], t[1], 63);
--    cris_alu(dc, CC_OP_LSL, cpu_R[dc->op2], t[0], t[1], size);
--    return 2;
--}
--
--static int dec_lsr_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--
--    LOG_DIS("lsr.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 0, t[0], t[1]);
--    tcg_gen_andi_tl(t[1], t[1], 63);
--    cris_alu(dc, CC_OP_LSR, cpu_R[dc->op2], t[0], t[1], size);
--    return 2;
--}
--
--static int dec_asr_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--
--    LOG_DIS("asr.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 1, t[0], t[1]);
--    tcg_gen_andi_tl(t[1], t[1], 63);
--    cris_alu(dc, CC_OP_ASR, cpu_R[dc->op2], t[0], t[1], size);
--    return 2;
--}
--
--static int dec_muls_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--
--    LOG_DIS("muls.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZV);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 1, t[0], t[1]);
--
--    cris_alu(dc, CC_OP_MULS, cpu_R[dc->op2], t[0], t[1], 4);
--    return 2;
--}
--
--static int dec_mulu_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--
--    LOG_DIS("mulu.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZV);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 0, t[0], t[1]);
--
--    cris_alu(dc, CC_OP_MULU, cpu_R[dc->op2], t[0], t[1], 4);
--    return 2;
--}
--
--
--static int dec_dstep_r(CPUCRISState *env, DisasContext *dc)
--{
--    LOG_DIS("dstep $r%u, $r%u\n", dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu(dc, CC_OP_DSTEP,
--            cpu_R[dc->op2], cpu_R[dc->op2], cpu_R[dc->op1], 4);
--    return 2;
--}
--
--static int dec_xor_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--    LOG_DIS("xor.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--    BUG_ON(size != 4); /* xor is dword.  */
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 0, t[0], t[1]);
--
--    cris_alu(dc, CC_OP_XOR, cpu_R[dc->op2], t[0], t[1], 4);
--    return 2;
--}
--
--static int dec_bound_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv l0;
--    int size = memsize_zz(dc);
--    LOG_DIS("bound.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    l0 = tcg_temp_new();
--    dec_prep_move_r(dc, dc->op1, dc->op2, size, 0, l0);
--    cris_alu(dc, CC_OP_BOUND, cpu_R[dc->op2], cpu_R[dc->op2], l0, 4);
--    return 2;
--}
--
--static int dec_cmp_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--    LOG_DIS("cmp.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 0, t[0], t[1]);
--
--    cris_alu(dc, CC_OP_CMP, cpu_R[dc->op2], t[0], t[1], size);
--    return 2;
--}
--
--static int dec_abs_r(CPUCRISState *env, DisasContext *dc)
--{
--    LOG_DIS("abs $r%u, $r%u\n",
--            dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZ);
--
--    tcg_gen_abs_tl(cpu_R[dc->op2], cpu_R[dc->op1]);
--    cris_alu(dc, CC_OP_MOVE,
--            cpu_R[dc->op2], cpu_R[dc->op2], cpu_R[dc->op2], 4);
--    return 2;
--}
--
--static int dec_add_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--    LOG_DIS("add.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 0, t[0], t[1]);
--
--    cris_alu(dc, CC_OP_ADD, cpu_R[dc->op2], t[0], t[1], size);
--    return 2;
--}
--
--static int dec_addc_r(CPUCRISState *env, DisasContext *dc)
--{
--    LOG_DIS("addc $r%u, $r%u\n",
--            dc->op1, dc->op2);
--    cris_evaluate_flags(dc);
--
--    /* Set for this insn.  */
--    dc->flags_x = X_FLAG;
--
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_ADDC,
--         cpu_R[dc->op2], cpu_R[dc->op2], cpu_R[dc->op1], 4);
--    return 2;
--}
--
--static int dec_mcp_r(CPUCRISState *env, DisasContext *dc)
--{
--    LOG_DIS("mcp $p%u, $r%u\n",
--             dc->op2, dc->op1);
--    cris_evaluate_flags(dc);
--    cris_cc_mask(dc, CC_MASK_RNZV);
--    cris_alu(dc, CC_OP_MCP,
--            cpu_R[dc->op1], cpu_R[dc->op1], cpu_PR[dc->op2], 4);
--    return 2;
--}
--
--#if DISAS_CRIS
--static char * swapmode_name(int mode, char *modename) {
--    int i = 0;
--    if (mode & 8) {
--        modename[i++] = 'n';
--    }
--    if (mode & 4) {
--        modename[i++] = 'w';
--    }
--    if (mode & 2) {
--        modename[i++] = 'b';
--    }
--    if (mode & 1) {
--        modename[i++] = 'r';
--    }
--    modename[i++] = 0;
--    return modename;
--}
--#endif
--
--static int dec_swap_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--#if DISAS_CRIS
--    char modename[4];
--#endif
--    LOG_DIS("swap%s $r%u\n",
--             swapmode_name(dc->op2, modename), dc->op1);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--    t0 = tcg_temp_new();
--    tcg_gen_mov_tl(t0, cpu_R[dc->op1]);
--    if (dc->op2 & 8) {
--        tcg_gen_not_tl(t0, t0);
--    }
--    if (dc->op2 & 4) {
--        t_gen_swapw(t0, t0);
--    }
--    if (dc->op2 & 2) {
--        t_gen_swapb(t0, t0);
--    }
--    if (dc->op2 & 1) {
--        t_gen_swapr(t0, t0);
--    }
--    cris_alu(dc, CC_OP_MOVE, cpu_R[dc->op1], cpu_R[dc->op1], t0, 4);
--    return 2;
--}
--
--static int dec_or_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--    LOG_DIS("or.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 0, t[0], t[1]);
--    cris_alu(dc, CC_OP_OR, cpu_R[dc->op2], t[0], t[1], size);
--    return 2;
--}
--
--static int dec_addi_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    LOG_DIS("addi.%c $r%u, $r%u\n",
--            memsize_char(memsize_zz(dc)), dc->op2, dc->op1);
--    cris_cc_mask(dc, 0);
--    t0 = tcg_temp_new();
--    tcg_gen_shli_tl(t0, cpu_R[dc->op2], dc->zzsize);
--    tcg_gen_add_tl(cpu_R[dc->op1], cpu_R[dc->op1], t0);
--    return 2;
--}
--
--static int dec_addi_acr(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    LOG_DIS("addi.%c $r%u, $r%u, $acr\n",
--          memsize_char(memsize_zz(dc)), dc->op2, dc->op1);
--    cris_cc_mask(dc, 0);
--    t0 = tcg_temp_new();
--    tcg_gen_shli_tl(t0, cpu_R[dc->op2], dc->zzsize);
--    tcg_gen_add_tl(cpu_R[R_ACR], cpu_R[dc->op1], t0);
--    return 2;
--}
--
--static int dec_neg_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--    LOG_DIS("neg.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 0, t[0], t[1]);
--
--    cris_alu(dc, CC_OP_NEG, cpu_R[dc->op2], t[0], t[1], size);
--    return 2;
--}
--
--static int dec_btst_r(CPUCRISState *env, DisasContext *dc)
--{
--    LOG_DIS("btst $r%u, $r%u\n",
--            dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_evaluate_flags(dc);
--        gen_helper_btst(cpu_PR[PR_CCS], tcg_env, cpu_R[dc->op2],
--            cpu_R[dc->op1], cpu_PR[PR_CCS]);
--    cris_alu(dc, CC_OP_MOVE, cpu_R[dc->op2],
--         cpu_R[dc->op2], cpu_R[dc->op2], 4);
--    cris_update_cc_op(dc, CC_OP_FLAGS, 4);
--    dc->flags_uptodate = 1;
--    return 2;
--}
--
--static int dec_sub_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int size = memsize_zz(dc);
--    LOG_DIS("sub.%c $r%u, $r%u\n",
--            memsize_char(size), dc->op1, dc->op2);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu_alloc_temps(dc, size, t);
--    dec_prep_alu_r(dc, dc->op1, dc->op2, size, 0, t[0], t[1]);
--    cris_alu(dc, CC_OP_SUB, cpu_R[dc->op2], t[0], t[1], size);
--    return 2;
--}
--
--/* Zero extension. From size to dword.  */
--static int dec_movu_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    int size = memsize_z(dc);
--    LOG_DIS("movu.%c $r%u, $r%u\n",
--            memsize_char(size),
--            dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--    t0 = tcg_temp_new();
--    dec_prep_move_r(dc, dc->op1, dc->op2, size, 0, t0);
--    cris_alu(dc, CC_OP_MOVE, cpu_R[dc->op2], cpu_R[dc->op2], t0, 4);
--    return 2;
--}
--
--/* Sign extension. From size to dword.  */
--static int dec_movs_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    int size = memsize_z(dc);
--    LOG_DIS("movs.%c $r%u, $r%u\n",
--            memsize_char(size),
--            dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZ);
--    t0 = tcg_temp_new();
--    /* Size can only be qi or hi.  */
--    t_gen_sext(t0, cpu_R[dc->op1], size);
--    cris_alu(dc, CC_OP_MOVE,
--            cpu_R[dc->op2], cpu_R[dc->op1], t0, 4);
--    return 2;
--}
--
--/* zero extension. From size to dword.  */
--static int dec_addu_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    int size = memsize_z(dc);
--    LOG_DIS("addu.%c $r%u, $r%u\n",
--            memsize_char(size),
--            dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    t0 = tcg_temp_new();
--    /* Size can only be qi or hi.  */
--    t_gen_zext(t0, cpu_R[dc->op1], size);
--    cris_alu(dc, CC_OP_ADD, cpu_R[dc->op2], cpu_R[dc->op2], t0, 4);
--    return 2;
--}
--
--/* Sign extension. From size to dword.  */
--static int dec_adds_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    int size = memsize_z(dc);
--    LOG_DIS("adds.%c $r%u, $r%u\n",
--            memsize_char(size),
--            dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    t0 = tcg_temp_new();
--    /* Size can only be qi or hi.  */
--    t_gen_sext(t0, cpu_R[dc->op1], size);
--    cris_alu(dc, CC_OP_ADD,
--            cpu_R[dc->op2], cpu_R[dc->op2], t0, 4);
--    return 2;
--}
--
--/* Zero extension. From size to dword.  */
--static int dec_subu_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    int size = memsize_z(dc);
--    LOG_DIS("subu.%c $r%u, $r%u\n",
--            memsize_char(size),
--            dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    t0 = tcg_temp_new();
--    /* Size can only be qi or hi.  */
--    t_gen_zext(t0, cpu_R[dc->op1], size);
--    cris_alu(dc, CC_OP_SUB,
--            cpu_R[dc->op2], cpu_R[dc->op2], t0, 4);
--    return 2;
--}
--
--/* Sign extension. From size to dword.  */
--static int dec_subs_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    int size = memsize_z(dc);
--    LOG_DIS("subs.%c $r%u, $r%u\n",
--            memsize_char(size),
--            dc->op1, dc->op2);
--
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    t0 = tcg_temp_new();
--    /* Size can only be qi or hi.  */
--    t_gen_sext(t0, cpu_R[dc->op1], size);
--    cris_alu(dc, CC_OP_SUB,
--            cpu_R[dc->op2], cpu_R[dc->op2], t0, 4);
--    return 2;
--}
--
--static int dec_setclrf(CPUCRISState *env, DisasContext *dc)
--{
--    uint32_t flags;
--    int set = (~dc->opcode >> 2) & 1;
--
--
--    flags = (EXTRACT_FIELD(dc->ir, 12, 15) << 4)
--        | EXTRACT_FIELD(dc->ir, 0, 3);
--    if (set && flags == 0) {
--        LOG_DIS("nop\n");
--        return 2;
--    } else if (!set && (flags & 0x20)) {
--        LOG_DIS("di\n");
--    } else {
--        LOG_DIS("%sf %x\n", set ? "set" : "clr", flags);
--    }
--
--    /* User space is not allowed to touch these. Silently ignore.  */
--    if (dc->tb_flags & U_FLAG) {
--        flags &= ~(S_FLAG | I_FLAG | U_FLAG);
--    }
--
--    if (flags & X_FLAG) {
--        if (set) {
--            dc->flags_x = X_FLAG;
--        } else {
--            dc->flags_x = 0;
--        }
--    }
--
--    /* Break the TB if any of the SPI flag changes.  */
--    if (flags & (P_FLAG | S_FLAG)) {
--        tcg_gen_movi_tl(env_pc, dc->pc + 2);
--        dc->base.is_jmp = DISAS_UPDATE;
--        dc->cpustate_changed = 1;
--    }
--
--    /* For the I flag, only act on posedge.  */
--    if ((flags & I_FLAG)) {
--        tcg_gen_movi_tl(env_pc, dc->pc + 2);
--        dc->base.is_jmp = DISAS_UPDATE;
--        dc->cpustate_changed = 1;
--    }
--
--
--    /* Simply decode the flags.  */
--    cris_evaluate_flags(dc);
--    cris_update_cc_op(dc, CC_OP_FLAGS, 4);
--    cris_update_cc_x(dc);
--    tcg_gen_movi_tl(cc_op, dc->cc_op);
--
--    if (set) {
--        if (!(dc->tb_flags & U_FLAG) && (flags & U_FLAG)) {
--            /* Enter user mode.  */
--            t_gen_mov_env_TN(ksp, cpu_R[R_SP]);
--            tcg_gen_mov_tl(cpu_R[R_SP], cpu_PR[PR_USP]);
--            dc->cpustate_changed = 1;
--        }
--        tcg_gen_ori_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], flags);
--    } else {
--        tcg_gen_andi_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], ~flags);
--    }
--
--    dc->flags_uptodate = 1;
--    dc->clear_x = 0;
--    return 2;
--}
--
--static int dec_move_rs(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv c2, c1;
--    LOG_DIS("move $r%u, $s%u\n", dc->op1, dc->op2);
--    c1 = tcg_constant_tl(dc->op1);
--    c2 = tcg_constant_tl(dc->op2);
--    cris_cc_mask(dc, 0);
--    gen_helper_movl_sreg_reg(tcg_env, c2, c1);
--    return 2;
--}
--static int dec_move_sr(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv c2, c1;
--    LOG_DIS("move $s%u, $r%u\n", dc->op2, dc->op1);
--    c1 = tcg_constant_tl(dc->op1);
--    c2 = tcg_constant_tl(dc->op2);
--    cris_cc_mask(dc, 0);
--    gen_helper_movl_reg_sreg(tcg_env, c1, c2);
--    return 2;
--}
--
--static int dec_move_rp(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    LOG_DIS("move $r%u, $p%u\n", dc->op1, dc->op2);
--    cris_cc_mask(dc, 0);
--
--    t[0] = tcg_temp_new();
--    if (dc->op2 == PR_CCS) {
--        cris_evaluate_flags(dc);
--        tcg_gen_mov_tl(t[0], cpu_R[dc->op1]);
--        if (dc->tb_flags & U_FLAG) {
--            t[1] = tcg_temp_new();
--            /* User space is not allowed to touch all flags.  */
--            tcg_gen_andi_tl(t[0], t[0], 0x39f);
--            tcg_gen_andi_tl(t[1], cpu_PR[PR_CCS], ~0x39f);
--            tcg_gen_or_tl(t[0], t[1], t[0]);
--        }
--    } else {
--        tcg_gen_mov_tl(t[0], cpu_R[dc->op1]);
--    }
--
--    t_gen_mov_preg_TN(dc, dc->op2, t[0]);
--    if (dc->op2 == PR_CCS) {
--        cris_update_cc_op(dc, CC_OP_FLAGS, 4);
--        dc->flags_uptodate = 1;
--    }
--    return 2;
--}
--static int dec_move_pr(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    LOG_DIS("move $p%u, $r%u\n", dc->op2, dc->op1);
--    cris_cc_mask(dc, 0);
--
--    if (dc->op2 == PR_CCS) {
--        cris_evaluate_flags(dc);
--    }
--
--    if (dc->op2 == PR_DZ) {
--        tcg_gen_movi_tl(cpu_R[dc->op1], 0);
--    } else {
--        t0 = tcg_temp_new();
--        t_gen_mov_TN_preg(t0, dc->op2);
--        cris_alu(dc, CC_OP_MOVE,
--                cpu_R[dc->op1], cpu_R[dc->op1], t0,
--                preg_sizes[dc->op2]);
--    }
--    return 2;
--}
--
--static int dec_move_mr(CPUCRISState *env, DisasContext *dc)
--{
--    int memsize = memsize_zz(dc);
--    int insn_len;
--    LOG_DIS("move.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--                    dc->op2);
--
--    if (memsize == 4) {
--        insn_len = dec_prep_move_m(env, dc, 0, 4, cpu_R[dc->op2]);
--        cris_cc_mask(dc, CC_MASK_NZ);
--        cris_update_cc_op(dc, CC_OP_MOVE, 4);
--        cris_update_cc_x(dc);
--        cris_update_result(dc, cpu_R[dc->op2]);
--    } else {
--        TCGv t0;
--
--        t0 = tcg_temp_new();
--        insn_len = dec_prep_move_m(env, dc, 0, memsize, t0);
--        cris_cc_mask(dc, CC_MASK_NZ);
--        cris_alu(dc, CC_OP_MOVE,
--                cpu_R[dc->op2], cpu_R[dc->op2], t0, memsize);
--    }
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static inline void cris_alu_m_alloc_temps(TCGv *t)
--{
--    t[0] = tcg_temp_new();
--    t[1] = tcg_temp_new();
--}
--
--static int dec_movs_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_z(dc);
--    int insn_len;
--    LOG_DIS("movs.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--    /* sign extend.  */
--        insn_len = dec_prep_alu_m(env, dc, 1, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu(dc, CC_OP_MOVE,
--            cpu_R[dc->op2], cpu_R[dc->op2], t[1], 4);
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_addu_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_z(dc);
--    int insn_len;
--    LOG_DIS("addu.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--    /* sign extend.  */
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_ADD,
--            cpu_R[dc->op2], cpu_R[dc->op2], t[1], 4);
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_adds_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_z(dc);
--    int insn_len;
--    LOG_DIS("adds.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--    /* sign extend.  */
--        insn_len = dec_prep_alu_m(env, dc, 1, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_ADD, cpu_R[dc->op2], cpu_R[dc->op2], t[1], 4);
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_subu_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_z(dc);
--    int insn_len;
--    LOG_DIS("subu.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--    /* sign extend.  */
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_SUB, cpu_R[dc->op2], cpu_R[dc->op2], t[1], 4);
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_subs_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_z(dc);
--    int insn_len;
--    LOG_DIS("subs.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--    /* sign extend.  */
--        insn_len = dec_prep_alu_m(env, dc, 1, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_SUB, cpu_R[dc->op2], cpu_R[dc->op2], t[1], 4);
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_movu_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_z(dc);
--    int insn_len;
--
--    LOG_DIS("movu.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu(dc, CC_OP_MOVE, cpu_R[dc->op2], cpu_R[dc->op2], t[1], 4);
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_cmpu_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_z(dc);
--    int insn_len;
--    LOG_DIS("cmpu.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_CMP, cpu_R[dc->op2], cpu_R[dc->op2], t[1], 4);
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_cmps_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_z(dc);
--    int insn_len;
--    LOG_DIS("cmps.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 1, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_CMP,
--            cpu_R[dc->op2], cpu_R[dc->op2], t[1],
--            memsize_zz(dc));
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_cmp_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_zz(dc);
--    int insn_len;
--    LOG_DIS("cmp.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_CMP,
--            cpu_R[dc->op2], cpu_R[dc->op2], t[1],
--            memsize_zz(dc));
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_test_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2], c;
--    int memsize = memsize_zz(dc);
--    int insn_len;
--    LOG_DIS("test.%c [$r%u%s] op2=%x\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_evaluate_flags(dc);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    tcg_gen_andi_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], ~3);
--
--    c = tcg_constant_tl(0);
--    cris_alu(dc, CC_OP_CMP,
--         cpu_R[dc->op2], t[1], c, memsize_zz(dc));
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_and_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_zz(dc);
--    int insn_len;
--    LOG_DIS("and.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu(dc, CC_OP_AND, cpu_R[dc->op2], t[0], t[1], memsize_zz(dc));
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_add_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_zz(dc);
--    int insn_len;
--    LOG_DIS("add.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_ADD,
--         cpu_R[dc->op2], t[0], t[1], memsize_zz(dc));
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_addo_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_zz(dc);
--    int insn_len;
--    LOG_DIS("add.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 1, memsize, t[0], t[1]);
--    cris_cc_mask(dc, 0);
--    cris_alu(dc, CC_OP_ADD, cpu_R[R_ACR], t[0], t[1], 4);
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_bound_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv l[2];
--    int memsize = memsize_zz(dc);
--    int insn_len;
--    LOG_DIS("bound.%c [$r%u%s, $r%u\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    l[0] = tcg_temp_new();
--    l[1] = tcg_temp_new();
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, l[0], l[1]);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu(dc, CC_OP_BOUND, cpu_R[dc->op2], l[0], l[1], 4);
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_addc_mr(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int insn_len = 2;
--    LOG_DIS("addc [$r%u%s, $r%u\n",
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_evaluate_flags(dc);
--
--    /* Set for this insn.  */
--    dc->flags_x = X_FLAG;
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 0, 4, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_ADDC, cpu_R[dc->op2], t[0], t[1], 4);
--    do_postinc(dc, 4);
--    return insn_len;
--}
--
--static int dec_sub_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_zz(dc);
--    int insn_len;
--    LOG_DIS("sub.%c [$r%u%s, $r%u ir=%x zz=%x\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2, dc->ir, dc->zzsize);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    cris_alu(dc, CC_OP_SUB, cpu_R[dc->op2], t[0], t[1], memsize);
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_or_m(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_zz(dc);
--    int insn_len;
--    LOG_DIS("or.%c [$r%u%s, $r%u pc=%x\n",
--            memsize_char(memsize),
--            dc->op1, dc->postinc ? "+]" : "]",
--            dc->op2, dc->pc);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, CC_MASK_NZ);
--    cris_alu(dc, CC_OP_OR,
--            cpu_R[dc->op2], t[0], t[1], memsize_zz(dc));
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_move_mp(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t[2];
--    int memsize = memsize_zz(dc);
--    int insn_len = 2;
--
--    LOG_DIS("move.%c [$r%u%s, $p%u\n",
--            memsize_char(memsize),
--            dc->op1,
--            dc->postinc ? "+]" : "]",
--            dc->op2);
--
--    cris_alu_m_alloc_temps(t);
--        insn_len = dec_prep_alu_m(env, dc, 0, memsize, t[0], t[1]);
--    cris_cc_mask(dc, 0);
--    if (dc->op2 == PR_CCS) {
--        cris_evaluate_flags(dc);
--        if (dc->tb_flags & U_FLAG) {
--            /* User space is not allowed to touch all flags.  */
--            tcg_gen_andi_tl(t[1], t[1], 0x39f);
--            tcg_gen_andi_tl(t[0], cpu_PR[PR_CCS], ~0x39f);
--            tcg_gen_or_tl(t[1], t[0], t[1]);
--        }
--    }
--
--    t_gen_mov_preg_TN(dc, dc->op2, t[1]);
--
--    do_postinc(dc, memsize);
--    return insn_len;
--}
--
--static int dec_move_pm(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv t0;
--    int memsize;
--
--    memsize = preg_sizes[dc->op2];
--
--    LOG_DIS("move.%c $p%u, [$r%u%s\n",
--            memsize_char(memsize),
--            dc->op2, dc->op1, dc->postinc ? "+]" : "]");
--
--    /* prepare store. Address in T0, value in T1.  */
--    if (dc->op2 == PR_CCS) {
--        cris_evaluate_flags(dc);
--    }
--    t0 = tcg_temp_new();
--    t_gen_mov_TN_preg(t0, dc->op2);
--    cris_flush_cc_state(dc);
--    gen_store(dc, cpu_R[dc->op1], t0, memsize);
--
--    cris_cc_mask(dc, 0);
--    if (dc->postinc) {
--        tcg_gen_addi_tl(cpu_R[dc->op1], cpu_R[dc->op1], memsize);
--    }
--    return 2;
--}
--
--static int dec_movem_mr(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv_i64 tmp[16];
--    TCGv tmp32;
--    TCGv addr;
--    int i;
--    int nr = dc->op2 + 1;
--
--    LOG_DIS("movem [$r%u%s, $r%u\n", dc->op1,
--            dc->postinc ? "+]" : "]", dc->op2);
--
--    addr = tcg_temp_new();
--    /* There are probably better ways of doing this.  */
--    cris_flush_cc_state(dc);
--    for (i = 0; i < (nr >> 1); i++) {
--        tmp[i] = tcg_temp_new_i64();
--        tcg_gen_addi_tl(addr, cpu_R[dc->op1], i * 8);
--        gen_load64(dc, tmp[i], addr);
--    }
--    if (nr & 1) {
--        tmp32 = tcg_temp_new_i32();
--        tcg_gen_addi_tl(addr, cpu_R[dc->op1], i * 8);
--        gen_load(dc, tmp32, addr, 4, 0);
--    } else {
--        tmp32 = NULL;
--    }
--
--    for (i = 0; i < (nr >> 1); i++) {
--        tcg_gen_extrl_i64_i32(cpu_R[i * 2], tmp[i]);
--        tcg_gen_shri_i64(tmp[i], tmp[i], 32);
--        tcg_gen_extrl_i64_i32(cpu_R[i * 2 + 1], tmp[i]);
--    }
--    if (nr & 1) {
--        tcg_gen_mov_tl(cpu_R[dc->op2], tmp32);
--    }
--
--    /* writeback the updated pointer value.  */
--    if (dc->postinc) {
--        tcg_gen_addi_tl(cpu_R[dc->op1], cpu_R[dc->op1], nr * 4);
--    }
--
--    /* gen_load might want to evaluate the previous insns flags.  */
--    cris_cc_mask(dc, 0);
--    return 2;
--}
--
--static int dec_movem_rm(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv tmp;
--    TCGv addr;
--    int i;
--
--    LOG_DIS("movem $r%u, [$r%u%s\n", dc->op2, dc->op1,
--            dc->postinc ? "+]" : "]");
--
--    cris_flush_cc_state(dc);
--
--    tmp = tcg_temp_new();
--    addr = tcg_temp_new();
--    tcg_gen_movi_tl(tmp, 4);
--    tcg_gen_mov_tl(addr, cpu_R[dc->op1]);
--    for (i = 0; i <= dc->op2; i++) {
--        /* Displace addr.  */
--        /* Perform the store.  */
--        gen_store(dc, addr, cpu_R[i], 4);
--        tcg_gen_add_tl(addr, addr, tmp);
--    }
--    if (dc->postinc) {
--        tcg_gen_mov_tl(cpu_R[dc->op1], addr);
--    }
--    cris_cc_mask(dc, 0);
--    return 2;
--}
--
--static int dec_move_rm(CPUCRISState *env, DisasContext *dc)
--{
--    int memsize;
--
--    memsize = memsize_zz(dc);
--
--    LOG_DIS("move.%c $r%u, [$r%u]\n",
--            memsize_char(memsize), dc->op2, dc->op1);
--
--    /* prepare store.  */
--    cris_flush_cc_state(dc);
--    gen_store(dc, cpu_R[dc->op1], cpu_R[dc->op2], memsize);
--
--    if (dc->postinc) {
--        tcg_gen_addi_tl(cpu_R[dc->op1], cpu_R[dc->op1], memsize);
--    }
--    cris_cc_mask(dc, 0);
--    return 2;
--}
--
--static int dec_lapcq(CPUCRISState *env, DisasContext *dc)
--{
--    LOG_DIS("lapcq %x, $r%u\n",
--            dc->pc + dc->op1*2, dc->op2);
--    cris_cc_mask(dc, 0);
--    tcg_gen_movi_tl(cpu_R[dc->op2], dc->pc + dc->op1 * 2);
--    return 2;
--}
--
--static int dec_lapc_im(CPUCRISState *env, DisasContext *dc)
--{
--    unsigned int rd;
--    int32_t imm;
--    int32_t pc;
--
--    rd = dc->op2;
--
--    cris_cc_mask(dc, 0);
--    imm = cris_fetch(env, dc, dc->pc + 2, 4, 0);
--    LOG_DIS("lapc 0x%x, $r%u\n", imm + dc->pc, dc->op2);
--
--    pc = dc->pc;
--    pc += imm;
--    tcg_gen_movi_tl(cpu_R[rd], pc);
--    return 6;
--}
--
--/* Jump to special reg.  */
--static int dec_jump_p(CPUCRISState *env, DisasContext *dc)
--{
--    LOG_DIS("jump $p%u\n", dc->op2);
--
--    if (dc->op2 == PR_CCS) {
--        cris_evaluate_flags(dc);
--    }
--    t_gen_mov_TN_preg(env_btarget, dc->op2);
--    /* rete will often have low bit set to indicate delayslot.  */
--    tcg_gen_andi_tl(env_btarget, env_btarget, ~1);
--    cris_cc_mask(dc, 0);
--    cris_prepare_jmp(dc, JMP_INDIRECT);
--    return 2;
--}
--
--/* Jump and save.  */
--static int dec_jas_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv c;
--    LOG_DIS("jas $r%u, $p%u\n", dc->op1, dc->op2);
--    cris_cc_mask(dc, 0);
--    /* Store the return address in Pd.  */
--    tcg_gen_mov_tl(env_btarget, cpu_R[dc->op1]);
--    if (dc->op2 > 15) {
--        abort();
--    }
--    c = tcg_constant_tl(dc->pc + 4);
--    t_gen_mov_preg_TN(dc, dc->op2, c);
--
--    cris_prepare_jmp(dc, JMP_INDIRECT);
--    return 2;
--}
--
--static int dec_jas_im(CPUCRISState *env, DisasContext *dc)
--{
--    uint32_t imm;
--    TCGv c;
--
--    imm = cris_fetch(env, dc, dc->pc + 2, 4, 0);
--
--    LOG_DIS("jas 0x%x\n", imm);
--    cris_cc_mask(dc, 0);
--    c = tcg_constant_tl(dc->pc + 8);
--    /* Store the return address in Pd.  */
--    t_gen_mov_preg_TN(dc, dc->op2, c);
--
--    dc->jmp_pc = imm;
--    cris_prepare_jmp(dc, JMP_DIRECT);
--    return 6;
--}
--
--static int dec_jasc_im(CPUCRISState *env, DisasContext *dc)
--{
--    uint32_t imm;
--    TCGv c;
--
--    imm = cris_fetch(env, dc, dc->pc + 2, 4, 0);
--
--    LOG_DIS("jasc 0x%x\n", imm);
--    cris_cc_mask(dc, 0);
--    c = tcg_constant_tl(dc->pc + 8 + 4);
--    /* Store the return address in Pd.  */
--    t_gen_mov_preg_TN(dc, dc->op2, c);
--
--    dc->jmp_pc = imm;
--    cris_prepare_jmp(dc, JMP_DIRECT);
--    return 6;
--}
--
--static int dec_jasc_r(CPUCRISState *env, DisasContext *dc)
--{
--    TCGv c;
--    LOG_DIS("jasc_r $r%u, $p%u\n", dc->op1, dc->op2);
--    cris_cc_mask(dc, 0);
--    /* Store the return address in Pd.  */
--    tcg_gen_mov_tl(env_btarget, cpu_R[dc->op1]);
--    c = tcg_constant_tl(dc->pc + 4 + 4);
--    t_gen_mov_preg_TN(dc, dc->op2, c);
--    cris_prepare_jmp(dc, JMP_INDIRECT);
--    return 2;
--}
--
--static int dec_bcc_im(CPUCRISState *env, DisasContext *dc)
--{
--    int32_t offset;
--    uint32_t cond = dc->op2;
--
--    offset = cris_fetch(env, dc, dc->pc + 2, 2, 1);
--
--    LOG_DIS("b%s %d pc=%x dst=%x\n",
--            cc_name(cond), offset,
--            dc->pc, dc->pc + offset);
--
--    cris_cc_mask(dc, 0);
--    /* op2 holds the condition-code.  */
--    cris_prepare_cc_branch(dc, offset, cond);
--    return 4;
--}
--
--static int dec_bas_im(CPUCRISState *env, DisasContext *dc)
--{
--    int32_t simm;
--    TCGv c;
--
--    simm = cris_fetch(env, dc, dc->pc + 2, 4, 0);
--
--    LOG_DIS("bas 0x%x, $p%u\n", dc->pc + simm, dc->op2);
--    cris_cc_mask(dc, 0);
--    c = tcg_constant_tl(dc->pc + 8);
--    /* Store the return address in Pd.  */
--    t_gen_mov_preg_TN(dc, dc->op2, c);
--
--    dc->jmp_pc = dc->pc + simm;
--    cris_prepare_jmp(dc, JMP_DIRECT);
--    return 6;
--}
--
--static int dec_basc_im(CPUCRISState *env, DisasContext *dc)
--{
--    int32_t simm;
--    TCGv c;
--    simm = cris_fetch(env, dc, dc->pc + 2, 4, 0);
--
--    LOG_DIS("basc 0x%x, $p%u\n", dc->pc + simm, dc->op2);
--    cris_cc_mask(dc, 0);
--    c = tcg_constant_tl(dc->pc + 12);
--    /* Store the return address in Pd.  */
--    t_gen_mov_preg_TN(dc, dc->op2, c);
--
--    dc->jmp_pc = dc->pc + simm;
--    cris_prepare_jmp(dc, JMP_DIRECT);
--    return 6;
--}
--
--static int dec_rfe_etc(CPUCRISState *env, DisasContext *dc)
--{
--    cris_cc_mask(dc, 0);
--
--    if (dc->op2 == 15) {
--        tcg_gen_st_i32(tcg_constant_i32(1), tcg_env,
--                       -offsetof(CRISCPU, env) + offsetof(CPUState, halted));
--        tcg_gen_movi_tl(env_pc, dc->pc + 2);
--        t_gen_raise_exception(EXCP_HLT);
--        dc->base.is_jmp = DISAS_NORETURN;
--        return 2;
--    }
--
--    switch (dc->op2 & 7) {
--    case 2:
--        /* rfe.  */
--        LOG_DIS("rfe\n");
--        cris_evaluate_flags(dc);
--        gen_helper_rfe(tcg_env);
--        dc->base.is_jmp = DISAS_UPDATE;
--        dc->cpustate_changed = true;
--        break;
--    case 5:
--        /* rfn.  */
--        LOG_DIS("rfn\n");
--        cris_evaluate_flags(dc);
--        gen_helper_rfn(tcg_env);
--        dc->base.is_jmp = DISAS_UPDATE;
--        dc->cpustate_changed = true;
--        break;
--    case 6:
--        LOG_DIS("break %d\n", dc->op1);
--        cris_evaluate_flags(dc);
--        /* break.  */
--        tcg_gen_movi_tl(env_pc, dc->pc + 2);
--
--        /* Breaks start at 16 in the exception vector.  */
--        t_gen_movi_env_TN(trap_vector, dc->op1 + 16);
--        t_gen_raise_exception(EXCP_BREAK);
--        dc->base.is_jmp = DISAS_NORETURN;
--        break;
--    default:
--        printf("op2=%x\n", dc->op2);
--        BUG();
--        break;
--
--    }
--    return 2;
--}
--
--static int dec_ftag_fidx_d_m(CPUCRISState *env, DisasContext *dc)
--{
--    return 2;
--}
--
--static int dec_ftag_fidx_i_m(CPUCRISState *env, DisasContext *dc)
--{
--    return 2;
--}
--
--static int dec_null(CPUCRISState *env, DisasContext *dc)
--{
--    printf("unknown insn pc=%x opc=%x op1=%x op2=%x\n",
--        dc->pc, dc->opcode, dc->op1, dc->op2);
--    fflush(NULL);
--    BUG();
--    return 2;
--}
--
--static const struct decoder_info {
--    struct {
--        uint32_t bits;
--        uint32_t mask;
--    };
--    int (*dec)(CPUCRISState *env, DisasContext *dc);
--} decinfo[] = {
--    /* Order matters here.  */
--    {DEC_MOVEQ, dec_moveq},
--    {DEC_BTSTQ, dec_btstq},
--    {DEC_CMPQ, dec_cmpq},
--    {DEC_ADDOQ, dec_addoq},
--    {DEC_ADDQ, dec_addq},
--    {DEC_SUBQ, dec_subq},
--    {DEC_ANDQ, dec_andq},
--    {DEC_ORQ, dec_orq},
--    {DEC_ASRQ, dec_asrq},
--    {DEC_LSLQ, dec_lslq},
--    {DEC_LSRQ, dec_lsrq},
--    {DEC_BCCQ, dec_bccq},
--
--    {DEC_BCC_IM, dec_bcc_im},
--    {DEC_JAS_IM, dec_jas_im},
--    {DEC_JAS_R, dec_jas_r},
--    {DEC_JASC_IM, dec_jasc_im},
--    {DEC_JASC_R, dec_jasc_r},
--    {DEC_BAS_IM, dec_bas_im},
--    {DEC_BASC_IM, dec_basc_im},
--    {DEC_JUMP_P, dec_jump_p},
--    {DEC_LAPC_IM, dec_lapc_im},
--    {DEC_LAPCQ, dec_lapcq},
--
--    {DEC_RFE_ETC, dec_rfe_etc},
--    {DEC_ADDC_MR, dec_addc_mr},
--
--    {DEC_MOVE_MP, dec_move_mp},
--    {DEC_MOVE_PM, dec_move_pm},
--    {DEC_MOVEM_MR, dec_movem_mr},
--    {DEC_MOVEM_RM, dec_movem_rm},
--    {DEC_MOVE_PR, dec_move_pr},
--    {DEC_SCC_R, dec_scc_r},
--    {DEC_SETF, dec_setclrf},
--    {DEC_CLEARF, dec_setclrf},
--
--    {DEC_MOVE_SR, dec_move_sr},
--    {DEC_MOVE_RP, dec_move_rp},
--    {DEC_SWAP_R, dec_swap_r},
--    {DEC_ABS_R, dec_abs_r},
--    {DEC_LZ_R, dec_lz_r},
--    {DEC_MOVE_RS, dec_move_rs},
--    {DEC_BTST_R, dec_btst_r},
--    {DEC_ADDC_R, dec_addc_r},
--
--    {DEC_DSTEP_R, dec_dstep_r},
--    {DEC_XOR_R, dec_xor_r},
--    {DEC_MCP_R, dec_mcp_r},
--    {DEC_CMP_R, dec_cmp_r},
--
--    {DEC_ADDI_R, dec_addi_r},
--    {DEC_ADDI_ACR, dec_addi_acr},
--
--    {DEC_ADD_R, dec_add_r},
--    {DEC_SUB_R, dec_sub_r},
--
--    {DEC_ADDU_R, dec_addu_r},
--    {DEC_ADDS_R, dec_adds_r},
--    {DEC_SUBU_R, dec_subu_r},
--    {DEC_SUBS_R, dec_subs_r},
--    {DEC_LSL_R, dec_lsl_r},
--
--    {DEC_AND_R, dec_and_r},
--    {DEC_OR_R, dec_or_r},
--    {DEC_BOUND_R, dec_bound_r},
--    {DEC_ASR_R, dec_asr_r},
--    {DEC_LSR_R, dec_lsr_r},
--
--    {DEC_MOVU_R, dec_movu_r},
--    {DEC_MOVS_R, dec_movs_r},
--    {DEC_NEG_R, dec_neg_r},
--    {DEC_MOVE_R, dec_move_r},
--
--    {DEC_FTAG_FIDX_I_M, dec_ftag_fidx_i_m},
--    {DEC_FTAG_FIDX_D_M, dec_ftag_fidx_d_m},
--
--    {DEC_MULS_R, dec_muls_r},
--    {DEC_MULU_R, dec_mulu_r},
--
--    {DEC_ADDU_M, dec_addu_m},
--    {DEC_ADDS_M, dec_adds_m},
--    {DEC_SUBU_M, dec_subu_m},
--    {DEC_SUBS_M, dec_subs_m},
--
--    {DEC_CMPU_M, dec_cmpu_m},
--    {DEC_CMPS_M, dec_cmps_m},
--    {DEC_MOVU_M, dec_movu_m},
--    {DEC_MOVS_M, dec_movs_m},
--
--    {DEC_CMP_M, dec_cmp_m},
--    {DEC_ADDO_M, dec_addo_m},
--    {DEC_BOUND_M, dec_bound_m},
--    {DEC_ADD_M, dec_add_m},
--    {DEC_SUB_M, dec_sub_m},
--    {DEC_AND_M, dec_and_m},
--    {DEC_OR_M, dec_or_m},
--    {DEC_MOVE_RM, dec_move_rm},
--    {DEC_TEST_M, dec_test_m},
--    {DEC_MOVE_MR, dec_move_mr},
--
--    {{0, 0}, dec_null}
--};
--
--static unsigned int crisv32_decoder(CPUCRISState *env, DisasContext *dc)
--{
--    int insn_len = 2;
--    int i;
--
--    /* Load a halfword onto the instruction register.  */
--    dc->ir = cris_fetch(env, dc, dc->pc, 2, 0);
--
--    /* Now decode it.  */
--    dc->opcode   = EXTRACT_FIELD(dc->ir, 4, 11);
--    dc->op1      = EXTRACT_FIELD(dc->ir, 0, 3);
--    dc->op2      = EXTRACT_FIELD(dc->ir, 12, 15);
--    dc->zsize    = EXTRACT_FIELD(dc->ir, 4, 4);
--    dc->zzsize   = EXTRACT_FIELD(dc->ir, 4, 5);
--    dc->postinc  = EXTRACT_FIELD(dc->ir, 10, 10);
--
--    /* Large switch for all insns.  */
--    for (i = 0; i < ARRAY_SIZE(decinfo); i++) {
--        if ((dc->opcode & decinfo[i].mask) == decinfo[i].bits) {
--            insn_len = decinfo[i].dec(env, dc);
--            break;
--        }
--    }
--
--#if !defined(CONFIG_USER_ONLY)
--    /* Single-stepping ?  */
--    if (dc->tb_flags & S_FLAG) {
--        TCGLabel *l1 = gen_new_label();
--        tcg_gen_brcondi_tl(TCG_COND_NE, cpu_PR[PR_SPC], dc->pc, l1);
--        /* We treat SPC as a break with an odd trap vector.  */
--        cris_evaluate_flags(dc);
--        t_gen_movi_env_TN(trap_vector, 3);
--        tcg_gen_movi_tl(env_pc, dc->pc + insn_len);
--        tcg_gen_movi_tl(cpu_PR[PR_SPC], dc->pc + insn_len);
--        t_gen_raise_exception(EXCP_BREAK);
--        gen_set_label(l1);
--    }
--#endif
--    return insn_len;
--}
--
--#include "translate_v10.c.inc"
--
--/*
-- * Delay slots on QEMU/CRIS.
-- *
-- * If an exception hits on a delayslot, the core will let ERP (the Exception
-- * Return Pointer) point to the branch (the previous) insn and set the lsb to
-- * to give SW a hint that the exception actually hit on the dslot.
-- *
-- * CRIS expects all PC addresses to be 16-bit aligned. The lsb is ignored by
-- * the core and any jmp to an odd addresses will mask off that lsb. It is 
-- * simply there to let sw know there was an exception on a dslot.
-- *
-- * When the software returns from an exception, the branch will re-execute.
-- * On QEMU care needs to be taken when a branch+delayslot sequence is broken
-- * and the branch and delayslot don't share pages.
-- *
-- * The TB containing the branch insn will set up env->btarget and evaluate 
-- * env->btaken. When the translation loop exits we will note that the branch 
-- * sequence is broken and let env->dslot be the size of the branch insn (those
-- * vary in length).
-- *
-- * The TB containing the delayslot will have the PC of its real insn (i.e no lsb
-- * set). It will also expect to have env->dslot setup with the size of the 
-- * delay slot so that env->pc - env->dslot point to the branch insn. This TB 
-- * will execute the dslot and take the branch, either to btarget or just one 
-- * insn ahead.
-- *
-- * When exceptions occur, we check for env->dslot in do_interrupt to detect 
-- * broken branch sequences and setup $erp accordingly (i.e let it point to the
-- * branch and set lsb). Then env->dslot gets cleared so that the exception 
-- * handler can enter. When returning from exceptions (jump $erp) the lsb gets
-- * masked off and we will reexecute the branch insn.
-- *
-- */
--
--static void cris_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
--{
--    DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUCRISState *env = cpu_env(cs);
--    uint32_t tb_flags = dc->base.tb->flags;
--    uint32_t pc_start;
--
--    if (env->pregs[PR_VR] == 32) {
--        dc->decoder = crisv32_decoder;
--        dc->clear_locked_irq = 0;
--    } else {
--        dc->decoder = crisv10_decoder;
--        dc->clear_locked_irq = 1;
--    }
--
--    /*
--     * Odd PC indicates that branch is rexecuting due to exception in the
--     * delayslot, like in real hw.
--     */
--    pc_start = dc->base.pc_first & ~1;
--    dc->base.pc_first = pc_start;
--    dc->base.pc_next = pc_start;
--
--    dc->cpu = env_archcpu(env);
--    dc->ppc = pc_start;
--    dc->pc = pc_start;
--    dc->mem_index = cpu_mmu_index(cs, false);
--    dc->flags_uptodate = 1;
--    dc->flags_x = tb_flags & X_FLAG;
--    dc->cc_x_uptodate = 0;
--    dc->cc_mask = 0;
--    dc->update_cc = 0;
--    dc->clear_prefix = 0;
--    dc->cpustate_changed = 0;
--
--    cris_update_cc_op(dc, CC_OP_FLAGS, 4);
--    dc->cc_size_uptodate = -1;
--
--    /* Decode TB flags.  */
--    dc->tb_flags = tb_flags & (S_FLAG | P_FLAG | U_FLAG | X_FLAG | PFIX_FLAG);
--    dc->delayed_branch = !!(tb_flags & 7);
--    if (dc->delayed_branch) {
--        dc->jmp = JMP_INDIRECT;
--    } else {
--        dc->jmp = JMP_NOJMP;
--    }
--}
--
--static void cris_tr_tb_start(DisasContextBase *db, CPUState *cpu)
--{
--}
--
--static void cris_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
--{
--    DisasContext *dc = container_of(dcbase, DisasContext, base);
--
--    tcg_gen_insn_start(dc->delayed_branch == 1 ? dc->ppc | 1 : dc->pc);
--}
--
--static void cris_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
--{
--    DisasContext *dc = container_of(dcbase, DisasContext, base);
--    unsigned int insn_len;
--
--    /* Pretty disas.  */
--    LOG_DIS("%8.8x:\t", dc->pc);
--
--    dc->clear_x = 1;
--
--    insn_len = dc->decoder(cpu_env(cs), dc);
--    dc->ppc = dc->pc;
--    dc->pc += insn_len;
--    dc->base.pc_next += insn_len;
--
--    if (dc->base.is_jmp == DISAS_NORETURN) {
--        return;
--    }
--
--    if (dc->clear_x) {
--        cris_clear_x_flag(dc);
--    }
--
--    /*
--     * All branches are delayed branches, handled immediately below.
--     * We don't expect to see odd combinations of exit conditions.
--     */
--    assert(dc->base.is_jmp == DISAS_NEXT || dc->cpustate_changed);
--
--    if (dc->delayed_branch && --dc->delayed_branch == 0) {
--        dc->base.is_jmp = DISAS_DBRANCH;
--        return;
--    }
--
--    if (dc->base.is_jmp != DISAS_NEXT) {
--        return;
--    }
--
--    /* Force an update if the per-tb cpu state has changed.  */
--    if (dc->cpustate_changed) {
--        dc->base.is_jmp = DISAS_UPDATE_NEXT;
--        return;
--    }
--
--    /*
--     * FIXME: Only the first insn in the TB should cross a page boundary.
--     * If we can detect the length of the next insn easily, we should.
--     * In the meantime, simply stop when we do cross.
--     */
--    if ((dc->pc ^ dc->base.pc_first) & TARGET_PAGE_MASK) {
--        dc->base.is_jmp = DISAS_TOO_MANY;
--    }
--}
--
--static void cris_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
--{
--    DisasContext *dc = container_of(dcbase, DisasContext, base);
--    DisasJumpType is_jmp = dc->base.is_jmp;
--    target_ulong npc = dc->pc;
--
--    if (is_jmp == DISAS_NORETURN) {
--        /* If we have a broken branch+delayslot sequence, it's too late. */
--        assert(dc->delayed_branch != 1);
--        return;
--    }
--
--    if (dc->clear_locked_irq) {
--        t_gen_movi_env_TN(locked_irq, 0);
--    }
--
--    /* Broken branch+delayslot sequence.  */
--    if (dc->delayed_branch == 1) {
--        /* Set env->dslot to the size of the branch insn.  */
--        t_gen_movi_env_TN(dslot, dc->pc - dc->ppc);
--        cris_store_direct_jmp(dc);
--    }
--
--    cris_evaluate_flags(dc);
--
--    /* Evaluate delayed branch destination and fold to another is_jmp case. */
--    if (is_jmp == DISAS_DBRANCH) {
--        if (dc->base.tb->flags & 7) {
--            t_gen_movi_env_TN(dslot, 0);
--        }
--
--        switch (dc->jmp) {
--        case JMP_DIRECT:
--            npc = dc->jmp_pc;
--            is_jmp = dc->cpustate_changed ? DISAS_UPDATE_NEXT : DISAS_TOO_MANY;
--            break;
--
--        case JMP_DIRECT_CC:
--            /*
--             * Use a conditional branch if either taken or not-taken path
--             * can use goto_tb.  If neither can, then treat it as indirect.
--             */
--            if (likely(!dc->cpustate_changed)
--                && (use_goto_tb(dc, dc->jmp_pc) || use_goto_tb(dc, npc))) {
--                TCGLabel *not_taken = gen_new_label();
--
--                tcg_gen_brcondi_tl(TCG_COND_EQ, env_btaken, 0, not_taken);
--                gen_goto_tb(dc, 1, dc->jmp_pc);
--                gen_set_label(not_taken);
--
--                /* not-taken case handled below. */
--                is_jmp = DISAS_TOO_MANY;
--                break;
--            }
--            tcg_gen_movi_tl(env_btarget, dc->jmp_pc);
--            /* fall through */
--
--        case JMP_INDIRECT:
--            tcg_gen_movcond_tl(TCG_COND_NE, env_pc,
--                               env_btaken, tcg_constant_tl(0),
--                               env_btarget, tcg_constant_tl(npc));
--            is_jmp = dc->cpustate_changed ? DISAS_UPDATE : DISAS_JUMP;
--
--            /*
--             * We have now consumed btaken and btarget.  Hint to the
--             * tcg compiler that the writeback to env may be dropped.
--             */
--            tcg_gen_discard_tl(env_btaken);
--            tcg_gen_discard_tl(env_btarget);
--            break;
--
--        default:
--            g_assert_not_reached();
--        }
--    }
--
--    switch (is_jmp) {
--    case DISAS_TOO_MANY:
--        gen_goto_tb(dc, 0, npc);
--        break;
--    case DISAS_UPDATE_NEXT:
--        tcg_gen_movi_tl(env_pc, npc);
--        /* fall through */
--    case DISAS_JUMP:
--        tcg_gen_lookup_and_goto_ptr();
--        break;
--    case DISAS_UPDATE:
--        /* Indicate that interrupts must be re-evaluated before the next TB. */
--        tcg_gen_exit_tb(NULL, 0);
--        break;
--    default:
--        g_assert_not_reached();
--    }
--}
--
--static const TranslatorOps cris_tr_ops = {
--    .init_disas_context = cris_tr_init_disas_context,
--    .tb_start           = cris_tr_tb_start,
--    .insn_start         = cris_tr_insn_start,
--    .translate_insn     = cris_tr_translate_insn,
--    .tb_stop            = cris_tr_tb_stop,
--};
--
--void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           vaddr pc, void *host_pc)
--{
--    DisasContext dc;
--    translator_loop(cs, tb, max_insns, pc, host_pc, &cris_tr_ops, &dc.base);
--}
--
--void cris_cpu_dump_state(CPUState *cs, FILE *f, int flags)
--{
--    CPUCRISState *env = cpu_env(cs);
--    const char * const *regnames;
--    const char * const *pregnames;
--    int i;
--
--    if (!env) {
--        return;
--    }
--    if (env->pregs[PR_VR] < 32) {
--        pregnames = pregnames_v10;
--        regnames = regnames_v10;
--    } else {
--        pregnames = pregnames_v32;
--        regnames = regnames_v32;
--    }
--
--    qemu_fprintf(f, "PC=%x CCS=%x btaken=%d btarget=%x\n"
--                 "cc_op=%d cc_src=%d cc_dest=%d cc_result=%x cc_mask=%x\n",
--                 env->pc, env->pregs[PR_CCS], env->btaken, env->btarget,
--                 env->cc_op,
--                 env->cc_src, env->cc_dest, env->cc_result, env->cc_mask);
--
--
--    for (i = 0; i < 16; i++) {
--        qemu_fprintf(f, "%s=%8.8x ", regnames[i], env->regs[i]);
--        if ((i + 1) % 4 == 0) {
--            qemu_fprintf(f, "\n");
--        }
--    }
--    qemu_fprintf(f, "\nspecial regs:\n");
--    for (i = 0; i < 16; i++) {
--        qemu_fprintf(f, "%s=%8.8x ", pregnames[i], env->pregs[i]);
--        if ((i + 1) % 4 == 0) {
--            qemu_fprintf(f, "\n");
--        }
--    }
--    if (env->pregs[PR_VR] >= 32) {
--        uint32_t srs = env->pregs[PR_SRS];
--        qemu_fprintf(f, "\nsupport function regs bank %x:\n", srs);
--        if (srs < ARRAY_SIZE(env->sregs)) {
--            for (i = 0; i < 16; i++) {
--                qemu_fprintf(f, "s%2.2d=%8.8x ",
--                             i, env->sregs[srs][i]);
--                if ((i + 1) % 4 == 0) {
--                    qemu_fprintf(f, "\n");
--                }
--            }
--        }
--    }
--    qemu_fprintf(f, "\n\n");
--
--}
--
--void cris_initialize_tcg(void)
--{
--    int i;
--
--    cc_x = tcg_global_mem_new(tcg_env,
--                              offsetof(CPUCRISState, cc_x), "cc_x");
--    cc_src = tcg_global_mem_new(tcg_env,
--                                offsetof(CPUCRISState, cc_src), "cc_src");
--    cc_dest = tcg_global_mem_new(tcg_env,
--                                 offsetof(CPUCRISState, cc_dest),
--                                 "cc_dest");
--    cc_result = tcg_global_mem_new(tcg_env,
--                                   offsetof(CPUCRISState, cc_result),
--                                   "cc_result");
--    cc_op = tcg_global_mem_new(tcg_env,
--                               offsetof(CPUCRISState, cc_op), "cc_op");
--    cc_size = tcg_global_mem_new(tcg_env,
--                                 offsetof(CPUCRISState, cc_size),
--                                 "cc_size");
--    cc_mask = tcg_global_mem_new(tcg_env,
--                                 offsetof(CPUCRISState, cc_mask),
--                                 "cc_mask");
--
--    env_pc = tcg_global_mem_new(tcg_env,
--                                offsetof(CPUCRISState, pc),
--                                "pc");
--    env_btarget = tcg_global_mem_new(tcg_env,
--                                     offsetof(CPUCRISState, btarget),
--                                     "btarget");
--    env_btaken = tcg_global_mem_new(tcg_env,
--                                    offsetof(CPUCRISState, btaken),
--                                    "btaken");
--    for (i = 0; i < 16; i++) {
--        cpu_R[i] = tcg_global_mem_new(tcg_env,
--                                      offsetof(CPUCRISState, regs[i]),
--                                      regnames_v32[i]);
--    }
--    for (i = 0; i < 16; i++) {
--        cpu_PR[i] = tcg_global_mem_new(tcg_env,
--                                       offsetof(CPUCRISState, pregs[i]),
--                                       pregnames_v32[i]);
--    }
--}
-diff --git a/tests/qtest/machine-none-test.c b/tests/qtest/machine-none-test.c
-index 05da7bc72d..159b2a705a 100644
---- a/tests/qtest/machine-none-test.c
-+++ b/tests/qtest/machine-none-test.c
-@@ -30,7 +30,6 @@ static struct arch2cpu cpus_map[] = {
-     { "x86_64", "qemu64,apic-id=0" },
-     { "i386", "qemu32,apic-id=0" },
-     { "alpha", "ev67" },
--    { "cris", "crisv32" },
-     { "m68k", "m5206" },
-     { "microblaze", "any" },
-     { "microblazeel", "any" },
-diff --git a/fpu/softfloat-specialize.c.inc b/fpu/softfloat-specialize.c.inc
-index 8f3b97d9bf..4e279b9bc4 100644
---- a/fpu/softfloat-specialize.c.inc
-+++ b/fpu/softfloat-specialize.c.inc
-@@ -151,8 +151,8 @@ static void parts64_default_nan(FloatParts64 *p, float_status *status)
- #else
-     /*
-      * This case is true for Alpha, ARM, MIPS, OpenRISC, PPC, RISC-V,
--     * S390, SH4, TriCore, and Xtensa.  Our other supported targets,
--     * such CRIS, do not have floating-point.
-+     * S390, SH4, TriCore, and Xtensa.  Our other supported targets
-+     * do not have floating-point.
-      */
-     if (snan_bit_is_one(status)) {
-         /* set all bits other than msb */
-diff --git a/target/cris/translate_v10.c.inc b/target/cris/translate_v10.c.inc
-deleted file mode 100644
-index c15ff47505..0000000000
---- a/target/cris/translate_v10.c.inc
-+++ /dev/null
-@@ -1,1262 +0,0 @@
--/*
-- *  CRISv10 emulation for qemu: main translation routines.
-- *
-- *  Copyright (c) 2010 AXIS Communications AB
-- *  Written by Edgar E. Iglesias.
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
--
--#include "qemu/osdep.h"
--#include "crisv10-decode.h"
--
--static const char * const regnames_v10[] =
--{
--    "$r0", "$r1", "$r2", "$r3",
--    "$r4", "$r5", "$r6", "$r7",
--    "$r8", "$r9", "$r10", "$r11",
--    "$r12", "$r13", "$sp", "$pc",
--};
--
--static const char * const pregnames_v10[] =
--{
--    "$bz", "$vr", "$p2", "$p3",
--    "$wz", "$ccr", "$p6-prefix", "$mof",
--    "$dz", "$ibr", "$irp", "$srp",
--    "$bar", "$dccr", "$brp", "$usp",
--};
--
--/* We need this table to handle preg-moves with implicit width.  */
--static const int preg_sizes_v10[] = {
--    1, /* bz.  */
--    1, /* vr.  */
--    1, /* pid. */
--    1, /* srs. */
--    2, /* wz.  */
--    2, 2, 4,
--    4, 4, 4, 4,
--    4, 4, 4, 4,
--};
--
--static inline int dec10_size(unsigned int size)
--{
--    size++;
--    if (size == 3)
--        size++;
--    return size;
--}
--
--static inline void cris_illegal_insn(DisasContext *dc)
--{
--    qemu_log_mask(LOG_GUEST_ERROR, "illegal insn at pc=%x\n", dc->pc);
--    t_gen_raise_exception(EXCP_BREAK);
--    dc->base.is_jmp = DISAS_NORETURN;
--}
--
--static void gen_store_v10_conditional(DisasContext *dc, TCGv addr, TCGv val,
--                       unsigned int size, int mem_index)
--{
--    TCGLabel *l1 = gen_new_label();
--    TCGv taddr = tcg_temp_new();
--    TCGv tval = tcg_temp_new();
--    TCGv t1 = tcg_temp_new();
--    dc->postinc = 0;
--    cris_evaluate_flags(dc);
--
--    tcg_gen_mov_tl(taddr, addr);
--    tcg_gen_mov_tl(tval, val);
--
--    /* Store only if F flag isn't set */
--    tcg_gen_andi_tl(t1, cpu_PR[PR_CCS], F_FLAG_V10);
--    tcg_gen_brcondi_tl(TCG_COND_NE, t1, 0, l1);
--
--    tcg_gen_qemu_st_tl(tval, taddr, mem_index, ctz32(size) | MO_TE);
--
--    gen_set_label(l1);
--    tcg_gen_shri_tl(t1, t1, 1);  /* shift F to P position */
--    tcg_gen_or_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], t1); /*P=F*/
--}
--
--static void gen_store_v10(DisasContext *dc, TCGv addr, TCGv val,
--                       unsigned int size)
--{
--    /* If we get a fault on a delayslot we must keep the jmp state in
--       the cpu-state to be able to re-execute the jmp.  */
--    if (dc->delayed_branch == 1) {
--        cris_store_direct_jmp(dc);
--    }
--
--    /* Conditional writes. */
--    if (dc->flags_x) {
--        gen_store_v10_conditional(dc, addr, val, size, dc->mem_index);
--        return;
--    }
--
--    tcg_gen_qemu_st_tl(val, addr, dc->mem_index, ctz32(size) | MO_TE);
--}
--
--
--/* Prefix flag and register are used to handle the more complex
--   addressing modes.  */
--static void cris_set_prefix(DisasContext *dc)
--{
--    dc->clear_prefix = 0;
--    dc->tb_flags |= PFIX_FLAG;
--    tcg_gen_ori_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], PFIX_FLAG);
--
--    /* prefix insns don't clear the x flag.  */
--    dc->clear_x = 0;
--    cris_lock_irq(dc);
--}
--
--static void crisv10_prepare_memaddr(DisasContext *dc,
--                                    TCGv addr, unsigned int size)
--{
--    if (dc->tb_flags & PFIX_FLAG) {
--        tcg_gen_mov_tl(addr, cpu_PR[PR_PREFIX]);
--    } else {
--        tcg_gen_mov_tl(addr, cpu_R[dc->src]);
--    }
--}
--
--static unsigned int crisv10_post_memaddr(DisasContext *dc, unsigned int size)
--{
--    unsigned int insn_len = 0;
--
--    if (dc->tb_flags & PFIX_FLAG) {
--        if (dc->mode == CRISV10_MODE_AUTOINC) {
--            tcg_gen_mov_tl(cpu_R[dc->src], cpu_PR[PR_PREFIX]);
--        }
--    } else {
--        if (dc->mode == CRISV10_MODE_AUTOINC) {
--            if (dc->src == 15) {
--                insn_len += size & ~1;
--            } else {
--                tcg_gen_addi_tl(cpu_R[dc->src], cpu_R[dc->src], size);
--            }
--        }
--    }
--    return insn_len;
--}
--
--static int dec10_prep_move_m(CPUCRISState *env, DisasContext *dc,
--                             int s_ext, int memsize, TCGv dst)
--{
--    unsigned int rs;
--    uint32_t imm;
--    int is_imm;
--    int insn_len = 0;
--
--    rs = dc->src;
--    is_imm = rs == 15 && !(dc->tb_flags & PFIX_FLAG);
--    LOG_DIS("rs=%d rd=%d is_imm=%d mode=%d pfix=%d\n",
--             rs, dc->dst, is_imm, dc->mode, dc->tb_flags & PFIX_FLAG);
--
--    /* Load [$rs] onto T1.  */
--    if (is_imm) {
--        imm = cris_fetch(env, dc, dc->pc + 2, memsize, s_ext);
--
--        tcg_gen_movi_tl(dst, imm);
--
--        if (dc->mode == CRISV10_MODE_AUTOINC) {
--            insn_len += memsize;
--            if (memsize == 1)
--                insn_len++;
--            tcg_gen_addi_tl(cpu_R[15], cpu_R[15], insn_len);
--        }
--    } else {
--        TCGv addr;
--
--        addr = tcg_temp_new();
--        cris_flush_cc_state(dc);
--        crisv10_prepare_memaddr(dc, addr, memsize);
--        gen_load(dc, dst, addr, memsize, 0);
--        if (s_ext)
--            t_gen_sext(dst, dst, memsize);
--        else
--            t_gen_zext(dst, dst, memsize);
--        insn_len += crisv10_post_memaddr(dc, memsize);
--    }
--
--    if (dc->mode == CRISV10_MODE_INDIRECT && (dc->tb_flags & PFIX_FLAG)) {
--        dc->dst = dc->src;
--    }
--    return insn_len;
--}
--
--static unsigned int dec10_quick_imm(DisasContext *dc)
--{
--    int32_t imm, simm;
--    int op;
--    TCGv c;
--
--    /* sign extend.  */
--    imm = dc->ir & ((1 << 6) - 1);
--    simm = (int8_t) (imm << 2);
--    simm >>= 2;
--    switch (dc->opcode) {
--        case CRISV10_QIMM_BDAP_R0:
--        case CRISV10_QIMM_BDAP_R1:
--        case CRISV10_QIMM_BDAP_R2:
--        case CRISV10_QIMM_BDAP_R3:
--            simm = (int8_t)dc->ir;
--            LOG_DIS("bdap %d $r%d\n", simm, dc->dst);
--            LOG_DIS("pc=%x mode=%x quickimm %d r%d r%d\n",
--                     dc->pc, dc->mode, dc->opcode, dc->src, dc->dst);
--            cris_set_prefix(dc);
--            if (dc->dst == 15) {
--                tcg_gen_movi_tl(cpu_PR[PR_PREFIX], dc->pc + 2 + simm);
--            } else {
--                tcg_gen_addi_tl(cpu_PR[PR_PREFIX], cpu_R[dc->dst], simm);
--            }
--            break;
--
--        case CRISV10_QIMM_MOVEQ:
--            LOG_DIS("moveq %d, $r%d\n", simm, dc->dst);
--
--            cris_cc_mask(dc, CC_MASK_NZVC);
--            c = tcg_constant_tl(simm);
--            cris_alu(dc, CC_OP_MOVE, cpu_R[dc->dst],
--                     cpu_R[dc->dst], c, 4);
--            break;
--        case CRISV10_QIMM_CMPQ:
--            LOG_DIS("cmpq %d, $r%d\n", simm, dc->dst);
--
--            cris_cc_mask(dc, CC_MASK_NZVC);
--            c = tcg_constant_tl(simm);
--            cris_alu(dc, CC_OP_CMP, cpu_R[dc->dst],
--                     cpu_R[dc->dst], c, 4);
--            break;
--        case CRISV10_QIMM_ADDQ:
--            LOG_DIS("addq %d, $r%d\n", imm, dc->dst);
--
--            cris_cc_mask(dc, CC_MASK_NZVC);
--            c = tcg_constant_tl(imm);
--            cris_alu(dc, CC_OP_ADD, cpu_R[dc->dst],
--                     cpu_R[dc->dst], c, 4);
--            break;
--        case CRISV10_QIMM_ANDQ:
--            LOG_DIS("andq %d, $r%d\n", simm, dc->dst);
--
--            cris_cc_mask(dc, CC_MASK_NZVC);
--            c = tcg_constant_tl(simm);
--            cris_alu(dc, CC_OP_AND, cpu_R[dc->dst],
--                     cpu_R[dc->dst], c, 4);
--            break;
--        case CRISV10_QIMM_ASHQ:
--            LOG_DIS("ashq %d, $r%d\n", simm, dc->dst);
--
--            cris_cc_mask(dc, CC_MASK_NZVC);
--            op = imm & (1 << 5);
--            imm &= 0x1f;
--            c = tcg_constant_tl(imm);
--            if (op) {
--                cris_alu(dc, CC_OP_ASR, cpu_R[dc->dst],
--                          cpu_R[dc->dst], c, 4);
--            } else {
--                /* BTST */
--                cris_update_cc_op(dc, CC_OP_FLAGS, 4);
--                gen_helper_btst(cpu_PR[PR_CCS], tcg_env, cpu_R[dc->dst],
--                           c, cpu_PR[PR_CCS]);
--            }
--            break;
--        case CRISV10_QIMM_LSHQ:
--            LOG_DIS("lshq %d, $r%d\n", simm, dc->dst);
--
--            op = CC_OP_LSL;
--            if (imm & (1 << 5)) {
--                op = CC_OP_LSR; 
--            }
--            imm &= 0x1f;
--            cris_cc_mask(dc, CC_MASK_NZVC);
--            c = tcg_constant_tl(imm);
--            cris_alu(dc, op, cpu_R[dc->dst],
--                     cpu_R[dc->dst], c, 4);
--            break;
--        case CRISV10_QIMM_SUBQ:
--            LOG_DIS("subq %d, $r%d\n", imm, dc->dst);
--
--            cris_cc_mask(dc, CC_MASK_NZVC);
--            c = tcg_constant_tl(imm);
--            cris_alu(dc, CC_OP_SUB, cpu_R[dc->dst],
--                     cpu_R[dc->dst], c, 4);
--            break;
--        case CRISV10_QIMM_ORQ:
--            LOG_DIS("andq %d, $r%d\n", simm, dc->dst);
--
--            cris_cc_mask(dc, CC_MASK_NZVC);
--            c = tcg_constant_tl(simm);
--            cris_alu(dc, CC_OP_OR, cpu_R[dc->dst],
--                     cpu_R[dc->dst], c, 4);
--            break;
--
--        case CRISV10_QIMM_BCC_R0:
--        case CRISV10_QIMM_BCC_R1:
--        case CRISV10_QIMM_BCC_R2:
--        case CRISV10_QIMM_BCC_R3:
--            imm = dc->ir & 0xff;
--            /* bit 0 is a sign bit.  */
--            if (imm & 1) {
--                imm |= 0xffffff00;   /* sign extend.  */
--                imm &= ~1;           /* get rid of the sign bit.  */
--            }
--            imm += 2;
--            LOG_DIS("b%s %d\n", cc_name(dc->cond), imm);
--
--            cris_cc_mask(dc, 0);
--            cris_prepare_cc_branch(dc, imm, dc->cond); 
--            break;
--
--        default:
--            LOG_DIS("pc=%x mode=%x quickimm %d r%d r%d\n",
--                     dc->pc, dc->mode, dc->opcode, dc->src, dc->dst);
--            cpu_abort(CPU(dc->cpu), "Unhandled quickimm\n");
--            break;
--    }
--    return 2;
--}
--
--static unsigned int dec10_setclrf(DisasContext *dc)
--{
--    uint32_t flags;
--    unsigned int set = ~dc->opcode & 1;
--
--    flags = EXTRACT_FIELD(dc->ir, 0, 3)
--            | (EXTRACT_FIELD(dc->ir, 12, 15) << 4);
--    LOG_DIS("%s set=%d flags=%x\n", __func__, set, flags);
--
--
--    if (flags & X_FLAG) {
--        if (set)
--            dc->flags_x = X_FLAG;
--        else
--            dc->flags_x = 0;
--    }
--
--    cris_evaluate_flags (dc);
--    cris_update_cc_op(dc, CC_OP_FLAGS, 4);
--    cris_update_cc_x(dc);
--    tcg_gen_movi_tl(cc_op, dc->cc_op);
--
--    if (set) {
--        tcg_gen_ori_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], flags);
--    } else {
--        tcg_gen_andi_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS],
--                        ~(flags|F_FLAG_V10|P_FLAG_V10));
--    }
--
--    dc->flags_uptodate = 1;
--    dc->clear_x = 0;
--    cris_lock_irq(dc);
--    return 2;
--}
--
--static inline void dec10_reg_prep_sext(DisasContext *dc, int size, int sext,
--                                       TCGv dd, TCGv ds, TCGv sd, TCGv ss)
--{
--    if (sext) {
--        t_gen_sext(dd, sd, size);
--        t_gen_sext(ds, ss, size);
--    } else {
--        t_gen_zext(dd, sd, size);
--        t_gen_zext(ds, ss, size);
--    }
--}
--
--static void dec10_reg_alu(DisasContext *dc, int op, int size, int sext)
--{
--    TCGv t[2];
--
--    t[0] = tcg_temp_new();
--    t[1] = tcg_temp_new();
--    dec10_reg_prep_sext(dc, size, sext,
--                        t[0], t[1], cpu_R[dc->dst], cpu_R[dc->src]);
--
--    if (op == CC_OP_LSL || op == CC_OP_LSR || op == CC_OP_ASR) {
--        tcg_gen_andi_tl(t[1], t[1], 63);
--    }
--
--    assert(dc->dst != 15);
--    cris_alu(dc, op, cpu_R[dc->dst], t[0], t[1], size);
--}
--
--static void dec10_reg_bound(DisasContext *dc, int size)
--{
--    TCGv t;
--
--    t = tcg_temp_new();
--    t_gen_zext(t, cpu_R[dc->src], size);
--    cris_alu(dc, CC_OP_BOUND, cpu_R[dc->dst], cpu_R[dc->dst], t, 4);
--}
--
--static void dec10_reg_mul(DisasContext *dc, int size, int sext)
--{
--    int op = sext ? CC_OP_MULS : CC_OP_MULU;
--    TCGv t[2];
--
--    t[0] = tcg_temp_new();
--    t[1] = tcg_temp_new();
--    dec10_reg_prep_sext(dc, size, sext,
--                        t[0], t[1], cpu_R[dc->dst], cpu_R[dc->src]);
--
--    cris_alu(dc, op, cpu_R[dc->dst], t[0], t[1], 4);
--}
--
--
--static void dec10_reg_movs(DisasContext *dc)
--{
--    int size = (dc->size & 1) + 1;
--    TCGv t;
--
--    LOG_DIS("movx.%d $r%d, $r%d\n", size, dc->src, dc->dst);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--
--    t = tcg_temp_new();
--    if (dc->ir & 32)
--        t_gen_sext(t, cpu_R[dc->src], size);
--    else
--        t_gen_zext(t, cpu_R[dc->src], size);
--
--    cris_alu(dc, CC_OP_MOVE, cpu_R[dc->dst], cpu_R[dc->dst], t, 4);
--}
--
--static void dec10_reg_alux(DisasContext *dc, int op)
--{
--    int size = (dc->size & 1) + 1;
--    TCGv t;
--
--    LOG_DIS("movx.%d $r%d, $r%d\n", size, dc->src, dc->dst);
--    cris_cc_mask(dc, CC_MASK_NZVC);
--
--    t = tcg_temp_new();
--    if (dc->ir & 32)
--        t_gen_sext(t, cpu_R[dc->src], size);
--    else
--        t_gen_zext(t, cpu_R[dc->src], size);
--
--    cris_alu(dc, op, cpu_R[dc->dst], cpu_R[dc->dst], t, 4);
--}
--
--static void dec10_reg_mov_pr(DisasContext *dc)
--{
--    LOG_DIS("move p%d r%d sz=%d\n", dc->dst, dc->src, preg_sizes_v10[dc->dst]);
--    cris_lock_irq(dc);
--    if (dc->src == 15) {
--        tcg_gen_mov_tl(env_btarget, cpu_PR[dc->dst]);
--        cris_prepare_jmp(dc, JMP_INDIRECT);
--        return;
--    }
--    if (dc->dst == PR_CCS) {
--        cris_evaluate_flags(dc); 
--    }
--    cris_alu(dc, CC_OP_MOVE, cpu_R[dc->src],
--                 cpu_R[dc->src], cpu_PR[dc->dst], preg_sizes_v10[dc->dst]);
--}
--
--static void dec10_reg_abs(DisasContext *dc)
--{
--    TCGv t0;
--
--    LOG_DIS("abs $r%u, $r%u\n", dc->src, dc->dst);
--
--    assert(dc->dst != 15);
--    t0 = tcg_temp_new();
--    tcg_gen_sari_tl(t0, cpu_R[dc->src], 31);
--    tcg_gen_xor_tl(cpu_R[dc->dst], cpu_R[dc->src], t0);
--    tcg_gen_sub_tl(t0, cpu_R[dc->dst], t0);
--
--    cris_alu(dc, CC_OP_MOVE, cpu_R[dc->dst], cpu_R[dc->dst], t0, 4);
--}
--
--static void dec10_reg_swap(DisasContext *dc)
--{
--    TCGv t0;
--
--    LOG_DIS("not $r%d, $r%d\n", dc->src, dc->dst);
--
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    t0 = tcg_temp_new();
--    tcg_gen_mov_tl(t0, cpu_R[dc->src]);
--    if (dc->dst & 8)
--        tcg_gen_not_tl(t0, t0);
--    if (dc->dst & 4)
--        t_gen_swapw(t0, t0);
--    if (dc->dst & 2)
--        t_gen_swapb(t0, t0);
--    if (dc->dst & 1)
--        t_gen_swapr(t0, t0);
--    cris_alu(dc, CC_OP_MOVE, cpu_R[dc->src], cpu_R[dc->src], t0, 4);
--}
--
--static void dec10_reg_scc(DisasContext *dc)
--{
--    int cond = dc->dst;
--
--    LOG_DIS("s%s $r%u\n", cc_name(cond), dc->src);
--
--    gen_tst_cc(dc, cpu_R[dc->src], cond);
--    tcg_gen_setcondi_tl(TCG_COND_NE, cpu_R[dc->src], cpu_R[dc->src], 0);
--
--    cris_cc_mask(dc, 0);
--}
--
--static unsigned int dec10_reg(DisasContext *dc)
--{
--    TCGv t;
--    unsigned int insn_len = 2;
--    unsigned int size = dec10_size(dc->size);
--    unsigned int tmp;
--
--    if (dc->size != 3) {
--        switch (dc->opcode) {
--            case CRISV10_REG_MOVE_R:
--                LOG_DIS("move.%d $r%d, $r%d\n", dc->size, dc->src, dc->dst);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_MOVE, size, 0);
--                if (dc->dst == 15) {
--                    tcg_gen_mov_tl(env_btarget, cpu_R[dc->dst]);
--                    cris_prepare_jmp(dc, JMP_INDIRECT);
--                    dc->delayed_branch = 1;
--                }
--                break;
--            case CRISV10_REG_MOVX:
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_movs(dc);
--                break;
--            case CRISV10_REG_ADDX:
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alux(dc, CC_OP_ADD);
--                break;
--            case CRISV10_REG_SUBX:
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alux(dc, CC_OP_SUB);
--                break;
--            case CRISV10_REG_ADD:
--                LOG_DIS("add $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_ADD, size, 0);
--                break;
--            case CRISV10_REG_SUB:
--                LOG_DIS("sub $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_SUB, size, 0);
--                break;
--            case CRISV10_REG_CMP:
--                LOG_DIS("cmp $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_CMP, size, 0);
--                break;
--            case CRISV10_REG_BOUND:
--                LOG_DIS("bound $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_bound(dc, size);
--                break;
--            case CRISV10_REG_AND:
--                LOG_DIS("and $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_AND, size, 0);
--                break;
--            case CRISV10_REG_ADDI:
--                if (dc->src == 15) {
--                    /* nop.  */
--                    return 2;
--                }
--                t = tcg_temp_new();
--                LOG_DIS("addi r%d r%d size=%d\n", dc->src, dc->dst, dc->size);
--                tcg_gen_shli_tl(t, cpu_R[dc->dst], dc->size & 3);
--                tcg_gen_add_tl(cpu_R[dc->src], cpu_R[dc->src], t);
--                break;
--            case CRISV10_REG_LSL:
--                LOG_DIS("lsl $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_LSL, size, 0);
--                break;
--            case CRISV10_REG_LSR:
--                LOG_DIS("lsr $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_LSR, size, 0);
--                break;
--            case CRISV10_REG_ASR:
--                LOG_DIS("asr $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_ASR, size, 1);
--                break;
--            case CRISV10_REG_OR:
--                LOG_DIS("or $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_OR, size, 0);
--                break;
--            case CRISV10_REG_NEG:
--                LOG_DIS("neg $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_NEG, size, 0);
--                break;
--            case CRISV10_REG_BIAP:
--                LOG_DIS("BIAP pc=%x reg %d r%d r%d size=%d\n", dc->pc,
--                         dc->opcode, dc->src, dc->dst, size);
--                switch (size) {
--                    case 4: tmp = 2; break;
--                    case 2: tmp = 1; break;
--                    case 1: tmp = 0; break;
--                    default:
--                        cpu_abort(CPU(dc->cpu), "Unhandled BIAP");
--                        break;
--                }
--
--                t = tcg_temp_new();
--                tcg_gen_shli_tl(t, cpu_R[dc->dst], tmp);
--                if (dc->src == 15) {
--                    tcg_gen_addi_tl(cpu_PR[PR_PREFIX], t, ((dc->pc +2)| 1) + 1);
--                } else {
--                    tcg_gen_add_tl(cpu_PR[PR_PREFIX], cpu_R[dc->src], t);
--                }
--                cris_set_prefix(dc);
--                break;
--
--            default:
--                LOG_DIS("pc=%x reg %d r%d r%d\n", dc->pc,
--                         dc->opcode, dc->src, dc->dst);
--                cpu_abort(CPU(dc->cpu), "Unhandled opcode");
--                break;
--        }
--    } else {
--        switch (dc->opcode) {
--            case CRISV10_REG_MOVX:
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_movs(dc);
--                break;
--            case CRISV10_REG_ADDX:
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alux(dc, CC_OP_ADD);
--                break;
--            case CRISV10_REG_SUBX:
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alux(dc, CC_OP_SUB);
--                break;
--            case CRISV10_REG_MOVE_SPR_R:
--                cris_evaluate_flags(dc);
--                cris_cc_mask(dc, 0);
--                dec10_reg_mov_pr(dc);
--                break;
--            case CRISV10_REG_MOVE_R_SPR:
--                LOG_DIS("move r%d p%d\n", dc->src, dc->dst);
--                cris_evaluate_flags(dc);
--                if (dc->src != 11) /* fast for srp.  */
--                    dc->cpustate_changed = 1;
--                t_gen_mov_preg_TN(dc, dc->dst, cpu_R[dc->src]);
--                break;
--            case CRISV10_REG_SETF:
--            case CRISV10_REG_CLEARF:
--                dec10_setclrf(dc);
--                break;
--            case CRISV10_REG_SWAP:
--                dec10_reg_swap(dc);
--                break;
--            case CRISV10_REG_ABS:
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_abs(dc);
--                break;
--            case CRISV10_REG_LZ:
--                LOG_DIS("lz $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_LZ, 4, 0);
--                break;
--            case CRISV10_REG_XOR:
--                LOG_DIS("xor $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_alu(dc, CC_OP_XOR, 4, 0);
--                break;
--            case CRISV10_REG_BTST:
--                LOG_DIS("btst $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                cris_update_cc_op(dc, CC_OP_FLAGS, 4);
--                gen_helper_btst(cpu_PR[PR_CCS], tcg_env, cpu_R[dc->dst],
--                           cpu_R[dc->src], cpu_PR[PR_CCS]);
--                break;
--            case CRISV10_REG_DSTEP:
--                LOG_DIS("dstep $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                cris_alu(dc, CC_OP_DSTEP, cpu_R[dc->dst],
--                            cpu_R[dc->dst], cpu_R[dc->src], 4);
--                break;
--            case CRISV10_REG_MSTEP:
--                LOG_DIS("mstep $r%d, $r%d sz=%d\n", dc->src, dc->dst, size);
--                cris_evaluate_flags(dc);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                cris_alu(dc, CC_OP_MSTEP, cpu_R[dc->dst],
--                            cpu_R[dc->dst], cpu_R[dc->src], 4);
--                break;
--            case CRISV10_REG_SCC:
--                dec10_reg_scc(dc);
--                break;
--            default:
--                LOG_DIS("pc=%x reg %d r%d r%d\n", dc->pc,
--                         dc->opcode, dc->src, dc->dst);
--                cpu_abort(CPU(dc->cpu), "Unhandled opcode");
--                break;
--        }
--    }
--    return insn_len;
--}
--
--static unsigned int dec10_ind_move_m_r(CPUCRISState *env, DisasContext *dc,
--                                       unsigned int size)
--{
--    unsigned int insn_len = 2;
--    TCGv t;
--
--    LOG_DIS("%s: move.%d [$r%d], $r%d\n", __func__,
--             size, dc->src, dc->dst);
--
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    t = tcg_temp_new();
--    insn_len += dec10_prep_move_m(env, dc, 0, size, t);
--    cris_alu(dc, CC_OP_MOVE, cpu_R[dc->dst], cpu_R[dc->dst], t, size);
--    if (dc->dst == 15) {
--        tcg_gen_mov_tl(env_btarget, cpu_R[dc->dst]);
--        cris_prepare_jmp(dc, JMP_INDIRECT);
--        dc->delayed_branch = 1;
--    }
--
--    return insn_len;
--}
--
--static unsigned int dec10_ind_move_r_m(DisasContext *dc, unsigned int size)
--{
--    unsigned int insn_len = 2;
--    TCGv addr;
--
--    LOG_DIS("move.%d $r%d, [$r%d]\n", dc->size, dc->src, dc->dst);
--    addr = tcg_temp_new();
--    crisv10_prepare_memaddr(dc, addr, size);
--    gen_store_v10(dc, addr, cpu_R[dc->dst], size);
--    insn_len += crisv10_post_memaddr(dc, size);
--
--    return insn_len;
--}
--
--static unsigned int dec10_ind_move_m_pr(CPUCRISState *env, DisasContext *dc)
--{
--    unsigned int insn_len = 2, rd = dc->dst;
--    TCGv t;
--
--    LOG_DIS("move.%d $p%d, [$r%d]\n", dc->size, dc->dst, dc->src);
--    cris_lock_irq(dc);
--
--    t = tcg_temp_new();
--    insn_len += dec10_prep_move_m(env, dc, 0, 4, t);
--    if (rd == 15) {
--        tcg_gen_mov_tl(env_btarget, t);
--        cris_prepare_jmp(dc, JMP_INDIRECT);
--        dc->delayed_branch = 1;
--    } else {
--        tcg_gen_mov_tl(cpu_PR[rd], t);
--        dc->cpustate_changed = 1;
--    }
--    return insn_len;
--}
--
--static unsigned int dec10_ind_move_pr_m(DisasContext *dc)
--{
--    unsigned int insn_len = 2, size = preg_sizes_v10[dc->dst];
--    TCGv addr, t0;
--
--    LOG_DIS("move.%d $p%d, [$r%d]\n", dc->size, dc->dst, dc->src);
--
--    addr = tcg_temp_new();
--    crisv10_prepare_memaddr(dc, addr, size);
--    if (dc->dst == PR_CCS) {
--        t0 = tcg_temp_new();
--        cris_evaluate_flags(dc);
--        tcg_gen_andi_tl(t0, cpu_PR[PR_CCS], ~PFIX_FLAG);
--        gen_store_v10(dc, addr, t0, size);
--    } else {
--        gen_store_v10(dc, addr, cpu_PR[dc->dst], size);
--    }
--    insn_len += crisv10_post_memaddr(dc, size);
--    cris_lock_irq(dc);
--
--    return insn_len;
--}
--
--static void dec10_movem_r_m(DisasContext *dc)
--{
--    int i, pfix = dc->tb_flags & PFIX_FLAG;
--    TCGv addr, t0;
--
--    LOG_DIS("%s r%d, [r%d] pi=%d ir=%x\n", __func__,
--              dc->dst, dc->src, dc->postinc, dc->ir);
--
--    addr = tcg_temp_new();
--    t0 = tcg_temp_new();
--    crisv10_prepare_memaddr(dc, addr, 4);
--    tcg_gen_mov_tl(t0, addr);
--    for (i = dc->dst; i >= 0; i--) {
--        if ((pfix && dc->mode == CRISV10_MODE_AUTOINC) && dc->src == i) {
--            gen_store_v10(dc, addr, t0, 4);
--        } else {
--            gen_store_v10(dc, addr, cpu_R[i], 4);
--        }
--        tcg_gen_addi_tl(addr, addr, 4);
--    }
--
--    if (pfix && dc->mode == CRISV10_MODE_AUTOINC) {
--        tcg_gen_mov_tl(cpu_R[dc->src], t0);
--    }
--
--    if (!pfix && dc->mode == CRISV10_MODE_AUTOINC) {
--        tcg_gen_mov_tl(cpu_R[dc->src], addr);
--    }
--}
--
--static void dec10_movem_m_r(DisasContext *dc)
--{
--    int i, pfix = dc->tb_flags & PFIX_FLAG;
--    TCGv addr, t0;
--
--    LOG_DIS("%s [r%d], r%d pi=%d ir=%x\n", __func__,
--              dc->src, dc->dst, dc->postinc, dc->ir);
--
--    addr = tcg_temp_new();
--    t0 = tcg_temp_new();
--    crisv10_prepare_memaddr(dc, addr, 4);
--    tcg_gen_mov_tl(t0, addr);
--    for (i = dc->dst; i >= 0; i--) {
--        gen_load(dc, cpu_R[i], addr, 4, 0);
--        tcg_gen_addi_tl(addr, addr, 4);
--    }
--
--    if (pfix && dc->mode == CRISV10_MODE_AUTOINC) {
--        tcg_gen_mov_tl(cpu_R[dc->src], t0);
--    }
--
--    if (!pfix && dc->mode == CRISV10_MODE_AUTOINC) {
--        tcg_gen_mov_tl(cpu_R[dc->src], addr);
--    }
--}
--
--static int dec10_ind_alu(CPUCRISState *env, DisasContext *dc,
--                         int op, unsigned int size)
--{
--    int insn_len = 0;
--    int rd = dc->dst;
--    TCGv t[2];
--
--    cris_alu_m_alloc_temps(t);
--    insn_len += dec10_prep_move_m(env, dc, 0, size, t[0]);
--    cris_alu(dc, op, cpu_R[dc->dst], cpu_R[rd], t[0], size);
--    if (dc->dst == 15) {
--        tcg_gen_mov_tl(env_btarget, cpu_R[dc->dst]);
--        cris_prepare_jmp(dc, JMP_INDIRECT);
--        dc->delayed_branch = 1;
--        return insn_len;
--    }
--    return insn_len;
--}
--
--static int dec10_ind_bound(CPUCRISState *env, DisasContext *dc,
--                           unsigned int size)
--{
--    int insn_len = 0;
--    int rd = dc->dst;
--    TCGv t;
--
--    t = tcg_temp_new();
--    insn_len += dec10_prep_move_m(env, dc, 0, size, t);
--    cris_alu(dc, CC_OP_BOUND, cpu_R[dc->dst], cpu_R[rd], t, 4);
--    if (dc->dst == 15) {
--        tcg_gen_mov_tl(env_btarget, cpu_R[dc->dst]);
--        cris_prepare_jmp(dc, JMP_INDIRECT);
--        dc->delayed_branch = 1;
--    }
--
--    return insn_len;
+-      strcpy (tp, "???");
+-      tp += 3;
+-    }
+-  }
+-
+-  *tp = 0;
+-
+-  if (prefix_opcodep)
+-    (*info->fprintf_func) (info->stream, " (OOPS unused prefix \"%s: %s\")",
+-			   prefix_opcodep->name, prefix_opcodep->args);
+-
+-  (*info->fprintf_func) (info->stream, "%s", temp);
+-
+-  /* Get info for matching case-tables, if we don't have any active.
+-     We assume that the last constant seen is used; either in the insn
+-     itself or in a "move.d const,rN, sub.d rN,rM"-like sequence.  */
+-  if (TRACE_CASE && case_offset_counter == 0)
+-    {
+-      if (CONST_STRNEQ (opcodep->name, "sub"))
+-	case_offset = last_immediate;
+-
+-      /* It could also be an "add", if there are negative case-values.  */
+-      else if (CONST_STRNEQ (opcodep->name, "add"))
+-	/* The first case is the negated operand to the add.  */
+-	case_offset = -last_immediate;
+-
+-      /* A bound insn will tell us the number of cases.  */
+-      else if (CONST_STRNEQ (opcodep->name, "bound"))
+-	no_of_case_offsets = last_immediate + 1;
+-
+-      /* A jump or jsr or branch breaks the chain of insns for a
+-	 case-table, so assume default first-case again.  */
+-      else if (info->insn_type == dis_jsr
+-	       || info->insn_type == dis_branch
+-	       || info->insn_type == dis_condbranch)
+-	case_offset = 0;
+-    }
+-}
+-
+-
+-/* Print the CRIS instruction at address memaddr on stream.  Returns
+-   length of the instruction, in bytes.  Prefix register names with `$' if
+-   WITH_REG_PREFIX.  */
+-
+-static int
+-print_insn_cris_generic (bfd_vma memaddr,
+-			 disassemble_info *info,
+-			 bfd_boolean with_reg_prefix)
+-{
+-  int nbytes;
+-  unsigned int insn;
+-  const struct cris_opcode *matchedp;
+-  int advance = 0;
+-  struct cris_disasm_data *disdata
+-    = (struct cris_disasm_data *) info->private_data;
+-
+-  /* No instruction will be disassembled as longer than this number of
+-     bytes; stacked prefixes will not be expanded.  */
+-  unsigned char buffer[MAX_BYTES_PER_CRIS_INSN];
+-  unsigned char *bufp;
+-  int status = 0;
+-  bfd_vma addr;
+-
+-  /* There will be an "out of range" error after the last instruction.
+-     Reading pairs of bytes in decreasing number, we hope that we will get
+-     at least the amount that we will consume.
+-
+-     If we can't get any data, or we do not get enough data, we print
+-     the error message.  */
+-
+-  nbytes = info->buffer_length ? info->buffer_length
+-                               : MAX_BYTES_PER_CRIS_INSN;
+-  nbytes = MIN(nbytes, MAX_BYTES_PER_CRIS_INSN);
+-  status = (*info->read_memory_func) (memaddr, buffer, nbytes, info);  
+-
+-  /* If we did not get all we asked for, then clear the rest.
+-     Hopefully this makes a reproducible result in case of errors.  */
+-  if (nbytes != MAX_BYTES_PER_CRIS_INSN)
+-    memset (buffer + nbytes, 0, MAX_BYTES_PER_CRIS_INSN - nbytes);
+-
+-  addr = memaddr;
+-  bufp = buffer;
+-
+-  /* Set some defaults for the insn info.  */
+-  info->insn_info_valid = 1;
+-  info->branch_delay_insns = 0;
+-  info->data_size = 0;
+-  info->insn_type = dis_nonbranch;
+-  info->flags = 0;
+-  info->target = 0;
+-  info->target2 = 0;
+-
+-  /* If we got any data, disassemble it.  */
+-  if (nbytes != 0)
+-    {
+-      matchedp = NULL;
+-
+-      insn = bufp[0] + bufp[1] * 256;
+-
+-      /* If we're in a case-table, don't disassemble the offsets.  */
+-      if (TRACE_CASE && case_offset_counter != 0)
+-	{
+-	  info->insn_type = dis_noninsn;
+-	  advance += 2;
+-
+-	  /* If to print data as offsets, then shortcut here.  */
+-	  (*info->fprintf_func) (info->stream, "case %ld%s: -> ",
+-				 case_offset + no_of_case_offsets
+-				 - case_offset_counter,
+-				 case_offset_counter == 1 ? "/default" :
+-				 "");
+-
+-	  (*info->print_address_func) ((bfd_vma)
+-				       ((short) (insn)
+-					+ (long) (addr
+-						  - (no_of_case_offsets
+-						     - case_offset_counter)
+-						  * 2)), info);
+-	  case_offset_counter--;
+-
+-	  /* The default case start (without a "sub" or "add") must be
+-	     zero.  */
+-	  if (case_offset_counter == 0)
+-	    case_offset = 0;
+-	}
+-      else if (insn == 0)
+-	{
+-	  /* We're often called to disassemble zeroes.  While this is a
+-	     valid "bcc .+2" insn, it is also useless enough and enough
+-	     of a nuiscance that we will just output "bcc .+2" for it
+-	     and signal it as a noninsn.  */
+-	  (*info->fprintf_func) (info->stream,
+-				 disdata->distype == cris_dis_v32
+-				 ? "bcc ." : "bcc .+2");
+-	  info->insn_type = dis_noninsn;
+-	  advance += 2;
+-	}
+-      else
+-	{
+-	  const struct cris_opcode *prefix_opcodep = NULL;
+-	  unsigned char *prefix_buffer = bufp;
+-	  unsigned int prefix_insn = insn;
+-	  int prefix_size = 0;
+-
+-	  matchedp = get_opcode_entry (insn, NO_CRIS_PREFIX, disdata);
+-
+-	  /* Check if we're supposed to write out prefixes as address
+-	     modes and if this was a prefix.  */
+-	  if (matchedp != NULL && PARSE_PREFIX && matchedp->args[0] == 'p')
+-	    {
+-	      /* If it's a prefix, put it into the prefix vars and get the
+-		 main insn.  */
+-	      prefix_size = bytes_to_skip (prefix_insn, matchedp,
+-					   disdata->distype, NULL);
+-	      prefix_opcodep = matchedp;
+-
+-	      insn = bufp[prefix_size] + bufp[prefix_size + 1] * 256;
+-	      matchedp = get_opcode_entry (insn, prefix_insn, disdata);
+-
+-	      if (matchedp != NULL)
+-		{
+-		  addr += prefix_size;
+-		  bufp += prefix_size;
+-		  advance += prefix_size;
+-		}
+-	      else
+-		{
+-		  /* The "main" insn wasn't valid, at least not when
+-		     prefixed.  Put back things enough to output the
+-		     prefix insn only, as a normal insn.  */
+-		  matchedp = prefix_opcodep;
+-		  insn = prefix_insn;
+-		  prefix_opcodep = NULL;
+-		}
+-	    }
+-
+-	  if (matchedp == NULL)
+-	    {
+-	      (*info->fprintf_func) (info->stream, "??0x%x", insn);
+-	      advance += 2;
+-
+-	      info->insn_type = dis_noninsn;
+-	    }
+-	  else
+-	    {
+-	      advance
+-		+= bytes_to_skip (insn, matchedp, disdata->distype,
+-				  prefix_opcodep);
+-
+-	      /* The info_type and assorted fields will be set according
+-		 to the operands.   */
+-	      print_with_operands (matchedp, insn, bufp, addr, info,
+-				   prefix_opcodep, prefix_insn,
+-				   prefix_buffer, with_reg_prefix);
+-	    }
+-	}
+-    }
+-  else
+-    info->insn_type = dis_noninsn;
+-
+-  /* If we read less than MAX_BYTES_PER_CRIS_INSN, i.e. we got an error
+-     status when reading that much, and the insn decoding indicated a
+-     length exceeding what we read, there is an error.  */
+-  if (status != 0 && (nbytes == 0 || advance > nbytes))
+-    {
+-      (*info->memory_error_func) (status, memaddr, info);
+-      return -1;
+-    }
+-
+-  /* Max supported insn size with one folded prefix insn.  */
+-  info->bytes_per_line = MAX_BYTES_PER_CRIS_INSN;
+-
+-  /* I would like to set this to a fixed value larger than the actual
+-     number of bytes to print in order to avoid spaces between bytes,
+-     but objdump.c (2.9.1) does not like that, so we print 16-bit
+-     chunks, which is the next choice.  */
+-  info->bytes_per_chunk = 2;
+-
+-  /* Printing bytes in order of increasing addresses makes sense,
+-     especially on a little-endian target.
+-     This is completely the opposite of what you think; setting this to
+-     BFD_ENDIAN_LITTLE will print bytes in order N..0 rather than the 0..N
+-     we want.  */
+-  info->display_endian = BFD_ENDIAN_BIG;
+-
+-  return advance;
+-}
+-
+-/* Disassemble, prefixing register names with `$'.  CRIS v0..v10.  */
+-static int
+-print_insn_cris_with_register_prefix (bfd_vma vma,
+-				      disassemble_info *info)
+-{
+-  struct cris_disasm_data disdata;
+-  info->private_data = &disdata;
+-  cris_parse_disassembler_options (&disdata, info->disassembler_options,
+-				   cris_dis_v0_v10);
+-  return print_insn_cris_generic (vma, info, true);
+-}
+-/* Disassemble, prefixing register names with `$'.  CRIS v32.  */
+-
+-static int
+-print_insn_crisv32_with_register_prefix (bfd_vma vma,
+-					 disassemble_info *info)
+-{
+-  struct cris_disasm_data disdata;
+-  info->private_data = &disdata;
+-  cris_parse_disassembler_options (&disdata, info->disassembler_options,
+-				   cris_dis_v32);
+-  return print_insn_cris_generic (vma, info, true);
 -}
--
--static int dec10_alux_m(CPUCRISState *env, DisasContext *dc, int op)
--{
--    unsigned int size = (dc->size & 1) ? 2 : 1;
--    unsigned int sx = !!(dc->size & 2);
--    int insn_len = 2;
--    int rd = dc->dst;
--    TCGv t;
--
--    LOG_DIS("addx size=%d sx=%d op=%d %d\n", size, sx, dc->src, dc->dst);
--
--    t = tcg_temp_new();
--
--    cris_cc_mask(dc, CC_MASK_NZVC);
--    insn_len += dec10_prep_move_m(env, dc, sx, size, t);
--    cris_alu(dc, op, cpu_R[dc->dst], cpu_R[rd], t, 4);
--    if (dc->dst == 15) {
--        tcg_gen_mov_tl(env_btarget, cpu_R[dc->dst]);
--        cris_prepare_jmp(dc, JMP_INDIRECT);
--        dc->delayed_branch = 1;
--    }
--
--    return insn_len;
--}
--
--static int dec10_dip(CPUCRISState *env, DisasContext *dc)
--{
--    int insn_len = 2;
--    uint32_t imm;
--
--    LOG_DIS("dip pc=%x opcode=%d r%d r%d\n",
--              dc->pc, dc->opcode, dc->src, dc->dst);
--    if (dc->src == 15) {
--        imm = cris_fetch(env, dc, dc->pc + 2, 4, 0);
--        tcg_gen_movi_tl(cpu_PR[PR_PREFIX], imm);
--        if (dc->postinc) {
--            insn_len += 4;
--        }
--        tcg_gen_addi_tl(cpu_R[15], cpu_R[15], insn_len - 2);
--    } else {
--        gen_load(dc, cpu_PR[PR_PREFIX], cpu_R[dc->src], 4, 0);
--        if (dc->postinc)
--            tcg_gen_addi_tl(cpu_R[dc->src], cpu_R[dc->src], 4);
--    }
--
--    cris_set_prefix(dc);
--    return insn_len;
--}
--
--static int dec10_bdap_m(CPUCRISState *env, DisasContext *dc, int size)
--{
--    int insn_len = 2;
--    int rd = dc->dst;
--
--    LOG_DIS("bdap_m pc=%x opcode=%d r%d r%d sz=%d\n",
--              dc->pc, dc->opcode, dc->src, dc->dst, size);
 -
--    assert(dc->dst != 15);
 -#if 0
--    /* 8bit embedded offset?  */
--    if (!dc->postinc && (dc->ir & (1 << 11))) {
--        int simm = dc->ir & 0xff;
+-/* Disassemble, prefixing register names with `$'.
+-   Common v10 and v32 subset.  */
 -
--        /* cpu_abort(CPU(dc->cpu), "Unhandled opcode"); */
--        /* sign extended.  */
--        simm = (int8_t)simm;
+-static int
+-print_insn_crisv10_v32_with_register_prefix (bfd_vma vma,
+-					     disassemble_info *info)
+-{
+-  struct cris_disasm_data disdata;
+-  info->private_data = &disdata;
+-  cris_parse_disassembler_options (&disdata, info->disassembler_options,
+-				   cris_dis_common_v10_v32);
+-  return print_insn_cris_generic (vma, info, true);
+-}
 -
--        tcg_gen_addi_tl(cpu_PR[PR_PREFIX], cpu_R[dc->dst], simm);
+-/* Disassemble, no prefixes on register names.  CRIS v0..v10.  */
 -
--        cris_set_prefix(dc);
--        return insn_len;
--    }
+-static int
+-print_insn_cris_without_register_prefix (bfd_vma vma,
+-					 disassemble_info *info)
+-{
+-  struct cris_disasm_data disdata;
+-  info->private_data = &disdata;
+-  cris_parse_disassembler_options (&disdata, info->disassembler_options,
+-				   cris_dis_v0_v10);
+-  return print_insn_cris_generic (vma, info, false);
+-}
+-
+-/* Disassemble, no prefixes on register names.  CRIS v32.  */
+-
+-static int
+-print_insn_crisv32_without_register_prefix (bfd_vma vma,
+-					    disassemble_info *info)
+-{
+-  struct cris_disasm_data disdata;
+-  info->private_data = &disdata;
+-  cris_parse_disassembler_options (&disdata, info->disassembler_options,
+-				   cris_dis_v32);
+-  return print_insn_cris_generic (vma, info, false);
+-}
+-
+-/* Disassemble, no prefixes on register names.
+-   Common v10 and v32 subset.  */
+-
+-static int
+-print_insn_crisv10_v32_without_register_prefix (bfd_vma vma,
+-						disassemble_info *info)
+-{
+-  struct cris_disasm_data disdata;
+-  info->private_data = &disdata;
+-  cris_parse_disassembler_options (&disdata, info->disassembler_options,
+-				   cris_dis_common_v10_v32);
+-  return print_insn_cris_generic (vma, info, false);
+-}
 -#endif
--    /* Now the rest of the modes are truly indirect.  */
--    insn_len += dec10_prep_move_m(env, dc, 1, size, cpu_PR[PR_PREFIX]);
--    tcg_gen_add_tl(cpu_PR[PR_PREFIX], cpu_PR[PR_PREFIX], cpu_R[rd]);
--    cris_set_prefix(dc);
--    return insn_len;
--}
 -
--static unsigned int dec10_ind(CPUCRISState *env, DisasContext *dc)
+-int
+-print_insn_crisv10 (bfd_vma vma,
+-		    disassemble_info *info)
 -{
--    unsigned int insn_len = 2;
--    unsigned int size = dec10_size(dc->size);
--    uint32_t imm;
--    int32_t simm;
--    TCGv t[2], c;
--
--    if (dc->size != 3) {
--        switch (dc->opcode) {
--            case CRISV10_IND_MOVE_M_R:
--                return dec10_ind_move_m_r(env, dc, size);
--            case CRISV10_IND_MOVE_R_M:
--                return dec10_ind_move_r_m(dc, size);
--            case CRISV10_IND_CMP:
--                LOG_DIS("cmp size=%d op=%d %d\n",  size, dc->src, dc->dst);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                insn_len += dec10_ind_alu(env, dc, CC_OP_CMP, size);
--                break;
--            case CRISV10_IND_TEST:
--                LOG_DIS("test size=%d op=%d %d\n",  size, dc->src, dc->dst);
--
--                cris_evaluate_flags(dc);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                cris_alu_m_alloc_temps(t);
--                insn_len += dec10_prep_move_m(env, dc, 0, size, t[0]);
--                tcg_gen_andi_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], ~3);
--                c = tcg_constant_tl(0);
--                cris_alu(dc, CC_OP_CMP, cpu_R[dc->dst],
--                         t[0], c, size);
--                break;
--            case CRISV10_IND_ADD:
--                LOG_DIS("add size=%d op=%d %d\n",  size, dc->src, dc->dst);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                insn_len += dec10_ind_alu(env, dc, CC_OP_ADD, size);
--                break;
--            case CRISV10_IND_SUB:
--                LOG_DIS("sub size=%d op=%d %d\n",  size, dc->src, dc->dst);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                insn_len += dec10_ind_alu(env, dc, CC_OP_SUB, size);
--                break;
--            case CRISV10_IND_BOUND:
--                LOG_DIS("bound size=%d op=%d %d\n",  size, dc->src, dc->dst);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                insn_len += dec10_ind_bound(env, dc, size);
--                break;
--            case CRISV10_IND_AND:
--                LOG_DIS("and size=%d op=%d %d\n",  size, dc->src, dc->dst);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                insn_len += dec10_ind_alu(env, dc, CC_OP_AND, size);
--                break;
--            case CRISV10_IND_OR:
--                LOG_DIS("or size=%d op=%d %d\n",  size, dc->src, dc->dst);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                insn_len += dec10_ind_alu(env, dc, CC_OP_OR, size);
--                break;
--            case CRISV10_IND_MOVX:
--                insn_len = dec10_alux_m(env, dc, CC_OP_MOVE);
--                break;
--            case CRISV10_IND_ADDX:
--                insn_len = dec10_alux_m(env, dc, CC_OP_ADD);
--                break;
--            case CRISV10_IND_SUBX:
--                insn_len = dec10_alux_m(env, dc, CC_OP_SUB);
--                break;
--            case CRISV10_IND_CMPX:
--                insn_len = dec10_alux_m(env, dc, CC_OP_CMP);
--                break;
--            case CRISV10_IND_MUL:
--                /* This is a reg insn coded in the mem indir space.  */
--                LOG_DIS("mul pc=%x opcode=%d\n", dc->pc, dc->opcode);
--                cris_cc_mask(dc, CC_MASK_NZVC);
--                dec10_reg_mul(dc, size, dc->ir & (1 << 10));
--                break;
--            case CRISV10_IND_BDAP_M:
--                insn_len = dec10_bdap_m(env, dc, size);
--                break;
--            default:
--            /*
--             * ADDC for v17:
--             *
--             * Instruction format: ADDC [Rs],Rd
--             *
--             *  +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+-+
--             *  |Destination(Rd)| 1   0   0   1   1   0   1   0 |   Source(Rs)|
--             *  +---+---+---+---+---+---+---+---+---+---+---+---+---+---+--+--+
--             *
--             * Instruction format: ADDC [Rs+],Rd
--             *
--             *  +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+-+
--             *  |Destination(Rd)| 1   1   0   1   1   0   1   0 |   Source(Rs)|
--             *  +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+-+
--             */
--                if (dc->opcode == CRISV17_IND_ADDC && dc->size == 2 &&
--                    env->pregs[PR_VR] == 17) {
--                    LOG_DIS("addc op=%d %d\n",  dc->src, dc->dst);
--                    cris_cc_mask(dc, CC_MASK_NZVC);
--                    insn_len += dec10_ind_alu(env, dc, CC_OP_ADDC, size);
--                    break;
--                }
--
--                LOG_DIS("pc=%x var-ind.%d %d r%d r%d\n",
--                          dc->pc, size, dc->opcode, dc->src, dc->dst);
--                cpu_abort(CPU(dc->cpu), "Unhandled opcode");
--                break;
--        }
--        return insn_len;
--    }
--
--    switch (dc->opcode) {
--        case CRISV10_IND_MOVE_M_SPR:
--            insn_len = dec10_ind_move_m_pr(env, dc);
--            break;
--        case CRISV10_IND_MOVE_SPR_M:
--            insn_len = dec10_ind_move_pr_m(dc);
--            break;
--        case CRISV10_IND_JUMP_M:
--            if (dc->src == 15) {
--                LOG_DIS("jump.%d %d r%d r%d direct\n", size,
--                         dc->opcode, dc->src, dc->dst);
--                imm = cris_fetch(env, dc, dc->pc + 2, size, 0);
--                if (dc->mode == CRISV10_MODE_AUTOINC) {
--                    insn_len += size;
--                }
--                c = tcg_constant_tl(dc->pc + insn_len);
--                t_gen_mov_preg_TN(dc, dc->dst, c);
--                dc->jmp_pc = imm;
--                cris_prepare_jmp(dc, JMP_DIRECT);
--                dc->delayed_branch--; /* v10 has no dslot here.  */
--            } else {
--                if (dc->dst == 14) {
--                    LOG_DIS("break %d\n", dc->src);
--                    cris_evaluate_flags(dc);
--                    tcg_gen_movi_tl(env_pc, dc->pc + 2);
--                    c = tcg_constant_tl(dc->src + 2);
--                    t_gen_mov_env_TN(trap_vector, c);
--                    t_gen_raise_exception(EXCP_BREAK);
--                    dc->base.is_jmp = DISAS_NORETURN;
--                    return insn_len;
--                }
--                LOG_DIS("%d: jump.%d %d r%d r%d\n", __LINE__, size,
--                         dc->opcode, dc->src, dc->dst);
--                t[0] = tcg_temp_new();
--                c = tcg_constant_tl(dc->pc + insn_len);
--                t_gen_mov_preg_TN(dc, dc->dst, c);
--                crisv10_prepare_memaddr(dc, t[0], size);
--                gen_load(dc, env_btarget, t[0], 4, 0);
--                insn_len += crisv10_post_memaddr(dc, size);
--                cris_prepare_jmp(dc, JMP_INDIRECT);
--                dc->delayed_branch--; /* v10 has no dslot here.  */
--            }
--            break;
--
--        case CRISV10_IND_MOVEM_R_M:
--            LOG_DIS("movem_r_m pc=%x opcode=%d r%d r%d\n",
--                        dc->pc, dc->opcode, dc->dst, dc->src);
--            dec10_movem_r_m(dc);
--            break;
--        case CRISV10_IND_MOVEM_M_R:
--            LOG_DIS("movem_m_r pc=%x opcode=%d\n", dc->pc, dc->opcode);
--            dec10_movem_m_r(dc);
--            break;
--        case CRISV10_IND_JUMP_R:
--            LOG_DIS("jmp pc=%x opcode=%d r%d r%d\n",
--                        dc->pc, dc->opcode, dc->dst, dc->src);
--            tcg_gen_mov_tl(env_btarget, cpu_R[dc->src]);
--            c = tcg_constant_tl(dc->pc + insn_len);
--            t_gen_mov_preg_TN(dc, dc->dst, c);
--            cris_prepare_jmp(dc, JMP_INDIRECT);
--            dc->delayed_branch--; /* v10 has no dslot here.  */
--            break;
--        case CRISV10_IND_MOVX:
--            insn_len = dec10_alux_m(env, dc, CC_OP_MOVE);
--            break;
--        case CRISV10_IND_ADDX:
--            insn_len = dec10_alux_m(env, dc, CC_OP_ADD);
--            break;
--        case CRISV10_IND_SUBX:
--            insn_len = dec10_alux_m(env, dc, CC_OP_SUB);
--            break;
--        case CRISV10_IND_CMPX:
--            insn_len = dec10_alux_m(env, dc, CC_OP_CMP);
--            break;
--        case CRISV10_IND_DIP:
--            insn_len = dec10_dip(env, dc);
--            break;
--        case CRISV10_IND_BCC_M:
--
--            cris_cc_mask(dc, 0);
--            simm = cris_fetch(env, dc, dc->pc + 2, 2, 1);
--            simm += 4;
--
--            LOG_DIS("bcc_m: b%s %x\n", cc_name(dc->cond), dc->pc + simm);
--            cris_prepare_cc_branch(dc, simm, dc->cond);
--            insn_len = 4;
--            break;
--        default:
--            LOG_DIS("ERROR pc=%x opcode=%d\n", dc->pc, dc->opcode);
--            cpu_abort(CPU(dc->cpu), "Unhandled opcode");
--            break;
--    }
--
--    return insn_len;
+-  return print_insn_cris_with_register_prefix(vma, info);
 -}
 -
--static unsigned int crisv10_decoder(CPUCRISState *env, DisasContext *dc)
+-int
+-print_insn_crisv32 (bfd_vma vma,
+-		    disassemble_info *info)
 -{
--    unsigned int insn_len = 2;
--
--    /* Load a halfword onto the instruction register.  */
--    dc->ir = cris_fetch(env, dc, dc->pc, 2, 0);
--
--    /* Now decode it.  */
--    dc->opcode   = EXTRACT_FIELD(dc->ir, 6, 9);
--    dc->mode     = EXTRACT_FIELD(dc->ir, 10, 11);
--    dc->src      = EXTRACT_FIELD(dc->ir, 0, 3);
--    dc->size     = EXTRACT_FIELD(dc->ir, 4, 5);
--    dc->cond = dc->dst = EXTRACT_FIELD(dc->ir, 12, 15);
--    dc->postinc  = EXTRACT_FIELD(dc->ir, 10, 10);
--
--    dc->clear_prefix = 1;
--
--    /* FIXME: What if this insn insn't 2 in length??  */
--    if (dc->src == 15 || dc->dst == 15)
--        tcg_gen_movi_tl(cpu_R[15], dc->pc + 2);
--
--    switch (dc->mode) {
--        case CRISV10_MODE_QIMMEDIATE:
--            insn_len = dec10_quick_imm(dc);
--            break;
--        case CRISV10_MODE_REG:
--            insn_len = dec10_reg(dc);
--            break;
--        case CRISV10_MODE_AUTOINC:
--        case CRISV10_MODE_INDIRECT:
--            insn_len = dec10_ind(env, dc);
--            break;
--    }
--
--    if (dc->clear_prefix && dc->tb_flags & PFIX_FLAG) {
--        dc->tb_flags &= ~PFIX_FLAG;
--        tcg_gen_andi_tl(cpu_PR[PR_CCS], cpu_PR[PR_CCS], ~PFIX_FLAG);
--        if (dc->tb_flags != dc->base.tb->flags) {
--            dc->cpustate_changed = 1;
--        }
--    }
--
--    /* CRISv10 locks out interrupts on dslots.  */
--    if (dc->delayed_branch == 2) {
--        cris_lock_irq(dc);
--    }
--    return insn_len;
+-  return print_insn_crisv32_with_register_prefix(vma, info);
 -}
 -
--void cris_initialize_crisv10_tcg(void)
+-/* Return a disassembler-function that prints registers with a `$' prefix,
+-   or one that prints registers without a prefix.
+-   FIXME: We should improve the solution to avoid the multitude of
+-   functions seen above.  */
+-#if 0
+-disassembler_ftype
+-cris_get_disassembler (bfd *abfd)
 -{
--    int i;
+-  /* If there's no bfd in sight, we return what is valid as input in all
+-     contexts if fed back to the assembler: disassembly *with* register
+-     prefix.  Unfortunately this will be totally wrong for v32.  */
+-  if (abfd == NULL)
+-    return print_insn_cris_with_register_prefix;
 -
--    cc_x = tcg_global_mem_new(tcg_env,
--                              offsetof(CPUCRISState, cc_x), "cc_x");
--    cc_src = tcg_global_mem_new(tcg_env,
--                                offsetof(CPUCRISState, cc_src), "cc_src");
--    cc_dest = tcg_global_mem_new(tcg_env,
--                                 offsetof(CPUCRISState, cc_dest),
--                                 "cc_dest");
--    cc_result = tcg_global_mem_new(tcg_env,
--                                   offsetof(CPUCRISState, cc_result),
--                                   "cc_result");
--    cc_op = tcg_global_mem_new(tcg_env,
--                               offsetof(CPUCRISState, cc_op), "cc_op");
--    cc_size = tcg_global_mem_new(tcg_env,
--                                 offsetof(CPUCRISState, cc_size),
--                                 "cc_size");
--    cc_mask = tcg_global_mem_new(tcg_env,
--                                 offsetof(CPUCRISState, cc_mask),
--                                 "cc_mask");
+-  if (bfd_get_symbol_leading_char (abfd) == 0)
+-    {
+-      if (bfd_get_mach (abfd) == bfd_mach_cris_v32)
+-	return print_insn_crisv32_with_register_prefix;
+-      if (bfd_get_mach (abfd) == bfd_mach_cris_v10_v32)
+-	return print_insn_crisv10_v32_with_register_prefix;
 -
--    env_pc = tcg_global_mem_new(tcg_env,
--                                offsetof(CPUCRISState, pc),
--                                "pc");
--    env_btarget = tcg_global_mem_new(tcg_env,
--                                     offsetof(CPUCRISState, btarget),
--                                     "btarget");
--    env_btaken = tcg_global_mem_new(tcg_env,
--                                    offsetof(CPUCRISState, btaken),
--                                    "btaken");
--    for (i = 0; i < 16; i++) {
--        cpu_R[i] = tcg_global_mem_new(tcg_env,
--                                      offsetof(CPUCRISState, regs[i]),
--                                      regnames_v10[i]);
+-      /* We default to v10.  This may be specifically specified in the
+-	 bfd mach, but is also the default setting.  */
+-      return print_insn_cris_with_register_prefix;
 -    }
--    for (i = 0; i < 16; i++) {
--        cpu_PR[i] = tcg_global_mem_new(tcg_env,
--                                       offsetof(CPUCRISState, pregs[i]),
--                                       pregnames_v10[i]);
--    }
+-
+-  if (bfd_get_mach (abfd) == bfd_mach_cris_v32)
+-    return print_insn_crisv32_without_register_prefix;
+-  if (bfd_get_mach (abfd) == bfd_mach_cris_v10_v32)
+-    return print_insn_crisv10_v32_without_register_prefix;
+-  return print_insn_cris_without_register_prefix;
 -}
-diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
-index c12ae9e49c..a58e7414c7 100644
---- a/scripts/coverity-scan/COMPONENTS.md
-+++ b/scripts/coverity-scan/COMPONENTS.md
-@@ -9,9 +9,6 @@ arm
- avr
-   ~ .*/qemu((/include)?/hw/avr/.*|/target/avr/.*)
- 
--cris
--  ~ .*/qemu/target/cris/.*
--
- hexagon-gen (component should be ignored in analysis)
-   ~ .*/qemu(/target/hexagon/.*generated.*)
- 
-diff --git a/target/Kconfig b/target/Kconfig
-index 7f64112e9e..d0c7b59d9c 100644
---- a/target/Kconfig
-+++ b/target/Kconfig
-@@ -1,7 +1,6 @@
- source alpha/Kconfig
- source arm/Kconfig
- source avr/Kconfig
--source cris/Kconfig
- source hppa/Kconfig
- source i386/Kconfig
- source loongarch/Kconfig
-diff --git a/target/cris/Kconfig b/target/cris/Kconfig
-deleted file mode 100644
-index 3fdc309fbb..0000000000
---- a/target/cris/Kconfig
-+++ /dev/null
-@@ -1,2 +0,0 @@
--config CRIS
--    bool
-diff --git a/target/cris/meson.build b/target/cris/meson.build
-deleted file mode 100644
-index bbfcdf7f7a..0000000000
---- a/target/cris/meson.build
-+++ /dev/null
-@@ -1,17 +0,0 @@
--cris_ss = ss.source_set()
--cris_ss.add(files(
--  'cpu.c',
--  'gdbstub.c',
--  'op_helper.c',
--  'translate.c',
--))
--
--cris_system_ss = ss.source_set()
--cris_system_ss.add(files(
--  'helper.c',
--  'machine.c',
--  'mmu.c',
--))
--
--target_arch += {'cris': cris_ss}
--target_system_arch += {'cris': cris_system_ss}
-diff --git a/target/meson.build b/target/meson.build
-index 1c2e6f2b19..b29598e7c5 100644
---- a/target/meson.build
-+++ b/target/meson.build
-@@ -1,7 +1,6 @@
- subdir('alpha')
- subdir('arm')
- subdir('avr')
--subdir('cris')
- subdir('hexagon')
- subdir('hppa')
- subdir('i386')
-diff --git a/tests/data/qobject/qdict.txt b/tests/data/qobject/qdict.txt
-index e2edc88161..888f3431b5 100644
---- a/tests/data/qobject/qdict.txt
-+++ b/tests/data/qobject/qdict.txt
-@@ -3487,12 +3487,6 @@ cred-internals.h: 559
- CREDITS: 603
- crime.c: 2833
- crime.h: 5271
--cris: 4096
--cris_defs_asm.h: 3805
--crisksyms.c: 472
--cris_supp_reg.h: 198
--crisv10.c: 129158
--crisv10.h: 4289
- crm_regs.h: 1700
- cr_pll.c: 4842
- crt0_ram.S: 2152
+-#endif
+-/* Local variables:
+-   eval: (c-set-style "gnu")
+-   indent-tabs-mode: t
+-   End:  */
+diff --git a/disas/meson.build b/disas/meson.build
+index 20d6aef9a7..bbfa119783 100644
+--- a/disas/meson.build
++++ b/disas/meson.build
+@@ -1,5 +1,4 @@
+ common_ss.add(when: 'CONFIG_ALPHA_DIS', if_true: files('alpha.c'))
+-common_ss.add(when: 'CONFIG_CRIS_DIS', if_true: files('cris.c'))
+ common_ss.add(when: 'CONFIG_HEXAGON_DIS', if_true: files('hexagon.c'))
+ common_ss.add(when: 'CONFIG_HPPA_DIS', if_true: files('hppa.c'))
+ common_ss.add(when: 'CONFIG_M68K_DIS', if_true: files('m68k.c'))
 -- 
 2.45.2
 
