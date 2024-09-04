@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A8CF96BCE6
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A5896BCD5
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:47:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slpNb-00056m-Rm; Wed, 04 Sep 2024 08:44:59 -0400
+	id 1slpNd-0005Ar-0f; Wed, 04 Sep 2024 08:45:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNZ-0004x9-1W
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:57 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNa-00053U-LE
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:58 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNX-0005bR-FJ
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:56 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNY-0005bx-Qn
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:58 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id E43EA2119F;
- Wed,  4 Sep 2024 12:44:53 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 859D91F7BC;
+ Wed,  4 Sep 2024 12:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453894; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453895; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OMCk6K5d6G6+9Y8txB3BHcZSoOMR6I+KaV+SlQizkAs=;
- b=yVBK7SEAyQhbK1Z8/ClRZz4G8mo8LnyWXi5IFDOvE9p0MDPmuL22yObR+8kxhEjV/LJye2
- rPHhxXUNXyimSeeUiDDf2TnSe7vCeYIENkNsF/h0OTs3kZk1rl0yojAWaYRbBzBr4dNd/H
- kjsuMQcvHTu1lqGKbjO8NPKqGaLNAPA=
+ bh=41Iha+9TwuH9aA17NRpJF0mKGVR2kS9cNIKotE3QSTI=;
+ b=UeDvBcKUT2mrQ4jnp6MiZ2IW40AHBfoK0wiFW9u0MDnEdDS9HwKBZyvWQt7lv19wTqVI7O
+ iszFKzFvhstTc3MVqbLxKpH0ng6yO7mmoYwApIx6Wx2d7NDrGykrc3teGqs8FuZsFaT1pa
+ Q2lmJ9PjIj4ZE76h0L/I6gRWQGPYaUE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453894;
+ s=susede2_ed25519; t=1725453895;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OMCk6K5d6G6+9Y8txB3BHcZSoOMR6I+KaV+SlQizkAs=;
- b=pLN6MR0N9aJ63UJ2d95sTyreG8ShPkunIwNdkiF/CJyKoswBI9WSjaeKWYchbV0QaEclvq
- kVA1vgfhP5kgtPCA==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Iux7mLF0;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=l7fJkt+8
+ bh=41Iha+9TwuH9aA17NRpJF0mKGVR2kS9cNIKotE3QSTI=;
+ b=Ah134rsl1/L5QvShycM3S1Irze3QLKpaTRnlspM4LNenyBXK7qJD6zIOPxJOZ2QyJoE/ub
+ cADVgS8TxnKvXmDA==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UeDvBcKU;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ah134rsl
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453893; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453895; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OMCk6K5d6G6+9Y8txB3BHcZSoOMR6I+KaV+SlQizkAs=;
- b=Iux7mLF09aU3B7F6eIvnyCjmNAjhiUqAD7+z+VB5XON3dKFdAbvQLOSLFeZUqZheVHDMag
- 2TdL1bV2dSVHn8dMw8HhXeJvUFvdTaglf6c4QujOvbvdQSznvTKAuySD/h+6SlpG+myuyQ
- fRLTWoP7b+AwGRYcXQy1nRXyliglVQg=
+ bh=41Iha+9TwuH9aA17NRpJF0mKGVR2kS9cNIKotE3QSTI=;
+ b=UeDvBcKUT2mrQ4jnp6MiZ2IW40AHBfoK0wiFW9u0MDnEdDS9HwKBZyvWQt7lv19wTqVI7O
+ iszFKzFvhstTc3MVqbLxKpH0ng6yO7mmoYwApIx6Wx2d7NDrGykrc3teGqs8FuZsFaT1pa
+ Q2lmJ9PjIj4ZE76h0L/I6gRWQGPYaUE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453893;
+ s=susede2_ed25519; t=1725453895;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OMCk6K5d6G6+9Y8txB3BHcZSoOMR6I+KaV+SlQizkAs=;
- b=l7fJkt+8OfnVSN4O/vp0pRL2aJeUK8TJBskpUmBxqpE42ONgV3U81utRGEEzNG+IM1Ke9J
- nV+MreF70XC/AyBA==
+ bh=41Iha+9TwuH9aA17NRpJF0mKGVR2kS9cNIKotE3QSTI=;
+ b=Ah134rsl1/L5QvShycM3S1Irze3QLKpaTRnlspM4LNenyBXK7qJD6zIOPxJOZ2QyJoE/ub
+ cADVgS8TxnKvXmDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BE4C0139D2;
- Wed,  4 Sep 2024 12:44:52 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B9DE139D2;
+ Wed,  4 Sep 2024 12:44:54 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id IObxIERW2GZuVQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:44:52 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 6H/fCEZW2GZuVQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:44:54 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 19/34] migration/multifd: Move pages accounting into
- multifd_send_zero_page_detect()
-Date: Wed,  4 Sep 2024 09:44:02 -0300
-Message-Id: <20240904124417.14565-20-farosas@suse.de>
+Subject: [PULL 20/34] migration/multifd: Remove total pages tracing
+Date: Wed,  4 Sep 2024 09:44:03 -0300
+Message-Id: <20240904124417.14565-21-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240904124417.14565-1-farosas@suse.de>
 References: <20240904124417.14565-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E43EA2119F
+X-Rspamd-Queue-Id: 859D91F7BC
 X-Spam-Score: -3.01
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
@@ -103,8 +102,8 @@ X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
  RCPT_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.de:+]
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -127,67 +126,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All references to pages are being removed from the multifd worker
-threads in order to allow multifd to deal with different payload
-types.
-
-multifd_send_zero_page_detect() is called by all multifd migration
-paths that deal with pages and is the last spot where zero pages and
-normal page amounts are adjusted. Move the pages accounting into that
-function.
+The total_normal_pages and total_zero_pages elements are used only for
+the end tracepoints of the multifd threads. These are not super useful
+since they record per-channel numbers and are just the sum of all the
+pages that are transmitted per-packet, for which we already have
+tracepoints. Remove the totals from the tracing.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd-zero-page.c | 7 ++++++-
- migration/multifd.c           | 2 --
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ migration/multifd.c    | 12 ++----------
+ migration/multifd.h    |  8 --------
+ migration/trace-events |  4 ++--
+ 3 files changed, 4 insertions(+), 20 deletions(-)
 
-diff --git a/migration/multifd-zero-page.c b/migration/multifd-zero-page.c
-index 6506a4aa89..f1e988a959 100644
---- a/migration/multifd-zero-page.c
-+++ b/migration/multifd-zero-page.c
-@@ -14,6 +14,7 @@
- #include "qemu/cutils.h"
- #include "exec/ramblock.h"
- #include "migration.h"
-+#include "migration-stats.h"
- #include "multifd.h"
- #include "options.h"
- #include "ram.h"
-@@ -53,7 +54,7 @@ void multifd_send_zero_page_detect(MultiFDSendParams *p)
- 
-     if (!multifd_zero_page_enabled()) {
-         pages->normal_num = pages->num;
--        return;
-+        goto out;
-     }
- 
-     /*
-@@ -74,6 +75,10 @@ void multifd_send_zero_page_detect(MultiFDSendParams *p)
-     }
- 
-     pages->normal_num = i;
-+
-+out:
-+    stat64_add(&mig_stats.normal_pages, pages->normal_num);
-+    stat64_add(&mig_stats.zero_pages, pages->num - pages->normal_num);
- }
- 
- void multifd_recv_zero_page_process(MultiFDRecvParams *p)
 diff --git a/migration/multifd.c b/migration/multifd.c
-index c310d28532..410b7e12cc 100644
+index 410b7e12cc..df8dfcc98f 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -989,8 +989,6 @@ static void *multifd_send_thread(void *opaque)
+@@ -453,8 +453,6 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
+     }
  
-             stat64_add(&mig_stats.multifd_bytes,
-                        p->next_packet_size + p->packet_len);
--            stat64_add(&mig_stats.normal_pages, pages->normal_num);
--            stat64_add(&mig_stats.zero_pages, pages->num - pages->normal_num);
+     p->packets_sent++;
+-    p->total_normal_pages += pages->normal_num;
+-    p->total_zero_pages += zero_num;
  
-             multifd_pages_reset(pages);
-             p->next_packet_size = 0;
+     trace_multifd_send(p->id, packet_num, pages->normal_num, zero_num,
+                        p->flags, p->next_packet_size);
+@@ -516,8 +514,6 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
+     p->next_packet_size = be32_to_cpu(packet->next_packet_size);
+     p->packet_num = be64_to_cpu(packet->packet_num);
+     p->packets_recved++;
+-    p->total_normal_pages += p->normal_num;
+-    p->total_zero_pages += p->zero_num;
+ 
+     trace_multifd_recv(p->id, p->packet_num, p->normal_num, p->zero_num,
+                        p->flags, p->next_packet_size);
+@@ -1036,8 +1032,7 @@ out:
+ 
+     rcu_unregister_thread();
+     migration_threads_remove(thread);
+-    trace_multifd_send_thread_end(p->id, p->packets_sent, p->total_normal_pages,
+-                                  p->total_zero_pages);
++    trace_multifd_send_thread_end(p->id, p->packets_sent);
+ 
+     return NULL;
+ }
+@@ -1561,7 +1556,6 @@ static void *multifd_recv_thread(void *opaque)
+                 qemu_sem_wait(&p->sem_sync);
+             }
+         } else {
+-            p->total_normal_pages += p->data->size / qemu_target_page_size();
+             p->data->size = 0;
+             /*
+              * Order data->size update before clearing
+@@ -1578,9 +1572,7 @@ static void *multifd_recv_thread(void *opaque)
+     }
+ 
+     rcu_unregister_thread();
+-    trace_multifd_recv_thread_end(p->id, p->packets_recved,
+-                                  p->total_normal_pages,
+-                                  p->total_zero_pages);
++    trace_multifd_recv_thread_end(p->id, p->packets_recved);
+ 
+     return NULL;
+ }
+diff --git a/migration/multifd.h b/migration/multifd.h
+index c2ba4cad13..9175104aea 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -162,10 +162,6 @@ typedef struct {
+     uint32_t next_packet_size;
+     /* packets sent through this channel */
+     uint64_t packets_sent;
+-    /* non zero pages sent through this channel */
+-    uint64_t total_normal_pages;
+-    /* zero pages sent through this channel */
+-    uint64_t total_zero_pages;
+     /* buffers to send */
+     struct iovec *iov;
+     /* number of iovs used */
+@@ -218,10 +214,6 @@ typedef struct {
+     RAMBlock *block;
+     /* ramblock host address */
+     uint8_t *host;
+-    /* non zero pages recv through this channel */
+-    uint64_t total_normal_pages;
+-    /* zero pages recv through this channel */
+-    uint64_t total_zero_pages;
+     /* buffers to recv */
+     struct iovec *iov;
+     /* Pages that are not zero */
+diff --git a/migration/trace-events b/migration/trace-events
+index 0b7c3324fb..0887cef912 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -134,7 +134,7 @@ multifd_recv_sync_main(long packet_num) "packet num %ld"
+ multifd_recv_sync_main_signal(uint8_t id) "channel %u"
+ multifd_recv_sync_main_wait(uint8_t id) "iter %u"
+ multifd_recv_terminate_threads(bool error) "error %d"
+-multifd_recv_thread_end(uint8_t id, uint64_t packets, uint64_t normal_pages, uint64_t zero_pages) "channel %u packets %" PRIu64 " normal pages %" PRIu64 " zero pages %" PRIu64
++multifd_recv_thread_end(uint8_t id, uint64_t packets) "channel %u packets %" PRIu64
+ multifd_recv_thread_start(uint8_t id) "%u"
+ multifd_send(uint8_t id, uint64_t packet_num, uint32_t normal_pages, uint32_t zero_pages, uint32_t flags, uint32_t next_packet_size) "channel %u packet_num %" PRIu64 " normal pages %u zero pages %u flags 0x%x next packet size %u"
+ multifd_send_error(uint8_t id) "channel %u"
+@@ -142,7 +142,7 @@ multifd_send_sync_main(long packet_num) "packet num %ld"
+ multifd_send_sync_main_signal(uint8_t id) "channel %u"
+ multifd_send_sync_main_wait(uint8_t id) "channel %u"
+ multifd_send_terminate_threads(void) ""
+-multifd_send_thread_end(uint8_t id, uint64_t packets, uint64_t normal_pages, uint64_t zero_pages) "channel %u packets %" PRIu64 " normal pages %"  PRIu64 " zero pages %"  PRIu64
++multifd_send_thread_end(uint8_t id, uint64_t packets) "channel %u packets %" PRIu64
+ multifd_send_thread_start(uint8_t id) "%u"
+ multifd_tls_outgoing_handshake_start(void *ioc, void *tioc, const char *hostname) "ioc=%p tioc=%p hostname=%s"
+ multifd_tls_outgoing_handshake_error(void *ioc, const char *err) "ioc=%p err=%s"
 -- 
 2.35.3
 
