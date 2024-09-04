@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF04696B8E2
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 674ED96B8D8
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 12:46:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slnRR-0004YE-Mf; Wed, 04 Sep 2024 06:40:49 -0400
+	id 1slnRW-000559-CK; Wed, 04 Sep 2024 06:40:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRP-0004HT-EA
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:40:47 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRQ-0004Sy-CA
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:40:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRN-0000MK-Di
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:40:47 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1slnRO-0000Mb-61
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 06:40:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725446444;
+ s=mimecast20190719; t=1725446445;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=U9OCf7f58k1KQ8jS5Trjzpc4/7cD3WA41IpBNB/dFDs=;
- b=T/i/3lfbkQP5Pi1BAdZLI0i+d2EGaBIwaEdPvvPJZq46Ztr/jWWD3ee7blV1jNg+tovXrM
- vetiECgJYOwja59es/XDSgk824o7pCCgE9yblkArKlDL/JzzMyVCBwti0vLyPKk65EPSM0
- MUeOnhFqBaB+1qeYgbRjuBsISvc70v8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=jiKAMk08Nd9GljgF49nsl0jS5O1JvMkVmtTyNvbDU4w=;
+ b=cUI/+44d1mm3qnUNAz3svSpMfA0lqjzVItgzGq4lFvW/KeBXYnwsHWSGjE57/HGkP+qJGi
+ niBMXkaKSfXd4AWbmj72IqZydGl+7iVyKaQ5Pfr11gj4dPPKrdAbrtSxQZ8Wqkm2I+1M+w
+ h1eRuaMkELhORvDMxwCkB4MCVTuSrDs=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-369-B8hVkk0CN6u3OGWe62dlRg-1; Wed,
- 04 Sep 2024 06:40:41 -0400
-X-MC-Unique: B8hVkk0CN6u3OGWe62dlRg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-513-nR8YPxfYMhOMC64MGbUjpg-1; Wed,
+ 04 Sep 2024 06:40:44 -0400
+X-MC-Unique: nR8YPxfYMhOMC64MGbUjpg-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A8C1E19560A7; Wed,  4 Sep 2024 10:40:40 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6900D19560B7; Wed,  4 Sep 2024 10:40:43 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.48])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AE3881955F44; Wed,  4 Sep 2024 10:40:38 +0000 (UTC)
+ id 49088195605A; Wed,  4 Sep 2024 10:40:41 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 26/42] tests/functional: Convert the ppc_hv avocado test into a
- standalone test
-Date: Wed,  4 Sep 2024 12:39:01 +0200
-Message-ID: <20240904103923.451847-27-thuth@redhat.com>
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 27/42] tests/functional: Convert the m68k nextcube test with
+ tesseract
+Date: Wed,  4 Sep 2024 12:39:02 +0200
+Message-ID: <20240904103923.451847-28-thuth@redhat.com>
 In-Reply-To: <20240904103923.451847-1-thuth@redhat.com>
 References: <20240904103923.451847-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,180 +83,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A straight forward conversion, we just also have to remove the decorator
-@skipUnless(os.getenv('SPEED')) since all non-trivial functional tests
-are running in SPEED=thorough mode now. Also make sure that the extracted
-assets are writable, so that the test does not fail if it gets re-run
-and there are stale read-only files already around.
+The code that handles running of tesseract needs to be tweaked a little
+bit to be able to run without the functions from avocado.utils, and
+while we're at it, drop some legacy stuff that was still there due to
+Tesseract 3 support that we already dropped a while ago.
 
-Message-ID: <20240830133841.142644-28-thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240830133841.142644-29-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                                   |  2 +-
- tests/functional/meson.build                  |  2 +
- .../test_ppc64_hv.py}                         | 52 ++++++++-----------
- 3 files changed, 24 insertions(+), 32 deletions(-)
- rename tests/{avocado/ppc_hv_tests.py => functional/test_ppc64_hv.py} (85%)
+ MAINTAINERS                                   |  1 +
+ tests/avocado/tesseract_utils.py              | 46 -------------------
+ tests/functional/meson.build                  |  4 ++
+ tests/functional/qemu_test/tesseract.py       | 35 ++++++++++++++
+ .../test_m68k_nextcube.py}                    | 29 ++++++------
+ 5 files changed, 56 insertions(+), 59 deletions(-)
+ delete mode 100644 tests/avocado/tesseract_utils.py
+ create mode 100644 tests/functional/qemu_test/tesseract.py
+ rename tests/{avocado/machine_m68k_nextcube.py => functional/test_m68k_nextcube.py} (75%)
  mode change 100644 => 100755
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index ee291e6d55..52b53d693e 100644
+index 52b53d693e..70dd2430db 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1531,7 +1531,7 @@ F: tests/qtest/libqos/*spapr*
- F: tests/qtest/rtas*
- F: tests/qtest/libqos/rtas*
- F: tests/functional/test_ppc64_pseries.py
--F: tests/avocado/ppc_hv_tests.py
-+F: tests/functional/test_ppc64_hv.py
+@@ -1282,6 +1282,7 @@ S: Odd Fixes
+ F: hw/m68k/next-*.c
+ F: hw/display/next-fb.c
+ F: include/hw/m68k/next-cube.h
++F: tests/functional/test_m68k_nextcube.py
  
- PowerNV (Non-Virtualized)
- M: Cédric Le Goater <clg@kaod.org>
+ q800
+ M: Laurent Vivier <laurent@vivier.eu>
+diff --git a/tests/avocado/tesseract_utils.py b/tests/avocado/tesseract_utils.py
+deleted file mode 100644
+index 476f528147..0000000000
+--- a/tests/avocado/tesseract_utils.py
++++ /dev/null
+@@ -1,46 +0,0 @@
+-# ...
+-#
+-# Copyright (c) 2019 Philippe Mathieu-Daudé <f4bug@amsat.org>
+-#
+-# This work is licensed under the terms of the GNU GPL, version 2 or
+-# later. See the COPYING file in the top-level directory.
+-
+-import re
+-import logging
+-
+-from avocado.utils import process
+-from avocado.utils.path import find_command, CmdNotFoundError
+-
+-def tesseract_available(expected_version):
+-    try:
+-        find_command('tesseract')
+-    except CmdNotFoundError:
+-        return False
+-    res = process.run('tesseract --version')
+-    try:
+-        version = res.stdout_text.split()[1]
+-    except IndexError:
+-        version = res.stderr_text.split()[1]
+-    return int(version.split('.')[0]) >= expected_version
+-
+-    match = re.match(r'tesseract\s(\d)', res)
+-    if match is None:
+-        return False
+-    # now this is guaranteed to be a digit
+-    return int(match.groups()[0]) >= expected_version
+-
+-
+-def tesseract_ocr(image_path, tesseract_args='', tesseract_version=3):
+-    console_logger = logging.getLogger('tesseract')
+-    console_logger.debug(image_path)
+-    if tesseract_version == 4:
+-        tesseract_args += ' --oem 1'
+-    proc = process.run("tesseract {} {} stdout".format(tesseract_args,
+-                                                       image_path))
+-    lines = []
+-    for line in proc.stdout_text.split('\n'):
+-        sline = line.strip()
+-        if len(sline):
+-            console_logger.debug(sline)
+-            lines += [sline]
+-    return lines
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index f0f0cbd500..fcb99c547d 100644
+index fcb99c547d..61cdd1d598 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -13,6 +13,7 @@ endif
- test_timeouts = {
-   'netdev_ethtool' : 180,
-   'ppc_40p' : 240,
-+  'ppc64_hv' : 1000,
-   'ppc64_powernv' : 120,
-   'ppc64_pseries' : 120,
-   's390x_ccw_virtio' : 180,
-@@ -68,6 +69,7 @@ tests_ppc_system_thorough = [
+@@ -43,6 +43,10 @@ tests_loongarch64_system_thorough = [
+   'loongarch64_virt',
  ]
  
- tests_ppc64_system_thorough = [
-+  'ppc64_hv',
-   'ppc64_powernv',
-   'ppc64_pseries',
++tests_m68k_system_thorough = [
++  'm68k_nextcube'
++]
++
+ tests_microblaze_system_thorough = [
+   'microblaze_s3adsp1800'
  ]
-diff --git a/tests/avocado/ppc_hv_tests.py b/tests/functional/test_ppc64_hv.py
+diff --git a/tests/functional/qemu_test/tesseract.py b/tests/functional/qemu_test/tesseract.py
+new file mode 100644
+index 0000000000..c4087b7c11
+--- /dev/null
++++ b/tests/functional/qemu_test/tesseract.py
+@@ -0,0 +1,35 @@
++# ...
++#
++# Copyright (c) 2019 Philippe Mathieu-Daudé <f4bug@amsat.org>
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later. See the COPYING file in the top-level directory.
++
++import re
++import logging
++
++from . import has_cmd, run_cmd
++
++def tesseract_available(expected_version):
++    if not has_cmd('tesseract'):
++        return False
++    (stdout, stderr, ret) = run_cmd([ 'tesseract', '--version'])
++    if ret:
++        return False
++    version = stdout.split()[1]
++    return int(version.split('.')[0]) >= expected_version
++
++def tesseract_ocr(image_path, tesseract_args=''):
++    console_logger = logging.getLogger('console')
++    console_logger.debug(image_path)
++    (stdout, stderr, ret) = run_cmd(['tesseract', image_path,
++                                     'stdout'])
++    if ret:
++        return None
++    lines = []
++    for line in stdout.split('\n'):
++        sline = line.strip()
++        if len(sline):
++            console_logger.debug(sline)
++            lines += [sline]
++    return lines
+diff --git a/tests/avocado/machine_m68k_nextcube.py b/tests/functional/test_m68k_nextcube.py
 old mode 100644
 new mode 100755
-similarity index 85%
-rename from tests/avocado/ppc_hv_tests.py
-rename to tests/functional/test_ppc64_hv.py
-index 0e83bbac71..1a6e4b6d07
---- a/tests/avocado/ppc_hv_tests.py
-+++ b/tests/functional/test_ppc64_hv.py
+similarity index 75%
+rename from tests/avocado/machine_m68k_nextcube.py
+rename to tests/functional/test_m68k_nextcube.py
+index 1f3c883910..89385a134a
+--- a/tests/avocado/machine_m68k_nextcube.py
++++ b/tests/functional/test_m68k_nextcube.py
 @@ -1,3 +1,5 @@
 +#!/usr/bin/env python3
 +#
- # Tests that specifically try to exercise hypervisor features of the
- # target machines. powernv supports the Power hypervisor ISA, and
- # pseries supports the nested-HV hypervisor spec.
-@@ -7,10 +9,9 @@
- # This work is licensed under the terms of the GNU GPL, version 2 or
- # later.  See the COPYING file in the top-level directory.
- 
--from avocado import skipIf, skipUnless
--from avocado.utils import archive
--from avocado_qemu import QemuSystemTest
--from avocado_qemu import wait_for_console_pattern, exec_command
-+from unittest import skipIf, skipUnless
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import wait_for_console_pattern, exec_command
+ # Functional test that boots a VM and run OCR on the framebuffer
+ #
+ # Copyright (c) 2019 Philippe Mathieu-Daudé <f4bug@amsat.org>
+@@ -8,10 +10,10 @@
  import os
  import time
- import subprocess
-@@ -45,8 +46,7 @@ def missing_deps():
- # QEMU already installed and use that.
- # XXX: The order of these tests seems to matter, see git blame.
- @skipIf(missing_deps(), 'dependencies (%s) not installed' % ','.join(deps))
--@skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
--@skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
-+@skipUnless(os.getenv('QEMU_TEST_ALLOW_LARGE_STORAGE'), 'storage limited')
- class HypervisorTest(QemuSystemTest):
  
-     timeout = 1000
-@@ -54,6 +54,11 @@ class HypervisorTest(QemuSystemTest):
-     panic_message = 'Kernel panic - not syncing'
-     good_message = 'VFS: Cannot open root device'
+-from avocado_qemu import QemuSystemTest
+-from avocado import skipUnless
++from qemu_test import QemuSystemTest, Asset
++from unittest import skipUnless
  
-+    ASSET_ISO = Asset(
-+        ('https://dl-cdn.alpinelinux.org/alpine/v3.18/'
-+         'releases/ppc64le/alpine-standard-3.18.4-ppc64le.iso'),
-+        'c26b8d3e17c2f3f0fed02b4b1296589c2390e6d5548610099af75300edd7b3ff')
+-from tesseract_utils import tesseract_available, tesseract_ocr
++from qemu_test.tesseract import tesseract_available, tesseract_ocr
+ 
+ PIL_AVAILABLE = True
+ try:
+@@ -21,19 +23,15 @@
+ 
+ 
+ class NextCubeMachine(QemuSystemTest):
+-    """
+-    :avocado: tags=arch:m68k
+-    :avocado: tags=machine:next-cube
+-    :avocado: tags=device:framebuffer
+-    """
+ 
+     timeout = 15
+ 
++    ASSET_ROM = Asset(('https://sourceforge.net/p/previous/code/1350/tree/'
++                       'trunk/src/Rev_2.5_v66.BIN?format=raw'),
++                      '1b753890b67095b73e104c939ddf62eca9e7d0aedde5108e3893b0ed9d8000a4')
 +
-     def extract_from_iso(self, iso, path):
-         """
-         Extracts a file from an iso file into the test workdir
-@@ -72,6 +77,7 @@ def extract_from_iso(self, iso, path):
-             subprocess.run(cmd.split(),
-                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+     def check_bootrom_framebuffer(self, screenshot_path):
+-        rom_url = ('https://sourceforge.net/p/previous/code/1350/tree/'
+-                   'trunk/src/Rev_2.5_v66.BIN?format=raw')
+-        rom_hash = 'b3534796abae238a0111299fc406a9349f7fee24'
+-        rom_path = self.fetch_asset(rom_url, asset_hash=rom_hash)
++        rom_path = self.ASSET_ROM.fetch()
  
-+        os.chmod(filename, 0o600)
-         os.chdir(cwd)
+         self.vm.add_args('-bios', rom_path)
+         self.vm.launch()
+@@ -48,6 +46,7 @@ def check_bootrom_framebuffer(self, screenshot_path):
  
-         # Return complete path to extracted file.  Because callers to
-@@ -83,16 +89,9 @@ def extract_from_iso(self, iso, path):
-     def setUp(self):
-         super().setUp()
+     @skipUnless(PIL_AVAILABLE, 'Python PIL not installed')
+     def test_bootrom_framebuffer_size(self):
++        self.set_machine('next-cube')
+         screenshot_path = os.path.join(self.workdir, "dump.ppm")
+         self.check_bootrom_framebuffer(screenshot_path)
  
--        iso_url = ('https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/ppc64le/alpine-standard-3.18.4-ppc64le.iso')
--
--        # Alpine use sha256 so I recalculated this myself
--        iso_sha256 = 'c26b8d3e17c2f3f0fed02b4b1296589c2390e6d5548610099af75300edd7b3ff'
--        iso_path = self.fetch_asset(iso_url, asset_hash=iso_sha256,
--                                    algorithm = "sha256")
--
--        self.iso_path = iso_path
--        self.vmlinuz = self.extract_from_iso(iso_path, '/boot/vmlinuz-lts')
--        self.initramfs = self.extract_from_iso(iso_path, '/boot/initramfs-lts')
-+        self.iso_path = self.ASSET_ISO.fetch()
-+        self.vmlinuz = self.extract_from_iso(self.iso_path, '/boot/vmlinuz-lts')
-+        self.initramfs = self.extract_from_iso(self.iso_path, '/boot/initramfs-lts')
- 
-     def do_start_alpine(self):
-         self.vm.set_console()
-@@ -158,12 +157,8 @@ def do_test_kvm(self, hpt=False):
-         wait_for_console_pattern(self, 'alpine:~#')
- 
-     def test_hv_pseries(self):
--        """
--        :avocado: tags=arch:ppc64
--        :avocado: tags=machine:pseries
--        :avocado: tags=accel:tcg
--        """
-         self.require_accelerator("tcg")
-+        self.set_machine('pseries')
-         self.vm.add_args("-accel", "tcg,thread=multi")
-         self.vm.add_args('-device', 'nvme,serial=1234,drive=drive0')
-         self.vm.add_args("-machine", "x-vof=on,cap-nested-hv=on")
-@@ -173,12 +168,8 @@ def test_hv_pseries(self):
-         self.do_stop_alpine()
- 
-     def test_hv_pseries_kvm(self):
--        """
--        :avocado: tags=arch:ppc64
--        :avocado: tags=machine:pseries
--        :avocado: tags=accel:kvm
--        """
-         self.require_accelerator("kvm")
-+        self.set_machine('pseries')
-         self.vm.add_args("-accel", "kvm")
-         self.vm.add_args('-device', 'nvme,serial=1234,drive=drive0')
-         self.vm.add_args("-machine", "x-vof=on,cap-nested-hv=on,cap-ccf-assist=off")
-@@ -188,12 +179,8 @@ def test_hv_pseries_kvm(self):
-         self.do_stop_alpine()
- 
-     def test_hv_powernv(self):
--        """
--        :avocado: tags=arch:ppc64
--        :avocado: tags=machine:powernv
--        :avocado: tags=accel:tcg
--        """
-         self.require_accelerator("tcg")
-+        self.set_machine('powernv')
-         self.vm.add_args("-accel", "tcg,thread=multi")
-         self.vm.add_args('-device', 'nvme,bus=pcie.2,addr=0x0,serial=1234,drive=drive0',
-                          '-device', 'e1000e,netdev=net0,mac=C0:FF:EE:00:00:02,bus=pcie.0,addr=0x0',
-@@ -203,3 +190,6 @@ def test_hv_powernv(self):
-         self.do_test_kvm()
-         self.do_test_kvm(True)
-         self.do_stop_alpine()
+@@ -60,11 +59,15 @@ def test_bootrom_framebuffer_size(self):
+     # that it is still alpha-level software.
+     @skipUnless(tesseract_available(4), 'tesseract OCR tool not available')
+     def test_bootrom_framebuffer_ocr_with_tesseract(self):
++        self.set_machine('next-cube')
+         screenshot_path = os.path.join(self.workdir, "dump.ppm")
+         self.check_bootrom_framebuffer(screenshot_path)
+-        lines = tesseract_ocr(screenshot_path, tesseract_version=4)
++        lines = tesseract_ocr(screenshot_path)
+         text = '\n'.join(lines)
+         self.assertIn('Testing the FPU', text)
+         self.assertIn('System test failed. Error code', text)
+         self.assertIn('Boot command', text)
+         self.assertIn('Next>', text)
 +
 +if __name__ == '__main__':
 +    QemuSystemTest.main()
