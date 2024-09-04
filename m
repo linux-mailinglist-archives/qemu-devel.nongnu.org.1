@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E8396BCD7
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B0096BCE0
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Sep 2024 14:48:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1slpNX-0004pN-HM; Wed, 04 Sep 2024 08:44:55 -0400
+	id 1slpNZ-0004x4-MV; Wed, 04 Sep 2024 08:44:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNU-0004dX-6d
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:52 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNV-0004jW-L4
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:53 -0400
 Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNS-0005Yc-8h
- for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:51 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1slpNT-0005ZF-VI
+ for qemu-devel@nongnu.org; Wed, 04 Sep 2024 08:44:53 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 233582191F;
- Wed,  4 Sep 2024 12:44:49 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id B78FB2119F;
+ Wed,  4 Sep 2024 12:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453889; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453890; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zBNH5hoMByRQw4O6EKyHHEbwBKscWoD9zGn8eAJCu0A=;
- b=xKsRHyWPqYkHQFlluVX60mHVi01J6qMSou5213r/XPycDpWFbmIWtfJoe300nwe+JBzdkm
- M9W6LJg9yDRPpZhZ3Gzk/dZX0yYopNjCVTTD0PcyMyMxW/rUfgfc3HYyislPyjL2AQLy8e
- 7rnnYB/IU3iBDr3WafQWM9CuRAtB1Hg=
+ bh=39t9Cv16AimeidENCBivcEBi5CMLaC52094MjW94ySo=;
+ b=wZwvuHvn+mdRfFGA9LNvDlNc5lpBmOPxaTK5vk/hf3tTzDxIu2RNgc6r/Ov/H3x5xw+52+
+ O1JczO7XLlGiESas2/oaVgbaK8mlAIeh+IK6c33f6Zz0Dvvbpk4+HhVUM/JmFf0Mc+VoVj
+ yn5FMRXGqgqZjbsqaImhtmNXOq97WYE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453889;
+ s=susede2_ed25519; t=1725453890;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zBNH5hoMByRQw4O6EKyHHEbwBKscWoD9zGn8eAJCu0A=;
- b=L42n4J1/nTg5XfsYcWHKCngOSfVDyh/u77Ap3aKwNelLezqAlYmqqA+I3YlkgcsW/QPOZW
- hqnGwVdUC1Q1MiBA==
+ bh=39t9Cv16AimeidENCBivcEBi5CMLaC52094MjW94ySo=;
+ b=FYJDQH/DY4ju4P9lB7cax0fm9YnKHgslljrSjZmJI2sznZgR8pF4D9FfkQCapGyVJ62ylv
+ tNNB4KDrNkkn+bDA==
 Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xKsRHyWP;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="L42n4J1/"
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wZwvuHvn;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="FYJDQH/D"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725453889; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1725453890; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zBNH5hoMByRQw4O6EKyHHEbwBKscWoD9zGn8eAJCu0A=;
- b=xKsRHyWPqYkHQFlluVX60mHVi01J6qMSou5213r/XPycDpWFbmIWtfJoe300nwe+JBzdkm
- M9W6LJg9yDRPpZhZ3Gzk/dZX0yYopNjCVTTD0PcyMyMxW/rUfgfc3HYyislPyjL2AQLy8e
- 7rnnYB/IU3iBDr3WafQWM9CuRAtB1Hg=
+ bh=39t9Cv16AimeidENCBivcEBi5CMLaC52094MjW94ySo=;
+ b=wZwvuHvn+mdRfFGA9LNvDlNc5lpBmOPxaTK5vk/hf3tTzDxIu2RNgc6r/Ov/H3x5xw+52+
+ O1JczO7XLlGiESas2/oaVgbaK8mlAIeh+IK6c33f6Zz0Dvvbpk4+HhVUM/JmFf0Mc+VoVj
+ yn5FMRXGqgqZjbsqaImhtmNXOq97WYE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725453889;
+ s=susede2_ed25519; t=1725453890;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zBNH5hoMByRQw4O6EKyHHEbwBKscWoD9zGn8eAJCu0A=;
- b=L42n4J1/nTg5XfsYcWHKCngOSfVDyh/u77Ap3aKwNelLezqAlYmqqA+I3YlkgcsW/QPOZW
- hqnGwVdUC1Q1MiBA==
+ bh=39t9Cv16AimeidENCBivcEBi5CMLaC52094MjW94ySo=;
+ b=FYJDQH/DY4ju4P9lB7cax0fm9YnKHgslljrSjZmJI2sznZgR8pF4D9FfkQCapGyVJ62ylv
+ tNNB4KDrNkkn+bDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EA1ED139D2;
- Wed,  4 Sep 2024 12:44:47 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8F140139D2;
+ Wed,  4 Sep 2024 12:44:49 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id SCerKz9W2GZuVQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:44:47 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id CDFDFUFW2GZuVQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 04 Sep 2024 12:44:49 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 16/34] migration/multifd: Introduce MultiFDSendData
-Date: Wed,  4 Sep 2024 09:43:59 -0300
-Message-Id: <20240904124417.14565-17-farosas@suse.de>
+Subject: [PULL 17/34] migration/multifd: Make MultiFDPages_t:offset a flexible
+ array member
+Date: Wed,  4 Sep 2024 09:44:00 -0300
+Message-Id: <20240904124417.14565-18-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240904124417.14565-1-farosas@suse.de>
 References: <20240904124417.14565-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 233582191F
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+X-Rspamd-Queue-Id: B78FB2119F
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  R_MISSING_CHARSET(0.50)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
@@ -125,64 +126,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new data structure to replace p->pages in the multifd
-channel. This new structure will hide the multifd payload type behind
-an union, so we don't need to add a new field to the channel each time
-we want to handle a different data type.
+We're about to use MultiFDPages_t from inside the MultiFDSendData
+payload union, which means we cannot have pointers to allocated data
+inside the pages structure, otherwise we'd lose the reference to that
+memory once another payload type touches the union. Move the offset
+array into the end of the structure and turn it into a flexible array
+member, so it is allocated along with the rest of MultiFDSendData in
+the next patches.
 
-This also allow us to keep multifd_send_pages() as is, without needing
-to complicate the pointer switching.
+Note that other pointers, such as the ramblock pointer are still fine
+as long as the storage for them is not owned by the migration code and
+can be correctly released at some point.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd.h | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ migration/multifd.c | 19 ++++++++++++-------
+ migration/multifd.h |  4 ++--
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 640e4450ff..717e71f539 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -98,6 +98,17 @@ struct {
+     MultiFDMethods *ops;
+ } *multifd_recv_state;
+ 
++static size_t multifd_ram_payload_size(void)
++{
++    uint32_t n = multifd_ram_page_count();
++
++    /*
++     * We keep an array of page offsets at the end of MultiFDPages_t,
++     * add space for it in the allocation.
++     */
++    return sizeof(MultiFDPages_t) + n * sizeof(ram_addr_t);
++}
++
+ static bool multifd_use_packets(void)
+ {
+     return !migrate_mapped_ram();
+@@ -394,18 +405,12 @@ static int multifd_recv_initial_packet(QIOChannel *c, Error **errp)
+ 
+ static MultiFDPages_t *multifd_pages_init(uint32_t n)
+ {
+-    MultiFDPages_t *pages = g_new0(MultiFDPages_t, 1);
+-
+-    pages->offset = g_new0(ram_addr_t, n);
+-
+-    return pages;
++    return g_malloc0(multifd_ram_payload_size());
+ }
+ 
+ static void multifd_pages_clear(MultiFDPages_t *pages)
+ {
+     multifd_pages_reset(pages);
+-    g_free(pages->offset);
+-    pages->offset = NULL;
+     g_free(pages);
+ }
+ 
 diff --git a/migration/multifd.h b/migration/multifd.h
-index 660a9882c2..7bb4a2cbc4 100644
+index 7bb4a2cbc4..a7fdd97f70 100644
 --- a/migration/multifd.h
 +++ b/migration/multifd.h
-@@ -17,6 +17,7 @@
- #include "ram.h"
+@@ -77,9 +77,9 @@ typedef struct {
+     uint32_t num;
+     /* number of normal pages */
+     uint32_t normal_num;
++    RAMBlock *block;
+     /* offset of each page */
+-    ram_addr_t *offset;
+-    RAMBlock *block;
++    ram_addr_t offset[];
+ } MultiFDPages_t;
  
- typedef struct MultiFDRecvData MultiFDRecvData;
-+typedef struct MultiFDSendData MultiFDSendData;
- 
- bool multifd_send_setup(void);
- void multifd_send_shutdown(void);
-@@ -88,6 +89,31 @@ struct MultiFDRecvData {
-     off_t file_offset;
- };
- 
-+typedef enum {
-+    MULTIFD_PAYLOAD_NONE,
-+    MULTIFD_PAYLOAD_RAM,
-+} MultiFDPayloadType;
-+
-+typedef union MultiFDPayload {
-+    MultiFDPages_t ram;
-+} MultiFDPayload;
-+
-+struct MultiFDSendData {
-+    MultiFDPayloadType type;
-+    MultiFDPayload u;
-+};
-+
-+static inline bool multifd_payload_empty(MultiFDSendData *data)
-+{
-+    return data->type == MULTIFD_PAYLOAD_NONE;
-+}
-+
-+static inline void multifd_set_payload_type(MultiFDSendData *data,
-+                                            MultiFDPayloadType type)
-+{
-+    data->type = type;
-+}
-+
- typedef struct {
-     /* Fields are only written at creating/deletion time */
-     /* No lock required for them, they are read only */
+ struct MultiFDRecvData {
 -- 
 2.35.3
 
