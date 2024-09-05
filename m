@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB4396D9B9
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7959696D9C1
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:05:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smC74-0001T4-S7; Thu, 05 Sep 2024 09:01:26 -0400
+	id 1smC74-0001Qw-Aj; Thu, 05 Sep 2024 09:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC6u-0000yN-9w
+ id 1smC6v-00010l-Qt
  for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:17 -0400
 Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC6s-0001k5-79
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:15 -0400
+ id 1smC6s-0001jm-6t
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:16 -0400
 Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4280ca0791bso5918325e9.1
+ 5b1f17b1804b1-42bbd0a40faso6783695e9.1
  for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 06:01:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1725541270; x=1726146070; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=x5PrsaI8e8/02sXu3878r/Hk09KLGVkhl986RODv/XE=;
- b=sba6Ax62CT2yHQVazfJLg3025KXP3J3ybrvrvSsTaQGtXV6GQu4uDM/U9+ZpI30Jm7
- qIjNa9/iJYjhvOFMNfarx0oukXD32IM8LCpGYchbacBqZN930U+DcrRT6pXrhfmqN5Yp
- bjV33LVx9jC4EdIrVt0FoI75wU6FCwanNiSGj9j6xHZR2B9CWSrpgUOLNfyPkNSUgPFp
- PZ3dRZ9wUCstUP+rFwk2gcoVaT9tDfiPg+3fum5j6Bt7+jNthOO20iQ5jVDMGewlu54N
- bpkzfoq9/ZbGJv5o1Sh0dQgf4oO5bF8YMOrQ57fvGsqi0FyRX2vcB1BZVJOg/p/wL2cQ
- Uf2A==
+ :reply-to; bh=D0tvKCCy0OvI0M0Fet5YgAPP444KsPJZWgtcRcxhpMM=;
+ b=h/jMEudq1VzyePd7QKfcCfWqiKgFHQQmBXuINwQexyoHrYyNrWrbIlIilFbTzziTbZ
+ mJ/uo6ZMwxRBCLAgYt+R4DcdByZNx/rSv0RlcDkBOtt4I/vIfnkfcR6Z60DISvdP/1DS
+ 0I6Xg4f6mY0RjBUm2yCbA4WKLgffVpAjO6XGm9IS81sGT+jkKfHFrvwUF09blwt+Gt/T
+ OGV+pNEVCn7T6hV9vPpwHz1B9mR0KSCEtD/lFoxR/PBNSyqL4SBikVz8GREB/BqZJcmQ
+ 2B1Ab+zWhq0RwSwQKuDr+Nv3f5bzogNY5/ALRzkR1dNIg+cvualImUddp5i+64+Iu8Y3
+ Qw/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1725541270; x=1726146070;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x5PrsaI8e8/02sXu3878r/Hk09KLGVkhl986RODv/XE=;
- b=Wwy2vNViK7Rr+ypJhvBSVslt5sDbtNYO6MU4aeAKI/dD9fyXy74X2monsIQay7il7H
- RKpmad92DGwiNKxT8jUULBE0pE22Q8yCSbpejtXfAuclHPUg8dB9BugT75sA5j1EOjNf
- enSfZ9S1JzoxRzm7tXPSk9syeNtxIqqmd75yGbS3plf+rRyfgYMbuDRMqcE/c/va9DD7
- t6WPTNjuGq3qjGGG9RmUmC2AbqgKBtuX+opDsRYSe4GHAPZYJn9r5AmiCYChwlJRE8WK
- y1ez9BW644+7ttiar+ML7BQapG0gI0OVxUokSG9z+D0YbKFdvVPbx+hXQjGXq3szFebu
- LbcA==
-X-Gm-Message-State: AOJu0YzoBGyg+PyZaFNsO/yYRtQGRdY9JTCXVLzo/gvSJA7cgbeoKPJl
- s5p7XSWvBxeCz+biiHxcX0zA+dDwQpcfN/1mOiZF4cYtXpRN713lJ6o+S3kxgAvzr03FHjaaIzI
- a
-X-Google-Smtp-Source: AGHT+IGO6WZaM0UDCcDaWJAApAF6947o6wKQV5HBbxFDH+Sdn8bSiLVmTovx+0v85FayZYodlGgT4w==
-X-Received: by 2002:adf:f64d:0:b0:371:7e3f:6cc with SMTP id
- ffacd0b85a97d-376dcc8b871mr5003657f8f.9.1725541269785; 
- Thu, 05 Sep 2024 06:01:09 -0700 (PDT)
+ bh=D0tvKCCy0OvI0M0Fet5YgAPP444KsPJZWgtcRcxhpMM=;
+ b=D2+zJOpc7twvurVraCDnLwWcXtziiVC1Hq/WUJj1yUZzAYiyk0IZPkEe6MJEXrXZv0
+ xOqn+3JXJpzbHDPuJKBVGOe9yE0ZEurlUSb5q5OZjsij8Hut48PwTD9QqMa0a7K0jtdS
+ FrFGI/45BQZNgACXKV54Pj4SbrbYbpZNGWmJY1HQwn5Ur0G1tP/MewBn5wR3xctCrHpT
+ Nk0rPdj/ONJbmk+P/AQeLtwArkcF5RmIiBAh5XrXcMOhBo34ifbAIV467l6QgMCyLcWh
+ M6EAe839ea2QkeAroxRWOYQVqjxqAOvasEoOZYhvR1k7bamWUgmh01Op142yO7F4eAmU
+ xRdA==
+X-Gm-Message-State: AOJu0YxoJypvm8aLFbPSJ5oUEr2fX61B4H82Myk6jv4i5wVxEEUmCk9J
+ adY06XSKYoai5pNCSyOqNW/KS7UyKi15JAs+z9Kl8P/F4e1hWYuhVKhs5Y6IU5A22TLqtRRl2Co
+ J
+X-Google-Smtp-Source: AGHT+IFZnzAXEyGkdFa/H4fk3FeDR7GvH9X+SlqYRf2QchxYy8FEPn3IUddSa6q0DaxvlcUIxSAVTw==
+X-Received: by 2002:a05:600c:5110:b0:426:6710:223c with SMTP id
+ 5b1f17b1804b1-42c880ef921mr93333495e9.9.1725541270331; 
+ Thu, 05 Sep 2024 06:01:10 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-42bb6e355dfsm232251365e9.46.2024.09.05.06.01.09
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Sep 2024 06:01:09 -0700 (PDT)
+ Thu, 05 Sep 2024 06:01:10 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/25] accel/tcg: Remove dead code from rr_cpu_thread_fn()
-Date: Thu,  5 Sep 2024 14:00:44 +0100
-Message-Id: <20240905130100.298768-10-peter.maydell@linaro.org>
+Subject: [PULL 10/25] hw: add compat machines for 9.2
+Date: Thu,  5 Sep 2024 14:00:45 +0100
+Message-Id: <20240905130100.298768-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240905130100.298768-1-peter.maydell@linaro.org>
 References: <20240905130100.298768-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
  envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
@@ -91,39 +92,273 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The main loop in rr_cpu_thread_fn() can never terminate, so the
-code at the end of the function to clean up the RCU subsystem is
-dead code. Replace it with g_assert_not_reached().
+From: Cornelia Huck <cohuck@redhat.com>
 
-(This is different from the other cpu_thread_fn for e.g. MTTCG or
-for the KVM accelerator -- those can exit, if the vCPU they
-are responsible for is unplugged. But the RR cpu thread fn
-handles all CPUs in the system in a round-robin way, so even
-if one is unplugged it keeps looping.)
+Add 9.2 machine types for arm/i440fx/m68k/q35/s390x/spapr.
 
-Resolves: Coverity CID 1547782
+Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240815143634.3413679-1-peter.maydell@linaro.org
+Message-id: 20240816161350.3706332-2-peter.maydell@linaro.org
+Message-id: 20240816103723.2325982-1-cohuck@redhat.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- accel/tcg/tcg-accel-ops-rr.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/hw/boards.h        |  3 +++
+ include/hw/i386/pc.h       |  3 +++
+ hw/arm/virt.c              | 11 +++++++++--
+ hw/core/machine.c          |  3 +++
+ hw/i386/pc.c               |  3 +++
+ hw/i386/pc_piix.c          | 15 ++++++++++++---
+ hw/i386/pc_q35.c           | 13 +++++++++++--
+ hw/m68k/virt.c             | 11 +++++++++--
+ hw/ppc/spapr.c             | 17 ++++++++++++++---
+ hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
+ 10 files changed, 80 insertions(+), 13 deletions(-)
 
-diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index c59c77da4b3..8ebadf8e9e1 100644
---- a/accel/tcg/tcg-accel-ops-rr.c
-+++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -302,9 +302,7 @@ static void *rr_cpu_thread_fn(void *arg)
-         rr_deal_with_unplugged_cpus();
-     }
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 48ff6d8b93f..9a492770cbb 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -732,6 +732,9 @@ struct MachineState {
+     } \
+     type_init(machine_initfn##_register_types)
  
--    rcu_remove_force_rcu_notifier(&force_rcu);
--    rcu_unregister_thread();
--    return NULL;
-+    g_assert_not_reached();
++extern GlobalProperty hw_compat_9_1[];
++extern const size_t hw_compat_9_1_len;
++
+ extern GlobalProperty hw_compat_9_0[];
+ extern const size_t hw_compat_9_0_len;
+ 
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 4e55d7ef6ea..14ee06287da 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -215,6 +215,9 @@ void pc_system_parse_ovmf_flash(uint8_t *flash_ptr, size_t flash_size);
+ /* sgx.c */
+ void pc_machine_init_sgx_epc(PCMachineState *pcms);
+ 
++extern GlobalProperty pc_compat_9_1[];
++extern const size_t pc_compat_9_1_len;
++
+ extern GlobalProperty pc_compat_9_0[];
+ extern const size_t pc_compat_9_0_len;
+ 
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 687fe0bb8bc..a5d3ad9bf9e 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -3301,10 +3301,17 @@ static void machvirt_machine_init(void)
+ }
+ type_init(machvirt_machine_init);
+ 
+-static void virt_machine_9_1_options(MachineClass *mc)
++static void virt_machine_9_2_options(MachineClass *mc)
+ {
+ }
+-DEFINE_VIRT_MACHINE_AS_LATEST(9, 1)
++DEFINE_VIRT_MACHINE_AS_LATEST(9, 2)
++
++static void virt_machine_9_1_options(MachineClass *mc)
++{
++    virt_machine_9_2_options(mc);
++    compat_props_add(mc->compat_props, hw_compat_9_1, hw_compat_9_1_len);
++}
++DEFINE_VIRT_MACHINE(9, 1)
+ 
+ static void virt_machine_9_0_options(MachineClass *mc)
+ {
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 27dcda02483..adaba17ebac 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -34,6 +34,9 @@
+ #include "hw/virtio/virtio-iommu.h"
+ #include "audio/audio.h"
+ 
++GlobalProperty hw_compat_9_1[] = {};
++const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
++
+ GlobalProperty hw_compat_9_0[] = {
+     {"arm-cpu", "backcompat-cntfrq", "true" },
+     { "scsi-hd", "migrate-emulated-scsi-request", "false" },
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 7779c88a91e..ba0ff511836 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -79,6 +79,9 @@
+     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
+     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
+ 
++GlobalProperty pc_compat_9_1[] = {};
++const size_t pc_compat_9_1_len = G_N_ELEMENTS(pc_compat_9_1);
++
+ GlobalProperty pc_compat_9_0[] = {
+     { TYPE_X86_CPU, "x-amd-topoext-features-only", "false" },
+     { TYPE_X86_CPU, "x-l1-cache-per-thread", "false" },
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 347afa4c370..2bf6865d405 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -474,13 +474,24 @@ static void pc_i440fx_machine_options(MachineClass *m)
+                                      "Use a different south bridge than PIIX3");
  }
  
- void rr_start_vcpu_thread(CPUState *cpu)
+-static void pc_i440fx_machine_9_1_options(MachineClass *m)
++static void pc_i440fx_machine_9_2_options(MachineClass *m)
+ {
+     pc_i440fx_machine_options(m);
+     m->alias = "pc";
+     m->is_default = true;
+ }
+ 
++DEFINE_I440FX_MACHINE(9, 2);
++
++static void pc_i440fx_machine_9_1_options(MachineClass *m)
++{
++    pc_i440fx_machine_9_2_options(m);
++    m->alias = NULL;
++    m->is_default = false;
++    compat_props_add(m->compat_props, hw_compat_9_1, hw_compat_9_1_len);
++    compat_props_add(m->compat_props, pc_compat_9_1, pc_compat_9_1_len);
++}
++
+ DEFINE_I440FX_MACHINE(9, 1);
+ 
+ static void pc_i440fx_machine_9_0_options(MachineClass *m)
+@@ -488,8 +499,6 @@ static void pc_i440fx_machine_9_0_options(MachineClass *m)
+     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+ 
+     pc_i440fx_machine_9_1_options(m);
+-    m->alias = NULL;
+-    m->is_default = false;
+     m->smbios_memory_device_size = 16 * GiB;
+ 
+     compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index f2d8edfa846..8319b6d45ee 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -356,19 +356,28 @@ static void pc_q35_machine_options(MachineClass *m)
+                      pc_q35_compat_defaults, pc_q35_compat_defaults_len);
+ }
+ 
+-static void pc_q35_machine_9_1_options(MachineClass *m)
++static void pc_q35_machine_9_2_options(MachineClass *m)
+ {
+     pc_q35_machine_options(m);
+     m->alias = "q35";
+ }
+ 
++DEFINE_Q35_MACHINE(9, 2);
++
++static void pc_q35_machine_9_1_options(MachineClass *m)
++{
++    pc_q35_machine_9_2_options(m);
++    m->alias = NULL;
++    compat_props_add(m->compat_props, hw_compat_9_1, hw_compat_9_1_len);
++    compat_props_add(m->compat_props, pc_compat_9_1, pc_compat_9_1_len);
++}
++
+ DEFINE_Q35_MACHINE(9, 1);
+ 
+ static void pc_q35_machine_9_0_options(MachineClass *m)
+ {
+     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+     pc_q35_machine_9_1_options(m);
+-    m->alias = NULL;
+     m->smbios_memory_device_size = 16 * GiB;
+     compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
+     compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
+diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
+index cda199af8fa..ea5c4a5a570 100644
+--- a/hw/m68k/virt.c
++++ b/hw/m68k/virt.c
+@@ -366,10 +366,17 @@ type_init(virt_machine_register_types)
+ #define DEFINE_VIRT_MACHINE(major, minor) \
+     DEFINE_VIRT_MACHINE_IMPL(false, major, minor)
+ 
+-static void virt_machine_9_1_options(MachineClass *mc)
++static void virt_machine_9_2_options(MachineClass *mc)
+ {
+ }
+-DEFINE_VIRT_MACHINE_AS_LATEST(9, 1)
++DEFINE_VIRT_MACHINE_AS_LATEST(9, 2)
++
++static void virt_machine_9_1_options(MachineClass *mc)
++{
++    virt_machine_9_2_options(mc);
++    compat_props_add(mc->compat_props, hw_compat_9_1, hw_compat_9_1_len);
++}
++DEFINE_VIRT_MACHINE(9, 1)
+ 
+ static void virt_machine_9_0_options(MachineClass *mc)
+ {
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 370d7c35d3a..8aa3ce7449b 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4838,14 +4838,25 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
+     DEFINE_SPAPR_MACHINE_IMPL(false, major, minor, _, tag)
+ 
+ /*
+- * pseries-9.1
++ * pseries-9.2
+  */
+-static void spapr_machine_9_1_class_options(MachineClass *mc)
++static void spapr_machine_9_2_class_options(MachineClass *mc)
+ {
+     /* Defaults for the latest behaviour inherited from the base class */
+ }
+ 
+-DEFINE_SPAPR_MACHINE_AS_LATEST(9, 1);
++DEFINE_SPAPR_MACHINE_AS_LATEST(9, 2);
++
++/*
++ * pseries-9.1
++ */
++static void spapr_machine_9_1_class_options(MachineClass *mc)
++{
++    spapr_machine_9_2_class_options(mc);
++    compat_props_add(mc->compat_props, hw_compat_9_1, hw_compat_9_1_len);
++}
++
++DEFINE_SPAPR_MACHINE(9, 1);
+ 
+ /*
+  * pseries-9.0
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index c483ff8064d..18240a0fd8b 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -871,14 +871,26 @@ static const TypeInfo ccw_machine_info = {
+     DEFINE_CCW_MACHINE_IMPL(false, major, minor)
+ 
+ 
++static void ccw_machine_9_2_instance_options(MachineState *machine)
++{
++}
++
++static void ccw_machine_9_2_class_options(MachineClass *mc)
++{
++}
++DEFINE_CCW_MACHINE_AS_LATEST(9, 2);
++
+ static void ccw_machine_9_1_instance_options(MachineState *machine)
+ {
++    ccw_machine_9_2_instance_options(machine);
+ }
+ 
+ static void ccw_machine_9_1_class_options(MachineClass *mc)
+ {
++    ccw_machine_9_2_class_options(mc);
++    compat_props_add(mc->compat_props, hw_compat_9_1, hw_compat_9_1_len);
+ }
+-DEFINE_CCW_MACHINE_AS_LATEST(9, 1);
++DEFINE_CCW_MACHINE(9, 1);
+ 
+ static void ccw_machine_9_0_instance_options(MachineState *machine)
+ {
 -- 
 2.34.1
 
