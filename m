@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85BC696D702
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 13:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E1596D6FA
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 13:24:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smAZv-0000IQ-At; Thu, 05 Sep 2024 07:23:07 -0400
+	id 1smAZv-0000JY-Eq; Thu, 05 Sep 2024 07:23:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3lJTZZggKCmEVGDMCQHJFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--whendrik.bounces.google.com>)
- id 1smAZt-0000BA-65
+ <3lpTZZggKCmMXIFOESJLHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--whendrik.bounces.google.com>)
+ id 1smAZt-0000BW-8n
  for qemu-devel@nongnu.org; Thu, 05 Sep 2024 07:23:05 -0400
 Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3lJTZZggKCmEVGDMCQHJFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--whendrik.bounces.google.com>)
- id 1smAZr-000305-MZ
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 07:23:04 -0400
+ <3lpTZZggKCmMXIFOESJLHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--whendrik.bounces.google.com>)
+ id 1smAZr-00030O-Pg
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 07:23:05 -0400
 Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-6d3e062dbeeso21751757b3.0
+ 00721157ae682-6d475205628so26690387b3.0
  for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 04:23:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1725535380; x=1726140180; darn=nongnu.org;
+ d=google.com; s=20230601; t=1725535382; x=1726140182; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:from:subject:message-id:references
  :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
- :reply-to; bh=YlsjdAW6J5vVTpFBfjWCX8gwxASE5xgLrF4n+X8CTEM=;
- b=bSmGRoDVHw1tb53HMztE0ot+ne9qDbEqW+gkJOjgdD8mZ581aiOO7eqoqlHm9bfNV4
- UHAYiXpCLR/2kh2LOIUvY7UwvIHUDhL3YQu4q80SdQEqH/fzDjCHbiOOOnObEdr/9ick
- GLcl9tcCLt1AnNaIgCgbJicJYYm5Thj6xva9qYfDEtCvWGVB6I3O829U2R9p7XayFOem
- TEl1Np6ZNchWhmiYlHqqadQtOj1dv45xsEQlNZQ9HQYlm8FU85aAjxiXJq3LgOYfhtuF
- o2o+mVn54gTQokCcahzXdJj71mxbhDEzvEjKXrDspN+/iVlMdrtOwHbAwl0HNKnxW63E
- YscA==
+ :reply-to; bh=sUIKZZlpr0KfcGjHDI4XoRscrAb+aelmj8CI87q4Re4=;
+ b=xmwiJRZsoNiIn7gEdhyrbtMOUZGEe9vElS7UnOeF5nejtv54hIuMP9xP2D2mhT5GiH
+ pCPyzQ6AJM1oy1a41SSJoWxAEF0tXFWMzM9PNIihtuaUeDRAB41erYCKxicmCf4mMxEW
+ rdpmziankbsAdq+X7612c1GHPOq2mpL9FZdGqXGZEERsw+N4S3ktvQWXKgD1j25OyBDW
+ J1nwOBDc0W9SLgzBWWAEv/BGHjb8PsxPXx563kZU4RFMqx3k9GxiOs/lpI9wEdaE2REO
+ hv/gndh+JlEW1iS4BiTLQbTLc6e1xYHI7bw9EPKRMeFmBVYsuIabORjitqz3xXGKX5/j
+ /8Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725535380; x=1726140180;
+ d=1e100.net; s=20230601; t=1725535382; x=1726140182;
  h=content-transfer-encoding:cc:to:from:subject:message-id:references
  :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
  :date:message-id:reply-to;
- bh=YlsjdAW6J5vVTpFBfjWCX8gwxASE5xgLrF4n+X8CTEM=;
- b=bgOIjEyoEBWS9DpA+PDaBihWCH3DxldldeAOnzJjUB3j9BXn/k/VbRZEfgPkROqhyA
- M1r8tPK82PZsD6l/iZpKy8iXYKr2/aqh/VSYr5H/uwYWPii2BBSvRzlHKqbfpYz4zVTF
- ZtVZypOHBAa/2DK6fUSi5MkdSCPoKGJ7m3dndKfznGEfTz0Y0aJ82TTNPToBVtB6YDnM
- +DUjCbfwVjZSqpH/bQ/MhigvhQb8PGIk750GCyN5IBi88WT+/oY2z3WAiSmceWtvLUgQ
- KtkS3vRoXg2j6XkALxwmycRrBmNNxMO4qi9hAmMDw6eqDPdcpKw6Ep6mFSCdpNtuFc0L
- FBTw==
-X-Gm-Message-State: AOJu0Yzbn6OL+LuNkixcSvLud0icJCuqLjbUVOuRqSqQhsGpJ6efr8z8
- swg9dfmzBctt0P/yku+7HQj3WxQz6071ITYG0VqcjtUn0UNlZAZpxTuLEQIwDwbDMjoQaW7Tgaa
- FkY+ylyLb7k2TQ38zauVmxp10ZwjWVK8xoRygQGd8IvgGfxiy38++HILVgiOOJjMAjvFiVca5Nw
- 4XRoSr62khdrULYlViOb4y1EK5pOLTMWJ+W4oYp91dbA==
-X-Google-Smtp-Source: AGHT+IGvEqdxwxXcxkTHGsgHbdBq/O0o7N5ZKqrD0KrW26E5SCkQjSzGuzeVaEXURysMVkupaKE7TbQFQrUyWQ==
+ bh=sUIKZZlpr0KfcGjHDI4XoRscrAb+aelmj8CI87q4Re4=;
+ b=Z0mzdk1SDimXMnrutflEGBXoVdTgIEd9vk1WYXX2vUiZ34EeFPUdDws2EdDm9xb49d
+ HOj275E53hioHAfGD6orf8oPmztRBMfmsKdG5D1N5UZ4c2kC9PWnuiQCilYfcrWV9hIg
+ TjwqsOpYl85HD3Yxfl8SZBqUkwDPlBWHh7M07qcYP+wgUYsfbTPusIUcDNZJjNvXS1iJ
+ 7KYVmzbSrMqLz1BJi2IcO+/dw6WOrln3bdNS6WnwLWd0KUt6oTW0ybybmkJiEUya9AnO
+ xHla1LKq8SaM2yfaeC3x+3DLFrszM8RwbhJo62jQhsfqp0ocKFDdGj24T2IkNHiEOcoh
+ N80A==
+X-Gm-Message-State: AOJu0Yxvos1VNG++6ISYNQLdwLHC0Lwjo5fQcTbOPUKfGeLoSm5Rf4AX
+ Ur5eT7iyTc37NRI+J5lEhfAcAMA3p3x0YK+CxQI/eKFIEkaWxz3Gm3NJLL0S1A2gfhmC8V0NETn
+ TcZ00swde8Yz0LBxUyS79bBAYE05fE/Wyb0TS5iNMEJ/8tTsTkxIRFS0/psKM7aV2kDPVLUWiPy
+ tah0EPOIBokR6w+Y4f9+XQsgU2EHgpgs/umcYb9/cS+Q==
+X-Google-Smtp-Source: AGHT+IGmeHQ+41Z3kVOPocZoLAuHqAweDU9d+GaHg+LGxfzt08A2bmKQIyMSwz3YL1SSGQudX9NsAYgchB+y0Q==
 X-Received: from whendrik-specialist-workstation.c.googlers.com
  ([fda3:e722:ac3:cc00:130:7cd9:ac11:98f1]) (user=whendrik job=sendgmr) by
- 2002:a81:690a:0:b0:6d3:e7e6:8462 with SMTP id
- 00721157ae682-6db25f47b18mr1464427b3.1.1725535380134; 
- Thu, 05 Sep 2024 04:23:00 -0700 (PDT)
-Date: Thu,  5 Sep 2024 11:22:36 +0000
+ 2002:a05:690c:6382:b0:69b:c01:82a5 with SMTP id
+ 00721157ae682-6d40ff0d1ccmr8721437b3.7.1725535382249; 
+ Thu, 05 Sep 2024 04:23:02 -0700 (PDT)
+Date: Thu,  5 Sep 2024 11:22:37 +0000
 In-Reply-To: <20240905112237.3586972-1-whendrik@google.com>
 Mime-Version: 1.0
 References: <20240905112237.3586972-1-whendrik@google.com>
 X-Mailer: git-send-email 2.46.0.469.g59c65b2a67-goog
-Message-ID: <20240905112237.3586972-8-whendrik@google.com>
-Subject: [PATCH v2 7/8] i386/cpu: Adjust CPUID level for RDT features
+Message-ID: <20240905112237.3586972-9-whendrik@google.com>
+Subject: [PATCH v2 8/8] i386/cpu: Adjust level for RDT on full_cpuid_auto_level
 From: Hendrik Wuethrich <whendrik@google.com>
 To: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com, eduardo@habkost.net, 
  richard.henderson@linaro.org, marcel.apfelbaum@gmail.com, mst@redhat.com, 
@@ -72,7 +72,7 @@ Cc: peternewman@google.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3lJTZZggKCmEVGDMCQHJFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--whendrik.bounces.google.com;
+ envelope-from=3lpTZZggKCmMXIFOESJLHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--whendrik.bounces.google.com;
  helo=mail-yw1-x114a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
@@ -99,37 +99,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: =E2=80=AAHendrik W=C3=BCthrich <whendrik@google.com>
 
-Adjust minimum CPUID level if RDT monitoring or allocation features are
-enabled to ensure that CPUID will return them.
+Make sure that RDT monitoring and allocation features are included in
+in full_cpuid_auto_level.
 
 Signed-off-by: Hendrik W=C3=BCthrich <whendrik@google.com>
 ---
- target/i386/cpu.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ target/i386/cpu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 36e19bfa8c..7c8bf707c2 100644
+index 7c8bf707c2..649540e971 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -7562,6 +7562,16 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **er=
-rp)
-         if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_SGX) {
-             x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x12);
-         }
+@@ -875,6 +875,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendo=
+r1,
+ #else
+ #define TCG_7_0_ECX_RDPID 0
+ #endif
 +
-+        /* RDT monitoring requires CPUID[0xF] */
-+        if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQM) {
-+            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0xF);
-+        }
-+
-+        /* RDT allocation requires CPUID[0x10] */
-+        if (env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_PQE) {
-+            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x10);
-+        }
-     }
+ #define TCG_7_0_ECX_FEATURES (CPUID_7_0_ECX_UMIP | CPUID_7_0_ECX_PKU | \
+           /* CPUID_7_0_ECX_OSPKE is dynamic */ \
+           CPUID_7_0_ECX_LA57 | CPUID_7_0_ECX_PKS | CPUID_7_0_ECX_VAES | \
+@@ -7520,6 +7521,8 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **err=
+p)
+         x86_cpu_adjust_feat_level(cpu, FEAT_C000_0001_EDX);
+         x86_cpu_adjust_feat_level(cpu, FEAT_SVM);
+         x86_cpu_adjust_feat_level(cpu, FEAT_XSAVE);
++        x86_cpu_adjust_feat_level(cpu, FEAT_RDT_15_0_EDX);
++        x86_cpu_adjust_feat_level(cpu, FEAT_RDT_10_0_EBX);
 =20
-     /* Set cpuid_*level* based on cpuid_min_*level, if not explicitly set =
-*/
+         /* Intel Processor Trace requires CPUID[0x14] */
+         if ((env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_INTEL_PT)) {
 --=20
 2.46.0.469.g59c65b2a67-goog
 
