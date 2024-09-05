@@ -2,78 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BC196D7D6
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 14:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AED8996DA0D
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:19:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smBBq-0003rF-Ez; Thu, 05 Sep 2024 08:02:18 -0400
+	id 1smCNH-0002CL-1U; Thu, 05 Sep 2024 09:18:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smBBn-0003pn-PN
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 08:02:15 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smBBl-0004Cm-Sp
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 08:02:15 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2f4f2868783so8306351fa.2
- for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 05:02:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725537732; x=1726142532; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=z17vQgwnKU+6Bc+7yReaghb2hi/P0ToLQSFYem2vrHA=;
- b=gKTjIRn7BhRquA3onT78mrsChVUsaR+cXFTC1ri4Y/wkDDAy+s26B5Fj4BCnCvYEDS
- NMSzmvyeeGgn8JJ9RizgpQ+tRbtafa89UkNP3Z35YH4CfYmLmVFtSsbC9gZIOm6oV/dF
- Yn+/4W6cm/KQTdfeIMtbLgrDMV8CIX+q153XwsOQmcQo5g5tqFkj1oCzhNScMV6EFRhM
- jyiu70kBGyvZTEZnFYBrCjHq3b82V1jv2can3auFyCoMXkL1EDQESxCanIxo2GLR5t5S
- zgueG/GqWktByRKSgXYcIyk+A/gZVsk+/3VLDtsQYWgalPHQF/5abfDWo/a+vmuAgfRm
- eKNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725537732; x=1726142532;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=z17vQgwnKU+6Bc+7yReaghb2hi/P0ToLQSFYem2vrHA=;
- b=VceKwgPQ9nhG98ncK/LErLVYH9pZWcaHbt5gasfgNQXnaG0412lTdp3JjlGQISqQJK
- Lfz4l0GCLrLet5wsNj8q+/Jxz7a8QVeb3FqcTjwzwYauoz0dbenmTTHFWy4A6V4EmYp0
- njGNl9bWNB/aPrvrs9HBFDY1QgU7IC7Tsn346TvQW89KVSeK6DsoNEEcjeNII5WnBInD
- 4iZNKDmKAjRQLkMWxGlPktowSnEvBq6FVF5B0qpFgTw3W9Mt5/j1oExjo0nJ7E8/FfIi
- ZmT1llwgc92Xvvv9r/PAEcMWKvyUILEqliv0iGx2HlDHbIxhHzePteltK8cdw+qwViW3
- u6ew==
-X-Gm-Message-State: AOJu0YzPB7OzqcGizKv1lhErC5yISsxy1YPNNG7pg5OXKHP6QDg8imty
- jJKhf6n6tmHJAyWA9n4WQ0vaAbPRlv1MJP26bNO3DmflkOaFqdA9o8M/NaqEPK9cpkUIB3IDIca
- vN6eUoig1Ld/qLif43bnoXXpdhpaOKqmhCdK3rQ==
-X-Google-Smtp-Source: AGHT+IEyILPzCwbaSdBt4kBRkHXbQOEe7A3XovNDX8ZNrYiba9t/kKqA17AYH+2SWUOUWXGUhC2ZuuXsMcaD3S4qcqk=
-X-Received: by 2002:a2e:be21:0:b0:2f0:25dc:1894 with SMTP id
- 38308e7fff4ca-2f61e025818mr158600731fa.2.1725537731600; Thu, 05 Sep 2024
- 05:02:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mps@arvanta.net>) id 1smAc2-0002r3-0M
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 07:25:21 -0400
+Received: from 93-87-244-166.static.isp.telekom.rs ([93.87.244.166]
+ helo=fx.arvanta.net)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mps@arvanta.net>) id 1smAc0-0003hk-7W
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 07:25:17 -0400
+Received: from m1pro.arvanta.net (m1pro.arvanta.net [10.5.1.11])
+ by fx.arvanta.net (Postfix) with ESMTP id E7E294B32;
+ Thu, 05 Sep 2024 13:25:10 +0200 (CEST)
+From: =?UTF-8?q?Milan=20P=2E=20Stani=C4=87?= <mps@arvanta.net>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Milan=20P=20=2E=20Stani=C4=87?= <mps@arvanta.net>
+Subject: [PATCH] util/util/cpuinfo-riscv.c: fix riscv64 build on musl libc
+Date: Thu,  5 Sep 2024 13:24:37 +0200
+Message-ID: <20240905112440.10438-1-mps@arvanta.net>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-References: <20240904124417.14565-1-farosas@suse.de>
-In-Reply-To: <20240904124417.14565-1-farosas@suse.de>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 5 Sep 2024 13:01:59 +0100
-Message-ID: <CAFEAcA80bmCt0YmkCaocDn56OSwPLTO4ZZG+n4PXHi6K_z+Xng@mail.gmail.com>
-Subject: Re: [PULL 00/34] Migration patches for 2024-09-04
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=93.87.244.166; envelope-from=mps@arvanta.net;
+ helo=fx.arvanta.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 05 Sep 2024 09:17:59 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,103 +54,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 4 Sept 2024 at 13:49, Fabiano Rosas <farosas@suse.de> wrote:
->
-> The following changes since commit e638d685ec2a0700fb9529cbd1b2823ac4120c=
-53:
->
->   Open 9.2 development tree (2024-09-03 09:18:43 -0700)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/farosas/qemu.git tags/migration-20240904-pull-reques=
-t
->
-> for you to fetch changes up to d41c9896f49076d1eaaa32214bd2296bd36d866c:
->
->   tests/qtest/migration: Add a check for the availability of the "pc" mac=
-hine (2024-09-03 16:24:37 -0300)
->
-> ----------------------------------------------------------------
-> Migration pull request
->
-> - Steve's cleanup of unused variable
-> - Peter Maydell's fixes for several leaks in migration-test
-> - Fabiano's flexibilization of multifd data structures for device
->   state migration
-> - Arman Nabiev's fix for ppc e500 migration
-> - Thomas' fix for migration-test vs. --without-default-devices
+build fails on musl libc (alpine linux) with this error:
 
-Hi. This generates a bunch of new warning messages when running
-"make check":
+../util/cpuinfo-riscv.c: In function 'cpuinfo_init':
+../util/cpuinfo-riscv.c:63:21: error: '__NR_riscv_hwprobe' undeclared (first use in this function); did you mean 'riscv_hwprobe'?
+   63 |         if (syscall(__NR_riscv_hwprobe, &pair, 1, 0, NULL, 0) == 0
+      |                     ^~~~~~~~~~~~~~~~~~
+      |                     riscv_hwprobe
+../util/cpuinfo-riscv.c:63:21: note: each undeclared identifier is reported only once for each function it appears in
+ninja: subcommand failed
 
-105/845 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test
-           OK             256.17s   51
- subtests passed
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95
-stderr:
-warning: fd: migration to a file is deprecated. Use file: instead.
-warning: fd: migration to a file is deprecated. Use file: instead.
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95
+add '#include "asm/unistd.h"' to util/cpuinfo-riscv.c fixes build
 
-Can you investigate or suppress these, please?
+Signed-off-by: Milan P. Stanić <mps@arvanta.net>
+---
+ util/cpuinfo-riscv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I also see a complaint from the migration-compat-x86_64 job:
-https://gitlab.com/qemu-project/qemu/-/jobs/7752621835
+diff --git a/util/cpuinfo-riscv.c b/util/cpuinfo-riscv.c
+index 497ce12680..f4779ed1fb 100644
+--- a/util/cpuinfo-riscv.c
++++ b/util/cpuinfo-riscv.c
+@@ -5,6 +5,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "host/cpuinfo.h"
++#include "asm/unistd.h"
+ 
+ #ifdef CONFIG_ASM_HWPROBE_H
+ #include <asm/hwprobe.h>
+-- 
+2.46.0
 
-Traceback (most recent call last):
-File "/builds/qemu-project/qemu/build-previous/scripts/vmstate-static-check=
-er.py",
-line 438, in <module>
-sys.exit(main())
-^^^^^^
-File "/builds/qemu-project/qemu/build-previous/scripts/vmstate-static-check=
-er.py",
-line 395, in main
-dest_data =3D json.load(args.dest)
-^^^^^^^^^^^^^^^^^^^^
-File "/usr/lib64/python3.11/json/__init__.py", line 293, in load
-return loads(fp.read(),
-^^^^^^^^^^^^^^^^
-File "/usr/lib64/python3.11/json/__init__.py", line 346, in loads
-return _default_decoder.decode(s)
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-File "/usr/lib64/python3.11/json/decoder.py", line 337, in decode
-obj, end =3D self.raw_decode(s, idx=3D_w(s, 0).end())
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-File "/usr/lib64/python3.11/json/decoder.py", line 353, in raw_decode
-obj, end =3D self.scan_once(s, idx)
-^^^^^^^^^^^^^^^^^^^^^^
-json.decoder.JSONDecodeError: Unterminated string starting at: line
-5085 column 7 (char 131064)
-# Failed to run vmstate-static-checker.py
-not ok 3 /x86_64/migration/vmstate-checker-script
-Bail out!
-
-I think this is probably a pre-existing failure, as
-I also saw it on the previous pullreq:
-https://gitlab.com/qemu-project/qemu/-/jobs/7751785881
-
-But since this is a migration pullreq, could you have a look?
-
-thanks
--- PMM
 
