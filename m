@@ -2,103 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1034996DF86
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 18:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD98296DFA1
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 18:28:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smFH2-0000t1-BS; Thu, 05 Sep 2024 12:23:56 -0400
+	id 1smFKt-0005X7-5T; Thu, 05 Sep 2024 12:27:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1smFGy-0000sA-Nh
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:23:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1smFKr-0005Vw-3d
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:27:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1smFGx-0007px-4V
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:23:52 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1smFKp-0008Rt-LN
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:27:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725553428;
+ s=mimecast20190719; t=1725553670;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TORdoPka1ZnRakrMoezien+psJJ0ugjPuE7EmxeirD8=;
- b=P7sG5c485vpB0K9+XsWEfmxgs5dGZgnOi9HfioDzuLDf/zonu7fHH6K7XjGiYpyPml3Ccq
- xMJDvspRzP0XWeRgCH3GjeTI5BbYqHYDVVrk2CPazoPra8I2JTP6UyY2vA+RcnSvYPNri3
- 7kj26P3QHOkt3I42po+oxfvxHepx2KI=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KypJTrR1yl+wn8WDsv7b1dNMyskgXfN0RUOvrUCNm2Q=;
+ b=LpvWO4+9po4rwlDYcyF2lE0dxoUg4yELGAO8zFf6OXSoWOmbymkIVtOSED+0xbQQYzWnJP
+ PLimTBHsTPp8PWT+4zKiXikYI0LXjAwuVhQBIL2vNWj2rYz50CWHueNq0DFi+bDM5lbAvF
+ YITZIHaSOu3XUyPHCfgdUUIKUpKPJFU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-29-whYcj-9vNh29S0xvye4E7w-1; Thu, 05 Sep 2024 12:23:47 -0400
-X-MC-Unique: whYcj-9vNh29S0xvye4E7w-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7a81b8a55b0so169922885a.0
- for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 09:23:46 -0700 (PDT)
+ us-mta-340-QoynB_8oN8SarDgoMq-vNg-1; Thu, 05 Sep 2024 12:27:48 -0400
+X-MC-Unique: QoynB_8oN8SarDgoMq-vNg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-42bb9fa67d7so10414745e9.0
+ for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 09:27:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725553426; x=1726158226;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TORdoPka1ZnRakrMoezien+psJJ0ugjPuE7EmxeirD8=;
- b=jNI1MBEmV9w/8beqNAcAr2tvbrHrQ4kavaJhXPh+vwPFfefPhbQvzl8BU9qwf+bZsD
- hpTTLxhnB4OkxWy9g40NDSZOzvFQu+5v8wI/AUdf0O3zeyX8OljPetANB4hyzYyRxxid
- O5bqm9tSnDjoEuW4W6zwzQr8/ADBmUtTSiMLECubWwFF//wyKpiBg4lQi1JUdfyREG3N
- ofm8NkZVHj9CRlKuyZZzMoPtXIAUWdUWUbZ6VInziTzXghUxmuRGE7ZhWNB4UW1nNo1B
- j2SWEI4L/zS75EvqBBm6vemPz6MV40na5rSro1/TclcmJ8KTPKlqJjPq1gT/PPlooZhK
- 85wQ==
-X-Gm-Message-State: AOJu0Yw18fr6MhWit9K/EI7ixUDyn1DE49o8miuHEBTgQc5w+/3bdjeI
- F9L8wLWSZTKTOCYM00eengcfYGS3WEExj+mZtOdujIFjf147OEMOXOamknVtTYNV4XFvlUZS77f
- Lcifp3mR4zuz9XVNPDMkx6Z2q3lxiQX3m4o6bt5fInXVV44dJRdcb
-X-Received: by 2002:a05:620a:4015:b0:7a2:e6c:422b with SMTP id
- af79cd13be357-7a8f6bab170mr1923666085a.24.1725553426561; 
- Thu, 05 Sep 2024 09:23:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHZ8l6Iv/6Gey6MIZ0f8JbfmaMsj7eW24vAe34e6wgKjJGTtrypoVDiRH5dkRwXhaWxXup/LQ==
-X-Received: by 2002:a05:620a:4015:b0:7a2:e6c:422b with SMTP id
- af79cd13be357-7a8f6bab170mr1923662285a.24.1725553426114; 
- Thu, 05 Sep 2024 09:23:46 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7a98f00fe15sm87230585a.108.2024.09.05.09.23.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Sep 2024 09:23:45 -0700 (PDT)
-Date: Thu, 5 Sep 2024 12:23:43 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Maor Gottlieb <maorg@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>,
- Tarun Gupta <targupta@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- Fabiano Rosas <farosas@suse.de>, Zhiyi Guo <zhguo@redhat.com>
-Subject: Re: [PATCH v11 08/11] vfio/migration: Implement VFIO migration
- protocol v2
-Message-ID: <ZtnbD69EeXhR6FFc@x1n>
-References: <20230216143630.25610-1-avihaih@nvidia.com>
- <20230216143630.25610-9-avihaih@nvidia.com> <ZthZ1aW_JmO3V9dr@x1n>
- <95d10ed3-33ef-48a9-9684-3a8c402c5db9@nvidia.com>
- <ZtiHzQHJ4PgWc21e@x1n>
- <b8807171-567b-4e21-af83-bc2f6dbbf606@nvidia.com>
- <ZtnLhW-2eo8hA7bQ@x1n>
- <812e89c4-35d8-4fc0-ac10-ec36d57f215c@nvidia.com>
+ d=1e100.net; s=20230601; t=1725553667; x=1726158467;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KypJTrR1yl+wn8WDsv7b1dNMyskgXfN0RUOvrUCNm2Q=;
+ b=ZY3m7EbvqAw17yTYC4ym1rAaGFpuMDYRIOV59LmXVni/us8XZwa7skCIBBpdA688gR
+ 9iHLyE2Tr/ZbsOFIW37zdBm8g3HpB4TVL6byJdHcO3WlivCh43EtHh+NBHAurxpwOrfw
+ x8A/CL94xpgJUB3VtiXmZhJfdaklx1WyGTakkjxYADS6yS2Czi/WNJLa5WQz7pzyn/bD
+ B5lPtPXRlYZoNck9DH7ijo0UY9QuyLTMdt2qTl4Ol7jEaLanGNIZUa3v04Okn2i74txr
+ BoRWS7mpa5YnrLl4hyIE1x06wTre67FaFcx9kMWiBdgoURkmLos2dZqPa+xYiAOTRcuJ
+ 4wng==
+X-Gm-Message-State: AOJu0Yz7eIjUAKIJ0PrjG53wKC1R7GdWquWsDvSxptx/dL40Y1AbwQjp
+ L2spI0flmCbSHlm2rg/2QEaQ9DN3Uu+xOuW6FUsVqisnUiRRP9mnjLhikzYUoxV6lRuive82XQs
+ xacRcDLjvAX7uoxDpfao6oJWs3BdAcYT5tLlkUu05t3pG03DPrrmZedf9C1wWB8+6IV6sa/u/RE
+ xxoVtWD9N9kHkPosmeKUTpOcR41Bc=
+X-Received: by 2002:adf:fecd:0:b0:374:bf18:6092 with SMTP id
+ ffacd0b85a97d-374bf1866a6mr15761166f8f.38.1725553667436; 
+ Thu, 05 Sep 2024 09:27:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG6A0qVUh2oFMRjvDUn8XDuWAUUyzIvs3Ukwnc7FLoxyluERrd/oAsLb11AkhS8HU67nkOq3nhxW2uRL8xyeWc=
+X-Received: by 2002:adf:fecd:0:b0:374:bf18:6092 with SMTP id
+ ffacd0b85a97d-374bf1866a6mr15761143f8f.38.1725553666918; Thu, 05 Sep 2024
+ 09:27:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <812e89c4-35d8-4fc0-ac10-ec36d57f215c@nvidia.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+References: <20240423150951.41600-1-pbonzini@redhat.com>
+ <20240423150951.41600-12-pbonzini@redhat.com>
+ <7762115d-cf9d-4505-a3c7-6782433e2521@tls.msk.ru>
+In-Reply-To: <7762115d-cf9d-4505-a3c7-6782433e2521@tls.msk.ru>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 5 Sep 2024 18:27:34 +0200
+Message-ID: <CABgObfbOZNudB3uycQGB31F0KXXhrVmhvi+wn9z9bANCmZQtZw@mail.gmail.com>
+Subject: Re: [PULL 11/63] hw/virtio: move stubs out of stubs/
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -116,43 +97,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 05, 2024 at 07:07:28PM +0300, Avihai Horon wrote:
-> > So I wonder why stop-size can change from a driver, and whether that can be
-> > reported in a more predictable fashion.  Otherwise I see little point in
-> > providing both stop-size and precopy-size, otherwise we'll always add them
-> > up into VFIO's total pending-size.  The line on provision which data falls
-> > into which bucket doesn't seem to be clear to me.
-> 
-> Stopcopy-size is reported by VFIO_DEVICE_FEATURE_MIG_DATA_SIZE ioctl, which
-> states that this is "[...] the estimated data length that will be required
-> to complete stop copy".
-> So by this definition, stopcopy-size can change during precopy (it can also
-> change if device resources are created or destroyed).
-> 
-> Precopy-size is reported by VFIO_MIG_GET_PRECOPY_INFO ioctl, which states
-> that this is "[...] estimates of data available from the device during the
-> PRE_COPY states".
-> 
-> Maybe the confusion was caused by this line in vfio_state_pending_exact():
->     *must_precopy += migration->precopy_init_size +
-> migration->precopy_dirty_size;
-> 
-> Which I think should be removed, as stopcopy-size should already cover
-> precopy data.
+On Sat, Aug 3, 2024 at 4:29=E2=80=AFAM Michael Tokarev <mjt@tls.msk.ru> wro=
+te:
+>
+> 23.04.2024 18:08, Paolo Bonzini wrote:
+> > Since the virtio memory device stubs are needed exactly when the
+> > Kconfig symbol is not enabled, they can be placed in hw/virtio/ and
+> > conditionalized on CONFIG_VIRTIO_MD.
+> >
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> > Message-ID: <20240408155330.522792-12-pbonzini@redhat.com>
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > ---
+> >   stubs/virtio-md-pci.c =3D> hw/virtio/virtio-md-stubs.c | 0
+> >   hw/virtio/meson.build                                | 2 ++
+> >   stubs/meson.build                                    | 1 -
+> >   3 files changed, 2 insertions(+), 1 deletion(-)
+> >   rename stubs/virtio-md-pci.c =3D> hw/virtio/virtio-md-stubs.c (100%)
+>
+> FWIW, this broke a minimal microvm build for debian:
+>
+> /usr/bin/ld: libqemu-x86_64-softmmu.a.p/hw_i386_pc.c.o: in function `pc_m=
+achine_device_pre_plug_cb':
+> ./b/microvm/hw/i386/pc.c:1377: undefined reference to `virtio_md_pci_pre_=
+plug'
+> /usr/bin/ld: libqemu-x86_64-softmmu.a.p/hw_i386_pc.c.o: in function `pc_m=
+achine_device_unplug_request_cb':
+> ./b/microvm/hw/i386/pc.c:1427: undefined reference to `virtio_md_pci_unpl=
+ug_request'
+> /usr/bin/ld: libqemu-x86_64-softmmu.a.p/hw_i386_pc.c.o: in function `pc_m=
+achine_device_unplug_cb':
+> ./b/microvm/hw/i386/pc.c:1443: undefined reference to `virtio_md_pci_unpl=
+ug'
+> /usr/bin/ld: libqemu-x86_64-softmmu.a.p/hw_i386_pc.c.o: in function `pc_m=
+achine_device_plug_cb':
+> ./b/microvm/hw/i386/pc.c:1413: undefined reference to `virtio_md_pci_plug=
+'
+> collect2: error: ld returned 1 exit status
 
-Would you please help double check on the kernel drivers' side?  If that's
-true I agree that should be dropped.
+Does it not link hw/virtio-virtio-md-stubs.c? Can you send the
+x86_64-softmmu-config-devices.mak file?
 
-Does it also mean then that the currently reported stop-size - precopy-size
-will be very close to the constant non-iterable data size?  If so, is it
-cache-able?  It doesn't need to be 100% accurate as the ioctls are not
-atomic, but still if it's mostly usable (again, will need you all to help
-justify that..) as that then it looks like we have some way to report that
-without the concern you raised before.
-
-Thanks,
-
--- 
-Peter Xu
+Paolo
 
 
