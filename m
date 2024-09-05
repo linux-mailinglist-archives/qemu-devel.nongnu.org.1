@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3551696E39C
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 21:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3C096E396
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 21:59:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smIcK-0006Z9-1J; Thu, 05 Sep 2024 15:58:08 -0400
+	id 1smIcJ-0006PJ-Ao; Thu, 05 Sep 2024 15:58:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1smIcD-0006Bc-7s
+ id 1smIcD-0006Bd-EC
  for qemu-devel@nongnu.org; Thu, 05 Sep 2024 15:58:02 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1smIc8-0005Q2-Sw
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 15:58:00 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-20570b42f24so16611985ad.1
- for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 12:57:53 -0700 (PDT)
+ id 1smIcB-0005QI-Nc
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 15:58:01 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-7d666fb3fb9so203012a12.0
+ for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 12:57:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1725566272; x=1726171072; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1725566276; x=1726171076; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J8mnf11fqMhOJ0HRRJgNLp3sCX2YE0q+64B/TUz3Pt8=;
- b=auhXSGLMF2v8csBs6j44cXCeozDbJ8ewJr4PWgWkQcygM8vmAuRAQ+AAIOsuF5qhoO
- jah7829DMkCCrv4jijvJ8/AlwJ4/Mxsbp3O9tdcvjdQSCwdiAyq8YpR+/Xjn8gjhfVQ1
- 0gMriHSLCJStvr6JNayGFt3prQWYkHmG5xbvlwas76sSwK4655kUEufJmH+WDpIhBIJn
- V625HKRej1+0dXY+RT0o8zO66qZHj6StH9Zz/qbjPrR0uHEatASjdiYvLP41qC+a2qJy
- Df/ordbCGlT9i9+QNhslKeSnIXZlMvRTsIWLRJxoLLP8lMV6wD07xvzDwKecUp1f00ab
- VTyA==
+ bh=2cUhzbDO1c4TVr/5fHme4bDVdctPUWA406Qmu6O3nZE=;
+ b=c8TjuYrJmXx0cnyrqioHdJj8HJhSWLANGgx7IBR/E9CJB08RfgXqqnMASTe4h71wSi
+ F3eYvWvgFGxTJOWC2xndGEu/nWmv6O/fX2PbCGW3nFDkMV0BpiUDgCMB9MzEhDHmfZJM
+ BkdWgO8x5KuXKL16BrtPwHfF6v5sQPRH8kHWYfZIoQilS/lKLy/3AvG4SjWKYhD6hUHX
+ YgfHva6e6uVKl2oXvYDLYigLnm8CBnAsJXeQteE+WGN0bokcfUpvhVbfJwc85y5YfP8o
+ SyduD4fuCImQj1IElSgnDXSVTPlkGB+rj9FcjZygmcjiaHd+bGEvZm+Gv38NViIhJ1el
+ ds7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725566272; x=1726171072;
+ d=1e100.net; s=20230601; t=1725566276; x=1726171076;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J8mnf11fqMhOJ0HRRJgNLp3sCX2YE0q+64B/TUz3Pt8=;
- b=GuawkBIA5JnwEsr72wIQ0aQQeMRhQq3Kcx2lUKTDvCkLOkqGT6BUhUqeiCKNPUy4j8
- y73sPybe0BYdD3QtUQCGrk6z4cyu9+eiXWtJ3xisRFJjH1Q3jaxO5ki15VuVaxqeZ2IT
- pBgerBdEJrjNnRgMxtIYXbt0gwBVH1PCzB/QOT4UF9lDuPsoQH4Tc4hSRFoWZNsdz+5/
- btrEp6UGAVaELeWNkk0IVdaR11Vg0BptGDeQKGZle53FY8YosTKYEFeN4EmDvdKFypgT
- a8vyr8+PqdL2/rn7IB8Alsgsf1FxEMWqkrskHREvm9KSmZi+Xkj7rWLZvUNb7fWXXEon
- DJjA==
-X-Gm-Message-State: AOJu0YyAaGgZfRFyIpSkLo0bL4v1mDLjA8K5ODqHcLGC15LqwKJ4w3Ev
- oFBnwGhhGxuc3WZ/wZCQr3ydC9PclJoFn2x7XtSug9p+xviErHymhvBkhA==
-X-Google-Smtp-Source: AGHT+IFgj0KrRHswL9j3aMxQ3AeikWLoriDiEUYI7hXra1UrJnBFxerhRYkYvgzbJcdGjYh2BGvHdg==
-X-Received: by 2002:a17:902:e950:b0:205:60d2:106b with SMTP id
- d9443c01a7336-206f054fe2cmr2493765ad.34.1725566271741; 
- Thu, 05 Sep 2024 12:57:51 -0700 (PDT)
+ bh=2cUhzbDO1c4TVr/5fHme4bDVdctPUWA406Qmu6O3nZE=;
+ b=Zzms6K0x8mQJZrHBbCFMybK7ODLj+rRIeAGgy6nN6rFqKI25oxQ/TOixJkVw40OsGI
+ 3gFoh6mKOu3w4jdRHbFH1ekfYITTGUrmcD4q6EYD7xlxYOg7tbpxgzhfq+PttDDbl7rD
+ kLWO7qJF3bq14Otw2yn8ytZYg+KnysChYV0a2SNe43dIplGzpPrZnXuL9Hv57IG6y94K
+ udubxS018c3pDw2BNZaINPuqwcv3hr+zYSG5ITQCs40fMJ966TzZVY0CCVk7yKdhMTBJ
+ RZqBGTjpK31HnDmAYMxwc0CPdC3p8D71+ZD/ebTldsiSWPFs9sxbbisnXMpt9jakcbBO
+ VnuA==
+X-Gm-Message-State: AOJu0YwZ45Jp5iDDwCa2CPguhRdMnXVvMaRvCNFwFGyXq6lNB+x473lR
+ AS2ubOJ25Q4H46cSzpO0U8vG6RpmdHkjU5CbuBH2NaEFB/rOvhQpnOr84g==
+X-Google-Smtp-Source: AGHT+IHPH+NMSopG83F+C7LUKqyL1muBwYkK92W2GGvBm6vcfsSuRQJ6lD3BvXgXHcR0Bdt/NsAZnw==
+X-Received: by 2002:a17:902:f54d:b0:206:b618:1d96 with SMTP id
+ d9443c01a7336-206ee75720fmr6211435ad.0.1725566275731; 
+ Thu, 05 Sep 2024 12:57:55 -0700 (PDT)
 Received: from localhost.localdomain ([103.103.35.145])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-206aea5554dsm32031355ad.235.2024.09.05.12.57.47
+ d9443c01a7336-206aea5554dsm32031355ad.235.2024.09.05.12.57.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Sep 2024 12:57:51 -0700 (PDT)
+ Thu, 05 Sep 2024 12:57:55 -0700 (PDT)
 From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: graf@amazon.com, agraf@csgraf.de, stefanha@redhat.com, pbonzini@redhat.com,
  slp@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  mst@redhat.com, marcel.apfelbaum@gmail.com, berrange@redhat.com,
  philmd@linaro.org
-Subject: [PATCH v6 1/8] crypto: Define macros for hash algorithm digest lengths
-Date: Fri,  6 Sep 2024 01:57:28 +0600
-Message-Id: <20240905195735.16911-2-dorjoychy111@gmail.com>
+Subject: [PATCH v6 2/8] crypto: Support SHA384 hash when using glib
+Date: Fri,  6 Sep 2024 01:57:29 +0600
+Message-Id: <20240905195735.16911-3-dorjoychy111@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240905195735.16911-1-dorjoychy111@gmail.com>
 References: <20240905195735.16911-1-dorjoychy111@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=dorjoychy111@gmail.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=dorjoychy111@gmail.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: 15
 X-Spam_score: 1.5
 X-Spam_bar: +
@@ -96,57 +96,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+QEMU requires minimum glib version 2.66.0 as per the root meson.build
+file and per glib documentation[1] G_CHECKSUM_SHA384 is available since
+2.51.
+
+[1] https://docs.gtk.org/glib/enum.ChecksumType.html
+
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 ---
- crypto/hash.c         | 14 +++++++-------
- include/crypto/hash.h |  8 ++++++++
- 2 files changed, 15 insertions(+), 7 deletions(-)
+ crypto/hash-glib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/hash.c b/crypto/hash.c
-index b0f8228bdc..8087f5dae6 100644
---- a/crypto/hash.c
-+++ b/crypto/hash.c
-@@ -23,13 +23,13 @@
- #include "hashpriv.h"
- 
- static size_t qcrypto_hash_alg_size[QCRYPTO_HASH_ALG__MAX] = {
--    [QCRYPTO_HASH_ALG_MD5] = 16,
--    [QCRYPTO_HASH_ALG_SHA1] = 20,
--    [QCRYPTO_HASH_ALG_SHA224] = 28,
--    [QCRYPTO_HASH_ALG_SHA256] = 32,
--    [QCRYPTO_HASH_ALG_SHA384] = 48,
--    [QCRYPTO_HASH_ALG_SHA512] = 64,
--    [QCRYPTO_HASH_ALG_RIPEMD160] = 20,
-+    [QCRYPTO_HASH_ALG_MD5]       = QCRYPTO_HASH_DIGEST_LEN_MD5,
-+    [QCRYPTO_HASH_ALG_SHA1]      = QCRYPTO_HASH_DIGEST_LEN_SHA1,
-+    [QCRYPTO_HASH_ALG_SHA224]    = QCRYPTO_HASH_DIGEST_LEN_SHA224,
-+    [QCRYPTO_HASH_ALG_SHA256]    = QCRYPTO_HASH_DIGEST_LEN_SHA256,
-+    [QCRYPTO_HASH_ALG_SHA384]    = QCRYPTO_HASH_DIGEST_LEN_SHA384,
-+    [QCRYPTO_HASH_ALG_SHA512]    = QCRYPTO_HASH_DIGEST_LEN_SHA512,
-+    [QCRYPTO_HASH_ALG_RIPEMD160] = QCRYPTO_HASH_DIGEST_LEN_RIPEMD160,
+diff --git a/crypto/hash-glib.c b/crypto/hash-glib.c
+index 82de9db705..18e64faa9c 100644
+--- a/crypto/hash-glib.c
++++ b/crypto/hash-glib.c
+@@ -29,7 +29,7 @@ static int qcrypto_hash_alg_map[QCRYPTO_HASH_ALG__MAX] = {
+     [QCRYPTO_HASH_ALG_SHA1] = G_CHECKSUM_SHA1,
+     [QCRYPTO_HASH_ALG_SHA224] = -1,
+     [QCRYPTO_HASH_ALG_SHA256] = G_CHECKSUM_SHA256,
+-    [QCRYPTO_HASH_ALG_SHA384] = -1,
++    [QCRYPTO_HASH_ALG_SHA384] = G_CHECKSUM_SHA384,
+     [QCRYPTO_HASH_ALG_SHA512] = G_CHECKSUM_SHA512,
+     [QCRYPTO_HASH_ALG_RIPEMD160] = -1,
  };
- 
- size_t qcrypto_hash_digest_len(QCryptoHashAlgorithm alg)
-diff --git a/include/crypto/hash.h b/include/crypto/hash.h
-index 54d87aa2a1..a113cc3b04 100644
---- a/include/crypto/hash.h
-+++ b/include/crypto/hash.h
-@@ -23,6 +23,14 @@
- 
- #include "qapi/qapi-types-crypto.h"
- 
-+#define QCRYPTO_HASH_DIGEST_LEN_MD5       16
-+#define QCRYPTO_HASH_DIGEST_LEN_SHA1      20
-+#define QCRYPTO_HASH_DIGEST_LEN_SHA224    28
-+#define QCRYPTO_HASH_DIGEST_LEN_SHA256    32
-+#define QCRYPTO_HASH_DIGEST_LEN_SHA384    48
-+#define QCRYPTO_HASH_DIGEST_LEN_SHA512    64
-+#define QCRYPTO_HASH_DIGEST_LEN_RIPEMD160 20
-+
- /* See also "QCryptoHashAlgorithm" defined in qapi/crypto.json */
- 
- /**
 -- 
 2.39.2
 
