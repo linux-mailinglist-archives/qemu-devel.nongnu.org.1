@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76BA096D9C6
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E70E96D9C8
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:05:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smC75-0001UG-9R; Thu, 05 Sep 2024 09:01:27 -0400
+	id 1smC72-0001KV-HW; Thu, 05 Sep 2024 09:01:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC6v-00010j-Q6
+ id 1smC6v-00010k-R7
  for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:17 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC6s-0001kO-7k
+ id 1smC6s-0001kU-7e
  for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:17 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-427fc97a88cso5996405e9.0
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42bbdf7f860so6198025e9.3
  for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 06:01:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1725541272; x=1726146072; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/1zEM1x6OVqIhqR0ynhG68F5R1rKfetSPpPKrgmLcWE=;
- b=Vo8NTsrLVRGPN/5ista5TiplIwnOm195CBK5hXTku/488R1FpF/OU6RbGhBEWjNTl2
- J7xzVOBg8Dtqfh8ZJZWQzKqYbX/mef0Gy7sl75ueuqnvs94Urjwze3tscIgA2TxRahyf
- lYpKJcNrWcF7/UJ+qvWnCGFZFXy7+f/u+/VN3X4PyupmlwAczvvaZtrejtQ7NjM4R69Y
- HDaLQtOLLt0PZ4PzKq8F7wLU8XA4xbjFKDwldOezTBKbuGcjFv4te/HVt6Ph9i8Mzvpd
- 9229EufOP/ECNsyIuYRGg+LTSgRb7fuvXAu6LY68W86QF7zewHS9+kvO5WqjslvNGnBM
- FXoQ==
+ :reply-to; bh=Vp6jqJWQJM20UmlkjdFnqB0qa1tAd5oRc0QPjbGe4sk=;
+ b=bC14IM1xtgss8rbVyCknxyQtHv/ns0JpGtO3sm7gT5rnWH+gjfhCDtRpVsruZkYn15
+ mEjxNMnjc80+iaK1pwJXcedStcIGusU0UFV8aP31KKOfq25rrZGMi9NtevCRFn+USQ3l
+ fltNyqOUtbH1YYIIy9jJy5qOsLPpX1aDBh5/u/TvN7JaPFviz4KmMmtQgPdwHyLfP/jR
+ Bl2jFYIIgHu0VPduWalka5BzPsDA+MBf0eyJN3cNmcX40DJgqf+6eYDbpLbanfirk3z9
+ a9YkkUbXJiHJeOtAjqkd2ZTUp5NbwjHMMsWeJjMLggqPRDp1zcganSKFVRQkpM0hdTQ0
+ 4pLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1725541272; x=1726146072;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/1zEM1x6OVqIhqR0ynhG68F5R1rKfetSPpPKrgmLcWE=;
- b=iT55Qgi4np1s1UEid9bgfHoIyqSYvi3lUAvKgxiSVkC7q5XDkYF4jYRPCBpbExIjiW
- IyWhNAxYTavFtZEbSLy4FKLID0vRzDO/LmEbd8PKao7XkOY73GMB7TN1I/kwYu4lQAQA
- BrzEXL3a5WFR7kzU4wQgokOWkznYAcMKMS/M6aQcpAePIuLfX2RcAZQIlJCiQSVpWCJz
- 9F4s7qa5axy44b3+H4ecUSgxb/7J86VIbTQp8kkogB2HLwx4Wq7+HCfTzTiH1YVBV+s+
- 6vvv2Pf1bF39z87s54KMTuVEteNELb7E2JzyR9KeC7PPTrucl/s6AAmauSeurHPaQC9/
- yBiA==
-X-Gm-Message-State: AOJu0Yye2EPSAafHTvaob6tJwYtu0l49v5wnXmXF0Q/scX2f7jZXPbzr
- GqsWeMjcGGwgH4udeTpwr/QKOU2i3oPuOseSXBch1W7YWdXbH+MdMsY5lYVWD+qETvj86BEIQeL
- v
-X-Google-Smtp-Source: AGHT+IHR9nfitc3xMkWd6+4bWjNXxjmK4Y1jlpLloUow3joUSGeXv4I27i7HKafEFno2xhwUYcrTdg==
-X-Received: by 2002:a05:600c:4509:b0:426:6153:5318 with SMTP id
- 5b1f17b1804b1-42c9545f8bamr39624475e9.19.1725541271976; 
- Thu, 05 Sep 2024 06:01:11 -0700 (PDT)
+ bh=Vp6jqJWQJM20UmlkjdFnqB0qa1tAd5oRc0QPjbGe4sk=;
+ b=GicmiCdwfs+YR3YLjpb2M4zJP1+2Hnp0NwavqEojidZL9w95C2cv0s68XUyJE+salB
+ 3QRSGFwUvnpP1tFhxHYElzHvItbSu0ziwrTDAQlmi0QurztlBzARPqbib477dBcRthxI
+ /0izOpBeIBEJ6ASZH9kGewgh2b92EHuu5T7cGM6Klpv26LDX/WaxdOM9DyIKI/wdpgQW
+ lbdp6cQUT0NWw56qx9QrnFyKAfAKENAITonBZlryok+cu9uF6MZzB4iRNLmeLM4jS5wI
+ L7yjVp3Eq4/gcZc6VXPuZHK/HrsvQVPuDErcNdQf1LtTDIvdwzTWFcDd7C6R1Wv0ugdM
+ 6t+Q==
+X-Gm-Message-State: AOJu0Yzd3Y8v+tkL2+U6Qdy4sC3rwvrLjq1xt1U46LsiOLb7jSDLWl5b
+ KYQBEUqmVNujBwXd7TSR8uG2W+jkUCi3GzxzQYfvgcBR4u16IGSQg0OaQ+JMrEWr+ZVXobyLPd+
+ 1
+X-Google-Smtp-Source: AGHT+IE1BejZOEQ7nuUIRc09DkQ9Z6FxKrluUHdn227Q+M23daOPJvIJHHne+mQHhhDVLsyMe91oaA==
+X-Received: by 2002:a05:600c:1389:b0:426:6326:4cec with SMTP id
+ 5b1f17b1804b1-42bb01e6befmr169492095e9.29.1725541272463; 
+ Thu, 05 Sep 2024 06:01:12 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb6e355dfsm232251365e9.46.2024.09.05.06.01.11
+ 5b1f17b1804b1-42bb6e355dfsm232251365e9.46.2024.09.05.06.01.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Sep 2024 06:01:11 -0700 (PDT)
+ Thu, 05 Sep 2024 06:01:12 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/25] hw/arm/sbsa-ref: Use two-stage SMMU
-Date: Thu,  5 Sep 2024 14:00:48 +0100
-Message-Id: <20240905130100.298768-14-peter.maydell@linaro.org>
+Subject: [PULL 14/25] hw/misc/xlnx-versal-cfu: destroy fifo in finalize
+Date: Thu,  5 Sep 2024 14:00:49 +0100
+Message-Id: <20240905130100.298768-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240905130100.298768-1-peter.maydell@linaro.org>
 References: <20240905130100.298768-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,33 +91,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that our SMMU model supports enabling both stages of translation
-at once, we can enable this in the sbsa-ref board.  Existing guest
-code that only programs stage 1 and doesn't care about stage 2 should
-continue to run with the same behaviour, but guests that do want to
-do nested SMMU configurations can now do so.
+Since the TYPE_XNLX_VERSAL_CFU_FDRO device creates a FIFO in its
+instance_init method, we must destroy the FIFO in instance_finalize
+to avoid a memory leak for the QOM introspection
+"instantiate-examine-finalize" cycle:
+
+Direct leak of 8192 byte(s) in 1 object(s) allocated from:
+    #0 0x55ec89eae7ee in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-aarch64+0x294d7ee) (BuildId: 6d508874816cc47d17c8dd775e8f809ae520e8cb)
+    #1 0x7f697018f738 in g_malloc debian/build/deb/../../../glib/gmem.c:128:13
+    #2 0x55ec8d98d98d in fifo8_create util/fifo8.c:27:18
+    #3 0x55ec8aa2a624 in fifo32_create /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/include/qemu/fifo32.h:35:5
+    #4 0x55ec8aa2a33c in cfu_fdro_init hw/misc/xlnx-versal-cfu.c:397:5
+    #5 0x55ec8ce75da1 in object_init_with_type qom/object.c:420:9
+    #6 0x55ec8ce5d07b in object_initialize_with_type qom/object.c:562:5
+    #7 0x55ec8ce5e91d in object_new_with_type qom/object.c:782:5
+    #8 0x55ec8ce5e9f1 in object_new qom/object.c:797:12
+    #9 0x55ec8d65c81d in qmp_device_list_properties qom/qom-qmp-cmds.c:144:11
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Message-id: 20240816161350.3706332-5-peter.maydell@linaro.org
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-id: 20240822162127.705879-2-peter.maydell@linaro.org
 ---
- hw/arm/sbsa-ref.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/misc/xlnx-versal-cfu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index ae37a923015..396abe9c1bd 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -621,6 +621,7 @@ static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
+diff --git a/hw/misc/xlnx-versal-cfu.c b/hw/misc/xlnx-versal-cfu.c
+index 6bb82e51c15..2284b407eab 100644
+--- a/hw/misc/xlnx-versal-cfu.c
++++ b/hw/misc/xlnx-versal-cfu.c
+@@ -397,6 +397,13 @@ static void cfu_fdro_init(Object *obj)
+     fifo32_create(&s->fdro_data, 8 * KiB / sizeof(uint32_t));
+ }
  
-     dev = qdev_new(TYPE_ARM_SMMUV3);
- 
-+    object_property_set_str(OBJECT(dev), "stage", "nested", &error_abort);
-     object_property_set_link(OBJECT(dev), "primary-bus", OBJECT(bus),
-                              &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++static void cfu_fdro_finalize(Object *obj)
++{
++    XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(obj);
++
++    fifo32_destroy(&s->fdro_data);
++}
++
+ static void cfu_fdro_reset_enter(Object *obj, ResetType type)
+ {
+     XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(obj);
+@@ -539,6 +546,7 @@ static const TypeInfo cfu_fdro_info = {
+     .instance_size = sizeof(XlnxVersalCFUFDRO),
+     .class_init    = cfu_fdro_class_init,
+     .instance_init = cfu_fdro_init,
++    .instance_finalize = cfu_fdro_finalize,
+     .interfaces = (InterfaceInfo[]) {
+         { TYPE_XLNX_CFI_IF },
+         { }
 -- 
 2.34.1
 
