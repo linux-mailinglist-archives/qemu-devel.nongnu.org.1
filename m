@@ -2,77 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7815996DEFF
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 17:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC56E96DF1B
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 18:04:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smEqx-0003qN-7D; Thu, 05 Sep 2024 11:56:59 -0400
+	id 1smEu3-00012E-0y; Thu, 05 Sep 2024 12:00:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1smEqu-0003ng-TZ
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 11:56:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1smEu0-0000yC-7i
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:00:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1smEqt-0003XA-AH
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 11:56:56 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1smEtx-0004KH-Eq
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:00:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725551811;
+ s=mimecast20190719; t=1725552004;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gIxbWX0JkGJYKHVaBvcyezrsYHVu6WgcjYkFKoWKmhw=;
- b=cg8YiUsK+UnmEBKHaniNJg9a8InOQeBhjf+lJY0LkgQEkbhNaIO2ObD/dKrX7je9btQyPc
- 3m9+6nToSsv3VA179CUWGDGtbUJqgRWplLGiYmULKiJrTMxWVpUp6jOdzhOCsFjgahNZbo
- T5pXI5bLbCED2sytRElEp9TiiIjNTnw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-232-rwd_9QedP0mkVXanT6UuVQ-1; Thu,
- 05 Sep 2024 11:56:48 -0400
-X-MC-Unique: rwd_9QedP0mkVXanT6UuVQ-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 61E8F1955E75; Thu,  5 Sep 2024 15:56:47 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.181])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6793E3001D06; Thu,  5 Sep 2024 15:56:45 +0000 (UTC)
-Date: Thu, 5 Sep 2024 11:56:43 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: David Stevens <stevensd@chromium.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Alyssa Ross <hi@alyssa.is>,
- Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org,
- jasowang@redhat.com, david@redhat.com, slp@redhat.com,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Subject: Re: [RFC PATCH v2 0/5] vhost-user: Add SHMEM_MAP/UNMAP requests
-Message-ID: <20240905155643.GD1922502@fedora>
-References: <20240628145710.1516121-1-aesteve@redhat.com>
- <87bk34i4dy.fsf@alyssa.is>
- <CAD=HUj7av_8Epkd0Fe0eWR7Z4bZMTuvTNgqzYoQcOzFQ82wvOg@mail.gmail.com>
- <20240712014407-mutt-send-email-mst@kernel.org>
- <CAD=HUj7iDbwnojq5a68s6B3S8z4vtpCa=B=9+ZBVYZV50zG+5g@mail.gmail.com>
+ bh=wiCB9zTDurBGHCoTmvMGSheHiBLo40nBAUfmse8EmNk=;
+ b=KNIobUBYnPUh7I+RLIAVe0bRx1pgHoKa7NR8dTfV6cQ526ufDwH2aKI0ps1ZSNdaMvUvyG
+ Au3M3KLZC0hUX5dODvKciv2jOLYdWJo9RCCk5mPrY8e11EqNlm3ENyoJnUpyMeoVpKkLiS
+ 3gfqFaTeVmXwZEbe/nu+gNbTqdWjHUQ=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-387-5PtpHodiNWOkbiIHKLeSVg-1; Thu, 05 Sep 2024 12:00:00 -0400
+X-MC-Unique: 5PtpHodiNWOkbiIHKLeSVg-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7a8084eb116so211970485a.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 09:00:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725552000; x=1726156800;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wiCB9zTDurBGHCoTmvMGSheHiBLo40nBAUfmse8EmNk=;
+ b=ONAhtEMWYEoU53nnYxcPgb1S7x3tvsxxtn4/DQspcbnx+UJftaluBeiqYAMynBQwzr
+ AMSPknjQC5eGr61NgNn9Q1vRlZ8Nos8NtsGM4Fk9lt9/A76WCT9jYH0v9t2zNk0WgnmC
+ qRN9Js1C5sf53Ke4EEGulZ/X4lUFThEf/JVhj1ih0c39w1UBSZE2nPKVDawn1k0rP275
+ qr5hsUfSUWAxE3b/bLBLR6CcOORMXdXW0RyXPueBziQMMwJgBN48cgkT8Ce+PMqYed8/
+ slLpgVL+G4cXwpeHCA3jpGsHOjAHPTOFvTLm4e2Q5phTQ121KFu7GnlCod0xdlycAFLO
+ r5iA==
+X-Gm-Message-State: AOJu0YyXFc8gJBNmoMQZJZ8E5Wri/V+9UHzY1R4rXLvWhpsA+Xf595IB
+ 4HcwfAkqgnz1P3rulxTDDckxvuHGwZWWPPWJN82pIZLsDqilF70MaT83MgS9HokEy0HJVemCstP
+ lJbv9OLf0lQ5tvFg6Tqh+NmAaakVoTMoCXs/roD9w6Rlkgk8PO/FP
+X-Received: by 2002:a05:620a:2809:b0:79f:148d:f615 with SMTP id
+ af79cd13be357-7a902f6a619mr2016162385a.60.1725551999829; 
+ Thu, 05 Sep 2024 08:59:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFzqGsDtxFcli82GDiss+8gGSkq3xRqokX6Bi7u6DYvgT+xz2HPyIVUg4Bxnwl7CyS58hq6Pg==
+X-Received: by 2002:a05:620a:2809:b0:79f:148d:f615 with SMTP id
+ af79cd13be357-7a902f6a619mr2016158885a.60.1725551999370; 
+ Thu, 05 Sep 2024 08:59:59 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7a98ef1cb64sm86306385a.25.2024.09.05.08.59.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Sep 2024 08:59:58 -0700 (PDT)
+Date: Thu, 5 Sep 2024 11:59:57 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juraj Marcin <jmarcin@redhat.com>
+Cc: qemu-devel@nongnu.org, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Prasad Pandit <ppandit@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ qemu-stable <qemu-stable@nongnu.org>, Zhiyi Guo <zhguo@redhat.com>
+Subject: Re: [PATCH v2 1/4] KVM: Dynamic sized kvm memslots array
+Message-ID: <ZtnVfXataavOoQp0@x1n>
+References: <20240904223510.3519358-1-peterx@redhat.com>
+ <20240904223510.3519358-2-peterx@redhat.com>
+ <CAC2qdxCW=ddmK1TLC4Agh4cGnMV60BKNpN_Nrrz-KuPbDfh-ew@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="+hyDKIidNNInbQW+"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAD=HUj7iDbwnojq5a68s6B3S8z4vtpCa=B=9+ZBVYZV50zG+5g@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+In-Reply-To: <CAC2qdxCW=ddmK1TLC4Agh4cGnMV60BKNpN_Nrrz-KuPbDfh-ew@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,121 +102,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Sep 05, 2024 at 05:32:46PM +0200, Juraj Marcin wrote:
+> Hi Peter,
 
---+hyDKIidNNInbQW+
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi, Juraj,
 
-On Tue, Jul 16, 2024 at 10:21:35AM +0900, David Stevens wrote:
-> On Fri, Jul 12, 2024 at 2:47=E2=80=AFPM Michael S. Tsirkin <mst@redhat.co=
-m> wrote:
+[...]
+
+> >  unsigned int kvm_get_max_memslots(void)
+> >  {
+> >      KVMState *s = KVM_STATE(current_accel());
+> > @@ -193,15 +247,20 @@ unsigned int kvm_get_free_memslots(void)
+> >  /* Called with KVMMemoryListener.slots_lock held */
+> >  static KVMSlot *kvm_get_free_slot(KVMMemoryListener *kml)
+> >  {
+> > -    KVMState *s = kvm_state;
+> >      int i;
 > >
-> > On Fri, Jul 12, 2024 at 11:06:49AM +0900, David Stevens wrote:
-> > > On Thu, Jul 11, 2024 at 7:56=E2=80=AFPM Alyssa Ross <hi@alyssa.is> wr=
-ote:
-> > > >
-> > > > Adding David Stevens, who implemented SHMEM_MAP and SHMEM_UNMAP in
-> > > > crosvm a couple of years ago.
-> > > >
-> > > > David, I'd be particularly interested for your thoughts on the MEM_=
-READ
-> > > > and MEM_WRITE commands, since as far as I know crosvm doesn't imple=
-ment
-> > > > anything like that.  The discussion leading to those being added st=
-arts
-> > > > here:
-> > > >
-> > > > https://lore.kernel.org/qemu-devel/20240604185416.GB90471@fedora.re=
-dhat.com/
-> > > >
-> > > > It would be great if this could be standardised between QEMU and cr=
-osvm
-> > > > (and therefore have a clearer path toward being implemented in othe=
-r VMMs)!
-> > >
-> > > Setting aside vhost-user for a moment, the DAX example given by Stefan
-> > > won't work in crosvm today.
-> > >
-> > > Is universal access to virtio shared memory regions actually mandated
-> > > by the virtio spec? Copying from virtiofs DAX to virtiofs sharing
-> > > seems reasonable enough, but what about virtio-pmem to virtio-blk?
-> > > What about screenshotting a framebuffer in virtio-gpu shared memory to
-> > > virtio-scsi? I guess with some plumbing in the VMM, it's solvable in a
-> > > virtualized environment. But what about when you have real hardware
-> > > that speaks virtio involved? That's outside my wheelhouse, but it
-> > > doesn't seem like that would be easy to solve.
+> > -    for (i = 0; i < s->nr_slots; i++) {
+> > +retry:
+> > +    for (i = 0; i < kml->nr_slots_allocated; i++) {
+> >          if (kml->slots[i].memory_size == 0) {
+> >              return &kml->slots[i];
+> >          }
+> >      }
 > >
-> > Yes, it can work for physical devices if allowed by host configuration.
-> > E.g. VFIO supports that I think. Don't think VDPA does.
->=20
-> I'm sure it can work, but that sounds more like a SHOULD (MAY?),
-> rather than a MUST.
->=20
-> > > For what it's worth, my interpretation of the target scenario:
-> > >
-> > > > Other backends don't see these mappings. If the guest submits a vri=
-ng
-> > > > descriptor referencing a mapping to another backend, then that back=
-end
-> > > > won't be able to access this memory
-> > >
-> > > is that it's omitting how the implementation is reconciled with
-> > > section 2.10.1 of v1.3 of the virtio spec, which states that:
-> > >
-> > > > References into shared memory regions are represented as offsets fr=
-om
-> > > > the beginning of the region instead of absolute memory addresses. O=
-ffsets
-> > > > are used both for references between structures stored within shared
-> > > > memory and for requests placed in virtqueues that refer to shared m=
-emory.
-> > >
-> > > My interpretation of that statement is that putting raw guest physical
-> > > addresses corresponding to virtio shared memory regions into a vring
-> > > is a driver spec violation.
-> > >
-> > > -David
-> >
-> > This really applies within device I think. Should be clarified ...
->=20
-> You mean that a virtio device can use absolute memory addresses for
-> other devices' shared memory regions, but it can't use absolute memory
-> addresses for its own shared memory regions? That's a rather strange
-> requirement. Or is the statement simply giving an addressing strategy
-> that device type specifications are free to ignore?
+> > +    /* If no free slots, try to grow first by doubling */
+> > +    if (kvm_slots_double(kml)) {
+> > +        goto retry;
+> 
+> At this point we know all previously allocated slots were used and
+> there should be a free slot just after the last used slot (at the
+> start of the region zeroed in the grow function). Wouldn't it be
+> faster to return it here right away, instead of iterating through
+> slots that should still be used again?
 
-My recollection of the intent behind the quoted section is:
+Good question.
 
-1. Structures in shared memory that point to shared memory must used
-   relative offsets instead of absolute physical addresses.
-2. Virtqueue requests that refer to shared memory (e.g. map this page
-   from virtiofs file to this location in shared memory) must use
-   relative offsets instead of absolute physical addresses.
+One trivial concern is we'll then have assumption on how kvm_slots_double()
+behaves, e.g., it must not move anything around inside, and we need to know
+that it touches nr_slots_allocated so we need to cache it.  The outcome
+looks like this:
 
-In other words, shared memory must be relocatable. Don't assume Shared
-Memory Regions have an absolute guest physical address. This makes
-device implementations independent of the guest physical memory layout
-and might also help when Shared Memory Regions are exposed to guest
-user-space where the guest physical memory layout isn't known.
+===8<===
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 020fd16ab8..7429fe87a8 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -249,9 +249,9 @@ unsigned int kvm_get_free_memslots(void)
+ /* Called with KVMMemoryListener.slots_lock held */
+ static KVMSlot *kvm_get_free_slot(KVMMemoryListener *kml)
+ {
++    unsigned int n;
+     int i;
+ 
+-retry:
+     for (i = 0; i < kml->nr_slots_allocated; i++) {
+         if (kml->slots[i].memory_size == 0) {
+             return &kml->slots[i];
+@@ -259,8 +259,13 @@ retry:
+     }
+ 
+     /* If no free slots, try to grow first by doubling */
++    n = kml->nr_slots_allocated;
+     if (kvm_slots_double(kml)) {
+-        goto retry;
++        /*
++         * If succeed, we must have n used slots, then followed by n free
++         * slots.
++         */
++        return &kml->slots[n];
+     }
+ 
+     return NULL;
+===8<===
 
-Stefan
+It's still good to get rid of "goto", and faster indeed.  Though I wished
+we don't need those assumptions, as cons.
 
---+hyDKIidNNInbQW+
-Content-Type: application/pgp-signature; name="signature.asc"
+One thing to mention that I expect this is extremely slow path, where I
+don't expect to even be reached in major uses of QEMU, and when reached
+should be only once or limited few times per VM life cycle.  The re-walks
+here shouldn't be a perf concern IMHO, because when it's a concern we'll
+hit it much more frequently elsewhere... many other hotter paths around.
 
------BEGIN PGP SIGNATURE-----
+So far it looks slightly more readable to me to keep the old way, but I'm
+ok either way.  What do you think?
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmbZ1LsACgkQnKSrs4Gr
-c8iinAf9E0fUKNCgemoKb0dps6XYeP43rtLkyqQd5+IOp3GpocVTYG8N50FFl0S3
-/WRdf7vn5+X943ItUGLKwGjssz2rkFIj3tfzREQxsbUqEMTRgUSZQTeiF4NYzbaZ
-sDhXTEE0YonIjRlpl2lnNv+kENlUArXljvZZLDzJmQFJsmfvW3eLDoXMWPUh9+33
-da62RN9cQxOcRAuwsj9YyORyEV1zrkncma5ER85Q2IkpOQ13qG0cg71E1eDGXCnD
-MbKCt+TlAesJX2fj3zN5eCVMvXfQmG6MQjNsAEkh/n/X5A/7oZh6K4r5H5sc2mxh
-o6krOhTKR6zx3E/OUsnJJtDhtZJb0Q==
-=OD4/
------END PGP SIGNATURE-----
+Thanks,
 
---+hyDKIidNNInbQW+--
+-- 
+Peter Xu
 
 
