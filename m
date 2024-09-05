@@ -2,56 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E128C96DF1C
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 18:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F149E96DF31
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 18:09:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smExs-00082V-Ew; Thu, 05 Sep 2024 12:04:08 -0400
+	id 1smF1J-0006p8-6c; Thu, 05 Sep 2024 12:07:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1smEwy-0007lX-KO
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:03:16 -0400
-Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1smF1F-0006jP-IA
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:07:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1smEwv-0004rJ-1G
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:03:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1725552184; bh=dxdoE+Tc69+QIWnRgHImPXkCDL2I7LUw0KJGtL4nNOo=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=GFrTHFeEIgyFKXRi3Fk+VbCAleTAzFk68KT5e6YKmmqVzxLQtYguti0fUUqD3m2Hf
- SLsFMzZruLmV7xlvNUwGMACKScw07jR3DClTzkSvl05JiH5XubgBVumxANN0v1Ts+2
- 0rYOLVm38nXXEXo7CUEtOVekUbx3F9V32xkYA2BU=
-Date: Thu, 5 Sep 2024 18:03:03 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: maobibo <maobibo@loongson.cn>, loongarch@lists.linux.dev, 
- qemu-devel@nongnu.org, xry111@xry111.site
-Subject: Re: qemu direct kernel boot on LoongArch
-Message-ID: <7311f2fa-2353-48ad-85f5-5eae1f6cb65f@t-8ch.de>
-References: <49432aed-3ed7-2f07-7f65-311faef96197@loongson.cn>
- <ZtkhtxcJUK-JediY@zx2c4.com>
- <f50c4868-7c2e-1ede-ab19-c67ea0acaab3@loongson.cn>
- <CAHmME9rRJjJ5tHf_xtprkHtWz-ButOOZXVo=E9y8qSyQ-qu6ew@mail.gmail.com>
- <ccc7db47-d065-4e78-bf67-c4e8855c9be4@t-8ch.de>
- <ZtnGA4mH0I2hdx4N@zx2c4.com>
- <ea52a89c-449f-4aed-8138-f81ad20a1a79@t-8ch.de>
- <CAHmME9pPvk4s9JnEPmc9w71hkeHD_1U-fAy0+8MQNmO_9Gh3=g@mail.gmail.com>
- <b11ba2f4-ba4b-40fb-860e-e10e760562fe@t-8ch.de>
- <CAHmME9pjokr=ahBbJA9Ljf8jjOyfyRAk0Qo4YeDYO_gs78GGzg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1smF1D-000611-Md
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:07:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1725552454;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jp345HzFmHJEwidIfoXQdHcIH1v2W8J0QUu4Wb8LVnY=;
+ b=hjWxxkBWJakUQ9TJEJPc023hFtTfGI3R8y7CP97SWwwFuwA4LugUUZkpnz25Dt2NGa4aSV
+ 9ZjjznoDlCNLZ9RU9dDMK8yYYROSOUZL6y9Lgcvwt7LLk/atS6Bd0nPpwB97W4cDMnYJg9
+ GZt1qeVzon3JTycn1NjaKaaD3NqWoak=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-307-OmmHIVYhNAKCFrVPrhXAdQ-1; Thu, 05 Sep 2024 12:07:32 -0400
+X-MC-Unique: OmmHIVYhNAKCFrVPrhXAdQ-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6c35b2ccf3cso14979836d6.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 09:07:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725552452; x=1726157252;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jp345HzFmHJEwidIfoXQdHcIH1v2W8J0QUu4Wb8LVnY=;
+ b=EW4A7wTx4kltPz+1PsdINqoweprTDSYZ5YHo3EY3fPM/w5EuvBApA8FfccHiDRyqtv
+ NTtQVtpoKz8kYSVPQrbK4GPUy81KpQj/arQRDDvrkBoLG1L+9t8bB9+b2BeK5h1suYum
+ LISV0hKbGsijgeI9tMnoK62C8fFijTRQtXHGEImZftjx2ggex4IlykDuggQIPmFkSnzx
+ v4tP77uYzZS2M8AaGOjW0KRL4xts8bhJ0IEmj3TlBi8hmgPX7DQFUlUEMTv273PmyTYz
+ Y/8FPOREAx7/ft7Ilc0l98tc9Oj6pLCaS+8OejllwCd1Q7VMFI6bPEukzbSC8xYklEdd
+ bRvw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWwODAX6TYFVE8doISLdfOSQT/rOjiUnjEUhk9162uiNOtSkjPv6VEZ9zaRUU5hkOeDWNds/+WGFRZ/@nongnu.org
+X-Gm-Message-State: AOJu0Yx0r+n9o48px77i5kc4GNv4JleibvRjcJ8CMtmi/RTstTqZFLEN
+ ia060aXt92JPeo3+CqgOoR7nEgi1K43nSmiv0fFsL4JpeAXkQO8goAGUUG/ZeGfRLY+DK9sp4LR
+ ssXURUEr1MskV4pCSHmZaxoFlq6GJplt6RnTbmpoDdi7Qoe/I05qW
+X-Received: by 2002:a05:6214:4413:b0:6c1:77ca:66e6 with SMTP id
+ 6a1803df08f44-6c3c62b3173mr102113946d6.32.1725552452187; 
+ Thu, 05 Sep 2024 09:07:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH9oPe/vTAgFoL/H+kQAEzNzDMUJyoURSRMXRDN3RUKtP81UDTLVH45WHx48Puph7mxqvbWDg==
+X-Received: by 2002:a05:6214:4413:b0:6c1:77ca:66e6 with SMTP id
+ 6a1803df08f44-6c3c62b3173mr102113566d6.32.1725552451795; 
+ Thu, 05 Sep 2024 09:07:31 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6c5201e42a5sm8659686d6.36.2024.09.05.09.07.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Sep 2024 09:07:31 -0700 (PDT)
+Date: Thu, 5 Sep 2024 12:07:27 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ alex.williamson@redhat.com, andrew@codeconstruct.com.au,
+ andrew@daynix.com, arei.gonglei@huawei.com, berto@igalia.com,
+ borntraeger@linux.ibm.com, clg@kaod.org, david@redhat.com,
+ den@openvz.org, eblake@redhat.com, eduardo@habkost.net,
+ farman@linux.ibm.com, farosas@suse.de, hreitz@redhat.com,
+ idryomov@gmail.com, iii@linux.ibm.com, jamin_lin@aspeedtech.com,
+ jasowang@redhat.com, joel@jms.id.au, jsnow@redhat.com,
+ kwolf@redhat.com, leetroy@gmail.com, marcandre.lureau@redhat.com,
+ marcel.apfelbaum@gmail.com, michael.roth@amd.com, mst@redhat.com,
+ mtosatti@redhat.com, nsg@linux.ibm.com, pasic@linux.ibm.com,
+ pbonzini@redhat.com, peter.maydell@linaro.org, philmd@linaro.org,
+ pizhenwei@bytedance.com, pl@dlhnet.de, richard.henderson@linaro.org,
+ stefanha@redhat.com, steven_lee@aspeedtech.com, thuth@redhat.com,
+ vsementsov@yandex-team.ru, wangyanan55@huawei.com,
+ yuri.benditovich@daynix.com, zhao1.liu@intel.com,
+ qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ kvm@vger.kernel.org, avihaih@nvidia.com
+Subject: Re: [PATCH v2 01/19] qapi: Smarter camel_to_upper() to reduce need
+ for 'prefix'
+Message-ID: <ZtnXP3_nB0vS5Ts8@x1n>
+References: <20240904111836.3273842-1-armbru@redhat.com>
+ <20240904111836.3273842-2-armbru@redhat.com>
+ <ZthQAr7Mpd0utBD9@redhat.com> <87o75263pq.fsf@pond.sub.org>
+ <ZtnTxNFmgJlaeLZy@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHmME9pjokr=ahBbJA9Ljf8jjOyfyRAk0Qo4YeDYO_gs78GGzg@mail.gmail.com>
-Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
- envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <ZtnTxNFmgJlaeLZy@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,58 +121,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024-09-05 17:18:07+0000, Jason A. Donenfeld wrote:
-> On Thu, Sep 5, 2024 at 5:16 PM Thomas Weißschuh <thomas@t-8ch.de> wrote:
-> >
-> > On 2024-09-05 17:07:22+0000, Jason A. Donenfeld wrote:
-> > > On Thu, Sep 5, 2024 at 5:05 PM Thomas Weißschuh <thomas@t-8ch.de> wrote:
-> > > >
-> > > > On 2024-09-05 16:53:55+0000, Jason A. Donenfeld wrote:
-> > > > > On Thu, Sep 05, 2024 at 07:25:05AM +0200, Thomas Weißschuh wrote:
-> > > > > > On 2024-09-05 06:04:12+0000, Jason A. Donenfeld wrote:
-> > > > > > > On Thu, Sep 5, 2024 at 5:45 AM maobibo <maobibo@loongson.cn> wrote:
-> > > > > > > >
-> > > > > > > > Jason,
-> > > > > > > >
-> > > > > > > > With the latest qemu 9.1 version, elf format booting is supported.
-> > > > > > >
-> > > > > > > Thanks, I just figured this out too, about 4 minutes ago. Excellent.
-> > > > > > > And the 1G minimum ram limit is gone too.
-> > > > > > >
-> > > > > > > Now working on how to trigger resets.
-> > > > > >
-> > > > > > With "reset" do you mean normal (non-panic) system shutdown/poweroff?
-> > > > > > Since QEMU 9.1 and a recent kernel you can use the pvpanic device for
-> > > > > > that in a cross-architecture way.
-> > > > >
-> > > > > What I mean is that I need for userspace calling `reboot(RB_AUTOBOOT);`
-> > > > > to actually result in QEMU being told to reboot the system. Sounds like
-> > > > > that's not possible (yet?) in 9.1?
-> > > >
-> > > > With reboot(RB_POWER_OFF) this is indeed the exact usecase for pvpanic
+On Thu, Sep 05, 2024 at 04:52:36PM +0100, Daniel P. Berrangé wrote:
+> On Thu, Sep 05, 2024 at 07:59:13AM +0200, Markus Armbruster wrote:
+> > Daniel P. Berrangé <berrange@redhat.com> writes:
+> > 
+> > > On Wed, Sep 04, 2024 at 01:18:18PM +0200, Markus Armbruster wrote:
+> > >> camel_to_upper() converts its argument from camel case to upper case
+> > >> with '_' between words.  Used for generated enumeration constant
+> > >> prefixes.
 > > >
-> > > I'm actually using reboot(RB_AUTOBOOT) wth QEMU's -no-reboot, because
-> > > that tends to be far more compatible with a greater number of
-> > > platforms, for example, x86 without acpi. Shucks.
-> >
-> > You can check that both QEMU and the kernel support pvpanic shutdown
-> > through sysfs and if so use reboot(RB_POWER_OFF); and
-> > reboot(RB_AUTOBOOT) otherwise.
+> > >
+> > >> 
+> > >> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> > >> Reviewed-by: Daniel P. Berrang?? <berrange@redhat.com>
+> > >
+> > > The accent in my name is getting mangled in this series.
+> > 
+> > Uh-oh!
+> > 
+> > Checking...  Hmm.  It's correct in git, correct in output of
+> > git-format-patch, correct in the copy I got from git-send-email --bcc
+> > armbru via localhost MTA, and the copy I got from --to
+> > qemu-devel@nongnu.org, correct in lore.kernel.org[*], correct in an mbox
+> > downloaded from patchew.
+> > 
+> > Could the culprit be on your side?
 > 
-> I guess. But the whole idea is to bloat the code as little as possible
-> and use one interface for everything. Pushing that all up into
-> userspace is pretty icky.
+> I compared my received mail vs the mbox archive on nongnu.org for
+> qemu-devel.
+> 
+> In both cases the actual mail body seems to be valid UTF-8 and is
+> identical. The message in the nongnu.org archive, however, has
+> 
+>   Content-Type: text/plain; charset=UTF-8
+> 
+> while the copy I got in my inbox has merely
+> 
+>   Content-Type: text/plain
+> 
+> What I can't determine is whether your original sent message
+> had "charset=UTF-8" which then got stripped by redhat's incoming
+> mail server, or whether your original lacked 'charset=UTF8' and
+> it got added by mailman when saving the message to the mbox archives ?
 
-If it works through ACPI everywhere then sure.
+I didn't read into details of what Markus hit, but I just remembered I hit
+similar things before and Dan reported similar issue.  At that time (which
+I tried to recall..) was because I used git-publish sending patches, in
+which there is an encoding issue. I tried to fix with this branch:
 
-> It sounds like LoongArch already supports this via ACPI GED, but
-> there's some plumbing that needs to be done still. So maybe I'll just
-> wait for that.
+https://github.com/xzpeter/git-publish/commits/fix-print-2/
 
-Also sounds reasonable.
+I also remember I tried to upstream that to Stefan's repo but I totally
+forgot what happened later, but the result is I am still using this branch
+internally (which I completely forgot which version I'm using... but I
+found that until I see this discussion and checked..).
 
-> Meanwhile, any idea about adding a second serial to the platform? I've
-> been futzing with it for a bit now to no avail.
+Please ignore everything if git-publish is not used at all.. but just in
+case helpful..
 
-No idea, sorry.
+-- 
+Peter Xu
+
 
