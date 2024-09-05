@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927AF96E086
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 18:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FC096E08E
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 18:57:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smFm7-0007vB-AL; Thu, 05 Sep 2024 12:56:03 -0400
+	id 1smFm7-0007zM-Tj; Thu, 05 Sep 2024 12:56:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smFm3-0007q3-I3
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:55:59 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1smFm4-0007r5-K2
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:56:01 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smFm1-00055K-SI
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:55:59 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-42bbdf7f860so8683835e9.3
+ id 1smFm2-00055P-93
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 12:56:00 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42bb6d3e260so8815795e9.1
  for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 09:55:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725555356; x=1726160156; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725555357; x=1726160157; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wAtNArR9zOSaOvNZbf13ag6ySe0y5WueK3TgAb9/DZ4=;
- b=YV89FRseITk7VUKmUFwzNHtbsGtxQ2sQqJhEFpj3hCuVrbMO3aVIQYnpltdCG2UuZG
- 3fdfI0QE1briH9yN9hTqRyLQw+o5kVPiZ5w4xehI6aeRxizSnoAEvj90lRZYllBEA/e8
- bFfV+c7Gw6KYUnVGB7R/hacs/ghfnsWz6neFPHhu5M14Gl5ZCmvlKNAyF5MuvsY5hj+Y
- MBS/PJY/sDZw/JhEN9Aq5wqxvpnAxywAdrGXC9W6Nu9REwq4ZT/O8C/LdHZ2GBHS95S4
- yHjJaog8+U9kDtPphi72M6oh+ZlAg/BfWcHDhPUGqS4Bx81+R567y6E38ZXwH/6fKP9T
- Tt3g==
+ bh=E7FHPmOQWKyZgNpvo90Rwc4wX0dTz+RaJ8RO/pqd3yM=;
+ b=EojgtlxHSM4Lkm51niss8SJ2IRUCkAnVqTlzTpvE83cUZ3SKL22jzOQ5yq8xvWlV63
+ YtMgdzbFwqaYmfIFUT2/YB7oa+bD+mH7bZlsiEdpcW2e1Jx2vVhY0E+PVBRpO8x7IkB1
+ dfgz8WPohhrBQHgrI+ZNSjS7ruGk0aB1BDMeg2Bn80BnDYtlwtnTq2xrzWtLHxr8QXC3
+ tk+VPDuruFxWfJx77MeWe3h+IXtioeNHlqWXZDvFwekcxsNPwcUNAtOCqlN140p11GL3
+ NMPi02ICCksVp+grG/pYKyKg2/Ae5eYnaf8Wo5LjtBXloEc2wPrU8iIO4RTZAsFZ4GwB
+ 7mJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725555356; x=1726160156;
+ d=1e100.net; s=20230601; t=1725555357; x=1726160157;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wAtNArR9zOSaOvNZbf13ag6ySe0y5WueK3TgAb9/DZ4=;
- b=VSB4ZfskY2ZFAD0i5rQpIOJB44f+T+2eKIcchmnl3SGa+KQPI5uvQ4D6qtL9KmDZsA
- iDA5RSi3nsQ6St7PObXCp417cgVxJf1djE1MUYOBYlh/Z84gg7p8U+kQmUJQMGYifeT+
- Fzo8KNz0euTzwWobC2YBvfFTKYO4O6aakIxNYl79momlFE7p6wNmlve3jUziO91RI3kv
- yOYjnwCBagFBgFobFPLQ4CiY/mJSiFBiUc5IRK3/CJMhryxTc2iDKd+NOT6HKKmNLTis
- L5oY/6LHIA/9YwOJAEzzeLN+xv5rT7kil3/SpWD13P6S6dX3kMS984ohpTVc9POmcYh+
- OcPg==
-X-Gm-Message-State: AOJu0YxY4dJo1H9+owLyX9XvMLCFZmFhck+AMCa4/Wqw1DNP4w/luBIZ
- uHPctJfF/QvgVfA/k4ArN9bqYarhJ5BtKMiSoC/ldTJpHxuvac8P0YYmqOZZara9ALGDoSO9F3q
- v
-X-Google-Smtp-Source: AGHT+IGAUBiKxfeO8XOfhAHqckj9nH2rCl29pMTApWdg+eVmU09FSAd9IQNfcuiNoxSR4dhxDO4Ysg==
-X-Received: by 2002:a05:600c:4ece:b0:426:6b85:bafb with SMTP id
- 5b1f17b1804b1-42bb01bfc60mr184341295e9.20.1725555356239; 
+ bh=E7FHPmOQWKyZgNpvo90Rwc4wX0dTz+RaJ8RO/pqd3yM=;
+ b=kghZEd2lV7DwSXk4s5FIP4CAlEXdx+ciuV7Xho27Wl/lyNa2mGXy/KCt214xJ5JB42
+ pkwwl2Nof4evWmLf6NoplgG6d77pixnJp92SA++YfZvfvU5dQEHEnutgYUUEjcVOX+UK
+ xUgDbChhWMZZLJsJT6K9dR8CVCFSn9GJewL1ZUDGV2B5JNXZMrSeP1quueQWIH+Dds11
+ tpQeEOLDqRa2YAmAnbdQKFtyL60bVI/gxPN4vR/B7EWK7RwneckFaOD0YDSy37K3TvZN
+ lw3YMphQ6R+nvG1+od6YhuqB2B8NB/dYupunqURScCMrgAMz3jjCvVB4ek1K7GGD55s7
+ IXwQ==
+X-Gm-Message-State: AOJu0YzO8xn7wCooXyol3zf3xUtqiuStAxjfHhb8r9lQ0KrfA3OIu6iJ
+ J+bmtJvODb6EcTCd+D6eCNYr4HwBiGS6zkJJh+/XSoVZ74XqpBJ93XpXrSJ4xczqb0Dj4oirRcZ
+ j
+X-Google-Smtp-Source: AGHT+IFqSIoDShQw+aHJY3AhLkPZ1ZS6Ams0m/8qg1iAM163Jfskoj5W6V/fhSJVpaMt/fWmccQf1A==
+X-Received: by 2002:a05:600c:34c6:b0:426:6921:e3e5 with SMTP id
+ 5b1f17b1804b1-42bdc64e47fmr130888515e9.24.1725555356697; 
  Thu, 05 Sep 2024 09:55:56 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bbd1eee1bsm206914925e9.9.2024.09.05.09.55.55
+ 5b1f17b1804b1-42bbd1eee1bsm206914925e9.9.2024.09.05.09.55.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 05 Sep 2024 09:55:56 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 1/2] tests/qtest: Add missing qtest_quit() to stm32 tests
-Date: Thu,  5 Sep 2024 17:55:53 +0100
-Message-Id: <20240905165554.320577-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/2] tests/qtest: Bump timeout on ahci-test
+Date: Thu,  5 Sep 2024 17:55:54 +0100
+Message-Id: <20240905165554.320577-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240905165554.320577-1-peter.maydell@linaro.org>
 References: <20240905165554.320577-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,64 +92,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the dm163-test and stm32l4x5_usart-test, a couple of subtests are
-missing the qtest_quit() call.  The effect of this is that on hosts
-other than Linux and FreeBSD the test will timeout after executing
-all the tests:
-
-242/845 qemu:qtest+qtest-arm / qtest-arm/dm163-test                               TIMEOUT         60.04s   3 subtests passed
-100/845 qemu:qtest+qtest-arm / qtest-arm/stm32l4x5_usart-test                     TIMEOUT        600.02s   5 subtests passed
-
-This happens because the qemu-system-arm binary which the test
-starts does not exit, and because it shares the stdout with the
-test binary, the overall meson test harness thinks the test is
-still running. On Linux and FreeBSD we have an extra safety net
-set up in qtest_spawn_qemu() which kills off any QEMU binary that
-ends up without a parent. This is intended for the case where
-QEMU crashed and didn't respond to a SIGTERM or polite request
-to quit, but it also sidestepped the problem in this case.
-However, OpenBSD doesn't have a PDEATHSIG equivalent, so we
-see the timeouts when running a 'make vm-build-openbsd' run.
-
-Add the missing qtest_quit() calls.
+On my OpenBSD VM test system, the ahci-test sometimes hits its 60 second
+timeout. It has 75 subtests and allowing at least two seconds per
+subtest seems reasonable. Bump it to 150s.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-Many thanks to Dan Berrangé for diagnosing the cause of this hang...
-Dan also suggested on IRC that we should support g_autoptr for
-the QTestState, so you don't need to manually qtest_quit(). But
-for the immediate fix, I just add the missing calls.
----
- tests/qtest/dm163-test.c           | 2 ++
- tests/qtest/stm32l4x5_usart-test.c | 2 ++
- 2 files changed, 4 insertions(+)
+ tests/qtest/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qtest/dm163-test.c b/tests/qtest/dm163-test.c
-index 3161c9208d8..4c8e654af29 100644
---- a/tests/qtest/dm163-test.c
-+++ b/tests/qtest/dm163-test.c
-@@ -182,6 +182,8 @@ static void test_dm163_gpio_connection(void)
-     g_assert_false(qtest_get_irq(qts, LAT_B));
-     g_assert_false(qtest_get_irq(qts, SELBK));
-     g_assert_false(qtest_get_irq(qts, RST_B));
-+
-+    qtest_quit(qts);
- }
- 
- int main(int argc, char **argv)
-diff --git a/tests/qtest/stm32l4x5_usart-test.c b/tests/qtest/stm32l4x5_usart-test.c
-index 89025182331..c175ff3064f 100644
---- a/tests/qtest/stm32l4x5_usart-test.c
-+++ b/tests/qtest/stm32l4x5_usart-test.c
-@@ -202,6 +202,8 @@ static void test_write_read(void)
-     qtest_writel(qts, USART1_BASE_ADDR + A_TDR, 0xFFFFFFFF);
-     const uint32_t tdr = qtest_readl(qts, USART1_BASE_ADDR + A_TDR);
-     g_assert_cmpuint(tdr, ==, 0x000001FF);
-+
-+    qtest_quit(qts);
- }
- 
- static void test_receive_char(void)
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 2f0d3ef0809..fc852f3d8ba 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -1,4 +1,5 @@
+ slow_qtests = {
++  'ahci-test': 150,
+   'aspeed_smc-test': 360,
+   'bios-tables-test' : 910,
+   'cdrom-test' : 610,
 -- 
 2.34.1
 
