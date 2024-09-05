@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBF296D9B8
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1263C96D9A0
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:02:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smC78-0001X6-DZ; Thu, 05 Sep 2024 09:01:30 -0400
+	id 1smC79-0001kM-4Q; Thu, 05 Sep 2024 09:01:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC6v-00010m-R8
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:17 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1smC6w-00012c-8U
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:19 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC6s-0001jc-7M
+ id 1smC6s-0001jj-7O
  for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:17 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-42c828c8863so6187945e9.3
- for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 06:01:09 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-42bbbff40bbso5920565e9.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 06:01:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725541269; x=1726146069; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725541270; x=1726146070; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=kA1Nhy36wEyQLROB85TcAoe1vw16tXcqprGuuXecm48=;
- b=pa84iWPGmV5efqSHBf+ePBpk31g4dKhiY36IUaIDKPzRU8wVhj4d6IzEi7FXwAsDRJ
- QBGf6kbvUJjpY5nC+ldSDy4djlllF0ZdubVzFtntRKKs0D2FVBd/fwZdgK3RuQTVXvyb
- 4o8NjOnWnf66Z1iMqxadlcX7SLiUmh1ZdNE7xvRp8YTpUk6vkgkjyp5vqXCOn2A8zRu5
- iYcsY7yu1gjbrSZ69zqOYNwmdsWLE27brDp6hoVf8H3EwXWp21lhdwSEKydx4WSWcjDq
- 5j1rfHoklXyYw6BChQz7seRXqhXT8gevM9JLLGTadSCjCri/eh/0YyrNko/lgnkaDjIG
- M2+Q==
+ :reply-to; bh=UEqv69UXTmYHkRInh7zHHsDNkedM/XSTNS7ye2GCeVk=;
+ b=EBVZnsKRPkCq5VFsj5tLv8RHf6SFoFyn7ehDt+M+E1+yueN5t/Mrv0LRxuyJk1/xQ4
+ bMEAGdkQNLgoZq4A07aQZLGzzpeaS8YNJ6jfBiTnnOGqRAJvw2mxB0UeM/TB1J/SyzQ6
+ +RnBblT5EvbCLqgzaWiIN0B5ZAkDYZNGLsjk/nBL37E5XIiSbrnAdYm5oryqPIvcf3p7
+ 4cUfKEMiI+SUUd61Gy5aJD9LQgzDjlQpdSpRUwBzWw4FBK24eaw/be1nvUzPkuRhebPj
+ rssOGyMCvUNMe2XaK/ymFCYA8A/QaehCciH2QBuna5P87wiqn55KsL+royaesz+CUyQE
+ CE+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725541269; x=1726146069;
+ d=1e100.net; s=20230601; t=1725541270; x=1726146070;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kA1Nhy36wEyQLROB85TcAoe1vw16tXcqprGuuXecm48=;
- b=Bt6RUDFI86hiPeJnLYMbR1M4cKZxPgwJG6jwzyVt6Z+7qlLV8Vva07sAB8aj6tRYN4
- pPwIDofu1Xpefn9x0xPmoG/GICH1bWk4OaEcYhMUYTSzwEgrJP9/Fm0pdyrO4yFMDZGG
- BTZcnWp7hnCtAb0emayqPTNUPMurekPg5JCeD10uvMdeBhmOelHfCJlKdPNdejh6WAOl
- bYoq0Mh1M0OrehxN0UOMHoo6TZ/Un7GYdxUBzuDnUUN8ldWsaBGpiEnm14UEKX+xdh+0
- ky92q66OjulZwX/3/aHElJi7+z0A+F4fU0NEqXICl7H3+KMNXbECRoix03JH+b8JrlJN
- F1tg==
-X-Gm-Message-State: AOJu0YyBPS3tJX9SskGBMECm+KcNMTX5lOqB65T1+6XSe2co08R8+3hp
- GIUULAmHCj9+klTDtDUIuqioZQJ+J/xqUmooRnUS0BorZ5YnSjQWR8qGWNZVdtIr/laEd5afKqc
- g
-X-Google-Smtp-Source: AGHT+IEFmt8lKgpxD1PoHBoKkIYwnbp00O791/rdgwkXKeqFkGNdDBLIVQY+lOagNsyWS7kAi4kuUA==
-X-Received: by 2002:a05:600c:4652:b0:42c:9e39:d066 with SMTP id
- 5b1f17b1804b1-42c9e39d0f8mr1212575e9.3.1725541268541; 
- Thu, 05 Sep 2024 06:01:08 -0700 (PDT)
+ bh=UEqv69UXTmYHkRInh7zHHsDNkedM/XSTNS7ye2GCeVk=;
+ b=VXl6n7epB8AeBuj5AZq6biseO9Q3IbE+be+LimoGRfdH884ai5hAVyMTE/kako2YTd
+ D5tzvn95ywGsuFfx1YFrjpfaHQOg4jskmTayHTsjQ1m56POvY1wyezLgA+xYuyLeOV5A
+ UgzxysHLNDVMYx4E8qsKOePzlFXPWuTAzMRsJGsOJ9B65foU67NOdZ6pumJSye7y/4Tq
+ rQO5yyCqwy7OSL66BlNmK295FSAjFw2I92FhyMnT9Mn9zGEyKe/iCp/Mbs22wEjwCN6O
+ gM0X4+kZI/Qo5aWckjBmFK2TdUZc09RcyKKUI7a97AQTrXofinkTTNngvxAGx8WXOCG3
+ SJQQ==
+X-Gm-Message-State: AOJu0Yx/sder7HTmIFRmyX8gtAPy/cxFSs2hzVYVeEQoGBgqR+MuoJuJ
+ dywaRmKYB+BOqELFd4dn2cke795O6oCzaRXc+AKfnO/9lQfcIbq4R12JIicXCgh8JuI/O9IQCIH
+ k
+X-Google-Smtp-Source: AGHT+IHG4NdSBMAvDgbXkSjwvGPRl1s2tE4Rmx+M/pLlqByDpSrG93liVhZ7Cfe9UD04zZNPZ5u9KQ==
+X-Received: by 2002:a05:600c:997:b0:42b:ac3f:f5c with SMTP id
+ 5b1f17b1804b1-42bbb436de5mr132747045e9.26.1725541269181; 
+ Thu, 05 Sep 2024 06:01:09 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb6e355dfsm232251365e9.46.2024.09.05.06.01.07
+ 5b1f17b1804b1-42bb6e355dfsm232251365e9.46.2024.09.05.06.01.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Sep 2024 06:01:07 -0700 (PDT)
+ Thu, 05 Sep 2024 06:01:08 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/25] target/arm: Implement FPCR.EBF=1 semantics for bfdotadd()
-Date: Thu,  5 Sep 2024 14:00:42 +0100
-Message-Id: <20240905130100.298768-8-peter.maydell@linaro.org>
+Subject: [PULL 08/25] target/arm: Enable FEAT_EBF16 in the "max" CPU
+Date: Thu,  5 Sep 2024 14:00:43 +0100
+Message-Id: <20240905130100.298768-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240905130100.298768-1-peter.maydell@linaro.org>
 References: <20240905130100.298768-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,103 +91,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement the FPCR.EBF=1 semantics for bfdotadd() operations:
- * is_ebf() sets up fpst and fpst_odd
- * bfdotadd_ebf() implements the fused paired-multiply-and-add
-   operation that we need
-
-The paired-multiply-and-add is similar to f16_dotadd() and
-we use the same trick here as in that function, but the inputs
-here are bfloat16 rather than float16.
+Now that we've implemented the required behaviour for FEAT_EBF16, we
+can enable it for the "max" CPU type, list it in our documentation,
+and delete a TODO comment about it being missing.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/vec_helper.c | 57 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 54 insertions(+), 3 deletions(-)
+ docs/system/arm/emulation.rst  | 1 +
+ target/arm/tcg/cpu64.c         | 4 ++--
+ target/arm/tcg/translate-sme.c | 1 -
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index b0de74b55f1..22ddb968817 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -2792,7 +2792,20 @@ DO_MMLA_B(gvec_usmmla_b, do_usmmla_b)
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index 3ab6e726679..35f52a54b1c 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -45,6 +45,7 @@ the following architecture extensions:
+ - FEAT_DotProd (Advanced SIMD dot product instructions)
+ - FEAT_DoubleFault (Double Fault Extension)
+ - FEAT_E0PD (Preventing EL0 access to halves of address maps)
++- FEAT_EBF16 (AArch64 Extended BFloat16 instructions)
+ - FEAT_ECV (Enhanced Counter Virtualization)
+ - FEAT_EL0 (Support for execution at EL0)
+ - FEAT_EL1 (Support for execution at EL1)
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index fe232eb3069..79258a7c928 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1160,7 +1160,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64ISAR1, FRINTTS, 1);  /* FEAT_FRINTTS */
+     t = FIELD_DP64(t, ID_AA64ISAR1, SB, 1);       /* FEAT_SB */
+     t = FIELD_DP64(t, ID_AA64ISAR1, SPECRES, 1);  /* FEAT_SPECRES */
+-    t = FIELD_DP64(t, ID_AA64ISAR1, BF16, 1);     /* FEAT_BF16 */
++    t = FIELD_DP64(t, ID_AA64ISAR1, BF16, 2);     /* FEAT_BF16, FEAT_EBF16 */
+     t = FIELD_DP64(t, ID_AA64ISAR1, DGH, 1);      /* FEAT_DGH */
+     t = FIELD_DP64(t, ID_AA64ISAR1, I8MM, 1);     /* FEAT_I8MM */
+     cpu->isar.id_aa64isar1 = t;
+@@ -1244,7 +1244,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64ZFR0, SVEVER, 1);
+     t = FIELD_DP64(t, ID_AA64ZFR0, AES, 2);       /* FEAT_SVE_PMULL128 */
+     t = FIELD_DP64(t, ID_AA64ZFR0, BITPERM, 1);   /* FEAT_SVE_BitPerm */
+-    t = FIELD_DP64(t, ID_AA64ZFR0, BFLOAT16, 1);  /* FEAT_BF16 */
++    t = FIELD_DP64(t, ID_AA64ZFR0, BFLOAT16, 2);  /* FEAT_BF16, FEAT_EBF16 */
+     t = FIELD_DP64(t, ID_AA64ZFR0, SHA3, 1);      /* FEAT_SVE_SHA3 */
+     t = FIELD_DP64(t, ID_AA64ZFR0, SM4, 1);       /* FEAT_SVE_SM4 */
+     t = FIELD_DP64(t, ID_AA64ZFR0, I8MM, 1);      /* FEAT_I8MM */
+diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
+index 3ceb32e8bd9..01ece570164 100644
+--- a/target/arm/tcg/translate-sme.c
++++ b/target/arm/tcg/translate-sme.c
+@@ -362,7 +362,6 @@ TRANS_FEAT(FMOPA_s, aa64_sme, do_outprod_fpst, a,
+ TRANS_FEAT(FMOPA_d, aa64_sme_f64f64, do_outprod_fpst, a,
+            MO_64, FPST_FPCR, gen_helper_sme_fmopa_d)
  
- bool is_ebf(CPUARMState *env, float_status *statusp, float_status *oddstatusp)
- {
--    /* FPCR is ignored for BFDOT and BFMMLA. */
-+    /*
-+     * For BFDOT, BFMMLA, etc, the behaviour depends on FPCR.EBF.
-+     * For EBF = 0, we ignore the FPCR bits which determine rounding
-+     * mode and denormal-flushing, and we do unfused multiplies and
-+     * additions with intermediate rounding of all products and sums.
-+     * For EBF = 1, we honour FPCR rounding mode and denormal-flushing bits,
-+     * and we perform a fused two-way sum-of-products without intermediate
-+     * rounding of the products.
-+     * In either case, we don't set fp exception flags.
-+     *
-+     * EBF is AArch64 only, so even if it's set in the FPCR it has
-+     * no effect on AArch32 instructions.
-+     */
-+    bool ebf = is_a64(env) && env->vfp.fpcr & FPCR_EBF;
-     *statusp = (float_status){
-         .tininess_before_rounding = float_tininess_before_rounding,
-         .float_rounding_mode = float_round_to_odd_inf,
-@@ -2801,7 +2814,18 @@ bool is_ebf(CPUARMState *env, float_status *statusp, float_status *oddstatusp)
-         .default_nan_mode = true,
-     };
+-/* TODO: FEAT_EBF16 */
+ TRANS_FEAT(BFMOPA, aa64_sme, do_outprod_env, a, MO_32, gen_helper_sme_bfmopa)
  
--    return false;
-+    if (ebf) {
-+        float_status *fpst = &env->vfp.fp_status;
-+        set_flush_to_zero(get_flush_to_zero(fpst), statusp);
-+        set_flush_inputs_to_zero(get_flush_inputs_to_zero(fpst), statusp);
-+        set_float_rounding_mode(get_float_rounding_mode(fpst), statusp);
-+
-+        /* EBF=1 needs to do a step with round-to-odd semantics */
-+        *oddstatusp = *statusp;
-+        set_float_rounding_mode(float_round_to_odd, oddstatusp);
-+    }
-+
-+    return ebf;
- }
- 
- float32 bfdotadd(float32 sum, uint32_t e1, uint32_t e2, float_status *fpst)
-@@ -2823,7 +2847,34 @@ float32 bfdotadd(float32 sum, uint32_t e1, uint32_t e2, float_status *fpst)
- float32 bfdotadd_ebf(float32 sum, uint32_t e1, uint32_t e2,
-                      float_status *fpst, float_status *fpst_odd)
- {
--    g_assert_not_reached();
-+    /*
-+     * Compare f16_dotadd() in sme_helper.c, but here we have
-+     * bfloat16 inputs. In particular that means that we do not
-+     * want the FPCR.FZ16 flush semantics, so we use the normal
-+     * float_status for the input handling here.
-+     */
-+    float64 e1r = float32_to_float64(e1 << 16, fpst);
-+    float64 e1c = float32_to_float64(e1 & 0xffff0000u, fpst);
-+    float64 e2r = float32_to_float64(e2 << 16, fpst);
-+    float64 e2c = float32_to_float64(e2 & 0xffff0000u, fpst);
-+    float64 t64;
-+    float32 t32;
-+
-+    /*
-+     * The ARM pseudocode function FPDot performs both multiplies
-+     * and the add with a single rounding operation.  Emulate this
-+     * by performing the first multiply in round-to-odd, then doing
-+     * the second multiply as fused multiply-add, and rounding to
-+     * float32 all in one step.
-+     */
-+    t64 = float64_mul(e1r, e2r, fpst_odd);
-+    t64 = float64r32_muladd(e1c, e2c, t64, 0, fpst);
-+
-+    /* This conversion is exact, because we've already rounded. */
-+    t32 = float64_to_float32(t64, fpst);
-+
-+    /* The final accumulation step is not fused. */
-+    return float32_add(sum, t32, fpst);
- }
- 
- void HELPER(gvec_bfdot)(void *vd, void *vn, void *vm, void *va,
+ TRANS_FEAT(SMOPA_s, aa64_sme, do_outprod, a, MO_32, gen_helper_sme_smopa_s)
 -- 
 2.34.1
 
