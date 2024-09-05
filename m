@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B9C96E213
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 20:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C4696E231
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 20:43:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smH94-0006Bl-EI; Thu, 05 Sep 2024 14:23:52 -0400
+	id 1smHQw-0003zy-3j; Thu, 05 Sep 2024 14:42:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1smH8Y-0006AX-68
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 14:23:19 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1smHQo-0003yG-57
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 14:42:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1smH85-0001tN-Lm
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 14:23:12 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1smHQm-0004U7-4I
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 14:42:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725560477;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1725561726;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aB3uG+jMipBUrase1G0A7DeUtNqHQ542hI4bDrUKD8I=;
- b=Fpq6oFjrW4Pgat3imdS4iw58svj10+m8L6XX7jbiVud82Gxfq1vV3gSoHa79pCvJkgzR1f
- p2QeqDaUBvpBkQlqM6DbkAugXEeaAGOwqip3lvz3jPvr5NOqwW1BsbFVxk8IbzjWyBFOuv
- fGhkQRZUClaWL8H+wKPAo1TYSBVzxL8=
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
- [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-Ukif7hbhPI2B9ey-fDg-pQ-1; Thu, 05 Sep 2024 14:21:16 -0400
-X-MC-Unique: Ukif7hbhPI2B9ey-fDg-pQ-1
-Received: by mail-io1-f70.google.com with SMTP id
- ca18e2360f4ac-82a72792dacso300752939f.1
- for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 11:21:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725560476; x=1726165276;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aB3uG+jMipBUrase1G0A7DeUtNqHQ542hI4bDrUKD8I=;
- b=Y/5ALYKcvvsMPmINigZbf8wY0vWC2EnQePgme54oom/VG6oAcZfnO3dowpErmPTYV8
- iw4eB8oSpVidL0aLUqr2oBgSQW8E5CK/k7DkSG6fovDSiAwDajGzgSqJhtMFBV3KWeXv
- v/+qcGu/+7feD9VOWO3MdqupqBVGjEpoChLazXi3n+movbJaEJ6eOQQmY/eRxH13KLT6
- gmpN3exXWno866ssL05JxDRKRqOMBUTPE4UmBNaUlCFoY6AV9s4rtRsiWJ5lF5lokzBQ
- DIKBAaGeTzPtCBOblj7LsgGlVpigDtQMyF3b9IcWtXLjbtsDOqowyAjtp9XhOoYteV/W
- UiCA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWU6XlaTLG5k9NSqN4Kbe1nlBVtfkSjVjBUe7VJBhpZ1UiTz1CB3cYhB4nzh6Zi3iYRczFDdsAWheVS@nongnu.org
-X-Gm-Message-State: AOJu0YxGeaXJsimKcGqr80e2tk3N3/fIto2l7H7iZDEWvPTCBVYXCPFN
- ETws4KrL3yaF7d9uLvzGbJucAqmEyEasoCtV7KeIBsK+uuQXCw4LNXMCJ/eeBQ3LVRd779SMImQ
- zOBV3w2P0FOG8vJQ8c/4ujMS8UfA4p+Yl9ktceyPrXg8wL1Vgkkb7
-X-Received: by 2002:a05:6602:168a:b0:82a:1dac:eb81 with SMTP id
- ca18e2360f4ac-82a648a2f46mr1333971839f.7.1725560475871; 
- Thu, 05 Sep 2024 11:21:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGOEFVdTjP9kGOV2PBsBv+DVQaJlzqzdUdjVUUPIAqctiHxZvkudZBEHFRv/xGVki4S+mhNmw==
-X-Received: by 2002:a05:6602:168a:b0:82a:1dac:eb81 with SMTP id
- ca18e2360f4ac-82a648a2f46mr1333968939f.7.1725560475572; 
- Thu, 05 Sep 2024 11:21:15 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-82a1a498c30sm419336939f.38.2024.09.05.11.21.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Sep 2024 11:21:15 -0700 (PDT)
-Date: Thu, 5 Sep 2024 14:21:13 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Denis V. Lunev" <den@virtuozzo.com>
-Cc: "Denis V. Lunev" <den@openvz.org>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 1/1] migration: improve migration_throttle tracepoint
-Message-ID: <Ztn2mfWC8NoxuFY6@x1n>
-References: <20240905165146.293586-1-den@openvz.org> <Ztnv9mouMVIbHnIx@x1n>
- <fae6629b-523f-46be-8b45-d3fa9174ed4d@virtuozzo.com>
+ bh=gN6fCe6L4FARQ2MSXXVhC5BzIkTJf78xxsfYBwi9L4Y=;
+ b=KV1+ZcHDlly84Bg2DAmBokjY0GxTmfraw960dHe0mB7YShjeSn9/oove+7eL/bPM1+trUT
+ 0lmaKw1MYnOmLL+KGerw0xaqPouVaLtn6mfD8dPKv1jmIwPZYkK9OI4JTPUvf8+PdU1q4s
+ 2NF0M1fK9D+xuAchq4warvPo8vLGTu4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-dZH23qfiNMa50GmyKrBZgA-1; Thu,
+ 05 Sep 2024 14:22:34 -0400
+X-MC-Unique: dZH23qfiNMa50GmyKrBZgA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 071DD1955D4E; Thu,  5 Sep 2024 18:22:27 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.53])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1FFE61955F45; Thu,  5 Sep 2024 18:22:18 +0000 (UTC)
+Date: Thu, 5 Sep 2024 19:22:15 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Cornelia Huck <cohuck@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
+Subject: Re: [PATCH for-9.2] hw: add compat machines for 9.2
+Message-ID: <Ztn21z0ZR3_MiVQJ@redhat.com>
+References: <20240816103723.2325982-1-cohuck@redhat.com>
+ <Zr8uNB8gaJTroMBU@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fae6629b-523f-46be-8b45-d3fa9174ed4d@virtuozzo.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <Zr8uNB8gaJTroMBU@redhat.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,38 +98,84 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 05, 2024 at 08:00:54PM +0200, Denis V. Lunev wrote:
-> On 9/5/24 19:52, Peter Xu wrote:
-> > On Thu, Sep 05, 2024 at 06:51:46PM +0200, Denis V. Lunev via wrote:
-> > > Right now this tracepoint is just saying that the guest has been
-> > > throttled, but this is not that good for debugging purposes. We should
-> > > also know how much the guest is throttled in order to understand
-> > > consequences for the guest behaviour.
-> > > 
-> > > The patch moves the tracepoint from migration_trigger_throttle() to
-> > > mig_throttle_guest_down() where this information is really available.
-> > > This is not a problem as mig_throttle_guest_down() is called in the
-> > > only one place.
-> > > 
-> > > Signed-off-by: Denis V. Lunev <den@openvz.org>
-> > > CC: Peter Xu <peterx@redhat.com>
-> > > CC: Fabiano Rosas <farosas@suse.de>
-> > Makes sense to me, but maybe we can further move it to cpu_throttle_set()?
+On Fri, Aug 16, 2024 at 11:47:16AM +0100, Daniel P. Berrangé wrote:
+> On Fri, Aug 16, 2024 at 12:37:23PM +0200, Cornelia Huck wrote:
+> > Add 9.2 machine types for arm/i440fx/m68k/q35/s390x/spapr.
 > > 
-> in that case we should rename the tracepoint as in that case the
-> module would be different :)
+> > Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+> > ---
+> >  hw/arm/virt.c              |  9 ++++++++-
+> >  hw/core/machine.c          |  3 +++
+> >  hw/i386/pc.c               |  3 +++
+> >  hw/i386/pc_piix.c          | 15 ++++++++++++---
+> >  hw/i386/pc_q35.c           | 13 +++++++++++--
+> >  hw/m68k/virt.c             |  9 ++++++++-
+> >  hw/ppc/spapr.c             | 15 +++++++++++++--
+> >  hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
+> >  include/hw/boards.h        |  3 +++
+> >  include/hw/i386/pc.h       |  3 +++
+> >  10 files changed, 77 insertions(+), 10 deletions(-)
 > 
->    4     90  system/cpu-throttle.c <<cpu_throttle_set>>
->              void cpu_throttle_set(int new_throttle_pct)
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 > 
-> Will it be OK for you?
+> 
+> > diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> > index d9e69243b4a7..746bfe05d386 100644
+> > --- a/hw/i386/pc_piix.c
+> > +++ b/hw/i386/pc_piix.c
+> > @@ -479,13 +479,24 @@ static void pc_i440fx_machine_options(MachineClass *m)
+> >                                       "Use a different south bridge than PIIX3");
+> >  }
+> >  
+> > -static void pc_i440fx_machine_9_1_options(MachineClass *m)
+> > +static void pc_i440fx_machine_9_2_options(MachineClass *m)
+> >  {
+> >      pc_i440fx_machine_options(m);
+> >      m->alias = "pc";
+> >      m->is_default = true;
+> >  }
+> >  
+> > +DEFINE_I440FX_MACHINE(9, 2);
+> > +
+> > +static void pc_i440fx_machine_9_1_options(MachineClass *m)
+> > +{
+> > +    pc_i440fx_machine_9_2_options(m);
+> > +    m->alias = NULL;
+> > +    m->is_default = false;
+> > +    compat_props_add(m->compat_props, hw_compat_9_1, hw_compat_9_1_len);
+> > +    compat_props_add(m->compat_props, pc_compat_9_1, pc_compat_9_1_len);
+> > +}
+> > +
+> >  DEFINE_I440FX_MACHINE(9, 1);
+> >  
+> >  static void pc_i440fx_machine_9_0_options(MachineClass *m)
+> > @@ -493,8 +504,6 @@ static void pc_i440fx_machine_9_0_options(MachineClass *m)
+> >      PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+> >  
+> >      pc_i440fx_machine_9_1_options(m);
+> > -    m->alias = NULL;
+> > -    m->is_default = false;
+> >      m->smbios_memory_device_size = 16 * GiB;
+> 
+> Feels like we should be adding an "_AS_LATEST" macro
+> variant for piix/q35 too, so it matches the pattern
+> in other targets for handling alias & is_default.
+> 
+> Not a thing your patch needs todo though.
 
-Yes. Thanks.
+I've just a patch that does that now. If it looks good & you want to include
+it as a pre-requisite for your patch here feel free to grab, otherwise I can
+rebase it after your patch merges.
 
+With regards,
+Daniel
 -- 
-Peter Xu
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
