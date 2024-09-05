@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ABD896D9A5
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFB196D9BB
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:04:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smC7A-0001oG-3M; Thu, 05 Sep 2024 09:01:33 -0400
+	id 1smC7E-00025M-Lq; Thu, 05 Sep 2024 09:01:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC71-0001Im-CN
+ id 1smC71-0001JC-Fc
  for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:23 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC6x-0001n7-NB
+ id 1smC6y-0001nF-34
  for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:23 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-42bfb50e4e6so5751935e9.2
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-42c7bc97423so7787415e9.0
  for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 06:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1725541278; x=1726146078; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=VA29/g4wKHT5gPl+VZPcS59cjqvbl7e/0STDa0JUTUw=;
- b=WW7pFIxCfPNt7FzKL64to3Suj5JKXhNDEoFvjZgOTuVkXjyPCmEuSPLLVzc8sPJLhI
- MDKZ3kpnzwlFhKD8npzVcSLWUgDdKiXP7yV1w22VWftJHNqF1UWxFv4hwgJee86BEJdJ
- HSY/lcPZinY5vAdoV8ifh24gzDDo/KOfCz2RPphc5aXFiQB3PvJrAqTLUea+oJnnGyUx
- pwMiviSROArI5sa0W4lD1jqX7XyA0V1WUWd5s0bJ9mRcnQWKx3hZaWwfz+6TOfQ9vQ5e
- 0Z7vNNXEM2oyQv9ZtaOt0BjamnBkXkAGMQFAJyp9xKm5zuYsOmsDfI3cYKyvDhePFdvL
- rwgw==
+ :reply-to; bh=R9U4aWp8TraYxhIRkNKUBeZnraOIqezcaMpKqimPY0U=;
+ b=WshvgZFcCXqZPhBpNXMhqBeWUtrLIjFGL45b3zuMu8r3HvWtKxFU5ij/1eaqHuvFP2
+ zpQd9RFE5iS36UpZzeuA6qtCvYVuv28zILGBv3AD99fAQ/SmiuvHhL2xkjFRxVQEZ9Cf
+ OgbLcPOfOYzdV4bVL+jrsc1Jp9h/rBDnPdu2maDMxmoNeoSgwpeDketr8HJmt8FrEWAu
+ Pe37w5RXA9R5NzkayrEyK7xahvkSE5YQ7mVwFhxBIJxG4NiRjQLQUM+eWh8CUzQ3Nef/
+ PXBn42lbOmvvPKpofAYMAK4VqWJDuoDj2D1L5EOvGG2eZpcboPQcg4xR9ByfCUXqKQ9F
+ 7JqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725541278; x=1726146078;
+ d=1e100.net; s=20230601; t=1725541279; x=1726146079;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VA29/g4wKHT5gPl+VZPcS59cjqvbl7e/0STDa0JUTUw=;
- b=FYVrCxa00D5K6ineo8TXqOis40Whz7ilNdDGQuR/d8qIQXAIsa9V/GTLZaeB9p+syd
- uxIUdkritJtNE9RMiis9W7Ffo41g+H9trLD+UagA9ypyH0TTV6hsIXhAYc8gHrdArNlM
- KSkGT6IDRJ9t+WG0x+5MFVAiI7fkS3bhXPEkLHOA/GaLAcxUMQCUu7uuwBjb7xTopH+F
- sguN1dC1We47QCykaz7cOEKhF8PRIYIAo0gFUhFIdkdd9FH/XoJqBUOUvvx5qMbtiryW
- DEZKXjDd4mbHOnCGUuW5YYirc41lLOTFiYGA5jnrrW/lQwtLyu3TXHxPv/A7cku8GDT/
- Ybgg==
-X-Gm-Message-State: AOJu0YxPbDIT5TtZCo4Zo9XEfDXMqm2oYSLm9wqzbtw2wz3Oxk+XPXL5
- 8KbQNiEp5ULLDvECPP0QyX1/pKwDPingT6YUG4X/d19IHpYbJVn6xpVP1bBI/IqRtjHSkWQPwsQ
- d
-X-Google-Smtp-Source: AGHT+IEPLerX9lXw70s6a7Blkxo6Nk+aIZ3kl8Tp9wojozHnB81sHh84zksuEjRXPEot0YXFN6Jbcg==
-X-Received: by 2002:a05:600c:1ca8:b0:426:6f17:531 with SMTP id
- 5b1f17b1804b1-42bb02edaf6mr187964425e9.13.1725541277878; 
- Thu, 05 Sep 2024 06:01:17 -0700 (PDT)
+ bh=R9U4aWp8TraYxhIRkNKUBeZnraOIqezcaMpKqimPY0U=;
+ b=bMOpGBOEvBs2KT1aW7LiaGXTgUPMcIqIMSPGKAEhZHsn05gtIBTs/TT/vSzHdCjXtv
+ A/OLJQNVITuKOXI896d0MW+hN34DOA9UmK3WtU54AWOmb2je9av0ABPc5dUApNGk7InV
+ eo0RP3bHVSL1bDMvtHRWLRdFxrWMwxHBMbb/s2zN/tQkcGIGvy8tvyIF6euseJ4+3m2b
+ I2Z6QLD5mFQurjAsKbB5t2YYvXFL6ybeadDVbez6WE1m/n5CfNXvTR5GKILmP/Iw0BOF
+ H1xNq1a/4u5RdoK8WnlzjmiiWlSAfEXIGoA86jZhgqZAfhp7Q0KTCdbl4W6l0UrB6GI8
+ mFbg==
+X-Gm-Message-State: AOJu0YzeZv2vJcPcL9ggD7LdXrqx47DuUhCKGt3g+JCdi2mFlcT0vih7
+ tY7UDPjusPOWUSFaxNtCw+AWC3u0uDUqMA3kX3UHtbwjUNx7K87F3NFX6IJsYOTfseBnOwwmF50
+ B
+X-Google-Smtp-Source: AGHT+IHxyXu94qLbx6CcPouCsLXwC2oQT2UiU1Gt880JDEO4rCiZ87x3376FTRJ2jp5jfZdBNlZtdw==
+X-Received: by 2002:a05:6000:124c:b0:374:c29a:a0d6 with SMTP id
+ ffacd0b85a97d-374c29aa194mr13434266f8f.2.1725541278318; 
+ Thu, 05 Sep 2024 06:01:18 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-42bb6e355dfsm232251365e9.46.2024.09.05.06.01.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Sep 2024 06:01:17 -0700 (PDT)
+ Thu, 05 Sep 2024 06:01:18 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/25] hw/arm/boot: Report error msg if loading elf/dtb failed
-Date: Thu,  5 Sep 2024 14:00:58 +0100
-Message-Id: <20240905130100.298768-24-peter.maydell@linaro.org>
+Subject: [PULL 24/25] hw/arm/boot: Explain why load_elf_hdr() error is ignored
+Date: Thu,  5 Sep 2024 14:00:59 +0100
+Message-Id: <20240905130100.298768-25-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240905130100.298768-1-peter.maydell@linaro.org>
 References: <20240905130100.298768-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,32 +92,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Changbin Du <changbin.du@huawei.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Print errors before exit. Do not exit silently.
+If the file is not an ELF file, arm_setup_direct_kernel_boot()
+falls back to try it as a uimage or an AArch64 Image file or as
+last resort a bare raw binary. We can discard load_elf_hdr()
+error and silently return.
 
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Changbin Du <changbin.du@huawei.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240903133940.3447430-1-changbin.du@huawei.com
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240903144154.17135-1-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/boot.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/arm/boot.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index d480a7da02c..6c895e05cbc 100644
+index 6c895e05cbc..5301d8d318c 100644
 --- a/hw/arm/boot.c
 +++ b/hw/arm/boot.c
-@@ -839,6 +839,8 @@ static ssize_t arm_load_elf(struct arm_boot_info *info, uint64_t *pentry,
-                       1, data_swab, as);
-     if (ret <= 0) {
-         /* The header loaded but the image didn't */
-+        error_report("Couldn't load elf '%s': %s",
-+                     info->kernel_filename, load_elf_strerror(ret));
-         exit(1);
+@@ -799,14 +799,18 @@ static ssize_t arm_load_elf(struct arm_boot_info *info, uint64_t *pentry,
+     } elf_header;
+     int data_swab = 0;
+     bool big_endian;
+-    ssize_t ret = -1;
++    ssize_t ret;
+     Error *err = NULL;
+ 
+ 
+     load_elf_hdr(info->kernel_filename, &elf_header, &elf_is64, &err);
+     if (err) {
++        /*
++         * If the file is not an ELF file we silently return.
++         * The caller will fall back to try other formats.
++         */
+         error_free(err);
+-        return ret;
++        return -1;
      }
  
+     if (elf_is64) {
 -- 
 2.34.1
 
