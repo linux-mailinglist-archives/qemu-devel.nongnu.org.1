@@ -2,73 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4330B96D9C3
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A9596D9AB
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:03:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smC7D-000208-7M; Thu, 05 Sep 2024 09:01:35 -0400
+	id 1smC8l-000167-EZ; Thu, 05 Sep 2024 09:03:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC72-0001LA-07
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:24 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1smC8Y-0008Sk-Aj
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:03:00 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC6y-0001nL-Os
- for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:23 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-374c84dcc90so478932f8f.1
- for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 06:01:20 -0700 (PDT)
+ id 1smC8W-0002AJ-8y
+ for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:02:57 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5c25554ec1eso864796a12.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 06:02:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725541279; x=1726146079; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=gZRGtO6SmZHDabe4EZR6EK0mqdv3jxaN8ddZYk6gMA0=;
- b=NPshg+3cYepOnD0Z3Lfbxg0lxTlb3lLt/QkGLU117hQKZ10ow5qeC6JfI6axrD9uJL
- pnsW/aXJVLBWcnq7l9TCVCyvFJxUNbum+AC7gPbf8ORWxa3D/8t7IaGb5N6XoWBW7Yan
- mY+D2qRsIy0CMKs8nej5vXuyD0rCsPZaOzhOyfoTG81fqYy0ySeAd6nNBmtx5mI1pPeH
- +yqd6ofvwFKhFga/J/pRcJWpyZ3Ck3qDOPTC2mYdnAt2eiYyftZLUzb7XKAfabJyhniX
- 1MYYeGi+Kt8hp1wGbh1KTMFVsMLTiK3ddhozwFp/KEdaOarSETEdiw/4FMyNjl4YUWHX
- I2VQ==
+ d=linaro.org; s=google; t=1725541373; x=1726146173; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cwnn1XgdkvGh9rrbYATl2uNkRA38AcvdqPQRMxn7g48=;
+ b=WRfOay2wMQJenotypXcyg2Gpe1aXiatUqdmh4H6sWRzY6fWXlxeS4/lcFl9slQxaOU
+ lTns+BOnirL+45/V2Qw4Kugtcef61tT2qovsgMZt3ssE/UJJnvYRKG9icy7eLaONP9mN
+ EiIytphFAZWHBwRATCw3Ct2ANUaubVgT+VWtaRt8ZwAPbV8za7d5T2tjz8wvn+GI2Uv+
+ OV4wdmGuiG3/J+rBFDGNzcl/8dvq8D8ZKX/uIVi/lxVHmKu8y9WQQi2mJw6E0fAxgTx3
+ /oGmwAw6uE+dgd/Ehp++VPNYxdm7uRlP8w3lW48ZPALSSDNoBg9sm5wPreZkkKfsVuWN
+ tr6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725541279; x=1726146079;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1725541373; x=1726146173;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gZRGtO6SmZHDabe4EZR6EK0mqdv3jxaN8ddZYk6gMA0=;
- b=NrQJ6vCq0RjBb8FvBnbAVV8mh6RuyQvj7yn13pTz5QcWUZNTcQu0olcuPGKdmTmhV3
- WtW57TFCaI1MJ6A1BpzuRlr+jHT5sws8Lv5FuTtsqybRvkcXiy5VjT/3QsHcQ2TT3Lgh
- 1iVLtIM0gKLfXYtWoz2PWydtpHEbgiGBGZPsGiBB9YwvKHLGatkr2RIOOvOr+XSYMHAt
- sU2N4Q1+kdEV4Gli0Ql7bkAypb4kpfUZgNqK2JiN+K2AfviwGcf8Wt/ioiZ3UB3R+OFZ
- MiLNfgPvc/wGkV+U5pHqrNm5fVcEHiLsWTyKjbWmiJqjElszx+BbUPvBsDN/8oRCxzzx
- dTpQ==
-X-Gm-Message-State: AOJu0Yx9JKk0T4akVgYD6KqlMu5UKv7M1SuFyVnQNpAfa80qqo32F3TD
- EOiL1l3EZPWEJBNXXBppNnq+f14jxZfOL0Kk5BSr25ES/ucvBtbiINuF+IDHZW+KJJdQxp7OZhi
- /
-X-Google-Smtp-Source: AGHT+IELypuksUdMYs1U38DY8kq/1Qp/rX8lRgkoi3arhmNG+49XGhNWVGyaaBlvCzObW3X3zx1eFw==
-X-Received: by 2002:a5d:4fc1:0:b0:374:c87c:6648 with SMTP id
- ffacd0b85a97d-3776f929435mr3651297f8f.25.1725541278789; 
- Thu, 05 Sep 2024 06:01:18 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42bb6e355dfsm232251365e9.46.2024.09.05.06.01.18
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Sep 2024 06:01:18 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 25/25] platform-bus: fix refcount leak
-Date: Thu,  5 Sep 2024 14:01:00 +0100
-Message-Id: <20240905130100.298768-26-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240905130100.298768-1-peter.maydell@linaro.org>
-References: <20240905130100.298768-1-peter.maydell@linaro.org>
+ bh=cwnn1XgdkvGh9rrbYATl2uNkRA38AcvdqPQRMxn7g48=;
+ b=YVS1aUkY7ktlkaIHMHjsLPhGduzoV/RqEEH1x8N8pYRafv+gmaFQ8oACLnODfi2pbv
+ RLbK4espokGkMWzprIbzIdMyXLLUaqXynSBIBCBrsdfkVGCc6yEcWTsG7cuVBAduD1wJ
+ Y7428lm5Psc/F25PKenlQwhruhy0H5Rg2Ok376osmIhy7HkTvrgFG0r38qN9cjwnh9Un
+ EU0XHJJfWHFu03HLoLpDNxI1TSeHP6OypXKO4cPrxF7uQU+mJ/SnnO4EeJwkJumQtf7D
+ brphFcg4KajPYyo/3iEfa7UbIooEgzeAtQ+ztPyTcQfNdEXGX0t++QpYA0+zfFr9KvBN
+ tJeA==
+X-Gm-Message-State: AOJu0YylGm1u+MIDo/ff/E/urGM8EqNzqCF9n1rX8RK97WG95lpONhTI
+ Ucrb4Kx3SX9cpSTAhLRZ/ROYKflsjn4dHcGbxAa/Uoavoh/jgGBHYXJ/CPpZo9ukq7zogDJuBfu
+ Ie+KAyGFPRNPHx9TLcG9Whphji258Pjp1TdGsfg==
+X-Google-Smtp-Source: AGHT+IHuk5vVn71M07bqWrqA5LQ4xwYNrAysM+fssQLHDk77ddSciZL9cQ0oxyggV7o0rjmlGJLhfVkO+BwZMpolwms=
+X-Received: by 2002:a05:6402:1eca:b0:5c3:d8fd:9a3b with SMTP id
+ 4fb4d7f45d1cf-5c3d8fd9c58mr246637a12.28.1725541372714; Thu, 05 Sep 2024
+ 06:02:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+References: <20240905073832.16222-1-shentey@gmail.com>
+ <20240905073832.16222-4-shentey@gmail.com>
+ <08360075-385e-4083-8dea-5e2275d02834@linaro.org>
+In-Reply-To: <08360075-385e-4083-8dea-5e2275d02834@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 5 Sep 2024 14:02:40 +0100
+Message-ID: <CAFEAcA_x6zwG+V-E_Lzr_3njQ2W5PN5=BXVNnOT11K3jMxTC5w@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] hw/char: Extract serial-mm
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jamin Lin <jamin_lin@aspeedtech.com>, 
+ Helge Deller <deller@gmx.de>, Song Gao <gaosong@loongson.cn>,
+ Stafford Horne <shorne@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Joel Stanley <joel@jms.id.au>, Troy Lee <leetroy@gmail.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Max Filippov <jcmvbkbc@gmail.com>, 
+ Artyom Tarasenko <atar4qemu@gmail.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ qemu-riscv@nongnu.org, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Hao Wu <wuhaotsh@google.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Steven Lee <steven_lee@aspeedtech.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Alistair Francis <Alistair.Francis@wdc.com>,
+ Beniamino Galvani <b.galvani@gmail.com>, 
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Tyrone Ting <kfting@nuvoton.com>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, qemu-arm@nongnu.org, 
+ Sergio Lopez <slp@redhat.com>, Jan Kiszka <jan.kiszka@web.de>,
+ qemu-ppc@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>, 
+ Aleksandar Rikalo <arikalo@gmail.com>, Jia Liu <proljc@gmail.com>, 
+ Huacai Chen <chenhuacai@kernel.org>, BALATON Zoltan <balaton@eik.bme.hu>, 
+ Niek Linnenbank <nieklinnenbank@gmail.com>, Paul Burton <paulburton@kernel.org>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Bernhard Beschow <shentey@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,40 +124,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gao Shiyuan <gaoshiyuan@baidu.com>
+On Thu, 5 Sept 2024 at 12:13, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+> Could we start recommend to also add SPDX tags for new files committed
+> to the repository? They are clearer than mis-copy/pasted license with
+> typos and can be parsed by tools.
 
-memory_region_find() returns an MR which it is the caller's
-responsibility to unref, but platform_bus_map_mmio() was
-forgetting to do so, thus leaking the MR.
+This is probably worth a discussion in a separate thread, not
+buried in a comment on a refactoring patchset :-)
 
-Signed-off-by: Gao Shiyuan <gaoshiyuan@baidu.com>
-Message-id: 20240829131005.9196-1-gaoshiyuan@baidu.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: tweaked commit message]
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/core/platform-bus.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/hw/core/platform-bus.c b/hw/core/platform-bus.c
-index b8487b26b67..dc58bf505aa 100644
---- a/hw/core/platform-bus.c
-+++ b/hw/core/platform-bus.c
-@@ -145,9 +145,12 @@ static void platform_bus_map_mmio(PlatformBusDevice *pbus, SysBusDevice *sbdev,
-      * the target device's memory region
-      */
-     for (off = 0; off < pbus->mmio_size; off += alignment) {
--        if (!memory_region_find(&pbus->mmio, off, size).mr) {
-+        MemoryRegion *mr = memory_region_find(&pbus->mmio, off, size).mr;
-+        if (!mr) {
-             found_region = true;
-             break;
-+        } else {
-+            memory_region_unref(mr);
-         }
-     }
- 
--- 
-2.34.1
-
+-- PMM
 
