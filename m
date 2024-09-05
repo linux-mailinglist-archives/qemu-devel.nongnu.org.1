@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AD896D9A1
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ABD896D9A5
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Sep 2024 15:03:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smC7B-0001oi-EM; Thu, 05 Sep 2024 09:01:33 -0400
+	id 1smC7A-0001oG-3M; Thu, 05 Sep 2024 09:01:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC71-0001Ic-AV
+ id 1smC71-0001Im-CN
  for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:23 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1smC6x-0001mt-Jf
+ id 1smC6x-0001n7-NB
  for qemu-devel@nongnu.org; Thu, 05 Sep 2024 09:01:23 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42c79deb7c4so5916365e9.3
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-42bfb50e4e6so5751935e9.2
  for <qemu-devel@nongnu.org>; Thu, 05 Sep 2024 06:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1725541278; x=1726146078; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=pTJYExxOYFHS9qVhAz/vysSNcJs4aSX7vL8lE2uSNrc=;
- b=mNLPg7GtXbHl0thyX+yt8BZaHrYSv77ueENoqemwcDCThqbNDXiPt9YP9M3EgCNNLC
- JJLAEiH0PVsERJBBKQCUcfex7UCKoZ2OQB+aRbgksfZqSlgVjUygSE13KLxEEvotbmP2
- hnqbnRWoxQaY0h5yDCTeo9VBdbFqNPThxAJoVZFtfkWYnQrb2vvirviPfNVUIsSuI90H
- 3u0RO2yZD2It8XJIcIWAgaJXGbNTwz6T2Y3LcMcfaFs76IIbVhTf+luPvNsnYlGT7RhY
- EkxZwuU3+WP3B90MGKFZG5ipVEFJBctqVwscBl/Ry3pXd9SY44KPguYTlZ30+1CoFNjF
- U0XQ==
+ :reply-to; bh=VA29/g4wKHT5gPl+VZPcS59cjqvbl7e/0STDa0JUTUw=;
+ b=WW7pFIxCfPNt7FzKL64to3Suj5JKXhNDEoFvjZgOTuVkXjyPCmEuSPLLVzc8sPJLhI
+ MDKZ3kpnzwlFhKD8npzVcSLWUgDdKiXP7yV1w22VWftJHNqF1UWxFv4hwgJee86BEJdJ
+ HSY/lcPZinY5vAdoV8ifh24gzDDo/KOfCz2RPphc5aXFiQB3PvJrAqTLUea+oJnnGyUx
+ pwMiviSROArI5sa0W4lD1jqX7XyA0V1WUWd5s0bJ9mRcnQWKx3hZaWwfz+6TOfQ9vQ5e
+ 0Z7vNNXEM2oyQv9ZtaOt0BjamnBkXkAGMQFAJyp9xKm5zuYsOmsDfI3cYKyvDhePFdvL
+ rwgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1725541278; x=1726146078;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pTJYExxOYFHS9qVhAz/vysSNcJs4aSX7vL8lE2uSNrc=;
- b=vTYY8YB5p8Vead8lzRRZl2+U74mZLZ0kKE1A7FR2XJHCVm9l8votHj0kXHYQDinEOW
- HlSDw/DsDfaKFgWMO/EsJTKUC8vHzVRCeL89gZVnB+MrCWR77FNRDOhrr2YDazKUv2ru
- QootsYaCGB2kygwg9Fpk/w9/iGlvw0sqM7SzOHiWw1MKN1CjpN1f9PsC0o0XMYW5f6O8
- yPsgG+p0jzKi4LP5TyWqh/YkLjtB3omC7XJD6e+0EiaYA3dLgNNMPW0IWqGLyFF9MSFs
- AQcXOkVjZMp5so12GhBWNd8+EufGpFPygvc9dQCy6kf3hhQqi/D3F1YZEeWVmF/hFDcr
- VSVA==
-X-Gm-Message-State: AOJu0YzKGrdo1nM9pyW2t6NQ/50D2LnW+RTO1nWTF8LHhqxq6ysxNV3T
- 3syJl1NumiglYUwwcmAbWExVUXkinCG2QpFkv27p3MNAQCFs0y5sRj1VBNScZUqC3H0nRv037Gx
- +
-X-Google-Smtp-Source: AGHT+IHeab5UdpNvVy45ZmZB9liQFJIg9m2r80b3j5PFux13YAuVtjpcu72Q6otTqVFiBnp0vtSQ6Q==
-X-Received: by 2002:a05:600c:1e85:b0:426:51ce:bb14 with SMTP id
- 5b1f17b1804b1-42c7b5d8f29mr110960935e9.30.1725541277408; 
+ bh=VA29/g4wKHT5gPl+VZPcS59cjqvbl7e/0STDa0JUTUw=;
+ b=FYVrCxa00D5K6ineo8TXqOis40Whz7ilNdDGQuR/d8qIQXAIsa9V/GTLZaeB9p+syd
+ uxIUdkritJtNE9RMiis9W7Ffo41g+H9trLD+UagA9ypyH0TTV6hsIXhAYc8gHrdArNlM
+ KSkGT6IDRJ9t+WG0x+5MFVAiI7fkS3bhXPEkLHOA/GaLAcxUMQCUu7uuwBjb7xTopH+F
+ sguN1dC1We47QCykaz7cOEKhF8PRIYIAo0gFUhFIdkdd9FH/XoJqBUOUvvx5qMbtiryW
+ DEZKXjDd4mbHOnCGUuW5YYirc41lLOTFiYGA5jnrrW/lQwtLyu3TXHxPv/A7cku8GDT/
+ Ybgg==
+X-Gm-Message-State: AOJu0YxPbDIT5TtZCo4Zo9XEfDXMqm2oYSLm9wqzbtw2wz3Oxk+XPXL5
+ 8KbQNiEp5ULLDvECPP0QyX1/pKwDPingT6YUG4X/d19IHpYbJVn6xpVP1bBI/IqRtjHSkWQPwsQ
+ d
+X-Google-Smtp-Source: AGHT+IEPLerX9lXw70s6a7Blkxo6Nk+aIZ3kl8Tp9wojozHnB81sHh84zksuEjRXPEot0YXFN6Jbcg==
+X-Received: by 2002:a05:600c:1ca8:b0:426:6f17:531 with SMTP id
+ 5b1f17b1804b1-42bb02edaf6mr187964425e9.13.1725541277878; 
  Thu, 05 Sep 2024 06:01:17 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,16 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 05 Sep 2024 06:01:17 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 22/25] hw/arm/xilinx_zynq: Enable Security Extensions
-Date: Thu,  5 Sep 2024 14:00:57 +0100
-Message-Id: <20240905130100.298768-23-peter.maydell@linaro.org>
+Subject: [PULL 23/25] hw/arm/boot: Report error msg if loading elf/dtb failed
+Date: Thu,  5 Sep 2024 14:00:58 +0100
+Message-Id: <20240905130100.298768-24-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240905130100.298768-1-peter.maydell@linaro.org>
 References: <20240905130100.298768-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,39 +92,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sebastian Huber <sebastian.huber@embedded-brains.de>
+From: Changbin Du <changbin.du@huawei.com>
 
-The system supports the Security Extensions (core and GIC).  This change is
-necessary to run tests which pass on the real hardware.
+Print errors before exit. Do not exit silently.
 
-Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Tested-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Message-id: 20240828005019.57705-1-sebastian.huber@embedded-brains.de
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Changbin Du <changbin.du@huawei.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240903133940.3447430-1-changbin.du@huawei.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/xilinx_zynq.c | 8 --------
- 1 file changed, 8 deletions(-)
+ hw/arm/boot.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index 3c56b9abe1c..37c234f5aba 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -219,14 +219,6 @@ static void zynq_init(MachineState *machine)
-     for (n = 0; n < smp_cpus; n++) {
-         Object *cpuobj = object_new(machine->cpu_type);
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index d480a7da02c..6c895e05cbc 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -839,6 +839,8 @@ static ssize_t arm_load_elf(struct arm_boot_info *info, uint64_t *pentry,
+                       1, data_swab, as);
+     if (ret <= 0) {
+         /* The header loaded but the image didn't */
++        error_report("Couldn't load elf '%s': %s",
++                     info->kernel_filename, load_elf_strerror(ret));
+         exit(1);
+     }
  
--        /*
--         * By default A9 CPUs have EL3 enabled.  This board does not currently
--         * support EL3 so the CPU EL3 property is disabled before realization.
--         */
--        if (object_property_find(cpuobj, "has_el3")) {
--            object_property_set_bool(cpuobj, "has_el3", false, &error_fatal);
--        }
--
-         object_property_set_int(cpuobj, "midr", ZYNQ_BOARD_MIDR,
-                                 &error_fatal);
-         object_property_set_int(cpuobj, "reset-cbar", MPCORE_PERIPHBASE,
 -- 
 2.34.1
 
