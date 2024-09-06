@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E5BF96F2DF
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:22:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB6296F2C0
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:20:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWxz-0000nR-Iw; Fri, 06 Sep 2024 07:17:28 -0400
+	id 1smWy5-0001Qi-Fa; Fri, 06 Sep 2024 07:17:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWxC-0006bn-C5; Fri, 06 Sep 2024 07:16:40 -0400
+ id 1smWxE-0006hc-SS; Fri, 06 Sep 2024 07:16:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWx9-00086r-RK; Fri, 06 Sep 2024 07:16:37 -0400
+ id 1smWxD-00087R-2p; Fri, 06 Sep 2024 07:16:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E44EB8C494;
+ by isrv.corpit.ru (Postfix) with ESMTP id F23638C495;
  Fri,  6 Sep 2024 14:12:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E416C1336FE;
- Fri,  6 Sep 2024 14:13:26 +0300 (MSK)
-Received: (nullmailer pid 353660 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0AEEF1336FF;
+ Fri,  6 Sep 2024 14:13:27 +0300 (MSK)
+Received: (nullmailer pid 353664 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Jim Fehlig <jfehlig@suse.com>, Peter Xu <peterx@redhat.com>,
+Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 36/69] migration/multifd: Fix multifd_send_setup
- cleanup when channel creation fails
-Date: Fri,  6 Sep 2024 14:12:45 +0300
-Message-Id: <20240906111324.353230-36-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 37/69] linux-user/elfload: Fix pr_pid values in core
+ files
+Date: Fri,  6 Sep 2024 14:12:46 +0300
+Message-Id: <20240906111324.353230-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -61,109 +61,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-When a channel fails to create, the code currently just returns. This
-is wrong for two reasons:
+Analyzing qemu-produced core dumps of multi-threaded apps runs into:
 
-1) Channel n+1 will not get to initialize it's semaphores, leading to
-   an assert when terminate_threads tries to post to it:
+    (gdb) info threads
+      [...]
+      21   Thread 0x3ff83cc0740 (LWP 9295) warning: Couldn't find general-purpose registers in core file.
+    <unavailable> in ?? ()
 
- qemu-system-x86_64: ../util/qemu-thread-posix.c:92:
- qemu_mutex_lock_impl: Assertion `mutex->initialized' failed.
+The reason is that all pr_pid values are the same, because the same
+TaskState is used for all CPUs when generating NT_PRSTATUS notes.
 
-2) (theoretical) If channel n-1 already started creation it will
-   defeat the purpose of the channels_created logic which is in place
-   to avoid migrate_fd_cleanup() to run while channels are still being
-   created.
-
-   This cannot really happen today because the current failure cases
-   for multifd_new_send_channel_create() are all synchronous,
-   resulting from qio_channel_file_new_path() getting a bad
-   filename. This would hit all channels equally.
-
-   But I don't want to set a trap for future people, so have all
-   channels try to create (even if failing), and only fail after the
-   channels_created semaphore has been posted.
-
-While here, remove the error_report_err call. There's one already at
-migrate_fd_cleanup later on.
+Fix by using TaskStates associated with individual CPUs.
 
 Cc: qemu-stable@nongnu.org
-Reported-by: Jim Fehlig <jfehlig@suse.com>
-Fixes: b7b03eb614 ("migration/multifd: Add outgoing QIOChannelFile support")
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 0bd5b9284fa94a6242a0d27a46380d93e753488b)
+Fixes: 243c47066253 ("linux-user/elfload: Write corefile elf header in one block")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240801202340.21845-1-iii@linux.ibm.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 5b0c2742c839376b7e03c4654914aaec6a8a7b09)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 2802afe79d..fa55586f89 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1145,7 +1145,6 @@ static bool multifd_new_send_channel_create(gpointer opaque, Error **errp)
- bool multifd_send_setup(void)
- {
-     MigrationState *s = migrate_get_current();
--    Error *local_err = NULL;
-     int thread_count, ret = 0;
-     uint32_t page_count = MULTIFD_PACKET_SIZE / qemu_target_page_size();
-     bool use_packets = multifd_use_packets();
-@@ -1166,6 +1165,7 @@ bool multifd_send_setup(void)
- 
-     for (i = 0; i < thread_count; i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
-+        Error *local_err = NULL;
- 
-         qemu_sem_init(&p->sem, 0);
-         qemu_sem_init(&p->sem_sync, 0);
-@@ -1190,7 +1190,8 @@ bool multifd_send_setup(void)
-         p->write_flags = 0;
- 
-         if (!multifd_new_send_channel_create(p, &local_err)) {
--            return false;
-+            migrate_set_error(s, local_err);
-+            ret = -1;
-         }
-     }
- 
-@@ -1203,24 +1204,27 @@ bool multifd_send_setup(void)
-         qemu_sem_wait(&multifd_send_state->channels_created);
-     }
- 
-+    if (ret) {
-+        goto err;
-+    }
-+
-     for (i = 0; i < thread_count; i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
-+        Error *local_err = NULL;
- 
-         ret = multifd_send_state->ops->send_setup(p, &local_err);
-         if (ret) {
--            break;
-+            migrate_set_error(s, local_err);
-+            goto err;
-         }
-     }
- 
--    if (ret) {
--        migrate_set_error(s, local_err);
--        error_report_err(local_err);
--        migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
--                          MIGRATION_STATUS_FAILED);
--        return false;
--    }
--
-     return true;
-+
-+err:
-+    migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
-+                      MIGRATION_STATUS_FAILED);
-+    return false;
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 60cf55b36c..0e00683dd2 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -4175,8 +4175,7 @@ static void fill_elf_note_phdr(struct elf_phdr *phdr, size_t sz, off_t offset)
+     bswap_phdr(phdr, 1);
  }
  
- bool multifd_recv(void)
+-static void fill_prstatus_note(void *data, const TaskState *ts,
+-                               CPUState *cpu, int signr)
++static void fill_prstatus_note(void *data, CPUState *cpu, int signr)
+ {
+     /*
+      * Because note memory is only aligned to 4, and target_elf_prstatus
+@@ -4186,7 +4185,7 @@ static void fill_prstatus_note(void *data, const TaskState *ts,
+     struct target_elf_prstatus prstatus = {
+         .pr_info.si_signo = signr,
+         .pr_cursig = signr,
+-        .pr_pid = ts->ts_tid,
++        .pr_pid = get_task_state(cpu)->ts_tid,
+         .pr_ppid = getppid(),
+         .pr_pgrp = getpgrp(),
+         .pr_sid = getsid(0),
+@@ -4501,8 +4500,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+         CPU_FOREACH(cpu_iter) {
+             dptr = fill_note(&hptr, NT_PRSTATUS, "CORE",
+                              sizeof(struct target_elf_prstatus));
+-            fill_prstatus_note(dptr, ts, cpu_iter,
+-                               cpu_iter == cpu ? signr : 0);
++            fill_prstatus_note(dptr, cpu_iter, cpu_iter == cpu ? signr : 0);
+         }
+ 
+         if (dump_write(fd, header, data_offset) < 0) {
 -- 
 2.39.2
 
