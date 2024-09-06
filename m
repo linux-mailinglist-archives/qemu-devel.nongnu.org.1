@@ -2,48 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAA396E931
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B668296E93D
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:26:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRPU-0008Vj-25; Fri, 06 Sep 2024 01:21:28 -0400
+	id 1smRPV-0001bd-SI; Fri, 06 Sep 2024 01:21:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smROY-000577-CZ; Fri, 06 Sep 2024 01:20:30 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smROV-0000CM-AK; Fri, 06 Sep 2024 01:20:29 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id ADD208C13D;
- Fri,  6 Sep 2024 08:15:18 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5E5A0133382;
- Fri,  6 Sep 2024 08:16:36 +0300 (MSK)
-Received: (nullmailer pid 10508 invoked by uid 1000);
- Fri, 06 Sep 2024 05:16:34 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jianzhou Yue <JianZhou.Yue@verisilicon.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 40/40] hw/core/ptimer: fix timer zero period condition
- for freq > 1GHz
-Date: Fri,  6 Sep 2024 08:16:28 +0300
-Message-Id: <20240906051633.10288-40-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
-References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1smRPI-0000XP-L0; Fri, 06 Sep 2024 01:21:19 -0400
+Received: from mail-vk1-xa2f.google.com ([2607:f8b0:4864:20::a2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1smRPF-0000IQ-W4; Fri, 06 Sep 2024 01:21:16 -0400
+Received: by mail-vk1-xa2f.google.com with SMTP id
+ 71dfb90a1353d-4fd142a798eso440301e0c.3; 
+ Thu, 05 Sep 2024 22:21:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1725600072; x=1726204872; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=F1BC3Ksc0AHRCzjCKQmIMGvREjxMf310PwjluIaLY8Y=;
+ b=YMYQ1S/MF2v11FCrTv0aMzpycuHco+jWmnyxShQNVzMus6yxlV45mT6Z/VqcQJNyQr
+ V5hpK02jl0PzhDvO4S3qnRxFkUQ0luc0tTtkKr1OVireRarMxYUMV7eYP1j1VHqKFGji
+ nMTKAXoHI4H916AmolVEyF27mwagYcmSkczkoUla1JOwEovMG51c/q5CYlea+7s8RGnR
+ RRl+UZQbVS2FPMdaG8BijWxiqXXGzsPyNL9x14mb9X0vEwtVtkiMud7Fi9571jU+ZSTZ
+ huoSN1WO7fCCXHt2cZn+/YJ7z5VBxzz1F3fMkqos8nYw+v8GvORg76kUVwjm/p2GX1b1
+ bung==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725600072; x=1726204872;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=F1BC3Ksc0AHRCzjCKQmIMGvREjxMf310PwjluIaLY8Y=;
+ b=AgKr+KMTxoAOrFN1pjTvTd8foHJ57k4ifT9rpF2clvlIk4FaZBOXmw0Naksa2e4PFG
+ tsiU9T9yITTb2kfv7/++bw6vVl5f4TrCuFwP1s2FMpQG4howCMi98kVKlOpLMMOSSwxq
+ 61/GYElRzyOiYPlHbJxTrtfM00+moCpcHWPRXmYowjwesqc9HFrb3WqBrmGE5gLmv4et
+ N72DUO4kzK/p+v6f++z7bkpAM6P2M8lpVnLWxFws7GtFpfgqD7aZac1q6hJxoKVYndcO
+ rx+kl4LKRTfYvKKgM9N/e0vrSQHEq+vB3ZboqMuVZZSpcX/7hSt9Ds1iCWRNyJAY3aLs
+ 97Zg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWbIMYQC0MhclvuMpA7aXaj1F9Q3olv9ZdVEe1S/cExHfkymP4OaJtUi/Tp3U458eTmBC/NhOM6/pfL@nongnu.org
+X-Gm-Message-State: AOJu0YwGujG6eHdFN2tm138TDk8E9uZmn+NXS8CdszY8uYsTr7etiBCd
+ /B8vdnax5lpdennLGy1kWHHMbcrziwhLvKUWSI6csoQncXbg4S6npSntwt0T1U5L8pRs6+3jKSJ
+ 00EkvMXJnYQfAx9E+Rb0J9dm6MrM=
+X-Google-Smtp-Source: AGHT+IEJw5Ltdm7hwJZkVNY96N2J/sXl+NgEmLJ/88EH0EVyzmgDQF8eswFq8Uji07WG8pKGVzKrIinmumuZgXdtJmI=
+X-Received: by 2002:a05:6122:36a6:b0:4f2:a974:29e5 with SMTP id
+ 71dfb90a1353d-50207ebec76mr1873996e0c.1.1725600072456; Thu, 05 Sep 2024
+ 22:21:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240826024657.262553-1-alvinga@andestech.com>
+In-Reply-To: <20240826024657.262553-1-alvinga@andestech.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 6 Sep 2024 15:20:46 +1000
+Message-ID: <CAKmqyKOBqfk1y631dL0jVHtyfmKO1Pwfmg9U5eoGwaCUuAit5g@mail.gmail.com>
+Subject: Re: [PATCH v4 0/2] RISC-V: Add preliminary textra trigger CSR
+ functions
+To: Alvin Chang <alvinga@andestech.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, alistair.francis@wdc.com, 
+ bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com, 
+ zhiwei_liu@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2f;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,96 +91,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jianzhou Yue <JianZhou.Yue@verisilicon.com>
+On Mon, Aug 26, 2024 at 12:48=E2=80=AFPM Alvin Chang via <qemu-devel@nongnu=
+.org> wrote:
+>
+> According to RISC-V Debug specification, the optional textra32 and textra=
+64
+> trigger CSRs can be used to configure additional matching conditions for =
+the
+> triggers.
+>
+> This series support to write MHVALUE and MHSELECT fields into textra32 an=
+d
+> textra64 trigger CSRs. Besides, the additional matching condition between
+> textra.MHVALUE and mcontext CSR is also implemented.
+>
+> Changes from v3:
+> - Simplify the comparison between mcontext and textra.MHVALUE
+>
+> Changes from v2:
+> - Remove redundant log
+>
+> Changes from v1:
+> - Log that mhselect only supports 0 or 4 for now
+> - Simplify writing of tdata3
+>
+> Alvin Chang (2):
+>   target/riscv: Preliminary textra trigger CSR writting support
+>   target/riscv: Add textra matching condition for the triggers
 
-The real period is zero when both period and period_frac are zero.
-Check the method ptimer_set_freq, if freq is larger than 1000 MHz,
-the period is zero, but the period_frac is not, in this case, the
-ptimer will work but the current code incorrectly recognizes that
-the ptimer is disabled.
+Thanks!
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2306
-Signed-off-by: JianZhou Yue <JianZhou.Yue@verisilicon.com>
-Message-id: 3DA024AEA8B57545AF1B3CAA37077D0FB75E82C8@SHASXM03.verisilicon.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 446e5e8b4515e9a7be69ef6a29852975289bb6f0)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Applied to riscv-to-apply.next
 
-diff --git a/hw/core/ptimer.c b/hw/core/ptimer.c
-index eb5ba1aff7..f1f8109385 100644
---- a/hw/core/ptimer.c
-+++ b/hw/core/ptimer.c
-@@ -83,7 +83,7 @@ static void ptimer_reload(ptimer_state *s, int delta_adjust)
-         delta = s->delta = s->limit;
-     }
- 
--    if (s->period == 0) {
-+    if (s->period == 0 && s->period_frac == 0) {
-         if (!qtest_enabled()) {
-             fprintf(stderr, "Timer with period zero, disabling\n");
-         }
-@@ -309,7 +309,7 @@ void ptimer_run(ptimer_state *s, int oneshot)
- 
-     assert(s->in_transaction);
- 
--    if (was_disabled && s->period == 0) {
-+    if (was_disabled && s->period == 0 && s->period_frac == 0) {
-         if (!qtest_enabled()) {
-             fprintf(stderr, "Timer with period zero, disabling\n");
-         }
-diff --git a/tests/unit/ptimer-test.c b/tests/unit/ptimer-test.c
-index 04b5f4e3d0..08240594bb 100644
---- a/tests/unit/ptimer-test.c
-+++ b/tests/unit/ptimer-test.c
-@@ -763,6 +763,33 @@ static void check_oneshot_with_load_0(gconstpointer arg)
-     ptimer_free(ptimer);
- }
- 
-+static void check_freq_more_than_1000M(gconstpointer arg)
-+{
-+    const uint8_t *policy = arg;
-+    ptimer_state *ptimer = ptimer_init(ptimer_trigger, NULL, *policy);
-+    bool no_round_down = (*policy & PTIMER_POLICY_NO_COUNTER_ROUND_DOWN);
-+
-+    triggered = false;
-+
-+    ptimer_transaction_begin(ptimer);
-+    ptimer_set_freq(ptimer, 2000000000);
-+    ptimer_set_limit(ptimer, 8, 1);
-+    ptimer_run(ptimer, 1);
-+    ptimer_transaction_commit(ptimer);
-+
-+    qemu_clock_step(3);
-+
-+    g_assert_cmpuint(ptimer_get_count(ptimer), ==, no_round_down ? 3 : 2);
-+    g_assert_false(triggered);
-+
-+    qemu_clock_step(1);
-+
-+    g_assert_cmpuint(ptimer_get_count(ptimer), ==, 0);
-+    g_assert_true(triggered);
-+
-+    ptimer_free(ptimer);
-+}
-+
- static void add_ptimer_tests(uint8_t policy)
- {
-     char policy_name[256] = "";
-@@ -857,6 +884,12 @@ static void add_ptimer_tests(uint8_t policy)
-                               policy_name),
-         g_memdup2(&policy, 1), check_oneshot_with_load_0, g_free);
-     g_free(tmp);
-+
-+    g_test_add_data_func_full(
-+        tmp = g_strdup_printf("/ptimer/freq_more_than_1000M policy=%s",
-+                              policy_name),
-+        g_memdup2(&policy, 1), check_freq_more_than_1000M, g_free);
-+    g_free(tmp);
- }
- 
- static void add_all_ptimer_policies_comb_tests(void)
--- 
-2.39.2
+Alistair
 
+>
+>  target/riscv/cpu_bits.h |  10 ++++
+>  target/riscv/debug.c    | 114 +++++++++++++++++++++++++++++++++++++---
+>  target/riscv/debug.h    |   3 ++
+>  3 files changed, 120 insertions(+), 7 deletions(-)
+>
+> --
+> 2.34.1
+>
+>
 
