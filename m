@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBABC96E930
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7F696E92E
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:23:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRMP-0000CE-L0; Fri, 06 Sep 2024 01:18:17 -0400
+	id 1smRNW-0004UU-Mf; Fri, 06 Sep 2024 01:19:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRMM-0008V9-Tn; Fri, 06 Sep 2024 01:18:14 -0400
+ id 1smRMi-00021F-6j; Fri, 06 Sep 2024 01:18:40 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRMK-00088f-VI; Fri, 06 Sep 2024 01:18:14 -0400
+ id 1smRMf-00088x-Tm; Fri, 06 Sep 2024 01:18:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 800608C129;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8F1198C12B;
  Fri,  6 Sep 2024 08:15:17 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 301AE13336F;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3E20C133370;
  Fri,  6 Sep 2024 08:16:35 +0300 (MSK)
-Received: (nullmailer pid 10448 invoked by uid 1000);
+Received: (nullmailer pid 10451 invoked by uid 1000);
  Fri, 06 Sep 2024 05:16:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Marco Palumbi <Marco.Palumbi@tii.ae>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 21/40] hw/arm/mps2-tz.c: fix RX/TX interrupts order
-Date: Fri,  6 Sep 2024 08:16:09 +0300
-Message-Id: <20240906051633.10288-21-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 22/40] target/arm: Handle denormals correctly for
+ FMOPA (widening)
+Date: Fri,  6 Sep 2024 08:16:10 +0300
+Message-Id: <20240906051633.10288-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
@@ -59,47 +61,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marco Palumbi <Marco.Palumbi@tii.ae>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-The order of the RX and TX interrupts are swapped.
-This commit fixes the order as per the following documents:
- * https://developer.arm.com/documentation/dai0505/latest/
- * https://developer.arm.com/documentation/dai0521/latest/
- * https://developer.arm.com/documentation/dai0524/latest/
- * https://developer.arm.com/documentation/dai0547/latest/
+The FMOPA (widening) SME instruction takes pairs of half-precision
+floating point values, widens them to single-precision, does a
+two-way dot product and accumulates the results into a
+single-precision destination.  We don't quite correctly handle the
+FPCR bits FZ and FZ16 which control flushing of denormal inputs and
+outputs.  This is because at the moment we pass a single float_status
+value to the helper function, which then uses that configuration for
+all the fp operations it does.  However, because the inputs to this
+operation are float16 and the outputs are float32 we need to use the
+fp_status_f16 for the float16 input widening but the normal fp_status
+for everything else.  Otherwise we will apply the flushing control
+FPCR.FZ16 to the 32-bit output rather than the FPCR.FZ control, and
+incorrectly flush a denormal output to zero when we should not (or
+vice-versa).
+
+(In commit 207d30b5fdb5b we tried to fix the FZ handling but
+didn't get it right, switching from "use FPCR.FZ for everything" to
+"use FPCR.FZ16 for everything".)
+(Mjt: it is commit d5373d7bdbee in stable-7.2)
+
+Pass the CPU env to the sme_fmopa_h helper instead of an fp_status
+pointer, and have the helper pass an extra fp_status into the
+f16_dotadd() function so that we can use the right status for the
+right parts of this operation.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Marco Palumbi <Marco.Palumbi@tii.ae>
-Message-id: 20240730073123.72992-1-marco@palumbi.it
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 207d30b5fdb5 ("target/arm: Use FPST_F16 for SME FMOPA (widening)")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2373
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 5a558be93ad628e5bed6e0ee062870f49251725c)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 55f9f4ee018c5ccea81d8c8c586756d7711ae46f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: s/tcg_env/cpu_env/ due to missingv
+ 8.1.0-1189-gad75a51e84af "tcg: Rename cpu_env to tcg_env")
 
-diff --git a/hw/arm/mps2-tz.c b/hw/arm/mps2-tz.c
-index 284c09c91d..334cd836c3 100644
---- a/hw/arm/mps2-tz.c
-+++ b/hw/arm/mps2-tz.c
-@@ -427,7 +427,7 @@ static MemoryRegion *make_uart(MPS2TZMachineState *mms, void *opaque,
-                                const char *name, hwaddr size,
-                                const int *irqs, const PPCExtraData *extradata)
+diff --git a/target/arm/helper-sme.h b/target/arm/helper-sme.h
+index d2d544a696..d33fbcd8fd 100644
+--- a/target/arm/helper-sme.h
++++ b/target/arm/helper-sme.h
+@@ -122,7 +122,7 @@ DEF_HELPER_FLAGS_5(sme_addha_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_5(sme_addva_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
+ 
+ DEF_HELPER_FLAGS_7(sme_fmopa_h, TCG_CALL_NO_RWG,
+-                   void, ptr, ptr, ptr, ptr, ptr, ptr, i32)
++                   void, ptr, ptr, ptr, ptr, ptr, env, i32)
+ DEF_HELPER_FLAGS_7(sme_fmopa_s, TCG_CALL_NO_RWG,
+                    void, ptr, ptr, ptr, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_7(sme_fmopa_d, TCG_CALL_NO_RWG,
+diff --git a/target/arm/sme_helper.c b/target/arm/sme_helper.c
+index f12f3288fd..98a4840970 100644
+--- a/target/arm/sme_helper.c
++++ b/target/arm/sme_helper.c
+@@ -1009,12 +1009,23 @@ static inline uint32_t f16mop_adj_pair(uint32_t pair, uint32_t pg, uint32_t neg)
+ }
+ 
+ static float32 f16_dotadd(float32 sum, uint32_t e1, uint32_t e2,
+-                          float_status *s_std, float_status *s_odd)
++                          float_status *s_f16, float_status *s_std,
++                          float_status *s_odd)
  {
--    /* The irq[] array is tx, rx, combined, in that order */
-+    /* The irq[] array is rx, tx, combined, in that order */
-     MPS2TZMachineClass *mmc = MPS2TZ_MACHINE_GET_CLASS(mms);
-     CMSDKAPBUART *uart = opaque;
-     int i = uart - &mms->uart[0];
-@@ -439,8 +439,8 @@ static MemoryRegion *make_uart(MPS2TZMachineState *mms, void *opaque,
-     qdev_prop_set_uint32(DEVICE(uart), "pclk-frq", mmc->apb_periph_frq);
-     sysbus_realize(SYS_BUS_DEVICE(uart), &error_fatal);
-     s = SYS_BUS_DEVICE(uart);
--    sysbus_connect_irq(s, 0, get_sse_irq_in(mms, irqs[0]));
--    sysbus_connect_irq(s, 1, get_sse_irq_in(mms, irqs[1]));
-+    sysbus_connect_irq(s, 0, get_sse_irq_in(mms, irqs[1]));
-+    sysbus_connect_irq(s, 1, get_sse_irq_in(mms, irqs[0]));
-     sysbus_connect_irq(s, 2, qdev_get_gpio_in(orgate_dev, i * 2));
-     sysbus_connect_irq(s, 3, qdev_get_gpio_in(orgate_dev, i * 2 + 1));
-     sysbus_connect_irq(s, 4, get_sse_irq_in(mms, irqs[2]));
+-    float64 e1r = float16_to_float64(e1 & 0xffff, true, s_std);
+-    float64 e1c = float16_to_float64(e1 >> 16, true, s_std);
+-    float64 e2r = float16_to_float64(e2 & 0xffff, true, s_std);
+-    float64 e2c = float16_to_float64(e2 >> 16, true, s_std);
++    /*
++     * We need three different float_status for different parts of this
++     * operation:
++     *  - the input conversion of the float16 values must use the
++     *    f16-specific float_status, so that the FPCR.FZ16 control is applied
++     *  - operations on float32 including the final accumulation must use
++     *    the normal float_status, so that FPCR.FZ is applied
++     *  - we have pre-set-up copy of s_std which is set to round-to-odd,
++     *    for the multiply (see below)
++     */
++    float64 e1r = float16_to_float64(e1 & 0xffff, true, s_f16);
++    float64 e1c = float16_to_float64(e1 >> 16, true, s_f16);
++    float64 e2r = float16_to_float64(e2 & 0xffff, true, s_f16);
++    float64 e2c = float16_to_float64(e2 >> 16, true, s_f16);
+     float64 t64;
+     float32 t32;
+ 
+@@ -1036,20 +1047,23 @@ static float32 f16_dotadd(float32 sum, uint32_t e1, uint32_t e2,
+ }
+ 
+ void HELPER(sme_fmopa_h)(void *vza, void *vzn, void *vzm, void *vpn,
+-                         void *vpm, void *vst, uint32_t desc)
++                         void *vpm, CPUARMState *env, uint32_t desc)
+ {
+     intptr_t row, col, oprsz = simd_maxsz(desc);
+     uint32_t neg = simd_data(desc) * 0x80008000u;
+     uint16_t *pn = vpn, *pm = vpm;
+-    float_status fpst_odd, fpst_std;
++    float_status fpst_odd, fpst_std, fpst_f16;
+ 
+     /*
+-     * Make a copy of float_status because this operation does not
+-     * update the cumulative fp exception status.  It also produces
+-     * default nans.  Make a second copy with round-to-odd -- see above.
++     * Make copies of fp_status and fp_status_f16, because this operation
++     * does not update the cumulative fp exception status.  It also
++     * produces default NaNs. We also need a second copy of fp_status with
++     * round-to-odd -- see above.
+      */
+-    fpst_std = *(float_status *)vst;
++    fpst_f16 = env->vfp.fp_status_f16;
++    fpst_std = env->vfp.fp_status;
+     set_default_nan_mode(true, &fpst_std);
++    set_default_nan_mode(true, &fpst_f16);
+     fpst_odd = fpst_std;
+     set_float_rounding_mode(float_round_to_odd, &fpst_odd);
+ 
+@@ -1069,7 +1083,8 @@ void HELPER(sme_fmopa_h)(void *vza, void *vzn, void *vzm, void *vpn,
+                         uint32_t m = *(uint32_t *)(vzm + H1_4(col));
+ 
+                         m = f16mop_adj_pair(m, pcol, 0);
+-                        *a = f16_dotadd(*a, n, m, &fpst_std, &fpst_odd);
++                        *a = f16_dotadd(*a, n, m,
++                                        &fpst_f16, &fpst_std, &fpst_odd);
+                     }
+                     col += 4;
+                     pcol >>= 4;
+diff --git a/target/arm/translate-sme.c b/target/arm/translate-sme.c
+index 0fcd4ad950..c864bd016c 100644
+--- a/target/arm/translate-sme.c
++++ b/target/arm/translate-sme.c
+@@ -376,8 +376,29 @@ static bool do_outprod_fpst(DisasContext *s, arg_op *a, MemOp esz,
+     return true;
+ }
+ 
+-TRANS_FEAT(FMOPA_h, aa64_sme, do_outprod_fpst, a,
+-           MO_32, FPST_FPCR_F16, gen_helper_sme_fmopa_h)
++static bool do_outprod_env(DisasContext *s, arg_op *a, MemOp esz,
++                           gen_helper_gvec_5_ptr *fn)
++{
++    int svl = streaming_vec_reg_size(s);
++    uint32_t desc = simd_desc(svl, svl, a->sub);
++    TCGv_ptr za, zn, zm, pn, pm;
++
++    if (!sme_smza_enabled_check(s)) {
++        return true;
++    }
++
++    za = get_tile(s, esz, a->zad);
++    zn = vec_full_reg_ptr(s, a->zn);
++    zm = vec_full_reg_ptr(s, a->zm);
++    pn = pred_full_reg_ptr(s, a->pn);
++    pm = pred_full_reg_ptr(s, a->pm);
++
++    fn(za, zn, zm, pn, pm, cpu_env, tcg_constant_i32(desc));
++    return true;
++}
++
++TRANS_FEAT(FMOPA_h, aa64_sme, do_outprod_env, a,
++           MO_32, gen_helper_sme_fmopa_h)
+ TRANS_FEAT(FMOPA_s, aa64_sme, do_outprod_fpst, a,
+            MO_32, FPST_FPCR, gen_helper_sme_fmopa_s)
+ TRANS_FEAT(FMOPA_d, aa64_sme_f64f64, do_outprod_fpst, a,
 -- 
 2.39.2
 
