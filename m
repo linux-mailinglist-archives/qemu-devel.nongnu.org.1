@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FB496F2D4
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BAE96F2FB
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:24:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWzg-0005MA-E0; Fri, 06 Sep 2024 07:19:12 -0400
+	id 1smWzf-0005Th-Tm; Fri, 06 Sep 2024 07:19:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWzW-0004gh-VA; Fri, 06 Sep 2024 07:19:02 -0400
+ id 1smWzZ-0004uW-8N; Fri, 06 Sep 2024 07:19:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWzU-0008Jr-R3; Fri, 06 Sep 2024 07:19:02 -0400
+ id 1smWzX-0008KB-Hd; Fri, 06 Sep 2024 07:19:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 65C3A8C4AD;
+ by isrv.corpit.ru (Postfix) with ESMTP id 735588C4AE;
  Fri,  6 Sep 2024 14:12:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 73E80133716;
+ by tsrv.corpit.ru (Postfix) with SMTP id 806FA133717;
  Fri,  6 Sep 2024 14:13:28 +0300 (MSK)
-Received: (nullmailer pid 353742 invoked by uid 1000);
+Received: (nullmailer pid 353745 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:25 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 60/69] linux-user: Preserve NULL hit in target_mmap
- subroutines
-Date: Fri,  6 Sep 2024 14:13:09 +0300
-Message-Id: <20240906111324.353230-60-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 61/69] target/sparc: Restrict STQF to sparcv9
+Date: Fri,  6 Sep 2024 14:13:10 +0300
+Message-Id: <20240906111324.353230-61-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,68 +63,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Do not pass guest_base to the host mmap instead of zero hint.
+Prior to sparcv9, the same encoding was STDFQ.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2353
+Fixes: 06c060d9e5b ("target/sparc: Move simple fp load/store to decodetree")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 3aefee3ec01e607529a9918e2978f365c5c3b5e9)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240816072311.353234-2-richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 12d36294a2d978faf893101862118d1ac1815e85)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index be3b9a68eb..2a11d921ab 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -559,9 +559,13 @@ static abi_long mmap_h_eq_g(abi_ulong start, abi_ulong len,
-                             int host_prot, int flags, int page_flags,
-                             int fd, off_t offset)
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index e2d8a07dc4..d2b29de084 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -484,7 +484,7 @@ STF         11 ..... 100100 ..... . .............          @r_r_ri_na
+ STFSR       11 00000 100101 ..... . .............          @n_r_ri
+ STXFSR      11 00001 100101 ..... . .............          @n_r_ri
  {
--    void *p, *want_p = g2h_untagged(start);
-+    void *p, *want_p = NULL;
-     abi_ulong last;
+-  STQF      11 ..... 100110 ..... . .............          @q_r_ri_na
++  STQF      11 ..... 100110 ..... . .............          @q_r_ri_na # v9
+   STDFQ     11 ----- 100110 ----- - -------------
+ }
+ STDF        11 ..... 100111 ..... . .............          @d_r_ri_na
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index 99c6f3cc72..9d5d0ae47c 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -4151,7 +4151,7 @@ static bool do_st_fpr(DisasContext *dc, arg_r_r_ri_asi *a, MemOp sz)
  
-+    if (start || (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-+        want_p = g2h_untagged(start);
-+    }
-+
-     p = mmap(want_p, len, host_prot, flags, fd, offset);
-     if (p == MAP_FAILED) {
-         return -1;
-@@ -609,11 +613,15 @@ static abi_long mmap_h_lt_g(abi_ulong start, abi_ulong len, int host_prot,
-                             int mmap_flags, int page_flags, int fd,
-                             off_t offset, int host_page_size)
- {
--    void *p, *want_p = g2h_untagged(start);
-+    void *p, *want_p = NULL;
-     off_t fileend_adj = 0;
-     int flags = mmap_flags;
-     abi_ulong last, pass_last;
+ TRANS(STF, ALL, do_st_fpr, a, MO_32)
+ TRANS(STDF, ALL, do_st_fpr, a, MO_64)
+-TRANS(STQF, ALL, do_st_fpr, a, MO_128)
++TRANS(STQF, 64, do_st_fpr, a, MO_128)
  
-+    if (start || (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-+        want_p = g2h_untagged(start);
-+    }
-+
-     if (!(flags & MAP_ANONYMOUS)) {
-         struct stat sb;
- 
-@@ -739,12 +747,16 @@ static abi_long mmap_h_gt_g(abi_ulong start, abi_ulong len,
-                             int flags, int page_flags, int fd,
-                             off_t offset, int host_page_size)
- {
--    void *p, *want_p = g2h_untagged(start);
-+    void *p, *want_p = NULL;
-     off_t host_offset = offset & -host_page_size;
-     abi_ulong last, real_start, real_last;
-     bool misaligned_offset = false;
-     size_t host_len;
- 
-+    if (start || (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-+        want_p = g2h_untagged(start);
-+    }
-+
-     if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-         /*
-          * Adjust the offset to something representable on the host.
+ TRANS(STFA, 64, do_st_fpr, a, MO_32)
+ TRANS(STDFA, 64, do_st_fpr, a, MO_64)
 -- 
 2.39.2
 
