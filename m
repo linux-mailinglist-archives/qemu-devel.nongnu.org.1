@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9FE96E93C
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBD696E920
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:21:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRNv-000145-0o; Fri, 06 Sep 2024 01:19:51 -0400
+	id 1smRNp-0008Qj-95; Fri, 06 Sep 2024 01:19:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRNi-0007r4-Jm; Fri, 06 Sep 2024 01:19:38 -0400
+ id 1smRNN-0005HO-W7; Fri, 06 Sep 2024 01:19:19 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRNg-0008I5-9h; Fri, 06 Sep 2024 01:19:38 -0400
+ id 1smRNM-0008I8-1C; Fri, 06 Sep 2024 01:19:17 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2370B8C134;
+ by isrv.corpit.ru (Postfix) with ESMTP id 322EC8C135;
  Fri,  6 Sep 2024 08:15:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C5369133379;
+ by tsrv.corpit.ru (Postfix) with SMTP id D5A5E13337A;
  Fri,  6 Sep 2024 08:16:35 +0300 (MSK)
-Received: (nullmailer pid 10480 invoked by uid 1000);
+Received: (nullmailer pid 10483 invoked by uid 1000);
  Fri, 06 Sep 2024 05:16:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 31/40] nbd/server: Plumb in new args to
- nbd_client_add()
-Date: Fri,  6 Sep 2024 08:16:19 +0300
-Message-Id: <20240906051633.10288-31-mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 32/40] nbd/server: CVE-2024-7409: Cap default
+ max-connections to 100
+Date: Fri,  6 Sep 2024 08:16:20 +0300
+Message-Id: <20240906051633.10288-32-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
@@ -65,153 +64,165 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Blake <eblake@redhat.com>
 
-Upcoming patches to fix a CVE need to track an opaque pointer passed
-in by the owner of a client object, as well as request for a time
-limit on how fast negotiation must complete.  Prepare for that by
-changing the signature of nbd_client_new() and adding an accessor to
-get at the opaque pointer, although for now the two servers
-(qemu-nbd.c and blockdev-nbd.c) do not change behavior even though
-they pass in a new default timeout value.
+Allowing an unlimited number of clients to any web service is a recipe
+for a rudimentary denial of service attack: the client merely needs to
+open lots of sockets without closing them, until qemu no longer has
+any more fds available to allocate.
 
-Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+For qemu-nbd, we default to allowing only 1 connection unless more are
+explicitly asked for (-e or --shared); this was historically picked as
+a nice default (without an explicit -t, a non-persistent qemu-nbd goes
+away after a client disconnects, without needing any additional
+follow-up commands), and we are not going to change that interface now
+(besides, someday we want to point people towards qemu-storage-daemon
+instead of qemu-nbd).
+
+But for qemu proper, and the newer qemu-storage-daemon, the QMP
+nbd-server-start command has historically had a default of unlimited
+number of connections, in part because unlike qemu-nbd it is
+inherently persistent until nbd-server-stop.  Allowing multiple client
+sockets is particularly useful for clients that can take advantage of
+MULTI_CONN (creating parallel sockets to increase throughput),
+although known clients that do so (such as libnbd's nbdcopy) typically
+use only 8 or 16 connections (the benefits of scaling diminish once
+more sockets are competing for kernel attention).  Picking a number
+large enough for typical use cases, but not unlimited, makes it
+slightly harder for a malicious client to perform a denial of service
+merely by opening lots of connections withot progressing through the
+handshake.
+
+This change does not eliminate CVE-2024-7409 on its own, but reduces
+the chance for fd exhaustion or unlimited memory usage as an attack
+surface.  On the other hand, by itself, it makes it more obvious that
+with a finite limit, we have the problem of an unauthenticated client
+holding 100 fds opened as a way to block out a legitimate client from
+being able to connect; thus, later patches will further add timeouts
+to reject clients that are not making progress.
+
+This is an INTENTIONAL change in behavior, and will break any client
+of nbd-server-start that was not passing an explicit max-connections
+parameter, yet expects more than 100 simultaneous connections.  We are
+not aware of any such client (as stated above, most clients aware of
+MULTI_CONN get by just fine on 8 or 16 connections, and probably cope
+with later connections failing by relying on the earlier connections;
+libvirt has not yet been passing max-connections, but generally
+creates NBD servers with the intent for a single client for the sake
+of live storage migration; meanwhile, the KubeSAN project anticipates
+a large cluster sharing multiple clients [up to 8 per node, and up to
+100 nodes in a cluster], but it currently uses qemu-nbd with an
+explicit --shared=0 rather than qemu-storage-daemon with
+nbd-server-start).
+
+We considered using a deprecation period (declare that omitting
+max-parameters is deprecated, and make it mandatory in 3 releases -
+then we don't need to pick an arbitrary default); that has zero risk
+of breaking any apps that accidentally depended on more than 100
+connections, and where such breakage might not be noticed under unit
+testing but only under the larger loads of production usage.  But it
+does not close the denial-of-service hole until far into the future,
+and requires all apps to change to add the parameter even if 100 was
+good enough.  It also has a drawback that any app (like libvirt) that
+is accidentally relying on an unlimited default should seriously
+consider their own CVE now, at which point they are going to change to
+pass explicit max-connections sooner than waiting for 3 qemu releases.
+Finally, if our changed default breaks an app, that app can always
+pass in an explicit max-parameters with a larger value.
+
+It is also intentional that the HMP interface to nbd-server-start is
+not changed to expose max-connections (any client needing to fine-tune
+things should be using QMP).
+
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20240807174943.771624-11-eblake@redhat.com>
+Message-ID: <20240807174943.771624-12-eblake@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-[eblake: s/LIMIT/MAX_SECS/ as suggested by Dan]
+[ericb: Expand commit message to summarize Dan's argument for why we
+break corner-case back-compat behavior without a deprecation period]
 Signed-off-by: Eric Blake <eblake@redhat.com>
-(cherry picked from commit fb1c2aaa981e0a2fa6362c9985f1296b74f055ac)
+(cherry picked from commit c8a76dbd90c2f48df89b75bef74917f90a59b623)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: minor fixups in qapi/block-export.json)
 
+diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
+index cf21b5e40a..d564d8d234 100644
+--- a/block/monitor/block-hmp-cmds.c
++++ b/block/monitor/block-hmp-cmds.c
+@@ -413,7 +413,8 @@ void hmp_nbd_server_start(Monitor *mon, const QDict *qdict)
+         goto exit;
+     }
+ 
+-    nbd_server_start(addr, NULL, NULL, 0, &local_err);
++    nbd_server_start(addr, NULL, NULL, NBD_DEFAULT_MAX_CONNECTIONS,
++                     &local_err);
+     qapi_free_SocketAddress(addr);
+     if (local_err != NULL) {
+         goto exit;
 diff --git a/blockdev-nbd.c b/blockdev-nbd.c
-index 012256bb02..bf02ddc1e0 100644
+index bf02ddc1e0..b357ae9bf1 100644
 --- a/blockdev-nbd.c
 +++ b/blockdev-nbd.c
-@@ -64,8 +64,10 @@ static void nbd_accept(QIONetListener *listener, QIOChannelSocket *cioc,
-     nbd_update_server_watch(nbd_server);
+@@ -170,6 +170,10 @@ void nbd_server_start(SocketAddress *addr, const char *tls_creds,
  
-     qio_channel_set_name(QIO_CHANNEL(cioc), "nbd-server");
--    nbd_client_new(cioc, nbd_server->tlscreds, nbd_server->tlsauthz,
--                   nbd_blockdev_client_closed);
-+    /* TODO - expose handshake timeout as QMP option */
-+    nbd_client_new(cioc, NBD_DEFAULT_HANDSHAKE_MAX_SECS,
-+                   nbd_server->tlscreds, nbd_server->tlsauthz,
-+                   nbd_blockdev_client_closed, NULL);
+ void nbd_server_start_options(NbdServerOptions *arg, Error **errp)
+ {
++    if (!arg->has_max_connections) {
++        arg->max_connections = NBD_DEFAULT_MAX_CONNECTIONS;
++    }
++
+     nbd_server_start(arg->addr, arg->tls_creds, arg->tls_authz,
+                      arg->max_connections, errp);
  }
+@@ -182,6 +186,10 @@ void qmp_nbd_server_start(SocketAddressLegacy *addr,
+ {
+     SocketAddress *addr_flat = socket_address_flatten(addr);
  
- static void nbd_update_server_watch(NBDServerData *s)
++    if (!has_max_connections) {
++        max_connections = NBD_DEFAULT_MAX_CONNECTIONS;
++    }
++
+     nbd_server_start(addr_flat, tls_creds, tls_authz, max_connections, errp);
+     qapi_free_SocketAddress(addr_flat);
+ }
 diff --git a/include/block/nbd.h b/include/block/nbd.h
-index 4ede3b2bd0..3392a5c319 100644
+index 3392a5c319..88be104e31 100644
 --- a/include/block/nbd.h
 +++ b/include/block/nbd.h
-@@ -27,6 +27,12 @@
- 
- extern const BlockExportDriver blk_exp_nbd;
+@@ -33,6 +33,13 @@ extern const BlockExportDriver blk_exp_nbd;
+  */
+ #define NBD_DEFAULT_HANDSHAKE_MAX_SECS 10
  
 +/*
-+ * NBD_DEFAULT_HANDSHAKE_MAX_SECS: Number of seconds in which client must
-+ * succeed at NBD_OPT_GO before being forcefully dropped as too slow.
++ * NBD_DEFAULT_MAX_CONNECTIONS: Number of client sockets to allow at
++ * once; must be large enough to allow a MULTI_CONN-aware client like
++ * nbdcopy to create its typical number of 8-16 sockets.
 + */
-+#define NBD_DEFAULT_HANDSHAKE_MAX_SECS 10
++#define NBD_DEFAULT_MAX_CONNECTIONS 100
 +
  /* Handshake phase structs - this struct is passed on the wire */
  
  struct NBDOption {
-@@ -338,9 +344,12 @@ AioContext *nbd_export_aio_context(NBDExport *exp);
- NBDExport *nbd_export_find(const char *name);
- 
- void nbd_client_new(QIOChannelSocket *sioc,
-+                    uint32_t handshake_max_secs,
-                     QCryptoTLSCreds *tlscreds,
-                     const char *tlsauthz,
--                    void (*close_fn)(NBDClient *, bool));
-+                    void (*close_fn)(NBDClient *, bool),
-+                    void *owner);
-+void *nbd_client_owner(NBDClient *client);
- void nbd_client_get(NBDClient *client);
- void nbd_client_put(NBDClient *client);
- 
-diff --git a/nbd/server.c b/nbd/server.c
-index 74edb2815b..431e543b47 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -120,10 +120,12 @@ typedef struct NBDExportMetaContexts {
- struct NBDClient {
-     int refcount;
-     void (*close_fn)(NBDClient *client, bool negotiated);
-+    void *owner;
- 
-     NBDExport *exp;
-     QCryptoTLSCreds *tlscreds;
-     char *tlsauthz;
-+    uint32_t handshake_max_secs;
-     QIOChannelSocket *sioc; /* The underlying data channel */
-     QIOChannel *ioc; /* The current I/O channel which may differ (eg TLS) */
- 
-@@ -2755,6 +2757,7 @@ static coroutine_fn void nbd_co_client_start(void *opaque)
- 
-     qemu_co_mutex_init(&client->send_lock);
- 
-+    /* TODO - utilize client->handshake_max_secs */
-     if (nbd_negotiate(client, &local_err)) {
-         if (local_err) {
-             error_report_err(local_err);
-@@ -2767,14 +2770,17 @@ static coroutine_fn void nbd_co_client_start(void *opaque)
- }
- 
- /*
-- * Create a new client listener using the given channel @sioc.
-+ * Create a new client listener using the given channel @sioc and @owner.
-  * Begin servicing it in a coroutine.  When the connection closes, call
-- * @close_fn with an indication of whether the client completed negotiation.
-+ * @close_fn with an indication of whether the client completed negotiation
-+ * within @handshake_max_secs seconds (0 for unbounded).
-  */
- void nbd_client_new(QIOChannelSocket *sioc,
-+                    uint32_t handshake_max_secs,
-                     QCryptoTLSCreds *tlscreds,
-                     const char *tlsauthz,
--                    void (*close_fn)(NBDClient *, bool))
-+                    void (*close_fn)(NBDClient *, bool),
-+                    void *owner)
- {
-     NBDClient *client;
-     Coroutine *co;
-@@ -2786,12 +2792,20 @@ void nbd_client_new(QIOChannelSocket *sioc,
-         object_ref(OBJECT(client->tlscreds));
-     }
-     client->tlsauthz = g_strdup(tlsauthz);
-+    client->handshake_max_secs = handshake_max_secs;
-     client->sioc = sioc;
-     object_ref(OBJECT(client->sioc));
-     client->ioc = QIO_CHANNEL(sioc);
-     object_ref(OBJECT(client->ioc));
-     client->close_fn = close_fn;
-+    client->owner = owner;
- 
-     co = qemu_coroutine_create(nbd_co_client_start, client);
-     qemu_coroutine_enter(co);
- }
-+
-+void *
-+nbd_client_owner(NBDClient *client)
-+{
-+    return client->owner;
-+}
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index f71f5125d8..16b220bdad 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -369,7 +369,9 @@ static void nbd_accept(QIONetListener *listener, QIOChannelSocket *cioc,
- 
-     nb_fds++;
-     nbd_update_server_watch();
--    nbd_client_new(cioc, tlscreds, tlsauthz, nbd_client_closed);
-+    /* TODO - expose handshake timeout as command line option */
-+    nbd_client_new(cioc, NBD_DEFAULT_HANDSHAKE_MAX_SECS,
-+                   tlscreds, tlsauthz, nbd_client_closed, NULL);
- }
- 
- static void nbd_update_server_watch(void)
+diff --git a/qapi/block-export.json b/qapi/block-export.json
+index 4627bbc4e6..67d2337f91 100644
+--- a/qapi/block-export.json
++++ b/qapi/block-export.json
+@@ -24,7 +24,7 @@
+ # @max-connections: The maximum number of connections to allow at the same
+ #                   time, 0 for unlimited. Setting this to 1 also stops
+ #                   the server from advertising multiple client support
+-#                   (since 5.2; default: 0)
++#                   (since 5.2; default: 100)
+ #
+ # Since: 4.2
+ ##
+@@ -55,7 +55,7 @@
+ # @max-connections: The maximum number of connections to allow at the same
+ #                   time, 0 for unlimited. Setting this to 1 also stops
+ #                   the server from advertising multiple client support
+-#                   (since 5.2; default: 0).
++#                   (since 5.2; default: 100).
+ #
+ # Returns: error if the server is already running.
+ #
 -- 
 2.39.2
 
