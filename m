@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0896C96F2A5
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2BB96F296
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:17:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWxU-0007L3-40; Fri, 06 Sep 2024 07:16:57 -0400
+	id 1smWxG-0005TS-0i; Fri, 06 Sep 2024 07:16:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWwI-0001yV-Af; Fri, 06 Sep 2024 07:15:45 -0400
+ id 1smWwI-0001yU-9Z; Fri, 06 Sep 2024 07:15:45 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWwG-00080o-Hj; Fri, 06 Sep 2024 07:15:42 -0400
+ id 1smWwG-00080r-IQ; Fri, 06 Sep 2024 07:15:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 532E98C48B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 612858C48C;
  Fri,  6 Sep 2024 14:12:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 602371336F5;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6E0C21336F6;
  Fri,  6 Sep 2024 14:13:26 +0300 (MSK)
-Received: (nullmailer pid 353630 invoked by uid 1000);
+Received: (nullmailer pid 353633 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 27/69] target/arm: Avoid shifts by -1 in tszimm_shr()
- and tszimm_shl()
-Date: Fri,  6 Sep 2024 14:12:36 +0300
-Message-Id: <20240906111324.353230-27-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 28/69] target/arm: Ignore SMCR_EL2.LEN and SVCR_EL2.LEN
+ if EL2 is not enabled
+Date: Fri,  6 Sep 2024 14:12:37 +0300
+Message-Id: <20240906111324.353230-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -63,59 +63,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-The function tszimm_esz() returns a shift amount, or possibly -1 in
-certain cases that correspond to unallocated encodings in the
-instruction set.  We catch these later in the trans_ functions
-(generally with an "a-esz < 0" check), but before we do the
-decodetree-generated code will also call tszimm_shr() or tszimm_sl(),
-which will use the tszimm_esz() return value as a shift count without
-checking that it is not negative, which is undefined behaviour.
+When determining the current vector length, the SMCR_EL2.LEN and
+SVCR_EL2.LEN settings should only be considered if EL2 is enabled
+(compare the pseudocode CurrentSVL and CurrentNSVL which call
+EL2Enabled()).
 
-Avoid the UB by checking the return value in tszimm_shr() and
-tszimm_shl().
+We were checking against ARM_FEATURE_EL2 rather than calling
+arm_is_el2_enabled(), which meant that we would look at
+SMCR_EL2/SVCR_EL2 when in Secure EL1 or Secure EL0 even if Secure EL2
+was not enabled.
+
+Use the correct check in sve_vqm1_for_el_sm().
 
 Cc: qemu-stable@nongnu.org
-Resolves: Coverity CID 1547617, 1547694
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240722172957.1041231-4-peter.maydell@linaro.org
-(cherry picked from commit 76916dfa89e8900639c1055c07a295c06628a0bc)
+Message-id: 20240722172957.1041231-5-peter.maydell@linaro.org
+(cherry picked from commit f573ac059ed060234fcef4299fae9e500d357c33)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index ada05aa530..466a19c25a 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -50,13 +50,27 @@ static int tszimm_esz(DisasContext *s, int x)
- 
- static int tszimm_shr(DisasContext *s, int x)
- {
--    return (16 << tszimm_esz(s, x)) - x;
-+    /*
-+     * We won't use the tszimm_shr() value if tszimm_esz() returns -1 (the
-+     * trans function will check for esz < 0), so we can return any
-+     * value we like from here in that case as long as we avoid UB.
-+     */
-+    int esz = tszimm_esz(s, x);
-+    if (esz < 0) {
-+        return esz;
-+    }
-+    return (16 << esz) - x;
- }
- 
- /* See e.g. LSL (immediate, predicated).  */
- static int tszimm_shl(DisasContext *s, int x)
- {
--    return x - (8 << tszimm_esz(s, x));
-+    /* As with tszimm_shr(), value will be unused if esz < 0 */
-+    int esz = tszimm_esz(s, x);
-+    if (esz < 0) {
-+        return esz;
-+    }
-+    return x - (8 << esz);
- }
- 
- /* The SH bit is in bit 8.  Extract the low 8 and shift.  */
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index a620481d7c..42044ae14b 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -7191,7 +7191,7 @@ uint32_t sve_vqm1_for_el_sm(CPUARMState *env, int el, bool sm)
+     if (el <= 1 && !el_is_in_host(env, el)) {
+         len = MIN(len, 0xf & (uint32_t)cr[1]);
+     }
+-    if (el <= 2 && arm_feature(env, ARM_FEATURE_EL2)) {
++    if (el <= 2 && arm_is_el2_enabled(env)) {
+         len = MIN(len, 0xf & (uint32_t)cr[2]);
+     }
+     if (arm_feature(env, ARM_FEATURE_EL3)) {
 -- 
 2.39.2
 
