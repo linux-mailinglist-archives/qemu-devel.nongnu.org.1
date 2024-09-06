@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68AC96F2C2
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:20:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0B296F2D3
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:21:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWyq-0005nh-03; Fri, 06 Sep 2024 07:18:21 -0400
+	id 1smWyk-00050c-6h; Fri, 06 Sep 2024 07:18:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWyb-0004B4-Ig; Fri, 06 Sep 2024 07:18:05 -0400
+ id 1smWyc-0004Hg-W9; Fri, 06 Sep 2024 07:18:07 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWyZ-0008D7-N5; Fri, 06 Sep 2024 07:18:05 -0400
+ id 1smWyb-0008E7-91; Fri, 06 Sep 2024 07:18:06 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C355E8C4A3;
+ by isrv.corpit.ru (Postfix) with ESMTP id D25B88C4A4;
  Fri,  6 Sep 2024 14:12:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id CEF7513370C;
+ by tsrv.corpit.ru (Postfix) with SMTP id DE60413370D;
  Fri,  6 Sep 2024 14:13:27 +0300 (MSK)
-Received: (nullmailer pid 353709 invoked by uid 1000);
+Received: (nullmailer pid 353712 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Eric Blake <eblake@redhat.com>,
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 50/69] nbd/server: CVE-2024-7409: Avoid use-after-free
- when closing server
-Date: Fri,  6 Sep 2024 14:12:59 +0300
-Message-Id: <20240906111324.353230-50-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, David Woodhouse <dwmw@amazon.co.uk>,
+ Hans <sungdgdhtryrt@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [Stable-9.0.3 51/69] net: Fix '-net nic,
+ model=' for non-help arguments
+Date: Fri,  6 Sep 2024 14:13:00 +0300
+Message-Id: <20240906111324.353230-51-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -61,88 +61,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Blake <eblake@redhat.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Commit 3e7ef738 plugged the use-after-free of the global nbd_server
-object, but overlooked a use-after-free of nbd_server->listener.
-Although this race is harder to hit, notice that our shutdown path
-first drops the reference count of nbd_server->listener, then triggers
-actions that can result in a pending client reaching the
-nbd_blockdev_client_closed() callback, which in turn calls
-qio_net_listener_set_client_func on a potentially stale object.
+Oops, don't *delete* the model option when checking for 'help'.
 
-If we know we don't want any more clients to connect, and have already
-told the listener socket to shut down, then we should not be trying to
-update the listener socket's associated function.
-
-Reproducer:
-
-> #!/usr/bin/python3
->
-> import os
-> from threading import Thread
->
-> def start_stop():
->     while 1:
->         os.system('virsh qemu-monitor-command VM \'{"execute": "nbd-server-start",
-+"arguments":{"addr":{"type":"unix","data":{"path":"/tmp/nbd-sock"}}}}\'')
->         os.system('virsh qemu-monitor-command VM \'{"execute": "nbd-server-stop"}\'')
->
-> def nbd_list():
->     while 1:
->         os.system('/path/to/build/qemu-nbd -L -k /tmp/nbd-sock')
->
-> def test():
->     sst = Thread(target=start_stop)
->     sst.start()
->     nlt = Thread(target=nbd_list)
->     nlt.start()
->
->     sst.join()
->     nlt.join()
->
-> test()
-
-Fixes: CVE-2024-7409
-Fixes: 3e7ef738c8 ("nbd/server: CVE-2024-7409: Close stray clients at server-stop")
-CC: qemu-stable@nongnu.org
-Reported-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20240822143617.800419-2-eblake@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-(cherry picked from commit 3874f5f73c441c52f1c699c848d463b0eda01e4c)
+Fixes: 64f75f57f9d2 ("net: Reinstate '-net nic, model=help' output as documented in man page")
+Reported-by: Hans <sungdgdhtryrt@gmail.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit fa62cb989a9146c82f8f172715042852f5d36200)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/blockdev-nbd.c b/blockdev-nbd.c
-index f73409ae49..b36f41b7c5 100644
---- a/blockdev-nbd.c
-+++ b/blockdev-nbd.c
-@@ -92,10 +92,13 @@ static void nbd_accept(QIONetListener *listener, QIOChannelSocket *cioc,
+diff --git a/net/net.c b/net/net.c
+index e6ca2529bb..897bb936cf 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -1748,7 +1748,7 @@ void net_check_clients(void)
  
- static void nbd_update_server_watch(NBDServerData *s)
+ static int net_init_client(void *dummy, QemuOpts *opts, Error **errp)
  {
--    if (!s->max_connections || s->connections < s->max_connections) {
--        qio_net_listener_set_client_func(s->listener, nbd_accept, NULL, NULL);
--    } else {
--        qio_net_listener_set_client_func(s->listener, NULL, NULL, NULL);
-+    if (s->listener) {
-+        if (!s->max_connections || s->connections < s->max_connections) {
-+            qio_net_listener_set_client_func(s->listener, nbd_accept, NULL,
-+                                             NULL);
-+        } else {
-+            qio_net_listener_set_client_func(s->listener, NULL, NULL, NULL);
-+        }
-     }
- }
+-    const char *model = qemu_opt_get_del(opts, "model");
++    const char *model = qemu_opt_get(opts, "model");
  
-@@ -113,6 +116,7 @@ static void nbd_server_free(NBDServerData *server)
-      */
-     qio_net_listener_disconnect(server->listener);
-     object_unref(OBJECT(server->listener));
-+    server->listener = NULL;
-     QLIST_FOREACH_SAFE(conn, &server->conns, next, tmp) {
-         qio_channel_shutdown(QIO_CHANNEL(conn->cioc), QIO_CHANNEL_SHUTDOWN_BOTH,
-                              NULL);
+     if (is_nic_model_help_option(model)) {
+         return 0;
 -- 
 2.39.2
 
