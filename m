@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A813896FA62
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 20:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 718DF96FA6B
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 20:07:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smdM7-0008C0-0J; Fri, 06 Sep 2024 14:06:47 -0400
+	id 1smdM9-0008O6-Nk; Fri, 06 Sep 2024 14:06:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smdLs-0007ma-EP
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:06:33 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smdLz-0007sv-DA
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:06:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smdLp-00053o-Jg
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:06:31 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smdLv-00054T-K6
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:06:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725645989;
+ s=mimecast20190719; t=1725645995;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ji84iv9XBJKYjEg7xYMJZg1LQX8VnwwUmA7czsLEGX8=;
- b=hwJzwMWhppqrNvEiH9sDz0A6n1FPYAxaxBMCgWxK2YwtO1W6OSNPBzwOaszkeqv/z7fKDh
- mWSGDjPcYYPELQCrC3WuOd2O9JWZr5we/NUCbX/zAHQd5EH3hg0fwZwifa5hTxlnrbDiCB
- d5tOaJBnS/EIFXZ73MnDWW6lUgLv7A4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=WauHp+fxyn35iSAldex/SJv7B3A4g0L3iJPfDRdhzyo=;
+ b=QT0DmX0dO0Gr2qaEI2lerDG4AXcCUFj0rDPu8XjStweenvi0YYIgGGaketGBVbZHb3o/my
+ Pp1tQyFjUkQCBUN20sRmBk+GjGsaKnxPBak+xytycmWri47tZp9yRSdf/jHh9azIY4k8Lf
+ W4OSZBYmwM4tqtLmNCd4Fbg2TNhMfsk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-540--OPRPHQjPD6smKOd9JS_YQ-1; Fri,
- 06 Sep 2024 14:06:27 -0400
-X-MC-Unique: -OPRPHQjPD6smKOd9JS_YQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-12-_gw2pR_UO-WwNEkMQBG-oA-1; Fri,
+ 06 Sep 2024 14:06:32 -0400
+X-MC-Unique: _gw2pR_UO-WwNEkMQBG-oA-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A83921977009; Fri,  6 Sep 2024 18:06:26 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 17CE21954B2D; Fri,  6 Sep 2024 18:06:30 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.70])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2815C19560AA; Fri,  6 Sep 2024 18:06:23 +0000 (UTC)
+ id EA65E19560AF; Fri,  6 Sep 2024 18:06:26 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  "Daniel P . Berrange" <berrange@redhat.com>
-Subject: [PATCH 10/14] tests/functional: Convert Aarch64 Raspi3 avocado tests
-Date: Fri,  6 Sep 2024 20:05:45 +0200
-Message-ID: <20240906180549.792832-11-thuth@redhat.com>
+Subject: [PATCH 11/14] tests/functional: Convert Aarch64 Raspi4 avocado tests
+Date: Fri,  6 Sep 2024 20:05:46 +0200
+Message-ID: <20240906180549.792832-12-thuth@redhat.com>
 In-Reply-To: <20240906180549.792832-1-thuth@redhat.com>
 References: <20240906180549.792832-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -87,118 +87,250 @@ Straight forward conversion. Update the SHA1 hashes to SHA256
 hashes since SHA1 should not be used anymore nowadays.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240826221058.75126-4-philmd@linaro.org>
-[thuth: Use the LinuxKernelTest class]
+Message-ID: <20240826221058.75126-5-philmd@linaro.org>
+[thuth: Use LinuxKernelTest class]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
  MAINTAINERS                             |  1 +
- tests/avocado/boot_linux_console.py     | 23 --------------
+ tests/avocado/boot_linux_console.py     | 97 ------------------------
  tests/functional/meson.build            |  1 +
- tests/functional/test_aarch64_raspi3.py | 41 +++++++++++++++++++++++++
- 4 files changed, 43 insertions(+), 23 deletions(-)
- create mode 100755 tests/functional/test_aarch64_raspi3.py
+ tests/functional/test_aarch64_raspi4.py | 99 +++++++++++++++++++++++++
+ 4 files changed, 101 insertions(+), 97 deletions(-)
+ create mode 100755 tests/functional/test_aarch64_raspi4.py
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index eaf71bb976..4e5a6d71b8 100644
+index 4e5a6d71b8..cede115085 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -912,6 +912,7 @@ F: include/hw/arm/rasp*
- F: include/hw/*/bcm283*
+@@ -913,6 +913,7 @@ F: include/hw/*/bcm283*
  F: docs/system/arm/raspi.rst
  F: tests/functional/test_arm_raspi2.py
-+F: tests/functional/test_aarch64_raspi3.py
+ F: tests/functional/test_aarch64_raspi3.py
++F: tests/functional/test_aarch64_raspi4.py
  
  Real View
  M: Peter Maydell <peter.maydell@linaro.org>
 diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 827a286429..e4caf34379 100644
+index e4caf34379..a8eac44d9f 100644
 --- a/tests/avocado/boot_linux_console.py
 +++ b/tests/avocado/boot_linux_console.py
-@@ -979,29 +979,6 @@ def test_arm_orangepi_uboot_netbsd9(self):
-         # Wait for user-space
-         wait_for_console_pattern(self, 'Starting root file system check')
+@@ -203,103 +203,6 @@ def test_arm_emcraft_sf2(self):
+         exec_command_and_wait_for_pattern(self, 'ping -c 3 10.0.2.2',
+             '3 packets transmitted, 3 packets received, 0% packet loss')
  
--    def test_aarch64_raspi3_atf(self):
+-    def test_arm_raspi4(self):
 -        """
--        :avocado: tags=accel:tcg
 -        :avocado: tags=arch:aarch64
--        :avocado: tags=machine:raspi3b
--        :avocado: tags=cpu:cortex-a53
+-        :avocado: tags=machine:raspi4b
 -        :avocado: tags=device:pl011
--        :avocado: tags=atf
+-        :avocado: tags=accel:tcg
+-        :avocado: tags=rpi4b
+-
+-        The kernel can be rebuilt using the kernel source referenced
+-        and following the instructions on the on:
+-        https://www.raspberrypi.org/documentation/linux/kernel/building.md
 -        """
--        zip_url = ('https://github.com/pbatard/RPi3/releases/download/'
--                   'v1.15/RPi3_UEFI_Firmware_v1.15.zip')
--        zip_hash = '74b3bd0de92683cadb14e008a7575e1d0c3cafb9'
--        zip_path = self.fetch_asset(zip_url, asset_hash=zip_hash)
 -
--        archive.extract(zip_path, self.workdir)
--        efi_fd = os.path.join(self.workdir, 'RPI_EFI.fd')
+-        deb_url = ('http://archive.raspberrypi.org/debian/'
+-            'pool/main/r/raspberrypi-firmware/'
+-            'raspberrypi-kernel_1.20230106-1_arm64.deb')
+-        deb_hash = '08dc55696535b18a6d4fe6fa10d4c0d905cbb2ed'
+-        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
+-        kernel_path = self.extract_from_deb(deb_path, '/boot/kernel8.img')
+-        dtb_path = self.extract_from_deb(deb_path, '/boot/bcm2711-rpi-4-b.dtb')
 -
--        self.vm.set_console(console_index=1)
--        self.vm.add_args('-nodefaults',
--                         '-device', 'loader,file=%s,force-raw=true' % efi_fd)
+-        self.vm.set_console()
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               'earlycon=pl011,mmio32,0xfe201000 ' +
+-                               'console=ttyAMA0,115200 ' +
+-                               'root=/dev/mmcblk1p2 rootwait ' +
+-                               'dwc_otg.fiq_fsm_enable=0')
+-        self.vm.add_args('-kernel', kernel_path,
+-                         '-dtb', dtb_path,
+-                         '-append', kernel_command_line)
+-        # When PCI is supported we can add a USB controller:
+-        #                '-device', 'qemu-xhci,bus=pcie.1,id=xhci',
+-        #                '-device', 'usb-kbd,bus=xhci.0',
 -        self.vm.launch()
--        self.wait_for_console_pattern('version UEFI Firmware v1.15')
+-        console_pattern = 'Kernel command line: %s' % kernel_command_line
+-        self.wait_for_console_pattern(console_pattern)
+-        # When USB is enabled we can look for this
+-        # console_pattern = 'Product: QEMU USB Keyboard'
+-        # self.wait_for_console_pattern(console_pattern)
+-        console_pattern = 'Waiting for root device'
+-        self.wait_for_console_pattern(console_pattern)
 -
-     def test_alpha_clipper(self):
+-
+-    def test_arm_raspi4_initrd(self):
+-        """
+-        :avocado: tags=arch:aarch64
+-        :avocado: tags=machine:raspi4b
+-        :avocado: tags=device:pl011
+-        :avocado: tags=accel:tcg
+-        :avocado: tags=rpi4b
+-
+-        The kernel can be rebuilt using the kernel source referenced
+-        and following the instructions on the on:
+-        https://www.raspberrypi.org/documentation/linux/kernel/building.md
+-        """
+-        deb_url = ('http://archive.raspberrypi.org/debian/'
+-            'pool/main/r/raspberrypi-firmware/'
+-            'raspberrypi-kernel_1.20230106-1_arm64.deb')
+-        deb_hash = '08dc55696535b18a6d4fe6fa10d4c0d905cbb2ed'
+-        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
+-        kernel_path = self.extract_from_deb(deb_path, '/boot/kernel8.img')
+-        dtb_path = self.extract_from_deb(deb_path, '/boot/bcm2711-rpi-4-b.dtb')
+-
+-        initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
+-                      '86b2be1384d41c8c388e63078a847f1e1c4cb1de/rootfs/'
+-                      'arm64/rootfs.cpio.gz')
+-        initrd_hash = 'f3d4f9fa92a49aa542f1b44d34be77bbf8ca5b9d'
+-        initrd_path_gz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
+-        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
+-        archive.gzip_uncompress(initrd_path_gz, initrd_path)
+-
+-        self.vm.set_console()
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               'earlycon=pl011,mmio32,0xfe201000 ' +
+-                               'console=ttyAMA0,115200 ' +
+-                               'panic=-1 noreboot ' +
+-                               'dwc_otg.fiq_fsm_enable=0')
+-        self.vm.add_args('-kernel', kernel_path,
+-                         '-dtb', dtb_path,
+-                         '-initrd', initrd_path,
+-                         '-append', kernel_command_line,
+-                         '-no-reboot')
+-        # When PCI is supported we can add a USB controller:
+-        #                '-device', 'qemu-xhci,bus=pcie.1,id=xhci',
+-        #                '-device', 'usb-kbd,bus=xhci.0',
+-        self.vm.launch()
+-        self.wait_for_console_pattern('Boot successful.')
+-
+-        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
+-                                                'BCM2835')
+-        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
+-                                                'cprman@7e101000')
+-        exec_command_and_wait_for_pattern(self, 'halt', 'reboot: System halted')
+-        # TODO: Raspberry Pi4 doesn't shut down properly with recent kernels
+-        # Wait for VM to shut down gracefully
+-        #self.vm.wait()
+-
+     def test_arm_exynos4210_initrd(self):
          """
-         :avocado: tags=arch:alpha
+         :avocado: tags=arch:arm
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index ff3fe7981e..35eebbe9b9 100644
+index 35eebbe9b9..a79083b0f9 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -35,6 +35,7 @@ tests_generic_bsduser = [
- ]
+@@ -36,6 +36,7 @@ tests_generic_bsduser = [
  
  tests_aarch64_system_thorough = [
-+  'aarch64_raspi3',
+   'aarch64_raspi3',
++  'aarch64_raspi4',
    'aarch64_sbsaref',
    'aarch64_virt',
  ]
-diff --git a/tests/functional/test_aarch64_raspi3.py b/tests/functional/test_aarch64_raspi3.py
+diff --git a/tests/functional/test_aarch64_raspi4.py b/tests/functional/test_aarch64_raspi4.py
 new file mode 100755
-index 0000000000..369f95a3d9
+index 0000000000..e5c9f77479
 --- /dev/null
-+++ b/tests/functional/test_aarch64_raspi3.py
-@@ -0,0 +1,41 @@
++++ b/tests/functional/test_aarch64_raspi4.py
+@@ -0,0 +1,99 @@
 +#!/usr/bin/env python3
 +#
 +# Functional test that boots a Linux kernel on a Raspberry Pi machine
 +# and checks the console
 +#
-+# Copyright (c) 2020 Philippe Mathieu-Daudé <f4bug@amsat.org>
-+#
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
 +import os
-+from zipfile import ZipFile
 +
 +from qemu_test import LinuxKernelTest, Asset
++from qemu_test import exec_command_and_wait_for_pattern
++from qemu_test.utils import gzip_uncompress
 +
 +
-+class Aarch64Raspi3Machine(LinuxKernelTest):
++class Aarch64Raspi4Machine(LinuxKernelTest):
 +
-+    ASSET_RPI3_UEFI = Asset(
-+        ('https://github.com/pbatard/RPi3/releases/download/'
-+         'v1.15/RPi3_UEFI_Firmware_v1.15.zip'),
-+        '8cff2e979560048b4c84921f41a91893240b9fb71a88f0b5c5d6c8edd994bd5b')
++    """
++    The kernel can be rebuilt using the kernel source referenced
++    and following the instructions on the on:
++    https://www.raspberrypi.org/documentation/linux/kernel/building.md
++    """
++    ASSET_KERNEL_20190215 = Asset(
++        ('http://archive.raspberrypi.org/debian/'
++         'pool/main/r/raspberrypi-firmware/'
++         'raspberrypi-kernel_1.20230106-1_arm64.deb'),
++        '56d5713c8f6eee8a0d3f0e73600ec11391144fef318b08943e9abd94c0a9baf7')
 +
-+    def test_aarch64_raspi3_atf(self):
-+        efi_name = 'RPI_EFI.fd'
-+        zip_path = self.ASSET_RPI3_UEFI.fetch()
++    ASSET_INITRD = Asset(
++        ('https://github.com/groeck/linux-build-test/raw/'
++         '86b2be1384d41c8c388e63078a847f1e1c4cb1de/rootfs/'
++         'arm64/rootfs.cpio.gz'),
++        '7c0b16d1853772f6f4c3ca63e789b3b9ff4936efac9c8a01fb0c98c05c7a7648')
 +
-+        with ZipFile(zip_path, 'r') as zf:
-+                     zf.extract(efi_name, path=self.workdir)
-+        efi_fd = os.path.join(self.workdir, efi_name)
++    def test_arm_raspi4(self):
++        deb_path = self.ASSET_KERNEL_20190215.fetch()
++        kernel_path = self.extract_from_deb(deb_path, '/boot/kernel8.img')
++        dtb_path = self.extract_from_deb(deb_path, '/boot/bcm2711-rpi-4-b.dtb')
 +
-+        self.set_machine('raspi3b')
-+        self.vm.set_console(console_index=1)
-+        self.vm.add_args('-cpu', 'cortex-a53',
-+                         '-nodefaults',
-+                         '-device', f'loader,file={efi_fd},force-raw=true')
++        self.set_machine('raspi4b')
++        self.vm.set_console()
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'earlycon=pl011,mmio32,0xfe201000 ' +
++                               'console=ttyAMA0,115200 ' +
++                               'root=/dev/mmcblk1p2 rootwait ' +
++                               'dwc_otg.fiq_fsm_enable=0')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-dtb', dtb_path,
++                         '-append', kernel_command_line)
++        # When PCI is supported we can add a USB controller:
++        #                '-device', 'qemu-xhci,bus=pcie.1,id=xhci',
++        #                '-device', 'usb-kbd,bus=xhci.0',
 +        self.vm.launch()
-+        self.wait_for_console_pattern('version UEFI Firmware v1.15')
++        console_pattern = 'Kernel command line: %s' % kernel_command_line
++        self.wait_for_console_pattern(console_pattern)
++        # When USB is enabled we can look for this
++        # console_pattern = 'Product: QEMU USB Keyboard'
++        # self.wait_for_console_pattern(console_pattern)
++        console_pattern = 'Waiting for root device'
++        self.wait_for_console_pattern(console_pattern)
++
++
++    def test_arm_raspi4_initrd(self):
++        deb_path = self.ASSET_KERNEL_20190215.fetch()
++        kernel_path = self.extract_from_deb(deb_path, '/boot/kernel8.img')
++        dtb_path = self.extract_from_deb(deb_path, '/boot/bcm2711-rpi-4-b.dtb')
++        initrd_path_gz = self.ASSET_INITRD.fetch()
++        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
++        gzip_uncompress(initrd_path_gz, initrd_path)
++
++        self.set_machine('raspi4b')
++        self.vm.set_console()
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'earlycon=pl011,mmio32,0xfe201000 ' +
++                               'console=ttyAMA0,115200 ' +
++                               'panic=-1 noreboot ' +
++                               'dwc_otg.fiq_fsm_enable=0')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-dtb', dtb_path,
++                         '-initrd', initrd_path,
++                         '-append', kernel_command_line,
++                         '-no-reboot')
++        # When PCI is supported we can add a USB controller:
++        #                '-device', 'qemu-xhci,bus=pcie.1,id=xhci',
++        #                '-device', 'usb-kbd,bus=xhci.0',
++        self.vm.launch()
++        self.wait_for_console_pattern('Boot successful.')
++
++        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
++                                                'BCM2835')
++        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
++                                                'cprman@7e101000')
++        exec_command_and_wait_for_pattern(self, 'halt', 'reboot: System halted')
++        # TODO: Raspberry Pi4 doesn't shut down properly with recent kernels
++        # Wait for VM to shut down gracefully
++        #self.vm.wait()
 +
 +
 +if __name__ == '__main__':
