@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AEBD96E913
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2706396E92F
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:24:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRLp-00057a-B7; Fri, 06 Sep 2024 01:17:41 -0400
+	id 1smRLw-00060m-NK; Fri, 06 Sep 2024 01:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRLL-000407-Tn; Fri, 06 Sep 2024 01:17:17 -0400
+ id 1smRLR-00042Q-Fw; Fri, 06 Sep 2024 01:17:20 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRLG-0007sb-ID; Fri, 06 Sep 2024 01:17:07 -0400
+ id 1smRLN-0007v4-Um; Fri, 06 Sep 2024 01:17:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C058E8C11E;
+ by isrv.corpit.ru (Postfix) with ESMTP id DA9648C11F;
  Fri,  6 Sep 2024 08:15:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6FACC133364;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7E75B133365;
  Fri,  6 Sep 2024 08:16:34 +0300 (MSK)
-Received: (nullmailer pid 10414 invoked by uid 1000);
+Received: (nullmailer pid 10417 invoked by uid 1000);
  Fri, 06 Sep 2024 05:16:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 10/40] util/async.c: Forbid negative min/max in
- aio_context_set_thread_pool_params()
-Date: Fri,  6 Sep 2024 08:15:58 +0300
-Message-Id: <20240906051633.10288-10-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 11/40] hw/virtio: Fix the de-initialization of
+ vhost-user devices
+Date: Fri,  6 Sep 2024 08:15:59 +0300
+Message-Id: <20240906051633.10288-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,41 +61,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-aio_context_set_thread_pool_params() takes two int64_t arguments to
-set the minimum and maximum number of threads in the pool.  We do
-some bounds checking on these, but we don't catch the case where the
-inputs are negative.  This means that later in the function when we
-assign these inputs to the AioContext::thread_pool_min and
-::thread_pool_max fields, which are of type int, the values might
-overflow the smaller type.
+The unrealize functions of the various vhost-user devices are
+calling the corresponding vhost_*_set_status() functions with a
+status of 0 to shut down the device correctly.
 
-A negative number of threads is meaningless, so make
-aio_context_set_thread_pool_params() return an error if either min or
-max are negative.
+Now these vhost_*_set_status() functions all follow this scheme:
 
-Resolves: Coverity CID 1547605
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240723150927.1396456-1-peter.maydell@linaro.org
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-(cherry picked from commit 851495571d14fe2226c52b9d423f88a4f5460836)
+    bool should_start = virtio_device_should_start(vdev, status);
+
+    if (vhost_dev_is_started(&vvc->vhost_dev) == should_start) {
+        return;
+    }
+
+    if (should_start) {
+        /* ... do the initialization stuff ... */
+    } else {
+        /* ... do the cleanup stuff ... */
+    }
+
+The problem here is virtio_device_should_start(vdev, 0) currently
+always returns "true" since it internally only looks at vdev->started
+instead of looking at the "status" parameter. Thus once the device
+got started once, virtio_device_should_start() always returns true
+and thus the vhost_*_set_status() functions return early, without
+ever doing any clean-up when being called with status == 0. This
+causes e.g. problems when trying to hot-plug and hot-unplug a vhost
+user devices multiple times since the de-initialization step is
+completely skipped during the unplug operation.
+
+This bug has been introduced in commit 9f6bcfd99f ("hw/virtio: move
+vm_running check to virtio_device_started") which replaced
+
+ should_start = status & VIRTIO_CONFIG_S_DRIVER_OK;
+
+with
+
+ should_start = virtio_device_started(vdev, status);
+
+which later got replaced by virtio_device_should_start(). This blocked
+the possibility to set should_start to false in case the status flag
+VIRTIO_CONFIG_S_DRIVER_OK was not set.
+
+Fix it by adjusting the virtio_device_should_start() function to
+only consider the status flag instead of vdev->started. Since this
+function is only used in the various vhost_*_set_status() functions
+for exactly the same purpose, it should be fine to fix it in this
+central place there without any risk to change the behavior of other
+code.
+
+Fixes: 9f6bcfd99f ("hw/virtio: move vm_running check to virtio_device_started")
+Buglink: https://issues.redhat.com/browse/RHEL-40708
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20240618121958.88673-1-thuth@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit d72479b11797c28893e1e3fc565497a9cae5ca16)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/util/async.c b/util/async.c
-index a1f07fc5a7..0cc3037e0c 100644
---- a/util/async.c
-+++ b/util/async.c
-@@ -744,7 +744,7 @@ void aio_context_set_thread_pool_params(AioContext *ctx, int64_t min,
-                                         int64_t max, Error **errp)
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index c1a7c9bd3b..aa7f7d3dd6 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -425,9 +425,9 @@ static inline bool virtio_device_started(VirtIODevice *vdev, uint8_t status)
+  * @vdev - the VirtIO device
+  * @status - the devices status bits
+  *
+- * This is similar to virtio_device_started() but also encapsulates a
+- * check on the VM status which would prevent a device starting
+- * anyway.
++ * This is similar to virtio_device_started() but ignores vdev->started
++ * and also encapsulates a check on the VM status which would prevent a
++ * device from starting anyway.
+  */
+ static inline bool virtio_device_should_start(VirtIODevice *vdev, uint8_t status)
  {
- 
--    if (min > max || !max || min > INT_MAX || max > INT_MAX) {
-+    if (min > max || max <= 0 || min < 0 || min > INT_MAX || max > INT_MAX) {
-         error_setg(errp, "bad thread-pool-min/thread-pool-max values");
-         return;
+@@ -435,7 +435,7 @@ static inline bool virtio_device_should_start(VirtIODevice *vdev, uint8_t status
+         return false;
      }
+ 
+-    return virtio_device_started(vdev, status);
++    return status & VIRTIO_CONFIG_S_DRIVER_OK;
+ }
+ 
+ static inline void virtio_set_started(VirtIODevice *vdev, bool started)
 -- 
 2.39.2
 
