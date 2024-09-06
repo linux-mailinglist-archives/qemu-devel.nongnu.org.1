@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DA396EB3E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 08:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A86E396EB39
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 08:59:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smSup-0003rI-Qv; Fri, 06 Sep 2024 02:57:56 -0400
+	id 1smSuT-0002Td-4v; Fri, 06 Sep 2024 02:57:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smSts-0000RK-HF; Fri, 06 Sep 2024 02:56:57 -0400
+ id 1smSuD-0001nS-HY; Fri, 06 Sep 2024 02:57:20 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smStq-0003U2-6U; Fri, 06 Sep 2024 02:56:56 -0400
+ id 1smSuB-0003UN-J8; Fri, 06 Sep 2024 02:57:17 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8E6888C252;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9E43E8C253;
  Fri,  6 Sep 2024 09:53:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 555D713340A;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6696213340B;
  Fri,  6 Sep 2024 09:54:31 +0300 (MSK)
-Received: (nullmailer pid 43558 invoked by uid 1000);
+Received: (nullmailer pid 43562 invoked by uid 1000);
  Fri, 06 Sep 2024 06:54:30 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, thomas <east.moutain.yang@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.7 29/53] virtio-net: Fix network stall at the host side
- waiting for kick
-Date: Fri,  6 Sep 2024 09:53:59 +0300
-Message-Id: <20240906065429.42415-29-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.7 30/53] target/i386: Fix VSIB decode
+Date: Fri,  6 Sep 2024 09:54:00 +0300
+Message-Id: <20240906065429.42415-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.7-20240906080902@cover.tls.msk.ru>
 References: <qemu-stable-8.2.7-20240906080902@cover.tls.msk.ru>
@@ -61,336 +59,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: thomas <east.moutain.yang@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Patch 06b12970174 ("virtio-net: fix network stall under load")
-added double-check to test whether the available buffer size
-can satisfy the request or not, in case the guest has added
-some buffers to the avail ring simultaneously after the first
-check. It will be lucky if the available buffer size becomes
-okay after the double-check, then the host can send the packet
-to the guest. If the buffer size still can't satisfy the request,
-even if the guest has added some buffers, viritio-net would
-stall at the host side forever.
+With normal SIB, index == 4 indicates no index.
+With VSIB, there is no exception for VR4/VR12.
 
-The patch enables notification and checks whether the guest has
-added some buffers since last check of available buffers when
-the available buffers are insufficient. If no buffer is added,
-return false, else recheck the available buffers in the loop.
-If the available buffers are sufficient, disable notification
-and return true.
-
-Changes:
-1. Change the return type of virtqueue_get_avail_bytes() from void
-   to int, it returns an opaque that represents the shadow_avail_idx
-   of the virtqueue on success, else -1 on error.
-2. Add a new API: virtio_queue_enable_notification_and_check(),
-   it takes an opaque as input arg which is returned from
-   virtqueue_get_avail_bytes(). It enables notification firstly,
-   then checks whether the guest has added some buffers since
-   last check of available buffers or not by virtio_queue_poll(),
-   return ture if yes.
-
-The patch also reverts patch "06b12970174".
-
-The case below can reproduce the stall.
-
-                                       Guest 0
-                                     +--------+
-                                     | iperf  |
-                    ---------------> | server |
-         Host       |                +--------+
-       +--------+   |                    ...
-       | iperf  |----
-       | client |----                  Guest n
-       +--------+   |                +--------+
-                    |                | iperf  |
-                    ---------------> | server |
-                                     +--------+
-
-Boot many guests from qemu with virtio network:
- qemu ... -netdev tap,id=net_x \
-    -device virtio-net-pci-non-transitional,\
-    iommu_platform=on,mac=xx:xx:xx:xx:xx:xx,netdev=net_x
-
-Each guest acts as iperf server with commands below:
- iperf3 -s -D -i 10 -p 8001
- iperf3 -s -D -i 10 -p 8002
-
-The host as iperf client:
- iperf3 -c guest_IP -p 8001 -i 30 -w 256k -P 20 -t 40000
- iperf3 -c guest_IP -p 8002 -i 30 -w 256k -P 20 -t 40000
-
-After some time, the host loses connection to the guest,
-the guest can send packet to the host, but can't receive
-packet from the host.
-
-It's more likely to happen if SWIOTLB is enabled in the guest,
-allocating and freeing bounce buffer takes some CPU ticks,
-copying from/to bounce buffer takes more CPU ticks, compared
-with that there is no bounce buffer in the guest.
-Once the rate of producing packets from the host approximates
-the rate of receiveing packets in the guest, the guest would
-loop in NAPI.
-
-         receive packets    ---
-               |             |
-               v             |
-           free buf      virtnet_poll
-               |             |
-               v             |
-     add buf to avail ring  ---
-               |
-               |  need kick the host?
-               |  NAPI continues
-               v
-         receive packets    ---
-               |             |
-               v             |
-           free buf      virtnet_poll
-               |             |
-               v             |
-     add buf to avail ring  ---
-               |
-               v
-              ...           ...
-
-On the other hand, the host fetches free buf from avail
-ring, if the buf in the avail ring is not enough, the
-host notifies the guest the event by writing the avail
-idx read from avail ring to the event idx of used ring,
-then the host goes to sleep, waiting for the kick signal
-from the guest.
-
-Once the guest finds the host is waiting for kick singal
-(in virtqueue_kick_prepare_split()), it kicks the host.
-
-The host may stall forever at the sequences below:
-
-         Host                        Guest
-     ------------                 -----------
- fetch buf, send packet           receive packet ---
-         ...                          ...         |
- fetch buf, send packet             add buf       |
-         ...                        add buf   virtnet_poll
-    buf not enough      avail idx-> add buf       |
-    read avail idx                  add buf       |
-                                    add buf      ---
-                                  receive packet ---
-    write event idx                   ...         |
-    wait for kick                   add buf   virtnet_poll
-                                      ...         |
-                                                 ---
-                                 no more packet, exit NAPI
-
-In the first loop of NAPI above, indicated in the range of
-virtnet_poll above, the host is sending packets while the
-guest is receiving packets and adding buffers.
- step 1: The buf is not enough, for example, a big packet
-         needs 5 buf, but the available buf count is 3.
-         The host read current avail idx.
- step 2: The guest adds some buf, then checks whether the
-         host is waiting for kick signal, not at this time.
-         The used ring is not empty, the guest continues
-         the second loop of NAPI.
- step 3: The host writes the avail idx read from avail
-         ring to used ring as event idx via
-         virtio_queue_set_notification(q->rx_vq, 1).
- step 4: At the end of the second loop of NAPI, recheck
-         whether kick is needed, as the event idx in the
-         used ring written by the host is beyound the
-         range of kick condition, the guest will not
-         send kick signal to the host.
-
-Fixes: 06b12970174 ("virtio-net: fix network stall under load")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2474
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Link: https://lore.kernel.org/r/20240805003130.1421051-3-richard.henderson@linaro.org
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Wencheng Yang <east.moutain.yang@gmail.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit f937309fbdbb48c354220a3e7110c202ae4aa7fa)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit ac63755b20013ec6a3d2aef4538d37dc90bc3d10)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: context fixup in include/hw/virtio/virtio.h)
+(Mjt: modify the change to pre-new-decoder introduced past qemu 9.0)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index f84cff43aa..038604bbec 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1640,24 +1640,28 @@ static bool virtio_net_can_receive(NetClientState *nc)
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 73aa2c42b7..ffd3a42688 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -1102,7 +1102,8 @@ static int decode_modrm(DisasContext *s, CPUX86State *env, X86DecodedInsn *decod
+     } else {
+         op->has_ea = true;
+         op->n = -1;
+-        decode->mem = gen_lea_modrm_0(env, s, get_modrm(s, env));
++        decode->mem = gen_lea_modrm_0(env, s, modrm,
++                                      decode->e.vex_class == 12);
+     }
+     return modrm;
+ }
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 716a747df7..157348273e 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -2159,7 +2159,7 @@ typedef struct AddressParts {
+ } AddressParts;
  
- static int virtio_net_has_buffers(VirtIONetQueue *q, int bufsize)
+ static AddressParts gen_lea_modrm_0(CPUX86State *env, DisasContext *s,
+-                                    int modrm)
++                                    int modrm, bool is_vsib)
  {
-+    int opaque;
-+    unsigned int in_bytes;
-     VirtIONet *n = q->n;
--    if (virtio_queue_empty(q->rx_vq) ||
--        (n->mergeable_rx_bufs &&
--         !virtqueue_avail_bytes(q->rx_vq, bufsize, 0))) {
--        virtio_queue_set_notification(q->rx_vq, 1);
--
--        /* To avoid a race condition where the guest has made some buffers
--         * available after the above check but before notification was
--         * enabled, check for available buffers again.
--         */
--        if (virtio_queue_empty(q->rx_vq) ||
--            (n->mergeable_rx_bufs &&
--             !virtqueue_avail_bytes(q->rx_vq, bufsize, 0))) {
-+
-+    while (virtio_queue_empty(q->rx_vq) || n->mergeable_rx_bufs) {
-+        opaque = virtqueue_get_avail_bytes(q->rx_vq, &in_bytes, NULL,
-+                                           bufsize, 0);
-+        /* Buffer is enough, disable notifiaction */
-+        if (bufsize <= in_bytes) {
-+            break;
-+        }
-+
-+        if (virtio_queue_enable_notification_and_check(q->rx_vq, opaque)) {
-+            /* Guest has added some buffers, try again */
-+            continue;
-+        } else {
-             return 0;
-         }
-     }
+     int def_seg, base, index, scale, mod, rm;
+     target_long disp;
+@@ -2188,7 +2188,7 @@ static AddressParts gen_lea_modrm_0(CPUX86State *env, DisasContext *s,
+             int code = x86_ldub_code(env, s);
+             scale = (code >> 6) & 3;
+             index = ((code >> 3) & 7) | REX_X(s);
+-            if (index == 4) {
++            if (index == 4 && !is_vsib) {
+                 index = -1;  /* no index */
+             }
+             base = (code & 7) | REX_B(s);
+@@ -2318,21 +2318,21 @@ static TCGv gen_lea_modrm_1(DisasContext *s, AddressParts a, bool is_vsib)
  
-     virtio_queue_set_notification(q->rx_vq, 0);
-+
-     return 1;
- }
- 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 157567912e..b066cdd4f1 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -743,6 +743,60 @@ int virtio_queue_empty(VirtQueue *vq)
-     }
- }
- 
-+static bool virtio_queue_split_poll(VirtQueue *vq, unsigned shadow_idx)
-+{
-+    if (unlikely(!vq->vring.avail)) {
-+        return false;
-+    }
-+
-+    return (uint16_t)shadow_idx != vring_avail_idx(vq);
-+}
-+
-+static bool virtio_queue_packed_poll(VirtQueue *vq, unsigned shadow_idx)
-+{
-+    VRingPackedDesc desc;
-+    VRingMemoryRegionCaches *caches;
-+
-+    if (unlikely(!vq->vring.desc)) {
-+        return false;
-+    }
-+
-+    caches = vring_get_region_caches(vq);
-+    if (!caches) {
-+        return false;
-+    }
-+
-+    vring_packed_desc_read(vq->vdev, &desc, &caches->desc,
-+                           shadow_idx, true);
-+
-+    return is_desc_avail(desc.flags, vq->shadow_avail_wrap_counter);
-+}
-+
-+static bool virtio_queue_poll(VirtQueue *vq, unsigned shadow_idx)
-+{
-+    if (virtio_device_disabled(vq->vdev)) {
-+        return false;
-+    }
-+
-+    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
-+        return virtio_queue_packed_poll(vq, shadow_idx);
-+    } else {
-+        return virtio_queue_split_poll(vq, shadow_idx);
-+    }
-+}
-+
-+bool virtio_queue_enable_notification_and_check(VirtQueue *vq,
-+                                                int opaque)
-+{
-+    virtio_queue_set_notification(vq, 1);
-+
-+    if (opaque >= 0) {
-+        return virtio_queue_poll(vq, (unsigned)opaque);
-+    } else {
-+        return false;
-+    }
-+}
-+
- static void virtqueue_unmap_sg(VirtQueue *vq, const VirtQueueElement *elem,
-                                unsigned int len)
+ static void gen_lea_modrm(CPUX86State *env, DisasContext *s, int modrm)
  {
-@@ -1330,9 +1384,9 @@ err:
-     goto done;
+-    AddressParts a = gen_lea_modrm_0(env, s, modrm);
++    AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+     TCGv ea = gen_lea_modrm_1(s, a, false);
+     gen_lea_v_seg(s, s->aflag, ea, a.def_seg, s->override);
  }
  
--void virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
--                               unsigned int *out_bytes,
--                               unsigned max_in_bytes, unsigned max_out_bytes)
-+int virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
-+                              unsigned int *out_bytes, unsigned max_in_bytes,
-+                              unsigned max_out_bytes)
+ static void gen_nop_modrm(CPUX86State *env, DisasContext *s, int modrm)
  {
-     uint16_t desc_size;
-     VRingMemoryRegionCaches *caches;
-@@ -1365,7 +1419,7 @@ void virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
-                                         caches);
-     }
- 
--    return;
-+    return (int)vq->shadow_avail_idx;
- err:
-     if (in_bytes) {
-         *in_bytes = 0;
-@@ -1373,6 +1427,8 @@ err:
-     if (out_bytes) {
-         *out_bytes = 0;
-     }
-+
-+    return -1;
+-    (void)gen_lea_modrm_0(env, s, modrm);
++    (void)gen_lea_modrm_0(env, s, modrm, false);
  }
  
- int virtqueue_avail_bytes(VirtQueue *vq, unsigned int in_bytes,
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 2eafad17b8..8b4da92889 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -271,9 +271,13 @@ void qemu_put_virtqueue_element(VirtIODevice *vdev, QEMUFile *f,
-                                 VirtQueueElement *elem);
- int virtqueue_avail_bytes(VirtQueue *vq, unsigned int in_bytes,
-                           unsigned int out_bytes);
--void virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
--                               unsigned int *out_bytes,
--                               unsigned max_in_bytes, unsigned max_out_bytes);
-+/**
-+ * Return <0 on error or an opaque >=0 to pass to
-+ * virtio_queue_enable_notification_and_check on success.
-+ */
-+int virtqueue_get_avail_bytes(VirtQueue *vq, unsigned int *in_bytes,
-+                              unsigned int *out_bytes, unsigned max_in_bytes,
-+                              unsigned max_out_bytes);
+ /* Used for BNDCL, BNDCU, BNDCN.  */
+ static void gen_bndck(CPUX86State *env, DisasContext *s, int modrm,
+                       TCGCond cond, TCGv_i64 bndv)
+ {
+-    AddressParts a = gen_lea_modrm_0(env, s, modrm);
++    AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+     TCGv ea = gen_lea_modrm_1(s, a, false);
  
- void virtio_notify_irqfd(VirtIODevice *vdev, VirtQueue *vq);
- void virtio_notify(VirtIODevice *vdev, VirtQueue *vq);
-@@ -307,6 +311,17 @@ int virtio_queue_ready(VirtQueue *vq);
- 
- int virtio_queue_empty(VirtQueue *vq);
- 
-+/**
-+ * Enable notification and check whether guest has added some
-+ * buffers since last call to virtqueue_get_avail_bytes.
-+ *
-+ * @opaque: value returned from virtqueue_get_avail_bytes
-+ */
-+bool virtio_queue_enable_notification_and_check(VirtQueue *vq,
-+                                                int opaque);
-+
-+void virtio_queue_set_shadow_avail_idx(VirtQueue *vq, uint16_t idx);
-+
- /* Host binding interface.  */
- 
- uint32_t virtio_config_readb(VirtIODevice *vdev, uint32_t addr);
+     tcg_gen_extu_tl_i64(s->tmp1_i64, ea);
+@@ -4156,7 +4156,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             goto illegal_op;
+         reg = ((modrm >> 3) & 7) | REX_R(s);
+         {
+-            AddressParts a = gen_lea_modrm_0(env, s, modrm);
++            AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+             TCGv ea = gen_lea_modrm_1(s, a, false);
+             gen_lea_v_seg(s, s->aflag, ea, -1, -1);
+             gen_op_mov_reg_v(s, dflag, reg, s->A0);
+@@ -4378,7 +4378,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             op = ((b & 7) << 3) | ((modrm >> 3) & 7);
+             if (mod != 3) {
+                 /* memory op */
+-                AddressParts a = gen_lea_modrm_0(env, s, modrm);
++                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+                 TCGv ea = gen_lea_modrm_1(s, a, false);
+                 TCGv last_addr = tcg_temp_new();
+                 bool update_fdp = true;
+@@ -5322,7 +5322,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+         rm = (modrm & 7) | REX_B(s);
+         gen_op_mov_v_reg(s, MO_32, s->T1, reg);
+         if (mod != 3) {
+-            AddressParts a = gen_lea_modrm_0(env, s, modrm);
++            AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+             /* specific case: we need to add a displacement */
+             gen_exts(ot, s->T1);
+             tcg_gen_sari_tl(s->tmp0, s->T1, 3 + ot);
+@@ -6318,7 +6318,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+                 }
+             } else if (mod != 3) {
+                 /* bndldx */
+-                AddressParts a = gen_lea_modrm_0(env, s, modrm);
++                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+                 if (reg >= 4
+                     || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16
+@@ -6362,7 +6362,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+                     || s->aflag == MO_16) {
+                     goto illegal_op;
+                 }
+-                AddressParts a = gen_lea_modrm_0(env, s, modrm);
++                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+                 if (a.base >= 0) {
+                     tcg_gen_extu_tl_i64(cpu_bndl[reg], cpu_regs[a.base]);
+                     if (!CODE64(s)) {
+@@ -6423,7 +6423,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+                 }
+             } else if (mod != 3) {
+                 /* bndstx */
+-                AddressParts a = gen_lea_modrm_0(env, s, modrm);
++                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+                 if (reg >= 4
+                     || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16
 -- 
 2.39.2
 
