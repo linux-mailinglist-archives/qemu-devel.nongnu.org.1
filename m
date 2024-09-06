@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B3096E93E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 413E496E937
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:25:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smROu-0005p1-Cn; Fri, 06 Sep 2024 01:20:52 -0400
+	id 1smRP2-0007By-9k; Fri, 06 Sep 2024 01:21:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smROO-0004RO-V8; Fri, 06 Sep 2024 01:20:26 -0400
+ id 1smROS-0004is-QD; Fri, 06 Sep 2024 01:20:30 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smROB-0008NS-0b; Fri, 06 Sep 2024 01:20:08 -0400
+ id 1smROB-0008Na-Rd; Fri, 06 Sep 2024 01:20:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7F4318C13A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8FD0E8C13B;
  Fri,  6 Sep 2024 08:15:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2FAE413337F;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3DA2F133380;
  Fri,  6 Sep 2024 08:16:36 +0300 (MSK)
-Received: (nullmailer pid 10498 invoked by uid 1000);
+Received: (nullmailer pid 10501 invoked by uid 1000);
  Fri, 06 Sep 2024 05:16:34 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
+ Claudio Fontana <cfontana@suse.de>, "Denis V . Lunev" <den@openvz.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 37/40] target/i386: Do not apply REX to MMX operands
-Date: Fri,  6 Sep 2024 08:16:25 +0300
-Message-Id: <20240906051633.10288-37-mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 38/40] module: Prevent crash by resetting local_err in
+ module_load_qom_all()
+Date: Fri,  6 Sep 2024 08:16:26 +0300
+Message-Id: <20240906051633.10288-38-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
@@ -59,33 +61,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 
+Set local_err to NULL after it has been freed in error_report_err(). This
+avoids triggering assert(*errp == NULL) failure in error_setv() when
+local_err is reused in the loop.
+
+Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+Reviewed-by: Claudio Fontana <cfontana@suse.de>
+Reviewed-by: Denis V. Lunev <den@openvz.org>
+Link: https://lore.kernel.org/r/20240809121340.992049-2-alexander.ivanov@virtuozzo.com
+[Do the same by moving the declaration instead. - Paolo]
 Cc: qemu-stable@nongnu.org
-Fixes: b3e22b2318a ("target/i386: add core of new i386 decoder")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2495
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20240812025844.58956-2-richard.henderson@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 416f2b16c02c618c0f233372ebfe343f9ee667d4)
+(cherry picked from commit 940d802b24e63650e0eacad3714e2ce171cba17c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 1dfc368456..88de92ed16 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1176,7 +1176,10 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
-             op->unit = X86_OP_SSE;
-         }
-     get_reg:
--        op->n = ((get_modrm(s, env) >> 3) & 7) | REX_R(s);
-+        op->n = ((get_modrm(s, env) >> 3) & 7);
-+        if (op->unit != X86_OP_MMX) {
-+            op->n |= REX_R(s);
-+        }
-         break;
+diff --git a/util/module.c b/util/module.c
+index 32e263163c..3eb0f06df1 100644
+--- a/util/module.c
++++ b/util/module.c
+@@ -354,13 +354,13 @@ int module_load_qom(const char *type, Error **errp)
+ void module_load_qom_all(void)
+ {
+     const QemuModinfo *modinfo;
+-    Error *local_err = NULL;
  
-     case X86_TYPE_E:  /* ALU modrm operand */
+     if (module_loaded_qom_all) {
+         return;
+     }
+ 
+     for (modinfo = module_info; modinfo->name != NULL; modinfo++) {
++        Error *local_err = NULL;
+         if (!modinfo->objs) {
+             continue;
+         }
 -- 
 2.39.2
 
