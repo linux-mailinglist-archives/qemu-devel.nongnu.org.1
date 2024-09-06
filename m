@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9591296F562
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 15:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4550996F563
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 15:31:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smZ25-0004IT-AW; Fri, 06 Sep 2024 09:29:51 -0400
+	id 1smZ2V-0005oz-Lv; Fri, 06 Sep 2024 09:30:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1smZ1j-0003oB-2M
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 09:29:28 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1smZ2J-0005KR-Rq
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 09:30:04 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1smZ1h-0008O0-FO
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 09:29:26 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2d87a1f0791so1432638a91.2
- for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 06:29:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1smZ2H-0008Qt-Vk
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 09:30:03 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-5365b71a6bdso417924e87.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 06:30:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1725629363; x=1726234163; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MJiwXDwz+nyTyxWqXsY+0vn8Yh51cYsH0PxbsAp2eNI=;
- b=KTWAdBNt4HZ+8bFQEQ/LL+UtH1nTig3OYtpfmG5cwPFnDhYPWnAM9tRxKGXD4O7wCH
- IPQVC6z9FLX5moqSZx4HCIM84FMwyfn8uJKjq9txNSj9aNWrgpN2PO8mh3Mw/IAtllOE
- zAoOOuOT3jj5d+przxloQprFb4lKuYpVeRaDNZvWm9Dusc2e2rFbWvf7kFpVlHZ8iN1b
- LOfTjZK2IeimeKUqcENNnLybDe+kO0OOQs5YluhDXkvivOgIzpHrEbr6Ey0ZmWpeX5td
- P8FkKhfSFoEqOKofQfeQCrRqYOcbKWu1o9zECylg+VSAGLde8baWAT4uxsmkePZgQXL5
- sU5Q==
+ d=linaro.org; s=google; t=1725629399; x=1726234199; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1DwYu9QdzrUW1gsmzF/i6MG5QrT1Cpgzq2dn1Yasafk=;
+ b=FpTPijpYYuvHJdG8hlfDbjeSWLqrTqcS3kdntib+TAPS1IRvpj6F685+6HPpWCIdhB
+ nzRLzxNPi5jW0lXv8+8KbR68VxDxT8HfPXucbnZRS27N5GYbqT8XOcKRyoYBueD7iyEg
+ SWgOajhyqRFiBZHZTFYj8GagVic5r+i6EtX85K0Jj5Uzsn1hf/wHdHR0R8PhrW/QBgU2
+ srAN710Fa3HgnIk/FriVAzZoVyWCkqWykKtJLHt3YMN7YwQUyqGmq3oxW37I8lq9hUc/
+ vum+XwFBifjdj3bMGGn+dK12fuFkuW1Y+I7+qH5evEZ5elLy+eQZQIpunnADKCbNsmX7
+ YUcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725629363; x=1726234163;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=MJiwXDwz+nyTyxWqXsY+0vn8Yh51cYsH0PxbsAp2eNI=;
- b=qd4H1qtR6dDJs1Znd3glx+lU4RuFuSmFJMXxcDE2NMQEzzJKKDLiog2b1P2WXzObgE
- vS5FzFzn+1O08hU6SJU16bpNL0EWd0BD69TsIUD0AnRJj6ltl05F2rjmt7/elCeuue7R
- D/eC6arPVMDkWLJ86dBBS+L2nw7tRU3tBxgCBGztgO9qdfj0G8rCFpib1p1nVzYKcF/s
- CYABjscy6ItXsWWcKf+hCHDUXFtpvGGQtA+TdRDv+prv/qhhA75YN8IIRUtIht75edtW
- eW5KShE2vQT9aJ67QhBPoVYx/i7GCgda04MZ1ssiZqDgnzJVjGvGCuDGrTukLSwFPRXM
- q/ww==
-X-Gm-Message-State: AOJu0YynHl4vE/q3xUGjsqQtH0hHjMMK16GD4X81obmOgZqaoiUex5bD
- Ss0h9mCIifTJ31Rf5eIDnzT1Kjrd7+bpG5Qv9NFpSgEXPp+Yzy/uE35XpQ==
-X-Google-Smtp-Source: AGHT+IHXUM4+mIx95aGi23jUKm5KMGhSUMSXBUuTM3Ra51fhTBXzNCLZU9OG+34RyUZGq46D8Fh6BQ==
-X-Received: by 2002:a17:90b:390f:b0:2d3:de40:d767 with SMTP id
- 98e67ed59e1d1-2dad5022ae7mr3156645a91.24.1725629363074; 
- Fri, 06 Sep 2024 06:29:23 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ d=1e100.net; s=20230601; t=1725629399; x=1726234199;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1DwYu9QdzrUW1gsmzF/i6MG5QrT1Cpgzq2dn1Yasafk=;
+ b=xCQex9qKuPwSNSzAq2vkj593OkWt8nGBKxH7n7CO68oXKnt6hvS7TNE6ccTQAta3Q7
+ s1xHPmpqhNYnNbLSHD1RlW7HyiOBv4a91XnkkdXhFaHfyMN4mVoAtJWVLvheS212Y5jh
+ vMFUUdpP4WengOMbVwbAHQ+1i35FoPrbs6bPV2Sw6AGhKnSgn4yAwS7BtNEJZOftUBxN
+ a4yH3Nud+KRgj9u+AHWk1Strc3MoR5mYvq02fzi1kBOmr8NSPPkPTfBunkJ8wBQgU9NY
+ UjL15bDh3TaYCBSfAs+rNB2wwMwpPdugKjYr2tL6KxjmCRrFMma4TNFG9CKcjyaxVSMJ
+ 3I5w==
+X-Gm-Message-State: AOJu0YwlqiWn3vD3sbp05vpNZQcq3hB/k0CJxviB7UWN9tXthR587RME
+ Wi3WCOjY+lhAKwrZvmZQJyUXkVdAkLgMWbfPulilu2Pqcpok7JDNIUZtLRIyKKzRT3E1Op85i22
+ t
+X-Google-Smtp-Source: AGHT+IFC+SsNEDOf2oqkOOeSy/S/S+2cpFdS6sL5037b1Y1Ntu/122jjFXrwYkR5m6oeRTYRpwj4tw==
+X-Received: by 2002:a05:6512:4018:b0:52c:df8c:72cc with SMTP id
+ 2adb3069b0e04-536587f9a5amr1819951e87.43.1725629399263; 
+ Fri, 06 Sep 2024 06:29:59 -0700 (PDT)
+Received: from [192.168.55.118] ([80.215.236.92])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2dadc03d1f5sm1520384a91.26.2024.09.06.06.29.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Sep 2024 06:29:22 -0700 (PDT)
-From: Guenter Roeck <linux@roeck-us.net>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 3/3] tmp105: Lower 4 bit of limit registers are always 0
-Date: Fri,  6 Sep 2024 06:29:12 -0700
-Message-ID: <20240906132912.3826089-4-linux@roeck-us.net>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240906132912.3826089-1-linux@roeck-us.net>
-References: <20240906132912.3826089-1-linux@roeck-us.net>
+ a640c23a62f3a-a8a62045569sm274920866b.73.2024.09.06.06.29.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 06 Sep 2024 06:29:58 -0700 (PDT)
+Message-ID: <b556bd8d-dbde-4e1a-a172-25027a66d893@linaro.org>
+Date: Fri, 6 Sep 2024 15:29:56 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] tests/unit: Strengthen FIFO8 tests
+To: qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Octavian Purdila <tavip@google.com>
+References: <20240906131217.78159-1-philmd@linaro.org>
+ <20240906131217.78159-2-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240906131217.78159-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=groeck7@gmail.com; helo=mail-pj1-x102e.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,30 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per datasheet, "HIGH AND LOW LIMIT REGISTERS", the lower 4 bit
-of the limit registers are unused and always report 0.
-The lower 4 bit should not be used for temperature comparisons,
-so mask the unused bits before storing the limits.
+On 6/9/24 15:12, Philippe Mathieu-Daudé wrote:
+> Replace reused bytes { 0x1, 0x2, 0x3, 0x4 } by { 0x9, 0xa, 0xb, 0xc }
+> to be sure a different value is overwritten.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   tests/unit/test-fifo.c | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
- hw/sensor/tmp105.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/sensor/tmp105.c b/hw/sensor/tmp105.c
-index 22728798f7..5fd30f8d50 100644
---- a/hw/sensor/tmp105.c
-+++ b/hw/sensor/tmp105.c
-@@ -166,7 +166,7 @@ static void tmp105_write(TMP105State *s)
-     case TMP105_REG_T_HIGH:
-         if (s->len >= 3)
-             s->limit[s->pointer & 1] = (int16_t)
--                    ((((uint16_t) s->buf[0]) << 8) | s->buf[1]);
-+                    ((((uint16_t) s->buf[0]) << 8) | (s->buf[1] & 0xf0));
-         tmp105_alarm_update(s);
-         break;
-     }
--- 
-2.45.2
+> @@ -157,8 +157,8 @@ static void test_fifo8_peek_buf_wrap(void)
+>   {
+>       Fifo8 fifo;
+>       uint8_t data_in1[] = { 0x1, 0x2, 0x3, 0x4 };
+> -    uint8_t data_in2[] = { 0x5, 0x6, 0x7, 0x8, 0x1, 0x2, 0x3, 0x4 };
+> +    uint8_t data_in2[] = { 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc };
+
+> -    uint8_t data_out[4];
+> +    uint8_t data_out[8];
+
+Since this part belongs to the next patch, I'll respin a v2.
+
+>       int count;
+>   
+>       fifo8_create(&fifo, 8);
 
 
