@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5FB96F288
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B1196F2B4
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:19:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWuo-0002dn-8m; Fri, 06 Sep 2024 07:14:10 -0400
+	id 1smWuq-0002p1-PA; Fri, 06 Sep 2024 07:14:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWul-0002YD-Le; Fri, 06 Sep 2024 07:14:07 -0400
+ id 1smWun-0002hC-Sz; Fri, 06 Sep 2024 07:14:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWuj-0007iB-JA; Fri, 06 Sep 2024 07:14:07 -0400
+ id 1smWum-0007iW-7y; Fri, 06 Sep 2024 07:14:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 334C18C47B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 434448C47C;
  Fri,  6 Sep 2024 14:12:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3E0671336E5;
+ by tsrv.corpit.ru (Postfix) with SMTP id 4E1501336E6;
  Fri,  6 Sep 2024 14:13:25 +0300 (MSK)
-Received: (nullmailer pid 353575 invoked by uid 1000);
+Received: (nullmailer pid 353579 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -31,9 +31,10 @@ Cc: qemu-stable@nongnu.org,
  Zheyu Ma <zheyuma97@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 11/69] virtio-snd: add max size bounds check in input cb
-Date: Fri,  6 Sep 2024 14:12:20 +0300
-Message-Id: <20240906111324.353230-11-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 12/69] virtio-snd: check for invalid param shift
+ operands
+Date: Fri,  6 Sep 2024 14:12:21 +0300
+Message-Id: <20240906111324.353230-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -65,52 +66,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-When reading input audio in the virtio-snd input callback,
-virtio_snd_pcm_in_cb(), we do not check whether the iov can actually fit
-the data buffer. This is because we use the buffer->size field as a
-total-so-far accumulator instead of byte-size-left like in TX buffers.
+When setting the parameters of a PCM stream, we compute the bit flag
+with the format and rate values as shift operand to check if they are
+set in supported_formats and supported_rates.
 
-This triggers an out of bounds write if the size of the virtio queue
-element is equal to virtio_snd_pcm_status, which makes the available
-space for audio data zero. This commit adds a check for reaching the
-maximum buffer size before attempting any writes.
+If the guest provides a format/rate value which when shifting 1 results
+in a value bigger than the number of bits in
+supported_formats/supported_rates, we must report an error.
+
+Previously, this ended up triggering the not reached assertions later
+when converting to internal QEMU values.
 
 Reported-by: Zheyu Ma <zheyuma97@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2427
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2416
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-Id: <virtio-snd-fuzz-2427-fix-v1-manos.pitsidianakis@linaro.org>
+Message-Id: <virtio-snd-fuzz-2416-fix-v1-manos.pitsidianakis@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 98e77e3dd8dd6e7aa9a7dffa60f49c8c8a49d4e3)
+(cherry picked from commit 9b6083465fb8311f2410615f8303a41f580a2a20)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-index 4a56c00ec9..541f0797ac 100644
+index 541f0797ac..2b80072b04 100644
 --- a/hw/audio/virtio-snd.c
 +++ b/hw/audio/virtio-snd.c
-@@ -1261,7 +1261,7 @@ static void virtio_snd_pcm_in_cb(void *data, int available)
- {
-     VirtIOSoundPCMStream *stream = data;
-     VirtIOSoundPCMBuffer *buffer;
--    size_t size;
-+    size_t size, max_size;
- 
-     WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
-         while (!QSIMPLEQ_EMPTY(&stream->queue)) {
-@@ -1275,7 +1275,12 @@ static void virtio_snd_pcm_in_cb(void *data, int available)
-                 continue;
-             }
- 
-+            max_size = iov_size(buffer->elem->in_sg, buffer->elem->in_num);
-             for (;;) {
-+                if (buffer->size >= max_size) {
-+                    return_rx_buffer(stream, buffer);
-+                    break;
-+                }
-                 size = AUD_read(stream->voice.in,
-                         buffer->data + buffer->size,
-                         MIN(available, (stream->params.period_bytes -
+@@ -282,11 +282,13 @@ uint32_t virtio_snd_set_pcm_params(VirtIOSound *s,
+         error_report("Number of channels is not supported.");
+         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+     }
+-    if (!(supported_formats & BIT(params->format))) {
++    if (BIT(params->format) > sizeof(supported_formats) ||
++        !(supported_formats & BIT(params->format))) {
+         error_report("Stream format is not supported.");
+         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+     }
+-    if (!(supported_rates & BIT(params->rate))) {
++    if (BIT(params->rate) > sizeof(supported_rates) ||
++        !(supported_rates & BIT(params->rate))) {
+         error_report("Stream rate is not supported.");
+         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+     }
 -- 
 2.39.2
 
