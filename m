@@ -2,80 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D756A96E906
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2C696E911
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:17:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRH1-0006Wy-US; Fri, 06 Sep 2024 01:12:43 -0400
+	id 1smRLb-0004Gh-NX; Fri, 06 Sep 2024 01:17:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1smRGx-0006TG-Nq; Fri, 06 Sep 2024 01:12:40 -0400
-Received: from mail-vk1-xa2e.google.com ([2607:f8b0:4864:20::a2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1smRGv-00062P-6S; Fri, 06 Sep 2024 01:12:39 -0400
-Received: by mail-vk1-xa2e.google.com with SMTP id
- 71dfb90a1353d-5012813249cso187518e0c.2; 
- Thu, 05 Sep 2024 22:12:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1725599555; x=1726204355; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TvobpZjYdbP5kgF4yeyYGDFFkpbWjXaWkzhNPyHJJUo=;
- b=XN/SaYyIp15y+9fBwbZrZFGuBUO4jyz9EORbpkeat68PtPCw2xpSYBULXKk4Ch41Uj
- z9rl6OA1spEDG1QC9HtlIBzgQdE3jSl34WrVSpCkDNuk2Dw0pjDHkmeBwDD59B4Bnk7K
- eUUceGnziGAmk8v0jMnlxX5sMzIVwc74nxG+8dQE2RlbquvBN0hU03wlC38GiQ3qE1ZA
- NnK8+qiPZ1Af9Zswf644OE3nd/FhDcoZtNyW69GOfkC5Zfk70/ueCLM8wlMh5NeuHc34
- 2aiOs1apUCaBSyEeGGv65f3icNwfTweOFfew6/lIuxxUhF4Akc8tW+Y1621NRqts+9aN
- 1X4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725599555; x=1726204355;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TvobpZjYdbP5kgF4yeyYGDFFkpbWjXaWkzhNPyHJJUo=;
- b=MVpmqoALl1iGFPJIFXVoBD2/dIQ2ng0xjFKiY3Imn3sA7fbrhcueJC5kNX7ieq8dlG
- KPryCWKkMc6g0EKSDryd7QUAizG65mRDIn+H85QYjJXW+MpYjtAYpNiXgsTFkc/CvbAP
- rNqtBt+ABneKELLEVAgl5mCL++YNFu20PyPWHVbdTGkwE1YU7TXSjEXtuwKMq+0pWn2G
- CDoo0DXfgdRuw7+oTtFUs9zOqVX5AalFHF+iRa+IEQ8K1gA/Z8rWq9RysWmd0QlkHRJe
- UyCIsofa6JwItOQXxz32L+RP90N1BTIAnitDRWPSEP//LV7QPku4n/LVYvQ/OWhHeq7c
- 0neA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUHfgjZMu0TofYfjFJAzB+jg99hHm2xyQTcKFj8hGJ7klnsGOlGkEVxcC5gN6CH217ZVuA5QAp4YJWD@nongnu.org
-X-Gm-Message-State: AOJu0YzjPlV+f62znKtNQfUI997V0+AdeN/8Zsl7f2Y5+AOl0Fiai/vC
- QEKsjIqf0madIWsbEH9mBqvIOvmJ8ZhSKr1xzIp+BsgE1n6vN6KM+4yfkJP08Bx5irUu1MsSvE+
- vKW6sLbVgSn4lKpIvLIejeWrzRCw=
-X-Google-Smtp-Source: AGHT+IEg+cXUjcFnaHuURsJdLNl/o+acPZK8rf0iCL2J7evmvwzKHkzyWccLjhqGkcxTbTeiIIJbP5o4HLIyAKsfygw=
-X-Received: by 2002:a05:6122:2016:b0:502:8cca:1313 with SMTP id
- 71dfb90a1353d-5028cca14a9mr894581e0c.12.1725599555330; Thu, 05 Sep 2024
- 22:12:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1smRKx-0003rI-He; Fri, 06 Sep 2024 01:16:48 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1smRKv-0007do-Ik; Fri, 06 Sep 2024 01:16:47 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 2649B8C114;
+ Fri,  6 Sep 2024 08:15:16 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id BD67D13335A;
+ Fri,  6 Sep 2024 08:16:33 +0300 (MSK)
+Received: (nullmailer pid 10382 invoked by uid 1000);
+ Fri, 06 Sep 2024 05:16:33 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 00/40] Patch Round-up for stable 7.2.14,
+ freeze on 2024-09-16
+Date: Fri,  6 Sep 2024 08:15:48 +0300
+Message-Id: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20240826024657.262553-1-alvinga@andestech.com>
- <20240826024657.262553-3-alvinga@andestech.com>
-In-Reply-To: <20240826024657.262553-3-alvinga@andestech.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 6 Sep 2024 15:12:09 +1000
-Message-ID: <CAKmqyKNJhvFt=aLBfOqY=PjTi4oPouTs9vHp7JVP3QEFj6Aoew@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] target/riscv: Add textra matching condition for
- the triggers
-To: Alvin Chang <alvinga@andestech.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, alistair.francis@wdc.com, 
- bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com, 
- zhiwei_liu@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2e;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,114 +58,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 26, 2024 at 12:48=E2=80=AFPM Alvin Chang via <qemu-devel@nongnu=
-.org> wrote:
->
-> According to RISC-V Debug specification, the optional textra32 and
-> textra64 trigger CSRs can be used to configure additional matching
-> conditions for the triggers. For example, if the textra.MHSELECT field
-> is set to 4 (mcontext), this trigger will only match or fire if the low
-> bits of mcontext/hcontext equal textra.MHVALUE field.
->
-> This commit adds the aforementioned matching condition as common trigger
-> matching conditions. Currently, the only legal values of textra.MHSELECT
-> are 0 (ignore) and 4 (mcontext). When textra.MHSELECT is 0, we pass the
-> checking. When textra.MHSELECT is 4, we compare textra.MHVALUE with
-> mcontext CSR. The remaining fields, such as textra.SBYTEMASK,
-> textra.SVALUE, and textra.SSELECT, are hardwired to zero for now. Thus,
-> we skip checking them here.
->
-> Signed-off-by: Alvin Chang <alvinga@andestech.com>
+The following patches are queued for QEMU stable v7.2.14:
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-Alistair
+Patch freeze is 2024-09-16, and the release is planned for 2024-09-18:
 
-> ---
->  target/riscv/debug.c | 45 +++++++++++++++++++++++++++++++++++++++++++-
->  target/riscv/debug.h |  3 +++
->  2 files changed, 47 insertions(+), 1 deletion(-)
->
-> diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-> index d6b4a06144..c79b51af30 100644
-> --- a/target/riscv/debug.c
-> +++ b/target/riscv/debug.c
-> @@ -364,11 +364,54 @@ static bool trigger_priv_match(CPURISCVState *env, =
-trigger_type_t type,
->      return false;
->  }
->
-> +static bool trigger_textra_match(CPURISCVState *env, trigger_type_t type=
-,
-> +                                 int trigger_index)
-> +{
-> +    target_ulong textra =3D env->tdata3[trigger_index];
-> +    target_ulong mhvalue, mhselect;
-> +
-> +    if (type < TRIGGER_TYPE_AD_MATCH || type > TRIGGER_TYPE_AD_MATCH6) {
-> +        /* textra checking is only applicable when type is 2, 3, 4, 5, o=
-r 6 */
-> +        return true;
-> +    }
-> +
-> +    switch (riscv_cpu_mxl(env)) {
-> +    case MXL_RV32:
-> +        mhvalue  =3D get_field(textra, TEXTRA32_MHVALUE);
-> +        mhselect =3D get_field(textra, TEXTRA32_MHSELECT);
-> +        break;
-> +    case MXL_RV64:
-> +    case MXL_RV128:
-> +        mhvalue  =3D get_field(textra, TEXTRA64_MHVALUE);
-> +        mhselect =3D get_field(textra, TEXTRA64_MHSELECT);
-> +        break;
-> +    default:
-> +        g_assert_not_reached();
-> +    }
-> +
-> +    /* Check mhvalue and mhselect. */
-> +    switch (mhselect) {
-> +    case MHSELECT_IGNORE:
-> +        break;
-> +    case MHSELECT_MCONTEXT:
-> +        /* Match if the low bits of mcontext/hcontext equal mhvalue. */
-> +        if (mhvalue !=3D env->mcontext) {
-> +            return false;
-> +        }
-> +        break;
-> +    default:
-> +        break;
-> +    }
-> +
-> +    return true;
-> +}
-> +
->  /* Common matching conditions for all types of the triggers. */
->  static bool trigger_common_match(CPURISCVState *env, trigger_type_t type=
-,
->                                   int trigger_index)
->  {
-> -    return trigger_priv_match(env, type, trigger_index);
-> +    return trigger_priv_match(env, type, trigger_index) &&
-> +           trigger_textra_match(env, type, trigger_index);
->  }
->
->  /* type 2 trigger */
-> diff --git a/target/riscv/debug.h b/target/riscv/debug.h
-> index c347863578..f76b8f944a 100644
-> --- a/target/riscv/debug.h
-> +++ b/target/riscv/debug.h
-> @@ -131,6 +131,9 @@ enum {
->  #define ITRIGGER_VU           BIT(25)
->  #define ITRIGGER_VS           BIT(26)
->
-> +#define MHSELECT_IGNORE       0
-> +#define MHSELECT_MCONTEXT     4
-> +
->  bool tdata_available(CPURISCVState *env, int tdata_index);
->
->  target_ulong tselect_csr_read(CPURISCVState *env);
-> --
-> 2.34.1
->
->
+  https://wiki.qemu.org/Planning/7.2
+
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 3becc9390810 Markus Armbruster:
+   qapi/qom: Document feature unstable of @x-vfio-user-server
+02 31d93fedf41c Daniyal Khan:
+   target/arm: Use float_status copy in sme_fmopa_s
+03 207d30b5fdb5 Richard Henderson:
+   target/arm: Use FPST_F16 for SME FMOPA (widening)
+04 c510fe78f1b7 Zheyu Ma:
+   hw/nvme: fix memory leak in nvme_dsm
+05 a207d5f87d66 Zhao Liu:
+   hw/cxl/cxl-host: Fix segmentation fault when getting cxl-fmw property
+06 a3c8d7e38550 Clément Mathieu--Drif:
+   intel_iommu: fix FRCD construction macro
+07 13be929aff80 Paolo Bonzini:
+   target/i386: do not crash if microvm guest uses SGX CPUID leaves
+08 903cc9e1173e songziming:
+   chardev/char-win-stdio.c: restore old console mode
+09 2465c89fb983 Bibo Mao:
+   hw/intc/loongson_ipi: Access memory in little endian
+10 851495571d14 Peter Maydell:
+   util/async.c: Forbid negative min/max in 
+   aio_context_set_thread_pool_params()
+11 d72479b11797 Thomas Huth:
+   hw/virtio: Fix the de-initialization of vhost-user devices
+12 83340193b991 Richard Henderson:
+   target/rx: Use target_ulong for address in LI
+13 546d574b11e0 Frederik van Hövell:
+   hw/char/bcm2835_aux: Fix assert when receive FIFO fills up
+14 0892fffc2aba Peter Maydell:
+   hw/misc/bcm2835_property: Fix handling of FRAMEBUFFER_SET_PALETTE
+15 56f1c0db928a Peter Maydell:
+   target/arm: Don't assert for 128-bit tile accesses when SVL is 128
+16 ea3f5a90f036 Peter Maydell:
+   target/arm: Fix UMOPA/UMOPS of 16-bit values
+17 76916dfa89e8 Peter Maydell:
+   target/arm: Avoid shifts by -1 in tszimm_shr() and tszimm_shl()
+18 f573ac059ed0 Peter Maydell:
+   target/arm: Ignore SMCR_EL2.LEN and SVCR_EL2.LEN if EL2 is not enabled
+19 48e5b5f994bc Peter Maydell:
+   docs/sphinx/depfile.py: Handle env.doc2path() returning a Path not a str
+20 9a45b0761628 Peter Maydell:
+   hw/i386/amd_iommu: Don't leak memory in amdvi_update_iotlb()
+21 5a558be93ad6 Marco Palumbi:
+   hw/arm/mps2-tz.c: fix RX/TX interrupts order
+22 55f9f4ee018c Peter Maydell:
+   target/arm: Handle denormals correctly for FMOPA (widening)
+23 f1595ceb9aad Akihiko Odaki:
+   virtio-net: Ensure queue index fits with RSS
+24 f937309fbdbb thomas:
+   virtio-net: Fix network stall at the host side waiting for kick
+25 ed5a159c3de4 Philippe Mathieu-Daudé:
+   hw/sd/sdhci: Reset @data_count index on invalid ADMA transfers
+26 b881cf00c99e Amjad Alsharafi:
+   vvfat: Fix bug in writing to middle of file
+27 21b25a0e466a Amjad Alsharafi:
+   vvfat: Fix usage of `info.file.offset`
+28 f60a6f7e17bf Amjad Alsharafi:
+   vvfat: Fix wrong checks for cluster mappings invariant
+29 5eed3db33650 Amjad Alsharafi:
+   vvfat: Fix reading files with non-continuous clusters
+30 c8f60bfb4345 Amjad Alsharafi:
+   iotests: Add `vvfat` tests
+31 fb1c2aaa981e Eric Blake:
+   nbd/server: Plumb in new args to nbd_client_add()
+32 c8a76dbd90c2 Eric Blake:
+   nbd/server: CVE-2024-7409: Cap default max-connections to 100
+33 b9b72cb3ce15 Eric Blake:
+   nbd/server: CVE-2024-7409: Drop non-negotiating clients
+34 3e7ef738c846 Eric Blake:
+   nbd/server: CVE-2024-7409: Close stray clients at server-stop
+35 3874f5f73c44 Eric Blake:
+   nbd/server: CVE-2024-7409: Avoid use-after-free when closing server
+36 547c4e50929e Stefano Garzarella:
+   block/blkio: use FUA flag on write zeroes only if supported
+37 416f2b16c02c Richard Henderson:
+   target/i386: Do not apply REX to MMX operands
+38 940d802b24e6 Alexander Ivanov:
+   module: Prevent crash by resetting local_err in module_load_qom_all()
+39 87e012f29f2e Peter Maydell:
+   crypto/tlscredspsk: Free username on finalize
+40 446e5e8b4515 Jianzhou Yue:
+   hw/core/ptimer: fix timer zero period condition for freq > 1GHz
 
