@@ -2,87 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8566296F3A1
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 839BD96F44A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 14:27:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smXWt-0006wo-Mm; Fri, 06 Sep 2024 07:53:31 -0400
+	id 1smY2b-0001e3-W2; Fri, 06 Sep 2024 08:26:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1smXWl-0006m5-C0
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 07:53:24 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1smY2F-0000YA-LZ; Fri, 06 Sep 2024 08:25:59 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1smXWj-00077Z-RB
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 07:53:23 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a86910caf9cso545650766b.1
- for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 04:53:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1smY2C-00022c-Qt; Fri, 06 Sep 2024 08:25:54 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-206f9b872b2so3178885ad.3; 
+ Fri, 06 Sep 2024 05:25:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725623599; x=1726228399; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2tKmW5gOZezfkPf6H5O6iVC54IjBwBT81yUC/ENPlNE=;
- b=OImhnmS0oe/4J6wXj3lN5jnJCiMrJwNyrOfWp3GGlj0oieSIk7VxHmS6JfUclouvSY
- J1kWR9NFElQIp8uhlsfONtxDyCHuU0OYR8+zQa4NhE9j55z0UKeJvnTgVmMKycPlWv7N
- nLpfrHgfPZD1w7L2hTn/SFGh61IBeivDGOZr7uahspdYbMaLDaUVG5ZFjmieX57pf1+S
- pK7UOewhT7cp6nXXyANW4U8S20JyytbWLqRIiKw+6OJUlXfPbjRbNNZqlG4ZxgNrqWiD
- izDH5S5ur7+jao8HlZW/g9dqoFFIzI884a8W72ai7WXK7AhzLeOedUIMEwHmIrEWww3A
- IWmA==
+ d=gmail.com; s=20230601; t=1725625546; x=1726230346; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=i25WBbXOE7bseAptFMJcoqMmGcDx0hm5DdRbe5SEl9s=;
+ b=IR63ydKTMk7k5oaCoZpJqMpw96CkJMG8u9rh8pz/8gChE7gSR0S+D7sI4TpgY4j45V
+ dxjnFAoSI1HR5Bfo4HiM3wrnHNJPC76F1MJK7F+G0vcRj0j8IA6Rmf0lbikygGc2B0AC
+ srNVtBGI+BrX9Fie8PFE4zEqx6xFXIAIoXiL+wQV+Ta+SpG/o4m6Gmrxojl5wJ/Lc/qV
+ 1l4pO+bmdotUPMV0K0YHfvvzcEc65Qm3noyqq1Bewx40DNrXvw1Hy2dQdrCM9E7HvJAL
+ KkOrhBN1lwR8uqcY25+XpD2ywI9XwzgH+EtsVl2w1y9lX1GAdNlRLHN8h7M3hge/obN2
+ FrDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725623599; x=1726228399;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2tKmW5gOZezfkPf6H5O6iVC54IjBwBT81yUC/ENPlNE=;
- b=NIPuiHP+MuQ0FSBybEBccTk99SzbC3tT8CJs30hzWkboJksejWVkbh+wAN0P2/xYi7
- 5jhW6Y/W/xrDDRkuJkHyxrL6vKtNzN6oigVWNF4XnvrDagyv6gdf8BoVamze/MWO7hiv
- MlsbGGWwrevtx9MKtvy5pDg06Nmg8+UMWpyGFSXCovSgn8Ovt35kQi2q3CRV3o/mZWr4
- cR8fJPXqp+fQyMJsmpNuoaIEd9+1XHym+rOO5EZyzZ8nh4ikF/C6QwByER1rQmazZk16
- hSAUw8pdihEWFkrLWwaGmst++I1UI+sgLNs+CcYp7zCD5CZFeU9vQJ93UL6jYGmgGUgE
- sBRw==
+ d=1e100.net; s=20230601; t=1725625546; x=1726230346;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=i25WBbXOE7bseAptFMJcoqMmGcDx0hm5DdRbe5SEl9s=;
+ b=AhKuwripM6SPfMNxnrwkeKHDo9Rc6E2y7MS7NCmM8/6JNO9kqD8CXDrpXESmYvE0QB
+ KSF81e2R0xh44jP+2zXPFddtTkP5d0jOJz7udEOT5VCCAsaCD+Z7LG/SWiHC7d74fQbM
+ JbawUqr6z8AmdVisUZoxXyInGyuCz9TOVFXbpAatqB6BIyhYPyfUyvms2EIUOWFZe9oA
+ kp0poERva6imnNv3+tDrT0FmwEucc8GHRBjfuE+bLw6gBKlnsc2AIvcxdnHxypzsyh1M
+ 8Ljt4V1aLaHP4q7MZwXO6NFyc57zkVPy6TL2g5A67yt9LkiCe/ACFoMyD3Z810iThGZn
+ 8YKA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXak0aFe2rf4vDJp+INty872BBS02KnUkdJGZ0uokptdU1GjIlXKvwwbVPqEGmjpqvKptW9NQc9BHqp@nongnu.org
-X-Gm-Message-State: AOJu0Yx36V2jL2EfOAls6x53HdiyzhpT/x3i7gkeunvnueQQojceFlCk
- WkVV9OmfETrL1wNXwQ9p8Y/VfSNLO3SYJDg58gT/p00MXqhCZsQPBd8Sv3cqTIs=
-X-Google-Smtp-Source: AGHT+IE8iVE+fE/dhFWJzhaVPKM8pYJ3ffPiHacy4xTRMN861ntlsAJV4c4K/vNApByp13zRenyD1g==
-X-Received: by 2002:a17:906:4789:b0:a80:9c1b:554f with SMTP id
- a640c23a62f3a-a8a86442be2mr289007266b.27.1725623599156; 
- Fri, 06 Sep 2024 04:53:19 -0700 (PDT)
-Received: from [192.168.55.118] ([80.215.236.92])
+ AJvYcCUYt0UGJiHkrYoUzLLP1uQ+qMWyQrqPtNIVyDtRrCRAsaZkBTyNLdbL9CoKF5+IBW3b+PLgkHCLHA==@nongnu.org
+X-Gm-Message-State: AOJu0YxvURKuVR0iRs4WbcansLkn3+eB+SokqrxcfBor2hZ01s02VQ/x
+ cm9y2+JrwDqJv4MsccLEbmiEm1j3+GU7s8Hwt6lWOl7PZlwhWbTjw3G2PA==
+X-Google-Smtp-Source: AGHT+IFF5G1sAlmT08tdrqWrDLgpJITxmH4ffuoQruZ1xrcKkqv8okFI6xtJPCU07CBM4kmm0knqew==
+X-Received: by 2002:a17:903:228f:b0:202:4a35:a803 with SMTP id
+ d9443c01a7336-206f053b370mr22382405ad.31.1725625546284; 
+ Fri, 06 Sep 2024 05:25:46 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8a6236d61csm265884166b.125.2024.09.06.04.53.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Sep 2024 04:53:18 -0700 (PDT)
-Message-ID: <0fa93707-d092-4db5-a4a4-f000df881ccd@linaro.org>
-Date: Fri, 6 Sep 2024 13:53:16 +0200
+ d9443c01a7336-206aea55d42sm42193535ad.204.2024.09.06.05.25.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Sep 2024 05:25:45 -0700 (PDT)
+From: Guenter Roeck <linux@roeck-us.net>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, BALATON Zoltan <balaton@eik.bme.hu>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ Guenter Roeck <linux@roeck-us.net>
+Subject: [RFC PATCH 0/8] usb/uhci: Add UHCI sysbus support,
+ and enable for AST machines
+Date: Fri,  6 Sep 2024 05:25:34 -0700
+Message-ID: <20240906122542.3808997-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 01/24] fifo32: add peek function
-To: Octavian Purdila <tavip@google.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
- peter.maydell@linaro.org, marcandre.lureau@redhat.com, berrange@redhat.com,
- eduardo@habkost.net, luc@lmichel.fr, damien.hedde@dahe.fr,
- alistair@alistair23.me, thuth@redhat.com, jsnow@redhat.com,
- crosa@redhat.com, lvivier@redhat.com
-References: <20240827064529.1246786-1-tavip@google.com>
- <20240827064529.1246786-2-tavip@google.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240827064529.1246786-2-tavip@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=groeck7@gmail.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,38 +102,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Octavian,
+Some machines (like Aspeed ARM) only support a sysbus UHCI controller.
+The current UHCI implementation in qemu only supports PCI based UHCI
+controllers.
 
-On 27/8/24 08:45, Octavian Purdila wrote:
-> Add fifo32_peek() that returns the first element from the queue
-> without popping it.
-> 
-> Signed-off-by: Octavian Purdila <tavip@google.com>
-> ---
->   include/qemu/fifo32.h | 28 ++++++++++++++++++++++++++++
->   1 file changed, 28 insertions(+)
-> 
-> diff --git a/include/qemu/fifo32.h b/include/qemu/fifo32.h
-> index 4e9fd1b5ef..77aab488ae 100644
-> --- a/include/qemu/fifo32.h
-> +++ b/include/qemu/fifo32.h
-> @@ -140,6 +140,34 @@ static inline uint32_t fifo32_pop(Fifo32 *fifo)
->       return ret;
->   }
->   
-> +/**
-> + * fifo32_peek:
-> + * @fifo: fifo to peek at
-> + *
-> + * Returns the value from the FIFO's head without poping it. Behaviour
-> + * is undefined if the FIFO is empty. Clients are responsible for
-> + * checking for emptiness using fifo32_is_empty().
-> + *
-> + * Returns: the value from the FIFO's head
-> + */
-> +
-> +static inline uint32_t fifo32_peek(Fifo32 *fifo)
+This patch series separates basic and PCI functionality from the hcd-uhci
+implementation and then adds uhci-sysbus support. This is then used
+to implement and enable sysbus based UHCI support for Aspeed machines.
 
-When respinning on top of Mark's Fifo8 work, please un-inline.
+The series is submitted as RFC since I am quite sure that I didn't get
+everything right. All code surrounding VMStates deserves special scrutiny,
+as well as the changes outside hw/usb/ and hw/arm/.
 
+A side effect of this patch series is that all Aspeed machines will now
+instantiate UHCI, even if the machine does not actually support it
+(it also always instantiates both EHCI ports, so that is not really
+different). This means that the default USB bus is now the UHCI bus,
+not the second EHCI bus. The bus number must therefore now be specified
+explicitly when attaching a device unless attaching it to the UHCI port
+is ok. I don't know if it is possible to avoid that and to ensure that
+the default USB port is still the second EHCI port.
+
+The code was tested on x86 machines to ensure that the existing UHCI
+implementation still works. It was also tested on various Aspeed machines
+with enabled UHCI ports (ast2500-evb, ast2600-evb, and rainier-bmc).
+
+----------------------------------------------------------------
+Guenter Roeck (8):
+      usb/uhci: checkpatch cleanup
+      usb/uhci: Introduce and use register defines
+      usb/uhci: Move PCI-related code into a separate file
+      usb/uhci: enlarge uhci memory space
+      usb/uhci: Add support for usb-uhci-sysbus
+      usb/uhci: Add aspeed specific read and write functions
+      aspeed: Add uhci support for ast2600
+      aspeed: Add uhci support for ast2400 and ast2500
+
+ hw/arm/Kconfig                |   1 +
+ hw/arm/aspeed_ast2400.c       |  14 ++
+ hw/arm/aspeed_ast2600.c       |  13 ++
+ hw/isa/Kconfig                |   4 +-
+ hw/isa/vt82c686.c             |   4 +-
+ hw/usb/Kconfig                |  10 +-
+ hw/usb/hcd-uhci-pci.c         | 255 ++++++++++++++++++++++++++++++++
+ hw/usb/hcd-uhci-pci.h         |  63 ++++++++
+ hw/usb/hcd-uhci-sysbus.c      | 201 +++++++++++++++++++++++++
+ hw/usb/hcd-uhci-sysbus.h      |  34 +++++
+ hw/usb/hcd-uhci.c             | 337 +++++++++++++-----------------------------
+ hw/usb/hcd-uhci.h             |  30 ++--
+ hw/usb/meson.build            |   2 +
+ hw/usb/vt82c686-uhci-pci.c    |  18 +--
+ include/hw/arm/aspeed_soc.h   |   3 +
+ include/hw/southbridge/piix.h |   4 +-
+ include/hw/usb/uhci-regs.h    |  11 ++
+ 17 files changed, 737 insertions(+), 267 deletions(-)
+ create mode 100644 hw/usb/hcd-uhci-pci.c
+ create mode 100644 hw/usb/hcd-uhci-pci.h
+ create mode 100644 hw/usb/hcd-uhci-sysbus.c
+ create mode 100644 hw/usb/hcd-uhci-sysbus.h
 
