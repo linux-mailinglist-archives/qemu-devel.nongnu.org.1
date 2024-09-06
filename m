@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE7996F2F9
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C7C96F2FF
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:25:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smX0r-0005oI-Fc; Fri, 06 Sep 2024 07:20:25 -0400
+	id 1smX0q-0005IL-GZ; Fri, 06 Sep 2024 07:20:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smX0P-0003ph-9r; Fri, 06 Sep 2024 07:20:01 -0400
+ id 1smX0S-00042E-G5; Fri, 06 Sep 2024 07:20:04 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smX0N-0008NG-Nk; Fri, 06 Sep 2024 07:19:57 -0400
+ id 1smX0Q-0008Px-Nb; Fri, 06 Sep 2024 07:20:00 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E7DEB8C4B5;
- Fri,  6 Sep 2024 14:12:10 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 02F898C4B6;
+ Fri,  6 Sep 2024 14:12:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id F378213371E;
- Fri,  6 Sep 2024 14:13:28 +0300 (MSK)
-Received: (nullmailer pid 353769 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0E95413371F;
+ Fri,  6 Sep 2024 14:13:29 +0300 (MSK)
+Received: (nullmailer pid 353772 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:25 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 68/69] hw/audio/virtio-snd: fix invalid param check
-Date: Fri,  6 Sep 2024 14:13:17 +0300
-Message-Id: <20240906111324.353230-68-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
+ Guenter Roeck <linux@roeck-us.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 69/69] target/hppa: Fix PSW V-bit packaging in
+ cpu_hppa_get for hppa64
+Date: Fri,  6 Sep 2024 14:13:18 +0300
+Message-Id: <20240906111324.353230-69-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,43 +62,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+From: Helge Deller <deller@gmx.de>
 
-Commit 9b6083465f ("virtio-snd: check for invalid param shift
-operands") tries to prevent invalid parameters specified by the
-guest. However, the code is not correct.
+While adding hppa64 support, the psw_v variable got extended from 32 to 64
+bits.  So, when packaging the PSW-V bit from the psw_v variable for interrupt
+processing, check bit 31 instead the 63th (sign) bit.
 
-Change the code so that the parameters format and rate, which are
-a bit numbers, are compared with the bit size of the data type.
+This fixes a hard to find Linux kernel boot issue where the loss of the PSW-V
+bit due to an ITLB interruption in the middle of a series of ds/addc
+instructions (from the divU milicode library) generated the wrong division
+result and thus triggered a Linux kernel crash.
 
-Fixes: 9b6083465f ("virtio-snd: check for invalid param shift operands")
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20240802071805.7123-1-vr_qemu@t-online.de>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 7d14471a121878602cb4e748c4707f9ab9a9e3e2)
+Link: https://lore.kernel.org/lkml/718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net/
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 931adff31478 ("target/hppa: Update cpu_hppa_get/put_psw for hppa64")
+Cc: qemu-stable@nongnu.org # v8.2+
+(cherry picked from commit ead5078cf1a5f11d16e3e8462154c859620bcc7e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: context fixup in target/hppa/helper.c due to lack of
+ v9.0.0-688-gebc9401a4067 "target/hppa: Split PSW X and B into their own field")
 
-diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-index 2b80072b04..95f55a02f1 100644
---- a/hw/audio/virtio-snd.c
-+++ b/hw/audio/virtio-snd.c
-@@ -282,12 +282,12 @@ uint32_t virtio_snd_set_pcm_params(VirtIOSound *s,
-         error_report("Number of channels is not supported.");
-         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index a072d0bb63..9c42431d72 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -188,7 +188,7 @@ typedef struct CPUArchState {
+ 
+     target_ulong psw;        /* All psw bits except the following:  */
+     target_ulong psw_n;      /* boolean */
+-    target_long psw_v;       /* in most significant bit */
++    target_long psw_v;       /* in bit 31 */
+ 
+     /* Splitting the carry-borrow field into the MSB and "the rest", allows
+      * for "the rest" to be deleted when it is unused, but the MSB is in use.
+diff --git a/target/hppa/helper.c b/target/hppa/helper.c
+index 9d217d051c..6c14994921 100644
+--- a/target/hppa/helper.c
++++ b/target/hppa/helper.c
+@@ -53,7 +53,7 @@ target_ulong cpu_hppa_get_psw(CPUHPPAState *env)
      }
--    if (BIT(params->format) > sizeof(supported_formats) ||
-+    if (params->format >= sizeof(supported_formats) * BITS_PER_BYTE ||
-         !(supported_formats & BIT(params->format))) {
-         error_report("Stream format is not supported.");
-         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
-     }
--    if (BIT(params->rate) > sizeof(supported_rates) ||
-+    if (params->rate >= sizeof(supported_rates) * BITS_PER_BYTE ||
-         !(supported_rates & BIT(params->rate))) {
-         error_report("Stream rate is not supported.");
-         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
+ 
+     psw |= env->psw_n * PSW_N;
+-    psw |= (env->psw_v < 0) * PSW_V;
++    psw |= ((env->psw_v >> 31) & 1) * PSW_V;
+     psw |= env->psw;
+ 
+     return psw;
 -- 
 2.39.2
 
