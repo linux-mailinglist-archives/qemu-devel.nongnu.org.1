@@ -2,87 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB3096EC23
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 09:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A8D996EC36
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 09:40:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smTXS-0007mh-3W; Fri, 06 Sep 2024 03:37:50 -0400
+	id 1smTZQ-0008VX-QK; Fri, 06 Sep 2024 03:39:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1smTXP-0007fW-UF
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 03:37:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1smTXO-0000hp-Fy
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 03:37:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725608264;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=7T/GiHajNDfQrOhmjStv5lhEoWWSSNNggx/DwKqObjM=;
- b=H+aXdYivYo5a9rMdHaDZ8SBS080R6mCt63XS31ZnD40WsWlrrs/8aCkhMMDRnBCJlbdEHw
- HHls7oU+LlsZ2d8jpa4xTyr5sYVn5v0iMTaRULQcR4ojuqsPhn5bDSF53S45h8KsYUdKfi
- XkeUxqvZN5j3ZIxQBr3B6eKrp6Usv74=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-91-O-pD5bhBNAywD3nCdT-GIw-1; Fri, 06 Sep 2024 03:37:42 -0400
-X-MC-Unique: O-pD5bhBNAywD3nCdT-GIw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-428040f49f9so13566745e9.0
- for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 00:37:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <michael.vogt@gmail.com>)
+ id 1smTZM-0008Dv-CB
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 03:39:49 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <michael.vogt@gmail.com>)
+ id 1smTZK-0000mm-6e
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 03:39:48 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2f4f24263acso30455521fa.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 00:39:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1725608383; x=1726213183; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RPR2kr68hQ5IuQ8MG/HC4hDsIR2S1/2Up0H8R4bLH8o=;
+ b=ESIZFvxoUZE7ysWzhpmFq1HdXdFa6y0i5il+Ew7o2FQkaB7j4GPIPQjGj/z+Ol5KrR
+ n0DeXphxtgziFvLsAe20BA7m6wUPlvvvl+szGDvS+Djm4TOBkAxcUtg1d6cPAhC65ZkR
+ hNXGnTJUp5DhYLqPl4ChS8Li/k/CmLvwO1Fwgji4vPjNkm6O6WBUfDU4AqyDN97qvj5M
+ mxqfRKxDEDiO8FpGyH7bhllieP0nX6Hgglme9Q8GMTvXnQrs6DC6oj/iNXZey+HMH2h1
+ d37fFZz2NUlv5re+BAld46b8iywSXSkxeQhDrHy9OsRLVVqTg99Fr7/jfs56keR6oFfL
+ wSXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725608260; x=1726213060;
+ d=1e100.net; s=20230601; t=1725608383; x=1726213183;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7T/GiHajNDfQrOhmjStv5lhEoWWSSNNggx/DwKqObjM=;
- b=kIMNut7jnalOyT4qqxX5Pnl4E8DlHiG7xWAenlb7ACGXYN83qza77qatV9f31O0DB8
- VseHcnG6MkfUniPQSScRf8N+wcrEmbNml/SxOYSpAonmhoH+dGK/SmY1GCB+JST5Ur0L
- a8cPjvl15LyXh4RI42b+WAmFFkO5fVOSX2DT6jfO06SevE8qRA4nPivx9O/78QYaKEpj
- FYVV5VQmF6gFv2DDuCHYzJVWeDxYg8rymvgXNdWh8nLLD4Gyv7bEI3BCUbv+jK/9idte
- MDi1Kjc0rsroDjbRRhzNFd+ptx51NafkRK4iuLJkJTDzagq4E7nDNhw4NOA+mxw8KgC3
- l0aA==
-X-Gm-Message-State: AOJu0YwZIdn7ND0K4/bSpb1KWBk+QEv89MdvQW/FWh2YlkhlWGtJV+kK
- NENyd+PhhOcuB0utpcuum/ed57AjHVApCF5rCdruwkBsGc6mj7lt2i5UKvf0jp1PXpr+H8Mu6uy
- ZBl+kujPpIBLU3/VZ8C+SYY5ud75yn6tFrL/hlUtfBggNyNBW3jo93w44IArYk2eBdS5go6P6YF
- swM41I1vRgdFvNiUf3YoHZ3OQ3AsnooVIoxWdIbMs=
-X-Received: by 2002:a05:600c:4505:b0:426:60b8:d8ba with SMTP id
- 5b1f17b1804b1-42bb27a9ca8mr203560725e9.28.1725608260587; 
- Fri, 06 Sep 2024 00:37:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFH5mupaTaA63fNt0hyF79YO2iO1hRDB/cB26Qbhz2WIz4zvrNRckKc6XLdRGucCeU8LEJ3eA==
-X-Received: by 2002:a05:600c:4505:b0:426:60b8:d8ba with SMTP id
- 5b1f17b1804b1-42bb27a9ca8mr203560535e9.28.1725608260036; 
- Fri, 06 Sep 2024 00:37:40 -0700 (PDT)
-Received: from avogadro.local ([151.95.101.29])
+ bh=RPR2kr68hQ5IuQ8MG/HC4hDsIR2S1/2Up0H8R4bLH8o=;
+ b=n6wKiBiJqrtKVwOccY4TYOLzUdm62nGLqBrJ6pTklOR0o7FycoV6KoDfjGmb2khU5j
+ QWssXISClB2EGyEEqRPCiS9kVnMGX/McaO+1H5YRzHFi+VL9RFj1eLebP4BWpyyf6UdE
+ IcvfvEgnT3MixQVy/nHv+kM/5qvUE+w4LuQawfREwj6LMFvrXWFVv2k/X5tzgR9hLpAS
+ YfLIXuT0jfiB7Sqs7+y/wgKqaMsQuxUWwF3kvLLIZ5EXzAH/5IlQiyoB7kWpbXBQEwRO
+ vukc7Sb0qSZ8A6Su0qOLapo7Wyd2wm3rzrfsx8MLdREQYGtINOZgeRxfVguSQE7+rP3j
+ ikyQ==
+X-Gm-Message-State: AOJu0YxYCUlWr6DH/Oa5bIwLAo73707TjDOeSIC15tTqZzuNZvyp3kFu
+ LFxFbCAxfs6NjfP2JOy0hwLSYAM7Ia9t6YJjSCG+7LsJtrTrykfKyToXTmy8
+X-Google-Smtp-Source: AGHT+IETe85ka54S0TIKo3HZaJTK26Nx7AUrUYVMuX166ma66k1yFtjMFF06X/n6Ow96R10thv4Eew==
+X-Received: by 2002:a2e:a590:0:b0:2f3:cb70:d447 with SMTP id
+ 38308e7fff4ca-2f6108ad85amr247562801fa.40.1725608381727; 
+ Fri, 06 Sep 2024 00:39:41 -0700 (PDT)
+Received: from top.fritz.box (p4fdf9401.dip0.t-ipconnect.de. [79.223.148.1])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42ca05c6fb9sm11265925e9.7.2024.09.06.00.37.39
+ a640c23a62f3a-a8aeacb588bsm19904466b.78.2024.09.06.00.39.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Sep 2024 00:37:39 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
+ Fri, 06 Sep 2024 00:39:41 -0700 (PDT)
+From: Michael Vogt <michael.vogt@gmail.com>
+X-Google-Original-From: Michael Vogt <mvogt@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH] virtio: kconfig: memory devices are PCI only
-Date: Fri,  6 Sep 2024 09:37:37 +0200
-Message-ID: <20240906073737.493254-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.46.0
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Michael Vogt <mvogt@redhat.com>
+Subject: [PATCH v4 0/1] linux-user: add openat2 support in linux-user
+Date: Fri,  6 Sep 2024 09:39:12 +0200
+Message-ID: <cover.1725607795.git.mvogt@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=michael.vogt@gmail.com; helo=mail-lj1-x236.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,54 +90,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Virtio memory devices rely on PCI BARs to expose the contents of memory.
-Because of this they cannot be used with virtio-mmio or virtio-ccw.  In fact
-the code that is common to virtio-mem and virtio-pmem, which is in
-hw/virtio/virtio-md-pci.c, is only included if CONFIG_VIRTIO_PCI is
-set.  Reproduce the same condition in the Kconfig file.
+Hi,
 
-Without this patch it is possible to create a configuration with
-CONFIG_VIRTIO_PCI=n and CONFIG_VIRTIO_MEM=y, but that causes a
-compilation failure.
+This is v4 of the openat2 support in linux-user. Thanks again for the
+excellent second round of feedback from Richard Henderson.
 
-Cc: David Hildenbrand <david@redhat.com>
-Reported-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- hw/virtio/Kconfig | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+The code is identical to the previous v3 and I only fixed two typos in
+the commit message. I'm sending v4 because in v3 I forgot to add
+"--threaded" when generating the coverletter/patch which makes it a bit
+awkward to review and it does not show up properly on
+e.g. https://patchew.org/QEMU/. My apologies for this mistake.
 
-diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
-index aa63ff7fd41..7c554d230d8 100644
---- a/hw/virtio/Kconfig
-+++ b/hw/virtio/Kconfig
-@@ -37,6 +37,7 @@ config VIRTIO_CRYPTO
- 
- config VIRTIO_MD
-     bool
-+    depends on VIRTIO_PCI
-     select MEM_DEVICE
- 
- config VIRTIO_PMEM_SUPPORTED
-@@ -45,7 +46,7 @@ config VIRTIO_PMEM_SUPPORTED
- config VIRTIO_PMEM
-     bool
-     default y
--    depends on VIRTIO
-+    depends on VIRTIO_PCI
-     depends on VIRTIO_PMEM_SUPPORTED
-     select VIRTIO_MD
- 
-@@ -55,7 +56,7 @@ config VIRTIO_MEM_SUPPORTED
- config VIRTIO_MEM
-     bool
-     default y
--    depends on VIRTIO
-+    depends on VIRTIO_PCI
-     depends on LINUX
-     depends on VIRTIO_MEM_SUPPORTED
-     select VIRTIO_MD
+This version tries to be closer to the kernels behavior, i.e. now
+do_openat2() uses a new copy_struct_from_user() helper that is very
+similar to the kernels. This lead me to also drop incuding openat2.h
+(as was originally suggested in the v1 review). It now contains it as
+a copy named `struct open_how_ver0` and with that we can LOG_UNIMP if
+the struct ever grows and qemu-user needs updating.
+
+To answer the question why "maybe_do_fake_open()" uses a
+"use_returned_fd" bool instead of just returning "-1": I wanted to be
+as close as possible to the previous behavior and maybe_fake_open()
+could in theory return "-1" for failures in memfd_create() or
+mkstemp() or fake_open->fill(). In those cases the old code in
+do_guest_openat() failed and returned the error but the new code would
+just see a -1 and continue trying to open a special file that should
+have been faked. Maybe I did overthink this as it's very
+corner-case-y. Advise is welcome here, happy to change back or
+simplify in other ways.
+
+Thanks again,
+ Michael
+
+v3 -> v4:
+- fix typos in the commit message
+
+v2 -> v3:
+- fix coding style (braches)
+- improve argument args/naming in do_openat2()
+- merge do_openat2/do_guest_openat2
+- do size checks first in do_openat2
+- add "copy_struct_from_user" and use in "do_openat2()"
+- drop using openat2.h and create "struct open_how_v0"
+- log if open_how guest struct is bigger than our supported struct
+
+v1 -> v2:
+- do not include <sys/syscall.h>
+- drop do_guest_openat2 from qemu.h and make static
+- drop "safe" from do_guest_openat2
+- ensure maybe_do_fake_open() is correct about when the result should
+  be used or not
+- Extract do_openat2() helper from do_syscall1()
+- Call user_unlock* if a lock call fails
+- Fix silly incorrect use of "target_open_how" when "open_how" is required
+- Fix coding style comments
+- Fix validation of arg4 in openat2
+- Fix missing zero initialization of open_how
+- Define target_open_how with abi_* types
+- Warn about unimplemented size if "size" of openat2 is bigger than
+  target_open_how
+
+
+Michael Vogt (1):
+  linux-user: add openat2 support in linux-user
+
+ linux-user/syscall.c      | 116 ++++++++++++++++++++++++++++++++++++--
+ linux-user/syscall_defs.h |   7 +++
+ 2 files changed, 119 insertions(+), 4 deletions(-)
+
 -- 
-2.46.0
+2.45.2
 
 
