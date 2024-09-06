@@ -2,43 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF0596E93F
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B3096E93E
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:26:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRNu-00013m-VN; Fri, 06 Sep 2024 01:19:51 -0400
+	id 1smROu-0005p1-Cn; Fri, 06 Sep 2024 01:20:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRNq-0000WI-1S; Fri, 06 Sep 2024 01:19:46 -0400
+ id 1smROO-0004RO-V8; Fri, 06 Sep 2024 01:20:26 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRNn-0008Mk-Vm; Fri, 06 Sep 2024 01:19:45 -0400
+ id 1smROB-0008NS-0b; Fri, 06 Sep 2024 01:20:08 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7144A8C139;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7F4318C13A;
  Fri,  6 Sep 2024 08:15:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1F41313337E;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2FAE413337F;
  Fri,  6 Sep 2024 08:16:36 +0300 (MSK)
-Received: (nullmailer pid 10495 invoked by uid 1000);
+Received: (nullmailer pid 10498 invoked by uid 1000);
  Fri, 06 Sep 2024 05:16:34 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>,
- Eric Blake <eblake@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 36/40] block/blkio: use FUA flag on write zeroes only
- if supported
-Date: Fri,  6 Sep 2024 08:16:24 +0300
-Message-Id: <20240906051633.10288-36-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 37/40] target/i386: Do not apply REX to MMX operands
+Date: Fri,  6 Sep 2024 08:16:25 +0300
+Message-Id: <20240906051633.10288-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,58 +59,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-libblkio supports BLKIO_REQ_FUA with write zeros requests only since
-version 1.4.0, so let's inform the block layer that the blkio driver
-supports it only in this case. Otherwise we can have runtime errors
-as reported in https://issues.redhat.com/browse/RHEL-32878
-
-Fixes: fd66dbd424 ("blkio: add libblkio block driver")
 Cc: qemu-stable@nongnu.org
-Buglink: https://issues.redhat.com/browse/RHEL-32878
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240808080545.40744-1-sgarzare@redhat.com
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-(cherry picked from commit 547c4e50929ec6c091d9c16a7b280e829b12b463)
+Fixes: b3e22b2318a ("target/i386: add core of new i386 decoder")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2495
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Link: https://lore.kernel.org/r/20240812025844.58956-2-richard.henderson@linaro.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 416f2b16c02c618c0f233372ebfe343f9ee667d4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: meson.build fixup for the lack of
- v8.0.0-1489-g98b126f5e3 "qapi: add '@fdset' feature for BlockdevOptionsVirtioBlkVhostVdpa")
 
-diff --git a/block/blkio.c b/block/blkio.c
-index cb66160268..1fd47c434c 100644
---- a/block/blkio.c
-+++ b/block/blkio.c
-@@ -808,8 +808,10 @@ static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
-     }
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 1dfc368456..88de92ed16 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -1176,7 +1176,10 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
+             op->unit = X86_OP_SSE;
+         }
+     get_reg:
+-        op->n = ((get_modrm(s, env) >> 3) & 7) | REX_R(s);
++        op->n = ((get_modrm(s, env) >> 3) & 7);
++        if (op->unit != X86_OP_MMX) {
++            op->n |= REX_R(s);
++        }
+         break;
  
-     bs->supported_write_flags = BDRV_REQ_FUA | BDRV_REQ_REGISTERED_BUF;
--    bs->supported_zero_flags = BDRV_REQ_FUA | BDRV_REQ_MAY_UNMAP |
--                               BDRV_REQ_NO_FALLBACK;
-+    bs->supported_zero_flags = BDRV_REQ_MAY_UNMAP | BDRV_REQ_NO_FALLBACK;
-+#ifdef CONFIG_BLKIO_WRITE_ZEROS_FUA
-+    bs->supported_zero_flags |= BDRV_REQ_FUA;
-+#endif
- 
-     qemu_mutex_init(&s->blkio_lock);
-     qemu_co_mutex_init(&s->bounce_lock);
-diff --git a/meson.build b/meson.build
-index 787f91855e..16dc9627e0 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1831,6 +1831,10 @@ config_host_data.set('CONFIG_LZO', lzo.found())
- config_host_data.set('CONFIG_MPATH', mpathpersist.found())
- config_host_data.set('CONFIG_MPATH_NEW_API', mpathpersist_new_api)
- config_host_data.set('CONFIG_BLKIO', blkio.found())
-+if blkio.found()
-+  config_host_data.set('CONFIG_BLKIO_WRITE_ZEROS_FUA',
-+                       blkio.version().version_compare('>=1.4.0'))
-+endif
- config_host_data.set('CONFIG_CURL', curl.found())
- config_host_data.set('CONFIG_CURSES', curses.found())
- config_host_data.set('CONFIG_GBM', gbm.found())
+     case X86_TYPE_E:  /* ALU modrm operand */
 -- 
 2.39.2
 
