@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C790396EB90
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 09:06:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8A696EB57
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 09:00:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smSwI-0006PZ-LR; Fri, 06 Sep 2024 02:59:27 -0400
+	id 1smSvz-0003JX-BZ; Fri, 06 Sep 2024 02:59:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smSvN-0008CL-HX; Fri, 06 Sep 2024 02:58:30 -0400
+ id 1smSvh-0001Zd-H1; Fri, 06 Sep 2024 02:58:53 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smSvL-0003iJ-Sr; Fri, 06 Sep 2024 02:58:29 -0400
+ id 1smSvf-0003iM-Ui; Fri, 06 Sep 2024 02:58:49 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8A8848C261;
+ by isrv.corpit.ru (Postfix) with ESMTP id 995388C262;
  Fri,  6 Sep 2024 09:53:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 53C55133419;
+ by tsrv.corpit.ru (Postfix) with SMTP id 633B713341A;
  Fri,  6 Sep 2024 09:54:32 +0300 (MSK)
-Received: (nullmailer pid 43670 invoked by uid 1000);
+Received: (nullmailer pid 43681 invoked by uid 1000);
  Fri, 06 Sep 2024 06:54:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.7 44/53] target/i386: Do not apply REX to MMX operands
-Date: Fri,  6 Sep 2024 09:54:14 +0300
-Message-Id: <20240906065429.42415-44-mjt@tls.msk.ru>
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.7 45/53] target/arm: Clear high SVE elements in
+ handle_vec_simd_wshli
+Date: Fri,  6 Sep 2024 09:54:15 +0300
+Message-Id: <20240906065429.42415-45-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.7-20240906080902@cover.tls.msk.ru>
 References: <qemu-stable-8.2.7-20240906080902@cover.tls.msk.ru>
@@ -61,31 +62,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
+AdvSIMD instructions are supposed to zero bits beyond 128.
+Affects SSHLL, USHLL, SSHLL2, USHLL2.
+
 Cc: qemu-stable@nongnu.org
-Fixes: b3e22b2318a ("target/i386: add core of new i386 decoder")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2495
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20240812025844.58956-2-richard.henderson@linaro.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 416f2b16c02c618c0f233372ebfe343f9ee667d4)
+Message-id: 20240717060903.205098-15-richard.henderson@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 8e0c9a9efa21a16190cbac288e414bbf1d80f639)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index ffd3a42688..852579eef5 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1237,7 +1237,10 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
-             op->unit = X86_OP_SSE;
-         }
-     get_reg:
--        op->n = ((get_modrm(s, env) >> 3) & 7) | REX_R(s);
-+        op->n = ((get_modrm(s, env) >> 3) & 7);
-+        if (op->unit != X86_OP_MMX) {
-+            op->n |= REX_R(s);
-+        }
-         break;
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 2fccd836b7..5beac07b60 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -10141,6 +10141,7 @@ static void handle_vec_simd_wshli(DisasContext *s, bool is_q, bool is_u,
+         tcg_gen_shli_i64(tcg_rd, tcg_rd, shift);
+         write_vec_element(s, tcg_rd, rd, i, size + 1);
+     }
++    clear_vec_high(s, true, rd);
+ }
  
-     case X86_TYPE_E:  /* ALU modrm operand */
+ /* SHRN/RSHRN - Shift right with narrowing (and potential rounding) */
 -- 
 2.39.2
 
