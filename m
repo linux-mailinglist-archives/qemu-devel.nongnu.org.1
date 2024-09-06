@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D748A96F283
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A50296F2B7
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:19:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWuN-0000ZR-JN; Fri, 06 Sep 2024 07:13:43 -0400
+	id 1smWuR-00014I-En; Fri, 06 Sep 2024 07:13:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWuH-0000Sl-Ep; Fri, 06 Sep 2024 07:13:37 -0400
+ id 1smWuK-0000ef-ER; Fri, 06 Sep 2024 07:13:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWuF-0007ft-LE; Fri, 06 Sep 2024 07:13:37 -0400
+ id 1smWuI-0007gf-IA; Fri, 06 Sep 2024 07:13:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C6FC58C475;
+ by isrv.corpit.ru (Postfix) with ESMTP id D8D308C476;
  Fri,  6 Sep 2024 14:12:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D3D3E1336DF;
+ by tsrv.corpit.ru (Postfix) with SMTP id E1E241336E0;
  Fri,  6 Sep 2024 14:13:24 +0300 (MSK)
-Received: (nullmailer pid 353555 invoked by uid 1000);
+Received: (nullmailer pid 353558 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+Cc: qemu-stable@nongnu.org, Daniyal Khan <danikhan632@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 05/69] target/arm: LDAPR should honour SCTLR_ELx.nAA
-Date: Fri,  6 Sep 2024 14:12:14 +0300
-Message-Id: <20240906111324.353230-5-mjt@tls.msk.ru>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 06/69] target/arm: Use float_status copy in sme_fmopa_s
+Date: Fri,  6 Sep 2024 14:12:15 +0300
+Message-Id: <20240906111324.353230-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,52 +63,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Daniyal Khan <danikhan632@gmail.com>
 
-In commit c1a1f80518d360b when we added the FEAT_LSE2 relaxations to
-the alignment requirements for atomic and ordered loads and stores,
-we didn't quite get it right for LDAPR/LDAPRH/LDAPRB with no
-immediate offset.  These instructions were handled in the old decoder
-as part of disas_ldst_atomic(), but unlike all the other insns that
-function decoded (LDADD, LDCLR, etc) these insns are "ordered", not
-"atomic", so they should be using check_ordered_align() rather than
-check_atomic_align().  Commit c1a1f80518d360b used
-check_atomic_align() regardless for everything in
-disas_ldst_atomic().  We then carried that incorrect check over in
-the decodetree conversion, where LDAPR/LDAPRH/LDAPRB are now handled
-by trans_LDAPR().
-
-The effect is that when FEAT_LSE2 is implemented, these instructions
-don't honour the SCTLR_ELx.nAA bit and will generate alignment
-faults when they should not.
-
-(The LDAPR insns with an immediate offset were in disas_ldst_ldapr_stlr()
-and then in trans_LDAPR_i() and trans_STLR_i(), and have always used
-the correct check_ordered_align().)
-
-Use check_ordered_align() in trans_LDAPR().
+We made a copy above because the fp exception flags
+are not propagated back to the FPST register, but
+then failed to use the copy.
 
 Cc: qemu-stable@nongnu.org
-Fixes: c1a1f80518d360b ("target/arm: Relax ordered/atomic alignment checks for LSE2")
+Fixes: 558e956c719 ("target/arm: Implement FMOPA, FMOPS (non-widening)")
+Signed-off-by: Daniyal Khan <danikhan632@gmail.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-id: 20240717060149.204788-2-richard.henderson@linaro.org
+[rth: Split from a larger patch]
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240709134504.3500007-3-peter.maydell@linaro.org
-(cherry picked from commit 25489b521b61b874c4c6583956db0012a3674e3a)
+(cherry picked from commit 31d93fedf41c24b0badb38cd9317590d1ef74e37)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 2666d52711..922a16e5d4 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -3428,7 +3428,7 @@ static bool trans_LDAPR(DisasContext *s, arg_LDAPR *a)
-     if (a->rn == 31) {
-         gen_check_sp_alignment(s);
-     }
--    mop = check_atomic_align(s, a->rn, a->sz);
-+    mop = check_ordered_align(s, a->rn, 0, false, a->sz);
-     clean_addr = gen_mte_check1(s, cpu_reg_sp(s, a->rn), false,
-                                 a->rn != 31, mop);
-     /*
+diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
+index e2e0575039..5a6dd76489 100644
+--- a/target/arm/tcg/sme_helper.c
++++ b/target/arm/tcg/sme_helper.c
+@@ -916,7 +916,7 @@ void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
+                         if (pb & 1) {
+                             uint32_t *a = vza_row + H1_4(col);
+                             uint32_t *m = vzm + H1_4(col);
+-                            *a = float32_muladd(n, *m, *a, 0, vst);
++                            *a = float32_muladd(n, *m, *a, 0, &fpst);
+                         }
+                         col += 4;
+                         pb >>= 4;
 -- 
 2.39.2
 
