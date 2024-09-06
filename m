@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D987696F20E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 12:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5101E96F214
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:00:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWfu-0003Kd-2L; Fri, 06 Sep 2024 06:58:46 -0400
+	id 1smWg1-0003pI-G4; Fri, 06 Sep 2024 06:58:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1smWfW-0002rf-Gf; Fri, 06 Sep 2024 06:58:22 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1smWfY-0002uC-Bo; Fri, 06 Sep 2024 06:58:24 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1smWfP-00063t-Vl; Fri, 06 Sep 2024 06:58:18 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-718a3b8a2dcso712396b3a.2; 
- Fri, 06 Sep 2024 03:58:13 -0700 (PDT)
+ id 1smWfV-00064X-Hh; Fri, 06 Sep 2024 06:58:24 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-2055136b612so19975805ad.0; 
+ Fri, 06 Sep 2024 03:58:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1725620292; x=1726225092; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1725620294; x=1726225094; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DpglpDUM4OlF9COFJkrNkQ6UFuQoFP0oapIAUazllKc=;
- b=BNQWIwHBhYUSgwyH6PVE2yKSUWQx7kdhYEQeQKFbbAQJ9zNFGzGt9ynVkuksD11AxV
- VUsEuXGVla9DDAAKROB3L2IiwJ6XGirpnOtxE1jV/9cW2zwe+OSINDcPfMTTHnjYVfqZ
- GX9moxTaAUHPijBxt3ASkOv6h6DxVXkd1jgAmv0k2iiYCVRucktfFa8kQ1uID6Qrw6t9
- rtEnAg3Cea+Gf/NCWg1yrmYFzbgnLQEsFFvXeShTBosMzv8HCzCni+CF7vQpUurrr1d2
- NEGRacTyrmiD2wuUHlT9IbHTQbr3BJQXpfsGRuT/Q2+0WT8eqez2vwiSOu5i+hPsrWe7
- TE4g==
+ bh=gOGzTPASlo6K8l2wzpyTbqSY9P+S0/aB+DvBDSW+bJQ=;
+ b=bZ1o+2jUX5ovNUdPmsBjYP/pa/FLH3inkZ9eUiijdZbXFa6kDwm6WdjvneR+tyMaaK
+ jgwUs/sJ3tCUMrdjnTww0Xz9uObIlATvm/UX6kuFWrdHXDPzoVmK7BUvjcK+c9YsYqba
+ M6LezQ08x2D/rlxpF3f6zu8FU0DsEst3STYANta5PP6Jd7ibZY6u5XejZDB2UfQlHU7N
+ T9Vkon4SQAyxEZJSPPzLq5gUzTVw2crDzFkEPJEdNP1+McO8hUlWjsfiFTNbzgigNRP7
+ OgNh9F5MNRBgzKkOrqYRBtAcbvqwvV4r+69DIPGiD72CCBXmhfBPzuin/xZBpRSDnh6p
+ cK8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725620292; x=1726225092;
+ d=1e100.net; s=20230601; t=1725620294; x=1726225094;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DpglpDUM4OlF9COFJkrNkQ6UFuQoFP0oapIAUazllKc=;
- b=pV8LOzJvjXQarKtL7pUPOzdjWVqX+4T3ELnOJDh0pOdzKRljb423t9rTmw9YLK2IhA
- paA1xIbA/IRPEtCABWKZjLfcJM1jdwAV5as+JkVQBvUvuJH3z1DQW9y88F0MT4tmLPEa
- sqVvZCpSUS6Y+wb3uWnq3Xc+kas/24eEYZpiTPFB33tqU1UEmWq7Oph9RX5OFnTr8w6X
- VBs2QL52Jyr29s14XqNXifFEAp5cPGHcwnAFK0x+r2oOcdUMnof9lWdd9X9HDGh3P6wF
- 3Afyht4F0bW8y7CDn/MQbJcjT0AYVi6tqkjPxDty13axy8gdwXb7d8JN2Y01UV6zNU0k
- g/8w==
+ bh=gOGzTPASlo6K8l2wzpyTbqSY9P+S0/aB+DvBDSW+bJQ=;
+ b=p+BWe3agKq3pE0oYPGUAHBVPeoou9yv8/2LirfthtjkqSz/8dHjSK2WchhIjuL7qXB
+ FjFrdvjsTpETv0oFcNJlEQ5iYxL55bmC7h1bXNl/si+Cov6QfSj+KNbRJWjCQ9Off+H1
+ UgXhoGQI4TvFZ1aL3OaJx3IhoMxsbNyggqxHFnaK8TjFIUjl5iRglYm5TFrtgc+ZfB5p
+ bNnndeXwsDm3drbWzVA7s6Nb2LiSHiP4VR9c8xczC2kLV5054z2m8QD0X/RvAwxcIisi
+ MYo2ojGoct0+dxr1gxkuYKeULQmXFm83kqnTpv0bgLG/tSrL8PY/dDAGSXYdxIGTEAPZ
+ qk2w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW1cV2f8OCZpk5wsTdyHNJWsVPG1SHqBUNSlrU6UT8DknmaXCSqqUwPNHSXBYuCICCUxO+94Sn82BPC@nongnu.org
-X-Gm-Message-State: AOJu0YxtIPTrcVvypG35yfGn1SAyLELamtK7OP0+6BmdAz+uu2BDpS+5
- 7KFYs/wsNkzg23/7sLQmlHAPuheVqonAUJGt/0w/RdPuMn6RgBrGz4UXrg==
-X-Google-Smtp-Source: AGHT+IEGIvCp3LqA9RxnJ3RUOlyXkADb27C7M6LxM+npN9b3ritDzoHXLT9At3eYLPfWghwZAi/7nA==
-X-Received: by 2002:a05:6a20:2d06:b0:1c4:6a86:e40d with SMTP id
- adf61e73a8af0-1cf1d1b2da9mr2386556637.38.1725620291595; 
- Fri, 06 Sep 2024 03:58:11 -0700 (PDT)
+ AJvYcCU+FOHeRQifNJ424ztaf855druG8SQJlqJ62JltiCzOePjDWtNaKJLnSax/6PVmkfCwcF8dIhFJHhY9@nongnu.org
+X-Gm-Message-State: AOJu0Yxt+/PE9f4ZFrsIkP5ZmDtM5iSKtBhCn8j8hBZ+zSPUVQcu501r
+ P55FIbPIELDMGwTMdjv1DJT3rCVaTxximv6MkohA5HGJ+42r7YW0s4CY3w==
+X-Google-Smtp-Source: AGHT+IGqWqzO1HMl0zOXynCf0/p/MGQzSEeMiTkMJy2GcrUmtdlYFFTVilxFLkh1/8yJNkIvCzQOVA==
+X-Received: by 2002:a17:903:41cf:b0:1fa:9c04:946a with SMTP id
+ d9443c01a7336-206f04c9dd2mr23303095ad.1.1725620294583; 
+ Fri, 06 Sep 2024 03:58:14 -0700 (PDT)
 Received: from jeuk-MS-7D42.. ([175.119.5.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-206aea67bc6sm41134575ad.258.2024.09.06.03.58.08
+ d9443c01a7336-206aea67bc6sm41134575ad.258.2024.09.06.03.58.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Sep 2024 03:58:11 -0700 (PDT)
+ Fri, 06 Sep 2024 03:58:14 -0700 (PDT)
 From: Jeuk Kim <jeuk20.kim@gmail.com>
 To: qemu-devel@nongnu.org,
 	peter.maydell@linaro.org
 Cc: fam@euphon.net, pbonzini@redhat.com, qemu-block@nongnu.org,
  jeuk20.kim@samsung.com, j-young.choi@samsung.com,
  jeongyuchan0629@gmail.com, Yoochan Jeong <yc01.jeong@samsung.com>
-Subject: [PULL 3/5] hw/ufs: ufs flag read/write test implemented
-Date: Fri,  6 Sep 2024 19:57:40 +0900
-Message-Id: <4aac30299b742f594f52016d4133487ad33459e7.1725619134.git.jeuk20.kim@samsung.com>
+Subject: [PULL 4/5] hw/ufs: ufs attribute read/write test implemented
+Date: Fri,  6 Sep 2024 19:57:41 +0900
+Message-Id: <49ccea4be9400a29477ab20fe959629786b076fd.1725619134.git.jeuk20.kim@samsung.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1725619134.git.jeuk20.kim@samsung.com>
 References: <cover.1725619134.git.jeuk20.kim@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,28 +96,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Yoochan Jeong <yc01.jeong@samsung.com>
 
-New test function "ufstest_flag_request" added, which can check one's
-virtual UFS device can properly read and write its flag data. It tests
-if reading, setting, clearing and toggling flags work properly. There
-are some testcases that are intended to make an error caused by
-permission issues.
+New test function "ufstest_query_attr_request" added, which can check one's
+virtual UFS device can properly read and write its attribute data.
+It tests if reading and writing attributes work properly. There are
+some testcases that are intended to make an error caused by writing an
+invalid value, allocating an invalid selector and permission issues.
 
 Signed-off-by: Yoochan Jeong <yc01.jeong@samsung.com>
 Reviewed-by: Jeuk Kim <jeuk20.kim@samsung.com>
 Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
 ---
- tests/qtest/ufs-test.c | 83 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+ tests/qtest/ufs-test.c | 137 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 137 insertions(+)
 
 diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index 9cc9e578ff..9f45a078e7 100644
+index 9f45a078e7..061371414a 100644
 --- a/tests/qtest/ufs-test.c
 +++ b/tests/qtest/ufs-test.c
-@@ -539,6 +539,87 @@ static void ufstest_read_write(void *obj, void *data, QGuestAllocator *alloc)
+@@ -620,6 +620,141 @@ static void ufstest_query_flag_request(void *obj, void *data,
      ufs_exit(ufs, alloc);
  }
  
-+static void ufstest_query_flag_request(void *obj, void *data,
++static void ufstest_query_attr_request(void *obj, void *data,
 +                                       QGuestAllocator *alloc)
 +{
 +    QUfs *ufs = obj;
@@ -126,74 +126,128 @@ index 9cc9e578ff..9f45a078e7 100644
 +    UtpUpiuRsp rsp_upiu;
 +    ufs_init(ufs, alloc);
 +
-+    /* Read read-only flag */
++    /* Read Readable Attributes*/
 +    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_FLAG,
-+                   UFS_QUERY_FLAG_IDN_FDEVICEINIT, 0, 0, 0, &utrd, &rsp_upiu);
++                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
++                   UFS_QUERY_ATTR_IDN_BOOT_LU_EN, 0, 0, 0, &utrd, &rsp_upiu);
 +    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
 +    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.opcode, ==, UFS_UPIU_QUERY_OPCODE_READ_FLAG);
-+    g_assert_cmpuint(rsp_upiu.qr.idn, ==, UFS_QUERY_FLAG_IDN_FDEVICEINIT);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, be32_to_cpu(0));
++    g_assert_cmpuint(rsp_upiu.qr.opcode, ==, UFS_UPIU_QUERY_OPCODE_READ_ATTR);
++    g_assert_cmpuint(rsp_upiu.qr.idn, ==, UFS_QUERY_ATTR_IDN_BOOT_LU_EN);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
 +
-+    /* Flag Set, Clear, Toggle Test with fDeviceLifeSpanModeEn */
 +    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_FLAG,
-+                   UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE, 0, 0, 0, &utrd,
++                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
++                   UFS_QUERY_ATTR_IDN_BKOPS_STATUS, 0, 0, 0, &utrd, &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
++
++    /* Write Writable Attributes & Read Again */
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
++                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0x03, &utrd,
 +                   &rsp_upiu);
 +    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
 +    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, be32_to_cpu(0));
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x03));
 +
 +    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_SET_FLAG,
-+                   UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE, 0, 0, 0, &utrd,
-+                   &rsp_upiu);
++                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
++                   UFS_QUERY_ATTR_IDN_EE_CONTROL, 0, 0, 0x07, &utrd, &rsp_upiu);
 +    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
 +    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, be32_to_cpu(1));
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x07));
 +
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_CLEAR_FLAG,
-+                   UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE, 0, 0, 0, &utrd,
-+                   &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, be32_to_cpu(0));
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_TOGGLE_FLAG,
-+                   UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE, 0, 0, 0, &utrd,
-+                   &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, be32_to_cpu(1));
-+
-+    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_TOGGLE_FLAG,
-+                   UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE, 0, 0, 0, &utrd,
-+                   &rsp_upiu);
-+    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
-+    g_assert_cmpuint(rsp_upiu.qr.value, ==, be32_to_cpu(0));
-+
-+    /* Read Write-only Flag (Intended Failure) */
 +    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_READ_FLAG,
-+                   UFS_QUERY_FLAG_IDN_PURGE_ENABLE, 0, 0, 0, &utrd, &rsp_upiu);
++                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
++                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0, &utrd,
++                   &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x03));
++
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
++                   UFS_QUERY_ATTR_IDN_EE_CONTROL, 0, 0, 0, &utrd, &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x07));
++
++    /* Write Invalid Value (Intended Error) */
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
++                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0x10, &utrd,
++                   &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==,
++                     UFS_OCS_INVALID_CMD_TABLE_ATTR);
++    g_assert_cmpuint(rsp_upiu.header.response, ==,
++                     UFS_QUERY_RESULT_INVALID_VALUE);
++
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
++                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0, &utrd,
++                   &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x03));
++
++    /* Read Write-Only Attribute (Intended Error) */
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
++                   UFS_QUERY_ATTR_IDN_SECONDS_PASSED, 0, 0, 0, &utrd,
++                   &rsp_upiu);
 +    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==,
 +                     UFS_OCS_INVALID_CMD_TABLE_ATTR);
 +    g_assert_cmpuint(rsp_upiu.header.response, ==,
 +                     UFS_QUERY_RESULT_NOT_READABLE);
 +
-+    /* Write Read-Only Flag (Intended Failure) */
++    /* Write Read-Only Attribute (Intended Error) */
 +    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
-+                   UFS_UPIU_QUERY_OPCODE_SET_FLAG, UFS_QUERY_FLAG_IDN_BUSY_RTC,
-+                   0, 0, 0, &utrd, &rsp_upiu);
++                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
++                   UFS_QUERY_ATTR_IDN_POWER_MODE, 0, 0, 0x01, &utrd, &rsp_upiu);
 +    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==,
 +                     UFS_OCS_INVALID_CMD_TABLE_ATTR);
 +    g_assert_cmpuint(rsp_upiu.header.response, ==,
 +                     UFS_QUERY_RESULT_NOT_WRITEABLE);
++
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
++                   UFS_QUERY_ATTR_IDN_POWER_MODE, 0, 0, 0, &utrd, &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
++
++    /* Reset Written Attributes */
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
++                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0, &utrd,
++                   &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
++
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_WRITE_ATTR,
++                   UFS_QUERY_ATTR_IDN_EE_CONTROL, 0, 0, 0, &utrd, &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
++
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
++                   UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL, 0, 0, 0, &utrd,
++                   &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
++
++    ufs_send_query(ufs, 0, UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST,
++                   UFS_UPIU_QUERY_OPCODE_READ_ATTR,
++                   UFS_QUERY_ATTR_IDN_EE_CONTROL, 0, 0, 0, &utrd, &rsp_upiu);
++    g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.header.response, ==, UFS_COMMAND_RESULT_SUCCESS);
++    g_assert_cmpuint(rsp_upiu.qr.value, ==, cpu_to_be32(0x00));
 +
 +    ufs_exit(ufs, alloc);
 +}
@@ -201,12 +255,12 @@ index 9cc9e578ff..9f45a078e7 100644
  static void drive_destroy(void *path)
  {
      unlink(path);
-@@ -606,6 +687,8 @@ static void ufs_register_nodes(void)
-     }
-     qos_add_test("init", "ufs", ufstest_init, NULL);
+@@ -689,6 +824,8 @@ static void ufs_register_nodes(void)
      qos_add_test("read-write", "ufs", ufstest_read_write, &io_test_opts);
-+    qos_add_test("flag read-write", "ufs",
-+                 ufstest_query_flag_request, &io_test_opts);
+     qos_add_test("flag read-write", "ufs",
+                  ufstest_query_flag_request, &io_test_opts);
++    qos_add_test("attr read-write", "ufs",
++                 ufstest_query_attr_request, &io_test_opts);
  }
  
  libqos_init(ufs_register_nodes);
