@@ -2,69 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8B396FA6F
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 20:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C3496FA8A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 20:08:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smdMc-0000vd-DK; Fri, 06 Sep 2024 14:07:21 -0400
+	id 1smdNB-00021Q-RW; Fri, 06 Sep 2024 14:07:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smdMY-0000nv-D2
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:07:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smdMR-00054y-AY
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:07:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725645999;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GntpAht59yV/R8tQt+YIxckQaTpkDbmEj51XFzA1VAA=;
- b=You5Rc4BOdeBx+UvUyTD5LqwtFe1Bf7KVt1hQvqpJDCevxG9PnkdvWqPD2M+tMDTeE4gfz
- 5YBv45tt5EBIoFwzaI8faX2mS6ueKcoNjbni2rF7Y3BGsE/oyB2RWj+L7zmgL86lanTmYd
- c4MDqD1HZHQUT4AmCJeCRc/JeghtPoY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-246-pldUc-tLMFuWnCetuhTiyQ-1; Fri,
- 06 Sep 2024 14:06:38 -0400
-X-MC-Unique: pldUc-tLMFuWnCetuhTiyQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 79DC91955DC8; Fri,  6 Sep 2024 18:06:37 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.194.70])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6D79919560AA; Fri,  6 Sep 2024 18:06:34 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1smdMn-0001br-Jr
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:07:32 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1smdMl-000562-Kw
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:07:29 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-375e5c12042so1207868f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 11:07:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725646045; x=1726250845; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+YGETogEe7QHs3kpO72TeOLSF1g7K/mh6DUXFGQKYAw=;
+ b=DAuB+IaGYs3ggEL+OBmHAVbosnorfVHiUShC/Gxdaf0DuN2mTDeUAxoBeMX7jmm9aN
+ JniQM7sy8Vl/ZsAGl2spDobcRz6bX7BK/84lgutyELfvGYaRcAByiVYZkc47OjhCAqkc
+ q0+LpP03NXLkjw3lbClMU6UjOtvMzRezQ2B70/HPov/z9siGEKSQS0RvgPCQBP+INxeZ
+ +DpUSZdSxT6QD1hNa1KRjhAlFne1WZ8zkqhjizg05ImVa30+1mLhqS0C+8hvzDdKC2p5
+ t8tbussIvCHD0KcBCHjxnZXmfNvVNUVriqRaNIcA8tV2h1cOR4IZhdDusz+tL9tKH2lR
+ +RRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725646045; x=1726250845;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+YGETogEe7QHs3kpO72TeOLSF1g7K/mh6DUXFGQKYAw=;
+ b=KBBp9yzHPtBR/p4DDQGcjyRX8/Y6W8Ct4qJfL/0W0b1/p5uBkDbAcwm6SSs+9yZf6o
+ iPAJI9WuntHuwBPXs0Azcw/kOhmh/C0hans63dxXjNylNyPInFMVr0d/Zud9ZQgULbra
+ 544lX/FyrmqLP95Pk2clJ45WKGsL0g+yRSb3ytg8QpiQ+tCQzCGXbE+cjEBFzcZdP6Wv
+ Y9PySfIp7ZDA9vpg6eNTWaMW388jdO67wJkC750yZiCbPXHUCEOKqpOk/RYU1/FrdoZV
+ 1o7MFgsBHwHscWfV5AcfOIFXZ8ZGsyYWRR5IudSIMUj6DfQBPozaq948UowUZfosj0wS
+ CXlw==
+X-Gm-Message-State: AOJu0YwdTlN1vXFkir3VIiIWVq7EOPbdGSojMuIERcSQcCVe8sabLOD+
+ rCfnKqzRMDnlTdicRQIYeEmGKqud37pJz/JdTfARpCNO7xYlc1y2M0nqhKv7PCf62ZcF4OaoflW
+ o
+X-Google-Smtp-Source: AGHT+IFp2ilXsxNvxEZsdHpkJ/fDpgF42CqfeZNxh6JvToyu3Lllv3J9sgTftN0ADOzQPqzKdojynQ==
+X-Received: by 2002:adf:cd8b:0:b0:374:ba7b:42b5 with SMTP id
+ ffacd0b85a97d-378895db877mr2565719f8f.24.1725646045319; 
+ Fri, 06 Sep 2024 11:07:25 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37891657a2csm441860f8f.95.2024.09.06.11.07.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Sep 2024 11:07:24 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "Daniel P . Berrange" <berrange@redhat.com>
-Subject: [PATCH 14/14] tests/functional: Convert the or1k-sim Avocado test
-Date: Fri,  6 Sep 2024 20:05:49 +0200
-Message-ID: <20240906180549.792832-15-thuth@redhat.com>
-In-Reply-To: <20240906180549.792832-1-thuth@redhat.com>
-References: <20240906180549.792832-1-thuth@redhat.com>
+Subject: [PATCH 0/2] gitlab-ci: Force 'make check' single-threaded for
+ cross-i686-tci
+Date: Fri,  6 Sep 2024 19:07:21 +0100
+Message-Id: <20240906180723.503855-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,89 +92,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We've got to do_test_advcal_2018() here now that the test resides
-in a separate file. Also switch back to the original URL (since
-the site did not vanish as originally expected) and update the
-hashsum to use SHA256.
+The CI job cross-i686-tci has been persistently flaky for what seems
+like years now. Stefan Weil had a look and his conclusion was that
+this happens because we run too many tests in parallel, and so
+sometimes they starve each other of CPU and time out:
+https://lore.kernel.org/qemu-devel/9692cfcb-ef59-4cec-8452-8bfb859e8a6c@weilnetz.de/
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/avocado/boot_linux_console.py |  8 --------
- tests/functional/meson.build        |  4 ++++
- tests/functional/test_or1k_sim.py   | 29 +++++++++++++++++++++++++++++
- 3 files changed, 33 insertions(+), 8 deletions(-)
- create mode 100755 tests/functional/test_or1k_sim.py
+To test this theory, force the cross-i686-tci job to run only
+one test at a time. 'meson test' has a handy environment
+variable to let us set the parallelism. Unfortunately meson
+prioritises the command line '--num-processes' argument over
+the environment variable if they are both set, so to make
+this work we need to adjust our mtest2make script to not
+set --num-processes if the MESON_TESTTHREADS envariable is set.
 
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index db72bd1b5e..6c50284986 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -927,14 +927,6 @@ def test_arm_ast2600_debian(self):
-         self.wait_for_console_pattern("SMP: Total of 2 processors activated")
-         self.wait_for_console_pattern("No filesystem could mount root")
- 
--    def test_or1k_sim(self):
--        """
--        :avocado: tags=arch:or1k
--        :avocado: tags=machine:or1k-sim
--        """
--        tar_hash = '20334cdaf386108c530ff0badaecc955693027dd'
--        self.do_test_advcal_2018('20', tar_hash, 'vmlinux')
--
-     def test_ppc64_e500(self):
-         """
-         :avocado: tags=arch:ppc64
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 8f9694244f..68a7570119 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -94,6 +94,10 @@ tests_mips64el_system_thorough = [
-   'mips64el_malta',
- ]
- 
-+tests_or1k_system_quick = [
-+  'or1k_sim',
-+]
-+
- tests_ppc_system_quick = [
-   'ppc_74xx',
- ]
-diff --git a/tests/functional/test_or1k_sim.py b/tests/functional/test_or1k_sim.py
-new file mode 100755
-index 0000000000..aa2a1f08d2
---- /dev/null
-+++ b/tests/functional/test_or1k_sim.py
-@@ -0,0 +1,29 @@
-+#!/usr/bin/env python3
-+#
-+# Functional test that boots a Linux kernel on an OpenRISC-1000 SIM machine
-+# and checks the console
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+import os
-+
-+from qemu_test import LinuxKernelTest, Asset
-+from qemu_test.utils import archive_extract
-+
-+class OpenRISC1kSimTest(LinuxKernelTest):
-+
-+    ASSET_DAY20 = Asset(
-+        'https://www.qemu-advent-calendar.org/2018/download/day20.tar.xz',
-+        'ff9d7dd7c6bdba325bd85ee85c02db61ff653e129558aeffe6aff55bffb6763a')
-+
-+    def test_or1k_sim(self):
-+        self.set_machine('or1k-sim')
-+        file_path = self.ASSET_DAY20.fetch()
-+        archive_extract(file_path, self.workdir)
-+        self.vm.set_console()
-+        self.vm.add_args('-kernel', self.workdir + '/day20/vmlinux')
-+        self.vm.launch()
-+        self.wait_for_console_pattern('QEMU advent calendar')
-+
-+if __name__ == '__main__':
-+    LinuxKernelTest.main()
+I don't know if this will fix the flakiness, but it seems worth
+a try. If it works, we might want to consider whether we should
+do something similar across the board -- at the moment we
+always use a parallelism of num-cpus + 1, because we use the
+same amount of parallelism that we do for the compile step.
+
+thanks
+-- PMM
+
+Peter Maydell (2):
+  scripts/mtest2make: Honour MESON_TESTTHREADS if it is set
+  .gitlab-ci.d/crossbuilds.yml: Force 'make check' single threaded for
+    cross-i686-tci
+
+ .gitlab-ci.d/crossbuilds.yml | 3 +++
+ scripts/mtest2make.py        | 4 ++++
+ 2 files changed, 7 insertions(+)
+
 -- 
-2.46.0
+2.34.1
 
 
