@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C22196F6E1
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 16:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B8D96F6EC
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 16:35:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sma2A-0000lN-RW; Fri, 06 Sep 2024 10:33:58 -0400
+	id 1sma2E-000119-OB; Fri, 06 Sep 2024 10:34:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sma29-0000gL-1s
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 10:33:57 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1sma2C-0000ur-Pk
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 10:34:00 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sma27-00073x-AD
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 10:33:56 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-2054e22ce3fso20497535ad.2
- for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 07:33:54 -0700 (PDT)
+ id 1sma29-00074A-Mz
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 10:34:00 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-206aee40676so19263015ad.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 07:33:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725633234; x=1726238034; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725633236; x=1726238036; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RG/0hzlp1e1U/X+viI7qOSSU9A8TRQ8gs/a7p+ROYlY=;
- b=zKbSTBFYS/pCAl8ro0L8bjQtugWHI7RQ5zDfKa/Jgog073b2tERZGeLhF6/8fJ+YLD
- Z1xBiaFqMi1CC4NVd02so+jcmISyh1PnSIlYEh/NO7IzO9evYrjjbpThFMBDTGCX20JO
- amXsAnm5kQEBBYFl3wCIp9K/JwfYmAxBSXCrGZ5bEQMw9xqBTvDu5OIsu0qd24ATqZwN
- mxvTMPcjHLNwU1GQfp8/bIBkq+hyFwM4hweOHNGa36sOlshXCeV80c7JxwH1pAU40Txr
- a6AM9PTIwfMJtOCs1UN8Snf88WYDByFRRQOXBcTIY7DFoYvzQaXDrjZ55Hz0IUvqZlra
- inFg==
+ bh=9zMNWTemNt+XMGFhIvLfgSfk7j8P7fZjmzkPpuiAszc=;
+ b=Kt/gluZCo6EjDiAkP4HM01yYgJoP++VglR1iEiZFGncnUi5N22lmypNWPYQG0NsiF7
+ Dvt2HoaLCxuYknPg2vuQsevMscALG3vOh9ICb5GdYbxIn5Mwl0Y1UcnD04atyKEQJ3ky
+ qj/vBQsVwKsX1pB3K9CZbAM0ObZ2kstuFkSMcyi5BdDBsc3SLZKIUH14euUnZwWHyVnC
+ 8C0KZsB3H3iBBVDxIi0+t69eLB3yZsU/gUw/jdCjbWeNLA9NWEarcZewDx9ZSgQBIut8
+ SFRB9PtfzRkObKDmNVaJAcIW2LoDHeNA+oe5n8XSly0E08haaf4gZGdsJb4C4xdoxpx2
+ 3H1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725633234; x=1726238034;
+ d=1e100.net; s=20230601; t=1725633236; x=1726238036;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RG/0hzlp1e1U/X+viI7qOSSU9A8TRQ8gs/a7p+ROYlY=;
- b=lawwpSdLBslQXFRz77BjcBnURmQbujwsGPJvNdnTpdade3O5th6lpoYOqMUyW55B+S
- N9i58c1IabhcGuOPy0hwoTOSNqhHZZwUKZe3dL9wb7PwRMt8G8W7yKYPrYqZGLMcIEm3
- rc2hHtIz2dvWB/a4dgwqCTA8fq9WWI509FkugL19YbjBllsdG07LLPoMPJosoEw+ZSOM
- B76Z9w4kVX7t+yONiWsxnZNd8jBRNpSsBFgKl/GA2vCyh/YmbaGklkAH0RPbWfZZXU56
- EhlnojdHN1fMlSpe4UL29LMKU94tWl8JjV5BHhLr0cH9CAfrfTi1/vzQBuNrI6oVLm3G
- y71w==
-X-Gm-Message-State: AOJu0Yyp7qEgTGaf88DUZBqlih/nOkV4Kq75O+QvZ+bC1q6Tt6e+cECU
- p93aH6EymBS/NMLVm73M7Qvn92reEHv7WHRQcz1DK7XBhN99zL5xsWlmEfKE4EJNLMC+36cH2+L
- v
-X-Google-Smtp-Source: AGHT+IHH0MvXw/K9jiSgmPiiaHBxsH+DkB8TdJ0iQ1K0ZIa6HweNZfMpBU+lUG4ohqXrNm0rUJ5Eug==
-X-Received: by 2002:a17:902:db0a:b0:205:894b:b5b0 with SMTP id
- d9443c01a7336-206f054f46bmr32044795ad.33.1725633233688; 
- Fri, 06 Sep 2024 07:33:53 -0700 (PDT)
+ bh=9zMNWTemNt+XMGFhIvLfgSfk7j8P7fZjmzkPpuiAszc=;
+ b=M0Jmz1BoYQC6BbDakvdhmNlHReigZR5O34rqrmqUqajY6eR0u2ovZJFC2oiawdTsFq
+ 8XJVYC2f6FVKdtaPgNE78wWeERe3J6DRxlWTQtioh8E47lOEq0MD9vAeGQpU3kKv350C
+ WqltTRiDMP4stLoTVeyN53smGfIvpi2hnWW23iNhiDT3ajvg6tV2rFj1WjRlspO6sK1R
+ PhK0xfG73+z1xItHrdWvUq6/zYeScCQjgSWSIJP3FgSgZQOuSaqP0H2ecPMfjE1s/yPf
+ Ngt/gXXDBIVjQKeSKsS9duI5OmGBShL2k8op4Qb3qe0Pp+qjamGpQ7sGSFcM1xKBNQSK
+ ptSA==
+X-Gm-Message-State: AOJu0Yx+oK2QayGP0OIb8INDB997wyNoz0Zv5FlvURvVqh0A0NI/nRBp
+ Ro69/HBvJrwW8Cw0ugdjn0xKYSWGLJnI6BR9ZQqdQ9ZfUDTrJJWaosSJ5Keila396tzjOgiPiX7
+ b
+X-Google-Smtp-Source: AGHT+IH8gbWemzgFZ5dRwfRABpQhdukRal21e9TYAaEQInC03y5rtghaN17FqPBskNDlZYUq7U73AQ==
+X-Received: by 2002:a17:902:d4c6:b0:1fa:1dd8:947a with SMTP id
+ d9443c01a7336-207070004d8mr410645ad.46.1725633236072; 
+ Fri, 06 Sep 2024 07:33:56 -0700 (PDT)
 Received: from amd.. ([2804:7f0:b401:42a1:3e7c:3fff:fe7a:e83b])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-206ae913cf1sm43844425ad.28.2024.09.06.07.33.51
+ d9443c01a7336-206ae913cf1sm43844425ad.28.2024.09.06.07.33.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Sep 2024 07:33:53 -0700 (PDT)
+ Fri, 06 Sep 2024 07:33:55 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, philmd@linaro.org, alex.bennee@linaro.org,
  richard.henderson@linaro.org
 Cc: peter.maydell@linaro.org,
 	gustavo.romero@linaro.org
-Subject: [PATCH v4 3/5] tests/guest-debug: Support passing arguments to the
- GDB test script
-Date: Fri,  6 Sep 2024 14:33:14 +0000
-Message-Id: <20240906143316.657436-4-gustavo.romero@linaro.org>
+Subject: [PATCH v4 4/5] tests/tcg/aarch64: Improve linker script organization
+Date: Fri,  6 Sep 2024 14:33:15 +0000
+Message-Id: <20240906143316.657436-5-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240906143316.657436-1-gustavo.romero@linaro.org>
 References: <20240906143316.657436-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,83 +94,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds support for passing arguments to the GDB test scripts
-so it's possible to parse the args in an "argparse way" in the test
-scripts launched by the runner. The arguments should be preceded by --
-when passed to the runner. For example, passing "--help" arg to the
-GDB_TEST_SCRIPT:
+Improve kernel.ld linker script organization by using MEMORY command.
 
-run-test.py [...] --test <GDB_TEST_SCRIPT> -- --help
-
-The test script should not use the argparse module directly but import
-arg_parser from test_gdbstub module. arg_parser then can be used just
-like the argparse.ArgumentParser class:
-
-from test_gdbstub import arg_parser
-
-p = arg_parser(prog="test-mytest.py", description="My test.")
-p.add_argument("--vowel", help="Select vowel",
-               required=True, choices=['a','e','i','o','u'])
-[...]
-
-The arg_parser allows a smooth and informative exit if, for instance,
-the caller of the runner script passes an invalid argument or misses a
-required argument by the test script.
-
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/guest-debug/run-test.py     | 6 ++++++
- tests/guest-debug/test_gdbstub.py | 5 +++++
- 2 files changed, 11 insertions(+)
+ tests/tcg/aarch64/system/kernel.ld | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
-index 368ff8a890..5a091db8be 100755
---- a/tests/guest-debug/run-test.py
-+++ b/tests/guest-debug/run-test.py
-@@ -27,6 +27,10 @@ def get_args():
-     parser.add_argument("--binary", help="Binary to debug",
-                         required=True)
-     parser.add_argument("--test", help="GDB test script")
-+    parser.add_argument('test_args', nargs='*',
-+                        help="Additional args for GDB test script. "
-+                        "The args should be preceded by -- to avoid confusion "
-+                        "with flags for runner script")
-     parser.add_argument("--gdb", help="The gdb binary to use",
-                         default=None)
-     parser.add_argument("--gdb-args", help="Additional gdb arguments")
-@@ -91,6 +95,8 @@ def log(output, msg):
-     gdb_cmd += " -ex 'target remote %s'" % (socket_name)
-     # finally the test script itself
-     if args.test:
-+        if args.test_args:
-+            gdb_cmd += f" -ex \"py sys.argv={args.test_args}\""
-         gdb_cmd += " -x %s" % (args.test)
+diff --git a/tests/tcg/aarch64/system/kernel.ld b/tests/tcg/aarch64/system/kernel.ld
+index 7b3a76dcbf..5f39258d32 100644
+--- a/tests/tcg/aarch64/system/kernel.ld
++++ b/tests/tcg/aarch64/system/kernel.ld
+@@ -1,23 +1,23 @@
+ ENTRY(__start)
  
- 
-diff --git a/tests/guest-debug/test_gdbstub.py b/tests/guest-debug/test_gdbstub.py
-index 46fbf98f0c..a715c0e3f5 100644
---- a/tests/guest-debug/test_gdbstub.py
-+++ b/tests/guest-debug/test_gdbstub.py
-@@ -2,6 +2,7 @@
- 
- """
- from __future__ import print_function
-+import argparse
- import gdb
- import os
- import sys
-@@ -9,6 +10,10 @@
- 
- fail_count = 0
- 
-+class arg_parser(argparse.ArgumentParser):
-+    def exit(self, status=None, message=""):
-+        print("Wrong GDB script test argument! " + message)
-+        gdb.execute("exit 1")
- 
- def report(cond, msg):
-     """Report success/fail of a test"""
+-SECTIONS
+-{
+-    /* virt machine, RAM starts at 1gb */
+-    . = (1 << 30);
++MEMORY {
++    /* On virt machine RAM starts at 1 GiB. */
++
++    /* Align text and rodata to the 1st 2 MiB chunk. */
++    TXT (rx) : ORIGIN = 1 << 30, LENGTH = 2M
++    /* Align r/w data to the 2nd 2 MiB chunk. */
++    DAT (rw) : ORIGIN = (1 << 30) + 2M, LENGTH = 2M
++}
++
++SECTIONS {
+     .text : {
+         *(.text)
+-    }
+-    .rodata : {
+         *(.rodata)
+-    }
+-    /* align r/w section to next 2mb */
+-    . = ALIGN(1 << 21);
++    } >TXT
+     .data : {
+         *(.data)
+-    }
+-    .bss : {
+         *(.bss)
+-    }
++    } >DAT
+     /DISCARD/ : {
+         *(.ARM.attributes)
+     }
 -- 
 2.34.1
 
