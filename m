@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F6296E926
+	by mail.lfdr.de (Postfix) with ESMTPS id A7EAC96E927
 	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:22:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRNu-0000yJ-K4; Fri, 06 Sep 2024 01:19:50 -0400
+	id 1smRNw-0001Od-Ku; Fri, 06 Sep 2024 01:19:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRNl-0008Kg-TZ; Fri, 06 Sep 2024 01:19:42 -0400
+ id 1smRNm-0008Or-Gb; Fri, 06 Sep 2024 01:19:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRNj-0008Ik-BO; Fri, 06 Sep 2024 01:19:41 -0400
+ id 1smRNk-0008M2-4f; Fri, 06 Sep 2024 01:19:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 414B98C136;
+ by isrv.corpit.ru (Postfix) with ESMTP id 51DEF8C137;
  Fri,  6 Sep 2024 08:15:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E470313337B;
+ by tsrv.corpit.ru (Postfix) with SMTP id F39EE13337C;
  Fri,  6 Sep 2024 08:16:35 +0300 (MSK)
-Received: (nullmailer pid 10486 invoked by uid 1000);
- Fri, 06 Sep 2024 05:16:33 -0000
+Received: (nullmailer pid 10489 invoked by uid 1000);
+ Fri, 06 Sep 2024 05:16:34 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 33/40] nbd/server: CVE-2024-7409: Drop non-negotiating
- clients
-Date: Fri,  6 Sep 2024 08:16:21 +0300
-Message-Id: <20240906051633.10288-33-mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 34/40] nbd/server: CVE-2024-7409: Close stray clients
+ at server-stop
+Date: Fri,  6 Sep 2024 08:16:22 +0300
+Message-Id: <20240906051633.10288-34-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
@@ -64,118 +65,156 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Blake <eblake@redhat.com>
 
-A client that opens a socket but does not negotiate is merely hogging
-qemu's resources (an open fd and a small amount of memory); and a
-malicious client that can access the port where NBD is listening can
-attempt a denial of service attack by intentionally opening and
-abandoning lots of unfinished connections.  The previous patch put a
-default bound on the number of such ongoing connections, but once that
-limit is hit, no more clients can connect (including legitimate ones).
-The solution is to insist that clients complete handshake within a
-reasonable time limit, defaulting to 10 seconds.  A client that has
-not successfully completed NBD_OPT_GO by then (including the case of
-where the client didn't know TLS credentials to even reach the point
-of NBD_OPT_GO) is wasting our time and does not deserve to stay
-connected.  Later patches will allow fine-tuning the limit away from
-the default value (including disabling it for doing integration
-testing of the handshake process itself).
+A malicious client can attempt to connect to an NBD server, and then
+intentionally delay progress in the handshake, including if it does
+not know the TLS secrets.  Although the previous two patches reduce
+this behavior by capping the default max-connections parameter and
+killing slow clients, they did not eliminate the possibility of a
+client waiting to close the socket until after the QMP nbd-server-stop
+command is executed, at which point qemu would SEGV when trying to
+dereference the NULL nbd_server global which is no longer present.
+This amounts to a denial of service attack.  Worse, if another NBD
+server is started before the malicious client disconnects, I cannot
+rule out additional adverse effects when the old client interferes
+with the connection count of the new server (although the most likely
+is a crash due to an assertion failure when checking
+nbd_server->connections > 0).
 
-Note that this patch in isolation actually makes it more likely to see
-qemu SEGV after nbd-server-stop, as any client socket still connected
-when the server shuts down will now be closed after 10 seconds rather
-than at the client's whims.  That will be addressed in the next patch.
+For environments without this patch, the CVE can be mitigated by
+ensuring (such as via a firewall) that only trusted clients can
+connect to an NBD server.  Note that using frameworks like libvirt
+that ensure that TLS is used and that nbd-server-stop is not executed
+while any trusted clients are still connected will only help if there
+is also no possibility for an untrusted client to open a connection
+but then stall on the NBD handshake.
 
-For a demo of this patch in action:
-$ qemu-nbd -f raw -r -t -e 10 file &
-$ nbdsh --opt-mode -c '
-H = list()
-for i in range(20):
-  print(i)
-  H.insert(i, nbd.NBD())
-  H[i].set_opt_mode(True)
-  H[i].connect_uri("nbd://localhost")
-'
-$ kill $!
+Given the previous patches, it would be possible to guarantee that no
+clients remain connected by having nbd-server-stop sleep for longer
+than the default handshake deadline before finally freeing the global
+nbd_server object, but that could make QMP non-responsive for a long
+time.  So intead, this patch fixes the problem by tracking all client
+sockets opened while the server is running, and forcefully closing any
+such sockets remaining without a completed handshake at the time of
+nbd-server-stop, then waiting until the coroutines servicing those
+sockets notice the state change.  nbd-server-stop now has a second
+AIO_WAIT_WHILE_UNLOCKED (the first is indirectly through the
+blk_exp_close_all_type() that disconnects all clients that completed
+handshakes), but forced socket shutdown is enough to progress the
+coroutines and quickly tear down all clients before the server is
+freed, thus finally fixing the CVE.
 
-where later connections get to start progressing once earlier ones are
-forcefully dropped for taking too long, rather than hanging.
+This patch relies heavily on the fact that nbd/server.c guarantees
+that it only calls nbd_blockdev_client_closed() from the main loop
+(see the assertion in nbd_client_put() and the hoops used in
+nbd_client_put_nonzero() to achieve that); if we did not have that
+guarantee, we would also need a mutex protecting our accesses of the
+list of connections to survive re-entrancy from independent iothreads.
 
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+Although I did not actually try to test old builds, it looks like this
+problem has existed since at least commit 862172f45c (v2.12.0, 2017) -
+even back when that patch started using a QIONetListener to handle
+listening on multiple sockets, nbd_server_free() was already unaware
+that the nbd_blockdev_client_closed callback can be reached later by a
+client thread that has not completed handshakes (and therefore the
+client's socket never got added to the list closed in
+nbd_export_close_all), despite that patch intentionally tearing down
+the QIONetListener to prevent new clients.
+
+Reported-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+Fixes: CVE-2024-7409
+CC: qemu-stable@nongnu.org
 Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20240807174943.771624-13-eblake@redhat.com>
+Message-ID: <20240807174943.771624-14-eblake@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-[eblake: rebase to changes earlier in series, reduce scope of timer]
-Signed-off-by: Eric Blake <eblake@redhat.com>
-(cherry picked from commit b9b72cb3ce15b693148bd09cef7e50110566d8a0)
+(cherry picked from commit 3e7ef738c8462c45043a1d39f702a0990406a3b3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: context fixup in nbd/server.c: lack of WITH_QEMU_LOCK_GUARD in 7.2)
 
-diff --git a/nbd/server.c b/nbd/server.c
-index 431e543b47..bfa8d47dad 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -2750,22 +2750,48 @@ static void nbd_client_receive_next_request(NBDClient *client)
-     }
+diff --git a/blockdev-nbd.c b/blockdev-nbd.c
+index b357ae9bf1..fea92a0046 100644
+--- a/blockdev-nbd.c
++++ b/blockdev-nbd.c
+@@ -21,12 +21,18 @@
+ #include "io/channel-socket.h"
+ #include "io/net-listener.h"
+ 
++typedef struct NBDConn {
++    QIOChannelSocket *cioc;
++    QLIST_ENTRY(NBDConn) next;
++} NBDConn;
++
+ typedef struct NBDServerData {
+     QIONetListener *listener;
+     QCryptoTLSCreds *tlscreds;
+     char *tlsauthz;
+     uint32_t max_connections;
+     uint32_t connections;
++    QLIST_HEAD(, NBDConn) conns;
+ } NBDServerData;
+ 
+ static NBDServerData *nbd_server;
+@@ -51,6 +57,14 @@ int nbd_server_max_connections(void)
+ 
+ static void nbd_blockdev_client_closed(NBDClient *client, bool ignored)
+ {
++    NBDConn *conn = nbd_client_owner(client);
++
++    assert(qemu_in_main_thread() && nbd_server);
++
++    object_unref(OBJECT(conn->cioc));
++    QLIST_REMOVE(conn, next);
++    g_free(conn);
++
+     nbd_client_put(client);
+     assert(nbd_server->connections > 0);
+     nbd_server->connections--;
+@@ -60,14 +74,20 @@ static void nbd_blockdev_client_closed(NBDClient *client, bool ignored)
+ static void nbd_accept(QIONetListener *listener, QIOChannelSocket *cioc,
+                        gpointer opaque)
+ {
++    NBDConn *conn = g_new0(NBDConn, 1);
++
++    assert(qemu_in_main_thread() && nbd_server);
+     nbd_server->connections++;
++    object_ref(OBJECT(cioc));
++    conn->cioc = cioc;
++    QLIST_INSERT_HEAD(&nbd_server->conns, conn, next);
+     nbd_update_server_watch(nbd_server);
+ 
+     qio_channel_set_name(QIO_CHANNEL(cioc), "nbd-server");
+     /* TODO - expose handshake timeout as QMP option */
+     nbd_client_new(cioc, NBD_DEFAULT_HANDSHAKE_MAX_SECS,
+                    nbd_server->tlscreds, nbd_server->tlsauthz,
+-                   nbd_blockdev_client_closed, NULL);
++                   nbd_blockdev_client_closed, conn);
  }
  
-+static void nbd_handshake_timer_cb(void *opaque)
-+{
-+    QIOChannel *ioc = opaque;
-+
-+    trace_nbd_handshake_timer_cb();
-+    qio_channel_shutdown(ioc, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
-+}
-+
- static coroutine_fn void nbd_co_client_start(void *opaque)
+ static void nbd_update_server_watch(NBDServerData *s)
+@@ -81,12 +101,25 @@ static void nbd_update_server_watch(NBDServerData *s)
+ 
+ static void nbd_server_free(NBDServerData *server)
  {
-     NBDClient *client = opaque;
-     Error *local_err = NULL;
-+    QEMUTimer *handshake_timer = NULL;
- 
-     qemu_co_mutex_init(&client->send_lock);
- 
--    /* TODO - utilize client->handshake_max_secs */
-+    /*
-+     * Create a timer to bound the time spent in negotiation. If the
-+     * timer expires, it is likely nbd_negotiate will fail because the
-+     * socket was shutdown.
-+     */
-+    if (client->handshake_max_secs > 0) {
-+        handshake_timer = aio_timer_new(qemu_get_aio_context(),
-+                                        QEMU_CLOCK_REALTIME,
-+                                        SCALE_NS,
-+                                        nbd_handshake_timer_cb,
-+                                        client->sioc);
-+        timer_mod(handshake_timer,
-+                  qemu_clock_get_ns(QEMU_CLOCK_REALTIME) +
-+                  client->handshake_max_secs * NANOSECONDS_PER_SECOND);
-+    }
++    NBDConn *conn, *tmp;
 +
-     if (nbd_negotiate(client, &local_err)) {
-         if (local_err) {
-             error_report_err(local_err);
-         }
-+        timer_free(handshake_timer);
-         client_close(client, false);
+     if (!server) {
          return;
      }
  
-+    timer_free(handshake_timer);
-     nbd_client_receive_next_request(client);
- }
- 
-diff --git a/nbd/trace-events b/nbd/trace-events
-index b7032ca277..675f880fa1 100644
---- a/nbd/trace-events
-+++ b/nbd/trace-events
-@@ -73,6 +73,7 @@ nbd_co_receive_request_decode_type(uint64_t handle, uint16_t type, const char *n
- nbd_co_receive_request_payload_received(uint64_t handle, uint32_t len) "Payload received: handle = %" PRIu64 ", len = %" PRIu32
- nbd_co_receive_align_compliance(const char *op, uint64_t from, uint32_t len, uint32_t align) "client sent non-compliant unaligned %s request: from=0x%" PRIx64 ", len=0x%" PRIx32 ", align=0x%" PRIx32
- nbd_trip(void) "Reading request"
-+nbd_handshake_timer_cb(void) "client took too long to negotiate"
- 
- # client-connection.c
- nbd_connect_thread_sleep(uint64_t timeout) "timeout %" PRIu64
++    /*
++     * Forcefully close the listener socket, and any clients that have
++     * not yet disconnected on their own.
++     */
+     qio_net_listener_disconnect(server->listener);
+     object_unref(OBJECT(server->listener));
++    QLIST_FOREACH_SAFE(conn, &server->conns, next, tmp) {
++        qio_channel_shutdown(QIO_CHANNEL(conn->cioc), QIO_CHANNEL_SHUTDOWN_BOTH,
++                             NULL);
++    }
++
++    AIO_WAIT_WHILE_UNLOCKED(NULL, server->connections > 0);
++
+     if (server->tlscreds) {
+         object_unref(OBJECT(server->tlscreds));
+     }
 -- 
 2.39.2
 
