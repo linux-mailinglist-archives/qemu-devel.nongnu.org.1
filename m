@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64BB696EB8D
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 09:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA5696EB7A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 09:04:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smSw1-0003qp-6r; Fri, 06 Sep 2024 02:59:09 -0400
+	id 1smSw5-0004ja-1Y; Fri, 06 Sep 2024 02:59:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smSvl-0001t8-20; Fri, 06 Sep 2024 02:58:55 -0400
+ id 1smSvl-0001tC-2N; Fri, 06 Sep 2024 02:58:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smSvi-0003jm-TG; Fri, 06 Sep 2024 02:58:52 -0400
+ id 1smSvi-0003lD-W2; Fri, 06 Sep 2024 02:58:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AAB5A8C263;
+ by isrv.corpit.ru (Postfix) with ESMTP id B976C8C264;
  Fri,  6 Sep 2024 09:53:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 71C5D13341B;
+ by tsrv.corpit.ru (Postfix) with SMTP id 82D1113341C;
  Fri,  6 Sep 2024 09:54:32 +0300 (MSK)
-Received: (nullmailer pid 43688 invoked by uid 1000);
+Received: (nullmailer pid 43691 invoked by uid 1000);
  Fri, 06 Sep 2024 06:54:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
- Claudio Fontana <cfontana@suse.de>, "Denis V . Lunev" <den@openvz.org>,
+Cc: qemu-stable@nongnu.org, Alyssa Ross <hi@alyssa.is>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.7 46/53] module: Prevent crash by resetting local_err in
- module_load_qom_all()
-Date: Fri,  6 Sep 2024 09:54:16 +0300
-Message-Id: <20240906065429.42415-46-mjt@tls.msk.ru>
+Subject: [Stable-8.2.7 47/53] target/hexagon: don't look for static glib
+Date: Fri,  6 Sep 2024 09:54:17 +0300
+Message-Id: <20240906065429.42415-47-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.7-20240906080902@cover.tls.msk.ru>
 References: <qemu-stable-8.2.7-20240906080902@cover.tls.msk.ru>
@@ -61,41 +59,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+From: Alyssa Ross <hi@alyssa.is>
 
-Set local_err to NULL after it has been freed in error_report_err(). This
-avoids triggering assert(*errp == NULL) failure in error_setv() when
-local_err is reused in the loop.
+When cross compiling QEMU configured with --static, I've been getting
+configure errors like the following:
 
-Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-Reviewed-by: Claudio Fontana <cfontana@suse.de>
-Reviewed-by: Denis V. Lunev <den@openvz.org>
-Link: https://lore.kernel.org/r/20240809121340.992049-2-alexander.ivanov@virtuozzo.com
-[Do the same by moving the declaration instead. - Paolo]
-Cc: qemu-stable@nongnu.org
+    Build-time dependency glib-2.0 found: NO
+
+    ../target/hexagon/meson.build:303:15: ERROR: Dependency lookup for glib-2.0 with method 'pkgconfig' failed: Could not generate libs for glib-2.0:
+    Package libpcre2-8 was not found in the pkg-config search path.
+    Perhaps you should add the directory containing `libpcre2-8.pc'
+    to the PKG_CONFIG_PATH environment variable
+    Package 'libpcre2-8', required by 'glib-2.0', not found
+
+This happens because --static sets the prefer_static Meson option, but
+my build machine doesn't have a static libpcre2.  I don't think it
+makes sense to insist that native dependencies are static, just
+because I want the non-native QEMU binaries to be static.
+
+Signed-off-by: Alyssa Ross <hi@alyssa.is>
+Link: https://lore.kernel.org/r/20240805104921.4035256-1-hi@alyssa.is
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 940d802b24e63650e0eacad3714e2ce171cba17c)
+(cherry picked from commit fe68cc0923ebfa0c12e4176f61ec9b363a07a73a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/util/module.c b/util/module.c
-index 32e263163c..3eb0f06df1 100644
---- a/util/module.c
-+++ b/util/module.c
-@@ -354,13 +354,13 @@ int module_load_qom(const char *type, Error **errp)
- void module_load_qom_all(void)
- {
-     const QemuModinfo *modinfo;
--    Error *local_err = NULL;
+diff --git a/target/hexagon/meson.build b/target/hexagon/meson.build
+index da8e608d00..436217f25a 100644
+--- a/target/hexagon/meson.build
++++ b/target/hexagon/meson.build
+@@ -188,7 +188,7 @@ if idef_parser_enabled and 'hexagon-linux-user' in target_dirs
+         arguments: ['@INPUT@', '--defines=@OUTPUT1@', '--output=@OUTPUT0@']
+     )
  
-     if (module_loaded_qom_all) {
-         return;
-     }
+-    glib_dep = dependency('glib-2.0', native: true)
++    glib_dep = dependency('glib-2.0', native: true, static: false)
  
-     for (modinfo = module_info; modinfo->name != NULL; modinfo++) {
-+        Error *local_err = NULL;
-         if (!modinfo->objs) {
-             continue;
-         }
+     idef_parser = executable(
+         'idef-parser',
 -- 
 2.39.2
 
