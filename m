@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624EA96E939
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9104A96E93B
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:26:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRNi-0007OL-Q7; Fri, 06 Sep 2024 01:19:39 -0400
+	id 1smRNf-0006nR-34; Fri, 06 Sep 2024 01:19:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRNK-00054J-HC; Fri, 06 Sep 2024 01:19:15 -0400
+ id 1smRND-0004VL-Nb; Fri, 06 Sep 2024 01:19:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRNA-0008E6-GE; Fri, 06 Sep 2024 01:19:12 -0400
+ id 1smRNB-0008GX-OS; Fri, 06 Sep 2024 01:19:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E871A8C131;
- Fri,  6 Sep 2024 08:15:17 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 01FCE8C132;
+ Fri,  6 Sep 2024 08:15:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 98EB4133376;
+ by tsrv.corpit.ru (Postfix) with SMTP id A69F7133377;
  Fri,  6 Sep 2024 08:16:35 +0300 (MSK)
-Received: (nullmailer pid 10470 invoked by uid 1000);
+Received: (nullmailer pid 10473 invoked by uid 1000);
  Fri, 06 Sep 2024 05:16:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Amjad Alsharafi <amjadsharafi10@gmail.com>,
  Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 28/40] vvfat: Fix wrong checks for cluster mappings
- invariant
-Date: Fri,  6 Sep 2024 08:16:16 +0300
-Message-Id: <20240906051633.10288-28-mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 29/40] vvfat: Fix reading files with non-continuous
+ clusters
+Date: Fri,  6 Sep 2024 08:16:17 +0300
+Message-Id: <20240906051633.10288-29-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
@@ -62,64 +62,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Amjad Alsharafi <amjadsharafi10@gmail.com>
 
-How this `abort` was intended to check for was:
-- if the `mapping->first_mapping_index` is not the same as
-  `first_mapping_index`, which **should** happen only in one case,
-  when we are handling the first mapping, in that case
-  `mapping->first_mapping_index == -1`, in all other cases, the other
-  mappings after the first should have the condition `true`.
-- From above, we know that this is the first mapping, so if the offset
-  is not `0`, then abort, since this is an invalid state.
+When reading with `read_cluster` we get the `mapping` with
+`find_mapping_for_cluster` and then we call `open_file` for this
+mapping.
+The issue appear when its the same file, but a second cluster that is
+not immediately after it, imagine clusters `500 -> 503`, this will give
+us 2 mappings one has the range `500..501` and another `503..504`, both
+point to the same file, but different offsets.
 
-The issue was that `first_mapping_index` is not set if we are
-checking from the middle, the variable `first_mapping_index` is
-only set if we passed through the check `cluster_was_modified` with the
-first mapping, and in the same function call we checked the other
-mappings.
+When we don't open the file since the path is the same, we won't assign
+`s->current_mapping` and thus accessing way out of bound of the file.
 
-One approach is to go into the loop even if `cluster_was_modified`
-is not true so that we will be able to set `first_mapping_index` for the
-first mapping, but since `first_mapping_index` is only used here,
-another approach is to just check manually for the
-`mapping->first_mapping_index != -1` since we know that this is the
-value for the only entry where `offset == 0` (i.e. first mapping).
+From our example above, after `open_file` (that didn't open anything) we
+will get the offset into the file with
+`s->cluster_size*(cluster_num-s->current_mapping->begin)`, which will
+give us `0x2000 * (504-500)`, which is out of bound for this mapping and
+will produce some issues.
 
 Signed-off-by: Amjad Alsharafi <amjadsharafi10@gmail.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <b0fbca3ee208c565885838f6a7deeaeb23f4f9c2.1721470238.git.amjadsharafi10@gmail.com>
+Message-ID: <1f3ea115779abab62ba32c788073cdc99f9ad5dd.1721470238.git.amjadsharafi10@gmail.com>
+[kwolf: Simplified the patch based on Amjad's analysis and input]
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit f60a6f7e17bf2a2a0f0a08265ac9b077fce42858)
+(cherry picked from commit 5eed3db336506b529b927ba221fe0d836e5b8819)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/block/vvfat.c b/block/vvfat.c
-index 3a83ab5af4..1adcc6040f 100644
+index 1adcc6040f..eb844c3134 100644
 --- a/block/vvfat.c
 +++ b/block/vvfat.c
-@@ -1879,7 +1879,6 @@ static uint32_t get_cluster_count_for_direntry(BDRVVVFATState* s,
+@@ -1368,8 +1368,9 @@ static int open_file(BDRVVVFATState* s,mapping_t* mapping)
+             return -1;
+         vvfat_close_current_file(s);
+         s->current_fd = fd;
+-        s->current_mapping = mapping;
+     }
++
++    s->current_mapping = mapping;
+     return 0;
+ }
  
-     uint32_t cluster_num = begin_of_direntry(direntry);
-     uint32_t offset = 0;
--    int first_mapping_index = -1;
-     mapping_t* mapping = NULL;
-     const char* basename2 = NULL;
- 
-@@ -1941,14 +1940,9 @@ static uint32_t get_cluster_count_for_direntry(BDRVVVFATState* s,
- 
-                         if (strcmp(basename, basename2))
-                             copy_it = 1;
--                        first_mapping_index = array_index(&(s->mapping), mapping);
--                    }
--
--                    if (mapping->first_mapping_index != first_mapping_index
--                            && mapping->info.file.offset > 0) {
--                        abort();
--                        copy_it = 1;
-                     }
-+                    assert(mapping->first_mapping_index == -1
-+                            || mapping->info.file.offset > 0);
- 
-                     /* need to write out? */
-                     if (!was_modified && is_file(direntry)) {
 -- 
 2.39.2
 
