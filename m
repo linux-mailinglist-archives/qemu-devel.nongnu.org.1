@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFC896EB20
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 08:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F38D96EB32
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 08:59:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smSss-0000Bs-Gj; Fri, 06 Sep 2024 02:55:54 -0400
+	id 1smSst-0000M8-K5; Fri, 06 Sep 2024 02:55:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smSsQ-00070k-RT; Fri, 06 Sep 2024 02:55:28 -0400
+ id 1smSsn-0008FM-Hn; Fri, 06 Sep 2024 02:55:50 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smSsN-0003HW-BN; Fri, 06 Sep 2024 02:55:25 -0400
+ id 1smSsl-0003Hk-1D; Fri, 06 Sep 2024 02:55:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7EA898C243;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8E57F8C244;
  Fri,  6 Sep 2024 09:53:12 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4422A1333FB;
+ by tsrv.corpit.ru (Postfix) with SMTP id 569901333FC;
  Fri,  6 Sep 2024 09:54:30 +0300 (MSK)
-Received: (nullmailer pid 43405 invoked by uid 1000);
+Received: (nullmailer pid 43414 invoked by uid 1000);
  Fri, 06 Sep 2024 06:54:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.7 14/53] hw/intc/loongson_ipi: Access memory in little
- endian
-Date: Fri,  6 Sep 2024 09:53:44 +0300
-Message-Id: <20240906065429.42415-14-mjt@tls.msk.ru>
+ Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.7 15/53] util/async.c: Forbid negative min/max in
+ aio_context_set_thread_pool_params()
+Date: Fri,  6 Sep 2024 09:53:45 +0300
+Message-Id: <20240906065429.42415-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.7-20240906080902@cover.tls.msk.ru>
 References: <qemu-stable-8.2.7-20240906080902@cover.tls.msk.ru>
@@ -64,66 +62,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Loongson IPI is only available in little-endian,
-so use that to access the guest memory (in case
-we run on a big-endian host).
+aio_context_set_thread_pool_params() takes two int64_t arguments to
+set the minimum and maximum number of threads in the pool.  We do
+some bounds checking on these, but we don't catch the case where the
+inputs are negative.  This means that later in the function when we
+assign these inputs to the AioContext::thread_pool_min and
+::thread_pool_max fields, which are of type int, the values might
+overflow the smaller type.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Fixes: f6783e3438 ("hw/loongarch: Add LoongArch ipi interrupt support")
-[PMD: Extracted from bigger commit, added commit description]
-Co-Developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Tested-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Message-Id: <20240718133312.10324-3-philmd@linaro.org>
-(cherry picked from commit 2465c89fb983eed670007742bd68c7d91b6d6f85)
+A negative number of threads is meaningless, so make
+aio_context_set_thread_pool_params() return an error if either min or
+max are negative.
+
+Resolves: Coverity CID 1547605
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240723150927.1396456-1-peter.maydell@linaro.org
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit 851495571d14fe2226c52b9d423f88a4f5460836)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: fixups for 8.2, for lack of:
- v9.0.0-583-g91d0b151de4c "hw/intc/loongson_ipi: Implement IOCSR address space for MIPS"
- v9.0.0-582-gb4a12dfc2132 "hw/intc/loongarch_ipi: Rename as loongson_ipi"
- v8.2.0-545-gfdd6ee0b7653 "hw/intc/loongarch_ipi: Use MemTxAttrs interface for ipi ops")
 
-diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-index 67858b521c..55da9ca7f9 100644
---- a/hw/intc/loongarch_ipi.c
-+++ b/hw/intc/loongarch_ipi.c
-@@ -12,6 +12,7 @@
- #include "qapi/error.h"
- #include "qemu/log.h"
- #include "exec/address-spaces.h"
-+#include "exec/memory.h"
- #include "hw/loongarch/virt.h"
- #include "migration/vmstate.h"
- #include "target/loongarch/internals.h"
-@@ -61,8 +62,8 @@ static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr)
-      * if the mask is 0, we need not to do anything.
-      */
-     if ((val >> 27) & 0xf) {
--        data = address_space_ldl(&env->address_space_iocsr, addr,
--                                 MEMTXATTRS_UNSPECIFIED, NULL);
-+        data = address_space_ldl_le(&env->address_space_iocsr, addr,
-+                                    MEMTXATTRS_UNSPECIFIED, NULL);
-         for (i = 0; i < 4; i++) {
-             /* get mask for byte writing */
-             if (val & (0x1 << (27 + i))) {
-@@ -73,8 +74,8 @@ static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr)
+diff --git a/util/async.c b/util/async.c
+index 8f90ddc304..86d2910481 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -758,7 +758,7 @@ void aio_context_set_thread_pool_params(AioContext *ctx, int64_t min,
+                                         int64_t max, Error **errp)
+ {
  
-     data &= mask;
-     data |= (val >> 32) & ~mask;
--    address_space_stl(&env->address_space_iocsr, addr,
--                      data, MEMTXATTRS_UNSPECIFIED, NULL);
-+    address_space_stl_le(&env->address_space_iocsr, addr,
-+                         data, MEMTXATTRS_UNSPECIFIED, NULL);
- }
- 
- static int archid_cmp(const void *a, const void *b)
+-    if (min > max || !max || min > INT_MAX || max > INT_MAX) {
++    if (min > max || max <= 0 || min < 0 || min > INT_MAX || max > INT_MAX) {
+         error_setg(errp, "bad thread-pool-min/thread-pool-max values");
+         return;
+     }
 -- 
 2.39.2
 
