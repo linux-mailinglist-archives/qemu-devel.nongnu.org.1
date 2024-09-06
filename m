@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB6296F2C0
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:20:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62CC396F2C8
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:21:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWy5-0001Qi-Fa; Fri, 06 Sep 2024 07:17:34 -0400
+	id 1smWyC-0001iD-6E; Fri, 06 Sep 2024 07:17:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWxE-0006hc-SS; Fri, 06 Sep 2024 07:16:41 -0400
+ id 1smWxF-0006lc-Mz; Fri, 06 Sep 2024 07:16:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWxD-00087R-2p; Fri, 06 Sep 2024 07:16:40 -0400
+ id 1smWxD-00087X-Cj; Fri, 06 Sep 2024 07:16:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F23638C495;
- Fri,  6 Sep 2024 14:12:08 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0D4728C496;
+ Fri,  6 Sep 2024 14:12:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0AEEF1336FF;
+ by tsrv.corpit.ru (Postfix) with SMTP id 18F50133700;
  Fri,  6 Sep 2024 14:13:27 +0300 (MSK)
-Received: (nullmailer pid 353664 invoked by uid 1000);
+Received: (nullmailer pid 353667 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 37/69] linux-user/elfload: Fix pr_pid values in core
- files
-Date: Fri,  6 Sep 2024 14:12:46 +0300
-Message-Id: <20240906111324.353230-37-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 38/69] target/i386: Fix VSIB decode
+Date: Fri,  6 Sep 2024 14:12:47 +0300
+Message-Id: <20240906111324.353230-38-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -61,62 +59,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Analyzing qemu-produced core dumps of multi-threaded apps runs into:
+With normal SIB, index == 4 indicates no index.
+With VSIB, there is no exception for VR4/VR12.
 
-    (gdb) info threads
-      [...]
-      21   Thread 0x3ff83cc0740 (LWP 9295) warning: Couldn't find general-purpose registers in core file.
-    <unavailable> in ?? ()
-
-The reason is that all pr_pid values are the same, because the same
-TaskState is used for all CPUs when generating NT_PRSTATUS notes.
-
-Fix by using TaskStates associated with individual CPUs.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 243c47066253 ("linux-user/elfload: Write corefile elf header in one block")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240801202340.21845-1-iii@linux.ibm.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2474
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 5b0c2742c839376b7e03c4654914aaec6a8a7b09)
+Link: https://lore.kernel.org/r/20240805003130.1421051-3-richard.henderson@linaro.org
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit ac63755b20013ec6a3d2aef4538d37dc90bc3d10)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: modify the change to pre-new-decoder introduced past qemu 9.0)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 60cf55b36c..0e00683dd2 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -4175,8 +4175,7 @@ static void fill_elf_note_phdr(struct elf_phdr *phdr, size_t sz, off_t offset)
-     bswap_phdr(phdr, 1);
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 4209d59ca8..2ca874b59d 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -1135,7 +1135,8 @@ static int decode_modrm(DisasContext *s, CPUX86State *env, X86DecodedInsn *decod
+     } else {
+         op->has_ea = true;
+         op->n = -1;
+-        decode->mem = gen_lea_modrm_0(env, s, get_modrm(s, env));
++        decode->mem = gen_lea_modrm_0(env, s, modrm,
++                                      decode->e.vex_class == 12);
+     }
+     return modrm;
+ }
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 26ed900f34..e2e3b3d7c3 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -2187,7 +2187,7 @@ typedef struct AddressParts {
+ } AddressParts;
+ 
+ static AddressParts gen_lea_modrm_0(CPUX86State *env, DisasContext *s,
+-                                    int modrm)
++                                    int modrm, bool is_vsib)
+ {
+     int def_seg, base, index, scale, mod, rm;
+     target_long disp;
+@@ -2216,7 +2216,7 @@ static AddressParts gen_lea_modrm_0(CPUX86State *env, DisasContext *s,
+             int code = x86_ldub_code(env, s);
+             scale = (code >> 6) & 3;
+             index = ((code >> 3) & 7) | REX_X(s);
+-            if (index == 4) {
++            if (index == 4 && !is_vsib) {
+                 index = -1;  /* no index */
+             }
+             base = (code & 7) | REX_B(s);
+@@ -2346,21 +2346,21 @@ static TCGv gen_lea_modrm_1(DisasContext *s, AddressParts a, bool is_vsib)
+ 
+ static void gen_lea_modrm(CPUX86State *env, DisasContext *s, int modrm)
+ {
+-    AddressParts a = gen_lea_modrm_0(env, s, modrm);
++    AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+     TCGv ea = gen_lea_modrm_1(s, a, false);
+     gen_lea_v_seg(s, s->aflag, ea, a.def_seg, s->override);
  }
  
--static void fill_prstatus_note(void *data, const TaskState *ts,
--                               CPUState *cpu, int signr)
-+static void fill_prstatus_note(void *data, CPUState *cpu, int signr)
+ static void gen_nop_modrm(CPUX86State *env, DisasContext *s, int modrm)
  {
-     /*
-      * Because note memory is only aligned to 4, and target_elf_prstatus
-@@ -4186,7 +4185,7 @@ static void fill_prstatus_note(void *data, const TaskState *ts,
-     struct target_elf_prstatus prstatus = {
-         .pr_info.si_signo = signr,
-         .pr_cursig = signr,
--        .pr_pid = ts->ts_tid,
-+        .pr_pid = get_task_state(cpu)->ts_tid,
-         .pr_ppid = getppid(),
-         .pr_pgrp = getpgrp(),
-         .pr_sid = getsid(0),
-@@ -4501,8 +4500,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
-         CPU_FOREACH(cpu_iter) {
-             dptr = fill_note(&hptr, NT_PRSTATUS, "CORE",
-                              sizeof(struct target_elf_prstatus));
--            fill_prstatus_note(dptr, ts, cpu_iter,
--                               cpu_iter == cpu ? signr : 0);
-+            fill_prstatus_note(dptr, cpu_iter, cpu_iter == cpu ? signr : 0);
-         }
+-    (void)gen_lea_modrm_0(env, s, modrm);
++    (void)gen_lea_modrm_0(env, s, modrm, false);
+ }
  
-         if (dump_write(fd, header, data_offset) < 0) {
+ /* Used for BNDCL, BNDCU, BNDCN.  */
+ static void gen_bndck(CPUX86State *env, DisasContext *s, int modrm,
+                       TCGCond cond, TCGv_i64 bndv)
+ {
+-    AddressParts a = gen_lea_modrm_0(env, s, modrm);
++    AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+     TCGv ea = gen_lea_modrm_1(s, a, false);
+ 
+     tcg_gen_extu_tl_i64(s->tmp1_i64, ea);
+@@ -4179,7 +4179,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             goto illegal_op;
+         reg = ((modrm >> 3) & 7) | REX_R(s);
+         {
+-            AddressParts a = gen_lea_modrm_0(env, s, modrm);
++            AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+             TCGv ea = gen_lea_modrm_1(s, a, false);
+             gen_lea_v_seg(s, s->aflag, ea, -1, -1);
+             gen_op_mov_reg_v(s, dflag, reg, s->A0);
+@@ -4400,7 +4400,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             op = ((b & 7) << 3) | ((modrm >> 3) & 7);
+             if (mod != 3) {
+                 /* memory op */
+-                AddressParts a = gen_lea_modrm_0(env, s, modrm);
++                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+                 TCGv ea = gen_lea_modrm_1(s, a, false);
+                 TCGv last_addr = tcg_temp_new();
+                 bool update_fdp = true;
+@@ -5348,7 +5348,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+         rm = (modrm & 7) | REX_B(s);
+         gen_op_mov_v_reg(s, MO_32, s->T1, reg);
+         if (mod != 3) {
+-            AddressParts a = gen_lea_modrm_0(env, s, modrm);
++            AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+             /* specific case: we need to add a displacement */
+             gen_exts(ot, s->T1);
+             tcg_gen_sari_tl(s->tmp0, s->T1, 3 + ot);
+@@ -6343,7 +6343,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+                 }
+             } else if (mod != 3) {
+                 /* bndldx */
+-                AddressParts a = gen_lea_modrm_0(env, s, modrm);
++                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+                 if (reg >= 4
+                     || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16
+@@ -6387,7 +6387,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+                     || s->aflag == MO_16) {
+                     goto illegal_op;
+                 }
+-                AddressParts a = gen_lea_modrm_0(env, s, modrm);
++                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+                 if (a.base >= 0) {
+                     tcg_gen_extu_tl_i64(cpu_bndl[reg], cpu_regs[a.base]);
+                     if (!CODE64(s)) {
+@@ -6448,7 +6448,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+                 }
+             } else if (mod != 3) {
+                 /* bndstx */
+-                AddressParts a = gen_lea_modrm_0(env, s, modrm);
++                AddressParts a = gen_lea_modrm_0(env, s, modrm, false);
+                 if (reg >= 4
+                     || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16
 -- 
 2.39.2
 
