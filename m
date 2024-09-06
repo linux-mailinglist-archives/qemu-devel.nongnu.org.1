@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0B296F2D3
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B22A96F30F
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:28:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWyk-00050c-6h; Fri, 06 Sep 2024 07:18:14 -0400
+	id 1smWyn-0005lh-IP; Fri, 06 Sep 2024 07:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWyc-0004Hg-W9; Fri, 06 Sep 2024 07:18:07 -0400
+ id 1smWyf-0004Tv-3N; Fri, 06 Sep 2024 07:18:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWyb-0008E7-91; Fri, 06 Sep 2024 07:18:06 -0400
+ id 1smWyd-0008EL-3H; Fri, 06 Sep 2024 07:18:08 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D25B88C4A4;
+ by isrv.corpit.ru (Postfix) with ESMTP id E067A8C4A5;
  Fri,  6 Sep 2024 14:12:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id DE60413370D;
+ by tsrv.corpit.ru (Postfix) with SMTP id ED5EF13370E;
  Fri,  6 Sep 2024 14:13:27 +0300 (MSK)
-Received: (nullmailer pid 353712 invoked by uid 1000);
+Received: (nullmailer pid 353715 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, David Woodhouse <dwmw@amazon.co.uk>,
- Hans <sungdgdhtryrt@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Jason Wang <jasowang@redhat.com>
-Subject: [Stable-9.0.3 51/69] net: Fix '-net nic,
- model=' for non-help arguments
-Date: Fri,  6 Sep 2024 14:13:00 +0300
-Message-Id: <20240906111324.353230-51-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Jianzhou Yue <JianZhou.Yue@verisilicon.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 52/69] hw/core/ptimer: fix timer zero period condition
+ for freq > 1GHz
+Date: Fri,  6 Sep 2024 14:13:01 +0300
+Message-Id: <20240906111324.353230-52-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -61,32 +60,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Jianzhou Yue <JianZhou.Yue@verisilicon.com>
 
-Oops, don't *delete* the model option when checking for 'help'.
+The real period is zero when both period and period_frac are zero.
+Check the method ptimer_set_freq, if freq is larger than 1000 MHz,
+the period is zero, but the period_frac is not, in this case, the
+ptimer will work but the current code incorrectly recognizes that
+the ptimer is disabled.
 
-Fixes: 64f75f57f9d2 ("net: Reinstate '-net nic, model=help' output as documented in man page")
-Reported-by: Hans <sungdgdhtryrt@gmail.com>
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit fa62cb989a9146c82f8f172715042852f5d36200)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2306
+Signed-off-by: JianZhou Yue <JianZhou.Yue@verisilicon.com>
+Message-id: 3DA024AEA8B57545AF1B3CAA37077D0FB75E82C8@SHASXM03.verisilicon.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 446e5e8b4515e9a7be69ef6a29852975289bb6f0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/net/net.c b/net/net.c
-index e6ca2529bb..897bb936cf 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -1748,7 +1748,7 @@ void net_check_clients(void)
+diff --git a/hw/core/ptimer.c b/hw/core/ptimer.c
+index b1517592c6..1d8964d804 100644
+--- a/hw/core/ptimer.c
++++ b/hw/core/ptimer.c
+@@ -83,7 +83,7 @@ static void ptimer_reload(ptimer_state *s, int delta_adjust)
+         delta = s->delta = s->limit;
+     }
  
- static int net_init_client(void *dummy, QemuOpts *opts, Error **errp)
+-    if (s->period == 0) {
++    if (s->period == 0 && s->period_frac == 0) {
+         if (!qtest_enabled()) {
+             fprintf(stderr, "Timer with period zero, disabling\n");
+         }
+@@ -309,7 +309,7 @@ void ptimer_run(ptimer_state *s, int oneshot)
+ 
+     assert(s->in_transaction);
+ 
+-    if (was_disabled && s->period == 0) {
++    if (was_disabled && s->period == 0 && s->period_frac == 0) {
+         if (!qtest_enabled()) {
+             fprintf(stderr, "Timer with period zero, disabling\n");
+         }
+diff --git a/tests/unit/ptimer-test.c b/tests/unit/ptimer-test.c
+index 04b5f4e3d0..08240594bb 100644
+--- a/tests/unit/ptimer-test.c
++++ b/tests/unit/ptimer-test.c
+@@ -763,6 +763,33 @@ static void check_oneshot_with_load_0(gconstpointer arg)
+     ptimer_free(ptimer);
+ }
+ 
++static void check_freq_more_than_1000M(gconstpointer arg)
++{
++    const uint8_t *policy = arg;
++    ptimer_state *ptimer = ptimer_init(ptimer_trigger, NULL, *policy);
++    bool no_round_down = (*policy & PTIMER_POLICY_NO_COUNTER_ROUND_DOWN);
++
++    triggered = false;
++
++    ptimer_transaction_begin(ptimer);
++    ptimer_set_freq(ptimer, 2000000000);
++    ptimer_set_limit(ptimer, 8, 1);
++    ptimer_run(ptimer, 1);
++    ptimer_transaction_commit(ptimer);
++
++    qemu_clock_step(3);
++
++    g_assert_cmpuint(ptimer_get_count(ptimer), ==, no_round_down ? 3 : 2);
++    g_assert_false(triggered);
++
++    qemu_clock_step(1);
++
++    g_assert_cmpuint(ptimer_get_count(ptimer), ==, 0);
++    g_assert_true(triggered);
++
++    ptimer_free(ptimer);
++}
++
+ static void add_ptimer_tests(uint8_t policy)
  {
--    const char *model = qemu_opt_get_del(opts, "model");
-+    const char *model = qemu_opt_get(opts, "model");
+     char policy_name[256] = "";
+@@ -857,6 +884,12 @@ static void add_ptimer_tests(uint8_t policy)
+                               policy_name),
+         g_memdup2(&policy, 1), check_oneshot_with_load_0, g_free);
+     g_free(tmp);
++
++    g_test_add_data_func_full(
++        tmp = g_strdup_printf("/ptimer/freq_more_than_1000M policy=%s",
++                              policy_name),
++        g_memdup2(&policy, 1), check_freq_more_than_1000M, g_free);
++    g_free(tmp);
+ }
  
-     if (is_nic_model_help_option(model)) {
-         return 0;
+ static void add_all_ptimer_policies_comb_tests(void)
 -- 
 2.39.2
 
