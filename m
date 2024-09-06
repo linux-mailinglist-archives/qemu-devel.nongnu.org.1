@@ -2,39 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF3A296E915
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6161D96E91D
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:19:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRLu-0005ob-ME; Fri, 06 Sep 2024 01:17:46 -0400
+	id 1smRLx-00063l-37; Fri, 06 Sep 2024 01:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRLQ-00041n-Qi; Fri, 06 Sep 2024 01:17:20 -0400
+ id 1smRLp-0005Nv-4m; Fri, 06 Sep 2024 01:17:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRLN-0007v5-Ul; Fri, 06 Sep 2024 01:17:16 -0400
+ id 1smRLm-0007wg-63; Fri, 06 Sep 2024 01:17:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E86A88C120;
- Fri,  6 Sep 2024 08:15:16 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 051168C121;
+ Fri,  6 Sep 2024 08:15:17 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 98C67133366;
+ by tsrv.corpit.ru (Postfix) with SMTP id A6D81133367;
  Fri,  6 Sep 2024 08:16:34 +0300 (MSK)
-Received: (nullmailer pid 10420 invoked by uid 1000);
+Received: (nullmailer pid 10423 invoked by uid 1000);
  Fri, 06 Sep 2024 05:16:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 12/40] target/rx: Use target_ulong for address in LI
-Date: Fri,  6 Sep 2024 08:16:00 +0300
-Message-Id: <20240906051633.10288-12-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Frederik=20van=20H=C3=B6vell?= <frederik@fvhovell.nl>,
+ Cryptjar <cryptjar@junk.studio>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 13/40] hw/char/bcm2835_aux: Fix assert when receive
+ FIFO fills up
+Date: Fri,  6 Sep 2024 08:16:01 +0300
+Message-Id: <20240906051633.10288-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,31 +64,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Frederik van Hövell <frederik@fvhovell.nl>
 
-Using int32_t meant that the address was sign-extended to uint64_t
-when passing to translator_ld*, triggering an assert.
+When a bare-metal application on the raspi3 board reads the
+AUX_MU_STAT_REG MMIO register while the device's buffer is
+at full receive FIFO capacity
+(i.e. `s->read_count == BCM2835_AUX_RX_FIFO_LEN`) the
+assertion `assert(s->read_count < BCM2835_AUX_RX_FIFO_LEN)`
+fails.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2453
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 83340193b991e7a974f117baa86a04db1fd835a9)
+Reported-by: Cryptjar <cryptjar@junk.studio>
+Suggested-by: Cryptjar <cryptjar@junk.studio>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/459
+Signed-off-by: Frederik van Hövell <frederik@fvhovell.nl>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+[PMM: commit message tweaks]
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 546d574b11e02bfd5b15cdf1564842c14516dfab)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/rx/translate.c b/target/rx/translate.c
-index 87a3f54adb..4233622c4e 100644
---- a/target/rx/translate.c
-+++ b/target/rx/translate.c
-@@ -83,7 +83,8 @@ static uint32_t decode_load_bytes(DisasContext *ctx, uint32_t insn,
- 
- static uint32_t li(DisasContext *ctx, int sz)
- {
--    int32_t tmp, addr;
-+    target_ulong addr;
-+    uint32_t tmp;
-     CPURXState *env = ctx->env;
-     addr = ctx->base.pc_next;
- 
+diff --git a/hw/char/bcm2835_aux.c b/hw/char/bcm2835_aux.c
+index 96410b1ff8..0f1b28547e 100644
+--- a/hw/char/bcm2835_aux.c
++++ b/hw/char/bcm2835_aux.c
+@@ -138,7 +138,7 @@ static uint64_t bcm2835_aux_read(void *opaque, hwaddr offset, unsigned size)
+         res = 0x30e; /* space in the output buffer, empty tx fifo, idle tx/rx */
+         if (s->read_count > 0) {
+             res |= 0x1; /* data in input buffer */
+-            assert(s->read_count < BCM2835_AUX_RX_FIFO_LEN);
++            assert(s->read_count <= BCM2835_AUX_RX_FIFO_LEN);
+             res |= ((uint32_t)s->read_count) << 16; /* rx fifo fill level */
+         }
+         return res;
 -- 
 2.39.2
 
