@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AFF996F314
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5071C96F2A8
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:18:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWvP-0005iE-4H; Fri, 06 Sep 2024 07:14:47 -0400
+	id 1smWvR-0005un-9g; Fri, 06 Sep 2024 07:14:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWvH-00057f-RX; Fri, 06 Sep 2024 07:14:39 -0400
+ id 1smWvK-0005MQ-3t; Fri, 06 Sep 2024 07:14:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWvD-0007kQ-Lc; Fri, 06 Sep 2024 07:14:38 -0400
+ id 1smWvH-0007kg-TW; Fri, 06 Sep 2024 07:14:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8FE488C481;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9E1AC8C482;
  Fri,  6 Sep 2024 14:12:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9CD6F1336EB;
+ by tsrv.corpit.ru (Postfix) with SMTP id AAF3F1336EC;
  Fri,  6 Sep 2024 14:13:25 +0300 (MSK)
-Received: (nullmailer pid 353595 invoked by uid 1000);
+Received: (nullmailer pid 353598 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 17/69] hw/intc/loongson_ipi: Fix resource leak
-Date: Fri,  6 Sep 2024 14:12:26 +0300
-Message-Id: <20240906111324.353230-17-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 18/69] target/loongarch: Fix helper_lddir() a CID
+ INTEGER_OVERFLOW issue
+Date: Fri,  6 Sep 2024 14:12:27 +0300
+Message-Id: <20240906111324.353230-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,69 +61,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Song Gao <gaosong@loongson.cn>
 
-Once initialised, QOM objects can be realized and
-unrealized multiple times before being finalized.
-Resources allocated in REALIZE must be deallocated
-in an equivalent UNREALIZE handler.
+When the lddir level is 4 and the base is a HugePage, we may try to put value 4
+into a field in the TLBENTRY that is only 2 bits wide.
 
-Free the CPU array in loongson_ipi_unrealize()
-instead of loongson_ipi_finalize().
-
-Cc: qemu-stable@nongnu.org
-Fixes: 5e90b8db382 ("hw/loongarch: Set iocsr address space per-board rather than percpu")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240723111405.14208-3-philmd@linaro.org>
-(cherry picked from commit 0c2086bc7360565dfb9933181dafaefe2c94cddf)
+Fixes: Coverity CID 1547717
+Fixes: 9c70db9a43388 ("target/loongarch: Fix tlb huge page loading issue")
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240724015853.1317396-1-gaosong@loongson.cn>
+(cherry picked from commit a18ffbcf8b9fabfc6c850ebb1d3e40a21b885c67)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: rename loongson back to longarch for 9.0 due to lack of
- v9.0.0-582-gb4a12dfc2132 "hw/intc/loongarch_ipi: Rename as loongson_ipi")
 
-diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-index 521731342c..c210b51811 100644
---- a/hw/intc/loongarch_ipi.c
-+++ b/hw/intc/loongarch_ipi.c
-@@ -301,6 +301,13 @@ static void loongarch_ipi_realize(DeviceState *dev, Error **errp)
-     }
- }
+diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+index 57f5308632..2262005499 100644
+--- a/target/loongarch/tcg/tlb_helper.c
++++ b/target/loongarch/tcg/tlb_helper.c
+@@ -524,6 +524,7 @@ target_ulong helper_lddir(CPULoongArchState *env, target_ulong base,
+         if (unlikely(level == 4)) {
+             qemu_log_mask(LOG_GUEST_ERROR,
+                           "Attempted use of level 4 huge page\n");
++            return base;
+         }
  
-+static void loongarch_ipi_unrealize(DeviceState *dev)
-+{
-+    LoongArchIPI *s = LOONGARCH_IPI(dev);
-+
-+    g_free(s->cpu);
-+}
-+
- static const VMStateDescription vmstate_ipi_core = {
-     .name = "ipi-single",
-     .version_id = 2,
-@@ -336,23 +343,16 @@ static void loongarch_ipi_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     dc->realize = loongarch_ipi_realize;
-+    dc->unrealize = loongarch_ipi_unrealize;
-     device_class_set_props(dc, ipi_properties);
-     dc->vmsd = &vmstate_loongarch_ipi;
- }
- 
--static void loongarch_ipi_finalize(Object *obj)
--{
--    LoongArchIPI *s = LOONGARCH_IPI(obj);
--
--    g_free(s->cpu);
--}
--
- static const TypeInfo loongarch_ipi_info = {
-     .name          = TYPE_LOONGARCH_IPI,
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(LoongArchIPI),
-     .class_init    = loongarch_ipi_class_init,
--    .instance_finalize = loongarch_ipi_finalize,
- };
- 
- static void loongarch_ipi_register_types(void)
+         if (FIELD_EX64(base, TLBENTRY, LEVEL)) {
 -- 
 2.39.2
 
