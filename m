@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02A896F2A7
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:18:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C9296F2F1
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:23:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWyG-00021a-0D; Fri, 06 Sep 2024 07:17:45 -0400
+	id 1smWyZ-0002lR-1c; Fri, 06 Sep 2024 07:18:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWxg-0008Se-UX; Fri, 06 Sep 2024 07:17:10 -0400
+ id 1smWxh-0008U8-DF; Fri, 06 Sep 2024 07:17:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWxd-00089o-KZ; Fri, 06 Sep 2024 07:17:08 -0400
+ id 1smWxf-0008A1-NJ; Fri, 06 Sep 2024 07:17:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 38F1E8C49A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 470B18C49B;
  Fri,  6 Sep 2024 14:12:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 45D1B133703;
+ by tsrv.corpit.ru (Postfix) with SMTP id 53F22133704;
  Fri,  6 Sep 2024 14:13:27 +0300 (MSK)
-Received: (nullmailer pid 353677 invoked by uid 1000);
+Received: (nullmailer pid 353681 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Amjad Alsharafi <amjadsharafi10@gmail.com>,
  Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 41/69] vvfat: Fix bug in writing to middle of file
-Date: Fri,  6 Sep 2024 14:12:50 +0300
-Message-Id: <20240906111324.353230-41-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 42/69] vvfat: Fix usage of `info.file.offset`
+Date: Fri,  6 Sep 2024 14:12:51 +0300
+Message-Id: <20240906111324.353230-42-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -61,37 +61,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Amjad Alsharafi <amjadsharafi10@gmail.com>
 
-Before this commit, the behavior when calling `commit_one_file` for
-example with `offset=0x2000` (second cluster), what will happen is that
-we won't fetch the next cluster from the fat, and instead use the first
-cluster for the read operation.
-
-This is due to off-by-one error here, where `i=0x2000 !< offset=0x2000`,
-thus not fetching the next cluster.
+The field is marked as "the offset in the file (in clusters)", but it
+was being used like this
+`cluster_size*(nums)+mapping->info.file.offset`, which is incorrect.
 
 Signed-off-by: Amjad Alsharafi <amjadsharafi10@gmail.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Tested-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <b97c1e1f1bc2f776061ae914f95d799d124fcd73.1721470238.git.amjadsharafi10@gmail.com>
+Message-ID: <72f19a7903886dda1aa78bcae0e17702ee939262.1721470238.git.amjadsharafi10@gmail.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit b881cf00c99e03bc8a3648581f97736ff275b18b)
+(cherry picked from commit 21b25a0e466a5bba0a45600bb8100ab564202ed1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/block/vvfat.c b/block/vvfat.c
-index 9d050ba3ae..19da009a5b 100644
+index 19da009a5b..247b232608 100644
 --- a/block/vvfat.c
 +++ b/block/vvfat.c
-@@ -2525,8 +2525,9 @@ commit_one_file(BDRVVVFATState* s, int dir_index, uint32_t offset)
-         return -1;
-     }
+@@ -1408,7 +1408,9 @@ read_cluster_directory:
  
--    for (i = s->cluster_size; i < offset; i += s->cluster_size)
-+    for (i = 0; i < offset; i += s->cluster_size) {
-         c = modified_fat_get(s, c);
-+    }
+         assert(s->current_fd);
  
-     fd = qemu_open_old(mapping->path, O_RDWR | O_CREAT | O_BINARY, 0666);
-     if (fd < 0) {
+-        offset=s->cluster_size*(cluster_num-s->current_mapping->begin)+s->current_mapping->info.file.offset;
++        offset = s->cluster_size *
++            ((cluster_num - s->current_mapping->begin)
++            + s->current_mapping->info.file.offset);
+         if(lseek(s->current_fd, offset, SEEK_SET)!=offset)
+             return -3;
+         s->cluster=s->cluster_buffer;
+@@ -1929,8 +1931,9 @@ get_cluster_count_for_direntry(BDRVVVFATState* s, direntry_t* direntry, const ch
+                         (mapping->mode & MODE_DIRECTORY) == 0) {
+ 
+                     /* was modified in qcow */
+-                    if (offset != mapping->info.file.offset + s->cluster_size
+-                            * (cluster_num - mapping->begin)) {
++                    if (offset != s->cluster_size
++                            * ((cluster_num - mapping->begin)
++                            + mapping->info.file.offset)) {
+                         /* offset of this cluster in file chain has changed */
+                         abort();
+                         copy_it = 1;
+@@ -2404,7 +2407,7 @@ static int commit_mappings(BDRVVVFATState* s,
+                         (mapping->end - mapping->begin);
+             } else
+                 next_mapping->info.file.offset = mapping->info.file.offset +
+-                        mapping->end - mapping->begin;
++                        (mapping->end - mapping->begin);
+ 
+             mapping = next_mapping;
+         }
 -- 
 2.39.2
 
