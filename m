@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BAE96F2FB
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC81596F30E
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:28:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWzf-0005Th-Tm; Fri, 06 Sep 2024 07:19:12 -0400
+	id 1smWzy-0008Jz-TH; Fri, 06 Sep 2024 07:19:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWzZ-0004uW-8N; Fri, 06 Sep 2024 07:19:05 -0400
+ id 1smWzu-000842-Dd; Fri, 06 Sep 2024 07:19:26 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWzX-0008KB-Hd; Fri, 06 Sep 2024 07:19:04 -0400
+ id 1smWzs-0008KK-Cq; Fri, 06 Sep 2024 07:19:26 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 735588C4AE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 83C2D8C4AF;
  Fri,  6 Sep 2024 14:12:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 806FA133717;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8E84E133718;
  Fri,  6 Sep 2024 14:13:28 +0300 (MSK)
-Received: (nullmailer pid 353745 invoked by uid 1000);
+Received: (nullmailer pid 353748 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:25 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 61/69] target/sparc: Restrict STQF to sparcv9
-Date: Fri,  6 Sep 2024 14:13:10 +0300
-Message-Id: <20240906111324.353230-61-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 62/69] crypto/tlscredspsk: Free username on finalize
+Date: Fri,  6 Sep 2024 14:13:11 +0300
+Message-Id: <20240906111324.353230-62-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -61,45 +62,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Prior to sparcv9, the same encoding was STDFQ.
+When the creds->username property is set we allocate memory
+for it in qcrypto_tls_creds_psk_prop_set_username(), but
+we never free this when the QCryptoTLSCredsPSK is destroyed.
+Free the memory in finalize.
+
+This fixes a LeakSanitizer complaint in migration-test:
+
+$ (cd build/asan; ASAN_OPTIONS="fast_unwind_on_malloc=0" QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test --tap -k -p /x86_64/migration/precopy/unix/tls/psk)
+
+=================================================================
+==3867512==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 5 byte(s) in 1 object(s) allocated from:
+    #0 0x5624e5c99dee in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x218edee) (BuildId: a9e623fa1009a9435c0142c037cd7b8c1ad04ce3)
+    #1 0x7fb199ae9738 in g_malloc debian/build/deb/../../../glib/gmem.c:128:13
+    #2 0x7fb199afe583 in g_strdup debian/build/deb/../../../glib/gstrfuncs.c:361:17
+    #3 0x5624e82ea919 in qcrypto_tls_creds_psk_prop_set_username /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../crypto/tlscredspsk.c:255:23
+    #4 0x5624e812c6b5 in property_set_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../qom/object.c:2277:5
+    #5 0x5624e8125ce5 in object_property_set /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../qom/object.c:1463:5
+    #6 0x5624e8136e7c in object_set_properties_from_qdict /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../qom/object_interfaces.c:55:14
+    #7 0x5624e81372d2 in user_creatable_add_type /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../qom/object_interfaces.c:112:5
+    #8 0x5624e8137964 in user_creatable_add_qapi /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../qom/object_interfaces.c:157:11
+    #9 0x5624e891ba3c in qmp_object_add /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../qom/qom-qmp-cmds.c:227:5
+    #10 0x5624e8af9118 in qmp_marshal_object_add /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qapi/qapi-commands-qom.c:337:5
+    #11 0x5624e8bd1d49 in do_qmp_dispatch_bh /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../qapi/qmp-dispatch.c:128:5
+    #12 0x5624e8cb2531 in aio_bh_call /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../util/async.c:171:5
+    #13 0x5624e8cb340c in aio_bh_poll /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../util/async.c:218:13
+    #14 0x5624e8c0be98 in aio_dispatch /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../util/aio-posix.c:423:5
+    #15 0x5624e8cba3ce in aio_ctx_dispatch /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../util/async.c:360:5
+    #16 0x7fb199ae0d3a in g_main_dispatch debian/build/deb/../../../glib/gmain.c:3419:28
+    #17 0x7fb199ae0d3a in g_main_context_dispatch debian/build/deb/../../../glib/gmain.c:4137:7
+    #18 0x5624e8cbe1d9 in glib_pollfds_poll /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../util/main-loop.c:287:9
+    #19 0x5624e8cbcb13 in os_host_main_loop_wait /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../util/main-loop.c:310:5
+    #20 0x5624e8cbc6dc in main_loop_wait /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../util/main-loop.c:589:11
+    #21 0x5624e6f3f917 in qemu_main_loop /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../system/runstate.c:801:9
+    #22 0x5624e893379c in qemu_default_main /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../system/main.c:37:14
+    #23 0x5624e89337e7 in main /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/../../system/main.c:48:12
+    #24 0x7fb197972d8f in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+    #25 0x7fb197972e3f in __libc_start_main csu/../csu/libc-start.c:392:3
+    #26 0x5624e5c16fa4 in _start (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/asan/qemu-system-x86_64+0x210bfa4) (BuildId: a9e623fa1009a9435c0142c037cd7b8c1ad04ce3)
+
+SUMMARY: AddressSanitizer: 5 byte(s) leaked in 1 allocation(s).
 
 Cc: qemu-stable@nongnu.org
-Fixes: 06c060d9e5b ("target/sparc: Move simple fp load/store to decodetree")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240816072311.353234-2-richard.henderson@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20240819145021.38524-1-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 12d36294a2d978faf893101862118d1ac1815e85)
+(cherry picked from commit 87e012f29f2e47dcd8c385ff8bb8188f9e06d4ea)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index e2d8a07dc4..d2b29de084 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -484,7 +484,7 @@ STF         11 ..... 100100 ..... . .............          @r_r_ri_na
- STFSR       11 00000 100101 ..... . .............          @n_r_ri
- STXFSR      11 00001 100101 ..... . .............          @n_r_ri
- {
--  STQF      11 ..... 100110 ..... . .............          @q_r_ri_na
-+  STQF      11 ..... 100110 ..... . .............          @q_r_ri_na # v9
-   STDFQ     11 ----- 100110 ----- - -------------
+diff --git a/crypto/tlscredspsk.c b/crypto/tlscredspsk.c
+index 546cad1c5a..0d6b71a37c 100644
+--- a/crypto/tlscredspsk.c
++++ b/crypto/tlscredspsk.c
+@@ -243,6 +243,7 @@ qcrypto_tls_creds_psk_finalize(Object *obj)
+     QCryptoTLSCredsPSK *creds = QCRYPTO_TLS_CREDS_PSK(obj);
+ 
+     qcrypto_tls_creds_psk_unload(creds);
++    g_free(creds->username);
  }
- STDF        11 ..... 100111 ..... . .............          @d_r_ri_na
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 99c6f3cc72..9d5d0ae47c 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -4151,7 +4151,7 @@ static bool do_st_fpr(DisasContext *dc, arg_r_r_ri_asi *a, MemOp sz)
  
- TRANS(STF, ALL, do_st_fpr, a, MO_32)
- TRANS(STDF, ALL, do_st_fpr, a, MO_64)
--TRANS(STQF, ALL, do_st_fpr, a, MO_128)
-+TRANS(STQF, 64, do_st_fpr, a, MO_128)
- 
- TRANS(STFA, 64, do_st_fpr, a, MO_32)
- TRANS(STDFA, 64, do_st_fpr, a, MO_64)
+ static void
 -- 
 2.39.2
 
