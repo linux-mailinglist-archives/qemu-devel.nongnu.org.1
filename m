@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5071C96F2A8
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C646096F2AA
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:18:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWvR-0005un-9g; Fri, 06 Sep 2024 07:14:49 -0400
+	id 1smWvR-0005vH-5r; Fri, 06 Sep 2024 07:14:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWvK-0005MQ-3t; Fri, 06 Sep 2024 07:14:42 -0400
+ id 1smWvM-0005ff-BT; Fri, 06 Sep 2024 07:14:44 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWvH-0007kg-TW; Fri, 06 Sep 2024 07:14:41 -0400
+ id 1smWvJ-0007ku-Ug; Fri, 06 Sep 2024 07:14:43 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9E1AC8C482;
+ by isrv.corpit.ru (Postfix) with ESMTP id AD7C38C483;
  Fri,  6 Sep 2024 14:12:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id AAF3F1336EC;
+ by tsrv.corpit.ru (Postfix) with SMTP id B92A11336ED;
  Fri,  6 Sep 2024 14:13:25 +0300 (MSK)
-Received: (nullmailer pid 353598 invoked by uid 1000);
+Received: (nullmailer pid 353601 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 18/69] target/loongarch: Fix helper_lddir() a CID
- INTEGER_OVERFLOW issue
-Date: Fri,  6 Sep 2024 14:12:27 +0300
-Message-Id: <20240906111324.353230-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 19/69] util/async.c: Forbid negative min/max in
+ aio_context_set_thread_pool_params()
+Date: Fri,  6 Sep 2024 14:12:28 +0300
+Message-Id: <20240906111324.353230-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,31 +62,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Song Gao <gaosong@loongson.cn>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-When the lddir level is 4 and the base is a HugePage, we may try to put value 4
-into a field in the TLBENTRY that is only 2 bits wide.
+aio_context_set_thread_pool_params() takes two int64_t arguments to
+set the minimum and maximum number of threads in the pool.  We do
+some bounds checking on these, but we don't catch the case where the
+inputs are negative.  This means that later in the function when we
+assign these inputs to the AioContext::thread_pool_min and
+::thread_pool_max fields, which are of type int, the values might
+overflow the smaller type.
 
-Fixes: Coverity CID 1547717
-Fixes: 9c70db9a43388 ("target/loongarch: Fix tlb huge page loading issue")
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240724015853.1317396-1-gaosong@loongson.cn>
-(cherry picked from commit a18ffbcf8b9fabfc6c850ebb1d3e40a21b885c67)
+A negative number of threads is meaningless, so make
+aio_context_set_thread_pool_params() return an error if either min or
+max are negative.
+
+Resolves: Coverity CID 1547605
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240723150927.1396456-1-peter.maydell@linaro.org
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit 851495571d14fe2226c52b9d423f88a4f5460836)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 57f5308632..2262005499 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -524,6 +524,7 @@ target_ulong helper_lddir(CPULoongArchState *env, target_ulong base,
-         if (unlikely(level == 4)) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "Attempted use of level 4 huge page\n");
-+            return base;
-         }
+diff --git a/util/async.c b/util/async.c
+index 0467890052..3e3e4fc712 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -746,7 +746,7 @@ void aio_context_set_thread_pool_params(AioContext *ctx, int64_t min,
+                                         int64_t max, Error **errp)
+ {
  
-         if (FIELD_EX64(base, TLBENTRY, LEVEL)) {
+-    if (min > max || !max || min > INT_MAX || max > INT_MAX) {
++    if (min > max || max <= 0 || min < 0 || min > INT_MAX || max > INT_MAX) {
+         error_setg(errp, "bad thread-pool-min/thread-pool-max values");
+         return;
+     }
 -- 
 2.39.2
 
