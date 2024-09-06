@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4550996F563
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 15:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CDC96F5CC
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 15:50:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smZ2V-0005oz-Lv; Fri, 06 Sep 2024 09:30:17 -0400
+	id 1smZKx-0006pc-O9; Fri, 06 Sep 2024 09:49:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1smZ2J-0005KR-Rq
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 09:30:04 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1smZKv-0006o6-Fi
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 09:49:17 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1smZ2H-0008Qt-Vk
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 09:30:03 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-5365b71a6bdso417924e87.2
- for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 06:30:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1smZKt-0002Lj-Pw
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 09:49:17 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5c241feb80dso6076598a12.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 06:49:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725629399; x=1726234199; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1DwYu9QdzrUW1gsmzF/i6MG5QrT1Cpgzq2dn1Yasafk=;
- b=FpTPijpYYuvHJdG8hlfDbjeSWLqrTqcS3kdntib+TAPS1IRvpj6F685+6HPpWCIdhB
- nzRLzxNPi5jW0lXv8+8KbR68VxDxT8HfPXucbnZRS27N5GYbqT8XOcKRyoYBueD7iyEg
- SWgOajhyqRFiBZHZTFYj8GagVic5r+i6EtX85K0Jj5Uzsn1hf/wHdHR0R8PhrW/QBgU2
- srAN710Fa3HgnIk/FriVAzZoVyWCkqWykKtJLHt3YMN7YwQUyqGmq3oxW37I8lq9hUc/
- vum+XwFBifjdj3bMGGn+dK12fuFkuW1Y+I7+qH5evEZ5elLy+eQZQIpunnADKCbNsmX7
- YUcQ==
+ d=linaro.org; s=google; t=1725630554; x=1726235354; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gC0ptLVRSdsg6xiI82CowBgQaBgNyGgi5EBpVv1ToGk=;
+ b=lLLmE1qvOoW7iNwfQsUDHdnz9YkRZAgs2fHZP/OyafFoO7UmvNccLymZV5F37kDPiM
+ iZQtBT4fzSYXtTAphot4GfiUpndSaYOvvGhOzdg/32Y74SmsvGzUbwxFHX/LHekLID+j
+ lwFoWtFmwiG1vnjaZ69AZEXvYFP0mFWEBBDovXG9YlHbifmeThM9cmR/3ZrwCiJ0Rs6h
+ Ok1K9QSNNeFT2nEY43Hr87AS99gXkyKcMz/RcKj6DH3lMm1HHuuXzeK4FWUYadUQTw9D
+ cYFxZLD7pfauT/+dVZLOvLvL4vOvh1xa4edXdLOVBi8U4DP1tkroOaeIVos0RCIcRPzy
+ e8Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725629399; x=1726234199;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1DwYu9QdzrUW1gsmzF/i6MG5QrT1Cpgzq2dn1Yasafk=;
- b=xCQex9qKuPwSNSzAq2vkj593OkWt8nGBKxH7n7CO68oXKnt6hvS7TNE6ccTQAta3Q7
- s1xHPmpqhNYnNbLSHD1RlW7HyiOBv4a91XnkkdXhFaHfyMN4mVoAtJWVLvheS212Y5jh
- vMFUUdpP4WengOMbVwbAHQ+1i35FoPrbs6bPV2Sw6AGhKnSgn4yAwS7BtNEJZOftUBxN
- a4yH3Nud+KRgj9u+AHWk1Strc3MoR5mYvq02fzi1kBOmr8NSPPkPTfBunkJ8wBQgU9NY
- UjL15bDh3TaYCBSfAs+rNB2wwMwpPdugKjYr2tL6KxjmCRrFMma4TNFG9CKcjyaxVSMJ
- 3I5w==
-X-Gm-Message-State: AOJu0YwlqiWn3vD3sbp05vpNZQcq3hB/k0CJxviB7UWN9tXthR587RME
- Wi3WCOjY+lhAKwrZvmZQJyUXkVdAkLgMWbfPulilu2Pqcpok7JDNIUZtLRIyKKzRT3E1Op85i22
- t
-X-Google-Smtp-Source: AGHT+IFC+SsNEDOf2oqkOOeSy/S/S+2cpFdS6sL5037b1Y1Ntu/122jjFXrwYkR5m6oeRTYRpwj4tw==
-X-Received: by 2002:a05:6512:4018:b0:52c:df8c:72cc with SMTP id
- 2adb3069b0e04-536587f9a5amr1819951e87.43.1725629399263; 
- Fri, 06 Sep 2024 06:29:59 -0700 (PDT)
-Received: from [192.168.55.118] ([80.215.236.92])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8a62045569sm274920866b.73.2024.09.06.06.29.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Sep 2024 06:29:58 -0700 (PDT)
-Message-ID: <b556bd8d-dbde-4e1a-a172-25027a66d893@linaro.org>
-Date: Fri, 6 Sep 2024 15:29:56 +0200
+ d=1e100.net; s=20230601; t=1725630554; x=1726235354;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=gC0ptLVRSdsg6xiI82CowBgQaBgNyGgi5EBpVv1ToGk=;
+ b=VI8Br9g4j573uwiZI1ZvqrfYaWsxdOoNuvyiHmUUSUgH2XIWddaIIB93NJKi+cVAV4
+ rd94qlU9EYkbr/RcnlvOIeFajnNOb6QfSY7b4V5wl/6EEugtS7lHnoa3MipubjJRyiWt
+ UOBCV+jEb0WX6mAqR1CoEpTOQDWPMH5jLHjv3MQaopDxai9J2hCZUduxhKHB21q14Bwc
+ 3JC26UbTFwbZygg0PqkHzQtqahKQoLeuk/1VjDgOy6USe4ACsMs7wR9MdWFnK69BbQ02
+ AKasoeuPAi8s6sQ0oyAdGCOHcpzR7YcoLaxmVvxWBrHDIFfu+0mjC+oezQM9q4sBKS7P
+ cUgA==
+X-Gm-Message-State: AOJu0YyHC+9L0ZwHHIwJVvifrs0XZs6dLWLOFh2u1wQFkUOYsr+YsT70
+ edsS55pXb7kd3C+Kfh2MQz/+ZWfKW44QitDpvb5rMgOyuLghFvYsHauaXKgioJ8=
+X-Google-Smtp-Source: AGHT+IGKv+GMbozsnCsJ/tFb7fyc62PMjrOMcDtxDv9nEbQtlf4y16pW/eRnOb/rTc6lvRfevwoTig==
+X-Received: by 2002:a05:6402:84d:b0:5c2:5248:a929 with SMTP id
+ 4fb4d7f45d1cf-5c3db976252mr3308396a12.7.1725630553147; 
+ Fri, 06 Sep 2024 06:49:13 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5c3cc56d686sm2466217a12.56.2024.09.06.06.49.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Sep 2024 06:49:12 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 9502E5F754;
+ Fri,  6 Sep 2024 14:49:11 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Gustavo Romero <gustavo.romero@linaro.org>
+Cc: qemu-devel@nongnu.org,  richard.henderson@linaro.org,
+ philmd@linaro.org,  peter.maydell@linaro.org
+Subject: Re: [PATCH v3 3/4] tests/guest-debug: Support passing arguments to
+ the GDB test script
+In-Reply-To: <20240825145208.46774-4-gustavo.romero@linaro.org> (Gustavo
+ Romero's message of "Sun, 25 Aug 2024 14:52:07 +0000")
+References: <20240825145208.46774-1-gustavo.romero@linaro.org>
+ <20240825145208.46774-4-gustavo.romero@linaro.org>
+User-Agent: mu4e 1.12.6; emacs 29.4
+Date: Fri, 06 Sep 2024 14:49:11 +0100
+Message-ID: <87plpgsxig.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] tests/unit: Strengthen FIFO8 tests
-To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Octavian Purdila <tavip@google.com>
-References: <20240906131217.78159-1-philmd@linaro.org>
- <20240906131217.78159-2-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240906131217.78159-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,30 +98,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/9/24 15:12, Philippe Mathieu-Daudé wrote:
-> Replace reused bytes { 0x1, 0x2, 0x3, 0x4 } by { 0x9, 0xa, 0xb, 0xc }
-> to be sure a different value is overwritten.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   tests/unit/test-fifo.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
+Gustavo Romero <gustavo.romero@linaro.org> writes:
 
+> This commit adds support for passing arguments to the GDB test scripts
+> so it's possible to parse the args in an "argparse way" in the test
+> scripts launched by the runner. The arguments should be preceded by --
+> when passed to the runner. For example, passing "--help" arg to the
+> GDB_TEST_SCRIPT:
+>
+> run-test.py [...] --test <GDB_TEST_SCRIPT> -- --help
+>
+> The test script should not use the argparse module directly but import
+> arg_parser from test_gdbstub module. arg_parser then can be used just
+> like the argparse.ArgumentParser class:
+>
+> from test_gdbstub import arg_parser
+>
+> p =3D arg_parser(prog=3D"test-mytest.py", description=3D"My test.")
+> p.add_argument("--vowel", help=3D"Select vowel",
+>                required=3DTrue, choices=3D['a','e','i','o','u'])
+> [...]
+>
+> The arg_parser allows a smooth and informative exit if, for instance,
+> the caller of the runner script passes an invalid argument or misses a
+> required argument by the test script.
+>
+> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 
-> @@ -157,8 +157,8 @@ static void test_fifo8_peek_buf_wrap(void)
->   {
->       Fifo8 fifo;
->       uint8_t data_in1[] = { 0x1, 0x2, 0x3, 0x4 };
-> -    uint8_t data_in2[] = { 0x5, 0x6, 0x7, 0x8, 0x1, 0x2, 0x3, 0x4 };
-> +    uint8_t data_in2[] = { 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc };
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-> -    uint8_t data_out[4];
-> +    uint8_t data_out[8];
-
-Since this part belongs to the next patch, I'll respin a v2.
-
->       int count;
->   
->       fifo8_create(&fifo, 8);
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
