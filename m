@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D691396EB6C
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 09:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9C996EB6A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 09:02:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smSw6-0004qg-AR; Fri, 06 Sep 2024 02:59:14 -0400
+	id 1smSwG-0005tp-29; Fri, 06 Sep 2024 02:59:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smSvH-0007YL-E1; Fri, 06 Sep 2024 02:58:24 -0400
+ id 1smSvK-0007rK-Ke; Fri, 06 Sep 2024 02:58:27 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smSvF-0003bg-L8; Fri, 06 Sep 2024 02:58:23 -0400
+ id 1smSvI-0003cA-OQ; Fri, 06 Sep 2024 02:58:26 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5BB908C25E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6A6838C25F;
  Fri,  6 Sep 2024 09:53:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 24002133416;
+ by tsrv.corpit.ru (Postfix) with SMTP id 33D19133417;
  Fri,  6 Sep 2024 09:54:32 +0300 (MSK)
-Received: (nullmailer pid 43653 invoked by uid 1000);
+Received: (nullmailer pid 43657 invoked by uid 1000);
  Fri, 06 Sep 2024 06:54:30 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Eric Blake <eblake@redhat.com>,
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.7 41/53] nbd/server: CVE-2024-7409: Avoid use-after-free
- when closing server
-Date: Fri,  6 Sep 2024 09:54:11 +0300
-Message-Id: <20240906065429.42415-41-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Jianzhou Yue <JianZhou.Yue@verisilicon.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.7 42/53] hw/core/ptimer: fix timer zero period condition
+ for freq > 1GHz
+Date: Fri,  6 Sep 2024 09:54:12 +0300
+Message-Id: <20240906065429.42415-42-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.7-20240906080902@cover.tls.msk.ru>
 References: <qemu-stable-8.2.7-20240906080902@cover.tls.msk.ru>
@@ -61,88 +60,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Blake <eblake@redhat.com>
+From: Jianzhou Yue <JianZhou.Yue@verisilicon.com>
 
-Commit 3e7ef738 plugged the use-after-free of the global nbd_server
-object, but overlooked a use-after-free of nbd_server->listener.
-Although this race is harder to hit, notice that our shutdown path
-first drops the reference count of nbd_server->listener, then triggers
-actions that can result in a pending client reaching the
-nbd_blockdev_client_closed() callback, which in turn calls
-qio_net_listener_set_client_func on a potentially stale object.
+The real period is zero when both period and period_frac are zero.
+Check the method ptimer_set_freq, if freq is larger than 1000 MHz,
+the period is zero, but the period_frac is not, in this case, the
+ptimer will work but the current code incorrectly recognizes that
+the ptimer is disabled.
 
-If we know we don't want any more clients to connect, and have already
-told the listener socket to shut down, then we should not be trying to
-update the listener socket's associated function.
-
-Reproducer:
-
-> #!/usr/bin/python3
->
-> import os
-> from threading import Thread
->
-> def start_stop():
->     while 1:
->         os.system('virsh qemu-monitor-command VM \'{"execute": "nbd-server-start",
-+"arguments":{"addr":{"type":"unix","data":{"path":"/tmp/nbd-sock"}}}}\'')
->         os.system('virsh qemu-monitor-command VM \'{"execute": "nbd-server-stop"}\'')
->
-> def nbd_list():
->     while 1:
->         os.system('/path/to/build/qemu-nbd -L -k /tmp/nbd-sock')
->
-> def test():
->     sst = Thread(target=start_stop)
->     sst.start()
->     nlt = Thread(target=nbd_list)
->     nlt.start()
->
->     sst.join()
->     nlt.join()
->
-> test()
-
-Fixes: CVE-2024-7409
-Fixes: 3e7ef738c8 ("nbd/server: CVE-2024-7409: Close stray clients at server-stop")
-CC: qemu-stable@nongnu.org
-Reported-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20240822143617.800419-2-eblake@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-(cherry picked from commit 3874f5f73c441c52f1c699c848d463b0eda01e4c)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2306
+Signed-off-by: JianZhou Yue <JianZhou.Yue@verisilicon.com>
+Message-id: 3DA024AEA8B57545AF1B3CAA37077D0FB75E82C8@SHASXM03.verisilicon.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 446e5e8b4515e9a7be69ef6a29852975289bb6f0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/blockdev-nbd.c b/blockdev-nbd.c
-index f73409ae49..b36f41b7c5 100644
---- a/blockdev-nbd.c
-+++ b/blockdev-nbd.c
-@@ -92,10 +92,13 @@ static void nbd_accept(QIONetListener *listener, QIOChannelSocket *cioc,
- 
- static void nbd_update_server_watch(NBDServerData *s)
- {
--    if (!s->max_connections || s->connections < s->max_connections) {
--        qio_net_listener_set_client_func(s->listener, nbd_accept, NULL, NULL);
--    } else {
--        qio_net_listener_set_client_func(s->listener, NULL, NULL, NULL);
-+    if (s->listener) {
-+        if (!s->max_connections || s->connections < s->max_connections) {
-+            qio_net_listener_set_client_func(s->listener, nbd_accept, NULL,
-+                                             NULL);
-+        } else {
-+            qio_net_listener_set_client_func(s->listener, NULL, NULL, NULL);
-+        }
+diff --git a/hw/core/ptimer.c b/hw/core/ptimer.c
+index e03165febf..7177ecfab0 100644
+--- a/hw/core/ptimer.c
++++ b/hw/core/ptimer.c
+@@ -83,7 +83,7 @@ static void ptimer_reload(ptimer_state *s, int delta_adjust)
+         delta = s->delta = s->limit;
      }
+ 
+-    if (s->period == 0) {
++    if (s->period == 0 && s->period_frac == 0) {
+         if (!qtest_enabled()) {
+             fprintf(stderr, "Timer with period zero, disabling\n");
+         }
+@@ -309,7 +309,7 @@ void ptimer_run(ptimer_state *s, int oneshot)
+ 
+     assert(s->in_transaction);
+ 
+-    if (was_disabled && s->period == 0) {
++    if (was_disabled && s->period == 0 && s->period_frac == 0) {
+         if (!qtest_enabled()) {
+             fprintf(stderr, "Timer with period zero, disabling\n");
+         }
+diff --git a/tests/unit/ptimer-test.c b/tests/unit/ptimer-test.c
+index 04b5f4e3d0..08240594bb 100644
+--- a/tests/unit/ptimer-test.c
++++ b/tests/unit/ptimer-test.c
+@@ -763,6 +763,33 @@ static void check_oneshot_with_load_0(gconstpointer arg)
+     ptimer_free(ptimer);
  }
  
-@@ -113,6 +116,7 @@ static void nbd_server_free(NBDServerData *server)
-      */
-     qio_net_listener_disconnect(server->listener);
-     object_unref(OBJECT(server->listener));
-+    server->listener = NULL;
-     QLIST_FOREACH_SAFE(conn, &server->conns, next, tmp) {
-         qio_channel_shutdown(QIO_CHANNEL(conn->cioc), QIO_CHANNEL_SHUTDOWN_BOTH,
-                              NULL);
++static void check_freq_more_than_1000M(gconstpointer arg)
++{
++    const uint8_t *policy = arg;
++    ptimer_state *ptimer = ptimer_init(ptimer_trigger, NULL, *policy);
++    bool no_round_down = (*policy & PTIMER_POLICY_NO_COUNTER_ROUND_DOWN);
++
++    triggered = false;
++
++    ptimer_transaction_begin(ptimer);
++    ptimer_set_freq(ptimer, 2000000000);
++    ptimer_set_limit(ptimer, 8, 1);
++    ptimer_run(ptimer, 1);
++    ptimer_transaction_commit(ptimer);
++
++    qemu_clock_step(3);
++
++    g_assert_cmpuint(ptimer_get_count(ptimer), ==, no_round_down ? 3 : 2);
++    g_assert_false(triggered);
++
++    qemu_clock_step(1);
++
++    g_assert_cmpuint(ptimer_get_count(ptimer), ==, 0);
++    g_assert_true(triggered);
++
++    ptimer_free(ptimer);
++}
++
+ static void add_ptimer_tests(uint8_t policy)
+ {
+     char policy_name[256] = "";
+@@ -857,6 +884,12 @@ static void add_ptimer_tests(uint8_t policy)
+                               policy_name),
+         g_memdup2(&policy, 1), check_oneshot_with_load_0, g_free);
+     g_free(tmp);
++
++    g_test_add_data_func_full(
++        tmp = g_strdup_printf("/ptimer/freq_more_than_1000M policy=%s",
++                              policy_name),
++        g_memdup2(&policy, 1), check_freq_more_than_1000M, g_free);
++    g_free(tmp);
+ }
+ 
+ static void add_all_ptimer_policies_comb_tests(void)
 -- 
 2.39.2
 
