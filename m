@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D71D896FA65
+	by mail.lfdr.de (Postfix) with ESMTPS id C9FA896FA63
 	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 20:07:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smdLX-0006uP-8R; Fri, 06 Sep 2024 14:06:11 -0400
+	id 1smdLZ-00070n-5T; Fri, 06 Sep 2024 14:06:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smdLU-0006tq-7L
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:06:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smdLV-0006uN-Su
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:06:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smdLP-00052G-Da
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:06:07 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smdLR-00052J-6O
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 14:06:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725645960;
+ s=mimecast20190719; t=1725645961;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=i7M+QsQ6lDbDSxW/vGEgz6c8wWso4vRl2Lp4N8PUlDQ=;
- b=DrWuog2NUGB2fQR7s7QbuIcaaQ+8GtiKtppsFFXHR96t3s0gljjoLaKVid3vXNuLxM/pG7
- ybxbLmGurRLh+AYQKIP6mInT+iLYeskopdDeCkOrJDC3JtveomtfV0fL9iCacGkBjvJLK1
- Yw0iEDlyQ7DJwgxZNQUU1XtPWYY+FeE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+R7nUk9czIJ+acFQjzkhzcQFsY3Y8gEbUu2Em0NVezs=;
+ b=fSsngOjEIQnflWYMRMXoGDktrDBNVybreLxHUIiG1LUmpXUrAfsGeCfLxr698aVoiNlEjB
+ VuS8vjbaPQst7yr7Z1zzf0MGSsyBZCq6dzPB3V9De+/I/yxLrfk/ZT1r/M5hqyXVDZOjoZ
+ qHCuCW2TkRBbnHbbnAa5E6Grxk7D87U=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-5-9NpXajQTOIGa1l3ZbJ1fRg-1; Fri,
- 06 Sep 2024 14:05:56 -0400
-X-MC-Unique: 9NpXajQTOIGa1l3ZbJ1fRg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-345-gNhZjY71Mq-GLAWXj2LhTw-1; Fri,
+ 06 Sep 2024 14:06:00 -0400
+X-MC-Unique: gNhZjY71Mq-GLAWXj2LhTw-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D9BD31953948; Fri,  6 Sep 2024 18:05:54 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E8A78196CDF1; Fri,  6 Sep 2024 18:05:58 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.70])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F26C519560AF; Fri,  6 Sep 2024 18:05:51 +0000 (UTC)
+ id D737019560AA; Fri,  6 Sep 2024 18:05:55 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  "Daniel P . Berrange" <berrange@redhat.com>
-Subject: [PATCH 00/14] Convert Avocado tests based on LinuxKernelTest class
-Date: Fri,  6 Sep 2024 20:05:35 +0200
-Message-ID: <20240906180549.792832-1-thuth@redhat.com>
+Subject: [PATCH 01/14] tests/functional: Add the LinuxKernelTest for testing
+ the Linux boot process
+Date: Fri,  6 Sep 2024 20:05:36 +0200
+Message-ID: <20240906180549.792832-2-thuth@redhat.com>
+In-Reply-To: <20240906180549.792832-1-thuth@redhat.com>
+References: <20240906180549.792832-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -78,64 +81,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Here's my suggestion how to convert the Avocado tests from
-tests/avocado/boot_linux_console.py to the new functional framework:
-Provide a LinuxKernelTest class in tests/functional/qemu_test/
-so that the tests can be converted without too much modifications
-(we just have to put them into separate files now, since each
-file is run with a different qemu-system-target binary now).
+Copy the LinuxKernelTest from tests/acceptance/boot_linux_console.py
+to be able to convert the related tests to the functional test framework
+in the following patches.
 
-Philippe Mathieu-Daudé (9):
-  tests/functional: Convert mips64el Fuloong2e avocado test (2/2)
-  tests/functional: Convert mips64el I6400 Malta avocado tests
-  tests/functional: Convert mips64el 5KEc Malta avocado tests
-  tests/functional: Convert mips32el Malta YAMON avocado test
-  tests/functional: Convert nanomips Malta avocado tests
-  tests/functional: Convert mips32eb 4Kc Malta avocado tests
-  tests/functional: Convert ARM Raspi2 avocado tests
-  tests/functional: Convert Aarch64 Raspi3 avocado tests
-  tests/functional: Convert Aarch64 Raspi4 avocado tests
-
-Thomas Huth (5):
-  tests/functional: Add the LinuxKernelTest for testing the Linux boot
-    process
-  tests/functional: Convert the m68k Q800 Avocado test into a functional
-    test
-  tests/functional: Convert the Alpha Clipper Avocado test
-  tests/functional: Convert the m68k MCF5208EVB Avocado test
-  tests/functional: Convert the or1k-sim Avocado test
-
- MAINTAINERS                                 |   8 +-
- tests/avocado/boot_linux_console.py         | 483 --------------------
- tests/avocado/machine_mips_malta.py         | 162 -------
- tests/functional/meson.build                |  24 +-
- tests/functional/qemu_test/__init__.py      |   1 +
- tests/functional/qemu_test/linuxkernel.py   |  41 ++
- tests/functional/test_aarch64_raspi3.py     |  41 ++
- tests/functional/test_aarch64_raspi4.py     |  99 ++++
- tests/functional/test_alpha_clipper.py      |  38 ++
- tests/functional/test_arm_raspi2.py         |  95 ++++
- tests/functional/test_m68k_mcf5208evb.py    |  29 ++
- tests/functional/test_m68k_q800.py          |  37 ++
- tests/functional/test_mips64el_fuloong2e.py |  25 +-
- tests/functional/test_mips64el_malta.py     | 186 ++++++++
- tests/functional/test_mips_malta.py         |  81 ++++
- tests/functional/test_mipsel_malta.py       |  96 ++++
- tests/functional/test_or1k_sim.py           |  29 ++
- 17 files changed, 825 insertions(+), 650 deletions(-)
- delete mode 100644 tests/avocado/machine_mips_malta.py
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/functional/qemu_test/__init__.py    |  1 +
+ tests/functional/qemu_test/linuxkernel.py | 41 +++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
  create mode 100644 tests/functional/qemu_test/linuxkernel.py
- create mode 100755 tests/functional/test_aarch64_raspi3.py
- create mode 100755 tests/functional/test_aarch64_raspi4.py
- create mode 100755 tests/functional/test_alpha_clipper.py
- create mode 100755 tests/functional/test_arm_raspi2.py
- create mode 100755 tests/functional/test_m68k_mcf5208evb.py
- create mode 100755 tests/functional/test_m68k_q800.py
- create mode 100755 tests/functional/test_mips64el_malta.py
- create mode 100755 tests/functional/test_mips_malta.py
- create mode 100755 tests/functional/test_mipsel_malta.py
- create mode 100755 tests/functional/test_or1k_sim.py
 
+diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+index f33282efe8..67f87be9c4 100644
+--- a/tests/functional/qemu_test/__init__.py
++++ b/tests/functional/qemu_test/__init__.py
+@@ -12,3 +12,4 @@
+     interrupt_interactive_console_until_pattern, wait_for_console_pattern, \
+     exec_command, exec_command_and_wait_for_pattern, get_qemu_img
+ from .testcase import QemuBaseTest, QemuUserTest, QemuSystemTest
++from .linuxkernel import LinuxKernelTest
+diff --git a/tests/functional/qemu_test/linuxkernel.py b/tests/functional/qemu_test/linuxkernel.py
+new file mode 100644
+index 0000000000..fdd5307629
+--- /dev/null
++++ b/tests/functional/qemu_test/linuxkernel.py
+@@ -0,0 +1,41 @@
++# Test class for testing the boot process of a Linux kernel
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later.  See the COPYING file in the top-level directory.
++
++import os
++
++from .testcase import QemuSystemTest
++from .cmd import run_cmd, wait_for_console_pattern
++from .utils import archive_extract
++
++class LinuxKernelTest(QemuSystemTest):
++    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
++
++    def wait_for_console_pattern(self, success_message, vm=None):
++        wait_for_console_pattern(self, success_message,
++                                 failure_message='Kernel panic - not syncing',
++                                 vm=vm)
++
++    def extract_from_deb(self, deb_path, path):
++        """
++        Extracts a file from a deb package into the test workdir
++
++        :param deb_path: path to the deb archive
++        :param path: path within the deb archive of the file to be extracted
++        :returns: path of the extracted file
++        """
++        cwd = os.getcwd()
++        os.chdir(self.workdir)
++        (stdout, stderr, ret) = run_cmd(['ar', 't', deb_path])
++        file_path = stdout.split()[2]
++        run_cmd(['ar', 'x', deb_path, file_path])
++        archive_extract(file_path, self.workdir)
++        os.chdir(cwd)
++        # Return complete path to extracted file.  Because callers to
++        # extract_from_deb() specify 'path' with a leading slash, it is
++        # necessary to use os.path.relpath() as otherwise os.path.join()
++        # interprets it as an absolute path and drops the self.workdir part.
++        return os.path.normpath(os.path.join(self.workdir,
++                                             os.path.relpath(path, '/')))
++
 -- 
 2.46.0
 
