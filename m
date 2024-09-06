@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A50296F2B7
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D6C96F2F4
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:24:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWuR-00014I-En; Fri, 06 Sep 2024 07:13:47 -0400
+	id 1smWuP-0000yE-S2; Fri, 06 Sep 2024 07:13:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWuK-0000ef-ER; Fri, 06 Sep 2024 07:13:41 -0400
+ id 1smWuL-0000hB-2f; Fri, 06 Sep 2024 07:13:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWuI-0007gf-IA; Fri, 06 Sep 2024 07:13:40 -0400
+ id 1smWuJ-0007gp-AY; Fri, 06 Sep 2024 07:13:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D8D308C476;
+ by isrv.corpit.ru (Postfix) with ESMTP id E96E88C477;
  Fri,  6 Sep 2024 14:12:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E1E241336E0;
+ by tsrv.corpit.ru (Postfix) with SMTP id F3B981336E1;
  Fri,  6 Sep 2024 14:13:24 +0300 (MSK)
-Received: (nullmailer pid 353558 invoked by uid 1000);
+Received: (nullmailer pid 353561 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Daniyal Khan <danikhan632@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Daniyal Khan <danikhan632@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 06/69] target/arm: Use float_status copy in sme_fmopa_s
-Date: Fri,  6 Sep 2024 14:12:15 +0300
-Message-Id: <20240906111324.353230-6-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 07/69] target/arm: Use FPST_F16 for SME FMOPA (widening)
+Date: Fri,  6 Sep 2024 14:12:16 +0300
+Message-Id: <20240906111324.353230-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -63,40 +62,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniyal Khan <danikhan632@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-We made a copy above because the fp exception flags
-are not propagated back to the FPST register, but
-then failed to use the copy.
+This operation has float16 inputs and thus must use
+the FZ16 control not the FZ control.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 558e956c719 ("target/arm: Implement FMOPA, FMOPS (non-widening)")
-Signed-off-by: Daniyal Khan <danikhan632@gmail.com>
+Fixes: 3916841ac75 ("target/arm: Implement FMOPA, FMOPS (widening)")
+Reported-by: Daniyal Khan <danikhan632@gmail.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 20240717060149.204788-2-richard.henderson@linaro.org
-[rth: Split from a larger patch]
+Message-id: 20240717060149.204788-3-richard.henderson@linaro.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2374
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 31d93fedf41c24b0badb38cd9317590d1ef74e37)
+(cherry picked from commit 207d30b5fdb5b45a36f26eefcf52fe2c1714dd4f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index e2e0575039..5a6dd76489 100644
---- a/target/arm/tcg/sme_helper.c
-+++ b/target/arm/tcg/sme_helper.c
-@@ -916,7 +916,7 @@ void HELPER(sme_fmopa_s)(void *vza, void *vzn, void *vzm, void *vpn,
-                         if (pb & 1) {
-                             uint32_t *a = vza_row + H1_4(col);
-                             uint32_t *m = vzm + H1_4(col);
--                            *a = float32_muladd(n, *m, *a, 0, vst);
-+                            *a = float32_muladd(n, *m, *a, 0, &fpst);
-                         }
-                         col += 4;
-                         pb >>= 4;
+diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
+index 46c7fce8b4..185a8a917b 100644
+--- a/target/arm/tcg/translate-sme.c
++++ b/target/arm/tcg/translate-sme.c
+@@ -304,6 +304,7 @@ static bool do_outprod(DisasContext *s, arg_op *a, MemOp esz,
+ }
+ 
+ static bool do_outprod_fpst(DisasContext *s, arg_op *a, MemOp esz,
++                            ARMFPStatusFlavour e_fpst,
+                             gen_helper_gvec_5_ptr *fn)
+ {
+     int svl = streaming_vec_reg_size(s);
+@@ -319,15 +320,18 @@ static bool do_outprod_fpst(DisasContext *s, arg_op *a, MemOp esz,
+     zm = vec_full_reg_ptr(s, a->zm);
+     pn = pred_full_reg_ptr(s, a->pn);
+     pm = pred_full_reg_ptr(s, a->pm);
+-    fpst = fpstatus_ptr(FPST_FPCR);
++    fpst = fpstatus_ptr(e_fpst);
+ 
+     fn(za, zn, zm, pn, pm, fpst, tcg_constant_i32(desc));
+     return true;
+ }
+ 
+-TRANS_FEAT(FMOPA_h, aa64_sme, do_outprod_fpst, a, MO_32, gen_helper_sme_fmopa_h)
+-TRANS_FEAT(FMOPA_s, aa64_sme, do_outprod_fpst, a, MO_32, gen_helper_sme_fmopa_s)
+-TRANS_FEAT(FMOPA_d, aa64_sme_f64f64, do_outprod_fpst, a, MO_64, gen_helper_sme_fmopa_d)
++TRANS_FEAT(FMOPA_h, aa64_sme, do_outprod_fpst, a,
++           MO_32, FPST_FPCR_F16, gen_helper_sme_fmopa_h)
++TRANS_FEAT(FMOPA_s, aa64_sme, do_outprod_fpst, a,
++           MO_32, FPST_FPCR, gen_helper_sme_fmopa_s)
++TRANS_FEAT(FMOPA_d, aa64_sme_f64f64, do_outprod_fpst, a,
++           MO_64, FPST_FPCR, gen_helper_sme_fmopa_d)
+ 
+ /* TODO: FEAT_EBF16 */
+ TRANS_FEAT(BFMOPA, aa64_sme, do_outprod, a, MO_32, gen_helper_sme_bfmopa)
 -- 
 2.39.2
 
