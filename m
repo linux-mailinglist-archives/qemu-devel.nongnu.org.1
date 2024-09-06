@@ -2,44 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC34196E936
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF1596E935
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:24:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRNV-0004Kf-Av; Fri, 06 Sep 2024 01:19:27 -0400
+	id 1smRNc-0006UX-Vq; Fri, 06 Sep 2024 01:19:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRMn-0002Nh-76; Fri, 06 Sep 2024 01:18:42 -0400
+ id 1smRMp-0002ZN-0P; Fri, 06 Sep 2024 01:18:44 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRMl-0008D3-EG; Fri, 06 Sep 2024 01:18:40 -0400
+ id 1smRMn-0008DM-BQ; Fri, 06 Sep 2024 01:18:42 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BECD18C12E;
+ by isrv.corpit.ru (Postfix) with ESMTP id CD52C8C12F;
  Fri,  6 Sep 2024 08:15:17 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6E2A7133373;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7D548133374;
  Fri,  6 Sep 2024 08:16:35 +0300 (MSK)
-Received: (nullmailer pid 10461 invoked by uid 1000);
+Received: (nullmailer pid 10464 invoked by uid 1000);
  Fri, 06 Sep 2024 05:16:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zheyu Ma <zheyuma97@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 25/40] hw/sd/sdhci: Reset @data_count index on invalid
- ADMA transfers
-Date: Fri,  6 Sep 2024 08:16:13 +0300
-Message-Id: <20240906051633.10288-25-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Amjad Alsharafi <amjadsharafi10@gmail.com>,
+ Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 26/40] vvfat: Fix bug in writing to middle of file
+Date: Fri,  6 Sep 2024 08:16:14 +0300
+Message-Id: <20240906051633.10288-26-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,34 +59,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Amjad Alsharafi <amjadsharafi10@gmail.com>
 
-We neglected to clear the @data_count index on ADMA error,
-allowing to trigger assertion in sdhci_read_dataport() or
-sdhci_write_dataport().
+Before this commit, the behavior when calling `commit_one_file` for
+example with `offset=0x2000` (second cluster), what will happen is that
+we won't fetch the next cluster from the fat, and instead use the first
+cluster for the read operation.
 
-Cc: qemu-stable@nongnu.org
-Fixes: d7dfca0807 ("hw/sdhci: introduce standard SD host controller")
-Reported-by: Zheyu Ma <zheyuma97@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2455
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240730092138.32443-4-philmd@linaro.org>
-(cherry picked from commit ed5a159c3de48a581f46de4c8c02b4b295e6c52d)
+This is due to off-by-one error here, where `i=0x2000 !< offset=0x2000`,
+thus not fetching the next cluster.
+
+Signed-off-by: Amjad Alsharafi <amjadsharafi10@gmail.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Tested-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <b97c1e1f1bc2f776061ae914f95d799d124fcd73.1721470238.git.amjadsharafi10@gmail.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit b881cf00c99e03bc8a3648581f97736ff275b18b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index abd503d168..c4a9b5956d 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -846,6 +846,7 @@ static void sdhci_do_adma(SDHCIState *s)
-                 }
-             }
-             if (res != MEMTX_OK) {
-+                s->data_count = 0;
-                 if (s->errintstsen & SDHC_EISEN_ADMAERR) {
-                     trace_sdhci_error("Set ADMA error flag");
-                     s->errintsts |= SDHC_EIS_ADMAERR;
+diff --git a/block/vvfat.c b/block/vvfat.c
+index 723c91216e..741fdb0341 100644
+--- a/block/vvfat.c
++++ b/block/vvfat.c
+@@ -2522,8 +2522,9 @@ static int commit_one_file(BDRVVVFATState* s,
+         return -1;
+     }
+ 
+-    for (i = s->cluster_size; i < offset; i += s->cluster_size)
++    for (i = 0; i < offset; i += s->cluster_size) {
+         c = modified_fat_get(s, c);
++    }
+ 
+     fd = qemu_open_old(mapping->path, O_RDWR | O_CREAT | O_BINARY, 0666);
+     if (fd < 0) {
 -- 
 2.39.2
 
