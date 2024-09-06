@@ -2,92 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB0B96EB8C
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 09:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEBD896EB99
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 09:08:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smT14-0000Vd-Vh; Fri, 06 Sep 2024 03:04:23 -0400
+	id 1smT4t-0000x1-Fr; Fri, 06 Sep 2024 03:08:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1smT0x-0008Iz-Ua
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 03:04:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1smT4r-0000qs-1g
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 03:08:17 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1smT0v-0004gK-57
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 03:04:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725606249;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=x5RTK1huD43fN5baFLwza8FggnO+af1rUC5T79L8KGA=;
- b=JKYzJRKDZ6Ch4n6CoAbzNlmJVTq+HV9AEJ5rAx5KtkYY7blG4Jdq76cpTfi3Lm6uUjIeh0
- mljK2k6Nykj3T/xBbGgQOKOzCl7bhYuQQ/TrC0IRG9G9HGcbEGAeq4XPAjidMgD0C4zkpk
- 3ThT1C9XhYA31g8MjrF5CORaJo59t9k=
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
- [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-228-tBRmshYsMiG_t9jNIMIdGQ-1; Fri, 06 Sep 2024 03:04:08 -0400
-X-MC-Unique: tBRmshYsMiG_t9jNIMIdGQ-1
-Received: by mail-oi1-f200.google.com with SMTP id
- 5614622812f47-3dee94f0dcdso1815036b6e.3
- for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 00:04:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725606247; x=1726211047;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=x5RTK1huD43fN5baFLwza8FggnO+af1rUC5T79L8KGA=;
- b=Hn8TQH+K8TY7G05wx7XrtXBMiKUCVbwZ5wGK8EAGCrHEPcOL5pELDJL55JnXKZGDPY
- /WQ5DSqmwltBkRmr76GJI+2w7Qv/XEioJMqA1UVCNKwG4efTenyWe1p8CKyD6fPn/7DP
- P+oNJ1dtwY4lZz8A7Ma4dOrrB81oYaQNGR8sKa7dSEPmN/fLhim4oHTwQsEfHUiB1d0O
- eAex3LyZkGuLPaUg95KHtEJFam6PTBCEkerGr9Y+5JJfrK4cvGL6IvcLwcqV2Z4V+J5P
- lESyxrIy424yywHIBy8en0T3RurWFczrGOf9gu/aMpEOwk5PoFb+7yWTNzD8RPMk2r64
- h+0g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWKHanhhmBL3MzUTUZHXsn3Zzcr7oTybjjKPogy+wOudIQroofP+0+nXbn55OTNfQVyrvtXORlj0WM/@nongnu.org
-X-Gm-Message-State: AOJu0Yxpwna7uNd46INUS8YKyjyVG8U82aSDLhvMzjpRZYeLDkKUbKl6
- gcuckTVEosctmlP260XaYUZE/1whalYm3SS7Mwk+jI2QQFuMC0WZH0sXeNpU+fyTUg5F4715dKE
- 2SzNfLRlDH3ch8HraZGfg09P6GKCEN6bcWzpTMOMwUCHx8qOdpx3bPeeoOL2DMI9euc42MjSefZ
- Nn4ZQj472NqXr4cjXOqKdnfJXCiKQ=
-X-Received: by 2002:a05:6870:b411:b0:260:3bdb:93a8 with SMTP id
- 586e51a60fabf-27790319b9emr27075458fac.41.1725606247597; 
- Fri, 06 Sep 2024 00:04:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHd3QIHhRAPeDYz32L99flJm8Zy7FGJH/MBhohshwgZuHH+kfHlNppmscnKAKxa3sUJtE+XTbPbT+TbC+eiWN4=
-X-Received: by 2002:a05:6870:b411:b0:260:3bdb:93a8 with SMTP id
- 586e51a60fabf-27790319b9emr27075429fac.41.1725606247048; Fri, 06 Sep 2024
- 00:04:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1smT4n-0005Dl-LT
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 03:08:16 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 996DB8C289;
+ Fri,  6 Sep 2024 10:06:53 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6154B13346D;
+ Fri,  6 Sep 2024 10:08:11 +0300 (MSK)
+Content-Type: multipart/mixed; boundary="------------iICnmpmGQFWp06wXqbnhaRD0"
+Message-ID: <5e1eb96e-ad42-4053-9431-7fa5705495a7@tls.msk.ru>
+Date: Fri, 6 Sep 2024 10:08:11 +0300
 MIME-Version: 1.0
-References: <20240628145710.1516121-1-aesteve@redhat.com>
- <87bk34i4dy.fsf@alyssa.is>
- <CAD=HUj7av_8Epkd0Fe0eWR7Z4bZMTuvTNgqzYoQcOzFQ82wvOg@mail.gmail.com>
- <20240712014407-mutt-send-email-mst@kernel.org>
- <CAD=HUj7iDbwnojq5a68s6B3S8z4vtpCa=B=9+ZBVYZV50zG+5g@mail.gmail.com>
- <CADSE00K=8SCghVxbP+7Awy6tGHtP3JyYy-5MAAMjrpv+bVC=6Q@mail.gmail.com>
- <20240905163937.GE1922502@fedora>
-In-Reply-To: <20240905163937.GE1922502@fedora>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Fri, 6 Sep 2024 09:03:55 +0200
-Message-ID: <CADSE00KZF7hOLouH0b4NX9frCmsM7ZBjn70LEbh_HyrKcHF-5A@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/5] vhost-user: Add SHMEM_MAP/UNMAP requests
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: David Stevens <stevensd@chromium.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Alyssa Ross <hi@alyssa.is>, 
- qemu-devel@nongnu.org, jasowang@redhat.com, david@redhat.com, slp@redhat.com, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: multipart/alternative; boundary="00000000000060bdf806216e03fb"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 11/63] hw/virtio: move stubs out of stubs/
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+References: <20240423150951.41600-1-pbonzini@redhat.com>
+ <20240423150951.41600-12-pbonzini@redhat.com>
+ <7762115d-cf9d-4505-a3c7-6782433e2521@tls.msk.ru>
+ <CABgObfbOZNudB3uycQGB31F0KXXhrVmhvi+wn9z9bANCmZQtZw@mail.gmail.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <CABgObfbOZNudB3uycQGB31F0KXXhrVmhvi+wn9z9bANCmZQtZw@mail.gmail.com>
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,448 +84,508 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000060bdf806216e03fb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This is a multi-part message in MIME format.
+--------------iICnmpmGQFWp06wXqbnhaRD0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 5, 2024 at 6:39=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.com=
-> wrote:
+05.09.2024 19:27, Paolo Bonzini wrote:
+> On Sat, Aug 3, 2024 at 4:29 AM Michael Tokarev <mjt@tls.msk.ru> wrote:
+>>
+>> 23.04.2024 18:08, Paolo Bonzini wrote:
+>>> Since the virtio memory device stubs are needed exactly when the
+>>> Kconfig symbol is not enabled, they can be placed in hw/virtio/ and
+>>> conditionalized on CONFIG_VIRTIO_MD.
+>>>
+>>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>>> Message-ID: <20240408155330.522792-12-pbonzini@redhat.com>
+>>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>>> ---
+>>>    stubs/virtio-md-pci.c => hw/virtio/virtio-md-stubs.c | 0
+>>>    hw/virtio/meson.build                                | 2 ++
+>>>    stubs/meson.build                                    | 1 -
+>>>    3 files changed, 2 insertions(+), 1 deletion(-)
+>>>    rename stubs/virtio-md-pci.c => hw/virtio/virtio-md-stubs.c (100%)
+>>
+>> FWIW, this broke a minimal microvm build for debian:
+>>
+>> /usr/bin/ld: libqemu-x86_64-softmmu.a.p/hw_i386_pc.c.o: in function `pc_machine_device_pre_plug_cb':
+>> ./b/microvm/hw/i386/pc.c:1377: undefined reference to `virtio_md_pci_pre_plug'
+>> /usr/bin/ld: libqemu-x86_64-softmmu.a.p/hw_i386_pc.c.o: in function `pc_machine_device_unplug_request_cb':
+>> ./b/microvm/hw/i386/pc.c:1427: undefined reference to `virtio_md_pci_unplug_request'
+>> /usr/bin/ld: libqemu-x86_64-softmmu.a.p/hw_i386_pc.c.o: in function `pc_machine_device_unplug_cb':
+>> ./b/microvm/hw/i386/pc.c:1443: undefined reference to `virtio_md_pci_unplug'
+>> /usr/bin/ld: libqemu-x86_64-softmmu.a.p/hw_i386_pc.c.o: in function `pc_machine_device_plug_cb':
+>> ./b/microvm/hw/i386/pc.c:1413: undefined reference to `virtio_md_pci_plug'
+>> collect2: error: ld returned 1 exit status
+> 
+> Does it not link hw/virtio-virtio-md-stubs.c?
 
-> On Tue, Sep 03, 2024 at 10:42:34AM +0200, Albert Esteve wrote:
-> > Hello all,
-> >
-> > Sorry, I have been a bit disconnected from this thread as I was on
-> > vacations and then had to switch tasks for a while.
-> >
-> > I will try to go through all comments and address them for the first
-> > non-RFC drop of this patch series.
-> >
-> > But I was discussing with some colleagues on this. So turns out
-> rust-vmm's
-> > vhost-user-gpu will potentially use
-> > this soon, and a rust-vmm/vhost patch have been already posted:
-> > https://github.com/rust-vmm/vhost/pull/251.
-> > So I think it may make sense to:
-> > 1. Split the vhost-user documentation patch once settled. Since it is
-> taken
-> > as the official spec,
-> >     having it upstreamed independently of the implementation will benef=
-it
-> > other projects to
-> >     work/integrate their own code.
-> > 2. Split READ_/WRITE_MEM messages from SHMEM_MAP/_UNMAP patches.
-> >     If I remember correctly, this addresses a virtio-fs specific issue,
-> > that will not
-> >     impact either virtio-gpu nor virtio-media, or any other.
->
-> This is an architectural issue that arises from exposing VIRTIO Shared
-> Memory Regions in vhost-user. It was first seen with Linux virtiofs but
-> it could happen with other devices and/or guest operating systems.
->
-> Any VIRTIO Shared Memory Region that can be mmapped into Linux userspace
-> may trigger this issue. Userspace may write(2) to an O_DIRECT file with
-> the mmap as the source. The vhost-user-blk device will not be able to
-> access the source device's VIRTIO Shared Memory Region and will fail.
->
-> > So it may make
-> > sense
-> >     to separate them so that one does not stall the other. I will try t=
-o
-> > have both
-> >     integrated in the mid term.
->
-> If READ_/WRITE_MEM is a pain to implement (I think it is in the
-> vhost-user back-end, even though I've been a proponent of it), then
-> another way to deal with this issue is to specify that upon receiving
-> MAP/UNMAP messages, the vhost-user front-end must update the vhost-user
-> memory tables of all other vhost-user devices. That way vhost-user
-> devices will be able to access VIRTIO Shared Memory Regions mapped by
-> other devices.
->
-> Implementing this in QEMU should be much easier than implementing
-> READ_/WRITE_MEM support in device back-ends.
->
-> This will be slow and scale poorly but performance is only a problem for
-> devices that frequently MAP/UNMAP like virtiofs. Will virtio-gpu and
-> virtio-media use MAP/UNMAP often at runtime? They might be able to get
-> away with this simple solution.
->
-> I'd be happy with that. If someone wants to make virtiofs DAX faster,
-> they can implement READ/WRITE_MEM or another solution later, but let's
-> at least make things correct from the start.
->
+The complete link line (it's done by using `cc -m64 @qemu-system-x86_64.rsp`) is attached.
 
-I agree. I want it to be correct first. If you agree on splitting the spec
-bits from this
-patch I'm already happy. I suggested splitting READ_/WRITE_MEM messages
-because I thought that it was a virtiofs-specific issue.
+Yes, it does NOT link md-stubs.
 
-The alternative that you proposed is interesting. I'll take it into
-account. But I
-feel I prefer to go for the better solution, and if I get too entangled,
-then switch
-to the easier implementation.
+>   Can you send the
+> x86_64-softmmu-config-devices.mak file?
 
-I think we could do this in 2 patches:
-1. Split the documentation bits for SHMEM_MAP/_UNMAP. The
-    implementation for these messages will go into the second patch.
-2. The implementation patch: keep going for the time being with
-     READ_/WRITE_MEM support. And the documentation for that
-    is kept it within this patch. This way if we switch to the frontend
-    updating vhost-user memory table, we weren't set in any specific
-    solution if patch 1 has been already merged.
+Yeah, it was in my first email (to which you replied), here it is again:
 
-BR,
-Albert.
+...with the following contents of microvm-devices.mak:
+======
+# see configs/devices/i386-softmmu/default.mak
+# for additional devices which can be disabled
+#
+CONFIG_PCI_DEVICES=n
 
+# we can't disable all machine types (boards) as of 6.1
+# since the resulting binary fails to link
+#CONFIG_ISAPC=y
+#CONFIG_I440FX=y
+CONFIG_Q35=y
+CONFIG_MICROVM=y
 
->
-> Stefan
->
-> >
-> > WDYT?
-> >
-> > BR,
-> > Albert.
-> >
-> > On Tue, Jul 16, 2024 at 3:21=E2=80=AFAM David Stevens <stevensd@chromiu=
-m.org>
-> wrote:
-> >
-> > > On Fri, Jul 12, 2024 at 2:47=E2=80=AFPM Michael S. Tsirkin <mst@redha=
-t.com>
-> wrote:
-> > > >
-> > > > On Fri, Jul 12, 2024 at 11:06:49AM +0900, David Stevens wrote:
-> > > > > On Thu, Jul 11, 2024 at 7:56=E2=80=AFPM Alyssa Ross <hi@alyssa.is=
-> wrote:
-> > > > > >
-> > > > > > Adding David Stevens, who implemented SHMEM_MAP and SHMEM_UNMAP
-> in
-> > > > > > crosvm a couple of years ago.
-> > > > > >
-> > > > > > David, I'd be particularly interested for your thoughts on the
-> > > MEM_READ
-> > > > > > and MEM_WRITE commands, since as far as I know crosvm doesn't
-> > > implement
-> > > > > > anything like that.  The discussion leading to those being adde=
-d
-> > > starts
-> > > > > > here:
-> > > > > >
-> > > > > >
-> > >
-> https://lore.kernel.org/qemu-devel/20240604185416.GB90471@fedora.redhat.c=
-om/
-> > > > > >
-> > > > > > It would be great if this could be standardised between QEMU an=
-d
-> > > crosvm
-> > > > > > (and therefore have a clearer path toward being implemented in
-> other
-> > > VMMs)!
-> > > > >
-> > > > > Setting aside vhost-user for a moment, the DAX example given by
-> Stefan
-> > > > > won't work in crosvm today.
-> > > > >
-> > > > > Is universal access to virtio shared memory regions actually
-> mandated
-> > > > > by the virtio spec? Copying from virtiofs DAX to virtiofs sharing
-> > > > > seems reasonable enough, but what about virtio-pmem to virtio-blk=
-?
-> > > > > What about screenshotting a framebuffer in virtio-gpu shared
-> memory to
-> > > > > virtio-scsi? I guess with some plumbing in the VMM, it's solvable
-> in a
-> > > > > virtualized environment. But what about when you have real hardwa=
-re
-> > > > > that speaks virtio involved? That's outside my wheelhouse, but it
-> > > > > doesn't seem like that would be easy to solve.
-> > > >
-> > > > Yes, it can work for physical devices if allowed by host
-> configuration.
-> > > > E.g. VFIO supports that I think. Don't think VDPA does.
-> > >
-> > > I'm sure it can work, but that sounds more like a SHOULD (MAY?),
-> > > rather than a MUST.
-> > >
-> > > > > For what it's worth, my interpretation of the target scenario:
-> > > > >
-> > > > > > Other backends don't see these mappings. If the guest submits a
-> vring
-> > > > > > descriptor referencing a mapping to another backend, then that
-> > > backend
-> > > > > > won't be able to access this memory
-> > > > >
-> > > > > is that it's omitting how the implementation is reconciled with
-> > > > > section 2.10.1 of v1.3 of the virtio spec, which states that:
-> > > > >
-> > > > > > References into shared memory regions are represented as offset=
-s
-> from
-> > > > > > the beginning of the region instead of absolute memory addresse=
-s.
-> > > Offsets
-> > > > > > are used both for references between structures stored within
-> shared
-> > > > > > memory and for requests placed in virtqueues that refer to shar=
-ed
-> > > memory.
-> > > > >
-> > > > > My interpretation of that statement is that putting raw guest
-> physical
-> > > > > addresses corresponding to virtio shared memory regions into a
-> vring
-> > > > > is a driver spec violation.
-> > > > >
-> > > > > -David
-> > > >
-> > > > This really applies within device I think. Should be clarified ...
-> > >
-> > > You mean that a virtio device can use absolute memory addresses for
-> > > other devices' shared memory regions, but it can't use absolute memor=
-y
-> > > addresses for its own shared memory regions? That's a rather strange
-> > > requirement. Or is the statement simply giving an addressing strategy
-> > > that device type specifications are free to ignore?
-> > >
-> > > -David
-> > >
-> > >
->
+CONFIG_VIRTIO_BLK=y
+CONFIG_VIRTIO_SERIAL=y
+CONFIG_VIRTIO_INPUT=y
+CONFIG_VIRTIO_INPUT_HOST=y
+CONFIG_VHOST_USER_INPUT=y
+CONFIG_VIRTIO_NET=y
+CONFIG_VIRTIO_SCSI=y
+CONFIG_VIRTIO_RNG=y
+CONFIG_VIRTIO_CRYPTO=y
+CONFIG_VIRTIO_BALLOON=y
+CONFIG_VIRTIO_MEM=y
+CONFIG_VIRTIO_PMEM=y
+CONFIG_VIRTIO_GPU=y
+CONFIG_VHOST_USER_GPU=y
+======
 
---00000000000060bdf806216e03fb
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+For now I just (temporarily) reverted the patch in question in debian,
+to make the build work.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
-ature"><div dir=3D"ltr"><br></div></div></div></div><br><div class=3D"gmail=
-_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Sep 5, 2024 at 6:39=
-=E2=80=AFPM Stefan Hajnoczi &lt;<a href=3D"mailto:stefanha@redhat.com">stef=
-anha@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" s=
-tyle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pad=
-ding-left:1ex">On Tue, Sep 03, 2024 at 10:42:34AM +0200, Albert Esteve wrot=
-e:<br>
-&gt; Hello all,<br>
-&gt; <br>
-&gt; Sorry, I have been a bit disconnected from this thread as I was on<br>
-&gt; vacations and then had to switch tasks for a while.<br>
-&gt; <br>
-&gt; I will try to go through all comments and address them for the first<b=
-r>
-&gt; non-RFC drop of this patch series.<br>
-&gt; <br>
-&gt; But I was discussing with some colleagues on this. So turns out rust-v=
-mm&#39;s<br>
-&gt; vhost-user-gpu will potentially use<br>
-&gt; this soon, and a rust-vmm/vhost patch have been already posted:<br>
-&gt; <a href=3D"https://github.com/rust-vmm/vhost/pull/251" rel=3D"noreferr=
-er" target=3D"_blank">https://github.com/rust-vmm/vhost/pull/251</a>.<br>
-&gt; So I think it may make sense to:<br>
-&gt; 1. Split the vhost-user documentation patch once settled. Since it is =
-taken<br>
-&gt; as the official spec,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0having it upstreamed independently of the implement=
-ation will benefit<br>
-&gt; other projects to<br>
-&gt;=C2=A0 =C2=A0 =C2=A0work/integrate their own code.<br>
-&gt; 2. Split READ_/WRITE_MEM messages from SHMEM_MAP/_UNMAP patches.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0If I remember correctly, this addresses a virtio-fs=
- specific issue,<br>
-&gt; that will not<br>
-&gt;=C2=A0 =C2=A0 =C2=A0impact either virtio-gpu nor virtio-media, or any o=
-ther.<br>
-<br>
-This is an architectural issue that arises from exposing VIRTIO Shared<br>
-Memory Regions in vhost-user. It was first seen with Linux virtiofs but<br>
-it could happen with other devices and/or guest operating systems.<br>
-<br>
-Any VIRTIO Shared Memory Region that can be mmapped into Linux userspace<br=
->
-may trigger this issue. Userspace may write(2) to an O_DIRECT file with<br>
-the mmap as the source. The vhost-user-blk device will not be able to<br>
-access the source device&#39;s VIRTIO Shared Memory Region and will fail.<b=
-r>
-<br>
-&gt; So it may make<br>
-&gt; sense<br>
-&gt;=C2=A0 =C2=A0 =C2=A0to separate them so that one does not stall the oth=
-er. I will try to<br>
-&gt; have both<br>
-&gt;=C2=A0 =C2=A0 =C2=A0integrated in the mid term.<br>
-<br>
-If READ_/WRITE_MEM is a pain to implement (I think it is in the<br>
-vhost-user back-end, even though I&#39;ve been a proponent of it), then<br>
-another way to deal with this issue is to specify that upon receiving<br>
-MAP/UNMAP messages, the vhost-user front-end must update the vhost-user<br>
-memory tables of all other vhost-user devices. That way vhost-user<br>
-devices will be able to access VIRTIO Shared Memory Regions mapped by<br>
-other devices.<br>
-<br>
-Implementing this in QEMU should be much easier than implementing<br>
-READ_/WRITE_MEM support in device back-ends.<br>
-<br>
-This will be slow and scale poorly but performance is only a problem for<br=
->
-devices that frequently MAP/UNMAP like virtiofs. Will virtio-gpu and<br>
-virtio-media use MAP/UNMAP often at runtime? They might be able to get<br>
-away with this simple solution.<br>
-<br>
-I&#39;d be happy with that. If someone wants to make virtiofs DAX faster,<b=
-r>
-they can implement READ/WRITE_MEM or another solution later, but let&#39;s<=
-br>
-at least make things correct from the start.<br></blockquote><div><br></div=
-><div>I agree. I want it to be correct first. If you agree on splitting the=
- spec bits from this</div><div>patch I&#39;m already happy. I suggested spl=
-itting READ_/WRITE_MEM messages</div><div>because I thought that it was a v=
-irtiofs-specific=C2=A0issue.</div><div><br></div><div>The alternative that =
-you proposed is interesting. I&#39;ll take it into account. But I</div><div=
->feel I prefer to go for the better solution, and if I get too entangled, t=
-hen switch</div><div>to the easier implementation.</div><div><br></div><div=
->I think we could do this in 2 patches:</div><div>1. Split the documentatio=
-n bits for SHMEM_MAP/_UNMAP. The</div><div>=C2=A0 =C2=A0 implementation for=
- these messages will go into the second patch.</div><div>2. The implementat=
-ion patch:=C2=A0keep going for the time being with</div><div>=C2=A0 =C2=A0 =
-=C2=A0READ_/WRITE_MEM support. And the documentation for that</div><div>=C2=
-=A0 =C2=A0 is kept it within this patch. This way if we switch to the front=
-end</div><div>=C2=A0 =C2=A0 updating vhost-user memory table, we weren&#39;=
-t set in any specific</div><div>=C2=A0 =C2=A0 solution if patch 1 has been =
-already merged.</div><div><br></div><div>BR,</div><div>Albert.</div><div>=
-=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
-.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-Stefan<br>
-<br>
-&gt; <br>
-&gt; WDYT?<br>
-&gt; <br>
-&gt; BR,<br>
-&gt; Albert.<br>
-&gt; <br>
-&gt; On Tue, Jul 16, 2024 at 3:21=E2=80=AFAM David Stevens &lt;<a href=3D"m=
-ailto:stevensd@chromium.org" target=3D"_blank">stevensd@chromium.org</a>&gt=
-; wrote:<br>
-&gt; <br>
-&gt; &gt; On Fri, Jul 12, 2024 at 2:47=E2=80=AFPM Michael S. Tsirkin &lt;<a=
- href=3D"mailto:mst@redhat.com" target=3D"_blank">mst@redhat.com</a>&gt; wr=
-ote:<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; On Fri, Jul 12, 2024 at 11:06:49AM +0900, David Stevens wrot=
-e:<br>
-&gt; &gt; &gt; &gt; On Thu, Jul 11, 2024 at 7:56=E2=80=AFPM Alyssa Ross &lt=
-;<a href=3D"mailto:hi@alyssa.is" target=3D"_blank">hi@alyssa.is</a>&gt; wro=
-te:<br>
-&gt; &gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; &gt; Adding David Stevens, who implemented SHMEM_MAP an=
-d SHMEM_UNMAP in<br>
-&gt; &gt; &gt; &gt; &gt; crosvm a couple of years ago.<br>
-&gt; &gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; &gt; David, I&#39;d be particularly interested for your=
- thoughts on the<br>
-&gt; &gt; MEM_READ<br>
-&gt; &gt; &gt; &gt; &gt; and MEM_WRITE commands, since as far as I know cro=
-svm doesn&#39;t<br>
-&gt; &gt; implement<br>
-&gt; &gt; &gt; &gt; &gt; anything like that.=C2=A0 The discussion leading t=
-o those being added<br>
-&gt; &gt; starts<br>
-&gt; &gt; &gt; &gt; &gt; here:<br>
-&gt; &gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; &gt;<br>
-&gt; &gt; <a href=3D"https://lore.kernel.org/qemu-devel/20240604185416.GB90=
-471@fedora.redhat.com/" rel=3D"noreferrer" target=3D"_blank">https://lore.k=
-ernel.org/qemu-devel/20240604185416.GB90471@fedora.redhat.com/</a><br>
-&gt; &gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; &gt; It would be great if this could be standardised be=
-tween QEMU and<br>
-&gt; &gt; crosvm<br>
-&gt; &gt; &gt; &gt; &gt; (and therefore have a clearer path toward being im=
-plemented in other<br>
-&gt; &gt; VMMs)!<br>
-&gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; Setting aside vhost-user for a moment, the DAX example =
-given by Stefan<br>
-&gt; &gt; &gt; &gt; won&#39;t work in crosvm today.<br>
-&gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; Is universal access to virtio shared memory regions act=
-ually mandated<br>
-&gt; &gt; &gt; &gt; by the virtio spec? Copying from virtiofs DAX to virtio=
-fs sharing<br>
-&gt; &gt; &gt; &gt; seems reasonable enough, but what about virtio-pmem to =
-virtio-blk?<br>
-&gt; &gt; &gt; &gt; What about screenshotting a framebuffer in virtio-gpu s=
-hared memory to<br>
-&gt; &gt; &gt; &gt; virtio-scsi? I guess with some plumbing in the VMM, it&=
-#39;s solvable in a<br>
-&gt; &gt; &gt; &gt; virtualized environment. But what about when you have r=
-eal hardware<br>
-&gt; &gt; &gt; &gt; that speaks virtio involved? That&#39;s outside my whee=
-lhouse, but it<br>
-&gt; &gt; &gt; &gt; doesn&#39;t seem like that would be easy to solve.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; Yes, it can work for physical devices if allowed by host con=
-figuration.<br>
-&gt; &gt; &gt; E.g. VFIO supports that I think. Don&#39;t think VDPA does.<=
-br>
-&gt; &gt;<br>
-&gt; &gt; I&#39;m sure it can work, but that sounds more like a SHOULD (MAY=
-?),<br>
-&gt; &gt; rather than a MUST.<br>
-&gt; &gt;<br>
-&gt; &gt; &gt; &gt; For what it&#39;s worth, my interpretation of the targe=
-t scenario:<br>
-&gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; &gt; Other backends don&#39;t see these mappings. If th=
-e guest submits a vring<br>
-&gt; &gt; &gt; &gt; &gt; descriptor referencing a mapping to another backen=
-d, then that<br>
-&gt; &gt; backend<br>
-&gt; &gt; &gt; &gt; &gt; won&#39;t be able to access this memory<br>
-&gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; is that it&#39;s omitting how the implementation is rec=
-onciled with<br>
-&gt; &gt; &gt; &gt; section 2.10.1 of v1.3 of the virtio spec, which states=
- that:<br>
-&gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; &gt; References into shared memory regions are represen=
-ted as offsets from<br>
-&gt; &gt; &gt; &gt; &gt; the beginning of the region instead of absolute me=
-mory addresses.<br>
-&gt; &gt; Offsets<br>
-&gt; &gt; &gt; &gt; &gt; are used both for references between structures st=
-ored within shared<br>
-&gt; &gt; &gt; &gt; &gt; memory and for requests placed in virtqueues that =
-refer to shared<br>
-&gt; &gt; memory.<br>
-&gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; My interpretation of that statement is that putting raw=
- guest physical<br>
-&gt; &gt; &gt; &gt; addresses corresponding to virtio shared memory regions=
- into a vring<br>
-&gt; &gt; &gt; &gt; is a driver spec violation.<br>
-&gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; -David<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; This really applies within device I think. Should be clarifi=
-ed ...<br>
-&gt; &gt;<br>
-&gt; &gt; You mean that a virtio device can use absolute memory addresses f=
-or<br>
-&gt; &gt; other devices&#39; shared memory regions, but it can&#39;t use ab=
-solute memory<br>
-&gt; &gt; addresses for its own shared memory regions? That&#39;s a rather =
-strange<br>
-&gt; &gt; requirement. Or is the statement simply giving an addressing stra=
-tegy<br>
-&gt; &gt; that device type specifications are free to ignore?<br>
-&gt; &gt;<br>
-&gt; &gt; -David<br>
-&gt; &gt;<br>
-&gt; &gt;<br>
-</blockquote></div></div>
+Thanks,
 
---00000000000060bdf806216e03fb--
+/mjt
+--------------iICnmpmGQFWp06wXqbnhaRD0
+Content-Type: text/plain; charset=UTF-8; name="qemu-system-x86_64.rsp"
+Content-Disposition: attachment; filename="qemu-system-x86_64.rsp"
+Content-Transfer-Encoding: base64
 
+IC1vIHFlbXUtc3lzdGVtLXg4Nl82NCBsaWJjb21tb24uYS5wL2dkYnN0dWJfc3lzY2FsbHMu
+Yy5vIGxpYmNvbW1vbi5hLnAvaHdfY29yZV9jcHUtY29tbW9uLmMubyBsaWJjb21tb24uYS5w
+L2h3X2NvcmVfbWFjaGluZS1zbXAuYy5vIGxpYmNvbW1vbi5hLnAvY3B1LWNvbW1vbi5jLm8g
+bGliY29tbW9uLmEucC9wYWdlLXZhcnktY29tbW9uLmMubyBsaWJjb21tb24uYS5wL2Rpc2Fz
+X2Rpc2FzLWNvbW1vbi5jLm8gbGliY29tbW9uLmEucC9zZW1paG9zdGluZ19zdHVicy1hbGwu
+Yy5vIGxpYmNvbW1vbi5hLnAvdHJhY2VfdHJhY2UtaG1wLWNtZHMuYy5vIGxpYmNvbW1vbi5h
+LnAvcW9tX3FvbS1obXAtY21kcy5jLm8gbGliY29tbW9uLmEucC91aV9jbGlwYm9hcmQuYy5v
+IGxpYmNvbW1vbi5hLnAvdWlfY29uc29sZS5jLm8gbGliY29tbW9uLmEucC91aV9jdXJzb3Iu
+Yy5vIGxpYmNvbW1vbi5hLnAvdWlfZG1hYnVmLmMubyBsaWJjb21tb24uYS5wL3VpX2lucHV0
+LWtleW1hcC5jLm8gbGliY29tbW9uLmEucC91aV9pbnB1dC1sZWdhY3kuYy5vIGxpYmNvbW1v
+bi5hLnAvdWlfaW5wdXQtYmFycmllci5jLm8gbGliY29tbW9uLmEucC91aV9pbnB1dC5jLm8g
+bGliY29tbW9uLmEucC91aV9rYmQtc3RhdGUuYy5vIGxpYmNvbW1vbi5hLnAvdWlfa2V5bWFw
+cy5jLm8gbGliY29tbW9uLmEucC91aV9xZW11LXBpeG1hbi5jLm8gbGliY29tbW9uLmEucC91
+aV91aS1obXAtY21kcy5jLm8gbGliY29tbW9uLmEucC91aV91aS1xbXAtY21kcy5jLm8gbGli
+Y29tbW9uLmEucC91aV91dGlsLmMubyBsaWJjb21tb24uYS5wL3VpX2NvbnNvbGUtdmMuYy5v
+IGxpYmNvbW1vbi5hLnAvdWlfc3BpY2UtbW9kdWxlLmMubyBsaWJjb21tb24uYS5wL3VpX2lu
+cHV0LWxpbnV4LmMubyBsaWJjb21tb24uYS5wL3VpX3VkbWFidWYuYy5vIGxpYmNvbW1vbi5h
+LnAvdWlfdm5jLmMubyBsaWJjb21tb24uYS5wL3VpX3ZuYy1lbmMtemxpYi5jLm8gbGliY29t
+bW9uLmEucC91aV92bmMtZW5jLWhleHRpbGUuYy5vIGxpYmNvbW1vbi5hLnAvdWlfdm5jLWVu
+Yy10aWdodC5jLm8gbGliY29tbW9uLmEucC91aV92bmMtcGFsZXR0ZS5jLm8gbGliY29tbW9u
+LmEucC91aV92bmMtZW5jLXpybGUuYy5vIGxpYmNvbW1vbi5hLnAvdWlfdm5jLWF1dGgtdmVu
+Y3J5cHQuYy5vIGxpYmNvbW1vbi5hLnAvdWlfdm5jLXdzLmMubyBsaWJjb21tb24uYS5wL3Vp
+X3ZuYy1qb2JzLmMubyBsaWJjb21tb24uYS5wL3VpX3ZuYy1jbGlwYm9hcmQuYy5vIGxpYmNv
+bW1vbi5hLnAvaHdfYWNwaV9hY3BpX2dlbmVyaWNfaW5pdGlhdG9yLmMubyBsaWJjb21tb24u
+YS5wL2h3X2FjcGlfYWNwaV9pbnRlcmZhY2UuYy5vIGxpYmNvbW1vbi5hLnAvaHdfYWNwaV9h
+bWwtYnVpbGQuYy5vIGxpYmNvbW1vbi5hLnAvaHdfYWNwaV9iaW9zLWxpbmtlci1sb2FkZXIu
+Yy5vIGxpYmNvbW1vbi5hLnAvaHdfYWNwaV9jb3JlLmMubyBsaWJjb21tb24uYS5wL2h3X2Fj
+cGlfdXRpbHMuYy5vIGxpYmNvbW1vbi5hLnAvaHdfYWNwaV9jcHUuYy5vIGxpYmNvbW1vbi5h
+LnAvaHdfYWNwaV9jcHVfaG90cGx1Zy5jLm8gbGliY29tbW9uLmEucC9od19hY3BpX21lbW9y
+eV9ob3RwbHVnLmMubyBsaWJjb21tb24uYS5wL2h3X2FjcGlfbnZkaW1tLmMubyBsaWJjb21t
+b24uYS5wL2h3X2FjcGlfcGNpLmMubyBsaWJjb21tb24uYS5wL2h3X2FjcGlfY3hsLmMubyBs
+aWJjb21tb24uYS5wL2h3X2FjcGlfdm1nZW5pZC5jLm8gbGliY29tbW9uLmEucC9od19hY3Bp
+X2dlbmVyaWNfZXZlbnRfZGV2aWNlLmMubyBsaWJjb21tb24uYS5wL2h3X2FjcGlfaG1hdC5j
+Lm8gbGliY29tbW9uLmEucC9od19hY3BpX2doZXMtc3R1Yi5jLm8gbGliY29tbW9uLmEucC9o
+d19hY3BpX3BjaS1icmlkZ2UuYy5vIGxpYmNvbW1vbi5hLnAvaHdfYWNwaV9wY2locC5jLm8g
+bGliY29tbW9uLmEucC9od19hY3BpX3Zpb3QuYy5vIGxpYmNvbW1vbi5hLnAvaHdfYWNwaV9p
+Y2g5LmMubyBsaWJjb21tb24uYS5wL2h3X2FjcGlfaWNoOV90Y28uYy5vIGxpYmNvbW1vbi5h
+LnAvaHdfYWNwaV9lcnN0LmMubyBsaWJjb21tb24uYS5wL2h3X2FjcGlfaXBtaS1zdHViLmMu
+byBsaWJjb21tb24uYS5wL2h3X2FjcGlfYWNwaS1xbXAtY21kcy5jLm8gbGliY29tbW9uLmEu
+cC9od19hdWRpb19zb3VuZGh3LmMubyBsaWJjb21tb24uYS5wL2h3X2F1ZGlvX3Bjc3BrLmMu
+byBsaWJjb21tb24uYS5wL2h3X2Jsb2NrX2Jsb2NrLmMubyBsaWJjb21tb24uYS5wL2h3X2Js
+b2NrX2Nkcm9tLmMubyBsaWJjb21tb24uYS5wL2h3X2Jsb2NrX2hkLWdlb21ldHJ5LmMubyBs
+aWJjb21tb24uYS5wL2h3X2Jsb2NrX3BmbGFzaF9jZmkwMS5jLm8gbGliY29tbW9uLmEucC9o
+d19jaGFyX3BhcmFsbGVsLWlzYS5jLm8gbGliY29tbW9uLmEucC9od19jaGFyX3NlcmlhbC5j
+Lm8gbGliY29tbW9uLmEucC9od19jaGFyX3NlcmlhbC1pc2EuYy5vIGxpYmNvbW1vbi5hLnAv
+aHdfY2hhcl92aXJ0aW8tY29uc29sZS5jLm8gbGliY29tbW9uLmEucC9od19jb3JlX2NwdS1z
+eXNlbXUuYy5vIGxpYmNvbW1vbi5hLnAvaHdfY29yZV9mdy1wYXRoLXByb3ZpZGVyLmMubyBs
+aWJjb21tb24uYS5wL2h3X2NvcmVfZ3Bpby5jLm8gbGliY29tbW9uLmEucC9od19jb3JlX2hv
+dHBsdWcuYy5vIGxpYmNvbW1vbi5hLnAvaHdfY29yZV9sb2FkZXIuYy5vIGxpYmNvbW1vbi5h
+LnAvaHdfY29yZV9tYWNoaW5lLWhtcC1jbWRzLmMubyBsaWJjb21tb24uYS5wL2h3X2NvcmVf
+bWFjaGluZS1xbXAtY21kcy5jLm8gbGliY29tbW9uLmEucC9od19jb3JlX21hY2hpbmUuYy5v
+IGxpYmNvbW1vbi5hLnAvaHdfY29yZV9ubWkuYy5vIGxpYmNvbW1vbi5hLnAvaHdfY29yZV9u
+dWxsLW1hY2hpbmUuYy5vIGxpYmNvbW1vbi5hLnAvaHdfY29yZV9udW1hLmMubyBsaWJjb21t
+b24uYS5wL2h3X2NvcmVfcWRldi1mdy5jLm8gbGliY29tbW9uLmEucC9od19jb3JlX3FkZXYt
+aG90cGx1Zy5jLm8gbGliY29tbW9uLmEucC9od19jb3JlX3FkZXYtcHJvcGVydGllcy1zeXN0
+ZW0uYy5vIGxpYmNvbW1vbi5hLnAvaHdfY29yZV9yZXNldC5jLm8gbGliY29tbW9uLmEucC9o
+d19jb3JlX3N5c2J1cy5jLm8gbGliY29tbW9uLmEucC9od19jb3JlX3ZtLWNoYW5nZS1zdGF0
+ZS1oYW5kbGVyLmMubyBsaWJjb21tb24uYS5wL2h3X2NvcmVfY2xvY2stdm1zdGF0ZS5jLm8g
+bGliY29tbW9uLmEucC9od19jcHVfY29yZS5jLm8gbGliY29tbW9uLmEucC9od19jeGxfY3hs
+LWhvc3Qtc3R1YnMuYy5vIGxpYmNvbW1vbi5hLnAvaHdfZGlzcGxheV9lZGlkLWdlbmVyYXRl
+LmMubyBsaWJjb21tb24uYS5wL2h3X2Rpc3BsYXlfZWRpZC1yZWdpb24uYy5vIGxpYmNvbW1v
+bi5hLnAvaHdfZGlzcGxheV9yYW1mYi5jLm8gbGliY29tbW9uLmEucC9od19kaXNwbGF5X3Jh
+bWZiLXN0YW5kYWxvbmUuYy5vIGxpYmNvbW1vbi5hLnAvaHdfZGlzcGxheV92aXJ0aW8tZG1h
+YnVmLmMubyBsaWJjb21tb24uYS5wL2h3X2RtYV9pODI1Ny5jLm8gbGliY29tbW9uLmEucC9o
+d19pMmNfY29yZS5jLm8gbGliY29tbW9uLmEucC9od19pMmNfc21idXNfc2xhdmUuYy5vIGxp
+YmNvbW1vbi5hLnAvaHdfaTJjX3NtYnVzX21hc3Rlci5jLm8gbGliY29tbW9uLmEucC9od19p
+MmNfcG1fc21idXMuYy5vIGxpYmNvbW1vbi5hLnAvaHdfaTJjX3NtYnVzX2ljaDkuYy5vIGxp
+YmNvbW1vbi5hLnAvaHdfaTJjX3NtYnVzX2VlcHJvbS5jLm8gbGliY29tbW9uLmEucC9od19p
+ZGVfYWhjaS5jLm8gbGliY29tbW9uLmEucC9od19pZGVfaWNoLmMubyBsaWJjb21tb24uYS5w
+L2h3X2lkZV9pZGUtYnVzLmMubyBsaWJjb21tb24uYS5wL2h3X2lkZV9jb3JlLmMubyBsaWJj
+b21tb24uYS5wL2h3X2lkZV9hdGFwaS5jLm8gbGliY29tbW9uLmEucC9od19pZGVfaWRlLWRl
+di5jLm8gbGliY29tbW9uLmEucC9od19pbnB1dF9oaWQuYy5vIGxpYmNvbW1vbi5hLnAvaHdf
+aW5wdXRfcGNrYmQuYy5vIGxpYmNvbW1vbi5hLnAvaHdfaW5wdXRfcHMyLmMubyBsaWJjb21t
+b24uYS5wL2h3X2lucHV0X3ZpcnRpby1pbnB1dC5jLm8gbGliY29tbW9uLmEucC9od19pbnB1
+dF92aXJ0aW8taW5wdXQtaGlkLmMubyBsaWJjb21tb24uYS5wL2h3X2lucHV0X3ZpcnRpby1p
+bnB1dC1ob3N0LmMubyBsaWJjb21tb24uYS5wL2h3X2ludGNfaW50Yy5jLm8gbGliY29tbW9u
+LmEucC9od19pbnRjX2k4MjU5X2NvbW1vbi5jLm8gbGliY29tbW9uLmEucC9od19pbnRjX2k4
+MjU5LmMubyBsaWJjb21tb24uYS5wL2h3X2ludGNfaW9hcGljX2NvbW1vbi5jLm8gbGliY29t
+bW9uLmEucC9od19pbnRjX2t2bV9pcnFjb3VudC5jLm8gbGliY29tbW9uLmEucC9od19pc2Ff
+YXBtLmMubyBsaWJjb21tb24uYS5wL2h3X2lzYV9pc2EtYnVzLmMubyBsaWJjb21tb24uYS5w
+L2h3X21lbV9jeGxfdHlwZTNfc3R1YnMuYy5vIGxpYmNvbW1vbi5hLnAvaHdfbWVtX21lbW9y
+eS1kZXZpY2UuYy5vIGxpYmNvbW1vbi5hLnAvaHdfbWVtX3BjLWRpbW0uYy5vIGxpYmNvbW1v
+bi5hLnAvaHdfbWlzY192bWNvcmVpbmZvLmMubyBsaWJjb21tb24uYS5wL2h3X25ldF9uZXRf
+cnhfcGt0LmMubyBsaWJjb21tb24uYS5wL2h3X25ldF92aG9zdF9uZXQuYy5vIGxpYmNvbW1v
+bi5hLnAvaHdfbmV0X3JvY2tlcl9xbXAtbm9yb2NrZXIuYy5vIGxpYmNvbW1vbi5hLnAvaHdf
+bmV0X3JvY2tlcl9yb2NrZXItaG1wLWNtZHMuYy5vIGxpYmNvbW1vbi5hLnAvaHdfbnZyYW1f
+ZndfY2ZnLWludGVyZmFjZS5jLm8gbGliY29tbW9uLmEucC9od19udnJhbV9md19jZmcuYy5v
+IGxpYmNvbW1vbi5hLnAvaHdfcGNpX3BjaWVfcG9ydC5jLm8gbGliY29tbW9uLmEucC9od19w
+Y2lfcGNpZV9ob3N0LmMubyBsaWJjb21tb24uYS5wL2h3X3BjaV9tc2kuYy5vIGxpYmNvbW1v
+bi5hLnAvaHdfcGNpX21zaXguYy5vIGxpYmNvbW1vbi5hLnAvaHdfcGNpX3BjaS5jLm8gbGli
+Y29tbW9uLmEucC9od19wY2lfcGNpX2JyaWRnZS5jLm8gbGliY29tbW9uLmEucC9od19wY2lf
+cGNpX2hvc3QuYy5vIGxpYmNvbW1vbi5hLnAvaHdfcGNpX3BjaS1obXAtY21kcy5jLm8gbGli
+Y29tbW9uLmEucC9od19wY2lfcGNpLXFtcC1jbWRzLmMubyBsaWJjb21tb24uYS5wL2h3X3Bj
+aV9wY2llX3NyaW92LmMubyBsaWJjb21tb24uYS5wL2h3X3BjaV9zaHBjLmMubyBsaWJjb21t
+b24uYS5wL2h3X3BjaV9zbG90aWRfY2FwLmMubyBsaWJjb21tb24uYS5wL2h3X3BjaV9wY2ll
+LmMubyBsaWJjb21tb24uYS5wL2h3X3BjaV9wY2llX2Flci5jLm8gbGliY29tbW9uLmEucC9o
+d19wY2lfcGNpZV9kb2UuYy5vIGxpYmNvbW1vbi5hLnAvaHdfcGNpLWJyaWRnZV9wY2lfYnJp
+ZGdlX2Rldi5jLm8gbGliY29tbW9uLmEucC9od19wY2ktYnJpZGdlX3BjaV9leHBhbmRlcl9i
+cmlkZ2Vfc3R1YnMuYy5vIGxpYmNvbW1vbi5hLnAvaHdfcGNpLWhvc3RfcGFtLmMubyBsaWJj
+b21tb24uYS5wL2h3X3BjaS1ob3N0X2dwZXguYy5vIGxpYmNvbW1vbi5hLnAvaHdfcGNpLWhv
+c3RfZ3BleC1hY3BpLmMubyBsaWJjb21tb24uYS5wL2h3X3BjaS1ob3N0X3EzNS5jLm8gbGli
+Y29tbW9uLmEucC9od19ydGNfbWMxNDY4MThydGMuYy5vIGxpYmNvbW1vbi5hLnAvaHdfc2Nz
+aV9lbXVsYXRpb24uYy5vIGxpYmNvbW1vbi5hLnAvaHdfc2NzaV9zY3NpLWJ1cy5jLm8gbGli
+Y29tbW9uLmEucC9od19zY3NpX3Njc2ktZGlzay5jLm8gbGliY29tbW9uLmEucC9od19zY3Np
+X3Njc2ktZ2VuZXJpYy5jLm8gbGliY29tbW9uLmEucC9od19zY3NpX3ZpcnRpby1zY3NpLWRh
+dGFwbGFuZS5jLm8gbGliY29tbW9uLmEucC9od19zbWJpb3Nfc21iaW9zLmMubyBsaWJjb21t
+b24uYS5wL2h3X3NtYmlvc19zbWJpb3NfdHlwZV8zOC1zdHViLmMubyBsaWJjb21tb24uYS5w
+L2h3X3NtYmlvc19zbWJpb3NfbGVnYWN5X3N0dWIuYy5vIGxpYmNvbW1vbi5hLnAvaHdfdGlt
+ZXJfaTgyNTRfY29tbW9uLmMubyBsaWJjb21tb24uYS5wL2h3X3RpbWVyX2k4MjU0LmMubyBs
+aWJjb21tb24uYS5wL2h3X3VzYl9idXMuYy5vIGxpYmNvbW1vbi5hLnAvaHdfdXNiX2NvbWJp
+bmVkLXBhY2tldC5jLm8gbGliY29tbW9uLmEucC9od191c2JfY29yZS5jLm8gbGliY29tbW9u
+LmEucC9od191c2JfZGVzYy5jLm8gbGliY29tbW9uLmEucC9od191c2JfZGVzYy1tc29zLmMu
+byBsaWJjb21tb24uYS5wL2h3X3VzYl9saWJody5jLm8gbGliY29tbW9uLmEucC9od191c2Jf
+cGNhcC5jLm8gbGliY29tbW9uLmEucC9od191c2JfaGNkLXhoY2kuYy5vIGxpYmNvbW1vbi5h
+LnAvaHdfdXNiX2hjZC14aGNpLXN5c2J1cy5jLm8gbGliY29tbW9uLmEucC9od192aXJ0aW9f
+dmlydGlvLWJ1cy5jLm8gbGliY29tbW9uLmEucC9od192aXJ0aW9fdmlydGlvLW1taW8uYy5v
+IGxpYmNvbW1vbi5hLnAvaHdfdmlydGlvX3ZpcnRpby1jcnlwdG8uYy5vIGxpYmNvbW1vbi5h
+LnAvaHdfdmlydGlvX3Zob3N0LmMubyBsaWJjb21tb24uYS5wL2h3X3ZpcnRpb192aG9zdC11
+c2VyLWJhc2UuYy5vIGxpYmNvbW1vbi5hLnAvaHdfdmlydGlvX3Zob3N0LXVzZXItZGV2aWNl
+LmMubyBsaWJjb21tb24uYS5wL2h3X3ZpcnRpb192aG9zdC11c2VyLWlucHV0LmMubyBsaWJj
+b21tb24uYS5wL2h3X3ZpcnRpb192aG9zdC12ZHBhLmMubyBsaWJjb21tb24uYS5wL2h3X3Zp
+cnRpb192aXJ0aW8taG1wLWNtZHMuYy5vIGxpYmNvbW1vbi5hLnAvaHdfdmlydGlvX3ZpcnRp
+by1hY3BpLmMubyBsaWJjb21tb24uYS5wL2h3X3dhdGNoZG9nX3dhdGNoZG9nLmMubyBsaWJj
+b21tb24uYS5wL2F1ZGlvX2F1ZGlvLmMubyBsaWJjb21tb24uYS5wL2F1ZGlvX2F1ZGlvLWht
+cC1jbWRzLmMubyBsaWJjb21tb24uYS5wL2F1ZGlvX21peGVuZy5jLm8gbGliY29tbW9uLmEu
+cC9hdWRpb19ub2F1ZGlvLmMubyBsaWJjb21tb24uYS5wL2F1ZGlvX3dhdmF1ZGlvLmMubyBs
+aWJjb21tb24uYS5wL2F1ZGlvX3dhdmNhcHR1cmUuYy5vIGxpYmNvbW1vbi5hLnAvY2hhcmRl
+dl9jaGFyLWhtcC1jbWRzLmMubyBsaWJjb21tb24uYS5wL2NoYXJkZXZfbXNtb3VzZS5jLm8g
+bGliY29tbW9uLmEucC9jaGFyZGV2X3djdGFibGV0LmMubyBsaWJjb21tb24uYS5wL2NoYXJk
+ZXZfdGVzdGRldi5jLm8gbGliY29tbW9uLmEucC9mc2Rldl9xZW11LWZzZGV2LW9wdHMuYy5v
+IGxpYmNvbW1vbi5hLnAvZnNkZXZfcWVtdS1mc2Rldi10aHJvdHRsZS5jLm8gbGliY29tbW9u
+LmEucC9mc2Rldl9xZW11LWZzZGV2LWR1bW15LmMubyBsaWJjb21tb24uYS5wL2R1bXBfZHVt
+cC5jLm8gbGliY29tbW9uLmEucC9kdW1wX2R1bXAtaG1wLWNtZHMuYy5vIGxpYmNvbW1vbi5h
+LnAvYmxvY2tfYmxvY2stcmFtLXJlZ2lzdHJhci5jLm8gbGliY29tbW9uLmEucC9ibG9ja19x
+YXBpLXN5c2VtdS5jLm8gbGliY29tbW9uLmEucC9ibG9ja19tb25pdG9yX2Jsb2NrLWhtcC1j
+bWRzLmMubyBsaWJjb21tb24uYS5wL3N5c3RlbV9iYWxsb29uLmMubyBsaWJjb21tb24uYS5w
+L3N5c3RlbV9ib290ZGV2aWNlLmMubyBsaWJjb21tb24uYS5wL3N5c3RlbV9jcHVzLmMubyBs
+aWJjb21tb24uYS5wL3N5c3RlbV9jcHUtdGhyb3R0bGUuYy5vIGxpYmNvbW1vbi5hLnAvc3lz
+dGVtX2NwdS10aW1lcnMuYy5vIGxpYmNvbW1vbi5hLnAvc3lzdGVtX2RhdGFkaXIuYy5vIGxp
+YmNvbW1vbi5hLnAvc3lzdGVtX2RpcnR5bGltaXQuYy5vIGxpYmNvbW1vbi5hLnAvc3lzdGVt
+X2RtYS1oZWxwZXJzLmMubyBsaWJjb21tb24uYS5wL3N5c3RlbV9nbG9iYWxzLmMubyBsaWJj
+b21tb24uYS5wL3N5c3RlbV9tZW1vcnlfbWFwcGluZy5jLm8gbGliY29tbW9uLmEucC9zeXN0
+ZW1fcWRldi1tb25pdG9yLmMubyBsaWJjb21tb24uYS5wL3N5c3RlbV9xdGVzdC5jLm8gbGli
+Y29tbW9uLmEucC9zeXN0ZW1fcnRjLmMubyBsaWJjb21tb24uYS5wL3N5c3RlbV9ydW5zdGF0
+ZS1hY3Rpb24uYy5vIGxpYmNvbW1vbi5hLnAvc3lzdGVtX3J1bnN0YXRlLWhtcC1jbWRzLmMu
+byBsaWJjb21tb24uYS5wL3N5c3RlbV9ydW5zdGF0ZS5jLm8gbGliY29tbW9uLmEucC9zeXN0
+ZW1fdHBtLWhtcC1jbWRzLmMubyBsaWJjb21tb24uYS5wL3N5c3RlbV92bC5jLm8gbGliY29t
+bW9uLmEucC9zeXN0ZW1fcWVtdS1zZWNjb21wLmMubyBsaWJjb21tb24uYS5wL3N5c3RlbV9k
+ZXZpY2VfdHJlZS5jLm8gbGliY29tbW9uLmEucC9zeXN0ZW1fYXN5bmMtdGVhcmRvd24uYy5v
+IGxpYmNvbW1vbi5hLnAvYmFja2VuZHNfY3J5cHRvZGV2LWJ1aWx0aW4uYy5vIGxpYmNvbW1v
+bi5hLnAvYmFja2VuZHNfY3J5cHRvZGV2LWhtcC1jbWRzLmMubyBsaWJjb21tb24uYS5wL2Jh
+Y2tlbmRzX2NyeXB0b2Rldi5jLm8gbGliY29tbW9uLmEucC9iYWNrZW5kc19ob3N0bWVtLXJh
+bS5jLm8gbGliY29tbW9uLmEucC9iYWNrZW5kc19ob3N0bWVtLmMubyBsaWJjb21tb24uYS5w
+L2JhY2tlbmRzX3JuZy1idWlsdGluLmMubyBsaWJjb21tb24uYS5wL2JhY2tlbmRzX3JuZy1l
+Z2QuYy5vIGxpYmNvbW1vbi5hLnAvYmFja2VuZHNfcm5nLmMubyBsaWJjb21tb24uYS5wL2Jh
+Y2tlbmRzX2NvbmZpZGVudGlhbC1ndWVzdC1zdXBwb3J0LmMubyBsaWJjb21tb24uYS5wL2Jh
+Y2tlbmRzX3JuZy1yYW5kb20uYy5vIGxpYmNvbW1vbi5hLnAvYmFja2VuZHNfaG9zdG1lbS1m
+aWxlLmMubyBsaWJjb21tb24uYS5wL2JhY2tlbmRzX2hvc3RtZW0tc2htLmMubyBsaWJjb21t
+b24uYS5wL2JhY2tlbmRzX2hvc3RtZW0tbWVtZmQuYy5vIGxpYmNvbW1vbi5hLnAvYmFja2Vu
+ZHNfaG9zdF9pb21tdV9kZXZpY2UuYy5vIGxpYmNvbW1vbi5hLnAvYmFja2VuZHNfdmhvc3Qt
+dXNlci5jLm8gbGliY29tbW9uLmEucC9iYWNrZW5kc19jcnlwdG9kZXYtdmhvc3QuYy5vIGxp
+YmNvbW1vbi5hLnAvYmFja2VuZHNfY3J5cHRvZGV2LXZob3N0LXVzZXIuYy5vIGxpYmNvbW1v
+bi5hLnAvZGlzYXNfZGlzYXMtbW9uLmMubyBsaWJjb21tb24uYS5wL21pZ3JhdGlvbl9ibG9j
+ay1kaXJ0eS1iaXRtYXAuYy5vIGxpYmNvbW1vbi5hLnAvbWlncmF0aW9uX2NoYW5uZWwuYy5v
+IGxpYmNvbW1vbi5hLnAvbWlncmF0aW9uX2NoYW5uZWwtYmxvY2suYy5vIGxpYmNvbW1vbi5h
+LnAvbWlncmF0aW9uX2RpcnR5cmF0ZS5jLm8gbGliY29tbW9uLmEucC9taWdyYXRpb25fZXhl
+Yy5jLm8gbGliY29tbW9uLmEucC9taWdyYXRpb25fZmQuYy5vIGxpYmNvbW1vbi5hLnAvbWln
+cmF0aW9uX2ZpbGUuYy5vIGxpYmNvbW1vbi5hLnAvbWlncmF0aW9uX2dsb2JhbF9zdGF0ZS5j
+Lm8gbGliY29tbW9uLmEucC9taWdyYXRpb25fbWlncmF0aW9uLWhtcC1jbWRzLmMubyBsaWJj
+b21tb24uYS5wL21pZ3JhdGlvbl9taWdyYXRpb24uYy5vIGxpYmNvbW1vbi5hLnAvbWlncmF0
+aW9uX211bHRpZmQuYy5vIGxpYmNvbW1vbi5hLnAvbWlncmF0aW9uX211bHRpZmQtemxpYi5j
+Lm8gbGliY29tbW9uLmEucC9taWdyYXRpb25fbXVsdGlmZC16ZXJvLXBhZ2UuYy5vIGxpYmNv
+bW1vbi5hLnAvbWlncmF0aW9uX29wdGlvbnMuYy5vIGxpYmNvbW1vbi5hLnAvbWlncmF0aW9u
+X3Bvc3Rjb3B5LXJhbS5jLm8gbGliY29tbW9uLmEucC9taWdyYXRpb25fc2F2ZXZtLmMubyBs
+aWJjb21tb24uYS5wL21pZ3JhdGlvbl9zb2NrZXQuYy5vIGxpYmNvbW1vbi5hLnAvbWlncmF0
+aW9uX3Rscy5jLm8gbGliY29tbW9uLmEucC9taWdyYXRpb25fdGhyZWFkaW5mby5jLm8gbGli
+Y29tbW9uLmEucC9taWdyYXRpb25fY29sby1zdHVicy5jLm8gbGliY29tbW9uLmEucC9tb25p
+dG9yX2Zkcy5jLm8gbGliY29tbW9uLmEucC9tb25pdG9yX2htcC1jbWRzLmMubyBsaWJjb21t
+b24uYS5wL21vbml0b3JfaG1wLmMubyBsaWJjb21tb24uYS5wL21vbml0b3JfcWVtdS1jb25m
+aWctcW1wLmMubyBsaWJjb21tb24uYS5wL21vbml0b3JfcW1wLWNtZHMuYy5vIGxpYmNvbW1v
+bi5hLnAvbmV0X2Fubm91bmNlLmMubyBsaWJjb21tb24uYS5wL25ldF9jaGVja3N1bS5jLm8g
+bGliY29tbW9uLmEucC9uZXRfZHVtcC5jLm8gbGliY29tbW9uLmEucC9uZXRfZXRoLmMubyBs
+aWJjb21tb24uYS5wL25ldF9maWx0ZXItYnVmZmVyLmMubyBsaWJjb21tb24uYS5wL25ldF9m
+aWx0ZXItbWlycm9yLmMubyBsaWJjb21tb24uYS5wL25ldF9maWx0ZXIuYy5vIGxpYmNvbW1v
+bi5hLnAvbmV0X2h1Yi5jLm8gbGliY29tbW9uLmEucC9uZXRfbmV0LWhtcC1jbWRzLmMubyBs
+aWJjb21tb24uYS5wL25ldF9uZXQuYy5vIGxpYmNvbW1vbi5hLnAvbmV0X3F1ZXVlLmMubyBs
+aWJjb21tb24uYS5wL25ldF9zb2NrZXQuYy5vIGxpYmNvbW1vbi5hLnAvbmV0X3N0cmVhbS5j
+Lm8gbGliY29tbW9uLmEucC9uZXRfZGdyYW0uYy5vIGxpYmNvbW1vbi5hLnAvbmV0X3V0aWwu
+Yy5vIGxpYmNvbW1vbi5hLnAvbmV0X2NvbG8tc3R1YnMuYy5vIGxpYmNvbW1vbi5hLnAvbmV0
+X3Zob3N0LXVzZXIuYy5vIGxpYmNvbW1vbi5hLnAvbmV0X3RhcC5jLm8gbGliY29tbW9uLmEu
+cC9uZXRfdGFwLWxpbnV4LmMubyBsaWJjb21tb24uYS5wL25ldF92aG9zdC12ZHBhLmMubyBs
+aWJjb21tb24uYS5wL3JlcGxheV9zdHVicy1zeXN0ZW0uYy5vIGxpYmNvbW1vbi5hLnAvc2Vt
+aWhvc3Rpbmdfc3R1YnMtc3lzdGVtLmMubyBsaWJjb21tb24uYS5wL3N0YXRzX3N0YXRzLWht
+cC1jbWRzLmMubyBsaWJjb21tb24uYS5wL3N0YXRzX3N0YXRzLXFtcC1jbWRzLmMubyBsaWJj
+b21tb24uYS5wL2FjY2VsX2FjY2VsLXN5c3RlbS5jLm8gbGliY29tbW9uLmEucC9hY2NlbF9h
+Y2NlbC1ibG9ja2VyLmMubyBsaWJjb21tb24uYS5wL2FjY2VsX2R1bW15LWNwdXMuYy5vIGxp
+YmNvbW1vbi5hLnAvZWJwZl9lYnBmX3Jzcy1zdHViLmMubyBsaWJjb21tb24uYS5wL2h3X2Rp
+c3BsYXlfdmlydGlvLWdwdS1iYXNlLmMubyBsaWJjb21tb24uYS5wL2h3X2Rpc3BsYXlfdmly
+dGlvLWdwdS5jLm8gbGliY29tbW9uLmEucC9od19kaXNwbGF5X3ZpcnRpby1ncHUtdWRtYWJ1
+Zi5jLm8gbGliY29tbW9uLmEucC9od19kaXNwbGF5X3Zob3N0LXVzZXItZ3B1LmMubyBsaWJx
+ZW11LXg4Nl82NC1zb2Z0bW11LmEucC90YXJnZXRfaTM4Nl9hcmNoX2R1bXAuYy5vIGxpYnFl
+bXUteDg2XzY0LXNvZnRtbXUuYS5wL3RhcmdldF9pMzg2X2FyY2hfbWVtb3J5X21hcHBpbmcu
+Yy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL3RhcmdldF9pMzg2X21hY2hpbmUuYy5v
+IGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL3RhcmdldF9pMzg2X21vbml0b3IuYy5vIGxp
+YnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL3RhcmdldF9pMzg2X2NwdS1hcGljLmMubyBsaWJx
+ZW11LXg4Nl82NC1zb2Z0bW11LmEucC90YXJnZXRfaTM4Nl9jcHUtc3lzZW11LmMubyBsaWJx
+ZW11LXg4Nl82NC1zb2Z0bW11LmEucC90YXJnZXRfaTM4Nl9zZXYtc3lzZW11LXN0dWIuYy5v
+IGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL3RhcmdldF9pMzg2X2t2bV9oeXBlcnYtc3R1
+Yi5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvdGFyZ2V0X2kzODZfa3ZtX2t2bS5j
+Lm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvdGFyZ2V0X2kzODZfa3ZtX2t2bS1jcHUu
+Yy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL3RhcmdldF9pMzg2X2t2bV92bXNyX2Vu
+ZXJneS5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvaHdfaTM4Nl9md19jZmcuYy5v
+IGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X2kzODZfZTgyMF9tZW1vcnlfbGF5b3V0
+LmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9od19pMzg2X21vbml0b3IuYy5vIGxp
+YnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X2kzODZfbXVsdGlib290LmMubyBsaWJxZW11
+LXg4Nl82NC1zb2Z0bW11LmEucC9od19pMzg2X3g4Ni5jLm8gbGlicWVtdS14ODZfNjQtc29m
+dG1tdS5hLnAvaHdfaTM4Nl94ODYtY3B1LmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEu
+cC9od19pMzg2X3ZhcGljLmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9od19pMzg2
+X3g4Ni1pb21tdS1zdHViLmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9od19pMzg2
+X2FtZF9pb21tdS1zdHViLmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9od19pMzg2
+X3g4Ni1jb21tb24uYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X2kzODZfbWlj
+cm92bS5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvaHdfaTM4Nl9hY3BpLW1pY3Jv
+dm0uYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X2kzODZfbWljcm92bS1kdC5j
+Lm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvaHdfaTM4Nl9wY19xMzUuYy5vIGxpYnFl
+bXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X2kzODZfc2d4LXN0dWIuYy5vIGxpYnFlbXUteDg2
+XzY0LXNvZnRtbXUuYS5wL2h3X2kzODZfYWNwaS1jb21tb24uYy5vIGxpYnFlbXUteDg2XzY0
+LXNvZnRtbXUuYS5wL2h3X2kzODZfcGMuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5w
+L2h3X2kzODZfcGNfc3lzZncuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X2kz
+ODZfYWNwaS1idWlsZC5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvaHdfaTM4Nl9w
+b3J0OTIuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X2kzODZfcGNfc3lzZndf
+b3ZtZi1zdHVicy5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvaHdfaTM4Nl9rdm1f
+Y2xvY2suYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X2kzODZfa3ZtX2FwaWMu
+Yy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X2kzODZfa3ZtX2k4MjU0LmMubyBs
+aWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9od19pMzg2X2t2bV9pODI1OS5jLm8gbGlicWVt
+dS14ODZfNjQtc29mdG1tdS5hLnAvaHdfaTM4Nl9rdm1faW9hcGljLmMubyBsaWJxZW11LXg4
+Nl82NC1zb2Z0bW11LmEucC90YXJnZXRfaTM4Nl9jcHUuYy5vIGxpYnFlbXUteDg2XzY0LXNv
+ZnRtbXUuYS5wL3RhcmdldF9pMzg2X2dkYnN0dWIuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRt
+bXUuYS5wL3RhcmdldF9pMzg2X2hlbHBlci5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5h
+LnAvdGFyZ2V0X2kzODZfeHNhdmVfaGVscGVyLmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11
+LmEucC90YXJnZXRfaTM4Nl9jcHUtZHVtcC5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5h
+LnAvdGFyZ2V0X2kzODZfaG9zdC1jcHUuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5w
+L3RhcmdldF9pMzg2X3RjZ190Y2ctc3R1Yi5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5h
+LnAvdHJhY2VfY29udHJvbC10YXJnZXQuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5w
+L2h3X2Jsb2NrX3ZpcnRpby1ibGsuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3
+X2Jsb2NrX3ZpcnRpby1ibGstY29tbW9uLmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEu
+cC9od19jaGFyX3ZpcnRpby1zZXJpYWwtYnVzLmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11
+LmEucC9od19oeXBlcnZfaHYtYmFsbG9vbi1zdHViLmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0
+bW11LmEucC9od19pbnRjX2FwaWMuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3
+X2ludGNfYXBpY19jb21tb24uYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X2lu
+dGNfaW9hcGljLmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9od19pc2FfbHBjX2lj
+aDkuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X25ldF92aXJ0aW8tbmV0LmMu
+byBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9od19udnJhbV9md19jZmctYWNwaS5jLm8g
+bGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvaHdfc2NzaV92aXJ0aW8tc2NzaS5jLm8gbGli
+cWVtdS14ODZfNjQtc29mdG1tdS5hLnAvaHdfdmlydGlvX3ZpcnRpby5jLm8gbGlicWVtdS14
+ODZfNjQtc29mdG1tdS5hLnAvaHdfdmlydGlvX3ZpcnRpby1jb25maWctaW8uYy5vIGxpYnFl
+bXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X3ZpcnRpb192aXJ0aW8tcW1wLmMubyBsaWJxZW11
+LXg4Nl82NC1zb2Z0bW11LmEucC9od192aXJ0aW9fdmhvc3QtYmFja2VuZC5jLm8gbGlicWVt
+dS14ODZfNjQtc29mdG1tdS5hLnAvaHdfdmlydGlvX3Zob3N0LWlvdmEtdHJlZS5jLm8gbGli
+cWVtdS14ODZfNjQtc29mdG1tdS5hLnAvaHdfdmlydGlvX3Zob3N0LXVzZXIuYy5vIGxpYnFl
+bXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X3ZpcnRpb192aG9zdC1zaGFkb3ctdmlydHF1ZXVl
+LmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9od192aXJ0aW9fdmlydGlvLWJhbGxv
+b24uYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X3ZpcnRpb192aXJ0aW8tcG1l
+bS5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvaHdfdmlydGlvX3ZpcnRpby1ybmcu
+Yy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2h3X3ZpcnRpb192aXJ0aW8tbWVtLmMu
+byBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9od19pMzg2X2t2bV94ZW4tc3R1YnMuYy5v
+IGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2R1bXBfd2luX2R1bXAuYy5vIGxpYnFlbXUt
+eDg2XzY0LXNvZnRtbXUuYS5wL2NwdS10YXJnZXQuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRt
+bXUuYS5wL3N5c3RlbV9hcmNoX2luaXQuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5w
+L3N5c3RlbV9pb3BvcnQuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL3N5c3RlbV9t
+ZW1vcnkuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL3N5c3RlbV9waHlzbWVtLmMu
+byBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9zeXN0ZW1fd2F0Y2hwb2ludC5jLm8gbGli
+cWVtdS14ODZfNjQtc29mdG1tdS5hLnAvcGFnZS10YXJnZXQuYy5vIGxpYnFlbXUteDg2XzY0
+LXNvZnRtbXUuYS5wL3BhZ2UtdmFyeS10YXJnZXQuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRt
+bXUuYS5wL21pZ3JhdGlvbl9yYW0uYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL21p
+Z3JhdGlvbl90YXJnZXQuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL21vbml0b3Jf
+aG1wLWNtZHMtdGFyZ2V0LmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9tb25pdG9y
+X2htcC10YXJnZXQuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2FjY2VsX2FjY2Vs
+LXRhcmdldC5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvYWNjZWxfa3ZtX2t2bS1h
+bGwuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2FjY2VsX2t2bV9rdm0tYWNjZWwt
+b3BzLmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9hY2NlbF9zdHVic194ZW4tc3R1
+Yi5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvYWNjZWxfc3R1YnNfdGNnLXN0dWIu
+Yy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL2FjY2VsX3F0ZXN0X3F0ZXN0LmMubyBs
+aWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9tZXNvbi1nZW5lcmF0ZWRfLi5feDg2XzY0LXNv
+ZnRtbXUtZ2Ric3R1Yi14bWwuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL21lc29u
+LWdlbmVyYXRlZF8uLl9xYXBpX3FhcGktdHlwZXMtbWFjaGluZS10YXJnZXQuYy5vIGxpYnFl
+bXUteDg2XzY0LXNvZnRtbXUuYS5wL21lc29uLWdlbmVyYXRlZF8uLl9xYXBpX3FhcGktdmlz
+aXQtbWFjaGluZS10YXJnZXQuYy5vIGxpYnFlbXUteDg2XzY0LXNvZnRtbXUuYS5wL21lc29u
+LWdlbmVyYXRlZF8uLl9xYXBpX3FhcGktZXZlbnRzLW1hY2hpbmUtdGFyZ2V0LmMubyBsaWJx
+ZW11LXg4Nl82NC1zb2Z0bW11LmEucC9tZXNvbi1nZW5lcmF0ZWRfLi5fcWFwaV9xYXBpLWNv
+bW1hbmRzLW1hY2hpbmUtdGFyZ2V0LmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9t
+ZXNvbi1nZW5lcmF0ZWRfLi5fcWFwaV9xYXBpLXR5cGVzLW1pc2MtdGFyZ2V0LmMubyBsaWJx
+ZW11LXg4Nl82NC1zb2Z0bW11LmEucC9tZXNvbi1nZW5lcmF0ZWRfLi5fcWFwaV9xYXBpLXZp
+c2l0LW1pc2MtdGFyZ2V0LmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9tZXNvbi1n
+ZW5lcmF0ZWRfLi5fcWFwaV9xYXBpLWV2ZW50cy1taXNjLXRhcmdldC5jLm8gbGlicWVtdS14
+ODZfNjQtc29mdG1tdS5hLnAvbWVzb24tZ2VuZXJhdGVkXy4uX3FhcGlfcWFwaS1jb21tYW5k
+cy1taXNjLXRhcmdldC5jLm8gbGlicWVtdS14ODZfNjQtc29mdG1tdS5hLnAvbWVzb24tZ2Vu
+ZXJhdGVkXy4uX3FhcGlfcWFwaS1pbnRyb3NwZWN0LmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0
+bW11LmEucC9tZXNvbi1nZW5lcmF0ZWRfLi5fcWFwaV9xYXBpLXR5cGVzLmMubyBsaWJxZW11
+LXg4Nl82NC1zb2Z0bW11LmEucC9tZXNvbi1nZW5lcmF0ZWRfLi5fcWFwaV9xYXBpLXZpc2l0
+LmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9tZXNvbi1nZW5lcmF0ZWRfLi5fcWFw
+aV9xYXBpLWNvbW1hbmRzLmMubyBsaWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9tZXNvbi1n
+ZW5lcmF0ZWRfLi5fcWFwaV9xYXBpLWluaXQtY29tbWFuZHMuYy5vIGxpYnFlbXUteDg2XzY0
+LXNvZnRtbXUuYS5wL21lc29uLWdlbmVyYXRlZF8uLl9xYXBpX3FhcGktZXZlbnRzLmMubyBs
+aWJxZW11LXg4Nl82NC1zb2Z0bW11LmEucC9tZXNvbi1nZW5lcmF0ZWRfLi5fcWFwaV9xYXBp
+LWVtaXQtZXZlbnRzLmMubyBsaWJod2NvcmUuYS5wL2h3X2NvcmVfYnVzLmMubyBsaWJod2Nv
+cmUuYS5wL2h3X2NvcmVfcWRldi1wcm9wZXJ0aWVzLmMubyBsaWJod2NvcmUuYS5wL2h3X2Nv
+cmVfcWRldi5jLm8gbGliaHdjb3JlLmEucC9od19jb3JlX3Jlc2V0Y29udGFpbmVyLmMubyBs
+aWJod2NvcmUuYS5wL2h3X2NvcmVfcmVzZXR0YWJsZS5jLm8gbGliaHdjb3JlLmEucC9od19j
+b3JlX3Ztc3RhdGUtaWYuYy5vIGxpYmh3Y29yZS5hLnAvaHdfY29yZV9pcnEuYy5vIGxpYmh3
+Y29yZS5hLnAvaHdfY29yZV9jbG9jay5jLm8gbGliaHdjb3JlLmEucC9od19jb3JlX3FkZXYt
+Y2xvY2suYy5vIGxpYnFvbS5hLnAvcW9tX2NvbnRhaW5lci5jLm8gbGlicW9tLmEucC9xb21f
+b2JqZWN0LmMubyBsaWJxb20uYS5wL3FvbV9vYmplY3RfaW50ZXJmYWNlcy5jLm8gbGlicW9t
+LmEucC9xb21fcW9tLXFvYmplY3QuYy5vIGxpYmV2ZW50LWxvb3AtYmFzZS5hLnAvZXZlbnQt
+bG9vcC1iYXNlLmMubyBnZGJzdHViL2xpYmdkYl9zeXN0ZW0uYS5wL2dkYnN0dWIuYy5vIGdk
+YnN0dWIvbGliZ2RiX3N5c3RlbS5hLnAvc3lzdGVtLmMubyBsaWJtaWdyYXRpb24uYS5wL21p
+Z3JhdGlvbl9taWdyYXRpb24tc3RhdHMuYy5vIGxpYm1pZ3JhdGlvbi5hLnAvbWlncmF0aW9u
+X3BhZ2VfY2FjaGUuYy5vIGxpYm1pZ3JhdGlvbi5hLnAvbWlncmF0aW9uX3hienJsZS5jLm8g
+bGlibWlncmF0aW9uLmEucC9taWdyYXRpb25fdm1zdGF0ZS10eXBlcy5jLm8gbGlibWlncmF0
+aW9uLmEucC9taWdyYXRpb25fdm1zdGF0ZS5jLm8gbGlibWlncmF0aW9uLmEucC9taWdyYXRp
+b25fcWVtdS1maWxlLmMubyBsaWJtaWdyYXRpb24uYS5wL21pZ3JhdGlvbl95YW5rX2Z1bmN0
+aW9ucy5jLm8gbGliaW8uYS5wL2lvX2NoYW5uZWwtYnVmZmVyLmMubyBsaWJpby5hLnAvaW9f
+Y2hhbm5lbC1jb21tYW5kLmMubyBsaWJpby5hLnAvaW9fY2hhbm5lbC1maWxlLmMubyBsaWJp
+by5hLnAvaW9fY2hhbm5lbC1udWxsLmMubyBsaWJpby5hLnAvaW9fY2hhbm5lbC1zb2NrZXQu
+Yy5vIGxpYmlvLmEucC9pb19jaGFubmVsLXRscy5jLm8gbGliaW8uYS5wL2lvX2NoYW5uZWwt
+dXRpbC5jLm8gbGliaW8uYS5wL2lvX2NoYW5uZWwtd2F0Y2guYy5vIGxpYmlvLmEucC9pb19j
+aGFubmVsLXdlYnNvY2suYy5vIGxpYmlvLmEucC9pb19jaGFubmVsLmMubyBsaWJpby5hLnAv
+aW9fZG5zLXJlc29sdmVyLmMubyBsaWJpby5hLnAvaW9fbmV0LWxpc3RlbmVyLmMubyBsaWJp
+by5hLnAvaW9fdGFzay5jLm8gbGliY3J5cHRvLmEucC9jcnlwdG9fYWZzcGxpdC5jLm8gbGli
+Y3J5cHRvLmEucC9jcnlwdG9fYWtjaXBoZXIuYy5vIGxpYmNyeXB0by5hLnAvY3J5cHRvX2Js
+b2NrLWx1a3MuYy5vIGxpYmNyeXB0by5hLnAvY3J5cHRvX2Jsb2NrLXFjb3cuYy5vIGxpYmNy
+eXB0by5hLnAvY3J5cHRvX2Jsb2NrLmMubyBsaWJjcnlwdG8uYS5wL2NyeXB0b19jaXBoZXIu
+Yy5vIGxpYmNyeXB0by5hLnAvY3J5cHRvX2Rlci5jLm8gbGliY3J5cHRvLmEucC9jcnlwdG9f
+aGFzaC5jLm8gbGliY3J5cHRvLmEucC9jcnlwdG9faG1hYy5jLm8gbGliY3J5cHRvLmEucC9j
+cnlwdG9faXZnZW4tZXNzaXYuYy5vIGxpYmNyeXB0by5hLnAvY3J5cHRvX2l2Z2VuLXBsYWlu
+LmMubyBsaWJjcnlwdG8uYS5wL2NyeXB0b19pdmdlbi1wbGFpbjY0LmMubyBsaWJjcnlwdG8u
+YS5wL2NyeXB0b19pdmdlbi5jLm8gbGliY3J5cHRvLmEucC9jcnlwdG9fcGJrZGYuYy5vIGxp
+YmNyeXB0by5hLnAvY3J5cHRvX3NlY3JldF9jb21tb24uYy5vIGxpYmNyeXB0by5hLnAvY3J5
+cHRvX3NlY3JldC5jLm8gbGliY3J5cHRvLmEucC9jcnlwdG9fdGxzY3JlZHMuYy5vIGxpYmNy
+eXB0by5hLnAvY3J5cHRvX3Rsc2NyZWRzYW5vbi5jLm8gbGliY3J5cHRvLmEucC9jcnlwdG9f
+dGxzY3JlZHNwc2suYy5vIGxpYmNyeXB0by5hLnAvY3J5cHRvX3Rsc2NyZWRzeDUwOS5jLm8g
+bGliY3J5cHRvLmEucC9jcnlwdG9fdGxzc2Vzc2lvbi5jLm8gbGliY3J5cHRvLmEucC9jcnlw
+dG9fcnNha2V5LmMubyBsaWJjcnlwdG8uYS5wL2NyeXB0b19oYXNoLWdsaWIuYy5vIGxpYmNy
+eXB0by5hLnAvY3J5cHRvX2htYWMtZ2xpYi5jLm8gbGliY3J5cHRvLmEucC9jcnlwdG9fcGJr
+ZGYtc3R1Yi5jLm8gbGliYXV0aHouYS5wL2F1dGh6X2Jhc2UuYy5vIGxpYmF1dGh6LmEucC9h
+dXRoel9saXN0LmMubyBsaWJhdXRoei5hLnAvYXV0aHpfbGlzdGZpbGUuYy5vIGxpYmF1dGh6
+LmEucC9hdXRoel9zaW1wbGUuYy5vIGxpYmJsb2NrZGV2LmEucC9uYmRfc2VydmVyLmMubyBs
+aWJibG9ja2Rldi5hLnAvYmxvY2tfZXhwb3J0X2V4cG9ydC5jLm8gbGliYmxvY2tkZXYuYS5w
+L2Jsb2NrX2V4cG9ydF92aG9zdC11c2VyLWJsay1zZXJ2ZXIuYy5vIGxpYmJsb2NrZGV2LmEu
+cC9ibG9ja19leHBvcnRfdmlydGlvLWJsay1oYW5kbGVyLmMubyBsaWJibG9ja2Rldi5hLnAv
+YmxvY2tkZXYuYy5vIGxpYmJsb2NrZGV2LmEucC9ibG9ja2Rldi1uYmQuYy5vIGxpYmJsb2Nr
+ZGV2LmEucC9pb3RocmVhZC5jLm8gbGliYmxvY2tkZXYuYS5wL2pvYi1xbXAuYy5vIGxpYmJs
+b2NrZGV2LmEucC9vcy1wb3NpeC5jLm8gbGliYmxvY2suYS5wL2Jsb2NrLmMubyBsaWJibG9j
+ay5hLnAvYmxvY2tqb2IuYy5vIGxpYmJsb2NrLmEucC9qb2IuYy5vIGxpYmJsb2NrLmEucC9x
+ZW11LWlvLWNtZHMuYy5vIGxpYmJsb2NrLmEucC9uYmRfY2xpZW50LmMubyBsaWJibG9jay5h
+LnAvbmJkX2NsaWVudC1jb25uZWN0aW9uLmMubyBsaWJibG9jay5hLnAvbmJkX2NvbW1vbi5j
+Lm8gbGliYmxvY2suYS5wL3Njc2lfdXRpbHMuYy5vIGxpYmJsb2NrLmEucC9zY3NpX3ByLW1h
+bmFnZXIuYy5vIGxpYmJsb2NrLmEucC9zY3NpX3ByLW1hbmFnZXItaGVscGVyLmMubyBsaWJi
+bG9jay5hLnAvYmxvY2tfYWNjb3VudGluZy5jLm8gbGliYmxvY2suYS5wL2Jsb2NrX2Fpb190
+YXNrLmMubyBsaWJibG9jay5hLnAvYmxvY2tfYW1lbmQuYy5vIGxpYmJsb2NrLmEucC9ibG9j
+a19iYWNrdXAuYy5vIGxpYmJsb2NrLmEucC9ibG9ja19ibGtkZWJ1Zy5jLm8gbGliYmxvY2su
+YS5wL2Jsb2NrX2Jsa2xvZ3dyaXRlcy5jLm8gbGliYmxvY2suYS5wL2Jsb2NrX2Jsa3Zlcmlm
+eS5jLm8gbGliYmxvY2suYS5wL2Jsb2NrX2Jsb2NrLWJhY2tlbmQuYy5vIGxpYmJsb2NrLmEu
+cC9ibG9ja19ibG9jay1jb3B5LmMubyBsaWJibG9jay5hLnAvYmxvY2tfY29tbWl0LmMubyBs
+aWJibG9jay5hLnAvYmxvY2tfY29weS1iZWZvcmUtd3JpdGUuYy5vIGxpYmJsb2NrLmEucC9i
+bG9ja19jb3B5LW9uLXJlYWQuYy5vIGxpYmJsb2NrLmEucC9ibG9ja19jcmVhdGUuYy5vIGxp
+YmJsb2NrLmEucC9ibG9ja19jcnlwdG8uYy5vIGxpYmJsb2NrLmEucC9ibG9ja19kaXJ0eS1i
+aXRtYXAuYy5vIGxpYmJsb2NrLmEucC9ibG9ja19maWx0ZXItY29tcHJlc3MuYy5vIGxpYmJs
+b2NrLmEucC9ibG9ja19ncmFwaC1sb2NrLmMubyBsaWJibG9jay5hLnAvYmxvY2tfaW8uYy5v
+IGxpYmJsb2NrLmEucC9ibG9ja19taXJyb3IuYy5vIGxpYmJsb2NrLmEucC9ibG9ja19uYmQu
+Yy5vIGxpYmJsb2NrLmEucC9ibG9ja19udWxsLmMubyBsaWJibG9jay5hLnAvYmxvY2tfcHJl
+YWxsb2NhdGUuYy5vIGxpYmJsb2NrLmEucC9ibG9ja19wcm9ncmVzc19tZXRlci5jLm8gbGli
+YmxvY2suYS5wL2Jsb2NrX3FhcGkuYy5vIGxpYmJsb2NrLmEucC9ibG9ja19xY293Mi5jLm8g
+bGliYmxvY2suYS5wL2Jsb2NrX3Fjb3cyLWJpdG1hcC5jLm8gbGliYmxvY2suYS5wL2Jsb2Nr
+X3Fjb3cyLWNhY2hlLmMubyBsaWJibG9jay5hLnAvYmxvY2tfcWNvdzItY2x1c3Rlci5jLm8g
+bGliYmxvY2suYS5wL2Jsb2NrX3Fjb3cyLXJlZmNvdW50LmMubyBsaWJibG9jay5hLnAvYmxv
+Y2tfcWNvdzItc25hcHNob3QuYy5vIGxpYmJsb2NrLmEucC9ibG9ja19xY293Mi10aHJlYWRz
+LmMubyBsaWJibG9jay5hLnAvYmxvY2tfcXVvcnVtLmMubyBsaWJibG9jay5hLnAvYmxvY2tf
+cmF3LWZvcm1hdC5jLm8gbGliYmxvY2suYS5wL2Jsb2NrX3JlcWxpc3QuYy5vIGxpYmJsb2Nr
+LmEucC9ibG9ja19zbmFwc2hvdC5jLm8gbGliYmxvY2suYS5wL2Jsb2NrX3NuYXBzaG90LWFj
+Y2Vzcy5jLm8gbGliYmxvY2suYS5wL2Jsb2NrX3Rocm90dGxlLmMubyBsaWJibG9jay5hLnAv
+YmxvY2tfdGhyb3R0bGUtZ3JvdXBzLmMubyBsaWJibG9jay5hLnAvYmxvY2tfd3JpdGUtdGhy
+ZXNob2xkLmMubyBsaWJibG9jay5hLnAvYmxvY2tfZmlsZS1wb3NpeC5jLm8gbGliYmxvY2su
+YS5wL2Jsb2NrX252bWUuYy5vIGxpYmJsb2NrLmEucC9ibG9ja19saW51eC1haW8uYy5vIGxp
+YmJsb2NrLmEucC9ibG9ja19pb191cmluZy5jLm8gbGliYmxvY2suYS5wL2Jsb2NrX3N0cmVh
+bS5jLm8gbGliYmxvY2suYS5wL2Jsb2NrX21vbml0b3JfYml0bWFwLXFtcC1jbWRzLmMubyBs
+aWJibG9jay5hLnAvbWVzb24tZ2VuZXJhdGVkXy4uX2Jsb2NrX2Jsb2NrLWdlbi5jLm8gbGli
+Y2hhcmRldi5hLnAvY2hhcmRldl9jaGFyLWZlLmMubyBsaWJjaGFyZGV2LmEucC9jaGFyZGV2
+X2NoYXItZmlsZS5jLm8gbGliY2hhcmRldi5hLnAvY2hhcmRldl9jaGFyLWlvLmMubyBsaWJj
+aGFyZGV2LmEucC9jaGFyZGV2X2NoYXItbXV4LmMubyBsaWJjaGFyZGV2LmEucC9jaGFyZGV2
+X2NoYXItbnVsbC5jLm8gbGliY2hhcmRldi5hLnAvY2hhcmRldl9jaGFyLXBpcGUuYy5vIGxp
+YmNoYXJkZXYuYS5wL2NoYXJkZXZfY2hhci1yaW5nYnVmLmMubyBsaWJjaGFyZGV2LmEucC9j
+aGFyZGV2X2NoYXItc2VyaWFsLmMubyBsaWJjaGFyZGV2LmEucC9jaGFyZGV2X2NoYXItc29j
+a2V0LmMubyBsaWJjaGFyZGV2LmEucC9jaGFyZGV2X2NoYXItc3RkaW8uYy5vIGxpYmNoYXJk
+ZXYuYS5wL2NoYXJkZXZfY2hhci11ZHAuYy5vIGxpYmNoYXJkZXYuYS5wL2NoYXJkZXZfY2hh
+ci5jLm8gbGliY2hhcmRldi5hLnAvY2hhcmRldl9jaGFyLWZkLmMubyBsaWJjaGFyZGV2LmEu
+cC9jaGFyZGV2X2NoYXItcGFyYWxsZWwuYy5vIGxpYmNoYXJkZXYuYS5wL2NoYXJkZXZfY2hh
+ci1wdHkuYy5vIGxpYnFtcC5hLnAvcW9tX3FvbS1xbXAtY21kcy5jLm8gbGlicW1wLmEucC9t
+b25pdG9yX21vbml0b3IuYy5vIGxpYnFtcC5hLnAvbW9uaXRvcl9xbXAuYy5vIGxpYnFtcC5h
+LnAvbW9uaXRvcl9xbXAtY21kcy1jb250cm9sLmMubyBxZW11LXN5c3RlbS14ODZfNjQucC9z
+eXN0ZW1fbWFpbi5jLm8gLVdsLC0tYXMtbmVlZGVkIC1XbCwtLW5vLXVuZGVmaW5lZCAtcGll
+IC1XbCwteixyZWxybyAtV2wsLXosbm93IC1nIC1PMiAtV2Vycm9yPWltcGxpY2l0LWZ1bmN0
+aW9uLWRlY2xhcmF0aW9uIC1mZmlsZS1wcmVmaXgtbWFwPS9idWlsZC9wa2cvYnVpbGQ9LiAt
+ZnN0YWNrLXByb3RlY3Rvci1zdHJvbmcgLWZzdGFjay1jbGFzaC1wcm90ZWN0aW9uIC1XZm9y
+bWF0IC1XZXJyb3I9Zm9ybWF0LXNlY3VyaXR5IC1mY2YtcHJvdGVjdGlvbiAtZmZpbGUtcHJl
+Zml4LW1hcD0uLi8uLi89IC1XZGF0ZS10aW1lIC1EX0ZPUlRJRllfU09VUkNFPTIgLURDT05G
+SUdfTUlDUk9WTV9ERUZBVUxUPTEgLVdsLC16LHJlbHJvIC1XbCwtLWFzLW5lZWRlZCAtV2ws
+LS1zdGFydC1ncm91cCBsaWJxZW11dXRpbC5hIHN1YnByb2plY3RzL2xpYnZob3N0LXVzZXIv
+bGlidmhvc3QtdXNlci1nbGliLmEgc3VicHJvamVjdHMvbGlidmhvc3QtdXNlci9saWJ2aG9z
+dC11c2VyLmEgQGJsb2NrLnN5bXMgQHFlbXUuc3ltcyAvdXNyL2xpYi94ODZfNjQtbGludXgt
+Z251L2xpYnBpeG1hbi0xLnNvIC91c3IvbGliL3g4Nl82NC1saW51eC1nbnUvbGliei5zbyAv
+dXNyL2xpYi94ODZfNjQtbGludXgtZ251L2xpYnNlY2NvbXAuc28gLWxmZHQgLWxudW1hIC1s
+cnQgLWxhaW8gL3Vzci9saWIveDg2XzY0LWxpbnV4LWdudS9saWJ1cmluZy5zbyAtbHV0aWwg
+LWxudW1hIC91c3IvbGliL3g4Nl82NC1saW51eC1nbnUvbGliZ2xpYi0yLjAuc28gLWxtIC1X
+bCwtLWVuZC1ncm91cCAtcHRocmVhZA==
+
+--------------iICnmpmGQFWp06wXqbnhaRD0--
 
