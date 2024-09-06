@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA16396F2DE
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C0496F2D0
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:21:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smX04-0001HA-TO; Fri, 06 Sep 2024 07:19:37 -0400
+	id 1smX0p-0004i6-M7; Fri, 06 Sep 2024 07:20:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smX02-000143-8k; Fri, 06 Sep 2024 07:19:34 -0400
+ id 1smX0P-0003pF-5t; Fri, 06 Sep 2024 07:20:01 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smX00-0008Mg-68; Fri, 06 Sep 2024 07:19:33 -0400
+ id 1smX0L-0008My-FX; Fri, 06 Sep 2024 07:19:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CA3EE8C4B3;
+ by isrv.corpit.ru (Postfix) with ESMTP id D8A0F8C4B4;
  Fri,  6 Sep 2024 14:12:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D71F813371C;
+ by tsrv.corpit.ru (Postfix) with SMTP id E557D13371D;
  Fri,  6 Sep 2024 14:13:28 +0300 (MSK)
-Received: (nullmailer pid 353762 invoked by uid 1000);
+Received: (nullmailer pid 353765 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:25 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 66/69] linux-user: Handle short reads in mmap_h_gt_g
-Date: Fri,  6 Sep 2024 14:13:15 +0300
-Message-Id: <20240906111324.353230-66-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 67/69] Revert "replay: stop us hanging in
+ rr_wait_io_event"
+Date: Fri,  6 Sep 2024 14:13:16 +0300
+Message-Id: <20240906111324.353230-67-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -61,93 +62,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-In particular, if an image has a large bss, we can hit
-EOF before reading all host_len bytes of the mapping.
+This reverts commit 1f881ea4a444ef36a8b6907b0b82be4b3af253a2.
 
-Create a helper, mmap_pread to handle the job for both
-the larger block in mmap_h_gt_g itself, as well as the
-smaller block in mmap_frag.
+That commit causes reverse_debugging.py test failures, and does
+not seem to solve the root cause of the problem x86-64 still
+hangs in record/replay tests.
 
-Cc: qemu-stable@nongnu.org
-Fixes: eb5027ac618 ("linux-user: Split out mmap_h_gt_g")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2504
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240820050848.165253-2-richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit a4ad4a9d98f7fbde806f07da21e69f39e134cdf1)
+The problem with short-cutting the iowait that was taken during
+record phase is that related events will not get consumed at the
+same points (e.g., reading the clock).
+
+A hang with zero icount always seems to be a symptom of an earlier
+problem that has caused the recording to become out of synch with
+the execution and consumption of events by replay.
+
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Message-Id: <20240813050638.446172-6-npiggin@gmail.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240813202329.1237572-14-alex.bennee@linaro.org>
+(cherry picked from commit 94962ff00d09674047aed896e87ba09736cd6941)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2524
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 2a11d921ab..9e94f36ba2 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -282,6 +282,40 @@ static int do_munmap(void *addr, size_t len)
-     return munmap(addr, len);
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index 894e73e52c..a942442a33 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -109,7 +109,7 @@ static void rr_wait_io_event(void)
+ {
+     CPUState *cpu;
+ 
+-    while (all_cpu_threads_idle() && replay_can_wait()) {
++    while (all_cpu_threads_idle()) {
+         rr_stop_kick_timer();
+         qemu_cond_wait_bql(first_cpu->halt_cond);
+     }
+diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
+index f229b2109c..8102fa54f0 100644
+--- a/include/sysemu/replay.h
++++ b/include/sysemu/replay.h
+@@ -73,11 +73,6 @@ int replay_get_instructions(void);
+ /*! Updates instructions counter in replay mode. */
+ void replay_account_executed_instructions(void);
+ 
+-/**
+- * replay_can_wait: check if we should pause for wait-io
+- */
+-bool replay_can_wait(void);
+-
+ /* Processing clocks and other time sources */
+ 
+ /*! Save the specified clock */
+diff --git a/replay/replay.c b/replay/replay.c
+index a2c576c16e..325e275756 100644
+--- a/replay/replay.c
++++ b/replay/replay.c
+@@ -449,27 +449,6 @@ void replay_start(void)
+     replay_enable_events();
  }
  
-+/*
-+ * Perform a pread on behalf of target_mmap.  We can reach EOF, we can be
-+ * interrupted by signals, and in general there's no good error return path.
-+ * If @zero, zero the rest of the block at EOF.
-+ * Return true on success.
-+ */
-+static bool mmap_pread(int fd, void *p, size_t len, off_t offset, bool zero)
-+{
-+    while (1) {
-+        ssize_t r = pread(fd, p, len, offset);
-+
-+        if (likely(r == len)) {
-+            /* Complete */
-+            return true;
-+        }
-+        if (r == 0) {
-+            /* EOF */
-+            if (zero) {
-+                memset(p, 0, len);
-+            }
-+            return true;
-+        }
-+        if (r > 0) {
-+            /* Short read */
-+            p += r;
-+            len -= r;
-+            offset += r;
-+        } else if (errno != EINTR) {
-+            /* Error */
-+            return false;
-+        }
-+    }
-+}
-+
- /*
-  * Map an incomplete host page.
-  *
-@@ -356,10 +390,9 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
-     /* Read or zero the new guest pages. */
-     if (flags & MAP_ANONYMOUS) {
-         memset(g2h_untagged(start), 0, last - start + 1);
--    } else {
--        if (pread(fd, g2h_untagged(start), last - start + 1, offset) == -1) {
+-/*
+- * For none/record the answer is yes.
+- */
+-bool replay_can_wait(void)
+-{
+-    if (replay_mode == REPLAY_MODE_PLAY) {
+-        /*
+-         * For playback we shouldn't ever be at a point we wait. If
+-         * the instruction count has reached zero and we have an
+-         * unconsumed event we should go around again and consume it.
+-         */
+-        if (replay_state.instruction_count == 0 && replay_state.has_unread_data) {
 -            return false;
+-        } else {
+-            replay_sync_error("Playback shouldn't have to iowait");
 -        }
-+    } else if (!mmap_pread(fd, g2h_untagged(start), last - start + 1,
-+                           offset, true)) {
-+        return false;
-     }
- 
-     /* Put final protection */
-@@ -852,8 +885,7 @@ static abi_long mmap_h_gt_g(abi_ulong start, abi_ulong len,
-     }
- 
-     if (misaligned_offset) {
--        /* TODO: The read could be short. */
--        if (pread(fd, p, host_len, offset + real_start - start) != host_len) {
-+        if (!mmap_pread(fd, p, host_len, offset + real_start - start, false)) {
-             do_munmap(p, host_len);
-             return -1;
-         }
+-    }
+-    return true;
+-}
+-
+-
+ void replay_finish(void)
+ {
+     if (replay_mode == REPLAY_MODE_NONE) {
 -- 
 2.39.2
 
