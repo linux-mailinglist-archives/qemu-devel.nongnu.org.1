@@ -2,50 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C7C96F2FF
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B53F896F323
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:33:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smX0q-0005IL-GZ; Fri, 06 Sep 2024 07:20:24 -0400
+	id 1smXCx-0000Lk-7Z; Fri, 06 Sep 2024 07:32:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smX0S-00042E-G5; Fri, 06 Sep 2024 07:20:04 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smX0Q-0008Px-Nb; Fri, 06 Sep 2024 07:20:00 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 02F898C4B6;
- Fri,  6 Sep 2024 14:12:11 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0E95413371F;
- Fri,  6 Sep 2024 14:13:29 +0300 (MSK)
-Received: (nullmailer pid 353772 invoked by uid 1000);
- Fri, 06 Sep 2024 11:13:25 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- Guenter Roeck <linux@roeck-us.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 69/69] target/hppa: Fix PSW V-bit packaging in
- cpu_hppa_get for hppa64
-Date: Fri,  6 Sep 2024 14:13:18 +0300
-Message-Id: <20240906111324.353230-69-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
-References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1smXCu-0000E5-JT
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 07:32:52 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1smXCs-0001kw-7e
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 07:32:51 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5c275491c61so2147916a12.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 04:32:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725622367; x=1726227167; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=hi2SjrygMmK2WNFx8XgAzH5BKkoeBwqtydW1vzokC/U=;
+ b=ugeMHwEWyBjvEohBzOn/h+NG3FWihNJ3p+0o0QtIEgy9fZAhthD2NeNZZHZ6K54gyK
+ UrmTHTarTy3AcpicCmyd5fXkfJtl3CEpz6coPh4vOkJAzA0LuBi41f+1LLsUFVhT+XSL
+ d51Stys5NNvRvmgYtIGcCHemOfFM926u75wJacFiq35zmMye4BzIQJHZxbVaS4HqgKgz
+ betYI4iNt6Zg4bXMfhohr/fmhlyXI99ub+pqHFQMRpepCcwRoo6Eo8wYZGZIqH+hbCrU
+ efLj0TJ4zXM0WWraejeeDzY5hn/M+cJx37gwZMlnwxEueGf2gS2skOhfj8G0Mj+KH9js
+ QymA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725622367; x=1726227167;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hi2SjrygMmK2WNFx8XgAzH5BKkoeBwqtydW1vzokC/U=;
+ b=WFjB+GhGlgA37u7pGKJdO9By+kJtHbavP8Xo7AMyq/0bBxHQHqQvFZ6GSzTDGGZM5e
+ nCfVjURnd9EPhXpKvtRR5mysI8Oszw1zuSGLZIP66AmBXE1nKUawszPrUO3U8aoJGZJ+
+ rNy+LEI1M0fASdImO2rMYx9qDDK3dH0lz69AyZhIfN7i1UrRRM7vp41y7QgZ7RxiwaoA
+ wPRGlMTopED8B1GwQEyoSKyyJ41nKitXOzuWZjDDhrmy5WCsrewBVsvnf48dGNpP1SvP
+ BHXfVRwb4zX0h3qP4Wbm2lQ8F8+ENTwXC+OENVa1rOOyqkqH1V3UZ19AQXVufNvHyMsh
+ qvzw==
+X-Gm-Message-State: AOJu0YxqBx2fwHepxvg/u/uHLNUXOQcI3KAkaVVEzXMEVoFn+8FK4kLr
+ SwyplVwIjsekFUj7OYPRTsuNjMNAyBBz/XsODwqqNzKDHw6yfJTp7uPO9lah1NpMjKmy2VJXYz9
+ VMnWyEZM6dfGWG0ZWEXGTZ+K0cgR8qZgJLpn9/A==
+X-Google-Smtp-Source: AGHT+IEY9b59tbUHZODvIDqx4CBZS1oAFWKD9/gETxBTItpsj98Q2wbfTTp1zV75Mv3MKVPMAVx4U/Ks30lHLQZfpsI=
+X-Received: by 2002:a05:6402:3592:b0:5c0:ad65:ebfa with SMTP id
+ 4fb4d7f45d1cf-5c21ec58f5emr20031635a12.0.1725622367304; Fri, 06 Sep 2024
+ 04:32:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240904103923.451847-1-thuth@redhat.com>
+In-Reply-To: <20240904103923.451847-1-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 6 Sep 2024 12:32:35 +0100
+Message-ID: <CAFEAcA-Rq+BbZeDABM-fRD7Jhj_4bbP8axgkmm+h1Oj-CPR_rA@mail.gmail.com>
+Subject: Re: [PULL 00/42] Introduce new functional test framework
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Stefan Hajnoczi <stefanha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -62,56 +86,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+On Wed, 4 Sept 2024 at 11:40, Thomas Huth <thuth@redhat.com> wrote:
+>
+>  Hi!
+>
+> The following changes since commit e638d685ec2a0700fb9529cbd1b2823ac4120c53:
+>
+>   Open 9.2 development tree (2024-09-03 09:18:43 -0700)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/thuth/qemu.git tags/pull-request-2024-09-04
+>
+> for you to fetch changes up to c3e24cff2b27d63ac4b56ac6d38ef1ae3a27d92f:
+>
+>   docs/devel/testing: Add documentation for functional tests (2024-09-04 12:28:00 +0200)
+>
+> ----------------------------------------------------------------
+> * Bump Avocado to version 103
+> * Introduce new functional test framework for Python-based tests
+> * Convert many Avocado tests to the new functional test framework
+>
 
-While adding hppa64 support, the psw_v variable got extended from 32 to 64
-bits.  So, when packaging the PSW-V bit from the psw_v variable for interrupt
-processing, check bit 31 instead the 63th (sign) bit.
 
-This fixes a hard to find Linux kernel boot issue where the loss of the PSW-V
-bit due to an ITLB interruption in the middle of a series of ds/addc
-instructions (from the divU milicode library) generated the wrong division
-result and thus triggered a Linux kernel crash.
+Applied, thanks.
 
-Link: https://lore.kernel.org/lkml/718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net/
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: 931adff31478 ("target/hppa: Update cpu_hppa_get/put_psw for hppa64")
-Cc: qemu-stable@nongnu.org # v8.2+
-(cherry picked from commit ead5078cf1a5f11d16e3e8462154c859620bcc7e)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: context fixup in target/hppa/helper.c due to lack of
- v9.0.0-688-gebc9401a4067 "target/hppa: Split PSW X and B into their own field")
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index a072d0bb63..9c42431d72 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -188,7 +188,7 @@ typedef struct CPUArchState {
- 
-     target_ulong psw;        /* All psw bits except the following:  */
-     target_ulong psw_n;      /* boolean */
--    target_long psw_v;       /* in most significant bit */
-+    target_long psw_v;       /* in bit 31 */
- 
-     /* Splitting the carry-borrow field into the MSB and "the rest", allows
-      * for "the rest" to be deleted when it is unused, but the MSB is in use.
-diff --git a/target/hppa/helper.c b/target/hppa/helper.c
-index 9d217d051c..6c14994921 100644
---- a/target/hppa/helper.c
-+++ b/target/hppa/helper.c
-@@ -53,7 +53,7 @@ target_ulong cpu_hppa_get_psw(CPUHPPAState *env)
-     }
- 
-     psw |= env->psw_n * PSW_N;
--    psw |= (env->psw_v < 0) * PSW_V;
-+    psw |= ((env->psw_v >> 31) & 1) * PSW_V;
-     psw |= env->psw;
- 
-     return psw;
--- 
-2.39.2
-
+-- PMM
 
