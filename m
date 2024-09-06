@@ -2,93 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DF696F450
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 14:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F85D96F454
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 14:31:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smY2n-0002g1-HX; Fri, 06 Sep 2024 08:26:29 -0400
+	id 1smY70-0006l9-2o; Fri, 06 Sep 2024 08:30:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1smY2O-00016O-Ia; Fri, 06 Sep 2024 08:26:05 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1smY2M-00024R-Up; Fri, 06 Sep 2024 08:26:04 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-7c6aee8e8daso1451812a12.0; 
- Fri, 06 Sep 2024 05:26:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1725625560; x=1726230360; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
- :message-id:reply-to;
- bh=T/CG8oTE97MQ3mzxYzcnj6JCXco3Y8qe4hbK/c5UiUk=;
- b=ZecGtxnjVmkBONNyQavxipqkT8rvW3mPfx4EDvFwUGJLfoKI/ioIqaE1zC+DjFdBoh
- 2dpWq1FDoV0A0qPU7bhpUkEiUoDIRPHi27vR98tFBklreMFafMi4L0uOWYkvHjf+/LM5
- cIWx8hrWjmRGBj8M6lCAs43H2kCz90M+rRarlM0RABb+cJM2OqsV4JriTCYPXgkRJLv6
- zctCVEI0uq553rs6VruJyoewqOhgFYJ9jXctL9SK2Cf47p3Ummekg5278HOdC0svlzw0
- D5/gKBpOiIz2MDz7EI7Sho0KJ/Xgxj3zvNpc6LeZ6mh2XrHzH/BlZnuJDMV1Xu+3NBic
- y8Eg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1smY6k-0006GI-Is
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 08:30:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1smY6d-0002hE-R4
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 08:30:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1725625822;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cYUuhUoOFprz5gXEjqcpnsQ4XnXl828/b8BDAMd70/c=;
+ b=goa00OSqPGgU0oYgk6Iep4yGiLgDe+0VBmt1qk0xMHdHs2cW/DCKwSJmXF8I80RbFn9xf2
+ 2jSVUx2FeTXS9ptkxr9ZQSqcbhpVk0x6eZJrwQXHFU1pIUIhdKZbFuJAgV3L/s34RftLTd
+ cPFBw15kklvexldYfAQxFCa8GF/ieyk=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-447-LL-ZKp7gPIuyhxbnh0VfDA-1; Fri, 06 Sep 2024 08:30:21 -0400
+X-MC-Unique: LL-ZKp7gPIuyhxbnh0VfDA-1
+Received: by mail-ot1-f72.google.com with SMTP id
+ 46e09a7af769-70f657cc663so1818252a34.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 05:30:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725625560; x=1726230360;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=T/CG8oTE97MQ3mzxYzcnj6JCXco3Y8qe4hbK/c5UiUk=;
- b=oeH201ld8WCNp1SYj/umeDwpWGQLlzsTz2ZE+GD7fHJTnrtQAEcfNp2k36I59BNRrh
- t+dc+rew7JZf92SJA6Epr5Z2h6EcCgSmp0OwWqwFYGE2XDubsj8zhOLDNX6VAqB7RHvu
- GEz12QQywjdorKnc3d+26d9IQJNasyR8syc5mK/lqwbHi9SM5dMec3IJFYGnN4HzJvJs
- wmSfsRsbpEb8Lc1im6VHRkSwREpW9H+YEIBHvT2BmL3yvd6TMce9x0vhvVO7bkm6YMwA
- WP9V1sDb6CGpqpUfoRkwzuqOkRQURokd61bX7cag7Aat2YH6BzvWRXq+Otoed/eqPqrs
- GmLw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXrGf6vhdQR3mIq09WDRWskd/9jxzcH7zkGu0LmtGwBRlaxZ8eYNU2vPH8jsfPe4T25My4DXx/sKw==@nongnu.org
-X-Gm-Message-State: AOJu0YzZYpGPIAAPiPzeqjHGtZDGVQPKP9CptvipwEbt9LTPMjOYSkkE
- dSbrIeNk5JAbms6uLM8RsAdkaBoqxgmMDcFxvusPU8GZAwduOL5AITeCEA==
-X-Google-Smtp-Source: AGHT+IGDSQlvrSIHoAD8lUmh2/QIQUt4vAb/eNqXr63/ROl0+Kir9TEnva/GB6yBgAwHQFSThoxTJA==
-X-Received: by 2002:a17:90b:4a89:b0:2d3:df93:1e5f with SMTP id
- 98e67ed59e1d1-2dad4dddd89mr2666007a91.6.1725625560566; 
- Fri, 06 Sep 2024 05:26:00 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2dadc1105fesm1412060a91.43.2024.09.06.05.25.59
+ d=1e100.net; s=20230601; t=1725625821; x=1726230621;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cYUuhUoOFprz5gXEjqcpnsQ4XnXl828/b8BDAMd70/c=;
+ b=dKyANYZrt/KTRcJrb2hSPeGS+gULyR4IVxwdMfCN51wjVXbiD9wXqBYKZxYZBmYri0
+ is4BkbKnseBXvxWoMcAYvSMqzUEskUwBeHojVgRVlfEUxXN8eNxZEek05L/jmqk781FF
+ vPs0k1PRmHalxrnulqdJ27dWqiSvhjGor7QLgf4ipM7cTl1bdcPjeyp/xlUS7fHtMUEp
+ fE5ao8TTp1kZBxH5823EAIDr0JnwTdPL8eJ7sUz141WMrDJG+kwEvRXck8bmku5o1X9W
+ 4NdBwSZoZBgJ79ei/l12vcZ0ph4aetZccvs8vtlZ+fG40yZNIWIgEMru8oTOW+NZJllH
+ 8EYw==
+X-Gm-Message-State: AOJu0YxM0oFbju8AmDSi058rTfc5ERMa2KUIuCSeALk8o0ATB15J5eKN
+ x09CSZzjjgc7GTQnEl2o1kFPfgAHgaLpl7MpnpVkQf2sX9NBNJvf5oN4UkV/evgNF9DvWiyDUCb
+ mletNfZaXOamAhw6Kwt5sd1DPoWswRbdPHI1qfYMS8q/dcTPR20ag
+X-Received: by 2002:a05:6830:2c0b:b0:710:cce7:5bbd with SMTP id
+ 46e09a7af769-710cce75ee5mr1768497a34.0.1725625820637; 
+ Fri, 06 Sep 2024 05:30:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFLeys1HL4MJZpomj+S749SEpU+sAFPYtae3Yu5aiTrGFQFaAmM1F3xm2flB4ItUIxYaaTPfg==
+X-Received: by 2002:a05:6830:2c0b:b0:710:cce7:5bbd with SMTP id
+ 46e09a7af769-710cce75ee5mr1768473a34.0.1725625820274; 
+ Fri, 06 Sep 2024 05:30:20 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6c5202de5b8sm16085986d6.69.2024.09.06.05.30.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Sep 2024 05:26:00 -0700 (PDT)
-From: Guenter Roeck <linux@roeck-us.net>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, BALATON Zoltan <balaton@eik.bme.hu>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Guenter Roeck <linux@roeck-us.net>
-Subject: [RFC PATCH 8/8] aspeed: Add uhci support for ast2400 and ast2500
-Date: Fri,  6 Sep 2024 05:25:42 -0700
-Message-ID: <20240906122542.3808997-9-linux@roeck-us.net>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240906122542.3808997-1-linux@roeck-us.net>
-References: <20240906122542.3808997-1-linux@roeck-us.net>
+ Fri, 06 Sep 2024 05:30:19 -0700 (PDT)
+Date: Fri, 6 Sep 2024 08:30:18 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juraj Marcin <jmarcin@redhat.com>
+Cc: qemu-devel@nongnu.org, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Prasad Pandit <ppandit@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ qemu-stable <qemu-stable@nongnu.org>, Zhiyi Guo <zhguo@redhat.com>
+Subject: Re: [PATCH v2 1/4] KVM: Dynamic sized kvm memslots array
+Message-ID: <Ztr12p5CR9C6a2y3@x1n>
+References: <20240904223510.3519358-1-peterx@redhat.com>
+ <20240904223510.3519358-2-peterx@redhat.com>
+ <CAC2qdxCW=ddmK1TLC4Agh4cGnMV60BKNpN_Nrrz-KuPbDfh-ew@mail.gmail.com>
+ <ZtnVfXataavOoQp0@x1n>
+ <CAC2qdxDDzmt-v4WL6HxUQDL=Dt-X2qmaVEp4FTFSKGABLfUG=Q@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=groeck7@gmail.com; helo=mail-pg1-x529.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
+In-Reply-To: <CAC2qdxDDzmt-v4WL6HxUQDL=Dt-X2qmaVEp4FTFSKGABLfUG=Q@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,68 +106,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable UHCI support for ast2400 and ast2500 SoCs. With this patch,
-the UHCI port is successfully instantiated on the ast2500-evb machine.
+On Fri, Sep 06, 2024 at 12:54:37PM +0200, Juraj Marcin wrote:
+> Hi Peter,
+> 
+> On Thu, Sep 5, 2024 at 6:00 PM Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Thu, Sep 05, 2024 at 05:32:46PM +0200, Juraj Marcin wrote:
+> > > Hi Peter,
+> >
+> > Hi, Juraj,
+> >
+> > [...]
+> >
+> > > >  unsigned int kvm_get_max_memslots(void)
+> > > >  {
+> > > >      KVMState *s = KVM_STATE(current_accel());
+> > > > @@ -193,15 +247,20 @@ unsigned int kvm_get_free_memslots(void)
+> > > >  /* Called with KVMMemoryListener.slots_lock held */
+> > > >  static KVMSlot *kvm_get_free_slot(KVMMemoryListener *kml)
+> > > >  {
+> > > > -    KVMState *s = kvm_state;
+> > > >      int i;
+> > > >
+> > > > -    for (i = 0; i < s->nr_slots; i++) {
+> > > > +retry:
+> > > > +    for (i = 0; i < kml->nr_slots_allocated; i++) {
+> > > >          if (kml->slots[i].memory_size == 0) {
+> > > >              return &kml->slots[i];
+> > > >          }
+> > > >      }
+> > > >
+> > > > +    /* If no free slots, try to grow first by doubling */
+> > > > +    if (kvm_slots_double(kml)) {
+> > > > +        goto retry;
+> > >
+> > > At this point we know all previously allocated slots were used and
+> > > there should be a free slot just after the last used slot (at the
+> > > start of the region zeroed in the grow function). Wouldn't it be
+> > > faster to return it here right away, instead of iterating through
+> > > slots that should still be used again?
+> >
+> > Good question.
+> >
+> > One trivial concern is we'll then have assumption on how kvm_slots_double()
+> > behaves, e.g., it must not move anything around inside, and we need to know
+> 
+> > that it touches nr_slots_allocated so we need to cache it.  The outcome
+> > looks like this:
+> >
+> > ===8<===
+> > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> > index 020fd16ab8..7429fe87a8 100644
+> > --- a/accel/kvm/kvm-all.c
+> > +++ b/accel/kvm/kvm-all.c
+> > @@ -249,9 +249,9 @@ unsigned int kvm_get_free_memslots(void)
+> >  /* Called with KVMMemoryListener.slots_lock held */
+> >  static KVMSlot *kvm_get_free_slot(KVMMemoryListener *kml)
+> >  {
+> > +    unsigned int n;
+> >      int i;
+> >
+> > -retry:
+> >      for (i = 0; i < kml->nr_slots_allocated; i++) {
+> >          if (kml->slots[i].memory_size == 0) {
+> >              return &kml->slots[i];
+> > @@ -259,8 +259,13 @@ retry:
+> >      }
+> >
+> >      /* If no free slots, try to grow first by doubling */
+> > +    n = kml->nr_slots_allocated;
+> >      if (kvm_slots_double(kml)) {
+> > -        goto retry;
+> > +        /*
+> > +         * If succeed, we must have n used slots, then followed by n free
+> > +         * slots.
+> > +         */
+> > +        return &kml->slots[n];
+> >      }
+> >
+> >      return NULL;
+> > ===8<===
+> >
+> > It's still good to get rid of "goto", and faster indeed.  Though I wished
+> > we don't need those assumptions, as cons.
+> >
+> > One thing to mention that I expect this is extremely slow path, where I
+> > don't expect to even be reached in major uses of QEMU, and when reached
+> > should be only once or limited few times per VM life cycle.  The re-walks
+> > here shouldn't be a perf concern IMHO, because when it's a concern we'll
+> > hit it much more frequently elsewhere... many other hotter paths around.
+> >
+> > So far it looks slightly more readable to me to keep the old way, but I'm
+> > ok either way.  What do you think?
+> 
+> I agree that it requires this assumption of not moving slots around,
+> but I think it's intuitive to assume it when it comes to
+> doubling/increasing the size of an array, realloc() and g_renew() also
+> don't shuffle existing elements.
+> 
+> In addition, there already is such an assumption. If slots were moved
+> around, pointers returned by `return &kml->slots[i];` wouldn't point
+> to the same slot structure after doubling.
+> 
+> However, I realized there's also another problem with this return
+> statement. g_renew() could have moved the whole array to a new
+> address, making all the previously returned pointers invalid. This
+> could be solved by either adding another layer of indirection, so the
+> function returns a pointer to a single slot structure that never moves
+> and the array contains pointers to these structures, or the slots need
+> to be always accessed through an up-to-date pointer to the array,
+> probably from another structure or through a getter function. With the
+> first approach, pointers in the array could shuffle, but with the
+> second one, the index of a slot must not change during the lifetime of
+> the slot, keeping the assumption correct.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
- hw/arm/aspeed_ast2400.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Note that all access to kvm slots are protected by kvm_slots_lock() which
+is currently a mutex (aka, non-RCU), and we can't cache slot yet so far
+because we don't know whether there's concurrent update.
 
-diff --git a/hw/arm/aspeed_ast2400.c b/hw/arm/aspeed_ast2400.c
-index d125886207..93bfe3e3dd 100644
---- a/hw/arm/aspeed_ast2400.c
-+++ b/hw/arm/aspeed_ast2400.c
-@@ -31,6 +31,7 @@ static const hwaddr aspeed_soc_ast2400_memmap[] = {
-     [ASPEED_DEV_FMC]    = 0x1E620000,
-     [ASPEED_DEV_SPI1]   = 0x1E630000,
-     [ASPEED_DEV_EHCI1]  = 0x1E6A1000,
-+    [ASPEED_DEV_UHCI]   = 0x1E6B0000,
-     [ASPEED_DEV_VIC]    = 0x1E6C0000,
-     [ASPEED_DEV_SDMC]   = 0x1E6E0000,
-     [ASPEED_DEV_SCU]    = 0x1E6E2000,
-@@ -68,6 +69,7 @@ static const hwaddr aspeed_soc_ast2500_memmap[] = {
-     [ASPEED_DEV_SPI2]   = 0x1E631000,
-     [ASPEED_DEV_EHCI1]  = 0x1E6A1000,
-     [ASPEED_DEV_EHCI2]  = 0x1E6A3000,
-+    [ASPEED_DEV_UHCI]   = 0x1E6B0000,
-     [ASPEED_DEV_VIC]    = 0x1E6C0000,
-     [ASPEED_DEV_SDMC]   = 0x1E6E0000,
-     [ASPEED_DEV_SCU]    = 0x1E6E2000,
-@@ -107,6 +109,7 @@ static const int aspeed_soc_ast2400_irqmap[] = {
-     [ASPEED_DEV_FMC]    = 19,
-     [ASPEED_DEV_EHCI1]  = 5,
-     [ASPEED_DEV_EHCI2]  = 13,
-+    [ASPEED_DEV_UHCI]   = 14,
-     [ASPEED_DEV_SDMC]   = 0,
-     [ASPEED_DEV_SCU]    = 21,
-     [ASPEED_DEV_ADC]    = 31,
-@@ -199,6 +202,8 @@ static void aspeed_ast2400_soc_init(Object *obj)
-                                 TYPE_PLATFORM_EHCI);
-     }
- 
-+    object_initialize_child(obj, "uhci", &s->uhci, TYPE_ASPEED_UHCI);
-+
-     snprintf(typename, sizeof(typename), "aspeed.sdmc-%s", socname);
-     object_initialize_child(obj, "sdmc", &s->sdmc, typename);
-     object_property_add_alias(obj, "ram-size", OBJECT(&s->sdmc),
-@@ -393,6 +398,15 @@ static void aspeed_ast2400_soc_realize(DeviceState *dev, Error **errp)
-                            aspeed_soc_get_irq(s, ASPEED_DEV_EHCI1 + i));
-     }
- 
-+    /* UHCI */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->uhci), errp)) {
-+        return;
-+    }
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->uhci), 0,
-+                    sc->memmap[ASPEED_DEV_UHCI]);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->uhci), 0,
-+                       aspeed_soc_get_irq(s, ASPEED_DEV_UHCI));
-+
-     /* SDMC - SDRAM Memory Controller */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->sdmc), errp)) {
-         return;
+Thanks,
+
 -- 
-2.45.2
+Peter Xu
 
 
