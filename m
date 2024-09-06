@@ -2,84 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14A896F8A4
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 17:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA3696F8EE
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 18:00:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smbDW-0001NL-2f; Fri, 06 Sep 2024 11:49:46 -0400
+	id 1smbMo-0001Cz-Rx; Fri, 06 Sep 2024 11:59:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1smbDU-0001GG-3i
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 11:49:44 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1smbDS-0008Bn-Ff
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 11:49:43 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5c263118780so2446265a12.2
- for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 08:49:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725637781; x=1726242581; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vC9WnbFOdrpXQUX3BWmGZJypN5/VBj5S9SdVEOdGWIc=;
- b=jDt1OGHnD8SKd1floQySmZjpOHrHVcOgvpHtQo1QYPePn/n2/N2yka7aS6wikMBs49
- LZO/nVrIfcDj0ECe/qE8ABNAn59Hq5ojtzU+Y7hDc7hLw4i/Jlad9i3ZM7XSr7zDVjNw
- nzp4EYpsIq+KEU1af8ynZN9HLoklmKy00CyaLoiAWNSgJHRwEsCmVJfuq7MA7Pfqu59g
- 8M1d1r1oBgnXjROlPSXlq3zhK/1Mtp02Y6Mg8Y/T2hFpipMLueorgSs3DrzaoDLAj8Zw
- aRSbF0ISEeFtCujRkfcfFWIDgv7opwsjo1sowVVRfogd9kk57+3BrQNpHpYKVMR+1EMX
- QGCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725637781; x=1726242581;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vC9WnbFOdrpXQUX3BWmGZJypN5/VBj5S9SdVEOdGWIc=;
- b=ps4YPZYOHo8xd6GHJgmvKHizDxNWRQq6rXMMEOwiTTuLPxIy34EZt8mC6OCvbr9U69
- USAylC/ybSvxuouQgrH+caNiBIwCaHOw1iTVcWJJh8jHcXDC/Oev30iD3K5MTGWwxj+T
- pnEzOAzPW62SlwOpb8IPPCkK69yKfoqUAlwou+L5W4eABCIm5CURcU7QsrE7kTvYRHwA
- D2AFByHUpBZuyWmzREgt3NzrlegKaV0W5Pmh1bn4LcmIMvbAEC9hhPaRVN5EXn6IC3yQ
- 8j8zPDc6WhisKb70bK3l6Kp0epjQB/3nIA1b0ImWnQrl+y7drBGLtza025gxw8JnfApQ
- mdbA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUmpGmg3RD3bNRnzOc92a10GyKJoIWn5jQwUShFK/rEA2tMXGFaYqrg3T93WdXBAx0aGmuzQWtNregV@nongnu.org
-X-Gm-Message-State: AOJu0Ywwo8/goS2tYKk9/GqSSxzECFP28He8xJZviYUx54Q+Wwe8wS+4
- Zzt5siZGI/eWQeF1QcaHXN4GXQeoa+yMz8l+UQl5pXt8UIj7uZSnjZGuuWVxQlY=
-X-Google-Smtp-Source: AGHT+IGClyno7/InsWevzZBVn4ySxeMti/CIC5Jov2agpzD6xbGkx8GM4D06oZ099YFcw1qDwVmdFw==
-X-Received: by 2002:a17:907:3689:b0:a86:7d62:4c28 with SMTP id
- a640c23a62f3a-a8a886667b6mr252359666b.30.1725637780821; 
- Fri, 06 Sep 2024 08:49:40 -0700 (PDT)
-Received: from localhost.localdomain (225.13.23.93.rev.sfr.net. [93.23.13.225])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8a8e439feesm98449766b.74.2024.09.06.08.49.39
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 06 Sep 2024 08:49:40 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Guenter Roeck <linux@roeck-us.net>,
-	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 5/5] hw/sensor/tmp105: Lower 4 bit of limit registers are
- always 0
-Date: Fri,  6 Sep 2024 17:49:11 +0200
-Message-ID: <20240906154911.86803-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240906154911.86803-1-philmd@linaro.org>
-References: <20240906154911.86803-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smbMe-0001C0-Kv
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 11:59:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1smbMd-0000cp-2j
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 11:59:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1725638349;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=SWJiefY300Cxe7wFWsNikqTxDSsa0aiKhB7jQnB6kTg=;
+ b=QOQehXODwGd9jcdJ2Y9bqBznXdtzYfC7/ir3CoIH0waKOH7nMFl4lsLPh62zsymh5mVNX2
+ nII9o6vkLKhtM2wlDP5GWkSD3/yP2+7OW4aNoAakB3+R4PGZ4RmCIbEIqZ7VmYMvrvJmR1
+ uV76LLdgxDUlSk5yklveOynFWAJ7Y2M=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-180-aOGlQEiiNHWfChEVjaEA8A-1; Fri,
+ 06 Sep 2024 11:59:06 -0400
+X-MC-Unique: aOGlQEiiNHWfChEVjaEA8A-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 412F01955F79; Fri,  6 Sep 2024 15:59:05 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.194.70])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 569021956056; Fri,  6 Sep 2024 15:59:01 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] MAINTAINERS: Remove myself from the Meson section
+Date: Fri,  6 Sep 2024 17:58:58 +0200
+Message-ID: <20240906155900.742157-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,33 +79,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Guenter Roeck <linux@roeck-us.net>
+The Meson section has plenty of reviewers, and in order to reduce the
+load on my Inbox a little bit, I'm stepping back as a reviewer here.
 
-Per datasheet, "HIGH AND LOW LIMIT REGISTERS", the lower 4 bit
-of the limit registers are unused and always report 0.
-The lower 4 bit should not be used for temperature comparisons,
-so mask the unused bits before storing the limits.
-
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/sensor/tmp105.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/sensor/tmp105.c b/hw/sensor/tmp105.c
-index f5101af919..9d7b911f59 100644
---- a/hw/sensor/tmp105.c
-+++ b/hw/sensor/tmp105.c
-@@ -171,7 +171,7 @@ static void tmp105_write(TMP105State *s)
-     case TMP105_REG_T_HIGH:
-         if (s->len >= 3) {
-             s->limit[s->pointer & 1] = (int16_t)
--                    ((((uint16_t) s->buf[0]) << 8) | s->buf[1]);
-+                    ((((uint16_t) s->buf[0]) << 8) | (s->buf[1] & 0xf0));
-         }
-         tmp105_alarm_update(s, false);
-         break;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0c1bc69828..c8115b00ca 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4215,7 +4215,6 @@ Meson
+ M: Paolo Bonzini <pbonzini@redhat.com>
+ R: Marc-André Lureau <marcandre.lureau@redhat.com>
+ R: Daniel P. Berrange <berrange@redhat.com>
+-R: Thomas Huth <thuth@redhat.com>
+ R: Philippe Mathieu-Daudé <philmd@linaro.org>
+ S: Maintained
+ F: meson.build
 -- 
-2.45.2
+2.46.0
 
 
