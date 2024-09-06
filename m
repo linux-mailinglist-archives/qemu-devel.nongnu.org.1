@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B1396F284
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BDC96F2F2
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:23:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWuI-0000Rd-Qw; Fri, 06 Sep 2024 07:13:38 -0400
+	id 1smWuP-0000uC-Rz; Fri, 06 Sep 2024 07:13:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWuE-0000El-7B; Fri, 06 Sep 2024 07:13:34 -0400
+ id 1smWuE-0000FA-9I; Fri, 06 Sep 2024 07:13:34 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWuC-0007f6-DD; Fri, 06 Sep 2024 07:13:33 -0400
+ id 1smWuC-0007fE-Jx; Fri, 06 Sep 2024 07:13:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 97D968C472;
+ by isrv.corpit.ru (Postfix) with ESMTP id A99EA8C473;
  Fri,  6 Sep 2024 14:12:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A38F31336DC;
+ by tsrv.corpit.ru (Postfix) with SMTP id B2C201336DD;
  Fri,  6 Sep 2024 14:13:24 +0300 (MSK)
-Received: (nullmailer pid 353545 invoked by uid 1000);
+Received: (nullmailer pid 353548 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
- Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+Cc: qemu-stable@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ John G Johnson <john.g.johnson@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>, John Snow <jsnow@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 02/69] scsi: fix regression and honor bootindex again
- for legacy drives
-Date: Fri,  6 Sep 2024 14:12:11 +0300
-Message-Id: <20240906111324.353230-2-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 03/69] qapi/qom: Document feature unstable of
+ @x-vfio-user-server
+Date: Fri,  6 Sep 2024 14:12:12 +0300
+Message-Id: <20240906111324.353230-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
@@ -61,59 +63,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Markus Armbruster <armbru@redhat.com>
 
-Commit 3089637461 ("scsi: Don't ignore most usb-storage properties")
-removed the call to object_property_set_int() and thus the 'set'
-method for the bootindex property was also not called anymore. Here
-that method is device_set_bootindex() (as configured by
-scsi_dev_instance_init() -> device_add_bootindex_property()) which as
-a side effect registers the device via add_boot_device_path().
+Commit 8f9a9259d32c added ObjectType member @x-vfio-user-server with
+feature unstable, but neglected to explain why it is unstable.  Do
+that now.
 
-As reported by a downstream user [0], the bootindex property did not
-have the desired effect anymore for legacy drives. Fix the regression
-by explicitly calling the add_boot_device_path() function after
-checking that the bootindex is not yet used (to avoid
-add_boot_device_path() calling exit()).
-
-[0]: https://forum.proxmox.com/threads/149772/post-679433
-
+Fixes: 8f9a9259d32c (vfio-user: define vfio-user-server object)
+Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Cc: John G Johnson <john.g.johnson@oracle.com>
+Cc: Jagannathan Raman <jag.raman@oracle.com>
 Cc: qemu-stable@nongnu.org
-Fixes: 3089637461 ("scsi: Don't ignore most usb-storage properties")
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Link: https://lore.kernel.org/r/20240710152529.1737407-1-f.ebner@proxmox.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 57a8a80d1a5b28797b21d30bfc60601945820e51)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20240703095310.1242102-1-armbru@redhat.com>
+Reviewed-by: John Snow <jsnow@redhat.com>
+[Indentation fixed]
+(cherry picked from commit 3becc939081097ccfed6968771f33d65ce8551eb)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-index 9e40b0c920..53eff5dd3d 100644
---- a/hw/scsi/scsi-bus.c
-+++ b/hw/scsi/scsi-bus.c
-@@ -384,6 +384,7 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
-     DeviceState *dev;
-     SCSIDevice *s;
-     DriveInfo *dinfo;
-+    Error *local_err = NULL;
- 
-     if (blk_is_sg(blk)) {
-         driver = "scsi-generic";
-@@ -403,6 +404,14 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
-     s = SCSI_DEVICE(dev);
-     s->conf = *conf;
- 
-+    check_boot_index(conf->bootindex, &local_err);
-+    if (local_err) {
-+        object_unparent(OBJECT(dev));
-+        error_propagate(errp, local_err);
-+        return NULL;
-+    }
-+    add_boot_device_path(conf->bootindex, dev, NULL);
-+
-     qdev_prop_set_uint32(dev, "scsi-id", unit);
-     if (object_property_find(OBJECT(dev), "removable")) {
-         qdev_prop_set_bit(dev, "removable", removable);
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 85e6b4f84a..09f4e4b22e 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -937,7 +937,8 @@
+ #
+ # Features:
+ #
+-# @unstable: Member @x-remote-object is experimental.
++# @unstable: Members @x-remote-object and @x-vfio-user-server are
++#     experimental.
+ #
+ # Since: 6.0
+ ##
 -- 
 2.39.2
 
