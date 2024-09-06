@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3384196E922
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A67B96E91A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 07:18:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smRLe-0004ar-Kg; Fri, 06 Sep 2024 01:17:30 -0400
+	id 1smRLs-0005JW-Lg; Fri, 06 Sep 2024 01:17:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRLF-0003xp-3n; Fri, 06 Sep 2024 01:17:08 -0400
+ id 1smRLL-000405-SL; Fri, 06 Sep 2024 01:17:17 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smRLC-0007qz-0P; Fri, 06 Sep 2024 01:17:03 -0400
+ id 1smRLF-0007rx-6t; Fri, 06 Sep 2024 01:17:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A048D8C11C;
+ by isrv.corpit.ru (Postfix) with ESMTP id B16EA8C11D;
  Fri,  6 Sep 2024 08:15:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 50397133362;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5E0D1133363;
  Fri,  6 Sep 2024 08:16:34 +0300 (MSK)
-Received: (nullmailer pid 10408 invoked by uid 1000);
+Received: (nullmailer pid 10411 invoked by uid 1000);
  Fri, 06 Sep 2024 05:16:33 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, songziming <s.ziming@hotmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.14 08/40] chardev/char-win-stdio.c: restore old console
- mode
-Date: Fri,  6 Sep 2024 08:15:56 +0300
-Message-Id: <20240906051633.10288-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Song Gao <gaosong@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 09/40] hw/intc/loongson_ipi: Access memory in little
+ endian
+Date: Fri,  6 Sep 2024 08:15:57 +0300
+Message-Id: <20240906051633.10288-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
 References: <qemu-stable-7.2.14-20240906080824@cover.tls.msk.ru>
@@ -62,51 +64,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: songziming <s.ziming@hotmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-If I use `-serial stdio` on Windows, after QEMU exits, the terminal
-could not handle arrow keys and tab any more. Because stdio backend
-on Windows sets console mode to virtual terminal input when starts,
-but does not restore the old mode when finalize.
+Loongson IPI is only available in little-endian,
+so use that to access the guest memory (in case
+we run on a big-endian host).
 
-This small patch saves the old console mode and set it back.
-
-Signed-off-by: Ziming Song <s.ziming@hotmail.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <ME3P282MB25488BE7C39BF0C35CD0DA5D8CA82@ME3P282MB2548.AUSP282.PROD.OUTLOOK.COM>
-(cherry picked from commit 903cc9e1173e0778caa50871e8275c898770c690)
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Fixes: f6783e3438 ("hw/loongarch: Add LoongArch ipi interrupt support")
+[PMD: Extracted from bigger commit, added commit description]
+Co-Developed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Tested-by: Bibo Mao <maobibo@loongson.cn>
+Acked-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Message-Id: <20240718133312.10324-3-philmd@linaro.org>
+(cherry picked from commit 2465c89fb983eed670007742bd68c7d91b6d6f85)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: fixups for 7.2, for lack of:
+ v9.0.0-583-g91d0b151de4c "hw/intc/loongson_ipi: Implement IOCSR address space for MIPS"
+ v9.0.0-582-gb4a12dfc2132 "hw/intc/loongarch_ipi: Rename as loongson_ipi"
+ v8.2.0-545-gfdd6ee0b7653 "hw/intc/loongarch_ipi: Use MemTxAttrs interface for ipi ops")
 
-diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c
-index eb830eabd9..6e59db84dd 100644
---- a/chardev/char-win-stdio.c
-+++ b/chardev/char-win-stdio.c
-@@ -33,6 +33,7 @@
- struct WinStdioChardev {
-     Chardev parent;
-     HANDLE  hStdIn;
-+    DWORD   dwOldMode;
-     HANDLE  hInputReadyEvent;
-     HANDLE  hInputDoneEvent;
-     HANDLE  hInputThread;
-@@ -159,6 +160,7 @@ static void qemu_chr_open_stdio(Chardev *chr,
-     }
+diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
+index 40e98af2ce..a4079e3732 100644
+--- a/hw/intc/loongarch_ipi.c
++++ b/hw/intc/loongarch_ipi.c
+@@ -12,6 +12,7 @@
+ #include "qapi/error.h"
+ #include "qemu/log.h"
+ #include "exec/address-spaces.h"
++#include "exec/memory.h"
+ #include "hw/loongarch/virt.h"
+ #include "migration/vmstate.h"
+ #include "target/loongarch/internals.h"
+@@ -59,8 +60,8 @@ static void send_ipi_data(CPULoongArchState *env, target_ulong val, target_ulong
+      * if the mask is 0, we need not to do anything.
+      */
+     if ((val >> 27) & 0xf) {
+-        data = address_space_ldl(&env->address_space_iocsr, addr,
+-                                 MEMTXATTRS_UNSPECIFIED, NULL);
++        data = address_space_ldl_le(&env->address_space_iocsr, addr,
++                                    MEMTXATTRS_UNSPECIFIED, NULL);
+         for (i = 0; i < 4; i++) {
+             /* get mask for byte writing */
+             if (val & (0x1 << (27 + i))) {
+@@ -71,8 +72,8 @@ static void send_ipi_data(CPULoongArchState *env, target_ulong val, target_ulong
  
-     is_console = GetConsoleMode(stdio->hStdIn, &dwMode) != 0;
-+    stdio->dwOldMode = dwMode;
+     data &= mask;
+     data |= (val >> 32) & ~mask;
+-    address_space_stl(&env->address_space_iocsr, addr,
+-                      data, MEMTXATTRS_UNSPECIFIED, NULL);
++    address_space_stl_le(&env->address_space_iocsr, addr,
++                         data, MEMTXATTRS_UNSPECIFIED, NULL);
+ }
  
-     if (is_console) {
-         if (qemu_add_wait_object(stdio->hStdIn,
-@@ -221,6 +223,9 @@ static void char_win_stdio_finalize(Object *obj)
- {
-     WinStdioChardev *stdio = WIN_STDIO_CHARDEV(obj);
- 
-+    if (stdio->hStdIn != INVALID_HANDLE_VALUE) {
-+        SetConsoleMode(stdio->hStdIn, stdio->dwOldMode);
-+    }
-     if (stdio->hInputReadyEvent != INVALID_HANDLE_VALUE) {
-         CloseHandle(stdio->hInputReadyEvent);
-     }
+ static void ipi_send(uint64_t val)
 -- 
 2.39.2
 
