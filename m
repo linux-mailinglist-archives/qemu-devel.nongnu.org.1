@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B22A96F30F
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D42596F2CE
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Sep 2024 13:21:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smWyn-0005lh-IP; Fri, 06 Sep 2024 07:18:17 -0400
+	id 1smWz5-0007hL-Ft; Fri, 06 Sep 2024 07:18:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWyf-0004Tv-3N; Fri, 06 Sep 2024 07:18:09 -0400
+ id 1smWz0-0007Pk-Fg; Fri, 06 Sep 2024 07:18:30 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1smWyd-0008EL-3H; Fri, 06 Sep 2024 07:18:08 -0400
+ id 1smWyy-0008Eb-FH; Fri, 06 Sep 2024 07:18:30 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E067A8C4A5;
+ by isrv.corpit.ru (Postfix) with ESMTP id F0C1F8C4A6;
  Fri,  6 Sep 2024 14:12:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id ED5EF13370E;
- Fri,  6 Sep 2024 14:13:27 +0300 (MSK)
-Received: (nullmailer pid 353715 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0733C13370F;
+ Fri,  6 Sep 2024 14:13:28 +0300 (MSK)
+Received: (nullmailer pid 353719 invoked by uid 1000);
  Fri, 06 Sep 2024 11:13:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jianzhou Yue <JianZhou.Yue@verisilicon.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 52/69] hw/core/ptimer: fix timer zero period condition
- for freq > 1GHz
-Date: Fri,  6 Sep 2024 14:13:01 +0300
-Message-Id: <20240906111324.353230-52-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>,
+ Eric Blake <eblake@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 53/69] block/blkio: use FUA flag on write zeroes only
+ if supported
+Date: Fri,  6 Sep 2024 14:13:02 +0300
+Message-Id: <20240906111324.353230-53-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240906141259@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,95 +63,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jianzhou Yue <JianZhou.Yue@verisilicon.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-The real period is zero when both period and period_frac are zero.
-Check the method ptimer_set_freq, if freq is larger than 1000 MHz,
-the period is zero, but the period_frac is not, in this case, the
-ptimer will work but the current code incorrectly recognizes that
-the ptimer is disabled.
+libblkio supports BLKIO_REQ_FUA with write zeros requests only since
+version 1.4.0, so let's inform the block layer that the blkio driver
+supports it only in this case. Otherwise we can have runtime errors
+as reported in https://issues.redhat.com/browse/RHEL-32878
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2306
-Signed-off-by: JianZhou Yue <JianZhou.Yue@verisilicon.com>
-Message-id: 3DA024AEA8B57545AF1B3CAA37077D0FB75E82C8@SHASXM03.verisilicon.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 446e5e8b4515e9a7be69ef6a29852975289bb6f0)
+Fixes: fd66dbd424 ("blkio: add libblkio block driver")
+Cc: qemu-stable@nongnu.org
+Buglink: https://issues.redhat.com/browse/RHEL-32878
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240808080545.40744-1-sgarzare@redhat.com
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit 547c4e50929ec6c091d9c16a7b280e829b12b463)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/core/ptimer.c b/hw/core/ptimer.c
-index b1517592c6..1d8964d804 100644
---- a/hw/core/ptimer.c
-+++ b/hw/core/ptimer.c
-@@ -83,7 +83,7 @@ static void ptimer_reload(ptimer_state *s, int delta_adjust)
-         delta = s->delta = s->limit;
+diff --git a/block/blkio.c b/block/blkio.c
+index 882e1c297b..52ac94527f 100644
+--- a/block/blkio.c
++++ b/block/blkio.c
+@@ -899,8 +899,10 @@ static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
      }
  
--    if (s->period == 0) {
-+    if (s->period == 0 && s->period_frac == 0) {
-         if (!qtest_enabled()) {
-             fprintf(stderr, "Timer with period zero, disabling\n");
-         }
-@@ -309,7 +309,7 @@ void ptimer_run(ptimer_state *s, int oneshot)
+     bs->supported_write_flags = BDRV_REQ_FUA | BDRV_REQ_REGISTERED_BUF;
+-    bs->supported_zero_flags = BDRV_REQ_FUA | BDRV_REQ_MAY_UNMAP |
+-                               BDRV_REQ_NO_FALLBACK;
++    bs->supported_zero_flags = BDRV_REQ_MAY_UNMAP | BDRV_REQ_NO_FALLBACK;
++#ifdef CONFIG_BLKIO_WRITE_ZEROS_FUA
++    bs->supported_zero_flags |= BDRV_REQ_FUA;
++#endif
  
-     assert(s->in_transaction);
- 
--    if (was_disabled && s->period == 0) {
-+    if (was_disabled && s->period == 0 && s->period_frac == 0) {
-         if (!qtest_enabled()) {
-             fprintf(stderr, "Timer with period zero, disabling\n");
-         }
-diff --git a/tests/unit/ptimer-test.c b/tests/unit/ptimer-test.c
-index 04b5f4e3d0..08240594bb 100644
---- a/tests/unit/ptimer-test.c
-+++ b/tests/unit/ptimer-test.c
-@@ -763,6 +763,33 @@ static void check_oneshot_with_load_0(gconstpointer arg)
-     ptimer_free(ptimer);
- }
- 
-+static void check_freq_more_than_1000M(gconstpointer arg)
-+{
-+    const uint8_t *policy = arg;
-+    ptimer_state *ptimer = ptimer_init(ptimer_trigger, NULL, *policy);
-+    bool no_round_down = (*policy & PTIMER_POLICY_NO_COUNTER_ROUND_DOWN);
-+
-+    triggered = false;
-+
-+    ptimer_transaction_begin(ptimer);
-+    ptimer_set_freq(ptimer, 2000000000);
-+    ptimer_set_limit(ptimer, 8, 1);
-+    ptimer_run(ptimer, 1);
-+    ptimer_transaction_commit(ptimer);
-+
-+    qemu_clock_step(3);
-+
-+    g_assert_cmpuint(ptimer_get_count(ptimer), ==, no_round_down ? 3 : 2);
-+    g_assert_false(triggered);
-+
-+    qemu_clock_step(1);
-+
-+    g_assert_cmpuint(ptimer_get_count(ptimer), ==, 0);
-+    g_assert_true(triggered);
-+
-+    ptimer_free(ptimer);
-+}
-+
- static void add_ptimer_tests(uint8_t policy)
- {
-     char policy_name[256] = "";
-@@ -857,6 +884,12 @@ static void add_ptimer_tests(uint8_t policy)
-                               policy_name),
-         g_memdup2(&policy, 1), check_oneshot_with_load_0, g_free);
-     g_free(tmp);
-+
-+    g_test_add_data_func_full(
-+        tmp = g_strdup_printf("/ptimer/freq_more_than_1000M policy=%s",
-+                              policy_name),
-+        g_memdup2(&policy, 1), check_freq_more_than_1000M, g_free);
-+    g_free(tmp);
- }
- 
- static void add_all_ptimer_policies_comb_tests(void)
+     qemu_mutex_init(&s->blkio_lock);
+     qemu_co_mutex_init(&s->bounce_lock);
+diff --git a/meson.build b/meson.build
+index 91a0aa64c6..7a56772136 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2211,6 +2211,8 @@ config_host_data.set('CONFIG_BLKIO', blkio.found())
+ if blkio.found()
+   config_host_data.set('CONFIG_BLKIO_VHOST_VDPA_FD',
+                        blkio.version().version_compare('>=1.3.0'))
++  config_host_data.set('CONFIG_BLKIO_WRITE_ZEROS_FUA',
++                       blkio.version().version_compare('>=1.4.0'))
+ endif
+ config_host_data.set('CONFIG_CURL', curl.found())
+ config_host_data.set('CONFIG_CURSES', curses.found())
 -- 
 2.39.2
 
