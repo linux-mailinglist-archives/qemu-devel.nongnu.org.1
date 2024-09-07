@@ -2,57 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE4397040B
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Sep 2024 22:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8154197040F
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Sep 2024 22:27:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sn1tv-0003FL-Nq; Sat, 07 Sep 2024 16:19:20 -0400
+	id 1sn21J-0006iS-7G; Sat, 07 Sep 2024 16:26:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <git@dprinz.de>) id 1sn1tg-0003DU-Cq
- for qemu-devel@nongnu.org; Sat, 07 Sep 2024 16:19:05 -0400
-Received: from mail.dprinz.de ([62.171.170.140])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <git@dprinz.de>) id 1sn1td-0006OK-1N
- for qemu-devel@nongnu.org; Sat, 07 Sep 2024 16:19:04 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 9E92E210; Sat,  7 Sep 2024 22:18:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dprinz.de; s=dkim;
- t=1725740334; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=zv7MxNgghMWiuDt+ie4gh540xx1rFi68/8wFCshFycQ=;
- b=PrOTOOIg2MTVs4ujO82PdCf4FYKlEs8w129Bpbv3hVWPDI3kr7ZdV//H6Wl20hJNY0cXJY
- m2Fno/nQTW3I0Y063jzy7mtA3F/VLTCBVfwHfk9Xw9XcLrFU2Os0jtMEww4osT18ZH3n+l
- Q/9p0n2TPudwd+7mTHA5sk69UHooCWnj/NLIUY+2dnmXG65IK/uXog2Pve9jmBhn3zFH/a
- zsVbSzTZcqi00K3uiCne6rJI03Mh5dbSXOHle1XRK0MiPBv9V/A3pNSvULw5dCQdZfpzYk
- 3KKQE7aIsNI5dxksGO1dkhyDGw6S7wtTjdrmrzzAxMDWHj4sHjSGi8vQ5Y3jjg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <satur9nine@gmail.com>)
+ id 1sn21G-0006fS-DU
+ for qemu-devel@nongnu.org; Sat, 07 Sep 2024 16:26:54 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <satur9nine@gmail.com>)
+ id 1sn21E-0007X3-Az
+ for qemu-devel@nongnu.org; Sat, 07 Sep 2024 16:26:54 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-20570b42f24so39262715ad.1
+ for <qemu-devel@nongnu.org>; Sat, 07 Sep 2024 13:26:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1725740810; x=1726345610; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FzpWUX+Pg6MNBiDTwYTTvjDU/EemCmQbzdxBamC8uRQ=;
+ b=TNfwZDGP/lwgV2JuSskKQb7KHcd1YE8jztDfienlS5+jkhWZz8aSpTTuEDhmL2DGVP
+ Nk8MluC6gJHUThS4qN/SEZOtaKMv+GLOFYHK0r8QiS1J5OkL1fzkjvgnw/gNcU4crmc+
+ tf6neyM+agHiCapsjmtmMqEspqULwfVJL+VamAycZILsACWr2NyNs2QbUfjH3DfQ8dzl
+ WRD8z52ze+ncD8LP8J+D6Uf6SU1xfBFbMqTRewoxXvuGKjtfL+b1SZdIYnP8FR9+Gc8m
+ +RFlnyjluMgHaJpv3jDzyWkBGk63HrFQram+uaxAGW5LDsKZ3/OWYhY5D1imx6nq9A4K
+ n/gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725740810; x=1726345610;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FzpWUX+Pg6MNBiDTwYTTvjDU/EemCmQbzdxBamC8uRQ=;
+ b=CaykhF5Wy4P1MJ4ffcEefbWGD5nzVmYrkkcwb/icV/leAwr8+tAG9IJPwNybfHD4aA
+ iSy0U1B/nbA6raYbNAW/8HB5bxYxxw+AM8t8q4TQyuoEHhm4QURg6PUL4/Ht/fax9EGY
+ hNL4wo32x3gtNAwyWO8X6Qd6KGaU4WufgSoIAQUjLw2gkAx0r7j+2WcjDuIgmaFElV+Y
+ b6v6hDH77aPsubAPPlzifgiLga795ny+ELhAdmJmR+uvlkw5AcohWtrUxGXWZ/iJ6v8R
+ MyKJ0BGpCIFf3w0pf6hJnM8ngtoWQz4xasbUiRzwkkouUIBhYrc3QwKBMJ1vm2c6CI3X
+ A3dg==
+X-Gm-Message-State: AOJu0YxJHtiRl9LykPvOjSsAG3wLEEs31hhCsbQL2E1aHSkPzMicuemd
+ dadhRywLrCOHN+hmedw59Rg6aIduRU3ZLXNj2hpYX8MwEW3qCi/mRVOZnJFz
+X-Google-Smtp-Source: AGHT+IEU+LmXS7H27vhtvdFwbo/Y7+Vo6xzK+DOtVHFRsAG/Txn8MrhecURB/em/B42TtLwJTKR7zg==
+X-Received: by 2002:a17:902:d4c9:b0:205:6f3c:4a65 with SMTP id
+ d9443c01a7336-206f04c76a0mr72083505ad.2.1725740809872; 
+ Sat, 07 Sep 2024 13:26:49 -0700 (PDT)
+Received: from ?IPV6:2600:1700:88b2:a50:2c86:7da2:dc34:a97f?
+ ([2600:1700:88b2:a50:2c86:7da2:dc34:a97f])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20710e33a22sm11824475ad.98.2024.09.07.13.26.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 07 Sep 2024 13:26:49 -0700 (PDT)
+Message-ID: <d561777d-2c7a-4561-8840-4bca363d28e8@gmail.com>
+Date: Sat, 7 Sep 2024 13:26:48 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/char/stm32l4x5_usart.c: Fix ACK and min access size
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org
+References: <20240902061944.526873-1-satur9nine@gmail.com>
+ <CAFEAcA9wP7f_yPYNJmaTDe1bB8cPifErAGpjtsNPKsR0s_65Sg@mail.gmail.com>
+Content-Language: en-US
+From: Jacob Abrams <satur9nine@gmail.com>
+In-Reply-To: <CAFEAcA9wP7f_yPYNJmaTDe1bB8cPifErAGpjtsNPKsR0s_65Sg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 07 Sep 2024 22:18:50 +0200
-Message-Id: <D40BW36MF3QO.1BSWXNJMCEFK8@dprinz.de>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, "Marcel Apfelbaum"
- <marcel.apfelbaum@gmail.com>, "Igor Mammedov" <imammedo@redhat.com>,
- "Dominic Prinz" <git@dprinz.de>
-Subject: Re: [PATCH v2] hw/acpi/ich9: Add periodic and swsmi timer
-From: "Dominic Prinz" <git@dprinz.de>
-To: <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.18.2-63-gf2d413e8dedd
-References: <20240730145240-mutt-send-email-mst@kernel.org>
- <1e4d59a49e7f2e02cf522e799a7bf5f3fa3fba1f.1722414006.git.git@dprinz.de>
- <D3LLXABB7UZ1.1RHBKW1GU9I3D@dp-laptop>
-In-Reply-To: <D3LLXABB7UZ1.1RHBKW1GU9I3D@dp-laptop>
-X-Last-TLS-Session-Version: TLSv1.3
-Received-SPF: pass client-ip=62.171.170.140; envelope-from=git@dprinz.de;
- helo=mail.dprinz.de
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=satur9nine@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,371 +95,222 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Second ping
+On 9/6/24 09:12, Peter Maydell wrote:
+> On Mon, 2 Sept 2024 at 14:38, Jacob Abrams <satur9nine@gmail.com> wrote:
+>>
+>> These changes allow the official STM32L4xx HAL UART driver to function
+>> properly with the b-l475e-iot01a machine.
+>>
+>> Modifying USART_CR1 TE bit should alter USART_ISR TEACK bit, and
+>> likewise for RE and REACK bit.
+>>
+>> USART registers may be accessed via 16-bit instructions.
+>>
+>> Reseting USART_CR1 UE bit should restore ISR to default value.
+>>
+>> Fixes: 87b77e6e01ca ("hw/char/stm32l4x5_usart: Enable serial read and write")
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2540
+>> Signed-off-by: Jacob Abrams <satur9nine@gmail.com>
+> 
+> Thanks for this patch. I have one question below, and one
+> minor nit.
+> 
+>> ---
+>>  hw/char/stm32l4x5_usart.c          | 29 +++++++++++++++++++---
+>>  tests/qtest/stm32l4x5_usart-test.c | 39 +++++++++++++++++++++++++++++-
+>>  2 files changed, 64 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/hw/char/stm32l4x5_usart.c b/hw/char/stm32l4x5_usart.c
+>> index fc5dcac0c4..859fc6236a 100644
+>> --- a/hw/char/stm32l4x5_usart.c
+>> +++ b/hw/char/stm32l4x5_usart.c
+>> @@ -154,6 +154,28 @@ REG32(RDR, 0x24)
+>>  REG32(TDR, 0x28)
+>>      FIELD(TDR, TDR, 0, 9)
+>>
+>> +#define ISR_RESET_VALUE (0x020000C0)
+>> +
+>> +static void stm32l4x5_update_isr(Stm32l4x5UsartBaseState *s)
+>> +{
+>> +    if (!(s->cr1 & R_CR1_UE_MASK)) {
+>> +        s->isr = ISR_RESET_VALUE;
+>> +        return;
+>> +    }
+>> +
+>> +    if (s->cr1 & R_CR1_TE_MASK) {
+>> +        s->isr |= R_ISR_TEACK_MASK;
+>> +    } else {
+>> +        s->isr &= ~R_ISR_TEACK_MASK;
+>> +    }
+>> +
+>> +    if (s->cr1 & R_CR1_RE_MASK) {
+>> +        s->isr |= R_ISR_REACK_MASK;
+>> +    } else {
+>> +        s->isr &= ~R_ISR_REACK_MASK;
+>> +    }
+>> +}
+> 
+> Should we be doing these things based on the value of
+> the CR1 bits (as this code does), or instead do them
+> when the bit changes from 0 to 1 (or 1 to 0)?
+> The wording in the datasheet seems unclear to me; my
+> impression is that hardware designers often like to
+> do these things on transitions rather than level based,
+> but of course you can design h/w both ways...
+> 
+> I guess it could be tested on real hardware:
+>  * write CR1.TE = 1
+>  * wait for ISR.TEACK = 1
+>  * write ISR.TEACK = 0
+>  * write CR1.TE = 1 (i.e. write again to the register
+>    without changing its value)
+>  * does ISR.TEACK go to 1 again, or does it stay 0?
+> 
 
-https://patchew.org/QEMU/1e4d59a49e7f2e02cf522e799a7bf5f3fa3fba1f.172241400=
-6.git.git@dprinz.de/
-https://lore.kernel.org/qemu-devel/1e4d59a49e7f2e02cf522e799a7bf5f3fa3fba1f=
-.1722414006.git.git@dprinz.de/
+Per RM0351 all bits in the ISR register are read-only by software, so we cannot test writing ISR.TEACK on a physical chip, the write would be ignored. Precise description in RM0351 is "This bit is set/reset by hardware, when the Transmit Enable value is taken into account by the USART." Based on this I think it is safe to assume that ISR.TEACK should always reflect the value of CR1.TE, though in real hardware it would take some microseconds for TEACK to be updated after TE is changed.
 
+>> +
+>>  static void stm32l4x5_update_irq(Stm32l4x5UsartBaseState *s)
+>>  {
+>>      if (((s->isr & R_ISR_WUF_MASK) && (s->cr3 & R_CR3_WUFIE_MASK))        ||
+>> @@ -367,7 +389,7 @@ static void stm32l4x5_usart_base_reset_hold(Object *obj, ResetType type)
+>>      s->brr = 0x00000000;
+>>      s->gtpr = 0x00000000;
+>>      s->rtor = 0x00000000;
+>> -    s->isr = 0x020000C0;
+>> +    s->isr = ISR_RESET_VALUE;
+>>      s->rdr = 0x00000000;
+>>      s->tdr = 0x00000000;
+>>
+>> @@ -456,6 +478,7 @@ static void stm32l4x5_usart_base_write(void *opaque, hwaddr addr,
+>>      case A_CR1:
+>>          s->cr1 = value;
+>>          stm32l4x5_update_params(s);
+>> +        stm32l4x5_update_isr(s);
+>>          stm32l4x5_update_irq(s);
+>>          return;
+>>      case A_CR2:
+>> @@ -508,12 +531,12 @@ static const MemoryRegionOps stm32l4x5_usart_base_ops = {
+>>      .endianness = DEVICE_NATIVE_ENDIAN,
+>>      .valid = {
+>>          .max_access_size = 4,
+>> -        .min_access_size = 4,
+>> +        .min_access_size = 2,
+>>          .unaligned = false
+>>      },
+>>      .impl = {
+>>          .max_access_size = 4,
+>> -        .min_access_size = 4,
+>> +        .min_access_size = 2,
+>>          .unaligned = false
+>>      },
+> 
+> The effect of these is that a 16-bit write not aligned
+> to a (4-aligned) register offset will generate a GUEST_ERROR
+> logged message, and a 16-bit write aligned to a 4-aligned
+> register offset will write the value zero-extended to 32 bits.
+> That seems reasonable to me.
+> 
 
-On Wed Aug 21, 2024 at 3:00 PM CEST, Dominic Prinz wrote:
-> Ping
->
-> https://patchew.org/QEMU/1e4d59a49e7f2e02cf522e799a7bf5f3fa3fba1f.1722414=
-006.git.git@dprinz.de/
-> https://lore.kernel.org/qemu-devel/1e4d59a49e7f2e02cf522e799a7bf5f3fa3fba=
-1f.1722414006.git.git@dprinz.de/
->
-> On Wed Jul 31, 2024 at 10:28 AM CEST, Dominic Prinz wrote:
-> > This patch implements the periodic and the swsmi ICH9 chipset timer. Th=
-ey are
-> > especially useful when prototyping UEFI firmware (e.g. with EDK2's OVMF=
-)
-> > using QEMU.
-> >
-> > For backwards compatibility, the compat properties "x-smi-swsmi-timer",
-> > and "x-smi-periodic-timer" are introduced.
-> >
-> > Additionally, writes to the SMI_STS register are enabled for the
-> > corresponding two bits.
-> >
-> > Signed-off-by: Dominic Prinz <git@dprinz.de>
-> > ---
-> > Changes since previous version:
-> >   - Ensured backwards compatablity by introducing two compat properties
-> >   - Introduced write mask for SMI_STS register to make future work easi=
-er
-> >
-> >  hw/acpi/ich9.c                | 23 +++++++++
-> >  hw/acpi/ich9_timer.c          | 93 +++++++++++++++++++++++++++++++++++
-> >  hw/acpi/meson.build           |  2 +-
-> >  hw/i386/pc.c                  |  2 +
-> >  hw/isa/lpc_ich9.c             | 14 ++++++
-> >  include/hw/acpi/ich9.h        |  6 +++
-> >  include/hw/acpi/ich9_timer.h  | 23 +++++++++
-> >  include/hw/southbridge/ich9.h |  4 ++
-> >  8 files changed, 166 insertions(+), 1 deletion(-)
-> >  create mode 100644 hw/acpi/ich9_timer.c
-> >  create mode 100644 include/hw/acpi/ich9_timer.h
-> >
-> > diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-> > index 02d8546bd3..c15e5b8281 100644
-> > --- a/hw/acpi/ich9.c
-> > +++ b/hw/acpi/ich9.c
-> > @@ -35,6 +35,7 @@
-> >  #include "sysemu/runstate.h"
-> >  #include "hw/acpi/acpi.h"
-> >  #include "hw/acpi/ich9_tco.h"
-> > +#include "hw/acpi/ich9_timer.h"
-> > =20
-> >  #include "hw/southbridge/ich9.h"
-> >  #include "hw/mem/pc-dimm.h"
-> > @@ -108,6 +109,18 @@ static void ich9_smi_writel(void *opaque, hwaddr a=
-ddr, uint64_t val,
-> >          }
-> >          pm->smi_en &=3D ~pm->smi_en_wmask;
-> >          pm->smi_en |=3D (val & pm->smi_en_wmask);
-> > +        if (pm->swsmi_timer_enabled) {
-> > +            ich9_pm_update_swsmi_timer(pm, pm->smi_en &
-> > +                                               ICH9_PMIO_SMI_EN_SWSMI_=
-EN);
-> > +        }
-> > +        if (pm->periodic_timer_enabled) {
-> > +            ich9_pm_update_periodic_timer(pm, pm->smi_en &
-> > +                                                  ICH9_PMIO_SMI_EN_PER=
-IODIC_EN);
-> > +        }
-> > +        break;
-> > +    case 4:
-> > +        pm->smi_sts &=3D ~pm->smi_sts_wmask;
-> > +        pm->smi_sts |=3D (val & pm->smi_sts_wmask);
-> >          break;
-> >      }
-> >  }
-> > @@ -286,6 +299,8 @@ static void pm_powerdown_req(Notifier *n, void *opa=
-que)
-> > =20
-> >  void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_=
-irq)
-> >  {
-> > +    pm->smi_sts_wmask =3D 0;
-> > +
-> >      memory_region_init(&pm->io, OBJECT(lpc_pci), "ich9-pm", ICH9_PMIO_=
-SIZE);
-> >      memory_region_set_enabled(&pm->io, false);
-> >      memory_region_add_subregion(pci_address_space_io(lpc_pci),
-> > @@ -305,6 +320,14 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMReg=
-s *pm, qemu_irq sci_irq)
-> >                            "acpi-smi", 8);
-> >      memory_region_add_subregion(&pm->io, ICH9_PMIO_SMI_EN, &pm->io_smi=
-);
-> > =20
-> > +    if (pm->swsmi_timer_enabled) {
-> > +        ich9_pm_swsmi_timer_init(pm);
-> > +    }
-> > +
-> > +    if (pm->periodic_timer_enabled) {
-> > +        ich9_pm_periodic_timer_init(pm);
-> > +    }
-> > +
-> >      if (pm->enable_tco) {
-> >          acpi_pm_tco_init(&pm->tco_regs, &pm->io);
-> >      }
-> > diff --git a/hw/acpi/ich9_timer.c b/hw/acpi/ich9_timer.c
-> > new file mode 100644
-> > index 0000000000..5b1c910156
-> > --- /dev/null
-> > +++ b/hw/acpi/ich9_timer.c
-> > @@ -0,0 +1,93 @@
-> > +/*
-> > + * QEMU ICH9 Timer emulation
-> > + *
-> > + * Copyright (c) 2024 Dominic Prinz <git@dprinz.de>
-> > + *
-> > + * This work is licensed under the terms of the GNU GPL, version 2 or =
-later.
-> > + * See the COPYING file in the top-level directory.
-> > + */
-> > +
-> > +#include "qemu/osdep.h"
-> > +#include "hw/core/cpu.h"
-> > +#include "hw/pci/pci.h"
-> > +#include "hw/southbridge/ich9.h"
-> > +#include "qemu/timer.h"
-> > +
-> > +#include "hw/acpi/ich9_timer.h"
-> > +
-> > +void ich9_pm_update_swsmi_timer(ICH9LPCPMRegs *pm, bool enable)
-> > +{
-> > +    uint16_t swsmi_rate_sel;
-> > +    int64_t expire_time;
-> > +    ICH9LPCState *lpc;
-> > +
-> > +    if (enable) {
-> > +        lpc =3D container_of(pm, ICH9LPCState, pm);
-> > +        swsmi_rate_sel =3D
-> > +            (pci_get_word(lpc->d.config + ICH9_LPC_GEN_PMCON_3) & 0xc0=
-) >> 6;
-> > +
-> > +        if (swsmi_rate_sel =3D=3D 0) {
-> > +            expire_time =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + 15=
-00000LL;
-> > +        } else {
-> > +            expire_time =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
-> > +                          8 * (1 << swsmi_rate_sel) * 1000000LL;
-> > +        }
-> > +
-> > +        timer_mod(pm->swsmi_timer, expire_time);
-> > +    } else {
-> > +        timer_del(pm->swsmi_timer);
-> > +    }
-> > +}
-> > +
-> > +static void ich9_pm_swsmi_timer_expired(void *opaque)
-> > +{
-> > +    ICH9LPCPMRegs *pm =3D opaque;
-> > +
-> > +    pm->smi_sts |=3D ICH9_PMIO_SMI_STS_SWSMI_STS;
-> > +    ich9_generate_smi();
-> > +
-> > +    ich9_pm_update_swsmi_timer(pm, pm->smi_en & ICH9_PMIO_SMI_EN_SWSMI=
-_EN);
-> > +}
-> > +
-> > +void ich9_pm_swsmi_timer_init(ICH9LPCPMRegs *pm)
-> > +{
-> > +    pm->smi_sts_wmask |=3D ICH9_PMIO_SMI_STS_SWSMI_STS;
-> > +    pm->swsmi_timer =3D
-> > +        timer_new_ns(QEMU_CLOCK_VIRTUAL, ich9_pm_swsmi_timer_expired, =
-pm);
-> > +}
-> > +
-> > +void ich9_pm_update_periodic_timer(ICH9LPCPMRegs *pm, bool enable)
-> > +{
-> > +    uint16_t per_smi_sel;
-> > +    int64_t expire_time;
-> > +    ICH9LPCState *lpc;
-> > +
-> > +    if (enable) {
-> > +        lpc =3D container_of(pm, ICH9LPCState, pm);
-> > +        per_smi_sel =3D pci_get_word(lpc->d.config + ICH9_LPC_GEN_PMCO=
-N_1) & 3;
-> > +        expire_time =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
-> > +                      8 * (1 << (3 - per_smi_sel)) * NANOSECONDS_PER_S=
-ECOND;
-> > +
-> > +        timer_mod(pm->periodic_timer, expire_time);
-> > +    } else {
-> > +        timer_del(pm->periodic_timer);
-> > +    }
-> > +}
-> > +
-> > +static void ich9_pm_periodic_timer_expired(void *opaque)
-> > +{
-> > +    ICH9LPCPMRegs *pm =3D opaque;
-> > +
-> > +    pm->smi_sts =3D ICH9_PMIO_SMI_STS_PERIODIC_STS;
-> > +    ich9_generate_smi();
-> > +
-> > +    ich9_pm_update_periodic_timer(pm,
-> > +                                  pm->smi_en & ICH9_PMIO_SMI_EN_PERIOD=
-IC_EN);
-> > +}
-> > +
-> > +void ich9_pm_periodic_timer_init(ICH9LPCPMRegs *pm)
-> > +{
-> > +    pm->smi_sts_wmask |=3D ICH9_PMIO_SMI_STS_PERIODIC_STS;
-> > +    pm->periodic_timer =3D
-> > +        timer_new_ns(QEMU_CLOCK_VIRTUAL, ich9_pm_periodic_timer_expire=
-d, pm);
-> > +}
-> > diff --git a/hw/acpi/meson.build b/hw/acpi/meson.build
-> > index fa5c07db90..7f8ccc9b7a 100644
-> > --- a/hw/acpi/meson.build
-> > +++ b/hw/acpi/meson.build
-> > @@ -24,7 +24,7 @@ acpi_ss.add(when: 'CONFIG_ACPI_PCI_BRIDGE', if_true: =
-files('pci-bridge.c'))
-> >  acpi_ss.add(when: 'CONFIG_ACPI_PCIHP', if_true: files('pcihp.c'))
-> >  acpi_ss.add(when: 'CONFIG_ACPI_PCIHP', if_false: files('acpi-pci-hotpl=
-ug-stub.c'))
-> >  acpi_ss.add(when: 'CONFIG_ACPI_VIOT', if_true: files('viot.c'))
-> > -acpi_ss.add(when: 'CONFIG_ACPI_ICH9', if_true: files('ich9.c', 'ich9_t=
-co.c'))
-> > +acpi_ss.add(when: 'CONFIG_ACPI_ICH9', if_true: files('ich9.c', 'ich9_t=
-co.c', 'ich9_timer.c'))
-> >  acpi_ss.add(when: 'CONFIG_ACPI_ERST', if_true: files('erst.c'))
-> >  acpi_ss.add(when: 'CONFIG_IPMI', if_true: files('ipmi.c'), if_false: f=
-iles('ipmi-stub.c'))
-> >  acpi_ss.add(when: 'CONFIG_PC', if_false: files('acpi-x86-stub.c'))
-> > diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> > index c74931d577..a97b1b1f57 100644
-> > --- a/hw/i386/pc.c
-> > +++ b/hw/i386/pc.c
-> > @@ -85,6 +85,8 @@ GlobalProperty pc_compat_9_0[] =3D {
-> >      { TYPE_X86_CPU, "guest-phys-bits", "0" },
-> >      { "sev-guest", "legacy-vm-type", "on" },
-> >      { TYPE_X86_CPU, "legacy-multi-node", "on" },
-> > +    { "ICH9-LPC", "x-smi-swsmi-timer", "off" },
-> > +    { "ICH9-LPC", "x-smi-periodic-timer", "off" },
-> >  };
-> >  const size_t pc_compat_9_0_len =3D G_N_ELEMENTS(pc_compat_9_0);
-> > =20
-> > diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-> > index bd727b2320..ab17b76f54 100644
-> > --- a/hw/isa/lpc_ich9.c
-> > +++ b/hw/isa/lpc_ich9.c
-> > @@ -43,6 +43,7 @@
-> >  #include "hw/southbridge/ich9.h"
-> >  #include "hw/acpi/acpi.h"
-> >  #include "hw/acpi/ich9.h"
-> > +#include "hw/acpi/ich9_timer.h"
-> >  #include "hw/pci/pci_bus.h"
-> >  #include "hw/qdev-properties.h"
-> >  #include "sysemu/runstate.h"
-> > @@ -531,6 +532,15 @@ ich9_lpc_pmcon_update(ICH9LPCState *lpc)
-> >      uint16_t gen_pmcon_1 =3D pci_get_word(lpc->d.config + ICH9_LPC_GEN=
-_PMCON_1);
-> >      uint16_t wmask;
-> > =20
-> > +    if (lpc->pm.swsmi_timer_enabled) {
-> > +        ich9_pm_update_swsmi_timer(
-> > +            &lpc->pm, lpc->pm.smi_en & ICH9_PMIO_SMI_EN_SWSMI_EN);
-> > +    }
-> > +    if (lpc->pm.periodic_timer_enabled) {
-> > +        ich9_pm_update_periodic_timer(
-> > +            &lpc->pm, lpc->pm.smi_en & ICH9_PMIO_SMI_EN_PERIODIC_EN);
-> > +    }
-> > +
-> >      if (gen_pmcon_1 & ICH9_LPC_GEN_PMCON_1_SMI_LOCK) {
-> >          wmask =3D pci_get_word(lpc->d.wmask + ICH9_LPC_GEN_PMCON_1);
-> >          wmask &=3D ~ICH9_LPC_GEN_PMCON_1_SMI_LOCK;
-> > @@ -826,6 +836,10 @@ static Property ich9_lpc_properties[] =3D {
-> >                        ICH9_LPC_SMI_F_CPU_HOTPLUG_BIT, true),
-> >      DEFINE_PROP_BIT64("x-smi-cpu-hotunplug", ICH9LPCState, smi_host_fe=
-atures,
-> >                        ICH9_LPC_SMI_F_CPU_HOT_UNPLUG_BIT, true),
-> > +    DEFINE_PROP_BOOL("x-smi-swsmi-timer", ICH9LPCState,
-> > +                     pm.swsmi_timer_enabled, true),
-> > +    DEFINE_PROP_BOOL("x-smi-periodic-timer", ICH9LPCState,
-> > +                     pm.periodic_timer_enabled, true),
-> >      DEFINE_PROP_END_OF_LIST(),
-> >  };
-> > =20
-> > diff --git a/include/hw/acpi/ich9.h b/include/hw/acpi/ich9.h
-> > index 2faf7f0cae..245fe08dc2 100644
-> > --- a/include/hw/acpi/ich9.h
-> > +++ b/include/hw/acpi/ich9.h
-> > @@ -46,6 +46,7 @@ typedef struct ICH9LPCPMRegs {
-> >      uint32_t smi_en;
-> >      uint32_t smi_en_wmask;
-> >      uint32_t smi_sts;
-> > +    uint32_t smi_sts_wmask;
-> > =20
-> >      qemu_irq irq;      /* SCI */
-> > =20
-> > @@ -68,6 +69,11 @@ typedef struct ICH9LPCPMRegs {
-> >      bool smm_compat;
-> >      bool enable_tco;
-> >      TCOIORegs tco_regs;
-> > +
-> > +    bool swsmi_timer_enabled;
-> > +    bool periodic_timer_enabled;
-> > +    QEMUTimer *swsmi_timer;
-> > +    QEMUTimer *periodic_timer;
-> >  } ICH9LPCPMRegs;
-> > =20
-> >  #define ACPI_PM_PROP_TCO_ENABLED "enable_tco"
-> > diff --git a/include/hw/acpi/ich9_timer.h b/include/hw/acpi/ich9_timer.=
-h
-> > new file mode 100644
-> > index 0000000000..5112df4385
-> > --- /dev/null
-> > +++ b/include/hw/acpi/ich9_timer.h
-> > @@ -0,0 +1,23 @@
-> > +/*
-> > + * QEMU ICH9 Timer emulation
-> > + *
-> > + * Copyright (c) 2024 Dominic Prinz <git@dprinz.de>
-> > + *
-> > + * This work is licensed under the terms of the GNU GPL, version 2 or =
-later.
-> > + * See the COPYING file in the top-level directory.
-> > + */
-> > +
-> > +#ifndef HW_ACPI_ICH9_TIMER_H
-> > +#define HW_ACPI_ICH9_TIMER_H
-> > +
-> > +#include "hw/acpi/ich9.h"
-> > +
-> > +void ich9_pm_update_swsmi_timer(ICH9LPCPMRegs *pm, bool enable);
-> > +
-> > +void ich9_pm_swsmi_timer_init(ICH9LPCPMRegs *pm);
-> > +
-> > +void ich9_pm_update_periodic_timer(ICH9LPCPMRegs *pm, bool enable);
-> > +
-> > +void ich9_pm_periodic_timer_init(ICH9LPCPMRegs *pm);
-> > +
-> > +#endif
-> > diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich=
-9.h
-> > index fd01649d04..6c60017024 100644
-> > --- a/include/hw/southbridge/ich9.h
-> > +++ b/include/hw/southbridge/ich9.h
-> > @@ -196,8 +196,12 @@ struct ICH9LPCState {
-> >  #define ICH9_PMIO_GPE0_LEN                      16
-> >  #define ICH9_PMIO_SMI_EN                        0x30
-> >  #define ICH9_PMIO_SMI_EN_APMC_EN                (1 << 5)
-> > +#define ICH9_PMIO_SMI_EN_SWSMI_EN               (1 << 6)
-> >  #define ICH9_PMIO_SMI_EN_TCO_EN                 (1 << 13)
-> > +#define ICH9_PMIO_SMI_EN_PERIODIC_EN            (1 << 14)
-> >  #define ICH9_PMIO_SMI_STS                       0x34
-> > +#define ICH9_PMIO_SMI_STS_SWSMI_STS             (1 << 6)
-> > +#define ICH9_PMIO_SMI_STS_PERIODIC_STS          (1 << 14)
-> >  #define ICH9_PMIO_TCO_RLD                       0x60
-> >  #define ICH9_PMIO_TCO_LEN                       32
-> > =20
-> > --=20
-> > 2.34.1
+OK sounds good
 
+>>  };
+>> diff --git a/tests/qtest/stm32l4x5_usart-test.c b/tests/qtest/stm32l4x5_usart-test.c
+>> index 8902518233..ef886074c0 100644
+>> --- a/tests/qtest/stm32l4x5_usart-test.c
+>> +++ b/tests/qtest/stm32l4x5_usart-test.c
+>> @@ -36,6 +36,8 @@ REG32(GTPR, 0x10)
+>>  REG32(RTOR, 0x14)
+>>  REG32(RQR, 0x18)
+>>  REG32(ISR, 0x1C)
+>> +    FIELD(ISR, REACK, 22, 1)
+>> +    FIELD(ISR, TEACK, 21, 1)
+>>      FIELD(ISR, TXE, 7, 1)
+>>      FIELD(ISR, RXNE, 5, 1)
+>>      FIELD(ISR, ORE, 3, 1)
+>> @@ -191,7 +193,7 @@ static void init_uart(QTestState *qts)
+>>
+>>      /* Enable the transmitter, the receiver and the USART. */
+>>      qtest_writel(qts, (USART1_BASE_ADDR + A_CR1),
+>> -        R_CR1_UE_MASK | R_CR1_RE_MASK | R_CR1_TE_MASK);
+>> +        cr1 | R_CR1_UE_MASK | R_CR1_RE_MASK | R_CR1_TE_MASK);
+>>  }
+>>
+>>  static void test_write_read(void)
+>> @@ -202,6 +204,11 @@ static void test_write_read(void)
+>>      qtest_writel(qts, USART1_BASE_ADDR + A_TDR, 0xFFFFFFFF);
+>>      const uint32_t tdr = qtest_readl(qts, USART1_BASE_ADDR + A_TDR);
+>>      g_assert_cmpuint(tdr, ==, 0x000001FF);
+>> +
+>> +    /* Official STM HAL uses uint16_t for TDR */
+>> +    qtest_writew(qts, USART1_BASE_ADDR + A_TDR, 0xFFFF);
+>> +    const uint16_t tdr16 = qtest_readw(qts, USART1_BASE_ADDR + A_TDR);
+>> +    g_assert_cmpuint(tdr16, ==, 0x000001FF);
+>>  }
+>>
+>>  static void test_receive_char(void)
+>> @@ -296,6 +303,35 @@ static void test_send_str(void)
+>>      qtest_quit(qts);
+>>  }
+>>
+>> +static void test_ack(void)
+>> +{
+>> +    uint32_t cr1;
+>> +    uint32_t isr;
+>> +    QTestState *qts = qtest_init("-M b-l475e-iot01a");
+>> +
+>> +    init_uart(qts);
+>> +
+>> +    cr1 = qtest_readl(qts, (USART1_BASE_ADDR + A_CR1));
+>> +
+>> +    /* Disable the transmitter and receiver. */
+>> +    qtest_writel(qts, (USART1_BASE_ADDR + A_CR1),
+>> +        cr1 & ~(R_CR1_RE_MASK | R_CR1_TE_MASK));
+>> +
+>> +    /* Test ISR ACK for transmitter and receiver disabled */
+>> +    isr = qtest_readl(qts, (USART1_BASE_ADDR + A_ISR));
+>> +    g_assert_false(isr & R_ISR_TEACK_MASK);
+>> +    g_assert_false(isr & R_ISR_REACK_MASK);
+>> +
+>> +    /* Enable the transmitter and receiver. */
+>> +    qtest_writel(qts, (USART1_BASE_ADDR + A_CR1),
+>> +        cr1 | (R_CR1_RE_MASK | R_CR1_TE_MASK));
+>> +
+>> +    /* Test ISR ACK for transmitter and receiver disabled */
+>> +    isr = qtest_readl(qts, (USART1_BASE_ADDR + A_ISR));
+>> +    g_assert_true(isr & R_ISR_TEACK_MASK);
+>> +    g_assert_true(isr & R_ISR_REACK_MASK);
+> 
+> This is missing a
+>        qtest_quit(qts);
+> at the end of the function. Without it, on non-Linux
+> hosts the QEMU process-under-tests will not be properly
+> killed. We were also missing one at the end of
+> test_write_read() in this file, which we just fixed
+> this week in commit d1e8bea9c9c186.
+> 
+
+Thanks I will submit a v2 patch with this corrected.
+
+>> +}
+>> +
+>>  int main(int argc, char **argv)
+>>  {
+>>      int ret;
+>> @@ -308,6 +344,7 @@ int main(int argc, char **argv)
+>>      qtest_add_func("stm32l4x5/usart/send_char", test_send_char);
+>>      qtest_add_func("stm32l4x5/usart/receive_str", test_receive_str);
+>>      qtest_add_func("stm32l4x5/usart/send_str", test_send_str);
+>> +    qtest_add_func("stm32l4x5/usart/ack", test_ack);
+>>      ret = g_test_run();
+>>
+>>      return ret;
+>> --
+>> 2.43.0
+> 
+> thanks
+> -- PMM
+
+regards
+-- Jacob Abrams
 
