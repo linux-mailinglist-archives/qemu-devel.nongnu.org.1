@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F0A96FFCF
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Sep 2024 05:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E42196FFD8
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Sep 2024 05:28:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smm3F-00049f-Ex; Fri, 06 Sep 2024 23:23:53 -0400
+	id 1smm2t-00012O-S2; Fri, 06 Sep 2024 23:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1smlzh-0003or-Be
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 23:20:13 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1smlzl-000428-SA
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 23:20:23 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1smlze-00054n-NS
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 23:20:12 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-2068bee21d8so28854485ad.2
- for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 20:20:10 -0700 (PDT)
+ id 1smlzh-00055J-6a
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 23:20:15 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-201d5af11a4so27017455ad.3
+ for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 20:20:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1725679209; x=1726284009; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1725679212; x=1726284012; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cjm2NL6Wgqty15f3ap7G8BavBfHkA8e5dbFy1QdhwG4=;
- b=eF+TAu71Yd3EMtYgov1UpmkBO3EXxsHidxQxBnlnQnVXLe4KTD8FsuuWphlPWcnQ+L
- fGN5MoYMrNZg4LTxxfhrn63GJuLjbUmtQL20iMfWi1jodH5pGrd1A2gLzabChhiJizBZ
- uKnrcKIEugh9xbmA07z2pzEuK2x+RwRmi2f5Uw9uwrYFZ2nc3tG86VgM62secwqmqRLO
- Wa+AkJ6iU/5hEsh4R8f633OKtInpl7vuPUpXhX+bBemprKOlkiNvNcSUMJ93fXMDFcKF
- LyJtUgMk4kvHvZ1p+2LOxGpY30TzmfvsbG917gxc/MXKfl7Q4ESPomLnpmNCXdsscbOJ
- O38w==
+ bh=voYN43OZ7lwbwneNl7z2eHNOhROV9NjNWmAvKPq1wXw=;
+ b=MQQNx/FQaY2xRkbOwfwSua4kLHgXxAvZ8RibOmvoTnnk9OAFMh/q5QWmrwrlcReo5Y
+ 7D1ZP2yA8Mi4Fr88l5ycCWshKvBHnncAGJ7YRTR3jYvg9oIAxkQl0LOGRewzMPnueLBn
+ 2BOZ2dezJPDvmOD+2C8SgU++3nkub1Qb3yItR41wdCGQOzabqY0F7L3uTplgn4Hi0b8v
+ v57d/chC9yFc4WSbGgTpKH4fUkSYGFinUY0SrBxCLZyJzwBBzTzZmH6pINUtCeTrgPzs
+ OrnY2GkutjFuKqLV1X7dyvUGIke/I5rJj72n9LgAz7CRSWvPD1GpC2frbnCYB560/Pn2
+ p2dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725679209; x=1726284009;
+ d=1e100.net; s=20230601; t=1725679212; x=1726284012;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cjm2NL6Wgqty15f3ap7G8BavBfHkA8e5dbFy1QdhwG4=;
- b=NGzMmnURr5sMLITgKKXRlRsVEFetNu4ASt3JoMan608MdF1cxZDKsJMOcJxT2JkEnc
- naGs6V4OUBw7vPkVdL9OgxU+xNePY0z4TpgdGM8HSy0NW5bp2SHqytelloPWyKxfqmfs
- 2SRLSyB+STG8t70zB7ZlF5AGmtIPOAZa8ubqXaTvbV6icsO5VcuZOWMK4Lgb8IvAE8sb
- ZquITnnBpKObLZAtY/cA59LdwrEA7xsf+8yacTLZA076WIiFPvA6U0b2TQcUei77Kd3C
- pfPzpokoyDYKzSrudPkZv+m+gXLvCYDu6dnsjHXUZNwF2o1w6kOBDdLLMkxUjPYLixjX
- 5v6g==
-X-Gm-Message-State: AOJu0YyEO3tCCINaR3uKDh5NQRaZcQzMPUIVh+w/lD2LyXBZMPG5dvCL
- 9KET/YP3XeErp9SzQ0SNI6o9vqLI8Sn7UdVvaDX/bfFM+ApCfVq/qRD+1A==
-X-Google-Smtp-Source: AGHT+IFBHWvl1QcceNo5pwo7NXDZ3vu7PzMKIptxtFd572G3+8yQhqRvBeNsCXvlNmn1XacBETvY5Q==
-X-Received: by 2002:a17:903:41c4:b0:205:8a25:904b with SMTP id
- d9443c01a7336-2070c1cfed1mr17256495ad.57.1725679209148; 
- Fri, 06 Sep 2024 20:20:09 -0700 (PDT)
+ bh=voYN43OZ7lwbwneNl7z2eHNOhROV9NjNWmAvKPq1wXw=;
+ b=KGzXIck2g1z/+ADif1+T6ZVg2aXwO3MX5sj8aQ4u2kyP1dAFkdU4Tg1vOcr2+xBTIl
+ cVxHGv8VrvGSexs4zzKXxLHFEWiWD6l/+r2NmP4EgGdq5C86ybfdZNmOhrQaP4QWtU3e
+ IFC6KsKRuay3liWfQU8aGNHarJegjldLBz8mSqQfgc+2r0hZ28KbLAN/etod00KmBddA
+ Bf1I/KGmAaondV5AWOQ6xDRl9eJIL28TeAgLypHrm5RSmXfXI85Hb+1ClyfUmUanlW1e
+ ulCEGCVteCkAiC9NmfLppLfZKUxIm7wc9GOi82yFzVwC1Zxt0vXsrJy4WMe7GfZworqS
+ /AjA==
+X-Gm-Message-State: AOJu0YxihN3DpGtiOK/qYQObsn0Zvz/P+3ep0kIvTejCzuWVKxV+SsAz
+ OHKEumk9nIHBemctK6d+drZ5xKTYr/BIF3I2T7dGQicD0gePsTZLDP7zIA==
+X-Google-Smtp-Source: AGHT+IGlgux1o5CaPCDcp8A4KKIlREAu3KrBIQYumhlgC6nDjFe8rMbxhTCjPkha/Q4++jkYCSRt6w==
+X-Received: by 2002:a17:902:dacd:b0:202:4cd2:d6e4 with SMTP id
+ d9443c01a7336-206f0529937mr66241675ad.24.1725679211590; 
+ Fri, 06 Sep 2024 20:20:11 -0700 (PDT)
 Received: from localhost.localdomain (115-64-160-35.tpgi.com.au.
  [115.64.160.35]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710f1d4c6sm1703745ad.187.2024.09.06.20.20.06
+ d9443c01a7336-20710f1d4c6sm1703745ad.187.2024.09.06.20.20.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Sep 2024 20:20:08 -0700 (PDT)
+ Fri, 06 Sep 2024 20:20:11 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Mark Corbin <mark@dibsco.co.uk>,
  Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v5 12/17] bsd-user: Add generic RISC-V64 target definitions
-Date: Sat,  7 Sep 2024 13:19:22 +1000
-Message-Id: <20240907031927.1908-13-itachis@FreeBSD.org>
+Subject: [PATCH v5 13/17] bsd-user: Define RISC-V signal handling structures
+ and constants
+Date: Sat,  7 Sep 2024 13:19:23 +1000
+Message-Id: <20240907031927.1908-14-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240907031927.1908-1-itachis@FreeBSD.org>
 References: <20240907031927.1908-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=itachis6234@gmail.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=itachis6234@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,46 +96,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
+From: Mark Corbin <mark@dibsco.co.uk>
 
-Added a generic definition for RISC-V64 target-specific details.
-Implemented the 'regpairs_aligned' function,which returns 'false'
-to indicate that register pairs are not aligned in the RISC-V64 ABI.
+Added definitions for RISC-V signal handling, including structures
+and constants for managing signal frames and context
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
+Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
+Co-authored-by: Warner Losh <imp@bsdimp.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/riscv/target.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
- create mode 100644 bsd-user/riscv/target.h
+ bsd-user/riscv/target_arch_signal.h | 75 +++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
+ create mode 100644 bsd-user/riscv/target_arch_signal.h
 
-diff --git a/bsd-user/riscv/target.h b/bsd-user/riscv/target.h
+diff --git a/bsd-user/riscv/target_arch_signal.h b/bsd-user/riscv/target_arch_signal.h
 new file mode 100644
-index 0000000000..036ddd185e
+index 0000000000..1a634b865b
 --- /dev/null
-+++ b/bsd-user/riscv/target.h
-@@ -0,0 +1,20 @@
++++ b/bsd-user/riscv/target_arch_signal.h
+@@ -0,0 +1,75 @@
 +/*
-+ * Riscv64 general target stuff that's common to all aarch details
++ *  RISC-V signal definitions
 + *
-+ * Copyright (c) 2022 M. Warner Losh <imp@bsdimp.com>
++ *  Copyright (c) 2019 Mark Corbin
 + *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#ifndef TARGET_H
-+#define TARGET_H
++#ifndef TARGET_ARCH_SIGNAL_H
++#define TARGET_ARCH_SIGNAL_H
 +
-+/*
-+ * riscv64 ABI does not 'lump' the registers for 64-bit args.
-+ */
-+static inline bool regpairs_aligned(void *cpu_env)
-+{
-+    return false;
-+}
++#include "cpu.h"
 +
-+#endif /* TARGET_H */
++
++#define TARGET_INSN_SIZE     4  /* riscv instruction size */
++
++/* Size of the signal trampoline code placed on the stack. */
++#define TARGET_SZSIGCODE    ((abi_ulong)(7 * TARGET_INSN_SIZE))
++
++/* Compare with riscv/include/_limits.h */
++#define TARGET_MINSIGSTKSZ  (1024 * 4)
++#define TARGET_SIGSTKSZ     (TARGET_MINSIGSTKSZ + 32768)
++
++struct target_gpregs {
++    uint64_t    gp_ra;
++    uint64_t    gp_sp;
++    uint64_t    gp_gp;
++    uint64_t    gp_tp;
++    uint64_t    gp_t[7];
++    uint64_t    gp_s[12];
++    uint64_t    gp_a[8];
++    uint64_t    gp_sepc;
++    uint64_t    gp_sstatus;
++};
++
++struct target_fpregs {
++    uint64_t        fp_x[32][2];
++    uint64_t        fp_fcsr;
++    uint32_t        fp_flags;
++    uint32_t        pad;
++};
++
++typedef struct target_mcontext {
++    struct target_gpregs   mc_gpregs;
++    struct target_fpregs   mc_fpregs;
++    uint32_t               mc_flags;
++#define TARGET_MC_FP_VALID 0x01
++    uint32_t               mc_pad;
++    uint64_t               mc_spare[8];
++} target_mcontext_t;
++
++#define TARGET_MCONTEXT_SIZE 864
++#define TARGET_UCONTEXT_SIZE 936
++
++#include "target_os_ucontext.h"
++
++struct target_sigframe {
++    target_ucontext_t   sf_uc; /* = *sf_uncontext */
++    target_siginfo_t    sf_si; /* = *sf_siginfo (SA_SIGINFO case)*/
++};
++
++#define TARGET_SIGSTACK_ALIGN 16
++
++#endif /* TARGET_ARCH_SIGNAL_H */
 -- 
 2.34.1
 
