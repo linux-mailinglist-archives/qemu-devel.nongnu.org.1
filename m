@@ -2,73 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F5196FF49
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Sep 2024 04:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE3296FFC3
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Sep 2024 05:21:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1smlWn-00015Y-Fl; Fri, 06 Sep 2024 22:50:25 -0400
+	id 1smlzN-00031C-GB; Fri, 06 Sep 2024 23:19:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=+fej=QF=zx2c4.com=Jason@kernel.org>)
- id 1smlV9-0000rT-SS
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 22:48:50 -0400
-Received: from nyc.source.kernel.org ([147.75.193.91])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=+fej=QF=zx2c4.com=Jason@kernel.org>)
- id 1smlV5-0001ww-7k
- for qemu-devel@nongnu.org; Fri, 06 Sep 2024 22:48:38 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 48B83A43F0D;
- Sat,  7 Sep 2024 02:48:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FEFC4CEC4;
- Sat,  7 Sep 2024 02:48:27 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
- dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com
- header.b="fqO02YY5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105; 
- t=1725677304;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3tEnVSgl4KWu1DsgL0C8TGbUh8FjzR6eAkgRRbuiFhw=;
- b=fqO02YY5HU2dzIXH4LOY7waP1KOWEKEq+VK2fi3DFd0ALf2jlq4EUKGsxhcXb8luexzVoh
- ln7+wBl1ecMkfj7zz+xVXxfFN25l7W2561YA50qHpmhc1r6x0u0AU+BLvbUUH7ezTwXtNP
- geFkd0DFal/qrafG/iixh225s5PpreI=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id b2310a09
- (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO); 
- Sat, 7 Sep 2024 02:48:24 +0000 (UTC)
-Date: Sat, 7 Sep 2024 04:48:22 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: maobibo <maobibo@loongson.cn>, gaosong@loongson.cn,
- jiaxun.yang@flygoat.com, qemu-devel@nongnu.org, thomas@t-8ch.de,
- xry111@xry111.site, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, Jinyang He <hejinyang@loongson.cn>,
- Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: Re: LoongArch without CONFIG_ACPI and CONFIG_EFI
-Message-ID: <Ztu-9qgiKS98c0hl@zx2c4.com>
-References: <ZtsX_tcEuOjktUl9@zx2c4.com>
- <84a8ee9c-7781-c474-c394-d1498dc00050@loongson.cn>
- <CAAhV-H5CbyemhjoYLXqW3pLPtp4Ne3wcOZXzv2k5=jJCpi3rfg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
+ id 1smlzF-0002wj-GT
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 23:19:45 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
+ id 1smlzA-0004qO-Va
+ for qemu-devel@nongnu.org; Fri, 06 Sep 2024 23:19:43 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2021c08b95cso29383835ad.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Sep 2024 20:19:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1725679177; x=1726283977; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3tMqY8rCxLTkE8ayemTC/1nbep0EmXZkXPq/OsTmB1Y=;
+ b=OceazGu6oHsXI417EaSgzTjS2yd0HQMRzZ06Nayl/hZ3JU2pQzdxZ6u+uFxs8aaY2B
+ OyC+Lg7AZdbclWxnBgDfegBCnDFQXK+SGDlb6wZh+LzuJzFNQoEdMYhfq8BhDbgkBeSb
+ wPnmqBObkkHYCvXyZCQ6kaZw3bn0ZyHMzhqR0L6fTIs2h1SXKivM/Pf2LGy8NOfghzxz
+ rP+zP2+hBzNTfCess74llifJ4W55DdSi1540FsEe/+qhHq02PmfF19DTYYq8FQhy6xEF
+ vrWXgyqOmdDQSMDcKRbHNaPqgUe/TCo3UzQvOc1kCxxZpSlMM+FWby8JoT06nWLXXxf7
+ 003g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725679177; x=1726283977;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3tMqY8rCxLTkE8ayemTC/1nbep0EmXZkXPq/OsTmB1Y=;
+ b=PYyx5HyE9kguc7kqMlDRj00xt5alwmfiJu0MMwPYor833H9Zqjkx1/hIf533cxPOqL
+ egibgTqqq+Xvd1IfnTMnyVRmCaanB/NhHuJmIWhf9E4D8IuQbsBbVKnerULy13OQZrfu
+ Hnzz9qfEs8rk3LGQU+q6IOrA9FEktLhAdjW/kHJ3vGj3xPgR3JiljQmDK7/DL4lEG9di
+ cYkYpbg0/GSt5IxSEIXyxmKRiVrXQDQyVKfOiaBOBq9yUjRvSAqmk/60eW16X3Y8Rp0G
+ PTjal9BBCj/TKcr87fpqG6wfzanOFs8O+i9N6LZvMTOe4/edUxAjc7imxAjLDZXcc4Hj
+ OcdA==
+X-Gm-Message-State: AOJu0YxtCEviPTZ+nNrjZZMKg0fCO3tlm1JvTdlGPw7YxttMmLcpA8Mq
+ M++7tC6OxEUFq5ICy9oebP+4EgzAcsr0XIHf+VaqBe1LxQXHNW7VzsFxlg==
+X-Google-Smtp-Source: AGHT+IH5Jptvbn9XplNjJ9u0aamR8JJy5OL+mAW8b5pMPPnF4+krZNoEpBXJv4s1dQJUMcmWVesCrQ==
+X-Received: by 2002:a17:903:283:b0:205:656d:5f46 with SMTP id
+ d9443c01a7336-206b8461b10mr192565515ad.28.1725679176918; 
+ Fri, 06 Sep 2024 20:19:36 -0700 (PDT)
+Received: from localhost.localdomain (115-64-160-35.tpgi.com.au.
+ [115.64.160.35]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20710f1d4c6sm1703745ad.187.2024.09.06.20.19.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Sep 2024 20:19:36 -0700 (PDT)
+From: Ajeet Singh <itachis6234@gmail.com>
+X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
+To: qemu-devel@nongnu.org
+Cc: Warner Losh <imp@bsdimp.com>, Mark Corbin <mark@dibsco.co.uk>,
+ Ajeet Singh <itachis@FreeBSD.org>
+Subject: [PATCH v5 00/17] bsd-user: Comprehensive RISCV Support
+Date: Sat,  7 Sep 2024 13:19:10 +1000
+Message-Id: <20240907031927.1908-1-itachis@FreeBSD.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAhV-H5CbyemhjoYLXqW3pLPtp4Ne3wcOZXzv2k5=jJCpi3rfg@mail.gmail.com>
-Received-SPF: pass client-ip=147.75.193.91;
- envelope-from=SRS0=+fej=QF=zx2c4.com=Jason@kernel.org;
- helo=nyc.source.kernel.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=itachis6234@gmail.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,23 +91,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Sep 07, 2024 at 09:47:38AM +0800, Huacai Chen wrote:
-> On Sat, Sep 7, 2024 at 9:44 AM maobibo <maobibo@loongson.cn> wrote:
-> >
-> > Add huacai who is maintainer of Loongarch Linux kernel.
-> >
-> > On 2024/9/6 下午10:55, Jason A. Donenfeld wrote:
-> > > Hi,
-> > >
-> > > It appears that as of QEMU 9.1, it's possible to boot LoongArch machines
-> > > that don't provide EFI or ACPI.
-> > >
-> > > Would you consider removing the `select ACPI` and `select EFI` from the
-> > > arch Kconfig, so that kernels built for this minimal QEMU environment
-> > > can be a bit leaner and quicker to build?
-> Very difficult, at least removing EFI is difficult. Even if booting to
-> a FDT environment, we still get information from EFI now.
+Key Changes Compared to Version 4:
+Minor formatting changes
 
-Makes sense. !ACPI is the more interesting one for me, anyway, as that
-takes a while to build.
+Mark Corbin (15):
+  bsd-user: Implement RISC-V CPU initialization and main loop
+  bsd-user: Add RISC-V CPU execution loop and syscall handling
+  bsd-user: Implement RISC-V CPU register cloning and reset functions
+  bsd-user: Implement RISC-V TLS register setup
+  bsd-user: Add RISC-V ELF definitions and hardware capability detection
+  bsd-user: Define RISC-V register structures and register copying
+  bsd-user: Add RISC-V signal trampoline setup function
+  bsd-user: Implement RISC-V sysarch system call emulation
+  bsd-user: Add RISC-V thread setup and initialization support
+  bsd-user: Define RISC-V VM parameters and helper functions
+  bsd-user: Define RISC-V system call structures and constants
+  bsd-user: Define RISC-V signal handling structures and constants
+  bsd-user: Implement RISC-V signal trampoline setup functions
+  bsd-user: Implement 'get_mcontext' for RISC-V
+  bsd-user: Implement set_mcontext and get_ucontext_sigreturn for RISCV
+
+Warner Losh (2):
+  bsd-user: Add generic RISC-V64 target definitions
+  bsd-user: Add RISC-V 64-bit Target Configuration and Debug XML Files
+
+ bsd-user/riscv/signal.c               | 170 ++++++++++++++++++++++++++
+ bsd-user/riscv/target.h               |  20 +++
+ bsd-user/riscv/target_arch.h          |  27 ++++
+ bsd-user/riscv/target_arch_cpu.c      |  29 +++++
+ bsd-user/riscv/target_arch_cpu.h      | 147 ++++++++++++++++++++++
+ bsd-user/riscv/target_arch_elf.h      |  42 +++++++
+ bsd-user/riscv/target_arch_reg.h      |  88 +++++++++++++
+ bsd-user/riscv/target_arch_signal.h   |  75 ++++++++++++
+ bsd-user/riscv/target_arch_sigtramp.h |  42 +++++++
+ bsd-user/riscv/target_arch_sysarch.h  |  41 +++++++
+ bsd-user/riscv/target_arch_thread.h   |  47 +++++++
+ bsd-user/riscv/target_arch_vmparam.h  |  53 ++++++++
+ bsd-user/riscv/target_syscall.h       |  38 ++++++
+ configs/targets/riscv64-bsd-user.mak  |   4 +
+ 14 files changed, 823 insertions(+)
+ create mode 100644 bsd-user/riscv/signal.c
+ create mode 100644 bsd-user/riscv/target.h
+ create mode 100644 bsd-user/riscv/target_arch.h
+ create mode 100644 bsd-user/riscv/target_arch_cpu.c
+ create mode 100644 bsd-user/riscv/target_arch_cpu.h
+ create mode 100644 bsd-user/riscv/target_arch_elf.h
+ create mode 100644 bsd-user/riscv/target_arch_reg.h
+ create mode 100644 bsd-user/riscv/target_arch_signal.h
+ create mode 100644 bsd-user/riscv/target_arch_sigtramp.h
+ create mode 100644 bsd-user/riscv/target_arch_sysarch.h
+ create mode 100644 bsd-user/riscv/target_arch_thread.h
+ create mode 100644 bsd-user/riscv/target_arch_vmparam.h
+ create mode 100644 bsd-user/riscv/target_syscall.h
+ create mode 100644 configs/targets/riscv64-bsd-user.mak
+
+-- 
+2.34.1
+
 
