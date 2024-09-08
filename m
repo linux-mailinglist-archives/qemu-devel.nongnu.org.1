@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16809707B9
+	by mail.lfdr.de (Postfix) with ESMTPS id C608E9707B8
 	for <lists+qemu-devel@lfdr.de>; Sun,  8 Sep 2024 15:13:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snHhu-0002uS-9B; Sun, 08 Sep 2024 09:11:58 -0400
+	id 1snHhv-00030B-Dk; Sun, 08 Sep 2024 09:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1snHho-0002pZ-Ij
- for qemu-devel@nongnu.org; Sun, 08 Sep 2024 09:11:52 -0400
-Received: from mail-ed1-f46.google.com ([209.85.208.46])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1snHhq-0002rA-78
+ for qemu-devel@nongnu.org; Sun, 08 Sep 2024 09:11:54 -0400
+Received: from mail-lj1-f172.google.com ([209.85.208.172])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1snHhm-0000fI-C1
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1snHhn-0000fL-AS
  for qemu-devel@nongnu.org; Sun, 08 Sep 2024 09:11:52 -0400
-Received: by mail-ed1-f46.google.com with SMTP id
- 4fb4d7f45d1cf-5c3d20eed0bso3380775a12.0
+Received: by mail-lj1-f172.google.com with SMTP id
+ 38308e7fff4ca-2f75f116d11so9580911fa.1
  for <qemu-devel@nongnu.org>; Sun, 08 Sep 2024 06:11:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1725801109; x=1726405909;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QChWw5AXY/Eh/tPeZIzDezE86tfwMhZTwskv5OivgNc=;
- b=jQO6PMfTQPum76YKF1p8zuYAD0V0kddLE5tpKvh+dbBM3Hpppg74t9gxzbsFKQb0Ru
- wl1QvI2U+f5TWqYUevYbmOHqoI6hBcLBTf4O1oFDDZ9z9vp1v4yRYIoHabcauvANE1FD
- S9p+tBL4GU/w+iq8NIGQWQG4kRYEsT7ZNBI2P86Gsn2UjQwQbBe6fB0jZ4Lu675gDdBe
- X7xrhvLewO403a+73UO7ec3KO5OrxPwwqZnWyFwzr4iFg1Jz/vZZ6rEjGWWijJ5QJrOm
- bDAt2RY20mGR94WFLGZUaKS+dw6fQtw9b3Y93OOUf18LCoino/Vf4kx4s2Cs5VgrPjFE
- K3lQ==
-X-Gm-Message-State: AOJu0YyBkYUrWQp1ppnmdLmBdVKP15yh6zgcBNfaeH2ZBBdlBOOOo+9G
- bWjlWGDPCznuMT9Wcgm2mf3VOdENTft7IELmvH44dUE+i32eeHLINJz/Lw==
-X-Google-Smtp-Source: AGHT+IEW14NK54vrKJTAHbHmO5knB45raX2tnm0p2YVE4LYrIZy9el7V8N26AYLFKuwW4cpUut2zhw==
-X-Received: by 2002:a05:6402:13cc:b0:5c3:1089:ff23 with SMTP id
- 4fb4d7f45d1cf-5c3dc7c92bfmr5171376a12.35.1725801108417; 
- Sun, 08 Sep 2024 06:11:48 -0700 (PDT)
+ bh=9q+YIIrgdQyzRQXNqBoVfQ3f8EP3T/uI3ZqwIVVnwUc=;
+ b=Nvx9i2EtC6qYADQfF5JMcr9cPXabUjqq9Bu1bhVBpc8Jtfu+V/eUWkusgMQvPdLEqW
+ 9pKtBWVx+07jPzlxEHrLHmrN37OWrkwA1H5JBkYDXIeK9f+7QeL8cQVmiqw5xcARx/Wq
+ k2AyNebxF+wzYPni2xRCB2UsSn9ga2nTG4SF//sElaINaGqacY+0GIhIN853adHPtkKd
+ dLLu0OV3dbsTLJbOK5QJtDJvEkWA53YrM0N+XQHLdsYTvy/8PDUCOXh2FNp0WPKoPG6u
+ cDLwy+wWCzmwOiNpZUdn53+nyC9cJqH4QeAxrl6w552TPhdaQCl3MQ5I/LVIjczla0dV
+ ybIg==
+X-Gm-Message-State: AOJu0YyfK/16aZd2n4tl82H4S6E5HT4BhEzsh5s0VWcIb0eSB746XHFS
+ tp0ZMDwADLhDzYLG5P5P1JTWfIZ7xYFkMMRIrIET0YqgdqxTRidt7edSKA==
+X-Google-Smtp-Source: AGHT+IEnWQpRkO7PpBX8UuLXpifWodOKzN8nqCmseigjW5esqHPEIpAy7VXMTQerTW0CEspxMQ31yw==
+X-Received: by 2002:a05:651c:20c:b0:2f3:ee44:c6de with SMTP id
+ 38308e7fff4ca-2f751f2b7ebmr47425381fa.27.1725801109323; 
+ Sun, 08 Sep 2024 06:11:49 -0700 (PDT)
 Received: from fedora.. (ip-109-43-115-52.web.vodafone.de. [109.43.115.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c3ebd5212asm1842418a12.57.2024.09.08.06.11.47
+ 4fb4d7f45d1cf-5c3ebd5212asm1842418a12.57.2024.09.08.06.11.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 08 Sep 2024 06:11:48 -0700 (PDT)
+ Sun, 08 Sep 2024 06:11:49 -0700 (PDT)
 From: Thomas Huth <huth@tuxfamily.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 1/3] hw/m68k/mcf5208: Avoid shifting off end of integer
-Date: Sun,  8 Sep 2024 15:11:26 +0200
-Message-ID: <20240908131128.19384-2-huth@tuxfamily.org>
+Subject: [PULL 2/3] hw/m68k/mcf5208: Add URLs for datasheets
+Date: Sun,  8 Sep 2024 15:11:27 +0200
+Message-ID: <20240908131128.19384-3-huth@tuxfamily.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240908131128.19384-1-huth@tuxfamily.org>
 References: <20240908131128.19384-1-huth@tuxfamily.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.208.46; envelope-from=th.huth@gmail.com;
- helo=mail-ed1-f46.google.com
+Received-SPF: pass client-ip=209.85.208.172; envelope-from=th.huth@gmail.com;
+ helo=mail-lj1-f172.google.com
 X-Spam_score_int: -15
 X-Spam_score: -1.6
 X-Spam_bar: -
@@ -80,43 +80,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In m5208_sys_read(), we have a loop of n from 0 to 31, and we
-calculate (2u << n).  For the n == 31 iteration this will shift off
-the top of the unsigned 32 bit integer.
+The datasheets for the SoC and board we model here are still
+available from the NXP website; add their URLs and titles for
+future reference.
 
-This is harmless, because we're going to stop the loop with n == 31
-anyway, but we can avoid the error by using 64-bit arithmetic here.
-
-(The SDCS0 register is documented at
-https://www.nxp.com/docs/en/reference-manual/MCF5208RM.pdf
-section 18.4.5; we want the lower 5 bits to indicate the
-RAM size, where 31 == 4GB, 30 == 2GB, and so on down.
-As it happens, the layout of the mcf5208evb board memory map
-means it doesn't make sense to have more than 1GB of RAM
-in any case.)
-
-Resolves: Coverity CID 1547727
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
-Message-ID: <20240830173452.2086140-2-peter.maydell@linaro.org>
+Message-ID: <20240830173452.2086140-3-peter.maydell@linaro.org>
 Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/mcf5208.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/m68k/mcf5208.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/hw/m68k/mcf5208.c b/hw/m68k/mcf5208.c
-index ec14096aa4..0ad347dfa8 100644
+index 0ad347dfa8..b6677ad6bc 100644
 --- a/hw/m68k/mcf5208.c
 +++ b/hw/m68k/mcf5208.c
-@@ -158,7 +158,7 @@ static uint64_t m5208_sys_read(void *opaque, hwaddr addr,
-         {
-             int n;
-             for (n = 0; n < 32; n++) {
--                if (current_machine->ram_size < (2u << n)) {
-+                if (current_machine->ram_size < (2ULL << n)) {
-                     break;
-                 }
-             }
+@@ -4,6 +4,14 @@
+  * Copyright (c) 2007 CodeSourcery.
+  *
+  * This code is licensed under the GPL
++ *
++ * This file models both the MCF5208 SoC, and the
++ * MCF5208EVB evaluation board. For details see
++ *
++ * "MCF5208 Reference Manual"
++ * https://www.nxp.com/docs/en/reference-manual/MCF5208RM.pdf
++ * "M5208EVB-RevB 32-bit Microcontroller User Manual"
++ * https://www.nxp.com/docs/en/reference-manual/M5208EVBUM.pdf
+  */
+ 
+ #include "qemu/osdep.h"
 -- 
 2.46.0
 
