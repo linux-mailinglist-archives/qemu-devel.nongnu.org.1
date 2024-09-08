@@ -2,82 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A69797079B
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Sep 2024 14:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 130119707A7
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Sep 2024 15:01:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snHH0-0000o6-Rs; Sun, 08 Sep 2024 08:44:10 -0400
+	id 1snHWa-0000jx-96; Sun, 08 Sep 2024 09:00:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1snHGy-0000e8-7o; Sun, 08 Sep 2024 08:44:08 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1snHWW-0000h1-0o
+ for qemu-devel@nongnu.org; Sun, 08 Sep 2024 09:00:12 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1snHGw-0006B4-FS; Sun, 08 Sep 2024 08:44:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725799447; x=1757335447;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=hMYhnFWxXSsAfwWdeOKrX4i9zZGtjRAXTsthyts1mB0=;
- b=HZ9OrpqfIVg8FAOTCtrvh3U7a8M0rVwmF/t0Sk/4mOJqxIBNRJDcraUW
- ZjPVfe2QqLqhRbHA+vBqcRUZGeqtvsjjvhFlP3ZwlHCRM/5FvjxMfli8o
- bQypAifufdcaKMgwpIA5HtyQLw8+Z8skVbZEnhzswm7//zc5+FA59fOIq
- urn4jJN1MNuc381KujsXxIAxDobklbTRhNLOt5XACr6KMXDtFzWFYKoT5
- 7WH3zJi2SPh5DHDexVpySoOq9w+6zOInWJ4/rhf9X2PX4Kf/596nBsx8A
- f6MZZspg3QDqnZRxC8YJwFQZvXsOuGqLHo+lWlPbYusmyLuDEAXDYZ11u A==;
-X-CSE-ConnectionGUID: Htkq4URLSuOS9utGV2mbJw==
-X-CSE-MsgGUID: UXvKmQ1JRbOtnAP4RYYH0A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="28238281"
-X-IronPort-AV: E=Sophos;i="6.10,212,1719903600"; d="scan'208";a="28238281"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Sep 2024 05:44:05 -0700
-X-CSE-ConnectionGUID: EjDF+9ZNR2CHqN/InLQCtw==
-X-CSE-MsgGUID: RyU6ZH3iQmq7EhvumKf80A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,212,1719903600"; d="scan'208";a="97196680"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 08 Sep 2024 05:43:59 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 7/7] i386/pc: Support cache topology in -machine for PC
- machine
-Date: Sun,  8 Sep 2024 20:59:20 +0800
-Message-Id: <20240908125920.1160236-8-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240908125920.1160236-1-zhao1.liu@intel.com>
-References: <20240908125920.1160236-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1snHWU-0007ib-2v
+ for qemu-devel@nongnu.org; Sun, 08 Sep 2024 09:00:11 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 967BE8CCC0;
+ Sun,  8 Sep 2024 16:00:05 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 76943137660;
+ Sun,  8 Sep 2024 16:00:07 +0300 (MSK)
+Message-ID: <26667ae9-1e7b-4733-9a48-3a647c306c0b@tls.msk.ru>
+Date: Sun, 8 Sep 2024 16:00:07 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: Build failure due to xen
+Cc: Kenneth Adam Miller <kennethadammiller@gmail.com>,
+ QEMU Developers <qemu-devel@nongnu.org>
+References: <CAK7rcp8YkeRisKBTfV0nenk6WvsG2Vwsqnm+=B=KD6rHuSqfog@mail.gmail.com>
+ <bc2ab18b-0e26-40c5-af01-98616fcddb2e@tls.msk.ru>
+ <CAFEAcA_-nV6zVq5Qo6XoF3gtnLNHaHBbMWJZOsUyrg_U=-fJDg@mail.gmail.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <CAFEAcA_-nV6zVq5Qo6XoF3gtnLNHaHBbMWJZOsUyrg_U=-fJDg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, MISSING_HEADERS=1.021,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,87 +84,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow user to configure l1d, l1i, l2 and l3 cache topologies for PC
-machine.
+07.09.2024 13:44, Peter Maydell:
+> On Sat, 7 Sept 2024 at 07:39, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>>
+>> 07.09.2024 02:59, Kenneth Adam Miller wrote:
+>>> Hello,
+>>>
+>>> I'm on commit bd80b59 and my host is:
+>>
+>> $ git desc bd80b59
+>> v2.4.0-rc3-9-gbd80b5963f
+>>
+>> Date:   Mon Aug 3 11:44:07 2015 +0100
+> 
+> Wow, that is very old. So the answer, in order of preference, is:
+> 
+> (1) don't try to build such an ancient QEMU version: use
+>      recent QEMU instead.
+> (2) build on (a container of) whatever the contemporary Linux
+>      distro version of the time would have been: QEMU at that
+>      time built on Linux of that time, so it's the mismatch
+>      between new host (system headers, compiler, etc) and old
+>      QEMU that is causing problems.
+> (3) if you must try to build ancient QEMU on a modern host,
+>      then you are going to run into a pile of more or less
+>      annoying compilation errors, and you're on your own in
+>      figuring out how to fix them. Some strategies:
+>       - if the issue is in part of QEMU you don't care about
+>         then use a configure --disable-foo option to just
+>         not try to compile that feature/etc. e.g. here if you
+>         don't care about Xen support then disable it.
+>       - look through QEMU's commit log and the mailing lists
+>         for the compile message -- often the fix will have
+>         been made in some later QEMU and you could backport it
+>       - otherwise you'll just have to figure out and address
+>         whatever the incompatibility is.
 
-Additionally, add the document of "-machine smp-cache" in
-qemu-options.hx.
+There's also
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Tested-by: Yongwei Ma <yongwei.ma@intel.com>
----
-Changes since Patch v1:
- * Merged document into this patch. (Markus)
+  (4) --disable-xen
 
-Changes since RFC v2:
- * Used cache_supported array.
----
- hw/i386/pc.c    |  4 ++++
- qemu-options.hx | 28 +++++++++++++++++++++++++++-
- 2 files changed, 31 insertions(+), 1 deletion(-)
+I guess.  FWIW.
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index ba0ff511836c..d562fd25aad2 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1788,6 +1788,10 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     mc->nvdimm_supported = true;
-     mc->smp_props.dies_supported = true;
-     mc->smp_props.modules_supported = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L1D] = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L1I] = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L2] = true;
-+    mc->smp_props.cache_supported[CACHE_LEVEL_AND_TYPE_L3] = true;
-     mc->default_ram_id = "pc.ram";
-     pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_AUTO;
- 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index d94e2cbbaeb1..3936ff3e77f9 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -39,7 +39,8 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
-     "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
-     "                hmat=on|off controls ACPI HMAT support (default=off)\n"
-     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
--    "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n",
-+    "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
-+    "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n",
-     QEMU_ARCH_ALL)
- SRST
- ``-machine [type=]name[,prop=value[,...]]``
-@@ -159,6 +160,31 @@ SRST
-         ::
- 
-             -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
-+
-+    ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
-+        Define cache properties (now only the cache topology level) for SMP
-+        system.
-+
-+        ``cache=cachename`` specifies the cache that the properties will be
-+        applied on. This field is the combination of cache level and cache
-+        type. Currently it supports ``l1d`` (L1 data cache), ``l1i`` (L1
-+        instruction cache), ``l2`` (L2 unified cache) and ``l3`` (L3 unified
-+        cache).
-+
-+        ``topology=topologylevel`` sets the cache topology level. It accepts
-+        CPU topology levels including ``thread``, ``core``, ``module``,
-+        ``cluster``, ``die``, ``socket``, ``book``, ``drawer`` and a special
-+        value ``default``. If ``default`` is set, then the cache topology will
-+        follow the architecture's default cache topology model. If other CPU
-+        topology level is set, the cache will be shared at corresponding CPU
-+        topology level. For example, ``topology=core`` makes the cache shared
-+        in a core.
-+
-+        Example:
-+
-+        ::
-+
-+            -machine smp-cache.0.cache=l1d,smp-cache.0.topology=core,smp-cache.1.cache=l1i,smp-cache.1.topology=core
- ERST
- 
- DEF("M", HAS_ARG, QEMU_OPTION_M,
--- 
-2.34.1
+/mjt
 
 
