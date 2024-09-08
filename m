@@ -2,120 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D253970479
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Sep 2024 01:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B11A19704CE
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Sep 2024 04:28:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sn4fP-0003eo-5N; Sat, 07 Sep 2024 19:16:31 -0400
+	id 1sn7dQ-0002tK-UK; Sat, 07 Sep 2024 22:26:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1sn4fG-0003dM-KU; Sat, 07 Sep 2024 19:16:22 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sn7dP-0002rU-9M
+ for qemu-devel@nongnu.org; Sat, 07 Sep 2024 22:26:39 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1sn4fE-0005z8-OB; Sat, 07 Sep 2024 19:16:22 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-42cae4eb026so7675935e9.0; 
- Sat, 07 Sep 2024 16:16:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sn7dN-0004yk-Gk
+ for qemu-devel@nongnu.org; Sat, 07 Sep 2024 22:26:39 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-718d704704aso1736871b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 07 Sep 2024 19:26:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1725750977; x=1726355777; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zdUYCB5+/YQr+E0TUUm0Dw5lCY94glCNJFdQX81xI9k=;
- b=Mvuu6oXuRC7EzrlvkiILtI0CMltGgvsfWoZdMtgDdhgwKs1Vt9g2zkwwu0N4S9rpjb
- Qtz96QlK4FYgA/QdHm/L5v1sXOd2lqbMYUAGdYrv+nGKIspAHZNcfFytkL0TUJAxd0r6
- my/G+rG2wKOR2Y+1FZoOyHa6IBZcqzilup/nfISl3T+iaiCEp/Wk2LNHNpQ9mSL79ACi
- FAhohXCVB1mXgstjS7K8610NhF8pLLp2sW8tr9Ug3HDQ23m0ef6uULtH+8ktFhEO8a4G
- 0xEuGbj2m+C7VBd3WRiiqfyD8eKrMfgVTs25qP4Sa3MWm4ZaKYX6Xvuipm3qVnNl98IU
- TIdw==
+ d=linaro.org; s=google; t=1725762395; x=1726367195; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=U2j0lMZsRK4bacOx+pZpf0i68zngCZE0Eba4wU07RQs=;
+ b=Tw9FG8EjLTa0SG5k28aQBqP9E5LVtZdytAb77859ohRzHVpeC1wI5mq6CAnV/St2vU
+ E6EV7xt5HAL+8Qic95UvIBUJNYmrJ58exYTdIJZNkzLoT5pZQSvwbIXWlV9sYDHalaW0
+ w5aw7FCrRj5SnhRmMAVlpnoYDuiC8CWXEqf66VJni0pFVSVxb9F7pnieWlmoS4le8Lxe
+ p0MzRoolfi38TdXl+q3u6RQJTxKQekRqh5OqD2S1sScsTOBB+hnYq0fENARxorjOQXpn
+ iGtXHojG893hvi7bCnpBcZDTSGLZsfdtT0f+NCFaG8Y9iVHbRYjsqTDTSrDSJbTa+1s2
+ Ho9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725750977; x=1726355777;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zdUYCB5+/YQr+E0TUUm0Dw5lCY94glCNJFdQX81xI9k=;
- b=JoCOWjFyb0nzk8cLTppyUa6flp3ooTTL30TCjX1knfW0888eOlr4c3eDXppMlFIl2L
- MnnqfXi44fN+oi7MlPE8jxe48NIbCyaaxjGAJLtxokHtiAiM+/HjN0kSlHcyAsYEVlHL
- z3fmXym8E9clChQo8bzD1DXQcV6n3QNT2mLLcZxQpcqwCnWAomske7T/anZI3dJHFp/U
- n0/fsiLO44i22+wuDUMlgEDxmZ+b2JCCuuOF63FkGNTBK5Yx/V7BLcWCC1OD4Dh3DUR1
- N0aNz8WnhOkaEDPZwILVe+KuEy2N8sOO/a0WvcVVtfle9JH0dgIAPTjcWn0jso003FMi
- 0j2Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUKDZyJLMZJ/kFb98En2eKkcwqKOweef1rgUYM/fjVxVqjGdLnGXvlT6DTQDARNvp9+l9t5J8yXLIsR4g==@nongnu.org,
- AJvYcCVkhZelyoLsmY0ZTA8RhQrSXhHtRl2vtO7vQ7rehgnwB87B2cnSZfUXa19+VduZcIiXdZXKNm+xIJo=@nongnu.org,
- AJvYcCWRcKDrMIWmZHaH+zjas89qkJyMc81ivHT0ipP780VOOhcK3oUoOEYQReBjbzuwkgGuPUwk/DatvQ==@nongnu.org
-X-Gm-Message-State: AOJu0YzfzJNvZRwBokcJvsIwk9rx7+KThMcbRwAMRYC7UGZsq9Ri3Z65
- JO0uqbe7AVFiNgCJ1y1c2TXJwwH9cPQItlDoq2SysBfu8RR0kGIR
-X-Google-Smtp-Source: AGHT+IE3oPNtsLmeGhxgrRyUZTn7JO4U9vNi6p0bkRLny2KBsyBv3JWF4YxIrSRIE4hfdXOaUBgWJQ==
-X-Received: by 2002:a5d:5452:0:b0:374:c0cc:a1fb with SMTP id
- ffacd0b85a97d-378896573fbmr4733165f8f.39.1725750977217; 
- Sat, 07 Sep 2024 16:16:17 -0700 (PDT)
-Received: from [127.0.0.1] ([185.238.219.7]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37895675bc9sm2223140f8f.56.2024.09.07.16.16.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 07 Sep 2024 16:16:16 -0700 (PDT)
-Date: Sat, 07 Sep 2024 17:33:47 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
- Helge Deller <deller@gmx.de>, Song Gao <gaosong@loongson.cn>,
- Stafford Horne <shorne@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Joel Stanley <joel@jms.id.au>, Troy Lee <leetroy@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>, qemu-riscv@nongnu.org,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Hao Wu <wuhaotsh@google.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Steven Lee <steven_lee@aspeedtech.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Alistair Francis <Alistair.Francis@wdc.com>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Subbaraya Sundeep <sundeep.lkml@gmail.com>,
- =?ISO-8859-1?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Tyrone Ting <kfting@nuvoton.com>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, qemu-arm@nongnu.org,
- Sergio Lopez <slp@redhat.com>, Jan Kiszka <jan.kiszka@web.de>,
- qemu-ppc@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- Aleksandar Rikalo <arikalo@gmail.com>, Jia Liu <proljc@gmail.com>,
- Huacai Chen <chenhuacai@kernel.org>,
- Niek Linnenbank <nieklinnenbank@gmail.com>,
- Paul Burton <paulburton@kernel.org>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Palmer Dabbelt <palmer@dabbelt.com>
-Subject: Re: [PATCH v2 3/3] hw/char: Extract serial-mm
-In-Reply-To: <b80ddcfd-bd02-8ebd-315f-285c533aaf81@eik.bme.hu>
-References: <20240905073832.16222-1-shentey@gmail.com>
- <20240905073832.16222-4-shentey@gmail.com>
- <b80ddcfd-bd02-8ebd-315f-285c533aaf81@eik.bme.hu>
-Message-ID: <859EB9E2-9101-4F01-AF40-B8A2E8FF1783@gmail.com>
+ d=1e100.net; s=20230601; t=1725762395; x=1726367195;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=U2j0lMZsRK4bacOx+pZpf0i68zngCZE0Eba4wU07RQs=;
+ b=iSnL4xjzPtCxeAgSOwxpfLpVT7xB3J4djpKH2v06vgCyamDJiQ4dE/jkI5F0IMhX6B
+ aUhe5yHZiBlsRELlPJ85HMizUHT9UrfWazxowyyV+t5k6ZzLRWW+tmCC2oqKsPFqfCwo
+ RTJBdyyQVEbjSxoZ3mERsI1xFNP+xkzUQkXgLY/zq/Hhff7czUHtRnjF36K27QlY0jdO
+ Px7y66Qt+Dqni+QmkpWSGle4nhgxHG8D+NzX8gJ9sEkByLl1Yp6K/VktprmgMv4sqfiQ
+ 9x/5fjQOnE6N478ezcWapXP70NiY46PaJOE3VrBd0FlGfs8rM3P2cR5Mg/csP0GsBING
+ fErg==
+X-Gm-Message-State: AOJu0YxuychNb3zW8w/zhUagcVNjxl3FcjqBYdA9C6wuroan2scB/GFD
+ XMQddoQuLxjRDWqxrh7HLqQzRW6RZwNXGRV33Ajs0YH1+OYoyyPK95rxIUw8vZAwqnUX3fSmEuG
+ L
+X-Google-Smtp-Source: AGHT+IH+xCbEUs3q5sL+zpDLJugLIMOpL2eWBzuSgpDFKzdQ+7i+uFOVxIzU2QP9K3VQCq+51SsvHw==
+X-Received: by 2002:a05:6a21:398a:b0:1c6:ecee:1850 with SMTP id
+ adf61e73a8af0-1cf2a0fb354mr5000725637.49.1725762394766; 
+ Sat, 07 Sep 2024 19:26:34 -0700 (PDT)
+Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2dadbfe46d4sm4084019a91.1.2024.09.07.19.26.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 07 Sep 2024 19:26:34 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: zhiwei_liu@linux.alibaba.com, tangtiancheng.ttc@alibaba-inc.com,
+ liwei1518@gmail.com, bmeng.cn@gmail.com
+Subject: [PATCH 00/12] tcg: Improve support for cmpsel_vec
+Date: Sat,  7 Sep 2024 19:26:20 -0700
+Message-ID: <20240908022632.459477-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x331.google.com
-X-Spam_score_int: 28
-X-Spam_score: 2.8
-X-Spam_bar: ++
-X-Spam_report: (2.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,149 +90,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The patches to optimize cmp_vec and cmpsel_vec -- particularly
+canonicalizing immediate operands -- are directed toward helping
+the in flight tcg/riscv vector backend.
+
+In order for that to happen, the tcg/i386 backend must be changed
+so that it does not rely upon choices that it made during early
+expansion, before optimization changes things.
+
+While I was looking at the issues i386 was attempting to solve
+during early expansion, I realized that avx512 does not have the
+same issues.  Expansion of vector cmp and cmpsel become trivial.
+
+I think I've split the difference nicely, so that avx1 still works.
+Also, the avx512 predication example should be a nice model for
+riscv and some future aarch64 sve vectorization.
 
 
-Am 5=2E September 2024 12:26:35 UTC schrieb BALATON Zoltan <balaton@eik=2E=
-bme=2Ehu>:
->On Thu, 5 Sep 2024, Bernhard Beschow wrote:
->> hw/char/serial currently contains the implementation of both TYPE_SERIA=
-L and
->> TYPE_SERIAL_MM=2E According to serial_class_init(), TYPE_SERIAL is an i=
-nternal
->> class while TYPE_SERIAL_MM is used by numerous machine types directly=
-=2E Let's
->> move the latter into its own module which makes the dependencies more o=
-bvious
->> and the code more tidy=2E
->>=20
->> The includes and the dependencies have been converted mechanically exce=
-pt in the
->> hw/char directories which were updated manually=2E The result was compi=
-le-tested=2E
->> Now, only hw/char makes direct use of TYPE_SERIAL:
->>=20
->>  # grep -r -e "select SERIAL" | grep -v SERIAL_
->>  hw/char/Kconfig:    select SERIAL
->>  hw/char/Kconfig:    select SERIAL
->>  hw/char/Kconfig:    select SERIAL
->>  hw/char/Kconfig:    select SERIAL
->>  hw/char/Kconfig:    select SERIAL
->>=20
->>  # grep -r -e "/serial\\=2Eh"
->>  include/hw/char/serial-mm=2Eh:#include "hw/char/serial=2Eh"
->>  hw/char/serial-pci-multi=2Ec:#include "hw/char/serial=2Eh"
->>  hw/char/serial=2Ec:#include "hw/char/serial=2Eh"
->>  hw/char/serial-isa=2Ec:#include "hw/char/serial=2Eh"
->>  hw/char/serial-pci=2Ec:#include "hw/char/serial=2Eh"
->>=20
->> Tested-by: Andrew Jeffery <andrew@codeconstruct=2Ecom=2Eau>
->> Reviewed-by: Mark Cave-Ayland <mark=2Ecave-ayland@ilande=2Eco=2Euk>
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->> include/hw/arm/aspeed_soc=2Eh         |   2 +-
->> include/hw/char/mchp_pfsoc_mmuart=2Eh |   2 +-
->> include/hw/char/serial-mm=2Eh         |  52 +++++++++
->> include/hw/char/serial=2Eh            |  19 ----
->> hw/arm/allwinner-a10=2Ec              |   2 +-
->> hw/arm/allwinner-h3=2Ec               |   2 +-
->> hw/arm/allwinner-r40=2Ec              |   2 +-
->> hw/arm/aspeed_ast2400=2Ec             |   2 +-
->> hw/arm/aspeed_soc_common=2Ec          |   2 +-
->> hw/arm/kzm=2Ec                        |   2 +-
->> hw/arm/msf2-soc=2Ec                   |   2 +-
->> hw/arm/musicpal=2Ec                   |   2 +-
->> hw/arm/npcm7xx=2Ec                    |   2 +-
->> hw/arm/pxa2xx=2Ec                     |   2 +-
->> hw/char/omap_uart=2Ec                 |   2 +-
->> hw/char/serial-mm=2Ec                 | 157 +++++++++++++++++++++++++++=
-+
->> hw/char/serial=2Ec                    | 126 ----------------------
->> hw/display/sm501=2Ec                  |   2 +-
->> hw/hppa/machine=2Ec                   |   2 +-
->> hw/loongarch/virt=2Ec                 |   2 +-
->> hw/microblaze/petalogix_ml605_mmu=2Ec |   2 +-
->> hw/mips/boston=2Ec                    |   2 +-
->> hw/mips/jazz=2Ec                      |   2 +-
->> hw/mips/loongson3_virt=2Ec            |   2 +-
->> hw/mips/malta=2Ec                     |   2 +-
->> hw/mips/mipssim=2Ec                   |   2 +-
->> hw/openrisc/openrisc_sim=2Ec          |   2 +-
->> hw/openrisc/virt=2Ec                  |   2 +-
->> hw/ppc/e500=2Ec                       |   2 +-
->> hw/ppc/ppc405_uc=2Ec                  |   2 +-
->> hw/ppc/ppc440_bamboo=2Ec              |   2 +-
->> hw/ppc/sam460ex=2Ec                   |   2 +-
->> hw/ppc/virtex_ml507=2Ec               |   2 +-
->> hw/riscv/virt=2Ec                     |   2 +-
->> hw/sparc64/niagara=2Ec                |   2 +-
->> hw/sparc64/sun4u=2Ec                  |   2 +-
->> hw/xtensa/xtfpga=2Ec                  |   2 +-
->> hw/arm/Kconfig                      |  20 ++--
->> hw/char/Kconfig                     |   4 +
->> hw/char/meson=2Ebuild                 |   1 +
->> hw/display/Kconfig                  |   2 +-
->> hw/hppa/Kconfig                     |   2 +-
->> hw/loongarch/Kconfig                |   2 +-
->> hw/microblaze/Kconfig               |   2 +-
->> hw/mips/Kconfig                     |  10 +-
->> hw/openrisc/Kconfig                 |   4 +-
->> hw/ppc/Kconfig                      |  10 +-
->> hw/riscv/Kconfig                    |   2 +-
->> hw/sparc64/Kconfig                  |   1 +
->> hw/xtensa/Kconfig                   |   2 +-
->> 50 files changed, 276 insertions(+), 206 deletions(-)
->> create mode 100644 include/hw/char/serial-mm=2Eh
->> create mode 100644 hw/char/serial-mm=2Ec
->>=20
->> diff --git a/include/hw/arm/aspeed_soc=2Eh b/include/hw/arm/aspeed_soc=
-=2Eh
->> index 624d489e0d=2E=2E689f52dae8 100644
->> --- a/include/hw/arm/aspeed_soc=2Eh
->> +++ b/include/hw/arm/aspeed_soc=2Eh
->> @@ -39,7 +39,7 @@
->> #include "hw/misc/unimp=2Eh"
->> #include "hw/misc/aspeed_peci=2Eh"
->> #include "hw/fsi/aspeed_apb2opb=2Eh"
->> -#include "hw/char/serial=2Eh"
->> +#include "hw/char/serial-mm=2Eh"
->> #include "hw/intc/arm_gicv3=2Eh"
->>=20
->> #define ASPEED_SPIS_NUM  2
->> diff --git a/include/hw/char/mchp_pfsoc_mmuart=2Eh b/include/hw/char/mc=
-hp_pfsoc_mmuart=2Eh
->> index b0e14ca355=2E=2Ea7b8b1b08b 100644
->> --- a/include/hw/char/mchp_pfsoc_mmuart=2Eh
->> +++ b/include/hw/char/mchp_pfsoc_mmuart=2Eh
->> @@ -29,7 +29,7 @@
->> #define HW_MCHP_PFSOC_MMUART_H
->>=20
->> #include "hw/sysbus=2Eh"
->> -#include "hw/char/serial=2Eh"
->> +#include "hw/char/serial-mm=2Eh"
->>=20
->> #define MCHP_PFSOC_MMUART_REG_COUNT 13
->>=20
->> diff --git a/include/hw/char/serial-mm=2Eh b/include/hw/char/serial-mm=
-=2Eh
->> new file mode 100644
->> index 0000000000=2E=2E62a8489d69
->> --- /dev/null
->> +++ b/include/hw/char/serial-mm=2Eh
->> @@ -0,0 +1,52 @@
->> +/*
->> + * QEMU 16550A UART emulation
->
->This is now only "memory mapped 16550A compatible UART emulation" or some=
-thing like that, the actual 16550A emulation is in serial=2Ec where this wa=
-s moved from=2E Maybe worth making it clear in this comment and in serial-m=
-m=2Ec as well=2E
+r~
 
-I'll send a v3 then=2E
 
-Best regards,
-Bernhard
+Richard Henderson (11):
+  tcg: Export vec_gen_6
+  tcg/i386: Split out tcg_out_vex_modrm_type
+  tcg/i386: Do not expand cmp_vec early
+  tcg/i386: Do not expand cmpsel_vec early
+  tcg/optimize: Fold movcond with true and false values identical
+  tcg/optimize: Optimize cmp_vec and cmpsel_vec
+  tcg/optimize: Optimize bitsel_vec
+  tcg/i386: Optimize cmpsel with constant 0 arguments
+  tcg/i386: Implement cmp_vec with avx512 insns
+  tcg/i386: Add predicate parameters to tcg_out_evex_opc
+  tcg/i386: Implement cmpsel_vec with avx512 insns
 
->
->Regards,
->BALATON Zoltan
+TANG Tiancheng (1):
+  tcg: Fix iteration step in 32-bit gvec operation
+
+ tcg/i386/tcg-target-con-set.h |   1 +
+ tcg/i386/tcg-target-con-str.h |   1 +
+ tcg/i386/tcg-target.h         |   2 +-
+ tcg/i386/tcg-target.opc.h     |   1 -
+ tcg/tcg-internal.h            |   2 +
+ tcg/optimize.c                |  99 +++++++
+ tcg/tcg-op-gvec.c             |   2 +-
+ tcg/tcg-op-vec.c              |   4 +-
+ tcg/i386/tcg-target.c.inc     | 469 +++++++++++++++++++++-------------
+ 9 files changed, 400 insertions(+), 181 deletions(-)
+
+-- 
+2.43.0
+
 
