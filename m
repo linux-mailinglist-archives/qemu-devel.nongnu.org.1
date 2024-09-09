@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F915971C74
+	by mail.lfdr.de (Postfix) with ESMTPS id 80112971C73
 	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 16:26:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snfLU-0002A9-1P; Mon, 09 Sep 2024 10:26:25 -0400
+	id 1snfLc-0002Ya-BO; Mon, 09 Sep 2024 10:26:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1snfLO-0001tD-Iv
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 10:26:21 -0400
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+ id 1snfLS-00028L-BG
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 10:26:22 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1snfLK-0004US-LA
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 10:26:17 -0400
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-277e965305dso2335041fac.2
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 07:26:14 -0700 (PDT)
+ id 1snfLO-0004Un-BV
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 10:26:20 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-7163489149eso3529633a12.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 07:26:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1725891973; x=1726496773;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1725891976; x=1726496776;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fDNjzZDuWCBsPbd7tcy7/yK9DFVnmavsqu74xEof5CQ=;
- b=gfSQZ3VcLIFV+/1XYmrXocIaohet6ol8UWwt3qXGDvRFn42AZJb/eeRNuf+zzyf49N
- lEr8Fyglgp5kF1JgdH2nWgRKHQ9FzIgJr/UI8Tls5V1yu3zt5sbirGeiiU1fgZ9c2xNc
- xD82SMp6kiHS69kV0s07aw3Cs/Z0fsprpEmbnmj1Rsba+dQj/sQE4YH2NRBUjRDSbA+Y
- eK/2HJZB6sfuFuAIxqXsE9J8n8I6Ly+BMxcSS8Wslz57ASxub50N0Rn6rJ6vfyX4zKj/
- GbSQZ9CdtqaFKld4LZCop6psF0wa+XkgOssU/9E6pIDCFPwMOf1OikZNilOq8j2LkEa1
- 5qhQ==
+ bh=PMsMrxXIYF55uyEUpAg6oCulZa95qOnP3qJj8dOgMPY=;
+ b=MGBDKqVf7zq8wAW3+BY7XkO/pil5AP3J+ti/4GeFhh9q5UA3zmI5gSJEQBNUApmOJb
+ vpE/rHwKulVSGhl28tNhsDonNsNGdmdPrQsTu/Hh9NGDCMA17y0aWTcAyEBJrmFil0XK
+ nGngOZTybIc4hb8+uxJOXrrneK7uHiWNDnCGVZssLs/MiSRG+Fkzid08hBk9kSQkefwt
+ lRqElvgu1xFkqQmq5ihY8dfMnwNlp6hhpX8XPgD51OPaZZSO7i6J47TNmGbB2olgv/pF
+ GS1hMkqI768SEt0r54ca0daQR+xiybs259BIKDJhLo1WhD8QP6rR434ekLz+8+ziKIIb
+ FJZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725891973; x=1726496773;
+ d=1e100.net; s=20230601; t=1725891976; x=1726496776;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fDNjzZDuWCBsPbd7tcy7/yK9DFVnmavsqu74xEof5CQ=;
- b=S2tKW2pp1XE9/ywR5yYJoCBhfTgncqJ4KqDZyxdPLNYo7o/2/5TXxHwQlUKx/YtBj0
- JOzz+UopuVZZTtWbC2VoN4TLbtsRRfg+5l5wMWU7NLysINbbwnA+Daa0FZYGdnG0q6vZ
- iNhaeEpxgJFHZe0xgeicHXvf4c9ZPNTORrdlLEnbCz3DmihYDdXCMcgj5yub/E9jM7Zv
- GW1jrzmGIKfmdUkhGqmEp6xbNqaUfTbBeOIu8FMBH0btTPfBipElB+VHNhhafTK1yzBD
- N4Y1mhO2wjbz53L0EQw3YxDzHoyCf0PA2sGyPqbbnUzxA5dmvDUXNhcJn4jQ7WmGr52x
- ugng==
-X-Gm-Message-State: AOJu0YwjyKkleaB5shfrQf+Dc/1kF3kc9s9wjF3l+P/CDeIF80YxgZJV
- uAFF6U2aDBN3Fx8wy8VI0xx9JPTmrErfihTC/c8Gwvucvjs+PZC49Xj57j7+ReywkE+cFk8HF+Z
- h6RiFoQ==
-X-Google-Smtp-Source: AGHT+IHca8Om7eqk8602bCQnCxFF0qmMNz22RXBMDsEwvgw66/xxzlAccL+Fmk+XEvJqdv3GlK+yuA==
-X-Received: by 2002:a05:6870:e391:b0:270:1b79:ccbc with SMTP id
- 586e51a60fabf-27b82da186dmr8372667fac.5.1725891972415; 
- Mon, 09 Sep 2024 07:26:12 -0700 (PDT)
+ bh=PMsMrxXIYF55uyEUpAg6oCulZa95qOnP3qJj8dOgMPY=;
+ b=xQm9FOJgb9U2qPkfW2OKOyhg6zlhXm3mgOp5lIirOvKeWEg8yEbIxK5FAmT0LnV2BZ
+ S19Bjkmw2K4ISbUOW7vgRiVod+0L6wuGL51VIGMVglXZe/F0MD2buxVy67TZq/T/GOXw
+ Nh3/uyfLkNjzyMG+5oU05Hcj7bNAg4rx8aEETreyZKr8huJDYJnVkMOnPa/AlWQEMPyu
+ 7Ned2dNUdTyFLSricOodZSSC91kp6c/Bze3hc2rw1QsAOXUMP+B7KQP6oqXaozQC/G/9
+ 9l4v8JdUvOPsf7adTd8KxFqxHUTBoV/j04ym1P/P2eFVAx1v/51Rp7rjr3x+prDMjfu+
+ q4BA==
+X-Gm-Message-State: AOJu0YymySucwhvn0EJ6AeDwN+zAiVWIhAmNPt7wysOkpsGV8URHvLhE
+ 9FUW2uGUZelqyX7sFis7NB2Cfn0zpgvWS0iOx+Mg69LxzJ9M95D3l8B/qW9JwbrGuOB0yypVKSA
+ GX0vitg==
+X-Google-Smtp-Source: AGHT+IEMbRYQFUUG8WXjkKSYiGzZOuXV4BZYZPDJVrOdXLDhURhSEXi6aehjLoqkl7nz0x3xD8X6sA==
+X-Received: by 2002:a05:6a20:4387:b0:1cf:41aa:f6a1 with SMTP id
+ adf61e73a8af0-1cf41ab0323mr3357398637.20.1725891975541; 
+ Mon, 09 Sep 2024 07:26:15 -0700 (PDT)
 Received: from localhost.localdomain ([118.114.94.226])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-718e58b2a88sm3561164b3a.46.2024.09.09.07.26.09
+ d2e1a72fcca58-718e58b2a88sm3561164b3a.46.2024.09.09.07.26.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 07:26:12 -0700 (PDT)
+ Mon, 09 Sep 2024 07:26:15 -0700 (PDT)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -65,16 +65,17 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH RESEND RFC 06/10] migration: Support periodic CPU throttle
-Date: Mon,  9 Sep 2024 22:25:39 +0800
-Message-Id: <c1ac9e22b0f087b2ddb2d3766171459a149b394e.1725891841.git.yong.huang@smartx.com>
+Subject: [PATCH RESEND RFC 07/10] tests/migration-tests: Add test case for
+ periodic throttle
+Date: Mon,  9 Sep 2024 22:25:40 +0800
+Message-Id: <8eae7759cdef113ff2fd5a77c9374b51dcd72284.1725891841.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1725891841.git.yong.huang@smartx.com>
 References: <cover.1725891841.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=yong.huang@smartx.com; helo=mail-oa1-x2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=yong.huang@smartx.com; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,57 +97,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When VM is configured with huge memory, the current throttle logic
-doesn't look like to scale, because migration_trigger_throttle()
-is only called for each iteration, so it won't be invoked for a long
-time if one iteration can take a long time.
-
-The periodic sync and throttle aims to fix the above issue by
-synchronizing the remote dirty bitmap and triggering the throttle
-periodically. This is a trade-off between synchronization overhead
-and CPU throttle impact.
+To make sure periodic throttle feature doesn't regression
+any features and functionalities, enable this feature in
+the auto-converge migration test.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- migration/migration.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/qtest/migration-test.c | 56 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 055d527ff6..fefd93b683 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1420,6 +1420,9 @@ static void migrate_fd_cleanup(MigrationState *s)
-             qemu_thread_join(&s->thread);
-             s->migration_thread_running = false;
-         }
-+        if (migrate_periodic_throttle()) {
-+            periodic_throttle_stop();
-+        }
-         bql_lock();
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 2fb10658d4..61d7182f88 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -281,6 +281,11 @@ static uint64_t get_migration_pass(QTestState *who)
+     return read_ram_property_int(who, "iteration-count");
+ }
  
-         multifd_send_shutdown();
-@@ -3263,6 +3266,9 @@ static MigIterateState migration_iteration_run(MigrationState *s)
++static uint64_t get_migration_dirty_sync_count(QTestState *who)
++{
++    return read_ram_property_int(who, "dirty-sync-count");
++}
++
+ static void read_blocktime(QTestState *who)
+ {
+     QDict *rsp_return;
+@@ -710,6 +715,11 @@ typedef struct {
+     PostcopyRecoveryFailStage postcopy_recovery_fail_stage;
+ } MigrateCommon;
  
-     if ((!pending_size || pending_size < s->threshold_size) && can_switchover) {
-         trace_migration_thread_low_pending(pending_size);
-+        if (migrate_periodic_throttle()) {
-+            periodic_throttle_stop();
-+        }
-         migration_completion(s);
-         return MIG_ITERATE_BREAK;
-     }
-@@ -3508,6 +3514,11 @@ static void *migration_thread(void *opaque)
-     ret = qemu_savevm_state_setup(s->to_dst_file, &local_err);
-     bql_unlock();
++typedef struct {
++    /* CPU throttle parameters */
++    bool periodic;
++} AutoConvergeArgs;
++
+ static int test_migrate_start(QTestState **from, QTestState **to,
+                               const char *uri, MigrateStart *args)
+ {
+@@ -2778,12 +2788,13 @@ static void test_validate_uri_channels_none_set(void)
+  * To make things even worse, we need to run the initial stage at
+  * 3MB/s so we enter autoconverge even when host is (over)loaded.
+  */
+-static void test_migrate_auto_converge(void)
++static void test_migrate_auto_converge_args(AutoConvergeArgs *input_args)
+ {
+     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
+     MigrateStart args = {};
+     QTestState *from, *to;
+     int64_t percentage;
++    bool periodic = (input_args && input_args->periodic);
  
-+    if (migrate_periodic_throttle()) {
-+        periodic_throttle_setup(true);
-+        periodic_throttle_start();
+     /*
+      * We want the test to be stable and as fast as possible.
+@@ -2791,6 +2802,7 @@ static void test_migrate_auto_converge(void)
+      * so we need to decrease a bandwidth.
+      */
+     const int64_t init_pct = 5, inc_pct = 25, max_pct = 95;
++    const int64_t periodic_throttle_interval = 2;
+ 
+     if (test_migrate_start(&from, &to, uri, &args)) {
+         return;
+@@ -2801,6 +2813,12 @@ static void test_migrate_auto_converge(void)
+     migrate_set_parameter_int(from, "cpu-throttle-increment", inc_pct);
+     migrate_set_parameter_int(from, "max-cpu-throttle", max_pct);
+ 
++    if (periodic) {
++        migrate_set_parameter_bool(from, "cpu-periodic-throttle", true);
++        migrate_set_parameter_int(from, "cpu-periodic-throttle-interval",
++                periodic_throttle_interval);
 +    }
 +
-     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
-                                MIGRATION_STATUS_ACTIVE);
+     /*
+      * Set the initial parameters so that the migration could not converge
+      * without throttling.
+@@ -2827,6 +2845,29 @@ static void test_migrate_auto_converge(void)
+     } while (true);
+     /* The first percentage of throttling should be at least init_pct */
+     g_assert_cmpint(percentage, >=, init_pct);
++
++    if (periodic) {
++        /*
++         * Check if periodic sync take effect, set the timeout with 20s
++         * (max_try_count * 1s), if extra sync doesn't show up, fail test.
++         */
++        uint64_t iteration_count, dirty_sync_count;
++        bool extra_sync = false;
++        int max_try_count = 20;
++
++        /* Check if periodic sync take effect */
++        while (--max_try_count) {
++            usleep(1000 * 1000);
++            iteration_count = get_migration_pass(from);
++            dirty_sync_count = get_migration_dirty_sync_count(from);
++            if (dirty_sync_count > iteration_count) {
++                extra_sync = true;
++                break;
++            }
++        }
++        g_assert(extra_sync);
++    }
++
+     /* Now, when we tested that throttling works, let it converge */
+     migrate_ensure_converge(from);
  
+@@ -2849,6 +2890,17 @@ static void test_migrate_auto_converge(void)
+     test_migrate_end(from, to, true);
+ }
+ 
++static void test_migrate_auto_converge(void)
++{
++    test_migrate_auto_converge_args(NULL);
++}
++
++static void test_migrate_auto_converge_periodic_throttle(void)
++{
++    AutoConvergeArgs args = {.periodic = true};
++    test_migrate_auto_converge_args(&args);
++}
++
+ static void *
+ test_migrate_precopy_tcp_multifd_start_common(QTestState *from,
+                                               QTestState *to,
+@@ -3900,6 +3952,8 @@ int main(int argc, char **argv)
+     if (g_test_slow()) {
+         migration_test_add("/migration/auto_converge",
+                            test_migrate_auto_converge);
++        migration_test_add("/migration/auto_converge_periodic_throttle",
++                           test_migrate_auto_converge_periodic_throttle);
+         if (g_str_equal(arch, "x86_64") &&
+             has_kvm && kvm_dirty_ring_supported()) {
+             migration_test_add("/migration/dirty_limit",
 -- 
 2.39.1
 
