@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADAD972093
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A799720A4
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:30:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sniBk-0003wj-PP; Mon, 09 Sep 2024 13:28:32 -0400
+	id 1sniBm-000426-Gm; Mon, 09 Sep 2024 13:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBg-0003v2-M5
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:28 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1sniBi-0003vo-K7
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:30 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBe-000606-PV
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:28 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-206b9455460so37857185ad.0
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:26 -0700 (PDT)
+ id 1sniBf-00060B-Kd
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:29 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2059204f448so37835715ad.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725902905; x=1726507705; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=XU8WqVqDSNan7RvkUkavozqeS1/zb6eo+5KVt+8RynU=;
- b=dWNX3r7R4KMLbW9HxD9xhzGoFJ5PrlxI2ljK283Bfgih7bE0cYNuEA+Moc8XOeEtJ2
- 4PS79JpkdC22SVlMWhvJcf+IriMNy1Xr3rSJlZ39edF5VbhCqwU0W1S5TJJaDlbReTXn
- eYBJacI/Jb4X4U3RS5yLyvE6FMcad94EJlLUTauu0VU8XKsMEAPIgsWHVkhGvFxS26l+
- soBrc+IsT7t5eqWxYMQHZu2cvRyYITW204J3JanuRHyNOof0CGG67clLVnMWGOsC+yAa
- xjVerBq7TwmjLBQBe4Cxw9SwURhZ76/FbwFbokTeOOXAFyPYe/R1YDqSSfboEn2XKWEq
- BZPQ==
+ d=linaro.org; s=google; t=1725902906; x=1726507706; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=421LbBczhN+7djkIM+80LiuWG1ET4qxsB+bV+/jUDAA=;
+ b=klznt2Z71KXb3dqIFMYhEihMYsuCsMLQiNjNDWUNvrgPa7O/5RyHx8umZgivHbGezi
+ 5e9XG1dYJAxohcAeRR+0cEMm3iJhmYRmz4gMY7aN9Rty/4ipYXanllchThwjcfsKzpwO
+ wwvUvhKpxoa9c4eA5abgvRXJy6fLET6rYO81/ozBgHhmozgweqWBtbu8azpj3OchZkEm
+ NMZQxlPYRI+Mru2F07fEzq8nVYEPDt0ZllocAswFkRCTr59cyUMlBB/7zfQrTsn4Za7A
+ fDuUJOSDUQcvHnD3RCIpLyASGOd5ZJQSciM4NB7KX/GJA2CVAXbbmciU/bux+BYKKI/j
+ rr4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725902905; x=1726507705;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XU8WqVqDSNan7RvkUkavozqeS1/zb6eo+5KVt+8RynU=;
- b=rk5kl9cXUiEXBW/hFcXYUpWHs+cGuYwVXdjy0BGAmsfx6m+ALmaVuolGHbkvkQw1zF
- h4CFnVRqujR7LCwCqih70YNTbUgNMOVV2quNG282/K+dqC551mToPo5wNrZSknEwPhEa
- fdJXDbFghlcbAgxf28njFk+uK6QbQ6p3MvDi3l2tpHljOPrJb5WRoue47h7LRJHohXFs
- iwsqPBzIIEsUKmNRNNm18x8Q8LZjwdSMpFkS/7ev8et//1Y+O8sLWib+whkn5mZrYCT7
- lG/VFx5B1Fa07CQ5UEIDPMwRbdsEHUcsQ8ZGpv18IYEYsYS/+sc6MWGFvT1D6UeDxrM5
- cMag==
-X-Gm-Message-State: AOJu0Yym48VP0D9RlEhA7f1TXDGdn3zwVQR5JZlP7BCZgGm2o8oHUAzr
- 4ragIjgfAZ9bcpQ3CQNVppPQMUXJx+ZZHukG936sfIOMPQgjjl6qYwQl4RSvNok/kZO/WQ2hJyx
- k
-X-Google-Smtp-Source: AGHT+IHxgTjg2HsK1EE9uMqWwxFHRx2M9X1pkwijhYsjbkIlGOpi9Ka/V7MZMYve1yL9Mzt/4q5mnw==
-X-Received: by 2002:a17:902:ea01:b0:207:1845:bc48 with SMTP id
- d9443c01a7336-20743c55a5dmr4371905ad.30.1725902905059; 
- Mon, 09 Sep 2024 10:28:25 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1725902906; x=1726507706;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=421LbBczhN+7djkIM+80LiuWG1ET4qxsB+bV+/jUDAA=;
+ b=t3crpngO4H4UTimnjrcP2TcX3yJNBMYkV0WRlPSmsr8MKSb23NP2UAhilrhk5buZ4s
+ 6uO2Twvjr4r08HSt7s15RwjBCb+td51AiJ9UbFHsB123hMwLh4JJbMxt5mPf+jeU1OdD
+ rmipCctbmmF/weKQqvAAtmGjnN9LbmXcJAlC42mndr/fsdqTqRsYhVKvGSflwkpeGSA7
+ EXTYr76lRxWJRL84pujHpOjXYK8qWPaPId0rddHN/jjb1XYNFDsFaODK2w5ds3aniD64
+ GDi7S8gav/l5MI6/FxGHpdGVzwsnWCD/kzkmOC0ZBozmc77YQX/hQvI8dKYjnyRnkE70
+ fJsQ==
+X-Gm-Message-State: AOJu0YxQRCO58ygwLl1IQQt9PDsQWbdsJyaTvngLdaXC08aUMafrqDpv
+ ZErRpzeWkDJWdsXiPqSCmcFt3YKocbmeCBYUu5iL5n4oHS+VVeSIbJLk5zVrUu9ID449KaC3wsr
+ p
+X-Google-Smtp-Source: AGHT+IGLhJLMt7eUmLZzk4JHabGBqk9QCHeUhmEWzn5gUOYZNu0OLicrjWerdp34QRZlojIwfkLWgQ==
+X-Received: by 2002:a17:903:947:b0:1fd:67c2:f975 with SMTP id
+ d9443c01a7336-206f056f059mr169959365ad.29.1725902906018; 
+ Mon, 09 Sep 2024 10:28:26 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.24
+ d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 10:28:24 -0700 (PDT)
+ Mon, 09 Sep 2024 10:28:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu,
-	daniel@0x0f.com
-Subject: [PATCH v3 00/26] target/m68k: fpu improvements
-Date: Mon,  9 Sep 2024 10:27:57 -0700
-Message-ID: <20240909172823.649837-1-richard.henderson@linaro.org>
+Cc: laurent@vivier.eu, daniel@0x0f.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 01/26] target/m68k: Always return a temporary from
+ gen_lea_mode
+Date: Mon,  9 Sep 2024 10:27:58 -0700
+Message-ID: <20240909172823.649837-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240909172823.649837-1-richard.henderson@linaro.org>
+References: <20240909172823.649837-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,67 +95,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Supercedes: 20240812004451.13711-1-richard.henderson@linaro.org
-("[PATCH for-9.2 v2 0/4] target/m68k: Implement fmove.p")
+Returning a raw areg does not preserve the value if the areg
+is subsequently modified.  Fixes, e.g. "jsr (sp)", where the
+return address is pushed before the branch.
 
-Changes for v3:
-  - Implement FPSR.EXC.  In particular, packed decimal sets a
-    different inexact bit.
-  - Lots of cleanup to the address/load/store translation, in
-    order to be able to pass down insn+ext only to gen_store_fp,
-    and not store it in DisasContext.
-  - Implement FPIAR stub.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2483
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240813000737.228470-1-richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/m68k/translate.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-
-r~
-
-
-Richard Henderson (26):
-  target/m68k: Always return a temporary from gen_lea_mode
-  target/m68k: Add FPSR exception bit defines
-  target/m68k: Restore fp rounding mode on vm load
-  target/m68k: Keep FPSR up-to-date
-  target/m68k: Update FPSR.EXC
-  softfloat: Set QEMU_NO_HARDFLOAT for m68k
-  target/m68k: Invoke update_fpsr for FMOVECR
-  target/m68k: Introduce M68K_FEATURE_FPU_PACKED_DECIMAL
-  target/m68k: Merge gen_ea into SRC_EA and DEST_EA
-  target/m68k: Use g_assert_not_reached in gen_lea_mode and gen_ea_mode
-  target/m68k: Use OS_UNSIZED in LEA, PEA, JMP
-  target/m68k: Move pre-dec/post-inc to gen_lea_mode
-  target/m68k: Split gen_ea_mode for load/store
-  target/m68k: Remove env argument to gen_lea_indexed
-  target/m68k: Remove env argument to gen_lea_mode
-  target/m68k: Remove env argument to gen_load_mode
-  target/m68k: Remove env argument to gen_store_mode
-  target/m68k: Remove env argument to gen_ea_mode_fp
-  target/m68k: Split gen_ea_mode_fp for load/store
-  target/m68k: Move gen_addr_fault into gen_{load,store}_mode_fp
-  target/m68k: Merge gen_load_fp, gen_load_mode_fp
-  target/m68k: Merge gen_store_fp, gen_store_mode_fp
-  target/m68k: Implement packed decimal real loads and stores
-  tests/tcg/m68k: Add packed decimal tests
-  target/m68k: Make vmstate variables static
-  target/m68k: Implement FPIAR
-
- target/m68k/cpu.h                |   27 +-
- target/m68k/helper.h             |    7 +-
- fpu/softfloat.c                  |    2 +-
- target/m68k/cpu.c                |   38 +-
- target/m68k/fpu_helper.c         |  351 ++-
- target/m68k/gen-floatx80-pow10.c |   33 +
- target/m68k/helper.c             |   18 +-
- target/m68k/translate.c          |  800 +++--
- tests/tcg/m68k/packeddecimal-1.c |   41 +
- tests/tcg/m68k/packeddecimal-2.c |   46 +
- target/m68k/floatx80-pow10.c.inc | 4935 ++++++++++++++++++++++++++++++
- tests/tcg/m68k/Makefile.target   |    4 +-
- 12 files changed, 5763 insertions(+), 539 deletions(-)
- create mode 100644 target/m68k/gen-floatx80-pow10.c
- create mode 100644 tests/tcg/m68k/packeddecimal-1.c
- create mode 100644 tests/tcg/m68k/packeddecimal-2.c
- create mode 100644 target/m68k/floatx80-pow10.c.inc
-
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index 445966fb6a..ad3ce34501 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -720,7 +720,9 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
+         }
+         /* fallthru */
+     case 2: /* Indirect register */
+-        return get_areg(s, reg0);
++        tmp = tcg_temp_new();
++        tcg_gen_mov_i32(tmp, get_areg(s, reg0));
++        return tmp;
+     case 4: /* Indirect predecrememnt.  */
+         if (opsize == OS_UNSIZED) {
+             return NULL_QREG;
+@@ -747,20 +749,23 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
+         switch (reg0) {
+         case 0: /* Absolute short.  */
+             offset = (int16_t)read_im16(env, s);
+-            return tcg_constant_i32(offset);
++            break;
+         case 1: /* Absolute long.  */
+             offset = read_im32(env, s);
+-            return tcg_constant_i32(offset);
++            break;
+         case 2: /* pc displacement  */
+             offset = s->pc;
+             offset += (int16_t)read_im16(env, s);
+-            return tcg_constant_i32(offset);
++            break;
+         case 3: /* pc index+displacement.  */
+             return gen_lea_indexed(env, s, NULL_QREG);
+         case 4: /* Immediate.  */
+         default:
+             return NULL_QREG;
+         }
++        tmp = tcg_temp_new();
++        tcg_gen_movi_i32(tmp, offset);
++        return tmp;
+     }
+     /* Should never happen.  */
+     return NULL_QREG;
 -- 
 2.43.0
 
