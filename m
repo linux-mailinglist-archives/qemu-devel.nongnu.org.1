@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3432971B8B
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 15:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73587971B9E
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 15:50:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snelS-0001kx-C8; Mon, 09 Sep 2024 09:49:10 -0400
+	id 1snelV-0002EL-Vr; Mon, 09 Sep 2024 09:49:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1snelQ-0001fI-2j
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 09:49:08 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1snelT-0001yF-Im
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 09:49:11 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1snelO-0000C5-8x
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 09:49:07 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-7c3e1081804so2082561a12.3
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 06:49:05 -0700 (PDT)
+ id 1snelR-0000CO-Sd
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 09:49:11 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-7163489149eso3490940a12.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 06:49:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1725889744; x=1726494544;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1725889748; x=1726494548;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ff6vB6OP2BGQkLDtZ3odfZR0Boq6VYV5mOBp8pXlipM=;
- b=1Z2YyacJiJ1DrB6A9KF05NNk13payUof4bvrM5yHQ+fJw/OCmPWy9nQGgoqkxexeUR
- PmnG15vX1ox+h3R1KUMc7+BcSij7nncUsNrHDgUdpKdX/MjA31p0Z3oJl7SlI0HRHMdZ
- +xAqJG6+AqDC5z5oGZ/c9i+lJthcfTKPm9okuePflLRD1dmaLcpD7u4e7ona+KYO0VFY
- BFxAWC44Wq3ke3Cd4X77NKRCun4gbW1dHWhtPjdZhVHgoCkAvpHZ9vuXT2JXULittzVB
- zM/KuLxm4fqFjIl4trTBRBBYOzCDilc18e4dOW9qlO6sEYoMAWHF7yIeT3fvzI09lWTM
- IaVg==
+ bh=3t+rJYL+OLNJsbkNL6rt5vBSdNx9BVxn2HZsRTYOAAc=;
+ b=Vk5g3uuJKmWRiPeNB1SKeckjqi9j4WFAI4DbheuCZnr67K48RZXa//dR/OUgGmU9hr
+ odVRKKD8e+F31n4y3X2q4Rx8GM85RTT9ArpuY1DKHpR+GVt0/neTZB9pQXIuQsQuXa3K
+ hP7qZ1C7JGdZ03A7oL8ez29VH5cHJ465EhSqHuAQnNwE2GFoaBhaPrbu121g+ML6XaRV
+ Fdee78uraHCnAdRam4fPGypuGF/EW8M7MQVdR+/GlNxRWxszVIzo+26g6i51ZDgtS7xP
+ hEdILDHIN4ZlVWP8yGW37/m2rG7uRdzV80UgI+iIBKXRjkK9gUogSlKpFHA6uXPpogcY
+ xNtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725889744; x=1726494544;
+ d=1e100.net; s=20230601; t=1725889748; x=1726494548;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ff6vB6OP2BGQkLDtZ3odfZR0Boq6VYV5mOBp8pXlipM=;
- b=Slxri35jmzXK3LDZIAna/u0425jLVxuCK7VEHa+/bIyViiynF7Ck8XxfIxBdA5Ve36
- Wzg/9xynzR2F/DJ0aBok+sn3mxmEvEU9+K5AADARA+MmLcD9A4WoyH4ZQUuFiI2ANZLT
- 9FPJNp1pW61mjV9U99ev6ZUPPGfKMkLmCvTqx6VsslDHgQ4Y+L0U+sfqd1oCNSthDbPy
- B7CRE8DiG1rJeMv17hKs1CsVpY9Ijq9NOqjo6kX7/7nXUG/TOzTkTSaIXIQe0H7NBqJM
- oMrlcMTa1e8quL6HcCbKbc+52oHdh9W/tvXQddKZ52olsF5lZjvWoYaLAFethknvsEVJ
- exKQ==
-X-Gm-Message-State: AOJu0Yx4lzxlT3pwr5ByJ19CWaGyF6EioAt8uUFN4hukSjqtpXfHx45Q
- UCJQWd0ybAgJfOt98VNan/gOt62PUpnrX4zIWbto/ndx0Jn5SUBFB4gH45spHvGBVCbjssH1Ive
- p2fvvfQ==
-X-Google-Smtp-Source: AGHT+IH6MILuGxeh8ES1f3j/FcRRnKw8LKasVvdN2f0UQVldT44bJhIKCFrwfB8j7HiyYlYPExOn6Q==
-X-Received: by 2002:a05:6a21:513:b0:1ce:e952:c0dd with SMTP id
- adf61e73a8af0-1cf2a0b5ed1mr6969929637.43.1725889743930; 
- Mon, 09 Sep 2024 06:49:03 -0700 (PDT)
+ bh=3t+rJYL+OLNJsbkNL6rt5vBSdNx9BVxn2HZsRTYOAAc=;
+ b=w9T53o3S4e6OoKhM0xN7NIeMxX440SYSqsVMgWd5V7XiLChEbowoEQIPKWdgBIR8y7
+ xP6gE8eqzfGpqzSiDQwxXepXjIfmRfH9cU3Zqyrx2MYgJVqVgjbmcgOsSibo2E7BEZ+W
+ NPLXy303l0cxbxNpS7HIUf2E2pRmablKAmMm6IZTkeGvDMTeF2NeAdIP9vIFa0Eho5E8
+ AoLPqy+zN/TEwp100YJi3MviloNs3COY/qgxVyD1MM9d5O1pS1NJEogeVnHzaATksMaF
+ M9jyAlhH8Ndfy6dDxZjy+FhE9NsClSB9mKXy6zLgb7ZlIrNubqSnXx9hRitbJXm7acZf
+ BaDw==
+X-Gm-Message-State: AOJu0Ywu/r4g8IP+2H3+MXZ5XYdnBk1Z7CSMh097lElgFwNHEzkg/f2l
+ iqXlF2lzMjj9Kok6q8TfIo76S3O3/s84MkkktwmZG5F0k50Yi5JHetY1rpKcLZiTy2bf6HhUjk7
+ WXpdw4g==
+X-Google-Smtp-Source: AGHT+IEIHouTQrQxgz/J2sEL4N1nMmDwA/0cnxC2g3gQYu8nJi+33wGAmO0AA91dNxDkkL4OiicYUQ==
+X-Received: by 2002:a05:6a20:cf8f:b0:1cf:39ee:f259 with SMTP id
+ adf61e73a8af0-1cf39eef59emr5103855637.5.1725889747596; 
+ Mon, 09 Sep 2024 06:49:07 -0700 (PDT)
 Received: from localhost.localdomain ([118.114.94.226])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2dab2c6b0b9sm7841031a91.0.2024.09.09.06.49.01
+ 98e67ed59e1d1-2dab2c6b0b9sm7841031a91.0.2024.09.09.06.49.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 06:49:03 -0700 (PDT)
+ Mon, 09 Sep 2024 06:49:07 -0700 (PDT)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -65,16 +65,17 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH RFC 09/10] migration: Support responsive CPU throttle
-Date: Mon,  9 Sep 2024 21:47:21 +0800
-Message-Id: <641bc3ac36205cd636f16b23d7960bac9c9a8931.1725889277.git.yong.huang@smartx.com>
+Subject: [PATCH RFC 10/10] tests/migration-tests: Add test case for responsive
+ CPU throttle
+Date: Mon,  9 Sep 2024 21:47:22 +0800
+Message-Id: <96eeea4efd3417212d6e2639bc118b90d4dcf926.1725889277.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1725889277.git.yong.huang@smartx.com>
 References: <cover.1725889277.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=yong.huang@smartx.com; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=yong.huang@smartx.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,160 +97,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, the convergence algorithm determines that the migration
-cannot converge according to the following principle:
-The dirty pages generated in current iteration exceed a specific
-percentage (throttle-trigger-threshold, 50 by default) of the number
-of transmissions. Let's refer to this criteria as the "dirty rate".
-If this criteria is met more than or equal to twice
-(dirty_rate_high_cnt >= 2), the throttle percentage increased.
+Despite the fact that the responsive CPU throttle is enabled,
+the dirty sync count may not always increase because this is
+an optimization that might not happen in any situation.
 
-In most cases, above implementation is appropriate. However, for a
-VM with high memory overload, each iteration is time-consuming.
-The VM's computing performance may be throttled at a high percentage
-and last for a long time due to the repeated confirmation behavior.
-Which may be intolerable for some computationally sensitive software
-in the VM.
-
-As the comment mentioned in the migration_trigger_throttle function,
-in order to avoid erroneous detection, the original algorithm confirms
-the criteria repeatedly. Put differently, the criteria does not need
-to be validated again once the detection is more reliable.
-
-In the refinement, in order to make the detection more accurate, we
-introduce another criteria, called the "dirty ratio" to determine
-the migration convergence. The "dirty ratio" is the ratio of
-bytes_xfer_period and bytes_dirty_period. When the algorithm
-repeatedly detects that the "dirty ratio" of current sync is lower
-than the previous, the algorithm determines that the migration cannot
-converge. For the "dirty rate" and "dirty ratio", if one of the two
-criteria is met, the penalty percentage would be increased. This
-makes CPU throttle more responsively and therefor saves the time of
-the entire iteration and therefore reduces the time of VM performance
-degradation.
-
-In conclusion, this refinement significantly reduces the processing
-time required for the throttle percentage step to its maximum while
-the VM is under a high memory load.
+This test case just making sure it doesn't interfere with any
+current functionality.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- migration/ram.c              | 55 ++++++++++++++++++++++++++++++++++--
- migration/trace-events       |  1 +
- tests/qtest/migration-test.c |  1 +
- 3 files changed, 55 insertions(+), 2 deletions(-)
+ tests/qtest/migration-test.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index d9d8ed0fda..5fba572f3e 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -420,6 +420,12 @@ struct RAMState {
-     /* Periodic throttle information */
-     bool throttle_running;
-     QemuThread throttle_thread;
-+
-+    /*
-+     * Ratio of bytes_dirty_period and bytes_xfer_period in the previous
-+     * sync.
-+     */
-+    uint64_t dirty_ratio_pct;
- };
- typedef struct RAMState RAMState;
- 
-@@ -1044,6 +1050,43 @@ static void migration_dirty_limit_guest(void)
-     trace_migration_dirty_limit_guest(quota_dirtyrate);
- }
- 
-+static bool migration_dirty_ratio_high(RAMState *rs)
-+{
-+    static int dirty_ratio_high_cnt;
-+    uint64_t threshold = migrate_throttle_trigger_threshold();
-+    uint64_t bytes_xfer_period =
-+        migration_transferred_bytes() - rs->bytes_xfer_prev;
-+    uint64_t bytes_dirty_period = rs->num_dirty_pages_period * TARGET_PAGE_SIZE;
-+    bool dirty_ratio_high = false;
-+    uint64_t prev, curr;
-+
-+    /* Calculate the dirty ratio percentage */
-+    curr = 100 * (bytes_dirty_period * 1.0 / bytes_xfer_period);
-+
-+    prev = rs->dirty_ratio_pct;
-+    rs->dirty_ratio_pct = curr;
-+
-+    if (prev == 0) {
-+        return false;
-+    }
-+
-+    /*
-+     * If current dirty ratio is greater than previouse, determine
-+     * that the migration do not converge.
-+     */
-+    if (curr > threshold && curr >= prev) {
-+        trace_migration_dirty_ratio_high(curr, prev);
-+        dirty_ratio_high_cnt++;
-+    }
-+
-+    if (dirty_ratio_high_cnt >= 2) {
-+        dirty_ratio_high = true;
-+        dirty_ratio_high_cnt = 0;
-+    }
-+
-+    return dirty_ratio_high;
-+}
-+
- static void migration_trigger_throttle(RAMState *rs)
- {
-     uint64_t threshold = migrate_throttle_trigger_threshold();
-@@ -1051,6 +1094,11 @@ static void migration_trigger_throttle(RAMState *rs)
-         migration_transferred_bytes() - rs->bytes_xfer_prev;
-     uint64_t bytes_dirty_period = rs->num_dirty_pages_period * TARGET_PAGE_SIZE;
-     uint64_t bytes_dirty_threshold = bytes_xfer_period * threshold / 100;
-+    bool dirty_ratio_high = false;
-+
-+    if (migrate_responsive_throttle() && (bytes_xfer_period != 0)) {
-+        dirty_ratio_high = migration_dirty_ratio_high(rs);
-+    }
- 
-     /*
-      * The following detection logic can be refined later. For now:
-@@ -1060,8 +1108,11 @@ static void migration_trigger_throttle(RAMState *rs)
-      * twice, start or increase throttling.
-      */
-     if ((bytes_dirty_period > bytes_dirty_threshold) &&
--        (++rs->dirty_rate_high_cnt >= 2)) {
--        rs->dirty_rate_high_cnt = 0;
-+        ((++rs->dirty_rate_high_cnt >= 2) || dirty_ratio_high)) {
-+
-+        rs->dirty_rate_high_cnt =
-+            rs->dirty_rate_high_cnt >= 2 ? 0 : rs->dirty_rate_high_cnt;
-+
-         if (migrate_auto_converge()) {
-             trace_migration_throttle();
-             mig_throttle_guest_down(bytes_dirty_period,
-diff --git a/migration/trace-events b/migration/trace-events
-index 5b9db57c8f..241bbfcee9 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -95,6 +95,7 @@ get_queued_page_not_dirty(const char *block_name, uint64_t tmp_offset, unsigned
- migration_bitmap_sync_start(void) ""
- migration_bitmap_sync_end(uint64_t dirty_pages) "dirty_pages %" PRIu64
- migration_bitmap_clear_dirty(char *str, uint64_t start, uint64_t size, unsigned long page) "rb %s start 0x%"PRIx64" size 0x%"PRIx64" page 0x%lx"
-+migration_dirty_ratio_high(uint64_t cur, uint64_t prev) "current ratio: %" PRIu64 " previous ratio: %" PRIu64
- migration_periodic_throttle(void) ""
- migration_periodic_throttle_start(void) ""
- migration_periodic_throttle_stop(void) ""
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 61d7182f88..4626301435 100644
+index 4626301435..cf0b1dcb50 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -2812,6 +2812,7 @@ static void test_migrate_auto_converge_args(AutoConvergeArgs *input_args)
-     migrate_set_parameter_int(from, "cpu-throttle-initial", init_pct);
-     migrate_set_parameter_int(from, "cpu-throttle-increment", inc_pct);
-     migrate_set_parameter_int(from, "max-cpu-throttle", max_pct);
-+    migrate_set_parameter_bool(from, "cpu-responsive-throttle", true);
+@@ -718,6 +718,7 @@ typedef struct {
+ typedef struct {
+     /* CPU throttle parameters */
+     bool periodic;
++    bool responsive;
+ } AutoConvergeArgs;
  
-     if (periodic) {
-         migrate_set_parameter_bool(from, "cpu-periodic-throttle", true);
+ static int test_migrate_start(QTestState **from, QTestState **to,
+@@ -2795,6 +2796,7 @@ static void test_migrate_auto_converge_args(AutoConvergeArgs *input_args)
+     QTestState *from, *to;
+     int64_t percentage;
+     bool periodic = (input_args && input_args->periodic);
++    bool responsive = (input_args && input_args->responsive);
+ 
+     /*
+      * We want the test to be stable and as fast as possible.
+@@ -2820,6 +2822,16 @@ static void test_migrate_auto_converge_args(AutoConvergeArgs *input_args)
+                 periodic_throttle_interval);
+     }
+ 
++    if (responsive) {
++        /*
++         * The dirty-sync-count may not always go down while using responsive
++         * throttle because it is an optimization and may not take effect in
++         * any scenario. Just making sure this feature doesn't break any
++         * existing functionality by turning it on.
++         */
++        migrate_set_parameter_bool(from, "cpu-responsive-throttle", true);
++    }
++
+     /*
+      * Set the initial parameters so that the migration could not converge
+      * without throttling.
+@@ -2902,6 +2914,12 @@ static void test_migrate_auto_converge_periodic_throttle(void)
+     test_migrate_auto_converge_args(&args);
+ }
+ 
++static void test_migrate_auto_converge_responsive_throttle(void)
++{
++    AutoConvergeArgs args = {.responsive = true};
++    test_migrate_auto_converge_args(&args);
++}
++
+ static void *
+ test_migrate_precopy_tcp_multifd_start_common(QTestState *from,
+                                               QTestState *to,
+@@ -3955,6 +3973,8 @@ int main(int argc, char **argv)
+                            test_migrate_auto_converge);
+         migration_test_add("/migration/auto_converge_periodic_throttle",
+                            test_migrate_auto_converge_periodic_throttle);
++        migration_test_add("/migration/auto_converge_responsive_throttle",
++                           test_migrate_auto_converge_responsive_throttle);
+         if (g_str_equal(arch, "x86_64") &&
+             has_kvm && kvm_dirty_ring_supported()) {
+             migration_test_add("/migration/dirty_limit",
 -- 
 2.39.1
 
