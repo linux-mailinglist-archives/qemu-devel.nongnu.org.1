@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF169720B5
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2C4972136
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:41:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sniCD-00068u-3F; Mon, 09 Sep 2024 13:29:01 -0400
+	id 1sniNW-0007ob-1m; Mon, 09 Sep 2024 13:40:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniC5-0005T5-F9
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:53 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sniNS-0007e7-RP
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:40:38 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniC3-000651-4O
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:53 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-20551eeba95so40962655ad.2
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sniNQ-0007Lj-S5
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:40:38 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a8b155b5e9eso431579066b.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:40:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725902930; x=1726507730; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=V5P3AbnuXIViFNLZwcR2g2CnCbWPQ0yDuBfVcwQJfUc=;
- b=UNUl7Vug0wAYO/M7rlhT8AfFhrK9m8HyJqnySwKMMayNRtPL/+a4ffmrdPET2aGrBr
- sffa9+Rg1rZUiWZnOBIbW/fETU9Pmgn/Ta/cywo7fDOchLKHT3wBC4uo7pGf/otz4LwG
- 8r09wFEx3HwZqyGzf8mN726BZM3EISsQ/8Hd7DBDxx1OBrzspbnb6DUTl6CtJ+4+HJDK
- gHb9ktByfTYrQCK9Unn7duiJDpiC3jyeIJsxaZChLxJ3d8HbEPkVtja+P59+R0K4dBTN
- z/po9C7+tA1HBHCX9noX+tcfJI47Znf1xf+3PiSECFAgI0w93kVTgUBzUKeuqsKyhNu8
- a3qg==
+ d=linaro.org; s=google; t=1725903635; x=1726508435; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DTZmSJkjzWTMN8gRZ6fQbLBJT5JJBIC3Z4x5mb+Kw9g=;
+ b=JuqgdM3FYTuLFRcLt5wSC77xzF+h1F+MyWOONpcbyyGmE9zYxgkaNl0xZ82Y04PidR
+ qvbTg7Kb2kjI036PeN/WY0q431YAr75tM9VHV5GkT5M6F4HE+cJ4miXHYtXKoaRzF9Ex
+ dAMCpWHvIp9drYOd05s9rX6lkhYNH6/QzPV7YrMMyMKipQT42VE3tCO8dKA4OfZHMiFc
+ 3RIrRuRtRPKtUgmxBLv/VsekqDAstcrve6z7G+uQ3HV6ZS3IRkWfxzjuUlLGxO8RK9TK
+ VbuQHTpAQSVYeUMUI6pIrSQKhkDj5Y740ZKY81kDUzV/fdqVnXezp+wnI1Hy6gSnUa3Z
+ ov9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725902930; x=1726507730;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=V5P3AbnuXIViFNLZwcR2g2CnCbWPQ0yDuBfVcwQJfUc=;
- b=JmXKrazDXIwEQvKMhKnNMgVtuQAk/ZGua60aTiFk+YuUzN+jTdKffcEhXG2zfNws9f
- gIlJGOdimEhsLVG8YACMUK8C3uH5jdhpQyxXwOLsVSarIxQFHkxC8Kvr9dyh+8P38ZQ8
- hG06entLcFH+eHxmeR6rTD2AG9QvEEFyY6SeBTg/lptbi+HiFD2FXm3UZIWvlGS9gHMq
- pYgSUzzmEThRz5ArjI+KuRoSGcOynXTJAAm3zk7DhYYWE8US/Hh76mPww46JlC3sDKFB
- 0OxztkdafAckhs7rRV3iu1panJTBAZlvBnOVDN2bghlfjCbqWglKL0wJb+axqRUqUtkM
- H3pw==
-X-Gm-Message-State: AOJu0YwB6Mp/wJ9hOn3wIlOo5jCsGog/OlLX/hjK/EgSWMPESJfcSQ9H
- R3n/YWZ+3NTyzHIu+vCELZkJcksOdChHnYtrssTobsWnjCYIUuwisaBJ/xrOtEXKzqkPppwLLdq
- M
-X-Google-Smtp-Source: AGHT+IFNhv4hoOa7YnPvYMKlr3kVT0OMYi31TooDRpM92iqNHDuLfOmNEIdSWsEn5whZDkRRYLo2+w==
-X-Received: by 2002:a17:902:cf03:b0:207:2093:99bb with SMTP id
- d9443c01a7336-20720939bc2mr48344855ad.31.1725902929627; 
- Mon, 09 Sep 2024 10:28:49 -0700 (PDT)
-Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 10:28:49 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu,
-	daniel@0x0f.com
-Subject: [PATCH v3 26/26] target/m68k: Implement FPIAR
-Date: Mon,  9 Sep 2024 10:28:23 -0700
-Message-ID: <20240909172823.649837-27-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240909172823.649837-1-richard.henderson@linaro.org>
-References: <20240909172823.649837-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1725903635; x=1726508435;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DTZmSJkjzWTMN8gRZ6fQbLBJT5JJBIC3Z4x5mb+Kw9g=;
+ b=vZgE/GoAeclnbRHH4bSyD3QC3lm52QzPLksV7oSXaDiPM0iYtAif4HtB6RDEF/8RDf
+ K9+LJv9VK33inX4m4zGvT4vqoP+VvVmFF2UgpGNC3SoEApwljdqzA7QZX9RR9S2aMSAJ
+ M10A56eRG7Vm/KDkNonQtt/1KzOx+BpF+kuVTUY13nA5nxYkWDhZtS3IYmT9lOS1qi2l
+ 9Xo6QZXZQg6uqAeREBV7sAJIMDTFYfYzt6aFjdzwNeSE/fO0qeeXYsOwSvJABRoTNItW
+ 1zS5gudTM3aQSsjVPZU+X/KDJ1z3IOou6C6lrc/Y9zo7b6BD6zZHEcbSDWmjJ/E2WNx6
+ 0E4Q==
+X-Gm-Message-State: AOJu0YxjKDaqMJa9Y7wv0jjy77dnKZ9WyL7mHURM+dGurwkPXpONn7Vk
+ ZjyKAXH8zR3exNn6WwCnGKwv42lq8t+fptWY6wHhXQSgSaYTaFxVMWbZnjPOh1I=
+X-Google-Smtp-Source: AGHT+IEXytohDILIY0y5GRKHIbt5BMTDJfIvyWXFcFla9d+sDgp+X3hXfK+Y//QdgPj0ZdEWl7OIOg==
+X-Received: by 2002:a17:907:7e8e:b0:a8d:345e:a0ba with SMTP id
+ a640c23a62f3a-a8d345ea209mr535908766b.15.1725903634956; 
+ Mon, 09 Sep 2024 10:40:34 -0700 (PDT)
+Received: from [192.168.69.100] (nsg93-h02-176-184-54-166.dsl.sta.abo.bbox.fr.
+ [176.184.54.166]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8d25cebcb2sm366448166b.153.2024.09.09.10.40.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Sep 2024 10:40:34 -0700 (PDT)
+Message-ID: <667c28a5-3c00-4de2-b37e-566dc7ffca14@linaro.org>
+Date: Mon, 9 Sep 2024 19:40:32 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/char/stm32l4x5_usart.c: Fix ACK and min access size
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Jacob Abrams <satur9nine@gmail.com>
+Cc: qemu-devel@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>
+References: <20240902061944.526873-1-satur9nine@gmail.com>
+ <CAFEAcA9wP7f_yPYNJmaTDe1bB8cPifErAGpjtsNPKsR0s_65Sg@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA9wP7f_yPYNJmaTDe1bB8cPifErAGpjtsNPKsR0s_65Sg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,115 +94,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So far, this is only read-as-written.
+Hi,
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/m68k/cpu.h    |  1 +
- target/m68k/cpu.c    | 23 ++++++++++++++++++++++-
- target/m68k/helper.c | 14 ++++++++------
- 3 files changed, 31 insertions(+), 7 deletions(-)
+(Cc'ing Arnaud & Inès who are listed as maintainers)
 
-diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
-index a676ae0b34..9d987b42be 100644
---- a/target/m68k/cpu.h
-+++ b/target/m68k/cpu.h
-@@ -110,6 +110,7 @@ typedef struct CPUArchState {
-     uint32_t fpsr;
-     bool fpsr_inex1;  /* live only with an in-flight decimal operand */
-     float_status fp_status;
-+    uint32_t fpiar;
- 
-     uint64_t mactmp;
-     /*
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index fd6c227820..e36eb3e5d6 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -392,6 +392,23 @@ static const VMStateDescription vmstate_freg = {
-     }
- };
- 
-+static bool fpu_fpiar_needed(void *opaque)
-+{
-+    M68kCPU *s = opaque;
-+    return s->env.fpiar != 0;
-+}
-+
-+static const VMStateDescription vmstate_fpiar = {
-+    .name = "cpu/fpu/fpiar",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = fpu_fpiar_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32(env.fpiar, M68kCPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static int fpu_post_load(void *opaque, int version)
- {
-     M68kCPU *s = opaque;
-@@ -412,7 +429,11 @@ static const VMStateDescription vmstate_fpu = {
-         VMSTATE_STRUCT_ARRAY(env.fregs, M68kCPU, 8, 0, vmstate_freg, FPReg),
-         VMSTATE_STRUCT(env.fp_result, M68kCPU, 0, vmstate_freg, FPReg),
-         VMSTATE_END_OF_LIST()
--    }
-+    },
-+    .subsections = (const VMStateDescription * const []) {
-+        &vmstate_fpiar,
-+        NULL
-+    },
- };
- 
- static bool cf_spregs_needed(void *opaque)
-diff --git a/target/m68k/helper.c b/target/m68k/helper.c
-index 6fc5afd296..dae6542e6d 100644
---- a/target/m68k/helper.c
-+++ b/target/m68k/helper.c
-@@ -44,8 +44,8 @@ static int cf_fpu_gdb_get_reg(CPUState *cs, GByteArray *mem_buf, int n)
-         return gdb_get_reg32(mem_buf, env->fpcr);
-     case 9: /* fpstatus */
-         return gdb_get_reg32(mem_buf, env->fpsr);
--    case 10: /* fpiar, not implemented */
--        return gdb_get_reg32(mem_buf, 0);
-+    case 10: /* fpiar */
-+        return gdb_get_reg32(mem_buf, env->fpiar);
-     }
-     return 0;
- }
-@@ -67,7 +67,8 @@ static int cf_fpu_gdb_set_reg(CPUState *cs, uint8_t *mem_buf, int n)
-     case 9: /* fpstatus */
-         env->fpsr = ldl_p(mem_buf);
-         return 4;
--    case 10: /* fpiar, not implemented */
-+    case 10: /* fpiar */
-+        env->fpiar = ldl_p(mem_buf);
-         return 4;
-     }
-     return 0;
-@@ -89,8 +90,8 @@ static int m68k_fpu_gdb_get_reg(CPUState *cs, GByteArray *mem_buf, int n)
-         return gdb_get_reg32(mem_buf, env->fpcr);
-     case 9: /* fpstatus */
-         return gdb_get_reg32(mem_buf, env->fpsr);
--    case 10: /* fpiar, not implemented */
--        return gdb_get_reg32(mem_buf, 0);
-+    case 10: /* fpiar */
-+        return gdb_get_reg32(mem_buf, env->fpiar);
-     }
-     return 0;
- }
-@@ -112,7 +113,8 @@ static int m68k_fpu_gdb_set_reg(CPUState *cs, uint8_t *mem_buf, int n)
-     case 9: /* fpstatus */
-         env->fpsr = ldl_p(mem_buf);
-         return 4;
--    case 10: /* fpiar, not implemented */
-+    case 10: /* fpiar */
-+        env->fpiar = ldl_p(mem_buf);
-         return 4;
-     }
-     return 0;
--- 
-2.43.0
+On 6/9/24 18:12, Peter Maydell wrote:
+> On Mon, 2 Sept 2024 at 14:38, Jacob Abrams <satur9nine@gmail.com> wrote:
+>>
+>> These changes allow the official STM32L4xx HAL UART driver to function
+>> properly with the b-l475e-iot01a machine.
+>>
+>> Modifying USART_CR1 TE bit should alter USART_ISR TEACK bit, and
+>> likewise for RE and REACK bit.
+>>
+>> USART registers may be accessed via 16-bit instructions.
+>>
+>> Reseting USART_CR1 UE bit should restore ISR to default value.
+>>
+>> Fixes: 87b77e6e01ca ("hw/char/stm32l4x5_usart: Enable serial read and write")
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2540
+>> Signed-off-by: Jacob Abrams <satur9nine@gmail.com>
+> 
+> Thanks for this patch. I have one question below, and one
+> minor nit.
+> 
+>> ---
+>>   hw/char/stm32l4x5_usart.c          | 29 +++++++++++++++++++---
+>>   tests/qtest/stm32l4x5_usart-test.c | 39 +++++++++++++++++++++++++++++-
+>>   2 files changed, 64 insertions(+), 4 deletions(-)
 
+
+>>   static void stm32l4x5_update_irq(Stm32l4x5UsartBaseState *s)
+>>   {
+>>       if (((s->isr & R_ISR_WUF_MASK) && (s->cr3 & R_CR3_WUFIE_MASK))        ||
+>> @@ -367,7 +389,7 @@ static void stm32l4x5_usart_base_reset_hold(Object *obj, ResetType type)
+>>       s->brr = 0x00000000;
+>>       s->gtpr = 0x00000000;
+>>       s->rtor = 0x00000000;
+>> -    s->isr = 0x020000C0;
+>> +    s->isr = ISR_RESET_VALUE;
+>>       s->rdr = 0x00000000;
+>>       s->tdr = 0x00000000;
+>>
+>> @@ -456,6 +478,7 @@ static void stm32l4x5_usart_base_write(void *opaque, hwaddr addr,
+>>       case A_CR1:
+>>           s->cr1 = value;
+>>           stm32l4x5_update_params(s);
+>> +        stm32l4x5_update_isr(s);
+>>           stm32l4x5_update_irq(s);
+>>           return;
+>>       case A_CR2:
+>> @@ -508,12 +531,12 @@ static const MemoryRegionOps stm32l4x5_usart_base_ops = {
+>>       .endianness = DEVICE_NATIVE_ENDIAN,
+>>       .valid = {
+>>           .max_access_size = 4,
+>> -        .min_access_size = 4,
+>> +        .min_access_size = 2,
+>>           .unaligned = false
+>>       },
+>>       .impl = {
+>>           .max_access_size = 4,
+>> -        .min_access_size = 4,
+>> +        .min_access_size = 2,
+>>           .unaligned = false
+>>       },
+> 
+> The effect of these is that a 16-bit write not aligned
+> to a (4-aligned) register offset will generate a GUEST_ERROR
+> logged message, and a 16-bit write aligned to a 4-aligned
+> register offset will write the value zero-extended to 32 bits.
+> That seems reasonable to me.
+
+Peter, are you describing the .valid.min_access_size 4 -> 2 change
+or the .impl.min_access_size one?
+
+My understanding of the implementation is a 32-bit one:
+
+   REG32(CR1, 0x00)
+
+   struct Stm32l4x5UsartBaseState {
+       ...
+       uint32_t cr1;
+
+   static void stm32l4x5_usart_base_write(void *opaque, hwaddr addr,
+                                   uint64_t val64, unsigned int size)
+   {
+       ...
+       switch (addr) {
+       case A_CR1:
+           s->cr1 = value;
+
+Am I missing something?
+
+Now, back to .valid.min_access_size, per the section "40.8 USART
+registers" of the reference manual:
+
+   The peripheral registers have to be accessed by words (32 bits).
+
+So I don't get the "USART registers may be accessed via 16-bit
+instructions." part of this patch.
+
+Jacob, for clarity, can you split this patch in 3 distinct parts
+(TE bit, UE bit, unaligned access) so this discussion doesn't delay
+the part which are OK?
+
+Thanks,
+
+Phil.
 
