@@ -2,106 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E4D972591
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 01:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A325E9725AE
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 01:20:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snnTA-0005EW-Fi; Mon, 09 Sep 2024 19:06:52 -0400
+	id 1snnfE-0002TK-G7; Mon, 09 Sep 2024 19:19:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1snnT7-0005Cp-Bv; Mon, 09 Sep 2024 19:06:49 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snnfC-0002Sq-P2
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 19:19:18 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1snnT5-0004lP-I9; Mon, 09 Sep 2024 19:06:49 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id A7D5721999;
- Mon,  9 Sep 2024 23:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725923204; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=S4Jg6L9U7hez0VFizdwWKuWh8ZCs0M5yCBZj9vPuU9k=;
- b=pfsIMfCdzeSb+6dlQrv7+b3U3S5JqTd8vwzLn7YDsfNFwjMgD7vZ0PV243XsODAwpB0Gzv
- CMvca9vQ9EuYPrKBBlDnFSTFmRluCkNDJLHKNF80y40nxJBGqG4V24cp/0chMqlWN2C/CE
- MpebMnzZYNB86x3LCBv6sTIWD0i+YP4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725923204;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=S4Jg6L9U7hez0VFizdwWKuWh8ZCs0M5yCBZj9vPuU9k=;
- b=iWW45E0i3gO+p4UUeTWXvFdXgYUy/eveWbDKNCaa3SV2bj3FLZ5HyqRcq1Lrhy0e5J9ga8
- LAX7S8S+xKivh4BQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1725923204; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=S4Jg6L9U7hez0VFizdwWKuWh8ZCs0M5yCBZj9vPuU9k=;
- b=pfsIMfCdzeSb+6dlQrv7+b3U3S5JqTd8vwzLn7YDsfNFwjMgD7vZ0PV243XsODAwpB0Gzv
- CMvca9vQ9EuYPrKBBlDnFSTFmRluCkNDJLHKNF80y40nxJBGqG4V24cp/0chMqlWN2C/CE
- MpebMnzZYNB86x3LCBv6sTIWD0i+YP4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1725923204;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=S4Jg6L9U7hez0VFizdwWKuWh8ZCs0M5yCBZj9vPuU9k=;
- b=iWW45E0i3gO+p4UUeTWXvFdXgYUy/eveWbDKNCaa3SV2bj3FLZ5HyqRcq1Lrhy0e5J9ga8
- LAX7S8S+xKivh4BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2B49E13A3A;
- Mon,  9 Sep 2024 23:06:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id QG6NOIN/32bGJQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 09 Sep 2024 23:06:43 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, Daniel Henrique Barboza
- <danielhb413@gmail.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Lucas Mateus Castro <lucas.castro@eldorado.org.br>, qemu-devel@nongnu.org,
- qemu-stable@nongnu.org, Joel Stanley <joel@jms.id.au>, Harsh Prateek Bora
- <harshpb@linux.ibm.com>
-Subject: Re: [PATCH] target/ppc: Fix lxv/stxv MSR facility check
-In-Reply-To: <20240213083933.718881-1-npiggin@gmail.com>
-References: <20240213083933.718881-1-npiggin@gmail.com>
-Date: Mon, 09 Sep 2024 20:06:41 -0300
-Message-ID: <87cylcl94u.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snnfA-0005ng-Jy
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 19:19:18 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42cb57f8b41so22312125e9.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 16:19:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725923954; x=1726528754; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RljF5ZZjKlfnOTNofIkZDAiguKbpQWfL+qX+BI8AThM=;
+ b=N4/qBooiCYq20EqEJCLlF0HsRFFHf3tARTWI6urW1UzoElW6taIj3fa+5kttnapp/t
+ s8MdNYEg3J40UYj1h+/SYetCIcsL/xYeLCXEEme0SuMkOX8h2jNxD/NVGHWvZroRHRW3
+ ZR3OrzjNRz290HK19WNv/RKeTflg5X6SSVLd7Av5t38X5Fge/8HWsfIxYnQbMHvLam7C
+ LdU4aGD34AvCrGkBY7Gr/5FskbZqf7ponA+N6fT6Je+BVgms5ggY3hYz9lXL9yxXkvgm
+ WhlZhDB9p02vCmIZESWx36LpUji/vylTxMnC5yHGRpFknVIUyerlkdzdtPyJPDczLF3Z
+ ccgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725923954; x=1726528754;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=RljF5ZZjKlfnOTNofIkZDAiguKbpQWfL+qX+BI8AThM=;
+ b=v4lg/5k4lUiHkKZnLC3kK3wWXh1A7w2MnSyLjuc+VwI3F2CtOSK+KgBTuiOFA8AtTN
+ KG647C/5dNJ9gJgKfI5M4ZbKGEW+vumdvvgFZitLpBKm5R9caGQb9rTluK/gUuR1qZK7
+ 5wF74fBfgAcYH7cKqAZCpMZjf00i+bkKvkGG7rgA0uG2uKzUh7L5KMzPjvw5Un3yXp/O
+ 9SqzQqoV4WKy1JQWb4049O2odXQ5LYUMajwNvEPUrqQfEYpcEkhn4j/dFfV1kfZpS6Lp
+ F78G6Fmh4t2jDewXffAXJI8pKQ0vDJeDalm9ZKu28zQfIKGTCDcpaEij8ivcHxHHl0Sn
+ rLkg==
+X-Gm-Message-State: AOJu0Yzo2otk3/zbTO/4pac6sgOSVq/2SadDNhg5I3w3sm65y/s32mNJ
+ ueNPK4a3rdDyXuOhgtlXKOQ6GhGIvj3/vpUOb0aJPvPsWFELdaB7eBK59gy1Anhxrm/lBpF5AJV
+ H
+X-Google-Smtp-Source: AGHT+IFdXr68q3G8lnG7nXkTY+80qJhIkf+RdlDuZIQT8J6AzRTL6zhCZovzVtUGO7r20YwQcuvKDQ==
+X-Received: by 2002:adf:ee8b:0:b0:378:8b84:4de9 with SMTP id
+ ffacd0b85a97d-3789229dae6mr8227202f8f.12.1725923954304; 
+ Mon, 09 Sep 2024 16:19:14 -0700 (PDT)
+Received: from m1x-phil.lan (nsg93-h02-176-184-54-166.dsl.sta.abo.bbox.fr.
+ [176.184.54.166]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8d25a258a3sm397127466b.89.2024.09.09.16.19.12
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 09 Sep 2024 16:19:13 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 06/10 1/4] target/s390x: Rename local variable in
+ save_link_info
+Date: Tue, 10 Sep 2024 01:19:07 +0200
+Message-ID: <20240909231910.14428-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240605215739.4758-7-richard.henderson@linaro.org>
+References: <20240605215739.4758-7-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -1.42
-X-Spamd-Result: default: False [-1.42 / 50.00]; NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; BAYES_HAM(-0.12)[66.87%];
- MIME_GOOD(-0.10)[text/plain];
- FREEMAIL_TO(0.00)[gmail.com,nongnu.org];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- FREEMAIL_CC(0.00)[gmail.com,kaod.org,eldorado.org.br,nongnu.org,jms.id.au,linux.ibm.com];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_TLS_ALL(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
- MISSING_XM_UA(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; RCPT_COUNT_SEVEN(0.00)[10];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,51 +95,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+From: Richard Henderson <richard.henderson@linaro.org>
 
-> The move to decodetree flipped the inequality test for the VEC / VSX
-> MSR facility check.
->
-> This caused application crashes under Linux, where these facility
-> unavailable interrupts are used for lazy-switching of VEC/VSX register
-> sets. Getting the incorrect interrupt would result in wrong registers
-> being loaded, potentially overwriting live values and/or exposing
-> stale ones.
->
-> Cc: qemu-stable@nongnu.org
-> Reported-by: Joel Stanley <joel@jms.id.au>
-> Fixes: 70426b5bb738 ("target/ppc: moved stxvx and lxvx from legacy to decodtree")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1769
-> Tested-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  target/ppc/translate/vsx-impl.c.inc | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
-> index 6db87ab336..0266f09119 100644
-> --- a/target/ppc/translate/vsx-impl.c.inc
-> +++ b/target/ppc/translate/vsx-impl.c.inc
-> @@ -2268,7 +2268,7 @@ static bool do_lstxv(DisasContext *ctx, int ra, TCGv displ,
->  
->  static bool do_lstxv_D(DisasContext *ctx, arg_D *a, bool store, bool paired)
->  {
-> -    if (paired || a->rt >= 32) {
-> +    if (paired || a->rt < 32) {
->          REQUIRE_VSX(ctx);
->      } else {
->          REQUIRE_VECTOR(ctx);
+To simplify the following commits, rename 't' as 't2'.
 
-What about the X-form down below?
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240605215739.4758-7-richard.henderson@linaro.org>
+[PMD: Split patch, part 1/4]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/s390x/tcg/translate.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-static bool do_lstxv_X(DisasContext *ctx, arg_X *a, bool store, bool paired)
-{
-    if (paired || a->rt >= 32) {
-        REQUIRE_VSX(ctx);
-    } else {
-        REQUIRE_VECTOR(ctx);
-    }
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index e1b1dd43e1..faa6d37c8e 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -1417,24 +1417,25 @@ static DisasJumpType op_bas(DisasContext *s, DisasOps *o)
+ 
+ static void save_link_info(DisasContext *s, DisasOps *o)
+ {
+-    TCGv_i64 t;
++    TCGv_i64 t2;
+ 
+     if (s->base.tb->flags & (FLAG_MASK_32 | FLAG_MASK_64)) {
+         pc_to_link_info(o->out, s);
+         return;
+     }
++
+     gen_op_calc_cc(s);
+-    t = tcg_temp_new_i64();
++    t2 = tcg_temp_new_i64();
+     tcg_gen_andi_i64(o->out, o->out, 0xffffffff00000000ull);
+-    gen_psw_addr_disp(s, t, s->ilen);
+-    tcg_gen_or_i64(o->out, o->out, t);
++    gen_psw_addr_disp(s, t2, s->ilen);
++    tcg_gen_or_i64(o->out, o->out, t2);
+     tcg_gen_ori_i64(o->out, o->out, (s->ilen / 2) << 30);
+-    tcg_gen_shri_i64(t, psw_mask, 16);
+-    tcg_gen_andi_i64(t, t, 0x0f000000);
+-    tcg_gen_or_i64(o->out, o->out, t);
+-    tcg_gen_extu_i32_i64(t, cc_op);
+-    tcg_gen_shli_i64(t, t, 28);
+-    tcg_gen_or_i64(o->out, o->out, t);
++    tcg_gen_shri_i64(t2, psw_mask, 16);
++    tcg_gen_andi_i64(t2, t2, 0x0f000000);
++    tcg_gen_or_i64(o->out, o->out, t2);
++    tcg_gen_extu_i32_i64(t2, cc_op);
++    tcg_gen_shli_i64(t2, t2, 28);
++    tcg_gen_or_i64(o->out, o->out, t2);
+ }
+ 
+ static DisasJumpType op_bal(DisasContext *s, DisasOps *o)
+-- 
+2.45.2
 
-    return do_lstxv(ctx, a->ra, cpu_gpr[a->rb], a->rt, store, paired);
-}
 
