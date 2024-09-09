@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E6597169B
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 13:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F12971708
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 13:36:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sncS9-0003Wq-PJ; Mon, 09 Sep 2024 07:21:05 -0400
+	id 1sncfu-0001cZ-M8; Mon, 09 Sep 2024 07:35:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1sncS6-0003Sj-50; Mon, 09 Sep 2024 07:21:02 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1sncfp-0001Vb-K2
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 07:35:13 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1sncS3-0008EH-85; Mon, 09 Sep 2024 07:21:01 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-5365c060f47so3182138e87.2; 
- Mon, 09 Sep 2024 04:20:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1sncfl-00010m-PG
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 07:35:13 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2057c6c57b5so22663305ad.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 04:35:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1725880855; x=1726485655; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=irer1V6l7mG0hprnra+r4ztdIPPVdoCTIegsCYsMWFo=;
- b=ILti6BCU0eKH9KfBSht+LlcCeTcf1PAkwGLwTgIc4MtRZurfhqo/UC4S5ixXtfbI0r
- p6OSxKmVcSrxox6+e4Ba+g1oL9dFMnWS4P6ramPnsDKbRyhoTrzOdDNoT3a633nNxGY4
- M4tBbGaLkx4edOpWcWZDbtRyVamEF2QIRSB7s=
+ d=bytedance.com; s=google; t=1725881703; x=1726486503; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=27gz/vZuThPHRcY/Qj+UEahQLS0Wv5RxC6HKL79z4y4=;
+ b=j14tpxfgiNiuPEWY3PdoejwOpzrFnOgPsIcdSQA4uYlfIxcleJdWzgZ8nJ/hkdTep9
+ mYmGQGLMR2SrfgeE5Vo9BNSkiS0SCe0mSW3M0fEQPOsZi+a92iEprmWiLsvrIwbL30+S
+ QMzeBqYRtuRWAJEC8l9RHBv1G1OPa1Wmi1ul7kb/BS8pwXX3ebGnXjIIWrbOL0AEwRXU
+ A6YDI4Z3j06yAB8Kjm5pk7irDj7vfx9r5rk+c3oh3D7sylQQjK9H9YlbA1pQ6zy77BEA
+ tRqE+SYIqFp9IMSZ6uy+SbACH5h7Glpk6lNjA9l6dTsuiUo7I4SU0poE3aW9V36jUf9Y
+ aJjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725880855; x=1726485655;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=irer1V6l7mG0hprnra+r4ztdIPPVdoCTIegsCYsMWFo=;
- b=AO9rO7dgI0UXpMsL9jxf9eujmfwLcKw8tf7u8+BS7jFnMvZ0uriCRAU5vQZsjUtZO2
- 9zBHwsu8G9qlipdo8IXsXebRNNuxRoWj1f0v96X58eZQhKF5Xy1+eyHo9dyCGr6n5txr
- hjcewaE3tifvgFMqmaEKIwiA3gtHh9lu8W+cvDJ0WIQaK82dsCrWZM8ThhRRetbLM/BJ
- sdZiYxabXtNC0v3TC9XU0zCIokR4i3cYsfwnr2c6V4sev2z+ZASxYVQNDVEbmeMyGt9W
- qTRud04t0Ut1R5ga3lb6TyHMbW65K81D8tOko3c/j94Tbk6/sH73PjwaF+l696zCIHGe
- Q2AQ==
+ d=1e100.net; s=20230601; t=1725881703; x=1726486503;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=27gz/vZuThPHRcY/Qj+UEahQLS0Wv5RxC6HKL79z4y4=;
+ b=gprctPZw2V5dMiuakCvScnI88CaYF0RkeoQj1NtRnLHnWYXVYb8LOqxslOtCjD3G4G
+ iMHLdK4HnCPHJWaLhkBgrQJcs6QFEMaWq0diXXN0gFQnjhnFWSizMeJg1E9UyVDvngPk
+ UQJKl4gb6/p06VTqIIr42pf7URteHp2t2+Wd9MWg89RbRk4ZRJwbuDKw9xvmkwHP8jo2
+ Ejl/XrMmpMMJgo2PMACLfCQAkosf6vkGkQJW6GgfYgRqnmANCh4iEvDb8dFAMb7en0kH
+ gKzvCFIEpDphz1H9xtPRUtMnk2womE1CSOkLA23aEsF1RI5rlxbuuBCT1o1P0WkQ20NA
+ SFBA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCULgqSTDQo81bWUq5C5bS27oeAoKz9heSbWw6oBGG+Jacm6JUX/59Sp+SXbvwjuAxlLT421OSV6pLnzmw==@nongnu.org,
- AJvYcCVKnCy004cHVdVQZLVrOTx0pqvzpta7VewFjjVmJAPSUFXYFRtMqU9cJnRSzSkrJik0ZWT6rXY4pA==@nongnu.org
-X-Gm-Message-State: AOJu0YwRztPaaPsIYbQtCS2JlY2QtnUkWeSKhrnGkIsNqEnoomxN+SB5
- JOeNSLoWZ1ZFOon35A68RDJFvSfgIcmeZouN7ZPGhIILuyjyeih/IeNSTQOuem7uFtjCRbFgJsg
- 7TATT48XHtPCDEay50PtCAjQfR78Oyg==
-X-Google-Smtp-Source: AGHT+IGIkc7Vrk+uH+gVHPIIifoNgOORoRPZXDEXAaK2IKS3GUjbmAJ9tqUhhhysc7GuBn/MPusQ7srP4BAopNqJYek=
-X-Received: by 2002:a05:6512:280d:b0:536:536f:c663 with SMTP id
- 2adb3069b0e04-536587aaf32mr8596744e87.22.1725880855167; Mon, 09 Sep 2024
- 04:20:55 -0700 (PDT)
+ AJvYcCUBTqpOLpXPEH1jB/ZoHRbiUz/zusF2bsrF7C96GBa83vLPLpy0UqifPOFNd/HbLfwlyggwFS06dTFT@nongnu.org
+X-Gm-Message-State: AOJu0YybzzwuU/Nkgd4pQ9wEusD9+hOtwG87aE8nBRBAB6a1bT5U1oA1
+ bKXjlUZ0CqOsp7FKpUlp9gaw5xZxmfWGPrbrkeOt11xh9rIaBV+uPkYPB5nz5rk=
+X-Google-Smtp-Source: AGHT+IEVlMCi1n9dXoAtZHeJyiE/Yx0JntwXXvkconQQK/kwb7RjOn6wnQJkel4DFS+fxbhu8D1+eA==
+X-Received: by 2002:a17:902:da86:b0:205:5bc9:37df with SMTP id
+ d9443c01a7336-206b848b292mr259855725ad.30.1725881703437; 
+ Mon, 09 Sep 2024 04:35:03 -0700 (PDT)
+Received: from TF4D9JK212.bytedance.net ([61.213.176.5])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20710e328aasm32378605ad.91.2024.09.09.04.34.58
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 09 Sep 2024 04:35:02 -0700 (PDT)
+From: Changqi Lu <luchangqi.123@bytedance.com>
+To: qemu-block@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
+ ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de,
+ kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
+ pizhenwei@bytedance.com, k.jensen@samsung.com,
+ Changqi Lu <luchangqi.123@bytedance.com>
+Subject: [PATCH v11 00/10] Support persistent reservation operations
+Date: Mon,  9 Sep 2024 19:34:43 +0800
+Message-Id: <20240909113453.64527-1-luchangqi.123@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-References: <20240625070830.492251-1-clg@redhat.com>
- <4e04f930-e7af-4084-99a8-2a3139e2bf43@roeck-us.net>
- <5fb7342b-fa67-4cb2-b6fd-2241b7b76d03@redhat.com>
- <f70cb39f-3567-4322-b1c4-1bc5991d91fa@roeck-us.net>
- <8d1fd867-647b-4827-a2b2-a239618a7743@redhat.com>
- <014b83a8-d733-442b-ba33-a24c35e46f3f@roeck-us.net>
- <bdb443f9-376e-4d4e-8c06-9ba0c5482c5e@redhat.com>
- <09457da7-e692-4d9f-92b8-361f14b7a1c2@roeck-us.net>
-In-Reply-To: <09457da7-e692-4d9f-92b8-361f14b7a1c2@roeck-us.net>
-From: Joel Stanley <joel@jms.id.au>
-Date: Mon, 9 Sep 2024 20:50:41 +0930
-Message-ID: <CACPK8XfqOE-GJWgUwC+Kh5r9nT2Jo42R2zdka54sURDiR70j5A@mail.gmail.com>
-Subject: Re: [PATCH v2] aspeed: Deprecate the tacoma-bmc machine
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=joel.stan@gmail.com; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=luchangqi.123@bytedance.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,40 +95,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 31 Aug 2024 at 05:41, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On Fri, Aug 30, 2024 at 10:09:25AM +0200, C=C3=A9dric Le Goater wrote:
-> > Hello,
-> >
-> >
-> > > > > I solved the problem by adding support for IBM Bonnell (which ins=
-tantiates
-> > > > > the TPM chip through its devicetree file, similar to tacoma-bmc) =
-to my local
-> > > > > copy of qemu.
-> > > >
-> > > > Hmm, did you copy the rainier-bmc machine definition ?
-> > > >
-> > > For aspeed_machine_bonnell_class_init(), pretty much yes, since I don=
-'t know
-> > > the actual hardware. For I2C initialization I used the devicetree fil=
-e.
-> > > You can find the patch in the master-local or v9.1.0-local branches
-> > > of my qemu clone at https://github.com/groeck/qemu if you are interes=
-ted.
-> >
-> > Oh nice ! Let's merge the IBM Bonnell machine. We can ask IBM to help f=
-ixing
-> > the definitions (strapping). Enabling the PCA9554 is good to have too.
+Hi,
 
-Instead of adding Bonnell to qemu, could we use the Rainier machine? I
-know the kernel device tree removed the i2c tpm, but there's no harm
-in it being present in the qemu machine.
+Patch v11 has been modified, thanks to Klaus for the code review.
 
-The bonnell device tree should boot fine on the rainier machine for
-your purposes.
+v10->v11:
+- Before executing the pr operation, check whether it is supported.
+  If it is not supported, return NVME_INVALID_OPCODE directly.
 
-Cheers,
+v9->v10:
+- When the driver does not support the pr operation, the error
+  code returned by nvme changes to Invalid Command Opcode.
 
-Joel
+v8->v9:
+- Fix double-free and remove persistent reservation operations at nvme_is_write().
+
+v7->v8:
+- Fix num_keys may be less than 0 at scsi_pr_read_keys_complete().
+- Fix buf memory leak at iscsi driver.
+
+v6->v7:
+- Add buferlen size check at SCSI layer.
+- Add pr_cap calculation in bdrv_merge_limits() function at block layer,
+  so the ugly bs->file->bs->bl.pr_cap in scsi and nvme layers was
+  changed to bs->bl.pr_cap.
+- Fix memory leak at iscsi driver, and some other spelling errors.
+
+v5->v6:
+- Add relevant comments in the io layer.
+
+v4->v5:
+- Fixed a memory leak bug at hw/nvme/ctrl.c.
+
+v3->v4:
+- At the nvme layer, the two patches of enabling the ONCS
+  function and enabling rescap are combined into one.
+- At the nvme layer, add helper functions for pr capacity
+  conversion between the block layer and the nvme layer.
+
+v2->v3:
+In v2 Persist Through Power Loss(PTPL) is enable default.
+In v3 PTPL is supported, which is passed as a parameter.
+
+v1->v2:
+- Add sg_persist --report-capabilities for SCSI protocol and enable
+  oncs and rescap for NVMe protocol.
+- Add persistent reservation capabilities constants and helper functions for
+  SCSI and NVMe protocol.
+- Add comments for necessary APIs.
+
+v1:
+- Add seven APIs about persistent reservation command for block layer.
+  These APIs including reading keys, reading reservations, registering,
+  reserving, releasing, clearing and preempting.
+- Add the necessary pr-related operation APIs for both the
+  SCSI protocol and NVMe protocol at the device layer.
+- Add scsi driver at the driver layer to verify the functions
+
+Changqi Lu (10):
+  block: add persistent reservation in/out api
+  block/raw: add persistent reservation in/out driver
+  scsi/constant: add persistent reservation in/out protocol constants
+  scsi/util: add helper functions for persistent reservation types
+    conversion
+  hw/scsi: add persistent reservation in/out api for scsi device
+  block/nvme: add reservation command protocol constants
+  hw/nvme: add helper functions for converting reservation types
+  hw/nvme: enable ONCS and rescap function
+  hw/nvme: add reservation protocal command
+  block/iscsi: add persistent reservation in/out driver
+
+ block/block-backend.c             | 403 +++++++++++++++++++++++++++
+ block/io.c                        | 164 +++++++++++
+ block/iscsi.c                     | 433 ++++++++++++++++++++++++++++++
+ block/raw-format.c                |  56 ++++
+ hw/nvme/ctrl.c                    | 349 +++++++++++++++++++++++-
+ hw/nvme/ns.c                      |  11 +
+ hw/nvme/nvme.h                    |  93 +++++++
+ hw/scsi/scsi-disk.c               | 368 +++++++++++++++++++++++++
+ include/block/block-common.h      |  40 +++
+ include/block/block-io.h          |  20 ++
+ include/block/block_int-common.h  |  84 ++++++
+ include/block/nvme.h              | 107 +++++++-
+ include/scsi/constants.h          |  52 ++++
+ include/scsi/utils.h              |   8 +
+ include/sysemu/block-backend-io.h |  24 ++
+ scsi/utils.c                      |  81 ++++++
+ 16 files changed, 2291 insertions(+), 2 deletions(-)
+
+-- 
+2.20.1
+
 
