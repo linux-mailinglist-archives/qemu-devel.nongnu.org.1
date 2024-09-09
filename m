@@ -2,90 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657E6970FF8
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 09:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5E2971036
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 09:49:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snYxI-00013f-6Z; Mon, 09 Sep 2024 03:37:00 -0400
+	id 1snZ8o-0006lY-T5; Mon, 09 Sep 2024 03:48:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1snYxG-00012s-ST
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 03:36:58 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1snYxE-00036H-Q0
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 03:36:58 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-201d5af11a4so41272295ad.3
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 00:36:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1725867415; x=1726472215;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UsAKdHV2ZXVU0rXq6wBM2YcbxoOvYr3F9XGHWXUqLRI=;
- b=va5RffeQ3lto23scp9O7qJtj83TiVwtnFSFyG0GlYfR6frpq5S0xJteEHI8/XzWqdC
- hIpRKS+7yhvjXOHKsN/yFFKOQfajgDJiZYlB2x/Lyti3TxA4c8GXh8Pk6aDPYZ7j/ogI
- l7VGK3UohqPNj6hw/nkNuCPoz/l0VnhLCMoOhnMfcWsT8x5uDLW5wCSg/YYuwWgNVJ8H
- b356g/ufkZZFR6+qIuSqBJdq46utivb2F1K9be4ejCvHV+aI0fp+bTUfl85JrPt60zdf
- TKk12cNnuX8Tk6klUueHNZzyaTyaTYTy3auPX50smz6a2MtlzKPFWPD1Ao8XkGuOh6Ge
- 8T2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725867415; x=1726472215;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UsAKdHV2ZXVU0rXq6wBM2YcbxoOvYr3F9XGHWXUqLRI=;
- b=V/S3Ak4hus3bJsKlahf15O+35bePePseP9UeJS7As0dpnb67cObSzmPN8cCO8o8mMR
- UN/LVDP7I1w4QATTGf47GYZX1+FffbaIet9fO+YWaYuaUOpuqN/0XX0tx4KOvvkPC5zn
- RARLSQffODoEPANYTii/9pLqTCLFToFf5kX41xxDUwOwxETycBOjpyclXFNy7TMMr+oK
- pI+EFQo0tKWi9qvvcFem38oNrmYr4dK0LyXcGeeCNdziwKs1KBZAvr5xbGQQekRPeX6N
- ftYx8Dl32vujix/ImcUnkzFON+GS/wqc1AB8tKS1fzxcjimtDta9Rzf2bFURxR84Fic0
- Djgw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXbIWCdXq48FMWWVzxIDIkLPDRixhfX4Rb6WTQ5ceCNte0VIFQoPx/OUUDfFTEOmuVjZOsT65iZAHe2@nongnu.org
-X-Gm-Message-State: AOJu0YxfjAl80VpOFpNcrXDj+cAxpX6DeJk+62grV2LMoAbfPwFi+17y
- ZcNdP7KivM5O86+6iiclC6Akh2khHvptan139GfzEuauPl5+TCK96qxwbsYj+Pw=
-X-Google-Smtp-Source: AGHT+IFj1R5f2uiuspkuS6RaLbYOcMiJZnNM8Iu6cbvLYVEIjJcSNXRQYr08L1cInI1nEQ4MdvDy4A==
-X-Received: by 2002:a17:902:ec84:b0:206:aac4:b844 with SMTP id
- d9443c01a7336-206f04c9142mr139708355ad.6.1725867414873; 
- Mon, 09 Sep 2024 00:36:54 -0700 (PDT)
-Received: from [157.82.201.226] ([157.82.201.226])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710f342edsm28667145ad.286.2024.09.09.00.36.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Sep 2024 00:36:54 -0700 (PDT)
-Message-ID: <dab54af1-cf9d-401c-a11f-657334b52d5a@daynix.com>
-Date: Mon, 9 Sep 2024 16:36:50 +0900
+ (Exim 4.90_1) (envelope-from <SRS0=Li2i=QH=kaod.org=clg@ozlabs.org>)
+ id 1snZ8l-0006jU-9M; Mon, 09 Sep 2024 03:48:51 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=Li2i=QH=kaod.org=clg@ozlabs.org>)
+ id 1snZ8i-000442-QH; Mon, 09 Sep 2024 03:48:51 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4X2JqW6cK9z4wyh;
+ Mon,  9 Sep 2024 17:48:39 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4X2JqL0Y6Zz4wb5;
+ Mon,  9 Sep 2024 17:48:29 +1000 (AEST)
+Message-ID: <5b87f9c2-5595-4d00-a341-40609e807082@kaod.org>
+Date: Mon, 9 Sep 2024 09:48:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: support locking on change medium
-To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+Subject: Re: [RFC PATCH 1/8] usb/uhci: checkpatch cleanup
+To: Guenter Roeck <linux@roeck-us.net>, qemu-devel@nongnu.org
+Cc: Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
  Peter Maydell <peter.maydell@linaro.org>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ BALATON Zoltan <balaton@eik.bme.hu>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- "open list:Block layer core" <qemu-block@nongnu.org>
-References: <20240909015847.40377-1-j@getutm.app>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20240909015847.40377-1-j@getutm.app>
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org
+References: <20240906122542.3808997-1-linux@roeck-us.net>
+ <20240906122542.3808997-2-linux@roeck-us.net>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240906122542.3808997-2-linux@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::629;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=Li2i=QH=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,132 +70,272 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/09/09 10:58, Joelle van Dyne wrote:
-> New optional argument for 'blockdev-change-medium' QAPI command to allow
-> the caller to specify if they wish to enable file locking.
+On 9/6/24 14:25, Guenter Roeck wrote:
+> Fix reported checkpatch issues to prepare for next patches
+> in the series.
 > 
-> Signed-off-by: Joelle van Dyne <j@getutm.app>
+> No functional change.
+> 
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
+
 > ---
->   qapi/block.json                | 23 ++++++++++++++++++++++-
->   block/monitor/block-hmp-cmds.c |  2 +-
->   block/qapi-sysemu.c            | 22 ++++++++++++++++++++++
->   ui/cocoa.m                     |  1 +
->   4 files changed, 46 insertions(+), 2 deletions(-)
+>   hw/usb/hcd-uhci.c | 90 +++++++++++++++++++++++++++++------------------
+>   1 file changed, 56 insertions(+), 34 deletions(-)
 > 
-> diff --git a/qapi/block.json b/qapi/block.json
-> index e66666f5c6..35e8e2e191 100644
-> --- a/qapi/block.json
-> +++ b/qapi/block.json
-> @@ -309,6 +309,23 @@
->   { 'enum': 'BlockdevChangeReadOnlyMode',
->     'data': ['retain', 'read-only', 'read-write'] }
+> diff --git a/hw/usb/hcd-uhci.c b/hw/usb/hcd-uhci.c
+> index a03cf22e69..dfcc3e05c0 100644
+> --- a/hw/usb/hcd-uhci.c
+> +++ b/hw/usb/hcd-uhci.c
+> @@ -67,7 +67,7 @@ struct UHCIPCIDeviceClass {
+>       UHCIInfo       info;
+>   };
 >   
-> +##
-> +# @BlockdevChangeFileLockingMode:
-> +#
-> +# Specifies the new locking mode of a file image passed to the
-> +# @blockdev-change-medium command.
-> +#
-> +# @auto: Use locking if API is available
-> +#
-> +# @off: Disable file image locking
-> +#
-> +# @on: Enable file image locking
-> +#
-> +# Since: 9.2
-> +##
-> +{ 'enum': 'BlockdevChangeFileLockingMode',
-> +  'data': ['auto', 'off', 'on'] }
-
-You can use OnOffAuto type instead of defining your own.
-
-> +
->   ##
->   # @blockdev-change-medium:
->   #
-> @@ -330,6 +347,9 @@
->   # @read-only-mode: change the read-only mode of the device; defaults
->   #     to 'retain'
->   #
-> +# @file-locking-mode: change the locking mode of the file image; defaults
-> +#     to 'auto' (since: 9.2)
-> +#
->   # @force: if false (the default), an eject request through
->   #     blockdev-open-tray will be sent to the guest if it has locked
->   #     the tray (and the tray will not be opened immediately); if true,
-> @@ -378,7 +398,8 @@
->               'filename': 'str',
->               '*format': 'str',
->               '*force': 'bool',
-> -            '*read-only-mode': 'BlockdevChangeReadOnlyMode' } }
-> +            '*read-only-mode': 'BlockdevChangeReadOnlyMode',
-> +            '*file-locking-mode': 'BlockdevChangeFileLockingMode' } }
->   
->   ##
->   # @DEVICE_TRAY_MOVED:
-> diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
-> index bdf2eb50b6..ff64020a80 100644
-> --- a/block/monitor/block-hmp-cmds.c
-> +++ b/block/monitor/block-hmp-cmds.c
-> @@ -1007,5 +1007,5 @@ void hmp_change_medium(Monitor *mon, const char *device, const char *target,
->       }
->   
->       qmp_blockdev_change_medium(device, NULL, target, arg, true, force,
-> -                               !!read_only, read_only_mode, errp);
-> +                               !!read_only, read_only_mode, false, 0, errp);
+> -/*
+> +/*
+>    * Pending async transaction.
+>    * 'packet' must be the first field because completion
+>    * handler does "(UHCIAsync *) pkt" cast.
+> @@ -220,8 +220,9 @@ static void uhci_async_cancel(UHCIAsync *async)
+>       uhci_async_unlink(async);
+>       trace_usb_uhci_packet_cancel(async->queue->token, async->td_addr,
+>                                    async->done);
+> -    if (!async->done)
+> +    if (!async->done) {
+>           usb_cancel_packet(&async->packet);
+> +    }
+>       uhci_async_free(async);
 >   }
-> diff --git a/block/qapi-sysemu.c b/block/qapi-sysemu.c
-> index e4282631d2..8064bdfb3a 100644
-> --- a/block/qapi-sysemu.c
-> +++ b/block/qapi-sysemu.c
-> @@ -311,6 +311,8 @@ void qmp_blockdev_change_medium(const char *device,
->                                   bool has_force, bool force,
->                                   bool has_read_only,
->                                   BlockdevChangeReadOnlyMode read_only,
-> +                                bool has_file_locking_mode,
-> +                                BlockdevChangeFileLockingMode file_locking_mode,
->                                   Error **errp)
+>   
+> @@ -322,7 +323,7 @@ static void uhci_reset(DeviceState *dev)
+>       s->fl_base_addr = 0;
+>       s->sof_timing = 64;
+>   
+> -    for(i = 0; i < UHCI_PORTS; i++) {
+> +    for (i = 0; i < UHCI_PORTS; i++) {
+>           port = &s->ports[i];
+>           port->ctrl = 0x0080;
+>           if (port->port.dev && port->port.dev->attached) {
+> @@ -387,7 +388,7 @@ static void uhci_port_write(void *opaque, hwaddr addr,
+>   
+>       trace_usb_uhci_mmio_writew(addr, val);
+>   
+> -    switch(addr) {
+> +    switch (addr) {
+>       case 0x00:
+>           if ((val & UHCI_CMD_RS) && !(s->cmd & UHCI_CMD_RS)) {
+>               /* start frame processing */
+> @@ -404,7 +405,7 @@ static void uhci_port_write(void *opaque, hwaddr addr,
+>               int i;
+>   
+>               /* send reset on the USB bus */
+> -            for(i = 0; i < UHCI_PORTS; i++) {
+> +            for (i = 0; i < UHCI_PORTS; i++) {
+>                   port = &s->ports[i];
+>                   usb_device_reset(port->port.dev);
+>               }
+> @@ -425,10 +426,13 @@ static void uhci_port_write(void *opaque, hwaddr addr,
+>           break;
+>       case 0x02:
+>           s->status &= ~val;
+> -        /* XXX: the chip spec is not coherent, so we add a hidden
+> -           register to distinguish between IOC and SPD */
+> -        if (val & UHCI_STS_USBINT)
+> +        /*
+> +         * XXX: the chip spec is not coherent, so we add a hidden
+> +         * register to distinguish between IOC and SPD
+> +         */
+> +        if (val & UHCI_STS_USBINT) {
+>               s->status2 = 0;
+> +        }
+>           uhci_update_irq(s);
+>           break;
+>       case 0x04:
+> @@ -436,8 +440,9 @@ static void uhci_port_write(void *opaque, hwaddr addr,
+>           uhci_update_irq(s);
+>           break;
+>       case 0x06:
+> -        if (s->status & UHCI_STS_HCHALTED)
+> +        if (s->status & UHCI_STS_HCHALTED) {
+>               s->frnum = val & 0x7ff;
+> +        }
+>           break;
+>       case 0x08:
+>           s->fl_base_addr &= 0xffff0000;
+> @@ -464,8 +469,8 @@ static void uhci_port_write(void *opaque, hwaddr addr,
+>               dev = port->port.dev;
+>               if (dev && dev->attached) {
+>                   /* port reset */
+> -                if ( (val & UHCI_PORT_RESET) &&
+> -                     !(port->ctrl & UHCI_PORT_RESET) ) {
+> +                if ((val & UHCI_PORT_RESET) &&
+> +                     !(port->ctrl & UHCI_PORT_RESET)) {
+>                       usb_device_reset(dev);
+>                   }
+>               }
+> @@ -487,7 +492,7 @@ static uint64_t uhci_port_read(void *opaque, hwaddr addr, unsigned size)
+>       UHCIState *s = opaque;
+>       uint32_t val;
+>   
+> -    switch(addr) {
+> +    switch (addr) {
+>       case 0x00:
+>           val = s->cmd;
+>           break;
+> @@ -533,12 +538,13 @@ static uint64_t uhci_port_read(void *opaque, hwaddr addr, unsigned size)
+>   }
+>   
+>   /* signal resume if controller suspended */
+> -static void uhci_resume (void *opaque)
+> +static void uhci_resume(void *opaque)
 >   {
->       BlockBackend *blk;
-> @@ -362,6 +364,26 @@ void qmp_blockdev_change_medium(const char *device,
->           qdict_put_str(options, "driver", format);
+>       UHCIState *s = (UHCIState *)opaque;
+>   
+> -    if (!s)
+> +    if (!s) {
+>           return;
+> +    }
+>   
+>       if (s->cmd & UHCI_CMD_EGSM) {
+>           s->cmd |= UHCI_CMD_FGR;
+> @@ -674,7 +680,8 @@ static int uhci_handle_td_error(UHCIState *s, UHCI_TD *td, uint32_t td_addr,
+>       return ret;
+>   }
+>   
+> -static int uhci_complete_td(UHCIState *s, UHCI_TD *td, UHCIAsync *async, uint32_t *int_mask)
+> +static int uhci_complete_td(UHCIState *s, UHCI_TD *td, UHCIAsync *async,
+> +                            uint32_t *int_mask)
+>   {
+>       int len = 0, max_len;
+>       uint8_t pid;
+> @@ -682,8 +689,9 @@ static int uhci_complete_td(UHCIState *s, UHCI_TD *td, UHCIAsync *async, uint32_
+>       max_len = ((td->token >> 21) + 1) & 0x7ff;
+>       pid = td->token & 0xff;
+>   
+> -    if (td->ctrl & TD_CTRL_IOS)
+> +    if (td->ctrl & TD_CTRL_IOS) {
+>           td->ctrl &= ~TD_CTRL_ACTIVE;
+> +    }
+>   
+>       if (async->packet.status != USB_RET_SUCCESS) {
+>           return uhci_handle_td_error(s, td, async->td_addr,
+> @@ -693,12 +701,15 @@ static int uhci_complete_td(UHCIState *s, UHCI_TD *td, UHCIAsync *async, uint32_
+>       len = async->packet.actual_length;
+>       td->ctrl = (td->ctrl & ~0x7ff) | ((len - 1) & 0x7ff);
+>   
+> -    /* The NAK bit may have been set by a previous frame, so clear it
+> -       here.  The docs are somewhat unclear, but win2k relies on this
+> -       behavior.  */
+> +    /*
+> +     * The NAK bit may have been set by a previous frame, so clear it
+> +     * here.  The docs are somewhat unclear, but win2k relies on this
+> +     * behavior.
+> +     */
+>       td->ctrl &= ~(TD_CTRL_ACTIVE | TD_CTRL_NAK);
+> -    if (td->ctrl & TD_CTRL_IOC)
+> +    if (td->ctrl & TD_CTRL_IOC) {
+>           *int_mask |= 0x01;
+> +    }
+>   
+>       if (pid == USB_TOKEN_IN) {
+>           pci_dma_write(&s->dev, td->buffer, async->buf, len);
+> @@ -780,9 +791,11 @@ static int uhci_handle_td(UHCIState *s, UHCIQueue *q, uint32_t qh_addr,
+>   
+>       if (async) {
+>           if (queuing) {
+> -            /* we are busy filling the queue, we are not prepared
+> -               to consume completed packages then, just leave them
+> -               in async state */
+> +            /*
+> +             * we are busy filling the queue, we are not prepared
+> +             * to consume completed packages then, just leave them
+> +             * in async state
+> +             */
+>               return TD_RESULT_ASYNC_CONT;
+>           }
+>           if (!async->done) {
+> @@ -832,7 +845,7 @@ static int uhci_handle_td(UHCIState *s, UHCIQueue *q, uint32_t qh_addr,
 >       }
+>       usb_packet_addbuf(&async->packet, async->buf, max_len);
 >   
-> +    if (!has_file_locking_mode) {
-> +        file_locking_mode = BLOCKDEV_CHANGE_FILE_LOCKING_MODE_AUTO;
+> -    switch(pid) {
+> +    switch (pid) {
+>       case USB_TOKEN_OUT:
+>       case USB_TOKEN_SETUP:
+>           pci_dma_read(&s->dev, td->buffer, async->buf, max_len);
+> @@ -911,12 +924,15 @@ static void qhdb_reset(QhDb *db)
+>   static int qhdb_insert(QhDb *db, uint32_t addr)
+>   {
+>       int i;
+> -    for (i = 0; i < db->count; i++)
+> -        if (db->addr[i] == addr)
+> +    for (i = 0; i < db->count; i++) {
+> +        if (db->addr[i] == addr) {
+>               return 1;
+> +        }
 > +    }
-> +
-> +    switch (file_locking_mode) {
-> +    case BLOCKDEV_CHANGE_FILE_LOCKING_MODE_AUTO:
-> +        break;
-> +
-> +    case BLOCKDEV_CHANGE_FILE_LOCKING_MODE_OFF:
-> +        qdict_put_str(options, "file.locking", "off");
-> +        break;
-> +
-> +    case BLOCKDEV_CHANGE_FILE_LOCKING_MODE_ON:
-> +        qdict_put_str(options, "file.locking", "on");
-> +        break;
-> +
-> +    default:
-> +        abort();
-> +    }
-> +
->       medium_bs = bdrv_open(filename, NULL, options, bdrv_flags, errp);
 >   
->       if (!medium_bs) {
-> diff --git a/ui/cocoa.m b/ui/cocoa.m
-> index 4c2dd33532..6e73c6e13e 100644
-> --- a/ui/cocoa.m
-> +++ b/ui/cocoa.m
-> @@ -1611,6 +1611,7 @@ - (void)changeDeviceMedia:(id)sender
->                                          "raw",
->                                          true, false,
->                                          false, 0,
-> +                                       false, 0,
+> -    if (db->count >= UHCI_MAX_QUEUES)
+> +    if (db->count >= UHCI_MAX_QUEUES) {
+>           return 1;
+> +    }
+>   
+>       db->addr[db->count++] = addr;
+>       return 0;
+> @@ -970,8 +986,10 @@ static void uhci_process_frame(UHCIState *s)
+>   
+>       for (cnt = FRAME_MAX_LOOPS; is_valid(link) && cnt; cnt--) {
+>           if (!s->completions_only && s->frame_bytes >= s->frame_bandwidth) {
+> -            /* We've reached the usb 1.1 bandwidth, which is
+> -               1280 bytes/frame, stop processing */
+> +            /*
+> +             * We've reached the usb 1.1 bandwidth, which is
+> +             * 1280 bytes/frame, stop processing
+> +             */
+>               trace_usb_uhci_frame_stop_bandwidth();
+>               break;
+>           }
+> @@ -1120,8 +1138,10 @@ static void uhci_frame_timer(void *opaque)
+>           uhci_async_validate_begin(s);
+>           uhci_process_frame(s);
+>           uhci_async_validate_end(s);
+> -        /* The spec says frnum is the frame currently being processed, and
+> -         * the guest must look at frnum - 1 on interrupt, so inc frnum now */
+> +        /*
+> +         * The spec says frnum is the frame currently being processed, and
+> +         * the guest must look at frnum - 1 on interrupt, so inc frnum now
+> +         */
+>           s->frnum = (s->frnum + 1) & 0x7ff;
+>           s->expire_time += frame_t;
+>       }
+> @@ -1174,7 +1194,7 @@ void usb_uhci_common_realize(PCIDevice *dev, Error **errp)
+>   
+>       if (s->masterbus) {
+>           USBPort *ports[UHCI_PORTS];
+> -        for(i = 0; i < UHCI_PORTS; i++) {
+> +        for (i = 0; i < UHCI_PORTS; i++) {
+>               ports[i] = &s->ports[i].port;
+>           }
+>           usb_register_companion(s->masterbus, ports, UHCI_PORTS,
+> @@ -1200,8 +1220,10 @@ void usb_uhci_common_realize(PCIDevice *dev, Error **errp)
+>       memory_region_init_io(&s->io_bar, OBJECT(s), &uhci_ioport_ops, s,
+>                             "uhci", 0x20);
+>   
+> -    /* Use region 4 for consistency with real hardware.  BSD guests seem
+> -       to rely on this.  */
+> +    /*
+> +     * Use region 4 for consistency with real hardware.  BSD guests seem
+> +     * to rely on this.
+> +     */
+>       pci_register_bar(&s->dev, 4, PCI_BASE_ADDRESS_SPACE_IO, &s->io_bar);
+>   }
+>   
 
-This change is irrelevant.
-
-Regards,
-Akihiko Odaki
 
