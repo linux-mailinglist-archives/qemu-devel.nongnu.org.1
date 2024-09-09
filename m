@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2551497219E
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 20:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A5E97219D
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 20:07:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sninK-0003vM-MU; Mon, 09 Sep 2024 14:07:22 -0400
+	id 1sninM-0004Bp-9D; Mon, 09 Sep 2024 14:07:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sninI-0003jD-EM
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 14:07:20 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1sninJ-0003pN-3t
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 14:07:21 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sninG-0001wj-8q
+ id 1sninH-0001wt-4z
  for qemu-devel@nongnu.org; Mon, 09 Sep 2024 14:07:20 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-718d962ad64so3141489b3a.0
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 11:07:17 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-7c3d8f260easo2238172a12.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 11:07:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1725905237; x=1726510037; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K5QfoW0VwajlTQd3ELmUEuobbsHpYmua9JmMsJd9x1U=;
- b=xhVWo18AbbAe4y00+4ZdWfoYUEE1QQeGW5Y7EOtax6xOoUY/5RoI73LSdZ+AGaC4gf
- TVexuCeTSokLMnq+GGfUD8OaGQ+HYB4KgVRJlydmZLFAvOKuYzYl/0a+8P0BmBcaIrsT
- EKLQmFA13AGLU2IZOH4I6d73AMH+vphgP2qoGQzjfLvyNqc2kzjGANFFSTb6sHRIwO+2
- n0HewXIbvuASucY4OQIDep8jQ/OLS4SVscq7WUYts8P1o0e4UtZHeOFRK/EJDjQeHNR5
- Q4wdC8CsDVDjRf5mLm1D7Q3WT2P+JMVn1x3DbZhwqRr5hwWOiaLcNwO4qOz88AZqT1cr
- FKRg==
+ bh=ms6V/0srD/nMNjMgzm5FTu/ZmmO4rz8+JUXESCUp5U0=;
+ b=k5iD4GTdAdXAiiLPzAmkSWfMvci2c80ftkhjWu141LhbDiEvxZ8qWP3kZcmGRottcS
+ I5veNyR4KF2Sbhvt/M6TJiJxaz6aTHPvpVNEjNpwpF1Gj6RTNNym1NPI5g159GQS4Pro
+ FHld5wbJsfR3kNC8bfgkXolALE4IoX8araQJg7ZUqde76xm3ojA3sy6MNq92mxVGAHLm
+ 3Lx0nXVbubFI7Otj+c24CkgL0bCan7YGMEigbLayblm0WvNsUIQwVmSMlo50UgJYK2Rp
+ ttPWEqL0Vqt7olCgPrwHJje4NC++OpJXPLDcrSmPfI+eHsDUMt5vek/a0fxsg242bqdT
+ C5FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1725905237; x=1726510037;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K5QfoW0VwajlTQd3ELmUEuobbsHpYmua9JmMsJd9x1U=;
- b=a+Fnzjs8vo3xY+tLJnSLPhyqu58OxDXgo1KUuZ3Am4qaWAMhKphBrBxDI6TBY6p7fZ
- nOOu+REN+RxLEPSjYngt3qpG6t5wXBpF8PIx5fm8kFm1KeMJb/NhmrhPUIk86K+o9rQe
- 7AduD8lybpIEiczxrZcbnP8ywQN+m1979v3W7dBy+j/6Yp7dN9S4sXgDfdkA41OUXLkf
- K1J/RlHZAhEvW4pXRECwTsm9ttQr88TIbHQ7K1LpRn0cKh+S1aTxxBqUAUCAhEtvPBGE
- igff4D1W70RPQFzF5euLRsMqwYQ27UsyvHsB0l2AUQHArOxhcSeAzcE/LRmAzqogxpf2
- UhJQ==
-X-Gm-Message-State: AOJu0YwvBKrTtwsSBULGTe0sk9AQvRlSAEO3N1A7cVVkPam/SUOxw4ZC
- rKSXRjs75W1dH3HgZBezm7La+c7llLy/LuMsmbyNosaXNL7N01PAfuaBuFfpOaXnKOV33zUjIB3
- +
-X-Google-Smtp-Source: AGHT+IFZ+++RZnyC73zGY5x8eYgcCbkH3dUP9WNDvLJNfFW++4MZKnixY9HpWFryJn8bO/BzIP92xg==
-X-Received: by 2002:a05:6a00:914c:b0:70d:2892:402b with SMTP id
- d2e1a72fcca58-718d5e0f22cmr15600522b3a.7.1725905236673; 
- Mon, 09 Sep 2024 11:07:16 -0700 (PDT)
+ bh=ms6V/0srD/nMNjMgzm5FTu/ZmmO4rz8+JUXESCUp5U0=;
+ b=orqphFTLbFPId1oG8tCqYTuPnTDXRYXXZe+guWFtpllaLQh3VYSOpnQFwPu5oe8tRA
+ FkxsukEz7kdK400Omy74oIYnlhZZF059hHRSYS7oM3J5Y+gda//rlS2zKq7Vzfbdcfp6
+ 3l/kZjxpYyq+XaZW1MwNtbR4LNNmfddiZmyTmwWtZxcqmSN26J5TaBWdUZcbgdedERLW
+ 8u98UCHVn3cYK4w4/kG56NMMDvOt4mTRKHA1/hfuevRvgwDKuRw1w+XyuxZDRNKA78K3
+ mWP9wm1msBJXZCQTPaaUPFgximnCpt/eOK76UL1wCb8jtnQ8XSBFUh7aHn7cr0cF7/Xv
+ ySYg==
+X-Gm-Message-State: AOJu0YwRA7ac9FVBagRudAwsJwN1pol9euvlxHzuSy0NgEw3nnA8/9Dy
+ 2k8f9N1bWre2EHFk9nTvepxACvFfnt4WRde1Zl0nHRAzfU6eRLfWqp9TVNvKzVWiskawdcUZEcW
+ i
+X-Google-Smtp-Source: AGHT+IEaj6OGrZFMuKkDuRLaQkEn5HNHKgNINiktDbKu7QM6w+nZ3MD/OViKnXdVt7hTjaYjjsG7GQ==
+X-Received: by 2002:a05:6a21:7702:b0:1ca:cd6d:3a26 with SMTP id
+ adf61e73a8af0-1cf2a047b7fmr7461115637.27.1725905237501; 
+ Mon, 09 Sep 2024 11:07:17 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-71908fc84efsm25431b3a.8.2024.09.09.11.07.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 11:07:16 -0700 (PDT)
+ Mon, 09 Sep 2024 11:07:17 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
 	chauser@pullman.com
-Subject: [PATCH v4 3/5] target/sparc: Add FSR_QNE to tb_flags
-Date: Mon,  9 Sep 2024 11:07:10 -0700
-Message-ID: <20240909180712.651651-4-richard.henderson@linaro.org>
+Subject: [PATCH v4 4/5] target/sparc: Implement STDFQ
+Date: Mon,  9 Sep 2024 11:07:11 -0700
+Message-ID: <20240909180712.651651-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240909180712.651651-1-richard.henderson@linaro.org>
 References: <20240909180712.651651-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,70 +93,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Invalid encoding of addr should raise TT_ILL_INSN, so
+check before supervisor, which might raise TT_PRIV_INSN.
+Clear QNE after execution.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/cpu.h       |  8 +++++++-
- target/sparc/translate.c | 10 +++++++---
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ target/sparc/translate.c  | 28 ++++++++++++++++++++++++++--
+ target/sparc/insns.decode |  2 +-
+ 2 files changed, 27 insertions(+), 3 deletions(-)
 
-diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index 9f2bc44722..f517e5a383 100644
---- a/target/sparc/cpu.h
-+++ b/target/sparc/cpu.h
-@@ -744,6 +744,7 @@ trap_state* cpu_tsptr(CPUSPARCState* env);
- #define TB_FLAG_AM_ENABLED   (1 << 5)
- #define TB_FLAG_SUPER        (1 << 6)
- #define TB_FLAG_HYPER        (1 << 7)
-+#define TB_FLAG_FSR_QNE      (1 << 8)
- #define TB_FLAG_ASI_SHIFT    24
- 
- static inline void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
-@@ -775,7 +776,12 @@ static inline void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
-     if (env->psref) {
-         flags |= TB_FLAG_FPU_ENABLED;
-     }
--#endif
-+#ifndef CONFIG_USER_ONLY
-+    if (env->fsr_qne) {
-+        flags |= TB_FLAG_FSR_QNE;
-+    }
-+#endif /* !CONFIG_USER_ONLY */
-+#endif /* TARGET_SPARC64 */
-     *pflags = flags;
- }
- 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index c803e8d1ba..eb0158a11d 100644
+index eb0158a11d..b80f071533 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -185,6 +185,8 @@ typedef struct DisasContext {
-     bool supervisor;
- #ifdef TARGET_SPARC64
-     bool hypervisor;
-+#else
-+    bool fsr_qne;
- #endif
- #endif
+@@ -4531,17 +4531,41 @@ TRANS(STQFA, 64, do_st_fpr, a, MO_128)
  
-@@ -5596,13 +5598,15 @@ static void sparc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     dc->address_mask_32bit = tb_am_enabled(dc->base.tb->flags);
- #ifndef CONFIG_USER_ONLY
-     dc->supervisor = (dc->base.tb->flags & TB_FLAG_SUPER) != 0;
-+# ifdef TARGET_SPARC64
-+    dc->hypervisor = (dc->base.tb->flags & TB_FLAG_HYPER) != 0;
-+# else
-+    dc->fsr_qne = (dc->base.tb->flags & TB_FLAG_FSR_QNE) != 0;
-+# endif
- #endif
- #ifdef TARGET_SPARC64
-     dc->fprs_dirty = 0;
-     dc->asi = (dc->base.tb->flags >> TB_FLAG_ASI_SHIFT) & 0xff;
--#ifndef CONFIG_USER_ONLY
--    dc->hypervisor = (dc->base.tb->flags & TB_FLAG_HYPER) != 0;
--#endif
- #endif
-     /*
-      * if we reach a page boundary, we stop generation so that the
+ static bool trans_STDFQ(DisasContext *dc, arg_STDFQ *a)
+ {
++    TCGv addr;
++
+     if (!avail_32(dc)) {
+         return false;
+     }
++    addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
++    if (addr == NULL) {
++        return false;
++    }
+     if (!supervisor(dc)) {
+         return raise_priv(dc);
+     }
++#if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY)
+     if (gen_trap_ifnofpu(dc)) {
+         return true;
+     }
+-    gen_op_fpexception_im(dc, FSR_FTT_SEQ_ERROR);
+-    return true;
++    if (!dc->fsr_qne) {
++        gen_op_fpexception_im(dc, FSR_FTT_SEQ_ERROR);
++        return true;
++    }
++
++    /* Store the single element from the queue. */
++    TCGv_i64 fq = tcg_temp_new_i64();
++    tcg_gen_ld_i64(fq, tcg_env, offsetof(CPUSPARCState, fq.d));
++    tcg_gen_qemu_st_i64(fq, addr, dc->mem_idx, MO_TEUQ | MO_ALIGN_4);
++
++    /* Mark the queue empty, transitioning to fp_execute state. */
++    tcg_gen_st_i32(tcg_constant_i32(0), tcg_env,
++                   offsetof(CPUSPARCState, fsr_qne));
++    dc->fsr_qne = 0;
++
++    return advance_pc(dc);
++#else
++    qemu_build_not_reached();
++#endif
+ }
+ 
+ static bool trans_LDFSR(DisasContext *dc, arg_r_r_ri *a)
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index 5fd478191a..923f348580 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -645,7 +645,7 @@ STFSR       11 00000 100101 ..... . .............          @n_r_ri
+ STXFSR      11 00001 100101 ..... . .............          @n_r_ri
+ {
+   STQF      11 ..... 100110 ..... . .............          @q_r_ri_na # v9
+-  STDFQ     11 ----- 100110 ----- - -------------
++  STDFQ     11 ..... 100110 ..... . .............          @r_r_ri    # v7,v8
+ }
+ STDF        11 ..... 100111 ..... . .............          @d_r_ri_na
+ 
 -- 
 2.43.0
 
