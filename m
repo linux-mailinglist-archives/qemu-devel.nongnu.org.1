@@ -2,94 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DB8972450
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 23:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 140F6972447
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 23:12:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snlf8-0000cB-C6; Mon, 09 Sep 2024 17:11:06 -0400
+	id 1snlfB-0000il-Ut; Mon, 09 Sep 2024 17:11:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1snlf4-0000O3-0U; Mon, 09 Sep 2024 17:11:02 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1snlf6-0000YK-Nk; Mon, 09 Sep 2024 17:11:04 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1snlf2-00025h-EG; Mon, 09 Sep 2024 17:11:01 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 489CBhOF012586;
- Mon, 9 Sep 2024 21:10:57 GMT
+ id 1snlf4-000261-QN; Mon, 09 Sep 2024 17:11:04 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 489EWSMI018449;
+ Mon, 9 Sep 2024 21:10:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-type:content-transfer-encoding; s=pp1; bh=
- Ux3PaV9CR8zvtRb9DC4RrYkLwh3J7d329aJIVOBjfIM=; b=kVqULKppBQO13NGc
- Uk1wdycDTm9XyJWHxhAMXY36epWWWeMMoRMm1MzpXU8+SZiwt33hUzaO+KOLg+wY
- pqwQBplnhYCROi52ANl6KMhMOaOiMRawr4sy3+lCOwKQNOmiOzo8HGgF+QjGd8B4
- p0hoBAJHighWUJjvQ7a+Ato/4U1T53Im+pdfLSPms0m3iUKjIflQwOje+mmCFO4y
- +wi1oLO6TnuIAcciiWkAAh1b9IEvbi0k4qiml6Fq1fsqdBH6F6k63kLtJQuu5X/t
- WvKufpRZLUayLPiBQkMHhbO9Q1MWZkN4nSDmnDEuEWSFJ+Tzj0kESvnvad5hCdes
- Ao70XA==
+ :mime-version:content-transfer-encoding; s=pp1; bh=9ldXKBgp/O3/x
+ VhaD9bDwjRBovAKynycRoA0ZDNOHcU=; b=pOaw0fuHFlge2upF0yRHdd0szU/7z
+ oaFpuAEOxpPPan+MAx5wvKqUxg1hslppj1GIS3x6Cj5cSOw1TRmVpUAQTwkiUee7
+ kfvSQxmadtkAc2gUG2fo4SxIf2wlh9nkluAmreXOsoRPPunPERJEATEtGHyvtWRO
+ dVDE+vCSw2RD4jvj9/PXO/DtBD0qIwg8BgeCdZy/J1oMEujkWPMIDop7jZ1s17eY
+ /DZThngoEtjr4NFaS5RAyVB5L6iyivO1tJtNLtjLOA41aU4o8VpdJjrtNuulTbWF
+ K7DngkkZNosIQ9O5y0aWX8lZksAqJ5PIdcqhIWWQ9aAcYvFxg19IzCZ5g==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8q4c5s-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41geba42ax-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Sep 2024 21:10:57 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 489LAvke014445;
- Mon, 9 Sep 2024 21:10:57 GMT
+ Mon, 09 Sep 2024 21:10:59 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 489LAwO6022505;
+ Mon, 9 Sep 2024 21:10:58 GMT
 Received: from ppma12.dal12v.mail.ibm.com
  (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8q4c5q-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41geba42av-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Sep 2024 21:10:57 +0000 (GMT)
+ Mon, 09 Sep 2024 21:10:58 +0000 (GMT)
 Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 489IDqNB003141;
- Mon, 9 Sep 2024 21:10:56 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h15trgst-1
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 489IR157003176;
+ Mon, 9 Sep 2024 21:10:57 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h15trgsv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Sep 2024 21:10:56 +0000
+ Mon, 09 Sep 2024 21:10:57 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 489LAq2c53084608
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 489LAslW33948398
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Sep 2024 21:10:52 GMT
+ Mon, 9 Sep 2024 21:10:54 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C09E220049;
- Mon,  9 Sep 2024 21:10:52 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3E04F2004B;
+ Mon,  9 Sep 2024 21:10:54 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9445320040;
- Mon,  9 Sep 2024 21:10:51 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 11ADA20040;
+ Mon,  9 Sep 2024 21:10:53 +0000 (GMT)
 Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  9 Sep 2024 21:10:51 +0000 (GMT)
+ Mon,  9 Sep 2024 21:10:52 +0000 (GMT)
 From: Michael Kowal <kowal@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
  npiggin@gmail.com, milesg@linux.ibm.com
-Subject: [PATCH v2 04/14] pnv/xive2: Support for "OS LGS Push" TIMA operation
-Date: Mon,  9 Sep 2024 16:10:28 -0500
-Message-Id: <20240909211038.27440-5-kowal@linux.ibm.com>
+Subject: [PATCH v2 05/14] ppc/xive2: Dump more NVP state with 'info pic'
+Date: Mon,  9 Sep 2024 16:10:29 -0500
+Message-Id: <20240909211038.27440-6-kowal@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240909211038.27440-1-kowal@linux.ibm.com>
 References: <20240909211038.27440-1-kowal@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: f5alh0-zUU9ibIfNdyQTDqbgQJZ2vVqX
-X-Proofpoint-ORIG-GUID: u39AA40NV0xwS3J6-wSJPmuzz46IM9-Q
+X-Proofpoint-ORIG-GUID: kWi7Htj83dDFwAyEbPPm5aUqk1igL_HE
+X-Proofpoint-GUID: Od2OLzDyVQPgjwVK1AOGiJuA6pOaCOOv
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-09_10,2024-09-09_02,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 adultscore=0 clxscore=1015 mlxlogscore=985 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409090162
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ malwarescore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ mlxscore=0 mlxlogscore=523 impostorscore=0 clxscore=1015 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409090166
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=kowal@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -112,54 +110,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Adds support for single byte writes to offset 0x15 of the TIMA address
-space.  This offset holds the Logical Server Group Size (LGS) field.
-The field is used to evenly distribute the interrupt load among the
-members of a group, but is unused in the current implementation so we
-just support the writing of the value for now.
+The 'PGoFirst' field of a Notify Virtual Processor tells if the NVP
+belongs to a VP group.
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+Also, print the Reporting Cache Line address, if defined.
+
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/xive.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ include/hw/ppc/xive2_regs.h |  1 +
+ hw/intc/xive2.c             | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 8e62c7e75f..8605dd618f 100644
---- a/hw/intc/xive.c
-+++ b/hw/intc/xive.c
-@@ -341,6 +341,19 @@ static void xive_tm_set_os_cppr(XivePresenter *xptr, XiveTCTX *tctx,
-     xive_tctx_set_cppr(tctx, TM_QW1_OS, value & 0xff);
- }
+diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
+index 7acf7dccf3..d71a54f9ff 100644
+--- a/include/hw/ppc/xive2_regs.h
++++ b/include/hw/ppc/xive2_regs.h
+@@ -151,6 +151,7 @@ typedef struct Xive2Nvp {
+ #define NVP2_W0_VALID              PPC_BIT32(0)
+ #define NVP2_W0_HW                 PPC_BIT32(7)
+ #define NVP2_W0_ESC_END            PPC_BIT32(25) /* 'N' bit 0:ESB  1:END */
++#define NVP2_W0_PGOFIRST           PPC_BITMASK32(26, 31)
+         uint32_t       w1;
+ #define NVP2_W1_CO                 PPC_BIT32(13)
+ #define NVP2_W1_CO_PRIV            PPC_BITMASK32(14, 15)
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index fbd05aa9f5..ac581fa195 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -161,14 +161,20 @@ void xive2_nvp_pic_print_info(Xive2Nvp *nvp, uint32_t nvp_idx, GString *buf)
+ {
+     uint8_t  eq_blk = xive_get_field32(NVP2_W5_VP_END_BLOCK, nvp->w5);
+     uint32_t eq_idx = xive_get_field32(NVP2_W5_VP_END_INDEX, nvp->w5);
++    uint64_t cache_line = xive2_nvp_reporting_addr(nvp);
  
-+static void xive_tctx_set_lgs(XiveTCTX *tctx, uint8_t ring, uint8_t lgs)
-+{
-+    uint8_t *regs = &tctx->regs[ring];
+     if (!xive2_nvp_is_valid(nvp)) {
+         return;
+     }
+ 
+-    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x",
++    g_string_append_printf(buf, "  %08x end:%02x/%04x IPB:%02x PGoFirst:%02x",
+                            nvp_idx, eq_blk, eq_idx,
+-                           xive_get_field32(NVP2_W2_IPB, nvp->w2));
++                           xive_get_field32(NVP2_W2_IPB, nvp->w2),
++                           xive_get_field32(NVP2_W0_PGOFIRST, nvp->w0));
++    if (cache_line) {
++        g_string_append_printf(buf, "  reporting CL:%016"PRIx64, cache_line);
++    }
 +
-+    regs[TM_LGS] = lgs;
-+}
-+
-+static void xive_tm_set_os_lgs(XivePresenter *xptr, XiveTCTX *tctx,
-+                          hwaddr offset, uint64_t value, unsigned size)
-+{
-+    xive_tctx_set_lgs(tctx, TM_QW1_OS, value & 0xff);
-+}
-+
- /*
-  * Adjust the IPB to allow a CPU to process event queues of other
-  * priorities during one physical interrupt cycle.
-@@ -525,6 +538,8 @@ static const XiveTmOp xive2_tm_operations[] = {
-                                                      NULL },
-     { XIVE_TM_HV_PAGE, TM_QW1_OS + TM_WORD2,      4, xive2_tm_push_os_ctx,
-                                                      NULL },
-+    { XIVE_TM_OS_PAGE, TM_QW1_OS + TM_LGS,        1, xive_tm_set_os_lgs,
-+                                                     NULL },
-     { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR,  1, xive_tm_set_hv_cppr,
-                                                      NULL },
-     { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, xive_tm_vt_push,
+     /*
+      * When the NVP is HW controlled, more fields are updated
+      */
 -- 
 2.43.0
 
