@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155A597235A
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 22:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 808A8972362
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 22:13:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snkk2-0000Tf-G3; Mon, 09 Sep 2024 16:12:06 -0400
+	id 1snkk6-0000ir-CY; Mon, 09 Sep 2024 16:12:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snkk0-0000O4-LH
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 16:12:04 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snkk4-0000dD-Du
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 16:12:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snkjy-00052b-T8
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 16:12:04 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snkk2-00053O-EQ
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 16:12:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725912722;
+ s=mimecast20190719; t=1725912725;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=t8TZl7MGrUC/7HcoL7VayMG078Iin7hnDhhYjY6hvtU=;
- b=HuOVEU42klydjvMMLNZ4pRrgphmya4x9hAwrw8KKytdAFgBDrgJ0AznKa+VvvmzzB5OFte
- PmpHOfYPEKgXSUEXhFMakhLi344UexEklyGZRI2AnICT30DoktSJricbTvOMHKS5Tr/0ON
- 1rj1vNJ8ShXuXrjcpquKG/e40+XR8Xo=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zyF+uB2XFDTWxO0PkzZtc9eGB9NRgyi0toAwC4na6TY=;
+ b=ic7mX/jYSzQp6eClJGjpytw/F4/HMaAtz3WwSCWZshZDrCFHjTOMOgOJzca7SRvfla+BAY
+ 8GNFvS4qYXE5jD3lJBJ6kcyMQoWTN4LQXDEeksEs+EkIg9R66m1mas8nR6ySivFcNTi2si
+ OVGAI+7QWa03Rx66aR6FXXilrQ05O1I=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-p0G91ztjMYuzKYMxx1i7wA-1; Mon, 09 Sep 2024 16:12:01 -0400
-X-MC-Unique: p0G91ztjMYuzKYMxx1i7wA-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-454e94467ceso88982011cf.1
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 13:12:01 -0700 (PDT)
+ us-mta-446-gzn0EMHlOU-oQQAjoEQg7Q-1; Mon, 09 Sep 2024 16:12:04 -0400
+X-MC-Unique: gzn0EMHlOU-oQQAjoEQg7Q-1
+Received: by mail-oi1-f200.google.com with SMTP id
+ 5614622812f47-3e04ec0155dso208797b6e.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 13:12:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725912720; x=1726517520;
+ d=1e100.net; s=20230601; t=1725912723; x=1726517523;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t8TZl7MGrUC/7HcoL7VayMG078Iin7hnDhhYjY6hvtU=;
- b=F4kYtl7K+/JyAiPxrbgk8X1xqG8OzrZTFPAttNmbWP3j/BQxjF1632WkVp5nrpFB5o
- nhS7dVAcCY49YdGjHlyxaOLhVXsjVrphGnlJdra+ChESqaScjX9TakEqBb63xMyH5S0G
- rjbmuEW8Lp8Mq8007IckXiL4PQSv3fJPwndZqFE6vYPP2OWhkpl37F5d6PmkZXhBAauW
- Oecm3oiu/MVoRgJOdV/pH91EKlu40BAQuM5foCV1iAqqkouDHYIBSsx9rQFRceJubONe
- Wx/a0t1AAPKxEfyxvnyzogGcrRnIqMimfT/wOiVUeDuo3eFkB1YvY9eUPuEeZ43s2qK6
- N7OA==
-X-Gm-Message-State: AOJu0YxuYvMVzURfV9sMNqnAo/i6QbsUTHTum2ziUe7btbvuvzN4cjad
- TJzU2wpZTXPJD2nuoBLSOFUXNchxqiCIaHK58vqHpW+vsEvMFV9z7+ZA/eg2NsNZ9Mhthbq6nQ5
- P9s1D+aVULTvEWVgPRmASGoRly+yYBPxwzS8Ed5On64BIgSO4gnULaV7a/owi0EmKT7MUGArPFh
- XYC3as3/z+/sZzm3RPQXzkCsy9gTmpItfmxQ==
-X-Received: by 2002:a05:622a:1304:b0:458:34be:88c2 with SMTP id
- d75a77b69052e-45834be8cafmr56965001cf.48.1725912720504; 
- Mon, 09 Sep 2024 13:12:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2tAB2X8NKL/8XWan95k8iIiFYTn5HAmT94iRzyWGhu3aPSA8adlc8PqgWtmf3plqOvLpPfA==
-X-Received: by 2002:a05:622a:1304:b0:458:34be:88c2 with SMTP id
- d75a77b69052e-45834be8cafmr56964621cf.48.1725912720027; 
- Mon, 09 Sep 2024 13:12:00 -0700 (PDT)
+ bh=zyF+uB2XFDTWxO0PkzZtc9eGB9NRgyi0toAwC4na6TY=;
+ b=BREVmDyVj+e0rRhANxHc1yD8OwKFzaomqyZ2AbRHzCCwseBJf5fWeSQUu2Z5uawWm3
+ iZI6WAQ1nd5LNdu5/P1bydf0xGQfbmyXeHdNbR93YH7o2Q8eLvexCxfmXFuO/xP5sxtn
+ DmFnMYYbeBwjj7FQ2abFH4L8zZcnuB6m7Dzg3R9bQTY2mjaSIlVBrFuAhi87GGF7mPtB
+ DxvO7nMxtWuh1S4zv6sjeVB5D5vRx99SmdxH8dvN7U+dKr7NqmQgkH21sJiQdJuXiYyS
+ 1rInVf01FsWhVTI7SqaTjhB1Mqb0+p+jcjs0XzTgpffFg23MvpsFLpXGIDI+KEzr2F4x
+ 7GpQ==
+X-Gm-Message-State: AOJu0Yw5V8t6ZwQZ6MGzOu1yQTjZEfkFnyuI5fH/chqna35QLMwb5b02
+ BRkKCTeZ18hAZ2xTG2pNybbxg5NKZQM8pvZway7oBI+HsEsX0j6WtsTtRSqrwNYkaZg+QKOKxJd
+ H11dj6tZJn5sC2A7FVlhTM8j3FdDxrDt/sxaW50hyFyzLIiN9LhLPh57McIxCv51h/MbFzyh4kK
+ 7/egQfRxSQSalD/ar4WrAN/FeP755XPDJMhA==
+X-Received: by 2002:a05:6808:1889:b0:3db:1516:2bcc with SMTP id
+ 5614622812f47-3e037ae4badmr5722542b6e.31.1725912722985; 
+ Mon, 09 Sep 2024 13:12:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGIaqtkXI8xWWU00jT15xA39fI+oshHeb894QR6JyHUUl5dqe7a/eym2PXiK2Fe0YWpjikALQ==
+X-Received: by 2002:a05:6808:1889:b0:3db:1516:2bcc with SMTP id
+ 5614622812f47-3e037ae4badmr5722501b6e.31.1725912722425; 
+ Mon, 09 Sep 2024 13:12:02 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-45822f93978sm22838561cf.83.2024.09.09.13.11.57
+ d75a77b69052e-45822f93978sm22838561cf.83.2024.09.09.13.12.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 13:11:58 -0700 (PDT)
+ Mon, 09 Sep 2024 13:12:00 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Bryan Zhang <bryan.zhang@bytedance.com>,
- Hao Xiang <hao.xiang@linux.dev>, Yichen Wang <yichen.wang@bytedance.com>
-Subject: [PULL 5/9] meson: Introduce 'qatzip' feature to the build system
-Date: Mon,  9 Sep 2024 16:11:43 -0400
-Message-ID: <20240909201147.3761639-6-peterx@redhat.com>
+ Markus Armbruster <armbru@redhat.com>, Hao Xiang <hao.xiang@linux.dev>,
+ Yichen Wang <yichen.wang@bytedance.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: [PULL 6/9] migration: Add migration parameters for QATzip
+Date: Mon,  9 Sep 2024 16:11:44 -0400
+Message-ID: <20240909201147.3761639-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240909201147.3761639-1-peterx@redhat.com>
 References: <20240909201147.3761639-1-peterx@redhat.com>
@@ -101,90 +103,209 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bryan Zhang <bryan.zhang@bytedance.com>
 
-Add a 'qatzip' feature, which is automatically disabled, and which
-depends on the QATzip library if enabled.
+Adds support for migration parameters to control QATzip compression
+level.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
 Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
 Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
-Link: https://lore.kernel.org/r/20240830232722.58272-3-yichen.wang@bytedance.com
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
+Link: https://lore.kernel.org/r/20240830232722.58272-4-yichen.wang@bytedance.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- meson.build                   | 10 ++++++++++
- meson_options.txt             |  2 ++
- scripts/meson-buildoptions.sh |  3 +++
- 3 files changed, 15 insertions(+)
+ qapi/migration.json            | 18 ++++++++++++++++++
+ migration/options.h            |  1 +
+ migration/migration-hmp-cmds.c |  4 ++++
+ migration/options.c            | 34 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 57 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index fbda17c987..b89b713e79 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1262,6 +1262,14 @@ if not get_option('uadk').auto() or have_system
-      uadk = declare_dependency(dependencies: [libwd, libwd_comp])
-   endif
- endif
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 7324571e92..f4c27426c8 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -792,6 +792,11 @@
+ #     speed, and 9 means best compression ratio which will consume
+ #     more CPU.  Defaults to 1.  (Since 5.0)
+ #
++# @multifd-qatzip-level: Set the compression level to be used in live
++#     migration. The level is an integer between 1 and 9, where 1 means
++#     the best compression speed, and 9 means the best compression
++#     ratio which will consume more CPU. Defaults to 1.  (Since 9.2)
++#
+ # @multifd-zstd-level: Set the compression level to be used in live
+ #     migration, the compression level is an integer between 0 and 20,
+ #     where 0 means no compression, 1 means the best compression
+@@ -852,6 +857,7 @@
+            'xbzrle-cache-size', 'max-postcopy-bandwidth',
+            'max-cpu-throttle', 'multifd-compression',
+            'multifd-zlib-level', 'multifd-zstd-level',
++           'multifd-qatzip-level',
+            'block-bitmap-mapping',
+            { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
+            'vcpu-dirty-limit',
+@@ -967,6 +973,11 @@
+ #     speed, and 9 means best compression ratio which will consume
+ #     more CPU.  Defaults to 1.  (Since 5.0)
+ #
++# @multifd-qatzip-level: Set the compression level to be used in live
++#     migration. The level is an integer between 1 and 9, where 1 means
++#     the best compression speed, and 9 means the best compression
++#     ratio which will consume more CPU. Defaults to 1.  (Since 9.2)
++#
+ # @multifd-zstd-level: Set the compression level to be used in live
+ #     migration, the compression level is an integer between 0 and 20,
+ #     where 0 means no compression, 1 means the best compression
+@@ -1040,6 +1051,7 @@
+             '*max-cpu-throttle': 'uint8',
+             '*multifd-compression': 'MultiFDCompression',
+             '*multifd-zlib-level': 'uint8',
++            '*multifd-qatzip-level': 'uint8',
+             '*multifd-zstd-level': 'uint8',
+             '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
+             '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
+@@ -1171,6 +1183,11 @@
+ #     speed, and 9 means best compression ratio which will consume
+ #     more CPU.  Defaults to 1.  (Since 5.0)
+ #
++# @multifd-qatzip-level: Set the compression level to be used in live
++#     migration. The level is an integer between 1 and 9, where 1 means
++#     the best compression speed, and 9 means the best compression
++#     ratio which will consume more CPU. Defaults to 1.  (Since 9.2)
++#
+ # @multifd-zstd-level: Set the compression level to be used in live
+ #     migration, the compression level is an integer between 0 and 20,
+ #     where 0 means no compression, 1 means the best compression
+@@ -1241,6 +1258,7 @@
+             '*max-cpu-throttle': 'uint8',
+             '*multifd-compression': 'MultiFDCompression',
+             '*multifd-zlib-level': 'uint8',
++            '*multifd-qatzip-level': 'uint8',
+             '*multifd-zstd-level': 'uint8',
+             '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
+             '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
+diff --git a/migration/options.h b/migration/options.h
+index a2397026db..a0bd6edc06 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -78,6 +78,7 @@ uint64_t migrate_max_postcopy_bandwidth(void);
+ int migrate_multifd_channels(void);
+ MultiFDCompression migrate_multifd_compression(void);
+ int migrate_multifd_zlib_level(void);
++int migrate_multifd_qatzip_level(void);
+ int migrate_multifd_zstd_level(void);
+ uint8_t migrate_throttle_trigger_threshold(void);
+ const char *migrate_tls_authz(void);
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 7d608d26e1..28165cfc9e 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -576,6 +576,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+         p->has_multifd_zlib_level = true;
+         visit_type_uint8(v, param, &p->multifd_zlib_level, &err);
+         break;
++    case MIGRATION_PARAMETER_MULTIFD_QATZIP_LEVEL:
++        p->has_multifd_qatzip_level = true;
++        visit_type_uint8(v, param, &p->multifd_qatzip_level, &err);
++        break;
+     case MIGRATION_PARAMETER_MULTIFD_ZSTD_LEVEL:
+         p->has_multifd_zstd_level = true;
+         visit_type_uint8(v, param, &p->multifd_zstd_level, &err);
+diff --git a/migration/options.c b/migration/options.c
+index 645f55003d..147cd2b8fd 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -55,6 +55,13 @@
+ #define DEFAULT_MIGRATE_MULTIFD_COMPRESSION MULTIFD_COMPRESSION_NONE
+ /* 0: means nocompress, 1: best speed, ... 9: best compress ratio */
+ #define DEFAULT_MIGRATE_MULTIFD_ZLIB_LEVEL 1
++/*
++ * 1: best speed, ... 9: best compress ratio
++ * There is some nuance here. Refer to QATzip documentation to understand
++ * the mapping of QATzip levels to standard deflate levels.
++ */
++#define DEFAULT_MIGRATE_MULTIFD_QATZIP_LEVEL 1
 +
-+qatzip = not_found
-+if not get_option('qatzip').auto() or have_system
-+  qatzip = dependency('qatzip', version: '>=1.1.2',
-+                      required: get_option('qatzip'),
-+                      method: 'pkg-config')
-+endif
-+
- virgl = not_found
+ /* 0: means nocompress, 1: best speed, ... 20: best compress ratio */
+ #define DEFAULT_MIGRATE_MULTIFD_ZSTD_LEVEL 1
  
- have_vhost_user_gpu = have_tools and host_os == 'linux' and pixman.found()
-@@ -2412,6 +2420,7 @@ config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
- config_host_data.set('CONFIG_ZSTD', zstd.found())
- config_host_data.set('CONFIG_QPL', qpl.found())
- config_host_data.set('CONFIG_UADK', uadk.found())
-+config_host_data.set('CONFIG_QATZIP', qatzip.found())
- config_host_data.set('CONFIG_FUSE', fuse.found())
- config_host_data.set('CONFIG_FUSE_LSEEK', fuse_lseek.found())
- config_host_data.set('CONFIG_SPICE_PROTOCOL', spice_protocol.found())
-@@ -4535,6 +4544,7 @@ summary_info += {'lzfse support':     liblzfse}
- summary_info += {'zstd support':      zstd}
- summary_info += {'Query Processing Library support': qpl}
- summary_info += {'UADK Library support': uadk}
-+summary_info += {'qatzip support':    qatzip}
- summary_info += {'NUMA host support': numa}
- summary_info += {'capstone':          capstone}
- summary_info += {'libpmem support':   libpmem}
-diff --git a/meson_options.txt b/meson_options.txt
-index 0269fa0f16..f7b652b30d 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -261,6 +261,8 @@ option('qpl', type : 'feature', value : 'auto',
-        description: 'Query Processing Library support')
- option('uadk', type : 'feature', value : 'auto',
-        description: 'UADK Library support')
-+option('qatzip', type: 'feature', value: 'auto',
-+       description: 'QATzip compression support')
- option('fuse', type: 'feature', value: 'auto',
-        description: 'FUSE block device export')
- option('fuse_lseek', type : 'feature', value : 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index c97079a38c..5f377a6d81 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -163,6 +163,7 @@ meson_options_help() {
-   printf "%s\n" '  pixman          pixman support'
-   printf "%s\n" '  plugins         TCG plugins via shared library loading'
-   printf "%s\n" '  png             PNG support with libpng'
-+  printf "%s\n" '  qatzip          QATzip compression support'
-   printf "%s\n" '  qcow1           qcow1 image format support'
-   printf "%s\n" '  qed             qed image format support'
-   printf "%s\n" '  qga-vss         build QGA VSS support (broken with MinGW)'
-@@ -427,6 +428,8 @@ _meson_option_parse() {
-     --enable-png) printf "%s" -Dpng=enabled ;;
-     --disable-png) printf "%s" -Dpng=disabled ;;
-     --prefix=*) quote_sh "-Dprefix=$2" ;;
-+    --enable-qatzip) printf "%s" -Dqatzip=enabled ;;
-+    --disable-qatzip) printf "%s" -Dqatzip=disabled ;;
-     --enable-qcow1) printf "%s" -Dqcow1=enabled ;;
-     --disable-qcow1) printf "%s" -Dqcow1=disabled ;;
-     --enable-qed) printf "%s" -Dqed=enabled ;;
+@@ -123,6 +130,9 @@ Property migration_properties[] = {
+     DEFINE_PROP_UINT8("multifd-zlib-level", MigrationState,
+                       parameters.multifd_zlib_level,
+                       DEFAULT_MIGRATE_MULTIFD_ZLIB_LEVEL),
++    DEFINE_PROP_UINT8("multifd-qatzip-level", MigrationState,
++                      parameters.multifd_qatzip_level,
++                      DEFAULT_MIGRATE_MULTIFD_QATZIP_LEVEL),
+     DEFINE_PROP_UINT8("multifd-zstd-level", MigrationState,
+                       parameters.multifd_zstd_level,
+                       DEFAULT_MIGRATE_MULTIFD_ZSTD_LEVEL),
+@@ -787,6 +797,13 @@ int migrate_multifd_zlib_level(void)
+     return s->parameters.multifd_zlib_level;
+ }
+ 
++int migrate_multifd_qatzip_level(void)
++{
++    MigrationState *s = migrate_get_current();
++
++    return s->parameters.multifd_qatzip_level;
++}
++
+ int migrate_multifd_zstd_level(void)
+ {
+     MigrationState *s = migrate_get_current();
+@@ -892,6 +909,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->multifd_compression = s->parameters.multifd_compression;
+     params->has_multifd_zlib_level = true;
+     params->multifd_zlib_level = s->parameters.multifd_zlib_level;
++    params->has_multifd_qatzip_level = true;
++    params->multifd_qatzip_level = s->parameters.multifd_qatzip_level;
+     params->has_multifd_zstd_level = true;
+     params->multifd_zstd_level = s->parameters.multifd_zstd_level;
+     params->has_xbzrle_cache_size = true;
+@@ -946,6 +965,7 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_multifd_channels = true;
+     params->has_multifd_compression = true;
+     params->has_multifd_zlib_level = true;
++    params->has_multifd_qatzip_level = true;
+     params->has_multifd_zstd_level = true;
+     params->has_xbzrle_cache_size = true;
+     params->has_max_postcopy_bandwidth = true;
+@@ -1038,6 +1058,14 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+         return false;
+     }
+ 
++    if (params->has_multifd_qatzip_level &&
++        ((params->multifd_qatzip_level > 9) ||
++        (params->multifd_qatzip_level < 1))) {
++        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "multifd_qatzip_level",
++                   "a value between 1 and 9");
++        return false;
++    }
++
+     if (params->has_multifd_zstd_level &&
+         (params->multifd_zstd_level > 20)) {
+         error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "multifd_zstd_level",
+@@ -1195,6 +1223,9 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+     if (params->has_multifd_compression) {
+         dest->multifd_compression = params->multifd_compression;
+     }
++    if (params->has_multifd_qatzip_level) {
++        dest->multifd_qatzip_level = params->multifd_qatzip_level;
++    }
+     if (params->has_multifd_zlib_level) {
+         dest->multifd_zlib_level = params->multifd_zlib_level;
+     }
+@@ -1315,6 +1346,9 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+     if (params->has_multifd_compression) {
+         s->parameters.multifd_compression = params->multifd_compression;
+     }
++    if (params->has_multifd_qatzip_level) {
++        s->parameters.multifd_qatzip_level = params->multifd_qatzip_level;
++    }
+     if (params->has_multifd_zlib_level) {
+         s->parameters.multifd_zlib_level = params->multifd_zlib_level;
+     }
 -- 
 2.45.0
 
