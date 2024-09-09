@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB2D971F27
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 18:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28028971F35
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 18:28:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snhAK-0002sN-2M; Mon, 09 Sep 2024 12:23:00 -0400
+	id 1snhAK-0002vK-M6; Mon, 09 Sep 2024 12:23:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1snhAI-0002mk-8e
+ id 1snhAI-0002os-NC
  for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:22:58 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1snhAG-0007jz-Gt
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:22:57 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-2068acc8b98so41331105ad.3
+ id 1snhAH-0007kM-6k
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:22:58 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-207397d1000so6301035ad.0
  for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 09:22:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725898975; x=1726503775; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725898976; x=1726503776; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rkXBvyX56rezRPuXpFz/dXJhKRh6RJ5INCTz9rG8X5g=;
- b=Yj5jeshkmtI/So4cnhKkjy95PMFLfE0cSDsL6fijmd8oQWcnDvDoWo+cWqT6iw3Ue9
- Wv/3c7fkc6QhaIrnF/hyOsTTj4JB3MvqiWKAObQtbqkqY1fqpHF1oQQojUecHo2JZieO
- SaHAkHjIqM+uMQQkjlQBPJcbXiDTV2NNvgX+sOcc7kYb33iCRq7ujvm9zbzd5ICqKSiV
- LtLrtCaRhZS9E5PkllIUTNTzImMk40eADpzzTuumFGVqWkdteU7ZWFjEXSVZWQA3MDON
- RTRfYLk+XSLdRpLvoOtBHb5M8EE3AA1uypI5kklm0BVGAKiJ7vnaTUutyPIyD6ZrSRPn
- iYZQ==
+ bh=cSY4uf6Z/opn/dlanPt8haDJAxn0KwcQEBixe3UYnmI=;
+ b=WEY0fhWKXByKxRwyOfdVO15jPfgxaIXENmekf8fVCEH5w/pO5wVhSH8RpOKAfpjizM
+ 49KqHRCPdqRPjheTwtg0HjCHrqa7xSEvpIpNprb7aHw1GE/Min2dbiH7BVeCzneWtJSI
+ bvAevomyC7BXZul0xdS1Ix4RGAbtsLv2I8hvOCZU2VIRBt0EtnNoN1Jg89axA1HBBytN
+ Oa6mVWewsXA4W+BGweWV6vZC2zghmQxh0rNWNN502OXwBR3+h1uZ5H4NJnudhdRmrT3O
+ /MNuR/k+QIO8WHl2wV4bAXm2CNC9YpeFzIMYZXecP4toONMXqIHPIf3TmYHUstzmcM9u
+ FumA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725898975; x=1726503775;
+ d=1e100.net; s=20230601; t=1725898976; x=1726503776;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rkXBvyX56rezRPuXpFz/dXJhKRh6RJ5INCTz9rG8X5g=;
- b=keWMa7Rf0KuUqr64qLbvCDDXzcryEBjhdau6+CXgfQUkXxFeebIhx59J+rm/m6zhxM
- o2si4NRdHgIxFOPNLqKBVoYAVgeETY9+87aVdCmu8nzqb3Xq3wdT6qYLH8MqsK1KoWY1
- gDkrcK1BGIkejk6Xl2CBMLzdscoNbXt3sAJYe2gKaLyov26W/ZkIXujbPlPfpa5WHXDT
- woS458n3AiP8py4EH+0Ovn6qh6C1mqx5fdJ5ysPlOYKRTOiw2wilMMLyCjHhEv9OzEB4
- gfhiAYyjR05nWQ/vVTx82dfQ8k400x9EVgKnxUQVcNLWriLo91Zrqe4f9Msj+vqZgS/D
- wkRA==
-X-Gm-Message-State: AOJu0Yz9ESrbCYftW+lAjOHmkZQ5LZtL1G0PF/iA8KoT8r3NxfA/60Xf
- Y2hS9sMZbbF/OBvKJaXvkxkTULngMfzO9wyVnijkmX19PUNjIowHq9EowBJAAZokFmpQb5oEoIg
- E
-X-Google-Smtp-Source: AGHT+IFSHZLdVnZIMDBYlzNDinx6jPOq7wRn1mYY2t9SLn/JE1i1IVE8J6+V2acFi2DFUDR4qephQg==
-X-Received: by 2002:a17:902:d483:b0:200:abb6:4daf with SMTP id
- d9443c01a7336-2070c1073c8mr102930145ad.39.1725898975079; 
+ bh=cSY4uf6Z/opn/dlanPt8haDJAxn0KwcQEBixe3UYnmI=;
+ b=REQwmJ4lannwbRRqTOCZVhJMiIG/kAFG8CHLFoRAIOF9jn7aqmkX5lJkPLuEoHQs1f
+ PcXo9ANNq3Y1R8Q4uwpleXaPfXkfM5UECuryPcYEe0FY+zzPEqPwdzAygBcLDeDNAU5Q
+ mK/8vIGgrUerImyxLDGjKyqkXcH5fTxHdY1WZ8mNRSoEqDcsVjnweYRsNQTlE4owErYj
+ PRSDs29aB/ODyB5PErSazQdx8OBgtmnfwxIqBt+CoWmx6i5NJOb9jX5ZwzJce/OyVG/b
+ GGbzlAWN4loJvDeAiGtUpIIieS8Px4JwS647sj66ki6ofxQ61A6S1dODIcnFrp38nfmi
+ DYOw==
+X-Gm-Message-State: AOJu0YxMQeFXmwXKauRi9CKJOdZ0SIhdn+YcP3PgxJPhmHntKJo8aNvH
+ Mj1bTzATbeFxae6OUSkryReSOz/a5dCK+G86YfnNlptzp+Dbx0APFUxdTTbf9e7femzyXvy/SZk
+ q
+X-Google-Smtp-Source: AGHT+IH6b+fE7T2a/RVR1ie58DdG0Ms1dfRzPIhWMhFCD1MZLn7utNAI9ucgv7USEuvwJKzYGwtsTw==
+X-Received: by 2002:a17:902:d50f:b0:205:7998:3deb with SMTP id
+ d9443c01a7336-20743c512e8mr2257125ad.19.1725898975943; 
  Mon, 09 Sep 2024 09:22:55 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710f35d79sm35753305ad.288.2024.09.09.09.22.54
+ d9443c01a7336-20710f35d79sm35753305ad.288.2024.09.09.09.22.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 09:22:54 -0700 (PDT)
+ Mon, 09 Sep 2024 09:22:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 14/29] target/arm: Introduce gen_gvec_sshr, gen_gvec_ushr
-Date: Mon,  9 Sep 2024 09:22:24 -0700
-Message-ID: <20240909162240.647173-15-richard.henderson@linaro.org>
+Subject: [PATCH v2 15/29] target/arm: Fix whitespace near gen_srshr64_i64
+Date: Mon,  9 Sep 2024 09:22:25 -0700
+Message-ID: <20240909162240.647173-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240909162240.647173-1-richard.henderson@linaro.org>
 References: <20240909162240.647173-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,127 +93,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle the two special cases within these new
-functions instead of higher in the call stack.
-
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate.h      |  5 +++++
- target/arm/tcg/gengvec.c        | 19 +++++++++++++++++++
- target/arm/tcg/translate-a64.c  | 16 +---------------
- target/arm/tcg/translate-neon.c | 25 ++-----------------------
- 4 files changed, 27 insertions(+), 38 deletions(-)
+ target/arm/tcg/gengvec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index 3f0e9ceaa3..45990ae292 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -514,6 +514,11 @@ void gen_sqsub_d(TCGv_i64 d, TCGv_i64 q, TCGv_i64 a, TCGv_i64 b);
- void gen_gvec_sqsub_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-                        uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz);
- 
-+void gen_gvec_sshr(unsigned vece, uint32_t rd_ofs, uint32_t rm_ofs,
-+                   int64_t shift, uint32_t opr_sz, uint32_t max_sz);
-+void gen_gvec_ushr(unsigned vece, uint32_t rd_ofs, uint32_t rm_ofs,
-+                   int64_t shift, uint32_t opr_sz, uint32_t max_sz);
-+
- void gen_gvec_ssra(unsigned vece, uint32_t rd_ofs, uint32_t rm_ofs,
-                    int64_t shift, uint32_t opr_sz, uint32_t max_sz);
- void gen_gvec_usra(unsigned vece, uint32_t rd_ofs, uint32_t rm_ofs,
 diff --git a/target/arm/tcg/gengvec.c b/target/arm/tcg/gengvec.c
-index c5fc1b6cfb..33c5084ea6 100644
+index 33c5084ea6..3abdc57202 100644
 --- a/target/arm/tcg/gengvec.c
 +++ b/target/arm/tcg/gengvec.c
-@@ -88,6 +88,25 @@ GEN_CMP0(gen_gvec_cgt0, TCG_COND_GT)
+@@ -304,7 +304,7 @@ void gen_srshr32_i32(TCGv_i32 d, TCGv_i32 a, int32_t sh)
+     tcg_gen_add_i32(d, d, t);
+ }
  
- #undef GEN_CMP0
- 
-+void gen_gvec_sshr(unsigned vece, uint32_t rd_ofs, uint32_t rm_ofs,
-+                   int64_t shift, uint32_t opr_sz, uint32_t max_sz)
-+{
-+    /* Signed shift out of range results in all-sign-bits */
-+    shift = MIN(shift, (8 << vece) - 1);
-+    tcg_gen_gvec_sari(vece, rd_ofs, rm_ofs, shift, opr_sz, max_sz);
-+}
-+
-+void gen_gvec_ushr(unsigned vece, uint32_t rd_ofs, uint32_t rm_ofs,
-+                   int64_t shift, uint32_t opr_sz, uint32_t max_sz)
-+{
-+    /* Unsigned shift out of range results in all-zero-bits */
-+    if (shift >= (8 << vece)) {
-+        tcg_gen_gvec_dup_imm(vece, rd_ofs, opr_sz, max_sz, 0);
-+    } else {
-+        tcg_gen_gvec_shri(vece, rd_ofs, rm_ofs, shift, opr_sz, max_sz);
-+    }
-+}
-+
- static void gen_ssra8_i64(TCGv_i64 d, TCGv_i64 a, int64_t shift)
+- void gen_srshr64_i64(TCGv_i64 d, TCGv_i64 a, int64_t sh)
++void gen_srshr64_i64(TCGv_i64 d, TCGv_i64 a, int64_t sh)
  {
-     tcg_gen_vec_sar8i_i64(a, a, shift);
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 53022f4fc0..032bd33650 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -10452,21 +10452,7 @@ static void handle_vec_simd_shri(DisasContext *s, bool is_q, bool is_u,
-         break;
+     TCGv_i64 t = tcg_temp_new_i64();
  
-     case 0x00: /* SSHR / USHR */
--        if (is_u) {
--            if (shift == 8 << size) {
--                /* Shift count the same size as element size produces zero.  */
--                tcg_gen_gvec_dup_imm(size, vec_full_reg_offset(s, rd),
--                                     is_q ? 16 : 8, vec_full_reg_size(s), 0);
--                return;
--            }
--            gvec_fn = tcg_gen_gvec_shri;
--        } else {
--            /* Shift count the same size as element size produces all sign.  */
--            if (shift == 8 << size) {
--                shift -= 1;
--            }
--            gvec_fn = tcg_gen_gvec_sari;
--        }
-+        gvec_fn = is_u ? gen_gvec_ushr : gen_gvec_sshr;
-         break;
- 
-     case 0x04: /* SRSHR / URSHR (rounding) */
-diff --git a/target/arm/tcg/translate-neon.c b/target/arm/tcg/translate-neon.c
-index 13cd31aad4..a31a78c347 100644
---- a/target/arm/tcg/translate-neon.c
-+++ b/target/arm/tcg/translate-neon.c
-@@ -1099,29 +1099,8 @@ DO_2SH(VRSHR_S, gen_gvec_srshr)
- DO_2SH(VRSHR_U, gen_gvec_urshr)
- DO_2SH(VRSRA_S, gen_gvec_srsra)
- DO_2SH(VRSRA_U, gen_gvec_ursra)
--
--static bool trans_VSHR_S_2sh(DisasContext *s, arg_2reg_shift *a)
--{
--    /* Signed shift out of range results in all-sign-bits */
--    a->shift = MIN(a->shift, (8 << a->size) - 1);
--    return do_vector_2sh(s, a, tcg_gen_gvec_sari);
--}
--
--static void gen_zero_rd_2sh(unsigned vece, uint32_t rd_ofs, uint32_t rm_ofs,
--                            int64_t shift, uint32_t oprsz, uint32_t maxsz)
--{
--    tcg_gen_gvec_dup_imm(vece, rd_ofs, oprsz, maxsz, 0);
--}
--
--static bool trans_VSHR_U_2sh(DisasContext *s, arg_2reg_shift *a)
--{
--    /* Shift out of range is architecturally valid and results in zero. */
--    if (a->shift >= (8 << a->size)) {
--        return do_vector_2sh(s, a, gen_zero_rd_2sh);
--    } else {
--        return do_vector_2sh(s, a, tcg_gen_gvec_shri);
--    }
--}
-+DO_2SH(VSHR_S, gen_gvec_sshr)
-+DO_2SH(VSHR_U, gen_gvec_ushr)
- 
- static bool do_2shift_env_64(DisasContext *s, arg_2reg_shift *a,
-                              NeonGenTwo64OpEnvFn *fn)
 -- 
 2.43.0
 
