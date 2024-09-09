@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7C7971BA9
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 15:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A16AF971B95
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 15:50:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snelL-0001Hz-AX; Mon, 09 Sep 2024 09:49:03 -0400
+	id 1snelP-0001ZS-4h; Mon, 09 Sep 2024 09:49:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1snelJ-0001Gz-Dp
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 09:49:01 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ id 1snelM-0001PF-PP
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 09:49:04 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1snelH-0000BO-O9
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 09:49:01 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-2d889207d1aso3032471a91.3
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 06:48:59 -0700 (PDT)
+ id 1snelK-0000Bi-S5
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 09:49:04 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2d89dbb60bdso2923562a91.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 06:49:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1725889738; x=1726494538;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1725889741; x=1726494541;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PMsMrxXIYF55uyEUpAg6oCulZa95qOnP3qJj8dOgMPY=;
- b=IbKr5iGaW1qjWCkggXFfb+BdX2kIT3hpuw1bkP1rPMG3VFR1kyO4bkWagFEaZOMAE5
- N9kO4xtnJ3K7yEUkxgIwt1Mr5smbs4Cuq4Wh+FceHLe36gOBclLVJYMHF/hHvp0fRuq2
- vntalflTHlxbL2ccQJMMYSczKMCblYcPw74xGeHMqwAKZkybRskiy4e7yXhL/SF7dNM6
- jWUzdX3RwSPvkU9Jc2Umu71Uw3SybbCoXj9eosa8b1kD55pnGcswH7hCVTsei960+U18
- E0owFhgwJm6SqhYW8cp50OMMrA6U+7j2iprGclM/QYe1bUlU5itYjjTYY1KM2f7jER/6
- CcRw==
+ bh=r0+VMi25/Zc4CDone71m1lCGybIDfbvM1CcXIqSCA9s=;
+ b=p26fR4YAEElT+Byzfj/pD3ukk90mrAwxNCHoLIeOXDw0FPKN7Oy6bqLgFLHtC7fSb/
+ CMpChNOYCpnpFvnCPCvaniTTtf87aFe/yLIO6WpRABM2IIJ1zRf6MWSm++dwahUh3nfI
+ b0ccSi9IywJLFAQPZDLiEFFbHLYROcpwbjD/G0An62r1VzqpM7OK3FItrfAbR9d1LwNQ
+ BxrfPSN8c/0PCkqjadU4o7oH9wIYY9/KBdTVON5ncmqnlPx5v8koGsUSlLogNruPONJG
+ scIantOiVcNL69R9orhRippqkkPPrSx3qmca1aO/1LpnWbZ83yuBzmHXYUBhjuxQYgT6
+ gMaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725889738; x=1726494538;
+ d=1e100.net; s=20230601; t=1725889741; x=1726494541;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PMsMrxXIYF55uyEUpAg6oCulZa95qOnP3qJj8dOgMPY=;
- b=QH5ZUQTC96eS5WZkR+S4HQNdMeGKDmzBpZdvzZ9VJ9Nds9W6WaRhNHsttduGl9k4L7
- zmFIreDR20kdYjErKCjx856HT6GcdTLSe6t9cNDjcVPj4rodVn5rWl4XmrnqFDZkjgem
- 20aqdaqCesk5qPpDUMrY1rKY+kJbVDs4VEAGRJBxSOVcVRqppsccngUKPJigfvwU4v61
- 5zuJrsO8DJUDvY2ZomQTzDyjVXRiG8H0DSuy7ugrinJFxj/69yrDLs+IXz0/JUyriglg
- MxjPlhfks2MyqfkHwlqnDHlXQXAF0tfMCuaewcrElNsshzbowJPG6HbRPwomBPVASv+R
- ScyA==
-X-Gm-Message-State: AOJu0YwqXO41aru9xliN04vcb1HptUw+/1Kr/+m4y8fVth80vHazlnKa
- SWBMe9iNhT1GedxC7K6/cuk6dDF/r8qom+da/dm+EfEWe5nGclmS//qrKmHnTo1D3OytPuX6QO+
- h2JAcEA==
-X-Google-Smtp-Source: AGHT+IGWssGLJxaQvufb3+G0ZMuSFcehCGYuez6+lG2DAJf+A2X7zxCL5AVHfTCkM8Cx3rDYBrx2/Q==
-X-Received: by 2002:a17:90b:384e:b0:2cf:cbc7:91f8 with SMTP id
- 98e67ed59e1d1-2dad50fc904mr10048579a91.19.1725889737002; 
- Mon, 09 Sep 2024 06:48:57 -0700 (PDT)
+ bh=r0+VMi25/Zc4CDone71m1lCGybIDfbvM1CcXIqSCA9s=;
+ b=RYgoiIhcCGkik83y3DQGlbDvKUIN1Syif4iCnjq3nol+l1/CfzWR2yXtnJySQS/A3P
+ sd28BZSxlrsx2qqlwE7LN0UovfrGZBE4HE5kfyOnSx76ig12L1aY4fzMoD2WJKqvH3lA
+ o+cmVsTUTQO09UerIEUUMSPqtQbGBnAM2SfFqvUoKvTo0c096rrz0lcIahaJP6ZSe6n9
+ quAE84SyQHtU9St1GaXJ6ufRUP7l18YM1AX8JDjAaOVs9QjMCTtJ+4L7YLDHCYIkmOD1
+ qw7hd20ivuejt4VFqkt/CLXOZ2ae60wNxONfDnx03rUHtaxwcoqZFHqZvoDTX9rYmSYr
+ sCAg==
+X-Gm-Message-State: AOJu0YzbrMOYOJYGEyOrpOtpBrbf+6ZuLdRmXbYW7oO6Dwya9oJZhBht
+ 1vTmzG3YgaOe6v0pjaTDQX8heA8O/tqTKhrotrhrBgeRa9/SSrSrwhtfm16HFltMNYxOhcjci6u
+ 1+BjWvg==
+X-Google-Smtp-Source: AGHT+IEv0vyqNLBwnpgRZISdlcOecif4whKql3fH/CgRnN1+3UtbJcnUagKcl/aWN4VEJ+LhY92qkg==
+X-Received: by 2002:a17:90a:ba93:b0:2d8:a731:7db0 with SMTP id
+ 98e67ed59e1d1-2daffe2735fmr8929016a91.35.1725889740675; 
+ Mon, 09 Sep 2024 06:49:00 -0700 (PDT)
 Received: from localhost.localdomain ([118.114.94.226])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2dab2c6b0b9sm7841031a91.0.2024.09.09.06.48.54
+ 98e67ed59e1d1-2dab2c6b0b9sm7841031a91.0.2024.09.09.06.48.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 06:48:56 -0700 (PDT)
+ Mon, 09 Sep 2024 06:49:00 -0700 (PDT)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -65,17 +65,17 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH RFC 07/10] tests/migration-tests: Add test case for periodic
- throttle
-Date: Mon,  9 Sep 2024 21:47:19 +0800
-Message-Id: <8903506e56f2c1d36cb83b54fe4875a1253b7691.1725889277.git.yong.huang@smartx.com>
+Subject: [PATCH RFC 08/10] migration: Introduce cpu-responsive-throttle
+ parameter
+Date: Mon,  9 Sep 2024 21:47:20 +0800
+Message-Id: <24b2598916502ae298fdf6ca296e8c1559710d78.1725889277.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1725889277.git.yong.huang@smartx.com>
 References: <cover.1725889277.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=yong.huang@smartx.com; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,136 +97,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To make sure periodic throttle feature doesn't regression
-any features and functionalities, enable this feature in
-the auto-converge migration test.
+To enable the responsive throttle that will be implemented
+in the next commit, introduce the cpu-responsive-throttle
+parameter.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- tests/qtest/migration-test.c | 56 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ migration/migration-hmp-cmds.c |  8 ++++++++
+ migration/options.c            | 20 ++++++++++++++++++++
+ migration/options.h            |  1 +
+ qapi/migration.json            | 16 +++++++++++++++-
+ 4 files changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 2fb10658d4..61d7182f88 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -281,6 +281,11 @@ static uint64_t get_migration_pass(QTestState *who)
-     return read_ram_property_int(who, "iteration-count");
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index f7b8e06bb4..a3d4d3f62f 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -273,6 +273,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+             MigrationParameter_str(
+                 MIGRATION_PARAMETER_CPU_PERIODIC_THROTTLE_INTERVAL),
+             params->cpu_periodic_throttle_interval);
++        assert(params->has_cpu_responsive_throttle);
++        monitor_printf(mon, "%s: %s\n",
++            MigrationParameter_str(MIGRATION_PARAMETER_CPU_RESPONSIVE_THROTTLE),
++            params->cpu_responsive_throttle ? "on" : "off");
+         assert(params->has_max_cpu_throttle);
+         monitor_printf(mon, "%s: %u\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_MAX_CPU_THROTTLE),
+@@ -529,6 +533,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+         p->has_cpu_periodic_throttle_interval = true;
+         visit_type_uint8(v, param, &p->cpu_periodic_throttle_interval, &err);
+         break;
++    case MIGRATION_PARAMETER_CPU_RESPONSIVE_THROTTLE:
++        p->has_cpu_responsive_throttle = true;
++        visit_type_bool(v, param, &p->cpu_responsive_throttle, &err);
++        break;
+     case MIGRATION_PARAMETER_MAX_CPU_THROTTLE:
+         p->has_max_cpu_throttle = true;
+         visit_type_uint8(v, param, &p->max_cpu_throttle, &err);
+diff --git a/migration/options.c b/migration/options.c
+index 2dbe275ba0..aa233684ee 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -110,6 +110,8 @@ Property migration_properties[] = {
+     DEFINE_PROP_UINT8("x-cpu-periodic-throttle-interval", MigrationState,
+                       parameters.cpu_periodic_throttle_interval,
+                       DEFAULT_MIGRATE_CPU_PERIODIC_THROTTLE_INTERVAL),
++    DEFINE_PROP_BOOL("x-cpu-responsive-throttle", MigrationState,
++                      parameters.cpu_responsive_throttle, false),
+     DEFINE_PROP_SIZE("x-max-bandwidth", MigrationState,
+                       parameters.max_bandwidth, MAX_THROTTLE),
+     DEFINE_PROP_SIZE("avail-switchover-bandwidth", MigrationState,
+@@ -715,6 +717,13 @@ bool migrate_periodic_throttle(void)
+     return s->parameters.cpu_periodic_throttle;
  }
  
-+static uint64_t get_migration_dirty_sync_count(QTestState *who)
++bool migrate_responsive_throttle(void)
 +{
-+    return read_ram_property_int(who, "dirty-sync-count");
++    MigrationState *s = migrate_get_current();
++
++    return s->parameters.cpu_responsive_throttle;
 +}
 +
- static void read_blocktime(QTestState *who)
+ bool migrate_cpu_throttle_tailslow(void)
  {
-     QDict *rsp_return;
-@@ -710,6 +715,11 @@ typedef struct {
-     PostcopyRecoveryFailStage postcopy_recovery_fail_stage;
- } MigrateCommon;
+     MigrationState *s = migrate_get_current();
+@@ -899,6 +908,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->has_cpu_periodic_throttle_interval = true;
+     params->cpu_periodic_throttle_interval =
+         s->parameters.cpu_periodic_throttle_interval;
++    params->has_cpu_responsive_throttle = true;
++    params->cpu_responsive_throttle = s->parameters.cpu_responsive_throttle;
+     params->tls_creds = g_strdup(s->parameters.tls_creds);
+     params->tls_hostname = g_strdup(s->parameters.tls_hostname);
+     params->tls_authz = g_strdup(s->parameters.tls_authz ?
+@@ -967,6 +978,7 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_cpu_throttle_tailslow = true;
+     params->has_cpu_periodic_throttle = true;
+     params->has_cpu_periodic_throttle_interval = true;
++    params->has_cpu_responsive_throttle = true;
+     params->has_max_bandwidth = true;
+     params->has_downtime_limit = true;
+     params->has_x_checkpoint_delay = true;
+@@ -1208,6 +1220,10 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+             params->cpu_periodic_throttle_interval;
+     }
  
-+typedef struct {
-+    /* CPU throttle parameters */
-+    bool periodic;
-+} AutoConvergeArgs;
-+
- static int test_migrate_start(QTestState **from, QTestState **to,
-                               const char *uri, MigrateStart *args)
- {
-@@ -2778,12 +2788,13 @@ static void test_validate_uri_channels_none_set(void)
-  * To make things even worse, we need to run the initial stage at
-  * 3MB/s so we enter autoconverge even when host is (over)loaded.
-  */
--static void test_migrate_auto_converge(void)
-+static void test_migrate_auto_converge_args(AutoConvergeArgs *input_args)
- {
-     g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-     MigrateStart args = {};
-     QTestState *from, *to;
-     int64_t percentage;
-+    bool periodic = (input_args && input_args->periodic);
- 
-     /*
-      * We want the test to be stable and as fast as possible.
-@@ -2791,6 +2802,7 @@ static void test_migrate_auto_converge(void)
-      * so we need to decrease a bandwidth.
-      */
-     const int64_t init_pct = 5, inc_pct = 25, max_pct = 95;
-+    const int64_t periodic_throttle_interval = 2;
- 
-     if (test_migrate_start(&from, &to, uri, &args)) {
-         return;
-@@ -2801,6 +2813,12 @@ static void test_migrate_auto_converge(void)
-     migrate_set_parameter_int(from, "cpu-throttle-increment", inc_pct);
-     migrate_set_parameter_int(from, "max-cpu-throttle", max_pct);
- 
-+    if (periodic) {
-+        migrate_set_parameter_bool(from, "cpu-periodic-throttle", true);
-+        migrate_set_parameter_int(from, "cpu-periodic-throttle-interval",
-+                periodic_throttle_interval);
++    if (params->has_cpu_responsive_throttle) {
++        dest->cpu_responsive_throttle = params->cpu_responsive_throttle;
 +    }
 +
-     /*
-      * Set the initial parameters so that the migration could not converge
-      * without throttling.
-@@ -2827,6 +2845,29 @@ static void test_migrate_auto_converge(void)
-     } while (true);
-     /* The first percentage of throttling should be at least init_pct */
-     g_assert_cmpint(percentage, >=, init_pct);
-+
-+    if (periodic) {
-+        /*
-+         * Check if periodic sync take effect, set the timeout with 20s
-+         * (max_try_count * 1s), if extra sync doesn't show up, fail test.
-+         */
-+        uint64_t iteration_count, dirty_sync_count;
-+        bool extra_sync = false;
-+        int max_try_count = 20;
-+
-+        /* Check if periodic sync take effect */
-+        while (--max_try_count) {
-+            usleep(1000 * 1000);
-+            iteration_count = get_migration_pass(from);
-+            dirty_sync_count = get_migration_dirty_sync_count(from);
-+            if (dirty_sync_count > iteration_count) {
-+                extra_sync = true;
-+                break;
-+            }
-+        }
-+        g_assert(extra_sync);
+     if (params->tls_creds) {
+         assert(params->tls_creds->type == QTYPE_QSTRING);
+         dest->tls_creds = params->tls_creds->u.s;
+@@ -1325,6 +1341,10 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+             params->cpu_periodic_throttle_interval;
+     }
+ 
++    if (params->has_cpu_responsive_throttle) {
++        s->parameters.cpu_responsive_throttle = params->cpu_responsive_throttle;
 +    }
 +
-     /* Now, when we tested that throttling works, let it converge */
-     migrate_ensure_converge(from);
- 
-@@ -2849,6 +2890,17 @@ static void test_migrate_auto_converge(void)
-     test_migrate_end(from, to, true);
- }
- 
-+static void test_migrate_auto_converge(void)
-+{
-+    test_migrate_auto_converge_args(NULL);
-+}
-+
-+static void test_migrate_auto_converge_periodic_throttle(void)
-+{
-+    AutoConvergeArgs args = {.periodic = true};
-+    test_migrate_auto_converge_args(&args);
-+}
-+
- static void *
- test_migrate_precopy_tcp_multifd_start_common(QTestState *from,
-                                               QTestState *to,
-@@ -3900,6 +3952,8 @@ int main(int argc, char **argv)
-     if (g_test_slow()) {
-         migration_test_add("/migration/auto_converge",
-                            test_migrate_auto_converge);
-+        migration_test_add("/migration/auto_converge_periodic_throttle",
-+                           test_migrate_auto_converge_periodic_throttle);
-         if (g_str_equal(arch, "x86_64") &&
-             has_kvm && kvm_dirty_ring_supported()) {
-             migration_test_add("/migration/dirty_limit",
+     if (params->tls_creds) {
+         g_free(s->parameters.tls_creds);
+         assert(params->tls_creds->type == QTYPE_QSTRING);
+diff --git a/migration/options.h b/migration/options.h
+index efeac01470..613d675003 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -70,6 +70,7 @@ uint8_t migrate_cpu_throttle_increment(void);
+ uint8_t migrate_cpu_throttle_initial(void);
+ uint8_t migrate_periodic_throttle_interval(void);
+ bool migrate_periodic_throttle(void);
++bool migrate_responsive_throttle(void);
+ bool migrate_cpu_throttle_tailslow(void);
+ bool migrate_direct_io(void);
+ uint64_t migrate_downtime_limit(void);
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 6d8358c202..9f52ed1899 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -734,6 +734,10 @@
+ # @cpu-periodic-throttle-interval: Interval of the periodic CPU throttling.
+ #     (Since 9.1)
+ #
++# @cpu-responsive-throttle: Make CPU throttling more responsively by
++#                           introduce an extra detection metric of
++#                           migration convergence. (Since 9.1)
++#
+ # @tls-creds: ID of the 'tls-creds' object that provides credentials
+ #     for establishing a TLS connection over the migration data
+ #     channel.  On the outgoing side of the migration, the credentials
+@@ -855,7 +859,7 @@
+            'throttle-trigger-threshold',
+            'cpu-throttle-initial', 'cpu-throttle-increment',
+            'cpu-throttle-tailslow', 'cpu-periodic-throttle',
+-           'cpu-periodic-throttle-interval',
++           'cpu-periodic-throttle-interval', 'cpu-responsive-throttle',
+            'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
+            'avail-switchover-bandwidth', 'downtime-limit',
+            { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
+@@ -916,6 +920,10 @@
+ # @cpu-periodic-throttle-interval: Interval of the periodic CPU throttling.
+ #     (Since 9.1)
+ #
++# @cpu-responsive-throttle: Make CPU throttling more responsively by
++#                           introduce an extra detection metric of
++#                           migration convergence. (Since 9.1)
++#
+ # @tls-creds: ID of the 'tls-creds' object that provides credentials
+ #     for establishing a TLS connection over the migration data
+ #     channel.  On the outgoing side of the migration, the credentials
+@@ -1045,6 +1053,7 @@
+             '*cpu-throttle-tailslow': 'bool',
+             '*cpu-periodic-throttle': 'bool',
+             '*cpu-periodic-throttle-interval': 'uint8',
++            '*cpu-responsive-throttle': 'bool',
+             '*tls-creds': 'StrOrNull',
+             '*tls-hostname': 'StrOrNull',
+             '*tls-authz': 'StrOrNull',
+@@ -1132,6 +1141,10 @@
+ # @cpu-periodic-throttle-interval: Interval of the periodic CPU throttling.
+ #     (Since 9.1)
+ #
++# @cpu-responsive-throttle: Make CPU throttling more responsively by
++#                           introduce an extra detection metric of
++#                           migration convergence. (Since 9.1)
++#
+ # @tls-creds: ID of the 'tls-creds' object that provides credentials
+ #     for establishing a TLS connection over the migration data
+ #     channel.  On the outgoing side of the migration, the credentials
+@@ -1254,6 +1267,7 @@
+             '*cpu-throttle-tailslow': 'bool',
+             '*cpu-periodic-throttle': 'bool',
+             '*cpu-periodic-throttle-interval': 'uint8',
++            '*cpu-responsive-throttle': 'bool',
+             '*tls-creds': 'str',
+             '*tls-hostname': 'str',
+             '*tls-authz': 'str',
 -- 
 2.39.1
 
