@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576A1972199
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 20:07:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2551497219E
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 20:07:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sninK-0003r4-Ab; Mon, 09 Sep 2024 14:07:22 -0400
+	id 1sninK-0003vM-MU; Mon, 09 Sep 2024 14:07:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sninI-0003gy-6E
+ id 1sninI-0003jD-EM
  for qemu-devel@nongnu.org; Mon, 09 Sep 2024 14:07:20 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sninF-0001wd-OC
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 14:07:19 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-656d8b346d2so2936553a12.2
+ id 1sninG-0001wj-8q
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 14:07:20 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-718d962ad64so3141489b3a.0
  for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 11:07:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725905236; x=1726510036; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725905237; x=1726510037; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bKKi0pMicJbraFe0EvfP4hRpwt+nXYvkFQlWAnrDKc0=;
- b=akUttigd8EVsy6ByCyyfjFGudFoXT+6d3PaKCWyr/tLitlyHohOacXZX653VF2J7pW
- QqROtvbidu14tmj4wxCuX8ToybH5xhRnfuheCJlEfQbuxD1kLT+GnVxJFlu5OKwcN4wN
- aAUPh4NwUYWmt0GZ7l98+/DG2ckFqGDgop3TfG806PCOP2AWV9S0fo3u/B3ECESRwsEP
- URIsYyXwofz3NLYMgr3nq0ty/7/in3ya9QGdOQVSQmpVa+sHZdIlrf8zAuX4vOJ3p/vT
- rlyjtFqlEuijTFbNXyJiMzCAdyfoPRnqAxGHuXVYJ5eD2a5JSrXwEW511YzGj2IROOFM
- 57KA==
+ bh=K5QfoW0VwajlTQd3ELmUEuobbsHpYmua9JmMsJd9x1U=;
+ b=xhVWo18AbbAe4y00+4ZdWfoYUEE1QQeGW5Y7EOtax6xOoUY/5RoI73LSdZ+AGaC4gf
+ TVexuCeTSokLMnq+GGfUD8OaGQ+HYB4KgVRJlydmZLFAvOKuYzYl/0a+8P0BmBcaIrsT
+ EKLQmFA13AGLU2IZOH4I6d73AMH+vphgP2qoGQzjfLvyNqc2kzjGANFFSTb6sHRIwO+2
+ n0HewXIbvuASucY4OQIDep8jQ/OLS4SVscq7WUYts8P1o0e4UtZHeOFRK/EJDjQeHNR5
+ Q4wdC8CsDVDjRf5mLm1D7Q3WT2P+JMVn1x3DbZhwqRr5hwWOiaLcNwO4qOz88AZqT1cr
+ FKRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725905236; x=1726510036;
+ d=1e100.net; s=20230601; t=1725905237; x=1726510037;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bKKi0pMicJbraFe0EvfP4hRpwt+nXYvkFQlWAnrDKc0=;
- b=WVmKHRNc7LNYbNtgVM3hMGrYtBhLaj4JO3XKuNfk+2W+fKZla+mtHyLv4gOE9P7Scs
- HUhCxfnF2fB3JjWSSyGOlzNSDmdhEaLD+4jRgyTYMqjiM/sTnS8NcTygntVG31KhA1Jy
- QPS2QyfcL1ycLX4VkqiKXx10rUX0iUxf7HAwB7u4Dm/F/edPaXuXqGCXaEa3kcoXYPTr
- b8VaOLrmHxwK3ZRziKMfJ/2JHMiBNUa0Qk9SbTV0NU4Tzq2JK+fufESQvjpgXsQMLZA5
- Hn5s+dZMH+aw+OKuah7gRRJFfeMHj98v1Ov2e5bNHacPlwSPMcUd1Y3tSR+wKz8lbCrU
- 16Pw==
-X-Gm-Message-State: AOJu0Ywdk2dUfWE/tEUMlW3EoMYgeu9yMEBPVXTwhhNzjYH4qssYOYrx
- PxHOYpXJbvShKywGWZ/GewyNPeN2zJyoGIsvyApEkSSXcxNXwMt59HjRKT1C2UjLJwobesWUmmf
- d
-X-Google-Smtp-Source: AGHT+IFsVeeZiS/sawRrbLTH9LqJb/j426q/xV7fUshPpfqBz8Bt2U0zif9hrBV6p6uw6sunm86Hng==
-X-Received: by 2002:a05:6a21:4d81:b0:1cf:43c6:d53f with SMTP id
- adf61e73a8af0-1cf43c6d637mr3376136637.19.1725905235888; 
- Mon, 09 Sep 2024 11:07:15 -0700 (PDT)
+ bh=K5QfoW0VwajlTQd3ELmUEuobbsHpYmua9JmMsJd9x1U=;
+ b=a+Fnzjs8vo3xY+tLJnSLPhyqu58OxDXgo1KUuZ3Am4qaWAMhKphBrBxDI6TBY6p7fZ
+ nOOu+REN+RxLEPSjYngt3qpG6t5wXBpF8PIx5fm8kFm1KeMJb/NhmrhPUIk86K+o9rQe
+ 7AduD8lybpIEiczxrZcbnP8ywQN+m1979v3W7dBy+j/6Yp7dN9S4sXgDfdkA41OUXLkf
+ K1J/RlHZAhEvW4pXRECwTsm9ttQr88TIbHQ7K1LpRn0cKh+S1aTxxBqUAUCAhEtvPBGE
+ igff4D1W70RPQFzF5euLRsMqwYQ27UsyvHsB0l2AUQHArOxhcSeAzcE/LRmAzqogxpf2
+ UhJQ==
+X-Gm-Message-State: AOJu0YwvBKrTtwsSBULGTe0sk9AQvRlSAEO3N1A7cVVkPam/SUOxw4ZC
+ rKSXRjs75W1dH3HgZBezm7La+c7llLy/LuMsmbyNosaXNL7N01PAfuaBuFfpOaXnKOV33zUjIB3
+ +
+X-Google-Smtp-Source: AGHT+IFZ+++RZnyC73zGY5x8eYgcCbkH3dUP9WNDvLJNfFW++4MZKnixY9HpWFryJn8bO/BzIP92xg==
+X-Received: by 2002:a05:6a00:914c:b0:70d:2892:402b with SMTP id
+ d2e1a72fcca58-718d5e0f22cmr15600522b3a.7.1725905236673; 
+ Mon, 09 Sep 2024 11:07:16 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71908fc84efsm25431b3a.8.2024.09.09.11.07.15
+ d2e1a72fcca58-71908fc84efsm25431b3a.8.2024.09.09.11.07.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 11:07:15 -0700 (PDT)
+ Mon, 09 Sep 2024 11:07:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
 	chauser@pullman.com
-Subject: [PATCH v4 2/5] target/sparc: Populate sparc32 FQ when raising fp
- exception
-Date: Mon,  9 Sep 2024 11:07:09 -0700
-Message-ID: <20240909180712.651651-3-richard.henderson@linaro.org>
+Subject: [PATCH v4 3/5] target/sparc: Add FSR_QNE to tb_flags
+Date: Mon,  9 Sep 2024 11:07:10 -0700
+Message-ID: <20240909180712.651651-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240909180712.651651-1-richard.henderson@linaro.org>
 References: <20240909180712.651651-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,88 +93,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Carl Hauser <chauser@pullman.com>
-
-Implement a single instruction floating point queue,
-populated while delivering an fp exception.
-
-Signed-off-by: Carl Hauser <chauser@pullman.com>
-[rth: Split from a larger patch]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/int32_helper.c | 40 +++++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 15 deletions(-)
+ target/sparc/cpu.h       |  8 +++++++-
+ target/sparc/translate.c | 10 +++++++---
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
-index 6b7d65b031..f2dd8bcb2e 100644
---- a/target/sparc/int32_helper.c
-+++ b/target/sparc/int32_helper.c
-@@ -21,10 +21,10 @@
- #include "qemu/main-loop.h"
- #include "cpu.h"
- #include "trace.h"
-+#include "exec/cpu_ldst.h"
- #include "exec/log.h"
- #include "sysemu/runstate.h"
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index 9f2bc44722..f517e5a383 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -744,6 +744,7 @@ trap_state* cpu_tsptr(CPUSPARCState* env);
+ #define TB_FLAG_AM_ENABLED   (1 << 5)
+ #define TB_FLAG_SUPER        (1 << 6)
+ #define TB_FLAG_HYPER        (1 << 7)
++#define TB_FLAG_FSR_QNE      (1 << 8)
+ #define TB_FLAG_ASI_SHIFT    24
  
--
- static const char * const excp_names[0x80] = {
-     [TT_TFAULT] = "Instruction Access Fault",
-     [TT_ILL_INSN] = "Illegal Instruction",
-@@ -116,22 +116,9 @@ void sparc_cpu_do_interrupt(CPUState *cs)
- 
-         qemu_log("%6d: %s (v=%02x)\n", count, name, intno);
-         log_cpu_state(cs, 0);
--#if 0
--        {
--            int i;
--            uint8_t *ptr;
--
--            qemu_log("       code=");
--            ptr = (uint8_t *)env->pc;
--            for (i = 0; i < 16; i++) {
--                qemu_log(" %02x", ldub(ptr + i));
--            }
--            qemu_log("\n");
--        }
+ static inline void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
+@@ -775,7 +776,12 @@ static inline void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
+     if (env->psref) {
+         flags |= TB_FLAG_FPU_ENABLED;
+     }
 -#endif
-         count++;
-     }
--#if !defined(CONFIG_USER_ONLY)
 +#ifndef CONFIG_USER_ONLY
-     if (env->psret == 0) {
-         if (cs->exception_index == 0x80 &&
-             env->def.features & CPU_FEATURE_TA0_SHUTDOWN) {
-@@ -143,6 +130,29 @@ void sparc_cpu_do_interrupt(CPUState *cs)
-         }
-         return;
-     }
-+    if (intno == TT_FP_EXCP) {
-+        /*
-+         * The sparc32 fpu has three states related to exception handling.
-+         * The FPop that signals an exception transitions from fp_execute
-+         * to fp_exception_pending.  A subsequent FPop transitions from
-+         * fp_exception_pending to fp_exception, which forces the trap.
-+         *
-+         * If the queue is not empty, this trap is due to execution of an
-+         * illegal FPop while in fp_exception state.  Here we are to
-+         * re-enter fp_exception_pending state without queuing the insn.
-+         *
-+         * We do not model the fp_exception_pending state, but instead
-+         * skip directly to fp_exception state.  We advance pc/npc to
-+         * mimic delayed trap delivery as if by the subsequent insn.
-+         */
-+        if (!env->fsr_qne) {
-+            env->fsr_qne = FSR_QNE;
-+            env->fq.s.addr = env->pc;
-+            env->fq.s.insn = cpu_ldl_code(env, env->pc);
-+        }
-+        env->pc = env->npc;
-+        env->npc = env->npc + 4;
++    if (env->fsr_qne) {
++        flags |= TB_FLAG_FSR_QNE;
 +    }
++#endif /* !CONFIG_USER_ONLY */
++#endif /* TARGET_SPARC64 */
+     *pflags = flags;
+ }
+ 
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index c803e8d1ba..eb0158a11d 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -185,6 +185,8 @@ typedef struct DisasContext {
+     bool supervisor;
+ #ifdef TARGET_SPARC64
+     bool hypervisor;
++#else
++    bool fsr_qne;
  #endif
-     env->psret = 0;
-     cwp = cpu_cwp_dec(env, env->cwp - 1);
+ #endif
+ 
+@@ -5596,13 +5598,15 @@ static void sparc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     dc->address_mask_32bit = tb_am_enabled(dc->base.tb->flags);
+ #ifndef CONFIG_USER_ONLY
+     dc->supervisor = (dc->base.tb->flags & TB_FLAG_SUPER) != 0;
++# ifdef TARGET_SPARC64
++    dc->hypervisor = (dc->base.tb->flags & TB_FLAG_HYPER) != 0;
++# else
++    dc->fsr_qne = (dc->base.tb->flags & TB_FLAG_FSR_QNE) != 0;
++# endif
+ #endif
+ #ifdef TARGET_SPARC64
+     dc->fprs_dirty = 0;
+     dc->asi = (dc->base.tb->flags >> TB_FLAG_ASI_SHIFT) & 0xff;
+-#ifndef CONFIG_USER_ONLY
+-    dc->hypervisor = (dc->base.tb->flags & TB_FLAG_HYPER) != 0;
+-#endif
+ #endif
+     /*
+      * if we reach a page boundary, we stop generation so that the
 -- 
 2.43.0
 
