@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6C6971C78
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 16:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 728B7971CA6
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 16:32:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snfLe-0002vl-5p; Mon, 09 Sep 2024 10:26:34 -0400
+	id 1snfQN-00027n-Jr; Mon, 09 Sep 2024 10:31:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1snfLZ-0002eI-OG
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 10:26:31 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1snfLY-0004Vb-06
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 10:26:29 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-718d704704aso2612035b3a.3
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 07:26:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1725891986; x=1726496786;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3t+rJYL+OLNJsbkNL6rt5vBSdNx9BVxn2HZsRTYOAAc=;
- b=Lg8Kck88Wi1Q5i9snlC3be9DG0I7i4UGVn7b63cNg9zTSkkZbazhw9ZxCNB5/OH0L9
- 6IjT8bRDDVk5b4HNa3L7XxE2ZNYdF+v58Zw3QKSq5IAJTD1/S+vP47tPlYTyNluhFJgp
- 4JdqpENwwYEOniJkkNaImR9Z6y9Ts7hyJ4lnYdh9g9hmL+zRoGth8txeO0YJ67yVwmN8
- Aq44L72yGzlQG2E7bqQPre70/X+wdAUOA8dbdSqxfa5WozOZfxUmoFs11ZqwFDJ/J6Iq
- 3EwOqTTlbrgRC/ItueQyt3oFFTooAU1MwPbP+yQg8KmmLdZMJAxmeNEO+UL00p6lybAC
- hx/w==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snfQF-0001nS-KA
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 10:31:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snfQC-000537-FO
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 10:31:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1725892273;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MoTUoucHa/qs8OISzbnX2OOpmk7SY6a1I9QCtsgouZk=;
+ b=Fyv/QBgiLtrQZFvGsi4YgGzsvnilnIujq5nbmvbepVDNjzxys+oemp92BPRdoxJfu5e62d
+ 4ST+oD43Ryg4pa1EgJXkk/RxGfpD9lUYYqapsCqKMKRGmGt7pTH6qjAKxJ3CyUFngE4IYY
+ dwLkqaSX5X4J6K3oNYR2oBy/2Zc2KEQ=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-74-mtBf5OswMLyJIzhYDjcslg-1; Mon, 09 Sep 2024 10:31:12 -0400
+X-MC-Unique: mtBf5OswMLyJIzhYDjcslg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6c35d6feed7so60869496d6.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 07:31:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725891986; x=1726496786;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3t+rJYL+OLNJsbkNL6rt5vBSdNx9BVxn2HZsRTYOAAc=;
- b=lmj6obVqErqdyy9jNRrEKvcayjVYCuzKHBk5OczvnSz7M+HKt7Q3hmhbCRw1k4HkRA
- p/01du9gLkfwGSGIrvzgWYviQ+x3WyiUSejFOA/ba7BQRqQkFRNBVSRmVPne5Diwm9qj
- csYsARmmPhk0nTStpf8FKtwyevRx8mjeec47aObQgsRkDg+HAtGR/8HINTRwsEsugqh5
- F90h2odB29sQsK1iV7XSIiLgfivq9h+a7Dz0bnMvjIGYTIDXZKKeAJmJY41R+UOaTGYw
- c54NLbYzCbljwSmvrepCbfwu4RarmD1okxrdJb0W33l2c+nn/EohE/4ZBXv2Y0lEQEYa
- TWXw==
-X-Gm-Message-State: AOJu0Yz3PmQoVuRpJHW3wmh0L7sG4krpt2mgulZdkiKa/8v7Ng55u5KO
- LECEvaIbWt2aFE9fTu6+pxUloyjMcIpdT7BqXsBRqljieAacmkLhtSobIv4t1JVo0PmV9bX26ix
- 15vwxWA==
-X-Google-Smtp-Source: AGHT+IF20x8ePnHQeOTMWmc62GgaNvFSf4hhjn7DeEGwKPf/ahMUtNfsCr2ZKZrS/sXSWylkloJfyg==
-X-Received: by 2002:a05:6a21:6802:b0:1c4:23f0:9665 with SMTP id
- adf61e73a8af0-1cf2a0b7dbfmr8712618637.29.1725891985705; 
- Mon, 09 Sep 2024 07:26:25 -0700 (PDT)
-Received: from localhost.localdomain ([118.114.94.226])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-718e58b2a88sm3561164b3a.46.2024.09.09.07.26.22
+ d=1e100.net; s=20230601; t=1725892271; x=1726497071;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MoTUoucHa/qs8OISzbnX2OOpmk7SY6a1I9QCtsgouZk=;
+ b=jFYcgYBobBXdLKaKuZ/tNf7rtC10gikH/HmokgIIPw/cwY762YIjpwpXHoB6tZ0RqC
+ M7idiWQeqT0Wn4r8+k0XsFOyEycSZnCyN96E/OKnV6yR5YZG0K4zUgQnitUIdZB4Wq6H
+ 4u76BDDo0Cd7sEYDV3N4EP7QPTNFYH0KIa2qbD5ewvvntIp+0o78Jwxfngj2GA2alotC
+ 38241h9spdDspQY1lPt8Y9hD6PKB3dbyh9SV7iG4D06rICQmiSUNUaoVzOdJmWaN4Rvn
+ n6jwdpd34Yn6+dg0S+jHgqpjV+m53mf5T+MNBevZaRikHMTNj/0nzrzkPSdO0mgWnEQ7
+ TuNw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXDtqb6xnG0NQtwE0UtsZY0qMSTPfNeAKWYFrb96QDqdRG7QZ3n+9Z1xWqI36kwcJHInSmxWQVH6G/z@nongnu.org
+X-Gm-Message-State: AOJu0YxvikpIlKbIX4FpxjZ4eDZAxl/cWSUZ/NV2rNDMG0FuAv4DKECB
+ XLN6S8kMFIok4ENN/tzwqZK94qMktYoxKTz5E/ZXqMFqWUP7sRGL+7/EZE5g2mk8oNUoOIWNW2h
+ JZRyOxXooA7YUcar9CHJTQg2KZ/EVkaXyUkaeV6aFyt1PMyeI3dS8
+X-Received: by 2002:a05:6214:398a:b0:6c3:5760:d769 with SMTP id
+ 6a1803df08f44-6c5284f59cemr112906496d6.27.1725892271397; 
+ Mon, 09 Sep 2024 07:31:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGo/Glo6dMJYyFmdxuq+DueZPeXM+8xZalcOoIr1i3LApStdDRV7pYw5u1pUNV00uub71xmpg==
+X-Received: by 2002:a05:6214:398a:b0:6c3:5760:d769 with SMTP id
+ 6a1803df08f44-6c5284f59cemr112906206d6.27.1725892270948; 
+ Mon, 09 Sep 2024 07:31:10 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6c53474d6d7sm21044626d6.102.2024.09.09.07.31.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 07:26:25 -0700 (PDT)
-From: Hyman Huang <yong.huang@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH RESEND RFC 10/10] tests/migration-tests: Add test case for
- responsive CPU throttle
-Date: Mon,  9 Sep 2024 22:25:43 +0800
-Message-Id: <d67b9d66351d89e0daeced982c41795fffa52e02.1725891841.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1725891841.git.yong.huang@smartx.com>
-References: <cover.1725891841.git.yong.huang@smartx.com>
+ Mon, 09 Sep 2024 07:31:10 -0700 (PDT)
+Date: Mon, 9 Sep 2024 10:31:02 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PULL 27/34] migration/multifd: Move nocomp code into
+ multifd-nocomp.c
+Message-ID: <Zt8GpnGWDYJE-dqg@x1n>
+References: <20240904124417.14565-1-farosas@suse.de>
+ <20240904124417.14565-28-farosas@suse.de>
+ <CAFEAcA_F2qrSAacY=V5Hez1qFGuNW0-XqL2LQ=Y_UKYuHEJWhw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=yong.huang@smartx.com; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA_F2qrSAacY=V5Hez1qFGuNW0-XqL2LQ=Y_UKYuHEJWhw@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,78 +101,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Despite the fact that the responsive CPU throttle is enabled,
-the dirty sync count may not always increase because this is
-an optimization that might not happen in any situation.
+On Mon, Sep 09, 2024 at 11:28:14AM +0100, Peter Maydell wrote:
+> On Wed, 4 Sept 2024 at 13:48, Fabiano Rosas <farosas@suse.de> wrote:
+> >
+> > In preparation for adding new payload types to multifd, move most of
+> > the no-compression code into multifd-nocomp.c. Let's try to keep a
+> > semblance of layering by not mixing general multifd control flow with
+> > the details of transmitting pages of ram.
+> >
+> > There are still some pieces leftover, namely the p->normal, p->zero,
+> > etc variables that we use for zero page tracking and the packet
+> > allocation which is heavily dependent on the ram code.
+> >
+> > Reviewed-by: Peter Xu <peterx@redhat.com>
+> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> 
+> I know Coverity has only flagged this up because the
+> code has moved, but it seems like a good place to ask
+> the question:
+> 
+> > +void multifd_ram_fill_packet(MultiFDSendParams *p)
+> > +{
+> > +    MultiFDPacket_t *packet = p->packet;
+> > +    MultiFDPages_t *pages = &p->data->u.ram;
+> > +    uint32_t zero_num = pages->num - pages->normal_num;
+> > +
+> > +    packet->pages_alloc = cpu_to_be32(multifd_ram_page_count());
+> > +    packet->normal_pages = cpu_to_be32(pages->normal_num);
+> > +    packet->zero_pages = cpu_to_be32(zero_num);
+> > +
+> > +    if (pages->block) {
+> > +        strncpy(packet->ramblock, pages->block->idstr, 256);
+> 
+> Coverity points out that when we fill in the RAMBlock::idstr
+> here, if packet->ramblock is not NUL terminated then we won't
+> NUL-terminate idstr either (CID 1560071).
+> 
+> Is this really what is intended?
+> 
+> Perhaps
+>          pstrncpy(packet->ramblock, sizeof(packet->ramblock),
+>                   pages->block->idstr);
+> 
+> would be better?
+> 
+> (pstrncpy will always NUL-terminate, and won't pointlessly
+> zero-fill the space after the string in the destination.)
 
-This test case just making sure it doesn't interfere with any
-current functionality.
+In reality only the "zero-fill" change would affect us, as ramblock->idstr
+always has the same size and always null-terminated, or we're in bigger
+trouble.. So I assume there's no security concern, however indeed still
+nice to use pstrcpy() to at least avoid zero-fills.
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- tests/qtest/migration-test.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+Thanks,
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 4626301435..cf0b1dcb50 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -718,6 +718,7 @@ typedef struct {
- typedef struct {
-     /* CPU throttle parameters */
-     bool periodic;
-+    bool responsive;
- } AutoConvergeArgs;
- 
- static int test_migrate_start(QTestState **from, QTestState **to,
-@@ -2795,6 +2796,7 @@ static void test_migrate_auto_converge_args(AutoConvergeArgs *input_args)
-     QTestState *from, *to;
-     int64_t percentage;
-     bool periodic = (input_args && input_args->periodic);
-+    bool responsive = (input_args && input_args->responsive);
- 
-     /*
-      * We want the test to be stable and as fast as possible.
-@@ -2820,6 +2822,16 @@ static void test_migrate_auto_converge_args(AutoConvergeArgs *input_args)
-                 periodic_throttle_interval);
-     }
- 
-+    if (responsive) {
-+        /*
-+         * The dirty-sync-count may not always go down while using responsive
-+         * throttle because it is an optimization and may not take effect in
-+         * any scenario. Just making sure this feature doesn't break any
-+         * existing functionality by turning it on.
-+         */
-+        migrate_set_parameter_bool(from, "cpu-responsive-throttle", true);
-+    }
-+
-     /*
-      * Set the initial parameters so that the migration could not converge
-      * without throttling.
-@@ -2902,6 +2914,12 @@ static void test_migrate_auto_converge_periodic_throttle(void)
-     test_migrate_auto_converge_args(&args);
- }
- 
-+static void test_migrate_auto_converge_responsive_throttle(void)
-+{
-+    AutoConvergeArgs args = {.responsive = true};
-+    test_migrate_auto_converge_args(&args);
-+}
-+
- static void *
- test_migrate_precopy_tcp_multifd_start_common(QTestState *from,
-                                               QTestState *to,
-@@ -3955,6 +3973,8 @@ int main(int argc, char **argv)
-                            test_migrate_auto_converge);
-         migration_test_add("/migration/auto_converge_periodic_throttle",
-                            test_migrate_auto_converge_periodic_throttle);
-+        migration_test_add("/migration/auto_converge_responsive_throttle",
-+                           test_migrate_auto_converge_responsive_throttle);
-         if (g_str_equal(arch, "x86_64") &&
-             has_kvm && kvm_dirty_ring_supported()) {
-             migration_test_add("/migration/dirty_limit",
 -- 
-2.39.1
+Peter Xu
 
 
