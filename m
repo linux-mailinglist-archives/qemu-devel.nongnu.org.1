@@ -2,82 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5253972182
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 20:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D67F2972187
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 20:06:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sniiz-0007fl-9U; Mon, 09 Sep 2024 14:02:53 -0400
+	id 1snilP-0001hp-Sp; Mon, 09 Sep 2024 14:05:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sniiq-00079w-OZ
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 14:02:46 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sniio-0001Kg-UG
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 14:02:44 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-52f01b8738dso3189205e87.1
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 11:02:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725904961; x=1726509761; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ekos1C05kXz4BX7E2oaErKrr3DrBSiu9SoQ/HQodfdI=;
- b=yrJ2vzA6bEv+gNIJOpKfG+q9Phr8K/0y4+qGeLN43CYU5O0Q7FAN86NygWxsK3zehD
- 0+DkLAM+Wa70/5NwCwiCrM7AaSzaMslcnFYg0OvGrYkgB8vTOZtTscKOFwFQAab4XQif
- asGpBRXWJ9XO7Ew/LZFJsSAmihf7cLEIFFWKQJw0pw03sFXc7R7mXFS94R1ys/7b7r+t
- s+a3yDNkltjhSo8EP9DCxE1u2Ik/skLTov6Yt2UW9YFqkoIEUao5Ics3aHHAh9rqnAK5
- 52mF47ICeuqLxHcMPqrhdUL6m7Uvv32/R4J+z1qR9AqrlxDb0Wfajzf5+BOMHPLJ61KZ
- LHlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725904961; x=1726509761;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ekos1C05kXz4BX7E2oaErKrr3DrBSiu9SoQ/HQodfdI=;
- b=QBJQieoQZt30TtRsStcJE4s1TjDn6ZmTdtFdowVVKfqczDJw2+xy1MoFGm0d2KmhgB
- PvgjLjtm2h88rz1nzy5x5ij0iMNL5l4nVociKAMtwowPSuGalK24Rx4Xi1Ix4dZkEoWZ
- PQQeLCs8Hmwm4Vjos1hSDgxlhfy2nI+GKg+fD1H13HsBYuoLaG988Pb4lsWUKH3P07DO
- pKYu2hXbYNKvfFflCy6BB3oElPlTHf7lEY+J73SVU5W8/VF3/5/noDAx6jec0puD//Z2
- hPAAV4W1KZfbBC6F4+gdTk4ZrzJbMHm8ov9imH+zDtKMZhA4hJrw/yosIBFwzSZH6wTX
- CB3w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWp+x3mlzDJdSXyOWu02SkabVG56FutPa6s0an4YswOnOPcyKje3oLYkqnBaW3gazl8EcDf3hv2q059@nongnu.org
-X-Gm-Message-State: AOJu0Yw2rV8Wsi2l1q6BcbqYbd33Chc+yuVqoGeaoe1E4m9eroJF08E5
- 1ZYk1yC1HuNVkNsqJlOd6G8nacGrclSjzVtF14widB3vcuvEBjHiqnP6M2j4OOU=
-X-Google-Smtp-Source: AGHT+IFmQMgkLcEagoxRF5u7xWo+9/xAnhtNSbfpVfEZHL2CpDMqE4lYVM134ARsDrKcD/upR61flg==
-X-Received: by 2002:a05:6512:104f:b0:533:482f:afb7 with SMTP id
- 2adb3069b0e04-536587fce37mr7659606e87.39.1725904960615; 
- Mon, 09 Sep 2024 11:02:40 -0700 (PDT)
-Received: from [192.168.69.100] (nsg93-h02-176-184-54-166.dsl.sta.abo.bbox.fr.
- [176.184.54.166]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25c74286sm371479966b.123.2024.09.09.11.02.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Sep 2024 11:02:38 -0700 (PDT)
-Message-ID: <f7f03006-9c7e-41a1-a683-db19378928b4@linaro.org>
-Date: Mon, 9 Sep 2024 20:02:37 +0200
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1snilN-0001bE-Qu
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 14:05:21 -0400
+Received: from vps-vb.mhejs.net ([37.28.154.113])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1snilL-0001i4-Rn
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 14:05:21 -0400
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1snil2-0006Q4-HK; Mon, 09 Sep 2024 20:05:00 +0200
+Message-ID: <57835a25-10f9-4484-bd20-9e4e90a590e9@maciej.szmigiero.name>
+Date: Mon, 9 Sep 2024 20:04:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.2 40/53] hw/intc: Remove omap2-intc device
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20240903160751.4100218-1-peter.maydell@linaro.org>
- <20240903160751.4100218-41-peter.maydell@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240903160751.4100218-41-peter.maydell@linaro.org>
+Subject: Re: [PATCH v2 01/17] vfio/migration: Add
+ save_{iterate,complete_precopy}_started trace events
+To: Avihai Horon <avihaih@nvidia.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
+ <3c43bf662842e579c0009dfc5135024e45166987.1724701542.git.maciej.szmigiero@oracle.com>
+ <8ec6abeb-25ee-417e-9f3f-d0f27ec4f370@nvidia.com>
+Content-Language: en-US, pl-PL
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <8ec6abeb-25ee-417e-9f3f-d0f27ec4f370@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,86 +106,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/9/24 18:07, Peter Maydell wrote:
-> Remove the OMAP2 specific code from omap_intc.c.
+On 5.09.2024 15:08, Avihai Horon wrote:
+> Hi Maciej,
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   hw/intc/omap_intc.c | 276 --------------------------------------------
->   1 file changed, 276 deletions(-)
+> On 27/08/2024 20:54, Maciej S. Szmigiero wrote:
+>> External email: Use caution opening links or attachments
+>>
+>>
+>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>
+>> This way both the start and end points of migrating a particular VFIO
+>> device are known.
+>>
+>> Add also a vfio_save_iterate_empty_hit trace event so it is known when
+>> there's no more data to send for that device.
+> 
+> Out of curiosity, what are these traces used for?
 
+Just for benchmarking, collecting these data makes it easier to
+reason where possible bottlenecks may be.
 
-> -static const TypeInfo omap2_intc_info = {
-> -    .name          = "omap2-intc",
-> -    .parent        = TYPE_OMAP_INTC,
-> -    .instance_init = omap2_intc_init,
-> -    .class_init    = omap2_intc_class_init,
-> -};
-> -
->   static const TypeInfo omap_intc_type_info = {
->       .name          = TYPE_OMAP_INTC,
->       .parent        = TYPE_SYS_BUS_DEVICE,
-> @@ -684,7 +409,6 @@ static void omap_intc_register_types(void)
->   {
->       type_register_static(&omap_intc_type_info);
->       type_register_static(&omap_intc_info);
-> -    type_register_static(&omap2_intc_info);
->   }
->   
->   type_init(omap_intc_register_types)
+>>
+>> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>> ---
+>>   hw/vfio/migration.c           | 13 +++++++++++++
+>>   hw/vfio/trace-events          |  3 +++
+>>   include/hw/vfio/vfio-common.h |  3 +++
+>>   3 files changed, 19 insertions(+)
+>>
+>> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+>> index 262d42a46e58..24679d8c5034 100644
+>> --- a/hw/vfio/migration.c
+>> +++ b/hw/vfio/migration.c
+>> @@ -472,6 +472,9 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
+>>           return -ENOMEM;
+>>       }
+>>
+>> +    migration->save_iterate_run = false;
+>> +    migration->save_iterate_empty_hit = false;
+>> +
+>>       if (vfio_precopy_supported(vbasedev)) {
+>>           switch (migration->device_state) {
+>>           case VFIO_DEVICE_STATE_RUNNING:
+>> @@ -605,9 +608,17 @@ static int vfio_save_iterate(QEMUFile *f, void *opaque)
+>>       VFIOMigration *migration = vbasedev->migration;
+>>       ssize_t data_size;
+>>
+>> +    if (!migration->save_iterate_run) {
+>> +        trace_vfio_save_iterate_started(vbasedev->name);
+>> +        migration->save_iterate_run = true;
+> 
+> Maybe rename save_iterate_run to save_iterate_started so it's aligned with trace_vfio_save_iterate_started and trace_vfio_save_complete_precopy_started?
 
-I'd squash in the same commit the abstract parent removal:
+Will do.
 
--- >8 --
-diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index 67bb83dff5..43a1a9ebe7 100644
---- a/include/hw/arm/omap.h
-+++ b/include/hw/arm/omap.h
-@@ -68,7 +68,7 @@ int64_t omap_clk_getrate(omap_clk clk);
-  void omap_clk_reparent(omap_clk clk, omap_clk parent);
+>> +    }
+>> +
+>>       data_size = vfio_save_block(f, migration);
+>>       if (data_size < 0) {
+>>           return data_size;
+>> +    } else if (data_size == 0 && !migration->save_iterate_empty_hit) {
+>> +        trace_vfio_save_iterate_empty_hit(vbasedev->name);
+>> +        migration->save_iterate_empty_hit = true;
+> 
+> During precopy we could hit empty multiple times. Any reason why only the first time should be traced?
 
-  /* omap_intc.c */
--#define TYPE_OMAP_INTC "common-omap-intc"
-+#define TYPE_OMAP_INTC "omap-intc"
-  typedef struct OMAPIntcState OMAPIntcState;
-  DECLARE_INSTANCE_CHECKER(OMAPIntcState, OMAP_INTC, TYPE_OMAP_INTC)
+This trace point is supposed to indicate whether the device state
+transfer during the time the VM was still running likely has
+exhausted the amount of data that can be transferred during
+that phase.
 
-diff --git a/hw/intc/omap_intc.c b/hw/intc/omap_intc.c
-index c14b22d381..f4f5f8455b 100644
---- a/hw/intc/omap_intc.c
-+++ b/hw/intc/omap_intc.c
-@@ -392,22 +392,15 @@ static void omap_intc_class_init(ObjectClass 
-*klass, void *data)
-  }
+In other words, the stopped-time device state transfer likely
+only had to transfer the data which the device does not support
+transferring during the live VM phase (with just a small possible
+residual accrued since that trace point was hit).
 
-  static const TypeInfo omap_intc_info = {
--    .name          = "omap-intc",
--    .parent        = TYPE_OMAP_INTC,
-+    .name          = TYPE_OMAP_INTC,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(OMAPIntcState),
-      .instance_init = omap_intc_init,
-      .class_init    = omap_intc_class_init,
-  };
+If that trace point was hit then delaying the switch over point
+further likely wouldn't help the device transfer less data during
+the downtime.
 
--static const TypeInfo omap_intc_type_info = {
--    .name          = TYPE_OMAP_INTC,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(OMAPIntcState),
--    .abstract      = true,
--};
--
-  static void omap_intc_register_types(void)
-  {
--    type_register_static(&omap_intc_type_info);
-      type_register_static(&omap_intc_info);
-  }
+>>       }
+>>
+>>       vfio_update_estimated_pending_data(migration, data_size);
+>> @@ -633,6 +644,8 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
+>>       int ret;
+>>       Error *local_err = NULL;
+>>
+>> +    trace_vfio_save_complete_precopy_started(vbasedev->name);
+>> +
+>>       /* We reach here with device state STOP or STOP_COPY only */
+>>       ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
+>>                                      VFIO_DEVICE_STATE_STOP, &local_err);
+>> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+>> index 98bd4dcceadc..013c602f30fa 100644
+>> --- a/hw/vfio/trace-events
+>> +++ b/hw/vfio/trace-events
+>> @@ -159,8 +159,11 @@ vfio_migration_state_notifier(const char *name, int state) " (%s) state %d"
+>>   vfio_save_block(const char *name, int data_size) " (%s) data_size %d"
+>>   vfio_save_cleanup(const char *name) " (%s)"
+>>   vfio_save_complete_precopy(const char *name, int ret) " (%s) ret %d"
+>> +vfio_save_complete_precopy_started(const char *name) " (%s)"
+>>   vfio_save_device_config_state(const char *name) " (%s)"
+>>   vfio_save_iterate(const char *name, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+>> +vfio_save_iterate_started(const char *name) " (%s)"
+>> +vfio_save_iterate_empty_hit(const char *name) " (%s)"
+> 
+> Let's keep it sorted in alphabetical order.
 
----
+Ack.
+  
+> Thanks.
 
-But this can be done on top, so:
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Thanks,
+Maciej
 
 
