@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECAA9720AA
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE94A9720C4
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:31:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sniC4-000568-BP; Mon, 09 Sep 2024 13:28:52 -0400
+	id 1sniC2-00055v-U6; Mon, 09 Sep 2024 13:28:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBt-0004Wg-19
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:41 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1sniBu-0004bQ-47
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:42 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBr-00062X-BJ
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:40 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2053525bd90so39040705ad.0
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:38 -0700 (PDT)
+ id 1sniBs-00062j-BH
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:41 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2059112f0a7so42400765ad.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725902918; x=1726507718; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725902919; x=1726507719; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lpkHGNCwIxJL+Ub/QiAiuLzqpRZVFPeNdY4siUkENhs=;
- b=j4hb8TAi9+bJigYJk00fNg4f6+y4T3Fh5UPrc20BiT3KqcHhGKGDeZg5EidgKyiuVZ
- JmSYJHH+lBx+llt3BtvE72VMHjUywj0i21IGy4NhGMrMqVJJefChswvqGSEzfo7h4lGU
- MZsFCvT1aLKrUTz6596YkOZdzK/by8b4E0PChwCL3KHRbFTiEauK09nFsmigLxCvJIVG
- xRtUB714vCeGG/ZMIMlRYbM/IIIN0qvQJlqvwkqz42pyQ3dxfg0Y/7Vm0PdkHPIkC+/P
- 99gb2xnGQ4+D0Rz97QKHX99B6Vt70vcnNwp/+hRCWxH2BiPFH5dbeNOqrhkdNHCgeuI7
- OddA==
+ bh=kAcKrDIxutgOniQxrMrD8IrQr2g9V6Cuwf+b/ddORiM=;
+ b=xmHK5xxgqmCgrrbW31S4Fi8H4dA24c299ub4zKKMyXXBI2a6KiG23iWlIiWtJPi39e
+ cGjkH11Hkn7n6P/euh5+y3ziSK5w9X6E2oK82B8pmyNeztUwEsQrqOWItw6ws1QFRupQ
+ jLVLiXAq2UeOuVndsUuoZhF5JAG7wVAg/zVyQ/rhGPLX6OYB8v9nH2KWbiRFAEwYLLdS
+ VDMXceBdWbXkCN3M4ujzGMpMmTQsZasCT+EDKDiDsIqLou29fZAN587FXihrVyOQrsLq
+ oVQ7FaWABvCTY4xjBZlr80t5afUSG8XU09lzCSy/BUv+RjCMPEddoLIBTFfZ7Yg8Q4kN
+ ULrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725902918; x=1726507718;
+ d=1e100.net; s=20230601; t=1725902919; x=1726507719;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lpkHGNCwIxJL+Ub/QiAiuLzqpRZVFPeNdY4siUkENhs=;
- b=Yasq7uoY8QJnMGR6xKvbKwQDQhNH6RwWgPiqUNMs2MClUQ1IyWKXuamrjhBag8EbDe
- uaXFN5ZkdNPjg8snMxpR2sDtWTCc/AqGcSVWCyCp8DLs3rGtRmrlufWkOXWzkCUoXm0r
- S/5RrnpgVY/t07amKBZWtgwmhiFeTiBKHFxVyTMbQOyQfPSGjohHJnozR4UPwO//4IS4
- xqo/aXczZ3HRMyFkwIwXss4fh/ssorozHath8LCQnTqMwtvGVUTQahP1bL64L8WQsdmg
- mCQPERDf6SCL1lI4ry5Eh/Ov4Uuiian8xkyTeyKHpos1uCTa0//xME9MAI0pk1hJl1pr
- yZHg==
-X-Gm-Message-State: AOJu0Yy7pfURkexHGaOJLen0sQ1U7t4HhnUO4EmYDYPpvAXGRROQUEMo
- TJ4giU74OnPRYjh0ORFNuDgo6yJitqy6LLZprJAHqTYBzyKrQ212o5Eiphw1Da77K+DP6hzS866
- C
-X-Google-Smtp-Source: AGHT+IG6z4i3ZswPz9L/LasGNmG98wVEzGJZPUvqPvqotrUqrvJIdIjBExWA5qeH+XP+9Rpisi2uOQ==
-X-Received: by 2002:a17:902:f550:b0:206:b250:1e1 with SMTP id
- d9443c01a7336-206f05f6425mr143626225ad.45.1725902918039; 
+ bh=kAcKrDIxutgOniQxrMrD8IrQr2g9V6Cuwf+b/ddORiM=;
+ b=SgURsbjcOxM++vSfbpIKyUuf//ui+JMsd0GznL+PoQJiKXA8F+jmJsA6bw7n6xKYh9
+ IVauIWrN3b+jXvpyChYeIsGlzRoEJ9bzWh4pLW7W3dkW2aG6Ix4StQLKj/ns36XDwkEj
+ e+8GBTsZzzgIhLvUc7CqX52N4ge8ZsRu6VjO9qK9nq6VwXeFonmMKG+fXvHvaDSK8VXP
+ xksE8zoJGlB7ESSWMd399eKcjuc3+Z1JhW7wNfat+x5fOm+0og31rd3l7qU0kPD3Bk8v
+ XRu+IY+GSwcmH6dN7yvPivDdVPXI3kRGKXetSNQ+iUMuf7ggPWwk5HFOJCn6xrD5dkZX
+ +99A==
+X-Gm-Message-State: AOJu0Yz/g91pR0B/l3c6XZbzVTGTZQaKdCb+DzATKVwlnaXnN9R+NbeI
+ OYtwOycIro6PcqQ0DmyebRocjNwa32DWFM5I+iKiABhZikfgHL1bUcH+9sw82HogAEhIEU/F5F7
+ n
+X-Google-Smtp-Source: AGHT+IHYcE0O1g82OalykUMAgDIKByE8sZxpG820ukstaFjPxa4vmp+1zSa4QB0AN6Ep6DdoyD2vRw==
+X-Received: by 2002:a17:902:e543:b0:202:2f0:3bb2 with SMTP id
+ d9443c01a7336-20707020f79mr78328825ad.60.1725902918945; 
  Mon, 09 Sep 2024 10:28:38 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.37
+ d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 10:28:37 -0700 (PDT)
+ Mon, 09 Sep 2024 10:28:38 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
 	daniel@0x0f.com
-Subject: [PATCH v3 14/26] target/m68k: Remove env argument to gen_lea_indexed
-Date: Mon,  9 Sep 2024 10:28:11 -0700
-Message-ID: <20240909172823.649837-15-richard.henderson@linaro.org>
+Subject: [PATCH v3 15/26] target/m68k: Remove env argument to gen_lea_mode
+Date: Mon,  9 Sep 2024 10:28:12 -0700
+Message-ID: <20240909172823.649837-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240909172823.649837-1-richard.henderson@linaro.org>
 References: <20240909172823.649837-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,73 +97,104 @@ Use the env pointer in DisasContext.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/translate.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ target/m68k/translate.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 2c0852ac3a..78a9358416 100644
+index 78a9358416..938c650c78 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -391,7 +391,7 @@ static TCGv gen_addr_index(DisasContext *s, uint16_t ext, TCGv tmp)
-  * Handle a base + index + displacement effective address.
-  * A NULL_QREG base means pc-relative.
+@@ -693,8 +693,7 @@ static int addr_inc_size(DisasContext *s, int reg0, int opsize)
+ /*
+  * Generate code for an "effective address".
   */
--static TCGv gen_lea_indexed(CPUM68KState *env, DisasContext *s, TCGv base)
-+static TCGv gen_lea_indexed(DisasContext *s, TCGv base)
+-static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
+-                         int mode, int reg0, int opsize)
++static TCGv gen_lea_mode(DisasContext *s, int mode, int reg0, int opsize)
  {
-     uint32_t offset;
+     TCGv reg, addr, tmp;
      uint16_t ext;
-@@ -400,7 +400,7 @@ static TCGv gen_lea_indexed(CPUM68KState *env, DisasContext *s, TCGv base)
-     uint32_t bd, od;
- 
-     offset = s->pc;
--    ext = read_im16(env, s);
-+    ext = read_im16(s->env, s);
- 
-     if ((ext & 0x800) == 0 && !m68k_feature(s->env, M68K_FEATURE_WORD_INDEX))
-         return NULL_QREG;
-@@ -418,9 +418,9 @@ static TCGv gen_lea_indexed(CPUM68KState *env, DisasContext *s, TCGv base)
-         if ((ext & 0x30) > 0x10) {
-             /* base displacement */
-             if ((ext & 0x30) == 0x20) {
--                bd = (int16_t)read_im16(env, s);
-+                bd = (int16_t)read_im16(s->env, s);
-             } else {
--                bd = read_im32(env, s);
-+                bd = read_im32(s->env, s);
-             }
-         } else {
-             bd = 0;
-@@ -466,9 +466,9 @@ static TCGv gen_lea_indexed(CPUM68KState *env, DisasContext *s, TCGv base)
-             if ((ext & 3) > 1) {
-                 /* outer displacement */
-                 if ((ext & 3) == 2) {
--                    od = (int16_t)read_im16(env, s);
-+                    od = (int16_t)read_im16(s->env, s);
-                 } else {
--                    od = read_im32(env, s);
-+                    od = read_im32(s->env, s);
-                 }
-             } else {
-                 od = 0;
-@@ -737,7 +737,7 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
+@@ -732,7 +731,7 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
+     case 5: /* Indirect displacement.  */
+         reg = get_areg(s, reg0);
+         addr = tcg_temp_new();
+-        ext = read_im16(env, s);
++        ext = read_im16(s->env, s);
+         tcg_gen_addi_i32(addr, reg, (int16_t)ext);
          return addr;
      case 6: /* Indirect index + displacement.  */
-         reg = get_areg(s, reg0);
--        return gen_lea_indexed(env, s, reg);
-+        return gen_lea_indexed(s, reg);
+@@ -741,14 +740,14 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
      case 7: /* Other */
          switch (reg0) {
          case 0: /* Absolute short.  */
-@@ -751,7 +751,7 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
-             offset += (int16_t)read_im16(env, s);
+-            offset = (int16_t)read_im16(env, s);
++            offset = (int16_t)read_im16(s->env, s);
+             break;
+         case 1: /* Absolute long.  */
+-            offset = read_im32(env, s);
++            offset = read_im32(s->env, s);
+             break;
+         case 2: /* pc displacement  */
+             offset = s->pc;
+-            offset += (int16_t)read_im16(env, s);
++            offset += (int16_t)read_im16(s->env, s);
              break;
          case 3: /* pc index+displacement.  */
--            return gen_lea_indexed(env, s, NULL_QREG);
-+            return gen_lea_indexed(s, NULL_QREG);
-         case 4: /* Immediate.  */
-         default:
-             return NULL_QREG;
+             return gen_lea_indexed(s, NULL_QREG);
+@@ -768,7 +767,7 @@ static TCGv gen_lea(CPUM68KState *env, DisasContext *s, uint16_t insn,
+ {
+     int mode = extract32(insn, 3, 3);
+     int reg0 = REG(insn, 0);
+-    return gen_lea_mode(env, s, mode, reg0, opsize);
++    return gen_lea_mode(s, mode, reg0, opsize);
+ }
+ 
+ /*
+@@ -826,7 +825,7 @@ static TCGv gen_load_mode(CPUM68KState *env, DisasContext *s,
+     case 4: /* Indirect predecrememnt.  */
+     case 5: /* Indirect displacement.  */
+     case 6: /* Indirect index + displacement.  */
+-        addr = gen_lea_mode(env, s, mode, reg0, opsize);
++        addr = gen_lea_mode(s, mode, reg0, opsize);
+         if (IS_NULL_QREG(addr)) {
+             ret = addr;
+             addr = NULL;
+@@ -869,7 +868,7 @@ static bool gen_store_mode(CPUM68KState *env, DisasContext *s,
+     case 6: /* Indirect index + displacement.  */
+     case 7: /* Other */
+         if (!addr) {
+-            addr = gen_lea_mode(env, s, mode, reg0, opsize);
++            addr = gen_lea_mode(s, mode, reg0, opsize);
+             if (IS_NULL_QREG(addr)) {
+                 return false;
+             }
+@@ -1109,7 +1108,7 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+     case 4: /* Indirect predecrememnt.  */
+     case 5: /* Indirect displacement.  */
+     case 6: /* Indirect index + displacement.  */
+-        addr = gen_lea_mode(env, s, mode, reg0, opsize);
++        addr = gen_lea_mode(s, mode, reg0, opsize);
+         if (IS_NULL_QREG(addr)) {
+             return -1;
+         }
+@@ -1930,7 +1929,7 @@ DISAS_INSN(movem)
+         break;
+ 
+     default:
+-        tmp = gen_lea_mode(env, s, mode, reg0, opsize);
++        tmp = gen_lea_mode(s, mode, reg0, opsize);
+         if (IS_NULL_QREG(tmp)) {
+             goto do_addr_fault;
+         }
+@@ -2672,7 +2671,7 @@ DISAS_INSN(tas)
+     } else {
+         TCGv src1, addr;
+ 
+-        addr = gen_lea_mode(env, s, mode, reg0, OS_BYTE);
++        addr = gen_lea_mode(s, mode, reg0, OS_BYTE);
+         if (IS_NULL_QREG(addr)) {
+             gen_addr_fault(s);
+             return;
 -- 
 2.43.0
 
