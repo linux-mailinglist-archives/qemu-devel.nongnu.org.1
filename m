@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3619972455
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 23:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2724A972449
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 23:12:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snlfQ-0001Iv-Jm; Mon, 09 Sep 2024 17:11:24 -0400
+	id 1snlfX-0002LJ-1D; Mon, 09 Sep 2024 17:11:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1snlfB-0000uB-Vq; Mon, 09 Sep 2024 17:11:11 -0400
+ id 1snlfL-0001Y4-V4; Mon, 09 Sep 2024 17:11:22 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1snlf9-00027R-NZ; Mon, 09 Sep 2024 17:11:09 -0400
+ id 1snlfG-00028M-66; Mon, 09 Sep 2024 17:11:19 -0400
 Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 489DwMt5000802;
- Mon, 9 Sep 2024 21:11:03 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 489JUBw8007077;
+ Mon, 9 Sep 2024 21:11:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-type:content-transfer-encoding; s=pp1; bh=
- 6xZiUYVlSV2LODCEsKOf1wxf3QQ4WQ/QUPGd67HsvBk=; b=AtPooY7Ln4Tl/Z/d
- yReWJWsvdb5zMgvR+hULCa6ZY2Ye2mDlqdSe0F+lFIdfSN9LUHQrSe+5er5XohnS
- Qk5Eq9hCG0buOnnnWye6vdx7iQcN60uff2rjM+Hb+pwOjI1tnlvQmHUt2z4YFa9f
- Nm0ZG9r5sPwD5ogScgqdpZ3AKb5OYP6DeUpaGN6gvTEzD+GKp+K19KCIghlc6qgb
- gIo3XalSF/47iD9YF3Gg6VogB/yrathJFFBNRgr+HYcHP96AncJyOL2oIYeQak6d
- PNsU91KmGe8FQYKRp333q/aCWHSFDQA9vkD2wGqfd4BebpUnLUP0ep7j44aMZqja
- tGK48Q==
+ :mime-version:content-transfer-encoding; s=pp1; bh=/zxLeQYtcXKa6
+ aHE78g886OsQB0jd+Mva5dkBaT1Sag=; b=T/lw0/GjBDv186O6VcibS7L0KVIXu
+ O2NLDU2RLr6qkZqoyqxkJwK1jZjQbipf5/0dPD8+4tcLrrcJl/mfuSO75rcC+4FZ
+ o9bXbJ2AynC0DpCHgqPy6atC9yzhOOFrjy98pRXtAhoYfJuM1hqAZOrQ81Giaqx6
+ uoMVYqR+aHFlQkXuWxIMFVvzGVdeG08Ar7WqYv9mQSzuC93ZUazcF5/xkzclD4qY
+ OJIpoCDokj2Mp8AXvjYBk7F9P/DGRq2xPFcsc4CEcl4vsj0+5qcYytZw0/2jLTUN
+ FQ6B/G/zPqSQuf0eO64rSANrsn//zyC6BDJ1seWP7OK5Amqx8pQ4rzAfg==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegwm1gr-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegwm1gu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Sep 2024 21:11:03 +0000 (GMT)
+ Mon, 09 Sep 2024 21:11:04 +0000 (GMT)
 Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 489LB3QH020912;
- Mon, 9 Sep 2024 21:11:03 GMT
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 489LB4C8020989;
+ Mon, 9 Sep 2024 21:11:04 GMT
 Received: from ppma12.dal12v.mail.ibm.com
  (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegwm1gp-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegwm1gt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Sep 2024 21:11:03 +0000 (GMT)
+ Mon, 09 Sep 2024 21:11:04 +0000 (GMT)
 Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 489Hwtwq003130;
- Mon, 9 Sep 2024 21:11:02 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h15trgt1-1
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 489IGd0e003122;
+ Mon, 9 Sep 2024 21:11:03 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h15trgt4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Sep 2024 21:11:02 +0000
+ Mon, 09 Sep 2024 21:11:03 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 489LAwoJ47776190
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 489LB0IM52166952
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Sep 2024 21:10:58 GMT
+ Mon, 9 Sep 2024 21:11:00 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9E70B20049;
+ by IMSVA (Postfix) with ESMTP id 1BD132004D;
+ Mon,  9 Sep 2024 21:11:00 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E3DCB20040;
  Mon,  9 Sep 2024 21:10:58 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 721CD20040;
- Mon,  9 Sep 2024 21:10:57 +0000 (GMT)
 Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  9 Sep 2024 21:10:57 +0000 (GMT)
+ Mon,  9 Sep 2024 21:10:58 +0000 (GMT)
 From: Michael Kowal <kowal@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
  npiggin@gmail.com, milesg@linux.ibm.com
-Subject: [PATCH v2 08/14] ppc/xive2: Support "Pull Thread Context to Register"
- operation
-Date: Mon,  9 Sep 2024 16:10:32 -0500
-Message-Id: <20240909211038.27440-9-kowal@linux.ibm.com>
+Subject: [PATCH v2 09/14] ppc/xive2: Change context/ring specific functions to
+ be generic
+Date: Mon,  9 Sep 2024 16:10:33 -0500
+Message-Id: <20240909211038.27440-10-kowal@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240909211038.27440-1-kowal@linux.ibm.com>
 References: <20240909211038.27440-1-kowal@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dxfP8mqbBfZyRHvh0VWPLaxATbm47GVO
-X-Proofpoint-ORIG-GUID: jH5_nI330LiqEN4TafzcwDzziuLEH_1o
+X-Proofpoint-GUID: t_ThiL39oCRwPPGYhIll_jDma9GmHRb5
+X-Proofpoint-ORIG-GUID: MjfNA0tLSB3UdPeIObgKYzlfr_6CB79b
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-09_10,2024-09-09_02,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=999
+ phishscore=0 mlxlogscore=767
  lowpriorityscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
  adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 mlxscore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
@@ -113,83 +111,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
+Some the functions that have been created are specific to a ring or context. Some
+of these same functions are being changed to operate on any ring/context. This  will
+simplify the next patch sets that are adding additional ring/context operations.
 
-Adds support for single byte read of offset 0x838 of the TIMA address
-space.  According to the XIVE2 Specification, this causes the hardware
-to atomically:
-  1. Read the number of bytes requested (lbz or lhz are supported).
-  2. Reset the valid bit of the thread context.
-  3. Return the number of bytes requested in step 1 to a register.
-
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/ppc/xive_regs.h |  2 ++
- hw/intc/xive.c             | 15 +++++++++++++++
- 2 files changed, 17 insertions(+)
+ include/hw/ppc/xive.h |  2 +-
+ hw/intc/xive.c        |  6 ++--
+ hw/intc/xive2.c       | 77 ++++++++++++++++++++++++++++---------------
+ 3 files changed, 55 insertions(+), 30 deletions(-)
 
-diff --git a/include/hw/ppc/xive_regs.h b/include/hw/ppc/xive_regs.h
-index f8f05deafd..558a5ae742 100644
---- a/include/hw/ppc/xive_regs.h
-+++ b/include/hw/ppc/xive_regs.h
-@@ -101,6 +101,7 @@
- #define   TM_QW3W2_LP           PPC_BIT32(6)
- #define   TM_QW3W2_LE           PPC_BIT32(7)
- #define   TM_QW3W2_T            PPC_BIT32(31)
-+#define   TM_QW3B8_VT           PPC_BIT8(0)
+diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+index 28c181faa2..31242f0406 100644
+--- a/include/hw/ppc/xive.h
++++ b/include/hw/ppc/xive.h
+@@ -533,7 +533,7 @@ Object *xive_tctx_create(Object *cpu, XivePresenter *xptr, Error **errp);
+ void xive_tctx_reset(XiveTCTX *tctx);
+ void xive_tctx_destroy(XiveTCTX *tctx);
+ void xive_tctx_ipb_update(XiveTCTX *tctx, uint8_t ring, uint8_t ipb);
+-void xive_tctx_reset_os_signal(XiveTCTX *tctx);
++void xive_tctx_reset_signal(XiveTCTX *tctx, uint8_t ring);
  
  /*
-  * In addition to normal loads to "peek" and writes (only when invalid)
-@@ -128,6 +129,7 @@
- #define TM_SPC_PULL_POOL_CTX    0x828   /* Load32/Load64 Pull/Invalidate Pool */
-                                         /* context to reg                     */
- #define TM_SPC_ACK_HV_REG       0x830   /* Load16 ack HV irq to reg           */
-+#define TM_SPC_PULL_PHYS_CTX    0x838   /* Pull phys ctx to reg               */
- #define TM_SPC_PULL_USR_CTX_OL  0xc08   /* Store8 Pull/Inval usr ctx to odd   */
-                                         /* line                               */
- #define TM_SPC_ACK_OS_EL        0xc10   /* Store8 ack OS irq to even line     */
+  * KVM XIVE device helpers
 diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 6229a6f870..5b66a3aec5 100644
+index 5b66a3aec5..f1d007d9a6 100644
 --- a/hw/intc/xive.c
 +++ b/hw/intc/xive.c
-@@ -179,6 +179,17 @@ static uint64_t xive_tm_pull_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-     return qw2w2;
+@@ -114,7 +114,7 @@ static void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring)
+     }
  }
  
-+static uint64_t xive_tm_pull_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-+                                      hwaddr offset, unsigned size)
+-void xive_tctx_reset_os_signal(XiveTCTX *tctx)
++void xive_tctx_reset_signal(XiveTCTX *tctx, uint8_t ring)
+ {
+     /*
+      * Lower the External interrupt. Used when pulling an OS
+@@ -122,7 +122,7 @@ void xive_tctx_reset_os_signal(XiveTCTX *tctx)
+      * context. It should be raised again when re-pushing the OS
+      * context.
+      */
+-    qemu_irq_lower(xive_tctx_output(tctx, TM_QW1_OS));
++    qemu_irq_lower(xive_tctx_output(tctx, ring));
+ }
+ 
+ static void xive_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+@@ -424,7 +424,7 @@ static uint64_t xive_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     qw1w2_new = xive_set_field32(TM_QW1W2_VO, qw1w2, 0);
+     xive_tctx_set_os_cam(tctx, qw1w2_new);
+ 
+-    xive_tctx_reset_os_signal(tctx);
++    xive_tctx_reset_signal(tctx, TM_QW1_OS);
+     return qw1w2;
+ }
+ 
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index 8d3d69a0db..38a4b0ff68 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -270,13 +270,14 @@ static void xive2_end_enqueue(Xive2End *end, uint32_t data)
+  *     the NVP by changing the H bit while the context is enabled
+  */
+ 
+-static void xive2_tctx_save_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+-                                   uint8_t nvp_blk, uint32_t nvp_idx)
++static void xive2_tctx_save_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
++                                uint8_t nvp_blk, uint32_t nvp_idx,
++                                uint8_t ring)
+ {
+     CPUPPCState *env = &POWERPC_CPU(tctx->cs)->env;
+     uint32_t pir = env->spr_cb[SPR_PIR].default_value;
+     Xive2Nvp nvp;
+-    uint8_t *regs = &tctx->regs[TM_QW1_OS];
++    uint8_t *regs = &tctx->regs[ring];
+ 
+     if (xive2_router_get_nvp(xrtr, nvp_blk, nvp_idx, &nvp)) {
+         qemu_log_mask(LOG_GUEST_ERROR, "XIVE: No NVP %x/%x\n",
+@@ -321,13 +322,13 @@ static void xive2_tctx_save_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+     xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, &nvp, 1);
+ }
+ 
+-static void xive2_os_cam_decode(uint32_t cam, uint8_t *nvp_blk,
+-                                uint32_t *nvp_idx, bool *vo, bool *ho)
++static void xive2_cam_decode(uint32_t cam, uint8_t *nvp_blk,
++                             uint32_t *nvp_idx, bool *valid, bool *hw)
+ {
+     *nvp_blk = xive2_nvp_blk(cam);
+     *nvp_idx = xive2_nvp_idx(cam);
+-    *vo = !!(cam & TM2_QW1W2_VO);
+-    *ho = !!(cam & TM2_QW1W2_HO);
++    *valid = !!(cam & TM2_QW1W2_VO);
++    *hw = !!(cam & TM2_QW1W2_HO);
+ }
+ 
+ 
+@@ -351,37 +352,54 @@ static uint32_t xive2_tctx_hw_cam_line(XivePresenter *xptr, XiveTCTX *tctx)
+     return xive2_nvp_cam_line(blk, 1 << tid_shift | (pir & tid_mask));
+ }
+ 
+-uint64_t xive2_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+-                              hwaddr offset, unsigned size)
++static uint64_t xive2_tm_pull_ctx(XivePresenter *xptr, XiveTCTX *tctx,
++                                  hwaddr offset, unsigned size, uint8_t ring)
+ {
+     Xive2Router *xrtr = XIVE2_ROUTER(xptr);
+-    uint32_t qw1w2 = xive_tctx_word2(&tctx->regs[TM_QW1_OS]);
+-    uint32_t qw1w2_new;
+-    uint32_t cam = be32_to_cpu(qw1w2);
++    uint32_t target_ringw2 = xive_tctx_word2(&tctx->regs[ring]);
++    uint32_t cam = be32_to_cpu(target_ringw2);
+     uint8_t nvp_blk;
+     uint32_t nvp_idx;
+-    bool vo;
++    uint8_t cur_ring;
++    bool valid;
+     bool do_save;
+ 
+-    xive2_os_cam_decode(cam, &nvp_blk, &nvp_idx, &vo, &do_save);
++    xive2_cam_decode(cam, &nvp_blk, &nvp_idx, &valid, &do_save);
+ 
+-    if (!vo) {
++    if (!valid) {
+         qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pulling invalid NVP %x/%x !?\n",
+                       nvp_blk, nvp_idx);
+     }
+ 
+-    /* Invalidate CAM line */
+-    qw1w2_new = xive_set_field32(TM2_QW1W2_VO, qw1w2, 0);
+-    memcpy(&tctx->regs[TM_QW1_OS + TM_WORD2], &qw1w2_new, 4);
++    /* Invalidate CAM line of requested ring and all lower rings */
++    for (cur_ring = TM_QW0_USER; cur_ring <= ring;
++         cur_ring += XIVE_TM_RING_SIZE) {
++        uint32_t ringw2 = xive_tctx_word2(&tctx->regs[cur_ring]);
++        uint32_t ringw2_new = xive_set_field32(TM2_QW1W2_VO, ringw2, 0);
++        memcpy(&tctx->regs[cur_ring + TM_WORD2], &ringw2_new, 4);
++    }
+ 
+     if (xive2_router_get_config(xrtr) & XIVE2_VP_SAVE_RESTORE && do_save) {
+-        xive2_tctx_save_os_ctx(xrtr, tctx, nvp_blk, nvp_idx);
++        xive2_tctx_save_ctx(xrtr, tctx, nvp_blk, nvp_idx, ring);
+     }
+ 
+-    xive_tctx_reset_os_signal(tctx);
+-    return qw1w2;
++    /*
++     * Lower external interrupt line of requested ring and below except for
++     * USER, which doesn't exist.
++     */
++    for (cur_ring = TM_QW1_OS; cur_ring <= ring;
++         cur_ring += XIVE_TM_RING_SIZE) {
++        xive_tctx_reset_signal(tctx, cur_ring);
++    }
++    return target_ringw2;
+ }
+ 
++uint64_t xive2_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
++                              hwaddr offset, unsigned size)
 +{
-+    uint8_t qw3b8_prev = tctx->regs[TM_QW3_HV_PHYS + TM_WORD2];
-+    uint8_t qw3b8;
++    return xive2_tm_pull_ctx(xptr, tctx, offset, size, TM_QW1_OS);
++ }
 +
-+    qw3b8 = qw3b8_prev & ~TM_QW3B8_VT;
-+    tctx->regs[TM_QW3_HV_PHYS + TM_WORD2] = qw3b8;
-+    return qw3b8;
+ #define REPORT_LINE_GEN1_SIZE       16
+ 
+ static void xive2_tm_report_line_gen1(XiveTCTX *tctx, uint8_t *data,
+@@ -424,8 +442,9 @@ static void xive2_tm_report_line_gen1(XiveTCTX *tctx, uint8_t *data,
+     }
+ }
+ 
+-void xive2_tm_pull_os_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
+-                             hwaddr offset, uint64_t value, unsigned size)
++static void xive2_tm_pull_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
++                                 hwaddr offset, uint64_t value,
++                                 unsigned size, uint8_t ring)
+ {
+     Xive2Router *xrtr = XIVE2_ROUTER(xptr);
+     uint32_t hw_cam, nvp_idx, xive2_cfg, reserved;
+@@ -473,8 +492,14 @@ void xive2_tm_pull_os_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
+         assert(result == MEMTX_OK);
+     }
+ 
+-    /* the rest is similar to pull OS context to registers */
+-    xive2_tm_pull_os_ctx(xptr, tctx, offset, size);
++    /* the rest is similar to pull context to registers */
++    xive2_tm_pull_ctx(xptr, tctx, offset, size, ring);
 +}
 +
- static void xive_tm_vt_push(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
-                             uint64_t value, unsigned size)
- {
-@@ -527,6 +538,8 @@ static const XiveTmOp xive_tm_operations[] = {
-                                                      xive_tm_pull_pool_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,      8, NULL,
-                                                      xive_tm_pull_pool_ctx },
-+    { XIVE_TM_HV_PAGE, TM_SPC_PULL_PHYS_CTX,      1, NULL,
-+                                                     xive_tm_pull_phys_ctx },
- };
++void xive2_tm_pull_os_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
++                             hwaddr offset, uint64_t value, unsigned size)
++{
++    xive2_tm_pull_ctx_ol(xptr, tctx, offset, value, size, TM_QW1_OS);
+ }
  
- static const XiveTmOp xive2_tm_operations[] = {
-@@ -566,6 +579,8 @@ static const XiveTmOp xive2_tm_operations[] = {
-                                                      xive_tm_pull_pool_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX_OL,     1, xive2_tm_pull_os_ctx_ol,
-                                                      NULL },
-+    { XIVE_TM_HV_PAGE, TM_SPC_PULL_PHYS_CTX,      1, NULL,
-+                                                     xive_tm_pull_phys_ctx },
- };
+ static uint8_t xive2_tctx_restore_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
+@@ -573,7 +598,7 @@ void xive2_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     bool vo;
+     bool do_restore;
  
- static const XiveTmOp *xive_tm_find_op(XivePresenter *xptr, hwaddr offset,
+-    xive2_os_cam_decode(cam, &nvp_blk, &nvp_idx, &vo, &do_restore);
++    xive2_cam_decode(cam, &nvp_blk, &nvp_idx, &vo, &do_restore);
+ 
+     /* First update the thead context */
+     memcpy(&tctx->regs[TM_QW1_OS + TM_WORD2], &qw1w2, 4);
 -- 
 2.43.0
 
