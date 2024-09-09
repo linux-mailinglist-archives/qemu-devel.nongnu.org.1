@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABEB49720B7
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C07C9720AB
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:30:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sniC4-0005GP-TE; Mon, 09 Sep 2024 13:28:52 -0400
+	id 1sniC6-0005Ti-Ok; Mon, 09 Sep 2024 13:28:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBv-0004ip-Jp
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:43 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1sniBw-0004mw-K1
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:44 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBu-000636-0o
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:43 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-7da3794b778so518484a12.0
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:41 -0700 (PDT)
+ id 1sniBu-00063O-Ts
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:44 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1fee6435a34so39721185ad.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1725902921; x=1726507721; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Wt4kGF8GHbs588bZ69TT9rn29gOCtaGr5vvJ3Kk3h8A=;
- b=iSpym8J6rnjRg0kjZjMQHs2cISumBSYkE6XUJwujHm7Qv10U/y6fDh/iehtjXCC55q
- 0AOyjRgO20CscmqH/9JuscrVAGPcPCRWW3n8WFZvjVe7awpODO6Hw9m/zg2bcEnQV5V4
- 4H2CTLU3SYJNrhjehpteS/m4xxTSmOqphfPr43iKljsCMUSkdadmebSj+kMbMlR5xGY0
- d8G3y3CQ2ckeDJP3Bn90TRAjfo0QeMRaSGaCk5SWK8A3lWgLS6nwRe/ncWxDmVzjIhAB
- XCoHjfc/4l2slycZrBI1RVv3GHaPhHmkpmKZcfBjdeZOKyDZN5yl4eR6Li5ykJkPTY0d
- SMiA==
+ bh=sFzduEvNp99h11xV1aQH9cRrEGMBljq+h6uoDBRgGBU=;
+ b=QRLBBJpAARUoSjp/9eka9DMZtfMv8TU7G3/7O3btN3eLOey3WPZkqlsFdyODqyo06C
+ PzoI6XTHSiFzV7bIAJ0NlWSeelGHm4cgL1M/AM4MFM4dzsLTAf5HVUAsHhkBzZeOtTNl
+ LPbdyvCK044zlkJZPAbxo449rfqdjg9nUMKp5Zkd2lhTWb30Tw7hKi85SlWCDycfR1zW
+ vxMQnRaypOD7e3XujJn1GRtQUOTv1mMp+I6RaK8SJVM2peRwR0ZaoeP5fVDkRCcTgmH9
+ n1U43rk2ctnraEFyoocHefCzNBmo4SVGb6kYDWeqCefaHHbdTqYe+qgy7uooP3+PNCpC
+ F4pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1725902921; x=1726507721;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Wt4kGF8GHbs588bZ69TT9rn29gOCtaGr5vvJ3Kk3h8A=;
- b=PqaghrPgPRgpBpLQMm7bbMj9WTR2KUDnGdqj1Y5mwwXq2i7AyYuqx0m/T2UwWTSMZb
- BrLoxN9mIyUqOoxgVyZxe8ome3MB2AJmbANgfOUOlgl2wDRnfrb4GhUKCTg9DHRR2vUT
- 8OnQsLDUMTVPHyQUBK28Y4lnPqS+F209HVj1k7UPiQrXsWnYO+tJqoJ9VQqbcpxbdcz3
- 3WUFEIG+Gll8Va3AlCDy+JQ3LxUJFaqhYh4bPEARZsh3otM5U9i0HSdCItny2yFEau+o
- u4pae8T2CB8kVPK/TWZYGjB4IcsBOhRj69dt98mG1pvoQv0GhscOReEYxqq/b8R9Ttsi
- 6ruA==
-X-Gm-Message-State: AOJu0Yz6PMNcs2SBIIhIuIfKbq/9GwmxaJnEIdInvX0wp1MDvVKm/kQ0
- b7+q2Eh7pYP0s0Kbiq4VCyBwqqy/6dKBUujbAIuKpp1cXLP2mB/qT+6zxd3arve6xKnRnEVcL2n
+ bh=sFzduEvNp99h11xV1aQH9cRrEGMBljq+h6uoDBRgGBU=;
+ b=KjqwheyQ0X/djnmqqYFwVh1x9GW5CbFUcFuQISV0nrssdUQ2hiM9at2BVBKAOxpITw
+ IqPVJa/1RQqpCU8iVhGx/ay4CItuOCmK9jciFAqK3sENQJOyHjp1+JzPkKyy9IOPTZ8x
+ WuHJlP9A0gcQH265e0Ccj0qYBfI04GN4370choxYffUO6dX0o0gromUB+/Jg0gj0FHpk
+ CgV5sSruG4xrHQeB61pOKxT9J8t94s0TMm52N6rur8A8oApXUtfrUjBf8tIlYbYL7o+S
+ 6gOoTnUWanQtvegT54ZzLP3FMDz3rqN88A2+7uFKFVWVelust7MEZn3kWEKsfROTjT5J
+ 8/OQ==
+X-Gm-Message-State: AOJu0YyF0Ae8qDGo9SR7o6ZGzV6Fp6pAeeLCKVGCM2EsjQ5PA82WYLx/
+ +Y3tlbl2oqk8H727+hTHJbLbhnBVw4RQV/Ab92TAh2zGHnsRrUZAtYUjg6D4qfdaZPEP7kblxJk
  r
-X-Google-Smtp-Source: AGHT+IH6VRJvSlEz623/dxfL5QA+l85CmSEaUhXzygox/V1pSLd8BMXNuoNZlh3hJjI4T6z1ZEGiQQ==
-X-Received: by 2002:a17:903:230a:b0:206:c486:4c33 with SMTP id
- d9443c01a7336-206f0522330mr155438205ad.30.1725902920626; 
- Mon, 09 Sep 2024 10:28:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGZSsNMKFGGZfYq2cw2Yf+eH9M1KGjBucdo4/Qv2bNVqlPi9QguvWZs8FDY7ckvItbYyN6hrA==
+X-Received: by 2002:a17:902:ec8a:b0:206:91e7:ba98 with SMTP id
+ d9443c01a7336-206f0622a02mr114515685ad.50.1725902921559; 
+ Mon, 09 Sep 2024 10:28:41 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 10:28:40 -0700 (PDT)
+ Mon, 09 Sep 2024 10:28:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
 	daniel@0x0f.com
-Subject: [PATCH v3 17/26] target/m68k: Remove env argument to gen_store_mode
-Date: Mon,  9 Sep 2024 10:28:14 -0700
-Message-ID: <20240909172823.649837-18-richard.henderson@linaro.org>
+Subject: [PATCH v3 18/26] target/m68k: Remove env argument to gen_ea_mode_fp
+Date: Mon,  9 Sep 2024 10:28:15 -0700
+Message-ID: <20240909172823.649837-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240909172823.649837-1-richard.henderson@linaro.org>
 References: <20240909172823.649837-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,50 +97,75 @@ Use the env pointer in DisasContext.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/translate.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ target/m68k/translate.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index a3452ace96..8a96b38682 100644
+index 8a96b38682..5bfdf9aadf 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -843,8 +843,7 @@ static TCGv gen_load_mode(DisasContext *s, int mode, int reg0, int opsize,
-     return ret;
+@@ -1011,9 +1011,8 @@ static void gen_ldst_fp(DisasContext *s, int opsize, TCGv addr,
+     }
  }
  
--static bool gen_store_mode(CPUM68KState *env, DisasContext *s,
--                           int mode, int reg0, int opsize,
-+static bool gen_store_mode(DisasContext *s, int mode, int reg0, int opsize,
-                            TCGv val, TCGv addr, int index)
+-static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+-                          int reg0, int opsize, TCGv_ptr fp, ea_what what,
+-                          int index)
++static int gen_ea_mode_fp(DisasContext *s, int mode, int reg0, int opsize,
++                          TCGv_ptr fp, ea_what what, int index)
  {
-     TCGv reg;
-@@ -1334,7 +1333,7 @@ static void gen_exit_tb(DisasContext *s)
- #define DEST_EA(env, insn, opsize, val, addrp)                          \
-     do {                                                                \
-         TCGv *addrp_ = (addrp);                                         \
--        if (!gen_store_mode(env, s, extract32(insn, 3, 3),              \
-+        if (!gen_store_mode(s, extract32(insn, 3, 3),                   \
-                             REG(insn, 0), opsize, val,                  \
-                             addrp_ ? *addrp_ : NULL, IS_USER(s))) {     \
-             gen_addr_fault(s);                                          \
-@@ -1703,7 +1702,7 @@ DISAS_INSN(abcd_mem)
- 
-     bcd_add(dest, src);
- 
--    gen_store_mode(env, s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
-+    gen_store_mode(s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
- 
-     bcd_flags(dest);
+     TCGv reg, addr, tmp;
+     TCGv_i64 t64;
+@@ -1058,23 +1057,23 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+         if (reg0 == 4 && what != EA_STORE) {
+             switch (opsize) {
+             case OS_BYTE:
+-                tmp = tcg_constant_i32((int8_t)read_im8(env, s));
++                tmp = tcg_constant_i32((int8_t)read_im8(s->env, s));
+                 gen_helper_exts32(tcg_env, fp, tmp);
+                 break;
+             case OS_WORD:
+-                tmp = tcg_constant_i32((int16_t)read_im16(env, s));
++                tmp = tcg_constant_i32((int16_t)read_im16(s->env, s));
+                 gen_helper_exts32(tcg_env, fp, tmp);
+                 break;
+             case OS_LONG:
+-                tmp = tcg_constant_i32(read_im32(env, s));
++                tmp = tcg_constant_i32(read_im32(s->env, s));
+                 gen_helper_exts32(tcg_env, fp, tmp);
+                 break;
+             case OS_SINGLE:
+-                tmp = tcg_constant_i32(read_im32(env, s));
++                tmp = tcg_constant_i32(read_im32(s->env, s));
+                 gen_helper_extf32(tcg_env, fp, tmp);
+                 break;
+             case OS_DOUBLE:
+-                t64 = tcg_constant_i64(read_im64(env, s));
++                t64 = tcg_constant_i64(read_im64(s->env, s));
+                 gen_helper_extf64(tcg_env, fp, t64);
+                 break;
+             case OS_EXTENDED:
+@@ -1082,9 +1081,9 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+                     gen_exception(s, s->base.pc_next, EXCP_FP_UNIMP);
+                     break;
+                 }
+-                tmp = tcg_constant_i32(read_im32(env, s) >> 16);
++                tmp = tcg_constant_i32(read_im32(s->env, s) >> 16);
+                 tcg_gen_st16_i32(tmp, fp, offsetof(FPReg, l.upper));
+-                t64 = tcg_constant_i64(read_im64(env, s));
++                t64 = tcg_constant_i64(read_im64(s->env, s));
+                 tcg_gen_st_i64(t64, fp, offsetof(FPReg, l.lower));
+                 break;
+             case OS_PACKED:
+@@ -1121,7 +1120,7 @@ static int gen_ea_fp(CPUM68KState *env, DisasContext *s, uint16_t insn,
+ {
+     int mode = extract32(insn, 3, 3);
+     int reg0 = REG(insn, 0);
+-    return gen_ea_mode_fp(env, s, mode, reg0, opsize, fp, what, index);
++    return gen_ea_mode_fp(s, mode, reg0, opsize, fp, what, index);
  }
-@@ -1737,7 +1736,7 @@ DISAS_INSN(sbcd_mem)
  
-     bcd_sub(dest, src);
- 
--    gen_store_mode(env, s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
-+    gen_store_mode(s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
- 
-     bcd_flags(dest);
- }
+ typedef struct {
 -- 
 2.43.0
 
