@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1799720D5
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 455879720D2
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:32:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sniBt-0004U9-HS; Mon, 09 Sep 2024 13:28:41 -0400
+	id 1sniBr-0004Oz-Id; Mon, 09 Sep 2024 13:28:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBm-00044L-2f
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:34 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1sniBn-00049x-Dv
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:35 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBk-00060p-6R
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:33 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-7179802b91fso2826246b3a.3
+ id 1sniBk-00060y-9i
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:34 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-2059112f0a7so42399455ad.3
  for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725902910; x=1726507710; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725902911; x=1726507711; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0PKG5YPQcXKyDHlspbxmEdeyLcXXv/kd5HUMAwRWwDA=;
- b=CyouL0zzfRpyKfcXmByisclRz+f10QcsTS9Oon1wE0OT9tZIQPKHMV7ddNHPmRRrKE
- RUF7CnX4ep2a9P0CzAU5gttE7Nu/mL74Uqsb4JncByo9ujo/AeT7d1g2iK++aayeMpM8
- C6qUKFWIqlX68IQW0AMJn21wG2TOAOclU05BTxWxwvelBw9rmhMBpWI7L5xpTTWAaDY+
- IlrtSJji8O3fnART0gpXEnA7Fo44IUluwjCmBNsBGG5UiYay8PaHSOB0paWn/6IKUpAQ
- Eur4Y7lIRXSz4DElGZcN0C2TtXeHuG8sKX0zqZnRGqRqM8ncuxWPQGsqE9vEe4vgd4ur
- bgow==
+ bh=WmJ2ujIulBhjcVgZsB5TPEctVhmiUOFaoVw5hh6PLPo=;
+ b=sXw8XCPHxp8fCP95ccOtH2DAEmnfFvLkh6xs2iCbnVzua9RpWopesDxfPvGeOQrrzo
+ yBhsUza5/wQ0bpYCdlY75x1tHj4F212R8Mb51/xLlpJRmoh+lKMCh89BGSoEYEqG+75S
+ wRmvRwSDhRx3H2lefwu2h3hmJ8aFH9l1/GGMGd8+zNtLD8y/iduI7/UbEdrKWWUqN9Jq
+ EISj+1mV/+KMOEcMkUr9mTfS0rCaonldEq0Op5SdxACbwGB3Tc2hwS+Qy9lwTTlF6ewz
+ tG0Ku5sLhsYhPul9owpkYtHixgZkl5DKdsxJoeY0iUZJlYNYNTnC67WE89x3Q1GglrD6
+ cv0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725902910; x=1726507710;
+ d=1e100.net; s=20230601; t=1725902911; x=1726507711;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0PKG5YPQcXKyDHlspbxmEdeyLcXXv/kd5HUMAwRWwDA=;
- b=D5tIsh4zGG1k43N3dsTOAXUw7YlEu/Jnl6p5nHVXbPHINzBZrHCfCQ9cZzWJ5UNp1W
- 15+UaYyN9YepGgtV/TvdAf6XNA3XUgBktEhulFE8eT43nlO+9mHX+5Iep/e63h7A0ZkU
- tDoaGjHIYlSpXSD2aCK2gxLW95mFavJJobbQ8bG/ceI+v94n0ONaMiK22AZVs/eyKr6S
- op5/pHe8QSqWRKHzvQRUJZnrJGLG53m6tiJ6vpQWA0iT2gXSt0y3wT/pLaQBMQNTB9Ex
- aryd5aJko6gzNJFPt09IlsepNNehBvojWR6afttYRy7qSo2gpdOJFdPW+37hw4Hi5TJM
- m1Gw==
-X-Gm-Message-State: AOJu0YwFRpzXBo71J/Izb/5R2J1tZwXjQwa/YvGyVBbCUWuD9D/eRIST
- uTKyDTqC9UI1T1rqdNVIlm1sf5saNb+iIh26n34AXikiwcE162iLaQBSEhje6RfV+wiN1PPcAhT
- E
-X-Google-Smtp-Source: AGHT+IHutecmoihmbB3z3oZNyJKzDaDs70cg1mG2IGG9igYMnbvsijZx6h/66RlU2p50THw+quhEbg==
-X-Received: by 2002:a05:6a21:39a:b0:1cf:3c60:b8dc with SMTP id
- adf61e73a8af0-1cf3c60ba63mr3525604637.34.1725902910095; 
+ bh=WmJ2ujIulBhjcVgZsB5TPEctVhmiUOFaoVw5hh6PLPo=;
+ b=Bs6PYGJnnfVJtcrzZbplpeVi1fjqMik4qeI0C0iFSA4HBCf4hC252kM/lnkIkVoB9z
+ VXnVYkjnTSrj5z2g/QHGnB8NKde1jpePSqdL/AUTEEtZR2zXcGOURPWLoKZQNElHozI4
+ OxQHpIur41pDS5eTKKgRJZpg36u4vLGCtHpUImL4pC8A46s14e4mMMXM8r4idFeNyQl6
+ ++EoFdc3aaDHnvNpvWSmyf8bEjoG7jD3JFCVUeawou3I4gIgkZJu9WasGMDR8+GfZluF
+ K8HyMDexq+NM6/msXy19qK2Vzn62ZFFR0u6aEN4LD6ARAENBdZaDnMn0Tx3JzC3R65e/
+ mbeQ==
+X-Gm-Message-State: AOJu0YybYSgFD6bX+6IPFKN3w4UFYZeK6NXoYxCp+cQOsGmXyD5IXl6R
+ sg8Vyhd5QPNhbDDJCrEE9azwxDMF6MGAmCgwoBtJv0CZpSdlj28arzpQ3aoy3CnV96D4hbO7Ogf
+ z
+X-Google-Smtp-Source: AGHT+IF1azunkvH0BNPYGkFZHoRgQxQXkT7bM8Kzgvrvgru03JfjdrMXwu7SYF4a6qYVsXHpxPj+FQ==
+X-Received: by 2002:a17:902:db04:b0:205:9112:efc7 with SMTP id
+ d9443c01a7336-20706f6ed71mr89466625ad.30.1725902910977; 
  Mon, 09 Sep 2024 10:28:30 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.29
+ d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 10:28:29 -0700 (PDT)
+ Mon, 09 Sep 2024 10:28:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
 	daniel@0x0f.com
-Subject: [PATCH v3 05/26] target/m68k: Update FPSR.EXC
-Date: Mon,  9 Sep 2024 10:28:02 -0700
-Message-ID: <20240909172823.649837-6-richard.henderson@linaro.org>
+Subject: [PATCH v3 06/26] softfloat: Set QEMU_NO_HARDFLOAT for m68k
+Date: Mon,  9 Sep 2024 10:28:03 -0700
+Message-ID: <20240909172823.649837-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240909172823.649837-1-richard.henderson@linaro.org>
 References: <20240909172823.649837-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,56 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So far we've only been updating the AEXC byte.
-Update the EXC byte as well.
+Like ppc, m68k needs the complete set of exception flags for each
+instruction, which means that float_flag_inexact will never be set
+before each instruction.  Thus the hardfloat path will not be used,
+so we improve things by compiling it out.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/fpu_helper.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ fpu/softfloat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
-index 56694418f2..0c8c14966d 100644
---- a/target/m68k/fpu_helper.c
-+++ b/target/m68k/fpu_helper.c
-@@ -170,7 +170,7 @@ void HELPER(update_fpsr)(CPUM68KState *env, FPReg *pval)
-     floatx80 val = pval->d;
-     int soft;
- 
--    fpsr &= ~FPSR_CC_MASK;
-+    fpsr &= ~(FPSR_CC_MASK | FPSR_EXC_MASK);
- 
-     if (floatx80_is_neg(val)) {
-         fpsr |= FPSR_CC_N;
-@@ -187,20 +187,22 @@ void HELPER(update_fpsr)(CPUM68KState *env, FPReg *pval)
-     if (soft) {
-         set_float_exception_flags(0, &env->fp_status);
- 
--        if (soft & float_flag_invalid) {
--            fpsr |= FPSR_AEXP_IOP;
-+        if (soft & float_flag_invalid_snan) {
-+            fpsr |= FPSR_EXC_SNAN | FPSR_AEXP_IOP;
-+        } else if (soft & float_flag_invalid) {
-+            fpsr |= FPSR_EXC_OPERR | FPSR_AEXP_IOP;
-         }
-         if (soft & float_flag_overflow) {
--            fpsr |= FPSR_AEXP_OVFL;
-+            fpsr |= FPSR_EXC_OVFL | FPSR_AEXP_OVFL;
-         }
-         if (soft & (float_flag_underflow | float_flag_output_denormal)) {
--            fpsr |= FPSR_AEXP_UNFL;
-+            fpsr |= FPSR_EXC_UNFL | FPSR_AEXP_UNFL;
-         }
-         if (soft & float_flag_divbyzero) {
--            fpsr |= FPSR_AEXP_DZ;
-+            fpsr |= FPSR_EXC_DZ | FPSR_AEXP_DZ;
-         }
-         if (soft & float_flag_inexact) {
--            fpsr |= FPSR_AEXC_INEX;
-+            fpsr |= FPSR_EXC_INEX2 | FPSR_AEXC_INEX;
-         }
-     }
- 
+diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+index 027a8e576d..0e4ff874e4 100644
+--- a/fpu/softfloat.c
++++ b/fpu/softfloat.c
+@@ -220,7 +220,7 @@ GEN_INPUT_FLUSH3(float64_input_flush3, float64)
+  * the use of hardfloat, since hardfloat relies on the inexact flag being
+  * already set.
+  */
+-#if defined(TARGET_PPC) || defined(__FAST_MATH__)
++#if defined(TARGET_M68K) || defined(TARGET_PPC) || defined(__FAST_MATH__)
+ # if defined(__FAST_MATH__)
+ #  warning disabling hardfloat due to -ffast-math: hardfloat requires an exact \
+     IEEE implementation
 -- 
 2.43.0
 
