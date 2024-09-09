@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12DE971F01
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 18:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA281971F2C
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 18:27:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snhA8-00024o-NR; Mon, 09 Sep 2024 12:22:49 -0400
+	id 1snhAD-0002O4-BV; Mon, 09 Sep 2024 12:22:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1snhA5-00022j-F4
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:22:45 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1snhA8-000274-Mo
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:22:49 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1snhA3-0007fk-4R
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:22:44 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-718a3b8a2dcso2546793b3a.2
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 09:22:42 -0700 (PDT)
+ id 1snhA5-0007fv-7Q
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:22:48 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-70b2421471aso2984219a12.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 09:22:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725898961; x=1726503761; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lOQChnUkVXUAx+y325Z3070TgSIayRy3/U0PP6+k2eQ=;
- b=QVYeO3FIIRQoxu3ylzAJF1i6s5asbRJRZTTY5UBRiS34gZct3XhOWowwlb+wsZ46Or
- 88h7++ZCVKTEHYY7nc8Do564A8g8n79u7NCegQLu4ojPuaXMK9K/W7CY7vOB0QHiwBTM
- E6YJ/pSs6HS3ZqbP6NXt3xmBWfFWy2muhirWclzVnwweHTH/RUdhYtJYIcAfMIzu7IJC
- Zb8r9FITO6uNlhne1umCfX0MvKun1mmqrMsv8rFJiLx4jYURgDuTGTkBJ4dGqCqOsLvT
- UcJctbk6MXpbklQU6lHRoecsn81REFJbPrK88UH5MQ8ptBwJqlY6ihrf0dL5BhUhRCvq
- e3Kg==
+ d=linaro.org; s=google; t=1725898962; x=1726503762; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=b76wfqWpuwoFDlLIxKLPUFdGu7bZu4H9hMXKBVkHcrw=;
+ b=pfz1fKITTjZrcVCB5zP6nmyZ8yeQoOENw0Zx38+ZeI9goRlICLf41d3QqA5B6bUyoI
+ DLl8IhQkoVUVDMcNEFyhiKGEDc49n4N9z9H/MubPGbZFPi1EV5s8e5dn0VDU6kWRCIIi
+ /AgKE7V/bcEbp7k8wk2Sl/Qd2Qx08WqoxtYPW5NJ9CJIOa7HSAKHrHKWnffZuv2AUMlm
+ iXVVYSZUoxOHcOt+EySfS0sDELn1neu5QDfE11V1OryM/CZUPYrAPr/YRt843g3DCswe
+ uDqK7vUOGe8LTVcnCDCYAg7/U5umrsCf90DU9LDZmisFWH7BTVXtIETeGWex4PkcajYw
+ j0Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725898961; x=1726503761;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lOQChnUkVXUAx+y325Z3070TgSIayRy3/U0PP6+k2eQ=;
- b=ufu+UcFT4UeBZohYr0joMsHkR59t0iwp/d4DbnN0KYIRhCAFjsFDqteRyJE3CYHKgi
- rw74MNeOaqBndGO5HW8MBCn8YRCAzdcH+0GXMJAM95leQwHz9PQK9rv71+IhQtdCc8QN
- btzGH+KTDB/ukU1BfxS3AU4kdWxVmQh5e/hC37hxmpo4P8kGP72hLWKGktsZSwmFCx4U
- GvnYI61v1pH29tA0os1WeR5syaKd3UdjiLyaey35XczVKrQ0VQT4GKkKRLxlXvlN84Wx
- ycJKVxzTmPIAuD2QsJueFqrqFnhhZS62T47d9tUDQKElLHcUZtlk5zxBz/m2m2iZrpJw
- g+Vg==
-X-Gm-Message-State: AOJu0YwN2c/B3iJ6NNL08hN36bGfKbDd/9JMtiDVXx3ZKp6jJwCyIiND
- a0gtDuVgEjto8ENAccTkUpr63dzVUp4d8EMvhql0oiIgXV0/9WzecWfJuVrz32EGwSA8GeyWC5+
- w
-X-Google-Smtp-Source: AGHT+IGKLn+aVxxq5Rs1EG/tEqxIEn8arKX1qv6lIyzOzPZvLJT0nXIDVaZbyzMB/vu2MCuN7k1pBA==
-X-Received: by 2002:a05:6a20:43a0:b0:1cf:36dd:32e5 with SMTP id
- adf61e73a8af0-1cf36dd3526mr4864704637.15.1725898961310; 
- Mon, 09 Sep 2024 09:22:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1725898962; x=1726503762;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=b76wfqWpuwoFDlLIxKLPUFdGu7bZu4H9hMXKBVkHcrw=;
+ b=PwRK+lNZVnKUc6cyumJN23K2jB+Nt2cQPVv/L3aU3F5MkHKEfRbjN8vFlrPHee6YcZ
+ IjcsuN4EZAEU2LvlUffl1NUBXZyR+HZKC33RtjV58kF5LI64qjX9GjQwuYoOwh0X3yVW
+ vRp+efr4M1R7gBOx16kskXRz/M6Yu/GsdyxVFH/TVRFbWH4HcEGjdYJPj5ZWDDUxucqX
+ Xv8vN0yVu8MYtGpL1TdkQbCIwtupV3/RarPyrxsNMmDsZ5xwcBuJQ62J2GN8rb051v9C
+ uzmH/oJdVz9PIZO4Bmvpj6H2sml8R6ChyEo4+rky26uYGMnCEJCMLrwrLMS60RvG82NV
+ daoQ==
+X-Gm-Message-State: AOJu0YyYQUstyFdFXRp3MCjWsS4n6ygABomrHcvUR6uzVm3g2lZC96hv
+ VZ2npsfe4PfE9Zy5/bnhWipPMs+JbzaRUjOoR9meNtANU3H2z4bVGkFN3I3r4N2SRsRij2fDtRx
+ D
+X-Google-Smtp-Source: AGHT+IE/+rjZDzA6sRPA0UNB3VJntWVWBReW2YF2+Ze+yJEQnrU9vYz6VqSVv60iTqeQogAemokFEA==
+X-Received: by 2002:a05:6a21:6f01:b0:1cf:38a2:c4a9 with SMTP id
+ adf61e73a8af0-1cf38a2c71dmr4545375637.20.1725898962367; 
+ Mon, 09 Sep 2024 09:22:42 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710f35d79sm35753305ad.288.2024.09.09.09.22.40
+ d9443c01a7336-20710f35d79sm35753305ad.288.2024.09.09.09.22.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 09:22:40 -0700 (PDT)
+ Mon, 09 Sep 2024 09:22:42 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 00/29] target/arm: AdvSIMD decodetree conversion, part 4
-Date: Mon,  9 Sep 2024 09:22:10 -0700
-Message-ID: <20240909162240.647173-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 01/29] target/arm: Replace tcg_gen_dupi_vec with constants
+ in gengvec.c
+Date: Mon,  9 Sep 2024 09:22:11 -0700
+Message-ID: <20240909162240.647173-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240909162240.647173-1-richard.henderson@linaro.org>
+References: <20240909162240.647173-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,55 +93,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-First post-9.1 queue flush.
+Instead of copying a constant into a temporary with dupi,
+use a vector constant directly.
 
-r~
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/tcg/gengvec.c | 43 ++++++++++++++++++----------------------
+ 1 file changed, 19 insertions(+), 24 deletions(-)
 
-Richard Henderson (29):
-  target/arm: Replace tcg_gen_dupi_vec with constants in gengvec.c
-  target/arm: Replace tcg_gen_dupi_vec with constants in translate-sve.c
-  target/arm: Use cmpsel in gen_ushl_vec
-  target/arm: Use cmpsel in gen_sshl_vec
-  target/arm: Use tcg_gen_extract2_i64 for EXT
-  target/arm: Convert EXT to decodetree
-  target/arm: Convert TBL, TBX to decodetree
-  target/arm: Convert UZP, TRN, ZIP to decodetree
-  target/arm: Simplify do_reduction_op
-  target/arm: Convert ADDV, *ADDLV, *MAXV, *MINV to decodetree
-  target/arm: Convert FMAXNMV, FMINNMV, FMAXV, FMINV to decodetree
-  target/arm: Convert FMOVI (scalar, immediate) to decodetree
-  target/arm: Convert MOVI, FMOV, ORR, BIC (vector immediate) to
-    decodetree
-  target/arm: Introduce gen_gvec_sshr, gen_gvec_ushr
-  target/arm: Fix whitespace near gen_srshr64_i64
-  target/arm: Convert handle_vec_simd_shri to decodetree
-  target/arm: Convert handle_vec_simd_shli to decodetree
-  target/arm: Use {,s}extract in handle_vec_simd_wshli
-  target/arm: Convert SSHLL, USHLL to decodetree
-  target/arm: Push tcg_rnd into handle_shri_with_rndacc
-  target/arm: Split out subroutines of handle_shri_with_rndacc
-  target/arm: Convert SHRN, RSHRN to decodetree
-  target/arm: Convert handle_scalar_simd_shri to decodetree
-  target/arm: Convert handle_scalar_simd_shli to decodetree
-  target/arm: Convert VQSHL, VQSHLU to gvec
-  target/arm: Widen NeonGenNarrowEnvFn return to 64 bits
-  target/arm: Convert SQSHL, UQSHL, SQSHLU (immediate) to decodetree
-  target/arm: Convert vector [US]QSHRN, [US]QRSHRN, SQSHRUN to
-    decodetree
-  target/arm: Convert scalar [US]QSHRN, [US]QRSHRN, SQSHRUN to
-    decodetree
-
- target/arm/helper.h             |   34 +-
- target/arm/tcg/translate.h      |   14 +-
- target/arm/tcg/gengvec.c        |  121 +-
- target/arm/tcg/neon_helper.c    |   55 +-
- target/arm/tcg/translate-a64.c  | 2081 +++++++++++++------------------
- target/arm/tcg/translate-neon.c |  179 +--
- target/arm/tcg/translate-sve.c  |  128 +-
- target/arm/tcg/a64.decode       |  257 ++++
- target/arm/tcg/neon-dp.decode   |    6 +-
- 9 files changed, 1377 insertions(+), 1498 deletions(-)
-
+diff --git a/target/arm/tcg/gengvec.c b/target/arm/tcg/gengvec.c
+index 56a1dc1f75..726a1383ae 100644
+--- a/target/arm/tcg/gengvec.c
++++ b/target/arm/tcg/gengvec.c
+@@ -297,10 +297,9 @@ void gen_srshr32_i32(TCGv_i32 d, TCGv_i32 a, int32_t sh)
+ static void gen_srshr_vec(unsigned vece, TCGv_vec d, TCGv_vec a, int64_t sh)
+ {
+     TCGv_vec t = tcg_temp_new_vec_matching(d);
+-    TCGv_vec ones = tcg_temp_new_vec_matching(d);
++    TCGv_vec ones = tcg_constant_vec_matching(d, vece, 1);
+ 
+     tcg_gen_shri_vec(vece, t, a, sh - 1);
+-    tcg_gen_dupi_vec(vece, ones, 1);
+     tcg_gen_and_vec(vece, t, t, ones);
+     tcg_gen_sari_vec(vece, d, a, sh);
+     tcg_gen_add_vec(vece, d, d, t);
+@@ -492,10 +491,9 @@ void gen_urshr64_i64(TCGv_i64 d, TCGv_i64 a, int64_t sh)
+ static void gen_urshr_vec(unsigned vece, TCGv_vec d, TCGv_vec a, int64_t shift)
+ {
+     TCGv_vec t = tcg_temp_new_vec_matching(d);
+-    TCGv_vec ones = tcg_temp_new_vec_matching(d);
++    TCGv_vec ones = tcg_constant_vec_matching(d, vece, 1);
+ 
+     tcg_gen_shri_vec(vece, t, a, shift - 1);
+-    tcg_gen_dupi_vec(vece, ones, 1);
+     tcg_gen_and_vec(vece, t, t, ones);
+     tcg_gen_shri_vec(vece, d, a, shift);
+     tcg_gen_add_vec(vece, d, d, t);
+@@ -685,9 +683,9 @@ static void gen_shr64_ins_i64(TCGv_i64 d, TCGv_i64 a, int64_t shift)
+ static void gen_shr_ins_vec(unsigned vece, TCGv_vec d, TCGv_vec a, int64_t sh)
+ {
+     TCGv_vec t = tcg_temp_new_vec_matching(d);
+-    TCGv_vec m = tcg_temp_new_vec_matching(d);
++    int64_t mi = MAKE_64BIT_MASK((8 << vece) - sh, sh);
++    TCGv_vec m = tcg_constant_vec_matching(d, vece, mi);
+ 
+-    tcg_gen_dupi_vec(vece, m, MAKE_64BIT_MASK((8 << vece) - sh, sh));
+     tcg_gen_shri_vec(vece, t, a, sh);
+     tcg_gen_and_vec(vece, d, d, m);
+     tcg_gen_or_vec(vece, d, d, t);
+@@ -773,10 +771,9 @@ static void gen_shl64_ins_i64(TCGv_i64 d, TCGv_i64 a, int64_t shift)
+ static void gen_shl_ins_vec(unsigned vece, TCGv_vec d, TCGv_vec a, int64_t sh)
+ {
+     TCGv_vec t = tcg_temp_new_vec_matching(d);
+-    TCGv_vec m = tcg_temp_new_vec_matching(d);
++    TCGv_vec m = tcg_constant_vec_matching(d, vece, MAKE_64BIT_MASK(0, sh));
+ 
+     tcg_gen_shli_vec(vece, t, a, sh);
+-    tcg_gen_dupi_vec(vece, m, MAKE_64BIT_MASK(0, sh));
+     tcg_gen_and_vec(vece, d, d, m);
+     tcg_gen_or_vec(vece, d, d, t);
+ }
+@@ -1044,14 +1041,13 @@ static void gen_ushl_vec(unsigned vece, TCGv_vec dst,
+     TCGv_vec rval = tcg_temp_new_vec_matching(dst);
+     TCGv_vec lsh = tcg_temp_new_vec_matching(dst);
+     TCGv_vec rsh = tcg_temp_new_vec_matching(dst);
+-    TCGv_vec msk, max;
++    TCGv_vec max;
+ 
+     tcg_gen_neg_vec(vece, rsh, shift);
+     if (vece == MO_8) {
+         tcg_gen_mov_vec(lsh, shift);
+     } else {
+-        msk = tcg_temp_new_vec_matching(dst);
+-        tcg_gen_dupi_vec(vece, msk, 0xff);
++        TCGv_vec msk = tcg_constant_vec_matching(dst, vece, 0xff);
+         tcg_gen_and_vec(vece, lsh, shift, msk);
+         tcg_gen_and_vec(vece, rsh, rsh, msk);
+     }
+@@ -1064,9 +1060,6 @@ static void gen_ushl_vec(unsigned vece, TCGv_vec dst,
+     tcg_gen_shlv_vec(vece, lval, src, lsh);
+     tcg_gen_shrv_vec(vece, rval, src, rsh);
+ 
+-    max = tcg_temp_new_vec_matching(dst);
+-    tcg_gen_dupi_vec(vece, max, 8 << vece);
+-
+     /*
+      * The choice of LT (signed) and GEU (unsigned) are biased toward
+      * the instructions of the x86_64 host.  For MO_8, the whole byte
+@@ -1074,6 +1067,7 @@ static void gen_ushl_vec(unsigned vece, TCGv_vec dst,
+      * have already masked to a byte and so a signed compare works.
+      * Other tcg hosts have a full set of comparisons and do not care.
+      */
++    max = tcg_constant_vec_matching(dst, vece, 8 << vece);
+     if (vece == MO_8) {
+         tcg_gen_cmp_vec(TCG_COND_GEU, vece, lsh, lsh, max);
+         tcg_gen_cmp_vec(TCG_COND_GEU, vece, rsh, rsh, max);
+@@ -1170,6 +1164,7 @@ static void gen_sshl_vec(unsigned vece, TCGv_vec dst,
+     TCGv_vec lsh = tcg_temp_new_vec_matching(dst);
+     TCGv_vec rsh = tcg_temp_new_vec_matching(dst);
+     TCGv_vec tmp = tcg_temp_new_vec_matching(dst);
++    TCGv_vec max, zero;
+ 
+     /*
+      * Rely on the TCG guarantee that out of range shifts produce
+@@ -1180,15 +1175,15 @@ static void gen_sshl_vec(unsigned vece, TCGv_vec dst,
+     if (vece == MO_8) {
+         tcg_gen_mov_vec(lsh, shift);
+     } else {
+-        tcg_gen_dupi_vec(vece, tmp, 0xff);
+-        tcg_gen_and_vec(vece, lsh, shift, tmp);
+-        tcg_gen_and_vec(vece, rsh, rsh, tmp);
++        TCGv_vec msk = tcg_constant_vec_matching(dst, vece, 0xff);
++        tcg_gen_and_vec(vece, lsh, shift, msk);
++        tcg_gen_and_vec(vece, rsh, rsh, msk);
+     }
+ 
+     /* Bound rsh so out of bound right shift gets -1.  */
+-    tcg_gen_dupi_vec(vece, tmp, (8 << vece) - 1);
+-    tcg_gen_umin_vec(vece, rsh, rsh, tmp);
+-    tcg_gen_cmp_vec(TCG_COND_GT, vece, tmp, lsh, tmp);
++    max = tcg_constant_vec_matching(dst, vece, (8 << vece) - 1);
++    tcg_gen_umin_vec(vece, rsh, rsh, max);
++    tcg_gen_cmp_vec(TCG_COND_GT, vece, tmp, lsh, max);
+ 
+     tcg_gen_shlv_vec(vece, lval, src, lsh);
+     tcg_gen_sarv_vec(vece, rval, src, rsh);
+@@ -1197,12 +1192,12 @@ static void gen_sshl_vec(unsigned vece, TCGv_vec dst,
+     tcg_gen_andc_vec(vece, lval, lval, tmp);
+ 
+     /* Select between left and right shift.  */
++    zero = tcg_constant_vec_matching(dst, vece, 0);
+     if (vece == MO_8) {
+-        tcg_gen_dupi_vec(vece, tmp, 0);
+-        tcg_gen_cmpsel_vec(TCG_COND_LT, vece, dst, lsh, tmp, rval, lval);
++        tcg_gen_cmpsel_vec(TCG_COND_LT, vece, dst, lsh, zero, rval, lval);
+     } else {
+-        tcg_gen_dupi_vec(vece, tmp, 0x80);
+-        tcg_gen_cmpsel_vec(TCG_COND_LT, vece, dst, lsh, tmp, lval, rval);
++        TCGv_vec sgn = tcg_constant_vec_matching(dst, vece, 0x80);
++        tcg_gen_cmpsel_vec(TCG_COND_LT, vece, dst, lsh, sgn, lval, rval);
+     }
+ }
+ 
 -- 
 2.43.0
 
