@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC19971F25
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 18:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FDE971F20
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 18:25:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snhAO-0003Et-K2; Mon, 09 Sep 2024 12:23:04 -0400
+	id 1snhAS-0003cP-SA; Mon, 09 Sep 2024 12:23:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1snhAM-00036B-LJ
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:23:02 -0400
+ id 1snhAN-000396-DG
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:23:03 -0400
 Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1snhAK-0007lm-S9
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:23:02 -0400
+ id 1snhAL-0007mM-Ly
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 12:23:03 -0400
 Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-205909afad3so44738775ad.2
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 09:23:00 -0700 (PDT)
+ d9443c01a7336-20543fdb7acso31133615ad.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 09:23:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725898979; x=1726503779; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725898980; x=1726503780; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gFwePBIJVpBdu1416185wluTAZjFVqA7tnKNghfskr8=;
- b=o9/q7ZB4yeIGOA4tj0wbMi6RDuKVyBZC/TYu2wVvtId+niUoqDcal/Alta7MjF/1rv
- BlCbgC0Kl7DoNSBB5w5qaDIaH5/043XgVGJ7v/CwGxH2GmNy4MyQvpbsp5nxuZ4FYH/b
- kL7gPGEdpE2DBZRgCKnMf6dF5Nb7akBK/5SQnC1b2P+pZ6ajLW1NExScWfhwGniU7Q0B
- PVK7DzXcMhLGxs2u4Cgw7IodMg4xe16MPJHltdkmAYj0sek3uMaiQjX3a2lpX8gbNNA6
- 56DX3rt9ZS8D6wFrHnPuThwAniwLDjulDrTzD3c09SmKMM8RWlO9nwFWfI2ojmQjtgii
- YKmQ==
+ bh=MFw2VQon7yYNUOzGMyDI6NhEkt/3qQ163d5w/+6FdjY=;
+ b=aVXbOA4b3vlFdiHoTz5QhUYy6C7s4Lts2Yh+/GaEOlUqVqi/D3VsckEDNZ/Jo/nZXm
+ IbEBfUEfhqA6iBIgKCgvZ42JJ+MjmpWiBa0vFoJKjR5SFipTZFzfNmYF13b2YhRqltet
+ oBuHsHZSsryMGHYItQ5eUc1z9aXlKSvm8UmlkrWcxk/qZ+OUmxM6OG+vP11DuFnJJOv5
+ uXadxMJAo/seYmvlzTtw3oPrxr8nNN/CaZyUiCP+7y9UlURuQxH/D/nyWcTTiPhtrTzf
+ PVG5z7jC++zMitJAZbLM+kCr2GADFSCuL5hnQ2jLPmZEtsh7bn/AUx4rd5bPjSCoG03S
+ vV3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725898979; x=1726503779;
+ d=1e100.net; s=20230601; t=1725898980; x=1726503780;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gFwePBIJVpBdu1416185wluTAZjFVqA7tnKNghfskr8=;
- b=JfqPtlBzINke6KnrZueIVV6vhs5faX5Cxgr+U441Z4chQ5Gngbp1aUL9hxUhBAJuvY
- w9sVSuS5DnRqqi+Gpg/KNi4fN0dI/+IBCW43DMrVve7DAX5m8dCaSZ4mVuUyBaIzyb3V
- LJWeXx6N/CpycDAWPuSJ//WCS9eQcyddahqM1c+xgNP900AkpGznpc7IAzA06t+8a7uj
- YAU42B08ebWFZShPbV5vTnneEcw5SQsgD23Ut6RhCct/2NIuycToTiFqenOLb9g1TXT1
- 3FOrhOjGPAD+mSQezD0viHrM4KoOXaB72HoJuF7bnKLG2P8poNLEgQNUyaSnJof8pQCk
- GVrQ==
-X-Gm-Message-State: AOJu0YywoXUGdpl2U0HxdEd/ksEjDRWtaT5z49d9tV9J/eavfHaRqGXP
- 3gaeCZXwBi9DSL2MHpUKUjvQbogG4z7GXQ1NSa8qBIyHtoKFGzImyKawqttN2yHxYnxBlRqd3kn
- 7
-X-Google-Smtp-Source: AGHT+IHUbXkn7VXqcBImqazD6SnK3cmPG+0FVA5TPUah89UBsh4jBvWeFzUt72igs2qmYItRfnulTQ==
-X-Received: by 2002:a17:902:e745:b0:207:1616:60db with SMTP id
- d9443c01a7336-207161660edmr94410595ad.6.1725898979344; 
- Mon, 09 Sep 2024 09:22:59 -0700 (PDT)
+ bh=MFw2VQon7yYNUOzGMyDI6NhEkt/3qQ163d5w/+6FdjY=;
+ b=gC8TNgTdsa8uuW7r5eRt3/QLqdX/GzeEhZioupSfTQd4qeHACTsHN9TG83SVV9X4F0
+ cGYK0ZiXOO9VZTPbvc66Xt2Kp+cA0PCzLt2le6GXLlVEyHR/E7wGvbB4PIoiyPbl4poH
+ RGePFB99fhsU9UBvPkkgyEOAgUeWQOf0AqITrQ/VWz545I2HR2lL25qihlx/BdsSWRcC
+ rlKTe9Li3/VMPnGiQO2VQf4x1iYAqH+y2wF0CntkX2TqE9BKEshqtiX7yi1BOnarXPtP
+ /puDW3NTa9+N7T9h7nuv1uIL4L2Pvncau/qzViTRsBFm5KHPwWKMv8TUbVIDOSNN/wpu
+ X0MQ==
+X-Gm-Message-State: AOJu0Yy40aFSoG8FzQ8iM+o0nDv3sZlpksWoAbVucEeHM4YB6Lhl3LVe
+ FKyWlEWTUi4jH1H4bixXMLKBCjvMPC1xpU0DM4FE9vUeH6Guefnp+vKIMqbOvzHs7Xi84lJkJlF
+ n
+X-Google-Smtp-Source: AGHT+IEhyVAjL4i62S7n2C70MVmJwpVjOyoE5SZbNDKagzSZNH9IRcGgATbXcNIEEjWRBSWMRBXW8g==
+X-Received: by 2002:a17:902:e80e:b0:206:d6ac:854f with SMTP id
+ d9443c01a7336-206f049d45amr95431845ad.3.1725898980363; 
+ Mon, 09 Sep 2024 09:23:00 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710f35d79sm35753305ad.288.2024.09.09.09.22.58
+ d9443c01a7336-20710f35d79sm35753305ad.288.2024.09.09.09.22.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 09:22:58 -0700 (PDT)
+ Mon, 09 Sep 2024 09:23:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 19/29] target/arm: Convert SSHLL, USHLL to decodetree
-Date: Mon,  9 Sep 2024 09:22:29 -0700
-Message-ID: <20240909162240.647173-20-richard.henderson@linaro.org>
+Subject: [PATCH v2 20/29] target/arm: Push tcg_rnd into handle_shri_with_rndacc
+Date: Mon,  9 Sep 2024 09:22:30 -0700
+Message-ID: <20240909162240.647173-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240909162240.647173-1-richard.henderson@linaro.org>
 References: <20240909162240.647173-1-richard.henderson@linaro.org>
@@ -92,141 +92,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We always pass the same value for round; compute it
+within common code.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 81 ++++++++++++++++------------------
- target/arm/tcg/a64.decode      |  8 ++++
- 2 files changed, 45 insertions(+), 44 deletions(-)
+ target/arm/tcg/translate-a64.c | 32 ++++++--------------------------
+ 1 file changed, 6 insertions(+), 26 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 740620074a..e00d7fbf48 100644
+index e00d7fbf48..e59236330a 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -6983,6 +6983,42 @@ TRANS(SRI_v, do_vec_shift_imm, a, gen_gvec_sri)
- TRANS(SHL_v, do_vec_shift_imm, a, tcg_gen_gvec_shli)
- TRANS(SLI_v, do_vec_shift_imm, a, gen_gvec_sli);
+@@ -9205,11 +9205,10 @@ static void disas_data_proc_fp(DisasContext *s, uint32_t insn)
+  * the vector and scalar code.
+  */
+ static void handle_shri_with_rndacc(TCGv_i64 tcg_res, TCGv_i64 tcg_src,
+-                                    TCGv_i64 tcg_rnd, bool accumulate,
++                                    bool round, bool accumulate,
+                                     bool is_u, int size, int shift)
+ {
+     bool extended_result = false;
+-    bool round = tcg_rnd != NULL;
+     int ext_lshift = 0;
+     TCGv_i64 tcg_src_hi;
  
-+static bool do_vec_shift_imm_wide(DisasContext *s, arg_qrri_e *a, bool is_u)
-+{
-+    TCGv_i64 tcg_rn, tcg_rd;
-+    int esz = a->esz;
-+    int esize;
-+
-+    if (!fp_access_check(s)) {
-+        return true;
-+    }
-+
-+    /*
-+     * For the LL variants the store is larger than the load,
-+     * so if rd == rn we would overwrite parts of our input.
-+     * So load everything right now and use shifts in the main loop.
-+     */
-+    tcg_rd = tcg_temp_new_i64();
-+    tcg_rn = tcg_temp_new_i64();
-+    read_vec_element(s, tcg_rn, a->rn, a->q, MO_64);
-+
-+    esize = 8 << esz;
-+    for (int i = 0, elements = 8 >> esz; i < elements; i++) {
-+        if (is_u) {
-+            tcg_gen_extract_i64(tcg_rd, tcg_rn, i * esize, esize);
-+        } else {
-+            tcg_gen_sextract_i64(tcg_rd, tcg_rn, i * esize, esize);
-+        }
-+        tcg_gen_shli_i64(tcg_rd, tcg_rd, a->imm);
-+        write_vec_element(s, tcg_rd, a->rd, i, esz + 1);
-+    }
-+    clear_vec_high(s, true, a->rd);
-+    return true;
-+}
-+
-+TRANS(SSHLL_v, do_vec_shift_imm_wide, a, false)
-+TRANS(USHLL_v, do_vec_shift_imm_wide, a, true)
-+
- /* Shift a TCGv src by TCGv shift_amount, put result in dst.
-  * Note that it is the caller's responsibility to ensure that the
-  * shift amount is in range (ie 0..31 or 0..63) and provide the ARM
-@@ -10447,47 +10483,6 @@ static void disas_simd_scalar_two_reg_misc(DisasContext *s, uint32_t insn)
-     }
- }
+@@ -9227,6 +9226,7 @@ static void handle_shri_with_rndacc(TCGv_i64 tcg_res, TCGv_i64 tcg_src,
  
--/* USHLL/SHLL - Vector shift left with widening */
--static void handle_vec_simd_wshli(DisasContext *s, bool is_q, bool is_u,
--                                 int immh, int immb, int opcode, int rn, int rd)
--{
--    int size = 32 - clz32(immh) - 1;
--    int immhb = immh << 3 | immb;
--    int shift = immhb - (8 << size);
--    int dsize = 64;
--    int esize = 8 << size;
--    int elements = dsize/esize;
--    TCGv_i64 tcg_rn = tcg_temp_new_i64();
--    TCGv_i64 tcg_rd = tcg_temp_new_i64();
--    int i;
--
--    if (size >= 3) {
--        unallocated_encoding(s);
--        return;
--    }
--
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    /* For the LL variants the store is larger than the load,
--     * so if rd == rn we would overwrite parts of our input.
--     * So load everything right now and use shifts in the main loop.
--     */
--    read_vec_element(s, tcg_rn, rn, is_q ? 1 : 0, MO_64);
--
--    for (i = 0; i < elements; i++) {
--        if (is_u) {
--            tcg_gen_extract_i64(tcg_rd, tcg_rn, i * esize, esize);
--        } else {
--            tcg_gen_sextract_i64(tcg_rd, tcg_rn, i * esize, esize);
--        }
--        tcg_gen_shli_i64(tcg_rd, tcg_rd, shift);
--        write_vec_element(s, tcg_rd, rd, i, size + 1);
--    }
--    clear_vec_high(s, true, rd);
--}
--
- /* SHRN/RSHRN - Shift right with narrowing (and potential rounding) */
- static void handle_vec_simd_shrn(DisasContext *s, bool is_q,
-                                  int immh, int immb, int opcode, int rn, int rd)
-@@ -10577,9 +10572,6 @@ static void disas_simd_shift_imm(DisasContext *s, uint32_t insn)
-         handle_vec_simd_sqshrn(s, false, is_q, is_u, is_u, immh, immb,
-                                opcode, rn, rd);
-         break;
--    case 0x14: /* SSHLL / USHLL */
--        handle_vec_simd_wshli(s, is_q, is_u, immh, immb, opcode, rn, rd);
--        break;
-     case 0x1c: /* SCVTF / UCVTF */
-         handle_simd_shift_intfp_conv(s, false, is_q, is_u, immh, immb,
-                                      opcode, rn, rd);
-@@ -10604,6 +10596,7 @@ static void disas_simd_shift_imm(DisasContext *s, uint32_t insn)
-     case 0x06: /* SRSRA / URSRA (accum + rounding) */
-     case 0x08: /* SRI */
-     case 0x0a: /* SHL / SLI */
-+    case 0x14: /* SSHLL / USHLL */
+     /* Deal with the rounding step */
+     if (round) {
++        TCGv_i64 tcg_rnd = tcg_constant_i64(1ull << (shift - 1));
+         if (extended_result) {
+             TCGv_i64 tcg_zero = tcg_constant_i64(0);
+             if (!is_u) {
+@@ -9294,7 +9294,6 @@ static void handle_scalar_simd_shri(DisasContext *s,
+     bool insert = false;
+     TCGv_i64 tcg_rn;
+     TCGv_i64 tcg_rd;
+-    TCGv_i64 tcg_round;
+ 
+     if (!extract32(immh, 3, 1)) {
          unallocated_encoding(s);
-         return;
+@@ -9320,12 +9319,6 @@ static void handle_scalar_simd_shri(DisasContext *s,
+         break;
      }
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 77b860a3f2..bf67f8a357 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -1269,3 +1269,11 @@ SLI_v           0.10 11110 .... ... 01010 1 ..... .....     @q_shli_b
- SLI_v           0.10 11110 .... ... 01010 1 ..... .....     @q_shli_h
- SLI_v           0.10 11110 .... ... 01010 1 ..... .....     @q_shli_s
- SLI_v           0.10 11110 .... ... 01010 1 ..... .....     @q_shli_d
-+
-+SSHLL_v         0.00 11110 .... ... 10100 1 ..... .....     @q_shli_b
-+SSHLL_v         0.00 11110 .... ... 10100 1 ..... .....     @q_shli_h
-+SSHLL_v         0.00 11110 .... ... 10100 1 ..... .....     @q_shli_s
-+
-+USHLL_v         0.10 11110 .... ... 10100 1 ..... .....     @q_shli_b
-+USHLL_v         0.10 11110 .... ... 10100 1 ..... .....     @q_shli_h
-+USHLL_v         0.10 11110 .... ... 10100 1 ..... .....     @q_shli_s
+ 
+-    if (round) {
+-        tcg_round = tcg_constant_i64(1ULL << (shift - 1));
+-    } else {
+-        tcg_round = NULL;
+-    }
+-
+     tcg_rn = read_fp_dreg(s, rn);
+     tcg_rd = (accumulate || insert) ? read_fp_dreg(s, rd) : tcg_temp_new_i64();
+ 
+@@ -9339,7 +9332,7 @@ static void handle_scalar_simd_shri(DisasContext *s,
+             tcg_gen_deposit_i64(tcg_rd, tcg_rd, tcg_rn, 0, esize - shift);
+         }
+     } else {
+-        handle_shri_with_rndacc(tcg_rd, tcg_rn, tcg_round,
++        handle_shri_with_rndacc(tcg_rd, tcg_rn, round,
+                                 accumulate, is_u, size, shift);
+     }
+ 
+@@ -9392,7 +9385,7 @@ static void handle_vec_simd_sqshrn(DisasContext *s, bool is_scalar, bool is_q,
+     int elements = is_scalar ? 1 : (64 / esize);
+     bool round = extract32(opcode, 0, 1);
+     MemOp ldop = (size + 1) | (is_u_shift ? 0 : MO_SIGN);
+-    TCGv_i64 tcg_rn, tcg_rd, tcg_round;
++    TCGv_i64 tcg_rn, tcg_rd;
+     TCGv_i32 tcg_rd_narrowed;
+     TCGv_i64 tcg_final;
+ 
+@@ -9437,15 +9430,9 @@ static void handle_vec_simd_sqshrn(DisasContext *s, bool is_scalar, bool is_q,
+     tcg_rd_narrowed = tcg_temp_new_i32();
+     tcg_final = tcg_temp_new_i64();
+ 
+-    if (round) {
+-        tcg_round = tcg_constant_i64(1ULL << (shift - 1));
+-    } else {
+-        tcg_round = NULL;
+-    }
+-
+     for (i = 0; i < elements; i++) {
+         read_vec_element(s, tcg_rn, rn, i, ldop);
+-        handle_shri_with_rndacc(tcg_rd, tcg_rn, tcg_round,
++        handle_shri_with_rndacc(tcg_rd, tcg_rn, round,
+                                 false, is_u_shift, size+1, shift);
+         narrowfn(tcg_rd_narrowed, tcg_env, tcg_rd);
+         tcg_gen_extu_i32_i64(tcg_rd, tcg_rd_narrowed);
+@@ -10495,7 +10482,6 @@ static void handle_vec_simd_shrn(DisasContext *s, bool is_q,
+     int shift = (2 * esize) - immhb;
+     bool round = extract32(opcode, 0, 1);
+     TCGv_i64 tcg_rn, tcg_rd, tcg_final;
+-    TCGv_i64 tcg_round;
+     int i;
+ 
+     if (extract32(immh, 3, 1)) {
+@@ -10512,15 +10498,9 @@ static void handle_vec_simd_shrn(DisasContext *s, bool is_q,
+     tcg_final = tcg_temp_new_i64();
+     read_vec_element(s, tcg_final, rd, is_q ? 1 : 0, MO_64);
+ 
+-    if (round) {
+-        tcg_round = tcg_constant_i64(1ULL << (shift - 1));
+-    } else {
+-        tcg_round = NULL;
+-    }
+-
+     for (i = 0; i < elements; i++) {
+         read_vec_element(s, tcg_rn, rn, i, size+1);
+-        handle_shri_with_rndacc(tcg_rd, tcg_rn, tcg_round,
++        handle_shri_with_rndacc(tcg_rd, tcg_rn, round,
+                                 false, true, size+1, shift);
+ 
+         tcg_gen_deposit_i64(tcg_final, tcg_final, tcg_rd, esize * i, esize);
 -- 
 2.43.0
 
