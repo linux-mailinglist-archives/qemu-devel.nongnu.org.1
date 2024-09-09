@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC6D97235B
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 22:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD916972359
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 22:12:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snkk9-0000vm-Hs; Mon, 09 Sep 2024 16:12:13 -0400
+	id 1snkkD-00019V-13; Mon, 09 Sep 2024 16:12:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snkk7-0000qU-OQ
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 16:12:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snkkB-000141-5e
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 16:12:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snkk5-00053m-RI
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 16:12:11 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snkk7-000557-RO
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 16:12:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725912729;
+ s=mimecast20190719; t=1725912731;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=22RXMR5DYkLZTisVq+tQn5/56hW2wP8HWKKqqEW05PY=;
- b=KyvoPDdA9byNFNd03uMEeaDKIqTwgdX0sVZHJQZKoOmEYqQyHnG0KdqbnB8pppspAuRHDs
- Wpuc+r10sreALWxg7Dtcitq8mkgVNhpin/7f5GTNVF8ZrsSG2LY065LjDn4obpiFWr15nB
- iDoE4hsXPTyh+Bc2CdR9LYHqQLfHOFM=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0yCYyH1EuoqCtDP/Ff8kG1W6vFMEFbXZwtdKjoE01Z8=;
+ b=ApZ5F63nEi/dFTGL9S9rm2npClBrqe5TfrnkzFStAwj1BbFwq+x/bgEf7c/Snf/OSoKHhF
+ 0UmA7/harmPLQmdRGL9p6zQL72C+kuSXhrdXPwkw1uRIUp1XYCVE85eATK73q3LBEg+TVM
+ cUOSGPhMAY2mLl7dmcTIHnOFHa2IjkQ=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-sL8NK-VOMXagUV75VWrK8Q-1; Mon, 09 Sep 2024 16:12:08 -0400
-X-MC-Unique: sL8NK-VOMXagUV75VWrK8Q-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4581efb73d3so45295861cf.1
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 13:12:08 -0700 (PDT)
+ us-mta-339-vMVvLR7oMFqcJjtHR__zGA-1; Mon, 09 Sep 2024 16:12:10 -0400
+X-MC-Unique: vMVvLR7oMFqcJjtHR__zGA-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-458353d3635so25799041cf.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 13:12:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725912727; x=1726517527;
+ d=1e100.net; s=20230601; t=1725912729; x=1726517529;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=22RXMR5DYkLZTisVq+tQn5/56hW2wP8HWKKqqEW05PY=;
- b=tZcuGapDq5waxJjN9BYZpHB6tYUVr3mi99YCFxmFg4+UF6ZmAH/KbvU+MvkUq65igB
- KDUjg01beE4AnCjDH84tXy9GDetLZWvxVF93nXn7ks3MJ4MRYXNJi9cz8jhQsAEj4m17
- y4f2ZKZSz9OLU/GevifMRW4m5RXvcZXLY8vOQjNexr2pMmTpWY57hpyB+F80KPnSdZkl
- J881que5P7Oq7O5IISYOBJWRfFAcqDr5ZezThTEB4djLPEs82XfmM2UDPUZYYaWwwXII
- GCpp9+X3JkY4aOPp9e6HnIsOizarf34E6g/xqRLBqWcBNMZ+5/jMMjEaV5zDbpiEVGP7
- KVgQ==
-X-Gm-Message-State: AOJu0YySLctxZGuQGPkDLeYkjHFYbSwONeecWom/oMIqI5Ludt/fYuWO
- f2rMfcbs51WjD2dxZ7MnVoj4KIAbf414nY/ubUgfqfCSCnpuBewy9H9ot5dnu6XeprE+3cBSmkl
- hQSmghvoKhfRiFRfLIGvRHCZQIsXbN+7Ql7Azgjm2rK6cHLG3PJZuYrWmbvstuIvq2a2QuPRBwe
- w1igMQWbBk0oRdpmx5xXI7THL9MvFkdAr/vQ==
-X-Received: by 2002:a05:622a:11c5:b0:457:c7b7:a26a with SMTP id
- d75a77b69052e-4580c67e50dmr156436451cf.8.1725912727176; 
- Mon, 09 Sep 2024 13:12:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEBNpc8PcW4Yu0Lh/xWDwHoJDT+rJRljxeQdI++FcsHcIXY5TJY3pvkGUpq48Lnpx+I4HXX/Q==
-X-Received: by 2002:a05:622a:11c5:b0:457:c7b7:a26a with SMTP id
- d75a77b69052e-4580c67e50dmr156436021cf.8.1725912726766; 
- Mon, 09 Sep 2024 13:12:06 -0700 (PDT)
+ bh=0yCYyH1EuoqCtDP/Ff8kG1W6vFMEFbXZwtdKjoE01Z8=;
+ b=RQc63Lcut7QY7GAEpMoR6nSyKZ1pw+ue8gCUAzlS9j4cMtfVjhwzUMseWdfuMCdMa0
+ L5gUyMUfjEHKJhYGYnKOiiTQ/BwvMIRyk2cgKGZ52b0FI4HfTCsD24j5zweL6DK2jow4
+ xG30LOoqf6WL2n7/J6IlfPnbBe7dlZbSWShm2hncDgA/sLt2CxRiHcLeQErfZRgzQKVK
+ KkyD/PcWkStI9HMKgYJCP1dO+mkLtgHc9wpgXqAgnoP0H1MbuBhPbBXxNNrsUGmRwz1X
+ a3n5twHsrolzL6Xoait3EbVg3qtz2jNI8kCno8yv8EBgwQIaLH1SL5JL5p1kIyLwXgwi
+ En7g==
+X-Gm-Message-State: AOJu0YzzO8iEOS7RTIUVBXVHMi/MFN3k8dssTWlcNQ+04UWmEqkUVNKL
+ 1ImJJHh3TdUxCUNdMhGiDAIlbQhqVjnsDu8PD1swhZZoVTY+Vmo/O30uJ0g/Clq3t0ejrPE0/Ca
+ MihX1zjLyU6GU41RMpVNdHo7suq5wMAVfnJncuoNBtKZscOSlhw9yXlO5gt0CglpsL5wvGX6YTy
+ KUa65PWt4irT3E9E2mteB6GHRrLkzxHRdWwQ==
+X-Received: by 2002:a05:622a:1105:b0:458:3ab3:84f9 with SMTP id
+ d75a77b69052e-4583c71e612mr18030971cf.9.1725912729365; 
+ Mon, 09 Sep 2024 13:12:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHiWn1w8zUW8ErmVutZLM011NNQdBen3vzF2zH0CPX5HEI06hiVq8oBjkWciZ17sNBr1r9s8g==
+X-Received: by 2002:a05:622a:1105:b0:458:3ab3:84f9 with SMTP id
+ d75a77b69052e-4583c71e612mr18030401cf.9.1725912728895; 
+ Mon, 09 Sep 2024 13:12:08 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-45822f93978sm22838561cf.83.2024.09.09.13.12.04
+ d75a77b69052e-45822f93978sm22838561cf.83.2024.09.09.13.12.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 13:12:05 -0700 (PDT)
+ Mon, 09 Sep 2024 13:12:07 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Bryan Zhang <bryan.zhang@bytedance.com>,
- Hao Xiang <hao.xiang@linux.dev>, Yichen Wang <yichen.wang@bytedance.com>
-Subject: [PULL 8/9] tests/migration: Add integration test for 'qatzip'
- compression method
-Date: Mon,  9 Sep 2024 16:11:46 -0400
-Message-ID: <20240909201147.3761639-9-peterx@redhat.com>
+ Fabiano Rosas <farosas@suse.de>, "Denis V. Lunev" <den@openvz.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 9/9] system: improve migration debug
+Date: Mon,  9 Sep 2024 16:11:47 -0400
+Message-ID: <20240909201147.3761639-10-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240909201147.3761639-1-peterx@redhat.com>
 References: <20240909201147.3761639-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,72 +99,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bryan Zhang <bryan.zhang@bytedance.com>
+From: "Denis V. Lunev" <den@openvz.org>
 
-Adds an integration test for 'qatzip'.
+Right now migration_throttle() tracepoint lacks very important
+important information, i.e. no one could easily say how much the guest
+is throttled. This makes difficult to debug guest quality of service
+during migration.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
-Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
-Signed-off-by: Yichen Wang <yichen.wang@bytedance.com>
-Link: https://lore.kernel.org/r/20240830232722.58272-6-yichen.wang@bytedance.com
+This patch adds one more tracepoint into cpu_throttle_set() which is
+actually doing this job.
+
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: Peter Xu <peterx@redhat.com>
+CC: Fabiano Rosas <farosas@suse.de>
+CC: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/r/20240905191941.310592-1-den@openvz.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/qtest/migration-test.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ system/cpu-throttle.c | 3 +++
+ system/trace-events   | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 9d08101643..d6768d5d71 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2920,6 +2920,18 @@ test_migrate_precopy_tcp_multifd_zstd_start(QTestState *from,
- }
- #endif /* CONFIG_ZSTD */
+diff --git a/system/cpu-throttle.c b/system/cpu-throttle.c
+index c951a6c65e..7632dc6143 100644
+--- a/system/cpu-throttle.c
++++ b/system/cpu-throttle.c
+@@ -28,6 +28,7 @@
+ #include "qemu/main-loop.h"
+ #include "sysemu/cpus.h"
+ #include "sysemu/cpu-throttle.h"
++#include "trace.h"
  
-+#ifdef CONFIG_QATZIP
-+static void *
-+test_migrate_precopy_tcp_multifd_qatzip_start(QTestState *from,
-+                                              QTestState *to)
-+{
-+    migrate_set_parameter_int(from, "multifd-qatzip-level", 2);
-+    migrate_set_parameter_int(to, "multifd-qatzip-level", 2);
-+
-+    return test_migrate_precopy_tcp_multifd_start_common(from, to, "qatzip");
-+}
-+#endif
-+
- #ifdef CONFIG_QPL
- static void *
- test_migrate_precopy_tcp_multifd_qpl_start(QTestState *from,
-@@ -3017,6 +3029,17 @@ static void test_multifd_tcp_zstd(void)
- }
- #endif
+ /* vcpu throttling controls */
+ static QEMUTimer *throttle_timer;
+@@ -95,6 +96,8 @@ void cpu_throttle_set(int new_throttle_pct)
+      */
+     bool throttle_active = cpu_throttle_active();
  
-+#ifdef CONFIG_QATZIP
-+static void test_multifd_tcp_qatzip(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "defer",
-+        .start_hook = test_migrate_precopy_tcp_multifd_qatzip_start,
-+    };
-+    test_precopy_common(&args);
-+}
-+#endif
++    trace_cpu_throttle_set(new_throttle_pct);
 +
- #ifdef CONFIG_QPL
- static void test_multifd_tcp_qpl(void)
- {
-@@ -3922,6 +3945,10 @@ int main(int argc, char **argv)
-     migration_test_add("/migration/multifd/tcp/plain/zstd",
-                        test_multifd_tcp_zstd);
- #endif
-+#ifdef CONFIG_QATZIP
-+    migration_test_add("/migration/multifd/tcp/plain/qatzip",
-+                test_multifd_tcp_qatzip);
-+#endif
- #ifdef CONFIG_QPL
-     migration_test_add("/migration/multifd/tcp/plain/qpl",
-                        test_multifd_tcp_qpl);
+     /* Ensure throttle percentage is within valid range */
+     new_throttle_pct = MIN(new_throttle_pct, CPU_THROTTLE_PCT_MAX);
+     new_throttle_pct = MAX(new_throttle_pct, CPU_THROTTLE_PCT_MIN);
+diff --git a/system/trace-events b/system/trace-events
+index 2ed1d59b1f..074d001e90 100644
+--- a/system/trace-events
++++ b/system/trace-events
+@@ -44,3 +44,6 @@ dirtylimit_state_finalize(void)
+ dirtylimit_throttle_pct(int cpu_index, uint64_t pct, int64_t time_us) "CPU[%d] throttle percent: %" PRIu64 ", throttle adjust time %"PRIi64 " us"
+ dirtylimit_set_vcpu(int cpu_index, uint64_t quota) "CPU[%d] set dirty page rate limit %"PRIu64
+ dirtylimit_vcpu_execute(int cpu_index, int64_t sleep_time_us) "CPU[%d] sleep %"PRIi64 " us"
++
++# cpu-throttle.c
++cpu_throttle_set(int new_throttle_pct)  "set guest CPU throttled by %d%%"
 -- 
 2.45.0
 
