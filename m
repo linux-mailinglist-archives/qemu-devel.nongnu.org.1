@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C07C9720AB
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6527972099
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:29:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sniC6-0005Ti-Ok; Mon, 09 Sep 2024 13:28:54 -0400
+	id 1sniC8-0005co-G8; Mon, 09 Sep 2024 13:28:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBw-0004mw-K1
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:44 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1sniBy-0004tN-5r
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:46 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBu-00063O-Ts
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:44 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1fee6435a34so39721185ad.0
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:42 -0700 (PDT)
+ id 1sniBw-00063d-BA
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:45 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2057835395aso41030935ad.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725902921; x=1726507721; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725902922; x=1726507722; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sFzduEvNp99h11xV1aQH9cRrEGMBljq+h6uoDBRgGBU=;
- b=QRLBBJpAARUoSjp/9eka9DMZtfMv8TU7G3/7O3btN3eLOey3WPZkqlsFdyODqyo06C
- PzoI6XTHSiFzV7bIAJ0NlWSeelGHm4cgL1M/AM4MFM4dzsLTAf5HVUAsHhkBzZeOtTNl
- LPbdyvCK044zlkJZPAbxo449rfqdjg9nUMKp5Zkd2lhTWb30Tw7hKi85SlWCDycfR1zW
- vxMQnRaypOD7e3XujJn1GRtQUOTv1mMp+I6RaK8SJVM2peRwR0ZaoeP5fVDkRCcTgmH9
- n1U43rk2ctnraEFyoocHefCzNBmo4SVGb6kYDWeqCefaHHbdTqYe+qgy7uooP3+PNCpC
- F4pQ==
+ bh=3jgxR3ACwEZdh0fOwka7bHIaCcpswZg47RQZTNXAvtg=;
+ b=V2UmtbqWtXHfPILhYjAmsDQeCItXuO7WFvoMp5XZUwCfZUxrB/8NyM3j7P0yhrTG6r
+ 1ILQj6TiQiFB1nuhg0qh9Ub487ykRAkgZNsynH0jhxKxoeXrVP5YQYVoKXNIeL6piuw9
+ WQJUer4BZLt7yKCmX7WbeZcOcRWPXgjNjyVec1j+dZvWIP3FjxieD6C7okFKVerMlcqc
+ lGvZQjpI6F8Up4muDcCVFgW2Lj7xNKixKIsvuZchf+xbDjOjy9nxvSslBPnG9bIenOAK
+ 6NOmShOwuAfqXSPbZRxRB2wWexCBMgo2/QPZDZqNPhjlG+3b4CBzgKgQdEd/oQVZMSa6
+ ol9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725902921; x=1726507721;
+ d=1e100.net; s=20230601; t=1725902922; x=1726507722;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sFzduEvNp99h11xV1aQH9cRrEGMBljq+h6uoDBRgGBU=;
- b=KjqwheyQ0X/djnmqqYFwVh1x9GW5CbFUcFuQISV0nrssdUQ2hiM9at2BVBKAOxpITw
- IqPVJa/1RQqpCU8iVhGx/ay4CItuOCmK9jciFAqK3sENQJOyHjp1+JzPkKyy9IOPTZ8x
- WuHJlP9A0gcQH265e0Ccj0qYBfI04GN4370choxYffUO6dX0o0gromUB+/Jg0gj0FHpk
- CgV5sSruG4xrHQeB61pOKxT9J8t94s0TMm52N6rur8A8oApXUtfrUjBf8tIlYbYL7o+S
- 6gOoTnUWanQtvegT54ZzLP3FMDz3rqN88A2+7uFKFVWVelust7MEZn3kWEKsfROTjT5J
- 8/OQ==
-X-Gm-Message-State: AOJu0YyF0Ae8qDGo9SR7o6ZGzV6Fp6pAeeLCKVGCM2EsjQ5PA82WYLx/
- +Y3tlbl2oqk8H727+hTHJbLbhnBVw4RQV/Ab92TAh2zGHnsRrUZAtYUjg6D4qfdaZPEP7kblxJk
- r
-X-Google-Smtp-Source: AGHT+IGZSsNMKFGGZfYq2cw2Yf+eH9M1KGjBucdo4/Qv2bNVqlPi9QguvWZs8FDY7ckvItbYyN6hrA==
-X-Received: by 2002:a17:902:ec8a:b0:206:91e7:ba98 with SMTP id
- d9443c01a7336-206f0622a02mr114515685ad.50.1725902921559; 
- Mon, 09 Sep 2024 10:28:41 -0700 (PDT)
+ bh=3jgxR3ACwEZdh0fOwka7bHIaCcpswZg47RQZTNXAvtg=;
+ b=OLXS+LNTLMWXULe1d4Id9XD1sUI1BhXKINTTPUpdA6G7e0JoTDpycv9gpWmXjQaceg
+ ApFeuGpsC43z59+1P9SWcw/wVQJQnKtSHY3a62a1CTizlXo8+wm2wDpuSKC6JaCo6gzQ
+ u/ZcasbqI4OHVj3NurjFdG85CxgpznFi8HjJ6K4a/yf/jI2DeB8kUadR0qlCjY8Bl53x
+ NjdE6hhPU+bgIBo7B34P6PqxVUM95Xm5xGegpQXwiCgJISsunwV7BGWeL+7HY3OU+A9I
+ fr9kY2Px87DlmKGl1WVinDDkEKadvTmoL0qNuHW7MAnn6+XEo/pGrWgcpyCkllKkkuA4
+ UWUQ==
+X-Gm-Message-State: AOJu0YyorzkaemciQmjbS8k3KthGP+w+pQlcuyhQr7df38zZ/zGes2aM
+ sx4fDY6Kn81/pERaNv8HwVopBm2C+b6q5+6uBukpXQ6pQ2YS1PfHYsmpn1x88XVTO5HkzmuSPsl
+ f
+X-Google-Smtp-Source: AGHT+IELMx12wt45Bga39AHSyrjViOXcDKUXvJAybNX962o0MawWWZxZTMVdGoCu//iE9OyZB6/ZpA==
+X-Received: by 2002:a17:903:120c:b0:206:add9:624 with SMTP id
+ d9443c01a7336-2070a5793a2mr103491765ad.36.1725902922391; 
+ Mon, 09 Sep 2024 10:28:42 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.40
+ d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Sep 2024 10:28:41 -0700 (PDT)
+ Mon, 09 Sep 2024 10:28:42 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
 	daniel@0x0f.com
-Subject: [PATCH v3 18/26] target/m68k: Remove env argument to gen_ea_mode_fp
-Date: Mon,  9 Sep 2024 10:28:15 -0700
-Message-ID: <20240909172823.649837-19-richard.henderson@linaro.org>
+Subject: [PATCH v3 19/26] target/m68k: Split gen_ea_mode_fp for load/store
+Date: Mon,  9 Sep 2024 10:28:16 -0700
+Message-ID: <20240909172823.649837-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240909172823.649837-1-richard.henderson@linaro.org>
 References: <20240909172823.649837-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,79 +93,205 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the env pointer in DisasContext.
+Replace with gen_load_mode_fp and gen_store_mode_fp.
+Return bool for success from the new functions.
+Remove gen_ldst_fp and ea_what as unused.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/translate.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ target/m68k/translate.c | 125 +++++++++++++++++++++-------------------
+ 1 file changed, 65 insertions(+), 60 deletions(-)
 
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 8a96b38682..5bfdf9aadf 100644
+index 5bfdf9aadf..c81d093c61 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -1011,9 +1011,8 @@ static void gen_ldst_fp(DisasContext *s, int opsize, TCGv addr,
+@@ -329,12 +329,6 @@ static inline void gen_store(DisasContext *s, int opsize, TCGv addr, TCGv val,
      }
  }
  
--static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
--                          int reg0, int opsize, TCGv_ptr fp, ea_what what,
--                          int index)
-+static int gen_ea_mode_fp(DisasContext *s, int mode, int reg0, int opsize,
-+                          TCGv_ptr fp, ea_what what, int index)
+-typedef enum {
+-    EA_STORE,
+-    EA_LOADU,
+-    EA_LOADS
+-} ea_what;
+-
+ /* Read a 16-bit immediate constant */
+ static inline uint16_t read_im16(CPUM68KState *env, DisasContext *s)
  {
+@@ -1001,60 +995,38 @@ static void gen_store_fp(DisasContext *s, int opsize, TCGv addr, TCGv_ptr fp,
+     }
+ }
+ 
+-static void gen_ldst_fp(DisasContext *s, int opsize, TCGv addr,
+-                        TCGv_ptr fp, ea_what what, int index)
+-{
+-    if (what == EA_STORE) {
+-        gen_store_fp(s, opsize, addr, fp, index);
+-    } else {
+-        gen_load_fp(s, opsize, addr, fp, index);
+-    }
+-}
+-
+-static int gen_ea_mode_fp(DisasContext *s, int mode, int reg0, int opsize,
+-                          TCGv_ptr fp, ea_what what, int index)
++static bool gen_load_mode_fp(DisasContext *s, uint16_t insn, int opsize,
++                             TCGv_ptr fp, int index)
+ {
++    int mode = extract32(insn, 3, 3);
++    int reg0 = REG(insn, 0);
      TCGv reg, addr, tmp;
      TCGv_i64 t64;
-@@ -1058,23 +1057,23 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
-         if (reg0 == 4 && what != EA_STORE) {
+ 
+     switch (mode) {
+     case 0: /* Data register direct.  */
+         reg = cpu_dregs[reg0];
+-        if (what == EA_STORE) {
+-            switch (opsize) {
+-            case OS_BYTE:
+-            case OS_WORD:
+-            case OS_LONG:
+-                gen_helper_reds32(reg, tcg_env, fp);
+-                break;
+-            case OS_SINGLE:
+-                gen_helper_redf32(reg, tcg_env, fp);
+-                break;
+-            default:
+-                g_assert_not_reached();
+-            }
+-        } else {
+-            tmp = tcg_temp_new();
+-            switch (opsize) {
+-            case OS_BYTE:
+-            case OS_WORD:
+-            case OS_LONG:
+-                tcg_gen_ext_i32(tmp, reg, opsize | MO_SIGN);
+-                gen_helper_exts32(tcg_env, fp, tmp);
+-                break;
+-            case OS_SINGLE:
+-                gen_helper_extf32(tcg_env, fp, reg);
+-                break;
+-            default:
+-                g_assert_not_reached();
+-            }
++        tmp = tcg_temp_new();
++        switch (opsize) {
++        case OS_BYTE:
++        case OS_WORD:
++        case OS_LONG:
++            tcg_gen_ext_i32(tmp, reg, opsize | MO_SIGN);
++            gen_helper_exts32(tcg_env, fp, tmp);
++            break;
++        case OS_SINGLE:
++            gen_helper_extf32(tcg_env, fp, reg);
++            break;
++        default:
++            g_assert_not_reached();
+         }
+-        return 0;
++        return true;
++
+     case 1: /* Address register direct.  */
+-        return -1;
++        return false;
+ 
+     case 7: /* Other */
+-        if (reg0 == 4 && what != EA_STORE) {
++        if (reg0 == 4) {
              switch (opsize) {
              case OS_BYTE:
--                tmp = tcg_constant_i32((int8_t)read_im8(env, s));
-+                tmp = tcg_constant_i32((int8_t)read_im8(s->env, s));
-                 gen_helper_exts32(tcg_env, fp, tmp);
-                 break;
-             case OS_WORD:
--                tmp = tcg_constant_i32((int16_t)read_im16(env, s));
-+                tmp = tcg_constant_i32((int16_t)read_im16(s->env, s));
-                 gen_helper_exts32(tcg_env, fp, tmp);
-                 break;
-             case OS_LONG:
--                tmp = tcg_constant_i32(read_im32(env, s));
-+                tmp = tcg_constant_i32(read_im32(s->env, s));
-                 gen_helper_exts32(tcg_env, fp, tmp);
-                 break;
-             case OS_SINGLE:
--                tmp = tcg_constant_i32(read_im32(env, s));
-+                tmp = tcg_constant_i32(read_im32(s->env, s));
-                 gen_helper_extf32(tcg_env, fp, tmp);
-                 break;
-             case OS_DOUBLE:
--                t64 = tcg_constant_i64(read_im64(env, s));
-+                t64 = tcg_constant_i64(read_im64(s->env, s));
-                 gen_helper_extf64(tcg_env, fp, t64);
-                 break;
-             case OS_EXTENDED:
-@@ -1082,9 +1081,9 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
-                     gen_exception(s, s->base.pc_next, EXCP_FP_UNIMP);
-                     break;
-                 }
--                tmp = tcg_constant_i32(read_im32(env, s) >> 16);
-+                tmp = tcg_constant_i32(read_im32(s->env, s) >> 16);
-                 tcg_gen_st16_i32(tmp, fp, offsetof(FPReg, l.upper));
--                t64 = tcg_constant_i64(read_im64(env, s));
-+                t64 = tcg_constant_i64(read_im64(s->env, s));
-                 tcg_gen_st_i64(t64, fp, offsetof(FPReg, l.lower));
-                 break;
-             case OS_PACKED:
-@@ -1121,7 +1120,7 @@ static int gen_ea_fp(CPUM68KState *env, DisasContext *s, uint16_t insn,
+                 tmp = tcg_constant_i32((int8_t)read_im8(s->env, s));
+@@ -1096,7 +1068,7 @@ static int gen_ea_mode_fp(DisasContext *s, int mode, int reg0, int opsize,
+             default:
+                 g_assert_not_reached();
+             }
+-            return 0;
++            return true;
+         }
+         /* fall through */
+ 
+@@ -1107,20 +1079,55 @@ static int gen_ea_mode_fp(DisasContext *s, int mode, int reg0, int opsize,
+     case 6: /* Indirect index + displacement.  */
+         addr = gen_lea_mode(s, mode, reg0, opsize);
+         if (IS_NULL_QREG(addr)) {
+-            return -1;
++            return false;
+         }
+-        gen_ldst_fp(s, opsize, addr, fp, what, index);
+-        return 0;
++        gen_load_fp(s, opsize, addr, fp, index);
++        return true;
+     }
+     g_assert_not_reached();
+ }
+ 
+-static int gen_ea_fp(CPUM68KState *env, DisasContext *s, uint16_t insn,
+-                       int opsize, TCGv_ptr fp, ea_what what, int index)
++static bool gen_store_mode_fp(DisasContext *s, uint16_t insn, int opsize,
++                              TCGv_ptr fp, int index)
  {
      int mode = extract32(insn, 3, 3);
      int reg0 = REG(insn, 0);
--    return gen_ea_mode_fp(env, s, mode, reg0, opsize, fp, what, index);
-+    return gen_ea_mode_fp(s, mode, reg0, opsize, fp, what, index);
+-    return gen_ea_mode_fp(s, mode, reg0, opsize, fp, what, index);
++    TCGv reg, addr;
++
++    switch (mode) {
++    case 0: /* Data register direct.  */
++        reg = cpu_dregs[reg0];
++        switch (opsize) {
++        case OS_BYTE:
++        case OS_WORD:
++        case OS_LONG:
++            gen_helper_reds32(reg, tcg_env, fp);
++            break;
++        case OS_SINGLE:
++            gen_helper_redf32(reg, tcg_env, fp);
++            break;
++        default:
++            g_assert_not_reached();
++        }
++        return true;
++
++    case 1: /* Address register direct.  */
++        return false;
++
++    case 2: /* Indirect register */
++    case 3: /* Indirect postincrement.  */
++    case 4: /* Indirect predecrememnt.  */
++    case 5: /* Indirect displacement.  */
++    case 6: /* Indirect index + displacement.  */
++    case 7: /* Other */
++        addr = gen_lea_mode(s, mode, reg0, opsize);
++        if (IS_NULL_QREG(addr)) {
++            return false;
++        }
++        gen_store_fp(s, opsize, addr, fp, index);
++        return true;
++    }
++    g_assert_not_reached();
  }
  
  typedef struct {
+@@ -4880,8 +4887,7 @@ DISAS_INSN(fpu)
+     case 3: /* fmove out */
+         cpu_src = gen_fp_ptr(REG(ext, 7));
+         opsize = ext_opsize(ext, 10);
+-        if (gen_ea_fp(env, s, insn, opsize, cpu_src,
+-                      EA_STORE, IS_USER(s)) == -1) {
++        if (!gen_store_mode_fp(s, insn, opsize, cpu_src, IS_USER(s))) {
+             gen_addr_fault(s);
+         }
+         gen_helper_update_fpsr(tcg_env, cpu_src);
+@@ -4902,8 +4908,7 @@ DISAS_INSN(fpu)
+         /* Source effective address.  */
+         opsize = ext_opsize(ext, 10);
+         cpu_src = gen_fp_result_ptr();
+-        if (gen_ea_fp(env, s, insn, opsize, cpu_src,
+-                      EA_LOADS, IS_USER(s)) == -1) {
++        if (!gen_load_mode_fp(s, insn, opsize, cpu_src, IS_USER(s))) {
+             gen_addr_fault(s);
+             return;
+         }
 -- 
 2.43.0
 
