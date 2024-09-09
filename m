@@ -2,102 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13453972454
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 23:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F31997248D
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 23:31:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snlfU-00029H-OZ; Mon, 09 Sep 2024 17:11:28 -0400
+	id 1snlxp-0005yH-2U; Mon, 09 Sep 2024 17:30:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1snlfP-0001pz-PG; Mon, 09 Sep 2024 17:11:24 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snlxn-0005xa-Fg
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 17:30:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1snlfN-00029m-W2; Mon, 09 Sep 2024 17:11:23 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 489BWeH7031711;
- Mon, 9 Sep 2024 21:11:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-type:content-transfer-encoding; s=pp1; bh=
- +3ppw8BFBE3S4nBdj6OXMry882xwu7Lbt9mBUyQU5+4=; b=TZ+s1vZl5onIs+Du
- U98KjhQoyJVkiNxmnINwUKfXkv/M8iePnSl4pgyjNehW9XXxu4hAZhxShfFIBbB0
- ZlzxG6jElnxR3WCcLWNNH9TvWF43jWGadddIqV/uFo07CoEqsmjsexgclijutVZH
- 2sQ7B+GpQqVzwMaMoXxef9SLwU/w1iiyXzKDQaR7ok6bbtwEUcoOh5LUR4LG64m9
- 7+dtNhBdAzgecLDSYemQcgckMRTk4DpTJKQQcblDWfn931T1df+rp68Q0v3dObJL
- Vj/MJL+E8QF6dqPv9e1At7sZlhowwMhkLvLAC4uHOaCk1XX/vaVjgm1GFWen8tp/
- 8AjbXA==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41geba42bd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Sep 2024 21:11:12 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 489L54bt010117;
- Mon, 9 Sep 2024 21:11:11 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41geba42bc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Sep 2024 21:11:11 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 489KWgg5014576;
- Mon, 9 Sep 2024 21:11:10 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3cm00ue-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Sep 2024 21:11:10 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 489LB71H56361266
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Sep 2024 21:11:07 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B32320049;
- Mon,  9 Sep 2024 21:11:07 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3F16F20040;
- Mon,  9 Sep 2024 21:11:06 +0000 (GMT)
-Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  9 Sep 2024 21:11:06 +0000 (GMT)
-From: Michael Kowal <kowal@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
- npiggin@gmail.com, milesg@linux.ibm.com
-Subject: [PATCH v2 14/14] pnv/xive2: TIMA CI ops using alternative offsets or
- byte lengths
-Date: Mon,  9 Sep 2024 16:10:38 -0500
-Message-Id: <20240909211038.27440-15-kowal@linux.ibm.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20240909211038.27440-1-kowal@linux.ibm.com>
-References: <20240909211038.27440-1-kowal@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1snlxl-0004QN-JJ
+ for qemu-devel@nongnu.org; Mon, 09 Sep 2024 17:30:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1725917419;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lgV63vA7puC+VcliaXWMAbNn3/pczEaAaNvUhihvjMg=;
+ b=eSWiNLZBgKmlyVyZl8YTKhmJBNC6tu1p2kdna1SSG21Ilulbti4jjVLFliUPwytIKrh4CA
+ aidZjoJksueg1p9zh4U0pEqYRnXRRYGT0kTqRV0kxgh0Dk1UiKvzenDQYzvQ2bt6+P9Ie8
+ O2B81HJnut17kZ9thp07Gz1Wx/geH4w=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-692-DILpyT3HOIGoN84hxMpyZQ-1; Mon, 09 Sep 2024 17:30:18 -0400
+X-MC-Unique: DILpyT3HOIGoN84hxMpyZQ-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7a9a653c6cdso439303985a.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 14:30:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725917418; x=1726522218;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lgV63vA7puC+VcliaXWMAbNn3/pczEaAaNvUhihvjMg=;
+ b=O53C7GhZXvX84328Nq9tr2PQojcl2AmtmwD2IigvZAHB8cstoggRvhbH1mUk7/oTS5
+ fQdFqUovoxHzTmIkTyHHA5WvHCtIaBSyCimajA4MOUaWFQBqMk2vnlw6tv6Qb0uDw7Um
+ JAZ8qEB2rxMKmUy396gO4smPZ1t83WSx9hM1ShKn0lbtZUNebDroWY95BHaa+8J/awDt
+ oJb5oDZVcm50UIBqvURUhbrADXZOlC1ESu3sXc52wIoqBEWC7pxjn6Gxd3VOZvwzn0xS
+ 0jokGdESpUoPFtyX8zxB18Vgpb7e8THMBCdBiBUCpnw3+zUaZW0By6rEebBcJsC8NBfZ
+ cJKg==
+X-Gm-Message-State: AOJu0YxB+3AcuDrMWoFVmufmZinT1yKcxUZqnU2w29g0reAWqKVX6UU4
+ V92+m4SVRa5D9rS5vXrfX6TSXkZg/o/8yuZ7jt9PhxHOz8977akqpkgt1N2pNMyiVtSYi/Tgkzp
+ WoJNUpekJn71a1JDU1DNp8JBaTGjfAmzssb2riJ+5+BZ0sz3zVrGm
+X-Received: by 2002:a05:620a:3916:b0:7a2:e2e:31c6 with SMTP id
+ af79cd13be357-7a9bf988bebmr165164785a.21.1725917417689; 
+ Mon, 09 Sep 2024 14:30:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHts6tzaB1GdzaF5V2VVLx9ZuMtbE8H2lLn1liS6yZFZVGf0Djz0x3ELN+LDO9Pxdjl7iQ9Zw==
+X-Received: by 2002:a05:620a:3916:b0:7a2:e2e:31c6 with SMTP id
+ af79cd13be357-7a9bf988bebmr165160885a.21.1725917417312; 
+ Mon, 09 Sep 2024 14:30:17 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7a9a79456a1sm254780785a.22.2024.09.09.14.30.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Sep 2024 14:30:16 -0700 (PDT)
+Date: Mon, 9 Sep 2024 17:30:14 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Hyman Huang <yong.huang@smartx.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH RESEND RFC 03/10] qapi/migration: Introduce periodic CPU
+ throttling parameters
+Message-ID: <Zt9o5r1ZWOxnjctC@x1n>
+References: <cover.1725891841.git.yong.huang@smartx.com>
+ <0bbcdfd86f35830e0a398220663aac5afd8b7e1e.1725891841.git.yong.huang@smartx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jeV9qS_DOntQOwzWoOccYF3fCPoYbGRG
-X-Proofpoint-GUID: TCvytBtEPIT5hcP8Dm6VGbLAnR5sWtmC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-09_10,2024-09-09_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
- mlxscore=0 mlxlogscore=921 impostorscore=0 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
- definitions=main-2409090166
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=kowal@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <0bbcdfd86f35830e0a398220663aac5afd8b7e1e.1725891841.git.yong.huang@smartx.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,79 +101,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some of the TIMA Special CI operations perform the same operation at
-alternative byte offsets and lengths.  The following
-xive2_tm_opertions[] table entries are missing when they exist for
-other offsets/sizes and have been added:
-- lwz@0x810 Pull/Invalidate O/S Context to register    added
-  lwz@0x818                                            exists
-  ld @0x818                                            exists
-- lwz@0x820 Pull Pool Context to register              added
-  lwz@0x828                                            exists
-  ld @0x828                                            exists
-- lwz@0x830 Pull Thread Context to register            added
-  lbz@0x838                                            exists
+On Mon, Sep 09, 2024 at 10:25:36PM +0800, Hyman Huang wrote:
+> To activate the periodic CPU throttleing feature, introduce
+> the cpu-periodic-throttle.
+> 
+> To control the frequency of throttling, introduce the
+> cpu-periodic-throttle-interval.
+> 
+> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 
-Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
----
- include/hw/ppc/xive_regs.h | 7 ++++++-
- hw/intc/xive.c             | 6 ++++++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+Considering that I would still suggest postcopy over auto-converge, IMO we
+should be cautious on adding more QMP interfaces on top of auto-converge,
+because that means more maintenance burden everywhere.. and it's against
+our goal to provide, hopefully, one solution for the long term for
+convergence issues.
 
-diff --git a/include/hw/ppc/xive_regs.h b/include/hw/ppc/xive_regs.h
-index 5b11463777..326327fc79 100644
---- a/include/hw/ppc/xive_regs.h
-+++ b/include/hw/ppc/xive_regs.h
-@@ -124,12 +124,17 @@
- #define TM_SPC_PULL_USR_CTX     0x808   /* Load32 Pull/Invalidate user        */
-                                         /* context                            */
- #define TM_SPC_SET_OS_PENDING   0x812   /* Store8 Set OS irq pending bit      */
-+#define TM_SPC_PULL_OS_CTX_G2   0x810   /* Load32/Load64 Pull/Invalidate OS   */
-+                                        /* context to reg                     */
- #define TM_SPC_PULL_OS_CTX      0x818   /* Load32/Load64 Pull/Invalidate OS   */
-                                         /* context to reg                     */
-+#define TM_SPC_PULL_POOL_CTX_G2 0x820   /* Load32/Load64 Pull/Invalidate Pool */
-+                                        /* context to reg                     */
- #define TM_SPC_PULL_POOL_CTX    0x828   /* Load32/Load64 Pull/Invalidate Pool */
-                                         /* context to reg                     */
- #define TM_SPC_ACK_HV_REG       0x830   /* Load16 ack HV irq to reg           */
--#define TM_SPC_PULL_PHYS_CTX    0x838   /* Pull phys ctx to reg               */
-+#define TM_SPC_PULL_PHYS_CTX_G2 0x830   /* Load32 Pull phys ctx to reg        */
-+#define TM_SPC_PULL_PHYS_CTX    0x838   /* Load8  Pull phys ctx to reg        */
- #define TM_SPC_PULL_USR_CTX_OL  0xc08   /* Store8 Pull/Inval usr ctx to odd   */
-                                         /* line                               */
- #define TM_SPC_ACK_OS_EL        0xc10   /* Store8 ack OS irq to even line     */
-diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 3ce86b6895..efcb63e8aa 100644
---- a/hw/intc/xive.c
-+++ b/hw/intc/xive.c
-@@ -614,18 +614,24 @@ static const XiveTmOp xive2_tm_operations[] = {
-                                                      xive_tm_ack_os_reg },
-     { XIVE_TM_OS_PAGE, TM_SPC_SET_OS_PENDING,     1, xive_tm_set_os_pending,
-                                                      NULL },
-+    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX_G2,     4, NULL,
-+                                                     xive2_tm_pull_os_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,        4, NULL,
-                                                      xive2_tm_pull_os_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,        8, NULL,
-                                                      xive2_tm_pull_os_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_ACK_HV_REG,         2, NULL,
-                                                      xive_tm_ack_hv_reg },
-+    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX_G2,   4, NULL,
-+                                                     xive_tm_pull_pool_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,      4, NULL,
-                                                      xive_tm_pull_pool_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,      8, NULL,
-                                                      xive_tm_pull_pool_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX_OL,     1, xive2_tm_pull_os_ctx_ol,
-                                                      NULL },
-+    { XIVE_TM_HV_PAGE, TM_SPC_PULL_PHYS_CTX_G2,   4, NULL,
-+                                                     xive_tm_pull_phys_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_PHYS_CTX,      1, NULL,
-                                                      xive_tm_pull_phys_ctx },
-     { XIVE_TM_HV_PAGE, TM_SPC_PULL_PHYS_CTX_OL,   1, xive2_tm_pull_phys_ctx_ol,
+Postcopy has a major issue with VFIO, but auto converge isn't anything
+better from that regard.. as we can't yet throttle a device so far anyway.
+Throttling of DMA probably means DMA faults, then postcopy might be doable
+too.  Meanwhile we're looking at working out 1G postcopy at some point.
+
+So I wonder whether we can make any further optmization for auto-converge
+(if we still really want that..) to be at least transparent, so that they
+get auto enabled on new machine types.  If we really want some knobs to
+control, we can still expose via -global migration.x-* parameters, but then
+they'll be all debug tunables only, perhaps that can at least reduce
+burdens to QMP maintainers and Libvirt side.
+
+Thanks,
+
 -- 
-2.43.0
+Peter Xu
 
 
