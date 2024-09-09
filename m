@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6527972099
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8049720BE
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 19:31:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sniC8-0005co-G8; Mon, 09 Sep 2024 13:28:56 -0400
+	id 1sniC6-0005Sr-7O; Mon, 09 Sep 2024 13:28:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBy-0004tN-5r
+ id 1sniBy-0004tM-5n
  for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:46 -0400
 Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sniBw-00063d-BA
+ id 1sniBw-00063u-FP
  for qemu-devel@nongnu.org; Mon, 09 Sep 2024 13:28:45 -0400
 Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-2057835395aso41030935ad.3
- for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:43 -0700 (PDT)
+ d9443c01a7336-2055136b612so55185495ad.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Sep 2024 10:28:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725902922; x=1726507722; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725902923; x=1726507723; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3jgxR3ACwEZdh0fOwka7bHIaCcpswZg47RQZTNXAvtg=;
- b=V2UmtbqWtXHfPILhYjAmsDQeCItXuO7WFvoMp5XZUwCfZUxrB/8NyM3j7P0yhrTG6r
- 1ILQj6TiQiFB1nuhg0qh9Ub487ykRAkgZNsynH0jhxKxoeXrVP5YQYVoKXNIeL6piuw9
- WQJUer4BZLt7yKCmX7WbeZcOcRWPXgjNjyVec1j+dZvWIP3FjxieD6C7okFKVerMlcqc
- lGvZQjpI6F8Up4muDcCVFgW2Lj7xNKixKIsvuZchf+xbDjOjy9nxvSslBPnG9bIenOAK
- 6NOmShOwuAfqXSPbZRxRB2wWexCBMgo2/QPZDZqNPhjlG+3b4CBzgKgQdEd/oQVZMSa6
- ol9A==
+ bh=mow0V9G4FldmSnaWptbbOl3icRG+p5X53n012qTF0RY=;
+ b=x3DbfAhDX8pIKK1QY2c/iW/xh088YFHjWYfMmKh4SYQ9AWoMpus2TbVCQdKwfAQbkh
+ x1IAqZFoj/857w32YKL2YbW+Z11lJ1/WWgzZQ6Jc1CbdSIiOwS1Wc4Y5Yxmtb5qqWj53
+ JpPjRsWJFGlZ51pnVaiJQAw7aTITT+ocUfM2hrrymEkm+NtP7AIfxeo6XdXmd24QOs/y
+ 1fkA7IbZutYKVeC7NBHr6fceKK8S13rLbSzVV/oBwWaA28smxaL/2Le2Gz0cEGKC7Wd7
+ 6+YUD64aLEndMbWNsYY8l+03AtAlx5Md0D4bxbWrwJhWnpdRVXh9yrXtIgx1g1vhwfHf
+ gJ6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725902922; x=1726507722;
+ d=1e100.net; s=20230601; t=1725902923; x=1726507723;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3jgxR3ACwEZdh0fOwka7bHIaCcpswZg47RQZTNXAvtg=;
- b=OLXS+LNTLMWXULe1d4Id9XD1sUI1BhXKINTTPUpdA6G7e0JoTDpycv9gpWmXjQaceg
- ApFeuGpsC43z59+1P9SWcw/wVQJQnKtSHY3a62a1CTizlXo8+wm2wDpuSKC6JaCo6gzQ
- u/ZcasbqI4OHVj3NurjFdG85CxgpznFi8HjJ6K4a/yf/jI2DeB8kUadR0qlCjY8Bl53x
- NjdE6hhPU+bgIBo7B34P6PqxVUM95Xm5xGegpQXwiCgJISsunwV7BGWeL+7HY3OU+A9I
- fr9kY2Px87DlmKGl1WVinDDkEKadvTmoL0qNuHW7MAnn6+XEo/pGrWgcpyCkllKkkuA4
- UWUQ==
-X-Gm-Message-State: AOJu0YyorzkaemciQmjbS8k3KthGP+w+pQlcuyhQr7df38zZ/zGes2aM
- sx4fDY6Kn81/pERaNv8HwVopBm2C+b6q5+6uBukpXQ6pQ2YS1PfHYsmpn1x88XVTO5HkzmuSPsl
- f
-X-Google-Smtp-Source: AGHT+IELMx12wt45Bga39AHSyrjViOXcDKUXvJAybNX962o0MawWWZxZTMVdGoCu//iE9OyZB6/ZpA==
-X-Received: by 2002:a17:903:120c:b0:206:add9:624 with SMTP id
- d9443c01a7336-2070a5793a2mr103491765ad.36.1725902922391; 
- Mon, 09 Sep 2024 10:28:42 -0700 (PDT)
+ bh=mow0V9G4FldmSnaWptbbOl3icRG+p5X53n012qTF0RY=;
+ b=PlvlDEVembPunmk7Uukop1KK6iwkq0mg3Fc5ARA7pNDVRDmepjG4p4PFM9yakQ616b
+ 3dwlwJH1FJFUADWLRurUpqPQ7BAKjoxv2UFoRaH2VSi8+3wYbXpedMu2NkBCwliq8rx8
+ 71cvuL9VjK91VH2Rtca1hbLTWM8TeDNIqyHhmEmimCsQbRe97e/EYDFJnMQyiudLwwag
+ mRcyN8Q5bt2NSgFk3bkaNoITFc6maAH2PmlbR8qyGs61n1fWuEl97uVozpmRX1hJbsGD
+ sl1jYCNZ9AL47XFTNVjGa0Blh6WjVQwazkqK1tAeGnj+/zj9K0a8DPSyMd47bvBeY0Vp
+ ntIQ==
+X-Gm-Message-State: AOJu0YzwaRpmfPnsFu/gQz97B9URXjlbVWGG3XwbMcRBVfTO+lxgUDNk
+ Ed4SEsnHRC2kHfuqPgexVS7xco2NNyNh9eq9SHLl2mZ6gnhSJe8HDdgqbAwhYT1y9nyGyXvfqvp
+ K
+X-Google-Smtp-Source: AGHT+IFEejr9xRs5oEBo3oO3YeG7IwM+RiIR6QHKnwFBxA+PG6E2X6COexI2a56iTumG1qSAKP1Djw==
+X-Received: by 2002:a17:902:f709:b0:206:cc5b:ad0c with SMTP id
+ d9443c01a7336-206f053479amr182542955ad.28.1725902923204; 
+ Mon, 09 Sep 2024 10:28:43 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.41
+ d9443c01a7336-20710e11e02sm36539875ad.14.2024.09.09.10.28.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 09 Sep 2024 10:28:42 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
 	daniel@0x0f.com
-Subject: [PATCH v3 19/26] target/m68k: Split gen_ea_mode_fp for load/store
-Date: Mon,  9 Sep 2024 10:28:16 -0700
-Message-ID: <20240909172823.649837-20-richard.henderson@linaro.org>
+Subject: [PATCH v3 20/26] target/m68k: Move gen_addr_fault into gen_{load,
+ store}_mode_fp
+Date: Mon,  9 Sep 2024 10:28:17 -0700
+Message-ID: <20240909172823.649837-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240909172823.649837-1-richard.henderson@linaro.org>
 References: <20240909172823.649837-1-richard.henderson@linaro.org>
@@ -93,205 +94,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace with gen_load_mode_fp and gen_store_mode_fp.
-Return bool for success from the new functions.
-Remove gen_ldst_fp and ea_what as unused.
+Move the exception to be raised into the helpers.
+This in preparation for raising other exceptions,
+and still wanting to return failure.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/translate.c | 125 +++++++++++++++++++++-------------------
- 1 file changed, 65 insertions(+), 60 deletions(-)
+ target/m68k/translate.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 5bfdf9aadf..c81d093c61 100644
+index c81d093c61..df886ed062 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -329,12 +329,6 @@ static inline void gen_store(DisasContext *s, int opsize, TCGv addr, TCGv val,
-     }
- }
+@@ -1023,6 +1023,7 @@ static bool gen_load_mode_fp(DisasContext *s, uint16_t insn, int opsize,
+         return true;
  
--typedef enum {
--    EA_STORE,
--    EA_LOADU,
--    EA_LOADS
--} ea_what;
--
- /* Read a 16-bit immediate constant */
- static inline uint16_t read_im16(CPUM68KState *env, DisasContext *s)
- {
-@@ -1001,60 +995,38 @@ static void gen_store_fp(DisasContext *s, int opsize, TCGv addr, TCGv_ptr fp,
-     }
- }
- 
--static void gen_ldst_fp(DisasContext *s, int opsize, TCGv addr,
--                        TCGv_ptr fp, ea_what what, int index)
--{
--    if (what == EA_STORE) {
--        gen_store_fp(s, opsize, addr, fp, index);
--    } else {
--        gen_load_fp(s, opsize, addr, fp, index);
--    }
--}
--
--static int gen_ea_mode_fp(DisasContext *s, int mode, int reg0, int opsize,
--                          TCGv_ptr fp, ea_what what, int index)
-+static bool gen_load_mode_fp(DisasContext *s, uint16_t insn, int opsize,
-+                             TCGv_ptr fp, int index)
- {
-+    int mode = extract32(insn, 3, 3);
-+    int reg0 = REG(insn, 0);
-     TCGv reg, addr, tmp;
-     TCGv_i64 t64;
- 
-     switch (mode) {
-     case 0: /* Data register direct.  */
-         reg = cpu_dregs[reg0];
--        if (what == EA_STORE) {
--            switch (opsize) {
--            case OS_BYTE:
--            case OS_WORD:
--            case OS_LONG:
--                gen_helper_reds32(reg, tcg_env, fp);
--                break;
--            case OS_SINGLE:
--                gen_helper_redf32(reg, tcg_env, fp);
--                break;
--            default:
--                g_assert_not_reached();
--            }
--        } else {
--            tmp = tcg_temp_new();
--            switch (opsize) {
--            case OS_BYTE:
--            case OS_WORD:
--            case OS_LONG:
--                tcg_gen_ext_i32(tmp, reg, opsize | MO_SIGN);
--                gen_helper_exts32(tcg_env, fp, tmp);
--                break;
--            case OS_SINGLE:
--                gen_helper_extf32(tcg_env, fp, reg);
--                break;
--            default:
--                g_assert_not_reached();
--            }
-+        tmp = tcg_temp_new();
-+        switch (opsize) {
-+        case OS_BYTE:
-+        case OS_WORD:
-+        case OS_LONG:
-+            tcg_gen_ext_i32(tmp, reg, opsize | MO_SIGN);
-+            gen_helper_exts32(tcg_env, fp, tmp);
-+            break;
-+        case OS_SINGLE:
-+            gen_helper_extf32(tcg_env, fp, reg);
-+            break;
-+        default:
-+            g_assert_not_reached();
-         }
--        return 0;
-+        return true;
-+
      case 1: /* Address register direct.  */
--        return -1;
-+        return false;
++        gen_addr_fault(s);
+         return false;
  
      case 7: /* Other */
--        if (reg0 == 4 && what != EA_STORE) {
-+        if (reg0 == 4) {
-             switch (opsize) {
-             case OS_BYTE:
-                 tmp = tcg_constant_i32((int8_t)read_im8(s->env, s));
-@@ -1096,7 +1068,7 @@ static int gen_ea_mode_fp(DisasContext *s, int mode, int reg0, int opsize,
-             default:
-                 g_assert_not_reached();
-             }
--            return 0;
-+            return true;
-         }
-         /* fall through */
- 
-@@ -1107,20 +1079,55 @@ static int gen_ea_mode_fp(DisasContext *s, int mode, int reg0, int opsize,
+@@ -1079,6 +1080,7 @@ static bool gen_load_mode_fp(DisasContext *s, uint16_t insn, int opsize,
      case 6: /* Indirect index + displacement.  */
          addr = gen_lea_mode(s, mode, reg0, opsize);
          if (IS_NULL_QREG(addr)) {
--            return -1;
-+            return false;
++            gen_addr_fault(s);
+             return false;
          }
--        gen_ldst_fp(s, opsize, addr, fp, what, index);
--        return 0;
-+        gen_load_fp(s, opsize, addr, fp, index);
-+        return true;
-     }
-     g_assert_not_reached();
- }
+         gen_load_fp(s, opsize, addr, fp, index);
+@@ -1112,6 +1114,7 @@ static bool gen_store_mode_fp(DisasContext *s, uint16_t insn, int opsize,
+         return true;
  
--static int gen_ea_fp(CPUM68KState *env, DisasContext *s, uint16_t insn,
--                       int opsize, TCGv_ptr fp, ea_what what, int index)
-+static bool gen_store_mode_fp(DisasContext *s, uint16_t insn, int opsize,
-+                              TCGv_ptr fp, int index)
- {
-     int mode = extract32(insn, 3, 3);
-     int reg0 = REG(insn, 0);
--    return gen_ea_mode_fp(s, mode, reg0, opsize, fp, what, index);
-+    TCGv reg, addr;
-+
-+    switch (mode) {
-+    case 0: /* Data register direct.  */
-+        reg = cpu_dregs[reg0];
-+        switch (opsize) {
-+        case OS_BYTE:
-+        case OS_WORD:
-+        case OS_LONG:
-+            gen_helper_reds32(reg, tcg_env, fp);
-+            break;
-+        case OS_SINGLE:
-+            gen_helper_redf32(reg, tcg_env, fp);
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+        return true;
-+
-+    case 1: /* Address register direct.  */
-+        return false;
-+
-+    case 2: /* Indirect register */
-+    case 3: /* Indirect postincrement.  */
-+    case 4: /* Indirect predecrememnt.  */
-+    case 5: /* Indirect displacement.  */
-+    case 6: /* Indirect index + displacement.  */
-+    case 7: /* Other */
-+        addr = gen_lea_mode(s, mode, reg0, opsize);
-+        if (IS_NULL_QREG(addr)) {
-+            return false;
-+        }
-+        gen_store_fp(s, opsize, addr, fp, index);
-+        return true;
-+    }
-+    g_assert_not_reached();
- }
+     case 1: /* Address register direct.  */
++        gen_addr_fault(s);
+         return false;
  
- typedef struct {
-@@ -4880,8 +4887,7 @@ DISAS_INSN(fpu)
+     case 2: /* Indirect register */
+@@ -1122,6 +1125,7 @@ static bool gen_store_mode_fp(DisasContext *s, uint16_t insn, int opsize,
+     case 7: /* Other */
+         addr = gen_lea_mode(s, mode, reg0, opsize);
+         if (IS_NULL_QREG(addr)) {
++            gen_addr_fault(s);
+             return false;
+         }
+         gen_store_fp(s, opsize, addr, fp, index);
+@@ -4887,10 +4891,9 @@ DISAS_INSN(fpu)
      case 3: /* fmove out */
          cpu_src = gen_fp_ptr(REG(ext, 7));
          opsize = ext_opsize(ext, 10);
--        if (gen_ea_fp(env, s, insn, opsize, cpu_src,
--                      EA_STORE, IS_USER(s)) == -1) {
-+        if (!gen_store_mode_fp(s, insn, opsize, cpu_src, IS_USER(s))) {
-             gen_addr_fault(s);
+-        if (!gen_store_mode_fp(s, insn, opsize, cpu_src, IS_USER(s))) {
+-            gen_addr_fault(s);
++        if (gen_store_mode_fp(s, insn, opsize, cpu_src, IS_USER(s))) {
++            gen_helper_update_fpsr(tcg_env, cpu_src);
          }
-         gen_helper_update_fpsr(tcg_env, cpu_src);
-@@ -4902,8 +4908,7 @@ DISAS_INSN(fpu)
-         /* Source effective address.  */
+-        gen_helper_update_fpsr(tcg_env, cpu_src);
+         return;
+     case 4: /* fmove to control register.  */
+     case 5: /* fmove from control register.  */
+@@ -4909,7 +4912,6 @@ DISAS_INSN(fpu)
          opsize = ext_opsize(ext, 10);
          cpu_src = gen_fp_result_ptr();
--        if (gen_ea_fp(env, s, insn, opsize, cpu_src,
--                      EA_LOADS, IS_USER(s)) == -1) {
-+        if (!gen_load_mode_fp(s, insn, opsize, cpu_src, IS_USER(s))) {
-             gen_addr_fault(s);
+         if (!gen_load_mode_fp(s, insn, opsize, cpu_src, IS_USER(s))) {
+-            gen_addr_fault(s);
              return;
          }
+     } else {
 -- 
 2.43.0
 
