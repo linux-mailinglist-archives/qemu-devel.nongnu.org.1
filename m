@@ -2,70 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D5F9723E8
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 22:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B216197244B
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Sep 2024 23:12:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snlE8-0002DI-6d; Mon, 09 Sep 2024 16:43:12 -0400
+	id 1snlf4-0000OK-Jf; Mon, 09 Sep 2024 17:11:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefan@weilnetz.de>)
- id 1snlE1-0002CL-Kt
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 16:43:05 -0400
-Received: from mail.weilnetz.de ([37.120.169.71]
- helo=mail.v2201612906741603.powersrv.de)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefan@weilnetz.de>)
- id 1snlDz-00085L-4I
- for qemu-devel@nongnu.org; Mon, 09 Sep 2024 16:43:04 -0400
-Received: from qemu.weilnetz.de (qemu.weilnetz.de [188.68.58.204])
- by mail.v2201612906741603.powersrv.de (Postfix) with ESMTP id 016B7DA0552;
- Mon,  9 Sep 2024 22:42:59 +0200 (CEST)
-Authentication-Results: mail.v2201612906741603.powersrv.de; dkim=none;
- dmarc=fail reason="No valid SPF, No valid DKIM" header.from=weilnetz.de
- (policy=none); 
- spf=softfail (mail.v2201612906741603.powersrv.de: 188.68.58.204 is neither
- permitted nor denied by domain of stefan@weilnetz.de)
- smtp.mailfrom=stefan@weilnetz.de
-Received: by qemu.weilnetz.de (Postfix, from userid 1000)
- id 862AD460030; Mon,  9 Sep 2024 22:42:58 +0200 (CEST)
-To: Zhang Chen <chen.zhang@intel.com>, Li Zhijian <lizhijian@fujitsu.com>,
- Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	Stefan Weil <sw@weilnetz.de>
-Subject: [PATCH] Fix calculation of minimum in colo_compare_tcp
-Date: Mon,  9 Sep 2024 22:42:54 +0200
-Message-Id: <20240909204254.1446800-1-sw@weilnetz.de>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1snlf1-0000L3-Ij; Mon, 09 Sep 2024 17:10:59 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1snley-00024u-UU; Mon, 09 Sep 2024 17:10:59 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 489CcM8v014165;
+ Mon, 9 Sep 2024 21:10:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version:content-type
+ :content-transfer-encoding; s=pp1; bh=ROqeBY2dyQO0oLMvXjqZZSR+gd
+ 5rWtRn91TnIGzhMa0=; b=WJb+ePD2yWJ1XMLx0Ekd97eNMgnyYsfrCCzExyVxRL
+ efFEjHsX23ZX5QCkWtnwzBlEMcf/sO6BVxNaNNmNIjfZ0raEfblvQtC8Amk1oAwl
+ P1i8SLtpm3Uoco795ZAEo3nPJQ2MdId2V0TjV8vfR7aRjQCk8kjclu+sas35kdxL
+ Ya25ZUU6mAieLpTdLLvDaezi/7LwGbgP/bVuGD1OL4AhkrPGhNfrK4V+5v+jCfFy
+ 99nVTf+VqppDamz/Zo2utIyTb2LgC/pj9j26gEsCKNzHBUg0TXQTa+eeLY4kVyWo
+ bUp0V16akzLmXcYNJJByeYfFQIrw0qYr/9fe5lwWN/qg==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gd8kc35x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Sep 2024 21:10:51 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 489LAp4D032643;
+ Mon, 9 Sep 2024 21:10:51 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gd8kc35w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Sep 2024 21:10:51 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 489IGd0d003122;
+ Mon, 9 Sep 2024 21:10:50 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h15trgsc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Sep 2024 21:10:50 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 489LAkCq54133100
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 9 Sep 2024 21:10:47 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DFA6A20049;
+ Mon,  9 Sep 2024 21:10:46 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B1A3520040;
+ Mon,  9 Sep 2024 21:10:45 +0000 (GMT)
+Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  9 Sep 2024 21:10:45 +0000 (GMT)
+From: Michael Kowal <kowal@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
+ npiggin@gmail.com, milesg@linux.ibm.com
+Subject: [PATCH v2 00/14] XIVE2 changes for TIMA operations
+Date: Mon,  9 Sep 2024 16:10:24 -0500
+Message-Id: <20240909211038.27440-1-kowal@linux.ibm.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
+Content-Type: text/plain; charset=yes
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 016B7DA0552
-X-Spamd-Bar: ++
-X-Spamd-Result: default: False [2.50 / 14.00]; VIOLATED_DIRECT_SPF(3.50)[];
- BAYES_HAM(-3.00)[99.99%]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- FORGED_SENDER(0.30)[sw@weilnetz.de,stefan@weilnetz.de];
- RCVD_NO_TLS_LAST(0.10)[];
- DMARC_POLICY_SOFTFAIL(0.10)[weilnetz.de : No valid SPF, No valid
- DKIM,quarantine,sampled_out]; MIME_GOOD(-0.10)[text/plain];
- ONCE_RECEIVED(0.10)[]; MIME_TRACE(0.00)[0:+];
- ASN(0.00)[asn:197540, ipnet:188.68.56.0/22, country:DE];
- RCVD_COUNT_ONE(0.00)[1]; TO_DN_SOME(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[weilnetz.de:mid,weilnetz.de:email];
- R_DKIM_NA(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[5];
- FROM_NEQ_ENVFROM(0.00)[sw@weilnetz.de,stefan@weilnetz.de];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; R_SPF_SOFTFAIL(0.00)[~all];
- ARC_NA(0.00)[]
-X-Rspamd-Server: v2201612906741603
-X-Rspamd-Action: no action
-Received-SPF: pass client-ip=37.120.169.71; envelope-from=stefan@weilnetz.de;
- helo=mail.v2201612906741603.powersrv.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: U9vMbntb55qeLj8wDXNY5b-yMwbhKtU6
+X-Proofpoint-ORIG-GUID: n9TJCOFeHIEe6Sl1lfswjlqM4cEzgCBI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-09_10,2024-09-09_02,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 suspectscore=0 clxscore=1015 phishscore=0 spamscore=0
+ lowpriorityscore=0 adultscore=0 mlxscore=0 mlxlogscore=693 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409090166
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,35 +106,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Stefan Weil <sw@weilnetz.de>
-From:  Stefan Weil via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GitHub's CodeQL reports a critical error which is fixed by using the MIN macro:
+In XIVE Gen 2 there are many operations that were not modeled and are
+needed for PowerVM.  These changes are associated with the following Thread
+Interrupt Management Area subjects:
+ - OS context
+ - Thread context
+ - Pulling contexts to 'cache lines'
+ - Pool targets
+ - Enhaced trace data for XIVE Gen2
 
-    Unsigned difference expression compared to zero
-
-Signed-off-by: Stefan Weil <sw@weilnetz.de>
+version 2:
+- use dma_memory_write() instead of cpu_physical_memory_write()
+- use ternery operator in NVG/NVC pnv_xive2_vst_read/write()
+- removed xive2_nvgc_set_backlog() until it is needed
+- re-defined word 2 valid bits since it is the same in each Reporting
+- provided better fix for possible NSR operation overflow
+- moved changes for operations that can occur on ring, in a new patch set (10/13)
+- version 1 reviewed-by tags:
+$b4 am 20240801203008.11224-1-kowal@linux.ibm.com
+Analyzing 35 messages in the thread
+Analyzing 0 code-review messages
 ---
- net/colo-compare.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+  [PATCH 1/13] pnv/xive: TIMA patch sets pre-req alignment and formatting changes
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 2/13] pnv/xive2: Define OGEN field in the TIMA
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 3/13] ppc/xive2: Support TIMA "Pull OS Context to Odd Thread Reporting Line"
+  [PATCH 4/13] pnv/xive2: Support for "OS LGS Push" TIMA operation
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 5/13] ppc/xive2: Dump more NVP state with 'info pic'
+  [PATCH 6/13] ppc/xive2: Dump the VP-group and crowd tables with 'info pic'
+  [PATCH 7/13] ppc/xive2: Allow 1-byte write of Target field in TIMA
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 8/13] ppc/xive2: Support "Pull Thread Context to Register" operation
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 9/13] ppc/xive2: Support "Pull Thread Context to Odd Thread Reporting Line"
+  [PATCH 10/13] pnv/xive: Add special handling for pool targets
+  [PATCH 11/13] pnv/xive: Update PIPR when updating CPPR
+  [PATCH 12/13] pnv/xive2: TIMA support for 8-byte OS context push for PHYP
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 13/13] pnv/xive2: TIMA CI ops using alternative offsets or byte lengths
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-diff --git a/net/colo-compare.c b/net/colo-compare.c
-index c4ad0ab71f..39f90c4065 100644
---- a/net/colo-compare.c
-+++ b/net/colo-compare.c
-@@ -412,8 +412,7 @@ static void colo_compare_tcp(CompareState *s, Connection *conn)
-      * can ensure that the packet's payload is acknowledged by
-      * primary and secondary.
-     */
--    uint32_t min_ack = conn->pack - conn->sack > 0 ?
--                       conn->sack : conn->pack;
-+    uint32_t min_ack = MIN(conn->pack, conn->sack);
- 
- pri:
-     if (g_queue_is_empty(&conn->primary_list)) {
--- 
-2.39.3 (Apple Git-146)
+
+Frederic Barrat (4):
+  pnv/xive2: Define OGEN field in the TIMA
+  ppc/xive2: Support TIMA "Pull OS Context to Odd Thread Reporting Line"
+  ppc/xive2: Dump more NVP state with 'info pic'
+  ppc/xive2: Dump the VP-group and crowd tables with 'info pic'
+
+Glenn Miles (7):
+  pnv/xive2: Support for "OS LGS Push" TIMA operation
+  ppc/xive2: Allow 1-byte write of Target field in TIMA
+  ppc/xive2: Support "Pull Thread Context to Register" operation
+  ppc/xive2: Support "Pull Thread Context to Odd Thread Reporting Line"
+  pnv/xive: Add special handling for pool targets
+  pnv/xive: Update PIPR when updating CPPR
+  pnv/xive2: TIMA support for 8-byte OS context push for PHYP
+
+Michael Kowal (3):
+  pnv/xive: TIMA patch sets pre-req alignment and formatting changes
+  ppc/xive2: Change context/ring specific functions to be generic
+  pnv/xive2: TIMA CI ops using alternative offsets or byte lengths
+
+ include/hw/ppc/xive.h       |   2 +-
+ include/hw/ppc/xive2.h      |  18 ++
+ include/hw/ppc/xive2_regs.h |  25 ++-
+ include/hw/ppc/xive_regs.h  |  45 +++--
+ hw/intc/pnv_xive2.c         |  44 ++++-
+ hw/intc/xive.c              | 201 ++++++++++++++++++-----
+ hw/intc/xive2.c             | 317 ++++++++++++++++++++++++++++++------
+ 7 files changed, 537 insertions(+), 115 deletions(-)
+
+--
+2.43.0
 
 
