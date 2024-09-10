@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732EE9744BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 23:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0B39744C2
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 23:26:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so8L9-0002WR-10; Tue, 10 Sep 2024 17:23:59 -0400
+	id 1so8Mm-0001sG-Qb; Tue, 10 Sep 2024 17:25:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1so8L7-0002SX-LM
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 17:23:57 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ (Exim 4.90_1) (envelope-from <gregorhaas1997@gmail.com>)
+ id 1so8Ml-0001oZ-Bk; Tue, 10 Sep 2024 17:25:39 -0400
+Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1so8L5-0001wB-Sy
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 17:23:57 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-7ae3d7222d4so1020998a12.3
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 14:23:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gregorhaas1997@gmail.com>)
+ id 1so8Mj-0002IK-Q4; Tue, 10 Sep 2024 17:25:39 -0400
+Received: by mail-yb1-xb36.google.com with SMTP id
+ 3f1490d57ef6-e1a9f84699cso1188766276.3; 
+ Tue, 10 Sep 2024 14:25:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726003434; x=1726608234; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JrrQrwkjzFljgzMx/X6RMiMfxp4p6p9uhxYwZvInmsY=;
- b=mesJ0H4fE+YHkaCCOpSY34nSsIQFWw6yvMHDPm6ts/f4UjSKaVEoYtjWGl+E6njLa3
- XE6E3CX6xkSnTwy8pjhgSEvI/MBse9pFSnyK7m53kKtQft0l9FnaZANWuFhcqocXo9GS
- Uic1IJvYGCuRQcIgGhyd9BYBWiiZgUQjrMDGZO+1g2mdl+XXblHbjaA/k1gB3+R8n6XX
- ee5/87p+Ncwg0pyZ5StpQz5ntrFwKrksqdpS1R9nGAhCRzrJKT2DNXT8nk7lNibZ9Vq0
- lJzvH+G1VbIzE/loYGjvIuiCIkSP+R4TJMBEn8qGH/ZwzkEpoxM0K625bcK1BAJBTl5x
- Cw0A==
+ d=gmail.com; s=20230601; t=1726003536; x=1726608336; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=22XBIU3pc0P+VXjFfMQTf9BHKfxrdihaJYixQ+/HslQ=;
+ b=OoaS13CfwtHpdn7jG/GOwplGsrRbWuKUeJhBtvFxpMnqS0gPzMKz4UbHwyiBtowlYv
+ 2yDs4CnyV7CKSNVdj3x9gx8a/SYxtcD/J5yS22k622aYF2HvvOzuNuVlNk9ypXNju9cu
+ j2WbrOyBqSqbaJMIYBLFBZtRbwEAN0vRSXze0esgNGL3h1REqoCNxTlbbl0AG5s2G5Hw
+ AZ/3NO2ANwvvsrI79JluPn/dQfY/sT7f4reO0YdwhUmUUffP/fZL9xWmeo+rbiF7SbZ8
+ 5ChAL5aAm9urQpNR5dUZXopLogVvruq5ocynLyeKNratz/1ofvyn8SQtKdU8wl22a6EH
+ ZrnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726003434; x=1726608234;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JrrQrwkjzFljgzMx/X6RMiMfxp4p6p9uhxYwZvInmsY=;
- b=bhcklF8GA078O041USadDwPpYxNp48Leh6YNBeWE0czdb25bHsuaz0utVGSHN5IZ6V
- 6mNnAecWpxAj+5hlHzYc927FIqmfpvy+j/xdeBSDrB/krKfRTwY/2JX/w3TrlFyu7Hy5
- n4fUPXe4NC+kRFTB2hWj4rQP8sMX1ymxstjI8oDhlHd8QK1JucUncyiw2+g/Z+qpBQpL
- o1byeyWoAjh95YtMin2xQzCNK4L8UI7Ryn4Ew/m91z7LSaG+YoRN/O8PeSXaMT/8K6Xu
- ogm8TDFg7XiZAoJsQCHXe/amIjKcChKLzgQZI6E/dSJqzCZxriyretqUAdk6UMgGQe39
- jrrA==
-X-Gm-Message-State: AOJu0YyEdlH92GQeT6VheUaVJtZ440P+vEsf5dCIceUYnxetJdDSKJ8S
- rLmKZYxtsTnN4r3OTOTlvpCijvgDn5c5SOrwOANEXDJb+zWe1lsXGqWrPMduGpqaXWmqFmdrYUf
- f
-X-Google-Smtp-Source: AGHT+IHCqt7SwLwoGwh5/XrkVBZD5b5wyFT2Fi++0dXIhUSpYDa0TN7y90pr541tv+knSwPhILrYrQ==
-X-Received: by 2002:a05:6a21:168b:b0:1c4:23f0:9665 with SMTP id
- adf61e73a8af0-1cf62cea105mr1956098637.29.1726003434289; 
- Tue, 10 Sep 2024 14:23:54 -0700 (PDT)
-Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7d825ba616bsm6089661a12.93.2024.09.10.14.23.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Sep 2024 14:23:53 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1726003536; x=1726608336;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=22XBIU3pc0P+VXjFfMQTf9BHKfxrdihaJYixQ+/HslQ=;
+ b=vG8+BXbO+LMsY2IEVl4cAupmciBBMkbOQQZ0BGmsW+fDG/wSI2zDbU7TA0vmAOV3fZ
+ CZOXD6D3niNmP7Xc+tsaJFTBO3dZnsNPnLIOyPxWSr6OYeKjteRPJ3UNIZkfuJTeKBsT
+ XK26aD7NIIWF5ayJsIN66BlU0F4qKVdISJg7OrwXqickUNNP8umWNhvx71Kl0vzsOUwI
+ DL5tctYXtqStVHrirNAjRodSWQJYabWThZ/nRo6WjDdszv7CCuuW7z5OFqjnGz6KhRr5
+ 2K/1CtrdSf5nL3wpXxfhS2Z6PrHpru1xnygespg9xApiW1X4q+NXL/ZQxkItnpUNsL7y
+ lsAA==
+X-Gm-Message-State: AOJu0Yyde0ZrSlRfRjmCILltq5fAls34ah4LzKLJNurttZtkuSSPv6zs
+ GVRL7ZvBPdcdU/9OiGnp7+QEY7+1NGm888wTUjojw5j4VG+62QixFLtDQ+2u
+X-Google-Smtp-Source: AGHT+IF5tMLJTThQKUhN6jHYXmU0V4XhmmYX6bhzrsborRfVr4GM+q4ntfkZNaC0p98lON/Ob0BC7A==
+X-Received: by 2002:a05:6902:250a:b0:e1a:441f:3208 with SMTP id
+ 3f1490d57ef6-e1d8c38d412mr986649276.23.1726003535957; 
+ Tue, 10 Sep 2024 14:25:35 -0700 (PDT)
+Received: from localhost ([2600:1700:830:3db0::14])
+ by smtp.gmail.com with UTF8SMTPSA id
+ 3f1490d57ef6-e1d7ba1c297sm459686276.27.2024.09.10.14.25.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Sep 2024 14:25:35 -0700 (PDT)
+From: Gregor Haas <gregorhaas1997@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, pierrick.bouvier@linaro.org,
- Elisha Hollander <just4now666666@gmail.com>
-Subject: [PATCH 2/2] tcg: Propagate new TCGOp to add_as_label_use
-Date: Tue, 10 Sep 2024 14:23:51 -0700
-Message-ID: <20240910212351.977753-3-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240910212351.977753-1-richard.henderson@linaro.org>
-References: <20240910212351.977753-1-richard.henderson@linaro.org>
+Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, dbarboza@ventanamicro.com,
+ alistair.francis@wdc.com, Gregor Haas <gregorhaas1997@gmail.com>
+Subject: [PATCH v5 0/2] Add support for generating OpenSBI domains in the
+ device tree
+Date: Tue, 10 Sep 2024 14:25:29 -0700
+Message-ID: <20240910212533.986734-1-gregorhaas1997@gmail.com>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
+ envelope-from=gregorhaas1997@gmail.com; helo=mail-yb1-xb36.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,153 +89,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The use of tcg_last_op does not interact well with
-TCGContext.emit_before_op, resulting in the label
-being linked to something other than the branch op.
+Apologies for the double-email, forgot to run checkpatch ...
 
-In this case it is easier to simply collect the emitted
-branch op and pass it directly to add_as_label_use.
+This patch series adds support for specifying OpenSBI domains on the QEMU
+command line. A simple example of what this looks like is included in the
+documentation changes included in this series, along with detailed information
+on each option to each of the new flags.
 
-Reported-by: Elisha Hollander <just4now666666@gmail.com>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/tcg-op.c | 63 ++++++++++++++++++++++++++--------------------------
- 1 file changed, 32 insertions(+), 31 deletions(-)
+v5:
+- Add missing Signed-off-by line in the documentation commit
 
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index 28c41b37a4..4a7e705367 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -117,9 +117,9 @@ static void DNI tcg_gen_op1_i64(TCGOpcode opc, TCGv_i64 a1)
-     tcg_gen_op1(opc, tcgv_i64_arg(a1));
- }
- 
--static void DNI tcg_gen_op1i(TCGOpcode opc, TCGArg a1)
-+static TCGOp * DNI tcg_gen_op1i(TCGOpcode opc, TCGArg a1)
- {
--    tcg_gen_op1(opc, a1);
-+    return tcg_gen_op1(opc, a1);
- }
- 
- static void DNI tcg_gen_op2_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2)
-@@ -196,16 +196,16 @@ static void DNI tcg_gen_op4i_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-                 tcgv_i64_arg(a3), a4);
- }
- 
--static void DNI tcg_gen_op4ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                                  TCGArg a3, TCGArg a4)
-+static TCGOp * DNI tcg_gen_op4ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                     TCGArg a3, TCGArg a4)
- {
--    tcg_gen_op4(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2), a3, a4);
-+    return tcg_gen_op4(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2), a3, a4);
- }
- 
--static void DNI tcg_gen_op4ii_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
--                                  TCGArg a3, TCGArg a4)
-+static TCGOp * DNI tcg_gen_op4ii_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-+                                     TCGArg a3, TCGArg a4)
- {
--    tcg_gen_op4(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2), a3, a4);
-+    return tcg_gen_op4(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2), a3, a4);
- }
- 
- static void DNI tcg_gen_op5_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-@@ -270,12 +270,12 @@ static void DNI tcg_gen_op6i_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-                 tcgv_i64_arg(a3), tcgv_i64_arg(a4), tcgv_i64_arg(a5), a6);
- }
- 
--static void DNI tcg_gen_op6ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                                  TCGv_i32 a3, TCGv_i32 a4,
--                                  TCGArg a5, TCGArg a6)
-+static TCGOp * DNI tcg_gen_op6ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                     TCGv_i32 a3, TCGv_i32 a4,
-+                                     TCGArg a5, TCGArg a6)
- {
--    tcg_gen_op6(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
--                tcgv_i32_arg(a3), tcgv_i32_arg(a4), a5, a6);
-+    return tcg_gen_op6(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
-+                       tcgv_i32_arg(a3), tcgv_i32_arg(a4), a5, a6);
- }
- 
- /* Generic ops.  */
-@@ -286,18 +286,17 @@ void gen_set_label(TCGLabel *l)
-     tcg_gen_op1(INDEX_op_set_label, label_arg(l));
- }
- 
--static void add_last_as_label_use(TCGLabel *l)
-+static void add_as_label_use(TCGLabel *l, TCGOp *op)
- {
-     TCGLabelUse *u = tcg_malloc(sizeof(TCGLabelUse));
- 
--    u->op = tcg_last_op();
-+    u->op = op;
-     QSIMPLEQ_INSERT_TAIL(&l->branches, u, next);
- }
- 
- void tcg_gen_br(TCGLabel *l)
- {
--    tcg_gen_op1(INDEX_op_br, label_arg(l));
--    add_last_as_label_use(l);
-+    add_as_label_use(l, tcg_gen_op1(INDEX_op_br, label_arg(l)));
- }
- 
- void tcg_gen_mb(TCGBar mb_type)
-@@ -514,8 +513,9 @@ void tcg_gen_brcond_i32(TCGCond cond, TCGv_i32 arg1, TCGv_i32 arg2, TCGLabel *l)
-     if (cond == TCG_COND_ALWAYS) {
-         tcg_gen_br(l);
-     } else if (cond != TCG_COND_NEVER) {
--        tcg_gen_op4ii_i32(INDEX_op_brcond_i32, arg1, arg2, cond, label_arg(l));
--        add_last_as_label_use(l);
-+        TCGOp *op = tcg_gen_op4ii_i32(INDEX_op_brcond_i32,
-+                                      arg1, arg2, cond, label_arg(l));
-+        add_as_label_use(l, op);
-     }
- }
- 
-@@ -1934,15 +1934,16 @@ void tcg_gen_brcond_i64(TCGCond cond, TCGv_i64 arg1, TCGv_i64 arg2, TCGLabel *l)
-     if (cond == TCG_COND_ALWAYS) {
-         tcg_gen_br(l);
-     } else if (cond != TCG_COND_NEVER) {
-+        TCGOp *op;
-         if (TCG_TARGET_REG_BITS == 32) {
--            tcg_gen_op6ii_i32(INDEX_op_brcond2_i32, TCGV_LOW(arg1),
--                              TCGV_HIGH(arg1), TCGV_LOW(arg2),
--                              TCGV_HIGH(arg2), cond, label_arg(l));
-+            op = tcg_gen_op6ii_i32(INDEX_op_brcond2_i32, TCGV_LOW(arg1),
-+                                   TCGV_HIGH(arg1), TCGV_LOW(arg2),
-+                                   TCGV_HIGH(arg2), cond, label_arg(l));
-         } else {
--            tcg_gen_op4ii_i64(INDEX_op_brcond_i64, arg1, arg2, cond,
--                              label_arg(l));
-+            op = tcg_gen_op4ii_i64(INDEX_op_brcond_i64, arg1, arg2, cond,
-+                                   label_arg(l));
-         }
--        add_last_as_label_use(l);
-+        add_as_label_use(l, op);
-     }
- }
- 
-@@ -1953,12 +1954,12 @@ void tcg_gen_brcondi_i64(TCGCond cond, TCGv_i64 arg1, int64_t arg2, TCGLabel *l)
-     } else if (cond == TCG_COND_ALWAYS) {
-         tcg_gen_br(l);
-     } else if (cond != TCG_COND_NEVER) {
--        tcg_gen_op6ii_i32(INDEX_op_brcond2_i32,
--                          TCGV_LOW(arg1), TCGV_HIGH(arg1),
--                          tcg_constant_i32(arg2),
--                          tcg_constant_i32(arg2 >> 32),
--                          cond, label_arg(l));
--        add_last_as_label_use(l);
-+        TCGOp *op = tcg_gen_op6ii_i32(INDEX_op_brcond2_i32,
-+                                      TCGV_LOW(arg1), TCGV_HIGH(arg1),
-+                                      tcg_constant_i32(arg2),
-+                                      tcg_constant_i32(arg2 >> 32),
-+                                      cond, label_arg(l));
-+        add_as_label_use(l, op);
-     }
- }
- 
+v4:
+- Added license comments to the top of each new file
+- Made id mandatory for OpenSBI domains
+- Added documentation
+
+v3:
+- Addressed review comments from v2 by adding default values to new properties.
+  This results in concrete errors at QEMU configuration time if a mandatory
+  property (as mandated by the OpenSBI spec) is not provided.
+- Changed command line encoding for the possible-harts field from a CPU bitmask
+  (e.g. where bit X is set if CPU X is a possible hart) to a range format (e.g.
+  the possible harts should be CPUs X-Y, where Y >= X). This does constrain the
+  hart assignment to consecutive ranges of harts, but this constraint is also
+  present for other QEMU subsystems (such as NUMA).
+- Added create_fdt_one_device(), which is invoked when scanning the device tree
+  for a memregion's devices. This function allocates a phandle for a region's
+  device if one does not yet exist.
+
+v2:
+- Addressed review comments from v1. Specifically, renamed domain.{c,h} ->
+  opensbi_domain.{c,h} to increase clarity of what these files do. Also, more
+  consistently use g_autofree for dynamically allocated variables
+- Added an "assign" flag to OpenSBIDomainState, which indicates whether to
+  assign the domain's boot hart to it at domain parsing time.
+
+Gregor Haas (2):
+  hw/riscv: Add support for generating OpenSBI domains in the device
+    tree
+  docs/system/riscv: Add documentation for command-line OpenSBI domains
+
+ MAINTAINERS                           |   8 +
+ docs/system/riscv/opensbi_domains.rst | 156 +++++++
+ docs/system/target-riscv.rst          |  10 +
+ hw/riscv/Kconfig                      |   4 +
+ hw/riscv/meson.build                  |   1 +
+ hw/riscv/opensbi_domain.c             | 558 ++++++++++++++++++++++++++
+ hw/riscv/virt.c                       |   3 +
+ include/hw/riscv/opensbi_domain.h     |  69 ++++
+ 8 files changed, 809 insertions(+)
+ create mode 100644 docs/system/riscv/opensbi_domains.rst
+ create mode 100644 hw/riscv/opensbi_domain.c
+ create mode 100644 include/hw/riscv/opensbi_domain.h
+
 -- 
-2.43.0
+2.46.0
 
 
