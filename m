@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CD197367E
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 13:52:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7E897367C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 13:52:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snzPj-0004Cl-3d; Tue, 10 Sep 2024 07:52:07 -0400
+	id 1snzPj-0004Ga-Oh; Tue, 10 Sep 2024 07:52:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snzPP-00044S-Uj
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 07:51:51 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snzPV-00045z-Mm
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 07:52:01 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snzPM-0006Wj-IH
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 07:51:46 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a8d56155f51so77327466b.2
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 04:51:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snzPT-0006Xr-F5
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 07:51:53 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5c263118780so901110a12.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 04:51:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725969102; x=1726573902; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725969109; x=1726573909; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jXVRH9YeP0ZiPm2lygL9nbSRmpHSfMI7+KyJVmSsa5o=;
- b=k20B9Ic2+PjXDq9gym96FkYd0llwBrvuVlwCBjcW6xIKhiaaJs2jLNWeqO9hGouCHb
- V8cD1gvRTAChtr1p0sqyBER4Hdmnx2e5SuUHSi6YV2jrGie3sLEZN4PlErIuXjZPU/9A
- pUYnT/zZS09mDwnkRLmyh8p+EXTJDWicvHLMy6BsmeAfn/V4r5CZ2L+QFhoqrgNCHNg+
- 5lAxypdrqA8WZ+AZcsEwE35xqwUvFvaSQf8sBd1wyqv+4/qawwPYczvXbMP+nzja0I5S
- UuMPc1IwFpICYfnif+ru6i3BgSpa9OmvZjG5HZgDlcJ94PCWVmOXOSDAac0Wz7otC7IY
- OQcQ==
+ bh=S0tP38q2aXeMtCrKpnNgEUV5n804wzkdrcUKmPP1+h0=;
+ b=kSnLSsrUEFdPc6I9xKqoTH3UFAbmoOGg6/0qmx8B0sCbxlOq3LxgcQEPezDDL6RWX4
+ ph95tO6IDCDpPbcKty/8sgrM64YiL5HgSjkYKQfJwHCQHU1XKwQKDZCMqwfBF1JzSnET
+ 5kUD9ekLsCGakPwu3MOTD8r0kxURtENbYN3lLj7Bukroine2EV5hxPUVs4ftlHWGSsKp
+ qR9HTrGOuFJAMyZd0JGmMtul+6MNkJtA9XUC/R2pscAHHDra0UkFsBv3Q+vrW+n5N4lU
+ 5wqzueLujSlJ1ZwVdTMqFSqRLf6akfHFIDXfeMHeKQz81K1dW3GmKLAMnl4Ptr46WAnK
+ hdMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725969102; x=1726573902;
+ d=1e100.net; s=20230601; t=1725969109; x=1726573909;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jXVRH9YeP0ZiPm2lygL9nbSRmpHSfMI7+KyJVmSsa5o=;
- b=PZ3YArHfGaiLM+9asq3Ke+4BI25pUwVXJCtZaT2TsKID/hfJqJPrJu23JvbOVnVHpH
- vqGzQ5HZYMrtMRSGNaPWvJjxyvjIQj6DG2V/PFDriWUYywDVfhsO8smI7FJjL54GkiNV
- V4klB9wMBLvU9kOsxurf2UzFAYCyH/Fw/xB5HuMpr2jdC37LBsC+wKr+WIr0TprsmoTS
- BtPzjMp3agHNdWSdLwjZxAkrLFud7oCTsAAqIjX+wspJTwD+vu2TJAB+sf4hr6V28svr
- 2JjlutppqXyxLcVUfkjRH03hrsw3xrKEG7JVSAEr/OrByJa+IVJnaYk5ylCyZj9qknmn
- fgmA==
-X-Gm-Message-State: AOJu0Yw53dKMMnhu2SX7fGi79M/ORkFfgUoNtmFfu2hkYM0E5e/JLH+w
- ByCajUoCSk/ZyX5jNF+Wn6X4O9aBiGFi4YIwRrezGCfayRI4fFJt7l2w4Ri2OnuMV2ZKVRQk/pC
- M
-X-Google-Smtp-Source: AGHT+IHANiqzoDhLHXkZ+7YDJTBf9QB5nv+4ZFl+FghKC5mMc1hNExSS+O15VQg1lfHahdvDTYlmIw==
-X-Received: by 2002:a17:906:f5a4:b0:a7a:9ca6:528 with SMTP id
- a640c23a62f3a-a8ffaaad1d0mr44706766b.11.1725969101866; 
- Tue, 10 Sep 2024 04:51:41 -0700 (PDT)
+ bh=S0tP38q2aXeMtCrKpnNgEUV5n804wzkdrcUKmPP1+h0=;
+ b=ErLyRjefuObG4fvRt4M3KpEcu+VgN2QEG8MmoprtS8MkZeYrgOmigMPPHvPuMPdUgs
+ jL0K+7outKHXbusSt1NhpWl/Su+u9aRSYISa9StZoTwh5liIfVkoJmfYQpOy/4PlK18s
+ eE5F4b4mUNOk+FoXFHtDxwRPMSfo8FHrKSQNMV4kpaEEsyEZXqxmI+Qo0Va6E7cg2edI
+ Qninq3hB2DrCYzs2KBpXydy8U+Ltz4AzCQKC1Gjzh3BA4H27zJkf+o18a4O77Ubh3Mn1
+ ojdHnTeSRPYQMd0E1F7CAlAtGwLezEytcfOxeObbG0m6lhBfiX2ZiiGLkmquvf0b3qHt
+ ma1w==
+X-Gm-Message-State: AOJu0YyMnNUnvEgc5QQoELKuUgEuJbxeY8EbxODsgPSVqTF//22mpmTr
+ ATGnSyH1/fM31G52bWmR6/LW4vX6KzeN9ClnULeTtJldRNHpu5ed3Q94ldVdu+tzDXweHvEZtgK
+ K
+X-Google-Smtp-Source: AGHT+IEzXBUCDbooUfQmm1Y7MsfG8eOhWmJ4LhAsjX0o+QtCoHa6colNT/ObDxaXfyjiD47WeQWfIw==
+X-Received: by 2002:a05:6402:448a:b0:5c2:632e:fad7 with SMTP id
+ 4fb4d7f45d1cf-5c3dc7955famr10749585a12.15.1725969108435; 
+ Tue, 10 Sep 2024 04:51:48 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.217.32])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25950cdcsm474155966b.58.2024.09.10.04.51.40
+ 4fb4d7f45d1cf-5c3ebd8cc33sm4188219a12.87.2024.09.10.04.51.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Sep 2024 04:51:41 -0700 (PDT)
+ Tue, 10 Sep 2024 04:51:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -65,17 +65,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-trivial@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/5] NSIS: Simplify license description
-Date: Tue, 10 Sep 2024 13:51:27 +0200
-Message-ID: <20240910115131.28766-2-philmd@linaro.org>
+Subject: [PATCH 2/5] tests/functional: Correct typo in test_netdev_ethtool.py
+ SPDX tag
+Date: Tue, 10 Sep 2024 13:51:28 +0200
+Message-ID: <20240910115131.28766-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240910115131.28766-1-philmd@linaro.org>
 References: <20240910115131.28766-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,38 +99,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the "2 | 3+" expression can be simplified as "2+",
-it is pointless to mention the GPLv3 license.
-
-Add the corresponding SPDX identifier to remove all doubt.
-
+Cc: Alex Bennée <alex.bennee@linaro.org>
+Fixes: 9f95111474 ("tests/avocado: re-factor igb test to avoid timeouts")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qemu.nsi | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/functional/test_netdev_ethtool.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qemu.nsi b/qemu.nsi
-index 564d617d11..b186f223e1 100644
---- a/qemu.nsi
-+++ b/qemu.nsi
-@@ -7,7 +7,7 @@
- ; This program is free software: you can redistribute it and/or modify
- ; it under the terms of the GNU General Public License as published by
- ; the Free Software Foundation, either version 2 of the License, or
--; (at your option) version 3 or any later version.
-+; (at your option) any later version.
- ;
- ; This program is distributed in the hope that it will be useful,
- ; but WITHOUT ANY WARRANTY; without even the implied warranty of
-@@ -16,6 +16,8 @@
- ;
- ; You should have received a copy of the GNU General Public License
- ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+;
-+; SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/tests/functional/test_netdev_ethtool.py b/tests/functional/test_netdev_ethtool.py
+index d5b911c918..ee1a397bd2 100755
+--- a/tests/functional/test_netdev_ethtool.py
++++ b/tests/functional/test_netdev_ethtool.py
+@@ -5,7 +5,7 @@
+ # This test leverages ethtool's --test sequence to validate network
+ # device behaviour.
+ #
+-# SPDX-License-Identifier: GPL-2.0-or-late
++# SPDX-License-Identifier: GPL-2.0-or-later
  
- ; NSIS_WIN32_MAKENSIS
- 
+ from unittest import skip
+ from qemu_test import QemuSystemTest, Asset
 -- 
 2.45.2
 
