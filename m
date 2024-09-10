@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D1997417F
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 20:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02AD974173
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 19:59:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so58k-0006FO-6b; Tue, 10 Sep 2024 13:58:58 -0400
+	id 1so58o-0006hi-Q8; Tue, 10 Sep 2024 13:59:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1so58g-0005z8-Aq
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:58:54 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1so58m-0006YW-0L
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:59:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1so58e-0006Py-Qk
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:58:54 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1so58k-0006QV-Ay
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:58:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725991132;
+ s=mimecast20190719; t=1725991137;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W1o7RWjo2eKLI9AA0Cw5dV9rFqNRkMKq+jR+W5pV6tA=;
- b=fb4pCOZNgZO/HWgMGViddzcxu7q9q6bIpZ/sV44DdgUnQw3v/Kxhc5rMwRM3J7Wsw0hjX3
- 8Hqvq8daH41ibyip7Vy2AfgwxVflSKWjBMK4z4/rPyVuAkRV3dHiHlcNoJEXNnbP7mPwaA
- f5gt1anvZkpOvxXXs1ML2pOU3I5q8/c=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=cECBk1qPAy/kFJQbJli+ig8bld14E32zOLZX1hTjPnw=;
+ b=S9n+LsJQ1H3HRm2Sp0+xX6ZK9sMLAiyoq7u8cHHZM9PDIAF0eBo3tB7evibGh5vG6g7F/R
+ 9GuftQk0vIREgol64ziJZo24KJXRIQo+4ntMObFS3rcPnx3dLGG3Xmo6GLBD3+K13NIVh8
+ wZP2pIbpIlpye+SLWNdYQVyiOvooapA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-182-UgMd9pHgNt6bA04nVOmajQ-1; Tue,
- 10 Sep 2024 13:58:49 -0400
-X-MC-Unique: UgMd9pHgNt6bA04nVOmajQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-450-43twLiD5OiSpbQqui4OpKg-1; Tue,
+ 10 Sep 2024 13:58:54 -0400
+X-MC-Unique: 43twLiD5OiSpbQqui4OpKg-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C21361956077; Tue, 10 Sep 2024 17:58:47 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AF208195394C; Tue, 10 Sep 2024 17:58:52 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.32.182])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0AD61195605A; Tue, 10 Sep 2024 17:58:42 +0000 (UTC)
+ id 423BB19560AD; Tue, 10 Sep 2024 17:58:47 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
@@ -53,9 +53,9 @@ Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>,
  Janosch Frank <frankja@linux.ibm.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH v1 06/14] s390x: introduce s390_get_memory_limit()
-Date: Tue, 10 Sep 2024 19:58:01 +0200
-Message-ID: <20240910175809.2135596-7-david@redhat.com>
+Subject: [PATCH v1 07/14] s390x/s390-hypercall: introduce DIAG500 STORAGE_LIMIT
+Date: Tue, 10 Sep 2024 19:58:02 +0200
+Message-ID: <20240910175809.2135596-8-david@redhat.com>
 In-Reply-To: <20240910175809.2135596-1-david@redhat.com>
 References: <20240910175809.2135596-1-david@redhat.com>
 MIME-Version: 1.0
@@ -85,61 +85,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's add s390_get_memory_limit(), to query what has been successfully
-set via s390_set_memory_limit(). Allow setting the limit only once.
+A guest OS that supports memory hotplug / memory devices must during
+boot be aware of the maximum possible physical memory address that it might
+have to handle at a later stage during its runtime
+
+For example, the maximum possible memory address might be required to
+prepare the kernel virtual address space accordingly (e.g., select page
+table hierarchy depth).
+
+On s390x there is currently no such mechanism that is compatible with
+paravirtualized memory devices, because the whole SCLP interface was
+designed around the idea of "storage increments" and "standby memory".
+Paravirtualized memory devices we want to support, such as virtio-mem, have
+no intersection with any of that, but could co-exist with them in the
+future if ever needed.
+
+In particular, a guest OS must never detect and use device memory
+without the help of a proper device driver. Device memory must not be
+exposed in any firmware-provided memory map (SCLP or diag260 on s390x).
+For this reason, these memory devices will be places in memory *above*
+the "maximum storage increment" exposed via SCLP.
+
+Let's provide a new diag500 subcode to query the memory limit determined in
+s390_memory_init().
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- target/s390x/cpu-sysemu.c | 19 +++++++++++++++++--
- target/s390x/cpu.h        |  1 +
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ hw/s390x/s390-hypercall.c | 3 +++
+ hw/s390x/s390-hypercall.h | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/target/s390x/cpu-sysemu.c b/target/s390x/cpu-sysemu.c
-index 1cd30c1d84..1915567b3a 100644
---- a/target/s390x/cpu-sysemu.c
-+++ b/target/s390x/cpu-sysemu.c
-@@ -255,12 +255,27 @@ unsigned int s390_cpu_set_state(uint8_t cpu_state, S390CPU *cpu)
-     return s390_count_running_cpus();
- }
- 
-+static uint64_t memory_limit;
-+
- int s390_set_memory_limit(uint64_t new_limit, uint64_t *hw_limit)
- {
-+    int ret = 0;
-+
-+    if (memory_limit) {
-+        return -EBUSY;
-+    }
-     if (kvm_enabled()) {
--        return kvm_s390_set_mem_limit(new_limit, hw_limit);
-+        ret = kvm_s390_set_mem_limit(new_limit, hw_limit);
-+    }
-+    if (!ret) {
-+        memory_limit = new_limit;
+diff --git a/hw/s390x/s390-hypercall.c b/hw/s390x/s390-hypercall.c
+index f09e8a1d81..ac48fc0961 100644
+--- a/hw/s390x/s390-hypercall.c
++++ b/hw/s390x/s390-hypercall.c
+@@ -68,6 +68,9 @@ int handle_diag_500(CPUS390XState *env)
+     case DIAG500_VIRTIO_CCW_NOTIFY:
+         env->regs[2] = handle_virtio_ccw_notify(env->regs[2], env->regs[3]);
+         return 0;
++    case DIAG500_STORAGE_LIMIT:
++        env->regs[2] = s390_get_memory_limit() - 1;
++        return 0;
+     default:
+         return -EINVAL;
      }
--    return 0;
-+    return ret;
-+}
-+
-+uint64_t s390_get_memory_limit(void)
-+{
-+    return memory_limit;
- }
+diff --git a/hw/s390x/s390-hypercall.h b/hw/s390x/s390-hypercall.h
+index b7ac29f444..f0ca62bcbb 100644
+--- a/hw/s390x/s390-hypercall.h
++++ b/hw/s390x/s390-hypercall.h
+@@ -18,6 +18,7 @@
+ #define DIAG500_VIRTIO_RESET            1 /* legacy */
+ #define DIAG500_VIRTIO_SET_STATUS       2 /* legacy */
+ #define DIAG500_VIRTIO_CCW_NOTIFY       3 /* KVM_S390_VIRTIO_CCW_NOTIFY */
++#define DIAG500_STORAGE_LIMIT           4
  
- void s390_set_max_pagesize(uint64_t pagesize, Error **errp)
-diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
-index d6b75ad0e0..7a51b606ed 100644
---- a/target/s390x/cpu.h
-+++ b/target/s390x/cpu.h
-@@ -895,6 +895,7 @@ static inline void s390_do_cpu_load_normal(CPUState *cs, run_on_cpu_data arg)
- /* cpu.c */
- void s390_crypto_reset(void);
- int s390_set_memory_limit(uint64_t new_limit, uint64_t *hw_limit);
-+uint64_t s390_get_memory_limit(void);
- void s390_set_max_pagesize(uint64_t pagesize, Error **errp);
- void s390_cmma_reset(void);
- void s390_enable_css_support(S390CPU *cpu);
+ int handle_diag_500(CPUS390XState *env);
+ 
 -- 
 2.46.0
 
