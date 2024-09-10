@@ -2,51 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97519974109
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 19:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A16C0974110
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 19:50:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so4yJ-0005Jc-Of; Tue, 10 Sep 2024 13:48:11 -0400
+	id 1so50Q-0005p6-8M; Tue, 10 Sep 2024 13:50:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexei.filippov@syntacore.com>)
- id 1so4yH-0005Cp-2A; Tue, 10 Sep 2024 13:48:09 -0400
+ id 1so50K-0005gE-F7; Tue, 10 Sep 2024 13:50:16 -0400
 Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexei.filippov@syntacore.com>)
- id 1so4yE-0005QK-B3; Tue, 10 Sep 2024 13:48:08 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 3A3E6C0005
+ id 1so50H-0005oA-4q; Tue, 10 Sep 2024 13:50:16 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 0B3AEC0005
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1725990483;
- bh=Hy9dad28MCnezxE6voSGiv7yABTY/G3VHYyOGnUiCUw=;
+ s=mta-04; t=1725990610;
+ bh=g9U/+M8BpKrhlYPtfur6st6R1S/cQc6zsYpV1Jr6WxY=;
  h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=W5j+/3f+vCrfJpzmR1yIjjvN3rpZzJ3vXZxtnC51Aic4nNYmRxPSn3WQKAea2Rd6h
- +ILVUNj2N1bHuhANQb6ON82arV9kPCe38N+jDtZaIbvglYcsqq+Z9sXxwR5XaZzBlH
- ao7MEA/dZpBh6uvhZu9gd2wHoCITgxKn8qImcw65oeeEqOys+7QQ8+zcgzrBUp01gf
- rHJ9jWhUwsDQTfe4AiuGEBZO1DMKvX7pnwdWVsX01/4bpo/CuTpa+13MMKuvPhhXFA
- gfh7vvyhPIIMIKutV/eS+guubu6taFwpWFkcfudMLPTult7qVDRMif3iiswN/gKV6J
- 4KeaKxkTgIIKA==
+ b=xIxyqHTF2Mm7UyqRU0mpzhKWSjaAk/w3Egs1KESlJYhF3NW+u/CMEeUXvYN6KqjR7
+ Dbuy3wVZLawT7f9lRZvWvjqEFd8gtWrp4OT6VRe8nhjuyLey4KUhCgMHliWus2gnYn
+ 6rWzjGMEA5X+azMujMSmFK6+2ZdPk+5aZeB9a7virROSGRsztGUPD/bK0+fFJ/2t2k
+ hZqvoGM8FtFEYsZ116McYjUsG/pnPFQ4/xTpxrrgMiBwDhMe82de6tjgNR5I3+E04T
+ FLkLEZbfUNtgkPpyRJW37c5yb1L1grdp1YVzQYSs8ewnQb3JjvrGDB/DontNl+6dHT
+ GnqIS4N+4c7tA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1725990483;
- bh=Hy9dad28MCnezxE6voSGiv7yABTY/G3VHYyOGnUiCUw=;
+ s=mta-03; t=1725990610;
+ bh=g9U/+M8BpKrhlYPtfur6st6R1S/cQc6zsYpV1Jr6WxY=;
  h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=wg/jeYv6xyWZG3LdIxHrULunuxxRy25yc5QTp5Y/bkGmJLXoQVUmF7i0keSzbBnIW
- e2qRLBQsVqQV0LMlxyGJLtKPD9VnxiZ1cELN/YqsityFaOGiqAKSDgTGg7euHYw+cv
- T2vdKnqeSdJ1l4CK+0NjdrOcKSgrgRlTvh6XrMRabmEKbXwOjx0zOoITQ8W7j3+I+K
- Ci4/seT1nwxq92ZTL3ltdOQbCFlBzy560FKnRM0FtJWTXZEEKYovnoqCK7h9hd7Qrs
- jbgdBGyYSP/BT6eW18+SyP3vSBCQeZtQVZbPjEHDT+AE4IsWYvbvsm/ogUfg7vKQ83
- u0xxIXPo71Csw==
+ b=aMJVj/9fQuAUsPjannUIsPMTJyKXA8P83PfRyqVtSmAEn7kfiel+5YJ8Q8wlaf8tm
+ uRch5zIGq34ha5Ymv6NKVP8OODNuVsr/qpMpm+EJUSavKUmEX+mh9OO79h4kx2e8R1
+ sxRIXnTniXbOFSFVPMqwP0phYcMIoHqzlgwS8OJOksRHgCKxBd4Wbbkw/FHhPl5/Ko
+ 0879HPgTEIIGmca2dcEaVQHl9f/OnzYgAF4DaGgLPXFNy5ydi2kbEirPdSCc+8FezZ
+ rSPDoRQN+lfaAgD/HZUF70mYts8XfbR8zA9JQQTp+v3DCJk37XSVRgR9I9unS0HOdm
+ sapOT2VMkU0oQ==
 From: Alexei Filippov <alexei.filippov@syntacore.com>
 To: <palmer@dabbelt.com>
 CC: <alexei.filippov@syntacore.com>, <alistair.francis@wdc.com>,
  <bmeng.cn@gmail.com>, <dbarboza@ventanamicro.com>,
  <zhiwei_liu@linux.alibaba.com>, <liwei1518@gmail.com>,
  <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>
-Subject: [RFC PATCH 1/2] target/riscv: Add support for machine specific pmu's
- events
-Date: Tue, 10 Sep 2024 20:47:46 +0300
-Message-ID: <20240910174747.148141-2-alexei.filippov@syntacore.com>
+Subject: [RFC PATCH 2/2] hw/riscv/sifive_u.c: Add initial HPM support
+Date: Tue, 10 Sep 2024 20:47:47 +0300
+Message-ID: <20240910174747.148141-3-alexei.filippov@syntacore.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240910174747.148141-1-alexei.filippov@syntacore.com>
 References: <20240910174747.148141-1-alexei.filippov@syntacore.com>
@@ -78,504 +77,556 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Was added call backs for machine specific pmu events.
-Simplify monitor functions by adding new hash table, which going to map
-counter number and event index.
-Was added read/write callbacks which going to simplify support for events,
-which expected to have different behavior.
+Add support of hardware performance monitor into sifive_u machine.
+HPM support was made along to [SiFive FU740-C000 manual v1p6] sec. 3.8.
+All described events for now counting by the same algorithm. Each event
+counting could be implemented separately in read/write call backs, also
+events combination are working, but right counting for them should be
+implemented separatly.
 
 Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
 ---
- target/riscv/cpu.h |   9 +++
- target/riscv/csr.c |  93 ++++++++++++++++++++----------
- target/riscv/pmu.c | 138 ++++++++++++++++++++++-----------------------
- target/riscv/pmu.h |  19 +++++--
- 4 files changed, 157 insertions(+), 102 deletions(-)
+ hw/misc/meson.build            |   1 +
+ hw/misc/sifive_u_pmu.c         | 384 +++++++++++++++++++++++++++++++++
+ hw/riscv/sifive_u.c            |  14 ++
+ include/hw/misc/sifive_u_pmu.h |  24 +++
+ target/riscv/cpu.c             |  20 +-
+ 5 files changed, 442 insertions(+), 1 deletion(-)
+ create mode 100644 hw/misc/sifive_u_pmu.c
+ create mode 100644 include/hw/misc/sifive_u_pmu.h
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 1619c3acb6..3fca02a670 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -415,6 +415,13 @@ struct CPUArchState {
-     uint64_t (*rdtime_fn)(void *);
-     void *rdtime_fn_arg;
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 2ca8717be2..ea93a38268 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -34,6 +34,7 @@ system_ss.add(when: 'CONFIG_SIFIVE_E_PRCI', if_true: files('sifive_e_prci.c'))
+ system_ss.add(when: 'CONFIG_SIFIVE_E_AON', if_true: files('sifive_e_aon.c'))
+ system_ss.add(when: 'CONFIG_SIFIVE_U_OTP', if_true: files('sifive_u_otp.c'))
+ system_ss.add(when: 'CONFIG_SIFIVE_U_PRCI', if_true: files('sifive_u_prci.c'))
++specific_ss.add(when: 'CONFIG_SIFIVE_U', if_true: files('sifive_u_pmu.c'))
  
-+    /*machine specific pmu callback */
-+    void (*pmu_ctr_write)(PMUCTRState *counter, uint32_t event_idx,
-+                          target_ulong val, bool high_half);
-+    target_ulong (*pmu_ctr_read)(PMUCTRState *counter, uint32_t event_idx,
-+                                 bool high_half);
-+    bool (*pmu_vendor_support)(uint32_t event_idx);
+ subdir('macio')
+ 
+diff --git a/hw/misc/sifive_u_pmu.c b/hw/misc/sifive_u_pmu.c
+new file mode 100644
+index 0000000000..929a2517cc
+--- /dev/null
++++ b/hw/misc/sifive_u_pmu.c
+@@ -0,0 +1,384 @@
++/*
++ * RISC-V SiFive U PMU emulation.
++ *
++ * Copyright (c) 2024 Alexei Filippov <alexei.filippov@syntacore.com>.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2 or later, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
 +
-     /* machine specific AIA ireg read-modify-write callback */
- #define AIA_MAKE_IREG(__isel, __priv, __virt, __vgein, __xlen) \
-     ((((__xlen) & 0xff) << 24) | \
-@@ -496,6 +503,8 @@ struct ArchCPU {
-     uint32_t pmu_avail_ctrs;
-     /* Mapping of events to counters */
-     GHashTable *pmu_event_ctr_map;
-+    /* Mapping of counters to events */
-+    GHashTable *pmu_ctr_event_map;
-     const GPtrArray *decoders;
- };
- 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index ea3560342c..ed46314a1c 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1009,7 +1009,7 @@ static target_ulong riscv_pmu_ctr_get_fixed_counters_val(CPURISCVState *env,
-                                                          int counter_idx,
-                                                          bool upper_half)
- {
--    int inst = riscv_pmu_ctr_monitor_instructions(env, counter_idx);
-+    int inst = riscv_pmu_get_event_by_ctr(env, counter_idx) - 1;
-     uint64_t *counter_arr_virt = env->pmu_fixed_ctrs[inst].counter_virt;
-     uint64_t *counter_arr = env->pmu_fixed_ctrs[inst].counter;
-     target_ulong result = 0;
-@@ -1078,22 +1078,27 @@ static RISCVException write_mhpmcounter(CPURISCVState *env, int csrno,
-     int ctr_idx = csrno - CSR_MCYCLE;
-     PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
-     uint64_t mhpmctr_val = val;
-+    int event_idx;
- 
-     counter->mhpmcounter_val = val;
-+    event_idx = riscv_pmu_get_event_by_ctr(env, ctr_idx);
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "qemu/error-report.h"
++#include "target/riscv/cpu.h"
++#include "target/riscv/pmu.h"
++#include "include/hw/misc/sifive_u_pmu.h"
++#include "sysemu/cpu-timers.h"
++#include "sysemu/device_tree.h"
 +
-     if (!get_field(env->mcountinhibit, BIT(ctr_idx)) &&
--        (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) ||
--         riscv_pmu_ctr_monitor_instructions(env, ctr_idx))) {
--        counter->mhpmcounter_prev = riscv_pmu_ctr_get_fixed_counters_val(env,
-+        event_idx != RISCV_PMU_EVENT_NOT_PRESENTED) {
-+        if (!RISCV_PMU_EVENT_IS_FIXED(event_idx) && env->pmu_ctr_write) {
-+            env->pmu_ctr_write(counter, event_idx, val, false);
-+        } else {
-+            counter->mhpmcounter_prev = riscv_pmu_ctr_get_fixed_counters_val(env,
-                                                                 ctr_idx, false);
--        if (ctr_idx > 2) {
-+        }
-+        if (RISCV_PMU_CTR_IS_HPM(ctr_idx)) {
-             if (riscv_cpu_mxl(env) == MXL_RV32) {
-                 mhpmctr_val = mhpmctr_val |
-                               ((uint64_t)counter->mhpmcounterh_val << 32);
-             }
-             riscv_pmu_setup_timer(env, mhpmctr_val, ctr_idx);
-         }
--     } else {
--        /* Other counters can keep incrementing from the given value */
-+    } else {
-         counter->mhpmcounter_prev = val;
-     }
- 
-@@ -1107,15 +1112,21 @@ static RISCVException write_mhpmcounterh(CPURISCVState *env, int csrno,
-     PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
-     uint64_t mhpmctr_val = counter->mhpmcounter_val;
-     uint64_t mhpmctrh_val = val;
-+    int event_idx;
- 
-     counter->mhpmcounterh_val = val;
-     mhpmctr_val = mhpmctr_val | (mhpmctrh_val << 32);
-+    event_idx = riscv_pmu_get_event_by_ctr(env, ctr_idx);
++REG32(SIFIVE_U_PMU_MHPMEVENT, 0x323)
++    FIELD(SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS, 0, 8)
++    FIELD(SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK, 8, 18)
 +
-     if (!get_field(env->mcountinhibit, BIT(ctr_idx)) &&
--        (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) ||
--         riscv_pmu_ctr_monitor_instructions(env, ctr_idx))) {
--        counter->mhpmcounterh_prev = riscv_pmu_ctr_get_fixed_counters_val(env,
--                                                                 ctr_idx, true);
--        if (ctr_idx > 2) {
-+        event_idx != RISCV_PMU_EVENT_NOT_PRESENTED) {
-+        if (!RISCV_PMU_EVENT_IS_FIXED(event_idx) && env->pmu_ctr_write) {
-+            env->pmu_ctr_write(counter, event_idx, val, true);
-+        } else {
-+            counter->mhpmcounterh_prev =
-+                riscv_pmu_ctr_get_fixed_counters_val(env, ctr_idx, true);
-+        }
-+        if (RISCV_PMU_CTR_IS_HPM(ctr_idx)) {
-             riscv_pmu_setup_timer(env, mhpmctr_val, ctr_idx);
-         }
-     } else {
-@@ -1133,6 +1144,7 @@ RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
-                                          counter->mhpmcounter_prev;
-     target_ulong ctr_val = upper_half ? counter->mhpmcounterh_val :
-                                         counter->mhpmcounter_val;
-+    int event_idx;
- 
-     if (get_field(env->mcountinhibit, BIT(ctr_idx))) {
-         /*
-@@ -1147,10 +1159,15 @@ RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
-      * The kernel computes the perf delta by subtracting the current value from
-      * the value it initialized previously (ctr_val).
-      */
--    if (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) ||
--        riscv_pmu_ctr_monitor_instructions(env, ctr_idx)) {
--        *val = riscv_pmu_ctr_get_fixed_counters_val(env, ctr_idx, upper_half) -
-+    event_idx = riscv_pmu_get_event_by_ctr(env, ctr_idx);
-+    if (event_idx != RISCV_PMU_EVENT_NOT_PRESENTED) {
-+        if (!RISCV_PMU_EVENT_IS_FIXED(event_idx) && env->pmu_ctr_read) {
-+            *val = env->pmu_ctr_read(counter, event_idx,
-+                                     upper_half) - ctr_prev + ctr_val;
-+        } else {
-+            *val = riscv_pmu_ctr_get_fixed_counters_val(env, ctr_idx, upper_half) -
-                                                     ctr_prev + ctr_val;
-+        }
-     } else {
-         *val = ctr_val;
-     }
-@@ -2182,25 +2199,33 @@ static RISCVException write_mcountinhibit(CPURISCVState *env, int csrno,
-     /* WARL register - disable unavailable counters; TM bit is always 0 */
-     env->mcountinhibit = val & present_ctrs;
- 
--    /* Check if any other counter is also monitoring cycles/instructions */
-     for (cidx = 0; cidx < RV_MAX_MHPMCOUNTERS; cidx++) {
-+        int event_idx = riscv_pmu_get_event_by_ctr(env, cidx);
-         if (!(updated_ctrs & BIT(cidx)) ||
--            (!riscv_pmu_ctr_monitor_cycles(env, cidx) &&
--            !riscv_pmu_ctr_monitor_instructions(env, cidx))) {
-+            event_idx == RISCV_PMU_EVENT_NOT_PRESENTED) {
-             continue;
-         }
- 
-         counter = &env->pmu_ctrs[cidx];
- 
-         if (!get_field(env->mcountinhibit, BIT(cidx))) {
--            counter->mhpmcounter_prev =
--                riscv_pmu_ctr_get_fixed_counters_val(env, cidx, false);
--            if (riscv_cpu_mxl(env) == MXL_RV32) {
--                counter->mhpmcounterh_prev =
--                    riscv_pmu_ctr_get_fixed_counters_val(env, cidx, true);
-+            if (!RISCV_PMU_EVENT_IS_FIXED(event_idx) && env->pmu_ctr_read) {
-+                counter->mhpmcounter_prev =
-+                    env->pmu_ctr_read(counter, event_idx, false);
-+                if (riscv_cpu_mxl(env) == MXL_RV32) {
-+                    counter->mhpmcounterh_prev =
-+                        env->pmu_ctr_read(counter, event_idx, true);
-+                }
-+            } else {
-+                counter->mhpmcounter_prev =
-+                    riscv_pmu_ctr_get_fixed_counters_val(env, cidx, false);
-+                if (riscv_cpu_mxl(env) == MXL_RV32) {
-+                    counter->mhpmcounterh_prev =
-+                        riscv_pmu_ctr_get_fixed_counters_val(env, cidx, true);
-+                }
-             }
- 
--            if (cidx > 2) {
-+            if (RISCV_PMU_CTR_IS_HPM(cidx)) {
-                 mhpmctr_val = counter->mhpmcounter_val;
-                 if (riscv_cpu_mxl(env) == MXL_RV32) {
-                     mhpmctr_val = mhpmctr_val |
-@@ -2209,15 +2234,25 @@ static RISCVException write_mcountinhibit(CPURISCVState *env, int csrno,
-                 riscv_pmu_setup_timer(env, mhpmctr_val, cidx);
-             }
-         } else {
--            curr_count = riscv_pmu_ctr_get_fixed_counters_val(env, cidx, false);
++    /*
++     * Support all PMU events  described in
++     * https://sifive.cdn.prismic.io/sifive/1a82e600-1f93-4f41-b2d8-86ed8b16acba_fu740-c000-manual-v1p6.pdf
++     * FU740-C000 Manual sec. 3.8 "Hardware Performace Monitor", all
++     * events trigger irq by counter overflow, by default all caunters
++     * caunted identically, special behavior, combining events for example,
++     * must be described separately in write/read and trigger irq functions.
++     */
 +
-+            if (!RISCV_PMU_EVENT_IS_FIXED(event_idx) && env->pmu_ctr_read) {
-+                curr_count = env->pmu_ctr_read(counter, event_idx, false);
-+                if (riscv_cpu_mxl(env) == MXL_RV32) {
-+                    curr_count = curr_count |
-+                        ((uint64_t)env->pmu_ctr_read(counter, event_idx, true) << 32);
-+                }
-+            } else {
-+                curr_count = riscv_pmu_ctr_get_fixed_counters_val(env, cidx, false);
-+                if (riscv_cpu_mxl(env) == MXL_RV32) {
-+                    curr_count = curr_count |
-+                        ((uint64_t)
-+                        riscv_pmu_ctr_get_fixed_counters_val(env, cidx, true) << 32);
-+                }
-+            }
- 
-             mhpmctr_val = counter->mhpmcounter_val;
-             prev_count = counter->mhpmcounter_prev;
-             if (riscv_cpu_mxl(env) == MXL_RV32) {
--                uint64_t tmp =
--                    riscv_pmu_ctr_get_fixed_counters_val(env, cidx, true);
--
--                curr_count = curr_count | (tmp << 32);
-                 mhpmctr_val = mhpmctr_val |
-                     ((uint64_t)counter->mhpmcounterh_val << 32);
-                 prev_count = prev_count |
-diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-index e05ab067d2..76edcfcbb6 100644
---- a/target/riscv/pmu.c
-+++ b/target/riscv/pmu.c
-@@ -89,7 +89,7 @@ static bool riscv_pmu_counter_valid(RISCVCPU *cpu, uint32_t ctr_idx)
-     }
- }
- 
--static bool riscv_pmu_counter_enabled(RISCVCPU *cpu, uint32_t ctr_idx)
-+bool riscv_pmu_counter_enabled(RISCVCPU *cpu, uint32_t ctr_idx)
- {
-     CPURISCVState *env = &cpu->env;
- 
-@@ -302,59 +302,30 @@ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx)
-     return ret;
- }
- 
--bool riscv_pmu_ctr_monitor_instructions(CPURISCVState *env,
--                                        uint32_t target_ctr)
-+int riscv_pmu_get_event_by_ctr(CPURISCVState *env,
-+                               uint32_t target_ctr)
- {
-     RISCVCPU *cpu;
-     uint32_t event_idx;
--    uint32_t ctr_idx;
- 
--    /* Fixed instret counter */
--    if (target_ctr == 2) {
--        return true;
--    }
--
--    cpu = env_archcpu(env);
--    if (!cpu->pmu_event_ctr_map) {
--        return false;
--    }
--
--    event_idx = RISCV_PMU_EVENT_HW_INSTRUCTIONS;
--    ctr_idx = GPOINTER_TO_UINT(g_hash_table_lookup(cpu->pmu_event_ctr_map,
--                               GUINT_TO_POINTER(event_idx)));
--    if (!ctr_idx) {
--        return false;
--    }
--
--    return target_ctr == ctr_idx ? true : false;
--}
--
--bool riscv_pmu_ctr_monitor_cycles(CPURISCVState *env, uint32_t target_ctr)
--{
--    RISCVCPU *cpu;
--    uint32_t event_idx;
--    uint32_t ctr_idx;
--
--    /* Fixed mcycle counter */
-     if (target_ctr == 0) {
--        return true;
-+        return RISCV_PMU_EVENT_HW_CPU_CYCLES;
-+    } else if (target_ctr == 1) {
-+        return RISCV_PMU_EVENT_HW_INSTRUCTIONS;
-     }
- 
-     cpu = env_archcpu(env);
--    if (!cpu->pmu_event_ctr_map) {
--        return false;
-+    if (!cpu->pmu_ctr_event_map || !cpu->pmu_event_ctr_map) {
-+        return RISCV_PMU_EVENT_NOT_PRESENTED;
-     }
- 
--    event_idx = RISCV_PMU_EVENT_HW_CPU_CYCLES;
--    ctr_idx = GPOINTER_TO_UINT(g_hash_table_lookup(cpu->pmu_event_ctr_map,
--                               GUINT_TO_POINTER(event_idx)));
--
--    /* Counter zero is not used for event_ctr_map */
--    if (!ctr_idx) {
--        return false;
-+    event_idx = GPOINTER_TO_UINT(g_hash_table_lookup(cpu->pmu_ctr_event_map,
-+                                                     GUINT_TO_POINTER(target_ctr)));
-+    if (!event_idx) {
-+        return RISCV_PMU_EVENT_NOT_PRESENTED;
-     }
- 
--    return (target_ctr == ctr_idx) ? true : false;
-+    return event_idx;
- }
- 
- static gboolean pmu_remove_event_map(gpointer key, gpointer value,
-@@ -363,6 +334,12 @@ static gboolean pmu_remove_event_map(gpointer key, gpointer value,
-     return (GPOINTER_TO_UINT(value) == GPOINTER_TO_UINT(udata)) ? true : false;
- }
- 
-+static gboolean pmu_remove_ctr_map(gpointer key, gpointer value,
-+                                   gpointer udata)
++#define SIFIVE_U_PMU_INST { \
++    X(RISCV_SIFIVE_U_EVENT_EXCEPTION_TAKEN,                   0x00001), \
++    X(RISCV_SIFIVE_U_EVENT_INTEGER_LOAD_RETIRED,              0x00002), \
++    X(RISCV_SIFIVE_U_EVENT_INTEGER_STORE_RETIRED,             0x00004), \
++    X(RISCV_SIFIVE_U_EVENT_ATOMIC_MEMORY_RETIRED,             0x00008), \
++    X(RISCV_SIFIVE_U_EVENT_SYSTEM_INSTRUCTION_RETIRED,        0x00010), \
++    X(RISCV_SIFIVE_U_EVENT_INTEGER_ARITHMETIC_RETIRED,        0x00020), \
++    X(RISCV_SIFIVE_U_EVENT_CONDITIONAL_BRANCH_RETIRED,        0x00040), \
++    X(RISCV_SIFIVE_U_EVENT_JAL_INSTRUCTION_RETIRED,           0x00080), \
++    X(RISCV_SIFIVE_U_EVENT_JALR_INSTRUCTION_RETIRED,          0x00100), \
++    X(RISCV_SIFIVE_U_EVENT_INTEGER_MULTIPLICATION_RETIRED,    0x00200), \
++    X(RISCV_SIFIVE_U_EVENT_INTEGER_DIVISION_RETIRED,          0x00400), \
++    X(RISCV_SIFIVE_U_EVENT_FP_LOAD_RETIRED,                   0x00800), \
++    X(RISCV_SIFIVE_U_EVENT_FP_STORE_RETIRED,                  0x01000), \
++    X(RISCV_SIFIVE_U_EVENT_FP_ADDITION_RETIRED,               0x02000), \
++    X(RISCV_SIFIVE_U_EVENT_FP_MULTIPLICATION_RETIRED,         0x04000), \
++    X(RISCV_SIFIVE_U_EVENT_FP_FUSEDMADD_RETIRED,              0x08000), \
++    X(RISCV_SIFIVE_U_EVENT_FP_DIV_SQRT_RETIRED,               0x10000), \
++    X(RISCV_SIFIVE_U_EVENT_OTHER_FP_RETIRED,                  0x20000), }
++
++#define SIFIVE_U_PMU_MICROARCH { \
++    X(RISCV_SIFIVE_U_EVENT_ADDRESSGEN_INTERLOCK,              0x00001), \
++    X(RISCV_SIFIVE_U_EVENT_LONGLAT_INTERLOCK,                 0x00002), \
++    X(RISCV_SIFIVE_U_EVENT_CSR_READ_INTERLOCK,                0x00004), \
++    X(RISCV_SIFIVE_U_EVENT_ICACHE_ITIM_BUSY,                  0x00008), \
++    X(RISCV_SIFIVE_U_EVENT_DCACHE_DTIM_BUSY,                  0x00010), \
++    X(RISCV_SIFIVE_U_EVENT_BRANCH_DIRECTION_MISPREDICTION,    0x00020), \
++    X(RISCV_SIFIVE_U_EVENT_BRANCH_TARGET_MISPREDICTION,       0x00040), \
++    X(RISCV_SIFIVE_U_EVENT_PIPE_FLUSH_CSR_WRITE,              0x00080), \
++    X(RISCV_SIFIVE_U_EVENT_PIPE_FLUSH_OTHER_EVENT,            0x00100), \
++    X(RISCV_SIFIVE_U_EVENT_INTEGER_MULTIPLICATION_INTERLOCK,  0x00200), \
++    X(RISCV_SIFIVE_U_EVENT_FP_INTERLOCK,                      0x00400), }
++
++#define SIFIVE_U_PMU_MEM { \
++    X(RISCV_SIFIVE_U_EVENT_ICACHE_RETIRED,                    0x00001), \
++    X(RISCV_SIFIVE_U_EVENT_DCACHE_MISS_MMIO_ACCESSES,         0x00002), \
++    X(RISCV_SIFIVE_U_EVENT_DCACHE_WRITEBACK,                  0x00004), \
++    X(RISCV_SIFIVE_U_EVENT_INST_TLB_MISS,                     0x00008), \
++    X(RISCV_SIFIVE_U_EVENT_DATA_TLB_MISS,                     0x00010), \
++    X(RISCV_SIFIVE_U_EVENT_UTLB_MISS,                         0x00020), }
++
++#define X(a, b) a = b
++    enum SIFIVE_U_PMU_INST;
++    enum SIFIVE_U_PMU_MEM;
++    enum SIFIVE_U_PMU_MICROARCH;
++#undef X
++
++#define X(a, b) a
++    const uint32_t
++    riscv_sifive_u_pmu_events[RISCV_SIFIVE_U_CLASS_MAX][RISCV_SIFIVE_U_MASK_MAX] = {
++    SIFIVE_U_PMU_INST,
++    SIFIVE_U_PMU_MICROARCH,
++    SIFIVE_U_PMU_MEM,
++    };
++#undef X
++
++void sifive_u_pmu_generate_fdt_node(void *fdt, uint32_t cmask, char *pmu_name)
 +{
-+    return (GPOINTER_TO_UINT(key) == GPOINTER_TO_UINT(udata)) ? true : false;
-+}
-+
- static int64_t pmu_icount_ticks_to_ns(int64_t value)
- {
-     int64_t ret = 0;
-@@ -381,8 +358,11 @@ int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
- {
-     uint32_t event_idx;
-     RISCVCPU *cpu = env_archcpu(env);
-+    bool machine_specific = false;
- 
--    if (!riscv_pmu_counter_valid(cpu, ctr_idx) || !cpu->pmu_event_ctr_map) {
-+    if (!riscv_pmu_counter_valid(cpu, ctr_idx) ||
-+        !cpu->pmu_event_ctr_map ||
-+        !cpu->pmu_ctr_event_map) {
-         return -1;
-     }
- 
-@@ -394,6 +374,9 @@ int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
-         g_hash_table_foreach_remove(cpu->pmu_event_ctr_map,
-                                     pmu_remove_event_map,
-                                     GUINT_TO_POINTER(ctr_idx));
-+        g_hash_table_foreach_remove(cpu->pmu_ctr_event_map,
-+                                    pmu_remove_ctr_map,
-+                                    GUINT_TO_POINTER(ctr_idx));
-         return 0;
-     }
- 
-@@ -403,19 +386,26 @@ int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
-         return 0;
-     }
- 
--    switch (event_idx) {
--    case RISCV_PMU_EVENT_HW_CPU_CYCLES:
--    case RISCV_PMU_EVENT_HW_INSTRUCTIONS:
--    case RISCV_PMU_EVENT_CACHE_DTLB_READ_MISS:
--    case RISCV_PMU_EVENT_CACHE_DTLB_WRITE_MISS:
--    case RISCV_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS:
--        break;
--    default:
--        /* We don't support any raw events right now */
--        return -1;
-+    if (RISCV_PMU_CTR_IS_HPM(ctr_idx) && env->pmu_vendor_support) {
-+        machine_specific = env->pmu_vendor_support(event_idx);
-+    }
-+
-+    if (!machine_specific) {
-+        switch (event_idx) {
-+        case RISCV_PMU_EVENT_HW_CPU_CYCLES:
-+        case RISCV_PMU_EVENT_HW_INSTRUCTIONS:
-+        case RISCV_PMU_EVENT_CACHE_DTLB_READ_MISS:
-+        case RISCV_PMU_EVENT_CACHE_DTLB_WRITE_MISS:
-+        case RISCV_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS:
-+            break;
-+        default:
-+            return -1;
-+        }
-     }
-     g_hash_table_insert(cpu->pmu_event_ctr_map, GUINT_TO_POINTER(event_idx),
-                         GUINT_TO_POINTER(ctr_idx));
-+    g_hash_table_insert(cpu->pmu_ctr_event_map, GUINT_TO_POINTER(ctr_idx),
-+                        GUINT_TO_POINTER(event_idx));
- 
-     return 0;
- }
-@@ -458,22 +448,14 @@ static bool pmu_hpmevent_set_of_if_clear(CPURISCVState *env, uint32_t ctr_idx)
- }
- 
- static void pmu_timer_trigger_irq(RISCVCPU *cpu,
--                                  enum riscv_pmu_event_idx evt_idx)
-+                                  uint32_t ctr_idx)
- {
--    uint32_t ctr_idx;
-     CPURISCVState *env = &cpu->env;
-     PMUCTRState *counter;
-     int64_t irq_trigger_at;
-     uint64_t curr_ctr_val, curr_ctrh_val;
-     uint64_t ctr_val;
- 
--    if (evt_idx != RISCV_PMU_EVENT_HW_CPU_CYCLES &&
--        evt_idx != RISCV_PMU_EVENT_HW_INSTRUCTIONS) {
--        return;
--    }
--
--    ctr_idx = GPOINTER_TO_UINT(g_hash_table_lookup(cpu->pmu_event_ctr_map,
--                               GUINT_TO_POINTER(evt_idx)));
-     if (!riscv_pmu_counter_enabled(cpu, ctr_idx)) {
-         return;
-     }
-@@ -519,14 +501,24 @@ static void pmu_timer_trigger_irq(RISCVCPU *cpu,
-     }
- }
- 
--/* Timer callback for instret and cycle counter overflow */
-+static void riscv_pmu_timer_trigger_irq(gpointer ctr, gpointer event_idx,
-+                                            gpointer opaque)
-+{
-+    RISCVCPU *cpu = opaque;
-+
-+    pmu_timer_trigger_irq(cpu, GPOINTER_TO_UINT(ctr));
-+}
-+
- void riscv_pmu_timer_cb(void *priv)
- {
-     RISCVCPU *cpu = priv;
- 
--    /* Timer event was triggered only for these events */
--    pmu_timer_trigger_irq(cpu, RISCV_PMU_EVENT_HW_CPU_CYCLES);
--    pmu_timer_trigger_irq(cpu, RISCV_PMU_EVENT_HW_INSTRUCTIONS);
-+    if (!cpu->pmu_ctr_event_map || !cpu->pmu_event_ctr_map) {
-+        return;
-+    }
-+    g_hash_table_foreach(cpu->pmu_ctr_event_map,
-+                         riscv_pmu_timer_trigger_irq,
-+                         cpu);
- }
- 
- int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
-@@ -535,6 +527,7 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
-     int64_t overflow_ns, overflow_left = 0;
-     RISCVCPU *cpu = env_archcpu(env);
-     PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
++    uint32_t fdt_event_mhpmevent_map[10 * 3] = {};
++    uint32_t fdt_event_mhpmctr_map[6 * 4] = {};
 +    uint32_t event_idx;
- 
-     /* No need to setup a timer if LCOFI is disabled when OF is set */
-     if (!riscv_pmu_counter_valid(cpu, ctr_idx) || !cpu->cfg.ext_sscofpmf ||
-@@ -557,8 +550,9 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
-         overflow_left = overflow_delta - INT64_MAX;
-     }
- 
--    if (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) ||
--        riscv_pmu_ctr_monitor_instructions(env, ctr_idx)) {
-+    event_idx = riscv_pmu_get_event_by_ctr(env, ctr_idx);
 +
-+    if (event_idx != RISCV_PMU_EVENT_NOT_PRESENTED) {
-         overflow_ns = pmu_icount_ticks_to_ns((int64_t)overflow_delta);
-         overflow_left = pmu_icount_ticks_to_ns(overflow_left) ;
-     } else {
-@@ -594,7 +588,13 @@ void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
- 
-     cpu->pmu_event_ctr_map = g_hash_table_new(g_direct_hash, g_direct_equal);
-     if (!cpu->pmu_event_ctr_map) {
--        error_setg(errp, "Unable to allocate PMU event hash table");
-+        error_setg(errp, "Unable to allocate first PMU event hash table");
++    /*
++     * SBI_PMU_HW_CACHE_REFERENCES: 0x3 -> Instruction cache/ITIM busy |
++     *                                     Data cache/DTIM busy
++     * result: < 0x3 0x0 1801 >
++     */
++    fdt_event_mhpmevent_map[0]  = cpu_to_be32(0x3);
++    fdt_event_mhpmevent_map[1]  = cpu_to_be32(0x0);
++    event_idx = FIELD_DP32(0, SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK,
++                           RISCV_SIFIVE_U_EVENT_ICACHE_ITIM_BUSY |
++                           RISCV_SIFIVE_U_EVENT_DCACHE_DTIM_BUSY);
++    event_idx = FIELD_DP32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS,
++                           RISCV_SIFIVE_U_CLASS_MICROARCH);
++    fdt_event_mhpmevent_map[2]  = cpu_to_be32(event_idx);
++
++
++    /*
++     * SBI_PMU_HW_CACHE_MISSES: 0x4 -> Instruction cache miss |
++     *                                 Data cache miss or mem-mapped I/O access
++     * result: < 0x4 0x0 0x302 >
++     */
++    fdt_event_mhpmevent_map[3]  = cpu_to_be32(0x4);
++    fdt_event_mhpmevent_map[4]  = cpu_to_be32(0x0);
++    event_idx = FIELD_DP32(0, SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK,
++                           RISCV_SIFIVE_U_EVENT_ICACHE_RETIRED |
++                           RISCV_SIFIVE_U_EVENT_DCACHE_MISS_MMIO_ACCESSES);
++    event_idx = FIELD_DP32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS,
++                           RISCV_SIFIVE_U_CLASS_MEM);
++    fdt_event_mhpmevent_map[5]  = cpu_to_be32(event_idx);
++
++    /*
++     * SBI_PMU_HW_BRANCH_INSTRUCTIONS: 0x5 -> Conditional branch retired
++     * result: < 0x5 0x0 0x4000 >
++     */
++    fdt_event_mhpmevent_map[6]  = cpu_to_be32(0x5);
++    fdt_event_mhpmevent_map[7]  = cpu_to_be32(0x0);
++    event_idx = FIELD_DP32(0, SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK,
++                           RISCV_SIFIVE_U_EVENT_CONDITIONAL_BRANCH_RETIRED);
++    event_idx = FIELD_DP32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS,
++                           RISCV_SIFIVE_U_CLASS_INST);
++    fdt_event_mhpmevent_map[8]  = cpu_to_be32(event_idx);
++
++    /*
++     * SBI_PMU_HW_BRANCH_MISSES: 0x6 -> Branch direction misprediction |
++     *                                  Branch/jump target misprediction
++     * result: < 0x6 0x0 0x6001 >
++     */
++    fdt_event_mhpmevent_map[9]  = cpu_to_be32(0x6);
++    fdt_event_mhpmevent_map[10] = cpu_to_be32(0x0);
++    event_idx = FIELD_DP32(0, SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK,
++                           RISCV_SIFIVE_U_EVENT_BRANCH_DIRECTION_MISPREDICTION |
++                           RISCV_SIFIVE_U_EVENT_BRANCH_TARGET_MISPREDICTION);
++    event_idx = FIELD_DP32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS,
++                           RISCV_SIFIVE_U_CLASS_MICROARCH);
++    fdt_event_mhpmevent_map[11] = cpu_to_be32(event_idx);
++
++    /*
++     * L1D_READ_MISS: 0x10001 -> Data cache miss or memory-mapped I/O access
++     * result: < 0x10001 0x0 0x202 >
++     */
++    fdt_event_mhpmevent_map[12]  = cpu_to_be32(0x10001);
++    fdt_event_mhpmevent_map[13] = cpu_to_be32(0x0);
++    event_idx = FIELD_DP32(0, SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK,
++                           RISCV_SIFIVE_U_EVENT_DCACHE_MISS_MMIO_ACCESSES);
++    event_idx = FIELD_DP32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS,
++                           RISCV_SIFIVE_U_CLASS_MEM);
++    fdt_event_mhpmevent_map[14] = cpu_to_be32(event_idx);
++
++    /*
++     * L1D_WRITE_ACCESS: 0x10002 -> Data cache write back
++     * result: < 0x10002 0x0 0x402 >
++     */
++    fdt_event_mhpmevent_map[15]  = cpu_to_be32(0x10002);
++    fdt_event_mhpmevent_map[16] = cpu_to_be32(0x0);
++    event_idx = FIELD_DP32(0, SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK,
++                           RISCV_SIFIVE_U_EVENT_DCACHE_WRITEBACK);
++    event_idx = FIELD_DP32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS,
++                           RISCV_SIFIVE_U_CLASS_MEM);
++    fdt_event_mhpmevent_map[17] = cpu_to_be32(event_idx);
++
++    /*
++     * L1I_READ_ACCESS: 0x10009 -> Instruction cache miss
++     * result: < 0x10009 0x0 0x102 >
++     */
++    fdt_event_mhpmevent_map[18]  = cpu_to_be32(0x10009);
++    fdt_event_mhpmevent_map[19] = cpu_to_be32(0x0);
++    event_idx = FIELD_DP32(0, SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK,
++                           RISCV_SIFIVE_U_EVENT_ICACHE_RETIRED);
++    event_idx = FIELD_DP32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS,
++                           RISCV_SIFIVE_U_CLASS_MEM);
++    fdt_event_mhpmevent_map[20] = cpu_to_be32(event_idx);
++
++    /*
++     * LL_READ_MISS: 0x10011 -> UTLB miss
++     * result: < 0x10011 0x0 0x2002 >
++     */
++    fdt_event_mhpmevent_map[21]  = cpu_to_be32(0x10011);
++    fdt_event_mhpmevent_map[22] = cpu_to_be32(0x0);
++    event_idx = FIELD_DP32(0, SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK,
++                           RISCV_SIFIVE_U_EVENT_UTLB_MISS);
++    event_idx = FIELD_DP32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS,
++                           RISCV_SIFIVE_U_CLASS_MEM);
++    fdt_event_mhpmevent_map[23] = cpu_to_be32(event_idx);
++
++    /*
++     * DTLB_READ_MISS: 0x10019 -> Data TLB miss
++     * result: < 0x10019 0x0 0x1002 >
++     */
++    fdt_event_mhpmevent_map[24]  = cpu_to_be32(0x10019);
++    fdt_event_mhpmevent_map[25] = cpu_to_be32(0x0);
++    event_idx = FIELD_DP32(0, SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK,
++                           RISCV_SIFIVE_U_EVENT_DATA_TLB_MISS);
++    event_idx = FIELD_DP32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS,
++                           RISCV_SIFIVE_U_CLASS_MEM);
++    fdt_event_mhpmevent_map[26] = cpu_to_be32(event_idx);
++
++    /*
++     * DTLB_READ_MISS: 0x10021 -> Data TLB miss
++     * result: < 0x10019 0x0 0x802 >
++     */
++    fdt_event_mhpmevent_map[27]  = cpu_to_be32(0x10021);
++    fdt_event_mhpmevent_map[28] = cpu_to_be32(0x0);
++    event_idx = FIELD_DP32(0, SIFIVE_U_PMU_MHPMEVENT, EVENT_MASK,
++                           RISCV_SIFIVE_U_EVENT_INST_TLB_MISS);
++    event_idx = FIELD_DP32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS,
++                           RISCV_SIFIVE_U_CLASS_MEM);
++    fdt_event_mhpmevent_map[29] = cpu_to_be32(event_idx);
++
++    fdt_event_mhpmctr_map[0] = cpu_to_be32(0x00003);
++    fdt_event_mhpmctr_map[1] = cpu_to_be32(0x00006);
++    fdt_event_mhpmctr_map[2] = cpu_to_be32(cmask);
++
++    fdt_event_mhpmctr_map[3] = cpu_to_be32(0x10001);
++    fdt_event_mhpmctr_map[4] = cpu_to_be32(0x10002);
++    fdt_event_mhpmctr_map[5] = cpu_to_be32(cmask);
++
++    fdt_event_mhpmctr_map[6] = cpu_to_be32(0x10009);
++    fdt_event_mhpmctr_map[7] = cpu_to_be32(0x10009);
++    fdt_event_mhpmctr_map[8] = cpu_to_be32(cmask);
++
++    fdt_event_mhpmctr_map[9] = cpu_to_be32(0x10011);
++    fdt_event_mhpmctr_map[10] = cpu_to_be32(0x10011);
++    fdt_event_mhpmctr_map[11] = cpu_to_be32(cmask);
++
++    fdt_event_mhpmctr_map[12] = cpu_to_be32(0x10019);
++    fdt_event_mhpmctr_map[13] = cpu_to_be32(0x10019);
++    fdt_event_mhpmctr_map[14] = cpu_to_be32(cmask);
++
++    fdt_event_mhpmctr_map[15] = cpu_to_be32(0x10021);
++    fdt_event_mhpmctr_map[16] = cpu_to_be32(0x10021);
++    fdt_event_mhpmctr_map[17] = cpu_to_be32(cmask);
++
++    fdt_event_mhpmctr_map[18] = cpu_to_be32(0x1);
++    fdt_event_mhpmctr_map[19] = cpu_to_be32(0x1);
++    fdt_event_mhpmctr_map[20] = cpu_to_be32(cmask | 1 << 0);
++
++    fdt_event_mhpmctr_map[21] = cpu_to_be32(0x2);
++    fdt_event_mhpmctr_map[22] = cpu_to_be32(0x2);
++    fdt_event_mhpmctr_map[23] = cpu_to_be32(cmask | 1 << 2);
++
++   /* This a OpenSBI specific DT property documented in OpenSBI docs */
++    qemu_fdt_setprop(fdt, pmu_name, "riscv,event-to-mhpmevent",
++                     fdt_event_mhpmevent_map, sizeof(fdt_event_mhpmevent_map));
++    qemu_fdt_setprop(fdt, pmu_name, "riscv,event-to-mhpmcounters",
++                     fdt_event_mhpmctr_map, sizeof(fdt_event_mhpmctr_map));
++
++}
++
++bool riscv_sifive_u_supported_events(uint32_t event_idx)
++{
++    uint32_t group = FIELD_EX32(event_idx, SIFIVE_U_PMU_MHPMEVENT, EVENT_CLASS);
++    uint32_t event_mask = FIELD_EX32(event_idx, SIFIVE_U_PMU_MHPMEVENT,
++                                     EVENT_MASK);
++    uint32_t idx = 32 - clz32(event_mask);
++
++    if (group >= RISCV_SIFIVE_U_CLASS_MAX || idx > RISCV_SIFIVE_U_MASK_MAX) {
++        return 0;
++    }
++
++    bool event_match = true;
++    if (!idx) {
++        event_match = false;
++    }
++    while (event_match && idx) {
++        if (!riscv_sifive_u_pmu_events[group][idx - 1]) {
++            event_match = false;
++        }
++        event_mask = event_mask & (~(1 << (idx - 1)));
++        idx = 32 - clz32(event_mask);
++    }
++    return event_match;
++}
++
++static target_ulong get_ticks(bool icnt, bool high_half)
++{
++    int64_t val;
++    target_ulong res;
++
++    if (icnt && icount_enabled()) {
++        val = icount_get_raw();
++    } else {
++        val = cpu_get_host_ticks();
++    }
++
++    if (high_half) {
++        res = val >> 32;
++    } else {
++        res = val;
++    }
++
++    return res;
++}
++
++target_ulong riscv_sifive_u_pmu_ctr_read(PMUCTRState *counter,
++                                         uint32_t event_idx, bool high_half)
++{
++    target_ulong ctrl_val = high_half ? counter->mhpmcounterh_val :
++                                        counter->mhpmcounter_val;
++    uint32_t event_class_field = FIELD_EX32(event_idx,
++                                                SIFIVE_U_PMU_MHPMEVENT,
++                                                EVENT_CLASS);
++    uint32_t event_mask_field = FIELD_EX32(event_idx,
++                                               SIFIVE_U_PMU_MHPMEVENT,
++                                               EVENT_MASK);
++
++    if (event_class_field >= RISCV_SIFIVE_U_CLASS_MAX ||
++        (32 - clz32(event_mask_field)) >= RISCV_SIFIVE_U_MASK_MAX) {
++        return ctrl_val;
++    }
++
++    switch (event_class_field) {
++    /* If we want to handle some events separately */
++
++    /* fall through */
++    default:
++    /* In case we do not want handle it separately */
++        if (riscv_sifive_u_supported_events(event_idx)) {
++                return get_ticks(false, high_half);
++        }
++    /* Did not find event in supported */
++        return ctrl_val;
++    }
++
++    g_assert_not_reached(); /* unreachable */
++    return 0;
++}
++
++void riscv_sifive_u_pmu_ctr_write(PMUCTRState *counter, uint32_t event_idx,
++                             target_ulong val, bool high_half)
++{
++    target_ulong *ctr_prev = high_half ? &counter->mhpmcounterh_prev :
++                                         &counter->mhpmcounter_prev;
++    uint32_t event_class_field = FIELD_EX32(event_idx,
++                                                SIFIVE_U_PMU_MHPMEVENT,
++                                                EVENT_CLASS);
++    uint32_t event_mask_field = FIELD_EX32(event_idx,
++                                               SIFIVE_U_PMU_MHPMEVENT,
++                                               EVENT_MASK);
++
++    if (event_class_field >= RISCV_SIFIVE_U_CLASS_MAX ||
++        (32 - clz32(event_mask_field)) >= RISCV_SIFIVE_U_MASK_MAX) {
++        *ctr_prev = val;
 +        return;
 +    }
 +
-+    cpu->pmu_ctr_event_map = g_hash_table_new(g_direct_hash, g_direct_equal);
-+    if (!cpu->pmu_ctr_event_map) {
-+        error_setg(errp, "Unable to allocate second PMU event hash table");
-         return;
-     }
- 
-diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-index 3853d0e262..e29dbc9ed5 100644
---- a/target/riscv/pmu.h
-+++ b/target/riscv/pmu.h
-@@ -22,10 +22,20 @@
- #include "cpu.h"
- #include "qapi/error.h"
- 
--bool riscv_pmu_ctr_monitor_instructions(CPURISCVState *env,
--                                        uint32_t target_ctr);
--bool riscv_pmu_ctr_monitor_cycles(CPURISCVState *env,
--                                  uint32_t target_ctr);
-+#define RISCV_PMU_EVENT_NOT_PRESENTED -1
++    switch (event_class_field) {
++    /* If we want to handle some events separately */
 +
-+#define RISCV_PMU_CTR_IS_HPM(x) (x > 2)
-+#define RISCV_PMU_EVENT_IS_FIXED(x) ({              \
-+    bool ret = false;                               \
-+    if ((x) == RISCV_PMU_EVENT_HW_CPU_CYCLES ||     \
-+        (x) == RISCV_PMU_EVENT_HW_INSTRUCTIONS) {   \
-+        ret = true;                                 \
-+    }                                               \
-+    ret;                                            \
-+})
++    /* fall through */
++    default:
++    /* In case we do not want handle it separately */
++        if (riscv_sifive_u_supported_events(event_idx)) {
++            *ctr_prev = get_ticks(false, high_half);
++            return;
++        }
++    /* Did not find event in supported */
++        *ctr_prev = val;
++        return;
++    }
 +
-+int riscv_pmu_get_event_by_ctr(CPURISCVState *env,
-+                               uint32_t target_ctr);
- void riscv_pmu_timer_cb(void *priv);
- void riscv_pmu_init(RISCVCPU *cpu, Error **errp);
- int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
-@@ -38,5 +48,6 @@ void riscv_pmu_update_fixed_ctrs(CPURISCVState *env, target_ulong newpriv,
-                                  bool new_virt);
- RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
-                                   bool upper_half, uint32_t ctr_idx);
-+bool riscv_pmu_counter_enabled(RISCVCPU *cpu, uint32_t ctr_idx);
++    g_assert_not_reached(); /* unreachable */
++    return;
++}
+diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+index af5f923f54..2771102fbe 100644
+--- a/hw/riscv/sifive_u.c
++++ b/hw/riscv/sifive_u.c
+@@ -60,6 +60,7 @@
+ #include "sysemu/device_tree.h"
+ #include "sysemu/runstate.h"
+ #include "sysemu/sysemu.h"
++#include "include/hw/misc/sifive_u_pmu.h"
  
- #endif /* RISCV_PMU_H */
+ #include <libfdt.h>
+ 
+@@ -93,6 +94,17 @@ static const MemMapEntry sifive_u_memmap[] = {
+ #define OTP_SERIAL          1
+ #define GEM_REVISION        0x10070109
+ 
++static void create_fdt_pmu(MachineState *s)
++{
++    g_autofree char *pmu_name = g_strdup_printf("/pmu");
++    MachineState *ms = MACHINE(s);
++    RISCVCPU *hart = RISCV_CPU(qemu_get_cpu(0));
++
++    qemu_fdt_add_subnode(ms->fdt, pmu_name);
++    qemu_fdt_setprop_string(ms->fdt, pmu_name, "compatible", "riscv,pmu");
++    sifive_u_pmu_generate_fdt_node(ms->fdt, hart->pmu_avail_ctrs, pmu_name);
++}
++
+ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
+                        bool is_32_bit)
+ {
+@@ -499,6 +511,8 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
+     qemu_fdt_setprop_string(fdt, "/aliases", "serial0", nodename);
+ 
+     g_free(nodename);
++
++    create_fdt_pmu(ms);
+ }
+ 
+ static void sifive_u_machine_reset(void *opaque, int n, int level)
+diff --git a/include/hw/misc/sifive_u_pmu.h b/include/hw/misc/sifive_u_pmu.h
+new file mode 100644
+index 0000000000..8877c2ba46
+--- /dev/null
++++ b/include/hw/misc/sifive_u_pmu.h
+@@ -0,0 +1,24 @@
++#ifndef RISCV_SIFIVE_U_PMU_H
++#define RISCV_SIFIVE_U_PMU_H
++
++#include "target/riscv/cpu.h"
++#include "qapi/error.h"
++
++/* Maximum events per class */
++#define RISCV_SIFIVE_U_MASK_MAX 18
++
++enum riscv_sifive_u_pmu_classes {
++    RISCV_SIFIVE_U_CLASS_INST = 0x0,
++    RISCV_SIFIVE_U_CLASS_MICROARCH,
++    RISCV_SIFIVE_U_CLASS_MEM,
++    RISCV_SIFIVE_U_CLASS_MAX  = 0x3
++};
++
++bool riscv_sifive_u_supported_events(uint32_t event_idx);
++void riscv_sifive_u_pmu_ctr_write(PMUCTRState *counter, uint32_t event_idx,
++                                    target_ulong val, bool high_half);
++target_ulong riscv_sifive_u_pmu_ctr_read(PMUCTRState *counter,
++                                           uint32_t event_idx, bool high_half);
++void sifive_u_pmu_generate_fdt_node(void *fdt, uint32_t cmask, char *pmu_name);
++
++#endif /* RISCV_SCR_PMU_H */
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index a90808a3ba..2ae43c7658 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -38,6 +38,7 @@
+ #include "kvm/kvm_riscv.h"
+ #include "tcg/tcg-cpu.h"
+ #include "tcg/tcg.h"
++#include "include/hw/misc/sifive_u_pmu.h"
+ 
+ /* RISC-V CPU definitions */
+ static const char riscv_single_letter_exts[] = "IEMAFDQCBPVH";
+@@ -477,6 +478,15 @@ static void riscv_max_cpu_init(Object *obj)
+ #endif
+ }
+ 
++#ifndef CONFIG_USER_ONLY
++static void riscv_sifive_u_hart_reg_pmu_cb(CPURISCVState *env)
++{
++    env->pmu_vendor_support = riscv_sifive_u_supported_events;
++    env->pmu_ctr_write = riscv_sifive_u_pmu_ctr_write;
++    env->pmu_ctr_read = riscv_sifive_u_pmu_ctr_read;
++}
++#endif
++
+ #if defined(TARGET_RISCV64)
+ static void rv64_base_cpu_init(Object *obj)
+ {
+@@ -498,9 +508,12 @@ static void rv64_sifive_u_cpu_init(Object *obj)
+     RISCVCPU *cpu = RISCV_CPU(obj);
+     CPURISCVState *env = &cpu->env;
+     riscv_cpu_set_misa_ext(env, RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
+-    env->priv_ver = PRIV_VERSION_1_10_0;
++    env->priv_ver = PRIV_VERSION_1_12_0;
+ #ifndef CONFIG_USER_ONLY
+     set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV39);
++    if (!kvm_enabled()) {
++        riscv_sifive_u_hart_reg_pmu_cb(env);
++    }
+ #endif
+ 
+     /* inherited from parent obj via riscv_cpu_init() */
+@@ -508,6 +521,8 @@ static void rv64_sifive_u_cpu_init(Object *obj)
+     cpu->cfg.ext_zicsr = true;
+     cpu->cfg.mmu = true;
+     cpu->cfg.pmp = true;
++    cpu->cfg.ext_sscofpmf = true;
++    cpu->cfg.pmu_mask = MAKE_64BIT_MASK(3, 2);
+ }
+ 
+ static void rv64_sifive_e_cpu_init(Object *obj)
+@@ -660,6 +675,9 @@ static void rv32_sifive_u_cpu_init(Object *obj)
+     env->priv_ver = PRIV_VERSION_1_10_0;
+ #ifndef CONFIG_USER_ONLY
+     set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV32);
++    if (!kvm_enabled()) {
++        riscv_sifive_u_hart_reg_pmu_cb(env);
++    }
+ #endif
+ 
+     /* inherited from parent obj via riscv_cpu_init() */
 -- 
 2.34.1
 
