@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E53C973926
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 15:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3372973968
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:09:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so1Ly-0006cP-7O; Tue, 10 Sep 2024 09:56:22 -0400
+	id 1so1Wz-0007b9-I6; Tue, 10 Sep 2024 10:07:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1so1Lt-0006bn-0A
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 09:56:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1so1Lr-0005Le-BZ
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 09:56:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725976574;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=spqhTNVJHhEhdKNaoWNom/Wy0L3Nm7AzxOZR3GPa0jc=;
- b=E1tv8hZxXXvkkmRKhhlhsoebT3FVUqycYBBr5GNLQMGBnhM9D5Zi4aWyZWLHEGP5yBUjkM
- vpZAnGqjnSlCU3hBYrMTiV4tSx530IRUWd4aFB9iCNy4aBBEqVgHiXrxXpctHHLft80MtR
- Bk1hflFYSDJP8qZFVp0m/eIdoK05ASI=
-Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
- [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-454-Ui3fjwUwPJW1yLOqas-ixg-1; Tue, 10 Sep 2024 09:56:11 -0400
-X-MC-Unique: Ui3fjwUwPJW1yLOqas-ixg-1
-Received: by mail-vk1-f199.google.com with SMTP id
- 71dfb90a1353d-501061b4a41so1701294e0c.0
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 06:56:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1so1Ww-0007RY-Hk
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:42 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1so1Ws-0006U3-Bv
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:42 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-a8a6d1766a7so100853166b.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 07:07:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725977257; x=1726582057; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=K0qiTs5xTqLvYUKCqSsGSE0SSUPZugump4DvmHIWRfA=;
+ b=qDqk13+fiPJYBREgN2BsH4467yKpFWZ/nvii3Nnv3tEpHlIrQzFCH5D8Ii/sutkXcb
+ TSirCRuH1djLfLpNELyPZjmlKZRfZNZpHP8wW66WTGef4GyIciB6U9XeZXTdnmvIlG7S
+ wF7Zk+Yk9CxdzHfa675yzYa0VJ6S5XNmz2dQ+sgp+8xPn2q1cR3BWg44qdmCKwKetxHd
+ cGo0HaDulPRztZuImR2Y5rCTtjceurB9PJJPAmPMA3MUrzFxv4xvGqVo61/tOg/uFgsN
+ F4UMn4NRGHg2OkT7+BefqK1Wlg7Vqt2qStFZOCog8vUqnrCqkUdOkAWIx4dm13vOQ9aw
+ wnLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725976570; x=1726581370;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=spqhTNVJHhEhdKNaoWNom/Wy0L3Nm7AzxOZR3GPa0jc=;
- b=ej1MOOLcuPlxHkaxENxVR6Er7WIQcmyFKts6wFcBtNuayNVmSK0bKbXkbpS0mHfV4T
- IyA7CRFN8Lpvlp4pFf8jgyZy21OVkaroWkLAggrQDUj/ZDogXzkqJ6/YcTZlIIl73s8J
- acpcSUFu8elnwIEwaMFLEhjBqRjEHYhjOvi4mtQwXxyI48T9oO7yFgiif4tbDdcB1tvX
- PAU2SwdEqPApxYo9tNFXq+nQj0YCp20l0aDgvzjWK0C7hkuzFErkjyQJ7Et9FUTSTiPg
- Xk4nXcgxZYSXJhZE+zfEOlqlToiAR5NippzCSp2QD++Xf2q3KZtBeTz08WzFk3LjrZs3
- oxwg==
-X-Gm-Message-State: AOJu0YxhBhKp2qGklRFr6u/1tCxY2LKnMC9gCDrxNv/OcSMNS2+3lF0v
- m9vdo/v6DBd25WEqoPabuADmJW7fK9lcBLw9iJnkLuWBFAoOqArjkCbOzvaFS6tBb0bNwJDHOTF
- ozn4RC9nThSo3cmvXC6TpCTNxjcmWsAF/9SDHfkdR4of7t4SpvQxy
-X-Received: by 2002:a05:6122:3282:b0:4f5:abe4:50e2 with SMTP id
- 71dfb90a1353d-50207c69ffdmr15737594e0c.6.1725976570476; 
- Tue, 10 Sep 2024 06:56:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHThpWTJWnOIKO7aFwx1fq8deA8VX8wZBP4O4RSgGD7/Z5hjdVEUWJoldgt5fkbX7uzOGaw/g==
-X-Received: by 2002:a05:6122:3282:b0:4f5:abe4:50e2 with SMTP id
- 71dfb90a1353d-50207c69ffdmr15737557e0c.6.1725976570078; 
- Tue, 10 Sep 2024 06:56:10 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c534786c12sm29928886d6.146.2024.09.10.06.56.09
+ d=1e100.net; s=20230601; t=1725977257; x=1726582057;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=K0qiTs5xTqLvYUKCqSsGSE0SSUPZugump4DvmHIWRfA=;
+ b=DJnPtnmw4fhANlDkVR4TCBU/voVMBzrClCy5DOpYr6nnuL4V0Vt+Gp2szIzlOWS/Yl
+ qmfJ1jhBAkmmg1Af89tzBrStdaXX3zmrwt8WmsDWAWmzX01Zs07Xfayz/pZybbkf3nJV
+ 6/A7QxXyu6Dwmr6jjYGbWRd1L5RFXVuEkEGbf5EPv/pbqTKuSZgjKsjUO3Ek/nH+rFfi
+ zX73ifdcXavPYNXGjfClNfiv2TKk7JdzHmnLyxtS1iSx6BMsJZBos14uH31JT75/ZVy/
+ IuYBtU9rFgge0ljr+dc3/qX9WJBm5KG9XPmAzzpbz07Zgv2Wj2v7XMdAPrKKXujBmyoW
+ OWAA==
+X-Gm-Message-State: AOJu0YzwmMN8JdQ+huyRIvjj5U+UGyq/eLg+yUsyGbx6A+YIPTCOazRy
+ 42IHR3a+3WIVH47evUDBYg2jCtqAELMTKfSuBQ8gx0Ajxx3hAPyAH0d0967kU6g=
+X-Google-Smtp-Source: AGHT+IHq4StGQUeLwD3SLMeDcewkmeP0shFB7ZgVVijwKH0AjM/GEhW7QbeRSAGcbJgNTvIooQuK2A==
+X-Received: by 2002:a17:907:72d1:b0:a8a:794b:9888 with SMTP id
+ a640c23a62f3a-a8ffab94228mr98996266b.36.1725977255917; 
+ Tue, 10 Sep 2024 07:07:35 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8d25ced1bfsm485811966b.154.2024.09.10.07.07.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Sep 2024 06:56:09 -0700 (PDT)
-Date: Tue, 10 Sep 2024 09:56:07 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Yong Huang <yong.huang@smartx.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH RESEND RFC 03/10] qapi/migration: Introduce periodic CPU
- throttling parameters
-Message-ID: <ZuBP90uSWiJWXTgQ@x1n>
-References: <cover.1725891841.git.yong.huang@smartx.com>
- <0bbcdfd86f35830e0a398220663aac5afd8b7e1e.1725891841.git.yong.huang@smartx.com>
- <Zt9o5r1ZWOxnjctC@x1n>
- <CAK9dgma+kmV=sXPu-RUnT8mkQmRUJXRRkiDXfFDoT+6JBu-nHw@mail.gmail.com>
+ Tue, 10 Sep 2024 07:07:34 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 9B51C5F762;
+ Tue, 10 Sep 2024 15:07:33 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, devel@lists.libvirt.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: [PATCH 00/26] Maintainer updates (testing, gdbstub, plugins)
+Date: Tue, 10 Sep 2024 15:07:07 +0100
+Message-Id: <20240910140733.4007719-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK9dgma+kmV=sXPu-RUnT8mkQmRUJXRRkiDXfFDoT+6JBu-nHw@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,74 +104,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 10, 2024 at 01:47:04PM +0800, Yong Huang wrote:
-> On Tue, Sep 10, 2024 at 5:30 AM Peter Xu <peterx@redhat.com> wrote:
-> 
-> > On Mon, Sep 09, 2024 at 10:25:36PM +0800, Hyman Huang wrote:
-> > > To activate the periodic CPU throttleing feature, introduce
-> > > the cpu-periodic-throttle.
-> > >
-> > > To control the frequency of throttling, introduce the
-> > > cpu-periodic-throttle-interval.
-> > >
-> > > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> >
-> > Considering that I would still suggest postcopy over auto-converge, IMO we
-> >
-> 
-> We are considering the hybrid of precopy and postcopy in fact, and i
-> entirely agree with what you are saying: postcopy migration is an
-> alternative
-> solution to deal with migrations that refuse to converge, or take too long
-> to converge. But enabling this feature may not be easy in production since
-> the
-> recovery requires upper apps to interface, the hugepages and spdk/dpdk
+Hi,
 
-Libvirt should support recovery, while vhost-user should also be supported
-in general by both qemu/libvirt.  Huge page is indeed still the issue,
-though.
+Here is the current state of my maintainer trees.
 
-> scenarios also need to be considered and re-test.
-> Considering auto-converge is the main policy in the industry, the
-> optimization
-> may still make sense. We would like to try to optimize the auto-converge in
-> huge
-> VM case and, IMHO, it doesn't conflict with postcopy.
+Testing
 
-Yeah, that's OK.
+I've updated a number of the docker containers to deal with breakages
+in the crossdev environments as bullseye moves to LTS. I've dropped
+the armel environment which doesn't really add much to the armhf cross
+build we have that works. i686 and mipsel cross containers are bumped
+up to bookworm. Currently mips64el is still broken.
 
-> 
-> 
-> > should be cautious on adding more QMP interfaces on top of auto-converge,
-> > because that means more maintenance burden everywhere.. and it's against
-> > our goal to provide, hopefully, one solution for the long term for
-> > convergence issues.
-> >
-> > Postcopy has a major issue with VFIO, but auto converge isn't anything
-> > better from that regard.. as we can't yet throttle a device so far anyway.
-> > Throttling of DMA probably means DMA faults, then postcopy might be doable
-> > too.  Meanwhile we're looking at working out 1G postcopy at some point.
-> >
-> > So I wonder whether we can make any further optmization for auto-converge
-> > (if we still really want that..) to be at least transparent, so that they
-> >
-> 
-> Thanks for the advice and of course yes.
-> So, at first, We'll try to avoid adding the new periodic throttle parameter
-> and make it be transparent ?
+gdbstub
 
-That'll be my take on this, so we can keep relatively focused for hopefully
-all migration developers around QEMU in the near future.  I wonder this
-could be a good measure so we at least try to reduce part of the burden.
+This brings in Gustavo's patches to support MTE for system mode
+expanding on the previously implemented user mode support.
 
-I don't think it's a published rule, it's just something I thought about
-when glancing your series.  So feel free to share your thoughts.  Btw I'll
-not be able to read into details yet in the next few days due to flooded
-inbox.. sorry for that.  But I'll come back after I flush the rest.
+plugins
 
-Thanks,
+I start by deprecating some options that don't make much sense for
+instrumentation including 32 bit and TCI support. They will still work
+but there are caveats and it doesn't seem worth wasting CI time
+keeping track of them.
+
+There are a couple of new plugins including some useful analysis ones.
+The bbv plugin can generate files that can be fed into simpoint. The
+cflow plugin I've posted before separately but takes advantage of the
+new conditional and store helpers to try and be more efficient tracing
+control flow.
+
+Finally there is not one but two memory APIs. Pierrick's updates to
+the main memory instrumentation now makes values available to the
+plugins and should be used if you absolutely want to track what value
+was read or stored. I've added a softmmu test case building on
+memory.c and I'll merge the updated linux-user test case once its been
+re-spun.
+
+Rowan's API provides a more direct access through the existing debug
+API but comes with the caveats that it should only used on memory you
+don't expect to be changing. The example provided allows for the
+contents of syscalls to be probed at the syscall point.
+
+Finally there is a RFC for a gdbstub hook which I mostly wrote while I
+was debugging weirdness in the memory stuff. I'll probably drop it
+before the PR and let it cook a bit more on plugins/next.
+
+The following still need review:
+
+  plugins: add ability to register a GDB triggered callback
+  util/timer: avoid deadlock when shutting down
+  tests/tcg: add a system test to check memory instrumentation
+  tests/tcg: only read/write 64 bit words on 64 bit systems
+  tests/tcg: clean up output of memory system test
+  contrib/plugins: control flow plugin
+  deprecation: don't enable TCG plugins by default with TCI
+  deprecation: don't enable TCG plugins by default on 32 bit hosts
+  scripts/ci: update the gitlab-runner playbook
+  docs/devel: fix duplicate line
+  tests/docker: update debian i686 and mipsel images to bookworm
+  tests/docker: remove debian-armel-cross
+
+Akihiko Odaki (1):
+  contrib/plugins: Add a plugin to generate basic block vectors
+
+Alex Bennée (12):
+  tests/docker: remove debian-armel-cross
+  tests/docker: update debian i686 and mipsel images to bookworm
+  docs/devel: fix duplicate line
+  scripts/ci: update the gitlab-runner playbook
+  deprecation: don't enable TCG plugins by default on 32 bit hosts
+  deprecation: don't enable TCG plugins by default with TCI
+  contrib/plugins: control flow plugin
+  tests/tcg: clean up output of memory system test
+  tests/tcg: only read/write 64 bit words on 64 bit systems
+  tests/tcg: add a system test to check memory instrumentation
+  util/timer: avoid deadlock when shutting down
+  plugins: add ability to register a GDB triggered callback
+
+Gustavo Romero (5):
+  gdbstub: Use specific MMU index when probing MTE addresses
+  gdbstub: Add support for MTE in system mode
+  tests/guest-debug: Support passing arguments to the GDB test script
+  tests/tcg/aarch64: Improve linker script organization
+  tests/tcg/aarch64: Extend MTE gdbstub tests to system mode
+
+Pierrick Bouvier (5):
+  plugins: save value during memory accesses
+  plugins: extend API to get latest memory value accessed
+  tests/tcg: add mechanism to run specific tests with plugins
+  tests/tcg: allow to check output of plugins
+  tests/plugin/mem: add option to print memory accesses
+
+Rowan Hart (2):
+  plugins: add plugin API to read guest memory
+  plugins: add option to dump write argument to syscall plugin
+
+Thomas Huth (1):
+  contrib/plugins/Makefile: Add a 'distclean' target
+
+ docs/about/deprecated.rst                     |  19 +
+ docs/about/emulation.rst                      |  44 +-
+ docs/devel/testing/main.rst                   |   6 -
+ configure                                     |  37 +-
+ accel/tcg/atomic_template.h                   |  66 ++-
+ include/hw/core/cpu.h                         |   4 +
+ include/qemu/plugin-event.h                   |   1 +
+ include/qemu/plugin.h                         |   4 +
+ include/qemu/qemu-plugin.h                    |  80 +++-
+ plugins/plugin.h                              |   9 +
+ contrib/plugins/bbv.c                         | 158 +++++++
+ contrib/plugins/cflow.c                       | 413 ++++++++++++++++++
+ plugins/api.c                                 |  71 +++
+ plugins/core.c                                |  43 ++
+ target/arm/gdbstub64.c                        |  21 +-
+ tcg/tcg-op-ldst.c                             |  66 ++-
+ tests/tcg/multiarch/system/memory.c           | 123 ++++--
+ tests/tcg/plugins/mem.c                       | 254 ++++++++++-
+ tests/tcg/plugins/syscall.c                   | 117 +++++
+ util/qemu-timer.c                             |  14 +-
+ accel/tcg/atomic_common.c.inc                 |  13 +-
+ accel/tcg/ldst_common.c.inc                   |  38 +-
+ .gitlab-ci.d/buildtest.yml                    |   2 +
+ .gitlab-ci.d/container-cross.yml              |   6 -
+ .gitlab-ci.d/crossbuilds.yml                  |   7 -
+ contrib/plugins/Makefile                      |   4 +-
+ plugins/qemu-plugins.symbols                  |   3 +
+ scripts/ci/setup/gitlab-runner.yml            |  39 +-
+ .../dockerfiles/debian-armel-cross.docker     | 179 --------
+ .../dockerfiles/debian-i686-cross.docker      |  10 +-
+ .../dockerfiles/debian-mipsel-cross.docker    |  10 +-
+ tests/guest-debug/run-test.py                 |   6 +
+ tests/guest-debug/test_gdbstub.py             |   5 +
+ tests/lcitool/refresh                         |  10 +-
+ tests/tcg/Makefile.target                     |  12 +-
+ tests/tcg/aarch64/Makefile.softmmu-target     |  49 ++-
+ tests/tcg/aarch64/Makefile.target             |   3 +-
+ tests/tcg/aarch64/gdbstub/test-mte.py         |  71 ++-
+ tests/tcg/aarch64/system/boot.S               |  11 +
+ tests/tcg/aarch64/system/kernel.ld            |  33 +-
+ tests/tcg/aarch64/system/mte.S                | 109 +++++
+ tests/tcg/alpha/Makefile.softmmu-target       |   2 +-
+ .../multiarch/system/Makefile.softmmu-target  |   6 +
+ .../system/validate-memory-counts.py          | 115 +++++
+ 44 files changed, 1935 insertions(+), 358 deletions(-)
+ create mode 100644 contrib/plugins/bbv.c
+ create mode 100644 contrib/plugins/cflow.c
+ delete mode 100644 tests/docker/dockerfiles/debian-armel-cross.docker
+ create mode 100644 tests/tcg/aarch64/system/mte.S
+ create mode 100755 tests/tcg/multiarch/system/validate-memory-counts.py
 
 -- 
-Peter Xu
+2.39.2
 
 
