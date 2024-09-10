@@ -2,52 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82780973799
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32FF5973713
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:21:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so07A-0003iE-L3; Tue, 10 Sep 2024 08:37:00 -0400
+	id 1snzrO-00068j-GZ; Tue, 10 Sep 2024 08:20:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1so06k-0002GI-8Q
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:36:34 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1so06h-000533-Dm
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:36:33 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxOOlJPeBmfbkDAA--.7594S3;
- Tue, 10 Sep 2024 20:36:25 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front2 (Coremail) with SMTP id qciowMBx+cVCPeBmXGoDAA--.15753S7;
- Tue, 10 Sep 2024 20:36:24 +0800 (CST)
-From: Xianglai Li <lixianglai@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Song Gao <gaosong@loongson.cn>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Huacai Chen <chenhuacai@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- kvm@vger.kernel.org, Bibo Mao <maobibo@loongson.cn>
-Subject: [RFC PATCH V2 5/5] hw/loongarch: Add KVM pch msi device support
-Date: Tue, 10 Sep 2024 20:18:32 +0800
-Message-Id: <8c81313bd4a5c53db5c889f19c9415994a9e007d.1725969898.git.lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1725969898.git.lixianglai@loongson.cn>
-References: <cover.1725969898.git.lixianglai@loongson.cn>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1snzrH-00067M-LQ
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:20:36 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1snzrF-0002rJ-5d
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:20:34 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5c3c30e6649so660960a12.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 05:20:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725970831; x=1726575631; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=aQ1AGyAt4d5SfLzGUv2zjnWVjYFKrQxvqh1xYv3MDfY=;
+ b=w0z8si5rNiH0CUCAGrEChO8DItNXUQ5Jw32cX0hBp8ZKZ/igpYCbkeZ7X426r79+sQ
+ mw+yke+1nLUpvJi2GdtmLvB7XMX0TxoXmnIhX6PocMT9oM6UBIcWeypeJd3HoNQ7oBeo
+ f+yp841Ws/GNc9Z+HcRHU0VRb4ws18WuwDyuyf/0+nkXybIlK4kfW1aVx6cEmo4IMhrk
+ BanzJKDqKJPP6mEaiTz4OHnK1qCimELqFKLAGGi28Ns7vdJR7gEuZhqjcUKGIBWCMPna
+ P2O0Eh1iVyLvj/oclPZO0smdyLbgSX6cZlSudlQHzsyJvjOcQWsnurgRMqEHD7ZQT6bR
+ WRUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725970831; x=1726575631;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aQ1AGyAt4d5SfLzGUv2zjnWVjYFKrQxvqh1xYv3MDfY=;
+ b=gSyR0b+mGMHMK5VxD9xaAyfpGrENAPbwfoSRHhZDD/SCbWBEb3+eE6nEHJ2mi/oaIi
+ RelDbPzfl8eUio5lUg596sSXhcdaXlUFOORwiiCZxd3BiZoRuxJlFQ+IeB0c95/DqVtN
+ VSwE65d1IJr5ZA05y2qK1o/q6zMDNo2E2yNJfdUAYNE22dIyqyUhZwTHY+Q6DX8SeSGF
+ E+vN1l5hp8MLL6E4MP/bwn/oGDkntGgmO03Fvu0eFwX4GSwGHcCeEfjk1kdDl0DwKU6X
+ hYktvDXgwSdae4uuDx5veD1qShy6XzmA90gMj81ZKGb0Oz1DKTFC05N2O/cDYtzO2IIt
+ 0X9g==
+X-Gm-Message-State: AOJu0YyLBm0vntfMeN5jVgSnk+WEM+8TrRkuo0vJCa850ms/ft9vCiHm
+ V7e/h94nsaUUrZxa8cu1TFcuGXKNIxJjlyfVH9s697EgMgvoKQggXc8Wv8WEZ3IWlCU5luelQY0
+ b9qB2s3cih2ubDGftpELg+Tm7GN5YQDBPB2anHQ==
+X-Google-Smtp-Source: AGHT+IHTrbcOiYYuyyf8pgZbNODrLLNzxdR4J1ZagJOzhMG2z4fUg8lfqP4gVJkm4AMLUWfBNhrvesnCDTh3SLFLBpo=
+X-Received: by 2002:a05:6402:2708:b0:5c0:8ea7:3deb with SMTP id
+ 4fb4d7f45d1cf-5c3dc7bec85mr9873090a12.22.1725970830994; Tue, 10 Sep 2024
+ 05:20:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qciowMBx+cVCPeBmXGoDAA--.15753S7
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+References: <20240906180723.503855-1-peter.maydell@linaro.org>
+ <20240906180723.503855-3-peter.maydell@linaro.org>
+ <3d74779c-7048-4de8-ba6d-e65062b541c5@redhat.com>
+In-Reply-To: <3d74779c-7048-4de8-ba6d-e65062b541c5@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 10 Sep 2024 13:20:19 +0100
+Message-ID: <CAFEAcA-phvrN5PMRHBBmNeb8wsLRSf9EuGpZMJiKhS_WmqN77w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] .gitlab-ci.d/crossbuilds.yml: Force 'make check'
+ single threaded for cross-i686-tci
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,157 +90,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added pch_msi interrupt controller handling
-during kernel emulation of irq chip.
+On Tue, 10 Sept 2024 at 13:13, Thomas Huth <thuth@redhat.com> wrote:
+>
+> On 06/09/2024 20.07, Peter Maydell wrote:
+> > The cross-i686-tci CI job is persistently flaky with various tests
+> > hitting timeouts.  One theory for why this is happening is that we're
+> > running too many tests in parallel and so sometimes a test gets
+> > starved of CPU and isn't able to complete within the timeout.
+> >
+> > Set the MESON_TESTTHREADS environment variable to 1 for this job;
+> > this will cause 'meson test' to run only one test at a time.
+> >
+> > (Note that this relies on the change to meson2make that makes it
+> > honour MESON_TESTTHREADS; otherwise it will have no effect.)
+> >
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> > ---
+> > Seems worth a try -- if this doesn't have an effect then
+> > we can revert it, but we'll at least have determined what
+> > the problem isn't...
+> > ---
+> >   .gitlab-ci.d/crossbuilds.yml | 3 +++
+> >   1 file changed, 3 insertions(+)
+> >
+> > diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+> > index cb499e4ee0d..ca1db011b11 100644
+> > --- a/.gitlab-ci.d/crossbuilds.yml
+> > +++ b/.gitlab-ci.d/crossbuilds.yml
+> > @@ -70,6 +70,9 @@ cross-i686-tci:
+> >       ACCEL: tcg-interpreter
+> >       EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
+> >       MAKE_CHECK_ARGS: check check-tcg
+> > +    # Force 'meson test' to run only one test at once, to
+> > +    # see whether this reduces the flakiness of this CI job.
+> > +    MESON_TESTTHREADS: 1
+>
+> Can't we simply add "-j1" to the MAKE_CHECK_ARGS line?
+>
+> According to the man-page of "make":
+>
+>   "If there is more than one -j option, the last one is effective."
+>
+> So adding a -j1 should override the previous setting, I think.
 
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
----
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Song Gao <gaosong@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Cornelia Huck <cohuck@redhat.com>
-Cc: kvm@vger.kernel.org
-Cc: Bibo Mao <maobibo@loongson.cn>
-Cc: Xianglai Li <lixianglai@loongson.cn>
+You would also be relying on the rune in mtest2make to
+pick the last -j option in the list, but luckily I think
+it already does that:
 
- hw/intc/loongarch_pch_msi.c | 42 +++++++++++++++++++++++++++----------
- hw/loongarch/virt.c         | 26 +++++++++++++----------
- target/loongarch/kvm/kvm.c  |  1 -
- 3 files changed, 46 insertions(+), 23 deletions(-)
+.mtestargs += $(subst -j,--num-processes , $(filter-out -j, $(lastword
+-j1 $(filter -j%, $(MAKEFLAGS)))))
 
-diff --git a/hw/intc/loongarch_pch_msi.c b/hw/intc/loongarch_pch_msi.c
-index ecf3ed0267..bab6f852f8 100644
---- a/hw/intc/loongarch_pch_msi.c
-+++ b/hw/intc/loongarch_pch_msi.c
-@@ -2,7 +2,7 @@
- /*
-  * QEMU Loongson 7A1000 msi interrupt controller.
-  *
-- * Copyright (C) 2021 Loongson Technology Corporation Limited
-+ * Copyright (C) 2024 Loongson Technology Corporation Limited
-  */
- 
- #include "qemu/osdep.h"
-@@ -14,6 +14,8 @@
- #include "hw/misc/unimp.h"
- #include "migration/vmstate.h"
- #include "trace.h"
-+#include "sysemu/kvm.h"
-+#include "hw/loongarch/virt.h"
- 
- static uint64_t loongarch_msi_mem_read(void *opaque, hwaddr addr, unsigned size)
- {
-@@ -26,14 +28,24 @@ static void loongarch_msi_mem_write(void *opaque, hwaddr addr,
-     LoongArchPCHMSI *s = (LoongArchPCHMSI *)opaque;
-     int irq_num;
- 
--    /*
--     * vector number is irq number from upper extioi intc
--     * need subtract irq base to get msi vector offset
--     */
--    irq_num = (val & 0xff) - s->irq_base;
--    trace_loongarch_msi_set_irq(irq_num);
--    assert(irq_num < s->irq_num);
--    qemu_set_irq(s->pch_msi_irq[irq_num], 1);
-+    MSIMessage msg = {
-+        .address = addr,
-+        .data = val,
-+    };
-+
-+    if (kvm_enabled() && kvm_irqchip_in_kernel()) {
-+        kvm_irqchip_send_msi(kvm_state, msg);
-+    } else {
-+        /*
-+         * vector number is irq number from upper extioi intc
-+         * need subtract irq base to get msi vector offset
-+         */
-+        irq_num = (val & 0xff) - s->irq_base;
-+        trace_loongarch_msi_set_irq(irq_num);
-+        assert(irq_num < s->irq_num);
-+
-+        qemu_set_irq(s->pch_msi_irq[irq_num], 1);
-+    }
- }
- 
- static const MemoryRegionOps loongarch_pch_msi_ops = {
-@@ -45,8 +57,16 @@ static const MemoryRegionOps loongarch_pch_msi_ops = {
- static void pch_msi_irq_handler(void *opaque, int irq, int level)
- {
-     LoongArchPCHMSI *s = LOONGARCH_PCH_MSI(opaque);
--
--    qemu_set_irq(s->pch_msi_irq[irq], level);
-+    MSIMessage msg = {
-+        .address = 0,
-+        .data = irq,
-+    };
-+
-+    if (kvm_enabled() && kvm_irqchip_in_kernel()) {
-+        kvm_irqchip_send_msi(kvm_state, msg);
-+    } else {
-+        qemu_set_irq(s->pch_msi_irq[irq], level);
-+    }
- }
- 
- static void loongarch_pch_msi_realize(DeviceState *dev, Error **errp)
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index db0c08899b..b42cf7e5af 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -887,24 +887,28 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-         for (i = 0; i < num; i++) {
-             qdev_connect_gpio_out(DEVICE(d), i, qdev_get_gpio_in(extioi, i));
-         }
-+    }
- 
--        /* Add PCH PIC node */
--        fdt_add_pch_pic_node(lvms, &eiointc_phandle, &pch_pic_phandle);
-+    /* Add PCH PIC node */
-+    fdt_add_pch_pic_node(lvms, &eiointc_phandle, &pch_pic_phandle);
- 
--        pch_msi = qdev_new(TYPE_LOONGARCH_PCH_MSI);
--        start   =  num;
--        num = EXTIOI_IRQS - start;
--        qdev_prop_set_uint32(pch_msi, "msi_irq_base", start);
--        qdev_prop_set_uint32(pch_msi, "msi_irq_num", num);
--        d = SYS_BUS_DEVICE(pch_msi);
--        sysbus_realize_and_unref(d, &error_fatal);
--        sysbus_mmio_map(d, 0, VIRT_PCH_MSI_ADDR_LOW);
-+    pch_msi = qdev_new(TYPE_LOONGARCH_PCH_MSI);
-+    num = VIRT_PCH_PIC_IRQ_NUM;
-+    start   =  num;
-+    num = EXTIOI_IRQS - start;
-+    qdev_prop_set_uint32(pch_msi, "msi_irq_base", start);
-+    qdev_prop_set_uint32(pch_msi, "msi_irq_num", num);
-+    d = SYS_BUS_DEVICE(pch_msi);
-+    sysbus_realize_and_unref(d, &error_fatal);
-+
-+    if (!(kvm_enabled() && kvm_irqchip_in_kernel())) {
-+        /* Connect pch_msi irqs to extioi */
-         for (i = 0; i < num; i++) {
--            /* Connect pch_msi irqs to extioi */
-             qdev_connect_gpio_out(DEVICE(d), i,
-                                   qdev_get_gpio_in(extioi, i + start));
-         }
-     }
-+    sysbus_mmio_map(d, 0, VIRT_PCH_MSI_ADDR_LOW);
- 
-     /* Add PCH MSI node */
-     fdt_add_pch_msi_node(lvms, &eiointc_phandle, &pch_msi_phandle);
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index c07dcfd85f..e1be6a6959 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -719,7 +719,6 @@ int kvm_arch_get_default_type(MachineState *ms)
- 
- int kvm_arch_init(MachineState *ms, KVMState *s)
- {
--    s->kernel_irqchip_allowed = false;
-     cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
-     return 0;
- }
--- 
-2.39.1
-
+thanks
+-- PMM
 
