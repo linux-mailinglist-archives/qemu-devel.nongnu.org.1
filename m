@@ -2,63 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5C7973DA2
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 18:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA8F973E4A
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 19:12:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so41r-0007V4-3R; Tue, 10 Sep 2024 12:47:47 -0400
+	id 1so4O9-0002bB-7C; Tue, 10 Sep 2024 13:10:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1so41a-0006qf-SR
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 12:47:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1so4O6-0002aC-V6
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:10:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1so41W-0007a1-FO
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 12:47:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1so4O5-0001iS-BC
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:10:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725986845;
+ s=mimecast20190719; t=1725988243;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1Zdqqub+sWEXimNYFiEIiGuFYzmKpVqenGTfkuTRG8Q=;
- b=dXaTKnEjFnL0r+EfNJKY+I4HunfpJ4ptb/s9mYOVdvD+FcP0VLqAo30s0WKldJeMDZLrvA
- u3wB+WY5iwFCWBT4IpmbXkfs9usqXnmgiqb+SyTX7jKbdGLQa3pzCQbcbOmhA/t1PJOYJ6
- 5Qm50ESq4jWDWijpHFTjelEWpKFSoSE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-I2gFaTf2OnqIVR15HPRgGg-1; Tue,
- 10 Sep 2024 12:47:22 -0400
-X-MC-Unique: I2gFaTf2OnqIVR15HPRgGg-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F409819560A7; Tue, 10 Sep 2024 16:47:21 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.112])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 931FF19560AB; Tue, 10 Sep 2024 16:47:21 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AED2521E66E6; Tue, 10 Sep 2024 18:47:14 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 19/19] qapi/vfio: Rename VfioMigrationState to Qapi*,
- and drop prefix
-Date: Tue, 10 Sep 2024 18:47:14 +0200
-Message-ID: <20240910164714.1993531-20-armbru@redhat.com>
-In-Reply-To: <20240910164714.1993531-1-armbru@redhat.com>
-References: <20240910164714.1993531-1-armbru@redhat.com>
+ bh=n2Vq/bu6PKXAAo63Rx2C4qJetDow9YwZuTQ1r+BP9I4=;
+ b=dqR7Yza1W2JgfKRejB9YNAaNWOp3bpwURKAZGyBlckHq4QPrkjFhWMAsYMDuOsk2+/jbtK
+ EXYaYj5ICAZJ+fPYNujKk29tuC+KVKlQwFKeBeQBzE5EoJN1sflaJj8/8yMVz5L6h0Tuv7
+ PV9ryji+R2wh8xoijbR5aBj6zn3hFCw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-WOCVtgQ2MsegCaJ4k1S0NA-1; Tue, 10 Sep 2024 13:10:41 -0400
+X-MC-Unique: WOCVtgQ2MsegCaJ4k1S0NA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-374c35b8e38so2617868f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 10:10:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1725988240; x=1726593040;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=n2Vq/bu6PKXAAo63Rx2C4qJetDow9YwZuTQ1r+BP9I4=;
+ b=dTF5RbjqAE/R7bmp+Fa0tzk86Fxo7GDARb/AMnjB4e9vZhVtoxnFjv733POKTi2DgR
+ cLCM5RW2wwOyk0emDpSSXRyOjxnpeBXRrztwo6RKqf8CkI9brfi02HtXjnpTSKFSwRGv
+ ofex1DE3VOviE7HAzKctcSDcYESTanKXhMdW/fVd48L9uaHKZJxfZviy+xf2aiEBHcMD
+ 1zotLPHXRfIHdYiSgsKag2xLs+ahD498l757NAMajNQYG/WjJ049LGQ/gdShA8+eOFeR
+ yxPdmHSIjm9t0tR8pg3fZhrxjfRca8PazRQ2bjz1TWpRRd1gpJaqxwxjcp2SfDgC9bmU
+ dkXg==
+X-Gm-Message-State: AOJu0YzEYe2f4KOkAjSnCyxOssJS7ifouxGQRaMy6GkUP/4paZW/xXdF
+ YGjtp7JLhFBJOp6CAfDqASE7xysn2239TZJrlHrldNQcmMlOWbgNw0M3Ofc0J5B0JhP07/B0rt7
+ FaMJGU6BIO7cYHQh3HbDIKvfAtXDgFNtEkPqj3z0Lv3vuwDqDrV76
+X-Received: by 2002:a5d:54c8:0:b0:365:f52f:cd44 with SMTP id
+ ffacd0b85a97d-378896c8049mr10278838f8f.57.1725988239770; 
+ Tue, 10 Sep 2024 10:10:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHj11+mZqW0nk1LE3XRXpDDYKPn/taopMMQeMmNRceru15ERhK30Z71ph+KIEQCxgw6pMvebw==
+X-Received: by 2002:a5d:54c8:0:b0:365:f52f:cd44 with SMTP id
+ ffacd0b85a97d-378896c8049mr10278818f8f.57.1725988239078; 
+ Tue, 10 Sep 2024 10:10:39 -0700 (PDT)
+Received: from redhat.com ([31.187.78.63]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37895665649sm9461155f8f.42.2024.09.10.10.10.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 Sep 2024 10:10:38 -0700 (PDT)
+Date: Tue, 10 Sep 2024 13:10:32 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: qemu-devel@nongnu.org, farosas@suse.de, jasowang@redhat.com,
+ mcoqueli@redhat.com, peterx@redhat.com,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH v2 0/2] Postcopy migration and vhost-user errors
+Message-ID: <20240910131008-mutt-send-email-mst@kernel.org>
+References: <20240828100914.105728-1-ppandit@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240828100914.105728-1-ppandit@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -82,74 +96,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QAPI's 'prefix' feature can make the connection between enumeration
-type and its constants less than obvious.  It's best used with
-restraint.
+On Wed, Aug 28, 2024 at 03:39:12PM +0530, Prasad Pandit wrote:
+> From: Prasad Pandit <pjp@fedoraproject.org>
+> 
+> Hello,
+> 
+> * virsh(1) offers multiple options to initiate Postcopy migration:
+> 
+>     1) virsh migrate --postcopy --postcopy-after-precopy
+>     2) virsh migrate --postcopy + virsh migrate-postcopy
+>     3) virsh migrate --postcopy --timeout <N> --timeout-postcopy
+> 
+> When Postcopy migration is invoked via method (2) or (3) above,
+> the migrated guest on the destination host hangs sometimes.
+> 
+> * During Postcopy migration, multiple threads are spawned on the destination
+> host to start the guest and setup devices. One such thread starts vhost
+> device via vhost_dev_start() function and another called fault_thread handles
+> page faults in user space using kernel's userfaultfd(2) system.
+> 
+> * When fault_thread exits upon completion of Postcopy migration, it sends a
+> 'postcopy_end' message to the vhost-user device. But sometimes 'postcopy_end'
+> message is sent while vhost device is being setup via vhost_dev_start().
+> 
+>      Thread-1                                  Thread-2
+> 
+> vhost_dev_start                        postcopy_ram_incoming_cleanup
+>  vhost_device_iotlb_miss                postcopy_notify
+>   vhost_backend_update_device_iotlb      vhost_user_postcopy_notifier
+>    vhost_user_send_device_iotlb_msg       vhost_user_postcopy_end
+>     process_message_reply                  process_message_reply
+>      vhost_user_read                        vhost_user_read
+>       vhost_user_read_header                 vhost_user_read_header
+>        "Fail to update device iotlb"          "Failed to receive reply to postcopy_end"
+> 
+> This creates confusion when vhost device receives 'postcopy_end' message while
+> it is still trying to update IOTLB entries.
+> 
+> This seems to leave the guest in a stranded/hung state because fault_thread
+> has exited saying Postcopy migration has ended, but vhost-device is probably
+> still expecting updates. QEMU logs following errors on the destination host
+> ===
+> ...
+> qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
+> qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
+> qemu-kvm: vhost_user_postcopy_end: 700871,700900: Failed to receive reply to postcopy_end
+> qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
+> qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
+> qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x8 instead of 0x5.
+> qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
+> qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x16 instead of 0x5.
+> qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
+> qemu-kvm: vhost_user_read_header: 700871,700871: Failed to read msg header. Flags 0x0 instead of 0x5.
+> qemu-kvm: vhost_device_iotlb_miss: 700871,700871: Fail to update device iotlb
+> ===
 
-VfioMigrationState has a 'prefix' that overrides the generated
-enumeration constants' prefix to QAPI_VFIO_MIGRATION_STATE.
 
-We could simply drop 'prefix', but then the enumeration constants
-would look as if they came from kernel header linux/vfio.h.
+So are we going to see a version with BQL?
 
-Rename the type to QapiVfioMigrationState instead, so that 'prefix' is
-not needed.
-
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240904111836.3273842-20-armbru@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
----
- qapi/vfio.json      | 9 ++++-----
- hw/vfio/migration.c | 2 +-
- 2 files changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/qapi/vfio.json b/qapi/vfio.json
-index eccca82068..b53b7caecd 100644
---- a/qapi/vfio.json
-+++ b/qapi/vfio.json
-@@ -7,7 +7,7 @@
- ##
- 
- ##
--# @VfioMigrationState:
-+# @QapiVfioMigrationState:
- #
- # An enumeration of the VFIO device migration states.
- #
-@@ -32,10 +32,9 @@
- #
- # Since: 9.1
- ##
--{ 'enum': 'VfioMigrationState',
-+{ 'enum': 'QapiVfioMigrationState',
-   'data': [ 'stop', 'running', 'stop-copy', 'resuming', 'running-p2p',
--            'pre-copy', 'pre-copy-p2p' ],
--  'prefix': 'QAPI_VFIO_MIGRATION_STATE' }
-+            'pre-copy', 'pre-copy-p2p' ] }
- 
- ##
- # @VFIO_MIGRATION:
-@@ -63,5 +62,5 @@
-   'data': {
-       'device-id': 'str',
-       'qom-path': 'str',
--      'device-state': 'VfioMigrationState'
-+      'device-state': 'QapiVfioMigrationState'
-   } }
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 262d42a46e..17199b73ae 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -81,7 +81,7 @@ static const char *mig_state_to_str(enum vfio_device_mig_state state)
-     }
- }
- 
--static VfioMigrationState
-+static QapiVfioMigrationState
- mig_state_to_qapi_state(enum vfio_device_mig_state state)
- {
-     switch (state) {
--- 
-2.46.0
+> * Couple of patches here help to fix/handle these errors.
+> 
+> Thank you.
+> ---
+> Prasad Pandit (2):
+>   vhost: fail device start if iotlb update fails
+>   vhost-user: add a request-reply lock
+> 
+>  hw/virtio/vhost-user.c         | 74 ++++++++++++++++++++++++++++++++++
+>  hw/virtio/vhost.c              |  6 ++-
+>  include/hw/virtio/vhost-user.h |  3 ++
+>  3 files changed, 82 insertions(+), 1 deletion(-)
+> 
+> --
+> 2.46.0
 
 
