@@ -2,136 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2209736EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E1B973797
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:38:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snzkO-0005Ab-LV; Tue, 10 Sep 2024 08:13:28 -0400
+	id 1so07K-0004Jo-Ff; Tue, 10 Sep 2024 08:37:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1snzkI-000592-Ur
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:13:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1snzkA-0001Cn-AT
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:13:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725970393;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=zMCLFNxyejVSEI0C0ONg2nRCjcJL3nR79nFtGUR0tjU=;
- b=XG8YGENlOUQ0zxKf5nBBMLkQ8B1ha4Gc6AKORjMWbgLolFvoV89rTIfigRCXdK2mr+ykVN
- umCcN4xf3oYarnVK4Ivfhnuv3exxej5y8ZMayoKcwpz3bfLy/09Cq2ZQ09Cs8yT6ERKFQ3
- gE//bxvHvQmWq3l++UOg8YgMlbWKqVo=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-574-oGlndHUoNjKbDLrfnXX7xw-1; Tue, 10 Sep 2024 08:13:11 -0400
-X-MC-Unique: oGlndHUoNjKbDLrfnXX7xw-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6c5135456cbso83951856d6.0
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 05:13:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725970390; x=1726575190;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zMCLFNxyejVSEI0C0ONg2nRCjcJL3nR79nFtGUR0tjU=;
- b=O4O8bwvsLnY63D+OmSz3Nrl6bHKVQHdc06v/Eyj3YDYnvPI0bdqx7IN6E6wDP8fWpj
- yy1VIezt/YjOI9RiZNlM+hhbuTeuKCrL1m5q4RULwrEmK+vUgKvDXwTLOxfGt13i9+Vf
- P+Ukzpw8Q685TPi792L2vh49p36ymFf0d2jr4Mud6l8R6yGdOijTTWHCMV0Oxw91mIpO
- GYznIHU+ymsjUjfOtYKG76CJDUGHY7krCVOu/koyYkRhd2QHVEo/71Ekxis4lLdDWt2a
- HfH246ez29z5QN5VTdaSCFqVxnRf0ps+Pqva6T/Mp61HhJf73qTaM6GLi/KcIkSJZj7t
- MfQA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUsWv4MayKbYxJ3OjMTBx2elUSyeHq76SthAuhRgGRj4a+Xla7plWNgCs9GE5FgjJP7ShTJ34rwnoOQ@nongnu.org
-X-Gm-Message-State: AOJu0Yz9Hp8rfcf6kyum1819LSdT3pWXFWNmuhb5wTBSTJI5v5VNvoAw
- 7cIuJNRFR5z4SMYEr7xK3LzNoEk3uxtXYaqd68qRqAAeG10TwuaJMWE6vFGDBWb3kT28hNRVbm0
- uR8oskO/ULak+VXNIbVxUNaAw3wsFVVWMwFuKvV3T8N8b/5se+xuO
-X-Received: by 2002:a05:6214:4302:b0:6c3:643d:3b with SMTP id
- 6a1803df08f44-6c528509e5fmr150722326d6.42.1725970390582; 
- Tue, 10 Sep 2024 05:13:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHuYPTEuoTwU0B3cQTKkjFSq1PKrF9H9b4cIxCDILwbNmPE4bV1HTutaH0cmT5mOqb16po7fQ==
-X-Received: by 2002:a05:6214:4302:b0:6c3:643d:3b with SMTP id
- 6a1803df08f44-6c528509e5fmr150722096d6.42.1725970390210; 
- Tue, 10 Sep 2024 05:13:10 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-178-122.web.vodafone.de.
- [109.43.178.122]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c5343293d3sm29533986d6.17.2024.09.10.05.13.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Sep 2024 05:13:09 -0700 (PDT)
-Message-ID: <3d74779c-7048-4de8-ba6d-e65062b541c5@redhat.com>
-Date: Tue, 10 Sep 2024 14:13:05 +0200
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1so06k-0002Gr-D7
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:36:34 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1so06h-000539-FI
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:36:34 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxhehEPeBmYrkDAA--.7710S3;
+ Tue, 10 Sep 2024 20:36:20 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front2 (Coremail) with SMTP id qciowMBx+cVCPeBmXGoDAA--.15753S2;
+ Tue, 10 Sep 2024 20:36:19 +0800 (CST)
+From: Xianglai Li <lixianglai@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Huacai Chen <chenhuacai@kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ kvm@vger.kernel.org, Bibo Mao <maobibo@loongson.cn>
+Subject: [RFC PATCH V2 0/5] Added Interrupt controller emulation for loongarch
+ kvm
+Date: Tue, 10 Sep 2024 20:18:27 +0800
+Message-Id: <cover.1725969898.git.lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] .gitlab-ci.d/crossbuilds.yml: Force 'make check'
- single threaded for cross-i686-tci
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-References: <20240906180723.503855-1-peter.maydell@linaro.org>
- <20240906180723.503855-3-peter.maydell@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240906180723.503855-3-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qciowMBx+cVCPeBmXGoDAA--.15753S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,48 +63,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06/09/2024 20.07, Peter Maydell wrote:
-> The cross-i686-tci CI job is persistently flaky with various tests
-> hitting timeouts.  One theory for why this is happening is that we're
-> running too many tests in parallel and so sometimes a test gets
-> starved of CPU and isn't able to complete within the timeout.
-> 
-> Set the MESON_TESTTHREADS environment variable to 1 for this job;
-> this will cause 'meson test' to run only one test at a time.
-> 
-> (Note that this relies on the change to meson2make that makes it
-> honour MESON_TESTTHREADS; otherwise it will have no effect.)
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> Seems worth a try -- if this doesn't have an effect then
-> we can revert it, but we'll at least have determined what
-> the problem isn't...
-> ---
->   .gitlab-ci.d/crossbuilds.yml | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-> index cb499e4ee0d..ca1db011b11 100644
-> --- a/.gitlab-ci.d/crossbuilds.yml
-> +++ b/.gitlab-ci.d/crossbuilds.yml
-> @@ -70,6 +70,9 @@ cross-i686-tci:
->       ACCEL: tcg-interpreter
->       EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
->       MAKE_CHECK_ARGS: check check-tcg
-> +    # Force 'meson test' to run only one test at once, to
-> +    # see whether this reduces the flakiness of this CI job.
-> +    MESON_TESTTHREADS: 1
+Before this, the interrupt controller simulation has been completed
+in the user mode program. In order to reduce the loss caused by frequent
+switching of the virtual machine monitor from kernel mode to user mode
+when the guest accesses the interrupt controller, we add the interrupt
+controller simulation in kvm.
 
-Can't we simply add "-j1" to the MAKE_CHECK_ARGS line?
+In qemu side implementation is simple, just make a new IPI EXTIOI PCH KVM
+related several classes, And the interface to access kvm related data is
+implemented.
 
-According to the man-page of "make":
+Most of the simulation work of the interrupt controller is done in kvm.
+Because KVM the changes have not been the Linux community acceptance,
+the patches of this series will have RFC label until KVM patch into the community.
 
-  "If there is more than one -j option, the last one is effective."
+For the implementation of kvm simulation, refer to the following documents.
 
-So adding a -j1 should override the previous setting, I think.
+IPI simulation implementation reference:
+https://github.com/loongson/LoongArch-Documentation/tree/main/docs/Loongson-3A5000-usermanual-EN/inter-processor-interrupts-and-communication
 
-  Thomas
+EXTIOI simulation implementation reference:
+https://github.com/loongson/LoongArch-Documentation/tree/main/docs/Loongson-3A5000-usermanual-EN/io-interrupts/extended-io-interrupts
 
+PCH-PIC simulation implementation reference:
+https://github.com/loongson/LoongArch-Documentation/blob/main/docs/Loongson-7A1000-usermanual-EN/interrupt-controller.adoc
+
+For PCH-MSI, we used irqfd mechanism to send the interrupt signal
+generated by user state to kernel state and then to EXTIOI without
+maintaining PCH-MSI state in kernel state.
+
+You can easily get the code from the link below:
+the kernel:
+https://github.com/lixianglai/linux
+the branch is: interrupt
+
+the qemu:
+https://github.com/lixianglai/qemu
+the branch is: interrupt
+
+Please note that the code above is regularly updated based on community
+reviews.
+
+changelog:
+V1->V2
+1.Make changes involving header files a separate patch
+2.rebase based on the latest qemu code
+3.Optimize the kvm ipi class into the ipi common class and the ipi kvm
+class.
+4.Optimized the interface for kernel reading and writing data on ipi
+extioi pch_pic device.
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Cornelia Huck <cohuck@redhat.com>
+Cc: kvm@vger.kernel.org
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: Xianglai Li <lixianglai@loongson.cn>
+
+Xianglai Li (5):
+  include: Add macro definitions needed for interrupt controller kvm
+    emulation
+  hw/loongarch: Add KVM IPI device support
+  hw/loongarch: Add KVM extioi device support
+  hw/loongarch: Add KVM pch pic device support
+  hw/loongarch: Add KVM pch msi device support
+
+ hw/intc/Kconfig                       |   9 +
+ hw/intc/loongarch_extioi_kvm.c        | 250 ++++++++++++++++++++++++++
+ hw/intc/loongarch_ipi_kvm.c           | 128 +++++++++++++
+ hw/intc/loongarch_pch_msi.c           |  42 +++--
+ hw/intc/loongarch_pch_pic.c           |  40 +++--
+ hw/intc/loongarch_pch_pic_kvm.c       | 180 +++++++++++++++++++
+ hw/intc/loongson_ipi_common.c         |  28 +++
+ hw/intc/meson.build                   |   3 +
+ hw/loongarch/Kconfig                  |   3 +
+ hw/loongarch/virt.c                   | 138 ++++++++------
+ include/hw/intc/loongarch_extioi.h    |  38 +++-
+ include/hw/intc/loongarch_ipi.h       |  15 ++
+ include/hw/intc/loongarch_pch_pic.h   |  58 +++++-
+ include/hw/intc/loongson_ipi.h        |   1 -
+ include/hw/intc/loongson_ipi_common.h |   2 +
+ include/hw/loongarch/virt.h           |  15 ++
+ linux-headers/asm-loongarch/kvm.h     |  18 ++
+ linux-headers/linux/kvm.h             |   6 +
+ 18 files changed, 891 insertions(+), 83 deletions(-)
+ create mode 100644 hw/intc/loongarch_extioi_kvm.c
+ create mode 100644 hw/intc/loongarch_ipi_kvm.c
+ create mode 100644 hw/intc/loongarch_pch_pic_kvm.c
+
+-- 
+2.39.1
 
 
