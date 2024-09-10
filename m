@@ -2,94 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F280297397F
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C274F9739A6
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:16:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so1cl-0001Pk-Kf; Tue, 10 Sep 2024 10:13:43 -0400
+	id 1so1fU-0000At-TM; Tue, 10 Sep 2024 10:16:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1so1cj-0001LG-Ll
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:13:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1so1ci-0007Rh-7r
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:13:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725977619;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Pt8bqbCwh9kKYJgKv8v45h+FfOHOODyraeYE53gO4t8=;
- b=C8RkVkMxriIDu8p/ytCdYwiVqGPO3sNhhcrPXqKrdyyE3yeApjkpdomw+OUIOQ1e6F0GYC
- 8KrDGreEQq3M48GW4eXJQtKKZeQP2g9zMndq5Z1759Bk2KTjq6JUm0X3FSw9May9SxX09a
- 1WTDYvZydvBRQErR9kJMCdeF+Y9rD68=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-nFNc7slGPT6tWngJN91sMw-1; Tue, 10 Sep 2024 10:13:38 -0400
-X-MC-Unique: nFNc7slGPT6tWngJN91sMw-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7a1d0b29198so932410285a.2
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 07:13:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1so1fS-0008Vd-PS
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:16:30 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1so1fQ-0007wu-RC
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:16:30 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5c3ca32971cso1197756a12.0
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 07:16:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725977787; x=1726582587; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aTO3SbR8/CS5imaO2ZtO2Uj6evUCssJ5RCky30jkoA4=;
+ b=uAJjFpNC093Vq+M5fgAolqZ681pFZu870eYQGdC5qLEG827GzDx5DhkFvAw0im37jW
+ AM/TsAL/lst1BjCkfGBGGKGPtKz5U1YW8LgzQCS3zhpnEZnEv3tFW1qWNdoSq8x2m45V
+ Uv2pKgitFk3FnALrIQLRoRx5LP+rmgQDQMaG+XPnjcNsk0hwwt8P/OK+ehG3UHEdQDxC
+ RSOu+qwyuKeUY9t0ph/el5IN6PCe7PEy8bvIY8jxGumdU231AdhNe7v2Hqusx7630QAF
+ y0dIRjQRgkI9noa86wlNkeipBpwcdAjx64DSfwIMI+xv8nmKJq3sW+g0GEDgYoJ/7dQF
+ nErw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725977617; x=1726582417;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Pt8bqbCwh9kKYJgKv8v45h+FfOHOODyraeYE53gO4t8=;
- b=dvjsysEp8Jo+4duN2Ub6XiBQ2CxyOjiuyI5h1V4s5tWa4zYfjSJDBIydi1oHrK406u
- gmeRN5SeFsGUWv1xYkrrh34My+udL0vOy15oDI2ObJ4pRYcYoJ+42J9fBGdjKflKQizW
- I8dX/irrTIU/aAtqTncpCoDcpmr3KckA9TuBI1jIGPwAcPZNhRHgeNPL1GZJJ0fRVDOA
- uqwQImexyO80PUCOB/3AG0pOwnm4rGGBo4U3IUK6h8qkEXr5GBWnOH7x3utekl89F51D
- tpYNND3/I1OhYibDqkauii7h+yPJCTBRSpediXCGOv/7Hn8InxMGA4CEPKYFzEejE5xr
- zAyQ==
+ d=1e100.net; s=20230601; t=1725977787; x=1726582587;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aTO3SbR8/CS5imaO2ZtO2Uj6evUCssJ5RCky30jkoA4=;
+ b=BD3HEfXdRz014bQ3YiddrlM2xL3xVHZukRtkgYGuN1WGFFRwvelKf7MoRerTaK24FQ
+ 9URHsI1KuQ6I8cZ9MhzHIjDfolXdAOf2z8z+Rqh2OZ8j2kI4tZ2huyrZJlzjXis4kB5a
+ 9XtfRnVY8kkhiypTiNt/NPrCgrzSzRKsYEWIcJqwgn9ZbbVxBaE5P1EfGQzGBVVH6oXf
+ Fe+anJ7YPwaXDYuIfOb5H9VgcNp9bfzra8jHqTeoUH3PTp19rQxnyBW/m0mbTgf9obhW
+ Ogr34R1iB8+AhD0UT65k1HZDwGWHfGsx5jFilC/COffNams7Rp/CpN40MuZeeePk1X9V
+ BQ8Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW7g66UdzNyQwiqOAj8WJ0oRdkNsCNls9yZ/9zCPgUaMyVtokonXs4hyxGrTMHXjVFuLhHpB9iGF0Lk@nongnu.org
-X-Gm-Message-State: AOJu0Yyz/5gGuOGXKHcrTi1cvtutr6VL5U0APDzgRE/6DhhysXDGg9Uy
- 1ZPEnzCauAb1TIbJubGOwe/Dkgee4mQq4hWF0aky+YCE8/tOikJDYHBZ/SnY9VYnd2C+xIl2dfM
- bj9r5Z6/uuYWMFVdyQ6/idT4CbXhFcSxzKv3f2yS8S2Ctgx57CMwB
-X-Received: by 2002:a05:620a:1aaa:b0:7a9:b959:7748 with SMTP id
- af79cd13be357-7a9b9597b82mr845879185a.54.1725977617464; 
- Tue, 10 Sep 2024 07:13:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhSVP9t81NbW6YYaG37bhZ2IXKUZT8vAHjjP+CYh63dyqFQDXdVkBwG2S6txIdWxw+RSPk3Q==
-X-Received: by 2002:a05:620a:1aaa:b0:7a9:b959:7748 with SMTP id
- af79cd13be357-7a9b9597b82mr845873685a.54.1725977616938; 
- Tue, 10 Sep 2024 07:13:36 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7a9a7a042b1sm309507285a.84.2024.09.10.07.13.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Sep 2024 07:13:36 -0700 (PDT)
-Date: Tue, 10 Sep 2024 10:13:34 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc: Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 10/17] migration/multifd: Convert
- multifd_send()::next_channel to atomic
-Message-ID: <ZuBUDmJAErKggXYE@x1n>
-References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
- <76dc3ad69fa457fd1e358ad3de874474f9f64716.1724701542.git.maciej.szmigiero@oracle.com>
+ AJvYcCVgCstv5drkTkhXgRKtCz4wFsvK4M1fm6HUkf9a4c5acVXzkxfCCQfD50/hHgdZ9xqvJZRCInVqWL9C@nongnu.org
+X-Gm-Message-State: AOJu0YyWuNVhQwXtc7KnHGKc9Uhf4yDMRuNd4ruCXd/K6io/a3mJq4MI
+ NA715PpgmqKvggAuyaw61eRo84w77MuurFV4gDjqD+776zJwmtHy6QdXsjrHmBg=
+X-Google-Smtp-Source: AGHT+IFAGjw+abPhxhHX0Re1aE9GVOOiy4Jgffq3gvvgleE0NPDLMAlE+kkItOjrG8WurqO/irFbDw==
+X-Received: by 2002:a05:6402:5cd:b0:5c2:439e:d6d6 with SMTP id
+ 4fb4d7f45d1cf-5c3dc78a1d6mr10104231a12.11.1725977786753; 
+ Tue, 10 Sep 2024 07:16:26 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.217.32])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5c3ebd8d9easm4265169a12.97.2024.09.10.07.16.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Sep 2024 07:16:26 -0700 (PDT)
+Message-ID: <fc493743-5ab0-49eb-98ed-dd260f0f60d6@linaro.org>
+Date: Tue, 10 Sep 2024 16:16:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <76dc3ad69fa457fd1e358ad3de874474f9f64716.1724701542.git.maciej.szmigiero@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 20/24] audio: Add sndio backend
+To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
+ Alexandre Ratchov <alex@caoua.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: Qiuhao Li <Qiuhao.Li@outlook.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Darren Kenny <darren.kenny@oracle.com>, Bandan Das <bsd@redhat.com>,
+ Alexander Bulekov <alxndr@bu.edu>, Markus Armbruster <armbru@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@gmail.com>, Laurent Vivier
+ <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Brad Smith <brad@comstyle.com>,
+ =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
+References: <20220927081912.180983-1-kraxel@redhat.com>
+ <20220927081912.180983-21-kraxel@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20220927081912.180983-21-kraxel@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,54 +103,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 27, 2024 at 07:54:29PM +0200, Maciej S. Szmigiero wrote:
-> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+Hi,
+
+(This is commit 663df1cc68).
+
+On 27/9/22 10:19, Gerd Hoffmann wrote:
+> From: Alexandre Ratchov <alex@caoua.org>
 > 
-> This is necessary for multifd_send() to be able to be called
-> from multiple threads.
+> sndio is the native API used by OpenBSD, although it has been ported to
+> other *BSD's and Linux (packages for Ubuntu, Debian, Void, Arch, etc.).
 > 
-> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+> Signed-off-by: Brad Smith <brad@comstyle.com>
+> Signed-off-by: Alexandre Ratchov <alex@caoua.org>
+> Reviewed-by: Volker Rümelin <vr_qemu@t-online.de>
+> Tested-by: Volker Rümelin <vr_qemu@t-online.de>
+> Message-Id: <YxibXrWsrS3XYQM3@vm1.arverb.com>
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+>   meson_options.txt             |   4 +-
+>   audio/audio_template.h        |   2 +
+>   audio/audio.c                 |   1 +
+>   audio/sndioaudio.c            | 565 ++++++++++++++++++++++++++++++++++
+>   MAINTAINERS                   |   7 +
+>   audio/meson.build             |   1 +
+>   meson.build                   |   9 +-
+>   qapi/audio.json               |  25 +-
+>   qemu-options.hx               |  16 +
+>   scripts/meson-buildoptions.sh |   7 +-
+>   10 files changed, 632 insertions(+), 5 deletions(-)
+>   create mode 100644 audio/sndioaudio.c
 
-Would it be much simpler to just use a mutex for enqueue?
 
-Something like:
+> diff --git a/audio/sndioaudio.c b/audio/sndioaudio.c
+> new file mode 100644
+> index 000000000000..7c45276d36ce
+> --- /dev/null
+> +++ b/audio/sndioaudio.c
+> @@ -0,0 +1,565 @@
+> +/*
+> + * SPDX-License-Identifier: ISC
 
-===8<===
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 9b200f4ad9..979c9748b5 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -69,6 +69,8 @@ struct {
-     QemuSemaphore channels_created;
-     /* send channels ready */
-     QemuSemaphore channels_ready;
-+    /* Mutex to serialize multifd enqueues */
-+    QemuMutex multifd_send_mutex;
-     /*
-      * Have we already run terminate threads.  There is a race when it
-      * happens that we got one error while we are exiting.
-@@ -305,6 +307,8 @@ bool multifd_send(MultiFDSendData **send_data)
-     MultiFDSendParams *p = NULL; /* make happy gcc */
-     MultiFDSendData *tmp;
- 
-+    QEMU_LOCK_GUARD(&multifd_send_mutex);
-+
-     if (multifd_send_should_exit()) {
-         return false;
-     }
-@@ -824,6 +828,7 @@ bool multifd_send_setup(void)
-     multifd_send_state->params = g_new0(MultiFDSendParams, thread_count);
-     qemu_sem_init(&multifd_send_state->channels_created, 0);
-     qemu_sem_init(&multifd_send_state->channels_ready, 0);
-+    qemu_mutex_init(&multifd_send_state->multifd_send_mutex);
-     qatomic_set(&multifd_send_state->exiting, 0);
-     multifd_send_state->ops = multifd_ops[migrate_multifd_compression()];
-===8<===
+This is the single use of the ISC license in the more than 10k
+files in the repository. Just checking IIUC this document:
+https://www.gnu.org/licenses/quick-guide-gplv3.en.html
 
-Then all the details doesn't need change (meanwhile the perf should be
-similar)?
+ISC -> LGPLv2.1 -> GPLv2 -> GPLv3
 
--- 
-Peter Xu
+So ISC is compatible with GPLv2-or-later. Is that correct?
 
+Thanks,
+
+Phil.
+
+> + *
+> + * Copyright (c) 2019 Alexandre Ratchov <alex@caoua.org>
+> + */
+> +
+> +/*
+> + * TODO :
+> + *
+> + * Use a single device and open it in full-duplex rather than
+> + * opening it twice (once for playback once for recording).
+> + *
+> + * This is the only way to ensure that playback doesn't drift with respect
+> + * to recording, which is what guest systems expect.
+> + */
+> +
+> +#include <poll.h>
+> +#include <sndio.h>
+> +#include "qemu/osdep.h"
+> +#include "qemu/main-loop.h"
+> +#include "audio.h"
+> +#include "trace.h"
+> +
+> +#define AUDIO_CAP "sndio"
+> +#include "audio_int.h"
+[...]
 
