@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56687973739
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2223973730
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:27:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snzx1-0007AH-53; Tue, 10 Sep 2024 08:26:31 -0400
+	id 1snzx7-0007Ui-9F; Tue, 10 Sep 2024 08:26:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snzwy-000794-KT
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:26:28 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snzx4-0007RG-ON
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:26:34 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snzww-0003dp-QH
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:26:28 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2f761461150so44164301fa.0
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 05:26:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snzx2-0003eg-Ja
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:26:34 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-5365aec6fc1so4838377e87.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 05:26:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725971184; x=1726575984; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=yMbcFoOzWZLnMx1hP8NxuXXLnMO/tZV1JBHxtiwK6ko=;
- b=oFaEQRT5loSjWle9cLOiEQymHKR3dzBm14GIBZn1XRb5vRJfRR+wRhOH3jjqaKz0dF
- pYOSEGYjA7ZmolMIVRbTftqyYKc1NN7SClXrU2kZb1WjLV9T25xOxYSOqdRwyJJadcp9
- iAnaYmyzruIqqcQ1rSsbYTWsRo2PtZ5RWtfvf4mJE0nPa+vsQSWecGx17bEmAyCKL+G9
- 3RlwIwtHBr4O/6CIu49NEj5V26/bBa+owzxhqlUB4g6AVueGux2uFN7Cdgq6ltmsc/Tz
- EEIAxykQmhYq1aTs1E3JdYs1nBRvEPrl3HPHyfQ/hFenPoTVyEozXE6odhhJ1T2Onqkz
- /IPw==
+ d=linaro.org; s=google; t=1725971190; x=1726575990; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DwmV2MeWXY+eAh46YLB4XlIS9tILH+3xHMSDQuLSaLg=;
+ b=abqN4lI8r2rigxVheCEZIS4a7Kjt4UReF50AXMxXgJIAhSTAb5tZTFJT3d9PVfAemH
+ 4+SndUicypvIu6x4iazla7kmhYaLq4GpERi1sVcwPSKF9gX0tG31LaaoVLCrXWLDn4+2
+ 67ZegP3MK6ROWDnvgEVcn3mky8Sb1/cR7LUVbNyiVAt4kJjsEas7qntzBT0dq8ADi7us
+ dKuAIv7SJgchX/+Sq+eeWXh/2jwd0lDYfqMWOPPeBzk183IFPsXnfiOL4fqWQIQyVVvG
+ bgJPTevPWrykLrrY1uXsk+i9zF/jVkgpngUlQEgwkR5W5Cj8NyrBRbT9k9pmC1LzNz0G
+ ot8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725971184; x=1726575984;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yMbcFoOzWZLnMx1hP8NxuXXLnMO/tZV1JBHxtiwK6ko=;
- b=Cwss8E8C1ddj7IrCZWeXYeaiRxvJZWtNrXI56m2oQ5L1uDdPFCh97tAMdBwKY4jlH5
- eWqA7Ct0h8PXF3oiHtjVxvdGmchzSonD60OSP9/tajAnfG55uRt5tN9sE9KnLAW8DpfA
- atqPVKcxbblm4VB07JJcBr/qKrdPvo/qIS1XVjw0z3Lj0D+Oce0z/kYx4Xt7Y/dA48fW
- NIC6tmBga7HnYCYDTzxkDvN7oaFTp+5HmWIODK4+9kZefQ3nELb/PCskNacQ4ekfnmEa
- iXubbYHdnAFG2o7jhwbqeJwgq0CBozyPtWXb+skyGOEhMpSY41WgvnfZ3XTMgov1zHZd
- Jjnw==
-X-Gm-Message-State: AOJu0Ywis+f1wClybyGr5RaKiKC9Mx/fgX90jF/XlFu5dKFT/FoLT5LA
- FkwAYPI4lSDE+FewuIz/KdleW6NG7IIyj9c0r3P5lPBmwbTBSJw+PoVwbMJPDJQ/ooaUPGAQXwZ
- m
-X-Google-Smtp-Source: AGHT+IGl8VrBfqLDvqSOb0o3TcO2u0pjuZdi2LQXyhgdiS+mk1CABkqDGxFLGiVOQOfcagMnLhT+YQ==
-X-Received: by 2002:a05:651c:2207:b0:2f3:cd4e:b931 with SMTP id
- 38308e7fff4ca-2f75a96da0amr103149801fa.10.1725971184137; 
- Tue, 10 Sep 2024 05:26:24 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1725971190; x=1726575990;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DwmV2MeWXY+eAh46YLB4XlIS9tILH+3xHMSDQuLSaLg=;
+ b=TxwJ3v7+/B+GcKPCrbE+7f+S/i/qycliSH+fw5MESKnSLQf14uqbpAmEXzyNfY60to
+ PsIKty5le5vG911Q4ABo9wB/Xofa/rSmDMtGMFb2kM2zP7c0iH3VZkeqIXJaR9j5pktC
+ bZQ3WeE8LNtyGgUgaG5VLB6SrlrD9WBt069tpXSYvbrlntQuEab3c5co5xEqoj8akA+Z
+ 2b2FhRgMZXvGrBYPZeN+OHu4ocOn9lQWbClU1yX+Vva8EuxyuQNg+/d5UUPiRC2Mnewe
+ +Ihe4HzDEPuayugcK794UIbNPebu+TJWp5XPWgbajxB5YQlJW5e9Vwkcg35qVVHAgJj+
+ F31g==
+X-Gm-Message-State: AOJu0Yycg1hFvgS5qFJIHnVuSESfEZMQdXz/EN5Kd6w6qh9023hAnZep
+ ta7XNrgJsccmVKEIi/jDW7/tnJSCXGKWl/CO/RHUs9jYebALLg1kwPXOpcyJXcYipJmtob+Rb8d
+ l
+X-Google-Smtp-Source: AGHT+IF89AkzhBhynHvCYSIF7yZDpCgJkbbFgO5WP8Zvsk+sbPJI8gNBLuuSHLAOGX94mh5kJZFNXQ==
+X-Received: by 2002:a05:6512:104b:b0:536:5625:511a with SMTP id
+ 2adb3069b0e04-536587f82d0mr8388155e87.47.1725971190425; 
+ Tue, 10 Sep 2024 05:26:30 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.217.32])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25ced18csm472751066b.161.2024.09.10.05.26.22
+ a640c23a62f3a-a8d25c82eaesm478295966b.118.2024.09.10.05.26.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Sep 2024 05:26:23 -0700 (PDT)
+ Tue, 10 Sep 2024 05:26:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Stefan Weil <sw@weilnetz.de>,
@@ -62,22 +63,24 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Stefan Weil <sw@weilnetz.de>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/5] license: Fix typos and update SPDX tags
-Date: Tue, 10 Sep 2024 14:26:13 +0200
-Message-ID: <20240910122618.33056-1-philmd@linaro.org>
+Subject: [PATCH v2 1/5] NSIS: Simplify license description
+Date: Tue, 10 Sep 2024 14:26:14 +0200
+Message-ID: <20240910122618.33056-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240910122618.33056-1-philmd@linaro.org>
+References: <20240910122618.33056-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,85 +96,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Series fully reviewed (thanks Thomas!)
+Since the "2 | 3+" expression can be simplified as "2+",
+it is pointless to mention the GPLv3 license.
 
-Since v1:
-. Updated regex to cover all GPL-2.0* cases.
+Add the corresponding SPDX identifier to remove all doubt.
 
-- Fix a pair of typos
-- Upgrade the deprecated GPL-2.0+/LGPL-2.0+ SPDX tags
-  to GPL-2.0-only / GPL-2.0-or-later / LGPL-2.0-or-later.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+---
+ qemu.nsi | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Philippe Mathieu-Daudé (5):
-  NSIS: Simplify license description
-  tests/functional: Correct typo in test_netdev_ethtool.py SPDX tag
-  license: Update deprecated SPDX tag LGPL-2.0+ to LGPL-2.0-or-later
-  license: Update deprecated SPDX tag GPL-2.0+ to GPL-2.0-or-later
-  license: Update deprecated SPDX tag GPL-2.0 to GPL-2.0-only
-
- hw/core/uboot_image.h                   | 2 +-
- hw/m68k/bootinfo.h                      | 2 +-
- hw/net/igb_regs.h                       | 2 +-
- include/gdbstub/syscalls.h              | 2 +-
- include/gdbstub/user.h                  | 2 +-
- include/hw/nvram/fw_cfg_acpi.h          | 2 +-
- include/hw/usb/dwc2-regs.h              | 2 +-
- include/hw/virtio/virtio-acpi.h         | 2 +-
- include/qemu/crc-ccitt.h                | 2 +-
- target/alpha/cpu-param.h                | 2 +-
- target/arm/cpu-param.h                  | 2 +-
- target/cris/cpu-param.h                 | 2 +-
- target/hppa/cpu-param.h                 | 2 +-
- target/i386/cpu-param.h                 | 2 +-
- target/m68k/cpu-param.h                 | 2 +-
- target/microblaze/cpu-param.h           | 2 +-
- target/mips/cpu-param.h                 | 2 +-
- target/openrisc/cpu-param.h             | 2 +-
- target/ppc/cpu-param.h                  | 2 +-
- target/riscv/cpu-param.h                | 2 +-
- target/s390x/cpu-param.h                | 2 +-
- target/sh4/cpu-param.h                  | 2 +-
- target/sparc/cpu-param.h                | 2 +-
- tests/tcg/loongarch64/system/regdef.h   | 2 +-
- target/sparc/insns.decode               | 2 +-
- gdbstub/gdbstub.c                       | 2 +-
- gdbstub/syscalls.c                      | 2 +-
- gdbstub/system.c                        | 2 +-
- gdbstub/user-target.c                   | 2 +-
- gdbstub/user.c                          | 2 +-
- hw/nvram/fw_cfg-acpi.c                  | 2 +-
- hw/virtio/virtio-acpi.c                 | 2 +-
- linux-user/alpha/syscall.tbl            | 2 +-
- linux-user/alpha/syscallhdr.sh          | 2 +-
- linux-user/arm/syscallhdr.sh            | 2 +-
- linux-user/hppa/syscall.tbl             | 2 +-
- linux-user/hppa/syscallhdr.sh           | 2 +-
- linux-user/i386/syscallhdr.sh           | 2 +-
- linux-user/m68k/syscall.tbl             | 2 +-
- linux-user/m68k/syscallhdr.sh           | 2 +-
- linux-user/microblaze/syscall.tbl       | 2 +-
- linux-user/microblaze/syscallhdr.sh     | 2 +-
- linux-user/mips/syscall_o32.tbl         | 2 +-
- linux-user/mips/syscallhdr.sh           | 2 +-
- linux-user/mips64/syscall_n32.tbl       | 2 +-
- linux-user/mips64/syscall_n64.tbl       | 2 +-
- linux-user/mips64/syscallhdr.sh         | 2 +-
- linux-user/ppc/syscall.tbl              | 2 +-
- linux-user/ppc/syscallhdr.sh            | 2 +-
- linux-user/s390x/syscall.tbl            | 2 +-
- linux-user/s390x/syscallhdr.sh          | 2 +-
- linux-user/sh4/syscall.tbl              | 2 +-
- linux-user/sh4/syscallhdr.sh            | 2 +-
- linux-user/sparc/syscall.tbl            | 2 +-
- linux-user/sparc/syscallhdr.sh          | 2 +-
- linux-user/x86_64/syscallhdr.sh         | 2 +-
- linux-user/xtensa/syscall.tbl           | 2 +-
- linux-user/xtensa/syscallhdr.sh         | 2 +-
- qemu.nsi                                | 4 +++-
- scripts/kernel-doc                      | 2 +-
- tests/functional/test_netdev_ethtool.py | 2 +-
- 61 files changed, 63 insertions(+), 61 deletions(-)
-
+diff --git a/qemu.nsi b/qemu.nsi
+index 564d617d11..b186f223e1 100644
+--- a/qemu.nsi
++++ b/qemu.nsi
+@@ -7,7 +7,7 @@
+ ; This program is free software: you can redistribute it and/or modify
+ ; it under the terms of the GNU General Public License as published by
+ ; the Free Software Foundation, either version 2 of the License, or
+-; (at your option) version 3 or any later version.
++; (at your option) any later version.
+ ;
+ ; This program is distributed in the hope that it will be useful,
+ ; but WITHOUT ANY WARRANTY; without even the implied warranty of
+@@ -16,6 +16,8 @@
+ ;
+ ; You should have received a copy of the GNU General Public License
+ ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
++;
++; SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ ; NSIS_WIN32_MAKENSIS
+ 
 -- 
 2.45.2
 
