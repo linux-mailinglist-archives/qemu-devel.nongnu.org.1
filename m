@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1455E973DA7
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 18:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5C7973DA2
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 18:48:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so41p-0007OE-8y; Tue, 10 Sep 2024 12:47:45 -0400
+	id 1so41r-0007V4-3R; Tue, 10 Sep 2024 12:47:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1so41b-0006rw-IC
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 12:47:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1so41a-0006qf-SR
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 12:47:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1so41W-0007Zu-7J
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1so41W-0007a1-FO
  for qemu-devel@nongnu.org; Tue, 10 Sep 2024 12:47:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1725986845;
@@ -22,43 +22,43 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XVjWOqpRKvgrj/1JG9ZZuyqeYROAAb2f2zG6zzrjVVU=;
- b=RBlSl1Zt/HXT0PUsQQLGPef3AnRjl9dKynUR3vt+oufwx+rFONUYqyp+iEPUzRhKa5zcqZ
- vHTZ3ZOUoMif7Y8+40SqFxp8CSiI4o+jl4/5ds9Am4N9mopkPH89njilkgtCI9KP0NLI/V
- PO4mVsTZE2OKBWCANe62MMvsy11AC7A=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=1Zdqqub+sWEXimNYFiEIiGuFYzmKpVqenGTfkuTRG8Q=;
+ b=dXaTKnEjFnL0r+EfNJKY+I4HunfpJ4ptb/s9mYOVdvD+FcP0VLqAo30s0WKldJeMDZLrvA
+ u3wB+WY5iwFCWBT4IpmbXkfs9usqXnmgiqb+SyTX7jKbdGLQa3pzCQbcbOmhA/t1PJOYJ6
+ 5Qm50ESq4jWDWijpHFTjelEWpKFSoSE=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-661--sSoOU0IOW2p0k-LU8YS5Q-1; Tue,
- 10 Sep 2024 12:47:24 -0400
-X-MC-Unique: -sSoOU0IOW2p0k-LU8YS5Q-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-I2gFaTf2OnqIVR15HPRgGg-1; Tue,
+ 10 Sep 2024 12:47:22 -0400
+X-MC-Unique: I2gFaTf2OnqIVR15HPRgGg-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7088B1955D56; Tue, 10 Sep 2024 16:47:22 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F409819560A7; Tue, 10 Sep 2024 16:47:21 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.112])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ABBBC195605A; Tue, 10 Sep 2024 16:47:21 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 931FF19560AB; Tue, 10 Sep 2024 16:47:21 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AC3D021E66E2; Tue, 10 Sep 2024 18:47:14 +0200 (CEST)
+ id AED2521E66E6; Tue, 10 Sep 2024 18:47:14 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 18/19] qapi/cryptodev: Rename QCryptodevBackendAlgType to *Algo,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 19/19] qapi/vfio: Rename VfioMigrationState to Qapi*,
  and drop prefix
-Date: Tue, 10 Sep 2024 18:47:13 +0200
-Message-ID: <20240910164714.1993531-19-armbru@redhat.com>
+Date: Tue, 10 Sep 2024 18:47:14 +0200
+Message-ID: <20240910164714.1993531-20-armbru@redhat.com>
 In-Reply-To: <20240910164714.1993531-1-armbru@redhat.com>
 References: <20240910164714.1993531-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -86,200 +86,69 @@ QAPI's 'prefix' feature can make the connection between enumeration
 type and its constants less than obvious.  It's best used with
 restraint.
 
-QCryptodevBackendAlgType has a 'prefix' that overrides the generated
-enumeration constants' prefix to QCRYPTODEV_BACKEND_ALG.
+VfioMigrationState has a 'prefix' that overrides the generated
+enumeration constants' prefix to QAPI_VFIO_MIGRATION_STATE.
 
-We could simply drop 'prefix', but I think the abbreviation "alg" is
-less than clear.
+We could simply drop 'prefix', but then the enumeration constants
+would look as if they came from kernel header linux/vfio.h.
 
-Additionally rename the type to QCryptodevBackendAlgoType.  The prefix
-becomes QCRYPTODEV_BACKEND_ALGO_TYPE.
+Rename the type to QapiVfioMigrationState instead, so that 'prefix' is
+not needed.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20240904111836.3273842-19-armbru@redhat.com>
+Message-ID: <20240904111836.3273842-20-armbru@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- qapi/cryptodev.json          |  5 ++---
- include/sysemu/cryptodev.h   |  2 +-
- backends/cryptodev-builtin.c |  6 +++---
- backends/cryptodev-lkcf.c    |  4 ++--
- backends/cryptodev.c         |  6 +++---
- hw/virtio/virtio-crypto.c    | 14 +++++++-------
- 6 files changed, 18 insertions(+), 19 deletions(-)
+ qapi/vfio.json      | 9 ++++-----
+ hw/vfio/migration.c | 2 +-
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/qapi/cryptodev.json b/qapi/cryptodev.json
-index 65abc16842..5e417340dc 100644
---- a/qapi/cryptodev.json
-+++ b/qapi/cryptodev.json
-@@ -9,7 +9,7 @@
+diff --git a/qapi/vfio.json b/qapi/vfio.json
+index eccca82068..b53b7caecd 100644
+--- a/qapi/vfio.json
++++ b/qapi/vfio.json
+@@ -7,7 +7,7 @@
  ##
  
  ##
--# @QCryptodevBackendAlgType:
-+# @QCryptodevBackendAlgoType:
+-# @VfioMigrationState:
++# @QapiVfioMigrationState:
  #
- # The supported algorithm types of a crypto device.
+ # An enumeration of the VFIO device migration states.
  #
-@@ -19,8 +19,7 @@
+@@ -32,10 +32,9 @@
  #
- # Since: 8.0
+ # Since: 9.1
  ##
--{ 'enum': 'QCryptodevBackendAlgType',
--  'prefix': 'QCRYPTODEV_BACKEND_ALG',
-+{ 'enum': 'QCryptodevBackendAlgoType',
-   'data': ['sym', 'asym']}
+-{ 'enum': 'VfioMigrationState',
++{ 'enum': 'QapiVfioMigrationState',
+   'data': [ 'stop', 'running', 'stop-copy', 'resuming', 'running-p2p',
+-            'pre-copy', 'pre-copy-p2p' ],
+-  'prefix': 'QAPI_VFIO_MIGRATION_STATE' }
++            'pre-copy', 'pre-copy-p2p' ] }
  
  ##
-diff --git a/include/sysemu/cryptodev.h b/include/sysemu/cryptodev.h
-index 96d3998b93..b20822df0d 100644
---- a/include/sysemu/cryptodev.h
-+++ b/include/sysemu/cryptodev.h
-@@ -178,7 +178,7 @@ typedef struct CryptoDevBackendAsymOpInfo {
- typedef void (*CryptoDevCompletionFunc) (void *opaque, int ret);
- 
- typedef struct CryptoDevBackendOpInfo {
--    QCryptodevBackendAlgType algtype;
-+    QCryptodevBackendAlgoType algtype;
-     uint32_t op_code;
-     uint32_t queue_index;
-     CryptoDevCompletionFunc cb;
-diff --git a/backends/cryptodev-builtin.c b/backends/cryptodev-builtin.c
-index 170c93a6be..b1486be630 100644
---- a/backends/cryptodev-builtin.c
-+++ b/backends/cryptodev-builtin.c
-@@ -549,7 +549,7 @@ static int cryptodev_builtin_operation(
-     CryptoDevBackendBuiltinSession *sess;
-     CryptoDevBackendSymOpInfo *sym_op_info;
-     CryptoDevBackendAsymOpInfo *asym_op_info;
--    QCryptodevBackendAlgType algtype = op_info->algtype;
-+    QCryptodevBackendAlgoType algtype = op_info->algtype;
-     int status = -VIRTIO_CRYPTO_ERR;
-     Error *local_error = NULL;
- 
-@@ -561,11 +561,11 @@ static int cryptodev_builtin_operation(
+ # @VFIO_MIGRATION:
+@@ -63,5 +62,5 @@
+   'data': {
+       'device-id': 'str',
+       'qom-path': 'str',
+-      'device-state': 'VfioMigrationState'
++      'device-state': 'QapiVfioMigrationState'
+   } }
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 262d42a46e..17199b73ae 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -81,7 +81,7 @@ static const char *mig_state_to_str(enum vfio_device_mig_state state)
      }
- 
-     sess = builtin->sessions[op_info->session_id];
--    if (algtype == QCRYPTODEV_BACKEND_ALG_SYM) {
-+    if (algtype == QCRYPTODEV_BACKEND_ALGO_TYPE_SYM) {
-         sym_op_info = op_info->u.sym_op_info;
-         status = cryptodev_builtin_sym_operation(sess, sym_op_info,
-                                                  &local_error);
--    } else if (algtype == QCRYPTODEV_BACKEND_ALG_ASYM) {
-+    } else if (algtype == QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM) {
-         asym_op_info = op_info->u.asym_op_info;
-         status = cryptodev_builtin_asym_operation(sess, op_info->op_code,
-                                                   asym_op_info, &local_error);
-diff --git a/backends/cryptodev-lkcf.c b/backends/cryptodev-lkcf.c
-index 0dc4b067f5..38deac0717 100644
---- a/backends/cryptodev-lkcf.c
-+++ b/backends/cryptodev-lkcf.c
-@@ -474,7 +474,7 @@ static int cryptodev_lkcf_operation(
-     CryptoDevBackendLKCF *lkcf =
-         CRYPTODEV_BACKEND_LKCF(backend);
-     CryptoDevBackendLKCFSession *sess;
--    QCryptodevBackendAlgType algtype = op_info->algtype;
-+    QCryptodevBackendAlgoType algtype = op_info->algtype;
-     CryptoDevLKCFTask *task;
- 
-     if (op_info->session_id >= MAX_SESSIONS ||
-@@ -485,7 +485,7 @@ static int cryptodev_lkcf_operation(
-     }
- 
-     sess = lkcf->sess[op_info->session_id];
--    if (algtype != QCRYPTODEV_BACKEND_ALG_ASYM) {
-+    if (algtype != QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM) {
-         error_report("algtype not supported: %u", algtype);
-         return -VIRTIO_CRYPTO_NOTSUPP;
-     }
-diff --git a/backends/cryptodev.c b/backends/cryptodev.c
-index 76dfe65904..d8bd2a1ae6 100644
---- a/backends/cryptodev.c
-+++ b/backends/cryptodev.c
-@@ -185,10 +185,10 @@ static int cryptodev_backend_operation(
- static int cryptodev_backend_account(CryptoDevBackend *backend,
-                  CryptoDevBackendOpInfo *op_info)
- {
--    enum QCryptodevBackendAlgType algtype = op_info->algtype;
-+    enum QCryptodevBackendAlgoType algtype = op_info->algtype;
-     int len;
- 
--    if (algtype == QCRYPTODEV_BACKEND_ALG_ASYM) {
-+    if (algtype == QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM) {
-         CryptoDevBackendAsymOpInfo *asym_op_info = op_info->u.asym_op_info;
-         len = asym_op_info->src_len;
- 
-@@ -212,7 +212,7 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
-         default:
-             return -VIRTIO_CRYPTO_NOTSUPP;
-         }
--    } else if (algtype == QCRYPTODEV_BACKEND_ALG_SYM) {
-+    } else if (algtype == QCRYPTODEV_BACKEND_ALGO_TYPE_SYM) {
-         CryptoDevBackendSymOpInfo *sym_op_info = op_info->u.sym_op_info;
-         len = sym_op_info->src_len;
- 
-diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
-index 0ab8ae3282..6e9d8293da 100644
---- a/hw/virtio/virtio-crypto.c
-+++ b/hw/virtio/virtio-crypto.c
-@@ -461,7 +461,7 @@ static void virtio_crypto_init_request(VirtIOCrypto *vcrypto, VirtQueue *vq,
-     req->in_iov = NULL;
-     req->in_num = 0;
-     req->in_len = 0;
--    req->flags = QCRYPTODEV_BACKEND_ALG__MAX;
-+    req->flags = QCRYPTODEV_BACKEND_ALGO_TYPE__MAX;
-     memset(&req->op_info, 0x00, sizeof(req->op_info));
  }
  
-@@ -471,7 +471,7 @@ static void virtio_crypto_free_request(VirtIOCryptoReq *req)
-         return;
-     }
- 
--    if (req->flags == QCRYPTODEV_BACKEND_ALG_SYM) {
-+    if (req->flags == QCRYPTODEV_BACKEND_ALGO_TYPE_SYM) {
-         size_t max_len;
-         CryptoDevBackendSymOpInfo *op_info = req->op_info.u.sym_op_info;
- 
-@@ -486,7 +486,7 @@ static void virtio_crypto_free_request(VirtIOCryptoReq *req)
-             memset(op_info, 0, sizeof(*op_info) + max_len);
-             g_free(op_info);
-         }
--    } else if (req->flags == QCRYPTODEV_BACKEND_ALG_ASYM) {
-+    } else if (req->flags == QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM) {
-         CryptoDevBackendAsymOpInfo *op_info = req->op_info.u.asym_op_info;
-         if (op_info) {
-             g_free(op_info->src);
-@@ -571,10 +571,10 @@ static void virtio_crypto_req_complete(void *opaque, int ret)
-     VirtIODevice *vdev = VIRTIO_DEVICE(vcrypto);
-     uint8_t status = -ret;
- 
--    if (req->flags == QCRYPTODEV_BACKEND_ALG_SYM) {
-+    if (req->flags == QCRYPTODEV_BACKEND_ALGO_TYPE_SYM) {
-         virtio_crypto_sym_input_data_helper(vdev, req, status,
-                                             req->op_info.u.sym_op_info);
--    } else if (req->flags == QCRYPTODEV_BACKEND_ALG_ASYM) {
-+    } else if (req->flags == QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM) {
-         virtio_crypto_akcipher_input_data_helper(vdev, req, status,
-                                              req->op_info.u.asym_op_info);
-     }
-@@ -884,7 +884,7 @@ virtio_crypto_handle_request(VirtIOCryptoReq *request)
-     switch (opcode) {
-     case VIRTIO_CRYPTO_CIPHER_ENCRYPT:
-     case VIRTIO_CRYPTO_CIPHER_DECRYPT:
--        op_info->algtype = request->flags = QCRYPTODEV_BACKEND_ALG_SYM;
-+        op_info->algtype = request->flags = QCRYPTODEV_BACKEND_ALGO_TYPE_SYM;
-         ret = virtio_crypto_handle_sym_req(vcrypto,
-                          &req.u.sym_req, op_info,
-                          out_iov, out_num);
-@@ -894,7 +894,7 @@ virtio_crypto_handle_request(VirtIOCryptoReq *request)
-     case VIRTIO_CRYPTO_AKCIPHER_DECRYPT:
-     case VIRTIO_CRYPTO_AKCIPHER_SIGN:
-     case VIRTIO_CRYPTO_AKCIPHER_VERIFY:
--        op_info->algtype = request->flags = QCRYPTODEV_BACKEND_ALG_ASYM;
-+        op_info->algtype = request->flags = QCRYPTODEV_BACKEND_ALGO_TYPE_ASYM;
-         ret = virtio_crypto_handle_asym_req(vcrypto,
-                          &req.u.akcipher_req, op_info,
-                          out_iov, out_num);
+-static VfioMigrationState
++static QapiVfioMigrationState
+ mig_state_to_qapi_state(enum vfio_device_mig_state state)
+ {
+     switch (state) {
 -- 
 2.46.0
 
