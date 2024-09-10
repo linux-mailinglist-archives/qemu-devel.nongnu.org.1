@@ -2,90 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543B0973FE2
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 19:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D26897409F
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 19:40:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so4k1-00075r-5m; Tue, 10 Sep 2024 13:33:25 -0400
+	id 1so4pe-0004mf-0L; Tue, 10 Sep 2024 13:39:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1so4jX-0005np-C2
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:32:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1so4jV-00044y-0o
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:32:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725989570;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=rqOsnL77CbWV938DL6ZPgYq9h5A6u1mM6hjyDiIqaXg=;
- b=LNKprSszunrHSCQx03VmyungXM9KJSgCm6XdO+2iV5lPH2ugu58sqVooQY5c5TL2AyGFGE
- aEw40hw/9I0AyC2pehNrqM1uqIETaAOZ8IppMYROGYRV/YYstWMktLtvb7qB0AbM7Boxz4
- HkWCi+FXU7OUVlyf5iPZoaY29RDKbfI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-a7H2XcVeP6yOHgJXA6qVyg-1; Tue, 10 Sep 2024 13:32:48 -0400
-X-MC-Unique: a7H2XcVeP6yOHgJXA6qVyg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-374c434b952so2727545f8f.1
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 10:32:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1so4pX-0004iI-Mw
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:39:08 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1so4pV-0004Z2-49
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:39:07 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5c25f01879fso1178191a12.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 10:39:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1725989943; x=1726594743; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8nyoNX09OJlC7JXmPdXxdbGRDmYKJxyq3fTF8xRLDcI=;
+ b=lpnXoWgJODMqls6QzMPsOa+mgXF/AQHUNc6M0HwU4bPRjIU/ruVFes+AkSgfBX1Jju
+ WreWsaJuPvBWXN/x+MG9A1BxKa0YWW2T4ORpeZ8CaVZhHkAKvCDrHgmJ4ijcYVRsCUlh
+ 05OuvaUSdhGx37rBZBO3RhY72R9kGGM2yuVHarbjqTzSAWPtEsjCDcJ9a7TPCu2YlhlM
+ cvSknY2/fOniSzIgdvLucyh4f2o0OvyBYiSCzACVmYdDax3ouu6TbnpEg5yT5UsR4vfe
+ AK3MCoXCfYaN3L8KyZAKykWGn5GiUBOelWVW+o5y/vtdC2Mvjrpsg5ecEofxVHuTG2hM
+ V+tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725989567; x=1726594367;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rqOsnL77CbWV938DL6ZPgYq9h5A6u1mM6hjyDiIqaXg=;
- b=qvAC0L/jb0oJ5zcZ6CLAmFO8HILaBlxjv4biknlKEJZlAzqFNFK/QQl1aA4v3lFh03
- 1oqviwDQlsITXYkME8o1O7fKLPwleOxEbIPmSPiaPGxppGY/RbGGvgMcr1u385XRTl43
- hGKcBNo8yVDr05JzZJ5hQtz/T7qNJ07gTdHyGms6W6n+Xk0DUFS0ODtGeVW4EB6hjkv7
- MLBq8yci+8CdhWMp9JowVtWQRkauOfqP7o2Vp6QfjES59A9W/7zqnkU2nVzB5pwXTsNN
- dLK3Mvheh4xShKGb8COnVbOjImjKB7zeKC4+932opzswLksf/xzQGVtQ/EAQ8JKBATYi
- bakQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVC+ztmxV3g4UEScxXxQh3Bk6b8pRTeKd+2pad614upwnXrpAzJC5iS2fLyHNGy9oUvZXCrgM0eG5dF@nongnu.org
-X-Gm-Message-State: AOJu0YzunepiPf4ERag0eurypR4mUrSxQKSi3lxvh7zAN9NSoxmDWL4I
- nAv9Mqvh0tOHZShSlNcc+AhV8leXeEAUJT5Wtv17YIfm3qcJ8m4YeyxYqy23Kge4bafHoudyQdu
- 0ZX21WJfqbxDNZ9pp7nD5EpA0u1aOX5bmxiYqiBdavFv4PfV+IAsF
-X-Received: by 2002:a05:6000:1281:b0:371:8c9c:d97f with SMTP id
- ffacd0b85a97d-378895b7999mr9449083f8f.10.1725989567441; 
- Tue, 10 Sep 2024 10:32:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFDDea/ZaXXBj6VDEJAvb1U4RGFMUj0rA5y5cb8ZIkmMARm+2HvlVZFxc0jZv+tYq0zKS05kA==
-X-Received: by 2002:a05:6000:1281:b0:371:8c9c:d97f with SMTP id
- ffacd0b85a97d-378895b7999mr9449064f8f.10.1725989566639; 
- Tue, 10 Sep 2024 10:32:46 -0700 (PDT)
-Received: from redhat.com ([31.187.78.63]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37895665762sm9492768f8f.45.2024.09.10.10.32.44
+ d=1e100.net; s=20230601; t=1725989943; x=1726594743;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8nyoNX09OJlC7JXmPdXxdbGRDmYKJxyq3fTF8xRLDcI=;
+ b=ssK3wyewxmw2QXNAQTnWT7FNHB5SqN93Iwcu+2jTDlfn0ugVRUA0UJtlPN6Q9vRL4W
+ adxl5NeHKKE17Pi/lFL97WL3Fv7HJwOiFf10UsAC/BWh34R6WQwXabzMLODDmlY19Isz
+ /Gb4ihB7lFeXOgHWRXUe90L4aYIX0xs1j4eq1n0V2KuIBJLYeERU/9WsCYaQDhGYf05P
+ S5o7+t/acVVvQ027yIXi0bZFelYZUyxZh2HtgZ2ERJ1aQXWWCZEm65XQjly33/c/Chkc
+ QSArglsVjD6uaNUNObWpNarutEP1lXDdo2ur0cqfc/p+LwENpvsaUTBSgenLx8YOez98
+ DZNg==
+X-Gm-Message-State: AOJu0YyJ0/FYnHyvmkxnjTSs6jj3N27uWYhYjZ50oL4lAzMXifPgj747
+ uwNMfqgSs30VQ3ivorruHVypyr1Olz1vYHpMrkCVo4j9KLC20WFWEcJdm6s5fo4=
+X-Google-Smtp-Source: AGHT+IHcRR7g18SAdvyeNS2tzmV0LOwOnMDkXx6ACl8XpI7SrSbbAncG/JmPSiQdqyQknboPsNYFUg==
+X-Received: by 2002:a05:6402:2692:b0:5c2:53a1:c209 with SMTP id
+ 4fb4d7f45d1cf-5c40bc503d6mr168008a12.25.1725989942170; 
+ Tue, 10 Sep 2024 10:39:02 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5c3ebd46819sm4453096a12.31.2024.09.10.10.39.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Sep 2024 10:32:45 -0700 (PDT)
-Date: Tue, 10 Sep 2024 13:32:42 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Igor Mammedov <imammedo@redhat.com>, Song Gao <gaosong@loongson.cn>,
- Ani Sinha <anisinha@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- "Jason A . Donenfeld" <Jason@zx2c4.com>,
- Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas@t-8ch.de>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/2] acpi: ged: Add macro for acpi ged sleep register
-Message-ID: <20240910133154-mutt-send-email-mst@kernel.org>
-References: <20240906021943.150494-1-maobibo@loongson.cn>
- <20240906021943.150494-2-maobibo@loongson.cn>
+ Tue, 10 Sep 2024 10:39:01 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 6A3215F762;
+ Tue, 10 Sep 2024 18:39:00 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-arm@nongnu.org,
+ devel@lists.libvirt.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Beraldo Leal <bleal@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: [PATCH v2 00/10] Maintainer updates (testing, gdbstub) pre-PR
+Date: Tue, 10 Sep 2024 18:38:50 +0100
+Message-Id: <20240910173900.4154726-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240906021943.150494-2-maobibo@loongson.cn>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,54 +104,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 06, 2024 at 10:19:42AM +0800, Bibo Mao wrote:
-> Macro definition is added for acpi ged sleep register, so that ged
-> emulation driver can use this, also it can be used in FDT table if
-> ged is exposed with FDT table.
-> 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->  hw/acpi/generic_event_device.c         | 6 +++---
->  include/hw/acpi/generic_event_device.h | 3 +++
->  2 files changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-> index 15b4c3ebbf..10a338877c 100644
-> --- a/hw/acpi/generic_event_device.c
-> +++ b/hw/acpi/generic_event_device.c
-> @@ -201,9 +201,9 @@ static void ged_regs_write(void *opaque, hwaddr addr, uint64_t data,
->  
->      switch (addr) {
->      case ACPI_GED_REG_SLEEP_CTL:
-> -        slp_typ = (data >> 2) & 0x07;
-> -        slp_en  = (data >> 5) & 0x01;
-> -        if (slp_en && slp_typ == 5) {
-> +        slp_typ = (data & ACPI_GED_SLP_TYP_MASK) >> ACPI_GED_SLP_TYP_SHIFT;
-> +        slp_en  = !!(data  & ACPI_GED_SLP_ENABLE);
-> +        if (slp_en && slp_typ == ACPI_GED_SLP_TYP_S5) {
->              qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
->          }
->          return;
-> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
-> index 40af3550b5..526fea6efe 100644
-> --- a/include/hw/acpi/generic_event_device.h
-> +++ b/include/hw/acpi/generic_event_device.h
-> @@ -82,7 +82,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
->  #define ACPI_GED_RESET_VALUE       0x42
->  
->  /* ACPI_GED_REG_SLEEP_CTL.SLP_TYP value for S5 (aka poweroff) */
-> +#define ACPI_GED_SLP_TYP_SHIFT     0x02
->  #define ACPI_GED_SLP_TYP_S5        0x05
-> +#define ACPI_GED_SLP_TYP_MASK      0x1C
-> +#define ACPI_GED_SLP_ENABLE        0x20
+Hi,
 
-The comment is wrong now, isn't it?
-Pls document each value, copying name from spec verbatim.
+Testing
 
->  
->  #define GED_DEVICE      "GED"
->  #define AML_GED_EVT_REG "EREG"
-> -- 
-> 2.39.3
+I've updated a number of the docker containers to deal with breakages
+in the crossdev environments as bullseye moves to LTS. I've dropped
+the armel environment which doesn't really add much to the armhf cross
+build we have that works. i686 and mipsel cross containers are bumped
+up to bookworm. Currently mips64el is still broken.
+
+gdbstub
+
+This brings in Gustavo's patches to support MTE for system mode
+expanding on the previously implemented user mode support.
+
+plugins
+
+I've dropped the TCG plugins from the series so as not to make the
+pull request too large. I'll roll a new series once I've sent the PR
+for this.
+
+Changes
+
+  - moved mips64le TCG tests to use the debian-all-test-cross
+  - fixed some --disable-tcg failures for the MTE patches
+
+The following still need review:
+
+  tests/docker: use debian-all-test-cross for mips64el tests
+
+Alex Bennée (5):
+  tests/docker: remove debian-armel-cross
+  tests/docker: update debian i686 and mipsel images to bookworm
+  tests/docker: use debian-all-test-cross for mips64el tests
+  docs/devel: fix duplicate line
+  scripts/ci: update the gitlab-runner playbook
+
+Gustavo Romero (5):
+  gdbstub: Use specific MMU index when probing MTE addresses
+  gdbstub: Add support for MTE in system mode
+  tests/guest-debug: Support passing arguments to the GDB test script
+  tests/tcg/aarch64: Improve linker script organization
+  tests/tcg/aarch64: Extend MTE gdbstub tests to system mode
+
+ docs/devel/testing/main.rst                   |   6 -
+ configure                                     |   7 +-
+ target/arm/gdbstub64.c                        |  23 ++-
+ .gitlab-ci.d/container-cross.yml              |   6 -
+ .gitlab-ci.d/crossbuilds.yml                  |   7 -
+ scripts/ci/setup/gitlab-runner.yml            |  39 +++-
+ .../dockerfiles/debian-armel-cross.docker     | 179 ------------------
+ .../dockerfiles/debian-i686-cross.docker      |  10 +-
+ .../dockerfiles/debian-mipsel-cross.docker    |  10 +-
+ tests/guest-debug/run-test.py                 |   6 +
+ tests/guest-debug/test_gdbstub.py             |   5 +
+ tests/lcitool/refresh                         |  10 +-
+ tests/tcg/aarch64/Makefile.softmmu-target     |  49 ++++-
+ tests/tcg/aarch64/Makefile.target             |   3 +-
+ tests/tcg/aarch64/gdbstub/test-mte.py         |  71 ++++---
+ tests/tcg/aarch64/system/boot.S               |  11 ++
+ tests/tcg/aarch64/system/kernel.ld            |  33 ++--
+ tests/tcg/aarch64/system/mte.S                | 109 +++++++++++
+ 18 files changed, 310 insertions(+), 274 deletions(-)
+ delete mode 100644 tests/docker/dockerfiles/debian-armel-cross.docker
+ create mode 100644 tests/tcg/aarch64/system/mte.S
+
+-- 
+2.39.2
 
 
