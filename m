@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B625973967
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:09:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6022E973975
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:10:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so1X2-0007ng-3X; Tue, 10 Sep 2024 10:07:48 -0400
+	id 1so1Wy-0007Xa-Jm; Tue, 10 Sep 2024 10:07:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1so1Wx-0007WE-PE
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:43 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1so1Wv-0007OM-Qg
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:41 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1so1Wt-0006Uf-RH
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:43 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-5365a9574b6so6261784e87.1
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 07:07:39 -0700 (PDT)
+ id 1so1Ws-0006U0-BB
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:41 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5c275491c61so6924033a12.0
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 07:07:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725977258; x=1726582058; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725977257; x=1726582057; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ExuMbIXOAQGfG1vwm+EE/TEBGthlbZ6vFrpI/DJuVTs=;
- b=gWySgFGSZJHBFSCZchbamVIoMYzoFyDoLUWaN56zotj/54fxcwDClfO1uHrgtzDCVo
- 87BoehHA4G9bJ+IbJE228SWpKXEEcskzz8cI6SNsfERZMPgJ5fgCXQVzjlU1H25iZqr8
- zDbies236RfOiRL33o6lwGXDJDT57o58nnKc27eV+nNSpL9XW7IAGQVq/Wl0rY9R9Gcd
- BkM7dYoysdeBFcFum3YCkHJzVZvY3Q4X8XM3ZL7UONsvZ12OUQJAeN/OnZc+m/1nD271
- gJxJM+KGNvxeDay6seaAvR+6hMzBOJtyKXaiNIK6+xnAMBCk/9Ut/VzsO5cCbgM44Dre
- fseQ==
+ bh=CQdWQJOdy0yNPGoyktr5h9MWk5hDnvlzDOKzVVqQGjs=;
+ b=jYoILo0jz+FoSf/vxYo/eKp9ucicuqrMM513i3F1nUcHwV7H9sdcg6I4DpHiiJUkhh
+ mzMx/CqhTYwnwfrTMIKkN0K34+nzKoJWIk7BRuQwXL1xzhoiyeVJzJ5rCP2gJ/6Okrml
+ 8j7BwMJE8v+UhsmZsjQjyb/eDqsVGJFdrf9OY7vyQHhaS6rDZu47AdWNUD+rGwW2ndZR
+ at/jpD543N4eP/pQl5pPpFCvlA2mQ6DaTjaAbp5yTqu80JzAgHllYxF9dRmKxm678O7W
+ mxvQdHkiiice/0C/cG4zZgroBsxfoSDGwoA0BRXQwxQgzpyKjUT7gGZH+P73w7My30dL
+ cjTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725977258; x=1726582058;
+ d=1e100.net; s=20230601; t=1725977257; x=1726582057;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ExuMbIXOAQGfG1vwm+EE/TEBGthlbZ6vFrpI/DJuVTs=;
- b=gV+pVOYlaICYw40QLxhEI0VdnS4Howh90f3iED3faBDVHnOMJcYfAxIjvQZxCE+03L
- OaQMcBTsR7jQVi7BdKeC8qGa7bMg3RbcP9kbT10IxDcs84XO0p6kwzhuwS8rkDkBtY2+
- OypBQlsvuF96C7bG6xQb9HtZ3YI327nLqvTc+W5LT58ipsBXVBpWyJnvUbVWoEh6jrrx
- BAe2dU4A4O0i/mxXdBhKw37ZP+cD4akGsJXClIUrLbTVa5as9Q0ZDhqMlX3U2i9rLZXO
- Onui1IHJ4ja/5+i57yWZjvDxseBVVKRn7H58ODdiAvJSt6irt6hMoFrUYm4H2DDnSDxU
- nMfg==
-X-Gm-Message-State: AOJu0YwpYnPcyAQwQBNenbVeALSQjlutbCLoV98wAA+/PaD8TkoU/z1p
- j1T7AehQ7oiNKSzHUWkBfPFdqJ16XWqixRDLluIOqMZLZJl7Pdb1GTJNaU9Yo1c=
-X-Google-Smtp-Source: AGHT+IHD9cl3GrQHrZn7xNAQK3tsXaN04X4wSHPljJCjEbWvzFormiwvfDWUhUBkNllzcCE8nQDpOg==
-X-Received: by 2002:a05:6512:2395:b0:535:6925:7a82 with SMTP id
- 2adb3069b0e04-536587f845amr14728847e87.41.1725977255283; 
- Tue, 10 Sep 2024 07:07:35 -0700 (PDT)
+ bh=CQdWQJOdy0yNPGoyktr5h9MWk5hDnvlzDOKzVVqQGjs=;
+ b=NDwkO7ocPmZzRpsg9Dn5YXSR14OXuDa89U2slvLCjvDoS3cAm6QymQb4Azuz9+888E
+ kOKCWSzcQ2d+B1BGwgL+4RrKj6KGinDnUfrs5S450MuQWHok/v3Z7nYcHRviQJpJA12e
+ 66kLv5+OJ3Gq2Wte+XaBAx/lF07nfHiXoXhBbtE3xjaXo1M3nriJ+7fjbNYxfmRnu6kg
+ wEyUbtBuztbHG9Fy/DYfw+iz6SE+hWD3lNjBtBu6MAjrUNAZoDMhHPkAs+T91NgAspK/
+ WCmh0+gMZZjrhcr861lIVdielTw6plDHD8JreAxhD5tr0DctbQe/A95OJImJWw9qf56C
+ BcUg==
+X-Gm-Message-State: AOJu0YwblyK004IryDXnlPL5xFk6UfL7EWP7jJ6Yc/eoS9/6XyDSI7oT
+ LvbX12SQ4cQ/619m59a0spjBhdVXvWqUJP8dWJ9T6sFaa7HWFxmtYIyjH0utU6I=
+X-Google-Smtp-Source: AGHT+IE2U0uHU06/Vp8X2hd+avzIe7NO4Zox0gqTRxzpZB6uesrM+rBCmQyq9iS6tiXXMU7g4SBUOw==
+X-Received: by 2002:a05:6402:1d4d:b0:5c4:95d:da34 with SMTP id
+ 4fb4d7f45d1cf-5c4095ddb7cmr1039308a12.26.1725977256520; 
+ Tue, 10 Sep 2024 07:07:36 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25cecc21sm484887666b.166.2024.09.10.07.07.34
+ 4fb4d7f45d1cf-5c3ebd41bb2sm4296386a12.14.2024.09.10.07.07.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 10 Sep 2024 07:07:34 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D33825F7B4;
+ by draig.lan (Postfix) with ESMTP id E9E8F5F86D;
  Tue, 10 Sep 2024 15:07:33 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -74,18 +74,17 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 02/26] tests/docker: update debian i686 and mipsel images to
- bookworm
-Date: Tue, 10 Sep 2024 15:07:09 +0100
-Message-Id: <20240910140733.4007719-3-alex.bennee@linaro.org>
+Subject: [PATCH 03/26] docs/devel: fix duplicate line
+Date: Tue, 10 Sep 2024 15:07:10 +0100
+Message-Id: <20240910140733.4007719-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240910140733.4007719-1-alex.bennee@linaro.org>
 References: <20240910140733.4007719-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,143 +107,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Whatever issues there were which stopped these being updates when the
-rest were have now been resolved. However mips64el continues to be
-broken so don't update it here.
+I guess the same change came in via two patch series. Remove the
+repetition.
 
+Fixes: 2a851fca9f (docs/devel: remind developers to run CI container pipeline when updating images)
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/docker/dockerfiles/debian-i686-cross.docker   | 10 ++++------
- tests/docker/dockerfiles/debian-mipsel-cross.docker | 10 ++++------
- tests/lcitool/refresh                               |  4 ++--
- 3 files changed, 10 insertions(+), 14 deletions(-)
+ docs/devel/testing/main.rst | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
-index 3fe8ee623d..2328ee1732 100644
---- a/tests/docker/dockerfiles/debian-i686-cross.docker
-+++ b/tests/docker/dockerfiles/debian-i686-cross.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all --cross-arch i686 debian-11 qemu
-+#  $ lcitool dockerfile --layers all --cross-arch i686 debian-12 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
+diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
+index e9921a4b10..09725e8ea9 100644
+--- a/docs/devel/testing/main.rst
++++ b/docs/devel/testing/main.rst
+@@ -500,12 +500,6 @@ first to contribute the mapping to the ``libvirt-ci`` project:
+    `CI <https://www.qemu.org/docs/master/devel/ci.html>`__ documentation
+    page on how to trigger gitlab CI pipelines on your change.
  
--FROM docker.io/library/debian:11-slim
-+FROM docker.io/library/debian:12-slim
- 
- RUN export DEBIAN_FRONTEND=noninteractive && \
-     apt-get update && \
-@@ -48,16 +48,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       python3-opencv \
-                       python3-pillow \
-                       python3-pip \
--                      python3-setuptools \
-                       python3-sphinx \
-                       python3-sphinx-rtd-theme \
-                       python3-venv \
--                      python3-wheel \
-                       python3-yaml \
-                       rpm2cpio \
-                       sed \
-                       socat \
-                       sparse \
-+                      swtpm \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
-@@ -69,8 +68,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     dpkg-reconfigure locales && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED
- 
--RUN /usr/bin/pip3 install tomli
+- * Please also trigger gitlab container generation pipelines on your change
+-   for as many OS distros as practical to make sure that there are no
+-   obvious breakages when adding the new pre-requisite. Please see
+-   `CI <https://www.qemu.org/docs/master/devel/ci.html>`__ documentation
+-   page on how to trigger gitlab CI pipelines on your change.
 -
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
- ENV LANG "en_US.UTF-8"
- ENV MAKE "/usr/bin/make"
-@@ -145,6 +142,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libvdeplug-dev:i386 \
-                       libvirglrenderer-dev:i386 \
-                       libvte-2.91-dev:i386 \
-+                      libxdp-dev:i386 \
-                       libzstd-dev:i386 \
-                       nettle-dev:i386 \
-                       systemtap-sdt-dev:i386 \
-diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-index 0d559ae4ba..4ac314e22e 100644
---- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all --cross-arch mipsel debian-11 qemu
-+#  $ lcitool dockerfile --layers all --cross-arch mipsel debian-12 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
- 
--FROM docker.io/library/debian:11-slim
-+FROM docker.io/library/debian:12-slim
- 
- RUN export DEBIAN_FRONTEND=noninteractive && \
-     apt-get update && \
-@@ -48,16 +48,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       python3-opencv \
-                       python3-pillow \
-                       python3-pip \
--                      python3-setuptools \
-                       python3-sphinx \
-                       python3-sphinx-rtd-theme \
-                       python3-venv \
--                      python3-wheel \
-                       python3-yaml \
-                       rpm2cpio \
-                       sed \
-                       socat \
-                       sparse \
-+                      swtpm \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
-@@ -69,8 +68,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     dpkg-reconfigure locales && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED
- 
--RUN /usr/bin/pip3 install tomli
--
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
- ENV LANG "en_US.UTF-8"
- ENV MAKE "/usr/bin/make"
-@@ -143,6 +140,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libvdeplug-dev:mipsel \
-                       libvirglrenderer-dev:mipsel \
-                       libvte-2.91-dev:mipsel \
-+                      libxdp-dev:mipsel \
-                       libzstd-dev:mipsel \
-                       nettle-dev:mipsel \
-                       systemtap-sdt-dev:mipsel \
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 199d5fad87..c60490a7fa 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -159,7 +159,7 @@ try:
-                         trailer=cross_build("arm-linux-gnueabihf-",
-                                             "arm-softmmu,arm-linux-user"))
- 
--    generate_dockerfile("debian-i686-cross", "debian-11",
-+    generate_dockerfile("debian-i686-cross", "debian-12",
-                         cross="i686",
-                         trailer=cross_build("i686-linux-gnu-",
-                                             "x86_64-softmmu,"
-@@ -171,7 +171,7 @@ try:
-                         trailer=cross_build("mips64el-linux-gnuabi64-",
-                                             "mips64el-softmmu,mips64el-linux-user"))
- 
--    generate_dockerfile("debian-mipsel-cross", "debian-11",
-+    generate_dockerfile("debian-mipsel-cross", "debian-12",
-                         cross="mipsel",
-                         trailer=cross_build("mipsel-linux-gnu-",
-                                             "mipsel-softmmu,mipsel-linux-user"))
+ For enterprise distros that default to old, end-of-life versions of the
+ Python runtime, QEMU uses a separate set of mappings that work with more
+ recent versions.  These can be found in ``tests/lcitool/mappings.yml``.
 -- 
 2.39.2
 
