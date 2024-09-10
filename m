@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3372973968
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E8F97396C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:10:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so1Wz-0007b9-I6; Tue, 10 Sep 2024 10:07:45 -0400
+	id 1so1Wx-0007RZ-46; Tue, 10 Sep 2024 10:07:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1so1Ww-0007RY-Hk
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:42 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1so1Wu-0007LR-I9
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:40 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1so1Ws-0006U3-Bv
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:42 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a8a6d1766a7so100853166b.3
+ id 1so1Ws-0006Tt-5j
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:40 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5c3c3b63135so6026087a12.3
  for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 07:07:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725977257; x=1726582057; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=K0qiTs5xTqLvYUKCqSsGSE0SSUPZugump4DvmHIWRfA=;
- b=qDqk13+fiPJYBREgN2BsH4467yKpFWZ/nvii3Nnv3tEpHlIrQzFCH5D8Ii/sutkXcb
- TSirCRuH1djLfLpNELyPZjmlKZRfZNZpHP8wW66WTGef4GyIciB6U9XeZXTdnmvIlG7S
- wF7Zk+Yk9CxdzHfa675yzYa0VJ6S5XNmz2dQ+sgp+8xPn2q1cR3BWg44qdmCKwKetxHd
- cGo0HaDulPRztZuImR2Y5rCTtjceurB9PJJPAmPMA3MUrzFxv4xvGqVo61/tOg/uFgsN
- F4UMn4NRGHg2OkT7+BefqK1Wlg7Vqt2qStFZOCog8vUqnrCqkUdOkAWIx4dm13vOQ9aw
- wnLQ==
+ d=linaro.org; s=google; t=1725977256; x=1726582056; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LndXJjyjZbmiVr1fSe4zs9iupkSXPp6CUIfGBaC22cA=;
+ b=N56i99Iz3fwxtAICfunZEAjR7iYtuKSYXXjCefJq5ghuAjY9H7zYmCUR7RTrV+dpKm
+ K0kVWTlmhGrTvBEwW/RwK5iKT1f6hNsji9K/eWslYtHf5yEamxE8HKFFenmJNd5lrVYr
+ tJE9RHeuTZYJD5KTfo8L7Y01PyByL+/EfRP2qvjCeIZfu4qad8TDRYvq0VkGdHJBvxsK
+ cENPqJM4xZ+90GwOCZ4iRulww4o1AypodEiJWGJIL+wQoeuoJfSYQM0HPFHU6LCYgyUi
+ 3m29TWJm2TeVcrmxq0lgcJyn9Dq6oIO254VVmwwsocPQkzFWag46vXqLcrNRq48KdMP8
+ l/NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725977257; x=1726582057;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=K0qiTs5xTqLvYUKCqSsGSE0SSUPZugump4DvmHIWRfA=;
- b=DJnPtnmw4fhANlDkVR4TCBU/voVMBzrClCy5DOpYr6nnuL4V0Vt+Gp2szIzlOWS/Yl
- qmfJ1jhBAkmmg1Af89tzBrStdaXX3zmrwt8WmsDWAWmzX01Zs07Xfayz/pZybbkf3nJV
- 6/A7QxXyu6Dwmr6jjYGbWRd1L5RFXVuEkEGbf5EPv/pbqTKuSZgjKsjUO3Ek/nH+rFfi
- zX73ifdcXavPYNXGjfClNfiv2TKk7JdzHmnLyxtS1iSx6BMsJZBos14uH31JT75/ZVy/
- IuYBtU9rFgge0ljr+dc3/qX9WJBm5KG9XPmAzzpbz07Zgv2Wj2v7XMdAPrKKXujBmyoW
- OWAA==
-X-Gm-Message-State: AOJu0YzwmMN8JdQ+huyRIvjj5U+UGyq/eLg+yUsyGbx6A+YIPTCOazRy
- 42IHR3a+3WIVH47evUDBYg2jCtqAELMTKfSuBQ8gx0Ajxx3hAPyAH0d0967kU6g=
-X-Google-Smtp-Source: AGHT+IHq4StGQUeLwD3SLMeDcewkmeP0shFB7ZgVVijwKH0AjM/GEhW7QbeRSAGcbJgNTvIooQuK2A==
-X-Received: by 2002:a17:907:72d1:b0:a8a:794b:9888 with SMTP id
- a640c23a62f3a-a8ffab94228mr98996266b.36.1725977255917; 
+ d=1e100.net; s=20230601; t=1725977256; x=1726582056;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LndXJjyjZbmiVr1fSe4zs9iupkSXPp6CUIfGBaC22cA=;
+ b=kxxmk48QKxrOecVIFjMRRDFtEOma8mkAdSlDveK8Vl8RMTULY/ctj2Xw9NlBLny7Uo
+ I8+4UTgqWF+LxK5183zY4uqclDoc6Q9B87lBn4B8aMIY58K7nevcecdqg+lL45g8JoJ/
+ b84v0gCleuOOjnqFozaaPFPZy6Lzgi0UyJlMPPdhM6x0nI0uHMeS9qRChtaplI1aH/Yc
+ dXMESgtEqJsIN8yqv2mYgSU3I9tV3fdUVQojiVwzn4bLhA7o1d3U/5dKi4b0gOhxXbjZ
+ gmBxHJAYNGjXsvFVz5isRqKK63KOwJ3LRlp+L0turd7pvaNMfzY2L+zzYhzQJya1ZoV6
+ pN3A==
+X-Gm-Message-State: AOJu0YyAXm+9vPr0VTryxeeYNukw2cK6ojM7zMZ4S0JAeKAt51jsYien
+ /I4JuLdCqZeojvp8EdqA1ZPrM6zS7lhR+gBsjZCI5xAH5jpruhUItZKOH0V4w+s=
+X-Google-Smtp-Source: AGHT+IH6/OSv1IRZLPvDsahkvD7qcOlMqQ9PQ5XbqoXUFNfezIdcKuq2QcBj7ahTvAQx+swgKoN4RA==
+X-Received: by 2002:a17:906:6a1b:b0:a77:b4e3:4fca with SMTP id
+ a640c23a62f3a-a8ffaaa23bbmr101780366b.9.1725977255572; 
  Tue, 10 Sep 2024 07:07:35 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25ced1bfsm485811966b.154.2024.09.10.07.07.34
+ a640c23a62f3a-a8d259f56f6sm478231866b.81.2024.09.10.07.07.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 10 Sep 2024 07:07:34 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9B51C5F762;
+ by draig.lan (Postfix) with ESMTP id B879D5F78C;
  Tue, 10 Sep 2024 15:07:33 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,15 +74,17 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 00/26] Maintainer updates (testing, gdbstub, plugins)
-Date: Tue, 10 Sep 2024 15:07:07 +0100
-Message-Id: <20240910140733.4007719-1-alex.bennee@linaro.org>
+Subject: [PATCH 01/26] tests/docker: remove debian-armel-cross
+Date: Tue, 10 Sep 2024 15:07:08 +0100
+Message-Id: <20240910140733.4007719-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240910140733.4007719-1-alex.bennee@linaro.org>
+References: <20240910140733.4007719-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,156 +107,259 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+As debian-11 transitions to LTS we are starting to have problems
+building the image. While we could update to a later Debian building a
+32 bit QEMU without modern floating point is niche host amongst the
+few remaining 32 bit hosts we regularly build for. For now we still
+have armhf-debian-cross-container which is currently built from the
+more recent debian-12.
 
-Here is the current state of my maintainer trees.
-
-Testing
-
-I've updated a number of the docker containers to deal with breakages
-in the crossdev environments as bullseye moves to LTS. I've dropped
-the armel environment which doesn't really add much to the armhf cross
-build we have that works. i686 and mipsel cross containers are bumped
-up to bookworm. Currently mips64el is still broken.
-
-gdbstub
-
-This brings in Gustavo's patches to support MTE for system mode
-expanding on the previously implemented user mode support.
-
-plugins
-
-I start by deprecating some options that don't make much sense for
-instrumentation including 32 bit and TCI support. They will still work
-but there are caveats and it doesn't seem worth wasting CI time
-keeping track of them.
-
-There are a couple of new plugins including some useful analysis ones.
-The bbv plugin can generate files that can be fed into simpoint. The
-cflow plugin I've posted before separately but takes advantage of the
-new conditional and store helpers to try and be more efficient tracing
-control flow.
-
-Finally there is not one but two memory APIs. Pierrick's updates to
-the main memory instrumentation now makes values available to the
-plugins and should be used if you absolutely want to track what value
-was read or stored. I've added a softmmu test case building on
-memory.c and I'll merge the updated linux-user test case once its been
-re-spun.
-
-Rowan's API provides a more direct access through the existing debug
-API but comes with the caveats that it should only used on memory you
-don't expect to be changing. The example provided allows for the
-contents of syscalls to be probed at the syscall point.
-
-Finally there is a RFC for a gdbstub hook which I mostly wrote while I
-was debugging weirdness in the memory stuff. I'll probably drop it
-before the PR and let it cook a bit more on plugins/next.
-
-The following still need review:
-
-  plugins: add ability to register a GDB triggered callback
-  util/timer: avoid deadlock when shutting down
-  tests/tcg: add a system test to check memory instrumentation
-  tests/tcg: only read/write 64 bit words on 64 bit systems
-  tests/tcg: clean up output of memory system test
-  contrib/plugins: control flow plugin
-  deprecation: don't enable TCG plugins by default with TCI
-  deprecation: don't enable TCG plugins by default on 32 bit hosts
-  scripts/ci: update the gitlab-runner playbook
-  docs/devel: fix duplicate line
-  tests/docker: update debian i686 and mipsel images to bookworm
-  tests/docker: remove debian-armel-cross
-
-Akihiko Odaki (1):
-  contrib/plugins: Add a plugin to generate basic block vectors
-
-Alex Bennée (12):
-  tests/docker: remove debian-armel-cross
-  tests/docker: update debian i686 and mipsel images to bookworm
-  docs/devel: fix duplicate line
-  scripts/ci: update the gitlab-runner playbook
-  deprecation: don't enable TCG plugins by default on 32 bit hosts
-  deprecation: don't enable TCG plugins by default with TCI
-  contrib/plugins: control flow plugin
-  tests/tcg: clean up output of memory system test
-  tests/tcg: only read/write 64 bit words on 64 bit systems
-  tests/tcg: add a system test to check memory instrumentation
-  util/timer: avoid deadlock when shutting down
-  plugins: add ability to register a GDB triggered callback
-
-Gustavo Romero (5):
-  gdbstub: Use specific MMU index when probing MTE addresses
-  gdbstub: Add support for MTE in system mode
-  tests/guest-debug: Support passing arguments to the GDB test script
-  tests/tcg/aarch64: Improve linker script organization
-  tests/tcg/aarch64: Extend MTE gdbstub tests to system mode
-
-Pierrick Bouvier (5):
-  plugins: save value during memory accesses
-  plugins: extend API to get latest memory value accessed
-  tests/tcg: add mechanism to run specific tests with plugins
-  tests/tcg: allow to check output of plugins
-  tests/plugin/mem: add option to print memory accesses
-
-Rowan Hart (2):
-  plugins: add plugin API to read guest memory
-  plugins: add option to dump write argument to syscall plugin
-
-Thomas Huth (1):
-  contrib/plugins/Makefile: Add a 'distclean' target
-
- docs/about/deprecated.rst                     |  19 +
- docs/about/emulation.rst                      |  44 +-
- docs/devel/testing/main.rst                   |   6 -
- configure                                     |  37 +-
- accel/tcg/atomic_template.h                   |  66 ++-
- include/hw/core/cpu.h                         |   4 +
- include/qemu/plugin-event.h                   |   1 +
- include/qemu/plugin.h                         |   4 +
- include/qemu/qemu-plugin.h                    |  80 +++-
- plugins/plugin.h                              |   9 +
- contrib/plugins/bbv.c                         | 158 +++++++
- contrib/plugins/cflow.c                       | 413 ++++++++++++++++++
- plugins/api.c                                 |  71 +++
- plugins/core.c                                |  43 ++
- target/arm/gdbstub64.c                        |  21 +-
- tcg/tcg-op-ldst.c                             |  66 ++-
- tests/tcg/multiarch/system/memory.c           | 123 ++++--
- tests/tcg/plugins/mem.c                       | 254 ++++++++++-
- tests/tcg/plugins/syscall.c                   | 117 +++++
- util/qemu-timer.c                             |  14 +-
- accel/tcg/atomic_common.c.inc                 |  13 +-
- accel/tcg/ldst_common.c.inc                   |  38 +-
- .gitlab-ci.d/buildtest.yml                    |   2 +
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
  .gitlab-ci.d/container-cross.yml              |   6 -
  .gitlab-ci.d/crossbuilds.yml                  |   7 -
- contrib/plugins/Makefile                      |   4 +-
- plugins/qemu-plugins.symbols                  |   3 +
- scripts/ci/setup/gitlab-runner.yml            |  39 +-
- .../dockerfiles/debian-armel-cross.docker     | 179 --------
- .../dockerfiles/debian-i686-cross.docker      |  10 +-
- .../dockerfiles/debian-mipsel-cross.docker    |  10 +-
- tests/guest-debug/run-test.py                 |   6 +
- tests/guest-debug/test_gdbstub.py             |   5 +
- tests/lcitool/refresh                         |  10 +-
- tests/tcg/Makefile.target                     |  12 +-
- tests/tcg/aarch64/Makefile.softmmu-target     |  49 ++-
- tests/tcg/aarch64/Makefile.target             |   3 +-
- tests/tcg/aarch64/gdbstub/test-mte.py         |  71 ++-
- tests/tcg/aarch64/system/boot.S               |  11 +
- tests/tcg/aarch64/system/kernel.ld            |  33 +-
- tests/tcg/aarch64/system/mte.S                | 109 +++++
- tests/tcg/alpha/Makefile.softmmu-target       |   2 +-
- .../multiarch/system/Makefile.softmmu-target  |   6 +
- .../system/validate-memory-counts.py          | 115 +++++
- 44 files changed, 1935 insertions(+), 358 deletions(-)
- create mode 100644 contrib/plugins/bbv.c
- create mode 100644 contrib/plugins/cflow.c
+ .../dockerfiles/debian-armel-cross.docker     | 179 ------------------
+ tests/lcitool/refresh                         |   6 -
+ 4 files changed, 198 deletions(-)
  delete mode 100644 tests/docker/dockerfiles/debian-armel-cross.docker
- create mode 100644 tests/tcg/aarch64/system/mte.S
- create mode 100755 tests/tcg/multiarch/system/validate-memory-counts.py
 
+diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
+index e3103940a0..9a3ebd885e 100644
+--- a/.gitlab-ci.d/container-cross.yml
++++ b/.gitlab-ci.d/container-cross.yml
+@@ -22,12 +22,6 @@ arm64-debian-cross-container:
+   variables:
+     NAME: debian-arm64-cross
+ 
+-armel-debian-cross-container:
+-  extends: .container_job_template
+-  stage: containers
+-  variables:
+-    NAME: debian-armel-cross
+-
+ armhf-debian-cross-container:
+   extends: .container_job_template
+   stage: containers
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index cb499e4ee0..459273f9da 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -1,13 +1,6 @@
+ include:
+   - local: '/.gitlab-ci.d/crossbuild-template.yml'
+ 
+-cross-armel-user:
+-  extends: .cross_user_build_job
+-  needs:
+-    job: armel-debian-cross-container
+-  variables:
+-    IMAGE: debian-armel-cross
+-
+ cross-armhf-user:
+   extends: .cross_user_build_job
+   needs:
+diff --git a/tests/docker/dockerfiles/debian-armel-cross.docker b/tests/docker/dockerfiles/debian-armel-cross.docker
+deleted file mode 100644
+index 8476fc8cce..0000000000
+--- a/tests/docker/dockerfiles/debian-armel-cross.docker
++++ /dev/null
+@@ -1,179 +0,0 @@
+-# THIS FILE WAS AUTO-GENERATED
+-#
+-#  $ lcitool dockerfile --layers all --cross-arch armv6l debian-11 qemu
+-#
+-# https://gitlab.com/libvirt/libvirt-ci
+-
+-FROM docker.io/library/debian:11-slim
+-
+-RUN export DEBIAN_FRONTEND=noninteractive && \
+-    apt-get update && \
+-    apt-get install -y eatmydata && \
+-    eatmydata apt-get dist-upgrade -y && \
+-    eatmydata apt-get install --no-install-recommends -y \
+-                      bash \
+-                      bc \
+-                      bison \
+-                      bsdextrautils \
+-                      bzip2 \
+-                      ca-certificates \
+-                      ccache \
+-                      dbus \
+-                      debianutils \
+-                      diffutils \
+-                      exuberant-ctags \
+-                      findutils \
+-                      flex \
+-                      gcc \
+-                      gcovr \
+-                      gettext \
+-                      git \
+-                      hostname \
+-                      libglib2.0-dev \
+-                      libgtk-vnc-2.0-dev \
+-                      libpcre2-dev \
+-                      libsndio-dev \
+-                      libspice-protocol-dev \
+-                      llvm \
+-                      locales \
+-                      make \
+-                      meson \
+-                      mtools \
+-                      ncat \
+-                      ninja-build \
+-                      openssh-client \
+-                      pkgconf \
+-                      python3 \
+-                      python3-numpy \
+-                      python3-opencv \
+-                      python3-pillow \
+-                      python3-pip \
+-                      python3-setuptools \
+-                      python3-sphinx \
+-                      python3-sphinx-rtd-theme \
+-                      python3-venv \
+-                      python3-wheel \
+-                      python3-yaml \
+-                      rpm2cpio \
+-                      sed \
+-                      socat \
+-                      sparse \
+-                      tar \
+-                      tesseract-ocr \
+-                      tesseract-ocr-eng \
+-                      xorriso \
+-                      zstd && \
+-    eatmydata apt-get autoremove -y && \
+-    eatmydata apt-get autoclean -y && \
+-    sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
+-    dpkg-reconfigure locales && \
+-    rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED
+-
+-RUN /usr/bin/pip3 install tomli
+-
+-ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+-ENV LANG "en_US.UTF-8"
+-ENV MAKE "/usr/bin/make"
+-ENV NINJA "/usr/bin/ninja"
+-ENV PYTHON "/usr/bin/python3"
+-
+-RUN export DEBIAN_FRONTEND=noninteractive && \
+-    dpkg --add-architecture armel && \
+-    eatmydata apt-get update && \
+-    eatmydata apt-get dist-upgrade -y && \
+-    eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
+-    eatmydata apt-get install --no-install-recommends -y \
+-                      gcc-arm-linux-gnueabi \
+-                      libaio-dev:armel \
+-                      libasan6:armel \
+-                      libasound2-dev:armel \
+-                      libattr1-dev:armel \
+-                      libbpf-dev:armel \
+-                      libbrlapi-dev:armel \
+-                      libbz2-dev:armel \
+-                      libc6-dev:armel \
+-                      libcacard-dev:armel \
+-                      libcap-ng-dev:armel \
+-                      libcapstone-dev:armel \
+-                      libcmocka-dev:armel \
+-                      libcurl4-gnutls-dev:armel \
+-                      libdaxctl-dev:armel \
+-                      libdrm-dev:armel \
+-                      libepoxy-dev:armel \
+-                      libfdt-dev:armel \
+-                      libffi-dev:armel \
+-                      libfuse3-dev:armel \
+-                      libgbm-dev:armel \
+-                      libgcrypt20-dev:armel \
+-                      libglib2.0-dev:armel \
+-                      libglusterfs-dev:armel \
+-                      libgnutls28-dev:armel \
+-                      libgtk-3-dev:armel \
+-                      libibverbs-dev:armel \
+-                      libiscsi-dev:armel \
+-                      libjemalloc-dev:armel \
+-                      libjpeg62-turbo-dev:armel \
+-                      libjson-c-dev:armel \
+-                      liblttng-ust-dev:armel \
+-                      liblzo2-dev:armel \
+-                      libncursesw5-dev:armel \
+-                      libnfs-dev:armel \
+-                      libnuma-dev:armel \
+-                      libpam0g-dev:armel \
+-                      libpipewire-0.3-dev:armel \
+-                      libpixman-1-dev:armel \
+-                      libpng-dev:armel \
+-                      libpulse-dev:armel \
+-                      librbd-dev:armel \
+-                      librdmacm-dev:armel \
+-                      libsasl2-dev:armel \
+-                      libsdl2-dev:armel \
+-                      libsdl2-image-dev:armel \
+-                      libseccomp-dev:armel \
+-                      libselinux1-dev:armel \
+-                      libslirp-dev:armel \
+-                      libsnappy-dev:armel \
+-                      libspice-server-dev:armel \
+-                      libssh-gcrypt-dev:armel \
+-                      libsystemd-dev:armel \
+-                      libtasn1-6-dev:armel \
+-                      libubsan1:armel \
+-                      libudev-dev:armel \
+-                      liburing-dev:armel \
+-                      libusb-1.0-0-dev:armel \
+-                      libusbredirhost-dev:armel \
+-                      libvdeplug-dev:armel \
+-                      libvirglrenderer-dev:armel \
+-                      libvte-2.91-dev:armel \
+-                      libzstd-dev:armel \
+-                      nettle-dev:armel \
+-                      systemtap-sdt-dev:armel \
+-                      zlib1g-dev:armel && \
+-    eatmydata apt-get autoremove -y && \
+-    eatmydata apt-get autoclean -y && \
+-    mkdir -p /usr/local/share/meson/cross && \
+-    printf "[binaries]\n\
+-c = '/usr/bin/arm-linux-gnueabi-gcc'\n\
+-ar = '/usr/bin/arm-linux-gnueabi-gcc-ar'\n\
+-strip = '/usr/bin/arm-linux-gnueabi-strip'\n\
+-pkgconfig = '/usr/bin/arm-linux-gnueabi-pkg-config'\n\
+-\n\
+-[host_machine]\n\
+-system = 'linux'\n\
+-cpu_family = 'arm'\n\
+-cpu = 'arm'\n\
+-endian = 'little'\n" > /usr/local/share/meson/cross/arm-linux-gnueabi && \
+-    dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
+-    mkdir -p /usr/libexec/ccache-wrappers && \
+-    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-cc && \
+-    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-gcc
+-
+-ENV ABI "arm-linux-gnueabi"
+-ENV MESON_OPTS "--cross-file=arm-linux-gnueabi"
+-ENV QEMU_CONFIGURE_OPTS --cross-prefix=arm-linux-gnueabi-
+-ENV DEF_TARGET_LIST arm-softmmu,arm-linux-user,armeb-linux-user
+-# As a final step configure the user (if env is defined)
+-ARG USER
+-ARG UID
+-RUN if [ "${USER}" ]; then \
+-  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index ac803e34f1..199d5fad87 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -154,12 +154,6 @@ try:
+                         trailer=cross_build("aarch64-linux-gnu-",
+                                             "aarch64-softmmu,aarch64-linux-user"))
+ 
+-    # migration to bookworm stalled: https://lists.debian.org/debian-arm/2023/09/msg00006.html
+-    generate_dockerfile("debian-armel-cross", "debian-11",
+-                        cross="armv6l",
+-                        trailer=cross_build("arm-linux-gnueabi-",
+-                                            "arm-softmmu,arm-linux-user,armeb-linux-user"))
+-
+     generate_dockerfile("debian-armhf-cross", "debian-12",
+                         cross="armv7l",
+                         trailer=cross_build("arm-linux-gnueabihf-",
 -- 
 2.39.2
 
