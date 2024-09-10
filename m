@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABBF9740A6
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 19:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82ED49740D1
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 19:42:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so4pf-0004mH-Pt; Tue, 10 Sep 2024 13:39:15 -0400
+	id 1so4pn-0005Nw-38; Tue, 10 Sep 2024 13:39:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1so4pW-0004iD-DM
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:39:06 -0400
+ id 1so4pX-0004iH-MG
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:39:08 -0400
 Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1so4pU-0004Yu-LO
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:39:06 -0400
+ id 1so4pV-0004ZD-Oo
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 13:39:07 -0400
 Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5c26852aff1so6797927a12.3
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 10:39:04 -0700 (PDT)
+ 4fb4d7f45d1cf-5c26852af8fso7610616a12.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 10:39:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725989943; x=1726594743; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725989944; x=1726594744; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nL+5j3KYtdxOCvyuGBLquGt4laEVHE2D17hxCL7BaSA=;
- b=wgbl8zWfQ2ip0louKbCujN541fUQhMapdwR42a8xVkI1RmKH0ax9DigyBSvKg8oCDS
- Ez60UQExM4xsaUSGxM0oNtig6lHePv9cZG0THV30QuZtFOON4c/UyARWYJr8mVq4TqiP
- gVVmQ/FA/rmBM2pnDEPyW8LHrUljUcj4O5//k17gTL7ujFbYjkTRQvIrP4bP8+KyfR6m
- 6i86Oq5nzm6ejo+QNYpOY7uOKYmOoO1Jvyx4AZgwlV23f89lHBGpZZO8WrVa1GD9iZyW
- vDuhdLiUa2HYiB2tKPLBL+8OZua7BfFyqd7ijI33eenUaMx8QTXdEey9wooFo3nPNhqp
- 9ltQ==
+ bh=uDAMP75hxzkvSxh1nZDBhj94P3LXNhJD9uwli3Aulp8=;
+ b=nn7UI0N5tnIt8ydaqDPf9TdOxJeqj3v6JvWRNlbZhD2h5T8I9u4axM0yRSuz28lTyC
+ ODGbDxiSaJtSm0HwS1VBw07d7dr7vS12OBD0Xx1gNphUCMk1WRZkmcZwwuuGaadpOXTg
+ Gof81od4GIvg/f6zRKjcn3csE1P0pAU2DAcJNLgCmjsKfEwJNAJ0A9cLr8C1XuawXwSx
+ jdqmZFhpTfuoW0bt6u1zaki8pKj5Sd++pE0s77H1bY5NhRniEKADrE4VXxgn4pQtTO3U
+ YAFHagACXx7uOdNem2xw8NVs8WOMKgyk+p23Siw8OK48CJjmaY9BF2PAaUKPrfCnCIIj
+ Au7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725989943; x=1726594743;
+ d=1e100.net; s=20230601; t=1725989944; x=1726594744;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nL+5j3KYtdxOCvyuGBLquGt4laEVHE2D17hxCL7BaSA=;
- b=MuAXQnw7y+z4Fuw12cEGCJWTq3HA6Vs8zyRLS2As4ZJ9p8JL8pGj4UCcqPDT6dkbWK
- b1Eu2xpMF0chlOm7fyMhVM6mwR+ga8YYjAm/OfzZlv7m7ZH5ZvMiaSalVlykUg3FnQfZ
- 6n0rCF1shABiXS5Lc9ageNmR+JyNxeV7rM6OLgtI446QqM+AGpB1z8ZPY3TK9HrfzG3x
- GQt58pc+/fuFhdy9KgkCj6YPae7zb05ppXepORJ+uHiABCP5ooQIUzYGs8ai2G3vt6hP
- 75VzrlRdsZFSuGNe5ZDZnie5C2thQbT5tHObh1msCl0i68Eo3m1ugj6Bu1/SwzGoijel
- q6Jg==
-X-Gm-Message-State: AOJu0YxcUYvQnUK3ClGdjYe5s/LOVR72QLrrk4zmiBzaUS9MXjfonxyv
- z5UUyKSJ1OtDK4qmkVh5wtZ93i+90gcBqUdyjMi+eIeleeaf6wAVGxY3hKAVDss=
-X-Google-Smtp-Source: AGHT+IFb5qWQFky2KBuxH+J7nhBtTftWNhiPNJhITTQsDLJazgFRriqeBjGZzCFoWs/APZW6aaPb+g==
-X-Received: by 2002:a17:907:268e:b0:a86:8953:e1fe with SMTP id
- a640c23a62f3a-a8ffadf3c37mr155638566b.47.1725989941865; 
- Tue, 10 Sep 2024 10:39:01 -0700 (PDT)
+ bh=uDAMP75hxzkvSxh1nZDBhj94P3LXNhJD9uwli3Aulp8=;
+ b=Tecchyt2K4Sp47SXXeaz2fWxfgZMhRnszNNIS1onTLSnJ1uzb5ehlVwMEuB9fJ+F+B
+ 7hM322svyOPYNIcyCojXQC25Yirb4l8BItz9Qin69pUE+ztGUn1o1pz/Nfrs2Ks0ssNX
+ 9nfLaI9bI0t4oJ6QrjAU9enmNOvWjbz91okLhXmfMIkt7gPknHI1dpeBSmdHQ2XCvrzT
+ 5wMzsAQ2j1prJO365cmbroUrEDmPSxDE3YFkEL0bQhMLU28BlcPrJ+Oozpt3oLKB0sbt
+ wI7C2w1FFDPyXBddOMk+DKHh0pKdkH8MMPK6MxFNWFxI5eHyYX9kUrb5eaCByBCqwA+C
+ FafA==
+X-Gm-Message-State: AOJu0YzCdN+e2qmfpoPTY5hSqyWZ8cfqv4c5zyi68MolSKmpb5Cb9Ki9
+ CnYLiUh64vzrS+Yt4hiyRWjC6foRlHGQnmjEWAiEM2PaKPK/pQk43YLLbX6iuV0=
+X-Google-Smtp-Source: AGHT+IG5eom9WBJpGw3ncMWrCxqN2raB7ElUMFe30Zp8kmSx3WAkK5FfD3K7tSVj1bQxhju1fEeSVg==
+X-Received: by 2002:a05:6402:34c4:b0:5c2:6083:6256 with SMTP id
+ 4fb4d7f45d1cf-5c3e962d91dmr10904004a12.10.1725989943384; 
+ Tue, 10 Sep 2024 10:39:03 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25ced20csm510791366b.172.2024.09.10.10.39.01
+ 4fb4d7f45d1cf-5c3ebd46819sm4453099a12.31.2024.09.10.10.39.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 10 Sep 2024 10:39:01 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B33C05F86D;
+ by draig.lan (Postfix) with ESMTP id C93A85F9CC;
  Tue, 10 Sep 2024 18:39:00 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -74,10 +74,9 @@ Cc: Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH v2 03/10] tests/docker: use debian-all-test-cross for mips64el
- tests
-Date: Tue, 10 Sep 2024 18:38:53 +0100
-Message-Id: <20240910173900.4154726-4-alex.bennee@linaro.org>
+Subject: [PATCH v2 04/10] docs/devel: fix duplicate line
+Date: Tue, 10 Sep 2024 18:38:54 +0100
+Message-Id: <20240910173900.4154726-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240910173900.4154726-1-alex.bennee@linaro.org>
 References: <20240910173900.4154726-1-alex.bennee@linaro.org>
@@ -108,28 +107,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While the mips64el cross compilation environment is busted in Debian
-we can use the debian-all-test-cross image for building TCG tests like
-we do in the CI.
+I guess the same change came in via two patch series. Remove the
+repetition.
 
+Fixes: 2a851fca9f (docs/devel: remind developers to run CI container pipeline when updating images)
+Message-Id: <20240910140733.4007719-4-alex.bennee@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configure | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/devel/testing/main.rst | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/configure b/configure
-index d08b71f14b..39a284ddfe 100755
---- a/configure
-+++ b/configure
-@@ -1328,7 +1328,7 @@ probe_target_compiler() {
-         container_cross_prefix=microblaze-linux-musl-
-         ;;
-       mips64el)
--        container_image=debian-mips64el-cross
-+        container_image=debian-all-test-cross
-         container_cross_prefix=mips64el-linux-gnuabi64-
-         ;;
-       tricore)
+diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
+index e9921a4b10..09725e8ea9 100644
+--- a/docs/devel/testing/main.rst
++++ b/docs/devel/testing/main.rst
+@@ -500,12 +500,6 @@ first to contribute the mapping to the ``libvirt-ci`` project:
+    `CI <https://www.qemu.org/docs/master/devel/ci.html>`__ documentation
+    page on how to trigger gitlab CI pipelines on your change.
+ 
+- * Please also trigger gitlab container generation pipelines on your change
+-   for as many OS distros as practical to make sure that there are no
+-   obvious breakages when adding the new pre-requisite. Please see
+-   `CI <https://www.qemu.org/docs/master/devel/ci.html>`__ documentation
+-   page on how to trigger gitlab CI pipelines on your change.
+-
+ For enterprise distros that default to old, end-of-life versions of the
+ Python runtime, QEMU uses a separate set of mappings that work with more
+ recent versions.  These can be found in ``tests/lcitool/mappings.yml``.
 -- 
 2.39.2
 
