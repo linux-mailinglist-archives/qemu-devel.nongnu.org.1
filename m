@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9796C9737BB
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7D69737A5
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:39:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so083-0001F6-AZ; Tue, 10 Sep 2024 08:37:55 -0400
+	id 1so08L-0002sz-Gs; Tue, 10 Sep 2024 08:38:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so07x-0000gV-Vv
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:37:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so080-00014a-GC
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:37:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so07u-00058w-JK
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:37:48 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so07w-000599-Pa
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:37:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725971863;
+ s=mimecast20190719; t=1725971867;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L7dFCKyGUkYu28b1nzEqtDF+fluqptoQqN4JKvtUwwU=;
- b=BAIFSy8bsRE26a3UQh0/9OOlJYXcnjn80PkwK37+Dli08kn9fNMOPR84cIMz3fWgpkxp54
- 5K9bgsX+qM5KjJbFrogRyYo6U4+SvgnODIjzyrqMSgjTF5Brb3dC+SX/Y3NTwoib60Kzzt
- ey+xmyfixWAHc4Y8oldvA3zUMQi9yjw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=pmpaivHbf7hge/u0xUgdrifftfz3/LCQC9ueCThj/9I=;
+ b=JxjAr/S+JUSF8d26H9uMvUwWVA4aHxnhLxu7HsLr0Km8bQzJrH6NNGeiq7m4ydZtQuHrp8
+ OF5Y8Sw3gB68JF5PK0UV4NiiU3uc886iNyJWAUIs0gMiTcatD/bHK7s5t+XNxoKXj/WWff
+ fOW0n7IYBdYTfX1GxbqL5oDAGiZ+Qow=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-TG7eMdXUMOuXl7-Cx79GiA-1; Tue,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-155-e5cWQGy6MQqL9O1HG-0a1g-1; Tue,
  10 Sep 2024 08:37:41 -0400
-X-MC-Unique: TG7eMdXUMOuXl7-Cx79GiA-1
+X-MC-Unique: e5cWQGy6MQqL9O1HG-0a1g-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 32AC6193586F; Tue, 10 Sep 2024 12:37:39 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EBD391945CB7; Tue, 10 Sep 2024 12:37:40 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.120])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 63B8319560AB; Tue, 10 Sep 2024 12:37:36 +0000 (UTC)
+ id 856D619560AD; Tue, 10 Sep 2024 12:37:39 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 04/22] contrib/plugins/Makefile: Add a 'distclean' target
-Date: Tue, 10 Sep 2024 14:37:05 +0200
-Message-ID: <20240910123726.182975-5-thuth@redhat.com>
+Subject: [PULL 05/22] MAINTAINERS: Remove myself as reviewer
+Date: Tue, 10 Sep 2024 14:37:06 +0200
+Message-ID: <20240910123726.182975-6-thuth@redhat.com>
 In-Reply-To: <20240910123726.182975-1-thuth@redhat.com>
 References: <20240910123726.182975-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -77,47 +78,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Running "make distclean" in the build tree currently fails since this
-tries to run the "distclean" target in the contrib/plugins/ folder, too,
-but the Makefile there is missing this target. Thus add 'distclean' there
-to fix this issue.
+From: Beraldo Leal <bleal@redhat.com>
 
-And to avoid regressions with "make distclean", add this command to one
-of the build jobs, too.
+Finally taking this off my to-do list. It’s been a privilege to be part
+of this project, but I am no longer actively involved in reviewing
+Python code here, so I believe it's best to update the list to reflect
+the current maintainers.
 
-Message-ID: <20240902154749.73876-1-thuth@redhat.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Please, feel free to reach out if any questions arise.
+
+Signed-off-by: Beraldo Leal <bleal@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240819150035.2180786-1-bleal@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 2 ++
- contrib/plugins/Makefile   | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ MAINTAINERS | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 9ac0776b94..98bac9e2c8 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -345,6 +345,8 @@ build-tcg-disabled:
-             124 132 139 142 144 145 151 152 155 157 165 194 196 200 202
-             208 209 216 218 227 234 246 247 248 250 254 255 257 258
-             260 261 262 263 264 270 272 273 277 279 image-fleecing
-+    - cd ../..
-+    - make distclean
- 
- build-user:
-   extends: .native_build_job_template
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-index edf256cd9d..05a2a45c5c 100644
---- a/contrib/plugins/Makefile
-+++ b/contrib/plugins/Makefile
-@@ -77,7 +77,7 @@ lib%$(SO_SUFFIX): %.o
- endif
- 
- 
--clean:
-+clean distclean:
- 	rm -f *.o *$(SO_SUFFIX) *.d
- 	rm -Rf .libs
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0c1bc69828..8c7358fd5b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3188,7 +3188,6 @@ F: qapi/cryptodev.json
+ Python library
+ M: John Snow <jsnow@redhat.com>
+ M: Cleber Rosa <crosa@redhat.com>
+-R: Beraldo Leal <bleal@redhat.com>
+ S: Maintained
+ F: python/
+ T: git https://gitlab.com/jsnow/qemu.git python
+@@ -4135,7 +4134,6 @@ M: Alex Bennée <alex.bennee@linaro.org>
+ M: Philippe Mathieu-Daudé <philmd@linaro.org>
+ M: Thomas Huth <thuth@redhat.com>
+ R: Wainer dos Santos Moschetta <wainersm@redhat.com>
+-R: Beraldo Leal <bleal@redhat.com>
+ S: Maintained
+ F: .github/workflows/lockdown.yml
+ F: .gitlab-ci.yml
+@@ -4181,7 +4179,6 @@ W: https://trello.com/b/6Qi1pxVn/avocado-qemu
+ R: Cleber Rosa <crosa@redhat.com>
+ R: Philippe Mathieu-Daudé <philmd@linaro.org>
+ R: Wainer dos Santos Moschetta <wainersm@redhat.com>
+-R: Beraldo Leal <bleal@redhat.com>
+ S: Odd Fixes
+ F: tests/avocado/
  
 -- 
 2.46.0
