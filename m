@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1CC9745B0
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 00:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 784949745E7
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 00:23:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so9Bb-0001T6-Cq; Tue, 10 Sep 2024 18:18:11 -0400
+	id 1so9BW-0000kz-OZ; Tue, 10 Sep 2024 18:18:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1so9BH-0007TE-I3
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 18:17:51 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1so9BK-0007qm-MV
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 18:17:54 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1so9BC-0006y1-OI
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 18:17:50 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7184a7c8a45so3839491b3a.0
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 15:17:46 -0700 (PDT)
+ id 1so9BH-0006yP-1w
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 18:17:53 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-71781f42f75so4835306b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 15:17:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726006665; x=1726611465; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726006667; x=1726611467; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qUh9IHgCF2MhxdXEfEudgW9+CnpXzCptLVYaeGylPlo=;
- b=WM2TZojeGwnbyGL0FDN0UZsG9vrfmYolsgbHhUmybOzmA/YGpkArD9Kt2wM7LNa+3/
- rSpjml08mMn3wtoY1h8p3jlZLB5v4T8t7Pj3Z4Q8ppFQnjzC2YDUW5lxBgDZ63oSrJvs
- Sd1zv87wvnl9zbYt/4vbb6N9nlmMfMkoBJ4ojLK70vGprFT6rvy68RK+671TIc7MaWkT
- 2Jm4pLqRXzbej2RPnDLPtK3DyrgHe2KYk6jVMNXSfM971Vvf9VVfe8JWxe+m+UWozoQ6
- 4Ls1UgGlj26PU0s1BofFeJdhzxhj6VVIwyCcfn87mCLevSHRHiIVEDRQmL0IAELZSjRv
- sH5g==
+ bh=pwL33KJkM4Q6sZhv70DYnj8c/5K/FMceLOUvjv0df2Q=;
+ b=fmQra3O1RchwVkBmA2kMEY4pkjxUPhCv7GexH08NrF6EJV/blkfsKk2+S8C6U10JNE
+ XwyUyI7pzFkL4W9Yzx60TRj5LpydputZbJR+4D9eW9tOUS5Gj97aid9YPlg0t+WBKXzI
+ 0uM7JUEWt69OLb5irA7UhZDgnbtQ9rRfMwvkjU0UohG7HduybV7+J+fspJY3BIToFL2N
+ 8ILzYoJ+NG9cfp/otT3xm++0uR5+M8DGcOkJua1lN1cU5pl3hxzRjwCxHFsJInd8QgOa
+ Iv267zyB4VjbA1z3tSV7CuxezZFFJQEoMgJF0jK3pAKapqwlR3djGtQWb/Zf6EQDni34
+ ldOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726006665; x=1726611465;
+ d=1e100.net; s=20230601; t=1726006667; x=1726611467;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qUh9IHgCF2MhxdXEfEudgW9+CnpXzCptLVYaeGylPlo=;
- b=D19DOPU+YIJRUYCzCR207QH7gb6TXKsGTc9WvFiyzJlCFpoAb5TyBA8gFGbMjJYasP
- nYsbyPS4nvSIODJ42VV+Ir9ZNli0AeczewuG6X8Nlc/gRUt+mPsJe0cQQa6kjGJ33awO
- RsN225y9WLjLHVfHLXiwV8IPH/OdvzYUZKtaq9bdhkMR8V2NYzyTP9XW9AmEeZOJj60V
- Vv0BPp5tr7KnLUWOS2pj27ih0neVW6AxK/rATY+HB9DUFlCynVtZrJ9MzltBHoG1gYar
- rR2CDbZpEySLiMezTiDAUUfEqW+WuD3on/2/tumLKZ9rNfyWikwsV/fnCmDF51wU6a0l
- XJDw==
-X-Gm-Message-State: AOJu0YzYs9T8t+pxRrmRXhF0YF9EtGKw9+3IgWYY84dZpN3j/ZAQDdpL
- YI4I2Fjx6TUBGhq2UCECjGUQwKVf1iA3AOT3gdA1LCyvNRw2g6uReFK61j9WkP/KNr1ElOvden8
- e2gYHq8rI
-X-Google-Smtp-Source: AGHT+IHslc3BcEPx9Pl9BNLcC3dBYXVlOSUQA7s5AOxlWq5X7KhrvJDzlRgFX2++lb84PnsqfiJvyA==
-X-Received: by 2002:a05:6a00:17a9:b0:70d:2e7e:1853 with SMTP id
- d2e1a72fcca58-718d5ef956cmr27062604b3a.19.1726006665231; 
- Tue, 10 Sep 2024 15:17:45 -0700 (PDT)
+ bh=pwL33KJkM4Q6sZhv70DYnj8c/5K/FMceLOUvjv0df2Q=;
+ b=nC+Mqtprqm9Wgm1BI2ShvrOsptLtVnff9qYjeiKIRwRifTtoAeUyP3Pa61Rpmg2DC0
+ 64ihlN8XtvAF3Mdz22UW53VX5oXVeCLUa0/DKPYhyBBupnMbgsYhS3rjwmthzC+4RF2u
+ C02zGGTFX0heLFAvm62GgMW2Xnyb/B/pg+C1wRSf27F0FXPMcAfpIOcC6f/4+Od1Zaph
+ 0wRJ/jjku0dwG1bM0kISDcrXet/CLmgnbBrTeWVszWK1zMjd8TfHwQg7vsKAxlnwHCEB
+ EdqSUitJDMi1UMhBtPMabZNt53BZDl7W+69GC7WARdoSY1h6XJ+GoA343wI68mKZ8Nen
+ lqdQ==
+X-Gm-Message-State: AOJu0Yy36mJm3LXXof44P2X7NpHxtMgRr3GHZhM8BgIgXhYajtjBcszS
+ rvnoUtyL8xFLDhFrkXyWl5KThHmmb/RIOIeL/gu4KWrSErWOqkiY8BtFBCAsI5XrR9gkW2LN28C
+ bkJQRDm/p
+X-Google-Smtp-Source: AGHT+IGLJQ5enOtPE13aQ+/NIdbH6s0S5HLwnq2JQ7qsPrp+J14Xh+TVi3Hmr9X9Sr+7gsTyHm2Dpg==
+X-Received: by 2002:a05:6a21:9d91:b0:1cf:3201:c3ad with SMTP id
+ adf61e73a8af0-1cf5e1c8112mr3689026637.49.1726006667581; 
+ Tue, 10 Sep 2024 15:17:47 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::9633])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71909003d0esm1884055b3a.93.2024.09.10.15.17.14
+ d2e1a72fcca58-71909003d0esm1884055b3a.93.2024.09.10.15.17.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Sep 2024 15:17:44 -0700 (PDT)
+ Tue, 10 Sep 2024 15:17:47 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>, "Richard W.M. Jones" <rjones@redhat.com>,
@@ -103,16 +103,16 @@ Cc: Zhao Liu <zhao1.liu@intel.com>, "Richard W.M. Jones" <rjones@redhat.com>,
  Jean-Christophe Dubois <jcd@tribudubois.net>,
  Jason Wang <jasowang@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 28/39] hw/misc: remove break after g_assert_not_reached()
-Date: Tue, 10 Sep 2024 15:15:55 -0700
-Message-Id: <20240910221606.1817478-29-pierrick.bouvier@linaro.org>
+Subject: [PATCH 29/39] hw/net: remove break after g_assert_not_reached()
+Date: Tue, 10 Sep 2024 15:15:56 -0700
+Message-Id: <20240910221606.1817478-30-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
 References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -137,42 +137,21 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- hw/misc/imx6_ccm.c | 1 -
- hw/misc/mac_via.c  | 2 --
- 2 files changed, 3 deletions(-)
+ hw/net/net_rx_pkt.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/misc/imx6_ccm.c b/hw/misc/imx6_ccm.c
-index b1def7f05b9..fd5d7ce4828 100644
---- a/hw/misc/imx6_ccm.c
-+++ b/hw/misc/imx6_ccm.c
-@@ -301,7 +301,6 @@ static uint64_t imx6_analog_get_periph_clk(IMX6CCMState *dev)
+diff --git a/hw/net/net_rx_pkt.c b/hw/net/net_rx_pkt.c
+index 6b9c4c9559d..0ea87344745 100644
+--- a/hw/net/net_rx_pkt.c
++++ b/hw/net/net_rx_pkt.c
+@@ -376,7 +376,6 @@ net_rx_pkt_calc_rss_hash(struct NetRxPkt *pkt,
+         break;
      default:
-         /* We should never get there */
          g_assert_not_reached();
 -        break;
      }
  
-     trace_imx6_analog_get_periph_clk(freq);
-diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-index 652395b84fc..af2b2b1af3d 100644
---- a/hw/misc/mac_via.c
-+++ b/hw/misc/mac_via.c
-@@ -495,7 +495,6 @@ static void via1_rtc_update(MOS6522Q800VIA1State *v1s)
-                 break;
-             default:
-                 g_assert_not_reached();
--                break;
-             }
-             return;
-         }
-@@ -556,7 +555,6 @@ static void via1_rtc_update(MOS6522Q800VIA1State *v1s)
-             break;
-         default:
-             g_assert_not_reached();
--            break;
-         }
-         return;
-     }
+     net_toeplitz_key_init(&key_data, key);
 -- 
 2.39.2
 
