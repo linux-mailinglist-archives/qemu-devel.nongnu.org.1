@@ -2,110 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769B69745EA
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 00:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 206279745EC
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 00:25:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so9HE-0005AS-9v; Tue, 10 Sep 2024 18:24:01 -0400
+	id 1so9IZ-0004Ea-R6; Tue, 10 Sep 2024 18:25:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1so9H5-0004Th-So
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 18:23:52 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1so9IV-0003yY-7G; Tue, 10 Sep 2024 18:25:19 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1so9H3-000868-AE
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 18:23:51 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1so9IT-00007F-CA; Tue, 10 Sep 2024 18:25:18 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 66AB221A55;
- Tue, 10 Sep 2024 22:23:47 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id B88061F836;
+ Tue, 10 Sep 2024 22:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1726007027; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1726007113; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rlfQMGgVDRwhBZb42QR9vuXiegX3X1IHDs3biMprsV4=;
- b=Rhfkyf9Suf7GN/u4fbKlsiceDFK4wPi2+LlmsH0qmJ8FRPmjcxkPC52HBsmWR2fmRLaNZG
- TBPAMq6kz37rhHCGsO+hjybk66hO+li4435U62Ta+ojxgN4xvt27KeghEYoPhur52iSNfI
- rjoEx1ymJ45HGRjCK4EEIPrEg/R5oSs=
+ bh=/ngJZupkt611k1HwvHZHIrGAiSEDttJWiwH4VezFYDA=;
+ b=IsJPlDelGX+nr5/FOwAUoKaLDkVeGRuJsjO5Ttp4G9CVC8eAQ6FHB2Xq8OP01tyhxwVDav
+ iE717wPn8F3aN4GfLXvPenoYL+iwTd4Ois6/1tyh0KpZFNFqpY71qwVM0Zvs9MwNUskY4G
+ cCHTofFJ4qY03+SV7OnoAaZ4rE6z6sc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1726007027;
+ s=susede2_ed25519; t=1726007113;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rlfQMGgVDRwhBZb42QR9vuXiegX3X1IHDs3biMprsV4=;
- b=OcHWT2TK0/i3cC8gQqi+n95u6/3TrdyjsIlrskNIPeiL3lgPASgGxMxvYzvWryiH9A2DLO
- 7Fv7TPxQzlYP61Cg==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Rhfkyf9S;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OcHWT2TK
+ bh=/ngJZupkt611k1HwvHZHIrGAiSEDttJWiwH4VezFYDA=;
+ b=+WN70kXvXhiKPcyECLNcD1EOXXM2KPPgNHW0tek0hOiIIoHIYJJEOGAY5gHwpFw6254f9c
+ UPV9Pe4BS9VBkVBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1726007027; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1726007113; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rlfQMGgVDRwhBZb42QR9vuXiegX3X1IHDs3biMprsV4=;
- b=Rhfkyf9Suf7GN/u4fbKlsiceDFK4wPi2+LlmsH0qmJ8FRPmjcxkPC52HBsmWR2fmRLaNZG
- TBPAMq6kz37rhHCGsO+hjybk66hO+li4435U62Ta+ojxgN4xvt27KeghEYoPhur52iSNfI
- rjoEx1ymJ45HGRjCK4EEIPrEg/R5oSs=
+ bh=/ngJZupkt611k1HwvHZHIrGAiSEDttJWiwH4VezFYDA=;
+ b=IsJPlDelGX+nr5/FOwAUoKaLDkVeGRuJsjO5Ttp4G9CVC8eAQ6FHB2Xq8OP01tyhxwVDav
+ iE717wPn8F3aN4GfLXvPenoYL+iwTd4Ois6/1tyh0KpZFNFqpY71qwVM0Zvs9MwNUskY4G
+ cCHTofFJ4qY03+SV7OnoAaZ4rE6z6sc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1726007027;
+ s=susede2_ed25519; t=1726007113;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rlfQMGgVDRwhBZb42QR9vuXiegX3X1IHDs3biMprsV4=;
- b=OcHWT2TK0/i3cC8gQqi+n95u6/3TrdyjsIlrskNIPeiL3lgPASgGxMxvYzvWryiH9A2DLO
- 7Fv7TPxQzlYP61Cg==
+ bh=/ngJZupkt611k1HwvHZHIrGAiSEDttJWiwH4VezFYDA=;
+ b=+WN70kXvXhiKPcyECLNcD1EOXXM2KPPgNHW0tek0hOiIIoHIYJJEOGAY5gHwpFw6254f9c
+ UPV9Pe4BS9VBkVBQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CF810132CB;
- Tue, 10 Sep 2024 22:23:46 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DD737132CB;
+ Tue, 10 Sep 2024 22:25:12 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 0mR5IvLG4GZ9OQAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 10 Sep 2024 22:23:46 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 9MvrNUjH4GbMOQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 10 Sep 2024 22:25:12 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>, Hyman Huang
- <yong.huang@smartx.com>, qemu-devel@nongnu.org, Eric Blake
- <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, David
- Hildenbrand <david@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH RFC 10/10] tests/migration-tests: Add test case for
- responsive CPU throttle
-In-Reply-To: <ZuC4pYT-atQwWePv@x1n>
-References: <cover.1725889277.git.yong.huang@smartx.com>
- <96eeea4efd3417212d6e2639bc118b90d4dcf926.1725889277.git.yong.huang@smartx.com>
- <CAFEAcA99=bn4x_BjgsAsrVitXNxOUSNviz=TGezJEB+=Zj603w@mail.gmail.com>
- <Zt8H6pC2yQ2DD7DV@x1n> <87frq8lcgp.fsf@suse.de> <ZuC4pYT-atQwWePv@x1n>
-Date: Tue, 10 Sep 2024 19:23:43 -0300
-Message-ID: <87seu7qhao.fsf@suse.de>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Zhao Liu <zhao1.liu@intel.com>, "Richard W.M. Jones"
+ <rjones@redhat.com>, Joel Stanley <joel@jms.id.au>, Kevin Wolf
+ <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Corey Minyard <minyard@acm.org>, Eric Farman
+ <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, Keith Busch
+ <kbusch@kernel.org>, WANG Xuerui <git@xen0n.name>, Hyman Huang
+ <yong.huang@smartx.com>, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Michael Rolnik <mrolnik@gmail.com>, Alistair Francis
+ <alistair.francis@wdc.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, qemu-riscv@nongnu.org, Ani Sinha
+ <anisinha@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, Jesper Devantier
+ <foss@defmacro.it>, Laurent Vivier <laurent@vivier.eu>, Peter Maydell
+ <peter.maydell@linaro.org>, Igor Mammedov <imammedo@redhat.com>,
+ kvm@vger.kernel.org, Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard
+ Henderson <richard.henderson@linaro.org>, Fam Zheng <fam@euphon.net>,
+ qemu-s390x@nongnu.org, Hanna Reitz <hreitz@redhat.com>, Nicholas Piggin
+ <npiggin@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Laurent Vivier
+ <lvivier@redhat.com>, Rob Herring <robh@kernel.org>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org, "Maciej S. Szmigiero"
+ <maciej.szmigiero@oracle.com>, qemu-ppc@nongnu.org, Daniel Henrique
+ Barboza <danielhb413@gmail.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Nina
+ Schoetterl-Glausch
+ <nsg@linux.ibm.com>, "Michael S. Tsirkin" <mst@redhat.com>, Helge Deller
+ <deller@gmx.de>, Dmitry Fleytman <dmitry.fleytman@gmail.com>, Daniel
+ Henrique Barboza <dbarboza@ventanamicro.com>, Akihiko Odaki
+ <akihiko.odaki@daynix.com>, Marcelo Tosatti <mtosatti@redhat.com>, David
+ Gibson <david@gibson.dropbear.id.au>, Aurelien Jarno
+ <aurelien@aurel32.net>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Yanan
+ Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>, Bin Meng
+ <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, Klaus Jensen
+ <its@irrelevant.dk>, Jean-Christophe Dubois <jcd@tribudubois.net>, Jason
+ Wang <jasowang@redhat.com>, Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH 08/39] migration: replace assert(0) with
+ g_assert_not_reached()
+In-Reply-To: <20240910221606.1817478-9-pierrick.bouvier@linaro.org>
+References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
+ <20240910221606.1817478-9-pierrick.bouvier@linaro.org>
+Date: Tue, 10 Sep 2024 19:25:10 -0300
+Message-ID: <87plpbqh89.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 66AB221A55
-X-Spamd-Result: default: False [-6.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
+ TAGGED_RCPT(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; ARC_NA(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
- FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCPT_COUNT_SEVEN(0.00)[9]; MISSING_XM_UA(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -6.51
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ FREEMAIL_CC(0.00)[intel.com,redhat.com,jms.id.au,nongnu.org,acm.org,linux.ibm.com,kernel.org,xen0n.name,smartx.com,linux.vnet.ibm.com,gmail.com,wdc.com,ericsson.com,dabbelt.com,defmacro.it,vivier.eu,linaro.org,vger.kernel.org,euphon.net,habkost.net,oracle.com,gmx.de,ventanamicro.com,daynix.com,gibson.dropbear.id.au,aurel32.net,linux.alibaba.com,huawei.com,irrelevant.dk,tribudubois.net];
+ R_RATELIMIT(0.00)[to_ip_from(RL77w4mfbgbm4kw8fg6bqi7qkm)];
+ TO_MATCH_ENVRCPT_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ RCPT_COUNT_GT_50(0.00)[64];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,linaro.org:email]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -128,222 +153,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 
-> On Mon, Sep 09, 2024 at 06:54:46PM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Mon, Sep 09, 2024 at 03:02:57PM +0100, Peter Maydell wrote:
->> >> On Mon, 9 Sept 2024 at 14:51, Hyman Huang <yong.huang@smartx.com> wrote:
->> >> >
->> >> > Despite the fact that the responsive CPU throttle is enabled,
->> >> > the dirty sync count may not always increase because this is
->> >> > an optimization that might not happen in any situation.
->> >> >
->> >> > This test case just making sure it doesn't interfere with any
->> >> > current functionality.
->> >> >
->> >> > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
->> >> 
->> >> tests/qtest/migration-test already runs 75 different
->> >> subtests, takes up a massive chunk of our "make check"
->> >> time, and is very commonly a "times out" test on some
->> >> of our CI jobs. It runs on five different guest CPU
->> >> architectures, each one of which takes between 2 and
->> >> 5 minutes to complete the full migration-test.
->> >> 
->> >> Do we really need to make it even bigger?
->> >
->> > I'll try to find some time in the next few weeks looking into this to see
->> > whether we can further shrink migration test times after previous attemps
->> > from Dan.  At least a low hanging fruit is we should indeed put some more
->> > tests into g_test_slow(), and this new test could also be a candidate (then
->> > we can run "-m slow" for migration PRs only).
->> 
->> I think we could (using -m slow or any other method) separate tests
->> that are generic enough that every CI run should benefit from them
->> vs. tests that are only useful once someone starts touching migration
->> code. I'd say very few in the former category and most of them in the
->> latter.
->> 
->> For an idea of where migration bugs lie, I took a look at what was
->> fixed since 2022:
->> 
->> # bugs | device/subsystem/arch
->> ----------------------------------
->>     54 | migration
->>     10 | vfio
->>      6 | ppc
->>      3 | virtio-gpu
->>      2 | pcie_sriov, tpm_emulator,
->>           vdpa, virtio-rng-pci
->>      1 | arm, block, gpio, lasi,
->>           pci, s390, scsi-disk,
->>           virtio-mem, TCG
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>  migration/migration-hmp-cmds.c |  2 +-
+>  migration/postcopy-ram.c       | 14 +++++++-------
+>  migration/ram.c                |  6 +++---
+>  3 files changed, 11 insertions(+), 11 deletions(-)
 >
-> Just curious; how did you collect these?
+> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+> index 7d608d26e19..e6e96aa6288 100644
+> --- a/migration/migration-hmp-cmds.c
+> +++ b/migration/migration-hmp-cmds.c
+> @@ -636,7 +636,7 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+>          visit_type_bool(v, param, &p->direct_io, &err);
+>          break;
+>      default:
+> -        assert(0);
+> +        g_assert_not_reached();
+>      }
+>  
+>      if (err) {
+> diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+> index 1c374b7ea1e..f431bbc0d4f 100644
+> --- a/migration/postcopy-ram.c
+> +++ b/migration/postcopy-ram.c
+> @@ -1411,40 +1411,40 @@ int postcopy_ram_incoming_init(MigrationIncomingState *mis)
+>  
+>  int postcopy_ram_incoming_cleanup(MigrationIncomingState *mis)
+>  {
+> -    assert(0);
+> +    g_assert_not_reached();
+>      return -1;
+>  }
+>  
+>  int postcopy_ram_prepare_discard(MigrationIncomingState *mis)
+>  {
+> -    assert(0);
+> +    g_assert_not_reached();
+>      return -1;
+>  }
+>  
+>  int postcopy_request_shared_page(struct PostCopyFD *pcfd, RAMBlock *rb,
+>                                   uint64_t client_addr, uint64_t rb_offset)
+>  {
+> -    assert(0);
+> +    g_assert_not_reached();
+>      return -1;
+>  }
+>  
+>  int postcopy_ram_incoming_setup(MigrationIncomingState *mis)
+>  {
+> -    assert(0);
+> +    g_assert_not_reached();
+>      return -1;
+>  }
+>  
+>  int postcopy_place_page(MigrationIncomingState *mis, void *host, void *from,
+>                          RAMBlock *rb)
+>  {
+> -    assert(0);
+> +    g_assert_not_reached();
+>      return -1;
+>  }
+>  
+>  int postcopy_place_page_zero(MigrationIncomingState *mis, void *host,
+>                          RAMBlock *rb)
+>  {
+> -    assert(0);
+> +    g_assert_not_reached();
+>      return -1;
+>  }
+>  
+> @@ -1452,7 +1452,7 @@ int postcopy_wake_shared(struct PostCopyFD *pcfd,
+>                           uint64_t client_addr,
+>                           RAMBlock *rb)
+>  {
+> -    assert(0);
+> +    g_assert_not_reached();
+>      return -1;
+>  }
+>  #endif
+> diff --git a/migration/ram.c b/migration/ram.c
+> index 67ca3d5d51a..0aa5d347439 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -1765,19 +1765,19 @@ bool ram_write_tracking_available(void)
+>  
+>  bool ram_write_tracking_compatible(void)
+>  {
+> -    assert(0);
+> +    g_assert_not_reached();
+>      return false;
+>  }
+>  
+>  int ram_write_tracking_start(void)
+>  {
+> -    assert(0);
+> +    g_assert_not_reached();
+>      return -1;
+>  }
+>  
+>  void ram_write_tracking_stop(void)
+>  {
+> -    assert(0);
+> +    g_assert_not_reached();
+>  }
+>  #endif /* defined(__linux__) */
 
-git log --since=2022 and then squinted at it. I wrote a warning to take
-this with a grain of salt, but it missed the final version.
-
->
->> 
->> From these, ignoring the migration bugs, the migration-tests cover some
->> of: arm, ppc, s390, TCG. The device_opts[1] patch hasn't merged yet, but
->> once it is, then virtio-gpu would be covered and we could investigate
->> adding some of the others.
->> 
->> For actual migration code issues:
->> 
->> # bugs | (sub)subsystem | kind
->> ----------------------------------------------
->>     13 | multifd        | correctness/races
->>      8 | ram            | correctness
->>      8 | rdma:          | general programming
->
-> 8 rdma bugs??? ouch..
-
-Mostly caught by a cleanup from Markus. Silly stuff like of mixed signed
-integer comparisons and bugs in error handling. I don't even want to
-look too much at it.
-
-...hopefully this release we'll manage to resolve that situation.
-
->
->>      7 | qmp            | new api bugs
->>      5 | postcopy       | races
->>      4 | file:          | leaks
->>      3 | return path    | races
->>      3 | fd_cleanup     | races
->>      2 | savevm, aio/coroutines
->>      1 | xbzrle, colo, dirtyrate, exec:,
->>           windows, iochannel, qemufile,
->>           arch (ppc64le)
->> 
->> Here, the migration-tests cover well: multifd, ram, qmp, postcopy,
->> file, rp, fd_cleanup, iochannel, qemufile, xbzrle.
->> 
->> My suggestion is we run per arch:
->> 
->> "/precopy/tcp/plain"
->> "/precopy/tcp/tls/psk/match",
->> "/postcopy/plain"
->> "/postcopy/preempt/plain"
->> "/postcopy/preempt/recovery/plain"
->> "/multifd/tcp/plain/cancel"
->> "/multifd/tcp/uri/plain/none"
->
-> Don't you want to still keep a few multifd / file tests?
-
-Not really, but I won't object if you want to add some more in there. To
-be honest, I want to get out of people's way as much as I can because
-having to revisit this every couple of months is stressful to me.
-
-My rationale for those is:
-
-"/precopy/tcp/plain":
- Smoke test, the most common migration
-
-"/precopy/tcp/tls/psk/match":
- Something might change in the distro regarding tls. Such as:
- https://gitlab.com/qemu-project/qemu/-/issues/1937
-
-"/postcopy/plain":
- Smoke test for postcopy
-
-"/postcopy/preempt/plain":
- Just to exercise the preempt thread
-
-"/postcopy/preempt/recovery/plain":
- Recovery has had some issues with races in the past
-
-"/multifd/tcp/plain/cancel":
- The MVP of catching concurrency issues
-
-"/multifd/tcp/uri/plain/none":
- Smoke test for multifd
-
-All in all, these will test basic funcionality and run very often. The
-more tests we add to this set, the less return we get in relation to the
-time they take.
-
->
-> IIUC some file ops can still be relevant to archs.  Multifd still has one
-> bug that can only reproduce on arm64.. but not x86_64.  I remember it's a
-> race condition when migration finishes, and the issue could be memory
-> ordering relevant, but maybe not.
-
-I'm not aware of anything. I believe the last arm64 bug we had was the
-threadinfo stuff[1]. If you remember what it's about, let me know.
-
-1- 01ec0f3a92 ("migration/multifd: Protect accesses to migration_threads").
-
->
->> 
->> and x86 gets extra:
->> 
->> "/precopy/unix/suspend/live"
->> "/precopy/unix/suspend/notlive"
->> "/dirty_ring"
->
-> dirty ring will be disabled anyway when !x86, so probably not a major
-> concern.
->
->> 
->> (the other dirty_* tests are too slow)
->
-> These are the 10 slowest tests when I run locally:
->
-> /x86_64/migration/multifd/tcp/tls/x509/allow-anon-client 2.41
-> /x86_64/migration/postcopy/recovery/plain 2.43
-> /x86_64/migration/multifd/tcp/tls/x509/default-host 2.66
-> /x86_64/migration/multifd/tcp/tls/x509/override-host 2.86
-> /x86_64/migration/postcopy/tls/psk 2.91
-> /x86_64/migration/postcopy/preempt/recovery/tls/psk 3.08
-> /x86_64/migration/postcopy/preempt/tls/psk 3.30
-> /x86_64/migration/postcopy/recovery/tls/psk 3.81
-> /x86_64/migration/vcpu_dirty_limit 13.29
-> /x86_64/migration/precopy/unix/xbzrle 27.55
->
-> Are you aware of people using xbzrle at all?
-
-Nope.
-
->
->> 
->> All the rest go behind a knob that people touching migration code will
->> enable.
->> 
->> wdyt?
->
-> Agree with the general idea, but I worry above exact list can be too small.
-
-We won't stop running the full set of tests. We can run them in our
-forks' CI as much as we want. There are no cases of people reporting a
-migration bug because their 'make check' caught something that ours
-didn't.
-
-Besides, the main strength of CI is to catch bugs when someone makes a
-code change. If people touch migration code, then we'll run it in our CI
-anyway. If they touch device code and that device is migrated by default
-then any one of the simple tests will catch the issue when it runs via
-the migration-compat job. If the device is not enabled by default, then
-no tests will catch it.
-
-The worst case scenario is they touch some code completely unrelated and
-their 'make check' or CI run breaks because of some race in the
-migration code. That's not what CI is for, that's just an annoyance for
-everyone. I'd rather it breaks in our hands and then we'll go fix it.
-
->
-> IMHO we can definitely, at least, move the last two into slow list
-> (vcpu_dirty_limit and xbzrle), then it'll already save us 40sec each run..
-
-Agreed. I'll send a patch once I get out from under downstream stuff.
-
->
->> 
->> 1- allows adding devices to QEMU cmdline for migration-test
->> https://lore.kernel.org/r/20240523201922.28007-4-farosas@suse.de
->> 
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
