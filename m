@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB1F972F48
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 11:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 650FF972F49
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 11:50:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snxUE-0006XI-La; Tue, 10 Sep 2024 05:48:38 -0400
+	id 1snxUE-0006Vl-9h; Tue, 10 Sep 2024 05:48:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1snxUB-0006TV-Ju; Tue, 10 Sep 2024 05:48:35 -0400
+ id 1snxUB-0006TU-NS; Tue, 10 Sep 2024 05:48:35 -0400
 Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1snxU9-0000M9-TM; Tue, 10 Sep 2024 05:48:35 -0400
+ id 1snxU9-0000M8-TU; Tue, 10 Sep 2024 05:48:35 -0400
 Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id D349A260BA2;
- Tue, 10 Sep 2024 11:48:30 +0200 (CEST)
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 7D7422602C9;
+ Tue, 10 Sep 2024 11:48:31 +0200 (CEST)
 X-Virus-Scanned: Debian amavis at juszkiewicz.com.pl
 Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
  by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavis, port 10024)
- with ESMTP id X2CWEUwOFf_u; Tue, 10 Sep 2024 11:48:28 +0200 (CEST)
+ with ESMTP id gcrsLz_4zubZ; Tue, 10 Sep 2024 11:48:29 +0200 (CEST)
 Received: from applejack.lan (83.11.24.101.ipv4.supernova.orange.pl
  [83.11.24.101])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id BD1552602C9;
- Tue, 10 Sep 2024 11:48:17 +0200 (CEST)
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id C4026260898;
+ Tue, 10 Sep 2024 11:48:28 +0200 (CEST)
 From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: [PATCH v5 0/4] tests: updates for aarch64/sbsa-ref
-Date: Tue, 10 Sep 2024 11:48:07 +0200
-Message-Id: <20240910-b4-move-to-freebsd-v5-0-0fb66d803c93@linaro.org>
+Date: Tue, 10 Sep 2024 11:48:08 +0200
+Subject: [PATCH v5 1/4] tests: use default cpu for aarch64/sbsa-ref
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANcV4GYC/4XNTQrCMBCG4atI1kbyM20aV95DXCR20ga0kaQEp
- fTupt2IKLp8P5hnJpIwekxkv5lIxOyTD0OJarsh594MHVLfliaCCWC1AGqBXkNGOgbqIqJNLTX
- GtWhVhU42pBzeIjp/X9HjqXTv0xjiY/2RxbL+5LKgjNaARlkGWjfucPGDiWEXYkcWL8v/hiyG4
- qBr6zjXLXwY8DIUk18NKAZTXHOnq6aS7M2Y5/kJcm/hlj0BAAA=
+Message-Id: <20240910-b4-move-to-freebsd-v5-1-0fb66d803c93@linaro.org>
+References: <20240910-b4-move-to-freebsd-v5-0-0fb66d803c93@linaro.org>
+In-Reply-To: <20240910-b4-move-to-freebsd-v5-0-0fb66d803c93@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
  Radoslaw Biernacki <rad@semihalf.com>, 
@@ -69,46 +67,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want test to run on default cpu settings. For now it is plain
-Neoverse-N2 but we are considering either disabling PAuth or going with
-'impdef' way.
+We want to run tests using default cpu without having to remember which
+Arm core is it.
 
-We want to have some non-Linux OS in testing in case one of changes keep
-Linux booting but crash elsewhere. So far OpenBSD was used for it but we
-move to FreeBSD 14.x due to longer support cycles (OpenBSD 7.3 we use is
-already EoL).
+Change Neoverse-N1 (old default) test to use default cpu (Neoverse-N2 at
+the moment).
 
 Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-
 ---
-Changes in v5:
-- update to post-avocado system
-- drop all OpenBSD tests
-- Link to v4: https://lore.kernel.org/r/20240703-b4-move-to-freebsd-v4-0-07191f958530@linaro.org
+ tests/functional/test_aarch64_sbsaref.py | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-Changes in v4:
-- hide OpenBSD test behind AVOCADO_TEST_LEGACY_OS switch
-- Link to v3: https://lore.kernel.org/r/20240624-b4-move-to-freebsd-v3-0-71496bf119d4@linaro.org
+diff --git a/tests/functional/test_aarch64_sbsaref.py b/tests/functional/test_aarch64_sbsaref.py
+index f31c2a60b6..528882f4fa 100755
+--- a/tests/functional/test_aarch64_sbsaref.py
++++ b/tests/functional/test_aarch64_sbsaref.py
+@@ -110,16 +110,17 @@ def test_sbsaref_edk2_firmware(self):
+     # This tests the whole boot chain from EFI to Userspace
+     # We only boot a whole OS for the current top level CPU and GIC
+     # Other test profiles should use more minimal boots
+-    def boot_alpine_linux(self, cpu):
++    def boot_alpine_linux(self, cpu=None):
+         self.fetch_firmware()
+ 
+         iso_path = self.ASSET_ALPINE_ISO.fetch()
+ 
+         self.vm.set_console()
+         self.vm.add_args(
+-            "-cpu", cpu,
+             "-drive", f"file={iso_path},media=cdrom,format=raw",
+         )
++        if cpu:
++            self.vm.add_args("-cpu", cpu)
+ 
+         self.vm.launch()
+         wait_for_console_pattern(self, "Welcome to Alpine Linux 3.17")
+@@ -127,8 +128,8 @@ def boot_alpine_linux(self, cpu):
+     def test_sbsaref_alpine_linux_cortex_a57(self):
+         self.boot_alpine_linux("cortex-a57")
+ 
+-    def test_sbsaref_alpine_linux_neoverse_n1(self):
+-        self.boot_alpine_linux("neoverse-n1")
++    def test_sbsaref_alpine_linux_default_cpu(self):
++        self.boot_alpine_linux()
+ 
+     def test_sbsaref_alpine_linux_max_pauth_off(self):
+         self.boot_alpine_linux("max,pauth=off")
+@@ -148,16 +149,17 @@ def test_sbsaref_alpine_linux_max(self):
+     # This tests the whole boot chain from EFI to Userspace
+     # We only boot a whole OS for the current top level CPU and GIC
+     # Other test profiles should use more minimal boots
+-    def boot_openbsd73(self, cpu):
++    def boot_openbsd73(self, cpu=None):
+         self.fetch_firmware()
+ 
+         img_path = self.ASSET_OPENBSD_ISO.fetch()
+ 
+         self.vm.set_console()
+         self.vm.add_args(
+-            "-cpu", cpu,
+             "-drive", f"file={img_path},format=raw,snapshot=on",
+         )
++        if cpu:
++            self.vm.add_args("-cpu", cpu)
+ 
+         self.vm.launch()
+         wait_for_console_pattern(self,
+@@ -167,8 +169,8 @@ def boot_openbsd73(self, cpu):
+     def test_sbsaref_openbsd73_cortex_a57(self):
+         self.boot_openbsd73("cortex-a57")
+ 
+-    def test_sbsaref_openbsd73_neoverse_n1(self):
+-        self.boot_openbsd73("neoverse-n1")
++    def test_sbsaref_openbsd73_default_cpu(self):
++        self.boot_openbsd73()
+ 
+     def test_sbsaref_openbsd73_max_pauth_off(self):
+         self.boot_openbsd73("max,pauth=off")
 
-Changes in v3:
-- kept OpenBSD/Cortex-A57 test for local runs (by request of Philippe)
-- Link to v2: https://lore.kernel.org/r/20240624-b4-move-to-freebsd-v2-0-64ea7b04998f@linaro.org
-
----
-Marcin Juszkiewicz (4):
-      tests: use default cpu for aarch64/sbsa-ref
-      tests: add FreeBSD tests for aarch64/sbsa-ref
-      tests: expand timeout information for aarch64/sbsa-ref
-      tests: drop OpenBSD tests for aarch64/sbsa-ref
-
- tests/functional/test_aarch64_sbsaref.py | 58 +++++++++++++++++---------------
- 1 file changed, 31 insertions(+), 27 deletions(-)
----
-base-commit: 1581a0bc928d61230ed6e43bcb83f2f6737d0bc0
-change-id: 20240624-b4-move-to-freebsd-aafdeb75ef38
-
-Best regards,
 -- 
-Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+2.46.0
 
 
