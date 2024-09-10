@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CB249737BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 100EB9737C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:41:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so08K-0002RL-9s; Tue, 10 Sep 2024 08:38:12 -0400
+	id 1so08S-0003fB-Ov; Tue, 10 Sep 2024 08:38:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so083-0001UF-Dj
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:37:55 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so08B-0002II-5K
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:38:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so07x-000598-Pp
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:37:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so084-00059U-6u
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:38:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725971867;
+ s=mimecast20190719; t=1725971869;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iIrIpJ8xCoVDhGsbI9RKUFy3uodlqvlFIf6MPCWaw0g=;
- b=NMhDmVSsTQY/oF4o08yDpWvuyL9w0BmsipS/gnuAHsIwgLqHGjXY5t6TewcFquiScIxnJp
- s7qzKyOLjEUwd+o40pHwjPAWQpR8qPW4WJCSr95K/SB76lWB89URIi3XJwhI4SqpIr6AFt
- HZSCNHndtz2s3HYpWfqZBzoNrfP1Qx4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=RtRLAuvqf+JeUxfTMm7H0IZIsVPZvbApHU6YhP9jrU0=;
+ b=i5hoUJZQEjmFZpCEbWibVGDOMtPecNSYBQ8Lmlwt5oqoxtvqdJmQjofgN/A+PsvJpLHjFq
+ 4Y5r2ElcqYwNe8WR7L036ucsgCi1D2YA5RZ43KSapIiCg4UP3WfhBjsDRQAOU/Pxt+LqqO
+ R+byrbv19mFKjYoVrRcJFyXZepzGWV8=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-199-dwIJqaKuNDKnCT88LFDLzQ-1; Tue,
- 10 Sep 2024 08:37:43 -0400
-X-MC-Unique: dwIJqaKuNDKnCT88LFDLzQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-zyQliyLZPR23YntrdvbUhQ-1; Tue,
+ 10 Sep 2024 08:37:46 -0400
+X-MC-Unique: zyQliyLZPR23YntrdvbUhQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8BC4119560B1; Tue, 10 Sep 2024 12:37:42 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A368A1944DDE; Tue, 10 Sep 2024 12:37:44 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.120])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4D9C919560AB; Tue, 10 Sep 2024 12:37:40 +0000 (UTC)
+ id 4012B19560AB; Tue, 10 Sep 2024 12:37:43 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 06/22] MAINTAINERS: Remove myself from the Meson section
-Date: Tue, 10 Sep 2024 14:37:07 +0200
-Message-ID: <20240910123726.182975-7-thuth@redhat.com>
+Subject: [PULL 07/22] tests/functional: Add the LinuxKernelTest for testing
+ the Linux boot process
+Date: Tue, 10 Sep 2024 14:37:08 +0200
+Message-ID: <20240910123726.182975-8-thuth@redhat.com>
 In-Reply-To: <20240910123726.182975-1-thuth@redhat.com>
 References: <20240910123726.182975-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -78,27 +79,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Meson section has plenty of reviewers, and in order to reduce the
-load on my Inbox a little bit, I'm stepping back as a reviewer here.
+Copy the LinuxKernelTest from tests/acceptance/boot_linux_console.py
+to be able to convert the related tests to the functional test framework
+in the following patches.
 
-Message-ID: <20240906155900.742157-1-thuth@redhat.com>
+Message-ID: <20240906180549.792832-2-thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+ tests/functional/qemu_test/__init__.py    |  1 +
+ tests/functional/qemu_test/linuxkernel.py | 41 +++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
+ create mode 100644 tests/functional/qemu_test/linuxkernel.py
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8c7358fd5b..822f89847b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4212,7 +4212,6 @@ Meson
- M: Paolo Bonzini <pbonzini@redhat.com>
- R: Marc-André Lureau <marcandre.lureau@redhat.com>
- R: Daniel P. Berrange <berrange@redhat.com>
--R: Thomas Huth <thuth@redhat.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
- S: Maintained
- F: meson.build
+diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
+index f33282efe8..67f87be9c4 100644
+--- a/tests/functional/qemu_test/__init__.py
++++ b/tests/functional/qemu_test/__init__.py
+@@ -12,3 +12,4 @@
+     interrupt_interactive_console_until_pattern, wait_for_console_pattern, \
+     exec_command, exec_command_and_wait_for_pattern, get_qemu_img
+ from .testcase import QemuBaseTest, QemuUserTest, QemuSystemTest
++from .linuxkernel import LinuxKernelTest
+diff --git a/tests/functional/qemu_test/linuxkernel.py b/tests/functional/qemu_test/linuxkernel.py
+new file mode 100644
+index 0000000000..fdd5307629
+--- /dev/null
++++ b/tests/functional/qemu_test/linuxkernel.py
+@@ -0,0 +1,41 @@
++# Test class for testing the boot process of a Linux kernel
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later.  See the COPYING file in the top-level directory.
++
++import os
++
++from .testcase import QemuSystemTest
++from .cmd import run_cmd, wait_for_console_pattern
++from .utils import archive_extract
++
++class LinuxKernelTest(QemuSystemTest):
++    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
++
++    def wait_for_console_pattern(self, success_message, vm=None):
++        wait_for_console_pattern(self, success_message,
++                                 failure_message='Kernel panic - not syncing',
++                                 vm=vm)
++
++    def extract_from_deb(self, deb_path, path):
++        """
++        Extracts a file from a deb package into the test workdir
++
++        :param deb_path: path to the deb archive
++        :param path: path within the deb archive of the file to be extracted
++        :returns: path of the extracted file
++        """
++        cwd = os.getcwd()
++        os.chdir(self.workdir)
++        (stdout, stderr, ret) = run_cmd(['ar', 't', deb_path])
++        file_path = stdout.split()[2]
++        run_cmd(['ar', 'x', deb_path, file_path])
++        archive_extract(file_path, self.workdir)
++        os.chdir(cwd)
++        # Return complete path to extracted file.  Because callers to
++        # extract_from_deb() specify 'path' with a leading slash, it is
++        # necessary to use os.path.relpath() as otherwise os.path.join()
++        # interprets it as an absolute path and drops the self.workdir part.
++        return os.path.normpath(os.path.join(self.workdir,
++                                             os.path.relpath(path, '/')))
++
 -- 
 2.46.0
 
