@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6BA973723
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56687973739
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:27:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snztz-00023A-Ql; Tue, 10 Sep 2024 08:23:23 -0400
+	id 1snzx1-0007AH-53; Tue, 10 Sep 2024 08:26:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1snztw-0001zf-Du
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:23:20 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snzwy-000794-KT
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:26:28 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1snztt-00036x-H9
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:23:20 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5c3ca32971cso1040686a12.0
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 05:23:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snzww-0003dp-QH
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:26:28 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2f761461150so44164301fa.0
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 05:26:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725970995; x=1726575795; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=xIt2jVQ8+nSY6T72AcewDyD/i8OcbuRqdJvmc5AcVvk=;
- b=f79bFm+55K2WIl9dEuLRZ54067DQP9+iL2u2bnLEKsSTst4LpF1xWg+/0awuDr8Yrt
- XCZyGSlaIylqfiXof/AZcJLSbxaNFEehWpkOqqL/W84TgV2FyXKL9PUmtPps1DLCeawi
- n+4cbXRhjaW3+Pmd76Vhi9DN3X8n7cjh0U4MgDZNDN+xvlcBWEKMB77ImMsGbV/I5lyJ
- XiDAxYw97uzEFfF7r7oWE9M9pfd7ZuRmmqesUY1HPh+sdv7sy1Yv/VW95jsoYQRcIkTP
- n8TzmLzgQ2VDlLF5qkohfAmsnUtsoqgvFuGwsXjMkHQr1NDWeJJHme+DJYc2ACgBaYk7
- QZZw==
+ d=linaro.org; s=google; t=1725971184; x=1726575984; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yMbcFoOzWZLnMx1hP8NxuXXLnMO/tZV1JBHxtiwK6ko=;
+ b=oFaEQRT5loSjWle9cLOiEQymHKR3dzBm14GIBZn1XRb5vRJfRR+wRhOH3jjqaKz0dF
+ pYOSEGYjA7ZmolMIVRbTftqyYKc1NN7SClXrU2kZb1WjLV9T25xOxYSOqdRwyJJadcp9
+ iAnaYmyzruIqqcQ1rSsbYTWsRo2PtZ5RWtfvf4mJE0nPa+vsQSWecGx17bEmAyCKL+G9
+ 3RlwIwtHBr4O/6CIu49NEj5V26/bBa+owzxhqlUB4g6AVueGux2uFN7Cdgq6ltmsc/Tz
+ EEIAxykQmhYq1aTs1E3JdYs1nBRvEPrl3HPHyfQ/hFenPoTVyEozXE6odhhJ1T2Onqkz
+ /IPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725970995; x=1726575795;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1725971184; x=1726575984;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=xIt2jVQ8+nSY6T72AcewDyD/i8OcbuRqdJvmc5AcVvk=;
- b=d5pfF8EyzfY7JBzLewkrEAJb8qmyiRNzgKkWOm4h5b62bCjQNzr5CpHQLDC2KdGfvp
- R1LbSI610QSpVGtNm+c+THbeDfiaKZFy3UglYe9G0Osu2aho8ijdKneuoAHyhaz9k+Wx
- fp13EVxuW6uGtmzBIY6rx4Az+CIxLFat9cXnZ8fC0iLgmf0Kijf+BCicC1l0k3XKY0di
- xnIKlk0FIAf4SV+r2JHM4bim0drNlhP4gDXh2/mKxW5XKOq9j+tFGgZUbRXXkJIfkQ21
- CKmdDExBBFoupGuLBkKSHDqGYEiJSbZc1wG9+Z67905sRHEAU/zKxi4d02ZnFoome02i
- zr6Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW+NSmij1t/9T/J5+vnxLUKNJTTXNQVNK1rgjeur3CYmNxoA2g3lKIGel0I1JaO0XQsSIZP6YD3pIl+@nongnu.org
-X-Gm-Message-State: AOJu0YyvMKpcd4YsBeTHJrrUxYhGmyXX6LGp/MTvaR92Eh90Y8jTq7Qc
- FPHSzwogjpZ8PlExa5Ew/lhIuNT8EFsB/c24Nr3HfQZlepCyg2SBBLx1aqJ4atQaVII6MoVMzgA
- +R6wG0ERsNNUH81qhUz4q2xT1axylnrUdb7errA==
-X-Google-Smtp-Source: AGHT+IEIQy/2oLJqkTJNmlede6t2VA5fKPjfuRWYMzmp9bxFaAVi4nS762DPdiLL0mCRvdBo4gxkDKz1jc0oJgoJeoU=
-X-Received: by 2002:a05:6402:42cb:b0:5a3:a4d7:caf5 with SMTP id
- 4fb4d7f45d1cf-5c3dc7c9cc1mr7526277a12.36.1725970995389; Tue, 10 Sep 2024
- 05:23:15 -0700 (PDT)
+ bh=yMbcFoOzWZLnMx1hP8NxuXXLnMO/tZV1JBHxtiwK6ko=;
+ b=Cwss8E8C1ddj7IrCZWeXYeaiRxvJZWtNrXI56m2oQ5L1uDdPFCh97tAMdBwKY4jlH5
+ eWqA7Ct0h8PXF3oiHtjVxvdGmchzSonD60OSP9/tajAnfG55uRt5tN9sE9KnLAW8DpfA
+ atqPVKcxbblm4VB07JJcBr/qKrdPvo/qIS1XVjw0z3Lj0D+Oce0z/kYx4Xt7Y/dA48fW
+ NIC6tmBga7HnYCYDTzxkDvN7oaFTp+5HmWIODK4+9kZefQ3nELb/PCskNacQ4ekfnmEa
+ iXubbYHdnAFG2o7jhwbqeJwgq0CBozyPtWXb+skyGOEhMpSY41WgvnfZ3XTMgov1zHZd
+ Jjnw==
+X-Gm-Message-State: AOJu0Ywis+f1wClybyGr5RaKiKC9Mx/fgX90jF/XlFu5dKFT/FoLT5LA
+ FkwAYPI4lSDE+FewuIz/KdleW6NG7IIyj9c0r3P5lPBmwbTBSJw+PoVwbMJPDJQ/ooaUPGAQXwZ
+ m
+X-Google-Smtp-Source: AGHT+IGl8VrBfqLDvqSOb0o3TcO2u0pjuZdi2LQXyhgdiS+mk1CABkqDGxFLGiVOQOfcagMnLhT+YQ==
+X-Received: by 2002:a05:651c:2207:b0:2f3:cd4e:b931 with SMTP id
+ 38308e7fff4ca-2f75a96da0amr103149801fa.10.1725971184137; 
+ Tue, 10 Sep 2024 05:26:24 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.217.32])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8d25ced18csm472751066b.161.2024.09.10.05.26.22
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 10 Sep 2024 05:26:23 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Stefan Weil <sw@weilnetz.de>,
+ qemu-trivial@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/5] license: Fix typos and update SPDX tags
+Date: Tue, 10 Sep 2024 14:26:13 +0200
+Message-ID: <20240910122618.33056-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20240709060448.251881-1-gankulkarni@os.amperecomputing.com>
- <CAFEAcA_7BOXSLXJ=VV0pWDvrN=2dWrM3bRTG+31ivPjeVbWGKQ@mail.gmail.com>
- <0b5764d4-fd63-4779-a22a-8e10ebafbcc7@os.amperecomputing.com>
-In-Reply-To: <0b5764d4-fd63-4779-a22a-8e10ebafbcc7@os.amperecomputing.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 10 Sep 2024 13:23:03 +0100
-Message-ID: <CAFEAcA9oP5HNYK=HFazBU8M9eaGN8sFhAvLFQvcy36Xf+Tm+7A@mail.gmail.com>
-Subject: Re: [PATCH] arm/kvm: add support for MTE
-To: Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, richard.henderson@linaro.org, 
- darren@os.amperecomputing.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,25 +93,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 10 Sept 2024 at 12:57, Ganapatrao Kulkarni
-<gankulkarni@os.amperecomputing.com> wrote:
-> On 16-07-2024 09:15 pm, Peter Maydell wrote:
-> > Since Cornelia first wrote the patch this is based on, we've
-> > landed gdbstub support for MTE (so gdb can find out which
-> > addresses in the memory map have tags and read and write
-> > those tags). So I think the KVM MTE support now also needs to
-> > handle that. (See aarch64_cpu_register_gdb_commands() in
-> > target/arm/gdbstub64.c.)
->
-> I looked at this code and it looks like, complete code is under
-> ifdef CONFIG_USER_ONLY and for kvm(target aarch64-softmmu) this is not
-> getting enabled. Are you asking to remove these ifdef and make
-> mte-gdbstub commands available for the KVM mode as well?
+Series fully reviewed (thanks Thomas!)
 
-The system mode support for mte gdbstub is just about
-to land. The current patchset is this one:
-https://patchew.org/QEMU/20240906143316.657436-1-gustavo.romero@linaro.org/
+Since v1:
+. Updated regex to cover all GPL-2.0* cases.
 
-thanks
--- PMM
+- Fix a pair of typos
+- Upgrade the deprecated GPL-2.0+/LGPL-2.0+ SPDX tags
+  to GPL-2.0-only / GPL-2.0-or-later / LGPL-2.0-or-later.
+
+Philippe Mathieu-Daudé (5):
+  NSIS: Simplify license description
+  tests/functional: Correct typo in test_netdev_ethtool.py SPDX tag
+  license: Update deprecated SPDX tag LGPL-2.0+ to LGPL-2.0-or-later
+  license: Update deprecated SPDX tag GPL-2.0+ to GPL-2.0-or-later
+  license: Update deprecated SPDX tag GPL-2.0 to GPL-2.0-only
+
+ hw/core/uboot_image.h                   | 2 +-
+ hw/m68k/bootinfo.h                      | 2 +-
+ hw/net/igb_regs.h                       | 2 +-
+ include/gdbstub/syscalls.h              | 2 +-
+ include/gdbstub/user.h                  | 2 +-
+ include/hw/nvram/fw_cfg_acpi.h          | 2 +-
+ include/hw/usb/dwc2-regs.h              | 2 +-
+ include/hw/virtio/virtio-acpi.h         | 2 +-
+ include/qemu/crc-ccitt.h                | 2 +-
+ target/alpha/cpu-param.h                | 2 +-
+ target/arm/cpu-param.h                  | 2 +-
+ target/cris/cpu-param.h                 | 2 +-
+ target/hppa/cpu-param.h                 | 2 +-
+ target/i386/cpu-param.h                 | 2 +-
+ target/m68k/cpu-param.h                 | 2 +-
+ target/microblaze/cpu-param.h           | 2 +-
+ target/mips/cpu-param.h                 | 2 +-
+ target/openrisc/cpu-param.h             | 2 +-
+ target/ppc/cpu-param.h                  | 2 +-
+ target/riscv/cpu-param.h                | 2 +-
+ target/s390x/cpu-param.h                | 2 +-
+ target/sh4/cpu-param.h                  | 2 +-
+ target/sparc/cpu-param.h                | 2 +-
+ tests/tcg/loongarch64/system/regdef.h   | 2 +-
+ target/sparc/insns.decode               | 2 +-
+ gdbstub/gdbstub.c                       | 2 +-
+ gdbstub/syscalls.c                      | 2 +-
+ gdbstub/system.c                        | 2 +-
+ gdbstub/user-target.c                   | 2 +-
+ gdbstub/user.c                          | 2 +-
+ hw/nvram/fw_cfg-acpi.c                  | 2 +-
+ hw/virtio/virtio-acpi.c                 | 2 +-
+ linux-user/alpha/syscall.tbl            | 2 +-
+ linux-user/alpha/syscallhdr.sh          | 2 +-
+ linux-user/arm/syscallhdr.sh            | 2 +-
+ linux-user/hppa/syscall.tbl             | 2 +-
+ linux-user/hppa/syscallhdr.sh           | 2 +-
+ linux-user/i386/syscallhdr.sh           | 2 +-
+ linux-user/m68k/syscall.tbl             | 2 +-
+ linux-user/m68k/syscallhdr.sh           | 2 +-
+ linux-user/microblaze/syscall.tbl       | 2 +-
+ linux-user/microblaze/syscallhdr.sh     | 2 +-
+ linux-user/mips/syscall_o32.tbl         | 2 +-
+ linux-user/mips/syscallhdr.sh           | 2 +-
+ linux-user/mips64/syscall_n32.tbl       | 2 +-
+ linux-user/mips64/syscall_n64.tbl       | 2 +-
+ linux-user/mips64/syscallhdr.sh         | 2 +-
+ linux-user/ppc/syscall.tbl              | 2 +-
+ linux-user/ppc/syscallhdr.sh            | 2 +-
+ linux-user/s390x/syscall.tbl            | 2 +-
+ linux-user/s390x/syscallhdr.sh          | 2 +-
+ linux-user/sh4/syscall.tbl              | 2 +-
+ linux-user/sh4/syscallhdr.sh            | 2 +-
+ linux-user/sparc/syscall.tbl            | 2 +-
+ linux-user/sparc/syscallhdr.sh          | 2 +-
+ linux-user/x86_64/syscallhdr.sh         | 2 +-
+ linux-user/xtensa/syscall.tbl           | 2 +-
+ linux-user/xtensa/syscallhdr.sh         | 2 +-
+ qemu.nsi                                | 4 +++-
+ scripts/kernel-doc                      | 2 +-
+ tests/functional/test_netdev_ethtool.py | 2 +-
+ 61 files changed, 63 insertions(+), 61 deletions(-)
+
+-- 
+2.45.2
+
 
