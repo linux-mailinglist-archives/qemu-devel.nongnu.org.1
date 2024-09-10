@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7019737C4
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1BBA9737B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:41:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so08d-0005Jv-22; Tue, 10 Sep 2024 08:38:31 -0400
+	id 1so08i-000646-6S; Tue, 10 Sep 2024 08:38:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so08Y-0004wk-J2
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:38:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so08d-0005mA-VO
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:38:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so08R-0005CI-Dx
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:38:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so08X-0005Cp-4J
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:38:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725971897;
+ s=mimecast20190719; t=1725971900;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E6W6qQbFxPETSgvz8itblR9VzVlS/skfk6suD/TMBUw=;
- b=GwleTXg522kSoUioH0viCaLirRjQhpCbt9YX7AzpBtCfa4tKDUtTUHJXgf9pK7KzWKMeAr
- SmAvftkBoqxfEfNPO7mKMdVUzIc8J3D4wacueEGwX/Osl+YZ7fJ8aH5IwkEOvkbCe43tSz
- sTkMvs7RPKlaywrbvyG/xAF5dC0OkiE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=8LFdB5bbo8drVbeu9wGKXLxGCcC3FGGUb/ed9H9Aj78=;
+ b=XYDYmehSNLV7gSS55ZGV5GRwtHDDpsss1/Zsmebp3PVrNFeTSSfrMl435cTsyFt1HynCve
+ td/AbJOUraP9JBcOqKpTHtK8eqHTtENSI98owyUln5CY/pcDkeldcmZ4iDPw2oPW6vHKl9
+ xN/r5BPL2DPkMBtg1XTfu3MVEfAebJg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-laR5GFZiNnmwSsMy_cgD3g-1; Tue,
- 10 Sep 2024 08:38:15 -0400
-X-MC-Unique: laR5GFZiNnmwSsMy_cgD3g-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-601-6-vi0kXLPO6ikXw1IPSqDw-1; Tue,
+ 10 Sep 2024 08:38:19 -0400
+X-MC-Unique: 6-vi0kXLPO6ikXw1IPSqDw-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DF78919371DF; Tue, 10 Sep 2024 12:38:14 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5CA721955F3C; Tue, 10 Sep 2024 12:38:17 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.120])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EE6B719560AB; Tue, 10 Sep 2024 12:38:12 +0000 (UTC)
+ id 8DDC219560AB; Tue, 10 Sep 2024 12:38:15 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 19/22] tests/functional: Convert the m68k MCF5208EVB Avocado
- test
-Date: Tue, 10 Sep 2024 14:37:20 +0200
-Message-ID: <20240910123726.182975-20-thuth@redhat.com>
+Subject: [PULL 20/22] tests/functional: Convert the or1k-sim Avocado test
+Date: Tue, 10 Sep 2024 14:37:21 +0200
+Message-ID: <20240910123726.182975-21-thuth@redhat.com>
 In-Reply-To: <20240910123726.182975-1-thuth@redhat.com>
 References: <20240910123726.182975-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,57 +83,60 @@ in a separate file. Also switch back to the original URL (since
 the site did not vanish as originally expected) and update the
 hashsum to use SHA256.
 
-Message-ID: <20240906180549.792832-14-thuth@redhat.com>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240906180549.792832-15-thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/boot_linux_console.py      |  8 -------
- tests/functional/meson.build             |  1 +
- tests/functional/test_m68k_mcf5208evb.py | 29 ++++++++++++++++++++++++
- 3 files changed, 30 insertions(+), 8 deletions(-)
- create mode 100755 tests/functional/test_m68k_mcf5208evb.py
+ tests/avocado/boot_linux_console.py |  8 --------
+ tests/functional/meson.build        |  4 ++++
+ tests/functional/test_or1k_sim.py   | 29 +++++++++++++++++++++++++++++
+ 3 files changed, 33 insertions(+), 8 deletions(-)
+ create mode 100755 tests/functional/test_or1k_sim.py
 
 diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 75aab90320..db72bd1b5e 100644
+index db72bd1b5e..6c50284986 100644
 --- a/tests/avocado/boot_linux_console.py
 +++ b/tests/avocado/boot_linux_console.py
 @@ -927,14 +927,6 @@ def test_arm_ast2600_debian(self):
          self.wait_for_console_pattern("SMP: Total of 2 processors activated")
          self.wait_for_console_pattern("No filesystem could mount root")
  
--    def test_m68k_mcf5208evb(self):
+-    def test_or1k_sim(self):
 -        """
--        :avocado: tags=arch:m68k
--        :avocado: tags=machine:mcf5208evb
+-        :avocado: tags=arch:or1k
+-        :avocado: tags=machine:or1k-sim
 -        """
--        tar_hash = 'ac688fd00561a2b6ce1359f9ff6aa2b98c9a570c'
--        self.do_test_advcal_2018('07', tar_hash, 'sanity-clause.elf')
+-        tar_hash = '20334cdaf386108c530ff0badaecc955693027dd'
+-        self.do_test_advcal_2018('20', tar_hash, 'vmlinux')
 -
-     def test_or1k_sim(self):
+     def test_ppc64_e500(self):
          """
-         :avocado: tags=arch:or1k
+         :avocado: tags=arch:ppc64
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index e1903132a1..8f9694244f 100644
+index 8f9694244f..68a7570119 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -64,6 +64,7 @@ tests_loongarch64_system_thorough = [
+@@ -94,6 +94,10 @@ tests_mips64el_system_thorough = [
+   'mips64el_malta',
  ]
  
- tests_m68k_system_thorough = [
-+  'm68k_mcf5208evb',
-   'm68k_nextcube',
-   'm68k_q800',
++tests_or1k_system_quick = [
++  'or1k_sim',
++]
++
+ tests_ppc_system_quick = [
+   'ppc_74xx',
  ]
-diff --git a/tests/functional/test_m68k_mcf5208evb.py b/tests/functional/test_m68k_mcf5208evb.py
+diff --git a/tests/functional/test_or1k_sim.py b/tests/functional/test_or1k_sim.py
 new file mode 100755
-index 0000000000..869ccc88df
+index 0000000000..aa2a1f08d2
 --- /dev/null
-+++ b/tests/functional/test_m68k_mcf5208evb.py
++++ b/tests/functional/test_or1k_sim.py
 @@ -0,0 +1,29 @@
 +#!/usr/bin/env python3
 +#
-+# Functional test that boots a Linux kernel on an MCF5208EVB machine
++# Functional test that boots a Linux kernel on an OpenRISC-1000 SIM machine
 +# and checks the console
 +#
 +# SPDX-License-Identifier: GPL-2.0-or-later
@@ -144,18 +146,18 @@ index 0000000000..869ccc88df
 +from qemu_test import LinuxKernelTest, Asset
 +from qemu_test.utils import archive_extract
 +
-+class Mcf5208EvbTest(LinuxKernelTest):
++class OpenRISC1kSimTest(LinuxKernelTest):
 +
-+    ASSET_DAY07 = Asset(
-+        'https://www.qemu-advent-calendar.org/2018/download/day07.tar.xz',
-+        '753c2f3837126b7c6ba92d0b1e0b156e8a2c5131d2d576bb0b9a763fae73c08a')
++    ASSET_DAY20 = Asset(
++        'https://www.qemu-advent-calendar.org/2018/download/day20.tar.xz',
++        'ff9d7dd7c6bdba325bd85ee85c02db61ff653e129558aeffe6aff55bffb6763a')
 +
-+    def test_m68k_mcf5208evb(self):
-+        self.set_machine('mcf5208evb')
-+        file_path = self.ASSET_DAY07.fetch()
++    def test_or1k_sim(self):
++        self.set_machine('or1k-sim')
++        file_path = self.ASSET_DAY20.fetch()
 +        archive_extract(file_path, self.workdir)
 +        self.vm.set_console()
-+        self.vm.add_args('-kernel', self.workdir + '/day07/sanity-clause.elf')
++        self.vm.add_args('-kernel', self.workdir + '/day20/vmlinux')
 +        self.vm.launch()
 +        self.wait_for_console_pattern('QEMU advent calendar')
 +
