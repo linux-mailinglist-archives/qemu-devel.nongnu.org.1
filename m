@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C475D972A29
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 09:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 755A2972A32
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 09:07:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1snuvz-0005lT-Co; Tue, 10 Sep 2024 03:05:07 -0400
+	id 1snuxi-0004UQ-Cu; Tue, 10 Sep 2024 03:06:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snuvr-0005jo-VC
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 03:05:02 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snuxg-0004PH-MO
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 03:06:52 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snuvq-0008DT-A1
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 03:04:59 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a8a897bd4f1so522755166b.3
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 00:04:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1snuxe-0008Uj-VX
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 03:06:52 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2f761cfa5d8so28358811fa.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 00:06:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725951890; x=1726556690; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725952009; x=1726556809; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=jJkHD6452Zj6bKA3FeX7Fzo4GxinqR95Kc/Il0+9tBg=;
- b=pTPu2gzpn9nVIp1GfVq+Ru537nVxJNQNqAXivxAzzmTpVu+MHYONKgidLYdM9hHW+m
- YuvGGPvj1ITxHR9QdB+9GSpzu1OVkRq6D0YLXoGLXO6H6Fhmoeh8+jlLSFUBfu0v/rRH
- OpeBbBU6LSgjo90d4KiCLosy4RQvhdn1WY7DTSdxPnQ4EpQvyE/c5F/X3i367BuAPWBy
- zenPXChOIAngYCpD3uMdh0ELGsAXcPzUl0UUvXyAXzOaBC+zDNCGYMC91MpDZ0iiuf0h
- YKh/wfv1y9NP20TsNEoH0kctFAKgZFj7G1zw7DrNmci3HI73oj1NEM5UaGR30bg0LC79
- HjeA==
+ bh=m4e7yrZL8EI2osvdoujnFqGKwjgylpzzlVIrd8thyC4=;
+ b=ib76tza9M2avyaQRJUyKUExgOLrKYsBzKmYzePcXGGHc4Tub9eI7VNu/1olsrJYnse
+ CzRqZia7lpvkOA5TbuUG5z3NwDv3+dDsMi7XKqVmTy7XKHbid8XM+OUR9KvdPfa3Kb9g
+ dBymlUv6Oi9l0WhnKwkwhDo5WW1ftijXEUVx11PpGGkPST7uXBPHiNnAk/twS7N/RuEq
+ pifLzntolDz8/U5jd7s1xddixHYA6LDSI953+U2YDL5uu1WiQI/+1fneTYPTVuoGIW1E
+ 3Lmn5gMPJGtFci+N8960irBajx+iWnvekUwrqV7Pmc8RDYMPlAgb3ft3cN+RWtGb7SxZ
+ bq0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725951890; x=1726556690;
+ d=1e100.net; s=20230601; t=1725952009; x=1726556809;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jJkHD6452Zj6bKA3FeX7Fzo4GxinqR95Kc/Il0+9tBg=;
- b=eqBrQ/6Pg5fN+ty0D1sP/qwc/IVSLvM7bJ57rYiv2XBjd2O3gAZ0LBvl0lPl7trr48
- 2lJbz1lGVT/ls3L2HwH8bO8HnbotuXS4bteCTp/LwpaEMYzCahRzFji5X7d5Kn35yL0H
- wODknUFxpEpyLjNMe2AAyNBxyGKqfazfEOLMD43Ma/yVRfKozHzqS5YxPtc68x6RUKeH
- 1qLcRdc7nW9NXyZwGc3eHt16X5bH7h+obrM7wGMSkFkX4RtgLfyvSCQzP2RhzwDAInzo
- hEHiCeAbR6iMU3M/f71SxuEWJnnktW5SYM1Q601UCXvciwonlpWweXIPA4VwqKLxweN/
- 6ysQ==
+ bh=m4e7yrZL8EI2osvdoujnFqGKwjgylpzzlVIrd8thyC4=;
+ b=pdac9ST/Cq5PEmbPn9G6dMeB6YZUzB5c2z+hrEOFzsYUKlVRYxmtw9JCLxYySF2hDZ
+ 8NYK+xfZawBhTPW7hB5cblxztBOQaO9sN6kakPMwrG8tCOCOpPwLjqazXEMZsgO2QK8T
+ WIOpyAkirpZ7TSmUp6e/6Z6EishJFYEML/gMeEUGgamxudrZaxJ5NhsztSNeJrxOleYZ
+ HwOi1uXkI+YUIuLBY2m/2hzteFLENz9GvvNj0HBLE0GvUJ69g5OEo9pSwFzP5sdXc6Tc
+ G80xIDQkAoBC856DMgI5yHKCv2lsO4uNGJyynMZYUjQxXc1v7UBVGmIj1b2IH1FG+asY
+ FJGw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVNL06IGgkwiOERUWLoDGL22L2E0Q8/6pjF2VozOQdLwWflTDE4Vxri5VzfuQbv6CyTEZYS3Vub+k2L@nongnu.org
-X-Gm-Message-State: AOJu0YyEDqb/IT6Lp1HJg8WI+UVKrInao2hD7ugbM/Rta1O/oeo4mWhO
- bLBEfKJhlT/euXHVWAyezsGb/tZBDHyX7XxbAr0MsUdcmhklrQNcKaBbU3ZPNVQ=
-X-Google-Smtp-Source: AGHT+IERx8brtVsgOx2GjGoC4aXB3MKrwPY8xFJ7DDk0wm+SNJeT32hxpDfLDFgy5YMMb4CZqt89NA==
-X-Received: by 2002:a17:907:eab:b0:a8d:1545:f48a with SMTP id
- a640c23a62f3a-a8d2494c101mr771829266b.61.1725951889558; 
- Tue, 10 Sep 2024 00:04:49 -0700 (PDT)
+ AJvYcCXNXbsZqfaryye+CouiRlLgYhNT1AP0UrkOig8PguJsaRgGDl+cxdKZA4mAk8bxeIgCNuKx87PcGbXq@nongnu.org
+X-Gm-Message-State: AOJu0YzbRQxn58RK+OVXykVchNmIB3ZC+LV4msnoj4eWB0c0V1yNJPGg
+ TI5+eFfUVN7g4Zt80/CnZwkEn1R9TM4DSrvbOs/JxOj0d7a9NM975qaAErPCROo=
+X-Google-Smtp-Source: AGHT+IF6YiimLNXg7MMG2TarPL7OS2vdllmKJbVpy0m8NBQgkpRqviV0WWULwg+Jqg7IPdhd4SdSpQ==
+X-Received: by 2002:a2e:bc21:0:b0:2f3:aed8:aa9b with SMTP id
+ 38308e7fff4ca-2f751eaef7emr91026861fa.5.1725952008565; 
+ Tue, 10 Sep 2024 00:06:48 -0700 (PDT)
 Received: from [192.168.69.100] ([176.187.217.32])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d258354ecsm436327166b.8.2024.09.10.00.04.48
+ 4fb4d7f45d1cf-5c3ebd8cd43sm3913147a12.93.2024.09.10.00.06.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Sep 2024 00:04:49 -0700 (PDT)
-Message-ID: <c2e9e0a0-ad53-451b-8ea4-d6032dad97d7@linaro.org>
-Date: Tue, 10 Sep 2024 09:04:47 +0200
+ Tue, 10 Sep 2024 00:06:48 -0700 (PDT)
+Message-ID: <ae3a0c8c-99a6-42b1-aeef-2b71b50ea611@linaro.org>
+Date: Tue, 10 Sep 2024 09:06:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/12] tcg/i386: Add predicate parameters to
- tcg_out_evex_opc
+Subject: Re: [PATCH v2 06/10 2/4] target/s390x: Use deposit to set psw_mask in
+ save_link_info
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: zhiwei_liu@linux.alibaba.com, tangtiancheng.ttc@alibaba-inc.com,
- liwei1518@gmail.com, bmeng.cn@gmail.com
-References: <20240908022632.459477-1-richard.henderson@linaro.org>
- <20240908022632.459477-12-richard.henderson@linaro.org>
+Cc: David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
+References: <20240605215739.4758-7-richard.henderson@linaro.org>
+ <20240909231910.14428-2-philmd@linaro.org>
+ <9aac4861-b9b6-444a-b0fd-db03f21b1343@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240908022632.459477-12-richard.henderson@linaro.org>
+In-Reply-To: <9aac4861-b9b6-444a-b0fd-db03f21b1343@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,15 +97,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/24 04:26, Richard Henderson wrote:
-> Extend tcg_out_evex_opc to handle the predicate and
-> zero-merging parameters of the evex prefix.
+On 10/9/24 01:50, Richard Henderson wrote:
+> On 9/9/24 16:19, Philippe Mathieu-Daudé wrote:
+>> From: Richard Henderson <richard.henderson@linaro.org>
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> Message-ID: <20240605215739.4758-7-richard.henderson@linaro.org>
+>> [PMD: Split patch, part 2/4]
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/s390x/tcg/translate.c | 12 ++++++++----
+>>   1 file changed, 8 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+>> index faa6d37c8e..53ec817e29 100644
+>> --- a/target/s390x/tcg/translate.c
+>> +++ b/target/s390x/tcg/translate.c
+>> @@ -1417,6 +1417,7 @@ static DisasJumpType op_bas(DisasContext *s, 
+>> DisasOps *o)
+>>   static void save_link_info(DisasContext *s, DisasOps *o)
+>>   {
+>> +    TCGv_i64 t1;
+>>       TCGv_i64 t2;
+>>       if (s->base.tb->flags & (FLAG_MASK_32 | FLAG_MASK_64)) {
+>> @@ -1425,14 +1426,17 @@ static void save_link_info(DisasContext *s, 
+>> DisasOps *o)
+>>       }
+>>       gen_op_calc_cc(s);
+>> +    t1 = tcg_temp_new_i64();
+>>       t2 = tcg_temp_new_i64();
+>> +
+>>       tcg_gen_andi_i64(o->out, o->out, 0xffffffff00000000ull);
+>> +
+>> +    /* Shift program mask into place, garbage outside of [27:24]. */
+>> +    tcg_gen_shri_i64(t1, psw_mask, 16);
+>> +    /* Deposit pc to replace garbage bits below program mask. */
+>>       gen_psw_addr_disp(s, t2, s->ilen);
+>> -    tcg_gen_or_i64(o->out, o->out, t2);
+>> +    tcg_gen_deposit_i64(o->out, t1, t2, 0, 24);
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/i386/tcg-target.c.inc | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
+> This is incorrect, as you've lost the high 32-bits of out.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Ah, I felt something was not right but couldn't figure it out,
+thanks for pointing at it.
+
+The original patch is not trivial to review...
+
+> 
+> r~
+> 
+> 
+>>       tcg_gen_ori_i64(o->out, o->out, (s->ilen / 2) << 30);
+>> -    tcg_gen_shri_i64(t2, psw_mask, 16);
+>> -    tcg_gen_andi_i64(t2, t2, 0x0f000000);
+>> -    tcg_gen_or_i64(o->out, o->out, t2);
+>>       tcg_gen_extu_i32_i64(t2, cc_op);
+>>       tcg_gen_shli_i64(t2, t2, 28);
+>>       tcg_gen_or_i64(o->out, o->out, t2);
+> 
 
 
