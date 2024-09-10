@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4C0973977
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 099A497396F
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:10:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so1X4-0007z4-Uy; Tue, 10 Sep 2024 10:07:50 -0400
+	id 1so1XD-0000Cd-B8; Tue, 10 Sep 2024 10:07:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1so1X2-0007sL-NH
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:48 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ id 1so1X8-0008GK-1X
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:54 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1so1Wz-0006We-DB
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:48 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-53661a131b4so3723060e87.1
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 07:07:44 -0700 (PDT)
+ id 1so1X4-0006Yz-Nb
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:53 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a8d2b4a5bf1so111545566b.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 07:07:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725977263; x=1726582063; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725977268; x=1726582068; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b313DFQEs8B271qGHlfKxgFhU13Os4oo/NuzYy1RUc0=;
- b=bMN4RQwDrjOseBIGL0ppdfKoGAOQtpgLxsGZS/0Nv2mxme+/Qs8v0h1Qb4KecHwGxM
- oXMNW0gtDxk+Y386BX/r/cFfmkrv7wz9ilObAOTvZTuYt7KE/4SGt+fYWYdc5clPGKVi
- /h2gSoppokl5yqs8Tjb8PNuuGo6EG/RtftjU5hmSSrFp86x2PeEo0wTzyVNFc2a6mh7L
- bcJ6I9ZY4Zav8J/X8kokmRbCWD9XByNiHi8cXYTlvl5hJDwkQD2QwxYV+sCnrz4O/lqD
- QMUWQP3MYJDHy8fe4AtniC9p65f04jglA6s2wxiV9a1BPqvKCp9UrPOKrqqd1+aZjBBY
- l1+A==
+ bh=g4TlBd0JeT03UVw9sn8pYyZukJ9dto1YgZC+m8kda2c=;
+ b=tcNsxONHHaJUkykjmJjolSw+9LCt8rt5KLYyP6+JoDLQZ9gPou3nN2oD87a2ot52ye
+ BOwQuN2+tmrH4lPuZN0WdrDzypdOe3dNmm4M33rcP56w73hFATTAcwF7c/vOLzShBr5K
+ /fl8UbiV7Nr+Bg6axe1gNFzDZjcXFXZ4J3GCjwzyE1fKPbuwyujscTJjNmSmNSl9uzs8
+ cRf4ypA23fo+5XVtQjU/TztuHopzGhT0zP6gahR2Ta8JUfQ8YJRIOhkuJnhuSNN+IN3x
+ 5b4ErdgwGVQFug0DzhJNht0NM9GwENqBBT8SMon/JrZn+IcgAZWopNv5IPE7lMrnw8Zn
+ wnVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725977263; x=1726582063;
+ d=1e100.net; s=20230601; t=1725977268; x=1726582068;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b313DFQEs8B271qGHlfKxgFhU13Os4oo/NuzYy1RUc0=;
- b=GIGNdFCGd5KNX7deNnkiDdXeYZlOUUAEtjFZs1wM1szJbqEzaOC1QXFA2gjebLP9SX
- JaRG8HCMlGys7cvB1yENiBUDECjbEx471h/9JuwxkldZvLKr+UTWPvCExoWtHt8X2mDz
- 83lPDb+AMFceG7wqmZRgflJeNgTpMPMFzmVbbLAuEmepSYtUSoqxA8D0o0zBF12pNkle
- Z97cesWWkJx+gxflstvLZylHMGEN1xni2MprywBg2FQ2dGY4bLjblJVjWE6f6whiIbyi
- mNeyGXN7Unw7SliUQpBL4jFBFa6xynWZ1moNsO3cbgpbpYfQ2/UWezrNsoF1NmmHKZzp
- 1eBw==
-X-Gm-Message-State: AOJu0YycnKPhvNLtyAUFd5EGhpTWjpIo0wND1sMka0nYkT+s885XQxcz
- lvn1QZS+ebNfQRiAT7WY35DIvmWedBjpAPfUQFQnI7OJlAEFpvn4NdMUjJ7EozM=
-X-Google-Smtp-Source: AGHT+IFwO8H6MQwQurzjS0eTgVG0M9Cu5OMs+G0LwZFRbZEmCxIeo0Cs7eE9m636G9ihGMN/RsqLdw==
-X-Received: by 2002:a05:6512:398d:b0:533:4652:983a with SMTP id
- 2adb3069b0e04-536587cda61mr8522331e87.35.1725977262997; 
- Tue, 10 Sep 2024 07:07:42 -0700 (PDT)
+ bh=g4TlBd0JeT03UVw9sn8pYyZukJ9dto1YgZC+m8kda2c=;
+ b=JL+tMtsFxP/G4BtpTM0+IQ1bUc8ZxhnhbRXxcKCimsroEat3erCA5QJIzfLrR0QVO9
+ rH9d2EzucZfjJEahbIzz+JQrwuhkNbC30vu8V/VfyOm+5ntCawFsFHY3cyJBJbuP5KZ4
+ FFmqCsxhfNKtO/L8DdlrRskRJkfyvEMH14HGPMEG9uSQsW/sMjeqpnIC3yC2YF88qIZR
+ sJQ1DBE0UMR/QqTB+1czlhJvBqwaoSop0nh1M1AixYGns7rcKwgOLa7oiME94NE+ewfz
+ rE1r6ktC+gVh6DBOrKsy3jdk9MRusBoMXSsZ7rMS1jDKcgwaygyCaWsW+6XprCtQcO1B
+ uFdA==
+X-Gm-Message-State: AOJu0YzQVYShwpkzJZpw/aVgz5ApISphuGlAj3KLEYoR7HvCW72ZJyyQ
+ qPGiUFBjX2KV3wFZ4lMrAVo1+0XAfUpZ7h+3GjWaAIb9NPT+j+LuVOUrQseFCK4=
+X-Google-Smtp-Source: AGHT+IErJNJJoE7feFTNDc27hviErpxt+F5KAygxg+YXUgSVnGAwixrEWB2e79CWF6NltR/8bD4giQ==
+X-Received: by 2002:a17:907:7208:b0:a8d:2c3e:7ed3 with SMTP id
+ a640c23a62f3a-a8ffab9752amr88481766b.35.1725977268040; 
+ Tue, 10 Sep 2024 07:07:48 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25c72748sm485424066b.117.2024.09.10.07.07.36
+ a640c23a62f3a-a8d25cf6a88sm483205466b.182.2024.09.10.07.07.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 10 Sep 2024 07:07:42 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B972C5FA1C;
+ by draig.lan (Postfix) with ESMTP id D55C862330;
  Tue, 10 Sep 2024 15:07:34 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -74,18 +74,18 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 11/26] deprecation: don't enable TCG plugins by default on 32
- bit hosts
-Date: Tue, 10 Sep 2024 15:07:18 +0100
-Message-Id: <20240910140733.4007719-12-alex.bennee@linaro.org>
+Subject: [PATCH 12/26] deprecation: don't enable TCG plugins by default with
+ TCI
+Date: Tue, 10 Sep 2024 15:07:19 +0100
+Message-Id: <20240910140733.4007719-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240910140733.4007719-1-alex.bennee@linaro.org>
 References: <20240910140733.4007719-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,82 +108,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The existing plugins already liberally use host pointer stuffing for
-passing user data which will fail when doing 64 bit guests on 32 bit
-hosts. We should discourage this by officially deprecating support and
-adding another nail to the 32 bit host coffin.
+The softmmu memory instrumentation test sees so many more accesses
+than a normal translated host and its really not worth fixing up. Lets
+deprecate this odd configuration and save on the CI cycles.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
 ---
-v2
-  - don't manually set based on CPU type, use __SIZEOF_POINTER__
----
- docs/about/deprecated.rst | 11 +++++++++++
- configure                 | 21 ++++++++++++++++++++-
- 2 files changed, 31 insertions(+), 1 deletion(-)
+ docs/about/deprecated.rst |  8 ++++++++
+ configure                 | 11 +++++++++--
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 88f0f03786..f7c7c33d39 100644
+index f7c7c33d39..5aa2e35314 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -184,6 +184,17 @@ be an effective use of its limited resources, and thus intends to discontinue
- it. Since all recent x86 hardware from the past >10 years is capable of the
- 64-bit x86 extensions, a corresponding 64-bit OS should be used instead.
+@@ -196,6 +196,14 @@ benefits from having plenty of host memory it seems reasonable to
+ encourage users to use 64 bit builds of QEMU for analysis work
+ whatever targets they are instrumenting.
  
-+TCG Plugin support not enabled by default on 32-bit hosts (since 9.2)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++TCG Plugin support not enabled by default with TCI (since 9.2)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 +
-+While it is still possible to enable TCG plugin support for 32-bit
-+hosts there are a number of potential pitfalls when instrumenting
-+64-bit guests. The plugin APIs typically pass most addresses as
-+uint64_t but practices like encoding that address in a host pointer
-+for passing as user-data will lose data. As most software analysis
-+benefits from having plenty of host memory it seems reasonable to
-+encourage users to use 64 bit builds of QEMU for analysis work
-+whatever targets they are instrumenting.
- 
++While the TCG interpreter can interpret the TCG ops used by plugins it
++is going to be so much slower it wouldn't make sense for any serious
++instrumentation. Due to implementation differences there will also be
++anomalies in things like memory instrumentation.
++
  System emulator CPUs
  --------------------
+ 
 diff --git a/configure b/configure
-index 40186d865e..14581c1b9a 100755
+index 14581c1b9a..1bda6b3a3b 100755
 --- a/configure
 +++ b/configure
-@@ -516,6 +516,25 @@ case "$cpu" in
-     ;;
- esac
- 
-+# Now we have our CPU_CFLAGS we can check if we are targeting a 32 or
-+# 64 bit host.
-+
-+check_64bit_host() {
-+cat > $TMPC <<EOF
-+#if __SIZEOF_POINTER__ != 8
-+#error not 64 bit system
-+#endif
-+int main(void) { return 0; }
-+EOF
-+  compile_object "$1"
-+}
-+
-+if check_64bit_host "$CPU_CFLAGS"; then
-+    host_bits=64
-+else
-+    host_bits=32
-+fi
-+
- if test -n "$host_arch" && {
-     ! test -d "$source_path/linux-user/include/host/$host_arch" ||
-     ! test -d "$source_path/common-user/host/$host_arch"; }; then
-@@ -1028,7 +1047,7 @@ if test "$static" = "yes" ; then
+@@ -629,6 +629,9 @@ meson_option_parse() {
+     exit 1
    fi
+ }
++has_meson_option() {
++    test "${meson_options#*"$1"}" != "$meson_options"
++}
+ 
+ meson_add_machine_file() {
+   if test "$cross_compile" = "yes"; then
+@@ -1048,8 +1051,12 @@ if test "$static" = "yes" ; then
    plugins="no"
  fi
--if test "$plugins" != "no"; then
-+if test "$plugins" != "no" && test $host_bits -eq 64; then
-   plugins=yes
-   subdirs="$subdirs contrib/plugins"
+ if test "$plugins" != "no" && test $host_bits -eq 64; then
+-  plugins=yes
+-  subdirs="$subdirs contrib/plugins"
++    if has_meson_option "-Dtcg_interpreter=true"; then
++        plugins="no"
++    else
++        plugins=yes
++        subdirs="$subdirs contrib/plugins"
++    fi
  fi
+ 
+ cat > $TMPC << EOF
 -- 
 2.39.2
 
