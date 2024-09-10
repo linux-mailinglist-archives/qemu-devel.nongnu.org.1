@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100EB9737C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:41:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C798D9737B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 14:40:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so08S-0003fB-Ov; Tue, 10 Sep 2024 08:38:21 -0400
+	id 1so08S-0003E2-6W; Tue, 10 Sep 2024 08:38:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so08B-0002II-5K
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:38:05 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so08A-0002HF-UI
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:38:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so084-00059U-6u
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:38:02 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1so084-00059j-5u
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 08:38:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1725971869;
+ s=mimecast20190719; t=1725971871;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RtRLAuvqf+JeUxfTMm7H0IZIsVPZvbApHU6YhP9jrU0=;
- b=i5hoUJZQEjmFZpCEbWibVGDOMtPecNSYBQ8Lmlwt5oqoxtvqdJmQjofgN/A+PsvJpLHjFq
- 4Y5r2ElcqYwNe8WR7L036ucsgCi1D2YA5RZ43KSapIiCg4UP3WfhBjsDRQAOU/Pxt+LqqO
- R+byrbv19mFKjYoVrRcJFyXZepzGWV8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=mlabaCVvf/B/G7Lq44qPt5H9r63tvaxqvyFiA2TTRdw=;
+ b=YIH32Zgh+KDK1hZt4ZxVw+fG3CbbUNjBit43QqkC4O7rGIz9F2ZqFXN4TP8/h3MtCoh2Z3
+ pDCQ1nR2OzqQmICRVspvvgWdnrzSsG+CShlJn8xvsl3LUu6zKheVJSaOUhJHwdMHUXQ5Rj
+ euRlxoi4QlR7xHmBgzRtetSa9lZKLrE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-zyQliyLZPR23YntrdvbUhQ-1; Tue,
- 10 Sep 2024 08:37:46 -0400
-X-MC-Unique: zyQliyLZPR23YntrdvbUhQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-f8MojtspNy6m4p5n4vbsDQ-1; Tue,
+ 10 Sep 2024 08:37:47 -0400
+X-MC-Unique: f8MojtspNy6m4p5n4vbsDQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A368A1944DDE; Tue, 10 Sep 2024 12:37:44 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1CE6E1977021; Tue, 10 Sep 2024 12:37:46 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.120])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4012B19560AB; Tue, 10 Sep 2024 12:37:43 +0000 (UTC)
+ id EC60F19560B0; Tue, 10 Sep 2024 12:37:44 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 07/22] tests/functional: Add the LinuxKernelTest for testing
- the Linux boot process
-Date: Tue, 10 Sep 2024 14:37:08 +0200
-Message-ID: <20240910123726.182975-8-thuth@redhat.com>
+Subject: [PULL 08/22] tests/functional: Convert the m68k Q800 Avocado test
+ into a functional test
+Date: Tue, 10 Sep 2024 14:37:09 +0200
+Message-ID: <20240910123726.182975-9-thuth@redhat.com>
 In-Reply-To: <20240910123726.182975-1-thuth@redhat.com>
 References: <20240910123726.182975-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,75 +79,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Copy the LinuxKernelTest from tests/acceptance/boot_linux_console.py
-to be able to convert the related tests to the functional test framework
-in the following patches.
+Just had to update the asset checksum to use SHA256 instead of SHA1,
+but apart from that it is a pretty much straightforward conversion.
 
-Message-ID: <20240906180549.792832-2-thuth@redhat.com>
+Message-ID: <20240906180549.792832-3-thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/__init__.py    |  1 +
- tests/functional/qemu_test/linuxkernel.py | 41 +++++++++++++++++++++++
- 2 files changed, 42 insertions(+)
- create mode 100644 tests/functional/qemu_test/linuxkernel.py
+ MAINTAINERS                         |  1 +
+ tests/avocado/boot_linux_console.py | 24 -------------------
+ tests/functional/meson.build        |  3 ++-
+ tests/functional/test_m68k_q800.py  | 37 +++++++++++++++++++++++++++++
+ 4 files changed, 40 insertions(+), 25 deletions(-)
+ create mode 100755 tests/functional/test_m68k_q800.py
 
-diff --git a/tests/functional/qemu_test/__init__.py b/tests/functional/qemu_test/__init__.py
-index f33282efe8..67f87be9c4 100644
---- a/tests/functional/qemu_test/__init__.py
-+++ b/tests/functional/qemu_test/__init__.py
-@@ -12,3 +12,4 @@
-     interrupt_interactive_console_until_pattern, wait_for_console_pattern, \
-     exec_command, exec_command_and_wait_for_pattern, get_qemu_img
- from .testcase import QemuBaseTest, QemuUserTest, QemuSystemTest
-+from .linuxkernel import LinuxKernelTest
-diff --git a/tests/functional/qemu_test/linuxkernel.py b/tests/functional/qemu_test/linuxkernel.py
-new file mode 100644
-index 0000000000..fdd5307629
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 822f89847b..a25022a77a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1310,6 +1310,7 @@ F: include/hw/m68k/q800-glue.h
+ F: include/hw/misc/djmemc.h
+ F: include/hw/misc/iosb.h
+ F: include/hw/audio/asc.h
++F: tests/functional/test_m68k_q800.py
+ 
+ virt
+ M: Laurent Vivier <laurent@vivier.eu>
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index 18c69d6acc..396836bf64 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -1325,30 +1325,6 @@ def test_alpha_clipper(self):
+         console_pattern = 'Kernel command line: %s' % kernel_command_line
+         self.wait_for_console_pattern(console_pattern)
+ 
+-    def test_m68k_q800(self):
+-        """
+-        :avocado: tags=arch:m68k
+-        :avocado: tags=machine:q800
+-        """
+-        deb_url = ('https://snapshot.debian.org/archive/debian-ports'
+-                   '/20191021T083923Z/pool-m68k/main'
+-                   '/l/linux/kernel-image-5.3.0-1-m68k-di_5.3.7-1_m68k.udeb')
+-        deb_hash = '044954bb9be4160a3ce81f8bc1b5e856b75cccd1'
+-        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
+-        kernel_path = self.extract_from_deb(deb_path,
+-                                            '/boot/vmlinux-5.3.0-1-m68k')
+-
+-        self.vm.set_console()
+-        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+-                               'console=ttyS0 vga=off')
+-        self.vm.add_args('-kernel', kernel_path,
+-                         '-append', kernel_command_line)
+-        self.vm.launch()
+-        console_pattern = 'Kernel command line: %s' % kernel_command_line
+-        self.wait_for_console_pattern(console_pattern)
+-        console_pattern = 'No filesystem could mount root'
+-        self.wait_for_console_pattern(console_pattern)
+-
+     def do_test_advcal_2018(self, day, tar_hash, kernel_name, console=0):
+         tar_url = ('https://qemu-advcal.gitlab.io'
+                    '/qac-best-of-multiarch/download/day' + day + '.tar.xz')
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index cda89c4b0c..c6bb345d2c 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -57,7 +57,8 @@ tests_loongarch64_system_thorough = [
+ ]
+ 
+ tests_m68k_system_thorough = [
+-  'm68k_nextcube'
++  'm68k_nextcube',
++  'm68k_q800',
+ ]
+ 
+ tests_microblaze_system_thorough = [
+diff --git a/tests/functional/test_m68k_q800.py b/tests/functional/test_m68k_q800.py
+new file mode 100755
+index 0000000000..3b17244b98
 --- /dev/null
-+++ b/tests/functional/qemu_test/linuxkernel.py
-@@ -0,0 +1,41 @@
-+# Test class for testing the boot process of a Linux kernel
++++ b/tests/functional/test_m68k_q800.py
+@@ -0,0 +1,37 @@
++#!/usr/bin/env python3
++#
++# Functional test for testing the q800 m68k machine
 +#
 +# This work is licensed under the terms of the GNU GPL, version 2 or
 +# later.  See the COPYING file in the top-level directory.
 +
-+import os
++from qemu_test import LinuxKernelTest, Asset
 +
-+from .testcase import QemuSystemTest
-+from .cmd import run_cmd, wait_for_console_pattern
-+from .utils import archive_extract
++class Q800MachineTest(LinuxKernelTest):
 +
-+class LinuxKernelTest(QemuSystemTest):
-+    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
++    ASSET_KERNEL = Asset(
++        ('https://snapshot.debian.org/'
++         'archive/debian-ports/20191021T083923Z/pool-m68k/main/l/linux/'
++         'kernel-image-5.3.0-1-m68k-di_5.3.7-1_m68k.udeb'),
++        '949e50d74d4b9bc15d26c06d402717b7a4c0e32ff8100014f5930d8024de7b73')
 +
-+    def wait_for_console_pattern(self, success_message, vm=None):
-+        wait_for_console_pattern(self, success_message,
-+                                 failure_message='Kernel panic - not syncing',
-+                                 vm=vm)
++    def test_m68k_q800(self):
++        self.set_machine('q800')
 +
-+    def extract_from_deb(self, deb_path, path):
-+        """
-+        Extracts a file from a deb package into the test workdir
++        deb_path = self.ASSET_KERNEL.fetch()
++        kernel_path = self.extract_from_deb(deb_path,
++                                            '/boot/vmlinux-5.3.0-1-m68k')
 +
-+        :param deb_path: path to the deb archive
-+        :param path: path within the deb archive of the file to be extracted
-+        :returns: path of the extracted file
-+        """
-+        cwd = os.getcwd()
-+        os.chdir(self.workdir)
-+        (stdout, stderr, ret) = run_cmd(['ar', 't', deb_path])
-+        file_path = stdout.split()[2]
-+        run_cmd(['ar', 'x', deb_path, file_path])
-+        archive_extract(file_path, self.workdir)
-+        os.chdir(cwd)
-+        # Return complete path to extracted file.  Because callers to
-+        # extract_from_deb() specify 'path' with a leading slash, it is
-+        # necessary to use os.path.relpath() as otherwise os.path.join()
-+        # interprets it as an absolute path and drops the self.workdir part.
-+        return os.path.normpath(os.path.join(self.workdir,
-+                                             os.path.relpath(path, '/')))
++        self.vm.set_console()
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'console=ttyS0 vga=off')
++        self.vm.add_args('-kernel', kernel_path,
++                         '-append', kernel_command_line)
++        self.vm.launch()
++        console_pattern = 'Kernel command line: %s' % kernel_command_line
++        self.wait_for_console_pattern(console_pattern)
++        console_pattern = 'No filesystem could mount root'
++        self.wait_for_console_pattern(console_pattern)
 +
++if __name__ == '__main__':
++    LinuxKernelTest.main()
 -- 
 2.46.0
 
