@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E8F97396C
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B625973967
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Sep 2024 16:09:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1so1Wx-0007RZ-46; Tue, 10 Sep 2024 10:07:43 -0400
+	id 1so1X2-0007ng-3X; Tue, 10 Sep 2024 10:07:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1so1Wu-0007LR-I9
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:40 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1so1Wx-0007WE-PE
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:43 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1so1Ws-0006Tt-5j
- for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:40 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5c3c3b63135so6026087a12.3
- for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 07:07:37 -0700 (PDT)
+ id 1so1Wt-0006Uf-RH
+ for qemu-devel@nongnu.org; Tue, 10 Sep 2024 10:07:43 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-5365a9574b6so6261784e87.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 07:07:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1725977256; x=1726582056; darn=nongnu.org;
+ d=linaro.org; s=google; t=1725977258; x=1726582058; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LndXJjyjZbmiVr1fSe4zs9iupkSXPp6CUIfGBaC22cA=;
- b=N56i99Iz3fwxtAICfunZEAjR7iYtuKSYXXjCefJq5ghuAjY9H7zYmCUR7RTrV+dpKm
- K0kVWTlmhGrTvBEwW/RwK5iKT1f6hNsji9K/eWslYtHf5yEamxE8HKFFenmJNd5lrVYr
- tJE9RHeuTZYJD5KTfo8L7Y01PyByL+/EfRP2qvjCeIZfu4qad8TDRYvq0VkGdHJBvxsK
- cENPqJM4xZ+90GwOCZ4iRulww4o1AypodEiJWGJIL+wQoeuoJfSYQM0HPFHU6LCYgyUi
- 3m29TWJm2TeVcrmxq0lgcJyn9Dq6oIO254VVmwwsocPQkzFWag46vXqLcrNRq48KdMP8
- l/NA==
+ bh=ExuMbIXOAQGfG1vwm+EE/TEBGthlbZ6vFrpI/DJuVTs=;
+ b=gWySgFGSZJHBFSCZchbamVIoMYzoFyDoLUWaN56zotj/54fxcwDClfO1uHrgtzDCVo
+ 87BoehHA4G9bJ+IbJE228SWpKXEEcskzz8cI6SNsfERZMPgJ5fgCXQVzjlU1H25iZqr8
+ zDbies236RfOiRL33o6lwGXDJDT57o58nnKc27eV+nNSpL9XW7IAGQVq/Wl0rY9R9Gcd
+ BkM7dYoysdeBFcFum3YCkHJzVZvY3Q4X8XM3ZL7UONsvZ12OUQJAeN/OnZc+m/1nD271
+ gJxJM+KGNvxeDay6seaAvR+6hMzBOJtyKXaiNIK6+xnAMBCk/9Ut/VzsO5cCbgM44Dre
+ fseQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725977256; x=1726582056;
+ d=1e100.net; s=20230601; t=1725977258; x=1726582058;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LndXJjyjZbmiVr1fSe4zs9iupkSXPp6CUIfGBaC22cA=;
- b=kxxmk48QKxrOecVIFjMRRDFtEOma8mkAdSlDveK8Vl8RMTULY/ctj2Xw9NlBLny7Uo
- I8+4UTgqWF+LxK5183zY4uqclDoc6Q9B87lBn4B8aMIY58K7nevcecdqg+lL45g8JoJ/
- b84v0gCleuOOjnqFozaaPFPZy6Lzgi0UyJlMPPdhM6x0nI0uHMeS9qRChtaplI1aH/Yc
- dXMESgtEqJsIN8yqv2mYgSU3I9tV3fdUVQojiVwzn4bLhA7o1d3U/5dKi4b0gOhxXbjZ
- gmBxHJAYNGjXsvFVz5isRqKK63KOwJ3LRlp+L0turd7pvaNMfzY2L+zzYhzQJya1ZoV6
- pN3A==
-X-Gm-Message-State: AOJu0YyAXm+9vPr0VTryxeeYNukw2cK6ojM7zMZ4S0JAeKAt51jsYien
- /I4JuLdCqZeojvp8EdqA1ZPrM6zS7lhR+gBsjZCI5xAH5jpruhUItZKOH0V4w+s=
-X-Google-Smtp-Source: AGHT+IH6/OSv1IRZLPvDsahkvD7qcOlMqQ9PQ5XbqoXUFNfezIdcKuq2QcBj7ahTvAQx+swgKoN4RA==
-X-Received: by 2002:a17:906:6a1b:b0:a77:b4e3:4fca with SMTP id
- a640c23a62f3a-a8ffaaa23bbmr101780366b.9.1725977255572; 
+ bh=ExuMbIXOAQGfG1vwm+EE/TEBGthlbZ6vFrpI/DJuVTs=;
+ b=gV+pVOYlaICYw40QLxhEI0VdnS4Howh90f3iED3faBDVHnOMJcYfAxIjvQZxCE+03L
+ OaQMcBTsR7jQVi7BdKeC8qGa7bMg3RbcP9kbT10IxDcs84XO0p6kwzhuwS8rkDkBtY2+
+ OypBQlsvuF96C7bG6xQb9HtZ3YI327nLqvTc+W5LT58ipsBXVBpWyJnvUbVWoEh6jrrx
+ BAe2dU4A4O0i/mxXdBhKw37ZP+cD4akGsJXClIUrLbTVa5as9Q0ZDhqMlX3U2i9rLZXO
+ Onui1IHJ4ja/5+i57yWZjvDxseBVVKRn7H58ODdiAvJSt6irt6hMoFrUYm4H2DDnSDxU
+ nMfg==
+X-Gm-Message-State: AOJu0YwpYnPcyAQwQBNenbVeALSQjlutbCLoV98wAA+/PaD8TkoU/z1p
+ j1T7AehQ7oiNKSzHUWkBfPFdqJ16XWqixRDLluIOqMZLZJl7Pdb1GTJNaU9Yo1c=
+X-Google-Smtp-Source: AGHT+IHD9cl3GrQHrZn7xNAQK3tsXaN04X4wSHPljJCjEbWvzFormiwvfDWUhUBkNllzcCE8nQDpOg==
+X-Received: by 2002:a05:6512:2395:b0:535:6925:7a82 with SMTP id
+ 2adb3069b0e04-536587f845amr14728847e87.41.1725977255283; 
  Tue, 10 Sep 2024 07:07:35 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d259f56f6sm478231866b.81.2024.09.10.07.07.34
+ a640c23a62f3a-a8d25cecc21sm484887666b.166.2024.09.10.07.07.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 10 Sep 2024 07:07:34 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B879D5F78C;
+ by draig.lan (Postfix) with ESMTP id D33825F7B4;
  Tue, 10 Sep 2024 15:07:33 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -74,17 +74,18 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 01/26] tests/docker: remove debian-armel-cross
-Date: Tue, 10 Sep 2024 15:07:08 +0100
-Message-Id: <20240910140733.4007719-2-alex.bennee@linaro.org>
+Subject: [PATCH 02/26] tests/docker: update debian i686 and mipsel images to
+ bookworm
+Date: Tue, 10 Sep 2024 15:07:09 +0100
+Message-Id: <20240910140733.4007719-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240910140733.4007719-1-alex.bennee@linaro.org>
 References: <20240910140733.4007719-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,259 +108,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As debian-11 transitions to LTS we are starting to have problems
-building the image. While we could update to a later Debian building a
-32 bit QEMU without modern floating point is niche host amongst the
-few remaining 32 bit hosts we regularly build for. For now we still
-have armhf-debian-cross-container which is currently built from the
-more recent debian-12.
+Whatever issues there were which stopped these being updates when the
+rest were have now been resolved. However mips64el continues to be
+broken so don't update it here.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .gitlab-ci.d/container-cross.yml              |   6 -
- .gitlab-ci.d/crossbuilds.yml                  |   7 -
- .../dockerfiles/debian-armel-cross.docker     | 179 ------------------
- tests/lcitool/refresh                         |   6 -
- 4 files changed, 198 deletions(-)
- delete mode 100644 tests/docker/dockerfiles/debian-armel-cross.docker
+ tests/docker/dockerfiles/debian-i686-cross.docker   | 10 ++++------
+ tests/docker/dockerfiles/debian-mipsel-cross.docker | 10 ++++------
+ tests/lcitool/refresh                               |  4 ++--
+ 3 files changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index e3103940a0..9a3ebd885e 100644
---- a/.gitlab-ci.d/container-cross.yml
-+++ b/.gitlab-ci.d/container-cross.yml
-@@ -22,12 +22,6 @@ arm64-debian-cross-container:
-   variables:
-     NAME: debian-arm64-cross
+diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
+index 3fe8ee623d..2328ee1732 100644
+--- a/tests/docker/dockerfiles/debian-i686-cross.docker
++++ b/tests/docker/dockerfiles/debian-i686-cross.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all --cross-arch i686 debian-11 qemu
++#  $ lcitool dockerfile --layers all --cross-arch i686 debian-12 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
  
--armel-debian-cross-container:
--  extends: .container_job_template
--  stage: containers
--  variables:
--    NAME: debian-armel-cross
--
- armhf-debian-cross-container:
-   extends: .container_job_template
-   stage: containers
-diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-index cb499e4ee0..459273f9da 100644
---- a/.gitlab-ci.d/crossbuilds.yml
-+++ b/.gitlab-ci.d/crossbuilds.yml
-@@ -1,13 +1,6 @@
- include:
-   - local: '/.gitlab-ci.d/crossbuild-template.yml'
- 
--cross-armel-user:
--  extends: .cross_user_build_job
--  needs:
--    job: armel-debian-cross-container
--  variables:
--    IMAGE: debian-armel-cross
--
- cross-armhf-user:
-   extends: .cross_user_build_job
-   needs:
-diff --git a/tests/docker/dockerfiles/debian-armel-cross.docker b/tests/docker/dockerfiles/debian-armel-cross.docker
-deleted file mode 100644
-index 8476fc8cce..0000000000
---- a/tests/docker/dockerfiles/debian-armel-cross.docker
-+++ /dev/null
-@@ -1,179 +0,0 @@
--# THIS FILE WAS AUTO-GENERATED
--#
--#  $ lcitool dockerfile --layers all --cross-arch armv6l debian-11 qemu
--#
--# https://gitlab.com/libvirt/libvirt-ci
--
 -FROM docker.io/library/debian:11-slim
--
--RUN export DEBIAN_FRONTEND=noninteractive && \
--    apt-get update && \
--    apt-get install -y eatmydata && \
--    eatmydata apt-get dist-upgrade -y && \
--    eatmydata apt-get install --no-install-recommends -y \
--                      bash \
--                      bc \
--                      bison \
--                      bsdextrautils \
--                      bzip2 \
--                      ca-certificates \
--                      ccache \
--                      dbus \
--                      debianutils \
--                      diffutils \
--                      exuberant-ctags \
--                      findutils \
--                      flex \
--                      gcc \
--                      gcovr \
--                      gettext \
--                      git \
--                      hostname \
--                      libglib2.0-dev \
--                      libgtk-vnc-2.0-dev \
--                      libpcre2-dev \
--                      libsndio-dev \
--                      libspice-protocol-dev \
--                      llvm \
--                      locales \
--                      make \
--                      meson \
--                      mtools \
--                      ncat \
--                      ninja-build \
--                      openssh-client \
--                      pkgconf \
--                      python3 \
--                      python3-numpy \
--                      python3-opencv \
--                      python3-pillow \
--                      python3-pip \
++FROM docker.io/library/debian:12-slim
+ 
+ RUN export DEBIAN_FRONTEND=noninteractive && \
+     apt-get update && \
+@@ -48,16 +48,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
 -                      python3-setuptools \
--                      python3-sphinx \
--                      python3-sphinx-rtd-theme \
--                      python3-venv \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
 -                      python3-wheel \
--                      python3-yaml \
--                      rpm2cpio \
--                      sed \
--                      socat \
--                      sparse \
--                      tar \
--                      tesseract-ocr \
--                      tesseract-ocr-eng \
--                      xorriso \
--                      zstd && \
--    eatmydata apt-get autoremove -y && \
--    eatmydata apt-get autoclean -y && \
--    sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
--    dpkg-reconfigure locales && \
--    rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED
--
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       tar \
+                       tesseract-ocr \
+                       tesseract-ocr-eng \
+@@ -69,8 +68,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     dpkg-reconfigure locales && \
+     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED
+ 
 -RUN /usr/bin/pip3 install tomli
 -
--ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
--ENV LANG "en_US.UTF-8"
--ENV MAKE "/usr/bin/make"
--ENV NINJA "/usr/bin/ninja"
--ENV PYTHON "/usr/bin/python3"
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+@@ -145,6 +142,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libvdeplug-dev:i386 \
+                       libvirglrenderer-dev:i386 \
+                       libvte-2.91-dev:i386 \
++                      libxdp-dev:i386 \
+                       libzstd-dev:i386 \
+                       nettle-dev:i386 \
+                       systemtap-sdt-dev:i386 \
+diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+index 0d559ae4ba..4ac314e22e 100644
+--- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
++++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all --cross-arch mipsel debian-11 qemu
++#  $ lcitool dockerfile --layers all --cross-arch mipsel debian-12 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+-FROM docker.io/library/debian:11-slim
++FROM docker.io/library/debian:12-slim
+ 
+ RUN export DEBIAN_FRONTEND=noninteractive && \
+     apt-get update && \
+@@ -48,16 +48,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
+-                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
+-                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       tar \
+                       tesseract-ocr \
+                       tesseract-ocr-eng \
+@@ -69,8 +68,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     dpkg-reconfigure locales && \
+     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED
+ 
+-RUN /usr/bin/pip3 install tomli
 -
--RUN export DEBIAN_FRONTEND=noninteractive && \
--    dpkg --add-architecture armel && \
--    eatmydata apt-get update && \
--    eatmydata apt-get dist-upgrade -y && \
--    eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
--    eatmydata apt-get install --no-install-recommends -y \
--                      gcc-arm-linux-gnueabi \
--                      libaio-dev:armel \
--                      libasan6:armel \
--                      libasound2-dev:armel \
--                      libattr1-dev:armel \
--                      libbpf-dev:armel \
--                      libbrlapi-dev:armel \
--                      libbz2-dev:armel \
--                      libc6-dev:armel \
--                      libcacard-dev:armel \
--                      libcap-ng-dev:armel \
--                      libcapstone-dev:armel \
--                      libcmocka-dev:armel \
--                      libcurl4-gnutls-dev:armel \
--                      libdaxctl-dev:armel \
--                      libdrm-dev:armel \
--                      libepoxy-dev:armel \
--                      libfdt-dev:armel \
--                      libffi-dev:armel \
--                      libfuse3-dev:armel \
--                      libgbm-dev:armel \
--                      libgcrypt20-dev:armel \
--                      libglib2.0-dev:armel \
--                      libglusterfs-dev:armel \
--                      libgnutls28-dev:armel \
--                      libgtk-3-dev:armel \
--                      libibverbs-dev:armel \
--                      libiscsi-dev:armel \
--                      libjemalloc-dev:armel \
--                      libjpeg62-turbo-dev:armel \
--                      libjson-c-dev:armel \
--                      liblttng-ust-dev:armel \
--                      liblzo2-dev:armel \
--                      libncursesw5-dev:armel \
--                      libnfs-dev:armel \
--                      libnuma-dev:armel \
--                      libpam0g-dev:armel \
--                      libpipewire-0.3-dev:armel \
--                      libpixman-1-dev:armel \
--                      libpng-dev:armel \
--                      libpulse-dev:armel \
--                      librbd-dev:armel \
--                      librdmacm-dev:armel \
--                      libsasl2-dev:armel \
--                      libsdl2-dev:armel \
--                      libsdl2-image-dev:armel \
--                      libseccomp-dev:armel \
--                      libselinux1-dev:armel \
--                      libslirp-dev:armel \
--                      libsnappy-dev:armel \
--                      libspice-server-dev:armel \
--                      libssh-gcrypt-dev:armel \
--                      libsystemd-dev:armel \
--                      libtasn1-6-dev:armel \
--                      libubsan1:armel \
--                      libudev-dev:armel \
--                      liburing-dev:armel \
--                      libusb-1.0-0-dev:armel \
--                      libusbredirhost-dev:armel \
--                      libvdeplug-dev:armel \
--                      libvirglrenderer-dev:armel \
--                      libvte-2.91-dev:armel \
--                      libzstd-dev:armel \
--                      nettle-dev:armel \
--                      systemtap-sdt-dev:armel \
--                      zlib1g-dev:armel && \
--    eatmydata apt-get autoremove -y && \
--    eatmydata apt-get autoclean -y && \
--    mkdir -p /usr/local/share/meson/cross && \
--    printf "[binaries]\n\
--c = '/usr/bin/arm-linux-gnueabi-gcc'\n\
--ar = '/usr/bin/arm-linux-gnueabi-gcc-ar'\n\
--strip = '/usr/bin/arm-linux-gnueabi-strip'\n\
--pkgconfig = '/usr/bin/arm-linux-gnueabi-pkg-config'\n\
--\n\
--[host_machine]\n\
--system = 'linux'\n\
--cpu_family = 'arm'\n\
--cpu = 'arm'\n\
--endian = 'little'\n" > /usr/local/share/meson/cross/arm-linux-gnueabi && \
--    dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
--    mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-gcc
--
--ENV ABI "arm-linux-gnueabi"
--ENV MESON_OPTS "--cross-file=arm-linux-gnueabi"
--ENV QEMU_CONFIGURE_OPTS --cross-prefix=arm-linux-gnueabi-
--ENV DEF_TARGET_LIST arm-softmmu,arm-linux-user,armeb-linux-user
--# As a final step configure the user (if env is defined)
--ARG USER
--ARG UID
--RUN if [ "${USER}" ]; then \
--  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+@@ -143,6 +140,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libvdeplug-dev:mipsel \
+                       libvirglrenderer-dev:mipsel \
+                       libvte-2.91-dev:mipsel \
++                      libxdp-dev:mipsel \
+                       libzstd-dev:mipsel \
+                       nettle-dev:mipsel \
+                       systemtap-sdt-dev:mipsel \
 diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index ac803e34f1..199d5fad87 100755
+index 199d5fad87..c60490a7fa 100755
 --- a/tests/lcitool/refresh
 +++ b/tests/lcitool/refresh
-@@ -154,12 +154,6 @@ try:
-                         trailer=cross_build("aarch64-linux-gnu-",
-                                             "aarch64-softmmu,aarch64-linux-user"))
- 
--    # migration to bookworm stalled: https://lists.debian.org/debian-arm/2023/09/msg00006.html
--    generate_dockerfile("debian-armel-cross", "debian-11",
--                        cross="armv6l",
--                        trailer=cross_build("arm-linux-gnueabi-",
--                                            "arm-softmmu,arm-linux-user,armeb-linux-user"))
--
-     generate_dockerfile("debian-armhf-cross", "debian-12",
-                         cross="armv7l",
+@@ -159,7 +159,7 @@ try:
                          trailer=cross_build("arm-linux-gnueabihf-",
+                                             "arm-softmmu,arm-linux-user"))
+ 
+-    generate_dockerfile("debian-i686-cross", "debian-11",
++    generate_dockerfile("debian-i686-cross", "debian-12",
+                         cross="i686",
+                         trailer=cross_build("i686-linux-gnu-",
+                                             "x86_64-softmmu,"
+@@ -171,7 +171,7 @@ try:
+                         trailer=cross_build("mips64el-linux-gnuabi64-",
+                                             "mips64el-softmmu,mips64el-linux-user"))
+ 
+-    generate_dockerfile("debian-mipsel-cross", "debian-11",
++    generate_dockerfile("debian-mipsel-cross", "debian-12",
+                         cross="mipsel",
+                         trailer=cross_build("mipsel-linux-gnu-",
+                                             "mipsel-softmmu,mipsel-linux-user"))
 -- 
 2.39.2
 
