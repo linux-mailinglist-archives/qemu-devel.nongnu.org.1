@@ -2,86 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8657975687
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A15439756AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:16:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOzA-0001CV-1Z; Wed, 11 Sep 2024 11:10:27 -0400
+	id 1soP1z-0003R7-Ca; Wed, 11 Sep 2024 11:13:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1soOuP-00009b-IQ
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:05:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1soOuN-0000lW-JE
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:05:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726067122;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uoUZeC6LRc7rq1WSj0H2PhIHrG20erxXeEpQDJ7AxZE=;
- b=DSt7vpg/TCrg18g7AgCmpnrmSVg2FmvGNsSpmZt2UuuKqyGvEi5suTM43LnimJ5ByAHBhu
- XPDaIa7NAsVgh/2taCQQUyCk2g7BM0nBAKKKWW7cUTFnZeNU0qkKge18t7Q9S8MpCIbljV
- iFQezALMfaMGa76euw60xQRbW2gL4ds=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-220-P5rGcSv9PbqPrnMx-8TksQ-1; Wed, 11 Sep 2024 11:05:21 -0400
-X-MC-Unique: P5rGcSv9PbqPrnMx-8TksQ-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7a99fdae7bbso1027986485a.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 08:05:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soP0x-00027r-CR
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:12:18 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soP0v-0001Gy-4e
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:12:15 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2f74e613a10so20839421fa.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 08:12:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1726067530; x=1726672330; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=B9oM8Ne18x0eSKs2eGImbQDt47h4Zb8ccSIXYvNWAjg=;
+ b=mJayO/a+c0eoCtZDpCGhPu0tdGJGeqTmcETQT/+kgNqKFlGSasEKtSvZeXJ1tZ5b6H
+ Wr7K6EQE4s2lrFG9C5MF36prCP/aW2QsF7VLFYsf+Ti42xSBqsDPvKOx+8WNsgwL65NF
+ R8mQPj61QPDOnsat8zw0Tc3WgWIwrSGnOSWJXrrOTBZIEtdm9HlEFEb48xKedSAKP+q6
+ RZD61Mr7Eky56b70mgb5DOo6sZ/3T+30JjtH8BH9CxGlN7InQ/0jZDzvr0V9oiW/4hqh
+ 6T1s2VsRZAZHypRuZRb914NBCcsi4rUdaO6pTooWezAxSjStr8u8KOaMMvM6mj77sCgP
+ +GUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726067120; x=1726671920;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uoUZeC6LRc7rq1WSj0H2PhIHrG20erxXeEpQDJ7AxZE=;
- b=UQ+xNKUpWwaPR9hxswiDaC5BSumOr5X2QtF6fH0es0/fWIyYFexkzX/NbkCXnbiQG/
- 5XPtr35yb8GB6ZPxsHI9NLMvO283ziHH9XqPSc4tpGu6oqRPJT1A28u4Pi1r8xyJqqVa
- 0vuOfvsMIgu82xbqD6PMNsNm60Sf67NiVdqocd+GnMeD0kUBVoeEOfGQBB59kQXjM0Cl
- vJMLRQ+uq6n6L76MoPm5hqYe2XdMIPn4FaZvKIqPqOz1pieRP56NKaTBeWJvuo9dLx82
- IsZHP/VQ1bI6KJWLE0IUvHdoSrCV/sYoQAnYzUPbhiccBnUSRxPYhVti46/360kebejf
- jv1A==
-X-Gm-Message-State: AOJu0YwLU4bmnwlGci0p8iwTB+L4g5+5Kc60yvq5IbRyI3DgtAZMxgSp
- llODCx54fpN8GxQntG53YM2LCa8HR2DXv8AJjEne1ymTPZKgimGs/ffsbolcS11mK90mCKKnIcI
- lW3IQP8LFxVkOwMcsJJv86BC2YiFN59EIkG9UA1fYLIL50EvMAjWDeWEhkTGSYQ0=
-X-Received: by 2002:a05:620a:2916:b0:7a9:c04a:f50 with SMTP id
- af79cd13be357-7a9c04a137cmr1153467085a.34.1726067120416; 
- Wed, 11 Sep 2024 08:05:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7DkCElsWpQR12tgGU+UPxAWubks45EE+ygNJkSE6Jnrs99zzpLwHCjsbXhr0P9R8lA/W2bQ==
-X-Received: by 2002:a05:620a:2916:b0:7a9:c04a:f50 with SMTP id
- af79cd13be357-7a9c04a137cmr1153462985a.34.1726067120044; 
- Wed, 11 Sep 2024 08:05:20 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7a9a796cc87sm431365385a.46.2024.09.11.08.05.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 08:05:19 -0700 (PDT)
-Date: Wed, 11 Sep 2024 11:05:17 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] tests/qtest/migration: Move a couple of slow tests under
- g_test_slow
-Message-ID: <ZuGxrSLgDt5aPPB_@x1n>
-References: <20240911145204.17692-1-farosas@suse.de>
+ d=1e100.net; s=20230601; t=1726067530; x=1726672330;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=B9oM8Ne18x0eSKs2eGImbQDt47h4Zb8ccSIXYvNWAjg=;
+ b=mK2P5IBzHuj9WNV2eCtyFvDf8tcvtranRpEYJaQgRjLri7rbOkGSeudIlVP/iD+ypd
+ zSF6S7Fvv1ndL2jQbTQ5/e1CwY+KP+57AHBIipqn3gesd/BjK1sBbWpEsvvl/sjBWLoB
+ +WVlGUwUAhv4z2DZjaHgwphSWw8xTxhIx5axPvvSF7GCoPg4iF7+zy7ggttqTyxHtsFe
+ DGxoouwDJ0KUgqjWLfDLFWxjteD67/zKEZ4BhTz6uxo8hnoQDhRyiEdzqtryU/8ze3yF
+ 2uxLp77NYslUuJhOR5E0PUJqCGCXEqUxD1kx1ivKfwWVtzf/oZb/5L5arnFFxEP5dRh9
+ 6cMg==
+X-Gm-Message-State: AOJu0YyfXJ2wzS+RWrBYPXW29E5/EoSxVhQtqb8ULY5SqS09exKzz0DS
+ 2YIgWuvxYK/KWoW8GWAGeAb0EpwaQO/gZzAOkD5oGBDo51negcSKcDkogMVUIMQBzQGtQSHHfpU
+ t
+X-Google-Smtp-Source: AGHT+IHPRcLm4FnWUA6AOh9rEKiut+/J70ZAHoCbo9uxNzlNuI1UUKqrSPh76VqbQXTu9EOvwVKwPg==
+X-Received: by 2002:a05:6512:3b10:b0:533:c9d:a01f with SMTP id
+ 2adb3069b0e04-536587a6704mr14952557e87.4.1726067529788; 
+ Wed, 11 Sep 2024 08:12:09 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.196.107])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8d25926ee8sm627279466b.50.2024.09.11.08.12.08
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 11 Sep 2024 08:12:09 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org
+Subject: [PATCH v3 0/5] license: Fix typos and update SPDX tags
+Date: Wed, 11 Sep 2024 17:12:01 +0200
+Message-ID: <20240911151206.60368-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240911145204.17692-1-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,16 +88,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 11, 2024 at 11:52:04AM -0300, Fabiano Rosas wrote:
-> The xbzrel and vcpu_dirty_limit are the two slowest tests from
-> migration-test. Move them under g_test_slow() to save about 40s per
-> run.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Series fully reviewed (thanks Thomas & Richard)
 
-queued.
+Since v2:
+. Updated few missed "2 | 3+" expressions
+
+Since v1:
+. Updated regex to cover all GPL-2.0* cases.
+
+- Fix a pair of typos
+- Upgrade the deprecated GPL-2.0+/LGPL-2.0+ SPDX tags
+  to GPL-2.0-only / GPL-2.0-or-later / LGPL-2.0-or-later.
+
+Philippe Mathieu-Daudé (5):
+  tests/functional: Correct typo in test_netdev_ethtool.py SPDX tag
+  license: Simplify GPL-2.0-or-later license descriptions
+  license: Update deprecated SPDX tag LGPL-2.0+ to LGPL-2.0-or-later
+  license: Update deprecated SPDX tag GPL-2.0+ to GPL-2.0-or-later
+  license: Update deprecated SPDX tag GPL-2.0 to GPL-2.0-only
+
+ hw/core/uboot_image.h                   | 2 +-
+ hw/m68k/bootinfo.h                      | 2 +-
+ hw/net/igb_regs.h                       | 2 +-
+ include/gdbstub/syscalls.h              | 2 +-
+ include/gdbstub/user.h                  | 2 +-
+ include/hw/nvram/fw_cfg_acpi.h          | 2 +-
+ include/hw/usb/dwc2-regs.h              | 2 +-
+ include/hw/virtio/virtio-acpi.h         | 2 +-
+ include/qemu/crc-ccitt.h                | 2 +-
+ include/qemu/timed-average.h            | 4 +++-
+ target/alpha/cpu-param.h                | 2 +-
+ target/arm/cpu-param.h                  | 2 +-
+ target/cris/cpu-param.h                 | 2 +-
+ target/hppa/cpu-param.h                 | 2 +-
+ target/i386/cpu-param.h                 | 2 +-
+ target/m68k/cpu-param.h                 | 2 +-
+ target/microblaze/cpu-param.h           | 2 +-
+ target/mips/cpu-param.h                 | 2 +-
+ target/openrisc/cpu-param.h             | 2 +-
+ target/ppc/cpu-param.h                  | 2 +-
+ target/riscv/cpu-param.h                | 2 +-
+ target/s390x/cpu-param.h                | 2 +-
+ target/sh4/cpu-param.h                  | 2 +-
+ target/sparc/cpu-param.h                | 2 +-
+ tests/tcg/loongarch64/system/regdef.h   | 2 +-
+ target/sparc/insns.decode               | 2 +-
+ block/vdi.c                             | 4 +++-
+ gdbstub/gdbstub.c                       | 2 +-
+ gdbstub/syscalls.c                      | 2 +-
+ gdbstub/system.c                        | 2 +-
+ gdbstub/user-target.c                   | 2 +-
+ gdbstub/user.c                          | 2 +-
+ hw/net/eepro100.c                       | 4 +++-
+ hw/nvram/fw_cfg-acpi.c                  | 2 +-
+ hw/ppc/rs6000_mc.c                      | 4 +++-
+ hw/virtio/virtio-acpi.c                 | 2 +-
+ util/timed-average.c                    | 4 +++-
+ linux-user/alpha/syscall.tbl            | 2 +-
+ linux-user/alpha/syscallhdr.sh          | 2 +-
+ linux-user/arm/syscallhdr.sh            | 2 +-
+ linux-user/hppa/syscall.tbl             | 2 +-
+ linux-user/hppa/syscallhdr.sh           | 2 +-
+ linux-user/i386/syscallhdr.sh           | 2 +-
+ linux-user/m68k/syscall.tbl             | 2 +-
+ linux-user/m68k/syscallhdr.sh           | 2 +-
+ linux-user/microblaze/syscall.tbl       | 2 +-
+ linux-user/microblaze/syscallhdr.sh     | 2 +-
+ linux-user/mips/syscall_o32.tbl         | 2 +-
+ linux-user/mips/syscallhdr.sh           | 2 +-
+ linux-user/mips64/syscall_n32.tbl       | 2 +-
+ linux-user/mips64/syscall_n64.tbl       | 2 +-
+ linux-user/mips64/syscallhdr.sh         | 2 +-
+ linux-user/ppc/syscall.tbl              | 2 +-
+ linux-user/ppc/syscallhdr.sh            | 2 +-
+ linux-user/s390x/syscall.tbl            | 2 +-
+ linux-user/s390x/syscallhdr.sh          | 2 +-
+ linux-user/sh4/syscall.tbl              | 2 +-
+ linux-user/sh4/syscallhdr.sh            | 2 +-
+ linux-user/sparc/syscall.tbl            | 2 +-
+ linux-user/sparc/syscallhdr.sh          | 2 +-
+ linux-user/x86_64/syscallhdr.sh         | 2 +-
+ linux-user/xtensa/syscall.tbl           | 2 +-
+ linux-user/xtensa/syscallhdr.sh         | 2 +-
+ qemu.nsi                                | 4 +++-
+ scripts/kernel-doc                      | 2 +-
+ tests/functional/test_netdev_ethtool.py | 2 +-
+ 66 files changed, 78 insertions(+), 66 deletions(-)
 
 -- 
-Peter Xu
+2.45.2
 
 
