@@ -2,75 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DDF975576
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87654975658
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:03:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOMS-0003HC-Hb; Wed, 11 Sep 2024 10:30:24 -0400
+	id 1soOnT-0003ig-T8; Wed, 11 Sep 2024 10:58:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOMJ-0002mo-Mj
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:30:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhk-00078a-Ib
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOMH-0003z7-Id
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:30:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOha-0007Dt-Sd
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726065012;
+ s=mimecast20190719; t=1726066332;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9zYqBsPTLqrTzbWp9haBTVRFIhZalRfUREIb3ugShtk=;
- b=IIPwhmyMf1kwfeTvJpCfsdxz6ceQYAcGzlW0/nnblhtebE6IFN/GeXrXFmsMFj4vJl6CgQ
- JwwWpJGzCx8CfzVIeXvjEfoqtm9XlNonkLD4Y9hLbgWN+IaDn2FKMiLLgyehvuSUye0uAv
- gbT5H7uPQjRcZr/XnQEN4rQAf0so1lE=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bY3kFhk2MQOhFrrXbGMngbSdwByo8f4uY8jy3ERVqew=;
+ b=cZOl26mRMJ/eJnI/OdKQr8YFGRU5qnjDxfcT+ogVKaP8n49g7KY87qHCPmX1xUdZg/qZoq
+ VB8Gx1bLhFl+p9sDGumKJIKmNkyd3QRi25OH7t0crXllFyWV11ZsMWjwpPOE80iDTFDPUH
+ jG58bJvR4W5yoJk61kKdEm9S9dvVuBY=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-164-S1qeoSNsPQmPUueHa0qQHw-1; Wed, 11 Sep 2024 09:51:50 -0400
-X-MC-Unique: S1qeoSNsPQmPUueHa0qQHw-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a8a7463c3d0so428596866b.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:51:49 -0700 (PDT)
+ us-mta-412-0xm-B_Y7OL--D-ct_F0bXg-1; Wed, 11 Sep 2024 09:51:54 -0400
+X-MC-Unique: 0xm-B_Y7OL--D-ct_F0bXg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5c3c256e2a3so5362058a12.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:51:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726062708; x=1726667508;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9zYqBsPTLqrTzbWp9haBTVRFIhZalRfUREIb3ugShtk=;
- b=ZAcjcVjv0HJSfq8L3ZLj2Ph+Ui21QvtgxrfuNzGsVHQP2KdJNdsoNSuG7dRu0AbGjW
- xDiRcMFvZBATsE80q3mUqST3AhAwNRQzaEjbTzYKiLf/SOKyrypzX+2bXArwTgW5MV1t
- NqnDnV9JQ9XCGGvVnKnq8OPvwb2QLJN8K0Qz9AJisoDpEVe5a5pxELopKGp6XkEX6q2Y
- Pj/NYgNB5NjIg4HbmpTpZtPEUbhoNooXlPRsHzh92UIlZq/Ygne/4Ntr7SzYVe+dmqRo
- MPbZdx0/gMTQ0IHq/Lu5if4deg88fs6lgKhmC4QPUVFlaY2vrpDZiTTOyaALiqfWCR+h
- f3yA==
-X-Gm-Message-State: AOJu0Yzfyf41rM1mspZ1ygvtxa7xmM2MHYBbCByK35E/Bjwkzd8LyfJW
- 2u74smDqlByZIM4rF8+sHcsLG0dd5vZxhsav6TykOboY1QcJrdxYCzzWnrPqt76GsfTwZi8dNL7
- tGfArLO4iJJUJqCUZ2kX57ZEde7ozVhKZh0jUbeEJFr7pSYYW8wAvbdiHf0PoePp545Kowztz24
- doCPKd3dCExtzhAGSjeGyZ7xT4TvzooA==
-X-Received: by 2002:a17:907:3d8e:b0:a8d:4e13:55f9 with SMTP id
- a640c23a62f3a-a8ffaae3670mr459512166b.19.1726062708365; 
- Wed, 11 Sep 2024 06:51:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGXJxl0aTKQb2byWlm3XEdxeHepi5POGTMCrx84gqqyUSQ7HgXr1fjPY9AUOB0fBDYzlpIwmQ==
-X-Received: by 2002:a17:907:3d8e:b0:a8d:4e13:55f9 with SMTP id
- a640c23a62f3a-a8ffaae3670mr459508666b.19.1726062707830; 
- Wed, 11 Sep 2024 06:51:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726062712; x=1726667512;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bY3kFhk2MQOhFrrXbGMngbSdwByo8f4uY8jy3ERVqew=;
+ b=LV4wkkVSb0zFluHNAqdsKi+C20owZuNSPTNQ1lOwXzxIIoW5kwuziqf5bePiK7j2Kq
+ 5GgzQZr4zQxqqa4d6HSayU5DWWb0l8x15lVW1CvBDw4VZHrBv1ZI2OrIh1CZlLDkc3Q7
+ EICB+PzkrLt0LN0H9ggOo4zgVX50sfZddV1KHXQkXdkF2vNG8kG2PMM74sP3SU5Nwyum
+ 26Uye73rt50oEXxdYdKlfJ9oY+mxfMKyBaKa05s6JtDfnr7+9WpiGMuDifPCZdQIZP0g
+ sZldntAq431+uDy8+EMvvmbBpOFMxdL817fyHPoqns22958EPmltWF+L4gAEmu1puCsS
+ zhQA==
+X-Gm-Message-State: AOJu0Yxi5QIl4oHEYG4SYqUBCRopbPgbqADNUlCjVDSvjNkwn3kzSzcy
+ Nm7ssSuFdO7finMvAI6TEhvs3ck4R5o2RiGokLDQhDpizwnt50nL5hzh5+mOoJHG39lh1nXvuTY
+ 2MAJTcqU1eWOcz5M38mZv8GDLAs79/98chx5q3IitlHiNTJdzDyjoho/u+HE3txKwb+K/dUPqwN
+ djPBW7UYROUSAiDwBJjHmKwT2dKgS1KQ==
+X-Received: by 2002:a17:906:d54b:b0:a8c:d6a3:d03a with SMTP id
+ a640c23a62f3a-a8ffab18781mr379087666b.21.1726062712056; 
+ Wed, 11 Sep 2024 06:51:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEdUTOIul3p3RXD60SbSrV4T0ZNZ8f38tSJB3JJikoRHl9kx7775iRWvtWUySz6TnMaK7nc1Q==
+X-Received: by 2002:a17:906:d54b:b0:a8c:d6a3:d03a with SMTP id
+ a640c23a62f3a-a8ffab18781mr379083266b.21.1726062711359; 
+ Wed, 11 Sep 2024 06:51:51 -0700 (PDT)
 Received: from redhat.com ([2.55.9.133]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25c62541sm621866966b.111.2024.09.11.06.51.46
+ a640c23a62f3a-a8d258354d1sm620068366b.13.2024.09.11.06.51.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 06:51:47 -0700 (PDT)
-Date: Wed, 11 Sep 2024 09:51:45 -0400
+ Wed, 11 Sep 2024 06:51:50 -0700 (PDT)
+Date: Wed, 11 Sep 2024 09:51:48 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Wenyu Huang <huangwenyuu@outlook.com>
-Subject: [PULL 07/18] virtio: rename virtio_split_packed_update_used_idx
-Message-ID: <e667485a80ed3f3849ea7421a63fe8ba553cd25e.1726062663.git.mst@redhat.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+ Yi Liu <yi.l.liu@intel.com>, Jason Wang <jasowang@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 08/18] intel_iommu: Fix invalidation descriptor type field
+Message-ID: <663168943d3db6d9b51d3dfa0998848a6e6eda71.1726062663.git.mst@redhat.com>
 References: <cover.1726062663.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1726062663.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -99,41 +107,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wenyu Huang <huangwenyuu@outlook.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-virtio_split_packed_update_used_idx should be
-virtio_queue_split_update_used_idx like
-virtio_split_packed_update_used_idx.
+According to spec, invalidation descriptor type is 7bits which is
+concatenation of bits[11:9] and bits[3:0] of invalidation descriptor.
 
-Signed-off-by: Wenyu Huang <huangwenyuu@outlook.com>
-Message-Id: <TYBP286MB036536B9015994AA5F3E4495ACB22@TYBP286MB0365.JPNP286.PROD.OUTLOOK.COM>
+Currently we only pick bits[3:0] as the invalidation type and treat
+bits[11:9] as reserved zero. This is not a problem for now as bits[11:9]
+is zero for all current invalidation types. But it will break if newer
+type occupies bits[11:9].
+
+Fix it by taking bits[11:9] into type and make reserved bits check accurate.
+
+Suggested-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
+Message-Id: <20240814071321.2621384-2-zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/i386/intel_iommu_internal.h | 11 ++++++-----
+ hw/i386/intel_iommu.c          |  2 +-
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 42589adf2c..a26f18908e 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3669,7 +3669,7 @@ static void virtio_queue_packed_update_used_idx(VirtIODevice *vdev, int n)
-     return;
- }
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+index 5f32c36943..13d5d129ae 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -356,7 +356,8 @@ union VTDInvDesc {
+ typedef union VTDInvDesc VTDInvDesc;
  
--static void virtio_split_packed_update_used_idx(VirtIODevice *vdev, int n)
-+static void virtio_queue_split_update_used_idx(VirtIODevice *vdev, int n)
- {
-     RCU_READ_LOCK_GUARD();
-     if (vdev->vq[n].vring.desc) {
-@@ -3682,7 +3682,7 @@ void virtio_queue_update_used_idx(VirtIODevice *vdev, int n)
-     if (virtio_vdev_has_feature(vdev, VIRTIO_F_RING_PACKED)) {
-         return virtio_queue_packed_update_used_idx(vdev, n);
-     } else {
--        return virtio_split_packed_update_used_idx(vdev, n);
-+        return virtio_queue_split_update_used_idx(vdev, n);
+ /* Masks for struct VTDInvDesc */
+-#define VTD_INV_DESC_TYPE               0xf
++#define VTD_INV_DESC_TYPE(val)          ((((val) >> 5) & 0x70ULL) | \
++                                         ((val) & 0xfULL))
+ #define VTD_INV_DESC_CC                 0x1 /* Context-cache Invalidate Desc */
+ #define VTD_INV_DESC_IOTLB              0x2
+ #define VTD_INV_DESC_DEVICE             0x3
+@@ -372,7 +373,7 @@ typedef union VTDInvDesc VTDInvDesc;
+ #define VTD_INV_DESC_WAIT_IF            (1ULL << 4)
+ #define VTD_INV_DESC_WAIT_FN            (1ULL << 6)
+ #define VTD_INV_DESC_WAIT_DATA_SHIFT    32
+-#define VTD_INV_DESC_WAIT_RSVD_LO       0Xffffff80ULL
++#define VTD_INV_DESC_WAIT_RSVD_LO       0Xfffff180ULL
+ #define VTD_INV_DESC_WAIT_RSVD_HI       3ULL
+ 
+ /* Masks for Context-cache Invalidation Descriptor */
+@@ -383,7 +384,7 @@ typedef union VTDInvDesc VTDInvDesc;
+ #define VTD_INV_DESC_CC_DID(val)        (((val) >> 16) & VTD_DOMAIN_ID_MASK)
+ #define VTD_INV_DESC_CC_SID(val)        (((val) >> 32) & 0xffffUL)
+ #define VTD_INV_DESC_CC_FM(val)         (((val) >> 48) & 3UL)
+-#define VTD_INV_DESC_CC_RSVD            0xfffc00000000ffc0ULL
++#define VTD_INV_DESC_CC_RSVD            0xfffc00000000f1c0ULL
+ 
+ /* Masks for IOTLB Invalidate Descriptor */
+ #define VTD_INV_DESC_IOTLB_G            (3ULL << 4)
+@@ -393,7 +394,7 @@ typedef union VTDInvDesc VTDInvDesc;
+ #define VTD_INV_DESC_IOTLB_DID(val)     (((val) >> 16) & VTD_DOMAIN_ID_MASK)
+ #define VTD_INV_DESC_IOTLB_ADDR(val)    ((val) & ~0xfffULL)
+ #define VTD_INV_DESC_IOTLB_AM(val)      ((val) & 0x3fULL)
+-#define VTD_INV_DESC_IOTLB_RSVD_LO      0xffffffff0000ff00ULL
++#define VTD_INV_DESC_IOTLB_RSVD_LO      0xffffffff0000f100ULL
+ #define VTD_INV_DESC_IOTLB_RSVD_HI      0xf80ULL
+ #define VTD_INV_DESC_IOTLB_PASID_PASID  (2ULL << 4)
+ #define VTD_INV_DESC_IOTLB_PASID_PAGE   (3ULL << 4)
+@@ -406,7 +407,7 @@ typedef union VTDInvDesc VTDInvDesc;
+ #define VTD_INV_DESC_DEVICE_IOTLB_SIZE(val) ((val) & 0x1)
+ #define VTD_INV_DESC_DEVICE_IOTLB_SID(val) (((val) >> 32) & 0xFFFFULL)
+ #define VTD_INV_DESC_DEVICE_IOTLB_RSVD_HI 0xffeULL
+-#define VTD_INV_DESC_DEVICE_IOTLB_RSVD_LO 0xffff0000ffe0fff8
++#define VTD_INV_DESC_DEVICE_IOTLB_RSVD_LO 0xffff0000ffe0f1f0
+ 
+ /* Rsvd field masks for spte */
+ #define VTD_SPTE_SNP 0x800ULL
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 16d2885fcc..68cb72a481 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -2744,7 +2744,7 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
+         return false;
      }
- }
+ 
+-    desc_type = inv_desc.lo & VTD_INV_DESC_TYPE;
++    desc_type = VTD_INV_DESC_TYPE(inv_desc.lo);
+     /* FIXME: should update at first or at last? */
+     s->iq_last_desc_type = desc_type;
  
 -- 
 MST
