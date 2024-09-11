@@ -2,87 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8F729756E7
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3EB9756F3
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:25:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOnw-00066F-Ep; Wed, 11 Sep 2024 10:58:53 -0400
+	id 1soOok-0000Oj-Hx; Wed, 11 Sep 2024 10:59:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhn-0007Kz-Sc
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhn-0007KT-NZ
  for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhi-0007EO-4A
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhi-0007EU-Uv
  for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726066336;
+ s=mimecast20190719; t=1726066338;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3Zv+AcVES8CQaHrznfI8esSyWVUaPQBotZar40Wzxw0=;
- b=K5Xwx0VyTDzfewXyWrnj+5dPpjk0I8w65d4moWpE3UW8Vz31QxrxdfNGzdKege/393IQ/7
- K9Apx9h/+VKfyzRNioBd48LJShneBouA2jSiznmD4EXsUYV+KZyaKFNINtkrTVPFKVNG/S
- LEGcb61N6B8hCoIuzfNFNkfsLoAJaNk=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8ycrQIYgW1gN05eLNxaUg6SdKNvOfcU2FQLbxdjG4Rw=;
+ b=BcxKmx2N0Xbp0chQzZaHeaWPbpJqIxPpEvJsWxYX+qYx9xreD7KnndhcDa6pQu1XAg5beI
+ HhwSbnoLAu0vwk6kNdsLd//+1Gf5xy26t59ezRlzqYCvCnmUjTDPlW3x4EPq2kvdzF4Blk
+ wCJPsz8HrJW/UJuaKWCrjlWnHJj8v2g=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-L2d2ENr7OYmhmroUZu_fjw-1; Wed, 11 Sep 2024 09:51:56 -0400
-X-MC-Unique: L2d2ENr7OYmhmroUZu_fjw-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a868b6d6882so96312266b.1
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:51:56 -0700 (PDT)
+ us-mta-147-5mNS_49oPDCgvbWvTk6fXg-1; Wed, 11 Sep 2024 09:52:00 -0400
+X-MC-Unique: 5mNS_49oPDCgvbWvTk6fXg-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5c3c256e2a3so5362107a12.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:52:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726062715; x=1726667515;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3Zv+AcVES8CQaHrznfI8esSyWVUaPQBotZar40Wzxw0=;
- b=xQfMshW0+XC+exFHH4UuMgmDJ1G+xZUNj6iTKHFK2AM5GNMV4g/B00mPma9GeXLZkx
- yW/1xaYkXKO3kMOjZ4cYkUb+YLM8oUNek54LyhVGnrTO9rRu9tkY/22PR1tBTvv3TZO8
- wLYs/fr/0usNEHx8MjO+ovIapVSkdRqehlO4nVGy/rnX09UIWEEA0YqfJ74ILmEXUwm9
- GEGRt913ZNjyq5CP6KRIDQobo/mbZW4/HeGyML7Psb0LJUMc4PgtF0EedJKyUJFzcEGc
- 4r/0BETJ7fs42B/lFCWcUNG2grQHAHHF/zNPppL0lhx6y/J/PQoBe4F6Pt1NhAW/iOzx
- DpGA==
-X-Gm-Message-State: AOJu0Yysixc2YAmn+DPr6VPnLldPG5qTpwJMNmsG44w8ezxZb2y6zP67
- OVDioBr3Bz6y/PSunsl7rwqflAv4Gblvm+npn8/84gFDd1wKx7BQmWLQdmyJjgp3Xdy3nJNfirc
- g39lZsPTJUUe5ld2jyf7cNyBkmMbaPjZEQBnmAVjKQklhaVRswphv1g0YwqfNcN+sxa2lZs1n1O
- phVxwYx7HUg7A8wBI705KfT8GRvUZI1w==
-X-Received: by 2002:a17:907:7f16:b0:a8a:6db7:6659 with SMTP id
- a640c23a62f3a-a8ffab6cbbfmr442551866b.9.1726062715335; 
- Wed, 11 Sep 2024 06:51:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQ563Z43scq9UThhGmH4KPDKOFBk+Lb1vsH7g6KkuYMmRsuy+k/OUdBc9E6TCx/appZJrk3Q==
-X-Received: by 2002:a17:907:7f16:b0:a8a:6db7:6659 with SMTP id
- a640c23a62f3a-a8ffab6cbbfmr442545666b.9.1726062714737; 
- Wed, 11 Sep 2024 06:51:54 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726062719; x=1726667519;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8ycrQIYgW1gN05eLNxaUg6SdKNvOfcU2FQLbxdjG4Rw=;
+ b=PZpqkqMvVyvRjbl/0ov+f7XZFWncAallft1XNd6a1nwsoH+EqBMPe3Q1xh1DApEyff
+ XEbvmUGyU9VII9Cy2tb1m+EdRuCJe3I8GRxMj4oCOqNZKyqUTgxv2quncwJ+eI2MkB1U
+ JKEE5Aq8jXJOAmpbSRQ/FvfKbZiUnORbFYq7J7TN7Endg1puTxHc3pFzbuMbrUOrPZ9z
+ kB/FLwf+P0hEyA0ibknTWzd+6MSzYacVO3zjwb+iyMlWtsLUVGlRrYAE/H6AHzRvuaMh
+ KWkk7rXNAVjNvEbodHso5ocwGGX+exUIyfkpVWL1fDOPHMz1jdYDqZ525spyn5OVQ1Pl
+ OxIw==
+X-Gm-Message-State: AOJu0Yz+mB92nwhpP1/qKOWfiKHnZkEKIlaKRlcevhv8ihoEMIK4aFEj
+ yaOitnpvxiHWvMpvPijuEfoNk83+yi+nNINTo07EBzCqd6n7q5RRXWe/4L4o2dikS39/m/ppfQh
+ 9N+uXv1zNNeAIo+ohMZ1J4jP/hhPOED4xfOd6PsGd9wElT/eHOtd2dlVmE6Icx3C2O2nM1mzoiO
+ HDSkogVK7Czy8v/raG6+gKfNJy2GBj5w==
+X-Received: by 2002:a05:6402:2551:b0:5c2:769a:df79 with SMTP id
+ 4fb4d7f45d1cf-5c3dc7c6c83mr12618121a12.32.1726062718815; 
+ Wed, 11 Sep 2024 06:51:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGa1U2meNUnhGlkhb8QGTZBePl0Blwq+nl0sH21K51an8Q2T6CcuWRGWK3mDSR+gMZEoY/yrA==
+X-Received: by 2002:a05:6402:2551:b0:5c2:769a:df79 with SMTP id
+ 4fb4d7f45d1cf-5c3dc7c6c83mr12618092a12.32.1726062718157; 
+ Wed, 11 Sep 2024 06:51:58 -0700 (PDT)
 Received: from redhat.com ([2.55.9.133]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25c82eaesm619003566b.118.2024.09.11.06.51.52
+ 4fb4d7f45d1cf-5c3ebd8cdebsm5375494a12.95.2024.09.11.06.51.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 06:51:54 -0700 (PDT)
-Date: Wed, 11 Sep 2024 09:51:51 -0400
+ Wed, 11 Sep 2024 06:51:57 -0700 (PDT)
+Date: Wed, 11 Sep 2024 09:51:55 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, Yi Liu <yi.l.liu@intel.com>,
- =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 09/18] intel_iommu: Make PASID-cache and PIOTLB type invalid
- in legacy mode
-Message-ID: <3b52cea829d873706ff86913ae99b4bd621c20e6.1726062663.git.mst@redhat.com>
+ Ricardo Ribalda <ribalda@chromium.org>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 10/18] tests/acpi: pc: allow DSDT acpi table changes
+Message-ID: <ae77a40e3c7f010d1d18a92806246654f92b6f26.1726062663.git.mst@redhat.com>
 References: <cover.1726062663.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1726062663.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -107,64 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-In vtd_process_inv_desc(), VTD_INV_DESC_PC and VTD_INV_DESC_PIOTLB are
-bypassed without scalable mode check. These two types are not valid
-in legacy mode and we should report error.
-
-Fixes: 4a4f219e8a10 ("intel_iommu: add scalable-mode option to make scalable mode work")
-Suggested-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Message-Id: <20240814071321.2621384-3-zhenzhong.duan@intel.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-Id: <20240814115736.1580337-2-ribalda@chromium.org>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 68cb72a481..90cd4e5044 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -2763,17 +2763,6 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
-         }
-         break;
- 
--    /*
--     * TODO: the entity of below two cases will be implemented in future series.
--     * To make guest (which integrates scalable mode support patch set in
--     * iommu driver) work, just return true is enough so far.
--     */
--    case VTD_INV_DESC_PC:
--        break;
--
--    case VTD_INV_DESC_PIOTLB:
--        break;
--
-     case VTD_INV_DESC_WAIT:
-         trace_vtd_inv_desc("wait", inv_desc.hi, inv_desc.lo);
-         if (!vtd_process_wait_desc(s, &inv_desc)) {
-@@ -2795,6 +2784,17 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
-         }
-         break;
- 
-+    /*
-+     * TODO: the entity of below two cases will be implemented in future series.
-+     * To make guest (which integrates scalable mode support patch set in
-+     * iommu driver) work, just return true is enough so far.
-+     */
-+    case VTD_INV_DESC_PC:
-+    case VTD_INV_DESC_PIOTLB:
-+        if (s->scalable_mode) {
-+            break;
-+        }
-+    /* fallthrough */
-     default:
-         error_report_once("%s: invalid inv desc: hi=%"PRIx64", lo=%"PRIx64
-                           " (unknown type)", __func__, inv_desc.hi,
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..f81f4e2469 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,16 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/x86/pc/DSDT",
++"tests/data/acpi/x86/pc/DSDT.acpierst",
++"tests/data/acpi/x86/pc/DSDT.acpihmat",
++"tests/data/acpi/x86/pc/DSDT.bridge",
++"tests/data/acpi/x86/pc/DSDT.cphp",
++"tests/data/acpi/x86/pc/DSDT.dimmpxm",
++"tests/data/acpi/x86/pc/DSDT.hpbridge",
++"tests/data/acpi/x86/pc/DSDT.hpbrroot",
++"tests/data/acpi/x86/pc/DSDT.ipmikcs",
++"tests/data/acpi/x86/pc/DSDT.memhp",
++"tests/data/acpi/x86/pc/DSDT.nohpet",
++"tests/data/acpi/x86/pc/DSDT.numamem",
++"tests/data/acpi/x86/pc/DSDT.roothp",
++"tests/data/acpi/x86/q35/DSDT.cxl",
++"tests/data/acpi/x86/q35/DSDT.viot",
 -- 
 MST
 
