@@ -2,95 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19139755D6
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C0D975548
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:28:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOXa-0004zm-C8; Wed, 11 Sep 2024 10:42:02 -0400
+	id 1soOI3-0004fo-Jv; Wed, 11 Sep 2024 10:25:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1soOT1-0000Bo-ER; Wed, 11 Sep 2024 10:37:17 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1soOSx-0005F4-3N; Wed, 11 Sep 2024 10:37:10 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id CE1A04E601D;
- Wed, 11 Sep 2024 16:10:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id 2a5-7Dj__MKk; Wed, 11 Sep 2024 16:10:07 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 7534F4E600E; Wed, 11 Sep 2024 16:10:07 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 7180A746F60;
- Wed, 11 Sep 2024 16:10:07 +0200 (CEST)
-Date: Wed, 11 Sep 2024 16:10:07 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>, 
- "Richard W.M. Jones" <rjones@redhat.com>, Joel Stanley <joel@jms.id.au>, 
- Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- qemu-arm@nongnu.org, Corey Minyard <minyard@acm.org>, 
- Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, 
- Keith Busch <kbusch@kernel.org>, WANG Xuerui <git@xen0n.name>, 
- Hyman Huang <yong.huang@smartx.com>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>, 
- Michael Rolnik <mrolnik@gmail.com>, 
- Alistair Francis <alistair.francis@wdc.com>, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, 
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org, 
- Ani Sinha <anisinha@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, 
- Jesper Devantier <foss@defmacro.it>, Laurent Vivier <laurent@vivier.eu>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- Igor Mammedov <imammedo@redhat.com>, kvm@vger.kernel.org, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Fam Zheng <fam@euphon.net>, qemu-s390x@nongnu.org, 
- Hanna Reitz <hreitz@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Laurent Vivier <lvivier@redhat.com>, 
- Rob Herring <robh@kernel.org>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org, 
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- Helge Deller <deller@gmx.de>, Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Akihiko Odaki <akihiko.odaki@daynix.com>, 
- Marcelo Tosatti <mtosatti@redhat.com>, 
- David Gibson <david@gibson.dropbear.id.au>, 
- Aurelien Jarno <aurelien@aurel32.net>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>, 
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
- Klaus Jensen <its@irrelevant.dk>, 
- Jean-Christophe Dubois <jcd@tribudubois.net>, 
- Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH 20/39] hw/ppc: replace assert(false) with
- g_assert_not_reached()
-In-Reply-To: <20240910221606.1817478-21-pierrick.bouvier@linaro.org>
-Message-ID: <232858c7-6270-f763-adfc-b6c8259bf021@eik.bme.hu>
-References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
- <20240910221606.1817478-21-pierrick.bouvier@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1soOHS-0004Eq-Vy; Wed, 11 Sep 2024 10:25:21 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1soOGt-0008FS-ST; Wed, 11 Sep 2024 10:25:14 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 1F4DC219EA;
+ Wed, 11 Sep 2024 14:16:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1726064215; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=GPyTDcszhoeWdCN/K5slNupruBYEwdvgfkSRmPx2RVM=;
+ b=Qx2gfTqlQD6J+pLrr70ungu9P82jluubzT3mTLx1IMpVYZ8HMoxJ9O6Jve0APpFWt+9GgP
+ +J2+kMn1UUaW+PLNXUfuH7GPx0an+bsUG62oWfgVI7EL1m/zURyqy4hHOpPQ7S6kUJ5/FG
+ NIokYSBugpFwrtzB+MllCrGxEGlOAEk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1726064215;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=GPyTDcszhoeWdCN/K5slNupruBYEwdvgfkSRmPx2RVM=;
+ b=E0BCvly8WGO6t7/uJngp80xKTcM8wMrTJiSdV/9VPtUgN21IuXDM9KKwKJcs0Yn+5akt29
+ AwISTjj9/6wAP1BA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1726064215; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=GPyTDcszhoeWdCN/K5slNupruBYEwdvgfkSRmPx2RVM=;
+ b=Qx2gfTqlQD6J+pLrr70ungu9P82jluubzT3mTLx1IMpVYZ8HMoxJ9O6Jve0APpFWt+9GgP
+ +J2+kMn1UUaW+PLNXUfuH7GPx0an+bsUG62oWfgVI7EL1m/zURyqy4hHOpPQ7S6kUJ5/FG
+ NIokYSBugpFwrtzB+MllCrGxEGlOAEk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1726064215;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=GPyTDcszhoeWdCN/K5slNupruBYEwdvgfkSRmPx2RVM=;
+ b=E0BCvly8WGO6t7/uJngp80xKTcM8wMrTJiSdV/9VPtUgN21IuXDM9KKwKJcs0Yn+5akt29
+ AwISTjj9/6wAP1BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AFE3B13A7C;
+ Wed, 11 Sep 2024 14:16:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id dp5jHVWm4WaXVQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 11 Sep 2024 14:16:53 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: [PATCH] target/ppc: Fix lxvx/stxvx facility check
+Date: Wed, 11 Sep 2024 11:16:51 -0300
+Message-Id: <20240911141651.6914-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -0.32
+X-Spamd-Result: default: False [-0.32 / 50.00]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ BAYES_HAM(-0.02)[52.29%]; MIME_TRACE(0.00)[0:+];
+ RCVD_TLS_ALL(0.00)[]; ARC_NA(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
+ FREEMAIL_CC(0.00)[nongnu.org,gmail.com];
+ RCPT_COUNT_THREE(0.00)[4]; FROM_EQ_ENVFROM(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:mid,
+ suse.de:email]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,38 +113,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The XT check for the lxvx/stxvx instructions is currently
+inverted. This was introduced during the move to decodetree.
 
+From the ISA:
+  Chapter 7. Vector-Scalar Extension Facility
+  Load VSX Vector Indexed X-form
 
-On Tue, 10 Sep 2024, Pierrick Bouvier wrote:
+  lxvx XT,RA,RB
+  if TX=0 & MSR.VSX=0 then VSX_Unavailable()
+  if TX=1 & MSR.VEC=0 then Vector_Unavailable()
+  ...
+  Let XT be the value 32×TX + T.
 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
-> hw/ppc/spapr_events.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/ppc/spapr_events.c b/hw/ppc/spapr_events.c
-> index cb0eeee5874..38ac1cb7866 100644
-> --- a/hw/ppc/spapr_events.c
-> +++ b/hw/ppc/spapr_events.c
-> @@ -645,7 +645,7 @@ static void spapr_hotplug_req_event(uint8_t hp_id, uint8_t hp_action,
->         /* we shouldn't be signaling hotplug events for resources
->          * that don't support them
->          */
-> -        g_assert(false);
-> +        g_assert_not_reached();
->         return;
->     }
+The code currently does the opposite:
 
-If break does not make sense after g_assert_not_reached() and removed then 
-return is the same here.
+    if (paired || a->rt >= 32) {
+        REQUIRE_VSX(ctx);
+    } else {
+        REQUIRE_VECTOR(ctx);
+    }
 
-It may make the series shorter and easier to check that none of these are 
-missed if this is done in the same patch where the assert is changed 
-instead of separate patches. It's unlikely that the assert change and 
-removal of the following break or return would need to be reverted 
-separately so it's a simple enough change to put in one patch in my 
-opinion but I don't mink if it's kept separate either.
+This was already fixed for lxv/stxv at commit "2cc0e449d1 (target/ppc:
+Fix lxv/stxv MSR facility check)", but the indexed forms were missed.
 
-Regards,
-BALATON Zoltan
+Cc: qemu-stable@nongnu.org
+Fixes: 70426b5bb7 ("target/ppc: moved stxvx and lxvx from legacy to decodtree")
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ target/ppc/translate/vsx-impl.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
+index 40a87ddc4a..a869f30e86 100644
+--- a/target/ppc/translate/vsx-impl.c.inc
++++ b/target/ppc/translate/vsx-impl.c.inc
+@@ -2244,7 +2244,7 @@ static bool do_lstxv_PLS_D(DisasContext *ctx, arg_PLS_D *a,
+ 
+ static bool do_lstxv_X(DisasContext *ctx, arg_X *a, bool store, bool paired)
+ {
+-    if (paired || a->rt >= 32) {
++    if (paired || a->rt < 32) {
+         REQUIRE_VSX(ctx);
+     } else {
+         REQUIRE_VECTOR(ctx);
+-- 
+2.35.3
+
 
