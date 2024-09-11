@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C84975565
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB88D975561
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:30:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOKI-0000tv-SU; Wed, 11 Sep 2024 10:28:11 -0400
+	id 1soOKv-0004JR-Vj; Wed, 11 Sep 2024 10:28:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1soOJw-0007cw-IL; Wed, 11 Sep 2024 10:27:51 -0400
-Received: from out30-119.freemail.mail.aliyun.com ([115.124.30.119])
+ id 1soOKa-00039O-H1; Wed, 11 Sep 2024 10:28:35 -0400
+Received: from out30-100.freemail.mail.aliyun.com ([115.124.30.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1soOJs-0003Qi-IH; Wed, 11 Sep 2024 10:27:48 -0400
+ id 1soOKT-0003Y0-9l; Wed, 11 Sep 2024 10:28:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linux.alibaba.com; s=default;
- t=1726064853; h=From:To:Subject:Date:Message-Id:MIME-Version;
- bh=KHfQNitBMULE0JVSpb+dYLlhBHbnY5R+M6YYmVRV80M=;
- b=MzlejHT9eGd7esFq2x+5ndmCUHV2CIW6KbybOnPj3kSKagOFnqNEGri1Bd3zbd9wO3ZhQib3PPRkxr0FF/9rhi6vfmEQ2i6JelHxfWiXV6u7mc0Upl0zVEh4AuhCKOxUdLx78C1j7REeeB3U0cgHuWvVDYTa75AihwAGuK4CLrY=
+ t=1726064896; h=From:To:Subject:Date:Message-Id:MIME-Version;
+ bh=5DiP9dcieHssdMJ+aH4pilVbeR8x06Ojl8mSF3DAWz8=;
+ b=T+anvIWk/vgeD3AV6wQ63f3H/bMifALNnLAhR4A2uiavkJUFLXlGw0nVSgJ1KYyRMP9tYZTPd8uhmNJNa07Vb+c8d9CURL6v5XjQEHOvNeJwPkoThcoehRFSIx7Rom7YpX0ObdSn0+cxC8ef13Y7GQSwncG3uzzbluDwjHteyjA=
 Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0WEoCEZo_1726061564) by smtp.aliyun-inc.com;
- Wed, 11 Sep 2024 21:32:45 +0800
+ fp:SMTPD_---0WEoDj3V_1726061596) by smtp.aliyun-inc.com;
+ Wed, 11 Sep 2024 21:33:16 +0800
 From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
  dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
  zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org,
  TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Subject: [PATCH v4 10/12] tcg/riscv: Implement vector shi/s/v ops
-Date: Wed, 11 Sep 2024 21:26:28 +0800
-Message-Id: <20240911132630.461-11-zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH v4 11/12] tcg/riscv: Implement vector roti/v/x ops
+Date: Wed, 11 Sep 2024 21:26:29 +0800
+Message-Id: <20240911132630.461-12-zhiwei_liu@linux.alibaba.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20240911132630.461-1-zhiwei_liu@linux.alibaba.com>
 References: <20240911132630.461-1-zhiwei_liu@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.119;
+Received-SPF: pass client-ip=115.124.30.100;
  envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-119.freemail.mail.aliyun.com
+ helo=out30-100.freemail.mail.aliyun.com
 X-Spam_score_int: -174
 X-Spam_score: -17.5
 X-Spam_bar: -----------------
@@ -70,163 +70,98 @@ From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
 ---
- tcg/riscv/tcg-target-con-set.h |  1 +
- tcg/riscv/tcg-target.c.inc     | 76 ++++++++++++++++++++++++++++++++++
- tcg/riscv/tcg-target.h         |  6 +--
- 3 files changed, 80 insertions(+), 3 deletions(-)
+ tcg/riscv/tcg-target.c.inc | 35 +++++++++++++++++++++++++++++++++++
+ tcg/riscv/tcg-target.h     |  6 +++---
+ 2 files changed, 38 insertions(+), 3 deletions(-)
 
-diff --git a/tcg/riscv/tcg-target-con-set.h b/tcg/riscv/tcg-target-con-set.h
-index cc06102ccf..f40de70001 100644
---- a/tcg/riscv/tcg-target-con-set.h
-+++ b/tcg/riscv/tcg-target-con-set.h
-@@ -24,6 +24,7 @@ C_O2_I4(r, r, rZ, rZ, rM, rM)
- C_O0_I2(v, r)
- C_O1_I1(v, r)
- C_O1_I1(v, v)
-+C_O1_I2(v, v, r)
- C_O1_I2(v, v, v)
- C_O1_I2(v, v, vL)
- C_O1_I4(v, v, vL, vK, vK)
 diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index c068d83a97..16785ebe8e 100644
+index 16785ebe8e..afc9747780 100644
 --- a/tcg/riscv/tcg-target.c.inc
 +++ b/tcg/riscv/tcg-target.c.inc
-@@ -315,6 +315,16 @@ typedef enum {
-     OPC_VMSGT_VI = 0x7c000057 | V_OPIVI,
-     OPC_VMSGT_VX = 0x7c000057 | V_OPIVX,
- 
-+    OPC_VSLL_VV = 0x94000057 | V_OPIVV,
-+    OPC_VSLL_VI = 0x94000057 | V_OPIVI,
-+    OPC_VSLL_VX = 0x94000057 | V_OPIVX,
-+    OPC_VSRL_VV = 0xa0000057 | V_OPIVV,
-+    OPC_VSRL_VI = 0xa0000057 | V_OPIVI,
-+    OPC_VSRL_VX = 0xa0000057 | V_OPIVX,
-+    OPC_VSRA_VV = 0xa4000057 | V_OPIVV,
-+    OPC_VSRA_VI = 0xa4000057 | V_OPIVI,
-+    OPC_VSRA_VX = 0xa4000057 | V_OPIVX,
-+
-     OPC_VMV_V_V = 0x5e000057 | V_OPIVV,
-     OPC_VMV_V_I = 0x5e000057 | V_OPIVI,
-     OPC_VMV_V_X = 0x5e000057 | V_OPIVX,
-@@ -1574,6 +1584,17 @@ static void tcg_out_cmpsel(TCGContext *s, TCGType type, unsigned vece,
-     }
- }
- 
-+static void tcg_out_vshifti(TCGContext *s, RISCVInsn opc_vi, RISCVInsn opc_vx,
-+                             TCGReg dst, TCGReg src, unsigned imm)
-+{
-+    if (imm < 32) {
-+        tcg_out_opc_vi(s, opc_vi, dst, src, imm, true);
-+    } else {
-+        tcg_out_movi(s, TCG_TYPE_I32, TCG_REG_TMP0, imm);
-+        tcg_out_opc_vx(s, opc_vx, dst, src, TCG_REG_TMP0, true);
-+    }
-+}
-+
- static void tcg_out_call_int(TCGContext *s, const tcg_insn_unit *arg, bool tail)
- {
-     TCGReg link = tail ? TCG_REG_ZERO : TCG_REG_RA;
-@@ -2437,6 +2458,42 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+@@ -2494,6 +2494,33 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
          set_vtype_len_sew(s, type, vece);
-         tcg_out_opc_vv(s, OPC_VMINU_VV, a0, a1, a2, true);
+         tcg_out_vshifti(s, OPC_VSRA_VI, OPC_VSRA_VX, a0, a1, a2);
          break;
-+    case INDEX_op_shls_vec:
++    case INDEX_op_rotli_vec:
 +        set_vtype_len_sew(s, type, vece);
-+        tcg_out_opc_vx(s, OPC_VSLL_VX, a0, a1, a2, true);
++        tcg_out_vshifti(s, OPC_VSLL_VI, OPC_VSLL_VX, TCG_REG_V0, a1, a2);
++        tcg_out_vshifti(s, OPC_VSRL_VI, OPC_VSRL_VX, a0, a1, -a2);
++        tcg_out_opc_vv(s, OPC_VOR_VV, a0, a0, TCG_REG_V0, true);
 +        break;
-+    case INDEX_op_shrs_vec:
++    case INDEX_op_rotls_vec:
 +        set_vtype_len_sew(s, type, vece);
++        tcg_out_opc_vx(s, OPC_VSLL_VX, TCG_REG_V0, a1, a2, true);
++        tcg_out_opc_reg(s, OPC_SUBW, a2, TCG_REG_ZERO, a2);
 +        tcg_out_opc_vx(s, OPC_VSRL_VX, a0, a1, a2, true);
++        tcg_out_opc_vv(s, OPC_VOR_VV, a0, a0, TCG_REG_V0, true);
 +        break;
-+    case INDEX_op_sars_vec:
++    case INDEX_op_rotlv_vec:
 +        set_vtype_len_sew(s, type, vece);
-+        tcg_out_opc_vx(s, OPC_VSRA_VX, a0, a1, a2, true);
++        tcg_out_opc_vv(s, OPC_VSLL_VV, TCG_REG_V0, a1, a2, true);
++        tcg_out_opc_vi(s, OPC_VRSUB_VI, TCG_REG_V0, a2, 0, true);
++        tcg_out_opc_vv(s, OPC_VSRL_VV, a0, a1, TCG_REG_V0, true);
++        tcg_out_opc_vv(s, OPC_VOR_VV, a0, a0, TCG_REG_V0, true);
 +        break;
-+    case INDEX_op_shlv_vec:
++    case INDEX_op_rotrv_vec:
 +        set_vtype_len_sew(s, type, vece);
-+        tcg_out_opc_vv(s, OPC_VSLL_VV, a0, a1, a2, true);
-+        break;
-+    case INDEX_op_shrv_vec:
-+        set_vtype_len_sew(s, type, vece);
++        tcg_out_opc_vi(s, OPC_VRSUB_VI, TCG_REG_V0, a2, 0, true);
++        tcg_out_opc_vv(s, OPC_VSLL_VV, TCG_REG_V0, a1, TCG_REG_V0, true);
 +        tcg_out_opc_vv(s, OPC_VSRL_VV, a0, a1, a2, true);
-+        break;
-+    case INDEX_op_sarv_vec:
-+        set_vtype_len_sew(s, type, vece);
-+        tcg_out_opc_vv(s, OPC_VSRA_VV, a0, a1, a2, true);
-+        break;
-+    case INDEX_op_shli_vec:
-+        set_vtype_len_sew(s, type, vece);
-+        tcg_out_vshifti(s, OPC_VSLL_VI, OPC_VSLL_VX, a0, a1, a2);
-+        break;
-+    case INDEX_op_shri_vec:
-+        set_vtype_len_sew(s, type, vece);
-+        tcg_out_vshifti(s, OPC_VSRL_VI, OPC_VSRL_VX, a0, a1, a2);
-+        break;
-+    case INDEX_op_sari_vec:
-+        set_vtype_len_sew(s, type, vece);
-+        tcg_out_vshifti(s, OPC_VSRA_VI, OPC_VSRA_VX, a0, a1, a2);
++        tcg_out_opc_vv(s, OPC_VOR_VV, a0, a0, TCG_REG_V0, true);
 +        break;
      case INDEX_op_cmpsel_vec:
          tcg_out_cmpsel(s, type, vece, args[5], a0, a1, a2, const_args[2],
                         args[3], const_args[3], args[4], const_args[4]);
-@@ -2490,6 +2547,15 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
-     case INDEX_op_smin_vec:
-     case INDEX_op_umax_vec:
-     case INDEX_op_umin_vec:
-+    case INDEX_op_shls_vec:
-+    case INDEX_op_shrs_vec:
-+    case INDEX_op_sars_vec:
-+    case INDEX_op_shlv_vec:
-+    case INDEX_op_shrv_vec:
-+    case INDEX_op_sarv_vec:
-+    case INDEX_op_shri_vec:
-+    case INDEX_op_shli_vec:
-+    case INDEX_op_sari_vec:
+@@ -2556,6 +2583,10 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
+     case INDEX_op_shri_vec:
+     case INDEX_op_shli_vec:
+     case INDEX_op_sari_vec:
++    case INDEX_op_rotls_vec:
++    case INDEX_op_rotlv_vec:
++    case INDEX_op_rotrv_vec:
++    case INDEX_op_rotli_vec:
      case INDEX_op_cmpsel_vec:
          return 1;
      case INDEX_op_cmp_vec:
-@@ -2646,6 +2712,9 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-         return C_O1_I1(v, r);
-     case INDEX_op_neg_vec:
-     case INDEX_op_not_vec:
-+    case INDEX_op_shli_vec:
-+    case INDEX_op_shri_vec:
-+    case INDEX_op_sari_vec:
+@@ -2715,6 +2746,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_shli_vec:
+     case INDEX_op_shri_vec:
+     case INDEX_op_sari_vec:
++    case INDEX_op_rotli_vec:
          return C_O1_I1(v, v);
      case INDEX_op_add_vec:
      case INDEX_op_sub_vec:
-@@ -2661,7 +2730,14 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_smin_vec:
-     case INDEX_op_umax_vec:
-     case INDEX_op_umin_vec:
-+    case INDEX_op_shlv_vec:
-+    case INDEX_op_shrv_vec:
-+    case INDEX_op_sarv_vec:
+@@ -2733,10 +2765,13 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_shlv_vec:
+     case INDEX_op_shrv_vec:
+     case INDEX_op_sarv_vec:
++    case INDEX_op_rotlv_vec:
++    case INDEX_op_rotrv_vec:
          return C_O1_I2(v, v, v);
-+    case INDEX_op_shls_vec:
-+    case INDEX_op_shrs_vec:
-+    case INDEX_op_sars_vec:
-+        return C_O1_I2(v, v, r);
+     case INDEX_op_shls_vec:
+     case INDEX_op_shrs_vec:
+     case INDEX_op_sars_vec:
++    case INDEX_op_rotls_vec:
+         return C_O1_I2(v, v, r);
      case INDEX_op_cmp_vec:
          return C_O1_I2(v, v, vL);
-     case INDEX_op_cmpsel_vec:
 diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
-index 7005099810..76d30e789b 100644
+index 76d30e789b..e6d66cd1b9 100644
 --- a/tcg/riscv/tcg-target.h
 +++ b/tcg/riscv/tcg-target.h
-@@ -157,9 +157,9 @@ typedef enum {
- #define TCG_TARGET_HAS_roti_vec         0
- #define TCG_TARGET_HAS_rots_vec         0
- #define TCG_TARGET_HAS_rotv_vec         0
--#define TCG_TARGET_HAS_shi_vec          0
--#define TCG_TARGET_HAS_shs_vec          0
--#define TCG_TARGET_HAS_shv_vec          0
-+#define TCG_TARGET_HAS_shi_vec          1
-+#define TCG_TARGET_HAS_shs_vec          1
-+#define TCG_TARGET_HAS_shv_vec          1
- #define TCG_TARGET_HAS_mul_vec          1
- #define TCG_TARGET_HAS_sat_vec          1
- #define TCG_TARGET_HAS_minmax_vec       1
+@@ -154,9 +154,9 @@ typedef enum {
+ #define TCG_TARGET_HAS_not_vec          1
+ #define TCG_TARGET_HAS_neg_vec          1
+ #define TCG_TARGET_HAS_abs_vec          0
+-#define TCG_TARGET_HAS_roti_vec         0
+-#define TCG_TARGET_HAS_rots_vec         0
+-#define TCG_TARGET_HAS_rotv_vec         0
++#define TCG_TARGET_HAS_roti_vec         1
++#define TCG_TARGET_HAS_rots_vec         1
++#define TCG_TARGET_HAS_rotv_vec         1
+ #define TCG_TARGET_HAS_shi_vec          1
+ #define TCG_TARGET_HAS_shs_vec          1
+ #define TCG_TARGET_HAS_shv_vec          1
 -- 
 2.43.0
 
