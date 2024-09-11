@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD5C9752BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACC089752CB
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:47:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMcs-0004hX-I7; Wed, 11 Sep 2024 08:39:14 -0400
+	id 1soMjl-0003wi-SK; Wed, 11 Sep 2024 08:46:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1soMcF-0002V7-CQ
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:38:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1soMji-0003qF-5c
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:46:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1soMcD-0001ge-Ux
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:38:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1soMjf-0002bY-PI
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:46:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726058313;
+ s=mimecast20190719; t=1726058774;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ZufLGoVcZlw07Ie5c/yHLAsSswxHhYc4h/+J6X2SOFM=;
- b=a/Uodwd1soO10gVwWmDeqMTlStvXOu1d3q0MkER7iztVuCT1s0po04vDEBbsWKOAO3M8bj
- NkxDvxEImSmYpv0IWgUfy3nWYy/B6l0RW9RCnQch2Q09rxSasXCyKellaDC9X7Khk5WlzG
- i3Qtmb7Q5gsUhOQlgdstA92EvrXd+PE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=M9OxMBb/zyCtLVWCtD7PkUAgTp3zyh//27cZ3fgxrz0=;
+ b=axOEKNg9jaF2Gl9fKoXAHXczWjJ4F6fFLpHKKbEzNcisEVbl8YVV9CSrsoymACJrSmezNz
+ FpdyNmmPANLdRqqdJ2hv9YBmqa1XdmqVQK44LG/8kWitGvNPSByTf0/5CDhE2pxIbC7biM
+ wmUypC3xw96xsYIrKao8u7pKkPPoeWU=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618--dRt4mgoP_ydFNHYCjwpkg-1; Wed, 11 Sep 2024 08:38:32 -0400
-X-MC-Unique: -dRt4mgoP_ydFNHYCjwpkg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-374aef640a4so2747167f8f.1
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:38:31 -0700 (PDT)
+ us-mta-441-eToZs7MsOWaaK6LL6BNZ-A-1; Wed, 11 Sep 2024 08:46:13 -0400
+X-MC-Unique: eToZs7MsOWaaK6LL6BNZ-A-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7a9b6181a99so842760985a.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:46:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726058311; x=1726663111;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=ZufLGoVcZlw07Ie5c/yHLAsSswxHhYc4h/+J6X2SOFM=;
- b=iorInUSdxT4QUNFr+P0MeWueZqCO2aieZhKKJSn4SuWQtp9UhUlHBSffK0WaHs3TYj
- QZXURE9/Zr7jw+sCvCrUCToya0k/yWzNN1mvyp1T/Hih7R3I8MniEXgrralSUMQGXHkM
- FE15lP/b24vSyeFF+D9U3OKQIAo/tSrmH173LniDngV+EvxgDa4PResuQF1nTc1ndMz1
- jB1G54jFSNSIhe+Eqh2IXp4+A/PiTllvmC/MdRpEplZ7JtChKysmjxdUzIQpR9077a9w
- zfzZBDME8jE7eUfva245DleQDwdhbLZ4uw2twOcoAGMLT8oIeLJ8TVLqco2GlT5tVOg1
- ZLAg==
+ d=1e100.net; s=20230601; t=1726058773; x=1726663573;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=M9OxMBb/zyCtLVWCtD7PkUAgTp3zyh//27cZ3fgxrz0=;
+ b=ImAj60lHJJFeOmgorhPmkqDKUu3fqYPt5u7XdZkMadPtHZT4eQDqlmT2aNLTtrnpcJ
+ WjihommsvGnx8RMc+pGs6h+V0Qi6uAJaDr1z0NO/pcBMBQIQYzpuFG1jEostvyCKQkSi
+ hq1ngL7SWZsglFO+WEXJgTx+5LrC1ZHRQZiKTkkkdSgRWUI4oT1q0B2Q28zceAWFtddR
+ Sut4tNkZNXVX2FWEYESitRIuBVNlmOPZErhLIDd8KvXUUGxsYDUj1oyi6HmaorK65orw
+ Ox2vE4xjaFx4MV8jOg5P34vvu1sW66yiV1mLci7vxg0ITPqDlj89Pk+J8OuODmmTQeMI
+ Nc3g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU5f+f4iTKOFHmCVQjQaSZDUoCu1ntlmQZvLOZQM+F3TFRcfnFCmKva7jefhEYDykRx2zpLAyN+Du9J@nongnu.org
-X-Gm-Message-State: AOJu0YxS9Q2e8H5O7RZCFQwxi++uJsYkCeqJ1T1Ln5wUBPnI40uws0js
- hBO2CJmFblg/O4F1CpWG417zSFw/t0sWdF9Lf3PeGuLBOrM+ye3NK45YxzHLZKmM++OhTJwyh0/
- 1tNR4nhE+kdQ0lKx80ru08bLzZ3hFGDU5P1oIJG+tabFtCYAi6ARB
-X-Received: by 2002:a05:6000:1249:b0:376:efb7:d19a with SMTP id
- ffacd0b85a97d-37892703efcmr8553131f8f.44.1726058310845; 
- Wed, 11 Sep 2024 05:38:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEXuTh5THzoFoQiMGVGaV9mgLV7XLaVvE8dlcnAHCC9X2izAfQs9QKF5lSJmwNHLx/3UL9aHg==
-X-Received: by 2002:a05:6000:1249:b0:376:efb7:d19a with SMTP id
- ffacd0b85a97d-37892703efcmr8553089f8f.44.1726058309911; 
- Wed, 11 Sep 2024 05:38:29 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c700:7e00:c672:608:5b3e:df8c?
- (p200300cbc7007e00c67206085b3edf8c.dip0.t-ipconnect.de.
- [2003:cb:c700:7e00:c672:608:5b3e:df8c])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3789567625esm11549657f8f.64.2024.09.11.05.38.28
+ AJvYcCU87Fpb/KyvoL4X7auKExGArrzv4v0OQlkjuebvlpqB/qjHSgdwQA9Yfle1sK8+V2hcxj+M/amjJkD6@nongnu.org
+X-Gm-Message-State: AOJu0Yxdw8gjkle4EGBuEv2elFL+r4e2zEgQDGGX7s1xFywy1hOE+ENH
+ pnB3imQc52z/G7DcKoJGuchBSDlRTMSeotcwV36KIIw7iwMBqvKoK3xceP4ZLePwXxB5Ma3JPs2
+ dlwgRBT0VjY6NuztWBImHk+kAyl2+dwDTZOaNUZvpbS9LnBEYUgH3
+X-Received: by 2002:a05:620a:28d0:b0:7a9:aeb1:388b with SMTP id
+ af79cd13be357-7a9aeb13b0cmr1760214885a.40.1726058773153; 
+ Wed, 11 Sep 2024 05:46:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGz2FlaY1g7YXDwVb8E/xw9mMX882T3fLYzxDET3AijFQ1DVSUk773InTfS9kT0YZhAXAAOWA==
+X-Received: by 2002:a05:620a:28d0:b0:7a9:aeb1:388b with SMTP id
+ af79cd13be357-7a9aeb13b0cmr1760211185a.40.1726058772751; 
+ Wed, 11 Sep 2024 05:46:12 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-43-178-122.web.vodafone.de.
+ [109.43.178.122]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7a9a7a27300sm418225685a.128.2024.09.11.05.46.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Sep 2024 05:38:29 -0700 (PDT)
-Message-ID: <b3739492-6f80-4dba-bfec-466ca2e12513@redhat.com>
-Date: Wed, 11 Sep 2024 14:38:28 +0200
+ Wed, 11 Sep 2024 05:46:12 -0700 (PDT)
+Message-ID: <973bb16d-7143-40f1-ad2a-b37c0cacd5e7@redhat.com>
+Date: Wed, 11 Sep 2024 14:46:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 01/14] s390x/s390-virtio-ccw: don't crash on weird RAM
  sizes
-To: Janosch Frank <frankja@linux.ibm.com>, qemu-devel@nongnu.org
+To: David Hildenbrand <david@redhat.com>,
+ Janosch Frank <frankja@linux.ibm.com>, qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -83,57 +82,55 @@ Cc: qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
 References: <20240910175809.2135596-1-david@redhat.com>
  <20240910175809.2135596-2-david@redhat.com>
  <df04fd44-de71-4616-86fe-a9ae5fe9af08@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
+ <b3739492-6f80-4dba-bfec-466ca2e12513@redhat.com>
 Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <df04fd44-de71-4616-86fe-a9ae5fe9af08@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <b3739492-6f80-4dba-bfec-466ca2e12513@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -142,7 +139,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,30 +155,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11.09.24 13:28, Janosch Frank wrote:
-> On 9/10/24 7:57 PM, David Hildenbrand wrote:
->> KVM is not happy when starting a VM with weird RAM sizes:
+On 11/09/2024 14.38, David Hildenbrand wrote:
+> On 11.09.24 13:28, Janosch Frank wrote:
+>> On 9/10/24 7:57 PM, David Hildenbrand wrote:
+>>> KVM is not happy when starting a VM with weird RAM sizes:
+>>>
+>>>     # qemu-system-s390x --enable-kvm --nographic -m 1234K
+>>>     qemu-system-s390x: kvm_set_user_memory_region: 
+>>> KVM_SET_USER_MEMORY_REGION
+>>>       failed, slot=0, start=0x0, size=0x244000: Invalid argument
+>>>     kvm_set_phys_mem: error registering slot: Invalid argument
+>>>     Aborted (core dumped)
+>>>
+>>> Let's handle that in a better way by rejecting such weird RAM sizes
+>>> right from the start:
+>>>
 >>
->>     # qemu-system-s390x --enable-kvm --nographic -m 1234K
->>     qemu-system-s390x: kvm_set_user_memory_region: KVM_SET_USER_MEMORY_REGION
->>       failed, slot=0, start=0x0, size=0x244000: Invalid argument
->>     kvm_set_phys_mem: error registering slot: Invalid argument
->>     Aborted (core dumped)
->>
->> Let's handle that in a better way by rejecting such weird RAM sizes
->> right from the start:
->>
+>> Huh, I always assumed that ram is handled in multiples of 1MB in QEMU.
 > 
-> Huh, I always assumed that ram is handled in multiples of 1MB in QEMU.
+> Me as well, I did not dig if that changed at some point ... or why such odd 
+> sizes would even be required :)
 
-Me as well, I did not dig if that changed at some point ... or why such 
-odd sizes would even be required :)
+I guess it's there for some old PC hardware ... Remember, 640K ought to be 
+enough for anybody.
 
-Thanks!
-
--- 
-Cheers,
-
-David / dhildenb
+  Thomas
 
 
