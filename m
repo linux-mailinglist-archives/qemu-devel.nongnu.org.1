@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424BE97555C
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FCA975582
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:33:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOKC-0000H5-Hs; Wed, 11 Sep 2024 10:28:04 -0400
+	id 1soOMm-00052k-Vr; Wed, 11 Sep 2024 10:30:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOJP-00076Y-HO
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:27:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOMh-0004tQ-Cz
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:30:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOJN-0003NH-0g
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:27:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOMf-00044c-9f
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:30:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726064832;
+ s=mimecast20190719; t=1726065036;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=7SP0llBIv1hTkxB2e1G9eZTNJY30OOtKHAC0GZkH5pk=;
- b=iqhG2mQw+L4d0UJpHk0V0paQYZlaolYPVK4XUrIddbBQptD2AW/zToaE9VeqGzA8w6+1Kk
- VZoiPGg12sA8gHoxF09RgXsSGePUnPvGOQC73MCxHZ2eZdSw2CiRn61ohJhqQudaKcez/g
- be+VcFiLuhmXYueFaK/haQCcUKzVgE8=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=s7eWEC+J3I9Lev0M7HtiUi/IanEUkElHv0I4GaiCIw8=;
+ b=eISEn2qVf62ZM2n5aB8zkDG75esudLUoEsfGXjIE/wtIlmAxURar5yHVvCEMHhOsaJ+G8s
+ VHk5o9SRmp1zCpVt/T+U7Kh7AHyhFZing5eFtEXTII8SThdGZJ4b/4A2DEwQ8L10kKhrbM
+ jD6aTv1pJ2iDxYnerS+eule4ZydXg1g=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-4IZLYEVzO3-T-EduSWVDiw-1; Wed, 11 Sep 2024 09:52:13 -0400
-X-MC-Unique: 4IZLYEVzO3-T-EduSWVDiw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a8d10954458so367259666b.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:52:13 -0700 (PDT)
+ us-mta-68-RJmG23MwOHSOHOvb3rg9Qg-1; Wed, 11 Sep 2024 09:52:17 -0400
+X-MC-Unique: RJmG23MwOHSOHOvb3rg9Qg-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5c25c45afb2so4829621a12.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:52:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726062732; x=1726667532;
+ d=1e100.net; s=20230601; t=1726062735; x=1726667535;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7SP0llBIv1hTkxB2e1G9eZTNJY30OOtKHAC0GZkH5pk=;
- b=kpoVlGJxdX+2VK+jPzgmBpDhLaRiNVHG/8YC6a9GXTKJTiBvo8RBCmOe74OCeq68h8
- 22SAOLLaAAq235Hs7oC7Bl0RHxNJRccers7jcVCOhC9SPOhbpaJHAi9ODFtIVMXkHmmC
- uC2efNj1jSWSPZXZsaD8yp4IudCVIsmut4vIEfsE+auoutH52zrVMGT7ZXLSVsqVrAoA
- 9IkDQQOrnsbZoT/wv0wS2fwavcFZnI6EMF33MtDHZx42WF09df9hV2ODAh7SzwVsGf6E
- 1k/i0Vjgb/TbujynZ8ZkPgwBGpy6RRDZ4HhajhMT3rYMoSpILsSqEGWB/TFo2jgX9sx9
- S19g==
-X-Gm-Message-State: AOJu0YxSDTer921HGdwz1AXL1L8iI9v91y/vWPjahtu7nw6UNf0wd1n1
- R1QZHIAIlTcxu4BiYMj+czdyfmej+kuNik6G6p949IrTEPQzuSdF8GOGKuBrqDNmmXByClUqvSa
- GOtv61fDl/mXzXbPV7yy29g0CZ4dA2U683PgeLTmO7+8V1WzZEf+F23u+CHSWq1Cnx/jR3jVvRm
- +h2t24OrwJYOUqSsOFTaNC1taHxt2+aQ==
-X-Received: by 2002:a17:907:2d0c:b0:a8d:2e5f:8fdd with SMTP id
- a640c23a62f3a-a8ffae0bea7mr436046766b.59.1726062732015; 
- Wed, 11 Sep 2024 06:52:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF9j3Zx7fBOmvGDs7LU/brNk/yeDDdgCfqQPYw6awSNHdmBK8k+8SMZdZd0Drc88ss0oO7qvA==
-X-Received: by 2002:a17:907:2d0c:b0:a8d:2e5f:8fdd with SMTP id
- a640c23a62f3a-a8ffae0bea7mr436043766b.59.1726062731403; 
- Wed, 11 Sep 2024 06:52:11 -0700 (PDT)
+ bh=s7eWEC+J3I9Lev0M7HtiUi/IanEUkElHv0I4GaiCIw8=;
+ b=ufvTDFT8p+uem6p/jSuqxLqNhECafJ0omcHXyLC9RKReXkD0ODlxlM5dG6QgCNLzed
+ 2Ty7OtTVdWfBArNqWHzNF17w9bpqLAjSPw6i9wNwRkA119tqrWsTnHYPt31pKLgpB2HD
+ alB3YwVWjJK98L7YpaM4+f8zj9ZJEf4UpTpvp96M98iZw2QiGu6TTlx9mGGSTiWBhTkV
+ ClylMeDGRNeXAx++Mzqk6J4z2zjogQEenTeOmZUDHjneR/J0ydX+ZTscqHFiniW99W1k
+ MIvSjof5rmsQP5c5/B3J6K40mIcyBCrmIHiHHCIPrLVQGnfW/IcwmBrcVvBh6Wx96XCv
+ CUvg==
+X-Gm-Message-State: AOJu0YzxMOlEUki71X4br/AsIcSMp9flIeQEON2Q0xiqbUuzHAIedKpc
+ yNx3kSu7kcZ21GNnGgvRBAhsYfSRUT6sX529W7eHpGbFy0sMlR5rtkdWs1uRVc0hYQ+OF2IN1br
+ KEybP6AhESmn05rNzA3STt42iX0QocEnZDFS8CZPKWxCIYrn4QGyQxaSeE6+BB5MhB7DQnDfmK9
+ gKIJvcNg3yiaucu0rXW8+UOsV/LyXSng==
+X-Received: by 2002:a05:6402:528d:b0:5be:fd66:edf3 with SMTP id
+ 4fb4d7f45d1cf-5c3dc79b7a6mr12720156a12.18.1726062735419; 
+ Wed, 11 Sep 2024 06:52:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzLNZKPzU44WOHzWzxWuIOTk/S6psIjrahnWH+D/HwRtJ/7DEgGqSrj3xM9gxcltyj57xeeA==
+X-Received: by 2002:a05:6402:528d:b0:5be:fd66:edf3 with SMTP id
+ 4fb4d7f45d1cf-5c3dc79b7a6mr12720129a12.18.1726062734725; 
+ Wed, 11 Sep 2024 06:52:14 -0700 (PDT)
 Received: from redhat.com ([2.55.9.133]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25a455besm622550566b.93.2024.09.11.06.52.10
+ 4fb4d7f45d1cf-5c3ebd41be4sm5361685a12.18.2024.09.11.06.52.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 06:52:10 -0700 (PDT)
-Date: Wed, 11 Sep 2024 09:52:08 -0400
+ Wed, 11 Sep 2024 06:52:14 -0700 (PDT)
+Date: Wed, 11 Sep 2024 09:52:11 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Gao Shiyuan <gaoshiyuan@baidu.com>, Zuo Boqun <zuoboqun@baidu.com>
-Subject: [PULL 14/18] virtio-pci: Add lookup subregion of VirtIOPCIRegion MR
-Message-ID: <ffa8a3e3b2e6ff017113b98d500d6a9e05b1560a.1726062663.git.mst@redhat.com>
+ peng guo <engguopeng@buaa.edu.cn>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 15/18] hw/cxl: fix physical address field in get scan media
+ results output
+Message-ID: <d29b7f3dd4f95da7173b3f0fb58a7d4dbb093f92.1726062663.git.mst@redhat.com>
 References: <cover.1726062663.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,7 +76,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1726062663.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -99,50 +101,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gao Shiyuan <gaoshiyuan@baidu.com>
+From: peng guo <engguopeng@buaa.edu.cn>
 
-Now virtio_address_space_lookup only lookup common/isr/device/notify
-MR and exclude their subregions.
+When using the mailbox command get scan media results, the scan media
+restart physical address field in the ouput palyload is not 64-byte
+aligned.
 
-When VHOST_USER_PROTOCOL_F_HOST_NOTIFIER enable, the notify MR has
-host-notifier subregions and we need use host-notifier MR to
-notify the hardware accelerator directly instead of eventfd notify.
+This patch removed the error source of the restart physical address.
 
-Further more, maybe common/isr/device MR also has subregions in
-the future, so need memory_region_find for each MR incluing
-their subregions.
+The Scan Media Restart Physical Address is the location from which the
+host should restart the Scan Media operation. [5:0] bits are reserved.
+Refer to CXL spec r3.1 Table 8-146
 
-Add lookup subregion of VirtIOPCIRegion MR instead of only lookup container MR.
-
-Fixes: a93c8d8 ("virtio-pci: Replace modern_as with direct access to modern_bar")
-Co-developed-by: Zuo Boqun <zuoboqun@baidu.com>
-Signed-off-by: Gao Shiyuan <gaoshiyuan@baidu.com>
-Signed-off-by: Zuo Boqun <zuoboqun@baidu.com>
-Message-Id: <20240903120304.97833-1-gaoshiyuan@baidu.com>
+Fixes: 89b5cfcc31e6 ("hw/cxl: Add get scan media results cmd support")
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/linux-cxl/20240819154206.16456-1-engguopeng@buaa.edu.cn/
+Signed-off-by: peng guo <engguopeng@buaa.edu.cn>
+Message-Id: <20240825102212.3871-1-engguopeng@buaa.edu.cn>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio-pci.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ hw/cxl/cxl-mailbox-utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 524b63e5c7..4d832fe845 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -615,8 +615,12 @@ static MemoryRegion *virtio_address_space_lookup(VirtIOPCIProxy *proxy,
-         reg = &proxy->regs[i];
-         if (*off >= reg->offset &&
-             *off + len <= reg->offset + reg->size) {
--            *off -= reg->offset;
--            return &reg->mr;
-+            MemoryRegionSection mrs = memory_region_find(&reg->mr,
-+                                        *off - reg->offset, len);
-+            assert(mrs.mr);
-+            *off = mrs.offset_within_region;
-+            memory_region_unref(mrs.mr);
-+            return mrs.mr;
-         }
-     }
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 3ebbd32e10..9258e48f95 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -2076,7 +2076,7 @@ static CXLRetCode cmd_media_get_scan_media_results(const struct cxl_cmd *cmd,
+ 
+         start = ROUND_DOWN(ent->start, 64ull);
+         stop = ROUND_DOWN(ent->start, 64ull) + ent->length;
+-        stq_le_p(&out->records[i].addr, start | (ent->type & 0x7));
++        stq_le_p(&out->records[i].addr, start);
+         stl_le_p(&out->records[i].length, (stop - start) / CXL_CACHE_LINE_SIZE);
+         i++;
  
 -- 
 MST
