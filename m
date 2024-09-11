@@ -2,71 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1057975751
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F34E0975786
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:49:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soPQB-0007cO-4y; Wed, 11 Sep 2024 11:38:19 -0400
+	id 1soPa4-00013B-68; Wed, 11 Sep 2024 11:48:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1soPQ9-0007WN-6x
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:38:17 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1soPa2-0000uX-HD
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:48:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1soPQ7-0004GC-Ev
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:38:16 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1soPa0-00056S-Gm
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:48:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726069093;
+ s=mimecast20190719; t=1726069707;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=d77J+34o2hbXYcWKv4p7sXHEjN5agx8MwMPMnZzMtiI=;
- b=AGMYbe0ohJXhTZNUSBdq9rQb9A8Ez0po5FzvL+QfuT/Z5DkTIh+5khddilfPA8qDVOPIyr
- 4LBkm6mOzZcuRbzIpysaWmXf0qXjNJkunFoH2FPeFjXCBcgJ/gON0ho9JKljq+j2KGII0k
- xmFjoQymptAeXTga1/VfgKVeVZJ8gg4=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=FDcn3NduRBzJ1p1GnYweZ1g7LcQAP4wJdN/8+ZG8KQo=;
+ b=DbmuZH8mKI5EUedDJmWOHxdSgAkryP237HWY8T37ADABMXRX0WRv2tK2V7l3YbHDIsY0a+
+ BoeHnJdjHhX1v1ElcbjQR6PBLBXdXq768kZAPhE1IFe/D/OwiCTkLBTjrAVl9uxeqa+S2m
+ BEXV2t1uIX6kSHuetPYMUkOxo/3akDc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-Wg9s8VapNA6FwyP0tBDJCw-1; Wed,
- 11 Sep 2024 11:38:09 -0400
-X-MC-Unique: Wg9s8VapNA6FwyP0tBDJCw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-463-mW7O2tfiMtGR-XEoQRGdqQ-1; Wed,
+ 11 Sep 2024 11:48:24 -0400
+X-MC-Unique: mW7O2tfiMtGR-XEoQRGdqQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C3D2C1944B2B; Wed, 11 Sep 2024 15:38:06 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.16])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 299311956086; Wed, 11 Sep 2024 15:38:04 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@redhat.com>
-Cc: Janosch Frank <frankja@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth
- <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, Christian
- Borntraeger <borntraeger@linux.ibm.com>, Eric Farman
- <farman@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>
-Subject: Re: [PATCH v1 00/14] s390x: virtio-mem support
-In-Reply-To: <20240911100415-mutt-send-email-mst@kernel.org>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20240910175809.2135596-1-david@redhat.com>
- <4429b29a-a022-4507-a358-1a16b5032395@linux.ibm.com>
- <9dc58bde-7979-4ffb-9ba7-a501d9fcc416@redhat.com>
- <20240911100415-mutt-send-email-mst@kernel.org>
-User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Wed, 11 Sep 2024 17:38:02 +0200
-Message-ID: <871q1qurol.fsf@redhat.com>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7094419344C2; Wed, 11 Sep 2024 15:48:12 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.224])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 59475195605A; Wed, 11 Sep 2024 15:47:48 +0000 (UTC)
+Date: Wed, 11 Sep 2024 17:47:40 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ "Richard W.M. Jones" <rjones@redhat.com>,
+ Joel Stanley <joel@jms.id.au>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Corey Minyard <minyard@acm.org>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Keith Busch <kbusch@kernel.org>, WANG Xuerui <git@xen0n.name>,
+ Hyman Huang <yong.huang@smartx.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Michael Rolnik <mrolnik@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Jesper Devantier <foss@defmacro.it>, Laurent Vivier <laurent@vivier.eu>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>, kvm@vger.kernel.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Fam Zheng <fam@euphon.net>, qemu-s390x@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Laurent Vivier <lvivier@redhat.com>, Rob Herring <robh@kernel.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Helge Deller <deller@gmx.de>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
+ Klaus Jensen <its@irrelevant.dk>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH 15/39] block: replace assert(false) with
+ g_assert_not_reached()
+Message-ID: <ZuG7nHfvuis-IAcf@redhat.com>
+References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
+ <20240910221606.1817478-16-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240910221606.1817478-16-pierrick.bouvier@linaro.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -75,7 +108,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,35 +124,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 11 2024, "Michael S. Tsirkin" <mst@redhat.com> wrote:
+Am 11.09.2024 um 00:15 hat Pierrick Bouvier geschrieben:
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
->> > 
->> > I'd rather have it in a shared and bigger repo than in your personal
->> > gitlab one. Maybe there's a space somewhere in QEMU or the Virtio team's
->> > repos that would be a good fit if the kernel's docu isn't the right place?
->> 
->> At this point, outside of kernel/QEMU feels like the right thing to do.
->> Conny is already a co-maintainer of my "personal" (;)) gitlab.
->> 
->> 
->> And now I realize that I CCed Heiko on the Linux series but not the QEMU
->> series. My bad.
->> 
->> [1] https://lore.kernel.org/all/20200727114819.3f816010.cohuck@redhat.com/
->
->
-> No prob. Or if you want it in virtio spec, that's also fine.
-
-The virtio spec makes sense for documenting things needed to implement
-it, but what I liked about the gitlab project is that it tries to go
-into more s390-specific aspects (that feel a bit out of scope for the
-virtio spec), and that it provides a place to document non-virtio
-related interfaces.
-
-Anyway, if we want to proceed with the gitlab project, would it make
-sense to create an org for it, so that it doesn't look like David's
-personal project? In any case, while I'm happy to stay on, I'm not that
-involved with s390 anymore, and it might make sense to add more people
-to it.
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 
 
