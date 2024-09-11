@@ -2,88 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D238975647
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A2197567F
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:11:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOmS-0008Dx-W3; Wed, 11 Sep 2024 10:57:20 -0400
+	id 1soOu7-0005AK-DN; Wed, 11 Sep 2024 11:05:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1soOjm-0007AS-OC
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:54:33 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1soOjj-0007LX-BI
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:54:30 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-27051f63018so3673530fac.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 07:54:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726066466; x=1726671266; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=R6hGB0vw7ZUbECqaNkS6H7FihAxNqyKbWTvXGArpq6U=;
- b=gernRcD/noecKJd2MeqfkdZOSSmnKwV2vmSfDtt1L0haBxccCGc1m840TFR623YsCD
- AwkCLUH/PPhz3UrGUblF5sQw8hkOsAqPqvzEPIoknmPWk1wv1cloc7miU/UCNAwjyXQH
- UDra3PMcZGDxMHZ41x+cntzCeXYeU7kG4OPq/avnNbCNgjdG2O5S4CGDAC3gJGhkW4kt
- aHKbAQdpPEDBleM5FQLSP/ls5OhSyBCCxb2KLwQHuytVPNos4Jv0h3aWZQztHkTgXz9X
- vwO+7x0Yw3/LRWmpMa8J7/b5qb2vEB03Oucq4SVBiIvr2Och/90TNJYPd9g4MXdp0+jJ
- 30bQ==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1soOrK-0004sU-MM
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:02:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1soOrC-0000GK-Kx
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:02:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1726066924;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Nn9bXK1BdSebugOBbEYMceGXLXwIY7LiI27+C3ZtM90=;
+ b=hoML3a1dVc0H3VbY/kNejaIq+/j7ZT3BOAu9uZHcgQj3nZlcHkNpVIEse5W9HPVerIyytx
+ BeIJsZzcQqBwNgt8IPK2f6CJeY4NcLy5WXrMczgFOMtwCKT2y6AINAmgV64xtGJQUv522z
+ rKM1K062MFaOUP/NQUyY/yZNuLQ7ZFU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-693-NDCnHPguPca8YuLSz9bWlg-1; Wed, 11 Sep 2024 11:02:02 -0400
+X-MC-Unique: NDCnHPguPca8YuLSz9bWlg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-374c79bf194so1362577f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 08:02:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726066466; x=1726671266;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1726066921; x=1726671721;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R6hGB0vw7ZUbECqaNkS6H7FihAxNqyKbWTvXGArpq6U=;
- b=fxXqZC1KKrFGlwbrEzognGfarekhp0TPa5X7kZYM3IaqS56uCeE7MQqY+arFCE+XHk
- hCX8LXDVJhamv9UWO4aLKNqM3+tLQLqP6m8unmsHRqt/hJmjSqwOsWeK0jSzdzqQvIwx
- t62C7Trx2vNSk2jyDqYjQNTPVJhH+0nIUJnb2Kgqn2K/EdNlFEsoFpTHtpsAnPQMyHcc
- pQvyggpbj2hqyKBZJXmFgjaGb3NoQ0n5e6SLi5VYXW4ZGJnAOiiTmdQ/5s/NLSaCuTPr
- 53G5FpWlTBxG6JN03GgIy8wqwV0mhIQhgCwFYJ45T0WcrUw5yiukajnFvzf3sP3g8Dyx
- +FVg==
+ bh=Nn9bXK1BdSebugOBbEYMceGXLXwIY7LiI27+C3ZtM90=;
+ b=WqYXnq+SEi/ejca3r2O0q2nvVnWg4nxvG0ssh2rCwPta9LJzR0eYtPsKzloAEO9QSo
+ prWjGBFsUAckA8k0jOAEHUSDY3e4BX5Kzu7NVCnG9jPWzljIaxvZ3UuxK9OTuWYxYexf
+ fYuyB2xG2jmc73bd16bC0nCVwXxhPneQI2kvTzxniMSDvY3IN0G04zE2uIoP3eDvk0NT
+ Bb2roygOTPqKhbE/k+GP27s9ii0IMZvWgV6JrQDGFnOrAH/rvMInG+jvihfUGBTtCin3
+ 9sNqdtTd6CRnA4Kjx3DthkZaso0VyLueu7II3ET9hlpLJMRxpRWiBkOyAPWGtSmzq1c/
+ o9wg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV7ypoZeiLDExUXabNkL6kKT3Qi17foANA/w5Aw9UdkrurmjLFKkEhlfSZkSKqpaqCk7/fZfclIU2+b@nongnu.org
-X-Gm-Message-State: AOJu0YzkQ7zE1qPk/LWCxH2HdErBDhX7cBrCCUd2HxxukanXgLXMxuF4
- 51CYgU1+VHM4gw3ESV1ypqHPi2/ZASDOC1BJJRCkYzHbmd9BoAp737DsTfWweWPSa8YrAkOpGhW
- C4m/rJ5U3gANuy2tsnJKCqHgfyxs=
-X-Google-Smtp-Source: AGHT+IGnTlKtakcBVdyJDFHvbBGXgCkPGU7Ctq50CXhC+sMHYd0ux4Lcr+vcvRess5fJwoFtcJle7BJhGPhIMYykbdg=
-X-Received: by 2002:a05:6870:5494:b0:254:bd24:de83 with SMTP id
- 586e51a60fabf-27b82e5d798mr18543680fac.12.1726066465380; Wed, 11 Sep 2024
- 07:54:25 -0700 (PDT)
+ AJvYcCWDV1aZbVhpc8TRBOwf5jAeHr9QNfL52LCd4eQuso0IklLIpR1nKKLT/uRvFbODwxdQv1zz0/hbWa7u@nongnu.org
+X-Gm-Message-State: AOJu0YwBZ/olHtrU8aEeoNopF7pjrvOTwurLNyhyJEUOMirvjr8xdESg
+ tjV+7LRWmxfi3KkDRbGh6hAdHqJqUVHJB6LOt13USRGv4CCQAQc7LVOj/P7rd1Qo1vpsc4qw7e+
+ KF667aGJjHRn4iY+mtw+cR2+eJb3sPdAAAU17hGL/zXRe2iPSKuQF
+X-Received: by 2002:adf:ef4b:0:b0:374:b71f:72c0 with SMTP id
+ ffacd0b85a97d-378b07a4e65mr2297951f8f.21.1726066921320; 
+ Wed, 11 Sep 2024 08:02:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxH0DoQKBSmd0ALjJbjMto2VzTIEIjv8UURlnAjPk9s9Gf97w2BlKw2mdakD8N3ywwPJQpzg==
+X-Received: by 2002:adf:ef4b:0:b0:374:b71f:72c0 with SMTP id
+ ffacd0b85a97d-378b07a4e65mr2297837f8f.21.1726066920009; 
+ Wed, 11 Sep 2024 08:02:00 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-378956de4b9sm11818658f8f.111.2024.09.11.08.01.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Sep 2024 08:01:59 -0700 (PDT)
+Date: Wed, 11 Sep 2024 17:01:57 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Dongjiu Geng <gengdongjiu1@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Shannon Zhao
+ <shannon.zhaosl@gmail.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v9 02/12] acpi/ghes: rework the logic to handle HEST
+ source ID
+Message-ID: <20240911170157.792225ef@imammedo.users.ipa.redhat.com>
+In-Reply-To: <de67e08436e6903579f4fdc6beee7a5bc2696303.1724556967.git.mchehab+huawei@kernel.org>
+References: <cover.1724556967.git.mchehab+huawei@kernel.org>
+ <de67e08436e6903579f4fdc6beee7a5bc2696303.1724556967.git.mchehab+huawei@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20240628145710.1516121-1-aesteve@redhat.com>
- <20240628145710.1516121-2-aesteve@redhat.com>
- <20240711074510.GC563880@dynamic-pd01.res.v6.highway.a1.net>
- <CADSE00+HWkP9FQTuA-xNtExS-FSieh7DJ4D3zzrtJi3a6=PP1Q@mail.gmail.com>
- <CADSE00JWvq7HYibVymewoKwuo1T1-W6ZJ1fJEB3ofiS1iOyf1w@mail.gmail.com>
- <20240905164525.GF1922502@fedora>
- <CADSE00JgC5fyax-foLqo__6ejupBuSaKU4tDbJ-9aJF1VhS5kA@mail.gmail.com>
-In-Reply-To: <CADSE00JgC5fyax-foLqo__6ejupBuSaKU4tDbJ-9aJF1VhS5kA@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 11 Sep 2024 10:54:13 -0400
-Message-ID: <CAJSP0QVineYfzF1CURq02oy9r4HvAQZF0ow4Gx7CowGUMcng9Q@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 1/5] vhost-user: Add VIRTIO Shared Memory map
- request
-To: Albert Esteve <aesteve@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- jasowang@redhat.com, david@redhat.com, slp@redhat.com,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x2a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,661 +108,617 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 11 Sept 2024 at 07:58, Albert Esteve <aesteve@redhat.com> wrote:
-> On Thu, Sep 5, 2024 at 6:45=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.c=
-om> wrote:
->>
->> On Tue, Sep 03, 2024 at 01:54:12PM +0200, Albert Esteve wrote:
->> > On Tue, Sep 3, 2024 at 11:54=E2=80=AFAM Albert Esteve <aesteve@redhat.=
-com> wrote:
->> >
->> > >
->> > >
->> > > On Thu, Jul 11, 2024 at 9:45=E2=80=AFAM Stefan Hajnoczi <stefanha@re=
-dhat.com>
->> > > wrote:
->> > >
->> > >> On Fri, Jun 28, 2024 at 04:57:06PM +0200, Albert Esteve wrote:
->> > >> > Add SHMEM_MAP/UNMAP requests to vhost-user to
->> > >> > handle VIRTIO Shared Memory mappings.
->> > >> >
->> > >> > This request allows backends to dynamically map
->> > >> > fds into a VIRTIO Shared Memory Region indentified
->> > >> > by its `shmid`. Then, the fd memory is advertised
->> > >> > to the driver as a base addres + offset, so it
->> > >> > can be read/written (depending on the mmap flags
->> > >> > requested) while its valid.
->> > >> >
->> > >> > The backend can munmap the memory range
->> > >> > in a given VIRTIO Shared Memory Region (again,
->> > >> > identified by its `shmid`), to free it. Upon
->> > >> > receiving this message, the front-end must
->> > >> > mmap the regions with PROT_NONE to reserve
->> > >> > the virtual memory space.
->> > >> >
->> > >> > The device model needs to create MemoryRegion
->> > >> > instances for the VIRTIO Shared Memory Regions
->> > >> > and add them to the `VirtIODevice` instance.
->> > >> >
->> > >> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
->> > >> > ---
->> > >> >  docs/interop/vhost-user.rst               |  27 +++++
->> > >> >  hw/virtio/vhost-user.c                    | 122 ++++++++++++++++=
-++++++
->> > >> >  hw/virtio/virtio.c                        |  12 +++
->> > >> >  include/hw/virtio/virtio.h                |   5 +
->> > >> >  subprojects/libvhost-user/libvhost-user.c |  65 ++++++++++++
->> > >> >  subprojects/libvhost-user/libvhost-user.h |  53 ++++++++++
->> > >> >  6 files changed, 284 insertions(+)
->> > >> >
->> > >> > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-use=
-r.rst
->> > >> > index d8419fd2f1..d52ba719d5 100644
->> > >> > --- a/docs/interop/vhost-user.rst
->> > >> > +++ b/docs/interop/vhost-user.rst
->> > >> > @@ -1859,6 +1859,33 @@ is sent by the front-end.
->> > >> >    when the operation is successful, or non-zero otherwise. Note =
-that
->> > >> if the
->> > >> >    operation fails, no fd is sent to the backend.
->> > >> >
->> > >> > +``VHOST_USER_BACKEND_SHMEM_MAP``
->> > >> > +  :id: 9
->> > >> > +  :equivalent ioctl: N/A
->> > >> > +  :request payload: fd and ``struct VhostUserMMap``
->> > >> > +  :reply payload: N/A
->> > >> > +
->> > >> > +  This message can be submitted by the backends to advertise a n=
-ew
->> > >> mapping
->> > >> > +  to be made in a given VIRTIO Shared Memory Region. Upon receiv=
-ing
->> > >> the message,
->> > >> > +  The front-end will mmap the given fd into the VIRTIO Shared Me=
-mory
->> > >> Region
->> > >> > +  with the requested ``shmid``. A reply is generated indicating
->> > >> whether mapping
->> > >> > +  succeeded.
->> > >> > +
->> > >> > +  Mapping over an already existing map is not allowed and reques=
-t
->> > >> shall fail.
->> > >> > +  Therefore, the memory range in the request must correspond wit=
-h a
->> > >> valid,
->> > >> > +  free region of the VIRTIO Shared Memory Region.
->> > >> > +
->> > >> > +``VHOST_USER_BACKEND_SHMEM_UNMAP``
->> > >> > +  :id: 10
->> > >> > +  :equivalent ioctl: N/A
->> > >> > +  :request payload: ``struct VhostUserMMap``
->> > >> > +  :reply payload: N/A
->> > >> > +
->> > >> > +  This message can be submitted by the backends so that the fron=
-t-end
->> > >> un-mmap
->> > >> > +  a given range (``offset``, ``len``) in the VIRTIO Shared Memor=
-y
->> > >> Region with
->> > >>
->> > >> s/offset/shm_offset/
->> > >>
->> > >> > +  the requested ``shmid``.
->> > >>
->> > >> Please clarify that <offset, len> must correspond to the entirety o=
-f a
->> > >> valid mapped region.
->> > >>
->> > >> By the way, the VIRTIO 1.3 gives the following behavior for the vir=
-tiofs
->> > >> DAX Window:
->> > >>
->> > >>   When a FUSE_SETUPMAPPING request perfectly overlaps a previous
->> > >>   mapping, the previous mapping is replaced. When a mapping partial=
-ly
->> > >>   overlaps a previous mapping, the previous mapping is split into o=
-ne or
->> > >>   two smaller mappings. When a mapping is partially unmapped it is =
-also
->> > >>   split into one or two smaller mappings.
->> > >>
->> > >>   Establishing new mappings or splitting existing mappings consumes
->> > >>   resources. If the device runs out of resources the FUSE_SETUPMAPP=
-ING
->> > >>   request fails until resources are available again following
->> > >>   FUSE_REMOVEMAPPING.
->> > >>
->> > >> I think SETUPMAPPING/REMOVMAPPING can be implemented using
->> > >> SHMEM_MAP/UNMAP. SHMEM_MAP/UNMAP do not allow atomically replacing
->> > >> partial ranges, but as far as I know that's not necessary for virti=
-ofs
->> > >> in practice.
->> > >>
->> > >> It's worth mentioning that mappings consume resources and that SHME=
-M_MAP
->> > >> can fail when there are no resources available. The process-wide li=
-mit
->> > >> is vm.max_map_count on Linux although a vhost-user frontend may red=
-uce
->> > >> it further to control vhost-user resource usage.
->> > >>
->> > >> > +  A reply is generated indicating whether unmapping succeeded.
->> > >> > +
->> > >> >  .. _reply_ack:
->> > >> >
->> > >> >  VHOST_USER_PROTOCOL_F_REPLY_ACK
->> > >> > diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
->> > >> > index cdf9af4a4b..7ee8a472c6 100644
->> > >> > --- a/hw/virtio/vhost-user.c
->> > >> > +++ b/hw/virtio/vhost-user.c
->> > >> > @@ -115,6 +115,8 @@ typedef enum VhostUserBackendRequest {
->> > >> >      VHOST_USER_BACKEND_SHARED_OBJECT_ADD =3D 6,
->> > >> >      VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE =3D 7,
->> > >> >      VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP =3D 8,
->> > >> > +    VHOST_USER_BACKEND_SHMEM_MAP =3D 9,
->> > >> > +    VHOST_USER_BACKEND_SHMEM_UNMAP =3D 10,
->> > >> >      VHOST_USER_BACKEND_MAX
->> > >> >  }  VhostUserBackendRequest;
->> > >> >
->> > >> > @@ -192,6 +194,24 @@ typedef struct VhostUserShared {
->> > >> >      unsigned char uuid[16];
->> > >> >  } VhostUserShared;
->> > >> >
->> > >> > +/* For the flags field of VhostUserMMap */
->> > >> > +#define VHOST_USER_FLAG_MAP_R (1u << 0)
->> > >> > +#define VHOST_USER_FLAG_MAP_W (1u << 1)
->> > >> > +
->> > >> > +typedef struct {
->> > >> > +    /* VIRTIO Shared Memory Region ID */
->> > >> > +    uint8_t shmid;
->> > >> > +    uint8_t padding[7];
->> > >> > +    /* File offset */
->> > >> > +    uint64_t fd_offset;
->> > >> > +    /* Offset within the VIRTIO Shared Memory Region */
->> > >> > +    uint64_t shm_offset;
->> > >> > +    /* Size of the mapping */
->> > >> > +    uint64_t len;
->> > >> > +    /* Flags for the mmap operation, from VHOST_USER_FLAG_* */
->> > >> > +    uint64_t flags;
->> > >> > +} VhostUserMMap;
->> > >> > +
->> > >> >  typedef struct {
->> > >> >      VhostUserRequest request;
->> > >> >
->> > >> > @@ -224,6 +244,7 @@ typedef union {
->> > >> >          VhostUserInflight inflight;
->> > >> >          VhostUserShared object;
->> > >> >          VhostUserTransferDeviceState transfer_state;
->> > >> > +        VhostUserMMap mmap;
->> > >> >  } VhostUserPayload;
->> > >> >
->> > >> >  typedef struct VhostUserMsg {
->> > >> > @@ -1748,6 +1769,100 @@
->> > >> vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u=
-,
->> > >> >      return 0;
->> > >> >  }
->> > >> >
->> > >> > +static int
->> > >> > +vhost_user_backend_handle_shmem_map(struct vhost_dev *dev,
->> > >> > +                                    VhostUserMMap *vu_mmap,
->> > >> > +                                    int fd)
->> > >> > +{
->> > >> > +    void *addr =3D 0;
->> > >> > +    MemoryRegion *mr =3D NULL;
->> > >> > +
->> > >> > +    if (fd < 0) {
->> > >> > +        error_report("Bad fd for map");
->> > >> > +        return -EBADF;
->> > >> > +    }
->> > >> > +
->> > >> > +    if (!dev->vdev->shmem_list ||
->> > >> > +        dev->vdev->n_shmem_regions <=3D vu_mmap->shmid) {
->> > >> > +        error_report("Device only has %d VIRTIO Shared Memory Re=
-gions.
->> > >> "
->> > >> > +                     "Requested ID: %d",
->> > >> > +                     dev->vdev->n_shmem_regions, vu_mmap->shmid)=
-;
->> > >> > +        return -EFAULT;
->> > >> > +    }
->> > >> > +
->> > >> > +    mr =3D &dev->vdev->shmem_list[vu_mmap->shmid];
->> > >> > +
->> > >> > +    if (!mr) {
->> > >> > +        error_report("VIRTIO Shared Memory Region at "
->> > >> > +                     "ID %d unitialized", vu_mmap->shmid);
->> > >> > +        return -EFAULT;
->> > >> > +    }
->> > >> > +
->> > >> > +    if ((vu_mmap->shm_offset + vu_mmap->len) < vu_mmap->len ||
->> > >> > +        (vu_mmap->shm_offset + vu_mmap->len) > mr->size) {
->> > >> > +        error_report("Bad offset/len for mmap %" PRIx64 "+%" PRI=
-x64,
->> > >> > +                     vu_mmap->shm_offset, vu_mmap->len);
->> > >> > +        return -EFAULT;
->> > >> > +    }
->> > >> > +
->> > >> > +    void *shmem_ptr =3D memory_region_get_ram_ptr(mr);
->> > >> > +
->> > >> > +    addr =3D mmap(shmem_ptr + vu_mmap->shm_offset, vu_mmap->len,
->> > >>
->> > >> Missing check for overlap between range [shm_offset, shm_offset + l=
-en)
->> > >> and existing mappings.
->> > >>
->> > >
->> > > Not sure how to do this check. Specifically, I am not sure how previ=
-ous
->> > > ranges are stored within the MemoryRegion. Is looping through
->> > > mr->subregions
->> > > a valid option?
->> > >
->> >
->> > Maybe something like this would do?
->> > ```
->> >      if (memory_region_find(mr, vu_mmap->shm_offset, vu_mmap->len).mr)=
- {
->> >         error_report("Requested memory (%" PRIx64 "+%" PRIx64 " overal=
-ps "
->> >                      "with previously mapped memory",
->> >                      vu_mmap->shm_offset, vu_mmap->len);
->> >         return -EFAULT;
->> >     }
->> > ```
->>
->> I don't think that works because the QEMU MemoryRegion covers the entire
->> range, some of which contains mappings and some of which is empty. It
->> would be necessary to track mappings that have been made.
->>
->> I'm not aware of a security implication if the overlap check is missing,
->> so I guess it may be okay to skip it and rely on the vhost-user back-end
->> author to honor the spec. I'm not totally against that because it's
->> faster and less code, but it feels a bit iffy to not enforce the input
->> validation that the spec requires.
->>
->> Maintain a list of mappings so this check can be performed?
->>
->
-> Ok, I prefer to aim for the better solution and see where that takes us.
-> So I will add a mapped_regions list or something like that to the
-> MemoryRegion struct in a new commit, so that it can be reviewed
-> independently. With the infrastructure's code in the patch we can decide =
-if
-> it is worth to have it.
+On Sun, 25 Aug 2024 05:45:57 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-Great. MemoryRegion is a core struct that's not related to vhost-user.
-I don't think anything else needs a mappings list. Maybe add the
-mappings list to shmem_list[] elements instead so that each VIRTIO
-Shared Memory Region has a mappings list? Each element could be a
-struct with a MemoryRegion field and a mappings list.
+> The current logic is based on a lot of duct tape, with
+> offsets calculated based on one define with the number of
+> source IDs and an enum.
+> 
+> Rewrite the logic in a way that it would be more resilient
+> of code changes, by moving the source ID count to an enum
+> and make the offset calculus more explicit.
+> 
+> Such change was inspired on a patch from Jonathan Cameron
+> splitting the logic to get the CPER address on a separate
+> function, as this will be needed to support generic error
+> injection.
 
-Stefan
+patch is too large and does too many things at once,
+see inline suggestions on how to split it in more
+manageable chunks.
+(I'll mark preferred patch order with numbers)
 
->
-> Thank you!
->
->>
->> >
->> > >
->> > >
->> > >>
->> > >> > +        ((vu_mmap->flags & VHOST_USER_FLAG_MAP_R) ? PROT_READ : =
-0) |
->> > >> > +        ((vu_mmap->flags & VHOST_USER_FLAG_MAP_W) ? PROT_WRITE :=
- 0),
->> > >> > +        MAP_SHARED | MAP_FIXED, fd, vu_mmap->fd_offset);
->> > >> > +
->> > >> > +    if (addr =3D=3D MAP_FAILED) {
->> > >> > +        error_report("Failed to mmap mem fd");
->> > >> > +        return -EFAULT;
->> > >> > +    }
->> > >> > +
->> > >> > +    return 0;
->> > >> > +}
->> > >> > +
->> > >> > +static int
->> > >> > +vhost_user_backend_handle_shmem_unmap(struct vhost_dev *dev,
->> > >> > +                                      VhostUserMMap *vu_mmap)
->> > >> > +{
->> > >> > +    void *addr =3D 0;
->> > >> > +    MemoryRegion *mr =3D NULL;
->> > >> > +
->> > >> > +    if (!dev->vdev->shmem_list ||
->> > >> > +        dev->vdev->n_shmem_regions <=3D vu_mmap->shmid) {
->> > >> > +        error_report("Device only has %d VIRTIO Shared Memory Re=
-gions.
->> > >> "
->> > >> > +                     "Requested ID: %d",
->> > >> > +                     dev->vdev->n_shmem_regions, vu_mmap->shmid)=
-;
->> > >> > +        return -EFAULT;
->> > >> > +    }
->> > >> > +
->> > >> > +    mr =3D &dev->vdev->shmem_list[vu_mmap->shmid];
->> > >> > +
->> > >> > +    if (!mr) {
->> > >> > +        error_report("VIRTIO Shared Memory Region at "
->> > >> > +                     "ID %d unitialized", vu_mmap->shmid);
->> > >> > +        return -EFAULT;
->> > >> > +    }
->> > >> > +
->> > >> > +    if ((vu_mmap->shm_offset + vu_mmap->len) < vu_mmap->len ||
->> > >> > +        (vu_mmap->shm_offset + vu_mmap->len) > mr->size) {
->> > >> > +        error_report("Bad offset/len for mmap %" PRIx64 "+%" PRI=
-x64,
->> > >> > +                     vu_mmap->shm_offset, vu_mmap->len);
->> > >> > +        return -EFAULT;
->> > >> > +    }
->> > >> > +
->> > >> > +    void *shmem_ptr =3D memory_region_get_ram_ptr(mr);
->> > >> > +
->> > >> > +    addr =3D mmap(shmem_ptr + vu_mmap->shm_offset, vu_mmap->len,
->> > >>
->> > >> Missing check for existing mapping with exact range [shm_offset, le=
-n)
->> > >> match.
->> > >>
->> > >> > +                PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIX=
-ED,
->> > >> -1, 0);
->> > >> > +
->> > >> > +    if (addr =3D=3D MAP_FAILED) {
->> > >> > +        error_report("Failed to unmap memory");
->> > >> > +        return -EFAULT;
->> > >> > +    }
->> > >> > +
->> > >> > +    return 0;
->> > >> > +}
->> > >> > +
->> > >> >  static void close_backend_channel(struct vhost_user *u)
->> > >> >  {
->> > >> >      g_source_destroy(u->backend_src);
->> > >> > @@ -1816,6 +1931,13 @@ static gboolean backend_read(QIOChannel *i=
-oc,
->> > >> GIOCondition condition,
->> > >> >          ret =3D
->> > >> vhost_user_backend_handle_shared_object_lookup(dev->opaque, ioc,
->> > >> >                                                               &hd=
-r,
->> > >> &payload);
->> > >> >          break;
->> > >> > +    case VHOST_USER_BACKEND_SHMEM_MAP:
->> > >> > +        ret =3D vhost_user_backend_handle_shmem_map(dev, &payloa=
-d.mmap,
->> > >> > +                                                  fd ? fd[0] : -=
-1);
->> > >> > +        break;
->> > >> > +    case VHOST_USER_BACKEND_SHMEM_UNMAP:
->> > >> > +        ret =3D vhost_user_backend_handle_shmem_unmap(dev,
->> > >> &payload.mmap);
->> > >> > +        break;
->> > >> >      default:
->> > >> >          error_report("Received unexpected msg type: %d.", hdr.re=
-quest);
->> > >> >          ret =3D -EINVAL;
->> > >> > diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
->> > >> > index 893a072c9d..9f2da5b11e 100644
->> > >> > --- a/hw/virtio/virtio.c
->> > >> > +++ b/hw/virtio/virtio.c
->> > >> > @@ -2856,6 +2856,16 @@ int virtio_save(VirtIODevice *vdev, QEMUFi=
-le *f)
->> > >> >      return vmstate_save_state(f, &vmstate_virtio, vdev, NULL);
->> > >> >  }
->> > >> >
->> > >> > +MemoryRegion *virtio_new_shmem_region(VirtIODevice *vdev)
->> > >> > +{
->> > >> > +    MemoryRegion *mr =3D g_new0(MemoryRegion, 1);
->> > >> > +    ++vdev->n_shmem_regions;
->> > >> > +    vdev->shmem_list =3D g_renew(MemoryRegion, vdev->shmem_list,
->> > >> > +                               vdev->n_shmem_regions);
->> > >>
->> > >> Where is shmem_list freed?
->> > >>
->> > >> The name "list" is misleading since this is an array, not a list.
->> > >>
->> > >> > +    vdev->shmem_list[vdev->n_shmem_regions - 1] =3D *mr;
->> > >> > +    return mr;
->> > >> > +}
->> > >>
->> > >> This looks weird. The contents of mr are copied into shmem_list[] a=
-nd
->> > >> then the pointer to mr is returned? Did you mean for the field's ty=
-pe to
->> > >> be MemoryRegion **shmem_list and then vdev->shmem_list[...] =3D mr =
-would
->> > >> stash the pointer?
->> > >>
->> > >> > +
->> > >> >  /* A wrapper for use as a VMState .put function */
->> > >> >  static int virtio_device_put(QEMUFile *f, void *opaque, size_t s=
-ize,
->> > >> >                                const VMStateField *field, JSONWri=
-ter
->> > >> *vmdesc)
->> > >> > @@ -3264,6 +3274,8 @@ void virtio_init(VirtIODevice *vdev, uint16=
-_t
->> > >> device_id, size_t config_size)
->> > >> >              virtio_vmstate_change, vdev);
->> > >> >      vdev->device_endian =3D virtio_default_endian();
->> > >> >      vdev->use_guest_notifier_mask =3D true;
->> > >> > +    vdev->shmem_list =3D NULL;
->> > >> > +    vdev->n_shmem_regions =3D 0;
->> > >> >  }
->> > >> >
->> > >> >  /*
->> > >> > diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virti=
-o.h
->> > >> > index 7d5ffdc145..16d598aadc 100644
->> > >> > --- a/include/hw/virtio/virtio.h
->> > >> > +++ b/include/hw/virtio/virtio.h
->> > >> > @@ -165,6 +165,9 @@ struct VirtIODevice
->> > >> >       */
->> > >> >      EventNotifier config_notifier;
->> > >> >      bool device_iotlb_enabled;
->> > >> > +    /* Shared memory region for vhost-user mappings. */
->> > >> > +    MemoryRegion *shmem_list;
->> > >> > +    int n_shmem_regions;
->> > >> >  };
->> > >> >
->> > >> >  struct VirtioDeviceClass {
->> > >> > @@ -280,6 +283,8 @@ void virtio_notify(VirtIODevice *vdev, VirtQu=
-eue
->> > >> *vq);
->> > >> >
->> > >> >  int virtio_save(VirtIODevice *vdev, QEMUFile *f);
->> > >> >
->> > >> > +MemoryRegion *virtio_new_shmem_region(VirtIODevice *vdev);
->> > >> > +
->> > >> >  extern const VMStateInfo virtio_vmstate_info;
->> > >> >
->> > >> >  #define VMSTATE_VIRTIO_DEVICE \
->> > >> > diff --git a/subprojects/libvhost-user/libvhost-user.c
->> > >> b/subprojects/libvhost-user/libvhost-user.c
->> > >> > index a879149fef..28556d183a 100644
->> > >> > --- a/subprojects/libvhost-user/libvhost-user.c
->> > >> > +++ b/subprojects/libvhost-user/libvhost-user.c
->> > >> > @@ -1586,6 +1586,71 @@ vu_rm_shared_object(VuDev *dev, unsigned c=
-har
->> > >> uuid[UUID_LEN])
->> > >> >      return vu_send_message(dev, &msg);
->> > >> >  }
->> > >> >
->> > >> > +bool
->> > >> > +vu_shmem_map(VuDev *dev, uint8_t shmid, uint64_t fd_offset,
->> > >> > +             uint64_t shm_offset, uint64_t len, uint64_t flags)
->> > >> > +{
->> > >> > +    bool result =3D false;
->> > >> > +    VhostUserMsg msg_reply;
->> > >> > +    VhostUserMsg vmsg =3D {
->> > >> > +        .request =3D VHOST_USER_BACKEND_SHMEM_MAP,
->> > >> > +        .size =3D sizeof(vmsg.payload.mmap),
->> > >> > +        .flags =3D VHOST_USER_VERSION,
->> > >> > +        .payload.mmap =3D {
->> > >> > +            .shmid =3D shmid,
->> > >> > +            .fd_offset =3D fd_offset,
->> > >> > +            .shm_offset =3D shm_offset,
->> > >> > +            .len =3D len,
->> > >> > +            .flags =3D flags,
->> > >> > +        },
->> > >> > +    };
->> > >> > +
->> > >> > +    if (vu_has_protocol_feature(dev, VHOST_USER_PROTOCOL_F_REPLY=
-_ACK))
->> > >> {
->> > >> > +        vmsg.flags |=3D VHOST_USER_NEED_REPLY_MASK;
->> > >> > +    }
->> > >> > +
->> > >> > +    pthread_mutex_lock(&dev->backend_mutex);
->> > >> > +    if (!vu_message_write(dev, dev->backend_fd, &vmsg)) {
->> > >> > +        pthread_mutex_unlock(&dev->backend_mutex);
->> > >> > +        return false;
->> > >> > +    }
->> > >> > +
->> > >> > +    /* Also unlocks the backend_mutex */
->> > >> > +    return vu_process_message_reply(dev, &vmsg);
->> > >> > +}
->> > >> > +
->> > >> > +bool
->> > >> > +vu_shmem_unmap(VuDev *dev, uint8_t shmid, uint64_t fd_offset,
->> > >> > +               uint64_t shm_offset, uint64_t len)
->> > >> > +{
->> > >> > +    bool result =3D false;
->> > >> > +    VhostUserMsg msg_reply;
->> > >> > +    VhostUserMsg vmsg =3D {
->> > >> > +        .request =3D VHOST_USER_BACKEND_SHMEM_UNMAP,
->> > >> > +        .size =3D sizeof(vmsg.payload.mmap),
->> > >> > +        .flags =3D VHOST_USER_VERSION,
->> > >> > +        .payload.mmap =3D {
->> > >> > +            .shmid =3D shmid,
->> > >> > +            .fd_offset =3D fd_offset,
->> > >>
->> > >> What is the meaning of this field? I expected it to be set to 0.
->> > >>
->> > >> > +            .shm_offset =3D shm_offset,
->> > >> > +            .len =3D len,
->> > >> > +        },
->> > >> > +    };
->> > >> > +
->> > >> > +    if (vu_has_protocol_feature(dev, VHOST_USER_PROTOCOL_F_REPLY=
-_ACK))
->> > >> {
->> > >> > +        vmsg.flags |=3D VHOST_USER_NEED_REPLY_MASK;
->> > >> > +    }
->> > >> > +
->> > >> > +    pthread_mutex_lock(&dev->backend_mutex);
->> > >> > +    if (!vu_message_write(dev, dev->backend_fd, &vmsg)) {
->> > >> > +        pthread_mutex_unlock(&dev->backend_mutex);
->> > >> > +        return false;
->> > >> > +    }
->> > >> > +
->> > >> > +    /* Also unlocks the backend_mutex */
->> > >> > +    return vu_process_message_reply(dev, &vmsg);
->> > >> > +}
->> > >> > +
->> > >> >  static bool
->> > >> >  vu_set_vring_call_exec(VuDev *dev, VhostUserMsg *vmsg)
->> > >> >  {
->> > >> > diff --git a/subprojects/libvhost-user/libvhost-user.h
->> > >> b/subprojects/libvhost-user/libvhost-user.h
->> > >> > index deb40e77b3..7f6c22cc1a 100644
->> > >> > --- a/subprojects/libvhost-user/libvhost-user.h
->> > >> > +++ b/subprojects/libvhost-user/libvhost-user.h
->> > >> > @@ -127,6 +127,8 @@ typedef enum VhostUserBackendRequest {
->> > >> >      VHOST_USER_BACKEND_SHARED_OBJECT_ADD =3D 6,
->> > >> >      VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE =3D 7,
->> > >> >      VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP =3D 8,
->> > >> > +    VHOST_USER_BACKEND_SHMEM_MAP =3D 9,
->> > >> > +    VHOST_USER_BACKEND_SHMEM_UNMAP =3D 10,
->> > >> >      VHOST_USER_BACKEND_MAX
->> > >> >  }  VhostUserBackendRequest;
->> > >> >
->> > >> > @@ -186,6 +188,24 @@ typedef struct VhostUserShared {
->> > >> >      unsigned char uuid[UUID_LEN];
->> > >> >  } VhostUserShared;
->> > >> >
->> > >> > +/* For the flags field of VhostUserMMap */
->> > >> > +#define VHOST_USER_FLAG_MAP_R (1u << 0)
->> > >> > +#define VHOST_USER_FLAG_MAP_W (1u << 1)
->> > >> > +
->> > >> > +typedef struct {
->> > >> > +    /* VIRTIO Shared Memory Region ID */
->> > >> > +    uint8_t shmid;
->> > >> > +    uint8_t padding[7];
->> > >> > +    /* File offset */
->> > >> > +    uint64_t fd_offset;
->> > >> > +    /* Offset within the VIRTIO Shared Memory Region */
->> > >> > +    uint64_t shm_offset;
->> > >> > +    /* Size of the mapping */
->> > >> > +    uint64_t len;
->> > >> > +    /* Flags for the mmap operation, from VHOST_USER_FLAG_* */
->> > >> > +    uint64_t flags;
->> > >> > +} VhostUserMMap;
->> > >> > +
->> > >> >  #if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__)=
-)
->> > >> >  # define VU_PACKED __attribute__((gcc_struct, packed))
->> > >> >  #else
->> > >> > @@ -214,6 +234,7 @@ typedef struct VhostUserMsg {
->> > >> >          VhostUserVringArea area;
->> > >> >          VhostUserInflight inflight;
->> > >> >          VhostUserShared object;
->> > >> > +        VhostUserMMap mmap;
->> > >> >      } payload;
->> > >> >
->> > >> >      int fds[VHOST_MEMORY_BASELINE_NREGIONS];
->> > >> > @@ -597,6 +618,38 @@ bool vu_add_shared_object(VuDev *dev, unsign=
-ed
->> > >> char uuid[UUID_LEN]);
->> > >> >   */
->> > >> >  bool vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN=
-]);
->> > >> >
->> > >> > +/**
->> > >> > + * vu_shmem_map:
->> > >> > + * @dev: a VuDev context
->> > >> > + * @shmid: VIRTIO Shared Memory Region ID
->> > >> > + * @fd_offset: File offset
->> > >> > + * @shm_offset: Offset within the VIRTIO Shared Memory Region
->> > >> > + * @len: Size of the mapping
->> > >> > + * @flags: Flags for the mmap operation
->> > >> > + *
->> > >> > + * Advertises a new mapping to be made in a given VIRTIO Shared =
-Memory
->> > >> Region.
->> > >> > + *
->> > >> > + * Returns: TRUE on success, FALSE on failure.
->> > >> > + */
->> > >> > +bool vu_shmem_map(VuDev *dev, uint8_t shmid, uint64_t fd_offset,
->> > >> > +                  uint64_t shm_offset, uint64_t len, uint64_t fl=
-ags);
->> > >> > +
->> > >> > +/**
->> > >> > + * vu_shmem_map:
->> > >> > + * @dev: a VuDev context
->> > >> > + * @shmid: VIRTIO Shared Memory Region ID
->> > >> > + * @fd_offset: File offset
->> > >> > + * @shm_offset: Offset within the VIRTIO Shared Memory Region
->> > >> > + * @len: Size of the mapping
->> > >> > + *
->> > >> > + * The front-end un-mmaps a given range in the VIRTIO Shared Mem=
-ory
->> > >> Region
->> > >> > + * with the requested `shmid`.
->> > >> > + *
->> > >> > + * Returns: TRUE on success, FALSE on failure.
->> > >> > + */
->> > >> > +bool vu_shmem_unmap(VuDev *dev, uint8_t shmid, uint64_t fd_offse=
-t,
->> > >> > +                  uint64_t shm_offset, uint64_t len);
->> > >> > +
->> > >> >  /**
->> > >> >   * vu_queue_set_notification:
->> > >> >   * @dev: a VuDev context
->> > >> > --
->> > >> > 2.45.2
->> > >> >
->> > >>
->> > >
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> 
+> ---
+> 
+> Changes from v8:
+> - Non-rename/cleanup changes merged altogether;
+> - source ID is now more generic, defined per guest target.
+>   That should make easier to add support for 86.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>  hw/acpi/ghes.c           | 275 ++++++++++++++++++++++++---------------
+>  hw/arm/virt-acpi-build.c |  10 +-
+>  include/hw/acpi/ghes.h   |  18 +--
+>  include/hw/arm/virt.h    |   7 +
+>  target/arm/kvm.c         |   3 +-
+>  5 files changed, 198 insertions(+), 115 deletions(-)
+> 
+> diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+> index 529c14e3289f..965fb1b36587 100644
+> --- a/hw/acpi/ghes.c
+> +++ b/hw/acpi/ghes.c
+> @@ -35,9 +35,6 @@
+>  /* The max size in bytes for one error block */
+>  #define ACPI_GHES_MAX_RAW_DATA_LENGTH   (1 * KiB)
+>  
+> -/* Now only support ARMv8 SEA notification type error source */
+> -#define ACPI_GHES_ERROR_SOURCE_COUNT        1
+
+ [patch 4] getting rid of this and introducing num_sources
+     (aka variable size HEST) 
+
+>  /* Generic Hardware Error Source version 2 */
+>  #define ACPI_GHES_SOURCE_GENERIC_ERROR_V2   10
+>  
+> @@ -64,6 +61,19 @@
+>   */
+>  #define ACPI_GHES_GESB_SIZE                 20
+>  
+> +/*
+> + * Offsets with regards to the start of the HEST table stored at
+> + * ags->hest_addr_le, according with the memory layout map at
+> + * docs/specs/acpi_hest_ghes.rst.
+> + */
+perhaps  mention in comment/commit message, that hest lookup
+is implemented only GHESv2 error sources.
+
+That will work as far we do forward migration only
+(i.e. old qemu -> new qemu), which is what upstream supports.
+
+However it won't work for backward migration (new qemu -> old qemu)
+since old one doesn't know about new non-GHESv2 sources.
+And that means we would need to introduce compat knobs for every
+new non-GHESv2 source is added. Which is easy to overlook and
+it adds up to maintenance.
+(You've already described zoo of types ACPI spec has in v8 review,
+but I don't thing it's too complex to implement lookup of all
+known types. compared to headache we would have with compat
+settings if anyone remembers)
+
+I won't insist on adding all known sources lookup in this series,
+if you agree to do it as a patch on top of this series within this
+dev cycle (~2 months time-frame).
+
+> +/* ACPI 6.2: 18.3.2.8 Generic Hardware Error Source version 2 */
+
+ +  ,Table 18-383
+
+> +#define HEST_GHES_V2_TABLE_SIZE  92
+> +#define GHES_ACK_OFFSET          (64 + GAS_ADDR_OFFSET)
+> +
+> +/* ACPI 6.2: 18.3.2.7: Generic Hardware Error Source */
+     
+   Table 18-380 'Error Status Address' field 
+
+> +#define GHES_ERR_ST_ADDR_OFFSET  (20 + GAS_ADDR_OFFSET)
+> +
+>  /*
+>   * Values for error_severity field
+>   */
+> @@ -185,51 +195,30 @@ static void acpi_ghes_build_append_mem_cper(GArray *table,
+>      build_append_int_noprefix(table, 0, 7);
+>  }
+>  
+> -static int acpi_ghes_record_mem_error(uint64_t error_block_address,
+> -                                      uint64_t error_physical_addr)
+> +static void
+> +ghes_gen_err_data_uncorrectable_recoverable(GArray *block,
+> +                                            const uint8_t *section_type,
+> +                                            int data_length)
+  [patch 2] splitting acpi_ghes_record_mem_error() on reusable and mem specific
+           code
+
+>  {
+> -    GArray *block;
+> -
+> -    /* Memory Error Section Type */
+> -    const uint8_t uefi_cper_mem_sec[] =
+> -          UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
+> -                  0xED, 0x7C, 0x83, 0xB1);
+> -
+>      /* invalid fru id: ACPI 4.0: 17.3.2.6.1 Generic Error Data,
+>       * Table 17-13 Generic Error Data Entry
+>       */
+>      QemuUUID fru_id = {};
+> -    uint32_t data_length;
+>  
+> -    block = g_array_new(false, true /* clear */, 1);
+> -
+> -    /* This is the length if adding a new generic error data entry*/
+> -    data_length = ACPI_GHES_DATA_LENGTH + ACPI_GHES_MEM_CPER_LENGTH;
+>      /*
+> -     * It should not run out of the preallocated memory if adding a new generic
+> -     * error data entry
+> +     * Calculate the size with this block. No need to check for
+> +     * too big CPER, as CPER size is checked at ghes_record_cper_errors()
+>       */
+> -    assert((data_length + ACPI_GHES_GESB_SIZE) <=
+> -            ACPI_GHES_MAX_RAW_DATA_LENGTH);
+> +    data_length += ACPI_GHES_GESB_SIZE;
+>  
+>      /* Build the new generic error status block header */
+>      acpi_ghes_generic_error_status(block, ACPI_GEBS_UNCORRECTABLE,
+>          0, 0, data_length, ACPI_CPER_SEV_RECOVERABLE);
+>  
+>      /* Build this new generic error data entry header */
+> -    acpi_ghes_generic_error_data(block, uefi_cper_mem_sec,
+> +    acpi_ghes_generic_error_data(block, section_type,
+>          ACPI_CPER_SEV_RECOVERABLE, 0, 0,
+>          ACPI_GHES_MEM_CPER_LENGTH, fru_id, 0);
+> -
+> -    /* Build the memory section CPER for above new generic error data entry */
+> -    acpi_ghes_build_append_mem_cper(block, error_physical_addr);
+> -
+> -    /* Write the generic error data entry into guest memory */
+> -    cpu_physical_memory_write(error_block_address, block->data, block->len);
+> -
+> -    g_array_free(block, true);
+> -
+> -    return 0;
+>  }
+>  
+>  /*
+> @@ -237,17 +226,18 @@ static int acpi_ghes_record_mem_error(uint64_t error_block_address,
+>   * Initialize "etc/hardware_errors" and "etc/hardware_errors_addr" fw_cfg blobs.
+>   * See docs/specs/acpi_hest_ghes.rst for blobs format.
+>   */
+> -void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker)
+> +static void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker,
+> +                                   int num_sources)
+>  {
+>      int i, error_status_block_offset;
+>  
+>      /* Build error_block_address */
+> -    for (i = 0; i < ACPI_GHES_ERROR_SOURCE_COUNT; i++) {
+> +    for (i = 0; i < num_sources; i++) {
+>          build_append_int_noprefix(hardware_errors, 0, sizeof(uint64_t));
+>      }
+>  
+>      /* Build read_ack_register */
+> -    for (i = 0; i < ACPI_GHES_ERROR_SOURCE_COUNT; i++) {
+> +    for (i = 0; i < num_sources; i++) {
+>          /*
+>           * Initialize the value of read_ack_register to 1, so GHES can be
+>           * writable after (re)boot.
+> @@ -262,13 +252,13 @@ void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker)
+>  
+>      /* Reserve space for Error Status Data Block */
+>      acpi_data_push(hardware_errors,
+> -        ACPI_GHES_MAX_RAW_DATA_LENGTH * ACPI_GHES_ERROR_SOURCE_COUNT);
+> +        ACPI_GHES_MAX_RAW_DATA_LENGTH * num_sources);
+>  
+>      /* Tell guest firmware to place hardware_errors blob into RAM */
+>      bios_linker_loader_alloc(linker, ACPI_GHES_ERRORS_FW_CFG_FILE,
+>                               hardware_errors, sizeof(uint64_t), false);
+>  
+> -    for (i = 0; i < ACPI_GHES_ERROR_SOURCE_COUNT; i++) {
+> +    for (i = 0; i < num_sources; i++) {
+>          /*
+>           * Tell firmware to patch error_block_address entries to point to
+>           * corresponding "Generic Error Status Block"
+
+> @@ -283,14 +273,20 @@ void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker)
+>       * tell firmware to write hardware_errors GPA into
+>       * hardware_errors_addr fw_cfg, once the former has been initialized.
+>       */
+> -    bios_linker_loader_write_pointer(linker, ACPI_GHES_DATA_ADDR_FW_CFG_FILE,
+> -        0, sizeof(uint64_t), ACPI_GHES_ERRORS_FW_CFG_FILE, 0);
+> +    bios_linker_loader_write_pointer(linker, ACPI_GHES_DATA_ADDR_FW_CFG_FILE, 0,
+> +                                     sizeof(uint64_t),
+> +                                     ACPI_GHES_ERRORS_FW_CFG_FILE, 0);
+
+ [patch 1] all indent changes in its own patch, or just drop them altogether 
+
+>  }
+>  
+>  /* Build Generic Hardware Error Source version 2 (GHESv2) */
+> -static void build_ghes_v2(GArray *table_data, int source_id, BIOSLinker *linker)
+> +static void build_ghes_v2(GArray *table_data,
+> +                          BIOSLinker *linker,
+> +                          enum AcpiGhesNotifyType notify,
+> +                          uint16_t source_id,
+> +                          int num_sources)
+>  {
+>      uint64_t address_offset;
+> +
+>      /*
+>       * Type:
+>       * Generic Hardware Error Source version 2(GHESv2 - Type 10)
+> @@ -317,21 +313,13 @@ static void build_ghes_v2(GArray *table_data, int source_id, BIOSLinker *linker)
+>      build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 0x40, 0,
+>                       4 /* QWord access */, 0);
+>      bios_linker_loader_add_pointer(linker, ACPI_BUILD_TABLE_FILE,
+> -        address_offset + GAS_ADDR_OFFSET, sizeof(uint64_t),
+> -        ACPI_GHES_ERRORS_FW_CFG_FILE, source_id * sizeof(uint64_t));
+> +                                   address_offset + GAS_ADDR_OFFSET,
+> +                                   sizeof(uint64_t),
+> +                                   ACPI_GHES_ERRORS_FW_CFG_FILE,
+> +                                   source_id * sizeof(uint64_t));
+ditto
+
+
+> -    switch (source_id) {
+> -    case ACPI_HEST_SRC_ID_SEA:
+> -        /*
+> -         * Notification Structure
+> -         * Now only enable ARMv8 SEA notification type
+> -         */
+> -        build_ghes_hw_error_notification(table_data, ACPI_GHES_NOTIFY_SEA);
+> -        break;
+> -    default:
+> -        error_report("Not support this error source");
+> -        abort();
+> -    }
+> +    /* Notification Structure */
+> +    build_ghes_hw_error_notification(table_data, notify);
+>  
+>      /* Error Status Block Length */
+>      build_append_int_noprefix(table_data, ACPI_GHES_MAX_RAW_DATA_LENGTH, 4);
+> @@ -345,9 +333,11 @@ static void build_ghes_v2(GArray *table_data, int source_id, BIOSLinker *linker)
+>      build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 0x40, 0,
+>                       4 /* QWord access */, 0);
+>      bios_linker_loader_add_pointer(linker, ACPI_BUILD_TABLE_FILE,
+> -        address_offset + GAS_ADDR_OFFSET,
+> -        sizeof(uint64_t), ACPI_GHES_ERRORS_FW_CFG_FILE,
+> -        (ACPI_GHES_ERROR_SOURCE_COUNT + source_id) * sizeof(uint64_t));
+> +                                   address_offset + GAS_ADDR_OFFSET,
+> +                                   sizeof(uint64_t),
+> +                                   ACPI_GHES_ERRORS_FW_CFG_FILE,
+> +                                   (num_sources + source_id) *
+> +                                   sizeof(uint64_t));
+ditto
+
+>      /*
+>       * Read Ack Preserve field
+> @@ -360,19 +350,28 @@ static void build_ghes_v2(GArray *table_data, int source_id, BIOSLinker *linker)
+>  }
+>  
+>  /* Build Hardware Error Source Table */
+> -void acpi_build_hest(GArray *table_data, BIOSLinker *linker,
+> +void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
+> +                     BIOSLinker *linker,
+> +                     const uint16_t * const notify,
+> +                     int num_sources,
+>                       const char *oem_id, const char *oem_table_id)
+>  {
+>      AcpiTable table = { .sig = "HEST", .rev = 1,
+>                          .oem_id = oem_id, .oem_table_id = oem_table_id };
+> +    int i;
+> +
+> +    build_ghes_error_table(hardware_errors, linker, num_sources);
+>  
+>      acpi_table_begin(&table, table_data);
+>  
+> +    /* Beginning at the HEST Error Source struct count and data */
+>      int hest_offset = table_data->len;
+>  
+>      /* Error Source Count */
+> -    build_append_int_noprefix(table_data, ACPI_GHES_ERROR_SOURCE_COUNT, 4);
+> -    build_ghes_v2(table_data, ACPI_HEST_SRC_ID_SEA, linker);
+> +    build_append_int_noprefix(table_data, num_sources, 4);
+> +    for (i = 0; i < num_sources; i++) {
+> +        build_ghes_v2(table_data, linker, notify[i], i, num_sources);
+> +    }
+>  
+>      acpi_table_end(linker, &table);
+>  
+> @@ -403,60 +402,132 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
+>      ags->present = true;
+>  }
+>  
+> -int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
+> +void ghes_record_cper_errors(const void *cper, size_t len,
+> +                             uint16_t source_id, Error **errp)
+
+ [patch 3] switching to hest source id lookup method
+
+>  {
+> -    uint64_t error_block_addr, read_ack_register_addr, read_ack_register = 0;
+> -    uint64_t start_addr;
+> -    bool ret = -1;
+> +    uint64_t hest_read_ack_start_addr, read_ack_start_addr;
+> +    uint64_t hest_addr, cper_addr, err_source_struct;
+> +    uint64_t hest_err_block_addr, error_block_addr;
+> +    uint32_t num_sources, i;
+>      AcpiGedState *acpi_ged_state;
+>      AcpiGhesState *ags;
+> +    uint64_t read_ack;
+>  
+> -    assert(source_id < ACPI_HEST_SRC_ID_RESERVED);
+> +    if (len > ACPI_GHES_MAX_RAW_DATA_LENGTH) {
+> +        error_setg(errp, "GHES CPER record is too big: %ld", len);
+> +    }
+>  
+>      acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
+>                                                         NULL));
+>      g_assert(acpi_ged_state);
+>      ags = &acpi_ged_state->ghes_state;
+>  
+> -    start_addr = le64_to_cpu(ags->ghes_addr_le);
+> -
+> -    if (physical_address) {
+> -
+> -        if (source_id < ACPI_HEST_SRC_ID_RESERVED) {
+> -            start_addr += source_id * sizeof(uint64_t);
+> -        }
+> -
+> -        cpu_physical_memory_read(start_addr, &error_block_addr,
+> -                                 sizeof(error_block_addr));
+> -
+> -        error_block_addr = le64_to_cpu(error_block_addr);
+> -
+> -        read_ack_register_addr = start_addr +
+> -            ACPI_GHES_ERROR_SOURCE_COUNT * sizeof(uint64_t);
+> -
+> -        cpu_physical_memory_read(read_ack_register_addr,
+> -                                 &read_ack_register, sizeof(read_ack_register));
+> -
+> -        /* zero means OSPM does not acknowledge the error */
+> -        if (!read_ack_register) {
+> -            error_report("OSPM does not acknowledge previous error,"
+> -                " so can not record CPER for current error anymore");
+> -        } else if (error_block_addr) {
+> -            read_ack_register = cpu_to_le64(0);
+> -            /*
+> -             * Clear the Read Ack Register, OSPM will write it to 1 when
+> -             * it acknowledges this error.
+> -             */
+> -            cpu_physical_memory_write(read_ack_register_addr,
+> -                &read_ack_register, sizeof(uint64_t));
+> -
+> -            ret = acpi_ghes_record_mem_error(error_block_addr,
+> -                                             physical_address);
+> -        } else
+> -            error_report("can not find Generic Error Status Block");
+> +    hest_addr = le64_to_cpu(ags->hest_addr_le);
+> +
+> +    cpu_physical_memory_read(hest_addr, &num_sources, sizeof(num_sources));
+> +
+> +    if (source_id >= num_sources) {
+> +        error_setg(errp,
+> +                   "GHES: Source %d not found. Only %d sources are defined",
+> +                   source_id, num_sources);
+> +        return;
+> +    }
+> +    err_source_struct = hest_addr + sizeof(num_sources);
+> +
+> +    for (i = 0; i < num_sources; i++) {
+> +        uint64_t addr = err_source_struct;
+> +        uint16_t type, src_id;
+> +
+> +        cpu_physical_memory_read(addr, &type, sizeof(type));
+> +
+> +        /* For now, we only know the size of GHESv2 table */
+> +        assert(type == ACPI_GHES_SOURCE_GENERIC_ERROR_V2);
+> +
+> +        /* It is GHES. Compare CPER source address */
+> +        addr += sizeof(type);
+> +        cpu_physical_memory_read(addr, &src_id, sizeof(src_id));
+> +
+> +        if (src_id == source_id)
+> +            break;
+> +
+> +        err_source_struct += HEST_GHES_V2_TABLE_SIZE;
+> +    }
+> +    if (i == num_sources) {
+> +        error_setg(errp, "HEST: Source %d not found.", source_id);
+> +        return;
+> +    }
+> +
+> +    /* Check if BIOS addr pointers were properly generated */
+> +
+> +    hest_err_block_addr = err_source_struct + GHES_ERR_ST_ADDR_OFFSET;
+> +    hest_read_ack_start_addr = err_source_struct + GHES_ACK_OFFSET;
+> +
+> +    cpu_physical_memory_read(hest_err_block_addr, &error_block_addr,
+> +                             sizeof(error_block_addr));
+> +
+> +    cpu_physical_memory_read(error_block_addr, &cper_addr,
+> +                             sizeof(error_block_addr));
+> +
+> +    cpu_physical_memory_read(hest_read_ack_start_addr, &read_ack_start_addr,
+> +			     sizeof(read_ack_start_addr));
+> +
+> +    /* Update ACK offset to notify about a new error */
+> +
+> +    cpu_physical_memory_read(read_ack_start_addr,
+> +                             &read_ack, sizeof(read_ack));
+> +
+> +    /* zero means OSPM does not acknowledge the error */
+> +    if (!read_ack) {
+> +        error_setg(errp,
+> +                   "Last CPER record was not acknowledged yet");
+> +        read_ack = 1;
+> +        cpu_physical_memory_write(read_ack_start_addr,
+> +                                  &read_ack, sizeof(read_ack));
+> +        return;
+> +    }
+> +
+> +    read_ack = cpu_to_le64(0);
+> +    cpu_physical_memory_write(read_ack_start_addr,
+> +                              &read_ack, sizeof(read_ack));
+> +
+> +    /* Write the generic error data entry into guest memory */
+> +    cpu_physical_memory_write(cper_addr, cper, len);
+> +}
+> +
+> +int acpi_ghes_record_errors(int source_id, uint64_t physical_address)
+> +{
+> +    /* Memory Error Section Type */
+> +    const uint8_t guid[] =
+> +          UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
+> +                  0xED, 0x7C, 0x83, 0xB1);
+> +    Error *errp = NULL;
+> +    GArray *block;
+> +
+> +    if (!physical_address) {
+> +        error_report("can not find Generic Error Status Block for source id %d",
+> +                     source_id);
+> +        return -1;
+> +    }
+> +
+> +    block = g_array_new(false, true /* clear */, 1);
+> +
+> +    ghes_gen_err_data_uncorrectable_recoverable(block, guid,
+> +                                                ACPI_GHES_MAX_RAW_DATA_LENGTH);
+> +
+> +    /* Build the memory section CPER for above new generic error data entry */
+> +    acpi_ghes_build_append_mem_cper(block, physical_address);
+> +
+> +    /* Report the error */
+> +    ghes_record_cper_errors(block->data, block->len, source_id, &errp);
+> +
+> +    g_array_free(block, true);
+> +
+> +    if (errp) {
+> +        error_report_err(errp);
+> +        return -1;
+>      }
+>  
+> -    return ret;
+> +    return 0;
+>  }
+>  
+>  bool acpi_ghes_present(void)
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index f76fb117adff..39100c2822c2 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -890,6 +890,10 @@ static void acpi_align_size(GArray *blob, unsigned align)
+>      g_array_set_size(blob, ROUND_UP(acpi_data_len(blob), align));
+>  }
+>  
+> +static const uint16_t hest_ghes_notify[] = {
+> +    [ARM_ACPI_HEST_SRC_ID_SEA] = ACPI_GHES_NOTIFY_SEA,
+> +};
+
+I agree that machine/platform shall opt in for a specific source id,
+but I'm not sure about whether we need platform specific source ids,
+it seems to complicate things needlessly.
+
+For example if one would define different src_id for error injection
+for ARM and X86, then we would somehow need to take that in account
+when QMP command X called so it would use correct ID
+ 
+Maybe this needs it's own patch with a commit message that
+would explain need for this approach (but so far I'm not seeing the point).
+
+PS:
+I'd prefer common/shared SRC_ID registry, from which boards would pick
+applicable ones.
+
+> +
+>  static
+>  void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+>  {
+> @@ -943,10 +947,10 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
+>      build_dbg2(tables_blob, tables->linker, vms);
+>  
+>      if (vms->ras) {
+> -        build_ghes_error_table(tables->hardware_errors, tables->linker);
+>          acpi_add_table(table_offsets, tables_blob);
+> -        acpi_build_hest(tables_blob, tables->linker, vms->oem_id,
+> -                        vms->oem_table_id);
+> +        acpi_build_hest(tables_blob, tables->hardware_errors, tables->linker,
+> +                        hest_ghes_notify, sizeof(hest_ghes_notify),
+> +                        vms->oem_id, vms->oem_table_id);
+>      }
+>  
+>      if (ms->numa_state->num_nodes > 0) {
+> diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
+> index 28b956acb19a..4b5af86ec077 100644
+> --- a/include/hw/acpi/ghes.h
+> +++ b/include/hw/acpi/ghes.h
+> @@ -23,6 +23,7 @@
+>  #define ACPI_GHES_H
+>  
+>  #include "hw/acpi/bios-linker-loader.h"
+> +#include "qapi/error.h"
+>  
+>  /*
+>   * Values for Hardware Error Notification Type field
+> @@ -56,24 +57,23 @@ enum AcpiGhesNotifyType {
+>      ACPI_GHES_NOTIFY_RESERVED = 12
+>  };
+>  
+> -enum {
+> -    ACPI_HEST_SRC_ID_SEA = 0,
+> -    /* future ids go here */
+> -    ACPI_HEST_SRC_ID_RESERVED,
+> -};
+> -
+>  typedef struct AcpiGhesState {
+>      uint64_t hest_addr_le;
+>      uint64_t ghes_addr_le;
+>      bool present; /* True if GHES is present at all on this board */
+>  } AcpiGhesState;
+>  
+> -void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker);
+> -void acpi_build_hest(GArray *table_data, BIOSLinker *linker,
+> +void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
+> +                     BIOSLinker *linker,
+> +                     const uint16_t * const notify,
+> +                     int num_sources,
+>                       const char *oem_id, const char *oem_table_id);
+>  void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
+>                            GArray *hardware_errors);
+> -int acpi_ghes_record_errors(uint8_t notify, uint64_t error_physical_addr);
+> +int acpi_ghes_record_errors(int source_id,
+> +                            uint64_t error_physical_addr);
+> +void ghes_record_cper_errors(const void *cper, size_t len,
+
+use GArray for cper so you won't have to pass down len
+
+> +                             uint16_t source_id, Error **errp);
+>  
+>  /**
+>   * acpi_ghes_present: Report whether ACPI GHES table is present
+> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+> index a4d937ed45ac..d62d8d9db5ae 100644
+> --- a/include/hw/arm/virt.h
+> +++ b/include/hw/arm/virt.h
+> @@ -189,6 +189,13 @@ OBJECT_DECLARE_TYPE(VirtMachineState, VirtMachineClass, VIRT_MACHINE)
+>  void virt_acpi_setup(VirtMachineState *vms);
+>  bool virt_is_acpi_enabled(VirtMachineState *vms);
+>  
+> +/*
+> + * ID numbers used to fill HEST source ID field
+> + */
+> +enum {
+> +    ARM_ACPI_HEST_SRC_ID_SEA,
+> +};
+> +
+>  /* Return number of redistributors that fit in the specified region */
+>  static uint32_t virt_redist_capacity(VirtMachineState *vms, int region)
+>  {
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index 849e2e21b304..8c4c8263b85a 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -2373,7 +2373,8 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+>               */
+>              if (code == BUS_MCEERR_AR) {
+>                  kvm_cpu_synchronize_state(c);
+> -                if (!acpi_ghes_record_errors(ACPI_HEST_SRC_ID_SEA, paddr)) {
+> +                if (!acpi_ghes_record_errors(ARM_ACPI_HEST_SRC_ID_SEA,
+> +                                             paddr)) {
+>                      kvm_inject_arm_sea(c);
+>                  } else {
+>                      error_report("failed to record the error");
+
 
