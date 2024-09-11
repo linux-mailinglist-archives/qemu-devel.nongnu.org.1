@@ -2,88 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925E69751F8
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EABEA97521D
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:28:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMIW-0002pi-Eg; Wed, 11 Sep 2024 08:18:12 -0400
+	id 1soMIZ-000395-Q2; Wed, 11 Sep 2024 08:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1soMHP-0007pJ-NF
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:11 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1soMI4-0001oY-6S
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:52 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1soMHN-0007XI-RQ
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:03 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a8d64b27c45so450686766b.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:17:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1soMHt-0007Y7-6E
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:42 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5c26852af8fso8689854a12.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:17:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726057020; x=1726661820; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+AwwrO7AexIBn5UzkGBUXAL6NYrI5jimiZLN5RSW2Xo=;
- b=mz2W7+zy1uVx5XRRsEX6vbW+McOBvxyqXFZG0g4YRA0m33SbjWsmeDrxZMOv82qy2Z
- XzpBMb/82ptBck9x/UXcmTJTEz6vIpP7SNUNOrMLtr7MMGxRnIHGyt5zGqjdWiIgi7ZH
- +TmBAccZ6n/B0U0lvOS5f6lrR1yJj6JhlHM/XkjoyRRiFH+IEuenmd/fNVFdMMDmeqCN
- potJmJkT5w9zNQsc9Z+V3OKXHhcvvrH3JAxLOimCzz7Dly9QmMkVcL2wU2dOCVkUtVMR
- Mk2Q6fQJ9gsePaT4NlgG59drzrHWP6aEi91xsfWwtTqTGG5pyJwCqiPOM6uaieV/rwxT
- Q8Ug==
+ d=linaro.org; s=google; t=1726057036; x=1726661836; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=3Aj1cv6VrGbENIMQvvUq6DYxQgavYLHyuixHCD7U248=;
+ b=YLArWZ5w4Y9u1dsvUWEiRwF2v+c3MGr/pRqooukZOCBLD6FTt0Mf87mv2Ln++NxktT
+ M0uRI40+8tkvKhrzlBVFSO3xEzXVJy/Dno7L7Pq2Amgs2j3QVU1hPeD1i8LL9/WBvLTj
+ wm7QxBZQGgYbD6onDdGE1DaxvFd8x241sKTqVLY2iIk7ZzEzKIyDhi0zWDeg/6g5pEw/
+ foUf31khhZhziqMwnQBD/BD8whdy9QlyguRP51Ga+XvDe7OIuRQXNx0U6P1qO4u//IFz
+ 4uW+Uqs6Rh7wbZ0ZjHioSLxmIKk49Cg17w1hQVJkRlvDOHkzI9bjEWiugOJEoboYHU2Y
+ VkbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726057020; x=1726661820;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+AwwrO7AexIBn5UzkGBUXAL6NYrI5jimiZLN5RSW2Xo=;
- b=hlWK7l+Y+6X3VtONoYP9XM160XiyEZlpzYdlCdmagKmkKvqPUecglU846MxDKxJwmO
- 9pFHZTVjLF8MuD6SnoOLGsFvb2j6RaIEd2yjWLkXOQh3oqd6ejSyvhEv+1r6ayrSLTPx
- Yv8pky4P8Wn9dwq1vvbEQa1D3QLcyM+mgmforhhzesMS3dAX2coKUcWONZdUyFqgpJ7Z
- pF3cYFgIKyLNgMnNTskUupv9u//kguTH6EtTe6V8s69HQnQJ4+KQtA6JYHnaMBAPPiDQ
- 0/KEtt47oaxQWKQtvAvY8r4+6OuPI4Bqjs0kBw2RcC8FDVlWhjhQC5XXejIoclTTSnaj
- CoqA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWVOnhG4Gz45+0S/92+cwlDNP+lYDwP1wnnDDqOKdcEnNymlbbcVbhY2kgCIakLcAKL4iwTHB+/9rxo@nongnu.org
-X-Gm-Message-State: AOJu0YwUeYfIKc238tP+sJJNFOnZIagYdH483gwU/9yzJtkkbhE1d+JE
- TUWrXo18RhQZdiQ+3xGpRoObxNdQkl2F8gOjhyp/CMFBR96WwoBi
-X-Google-Smtp-Source: AGHT+IFRlxqnYhEIZO2oI77aWYnWRf/ZFuQWw/RutCDhXoQob0sgHJwtjX+G39hy62Nw1AEnvGb8Iw==
-X-Received: by 2002:a17:907:2daa:b0:a8d:3338:a48c with SMTP id
- a640c23a62f3a-a8ffaaacf88mr416697866b.7.1726057018777; 
- Wed, 11 Sep 2024 05:16:58 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-191-102-051.77.191.pool.telefonica.de.
- [77.191.102.51]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25c7277bsm599441766b.102.2024.09.11.05.16.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Sep 2024 05:16:58 -0700 (PDT)
-Date: Wed, 11 Sep 2024 12:16:55 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- =?ISO-8859-1?Q?Volker_R=FCmelin?= <vr_qemu@t-online.de>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
-CC: Stefan Weil <sw@weilnetz.de>, Howard Spoelstra <hsp.cat7@gmail.com>,
- qemu-devel@nongnu.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_1/3=5D_ui/sdl2=3A_reenable_the?=
- =?US-ASCII?Q?_SDL2_Windows_keyboard_hook_procedure?=
-In-Reply-To: <1e160bbe-f16a-4396-9f73-e9a6cab91fd9@linaro.org>
-References: <ae9b2c56-dab2-4b8f-bb5e-2087e9ccaa92@t-online.de>
- <20240909061552.6122-1-vr_qemu@t-online.de>
- <CAMxuvay4vRm6ZYQoUx=cmD5mr-8-qR4Z4iLEJ6-f0m2eUSbdOg@mail.gmail.com>
- <69b15684-0d00-4a74-aeac-2d98f7e88d95@t-online.de>
- <7b536856-3155-432b-95b0-e03f96a0808e@linaro.org>
- <1e160bbe-f16a-4396-9f73-e9a6cab91fd9@linaro.org>
-Message-ID: <6F67E7BA-44A5-4CBE-8678-C4273D6ECC20@gmail.com>
+ d=1e100.net; s=20230601; t=1726057036; x=1726661836;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3Aj1cv6VrGbENIMQvvUq6DYxQgavYLHyuixHCD7U248=;
+ b=ZT7AmiDHQ8DJ679s6/wFnn1oPfJAHNSPe80q1GUOWSGh06CpBPSbrENRw802tSIZC/
+ lxogGvkiEvGvEMLHd9JZY+Wr3MFijz0yLp/lKO+Yn/+gHdcqVSjrSHQLdIPPLj16mlsd
+ vwUOGngdDZ1JTuZ8QfLgXCx8lbWzu2qmFRZFQUOCKhWDUJFghiusFZG3/GqZnNtLoyN5
+ 1QzGT//gDw9+y+aNdmtLhqk93Fo0NgHaRr0gW8ua6HmkMgkgJC2buAHTY9RbyVjgRSq7
+ rOF4a9T2Urm/2Mc77m1xSBg51BtGhB/mO4NVD7tls9zdJ2+4I0JI943vT0WY0kASIZC9
+ mi6Q==
+X-Gm-Message-State: AOJu0Yy0WZwpqd9azTN5YVOsVDUrzOngUuF7T2uHHv3mZKKSbayDb22U
+ AmM77lwtvNq1RHClqCtJDWDfjoAV189Z+aHSjN/mLPd7rSOuLlhrAsZQgEvK/R7dnoYTc2HE4Er
+ 5nwn1r9XyX60eCmKVOS1nSTkRQzqVUlvtKksWtRBavBNfpybF
+X-Google-Smtp-Source: AGHT+IGGQeYz3mwQH+KGvJnWFhW1f+1uQmL4q24It7KYU+mztwN3PjkQhD1B5l0M9+tZzCdgUSII7AkLIGtm5LbGhLc=
+X-Received: by 2002:a05:6402:388d:b0:5c3:d8fd:9a3b with SMTP id
+ 4fb4d7f45d1cf-5c3e964cae0mr12451847a12.28.1726057035645; Wed, 11 Sep 2024
+ 05:17:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
+References: <20240910164714.1993531-1-armbru@redhat.com>
+In-Reply-To: <20240910164714.1993531-1-armbru@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 11 Sep 2024 13:17:04 +0100
+Message-ID: <CAFEAcA_-Jv2nc=x-nXT4jFHd0OdPMvCJSvCwdCSfx=0GWZRXDw@mail.gmail.com>
+Subject: Re: [PULL 00/19] QAPI patches patches for 2024-09-10
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,74 +85,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 11=2E September 2024 11:59:25 UTC schrieb "Philippe Mathieu-Daud=C3=A9"=
- <philmd@linaro=2Eorg>:
->On 11/9/24 13:57, Philippe Mathieu-Daud=C3=A9 wrote:
->> Hi Volker,
->>=20
->> On 9/9/24 21:38, Volker R=C3=BCmelin wrote:
->>> Am 09=2E09=2E24 um 09:26 schrieb Marc-Andr=C3=A9 Lureau:
->>>> Hi
->>>>=20
->>>> On Mon, Sep 9, 2024 at 10:22=E2=80=AFAM Volker R=C3=BCmelin <vr_qemu@=
-t-online=2Ede> wrote:
->>>>> Windows only:
->>>>>=20
->>>>> The libSDL2 Windows message loop needs the libSDL2 Windows low
->>>>> level keyboard hook procedure to grab the left and right Windows
->>>>> keys correctly=2E Reenable the SDL2 Windows keyboard hook procedure=
-=2E
->>>>>=20
->>>>> Because the QEMU Windows keyboard hook procedure is still needed
->>>>> to filter out the special left Control key event for every Alt Gr
->>>>> key event, it's important to install the two keyboard hook
->>>>> procedures in the following order=2E First the SDL2 procedure, then
->>>>> the QEMU procedure=2E
->>>>>=20
->>>>> Resolves: https://gitlab=2Ecom/qemu-project/qemu/-/issues/2139
->>>>> Resolves: https://gitlab=2Ecom/qemu-project/qemu/-/issues/2323
->>>>> Tested-by: Howard Spoelstra <hsp=2Ecat7@gmail=2Ecom>
->>>>> Signed-off-by: Volker R=C3=BCmelin <vr_qemu@t-online=2Ede>
->>>>> ---
->>>>> =C2=A0 ui/sdl2=2Ec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 53 ++++++++++++++++++++++++++++++---------------
->>>>> =C2=A0 ui/win32-kbd-hook=2Ec |=C2=A0 3 +++
->>>>> =C2=A0 2 files changed, 38 insertions(+), 18 deletions(-)
->>=20
->>=20
->>>> Note: there is no 2=2E16 release=2E They jumped from 2=2E0=2E22 to 2=
-=2E24 (see
->>>> https://github=2Ecom/libsdl-org/SDL/releases/tag/release-2=2E24=2E0)
->>>=20
->>> Hi Marc-Andr=C3=A9
->>>=20
->>> Oh=2E This means that the comparison I wrote is true for SDL2 versions=
- <
->>> 2=2E24=2E0=2E
->>>=20
->>>>=20
->>>> The windows hook was indeed added in 2=2E0=2E16, released on Aug 10, =
-2021=2E
->>>>=20
->>>> Given the distribution nature of the Windows binaries, I think we
->>>> could simply depend on a much recent version without worrying about
->>>> compatibility with < 2=2E0=2E16=2E This would help reduce the potenti=
-al
->>>> combinations of versions and bugs reports=2E
->>>=20
->>> Okay, I'll send a version 2 patch series=2E
->>=20
->> Queuing patches 2 & 3 meanwhile=2E Please do not bury series within
->> threads, if Bernhard hadn't sent his T-b tag, I'd have missed it=2E
+On Tue, 10 Sept 2024 at 17:47, Markus Armbruster <armbru@redhat.com> wrote:
 >
->Oh actually this is a series with a cover, but the cover subject
->doesn't contains 'PATCH' which is why my git tool missed it=2E
+> The following changes since commit 7bbadc60b58b742494555f06cd342311ddab9351:
 >
+>   Merge tag 'crypto-fixes-pull-request' of https://gitlab.com/berrange/qemu into staging (2024-09-09 15:19:32 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2024-09-10
+>
+> for you to fetch changes up to 64f5e9db7706c8f4a7d7b521596caae9a1106337:
+>
+>   qapi/vfio: Rename VfioMigrationState to Qapi*, and drop prefix (2024-09-10 14:03:45 +0200)
+>
+> ----------------------------------------------------------------
+> QAPI patches patches for 2024-09-10
+>
+> ----------------------------------------------------------------
 
-For me, `git am` didn't work after downloading the series' mbox=2E I had t=
-o download each patch mail individually and apply one by one=2E Then I coul=
-d test the series=2E
 
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
+
+-- PMM
 
