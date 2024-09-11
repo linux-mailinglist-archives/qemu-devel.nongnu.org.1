@@ -2,84 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7C1975688
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D59975787
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:49:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOho-0005RT-CN; Wed, 11 Sep 2024 10:52:32 -0400
+	id 1soPZx-0000BY-Ry; Wed, 11 Sep 2024 11:48:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
- id 1soOfx-0007yG-4c
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:50:47 -0400
-Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
- id 1soOfs-0006zz-3A
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:50:32 -0400
-Received: by mail-il1-x12b.google.com with SMTP id
- e9e14a558f8ab-39f4827a07aso28387295ab.1
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 07:50:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1726066226; x=1726671026; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rmKQtVhFV+qmrPC+l2g1n7XwgI++OK9zklf0cT8kpAU=;
- b=VwS4kPsMw9C07krL6of7fZC+9Tmn0pabNxN1mKXaGupIObuqskCYvyyHBtq/5TA/T0
- Rv7Yzs2OXAj2UVq774j6TEuOmKTyPxQlPt8xu0VCzjDjZjN3HVtVPZI9wspSVZloNgY1
- Jt6/1HuZYkleAYomF7jN3e2J9WPuz/DyDWZWrJisby4grdRei7h8k4vWmOMmsqH09ryS
- Q7JquOTvkBVsxehpk/f1fiDS4GgyfCjq98IvfoqXdsdbIcjHFaYLylJlcRP7YgRJZKcD
- k21MuHiDe/IrOcapwCh87PPzIEvMaRE2QJndt+Xca1njio4XDwpHrALLsSbn0E6H6YJG
- kiKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726066226; x=1726671026;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rmKQtVhFV+qmrPC+l2g1n7XwgI++OK9zklf0cT8kpAU=;
- b=KJ/4cCVaUTq32ssXASLKq3OPXFjWZIK2q8MNGo3Cv94oIMgNJdZO7slvfJJbFHMlju
- kWWss0/SmWb2fAXrr57N7Hhy/kQWhqkjs+gkRgOApHI22kKxO/bMREujTDwBlAupgwnG
- Y7S5lALyjeWM3/lPQIfzWNP9rCDRaB1kgNUEcZCLMXs2u8wf6rT3OkXXCkH98gmw32NM
- o4imFQO/RULlIFiWg7J0+mwxszeS/usmxmVabC5Qdn4Bxalw5/Boo+aRGRCnnCxZMmu1
- e60JqctGjl8gOIe/t/LZkt14l3hAq8CwOhe9K6RoPG0fmVBl4Fcz+9CoC4Wg/ghXiCSL
- SxmA==
-X-Gm-Message-State: AOJu0YwvOAvQccHz2rcfdIoa1PVB1KLG6fSnHCxabrbRAgXgo8aQkdnp
- QNTPDPmqemj+ZqNjpNS4wxor5D8XkhP2LfVT7xohBZwdox4NIgYIxO6a8sZj7C5jHqmVssL8qDz
- Au/k=
-X-Google-Smtp-Source: AGHT+IHXr3IZsOEjxikd8VYTgBy8kSiVkjgZmrEuf9VMQ2p6HTO/mymVWukb5slblThbHek9iy3deg==
-X-Received: by 2002:a17:90a:fd13:b0:2d3:c34e:2fda with SMTP id
- 98e67ed59e1d1-2dad4efe241mr17138136a91.14.1726062856861; 
- Wed, 11 Sep 2024 06:54:16 -0700 (PDT)
-Received: from MacBook-Pro-2.local.bytedance.net ([124.90.41.66])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2dadc1105fesm10535966a91.43.2024.09.11.06.54.13
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 11 Sep 2024 06:54:16 -0700 (PDT)
-From: Chuang Xu <xuchuangxclwt@bytedance.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, xieyongji@bytedance.com, chaiwen.cc@bytedance.com,
- zhao1.liu@intel.com, qemu-stable@nongnu.org,
- Chuang Xu <xuchuangxclwt@bytedance.com>,
- Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>
-Subject: [PATCH] i386/cpu: fixup number of addressable IDs for logical
- processors in the physical package
-Date: Wed, 11 Sep 2024 21:52:57 +0800
-Message-Id: <20240911135257.16278-1-xuchuangxclwt@bytedance.com>
-X-Mailer: git-send-email 2.24.3 (Apple Git-128)
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1soPZv-0008ME-9S; Wed, 11 Sep 2024 11:48:23 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1soPZs-0004zG-WA; Wed, 11 Sep 2024 11:48:22 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48B9L3im019671;
+ Wed, 11 Sep 2024 13:53:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:date:mime-version:subject:to:cc:references:from
+ :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=r
+ IJMgRl37Fa1bdoPJ4aja9Zl/rby8/g1MowecIoN8u8=; b=kH9rEKqudvMAsSORA
+ pKYHW0uiHhj7mM9x1PxG6IM8HAQzEVWrUXKVC6TOPupQ5zmJYNDjmGBhYq5PI7My
+ SdcPpENDXFbkmtbll4Ic0yM3OR+p0F9GoAP6a5JsZPDUvc85lYyNo61THHAD9NmQ
+ lL8k5hR1ljFzgAeeVEgbpD2qvLcF4WsaLKo/lFAusNO9flKUAHShoZKxAZYtn6No
+ rhLcR8WMzX082TmhboWQGaOBKgM0pelfoQTNQB0SFUKu0tPYRsTn6SoniaqoGKKb
+ ZDtVap3YwnKor+WT2Z3jJWMjiSKYenvCJeIvDRg3Y1yXiw/iQZt5IqDQpHYaV63i
+ t0LhQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gebae53y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Sep 2024 13:53:27 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48BDrRnB021880;
+ Wed, 11 Sep 2024 13:53:27 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gebae53v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Sep 2024 13:53:27 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48BDUsTh013449;
+ Wed, 11 Sep 2024 13:53:25 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3cm9ngm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Sep 2024 13:53:25 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48BDrO8t32178782
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 11 Sep 2024 13:53:25 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B5F1258058;
+ Wed, 11 Sep 2024 13:53:24 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B773358059;
+ Wed, 11 Sep 2024 13:53:22 +0000 (GMT)
+Received: from [9.61.185.100] (unknown [9.61.185.100])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 11 Sep 2024 13:53:22 +0000 (GMT)
+Message-ID: <8dbc553b-c3ae-4f11-accb-6dee10e9758e@linux.ibm.com>
+Date: Wed, 11 Sep 2024 09:53:21 -0400
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-9.2 v15 04/11] s390x/pci: Check for multifunction
+ after device realization
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
+References: <20240823-reuse-v15-0-eddcb960e289@daynix.com>
+ <20240823-reuse-v15-4-eddcb960e289@daynix.com>
+ <2b5d2fce-8a1e-4f50-a5d2-0c4aaa2880af@redhat.com>
+ <eaebda7d-c61e-4ed8-a6b9-98e5f48f26ff@daynix.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <eaebda7d-c61e-4ed8-a6b9-98e5f48f26ff@daynix.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
- envelope-from=xuchuangxclwt@bytedance.com; helo=mail-il1-x12b.google.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 2dtbRBJ4-pNDfZbj6oOW9AwuSzR-CVI8
+X-Proofpoint-GUID: -IO35izHFxEeRbaogIc6oel1bUmOAg_Y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-10_12,2024-09-09_02,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ mlxscore=0 mlxlogscore=930 impostorscore=0 clxscore=1011 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409110098
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,52 +128,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As (1+CPUID.04H.EAX[31:26]) round up to the nearest power-of-2 integer,
-we'd beter round up CPUID.01H.EBX[23:16] to the nearest power-of-2
-integer too. Otherwise we may encounter unexpected results in guest.
+On 9/11/24 6:58 AM, Akihiko Odaki wrote:
+> On 2024/09/11 18:38, Cédric Le Goater wrote:
+>> +Matthew +Eric
+>>
+>> Side note for the maintainers :
+>>
+>> Before this change, the igb device, which is multifunction, was working
+>> fine under Linux.
+>>
+>> Was there a fix in Linux since :
+>>
+>>    57da367b9ec4 ("s390x/pci: forbid multifunction pci device")
+>>    6069bcdeacee ("s390x/pci: Move some hotplug checks to the pre_plug handler")
+>>
+>> ?
+The timing of those particular commits predates the linux s390 kernel support of multifunction/SR-IOV.  At that time it was simply not possible on s390.
 
-For example, some guest os uses CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26])
-to calculate threads-per-core, if we have 90 ht (45 core) in the
-package, we'll get "90/(1+63)=1" as the result, even though
-theads-per-core should actually be 2.
+>>
+>> s390 PCI devices do not have extended capabilities, so the igb device
+>> does not expose the SRIOV capability and only the PF is accessible but
+>> it doesn't seem to be an issue. (Btw, CONFIG_PCI_IOV is set to y in the
+>> default Linux config which is unexpected)
 
-So let us round up CPUID.01H.EBX[23:16] to the nearest power-of-2 integer
-to solve the unexpected result.
+The linux config option makes sense because the s390 kernel now supports SR-IOV/multifunction.
 
-Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
-Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
----
- target/i386/cpu.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> Doesn't s390x really see extended capabilities? hw/s390x/s390-pci-inst.c has a call pci_config_size() and pci_host_config_write_common(), which means it is exposing the whole PCI Express configuration space. Why can't s390x use extended capabilities then?
+> 
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 4c2e6f3a71..24d60ead9e 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -261,6 +261,12 @@ static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
-     return num_ids - 1;
- }
- 
-+static uint32_t max_thread_number_in_package(X86CPUTopoInfo *topo_info)
-+{
-+    uint32_t num_threads = 1 << apicid_pkg_offset(topo_info);
-+    return num_threads;
-+}
-+
- static uint32_t max_core_ids_in_package(X86CPUTopoInfo *topo_info)
- {
-     uint32_t num_cores = 1 << (apicid_pkg_offset(topo_info) -
-@@ -6417,7 +6423,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         }
-         *edx = env->features[FEAT_1_EDX];
-         if (threads_per_pkg > 1) {
--            *ebx |= threads_per_pkg << 16;
-+            *ebx |= max_thread_number_in_package(&topo_info) << 16;
-             *edx |= CPUID_HT;
-         }
-         if (!cpu->enable_pmu) {
--- 
-2.20.1
+So, rather than poking around in config space, s390 (and thus the s390 kernel) has an extra layer of 'capabilities' that it generally relies on to determine device functionality called 'CLP'.  Basically, there are pieces of CLP that are not currently generated (or forwarded from the host in the case of passthrough) by QEMU that would be needed by the guest to recognize the SRIOV/multifunction capability of a device, despite what config space has in it.  I suspect this is exactly why only the PF was available to your igb device then (missing CLP info made the device appear to not have multifunction capability as far as the s390 guest is concerned - fwiw adding CLP emulation to enable that is on our todo list).
 
+Sounds like the short-term solution here would be to continue allowing the PF without multifunction being visible to the guest (so as to not regress prior functionality) and then aim for proper support after with the necessary CLP pieces. 
+
+Thanks,
+Matt
 
