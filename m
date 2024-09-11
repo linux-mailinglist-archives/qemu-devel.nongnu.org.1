@@ -2,82 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3098B975296
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3AA39752A9
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:40:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMZ0-0001uK-7s; Wed, 11 Sep 2024 08:35:14 -0400
+	id 1soMbP-0004R9-IL; Wed, 11 Sep 2024 08:37:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1soMYU-0000H7-5r
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:44 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1soMbM-0004Bk-60
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:37:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1soMYS-00017c-QR
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:41 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1soMbI-0001c3-Gb
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:37:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726058080;
+ s=mimecast20190719; t=1726058255;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+s8ozgP3DcLfD8jX3L8PdVl6oakdD8m+hmmFQEParW8=;
- b=IUiKAv58fflowQ0daAxDaJOOX7iw1Bteb+VkXiLz8LPSD0aTWgOnVl+EJfFkn6LBmV3+US
- VU7nhYK7UYBUtgNA4nAeicS12rZtf60dcpiFBuvmZ0pcwmQwQ++jzUProRErj4F+vwEfrG
- 5KDv0oowp/dpwzjQ7jmNJ9wO0lSDY8Y=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-9RHEHVGcMoOdxoKmMJcgLA-1; Wed, 11 Sep 2024 08:34:39 -0400
-X-MC-Unique: 9RHEHVGcMoOdxoKmMJcgLA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42cb6ed7f9dso30854565e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:34:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726058077; x=1726662877;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+s8ozgP3DcLfD8jX3L8PdVl6oakdD8m+hmmFQEParW8=;
- b=N0WNj3WDFzBWhQkiyG8C+xrSolkqcfVVRHeNC2FZgy9hICheMxguiFzPAp3QorS+nt
- 0WHYrVJ7b9+IDAN8oMeen/7O1quMfV1bAc3Y3zh0Fm/yKyuCjhH3/fUcSj2bfaT674A3
- 9LRMI81LpbMhaQyAYwsvF57T87Xkh1yvUM74csUhkSZOtwcbH3/cH6dfWZ5TkQWaiTwO
- YIW+8TaXaTuiwrJuK/QueMJdXkDW5pK4Q6k9aZyuWYSUbx99m7yE5zidbgNMg1UYsFYd
- gcI3Eok9oR4Em1s2vBwU7XF6Jhc/kpRVPdD3sy6PWFS2l/XYcJKrwVYxetWTyMqWhXIg
- sXig==
-X-Gm-Message-State: AOJu0YzCVS8dhfAX9D1IS/kxD99xFoYQaRbLVfexR3mJXQwnwJngDXpo
- 5GQSuE55TaWWJs5H374LdfUvVsPHdUwgoCgWnf/cDhwIHM7m/PxkEWPgyeIJFtsahCvVwyyWBOb
- XFOIImXQTCQn2j4shp21gh68parMZv/7tV1vZr4YELiRIyWm8KcF4GSukcR4u7w8GgKd1IsJn0j
- ILEJGfWgNfe8Uuf6XTYrnpW3uZYhqKIbywcz1MFWc=
-X-Received: by 2002:a05:600c:4449:b0:42c:b52b:4349 with SMTP id
- 5b1f17b1804b1-42cb52b45a0mr110784035e9.33.1726058077313; 
- Wed, 11 Sep 2024 05:34:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGLJHmQLLPlLTiGLYkydQNnTc1h66Qf5WU2jEeOdW0sDC+aylLsa8N2YMpSiszvDnb0hHLgKA==
-X-Received: by 2002:a05:600c:4449:b0:42c:b52b:4349 with SMTP id
- 5b1f17b1804b1-42cb52b45a0mr110783685e9.33.1726058076804; 
- Wed, 11 Sep 2024 05:34:36 -0700 (PDT)
-Received: from avogadro.local ([151.95.101.29])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-378956d367csm11329540f8f.68.2024.09.11.05.34.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 05:34:36 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 17/17] minikconf: print error entirely on stderr
-Date: Wed, 11 Sep 2024 14:33:42 +0200
-Message-ID: <20240911123342.339482-18-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240911123342.339482-1-pbonzini@redhat.com>
-References: <20240911123342.339482-1-pbonzini@redhat.com>
+ bh=2yyoUHl0RktlwtpBgJrkB7WrBtx0gjcCkcB5aXQqSHw=;
+ b=EiRMEf7GzRTVD4iiHNueLZ29Eq2R+odQR6EXVqAXz/0Egc6S8gVioap1iRtTzl6MRbqB1f
+ C+J+RTiyZOwy4uK537djNoNN9kMPf1/r+MdE0WttyK/tCEVjk5tybsdc+CFHwXBEQc+pnv
+ PFnw5dtPXBWHdMHCMk7ptsjHEoExthw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-jaSzpHeWNrut-meJROLWwg-1; Wed,
+ 11 Sep 2024 08:37:32 -0400
+X-MC-Unique: jaSzpHeWNrut-meJROLWwg-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C874D19560BE; Wed, 11 Sep 2024 12:37:23 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.98])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5E27C19560A3; Wed, 11 Sep 2024 12:37:05 +0000 (UTC)
+Date: Wed, 11 Sep 2024 07:37:02 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>, 
+ "Richard W.M. Jones" <rjones@redhat.com>, Joel Stanley <joel@jms.id.au>,
+ Kevin Wolf <kwolf@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ Corey Minyard <minyard@acm.org>, 
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Keith Busch <kbusch@kernel.org>, 
+ WANG Xuerui <git@xen0n.name>, Hyman Huang <yong.huang@smartx.com>, 
+ Stefan Berger <stefanb@linux.vnet.ibm.com>, Michael Rolnik <mrolnik@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>, 
+ Halil Pasic <pasic@linux.ibm.com>, Jesper Devantier <foss@defmacro.it>, 
+ Laurent Vivier <laurent@vivier.eu>, Peter Maydell <peter.maydell@linaro.org>, 
+ Igor Mammedov <imammedo@redhat.com>, kvm@vger.kernel.org, 
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Fam Zheng <fam@euphon.net>, qemu-s390x@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Laurent Vivier <lvivier@redhat.com>, Rob Herring <robh@kernel.org>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org, 
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, qemu-ppc@nongnu.org, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Helge Deller <deller@gmx.de>, 
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Aurelien Jarno <aurelien@aurel32.net>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Peter Xu <peterx@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, 
+ Klaus Jensen <its@irrelevant.dk>, Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH 01/39] docs/spin: replace assert(0) with
+ g_assert_not_reached()
+Message-ID: <bwo43ms2wi6vbeqhlc7qjwmw5jyt2btxvpph3lqn7tfol4srjf@77yusngzs6wh>
+References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
+ <20240910221606.1817478-2-pierrick.bouvier@linaro.org>
+ <zkyoryho5alnyirnl7ulvh5y6tkty6koccgeygmve42uml7glu@37rkdodtlx4f>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <zkyoryho5alnyirnl7ulvh5y6tkty6koccgeygmve42uml7glu@37rkdodtlx4f>
+User-Agent: NeoMutt/20240425
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -86,7 +108,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,31 +124,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While debugging an invalid configuration, I noticed that the clauses debug
-ends up on stderr but the header ("The following clauses were found..."
-ends up on stdout.  This makes the contents of meson-logs/meson-log.txt
-a bit confusing.
+On Wed, Sep 11, 2024 at 07:33:59AM GMT, Eric Blake wrote:
+> On Tue, Sep 10, 2024 at 03:15:28PM GMT, Pierrick Bouvier wrote:
+> > Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> > ---
+> 
+> A general suggestion for the entire series: please use a commit
+> message that explains why this is a good idea.  Even something as
+> boiler-plate as "refer to commit XXX for rationale" that can be
+> copy-pasted into all the other commits is better than nothing,
+> although a self-contained message is best.  Maybe:
+> 
+> This patch is part of a series that moves towards a consistent use of
+> g_assert_not_reached() rather than an ad hoc mix of different
+> assertion mechanisms.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- scripts/minikconf.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Or summarize your cover letter:
 
-diff --git a/scripts/minikconf.py b/scripts/minikconf.py
-index bcd91015d34..6f7f43b2918 100644
---- a/scripts/minikconf.py
-+++ b/scripts/minikconf.py
-@@ -112,7 +112,7 @@ def has_value(self):
-         def set_value(self, val, clause):
-             self.clauses_for_var.append(clause)
-             if self.has_value() and self.value != val:
--                print("The following clauses were found for " + self.name)
-+                print("The following clauses were found for " + self.name, file=sys.stderr)
-                 for i in self.clauses_for_var:
-                     print("    " + str(i), file=sys.stderr)
-                 raise KconfigDataError('contradiction between clauses when setting %s' % self)
+Use of assert(false) can trip spurious control flow warnings from some
+versions of gcc:
+https://lore.kernel.org/qemu-devel/54bb02a6-1b12-460a-97f6-3f478ef766c6@linaro.org/
+Solve that by unifying the code base on g_assert_not_reached()
+instead.
+
 -- 
-2.46.0
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
