@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E57B975569
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9E0975682
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:12:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOKC-0000Ao-Fi; Wed, 11 Sep 2024 10:28:04 -0400
+	id 1soOm3-0006Zz-Dz; Wed, 11 Sep 2024 10:56:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOJR-00079c-S1
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:27:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOig-0002ck-KS
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:53:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOJN-0003NL-9A
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:27:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOid-0007IU-1t
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:53:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726064832;
+ s=mimecast20190719; t=1726066398;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DB9NGbeaAbvfzy7mNKPYp8OuO5yV58WQSC8D88JNFOQ=;
- b=eotXh7+4MPPvOD4EKTyVDdEgp3MYOHNK2m+0SbRwXUQ+wueZGqOPfF3aOwYbmC2PsQg5MB
- E2s+TT/SCsH+A4N3+AsB01uSd2U9KjACa051zXub8k9FhkNnbZKMmSPesrLKbup3hhgtoz
- t8qFZpe2tmK4G9a+4AjkY0x/Bzw7Yeg=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4veiozMEGfv+9OEJSb+cGyfH7FXaz+7Wyk7isIZPzXI=;
+ b=VBZloT7g8sNtsVS+csbWn3h0Zy6zGrhaVDLTSaTHcnVNRgaTMvRnRgq/gjJwVvD8pbiO8H
+ Y7KBftllqj8H9wL3GBEnw4L+tbG06lXsag569BW4YfcKfjAl3g/FFvgrHLpe283QdgrdnN
+ SfAN22RyhJRwKcPw383LpNJhoAj4dFM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-214-UrGgz0SqPeKAk9b-vi0G1A-1; Wed, 11 Sep 2024 09:52:21 -0400
-X-MC-Unique: UrGgz0SqPeKAk9b-vi0G1A-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a8d2e6a6989so251058666b.1
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:52:19 -0700 (PDT)
+ us-mta-76-JNxwyFy8OGS6N0S9wd4tQA-1; Wed, 11 Sep 2024 09:52:23 -0400
+X-MC-Unique: JNxwyFy8OGS6N0S9wd4tQA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-374b981dd62so1079003f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:52:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726062738; x=1726667538;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DB9NGbeaAbvfzy7mNKPYp8OuO5yV58WQSC8D88JNFOQ=;
- b=hhD829JtsUSXq5Z2l1GvS/8MAJIFgm0/nuSyp8uK1MpsrxoGE7yhGnOl+kCw5UPeuo
- dU8Gcjnq4Xja1xKm5YaLc8xcvKQbtucGpkY6RD/x0NYfDI8/17G21mEqE9ndqruX5FNA
- fg4aWy894wXgpB1dL6PbfLFLSVJ3tRhMA37FB0RGCQ7iwvtFhaVBjVGCGMZH2ksqgUd8
- qHjyWF7/xK2UKPLV2gJNjQzovRiSRIkZediTlE4Fg582N+GXJD+YOl3Hi+j6c+03jeTU
- hL6a6km7kKN4mP2NfNSPVZQcbNMn5/Jy6JLqsCajb9q6cCxCCA6KkAkPCpF5KQymtx4b
- 65ew==
-X-Gm-Message-State: AOJu0YxkbOexp//ys0yxBwvU8DbO9SqjqwRZUkYpQvMCIhBQM3nunXX0
- Zyd5Zt+ruTbdb7jENW+9Iaz2OufPV6LX5Dvgeue45C4pZy2UDoxwPsefSZiEp39AKV2+50T2Pci
- eNr1MnOiW1laCY5o0OhCcatwuEClZ7Dw3S0XVnAqR3o3k/uTEbhTNQjVu5n7LFnWwvWi0orPnoa
- ec0O2SpKe9KGki2SEFp+Q5sp79xba2bw==
-X-Received: by 2002:a17:907:60ca:b0:a8d:3e29:a82d with SMTP id
- a640c23a62f3a-a8ffab771b9mr459881066b.37.1726062738367; 
- Wed, 11 Sep 2024 06:52:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEyRf5v+DYP/9JUh8QHbJzGLb2wgjxLVIaqhTZr6pP7FjtSjnlbJet8bU6YApEOMBOSO/qlgQ==
-X-Received: by 2002:a17:907:60ca:b0:a8d:3e29:a82d with SMTP id
- a640c23a62f3a-a8ffab771b9mr459877466b.37.1726062737792; 
- Wed, 11 Sep 2024 06:52:17 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726062742; x=1726667542;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4veiozMEGfv+9OEJSb+cGyfH7FXaz+7Wyk7isIZPzXI=;
+ b=YuGQU+Y439gQWsqF1oLI37OSiObE1Te/gi8Ih/q49GvZXVvnA8s5ACtzS+1CipTwtw
+ FjaWI8Bov6utRAjqWLz95an+xiB9GTEklaB+894hP0bcfX+uysog8EdbUmdwo0VAC6eN
+ 4zAdSKOMw5Q5i0A8PFbBBe2F97ubiJdHoG0AcaO+HLHkkV/PX2Q3vWx+gcqfr3VHASiy
+ kmoQpnEh/y8sCQ9+68G6ZL2rVQuf1u2XYnprF/NfamLCTqRzLa8ESxM5kAAWhf+QU0C5
+ UXlxOi7zzwkuk/QU5xgikXhKgaxiZomaeFJ4+XrKbTqiqqI8RB+oedD/vFDIG9evv86V
+ dq5Q==
+X-Gm-Message-State: AOJu0YxkaoLhlzxiIwTkHUxyfXOVaLkY5UBLgiCJC1kc03cxh4ayD4r0
+ Zlef37Yh/EPGavQ4NhEpqXR7Clx5u+1yPhwFdeboNfKYYd+HkxfgV1F+QzluzWZqbbpOgbaasWC
+ 7G/oBccmt8sYYlo15KHtXtcx0cRrvCE27GI5IRkrwhkaAmjB52dPL5ZPJ/8oVZqPtWtrkIbZOfa
+ D9tgeWAyKXWaQpxYp+aRBHU8x1CI2NKg==
+X-Received: by 2002:a05:6000:156e:b0:378:7e94:d613 with SMTP id
+ ffacd0b85a97d-378b07f6ad8mr2411386f8f.42.1726062741683; 
+ Wed, 11 Sep 2024 06:52:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3fvnhE/laytZOuXh9GtvogEZU9g8iP2CK+EAn9uPy3+gHAc7EKj5dFV1iyfaiUOt7pcxJ0Q==
+X-Received: by 2002:a05:6000:156e:b0:378:7e94:d613 with SMTP id
+ ffacd0b85a97d-378b07f6ad8mr2411344f8f.42.1726062740959; 
+ Wed, 11 Sep 2024 06:52:20 -0700 (PDT)
 Received: from redhat.com ([2.55.9.133]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25c727e4sm614180366b.126.2024.09.11.06.52.16
+ 4fb4d7f45d1cf-5c3ebd46886sm5388659a12.34.2024.09.11.06.52.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 06:52:17 -0700 (PDT)
-Date: Wed, 11 Sep 2024 09:52:15 -0400
+ Wed, 11 Sep 2024 06:52:20 -0700 (PDT)
+Date: Wed, 11 Sep 2024 09:52:18 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 16/18] hw/audio/virtio-sound: fix heap buffer overflow
-Message-ID: <7fc6611cad3e9627b23ce83e550b668abba6c886.1726062663.git.mst@redhat.com>
+ David Hildenbrand <david@redhat.com>, Gavin Shan <gshan@redhat.com>,
+ Juraj Marcin <jmarcin@redhat.com>
+Subject: [PULL 17/18] virtio-mem: don't warn about THP sizes on a kernel
+ without THP support
+Message-ID: <95b717a8154b955de2782305f305b63f357b0576.1726062663.git.mst@redhat.com>
 References: <cover.1726062663.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1726062663.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -103,81 +101,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+From: David Hildenbrand <david@redhat.com>
 
-Currently, the guest may write to the device configuration space,
-whereas the virtio sound device specification in chapter 5.14.4
-clearly states that the fields in the device configuration space
-are driver-read-only.
+If the config directory in sysfs does not exist at all, we are dealing
+with a system that does not support THPs. Simply use 1 MiB block size
+then, instead of warning "Could not detect THP size, falling back to
+..." and falling back to the default THP size.
 
-Remove the set_config function from the virtio_snd class.
-
-This also prevents a heap buffer overflow. See QEMU issue #2296.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2296
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20240901130112.8242-1-vr_qemu@t-online.de>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Gavin Shan <gshan@redhat.com>
+Cc: Juraj Marcin <jmarcin@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Message-Id: <20240910163433.2100295-1-david@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/audio/virtio-snd.c | 24 ------------------------
- hw/audio/trace-events |  1 -
- 2 files changed, 25 deletions(-)
+ hw/virtio/virtio-mem.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-index d1cf5eb445..69838181dd 100644
---- a/hw/audio/virtio-snd.c
-+++ b/hw/audio/virtio-snd.c
-@@ -107,29 +107,6 @@ virtio_snd_get_config(VirtIODevice *vdev, uint8_t *config)
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index ef64bf1b4a..4075f3d4ce 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -88,6 +88,7 @@ static uint32_t virtio_mem_default_thp_size(void)
+ static uint32_t thp_size;
  
- }
- 
--static void
--virtio_snd_set_config(VirtIODevice *vdev, const uint8_t *config)
--{
--    VirtIOSound *s = VIRTIO_SND(vdev);
--    const virtio_snd_config *sndconfig =
--        (const virtio_snd_config *)config;
--
--
--   trace_virtio_snd_set_config(vdev,
--                               s->snd_conf.jacks,
--                               sndconfig->jacks,
--                               s->snd_conf.streams,
--                               sndconfig->streams,
--                               s->snd_conf.chmaps,
--                               sndconfig->chmaps);
--
--    memcpy(&s->snd_conf, sndconfig, sizeof(virtio_snd_config));
--    le32_to_cpus(&s->snd_conf.jacks);
--    le32_to_cpus(&s->snd_conf.streams);
--    le32_to_cpus(&s->snd_conf.chmaps);
--
--}
--
- static void
- virtio_snd_pcm_buffer_free(VirtIOSoundPCMBuffer *buffer)
+ #define HPAGE_PMD_SIZE_PATH "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size"
++#define HPAGE_PATH "/sys/kernel/mm/transparent_hugepage/"
+ static uint32_t virtio_mem_thp_size(void)
  {
-@@ -1400,7 +1377,6 @@ static void virtio_snd_class_init(ObjectClass *klass, void *data)
-     vdc->realize = virtio_snd_realize;
-     vdc->unrealize = virtio_snd_unrealize;
-     vdc->get_config = virtio_snd_get_config;
--    vdc->set_config = virtio_snd_set_config;
-     vdc->get_features = get_features;
-     vdc->reset = virtio_snd_reset;
-     vdc->legacy_features = 0;
-diff --git a/hw/audio/trace-events b/hw/audio/trace-events
-index b1870ff224..b8ef572767 100644
---- a/hw/audio/trace-events
-+++ b/hw/audio/trace-events
-@@ -41,7 +41,6 @@ asc_update_irq(int irq, int a, int b) "set IRQ to %d (A: 0x%x B: 0x%x)"
+     gchar *content = NULL;
+@@ -98,6 +99,12 @@ static uint32_t virtio_mem_thp_size(void)
+         return thp_size;
+     }
  
- #virtio-snd.c
- virtio_snd_get_config(void *vdev, uint32_t jacks, uint32_t streams, uint32_t chmaps) "snd %p: get_config jacks=%"PRIu32" streams=%"PRIu32" chmaps=%"PRIu32""
--virtio_snd_set_config(void *vdev, uint32_t jacks, uint32_t new_jacks, uint32_t streams, uint32_t new_streams, uint32_t chmaps, uint32_t new_chmaps) "snd %p: set_config jacks from %"PRIu32"->%"PRIu32", streams from %"PRIu32"->%"PRIu32", chmaps from %"PRIu32"->%"PRIu32
- virtio_snd_get_features(void *vdev, uint64_t features) "snd %p: get_features 0x%"PRIx64
- virtio_snd_vm_state_running(void) "vm state running"
- virtio_snd_vm_state_stopped(void) "vm state stopped"
++    /* No THP -> no restrictions. */
++    if (!g_file_test(HPAGE_PATH, G_FILE_TEST_EXISTS)) {
++        thp_size = VIRTIO_MEM_MIN_BLOCK_SIZE;
++        return thp_size;
++    }
++
+     /*
+      * Try to probe the actual THP size, fallback to (sane but eventually
+      * incorrect) default sizes.
 -- 
 MST
 
