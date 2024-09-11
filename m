@@ -2,80 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 509EB97524A
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 925E69751F8
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:24:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soML1-0000Ff-6B; Wed, 11 Sep 2024 08:20:47 -0400
+	id 1soMIW-0002pi-Eg; Wed, 11 Sep 2024 08:18:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMKv-0008RW-U2
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:20:42 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1soMHP-0007pJ-NF
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:11 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMKu-0007z5-6h
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:20:41 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-42ca6ba750eso5402905e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:20:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1soMHN-0007XI-RQ
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:03 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a8d64b27c45so450686766b.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:17:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726057238; x=1726662038; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1726057020; x=1726661820; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GfEvkwnEEFGS6Fqt0EDQ+b0+iYRPDGyqpn6F5IpXr00=;
- b=hYpHYjuck/nEUKOYtEN/6CacPosDq5vpZlEjr6YczhrsocHGyG2/haq6eR6KUhMlb7
- RdfJDPkcD+pSTZcXuEKKKpriBWgtPkH56Y1p2CSd2HcccL68gfgonwh0kY0mMYng8znu
- vsdZnS+WbrbKCcLQjo9vDAH1NFs6U53XHzjAikCUtB0A9GP5Odw9MmXJcjzNTvB4put3
- Lkzhs6+j/73LXzp9bnle7+0A0YbDtJ+JuhW/TDSDyjl0McL+0Ur0MNUvSc6+8qrWAY8S
- d2u6VfVtjIOZ8wG44+hf3FSL+3hf0/Ouep269JV0RXMh96tvgRrGIIR9tnPeEV89YJ/Q
- lflg==
+ bh=+AwwrO7AexIBn5UzkGBUXAL6NYrI5jimiZLN5RSW2Xo=;
+ b=mz2W7+zy1uVx5XRRsEX6vbW+McOBvxyqXFZG0g4YRA0m33SbjWsmeDrxZMOv82qy2Z
+ XzpBMb/82ptBck9x/UXcmTJTEz6vIpP7SNUNOrMLtr7MMGxRnIHGyt5zGqjdWiIgi7ZH
+ +TmBAccZ6n/B0U0lvOS5f6lrR1yJj6JhlHM/XkjoyRRiFH+IEuenmd/fNVFdMMDmeqCN
+ potJmJkT5w9zNQsc9Z+V3OKXHhcvvrH3JAxLOimCzz7Dly9QmMkVcL2wU2dOCVkUtVMR
+ Mk2Q6fQJ9gsePaT4NlgG59drzrHWP6aEi91xsfWwtTqTGG5pyJwCqiPOM6uaieV/rwxT
+ Q8Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726057238; x=1726662038;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1726057020; x=1726661820;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GfEvkwnEEFGS6Fqt0EDQ+b0+iYRPDGyqpn6F5IpXr00=;
- b=q0Bz4MXtUmEKRdDtp/GQMUiiJ/I0HXdVjxOXG/KYzOzEm58VR4gOYjJQSRSPsv68zO
- UuXw118XttPM0PPRUSciFBS4+6UirR+9IMgccj5a28jSkOfboWrQeQ8LCV6DO62Nhbdt
- A3SIf5ZHpp7yH8xTp4LxjCYc0iuPYK4AacM64JBBqBR2FpOzJ2facdUfbvmb/V9fLFVp
- X+hvfUbYizYYvpgFIGEegmt+mih8W2G9JHBU8Q4C3epqJNNeQ3A//1uEZmSt1TLv+P/N
- qAsqYQARGxgaANZhvuXjgDm0TuuxejkD1gYRwXWDizA7Orf0zIfK8s5crhHWdWpEBerE
- YsIw==
-X-Gm-Message-State: AOJu0YwimChL402Oj/ThYt+syPkO49WXzvXTev+bdlgv0WDpVo/TLCl7
- t4NqraELR0mkIS7zMIW88mjQqxmQext1hp2B7QAfRzPL/s0RZ5yrvDjJVIlZZt9QXwYi8OLRINS
- A
-X-Google-Smtp-Source: AGHT+IFkF2GBTGlu4z0kQGqgN7aJaOVMI0P+pTkgSdGzuGeb811S1OLq0vTyy4V1ZRNWvyna1+Toog==
-X-Received: by 2002:a05:600c:4fc8:b0:42c:bd4d:e8d6 with SMTP id
- 5b1f17b1804b1-42cbddbd72bmr37897835e9.3.1726057238429; 
- Wed, 11 Sep 2024 05:20:38 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.196.107])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42ca3a3cc31sm166500105e9.24.2024.09.11.05.20.37
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:20:38 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 56/56] ui: remove break after g_assert_not_reached()
-Date: Wed, 11 Sep 2024 14:14:21 +0200
-Message-ID: <20240911121422.52585-57-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
-References: <20240911121422.52585-1-philmd@linaro.org>
+ bh=+AwwrO7AexIBn5UzkGBUXAL6NYrI5jimiZLN5RSW2Xo=;
+ b=hlWK7l+Y+6X3VtONoYP9XM160XiyEZlpzYdlCdmagKmkKvqPUecglU846MxDKxJwmO
+ 9pFHZTVjLF8MuD6SnoOLGsFvb2j6RaIEd2yjWLkXOQh3oqd6ejSyvhEv+1r6ayrSLTPx
+ Yv8pky4P8Wn9dwq1vvbEQa1D3QLcyM+mgmforhhzesMS3dAX2coKUcWONZdUyFqgpJ7Z
+ pF3cYFgIKyLNgMnNTskUupv9u//kguTH6EtTe6V8s69HQnQJ4+KQtA6JYHnaMBAPPiDQ
+ 0/KEtt47oaxQWKQtvAvY8r4+6OuPI4Bqjs0kBw2RcC8FDVlWhjhQC5XXejIoclTTSnaj
+ CoqA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWVOnhG4Gz45+0S/92+cwlDNP+lYDwP1wnnDDqOKdcEnNymlbbcVbhY2kgCIakLcAKL4iwTHB+/9rxo@nongnu.org
+X-Gm-Message-State: AOJu0YwUeYfIKc238tP+sJJNFOnZIagYdH483gwU/9yzJtkkbhE1d+JE
+ TUWrXo18RhQZdiQ+3xGpRoObxNdQkl2F8gOjhyp/CMFBR96WwoBi
+X-Google-Smtp-Source: AGHT+IFRlxqnYhEIZO2oI77aWYnWRf/ZFuQWw/RutCDhXoQob0sgHJwtjX+G39hy62Nw1AEnvGb8Iw==
+X-Received: by 2002:a17:907:2daa:b0:a8d:3338:a48c with SMTP id
+ a640c23a62f3a-a8ffaaacf88mr416697866b.7.1726057018777; 
+ Wed, 11 Sep 2024 05:16:58 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-191-102-051.77.191.pool.telefonica.de.
+ [77.191.102.51]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8d25c7277bsm599441766b.102.2024.09.11.05.16.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Sep 2024 05:16:58 -0700 (PDT)
+Date: Wed, 11 Sep 2024 12:16:55 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ =?ISO-8859-1?Q?Volker_R=FCmelin?= <vr_qemu@t-online.de>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
+CC: Stefan Weil <sw@weilnetz.de>, Howard Spoelstra <hsp.cat7@gmail.com>,
+ qemu-devel@nongnu.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_1/3=5D_ui/sdl2=3A_reenable_the?=
+ =?US-ASCII?Q?_SDL2_Windows_keyboard_hook_procedure?=
+In-Reply-To: <1e160bbe-f16a-4396-9f73-e9a6cab91fd9@linaro.org>
+References: <ae9b2c56-dab2-4b8f-bb5e-2087e9ccaa92@t-online.de>
+ <20240909061552.6122-1-vr_qemu@t-online.de>
+ <CAMxuvay4vRm6ZYQoUx=cmD5mr-8-qR4Z4iLEJ6-f0m2eUSbdOg@mail.gmail.com>
+ <69b15684-0d00-4a74-aeac-2d98f7e88d95@t-online.de>
+ <7b536856-3155-432b-95b0-e03f96a0808e@linaro.org>
+ <1e160bbe-f16a-4396-9f73-e9a6cab91fd9@linaro.org>
+Message-ID: <6F67E7BA-44A5-4CBE-8678-C4273D6ECC20@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,30 +101,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240910221606.1817478-37-pierrick.bouvier@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- ui/qemu-pixman.c | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
-index 5ca55dd199..6cada8b45e 100644
---- a/ui/qemu-pixman.c
-+++ b/ui/qemu-pixman.c
-@@ -49,7 +49,6 @@ PixelFormat qemu_pixelformat_from_pixman(pixman_format_code_t format)
-         break;
-     default:
-         g_assert_not_reached();
--        break;
-     }
- 
-     pf.amax = (1 << pf.abits) - 1;
--- 
-2.45.2
+Am 11=2E September 2024 11:59:25 UTC schrieb "Philippe Mathieu-Daud=C3=A9"=
+ <philmd@linaro=2Eorg>:
+>On 11/9/24 13:57, Philippe Mathieu-Daud=C3=A9 wrote:
+>> Hi Volker,
+>>=20
+>> On 9/9/24 21:38, Volker R=C3=BCmelin wrote:
+>>> Am 09=2E09=2E24 um 09:26 schrieb Marc-Andr=C3=A9 Lureau:
+>>>> Hi
+>>>>=20
+>>>> On Mon, Sep 9, 2024 at 10:22=E2=80=AFAM Volker R=C3=BCmelin <vr_qemu@=
+t-online=2Ede> wrote:
+>>>>> Windows only:
+>>>>>=20
+>>>>> The libSDL2 Windows message loop needs the libSDL2 Windows low
+>>>>> level keyboard hook procedure to grab the left and right Windows
+>>>>> keys correctly=2E Reenable the SDL2 Windows keyboard hook procedure=
+=2E
+>>>>>=20
+>>>>> Because the QEMU Windows keyboard hook procedure is still needed
+>>>>> to filter out the special left Control key event for every Alt Gr
+>>>>> key event, it's important to install the two keyboard hook
+>>>>> procedures in the following order=2E First the SDL2 procedure, then
+>>>>> the QEMU procedure=2E
+>>>>>=20
+>>>>> Resolves: https://gitlab=2Ecom/qemu-project/qemu/-/issues/2139
+>>>>> Resolves: https://gitlab=2Ecom/qemu-project/qemu/-/issues/2323
+>>>>> Tested-by: Howard Spoelstra <hsp=2Ecat7@gmail=2Ecom>
+>>>>> Signed-off-by: Volker R=C3=BCmelin <vr_qemu@t-online=2Ede>
+>>>>> ---
+>>>>> =C2=A0 ui/sdl2=2Ec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 53 ++++++++++++++++++++++++++++++---------------
+>>>>> =C2=A0 ui/win32-kbd-hook=2Ec |=C2=A0 3 +++
+>>>>> =C2=A0 2 files changed, 38 insertions(+), 18 deletions(-)
+>>=20
+>>=20
+>>>> Note: there is no 2=2E16 release=2E They jumped from 2=2E0=2E22 to 2=
+=2E24 (see
+>>>> https://github=2Ecom/libsdl-org/SDL/releases/tag/release-2=2E24=2E0)
+>>>=20
+>>> Hi Marc-Andr=C3=A9
+>>>=20
+>>> Oh=2E This means that the comparison I wrote is true for SDL2 versions=
+ <
+>>> 2=2E24=2E0=2E
+>>>=20
+>>>>=20
+>>>> The windows hook was indeed added in 2=2E0=2E16, released on Aug 10, =
+2021=2E
+>>>>=20
+>>>> Given the distribution nature of the Windows binaries, I think we
+>>>> could simply depend on a much recent version without worrying about
+>>>> compatibility with < 2=2E0=2E16=2E This would help reduce the potenti=
+al
+>>>> combinations of versions and bugs reports=2E
+>>>=20
+>>> Okay, I'll send a version 2 patch series=2E
+>>=20
+>> Queuing patches 2 & 3 meanwhile=2E Please do not bury series within
+>> threads, if Bernhard hadn't sent his T-b tag, I'd have missed it=2E
+>
+>Oh actually this is a series with a cover, but the cover subject
+>doesn't contains 'PATCH' which is why my git tool missed it=2E
+>
+
+For me, `git am` didn't work after downloading the series' mbox=2E I had t=
+o download each patch mail individually and apply one by one=2E Then I coul=
+d test the series=2E
 
 
