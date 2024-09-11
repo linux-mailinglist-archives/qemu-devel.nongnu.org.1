@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C87975544
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6CD975581
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:33:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOJ8-0005u7-8g; Wed, 11 Sep 2024 10:27:03 -0400
+	id 1soOKH-0000p7-RK; Wed, 11 Sep 2024 10:28:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOIG-0005Th-Lb
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:26:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOJR-00079d-Tr
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:27:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOID-0002Mo-NP
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:26:03 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOJN-0003NJ-A1
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:27:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726064760;
+ s=mimecast20190719; t=1726064832;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Djqo6J3MxbHHYuNo/Fe5MbLiDLdsz4AL1lSbVDXBPpw=;
- b=jAzIPgQ1WFEa9vWRhJiHzTQUgYQxkXQIEbt2AHpJoTT0DoK9zp24k+Ezz8xlP93QXDXdXn
- Www3oEZFH1oh6JLH9gL5Jfd3dL8z02ZQpiDo3SVFqHPiYUXFvKVl+o/thzc+4SS4uvt8DO
- 0CDCdq7sfDKRowtgvfTy1nMzFu1EAWw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=R5ePHMPfQwBzPpsGte/yR9q9ulk7hoKYYN7lCYMftAw=;
+ b=hact8nxCQRbz/LW1pUfuNLnCNHF9q7LiOsihXR0nvrzY/Z408PCtPu0CQybB9TE45hxKaJ
+ NUoTx6i+7SmLmSO8dR/0qV8g+edDBmK1krMe9bMcxEmZD/x+P1HpRAqDTKFa/QHMJaS5lg
+ STXLN0UPv5sqhKECkCh1FMMsj8VfoOM=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-166-mMv7lFdJMje9xp_pQwXiYQ-1; Wed, 11 Sep 2024 09:51:28 -0400
-X-MC-Unique: mMv7lFdJMje9xp_pQwXiYQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42cb940cd67so29196935e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:51:27 -0700 (PDT)
+ us-mta-316-BiHTkPcBPKySs71RUCzzFQ-1; Wed, 11 Sep 2024 09:51:32 -0400
+X-MC-Unique: BiHTkPcBPKySs71RUCzzFQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a870f3a65a0so490938166b.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:51:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726062686; x=1726667486;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Djqo6J3MxbHHYuNo/Fe5MbLiDLdsz4AL1lSbVDXBPpw=;
- b=FFN3iGTzPMq5DfDCa40Eiv8ufOdhmfvvhN8jmS69pcUDVmbGE3f4ynPkPG8Text9+g
- WizmfzZSqlqdABWUehHnPoO1aNV2m/j1EyBcMlGQVI+wD1PFLdbx0zA8YBmedukbD4tf
- giu+PqM1+aCiH1rfg+eBjmvaFw6RAbiauq2SE4MZjjlPE2hBlA18m3Ow8SA/jmtQbh6Q
- cpLGzqnDfeQu3vaLQSRu2MUKaEGiO+rz3fX3HDiXjlMTPw38dIFtQ/Aw5it5C5PnxkFc
- 9ebfJD+M+TwiS6M91xIXbkTQzNCSroc7kzWci/v86nS/vKzuspuN6X+H24JSqge5xcmx
- Bfgw==
-X-Gm-Message-State: AOJu0Yxhhp1ROJ54Np4z3pwwoT13jbAKV/Ne2wUGPWozCWbu6jMwb8Sp
- CD7dXPaPm/xNJZZk6TfiPSCllNPhZw+Yj10PXDp8FkRseABYz/mMvaZdxZNx4EkewUe9e7WQCZT
- a4tPu/dNkFR01n0LUff1yLgaXQmtH3aE9dMBDqSmvVBDyTWUfnAUJlyZHkMHfgn4FbQCflbhL3D
- y/oxY3cEG/5p+SKkQICgIcUQMxbme+AA==
-X-Received: by 2002:a05:600c:4f89:b0:42c:b802:47bc with SMTP id
- 5b1f17b1804b1-42cb802498bmr105013935e9.34.1726062686346; 
- Wed, 11 Sep 2024 06:51:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHRgSgouYIRe5f721RRXDKdrquAT6TzX12rXYEZTs9fbzXIKSFlKymk5NXmf435XuDHZvMkeQ==
-X-Received: by 2002:a05:600c:4f89:b0:42c:b802:47bc with SMTP id
- 5b1f17b1804b1-42cb802498bmr105013275e9.34.1726062685366; 
- Wed, 11 Sep 2024 06:51:25 -0700 (PDT)
-Received: from redhat.com ([2.55.34.253]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42caeb32639sm143281555e9.13.2024.09.11.06.51.24
+ d=1e100.net; s=20230601; t=1726062689; x=1726667489;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=R5ePHMPfQwBzPpsGte/yR9q9ulk7hoKYYN7lCYMftAw=;
+ b=sZOcBhElDOcYQociXdLEyLkJq8si2HMPuZf+B6Bsag9wFrMGYhJDKqDpvUe7INTi3Y
+ O8dLBZtCLiDQl+ai/gGzmorI3j7QCasFWCb3I1a1kjdxg7eQ/N25mDQi6u2E48Y8wK/D
+ +yGFbcc06wn7TorBCE+MRMLWN7f1AhgeDgwrhneO0QnVDrnuo9Rvgq5hzIaGmf3DMlvv
+ r3TnZ9trUZ/aDJ/pxJRhBXimmdK1KDu7waMMrcOfXUcRbfKMofgcg+iLUjWeuSCXQfw9
+ mqBaEKE4NkTcZSaG7I4Hi+ZEmsEbX/J1/8Sb5nXPvlilFt9k6YMoJb+J7ZVqs+pSq7X2
+ NGQw==
+X-Gm-Message-State: AOJu0YzVjuha4S+PI/Ygj+4qAz46ho8NxdThQYQSAy54hyKKpbdT3kr3
+ uC7W9gCjA8nmr8l/ZD3soRiWDD//xZ3lsMGEiYSM1jv2Nn/ikUjw2GiNII+K+D7yI+mwwTT5vRA
+ x6JIIjSVFzuCNJppKZ2pE4voeW3CJ1tfes+rtDxjjcqEy25cQI7MRNPULpCyUDstKigBKrPiFPn
+ uZDmyVOvqG0kxSFEjNK+tc+dNZR25KnA==
+X-Received: by 2002:a17:907:9487:b0:a86:7924:11bd with SMTP id
+ a640c23a62f3a-a8ffad9d1a8mr452160566b.41.1726062689271; 
+ Wed, 11 Sep 2024 06:51:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFY+bWB+IztdPuwAyYLrFzsLbCvl61KtjpyJeZQfkrPuLoif8uHr5PqRAsy2azdqO7WXIAXmA==
+X-Received: by 2002:a17:907:9487:b0:a86:7924:11bd with SMTP id
+ a640c23a62f3a-a8ffad9d1a8mr452156966b.41.1726062688686; 
+ Wed, 11 Sep 2024 06:51:28 -0700 (PDT)
+Received: from redhat.com ([2.55.9.133]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8d25cec10asm613690266b.160.2024.09.11.06.51.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 06:51:24 -0700 (PDT)
-Date: Wed, 11 Sep 2024 09:51:22 -0400
+ Wed, 11 Sep 2024 06:51:28 -0700 (PDT)
+Date: Wed, 11 Sep 2024 09:51:25 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/18] virtio,pc,pci: features, fixes, cleanups
-Message-ID: <cover.1726062663.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Hanna Czenczek <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>
+Subject: [PULL 01/18] virtio: Allow .get_vhost() without vhost_started
+Message-ID: <00adced5c3166ee65b6880b48c1e0826b7304f76.1726062663.git.mst@redhat.com>
+References: <cover.1726062663.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1726062663.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -97,120 +102,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a66f28df650166ae8b50c992eea45e7b247f4143:
+From: Hanna Czenczek <hreitz@redhat.com>
 
-  Merge tag 'migration-20240909-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-09-10 11:19:22 +0100)
+Historically, .get_vhost() was probably only called when
+vdev->vhost_started is true.  However, we now decidedly want to call it
+also when vhost_started is false, specifically so we can issue a reset
+to the vhost back-end while device operation is stopped.
 
-are available in the Git repository at:
+Some .get_vhost() implementations dereference some pointers (or return
+offsets from them) that are probably guaranteed to be non-NULL when
+vhost_started is true, but not necessarily otherwise.  This patch makes
+all such implementations check all such pointers, returning NULL if any
+is NULL.
 
-  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
-
-for you to fetch changes up to 6e3c2d58e967cde3dadae298e81c5e8eb9fb9080:
-
-  hw/acpi/ich9: Add periodic and swsmi timer (2024-09-11 09:46:14 -0400)
-
-----------------------------------------------------------------
-virtio,pc,pci: features, fixes, cleanups
-
-i286 acpi speedup by precomputing _PRT by Ricardo Ribalda
-vhost_net speedup by using MR transactions by Zuo Boqun
-ich9 gained support for periodic and swsmi timer by Dominic Prinz
-
-Fixes, cleanups all over the place.
-
+Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+Message-Id: <20240723163941.48775-2-hreitz@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ include/hw/virtio/virtio.h  |  1 +
+ hw/display/vhost-user-gpu.c |  2 +-
+ hw/net/virtio-net.c         | 19 +++++++++++++++++--
+ hw/virtio/virtio-crypto.c   | 18 +++++++++++++++---
+ 4 files changed, 34 insertions(+), 6 deletions(-)
 
-----------------------------------------------------------------
-BALATON Zoltan (2):
-      hw: Move declaration of IRQState to header and add init function
-      hw/isa/vt82c686.c: Embed i8259 irq in device state instead of allocating
-
-David Hildenbrand (1):
-      virtio-mem: don't warn about THP sizes on a kernel without THP support
-
-Dominic Prinz (1):
-      hw/acpi/ich9: Add periodic and swsmi timer
-
-Dongli Zhang (1):
-      pci: don't skip function 0 occupancy verification for devfn auto assign
-
-Gao Shiyuan (1):
-      virtio-pci: Add lookup subregion of VirtIOPCIRegion MR
-
-Hanna Czenczek (2):
-      virtio: Allow .get_vhost() without vhost_started
-      virtio: Always reset vhost devices
-
-Philippe Mathieu-Daudé (1):
-      hw/pci/pci-hmp-cmds: Avoid displaying bogus size in 'info pci'
-
-Ricardo Ribalda (3):
-      tests/acpi: pc: allow DSDT acpi table changes
-      hw/i386/acpi-build: Return a pre-computed _PRT table
-      tests/acpi: pc: update golden masters for DSDT
-
-Volker Rümelin (1):
-      hw/audio/virtio-sound: fix heap buffer overflow
-
-Wenyu Huang (1):
-      virtio: rename virtio_split_packed_update_used_idx
-
-Zhenzhong Duan (2):
-      intel_iommu: Fix invalidation descriptor type field
-      intel_iommu: Make PASID-cache and PIOTLB type invalid in legacy mode
-
-peng guo (1):
-      hw/cxl: fix physical address field in get scan media results output
-
-zuoboqun (1):
-      vhost_net: configure all host notifiers in a single MR transaction
-
- hw/i386/intel_iommu_internal.h       |  11 +--
- include/hw/acpi/ich9.h               |   6 ++
- include/hw/acpi/ich9_timer.h         |  23 ++++++
- include/hw/irq.h                     |  18 ++++
- include/hw/southbridge/ich9.h        |   4 +
- include/hw/virtio/vhost.h            |   4 +
- include/hw/virtio/virtio.h           |   1 +
- hw/acpi/ich9.c                       |  23 ++++++
- hw/acpi/ich9_timer.c                 |  93 +++++++++++++++++++++
- hw/audio/virtio-snd.c                |  24 ------
- hw/core/irq.c                        |  25 +++---
- hw/cxl/cxl-mailbox-utils.c           |   2 +-
- hw/display/vhost-user-gpu.c          |   2 +-
- hw/i386/acpi-build.c                 | 118 +++++---------------------
- hw/i386/intel_iommu.c                |  24 +++---
- hw/i386/pc.c                         |   5 +-
- hw/isa/lpc_ich9.c                    |  14 ++++
- hw/isa/vt82c686.c                    |   7 +-
- hw/net/vhost_net.c                   | 155 ++++++++++++++++++++++++++++++++---
- hw/net/virtio-net.c                  |  19 ++++-
- hw/pci/pci-hmp-cmds.c                |  26 ++++--
- hw/pci/pci.c                         |  17 ++--
- hw/virtio/vhost.c                    |   6 +-
- hw/virtio/virtio-crypto.c            |  18 +++-
- hw/virtio/virtio-mem.c               |   7 ++
- hw/virtio/virtio-pci.c               |   8 +-
- hw/virtio/virtio.c                   |  12 ++-
- hw/acpi/meson.build                  |   2 +-
- hw/audio/trace-events                |   1 -
- tests/data/acpi/x86/pc/DSDT          | Bin 6830 -> 8527 bytes
- tests/data/acpi/x86/pc/DSDT.acpierst | Bin 6741 -> 8438 bytes
- tests/data/acpi/x86/pc/DSDT.acpihmat | Bin 8155 -> 9852 bytes
- tests/data/acpi/x86/pc/DSDT.bridge   | Bin 13701 -> 15398 bytes
- tests/data/acpi/x86/pc/DSDT.cphp     | Bin 7294 -> 8991 bytes
- tests/data/acpi/x86/pc/DSDT.dimmpxm  | Bin 8484 -> 10181 bytes
- tests/data/acpi/x86/pc/DSDT.hpbridge | Bin 6781 -> 8478 bytes
- tests/data/acpi/x86/pc/DSDT.hpbrroot | Bin 3337 -> 5034 bytes
- tests/data/acpi/x86/pc/DSDT.ipmikcs  | Bin 6902 -> 8599 bytes
- tests/data/acpi/x86/pc/DSDT.memhp    | Bin 8189 -> 9886 bytes
- tests/data/acpi/x86/pc/DSDT.nohpet   | Bin 6688 -> 8385 bytes
- tests/data/acpi/x86/pc/DSDT.numamem  | Bin 6836 -> 8533 bytes
- tests/data/acpi/x86/pc/DSDT.roothp   | Bin 10623 -> 12320 bytes
- tests/data/acpi/x86/q35/DSDT.cxl     | Bin 9714 -> 13148 bytes
- tests/data/acpi/x86/q35/DSDT.viot    | Bin 9464 -> 14615 bytes
- 44 files changed, 473 insertions(+), 202 deletions(-)
- create mode 100644 include/hw/acpi/ich9_timer.h
- create mode 100644 hw/acpi/ich9_timer.c
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index 0fcbc5c0c6..f526ecc8fc 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -223,6 +223,7 @@ struct VirtioDeviceClass {
+     int (*post_load)(VirtIODevice *vdev);
+     const VMStateDescription *vmsd;
+     bool (*primary_unplug_pending)(void *opaque);
++    /* May be called even when vdev->vhost_started is false */
+     struct vhost_dev *(*get_vhost)(VirtIODevice *vdev);
+     void (*toggle_device_iotlb)(VirtIODevice *vdev);
+ };
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index c0c66910f1..14548f1a57 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -642,7 +642,7 @@ vhost_user_gpu_device_realize(DeviceState *qdev, Error **errp)
+ static struct vhost_dev *vhost_user_gpu_get_vhost(VirtIODevice *vdev)
+ {
+     VhostUserGPU *g = VHOST_USER_GPU(vdev);
+-    return &g->vhost->dev;
++    return g->vhost ? &g->vhost->dev : NULL;
+ }
+ 
+ static Property vhost_user_gpu_properties[] = {
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index ed33a32877..fb84d142ee 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3896,8 +3896,23 @@ static bool dev_unplug_pending(void *opaque)
+ static struct vhost_dev *virtio_net_get_vhost(VirtIODevice *vdev)
+ {
+     VirtIONet *n = VIRTIO_NET(vdev);
+-    NetClientState *nc = qemu_get_queue(n->nic);
+-    struct vhost_net *net = get_vhost_net(nc->peer);
++    NetClientState *nc;
++    struct vhost_net *net;
++
++    if (!n->nic) {
++        return NULL;
++    }
++
++    nc = qemu_get_queue(n->nic);
++    if (!nc) {
++        return NULL;
++    }
++
++    net = get_vhost_net(nc->peer);
++    if (!net) {
++        return NULL;
++    }
++
+     return &net->dev;
+ }
+ 
+diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
+index 5034768bff..0793f56965 100644
+--- a/hw/virtio/virtio-crypto.c
++++ b/hw/virtio/virtio-crypto.c
+@@ -1247,9 +1247,21 @@ static bool virtio_crypto_guest_notifier_pending(VirtIODevice *vdev, int idx)
+ static struct vhost_dev *virtio_crypto_get_vhost(VirtIODevice *vdev)
+ {
+     VirtIOCrypto *vcrypto = VIRTIO_CRYPTO(vdev);
+-    CryptoDevBackend *b = vcrypto->cryptodev;
+-    CryptoDevBackendClient *cc = b->conf.peers.ccs[0];
+-    CryptoDevBackendVhost *vhost_crypto = cryptodev_get_vhost(cc, b, 0);
++    CryptoDevBackend *b;
++    CryptoDevBackendClient *cc;
++    CryptoDevBackendVhost *vhost_crypto;
++
++    b = vcrypto->cryptodev;
++    if (!b) {
++        return NULL;
++    }
++
++    cc = b->conf.peers.ccs[0];
++    vhost_crypto = cryptodev_get_vhost(cc, b, 0);
++    if (!vhost_crypto) {
++        return NULL;
++    }
++
+     return &vhost_crypto->dev;
+ }
+ 
+-- 
+MST
 
 
