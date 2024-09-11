@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D335975225
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C1497522E
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:30:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMJn-0001Dm-DV; Wed, 11 Sep 2024 08:19:31 -0400
+	id 1soMJq-0001ox-QH; Wed, 11 Sep 2024 08:19:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJ6-0006Hw-9x
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:18:57 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJD-0006rN-L9
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:19:05 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJ4-0007eY-Is
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:18:48 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-42cba0dc922so24682345e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:18:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJA-0007er-OZ
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:18:54 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-42cb1e623d1so19092625e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726057124; x=1726661924; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726057130; x=1726661930; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NTCRQ2hPR5eh42ZfIm8LY44Myf8vzzYhRLsWqDIkSHk=;
- b=aOr+GR1Sy+ekLHA8ms/06moYskJzvD5hOdFTWN7GiTAy+2SJQel1Xk3hs53fZ+aBhV
- WE9Z4rOp4aLJq6p8FUowWbrPs3mKY5HKtiSS6rbnqqKFSN6YhFYD/sQX/pYPTEqAWj87
- EiO/BgU2tibf41OuTJK9jfgnUb1w98S2Eu9tfUm/eM4MI77CG0Cd8+ZCUIvzz+W5Z4gP
- aNX21LcKfy/b2mOJMlIccaX4xWw7669pyULX4Wt4N/JooImFujBDMjnSpnXwOTA8G7pF
- QjmpBZmlV0INP8O0vTqQ6yrAUsx6BbGrsKD7jJyJMnfeKQkb9GwhizR6G/qQi1m0HYCn
- frCw==
+ bh=JGgy78gvcc3jMmF3sOv2NVPvQFdbhvqBJ1whFt/CWgE=;
+ b=efwmZZqs30WofrBfABHfrfbvnJg115LhCzhRO0WfMQ9MDN4nMuKP29xrMtdUkEdpYQ
+ MTZWKYgFZd/8a90GY2pRDJKJrDW3MpYMpY/YOwnL1AOS/Rz5UxnXuV7y4NQQxetj2ShD
+ XTducv+yp1NKk66qhkcLyb7T1SDuN4hd8ne4O9ezKjPfDJLNdlTSzoQPCXAyqktRm6xQ
+ Wrc9bSgD2VVWtdF+Tk9exTyiwO23oDpu0nbmW0Dy4qVfh/81bmIBOxhniy6g92bcpZyL
+ heC4/gU+9wlqCFK4QGrgXgMxKPU2PV3+CavFQBW/hJrcq5hnz33+9ddEI4NsPPxj7G7p
+ bUgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726057124; x=1726661924;
+ d=1e100.net; s=20230601; t=1726057130; x=1726661930;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NTCRQ2hPR5eh42ZfIm8LY44Myf8vzzYhRLsWqDIkSHk=;
- b=ZpnqmZpB3PharxALYGYLlNTuSpiTI8x7jaCslAXNmX/mGmTmXCWjNkhjrDk4497VDY
- iG0H6YgEHxtKNTOykfFPv63ZIRseo2qlZvJM8If+r/+URCdmniIfj/LjuoZvyuNJ+OcQ
- UZU8blF6hVEJgyvk5NXGwmdKdVNWtVnsIcShJftnoRvA2JosI7oyfsrZDesNmh24LET0
- R7TGVPC3yK3erN82iF4EQWprCMOL3hG7Ds0oeFzg3JfvooNvjHbAuDVwtRLVcDZ6dAZv
- MMvOYp05nkGXVODZn/5/f6/6FjWvPADuOhYjZwl1QtO81e/1d3pffTPJhcBYAK4lYUES
- qPFw==
-X-Gm-Message-State: AOJu0YxTkpMwtzyxbzPt+fWpJjjfLmlPTJ1409iUXLOpoDUKcNbAILEx
- FUJfDIqkePTg3silyq8kCi6SvuX0+tA6d0RBh88/xfhZ7iiJGEZOV4vi1VTQK/4kjkGvKKsnGEu
- J
-X-Google-Smtp-Source: AGHT+IGdFn1WoTY5TcquwwCqTiUikX0GKgCCvhxIJEC7O/1TooDO6GSGCxzgNgYHHwZcWUe2maAVVg==
-X-Received: by 2002:adf:f489:0:b0:374:baf1:41bb with SMTP id
- ffacd0b85a97d-37892685979mr7400650f8f.3.1726057124310; 
- Wed, 11 Sep 2024 05:18:44 -0700 (PDT)
+ bh=JGgy78gvcc3jMmF3sOv2NVPvQFdbhvqBJ1whFt/CWgE=;
+ b=wxBaa2LybUrtoLZOAlvbe8Px90SOwk+7ID1EVk0WfOIA4zccQg7q4Tbtw0JtEG5pcc
+ jaw3ZupOcvpewwObqE7K95739lSrZIYAVS1M1YjFHjy1Atwp1mnjfN49bG8MB2mkrb6V
+ HZLmn9CylFVpEVA5TzpeQLN2LpR5ZKfow8GOV6X+t4RHtia2oOztIlvdr2WEDjQ2jCrE
+ 1lCUN9BKiCAWzG2NOZ8JNVtZyensTk5bxS/oFli21Zy5/HyDOThxG2nnEamQ71IpnmW/
+ S3rogmRgab7xuKk8tp+uYd0yJUgLb+XlmEvOQkQb8fr4G1fcsSgOi3dWFoAk1tckKdJt
+ Kajw==
+X-Gm-Message-State: AOJu0YzJMBJUZIGK2UkU5jZbmgpvOGjRdMjIOk4SDTXGtgV6ga8j+XCC
+ TTIKvC1ZPlugcwOnKvwDq0INdGIIH+Mt88TUDeaiHuwU3aglD3u2wieWhC3g41/C7OLkHdTRwoB
+ Y
+X-Google-Smtp-Source: AGHT+IFrKM3HpuL5U113y0wdP82Iwwbb/s7kyptaQXQZ+1cVSI1gbLkFMo0n5xtXfA/qZ78l32fRAg==
+X-Received: by 2002:a05:600c:4fc5:b0:42c:b22e:fc2e with SMTP id
+ 5b1f17b1804b1-42ccd32cdb4mr22693415e9.15.1726057130295; 
+ Wed, 11 Sep 2024 05:18:50 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42caeb815f4sm142568945e9.30.2024.09.11.05.18.42
+ 5b1f17b1804b1-42cc8be465csm35399005e9.28.2024.09.11.05.18.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:18:43 -0700 (PDT)
+ Wed, 11 Sep 2024 05:18:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Octavian Purdila <tavip@google.com>,
  Alistair Francis <alistair.francis@wdc.com>,
+ Octavian Purdila <tavip@google.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 36/56] fifo8: rename fifo8_pop_buf() to fifo8_peekpop_buf()
-Date: Wed, 11 Sep 2024 14:14:01 +0200
-Message-ID: <20240911121422.52585-37-philmd@linaro.org>
+Subject: [PULL 37/56] fifo8: honour do_pop argument in fifo8_peekpop_buf()
+Date: Wed, 11 Sep 2024 14:14:02 +0200
+Message-ID: <20240911121422.52585-38-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
 References: <20240911121422.52585-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,48 +96,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-The fifo8_pop_buf() function will soon also be used for peek
-operations, so rename the function accordingly. Create a new
-fifo8_pop_buf() wrapper function that can be used by existing
-callers.
+Pass the do_pop value from fifo8_peekpop_buf() to fifo8_peekpop_bufptr()
+to allow peeks to the FIFO buffer, including adjusting the skip parameter
+to handle the case where the internal FIFO buffer wraps around.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Octavian Purdila <tavip@google.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Octavian Purdila <tavip@google.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240828122258.928947-6-mark.cave-ayland@ilande.co.uk>
+Message-ID: <20240828122258.928947-7-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- util/fifo8.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ util/fifo8.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/util/fifo8.c b/util/fifo8.c
-index efe0117b1f..5453cbc1b0 100644
+index 5453cbc1b0..1031ffbe7e 100644
 --- a/util/fifo8.c
 +++ b/util/fifo8.c
-@@ -105,7 +105,8 @@ const uint8_t *fifo8_pop_bufptr(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
-     return fifo8_peekpop_bufptr(fifo, max, 0, numptr, true);
- }
+@@ -117,7 +117,7 @@ static uint32_t fifo8_peekpop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen,
+     }
  
--uint32_t fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen)
-+static uint32_t fifo8_peekpop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen,
-+                                  bool do_pop)
- {
-     const uint8_t *buf;
-     uint32_t n1, n2 = 0;
-@@ -134,6 +135,11 @@ uint32_t fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen)
-     return n1 + n2;
- }
- 
-+uint32_t fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen)
-+{
-+    return fifo8_peekpop_buf(fifo, dest, destlen, true);
-+}
-+
- void fifo8_drop(Fifo8 *fifo, uint32_t len)
- {
-     len -= fifo8_pop_buf(fifo, NULL, len);
+     len = destlen;
+-    buf = fifo8_peekpop_bufptr(fifo, len, 0, &n1, true);
++    buf = fifo8_peekpop_bufptr(fifo, len, 0, &n1, do_pop);
+     if (dest) {
+         memcpy(dest, buf, n1);
+     }
+@@ -126,7 +126,7 @@ static uint32_t fifo8_peekpop_buf(Fifo8 *fifo, uint8_t *dest, uint32_t destlen,
+     len -= n1;
+     len = MIN(len, fifo8_num_used(fifo));
+     if (len) {
+-        buf = fifo8_peekpop_bufptr(fifo, len, 0, &n2, true);
++        buf = fifo8_peekpop_bufptr(fifo, len, do_pop ? 0 : n1, &n2, do_pop);
+         if (dest) {
+             memcpy(&dest[n1], buf, n2);
+         }
 -- 
 2.45.2
 
