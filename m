@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11B597566C
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB6297563A
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:58:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOmo-0001My-Vq; Wed, 11 Sep 2024 10:57:39 -0400
+	id 1soOkY-00078Q-9f; Wed, 11 Sep 2024 10:55:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhi-00070k-Be
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:26 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhk-00079M-P3
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhX-0007Dd-73
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhc-0007Dw-N9
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726066329;
+ s=mimecast20190719; t=1726066332;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=cW6rJsKhPMN4DAXnpRk9aJejhnXYOKSdkgv1oLepLKc=;
- b=UOzKZ/LkrVY2P0xxqap6GqTzzhVJfUEyCR5O9WnyYM/hYdutN79nbugmOSRosPxLBPcdiJ
- 3aAY84fHcvs6idYVd+FJe2fgS4YMqoK1Oo90TD0WYRO1Yh4T6Lk+rvRixYSZqK6g71Mck1
- Wzt4GJFe36rDGTw545bhb3q1w5KDauU=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Hje9oGIw2otX3n3e6GR0YuFJNQxqhspv7J1M4mo3f28=;
+ b=iXgLLhbpWthxegEe79bIE076DuOoVSiaWIJ62txPcBAK90mTl+aCUgEiqmnU+KJwmPhhMX
+ bNPKmCznPjS5y1nv1/S5PD1Co1DThT02fJTVnw5JuKIwYXQd8LmU/U3NvNXe+Q1lgLEG2t
+ cUEtIISt7Pik0cnZLY6APkPnDuMxzt0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-550-uku9yfBzMNqmtwfAvz6AZA-1; Wed, 11 Sep 2024 09:51:37 -0400
-X-MC-Unique: uku9yfBzMNqmtwfAvz6AZA-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5c25c45afb2so4829182a12.1
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:51:37 -0700 (PDT)
+ us-mta-524-VH3gesR8PkCYoMjLDScvAw-1; Wed, 11 Sep 2024 09:51:40 -0400
+X-MC-Unique: VH3gesR8PkCYoMjLDScvAw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a8a877c1d22so330361966b.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:51:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726062695; x=1726667495;
+ d=1e100.net; s=20230601; t=1726062698; x=1726667498;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cW6rJsKhPMN4DAXnpRk9aJejhnXYOKSdkgv1oLepLKc=;
- b=U6edi+VD2seSGOTusjonRapM/ryDqo+ePL252+7kyZh5am2rv9KY9asmiCIPswb4Yj
- n+9acIwUU2+7dna2CGRgUlYYqd0iDYEGIKnKd7PgvrPXM/OC2F74ea0ViWHUlqi2bBRx
- j2GNnlKT09IwrOqSGfYAndUqXYzKneqkGJESZEHpJaNATMHus7IvCb7/WHI6G8uj78zf
- RCEybm+g2+LrZbvpXtrYqTi7YeZkKR4FP65Nw/NO2GcXlQDLMQ5D6rQ0X68FTzC23Ldo
- QDeB9r1tcTl3KGwABkHnX2oGE2g49ivTzKtbxKoWfkiKcLQpiQKGOM4pE5+F40pcx95G
- XtzA==
-X-Gm-Message-State: AOJu0Ywhjg/IbJiikg4ThA+/m5Yttblo+beeTo5MeJtoEmyJReDiT1L9
- lyEPGNku6A3pTGYmpsSwNjBXTp8M0pSg5gPHwsg+BKBw4Cnyw/W1C7kasvsN9bGoTtXBAdYgEt1
- SYnBm7ZsA8LDs+jA2CY1PHzpC+zVD+AN+KSxukGSoQtkBXRENzHp6EbPVO8YIPBuFRrytP19Vuo
- 5HZNt/FPQBt7Oggh64v48RE0mDza777A==
-X-Received: by 2002:a17:907:7f10:b0:a8b:6ee7:ba25 with SMTP id
- a640c23a62f3a-a8ffadb0612mr405072366b.47.1726062695518; 
- Wed, 11 Sep 2024 06:51:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGlSiPBnTtHcvdwGtlu9vE+aMb07EQGcKjwLV6c8rHV3ngBWdOtgs2ai/xRWXpg0D8Crxxr8w==
-X-Received: by 2002:a17:907:7f10:b0:a8b:6ee7:ba25 with SMTP id
- a640c23a62f3a-a8ffadb0612mr405067566b.47.1726062694589; 
- Wed, 11 Sep 2024 06:51:34 -0700 (PDT)
+ bh=Hje9oGIw2otX3n3e6GR0YuFJNQxqhspv7J1M4mo3f28=;
+ b=SGUB0kLBwIocZ/v9yq5xJXf4XGzAMZu74r5STeebOySSnTGBZMhv6/nyl5CTgk6PE7
+ oGdTWh+PlTYT8maeUxrkOBgjZduXMveW2HhCP5xmcA332onxg3zLoDiBEzWyZG85WYg9
+ L/j+AVdpAROd3ikFJH6t49dHF//rMunqTrsUwfrEiMiPuMEf8iQo8xlRrKTkIWCZMKcE
+ A0isqGjjSMJjjcEhiroShtOccqY7TUI8b4uq8DR38fb3Qbe/BaF0rUsHSbRFOiCtnD+y
+ 0egNrQyFEqgzs6JoO9/v3V2xBClxoGMAM65zfl65lEVRnKB0QZWNGA8z7jKayjoKuctq
+ mc4w==
+X-Gm-Message-State: AOJu0YwjVcjebpPGkLDmbbWNJPMJQXeR2Gakrynm3pH0T7VZQUUkV5q+
+ aBrrsQ/yOjQiYEcs02/f8MNAq9Oatg+z/b2UI6or0UQFT/5p18N09vQ0iuMXb9fLxkhJf/WhNOo
+ V23D2kzsLh5BUPxzB2Ky3ovjGtNeeqZKjznlzTDPBBOzgdXtuHOGleARVH4PgqQtjG/HCRUH9Tn
+ TbIDnjvfhj6Ud287gkK04DqSz/rh87PA==
+X-Received: by 2002:a17:907:6d0e:b0:a8a:835f:4cb9 with SMTP id
+ a640c23a62f3a-a8ffadf04ffmr336003966b.46.1726062698536; 
+ Wed, 11 Sep 2024 06:51:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6bD5XcAmB/xGWz6Ei3wFwoAeoEQsyQsfXaF1vCQ+x21OsHGZC9dt/pUD5oEbtl1oNshF04w==
+X-Received: by 2002:a17:907:6d0e:b0:a8a:835f:4cb9 with SMTP id
+ a640c23a62f3a-a8ffadf04ffmr336000366b.46.1726062698036; 
+ Wed, 11 Sep 2024 06:51:38 -0700 (PDT)
 Received: from redhat.com ([2.55.9.133]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d259c1fa3sm616631166b.80.2024.09.11.06.51.33
+ a640c23a62f3a-a8d25a073b1sm612326266b.82.2024.09.11.06.51.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 06:51:34 -0700 (PDT)
-Date: Wed, 11 Sep 2024 09:51:32 -0400
+ Wed, 11 Sep 2024 06:51:37 -0700 (PDT)
+Date: Wed, 11 Sep 2024 09:51:34 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 03/18] hw: Move declaration of IRQState to header and add init
- function
-Message-ID: <e72a7f65c11565d2f216711588a4e767a1f6cd80.1726062663.git.mst@redhat.com>
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PULL 04/18] hw/isa/vt82c686.c: Embed i8259 irq in device state
+ instead of allocating
+Message-ID: <2225dc562a93dc191c3b2a43f273639bebad5d9a.1726062663.git.mst@redhat.com>
 References: <cover.1726062663.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -102,106 +104,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-To allow embedding a qemu_irq in a struct move its definition to the
-header and add a function to init it in place without allocating it.
+To avoid a warning about unfreed qemu_irq embed the i8259 irq in the
+device state instead of allocating it.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-Id: <e3ffd0f6ef8845d0f7247c9b6ff33f7ee8b432cf.1719690591.git.balaton@eik.bme.hu>
+Message-Id: <b70b9e72063b4dd4005bf4bc040b84f2bb617bf4.1719690591.git.balaton@eik.bme.hu>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- include/hw/irq.h | 18 ++++++++++++++++++
- hw/core/irq.c    | 25 +++++++++++--------------
- 2 files changed, 29 insertions(+), 14 deletions(-)
+ hw/isa/vt82c686.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/irq.h b/include/hw/irq.h
-index 645b73d251..c861c1debd 100644
---- a/include/hw/irq.h
-+++ b/include/hw/irq.h
-@@ -1,9 +1,20 @@
- #ifndef QEMU_IRQ_H
- #define QEMU_IRQ_H
+diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+index 505b44c4e6..82591e3e07 100644
+--- a/hw/isa/vt82c686.c
++++ b/hw/isa/vt82c686.c
+@@ -592,6 +592,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(ViaISAState, VIA_ISA)
  
-+#include "qom/object.h"
+ struct ViaISAState {
+     PCIDevice dev;
 +
- /* Generic IRQ/GPIO pin infrastructure.  */
++    IRQState i8259_irq;
+     qemu_irq cpu_intr;
+     qemu_irq *isa_irqs_in;
+     uint16_t irq_state[ISA_NUM_IRQS];
+@@ -715,13 +717,12 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+     ViaISAState *s = VIA_ISA(d);
+     DeviceState *dev = DEVICE(d);
+     PCIBus *pci_bus = pci_get_bus(d);
+-    qemu_irq *isa_irq;
+     ISABus *isa_bus;
+     int i;
  
- #define TYPE_IRQ "irq"
-+OBJECT_DECLARE_SIMPLE_TYPE(IRQState, IRQ)
-+
-+struct IRQState {
-+    Object parent_obj;
-+
-+    qemu_irq_handler handler;
-+    void *opaque;
-+    int n;
-+};
+     qdev_init_gpio_out_named(dev, &s->cpu_intr, "intr", 1);
+     qdev_init_gpio_in_named(dev, via_isa_pirq, "pirq", PCI_NUM_PINS);
+-    isa_irq = qemu_allocate_irqs(via_isa_request_i8259_irq, s, 1);
++    qemu_init_irq(&s->i8259_irq, via_isa_request_i8259_irq, s, 0);
+     isa_bus = isa_bus_new(dev, pci_address_space(d), pci_address_space_io(d),
+                           errp);
  
- void qemu_set_irq(qemu_irq irq, int level);
+@@ -729,7 +730,7 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+         return;
+     }
  
-@@ -23,6 +34,13 @@ static inline void qemu_irq_pulse(qemu_irq irq)
-     qemu_set_irq(irq, 0);
- }
- 
-+/*
-+ * Init a single IRQ. The irq is assigned with a handler, an opaque data
-+ * and the interrupt number.
-+ */
-+void qemu_init_irq(IRQState *irq, qemu_irq_handler handler, void *opaque,
-+                   int n);
-+
- /* Returns an array of N IRQs. Each IRQ is assigned the argument handler and
-  * opaque data.
-  */
-diff --git a/hw/core/irq.c b/hw/core/irq.c
-index 3f14e2dda7..db95ffc18f 100644
---- a/hw/core/irq.c
-+++ b/hw/core/irq.c
-@@ -26,16 +26,6 @@
- #include "hw/irq.h"
- #include "qom/object.h"
- 
--OBJECT_DECLARE_SIMPLE_TYPE(IRQState, IRQ)
--
--struct IRQState {
--    Object parent_obj;
--
--    qemu_irq_handler handler;
--    void *opaque;
--    int n;
--};
--
- void qemu_set_irq(qemu_irq irq, int level)
- {
-     if (!irq)
-@@ -44,6 +34,15 @@ void qemu_set_irq(qemu_irq irq, int level)
-     irq->handler(irq->opaque, irq->n, level);
- }
- 
-+void qemu_init_irq(IRQState *irq, qemu_irq_handler handler, void *opaque,
-+                   int n)
-+{
-+    object_initialize(irq, sizeof(*irq), TYPE_IRQ);
-+    irq->handler = handler;
-+    irq->opaque = opaque;
-+    irq->n = n;
-+}
-+
- qemu_irq *qemu_extend_irqs(qemu_irq *old, int n_old, qemu_irq_handler handler,
-                            void *opaque, int n)
- {
-@@ -69,10 +68,8 @@ qemu_irq qemu_allocate_irq(qemu_irq_handler handler, void *opaque, int n)
- {
-     IRQState *irq;
- 
--    irq = IRQ(object_new(TYPE_IRQ));
--    irq->handler = handler;
--    irq->opaque = opaque;
--    irq->n = n;
-+    irq = g_new(IRQState, 1);
-+    qemu_init_irq(irq, handler, opaque, n);
- 
-     return irq;
- }
+-    s->isa_irqs_in = i8259_init(isa_bus, *isa_irq);
++    s->isa_irqs_in = i8259_init(isa_bus, &s->i8259_irq);
+     isa_bus_register_input_irqs(isa_bus, s->isa_irqs_in);
+     i8254_pit_init(isa_bus, 0x40, 0, NULL);
+     i8257_dma_init(OBJECT(d), isa_bus, 0);
 -- 
 MST
 
