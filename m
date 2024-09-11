@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ABFE9751C3
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B9F9751B2
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:15:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMG7-0006SO-HG; Wed, 11 Sep 2024 08:15:43 -0400
+	id 1soMG8-0006hY-5w; Wed, 11 Sep 2024 08:15:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMFQ-0005oP-LL
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:15:02 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMFW-0005zH-Bo
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:15:10 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMFL-0007BC-Dr
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:14:58 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5c3c30e663fso2326277a12.1
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:14:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMFR-0007BP-9g
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:15:03 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a8d43657255so513474166b.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:15:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726056893; x=1726661693; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726056899; x=1726661699; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SHZtT0Mi6mfq4oAIqM+FpgWwIHkjDwma5fbBIgU2sjA=;
- b=WnV1x3cMoPwzGKEkNLT93C3ljGQ4/j/4kP+pGg+6kZnkWfSa/tKSI16Oyrisb/lkMT
- r2P6xQxK1uwcsBy/ZVqfyck7USsuP8JDTvKaaJdLqGJ6bFRwM2j2eHO0crhjZXSGoPyJ
- txnxHy5DRyX+UNPe//y3UJrFz+cDLUxEnFNSBil8osJFeytarY5he3ssMIG94QnlO3/G
- ywJlv5Fc5aBe8GuR+UGjgTcUMLmhKNXi4vRuENWBUYQUq+tjNBlIR3C7vKba+Odo5T/6
- fdiMRY8m+2jHs00cjWzTk/xR0E4mxrQHLjJFi6dOqmihpD2z9dlLNvQhQOlqzx88ARnW
- T0nA==
+ bh=Z8YejXUnvjps1R98iES1hFKof918dPtM+kFcMx/JcZI=;
+ b=vlXkVtk+iDcsZ+3gMY3873AX8fC955g4jA2ZnWX0+FhkaGZ7oNYGua1ILhR6hCbEBB
+ KjdtJM5qP4MbXVYAdaHAlGJPdK16Ov7vbZkjlJgLEXYYHd/JnHsdplGQvn7KSoQ1Jj3i
+ M7Occofi/IvvlZ2FRgd+SMcDk9pE+K66C5BKG/eo9i2e+/bPXyqDn0UuN6oAxgFFik84
+ OyGaxRke4gI33huAoCxbZ50zB+ZDZYJLXrK8et3n2/sg2jMCtBpfNCvnmcbRkrWD7upz
+ b5fvf94xvlgTjtJAOsxRPZk4t5asqLjQUvD6tcUhwD3oE9R+DwFTDvjEYzoNI8Azis1N
+ UD9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726056893; x=1726661693;
+ d=1e100.net; s=20230601; t=1726056899; x=1726661699;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SHZtT0Mi6mfq4oAIqM+FpgWwIHkjDwma5fbBIgU2sjA=;
- b=Ks6kwYJFFayIdWR9/fEef1t0KL7IQmlMGXhrbGNVbKMaiHPi2ynIcENKQdj0OTcppC
- JoNvY/G1GkKwQemXn35cOkQSuSsKO3sGWEbL3bBpJPYrnmwLxgWSzudktrjsKh6rMZU8
- Wszdsc9GTQz0fj+xYhkmJOQ8O/ROKZK8i6m14lfupuVBNl6qE3+nQzaeCWsFfBhcMFmW
- 8O4MZqp5ObDk5FE77mCXqAVuOdfmEewoqG/AfYsNt/h39kbMO8e4x+TAjOEckk3Txn+P
- GvtnzHj5YWyB4iNIhL1T4bTB4pQjXZsXCR7eBXgWbt1SlXztSbGWwedDW2ZOwPIHwtbg
- 9kRQ==
-X-Gm-Message-State: AOJu0YwrZpjvkpbp5vbrnxLOg3R2TiwZJBSXA5Eb2QOQob8urUOxHCxC
- ordNt+GjIC2XSTTZ8QXQiAJWpmBfeq3gisEeDBOl00ihbR88LBRbdRu9Zs1GKIUJcTs5OET5v6h
- Q
-X-Google-Smtp-Source: AGHT+IG435OQch8dkX2kqi3xCqE7+ZfCaTp0s7Gk4gRiC1quouzVQO+nY/c61h6A3M6iuVhWU4WV8w==
-X-Received: by 2002:a05:6402:1d56:b0:5c0:aa23:e1c1 with SMTP id
- 4fb4d7f45d1cf-5c40bc24f9emr2553700a12.14.1726056892972; 
- Wed, 11 Sep 2024 05:14:52 -0700 (PDT)
+ bh=Z8YejXUnvjps1R98iES1hFKof918dPtM+kFcMx/JcZI=;
+ b=BmFO23GHxk3mP/HjmvE0e36/Av9AP/OVUKKnkDnXCwQw0FsF6kYMdpwLQFG9QwQSm9
+ 5+qwhQQxPbpuyjbKr5vv4xN18XPGmJ8rivM/oSyz79r+z61mJ6OPudFQ341nzpOzQVbn
+ 7wVPhYrnUODa21zW24bCq9dRVgGpIYX5MmxP1Wpqo53abY8C50L0jHIqvbQpCaD9xh54
+ ETg+WKYp1phRLo7ny3BJjrwjeLYrg0NhIp9OWFUcFqdxbkl9LevVsHfXF2DdD1k5x1Tf
+ z4Dv7vD+Cl4SZ0/fYEwzYw8+lnIX5U6T7eRHwn9AOT7lgKurOgOHD+OSmj2aegpDUhD2
+ lgsQ==
+X-Gm-Message-State: AOJu0Yy64hPFXnUhWrEBzp5ldlYs/gKMfpglSnqXkXVbR7Zyo/1M/YtQ
+ 4jg5cbvnWPoUb2efa+UWcGq488fpTEjP21uGDpckDHMMfP3lOOdihLMv4LyaCHlAk4yKHjTr/ff
+ B
+X-Google-Smtp-Source: AGHT+IH/J+zvj4EKEiIFToZ8vZMCHz4t6e6pSpOXIwD13pbkwujcznAH8M/t0mB5rUoUCpOEN/EGSg==
+X-Received: by 2002:a17:907:6095:b0:a8d:1303:2283 with SMTP id
+ a640c23a62f3a-a8ffab6cbb4mr354267666b.30.1726056899016; 
+ Wed, 11 Sep 2024 05:14:59 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c3ebd8cef8sm5394449a12.89.2024.09.11.05.14.51
+ a640c23a62f3a-a8d25ce86e0sm611757566b.143.2024.09.11.05.14.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:14:52 -0700 (PDT)
+ Wed, 11 Sep 2024 05:14:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PULL 04/56] hw/sh4: Remove the deprecated SHIX machine
-Date: Wed, 11 Sep 2024 14:13:29 +0200
-Message-ID: <20240911121422.52585-5-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 05/56] hw/block: Remove TC58128 NAND EEPROM
+Date: Wed, 11 Sep 2024 14:13:30 +0200
+Message-ID: <20240911121422.52585-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
 References: <20240911121422.52585-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,97 +92,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SHIX machine is deprecated since v9.0 (commit
-322b038c94 "target/sh4: Deprecate the shix machine").
-Time to remove it.
+The TC58128 NAND EEPROM is not user creatable and
+needs to be instanciated in the code via tc58128_init().
+
+Only the SHIX machine was using it, and it was removed
+in the previous commit. Since the TC58128 has no more
+users, remove it too.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
-Message-ID: <20240903153959.18392-2-philmd@linaro.org>
+Message-ID: <20240903153959.18392-3-philmd@linaro.org>
 ---
- MAINTAINERS                             |  7 +-
- docs/about/deprecated.rst               |  6 --
- docs/about/removed-features.rst         |  5 ++
- configs/devices/sh4-softmmu/default.mak |  1 -
- hw/sh4/shix.c                           | 86 -------------------------
- hw/sh4/Kconfig                          |  7 --
- hw/sh4/meson.build                      |  1 -
- 7 files changed, 6 insertions(+), 107 deletions(-)
- delete mode 100644 hw/sh4/shix.c
+ MAINTAINERS          |   6 --
+ include/hw/sh4/sh.h  |   3 -
+ hw/block/tc58128.c   | 211 -------------------------------------------
+ hw/block/Kconfig     |   3 -
+ hw/block/meson.build |   1 -
+ 5 files changed, 224 deletions(-)
+ delete mode 100644 hw/block/tc58128.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 0c1bc69828..ff5b3d1afd 100644
+index ff5b3d1afd..26f9310a4f 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1682,16 +1682,11 @@ F: hw/timer/sh_timer.c
+@@ -1682,12 +1682,6 @@ F: hw/timer/sh_timer.c
  F: include/hw/sh4/sh_intc.h
  F: include/hw/timer/tmu012.h
  
--Shix
-+TC58128 NAND EEPROM
- R: Yoshinori Sato <ysato@users.sourceforge.jp>
- R: Magnus Damm <magnus.damm@gmail.com>
- S: Odd Fixes
- F: hw/block/tc58128.c
--F: hw/char/sh_serial.c
--F: hw/sh4/shix.c
--F: hw/intc/sh_intc.c
--F: hw/timer/sh_timer.c
--F: include/hw/sh4/sh_intc.h
- 
+-TC58128 NAND EEPROM
+-R: Yoshinori Sato <ysato@users.sourceforge.jp>
+-R: Magnus Damm <magnus.damm@gmail.com>
+-S: Odd Fixes
+-F: hw/block/tc58128.c
+-
  SPARC Machines
  --------------
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 88f0f03786..2020542a6b 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -232,12 +232,6 @@ These old machine types are quite neglected nowadays and thus might have
- various pitfalls with regards to live migration. Use a newer machine type
- instead.
+ Sun4m
+diff --git a/include/hw/sh4/sh.h b/include/hw/sh4/sh.h
+index ec716cdd45..b726b987cc 100644
+--- a/include/hw/sh4/sh.h
++++ b/include/hw/sh4/sh.h
+@@ -60,7 +60,4 @@ int sh7750_register_io_device(struct SH7750State *s,
+ /* sh7750.c */
+ qemu_irq sh7750_irl(struct SH7750State *s);
  
--``shix`` (since 9.0)
--''''''''''''''''''''
+-/* tc58128.c */
+-int tc58128_init(struct SH7750State *s, const char *zone1, const char *zone2);
 -
--The machine is no longer in existence and has been long unmaintained
--in QEMU. This also holds for the TC51828 16MiB flash that it uses.
--
- ``pseries-2.1`` up to ``pseries-2.12`` (since 9.0)
- ''''''''''''''''''''''''''''''''''''''''''''''''''
- 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index fc7b28e637..9eaf864004 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -978,6 +978,11 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (removed in 9.1)
- 
- The Nios II architecture was orphan.
- 
-+``shix`` (removed in 9.2)
-+'''''''''''''''''''''''''
-+
-+The machine was unmaintained.
-+
- linux-user mode CPUs
- --------------------
- 
-diff --git a/configs/devices/sh4-softmmu/default.mak b/configs/devices/sh4-softmmu/default.mak
-index c06a427053..aa821e4b60 100644
---- a/configs/devices/sh4-softmmu/default.mak
-+++ b/configs/devices/sh4-softmmu/default.mak
-@@ -7,4 +7,3 @@
- 
- # Boards are selected by default, uncomment to keep out of the build.
- # CONFIG_R2D=n
--# CONFIG_SHIX=n
-diff --git a/hw/sh4/shix.c b/hw/sh4/shix.c
+ #endif
+diff --git a/hw/block/tc58128.c b/hw/block/tc58128.c
 deleted file mode 100644
-index eb3150b5bc..0000000000
---- a/hw/sh4/shix.c
+index 0984e37417..0000000000
+--- a/hw/block/tc58128.c
 +++ /dev/null
-@@ -1,86 +0,0 @@
+@@ -1,211 +0,0 @@
 -/*
-- * SHIX 2.0 board description
+- * TC58128 NAND EEPROM emulation
 - *
 - * Copyright (c) 2005 Samuel Tardieu
 - *
@@ -194,8 +158,9 @@ index eb3150b5bc..0000000000
 - * copies of the Software, and to permit persons to whom the Software is
 - * furnished to do so, subject to the following conditions:
 - *
-- * The above copyright notice and this permission notice shall be included in
-- * all copies or substantial portions of the Software.
+- * The above copyright notice and this permission notice (including the next
+- * paragraph) shall be included in all copies or substantial portions of the
+- * Software.
 - *
 - * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 - * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -204,99 +169,220 @@ index eb3150b5bc..0000000000
 - * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
-- */
--/*
-- * Shix 2.0 board by Alexis Polti, described at
-- * https://web.archive.org/web/20070917001736/perso.enst.fr/~polti/realisations/shix20
 - *
-- * More information in target/sh4/README.sh4
+- * SPDX-License-Identifier: MIT
 - */
 -#include "qemu/osdep.h"
--#include "qapi/error.h"
--#include "cpu.h"
+-#include "qemu/units.h"
 -#include "hw/sh4/sh.h"
--#include "sysemu/qtest.h"
--#include "hw/boards.h"
 -#include "hw/loader.h"
+-#include "sysemu/qtest.h"
 -#include "qemu/error-report.h"
 -
--#define BIOS_FILENAME "shix_bios.bin"
--#define BIOS_ADDRESS 0xA0000000
+-#define CE1  0x0100
+-#define CE2  0x0200
+-#define RE   0x0400
+-#define WE   0x0800
+-#define ALE  0x1000
+-#define CLE  0x2000
+-#define RDY1 0x4000
+-#define RDY2 0x8000
+-#define RDY(n) ((n) == 0 ? RDY1 : RDY2)
 -
--static void shix_init(MachineState *machine)
+-typedef enum { WAIT, READ1, READ2, READ3 } state_t;
+-
+-typedef struct {
+-    uint8_t *flash_contents;
+-    state_t state;
+-    uint32_t address;
+-    uint8_t address_cycle;
+-} tc58128_dev;
+-
+-static tc58128_dev tc58128_devs[2];
+-
+-#define FLASH_SIZE (16 * MiB)
+-
+-static void init_dev(tc58128_dev * dev, const char *filename)
 -{
--    int ret;
--    SuperHCPU *cpu;
--    struct SH7750State *s;
--    MemoryRegion *sysmem = get_system_memory();
--    MemoryRegion *rom = g_new(MemoryRegion, 1);
--    MemoryRegion *sdram = g_new(MemoryRegion, 2);
--    const char *bios_name = machine->firmware ?: BIOS_FILENAME;
+-    int ret, blocks;
 -
--    cpu = SUPERH_CPU(cpu_create(machine->cpu_type));
+-    dev->state = WAIT;
+-    dev->flash_contents = g_malloc(FLASH_SIZE);
+-    memset(dev->flash_contents, 0xff, FLASH_SIZE);
+-    if (filename) {
+-        /* Load flash image skipping the first block */
+-        ret = load_image_size(filename, dev->flash_contents + 528 * 32,
+-                              FLASH_SIZE - 528 * 32);
+-        if (ret < 0) {
+-            if (!qtest_enabled()) {
+-                error_report("Could not load flash image %s", filename);
+-                exit(1);
+-            }
+-        } else {
+-            /* Build first block with number of blocks */
+-            blocks = DIV_ROUND_UP(ret, 528 * 32);
+-            dev->flash_contents[0] = blocks & 0xff;
+-            dev->flash_contents[1] = (blocks >> 8) & 0xff;
+-            dev->flash_contents[2] = (blocks >> 16) & 0xff;
+-            dev->flash_contents[3] = (blocks >> 24) & 0xff;
+-            fprintf(stderr, "loaded %d bytes for %s into flash\n", ret,
+-                    filename);
+-        }
+-    }
+-}
 -
--    /* Allocate memory space */
--    memory_region_init_rom(rom, NULL, "shix.rom", 0x4000, &error_fatal);
--    memory_region_add_subregion(sysmem, 0x00000000, rom);
--    memory_region_init_ram(&sdram[0], NULL, "shix.sdram1", 0x01000000,
--                           &error_fatal);
--    memory_region_add_subregion(sysmem, 0x08000000, &sdram[0]);
--    memory_region_init_ram(&sdram[1], NULL, "shix.sdram2", 0x01000000,
--                           &error_fatal);
--    memory_region_add_subregion(sysmem, 0x0c000000, &sdram[1]);
+-static void handle_command(tc58128_dev * dev, uint8_t command)
+-{
+-    switch (command) {
+-    case 0xff:
+-        fprintf(stderr, "reset flash device\n");
+-        dev->state = WAIT;
+-        break;
+-    case 0x00:
+-        fprintf(stderr, "read mode 1\n");
+-        dev->state = READ1;
+-        dev->address_cycle = 0;
+-        break;
+-    case 0x01:
+-        fprintf(stderr, "read mode 2\n");
+-        dev->state = READ2;
+-        dev->address_cycle = 0;
+-        break;
+-    case 0x50:
+-        fprintf(stderr, "read mode 3\n");
+-        dev->state = READ3;
+-        dev->address_cycle = 0;
+-        break;
+-    default:
+-        fprintf(stderr, "unknown flash command 0x%02x\n", command);
+-        abort();
+-    }
+-}
 -
--    /* Load BIOS in 0 (and access it through P2, 0xA0000000) */
--    ret = load_image_targphys(bios_name, 0, 0x4000);
--    if (ret < 0 && !qtest_enabled()) {
--        error_report("Could not load SHIX bios '%s'", bios_name);
--        exit(1);
+-static void handle_address(tc58128_dev * dev, uint8_t data)
+-{
+-    switch (dev->state) {
+-    case READ1:
+-    case READ2:
+-    case READ3:
+-        switch (dev->address_cycle) {
+-        case 0:
+-            dev->address = data;
+-            if (dev->state == READ2)
+-                dev->address |= 0x100;
+-            else if (dev->state == READ3)
+-                dev->address |= 0x200;
+-            break;
+-        case 1:
+-            dev->address += data * 528 * 0x100;
+-            break;
+-        case 2:
+-            dev->address += data * 528;
+-            fprintf(stderr, "address pointer in flash: 0x%08x\n",
+-                    dev->address);
+-            break;
+-        default:
+-            /* Invalid data */
+-            abort();
+-        }
+-        dev->address_cycle++;
+-        break;
+-    default:
+-        abort();
+-    }
+-}
+-
+-static uint8_t handle_read(tc58128_dev * dev)
+-{
+-#if 0
+-    if (dev->address % 0x100000 == 0)
+-        fprintf(stderr, "reading flash at address 0x%08x\n", dev->address);
+-#endif
+-    return dev->flash_contents[dev->address++];
+-}
+-
+-/* We never mark the device as busy, so interrupts cannot be triggered
+-   XXXXX */
+-
+-static int tc58128_cb(uint16_t porta, uint16_t portb,
+-                      uint16_t * periph_pdtra, uint16_t * periph_portadir,
+-                      uint16_t * periph_pdtrb, uint16_t * periph_portbdir)
+-{
+-    int dev;
+-
+-    if ((porta & CE1) == 0)
+-        dev = 0;
+-    else if ((porta & CE2) == 0)
+-        dev = 1;
+-    else
+-        return 0;        /* No device selected */
+-
+-    if ((porta & RE) && (porta & WE)) {
+-        /* Nothing to do, assert ready and return to input state */
+-        *periph_portadir &= 0xff00;
+-        *periph_portadir |= RDY(dev);
+-        *periph_pdtra |= RDY(dev);
+-        return 1;
 -    }
 -
--    /* Register peripherals */
--    s = sh7750_init(cpu, sysmem);
--    /* XXXXX Check success */
--    tc58128_init(s, "shix_linux_nand.bin", NULL);
+-    if (porta & CLE) {
+-        /* Command */
+-        assert((porta & WE) == 0);
+-        handle_command(&tc58128_devs[dev], porta & 0x00ff);
+-    } else if (porta & ALE) {
+-        assert((porta & WE) == 0);
+-        handle_address(&tc58128_devs[dev], porta & 0x00ff);
+-    } else if ((porta & RE) == 0) {
+-        *periph_portadir |= 0x00ff;
+-        *periph_pdtra &= 0xff00;
+-        *periph_pdtra |= handle_read(&tc58128_devs[dev]);
+-    } else {
+-        abort();
+-    }
+-    return 1;
 -}
 -
--static void shix_machine_init(MachineClass *mc)
+-static sh7750_io_device tc58128 = {
+-    RE | WE,            /* Port A triggers */
+-    0,                  /* Port B triggers */
+-    tc58128_cb          /* Callback */
+-};
+-
+-int tc58128_init(struct SH7750State *s, const char *zone1, const char *zone2)
 -{
--    mc->desc = "shix card";
--    mc->init = shix_init;
--    mc->is_default = true;
--    mc->default_cpu_type = TYPE_SH7750R_CPU;
--    mc->deprecation_reason = "old and unmaintained";
+-    if (!qtest_enabled()) {
+-        warn_report_once("The TC58128 flash device is deprecated");
+-    }
+-    init_dev(&tc58128_devs[0], zone1);
+-    init_dev(&tc58128_devs[1], zone2);
+-    return sh7750_register_io_device(s, &tc58128);
 -}
--
--DEFINE_MACHINE("shix", shix_machine_init)
-diff --git a/hw/sh4/Kconfig b/hw/sh4/Kconfig
-index 99a76a94c3..1660d292d5 100644
---- a/hw/sh4/Kconfig
-+++ b/hw/sh4/Kconfig
-@@ -13,13 +13,6 @@ config R2D
-     select SH7750
-     select SH_PCI
- 
--config SHIX
--    bool
--    default y
--    depends on SH4
--    select SH7750
--    select TC58128
--
- config SH7750
+diff --git a/hw/block/Kconfig b/hw/block/Kconfig
+index 9e8f28f982..ef6709b106 100644
+--- a/hw/block/Kconfig
++++ b/hw/block/Kconfig
+@@ -28,9 +28,6 @@ config ECC
+ config ONENAND
      bool
-     select SH_INTC
-diff --git a/hw/sh4/meson.build b/hw/sh4/meson.build
-index 70e814c3a2..7d27839fee 100644
---- a/hw/sh4/meson.build
-+++ b/hw/sh4/meson.build
-@@ -4,6 +4,5 @@ sh4_ss.add(when: 'CONFIG_SH7750', if_true: files(
-   'sh7750_regnames.c',
- ))
- sh4_ss.add(when: 'CONFIG_R2D', if_true: files('r2d.c'))
--sh4_ss.add(when: 'CONFIG_SHIX', if_true: files('shix.c'))
  
- hw_arch += {'sh4': sh4_ss}
+-config TC58128
+-    bool
+-
+ config VIRTIO_BLK
+     bool
+     default y
+diff --git a/hw/block/meson.build b/hw/block/meson.build
+index 8aa4dc3893..0fb0f41f42 100644
+--- a/hw/block/meson.build
++++ b/hw/block/meson.build
+@@ -15,7 +15,6 @@ system_ss.add(when: 'CONFIG_SSI_M25P80', if_true: files('m25p80.c'))
+ system_ss.add(when: 'CONFIG_SSI_M25P80', if_true: files('m25p80_sfdp.c'))
+ system_ss.add(when: 'CONFIG_SWIM', if_true: files('swim.c'))
+ system_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen-block.c'))
+-system_ss.add(when: 'CONFIG_TC58128', if_true: files('tc58128.c'))
+ 
+ specific_ss.add(when: 'CONFIG_VIRTIO_BLK', if_true: files('virtio-blk.c', 'virtio-blk-common.c'))
+ specific_ss.add(when: 'CONFIG_VHOST_USER_BLK', if_true: files('vhost-user-blk.c', 'virtio-blk-common.c'))
 -- 
 2.45.2
 
