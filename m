@@ -2,126 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D5D974EBB
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 11:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 536AD974ED5
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 11:40:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soJlg-0002LH-5P; Wed, 11 Sep 2024 05:36:08 -0400
+	id 1soJoM-0004zz-A0; Wed, 11 Sep 2024 05:38:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1soJlJ-00022N-4L
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 05:35:45 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1soJlG-0005kd-Gk
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 05:35:44 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-201d5af11a4so69525025ad.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 02:35:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1726047340; x=1726652140; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1u4hLYLb6JvJyT39AyvjEboo66L18yRm1sqg09O3j9E=;
- b=PiHWs1tyuu0X40gjVWBhgrLzBbp5+qHEIHZa7UOaJ4wHHRPMpMq/VrwNT+09/mSIhS
- obNXV+oEvSp6Y4hGkHelDRZ+RYsoX4L60JgTG4gTs0axza93Deyt59Fds3Kyt2a9e0pd
- TDXJBDnzrpY90BmusI3+1k9aUAq62+7VYdr/mRR5mJpBP7YZwEg430meqHphMXYwM8PH
- kZWzlj24qrsa9XPGcJXDgOuejbzEqGSIaAZd1PuXsepK7LmlMzxmQ7CPyfAHLYhLlmDC
- 7OyoPQYWJLeKlZSuPAx7jkZPpTh1v+AiFO7DuYKf00am8vS8iwhqlp69/c46w5YRm/mA
- 7CFA==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1soJoK-0004tW-7V
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 05:38:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1soJoI-00061b-MN
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 05:38:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1726047529;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QcwHyRoX9Qf99oFktbEaCvxy+3kxDGx0d9Tm7HWdpoA=;
+ b=ET7VXXYFBxWjc6/S8zvqAtT0HB+Tb1nOEPd5bd0xhn0glk2V9t0+4DB0bhap7U4yNHGpvW
+ GRunpX5ud1RyYZ6KGbgc4sBYvUSvN+2mMxNT63roAAGLNg/EJ69xLDqS4RYm6HphicUzuO
+ em0wW0/+tGFyvovvQRfawD54JcGjBwo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-1uft8V4ZMp-l40y5sSUyQw-1; Wed, 11 Sep 2024 05:38:48 -0400
+X-MC-Unique: 1uft8V4ZMp-l40y5sSUyQw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-42cb830ea86so13838195e9.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 02:38:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726047340; x=1726652140;
+ d=1e100.net; s=20230601; t=1726047527; x=1726652327;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1u4hLYLb6JvJyT39AyvjEboo66L18yRm1sqg09O3j9E=;
- b=gK/t+8gNq3kfPbATBoydPsQDcfFsIpQs96C9BB9QihSj/wfRoq25K/KCsSaPPwODFl
- e6oRAOdV6Mpcqwt6kTh3H8mfE1RjTg+gAty4/GRRjwy8kEwEXGEl6TrZkAol+QHrwrof
- laESfxM439IDcKpsOd7OvekXd5P0tsEa0EV4v4SGtwXsoCy0vYKJX2CxzIsEoqrJmR7E
- YywlD42Y9S6+sX4CPuFZxzI8ZlwQ4QGoPUDHtZP9QUYXjmews5TPQWCuqaNXCV+zioeR
- TR2E7kQrnXs7rH77nqKre3xTjBgOvnVFl/ha5Z2Wkb9ExbtLyHU6fcAKXgKOBcDMZ1BJ
- VBDw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUbRuI0e3ZeGSMlwFSSIPuy/m2st7FkfJFez4GtQClxVZtViU2vFi073ub3BRJnuogV22Txs08V/ZQ5@nongnu.org
-X-Gm-Message-State: AOJu0Yw2NBJSuUdhhJ0oMyginLf/kyX9hgzmWnYDXGdw5A0Y5VAkX5j9
- bnkSEO06Lq5aweW0aR+ErvW/sxIwjx2XKDR6vxSZwvngwSwxlGnUC3wnZeTnYE4=
-X-Google-Smtp-Source: AGHT+IFUx/BwHC24gWqvFB3GjiXa6Pwl4/OE8FDUMSu9YsViqYb7FQaE3SBpFeH2lAaF7lGvC5UgZA==
-X-Received: by 2002:a17:903:290:b0:207:3a53:fe67 with SMTP id
- d9443c01a7336-2074c5f7f19mr61649475ad.32.1726047340049; 
- Wed, 11 Sep 2024 02:35:40 -0700 (PDT)
-Received: from [192.168.68.110] (201-68-240-198.dsl.telesp.net.br.
- [201.68.240.198]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7d8255dc0d4sm6861245a12.64.2024.09.11.02.35.26
+ bh=QcwHyRoX9Qf99oFktbEaCvxy+3kxDGx0d9Tm7HWdpoA=;
+ b=tIq3j6P8KpmqptkWnW1OSuNYjVAQQuvp7M2faW2bWXrcZFmdNmjaVzWWIYcagFNJd1
+ 39oOumppizt7hke2YOQi7oijRDos8Bi5mT9Ov9WinmrtX1JDnv9MIQ/8sW0Ubb87pu+H
+ ehTC85oW8bM5cXBmJHVgBnLFziPqDgJ6vx2JmC0knjoyfb5ixNnvAH8ZIGhSvNFAg8SO
+ oYtUZpmj1yQewJjKrILID3XjAWgauXsMFfaRbD+rLPqkoUxkEfaZJ+J02sj0JA/HTb2Y
+ JIjPZbYpGZqZotZ3epncXVW/yAxBVidTwM5JzK6NWIXBHcAQ4H1ipsheZUUjXQS3/wkq
+ xJmQ==
+X-Gm-Message-State: AOJu0YzYjZQV48ESYJe9+IowmyzVOHDzbGKN56XD6t2C9RawqXfGUhgq
+ UvA1Ql/IvzmGNdZ+xkz/qJJ2cWsoaReUE2SfSroOW+WTRu+0dVdLkpEDiwhS+KaeLtZ/YlGLTwl
+ H5rRpbcnfGVwMNvOHHxb6BYlqGewyQ6mcvzf6cIncZ2nYA6MCWuSQ
+X-Received: by 2002:a5d:4306:0:b0:374:c50e:377b with SMTP id
+ ffacd0b85a97d-378b080cf8cmr1337814f8f.57.1726047527105; 
+ Wed, 11 Sep 2024 02:38:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7dDiasvKV1MpBB8pdnZ6G9IdZCrCyjchhgSWkYs+B86kvFZ7PcBytDBCLFT7eSh6aasNVJw==
+X-Received: by 2002:a5d:4306:0:b0:374:c50e:377b with SMTP id
+ ffacd0b85a97d-378b080cf8cmr1337802f8f.57.1726047526603; 
+ Wed, 11 Sep 2024 02:38:46 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-378956650f2sm11000203f8f.26.2024.09.11.02.38.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Sep 2024 02:35:39 -0700 (PDT)
-Message-ID: <769135e9-c377-461e-86ed-e4e1de6ff0cc@ventanamicro.com>
-Date: Wed, 11 Sep 2024 06:35:23 -0300
+ Wed, 11 Sep 2024 02:38:46 -0700 (PDT)
+Message-ID: <2b5d2fce-8a1e-4f50-a5d2-0c4aaa2880af@redhat.com>
+Date: Wed, 11 Sep 2024 11:38:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 34/39] target/riscv: remove break after
- g_assert_not_reached()
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, "Richard W.M. Jones" <rjones@redhat.com>, 
- Joel Stanley <joel@jms.id.au>, Kevin Wolf <kwolf@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Corey Minyard <minyard@acm.org>, Eric Farman <farman@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Keith Busch <kbusch@kernel.org>,
- WANG Xuerui <git@xen0n.name>, Hyman Huang <yong.huang@smartx.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Michael Rolnik <mrolnik@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
- Ani Sinha <anisinha@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jesper Devantier <foss@defmacro.it>, Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>, Igor Mammedov
- <imammedo@redhat.com>, kvm@vger.kernel.org,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, Fam Zheng
- <fam@euphon.net>, qemu-s390x@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- Laurent Vivier <lvivier@redhat.com>, Rob Herring <robh@kernel.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
+Subject: Re: [PATCH for-9.2 v15 04/11] s390x/pci: Check for multifunction
+ after device realization
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Helge Deller <deller@gmx.de>, Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>,
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
- Klaus Jensen <its@irrelevant.dk>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Jason Wang <jasowang@redhat.com>
-References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
- <20240910221606.1817478-35-pierrick.bouvier@linaro.org>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240910221606.1817478-35-pierrick.bouvier@linaro.org>
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
+References: <20240823-reuse-v15-0-eddcb960e289@daynix.com>
+ <20240823-reuse-v15-4-eddcb960e289@daynix.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240823-reuse-v15-4-eddcb960e289@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -137,48 +111,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
++Matthew +Eric
+
+Side note for the maintainers :
+
+Before this change, the igb device, which is multifunction, was working
+fine under Linux.
+
+Was there a fix in Linux since :
+
+   57da367b9ec4 ("s390x/pci: forbid multifunction pci device")
+   6069bcdeacee ("s390x/pci: Move some hotplug checks to the pre_plug handler")
+
+?
+
+s390 PCI devices do not have extended capabilities, so the igb device
+does not expose the SRIOV capability and only the PF is accessible but
+it doesn't seem to be an issue. (Btw, CONFIG_PCI_IOV is set to y in the
+default Linux config which is unexpected)
+
+Thanks,
+
+C.
 
 
-On 9/10/24 7:16 PM, Pierrick Bouvier wrote:
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   target/riscv/monitor.c                  | 1 -
->   target/riscv/insn_trans/trans_rvv.c.inc | 2 --
->   2 files changed, 3 deletions(-)
+On 8/23/24 07:00, Akihiko Odaki wrote:
+> The SR-IOV PFs set the multifunction bits during device realization so
+> check them after that. This forbids adding SR-IOV devices to s390x.
 > 
-> diff --git a/target/riscv/monitor.c b/target/riscv/monitor.c
-> index f5b1ffe6c3e..100005ea4e9 100644
-> --- a/target/riscv/monitor.c
-> +++ b/target/riscv/monitor.c
-> @@ -184,7 +184,6 @@ static void mem_info_svxx(Monitor *mon, CPUArchState *env)
->           break;
->       default:
->           g_assert_not_reached();
-> -        break;
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   hw/s390x/s390-pci-bus.c | 14 ++++++--------
+>   1 file changed, 6 insertions(+), 8 deletions(-)
+> 
+> diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+> index 3e57d5faca18..00b2c1f6157b 100644
+> --- a/hw/s390x/s390-pci-bus.c
+> +++ b/hw/s390x/s390-pci-bus.c
+> @@ -971,14 +971,7 @@ static void s390_pcihost_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+>                       "this device");
 >       }
 >   
->       /* calculate virtual address bits */
-> diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-> index 3a3896ba06c..f8928c44a8b 100644
-> --- a/target/riscv/insn_trans/trans_rvv.c.inc
-> +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-> @@ -3172,7 +3172,6 @@ static void load_element(TCGv_i64 dest, TCGv_ptr base,
->           break;
->       default:
->           g_assert_not_reached();
-> -        break;
->       }
->   }
+> -    if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
+> -        PCIDevice *pdev = PCI_DEVICE(dev);
+> -
+> -        if (pdev->cap_present & QEMU_PCI_CAP_MULTIFUNCTION) {
+> -            error_setg(errp, "multifunction not supported in s390");
+> -            return;
+> -        }
+> -    } else if (object_dynamic_cast(OBJECT(dev), TYPE_S390_PCI_DEVICE)) {
+> +    if (object_dynamic_cast(OBJECT(dev), TYPE_S390_PCI_DEVICE)) {
+>           S390PCIBusDevice *pbdev = S390_PCI_DEVICE(dev);
 >   
-> @@ -3257,7 +3256,6 @@ static void store_element(TCGv_i64 val, TCGv_ptr base,
->           break;
->       default:
->           g_assert_not_reached();
-> -        break;
->       }
->   }
+>           if (!s390_pci_alloc_idx(s, pbdev)) {
+> @@ -1069,6 +1062,11 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+>       } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
+>           pdev = PCI_DEVICE(dev);
 >   
+> +        if (pdev->cap_present & QEMU_PCI_CAP_MULTIFUNCTION) {
+> +            error_setg(errp, "multifunction not supported in s390");
+> +            return;
+> +        }
+> +
+>           if (!dev->id) {
+>               /* In the case the PCI device does not define an id */
+>               /* we generate one based on the PCI address         */
+> 
+
 
