@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779059751F1
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FD397520C
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:27:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMIr-00043F-KG; Wed, 11 Sep 2024 08:18:33 -0400
+	id 1soMJk-0000ij-VG; Wed, 11 Sep 2024 08:19:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMHt-0001AS-Gb
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMHu-0001Fo-UB
  for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:35 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMHi-0007Y8-O3
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:30 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-42cbaf9bfdbso23657985e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:17:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMHn-0007YS-Nf
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:34 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-374c4c6cb29so5962214f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:17:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726057036; x=1726661836; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726057042; x=1726661842; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=elIxjmyAyoAhIo/NQZzBwt7GxZ1ngMgFdcN/6EhC+o4=;
- b=apcW8j7tK0865PUwRZHVKy5EIEXlw7/Z5XL30l9QkMa4+pgelr6F1CheH9T+defV2x
- k0GEF6EprqXRLky2fezxFAXoKwewCefZiB0l07GSdO2lc/TeGra4jWJwomrYZDoCtk6N
- 84CYZ5QpdmtxWyxib2qXrcqZVG9ChG1osAl5xhChulJlRKeNbhOvD4/AGPd0DM3Vzikm
- asMSM1tWNjWBST6U9etCNw2vw1OM389TlKcHXJ1/BK5Dx8IvcKoGfHvmQjtxVn8HAKoH
- i+WkMB670znhxKgD1l/AH85/VDs/Yi6uiiLDQCIC1t+rMbEdEwYb1clR0Y3ixehscuhJ
- Vbvw==
+ bh=pNwBUYcUVU1y0Bv9EZ1zPpKAjm6wshMLuOdapkK29TA=;
+ b=Hb5yUF6QOavms4ZyYKtF7GQvFclaVEiRrajADqRVZzepTm4GOMgr635MD25jPKeB13
+ AzHSiY7uEEjKp2ulFFFyrdOojB5RWz7rWubltbOsOQECLlI6wxe60QvWeu/MB9qSQGaK
+ DEPerup0Oo8fTHHrGpTuVnyOBzC/FKrNT5ljQ4ZsDV+E37vcvVZSKHHlwpGQEpsxd7Aw
+ FeSPPYnl1AQZN3SGMgW7KGBESrg9JrhI8+cuv4Zw0CLeRPmIuYnoUyndGU5J5p42DeWe
+ KsjSwdDVNqIzpKOBG+ef3H6nFrXyYks8WxHRltma0p9eNIdzhB6taEH3V8Nwc0bnOx9l
+ Nz3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726057036; x=1726661836;
+ d=1e100.net; s=20230601; t=1726057042; x=1726661842;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=elIxjmyAyoAhIo/NQZzBwt7GxZ1ngMgFdcN/6EhC+o4=;
- b=R1NN02j4e+G8MuBDhutHK/fHCZrg0sz+kJAvMkYsRf6nFbG3wsKFKdiSp31nzLmZBs
- /DOWhlgHHUzKgO0YlzZhNYAs9vS/CtiewMPUpDK0AlmYI5Gw3MHyNuATF0v98kgCgQir
- o0Uz6XYA/s0vkO4b0pnKOPHOdS6NMR+J9uegj/jpcd4RbB4IaWc1gishn51feXGZ9scS
- 3UvPiGhVHt3Ktfp9bMJcC2QZHBJtJDFgDa12Nr2qK75uwUxiI4f9R8aX4TB47roRbVnX
- a/H62QTb5ZMRx3n6Y6dMGjqF2jsM+DjNIiuTc0zVxu5ON6OVlPusXL5E6wxhG6C/agbj
- iFZA==
-X-Gm-Message-State: AOJu0YxA2OOvTDU2ueZV00ObHjjGW/oJFqmQufuecOHl4M+8K4vsyETS
- 8GwlvK8g+sZjevZDKtaFW6IBy5Wb8fIJLueNbuwiLy909D5sq1BCvLicNqmX4jzVhj31Q4fOapw
- f
-X-Google-Smtp-Source: AGHT+IHc2JN6uObN0/Ds3bRoq+HVesDzHtqpADNDo6JYTHFfr4CzReeLDxicV7Ah6/5hovp0rGMzNw==
-X-Received: by 2002:a05:600c:1c06:b0:42c:ba0d:c766 with SMTP id
- 5b1f17b1804b1-42cba0dca47mr60000335e9.6.1726057035589; 
- Wed, 11 Sep 2024 05:17:15 -0700 (PDT)
+ bh=pNwBUYcUVU1y0Bv9EZ1zPpKAjm6wshMLuOdapkK29TA=;
+ b=aTyLR/di61fTjmF8dUrb5qVUPM2vmKwXOMjNEC+OINRTIHTN6KhmMPsH8SWFBTMjch
+ Bfzg7OZAMISDgS9TvzeBzgHYD3mrDFWmsujzLtAeaIahd2eoFPql7+aML+UW1DjfpaFR
+ z+WvRnvjPvhJeX4vE+3JG1wdib6veAdx8Dof+QUd8Rj7esWKAtgdjDi9PAptFysP1DhG
+ aPhxjy5XBLYK/qPfgxukfIio61i2aBzCR/LNQp9Vkjj9siUbWQvh726HSV2iCjOzMOjP
+ qvqh7ljat/+v90lv06s9Ujyxm9GDptf97Nb95aGY+WF6XwBMJGLS0z5/amIVwjjTM3hu
+ nxKQ==
+X-Gm-Message-State: AOJu0Yxo1atMGbQtLydUK/jXHRN3CvC1buqcND/6rF/12pOh2NtAZm1W
+ IPZHtf3TqSHSR5a1D5H+zalra+VckRFoQWHBE2diLOqQcKOw3RxLIlnzX+6Vx2VmfaSiSrtaiGM
+ 2
+X-Google-Smtp-Source: AGHT+IEc4MkNI3BBdLfijH7VXlkaKenkXNtS5GfXMjoofQvRIo3w2tvsxiNLKXdE9T5eioZj52Zifg==
+X-Received: by 2002:adf:f850:0:b0:374:bf18:6092 with SMTP id
+ ffacd0b85a97d-3789243fd5bmr11325206f8f.38.1726057041662; 
+ Wed, 11 Sep 2024 05:17:21 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42cc1375189sm52193145e9.1.2024.09.11.05.17.14
+ ffacd0b85a97d-378956d372dsm11439657f8f.73.2024.09.11.05.17.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:17:15 -0700 (PDT)
+ Wed, 11 Sep 2024 05:17:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 25/56] hw/char/pl011: Move pl011_loopback_enabled|tx() around
-Date: Wed, 11 Sep 2024 14:13:50 +0200
-Message-ID: <20240911121422.52585-26-philmd@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 26/56] hw/char/pl011: Split RX/TX path of pl011_reset_fifo()
+Date: Wed, 11 Sep 2024 14:13:51 +0200
+Message-ID: <20240911121422.52585-27-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
 References: <20240911121422.52585-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,115 +93,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll soon use pl011_loopback_enabled() and pl011_loopback_tx()
-from functions defined before their declarations. In order to
-avoid forward-declaring them, move them around.
+To be able to reset the RX or TX FIFO separately,
+split pl011_reset_fifo() in two.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20240719181041.49545-5-philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240719181041.49545-6-philmd@linaro.org>
 ---
- hw/char/pl011.c | 66 ++++++++++++++++++++++++-------------------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ hw/char/pl011.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
 diff --git a/hw/char/pl011.c b/hw/char/pl011.c
-index edb5395fb8..22195ead7b 100644
+index 22195ead7b..3d294c3b52 100644
 --- a/hw/char/pl011.c
 +++ b/hw/char/pl011.c
-@@ -138,6 +138,11 @@ static void pl011_update(PL011State *s)
-     }
+@@ -154,14 +154,21 @@ static inline unsigned pl011_get_fifo_depth(PL011State *s)
+     return pl011_is_fifo_enabled(s) ? PL011_FIFO_DEPTH : 1;
  }
  
-+static bool pl011_loopback_enabled(PL011State *s)
-+{
-+    return !!(s->cr & CR_LBE);
+-static inline void pl011_reset_fifo(PL011State *s)
++static inline void pl011_reset_rx_fifo(PL011State *s)
+ {
+     s->read_count = 0;
+     s->read_pos = 0;
+ 
+     /* Reset FIFO flags */
+-    s->flags &= ~(PL011_FLAG_RXFF | PL011_FLAG_TXFF);
+-    s->flags |= PL011_FLAG_RXFE | PL011_FLAG_TXFE;
++    s->flags &= ~PL011_FLAG_RXFF;
++    s->flags |= PL011_FLAG_RXFE;
 +}
 +
- static bool pl011_is_fifo_enabled(PL011State *s)
- {
-     return (s->lcr & LCR_FEN) != 0;
-@@ -181,6 +186,34 @@ static void pl011_put_fifo(void *opaque, uint32_t value)
-     }
- }
- 
-+static void pl011_loopback_tx(PL011State *s, uint32_t value)
++static inline void pl011_reset_tx_fifo(PL011State *s)
 +{
-+    if (!pl011_loopback_enabled(s)) {
-+        return;
-+    }
-+
-+    /*
-+     * Caveat:
-+     *
-+     * In real hardware, TX loopback happens at the serial-bit level
-+     * and then reassembled by the RX logics back into bytes and placed
-+     * into the RX fifo. That is, loopback happens after TX fifo.
-+     *
-+     * Because the real hardware TX fifo is time-drained at the frame
-+     * rate governed by the configured serial format, some loopback
-+     * bytes in TX fifo may still be able to get into the RX fifo
-+     * that could be full at times while being drained at software
-+     * pace.
-+     *
-+     * In such scenario, the RX draining pace is the major factor
-+     * deciding which loopback bytes get into the RX fifo, unless
-+     * hardware flow-control is enabled.
-+     *
-+     * For simplicity, the above described is not emulated.
-+     */
-+    pl011_put_fifo(s, value);
-+}
-+
- static uint64_t pl011_read(void *opaque, hwaddr offset,
-                            unsigned size)
- {
-@@ -290,11 +323,6 @@ static void pl011_trace_baudrate_change(const PL011State *s)
-                                 s->ibrd, s->fbrd);
++    /* Reset FIFO flags */
++    s->flags &= ~PL011_FLAG_TXFF;
++    s->flags |= PL011_FLAG_TXFE;
  }
  
--static bool pl011_loopback_enabled(PL011State *s)
--{
--    return !!(s->cr & CR_LBE);
--}
--
- static void pl011_loopback_mdmctrl(PL011State *s)
- {
-     uint32_t cr, fr, il;
-@@ -336,34 +364,6 @@ static void pl011_loopback_mdmctrl(PL011State *s)
-     pl011_update(s);
+ static void pl011_put_fifo(void *opaque, uint32_t value)
+@@ -410,7 +417,8 @@ static void pl011_write(void *opaque, hwaddr offset,
+     case 11: /* UARTLCR_H */
+         /* Reset the FIFO state on FIFO enable or disable */
+         if ((s->lcr ^ value) & LCR_FEN) {
+-            pl011_reset_fifo(s);
++            pl011_reset_rx_fifo(s);
++            pl011_reset_tx_fifo(s);
+         }
+         if ((s->lcr ^ value) & LCR_BRK) {
+             int break_enable = value & LCR_BRK;
+@@ -619,7 +627,8 @@ static void pl011_reset(DeviceState *dev)
+     s->ifl = 0x12;
+     s->cr = 0x300;
+     s->flags = 0;
+-    pl011_reset_fifo(s);
++    pl011_reset_rx_fifo(s);
++    pl011_reset_tx_fifo(s);
  }
  
--static void pl011_loopback_tx(PL011State *s, uint32_t value)
--{
--    if (!pl011_loopback_enabled(s)) {
--        return;
--    }
--
--    /*
--     * Caveat:
--     *
--     * In real hardware, TX loopback happens at the serial-bit level
--     * and then reassembled by the RX logics back into bytes and placed
--     * into the RX fifo. That is, loopback happens after TX fifo.
--     *
--     * Because the real hardware TX fifo is time-drained at the frame
--     * rate governed by the configured serial format, some loopback
--     * bytes in TX fifo may still be able to get into the RX fifo
--     * that could be full at times while being drained at software
--     * pace.
--     *
--     * In such scenario, the RX draining pace is the major factor
--     * deciding which loopback bytes get into the RX fifo, unless
--     * hardware flow-control is enabled.
--     *
--     * For simplicity, the above described is not emulated.
--     */
--    pl011_put_fifo(s, value);
--}
--
- static void pl011_loopback_break(PL011State *s, int brk_enable)
- {
-     if (brk_enable) {
+ static void pl011_class_init(ObjectClass *oc, void *data)
 -- 
 2.45.2
 
