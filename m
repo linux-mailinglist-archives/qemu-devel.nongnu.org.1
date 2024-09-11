@@ -2,90 +2,128 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08479756EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDAA9756F4
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:25:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soPAK-0007cl-Hk; Wed, 11 Sep 2024 11:21:58 -0400
+	id 1soPCa-0000RF-VC; Wed, 11 Sep 2024 11:24:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1soP8a-0001gB-Lh
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:20:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1soP8W-0001qq-M7
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:20:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726068000;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=LwKA9v+hQSM78i0ouAhxjLBGM+JLuV05MtoMbKJsJDU=;
- b=gdSI3K4paVe4+zKfraC9pbSSRVFwIS2LTxz+YlTK5C7Ou3T5AV8HeiA61+7gxJq+UHnFHT
- Uwj1QdsTYhamDwDMIYFsscH88rd/Shkih57e61qfDWFnp4LUzKtgVBESlaAK5JSZucW/4i
- WQGrNNQnu3M6zS6HnfTydHa0strhCOw=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-404-7kd_4ch3OuWG0EY3_7M64g-1; Wed, 11 Sep 2024 11:19:59 -0400
-X-MC-Unique: 7kd_4ch3OuWG0EY3_7M64g-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6c3639a649bso97277206d6.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 08:19:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1soPBv-0007iC-Rx
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:23:39 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1soPBs-0002Pj-FS
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:23:35 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-7cd8803fe0aso4906253a12.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 08:23:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1726068211; x=1726673011; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OuvMeDUVp0mbaD2Ccta77meu7WyU6zTm7qPRf/MNjOo=;
+ b=jT3yPNP8ZJX8SjAHuqKLQp6r8HSxurfxnAVWGZ5v7TiofYiMi6fpSKr7rLFqaEyAX4
+ y8WhfeolMVDPsFW1PYJ2J/qSd1FctyMprDnTlpKh61hh9XS2MErclk5+97oEzsf+XTTM
+ rZ0A6QhD0yX6jYbWLdsR13rs8RfAQu54GUwBlTI6DnSwSyZnfCnAb1t5yOwY8kiDfXR2
+ DJZ+q334ipbLvg7uf4gjTM/dDJwiFNoVwSda+tVIvhLkFgoNv51frZTu18VkYbtq4YZN
+ veh4KOOWNxjmTfQVgA6qftMmwBjFse03R3MxRV+OR06gUM/2/NM/SwwTxAOY8vM/G9Rz
+ /jhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726067998; x=1726672798;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LwKA9v+hQSM78i0ouAhxjLBGM+JLuV05MtoMbKJsJDU=;
- b=Ndtng0oeYbZ0kyl+Kk0UqZ5Xc+p+P5SvpKO2t4x3468e9QqL3nyfLfY9aLWyH1lujs
- mOIrdk5SvbEHq2ktGhx1y9BvqZT28agP+J4J4XJfZ8cxKSY80U6ID5S4PZ3cCxbAOiFC
- NARn8vmwLqG23zO1KwvgHJrbgIoRTb56SScBZqJBA1iU6asqfZqcTCvV6dlavw2ATQjR
- 1I3il8LV1WXeg1f2JEyhhW1kmSl7I/bJu+yIJ83zjoJmXS3FE5Sz4z1Uu6GmqFrxSjZ2
- WyiP/NrQCwc8egpehTdJ8ZSEjcD8HAqnJNtKWaAOR47KZUqi3ipUze4E/Y47m74YONKg
- obrg==
-X-Gm-Message-State: AOJu0Ywy21oOGbyhnmViV67r72BDeSgLuonVOYy+FmiytNmcs0msvljl
- EjV4WhqSpPdo4wIM9CsCxUAq/+bF+hyNzeV6QNDZRV1psMrdd148K07UdkkTOU5FJvS4N9DYXSy
- hp0KeISL+Aym/K98sT53gwo1Ce/6rotqXOG3pp7Gr2kS/Q4KAR4Y4
-X-Received: by 2002:a05:6214:540c:b0:6c3:64ec:fe4d with SMTP id
- 6a1803df08f44-6c52850de38mr278677586d6.42.1726067998535; 
- Wed, 11 Sep 2024 08:19:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGI8wK/RjGwAiFI2cW/DSsMrAVCNXAfsLnv8+dV+4rS9GRjbYnhL6dgAtaiN83X0alCMCnyTQ==
-X-Received: by 2002:a05:6214:540c:b0:6c3:64ec:fe4d with SMTP id
- 6a1803df08f44-6c52850de38mr278677296d6.42.1726067998156; 
- Wed, 11 Sep 2024 08:19:58 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c53432954fsm42877766d6.25.2024.09.11.08.19.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 08:19:57 -0700 (PDT)
-Date: Wed, 11 Sep 2024 11:19:49 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Prasad Pandit <ppandit@redhat.com>,
- Yichen Wang <yichen.wang@bytedance.com>,
- Bryan Zhang <bryan.zhang@bytedance.com>,
- Hao Xiang <hao.xiang@linux.dev>, Yuan Liu <yuan1.liu@intel.com>
-Subject: Re: [PATCH] migration/multifd: Fix build for qatzip
-Message-ID: <ZuG1FWeek3TEpgAK@x1n>
-References: <20240910210450.3835123-1-peterx@redhat.com>
- <87v7z3qjih.fsf@suse.de> <ZuDBUSC2hVaWv6dE@x1n>
- <87jzfjqgwc.fsf@suse.de>
+ d=1e100.net; s=20230601; t=1726068211; x=1726673011;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OuvMeDUVp0mbaD2Ccta77meu7WyU6zTm7qPRf/MNjOo=;
+ b=f8DICSjxTieAV0b51cguqyR599HQH4DzKct4et1tuF0QDlWH0L7VokkVV4Z7I+jZZN
+ Cs0fPXLV8rHz6GUgywztAIsEmllShy3u26iIj7m9SIY1GM5vqwdQkGdzPQAohdFuOvMT
+ DibR9mteiuU4odWGuQNJldekYfjIKHL5xOJm1SwMEeBt5GAtnTzeKEBpPdL21N0BXi3k
+ ax99TOubMfW0OqkKsUUJkpv0rfia4zlWyN778MRwsambisJC/xng5oI8yrnyRp5pz8mC
+ w5k7jlDEM/yjh1jFLmb/BkKedTp1el3i94BknnBhUtKm5D8V7X+eJQljXZQ+iZxu0b34
+ D4vg==
+X-Gm-Message-State: AOJu0Yy//O5/oQ+i6T3vdhUjU3emViLh8N+moDbhvWSKOAepYZl7G0yq
+ ekSKpcxwygs981QdlByca5jxMU1Zr1itpvZO0OIActHOt03hGqcsYF7U0LCOrg0=
+X-Google-Smtp-Source: AGHT+IFVEaQbbNIN6u4ycMxcdISjFC11x2LnDF31jXta/zBjlVjuD+C9lapW5FnwVoc/RuMXV2R+aQ==
+X-Received: by 2002:a05:6a20:d809:b0:1c6:fb07:381e with SMTP id
+ adf61e73a8af0-1cf5e1aba0fmr5779831637.44.1726068210675; 
+ Wed, 11 Sep 2024 08:23:30 -0700 (PDT)
+Received: from ?IPV6:2604:3d08:9384:1d00::9633? ([2604:3d08:9384:1d00::9633])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71908fe4e7esm3102009b3a.80.2024.09.11.08.23.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Sep 2024 08:23:30 -0700 (PDT)
+Message-ID: <510bda9d-031a-4235-aee3-119c5f8865ea@linaro.org>
+Date: Wed, 11 Sep 2024 08:23:23 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87jzfjqgwc.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/39] docs/spin: replace assert(0) with
+ g_assert_not_reached()
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ "Richard W.M. Jones" <rjones@redhat.com>, Joel Stanley <joel@jms.id.au>,
+ Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Corey Minyard <minyard@acm.org>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Keith Busch <kbusch@kernel.org>, WANG Xuerui <git@xen0n.name>,
+ Hyman Huang <yong.huang@smartx.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Michael Rolnik <mrolnik@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Jesper Devantier <foss@defmacro.it>, Laurent Vivier <laurent@vivier.eu>,
+ Peter Maydell <peter.maydell@linaro.org>, Igor Mammedov
+ <imammedo@redhat.com>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, Fam Zheng
+ <fam@euphon.net>, qemu-s390x@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Laurent Vivier <lvivier@redhat.com>, Rob Herring <robh@kernel.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Helge Deller <deller@gmx.de>, Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
+ Klaus Jensen <its@irrelevant.dk>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Jason Wang <jasowang@redhat.com>
+References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
+ <20240910221606.1817478-2-pierrick.bouvier@linaro.org>
+ <zkyoryho5alnyirnl7ulvh5y6tkty6koccgeygmve42uml7glu@37rkdodtlx4f>
+ <bwo43ms2wi6vbeqhlc7qjwmw5jyt2btxvpph3lqn7tfol4srjf@77yusngzs6wh>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <bwo43ms2wi6vbeqhlc7qjwmw5jyt2btxvpph3lqn7tfol4srjf@77yusngzs6wh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,54 +139,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 10, 2024 at 07:32:19PM -0300, Fabiano Rosas wrote:
-> I'm trying to find a way of having more code compiled by default and
-> only a minimal amount of code put under the CONFIG_FOO options. So if
-> some multifd code depends on a library call, say deflateInit, we make
-> that a multifd_deflate_init and add a stub for when !ZLIB (just an
-> example). I'm not sure it's feasible though, I'm just bouncing the idea
-> off of you.
+On 9/11/24 05:37, Eric Blake wrote:
+> On Wed, Sep 11, 2024 at 07:33:59AM GMT, Eric Blake wrote:
+>> On Tue, Sep 10, 2024 at 03:15:28PM GMT, Pierrick Bouvier wrote:
+>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>> ---
+>>
+>> A general suggestion for the entire series: please use a commit
+>> message that explains why this is a good idea.  Even something as
+>> boiler-plate as "refer to commit XXX for rationale" that can be
+>> copy-pasted into all the other commits is better than nothing,
+>> although a self-contained message is best.  Maybe:
+>>
+>> This patch is part of a series that moves towards a consistent use of
+>> g_assert_not_reached() rather than an ad hoc mix of different
+>> assertion mechanisms.
+> 
+> Or summarize your cover letter:
+> 
+> Use of assert(false) can trip spurious control flow warnings from some
+> versions of gcc:
+> https://lore.kernel.org/qemu-devel/54bb02a6-1b12-460a-97f6-3f478ef766c6@linaro.org/
+> Solve that by unifying the code base on g_assert_not_reached()
+> instead.
+> 
 
-Not sure how much it helps.  It adds more work, add slightly more code to
-maintain (then we will then need to maintain the shim layer, and that's
-per-compressor), while I am not sure it'll be good enough either..  For
-example, even if it compiles it can still run into constant failure when
-with the real library / hardware underneath.
-
-This not so bad to me yet: do you still remember or aware of the "joke" on
-how people remove a feature in Linux?  One can introduce a bug that can
-directly crash when some feature enabled, then after two years the
-developer can say "see, this feature is not used by anyone, let's remove
-it".
-
-I think it's a joke (which might come from reality..) but it's kind of a
-way that how we should treat these compressors as a start, IMHO.  AFAIU
-many of these compressors start with PoC-type projects where it's used to
-justify the hardware features.  The next step is in production use but that
-requires software vendors to involve, IIUC.  I think that's what we're
-waiting for, on company use it in more serious way that sign these features
-off.
-
-I don't think all such compressors will reach that point.  Meanwhile I
-don't think we (as qemu migration maintainers) can maintain that code well,
-if we don't get sponsored by people with hardwares to test.
-
-I think it means it's not our job to maintain it at 100%, yet so far.  We
-will still try our best, but that's always limited.  As we discussed
-before, we always need to rely on vendors so far for most of them.
-
-If after a few releases we found it's broken so bad, it may mean it
-finished its job as PoC or whatever purpose it services.  It means we could
-choose to move on, with no joking.
-
-That's why I think it's not so urgent, and maybe we don't need extra effort
-to make it harder for us to notice nobody is using it - we keep everything
-we know productions are actively using seriously (like multifd, postcopy,
-etc.).  Either some compressors become part of the serious use case, or we
-move on.  I recently do find more that the only way to make QEMU keep
-living well is to sometimes throw things away..
-
--- 
-Peter Xu
-
+I'll add this to messages. Thanks.
 
