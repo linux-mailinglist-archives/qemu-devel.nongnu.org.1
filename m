@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D2C9751E3
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 860A7975220
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:28:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMKc-0006yT-53; Wed, 11 Sep 2024 08:20:22 -0400
+	id 1soMKi-0007Ol-Gu; Wed, 11 Sep 2024 08:20:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMKZ-0006o6-5A
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:20:19 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMKe-0007FA-Ry
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:20:25 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMKX-0007xR-CD
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:20:18 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-42cb9a0c300so17583735e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:20:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMKd-0007xt-28
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:20:24 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42bb7298bdeso80581155e9.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726057215; x=1726662015; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726057221; x=1726662021; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YPDjaRNSqW+//4MAf7iMwolsYWY7f5O00bu8nr1h9As=;
- b=NWFUa6KEyfPADpUcWqN5ZYy4aoqcUJvLuClSXL7mwCrmKwbCI9VtgN34TAKtpQDp7P
- Ne1GLUSS9Dzq9Qu5x1pgYQ2/d0gCRXrbZAUN/6RoQK5fLQ438Al9RX9VGweXTzRnBtJk
- 515mQLpBBdInU1NcLky8Vt6F27t+I0K95ou0BeTHyPyax8q16+5y9L2WYRr5a4jKqxAC
- u5gQwMyPqwFG8e4rONPRiv6tmbHOSxvY3qIt9K5XWBwaDpnjfoTLM4cdUVJoRPHpRhKw
- yDek/LOJtv2G+KUZz5dzg1HBSLBMpvm42ILPVjquycmSK3C48GZskOK5HulXF00pl4VH
- IGrg==
+ bh=r5FvC+/VM5CrNgO4HyY/9BZiUoLX3NqqSLut7K2D/c8=;
+ b=O+I5HPTc+ntUDEuSpBIomojFZHMhpYL2u6JkHMfVTpT4pmgEzWCPJMzZdbpp7gZuy/
+ NBksv4OVyRrkbQsVd7fNkwp28AHEewObf2wuAPFnXQwlGju+OJHZZ52gdO1CnFj9h+5g
+ UlxkkHO1rFTo9X7YNu056fCx9unPQZAGEP0SA8uV/LaIwEdQqmVELaFqXKRjEyvUPMZW
+ 28V5zOwJHaD5DlkUvm9FJeq4G46cAuU1LpbyhbG0xq24qJoHZ8aNCm2gUTQhHldT9Rj6
+ rQBMthL7dDeSG1UZK1uou2BF4QW0eyRlUKV9jWaHxVvLOvirLMEZ2nZtCl4OnIgnRDDP
+ SbNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726057215; x=1726662015;
+ d=1e100.net; s=20230601; t=1726057221; x=1726662021;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YPDjaRNSqW+//4MAf7iMwolsYWY7f5O00bu8nr1h9As=;
- b=DJlkSqj9E+cosfMoY7WdfKcRCoaM9lKe1Ls5NpiIuD6k4mLtVw/Fd+2ATiVblvz/G+
- FNvZY3h4lDu2ofPRxKUkc+CVFxAGtDWHaAXJRtHdDyGDqNsBWHuIzL2hi4RvPZYj8qSx
- T8kMQMLUs1B7AC2qOj/nCZuJgAb9YaPVQYDEzV6n0onnvNDhOHl7oCfczIERhIlpuOX8
- YzOvQraijFc/mpA/z3Qc+ReGL56rIvQfHNTA3PN84fsBkLg5paYO4qAaZszugrOOEsaU
- qx70W7ZMkxdNl+OBhdvbbq6DGYDE1h885EBbfZX1E0kHXNeJc3m21+apIXruEbtXtGEB
- t6VA==
-X-Gm-Message-State: AOJu0YxyYVoM+7AUvo3YJnEf8KxCBuC6Ii2LSWRVH6DH+G92SIPipfEI
- BmIqYGK+dl3rBXnjOOg1ZsRuAMXbAcKCOVG7LmZTNq5a9cCPt1Cw18PQLct6gDbCQHRl9y3bTrR
- b
-X-Google-Smtp-Source: AGHT+IE4AQtL13Fr3jqHVgR5po9nRxxuLvuJJ1hjMUAMyTm6z2VHhxJuV5Qq7xhB6H3eUnFlnTVetA==
-X-Received: by 2002:a05:600c:4706:b0:42c:c401:6d67 with SMTP id
- 5b1f17b1804b1-42ccd30c292mr21063755e9.6.1726057215394; 
- Wed, 11 Sep 2024 05:20:15 -0700 (PDT)
+ bh=r5FvC+/VM5CrNgO4HyY/9BZiUoLX3NqqSLut7K2D/c8=;
+ b=KmQ0rWyMVlgWqfNzOshAK5++0kcC+0nLpoBAYQFRHlHWRF3awR46+KmEEfN+W9b/ry
+ HcAMhlRKQIjTj2QXUjA0RlflNtt++4bMItSnkslGqXBdL/SRkcM43ZL+xbYRximx3JBx
+ WZoB81Ia+pBJTwTmvCIURPBMISuwPFfYkkrDEgQkAXCYnK5VC6qY7bglfeDhi5zPrI3o
+ oBp+aQqHSOC0JNGbx+bWpHenLja6UnCvbdAyoEVmwVqs9M2W7EC5+clDEm/f5S3GKAMx
+ iESOsAjxecmNRnN4xnB2ZKlrPwBaVFAdgrlsV9c/zJdFzMyQPVAHafisOsPmQLIzpzkF
+ TlEw==
+X-Gm-Message-State: AOJu0Yw4eA7cwqCMVsN4+TZs0sKP1IQRRJFNyaHzdVsQWUPfX/fIgLv5
+ 97UPANP/MLDMoUDar0xFLihMQIqiw8rG9HTQ4TL/s2j/PLCLuReB8e1pDPlNqeeRAMOyNUa3zP6
+ J
+X-Google-Smtp-Source: AGHT+IHlcvyHE6JB6o5XnpqSauKM+GAt+zKnm7kwmNZPGoAzVDjf0AZZJxo7eJBmkPgETPE7JD094A==
+X-Received: by 2002:a05:600c:524c:b0:42c:b555:43dd with SMTP id
+ 5b1f17b1804b1-42cb55545fdmr110635715e9.3.1726057221052; 
+ Wed, 11 Sep 2024 05:20:21 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42cb2f86488sm124364265e9.15.2024.09.11.05.20.14
+ ffacd0b85a97d-378956d3941sm11477256f8f.84.2024.09.11.05.20.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:20:14 -0700 (PDT)
+ Wed, 11 Sep 2024 05:20:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ Howard Spoelstra <hsp.cat7@gmail.com>,
+ Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 52/56] system: replace assert(0) with g_assert_not_reached()
-Date: Wed, 11 Sep 2024 14:14:17 +0200
-Message-ID: <20240911121422.52585-53-philmd@linaro.org>
+Subject: [PULL 53/56] ui/sdl2: release all modifiers
+Date: Wed, 11 Sep 2024 14:14:18 +0200
+Message-ID: <20240911121422.52585-54-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
 References: <20240911121422.52585-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,30 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Volker Rümelin <vr_qemu@t-online.de>
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240910221606.1817478-11-pierrick.bouvier@linaro.org>
+Each virtual console in the SDL2 frontend has a key state map.
+When switching windows with GUI keys we have to release all
+pressed modifier keys in the currently active window, because
+after the switch the now inactive window no longer receives the
+key release events.
+
+To reproduce the issue open a text editor in the SDL UI and then
+press Ctrl-Alt-2 to open a Compat Monitor Console. Close the
+console with the mouse. Try to enter text in the text editor and
+notice that the modifier keys Ctrl and Alt are stuck and need to
+be pressed once to be released.
+
+Tested-by: Howard Spoelstra <hsp.cat7@gmail.com>
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+Tested-by: Bernhard Beschow <shentey@gmail.com>
+Message-ID: <20240909061552.6122-2-vr_qemu@t-online.de>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- system/rtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/ui/sdl2.h | 1 +
+ ui/sdl2-input.c   | 5 +++++
+ ui/sdl2.c         | 1 +
+ 3 files changed, 7 insertions(+)
 
-diff --git a/system/rtc.c b/system/rtc.c
-index dc44576686..216d2aee3a 100644
---- a/system/rtc.c
-+++ b/system/rtc.c
-@@ -62,7 +62,7 @@ static time_t qemu_ref_timedate(QEMUClockType clock)
+diff --git a/include/ui/sdl2.h b/include/ui/sdl2.h
+index e3acc7c82a..6907115809 100644
+--- a/include/ui/sdl2.h
++++ b/include/ui/sdl2.h
+@@ -60,6 +60,7 @@ void sdl2_poll_events(struct sdl2_console *scon);
+ 
+ void sdl2_process_key(struct sdl2_console *scon,
+                       SDL_KeyboardEvent *ev);
++void sdl2_release_modifiers(struct sdl2_console *scon);
+ 
+ void sdl2_2d_update(DisplayChangeListener *dcl,
+                     int x, int y, int w, int h);
+diff --git a/ui/sdl2-input.c b/ui/sdl2-input.c
+index b02a89ee7c..2286df4223 100644
+--- a/ui/sdl2-input.c
++++ b/ui/sdl2-input.c
+@@ -58,3 +58,8 @@ void sdl2_process_key(struct sdl2_console *scon,
          }
-         break;
-     default:
--        assert(0);
-+        g_assert_not_reached();
      }
-     return value;
  }
++
++void sdl2_release_modifiers(struct sdl2_console *scon)
++{
++    qkbd_state_lift_all_keys(scon->kbd);
++}
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index 98ed974371..bf6868f204 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -418,6 +418,7 @@ static void handle_keydown(SDL_Event *ev)
+                         SDL_ShowWindow(sdl2_console[win].real_window);
+                     }
+                 }
++                sdl2_release_modifiers(scon);
+                 gui_keysym = 1;
+             }
+             break;
 -- 
 2.45.2
 
