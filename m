@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7609749CC
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 07:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87BF89749C7
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 07:27:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soFs0-0002CP-Ro; Wed, 11 Sep 2024 01:26:24 -0400
+	id 1soFs6-0002N4-Dl; Wed, 11 Sep 2024 01:26:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1soFrz-0002Bc-BW
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:26:23 -0400
+ id 1soFs3-0002Ls-TF
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:26:27 -0400
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1soFrx-0004Mp-8J
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:26:23 -0400
+ id 1soFs2-0004Mp-6k
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:26:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726032381; x=1757568381;
+ t=1726032386; x=1757568386;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zGO3E2RHkJTu1LpuFC+aHQvPLyEXDeX5DBwZcDcQgTg=;
- b=P+9XZEJEC4Qm89ouJm8DX0pUWlf+Npu/5ZB3ukoUejQ0Zp32yvNi38E2
- cZfmg2PMsG8MtY7xyS5uI1nlgvC25NjvI2+CfjkX5ad5nU7OQWJnErtfQ
- 3xY8RFuRreRkmkvY/DJGPgu1vnw/DN7/QJEt5YjJfpq4A4x4CzrPdtwBI
- zUrbBILUbRYJscBBZWwuqGpF82dzhzKKgiTI8G0vaHge0r5Zxugp9JooD
- vKnQZU4SOHD/sNyxoMQUhMfrCIta2gzJr3KXO/XNfEnPkcGgA9QuoPmEj
- QmGxAbfKLxw6RFzcEp4gVbK2Y2ByrAh5locGg7wwLOq2lagpSoKbsnHjB Q==;
-X-CSE-ConnectionGUID: ecta29tBT4+tS6vWU7+Gew==
-X-CSE-MsgGUID: Vzxg9wPzRYGD7Rx22DZAnw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="35403526"
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="35403526"
+ bh=yqWqyth2P/d3i3FGK/vIH9NaHNh3ZvisTnQJSetWMNY=;
+ b=jVw6KgDodf34ytw+040CUWcHc2tZZo5GLL1amOMsJQY1j8jlGzBs80f2
+ oGdZT6I29v8qMCLh/qYpMgFMMf7WeYlE3lXUeYpvTtfacTMKh6OBg8TvR
+ 8PyLOjmvKe+42UOybfNcI+9jQFTyFaMBJ/+slk5bpvEWrC67AqLtk1irf
+ AQBeODB8mDclHyFzvIBbeHttRYQerHr8r6BG/M9A3DUFfZzAmSbasCJ+G
+ yaXoJbEQ0aKRcn8NW14/3iB19AX4/xUOeoyuc8owPxXdIUPT7+QKOyuQk
+ 9zj7NVGsJzEafld1rwAgQ0NT8rVGld8jIzNj8Xnoe3b4YHbUwr9c50xvW Q==;
+X-CSE-ConnectionGUID: Sc1jmhrKTtOMfJiGuLgSXA==
+X-CSE-MsgGUID: 5s1de0RRTLKPOsunCEQ8Vw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="35403537"
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="35403537"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 22:26:21 -0700
-X-CSE-ConnectionGUID: lpxZ7I8EQA+MHN8NIs0iLA==
-X-CSE-MsgGUID: 8VjwMS4wQfWkqEX0kYNIpg==
+ 10 Sep 2024 22:26:25 -0700
+X-CSE-ConnectionGUID: oXRRSOrYT9qyWBD6rZl1iA==
+X-CSE-MsgGUID: 0U8jvKd3Sb+Loa/IcKN2NA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="67536443"
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="67536453"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 22:26:16 -0700
+ 10 Sep 2024 22:26:21 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -55,9 +55,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v3 06/17] intel_iommu: Implement stage-1 translation
-Date: Wed, 11 Sep 2024 13:22:44 +0800
-Message-Id: <20240911052255.1294071-7-zhenzhong.duan@intel.com>
+Subject: [PATCH v3 07/17] intel_iommu: Check if the input address is canonical
+Date: Wed, 11 Sep 2024 13:22:45 +0800
+Message-Id: <20240911052255.1294071-8-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240911052255.1294071-1-zhenzhong.duan@intel.com>
 References: <20240911052255.1294071-1-zhenzhong.duan@intel.com>
@@ -88,268 +88,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
 
-This adds stage-1 page table walking to support stage-1 only
-transltion in scalable modern mode.
+First stage translation must fail if the address to translate is
+not canonical.
 
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Co-developed-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
 Signed-off-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/i386/intel_iommu_internal.h |  23 ++++++
- hw/i386/intel_iommu.c          | 146 ++++++++++++++++++++++++++++++++-
- 2 files changed, 165 insertions(+), 4 deletions(-)
+ hw/i386/intel_iommu_internal.h |  2 ++
+ hw/i386/intel_iommu.c          | 23 +++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
 diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index 1fa4add9e2..51e9b1fc43 100644
+index 51e9b1fc43..668583aeca 100644
 --- a/hw/i386/intel_iommu_internal.h
 +++ b/hw/i386/intel_iommu_internal.h
-@@ -433,6 +433,21 @@ typedef union VTDInvDesc VTDInvDesc;
-         (0x3ffff800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM | VTD_SL_TM)) : \
-         (0x3ffff800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM))
+@@ -320,6 +320,8 @@ typedef enum VTDFaultReason {
+     VTD_FR_PASID_ENTRY_P = 0x59,
+     VTD_FR_PASID_TABLE_ENTRY_INV = 0x5b,  /*Invalid PASID table entry */
  
-+/* Rsvd field masks for fpte */
-+#define VTD_FS_UPPER_IGNORED 0xfff0000000000000ULL
-+#define VTD_FPTE_PAGE_L1_RSVD_MASK(aw) \
-+        (~(VTD_HAW_MASK(aw) | VTD_FS_UPPER_IGNORED))
-+#define VTD_FPTE_PAGE_L2_RSVD_MASK(aw) \
-+        (~(VTD_HAW_MASK(aw) | VTD_FS_UPPER_IGNORED))
-+#define VTD_FPTE_PAGE_L3_RSVD_MASK(aw) \
-+        (~(VTD_HAW_MASK(aw) | VTD_FS_UPPER_IGNORED))
-+#define VTD_FPTE_PAGE_L3_FS1GP_RSVD_MASK(aw) \
-+        (0x3fffe000ULL | ~(VTD_HAW_MASK(aw) | VTD_FS_UPPER_IGNORED))
-+#define VTD_FPTE_PAGE_L2_FS2MP_RSVD_MASK(aw) \
-+        (0x1fe000ULL | ~(VTD_HAW_MASK(aw) | VTD_FS_UPPER_IGNORED))
-+#define VTD_FPTE_PAGE_L4_RSVD_MASK(aw) \
-+        (0x80ULL | ~(VTD_HAW_MASK(aw) | VTD_FS_UPPER_IGNORED))
++    VTD_FR_FS_NON_CANONICAL = 0x80, /* SNG.1 : Address for FS not canonical.*/
 +
- /* Masks for PIOTLB Invalidate Descriptor */
- #define VTD_INV_DESC_PIOTLB_G             (3ULL << 4)
- #define VTD_INV_DESC_PIOTLB_ALL_IN_PASID  (2ULL << 4)
-@@ -525,6 +540,14 @@ typedef struct VTDRootEntry VTDRootEntry;
- #define VTD_SM_PASID_ENTRY_AW          7ULL /* Adjusted guest-address-width */
- #define VTD_SM_PASID_ENTRY_DID(val)    ((val) & VTD_DOMAIN_ID_MASK)
- 
-+#define VTD_SM_PASID_ENTRY_FLPM          3ULL
-+#define VTD_SM_PASID_ENTRY_FLPTPTR       (~0xfffULL)
-+
-+/* First Level Paging Structure */
-+/* Masks for First Level Paging Entry */
-+#define VTD_FL_P                    1ULL
-+#define VTD_FL_RW_MASK              (1ULL << 1)
-+
- /* Second Level Page Translation Pointer*/
- #define VTD_SM_PASID_ENTRY_SLPTPTR     (~0xfffULL)
- 
+     /* Output address in the interrupt address range for scalable mode */
+     VTD_FR_SM_INTERRUPT_ADDR = 0x87,
+     VTD_FR_MAX,                 /* Guard */
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index a22bd43b98..6e31a8d383 100644
+index 6e31a8d383..be73366a64 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -48,6 +48,8 @@
+@@ -1821,6 +1821,7 @@ static const bool vtd_qualified_faults[] = {
+     [VTD_FR_PASID_ENTRY_P] = true,
+     [VTD_FR_PASID_TABLE_ENTRY_INV] = true,
+     [VTD_FR_SM_INTERRUPT_ADDR] = true,
++    [VTD_FR_FS_NON_CANONICAL] = true,
+     [VTD_FR_MAX] = false,
+ };
  
- /* pe operations */
- #define VTD_PE_GET_TYPE(pe) ((pe)->val[0] & VTD_SM_PASID_ENTRY_PGTT)
-+#define VTD_PE_GET_FL_LEVEL(pe) \
-+    (4 + (((pe)->val[2] >> 2) & VTD_SM_PASID_ENTRY_FLPM))
- #define VTD_PE_GET_SL_LEVEL(pe) \
-     (2 + (((pe)->val[0] >> 2) & VTD_SM_PASID_ENTRY_AW))
- 
-@@ -755,6 +757,11 @@ static inline bool vtd_is_sl_level_supported(IntelIOMMUState *s, uint32_t level)
-            (1ULL << (level - 2 + VTD_CAP_SAGAW_SHIFT));
+@@ -1924,6 +1925,22 @@ static inline bool vtd_flpte_present(uint64_t flpte)
+     return !!(flpte & VTD_FL_P);
  }
  
-+static inline bool vtd_is_fl_level_supported(IntelIOMMUState *s, uint32_t level)
++/* Return true if IOVA is canonical, otherwise false. */
++static bool vtd_iova_fl_check_canonical(IntelIOMMUState *s, uint64_t iova,
++                                        VTDContextEntry *ce, uint32_t pasid)
 +{
-+    return level == VTD_PML4_LEVEL;
-+}
++    uint64_t iova_limit = vtd_iova_limit(s, ce, s->aw_bits, pasid);
++    uint64_t upper_bits_mask = ~(iova_limit - 1);
++    uint64_t upper_bits = iova & upper_bits_mask;
++    bool msb = ((iova & (iova_limit >> 1)) != 0);
 +
- /* Return true if check passed, otherwise false */
- static inline bool vtd_pe_type_check(X86IOMMUState *x86_iommu,
-                                      VTDPASIDEntry *pe)
-@@ -838,6 +845,11 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
-             return -VTD_FR_PASID_TABLE_ENTRY_INV;
-     }
- 
-+    if (pgtt == VTD_SM_PASID_ENTRY_FLT &&
-+        !vtd_is_fl_level_supported(s, VTD_PE_GET_FL_LEVEL(pe))) {
-+            return -VTD_FR_PASID_TABLE_ENTRY_INV;
-+    }
-+
-     return 0;
- }
- 
-@@ -973,7 +985,11 @@ static uint32_t vtd_get_iova_level(IntelIOMMUState *s,
- 
-     if (s->root_scalable) {
-         vtd_ce_get_rid2pasid_entry(s, ce, &pe, pasid);
--        return VTD_PE_GET_SL_LEVEL(&pe);
-+        if (s->scalable_modern) {
-+            return VTD_PE_GET_FL_LEVEL(&pe);
-+        } else {
-+            return VTD_PE_GET_SL_LEVEL(&pe);
-+        }
-     }
- 
-     return vtd_ce_get_level(ce);
-@@ -1060,7 +1076,11 @@ static dma_addr_t vtd_get_iova_pgtbl_base(IntelIOMMUState *s,
- 
-     if (s->root_scalable) {
-         vtd_ce_get_rid2pasid_entry(s, ce, &pe, pasid);
--        return pe.val[0] & VTD_SM_PASID_ENTRY_SLPTPTR;
-+        if (s->scalable_modern) {
-+            return pe.val[2] & VTD_SM_PASID_ENTRY_FLPTPTR;
-+        } else {
-+            return pe.val[0] & VTD_SM_PASID_ENTRY_SLPTPTR;
-+        }
-     }
- 
-     return vtd_ce_get_slpt_base(ce);
-@@ -1862,6 +1882,104 @@ out:
-     trace_vtd_pt_enable_fast_path(source_id, success);
- }
- 
-+/*
-+ * Rsvd field masks for fpte:
-+ *     vtd_fpte_rsvd 4k pages
-+ *     vtd_fpte_rsvd_large large pages
-+ *
-+ * We support only 4-level page tables.
-+ */
-+#define VTD_FPTE_RSVD_LEN 5
-+static uint64_t vtd_fpte_rsvd[VTD_FPTE_RSVD_LEN];
-+static uint64_t vtd_fpte_rsvd_large[VTD_FPTE_RSVD_LEN];
-+
-+static bool vtd_flpte_nonzero_rsvd(uint64_t flpte, uint32_t level)
-+{
-+    uint64_t rsvd_mask;
-+
-+    /*
-+     * We should have caught a guest-mis-programmed level earlier,
-+     * via vtd_is_fl_level_supported.
-+     */
-+    assert(level < VTD_SPTE_RSVD_LEN);
-+    /*
-+     * Zero level doesn't exist. The smallest level is VTD_PT_LEVEL=1 and
-+     * checked by vtd_is_last_pte().
-+     */
-+    assert(level);
-+
-+    if ((level == VTD_PD_LEVEL || level == VTD_PDP_LEVEL) &&
-+        (flpte & VTD_PT_PAGE_SIZE_MASK)) {
-+        /* large page */
-+        rsvd_mask = vtd_fpte_rsvd_large[level];
++    if (msb) {
++        return upper_bits == upper_bits_mask;
 +    } else {
-+        rsvd_mask = vtd_fpte_rsvd[level];
-+    }
-+
-+    return flpte & rsvd_mask;
-+}
-+
-+static inline bool vtd_flpte_present(uint64_t flpte)
-+{
-+    return !!(flpte & VTD_FL_P);
-+}
-+
-+/*
-+ * Given the @iova, get relevant @flptep. @flpte_level will be the last level
-+ * of the translation, can be used for deciding the size of large page.
-+ */
-+static int vtd_iova_to_flpte(IntelIOMMUState *s, VTDContextEntry *ce,
-+                             uint64_t iova, bool is_write,
-+                             uint64_t *flptep, uint32_t *flpte_level,
-+                             bool *reads, bool *writes, uint8_t aw_bits,
-+                             uint32_t pasid)
-+{
-+    dma_addr_t addr = vtd_get_iova_pgtbl_base(s, ce, pasid);
-+    uint32_t level = vtd_get_iova_level(s, ce, pasid);
-+    uint32_t offset;
-+    uint64_t flpte;
-+
-+    while (true) {
-+        offset = vtd_iova_level_offset(iova, level);
-+        flpte = vtd_get_pte(addr, offset);
-+
-+        if (flpte == (uint64_t)-1) {
-+            if (level == vtd_get_iova_level(s, ce, pasid)) {
-+                /* Invalid programming of context-entry */
-+                return -VTD_FR_CONTEXT_ENTRY_INV;
-+            } else {
-+                return -VTD_FR_PAGING_ENTRY_INV;
-+            }
-+        }
-+        if (!vtd_flpte_present(flpte)) {
-+            *reads = false;
-+            *writes = false;
-+            return -VTD_FR_PAGING_ENTRY_INV;
-+        }
-+        *reads = true;
-+        *writes = (*writes) && (flpte & VTD_FL_RW_MASK);
-+        if (is_write && !(flpte & VTD_FL_RW_MASK)) {
-+            return -VTD_FR_WRITE;
-+        }
-+        if (vtd_flpte_nonzero_rsvd(flpte, level)) {
-+            error_report_once("%s: detected flpte reserved non-zero "
-+                              "iova=0x%" PRIx64 ", level=0x%" PRIx32
-+                              "flpte=0x%" PRIx64 ", pasid=0x%" PRIX32 ")",
-+                              __func__, iova, level, flpte, pasid);
-+            return -VTD_FR_PAGING_ENTRY_RSVD;
-+        }
-+
-+        if (vtd_is_last_pte(flpte, level)) {
-+            *flptep = flpte;
-+            *flpte_level = level;
-+            return 0;
-+        }
-+
-+        addr = vtd_get_pte_addr(flpte, aw_bits);
-+        level--;
++        return !upper_bits;
 +    }
 +}
 +
- static void vtd_report_fault(IntelIOMMUState *s,
-                              int err, bool is_fpd_set,
-                              uint16_t source_id,
-@@ -2010,8 +2128,13 @@ static bool vtd_do_iommu_translate(VTDAddressSpace *vtd_as, PCIBus *bus,
-         }
-     }
+ /*
+  * Given the @iova, get relevant @flptep. @flpte_level will be the last level
+  * of the translation, can be used for deciding the size of large page.
+@@ -1939,6 +1956,12 @@ static int vtd_iova_to_flpte(IntelIOMMUState *s, VTDContextEntry *ce,
+     uint32_t offset;
+     uint64_t flpte;
  
--    ret_fr = vtd_iova_to_slpte(s, &ce, addr, is_write, &pte, &level,
--                               &reads, &writes, s->aw_bits, pasid);
-+    if (s->scalable_modern && s->root_scalable) {
-+        ret_fr = vtd_iova_to_flpte(s, &ce, addr, is_write, &pte, &level,
-+                                   &reads, &writes, s->aw_bits, pasid);
-+    } else {
-+        ret_fr = vtd_iova_to_slpte(s, &ce, addr, is_write, &pte, &level,
-+                                   &reads, &writes, s->aw_bits, pasid);
++    if (!vtd_iova_fl_check_canonical(s, iova, ce, pasid)) {
++        error_report_once("%s: detected non canonical IOVA (iova=0x%" PRIx64 ","
++                          "pasid=0x%" PRIx32 ")", __func__, iova, pasid);
++        return -VTD_FR_FS_NON_CANONICAL;
 +    }
-     if (ret_fr) {
-         vtd_report_fault(s, -ret_fr, is_fpd_set, source_id,
-                          addr, is_write, pasid != PCI_NO_PASID, pasid);
-@@ -4239,6 +4362,21 @@ static void vtd_init(IntelIOMMUState *s)
-     vtd_spte_rsvd_large[3] = VTD_SPTE_LPAGE_L3_RSVD_MASK(s->aw_bits,
-                                                     x86_iommu->dt_supported);
- 
-+    /*
-+     * Rsvd field masks for fpte
-+     */
-+    vtd_fpte_rsvd[0] = ~0ULL;
-+    vtd_fpte_rsvd[1] = VTD_FPTE_PAGE_L1_RSVD_MASK(s->aw_bits);
-+    vtd_fpte_rsvd[2] = VTD_FPTE_PAGE_L2_RSVD_MASK(s->aw_bits);
-+    vtd_fpte_rsvd[3] = VTD_FPTE_PAGE_L3_RSVD_MASK(s->aw_bits);
-+    vtd_fpte_rsvd[4] = VTD_FPTE_PAGE_L4_RSVD_MASK(s->aw_bits);
 +
-+    vtd_fpte_rsvd_large[0] = ~0ULL;
-+    vtd_fpte_rsvd_large[1] = ~0ULL;
-+    vtd_fpte_rsvd_large[2] = VTD_FPTE_PAGE_L2_FS2MP_RSVD_MASK(s->aw_bits);
-+    vtd_fpte_rsvd_large[3] = VTD_FPTE_PAGE_L3_FS1GP_RSVD_MASK(s->aw_bits);
-+    vtd_fpte_rsvd_large[4] = ~0ULL;
-+
-     if (s->scalable_mode || s->snoop_control) {
-         vtd_spte_rsvd[1] &= ~VTD_SPTE_SNP;
-         vtd_spte_rsvd_large[2] &= ~VTD_SPTE_SNP;
+     while (true) {
+         offset = vtd_iova_level_offset(iova, level);
+         flpte = vtd_get_pte(addr, offset);
 -- 
 2.34.1
 
