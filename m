@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435C7975297
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCF99751EC
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:22:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMJv-0002ga-QU; Wed, 11 Sep 2024 08:19:39 -0400
+	id 1soMK0-0003lw-0z; Wed, 11 Sep 2024 08:19:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJr-00026Z-Ax
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:19:35 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJx-0003Mr-HH
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:19:41 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJo-0007iN-UP
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:19:34 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-42cb806623eso17434875e9.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:19:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJu-0007im-CE
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:19:41 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-42cb58d810eso5117355e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:19:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726057171; x=1726661971; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726057176; x=1726661976; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NssZFsgofzGs2gp8p888uYqHLNroe1f/wyQ4Ij7Swyo=;
- b=S5X0A8UzOg0fuUQqQq7R+tH6//MUyARhZHOpfK7iy9MbuYU8lzm+v2f0L+a3aRVMNT
- ht6QkU43zJkgjv4H4PtKuSxMqUEMoDIIczzlha+APvSHCVHA6mdKunYV1zdoYfnndrCO
- 2I+NEQ7A3FdM6P/1UJRLxckMnUWpEzxv13aPlFd++pqvs6l8HPXgKeXZMSZBmJdW3kZq
- /xmJsAW3aIsxpAyceTWHlHrlQW6rISDLC6EDF0AY471Fxbv/3OwR9F/6Y44jWjDppbJH
- eyR29QIqpe0XGtjufBVUlfw58iYnOEpEs4srPmK5bNGsVJJzsjsm6H+VuR6XDhlkfxjU
- 8nEg==
+ bh=5uAYQOz0f3NUUgtgEDr3l2InET86j9EqdXcrrlozEfg=;
+ b=hGImCzJso1mf2mVeCB3eK/igCaUIZ4WxW4YNgxDAhXtGlQkleug2jAly+NguD2AgtR
+ bKyOZ9YzY3LVBXjps0uhw6Xjr+m9z/IPNLdJXkdoF/XQ8WZLdTN/+di89NdIkOWi/Vy4
+ ine97XlS4rhTUFtn8H0GbHybmZ4Kx1XjxE8Pc9z3JQ6w5xzwqrekjGPMvJL2oSoMCMDJ
+ qxyyREwrpGI3ojBhsFGVxPCYQLg6o9tmkhQS6CsgFf2i71L1CbqLydprNZR9/Sx0LRBY
+ SlJlsg+trXE/1fZikQX05LQ2RvqwfI1Dc9ywU8yScRurd+9HU73k2mUYBbZwOJl8NVkE
+ mE2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726057171; x=1726661971;
+ d=1e100.net; s=20230601; t=1726057176; x=1726661976;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NssZFsgofzGs2gp8p888uYqHLNroe1f/wyQ4Ij7Swyo=;
- b=UtIX8UdQ1C6M6THIus/6cjKROC+JEoWdxnQzkj7qh2QJV7UdMLY8yncKDTW3wqJQNZ
- 1mXJETWCdGqkyarIgIlJnWZJRSmxue7kmo4mdRu05UJUky/VDYkdDCXMnpAi2RcaxkJZ
- nyC3RBHZLuq/rvo4ST+gq2tjtOpgmfUi1NTgRTEyGcc3hMimJ5Uv8MmuHvMt5C8CABlA
- LNY15wAKcaMjTtYiN8nOYjqG9dK1+n5gxH5AKb29YkSw85LVq+rfoQjChMoz7LT037fM
- PsjEg4zkcU25MgXOQuaMoFidHinBMD9JRIYHq3H6to4I/VOKHhk8liTchQCUd2GFvVe8
- jjVw==
-X-Gm-Message-State: AOJu0Yx3G7N5NC2LFzL8//cRl6lZBKnjQKAK2GHo2a2vUH0c7hmD2TYW
- wBHGdasckRtsvQsGdDgdpgvYBbL9F97kYu49CY1YPzD+xqWIQ6rIVt6ljLlLccBgh9bK1Q8yU+A
- 0
-X-Google-Smtp-Source: AGHT+IHQKMKWCPgxFOZhmzVhwSUA0KIaoz1nBAg1kItW9iP0BaeZxpyByes+Bf5YG4g4X/L6e9PUTA==
-X-Received: by 2002:a05:600c:46ca:b0:42c:b1f0:f67 with SMTP id
- 5b1f17b1804b1-42ccd35adf5mr20242215e9.27.1726057170789; 
- Wed, 11 Sep 2024 05:19:30 -0700 (PDT)
+ bh=5uAYQOz0f3NUUgtgEDr3l2InET86j9EqdXcrrlozEfg=;
+ b=BzlBlxAWmsdKou8E7sP26xl77X8x5cpDLpdqSFKCv1x52XLg6LacSuGtpMt+yIFS/W
+ P2MVUKOqNE+2DI31Bw4JpOrejHE0CMgrDAgO6Cu8GMhLNRc7KuyFXHw0W9eUpXaAJ/94
+ lZbfUPvwW0tWgdlFpeoN3axXKoifZH0hn8U2MH/OGi3gDR4L1v0CNZhwGSHkbgz0cOPw
+ u2MRKsDccYteDp4UXBeIoCBxaAnkZmSuI01gS+S0fHVQlESI7dNXKum0rdW3lfTVYl3Z
+ 0e+NeTeoSRGypis9yzI7UTQ+EhFMiB3+jSD/MNW5zYSaNQFO61eBhZDAmQn0QXrTD1jj
+ bzqw==
+X-Gm-Message-State: AOJu0YyXDOirHH6WSAvUD61AvnZhCPkgOLVxVtlsJSv3gphIYy8HJhFe
+ kqZYFtERHivNDufTUGfCxvFLK1a9vNk2i2O/YrKGhIK+olJBlZ1m6jH5LF8mPkkEYeNvAVgwL3f
+ Q
+X-Google-Smtp-Source: AGHT+IG6FBCLTgGRgxi4UDXuJoG/UDElP7Gs7bIVVsRgpuO8ZDjh/xXj+z8dGNRiHHI6+UousmNcLg==
+X-Received: by 2002:a05:600c:450d:b0:426:5c36:f57a with SMTP id
+ 5b1f17b1804b1-42cbde01a6emr39184285e9.14.1726057176347; 
+ Wed, 11 Sep 2024 05:19:36 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42caeb43d73sm146432955e9.24.2024.09.11.05.19.29
+ 5b1f17b1804b1-42caeb4444asm140839205e9.22.2024.09.11.05.19.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:19:30 -0700 (PDT)
+ Wed, 11 Sep 2024 05:19:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Richard Henderson <richard.henderson@linaro.org>,
- Carl Hauser <chauser@pullman.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 44/56] hw/char/escc: convert Sun mouse to use QemuInputHandler
-Date: Wed, 11 Sep 2024 14:14:09 +0200
-Message-ID: <20240911121422.52585-45-philmd@linaro.org>
+Subject: [PULL 45/56] hw/input/adb-mouse: convert to use QemuInputHandler
+Date: Wed, 11 Sep 2024 14:14:10 +0200
+Message-ID: <20240911121422.52585-46-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
 References: <20240911121422.52585-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,77 +94,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Update the Sun mouse implementation to use QemuInputHandler instead of the
+Update the ADB mouse implementation to use QemuInputHandler instead of the
 legacy qemu_add_mouse_event_handler() function.
 
-Note that this conversion adds extra sunmouse_* members to ESCCChannelState
-but they are not added to the migration stream (similar to the Sun keyboard
-members). If this were desired in future, the Sun devices should be split
-into separate devices and added to the migration stream there instead.
-
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2518
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Carl Hauser <chauser@pullman.com>
-Message-ID: <20240904102301.175706-1-mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240907173700.348818-1-mark.cave-ayland@ilande.co.uk>
+[PMD: Add comment about .sync handler]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/char/escc.h |  3 ++
- hw/char/escc.c         | 92 +++++++++++++++++++++++++++++++-----------
- 2 files changed, 71 insertions(+), 24 deletions(-)
+ hw/input/adb-mouse.c | 63 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 52 insertions(+), 11 deletions(-)
 
-diff --git a/include/hw/char/escc.h b/include/hw/char/escc.h
-index 5669a5b811..8c4c6a7730 100644
---- a/include/hw/char/escc.h
-+++ b/include/hw/char/escc.h
-@@ -46,6 +46,9 @@ typedef struct ESCCChannelState {
-     uint8_t rx, tx;
-     QemuInputHandlerState *hs;
-     char *sunkbd_layout;
-+    int sunmouse_dx;
-+    int sunmouse_dy;
-+    int sunmouse_buttons;
- } ESCCChannelState;
+diff --git a/hw/input/adb-mouse.c b/hw/input/adb-mouse.c
+index 144a0ccce7..15e6e91804 100644
+--- a/hw/input/adb-mouse.c
++++ b/hw/input/adb-mouse.c
+@@ -38,6 +38,7 @@ struct MouseState {
+     ADBDevice parent_obj;
+     /*< private >*/
  
- struct ESCCState {
-diff --git a/hw/char/escc.c b/hw/char/escc.c
-index d450d70eda..245a7b19d3 100644
---- a/hw/char/escc.c
-+++ b/hw/char/escc.c
-@@ -287,6 +287,7 @@ static void escc_reset_chn(ESCCChannelState *s)
-     s->rxint = s->txint = 0;
-     s->rxint_under_svc = s->txint_under_svc = 0;
-     s->e0_mode = s->led_mode = s->caps_lock_mode = s->num_lock_mode = 0;
-+    s->sunmouse_dx = s->sunmouse_dy = s->sunmouse_buttons = 0;
-     clear_queue(s);
- }
++    QemuInputHandlerState *hs;
+     int buttons_state, last_buttons_state;
+     int dx, dy, dz;
+ };
+@@ -51,17 +52,57 @@ struct ADBMouseClass {
+     DeviceRealize parent_realize;
+ };
  
-@@ -952,53 +953,96 @@ static void handle_kbd_command(ESCCChannelState *s, int val)
-     }
- }
+-static void adb_mouse_event(void *opaque,
+-                            int dx1, int dy1, int dz1, int buttons_state)
+-{
+-    MouseState *s = opaque;
++#define ADB_MOUSE_BUTTON_LEFT   0x01
++#define ADB_MOUSE_BUTTON_RIGHT  0x02
  
--static void sunmouse_event(void *opaque,
--                               int dx, int dy, int dz, int buttons_state)
-+static void sunmouse_handle_event(DeviceState *dev, QemuConsole *src,
-+                                  InputEvent *evt)
- {
--    ESCCChannelState *s = opaque;
-+    ESCCChannelState *s = (ESCCChannelState *)dev;
+-    s->dx += dx1;
+-    s->dy += dy1;
+-    s->dz += dz1;
+-    s->buttons_state = buttons_state;
++static void adb_mouse_handle_event(DeviceState *dev, QemuConsole *src,
++                                   InputEvent *evt)
++{
++    MouseState *s = (MouseState *)dev;
 +    InputMoveEvent *move;
 +    InputBtnEvent *btn;
 +    static const int bmap[INPUT_BUTTON__MAX] = {
-+        [INPUT_BUTTON_LEFT]   = 0x4,
-+        [INPUT_BUTTON_MIDDLE] = 0x2,
-+        [INPUT_BUTTON_RIGHT]  = 0x1,
++        [INPUT_BUTTON_LEFT]   = ADB_MOUSE_BUTTON_LEFT,
++        [INPUT_BUTTON_RIGHT]  = ADB_MOUSE_BUTTON_RIGHT,
 +    };
 +
 +    switch (evt->type) {
 +    case INPUT_EVENT_KIND_REL:
 +        move = evt->u.rel.data;
 +        if (move->axis == INPUT_AXIS_X) {
-+            s->sunmouse_dx += move->value;
++            s->dx += move->value;
 +        } else if (move->axis == INPUT_AXIS_Y) {
-+            s->sunmouse_dy -= move->value;
++            s->dy += move->value;
 +        }
 +        break;
 +
@@ -174,12 +158,10 @@ index d450d70eda..245a7b19d3 100644
 +        btn = evt->u.btn.data;
 +        if (bmap[btn->button]) {
 +            if (btn->down) {
-+                s->sunmouse_buttons |= bmap[btn->button];
++                s->buttons_state |= bmap[btn->button];
 +            } else {
-+                s->sunmouse_buttons &= ~bmap[btn->button];
++                s->buttons_state &= ~bmap[btn->button];
 +            }
-+            /* Indicate we have a supported button event */
-+            s->sunmouse_buttons |= 0x80;
 +        }
 +        break;
 +
@@ -187,90 +169,43 @@ index d450d70eda..245a7b19d3 100644
 +        /* keep gcc happy */
 +        break;
 +    }
-+}
-+
-+static void sunmouse_sync(DeviceState *dev)
-+{
-+    ESCCChannelState *s = (ESCCChannelState *)dev;
-     int ch;
- 
--    trace_escc_sunmouse_event(dx, dy, buttons_state);
-+    if (s->sunmouse_dx == 0 && s->sunmouse_dy == 0 &&
-+        (s->sunmouse_buttons & 0x80) == 0) {
-+            /* Nothing to do after button event filter */
-+            return;
-+    }
-+
-+    /* Clear our button event flag */
-+    s->sunmouse_buttons &= ~0x80;
-+    trace_escc_sunmouse_event(s->sunmouse_dx, s->sunmouse_dy,
-+                              s->sunmouse_buttons);
-     ch = 0x80 | 0x7; /* protocol start byte, no buttons pressed */
--
--    if (buttons_state & MOUSE_EVENT_LBUTTON) {
--        ch ^= 0x4;
--    }
--    if (buttons_state & MOUSE_EVENT_MBUTTON) {
--        ch ^= 0x2;
--    }
--    if (buttons_state & MOUSE_EVENT_RBUTTON) {
--        ch ^= 0x1;
--    }
--
-+    ch ^= s->sunmouse_buttons;
-     put_queue(s, ch);
- 
--    ch = dx;
--
-+    ch = s->sunmouse_dx;
-     if (ch > 127) {
-         ch = 127;
-     } else if (ch < -127) {
-         ch = -127;
-     }
--
-     put_queue(s, ch & 0xff);
-+    s->sunmouse_dx -= ch;
- 
--    ch = -dy;
--
-+    ch = s->sunmouse_dy;
-     if (ch > 127) {
-         ch = 127;
-     } else if (ch < -127) {
-         ch = -127;
-     }
--
-     put_queue(s, ch & 0xff);
-+    s->sunmouse_dy -= ch;
- 
-     /* MSC protocol specifies two extra motion bytes */
--
-     put_queue(s, 0);
-     put_queue(s, 0);
  }
  
-+static const QemuInputHandler sunmouse_handler = {
-+    .name  = "QEMU Sun Mouse",
++static const QemuInputHandler adb_mouse_handler = {
++    .name  = "QEMU ADB Mouse",
 +    .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_REL,
-+    .event = sunmouse_handle_event,
-+    .sync  = sunmouse_sync,
++    .event = adb_mouse_handle_event,
++    /*
++     * We do not need the .sync handler because unlike e.g. PS/2 where async
++     * mouse events are sent over the serial port, an ADB mouse is constantly
++     * polled by the host via the adb_mouse_poll() callback.
++     */
 +};
-+
- static void escc_init1(Object *obj)
+ 
+ static int adb_mouse_poll(ADBDevice *d, uint8_t *obuf)
  {
-     ESCCState *s = ESCC(obj);
-@@ -1036,8 +1080,8 @@ static void escc_realize(DeviceState *dev, Error **errp)
+@@ -94,10 +135,10 @@ static int adb_mouse_poll(ADBDevice *d, uint8_t *obuf)
+     dx &= 0x7f;
+     dy &= 0x7f;
+ 
+-    if (!(s->buttons_state & MOUSE_EVENT_LBUTTON)) {
++    if (!(s->buttons_state & ADB_MOUSE_BUTTON_LEFT)) {
+         dy |= 0x80;
+     }
+-    if (!(s->buttons_state & MOUSE_EVENT_RBUTTON)) {
++    if (!(s->buttons_state & ADB_MOUSE_BUTTON_RIGHT)) {
+         dx |= 0x80;
      }
  
-     if (s->chn[0].type == escc_mouse) {
--        qemu_add_mouse_event_handler(sunmouse_event, &s->chn[0], 0,
--                                     "QEMU Sun Mouse");
-+        s->chn[0].hs = qemu_input_handler_register((DeviceState *)(&s->chn[0]),
-+                                                   &sunmouse_handler);
-     }
-     if (s->chn[1].type == escc_kbd) {
-         s->chn[1].hs = qemu_input_handler_register((DeviceState *)(&s->chn[1]),
+@@ -236,7 +277,7 @@ static void adb_mouse_realizefn(DeviceState *dev, Error **errp)
+ 
+     amc->parent_realize(dev, errp);
+ 
+-    qemu_add_mouse_event_handler(adb_mouse_event, s, 0, "QEMU ADB Mouse");
++    s->hs = qemu_input_handler_register(dev, &adb_mouse_handler);
+ }
+ 
+ static void adb_mouse_initfn(Object *obj)
 -- 
 2.45.2
 
