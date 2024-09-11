@@ -2,82 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A13975294
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F28975271
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:34:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMYb-0000hB-Ah; Wed, 11 Sep 2024 08:34:49 -0400
+	id 1soMYC-0006sS-Vf; Wed, 11 Sep 2024 08:34:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1soMYB-0007XT-P9
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:24 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1soMY2-0006MC-Bo
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1soMY9-00016J-Ur
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:23 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1soMXz-00014D-Ev
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726058061;
+ s=mimecast20190719; t=1726058050;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gU4vA1l3j7vpb6U9RGVZr3j7o9V0Y0q871++U1XS99U=;
- b=iWyq6cK4B3Tgix9WnlnoChny3MjXgJdMIakpyUr9tybvHzBoZeAB4QcmKgYFbDSOqXV0sp
- ze6aOfhb7QoRZu74fExFN2Pb9f2xoLlcB0QqB6+5vZJdpzXOMEHnWhGq4e0IsCaVARahGp
- kCmACmWE0gCOWe44u4xnQsA25TqY0bM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-WctiAn0ANhyw_cS2vb2miA-1; Wed, 11 Sep 2024 08:34:20 -0400
-X-MC-Unique: WctiAn0ANhyw_cS2vb2miA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42cb6ed7f9dso30852565e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:34:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726058059; x=1726662859;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gU4vA1l3j7vpb6U9RGVZr3j7o9V0Y0q871++U1XS99U=;
- b=Ba8PfAu7Ur2/IbYGWDCeo8fvPt31SS4IXdHeEz+isu0Cb4edf0SBhz7a9I2jsPu7zx
- 6aVHbQG7GPIHcpbDGHEiTgq0wb32cfqB1zIrhq8b4Nn3JD0jfygtFP0GLjRzhVwBr/Wv
- kINUUBP6F8aUo55gupoGO+bMwCqHOKrZa8UF1VQ4yKrq66Ij67T57+oSVawkjyNi5FzR
- y0h7EJjQPJGgMruM6D1JTYS5NuGl5HEzI/szL82TcxmM5SiE1V/VnFqR/VwGvObqavwm
- 9se4oF1Q/RaE1J+4H8PedMnEFFfFx/p4dqtD9nLxkYsazIQJmxsHqudEMAFBJ740l/df
- sCGA==
-X-Gm-Message-State: AOJu0YzU9DtWCRhROq900akTSVc8o2ZUL9V+vMgIplIHcZQ7g0jbvJ1u
- QeFZ8PitRbW4+8P/2rjVO2LO/GyOZ56xBNWbmBC/5xKyD7Ylv7GB6VSW3Vm9A/SdgTbdTIHLgET
- VROcI5auksN/4gQza2/l4dymvsemdN2Tu/fc0nutLX0lkuFFJjBt+hkyH0Fw4tfZOiOh5QHdjb0
- GDMBbrEakkVYY8TnCkXeDLNteN/au0EvQtxdTLeM8=
-X-Received: by 2002:a5d:4387:0:b0:374:c160:269e with SMTP id
- ffacd0b85a97d-378922a6d58mr12067515f8f.22.1726058058769; 
- Wed, 11 Sep 2024 05:34:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF1syhIqZn9kkdR5trZlf4NlSE5E+KBXO4xNaw8uzj3xmc6XFKG/brCDEo8NOohUZZrfsloHw==
-X-Received: by 2002:a5d:4387:0:b0:374:c160:269e with SMTP id
- ffacd0b85a97d-378922a6d58mr12067493f8f.22.1726058058284; 
- Wed, 11 Sep 2024 05:34:18 -0700 (PDT)
-Received: from avogadro.local ([151.95.101.29])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3789564aea0sm11454160f8f.20.2024.09.11.05.34.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 05:34:17 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Ani Sinha <anisinha@redhat.com>, pbonzini@redhat.com, zhao1.liu@intel.com
-Subject: [PULL 11/17] kvm: refactor core virtual machine creation into its own
- function
-Date: Wed, 11 Sep 2024 14:33:36 +0200
-Message-ID: <20240911123342.339482-12-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240911123342.339482-1-pbonzini@redhat.com>
-References: <20240911123342.339482-1-pbonzini@redhat.com>
+ bh=zwWiCWwJ3dGN6gxSk3Yzd9j0+zvFL+3PfRinwilJ57Y=;
+ b=c8nmHQ02Qk8MRO8MfPmp9qBHBwE//KKpBuTWKAZM/Z1H4XaaPzhojcbI0PaylaLN3eqLBm
+ wG9yhEV/v+BVX9bEM8XNQLCJ1x+2X2C+LkqmFhFO5oTKqZ/0gHKesRU8oHdw1Dt/oqwrSp
+ H/jQ5uU6TzuBB3JrjfPmOgFG/mP0WsY=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-WpP9fjYZPdaDAYx7zZo4qg-1; Wed,
+ 11 Sep 2024 08:34:08 -0400
+X-MC-Unique: WpP9fjYZPdaDAYx7zZo4qg-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C090E1958B1E; Wed, 11 Sep 2024 12:33:59 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.98])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 874C530001A1; Wed, 11 Sep 2024 12:33:39 +0000 (UTC)
+Date: Wed, 11 Sep 2024 07:33:36 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>, 
+ "Richard W.M. Jones" <rjones@redhat.com>, Joel Stanley <joel@jms.id.au>,
+ Kevin Wolf <kwolf@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ Corey Minyard <minyard@acm.org>, 
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Keith Busch <kbusch@kernel.org>, 
+ WANG Xuerui <git@xen0n.name>, Hyman Huang <yong.huang@smartx.com>, 
+ Stefan Berger <stefanb@linux.vnet.ibm.com>, Michael Rolnik <mrolnik@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>, 
+ Halil Pasic <pasic@linux.ibm.com>, Jesper Devantier <foss@defmacro.it>, 
+ Laurent Vivier <laurent@vivier.eu>, Peter Maydell <peter.maydell@linaro.org>, 
+ Igor Mammedov <imammedo@redhat.com>, kvm@vger.kernel.org, 
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Fam Zheng <fam@euphon.net>, qemu-s390x@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Laurent Vivier <lvivier@redhat.com>, Rob Herring <robh@kernel.org>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org, 
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, qemu-ppc@nongnu.org, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Helge Deller <deller@gmx.de>, 
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Aurelien Jarno <aurelien@aurel32.net>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Peter Xu <peterx@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, 
+ Klaus Jensen <its@irrelevant.dk>, Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH 01/39] docs/spin: replace assert(0) with
+ g_assert_not_reached()
+Message-ID: <zkyoryho5alnyirnl7ulvh5y6tkty6koccgeygmve42uml7glu@37rkdodtlx4f>
+References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
+ <20240910221606.1817478-2-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240910221606.1817478-2-pierrick.bouvier@linaro.org>
+User-Agent: NeoMutt/20240425
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -86,7 +107,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,135 +123,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ani Sinha <anisinha@redhat.com>
+On Tue, Sep 10, 2024 at 03:15:28PM GMT, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
 
-Refactoring the core logic around KVM_CREATE_VM into its own separate function
-so that it can be called from other functions in subsequent patches. There is
-no functional change in this patch.
+A general suggestion for the entire series: please use a commit
+message that explains why this is a good idea.  Even something as
+boiler-plate as "refer to commit XXX for rationale" that can be
+copy-pasted into all the other commits is better than nothing,
+although a self-contained message is best.  Maybe:
 
-CC: pbonzini@redhat.com
-CC: zhao1.liu@intel.com
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Link: https://lore.kernel.org/r/20240808113838.1697366-1-anisinha@redhat.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- accel/kvm/kvm-all.c | 89 ++++++++++++++++++++++++++++-----------------
- 1 file changed, 56 insertions(+), 33 deletions(-)
+This patch is part of a series that moves towards a consistent use of
+g_assert_not_reached() rather than an ad hoc mix of different
+assertion mechanisms.
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index fcc157f0e60..ebaa632a21e 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2385,6 +2385,60 @@ uint32_t kvm_dirty_ring_size(void)
-     return kvm_state->kvm_dirty_ring_size;
- }
- 
-+static int do_kvm_create_vm(MachineState *ms, int type)
-+{
-+    KVMState *s;
-+    int ret;
-+
-+    s = KVM_STATE(ms->accelerator);
-+
-+    do {
-+        ret = kvm_ioctl(s, KVM_CREATE_VM, type);
-+    } while (ret == -EINTR);
-+
-+    if (ret < 0) {
-+        error_report("ioctl(KVM_CREATE_VM) failed: %s", strerror(-ret));
-+
-+#ifdef TARGET_S390X
-+        if (ret == -EINVAL) {
-+            error_printf("Host kernel setup problem detected."
-+                         " Please verify:\n");
-+            error_printf("- for kernels supporting the"
-+                        " switch_amode or user_mode parameters, whether");
-+            error_printf(" user space is running in primary address space\n");
-+            error_printf("- for kernels supporting the vm.allocate_pgste"
-+                         " sysctl, whether it is enabled\n");
-+        }
-+#elif defined(TARGET_PPC)
-+        if (ret == -EINVAL) {
-+            error_printf("PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
-+                         (type == 2) ? "pr" : "hv");
-+        }
-+#endif
-+    }
-+
-+    return ret;
-+}
-+
-+static int find_kvm_machine_type(MachineState *ms)
-+{
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
-+    int type;
-+
-+    if (object_property_find(OBJECT(current_machine), "kvm-type")) {
-+        g_autofree char *kvm_type;
-+        kvm_type = object_property_get_str(OBJECT(current_machine),
-+                                           "kvm-type",
-+                                           &error_abort);
-+        type = mc->kvm_type(ms, kvm_type);
-+    } else if (mc->kvm_type) {
-+        type = mc->kvm_type(ms, NULL);
-+    } else {
-+        type = kvm_arch_get_default_type(ms);
-+    }
-+    return type;
-+}
-+
- static int kvm_init(MachineState *ms)
- {
-     MachineClass *mc = MACHINE_GET_CLASS(ms);
-@@ -2467,45 +2521,14 @@ static int kvm_init(MachineState *ms)
-     }
-     s->as = g_new0(struct KVMAs, s->nr_as);
- 
--    if (object_property_find(OBJECT(current_machine), "kvm-type")) {
--        g_autofree char *kvm_type = object_property_get_str(OBJECT(current_machine),
--                                                            "kvm-type",
--                                                            &error_abort);
--        type = mc->kvm_type(ms, kvm_type);
--    } else if (mc->kvm_type) {
--        type = mc->kvm_type(ms, NULL);
--    } else {
--        type = kvm_arch_get_default_type(ms);
--    }
--
-+    type = find_kvm_machine_type(ms);
-     if (type < 0) {
-         ret = -EINVAL;
-         goto err;
-     }
- 
--    do {
--        ret = kvm_ioctl(s, KVM_CREATE_VM, type);
--    } while (ret == -EINTR);
--
-+    ret = do_kvm_create_vm(ms, type);
-     if (ret < 0) {
--        error_report("ioctl(KVM_CREATE_VM) failed: %s", strerror(-ret));
--
--#ifdef TARGET_S390X
--        if (ret == -EINVAL) {
--            error_printf("Host kernel setup problem detected."
--                         " Please verify:\n");
--            error_printf("- for kernels supporting the"
--                        " switch_amode or user_mode parameters, whether");
--            error_printf(" user space is running in primary address space\n");
--            error_printf("- for kernels supporting the vm.allocate_pgste"
--                         " sysctl, whether it is enabled\n");
--        }
--#elif defined(TARGET_PPC)
--        if (ret == -EINVAL) {
--            error_printf("PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
--                         (type == 2) ? "pr" : "hv");
--        }
--#endif
-         goto err;
-     }
- 
 -- 
-2.46.0
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
