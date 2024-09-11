@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72F49751DD
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 435C7975297
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:37:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMJw-0002nF-Iv; Wed, 11 Sep 2024 08:19:40 -0400
+	id 1soMJv-0002ga-QU; Wed, 11 Sep 2024 08:19:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJl-00015M-4a
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:19:29 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJr-00026Z-Ax
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:19:35 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJi-0007ha-LS
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:19:28 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-374c6187b6eso4192154f8f.0
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:19:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMJo-0007iN-UP
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:19:34 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-42cb806623eso17434875e9.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:19:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726057165; x=1726661965; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726057171; x=1726661971; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CpGirFJS1hiVzWB+YvlZwSrjHOF2ym8zGg1RtGSITz4=;
- b=iCKJJfl3G83xj+NG2BfGWhNTxewFy6+bG8gGG6wfUfj6rQTJGgTYuIGgkeRkcC+dzF
- CLamP6Au7UKqu1kFijeNpSGp7iIb2n5xEmdpJ//ozGv3ZnsDSSLSTnNjVt99g6tao41h
- fbpcgc8ynZaH1iAiQj+wEOEXP1803SyjqhZJNjB3uHP+2TcVehM7C5wrrrIZ+Nd/Qsv2
- yxSTzLle23nEqwkaoGcqqv+a2g59wRxoz8HP5Qq1qLDLpiRm328i8pFEMSIemfyB8a8s
- Qc9Ut6gFrl+yO+r3soAoZcO3vO76rnZfwUHqqMNN59jt4CiCT3DLvESD2kKaywkEqjud
- ZDow==
+ bh=NssZFsgofzGs2gp8p888uYqHLNroe1f/wyQ4Ij7Swyo=;
+ b=S5X0A8UzOg0fuUQqQq7R+tH6//MUyARhZHOpfK7iy9MbuYU8lzm+v2f0L+a3aRVMNT
+ ht6QkU43zJkgjv4H4PtKuSxMqUEMoDIIczzlha+APvSHCVHA6mdKunYV1zdoYfnndrCO
+ 2I+NEQ7A3FdM6P/1UJRLxckMnUWpEzxv13aPlFd++pqvs6l8HPXgKeXZMSZBmJdW3kZq
+ /xmJsAW3aIsxpAyceTWHlHrlQW6rISDLC6EDF0AY471Fxbv/3OwR9F/6Y44jWjDppbJH
+ eyR29QIqpe0XGtjufBVUlfw58iYnOEpEs4srPmK5bNGsVJJzsjsm6H+VuR6XDhlkfxjU
+ 8nEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726057165; x=1726661965;
+ d=1e100.net; s=20230601; t=1726057171; x=1726661971;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CpGirFJS1hiVzWB+YvlZwSrjHOF2ym8zGg1RtGSITz4=;
- b=WjBD6jF+xGOmIZYP/wOdGgzsCXc4lpL+IW2SizOG5wITd4cp7m5s1Fzpqilulmcupl
- YPKqWGNpN8Ukgg6ia/G/J91olBkrMXIfTQyuZPhiYeAn3vu5k+gsrAlHd657xZEzJagb
- PSbpv55nST3eE+kEq4Ww/tOdpu3XxVQR8qpwLbBdm2WokIUKEN2i1C/WEtjAtFkejwR6
- 4qGVqSyoAvyvltCqxTyzt9MMsRuOt1zi3XDoxn+7eXz9wBfsa12znzxUPrtdwmnhLUOe
- D9UlnyGoT3zp9OKeQZ5faFSBiCsc6W2YMb1NGsBBiFIl1rXWvbJyw7awRW4uFGgbgpHI
- CWkg==
-X-Gm-Message-State: AOJu0YzwUDjEHQkdjShv8jTBzyLlD9/2ZikL2i9ONiFso56LhhVF9qFQ
- /eD2HwGy7PHdfFdOfuF4IQ7IERgvlpyphHTv18g+epcLIiFVSnlM23/qpjHN/sTRi92RUyji4yZ
- 3
-X-Google-Smtp-Source: AGHT+IEUFDLgWmfIfyvZLvoZDG4wQJB1LpuWZJRXg4f/bmVHsmIsw/RxjmEpEHtdWL804ZKzbYpiQg==
-X-Received: by 2002:adf:f6c2:0:b0:374:cbc4:53b1 with SMTP id
- ffacd0b85a97d-3788967e494mr12571511f8f.40.1726057164608; 
- Wed, 11 Sep 2024 05:19:24 -0700 (PDT)
+ bh=NssZFsgofzGs2gp8p888uYqHLNroe1f/wyQ4Ij7Swyo=;
+ b=UtIX8UdQ1C6M6THIus/6cjKROC+JEoWdxnQzkj7qh2QJV7UdMLY8yncKDTW3wqJQNZ
+ 1mXJETWCdGqkyarIgIlJnWZJRSmxue7kmo4mdRu05UJUky/VDYkdDCXMnpAi2RcaxkJZ
+ nyC3RBHZLuq/rvo4ST+gq2tjtOpgmfUi1NTgRTEyGcc3hMimJ5Uv8MmuHvMt5C8CABlA
+ LNY15wAKcaMjTtYiN8nOYjqG9dK1+n5gxH5AKb29YkSw85LVq+rfoQjChMoz7LT037fM
+ PsjEg4zkcU25MgXOQuaMoFidHinBMD9JRIYHq3H6to4I/VOKHhk8liTchQCUd2GFvVe8
+ jjVw==
+X-Gm-Message-State: AOJu0Yx3G7N5NC2LFzL8//cRl6lZBKnjQKAK2GHo2a2vUH0c7hmD2TYW
+ wBHGdasckRtsvQsGdDgdpgvYBbL9F97kYu49CY1YPzD+xqWIQ6rIVt6ljLlLccBgh9bK1Q8yU+A
+ 0
+X-Google-Smtp-Source: AGHT+IHQKMKWCPgxFOZhmzVhwSUA0KIaoz1nBAg1kItW9iP0BaeZxpyByes+Bf5YG4g4X/L6e9PUTA==
+X-Received: by 2002:a05:600c:46ca:b0:42c:b1f0:f67 with SMTP id
+ 5b1f17b1804b1-42ccd35adf5mr20242215e9.27.1726057170789; 
+ Wed, 11 Sep 2024 05:19:30 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-378956d3765sm11464880f8f.74.2024.09.11.05.19.23
+ 5b1f17b1804b1-42caeb43d73sm146432955e9.24.2024.09.11.05.19.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:19:24 -0700 (PDT)
+ Wed, 11 Sep 2024 05:19:30 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 43/56] tests/unit: Comment FIFO8 tests
-Date: Wed, 11 Sep 2024 14:14:08 +0200
-Message-ID: <20240911121422.52585-44-philmd@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Carl Hauser <chauser@pullman.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 44/56] hw/char/escc: convert Sun mouse to use QemuInputHandler
+Date: Wed, 11 Sep 2024 14:14:09 +0200
+Message-ID: <20240911121422.52585-45-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
 References: <20240911121422.52585-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,346 +94,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add comments describing how the FIFO evolves during each test.
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
+Update the Sun mouse implementation to use QemuInputHandler instead of the
+legacy qemu_add_mouse_event_handler() function.
+
+Note that this conversion adds extra sunmouse_* members to ESCCChannelState
+but they are not added to the migration stream (similar to the Sun keyboard
+members). If this were desired in future, the Sun devices should be split
+into separate devices and added to the migration stream there instead.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2518
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Carl Hauser <chauser@pullman.com>
+Message-ID: <20240904102301.175706-1-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-Id: <20240906132909.78886-4-philmd@linaro.org>
 ---
- tests/unit/test-fifo.c | 188 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 187 insertions(+), 1 deletion(-)
+ include/hw/char/escc.h |  3 ++
+ hw/char/escc.c         | 92 +++++++++++++++++++++++++++++++-----------
+ 2 files changed, 71 insertions(+), 24 deletions(-)
 
-diff --git a/tests/unit/test-fifo.c b/tests/unit/test-fifo.c
-index fada526b6c..14153c41fa 100644
---- a/tests/unit/test-fifo.c
-+++ b/tests/unit/test-fifo.c
-@@ -27,14 +27,36 @@ static void test_fifo8_pop_bufptr_wrap(void)
-     uint32_t count;
+diff --git a/include/hw/char/escc.h b/include/hw/char/escc.h
+index 5669a5b811..8c4c6a7730 100644
+--- a/include/hw/char/escc.h
++++ b/include/hw/char/escc.h
+@@ -46,6 +46,9 @@ typedef struct ESCCChannelState {
+     uint8_t rx, tx;
+     QemuInputHandlerState *hs;
+     char *sunkbd_layout;
++    int sunmouse_dx;
++    int sunmouse_dy;
++    int sunmouse_buttons;
+ } ESCCChannelState;
  
-     fifo8_create(&fifo, 8);
-+    /*
-+     *  head --v-- tail             used = 0
-+     * FIFO: [ . . . . . . . . ]
-+     */
+ struct ESCCState {
+diff --git a/hw/char/escc.c b/hw/char/escc.c
+index d450d70eda..245a7b19d3 100644
+--- a/hw/char/escc.c
++++ b/hw/char/escc.c
+@@ -287,6 +287,7 @@ static void escc_reset_chn(ESCCChannelState *s)
+     s->rxint = s->txint = 0;
+     s->rxint_under_svc = s->txint_under_svc = 0;
+     s->e0_mode = s->led_mode = s->caps_lock_mode = s->num_lock_mode = 0;
++    s->sunmouse_dx = s->sunmouse_dy = s->sunmouse_buttons = 0;
+     clear_queue(s);
+ }
  
-     fifo8_push_all(&fifo, data_in1, sizeof(data_in1));
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: [ 1 2 3 4 . . . . ]
-+     */
-     buf = fifo8_pop_bufptr(&fifo, 2, &count);
-+    /*
-+     *      head --v  ]-- tail      used = 2
-+     * FIFO: [ 1 2 3 4 . . . . ]
-+     *  buf  --^                    count = 2
-+     */
-     g_assert(count == 2);
-     g_assert(buf[0] == 0x1 && buf[1] == 0x2);
+@@ -952,53 +953,96 @@ static void handle_kbd_command(ESCCChannelState *s, int val)
+     }
+ }
  
-     fifo8_push_all(&fifo, data_in2, sizeof(data_in2));
-+    /*
-+     *     tail --]v-- head         used = 8
-+     * FIFO: [ 9 a 3 4 5 6 7 8 ]
-+     */
-     buf = fifo8_pop_bufptr(&fifo, 8, &count);
-+    /*
-+     *  head --v  ]-- tail          used = 2
-+     * FIFO: [ 9 a 3 4 5 6 7 8 ]
-+     *  buf      --^                count = 6
-+     */
-     g_assert(count == 6);
-     g_assert(buf[0] == 0x3 && buf[1] == 0x4 && buf[2] == 0x5 &&
-              buf[3] == 0x6 && buf[4] == 0x7 && buf[5] == 0x8);
-@@ -51,9 +73,22 @@ static void test_fifo8_pop_bufptr(void)
-     uint32_t count;
- 
-     fifo8_create(&fifo, 8);
-+    /*
-+     *  head --v-- tail             used = 0
-+     * FIFO: [ . . . . . . . . ]
-+     */
- 
-     fifo8_push_all(&fifo, data_in, sizeof(data_in));
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: [ 1 2 3 4 . . . . ]
-+     */
-     buf = fifo8_pop_bufptr(&fifo, 2, &count);
-+    /*
-+     *      head --v  ]-- tail      used = 2
-+     * FIFO: [ 1 2 3 4 . . . . ]
-+     *  buf  --^                    count = 2
-+     */
-     g_assert(count == 2);
-     g_assert(buf[0] == 0x1 && buf[1] == 0x2);
- 
-@@ -70,18 +105,45 @@ static void test_fifo8_peek_bufptr_wrap(void)
-     uint32_t count;
- 
-     fifo8_create(&fifo, 8);
-+    /*
-+     *  head --v-- tail             used = 0
-+     * FIFO: { . . . . . . . . }
-+     */
- 
-     fifo8_push_all(&fifo, data_in1, sizeof(data_in1));
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: { 1 2 3 4 . . . . }
-+     */
-     buf = fifo8_peek_bufptr(&fifo, 2, &count);
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: { 1 2 3 4 . . . . }
-+     *  buf: [ 1 2 ]                count = 2
-+     */
-     g_assert(count == 2);
-     g_assert(buf[0] == 0x1 && buf[1] == 0x2);
- 
-     buf = fifo8_pop_bufptr(&fifo, 2, &count);
-+    /*
-+     *     head  --v  ]-- tail      used = 2
-+     * FIFO: { 1 2 3 4 . . . . }
-+     *  buf: [ 1 2 ]                count = 2
-+     */
-     g_assert(count == 2);
-     g_assert(buf[0] == 0x1 && buf[1] == 0x2);
-     fifo8_push_all(&fifo, data_in2, sizeof(data_in2));
-+    /*
-+     *  tail   ---]v-- head         used = 8
-+     * FIFO: { 9 a 3 4 5 6 7 8 }
-+     */
- 
-     buf = fifo8_peek_bufptr(&fifo, 8, &count);
-+    /*
-+     *     tail --]v-- head         used = 8
-+     * FIFO: { 9 a 3 4 5 6 7 8 }
-+     *  buf:     [ 3 4 5 6 7 8 ]    count = 6
-+     */
-     g_assert(count == 6);
-     g_assert(buf[0] == 0x3 && buf[1] == 0x4 && buf[2] == 0x5 &&
-              buf[3] == 0x6 && buf[4] == 0x7 && buf[5] == 0x8);
-@@ -98,9 +160,22 @@ static void test_fifo8_peek_bufptr(void)
-     uint32_t count;
- 
-     fifo8_create(&fifo, 8);
-+    /*
-+     *  head --v-- tail             used = 0
-+     * FIFO: { . . . . . . . . }
-+     */
- 
-     fifo8_push_all(&fifo, data_in, sizeof(data_in));
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: { 1 2 3 4 . . . . }
-+     */
-     buf = fifo8_peek_bufptr(&fifo, 2, &count);
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: { 1 2 3 4 . . . . }
-+     *  buf: [ 1 2 ]                count = 2
-+     */
-     g_assert(count == 2);
-     g_assert(buf[0] == 0x1 && buf[1] == 0x2);
- 
-@@ -117,14 +192,38 @@ static void test_fifo8_pop_buf_wrap(void)
-     int count;
- 
-     fifo8_create(&fifo, 8);
-+    /*
-+     *  head --v-- tail             used = 0
-+     * FIFO: { . . . . . . . . }
-+     */
- 
-     fifo8_push_all(&fifo, data_in1, sizeof(data_in1));
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: { 1 2 3 4 . . . . }
-+     */
-     fifo8_pop_buf(&fifo, NULL, 4);
-+    /*
-+     *         tail --]v-- head     used = 0
-+     * FIFO: [ 1 2 3 4 . . . . ]
-+     */
- 
-     fifo8_push_all(&fifo, data_in2, sizeof(data_in2));
-+    /*
-+     *         tail --]v-- head     used = 8
-+     * FIFO: { 9 a b c 5 6 7 8 }
-+     */
-     count = fifo8_pop_buf(&fifo, NULL, 4);
-+    /*
-+     * head  --v      ]-- tail      used = 4
-+     * FIFO: { 9 a b c 5 6 7 8 }
-+     */
-     g_assert(count == 4);
-     count = fifo8_pop_buf(&fifo, data_out, 4);
-+    /*
-+     *         tail --]v-- head     used = 0
-+     * FIFO: { 9 a b c 5 6 7 8 }
-+     */
-     g_assert(count == 4);
-     g_assert(data_out[0] == 0x9 && data_out[1] == 0xa &&
-              data_out[2] == 0xb && data_out[3] == 0xc);
-@@ -141,9 +240,21 @@ static void test_fifo8_pop_buf(void)
-     int count;
- 
-     fifo8_create(&fifo, 8);
-+    /*
-+     *  head --v-- tail             used = 0
-+     * FIFO: { . . . . . . . . }
-+     */
- 
-     fifo8_push_all(&fifo, data_in, sizeof(data_in));
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: { 1 2 3 4 . . . . }
-+     */
-     count = fifo8_pop_buf(&fifo, NULL, 4);
-+    /*
-+     *         tail --]v-- head     used = 0
-+     * FIFO: { 1 2 3 4 . . . . }
-+     */
-     g_assert(count == 4);
-     count = fifo8_pop_buf(&fifo, data_out, 4);
-     g_assert(data_out[0] == 0x5 && data_out[1] == 0x6 &&
-@@ -162,19 +273,45 @@ static void test_fifo8_peek_buf_wrap(void)
-     int count;
- 
-     fifo8_create(&fifo, 8);
-+    /*
-+     *  head --v-- tail             used = 0
-+     * FIFO: { . . . . . . . . }
-+     */
- 
-     fifo8_push_all(&fifo, data_in1, sizeof(data_in1));
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: { 1 2 3 4 . . . . }
-+     */
-     fifo8_pop_buf(&fifo, NULL, 4);
-+    /*
-+     *         tail --]v-- head     used = 0
-+     * FIFO: { 1 2 3 4 . . . . }
-+     */
- 
-     fifo8_push_all(&fifo, data_in2, sizeof(data_in2));
-+    /*
-+     *         tail --]v-- head     used = 8
-+     * FIFO: { 9 a b c 5 6 7 8 }
-+     */
-     count = fifo8_peek_buf(&fifo, NULL, 4);
-     g_assert(count == 4);
-     count = fifo8_peek_buf(&fifo, data_out, 4);
-+    /*
-+     *         tail --]v-- head     used = 8
-+     * FIFO: { 9 a b c 5 6 7 8 }
-+     *  buf:         [ 5 6 7 8 ]    count = 4
-+     */
-     g_assert(count == 4);
-     g_assert(data_out[0] == 0x5 && data_out[1] == 0x6 &&
-              data_out[2] == 0x7 && data_out[3] == 0x8);
- 
-     count = fifo8_peek_buf(&fifo, data_out, 8);
-+    /*
-+     *         tail --]v-- head     used = 8
-+     * FIFO: { 9 a b c 5 6 7 8 }
-+     *  buf:         [ 5 6 7 8 9 a b c ] count = 8
-+     */
-     g_assert(count == 8);
-     g_assert(data_out[0] == 0x5 && data_out[1] == 0x6 &&
-              data_out[2] == 0x7 && data_out[3] == 0x8);
-@@ -193,14 +330,27 @@ static void test_fifo8_peek_buf(void)
-     int count;
- 
-     fifo8_create(&fifo, 8);
-+    /*
-+     *  head --v-- tail             used = 0
-+     * FIFO: { . . . . . . . . }
-+     */
- 
-     fifo8_push_all(&fifo, data_in, sizeof(data_in));
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: { 1 2 3 4 . . . . }
-+     */
-     count = fifo8_peek_buf(&fifo, NULL, 4);
-     g_assert(count == 4);
+-static void sunmouse_event(void *opaque,
+-                               int dx, int dy, int dz, int buttons_state)
++static void sunmouse_handle_event(DeviceState *dev, QemuConsole *src,
++                                  InputEvent *evt)
+ {
+-    ESCCChannelState *s = opaque;
++    ESCCChannelState *s = (ESCCChannelState *)dev;
++    InputMoveEvent *move;
++    InputBtnEvent *btn;
++    static const int bmap[INPUT_BUTTON__MAX] = {
++        [INPUT_BUTTON_LEFT]   = 0x4,
++        [INPUT_BUTTON_MIDDLE] = 0x2,
++        [INPUT_BUTTON_RIGHT]  = 0x1,
++    };
 +
-     g_assert(data_out[0] == 0xff && data_out[1] == 0xff &&
-              data_out[2] == 0xff && data_out[3] == 0xff);
++    switch (evt->type) {
++    case INPUT_EVENT_KIND_REL:
++        move = evt->u.rel.data;
++        if (move->axis == INPUT_AXIS_X) {
++            s->sunmouse_dx += move->value;
++        } else if (move->axis == INPUT_AXIS_Y) {
++            s->sunmouse_dy -= move->value;
++        }
++        break;
++
++    case INPUT_EVENT_KIND_BTN:
++        btn = evt->u.btn.data;
++        if (bmap[btn->button]) {
++            if (btn->down) {
++                s->sunmouse_buttons |= bmap[btn->button];
++            } else {
++                s->sunmouse_buttons &= ~bmap[btn->button];
++            }
++            /* Indicate we have a supported button event */
++            s->sunmouse_buttons |= 0x80;
++        }
++        break;
++
++    default:
++        /* keep gcc happy */
++        break;
++    }
++}
++
++static void sunmouse_sync(DeviceState *dev)
++{
++    ESCCChannelState *s = (ESCCChannelState *)dev;
+     int ch;
+ 
+-    trace_escc_sunmouse_event(dx, dy, buttons_state);
++    if (s->sunmouse_dx == 0 && s->sunmouse_dy == 0 &&
++        (s->sunmouse_buttons & 0x80) == 0) {
++            /* Nothing to do after button event filter */
++            return;
++    }
++
++    /* Clear our button event flag */
++    s->sunmouse_buttons &= ~0x80;
++    trace_escc_sunmouse_event(s->sunmouse_dx, s->sunmouse_dy,
++                              s->sunmouse_buttons);
+     ch = 0x80 | 0x7; /* protocol start byte, no buttons pressed */
 -
-     count = fifo8_peek_buf(&fifo, data_out, 4);
-+    /*
-+     *  head --v      ]-- tail      used = 4
-+     * FIFO: { 1 2 3 4 . . . . }
-+     *  buf: [ 1 2 3 4 ]            count = 4
-+     */
-     g_assert(count == 4);
-     g_assert(data_out[0] == 0x1 && data_out[1] == 0x2 &&
-              data_out[2] == 0x3 && data_out[3] == 0x4);
-@@ -215,12 +365,28 @@ static void test_fifo8_peek(void)
-     uint8_t c;
+-    if (buttons_state & MOUSE_EVENT_LBUTTON) {
+-        ch ^= 0x4;
+-    }
+-    if (buttons_state & MOUSE_EVENT_MBUTTON) {
+-        ch ^= 0x2;
+-    }
+-    if (buttons_state & MOUSE_EVENT_RBUTTON) {
+-        ch ^= 0x1;
+-    }
+-
++    ch ^= s->sunmouse_buttons;
+     put_queue(s, ch);
  
-     fifo8_create(&fifo, 8);
-+    /*
-+     *  head --v-- tail             used = 0
-+     * FIFO: { . . . . . . . . }
-+     */
-     fifo8_push(&fifo, 0x1);
-+    /*
-+     *  head --v]-- tail            used = 1
-+     * FIFO: { 1 . . . . . . . }
-+     */
-     fifo8_push(&fifo, 0x2);
-+    /*
-+     *  head --v  ]-- tail          used = 2
-+     * FIFO: { 1 2 . . . . . . }
-+     */
+-    ch = dx;
+-
++    ch = s->sunmouse_dx;
+     if (ch > 127) {
+         ch = 127;
+     } else if (ch < -127) {
+         ch = -127;
+     }
+-
+     put_queue(s, ch & 0xff);
++    s->sunmouse_dx -= ch;
  
-     c = fifo8_peek(&fifo);
-     g_assert(c == 0x1);
-     fifo8_pop(&fifo);
-+    /*
-+     *    head --v]-- tail          used = 1
-+     * FIFO: { 1 2 . . . . . . }
-+     */
-     c = fifo8_peek(&fifo);
-     g_assert(c == 0x2);
+-    ch = -dy;
+-
++    ch = s->sunmouse_dy;
+     if (ch > 127) {
+         ch = 127;
+     } else if (ch < -127) {
+         ch = -127;
+     }
+-
+     put_queue(s, ch & 0xff);
++    s->sunmouse_dy -= ch;
  
-@@ -234,12 +400,32 @@ static void test_fifo8_pushpop(void)
-     uint8_t c;
+     /* MSC protocol specifies two extra motion bytes */
+-
+     put_queue(s, 0);
+     put_queue(s, 0);
+ }
  
-     fifo8_create(&fifo, 8);
-+    /*
-+     *  head --v-- tail             used = 0
-+     * FIFO: { . . . . . . . . }
-+     */
-     fifo8_push(&fifo, 0x1);
-+    /*
-+     *  head --v]-- tail            used = 1
-+     * FIFO: { 1 . . . . . . . }
-+     */
-     fifo8_push(&fifo, 0x2);
-+    /*
-+     *  head --v  ]-- tail          used = 2
-+     * FIFO: { 1 2 . . . . . . }
-+     */
++static const QemuInputHandler sunmouse_handler = {
++    .name  = "QEMU Sun Mouse",
++    .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_REL,
++    .event = sunmouse_handle_event,
++    .sync  = sunmouse_sync,
++};
++
+ static void escc_init1(Object *obj)
+ {
+     ESCCState *s = ESCC(obj);
+@@ -1036,8 +1080,8 @@ static void escc_realize(DeviceState *dev, Error **errp)
+     }
  
-     c = fifo8_pop(&fifo);
-+    /*
-+     *    head --v]-- tail          used = 1
-+     * FIFO: { 1 2 . . . . . . }
-+     */
-     g_assert(c == 0x1);
-     c = fifo8_pop(&fifo);
-+    /*
-+     *     tail --]v-- head         used = 0
-+     * FIFO: { 1 2 . . . . . . }
-+     */
-     g_assert(c == 0x2);
- 
-     g_assert(fifo8_num_used(&fifo) == 0);
+     if (s->chn[0].type == escc_mouse) {
+-        qemu_add_mouse_event_handler(sunmouse_event, &s->chn[0], 0,
+-                                     "QEMU Sun Mouse");
++        s->chn[0].hs = qemu_input_handler_register((DeviceState *)(&s->chn[0]),
++                                                   &sunmouse_handler);
+     }
+     if (s->chn[1].type == escc_kbd) {
+         s->chn[1].hs = qemu_input_handler_register((DeviceState *)(&s->chn[1]),
 -- 
 2.45.2
 
