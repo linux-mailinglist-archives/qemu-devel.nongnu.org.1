@@ -2,136 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBEA975261
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF458975298
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:37:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMSp-0003il-6R; Wed, 11 Sep 2024 08:28:51 -0400
+	id 1soMXr-0004hG-R1; Wed, 11 Sep 2024 08:34:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1soMSg-0003K1-Tv
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:28:44 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1soMXg-00040X-W4
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:33:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1soMSd-0000Ra-Oe
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:28:41 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1soMXd-00010Z-FD
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:33:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726057717;
+ s=mimecast20190719; t=1726058028;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=hiu3ZmzuqvXv3UWpRTqWPKL3YegnPAKiiiK5QeaTY5E=;
- b=dSEPqMrVGI6BzEAbeEha9tVLmHNfpUAq65CBfOTJXVqwgpW+clTXD0W1KthevaibLwhJlL
- 9d/sNm5BYv159iPcHLvFqRPcL7wZL9y44x53m+OSlGeuRz6BLbx9XiBD1/llDWe8l2VlUo
- OsJPMOZzWktzGJFszEd+rkwcGUORe9Q=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=TxqMjBf0hhsky+HtnVAPJEta79bmURp31k7Ir/mM51U=;
+ b=TaaMP1DhQndeYPByM5wbNgwkrOerR7wPJTuCFLyOG0t2Nqe3SU26tq6J6+UORVroe3Uthn
+ iWFEBvAWlqQX17P+wgHDtPqmVjMeKriFy1fqBv/Tb0ySgFKzYRAM0Swh7WPrKnCwBXpaxx
+ Siw/MhQ/AMcQqF4fakhxCtqCxFO8Q4E=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-bjg0y6scNlurTpNWyB3OTQ-1; Wed, 11 Sep 2024 08:28:34 -0400
-X-MC-Unique: bjg0y6scNlurTpNWyB3OTQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-42cbcf60722so19313475e9.1
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:28:34 -0700 (PDT)
+ us-mta-279-r62jHO_2MI6kbdwI5Gs0eA-1; Wed, 11 Sep 2024 08:33:47 -0400
+X-MC-Unique: r62jHO_2MI6kbdwI5Gs0eA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-374c3402d93so3586025f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:33:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726057713; x=1726662513;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=hiu3ZmzuqvXv3UWpRTqWPKL3YegnPAKiiiK5QeaTY5E=;
- b=h84vWC+69keYhO9RzRRwdvFYVyTEQ5IO3AbHg6UF2+27YBuTtu05T2bbIwKGWVF53T
- Rk7tPAqBzYMNs4mHGh7SXp+H2tr37UwY5F0V9YuTlbBNziWiKw5NBKlzm4X8oVu2b34v
- XrpYFH26icxnTBJWUE8T959tLDZebzHa4eeEenVw/hBeMnMJpMRVvGpsZr/jtquLPA0f
- 3MEOZMHOim/GtJNu4VPpKBbrHiXrNJouCLAk1SUAIdw3vAhfBFGgVU4vVnjnq5XX+ApQ
- l9BDsZePkzpf/j9a2jSLZpUac+yk77VcTaQfeJEo3Fxm5XvAbeplXuNN8s0sCGW8Uy26
- PKXQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXmqQV/2okFk8Hhav/1kHanw7V7qItwv/5oqeh1dBqBnYn84RfNCyqf5kiP0Ca41X4eR0xU7//BbJmx@nongnu.org
-X-Gm-Message-State: AOJu0YwmiDgjKgqscBOJMqWndfeB4vMsACMNYwmVkn4P0Jc9UFZ5Sdr2
- Bag1L644yanGUa0IienkDW3fJ1vsm8oezT1YHfEMkQEPc5TAwkWv7hVsDPRHGvZGdBWLpDil3Tw
- FELNA8NiPNPypW9i1Rh9UFPhJtTN6Lu5gWqZAGUxK1IjrgOED4iAB0GJDgcgzHGE=
-X-Received: by 2002:a05:600c:4e08:b0:42c:b7f9:4bbd with SMTP id
- 5b1f17b1804b1-42cb7f94e5cmr77637245e9.26.1726057713164; 
- Wed, 11 Sep 2024 05:28:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEhG/u2q8GL71YU1Nmgukj8KdhMzoL+1wqzbCS3gNXIUjotn+15Rs16MiUuYcQ4Fgrj6GJGgw==
-X-Received: by 2002:a05:600c:4e08:b0:42c:b7f9:4bbd with SMTP id
- 5b1f17b1804b1-42cb7f94e5cmr77636795e9.26.1726057712191; 
- Wed, 11 Sep 2024 05:28:32 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c700:7e00:c672:608:5b3e:df8c?
- (p200300cbc7007e00c67206085b3edf8c.dip0.t-ipconnect.de.
- [2003:cb:c700:7e00:c672:608:5b3e:df8c])
+ d=1e100.net; s=20230601; t=1726058025; x=1726662825;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TxqMjBf0hhsky+HtnVAPJEta79bmURp31k7Ir/mM51U=;
+ b=AiDVK457IqxcR/D0J0UxVeqAzfAyPegk0ZYbJLy14BKggV1mkU26JVNObe3Dgd48wp
+ hR3K9wWs3gthShp85aWxJk0R/n8ZXF+Bk0VMLE6ThMKOklmzqMx7UOAJ70ZPfuZwimc9
+ PLUDDtfYotiCwtXhvdid/6sb0FQBtiyipiAkk2d2+d4akOgal5Pr2HA2I763dxgtHQ2O
+ w5678zgH9VclBpnrFfpPtM6C2SeaXw05G35tlHW8x47FFqQLaJ0si8oMNVZmiOQjTtn8
+ NkwwNCTMSLRzf5+i6xsQJWp5Etp4wZNXUU357yeu/vb/UXSu3d8Z1CvcFSfu8uRiueC/
+ GKRw==
+X-Gm-Message-State: AOJu0YxlXY5F9Z0aNql+GYaXbcASk++kFI33BtkcCibe5qd+id63b8+e
+ 4wyjirDV76FIPUM5LZW/nR/1rsq1Qnx02uYbKimVP3uJnEKUoYdBJ1DT1pakuNOZyfF1O4ZvPlR
+ SEDNScmpCe7gDhj7erNIAAS+g+9U7MtxgiI+4FgYK5nmrnNsYDu32tEyeQmrQDrPp4o1VJaGlfy
+ 38vloRmicDjiH7UwIcRDX8+TGxmgA7miHsEZCzLow=
+X-Received: by 2002:adf:ed0b:0:b0:374:c1c5:859e with SMTP id
+ ffacd0b85a97d-3788967e478mr12118189f8f.42.1726058025439; 
+ Wed, 11 Sep 2024 05:33:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMdjLBTelPMSRSvJiObwLv/V9Uv5OFv36hoJ8uZurTbWb/2JvGExnBvA/1Vr5YZTisvg/uBw==
+X-Received: by 2002:adf:ed0b:0:b0:374:c1c5:859e with SMTP id
+ ffacd0b85a97d-3788967e478mr12118169f8f.42.1726058024789; 
+ Wed, 11 Sep 2024 05:33:44 -0700 (PDT)
+Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42cb2f86488sm124584035e9.15.2024.09.11.05.28.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Sep 2024 05:28:31 -0700 (PDT)
-Message-ID: <9dc58bde-7979-4ffb-9ba7-a501d9fcc416@redhat.com>
-Date: Wed, 11 Sep 2024 14:28:30 +0200
+ 5b1f17b1804b1-42caeb21a73sm142142185e9.3.2024.09.11.05.33.44
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Sep 2024 05:33:44 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/17] Misc patches for 2024-09-11
+Date: Wed, 11 Sep 2024 14:33:25 +0200
+Message-ID: <20240911123342.339482-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 00/14] s390x: virtio-mem support
-To: Janosch Frank <frankja@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Heiko Carstens <hca@linux.ibm.com>
-References: <20240910175809.2135596-1-david@redhat.com>
- <4429b29a-a022-4507-a358-1a16b5032395@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
- 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
- rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
- wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
- 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
- pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
- KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
- BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
- 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
- 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
- M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
- Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
- T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
- 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
- CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
- NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
- 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
- 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
- lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
- AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
- N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
- AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
- boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
- 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
- XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
- a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
- Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
- 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
- kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
- th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
- jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <4429b29a-a022-4507-a358-1a16b5032395@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -156,45 +98,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11.09.24 13:49, Janosch Frank wrote:
-> On 9/10/24 7:57 PM, David Hildenbrand wrote:
->> This series introduces a new diag(500) "STORAGE LIMIT" subcode that will
->> be documented at [2] once this+kernel part go upstream.
-> 
-> Why not in Documentation/virt/kvm/s390/?
-> s390-diag.rst is very similar already.
+The following changes since commit 7b87a25f49a301d3377f3e71e0b4a62540c6f6e4:
 
-I can document it anywhere people fancy, really I don't care. But this 
-has some history. The last time we discussed it [1] there was:
+  Merge tag 'edgar/xen-queue-2024-09-04.for-upstream' of https://gitlab.com/edgar.iglesias/qemu into staging (2024-09-05 13:02:26 +0100)
 
-"Regardless what we end up with, this needs to be specified
-somewhere(tm)." from Conny
+are available in the Git repository at:
 
-"It must be well defined and easy to find also for kernel developers
-who actually have to care about memory detection code :)" from Heiko.
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-And then
+for you to fetch changes up to bcc39835be0c3dfb375172e027cb7b29d08f8abd:
 
-"the kernel's s390-diag.rst should also point to it ... Nothing as 
-complicated as an OASIS spec, but maybe a git??b project?" from Conny
+  minikconf: print error entirely on stderr (2024-09-06 10:18:29 +0200)
 
-> 
-> I'd rather have it in a shared and bigger repo than in your personal
-> gitlab one. Maybe there's a space somewhere in QEMU or the Virtio team's
-> repos that would be a good fit if the kernel's docu isn't the right place?
+----------------------------------------------------------------
+* pc: Add a description for the i8042 property
+* kvm: support for nested FRED
+* tests/unit: fix warning when compiling test-nested-aio-poll with LTO
+* kvm: refactoring of VM creation
+* target/i386: expose IBPB-BRTYPE and SBPB CPUID bits to the guest
+* hw/char: clean up serial
+* remove virtfs-proxy-helper
 
-At this point, outside of kernel/QEMU feels like the right thing to do. 
-Conny is already a co-maintainer of my "personal" (;)) gitlab.
+----------------------------------------------------------------
+Ani Sinha (5):
+      kvm/i386: make kvm_filter_msr() and related definitions private to kvm module
+      kvm/i386: fix return values of is_host_cpu_intel()
+      kvm: replace fprintf with error_report()/printf() in kvm_init()
+      kvm/i386: refactor kvm_arch_init and split it into smaller functions
+      kvm: refactor core virtual machine creation into its own function
 
+Bernhard Beschow (3):
+      hw: Remove unused inclusion of hw/char/serial.h
+      hw/char/serial.h: Extract serial-isa.h
+      hw/char: Extract serial-mm
 
-And now I realize that I CCed Heiko on the Linux series but not the QEMU 
-series. My bad.
+Fabiano Rosas (1):
+      target/i386: Expose IBPB-BRTYPE and SBPB CPUID bits to the guest
 
-[1] https://lore.kernel.org/all/20200727114819.3f816010.cohuck@redhat.com/
+Kamil Szczęk (1):
+      hw/i386/pc: Add a description for the i8042 property
 
+Lei Wang (1):
+      target/i386: Raise the highest index value used for any VMCS encoding
+
+Paolo Bonzini (4):
+      tests/unit: remove block layer code from test-nested-aio-poll
+      kvm/i386: replace identity_base variable with a constant
+      virtio-9p: remove virtfs-proxy-helper
+      minikconf: print error entirely on stderr
+
+Xin Li (Intel) (2):
+      target/i386: Delete duplicated macro definition CR4_FRED_MASK
+      target/i386: Add VMX control bits for nested FRED support
+
+ MAINTAINERS                         |    8 -
+ docs/about/deprecated.rst           |   23 -
+ docs/about/removed-features.rst     |   14 +
+ docs/conf.py                        |    3 -
+ docs/meson.build                    |    1 -
+ docs/tools/index.rst                |    1 -
+ docs/tools/virtfs-proxy-helper.rst  |   75 --
+ meson.build                         |    8 -
+ fsdev/qemu-fsdev.h                  |    1 -
+ hw/9pfs/9p-proxy.h                  |  101 ---
+ include/hw/arm/aspeed_soc.h         |    2 +-
+ include/hw/char/mchp_pfsoc_mmuart.h |    2 +-
+ include/hw/char/serial-isa.h        |   38 ++
+ include/hw/char/serial-mm.h         |   52 ++
+ include/hw/char/serial.h            |   28 -
+ target/i386/cpu.h                   |    7 +-
+ target/i386/kvm/kvm_i386.h          |   11 -
+ accel/kvm/kvm-all.c                 |  109 +--
+ fsdev/qemu-fsdev.c                  |   19 -
+ fsdev/virtfs-proxy-helper.c         | 1193 --------------------------------
+ hw/9pfs/9p-proxy.c                  | 1279 -----------------------------------
+ hw/arm/allwinner-a10.c              |    2 +-
+ hw/arm/allwinner-h3.c               |    2 +-
+ hw/arm/allwinner-r40.c              |    2 +-
+ hw/arm/aspeed_ast2400.c             |    2 +-
+ hw/arm/aspeed_soc_common.c          |    2 +-
+ hw/arm/kzm.c                        |    2 +-
+ hw/arm/msf2-soc.c                   |    2 +-
+ hw/arm/musicpal.c                   |    2 +-
+ hw/arm/npcm7xx.c                    |    2 +-
+ hw/arm/pxa2xx.c                     |    2 +-
+ hw/char/omap_uart.c                 |    2 +-
+ hw/char/riscv_htif.c                |    1 -
+ hw/char/serial-isa.c                |    1 +
+ hw/char/serial-mm.c                 |  157 +++++
+ hw/char/serial.c                    |  126 ----
+ hw/display/sm501.c                  |    2 +-
+ hw/hppa/machine.c                   |    2 +-
+ hw/i386/microvm-dt.c                |    2 +-
+ hw/i386/microvm.c                   |    2 +-
+ hw/i386/pc.c                        |    4 +-
+ hw/isa/isa-superio.c                |    2 +-
+ hw/isa/vt82c686.c                   |    2 +-
+ hw/loongarch/virt.c                 |    2 +-
+ hw/microblaze/petalogix_ml605_mmu.c |    2 +-
+ hw/mips/boston.c                    |    2 +-
+ hw/mips/jazz.c                      |    2 +-
+ hw/mips/loongson3_virt.c            |    2 +-
+ hw/mips/malta.c                     |    2 +-
+ hw/mips/mipssim.c                   |    2 +-
+ hw/openrisc/openrisc_sim.c          |    2 +-
+ hw/openrisc/virt.c                  |    2 +-
+ hw/ppc/e500.c                       |    2 +-
+ hw/ppc/pnv.c                        |    2 +-
+ hw/ppc/ppc405_uc.c                  |    2 +-
+ hw/ppc/ppc440_bamboo.c              |    2 +-
+ hw/ppc/prep.c                       |    1 -
+ hw/ppc/sam460ex.c                   |    2 +-
+ hw/ppc/virtex_ml507.c               |    2 +-
+ hw/riscv/sifive_e.c                 |    1 -
+ hw/riscv/sifive_u.c                 |    1 -
+ hw/riscv/virt.c                     |    2 +-
+ hw/sparc64/niagara.c                |    2 +-
+ hw/sparc64/sun4u.c                  |    3 +-
+ hw/xtensa/xtfpga.c                  |    2 +-
+ target/i386/cpu.c                   |    8 +-
+ target/i386/kvm/kvm.c               |  366 ++++++----
+ target/i386/kvm/vmsr_energy.c       |    2 +-
+ fsdev/meson.build                   |    8 -
+ hw/9pfs/meson.build                 |    1 -
+ hw/arm/Kconfig                      |   20 +-
+ hw/char/Kconfig                     |    4 +
+ hw/char/meson.build                 |    1 +
+ hw/display/Kconfig                  |    2 +-
+ hw/hppa/Kconfig                     |    2 +-
+ hw/loongarch/Kconfig                |    2 +-
+ hw/microblaze/Kconfig               |    2 +-
+ hw/mips/Kconfig                     |   10 +-
+ hw/openrisc/Kconfig                 |    4 +-
+ hw/ppc/Kconfig                      |   10 +-
+ hw/riscv/Kconfig                    |    2 +-
+ hw/sparc64/Kconfig                  |    1 +
+ hw/xtensa/Kconfig                   |    2 +-
+ meson_options.txt                   |    2 -
+ qemu-options.hx                     |   46 --
+ scripts/meson-buildoptions.         |    0
+ scripts/meson-buildoptions.sh       |    4 -
+ scripts/minikconf.py                |    2 +-
+ tests/unit/meson.build              |    2 +-
+ 89 files changed, 644 insertions(+), 3199 deletions(-)
+ delete mode 100644 docs/tools/virtfs-proxy-helper.rst
+ delete mode 100644 hw/9pfs/9p-proxy.h
+ create mode 100644 include/hw/char/serial-isa.h
+ create mode 100644 include/hw/char/serial-mm.h
+ delete mode 100644 fsdev/virtfs-proxy-helper.c
+ delete mode 100644 hw/9pfs/9p-proxy.c
+ create mode 100644 hw/char/serial-mm.c
+ create mode 100644 scripts/meson-buildoptions.
 -- 
-Cheers,
-
-David / dhildenb
+2.46.0
 
 
