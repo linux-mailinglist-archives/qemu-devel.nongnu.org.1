@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0FD975246
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 509EB97524A
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:32:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMKv-00089Q-Gh; Wed, 11 Sep 2024 08:20:41 -0400
+	id 1soML1-0000Ff-6B; Wed, 11 Sep 2024 08:20:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMKq-0007xV-EH
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:20:36 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMKv-0008RW-U2
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:20:42 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMKo-0007ya-Lu
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:20:36 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-42cb6f3a5bcso1259085e9.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:20:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMKu-0007z5-6h
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:20:41 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-42ca6ba750eso5402905e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:20:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726057233; x=1726662033; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726057238; x=1726662038; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o+JN/C2X36G3NaCEpwwdK6lpAZCWVIpHedYNQuIYeRc=;
- b=vH01775qbAoJQyzrg+fm5w0Xq19piPY8XC0DLg/8iav/ewhjs8ypjmQGQSEJTq+Eq8
- /wFr/qp9mkoGz9q+JJ4CUnBBvk+MYecIK7qyqJ9318j2uNPT8zydbr3LTkT3h/ivXT/Z
- Vi15fb6sXyNh7M62M2Yt9d5ElIJCbwi+qhLU2wL0ZYpCFZCg5xe6wLICiAt7T9Vfb2z9
- IKUmK0EzL8Dz8CFbYacK7ntuQbakQDRWRzHz3fRovxWVCQZL1MqrrksiyduEHvU3E/J3
- +dqRmlYB7FLqg1xOZa1i+UT/mMh8so8t4cXmmPhLYxsod3iQRrSlfT5ZTi30FxJe0VDQ
- bVYA==
+ bh=GfEvkwnEEFGS6Fqt0EDQ+b0+iYRPDGyqpn6F5IpXr00=;
+ b=hYpHYjuck/nEUKOYtEN/6CacPosDq5vpZlEjr6YczhrsocHGyG2/haq6eR6KUhMlb7
+ RdfJDPkcD+pSTZcXuEKKKpriBWgtPkH56Y1p2CSd2HcccL68gfgonwh0kY0mMYng8znu
+ vsdZnS+WbrbKCcLQjo9vDAH1NFs6U53XHzjAikCUtB0A9GP5Odw9MmXJcjzNTvB4put3
+ Lkzhs6+j/73LXzp9bnle7+0A0YbDtJ+JuhW/TDSDyjl0McL+0Ur0MNUvSc6+8qrWAY8S
+ d2u6VfVtjIOZ8wG44+hf3FSL+3hf0/Ouep269JV0RXMh96tvgRrGIIR9tnPeEV89YJ/Q
+ lflg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726057233; x=1726662033;
+ d=1e100.net; s=20230601; t=1726057238; x=1726662038;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o+JN/C2X36G3NaCEpwwdK6lpAZCWVIpHedYNQuIYeRc=;
- b=rhBf9Kw7gHi89Wz0UKWEgwanxZ7YSlGmA27RI0Ic9fwlha74xp+0bT+Z3XthfCtn5r
- RpuvMLf2jcib0imRei4BzWJoHxv1mqr287Dn0RIyq2k9vWRAUzkFW6o5N8eL7r6uHNkh
- rB18P8wMS3lyQAHXr3FTmeCqOQRpon3UdJF8WtPJS2kDGsvdArwZZQQPZNQEHmhWSoLU
- yHEogF06YBSeU34LbH/QuO/F+nEj5Z9uiPIVbR/ZFLCa2NAAE+Fsb7hCC198VN71VGoW
- eprTlhLnuwe+Se2JOtyGVGOHbYzPA2/DgF1IFej+eZcg0Hzhd9AhYjQC+eQYxPRPBbtg
- +0Bg==
-X-Gm-Message-State: AOJu0Ywt48d8PgO8H+0AzotIlp3hmsOBAEuQoXGWVa60mg3g6ZcIiDGP
- 6ku6IrpPjPGMsHf0KSIBBGEin8qboKoVr2LEPfzLkauX5wS2dioy59m3a5BCRWBdnhTDYrXbtQp
- v
-X-Google-Smtp-Source: AGHT+IEsHm6k0wHQzFIjrIhS7ROfNn4bzBH2DHWc7ffWYTzroXlzFEoug0UgZvcgC0Cmaaideqo1wA==
-X-Received: by 2002:adf:fcca:0:b0:374:c90e:990c with SMTP id
- ffacd0b85a97d-378922b7aefmr11604959f8f.33.1726057232798; 
- Wed, 11 Sep 2024 05:20:32 -0700 (PDT)
+ bh=GfEvkwnEEFGS6Fqt0EDQ+b0+iYRPDGyqpn6F5IpXr00=;
+ b=q0Bz4MXtUmEKRdDtp/GQMUiiJ/I0HXdVjxOXG/KYzOzEm58VR4gOYjJQSRSPsv68zO
+ UuXw118XttPM0PPRUSciFBS4+6UirR+9IMgccj5a28jSkOfboWrQeQ8LCV6DO62Nhbdt
+ A3SIf5ZHpp7yH8xTp4LxjCYc0iuPYK4AacM64JBBqBR2FpOzJ2facdUfbvmb/V9fLFVp
+ X+hvfUbYizYYvpgFIGEegmt+mih8W2G9JHBU8Q4C3epqJNNeQ3A//1uEZmSt1TLv+P/N
+ qAsqYQARGxgaANZhvuXjgDm0TuuxejkD1gYRwXWDizA7Orf0zIfK8s5crhHWdWpEBerE
+ YsIw==
+X-Gm-Message-State: AOJu0YwimChL402Oj/ThYt+syPkO49WXzvXTev+bdlgv0WDpVo/TLCl7
+ t4NqraELR0mkIS7zMIW88mjQqxmQext1hp2B7QAfRzPL/s0RZ5yrvDjJVIlZZt9QXwYi8OLRINS
+ A
+X-Google-Smtp-Source: AGHT+IFkF2GBTGlu4z0kQGqgN7aJaOVMI0P+pTkgSdGzuGeb811S1OLq0vTyy4V1ZRNWvyna1+Toog==
+X-Received: by 2002:a05:600c:4fc8:b0:42c:bd4d:e8d6 with SMTP id
+ 5b1f17b1804b1-42cbddbd72bmr37897835e9.3.1726057238429; 
+ Wed, 11 Sep 2024 05:20:38 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37895675cb5sm11487134f8f.53.2024.09.11.05.20.31
+ 5b1f17b1804b1-42ca3a3cc31sm166500105e9.24.2024.09.11.05.20.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:20:32 -0700 (PDT)
+ Wed, 11 Sep 2024 05:20:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 55/56] ui/sdl2: set swap interval explicitly when OpenGL is
- enabled
-Date: Wed, 11 Sep 2024 14:14:20 +0200
-Message-ID: <20240911121422.52585-56-philmd@linaro.org>
+Subject: [PULL 56/56] ui: remove break after g_assert_not_reached()
+Date: Wed, 11 Sep 2024 14:14:21 +0200
+Message-ID: <20240911121422.52585-57-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
 References: <20240911121422.52585-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,43 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gert Wollny <gert.wollny@collabora.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Before 176e3783f2ab (ui/sdl2: OpenGL window context)
-SDL_CreateRenderer was called unconditionally setting
-the swap interval to 0. Since SDL_CreateRenderer is now no
-longer called when OpenGL is enabled, the swap interval is
-no longer set explicitly and vsync handling depends on
-the environment settings which may lead to a performance
-regression with virgl as reported in
-   https://gitlab.com/qemu-project/qemu/-/issues/2565
-
-Restore the old vsync handling by explicitly calling
-SDL_GL_SetSwapInterval if OpenGL is enabled.
-
-Fixes: 176e3783f2ab (ui/sdl2: OpenGL window context)
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/2565
-
-Signed-off-by: Gert Wollny <gert.wollny@collabora.com>
-Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <01020191e05ce6df-84da6386-62c2-4ce8-840e-ad216ac253dd-000000@eu-west-1.amazonses.com>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240910221606.1817478-37-pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- ui/sdl2.c | 1 +
- 1 file changed, 1 insertion(+)
+ ui/qemu-pixman.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/ui/sdl2.c b/ui/sdl2.c
-index 574a22306d..51b7aa82ea 100644
---- a/ui/sdl2.c
-+++ b/ui/sdl2.c
-@@ -115,6 +115,7 @@ void sdl2_window_create(struct sdl2_console *scon)
-         SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index 5ca55dd199..6cada8b45e 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -49,7 +49,6 @@ PixelFormat qemu_pixelformat_from_pixman(pixman_format_code_t format)
+         break;
+     default:
+         g_assert_not_reached();
+-        break;
+     }
  
-         scon->winctx = SDL_GL_CreateContext(scon->real_window);
-+        SDL_GL_SetSwapInterval(0);
-     } else {
-         /* The SDL renderer is only used by sdl2-2D, when OpenGL is disabled */
-         scon->real_renderer = SDL_CreateRenderer(scon->real_window, -1, 0);
+     pf.amax = (1 << pf.abits) - 1;
 -- 
 2.45.2
 
