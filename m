@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87654975658
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F729756E7
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:22:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOnT-0003ig-T8; Wed, 11 Sep 2024 10:58:20 -0400
+	id 1soOnw-00066F-Ep; Wed, 11 Sep 2024 10:58:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhk-00078a-Ib
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhn-0007Kz-Sc
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOha-0007Dt-Sd
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:20 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1soOhi-0007EO-4A
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 10:52:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726066332;
+ s=mimecast20190719; t=1726066336;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bY3kFhk2MQOhFrrXbGMngbSdwByo8f4uY8jy3ERVqew=;
- b=cZOl26mRMJ/eJnI/OdKQr8YFGRU5qnjDxfcT+ogVKaP8n49g7KY87qHCPmX1xUdZg/qZoq
- VB8Gx1bLhFl+p9sDGumKJIKmNkyd3QRi25OH7t0crXllFyWV11ZsMWjwpPOE80iDTFDPUH
- jG58bJvR4W5yoJk61kKdEm9S9dvVuBY=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3Zv+AcVES8CQaHrznfI8esSyWVUaPQBotZar40Wzxw0=;
+ b=K5Xwx0VyTDzfewXyWrnj+5dPpjk0I8w65d4moWpE3UW8Vz31QxrxdfNGzdKege/393IQ/7
+ K9Apx9h/+VKfyzRNioBd48LJShneBouA2jSiznmD4EXsUYV+KZyaKFNINtkrTVPFKVNG/S
+ LEGcb61N6B8hCoIuzfNFNkfsLoAJaNk=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-0xm-B_Y7OL--D-ct_F0bXg-1; Wed, 11 Sep 2024 09:51:54 -0400
-X-MC-Unique: 0xm-B_Y7OL--D-ct_F0bXg-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5c3c256e2a3so5362058a12.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:51:53 -0700 (PDT)
+ us-mta-617-L2d2ENr7OYmhmroUZu_fjw-1; Wed, 11 Sep 2024 09:51:56 -0400
+X-MC-Unique: L2d2ENr7OYmhmroUZu_fjw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a868b6d6882so96312266b.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 06:51:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726062712; x=1726667512;
+ d=1e100.net; s=20230601; t=1726062715; x=1726667515;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bY3kFhk2MQOhFrrXbGMngbSdwByo8f4uY8jy3ERVqew=;
- b=LV4wkkVSb0zFluHNAqdsKi+C20owZuNSPTNQ1lOwXzxIIoW5kwuziqf5bePiK7j2Kq
- 5GgzQZr4zQxqqa4d6HSayU5DWWb0l8x15lVW1CvBDw4VZHrBv1ZI2OrIh1CZlLDkc3Q7
- EICB+PzkrLt0LN0H9ggOo4zgVX50sfZddV1KHXQkXdkF2vNG8kG2PMM74sP3SU5Nwyum
- 26Uye73rt50oEXxdYdKlfJ9oY+mxfMKyBaKa05s6JtDfnr7+9WpiGMuDifPCZdQIZP0g
- sZldntAq431+uDy8+EMvvmbBpOFMxdL817fyHPoqns22958EPmltWF+L4gAEmu1puCsS
- zhQA==
-X-Gm-Message-State: AOJu0Yxi5QIl4oHEYG4SYqUBCRopbPgbqADNUlCjVDSvjNkwn3kzSzcy
- Nm7ssSuFdO7finMvAI6TEhvs3ck4R5o2RiGokLDQhDpizwnt50nL5hzh5+mOoJHG39lh1nXvuTY
- 2MAJTcqU1eWOcz5M38mZv8GDLAs79/98chx5q3IitlHiNTJdzDyjoho/u+HE3txKwb+K/dUPqwN
- djPBW7UYROUSAiDwBJjHmKwT2dKgS1KQ==
-X-Received: by 2002:a17:906:d54b:b0:a8c:d6a3:d03a with SMTP id
- a640c23a62f3a-a8ffab18781mr379087666b.21.1726062712056; 
- Wed, 11 Sep 2024 06:51:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEdUTOIul3p3RXD60SbSrV4T0ZNZ8f38tSJB3JJikoRHl9kx7775iRWvtWUySz6TnMaK7nc1Q==
-X-Received: by 2002:a17:906:d54b:b0:a8c:d6a3:d03a with SMTP id
- a640c23a62f3a-a8ffab18781mr379083266b.21.1726062711359; 
- Wed, 11 Sep 2024 06:51:51 -0700 (PDT)
+ bh=3Zv+AcVES8CQaHrznfI8esSyWVUaPQBotZar40Wzxw0=;
+ b=xQfMshW0+XC+exFHH4UuMgmDJ1G+xZUNj6iTKHFK2AM5GNMV4g/B00mPma9GeXLZkx
+ yW/1xaYkXKO3kMOjZ4cYkUb+YLM8oUNek54LyhVGnrTO9rRu9tkY/22PR1tBTvv3TZO8
+ wLYs/fr/0usNEHx8MjO+ovIapVSkdRqehlO4nVGy/rnX09UIWEEA0YqfJ74ILmEXUwm9
+ GEGRt913ZNjyq5CP6KRIDQobo/mbZW4/HeGyML7Psb0LJUMc4PgtF0EedJKyUJFzcEGc
+ 4r/0BETJ7fs42B/lFCWcUNG2grQHAHHF/zNPppL0lhx6y/J/PQoBe4F6Pt1NhAW/iOzx
+ DpGA==
+X-Gm-Message-State: AOJu0Yysixc2YAmn+DPr6VPnLldPG5qTpwJMNmsG44w8ezxZb2y6zP67
+ OVDioBr3Bz6y/PSunsl7rwqflAv4Gblvm+npn8/84gFDd1wKx7BQmWLQdmyJjgp3Xdy3nJNfirc
+ g39lZsPTJUUe5ld2jyf7cNyBkmMbaPjZEQBnmAVjKQklhaVRswphv1g0YwqfNcN+sxa2lZs1n1O
+ phVxwYx7HUg7A8wBI705KfT8GRvUZI1w==
+X-Received: by 2002:a17:907:7f16:b0:a8a:6db7:6659 with SMTP id
+ a640c23a62f3a-a8ffab6cbbfmr442551866b.9.1726062715335; 
+ Wed, 11 Sep 2024 06:51:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEQ563Z43scq9UThhGmH4KPDKOFBk+Lb1vsH7g6KkuYMmRsuy+k/OUdBc9E6TCx/appZJrk3Q==
+X-Received: by 2002:a17:907:7f16:b0:a8a:6db7:6659 with SMTP id
+ a640c23a62f3a-a8ffab6cbbfmr442545666b.9.1726062714737; 
+ Wed, 11 Sep 2024 06:51:54 -0700 (PDT)
 Received: from redhat.com ([2.55.9.133]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d258354d1sm620068366b.13.2024.09.11.06.51.49
+ a640c23a62f3a-a8d25c82eaesm619003566b.118.2024.09.11.06.51.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 06:51:50 -0700 (PDT)
-Date: Wed, 11 Sep 2024 09:51:48 -0400
+ Wed, 11 Sep 2024 06:51:54 -0700 (PDT)
+Date: Wed, 11 Sep 2024 09:51:51 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, Yi Liu <yi.l.liu@intel.com>,
  =?utf-8?Q?Cl=C3=A9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- Yi Liu <yi.l.liu@intel.com>, Jason Wang <jasowang@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 08/18] intel_iommu: Fix invalidation descriptor type field
-Message-ID: <663168943d3db6d9b51d3dfa0998848a6e6eda71.1726062663.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 09/18] intel_iommu: Make PASID-cache and PIOTLB type invalid
+ in legacy mode
+Message-ID: <3b52cea829d873706ff86913ae99b4bd621c20e6.1726062663.git.mst@redhat.com>
 References: <cover.1726062663.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -82,7 +82,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1726062663.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -109,91 +109,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-According to spec, invalidation descriptor type is 7bits which is
-concatenation of bits[11:9] and bits[3:0] of invalidation descriptor.
+In vtd_process_inv_desc(), VTD_INV_DESC_PC and VTD_INV_DESC_PIOTLB are
+bypassed without scalable mode check. These two types are not valid
+in legacy mode and we should report error.
 
-Currently we only pick bits[3:0] as the invalidation type and treat
-bits[11:9] as reserved zero. This is not a problem for now as bits[11:9]
-is zero for all current invalidation types. But it will break if newer
-type occupies bits[11:9].
-
-Fix it by taking bits[11:9] into type and make reserved bits check accurate.
-
-Suggested-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
+Fixes: 4a4f219e8a10 ("intel_iommu: add scalable-mode option to make scalable mode work")
+Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
-Message-Id: <20240814071321.2621384-2-zhenzhong.duan@intel.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Message-Id: <20240814071321.2621384-3-zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu_internal.h | 11 ++++++-----
- hw/i386/intel_iommu.c          |  2 +-
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ hw/i386/intel_iommu.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index 5f32c36943..13d5d129ae 100644
---- a/hw/i386/intel_iommu_internal.h
-+++ b/hw/i386/intel_iommu_internal.h
-@@ -356,7 +356,8 @@ union VTDInvDesc {
- typedef union VTDInvDesc VTDInvDesc;
- 
- /* Masks for struct VTDInvDesc */
--#define VTD_INV_DESC_TYPE               0xf
-+#define VTD_INV_DESC_TYPE(val)          ((((val) >> 5) & 0x70ULL) | \
-+                                         ((val) & 0xfULL))
- #define VTD_INV_DESC_CC                 0x1 /* Context-cache Invalidate Desc */
- #define VTD_INV_DESC_IOTLB              0x2
- #define VTD_INV_DESC_DEVICE             0x3
-@@ -372,7 +373,7 @@ typedef union VTDInvDesc VTDInvDesc;
- #define VTD_INV_DESC_WAIT_IF            (1ULL << 4)
- #define VTD_INV_DESC_WAIT_FN            (1ULL << 6)
- #define VTD_INV_DESC_WAIT_DATA_SHIFT    32
--#define VTD_INV_DESC_WAIT_RSVD_LO       0Xffffff80ULL
-+#define VTD_INV_DESC_WAIT_RSVD_LO       0Xfffff180ULL
- #define VTD_INV_DESC_WAIT_RSVD_HI       3ULL
- 
- /* Masks for Context-cache Invalidation Descriptor */
-@@ -383,7 +384,7 @@ typedef union VTDInvDesc VTDInvDesc;
- #define VTD_INV_DESC_CC_DID(val)        (((val) >> 16) & VTD_DOMAIN_ID_MASK)
- #define VTD_INV_DESC_CC_SID(val)        (((val) >> 32) & 0xffffUL)
- #define VTD_INV_DESC_CC_FM(val)         (((val) >> 48) & 3UL)
--#define VTD_INV_DESC_CC_RSVD            0xfffc00000000ffc0ULL
-+#define VTD_INV_DESC_CC_RSVD            0xfffc00000000f1c0ULL
- 
- /* Masks for IOTLB Invalidate Descriptor */
- #define VTD_INV_DESC_IOTLB_G            (3ULL << 4)
-@@ -393,7 +394,7 @@ typedef union VTDInvDesc VTDInvDesc;
- #define VTD_INV_DESC_IOTLB_DID(val)     (((val) >> 16) & VTD_DOMAIN_ID_MASK)
- #define VTD_INV_DESC_IOTLB_ADDR(val)    ((val) & ~0xfffULL)
- #define VTD_INV_DESC_IOTLB_AM(val)      ((val) & 0x3fULL)
--#define VTD_INV_DESC_IOTLB_RSVD_LO      0xffffffff0000ff00ULL
-+#define VTD_INV_DESC_IOTLB_RSVD_LO      0xffffffff0000f100ULL
- #define VTD_INV_DESC_IOTLB_RSVD_HI      0xf80ULL
- #define VTD_INV_DESC_IOTLB_PASID_PASID  (2ULL << 4)
- #define VTD_INV_DESC_IOTLB_PASID_PAGE   (3ULL << 4)
-@@ -406,7 +407,7 @@ typedef union VTDInvDesc VTDInvDesc;
- #define VTD_INV_DESC_DEVICE_IOTLB_SIZE(val) ((val) & 0x1)
- #define VTD_INV_DESC_DEVICE_IOTLB_SID(val) (((val) >> 32) & 0xFFFFULL)
- #define VTD_INV_DESC_DEVICE_IOTLB_RSVD_HI 0xffeULL
--#define VTD_INV_DESC_DEVICE_IOTLB_RSVD_LO 0xffff0000ffe0fff8
-+#define VTD_INV_DESC_DEVICE_IOTLB_RSVD_LO 0xffff0000ffe0f1f0
- 
- /* Rsvd field masks for spte */
- #define VTD_SPTE_SNP 0x800ULL
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 16d2885fcc..68cb72a481 100644
+index 68cb72a481..90cd4e5044 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -2744,7 +2744,7 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
-         return false;
-     }
+@@ -2763,17 +2763,6 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
+         }
+         break;
  
--    desc_type = inv_desc.lo & VTD_INV_DESC_TYPE;
-+    desc_type = VTD_INV_DESC_TYPE(inv_desc.lo);
-     /* FIXME: should update at first or at last? */
-     s->iq_last_desc_type = desc_type;
+-    /*
+-     * TODO: the entity of below two cases will be implemented in future series.
+-     * To make guest (which integrates scalable mode support patch set in
+-     * iommu driver) work, just return true is enough so far.
+-     */
+-    case VTD_INV_DESC_PC:
+-        break;
+-
+-    case VTD_INV_DESC_PIOTLB:
+-        break;
+-
+     case VTD_INV_DESC_WAIT:
+         trace_vtd_inv_desc("wait", inv_desc.hi, inv_desc.lo);
+         if (!vtd_process_wait_desc(s, &inv_desc)) {
+@@ -2795,6 +2784,17 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
+         }
+         break;
  
++    /*
++     * TODO: the entity of below two cases will be implemented in future series.
++     * To make guest (which integrates scalable mode support patch set in
++     * iommu driver) work, just return true is enough so far.
++     */
++    case VTD_INV_DESC_PC:
++    case VTD_INV_DESC_PIOTLB:
++        if (s->scalable_mode) {
++            break;
++        }
++    /* fallthrough */
+     default:
+         error_report_once("%s: invalid inv desc: hi=%"PRIx64", lo=%"PRIx64
+                           " (unknown type)", __func__, inv_desc.hi,
 -- 
 MST
 
