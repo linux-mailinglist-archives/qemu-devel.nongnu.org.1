@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16AE69751B1
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AF09751AE
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:15:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMF9-0004dP-Gg; Wed, 11 Sep 2024 08:14:43 -0400
+	id 1soMFI-000512-M1; Wed, 11 Sep 2024 08:14:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMF7-0004X7-3u
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:14:41 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMFB-0004ky-0A
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:14:45 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMF4-00078W-Hd
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:14:40 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-5365b71a6bdso6358587e87.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:14:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMF9-00079X-9r
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:14:44 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-5365b6bd901so6074774e87.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:14:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726056875; x=1726661675; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726056881; x=1726661681; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sgquy8ayg0+igtRVZU2VaE9+ZLSxvBTEk0PAs5rrZzA=;
- b=uOBY/Teb7XBTmHItkoSmj03jQ+zpdy27ycqOutnMwZacq+RN8DkfiEDyx2YnNTeTTx
- 3Rq5yysMWCRrDWvPwpq6Y5yARoJvMJatc6SaZkA+SSLSURUMUaSZAVgOP8ZX+K+NkLAB
- cqLPwNhuUTAo1Wrgpp7N+kTXBmqLE6IPm1d2KuJWG9i/i2pv4vnP5NUzmdO2CG6gAI59
- BDgDakgKdPtMqKbw01vUrwBAzrOvMYyY07MMaQFps38p6bJjH5F1aXChUbD3oxt11U3Y
- ZLu0MnggkiS2d5INyqGHfNSF6cSbTD7wwvMM9E5cR4d/ofd9SGoAWfByF72USnhr2wDd
- RQaA==
+ bh=l5xvJFVBKMvbpa6Bm2hjf4HSkH6PCdIPkm949TYXsgc=;
+ b=WLUN4V16Qd4ViDhOWGHZ6l92XH1kvxbSkfLple7g/EDomlwl2ZmALh1bFDTvThLwgE
+ JrDd9vPZfLTbgYZj0Em1CfWOxyKoeHwGzX4BEEQ87Et69GITUNaEMWtqYJbQGMBxzZT4
+ ucGIVVtsCCTaXAQdrm9b1ODB4Wuk6kxfg/tRmN61RQy19LxTLQAI5pxc2NYPbys3lIHR
+ OSvHiG45aP76a8ug/V1HG0oAGl3eCuQzDLJ65VvlS4OvRpHl4C6C3S+wU1quL2My1clk
+ BHb7cCG7ccUkgVeOucmeJJkkWBdocCYwCbeIsBVVNDHOK0kEOVAn7rgm/c6YngaECzwv
+ Fdfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726056875; x=1726661675;
+ d=1e100.net; s=20230601; t=1726056881; x=1726661681;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sgquy8ayg0+igtRVZU2VaE9+ZLSxvBTEk0PAs5rrZzA=;
- b=nNRg42Q2G7ex0yaPaI1U3tzbK8qxXkYpyHUG+QBgj6lZWbqMsFKgTsP4XWbpsVMTjP
- M4xAp51j/nuzVF2SCZyPhOMBc5Se/4kQIdpWmPOR0k24Q2/yUqon32KHbyMnLKje7r2U
- qR3l/+1p1Sm8uUjIP/U3P1ZrZlnJ0Xrt7wNWA/Uuf+9+2nV+iAsybbZGjZONGLmjC/1w
- OBeNaisSeT1dl919MzqFrMVn8O2CEMJVuyO2MuDYjR4CmLWZGdY4YOyGUEz5rMDDqgO2
- t60Xs/i087JDdIzfOzjnDaxahlOy+uMXcofOtPVA1dCRTicY0INUi6sinB2Cfs1NpNlt
- JVSw==
-X-Gm-Message-State: AOJu0YyDnhZFQwNtlCJF4tXSc735G0tkxRC7wDXblguoZzZFClSisKkb
- 7qq/rP2xaVpfxegTQcpbmp+gMky82neApIuMLA+nw8c7rkg8QJ3IjRNHEDafWNtHTJ9lFE5GnB1
- F
-X-Google-Smtp-Source: AGHT+IH88y5IMaEvpHRgxGmgDT5hZObOQ+0YO+oXL9yXtau6bFvZLtQrk3lXKNGGHKKVuuFEFS9U/Q==
-X-Received: by 2002:a05:6512:2215:b0:534:5453:ecda with SMTP id
- 2adb3069b0e04-536587ae6c8mr11545244e87.23.1726056874706; 
- Wed, 11 Sep 2024 05:14:34 -0700 (PDT)
+ bh=l5xvJFVBKMvbpa6Bm2hjf4HSkH6PCdIPkm949TYXsgc=;
+ b=bQegbZ2279hfLAD99kVogQM82CoOI/0I0xCauNzF9/KH+XRN0MRha0hKdP8SteHQRw
+ /0FA7PeYzebjNnBKQivIhNOgqv6xO1MxycD/zF21vxQjsFovJK5SqbSJA5QMm/TfIDKB
+ 1wJIiH8mVmYmixw/1ljSESBUmZKx32xh2bl7qC/aMvt3hKH8HxG3SvvQRRYfpcAjrxde
+ dh/jMgf1X0BcWzzWpOBrsi2Op29i4vI/xBI6LCvskLGvkMknkvNy3nOJYUUv8i9aQZ/2
+ mPDRaBvVSvSOWlPT2CBG6zEF8PrRutck5y6o0uzBah9Qo0O3u7IazEkIDSGsnucyIzaF
+ 5znQ==
+X-Gm-Message-State: AOJu0YwPZ8dWtQVUg0iKid8+Qc9LKWSf1QtotnJDLj+QDklyxtosAMt/
+ VurEwK9+zpg3xjaM27an70GeGqIBULYU0o/4IC3RNqf5vmzNMOHudIQPbRj7GcqNcf6a4vdQp+O
+ u
+X-Google-Smtp-Source: AGHT+IHkpOfAS8u5OKPiEwoGL9JPx1etr54IbWhS+ZkiktgkVMP/D1KeIv4b31EoSyMVA86RU0PKSQ==
+X-Received: by 2002:a05:6512:3989:b0:52c:d6a1:5734 with SMTP id
+ 2adb3069b0e04-536587b2bf7mr11723296e87.14.1726056880912; 
+ Wed, 11 Sep 2024 05:14:40 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25c72861sm605974066b.105.2024.09.11.05.14.33
+ a640c23a62f3a-a8d25d657fesm610095966b.221.2024.09.11.05.14.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:14:34 -0700 (PDT)
+ Wed, 11 Sep 2024 05:14:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PULL 01/56] hw/pci-host/designware: Declare CPU QOM types using
- DEFINE_TYPES() macro
-Date: Wed, 11 Sep 2024 14:13:26 +0200
-Message-ID: <20240911121422.52585-2-philmd@linaro.org>
+Subject: [PULL 02/56] hw/pci-host/designware: Add 'host_mem' variable for
+ clarity
+Date: Wed, 11 Sep 2024 14:13:27 +0200
+Message-ID: <20240911121422.52585-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
 References: <20240911121422.52585-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,85 +94,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When multiple QOM types are registered in the same file,
-it is simpler to use the the DEFINE_TYPES() macro. In
-particular because type array declared with such macro
-are easier to review.
-
-Remove a pointless structure declaration in "designware.h".
+designware_pcie_root_realize() uses get_system_memory()
+as the "host side memory region", as opposed to the "PCI
+side" one. Introduce the 'host_mem' variable for clarity.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-Message-Id: <20231012121857.31873-2-philmd@linaro.org>
+Message-Id: <20231012121857.31873-4-philmd@linaro.org>
 ---
- include/hw/pci-host/designware.h |  2 --
- hw/pci-host/designware.c         | 39 ++++++++++++++------------------
- 2 files changed, 17 insertions(+), 24 deletions(-)
+ hw/pci-host/designware.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/pci-host/designware.h b/include/hw/pci-host/designware.h
-index 908f3d946b..c484e377a8 100644
---- a/include/hw/pci-host/designware.h
-+++ b/include/hw/pci-host/designware.h
-@@ -31,8 +31,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIEHost, DESIGNWARE_PCIE_HOST)
- #define TYPE_DESIGNWARE_PCIE_ROOT "designware-pcie-root"
- OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIERoot, DESIGNWARE_PCIE_ROOT)
- 
--struct DesignwarePCIERoot;
--
- typedef struct DesignwarePCIEViewport {
-     DesignwarePCIERoot *root;
- 
 diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index c25d50f1c6..c8ec5e8ba9 100644
+index c8ec5e8ba9..5d0f2ad703 100644
 --- a/hw/pci-host/designware.c
 +++ b/hw/pci-host/designware.c
-@@ -752,28 +752,23 @@ static void designware_pcie_host_init(Object *obj)
-     qdev_prop_set_bit(DEVICE(root), "multifunction", false);
- }
+@@ -395,6 +395,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+ {
+     DesignwarePCIERoot *root = DESIGNWARE_PCIE_ROOT(dev);
+     DesignwarePCIEHost *host = designware_pcie_root_to_host(root);
++    MemoryRegion *host_mem = get_system_memory();
+     MemoryRegion *address_space = &host->pci.memory;
+     PCIBridge *br = PCI_BRIDGE(dev);
+     DesignwarePCIEViewport *viewport;
+@@ -435,7 +436,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+         viewport->cr[0]   = DESIGNWARE_PCIE_ATU_TYPE_MEM;
  
--static const TypeInfo designware_pcie_root_info = {
--    .name = TYPE_DESIGNWARE_PCIE_ROOT,
--    .parent = TYPE_PCI_BRIDGE,
--    .instance_size = sizeof(DesignwarePCIERoot),
--    .class_init = designware_pcie_root_class_init,
--    .interfaces = (InterfaceInfo[]) {
--        { INTERFACE_PCIE_DEVICE },
--        { }
-+static const TypeInfo designware_pcie_types[] = {
-+    {
-+        .name           = TYPE_DESIGNWARE_PCIE_HOST,
-+        .parent         = TYPE_PCI_HOST_BRIDGE,
-+        .instance_size  = sizeof(DesignwarePCIEHost),
-+        .instance_init  = designware_pcie_host_init,
-+        .class_init     = designware_pcie_host_class_init,
-+    }, {
-+        .name           = TYPE_DESIGNWARE_PCIE_ROOT,
-+        .parent         = TYPE_PCI_BRIDGE,
-+        .instance_size  = sizeof(DesignwarePCIERoot),
-+        .class_init     = designware_pcie_root_class_init,
-+        .interfaces     = (InterfaceInfo[]) {
-+            { INTERFACE_PCIE_DEVICE },
-+            { }
-+        },
-     },
- };
+         source      = &host->pci.address_space_root;
+-        destination = get_system_memory();
++        destination = host_mem;
+         direction   = "Inbound";
  
--static const TypeInfo designware_pcie_host_info = {
--    .name       = TYPE_DESIGNWARE_PCIE_HOST,
--    .parent     = TYPE_PCI_HOST_BRIDGE,
--    .instance_size = sizeof(DesignwarePCIEHost),
--    .instance_init = designware_pcie_host_init,
--    .class_init = designware_pcie_host_class_init,
--};
--
--static void designware_pcie_register(void)
--{
--    type_register_static(&designware_pcie_root_info);
--    type_register_static(&designware_pcie_host_info);
--}
--type_init(designware_pcie_register)
-+DEFINE_TYPES(designware_pcie_types)
+         /*
+@@ -460,7 +461,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+ 
+         destination = &host->pci.memory;
+         direction   = "Outbound";
+-        source      = get_system_memory();
++        source      = host_mem;
+ 
+         /*
+          * Configure MemoryRegion implementing CPU -> PCI memory
 -- 
 2.45.2
 
