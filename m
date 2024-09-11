@@ -2,111 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60EA974E70
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 11:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EEF0974EBA
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 11:37:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soJZd-0003vj-KB; Wed, 11 Sep 2024 05:23:41 -0400
+	id 1soJkO-00016d-Gw; Wed, 11 Sep 2024 05:34:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lwhsu@freebsd.org>) id 1soJZb-0003u4-M9
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 05:23:39 -0400
-Received: from mx2.freebsd.org ([96.47.72.81])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1soJkH-00011Q-GZ
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 05:34:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lwhsu@freebsd.org>) id 1soJZX-0004T9-QC
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 05:23:38 -0400
-Received: from mx1.freebsd.org (mx1.freebsd.org [96.47.72.80])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits)
- client-signature RSA-PSS (4096 bits))
- (Client CN "mx1.freebsd.org", Issuer "R10" (verified OK))
- by mx2.freebsd.org (Postfix) with ESMTPS id 4X3Zr40YQZz3hCW
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 09:23:32 +0000 (UTC)
- (envelope-from lwhsu@freebsd.org)
-Received: from smtp.freebsd.org (smtp.freebsd.org
- [IPv6:2610:1c1:1:606c::24b:4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
- client-signature RSA-PSS (4096 bits) client-digest SHA256)
- (Client CN "smtp.freebsd.org", Issuer "R10" (verified OK))
- by mx1.freebsd.org (Postfix) with ESMTPS id 4X3Zr34Xk8z4Fw6
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 09:23:31 +0000 (UTC)
- (envelope-from lwhsu@freebsd.org)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org; s=dkim;
- t=1726046611;
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1soJkE-0005U9-CQ
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 05:34:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1726047276;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=a6Wrw4m2ESemBFZ6jibwr1pn+SIAwSUGgu6UdJWaoMY=;
- b=v1sRG0xuPe1JWQK/2h/BFsN8N/ZDwBlWYgyB84n5fkjto3unbq9LqjtuVVxyJjlQtmGorU
- uX5Q7c1qBhZoaJA+deM6D3/Ss3vmCpYN6hSjyOjX7r36Oa2JR7VeXFb9XjsouR37j8d5mo
- lMzR2eVjjdd2RqWdpKNpwDFLnxScZ1BIGOrw/lb0gNpox8pHCmAufOa6isWF+AsMYTymXW
- +T3pgZu5YSsvZJSx4y+X3OErDRMqEjvaYAcTPm3boimKl3bdkUzW5nAke3J5C5FHBAGr4E
- Xpz9IfOfdrT6R5azInaEVYC5zymzRd/zN51ysIcoNiarotVDlx0pdkrErA5Uzg==
-ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1726046611; a=rsa-sha256; cv=none;
- b=FwC4xEKp6HNYJCPM+WZyzELq/x9FaNaUFzQnmfpNcXUo1TRB7PP+JiQ/ran/LEykBTgkOa
- pR1XPdNgH24FpBbr7V7szeaqoYoSDAs244NgJltfFgxqtx7x+8JXUQnofyCzOjmeb3Bo4M
- OhxkXwF4htGf7kfhEvmqStp7ELBzK7+RTGPZSQRap+7JoMH5VVij4L7be3TXUYNh5cxCjz
- Z8ThOjXvzz/C1Snizea87XsJshZBJungXAcOWdKBhbV5QsnCL6Ey8Dl6cf78qC7tQ4eKrI
- 2kFwnO/wparnzOzlPc837AqELRfpr1l6lFLDTZ24VIjh1AZbjzjZqC2CWO4PeA==
-ARC-Authentication-Results: i=1;
-	mx1.freebsd.org;
-	none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org;
- s=dkim; t=1726046611;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=a6Wrw4m2ESemBFZ6jibwr1pn+SIAwSUGgu6UdJWaoMY=;
- b=LKaVkMe8mDLISe5eV603de7ZOTd/znO5o71i9Ny+uavtRpy4ubN13ehXkokNRKb8ydIDzs
- 1n7LMhdvRKLIJHCHcbGZYxiUxMDjQ4hfrQq26JI2mZmTL2rfb5seRgNxymFJg3Qh3NMJXL
- 5B5hR/v2qzgJE+1bt5qltpLvu1fv8F/UDr0YwgOgkiTmZxntbm09EVHmR6cLuLtxXnb4XQ
- p4XXzPTApGHRf9oIyVj/7VVrRuoPad+vsg8HnDtSKZFAKQIDEfbuRbuPQY0t1uqI0i8T/P
- 4B44hQe87WJJxFPgvZ5G/Cv6Okvz2HMtvqApMPOknwjkNHVYbowXrTrsQAzVuw==
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com
- [209.85.210.49])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
- client-signature RSA-PSS (2048 bits) client-digest SHA256)
- (Client CN "smtp.gmail.com", Issuer "WR4" (verified OK))
- (Authenticated sender: lwhsu/mail)
- by smtp.freebsd.org (Postfix) with ESMTPSA id 4X3Zr340frz16NS
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 09:23:31 +0000 (UTC)
- (envelope-from lwhsu@freebsd.org)
-Received: by mail-ot1-f49.google.com with SMTP id
- 46e09a7af769-710d77380cdso2366621a34.0
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 02:23:31 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxIs/v6MGXDkwwKwkemmcWEyxtWTFS+1AaVA/FUMr86aqWHl+X7
- sJyrPQH3fVJSYtxS3d0GdMJyb5fQji+XGc83tW+fURF2OBfXWt6c+uK7gDjsCBvqa5/H4WJNJXY
- rTA3I1AXEzI0RFGq1rvcDfrDNaVw=
-X-Google-Smtp-Source: AGHT+IFalpGmx6eSR4jPrl9dIMFNNvy5WpcsAQDTOliFZKEwNLpDwpKVUQqaDOqJD9AYXR2s0Uol4dooEMXmc//bMDQ=
-X-Received: by 2002:a05:6830:380b:b0:710:f76b:350f with SMTP id
- 46e09a7af769-710f76b361emr3024539a34.30.1726046610917; Wed, 11 Sep 2024
- 02:23:30 -0700 (PDT)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=yx7TpjPadaZrt74OTo/SGjbePwAgjzKi8atJQJr963I=;
+ b=d7I9Ruz15QWB927jEe3z8jAWm2KlYafiYlwTOPV5VuhhQDi/Nb8P5CafwCw5IRasJkDRAw
+ MT4RJO1Zx6tn7WAz0jYy5KVGQfdzRV321pJEj4HVWxGB4LHfKhOqp/T1o0xRpMPTZgpCKV
+ PVgIrjJYgGBBnQG4/cqOdrxyka6cyFs=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-uXEmyjj9NNmCDPdemivukw-1; Wed,
+ 11 Sep 2024 05:34:31 -0400
+X-MC-Unique: uXEmyjj9NNmCDPdemivukw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5AFE21944DDE; Wed, 11 Sep 2024 09:34:29 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.193.18])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 3FCE919560AD; Wed, 11 Sep 2024 09:34:27 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL v2 00/24] Tests and misc patches
+Date: Wed, 11 Sep 2024 11:34:24 +0200
+Message-ID: <20240911093426.287808-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20240911090149.286257-1-thuth@redhat.com>
-In-Reply-To: <20240911090149.286257-1-thuth@redhat.com>
-From: Li-Wen Hsu <lwhsu@freebsd.org>
-Date: Wed, 11 Sep 2024 17:23:20 +0800
-X-Gmail-Original-Message-ID: <CAKBkRUyW4USU0hkfcWHFOUno1QS=FMddCr5_apvvhxKHz73RVQ@mail.gmail.com>
-Message-ID: <CAKBkRUyW4USU0hkfcWHFOUno1QS=FMddCr5_apvvhxKHz73RVQ@mail.gmail.com>
-Subject: Re: [PATCH] Update FreeBSD CI jobs FreeBSD 14.1
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Kyle Evans <kevans@freebsd.org>,
- Warner Losh <imp@bsdimp.com>, 
- Ed Maste <emaste@freebsd.org>, Peter Maydell <peter.maydell@linaro.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: multipart/alternative; boundary="0000000000001c18600621d48b3b"
-Received-SPF: pass client-ip=96.47.72.81; envelope-from=lwhsu@freebsd.org;
- helo=mx2.freebsd.org
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -123,274 +75,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000001c18600621d48b3b
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ Hi Peter!
 
-On Wed, Sep 11, 2024 at 5:02=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
-e:
+The following changes since commit a66f28df650166ae8b50c992eea45e7b247f4143:
 
-> The current FreeBSD CI jobs are failing installation since the
-> "opencv" package is now missing there. Updating to 14.1 fixes
-> the issue.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
->
+  Merge tag 'migration-20240909-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-09-10 11:19:22 +0100)
 
-Reviewed-by: Li-Wen Hsu <lwhsu@FreeBSD.org>
+are available in the Git repository at:
 
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-09-11
 
-> ---
->  Here's the output of a successful run:
->  https://gitlab.com/thuth/qemu/-/jobs/7795460644
->
->  .gitlab-ci.d/cirrus.yml                                  | 6 +++---
->  .gitlab-ci.d/cirrus/{freebsd-13.vars =3D> freebsd-14.vars} | 2 +-
->  tests/lcitool/refresh                                    | 4 ++--
->  tests/vm/freebsd                                         | 6 +++---
->  4 files changed, 9 insertions(+), 9 deletions(-)
->  rename .gitlab-ci.d/cirrus/{freebsd-13.vars =3D> freebsd-14.vars} (95%)
->
-> diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-> index 75df1273bc..92c97eefc1 100644
-> --- a/.gitlab-ci.d/cirrus.yml
-> +++ b/.gitlab-ci.d/cirrus.yml
-> @@ -46,13 +46,13 @@
->    variables:
->      QEMU_JOB_CIRRUS: 1
->
-> -x64-freebsd-13-build:
-> +x64-freebsd-14-build:
->    extends: .cirrus_build_job
->    variables:
-> -    NAME: freebsd-13
-> +    NAME: freebsd-14
->      CIRRUS_VM_INSTANCE_TYPE: freebsd_instance
->      CIRRUS_VM_IMAGE_SELECTOR: image_family
-> -    CIRRUS_VM_IMAGE_NAME: freebsd-13-3
-> +    CIRRUS_VM_IMAGE_NAME: freebsd-14-1
->      CIRRUS_VM_CPUS: 8
->      CIRRUS_VM_RAM: 8G
->      UPDATE_COMMAND: pkg update; pkg upgrade -y
-> diff --git a/.gitlab-ci.d/cirrus/freebsd-13.vars
-> b/.gitlab-ci.d/cirrus/freebsd-14.vars
-> similarity index 95%
-> rename from .gitlab-ci.d/cirrus/freebsd-13.vars
-> rename to .gitlab-ci.d/cirrus/freebsd-14.vars
-> index 69c948b503..aba0eff4b9 100644
-> --- a/.gitlab-ci.d/cirrus/freebsd-13.vars
-> +++ b/.gitlab-ci.d/cirrus/freebsd-14.vars
-> @@ -1,6 +1,6 @@
->  # THIS FILE WAS AUTO-GENERATED
->  #
-> -#  $ lcitool variables freebsd-13 qemu
-> +#  $ lcitool variables freebsd-14 qemu
->  #
->  # https://gitlab.com/libvirt/libvirt-ci
->
-> diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-> index ac803e34f1..290804f6be 100755
-> --- a/tests/lcitool/refresh
-> +++ b/tests/lcitool/refresh
-> @@ -207,14 +207,14 @@ try:
->      #
->      # Cirrus packages lists for GitLab
->      #
-> -    generate_cirrus("freebsd-13")
-> +    generate_cirrus("freebsd-14")
->      generate_cirrus("macos-13")
->      generate_cirrus("macos-14")
->
->      #
->      # VM packages lists
->      #
-> -    generate_pkglist("freebsd", "freebsd-13")
-> +    generate_pkglist("freebsd", "freebsd-14")
->
->      #
->      # Ansible package lists
-> diff --git a/tests/vm/freebsd b/tests/vm/freebsd
-> index 1247f40a38..74b3b1e520 100755
-> --- a/tests/vm/freebsd
-> +++ b/tests/vm/freebsd
-> @@ -28,8 +28,8 @@ class FreeBSDVM(basevm.BaseVM):
->      name =3D "freebsd"
->      arch =3D "x86_64"
->
-> -    link =3D "
-> https://download.freebsd.org/releases/CI-IMAGES/13.2-RELEASE/amd64/Latest=
-/FreeBSD-13.2-RELEASE-amd64-BASIC-CI.raw.xz
-> "
-> -    csum =3D
-> "a4fb3b6c7b75dd4d58fb0d75e4caf72844bffe0ca00e66459c028b198ffb3c0e"
-> +    link =3D "
-> https://download.freebsd.org/releases/CI-IMAGES/14.1-RELEASE/amd64/Latest=
-/FreeBSD-14.1-RELEASE-amd64-BASIC-CI.raw.xz
-> "
-> +    csum =3D
-> "202fe27a05427f0a86d3ebb97712745186f2776ccc4f70d95466dd99a0238ba5"
->      size =3D "20G"
->
->      BUILD_SCRIPT =3D """
-> @@ -39,7 +39,7 @@ class FreeBSDVM(basevm.BaseVM):
->          mkdir src build; cd src;
->          tar -xf /dev/vtbd1;
->          cd ../build;
-> -        ../src/configure --python=3Dpython3.9
-> --extra-ldflags=3D-L/usr/local/lib \
-> +        ../src/configure --extra-ldflags=3D-L/usr/local/lib \
->                           --extra-cflags=3D-I/usr/local/include
-> {configure_opts};
->          gmake --output-sync -j{jobs} {target} {verbose};
->      """
-> --
-> 2.46.0
->
->
+for you to fetch changes up to b4358ed4fd29c21c69e492d814f0926c58caa10f:
 
---0000000000001c18600621d48b3b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  Update FreeBSD CI jobs FreeBSD 14.1 (2024-09-11 11:26:41 +0200)
 
-<div dir=3D"ltr"><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail=
-_attr">On Wed, Sep 11, 2024 at 5:02=E2=80=AFPM Thomas Huth &lt;<a href=3D"m=
-ailto:thuth@redhat.com">thuth@redhat.com</a>&gt; wrote:<br></div><blockquot=
-e class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px s=
-olid rgb(204,204,204);padding-left:1ex">The current FreeBSD CI jobs are fai=
-ling installation since the<br>
-&quot;opencv&quot; package is now missing there. Updating to 14.1 fixes<br>
-the issue.<br>
-<br>
-Signed-off-by: Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.com" target=
-=3D"_blank">thuth@redhat.com</a>&gt;<br></blockquote><div><br>Reviewed-by: =
-Li-Wen Hsu &lt;lwhsu@FreeBSD.org&gt;<br></div><div>=C2=A0</div><blockquote =
-class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
-id rgb(204,204,204);padding-left:1ex">
----<br>
-=C2=A0Here&#39;s the output of a successful run:<br>
-=C2=A0<a href=3D"https://gitlab.com/thuth/qemu/-/jobs/7795460644" rel=3D"no=
-referrer" target=3D"_blank">https://gitlab.com/thuth/qemu/-/jobs/7795460644=
-</a><br>
-<br>
-=C2=A0.gitlab-ci.d/cirrus.yml=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=
- 6 +++---<br>
-=C2=A0.gitlab-ci.d/cirrus/{freebsd-13.vars =3D&gt; freebsd-14.vars} | 2 +-<=
-br>
-=C2=A0tests/lcitool/refresh=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 | 4 ++--<br>
-=C2=A0tests/vm/freebsd=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0| 6 +++---<br>
-=C2=A04 files changed, 9 insertions(+), 9 deletions(-)<br>
-=C2=A0rename .gitlab-ci.d/cirrus/{freebsd-13.vars =3D&gt; freebsd-14.vars} =
-(95%)<br>
-<br>
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml<br>
-index 75df1273bc..92c97eefc1 100644<br>
---- a/.gitlab-ci.d/cirrus.yml<br>
-+++ b/.gitlab-ci.d/cirrus.yml<br>
-@@ -46,13 +46,13 @@<br>
-=C2=A0 =C2=A0variables:<br>
-=C2=A0 =C2=A0 =C2=A0QEMU_JOB_CIRRUS: 1<br>
-<br>
--x64-freebsd-13-build:<br>
-+x64-freebsd-14-build:<br>
-=C2=A0 =C2=A0extends: .cirrus_build_job<br>
-=C2=A0 =C2=A0variables:<br>
--=C2=A0 =C2=A0 NAME: freebsd-13<br>
-+=C2=A0 =C2=A0 NAME: freebsd-14<br>
-=C2=A0 =C2=A0 =C2=A0CIRRUS_VM_INSTANCE_TYPE: freebsd_instance<br>
-=C2=A0 =C2=A0 =C2=A0CIRRUS_VM_IMAGE_SELECTOR: image_family<br>
--=C2=A0 =C2=A0 CIRRUS_VM_IMAGE_NAME: freebsd-13-3<br>
-+=C2=A0 =C2=A0 CIRRUS_VM_IMAGE_NAME: freebsd-14-1<br>
-=C2=A0 =C2=A0 =C2=A0CIRRUS_VM_CPUS: 8<br>
-=C2=A0 =C2=A0 =C2=A0CIRRUS_VM_RAM: 8G<br>
-=C2=A0 =C2=A0 =C2=A0UPDATE_COMMAND: pkg update; pkg upgrade -y<br>
-diff --git a/.gitlab-ci.d/cirrus/freebsd-13.vars b/.gitlab-ci.d/cirrus/free=
-bsd-14.vars<br>
-similarity index 95%<br>
-rename from .gitlab-ci.d/cirrus/freebsd-13.vars<br>
-rename to .gitlab-ci.d/cirrus/freebsd-14.vars<br>
-index 69c948b503..aba0eff4b9 100644<br>
---- a/.gitlab-ci.d/cirrus/freebsd-13.vars<br>
-+++ b/.gitlab-ci.d/cirrus/freebsd-14.vars<br>
-@@ -1,6 +1,6 @@<br>
-=C2=A0# THIS FILE WAS AUTO-GENERATED<br>
-=C2=A0#<br>
--#=C2=A0 $ lcitool variables freebsd-13 qemu<br>
-+#=C2=A0 $ lcitool variables freebsd-14 qemu<br>
-=C2=A0#<br>
-=C2=A0# <a href=3D"https://gitlab.com/libvirt/libvirt-ci" rel=3D"noreferrer=
-" target=3D"_blank">https://gitlab.com/libvirt/libvirt-ci</a><br>
-<br>
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh<br>
-index ac803e34f1..290804f6be 100755<br>
---- a/tests/lcitool/refresh<br>
-+++ b/tests/lcitool/refresh<br>
-@@ -207,14 +207,14 @@ try:<br>
-=C2=A0 =C2=A0 =C2=A0#<br>
-=C2=A0 =C2=A0 =C2=A0# Cirrus packages lists for GitLab<br>
-=C2=A0 =C2=A0 =C2=A0#<br>
--=C2=A0 =C2=A0 generate_cirrus(&quot;freebsd-13&quot;)<br>
-+=C2=A0 =C2=A0 generate_cirrus(&quot;freebsd-14&quot;)<br>
-=C2=A0 =C2=A0 =C2=A0generate_cirrus(&quot;macos-13&quot;)<br>
-=C2=A0 =C2=A0 =C2=A0generate_cirrus(&quot;macos-14&quot;)<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0#<br>
-=C2=A0 =C2=A0 =C2=A0# VM packages lists<br>
-=C2=A0 =C2=A0 =C2=A0#<br>
--=C2=A0 =C2=A0 generate_pkglist(&quot;freebsd&quot;, &quot;freebsd-13&quot;=
-)<br>
-+=C2=A0 =C2=A0 generate_pkglist(&quot;freebsd&quot;, &quot;freebsd-14&quot;=
-)<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0#<br>
-=C2=A0 =C2=A0 =C2=A0# Ansible package lists<br>
-diff --git a/tests/vm/freebsd b/tests/vm/freebsd<br>
-index 1247f40a38..74b3b1e520 100755<br>
---- a/tests/vm/freebsd<br>
-+++ b/tests/vm/freebsd<br>
-@@ -28,8 +28,8 @@ class FreeBSDVM(basevm.BaseVM):<br>
-=C2=A0 =C2=A0 =C2=A0name =3D &quot;freebsd&quot;<br>
-=C2=A0 =C2=A0 =C2=A0arch =3D &quot;x86_64&quot;<br>
-<br>
--=C2=A0 =C2=A0 link =3D &quot;<a href=3D"https://download.freebsd.org/relea=
-ses/CI-IMAGES/13.2-RELEASE/amd64/Latest/FreeBSD-13.2-RELEASE-amd64-BASIC-CI=
-.raw.xz" rel=3D"noreferrer" target=3D"_blank">https://download.freebsd.org/=
-releases/CI-IMAGES/13.2-RELEASE/amd64/Latest/FreeBSD-13.2-RELEASE-amd64-BAS=
-IC-CI.raw.xz</a>&quot;<br>
--=C2=A0 =C2=A0 csum =3D &quot;a4fb3b6c7b75dd4d58fb0d75e4caf72844bffe0ca00e6=
-6459c028b198ffb3c0e&quot;<br>
-+=C2=A0 =C2=A0 link =3D &quot;<a href=3D"https://download.freebsd.org/relea=
-ses/CI-IMAGES/14.1-RELEASE/amd64/Latest/FreeBSD-14.1-RELEASE-amd64-BASIC-CI=
-.raw.xz" rel=3D"noreferrer" target=3D"_blank">https://download.freebsd.org/=
-releases/CI-IMAGES/14.1-RELEASE/amd64/Latest/FreeBSD-14.1-RELEASE-amd64-BAS=
-IC-CI.raw.xz</a>&quot;<br>
-+=C2=A0 =C2=A0 csum =3D &quot;202fe27a05427f0a86d3ebb97712745186f2776ccc4f7=
-0d95466dd99a0238ba5&quot;<br>
-=C2=A0 =C2=A0 =C2=A0size =3D &quot;20G&quot;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0BUILD_SCRIPT =3D &quot;&quot;&quot;<br>
-@@ -39,7 +39,7 @@ class FreeBSDVM(basevm.BaseVM):<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0mkdir src build; cd src;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tar -xf /dev/vtbd1;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cd ../build;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 ../src/configure --python=3Dpython3.9=C2=A0 --=
-extra-ldflags=3D-L/usr/local/lib \<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ../src/configure --extra-ldflags=3D-L/usr/loca=
-l/lib \<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 --extra-cflags=3D-I/usr/local/include {configure_opts};<b=
-r>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0gmake --output-sync -j{jobs} {target} {ve=
-rbose};<br>
-=C2=A0 =C2=A0 =C2=A0&quot;&quot;&quot;<br>
--- <br>
-2.46.0<br>
-<br>
-</blockquote></div></div>
+----------------------------------------------------------------
+* Split --enable-sanitizers to --enable-{asan, ubsan}
+* Build MSYS2 job using multiple CPUs
+* Fix "make distclean" wrt contrib/plugins/
+* Convert more Avocado tests to plain standalone functional tests
+* Fix bug that breaks "make check-functional" when tesseract is missing
+* Use builtin hashlib of Python in the functional tests
+* Update the FreeBSD CI jobs to 14.1
 
---0000000000001c18600621d48b3b--
+v2:
+ - Use python hashlib instead of external programs
+ - Update FreeBSD CI jobs FreeBSD 14.1
+
+----------------------------------------------------------------
+Beraldo Leal (1):
+      MAINTAINERS: Remove myself as reviewer
+
+Philippe Mathieu-Daudé (10):
+      gitlab-ci: Build MSYS2 job using multiple CPUs
+      tests/functional: Convert mips64el Fuloong2e avocado test (2/2)
+      tests/functional: Convert mips64el I6400 Malta avocado tests
+      tests/functional: Convert mips64el 5KEc Malta avocado tests
+      tests/functional: Convert mips32el Malta YAMON avocado test
+      tests/functional: Convert nanomips Malta avocado tests
+      tests/functional: Convert mips32eb 4Kc Malta avocado tests
+      tests/functional: Convert ARM Raspi2 avocado tests
+      tests/functional: Convert Aarch64 Raspi3 avocado tests
+      tests/functional: Convert Aarch64 Raspi4 avocado tests
+
+Richard Henderson (2):
+      meson: Split --enable-sanitizers to --enable-{asan, ubsan}
+      meson: Move -fsanitize=undefined into normal configuraton
+
+Thomas Huth (11):
+      contrib/plugins/Makefile: Add a 'distclean' target
+      MAINTAINERS: Remove myself from the Meson section
+      tests/functional: Add the LinuxKernelTest for testing the Linux boot process
+      tests/functional: Convert the m68k Q800 Avocado test into a functional test
+      tests/functional: Convert the Alpha Clipper Avocado test
+      tests/functional: Convert the m68k MCF5208EVB Avocado test
+      tests/functional: Convert the or1k-sim Avocado test
+      tests/functional: Convert the multiprocess avocado test into a standalone test
+      tests/functional: Fix bad usage of has_cmd
+      tests/functional/qemu_test: Use Python hashlib instead of external programs
+      Update FreeBSD CI jobs FreeBSD 14.1
+
+ MAINTAINERS                                        |  12 +-
+ docs/devel/testing/fuzzing.rst                     |   4 +-
+ meson.build                                        |  26 +-
+ tests/qtest/fdc-test.c                             |   2 +-
+ .gitlab-ci.d/buildtest.yml                         |  12 +-
+ .gitlab-ci.d/cirrus.yml                            |   6 +-
+ .../cirrus/{freebsd-13.vars => freebsd-14.vars}    |   2 +-
+ .../custom-runners/ubuntu-22.04-aarch64.yml        |   2 +-
+ .gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml |   2 +-
+ .gitlab-ci.d/windows.yml                           |   3 +-
+ contrib/plugins/Makefile                           |   2 +-
+ meson_options.txt                                  |   6 +-
+ scripts/meson-buildoptions.sh                      |   9 +-
+ tests/avocado/avocado_qemu/__init__.py             |  10 -
+ tests/avocado/boot_linux_console.py                | 483 ---------------------
+ tests/avocado/machine_mips_malta.py                | 162 -------
+ tests/avocado/multiprocess.py                      | 102 -----
+ tests/docker/test-debug                            |   4 +-
+ tests/functional/meson.build                       |  26 +-
+ tests/functional/qemu_test/__init__.py             |   1 +
+ tests/functional/qemu_test/asset.py                |  16 +-
+ tests/functional/qemu_test/cmd.py                  |   6 +-
+ tests/functional/qemu_test/linuxkernel.py          |  41 ++
+ tests/functional/qemu_test/tesseract.py            |   3 +-
+ tests/functional/test_aarch64_raspi3.py            |  41 ++
+ tests/functional/test_aarch64_raspi4.py            |  99 +++++
+ tests/functional/test_alpha_clipper.py             |  38 ++
+ tests/functional/test_arm_raspi2.py                |  95 ++++
+ tests/functional/test_m68k_mcf5208evb.py           |  29 ++
+ tests/functional/test_m68k_q800.py                 |  37 ++
+ tests/functional/test_mips64el_fuloong2e.py        |  25 +-
+ tests/functional/test_mips64el_malta.py            | 186 ++++++++
+ tests/functional/test_mips_malta.py                |  81 ++++
+ tests/functional/test_mipsel_malta.py              |  96 ++++
+ tests/functional/test_multiprocess.py              | 100 +++++
+ tests/functional/test_or1k_sim.py                  |  29 ++
+ tests/lcitool/refresh                              |   4 +-
+ tests/vm/freebsd                                   |   6 +-
+ 38 files changed, 998 insertions(+), 810 deletions(-)
+ rename .gitlab-ci.d/cirrus/{freebsd-13.vars => freebsd-14.vars} (95%)
+ delete mode 100644 tests/avocado/machine_mips_malta.py
+ delete mode 100644 tests/avocado/multiprocess.py
+ create mode 100644 tests/functional/qemu_test/linuxkernel.py
+ create mode 100755 tests/functional/test_aarch64_raspi3.py
+ create mode 100755 tests/functional/test_aarch64_raspi4.py
+ create mode 100755 tests/functional/test_alpha_clipper.py
+ create mode 100755 tests/functional/test_arm_raspi2.py
+ create mode 100755 tests/functional/test_m68k_mcf5208evb.py
+ create mode 100755 tests/functional/test_m68k_q800.py
+ create mode 100755 tests/functional/test_mips64el_malta.py
+ create mode 100755 tests/functional/test_mips_malta.py
+ create mode 100755 tests/functional/test_mipsel_malta.py
+ create mode 100755 tests/functional/test_multiprocess.py
+ create mode 100755 tests/functional/test_or1k_sim.py
+
 
