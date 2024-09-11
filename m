@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3667C9750C5
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 13:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BAA9750C2
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 13:27:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soLU4-0005vj-6s; Wed, 11 Sep 2024 07:26:04 -0400
+	id 1soLU4-0005vY-6d; Wed, 11 Sep 2024 07:26:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1soLU1-0005pW-QN
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1soLU1-0005pl-SY
  for qemu-devel@nongnu.org; Wed, 11 Sep 2024 07:26:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1soLTz-00013G-J2
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1soLTz-00013K-Vy
  for qemu-devel@nongnu.org; Wed, 11 Sep 2024 07:26:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726053958;
+ s=mimecast20190719; t=1726053959;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x+TXE6moC3ZQS75kAlVK5kKObKsczRfd3IuyHbYO8VQ=;
- b=bhVy9kXk3vKPBoaV693NdQDadzOGBqlFTir2+QvuqlpWboKvDg/gE2D/Ykq0dW1bgOXDQr
- w6uGiPJEWpQAmce9IRdgWPeD4N7yDZcHBfnLDgO25u2WTmaSA/Thr2XXagOdeIiDgupNYT
- rgnDvYseHsdSm7ir+VN2QxCda5nqwFM=
+ bh=jcDBU4owQbBxkclDor65l8lSzSIuAVoWdS2D2Q1iluo=;
+ b=A12P1J93C+zP+g0wBVpXNu8T2bmNCbgRdSbZvr0Kg4/kzGYttmOh1Wl/d6EJQFqTzAkvr3
+ zu+vVrA4mt7giIBa8/1hubKaZGm68TR/jLPBJ01AlQ2QBjEH5gvAZi83SsQ1POorsoZHYS
+ Kq7kum9AWJrD3hkytHQfp63FVkfdqSg=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-379-Kdz3VcrsNFqUz3Dwyuwm8Q-1; Wed,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-501-CdlHh2SYNguXfoWI6xwnPQ-1; Wed,
  11 Sep 2024 07:25:53 -0400
-X-MC-Unique: Kdz3VcrsNFqUz3Dwyuwm8Q-1
+X-MC-Unique: CdlHh2SYNguXfoWI6xwnPQ-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C55571956083; Wed, 11 Sep 2024 11:25:51 +0000 (UTC)
+ id 9A3021956088; Wed, 11 Sep 2024 11:25:51 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.112])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1CFDB195605A; Wed, 11 Sep 2024 11:25:51 +0000 (UTC)
+ id 1AC0B19560AD; Wed, 11 Sep 2024 11:25:51 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2B59D21E68B2; Wed, 11 Sep 2024 13:25:45 +0200 (CEST)
+ id 2EA3021E68BD; Wed, 11 Sep 2024 13:25:45 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: eblake@redhat.com, marcandre.lureau@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com, arei.gonglei@huawei.com, pizhenwei@bytedance.com,
  jonathan.cameron@huawei.com, fan.ni@samsung.com, mst@redhat.com,
  marcel.apfelbaum@gmail.com, jiri@resnulli.us, jsnow@redhat.com
-Subject: [PATCH v2 7/8] qapi/cxl: Supply missing member documentation
-Date: Wed, 11 Sep 2024 13:25:44 +0200
-Message-ID: <20240911112545.2248881-8-armbru@redhat.com>
+Subject: [PATCH v2 8/8] qapi: Document QCryptodevBackendServiceType
+Date: Wed, 11 Sep 2024 13:25:45 +0200
+Message-ID: <20240911112545.2248881-9-armbru@redhat.com>
 In-Reply-To: <20240911112545.2248881-1-armbru@redhat.com>
 References: <20240911112545.2248881-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -83,42 +83,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we neglect to document a member of CxlCorErrorType, its
-description in the QEMU QMP Reference manual is "Not documented".  Fix
-that.
+From: zhenwei pi <pizhenwei@bytedance.com>
 
+QCryptodevBackendServiceType was introduced by
+bc304a6442e (cryptodev: Introduce server type in QAPI). However there
+is a lack of member description.
+
+Reported-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+[Drop QCryptodevBackendServiceType from pragma documentation-exceptions]
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/cxl.json    | 3 +++
- qapi/pragma.json | 1 -
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ qapi/cryptodev.json | 10 ++++++++++
+ qapi/pragma.json    |  1 -
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/cxl.json b/qapi/cxl.json
-index e9315d5b4d..9f65589bce 100644
---- a/qapi/cxl.json
-+++ b/qapi/cxl.json
-@@ -326,6 +326,9 @@
- # @crc-threshold: Component specific and applicable to 68 byte Flit
- #     mode only.
+diff --git a/qapi/cryptodev.json b/qapi/cryptodev.json
+index 5e417340dc..04d0e21d20 100644
+--- a/qapi/cryptodev.json
++++ b/qapi/cryptodev.json
+@@ -27,6 +27,16 @@
  #
-+# @retry-threshold: Retry threshold hit in the Local Retry State
-+#     Machine, 68B Flits only.
+ # The supported service types of a crypto device.
+ #
++# @cipher: Symmetric Key Cipher service
 +#
- # @cache-poison-received: Received poison from a peer on CXL.cache.
- #
- # @mem-poison-received: Received poison from a peer on CXL.mem
++# @hash: Hash service
++#
++# @mac: Message Authentication Codes service
++#
++# @aead: Authenticated Encryption with Associated Data service
++#
++# @akcipher: Asymmetric Key Cipher service
++#
+ # Since: 8.0
+ ##
+ { 'enum': 'QCryptodevBackendServiceType',
 diff --git a/qapi/pragma.json b/qapi/pragma.json
-index feb7981700..108e574678 100644
+index 108e574678..023a2ef7bc 100644
 --- a/qapi/pragma.json
 +++ b/qapi/pragma.json
-@@ -46,7 +46,6 @@
-         'BlockdevSnapshotSyncWrapper',
-         'BlockdevSnapshotWrapper',
-         'BlockdevVmdkAdapterType',
--        'CxlCorErrorType',
-         'DisplayProtocol',
-         'DriveBackupWrapper',
-         'DummyBlockCoreForceArrays',
+@@ -61,7 +61,6 @@
+         'MemoryDeviceInfoKind',
+         'NetClientDriver',
+         'ObjectType',
+-        'QCryptodevBackendServiceType',
+         'QKeyCode',
+         'RbdAuthMode',
+         'RbdImageEncryptionFormat',
 -- 
 2.46.0
 
