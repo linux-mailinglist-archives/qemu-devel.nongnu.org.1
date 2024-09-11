@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B659752A7
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CAC9752BA
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:43:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMXw-0005AL-4O; Wed, 11 Sep 2024 08:34:08 -0400
+	id 1soMXz-0005X5-Sa; Wed, 11 Sep 2024 08:34:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1soMXs-0004wN-9T
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:04 -0400
+ id 1soMXt-00050r-4c
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1soMXq-00012P-Fo
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:03 -0400
+ id 1soMXr-00012U-1F
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726058041;
+ s=mimecast20190719; t=1726058042;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=B8BWBynZiqu5W0tPrxT2WqoU5n0IrKBPLt4KWbMfpz8=;
- b=QYI4E755MXET1vFeuHLrMUDuMAPyCcNgrB6MaWjhgsy8YOmwaUObLj118yh35gyQwg0kuI
- 6Uzmgyjmdple/EUp6wVHShd3dI5/Kbuz4XAdb2crSCeorS84fgVK9Cs42G/+dqtrKoVPvS
- Zesj9CMGeBXjAPwDt89oZyENFLmBF90=
+ bh=P1muO7aVC7mT7zEk/C07F6EvF/ytJrxOdC9V2ewUNBQ=;
+ b=Mob7F95if5U8dVn+OnY9qNy219VvEjuEovNta1FOHjvbKQh4xx5dN6aLIUMjKAOIwnlNP+
+ HlTrOpWCmhuOi07qzXotN0H3RzbQ3eELSnDvhqsNVdgInkQugpLm/9ywbZmIxuckya7dEK
+ yNy09Iid6AVtFiCCbfdGKDvLfaxhU3A=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-548-ZF2Fjw8pPDuupRtz-_Bdeg-1; Wed, 11 Sep 2024 08:33:58 -0400
-X-MC-Unique: ZF2Fjw8pPDuupRtz-_Bdeg-1
+ us-mta-304-WQEL6bpCOK-zH8KGR2sPPw-1; Wed, 11 Sep 2024 08:34:01 -0400
+X-MC-Unique: WQEL6bpCOK-zH8KGR2sPPw-1
 Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-374b35856aeso938407f8f.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:33:58 -0700 (PDT)
+ ffacd0b85a97d-374c44e58a9so3450094f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:34:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726058036; x=1726662836;
+ d=1e100.net; s=20230601; t=1726058039; x=1726662839;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B8BWBynZiqu5W0tPrxT2WqoU5n0IrKBPLt4KWbMfpz8=;
- b=M8wQyJCcxqkSpd9DDfasM5EH+mido4HpkACTOIMEPcr3ET66eBTVunOsValbT3zGEL
- gFiR89nP3PnWax8fyWzfNS4C0D7d2scHaGlMi5baI8y0vblve3tBo2Mx6g8V3rpW/Yi8
- Fv+8Pe8iigycsafC0o6+ZGOuHWptROhcCVyIaCbxvRDtqVjC4hC9KuImeoWyAX7lGNkw
- xAXqCU20DEFlGBeK2lFDvobOMYBlkJ/zQRqEuk0sV9usX6+9Yj+TCE94+cbpY05C197u
- CzMSvTlACkHIKON5qfHdTPatCcOutQ5XAu2AIGyKISv0F4aqJVm8cuLFPZX9HvljDptZ
- NXpw==
-X-Gm-Message-State: AOJu0YxnGUZF+IVAGGWJNhNVMCL0yjOt+OWqxWPovsPwX9wlZiPooSb2
- 7z4pCkj7wkZVLVxC5QjNQscYiiTJZ7HWyJ+aNUw7qrtD8QRG7D5Wgp9iw2AA8rWDZKk7fWrPElx
- DzwGJuGI9l9tEGxkExubcUn6XGfHL6jR0+ddOZc8GAX5LfbQmGxHSrqvutvkYAPK18AVPt6V/QL
- 1jvv0Yby0tFbAq4VzXR/r8Dv/Ntv/qoeiexwRS67I=
-X-Received: by 2002:a5d:684a:0:b0:374:c022:fa76 with SMTP id
- ffacd0b85a97d-378b07feb93mr1812921f8f.37.1726058036480; 
- Wed, 11 Sep 2024 05:33:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFVwR8ZfTNReuKjdEEN7FcHAuSFYvvecyZ/v+rFPJnXROdocavS5PKCZKDZo2TD+j0LfZ2wsA==
-X-Received: by 2002:a5d:684a:0:b0:374:c022:fa76 with SMTP id
- ffacd0b85a97d-378b07feb93mr1812900f8f.37.1726058035999; 
- Wed, 11 Sep 2024 05:33:55 -0700 (PDT)
+ bh=P1muO7aVC7mT7zEk/C07F6EvF/ytJrxOdC9V2ewUNBQ=;
+ b=e9hiw+acnJaZN/quWpcZO8ttXTPp3kxe/Z7PDD1YxZxxkeuC8VEjd/1qmfGyInFzeD
+ JhcPCPnAUoP2okLcqyRiwTjyxhsW7+jsldQcHUo7YI3g1oLn02bRMg+sAlax0WfzMRfP
+ BQyABwUB+x14NkoyD83P+lYHB8CFJF+GiAAtetohKWUsuh3M/bLy7qlvejbxKjg0Vyvp
+ Xt1ZbnWxqCQKKMu1BnmghjyekNhU57ud//AK74qhoIAC1T/cryACoT3CjCa8KQuwzFRZ
+ +xKyQVHzSoumY6o92d6dZjo2jM4ZoyJPm0P2tN/30KzaTSlbJps1wqqb6BU6RNSuw3PY
+ ClAQ==
+X-Gm-Message-State: AOJu0YzpgTAQeeQENgCE8NJTKansaea1eQgg+FKYwwmiFNrLXsLSlQNI
+ Cwp5wxr0WAJzQuU0G3168t/UR9FniCNkOPxSBygyURu0ztcgQAUm0F06f//Spvge1PjeKj2pdNT
+ J/fAUDD5FgtomvHz14Owo4JsSpsTS3u9pB25KKDbiDUwnJbMlMQxYJyZVROmJq8Yt7FSJ/N8pmK
+ gCxbDoDCJY1n9U0EXviZQbgOuLyAXdkBGXqpfDkxg=
+X-Received: by 2002:a5d:558d:0:b0:374:bcc7:b9bb with SMTP id
+ ffacd0b85a97d-378896100e6mr11198554f8f.35.1726058039461; 
+ Wed, 11 Sep 2024 05:33:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHU2UDkvAs+nt+uHc8F2lvTHNdGdImuFRcxGDWZQyAykrxIx5tQs/C6WWWJT4MeYg8cZ+NoYg==
+X-Received: by 2002:a5d:558d:0:b0:374:bcc7:b9bb with SMTP id
+ ffacd0b85a97d-378896100e6mr11198537f8f.35.1726058038970; 
+ Wed, 11 Sep 2024 05:33:58 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-378956dd932sm11446224f8f.98.2024.09.11.05.33.55
+ ffacd0b85a97d-3789567609esm11470721f8f.59.2024.09.11.05.33.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 05:33:55 -0700 (PDT)
+ Wed, 11 Sep 2024 05:33:57 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: "Richard W.M. Jones" <rjones@redhat.com>
-Subject: [PULL 04/17] tests/unit: remove block layer code from
- test-nested-aio-poll
-Date: Wed, 11 Sep 2024 14:33:29 +0200
-Message-ID: <20240911123342.339482-5-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Kamil=20Szcz=C4=99k?= <kamil@szczek.dev>
+Subject: [PULL 05/17] hw/i386/pc: Add a description for the i8042 property
+Date: Wed, 11 Sep 2024 14:33:30 +0200
+Message-ID: <20240911123342.339482-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240911123342.339482-1-pbonzini@redhat.com>
 References: <20240911123342.339482-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -102,39 +102,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GCC is reporting a NULL pointer dereference when compiling aio_wait_kick()
-with LTO.
+From: Kamil Szczęk <kamil@szczek.dev>
 
-The issue is that test-nested-aio-poll.c does not call qemu_init_main_loop().
-It doesn't _need_ to because it never calls AIO_WAIT_WHILE(), but it seems
-that LTO does not do enough dead-code elimination to catch that.
+While working on exposing the i8042 property in libvirt I noticed that
+the property is missing a description. This adds a simple description
+so that QEMU users don't have to dig in the source code to figure out
+what this option does.
 
-Fortunately aio_wait_kick() is only used in few places, and only in block
-layer or system emulation code; and this test only needs the core event loop
-functionality.  It does not even need iothreads.   So remove everything that
-calls aio_wait_kick(), which is nice for coverage compared to adding the call
-to qemu_init_main_loop().
-
-Reported-by: Richard W.M. Jones <rjones@redhat.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2434
+Signed-off-by: Kamil Szczęk <kamil@szczek.dev>
+Link: https://lore.kernel.org/r/15fhXFY6x78KW8P5gw0eKTW8kc17zejrJFxqnOyoBy6vw4W9rCmgDhoxssWosWFs_dbFtfsyjn9wpPrV3x8Nlzhy8mTJSEnXCr4qyHAhXSw=@szczek.dev
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/unit/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/pc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index 490ab8182dc..6c377917636 100644
---- a/tests/unit/meson.build
-+++ b/tests/unit/meson.build
-@@ -115,7 +115,7 @@ if have_block
-   if host_os != 'windows'
-     tests += {
-       'test-image-locking': [testblock],
--      'test-nested-aio-poll': [testblock],
-+      'test-nested-aio-poll': [],
-     }
-   endif
-   if config_host_data.get('CONFIG_REPLICATION')
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 7779c88a91e..f4df8637ef0 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1817,6 +1817,8 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+ 
+     object_class_property_add_bool(oc, PC_MACHINE_I8042,
+         pc_machine_get_i8042, pc_machine_set_i8042);
++    object_class_property_set_description(oc, PC_MACHINE_I8042,
++        "Enable/disable Intel 8042 PS/2 controller emulation");
+ 
+     object_class_property_add_bool(oc, "default-bus-bypass-iommu",
+         pc_machine_get_default_bus_bypass_iommu,
 -- 
 2.46.0
 
