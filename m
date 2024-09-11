@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171EB9749CE
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 07:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 435CF9749D0
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 07:28:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soFsh-0004v9-U7; Wed, 11 Sep 2024 01:27:07 -0400
+	id 1soFsm-00055W-Gh; Wed, 11 Sep 2024 01:27:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1soFsd-0004fz-4K
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:27:03 -0400
+ id 1soFsg-0004ut-O8
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:27:06 -0400
 Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1soFsa-0004Mp-Ja
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:27:01 -0400
+ id 1soFse-0004Mp-PL
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:27:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726032421; x=1757568421;
+ t=1726032425; x=1757568425;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=UGoxBVA6kzO1gidRWg1XuJWhl0S6Jg6nM4URHbYa68g=;
- b=c1/CkIqDznyAXcJEBF1kPVW4YcDd86iyBx8QMOtowhCNTVTmT4PWTB9z
- HGL7OKGvJyUhH+EPrEPrwnwWOj3jRiEHoiTVMIxl3c96zzj3dAUh+kZW+
- Nx+y+p+EQEChtL599+bYAStLtguF4M4cnQTBLj33G7JlABVuWwUdGw5ch
- ZyCJ+ekPGfc+55aCf/qYDZl1D2KsSSeTAbudisjcZAcjznjQ+YE7eT3PA
- 9FtUcgWTj7Ilw9OYYsqDR/+vJjBl2sa9T/qm2HQPHzvAvgR/+JccyxX9d
- RVwJHn73Wc4dgFd1CZ1P1AsBy08YVxSdlZwyEBuWKdGcYxGYKOBuMMvxV Q==;
-X-CSE-ConnectionGUID: LKQP1zxTQ1ymm08qkZxIZQ==
-X-CSE-MsgGUID: O7d2ASSXRAKTM71TuMa44Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="35403616"
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="35403616"
+ bh=AITBgbbwWGVpEmJhWQEQKgwrBpsf2DE8pxN8/CX0AZE=;
+ b=TICwsntcavay9zeFyd/kEkD5Hii9KbOh6nodjIeFVGpdhu5cm/2dV9Fk
+ Gi1W8sjJPi29zOgBw13Ua/bcc7+yIh2V2BSZs+FLJlBDZ+ioKYJSGcM13
+ ei2czmZmJmaR9+2nO5//BBejmt5/cTGtTT4sXzmBOCy7+eyxOphHEmLbL
+ cOJ0E6LtL8Imp5EWRzUKix620gh7CCQPX/OBPASupcgZtWBrfAS4norUl
+ 43UYzYIxCVr7omrBCdmBGT66dNy8nSO85AQKE8hEHrS/lYSck7B6cvTsI
+ eKHBg512mdyjO8+clUUOtgP20wnS13D3s3svdpBvsrrPdwLS5ijcvu0UF A==;
+X-CSE-ConnectionGUID: 3JiW++k2R/u40xhisOTwCA==
+X-CSE-MsgGUID: 1NqqiavzTveOjTWdjglyhA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="35403626"
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="35403626"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 22:26:59 -0700
-X-CSE-ConnectionGUID: bqxPxb0hSMC3tIHAqN7BIg==
-X-CSE-MsgGUID: VmVfFZ2uTr2HtHM86d4U3g==
+ 10 Sep 2024 22:27:04 -0700
+X-CSE-ConnectionGUID: lC8BTSklRRir5Nl5W+eypA==
+X-CSE-MsgGUID: raa8UZK6QTSNdCeGRkh/mQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="67536528"
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="67536551"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 22:26:54 -0700
+ 10 Sep 2024 22:26:59 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -55,15 +55,14 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v3 14/17] intel_iommu: Set default aw_bits to 48 in scalable
- modern mode
-Date: Wed, 11 Sep 2024 13:22:52 +0800
-Message-Id: <20240911052255.1294071-15-zhenzhong.duan@intel.com>
+Subject: [PATCH v3 15/17] intel_iommu: Modify x-scalable-mode to be string
+ option to expose scalable modern mode
+Date: Wed, 11 Sep 2024 13:22:53 +0800
+Message-Id: <20240911052255.1294071-16-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240911052255.1294071-1-zhenzhong.duan@intel.com>
 References: <20240911052255.1294071-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.11;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -89,66 +88,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to VTD spec, stage-1 page table could support 4-level and
-5-level paging.
+From: Yi Liu <yi.l.liu@intel.com>
 
-However, 5-level paging translation emulation is unsupported yet.
-That means the only supported value for aw_bits is 48.
+Intel VT-d 3.0 introduces scalable mode, and it has a bunch of capabilities
+related to scalable mode translation, thus there are multiple combinations.
+While this vIOMMU implementation wants to simplify it for user by providing
+typical combinations. User could config it by "x-scalable-mode" option. The
+usage is as below:
 
-So default aw_bits to 48 in scalable modern mode. In other cases,
-it is still default to 39 for compatibility.
+"-device intel-iommu,x-scalable-mode=["legacy"|"modern"|"off"]"
 
-Add a check to ensure user specified value is 48 in modern mode
-for now.
+ - "legacy": gives support for stage-2 page table
+ - "modern": gives support for stage-1 page table
+ - "off": no scalable mode support
+ - any other string, will throw error
 
+If x-scalable-mode is not configured, it is equivalent to x-scalable-mode=off.
+
+With scalable modern mode exposed to user, also accurate the pasid entry
+check in vtd_pe_type_check().
+
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
 ---
- include/hw/i386/intel_iommu.h |  2 +-
- hw/i386/intel_iommu.c         | 10 +++++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ hw/i386/intel_iommu_internal.h |  2 ++
+ include/hw/i386/intel_iommu.h  |  1 +
+ hw/i386/intel_iommu.c          | 46 ++++++++++++++++++++++++++--------
+ 3 files changed, 39 insertions(+), 10 deletions(-)
 
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+index 52bdbf3bc5..af99deb4cd 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -195,6 +195,7 @@
+ #define VTD_ECAP_PASID              (1ULL << 40)
+ #define VTD_ECAP_SMTS               (1ULL << 43)
+ #define VTD_ECAP_SLTS               (1ULL << 46)
++#define VTD_ECAP_FLTS               (1ULL << 47)
+ 
+ /* CAP_REG */
+ /* (offset >> 4) << 24 */
+@@ -211,6 +212,7 @@
+ #define VTD_CAP_SLLPS               ((1ULL << 34) | (1ULL << 35))
+ #define VTD_CAP_DRAIN_WRITE         (1ULL << 54)
+ #define VTD_CAP_DRAIN_READ          (1ULL << 55)
++#define VTD_CAP_FS1GP               (1ULL << 56)
+ #define VTD_CAP_DRAIN               (VTD_CAP_DRAIN_READ | VTD_CAP_DRAIN_WRITE)
+ #define VTD_CAP_CM                  (1ULL << 7)
+ #define VTD_PASID_ID_SHIFT          20
 diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index b843d069cc..48134bda11 100644
+index 48134bda11..650641544c 100644
 --- a/include/hw/i386/intel_iommu.h
 +++ b/include/hw/i386/intel_iommu.h
-@@ -45,7 +45,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState, INTEL_IOMMU_DEVICE)
- #define DMAR_REG_SIZE               0x230
- #define VTD_HOST_AW_39BIT           39
- #define VTD_HOST_AW_48BIT           48
--#define VTD_HOST_ADDRESS_WIDTH      VTD_HOST_AW_39BIT
-+#define VTD_HOST_AW_AUTO            0xff
- #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
+@@ -263,6 +263,7 @@ struct IntelIOMMUState {
  
- #define DMAR_REPORT_F_INTR          (1)
+     bool caching_mode;              /* RO - is cap CM enabled? */
+     bool scalable_mode;             /* RO - is Scalable Mode supported? */
++    char *scalable_mode_str;        /* RO - admin's Scalable Mode config */
+     bool scalable_modern;           /* RO - is modern SM supported? */
+     bool snoop_control;             /* RO - is SNP filed supported? */
+ 
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index c25211ddaf..949f120456 100644
+index 949f120456..bb3ed48281 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -3771,7 +3771,7 @@ static Property vtd_properties[] = {
-                             ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_BOOL("x-buggy-eim", IntelIOMMUState, buggy_eim, false),
+@@ -803,16 +803,18 @@ static inline bool vtd_is_fl_level_supported(IntelIOMMUState *s, uint32_t level)
+ }
+ 
+ /* Return true if check passed, otherwise false */
+-static inline bool vtd_pe_type_check(X86IOMMUState *x86_iommu,
+-                                     VTDPASIDEntry *pe)
++static inline bool vtd_pe_type_check(IntelIOMMUState *s, VTDPASIDEntry *pe)
+ {
+     switch (VTD_PE_GET_TYPE(pe)) {
+-    case VTD_SM_PASID_ENTRY_SLT:
+-        return true;
+-    case VTD_SM_PASID_ENTRY_PT:
+-        return x86_iommu->pt_supported;
+     case VTD_SM_PASID_ENTRY_FLT:
++        return !!(s->ecap & VTD_ECAP_FLTS);
++    case VTD_SM_PASID_ENTRY_SLT:
++        return !!(s->ecap & VTD_ECAP_SLTS);
+     case VTD_SM_PASID_ENTRY_NESTED:
++        /* Not support NESTED page table type yet */
++        return false;
++    case VTD_SM_PASID_ENTRY_PT:
++        return !!(s->ecap & VTD_ECAP_PT);
+     default:
+         /* Unknown type */
+         return false;
+@@ -861,7 +863,6 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
+     uint8_t pgtt;
+     uint32_t index;
+     dma_addr_t entry_size;
+-    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
+ 
+     index = VTD_PASID_TABLE_INDEX(pasid);
+     entry_size = VTD_PASID_ENTRY_SIZE;
+@@ -875,7 +876,7 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
+     }
+ 
+     /* Do translation type check */
+-    if (!vtd_pe_type_check(x86_iommu, pe)) {
++    if (!vtd_pe_type_check(s, pe)) {
+         return -VTD_FR_PASID_TABLE_ENTRY_INV;
+     }
+ 
+@@ -3773,7 +3774,7 @@ static Property vtd_properties[] = {
      DEFINE_PROP_UINT8("aw-bits", IntelIOMMUState, aw_bits,
--                      VTD_HOST_ADDRESS_WIDTH),
-+                      VTD_HOST_AW_AUTO),
+                       VTD_HOST_AW_AUTO),
      DEFINE_PROP_BOOL("caching-mode", IntelIOMMUState, caching_mode, FALSE),
-     DEFINE_PROP_BOOL("x-scalable-mode", IntelIOMMUState, scalable_mode, FALSE),
+-    DEFINE_PROP_BOOL("x-scalable-mode", IntelIOMMUState, scalable_mode, FALSE),
++    DEFINE_PROP_STRING("x-scalable-mode", IntelIOMMUState, scalable_mode_str),
      DEFINE_PROP_BOOL("snoop-control", IntelIOMMUState, snoop_control, false),
-@@ -4686,6 +4686,14 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
+     DEFINE_PROP_BOOL("x-pasid-mode", IntelIOMMUState, pasid, false),
+     DEFINE_PROP_BOOL("dma-drain", IntelIOMMUState, dma_drain, true),
+@@ -4504,7 +4505,10 @@ static void vtd_cap_init(IntelIOMMUState *s)
+     }
+ 
+     /* TODO: read cap/ecap from host to decide which cap to be exposed. */
+-    if (s->scalable_mode) {
++    if (s->scalable_modern) {
++        s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_FLTS;
++        s->cap |= VTD_CAP_FS1GP;
++    } else if (s->scalable_mode) {
+         s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_SRS | VTD_ECAP_SLTS;
+     }
+ 
+@@ -4686,6 +4690,28 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
          }
      }
  
-+    if (s->aw_bits == VTD_HOST_AW_AUTO) {
-+        if (s->scalable_modern) {
-+            s->aw_bits = VTD_HOST_AW_48BIT;
-+        } else {
-+            s->aw_bits = VTD_HOST_AW_39BIT;
-+        }
++    if (s->scalable_mode_str &&
++        (strcmp(s->scalable_mode_str, "off") &&
++         strcmp(s->scalable_mode_str, "modern") &&
++         strcmp(s->scalable_mode_str, "legacy"))) {
++        error_setg(errp, "Invalid x-scalable-mode config,"
++                         "Please use \"modern\", \"legacy\" or \"off\"");
++        return false;
 +    }
 +
-     if ((s->aw_bits != VTD_HOST_AW_39BIT) &&
-         (s->aw_bits != VTD_HOST_AW_48BIT) &&
-         !s->scalable_modern) {
++    if (s->scalable_mode_str &&
++        !strcmp(s->scalable_mode_str, "legacy")) {
++        s->scalable_mode = true;
++        s->scalable_modern = false;
++    } else if (s->scalable_mode_str &&
++        !strcmp(s->scalable_mode_str, "modern")) {
++        s->scalable_mode = true;
++        s->scalable_modern = true;
++    } else {
++        s->scalable_mode = false;
++        s->scalable_modern = false;
++    }
++
+     if (s->aw_bits == VTD_HOST_AW_AUTO) {
+         if (s->scalable_modern) {
+             s->aw_bits = VTD_HOST_AW_48BIT;
 -- 
 2.34.1
 
