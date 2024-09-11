@@ -2,76 +2,175 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D879749D2
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 07:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3BC9749EE
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 07:44:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soFst-0006Ye-L8; Wed, 11 Sep 2024 01:27:19 -0400
+	id 1soG7o-0005x1-Ml; Wed, 11 Sep 2024 01:42:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1soFsq-0006Dl-Lb
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:27:16 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1soG7g-0005Sh-DI
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:42:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1soFso-0004Mp-Ef
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:27:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726032435; x=1757568435;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=bZWcEWPUvXrW2dfLoI2QO7d604JqxTuRIvII2jmDh/U=;
- b=dGLQbRcRLy94vD82Eod0NZXJBopqwgUmZdq181tcVc0Oas0Mx5zfxNvz
- 46+qcbOfBbrt6Lpu121rLfIlM8NwcTEFXNQtdYuAxNJpgkX7J4zohwCvm
- SYphcz2yns1bAaCLDnm2rWma1n1zOWVGp6GlUwGOD+9r4N+gDOp3yh62z
- PXQNN1Zvur7PdXHHCJDiX329RxFGIMRYj9R+5J2OHlP4iBmvmLdCnVBIW
- dpNqjEQ0jitzQeGlA/Dd1lTxWAkuSpWL6bZdI7cMG00LP6HE1xfC2gTST
- 2MgsHaTn0zP1xs/kYgdetQWncRH57XqrCHVnbskUmcEMwwxjhG5I9sWhk Q==;
-X-CSE-ConnectionGUID: rz0e0roqRr2XSeO31Js2kA==
-X-CSE-MsgGUID: bTPJ1ESET2ypAujKjxtj/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="35403642"
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="35403642"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 22:27:14 -0700
-X-CSE-ConnectionGUID: eAjBiPkUSeuEObiY7mJ7Rg==
-X-CSE-MsgGUID: hCxTUM93R2KKiMoGQKT9UQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="67536578"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 22:27:09 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Thomas Huth <thuth@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 17/17] tests/qtest: Add intel-iommu test
-Date: Wed, 11 Sep 2024 13:22:55 +0800
-Message-Id: <20240911052255.1294071-18-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240911052255.1294071-1-zhenzhong.duan@intel.com>
-References: <20240911052255.1294071-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1soG7d-0005dj-No
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 01:42:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1726033353;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=x4348nCbIlGLxEQjv+PoBelfS3/wjA0ch8jReP02Bw0=;
+ b=AwDXltbkL+1uv3NiG6SH1s/y6kNenO0p2D1DiCnSEeAKGlqYiDACwEGeHTSXnLKmf5F6vP
+ L0coiJxE69rJ+pAVty1wQECtNHL4t5oZjQlWFdSWkXKT65ngkYe2h/qi9gdBtqrHgeMWXC
+ EYaxqSRKx6D0m2p9Ah34ICs6W16GErQ=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-154-wE9mQ5nwP82MMelpVOWXiQ-1; Wed, 11 Sep 2024 01:42:29 -0400
+X-MC-Unique: wE9mQ5nwP82MMelpVOWXiQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a8ff95023b6so74823866b.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Sep 2024 22:42:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726033348; x=1726638148;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=x4348nCbIlGLxEQjv+PoBelfS3/wjA0ch8jReP02Bw0=;
+ b=asz6dMlO8Bgwu9bLWz3PExNj4sVgbQ85eoiOY9W0+XJzV51b3tPW6ssgA8yOGGc3wj
+ /Ccodcv1GwaArBZNqIWu/IpA3WcsPOrANhS02amO1kRQJAKCPh69qQgDQleuRB7btUcU
+ I/uQpqHESGMGIXyBY2t/ZApmjCHDKE7oiMKULK0hxxYNd9WseTZQUEI2Pui78RnNt/sc
+ unMhIOjfqcr1S6ckY+5cqedQPLk/Y/44E31AlmWG2qNerG9h1O2jV0pfPQ56rKpIUvmo
+ rXi61CkPorX/L29AhlwA+n3co3pSdy3pqH9Vzf4wjB4Cso5WsCNKkGdXO+59HcgoMS5Z
+ VBzA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU+r+AAkAYZwoZPRcakIFpo5NlnfDwNozqRntLjLrnkzjy53YmNjAWysAFQq0zQtlhaP38Xg1S5Q39n@nongnu.org
+X-Gm-Message-State: AOJu0YyIcGfPndcbsm0TjAFxGCC+S/bXwVZv5ScNtgA6V6jxVKNNtyrp
+ /zpk4S1MvlazVtB16a+FgL0SelRkBVGny85o9h1ahNumOeKI7gphWXsrUnZGbgi0cFPd2Sqjycl
+ NwUSUMS8yEgUpimyZYRohJtmmnHgFq/kZpZJ2B8qEeX/vfVzL6ktN
+X-Received: by 2002:a17:907:3e86:b0:a8d:64af:dc2a with SMTP id
+ a640c23a62f3a-a900481b979mr174459766b.25.1726033348402; 
+ Tue, 10 Sep 2024 22:42:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHNapT7TRA+lYmQVNZzHqSafdft1VWEnXQPQJqc+3FLAB7KIYe3OU3WSedr3mJhtpajGZ4nVQ==
+X-Received: by 2002:a17:907:3e86:b0:a8d:64af:dc2a with SMTP id
+ a640c23a62f3a-a900481b979mr174453066b.25.1726033347826; 
+ Tue, 10 Sep 2024 22:42:27 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-43-178-122.web.vodafone.de.
+ [109.43.178.122]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8d25c624efsm569273666b.114.2024.09.10.22.42.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Sep 2024 22:42:27 -0700 (PDT)
+Message-ID: <1a675a19-27ed-44a8-a19c-4ae3a6452e49@redhat.com>
+Date: Wed, 11 Sep 2024 07:42:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.11;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/39] include/hw/s390x: replace assert(false) with
+ g_assert_not_reached()
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Zhao Liu <zhao1.liu@intel.com>, "Richard W.M. Jones" <rjones@redhat.com>, 
+ Joel Stanley <joel@jms.id.au>, Kevin Wolf <kwolf@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ Corey Minyard <minyard@acm.org>, Eric Farman <farman@linux.ibm.com>,
+ Keith Busch <kbusch@kernel.org>, WANG Xuerui <git@xen0n.name>,
+ Hyman Huang <yong.huang@smartx.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Michael Rolnik <mrolnik@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Jesper Devantier <foss@defmacro.it>, Laurent Vivier <laurent@vivier.eu>,
+ Peter Maydell <peter.maydell@linaro.org>, Igor Mammedov
+ <imammedo@redhat.com>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, Fam Zheng
+ <fam@euphon.net>, qemu-s390x@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Laurent Vivier <lvivier@redhat.com>, Rob Herring <robh@kernel.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Helge Deller <deller@gmx.de>, Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
+ Klaus Jensen <its@irrelevant.dk>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Jason Wang <jasowang@redhat.com>
+References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
+ <20240910221606.1817478-15-pierrick.bouvier@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240910221606.1817478-15-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,136 +186,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the framework to test the intel-iommu device.
+On 11/09/2024 00.15, Pierrick Bouvier wrote:
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   include/hw/s390x/cpu-topology.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/s390x/cpu-topology.h b/include/hw/s390x/cpu-topology.h
+> index c064f427e94..dcb25956a64 100644
+> --- a/include/hw/s390x/cpu-topology.h
+> +++ b/include/hw/s390x/cpu-topology.h
+> @@ -57,7 +57,7 @@ static inline void s390_topology_setup_cpu(MachineState *ms,
+>   static inline void s390_topology_reset(void)
+>   {
+>       /* Unreachable, CPU topology not implemented for TCG */
+> -    assert(false);
+> +    g_assert_not_reached();
+>   }
+>   #endif
+>   
 
-Currently only tested cap/ecap bits correctness in scalable
-modern mode. Also tested cap/ecap bits consistency before
-and after system reset.
-
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Acked-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
----
- MAINTAINERS                    |  1 +
- include/hw/i386/intel_iommu.h  |  1 +
- tests/qtest/intel-iommu-test.c | 70 ++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build        |  1 +
- 4 files changed, 73 insertions(+)
- create mode 100644 tests/qtest/intel-iommu-test.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0c1bc69828..120e8b86e5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3690,6 +3690,7 @@ S: Supported
- F: hw/i386/intel_iommu.c
- F: hw/i386/intel_iommu_internal.h
- F: include/hw/i386/intel_iommu.h
-+F: tests/qtest/intel-iommu-test.c
- 
- AMD-Vi Emulation
- S: Orphan
-diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index f6d9b41b80..0c9bb8eab6 100644
---- a/include/hw/i386/intel_iommu.h
-+++ b/include/hw/i386/intel_iommu.h
-@@ -47,6 +47,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState, INTEL_IOMMU_DEVICE)
- #define VTD_HOST_AW_48BIT           48
- #define VTD_HOST_AW_AUTO            0xff
- #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
-+#define VTD_MGAW_FROM_CAP(cap)      ((cap >> 16) & 0x3fULL)
- 
- #define DMAR_REPORT_F_INTR          (1)
- 
-diff --git a/tests/qtest/intel-iommu-test.c b/tests/qtest/intel-iommu-test.c
-new file mode 100644
-index 0000000000..fa9169f1a3
---- /dev/null
-+++ b/tests/qtest/intel-iommu-test.c
-@@ -0,0 +1,70 @@
-+/*
-+ * QTest testcase for intel-iommu
-+ *
-+ * Copyright (c) 2024 Intel, Inc.
-+ *
-+ * Author: Zhenzhong Duan <zhenzhong.duan@intel.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+#include "hw/i386/intel_iommu_internal.h"
-+
-+#define CAP_MODERN_FIXED1    (VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND | \
-+                              VTD_CAP_MAMV | VTD_CAP_PSI | VTD_CAP_SLLPS)
-+#define ECAP_MODERN_FIXED1   (VTD_ECAP_QI |  VTD_ECAP_IR | VTD_ECAP_IRO | \
-+                              VTD_ECAP_MHMV | VTD_ECAP_SMTS | VTD_ECAP_FLTS)
-+
-+static inline uint32_t vtd_reg_readl(QTestState *s, uint64_t offset)
-+{
-+    return qtest_readl(s, Q35_HOST_BRIDGE_IOMMU_ADDR + offset);
-+}
-+
-+static inline uint64_t vtd_reg_readq(QTestState *s, uint64_t offset)
-+{
-+    return qtest_readq(s, Q35_HOST_BRIDGE_IOMMU_ADDR + offset);
-+}
-+
-+static void test_intel_iommu_modern(void)
-+{
-+    uint8_t init_csr[DMAR_REG_SIZE];     /* register values */
-+    uint8_t post_reset_csr[DMAR_REG_SIZE];     /* register values */
-+    uint64_t cap, ecap, tmp;
-+    QTestState *s;
-+
-+    s = qtest_init("-M q35 -device intel-iommu,x-scalable-mode=modern");
-+
-+    cap = vtd_reg_readq(s, DMAR_CAP_REG);
-+    g_assert((cap & CAP_MODERN_FIXED1) == CAP_MODERN_FIXED1);
-+
-+    tmp = cap & VTD_CAP_SAGAW_MASK;
-+    g_assert(tmp == (VTD_CAP_SAGAW_39bit | VTD_CAP_SAGAW_48bit));
-+
-+    tmp = VTD_MGAW_FROM_CAP(cap);
-+    g_assert(tmp == VTD_HOST_AW_48BIT - 1);
-+
-+    ecap = vtd_reg_readq(s, DMAR_ECAP_REG);
-+    g_assert((ecap & ECAP_MODERN_FIXED1) == ECAP_MODERN_FIXED1);
-+
-+    qtest_memread(s, Q35_HOST_BRIDGE_IOMMU_ADDR, init_csr, DMAR_REG_SIZE);
-+
-+    qobject_unref(qtest_qmp(s, "{ 'execute': 'system_reset' }"));
-+    qtest_qmp_eventwait(s, "RESET");
-+
-+    qtest_memread(s, Q35_HOST_BRIDGE_IOMMU_ADDR, post_reset_csr, DMAR_REG_SIZE);
-+    /* Ensure registers are consistent after hard reset */
-+    g_assert(!memcmp(init_csr, post_reset_csr, DMAR_REG_SIZE));
-+
-+    qtest_quit(s);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    qtest_add_func("/q35/intel-iommu/modern", test_intel_iommu_modern);
-+
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index fc852f3d8b..826e967a81 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -80,6 +80,7 @@ qtests_i386 = \
-   (config_all_devices.has_key('CONFIG_SB16') ? ['fuzz-sb16-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_SDHCI_PCI') ? ['fuzz-sdcard-test'] : []) +            \
-   (config_all_devices.has_key('CONFIG_ESP_PCI') ? ['am53c974-test'] : []) +                 \
-+  (config_all_devices.has_key('CONFIG_VTD') ? ['intel-iommu-test'] : []) +                 \
-   (host_os != 'windows' and                                                                \
-    config_all_devices.has_key('CONFIG_ACPI_ERST') ? ['erst-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_PCIE_PORT') and                                       \
--- 
-2.34.1
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
