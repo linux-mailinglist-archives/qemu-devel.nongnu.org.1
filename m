@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7BD8975696
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49EB49756F6
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 17:25:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soP2O-0006PQ-A9; Wed, 11 Sep 2024 11:13:44 -0400
+	id 1soP21-0004YX-G5; Wed, 11 Sep 2024 11:13:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soP18-0002u9-04
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:12:28 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soP1B-0003BU-Mk
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:12:32 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soP0z-0001Hp-Ko
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:12:20 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a8d51a7d6f5so444260866b.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 08:12:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soP17-0001IM-PP
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 11:12:28 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5c412cfc53eso393395a12.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 08:12:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726067535; x=1726672335; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726067541; x=1726672341; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=C6fs1IUTb9TPohRF9BBRWmVTfcqz5qZnUo2BPeCal4E=;
- b=f8caxWHhJZiWO7x9aCSYJxqZOjGtYytgOrWhNGzWIvTVTC3yP0iO7+XgpFMdkGjxOY
- mDUn+TuLNxXPS6Sw1X5gpSqmxbQMd6m1ku6aus/jOj3AKKmldvtjrM6KDEIZeT/Xa/QN
- CORcRIa1jgZlFFOwv6zT6RB5XSLzZ0rIO261AVr6CUObbMya+h7d56Kfa7MkDqiF4Wtm
- L05pBv2r48fEOT1QERvmlspC08Ofo078Ag2B97NzIyEAlAUfvQz1ha9thRFHQfF/YRYM
- 2SoFqON8qS086BqJNaheQlijlRal6RT1IWfOJyVGQkA9Z2rUHpvHDOpyHLY5+f0AjeEw
- CK9w==
+ bh=f52+BqOoRzSG9eBiMUrGEFVsDTdb6hL4k2FLSWDqtKs=;
+ b=bDJnhHIFDEdeyBo85iznVQqhDm6vh302SdYd3TcCnQvtqvbYXo5JA0t9k+hvT324yq
+ Rd9mFLCJwywo4MCJcB+w7wbuFcnVYOEmaz4X36jtLUNzektYbhIJ65GITlvU2ci98OM2
+ zSgMgmEQTCl4a/GeHFFFZrncO/mqZRuwlb3U/kQyps1IWpLllzw6YXQTRX06SZdCeFOO
+ SYZpvCy+khzIQNidy9ztXUkyxd/h6rQz8PwxS+erJp1i0OdAgtqWhFtpABTH9WynZxoS
+ ocwiBveebf2jXZLMEys7RIDsl8KNWJOTd91Vik/mVvPdYF1wvAg7coG0RHtYiwBTGf67
+ fDcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726067535; x=1726672335;
+ d=1e100.net; s=20230601; t=1726067541; x=1726672341;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C6fs1IUTb9TPohRF9BBRWmVTfcqz5qZnUo2BPeCal4E=;
- b=X7vKdwBbI8WgqbKMd0D/Et30XSsKzMWeovqguOHf6vNDfNcsrRxAwe7bQ73EfJOSDu
- MuqEsi/SH0QTL9dr7lOkOrh3IKwSydUJJ2a+UdJu5jpMBi7e5Ha7a3RTW5Wclcio20B5
- pFEc9Z/5EARXOS66Zuza02c4h4+V6OwtaGZm5EbpcXWnzfdOzbUDxEPqhd9ErWhww8LN
- xLl6ovl8gAW4ojllZv271gbul6oGg1RJmMXZM2LHwTcV/lB3zgyL/1sPcrGF6nlYP+4N
- 69GBmspEM7qBQdLaCm2mvYvVHEaDUDy4KAweLGlB4WKloQKJ8/FXQuPaeBqjg93eAxLZ
- 46ZA==
-X-Gm-Message-State: AOJu0YwDU9VB10Gbok0xYn1K4BQCvbEBNslgdMFzKyAHeV9U0OI616Hi
- 4tBmoECkSzgREsYhqW12GyFHeSO/JKysnE3FqDYIM3gwQGEN5W2Yewc3KQwiIyytQlwRU8N+c4R
- N
-X-Google-Smtp-Source: AGHT+IGo6R2XSv1js1cRDObLgzNHOxBnfDzrJwBvvPiW2xMsHCcXyzA1FX1VYQwBzdRID1Rmn8nBPg==
-X-Received: by 2002:a17:907:7294:b0:a86:96d1:d1f with SMTP id
- a640c23a62f3a-a8ffaadafdbmr488357866b.26.1726067535402; 
- Wed, 11 Sep 2024 08:12:15 -0700 (PDT)
+ bh=f52+BqOoRzSG9eBiMUrGEFVsDTdb6hL4k2FLSWDqtKs=;
+ b=lbPHTETI4DAv8ZiSALV/Zn/e+2Khi76+nJ8Se1uTsK7ocnFZwz55kVTPfaeiKbd4je
+ C1qtKiAV5gltTwuUxR1cb7ppm81a9+oa6n5wvHOcU9b8qU71ITH3I2giIjH+u2cqhP9O
+ jxq0XzlrvucZ6dsnpae+a/uJ1GAD5pKG0ItYGF+g7oa+jVrXTeAGb7qJvOQNq2FKu5gw
+ r1XU+Kzp5gopbT93mN6vDEGesmZH9l1aKq55MDCEGE6mTKkWLWjY00IDlQvt1QXyH3gd
+ 49OG57Kl09W355qTreHjKdFtDP64vFIDiD8oMdWOB9QOAPkb6t5g9ClkKOKfKLbjTJyt
+ vzOw==
+X-Gm-Message-State: AOJu0YyVbg5EVo7SV7MEMgRZXAxDtkM6O9/pLMGxcR7uGJ8uYy7aBFTc
+ CNwSQ+c5b34LxtfkWtm/Pds+Ztbw7nSBK2McxDi7wdqHNP53M3budWMtLaQdS5E8g2RMhxNw6yC
+ 5
+X-Google-Smtp-Source: AGHT+IHlWRcW+YSCOoeARjmOWmlsXZUiXq4ysmZrs1FNtCBGBF1ufs5ezV0SUsNbR7wwXx2+iLk3nw==
+X-Received: by 2002:a05:6402:848:b0:5c4:1334:76ea with SMTP id
+ 4fb4d7f45d1cf-5c4133476f6mr308265a12.22.1726067541207; 
+ Wed, 11 Sep 2024 08:12:21 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d258338a2sm626940566b.43.2024.09.11.08.12.14
+ 4fb4d7f45d1cf-5c3ebd76eb6sm5497102a12.61.2024.09.11.08.12.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 08:12:15 -0700 (PDT)
+ Wed, 11 Sep 2024 08:12:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org
-Subject: [PATCH v3 1/5] tests/functional: Correct typo in
- test_netdev_ethtool.py SPDX tag
-Date: Wed, 11 Sep 2024 17:12:02 +0200
-Message-ID: <20240911151206.60368-2-philmd@linaro.org>
+Subject: [PATCH v3 2/5] license: Simplify GPL-2.0-or-later license descriptions
+Date: Wed, 11 Sep 2024 17:12:03 +0200
+Message-ID: <20240911151206.60368-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911151206.60368-1-philmd@linaro.org>
 References: <20240911151206.60368-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,28 +91,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc: Alex Bennée <alex.bennee@linaro.org>
-Fixes: 9f95111474 ("tests/avocado: re-factor igb test to avoid timeouts")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Since the "2 | 3+" expression can be simplified as "2+",
+it is pointless to mention the GPLv3 license.
+
+Add the corresponding SPDX identifier to remove all doubt.
+
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/functional/test_netdev_ethtool.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/qemu/timed-average.h | 4 +++-
+ block/vdi.c                  | 4 +++-
+ hw/net/eepro100.c            | 4 +++-
+ hw/ppc/rs6000_mc.c           | 4 +++-
+ util/timed-average.c         | 4 +++-
+ qemu.nsi                     | 4 +++-
+ 6 files changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/tests/functional/test_netdev_ethtool.py b/tests/functional/test_netdev_ethtool.py
-index d5b911c918..ee1a397bd2 100755
---- a/tests/functional/test_netdev_ethtool.py
-+++ b/tests/functional/test_netdev_ethtool.py
-@@ -5,7 +5,7 @@
- # This test leverages ethtool's --test sequence to validate network
- # device behaviour.
- #
--# SPDX-License-Identifier: GPL-2.0-or-late
-+# SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/include/qemu/timed-average.h b/include/qemu/timed-average.h
+index 08245e7a10..dfd8d653fa 100644
+--- a/include/qemu/timed-average.h
++++ b/include/qemu/timed-average.h
+@@ -8,10 +8,12 @@
+  *   Benoît Canet <benoit.canet@nodalink.com>
+  *   Alberto Garcia <berto@igalia.com>
+  *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 2 of the License, or
+- * (at your option) version 3 or any later version.
++ * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+diff --git a/block/vdi.c b/block/vdi.c
+index 6363da08ce..149e15c831 100644
+--- a/block/vdi.c
++++ b/block/vdi.c
+@@ -3,10 +3,12 @@
+  *
+  * Copyright (c) 2009, 2012 Stefan Weil
+  *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 2 of the License, or
+- * (at your option) version 3 or any later version.
++ * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+diff --git a/hw/net/eepro100.c b/hw/net/eepro100.c
+index d9a70c4544..c8a88b9813 100644
+--- a/hw/net/eepro100.c
++++ b/hw/net/eepro100.c
+@@ -6,10 +6,12 @@
+  * Portions of the code are copies from grub / etherboot eepro100.c
+  * and linux e100.c.
+  *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 2 of the License, or
+- * (at your option) version 3 or any later version.
++ * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+diff --git a/hw/ppc/rs6000_mc.c b/hw/ppc/rs6000_mc.c
+index e6ec4b4c40..07b0b664d9 100644
+--- a/hw/ppc/rs6000_mc.c
++++ b/hw/ppc/rs6000_mc.c
+@@ -3,10 +3,12 @@
+  *
+  * Copyright (c) 2017 Hervé Poussineau
+  *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 2 of the License, or
+- * (at your option) version 3 or any later version.
++ * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+diff --git a/util/timed-average.c b/util/timed-average.c
+index 2b49d532ce..5b5c22afd8 100644
+--- a/util/timed-average.c
++++ b/util/timed-average.c
+@@ -8,10 +8,12 @@
+  *   Benoît Canet <benoit.canet@nodalink.com>
+  *   Alberto Garcia <berto@igalia.com>
+  *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 2 of the License, or
+- * (at your option) version 3 or any later version.
++ * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+diff --git a/qemu.nsi b/qemu.nsi
+index 564d617d11..b186f223e1 100644
+--- a/qemu.nsi
++++ b/qemu.nsi
+@@ -7,7 +7,7 @@
+ ; This program is free software: you can redistribute it and/or modify
+ ; it under the terms of the GNU General Public License as published by
+ ; the Free Software Foundation, either version 2 of the License, or
+-; (at your option) version 3 or any later version.
++; (at your option) any later version.
+ ;
+ ; This program is distributed in the hope that it will be useful,
+ ; but WITHOUT ANY WARRANTY; without even the implied warranty of
+@@ -16,6 +16,8 @@
+ ;
+ ; You should have received a copy of the GNU General Public License
+ ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
++;
++; SPDX-License-Identifier: GPL-2.0-or-later
  
- from unittest import skip
- from qemu_test import QemuSystemTest, Asset
+ ; NSIS_WIN32_MAKENSIS
+ 
 -- 
 2.45.2
 
