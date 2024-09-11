@@ -2,46 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF2F97559F
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7D0975549
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:28:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soORX-0008IK-OY; Wed, 11 Sep 2024 10:35:41 -0400
+	id 1soOI1-0004Z9-Hy; Wed, 11 Sep 2024 10:25:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1soOPv-0005KG-Iw; Wed, 11 Sep 2024 10:34:07 -0400
-Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132])
+ id 1soOHX-0004Fu-8W; Wed, 11 Sep 2024 10:25:21 -0400
+Received: from out30-124.freemail.mail.aliyun.com ([115.124.30.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1soOPq-0004g8-Mc; Wed, 11 Sep 2024 10:33:59 -0400
+ id 1soOGz-00080P-J8; Wed, 11 Sep 2024 10:25:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linux.alibaba.com; s=default;
- t=1726065221; h=From:To:Subject:Date:Message-Id:MIME-Version;
- bh=MmJsg8TjEZnNEckMK5cvtijhMjyt1jctvoRDIOcyfa0=;
- b=x7QFDpKqNJEOrewJ8QJbIazEbTeFfor+42MNny5Hh688lQeiu2LBXw16hDzOlmLyBC34l12ykg9mE9Or2HN6Rz9dyM0Q5PojTg/Zahq4poK8OG08Rt/f47AoG2LxRpuSEq3gR9J7o9ZmU9w2wZ+N3l0OtMqBpAWDGkhFdSV1KFM=
+ t=1726063152; h=From:To:Subject:Date:Message-Id:MIME-Version;
+ bh=rECffFvEXM35EN2I8Ye4kezYNYNMJMu+IsgiqClZmsQ=;
+ b=plqFDm3/ckPRrn41fkZSwXE8iZ7/SnB5/9KZIP4wRtoh7KP50a72EF79IhkiDME6RxMxVIAjaLUJ5aOFa6n4MPO+fs+GX2QoQFDSkNcJWNu7XmXXX4XyUWrl+lbAnVxInQSaDNcO3FNqTrGtV3RDJ3yPypkPQ8r0LEKB1yKNBUU=
 Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0WEoCzWn_1726061314) by smtp.aliyun-inc.com;
- Wed, 11 Sep 2024 21:28:35 +0800
+ fp:SMTPD_---0WEo88KD_1726061345) by smtp.aliyun-inc.com;
+ Wed, 11 Sep 2024 21:29:06 +0800
 From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
  dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
  zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org,
- Swung0x48 <swung0x48@outlook.com>,
  TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Subject: [PATCH v4 02/12] tcg/riscv: Add basic support for vector
-Date: Wed, 11 Sep 2024 21:26:20 +0800
-Message-Id: <20240911132630.461-3-zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH v4 03/12] tcg/riscv: Add vset{i}vli and ld/st vec ops
+Date: Wed, 11 Sep 2024 21:26:21 +0800
+Message-Id: <20240911132630.461-4-zhiwei_liu@linux.alibaba.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20240911132630.461-1-zhiwei_liu@linux.alibaba.com>
 References: <20240911132630.461-1-zhiwei_liu@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.132;
+Received-SPF: pass client-ip=115.124.30.124;
  envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-132.freemail.mail.aliyun.com
+ helo=out30-124.freemail.mail.aliyun.com
 X-Spam_score_int: -174
 X-Spam_score: -17.5
 X-Spam_bar: -----------------
@@ -66,365 +65,415 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Swung0x48 <swung0x48@outlook.com>
+From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 
-The RISC-V vector instruction set utilizes the LMUL field to group
-multiple registers, enabling variable-length vector registers. This
-implementation uses only the first register number of each group while
-reserving the other register numbers within the group.
+In RISC-V, vector operations require initial vtype and vl using
+the vset{i}vl{i} instruction.
 
-In TCG, each VEC_IR can have 3 types (TCG_TYPE_V64/128/256), and the
-host runtime needs to adjust LMUL based on the type to use different
-register groups.
+This instruction:
+  1. Sets the vector length (vl) in bytes
+  2. Configures the vtype register, which includes:
+    SEW (Single Element Width)
+    LMUL (vector register group multiplier)
+    Other vector operation parameters
 
-This presents challenges for TCG's register allocation. Currently, we
-avoid modifying the register allocation part of TCG and only expose the
-minimum number of vector registers.
+This configuration is crucial for defining subsequent vector
+operation behavior. To optimize performance, the configuration
+process is managed dynamically:
+  1. Reconfiguration using vset{i}vl{i} is necessary when SEW
+     or TCG_Type changes.
+  2. The vset instruction can be omitted when configuration
+     remains unchanged.
 
-For example, when the host vlen is 64 bits and type is TCG_TYPE_V256, with
-LMUL equal to 4, we use 4 vector registers as one register group. We can
-use a maximum of 8 register groups, but the V0 register number is reserved
-as a mask register, so we can effectively use at most 7 register groups.
-Moreover, when type is smaller than TCG_TYPE_V256, only 7 registers are
-forced to be used. This is because TCG cannot yet dynamically constrain
-registers with type; likewise, when the host vlen is 128 bits and
-TCG_TYPE_V256, we can use at most 15 registers.
+This optimization is only effective within a single TB.
+Each TB requires reconfiguration at its start, as the current
+state cannot be obtained from hardware.
 
-There is not much pressure on vector register allocation in TCG now, so
-using 7 registers is feasible and will not have a major impact on code
-generation.
-
-This patch:
-1. Reserves vector register 0 for use as a mask register.
-2. When using register groups, reserves the additional registers within
-   each group.
+We save the TCGType and SEW in TCGContext, so that it matches
+the multi-threaded TCG.
 
 Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Co-authored-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+Signed-off-by: Weiwei Li <liwei1518@gmail.com>
 Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
 ---
- tcg/riscv/tcg-target-con-str.h |   1 +
- tcg/riscv/tcg-target.c.inc     | 126 ++++++++++++++++++++++++---------
- tcg/riscv/tcg-target.h         |  78 +++++++++++---------
- tcg/riscv/tcg-target.opc.h     |  12 ++++
- 4 files changed, 151 insertions(+), 66 deletions(-)
- create mode 100644 tcg/riscv/tcg-target.opc.h
+ include/tcg/tcg.h              |   7 +
+ tcg/riscv/tcg-target-con-set.h |   2 +
+ tcg/riscv/tcg-target.c.inc     | 269 ++++++++++++++++++++++++++++++++-
+ 3 files changed, 274 insertions(+), 4 deletions(-)
 
-diff --git a/tcg/riscv/tcg-target-con-str.h b/tcg/riscv/tcg-target-con-str.h
-index d5c419dff1..b2b3211bcb 100644
---- a/tcg/riscv/tcg-target-con-str.h
-+++ b/tcg/riscv/tcg-target-con-str.h
-@@ -9,6 +9,7 @@
-  * REGS(letter, register_mask)
-  */
- REGS('r', ALL_GENERAL_REGS)
-+REGS('v', ALL_VECTOR_REGS)
- 
- /*
-  * Define constraint letters for constants:
-diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index d334857226..966d1ad981 100644
---- a/tcg/riscv/tcg-target.c.inc
-+++ b/tcg/riscv/tcg-target.c.inc
-@@ -32,38 +32,14 @@
- 
- #ifdef CONFIG_DEBUG_TCG
- static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
--    "zero",
--    "ra",
--    "sp",
--    "gp",
--    "tp",
--    "t0",
--    "t1",
--    "t2",
--    "s0",
--    "s1",
--    "a0",
--    "a1",
--    "a2",
--    "a3",
--    "a4",
--    "a5",
--    "a6",
--    "a7",
--    "s2",
--    "s3",
--    "s4",
--    "s5",
--    "s6",
--    "s7",
--    "s8",
--    "s9",
--    "s10",
--    "s11",
--    "t3",
--    "t4",
--    "t5",
--    "t6"
-+    "zero", "ra",  "sp",  "gp",  "tp",  "t0",  "t1",  "t2",
-+    "s0",   "s1",  "a0",  "a1",  "a2",  "a3",  "a4",  "a5",
-+    "a6",   "a7",  "s2",  "s3",  "s4",  "s5",  "s6",  "s7",
-+    "s8",   "s9",  "s10", "s11", "t3",  "t4",  "t5",  "t6",
-+    "v0",   "v1",  "v2",  "v3",  "v4",  "v5",  "v6",  "v7",
-+    "v8",   "v9",  "v10", "v11", "v12", "v13", "v14", "v15",
-+    "v16",  "v17", "v18", "v19", "v20", "v21", "v22", "v23",
-+    "v24",  "v25", "v26", "v27", "v28", "v29", "v30", "v31",
- };
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 21d5884741..93aa9c30ee 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -544,6 +544,12 @@ struct TCGContext {
+     struct qemu_plugin_insn *plugin_insn;
  #endif
  
-@@ -100,6 +76,16 @@ static const int tcg_target_reg_alloc_order[] = {
-     TCG_REG_A5,
-     TCG_REG_A6,
-     TCG_REG_A7,
++    /* For host-specific values. */
++#ifdef __riscv
++    MemOp riscv_cur_vsew;
++    TCGType riscv_cur_type;
++#endif
 +
-+    /* Vector registers and TCG_REG_V0 reserved for mask. */
-+    TCG_REG_V1,  TCG_REG_V2,  TCG_REG_V3,  TCG_REG_V4,
-+    TCG_REG_V5,  TCG_REG_V6,  TCG_REG_V7,  TCG_REG_V8,
-+    TCG_REG_V9,  TCG_REG_V10, TCG_REG_V11, TCG_REG_V12,
-+    TCG_REG_V13, TCG_REG_V14, TCG_REG_V15, TCG_REG_V16,
-+    TCG_REG_V17, TCG_REG_V18, TCG_REG_V19, TCG_REG_V20,
-+    TCG_REG_V21, TCG_REG_V22, TCG_REG_V23, TCG_REG_V24,
-+    TCG_REG_V25, TCG_REG_V26, TCG_REG_V27, TCG_REG_V28,
-+    TCG_REG_V29, TCG_REG_V30, TCG_REG_V31,
+     GHashTable *const_table[TCG_TYPE_COUNT];
+     TCGTempSet free_temps[TCG_TYPE_COUNT];
+     TCGTemp temps[TCG_MAX_TEMPS]; /* globals first, temps after */
+@@ -566,6 +572,7 @@ struct TCGContext {
+ 
+     /* Exit to translator on overflow. */
+     sigjmp_buf jmp_trans;
++
  };
  
- static const int tcg_target_call_iarg_regs[] = {
-@@ -127,6 +113,9 @@ static TCGReg tcg_target_call_oarg_reg(TCGCallReturnKind kind, int slot)
- #define TCG_CT_CONST_J12  0x1000
+ static inline bool temp_readonly(TCGTemp *ts)
+diff --git a/tcg/riscv/tcg-target-con-set.h b/tcg/riscv/tcg-target-con-set.h
+index aac5ceee2b..d73a62b0f2 100644
+--- a/tcg/riscv/tcg-target-con-set.h
++++ b/tcg/riscv/tcg-target-con-set.h
+@@ -21,3 +21,5 @@ C_O1_I2(r, rZ, rZ)
+ C_N1_I2(r, r, rM)
+ C_O1_I4(r, r, rI, rM, rM)
+ C_O2_I4(r, r, rZ, rZ, rM, rM)
++C_O0_I2(v, r)
++C_O1_I1(v, r)
+diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+index 966d1ad981..47f4e35237 100644
+--- a/tcg/riscv/tcg-target.c.inc
++++ b/tcg/riscv/tcg-target.c.inc
+@@ -165,6 +165,31 @@ static bool tcg_target_const_match(int64_t val, int ct,
+  * RISC-V Base ISA opcodes (IM)
+  */
  
- #define ALL_GENERAL_REGS   MAKE_64BIT_MASK(0, 32)
-+#define ALL_VECTOR_REGS    MAKE_64BIT_MASK(32, 32)
-+#define ALL_DVECTOR_REG_GROUPS 0x5555555500000000
-+#define ALL_QVECTOR_REG_GROUPS 0x1111111100000000
- 
- #define sextreg  sextract64
- 
-@@ -766,6 +755,23 @@ static void tcg_out_addsub2(TCGContext *s,
-     }
- }
- 
-+static bool tcg_out_dup_vec(TCGContext *s, TCGType type, unsigned vece,
-+                                   TCGReg dst, TCGReg src)
-+{
-+    return false;
-+}
++#define V_OPIVV (0x0 << 12)
++#define V_OPFVV (0x1 << 12)
++#define V_OPMVV (0x2 << 12)
++#define V_OPIVI (0x3 << 12)
++#define V_OPIVX (0x4 << 12)
++#define V_OPFVF (0x5 << 12)
++#define V_OPMVX (0x6 << 12)
++#define V_OPCFG (0x7 << 12)
 +
-+static bool tcg_out_dupm_vec(TCGContext *s, TCGType type, unsigned vece,
-+                                    TCGReg dst, TCGReg base, intptr_t offset)
-+{
-+    return false;
-+}
++/* NF <= 7 && NF >= 0 */
++#define V_NF(x) (x << 29)
++#define V_UNIT_STRIDE (0x0 << 20)
++#define V_UNIT_STRIDE_WHOLE_REG (0x8 << 20)
 +
-+static void tcg_out_dupi_vec(TCGContext *s, TCGType type, unsigned vece,
-+                                    TCGReg dst, int64_t arg)
-+{
-+}
++typedef enum {
++    VLMUL_M1 = 0, /* LMUL=1 */
++    VLMUL_M2,     /* LMUL=2 */
++    VLMUL_M4,     /* LMUL=4 */
++    VLMUL_M8,     /* LMUL=8 */
++    VLMUL_RESERVED,
++    VLMUL_MF8,    /* LMUL=1/8 */
++    VLMUL_MF4,    /* LMUL=1/4 */
++    VLMUL_MF2,    /* LMUL=1/2 */
++} RISCVVlmul;
 +
- static const struct {
-     RISCVInsn op;
-     bool swap;
-@@ -1881,6 +1887,36 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
-     }
- }
- 
-+static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-+                           unsigned vecl, unsigned vece,
-+                           const TCGArg args[TCG_MAX_OP_ARGS],
-+                           const int const_args[TCG_MAX_OP_ARGS])
-+{
-+    switch (opc) {
-+    case INDEX_op_mov_vec: /* Always emitted via tcg_out_mov.  */
-+    case INDEX_op_dup_vec: /* Always emitted via tcg_out_dup_vec.  */
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+void tcg_expand_vec_op(TCGOpcode opc, TCGType type, unsigned vece,
-+                       TCGArg a0, ...)
-+{
-+    switch (opc) {
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
-+{
-+    switch (opc) {
-+    default:
-+        return 0;
-+    }
-+}
-+
- static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
- {
-     switch (op) {
-@@ -2100,6 +2136,30 @@ static void tcg_target_init(TCGContext *s)
- {
-     tcg_target_available_regs[TCG_TYPE_I32] = 0xffffffff;
-     tcg_target_available_regs[TCG_TYPE_I64] = 0xffffffff;
-+    s->reserved_regs = 0;
-+
-+    switch (riscv_lg2_vlenb) {
-+    case TCG_TYPE_V64:
-+        tcg_target_available_regs[TCG_TYPE_V64] = ALL_VECTOR_REGS;
-+        tcg_target_available_regs[TCG_TYPE_V128] = ALL_DVECTOR_REG_GROUPS;
-+        tcg_target_available_regs[TCG_TYPE_V256] = ALL_QVECTOR_REG_GROUPS;
-+        s->reserved_regs |= (~ALL_QVECTOR_REG_GROUPS & ALL_VECTOR_REGS);
-+        break;
-+    case TCG_TYPE_V128:
-+        tcg_target_available_regs[TCG_TYPE_V64] = ALL_VECTOR_REGS;
-+        tcg_target_available_regs[TCG_TYPE_V128] = ALL_VECTOR_REGS;
-+        tcg_target_available_regs[TCG_TYPE_V256] = ALL_DVECTOR_REG_GROUPS;
-+        s->reserved_regs |= (~ALL_DVECTOR_REG_GROUPS & ALL_VECTOR_REGS);
-+        break;
-+    default:
-+        /* Guaranteed by Zve64x. */
-+        tcg_debug_assert(riscv_lg2_vlenb >= TCG_TYPE_V256);
-+
-+        tcg_target_available_regs[TCG_TYPE_V64] = ALL_VECTOR_REGS;
-+        tcg_target_available_regs[TCG_TYPE_V128] = ALL_VECTOR_REGS;
-+        tcg_target_available_regs[TCG_TYPE_V256] = ALL_VECTOR_REGS;
-+        break;
-+    }
- 
-     tcg_target_call_clobber_regs = -1u;
-     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S0);
-@@ -2115,7 +2175,6 @@ static void tcg_target_init(TCGContext *s)
-     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S10);
-     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S11);
- 
--    s->reserved_regs = 0;
-     tcg_regset_set_reg(s->reserved_regs, TCG_REG_ZERO);
-     tcg_regset_set_reg(s->reserved_regs, TCG_REG_TMP0);
-     tcg_regset_set_reg(s->reserved_regs, TCG_REG_TMP1);
-@@ -2123,6 +2182,7 @@ static void tcg_target_init(TCGContext *s)
-     tcg_regset_set_reg(s->reserved_regs, TCG_REG_SP);
-     tcg_regset_set_reg(s->reserved_regs, TCG_REG_GP);
-     tcg_regset_set_reg(s->reserved_regs, TCG_REG_TP);
-+    tcg_regset_set_reg(s->reserved_regs, TCG_REG_V0);
- }
- 
- typedef struct {
-diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
-index 1a347eaf6e..12a7a37aaa 100644
---- a/tcg/riscv/tcg-target.h
-+++ b/tcg/riscv/tcg-target.h
-@@ -28,42 +28,28 @@
- #include "host/cpuinfo.h"
- 
- #define TCG_TARGET_INSN_UNIT_SIZE 4
--#define TCG_TARGET_NB_REGS 32
-+#define TCG_TARGET_NB_REGS 64
- #define MAX_CODE_GEN_BUFFER_SIZE  ((size_t)-1)
- 
  typedef enum {
--    TCG_REG_ZERO,
--    TCG_REG_RA,
--    TCG_REG_SP,
--    TCG_REG_GP,
--    TCG_REG_TP,
--    TCG_REG_T0,
--    TCG_REG_T1,
--    TCG_REG_T2,
--    TCG_REG_S0,
--    TCG_REG_S1,
--    TCG_REG_A0,
--    TCG_REG_A1,
--    TCG_REG_A2,
--    TCG_REG_A3,
--    TCG_REG_A4,
--    TCG_REG_A5,
--    TCG_REG_A6,
--    TCG_REG_A7,
--    TCG_REG_S2,
--    TCG_REG_S3,
--    TCG_REG_S4,
--    TCG_REG_S5,
--    TCG_REG_S6,
--    TCG_REG_S7,
--    TCG_REG_S8,
--    TCG_REG_S9,
--    TCG_REG_S10,
--    TCG_REG_S11,
--    TCG_REG_T3,
--    TCG_REG_T4,
--    TCG_REG_T5,
--    TCG_REG_T6,
-+    TCG_REG_ZERO, TCG_REG_RA,  TCG_REG_SP,  TCG_REG_GP,
-+    TCG_REG_TP,   TCG_REG_T0,  TCG_REG_T1,  TCG_REG_T2,
-+    TCG_REG_S0,   TCG_REG_S1,  TCG_REG_A0,  TCG_REG_A1,
-+    TCG_REG_A2,   TCG_REG_A3,  TCG_REG_A4,  TCG_REG_A5,
-+    TCG_REG_A6,   TCG_REG_A7,  TCG_REG_S2,  TCG_REG_S3,
-+    TCG_REG_S4,   TCG_REG_S5,  TCG_REG_S6,  TCG_REG_S7,
-+    TCG_REG_S8,   TCG_REG_S9,  TCG_REG_S10, TCG_REG_S11,
-+    TCG_REG_T3,   TCG_REG_T4,  TCG_REG_T5,  TCG_REG_T6,
+     OPC_ADD = 0x33,
+     OPC_ADDI = 0x13,
+@@ -260,6 +285,30 @@ typedef enum {
+     /* Zicond: integer conditional operations */
+     OPC_CZERO_EQZ = 0x0e005033,
+     OPC_CZERO_NEZ = 0x0e007033,
 +
-+    /* RISC-V V Extension registers */
-+    TCG_REG_V0,   TCG_REG_V1,  TCG_REG_V2,  TCG_REG_V3,
-+    TCG_REG_V4,   TCG_REG_V5,  TCG_REG_V6,  TCG_REG_V7,
-+    TCG_REG_V8,   TCG_REG_V9,  TCG_REG_V10, TCG_REG_V11,
-+    TCG_REG_V12,  TCG_REG_V13, TCG_REG_V14, TCG_REG_V15,
-+    TCG_REG_V16,  TCG_REG_V17, TCG_REG_V18, TCG_REG_V19,
-+    TCG_REG_V20,  TCG_REG_V21, TCG_REG_V22, TCG_REG_V23,
-+    TCG_REG_V24,  TCG_REG_V25, TCG_REG_V26, TCG_REG_V27,
-+    TCG_REG_V28,  TCG_REG_V29, TCG_REG_V30, TCG_REG_V31,
- 
-     /* aliases */
-     TCG_AREG0          = TCG_REG_S0,
-@@ -156,6 +142,32 @@ typedef enum {
- 
- #define TCG_TARGET_HAS_tst              0
- 
-+/* vector instructions */
-+#define TCG_TARGET_HAS_v64              0
-+#define TCG_TARGET_HAS_v128             0
-+#define TCG_TARGET_HAS_v256             0
-+#define TCG_TARGET_HAS_andc_vec         0
-+#define TCG_TARGET_HAS_orc_vec          0
-+#define TCG_TARGET_HAS_nand_vec         0
-+#define TCG_TARGET_HAS_nor_vec          0
-+#define TCG_TARGET_HAS_eqv_vec          0
-+#define TCG_TARGET_HAS_not_vec          0
-+#define TCG_TARGET_HAS_neg_vec          0
-+#define TCG_TARGET_HAS_abs_vec          0
-+#define TCG_TARGET_HAS_roti_vec         0
-+#define TCG_TARGET_HAS_rots_vec         0
-+#define TCG_TARGET_HAS_rotv_vec         0
-+#define TCG_TARGET_HAS_shi_vec          0
-+#define TCG_TARGET_HAS_shs_vec          0
-+#define TCG_TARGET_HAS_shv_vec          0
-+#define TCG_TARGET_HAS_mul_vec          0
-+#define TCG_TARGET_HAS_sat_vec          0
-+#define TCG_TARGET_HAS_minmax_vec       0
-+#define TCG_TARGET_HAS_bitsel_vec       0
-+#define TCG_TARGET_HAS_cmpsel_vec       0
++    /* V: Vector extension 1.0 */
++    OPC_VSETVLI  = 0x57 | V_OPCFG,
++    OPC_VSETIVLI = 0xc0000057 | V_OPCFG,
++    OPC_VSETVL   = 0x80000057 | V_OPCFG,
 +
-+#define TCG_TARGET_HAS_tst_vec          0
++    OPC_VLE8_V  = 0x7 | V_UNIT_STRIDE,
++    OPC_VLE16_V = 0x5007 | V_UNIT_STRIDE,
++    OPC_VLE32_V = 0x6007 | V_UNIT_STRIDE,
++    OPC_VLE64_V = 0x7007 | V_UNIT_STRIDE,
++    OPC_VSE8_V  = 0x27 | V_UNIT_STRIDE,
++    OPC_VSE16_V = 0x5027 | V_UNIT_STRIDE,
++    OPC_VSE32_V = 0x6027 | V_UNIT_STRIDE,
++    OPC_VSE64_V = 0x7027 | V_UNIT_STRIDE,
 +
- #define TCG_TARGET_DEFAULT_MO (0)
++    OPC_VL1RE64_V = 0x2007007 | V_UNIT_STRIDE_WHOLE_REG | V_NF(0),
++    OPC_VL2RE64_V = 0x2007007 | V_UNIT_STRIDE_WHOLE_REG | V_NF(1),
++    OPC_VL4RE64_V = 0x2007007 | V_UNIT_STRIDE_WHOLE_REG | V_NF(3),
++    OPC_VL8RE64_V = 0x2007007 | V_UNIT_STRIDE_WHOLE_REG | V_NF(7),
++
++    OPC_VS1R_V = 0x2000027 | V_UNIT_STRIDE_WHOLE_REG | V_NF(0),
++    OPC_VS2R_V = 0x2000027 | V_UNIT_STRIDE_WHOLE_REG | V_NF(1),
++    OPC_VS4R_V = 0x2000027 | V_UNIT_STRIDE_WHOLE_REG | V_NF(3),
++    OPC_VS8R_V = 0x2000027 | V_UNIT_STRIDE_WHOLE_REG | V_NF(7),
+ } RISCVInsn;
  
- #define TCG_TARGET_NEED_LDST_LABELS
-diff --git a/tcg/riscv/tcg-target.opc.h b/tcg/riscv/tcg-target.opc.h
-new file mode 100644
-index 0000000000..b80b39e1e5
---- /dev/null
-+++ b/tcg/riscv/tcg-target.opc.h
-@@ -0,0 +1,12 @@
+ /*
+@@ -352,6 +401,35 @@ static int32_t encode_uj(RISCVInsn opc, TCGReg rd, uint32_t imm)
+     return opc | (rd & 0x1f) << 7 | encode_ujimm20(imm);
+ }
+ 
++/* Type-OPIVV/OPMVV/OPIVX/OPMVX, Vector load and store */
++
++static int32_t encode_v(RISCVInsn opc, TCGReg d, TCGReg s1,
++                        TCGReg s2, bool vm)
++{
++    return opc | (d & 0x1f) << 7 | (s1 & 0x1f) << 15 |
++           (s2 & 0x1f) << 20 | (vm << 25);
++}
++
++/* Vector vtype */
++
++static uint32_t encode_vtype(bool vta, bool vma,
++                            MemOp vsew, RISCVVlmul vlmul)
++{
++    return vma << 7 | vta << 6 | vsew << 3 | vlmul;
++}
++
++static int32_t encode_vset(RISCVInsn opc, TCGReg rd,
++                           TCGArg rs1, uint32_t vtype)
++{
++    return opc | (rd & 0x1f) << 7 | (rs1 & 0x1f) << 15 | (vtype & 0x7ff) << 20;
++}
++
++static int32_t encode_vseti(RISCVInsn opc, TCGReg rd,
++                            uint32_t uimm, uint32_t vtype)
++{
++    return opc | (rd & 0x1f) << 7 | (uimm & 0x1f) << 15 | (vtype & 0x3ff) << 20;
++}
++
+ /*
+  * RISC-V instruction emitters
+  */
+@@ -464,6 +542,88 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
+     }
+ }
+ 
 +/*
-+ * Copyright (c) C-SKY Microsystems Co., Ltd.
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * (at your option) any later version.
-+ *
-+ * See the COPYING file in the top-level directory for details.
-+ *
-+ * Target-specific opcodes for host vector expansion.  These will be
-+ * emitted by tcg_expand_vec_op.  For those familiar with GCC internals,
-+ * consider these to be UNSPEC with names.
++ * RISC-V vector instruction emitters
 + */
++
++/*
++ * Only unit-stride addressing implemented; may extend in future.
++ */
++static void tcg_out_opc_ldst_vec(TCGContext *s, RISCVInsn opc, TCGReg data,
++                                 TCGReg rs1, bool vm)
++{
++    tcg_out32(s, encode_v(opc, data, rs1, 0, vm));
++}
++
++static bool lmul_check(int lmul, MemOp vsew)
++{
++    /*
++     * For a given supported fractional LMUL setting, implementations must
++     * support SEW settings between SEW_MIN and LMUL * ELEN, inclusive.
++     * So if ELEN = 64, LMUL = 1/2, then SEW will support e8, e16, e32,
++     * but e64 may not be supported.
++     */
++    if (lmul < 0) {
++        return (8 << vsew) <= (64 / (1 << (-lmul)));
++    } else {
++        return true;
++    }
++}
++
++static void set_vtype(TCGContext *s, TCGType type, MemOp vsew)
++{
++    unsigned vtype, insn, avl;
++    int lmul;
++    RISCVVlmul vlmul;
++    bool lmul_eq_avl;
++
++    s->riscv_cur_type = type;
++    s->riscv_cur_vsew = vsew;
++
++    /* Match riscv_lg2_vlenb to TCG_TYPE_V64. */
++    QEMU_BUILD_BUG_ON(TCG_TYPE_V64 != 3);
++
++    lmul = type - riscv_lg2_vlenb;
++    if (lmul < -3) {
++        /* Host VLEN >= 1024 bits. */
++        vlmul = VLMUL_M1;
++        lmul_eq_avl = false;
++    } else if (lmul < 3) {
++        /* 1/8, 1/4, 1/2, 1, 2, 4 */
++        if (lmul_check(lmul, vsew)) {
++            vlmul = lmul & 7;
++        } else {
++            vlmul = VLMUL_M1;
++        }
++        lmul_eq_avl = true;
++    } else {
++        /* Guaranteed by Zve64x. */
++        g_assert_not_reached();
++    }
++
++    avl = tcg_type_size(type) >> vsew;
++    vtype = encode_vtype(true, true, vsew, vlmul);
++
++    if (avl < 32) {
++        insn = encode_vseti(OPC_VSETIVLI, TCG_REG_ZERO, avl, vtype);
++    } else if (lmul_eq_avl) {
++        /* rd != 0 and rs1 == 0 uses vlmax */
++        insn = encode_vset(OPC_VSETVLI, TCG_REG_TMP0, TCG_REG_ZERO, vtype);
++    } else {
++        tcg_out_opc_imm(s, OPC_ADDI, TCG_REG_TMP0, TCG_REG_ZERO, avl);
++        insn = encode_vset(OPC_VSETVLI, TCG_REG_ZERO, TCG_REG_TMP0, vtype);
++    }
++    tcg_out32(s, insn);
++}
++
++static MemOp set_vtype_len(TCGContext *s, TCGType type)
++{
++    if (type != s->riscv_cur_type) {
++        set_vtype(s, type, MO_64);
++    }
++    return s->riscv_cur_vsew;
++}
++
+ /*
+  * TCG intrinsics
+  */
+@@ -670,18 +830,101 @@ static void tcg_out_ldst(TCGContext *s, RISCVInsn opc, TCGReg data,
+     }
+ }
+ 
++static void tcg_out_vec_ldst(TCGContext *s, RISCVInsn opc, TCGReg data,
++                              TCGReg addr, intptr_t offset)
++{
++    tcg_debug_assert(data >= TCG_REG_V0);
++    tcg_debug_assert(addr < TCG_REG_V0);
++
++    if (offset) {
++        tcg_debug_assert(addr != TCG_REG_ZERO);
++        if (offset == sextreg(offset, 0, 12)) {
++            tcg_out_opc_imm(s, OPC_ADDI, TCG_REG_TMP0, addr, offset);
++        } else {
++            tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP0, offset);
++            tcg_out_opc_reg(s, OPC_ADD, TCG_REG_TMP0, TCG_REG_TMP0, addr);
++        }
++        addr = TCG_REG_TMP0;
++    }
++    tcg_out_opc_ldst_vec(s, opc, data, addr, true);
++}
++
+ static void tcg_out_ld(TCGContext *s, TCGType type, TCGReg arg,
+                        TCGReg arg1, intptr_t arg2)
+ {
+-    RISCVInsn insn = type == TCG_TYPE_I32 ? OPC_LW : OPC_LD;
+-    tcg_out_ldst(s, insn, arg, arg1, arg2);
++    RISCVInsn insn;
++
++    switch (type) {
++    case TCG_TYPE_I32:
++        tcg_out_ldst(s, OPC_LW, arg, arg1, arg2);
++        break;
++    case TCG_TYPE_I64:
++        tcg_out_ldst(s, OPC_LD, arg, arg1, arg2);
++        break;
++    case TCG_TYPE_V64:
++    case TCG_TYPE_V128:
++    case TCG_TYPE_V256:
++        if (type >= riscv_lg2_vlenb) {
++            static const RISCVInsn whole_reg_ld[] = {
++                OPC_VL1RE64_V, OPC_VL2RE64_V, OPC_VL4RE64_V, OPC_VL8RE64_V
++            };
++            unsigned idx = type - riscv_lg2_vlenb;
++
++            tcg_debug_assert(idx < sizeof(whole_reg_ld));
++            insn = whole_reg_ld[idx];
++        } else {
++            static const RISCVInsn unit_stride_ld[] = {
++                OPC_VLE8_V, OPC_VLE16_V, OPC_VLE32_V, OPC_VLE64_V
++            };
++            MemOp prev_vsew = set_vtype_len(s, type);
++
++            tcg_debug_assert(prev_vsew < sizeof(unit_stride_ld));
++            insn = unit_stride_ld[prev_vsew];
++        }
++        tcg_out_vec_ldst(s, insn, arg, arg1, arg2);
++        break;
++    default:
++        g_assert_not_reached();
++    }
+ }
+ 
+ static void tcg_out_st(TCGContext *s, TCGType type, TCGReg arg,
+                        TCGReg arg1, intptr_t arg2)
+ {
+-    RISCVInsn insn = type == TCG_TYPE_I32 ? OPC_SW : OPC_SD;
+-    tcg_out_ldst(s, insn, arg, arg1, arg2);
++    RISCVInsn insn;
++
++    switch (type) {
++    case TCG_TYPE_I32:
++        tcg_out_ldst(s, OPC_SW, arg, arg1, arg2);
++        break;
++    case TCG_TYPE_I64:
++        tcg_out_ldst(s, OPC_SD, arg, arg1, arg2);
++        break;
++    case TCG_TYPE_V64:
++    case TCG_TYPE_V128:
++    case TCG_TYPE_V256:
++        if (type >= riscv_lg2_vlenb) {
++            static const RISCVInsn whole_reg_st[] = {
++                OPC_VS1R_V, OPC_VS2R_V, OPC_VS4R_V, OPC_VS8R_V
++            };
++            unsigned idx = type - riscv_lg2_vlenb;
++
++            tcg_debug_assert(idx < sizeof(whole_reg_st));
++            insn = whole_reg_st[idx];
++        } else {
++            static const RISCVInsn unit_stride_st[] = {
++                OPC_VSE8_V, OPC_VSE16_V, OPC_VSE32_V, OPC_VSE64_V
++            };
++            MemOp prev_vsew = set_vtype_len(s, type);
++
++            tcg_debug_assert(prev_vsew < sizeof(unit_stride_st));
++            insn = unit_stride_st[prev_vsew];
++        }
++        tcg_out_vec_ldst(s, insn, arg, arg1, arg2);
++        break;
++    default:
++        g_assert_not_reached();
++    }
+ }
+ 
+ static bool tcg_out_sti(TCGContext *s, TCGType type, TCGArg val,
+@@ -1892,7 +2135,20 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+                            const TCGArg args[TCG_MAX_OP_ARGS],
+                            const int const_args[TCG_MAX_OP_ARGS])
+ {
++    TCGType type = vecl + TCG_TYPE_V64;
++    TCGArg a0, a1, a2;
++
++    a0 = args[0];
++    a1 = args[1];
++    a2 = args[2];
++
+     switch (opc) {
++    case INDEX_op_ld_vec:
++        tcg_out_ld(s, type, a0, a1, a2);
++        break;
++    case INDEX_op_st_vec:
++        tcg_out_st(s, type, a0, a1, a2);
++        break;
+     case INDEX_op_mov_vec: /* Always emitted via tcg_out_mov.  */
+     case INDEX_op_dup_vec: /* Always emitted via tcg_out_dup_vec.  */
+     default:
+@@ -2056,6 +2312,10 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_qemu_st_a64_i64:
+         return C_O0_I2(rZ, r);
+ 
++    case INDEX_op_st_vec:
++        return C_O0_I2(v, r);
++    case INDEX_op_ld_vec:
++        return C_O1_I1(v, r);
+     default:
+         g_assert_not_reached();
+     }
+@@ -2129,6 +2389,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+ 
+ static void tcg_out_tb_start(TCGContext *s)
+ {
++    s->riscv_cur_type = TCG_TYPE_COUNT;
+     /* nothing to do */
+ }
+ 
 -- 
 2.43.0
 
