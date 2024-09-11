@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B9F9751B2
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1969751B7
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:16:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMG8-0006hY-5w; Wed, 11 Sep 2024 08:15:44 -0400
+	id 1soMGC-0007ml-Kg; Wed, 11 Sep 2024 08:15:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMFW-0005zH-Bo
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:15:10 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMFa-0006CL-BN
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:15:12 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMFR-0007BP-9g
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:15:03 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a8d43657255so513474166b.0
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:15:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMFX-0007Bv-Vr
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:15:09 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a8d100e9ce0so677706366b.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:15:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726056899; x=1726661699; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726056905; x=1726661705; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z8YejXUnvjps1R98iES1hFKof918dPtM+kFcMx/JcZI=;
- b=vlXkVtk+iDcsZ+3gMY3873AX8fC955g4jA2ZnWX0+FhkaGZ7oNYGua1ILhR6hCbEBB
- KjdtJM5qP4MbXVYAdaHAlGJPdK16Ov7vbZkjlJgLEXYYHd/JnHsdplGQvn7KSoQ1Jj3i
- M7Occofi/IvvlZ2FRgd+SMcDk9pE+K66C5BKG/eo9i2e+/bPXyqDn0UuN6oAxgFFik84
- OyGaxRke4gI33huAoCxbZ50zB+ZDZYJLXrK8et3n2/sg2jMCtBpfNCvnmcbRkrWD7upz
- b5fvf94xvlgTjtJAOsxRPZk4t5asqLjQUvD6tcUhwD3oE9R+DwFTDvjEYzoNI8Azis1N
- UD9w==
+ bh=LLvbZKUD4kZ8okDx/zMPvNVTVHxXSANES/l3IRefTcE=;
+ b=y2qLZM3EIhcC2/G3vRZfpvVY71AXaQWP3ZkBzyo0UrBAPkcH7QC1q+A9mDGKUssvyx
+ SL3LX/5FnCYl2+c122ycduY8ZznVkPBygOIzEapn8LfH8y64neK1+IUaaqhaBMDLfKya
+ VU2lgQFT6aSqhUHkILymVA2/ils0UVTFghWBgrCilbAM8c7GpM6m6XT3wckNs/Jz5k7S
+ bFg2VEb/lJGxB+ZEblmypaQNNUfLT20O2WK5KenV+VutMPCW9Eqq46IMa2YANWGYC9Sj
+ IVHyhiltlY4XEFxO5GmJNPrb3Ppc1UktAHUBHLnSH1PM/GwSU+UaiSANgEjJISeLRJ8g
+ K1BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726056899; x=1726661699;
+ d=1e100.net; s=20230601; t=1726056905; x=1726661705;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z8YejXUnvjps1R98iES1hFKof918dPtM+kFcMx/JcZI=;
- b=BmFO23GHxk3mP/HjmvE0e36/Av9AP/OVUKKnkDnXCwQw0FsF6kYMdpwLQFG9QwQSm9
- 5+qwhQQxPbpuyjbKr5vv4xN18XPGmJ8rivM/oSyz79r+z61mJ6OPudFQ341nzpOzQVbn
- 7wVPhYrnUODa21zW24bCq9dRVgGpIYX5MmxP1Wpqo53abY8C50L0jHIqvbQpCaD9xh54
- ETg+WKYp1phRLo7ny3BJjrwjeLYrg0NhIp9OWFUcFqdxbkl9LevVsHfXF2DdD1k5x1Tf
- z4Dv7vD+Cl4SZ0/fYEwzYw8+lnIX5U6T7eRHwn9AOT7lgKurOgOHD+OSmj2aegpDUhD2
- lgsQ==
-X-Gm-Message-State: AOJu0Yy64hPFXnUhWrEBzp5ldlYs/gKMfpglSnqXkXVbR7Zyo/1M/YtQ
- 4jg5cbvnWPoUb2efa+UWcGq488fpTEjP21uGDpckDHMMfP3lOOdihLMv4LyaCHlAk4yKHjTr/ff
- B
-X-Google-Smtp-Source: AGHT+IH/J+zvj4EKEiIFToZ8vZMCHz4t6e6pSpOXIwD13pbkwujcznAH8M/t0mB5rUoUCpOEN/EGSg==
-X-Received: by 2002:a17:907:6095:b0:a8d:1303:2283 with SMTP id
- a640c23a62f3a-a8ffab6cbb4mr354267666b.30.1726056899016; 
- Wed, 11 Sep 2024 05:14:59 -0700 (PDT)
+ bh=LLvbZKUD4kZ8okDx/zMPvNVTVHxXSANES/l3IRefTcE=;
+ b=DFNTZszItmFRwnYnDr559JvW1U1TnQ6NEkcbuQGn/zIfovqvjhcBk2K7R5IYMhuk4U
+ YKpcER3yFrVmSzSf2AzFx6EkRS4JjncldlQvLR15T/OhB4KFvCYJX4H2tiYuyLSx+91L
+ EzY1f1l/oBlGS4EpZyGFu+3GEpGBifCbSwJAsGznxdVlbkIJZJmgCW2IUhLC343JNUm6
+ wuNWFUWYaWyjH4wFk9F3nothEeXVjXlJSasXC2wAE/uN996aJC41vuGn2k76NpXIQfPc
+ sc+xZaYAe0F++A4qNN4jsX2hTEYpTdD1PRXLQp5Cx0wfR/0vXQ2CZ0AArHuEHoREIb/y
+ WQJg==
+X-Gm-Message-State: AOJu0YwHj3Rl2dqHsYR2HqQeP3abP2P7uJXqinIJd5QyJntJaJ34Vq7M
+ ZzPHudbMkEObUSXEV2VnllvaCphA2fTDw+Miwp8dIjqSYykykJJYFZAhJcsWpamPvDMaRwBw6G9
+ r
+X-Google-Smtp-Source: AGHT+IF2Q5CuHHBXJukvBm2j1TyGifhmEe3Rk6jBgnBEDsC0zZJ4/pMjoTuTR5SvYpr8EkYyFixPvg==
+X-Received: by 2002:a17:907:961f:b0:a8d:2faf:d333 with SMTP id
+ a640c23a62f3a-a8ffab83475mr394432266b.35.1726056905184; 
+ Wed, 11 Sep 2024 05:15:05 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25ce86e0sm611757566b.143.2024.09.11.05.14.57
+ a640c23a62f3a-a8d25cf4a1fsm602958066b.181.2024.09.11.05.15.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:14:58 -0700 (PDT)
+ Wed, 11 Sep 2024 05:15:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 05/56] hw/block: Remove TC58128 NAND EEPROM
-Date: Wed, 11 Sep 2024 14:13:30 +0200
-Message-ID: <20240911121422.52585-6-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: [PULL 06/56] hw/sh4: Remove sh7750_register_io_device() helper
+Date: Wed, 11 Sep 2024 14:13:31 +0200
+Message-ID: <20240911121422.52585-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
 References: <20240911121422.52585-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,297 +93,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TC58128 NAND EEPROM is not user creatable and
-needs to be instanciated in the code via tc58128_init().
-
-Only the SHIX machine was using it, and it was removed
-in the previous commit. Since the TC58128 has no more
-users, remove it too.
+sh7750_register_io_device() was only used by the TC58128
+NAND EEPROM which has been removed in the previous commit.
+Remove it as unused code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20240903153959.18392-3-philmd@linaro.org>
+Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
+Message-ID: <20240903153959.18392-4-philmd@linaro.org>
 ---
- MAINTAINERS          |   6 --
- include/hw/sh4/sh.h  |   3 -
- hw/block/tc58128.c   | 211 -------------------------------------------
- hw/block/Kconfig     |   3 -
- hw/block/meson.build |   1 -
- 5 files changed, 224 deletions(-)
- delete mode 100644 hw/block/tc58128.c
+ include/hw/sh4/sh.h | 16 -------------
+ hw/sh4/sh7750.c     | 57 ++-------------------------------------------
+ 2 files changed, 2 insertions(+), 71 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ff5b3d1afd..26f9310a4f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1682,12 +1682,6 @@ F: hw/timer/sh_timer.c
- F: include/hw/sh4/sh_intc.h
- F: include/hw/timer/tmu012.h
- 
--TC58128 NAND EEPROM
--R: Yoshinori Sato <ysato@users.sourceforge.jp>
--R: Magnus Damm <magnus.damm@gmail.com>
--S: Odd Fixes
--F: hw/block/tc58128.c
--
- SPARC Machines
- --------------
- Sun4m
 diff --git a/include/hw/sh4/sh.h b/include/hw/sh4/sh.h
-index ec716cdd45..b726b987cc 100644
+index b726b987cc..c82feef8d0 100644
 --- a/include/hw/sh4/sh.h
 +++ b/include/hw/sh4/sh.h
-@@ -60,7 +60,4 @@ int sh7750_register_io_device(struct SH7750State *s,
- /* sh7750.c */
- qemu_irq sh7750_irl(struct SH7750State *s);
+@@ -38,22 +38,6 @@ struct SH7750State;
  
--/* tc58128.c */
--int tc58128_init(struct SH7750State *s, const char *zone1, const char *zone2);
--
- #endif
-diff --git a/hw/block/tc58128.c b/hw/block/tc58128.c
-deleted file mode 100644
-index 0984e37417..0000000000
---- a/hw/block/tc58128.c
-+++ /dev/null
-@@ -1,211 +0,0 @@
--/*
-- * TC58128 NAND EEPROM emulation
-- *
-- * Copyright (c) 2005 Samuel Tardieu
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a copy
-- * of this software and associated documentation files (the "Software"), to deal
-- * in the Software without restriction, including without limitation the rights
-- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-- * copies of the Software, and to permit persons to whom the Software is
-- * furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice (including the next
-- * paragraph) shall be included in all copies or substantial portions of the
-- * Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-- * THE SOFTWARE.
-- *
-- * SPDX-License-Identifier: MIT
-- */
--#include "qemu/osdep.h"
--#include "qemu/units.h"
--#include "hw/sh4/sh.h"
--#include "hw/loader.h"
--#include "sysemu/qtest.h"
--#include "qemu/error-report.h"
--
--#define CE1  0x0100
--#define CE2  0x0200
--#define RE   0x0400
--#define WE   0x0800
--#define ALE  0x1000
--#define CLE  0x2000
--#define RDY1 0x4000
--#define RDY2 0x8000
--#define RDY(n) ((n) == 0 ? RDY1 : RDY2)
--
--typedef enum { WAIT, READ1, READ2, READ3 } state_t;
--
+ struct SH7750State *sh7750_init(SuperHCPU *cpu, MemoryRegion *sysmem);
+ 
 -typedef struct {
--    uint8_t *flash_contents;
--    state_t state;
--    uint32_t address;
--    uint8_t address_cycle;
--} tc58128_dev;
+-    /* The callback will be triggered if any of the designated lines change */
+-    uint16_t portamask_trigger;
+-    uint16_t portbmask_trigger;
+-    /* Return 0 if no action was taken */
+-    int (*port_change_cb) (uint16_t porta, uint16_t portb,
+-                           uint16_t *periph_pdtra,
+-                           uint16_t *periph_portdira,
+-                           uint16_t *periph_pdtrb,
+-                           uint16_t *periph_portdirb);
+-} sh7750_io_device;
 -
--static tc58128_dev tc58128_devs[2];
+-int sh7750_register_io_device(struct SH7750State *s,
+-                              sh7750_io_device *device);
 -
--#define FLASH_SIZE (16 * MiB)
+-/* sh_serial.c */
+ #define TYPE_SH_SERIAL "sh-serial"
+ #define SH_SERIAL_FEAT_SCIF (1 << 0)
+ 
+diff --git a/hw/sh4/sh7750.c b/hw/sh4/sh7750.c
+index ebe0fd96d9..8041b3b651 100644
+--- a/hw/sh4/sh7750.c
++++ b/hw/sh4/sh7750.c
+@@ -38,8 +38,6 @@
+ #include "exec/exec-all.h"
+ #include "trace.h"
+ 
+-#define NB_DEVICES 4
 -
--static void init_dev(tc58128_dev * dev, const char *filename)
+ typedef struct SH7750State {
+     MemoryRegion iomem;
+     MemoryRegion iomem_1f0;
+@@ -75,7 +73,6 @@ typedef struct SH7750State {
+     uint16_t periph_portdira; /* Direction seen from the peripherals */
+     uint16_t periph_pdtrb;    /* Imposed by the peripherals */
+     uint16_t periph_portdirb; /* Direction seen from the peripherals */
+-    sh7750_io_device *devices[NB_DEVICES]; /* External peripherals */
+ 
+     /* Cache */
+     uint32_t ccr;
+@@ -92,19 +89,6 @@ static inline int has_bcr3_and_bcr4(SH7750State *s)
+  * I/O ports
+  */
+ 
+-int sh7750_register_io_device(SH7750State *s, sh7750_io_device *device)
 -{
--    int ret, blocks;
+-    int i;
 -
--    dev->state = WAIT;
--    dev->flash_contents = g_malloc(FLASH_SIZE);
--    memset(dev->flash_contents, 0xff, FLASH_SIZE);
--    if (filename) {
--        /* Load flash image skipping the first block */
--        ret = load_image_size(filename, dev->flash_contents + 528 * 32,
--                              FLASH_SIZE - 528 * 32);
--        if (ret < 0) {
--            if (!qtest_enabled()) {
--                error_report("Could not load flash image %s", filename);
--                exit(1);
--            }
--        } else {
--            /* Build first block with number of blocks */
--            blocks = DIV_ROUND_UP(ret, 528 * 32);
--            dev->flash_contents[0] = blocks & 0xff;
--            dev->flash_contents[1] = (blocks >> 8) & 0xff;
--            dev->flash_contents[2] = (blocks >> 16) & 0xff;
--            dev->flash_contents[3] = (blocks >> 24) & 0xff;
--            fprintf(stderr, "loaded %d bytes for %s into flash\n", ret,
--                    filename);
+-    for (i = 0; i < NB_DEVICES; i++) {
+-        if (s->devices[i] == NULL) {
+-            s->devices[i] = device;
+-            return 0;
 -        }
 -    }
+-    return -1;
 -}
 -
--static void handle_command(tc58128_dev * dev, uint8_t command)
+ static uint16_t portdir(uint32_t v)
+ {
+ #define EVENPORTMASK(n) ((v & (1 << ((n) << 1))) >> (n))
+@@ -142,63 +126,26 @@ static uint16_t portb_lines(SH7750State *s)
+         (~(s->portdirb | s->periph_portdirb) & s->portpullupb); /* Pullups */
+ }
+ 
+-static void gen_port_interrupts(SH7750State *s)
 -{
--    switch (command) {
--    case 0xff:
--        fprintf(stderr, "reset flash device\n");
--        dev->state = WAIT;
--        break;
--    case 0x00:
--        fprintf(stderr, "read mode 1\n");
--        dev->state = READ1;
--        dev->address_cycle = 0;
--        break;
--    case 0x01:
--        fprintf(stderr, "read mode 2\n");
--        dev->state = READ2;
--        dev->address_cycle = 0;
--        break;
--    case 0x50:
--        fprintf(stderr, "read mode 3\n");
--        dev->state = READ3;
--        dev->address_cycle = 0;
--        break;
--    default:
--        fprintf(stderr, "unknown flash command 0x%02x\n", command);
--        abort();
--    }
+-    /* XXXXX interrupts not generated */
 -}
 -
--static void handle_address(tc58128_dev * dev, uint8_t data)
--{
--    switch (dev->state) {
--    case READ1:
--    case READ2:
--    case READ3:
--        switch (dev->address_cycle) {
--        case 0:
--            dev->address = data;
--            if (dev->state == READ2)
--                dev->address |= 0x100;
--            else if (dev->state == READ3)
--                dev->address |= 0x200;
--            break;
--        case 1:
--            dev->address += data * 528 * 0x100;
--            break;
--        case 2:
--            dev->address += data * 528;
--            fprintf(stderr, "address pointer in flash: 0x%08x\n",
--                    dev->address);
--            break;
--        default:
--            /* Invalid data */
--            abort();
+ static void porta_changed(SH7750State *s, uint16_t prev)
+ {
+-    uint16_t currenta, changes;
+-    int i, r = 0;
++    uint16_t currenta;
+ 
+     currenta = porta_lines(s);
+     if (currenta == prev) {
+         return;
+     }
+     trace_sh7750_porta(prev, currenta, s->pdtra, s->pctra);
+-    changes = currenta ^ prev;
+-
+-    for (i = 0; i < NB_DEVICES; i++) {
+-        if (s->devices[i] && (s->devices[i]->portamask_trigger & changes)) {
+-            r |= s->devices[i]->port_change_cb(currenta, portb_lines(s),
+-                                               &s->periph_pdtra,
+-                                               &s->periph_portdira,
+-                                               &s->periph_pdtrb,
+-                                               &s->periph_portdirb);
 -        }
--        dev->address_cycle++;
--        break;
--    default:
--        abort();
--    }
--}
--
--static uint8_t handle_read(tc58128_dev * dev)
--{
--#if 0
--    if (dev->address % 0x100000 == 0)
--        fprintf(stderr, "reading flash at address 0x%08x\n", dev->address);
--#endif
--    return dev->flash_contents[dev->address++];
--}
--
--/* We never mark the device as busy, so interrupts cannot be triggered
--   XXXXX */
--
--static int tc58128_cb(uint16_t porta, uint16_t portb,
--                      uint16_t * periph_pdtra, uint16_t * periph_portadir,
--                      uint16_t * periph_pdtrb, uint16_t * periph_portbdir)
--{
--    int dev;
--
--    if ((porta & CE1) == 0)
--        dev = 0;
--    else if ((porta & CE2) == 0)
--        dev = 1;
--    else
--        return 0;        /* No device selected */
--
--    if ((porta & RE) && (porta & WE)) {
--        /* Nothing to do, assert ready and return to input state */
--        *periph_portadir &= 0xff00;
--        *periph_portadir |= RDY(dev);
--        *periph_pdtra |= RDY(dev);
--        return 1;
 -    }
 -
--    if (porta & CLE) {
--        /* Command */
--        assert((porta & WE) == 0);
--        handle_command(&tc58128_devs[dev], porta & 0x00ff);
--    } else if (porta & ALE) {
--        assert((porta & WE) == 0);
--        handle_address(&tc58128_devs[dev], porta & 0x00ff);
--    } else if ((porta & RE) == 0) {
--        *periph_portadir |= 0x00ff;
--        *periph_pdtra &= 0xff00;
--        *periph_pdtra |= handle_read(&tc58128_devs[dev]);
--    } else {
--        abort();
+-    if (r) {
+-        gen_port_interrupts(s);
 -    }
--    return 1;
--}
--
--static sh7750_io_device tc58128 = {
--    RE | WE,            /* Port A triggers */
--    0,                  /* Port B triggers */
--    tc58128_cb          /* Callback */
--};
--
--int tc58128_init(struct SH7750State *s, const char *zone1, const char *zone2)
--{
--    if (!qtest_enabled()) {
--        warn_report_once("The TC58128 flash device is deprecated");
--    }
--    init_dev(&tc58128_devs[0], zone1);
--    init_dev(&tc58128_devs[1], zone2);
--    return sh7750_register_io_device(s, &tc58128);
--}
-diff --git a/hw/block/Kconfig b/hw/block/Kconfig
-index 9e8f28f982..ef6709b106 100644
---- a/hw/block/Kconfig
-+++ b/hw/block/Kconfig
-@@ -28,9 +28,6 @@ config ECC
- config ONENAND
-     bool
+ }
  
--config TC58128
--    bool
--
- config VIRTIO_BLK
-     bool
-     default y
-diff --git a/hw/block/meson.build b/hw/block/meson.build
-index 8aa4dc3893..0fb0f41f42 100644
---- a/hw/block/meson.build
-+++ b/hw/block/meson.build
-@@ -15,7 +15,6 @@ system_ss.add(when: 'CONFIG_SSI_M25P80', if_true: files('m25p80.c'))
- system_ss.add(when: 'CONFIG_SSI_M25P80', if_true: files('m25p80_sfdp.c'))
- system_ss.add(when: 'CONFIG_SWIM', if_true: files('swim.c'))
- system_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen-block.c'))
--system_ss.add(when: 'CONFIG_TC58128', if_true: files('tc58128.c'))
+ static void portb_changed(SH7750State *s, uint16_t prev)
+ {
+-    uint16_t currentb, changes;
+-    int i, r = 0;
++    uint16_t currentb;
  
- specific_ss.add(when: 'CONFIG_VIRTIO_BLK', if_true: files('virtio-blk.c', 'virtio-blk-common.c'))
- specific_ss.add(when: 'CONFIG_VHOST_USER_BLK', if_true: files('vhost-user-blk.c', 'virtio-blk-common.c'))
+     currentb = portb_lines(s);
+     if (currentb == prev) {
+         return;
+     }
+     trace_sh7750_portb(prev, currentb, s->pdtrb, s->pctrb);
+-    changes = currentb ^ prev;
+-
+-    for (i = 0; i < NB_DEVICES; i++) {
+-        if (s->devices[i] && (s->devices[i]->portbmask_trigger & changes)) {
+-            r |= s->devices[i]->port_change_cb(portb_lines(s), currentb,
+-                                               &s->periph_pdtra,
+-                                               &s->periph_portdira,
+-                                               &s->periph_pdtrb,
+-                                               &s->periph_portdirb);
+-        }
+-    }
+-
+-    if (r) {
+-        gen_port_interrupts(s);
+-    }
+ }
+ 
+ /*
 -- 
 2.45.2
 
