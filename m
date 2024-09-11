@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482999752BC
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 656D797528E
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:37:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMXz-0005VD-HV; Wed, 11 Sep 2024 08:34:11 -0400
+	id 1soMY1-000650-Ss; Wed, 11 Sep 2024 08:34:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1soMXv-0005H5-Kl
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:07 -0400
+ id 1soMXy-0005mh-KU
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1soMXt-00012u-LA
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:07 -0400
+ id 1soMXw-00013V-Fe
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:34:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726058044;
+ s=mimecast20190719; t=1726058047;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pit7qiYVqnOWSVjEH0t9en0kWfam4PoVe6YUyM257fE=;
- b=Fqx0A5tyDLp2yzzOTqTHfnI+4qw+YFi6MMewuwM1GAIcdPlMF3vPrQE01NAFpEWJ/yYh+Q
- 0E6/bGxbrmNXg4XIv8ha3IwlaRhKuO80YYTnw3s7YV10pEbvkSBgLnsztgF8FP061xd3GP
- WHtWjtolLWRhoMNebhxuCTGCoZCoQp8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xtYCdte9dWd9oGT6jGVa2VRP3oHQUflr0u1OJvVB2MA=;
+ b=gFtsPBnO0IJ+0Xzyo0Op987NZbZfQuzdC3AYd8fHfgbLaMIbe4MSrZoT0DzcBLu6e31YR4
+ eI16369PiTewo5XQW2pFYgmiTW8XGRaRHUgVw748HU3Zmrk02LoW40Ec8EEkmjpW6GC+uc
+ 0hKmpCjBCbm6Ocfekg9CxfKa8uHR2zM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-103-p4mEJYwUOLKIPs-Kb8fT6w-1; Wed, 11 Sep 2024 08:34:04 -0400
-X-MC-Unique: p4mEJYwUOLKIPs-Kb8fT6w-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-42cb0ed9072so37259025e9.1
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:34:03 -0700 (PDT)
+ us-mta-107-Wz8Rcq_KPZ-vB-UsiYMfHQ-1; Wed, 11 Sep 2024 08:34:06 -0400
+X-MC-Unique: Wz8Rcq_KPZ-vB-UsiYMfHQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-374b9617ab0so2863216f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:34:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726058042; x=1726662842;
+ d=1e100.net; s=20230601; t=1726058045; x=1726662845;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Pit7qiYVqnOWSVjEH0t9en0kWfam4PoVe6YUyM257fE=;
- b=Hf62JALdAIcHVTuCjsV5ceIluvntqbqajYFyl6MPFZaqVjmZcMsEYs1UT71m5svLQy
- dxC02zFI/e/estb2wfBA6V4kOG5LLfTSn6URymL9pWDb2eEGeiKMNCHlG7LlArqEIJj1
- UGcH7yEWA77SvftugLq0xMgjozRVcFPcex0U4MU6Ap905I6+KSM9lybsHScGSRHGtSva
- KdAlunDSdLAwBUaE01X3ClWf3Nsn8CDPmEg3vaR9lwDtGoFUfo38bl/zsImCZ/GRgyb5
- 69H/l3UC+0Xkxw2lin1SP9coPvoiJVl2EGQWYaeoLEFhiEpXST2PBt+ISfLcyrV4hRFu
- KASg==
-X-Gm-Message-State: AOJu0YyT+QHdKfe0r6n3dVBgmpqi6Cs1iyFh/HzqVZWrsKyW6Yjfq+3k
- 6vW9tnnv6Sqqy28/1et1SF9+K6+qS8V8ZSbsEg3XqmvCDQQbBrTZ7AN7HXzecZz+oGp4w5nRrLT
- c9ivdKJqV4d3VBiXwT4Xy/XAxl7VKoqvh60Q3DOr0OKf9GJ+jgMS9q/jKlW9JWz3EEvt4X8GxeU
- UnWUVccSklOP9fguQFSJnXJTp3Ntuj4mK7uq2uu1o=
-X-Received: by 2002:a05:600c:358a:b0:42c:b950:6821 with SMTP id
- 5b1f17b1804b1-42cb9506a4amr83041095e9.19.1726058042011; 
- Wed, 11 Sep 2024 05:34:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFPWOPoXwIRnhEFSJs4L0bBpigenF/2c5N4PsmiDOGtEEWyhQYmJ1jtGqUQP5AttL87YqQpXw==
-X-Received: by 2002:a05:600c:358a:b0:42c:b950:6821 with SMTP id
- 5b1f17b1804b1-42cb9506a4amr83040825e9.19.1726058041501; 
- Wed, 11 Sep 2024 05:34:01 -0700 (PDT)
+ bh=xtYCdte9dWd9oGT6jGVa2VRP3oHQUflr0u1OJvVB2MA=;
+ b=EMWfj5453TfceR7FqnzMGLvHtDveZJ+O2g6XYRq6jAytjCGxOsOUBgyaWMRfGrIHip
+ QvqD2Mcqt5MffhMUKg8aCLT195OHS/10F/pLvZPxlmwT5++pKStq2XECHAzgqDv26Dcz
+ lrK8tD4+5kS1/6yuW8kBKiWHP20MIY/omdxCI6sufzPs2KmIBHbpGkbc6AsWWmwSXkZF
+ YVB08pz8I7TGUewLLDrE52hRcB5343q+jzlTLC4a+1O3FkuQBjWnaKhhVYtPR+AaS8xQ
+ m+cZw5ha5gCijJC2o1HSKdlNhdLy2SMmBa+n1mPuDf2eaNS1xF/9RV6F+mpHx9VGIgot
+ 0Ong==
+X-Gm-Message-State: AOJu0Yxevt1BqPXTBjzJbL/WRQZtb9DLzmIQfzUBV7no4QLJ8aSFIJBq
+ WE373ObNVlMhn4k0zETJ9E4Yoe9EPJHHJo7rbgRDuNH2wK138CJewamGSge0T71pk7TQccrBx3p
+ c7Up3i7lf2rBVcPLPb89/OoYiLmUAMkqYLXDEQsP3EoukJIRxd6wCQQtKRI7TgGuKgmalOutm7d
+ uDfc2q71rIC75Jo1LIlnGtJg2KmK53aHaEQDMYTLU=
+X-Received: by 2002:a5d:4991:0:b0:368:5bb4:169b with SMTP id
+ ffacd0b85a97d-378926858b2mr7941981f8f.4.1726058044579; 
+ Wed, 11 Sep 2024 05:34:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFNafR3vo7C/29BOJu4tasZKxMizFSJ9u+6mePFyBtocHZYI8Q8jgAoAWHtyi+3mSLgGSQK9w==
+X-Received: by 2002:a5d:4991:0:b0:368:5bb4:169b with SMTP id
+ ffacd0b85a97d-378926858b2mr7941958f8f.4.1726058044030; 
+ Wed, 11 Sep 2024 05:34:04 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42caeb449aesm140800895e9.25.2024.09.11.05.34.00
+ ffacd0b85a97d-378956d35b9sm11476718f8f.70.2024.09.11.05.34.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 05:34:00 -0700 (PDT)
+ Wed, 11 Sep 2024 05:34:03 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Ani Sinha <anisinha@redhat.com>,
-	philmd@linaro.org
-Subject: [PULL 06/17] kvm/i386: make kvm_filter_msr() and related definitions
- private to kvm module
-Date: Wed, 11 Sep 2024 14:33:31 +0200
-Message-ID: <20240911123342.339482-7-pbonzini@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 07/17] kvm/i386: fix return values of is_host_cpu_intel()
+Date: Wed, 11 Sep 2024 14:33:32 +0200
+Message-ID: <20240911123342.339482-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240911123342.339482-1-pbonzini@redhat.com>
 References: <20240911123342.339482-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -106,74 +103,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ani Sinha <anisinha@redhat.com>
 
-kvm_filer_msr() is only used from i386 kvm module. Make it static so that its
-easy for developers to understand that its not used anywhere else.
-Same for QEMURDMSRHandler, QEMUWRMSRHandler and KVMMSRHandlers definitions.
+is_host_cpu_intel() should return TRUE if the host cpu in Intel based, otherwise
+it should return FALSE. Currently, it returns zero (FALSE) when the host CPU
+is INTEL and non-zero otherwise. Fix the function so that it agrees more with
+the semantics. Adjust the calling logic accordingly. RAPL needs Intel host cpus.
+If the host CPU is not Intel baseed, we should report error.
 
-CC: philmd@linaro.org
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Link: https://lore.kernel.org/r/20240903140045.41167-1-anisinha@redhat.com
-[Make struct unnamed. - Paolo]
+Link: https://lore.kernel.org/r/20240903080004.33746-1-anisinha@redhat.com
+[While touching the code remove too many spaces from the second part of the
+ error. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm_i386.h | 11 -----------
- target/i386/kvm/kvm.c      | 12 +++++++++++-
- 2 files changed, 11 insertions(+), 12 deletions(-)
+ target/i386/kvm/kvm.c         | 6 +++---
+ target/i386/kvm/vmsr_energy.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 34fc60774b8..9de9c0d3038 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -66,17 +66,6 @@ uint64_t kvm_swizzle_msi_ext_dest_id(uint64_t address);
- void kvm_update_msi_routes_all(void *private, bool global,
-                                uint32_t index, uint32_t mask);
- 
--typedef bool QEMURDMSRHandler(X86CPU *cpu, uint32_t msr, uint64_t *val);
--typedef bool QEMUWRMSRHandler(X86CPU *cpu, uint32_t msr, uint64_t val);
--typedef struct kvm_msr_handlers {
--    uint32_t msr;
--    QEMURDMSRHandler *rdmsr;
--    QEMUWRMSRHandler *wrmsr;
--} KVMMSRHandlers;
--
--bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
--                    QEMUWRMSRHandler *wrmsr);
--
- #endif /* CONFIG_KVM */
- 
- void kvm_pc_setup_irq_routing(bool pci_enabled);
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 381f414d1e0..d95013a2ce6 100644
+index d95013a2ce6..7c491378026 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -92,7 +92,17 @@
-  * 255 kvm_msr_entry structs */
- #define MSR_BUF_SIZE 4096
+@@ -2906,9 +2906,9 @@ static int kvm_msr_energy_thread_init(KVMState *s, MachineState *ms)
+      * 1. Host cpu must be Intel cpu
+      * 2. RAPL must be enabled on the Host
+      */
+-    if (is_host_cpu_intel()) {
+-        error_report("The RAPL feature can only be enabled on hosts\
+-                      with Intel CPU models");
++    if (!is_host_cpu_intel()) {
++        error_report("The RAPL feature can only be enabled on hosts "
++                     "with Intel CPU models");
+         ret = 1;
+         goto out;
+     }
+diff --git a/target/i386/kvm/vmsr_energy.c b/target/i386/kvm/vmsr_energy.c
+index 7e064c5aef3..31508d4e77a 100644
+--- a/target/i386/kvm/vmsr_energy.c
++++ b/target/i386/kvm/vmsr_energy.c
+@@ -34,7 +34,7 @@ bool is_host_cpu_intel(void)
  
-+typedef bool QEMURDMSRHandler(X86CPU *cpu, uint32_t msr, uint64_t *val);
-+typedef bool QEMUWRMSRHandler(X86CPU *cpu, uint32_t msr, uint64_t val);
-+typedef struct {
-+    uint32_t msr;
-+    QEMURDMSRHandler *rdmsr;
-+    QEMUWRMSRHandler *wrmsr;
-+} KVMMSRHandlers;
-+
- static void kvm_init_msrs(X86CPU *cpu);
-+static bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
-+                           QEMUWRMSRHandler *wrmsr);
+     host_cpu_vendor_fms(vendor, &family, &model, &stepping);
  
- const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
-     KVM_CAP_INFO(SET_TSS_ADDR),
-@@ -5735,7 +5745,7 @@ static bool kvm_install_msr_filters(KVMState *s)
-     return true;
+-    return strcmp(vendor, CPUID_VENDOR_INTEL);
++    return g_str_equal(vendor, CPUID_VENDOR_INTEL);
  }
  
--bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
-+static bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
-                     QEMUWRMSRHandler *wrmsr)
- {
-     int i;
+ int is_rapl_enabled(void)
 -- 
 2.46.0
 
