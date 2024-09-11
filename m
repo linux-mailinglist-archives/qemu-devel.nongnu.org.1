@@ -2,76 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1EE9758C0
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 18:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A40A9758DA
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 18:56:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soQYw-0003lo-Ks; Wed, 11 Sep 2024 12:51:26 -0400
+	id 1soQdS-0004zp-NT; Wed, 11 Sep 2024 12:56:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1soQYf-0002nB-B4
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 12:51:10 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1soQdP-0004pu-QZ
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 12:56:03 -0400
+Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1soQYd-0003hS-9x
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 12:51:09 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-717934728adso5173278b3a.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 09:51:06 -0700 (PDT)
+ id 1soQdN-000419-Uc
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 12:56:03 -0400
+Received: by mail-oa1-x33.google.com with SMTP id
+ 586e51a60fabf-27b55c4b35eso3125557fac.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 09:56:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726073466; x=1726678266; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nf2KKD8gpkfqLcprZUwSXAhZF2kW47U2PBUtTXC4uSQ=;
- b=xa8rkY1XmNjHsqmS+m3G3AzgZ5EatdbBlQe3gtSqGvfVD/Fz9UrfdmE/b6dqDFSYSp
- iLlLuGvy0BDC+azWKALjXdol510ZJaIl3/SUnJDDl3qzSWHH1IVqqnKKrZ8h8b5RaVZj
- uf2wBZNPD+ZkUYFDycNcawa/RQp12Z5bexDGxztIjaFhX/AXyrmavEddJpTdQMPj5fll
- 1UIEa8OS6N144KG0NrAwCaGL2grO6lE5J9vWImJT44XJmoKwRrCUpJX/YTXnDLQoVtQd
- yZ8PZy7XFB5J4nSiJazJnx0+3XCEBtgGug92mZHuF2cWdbAgW7Z4IUXQZr31RHf/6qcM
- aJQQ==
+ d=linaro.org; s=google; t=1726073760; x=1726678560; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jT2yfHOKQil4uehZcIK/2WmRn/qwChXA7I64h0o8Rrg=;
+ b=wt9zT+EISZIE355U9SkDQvKCBBtzJ7LUMsWR4ro2u17b4/ebn38y8gx3O5iEg6LQMO
+ tUDeGO2QSo4/vSzudMbVC22qtKBS98y5wDIDv7FxqyY6Xpkox1z+dqhIOvs5VpJZVTP4
+ n8eUPpL6SU+bqjYqRrUG2kPatsdsoAZBSu/3dkZear4KFQlepBVh9M3EAU1UJLn9nyBJ
+ nR9O+F4XIr/X1xz1pdIQW5n1qM8881qF2LuL4itb/4Y1YNs6WtXzii8DaoYL1hSpLCN/
+ OW5fYrXESJFHX6YwrXmbn+8YqlLv8QH8+mq2nIZ64aOTmZAcNSD3AuS/LB0gafGkZIXy
+ rX5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726073466; x=1726678266;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nf2KKD8gpkfqLcprZUwSXAhZF2kW47U2PBUtTXC4uSQ=;
- b=p9IQj/UcDt69eHtzfhR0uSkVeQU2hAYf0xGFVBZkydKovdyEdkGZ1Tq+/Uc2+8V9eC
- h3PZl9ahdSccyaoeBw1f2AOF1rMPNfgnafMULLJFWf4bnv+PEMNum6LeG9eMZlOzYQOQ
- 5wWe2KitngVl5mtRX3hTyeS7b+3obwXf0XCgk8igTvUEhuXR3njYhJkX/QXnhvufVqhx
- l1OkefFxl6jwbYietk9607/+tmU4yHdbu1XEbNYbz9iB3/RfGSHxZUGhLHrEK2v8Xa2T
- izgDqgkZZBVcTmDzvHt4D7Eq4XCdTGwXjlsTnkNII9NjahNbGItN+zsdfkwKSGqWbJ3u
- mgKw==
-X-Gm-Message-State: AOJu0YxKgVEBcNP+f5CpxoHWA3BlYHa6MzQ4XifpgpdmfKIq8xvVNdb1
- zhNTV0zHQhou4F+KBxg6Oh5IxT76UnUMdB+/PvqyG0SOnKBBvP5K4cSboAueYrjith9WpFypz8o
- o
-X-Google-Smtp-Source: AGHT+IFIRcxULGhFCZ/bAMuVohDntJldVrf8vHcuIW0wOXvPxgS9clUSNomZyvj4OVeQCrVKatyYXg==
-X-Received: by 2002:a05:6a00:4f90:b0:717:97ac:ef46 with SMTP id
- d2e1a72fcca58-7192609615amr16010b3a.15.1726073465714; 
- Wed, 11 Sep 2024 09:51:05 -0700 (PDT)
-Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
+ d=1e100.net; s=20230601; t=1726073760; x=1726678560;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jT2yfHOKQil4uehZcIK/2WmRn/qwChXA7I64h0o8Rrg=;
+ b=DALpbFNfWARyTLXrx5jxDAaAYJvVhlM0NbiXP59zGKCm5SdUbCRXEusqelT5pFOFa+
+ vkMVr06VWe+DLI3TzDoauWbOylTEw9mg9N5coGgYgAK5CMxX1sTq3HaxKzhQHr94Q8t0
+ LePRJX0TkT5Jb4OYyvP2qkL099wG+y0y5kuHIpmBZ6POkVkzC/UjLSaXrmX5WMmg31aS
+ nyp+hH7B95sYWJgErXMgPI6brqx1KQifzT4gXqIJ+KXAJvn5SYgFAFWHsWchyeg78Wvd
+ r2JedrhN0olRb3d+1SYacWJOGMWbmd9rRFIPBxgHbUPzR2u8acs5ce2YSy5tHiZgnHVr
+ GpBA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW2Ykx0ec5gg7YdprBhhwT/IHwfzC/MsOuvURw3f2zoUNYmCRI0zTSUhIOc0HjZyc9KUs8+1hTXcutp@nongnu.org
+X-Gm-Message-State: AOJu0Ywqrx7OGLF0xKUTQ0M4jLsI4fUJwkgVht7rEHkEwQH0qzqHbh1z
+ vDhAEG13RuKuVRyXEdnayrcSpbIHYyLvFaZ2eizFB3C6ywX8gwVrbOLTz0y0dpQ=
+X-Google-Smtp-Source: AGHT+IHm6lZ+zYd6OLElv1nSKeE8E+EcYdnIUsM2//Be/MFCqecYcYkqJpKvjCJcxFiRHPU1Pk0c9g==
+X-Received: by 2002:a05:6870:df48:b0:27b:b2e0:6a5 with SMTP id
+ 586e51a60fabf-27bb2e00bd5mr7219953fac.3.1726073760261; 
+ Wed, 11 Sep 2024 09:56:00 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71908fe4e7esm3186947b3a.80.2024.09.11.09.51.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 09:51:05 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: zhiwei_liu@linux.alibaba.com, tangtiancheng.ttc@alibaba-inc.com,
- philmd@linaro.org
-Subject: [PATCH v2 18/18] tcg/s390x: Optimize cmpsel with constant 0/-1
- arguments
-Date: Wed, 11 Sep 2024 09:50:47 -0700
-Message-ID: <20240911165047.1035764-19-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240911165047.1035764-1-richard.henderson@linaro.org>
-References: <20240911165047.1035764-1-richard.henderson@linaro.org>
+ 41be03b00d2f7-7db1fbb5414sm210156a12.23.2024.09.11.09.55.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Sep 2024 09:55:59 -0700 (PDT)
+Message-ID: <e9bac0e4-ee34-4634-a6a2-73854a45d7d6@linaro.org>
+Date: Wed, 11 Sep 2024 09:55:57 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/39] docs/spin: replace assert(0) with
+ g_assert_not_reached()
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ "Richard W.M. Jones" <rjones@redhat.com>,
+ "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>, Joel Stanley <joel@jms.id.au>,
+ Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Corey Minyard <minyard@acm.org>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Keith Busch <kbusch@kernel.org>, WANG Xuerui <git@xen0n.name>,
+ Hyman Huang <yong.huang@smartx.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Michael Rolnik <mrolnik@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Jesper Devantier <foss@defmacro.it>, Laurent Vivier <laurent@vivier.eu>,
+ Peter Maydell <peter.maydell@linaro.org>, Igor Mammedov
+ <imammedo@redhat.com>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fam Zheng <fam@euphon.net>, qemu-s390x@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Laurent Vivier <lvivier@redhat.com>,
+ Rob Herring <robh@kernel.org>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Helge Deller <deller@gmx.de>, Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
+ Klaus Jensen <its@irrelevant.dk>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Jason Wang <jasowang@redhat.com>
+References: <20240910221606.1817478-1-pierrick.bouvier@linaro.org>
+ <20240910221606.1817478-2-pierrick.bouvier@linaro.org>
+ <zkyoryho5alnyirnl7ulvh5y6tkty6koccgeygmve42uml7glu@37rkdodtlx4f>
+ <bwo43ms2wi6vbeqhlc7qjwmw5jyt2btxvpph3lqn7tfol4srjf@77yusngzs6wh>
+ <10d6d67a-32f6-40fc-aba9-c62a74d9d98d@maciej.szmigiero.name>
+ <20240911125126.GS1450@redhat.com>
+ <6818337d-ba58-4051-8105-05f679f71b88@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <6818337d-ba58-4051-8105-05f679f71b88@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::33;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,124 +145,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These can be simplified to and/or/andc/orc,
-avoiding the load of the constantinto a register.
+On 9/11/24 08:25, Pierrick Bouvier wrote:
+> On 9/11/24 05:51, Richard W.M. Jones wrote:
+>> Although it's unlikely to be used on any compiler that can also
+>> compile qemu, there is a third implementation of g_assert_not_reached
+>> that does nothing, see:
+>>
+>> https://gitlab.gnome.org/GNOME/glib/-/blob/927683ebd94eb66c0d7868b77863f57ce9c5bc76/ 
+>> glib/gtestutils.h#L269
+>>
+>> Rich.
+>>
+> 
+> Interesting.
+> At least gcc, clang and msvc are covered, this should be ok for most of the builds.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/s390x/tcg-target-con-set.h |  3 ++-
- tcg/s390x/tcg-target-con-str.h |  1 +
- tcg/s390x/tcg-target.c.inc     | 40 ++++++++++++++++++++++++++--------
- 3 files changed, 34 insertions(+), 10 deletions(-)
+All of that is inside #ifdef G_DISABLE_ASSERT, which we will never set.
 
-diff --git a/tcg/s390x/tcg-target-con-set.h b/tcg/s390x/tcg-target-con-set.h
-index 670089086d..370e4b1295 100644
---- a/tcg/s390x/tcg-target-con-set.h
-+++ b/tcg/s390x/tcg-target-con-set.h
-@@ -38,7 +38,8 @@ C_O1_I2(r, rZ, r)
- C_O1_I2(v, v, r)
- C_O1_I2(v, v, v)
- C_O1_I3(v, v, v, v)
--C_O1_I4(v, v, v, v, v)
-+C_O1_I4(v, v, v, vZ, v)
-+C_O1_I4(v, v, v, vZM, v)
- C_O1_I4(r, r, ri, rI, r)
- C_O1_I4(r, r, rC, rI, r)
- C_O2_I1(o, m, r)
-diff --git a/tcg/s390x/tcg-target-con-str.h b/tcg/s390x/tcg-target-con-str.h
-index 745f6c0df5..3e574e0662 100644
---- a/tcg/s390x/tcg-target-con-str.h
-+++ b/tcg/s390x/tcg-target-con-str.h
-@@ -20,6 +20,7 @@ CONST('C', TCG_CT_CONST_CMP)
- CONST('I', TCG_CT_CONST_S16)
- CONST('J', TCG_CT_CONST_S32)
- CONST('K', TCG_CT_CONST_P32)
-+CONST('M', TCG_CT_CONST_M1)
- CONST('N', TCG_CT_CONST_INV)
- CONST('R', TCG_CT_CONST_INVRISBG)
- CONST('U', TCG_CT_CONST_U32)
-diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
-index e044168826..a5d57197a4 100644
---- a/tcg/s390x/tcg-target.c.inc
-+++ b/tcg/s390x/tcg-target.c.inc
-@@ -36,6 +36,7 @@
- #define TCG_CT_CONST_INV        (1 << 13)
- #define TCG_CT_CONST_INVRISBG   (1 << 14)
- #define TCG_CT_CONST_CMP        (1 << 15)
-+#define TCG_CT_CONST_M1         (1 << 16)
- 
- #define ALL_GENERAL_REGS     MAKE_64BIT_MASK(0, 16)
- #define ALL_VECTOR_REGS      MAKE_64BIT_MASK(32, 32)
-@@ -607,6 +608,9 @@ static bool tcg_target_const_match(int64_t val, int ct,
-     if ((ct & TCG_CT_CONST_ZERO) && val == 0) {
-         return true;
-     }
-+    if ((ct & TCG_CT_CONST_M1) && val == -1) {
-+        return true;
-+    }
- 
-     if (ct & TCG_CT_CONST_INV) {
-         val = ~val;
-@@ -2904,15 +2908,30 @@ static void tcg_out_cmp_vec(TCGContext *s, unsigned vece, TCGReg a0,
- }
- 
- static void tcg_out_cmpsel_vec(TCGContext *s, unsigned vece, TCGReg a0,
--                               TCGReg c1, TCGReg c2,
--                               TCGReg v3, TCGReg v4, TCGCond cond)
-+                               TCGReg c1, TCGReg c2, TCGArg v3,
-+                               int const_v3, TCGReg v4, TCGCond cond)
- {
--    if (tcg_out_cmp_vec_noinv(s, vece, TCG_VEC_TMP0, c1, c2, cond)) {
--        TCGReg swap = v3;
--        v3 = v4;
--        v4 = swap;
-+    bool inv = tcg_out_cmp_vec_noinv(s, vece, TCG_VEC_TMP0, c1, c2, cond);
-+
-+    if (!const_v3) {
-+        if (inv) {
-+            tcg_out_insn(s, VRRe, VSEL, a0, v4, v3, TCG_VEC_TMP0);
-+        } else {
-+            tcg_out_insn(s, VRRe, VSEL, a0, v3, v4, TCG_VEC_TMP0);
-+        }
-+    } else if (v3) {
-+        if (inv) {
-+            tcg_out_insn(s, VRRc, VOC, a0, v4, TCG_VEC_TMP0, 0);
-+        } else {
-+            tcg_out_insn(s, VRRc, VO, a0, v4, TCG_VEC_TMP0, 0);
-+        }
-+    } else {
-+        if (inv) {
-+            tcg_out_insn(s, VRRc, VN, a0, v4, TCG_VEC_TMP0, 0);
-+        } else {
-+            tcg_out_insn(s, VRRc, VNC, a0, v4, TCG_VEC_TMP0, 0);
-+        }
-     }
--    tcg_out_insn(s, VRRe, VSEL, a0, v3, v4, TCG_VEC_TMP0);
- }
- 
- static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-@@ -3036,7 +3055,8 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-         tcg_out_cmp_vec(s, vece, a0, a1, a2, args[3]);
-         break;
-     case INDEX_op_cmpsel_vec:
--        tcg_out_cmpsel_vec(s, vece, a0, a1, a2, args[3], args[4], args[5]);
-+        tcg_out_cmpsel_vec(s, vece, a0, a1, a2, args[3], const_args[3],
-+                           args[4], args[5]);
-         break;
- 
-     case INDEX_op_s390_vuph_vec:
-@@ -3388,7 +3408,9 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_bitsel_vec:
-         return C_O1_I3(v, v, v, v);
-     case INDEX_op_cmpsel_vec:
--        return C_O1_I4(v, v, v, v, v);
-+        return (TCG_TARGET_HAS_orc_vec
-+                ? C_O1_I4(v, v, v, vZM, v)
-+                : C_O1_I4(v, v, v, vZ, v));
- 
-     default:
-         g_assert_not_reached();
--- 
-2.43.0
 
+r~
 
