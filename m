@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB88D975561
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D1F975580
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 16:32:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soOKv-0004JR-Vj; Wed, 11 Sep 2024 10:28:50 -0400
+	id 1soOM3-0000vC-M2; Wed, 11 Sep 2024 10:29:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1soOKa-00039O-H1; Wed, 11 Sep 2024 10:28:35 -0400
-Received: from out30-100.freemail.mail.aliyun.com ([115.124.30.100])
+ id 1soOLn-0000Cb-Sb; Wed, 11 Sep 2024 10:29:46 -0400
+Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1soOKT-0003Y0-9l; Wed, 11 Sep 2024 10:28:24 -0400
+ id 1soOLj-0003k7-IM; Wed, 11 Sep 2024 10:29:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linux.alibaba.com; s=default;
- t=1726064896; h=From:To:Subject:Date:Message-Id:MIME-Version;
- bh=5DiP9dcieHssdMJ+aH4pilVbeR8x06Ojl8mSF3DAWz8=;
- b=T+anvIWk/vgeD3AV6wQ63f3H/bMifALNnLAhR4A2uiavkJUFLXlGw0nVSgJ1KYyRMP9tYZTPd8uhmNJNa07Vb+c8d9CURL6v5XjQEHOvNeJwPkoThcoehRFSIx7Rom7YpX0ObdSn0+cxC8ef13Y7GQSwncG3uzzbluDwjHteyjA=
+ t=1726064963; h=From:To:Subject:Date:Message-Id:MIME-Version;
+ bh=Yl3M8354kVippAK6RwD1b21gob2GALUsjhbptMflEpM=;
+ b=NMb+lJFUktss4zjcOv2DnXkdpdmmqRgPsP58/Xty9gxIQCC6A4AH7+5fzPoKHZi+SBZATUyot3f3o3XlDObVJqRkxJHmwybbRumTyOv0nZ4THFvccsND+trSOKlKFCh5/t35V8xMH8SAZ70wlrgFv9mGBWN1SoXLPFxN55mkSBw=
 Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0WEoDj3V_1726061596) by smtp.aliyun-inc.com;
- Wed, 11 Sep 2024 21:33:16 +0800
+ fp:SMTPD_---0WEoCEuP_1726061627) by smtp.aliyun-inc.com;
+ Wed, 11 Sep 2024 21:33:48 +0800
 From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
  dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
  zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org,
  TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Subject: [PATCH v4 11/12] tcg/riscv: Implement vector roti/v/x ops
-Date: Wed, 11 Sep 2024 21:26:29 +0800
-Message-Id: <20240911132630.461-12-zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH v4 12/12] tcg/riscv: Enable native vector support for TCG host
+Date: Wed, 11 Sep 2024 21:26:30 +0800
+Message-Id: <20240911132630.461-13-zhiwei_liu@linux.alibaba.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20240911132630.461-1-zhiwei_liu@linux.alibaba.com>
 References: <20240911132630.461-1-zhiwei_liu@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.100;
+Received-SPF: pass client-ip=115.124.30.131;
  envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-100.freemail.mail.aliyun.com
+ helo=out30-131.freemail.mail.aliyun.com
 X-Spam_score_int: -174
 X-Spam_score: -17.5
 X-Spam_bar: -----------------
@@ -69,99 +69,30 @@ From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 
 Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/riscv/tcg-target.c.inc | 35 +++++++++++++++++++++++++++++++++++
- tcg/riscv/tcg-target.h     |  6 +++---
- 2 files changed, 38 insertions(+), 3 deletions(-)
+ tcg/riscv/tcg-target.h | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index 16785ebe8e..afc9747780 100644
---- a/tcg/riscv/tcg-target.c.inc
-+++ b/tcg/riscv/tcg-target.c.inc
-@@ -2494,6 +2494,33 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-         set_vtype_len_sew(s, type, vece);
-         tcg_out_vshifti(s, OPC_VSRA_VI, OPC_VSRA_VX, a0, a1, a2);
-         break;
-+    case INDEX_op_rotli_vec:
-+        set_vtype_len_sew(s, type, vece);
-+        tcg_out_vshifti(s, OPC_VSLL_VI, OPC_VSLL_VX, TCG_REG_V0, a1, a2);
-+        tcg_out_vshifti(s, OPC_VSRL_VI, OPC_VSRL_VX, a0, a1, -a2);
-+        tcg_out_opc_vv(s, OPC_VOR_VV, a0, a0, TCG_REG_V0, true);
-+        break;
-+    case INDEX_op_rotls_vec:
-+        set_vtype_len_sew(s, type, vece);
-+        tcg_out_opc_vx(s, OPC_VSLL_VX, TCG_REG_V0, a1, a2, true);
-+        tcg_out_opc_reg(s, OPC_SUBW, a2, TCG_REG_ZERO, a2);
-+        tcg_out_opc_vx(s, OPC_VSRL_VX, a0, a1, a2, true);
-+        tcg_out_opc_vv(s, OPC_VOR_VV, a0, a0, TCG_REG_V0, true);
-+        break;
-+    case INDEX_op_rotlv_vec:
-+        set_vtype_len_sew(s, type, vece);
-+        tcg_out_opc_vv(s, OPC_VSLL_VV, TCG_REG_V0, a1, a2, true);
-+        tcg_out_opc_vi(s, OPC_VRSUB_VI, TCG_REG_V0, a2, 0, true);
-+        tcg_out_opc_vv(s, OPC_VSRL_VV, a0, a1, TCG_REG_V0, true);
-+        tcg_out_opc_vv(s, OPC_VOR_VV, a0, a0, TCG_REG_V0, true);
-+        break;
-+    case INDEX_op_rotrv_vec:
-+        set_vtype_len_sew(s, type, vece);
-+        tcg_out_opc_vi(s, OPC_VRSUB_VI, TCG_REG_V0, a2, 0, true);
-+        tcg_out_opc_vv(s, OPC_VSLL_VV, TCG_REG_V0, a1, TCG_REG_V0, true);
-+        tcg_out_opc_vv(s, OPC_VSRL_VV, a0, a1, a2, true);
-+        tcg_out_opc_vv(s, OPC_VOR_VV, a0, a0, TCG_REG_V0, true);
-+        break;
-     case INDEX_op_cmpsel_vec:
-         tcg_out_cmpsel(s, type, vece, args[5], a0, a1, a2, const_args[2],
-                        args[3], const_args[3], args[4], const_args[4]);
-@@ -2556,6 +2583,10 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
-     case INDEX_op_shri_vec:
-     case INDEX_op_shli_vec:
-     case INDEX_op_sari_vec:
-+    case INDEX_op_rotls_vec:
-+    case INDEX_op_rotlv_vec:
-+    case INDEX_op_rotrv_vec:
-+    case INDEX_op_rotli_vec:
-     case INDEX_op_cmpsel_vec:
-         return 1;
-     case INDEX_op_cmp_vec:
-@@ -2715,6 +2746,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_shli_vec:
-     case INDEX_op_shri_vec:
-     case INDEX_op_sari_vec:
-+    case INDEX_op_rotli_vec:
-         return C_O1_I1(v, v);
-     case INDEX_op_add_vec:
-     case INDEX_op_sub_vec:
-@@ -2733,10 +2765,13 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_shlv_vec:
-     case INDEX_op_shrv_vec:
-     case INDEX_op_sarv_vec:
-+    case INDEX_op_rotlv_vec:
-+    case INDEX_op_rotrv_vec:
-         return C_O1_I2(v, v, v);
-     case INDEX_op_shls_vec:
-     case INDEX_op_shrs_vec:
-     case INDEX_op_sars_vec:
-+    case INDEX_op_rotls_vec:
-         return C_O1_I2(v, v, r);
-     case INDEX_op_cmp_vec:
-         return C_O1_I2(v, v, vL);
 diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
-index 76d30e789b..e6d66cd1b9 100644
+index e6d66cd1b9..d27007f2e6 100644
 --- a/tcg/riscv/tcg-target.h
 +++ b/tcg/riscv/tcg-target.h
-@@ -154,9 +154,9 @@ typedef enum {
- #define TCG_TARGET_HAS_not_vec          1
- #define TCG_TARGET_HAS_neg_vec          1
- #define TCG_TARGET_HAS_abs_vec          0
--#define TCG_TARGET_HAS_roti_vec         0
--#define TCG_TARGET_HAS_rots_vec         0
--#define TCG_TARGET_HAS_rotv_vec         0
-+#define TCG_TARGET_HAS_roti_vec         1
-+#define TCG_TARGET_HAS_rots_vec         1
-+#define TCG_TARGET_HAS_rotv_vec         1
- #define TCG_TARGET_HAS_shi_vec          1
- #define TCG_TARGET_HAS_shs_vec          1
- #define TCG_TARGET_HAS_shv_vec          1
+@@ -143,9 +143,11 @@ typedef enum {
+ #define TCG_TARGET_HAS_tst              0
+ 
+ /* vector instructions */
+-#define TCG_TARGET_HAS_v64              0
+-#define TCG_TARGET_HAS_v128             0
+-#define TCG_TARGET_HAS_v256             0
++#define have_rvv    (cpuinfo & CPUINFO_ZVE64X)
++
++#define TCG_TARGET_HAS_v64              have_rvv
++#define TCG_TARGET_HAS_v128             have_rvv
++#define TCG_TARGET_HAS_v256             have_rvv
+ #define TCG_TARGET_HAS_andc_vec         0
+ #define TCG_TARGET_HAS_orc_vec          0
+ #define TCG_TARGET_HAS_nand_vec         0
 -- 
 2.43.0
 
