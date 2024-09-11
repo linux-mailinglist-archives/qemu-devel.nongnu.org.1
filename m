@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13209751D3
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 302969751D5
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Sep 2024 14:19:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soMJg-0005XV-Vt; Wed, 11 Sep 2024 08:19:25 -0400
+	id 1soMJg-0005eR-OM; Wed, 11 Sep 2024 08:19:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMIC-00021K-Dq
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMID-00021P-GN
  for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:58 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMI9-0007aY-0D
- for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:52 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42ca4e0299eso40414745e9.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:17:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1soMIB-0007bE-Pc
+ for qemu-devel@nongnu.org; Wed, 11 Sep 2024 08:17:53 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-42cbe624c59so17523475e9.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 05:17:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726057064; x=1726661864; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726057070; x=1726661870; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/VR2UR1dthqYJR71A2WcgwFe6vVtppJkQRzukW2+d1s=;
- b=OBuAiYyHgsBMIkMx0Py7t8Jku/lpMKHLbsCwVey7KAoM4raxaabvDSXP632AhoGlnP
- C2LLBMz9sfz+Vs3scgjKdyg9CnwcBZtkSz37aGviAQrEhgxYkQfanZ8tmFsPffVopkd8
- H0hrs/13mmxkPqQfiKdDtI6KrHqWlc8747pwPeL09goQPTV+CXwDz2IDR3gsNLXsQH7A
- f7ibyabEFQUac+AxNO6BcRuKrDB+JySJxc4Xpq1Mb9aCt3uRc0+E0wGjENYOIXJ0ru4k
- HHsPgiDwx8avzcAGfzNbkFYdgAEh4gVZg3APpwxNOnrV0MzYArd5otVV2V9QyszEaYif
- Fpdg==
+ bh=fw5xOtBNIRHkpMkNkgTQIdZ9ohmUJVJx9XSvRhYmISM=;
+ b=nmpR3zY8mEhmcyLY4kiwRzr2cgLJqbsfYOFQK4iIytiPsf8CUbbhqQJjvtr3LnTEWn
+ LHMHJk016U9MlcHJsd+/ZByDRHKe/teM7AIYxIc26bTIdBW5pTBwm7ZVqdtDQG3m1G9z
+ IPvLv7onjlvLpGLw6aS2ElYHG0V01Ti5p/riyzwApO8Tbx4W0OZYUSYCpP89+Tn+ViTd
+ CFjUk5+lXXllfuucY1ounvhTJVnLFDPwj0Q6c6/r2rByY2MDVT1+UI2MvqsHCgiTDgx6
+ qVWxk6If/SdCqFCwpzq3ntHxa6ccjQlJA+940H/hNpot0GAjIPHsheDKh00cnj3/2C3y
+ bvXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726057064; x=1726661864;
+ d=1e100.net; s=20230601; t=1726057070; x=1726661870;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/VR2UR1dthqYJR71A2WcgwFe6vVtppJkQRzukW2+d1s=;
- b=rDLGfsX0ltOOXUVw+SqJlIRBEBUBWoyzAmE4PB+57YwSYiahVZt5CfXKnWRKseynty
- lzlOkbi9cOZxXEwIujUW1tUXhPo27GKazdLQ+rkp7C3OKLPh/fRJluI8+Hi+KFwtGpsb
- tQo8NoOUb4GYVH7bENFXiFw1dA9AudnL04uWbPc+ObtcwwYdeBym+rSvHJR6rL2mj0z2
- yrLGLpVO+WGNd8mgphBfuybvDVyM0OsZ9y6QQml2DSpAxYwL4biGPUnLN9Dm450EhfSE
- W40m3Zr3tv2ckUi4kAtLLAaxsRTJn5cbPae7bMDyocpMPN5wvqmAnSzPujbPXDWvGpF/
- rZlQ==
-X-Gm-Message-State: AOJu0Ywvwy+zmfg434Vu7wqpk5CP/re7xQFiLKfpgKgmnE4cyfE3RRwn
- N/tmsUsTg1bH88+MUtYVNWsfRnfDYkv/Qiw+/wGGyb1n3aw5xO+SnnEu0LMJBpzb0bg8LxUp5aX
- L
-X-Google-Smtp-Source: AGHT+IHfZ1TgJsVOLnr0L5y3WPBmQ0dzb5Wem6cC9z0XKTrmzyMVnDQU2TfAVmSa424cj9u/+UKupA==
-X-Received: by 2002:a05:600c:3d93:b0:426:62c5:4742 with SMTP id
- 5b1f17b1804b1-42cad74649emr110286175e9.7.1726057064145; 
- Wed, 11 Sep 2024 05:17:44 -0700 (PDT)
+ bh=fw5xOtBNIRHkpMkNkgTQIdZ9ohmUJVJx9XSvRhYmISM=;
+ b=DfViQuMG/osiVhAr09FeqJE2lz6fswkJ3dn+Yi/hpePL7tY0ITfSkB52bMCFqedOjA
+ ouSTCby7iIbUJR2SS/FQ+tlEo4ZbrqcCYtViywr+E2ozix9mX2v/NArNVCRp/fHZC6xf
+ hDlYMOsQxKQEN8b55DvEPTIrCyFlhb+QnRFOYvwBym80L+A74lokcJAzCFl9kfRdAPYf
+ SQhJlX29AgSuwHncIzxRIZh8nXKUXgG2eg9E3dvHrLs43ZM6tAd6Oew3C/cC/M+hTJL/
+ 3Yl9okd5bYlFXN2zioaBi7gTsDmJGPbqoz+TGHM2TPDl+pE0QENW7Hdesdw1JTPlo4hF
+ PPYw==
+X-Gm-Message-State: AOJu0YwYdxuDp/+9pP3y3L3/xcJUWWZPfvycGJ3K9A9GnTC1MkI1rMWh
+ W3EbVYGuD0zLijcLb+ZPFTUXcOaL1W2JbFnaBSigArFwgtqWbqx8OpPcBBl+ewmcURls9pFRIXV
+ O
+X-Google-Smtp-Source: AGHT+IFM+3RAPND2HiwojAZnU0IVJFCdQN341yNAX6F4b8ye6tmvcREpD+eP2rwqRqV1lSefoqeBTA==
+X-Received: by 2002:a05:600c:5252:b0:42c:b750:19ce with SMTP id
+ 5b1f17b1804b1-42cb7501eb6mr80335095e9.1.1726057069931; 
+ Wed, 11 Sep 2024 05:17:49 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.196.107])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42caeb44473sm140415835e9.26.2024.09.11.05.17.43
+ 5b1f17b1804b1-42cb6db7ddbsm105424855e9.34.2024.09.11.05.17.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 05:17:43 -0700 (PDT)
+ Wed, 11 Sep 2024 05:17:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 30/56] hw/char/pl011: Rename RX FIFO methods
-Date: Wed, 11 Sep 2024 14:13:55 +0200
-Message-ID: <20240911121422.52585-31-philmd@linaro.org>
+Cc: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
+ Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>
+Subject: [PULL 31/56] MAINTAINERS: Add myself as a reviewer of VT-d
+Date: Wed, 11 Sep 2024 14:13:56 +0200
+Message-ID: <20240911121422.52585-32-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
 References: <20240911121422.52585-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,82 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of having a TX FIFO, rename the RX FIFO methods.
+From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 
+Signed-off-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Message-ID: <20240820095112.61510-1-clement.mathieu--drif@eviden.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240719181041.49545-12-philmd@linaro.org>
 ---
- hw/char/pl011.c      | 12 ++++++------
- hw/char/trace-events |  4 ++--
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/char/pl011.c b/hw/char/pl011.c
-index 9c045d3709..7ac2f39ac2 100644
---- a/hw/char/pl011.c
-+++ b/hw/char/pl011.c
-@@ -173,7 +173,7 @@ static inline void pl011_reset_tx_fifo(PL011State *s)
-     s->flags |= PL011_FLAG_TXFE;
- }
- 
--static void pl011_put_fifo(void *opaque, uint32_t value)
-+static void pl011_fifo_rx_put(void *opaque, uint32_t value)
- {
-     PL011State *s = (PL011State *)opaque;
-     int slot;
-@@ -184,9 +184,9 @@ static void pl011_put_fifo(void *opaque, uint32_t value)
-     s->read_fifo[slot] = value;
-     s->read_count++;
-     s->flags &= ~PL011_FLAG_RXFE;
--    trace_pl011_put_fifo(value, s->read_count);
-+    trace_pl011_fifo_rx_put(value, s->read_count);
-     if (s->read_count == pipe_depth) {
--        trace_pl011_put_fifo_full();
-+        trace_pl011_fifo_rx_full();
-         s->flags |= PL011_FLAG_RXFF;
-     }
-     if (s->read_count == s->read_trigger) {
-@@ -220,7 +220,7 @@ static void pl011_loopback_tx(PL011State *s, uint32_t value)
-      *
-      * For simplicity, the above described is not emulated.
-      */
--    pl011_put_fifo(s, value);
-+    pl011_fifo_rx_put(s, value);
- }
- 
- static void pl011_write_txdata(PL011State *s, uint8_t data)
-@@ -503,13 +503,13 @@ static void pl011_receive(void *opaque, const uint8_t *buf, int size)
-         return;
-     }
- 
--    pl011_put_fifo(opaque, *buf);
-+    pl011_fifo_rx_put(opaque, *buf);
- }
- 
- static void pl011_event(void *opaque, QEMUChrEvent event)
- {
-     if (event == CHR_EVENT_BREAK && !pl011_loopback_enabled(opaque)) {
--        pl011_put_fifo(opaque, DR_BE);
-+        pl011_fifo_rx_put(opaque, DR_BE);
-     }
- }
- 
-diff --git a/hw/char/trace-events b/hw/char/trace-events
-index 8875758076..59e1f734a7 100644
---- a/hw/char/trace-events
-+++ b/hw/char/trace-events
-@@ -58,8 +58,8 @@ pl011_read(uint32_t addr, uint32_t value, const char *regname) "addr 0x%03x valu
- pl011_read_fifo(int read_count) "FIFO read, read_count now %d"
- pl011_write(uint32_t addr, uint32_t value, const char *regname) "addr 0x%03x value 0x%08x reg %s"
- pl011_can_receive(uint32_t lcr, int read_count, int r) "LCR 0x%08x read_count %d returning %d"
--pl011_put_fifo(uint32_t c, int read_count) "new char 0x%x read_count now %d"
--pl011_put_fifo_full(void) "FIFO now full, RXFF set"
-+pl011_fifo_rx_put(uint32_t c, int read_count) "new char 0x%02x read_count now %d"
-+pl011_fifo_rx_full(void) "RX FIFO now full, RXFF set"
- pl011_baudrate_change(unsigned int baudrate, uint64_t clock, uint32_t ibrd, uint32_t fbrd) "new baudrate %u (clk: %" PRIu64 "hz, ibrd: %" PRIu32 ", fbrd: %" PRIu32 ")"
- 
- # cmsdk-apb-uart.c
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a197994c10..da631eb467 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3663,6 +3663,7 @@ VT-d Emulation
+ M: Michael S. Tsirkin <mst@redhat.com>
+ R: Jason Wang <jasowang@redhat.com>
+ R: Yi Liu <yi.l.liu@intel.com>
++R: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
+ S: Supported
+ F: hw/i386/intel_iommu.c
+ F: hw/i386/intel_iommu_internal.h
 -- 
 2.45.2
 
