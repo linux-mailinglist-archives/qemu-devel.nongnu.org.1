@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E622976058
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD85597605F
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:32:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1socPQ-0000T0-JH; Thu, 12 Sep 2024 01:30:24 -0400
+	id 1socPS-0000VR-2R; Thu, 12 Sep 2024 01:30:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1socPL-0000Ek-7R
+ id 1socPO-0000PI-UI
  for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:22 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1socPJ-0002zD-Ag
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:18 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-718e6299191so291785b3a.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:30:16 -0700 (PDT)
+ id 1socPM-0002za-QQ
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:22 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-7d4fbe62bf5so422666a12.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:30:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726119016; x=1726723816; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1726119019; x=1726723819; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FihobyF5TVd7Cmn/sPRvZcTI6XyLQLapMPzEBDPYEuQ=;
- b=gbkb4WA5Tie7WYood07Ei0ARROrLnkLRjvzA5rXrT5MykUGqkBunWDszk2Vtrs8mEU
- GqRAja34EoEUG/rr9+uAGyd1pAKyrogLQAqHT7ZZ+sBkdQHoqiYP37XMJE7C10IO8gUk
- y6kKb8deRuPPdC8IX+qP6OjrX4e2onW9ab2bdGIr2KBs8FzPmDJpMO61L3xMgvh6vcr0
- aG30LFKuGHdNDSksvNpTZdpAksBH4pY3Q4nrXk8To6FOrbCFRosMu0yhnI5u9Qj784T1
- NtwEPxYpBjfX31yEPyags2XLHQguJi4ZL8jZWOJz8xYDjBwdgsVi1O8Bqc8etMK5pJ62
- bg0A==
+ bh=nEqcrjvASUkXL9sGfBA1/Ox7MJPQ1GfLBPBXbleYroY=;
+ b=O/X9HS44ngc0554KfFV/w5QodR31pKanRatBhKhEq20f7FEjQ2/NG9UQPNEbspge8g
+ 6r7ZuwK6zyf7edv4m8ATflpJLhb2ywZx/rn3fwzceIdrwIEQPdoZ7n20KSFY9APJiCF3
+ PQ+OsvR4OY8eaSnlU/StP5vRf+ToGMFw0mccMwJibogHkrUFfoxp4RFsBJXT6tIVYwOT
+ /f7ub8ZsDNzI2eAeblbom/3cHvVg/hu2xw590Cd1n64TpYVTuS7MFWLxsKUqeoBK8aFR
+ 3zwe/gLRdwdG727z35iowz+8UlXqf90PD3zxZXywSw4ailZwChwwjKOjwNx62D9xbQD4
+ ah+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726119016; x=1726723816;
+ d=1e100.net; s=20230601; t=1726119019; x=1726723819;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FihobyF5TVd7Cmn/sPRvZcTI6XyLQLapMPzEBDPYEuQ=;
- b=uPBfB7opgibaEwGMEagaQsVMPsPOBnFhSFIi28WGrV66279vKH1RlkE5RcjYfhDEZL
- uPAg6fNQg1vI56eocxRUx3hmsQpsLW2bip5wmXmXwKFXapfFWbBjrCMFacG1BjgSJNJU
- Mlx6id7w/EPsuT8K463PRmCaZCI7OrDeBPle6MoSGIS3sRoYObUYJp7HBaqzZgNdb9cO
- 4IOL1pAZCG9lLBFfLP6NirnKaZzUsw/t2nwGFkz0ziGPkvuCzX+UlQwUcGqlHu72JXxs
- xOMiiOaYXgm/QC/LhvqdCMe8bulrj6iXd3rUV6YwIYNCWAYgVUGmuBgu8zDfQzrstolI
- IJdw==
-X-Gm-Message-State: AOJu0YxVdrNgg8iYHkMCAf7oZJ3NuidQdCoslTkAm3h2JIGuoVsEm9Dq
- QDXTG+7Pbe+IxevubnSSLpGEYREOEzidHmSzQBcH7Iv4CcDZmQ1uo8G4Nw==
-X-Google-Smtp-Source: AGHT+IFsd3yQPAcWdB7imJ9tUE7I7V3j+NW/8K/QfFRqs+t9/iYFG/pvhVR+AHy9YaBaLSDnI6IKPg==
-X-Received: by 2002:a05:6a00:1952:b0:714:3acb:9d4b with SMTP id
- d2e1a72fcca58-719261cb457mr2327387b3a.18.1726119015390; 
- Wed, 11 Sep 2024 22:30:15 -0700 (PDT)
+ bh=nEqcrjvASUkXL9sGfBA1/Ox7MJPQ1GfLBPBXbleYroY=;
+ b=X89HwoldmkT4VELPJD+ngi1J77x5ViMm2KK9jQ78aI70S74UNR5QFjXsgvLm2VMCFy
+ TzVrv/zujGZFy060CFIE00w+a0SjykxjN8aY3qmQovPhUBcxcJPYdyOYBroCK6nlDNA+
+ xqfEeN1VyODntYbzxneKdp7QW9CCdpEvblG2/ElbpVmOLNNxFyC1cm/qSIcIW7KoiPS8
+ DDpDuM3J7Mjqi6D2/gXMDh3R6CQc/1fTyqk73+Q7JxUA6/jX+PRCExBUlIBHgPli/zTU
+ yEFLasytMro0N9qC7rFNAG+xWHPVu0CsXZ3R9BOHD8Jng4jGCXtQYDStWvEq1hgDdQ3y
+ p6jw==
+X-Gm-Message-State: AOJu0Yz9guz5M2vUBQpUA2TeKtATUxlnN4xCDSdIW2LEBtdFzlCXB/Ns
+ ovYp0Te1Q/EpssR9a0pCdzhNl/KmxTVYyoc9wNrRTeV7wt2qsoMgTEnlTw==
+X-Google-Smtp-Source: AGHT+IGRPKx+qBHm3vsMn4jtwC5gZkT3VqRqiW3oCN+c6LTe2XLKYjgK0GXly0VbxS8YyX20O5nRpA==
+X-Received: by 2002:a05:6a20:2d09:b0:1cf:6d68:5654 with SMTP id
+ adf61e73a8af0-1cf75f10dd0mr2078779637.25.1726119018657; 
+ Wed, 11 Sep 2024 22:30:18 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71908fc8fdesm3833034b3a.1.2024.09.11.22.30.12
+ d2e1a72fcca58-71908fc8fdesm3833034b3a.1.2024.09.11.22.30.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 22:30:14 -0700 (PDT)
+ Wed, 11 Sep 2024 22:30:17 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Frank Chang <frank.chang@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 05/47] target/riscv/tcg/tcg-cpu.c: consider MISA bit choice in
- implied rule
-Date: Thu, 12 Sep 2024 15:29:10 +1000
-Message-ID: <20240912052953.2552501-6-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Vladimir Isaev <vladimir.isaev@syntacore.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL 06/47] target/riscv: fix za64rs enabling
+Date: Thu, 12 Sep 2024 15:29:11 +1000
+Message-ID: <20240912052953.2552501-7-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240912052953.2552501-1-alistair.francis@wdc.com>
 References: <20240912052953.2552501-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,79 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Vladimir Isaev <vladimir.isaev@syntacore.com>
 
-Gitlab issue [1] reports a misleading error when trying to run a 'rv64'
-cpu with 'zfinx' and without 'f':
+za64rs requires priv 1.12 when enabled by priv 1.11.
 
-$ ./build/qemu-system-riscv64 -nographic -M virt -cpu rv64,zfinx=true,f=false
-qemu-system-riscv64: Zfinx cannot be supported together with F extension
+This fixes annoying warning:
+warning: disabling za64rs extension for hart 0x00000000 because privilege spec version does not match
 
-The user explicitly disabled F and the error message mentions a conflict
-with Zfinx and F.
+on priv 1.11 CPUs.
 
-The problem isn't the error reporting, but the logic used when applying
-the implied ZFA rule that enables RVF unconditionally, without honoring
-user choice (i.e. keep F disabled).
-
-Change cpu_enable_implied_rule() to check if the user deliberately
-disabled a MISA bit. In this case we shouldn't either re-enable the bit
-nor apply any implied rules related to it.
-
-After this change the error message now shows:
-
-$ ./build/qemu-system-riscv64 -nographic -M virt -cpu rv64,zfinx=true,f=false
-qemu-system-riscv64: Zfa extension requires F extension
-
-Disabling 'zfa':
-
-$ ./build/qemu-system-riscv64 -nographic -M virt -cpu rv64,zfinx=true,f=false,zfa=false
-qemu-system-riscv64: D extension requires F extension
-
-And finally after disabling 'd':
-
-$ ./build/qemu-system-riscv64 -nographic -M virt -cpu rv64,zfinx=true,f=false,zfa=false,d=false
-(OpenSBI boots ...)
-
-[1] https://gitlab.com/qemu-project/qemu/-/issues/2486
-
-Cc: Frank Chang <frank.chang@sifive.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2486
-Fixes: 047da861f9 ("target/riscv: Introduce extension implied rule helpers")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Fixes: 68c9e54beae8 ("target/riscv: do not enable all named features by default")
+Signed-off-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240824173338.316666-1-dbarboza@ventanamicro.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20240823063431.17474-1-vladimir.isaev@syntacore.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ target/riscv/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index b8814ab753..dea8ab7a43 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -778,11 +778,18 @@ static void cpu_enable_implied_rule(RISCVCPU *cpu,
-     if (!enabled) {
-         /* Enable the implied MISAs. */
-         if (rule->implied_misa_exts) {
--            riscv_cpu_set_misa_ext(env,
--                                   env->misa_ext | rule->implied_misa_exts);
--
-             for (i = 0; misa_bits[i] != 0; i++) {
-                 if (rule->implied_misa_exts & misa_bits[i]) {
-+                    /*
-+                     * If the user disabled the misa_bit do not re-enable it
-+                     * and do not apply any implied rules related to it.
-+                     */
-+                    if (cpu_misa_ext_is_user_set(misa_bits[i]) &&
-+                        !(env->misa_ext & misa_bits[i])) {
-+                        continue;
-+                    }
-+
-+                    riscv_cpu_set_misa_ext(env, env->misa_ext | misa_bits[i]);
-                     ir = g_hash_table_lookup(misa_ext_implied_rules,
-                                              GUINT_TO_POINTER(misa_bits[i]));
- 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 8f21171ffa..f93bf9c221 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -115,7 +115,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
+     ISA_EXT_DATA_ENTRY(zimop, PRIV_VERSION_1_13_0, ext_zimop),
+     ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
+-    ISA_EXT_DATA_ENTRY(za64rs, PRIV_VERSION_1_12_0, has_priv_1_11),
++    ISA_EXT_DATA_ENTRY(za64rs, PRIV_VERSION_1_12_0, has_priv_1_12),
+     ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
+     ISA_EXT_DATA_ENTRY(zabha, PRIV_VERSION_1_13_0, ext_zabha),
+     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
 -- 
 2.46.0
 
