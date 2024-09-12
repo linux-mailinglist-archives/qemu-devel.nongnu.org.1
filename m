@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02992976A09
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 15:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCC5976A0E
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 15:10:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sojZj-00030s-5H; Thu, 12 Sep 2024 09:09:31 -0400
+	id 1sojZp-0003Rb-41; Thu, 12 Sep 2024 09:09:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1sojZd-0002zw-3p
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 09:09:25 -0400
+ id 1sojZg-00030j-Qf
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 09:09:28 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1sojZb-0004pS-CJ
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 09:09:24 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1sojZb-0004pV-0m
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 09:09:25 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxOOkA6OJm5OQFAA--.12495S3;
+ by gateway (Coremail) with SMTP id _____8Dx1ugA6OJm5uQFAA--.12514S3;
  Thu, 12 Sep 2024 21:09:20 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front2 (Coremail) with SMTP id qciowMDxl8Xr5+JmR8MFAA--.9219S3;
+ by front2 (Coremail) with SMTP id qciowMDxl8Xr5+JmR8MFAA--.9219S4;
  Thu, 12 Sep 2024 21:09:20 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
 	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 1/7] target/loongarch: Add compatible support about VM reboot
-Date: Thu, 12 Sep 2024 20:51:26 +0800
-Message-Id: <20240912125132.268802-2-gaosong@loongson.cn>
+Subject: [PULL 2/7] hw/loongarch: Remove default enable with VIRTIO_VGA device
+Date: Thu, 12 Sep 2024 20:51:27 +0800
+Message-Id: <20240912125132.268802-3-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240912125132.268802-1-gaosong@loongson.cn>
 References: <20240912125132.268802-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qciowMDxl8Xr5+JmR8MFAA--.9219S3
+X-CM-TRANSID: qciowMDxl8Xr5+JmR8MFAA--.9219S4
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,47 +64,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-With edk2-stable202408 LoongArch UEFI bios, CSR PGD register is set only
-if its value is equal to zero for boot cpu, it causes reboot issue. Since
-CSR PGD register is changed with linux kernel, UEFI BIOS cannot use it.
+For virtio VGA deivce libvirt will select VIRTIO_VGA firstly rather than
+VIRTIO_GPU, VIRTIO_VGA device supports frame buffer however it requires
+legacy VGA compatible support. Frame buffer area 0xa0000 -- 0xc0000
+conflicts with low memory area 0 -- 0x10000000.
 
-Add workaround to clear CSR registers relative with TLB in function
-loongarch_cpu_reset_hold(), so that VM can reboot with edk2-stable202408
-UEFI bios.
+Here remove default support for VIRTIO_VGA device, VIRTIO_GPU is prefered
+on LoongArch system. For frame buffer video card support, standard VGA can
+be used.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240827035807.3326293-1-maobibo@loongson.cn>
+Message-Id: <20240823073050.2619484-1-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/cpu.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ hw/loongarch/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 5e85b9dbef..115922113a 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -549,6 +549,20 @@ static void loongarch_cpu_reset_hold(Object *obj, ResetType type)
-     env->CSR_TLBRERA = FIELD_DP64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR, 0);
-     env->CSR_MERRCTL = FIELD_DP64(env->CSR_MERRCTL, CSR_MERRCTL, ISMERR, 0);
-     env->CSR_TID = cs->cpu_index;
-+    /*
-+     * Workaround for edk2-stable202408, CSR PGD register is set only if
-+     * its value is equal to zero for boot cpu, it causes reboot issue.
-+     *
-+     * Here clear CSR registers relative with TLB.
-+     */
-+    env->CSR_PGDH = 0;
-+    env->CSR_PGDL = 0;
-+    env->CSR_PWCL = 0;
-+    env->CSR_PWCH = 0;
-+    env->CSR_STLBPS = 0;
-+    env->CSR_EENTRY = 0;
-+    env->CSR_TLBRENTRY = 0;
-+    env->CSR_MERRENTRY = 0;
- 
-     for (n = 0; n < 4; n++) {
-         env->CSR_DMW[n] = FIELD_DP64(env->CSR_DMW[n], CSR_DMW, PLV0, 0);
+diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
+index 0de713a439..9c69170968 100644
+--- a/hw/loongarch/Kconfig
++++ b/hw/loongarch/Kconfig
+@@ -5,7 +5,6 @@ config LOONGARCH_VIRT
+     select DEVICE_TREE
+     select PCI
+     select PCI_EXPRESS_GENERIC_BRIDGE
+-    imply VIRTIO_VGA
+     imply PCI_DEVICES
+     imply NVDIMM
+     imply TPM_TIS_SYSBUS
 -- 
 2.34.1
 
