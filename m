@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD85597605F
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37356976069
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:34:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1socPS-0000VR-2R; Thu, 12 Sep 2024 01:30:26 -0400
+	id 1socPU-0000gx-Kr; Thu, 12 Sep 2024 01:30:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1socPO-0000PI-UI
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:22 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1socPR-0000XO-Bn
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:25 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1socPM-0002za-QQ
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:22 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-7d4fbe62bf5so422666a12.0
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:30:20 -0700 (PDT)
+ id 1socPP-0002zl-Hh
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:25 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-718d606726cso313550b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:30:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726119019; x=1726723819; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1726119022; x=1726723822; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nEqcrjvASUkXL9sGfBA1/Ox7MJPQ1GfLBPBXbleYroY=;
- b=O/X9HS44ngc0554KfFV/w5QodR31pKanRatBhKhEq20f7FEjQ2/NG9UQPNEbspge8g
- 6r7ZuwK6zyf7edv4m8ATflpJLhb2ywZx/rn3fwzceIdrwIEQPdoZ7n20KSFY9APJiCF3
- PQ+OsvR4OY8eaSnlU/StP5vRf+ToGMFw0mccMwJibogHkrUFfoxp4RFsBJXT6tIVYwOT
- /f7ub8ZsDNzI2eAeblbom/3cHvVg/hu2xw590Cd1n64TpYVTuS7MFWLxsKUqeoBK8aFR
- 3zwe/gLRdwdG727z35iowz+8UlXqf90PD3zxZXywSw4ailZwChwwjKOjwNx62D9xbQD4
- ah+Q==
+ bh=xl2u8VSlAsDXatryQRsLfhflFKGJFdFrYq4cRLhSKls=;
+ b=GciZP3ue3ve8iLqrOTH8D1bA0YFTY/H+C35eTMMtCJrYj7v0r2Izih/2D9/Yikmw16
+ vRopy2LOZqQ49/gR5Io57TuFzCeP6vmm1DlN1qqf671Q+k75GKQWzxJ/PquSU92Ow9D6
+ lUDkfCRmtpDysnrtIltnkGfA/cWec+Xuz6qpuuawtMdmr9hBZD8vXZp8bBlsoJXryuU8
+ zm2yM8d3xLS4ijOLT0eMSa/CbOEFz6HUuQ+NHTOPC1MlwnfFJIESbtKQUaGOqtzlZNkj
+ lS0665NAid4mZstxnVnHyJFxO2AJvuk4BALYiLfr/gDQdTi25N2rA5ojSIByaT0WlXHu
+ w5rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726119019; x=1726723819;
+ d=1e100.net; s=20230601; t=1726119022; x=1726723822;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nEqcrjvASUkXL9sGfBA1/Ox7MJPQ1GfLBPBXbleYroY=;
- b=X89HwoldmkT4VELPJD+ngi1J77x5ViMm2KK9jQ78aI70S74UNR5QFjXsgvLm2VMCFy
- TzVrv/zujGZFy060CFIE00w+a0SjykxjN8aY3qmQovPhUBcxcJPYdyOYBroCK6nlDNA+
- xqfEeN1VyODntYbzxneKdp7QW9CCdpEvblG2/ElbpVmOLNNxFyC1cm/qSIcIW7KoiPS8
- DDpDuM3J7Mjqi6D2/gXMDh3R6CQc/1fTyqk73+Q7JxUA6/jX+PRCExBUlIBHgPli/zTU
- yEFLasytMro0N9qC7rFNAG+xWHPVu0CsXZ3R9BOHD8Jng4jGCXtQYDStWvEq1hgDdQ3y
- p6jw==
-X-Gm-Message-State: AOJu0Yz9guz5M2vUBQpUA2TeKtATUxlnN4xCDSdIW2LEBtdFzlCXB/Ns
- ovYp0Te1Q/EpssR9a0pCdzhNl/KmxTVYyoc9wNrRTeV7wt2qsoMgTEnlTw==
-X-Google-Smtp-Source: AGHT+IGRPKx+qBHm3vsMn4jtwC5gZkT3VqRqiW3oCN+c6LTe2XLKYjgK0GXly0VbxS8YyX20O5nRpA==
-X-Received: by 2002:a05:6a20:2d09:b0:1cf:6d68:5654 with SMTP id
- adf61e73a8af0-1cf75f10dd0mr2078779637.25.1726119018657; 
- Wed, 11 Sep 2024 22:30:18 -0700 (PDT)
+ bh=xl2u8VSlAsDXatryQRsLfhflFKGJFdFrYq4cRLhSKls=;
+ b=ZbAEdmMZQ6sApbCoawbGr9bXRBZ3FaWSBUhTBu9IkE0lFW2/DFVev8NwrnIb+UTCUi
+ kdSh08Hhqwhv5CPQXxw3nVr7ryahlfCbva/EgZObGrTusZWNTuJxTpg4FtqEh0cSRN5P
+ gWqbCIGM+hSSavoFWLMK5Y5dzuiAFtmS2rA9dqNMhLra7LCoR9zqBhC5slS50eEzWTfa
+ VzdviJEu4/MiuP8TZXFUIlKL/eBulMuzIMfBivvh/xQ7wDR38yIxfBYklT619ep4TtEQ
+ amEpSROkylqKcm5DWzv+mH6gNrOj/V3mTnQSn9eID28xuokjFr6HnPMi5unj8/TYx8Jh
+ +3KQ==
+X-Gm-Message-State: AOJu0YzVAMSzXgkMFjtOPKtgn2FCLk3jrgQB+HJWPfuo36lHXDbunwf8
+ v7dgKmGDQNg5Rj2uG7lwA6mv8T3eYl7VwbSdZX95mEMAvsFaUWwfZdqGow==
+X-Google-Smtp-Source: AGHT+IFO2Kb3C6kauazbiL2J/6MLPd4fk7ySnx++j35LzCP4/rGP+jzuuR1/CJY6/cVwxp9ju3DHfA==
+X-Received: by 2002:a05:6a21:3305:b0:1cf:3996:744e with SMTP id
+ adf61e73a8af0-1cf761e559cmr2048548637.39.1726119021323; 
+ Wed, 11 Sep 2024 22:30:21 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71908fc8fdesm3833034b3a.1.2024.09.11.22.30.15
+ d2e1a72fcca58-71908fc8fdesm3833034b3a.1.2024.09.11.22.30.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 22:30:17 -0700 (PDT)
+ Wed, 11 Sep 2024 22:30:20 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Vladimir Isaev <vladimir.isaev@syntacore.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+Cc: alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 06/47] target/riscv: fix za64rs enabling
-Date: Thu, 12 Sep 2024 15:29:11 +1000
-Message-ID: <20240912052953.2552501-7-alistair.francis@wdc.com>
+Subject: [PULL 07/47] target: riscv: Enable Bit Manip for OpenTitan Ibex CPU
+Date: Thu, 12 Sep 2024 15:29:12 +1000
+Message-ID: <20240912052953.2552501-8-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240912052953.2552501-1-alistair.francis@wdc.com>
 References: <20240912052953.2552501-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,38 +96,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vladimir Isaev <vladimir.isaev@syntacore.com>
+From: Alistair Francis <alistair23@gmail.com>
 
-za64rs requires priv 1.12 when enabled by priv 1.11.
+The OpenTitan Ibex CPU now supports the the Zba, Zbb, Zbc
+and Zbs bit-manipulation sub-extensions ratified in
+v.1.0.0 of the RISC-V Bit- Manipulation ISA Extension, so let's enable
+them in QEMU as well.
 
-This fixes annoying warning:
-warning: disabling za64rs extension for hart 0x00000000 because privilege spec version does not match
+1: https://github.com/lowRISC/opentitan/pull/9748
 
-on priv 1.11 CPUs.
-
-Fixes: 68c9e54beae8 ("target/riscv: do not enable all named features by default")
-Signed-off-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240823063431.17474-1-vladimir.isaev@syntacore.com>
+Message-ID: <20240823003231.3522113-1-alistair.francis@wdc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/cpu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 8f21171ffa..f93bf9c221 100644
+index f93bf9c221..fc3f75e826 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -115,7 +115,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
-     ISA_EXT_DATA_ENTRY(zimop, PRIV_VERSION_1_13_0, ext_zimop),
-     ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
--    ISA_EXT_DATA_ENTRY(za64rs, PRIV_VERSION_1_12_0, has_priv_1_11),
-+    ISA_EXT_DATA_ENTRY(za64rs, PRIV_VERSION_1_12_0, has_priv_1_12),
-     ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
-     ISA_EXT_DATA_ENTRY(zabha, PRIV_VERSION_1_13_0, ext_zabha),
-     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
+@@ -701,6 +701,11 @@ static void rv32_ibex_cpu_init(Object *obj)
+     cpu->cfg.ext_zicsr = true;
+     cpu->cfg.pmp = true;
+     cpu->cfg.ext_smepmp = true;
++
++    cpu->cfg.ext_zba = true;
++    cpu->cfg.ext_zbb = true;
++    cpu->cfg.ext_zbc = true;
++    cpu->cfg.ext_zbs = true;
+ }
+ 
+ static void rv32_imafcu_nommu_cpu_init(Object *obj)
 -- 
 2.46.0
 
