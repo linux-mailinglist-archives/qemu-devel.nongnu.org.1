@@ -2,133 +2,166 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC26C97607B
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6BC697608D
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:45:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1socY7-0007eF-Hi; Thu, 12 Sep 2024 01:39:24 -0400
+	id 1soceG-0007at-4U; Thu, 12 Sep 2024 01:45:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1socXc-0006kJ-Kg
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:38:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <Santosh.Shukla@amd.com>)
+ id 1soceB-0007Cx-VT
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:45:40 -0400
+Received: from mail-mw2nam10on2046.outbound.protection.outlook.com
+ ([40.107.94.46] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1socXY-0003jc-FA
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:38:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726119526;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
- bh=Z7kYflwMZRa47LKuqq+fSNneBw952RbVdOoXPHzeY3Q=;
- b=HkCfQOSQO52kI29vt1ShEb+QV3chkoeSbk1NlB1ERc6/W5WJsLuCrU5h1XEDu4JMXhKtTA
- VIJt844GfWAdvG/sbUVExRa8u+mIcqMIgJ7EuDbUIXnworIyh8b7ZyUaD8KXBruncD9AMm
- AzAG2jZ856FJSea1AoRwSsKdoroZn5o=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-iVM7PhxaNryCW13qRsxOMw-1; Thu, 12 Sep 2024 01:38:41 -0400
-X-MC-Unique: iVM7PhxaNryCW13qRsxOMw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42cb830ea86so3626965e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:38:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726119520; x=1726724320;
- h=content-transfer-encoding:autocrypt:subject:cc:to:from
- :content-language:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Z7kYflwMZRa47LKuqq+fSNneBw952RbVdOoXPHzeY3Q=;
- b=eDfcc/0KEvUR12P2twrBfskoVhqYSlYgMNF+PiJzOFXr4Z/VYS34AJGophdlaaTsEC
- 678fbN5uOKSCihdA2FER0/qPMfbd88VvR8QXQdXL9sKCowz62Amg1P9CO5IIxEPJLdxX
- ALA9BWs8gMFqEvBwA9e+Wz5wBI8pgXYAKJWZiWUtoZ0EWXL9yAcNOjTYnXa4jp8unO/8
- raGIXT0DAoz0MkBtZMms/qbhfey3zKObTJAIXdfqS8XdUHWIqD00Ee6NcdjA03Ca7bvM
- 6L1SnShTdVy0tHDSyvRwPYc8I8uRSXVqsf2tNdjRNRlqdK6i6fb0sUHQZu1piVTCv47X
- 9b2w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXTQSNrQ0qpW47cxvOj5hHMjP2bZgkKWppPU+RtoyZoOUWw4B1fceqix5CisP7hFrcd3wsDg5jcLvMr@nongnu.org
-X-Gm-Message-State: AOJu0Yxl1PlJatN+yOFWho2H+WVbUqFOPqgIK4TTVeobEedLlLAk7WSo
- ybnSuoirQm9MBmbZej4RL+LR1lVR2TmmYQWG5K/nJDpuvNgByzv5+U6O5KvJduviIK3GM+LGG/K
- 1Ro7WR4dzX42i6PtFig2S+S0GZ5DG7T7BfhkVoJ1uMTgEFGp1PMYD
-X-Received: by 2002:a05:600c:4ecb:b0:42c:b8c9:16cb with SMTP id
- 5b1f17b1804b1-42cdb4e6aecmr11006935e9.5.1726119520226; 
- Wed, 11 Sep 2024 22:38:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYJhsKj0sDfA3BHiigkoVTxOM49PYhaiC9WNKl1cmxqcNBNBl/ZRz19gwqrRLmYz7LiIx8rg==
-X-Received: by 2002:a05:600c:4ecb:b0:42c:b8c9:16cb with SMTP id
- 5b1f17b1804b1-42cdb4e6aecmr11006825e9.5.1726119519701; 
- Wed, 11 Sep 2024 22:38:39 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-43-178-122.web.vodafone.de.
- [109.43.178.122]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42cb77afd5asm121284785e9.17.2024.09.11.22.38.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Sep 2024 22:38:39 -0700 (PDT)
-Message-ID: <d88511da-de21-4260-bf69-2b68f92a37b9@redhat.com>
-Date: Thu, 12 Sep 2024 07:38:37 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+ (Exim 4.90_1) (envelope-from <Santosh.Shukla@amd.com>)
+ id 1soce9-0004Lo-D1
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:45:39 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XQ8yaNvHmNgXAwvJV4nWtUNSqy5kqDJBJopW5IJVdMcdsZsEFIuD4q4G/syfxedVpzbF+U0iPtOPzqX28czdzRZuhOPaUbhChX5fXyGHIBmWYZu5GzLKfp+93wr7mevU/tU9llVmD95GRE59KDt8TzZz+Ov7k8opkq20FX6KrZWh/snCi786p48mIIYWvqPZDtx2DMegcVXLrndXTYPgu+ehzo7nfDVPPYZB7c2BhLsHut+l4q9OYagPl0Wc5gPVNRMIkbBsKjWkxDiKxZeNWXcxZm2R42Mz43OTrs0qAWvhbyZy8psQ7VrEdeU9PnPxRFbc9KcERV+uPz0dY/4l+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LomolTXIsHeDqZGpPoXuxk/fz5h6WyNDtPiUQ6rxyNc=;
+ b=XSNK7m4Q5Q+6pEtWbRGyHwwDWpiF6MxjBMapnv79noUzZLjdTuAI9hBE347N/7Hr2o1PKLXhtYXRpudUWDlc+bkvnUvCDcBIv1c6hulTyLa2YbjP2FQD1hERVN6RNHTrik4ImZP5+bPjfJaorJvf96w0tpAfyvjfIkCDTXIG3TkVEPgvu/IrEq4Qxz+fqvLQLGTgutSd1VbdRrO6gs1cpLzQEiWj8YGHQvZwILZCuIdE0XL4PScHMz90vNWITupgYAHJ7EWG0y4sRjlR4UM4f68YkFvsxr4i8C2hAkIOcEbW9HGkSR+qrjTIRjs7zG1cdZDeP+vRR7wgii93SQ+kow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LomolTXIsHeDqZGpPoXuxk/fz5h6WyNDtPiUQ6rxyNc=;
+ b=CTcqu9cSqSpnbHCJzDXjvmqCvRzFH896SZRGC4EofeMrFPkbnuLQsMa68j7XS4iF8B/FmVRNDzIxuOO0zl8L0gFmLoWNuCSf3pyCNcvfZF1G73SeLsQti7wrnAbyQClwZkg/dsJYuefYWd1cBbwzF/nNk/0usPPjv44NTxZmbRQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CY5PR12MB6323.namprd12.prod.outlook.com (2603:10b6:930:20::11)
+ by DM4PR12MB5868.namprd12.prod.outlook.com (2603:10b6:8:67::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.25; Thu, 12 Sep
+ 2024 05:40:29 +0000
+Received: from CY5PR12MB6323.namprd12.prod.outlook.com
+ ([fe80::2300:2257:1877:4750]) by CY5PR12MB6323.namprd12.prod.outlook.com
+ ([fe80::2300:2257:1877:4750%2]) with mapi id 15.20.7939.022; Thu, 12 Sep 2024
+ 05:40:28 +0000
+Message-ID: <b57f362a-dfac-8ee8-5746-8abbe7b2183d@amd.com>
+Date: Thu, 12 Sep 2024 11:10:20 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH 0/5] Interrupt Remap support for emulated amd viommu
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- QEMU Developers <qemu-devel@nongnu.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Gitlab CI caching is not working
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, joao.m.martins@oracle.com,
+ Suravee.Suthikulpanit@amd.com, vasant.hegde@amd.com, mtosatti@redhat.com,
+ marcel.apfelbaum@gmail.com
+References: <20240904100257.184851-1-santosh.shukla@amd.com>
+ <20240910161403-mutt-send-email-mst@kernel.org>
+From: "Shukla, Santosh" <santosh.shukla@amd.com>
+In-Reply-To: <20240910161403-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+X-ClientProxiedBy: MA0P287CA0002.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:d9::8) To CY5PR12MB6323.namprd12.prod.outlook.com
+ (2603:10b6:930:20::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR12MB6323:EE_|DM4PR12MB5868:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99aba193-9338-4d67-9a97-08dcd2ed6878
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eGZiT0dHUi9zOFpIczJQNzhLWkdJTU5UMVI4Qi81cTVsaUNoMldEb3AxTnBF?=
+ =?utf-8?B?YjBjbDlBVXVtWnd0bUlIVStiY002endqVGw4ZTBHSUFmb2x3cGxHTEVIaUNL?=
+ =?utf-8?B?NUxDZjlVVTJBTzRxQ1pDdUtWNVVKNDdVMmE1bXRSZmx4YUM5WHo4b1BqOUM1?=
+ =?utf-8?B?QmJIZlVVWnBNdkhnNWtiYUdOSnp4VWJHYlltMlZRM3RNSjRqRWFMZGZiREZJ?=
+ =?utf-8?B?ZW1GWTYzZmRHUHJYTjFYNEpNN2tOQ054ajlVT2I4VmExV3pkYWRCbzJ2RDlF?=
+ =?utf-8?B?TVE4ODYwb2paTkFGSzdsZDAvdVp1V2JEamJZL1RTRkJ6UGZERGMzS1JEcTN6?=
+ =?utf-8?B?K29oTmhVdUVWckZQK2NKZ0laVDBVejZiR0tLTm9mNXhOeFltQ3ppWnVxUVlh?=
+ =?utf-8?B?MlM0cnpNWXU5TE1vTnhTOFVOK2lseWZHZlhWWTliWHhRWnhMTVRQbnpnUWdq?=
+ =?utf-8?B?YngrblljUVBWcXRHZjNFanAyVExFaGxBTHVaYzIvMm9EbHRTODc5aTdDd0NX?=
+ =?utf-8?B?MVJuZU5odW1TMGxjN3FqcjRGWlByYU5uM1AxWE5VZlpteUNrMlVQSW4xWGkx?=
+ =?utf-8?B?b1hGWW90Sk5GTEJ5U0RWWkF0UUlwbkc1S09tYWxHb0tzZ0d6OXY0MXcxYnNt?=
+ =?utf-8?B?eDh5dG9rVGc4SHQ1VUZZRjliVlU5RnRmejFkNTJ0SnBOY3dyRjFwdERsc2xI?=
+ =?utf-8?B?N2x0R0orVmN4WGIwOUhzMjhTVnRPOWo4QUtaRndwSkxXRHFXS1FGL0VMc0U5?=
+ =?utf-8?B?cmp0UkhqOE93aEF1UnBDL1ZnTnVwNzFydDhBYU9uWHFsZkc0aE5qKzlSaTZM?=
+ =?utf-8?B?R0ZSdWFZTU1EYi81WmF4R3htOW1SKzhtekhSUVpjajd3c3NqS1RtTkFDSW1G?=
+ =?utf-8?B?OXl1NXg3cW83ZVVsVis1UC9iRU1hd0U3U09jSjZ6VXNtL3Z0ZHZQQXRxOFBZ?=
+ =?utf-8?B?RzlhZFQwSWVENVA1bnJTTGtVZ1VCdzc0K29JYnpFWENQd3BaaTkrR2IyREQ3?=
+ =?utf-8?B?QXZ0OHBhWXBNU0t2WGZoYWpSTk04YjJGSVN1d2ZydHJPUjdMVEtDRXdmZmN1?=
+ =?utf-8?B?aEx4UmdHbG5WVXhWVHpYK1B6RjJjUnlEM2M4MFNpdXNaOUlvZVh4b1dDZVNE?=
+ =?utf-8?B?dmd1Z0hxUWZjUjk4NUFzYkIrSVFQOXVxcW5Eb1dSaDVBR3lJeEw2ZlU2M2o3?=
+ =?utf-8?B?eXhhR0pPUTAvT0thUnJHbnROMTN2cEMwRlFIVmZNQkRYdHA2eTJvV0NldXFu?=
+ =?utf-8?B?MWs5ODBGQXpabjYxc2IrUGxhcHluNjBVRS9LQTFHZDhVNzdSQlBXeHdWbmNF?=
+ =?utf-8?B?UnJobmFCMTlSeFFtcTBlT0tJQ0pIZjVoNEZOcnVVd3ZOVEovQXZ3YUZBQ2RV?=
+ =?utf-8?B?cjB4VHNjRnBDRSt6S0huZ3dBNXNLTlY5SndJTmZxcU5KVTBNK3NHbjhhcTNR?=
+ =?utf-8?B?aVo5bVNXSGk4cm1IRHpNSjhGTk1LN0hYbTRQMkhWZk9ZL29kaGJoc3YvdTIr?=
+ =?utf-8?B?QWxtK0VqNmRoYVh6aHQxUmRsUW83MlF0WU1pSFdrRTNUVHNyaEgvLzZRSndz?=
+ =?utf-8?B?SjltRG1UdEFSdVlUMGVUZS9MUmpDc2Y0Uno2MWlYeUtrOGllR1k4MkNHWnoz?=
+ =?utf-8?B?WTRZcjhVOENvTkswNGFMNlBuK1IvZTBTUENlbi9QbzJDblJidDdHNEdyRk1m?=
+ =?utf-8?B?M2N4bEVlTE4rTWs2eXJSN1FuclFyeUd2SldkV0luZEtUTk1CS01tOSs2bjVO?=
+ =?utf-8?B?Q3IzZ3ZqU21vL0E1MHRzdmVnNkpZVitHck0zSmtaSG9VYnNvaFlGTEUwSDNQ?=
+ =?utf-8?Q?oMhkRiHLTcE32l43D8yXzP4FhGMjPkUcf/nh4=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY5PR12MB6323.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bHgwbng5NEE1b2xiQWhMcktmWnQ1UGY1bU1OOHF3SjlZUmI2TVBKTGZFaWxW?=
+ =?utf-8?B?TXloR3ltbVlmeXM3YlhHMFJDNzdkR0hHL0tZRDBmaTlTR1NiVCtSN29sWkRS?=
+ =?utf-8?B?OFkwTjhTc0duZjBYRVpEU2kraGRHRzEzdWduaVBucnlaWmRNeWVwd1F0SFlo?=
+ =?utf-8?B?Z0RSTW9yQTVVR0VaQytINEdpZjlGMUhrc3MrKzE4NUJWc3ZnZEtTYzEzb3Nn?=
+ =?utf-8?B?MzVwcHMyMG5JZVNUb3hKalpLTlpEN0p5cHp0RmVHRGpaRXNIMjJUSFFYM0Zz?=
+ =?utf-8?B?cHh6Skl4WitRWmcyMTlPOWhrYldMQ24wc0J4NG0xN0xGMmRmN2s5aDRFS1gy?=
+ =?utf-8?B?SmNBS3FnZ0VxKytnMXVwTDMwMm9sMTViNXRuRFlYNzRyZGR5S1ZnSXpiUkh3?=
+ =?utf-8?B?b2FxenEvbkt1VVlSWW1vVUF5OEZ4ZmtabTVTS05lblpCbWhJTDAycWVnamtn?=
+ =?utf-8?B?OUc0OUdyRUc1TU9semhHRWI0b2VXelY3Y0RtZ1p2S1R4UFZianJwbzI4SUU0?=
+ =?utf-8?B?ZXlCcGJOZzlxYTZRWUxJeC9hcUhuYXRaSHhjeDk4eTlOeDNSaUlib0xuRVBm?=
+ =?utf-8?B?Y1lBa1pNai9xNDEyVDdOdy9xWm8yQzRoYjZxNmEwNU1iNU55NDI0WU94YXZX?=
+ =?utf-8?B?OCs5eXJmaWZnYjVsdFloUVlObWhJOW9wL0NyMUcxZWd3b0RZUVFsUzNDZ2FG?=
+ =?utf-8?B?cEx0Zm9BcDY5cGZPK0J5WlFza1htNUc2N01tWXhzQ1loZTNiNU9aZys3YTZv?=
+ =?utf-8?B?d0h5S3BBOEVvR1VjY2N3WXFaODIybkovMFJuQUNZWGZFbUl5aGRUbEFhY09O?=
+ =?utf-8?B?SmNiOHRIb3ZINDlYcG5hTWhMTEE0c1hzaEdGcm9BQmFzOVg3MEc1Q2dsb1N1?=
+ =?utf-8?B?aE1ESGpoVE5EZVRHV0puSXJMUDRubHhMOHFaY0JoYmZid0VjSHhPcXFKRCsr?=
+ =?utf-8?B?S2o0UTFhTXV3eUcwVVc5dHJhbFViV1J3aTVveEkyTzZqbXBLTHo1SGFOZEEx?=
+ =?utf-8?B?ajg0aWltYW9GQ2J6MHJDYmhOSTVPWVlnSkcvN0p0UTZVZXRlb05Fazd6V3BX?=
+ =?utf-8?B?RWJzTVBTbkxhcFA4d3pKZS8wK2piTExjNUNYK1ZRLzBuSFJYSzRMZTdaOWpv?=
+ =?utf-8?B?Ym9ENWhZZGpXcGFNeDhrRnQ4V21TUHltOWIremcyRENialJ5R0VNUWJJbU9I?=
+ =?utf-8?B?YVFSc2lWVk8yalhlazdMWUtWeUJHNmNWakpZOXE5dkFQdjdnMk5OS0E1KzVY?=
+ =?utf-8?B?d2w3b093eC9IOHFQT1RtaEJNRWVUWXBnREdZcXI5emZiOVEwYzY0S1ljNFMz?=
+ =?utf-8?B?SGdLSkRmQy96dWdoNUJXNTNTaTVCRU5aY05nWUNFWU04MFFBQUppbVpWcys4?=
+ =?utf-8?B?WmZRc1hHQUlIQS9ueTduRWJSVXdteUxaU01NNTJlZ0lSb3MyK1NLNmdrODM5?=
+ =?utf-8?B?bk9COWwvN1BQOTNXSHJMbklFTGxtTkhQOXh0K1JOekttSXRBalRDVTJzUDdk?=
+ =?utf-8?B?d3ppYWtaeUk2RC82QmZqRzFxVkd5NUYxK2xOYmNSUDgwaGlIZzY1UW9BSVhF?=
+ =?utf-8?B?TjdaeGpTNThGQk1SY2R4cGxKQ0pnSUlkZCtiS3Q1b1VpemVnajFIQTYvaC9F?=
+ =?utf-8?B?M2FuZFJFZHhlTHNjKzZMdkxIbUFGNzRoS1dDbmI5QTc5b2tmb2RxTGdMaDdn?=
+ =?utf-8?B?azFadEZiMGJlZjlhTGUxZWEwckhTOXg2bS9hbzNQQnVQaWJKdll3bFBuMy9L?=
+ =?utf-8?B?ZW0yYjNGa1laVklOWkNnai9TNVZnaWpldmgva0Y5czRCbTZHTTl6d1RiaU9T?=
+ =?utf-8?B?NkZFRll1SEZHT0V3djBXQSs5SEV6eUE4eVcvTkZXeHp1aDI4YitiWXBvUFpG?=
+ =?utf-8?B?ajN1NWJwSVNaUWNtQk1HNXoxU1c1ZGUxMlR6RmkxRk9QVG5PTFRDTUNSdEY0?=
+ =?utf-8?B?Mlo1MmtiTEt6KytneUF5NG5EUGVIa0VmRHdMakVJVUxjVi9NWVMrZEtNSnFX?=
+ =?utf-8?B?VlVIUTllR1pnREpaQ004Mkt5ZWlmdnkzYk9sRkNqOG9GOVVadllBYWZXd2px?=
+ =?utf-8?B?QVFndlFVZ2NFckFCWi9aaHhHQmZGVXo0ejBNTy9xUG1pSHludnN5RFJzT0lI?=
+ =?utf-8?Q?GxAaD97QmqyVZc+J92JXNVLJi?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99aba193-9338-4d67-9a97-08dcd2ed6878
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6323.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2024 05:40:28.4897 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xvgS+Tk5hVpj1XBbhsE8jnryngvqr+R7Ui2JgUiuY3oVUCza8LdcrERFMyVqPezYCtf4gIAiU+ug+fXGSqRKBg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5868
+Received-SPF: permerror client-ip=40.107.94.46;
+ envelope-from=Santosh.Shukla@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ NICE_REPLY_A=-1.499, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,42 +177,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Michael,
 
-  Hi!
+On 9/11/2024 1:44 AM, Michael S. Tsirkin wrote:
+> On Wed, Sep 04, 2024 at 05:02:52AM -0500, Santosh Shukla wrote:
+>> Series adds following feature support for emulated amd vIOMMU
+>> 1) Pass Through(PT) mode
+>> 2) Interrupt Remapping(IR) mode
+>>
+>> 1) PT mode
+>> Introducing the shared 'nodma' memory region that can be aliased
+>> by all the devices in the PT mode. Shared memory with aliasing
+>> approach will help run VM faster when lot of devices attached to
+>> VM.
+>>
+>> 2) IR mode
+>> Shared IR memory region with aliasing approach proposed for the
+>> reason mentioned in 1). Also add support to invalidate Interrupt
+>> remaping table(IRT).
+>>
+>> Series based on f259e4cb8a8b4ef5463326fc214a7d8d7703d5de.
+> 
+> 
+> Fails build on non-kvm:
+> 
+> https://gitlab.com/mstredhat/qemu/-/jobs/7791357916
+> 
+> /usr/lib/gcc-cross/i686-linux-gnu/10/../../../../i686-linux-gnu/bin/ld: libqemu-x86_64-softmmu.a.p/hw_i386_amd_iommu.c.o: in function `amdvi_sysbus_realize':
+> /builds/mstredhat/qemu/build/../hw/i386/amd_iommu.c:1660: undefined reference to `kvm_enable_x2apic'
+> collect2: error: ld returned 1 exit status
+> 
+Thank you for reporting, Fix in v2.
 
-While looking at some recent CI jobs, I noticed that the caching of the 
-Gitlab-CI jobs is not working at all anymore. In the build jobs, the ccache 
-saving is not working and causing a complete cache miss of each compile:
-
-  https://gitlab.com/qemu-project/qemu/-/jobs/7802183187#L5328
-
-And, maybe more important, in the avocado/functional jobs we don't cache the 
-assets anymore, causing a re-download of multiple gigabytes each time:
-
-  https://gitlab.com/qemu-project/qemu/-/jobs/7802183251#L29
-
-(the du -chs in line 35 is not executed, thus the cache is nonexistent)
-
-The problem is not new, it's been there for some weeks already, e.g. here's 
-a run from the last freeze period (when the job was only running avocado tests):
-
-  https://gitlab.com/qemu-project/qemu/-/jobs/7753544153#L86
-
-There is a suspicious message at the beginning of the logs:
-
-  "No URL provided, cache will not be downloaded from shared cache server. 
-Instead a local version of cache will be extracted."
-
-... but since we use throw-away containers for building, I guess there is no 
-local version of the cache?
-
-Anyway, the problem only exists for the k8s runners, in my private clone of 
-the repository that uses shared runners from gitlab, the caching is working 
-right.
-
-Could somebody please have a look into this? Fixing the caching might speed 
-up our build time quite a bit, I think.
-
-  Thomas
-
+- Santosh
 
