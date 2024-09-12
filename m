@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830C8976075
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:39:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99425976070
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:38:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1socPo-0001Zp-1d; Thu, 12 Sep 2024 01:30:48 -0400
+	id 1socPo-0001Xy-0A; Thu, 12 Sep 2024 01:30:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1socPh-0001Iz-TX
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:41 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1socPk-0001Sl-GP
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:44 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1socPd-00030n-VS
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:39 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-7d4f85766f0so540805a12.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:30:37 -0700 (PDT)
+ id 1socPh-000318-Lx
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:43 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-7191f58054aso453216b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:30:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726119036; x=1726723836; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1726119039; x=1726723839; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wQLh5favEwPC3T5JVQV5e7WmeMzusKhuamksZ0+89Yw=;
- b=ELnY/SiWY4mDP3e5v58iwVw5P/xV9xMwCy/lVT0FguNJk99xswxzmd1BK2FGL7P0f4
- ObKPtbPC8O/y87bx+bX8JT1NKdGQIJjrRWqLxvCvmiqALrmc3VLDPpJzWGmh1J75eYBt
- //AwHuybbPajPF1254ExTaFBemgO4AUPF6pKvUngtB9jtJkd6b6aEBoRgjSg/l7ujuxh
- CQGgsRMQsh7D8PPVZF9PveZo516JmuysglO4E/1IAUD3KoSocd1Mpm466fjgGsce3f/y
- aByIzig9kuVxqTITSS/z16QIpjZcsSa5/E9a6/aG9DB5jwo7cfEVFCtxaRcB/WnlYdga
- 3RoA==
+ bh=zHM5wBkancr1aI05BSHOUm9WH4dpuz+OJwBW2j963mI=;
+ b=bGmJaXm9nWhEicHHHxj0y9ijo4YN30xFWsqcSZqwmSRnOZR9PMPwHwlbNEYtBQtxqL
+ nYqdeduSViJAAU44g7ri4sZPal2BKMc0zCC2BpHPTQ/1UFg3PYmMynyB9lAkeQgouSuE
+ B/eonpTaL8ufsFQaSHUtDgIGif1Z2RrM6nTGYaKAKtIayiUFXOhdat276RIADhlqQjfU
+ qAq6D6wY3MDNhUThcT5OONMqRkF1114U4WSZKxarjVaX0Ro3rmdVYTvJHGX4TWhIXRNY
+ on0H4nqLeqSBo2ukWDMOxjM6eyhubCD9ZTfWbaTdxQJb75ExCs6lWq8qUB6pvEdVrKFh
+ eNBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726119036; x=1726723836;
+ d=1e100.net; s=20230601; t=1726119039; x=1726723839;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wQLh5favEwPC3T5JVQV5e7WmeMzusKhuamksZ0+89Yw=;
- b=bCcoVPQVP0+UVllnf88yeQLSm/8bJXNY2cHqKU/u7iHTyRPG0OUbVvGPG8Pime5p3a
- +xAnuv2b/XaNAbhhGM4PDHfEYf/FI2VCHh1on/w1tIOA3zd2ORHuZipQ8PJPc7w9avpb
- ECxwZDmLumGBeM+NcWOuYaP0YQHNs65S4IbCVme/ArH++N7jtt7YVtjBvXtcPiQM01CI
- 5dBinK/ZXQcpS4Pt9GX7JzS6ksIOav2FNAy6+k6vwgLar7YIFz4NHiJke9mtGgdxQl3t
- 25Y+OnQCGxjF50rjkJ14wDpcJTwc98XnAeYs+uF2l8OS7gk5JmwUX6WkwDMxq6581W/C
- Cvjw==
-X-Gm-Message-State: AOJu0YzwH85ha+Ls7PeNwl+OzdPnhih3MCiwU22sssmRk2Sc7gwnf/MX
- uUI4dQEdrYF1adm68EyGVrhSjbkAqlAb+p5Vrdpz9e3guXpDw5W6R9yFsQ==
-X-Google-Smtp-Source: AGHT+IHkdPninia+JpeDUTA0AB+bTY2tK2QTJswS4S2pThfaKSTVVAKti3adEheJ+5g/6Ld9AkQS9w==
-X-Received: by 2002:a05:6a20:e609:b0:1cf:2ad4:3083 with SMTP id
- adf61e73a8af0-1cf75f2a5cfmr2599793637.23.1726119035861; 
- Wed, 11 Sep 2024 22:30:35 -0700 (PDT)
+ bh=zHM5wBkancr1aI05BSHOUm9WH4dpuz+OJwBW2j963mI=;
+ b=IjOk3aKARmS/WztK3DXzS/cttgdQ8YaJWR9ULKFE+a47lOi6UEr8gDpmkme4lgfKfX
+ 6D7ftYWKd9S66Cz+HIz44WRPCUX9vsyg3mB8TKiXW40wUg/xi7gBzsmwMyG3SwoND0vB
+ C1sKu6TL8G+VirdOgEzJ/eEaoOHIFJQLuNoa8yGdOuQeTYpdJn6tdNrHTw32zofcLOmh
+ E2VKC91sXptTCO9IX/FlThZdI1qstmrvkOHTk/9hmNsOwnvGr1Mr2Ni1zYIWBI5W5SDo
+ HRtNRAzwXdtTXP8j6YanVcdXiB9yPtgneE2zNyar4Mo0k/6CtdxLbN9mWer1o12pb8FK
+ K27Q==
+X-Gm-Message-State: AOJu0YyH5S1vI/DbxgVP2g4aZDOFdPzowbVgMvvOR0YlPQTCSiYROURg
+ 14z0NTZ6OLSeJLT9TGJGJ1W/YhBAY9IO5XRY3fH3tWQJ15sSODJM4PO91g==
+X-Google-Smtp-Source: AGHT+IGkLYVT8qJLWOIwC1qSAqKHGHKgG4ANp0Nc+IwPKd+3UE7xq8yP9juXsYkUJkTqPZQXLIicEg==
+X-Received: by 2002:a05:6a21:6e41:b0:1c3:fc87:374e with SMTP id
+ adf61e73a8af0-1cf764c255bmr2035722637.41.1726119038645; 
+ Wed, 11 Sep 2024 22:30:38 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71908fc8fdesm3833034b3a.1.2024.09.11.22.30.33
+ d2e1a72fcca58-71908fc8fdesm3833034b3a.1.2024.09.11.22.30.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 22:30:35 -0700 (PDT)
+ Wed, 11 Sep 2024 22:30:38 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Alvin Chang <alvinga@andestech.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 12/47] target/riscv: Preliminary textra trigger CSR writting
- support
-Date: Thu, 12 Sep 2024 15:29:17 +1000
-Message-ID: <20240912052953.2552501-13-alistair.francis@wdc.com>
+Subject: [PULL 13/47] target/riscv: Add textra matching condition for the
+ triggers
+Date: Thu, 12 Sep 2024 15:29:18 +1000
+Message-ID: <20240912052953.2552501-14-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240912052953.2552501-1-alistair.francis@wdc.com>
 References: <20240912052953.2552501-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,148 +99,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alvin Chang <alvinga@andestech.com>
 
-This commit allows program to write textra trigger CSR for type 2, 3, 6
-triggers. In this preliminary patch, the textra.MHVALUE and the
-textra.MHSELECT fields are allowed to be configured. Other fields, such
-as textra.SBYTEMASK, textra.SVALUE, and textra.SSELECT, are hardwired to
-zero for now.
+According to RISC-V Debug specification, the optional textra32 and
+textra64 trigger CSRs can be used to configure additional matching
+conditions for the triggers. For example, if the textra.MHSELECT field
+is set to 4 (mcontext), this trigger will only match or fire if the low
+bits of mcontext/hcontext equal textra.MHVALUE field.
 
-For textra.MHSELECT field, the only legal values are 0 (ignore) and 4
-(mcontext). Writing 1~3 into textra.MHSELECT will be changed to 0, and
-writing 5~7 into textra.MHSELECT will be changed to 4. This behavior is
-aligned to RISC-V SPIKE simulator.
+This commit adds the aforementioned matching condition as common trigger
+matching conditions. Currently, the only legal values of textra.MHSELECT
+are 0 (ignore) and 4 (mcontext). When textra.MHSELECT is 0, we pass the
+checking. When textra.MHSELECT is 4, we compare textra.MHVALUE with
+mcontext CSR. The remaining fields, such as textra.SBYTEMASK,
+textra.SVALUE, and textra.SSELECT, are hardwired to zero for now. Thus,
+we skip checking them here.
 
 Signed-off-by: Alvin Chang <alvinga@andestech.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240826024657.262553-2-alvinga@andestech.com>
+Message-ID: <20240826024657.262553-3-alvinga@andestech.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_bits.h | 10 ++++++
- target/riscv/debug.c    | 69 +++++++++++++++++++++++++++++++++++++----
- 2 files changed, 73 insertions(+), 6 deletions(-)
+ target/riscv/debug.h |  3 +++
+ target/riscv/debug.c | 45 +++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 47 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 32b068f18a..7e3f629356 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -947,6 +947,16 @@ typedef enum RISCVException {
- #define JVT_BASE                           (~0x3F)
+diff --git a/target/riscv/debug.h b/target/riscv/debug.h
+index c347863578..f76b8f944a 100644
+--- a/target/riscv/debug.h
++++ b/target/riscv/debug.h
+@@ -131,6 +131,9 @@ enum {
+ #define ITRIGGER_VU           BIT(25)
+ #define ITRIGGER_VS           BIT(26)
  
- /* Debug Sdtrig CSR masks */
-+#define TEXTRA32_MHVALUE                   0xFC000000
-+#define TEXTRA32_MHSELECT                  0x03800000
-+#define TEXTRA32_SBYTEMASK                 0x000C0000
-+#define TEXTRA32_SVALUE                    0x0003FFFC
-+#define TEXTRA32_SSELECT                   0x00000003
-+#define TEXTRA64_MHVALUE                   0xFFF8000000000000ULL
-+#define TEXTRA64_MHSELECT                  0x0007000000000000ULL
-+#define TEXTRA64_SBYTEMASK                 0x000000F000000000ULL
-+#define TEXTRA64_SVALUE                    0x00000003FFFFFFFCULL
-+#define TEXTRA64_SSELECT                   0x0000000000000003ULL
- #define MCONTEXT32                         0x0000003F
- #define MCONTEXT64                         0x0000000000001FFFULL
- #define MCONTEXT32_HCONTEXT                0x0000007F
++#define MHSELECT_IGNORE       0
++#define MHSELECT_MCONTEXT     4
++
+ bool tdata_available(CPURISCVState *env, int tdata_index);
+ 
+ target_ulong tselect_csr_read(CPURISCVState *env);
 diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index 0b5099ff9a..d6b4a06144 100644
+index d6b4a06144..c79b51af30 100644
 --- a/target/riscv/debug.c
 +++ b/target/riscv/debug.c
-@@ -217,6 +217,66 @@ static inline void warn_always_zero_bit(target_ulong val, target_ulong mask,
-     }
+@@ -364,11 +364,54 @@ static bool trigger_priv_match(CPURISCVState *env, trigger_type_t type,
+     return false;
  }
  
-+static target_ulong textra_validate(CPURISCVState *env, target_ulong tdata3)
++static bool trigger_textra_match(CPURISCVState *env, trigger_type_t type,
++                                 int trigger_index)
 +{
++    target_ulong textra = env->tdata3[trigger_index];
 +    target_ulong mhvalue, mhselect;
-+    target_ulong mhselect_new;
-+    target_ulong textra;
-+    const uint32_t mhselect_no_rvh[8] = { 0, 0, 0, 0, 4, 4, 4, 4 };
++
++    if (type < TRIGGER_TYPE_AD_MATCH || type > TRIGGER_TYPE_AD_MATCH6) {
++        /* textra checking is only applicable when type is 2, 3, 4, 5, or 6 */
++        return true;
++    }
 +
 +    switch (riscv_cpu_mxl(env)) {
 +    case MXL_RV32:
-+        mhvalue  = get_field(tdata3, TEXTRA32_MHVALUE);
-+        mhselect = get_field(tdata3, TEXTRA32_MHSELECT);
-+        /* Validate unimplemented (always zero) bits */
-+        warn_always_zero_bit(tdata3, (target_ulong)TEXTRA32_SBYTEMASK,
-+                             "sbytemask");
-+        warn_always_zero_bit(tdata3, (target_ulong)TEXTRA32_SVALUE,
-+                             "svalue");
-+        warn_always_zero_bit(tdata3, (target_ulong)TEXTRA32_SSELECT,
-+                             "sselect");
++        mhvalue  = get_field(textra, TEXTRA32_MHVALUE);
++        mhselect = get_field(textra, TEXTRA32_MHSELECT);
 +        break;
 +    case MXL_RV64:
 +    case MXL_RV128:
-+        mhvalue  = get_field(tdata3, TEXTRA64_MHVALUE);
-+        mhselect = get_field(tdata3, TEXTRA64_MHSELECT);
-+        /* Validate unimplemented (always zero) bits */
-+        warn_always_zero_bit(tdata3, (target_ulong)TEXTRA64_SBYTEMASK,
-+                             "sbytemask");
-+        warn_always_zero_bit(tdata3, (target_ulong)TEXTRA64_SVALUE,
-+                             "svalue");
-+        warn_always_zero_bit(tdata3, (target_ulong)TEXTRA64_SSELECT,
-+                             "sselect");
++        mhvalue  = get_field(textra, TEXTRA64_MHVALUE);
++        mhselect = get_field(textra, TEXTRA64_MHSELECT);
 +        break;
 +    default:
 +        g_assert_not_reached();
 +    }
 +
-+    /* Validate mhselect. */
-+    mhselect_new = mhselect_no_rvh[mhselect];
-+    if (mhselect != mhselect_new) {
-+        qemu_log_mask(LOG_UNIMP, "mhselect only supports 0 or 4 for now\n");
-+    }
-+
-+    /* Write legal values into textra */
-+    textra = 0;
-+    switch (riscv_cpu_mxl(env)) {
-+    case MXL_RV32:
-+        textra = set_field(textra, TEXTRA32_MHVALUE,  mhvalue);
-+        textra = set_field(textra, TEXTRA32_MHSELECT, mhselect_new);
++    /* Check mhvalue and mhselect. */
++    switch (mhselect) {
++    case MHSELECT_IGNORE:
 +        break;
-+    case MXL_RV64:
-+    case MXL_RV128:
-+        textra = set_field(textra, TEXTRA64_MHVALUE,  mhvalue);
-+        textra = set_field(textra, TEXTRA64_MHSELECT, mhselect_new);
++    case MHSELECT_MCONTEXT:
++        /* Match if the low bits of mcontext/hcontext equal mhvalue. */
++        if (mhvalue != env->mcontext) {
++            return false;
++        }
 +        break;
 +    default:
-+        g_assert_not_reached();
++        break;
 +    }
 +
-+    return textra;
++    return true;
 +}
 +
- static void do_trigger_action(CPURISCVState *env, target_ulong trigger_index)
+ /* Common matching conditions for all types of the triggers. */
+ static bool trigger_common_match(CPURISCVState *env, trigger_type_t type,
+                                  int trigger_index)
  {
-     trigger_action_t action = get_trigger_action(env, trigger_index);
-@@ -441,8 +501,7 @@ static void type2_reg_write(CPURISCVState *env, target_ulong index,
-         }
-         break;
-     case TDATA3:
--        qemu_log_mask(LOG_UNIMP,
--                      "tdata3 is not supported for type 2 trigger\n");
-+        env->tdata3[index] = textra_validate(env, val);
-         break;
-     default:
-         g_assert_not_reached();
-@@ -558,8 +617,7 @@ static void type6_reg_write(CPURISCVState *env, target_ulong index,
-         }
-         break;
-     case TDATA3:
--        qemu_log_mask(LOG_UNIMP,
--                      "tdata3 is not supported for type 6 trigger\n");
-+        env->tdata3[index] = textra_validate(env, val);
-         break;
-     default:
-         g_assert_not_reached();
-@@ -741,8 +799,7 @@ static void itrigger_reg_write(CPURISCVState *env, target_ulong index,
-                       "tdata2 is not supported for icount trigger\n");
-         break;
-     case TDATA3:
--        qemu_log_mask(LOG_UNIMP,
--                      "tdata3 is not supported for icount trigger\n");
-+        env->tdata3[index] = textra_validate(env, val);
-         break;
-     default:
-         g_assert_not_reached();
+-    return trigger_priv_match(env, type, trigger_index);
++    return trigger_priv_match(env, type, trigger_index) &&
++           trigger_textra_match(env, type, trigger_index);
+ }
+ 
+ /* type 2 trigger */
 -- 
 2.46.0
 
