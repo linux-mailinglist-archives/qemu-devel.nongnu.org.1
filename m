@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E99765A7
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 11:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A41B39765A6
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 11:32:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sog9x-0007Af-TQ; Thu, 12 Sep 2024 05:30:41 -0400
+	id 1sog9w-00074Q-Hc; Thu, 12 Sep 2024 05:30:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sog9k-0006vf-6q
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sog9k-0006vh-6x
  for qemu-devel@nongnu.org; Thu, 12 Sep 2024 05:30:37 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sog9g-0004LJ-7T
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 05:30:25 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48C41oF0022813;
- Thu, 12 Sep 2024 09:30:20 GMT
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sog9g-0004LX-8p
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 05:30:26 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48BIpASP013414;
+ Thu, 12 Sep 2024 09:30:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=nZ5ZfuY8DqKcZ
- UIZERfUXcnqAcq5EHxmfo32LBk7SZo=; b=FEGqt8QpmeQxwXB/ajTOeOBN4hEZY
- 3PjuCSfwUxlyKH9gaHyG4DDdJqT3CpmLTNk9gjIqcU4j5skqq2lETv8XV0dfceAf
- dGu+MaAcc5A4PC7grHib13bRgECVc2dYZeAUkwcUctwMSQ6m2+7U+2yNYcJiiYp+
- HAdOF+l2nezr/rJaiuWnTh4BJ6vunfqk1vT837maqvR7ETiyO1Q0qNeBCWarYaPN
- SWBy3FfpwnXchtqbnBX5MnXegqW5iEgbGspuHvac85t866o0xC9Zft+yPzFz62Pz
- C3T930AOIe/i07Ti3eQb8Gpr67C6aKplOPTFUksMuhKUh/sg31/D8+nxQ==
+ :content-transfer-encoding:mime-version; s=pp1; bh=z15MGlbE7xNbf
+ KEJzQJx28SesNJPf3ivaIA6ZPPyPdw=; b=TSCQ58hNNHNzzzANuOzOipKNUj7pF
+ +MfnLD2JwlAOGGpQ4UbXWOQsjrkzwYkUuGVm+RhsejZbHQ93aERBCSwWfSSYt/wB
+ YQvuKPpHDy0Q/et1K4xgdn4hzD9OtmRwGSEKjCcNRq+Y6wni9WkhNTZrXTW7yYZd
+ Hc3KMR2SAk/7aiBZtX8P1PxqifojxqhkIpZTlbD4u/MjQ3cEN9eJrTg8W1EkU6Kb
+ Yqr3zUNN7lqm2uT0yMhJZbpaErnJyUsYwjMKtLF/49Fpb/x+Fv0O5kTdhr7orxna
+ RuL3zd3k4gxQd8zCLUKqOISB9fZazECSrX+e5kG9+KuEedzzeuVs67Frg==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8qjwst-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegx2qrp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Sep 2024 09:30:21 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48C9T1Ul018821;
+ Thu, 12 Sep 2024 09:30:20 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegx2qrh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 12 Sep 2024 09:30:20 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48C9UI6Z015105;
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48C8Q44X003141;
  Thu, 12 Sep 2024 09:30:19 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8qjwsq-1
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h15u767k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Sep 2024 09:30:19 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48C7QDeQ027333;
- Thu, 12 Sep 2024 09:30:18 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3v3eq3h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Sep 2024 09:30:18 +0000
+ Thu, 12 Sep 2024 09:30:19 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 48C9UGMW52167152
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48C9UHlr53150096
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 12 Sep 2024 09:30:17 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DF4B120043;
- Thu, 12 Sep 2024 09:30:16 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5DED42004B;
+ Thu, 12 Sep 2024 09:30:17 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F20020040;
+ by IMSVA (Postfix) with ESMTP id F1DF320040;
  Thu, 12 Sep 2024 09:30:16 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.171.24.155])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -69,29 +69,29 @@ To: Laurent Vivier <laurent@vivier.eu>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 3/5] target/i386/gdbstub: Factor out gdb_get_reg() and
- gdb_write_reg()
-Date: Thu, 12 Sep 2024 11:28:22 +0200
-Message-ID: <20240912093012.402366-4-iii@linux.ibm.com>
+Subject: [PATCH v2 4/5] target/i386/gdbstub: Expose orig_ax
+Date: Thu, 12 Sep 2024 11:28:23 +0200
+Message-ID: <20240912093012.402366-5-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240912093012.402366-1-iii@linux.ibm.com>
 References: <20240912093012.402366-1-iii@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: x9vuZVoIRF2VVZ2gzin6UvFCOP4ltjJS
-X-Proofpoint-ORIG-GUID: 8xR7GoCXNw5aLXBQ_Sqom08AL850ksF0
+X-Proofpoint-GUID: i9WFuKSwO2qVuHAKfe3yZx0DNjwJHqfs
+X-Proofpoint-ORIG-GUID: LhQmdMKb_lvCQ0KQ4vUU49ONfr_DbMmn
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-12_01,2024-09-09_02,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 adultscore=0 clxscore=1015 mlxlogscore=704 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 mlxlogscore=969
+ lowpriorityscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2408220000 definitions=main-2409120063
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -115,100 +115,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-i386 gdbstub handles both i386 and x86_64. Factor out two functions
-for reading and writing registers without knowing their bitness.
-
-While at it, simplify the TARGET_LONG_BITS == 32 case.
+Copy XML files describing orig_ax from GDB and glue them with
+CPUX86State.orig_ax.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/i386/gdbstub.c | 51 +++++++++++++++++++++++++------------------
- 1 file changed, 30 insertions(+), 21 deletions(-)
+ configs/targets/i386-linux-user.mak   |  2 +-
+ configs/targets/x86_64-linux-user.mak |  2 +-
+ gdb-xml/i386-32bit-linux.xml          | 11 ++++++
+ gdb-xml/i386-64bit-linux.xml          | 11 ++++++
+ target/i386/cpu.c                     |  1 +
+ target/i386/cpu.h                     |  1 +
+ target/i386/gdbstub.c                 | 51 +++++++++++++++++++++++++++
+ 7 files changed, 77 insertions(+), 2 deletions(-)
+ create mode 100644 gdb-xml/i386-32bit-linux.xml
+ create mode 100644 gdb-xml/i386-64bit-linux.xml
 
+diff --git a/configs/targets/i386-linux-user.mak b/configs/targets/i386-linux-user.mak
+index 5b2546a4309..b72a156473a 100644
+--- a/configs/targets/i386-linux-user.mak
++++ b/configs/targets/i386-linux-user.mak
+@@ -1,4 +1,4 @@
+ TARGET_ARCH=i386
+ TARGET_SYSTBL_ABI=i386
+ TARGET_SYSTBL=syscall_32.tbl
+-TARGET_XML_FILES= gdb-xml/i386-32bit.xml
++TARGET_XML_FILES= gdb-xml/i386-32bit.xml gdb-xml/i386-32bit-linux.xml
+diff --git a/configs/targets/x86_64-linux-user.mak b/configs/targets/x86_64-linux-user.mak
+index 9ceefbb615a..86042814d39 100644
+--- a/configs/targets/x86_64-linux-user.mak
++++ b/configs/targets/x86_64-linux-user.mak
+@@ -2,4 +2,4 @@ TARGET_ARCH=x86_64
+ TARGET_BASE_ARCH=i386
+ TARGET_SYSTBL_ABI=common,64
+ TARGET_SYSTBL=syscall_64.tbl
+-TARGET_XML_FILES= gdb-xml/i386-64bit.xml
++TARGET_XML_FILES= gdb-xml/i386-64bit.xml gdb-xml/i386-64bit-linux.xml
+diff --git a/gdb-xml/i386-32bit-linux.xml b/gdb-xml/i386-32bit-linux.xml
+new file mode 100644
+index 00000000000..5ffe5616e63
+--- /dev/null
++++ b/gdb-xml/i386-32bit-linux.xml
+@@ -0,0 +1,11 @@
++<?xml version="1.0"?>
++<!-- Copyright (C) 2010-2024 Free Software Foundation, Inc.
++
++     Copying and distribution of this file, with or without modification,
++     are permitted in any medium without royalty provided the copyright
++     notice and this notice are preserved.  -->
++
++<!DOCTYPE feature SYSTEM "gdb-target.dtd">
++<feature name="org.gnu.gdb.i386.linux">
++  <reg name="orig_eax" bitsize="32" type="int"/>
++</feature>
+diff --git a/gdb-xml/i386-64bit-linux.xml b/gdb-xml/i386-64bit-linux.xml
+new file mode 100644
+index 00000000000..0f26990d2f7
+--- /dev/null
++++ b/gdb-xml/i386-64bit-linux.xml
+@@ -0,0 +1,11 @@
++<?xml version="1.0"?>
++<!-- Copyright (C) 2010-2024 Free Software Foundation, Inc.
++
++     Copying and distribution of this file, with or without modification,
++     are permitted in any medium without royalty provided the copyright
++     notice and this notice are preserved.  -->
++
++<!DOCTYPE feature SYSTEM "gdb-target.dtd">
++<feature name="org.gnu.gdb.i386.linux">
++  <reg name="orig_rax" bitsize="64" type="int"/>
++</feature>
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 85ef7452c04..52788e6170d 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7831,6 +7831,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+     mce_init(cpu);
+ 
++    x86_cpu_gdb_init(cs);
+     qemu_init_vcpu(cs);
+ 
+     /*
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 14edd57a37b..dc2e074e227 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2231,6 +2231,7 @@ void x86_cpu_dump_state(CPUState *cs, FILE *f, int flags);
+ 
+ int x86_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ int x86_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
++void x86_cpu_gdb_init(CPUState *cs);
+ 
+ void x86_cpu_list(void);
+ int cpu_x86_support_mca_broadcast(CPUX86State *env);
 diff --git a/target/i386/gdbstub.c b/target/i386/gdbstub.c
-index 4acf485879e..cc5eceeb7eb 100644
+index cc5eceeb7eb..04c49e802d7 100644
 --- a/target/i386/gdbstub.c
 +++ b/target/i386/gdbstub.c
-@@ -96,6 +96,19 @@ static int gdb_write_reg_cs64(uint32_t hflags, uint8_t *buf, target_ulong *val)
-     return 4;
- }
+@@ -18,8 +18,13 @@
+  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+  */
+ #include "qemu/osdep.h"
++#include "accel/tcg/vcpu-state.h"
+ #include "cpu.h"
++#include "exec/gdbstub.h"
+ #include "gdbstub/helpers.h"
++#ifdef CONFIG_LINUX_USER
++#include "linux-user/qemu.h"
++#endif
  
-+static int gdb_get_reg(CPUX86State *env, GByteArray *mem_buf, target_ulong val)
+ #ifdef TARGET_X86_64
+ static const int gpr_map[16] = {
+@@ -406,3 +411,49 @@ int x86_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     /* Unrecognised register.  */
+     return 0;
+ }
++
++#ifdef CONFIG_LINUX_USER
++
++#define IDX_ORIG_AX 0
++
++static int x86_cpu_gdb_read_linux_register(CPUState *cs, GByteArray *mem_buf,
++                                           int n)
 +{
-+    if (TARGET_LONG_BITS == 64) {
-+        if (env->hflags & HF_CS64_MASK) {
-+            return gdb_get_reg64(mem_buf, val);
-+        } else {
-+            return gdb_get_reg64(mem_buf, val & 0xffffffffUL);
-+        }
-+    } else {
-+        return gdb_get_reg32(mem_buf, val);
++    X86CPU *cpu = X86_CPU(cs);
++    CPUX86State *env = &cpu->env;
++
++    switch (n) {
++    case IDX_ORIG_AX:
++        return gdb_get_reg(env, mem_buf, get_task_state(cs)->orig_ax);
 +    }
++    return 0;
 +}
 +
- int x86_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- {
-     X86CPU *cpu = X86_CPU(cs);
-@@ -137,15 +150,7 @@ int x86_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-     } else {
-         switch (n) {
-         case IDX_IP_REG:
--            if (TARGET_LONG_BITS == 64) {
--                if (env->hflags & HF_CS64_MASK) {
--                    return gdb_get_reg64(mem_buf, env->eip);
--                } else {
--                    return gdb_get_reg64(mem_buf, env->eip & 0xffffffffUL);
--                }
--            } else {
--                return gdb_get_reg32(mem_buf, env->eip);
--            }
-+            return gdb_get_reg(env, mem_buf, env->eip);
-         case IDX_FLAGS_REG:
-             return gdb_get_reg32(mem_buf, env->eflags);
- 
-@@ -248,6 +253,21 @@ static int x86_cpu_gdb_load_seg(X86CPU *cpu, X86Seg sreg, uint8_t *mem_buf)
-     return 4;
- }
- 
-+static int gdb_write_reg(CPUX86State *env, uint8_t *mem_buf, target_ulong *val)
++static int x86_cpu_gdb_write_linux_register(CPUState *cs, uint8_t *mem_buf,
++                                            int n)
 +{
-+    if (TARGET_LONG_BITS == 64) {
-+        if (env->hflags & HF_CS64_MASK) {
-+            *val = ldq_p(mem_buf);
-+        } else {
-+            *val = ldq_p(mem_buf) & 0xffffffffUL;
-+        }
-+        return 8;
-+    } else {
-+        *val = (uint32_t)ldl_p(mem_buf);
-+        return 4;
++    X86CPU *cpu = X86_CPU(cs);
++    CPUX86State *env = &cpu->env;
++
++    switch (n) {
++    case IDX_ORIG_AX:
++        return gdb_write_reg(env, mem_buf, &get_task_state(cs)->orig_ax);
 +    }
++    return 0;
 +}
 +
- int x86_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
-     X86CPU *cpu = X86_CPU(cs);
-@@ -288,18 +308,7 @@ int x86_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-     } else {
-         switch (n) {
-         case IDX_IP_REG:
--            if (TARGET_LONG_BITS == 64) {
--                if (env->hflags & HF_CS64_MASK) {
--                    env->eip = ldq_p(mem_buf);
--                } else {
--                    env->eip = ldq_p(mem_buf) & 0xffffffffUL;
--                }
--                return 8;
--            } else {
--                env->eip &= ~0xffffffffUL;
--                env->eip |= (uint32_t)ldl_p(mem_buf);
--                return 4;
--            }
-+            return gdb_write_reg(env, mem_buf, &env->eip);
-         case IDX_FLAGS_REG:
-             env->eflags = ldl_p(mem_buf);
-             return 4;
++#endif
++
++void x86_cpu_gdb_init(CPUState *cs)
++{
++#ifdef CONFIG_LINUX_USER
++    gdb_register_coprocessor(cs, x86_cpu_gdb_read_linux_register,
++                             x86_cpu_gdb_write_linux_register,
++#ifdef TARGET_X86_64
++                             gdb_find_static_feature("i386-64bit-linux.xml"),
++#else
++                             gdb_find_static_feature("i386-32bit-linux.xml"),
++#endif
++                             0);
++#endif
++}
 -- 
 2.46.0
 
