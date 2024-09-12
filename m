@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16D59762F9
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 09:41:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5827D9762F0
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 09:41:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soeRg-0006D3-IW; Thu, 12 Sep 2024 03:40:52 -0400
+	id 1soeRg-0006CW-5M; Thu, 12 Sep 2024 03:40:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1soeQr-0002f3-P1
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:02 -0400
+ id 1soeQu-0002ov-91
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:09 -0400
 Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1soeQp-0000Iw-Jp
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:01 -0400
+ id 1soeQs-0000K0-2w
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:03 -0400
 Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-710da656c0bso235528a34.0
- for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 00:39:58 -0700 (PDT)
+ 46e09a7af769-710daaadd9bso335233a34.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 00:40:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726126798; x=1726731598; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726126800; x=1726731600; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/E70KJJTPx2V75BYTTVlugDcxiGJ3PzFoLEiBX1aDhc=;
- b=NBt0kJq29ZrdVYnNEiFbNvx3zWegkEfso4uyW6P4UKfl9HP6JSpW0UP5HM1GNGeiyT
- FXKIdZN+K10sN60PbTcTtWtmYM2dJIxvyxAuNcez9+NeN3Ab57NjRYaUiwAOFDi6Yh98
- EwyUuWCU5uaM+OX2P3Gz7pfQ1+adCADPfuJzfbwjHDTSgV2QbBkKYoa7HKP/iJu7w8fm
- H2bo/3rk11hQq9plVG00btD/97GM6MQsHtkklxkxZ39vMCz0cY1RoE93Y5W2BqblTNEP
- 6YnnFsiCsZjuzoHB8FJP8wsSHQARA5q60NJyvxnYuIPXHIE4Je1KM0DVhowegOX/Zhts
- DMdQ==
+ bh=F+rVp3/BLJYyjxO33P6GwzzAqjbQ85NDH2br5JtXUaQ=;
+ b=LGSkZnRljWDM7uymPWgDkrJXtxwNpgUSYPeRnmsHK+vvxl2kTaQyV/jv61LzjM3tEA
+ tAUGB2JijT8NPhnWRRAi5Lhj2m4PiJxbR7VePAVRdr5mYp2j21eYHlXzfsUNrfd+cmKL
+ VhiT+Lr92Rc//ATeNXAbzqCGqcWFixArz8R+CBX2vbMeXG+ZUhaGVferKu7E7GpAH4EQ
+ KjnfGOvnowDsy6A9t1X7ira9Wa3Y/aKyyvkvuc0o/Ps9V1uuKVlXvM8MXJ7gEu+fgKRM
+ TafiyXnnCArKWX8OVIxvbf2uhFoBwz7AOM73kFxWMwCdnZYEsacjpgL+8KiBR/DSBnOb
+ 6hew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726126798; x=1726731598;
+ d=1e100.net; s=20230601; t=1726126800; x=1726731600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/E70KJJTPx2V75BYTTVlugDcxiGJ3PzFoLEiBX1aDhc=;
- b=hec9Z85A3Jl/VAb3x//eo7Cr95QaDGgMnMYLPSCynHaTCBKCr6bdtDSrPLfrat8Mht
- HdfT3ZhEWg6Vtf6hOCO/c3JerxiCfdRbF2Kna5WyHaUOOw3PIOHP8byNXBkYSBf6kWWj
- EZ/2CGcwqNPzEeDlenhTs0MkVzsiJdF19IGc0y6RzOE/7d0FJjLHG+eJqxIM37d6ZM5a
- FucWL92Skzq3GRkZBR2UHeoV08c09ydbwnJwZnQoRVtqgdCazO+moSh0WQufVtaefF3b
- k+frVYjgHa1TDwUSQHvhD07gd08jRtmxdX2H+GopXI+JVpjogmWKQtnHIpFiAQB5LQnR
- UZYg==
-X-Gm-Message-State: AOJu0YzCcyBXOqCW2WhYLNS14whbAZT/7tStdUj/2pmihinDk6Rn8MpL
- RYcw7OxxKVwzQImSFGfcX4yEFsgjS0JDHH/QCkhBv6kZN5LY3vSLkINiq4tWP6S7F3fKXCDAmRX
- ipd/b5zUN
-X-Google-Smtp-Source: AGHT+IG5ne8GTfzcAIBppwGJ8l4Yooy0KY6YC3wG/455mCNEr6eNEp84R9bb0cy5D5sMvEwevLyaeg==
-X-Received: by 2002:a05:6830:d02:b0:710:bffc:a28e with SMTP id
- 46e09a7af769-7110949a084mr1707232a34.19.1726126797795; 
- Thu, 12 Sep 2024 00:39:57 -0700 (PDT)
+ bh=F+rVp3/BLJYyjxO33P6GwzzAqjbQ85NDH2br5JtXUaQ=;
+ b=Op6h9VDvef7XCxHzBP6LaGWMvjjFi7TRD0kJ3pBeUF5sH5nnoNZsetcpq23PwhZG+r
+ bMVQq/QeXIg5Z7qz6RgBdul4ES/GfCH9QBd4rEUDGrwJkpB6fedkaPeZkvV9koYlhZ4R
+ A2/GL2pNP9KHHfNKeos/gRzvcGP6VWAflErO6nUnTt4a5/r31JNbVOK2qrR61ZjqthAG
+ bO1LL0rEPI3hJDm2zfqXJrp5FmumHMvcj0W+TuJ142RVSNt5TPqUNwB96Hij/X+J0Quu
+ bSZyt4hAfWVWRtGCl/EZk6tIQd6WXIx80DpnEQOlc/WzZr7FbYIkYMjunfLZQ3PjHSnV
+ HfoA==
+X-Gm-Message-State: AOJu0Yy9fnrq/ukR+DKtswT/2VAD7OnAOSvNFMSfO9tPDtfgR39qjmXE
+ yBpsuF9JuM1XEz7gtqCqw1bD1gYfqW7uVqYmrK1kA/ff309lGXLRq3nRpyqC2g+W9WjNDx4EjIS
+ odiYW6lZM
+X-Google-Smtp-Source: AGHT+IG6+n9GSh9VOQuGu9AiTjxnE8dPu+UEy8HMFEQWjdljbFKlQEVbTyzIuHmcncyWJBtD1Vjx6g==
+X-Received: by 2002:a05:6830:4994:b0:710:b19a:cea3 with SMTP id
+ 46e09a7af769-711094727c0mr2302235a34.13.1726126800291; 
+ Thu, 12 Sep 2024 00:40:00 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::9633])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7db1fb9ad87sm983458a12.6.2024.09.12.00.39.55
+ 41be03b00d2f7-7db1fb9ad87sm983458a12.6.2024.09.12.00.39.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Sep 2024 00:39:57 -0700 (PDT)
+ Thu, 12 Sep 2024 00:39:59 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>,
@@ -103,10 +103,10 @@ Cc: Jason Wang <jasowang@redhat.com>,
  David Gibson <david@gibson.dropbear.id.au>, Fam Zheng <fam@euphon.net>,
  Weiwei Li <liwei1518@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 12/48] tests/qtest: replace assert(0) with
+Subject: [PATCH v2 13/48] tests/unit: replace assert(0) with
  g_assert_not_reached()
-Date: Thu, 12 Sep 2024 00:38:45 -0700
-Message-Id: <20240912073921.453203-13-pierrick.bouvier@linaro.org>
+Date: Thu, 12 Sep 2024 00:38:46 -0700
+Message-Id: <20240912073921.453203-14-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240912073921.453203-1-pierrick.bouvier@linaro.org>
 References: <20240912073921.453203-1-pierrick.bouvier@linaro.org>
@@ -141,62 +141,33 @@ g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- tests/qtest/ipmi-bt-test.c  | 2 +-
- tests/qtest/ipmi-kcs-test.c | 4 ++--
- tests/qtest/rtl8139-test.c  | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ tests/unit/test-xs-node.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/ipmi-bt-test.c b/tests/qtest/ipmi-bt-test.c
-index 383239bcd48..13f7c841f59 100644
---- a/tests/qtest/ipmi-bt-test.c
-+++ b/tests/qtest/ipmi-bt-test.c
-@@ -251,7 +251,7 @@ static void emu_msg_handler(void)
-         msg[msg_len++] = 0xa0;
-         write_emu_msg(msg, msg_len);
-     } else {
+diff --git a/tests/unit/test-xs-node.c b/tests/unit/test-xs-node.c
+index ac94e7ed6c2..2f447a73fb8 100644
+--- a/tests/unit/test-xs-node.c
++++ b/tests/unit/test-xs-node.c
+@@ -212,7 +212,7 @@ static void compare_tx(gpointer key, gpointer val, gpointer opaque)
+         printf("Comparison failure in TX %u after serdes:\n", tx_id);
+         dump_ref("Original", t1->root, 0);
+         dump_ref("Deserialised", t2->root, 0);
 -        g_assert(0);
 +        g_assert_not_reached();
      }
+     g_assert(t1->nr_nodes == t2->nr_nodes);
  }
- 
-diff --git a/tests/qtest/ipmi-kcs-test.c b/tests/qtest/ipmi-kcs-test.c
-index afc24dd3e46..3186c6ad64b 100644
---- a/tests/qtest/ipmi-kcs-test.c
-+++ b/tests/qtest/ipmi-kcs-test.c
-@@ -145,7 +145,7 @@ static void kcs_cmd(uint8_t *cmd, unsigned int cmd_len,
-         break;
- 
-     default:
--        g_assert(0);
-+        g_assert_not_reached();
-     }
-     *rsp_len = j;
- }
-@@ -184,7 +184,7 @@ static void kcs_abort(uint8_t *cmd, unsigned int cmd_len,
-         break;
- 
-     default:
+@@ -257,7 +257,7 @@ static void check_serdes(XenstoreImplState *s)
+         printf("Comparison failure in main tree after serdes:\n");
+         dump_ref("Original", s->root, 0);
+         dump_ref("Deserialised", s2->root, 0);
 -        g_assert(0);
 +        g_assert_not_reached();
      }
  
-     /* Start the abort here */
-diff --git a/tests/qtest/rtl8139-test.c b/tests/qtest/rtl8139-test.c
-index eedf90f65af..55f671f2f59 100644
---- a/tests/qtest/rtl8139-test.c
-+++ b/tests/qtest/rtl8139-test.c
-@@ -65,7 +65,7 @@ PORT(IntrMask, w, 0x3c)
- PORT(IntrStatus, w, 0x3E)
- PORT(TimerInt, l, 0x54)
- 
--#define fatal(...) do { g_test_message(__VA_ARGS__); g_assert(0); } while (0)
-+#define fatal(...) do { g_test_message(__VA_ARGS__); g_assert_not_reached(); } while (0)
- 
- static void test_timer(void)
- {
+     nr_transactions1 = g_hash_table_size(s->transactions);
 -- 
 2.39.2
 
