@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD7A97634B
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 09:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E7297630B
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 09:42:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soeTU-0001dB-5N; Thu, 12 Sep 2024 03:42:44 -0400
+	id 1soeSr-0005Xo-AB; Thu, 12 Sep 2024 03:42:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1soeRR-0004qB-2X
+ id 1soeRR-0004qx-5Z
  for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:37 -0400
-Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
+Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1soeRK-0000gN-Pa
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:34 -0400
-Received: by mail-il1-x12f.google.com with SMTP id
- e9e14a558f8ab-37636c3872bso2430305ab.3
- for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 00:40:28 -0700 (PDT)
+ id 1soeRN-0000ha-2W
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:36 -0400
+Received: by mail-il1-x12b.google.com with SMTP id
+ e9e14a558f8ab-3a056727fdfso2448755ab.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 00:40:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726126827; x=1726731627; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726126830; x=1726731630; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lAgxsGkzSX6UIjZ+akO+9hnbz8NplQ6SsHLnjF/2omU=;
- b=ZM5hy7ACFMjNG/zZDPBHMwW5cZe+RA8zsNBTYf0ivTTN4jGKlPVoO2AFvY6RsL6Pvd
- 9Z+3Be5YN0yVGqlZBBF1Ffh3CrIHlCUFH85P6yUvuLEjA3FA9te1xZY9SDr73EnIsDU9
- mutI0+YrqBfkxpsPFeMViqMB2FXKThPaCcdYy9VgjVeojxRQqE48+cej5jbH1l6S/tVc
- dF8WEbm0YFXC7HlWmYJPq118IK2KF/IBJFwoAYZ3KiMTLy3vhkc+FHlj7PuCkbRaTeqh
- OzuXIh8hPfjsEaoxdvs/nT8TBaTeN8HhzO6z/iha0Z7fo5JbrfmNk2mlMk26QROWdT+5
- sdsQ==
+ bh=sAFROPRNfnjqKGInm+avpv2FlUZT8Lrw7bfqM3cunwQ=;
+ b=KLihJqzmOme/yEqvDyX2sF+lto69PPZbK3/qDhJcXvZ+v3tuO7ccAbbblj54WtXOJ9
+ pCEJ/W7+vlJIXbYtxNyGvEupDbcQYctVWp82ZoDo6rbwjH/DnG70ITRv/dXYWL5p7ev4
+ E8oHM90Gdhr6aecH84O3mfy2hBOdPhgncvhvlmI9OKSWWCW6PYfFzAq5l9Ko6SU/z9am
+ wqn3Eo7kZoTMmkMqRwGjzuhPlzPCNOyxzg+9nMyo2uPVTQUH1SDJphZE/GGvd+TW00Dz
+ +OSbi3RjKPiVFcaAfDyaVW07R7fIfBPwqiKtWtHMrBQCyt86aYCWTMpKmSPeutipIkO5
+ RXdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726126827; x=1726731627;
+ d=1e100.net; s=20230601; t=1726126830; x=1726731630;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lAgxsGkzSX6UIjZ+akO+9hnbz8NplQ6SsHLnjF/2omU=;
- b=LYH0ZlEi9AdacTFAapnxhh1j/jWQ2+ZoBoZaJrLDYWMOK1apwvMiy3F8BREN3GOtNy
- Qx1445EI6UsXCWBkqwCf3kU+JYL9BEQ6Ddqdfg3FykXi3BMOT0fYbscmAvkEUJKNr7x2
- y/mHHAootM4VNjHN+KOlXqARt9WjQwPQAknqHs73UfF5KRUVILMJsTjBGHYXwIM4HeiL
- lw5bIU3SD4JocLVqrP2QJ6YkKgQazVt0DS0VmZ9vZjvb+ZGG8CwDk8q3VHRtLMWhTUd7
- k6r3zG6ysvx2N8CtYPofgIFO9TcgU2u7OGLRFn82TTywR8oUxD37Cr8Y7Gx9Y9G8XdeI
- YVPw==
-X-Gm-Message-State: AOJu0Yyi3WURPu4H8hyIIM+z6zKjchePVhCJMFIrpn9xLfZgYselBTo9
- hOyxqmgcxMXigGZheQA6+Fe2OhJ0uomTnZUI1t/8KbKpIhYoWH+/edtSC/yAiAglGNedLcdO5Xj
- sGKG6IPoZ
-X-Google-Smtp-Source: AGHT+IEyvhxwwfs3O4zBogJKiJanB1/6FwZWrxSk8P1iezRQ+YaRZrKbsv+G1dKwphxUzMpD10O4JQ==
-X-Received: by 2002:a05:6e02:180c:b0:39f:709d:72b5 with SMTP id
- e9e14a558f8ab-3a0848fc3ddmr16439855ab.10.1726126827207; 
- Thu, 12 Sep 2024 00:40:27 -0700 (PDT)
+ bh=sAFROPRNfnjqKGInm+avpv2FlUZT8Lrw7bfqM3cunwQ=;
+ b=TAXAxKekNtdYwRB2ZulJsunkU7FujBkgrb/TEo8jweXUGc5WywPd2yTQUbRPlVDhDV
+ YDjOG3sGDh6EMmyshPhxoL0jbFpn5wBj8v0/IdZ3Xi9/Z17yUMDJy5DqDemxLxq/VZrM
+ Pj7oQs5eW4+sOtwWGB8y2ChytKPEdVy7VCcXx8ZPHwp5T32ERtXouOpN+tRUf8+vkGm+
+ khyiqR+9H46K2gFn/FhdHXLVajpBo186f4OpAffIMTvRLgEQLRtHPZPNZRSeQJYEocPx
+ eR6DmV0ZFw4QhQdtyy9Lpil/Cw2jZLPWQRp40j5fFBpb4zAPz+JNji+jw/BJcMJ2EtID
+ P+QQ==
+X-Gm-Message-State: AOJu0Yy04R6Nbqo3SWXZ++1Jj6ZMvBymlrBB5UKtcf/BZXy3uOsdOw2K
+ 8WefjXqxbkt96S0hlb04lfnJbjqyIrJ/kW/EYfCmx47qP7CycPAKhcybH+Nq4rYOQ8RtmuoP3kS
+ GKFruUkRq
+X-Google-Smtp-Source: AGHT+IEH81pDNJI3FqeUIYeBUH1XaZ7gixSvfp0/bKQHU2ae/DBaz8G+MQhE29wWc5KRqiqKpbOJOw==
+X-Received: by 2002:a05:6e02:152e:b0:3a0:7687:8c2d with SMTP id
+ e9e14a558f8ab-3a08495a790mr13830495ab.26.1726126829641; 
+ Thu, 12 Sep 2024 00:40:29 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::9633])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7db1fb9ad87sm983458a12.6.2024.09.12.00.40.24
+ 41be03b00d2f7-7db1fb9ad87sm983458a12.6.2024.09.12.00.40.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Sep 2024 00:40:26 -0700 (PDT)
+ Thu, 12 Sep 2024 00:40:29 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>,
@@ -103,17 +103,16 @@ Cc: Jason Wang <jasowang@redhat.com>,
  David Gibson <david@gibson.dropbear.id.au>, Fam Zheng <fam@euphon.net>,
  Weiwei Li <liwei1518@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 23/48] tests/qtest: replace assert(false) with
- g_assert_not_reached()
-Date: Thu, 12 Sep 2024 00:38:56 -0700
-Message-Id: <20240912073921.453203-24-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 24/48] accel/tcg: remove break after g_assert_not_reached()
+Date: Thu, 12 Sep 2024 00:38:57 -0700
+Message-Id: <20240912073921.453203-25-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240912073921.453203-1-pierrick.bouvier@linaro.org>
 References: <20240912073921.453203-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-il1-x12f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-il1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -143,58 +142,21 @@ assertion mechanisms.
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- tests/qtest/numa-test.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ accel/tcg/plugin-gen.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/qtest/numa-test.c b/tests/qtest/numa-test.c
-index ede418963cb..6d92baee860 100644
---- a/tests/qtest/numa-test.c
-+++ b/tests/qtest/numa-test.c
-@@ -162,7 +162,7 @@ static void pc_numa_cpu(const void *data)
-         } else if (socket == 1 && core == 1 && thread == 1) {
-             g_assert_cmpint(node, ==, 1);
-         } else {
--            g_assert(false);
-+            g_assert_not_reached();
-         }
-         qobject_unref(e);
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index ec89a085b43..2ee4c22befd 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -251,7 +251,6 @@ static void inject_mem_cb(struct qemu_plugin_dyn_cb *cb,
+         break;
+     default:
+         g_assert_not_reached();
+-        break;
      }
-@@ -207,7 +207,7 @@ static void spapr_numa_cpu(const void *data)
-         } else if (core == 3) {
-             g_assert_cmpint(node, ==, 1);
-         } else {
--            g_assert(false);
-+            g_assert_not_reached();
-         }
-         qobject_unref(e);
-     }
-@@ -257,7 +257,7 @@ static void aarch64_numa_cpu(const void *data)
-         } else if (socket == 1 && cluster == 0 && core == 0 && thread == 0) {
-             g_assert_cmpint(node, ==, 0);
-         } else {
--            g_assert(false);
-+            g_assert_not_reached();
-         }
-         qobject_unref(e);
-     }
-@@ -305,7 +305,7 @@ static void loongarch64_numa_cpu(const void *data)
-         } else if (socket == 1 && core == 0 && thread == 0) {
-             g_assert_cmpint(node, ==, 0);
-         } else {
--            g_assert(false);
-+            g_assert_not_reached();
-         }
-         qobject_unref(e);
-     }
-@@ -367,7 +367,7 @@ static void pc_dynamic_cpu_cfg(const void *data)
-         } else if (socket == 1) {
-             g_assert_cmpint(node, ==, 0);
-         } else {
--            g_assert(false);
-+            g_assert_not_reached();
-         }
-         qobject_unref(e);
-     }
+ }
+ 
 -- 
 2.39.2
 
