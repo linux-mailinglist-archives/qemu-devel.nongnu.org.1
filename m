@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7399761E7
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 08:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E41779761EF
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 08:55:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sodih-0003jZ-RS; Thu, 12 Sep 2024 02:54:24 -0400
+	id 1sodjS-0000qv-Q0; Thu, 12 Sep 2024 02:55:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodiA-0001UK-2t
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:53:52 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodjJ-0000Xe-E1
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:55:01 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodi6-0003WN-Od
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:53:48 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-374ca7a10d4so436770f8f.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 23:53:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodjH-0003Zl-Is
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:55:01 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-374c84dcc90so434231f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 23:54:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726124025; x=1726728825; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Z8JlX1hTCmbpuUkyTy+jdA1DfHzPSmi+/XVGPIHJ48I=;
- b=vw3wAXP8YyzANzqGEgQrOwiwgB31HJpXKWjseKvB6y6bIkQBjfb4EK17i7YFtwXodI
- 9YMwilQxrFaR+RlaPhoguLtZid9DhRgOmRRMOSG3hsm9IH7/44jhNtvEtO00dMOeRQ0p
- HzioYey86r0hF7TBeU/FzEVKwxUAyxVtR17IrLBm9ED3sW5rWtwCSxi4EmeA2BtZCUJd
- XD7diH0F16jGv8NGGQ0JSKFtGxJlSRXhn3CG6Um73awRniignheZqDamBYKNKgPNgik9
- YTigqKkQvZ1qy0AWiSKluFyq/uX7b+U0A+4nJgTBP2ttKVJw8691y418+LWb9XOLo2mt
- AFcg==
+ d=linaro.org; s=google; t=1726124098; x=1726728898; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:cc:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=jCvXOJb3M0UmkUBLMSdgaYUO7s0+K5lztCSk4YluA/o=;
+ b=ifAOaWaonelBdCmsyM0NuOrnSJ5qXY6FJ9hNKMtMmvfab6SRFg9BshuwBJU4aLrkwb
+ B703UEKOJGFzSsVe8GJRj7nZeAywDEjTd/gd1aA3yfo3hDvaPkO24TMcym3fXh9A8622
+ /u5R+bLPXya20KqEAF32WvXCGBJ0BNwLL2A5cmo0kSnCyq0VQnFbyT9k+tHp5vG/S7nY
+ PHN0krrLHU8qw/AoQbaOfDsyxMNc82JjzdLos9WPj27pXVXTG9JyJNWWSFxPL/UxnTja
+ XxlxwVHg4c8L1EAp9CTECGbXIhtyojc7WDykK6+Io+v6zaiz0QYkEUYvbXkv5dHVfChL
+ ZuzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726124025; x=1726728825;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Z8JlX1hTCmbpuUkyTy+jdA1DfHzPSmi+/XVGPIHJ48I=;
- b=JkpsLV8WxxnL0TFoPXaOaFP8/zSxzabgcMzKhduBVUDu5jKx/8bUx2wpoDjg0X7Y4U
- fKORvjX6nyBs5dIWqvRPX0+TBjEpOSlJdJiq2sdMBslrYiZt7YIbPYoXb/HqdYQaNA3U
- 4sVuFmfHd1OjPWzsvO9hNaMrHN+J1LcSN5xpTT4KYuGofyVxyFWE5/w3U7E92YFvQSnS
- CnQFxoiPR/3i7VVeE62g6kGMmI1/GvFEyjcfZnUPOvQ/GRRJEuz7ttjNun26N9RLUIyi
- JAouCq99mdtu7Azy94K2G5Bw5NI//2VCrzFFsDilGg0iyjomSJhCuub4bLs6NJgLr8UA
- VdjA==
-X-Gm-Message-State: AOJu0YxZxvGOKXoaVNmauOix934mCOhg+MPm6+WgCjLMAXf/JVPwp0me
- Q57c7KxcjriY2WmDWTsAPhpb1r3tIXt+TA1QmZ8QizgR1INrT5zDW6Erw/pVyiVib9P3FGWFCWa
- a
-X-Google-Smtp-Source: AGHT+IFje1iHjYQRayee5IXKWbieCnQTeMV5uuBMuNTGI4ioXw7aZ7eOs0b0GJZpjngZdOjXPZJnhA==
-X-Received: by 2002:a05:6000:459f:b0:374:c0c5:3c05 with SMTP id
- ffacd0b85a97d-378c2d4d802mr923227f8f.42.1726124024412; 
- Wed, 11 Sep 2024 23:53:44 -0700 (PDT)
-Received: from m1x-phil.lan (mic92-h03-176-184-33-210.dsl.sta.abo.bbox.fr.
+ d=1e100.net; s=20230601; t=1726124098; x=1726728898;
+ h=content-transfer-encoding:in-reply-to:from:cc:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jCvXOJb3M0UmkUBLMSdgaYUO7s0+K5lztCSk4YluA/o=;
+ b=E1rUCOGkbP0VAuSo4GQMSGhiAD1A8+wDZRXTCf6KVBMrypuj6CZG2LGFeEIcdaXE0j
+ UKPQM0T+s5g4HDi1MjXKAg3Z9HbZRvtDIsVoagicA51RmNEa2AEo5XQ+n/GfVHTbGiML
+ sj2xCVGjYxv4EMDref+XHFtXZUKnykfobaqhYywR7ILfNWHfC7Cq6GJOtfvkUss9al1q
+ jqLWTRO5/tDCp8NbRWHeqm+CuzxwNt9BWM7F51B4VmBV4HZwX5Aw+2yqpxOVX41GxRHa
+ lC0bVlXBdc1HrNyL/7XOoCIwHPn7BuARG/hkJavM7MlN3R+wr4mPFcnARrLnR0AzcKgG
+ nm7Q==
+X-Gm-Message-State: AOJu0YzFiiBITFLr0a15rgWtEaUHtXe1JQmmWJmU8G7RvYY/dqpiqeoJ
+ pFR6gy1t/d/uLCXyzEUFplqx99P61pD06RS3bacQ7Ss5nmqchsw7zwFH0DlHbfc=
+X-Google-Smtp-Source: AGHT+IF25n7Sa6TfJZUDzd53iQPcZpqE+4Xyhb+Rkk3OlRpJDDENF57nMsrRIboWoIlVu8+ZeV6gbQ==
+X-Received: by 2002:adf:ebc6:0:b0:377:6073:48df with SMTP id
+ ffacd0b85a97d-378c2d5b42emr757111f8f.58.1726124097757; 
+ Wed, 11 Sep 2024 23:54:57 -0700 (PDT)
+Received: from [192.168.69.100] (mic92-h03-176-184-33-210.dsl.sta.abo.bbox.fr.
  [176.184.33.210]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-378956650fdsm13521670f8f.25.2024.09.11.23.53.43
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 23:53:44 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL v2 61/61] ui: remove break after g_assert_not_reached()
-Date: Thu, 12 Sep 2024 08:52:27 +0200
-Message-ID: <20240912065227.67848-14-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240912065227.67848-1-philmd@linaro.org>
-References: <20240912065227.67848-1-philmd@linaro.org>
+ ffacd0b85a97d-378956d3796sm13419498f8f.80.2024.09.11.23.54.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Sep 2024 23:54:57 -0700 (PDT)
+Message-ID: <d832e49f-478b-4b7f-93a4-a3d00d5439fb@linaro.org>
+Date: Thu, 12 Sep 2024 08:54:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/56] Misc HW & UI patches
+To: Peter Maydell <peter.maydell@linaro.org>
+References: <20240911121422.52585-1-philmd@linaro.org>
+Content-Language: en-US
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240911121422.52585-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,43 +91,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Hi Peter,
 
-Use of assert(false) can trip spurious control flow warnings from
-some versions of GCC (i.e. using -fsanitize=thread with gcc-12):
+On 11/9/24 14:13, Philippe Mathieu-Daudé wrote:
+> The following changes since commit a66f28df650166ae8b50c992eea45e7b247f4143:
+> 
+>    Merge tag 'migration-20240909-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-09-10 11:19:22 +0100)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/philmd/qemu.git tags/hw-misc-20240911
+> 
+> for you to fetch changes up to d6bda15a00b46778e577c95c77f066f95ed58e07:
+> 
+>    ui: remove break after g_assert_not_reached() (2024-09-11 13:54:06 +0200)
+> 
+> ----------------------------------------------------------------
+> Misc HW & UI patches
+> 
+> - Remove deprecated SH4 SHIX machine TC58128 NAND EEPROM (Phil)
+> - Remove deprecated CRIS target (Phil)
+> - Remove deprecated RISC-V 'any' CPU type (Phil)
+> - Add fifo8_peek_buf() to correctly handle FIFO wraparound (Mark)
+> - Minor cleanups in Designware PCIe, PL011 and loongson IPI models (Phil)
+> - Convert Sun ESCC and ADB mouses to QemuInputHandler (Mark)
+> - Prevent heap overflow in VIRTIO sound device (Volker)
+> - Cleanups around g_assert_not_reached() call (Pierrick)
+> - Add Clément as VT-d reviewer (Clément)
+> - Prevent stuck modifier keys and unexpected text input on Windows (Volker)
+> - Explicitly set SDL2 swap interval when OpenGL is enabled (Gert)
+> 
+> ----------------------------------------------------------------
 
-  error: control reaches end of non-void function [-Werror=return-type]
-        default:
-            g_assert_not_reached();
-            break;
-          | ^^^^^
+FYI I posted a v2 updating Pierrick's commit descriptions:
+https://lore.kernel.org/qemu-devel/20240912065227.67848-1-philmd@linaro.org/
 
-Solve that by removing the unreachable 'break' statement, unifying
-the code base on g_assert_not_reached() instead.
+Regards,
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240910221606.1817478-37-pierrick.bouvier@linaro.org>
-[PMD: Add description suggested by Eric Blake]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- ui/qemu-pixman.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
-index 5ca55dd199..6cada8b45e 100644
---- a/ui/qemu-pixman.c
-+++ b/ui/qemu-pixman.c
-@@ -49,7 +49,6 @@ PixelFormat qemu_pixelformat_from_pixman(pixman_format_code_t format)
-         break;
-     default:
-         g_assert_not_reached();
--        break;
-     }
- 
-     pf.amax = (1 << pf.abits) - 1;
--- 
-2.45.2
-
+Phil.
 
