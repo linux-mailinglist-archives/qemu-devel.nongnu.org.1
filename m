@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EE4976A19
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 15:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EAA7976A12
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 15:10:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sojZo-0003K9-5Y; Thu, 12 Sep 2024 09:09:36 -0400
+	id 1sojZy-0003lh-7S; Thu, 12 Sep 2024 09:09:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1sojZj-00039M-KB
+ id 1sojZj-00039Q-KW
  for qemu-devel@nongnu.org; Thu, 12 Sep 2024 09:09:31 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1sojZg-0004q3-Qw
+ (envelope-from <gaosong@loongson.cn>) id 1sojZg-0004qO-RG
  for qemu-devel@nongnu.org; Thu, 12 Sep 2024 09:09:31 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxSOkE6OJm8eQFAA--.12716S3;
- Thu, 12 Sep 2024 21:09:24 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxB+kG6OJm9uQFAA--.12642S3;
+ Thu, 12 Sep 2024 21:09:26 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front2 (Coremail) with SMTP id qciowMDxl8Xr5+JmR8MFAA--.9219S8;
+ by front2 (Coremail) with SMTP id qciowMDxl8Xr5+JmR8MFAA--.9219S9;
  Thu, 12 Sep 2024 21:09:24 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: [PULL 6/7] hw/loongarch: virt: pass random seed to fdt
-Date: Thu, 12 Sep 2024 20:51:31 +0800
-Message-Id: <20240912125132.268802-7-gaosong@loongson.cn>
+	Bibo Mao <maobibo@loongson.cn>
+Subject: [PULL 7/7] hw/loongarch: Add acpi SPCR table support
+Date: Thu, 12 Sep 2024 20:51:32 +0800
+Message-Id: <20240912125132.268802-8-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240912125132.268802-1-gaosong@loongson.cn>
 References: <20240912125132.268802-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qciowMDxl8Xr5+JmR8MFAA--.9219S8
+X-CM-TRANSID: qciowMDxl8Xr5+JmR8MFAA--.9219S9
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -62,65 +62,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-If the FDT contains /chosen/rng-seed, then the Linux RNG will use it to
-initialize early. Set this using the usual guest random number
-generation function.
+Serial port console redirection table can be used for default serial
+port selection, like chosen stdout-path selection with FDT method.
 
-This is the same procedure that's done in b91b6b5a2c ("hw/microblaze:
-pass random seed to fdt"), e4b4f0b71c ("hw/riscv: virt: pass random seed
-to fdt"), c6fe3e6b4c ("hw/openrisc: virt: pass random seed to fdt"),
-67f7e426e5 ("hw/i386: pass RNG seed via setup_data entry"), c287941a4d
-("hw/rx: pass random seed to fdt"), 5e19cc68fb ("hw/mips: boston: pass
-random seed to fdt"), 6b23a67916 ("hw/nios2: virt: pass random seed to fdt")
-c4b075318e ("hw/ppc: pass random seed to fdt"), and 5242876f37
-("hw/arm/virt: dt: add rng-seed property").
+With acpi SPCR table added, early debug console can be parsed from
+SPCR table with simple kernel parameter earlycon rather than
+earlycon=uart,mmio,0x1fe001e0
 
-These earlier commits later were amended to rerandomize the RNG seed on
-snapshot load, but the LoongArch code somehow already does that, despite
-not having this patch here, presumably due to some lucky copy and
-pasting.
-
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240905153316.2038769-1-Jason@zx2c4.com>
+Message-Id: <20240907073037.243353-1-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/loongarch/virt.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/loongarch/acpi-build.c | 40 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 76dd29a391..81b1f9486f 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -48,6 +48,7 @@
- #include "hw/block/flash.h"
- #include "hw/virtio/virtio-iommu.h"
- #include "qemu/error-report.h"
-+#include "qemu/guest-random.h"
- 
- static bool virt_is_veiointc_enabled(LoongArchVirtMachineState *lvms)
- {
-@@ -303,6 +304,7 @@ static void fdt_add_uart_node(LoongArchVirtMachineState *lvms,
- static void create_fdt(LoongArchVirtMachineState *lvms)
- {
-     MachineState *ms = MACHINE(lvms);
-+    uint8_t rng_seed[32];
- 
-     ms->fdt = create_device_tree(&lvms->fdt_size);
-     if (!ms->fdt) {
-@@ -316,6 +318,10 @@ static void create_fdt(LoongArchVirtMachineState *lvms)
-     qemu_fdt_setprop_cell(ms->fdt, "/", "#address-cells", 0x2);
-     qemu_fdt_setprop_cell(ms->fdt, "/", "#size-cells", 0x2);
-     qemu_fdt_add_subnode(ms->fdt, "/chosen");
-+
-+    /* Pass seed to RNG */
-+    qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
-+    qemu_fdt_setprop(ms->fdt, "/chosen", "rng-seed", rng_seed, sizeof(rng_seed));
+diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+index 04107c84ba..50709bda0f 100644
+--- a/hw/loongarch/acpi-build.c
++++ b/hw/loongarch/acpi-build.c
+@@ -242,6 +242,44 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+     acpi_table_end(linker, &table);
  }
  
- static void fdt_add_cpu_nodes(const LoongArchVirtMachineState *lvms)
++/*
++ * Serial Port Console Redirection Table (SPCR)
++ * https://learn.microsoft.com/en-us/windows-hardware/drivers/serports/serial-port-console-redirection-table
++ */
++static void
++spcr_setup(GArray *table_data, BIOSLinker *linker, MachineState *machine)
++{
++    LoongArchVirtMachineState *lvms;
++    AcpiSpcrData serial = {
++        .interface_type = 0,       /* 16550 compatible */
++        .base_addr.id = AML_AS_SYSTEM_MEMORY,
++        .base_addr.width = 32,
++        .base_addr.offset = 0,
++        .base_addr.size = 1,
++        .base_addr.addr = VIRT_UART_BASE,
++        .interrupt_type = 0,       /* Interrupt not supported */
++        .pc_interrupt = 0,
++        .interrupt = VIRT_UART_IRQ,
++        .baud_rate = 7,            /* 115200 */
++        .parity = 0,
++        .stop_bits = 1,
++        .flow_control = 0,
++        .terminal_type = 3,        /* ANSI */
++        .language = 0,             /* Language */
++        .pci_device_id = 0xffff,   /* not a PCI device*/
++        .pci_vendor_id = 0xffff,   /* not a PCI device*/
++        .pci_bus = 0,
++        .pci_device = 0,
++        .pci_function = 0,
++        .pci_flags = 0,
++        .pci_segment = 0,
++    };
++
++    lvms = LOONGARCH_VIRT_MACHINE(machine);
++    build_spcr(table_data, linker, &serial, 2, lvms->oem_id,
++               lvms->oem_table_id);
++}
++
+ typedef
+ struct AcpiBuildState {
+     /* Copy of table in RAM (for patching). */
+@@ -484,6 +522,8 @@ static void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+ 
+     acpi_add_table(table_offsets, tables_blob);
+     build_srat(tables_blob, tables->linker, machine);
++    acpi_add_table(table_offsets, tables_blob);
++    spcr_setup(tables_blob, tables->linker, machine);
+ 
+     if (machine->numa_state->num_nodes) {
+         if (machine->numa_state->have_numa_distance) {
 -- 
 2.34.1
 
