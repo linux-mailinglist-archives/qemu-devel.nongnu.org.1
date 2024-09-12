@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E1B9761EB
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 08:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EDFB9761E4
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 08:54:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sodhK-0004pf-Vk; Thu, 12 Sep 2024 02:52:59 -0400
+	id 1sodhQ-0005VD-QS; Thu, 12 Sep 2024 02:53:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodhJ-0004lu-6F
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:52:57 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodhO-0005ME-Iv
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:53:02 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodhH-0003RH-L7
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:52:56 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-42cc43454d5so4409255e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 23:52:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodhM-0003RX-Td
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:53:02 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-428e1915e18so4373065e9.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 23:53:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726123974; x=1726728774; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726123979; x=1726728779; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LFdQQyV2bmEsjuWxwcR0v9/S6TIwatMWxB854Zl8gYU=;
- b=QDrSJhFYYzRN/r++sEcuVCDm87wrU6I21xjiuoddNraTrx34+96RBt/2xjjiMBGqaw
- q5g+Q/D3hT4lph7Yb/+lB4wAeT1fdxWgVKPyfCoy7ghJf0iNmunfs+s3UQYZdikVXejh
- Sdf/kWcSew3Q6bO5zBQqtWf9j89t5pv0tCDfTyA/TSd2iyqJ7FL89CR9zOQrxrLckxMa
- 7Lws9WKtEJPJ6WuseD0LOgMxnZpR5hqz1jy+Rz0Aft7pi4YrK4wXoZsWDYrNoPsJYzbB
- ussXI+UM1e4jioGM+/Z83YQ7ZsIKvnAXknHpJgdI4W+z2bpOAv4KFDZzlvijNSFEqI/J
- rGVA==
+ :reply-to; bh=vlRmpnbCbgSErzwwLA97yhTv9fMzKif0TAzO/KO/JOk=;
+ b=WtR5X7Kr61e7FTeTtdt7RHjLuhvm9ZcmZAHx8w4m6CU6T3DFKZILu1/6UqxxC1Yuua
+ d/+lnh1TXhcIOCYNaho7D2YMvbKoxYUVfXkAkhpudVuyl+Ag7LAohwfQrU59ivFnKwp8
+ GgsgIaVL5InyxlcNsXp5NitxHdAFnjAAq3E3ujGLUtkSqKtXe4I+sdPq1VG4XJ5vT9ky
+ NU/zhc33vfvNtg+YmBr3SbBGi1C5lEY0j37LlBRMwHUvgRGLRmW72I59tLbHjdEkxRWD
+ UYaoAxla3/FdDKSfIHf/8w4X+nQ8VUBXNjwGFuAGyiKeO5S9REujHpGuWjCJ0YsvG6Cg
+ tXdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726123974; x=1726728774;
+ d=1e100.net; s=20230601; t=1726123979; x=1726728779;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LFdQQyV2bmEsjuWxwcR0v9/S6TIwatMWxB854Zl8gYU=;
- b=tnHAGb9z0UT2qUjTdwA2Wkf0+YvacxLZM89MJ0BWzRKq0whisuma2MA3+yupMxE1Hc
- B3ulm5HAPI4nSAC1nORWEr/n9IGGtx6IGBZtTe1EBXicRw1PPWcOQMx9mx1Ayqdl19UA
- Y0YgK5JTbSYvR1FXvxH46mbhSIgsuRjPCiOIzCkuxsE/EAVOcU2LmJ47jrkEPh6+tH/x
- b5GEyZpIzkof9GPqj07P+4YgbJTxn193996fMUwkVbG06Rv7gnEStFPSs5qvj+lS/uCY
- keJ1quZ2CqDdeJmOBjv5E/kn3UWCqPHap8E7ud/lWSVgIHuJh15CPk+71y4LVNC4aDEV
- kD8Q==
-X-Gm-Message-State: AOJu0YwAhh1Zx6Mqt4XVTnDUDKqZBjQmb3S0S6h5QxGVefZ3MWR7joXo
- ZBAZIE6BilC4qKIjE9A0uU4gtODB4Zgx+FkUzscIpp/VAx8SlcqhXHkAURVj8if7js6fowRCjVa
- 1
-X-Google-Smtp-Source: AGHT+IFV/adnIakW2Nl/d3TbR3dDLAbN8ZvxpXZjLQwBMBDsZJs4ottJA0AUAxbdMxyCmO+g1SRcuQ==
-X-Received: by 2002:a05:600c:3b14:b0:426:6edf:6597 with SMTP id
- 5b1f17b1804b1-42cdb547d4emr9707885e9.19.1726123973680; 
- Wed, 11 Sep 2024 23:52:53 -0700 (PDT)
+ bh=vlRmpnbCbgSErzwwLA97yhTv9fMzKif0TAzO/KO/JOk=;
+ b=sCkJZkxp7qQeFecb0R7g98aftutTAxL20Cb0nDpyy5XlEsWmunYEIK1VytQ2QTYqel
+ xgAkd8nCP5jsBzbgK/MABAOOXTvSBW99mXHhswVCxiQIELrbfSR0j5KS0PSV9jMrxUSn
+ 8NGOCQAzdUDLFtdElklKJoID8odJpEDLTkIAICW6zOzGxMclzMwGGEE7AUlhvEX3wgj4
+ TYRN0QOvMHYlqlkQPP7HbhRMSdAKXw25f8yc0blkl5RDajsQK7G6fITCI4VYsueWLTOy
+ TXiSP/+LeAjGX9bQqoSFM6nRUeK1tBFzSyeBefR9Ky1eD4U/EAQUOhR7ZIemURflIpAd
+ O4ng==
+X-Gm-Message-State: AOJu0YzyBCoNl8mTtZhUiysH7fC8BLEKiYOp0bgis3XlhqaO0v6ldCJu
+ K0faU51rqrArw4bmtrIe+IfCjEnKpAdf5dzwj7dJGh4HYvbfkgyF/rWPsihzw+5/98Fr253tdqi
+ 4
+X-Google-Smtp-Source: AGHT+IGGtZ/zMnYkWwPixxjcn4uYI/2wK63nJJqTbjum7r4iqYgemDIaPQUyc/MzYToGLQaGuaHcPg==
+X-Received: by 2002:a05:600c:1c1f:b0:42c:b6e4:e3ac with SMTP id
+ 5b1f17b1804b1-42cdb531d35mr12560495e9.3.1726123978958; 
+ Wed, 11 Sep 2024 23:52:58 -0700 (PDT)
 Received: from m1x-phil.lan (mic92-h03-176-184-33-210.dsl.sta.abo.bbox.fr.
  [176.184.33.210]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42cb73ab096sm125266255e9.22.2024.09.11.23.52.52
+ 5b1f17b1804b1-42caeb444b0sm163333205e9.21.2024.09.11.23.52.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 23:52:53 -0700 (PDT)
+ Wed, 11 Sep 2024 23:52:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL v2 47/61] hw/sensor/tmp105: OS (one-shot) bit in config
- register always returns 0
-Date: Thu, 12 Sep 2024 08:52:18 +0200
-Message-ID: <20240912065227.67848-5-philmd@linaro.org>
+Subject: [PULL v2 48/61] hw/sensor/tmp105: Lower 4 bit of limit registers are
+ always 0
+Date: Thu, 12 Sep 2024 08:52:19 +0200
+Message-ID: <20240912065227.67848-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240912065227.67848-1-philmd@linaro.org>
 References: <20240912065227.67848-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,47 +91,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per datasheet, "ONE-SHOT (OS)", the OS bit always returns 0 when reading
-the configuration register.
+From: Guenter Roeck <linux@roeck-us.net>
 
-Clear the ONE_SHOT bit in the WRITE path. Now than the READ path is
-simpler, we can also simplify tmp105_alarm_update().
+Per datasheet, "HIGH AND LOW LIMIT REGISTERS", the lower 4 bit
+of the limit registers are unused and always report 0.
+The lower 4 bit should not be used for temperature comparisons,
+so mask the unused bits before storing the limits.
 
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Message-Id: <20240906154911.86803-5-philmd@linaro.org>
+Message-Id: <20240906154911.86803-6-philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sensor/tmp105.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ hw/sensor/tmp105.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/sensor/tmp105.c b/hw/sensor/tmp105.c
-index 6740200aea..f5101af919 100644
+index f5101af919..9d7b911f59 100644
 --- a/hw/sensor/tmp105.c
 +++ b/hw/sensor/tmp105.c
-@@ -42,12 +42,8 @@ static void tmp105_interrupt_update(TMP105State *s)
- 
- static void tmp105_alarm_update(TMP105State *s, bool one_shot)
- {
--    if (FIELD_EX8(s->config, CONFIG, SHUTDOWN_MODE)) {
--        if (one_shot) {
--            s->config = FIELD_DP8(s->config, CONFIG, ONE_SHOT, 0);
--        } else {
--            return;
--        }
-+    if (FIELD_EX8(s->config, CONFIG, SHUTDOWN_MODE) && !one_shot) {
-+        return;
-     }
- 
-     if (FIELD_EX8(s->config, CONFIG, THERMOSTAT_MODE)) {
-@@ -166,7 +162,7 @@ static void tmp105_write(TMP105State *s)
-         if (FIELD_EX8(s->buf[0] & ~s->config, CONFIG, SHUTDOWN_MODE)) {
-             printf("%s: TMP105 shutdown\n", __func__);
+@@ -171,7 +171,7 @@ static void tmp105_write(TMP105State *s)
+     case TMP105_REG_T_HIGH:
+         if (s->len >= 3) {
+             s->limit[s->pointer & 1] = (int16_t)
+-                    ((((uint16_t) s->buf[0]) << 8) | s->buf[1]);
++                    ((((uint16_t) s->buf[0]) << 8) | (s->buf[1] & 0xf0));
          }
--        s->config = s->buf[0];
-+        s->config = FIELD_DP8(s->buf[0], CONFIG, ONE_SHOT, 0);
-         s->faults = tmp105_faultq[FIELD_EX8(s->config, CONFIG, FAULT_QUEUE)];
-         tmp105_alarm_update(s, FIELD_EX8(s->buf[0], CONFIG, ONE_SHOT));
+         tmp105_alarm_update(s, false);
          break;
 -- 
 2.45.2
