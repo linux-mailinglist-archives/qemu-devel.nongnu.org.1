@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADCB9761EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 08:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7399761E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 08:54:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sodiW-000197-1q; Thu, 12 Sep 2024 02:54:13 -0400
+	id 1sodih-0003jZ-RS; Thu, 12 Sep 2024 02:54:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodi1-0000lF-2t
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:53:41 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodiA-0001UK-2t
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:53:52 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodhz-0003Vl-7p
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:53:40 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-374c7e64b60so404020f8f.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 23:53:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sodi6-0003WN-Od
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 02:53:48 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-374ca7a10d4so436770f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 23:53:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726124017; x=1726728817; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726124025; x=1726728825; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jtNJDIJpUDW0bpRhizb3Cf8FodNOF9sdbTjBD++YWOI=;
- b=OOBjTxjRedfsg000zdCcywmC7wd+EohaoAPOteRVous/V4/87O7p9R9Y1rOP+iEF7/
- c+UrWcLX6evU6ft4k5xwe9suskHomuyhqlGsDv85tBueVXSC+yN145a/D0Bqx4nmJReT
- Jv1HTkw5Tj+qGskA+sK4SbiPCgdif3ljEDwb7QjnQRAzLbKie2rumMALzuV7R/ruV9HZ
- nQbQ7hofEpnY5tzRou5alk8GJCuPHKkq0g9Nxh1FJ82vZfvFAvSZOeB7Eq7oUJumBA5v
- B6lwER1gHRc4PHoSWfcr+eCXrH8KA6U3+CImgVLAl623nis6/P/QYIvP+Q3jPX/tul5D
- pMJA==
+ :reply-to; bh=Z8JlX1hTCmbpuUkyTy+jdA1DfHzPSmi+/XVGPIHJ48I=;
+ b=vw3wAXP8YyzANzqGEgQrOwiwgB31HJpXKWjseKvB6y6bIkQBjfb4EK17i7YFtwXodI
+ 9YMwilQxrFaR+RlaPhoguLtZid9DhRgOmRRMOSG3hsm9IH7/44jhNtvEtO00dMOeRQ0p
+ HzioYey86r0hF7TBeU/FzEVKwxUAyxVtR17IrLBm9ED3sW5rWtwCSxi4EmeA2BtZCUJd
+ XD7diH0F16jGv8NGGQ0JSKFtGxJlSRXhn3CG6Um73awRniignheZqDamBYKNKgPNgik9
+ YTigqKkQvZ1qy0AWiSKluFyq/uX7b+U0A+4nJgTBP2ttKVJw8691y418+LWb9XOLo2mt
+ AFcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726124017; x=1726728817;
+ d=1e100.net; s=20230601; t=1726124025; x=1726728825;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jtNJDIJpUDW0bpRhizb3Cf8FodNOF9sdbTjBD++YWOI=;
- b=s5QfuWYy2m9Sa3YKW5OX3+4Yik0i1tAqPtzDQdYuUMBAaenb70AruHhuiiQ3DiU6GS
- mh3v1NcLIWIMy9p1V0CJyjIxhSAcI27+vfllBXpIlo41HTnyw8TbnacJzpu8hGXJYaFs
- 68VpxxPV1XYsXhnmx0v0SX17o8cy5QYhnGo/d6qwAl06VksrWtUEd++USQ9DgJpBW+Li
- aBZIAm2iJM5VVRshn0JPXFZqVEnWiyl0Kh2yJbncrPXShqE9RUNXVU4EUBvhbj0MIZup
- 9KuX7ZnC0fFS4v2DpLOspW7PPrnPnMcWN764K1QUYWNCdKA/nIdZ35lbfsUgyMgLe0NJ
- tUjg==
-X-Gm-Message-State: AOJu0YwG8n+ZtrfugcQQKEWgvM0S2MFrmlyfWK4XMAGuIHbgfg0KH2Y3
- EErRhkOoi5jVgWqWONHJ9gnwqv09OZ9tZ5xwbeKEliN0bONBk5TGVnCWvIoE9kj3tcmAvKxvsid
- z
-X-Google-Smtp-Source: AGHT+IGD98+6TkdrYZ0rUSNXLKOQzXDu2+sfauEnwsSqE7d4Jja2CrdaY3tQCZ3s/uXPo2nNXMDX3w==
-X-Received: by 2002:a05:6000:ac4:b0:366:ee9b:847 with SMTP id
- ffacd0b85a97d-378c2d05d7emr900018f8f.14.1726124017186; 
- Wed, 11 Sep 2024 23:53:37 -0700 (PDT)
+ bh=Z8JlX1hTCmbpuUkyTy+jdA1DfHzPSmi+/XVGPIHJ48I=;
+ b=JkpsLV8WxxnL0TFoPXaOaFP8/zSxzabgcMzKhduBVUDu5jKx/8bUx2wpoDjg0X7Y4U
+ fKORvjX6nyBs5dIWqvRPX0+TBjEpOSlJdJiq2sdMBslrYiZt7YIbPYoXb/HqdYQaNA3U
+ 4sVuFmfHd1OjPWzsvO9hNaMrHN+J1LcSN5xpTT4KYuGofyVxyFWE5/w3U7E92YFvQSnS
+ CnQFxoiPR/3i7VVeE62g6kGMmI1/GvFEyjcfZnUPOvQ/GRRJEuz7ttjNun26N9RLUIyi
+ JAouCq99mdtu7Azy94K2G5Bw5NI//2VCrzFFsDilGg0iyjomSJhCuub4bLs6NJgLr8UA
+ VdjA==
+X-Gm-Message-State: AOJu0YxZxvGOKXoaVNmauOix934mCOhg+MPm6+WgCjLMAXf/JVPwp0me
+ Q57c7KxcjriY2WmDWTsAPhpb1r3tIXt+TA1QmZ8QizgR1INrT5zDW6Erw/pVyiVib9P3FGWFCWa
+ a
+X-Google-Smtp-Source: AGHT+IFje1iHjYQRayee5IXKWbieCnQTeMV5uuBMuNTGI4ioXw7aZ7eOs0b0GJZpjngZdOjXPZJnhA==
+X-Received: by 2002:a05:6000:459f:b0:374:c0c5:3c05 with SMTP id
+ ffacd0b85a97d-378c2d4d802mr923227f8f.42.1726124024412; 
+ Wed, 11 Sep 2024 23:53:44 -0700 (PDT)
 Received: from m1x-phil.lan (mic92-h03-176-184-33-210.dsl.sta.abo.bbox.fr.
  [176.184.33.210]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-378956653f9sm13440159f8f.31.2024.09.11.23.53.36
+ ffacd0b85a97d-378956650fdsm13521670f8f.25.2024.09.11.23.53.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Sep 2024 23:53:36 -0700 (PDT)
+ Wed, 11 Sep 2024 23:53:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL v2 57/61] system: replace assert(0) with g_assert_not_reached()
-Date: Thu, 12 Sep 2024 08:52:26 +0200
-Message-ID: <20240912065227.67848-13-philmd@linaro.org>
+Subject: [PULL v2 61/61] ui: remove break after g_assert_not_reached()
+Date: Thu, 12 Sep 2024 08:52:27 +0200
+Message-ID: <20240912065227.67848-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240912065227.67848-1-philmd@linaro.org>
 References: <20240912065227.67848-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,35 +97,35 @@ some versions of GCC (i.e. using -fsanitize=thread with gcc-12):
 
   error: control reaches end of non-void function [-Werror=return-type]
         default:
-            assert(0);
-      | }
-      | ^
+            g_assert_not_reached();
+            break;
+          | ^^^^^
 
-Solve that by unifying the code base on g_assert_not_reached() instead.
+Solve that by removing the unreachable 'break' statement, unifying
+the code base on g_assert_not_reached() instead.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240910221606.1817478-11-pierrick.bouvier@linaro.org>
+Message-ID: <20240910221606.1817478-37-pierrick.bouvier@linaro.org>
 [PMD: Add description suggested by Eric Blake]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- system/rtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ui/qemu-pixman.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/system/rtc.c b/system/rtc.c
-index dc44576686..216d2aee3a 100644
---- a/system/rtc.c
-+++ b/system/rtc.c
-@@ -62,7 +62,7 @@ static time_t qemu_ref_timedate(QEMUClockType clock)
-         }
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index 5ca55dd199..6cada8b45e 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -49,7 +49,6 @@ PixelFormat qemu_pixelformat_from_pixman(pixman_format_code_t format)
          break;
      default:
--        assert(0);
-+        g_assert_not_reached();
+         g_assert_not_reached();
+-        break;
      }
-     return value;
- }
+ 
+     pf.amax = (1 << pf.abits) - 1;
 -- 
 2.45.2
 
