@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79338976300
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 09:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC999762ED
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 09:41:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soeQh-0001XQ-Ka; Thu, 12 Sep 2024 03:39:51 -0400
+	id 1soeQk-00027F-T0; Thu, 12 Sep 2024 03:39:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1soeQR-000129-OO
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:39:36 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1soeQT-00018K-8A
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:39:39 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1soeQN-00006Y-1V
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:39:35 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-7db1f13b14aso632277a12.1
- for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 00:39:29 -0700 (PDT)
+ id 1soeQQ-00007L-Uj
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:39:36 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-71798661a52so478409b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 00:39:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726126769; x=1726731569; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726126771; x=1726731571; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IRV8cs5vGajAoqqaVP2CMnCi0idLbKzQEkk2XTwPdlU=;
- b=hskvmCdPAR9ucb0aGc8qwiq7fCLrb5JCj/kaLnd+4QbMqyCemR2Fsj+wV+7apDwfRv
- lgtyeAJGOUp5v6s7Gds0caTrN4aL15Q4AY+RaRSMgrRftwsY91ujzUzMpDOydOaqdEgG
- OOE4PWDjfgn2JYjLJQdQMhtDW8/gQnrk+Gi4A3Eh0GvN0uwPAtSKcG3029M6O4tbXEbP
- +I8iQt6EIKmTef5+JcS9ri7vNWQLpdpppqZu2/Y3KwX3NFiWiFqyZX6yn4zLVH2l+y4S
- fQ3C5t/E3EClCM6+tga4FeTaM3jDHChswzbIyWisr8PMltKolVrj/Mr2LEXH/0otOmzH
- dr2A==
+ bh=WKzkwMvjulowmVZuCJWvk+8fDxucMHovajiMFoHCRQg=;
+ b=EKvW9PIs9nyFZYiTEPQXjmkqYiHrDUzKCsFAK5Lm/XYb7wX0JJCx5N0Q3nXWjkDUYd
+ HWibWnQKt+gDyOR8zW5X4CvflppdDoobmUMC6CSruRtGdnzeW+1QAwH3nQgIgFza0u05
+ HlLiALb2hNcZ2uoz3swkA/m33ssM6ZSGb+QS0rCzmDnF2wYwtRnVCPBLVodDO9oNvMEQ
+ /N9PHEavC9SVdf7G4wHTUMNCpCRpLrLLnaihLAO4233ZJDX99DhYBBr6DhUyIW3NlBLP
+ 3kM2VtVkR6w3LfjDbXIqsJLlemyhKccIS4kJR8F3dYtleLcJgPuRlY+ryx77zy+Cgjyq
+ GpEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726126769; x=1726731569;
+ d=1e100.net; s=20230601; t=1726126771; x=1726731571;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IRV8cs5vGajAoqqaVP2CMnCi0idLbKzQEkk2XTwPdlU=;
- b=dR7kDJ/xwNyl84UF+UmKRx7IGU5BAOoUTGOfjvMpPMD5a2573Fbiq897KAJ/a+G2c7
- wpxeLH3cDg7KU5BngEw09LtthdEAZ6Cbtd+0w5VneTwpXZaItbbgaNnUy0hquJ5z/POC
- 4PJb8x41rPvHoFr1fFfdLuoGcObjwFjHu1kIpyN0fxoYpJIDi4YZxO8cccTWPuwUowjV
- Yo0CEGuRo/bci/X5BAu3X/DcSpHQcSQch0WWtTJuxVEAiNhGQWxEkEo5fTioTgEzuLYT
- bmv/Q2fOhjz4bwhd1qpDN/ATjo+ZwAYQf0DiABKTBPP3HiIYWZ0ik3+430jW0NVSKrkY
- Hp0g==
-X-Gm-Message-State: AOJu0YzOEcfRU/NyPevX8viAu58Af5YM8w6JXhFM2WxqBODkI6Yrkrub
- o21IxJqMbbAgIN9w11cUZxSmBZgVJbl63G5KpfSMK6nPLDTDh+ZjEp4N1v9LlOGe8R26RwHO/zO
- i++VXaHHK
-X-Google-Smtp-Source: AGHT+IELQJ4LN1eiiJh78GYcEX/xms21hXHkteEXLmVpd/6Wpu6TPg6l8or6duVIN2euH8mSyIIX7A==
-X-Received: by 2002:a05:6a21:10a:b0:1cf:434d:609 with SMTP id
- adf61e73a8af0-1cf75ec46b4mr3157664637.6.1726126768552; 
- Thu, 12 Sep 2024 00:39:28 -0700 (PDT)
+ bh=WKzkwMvjulowmVZuCJWvk+8fDxucMHovajiMFoHCRQg=;
+ b=qfqZ7Q7GFtqSjSNdCpZWDkvLTHZ00aSkzwxmnpNKlbQbuOnj5xeqK+LAJ8IyylxCDg
+ 8uZMm+YFn1CAOpcF2naTEfcc+u4C5J+M/Dh0nNTRm7tGToI5cq8HZ58XhKUDJg+tdigH
+ dt+r/5UirL76qMN3EvQBn+LbWvDI3YOMGO9r/WC5NT2Xt6gB15soHwxnn+kJLMkWgyxk
+ eiw+Ofb2rRGp+YQ0H8SqMIjcE7FgSnuaO+RyxJQa3Koy6qrK4RUg91IkixCi7YZA7yPT
+ uRYURHk9F2U70cax0cEbgIM/MxrhMzXPUlNi1uiu6jpJIpSwkK80pfhg78CI5h/sRjXC
+ V2aQ==
+X-Gm-Message-State: AOJu0Yw9o0pfYNNR6SUIcNL7QVbFEm0SuCR43UnINZIH+ChMvWWbpy7l
+ 7dSmaR1pMuqpibmToMxhcU6XGygvb5q0lth6/j2Yh8fBkDsfhSCN5ym//OxpHnnxg0MEuid7vC+
+ ryZk4y+pd
+X-Google-Smtp-Source: AGHT+IFV73zYW1Waxu/aZZ0kavyu0j3iUea6gq5xe8cf1PrugnTCL4VeCsbqhbUloiuceag0jwjTVg==
+X-Received: by 2002:a05:6a00:1803:b0:717:9743:e4fb with SMTP id
+ d2e1a72fcca58-71926456829mr2983283b3a.14.1726126771431; 
+ Thu, 12 Sep 2024 00:39:31 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::9633])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7db1fb9ad87sm983458a12.6.2024.09.12.00.39.26
+ 41be03b00d2f7-7db1fb9ad87sm983458a12.6.2024.09.12.00.39.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Sep 2024 00:39:28 -0700 (PDT)
+ Thu, 12 Sep 2024 00:39:30 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>,
@@ -103,17 +103,17 @@ Cc: Jason Wang <jasowang@redhat.com>,
  David Gibson <david@gibson.dropbear.id.au>, Fam Zheng <fam@euphon.net>,
  Weiwei Li <liwei1518@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 01/48] docs/spin: replace assert(0) with
+Subject: [PATCH v2 02/48] hw/acpi: replace assert(0) with
  g_assert_not_reached()
-Date: Thu, 12 Sep 2024 00:38:34 -0700
-Message-Id: <20240912073921.453203-2-pierrick.bouvier@linaro.org>
+Date: Thu, 12 Sep 2024 00:38:35 -0700
+Message-Id: <20240912073921.453203-3-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240912073921.453203-1-pierrick.bouvier@linaro.org>
 References: <20240912073921.453203-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -143,66 +143,22 @@ assertion mechanisms.
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- docs/spin/aio_notify_accept.promela | 6 +++---
- docs/spin/aio_notify_bug.promela    | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ hw/acpi/aml-build.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/spin/aio_notify_accept.promela b/docs/spin/aio_notify_accept.promela
-index 9cef2c955dd..f929d303281 100644
---- a/docs/spin/aio_notify_accept.promela
-+++ b/docs/spin/aio_notify_accept.promela
-@@ -118,7 +118,7 @@ accept_if_req_not_eventually_false:
-     if
-         :: req -> goto accept_if_req_not_eventually_false;
-     fi;
--    assert(0);
-+    g_assert_not_reached();
- }
- 
- #else
-@@ -141,12 +141,12 @@ accept_if_event_not_eventually_true:
-         :: !event && notifier_done  -> do :: true -> skip; od;
-         :: !event && !notifier_done -> goto accept_if_event_not_eventually_true;
-     fi;
--    assert(0);
-+    g_assert_not_reached();
- 
- accept_if_event_not_eventually_false:
-     if
-         :: event     -> goto accept_if_event_not_eventually_false;
-     fi;
--    assert(0);
-+    g_assert_not_reached();
- }
- #endif
-diff --git a/docs/spin/aio_notify_bug.promela b/docs/spin/aio_notify_bug.promela
-index b3bfca1ca4f..ce6f5177ed5 100644
---- a/docs/spin/aio_notify_bug.promela
-+++ b/docs/spin/aio_notify_bug.promela
-@@ -106,7 +106,7 @@ accept_if_req_not_eventually_false:
-     if
-         :: req -> goto accept_if_req_not_eventually_false;
-     fi;
--    assert(0);
-+    g_assert_not_reached();
- }
- 
- #else
-@@ -129,12 +129,12 @@ accept_if_event_not_eventually_true:
-         :: !event && notifier_done  -> do :: true -> skip; od;
-         :: !event && !notifier_done -> goto accept_if_event_not_eventually_true;
-     fi;
--    assert(0);
-+    g_assert_not_reached();
- 
- accept_if_event_not_eventually_false:
-     if
-         :: event     -> goto accept_if_event_not_eventually_false;
-     fi;
--    assert(0);
-+    g_assert_not_reached();
- }
- #endif
+diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
+index 6d4517cfbe3..006c506a375 100644
+--- a/hw/acpi/aml-build.c
++++ b/hw/acpi/aml-build.c
+@@ -534,7 +534,7 @@ void aml_append(Aml *parent_ctx, Aml *child)
+     case AML_NO_OPCODE:
+         break;
+     default:
+-        assert(0);
++        g_assert_not_reached();
+         break;
+     }
+     build_append_array(parent_ctx->buf, buf);
 -- 
 2.39.2
 
