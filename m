@@ -2,83 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC5897697F
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 14:48:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C7F976A1A
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 15:11:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sojET-0000NP-GD; Thu, 12 Sep 2024 08:47:33 -0400
+	id 1sojZa-0002qi-Uw; Thu, 12 Sep 2024 09:09:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1sojEM-0000Cm-Fu
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 08:47:26 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1sojEK-00028q-Qc
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 08:47:26 -0400
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48CBbXSp007674;
- Thu, 12 Sep 2024 12:47:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- cc:content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=qcppdkim1; bh=KusYu2paOafwMALw/CvdPh
- W4OwUTipqbYltQrh3cTfg=; b=niXJpQVfyw3LdCCGcw8/EdCcaUILWC/069QPPX
- t6tFNe8MNv+7C8WJJ+xZiqWRtS8vp3bXPzUj+Yj5ktKSmJPNFFYxmrhXtQYGHF4e
- 67Gan9RLye4CtaZwILFn146dLgzk6dQl7k+jImlfpBGlS/GZ86H429fe4N4wVMtE
- aboFuE2S/QrvVLvMJacjZ8tZGVz/tHhWSwZXCbzhCuBaxI60FosjPUHKZ/eMU57P
- a53eEbrZikaCBuvZqgK5JIU3njGGRwLN0njb5OswgyURv+6Od0pBM/M1A5R7Oajn
- mRXzEEqJlI3ME6XVohnByWxw/jdifw9DL0zogn/O0EYPVcgA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41j6gn1fcd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Sep 2024 12:47:20 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48CClJeV012435
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Sep 2024 12:47:19 GMT
-Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 12 Sep 2024 05:47:19 -0700
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: <peter.maydell@linaro.org>, <thuth@redhat.com>, <bcain@quicinc.com>
-Subject: [PATCH] docs/fuzz: fix outdated mention to enable-sanitizers
-Date: Thu, 12 Sep 2024 09:47:09 -0300
-Message-ID: <a788215960b94d863baeffb736f06e3fb94275e7.1726145226.git.quic_mathbern@quicinc.com>
-X-Mailer: git-send-email 2.37.2
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1sojZO-0002oi-JQ
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 09:09:13 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1sojZM-0004nA-1E
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 09:09:10 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8Dxleju5+Jm0+QFAA--.12597S3;
+ Thu, 12 Sep 2024 21:09:02 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front2 (Coremail) with SMTP id qciowMDxl8Xr5+JmR8MFAA--.9219S2;
+ Thu, 12 Sep 2024 21:09:01 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PULL 0/7] loongarch-to-apply queue
+Date: Thu, 12 Sep 2024 20:51:25 +0800
+Message-Id: <20240912125132.268802-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: G1q1BkzEReOWFzUokHLBbfyM24KIrXiw
-X-Proofpoint-GUID: G1q1BkzEReOWFzUokHLBbfyM24KIrXiw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0
- clxscore=1011 phishscore=0 mlxlogscore=594 lowpriorityscore=0
- suspectscore=0 mlxscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409120092
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_mathbern@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-CM-TRANSID: qciowMDxl8Xr5+JmR8MFAA--.9219S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,32 +59,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This options has been removed at cb771ac1f5 (meson: Split
---enable-sanitizers to --enable-{asan, ubsan}, 2024-08-13), so let's
-update its last standing mention in the docs.
+The following changes since commit 4b7ea33074450bc6148c8e1545d78f179e64adb4:
 
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
----
- docs/devel/testing/fuzzing.rst | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+  Merge tag 'pull-request-2024-09-11' of https://gitlab.com/thuth/qemu into staging (2024-09-11 19:28:23 +0100)
 
-diff --git a/docs/devel/testing/fuzzing.rst b/docs/devel/testing/fuzzing.rst
-index dfe1973cf8..e42d64d6ec 100644
---- a/docs/devel/testing/fuzzing.rst
-+++ b/docs/devel/testing/fuzzing.rst
-@@ -21,8 +21,9 @@ Building the fuzzers
- 
- To build the fuzzers, install a recent version of clang:
- Configure with (substitute the clang binaries with the version you installed).
--Here, enable-sanitizers, is optional but it allows us to reliably detect bugs
--such as out-of-bounds accesses, use-after-frees, double-frees etc.::
-+Here, enable-asan and enable-ubsan are optional but they allows us to reliably
-+detect bugs such as out-of-bounds accesses, use-after-frees, double-frees
-+etc.::
- 
-     CC=clang-8 CXX=clang++-8 /path/to/configure \
-         --enable-fuzzing --enable-asan --enable-ubsan
--- 
-2.37.2
+are available in the Git repository at:
+
+  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240912
+
+for you to fetch changes up to 45d1fe46e5a6fe2b22b034e2b2bc0d941acd4b9e:
+
+  hw/loongarch: Add acpi SPCR table support (2024-09-12 20:57:54 +0800)
+
+----------------------------------------------------------------
+pull-loongarch-20240912
+
+----------------------------------------------------------------
+Bibo Mao (5):
+      target/loongarch: Add compatible support about VM reboot
+      hw/loongarch: Remove default enable with VIRTIO_VGA device
+      target/loongarch/kvm: Add vCPU reset function
+      target/loongarch: Support QMP dump-guest-memory
+      hw/loongarch: Add acpi SPCR table support
+
+Jason A. Donenfeld (2):
+      hw/loongarch: virt: support up to 4 serial ports
+      hw/loongarch: virt: pass random seed to fdt
+
+ hw/loongarch/Kconfig                 |   1 -
+ hw/loongarch/acpi-build.c            |  63 +++++++++++--
+ hw/loongarch/virt.c                  |  33 ++++---
+ include/hw/pci-host/ls7a.h           |   9 +-
+ target/loongarch/arch_dump.c         | 167 +++++++++++++++++++++++++++++++++++
+ target/loongarch/cpu.c               |  17 +++-
+ target/loongarch/internals.h         |   2 +
+ target/loongarch/kvm/kvm.c           |   5 +-
+ target/loongarch/kvm/kvm_loongarch.h |   2 +-
+ target/loongarch/meson.build         |   1 +
+ 10 files changed, 274 insertions(+), 26 deletions(-)
+ create mode 100644 target/loongarch/arch_dump.c
 
 
