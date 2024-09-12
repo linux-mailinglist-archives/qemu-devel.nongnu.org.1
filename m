@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC789765A3
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 11:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E99765A7
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 11:32:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sog9v-00070M-Ja; Thu, 12 Sep 2024 05:30:39 -0400
+	id 1sog9x-0007Af-TQ; Thu, 12 Sep 2024 05:30:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sog9k-0006vg-6o
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sog9k-0006vf-6q
  for qemu-devel@nongnu.org; Thu, 12 Sep 2024 05:30:37 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sog9g-0004LT-7g
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sog9g-0004LJ-7T
  for qemu-devel@nongnu.org; Thu, 12 Sep 2024 05:30:25 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48C6Q1Cf023704;
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48C41oF0022813;
  Thu, 12 Sep 2024 09:30:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=sLzg4gVgou+L8
- /YeEQBK1DBF4DR+LjSB0I8+lMA45jM=; b=LUltwvGKOA9UsWIJQzJrwaH9X1tUC
- WW+rqQmiqa20q1pf8bEGqJUtKEFDVn6T9bJmyFmMHQy4C2gLQnLE1hnhwOLyLfYQ
- ASbWsnj2aR9Io/OzGfPpFk3yCmUh5HHH9YT/EZD9/xd9hF8BIunzJXCr1Xdpz0ur
- /FDsM6LPgOA2r9uuEADKNOBQgbuawquIqZN9qYW8UHReom6OMHQwsRILtOvON4+v
- GHeKYeoBf/vYFWMz31FuJgSQk8gO0dTMhboYx8yL/uRj39Tv601KwcY/3OPCfOik
- irIkD+mZ6pmI9M9rNr2XmEHV0p8gARyQWzaIWxJmhYuMLgDLB+FJqo+wQ==
+ :mime-version:content-transfer-encoding; s=pp1; bh=nZ5ZfuY8DqKcZ
+ UIZERfUXcnqAcq5EHxmfo32LBk7SZo=; b=FEGqt8QpmeQxwXB/ajTOeOBN4hEZY
+ 3PjuCSfwUxlyKH9gaHyG4DDdJqT3CpmLTNk9gjIqcU4j5skqq2lETv8XV0dfceAf
+ dGu+MaAcc5A4PC7grHib13bRgECVc2dYZeAUkwcUctwMSQ6m2+7U+2yNYcJiiYp+
+ HAdOF+l2nezr/rJaiuWnTh4BJ6vunfqk1vT837maqvR7ETiyO1Q0qNeBCWarYaPN
+ SWBy3FfpwnXchtqbnBX5MnXegqW5iEgbGspuHvac85t866o0xC9Zft+yPzFz62Pz
+ C3T930AOIe/i07Ti3eQb8Gpr67C6aKplOPTFUksMuhKUh/sg31/D8+nxQ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gebajqa6-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8qjwst-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 12 Sep 2024 09:30:20 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48C9UJDW012239;
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48C9UI6Z015105;
  Thu, 12 Sep 2024 09:30:19 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gebajqa0-1
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8qjwsq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 12 Sep 2024 09:30:19 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48C6rOu5032103;
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48C7QDeQ027333;
  Thu, 12 Sep 2024 09:30:18 GMT
 Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41h2nmxx3v-1
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3v3eq3h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 12 Sep 2024 09:30:18 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
  by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 48C9UGQh57803136
+ 48C9UGMW52167152
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Sep 2024 09:30:16 GMT
+ Thu, 12 Sep 2024 09:30:17 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C4292004D;
+ by IMSVA (Postfix) with ESMTP id DF4B120043;
  Thu, 12 Sep 2024 09:30:16 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0BE2C20040;
+ by IMSVA (Postfix) with ESMTP id 7F20020040;
  Thu, 12 Sep 2024 09:30:16 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.171.24.155])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 12 Sep 2024 09:30:15 +0000 (GMT)
+ Thu, 12 Sep 2024 09:30:16 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -69,28 +69,29 @@ To: Laurent Vivier <laurent@vivier.eu>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 2/5] linux-user/i386: Emulate orig_ax
-Date: Thu, 12 Sep 2024 11:28:21 +0200
-Message-ID: <20240912093012.402366-3-iii@linux.ibm.com>
+Subject: [PATCH v2 3/5] target/i386/gdbstub: Factor out gdb_get_reg() and
+ gdb_write_reg()
+Date: Thu, 12 Sep 2024 11:28:22 +0200
+Message-ID: <20240912093012.402366-4-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240912093012.402366-1-iii@linux.ibm.com>
 References: <20240912093012.402366-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4Lzhc4wAQwIAPKHNCIrftTvwKgh_lY0H
-X-Proofpoint-GUID: 1HCZYHqAxXAoJvASlPMJgI9pbb8EZ3Ga
+X-Proofpoint-GUID: x9vuZVoIRF2VVZ2gzin6UvFCOP4ltjJS
+X-Proofpoint-ORIG-GUID: 8xR7GoCXNw5aLXBQ_Sqom08AL850ksF0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-12_01,2024-09-09_02,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
- mlxscore=0 mlxlogscore=842 impostorscore=0 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
- definitions=main-2409120063
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ bulkscore=0 spamscore=0
+ mlxscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ malwarescore=0 adultscore=0 clxscore=1015 mlxlogscore=704 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409120063
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -114,82 +115,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The kernel uses orig_rax/orig_eax to store the syscall number before
-a syscall. One can see this value in core dumps and ptrace.
+i386 gdbstub handles both i386 and x86_64. Factor out two functions
+for reading and writing registers without knowing their bitness.
+
+While at it, simplify the TARGET_LONG_BITS == 32 case.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- linux-user/elfload.c       | 4 ++--
- linux-user/i386/cpu_loop.c | 3 +++
- linux-user/qemu.h          | 4 ++++
- 3 files changed, 9 insertions(+), 2 deletions(-)
+ target/i386/gdbstub.c | 51 +++++++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 21 deletions(-)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 05292c27776..2d73382ae6b 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -203,7 +203,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
-     (*regs)[12] = tswapreg(env->regs[R_EDX]);
-     (*regs)[13] = tswapreg(env->regs[R_ESI]);
-     (*regs)[14] = tswapreg(env->regs[R_EDI]);
--    (*regs)[15] = tswapreg(env->regs[R_EAX]); /* XXX */
-+    (*regs)[15] = tswapreg(get_task_state(env_cpu_const(env))->orig_ax);
-     (*regs)[16] = tswapreg(env->eip);
-     (*regs)[17] = tswapreg(env->segs[R_CS].selector & 0xffff);
-     (*regs)[18] = tswapreg(env->eflags);
-@@ -306,7 +306,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
-     (*regs)[8] = tswapreg(env->segs[R_ES].selector & 0xffff);
-     (*regs)[9] = tswapreg(env->segs[R_FS].selector & 0xffff);
-     (*regs)[10] = tswapreg(env->segs[R_GS].selector & 0xffff);
--    (*regs)[11] = tswapreg(env->regs[R_EAX]); /* XXX */
-+    (*regs)[11] = tswapreg(get_task_state(env_cpu_const(env))->orig_ax);
-     (*regs)[12] = tswapreg(env->eip);
-     (*regs)[13] = tswapreg(env->segs[R_CS].selector & 0xffff);
-     (*regs)[14] = tswapreg(env->eflags);
-diff --git a/linux-user/i386/cpu_loop.c b/linux-user/i386/cpu_loop.c
-index 8707a3eaf25..43ad4e2f39e 100644
---- a/linux-user/i386/cpu_loop.c
-+++ b/linux-user/i386/cpu_loop.c
-@@ -172,6 +172,7 @@ static void emulate_vsyscall(CPUX86State *env)
-     /*
-      * Perform the syscall.  None of the vsyscalls should need restarting.
-      */
-+    get_task_state(env_cpu(env))->orig_ax = syscall;
-     ret = do_syscall(env, syscall, env->regs[R_EDI], env->regs[R_ESI],
-                      env->regs[R_EDX], env->regs[10], env->regs[8],
-                      env->regs[9], 0, 0);
-@@ -218,6 +219,7 @@ void cpu_loop(CPUX86State *env)
-         case EXCP_SYSCALL:
- #endif
-             /* linux syscall from int $0x80 */
-+            get_task_state(cs)->orig_ax = env->regs[R_EAX];
-             ret = do_syscall(env,
-                              env->regs[R_EAX],
-                              env->regs[R_EBX],
-@@ -236,6 +238,7 @@ void cpu_loop(CPUX86State *env)
- #ifdef TARGET_X86_64
-         case EXCP_SYSCALL:
-             /* linux syscall from syscall instruction.  */
-+            get_task_state(cs)->orig_ax = env->regs[R_EAX];
-             ret = do_syscall(env,
-                              env->regs[R_EAX],
-                              env->regs[R_EDI],
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index a2961f503f4..92b2bee87b1 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -113,6 +113,10 @@ struct TaskState {
-     struct target_vm86plus_struct vm86plus;
-     uint32_t v86flags;
-     uint32_t v86mask;
-+#endif
-+#if defined(TARGET_I386)
-+    /* Last syscall number. */
-+    target_ulong orig_ax;
- #endif
-     abi_ulong child_tidptr;
- #ifdef TARGET_M68K
+diff --git a/target/i386/gdbstub.c b/target/i386/gdbstub.c
+index 4acf485879e..cc5eceeb7eb 100644
+--- a/target/i386/gdbstub.c
++++ b/target/i386/gdbstub.c
+@@ -96,6 +96,19 @@ static int gdb_write_reg_cs64(uint32_t hflags, uint8_t *buf, target_ulong *val)
+     return 4;
+ }
+ 
++static int gdb_get_reg(CPUX86State *env, GByteArray *mem_buf, target_ulong val)
++{
++    if (TARGET_LONG_BITS == 64) {
++        if (env->hflags & HF_CS64_MASK) {
++            return gdb_get_reg64(mem_buf, val);
++        } else {
++            return gdb_get_reg64(mem_buf, val & 0xffffffffUL);
++        }
++    } else {
++        return gdb_get_reg32(mem_buf, val);
++    }
++}
++
+ int x86_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ {
+     X86CPU *cpu = X86_CPU(cs);
+@@ -137,15 +150,7 @@ int x86_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+     } else {
+         switch (n) {
+         case IDX_IP_REG:
+-            if (TARGET_LONG_BITS == 64) {
+-                if (env->hflags & HF_CS64_MASK) {
+-                    return gdb_get_reg64(mem_buf, env->eip);
+-                } else {
+-                    return gdb_get_reg64(mem_buf, env->eip & 0xffffffffUL);
+-                }
+-            } else {
+-                return gdb_get_reg32(mem_buf, env->eip);
+-            }
++            return gdb_get_reg(env, mem_buf, env->eip);
+         case IDX_FLAGS_REG:
+             return gdb_get_reg32(mem_buf, env->eflags);
+ 
+@@ -248,6 +253,21 @@ static int x86_cpu_gdb_load_seg(X86CPU *cpu, X86Seg sreg, uint8_t *mem_buf)
+     return 4;
+ }
+ 
++static int gdb_write_reg(CPUX86State *env, uint8_t *mem_buf, target_ulong *val)
++{
++    if (TARGET_LONG_BITS == 64) {
++        if (env->hflags & HF_CS64_MASK) {
++            *val = ldq_p(mem_buf);
++        } else {
++            *val = ldq_p(mem_buf) & 0xffffffffUL;
++        }
++        return 8;
++    } else {
++        *val = (uint32_t)ldl_p(mem_buf);
++        return 4;
++    }
++}
++
+ int x86_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+     X86CPU *cpu = X86_CPU(cs);
+@@ -288,18 +308,7 @@ int x86_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     } else {
+         switch (n) {
+         case IDX_IP_REG:
+-            if (TARGET_LONG_BITS == 64) {
+-                if (env->hflags & HF_CS64_MASK) {
+-                    env->eip = ldq_p(mem_buf);
+-                } else {
+-                    env->eip = ldq_p(mem_buf) & 0xffffffffUL;
+-                }
+-                return 8;
+-            } else {
+-                env->eip &= ~0xffffffffUL;
+-                env->eip |= (uint32_t)ldl_p(mem_buf);
+-                return 4;
+-            }
++            return gdb_write_reg(env, mem_buf, &env->eip);
+         case IDX_FLAGS_REG:
+             env->eflags = ldl_p(mem_buf);
+             return 4;
 -- 
 2.46.0
 
