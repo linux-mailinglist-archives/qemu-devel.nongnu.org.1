@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AE2976368
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 09:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB06976350
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 09:49:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soeVN-0005md-Tc; Thu, 12 Sep 2024 03:44:42 -0400
+	id 1soeVU-0006ks-Tj; Thu, 12 Sep 2024 03:44:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1soeRd-00064w-Qb
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:50 -0400
-Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
+ id 1soeRi-0006WV-85
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:54 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1soeRa-0000rE-QM
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:49 -0400
-Received: by mail-oi1-x234.google.com with SMTP id
- 5614622812f47-3df02c407c4so234507b6e.1
- for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 00:40:46 -0700 (PDT)
+ id 1soeRe-0000t3-PX
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:40:53 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-7191f58054aso539951b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 00:40:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726126845; x=1726731645; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726126848; x=1726731648; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G15/cfLWuhy58D3S6VTY2yyYFPoVOBpPVm7OgoLv/9Y=;
- b=zp+iAnBs+pJfkWWX51N10LVn3547RjHyHj3Y72jwh0FDAtqC4FFZfYM2hDNY0fMvJS
- 7wZqzaFxOQGoHLDLtc8gZRUR8qzqk+m9AF2vs19OSFEHlv0jOIyLRO0OzNznCLl/EiYE
- 2rSTIevA7j7j3c1+pDApIHOHsCI93RW/pKY11X//h04nM7OUtPb76rg/+5+xXC7rPcqG
- R5r5fixSICRoVcofLnd+LqHsnCGXEUg+r7PQeUKkZnHdbbXuia6ZDBrLLf3HVnOFfD+C
- Gaai9Y1K0hbb2dvRxXWKuxrJYvpKS3+WlstOYdLv/rNW9g2bCsdU7syrNE+SPNKw4pTM
- TVBw==
+ bh=PpoFW3JjD5zeg9AjFjAz2aaQ3UrReIS3eTyx8szr/r0=;
+ b=yTra4WM10/MeWGUpIuPdR3fZ5bVPDrPbzO1aDr8SGZ6qaegZVaRmmJJWoBnxCKv1Sn
+ 0C8fRZfAEWzw7Fz7AdUPelftOKywFG4DSi1nSdjBJlSaOQiShBQaSHyfSd74WOCNE1G2
+ Ke4f/oFT7xqugkdj2mKHOoNJjB/+wIr4DOzMKuL3P7I1ZqZ/i0TgnVlZNCLJYZsdJexF
+ ekpAZ0T45Giardz7ZKght7xiG9S6h7SdFONelhWL2D1sBU8Y6ZiMUmfxSl05klhUkNbs
+ CIhaOruSZ9gb267QDlKVPZjrGo4fHjFq5EHn0KI+lVfQK1u2rOt5xmQd8qPP7oMteyQF
+ Rpvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726126845; x=1726731645;
+ d=1e100.net; s=20230601; t=1726126848; x=1726731648;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G15/cfLWuhy58D3S6VTY2yyYFPoVOBpPVm7OgoLv/9Y=;
- b=L2QZ6hfl67eZR3fUJK4JoyUUMkLi+HHgj2EayBqkLyMNSgP8/HXl3QVORAcoulSUh6
- Hy0UD7BBEPxzN53/GTRBCIEndUl2YCqPLjIprvFjZS90rJrU67VJbKkSWSnHlpJR5pR0
- FQdIb5QjnKMa389MhTvb2IIKdgU5QFFfVdcK2LIH/RH++lvpFygw6Nd9XFWraakfwdFb
- qhJA4vgs73ZisTHriKiJ4iZHNtHzPa/Dg3Dc+8mURk0Yn8fTOq60PMdFTXSpkgQuicwR
- 9BVH7y/uBB8UoeAuYgCPi3nRja1FudG+r1nNGYI+sgIpd66M28Df70klkMFkv437qkFT
- sUFQ==
-X-Gm-Message-State: AOJu0YyBWSOvo8NFs4dvSs9r/FDIeTa4cLUKEwIX7lcJX0vR5hotkfCy
- 04QeLDuuvFiIAer0liZPLLf2L0khGQk+kOOUFi6kYhZpuENtWkjmVV3y0BoqYFSf1+xkI+l59Hw
- ut7l+XjpA
-X-Google-Smtp-Source: AGHT+IETN6rcEOkN5n0lmGk313YArCk9WXbSbiIwWQ/b2J6sYsWxK5jf+hG5cA2W/PAz8ROKcimuCw==
-X-Received: by 2002:a05:6808:448a:b0:3d6:3450:7fe0 with SMTP id
- 5614622812f47-3e071a835ffmr1063495b6e.9.1726126845522; 
- Thu, 12 Sep 2024 00:40:45 -0700 (PDT)
+ bh=PpoFW3JjD5zeg9AjFjAz2aaQ3UrReIS3eTyx8szr/r0=;
+ b=g0mwVCbwHNPoq/X3/sjd/9ysYy4w0n8DFFU0/BFp/p/r/g4IAdLyNNyIZGyCY38BDf
+ CL7LQWgK1mYwZHPcYOQoYbZsdApea/CBHahb4ftrLm1i0eQTbu2w4nKm3LO1EL3LsV60
+ Ux/yx66UZqcNGcQUSXMJyh9fyz3KZkilcPdtaTF17wGY9euvqQ6iEjNnbdKR2b4/dEHU
+ CvDq3n8PcX3v9TcYUMTRrmid1xTc6pwcRk6hPZf8eo0qnIAfjocwBFPC+YherZcab87/
+ pWMTJyA7JLb0b8y2an3sYaBsYAOQHUp9sUoRScqzlonDIyiNgf+3yHQusRJC+TsRMCgW
+ Xb3A==
+X-Gm-Message-State: AOJu0YyWzOh1+D6xmqFlzWBzCBnwfNAzeQhfRdPlgn5MDpP7ckJAVl6P
+ KQOuYehrADdx1+2/QZMjj1PU/TpLy16rhGgTg8z1C9bMUKqL16DTPIusoKpAAK656V/efAe8sb3
+ jg8nqQAZ/
+X-Google-Smtp-Source: AGHT+IHrNzFr8rAxfNqGUQ/W4jAVrPS/G+v+L27QxJD+DkA0TVwS9jjC8lWOw+J53BlKzThCp6mjqQ==
+X-Received: by 2002:a05:6a00:8d0:b0:706:5dab:83c4 with SMTP id
+ d2e1a72fcca58-71926087f29mr3097493b3a.14.1726126848124; 
+ Thu, 12 Sep 2024 00:40:48 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::9633])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7db1fb9ad87sm983458a12.6.2024.09.12.00.40.42
+ 41be03b00d2f7-7db1fb9ad87sm983458a12.6.2024.09.12.00.40.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Sep 2024 00:40:44 -0700 (PDT)
+ Thu, 12 Sep 2024 00:40:47 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>,
@@ -103,18 +103,16 @@ Cc: Jason Wang <jasowang@redhat.com>,
  David Gibson <david@gibson.dropbear.id.au>, Fam Zheng <fam@euphon.net>,
  Weiwei Li <liwei1518@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 30/48] hw/pci-host: remove break after
- g_assert_not_reached()
-Date: Thu, 12 Sep 2024 00:39:03 -0700
-Message-Id: <20240912073921.453203-31-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 31/48] hw/scsi: remove break after g_assert_not_reached()
+Date: Thu, 12 Sep 2024 00:39:04 -0700
+Message-Id: <20240912073921.453203-32-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240912073921.453203-1-pierrick.bouvier@linaro.org>
 References: <20240912073921.453203-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-oi1-x234.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -142,32 +140,24 @@ g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- hw/pci-host/gt64120.c | 2 --
- 1 file changed, 2 deletions(-)
+ hw/scsi/virtio-scsi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
-index 33607dfbec4..58557416629 100644
---- a/hw/pci-host/gt64120.c
-+++ b/hw/pci-host/gt64120.c
-@@ -689,7 +689,6 @@ static void gt64120_writel(void *opaque, hwaddr addr,
-     case GT_PCI0_CFGDATA:
-         /* Mapped via in gt64120_pci_mapping() */
+diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+index 9f02ceea099..6637cfeaf51 100644
+--- a/hw/scsi/virtio-scsi.c
++++ b/hw/scsi/virtio-scsi.c
+@@ -357,7 +357,6 @@ static void virtio_scsi_do_one_tmf_bh(VirtIOSCSIReq *req)
+ 
+     default:
          g_assert_not_reached();
 -        break;
+     }
  
-     /* Interrupts */
-     case GT_INTRCAUSE:
-@@ -933,7 +932,6 @@ static uint64_t gt64120_readl(void *opaque,
-     case GT_PCI0_CFGDATA:
-         /* Mapped via in gt64120_pci_mapping() */
-         g_assert_not_reached();
--        break;
- 
-     case GT_PCI0_CMD:
-     case GT_PCI0_TOR:
+ out:
 -- 
 2.39.2
 
