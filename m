@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB4D976061
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE0ED976083
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:43:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1socRB-00082M-LS; Thu, 12 Sep 2024 01:32:14 -0400
+	id 1socR1-0006u4-Sb; Thu, 12 Sep 2024 01:32:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1socQk-0005W2-Ag
+ id 1socQm-0005f5-LZ
  for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:31:51 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1socQi-00039A-BZ
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:31:45 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-7d82b0ebd51so249959a12.2
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:31:42 -0700 (PDT)
+ id 1socQk-00039F-Ow
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:31:48 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-7179802b8fcso365815b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:31:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726119102; x=1726723902; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1726119105; x=1726723905; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z3t80eNs9kvylNawc0Wkcda6DFCgx+hJ52Hiw8JLovs=;
- b=ZOUVuU5/ZZBiJinRmKznjzWXAHDkIZye6KgiVsjLdztPPac+wyX/wFtvb36eKf1XP6
- ZX8LwYeA4Ae1+A/sFB7yEKVxgzy06IC1lbH+VdDuiRw2kpKJFywLBWq3NUYbyeGHZi/4
- QOrN1qw2WDTO73/iUwjdn7u7EiUL2pZpbpFD2aJZEid2JKVur87jTWgLZkCAclduRqUc
- BdhcC6XBReB4WDvxordBG4Erw9dYigG34rGZLLRyXkvGXRsUrM4QNWx+3Py6J34Tw3oD
- OXWnIeN5hlxXvbxGMoVh5txpnNzfv27SZOnq7IBknmBNf9jCZrkflP2QO7j1UgWfu4Tb
- pKLg==
+ bh=raD5wFnRa3LjZYQkzjXwjgGbirsM75uwQ48wbj5UKfI=;
+ b=IJjDW0Q3HZHU4erYiHUpbfEr9FFU59kIarP0Jkr4pKRvU6VAm3Tfh4/gA33hu1OYcI
+ egWIC/crP2DdBsrXzRKsyVkdp+DwR3zppLVu5RY+xynxZZGbav+kUwx/Qos9ijDCr4qT
+ a2vl8sIlR07Zd0kAUXD8pMfUEPEpKAyzgaDT75hPGaA1fRLpZznIejq4jHltLslR4F2A
+ sdNHXjI3T0mThpn/LtKshK4/UGYZ22x7Dh7qz0nV44ovESpp/EOm0pevahTOlStFU4he
+ qzI7xWHCIUUFQi8gLFwgymzleoFDkWCQnZHyYPIiRHCXv6FNfnDvEHHpUcDhbpCpgm6D
+ MeDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726119102; x=1726723902;
+ d=1e100.net; s=20230601; t=1726119105; x=1726723905;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z3t80eNs9kvylNawc0Wkcda6DFCgx+hJ52Hiw8JLovs=;
- b=a7wtYu5wB4DY1HR7ATF92KutKMaATIPUBzAiKw1Ya2b9xWcnmtFdeBvgKVQFYnf8Cb
- XVIZrimSXVp+WVhGIwviX+qhCqJBiuIha6cxTjrWu22IIdLoh9dSJc7q89PyHcgh57lP
- ScFzbEdLAQKGDsJNoVC55Z9RsK83ECQbpHNCOp6AWmR8rGX/Teb06qXATJlJi9mmBJpf
- vgBgglIjzKskDGd+yG/Voz8U6Cq6OQiZ4N9dPsMCxGOZRNvnWzFc/0WCNioAe9dR1Eeu
- VzV2FVnus2rmzYhKpbhmQE8hR0m9+5xj96IsCTka60Utkb1imqUxfG7kQBHPNBpZb6/U
- 6XpA==
-X-Gm-Message-State: AOJu0YzH3VPbrlLJIxFMU0mGiC76o+m04BgFdGJJxzZcAPRPBFmmB7Fh
- 5EnZ4j/ISIO3FEDDwnxtLwWkXE3bWLYikhAs1dwDGRjpbEEXC8lrG/5Mug==
-X-Google-Smtp-Source: AGHT+IFD2eOMSa4x5uX3ITCPQT15QXVoxW/oxrdnJ5YHgBfq55Pzq+1iw2SJDqRJQ6qBpBuy1Me4/A==
-X-Received: by 2002:a05:6a20:43a0:b0:1cf:38cf:df92 with SMTP id
- adf61e73a8af0-1cf76067aa4mr2244108637.30.1726119101624; 
- Wed, 11 Sep 2024 22:31:41 -0700 (PDT)
+ bh=raD5wFnRa3LjZYQkzjXwjgGbirsM75uwQ48wbj5UKfI=;
+ b=tHi5neKcCk2httttCfKUHSDvSBYnf8AV2kLwJ9qwgV5dPZ30J0SOx1720Lk0CEsuj3
+ GEWrxAffkfCJIdJGavSJepPKHBRLjKg5owUjapeld5vdm8iu3fu8qMTQyEW6m5A3OFTo
+ vN7x4ButI6Iqxs9pjq0e9XY34m8PXKfhPtugMqCw6Kk2G5hNTfq4g9Ds2t0qQPTzFh1U
+ tFvLyzwsWEb/fA7Ix2V97B0j6oakXE80BYQgRlY9R684Dp94VxL/eoVGprt2L2kNTDIT
+ XkXAjFzeP9Z4Ui0ThoJxQC7UnZieNwEwAdaXyUH4Db0rSvf2lZZnk0MpJOX1F67aQ5R6
+ LXMA==
+X-Gm-Message-State: AOJu0Yxg3j5xlSji12LCWT8TPJ7Cp/5Gjbs65LzuBXOZT/yatidjYHwZ
+ oKwpO5ESQwoQKCAthbcwIM8UYH4A3ZoMHABm3q5muKXzBDZeMa442tQr3A==
+X-Google-Smtp-Source: AGHT+IHtyAYUFqysefWlr4fs5g2hLvZctuMb3pi1+Xpa8w2b4nPF2rQ2MH/Xn2gsqDNHu+QEN1Hofg==
+X-Received: by 2002:a05:6a00:218f:b0:70d:7547:90f7 with SMTP id
+ d2e1a72fcca58-71926081525mr3059051b3a.12.1726119104796; 
+ Wed, 11 Sep 2024 22:31:44 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71908fc8fdesm3833034b3a.1.2024.09.11.22.31.38
+ d2e1a72fcca58-71908fc8fdesm3833034b3a.1.2024.09.11.22.31.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 22:31:41 -0700 (PDT)
+ Wed, 11 Sep 2024 22:31:44 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
@@ -65,16 +65,16 @@ Cc: alistair23@gmail.com, Mark Corbin <mark@dibsco.co.uk>,
  Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 32/47] bsd-user: Add RISC-V signal trampoline setup function
-Date: Thu, 12 Sep 2024 15:29:37 +1000
-Message-ID: <20240912052953.2552501-33-alistair.francis@wdc.com>
+Subject: [PULL 33/47] bsd-user: Implement RISC-V sysarch system call emulation
+Date: Thu, 12 Sep 2024 15:29:38 +1000
+Message-ID: <20240912052953.2552501-34-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240912052953.2552501-1-alistair.francis@wdc.com>
 References: <20240912052953.2552501-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,67 +100,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Corbin <mark@dibsco.co.uk>
 
-Implemented the 'setup_sigtramp' function for setting up the signal
-trampoline code in the RISC-V architecture.
+Added the 'do_freebsd_arch_sysarch' function to emulate the 'sysarch'
+system call for the RISC-V architecture.
+Currently, this function returns '-TARGET_EOPNOTSUPP' to indicate that
+the operation is not supported.
 
 Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240907031927.1908-8-itachis@FreeBSD.org>
+Message-ID: <20240907031927.1908-9-itachis@FreeBSD.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- bsd-user/riscv/target_arch_sigtramp.h | 42 +++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
- create mode 100644 bsd-user/riscv/target_arch_sigtramp.h
+ bsd-user/riscv/target_arch_sysarch.h | 41 ++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+ create mode 100644 bsd-user/riscv/target_arch_sysarch.h
 
-diff --git a/bsd-user/riscv/target_arch_sigtramp.h b/bsd-user/riscv/target_arch_sigtramp.h
+diff --git a/bsd-user/riscv/target_arch_sysarch.h b/bsd-user/riscv/target_arch_sysarch.h
 new file mode 100644
-index 0000000000..83345f3961
+index 0000000000..9af42331b4
 --- /dev/null
-+++ b/bsd-user/riscv/target_arch_sigtramp.h
-@@ -0,0 +1,42 @@
++++ b/bsd-user/riscv/target_arch_sysarch.h
+@@ -0,0 +1,41 @@
 +/*
-+ * RISC-V sigcode
++ *  RISC-V sysarch() system call emulation
 + *
-+ * Copyright (c) 2019 Mark Corbin
++ *  Copyright (c) 2019 Mark Corbin
 + *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2 of the License, or (at your option) any later version.
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
 + *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
 + *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#ifndef TARGET_ARCH_SIGTRAMP_H
-+#define TARGET_ARCH_SIGTRAMP_H
++#ifndef TARGET_ARCH_SYSARCH_H
++#define TARGET_ARCH_SYSARCH_H
 +
-+/* Compare with sigcode() in riscv/riscv/locore.S */
-+static inline abi_long setup_sigtramp(abi_ulong offset, unsigned sigf_uc,
-+        unsigned sys_sigreturn)
++#include "target_syscall.h"
++#include "target_arch.h"
++
++static inline abi_long do_freebsd_arch_sysarch(CPURISCVState *env, int op,
++        abi_ulong parms)
 +{
-+    int i;
-+    uint32_t sys_exit = TARGET_FREEBSD_NR_exit;
 +
-+    static const uint32_t sigtramp_code[] = {
-+    /*1*/ const_le32(0x00010513),                        /*mv a0, sp*/
-+    /*2*/ const_le32(0x00050513 + (sigf_uc << 20)),      /*addi a0,a0,sigf_uc*/
-+    /*3*/ const_le32(0x00000293 + (sys_sigreturn << 20)),/*li t0,sys_sigreturn*/
-+    /*4*/ const_le32(0x00000073),                        /*ecall*/
-+    /*5*/ const_le32(0x00000293 + (sys_exit << 20)),     /*li t0,sys_exit*/
-+    /*6*/ const_le32(0x00000073),                        /*ecall*/
-+    /*7*/ const_le32(0xFF1FF06F)                         /*b -16*/
-+    };
-+
-+    return memcpy_to_target(offset, sigtramp_code, TARGET_SZSIGCODE);
++    return -TARGET_EOPNOTSUPP;
 +}
-+#endif /* TARGET_ARCH_SIGTRAMP_H */
++
++static inline void do_freebsd_arch_print_sysarch(
++        const struct syscallname *name, abi_long arg1, abi_long arg2,
++        abi_long arg3, abi_long arg4, abi_long arg5, abi_long arg6)
++{
++
++    gemu_log("UNKNOWN OP: %d, " TARGET_ABI_FMT_lx ")", (int)arg1, arg2);
++}
++
++#endif /* TARGET_ARCH_SYSARCH_H */
 -- 
 2.46.0
 
