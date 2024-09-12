@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F51A97607C
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4165797606F
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 07:37:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1socPD-0008CY-32; Thu, 12 Sep 2024 01:30:11 -0400
+	id 1socPI-0008KR-SD; Thu, 12 Sep 2024 01:30:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1socP9-00087O-6q
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:07 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1socPC-0008DW-56
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:10 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1socP7-0002xx-I3
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:06 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-7191df6b5f5so395603b3a.0
- for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:30:05 -0700 (PDT)
+ id 1socPA-0002yG-F3
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 01:30:09 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-7cf5e179b68so426685a12.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Sep 2024 22:30:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726119003; x=1726723803; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1726119007; x=1726723807; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=98jPE8Nm5XmnYTmie79vaM5ax8offv0h+SJp0+g/oio=;
- b=Afxv0VCtUYpmGXE+E3xiFi4twTPhNAMzS/Dd4zPkG518f6FGPYPoMz75hS2RwbiUXU
- AbinH5gBzwMyHs7bZ9NNyN6oC7Yhcby1JJ18/BTDVkf/iBOE6YhpJXGk3Y7Bvk6uS1s6
- eWJx3C6tN6vX2B5RD+1pJITYt4uMyiXei9vJS9tWZFU+Ff0dljdA7GAea+Tx+hBZuMvo
- Caf+tF4aPrI6kKw+gMY7WREpfdNsVI5sB3lNQmE+Td3DyI5hJrV2Zk1ET4ZsbYjvkHxy
- MiiqAWtWtzJZRzyX/6KTlsiX9h7fMzdkHsHOzMAtYdRV2HlWipxVVylzLOI0f3vOloch
- V5mg==
+ bh=qKFK7bfzo9lztBPhZCSDP1XR7U4NGQvb7cgLHvUq4Qk=;
+ b=BljB+s7k+nxPgTKRuIuf1WhPdQROXb5sJD/7n6vZ5KRPM02Jq2DLM4MM1jNpQusaLo
+ /uIgukx996c1RgFPdeD2EuP7Rg40VnevBgeQntMfUQaojr7+W4df2OPSpMeG7erx8/V6
+ hF+s6KVpkI1R8UffSYgMU8RQ1jpNa5Pj2tAyoK1lQuWljkPRA3E+UO7N+tA9csnfAN2t
+ hDGizk+dIjHH2EKl1gU3BH/AMyxd+u4eqNdGirOMzMftKVz92TBDYAfU3NHxsDRMTpew
+ +p044O1DIaGEHN4N9iwKSUiNLGVr41vW0vO5vqPPoQApw3ZM7SdtqiekJ1Dr/NHU6nbR
+ zkPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726119003; x=1726723803;
+ d=1e100.net; s=20230601; t=1726119007; x=1726723807;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=98jPE8Nm5XmnYTmie79vaM5ax8offv0h+SJp0+g/oio=;
- b=SIiqhGzesIHAYDLQ6KJDiv1EUpgNGxOkMWWkjXkmYPQ1MN6WYROIwPaNE5nIwF/+7P
- np70AFgmy45YN8XBKMLfkRP0ayYeyByIWsnplcjftSc46JXjL6dWkcbB6+faZXbhE3Rf
- QXIwzOlTKGpgAgtHjEHYn0JUHswVgrINjpixl+h3m4Bhd2Z7d2ezPrRu86qfkXDCF5WY
- 0EJ45l+/tUV3eg6w3irrj9My1MlfLOYlMJaP6xD3PHUgdTaR1pEt9nbwRBjyEw3e1toA
- QJor2ieJ1+r5EJCOJKisxfgSlDs28SBfmQvyeKoc61DHV0irlmM0Tt/I6oQcAcGZg2x2
- mI5A==
-X-Gm-Message-State: AOJu0Yw0l7+eRclvHqKXrobKt4wFYsXJrTPjQCtR6GXOiOtIIW/Uo2ct
- swfjxKQA0viEpGoWGUTNIf6htD1Qd7MsmvrpSwM/HTGrRd6vEDM0ItWRKQ==
-X-Google-Smtp-Source: AGHT+IHFJpVoqRTRqJDN/lRzeXEUecBDgoyLc/B9teFup1hMsYS91/uIyJP48qIzncqFu24UBz+plg==
-X-Received: by 2002:a05:6a00:2d17:b0:714:2d05:60df with SMTP id
- d2e1a72fcca58-71926091d24mr2537578b3a.15.1726119003315; 
- Wed, 11 Sep 2024 22:30:03 -0700 (PDT)
+ bh=qKFK7bfzo9lztBPhZCSDP1XR7U4NGQvb7cgLHvUq4Qk=;
+ b=TT30/bWmzU6DD3KhPcxpEboH2Wamef+F1nuT4ilSrsUdih7fzCl7eAUvtCUL6ST27C
+ PCDshkqQ1M/Cs5WkSHFdtLytFhOn7d3roZTxoJ0wCcvdo5rxkphymcTSk1KjPGVttqLY
+ kLrkoJlQXahmBCh6lyZs5jX2RqXY/PaC//nwE25WlV8Lfil8V7+0KGl+uRNwi1bNXthw
+ qDg+X1cB51nvHV4K9WIWf2yihc0psR6IxJQhyHwPxUBBs4Rh5Baz830rPfu46iPBu9dB
+ nw7pYrt0Soyv+M7m0/4eZOUDwxfpIqdkMpvzZnpoMQHdicaJEZZY9G85kLdJFwIlyj1Q
+ azGA==
+X-Gm-Message-State: AOJu0Yy9ehXRaviX0eSf85RSl1aGGYWYbwvLsacSBlSyRaAGEtIqiSPD
+ efEt0j3y3XOcBn9KA4f3zWQ99sG9uHulCdlAhVs5BBU1hYvzFjcDSzPgtQ==
+X-Google-Smtp-Source: AGHT+IFIojT6DO00nECHxhJaDgiZMy5EGf9SBLIQjAxWI0X9jVG7o8oA3/I/pqGPGMYdyEcQXCvntQ==
+X-Received: by 2002:a05:6a21:6e41:b0:1cf:3338:a475 with SMTP id
+ adf61e73a8af0-1cf755c7824mr2727457637.9.1726119006381; 
+ Wed, 11 Sep 2024 22:30:06 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71908fc8fdesm3833034b3a.1.2024.09.11.22.30.00
+ d2e1a72fcca58-71908fc8fdesm3833034b3a.1.2024.09.11.22.30.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Sep 2024 22:30:02 -0700 (PDT)
+ Wed, 11 Sep 2024 22:30:05 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Jason Chien <jason.chien@sifive.com>,
- Frank Chang <frank.chang@sifive.com>,
+Cc: alistair23@gmail.com, Haibo Xu <haibo1.xu@intel.com>,
+ Sunil V L <sunilvl@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 01/47] target/riscv: Add a property to set vl to ceil(AVL/2)
-Date: Thu, 12 Sep 2024 15:29:06 +1000
-Message-ID: <20240912052953.2552501-2-alistair.francis@wdc.com>
+Subject: [PULL 02/47] tests/acpi: Add empty ACPI SRAT data file for RISC-V
+Date: Thu, 12 Sep 2024 15:29:07 +1000
+Message-ID: <20240912052953.2552501-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240912052953.2552501-1-alistair.francis@wdc.com>
 References: <20240912052953.2552501-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,60 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jason Chien <jason.chien@sifive.com>
+From: Haibo Xu <haibo1.xu@intel.com>
 
-RVV spec allows implementations to set vl with values within
-[ceil(AVL/2),VLMAX] when VLMAX < AVL < 2*VLMAX. This commit adds a
-property "rvv_vl_half_avl" to enable setting vl = ceil(AVL/2). This
-behavior helps identify compiler issues and bugs.
+As per process documented (steps 1-3) in bios-tables-test.c, add
+empty AML data file for RISC-V ACPI SRAT table and add the entry
+in bios-tables-test-allowed-diff.h.
 
-Signed-off-by: Jason Chien <jason.chien@sifive.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Message-ID: <20240722175004.23666-1-jason.chien@sifive.com>
+Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <0e30216273f2f59916bc651350578d8e8bc3a75f.1723172696.git.haibo1.xu@intel.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_cfg.h       | 1 +
- target/riscv/cpu.c           | 1 +
- target/riscv/vector_helper.c | 2 ++
- 3 files changed, 4 insertions(+)
+ tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+ tests/data/acpi/riscv64/virt/SRAT.numamem   | 0
+ 2 files changed, 1 insertion(+)
+ create mode 100644 tests/data/acpi/riscv64/virt/SRAT.numamem
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 8b272fb826..96fe26d4ea 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -127,6 +127,7 @@ struct RISCVCPUConfig {
-     bool ext_smepmp;
-     bool rvv_ta_all_1s;
-     bool rvv_ma_all_1s;
-+    bool rvv_vl_half_avl;
- 
-     uint32_t mvendorid;
-     uint64_t marchid;
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index a90808a3ba..8f21171ffa 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2687,6 +2687,7 @@ static Property riscv_cpu_properties[] = {
- 
-     DEFINE_PROP_BOOL("rvv_ta_all_1s", RISCVCPU, cfg.rvv_ta_all_1s, false),
-     DEFINE_PROP_BOOL("rvv_ma_all_1s", RISCVCPU, cfg.rvv_ma_all_1s, false),
-+    DEFINE_PROP_BOOL("rvv_vl_half_avl", RISCVCPU, cfg.rvv_vl_half_avl, false),
- 
-     /*
-      * write_misa() is marked as experimental for now so mark
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 10a52ceb5b..072bd444b1 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -75,6 +75,8 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
-     vlmax = vext_get_vlmax(cpu->cfg.vlenb, vsew, lmul);
-     if (s1 <= vlmax) {
-         vl = s1;
-+    } else if (s1 < 2 * vlmax && cpu->cfg.rvv_vl_half_avl) {
-+        vl = (s1 + 1) >> 1;
-     } else {
-         vl = vlmax;
-     }
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..a3e01d2eb7 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,2 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/riscv64/virt/SRAT.numamem",
+diff --git a/tests/data/acpi/riscv64/virt/SRAT.numamem b/tests/data/acpi/riscv64/virt/SRAT.numamem
+new file mode 100644
+index 0000000000..e69de29bb2
 -- 
 2.46.0
 
