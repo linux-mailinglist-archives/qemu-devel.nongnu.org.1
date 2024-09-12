@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B99976310
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 09:42:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E46976354
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Sep 2024 09:50:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soeRc-0005jV-1Y; Thu, 12 Sep 2024 03:40:48 -0400
+	id 1soeRm-0006n0-Gz; Thu, 12 Sep 2024 03:40:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1soeQo-0002PC-5P
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:39:58 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1soeQp-0002Un-D0
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:39:59 -0400
+Received: from mail-io1-xd33.google.com ([2607:f8b0:4864:20::d33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1soeQk-0000Gj-5C
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:39:57 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-717849c0dcaso594369b3a.3
- for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 00:39:53 -0700 (PDT)
+ id 1soeQm-0000Hh-I0
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 03:39:58 -0400
+Received: by mail-io1-xd33.google.com with SMTP id
+ ca18e2360f4ac-82aab679b7bso25476439f.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 00:39:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726126793; x=1726731593; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726126795; x=1726731595; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1LH7RZDNr8Bem+cpDiAWWDNCRvN8aqG8ZgQstwfOCIs=;
- b=M0m1fPA6ybM3qZgILnHK6UR2wLC15ljcNBL6odm6BpCAs8kv0taDXJHZknCdL4U66G
- kn9Js+VJLBuNmzsjPan21c/D1Er8/XC7nVNWb2T/oj9eODl625FbYfcN/L6XsCo6+3Pv
- ZUvx/1JX1k1lvYFYbEQx31HpgH/WidHmV3V7JUpRkBte+3BvXNvdHdzglaEBWh0gQYws
- NvzVB618AX5tkwIGH+p5n1YfZX03SU1ZJZvMcQX4ueY3L0oFDmlWGdr+liPYcbXCLAFJ
- UnMtm9lN8U02WgXkPDJ48A0gCYY3/TJv24pFDMasNN3BTV7/SkctOV8D/+6DOO0zpsVH
- UIog==
+ bh=gl+JcJWeB9n4U9owGQI4EbvNVAnzvdcJPjSOFH/LTqM=;
+ b=kg2ug93Xwl3nC1MP+jbTve2uDeGVxYbskRbyyi1EGnpX50ewagvLoVlIKKZfWWVfIL
+ XSGBQQhNjqvfoXE7Ktt0+UjfcamAKXnBpZhVgGfyOlsbksEPW7RHkaf3OCvFMq6P/t5N
+ 6FfzwfRAVvykhUE5xIkFkdJI0dhShjHmLcYup/OyJWW9vnAMrrc7f/4Wuuz5oD2DktRj
+ oTzR/w7/G2gVDeQaeV699htnuwEEDhoXEYJ7HK33iDhMtXVpP+PbQsjS4wUASoskx0+S
+ 1M6XzgS2btdJGRgw3ykcrs9bolT3lVNJHPBSBval1OhtAw4eRx7yDDz8dcYHGTymA+cY
+ tLxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726126793; x=1726731593;
+ d=1e100.net; s=20230601; t=1726126795; x=1726731595;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1LH7RZDNr8Bem+cpDiAWWDNCRvN8aqG8ZgQstwfOCIs=;
- b=i0065BWS/FjA8rzJ7d7cyA8QK42PsLDBNIaJEoFPBnTOXylOVBicfOa1p6pvlEZrXq
- QwPHi99VEC1BsO4w39L+zB9B4MpTC1uxg22Ln94sIE9bKSwWEldNS82WG5caxvLogadO
- sETAdOP+XudnxXS7tdn4IWR3PzE5b/+Tq4mYfV8hhivQM36hQdscyZPwqOt7rB/sHYpR
- LPmJZFBdx98yiysVTwEhTnTWTpzFXauvaOqnMGPcTPyVLcGi6PO2lXVYwxtK/fhWb899
- 1B7jD1DuFjjv/H7WCy4t9lM0of04EMmyMSzz0mu+fkVF9VA1zVesphWAojxtcLxI2MN/
- FQHg==
-X-Gm-Message-State: AOJu0YwMKyBM+EbJbterr3m96vrJl5iepoWDL1KR+Mj5onZ7HPoek4dg
- ysIjWQJg/tnWQrUrz6UYo9EeafSuQPTLggxJ/9UJO/H2SfwBO75Or1qC2rmPfJd2ElOL2XvW77N
- MhWr+36Or
-X-Google-Smtp-Source: AGHT+IHO/OYYyb0vxtmPEDD5VDcNxDdhzKA5t0NP0cSnDTfGGp5wourxXyyoQSgKxB6gKjLR2x0CeA==
-X-Received: by 2002:a05:6a00:ac2:b0:717:8cef:4053 with SMTP id
- d2e1a72fcca58-7192608fd96mr3206049b3a.14.1726126792521; 
- Thu, 12 Sep 2024 00:39:52 -0700 (PDT)
+ bh=gl+JcJWeB9n4U9owGQI4EbvNVAnzvdcJPjSOFH/LTqM=;
+ b=h0xx84eYhDFFieqKPgQD/UO31yRoIp+ZyB0iu5MNBFKlB76kl3R02/KBHMbw9SAijt
+ u0xIyFeOSTx1qYWO2nXc4DRzSjdpjbHOvXFLQQrpTjM4nku1dU0mAunHdViD4dGVoVMB
+ WglCWmyxSH2AIoMta+/nwIpMf9R1oUncvGBkXciGrwf5RMI43BdXGfm8WhkfmeNxU6IZ
+ 0m9ZGFdI89RbhvlWeO1ghg7JF4FvXsUsY6M3D3c9UeBWJeERQ7o/Nq9s135nxO8CkzM+
+ 3on+iul1RzdGqQ64c0C40pa7OZrxAdUf8Gao642SFgU4rtHF65VdEy98HmJO/+TDTmeR
+ G6Rg==
+X-Gm-Message-State: AOJu0YyknigzDlJvyzpEPB98+tAoiDkZT51l4FpN4DdVklVbfp4uIgDB
+ 9tkcpMVwOp0kY5nmFFcBRbUOt6IFPGBrBaat7IR9kvoDoDxpeaGXuU8yUjmtPQICoUG+4x6v+kE
+ TEpjZM8dL
+X-Google-Smtp-Source: AGHT+IFc2U5w+P2/p0zo+AVbvStN+97kW37ZvG1bComHgG1CrEqJE1viLz5YY6RVesmsw9//+xNbnQ==
+X-Received: by 2002:a05:6e02:1806:b0:3a0:1828:31d9 with SMTP id
+ e9e14a558f8ab-3a0849736d4mr17121295ab.24.1726126795091; 
+ Thu, 12 Sep 2024 00:39:55 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::9633])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-7db1fb9ad87sm983458a12.6.2024.09.12.00.39.50
+ 41be03b00d2f7-7db1fb9ad87sm983458a12.6.2024.09.12.00.39.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Sep 2024 00:39:51 -0700 (PDT)
+ Thu, 12 Sep 2024 00:39:54 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>,
@@ -103,17 +103,17 @@ Cc: Jason Wang <jasowang@redhat.com>,
  David Gibson <david@gibson.dropbear.id.au>, Fam Zheng <fam@euphon.net>,
  Weiwei Li <liwei1518@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 10/48] system: replace assert(0) with g_assert_not_reached()
-Date: Thu, 12 Sep 2024 00:38:43 -0700
-Message-Id: <20240912073921.453203-11-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 11/48] target/ppc: replace assert(0) with
+ g_assert_not_reached()
+Date: Thu, 12 Sep 2024 00:38:44 -0700
+Message-Id: <20240912073921.453203-12-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240912073921.453203-1-pierrick.bouvier@linaro.org>
 References: <20240912073921.453203-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d33;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-io1-xd33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -141,25 +141,66 @@ g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- system/rtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/ppc/dfp_helper.c | 8 ++++----
+ target/ppc/mmu_helper.c | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/system/rtc.c b/system/rtc.c
-index dc44576686e..216d2aee3ae 100644
---- a/system/rtc.c
-+++ b/system/rtc.c
-@@ -62,7 +62,7 @@ static time_t qemu_ref_timedate(QEMUClockType clock)
-         }
+diff --git a/target/ppc/dfp_helper.c b/target/ppc/dfp_helper.c
+index 5967ea07a92..ecc3f793267 100644
+--- a/target/ppc/dfp_helper.c
++++ b/target/ppc/dfp_helper.c
+@@ -249,7 +249,7 @@ static void dfp_set_FPRF_from_FRT_with_context(struct PPC_DFP *dfp,
+         fprf = 0x05;
          break;
      default:
+-        assert(0); /* should never get here */
++        g_assert_not_reached();
+     }
+     dfp->env->fpscr &= ~FP_FPRF;
+     dfp->env->fpscr |= (fprf << FPSCR_FPRF);
+@@ -1243,7 +1243,7 @@ void helper_##op(CPUPPCState *env, ppc_fprp_t *t, ppc_fprp_t *b) \
+         } else if (decNumberIsQNaN(&dfp.b)) {                  \
+             vt.VsrD(1) = -2;                                   \
+         } else {                                               \
+-            assert(0);                                         \
++            g_assert_not_reached();                            \
+         }                                                      \
+         set_dfp64(t, &vt);                                     \
+     } else {                                                   \
+@@ -1252,7 +1252,7 @@ void helper_##op(CPUPPCState *env, ppc_fprp_t *t, ppc_fprp_t *b) \
+         } else if ((size) == 128) {                            \
+             vt.VsrD(1) = dfp.b.exponent + 6176;                \
+         } else {                                               \
+-            assert(0);                                         \
++            g_assert_not_reached();                            \
+         }                                                      \
+         set_dfp64(t, &vt);                                     \
+     }                                                          \
+@@ -1300,7 +1300,7 @@ void helper_##op(CPUPPCState *env, ppc_fprp_t *t, ppc_fprp_t *a,          \
+         raw_inf = 0x1e000;                                                \
+         bias = 6176;                                                      \
+     } else {                                                              \
+-        assert(0);                                                        \
++        g_assert_not_reached();                                           \
+     }                                                                     \
+                                                                           \
+     if (unlikely((exp < 0) || (exp > max_exp))) {                         \
+diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
+index b0a0676beba..b167b37e0ab 100644
+--- a/target/ppc/mmu_helper.c
++++ b/target/ppc/mmu_helper.c
+@@ -316,7 +316,7 @@ void ppc_tlb_invalidate_one(CPUPPCState *env, target_ulong addr)
+         break;
+     default:
+         /* Should never reach here with other MMU models */
 -        assert(0);
 +        g_assert_not_reached();
      }
-     return value;
- }
+ #else
+     ppc_tlb_invalidate_all(env);
 -- 
 2.39.2
 
