@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2516697844E
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 378F3978495
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:20:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp805-0001fD-2B; Fri, 13 Sep 2024 11:14:21 -0400
+	id 1sp806-0001ko-2k; Fri, 13 Sep 2024 11:14:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp801-0001e1-GP
+ id 1sp801-0001e2-L2
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:17 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp7zz-0007lA-Gj
+ id 1sp7zz-0007lF-HM
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:16 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-42cae102702so9678775e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:14 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-42cb58d810eso21132755e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726240453; x=1726845253; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726240454; x=1726845254; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BiUIYlJOdOGKvvXaIvZ9uAJPTRW7M3bm0eR3W2ujliw=;
- b=hOicrIs5m3ghyGZnijH2VDtDnlxYPpZwCVd51tgw4odZuwoXp+6fAdJ+emhjGJwChN
- fIUEPVwebyQVzLj64zrNch0LZeb1uJMJIHi2xhhfsSu48FbVsFdCPNLD0bOJFmKIPYLl
- CaKkDvXnzU+nKmHb3Rl0SCTdDsFNLTi54buszZ1H5Jiyjq8h3teUWZ3QTkoHu1bLtVOb
- bLqTru7Wb1ehi0fDh8VMV/UFbzCvUiYLPF20r0b4pVKtpAvLd9cXx16FBR1boZ2wmaxM
- M5e8WxFIT9/W4e+ud4haMuWkfxfsYkvwSxNfERSWOl3JKM03J5ng61LBjrYmUXFEMtlv
- tr1A==
+ :reply-to; bh=FEVlYNj+KkVzvYMimZ0C37BEH9XfIFMPrSdV/xyd06Y=;
+ b=BlP1gskm8tp62NNbrWsmES233TP9HMRv1fbPwq4wTRoNEZIWTpBXY3nfh6JS1qgny7
+ cZDkDpNKztybfaAgVH05d32dBmMeIwmAmQ2QLCC8dkAaj4kj2SUIMBCYZlBvzp8CkfpR
+ hDNdGMFozDorsr54kbkieyufzVKQHQGWNDtRCGdotkAH84knMwnUirXY4JhiYoNiHWwW
+ ASX0S+v3J5WQ/YjyedtYI5JgcecMJv3MwXZPde5OXuMyODWuAm4Wsbow7Eu3b38gbFJi
+ pItVy86xWk8xY/oARCN00ErGeQD7DBHpw3cYR/BRbxG3nVsGQGNW2aY8KVGPjgXSR9kA
+ NQkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726240453; x=1726845253;
+ d=1e100.net; s=20230601; t=1726240454; x=1726845254;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BiUIYlJOdOGKvvXaIvZ9uAJPTRW7M3bm0eR3W2ujliw=;
- b=OafsXddzsRDQoCroG3iDoWldAkoYpG3MDL1wIZGUAsJjgbvGHDG8BlIxdiPmdXVsDj
- mOsIXMvKjThBBbNzoKkE49FXVLBqJPdMo2W8/MdgzK41z9WO/PeuM+txqf+3uLeYydez
- cSs51R9g1fXJpFEJGz/C9tSuIeGLijPI4cUkROrm1Jsk1cKjy2WhQBDmkeYUgOVNpYMj
- S5mafeBoi3J2rLoBtTHQYQjTGSmKqUK93tOotGHbQXWnGiIV5RFuSQsgcUzUT2QtInM1
- 7Z+eBURQFHzyJ52BqeDag2+Sr/HPyur4gfXn4a39aVuLeZHDsy88BjXJ2v/uG6BAoB8B
- qIQw==
-X-Gm-Message-State: AOJu0YyEVqNJMUQbzmZXtg9qlr2U9IIQ2zLDQBhg7kdrMcKFoGa+m6Zt
- moiVnRwo4oMvguTbYc5sNQhKkIQ0dWy0/wqgxG2XV7IdAvCVbCxRqOfBgOicIAFlFY+qPN9G9+K
- 4
-X-Google-Smtp-Source: AGHT+IEzUbv8NYajuQbjkAfeWs7UOsBKCWay1JuW/tPEcSl9badXloLJ03utnsMSs77iERWKU5/R6Q==
-X-Received: by 2002:a05:600c:63d3:b0:426:6a53:e54f with SMTP id
- 5b1f17b1804b1-42d964e10b0mr21125425e9.33.1726240453398; 
+ bh=FEVlYNj+KkVzvYMimZ0C37BEH9XfIFMPrSdV/xyd06Y=;
+ b=ZEggyJM38tDBpmR7ZOejMgp7RDg8YXTeBMCTenXeL6r+Z9I4cjkIUIiWEQ4SkWejKN
+ QAU8kx6z7MIEadpCEyCnPAegJhSWb5fgsISr1F5T/BCr9nxjBQ7FVwmKQMBgjymjNfrW
+ 67ffLHJpmSSjlymuOB5YOW508U8fv+qUGK840PLjXyajcDD/PnJaUt0FEt+Ke/z5zyLb
+ Tr/RVV6sEuB7sap6zVdML93CjzoaDwIslDpvn88yUmNS4q0i54uSC+Ro6YvrnWMWjxLX
+ 7CRKkk3laYOziO31bTODtSoJ453xjVd5gHsmHoG9j5DSsvaQbqi7oMCJY0tWu3P1QgMN
+ sNAw==
+X-Gm-Message-State: AOJu0Ywi7let0qbRwDH3pizfFxTgJp0dblCwUrMXvjQlmT7CQn0rLV8m
+ lLI8EEe5rAaeK8cTk3dchFvHtyy0uLmjHe44HUTVybqVU5Wbxj8waGX+5VMWPnW7uMBt8LSnvip
+ O
+X-Google-Smtp-Source: AGHT+IHg9dB+A1vt518VIBktTNbt4/yfKuECiGbzO692SseMomCzmdwXFWTvz8ARTluamk4CgdOzfA==
+X-Received: by 2002:a5d:5f46:0:b0:36b:c65c:661e with SMTP id
+ ffacd0b85a97d-378a8a1d30cmr11529096f8f.13.1726240453881; 
  Fri, 13 Sep 2024 08:14:13 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42d9b16bfbfsm29152325e9.22.2024.09.13.08.14.12
+ 5b1f17b1804b1-42d9b16bfbfsm29152325e9.22.2024.09.13.08.14.13
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 13 Sep 2024 08:14:13 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/27] hw/s390/ccw-device: Convert to three-phase reset
-Date: Fri, 13 Sep 2024 16:13:45 +0100
-Message-Id: <20240913151411.2167922-2-peter.maydell@linaro.org>
+Subject: [PULL 02/27] hw/s390/virtio-ccw: Convert to three-phase reset
+Date: Fri, 13 Sep 2024 16:13:46 +0100
+Message-Id: <20240913151411.2167922-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240913151411.2167922-1-peter.maydell@linaro.org>
 References: <20240913151411.2167922-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,49 +92,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the TYPE_CCW_DEVICE to three-phase reset. This is a
-device class which is subclassed, so it needs to be three-phase
-before we can convert the subclass.
+Convert the virtio-ccw code to three-phase reset.  This allows us to
+remove a call to device_class_set_parent_reset(), replacing it with
+the three-phase equivalent resettable_class_set_parent_phases().
+Removing all the device_class_set_parent_reset() uses will allow us
+to remove some of the glue code that interworks between three-phase
+and legacy reset.
+
+This is a simple conversion, with no behavioural changes.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Acked-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20240830145812.1967042-2-peter.maydell@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240830145812.1967042-3-peter.maydell@linaro.org
 ---
- hw/s390x/ccw-device.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ hw/s390x/virtio-ccw.h |  2 +-
+ hw/s390x/virtio-ccw.c | 13 ++++++++-----
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/hw/s390x/ccw-device.c b/hw/s390x/ccw-device.c
-index a7d682e5af9..14c24e38904 100644
---- a/hw/s390x/ccw-device.c
-+++ b/hw/s390x/ccw-device.c
-@@ -44,9 +44,9 @@ static Property ccw_device_properties[] = {
-     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/s390x/virtio-ccw.h b/hw/s390x/virtio-ccw.h
+index fac186c8f64..c7a830a1944 100644
+--- a/hw/s390x/virtio-ccw.h
++++ b/hw/s390x/virtio-ccw.h
+@@ -57,7 +57,7 @@ struct VirtIOCCWDeviceClass {
+     CCWDeviceClass parent_class;
+     void (*realize)(VirtioCcwDevice *dev, Error **errp);
+     void (*unrealize)(VirtioCcwDevice *dev);
+-    void (*parent_reset)(DeviceState *dev);
++    ResettablePhases parent_phases;
  };
  
--static void ccw_device_reset(DeviceState *d)
-+static void ccw_device_reset_hold(Object *obj, ResetType type)
- {
--    CcwDevice *ccw_dev = CCW_DEVICE(d);
-+    CcwDevice *ccw_dev = CCW_DEVICE(obj);
- 
-     css_reset_sch(ccw_dev->sch);
+ /* Performance improves when virtqueue kick processing is decoupled from the
+diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
+index b4676909dd6..96747318d2a 100644
+--- a/hw/s390x/virtio-ccw.c
++++ b/hw/s390x/virtio-ccw.c
+@@ -913,14 +913,15 @@ static void virtio_ccw_notify(DeviceState *d, uint16_t vector)
+     }
  }
-@@ -55,11 +55,12 @@ static void ccw_device_class_init(ObjectClass *klass, void *data)
+ 
+-static void virtio_ccw_reset(DeviceState *d)
++static void virtio_ccw_reset_hold(Object *obj, ResetType type)
  {
+-    VirtioCcwDevice *dev = VIRTIO_CCW_DEVICE(d);
++    VirtioCcwDevice *dev = VIRTIO_CCW_DEVICE(obj);
+     VirtIOCCWDeviceClass *vdc = VIRTIO_CCW_DEVICE_GET_CLASS(dev);
+ 
+     virtio_ccw_reset_virtio(dev);
+-    if (vdc->parent_reset) {
+-        vdc->parent_reset(d);
++
++    if (vdc->parent_phases.hold) {
++        vdc->parent_phases.hold(obj, type);
+     }
+ }
+ 
+@@ -1233,11 +1234,13 @@ static void virtio_ccw_device_class_init(ObjectClass *klass, void *data)
      DeviceClass *dc = DEVICE_CLASS(klass);
-     CCWDeviceClass *k = CCW_DEVICE_CLASS(klass);
+     CCWDeviceClass *k = CCW_DEVICE_CLASS(dc);
+     VirtIOCCWDeviceClass *vdc = VIRTIO_CCW_DEVICE_CLASS(klass);
 +    ResettableClass *rc = RESETTABLE_CLASS(klass);
  
-     k->realize = ccw_device_realize;
-     k->refill_ids = ccw_device_refill_ids;
-     device_class_set_props(dc, ccw_device_properties);
--    dc->reset = ccw_device_reset;
-+    rc->phases.hold = ccw_device_reset_hold;
-     dc->bus_type = TYPE_VIRTUAL_CSS_BUS;
+     k->unplug = virtio_ccw_busdev_unplug;
+     dc->realize = virtio_ccw_busdev_realize;
+     dc->unrealize = virtio_ccw_busdev_unrealize;
+-    device_class_set_parent_reset(dc, virtio_ccw_reset, &vdc->parent_reset);
++    resettable_class_set_parent_phases(rc, NULL, virtio_ccw_reset_hold, NULL,
++                                       &vdc->parent_phases);
  }
  
+ static const TypeInfo virtio_ccw_device_info = {
 -- 
 2.34.1
 
