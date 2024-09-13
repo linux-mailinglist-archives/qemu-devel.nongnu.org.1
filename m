@@ -2,93 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3364E97853C
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFF697859D
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 18:18:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp8dj-0001o6-BX; Fri, 13 Sep 2024 11:55:19 -0400
+	id 1sp8zI-0006NP-S2; Fri, 13 Sep 2024 12:17:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sp8dc-0001l7-Lo
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:55:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1sp8z4-0005qz-1M; Fri, 13 Sep 2024 12:17:22 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sp8da-0004NJ-K2
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:55:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726242909;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Ecke6lkoeU5mIwkL7dVkHe3ekMQJ1EJkevrhtfpo3j0=;
- b=irDKJLU42at+2vtyZJOa3DPEXEnny5yVgiFfaFDeGmBYyuqEx6B4z6kaLQIBjr3KwmXNfq
- yATmaiOUN8Yy9OtDXU20050juxODyH7/N+3rpFBk2y5XOAMGWuKmRnX2iXXdiG+ygq3OhA
- YNTvQqnJYNSS/iL/yHYCsF3GUoj0RSI=
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
- [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-rKoiS1njP3SVW_Louu2Osg-1; Fri, 13 Sep 2024 11:55:07 -0400
-X-MC-Unique: rKoiS1njP3SVW_Louu2Osg-1
-Received: by mail-oo1-f71.google.com with SMTP id
- 006d021491bc7-5daa71823e0so2006866eaf.2
- for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:55:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726242907; x=1726847707;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ecke6lkoeU5mIwkL7dVkHe3ekMQJ1EJkevrhtfpo3j0=;
- b=bAOygl5VXmlfVoZD26N0XrKNYm0SoEOv3T5Cp92z3Ik1pkaaysTt3n37GzcVE2aZNK
- 8aIO9IcvlPfwpaRw9wL2HL0/yiVJFiDk8Iaql2EzzZU2liVC5cyCyXZUye4WL3SQtL+N
- u7NrGcbvwj+6KA86S5NnNepJKIgwaGCUfGKFWzo9gshLUMqp5eORL8PxmQHoIpH1ILEr
- ryXtPWZgOJxLnyNA3N6T0VwI8SO0mjRZ14MtKUFBe7+VNLPyi+VqS2ZKQ0BGdM3d+I8O
- c3nbBGAuJ51LE/Ldn3XiRS9ZSw552tnabhFS2oxW2UujF5zG6Az6+aQ83d1ilEVsYaF2
- ROgg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUWQ3ElHaS2HhGnY1CoBTCvLXRmjT4zH6+hoe2cJzqfbcoCEMWJBu/blLwHCOUF2UxRiptWt2e+MXEB@nongnu.org
-X-Gm-Message-State: AOJu0YwXlgyenj42vZ8H/BXZze/NkszENd6czem5N0YKl3qKU+pA65WY
- 4IXyx+dSrqbaDni42ibw3gujsGWuHo3O5fImllZqK3jnYoU/ttSUMDoXBhCAzlJs+dUo5RSCZkN
- zMHhN6SRuVC8wC1FE/ft74VFRg1aZKz4hh5l42+wnsLPe6EMeWjh5
-X-Received: by 2002:a05:6359:5fa0:b0:1b8:21ed:7551 with SMTP id
- e5c5f4694b2df-1bb23de3e87mr449918655d.27.1726242906810; 
- Fri, 13 Sep 2024 08:55:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2bd+enDvUFXDsrFMC+vBgwACpvse6zYRt6tXZtIXI4oZR+BaI3u2/8VG6Ok6FNJfPgNUaOA==
-X-Received: by 2002:a05:6359:5fa0:b0:1b8:21ed:7551 with SMTP id
- e5c5f4694b2df-1bb23de3e87mr449917155d.27.1726242906446; 
- Fri, 13 Sep 2024 08:55:06 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7a9a7945667sm677160885a.4.2024.09.13.08.55.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Sep 2024 08:55:05 -0700 (PDT)
-Date: Fri, 13 Sep 2024 11:55:03 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Mattias Nissler <mnissler@rivosinc.com>, qemu-devel@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, stefanha@redhat.com,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH] softmmu: Support concurrent bounce buffers
-Message-ID: <ZuRgV7lS75BpDUox@x1n>
-References: <20240819135455.2957406-1-mnissler@rivosinc.com>
- <CAFEAcA-pVJozMoPnUU9TO=0KKH3iR95rf7XLj9EuaM7+Q-VZoQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1sp8z2-0006jb-4h; Fri, 13 Sep 2024 12:17:21 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48DGBYa3003690;
+ Fri, 13 Sep 2024 16:17:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version:content-type
+ :content-transfer-encoding; s=pp1; bh=XmvU8qCvVzU0MF2i0QpXEoBFpI
+ CWtORXT5pbPcOicE8=; b=PJLpaIjYk1LKDMgpNZ4QlbD8BTUvf/kuZbtAD5jrVM
+ juxSbZr8zMBqEZQXzXk1tmYHUyvMgxO1ynYuoPGxKpfxBSMQMSptXEbrl3cbUpgI
+ 91dxXP15V72Df3FL7wJ7eezQZPI0sS+m0ET+YqLrd16m5IptDrgUrNW7+nYARU8Z
+ CGorO+4uxvCeWQ1+iNo8XTRTYyewRCAUXUpdEfVDekhWGe0jwl+wzifrE/WmIAU4
+ 7UeKgCLO5UX75SzgSBSXipl05MhECKrJsxwt2prPPycQMDa/S4XQaxoFrMgWADqG
+ p0dz2w6hvA1iF8Xt71jrWZJvGAWgMNbUrsGf8z5FzfZw==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gejb39m3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Sep 2024 16:17:11 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48DGDG2A005955;
+ Fri, 13 Sep 2024 16:17:10 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gejb39m0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Sep 2024 16:17:10 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48DFh8hn013566;
+ Fri, 13 Sep 2024 16:17:09 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3cmq30q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Sep 2024 16:17:09 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48DGH6Hh38732148
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 13 Sep 2024 16:17:06 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27C032004D;
+ Fri, 13 Sep 2024 16:17:06 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E74B120040;
+ Fri, 13 Sep 2024 16:17:04 +0000 (GMT)
+Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 13 Sep 2024 16:17:04 +0000 (GMT)
+From: Michael Kowal <kowal@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
+ npiggin@gmail.com, milesg@linux.ibm.com
+Subject: [PATCH v4 00/14] XIVE2 changes for TIMA operations
+Date: Fri, 13 Sep 2024 11:16:45 -0500
+Message-Id: <20240913161659.1981-1-kowal@linux.ibm.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEAcA-pVJozMoPnUU9TO=0KKH3iR95rf7XLj9EuaM7+Q-VZoQ@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: tAkt1Cn9pRymEZt42Tzx62huAtaiplAx
+X-Proofpoint-GUID: farvDHPy9CUfKBfoIBO4_NvluwHqbYse
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-13_11,2024-09-13_02,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ phishscore=0 mlxlogscore=718 spamscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409130113
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=kowal@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.147,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,109 +109,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 12, 2024 at 03:27:55PM +0100, Peter Maydell wrote:
-> On Mon, 19 Aug 2024 at 14:56, Mattias Nissler <mnissler@rivosinc.com> wrote:
-> >
-> > When DMA memory can't be directly accessed, as is the case when
-> > running the device model in a separate process without shareable DMA
-> > file descriptors, bounce buffering is used.
-> >
-> > It is not uncommon for device models to request mapping of several DMA
-> > regions at the same time. Examples include:
-> >  * net devices, e.g. when transmitting a packet that is split across
-> >    several TX descriptors (observed with igb)
-> >  * USB host controllers, when handling a packet with multiple data TRBs
-> >    (observed with xhci)
-> >
-> > Previously, qemu only provided a single bounce buffer per AddressSpace
-> > and would fail DMA map requests while the buffer was already in use. In
-> > turn, this would cause DMA failures that ultimately manifest as hardware
-> > errors from the guest perspective.
-> >
-> > This change allocates DMA bounce buffers dynamically instead of
-> > supporting only a single buffer. Thus, multiple DMA mappings work
-> > correctly also when RAM can't be mmap()-ed.
-> >
-> > The total bounce buffer allocation size is limited individually for each
-> > AddressSpace. The default limit is 4096 bytes, matching the previous
-> > maximum buffer size. A new x-max-bounce-buffer-size parameter is
-> > provided to configure the limit for PCI devices.
-> >
-> > Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
-> > Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > Acked-by: Peter Xu <peterx@redhat.com>
-> > ---
-> 
-> > @@ -3251,28 +3265,40 @@ void *address_space_map(AddressSpace *as,
-> >      mr = flatview_translate(fv, addr, &xlat, &l, is_write, attrs);
-> >
-> >      if (!memory_access_is_direct(mr, is_write)) {
-> > -        if (qatomic_xchg(&as->bounce.in_use, true)) {
-> > +        size_t used = qatomic_read(&as->bounce_buffer_size);
-> > +        for (;;) {
-> > +            hwaddr alloc = MIN(as->max_bounce_buffer_size - used, l);
-> > +            size_t new_size = used + alloc;
-> > +            size_t actual =
-> > +                qatomic_cmpxchg(&as->bounce_buffer_size, used, new_size);
-> > +            if (actual == used) {
-> > +                l = alloc;
-> > +                break;
-> > +            }
-> > +            used = actual;
-> > +        }
-> > +
-> > +        if (l == 0) {
-> >              *plen = 0;
-> >              return NULL;
-> >          }
-> > -        /* Avoid unbounded allocations */
-> > -        l = MIN(l, TARGET_PAGE_SIZE);
-> > -        as->bounce.buffer = qemu_memalign(TARGET_PAGE_SIZE, l);
-> > -        as->bounce.addr = addr;
-> > -        as->bounce.len = l;
-> >
-> > +        BounceBuffer *bounce = g_malloc0(l + sizeof(BounceBuffer));
-> > +        bounce->magic = BOUNCE_BUFFER_MAGIC;
-> >          memory_region_ref(mr);
-> > -        as->bounce.mr = mr;
-> > +        bounce->mr = mr;
-> > +        bounce->addr = addr;
-> > +        bounce->len = l;
-> > +
-> >          if (!is_write) {
-> >              flatview_read(fv, addr, MEMTXATTRS_UNSPECIFIED,
-> > -                          as->bounce.buffer, l);
-> > +                          bounce->buffer, l);
-> >          }
-> >
-> >          *plen = l;
-> > -        return as->bounce.buffer;
-> > +        return bounce->buffer;
-> 
-> Coverity is pretty unhappy about this trick, because it isn't able
-> to recognise that we can figure out the address of 'bounce'
-> from the address of 'bounce->buffer' and free it in the
-> address_space_unmap() code, so it thinks that every use
-> of address_space_map(), pci_dma_map(), etc, is a memory leak.
-> We can mark all those as false positives, of course, but it got
-> me wondering whether maybe we should have this function return
-> a struct that has all the information address_space_unmap()
-> needs rather than relying on it being able to figure it out
-> from the host memory pointer...
+In XIVE Gen 2 there are many operations that were not modeled and are
+needed for PowerVM.  These changes are associated with the following Thread
+Interrupt Management Area subjects:
+ - OS context
+ - Thread context
+ - Pulling contexts to 'cache lines'
+ - Pool targets
+ - Enhaced trace data for XIVE Gen2
 
-Indeed that sounds like a viable option.  Looks like we don't have a lot of
-address_space_map() users.
+version 4:
+- fixed rebase error in patch set 9 xive2_cam_decode().  Complete changes
+  for this are in patch set 10.
+- version 3 reviewed tags:
+  - added 10/14
 
-There might be some challenge on users who cache the results (rather than
-immediately unmap() after using the buffer in the same function).  Still
-doable but the changeset can spread all over, and also testing is harder if
-just to get some coverage.
+version 3:
+- moved some of ring functions from patch set 9 to 10
+- version 2 reviewed-by tags:
+$ b4 am 20240909211038.27440-1-kowal@linux.ibm.com
+Grabbing thread from lore.kernel.org/all/20240909211038.27440-1-kowal@linux.ibm.com/t.mbox.gz
+Analyzing 23 messages in the thread
+Looking for additional code-review trailers on lore.kernel.org
+---
+  [PATCH v2 1/14] pnv/xive: TIMA patch sets pre-req alignment and formatting changes
+  [PATCH v2 2/14] pnv/xive2: Define OGEN field in the TIMA
+  [PATCH v2 3/14] ppc/xive2: Support TIMA "Pull OS Context to Odd Thread Reporting Line"
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH v2 4/14] pnv/xive2: Support for "OS LGS Push" TIMA operation
+  [PATCH v2 5/14] ppc/xive2: Dump more NVP state with 'info pic'
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH v2 6/14] ppc/xive2: Dump the VP-group and crowd tables with 'info pic'
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH v2 7/14] ppc/xive2: Allow 1-byte write of Target field in TIMA
+  [PATCH v2 8/14] ppc/xive2: Support "Pull Thread Context to Register" operation
+  [PATCH v2 9/14] ppc/xive2: Change context/ring specific functions to be generic
+  [PATCH v2 10/14] ppc/xive2: Support "Pull Thread Context to Odd Thread Reporting Line"
+  [PATCH v2 11/14] pnv/xive: Add special handling for pool targets
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH v2 12/14] pnv/xive: Update PIPR when updating CPPR
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH v2 13/14] pnv/xive2: TIMA support for 8-byte OS context push for PHYP
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH v2 14/14] pnv/xive2: TIMA CI ops using alternative offsets or byte lengths
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-Not sure whether Mattias have some more clue when he's working on that.
+version 2:
+- use dma_memory_write() instead of cpu_physical_memory_write()
+- use ternery operator in NVG/NVC pnv_xive2_vst_read/write()
+- removed xive2_nvgc_set_backlog() until it is needed
+- re-defined word 2 valid bits since it is the same in each Reporting
+- provided better fix for possible NSR operation overflow
+- moved changes for operations that can occur on ring, in a new patch set (10/13)
+- version 1 reviewed-by tags:
+$b4 am 20240801203008.11224-1-kowal@linux.ibm.com
+Analyzing 35 messages in the thread
+Analyzing 0 code-review messages
+---
+  [PATCH 1/13] pnv/xive: TIMA patch sets pre-req alignment and formatting changes
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 2/13] pnv/xive2: Define OGEN field in the TIMA
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 3/13] ppc/xive2: Support TIMA "Pull OS Context to Odd Thread Reporting Line"
+  [PATCH 4/13] pnv/xive2: Support for "OS LGS Push" TIMA operation
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 5/13] ppc/xive2: Dump more NVP state with 'info pic'
+  [PATCH 6/13] ppc/xive2: Dump the VP-group and crowd tables with 'info pic'
+  [PATCH 7/13] ppc/xive2: Allow 1-byte write of Target field in TIMA
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 8/13] ppc/xive2: Support "Pull Thread Context to Register" operation
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 9/13] ppc/xive2: Support "Pull Thread Context to Odd Thread Reporting Line"
+  [PATCH 10/13] pnv/xive: Add special handling for pool targets
+  [PATCH 11/13] pnv/xive: Update PIPR when updating CPPR
+  [PATCH 12/13] pnv/xive2: TIMA support for 8-byte OS context push for PHYP
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+  [PATCH 13/13] pnv/xive2: TIMA CI ops using alternative offsets or byte lengths
+    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-Thanks,
+Frederic Barrat (4):
+  pnv/xive2: Define OGEN field in the TIMA
+  ppc/xive2: Support TIMA "Pull OS Context to Odd Thread Reporting Line"
+  ppc/xive2: Dump more NVP state with 'info pic'
+  ppc/xive2: Dump the VP-group and crowd tables with 'info pic'
 
--- 
-Peter Xu
+
+Frederic Barrat (4):
+  pnv/xive2: Define OGEN field in the TIMA
+  ppc/xive2: Support TIMA "Pull OS Context to Odd Thread Reporting Line"
+  ppc/xive2: Dump more NVP state with 'info pic'
+  ppc/xive2: Dump the VP-group and crowd tables with 'info pic'
+
+Glenn Miles (7):
+  pnv/xive2: Support for "OS LGS Push" TIMA operation
+  ppc/xive2: Allow 1-byte write of Target field in TIMA
+  ppc/xive2: Support "Pull Thread Context to Register" operation
+  ppc/xive2: Support "Pull Thread Context to Odd Thread Reporting Line"
+  pnv/xive: Add special handling for pool targets
+  pnv/xive: Update PIPR when updating CPPR
+  pnv/xive2: TIMA support for 8-byte OS context push for PHYP
+
+Michael Kowal (3):
+  pnv/xive: TIMA patch sets pre-req alignment and formatting changes
+  ppc/xive2: Change context/ring specific functions to be generic
+  pnv/xive2: TIMA CI ops using alternative offsets or byte lengths
+
+ include/hw/ppc/xive.h       |   2 +-
+ include/hw/ppc/xive2.h      |  18 ++
+ include/hw/ppc/xive2_regs.h |  25 ++-
+ include/hw/ppc/xive_regs.h  |  45 +++--
+ hw/intc/pnv_xive2.c         |  44 ++++-
+ hw/intc/xive.c              | 201 ++++++++++++++++++-----
+ hw/intc/xive2.c             | 317 ++++++++++++++++++++++++++++++------
+ 7 files changed, 537 insertions(+), 115 deletions(-)
+
+--
+2.43.0
 
 
