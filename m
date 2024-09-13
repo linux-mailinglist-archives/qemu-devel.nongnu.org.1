@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E7997841D
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:15:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C57CB978467
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:18:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp80m-0003ln-9R; Fri, 13 Sep 2024 11:15:04 -0400
+	id 1sp80d-0003Ok-2I; Fri, 13 Sep 2024 11:14:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp80A-0002AX-9n
+ id 1sp809-000299-Tk
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:26 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp807-0007nR-BR
+ id 1sp807-0007nj-E4
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:25 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-42cd46f3ac9so21700985e9.3
- for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:22 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-42cb806623eso20966345e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726240461; x=1726845261; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726240462; x=1726845262; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sMpuvKSijMzza9jyYi3YKFy2MNvxfWsjj0r4/UrtdJo=;
- b=by1y0Ywcz/1Eb+IL7mSeHkuMLcmSASAIdSLkwszu5qP3kKMRG8J5oI3OQaRkSjhjqG
- PSQjuAU+xotrfRvVIDv+m5v4QP1CaWoCIp9o+2VgfD0QAEUEqb1a8ovv4lvGd3K6x9EH
- Q81thgsvtLS1E8cIz6EI8H4L1RvhriVYwydikHh8TucJVoBpcIR/P0If1TGz8DpN5Cfm
- zmOAsv0mg001EJP0gJrsHibUQmRukoch3ujfU7ug1UXxDxwAslwbANmtSnh+Q1IkCX7h
- N5sv8iMJdd/lC1J5O1QsEeBLHrYC2aQJZOgad4B9AMm1ObT8+7TiKg0byPK9C6xkSayj
- UpSQ==
+ :reply-to; bh=dcqXMxLjwWlPP6O8WmHKBKl3hhhcbk38Qfnbk5uacwc=;
+ b=koen2+tUovz6PKNMtguqFw/H7i7YfxdJuEE/KFGDMlqerTvrtntFOtMK7SC0/2DeoH
+ ZBlWHv7NvpbnbEgurIGvbOoVHEpD8OAKEnbqFJLQxY23tzP36wXPukM5fdlMxO9oeELS
+ O2MdnLIvp+gZmBfo6eDUc3WvQinkatJWr1CumBlTWeJ5zYZlYLbGXocRvzXKhX3ifRXV
+ 0Nk1JQeHALBec39YFDRZZqYkKQ5Ju8WZkIaDVlfx9yefKFysPgUJlAWayeuWYSZdqYlA
+ gRtML1LgGE48x8cy90LnetTTchMGdmhwlbx6pwN+aTSIk5dpFZsWxCcwtlCNMiCvFQij
+ Nd1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726240461; x=1726845261;
+ d=1e100.net; s=20230601; t=1726240462; x=1726845262;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sMpuvKSijMzza9jyYi3YKFy2MNvxfWsjj0r4/UrtdJo=;
- b=ciU4XIx1GBQ1PGs1zjMCrZg/Fr2DbNwT6aZFxZfLPRN+hHPqjC0TOH+aKmTd2hdKI+
- M52ji0Et15vC+Tp1SO+fj2hsQk3OzlXy3FT0rUON63nWy5mRoarDQnRk+Qw+uwXn6xxb
- fjIiZ0YHs7xnUlviYB8u8BnsLE10Z+yEgEFX3ZnbTauZ6drX7ehI3sz611B4Xo/cYAVz
- voNQGxHqqpd3MAvzRzJeey5ocb9ycSZNT9d09AC5Bbvls3eCDsaSD4WAElEbtaPjhnfV
- 33n8HNMBn/YEVtyi0BmB0K+VR0fGld1Un1muvCZfb8xRcfaBYRSe9G/dj6uiXxxMb/a+
- gZ8A==
-X-Gm-Message-State: AOJu0YzKXqpsHKfdPZOP+eaZQVLRETMGyw5ThxPM5DOkYLQcT3vNamhy
- sgP1SGtcYRG3Iwz0ENHLl2CY9ikijZ1T2336p6eYwVo/0sz7i+DnmibUecKgNg7auo8otlxUxfZ
- 6
-X-Google-Smtp-Source: AGHT+IG0hfeezERxpVZcQi+LotZP+VnGZ7siNaa7pVzNaHWp2kmsHJksmim+ZVTIekqPfARImtAhiw==
-X-Received: by 2002:a05:600c:3b8e:b0:42c:b377:3f76 with SMTP id
- 5b1f17b1804b1-42cdb54e68fmr57889745e9.17.1726240461329; 
+ bh=dcqXMxLjwWlPP6O8WmHKBKl3hhhcbk38Qfnbk5uacwc=;
+ b=f48eqFy4O0HV3PztRuxvVdP8MBvY55ExZITGVX6KmFBhHEbT1MajCtMS7VegcXdY0W
+ jh0xisrjh6WCfRcZ0bkOJ0XWHbcG1gs/Fk0dB9rzDuyan7uIlNcjXo9/F8I2M2Yg4IUW
+ VOtbLMJR+P3YUjUkDevK+87lukJutnIWzPzJNhCDnBOHIZXBOzmMlvUo/NgAeq1kISJr
+ a1uhLovBiXbSDr/L2SUs4VL4e7Vnt/Fm8Dte4gfPInkpvwrTXtCItRQcWAO1CQ6Kk7DN
+ wH+2SlFkoaEPTzbuVHHepPxPyoHX20gDzflkcc/gQCx4j6MzRshpviQghDRBMtm2OIe3
+ Iqdw==
+X-Gm-Message-State: AOJu0Yy+PB7isTiQBpnvhZCzZVzvhNnBMgvkjTePRRaH6Wx/vrJ07d6v
+ DCubIEgUeizZfL5/Aho/J94pEPa3EQ39bqhq/4PTSZoTrG1KQZSmgJzGmF7HlPuAIzJxDdYwO74
+ 1
+X-Google-Smtp-Source: AGHT+IGNHCfGwidw6zlDXf7OlsNh4WrTDGhpS6PdDMI5XdpKJgBbN5rbEqsSgoYYe2zB66Atu7jqxg==
+X-Received: by 2002:a05:600c:1c1a:b0:42c:b037:5f9d with SMTP id
+ 5b1f17b1804b1-42cdb4e6a7bmr57568285e9.3.1726240461998; 
  Fri, 13 Sep 2024 08:14:21 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42d9b16bfbfsm29152325e9.22.2024.09.13.08.14.20
+ 5b1f17b1804b1-42d9b16bfbfsm29152325e9.22.2024.09.13.08.14.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 13 Sep 2024 08:14:21 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/27] target/arm/tcg: refine cache descriptions with a wrapper
-Date: Fri, 13 Sep 2024 16:14:00 +0100
-Message-Id: <20240913151411.2167922-17-peter.maydell@linaro.org>
+Subject: [PULL 17/27] hw/net/can/xlnx-versal-canfd: Fix interrupt level
+Date: Fri, 13 Sep 2024 16:14:01 +0100
+Message-Id: <20240913151411.2167922-18-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240913151411.2167922-1-peter.maydell@linaro.org>
 References: <20240913151411.2167922-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,329 +91,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alireza Sanaee <alireza.sanaee@huawei.com>
+From: Doug Brown <doug@schmorgal.com>
 
-This patch allows for easier manipulation of the cache description
-register, CCSIDR. Which is helpful for testing as well. Currently,
-numbers get hard-coded and might be prone to errors.
+The interrupt level should be 0 or 1. The existing code was using the
+interrupt flags to determine the level. In the only machine currently
+supported (xlnx-versal-virt), the GICv3 was masking off all bits except
+bit 0 when applying it, resulting in the IRQ never being delivered.
 
-Therefore, this patch adds a wrapper for different types of CPUs
-available in tcg to decribe caches. One function `make_ccsidr` supports
-two cases by carrying a parameter as FORMAT that can be LEGACY and
-CCIDX which determines the specification of the register.
-
-For CCSIDR register, 32 bit version follows specification [1].
-Conversely, 64 bit version follows specification [2].
-
-[1] B4.1.19, ARM Architecture Reference Manual ARMv7-A and ARMv7-R
-edition, https://developer.arm.com/documentation/ddi0406
-[2] D23.2.29, ARM Architecture Reference Manual for A-profile Architecture,
-https://developer.arm.com/documentation/ddi0487/latest/
-
-Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240903144550.280-1-alireza.sanaee@huawei.com
+Signed-off-by: Doug Brown <doug@schmorgal.com>
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Reviewed-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+Message-id: 20240827034927.66659-2-doug@schmorgal.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu-features.h |  50 ++++++++++++++++++
- target/arm/cpu64.c        |  19 ++++---
- target/arm/tcg/cpu64.c    | 108 +++++++++++++++++++-------------------
- 3 files changed, 117 insertions(+), 60 deletions(-)
+ hw/net/can/xlnx-versal-canfd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index cfb82c23cad..04ce2818263 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -21,6 +21,7 @@
- #define TARGET_ARM_FEATURES_H
+diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
+index b30edb83bf8..f89dfc565b5 100644
+--- a/hw/net/can/xlnx-versal-canfd.c
++++ b/hw/net/can/xlnx-versal-canfd.c
+@@ -682,8 +682,8 @@ static uint8_t canfd_dlc_array[8] = {8, 12, 16, 20, 24, 32, 48, 64};
  
- #include "hw/registerfields.h"
-+#include "qemu/host-utils.h"
- 
- /*
-  * Naming convention for isar_feature functions:
-@@ -1027,6 +1028,55 @@ static inline bool isar_feature_any_evt(const ARMISARegisters *id)
-     return isar_feature_aa64_evt(id) || isar_feature_aa32_evt(id);
- }
- 
-+typedef enum {
-+    CCSIDR_FORMAT_LEGACY,
-+    CCSIDR_FORMAT_CCIDX,
-+} CCSIDRFormat;
-+
-+static inline uint64_t make_ccsidr(CCSIDRFormat format, unsigned assoc,
-+                                   unsigned linesize, unsigned cachesize,
-+                                   uint8_t flags)
-+{
-+    unsigned lg_linesize = ctz32(linesize);
-+    unsigned sets;
-+    uint64_t ccsidr = 0;
-+
-+    assert(assoc != 0);
-+    assert(is_power_of_2(linesize));
-+    assert(lg_linesize >= 4 && lg_linesize <= 7 + 4);
-+
-+    /* sets * associativity * linesize == cachesize. */
-+    sets = cachesize / (assoc * linesize);
-+    assert(cachesize % (assoc * linesize) == 0);
-+
-+    if (format == CCSIDR_FORMAT_LEGACY) {
-+        /*
-+         * The 32-bit CCSIDR format is:
-+         *   [27:13] number of sets - 1
-+         *   [12:3]  associativity - 1
-+         *   [2:0]   log2(linesize) - 4
-+         *           so 0 == 16 bytes, 1 == 32 bytes, 2 == 64 bytes, etc
-+         */
-+        ccsidr = deposit32(ccsidr, 28,  4, flags);
-+        ccsidr = deposit32(ccsidr, 13, 15, sets - 1);
-+        ccsidr = deposit32(ccsidr,  3, 10, assoc - 1);
-+        ccsidr = deposit32(ccsidr,  0,  3, lg_linesize - 4);
-+    } else {
-+        /*
-+         * The 64-bit CCSIDR_EL1 format is:
-+         *   [55:32] number of sets - 1
-+         *   [23:3]  associativity - 1
-+         *   [2:0]   log2(linesize) - 4
-+         *           so 0 == 16 bytes, 1 == 32 bytes, 2 == 64 bytes, etc
-+         */
-+        ccsidr = deposit64(ccsidr, 32, 24, sets - 1);
-+        ccsidr = deposit64(ccsidr,  3, 21, assoc - 1);
-+        ccsidr = deposit64(ccsidr,  0,  3, lg_linesize - 4);
-+    }
-+
-+    return ccsidr;
-+}
-+
- /*
-  * Forward to the above feature tests given an ARMCPU pointer.
-  */
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 262a1d6c0bb..458d1cee012 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -23,6 +23,7 @@
- #include "cpu.h"
- #include "cpregs.h"
- #include "qemu/module.h"
-+#include "qemu/units.h"
- #include "sysemu/kvm.h"
- #include "sysemu/hvf.h"
- #include "sysemu/qtest.h"
-@@ -642,9 +643,12 @@ static void aarch64_a57_initfn(Object *obj)
-     cpu->isar.dbgdevid1 = 0x2;
-     cpu->isar.reset_pmcr_el0 = 0x41013000;
-     cpu->clidr = 0x0a200023;
--    cpu->ccsidr[0] = 0x701fe00a; /* 32KB L1 dcache */
--    cpu->ccsidr[1] = 0x201fe012; /* 48KB L1 icache */
--    cpu->ccsidr[2] = 0x70ffe07a; /* 2048KB L2 cache */
-+    /* 32KB L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 7);
-+    /* 48KB L1 icache */
-+    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 3, 64, 48 * KiB, 2);
-+    /* 2048KB L2 cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 64, 2 * MiB, 7);
-     cpu->dcz_blocksize = 4; /* 64 bytes */
-     cpu->gic_num_lrs = 4;
-     cpu->gic_vpribits = 5;
-@@ -700,9 +704,12 @@ static void aarch64_a53_initfn(Object *obj)
-     cpu->isar.dbgdevid1 = 0x1;
-     cpu->isar.reset_pmcr_el0 = 0x41033000;
-     cpu->clidr = 0x0a200023;
--    cpu->ccsidr[0] = 0x700fe01a; /* 32KB L1 dcache */
--    cpu->ccsidr[1] = 0x201fe00a; /* 32KB L1 icache */
--    cpu->ccsidr[2] = 0x707fe07a; /* 1024KB L2 cache */
-+    /* 32KB L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 7);
-+    /* 32KB L1 icache */
-+    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 1, 64, 32 * KiB, 2);
-+    /* 1024KB L2 cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 64, 1 * MiB, 7);
-     cpu->dcz_blocksize = 4; /* 64 bytes */
-     cpu->gic_num_lrs = 4;
-     cpu->gic_vpribits = 5;
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 79258a7c928..b9f34f044d0 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -29,32 +29,6 @@
- #include "cpu-features.h"
- #include "cpregs.h"
- 
--static uint64_t make_ccsidr64(unsigned assoc, unsigned linesize,
--                              unsigned cachesize)
--{
--    unsigned lg_linesize = ctz32(linesize);
--    unsigned sets;
--
--    /*
--     * The 64-bit CCSIDR_EL1 format is:
--     *   [55:32] number of sets - 1
--     *   [23:3]  associativity - 1
--     *   [2:0]   log2(linesize) - 4
--     *           so 0 == 16 bytes, 1 == 32 bytes, 2 == 64 bytes, etc
--     */
--    assert(assoc != 0);
--    assert(is_power_of_2(linesize));
--    assert(lg_linesize >= 4 && lg_linesize <= 7 + 4);
--
--    /* sets * associativity * linesize == cachesize. */
--    sets = cachesize / (assoc * linesize);
--    assert(cachesize % (assoc * linesize) == 0);
--
--    return ((uint64_t)(sets - 1) << 32)
--         | ((assoc - 1) << 3)
--         | (lg_linesize - 4);
--}
--
- static void aarch64_a35_initfn(Object *obj)
+ static void canfd_update_irq(XlnxVersalCANFDState *s)
  {
-     ARMCPU *cpu = ARM_CPU(obj);
-@@ -106,9 +80,12 @@ static void aarch64_a35_initfn(Object *obj)
-     cpu->isar.reset_pmcr_el0 = 0x410a3000;
+-    unsigned int irq = s->regs[R_INTERRUPT_STATUS_REGISTER] &
+-                        s->regs[R_INTERRUPT_ENABLE_REGISTER];
++    const bool irq = (s->regs[R_INTERRUPT_STATUS_REGISTER] &
++                      s->regs[R_INTERRUPT_ENABLE_REGISTER]) != 0;
+     g_autofree char *path = object_get_canonical_path(OBJECT(s));
  
-     /* From B2.29 Cache ID registers */
--    cpu->ccsidr[0] = 0x700fe01a; /* 32KB L1 dcache */
--    cpu->ccsidr[1] = 0x201fe00a; /* 32KB L1 icache */
--    cpu->ccsidr[2] = 0x703fe03a; /* 512KB L2 cache */
-+    /* 32KB L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 7);
-+    /* 32KB L1 icache */
-+    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 2);
-+    /* 512KB L2 cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 64, 512 * KiB, 7);
- 
-     /* From B3.5 VGIC Type register */
-     cpu->gic_num_lrs = 4;
-@@ -272,9 +249,12 @@ static void aarch64_a55_initfn(Object *obj)
-     cpu->revidr = 0;
- 
-     /* From B2.23 CCSIDR_EL1 */
--    cpu->ccsidr[0] = 0x700fe01a; /* 32KB L1 dcache */
--    cpu->ccsidr[1] = 0x200fe01a; /* 32KB L1 icache */
--    cpu->ccsidr[2] = 0x703fe07a; /* 512KB L2 cache */
-+    /* 32KB L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 7);
-+    /* 32KB L1 icache */
-+    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 2);
-+    /* 512KB L2 cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 64, 512 * KiB, 7);
- 
-     /* From B2.96 SCTLR_EL3 */
-     cpu->reset_sctlr = 0x30c50838;
-@@ -338,9 +318,12 @@ static void aarch64_a72_initfn(Object *obj)
-     cpu->isar.dbgdevid1 = 0x2;
-     cpu->isar.reset_pmcr_el0 = 0x41023000;
-     cpu->clidr = 0x0a200023;
--    cpu->ccsidr[0] = 0x701fe00a; /* 32KB L1 dcache */
--    cpu->ccsidr[1] = 0x201fe012; /* 48KB L1 icache */
--    cpu->ccsidr[2] = 0x707fe07a; /* 1MB L2 cache */
-+    /* 32KB L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 7);
-+    /* 48KB L1 dcache */
-+    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 3, 64, 48 * KiB, 2);
-+    /* 1MB L2 cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 64, 1 * MiB, 7);
-     cpu->dcz_blocksize = 4; /* 64 bytes */
-     cpu->gic_num_lrs = 4;
-     cpu->gic_vpribits = 5;
-@@ -397,9 +380,12 @@ static void aarch64_a76_initfn(Object *obj)
-     cpu->revidr = 0;
- 
-     /* From B2.18 CCSIDR_EL1 */
--    cpu->ccsidr[0] = 0x701fe01a; /* 64KB L1 dcache */
--    cpu->ccsidr[1] = 0x201fe01a; /* 64KB L1 icache */
--    cpu->ccsidr[2] = 0x707fe03a; /* 512KB L2 cache */
-+    /* 64KB L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 7);
-+    /* 64KB L1 icache */
-+    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 2);
-+    /* 512KB L2 cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 8, 64, 512 * KiB, 7);
- 
-     /* From B2.93 SCTLR_EL3 */
-     cpu->reset_sctlr = 0x30c50838;
-@@ -449,9 +435,12 @@ static void aarch64_a64fx_initfn(Object *obj)
-     cpu->isar.id_aa64isar1 = 0x0000000000010001;
-     cpu->isar.id_aa64zfr0 = 0x0000000000000000;
-     cpu->clidr = 0x0000000080000023;
--    cpu->ccsidr[0] = 0x7007e01c; /* 64KB L1 dcache */
--    cpu->ccsidr[1] = 0x2007e01c; /* 64KB L1 icache */
--    cpu->ccsidr[2] = 0x70ffe07c; /* 8MB L2 cache */
-+    /* 64KB L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 256, 64 * KiB, 7);
-+    /* 64KB L1 icache */
-+    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 256, 64 * KiB, 2);
-+    /* 8MB L2 cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 256, 8 * MiB, 7);
-     cpu->dcz_blocksize = 6; /* 256 bytes */
-     cpu->gic_num_lrs = 4;
-     cpu->gic_vpribits = 5;
-@@ -637,9 +626,12 @@ static void aarch64_neoverse_n1_initfn(Object *obj)
-     cpu->revidr = 0;
- 
-     /* From B2.23 CCSIDR_EL1 */
--    cpu->ccsidr[0] = 0x701fe01a; /* 64KB L1 dcache */
--    cpu->ccsidr[1] = 0x201fe01a; /* 64KB L1 icache */
--    cpu->ccsidr[2] = 0x70ffe03a; /* 1MB L2 cache */
-+    /* 64KB L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 7);
-+    /* 64KB L1 icache */
-+    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 2);
-+    /* 1MB L2 dcache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 8, 64, 1 * MiB, 7);
- 
-     /* From B2.98 SCTLR_EL3 */
-     cpu->reset_sctlr = 0x30c50838;
-@@ -721,9 +713,12 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
-      * L2: 8-way set associative, 64 byte line size, either 512K or 1MB.
-      * L3: No L3 (this matches the CLIDR_EL1 value).
-      */
--    cpu->ccsidr[0] = make_ccsidr64(4, 64, 64 * KiB); /* L1 dcache */
--    cpu->ccsidr[1] = cpu->ccsidr[0];                 /* L1 icache */
--    cpu->ccsidr[2] = make_ccsidr64(8, 64, 1 * MiB);  /* L2 cache */
-+    /* 64KB L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 4, 64, 64 * KiB, 0);
-+    /* 64KB L1 icache */
-+    cpu->ccsidr[1] = cpu->ccsidr[0];
-+    /* 1MB L2 cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 8, 64, 1 * MiB, 0);
- 
-     /* From 3.2.115 SCTLR_EL3 */
-     cpu->reset_sctlr = 0x30c50838;
-@@ -959,9 +954,12 @@ static void aarch64_a710_initfn(Object *obj)
-      * L1: 4-way set associative 64-byte line size, total either 32K or 64K.
-      * L2: 8-way set associative 64 byte line size, total either 256K or 512K.
-      */
--    cpu->ccsidr[0] = make_ccsidr64(4, 64, 64 * KiB);   /* L1 dcache */
--    cpu->ccsidr[1] = cpu->ccsidr[0];                   /* L1 icache */
--    cpu->ccsidr[2] = make_ccsidr64(8, 64, 512 * KiB);  /* L2 cache */
-+    /* L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 4, 64, 64 * KiB, 0);
-+    /* L1 icache */
-+    cpu->ccsidr[1] = cpu->ccsidr[0];
-+    /* L2 cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 8, 64, 512 * KiB, 0);
- 
-     /* FIXME: Not documented -- copied from neoverse-v1 */
-     cpu->reset_sctlr = 0x30c50838;
-@@ -1057,10 +1055,12 @@ static void aarch64_neoverse_n2_initfn(Object *obj)
-      * L1: 4-way set associative 64-byte line size, total 64K.
-      * L2: 8-way set associative 64 byte line size, total either 512K or 1024K.
-      */
--    cpu->ccsidr[0] = make_ccsidr64(4, 64, 64 * KiB);   /* L1 dcache */
--    cpu->ccsidr[1] = cpu->ccsidr[0];                   /* L1 icache */
--    cpu->ccsidr[2] = make_ccsidr64(8, 64, 512 * KiB);  /* L2 cache */
--
-+    /* L1 dcache */
-+    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 4, 64, 64 * KiB, 0);
-+    /* L1 icache */
-+    cpu->ccsidr[1] = cpu->ccsidr[0];
-+    /* L2 cache */
-+    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 8, 64, 512 * KiB, 0);
-     /* FIXME: Not documented -- copied from neoverse-v1 */
-     cpu->reset_sctlr = 0x30c50838;
- 
+     /* RX watermark interrupts. */
 -- 
 2.34.1
 
