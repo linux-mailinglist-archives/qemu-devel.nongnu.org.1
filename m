@@ -2,83 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76B6978A3A
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 22:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B10978B33
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Sep 2024 00:06:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spDFy-0000d1-A9; Fri, 13 Sep 2024 16:51:06 -0400
+	id 1spEQL-0000pL-1G; Fri, 13 Sep 2024 18:05:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1spDFw-0000Z8-So
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 16:51:04 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1spEQH-0000me-Us
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 18:05:49 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1spDFv-0003eh-8A
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 16:51:04 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-5367ae52a01so1918479e87.3
- for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 13:51:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726260661; x=1726865461; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Ga8ChKjTc49tZRld8xth2Qy2W/qx0QbnLXgUkw8VrsM=;
- b=T2I3U13pJH6bxD3uOv2xm0f2dx/fUR42Yua3+5spJM9udPYy9oNWJCQSesVKsoaLS2
- uGK00JmXeKdN8PBs5fviXuy1pMWblgSPGqhsNFx4GDE8BGgbQgqUITn+1otoxGieBhid
- Zg2Rf/qMKGRXbWBwgxVozFYpJRa5IYnxuJrDFK7z9sitLUCQyFE2LUZmVpyJMmGjMb0E
- WWl8Dp2lLPLF+YD72lneTm87nqYAz8iYXDS4Xe0NmHDJPy+9nNrgrbGp+VvbfyF+FqXb
- f80OKZof1QhjlkotKwX4TEgH4B1kQNL0uzRdkIRHH31RcnTQqtBNRcAps9MKtPFihLr3
- /duA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726260661; x=1726865461;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ga8ChKjTc49tZRld8xth2Qy2W/qx0QbnLXgUkw8VrsM=;
- b=aDj59mpDfCCLJtFgcuOKz8p1r6CpjKqmWfTdrs7XWMiJLIWyOy+FyaRS+3HU/veUl9
- QjfJkAkKLOdUCU9OAVbrIgeVG2pH6pouUkPpqhyS/BqQ8L+4Emy1qF9KqSmdPXqtF2kz
- fNs9juIhA4eFie9hv0tZWeSltMNJidOKEFXUvwAkTVg3MNXvHm1lg8rApYeOEFvga7rJ
- 7iiMhNhtOhC/qIy7UOjSFv2WdAxvZmR0fh+FIMQYv1CtMR0p6WzrVn3zIGyKmxdjh1KK
- NdjZO6Ao6Bc8WH78YBpNBkXyHJubSXWGV4G5SGRg6NqzmU+E/ecmSxdvcH+xgbT/bxGm
- 7tYQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU7qq9vMBsmIgocEdypyXlpPcq/femC15SKfirAi37+kJc346LyjtWkHH0a1Xj0YXTWhZtuOsWtTo3/@nongnu.org
-X-Gm-Message-State: AOJu0Yzcm/0Ct2nqlhBJUfBX+FdlIn6FCM9VMZv+lUjKTZ6JsBEg9AvL
- /syS/UxNyO6ce/08QV/2ke4TnpJNTlMRY4r1nS20GVx0GiHSIXtvaUOPPmZvf7mtYHF3GEHEx7l
- 3
-X-Google-Smtp-Source: AGHT+IGpKDbPKQ1boWHrbCRsB4H7b2nvZO6yjPmDcctYi+c1edXzFi1yxMy8crXPlkZHReAmCR02XQ==
-X-Received: by 2002:a05:6512:2391:b0:52e:9382:a36 with SMTP id
- 2adb3069b0e04-5367fee6c57mr2991141e87.30.1726260661188; 
- Fri, 13 Sep 2024 13:51:01 -0700 (PDT)
-Received: from [192.168.69.100] (uni14-h01-176-184-39-243.dsl.sta.abo.bbox.fr.
- [176.184.39.243]) by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-536870b8cd6sm21455e87.290.2024.09.13.13.50.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Sep 2024 13:51:00 -0700 (PDT)
-Message-ID: <dc9e2f27-8566-4dec-9e6f-d7366f55e1f4@linaro.org>
-Date: Fri, 13 Sep 2024 22:50:58 +0200
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1spEQG-0002Fh-BL
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 18:05:49 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 30CA0219B2;
+ Fri, 13 Sep 2024 22:05:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1726265146; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=VIS+/v5Dnf70mTwaDtHe2DRRn5PhKjTWu5XLODyjuQE=;
+ b=FVfbrjmVLXbVqJgYf2x8ZBwPG6GDoyimYyoDa48f9vF/8k+hRr0F++JiliXnbByk5YaKcA
+ o1LRpssmPGL9Metoms/KmtQgLoChZNSaHMjm9Amla5JPn2h+U346khbyRWHCxEDj0JGgt+
+ yiyMcAt99lRRb+dJ/r3NlwZXkKh4Uqo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1726265146;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=VIS+/v5Dnf70mTwaDtHe2DRRn5PhKjTWu5XLODyjuQE=;
+ b=hOlquGSumRDNIhwGdnXm/O55Gr5Yt4q2VKCx7IfH2WXJigzWbOQTcOiDWswhCwssTtjyn+
+ qPEo8bId3rSyS8Aw==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FVfbrjmV;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hOlquGSu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1726265146; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=VIS+/v5Dnf70mTwaDtHe2DRRn5PhKjTWu5XLODyjuQE=;
+ b=FVfbrjmVLXbVqJgYf2x8ZBwPG6GDoyimYyoDa48f9vF/8k+hRr0F++JiliXnbByk5YaKcA
+ o1LRpssmPGL9Metoms/KmtQgLoChZNSaHMjm9Amla5JPn2h+U346khbyRWHCxEDj0JGgt+
+ yiyMcAt99lRRb+dJ/r3NlwZXkKh4Uqo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1726265146;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=VIS+/v5Dnf70mTwaDtHe2DRRn5PhKjTWu5XLODyjuQE=;
+ b=hOlquGSumRDNIhwGdnXm/O55Gr5Yt4q2VKCx7IfH2WXJigzWbOQTcOiDWswhCwssTtjyn+
+ qPEo8bId3rSyS8Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F039013A72;
+ Fri, 13 Sep 2024 22:05:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id CQYtLTi35GaQQgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 13 Sep 2024 22:05:44 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH 0/2] migration/multifd: Fix rb->receivedmap cleanup race
+Date: Fri, 13 Sep 2024 19:05:40 -0300
+Message-Id: <20240913220542.18305-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] tcg: Return TCGOp from tcg_gen_op[1-6]
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, pierrick.bouvier@linaro.org
-References: <20240910212351.977753-1-richard.henderson@linaro.org>
- <20240910212351.977753-2-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240910212351.977753-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 30CA0219B2
+X-Spamd-Result: default: False [-5.00 / 50.00]; BAYES_HAM(-2.99)[99.96%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCPT_COUNT_THREE(0.00)[3]; ARC_NA(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ DKIM_TRACE(0.00)[suse.de:+];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,
+ imap1.dmz-prg2.suse.org:rdns, suse.de:dkim, suse.de:mid]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -5.00
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,13 +119,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Maybe a line like "See the justification in the next commit"?
+This fixes the crash we've been seing recently in migration-test. The
+first patch is a cleanup to have only one place calling
+qemu_loadvm_state_cleanup() and the second patch reorders the cleanup
+calls to make multifd_recv_cleanup() run first and stop the recv
+threads.
 
-On 10/9/24 23:23, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/tcg-internal.h | 12 ++++++------
->   tcg/tcg-op.c       | 23 +++++++++++++++--------
->   2 files changed, 21 insertions(+), 14 deletions(-)
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1453038652
+
+Fabiano Rosas (2):
+  migration/savevm: Remove extra load cleanup calls
+  migration/multifd: Fix rb->receivedmap cleanup race
+
+ migration/migration.c |  1 +
+ migration/migration.h |  1 -
+ migration/savevm.c    | 11 -----------
+ 3 files changed, 1 insertion(+), 12 deletions(-)
+
+-- 
+2.35.3
 
 
