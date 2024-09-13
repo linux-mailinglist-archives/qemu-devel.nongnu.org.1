@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5C39786B9
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 19:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CD4C9786C8
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 19:29:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spA4q-0006ud-Qp; Fri, 13 Sep 2024 13:27:24 -0400
+	id 1spA4s-00070F-6m; Fri, 13 Sep 2024 13:27:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1spA4g-0006CO-AI
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:27:14 -0400
+ id 1spA4l-0006Zo-W2
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:27:20 -0400
 Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1spA4Y-0005vL-US
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:27:13 -0400
+ id 1spA4b-0005wt-SX
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:27:17 -0400
 Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5c4146c7d5dso1401064a12.3
- for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 10:27:06 -0700 (PDT)
+ 4fb4d7f45d1cf-5c4226a5af8so1034710a12.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 10:27:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726248425; x=1726853225; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726248428; x=1726853228; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qJmFYzrzBJkStmV1LFnozcM8CHfOVSOnWWdPSAqY7Qc=;
- b=Qw+Vtzd6IVAGId4iOttExRLVzUDJ7++KJPl2YS6RliwFJTJjVCrZ0bQk5yUWmOJgvb
- 5p36vx9A/W/wzy/S31W5bzvdqD0cjPOYfzyDS29E6KH4xFSa97x5LLfnaxGoRRmYef/R
- /2yRKDjIv8jGP0T2uKIO338yRGGBGrzINXWewmvHII+WfCrPYgQgLCIeFYg8xUeBL8dY
- n+y/Mfrt7Rhld3BvxLVcanwTboMp7tlMxs3XaKoJvtvQVTOhSrmLskjyj2ZEtf59ANY0
- 5J7p6/dS2TSMmbhBM9gAKh4z8fV+ZxQtx8tcJPTEFW6tQchHBRh/dVhy9qr1nTzo529F
- oASg==
+ bh=nKDdDxN3APIqbfrXr39czdsb/f5XxemGM9ivAMoMPDg=;
+ b=fPBx9TEIQb3ACTGpLP9oYdwHqCVs4seMfMKYpSOhyjeo2+HN1x8FFdxZvc/L1z1tZD
+ ogwnA5rdxIVmcY7nqbhR2H6oSCJvAu5eVQfj9JJlo5ilKhzuNTm+RzixJHT673G02XGU
+ +bE7D9Gv9PM/WZqfm1NYJTSfqpfyt1EMdBfJsbejiGfRc5z7YRzDyxIVtu8wdwK3UArE
+ OM2I6JflhWcVqZtMzheE32bgdhLoDRlkvaivv1gmRAPDgOBxkRD+8ZdOoly0M4MELPn3
+ H6oFBjm33Q5u7pel/Ld+/vYc2mTGWtNpgYkorGncdWFAbCNB4wUvf6wOVOesRWqEU8sk
+ LS2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726248425; x=1726853225;
+ d=1e100.net; s=20230601; t=1726248428; x=1726853228;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qJmFYzrzBJkStmV1LFnozcM8CHfOVSOnWWdPSAqY7Qc=;
- b=dwTqNJPa6o/qlRwLkP3fW0idqsCj8Y2yxeT1sHKG1xsc1ZF/vmUC6OropWzUmltKx0
- 2AptrQpHCn16zIN0n73noOd/BDEajN7lfH0QbsQVTjUGrxHvLOhe/Ft0K6EVnD5Yw+oq
- rDFWyPE9hSVJXB8EN9A+LVoNJWI1fXocaesN5D7+5/HHaufIjxI5wfhF3dWYIzqVbcO7
- r3BGXCRQLIkrQmUoICLSHZAQSKlcS/BrsKFJmscw4jiv/V7/vxdriAZASgJLVODvAcH7
- UA5SsRH8hRWurhkhJ2zoN9j8J8uwLTYnWSUnbf2r8mbbov5anGdXtQ4bEQa/7JHQjDF2
- xqUQ==
-X-Gm-Message-State: AOJu0YzCwU5r6ZY9LH/6LCSm4vZFXOO+UnBsMf7mGJfcR1WjSaDXTzZ3
- gXz0bbGqYwPynCUKmYn/vj9bdtzt8uXy+Je56w/OO5KZAF8451yR7uptCLaUtM0=
-X-Google-Smtp-Source: AGHT+IGLPRhNNI0bt9w/iMQTNqGBgqLgWbjN5/Xn+K77TqL0T/kuT3mFR36/UF1Kpyrbp7EH+enDZw==
-X-Received: by 2002:a17:907:25ca:b0:a90:348f:fad7 with SMTP id
- a640c23a62f3a-a9047d3dd87mr313071766b.38.1726248424761; 
- Fri, 13 Sep 2024 10:27:04 -0700 (PDT)
+ bh=nKDdDxN3APIqbfrXr39czdsb/f5XxemGM9ivAMoMPDg=;
+ b=W3aQGyjgdZTPLmQ9wDk+MtOI47ktZWx/Epwf70XrKuWBhPY3yd9G6VYf3s1zUqAZ0m
+ oue5DOfbqw4N0Pc0kY6v9PUEcOfmgbIRkpra33kXvGxBqPnRwMAe2+5vnYflZ30//owk
+ pIfLYNWA+4xTNci+R5sS8VCqKzF+/hBuFPTRYIxTrf6KzfVs+i+qcM65WwU9qlDspkDA
+ IH/ngVNkrbnt0EBPqcIlw8lwLhdcLEu/KiR55cTcXDWpFf6G+hXKWlCow3LbLe+Pqf2U
+ 5i+SSQUCzDwQdcQsCXQQRIv7FhEQ30oRKlUYInXJGSCeZSEPpI6UIOHlmFEPQS+Z6Bew
+ 3CmQ==
+X-Gm-Message-State: AOJu0YwxNlDPj1ODpfFV1H7u/FGqcKfEoz1T1qUD0E/fAz24gPFi9qCw
+ EcEEmDvgzVeZGk86ATDu/n7zdhNPBQKJRiklwrPYus2X3lDFu0aBq/6+EKXj0TQ=
+X-Google-Smtp-Source: AGHT+IGwpJHqZC1lRVdU5S/p2xiz4xV8JcG21H/8OQ/9C30LOaZHjArpJC1qKnevHiXD31wDLT5ueQ==
+X-Received: by 2002:aa7:d9c4:0:b0:5c0:903e:963a with SMTP id
+ 4fb4d7f45d1cf-5c413e5367cmr4076130a12.29.1726248427640; 
+ Fri, 13 Sep 2024 10:27:07 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25830efdsm891313366b.41.2024.09.13.10.26.59
+ 4fb4d7f45d1cf-5c3ebd8cc28sm7886984a12.83.2024.09.13.10.27.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Sep 2024 10:27:00 -0700 (PDT)
+ Fri, 13 Sep 2024 10:27:06 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1D6275FA2D;
+ by draig.lan (Postfix) with ESMTP id 3295C5FA2F;
  Fri, 13 Sep 2024 18:26:57 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,9 +73,10 @@ Cc: Richard Henderson <richard.henderson@linaro.org>, devel@lists.libvirt.org,
  Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH 10/17] tests/tcg: clean up output of memory system test
-Date: Fri, 13 Sep 2024 18:26:48 +0100
-Message-Id: <20240913172655.173873-11-alex.bennee@linaro.org>
+Subject: [PATCH 11/17] tests/tcg: only read/write 64 bit words on 64 bit
+ systems
+Date: Fri, 13 Sep 2024 18:26:49 +0100
+Message-Id: <20240913172655.173873-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240913172655.173873-1-alex.bennee@linaro.org>
 References: <20240913172655.173873-1-alex.bennee@linaro.org>
@@ -106,189 +107,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is useful information when debugging memory issues so lets
-improve by:
+While the compilers will generally happily synthesise a 64 bit value
+for you on 32 bit systems it doesn't exercise anything on QEMU. It
+also makes it hard to accurately compare the accesses to test_data
+when instrumenting.
 
-  - include the ptr address for u8 fills (like the others)
-  - indicate the number of operations for reads and writes
-  - explicitly note when we are flushing
-  - move the fill printf to after the reset
-
-Message-Id: <20240910140733.4007719-20-alex.bennee@linaro.org>
+Message-Id: <20240910140733.4007719-21-alex.bennee@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/multiarch/system/memory.c | 47 ++++++++++++++++++-----------
- 1 file changed, 29 insertions(+), 18 deletions(-)
+ tests/tcg/multiarch/system/memory.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
 diff --git a/tests/tcg/multiarch/system/memory.c b/tests/tcg/multiarch/system/memory.c
-index 6eb2eb16f7..8f2371975d 100644
+index 8f2371975d..680dd4800b 100644
 --- a/tests/tcg/multiarch/system/memory.c
 +++ b/tests/tcg/multiarch/system/memory.c
-@@ -63,12 +63,14 @@ static void init_test_data_u8(int unused_offset)
-     int i;
-     (void)(unused_offset);
- 
--    ml_printf("Filling test area with u8:");
-+    ml_printf("Filling test area with u8 (%p):", ptr);
-+
-     for (i = 0; i < TEST_SIZE; i++) {
-         *ptr++ = BYTE_NEXT(count);
-         pdot(i);
-     }
--    ml_printf("done\n");
-+
-+    ml_printf("done %d @ %p\n", i, ptr);
+@@ -163,6 +163,7 @@ static void init_test_data_u32(int offset)
+     ml_printf("done %d @ %p\n", i, ptr);
  }
  
- /*
-@@ -94,7 +96,7 @@ static void init_test_data_s8(bool neg_first)
-         *ptr++ = get_byte(i, !neg_first);
-         pdot(i);
-     }
--    ml_printf("done\n");
-+    ml_printf("done %d @ %p\n", i * 2, ptr);
- }
- 
- /*
-@@ -105,9 +107,18 @@ static void reset_start_data(int offset)
- {
-     uint32_t *ptr = (uint32_t *) &test_data[0];
-     int i;
-+
-+    if (!offset) {
-+        return;
-+    }
-+
-+    ml_printf("Flushing %d bytes from %p: ", offset, ptr);
-+
-     for (i = 0; i < offset; i++) {
-         *ptr++ = 0;
-     }
-+
-+    ml_printf("done %d @ %p\n", i, ptr);
- }
- 
- static void init_test_data_u16(int offset)
-@@ -117,17 +128,17 @@ static void init_test_data_u16(int offset)
-     const int max = (TEST_SIZE - offset) / sizeof(word);
-     int i;
- 
--    ml_printf("Filling test area with u16 (offset %d, %p):", offset, ptr);
--
-     reset_start_data(offset);
- 
-+    ml_printf("Filling test area with u16 (offset %d, %p):", offset, ptr);
-+
-     for (i = 0; i < max; i++) {
-         uint16_t low = BYTE_NEXT(count), high = BYTE_NEXT(count);
-         word = BYTE_SHIFT(high, 1) | BYTE_SHIFT(low, 0);
-         *ptr++ = word;
-         pdot(i);
-     }
--    ml_printf("done @ %p\n", ptr);
-+    ml_printf("done %d @ %p\n", i, ptr);
- }
- 
- static void init_test_data_u32(int offset)
-@@ -137,10 +148,10 @@ static void init_test_data_u32(int offset)
-     const int max = (TEST_SIZE - offset) / sizeof(word);
-     int i;
- 
--    ml_printf("Filling test area with u32 (offset %d, %p):", offset, ptr);
--
-     reset_start_data(offset);
- 
-+    ml_printf("Filling test area with u32 (offset %d, %p):", offset, ptr);
-+
-     for (i = 0; i < max; i++) {
-         uint32_t b4 = BYTE_NEXT(count), b3 = BYTE_NEXT(count);
-         uint32_t b2 = BYTE_NEXT(count), b1 = BYTE_NEXT(count);
-@@ -149,7 +160,7 @@ static void init_test_data_u32(int offset)
-         *ptr++ = word;
-         pdot(i);
-     }
--    ml_printf("done @ %p\n", ptr);
-+    ml_printf("done %d @ %p\n", i, ptr);
- }
- 
++#if __SIZEOF_POINTER__ == 8
  static void init_test_data_u64(int offset)
-@@ -159,10 +170,10 @@ static void init_test_data_u64(int offset)
-     const int max = (TEST_SIZE - offset) / sizeof(word);
-     int i;
- 
--    ml_printf("Filling test area with u64 (offset %d, %p):", offset, ptr);
--
-     reset_start_data(offset);
- 
-+    ml_printf("Filling test area with u64 (offset %d, %p):", offset, ptr);
-+
-     for (i = 0; i < max; i++) {
-         uint64_t b8 = BYTE_NEXT(count), b7 = BYTE_NEXT(count);
-         uint64_t b6 = BYTE_NEXT(count), b5 = BYTE_NEXT(count);
-@@ -174,7 +185,7 @@ static void init_test_data_u64(int offset)
-         *ptr++ = word;
-         pdot(i);
+ {
+     uint8_t count = 0;
+@@ -187,6 +188,7 @@ static void init_test_data_u64(int offset)
      }
--    ml_printf("done @ %p\n", ptr);
-+    ml_printf("done %d @ %p\n", i, ptr);
+     ml_printf("done %d @ %p\n", i, ptr);
  }
++#endif
  
  static bool read_test_data_u16(int offset)
-@@ -198,7 +209,7 @@ static bool read_test_data_u16(int offset)
-         }
- 
-     }
--    ml_printf("done @ %p\n", ptr);
-+    ml_printf("done %d @ %p\n", i, ptr);
+ {
+@@ -254,6 +256,7 @@ static bool read_test_data_u32(int offset)
      return true;
  }
  
-@@ -239,7 +250,7 @@ static bool read_test_data_u32(int offset)
-             pdot(i);
-         }
-     }
--    ml_printf("done @ %p\n", ptr);
-+    ml_printf("done %d @ %p\n", i, ptr);
++#if __SIZEOF_POINTER__ == 8
+ static bool read_test_data_u64(int offset)
+ {
+     uint64_t word, *ptr = (uint64_t *)&test_data[offset];
+@@ -307,11 +310,16 @@ static bool read_test_data_u64(int offset)
+     ml_printf("done %d @ %p\n", i, ptr);
      return true;
  }
++#endif
  
-@@ -293,7 +304,7 @@ static bool read_test_data_u64(int offset)
-             pdot(i);
-         }
-     }
--    ml_printf("done @ %p\n", ptr);
-+    ml_printf("done %d @ %p\n", i, ptr);
-     return true;
+ /* Read the test data and verify at various offsets */
+-read_ufn read_ufns[] = { read_test_data_u16,
+-                         read_test_data_u32,
+-                         read_test_data_u64 };
++read_ufn read_ufns[] = {
++    read_test_data_u16,
++    read_test_data_u32,
++#if __SIZEOF_POINTER__ == 8
++    read_test_data_u64
++#endif
++};
+ 
+ bool do_unsigned_reads(int start_off)
+ {
+@@ -476,10 +484,14 @@ bool do_signed_reads(bool neg_first)
+     return ok;
  }
  
-@@ -365,7 +376,7 @@ static bool read_test_data_s8(int offset, bool neg_first)
-             return false;
-         }
-     }
--    ml_printf("done @ %p\n", ptr);
-+    ml_printf("done %d @ %p\n", i * 2, ptr);
-     return true;
- }
+-init_ufn init_ufns[] = { init_test_data_u8,
+-                         init_test_data_u16,
+-                         init_test_data_u32,
+-                         init_test_data_u64 };
++init_ufn init_ufns[] = {
++    init_test_data_u8,
++    init_test_data_u16,
++    init_test_data_u32,
++#if __SIZEOF_POINTER__ == 8
++    init_test_data_u64
++#endif
++};
  
-@@ -398,7 +409,7 @@ static bool read_test_data_s16(int offset, bool neg_first)
-             return false;
-         }
-     }
--    ml_printf("done @ %p\n", ptr);
-+    ml_printf("done %d @ %p\n", i, ptr);
-     return true;
- }
- 
-@@ -431,7 +442,7 @@ static bool read_test_data_s32(int offset, bool neg_first)
-             return false;
-         }
-     }
--    ml_printf("done @ %p\n", ptr);
-+    ml_printf("done %d @ %p\n", i, ptr);
-     return true;
- }
- 
+ int main(void)
+ {
 -- 
 2.39.2
 
