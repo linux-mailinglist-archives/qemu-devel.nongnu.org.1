@@ -2,85 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E010F97868C
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 19:21:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEED69786B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 19:28:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp9xd-0008Rx-0Q; Fri, 13 Sep 2024 13:19:57 -0400
+	id 1spA4b-0005kv-IA; Fri, 13 Sep 2024 13:27:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sp9xZ-0008Qd-Qd
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:19:53 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1spA4X-0005dQ-NN
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:27:05 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sp9xY-0004pV-0J
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:19:53 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-374c7e64b60so1516146f8f.2
- for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 10:19:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1spA4U-0005sR-3n
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:27:05 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-378e5d4a80eso6521f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 10:26:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726247990; x=1726852790; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5+AnuVLfHd7PvYvooJv0ht2T97eI71ciQx+O8WpxzLc=;
- b=QuZWAbgrVs+nfADewFrvdsjcs/SmuEYt3jJqe4I9CChGzxHNRm826YgD2QoMh0s7d+
- T0/gpyOK4vOfoGQzR0uRCNWfuDsqsJsRj5tjAheaLH86JNKJVlC7bVcjx7rJSPXm01Z6
- U/Y7J2320K445dQviN9jkRHNIyRtA4FOBC/7xItQMni87uL/3lzRJF0xHGux57wP/YEG
- dE6oJP1TSpfr+V0U3AF3j3IYwirYPB4jCR0Rit38CG/VotnN728R8woB9t8v2iGh9BF9
- XCcs+9JDqx2cJ6/tuIP4NnKlbbHUxbNKgqgzPBLkXRKRU1TOF7CKFJQBgY3ZPPk8Z8u4
- lhsQ==
+ d=linaro.org; s=google; t=1726248418; x=1726853218; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2dzQLuxRk3ZcH5KfpARLW/rp/sE29yXJC5EjCti8cqQ=;
+ b=u6gm3ZYIxy4dHr4C1lnR0wxTc3ZhEFL2cuPQ23X6zdKe2luruzavfqRTyVWWhKJnDQ
+ L9qarFrXtXsPmJc/jtRohQC3QPxWlNHIesAn7HbVvTBJB0ParObg1AazB2eiRDWpARrF
+ mk3u/VRA+TyNXHCPYLIHYVPdpbAB+lpYmEInRidNe5IbpG8RT+psn61iqDJcO8D0tKH8
+ 2mr8HE+TF6wH2HcuxF433P7qmUaaHvV7MQsDeTzOgyjNpO4O1Ownf9mPTvApAJBiF74Q
+ KO1m5eI3DRwSeX7psMZ47Ua0W8I4YQuT2kawxH9EsH92NobzCuA2eHJjBKgp0MncBS8R
+ tp4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726247990; x=1726852790;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5+AnuVLfHd7PvYvooJv0ht2T97eI71ciQx+O8WpxzLc=;
- b=Nhzq/KFTL6N1SQNBSXWzlvCWKtGM1oI4XKDv7JmesPeYzCUDYVnDBgJ9KtjaJaR3NF
- e+yL2Se3Z3g+lphgMyq2IHh+A5mUveOiLgzlVdoHkY5jbBwh1vHkfeZzPR8FnUaFc/fe
- Nmpklgk5l+5pBg1w0wPa4Qj8VoLRLo/ZApfF8Q/KPl4M2S58855WB1nRFwk2FvbtUExt
- U1nLQfeSOrkvNAjfJEfLPc8/N16zUdp/Ib+zV7WYjtvabwL8tE16Cmr3a16XFH2ubOjl
- OU1MvO5LRVgA5F22+wxTjgbPMas9/v9LoxmqG8ZyUNPRmLcMgSD+tc2+GhsCmO8Dpc+A
- KxDg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXO2uyJBRlbITgM7y+Hh/Y96VgSzhY2+SxX8aCObx2b1RSaO3hqmJEREh4KLwnD7zkMvCA7GF/Hn6XC@nongnu.org
-X-Gm-Message-State: AOJu0YzwqTunYIsg/2FW3H7Jzs62k5vm1rm+baIbk7L9sO+x54vKuBRz
- 5l2VPiFEIZze4aUgNr/KumsI27oR9LrGEKc78xu8HoDaK2OnttAUcea9Sw4cPi825v3bkdAf+H7
- w
-X-Google-Smtp-Source: AGHT+IGWQYy2/FVJT7peoyHuU//rhKhotbpYCkDaPa974O1iE/MF8LqMMgNQzJy+/Ao7OcL2L21uTg==
-X-Received: by 2002:a05:6000:ac4:b0:366:ee9b:847 with SMTP id
- ffacd0b85a97d-378c2d05d7emr4030923f8f.14.1726247989640; 
- Fri, 13 Sep 2024 10:19:49 -0700 (PDT)
-Received: from [192.168.69.100] (uni14-h01-176-184-39-243.dsl.sta.abo.bbox.fr.
- [176.184.39.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42d9b05d4e1sm32321805e9.12.2024.09.13.10.19.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Sep 2024 10:19:48 -0700 (PDT)
-Message-ID: <cdd1803b-6db6-42d0-b9a7-0803c5ea0f71@linaro.org>
-Date: Fri, 13 Sep 2024 19:19:47 +0200
+ d=1e100.net; s=20230601; t=1726248418; x=1726853218;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2dzQLuxRk3ZcH5KfpARLW/rp/sE29yXJC5EjCti8cqQ=;
+ b=YkVobgmeQEslfrA7u/nzdCPl2eWA6pDTnGHQoGcRBEBgzfIL8QoBMDEMoi88qY5z9W
+ CQgCve2mL+BoYzzni9KVDtZIWNXG75Akc5a/kB5JddGCqeSQhvgH9o3lcfyQeoobQQOK
+ gBVsUwkzCFI3MG1bfy9FX5MGEh5y3RprLAsDf+0510owNiSz2sWLqZ5DB+4LJlbN4oBA
+ NsDRe+e2q7ttSn0xKPF6AfM7R84Wd8ZZPmMaZ95rZeWeOy2N00MQInSXPxPoTq9ifuld
+ ep6lYdvDbelpJahWdZeDYG0wV3S5vsVgTa27SOHKM77zkwoLlLfsvhjrgane5hxymH3O
+ FdBw==
+X-Gm-Message-State: AOJu0YychMNCA7X31EgeStQkxyQFBXWq0FF/91xR8V7LyTH0LhfVYZWZ
+ MNH1zNxYGDg7kRvKxF70Mbqb8pM6X5zJpqeHKE0u0/UpsHUuNZniZvmTy8Zh84k=
+X-Google-Smtp-Source: AGHT+IFNpeCw+lnp98HNmuulI7lXqNTV2xa/zQ3zLQ8R4fx08bAc2ZKWawb6/XNOeIeSfTJPZTvLUg==
+X-Received: by 2002:adf:f30b:0:b0:371:8dcc:7f9e with SMTP id
+ ffacd0b85a97d-378c2cd3e05mr4315254f8f.2.1726248417582; 
+ Fri, 13 Sep 2024 10:26:57 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5c3ebd468fesm7875310a12.39.2024.09.13.10.26.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Sep 2024 10:26:57 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 1ABF75F897;
+ Fri, 13 Sep 2024 18:26:56 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>, devel@lists.libvirt.org,
+ Thomas Huth <thuth@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-ppc@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>,
+ qemu-s390x@nongnu.org, Alexandre Iooss <erdnaxe@crans.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH 00/17] tcg plugins pre-PR (deprecations, mem apis,
+ contrib plugins)
+Date: Fri, 13 Sep 2024 18:26:38 +0100
+Message-Id: <20240913172655.173873-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] include: Add loongarch_pic_common header file
-To: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
-References: <20240912023537.1004979-1-maobibo@loongson.cn>
- <20240912023537.1004979-4-maobibo@loongson.cn>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240912023537.1004979-4-maobibo@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,77 +104,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/9/24 04:35, Bibo Mao wrote:
-> From: bibo mao <maobibo@loongson.cn>
-> 
-> For header file hw/intc/loongarch_pch_pic.h, add common file
-> hw/intc/loongarch_pic_common.h and remove duplicated macro definition
-> in file loongarch_pch_pic.h
-> 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   include/hw/intc/loongarch_pch_pic.h | 36 +++++------------------------
->   1 file changed, 6 insertions(+), 30 deletions(-)
+I think all these are ready to go having been mostly reviewed in previous
+series. The following still need review:
 
-Maybe easier to review if moved as first patch, moving definitions
-to the new include/hw/intc/loongarch_pic_common.h
+  util/timer: avoid deadlock when shutting down
+  tests/tcg: add a system test to check memory instrumentation
+  tests/tcg: ensure s390x-softmmu output redirected
+  tests/tcg/multiarch: add test for plugin memory access (0 acks, 1 sobs, 1 tbs)
 
-> diff --git a/include/hw/intc/loongarch_pch_pic.h b/include/hw/intc/loongarch_pch_pic.h
-> index d5437e88f2..c71ee59de2 100644
-> --- a/include/hw/intc/loongarch_pch_pic.h
-> +++ b/include/hw/intc/loongarch_pch_pic.h
-> @@ -5,42 +5,16 @@
->    * Copyright (c) 2021 Loongson Technology Corporation Limited
->    */
->   
-> +#ifndef HW_LOONGARCH_PCH_PIC_H
-> +#define HW_LOONGARCH_PCH_PIC_H
-> +
->   #include "hw/sysbus.h"
-> +#include "hw/intc/loongarch_pic_common.h"
->   
->   #define TYPE_LOONGARCH_PCH_PIC "loongarch_pch_pic"
->   #define PCH_PIC_NAME(name) TYPE_LOONGARCH_PCH_PIC#name
->   OBJECT_DECLARE_SIMPLE_TYPE(LoongArchPCHPIC, LOONGARCH_PCH_PIC)
->   
-> -#define PCH_PIC_INT_ID_VAL              0x7000000UL
-> -#define PCH_PIC_INT_ID_VER              0x1UL
-> -
-> -#define PCH_PIC_INT_ID_LO               0x00
-> -#define PCH_PIC_INT_ID_HI               0x04
-> -#define PCH_PIC_INT_MASK_LO             0x20
-> -#define PCH_PIC_INT_MASK_HI             0x24
-> -#define PCH_PIC_HTMSI_EN_LO             0x40
-> -#define PCH_PIC_HTMSI_EN_HI             0x44
-> -#define PCH_PIC_INT_EDGE_LO             0x60
-> -#define PCH_PIC_INT_EDGE_HI             0x64
-> -#define PCH_PIC_INT_CLEAR_LO            0x80
-> -#define PCH_PIC_INT_CLEAR_HI            0x84
-> -#define PCH_PIC_AUTO_CTRL0_LO           0xc0
-> -#define PCH_PIC_AUTO_CTRL0_HI           0xc4
-> -#define PCH_PIC_AUTO_CTRL1_LO           0xe0
-> -#define PCH_PIC_AUTO_CTRL1_HI           0xe4
-> -#define PCH_PIC_ROUTE_ENTRY_OFFSET      0x100
-> -#define PCH_PIC_ROUTE_ENTRY_END         0x13f
-> -#define PCH_PIC_HTMSI_VEC_OFFSET        0x200
-> -#define PCH_PIC_HTMSI_VEC_END           0x23f
-> -#define PCH_PIC_INT_STATUS_LO           0x3a0
-> -#define PCH_PIC_INT_STATUS_HI           0x3a4
-> -#define PCH_PIC_INT_POL_LO              0x3e0
-> -#define PCH_PIC_INT_POL_HI              0x3e4
-> -
-> -#define STATUS_LO_START                 0
-> -#define STATUS_HI_START                 0x4
-> -#define POL_LO_START                    0x40
-> -#define POL_HI_START                    0x44
->   struct LoongArchPCHPIC {
->       SysBusDevice parent_obj;
->       qemu_irq parent_irq[64];
-> @@ -67,3 +41,5 @@ struct LoongArchPCHPIC {
->       MemoryRegion iomem8;
->       unsigned int irq_num;
->   };
-> +
-> +#endif /* HW_LOONGARCH_PCH_PIC_H */
+Alex.
+
+Akihiko Odaki (1):
+  contrib/plugins: Add a plugin to generate basic block vectors
+
+Alex Bennée (8):
+  deprecation: don't enable TCG plugins by default on 32 bit hosts
+  deprecation: don't enable TCG plugins by default with TCI
+  contrib/plugins: control flow plugin
+  tests/tcg: clean up output of memory system test
+  tests/tcg: only read/write 64 bit words on 64 bit systems
+  tests/tcg: ensure s390x-softmmu output redirected
+  tests/tcg: add a system test to check memory instrumentation
+  util/timer: avoid deadlock when shutting down
+
+Pierrick Bouvier (6):
+  plugins: save value during memory accesses
+  plugins: extend API to get latest memory value accessed
+  tests/tcg: add mechanism to run specific tests with plugins
+  tests/tcg: allow to check output of plugins
+  tests/tcg/plugins/mem: add option to print memory accesses
+  tests/tcg/multiarch: add test for plugin memory access
+
+Rowan Hart (2):
+  plugins: add plugin API to read guest memory
+  plugins: add option to dump write argument to syscall plugin
+
+ docs/about/deprecated.rst                     |  19 +
+ docs/about/emulation.rst                      |  44 +-
+ configure                                     |  32 +-
+ accel/tcg/atomic_template.h                   |  66 ++-
+ include/hw/core/cpu.h                         |   4 +
+ include/qemu/plugin.h                         |   4 +
+ include/qemu/qemu-plugin.h                    |  64 ++-
+ contrib/plugins/bbv.c                         | 158 +++++++
+ contrib/plugins/cflow.c                       | 384 ++++++++++++++++++
+ plugins/api.c                                 |  53 +++
+ plugins/core.c                                |   6 +
+ tcg/tcg-op-ldst.c                             |  66 ++-
+ tests/tcg/multiarch/system/memory.c           | 123 ++++--
+ tests/tcg/multiarch/test-plugin-mem-access.c  | 177 ++++++++
+ tests/tcg/plugins/mem.c                       | 248 ++++++++++-
+ tests/tcg/plugins/syscall.c                   | 117 ++++++
+ util/qemu-timer.c                             |  14 +-
+ accel/tcg/atomic_common.c.inc                 |  13 +-
+ accel/tcg/ldst_common.c.inc                   |  38 +-
+ contrib/plugins/Makefile                      |   2 +
+ plugins/qemu-plugins.symbols                  |   2 +
+ tests/tcg/Makefile.target                     |  12 +-
+ tests/tcg/alpha/Makefile.softmmu-target       |   2 +-
+ tests/tcg/alpha/Makefile.target               |   3 +
+ tests/tcg/multiarch/Makefile.target           |  11 +
+ tests/tcg/multiarch/check-plugin-output.sh    |  36 ++
+ .../multiarch/system/Makefile.softmmu-target  |   6 +
+ .../system/validate-memory-counts.py          | 129 ++++++
+ tests/tcg/ppc64/Makefile.target               |   5 +
+ tests/tcg/s390x/Makefile.softmmu-target       |   7 +-
+ 30 files changed, 1762 insertions(+), 83 deletions(-)
+ create mode 100644 contrib/plugins/bbv.c
+ create mode 100644 contrib/plugins/cflow.c
+ create mode 100644 tests/tcg/multiarch/test-plugin-mem-access.c
+ create mode 100755 tests/tcg/multiarch/check-plugin-output.sh
+ create mode 100755 tests/tcg/multiarch/system/validate-memory-counts.py
+
+-- 
+2.39.2
 
 
