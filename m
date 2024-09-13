@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E01997848E
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B3497845E
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:18:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp80W-0002Uq-Oz; Fri, 13 Sep 2024 11:14:53 -0400
+	id 1sp81C-0006DM-Q7; Fri, 13 Sep 2024 11:15:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp805-0001mb-NT
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:21 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1sp807-00020E-LK
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:24 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp803-0007mE-TK
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:21 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42cb5b3c57eso21724075e9.2
- for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:19 -0700 (PDT)
+ id 1sp804-0007mR-Qb
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:23 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-374b25263a3so783831f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726240458; x=1726845258; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726240459; x=1726845259; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NsggWRJP3KBRd4q9MhVbNlsb0QgXLnb4719LpHM7BO4=;
- b=TR1on2ZiC9tjSl411W3LtZacrLw+dtq4ANl7PadI/6z64SwBZ+YUjdmvGoh719+t7l
- tM6sD6/yb2QrbCrNjzv+QBvOOxLwgmEWgJs2Hj8G+uISHbMO4vMdTpVQg83AdQcIH0/Q
- mnm4prrYSaJnc0W8x6oZrZV2iekVGY7fZvLUAf0q0RqlrTxqOzbE1veOuTDdYyT7K22w
- U1/3xVviu2LgbzlcFkIYcd7kBC/a4ABtfnxb2gAG4GdgQgt7jO6iRveoYBwZ59mXvtdi
- 5cowSytUObcUesdziSSnv4tBzr8xuEh2g9hauqECfNgV2iitmZzIE6mYrmsD0cuzcLfx
- SXqg==
+ :reply-to; bh=txDZ12T6fHXdIDZypcg9V1CdvFzmbSQBApsf5uAHoUk=;
+ b=bXw+bq1nnsKeUf1RM6xyQViv0scSsJcM0wxm+lS7aF8G2Jn/ZAZtDI5YkirhHKdzD6
+ lW8JWvRvTCikI9DAgVbYrOLt4yz0mQ5L/oS2Z2mCTOtjiCxus8WiIir620MXiOR24339
+ 05oA+SHmI5Bx1FYbTmChJLtA6EtG7cFNDmlxz/LZKyssEwgS4DDoU1LkeW60mR0JTm7Y
+ 162IYe9nukcHIhg3FcsrwTbKVEYUuuTmnMlU7a5TklVEC/M2yGG67EHBY/fBhGWoauk6
+ y7+kycEmKs14cyBm/Jfq7sCSl93xhiPB+P4TOrtrhVPU/zx++p6wiV792du2yuFm64Gg
+ 5Abg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726240458; x=1726845258;
+ d=1e100.net; s=20230601; t=1726240459; x=1726845259;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NsggWRJP3KBRd4q9MhVbNlsb0QgXLnb4719LpHM7BO4=;
- b=HHsAwrDrkwvlaCty4PXGZ+9rBqxlKjVMzBjFRis86iOoAscb1Fcb4q4e26tyaTbpxy
- s55ESStxqkTBgWSi1XRfI/tuYW+MKiF2L4f3HP4Yyuxuw/8T0523/6YcGKRIWKdd5nSL
- 61g5mTZp8x/3KVWDTK6ekzq4rk6T7/x9fa/d7DxJ9hOUjCxdkYeO53uOvYxaXeKgSoph
- 0ktLjh6dnnudNp/6bewyKlGn8A93yOtnA2dlPs59Rs2j/0LyLRG1HUj/TAJuBYiRsU74
- cpNJJaQgN84cmt3/o4Kkz8w16hNPrKnt55GI6NT9YBZygRAyQi4sLnbu2l8QupKnl8AV
- PVLg==
-X-Gm-Message-State: AOJu0YxNpVz6cTp98P50CQRtI7BM21PvUUM2E259hZ9QZiWncc+hACw9
- 3B/zrktg5hREAh0ONsDP8z4P9cVXt/sUCOIPQDHp3sXck6BQYu2qqL/3CVS7dJX497E+K2mCmEZ
- e
-X-Google-Smtp-Source: AGHT+IHd54mqYLBNgpLP2MHv3K8qbLcnA9H8YKFYTq0j8M21NZenf/PxuNY6UPgH7LfLNxTVhXO5Dg==
-X-Received: by 2002:adf:e684:0:b0:374:c56c:fbb4 with SMTP id
- ffacd0b85a97d-378c2d0627dmr4000787f8f.22.1726240458393; 
+ bh=txDZ12T6fHXdIDZypcg9V1CdvFzmbSQBApsf5uAHoUk=;
+ b=V8aBbEGFaJjIjxNBIlB21PgrGp0bBV4omzEKY2J6GD4q58r363O+/Pw62Z5ZUWFJ5V
+ EEm7nIs6aDc02doTwuM1bKBQNUungmWQmtdVfl/136UEkIbdFCVlCnN4P4qusf9syNsK
+ YtgxUPyjYtuMSN4CZ2rZd7I9fsRzcqs16KEn45uJVGi6sk5RAGJMnPeFFvwwmKrYc1/f
+ jItc67A8tFUnLP09GQhOpNemOw7ZxNR166u7y+ALO3xOBIEOQQBI9xest+7xg3fTudZh
+ ea3IW3Q5FRYzbXuaihtl1HciU4Vb51oBeIr4uiKdLxhlh9wSt3qKAqf4FA46gprECLFr
+ fgaQ==
+X-Gm-Message-State: AOJu0YxF8kBvTnygvIHsk7aeCWGKnKyXwXeu6ldkLqr/7m0PTZxoeJGn
+ xe/CLc9/Cnc/DsmpJRefQFz7RiJ8qrSapzUjNWmHIOOsrBB4L4iIrpx8jZbw+gCUKdYPh/4IR+x
+ /
+X-Google-Smtp-Source: AGHT+IG5EdxSXSQ/U2OqhaPKxZ76SL2bWR+NH8voCDOJZs+XFCZcbgUEh6hAd4w1pNENtgKUG581NA==
+X-Received: by 2002:a5d:5987:0:b0:374:c269:df79 with SMTP id
+ ffacd0b85a97d-378d61e2b52mr2246391f8f.22.1726240458852; 
  Fri, 13 Sep 2024 08:14:18 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 13 Sep 2024 08:14:18 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/27] hw/core/qdev: Simplify legacy_reset handling
-Date: Fri, 13 Sep 2024 16:13:54 +0100
-Message-Id: <20240913151411.2167922-11-peter.maydell@linaro.org>
+Subject: [PULL 11/27] hw/core/resettable: Remove transitional_function
+ machinery
+Date: Fri, 13 Sep 2024 16:13:55 +0100
+Message-Id: <20240913151411.2167922-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240913151411.2167922-1-peter.maydell@linaro.org>
 References: <20240913151411.2167922-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,106 +92,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all devices which still implement a the legacy reset method
-register it via device_class_legacy_reset(), we can simplify the
-handling of these devices.  Instead of using the complex
-Resettable::get_transitional_function machinery, we register a hold
-phase method which invokes the DeviceClass::legacy_reset method.
-
-This will allow us to remove all the get_transitional_function
-handling from resettable.c.
+We used to need the transitional_function machinery to handle bus
+classes and device classes which still used their legacy reset
+handling.  We have now converted all bus classes to three phase
+reset, and simplified the device class legacy reset so it is just an
+adapting wrapper function around registration of a hold phase method.
+There are therefore no more users of the transitional_function
+machinery and we can remove it.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240830145812.1967042-11-peter.maydell@linaro.org
+Message-id: 20240830145812.1967042-12-peter.maydell@linaro.org
 ---
- hw/core/qdev.c | 55 ++++++++++++++++++++------------------------------
- 1 file changed, 22 insertions(+), 33 deletions(-)
+ include/hw/resettable.h | 13 -------------
+ hw/core/resettable.c    | 24 +++---------------------
+ 2 files changed, 3 insertions(+), 34 deletions(-)
 
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index 9af0ed3e1b7..db36f54d914 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -747,35 +747,6 @@ device_vmstate_if_get_id(VMStateIf *obj)
-     return qdev_get_dev_path(dev);
+diff --git a/include/hw/resettable.h b/include/hw/resettable.h
+index 83b561fc830..94f6f22e3cf 100644
+--- a/include/hw/resettable.h
++++ b/include/hw/resettable.h
+@@ -90,14 +90,6 @@ typedef enum ResetType {
+  * @get_state: Mandatory method which must return a pointer to a
+  * ResettableState.
+  *
+- * @get_transitional_function: transitional method to handle Resettable objects
+- * not yet fully moved to this interface. It will be removed as soon as it is
+- * not needed anymore. This method is optional and may return a pointer to a
+- * function to be used instead of the phases. If the method exists and returns
+- * a non-NULL function pointer then that function is executed as a replacement
+- * of the 'hold' phase method taking the object as argument. The two other phase
+- * methods are not executed.
+- *
+  * @child_foreach: Executes a given callback on every Resettable child. Child
+  * in this context means a child in the qbus tree, so the children of a qbus
+  * are the devices on it, and the children of a device are all the buses it
+@@ -109,8 +101,6 @@ typedef void (*ResettableEnterPhase)(Object *obj, ResetType type);
+ typedef void (*ResettableHoldPhase)(Object *obj, ResetType type);
+ typedef void (*ResettableExitPhase)(Object *obj, ResetType type);
+ typedef ResettableState * (*ResettableGetState)(Object *obj);
+-typedef void (*ResettableTrFunction)(Object *obj);
+-typedef ResettableTrFunction (*ResettableGetTrFunction)(Object *obj);
+ typedef void (*ResettableChildCallback)(Object *, void *opaque,
+                                         ResetType type);
+ typedef void (*ResettableChildForeach)(Object *obj,
+@@ -130,9 +120,6 @@ struct ResettableClass {
+     /* State access method */
+     ResettableGetState get_state;
+ 
+-    /* Transitional method for legacy reset compatibility */
+-    ResettableGetTrFunction get_transitional_function;
+-
+     /* Hierarchy handling method */
+     ResettableChildForeach child_foreach;
+ };
+diff --git a/hw/core/resettable.c b/hw/core/resettable.c
+index 6dd3e3dc487..5cdb4a4f8d3 100644
+--- a/hw/core/resettable.c
++++ b/hw/core/resettable.c
+@@ -93,20 +93,6 @@ static void resettable_child_foreach(ResettableClass *rc, Object *obj,
+     }
  }
  
--static void device_transitional_reset(Object *obj)
--{
--    DeviceClass *dc = DEVICE_GET_CLASS(obj);
--
--    /*
--     * Device still using DeviceClass legacy_reset method. This doesn't
--     * reset children. device_get_transitional_reset() checked that
--     * this isn't NULL.
--     */
--    dc->legacy_reset(DEVICE(obj));
--}
--
 -/**
-- * device_get_transitional_reset:
-- * check if the device's class is ready for multi-phase
+- * resettable_get_tr_func:
+- * helper to fetch transitional reset callback if any.
 - */
--static ResettableTrFunction device_get_transitional_reset(Object *obj)
+-static ResettableTrFunction resettable_get_tr_func(ResettableClass *rc,
+-                                                   Object *obj)
 -{
--    DeviceClass *dc = DEVICE_GET_CLASS(obj);
--    if (dc->legacy_reset) {
--        /*
--         * dc->reset has been overridden by a subclass,
--         * the device is not ready for multi phase yet.
--         */
--        return device_transitional_reset;
+-    ResettableTrFunction tr_func = NULL;
+-    if (rc->get_transitional_function) {
+-        tr_func = rc->get_transitional_function(obj);
 -    }
--    return NULL;
+-    return tr_func;
 -}
 -
- static void device_class_init(ObjectClass *class, void *data)
+ static void resettable_phase_enter(Object *obj, void *opaque, ResetType type)
  {
-     DeviceClass *dc = DEVICE_CLASS(class);
-@@ -800,12 +771,9 @@ static void device_class_init(ObjectClass *class, void *data)
-      * A NULL legacy_reset implies a three-phase reset device. Devices can
-      * only be reset using three-phase aware mechanisms, but we still support
-      * for transitional purposes leaf classes which set the old legacy_reset
--     * method via device_class_set_legacy_reset(). If they do so, then
--     * device_get_transitional_reset() will notice and arrange for the
--     * DeviceClass::legacy_reset() method to be called during the hold phase.
-+     * method via device_class_set_legacy_reset().
-      */
-     dc->legacy_reset = NULL;
--    rc->get_transitional_function = device_get_transitional_reset;
- 
-     object_class_property_add_bool(class, "realized",
-                                    device_get_realized, device_set_realized);
-@@ -817,8 +785,29 @@ static void device_class_init(ObjectClass *class, void *data)
-                                    offsetof(DeviceState, parent_bus), NULL, 0);
- }
- 
-+static void do_legacy_reset(Object *obj, ResetType type)
-+{
-+    DeviceClass *dc = DEVICE_GET_CLASS(obj);
-+
-+    dc->legacy_reset(DEVICE(obj));
-+}
-+
- void device_class_set_legacy_reset(DeviceClass *dc, DeviceReset dev_reset)
- {
-+    /*
-+     * A legacy DeviceClass::reset has identical semantics to the
-+     * three-phase "hold" method, with no "enter" or "exit"
-+     * behaviour. Classes that use this legacy function must be leaf
-+     * classes that do not chain up to their parent class reset.
-+     * There is no mechanism for resetting a device that does not
-+     * use the three-phase APIs, so the only place which calls
-+     * the legacy_reset hook is do_legacy_reset().
-+     */
-+    ResettableClass *rc = RESETTABLE_CLASS(dc);
-+
-+    rc->phases.enter = NULL;
-+    rc->phases.hold = do_legacy_reset;
-+    rc->phases.exit = NULL;
-     dc->legacy_reset = dev_reset;
- }
- 
+     ResettableClass *rc = RESETTABLE_GET_CLASS(obj);
+@@ -146,7 +132,7 @@ static void resettable_phase_enter(Object *obj, void *opaque, ResetType type)
+     if (action_needed) {
+         trace_resettable_phase_enter_exec(obj, obj_typename, type,
+                                           !!rc->phases.enter);
+-        if (rc->phases.enter && !resettable_get_tr_func(rc, obj)) {
++        if (rc->phases.enter) {
+             rc->phases.enter(obj, type);
+         }
+         s->hold_phase_pending = true;
+@@ -171,12 +157,8 @@ static void resettable_phase_hold(Object *obj, void *opaque, ResetType type)
+     /* exec hold phase */
+     if (s->hold_phase_pending) {
+         s->hold_phase_pending = false;
+-        ResettableTrFunction tr_func = resettable_get_tr_func(rc, obj);
+         trace_resettable_phase_hold_exec(obj, obj_typename, !!rc->phases.hold);
+-        if (tr_func) {
+-            trace_resettable_transitional_function(obj, obj_typename);
+-            tr_func(obj);
+-        } else if (rc->phases.hold) {
++        if (rc->phases.hold) {
+             rc->phases.hold(obj, type);
+         }
+     }
+@@ -199,7 +181,7 @@ static void resettable_phase_exit(Object *obj, void *opaque, ResetType type)
+     assert(s->count > 0);
+     if (--s->count == 0) {
+         trace_resettable_phase_exit_exec(obj, obj_typename, !!rc->phases.exit);
+-        if (rc->phases.exit && !resettable_get_tr_func(rc, obj)) {
++        if (rc->phases.exit) {
+             rc->phases.exit(obj, type);
+         }
+     }
 -- 
 2.34.1
 
