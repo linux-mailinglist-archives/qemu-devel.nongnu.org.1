@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57CB978467
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D71C978462
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:18:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp80d-0003Ok-2I; Fri, 13 Sep 2024 11:14:56 -0400
+	id 1sp80p-0004Ll-9H; Fri, 13 Sep 2024 11:15:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp809-000299-Tk
+ id 1sp80A-0002Aq-Ca
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:26 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp807-0007nj-E4
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:25 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42cb806623eso20966345e9.2
- for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:23 -0700 (PDT)
+ id 1sp808-0007o8-Os
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:26 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-42cd74c0d16so22129265e9.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726240462; x=1726845262; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726240463; x=1726845263; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=dcqXMxLjwWlPP6O8WmHKBKl3hhhcbk38Qfnbk5uacwc=;
- b=koen2+tUovz6PKNMtguqFw/H7i7YfxdJuEE/KFGDMlqerTvrtntFOtMK7SC0/2DeoH
- ZBlWHv7NvpbnbEgurIGvbOoVHEpD8OAKEnbqFJLQxY23tzP36wXPukM5fdlMxO9oeELS
- O2MdnLIvp+gZmBfo6eDUc3WvQinkatJWr1CumBlTWeJ5zYZlYLbGXocRvzXKhX3ifRXV
- 0Nk1JQeHALBec39YFDRZZqYkKQ5Ju8WZkIaDVlfx9yefKFysPgUJlAWayeuWYSZdqYlA
- gRtML1LgGE48x8cy90LnetTTchMGdmhwlbx6pwN+aTSIk5dpFZsWxCcwtlCNMiCvFQij
- Nd1g==
+ :reply-to; bh=1ZFwfAVKTgNipDHShNCsT5K1gdfzcBV1L7/A4/MYLhs=;
+ b=cPzIHRupc9mfN1ExCtvRcXcrpF98fx2VdQ+istq/Ows8KUQE5UOwWfHc3+D3Zh8N8u
+ zZ4jpm5Y8sIJSntSQ31kjw9sRFk7/byTZdtEd0tA+FCFwTpAjZUpZQeiusjk4lHCGOXw
+ eyquFRdXShMNGUNsAgR+MuOR6zKOVI3cTPryFgFKVqhgnwsF9xQ1Ojhwk3zLReh7ixVg
+ grg4OtXcdxCpa9eaYS05uFqXUXdPXXTkC7Mio3mkmLsmvzChODaHtA1PkKTcXy3vbZ2z
+ V7AjnaDKFvI//Lt/wUfOW6TXxSaFHJ+1i/sv1kchgY++ZzoRvwBLqkcP3Bkp6TaiMxQ3
+ dRKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726240462; x=1726845262;
+ d=1e100.net; s=20230601; t=1726240463; x=1726845263;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dcqXMxLjwWlPP6O8WmHKBKl3hhhcbk38Qfnbk5uacwc=;
- b=f48eqFy4O0HV3PztRuxvVdP8MBvY55ExZITGVX6KmFBhHEbT1MajCtMS7VegcXdY0W
- jh0xisrjh6WCfRcZ0bkOJ0XWHbcG1gs/Fk0dB9rzDuyan7uIlNcjXo9/F8I2M2Yg4IUW
- VOtbLMJR+P3YUjUkDevK+87lukJutnIWzPzJNhCDnBOHIZXBOzmMlvUo/NgAeq1kISJr
- a1uhLovBiXbSDr/L2SUs4VL4e7Vnt/Fm8Dte4gfPInkpvwrTXtCItRQcWAO1CQ6Kk7DN
- wH+2SlFkoaEPTzbuVHHepPxPyoHX20gDzflkcc/gQCx4j6MzRshpviQghDRBMtm2OIe3
- Iqdw==
-X-Gm-Message-State: AOJu0Yy+PB7isTiQBpnvhZCzZVzvhNnBMgvkjTePRRaH6Wx/vrJ07d6v
- DCubIEgUeizZfL5/Aho/J94pEPa3EQ39bqhq/4PTSZoTrG1KQZSmgJzGmF7HlPuAIzJxDdYwO74
- 1
-X-Google-Smtp-Source: AGHT+IGNHCfGwidw6zlDXf7OlsNh4WrTDGhpS6PdDMI5XdpKJgBbN5rbEqsSgoYYe2zB66Atu7jqxg==
-X-Received: by 2002:a05:600c:1c1a:b0:42c:b037:5f9d with SMTP id
- 5b1f17b1804b1-42cdb4e6a7bmr57568285e9.3.1726240461998; 
- Fri, 13 Sep 2024 08:14:21 -0700 (PDT)
+ bh=1ZFwfAVKTgNipDHShNCsT5K1gdfzcBV1L7/A4/MYLhs=;
+ b=C2TT4Cpaj1Wwjjikseb8qtmdtLAIba1CRFoXPTz/ER6hPb4guD5zlOxAL9cRSHXzfC
+ PtfKGmQdc2A+GSccN4VRc97/04P7/csHRjFBz66I91fhFwxJhYkil9qfLHwY0xor0L6+
+ OzJPLHqm33o8mkaS112Jxb9ti5u/+KnCRgh4NQY9WobCDPEnzBo1Ty45N5wovMl8p8Lw
+ cVIRe1F1k+RGOhcsLrxjJuKgZappB73fjawHyUjROb1Zlryc6jTUmR3zHMVzIM7FnHI4
+ P8kQH1sOKZkN6B3vz9U+nvst6GtXiTwUcXqfjtBmcwz2SmMryMLt/F79ltUgE1l7cdu0
+ o90A==
+X-Gm-Message-State: AOJu0YxmiVkk7foWe5LbwAQETuD486LUqT7A40Wb0ATLFi1hm9L7kAka
+ N7ir/Q4wmDjW6VsLe9LrfXfYS5s5Yn1QmLhAj2dBS6WqKSBWyqQzwt3XjaDuk3F0VvQLc2HY3Yj
+ e
+X-Google-Smtp-Source: AGHT+IFFKCP0NoR03t4tL3/mvEffrOJ2VblDT5XUshbXTUEms8yHxFG0E66PQVwzZ3yoBh1hwJNiBQ==
+X-Received: by 2002:a7b:c453:0:b0:42c:de34:34c1 with SMTP id
+ 5b1f17b1804b1-42cde34376bmr49875985e9.2.1726240463099; 
+ Fri, 13 Sep 2024 08:14:23 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42d9b16bfbfsm29152325e9.22.2024.09.13.08.14.21
+ 5b1f17b1804b1-42d9b16bfbfsm29152325e9.22.2024.09.13.08.14.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Sep 2024 08:14:21 -0700 (PDT)
+ Fri, 13 Sep 2024 08:14:22 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/27] hw/net/can/xlnx-versal-canfd: Fix interrupt level
-Date: Fri, 13 Sep 2024 16:14:01 +0100
-Message-Id: <20240913151411.2167922-18-peter.maydell@linaro.org>
+Subject: [PULL 18/27] hw/net/can/xlnx-versal-canfd: Fix CAN FD flag check
+Date: Fri, 13 Sep 2024 16:14:02 +0100
+Message-Id: <20240913151411.2167922-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240913151411.2167922-1-peter.maydell@linaro.org>
 References: <20240913151411.2167922-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,35 +93,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Doug Brown <doug@schmorgal.com>
 
-The interrupt level should be 0 or 1. The existing code was using the
-interrupt flags to determine the level. In the only machine currently
-supported (xlnx-versal-virt), the GICv3 was masking off all bits except
-bit 0 when applying it, resulting in the IRQ never being delivered.
+When checking the QEMU_CAN_FRMF_TYPE_FD flag, we need to ignore other
+potentially set flags. Before this change, received CAN FD frames from
+SocketCAN weren't being recognized as CAN FD.
 
 Signed-off-by: Doug Brown <doug@schmorgal.com>
-Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Reviewed-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
-Message-id: 20240827034927.66659-2-doug@schmorgal.com
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Message-id: 20240827034927.66659-3-doug@schmorgal.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/net/can/xlnx-versal-canfd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/net/can/xlnx-versal-canfd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
-index b30edb83bf8..f89dfc565b5 100644
+index f89dfc565b5..add1e0fbf17 100644
 --- a/hw/net/can/xlnx-versal-canfd.c
 +++ b/hw/net/can/xlnx-versal-canfd.c
-@@ -682,8 +682,8 @@ static uint8_t canfd_dlc_array[8] = {8, 12, 16, 20, 24, 32, 48, 64};
+@@ -1003,7 +1003,7 @@ static void store_rx_sequential(XlnxVersalCANFDState *s,
  
- static void canfd_update_irq(XlnxVersalCANFDState *s)
- {
--    unsigned int irq = s->regs[R_INTERRUPT_STATUS_REGISTER] &
--                        s->regs[R_INTERRUPT_ENABLE_REGISTER];
-+    const bool irq = (s->regs[R_INTERRUPT_STATUS_REGISTER] &
-+                      s->regs[R_INTERRUPT_ENABLE_REGISTER]) != 0;
-     g_autofree char *path = object_get_canonical_path(OBJECT(s));
+         dlc = frame->can_dlc;
  
-     /* RX watermark interrupts. */
+-        if (frame->flags == QEMU_CAN_FRMF_TYPE_FD) {
++        if (frame->flags & QEMU_CAN_FRMF_TYPE_FD) {
+             is_canfd_frame = true;
+ 
+             /* Store dlc value in Xilinx specific format. */
 -- 
 2.34.1
 
