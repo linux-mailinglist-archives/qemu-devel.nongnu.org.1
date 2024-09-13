@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489249784AB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0598797845C
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:18:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp816-0005d1-Re; Fri, 13 Sep 2024 11:15:25 -0400
+	id 1sp81H-0006Ic-3i; Fri, 13 Sep 2024 11:15:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp80E-0002PJ-5g
+ id 1sp80E-0002Qn-IF
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:31 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp80C-0007pP-8T
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:29 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42cb6f3a5bcso13906095e9.2
- for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:27 -0700 (PDT)
+ id 1sp80C-0007pW-Oa
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:30 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42cafda818aso21785405e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1726240467; x=1726845267; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Fude+uQBvTUC4WQt1NMV57c6fElhXstVxcGWa2blBAU=;
- b=t45f7JXqcJSIawSKF81+g0Kxls+omxPJg6k/KPkpjfLwqWidPSHPI2N73GTGxTpVig
- yw2F1TFrYhfnoKDBrCEiThdRh0GlKBcZ4H5wWTdOSsHk358IbFEa7QXe8C7CAKInxE3o
- fqv/AbIIGOiAe4jqiQGHnSd+f3DQX3NTlnNdi6lrkIEDMQZVGnuwA9J/p8y50Vt8HveL
- VBZZCH9YAMvoMkMN9bLjcT2SbC5OOCUy7+qPkl8XdiKAjuMucw6OMnuUL98SYhHSWWTY
- WRtyZRJZXDxs3E9sfgJNnZwEnho3Kv7mUtujKrNpZhNCUbl6yoLsn/0Q6XpZLz4v7KMH
- kwOw==
+ :reply-to; bh=qYwSezei3GHgmowM3iNNbQqlhKZV+rcT9uJVVE4D7io=;
+ b=hKHVaT3BhLde92e4i4LYTvEvH3PcKlX0u8t7wJEUqYAAYwGo24xZIrMp/hxoNbJRnr
+ REjUN9yD4g60iOa95/pTfYs0E9RAMD1k6KfR7hc4UUjoD5CSrS8/04iABqTfbs+TGWSC
+ QCLuZKVoE5cBIi8DkOg+T1tzoOcUg+8JiLoXZmYgor55avCS/Fy2DN0rvAJOpDwokz3/
+ 4AnHQwFYTzLA5qNAkq0++1SdTvfQ7R+eO+k4I2Gny1xqJA/FFSmOe42IxZzym4ccTfw4
+ jd9+4+9n0GEByb2C8SIPORmcsmJ/0YtZM5enNIrqEQE+AXW4nh5zgMC35CHZb1qOYVhd
+ n89g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1726240467; x=1726845267;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fude+uQBvTUC4WQt1NMV57c6fElhXstVxcGWa2blBAU=;
- b=H7SOD2FWLgIaKq6WVpEc3Fx5xcwVz+PdH343X0/vFRYeL0+WB8HOrlCnO8bAF4Xahh
- ZOoSDBj1cLjia7ijPnn0FX5R3FBfvExZyMwhMYORVf2f9URxgEs4CnvJ2skOQ5NxuKTk
- XX5LAmhREpeKl8WzOhoiiZq/F9Ym028aUSnQlQGy/qrTM1tW5uGD5ElG0s0nKmNMWtJ0
- nvOFAIIRiEf9XWZmB3VV/5tfgukTlD6yp8ddgJRqsQfAOm+tSHNz37NapmD3U8S9Zh8o
- cSJIeZPjpnz254LfMIua9WAipeKmgLqjz0yStahvCkYRHKsYr+4TrfqBektxLix3662V
- HNrw==
-X-Gm-Message-State: AOJu0YzERP/CljAKEIrg1skCauj90FvD96clPVijczzRNLTGHAYES/nF
- f0jIfcrKU9a8GEFuCQX5R+JrB7a61bK6b3tM7qC1sGnjZBkQEKiGFqcVMB+wx1OwJQ+ZYD/lQ6X
- e
-X-Google-Smtp-Source: AGHT+IG5uyABQnJRg8IN+dRjrtngQJQTWqFKcRcEpKWPTLvh2/xBNuobPA6+1ay+6yOgB7DuKuXJ+g==
-X-Received: by 2002:a05:600c:1c9a:b0:42c:b187:bdd5 with SMTP id
- 5b1f17b1804b1-42d964d6625mr33684025e9.22.1726240466690; 
- Fri, 13 Sep 2024 08:14:26 -0700 (PDT)
+ bh=qYwSezei3GHgmowM3iNNbQqlhKZV+rcT9uJVVE4D7io=;
+ b=FK7TC5EZZjfcLUCigc0HmOr0qa6zoeKbcqC195LkZnEAt9N3oAaOSzAuHhd2s8I5+k
+ DAWFGMUJs+dabVjLKVMq+OZ1MGU/7dStX1IqgH69WvfNEsx8u3wmvksasckEyuJuMkMw
+ MogTpJWkDO5t0fBGhhtQaNTzQxc7wAI7C2j8BLV9+yOM/2P+z7EntBdiep2MDb9PBvQd
+ KFGfg+bHkwyyjpHEMq2p8nWqrIxI/4AtLubrjhYMpDZIsEsbGm4fNYC2jk6pcqWslZE3
+ oMPurTbh5x3nLe+8dn77jZIufrN4EcYretswu0/UP0ogWQBjDlwnJbKNTr7U2P8ke65d
+ x/lg==
+X-Gm-Message-State: AOJu0YwOJ/XN6GHA1kpbpGmhK07/27+tttxP8WBTK59pUnONrAaTpvUN
+ LV0KvVETsLr2R1UUFgRdb7EqqYVx/akHBm4cG0JXC+j0pXqj0jeGEkWAnT/wCFTLPWuRun8GjYs
+ N
+X-Google-Smtp-Source: AGHT+IGsDwzWmd7DBFqfEckPgVFGSN1K8tlaf18PdwFC79GkjGmr0AMorlPbvjteW09sVCSNoLNILQ==
+X-Received: by 2002:a05:600c:3514:b0:42c:df67:1d35 with SMTP id
+ 5b1f17b1804b1-42cdf671f9emr53039085e9.1.1726240467134; 
+ Fri, 13 Sep 2024 08:14:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-42d9b16bfbfsm29152325e9.22.2024.09.13.08.14.26
@@ -59,17 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 13 Sep 2024 08:14:26 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 25/27] MAINTAINERS: Update Xilinx Versal OSPI maintainer's
- email address
-Date: Fri, 13 Sep 2024 16:14:09 +0100
-Message-Id: <20240913151411.2167922-26-peter.maydell@linaro.org>
+Subject: [PULL 26/27] MAINTAINERS: Add my-self as CAN maintainer
+Date: Fri, 13 Sep 2024 16:14:10 +0100
+Message-Id: <20240913151411.2167922-27-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240913151411.2167922-1-peter.maydell@linaro.org>
 References: <20240913151411.2167922-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,29 +93,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Francisco Iglesias <francisco.iglesias@amd.com>
 
-Update my xilinx.com email address to my amd.com address.
-
 Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
-Message-id: 20240906181645.40359-3-francisco.iglesias@amd.com
+Message-id: 20240906181645.40359-4-francisco.iglesias@amd.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 8be4f524779..b9812d46525 100644
+index b9812d46525..b05505436a8 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1058,7 +1058,7 @@ F: include/hw/display/dpcd.h
- F: docs/system/arm/xlnx-versal-virt.rst
+@@ -2707,6 +2707,7 @@ F: include/hw/rx/
  
- Xilinx Versal OSPI
--M: Francisco Iglesias <francisco.iglesias@xilinx.com>
+ CAN bus subsystem and hardware
+ M: Pavel Pisa <pisa@cmp.felk.cvut.cz>
 +M: Francisco Iglesias <francisco.iglesias@amd.com>
  S: Maintained
- F: hw/ssi/xlnx-versal-ospi.c
- F: include/hw/ssi/xlnx-versal-ospi.h
+ W: https://canbus.pages.fel.cvut.cz/
+ F: net/can/*
 -- 
 2.34.1
 
