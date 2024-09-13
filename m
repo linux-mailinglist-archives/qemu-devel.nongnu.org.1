@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9AB9786BB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 19:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A02FC9786BD
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 19:28:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spA4q-0006rd-Iz; Fri, 13 Sep 2024 13:27:24 -0400
+	id 1spA4u-0007BE-8s; Fri, 13 Sep 2024 13:27:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1spA4g-0006Ci-Bt
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:27:14 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ id 1spA4h-0006I9-JT
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:27:18 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1spA4Y-0005v0-T6
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:27:12 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-5367ae52a01so1701296e87.3
- for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 10:27:06 -0700 (PDT)
+ id 1spA4a-0005wD-5X
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:27:15 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a8a706236bfso61080466b.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 10:27:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726248425; x=1726853225; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726248426; x=1726853226; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tNcKpK3gqW5pd0AiX4NmCCbDvgLi1QOfUkQVya3+J3c=;
- b=dMhgqKHttWXwg9Hh6JYeL1Tj8VkZyAbigPLnhy/oIv+rApl6Lv0uhT2bATbqWvIhvm
- QNhR0b0KaIaeMvBls27WvnIE0lDwgHB0EMIH2AS3Z0X/6Wal+fMman/ISsf/XbvFjvlu
- W0xuT7GG9jYjXpctWgENIf8LEq48nUfoCOOl12bkmVKMqlkvF8omOM53R7kgx1tmJ0Jc
- akgUMZKwy/T0tiMjg/sLd/Dlzi/gSFRrpEWGUxeepznASLM0D9XgW6COyBqLnMgG0DVM
- 14fra2FuRO0SSpE2rMJLrnc4MZX0T+s+a/DoKEY4CAkauZE835VGVq1/X9Q6GmiJcwZk
- 5VRw==
+ bh=reQ0RNQCypKAdEXf96hopek227oB6f9dFG3OWWq4314=;
+ b=L2fz0ZukWQKEcLaE6uA4lEip/p/c31x2jZ1DAWXNssn+PQonQzNGsXrvTr09llE3vv
+ CONKR+hNm4eQK+rYVU9UMyGKp1vJOqOYB0zEtX0TRFK7IqAiIDgBThra7TyULy9567qp
+ bMb14JOGlv3pcfK5339bN6TtwAd5MJDvyPNtfIx0EuHxioKQm12GL/lH8oWt2T6ipO2g
+ kqCzn+OnOWCcvrkiO5rcUsaZ35AvmRCRahibHrZLadtSQOKOFk+b05vQYiHAxXZ3n9oJ
+ +AldFLvFf1nTm9CIygfkmDVdVwnVAgwadTmnFqvrGhFreDlN92BTs7LIvIG/wb4z4wLS
+ 9taw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726248425; x=1726853225;
+ d=1e100.net; s=20230601; t=1726248426; x=1726853226;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tNcKpK3gqW5pd0AiX4NmCCbDvgLi1QOfUkQVya3+J3c=;
- b=C4LuD/FH/acL0ZDUDuxqAFRTRZUK1QjkBYG6WhJ5RlIuSEu7d8VgOM+3xbNCR9S2Pb
- aG5j1xEGhxsylofKYNq2IkutJB8ImTMeaYPMjwhWxDLekcR6/oNCRxvfr83cyJ3q0RCM
- RYHyuA3+begkCEZAp6F3onHRzplXbBMUO9Vbu+BN522ThnzsYq+2wuEMeUvugvazx/Ak
- CufjZHqI58QMxUkwSUSyEdNHn4wJgjf4H1jkTQ3cl+YcYXEwstsn8TKns8WzQEIQozj7
- a3I1xJgzqvB6XuJF7e0buNhB3sAz0dTwua4Vea6VRbbwB+kZjzceBTDN+f2d8HdDP48K
- 6ifg==
-X-Gm-Message-State: AOJu0YzNI4hSey/VbZKN3g6vq8noGZh5OizEJudhnC1Lln2zUConbgpe
- YksM+XOvBYZvQYx5H16dTUz/fBfSvB0KmIQuPd47ofQs1TrB+RCgtd9HrVEEo+g=
-X-Google-Smtp-Source: AGHT+IHG6h9u+sMY4i8mG9ksmPVhqCM9SZTCG1cORERdH/GeIADh8bXIQknvkCNDzhne4hprxudoGA==
-X-Received: by 2002:a05:6512:224f:b0:530:aa09:b6bf with SMTP id
- 2adb3069b0e04-5367fee270emr2138919e87.24.1726248424436; 
- Fri, 13 Sep 2024 10:27:04 -0700 (PDT)
+ bh=reQ0RNQCypKAdEXf96hopek227oB6f9dFG3OWWq4314=;
+ b=K259OmmhM0ArndG4id2VnSQRNJtloYEVyS9uKXhlVMttTJu/e+l0XSjGZyYGsNQwmb
+ C5fvN5ly8Mk/Uz/nMlNslpT6RcuM8uDXxrXuVa2f2W2jPbNi87yltC6xOlcK3A/lxOBD
+ aJ9w8CWhX92Rcb1pGBF9KQNGD4yJqDHDTmUu1cJprtV6upNhB7h6H6Sl4oIkRF+ajyax
+ 1HItrFGRsb+LVPUJqYxamtYOtEmhGIShhE5yaljZfF538Umz1TxlzLkg06P8p4duvChT
+ fsEAdcrxwDw2t41/dBgH3p6jYNWIvuMWUs6EYh3mv0pDRRqMGV32MZPIf9g9nb9If1qC
+ 41LQ==
+X-Gm-Message-State: AOJu0YwAOuKTu4H1TIRKon1vBPVTT5EZyNK48Pk8pU/0sTnsh0mJGYwA
+ Cd2rTgwfgMT5LH6UMcQBeMBm4cxwbMX1H9CvFR78kMNSl7zk4caJQiCMrd9/eBw=
+X-Google-Smtp-Source: AGHT+IFXpy3YINeBnZ5kIdn/erLdEkXUzJaXxgc446qFfsy3i6SDeGOEic9HoR00kSL52uoQ6+RX8g==
+X-Received: by 2002:a05:6402:2551:b0:5c2:6d13:c583 with SMTP id
+ 4fb4d7f45d1cf-5c41e1b5354mr3294265a12.28.1726248426227; 
+ Fri, 13 Sep 2024 10:27:06 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a8d25d400afsm894067866b.189.2024.09.13.10.26.58
+ 4fb4d7f45d1cf-5c3ebd8adaasm8236187a12.80.2024.09.13.10.26.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 13 Sep 2024 10:27:00 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DCE115FA0F;
- Fri, 13 Sep 2024 18:26:56 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 044945FA16;
+ Fri, 13 Sep 2024 18:26:57 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>, devel@lists.libvirt.org,
@@ -74,18 +74,16 @@ Cc: Richard Henderson <richard.henderson@linaro.org>, devel@lists.libvirt.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Xingtao Yao <yaoxt.fnst@fujitsu.com>
-Subject: [PATCH 08/17] tests/tcg/plugins/mem: add option to print memory
- accesses
-Date: Fri, 13 Sep 2024 18:26:46 +0100
-Message-Id: <20240913172655.173873-9-alex.bennee@linaro.org>
+Subject: [PATCH 09/17] tests/tcg/multiarch: add test for plugin memory access
+Date: Fri, 13 Sep 2024 18:26:47 +0100
+Message-Id: <20240913172655.173873-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240913172655.173873-1-alex.bennee@linaro.org>
 References: <20240913172655.173873-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,130 +108,309 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-By using "print-accesses=true" option, mem plugin will now print every
-value accessed, with associated size, type (store vs load), symbol,
-instruction address and phys/virt address accessed.
+Add an explicit test to check expected memory values are read/written.
+8,16,32 load/store are tested for all arch.
+64,128 load/store are tested for aarch64/x64.
+atomic operations (8,16,32,64) are tested for x64 only.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Xingtao Yao <yaoxt.fnst@fujitsu.com>
+By default, atomic accesses are non atomic if a single cpu is running,
+so we force creation of a second one by creating a new thread first.
+
+load/store helpers code path can't be triggered easily in user mode (no
+softmmu), so we can't test it here.
+
+Output of test-plugin-mem-access.c is the list of expected patterns in
+plugin output. By reading stdout, we can compare to plugins output and
+have a multiarch test.
+
+Can be run with:
+make -C build/tests/tcg/$ARCH-linux-user run-plugin-test-plugin-mem-access-with-libmem.so
+
+Tested-by: Xingtao Yao <yaoxt.fnst@fujitsu.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240724194708.1843704-6-pierrick.bouvier@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240910172033.1427812-7-pierrick.bouvier@linaro.org>
 ---
- tests/tcg/plugins/mem.c | 69 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 68 insertions(+), 1 deletion(-)
+ tests/tcg/multiarch/test-plugin-mem-access.c | 177 +++++++++++++++++++
+ tests/tcg/alpha/Makefile.target              |   3 +
+ tests/tcg/multiarch/Makefile.target          |  11 ++
+ tests/tcg/multiarch/check-plugin-output.sh   |  36 ++++
+ tests/tcg/ppc64/Makefile.target              |   5 +
+ 5 files changed, 232 insertions(+)
+ create mode 100644 tests/tcg/multiarch/test-plugin-mem-access.c
+ create mode 100755 tests/tcg/multiarch/check-plugin-output.sh
 
-diff --git a/tests/tcg/plugins/mem.c b/tests/tcg/plugins/mem.c
-index b650dddcce..086e6f5bdf 100644
---- a/tests/tcg/plugins/mem.c
-+++ b/tests/tcg/plugins/mem.c
-@@ -21,10 +21,15 @@ typedef struct {
-     uint64_t io_count;
- } CPUCount;
- 
-+typedef struct {
-+    uint64_t vaddr;
-+    const char *sym;
-+} InsnInfo;
+diff --git a/tests/tcg/multiarch/test-plugin-mem-access.c b/tests/tcg/multiarch/test-plugin-mem-access.c
+new file mode 100644
+index 0000000000..057b9aac9f
+--- /dev/null
++++ b/tests/tcg/multiarch/test-plugin-mem-access.c
+@@ -0,0 +1,177 @@
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Check if we detect all memory accesses expected using plugin API.
++ * Used in conjunction with ./check-plugin-mem-access.sh check script.
++ * Output of this program is the list of patterns expected in plugin output.
++ *
++ * 8,16,32 load/store are tested for all arch.
++ * 64,128 load/store are tested for aarch64/x64.
++ * atomic operations (8,16,32,64) are tested for x64 only.
++ */
 +
- static struct qemu_plugin_scoreboard *counts;
- static qemu_plugin_u64 mem_count;
- static qemu_plugin_u64 io_count;
--static bool do_inline, do_callback;
-+static bool do_inline, do_callback, do_print_accesses;
- static bool do_haddr;
- static enum qemu_plugin_mem_rw rw = QEMU_PLUGIN_MEM_RW;
- 
-@@ -60,6 +65,44 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t meminfo,
-     }
- }
- 
-+static void print_access(unsigned int cpu_index, qemu_plugin_meminfo_t meminfo,
-+                         uint64_t vaddr, void *udata)
-+{
-+    InsnInfo *insn_info = udata;
-+    unsigned size = 8 << qemu_plugin_mem_size_shift(meminfo);
-+    const char *type = qemu_plugin_mem_is_store(meminfo) ? "store" : "load";
-+    qemu_plugin_mem_value value = qemu_plugin_mem_get_value(meminfo);
-+    uint64_t hwaddr =
-+        qemu_plugin_hwaddr_phys_addr(qemu_plugin_get_hwaddr(meminfo, vaddr));
-+    g_autoptr(GString) out = g_string_new("");
-+    g_string_printf(out,
-+                    "0x%"PRIx64",%s,0x%"PRIx64",0x%"PRIx64",%d,%s,",
-+                    insn_info->vaddr, insn_info->sym,
-+                    vaddr, hwaddr, size, type);
-+    switch (value.type) {
-+    case QEMU_PLUGIN_MEM_VALUE_U8:
-+        g_string_append_printf(out, "0x%02"PRIx8, value.data.u8);
-+        break;
-+    case QEMU_PLUGIN_MEM_VALUE_U16:
-+        g_string_append_printf(out, "0x%04"PRIx16, value.data.u16);
-+        break;
-+    case QEMU_PLUGIN_MEM_VALUE_U32:
-+        g_string_append_printf(out, "0x%08"PRIx32, value.data.u32);
-+        break;
-+    case QEMU_PLUGIN_MEM_VALUE_U64:
-+        g_string_append_printf(out, "0x%016"PRIx64, value.data.u64);
-+        break;
-+    case QEMU_PLUGIN_MEM_VALUE_U128:
-+        g_string_append_printf(out, "0x%016"PRIx64"%016"PRIx64,
-+                               value.data.u128.high, value.data.u128.low);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+    g_string_append_printf(out, "\n");
-+    qemu_plugin_outs(out->str);
++#include <pthread.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++#if defined(__x86_64__)
++#include <emmintrin.h>
++#elif defined(__aarch64__)
++#include <arm_neon.h>
++#endif /* __x86_64__ */
++
++static void *data;
++
++/* ,store_u8,.*,8,store,0xf1 */
++#define PRINT_EXPECTED(function, type, value, action)                 \
++do {                                                                  \
++    printf(",%s,.*,%d,%s,%s\n",                                       \
++           #function, (int) sizeof(type) * 8, action, value);         \
++}                                                                     \
++while (0)
++
++#define DEFINE_STORE(name, type, value)                  \
++                                                         \
++static void print_expected_store_##name(void)            \
++{                                                        \
++    PRINT_EXPECTED(store_##name, type, #value, "store"); \
++}                                                        \
++                                                         \
++static void store_##name(void)                           \
++{                                                        \
++    *((type *)data) = value;                             \
++    print_expected_store_##name();                       \
 +}
 +
- static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
- {
-     size_t n = qemu_plugin_tb_n_insns(tb);
-@@ -79,6 +122,16 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-                                              QEMU_PLUGIN_CB_NO_REGS,
-                                              rw, NULL);
-         }
-+        if (do_print_accesses) {
-+            /* we leak this pointer, to avoid locking to keep track of it */
-+            InsnInfo *insn_info = g_malloc(sizeof(InsnInfo));
-+            const char *sym = qemu_plugin_insn_symbol(insn);
-+            insn_info->sym = sym ? sym : "";
-+            insn_info->vaddr = qemu_plugin_insn_vaddr(insn);
-+            qemu_plugin_register_vcpu_mem_cb(insn, print_access,
-+                                             QEMU_PLUGIN_CB_NO_REGS,
-+                                             rw, (void *) insn_info);
-+        }
-     }
- }
- 
-@@ -117,6 +170,12 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-                 fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-                 return -1;
-             }
-+        } else if (g_strcmp0(tokens[0], "print-accesses") == 0) {
-+            if (!qemu_plugin_bool_parse(tokens[0], tokens[1],
-+                                        &do_print_accesses)) {
-+                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-+                return -1;
-+            }
-         } else {
-             fprintf(stderr, "option parsing failed: %s\n", opt);
-             return -1;
-@@ -129,6 +188,14 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-         return -1;
-     }
- 
-+    if (do_print_accesses) {
-+        g_autoptr(GString) out = g_string_new("");
-+        g_string_printf(out,
-+                "insn_vaddr,insn_symbol,mem_vaddr,mem_hwaddr,"
-+                "access_size,access_type,mem_value\n");
-+        qemu_plugin_outs(out->str);
-+    }
++#define DEFINE_ATOMIC_OP(name, type, value)                    \
++                                                               \
++static void print_expected_atomic_op_##name(void)              \
++{                                                              \
++    PRINT_EXPECTED(atomic_op_##name, type, "0x0*42", "load");  \
++    PRINT_EXPECTED(atomic_op_##name, type, #value, "store");   \
++}                                                              \
++                                                               \
++static void atomic_op_##name(void)                             \
++{                                                              \
++    *((type *)data) = 0x42;                                    \
++    __sync_val_compare_and_swap((type *)data, 0x42, value);    \
++    print_expected_atomic_op_##name();                         \
++}
 +
-     counts = qemu_plugin_scoreboard_new(sizeof(CPUCount));
-     mem_count = qemu_plugin_scoreboard_u64_in_struct(
-         counts, CPUCount, mem_count);
++#define DEFINE_LOAD(name, type, value)                  \
++                                                        \
++static void print_expected_load_##name(void)            \
++{                                                       \
++    PRINT_EXPECTED(load_##name, type, #value, "load");  \
++}                                                       \
++                                                        \
++static void load_##name(void)                           \
++{                                                       \
++                                                        \
++    /* volatile forces load to be generated. */         \
++    volatile type src = *((type *) data);               \
++    volatile type dest = src;                           \
++    (void)src, (void)dest;                              \
++    print_expected_load_##name();                       \
++}
++
++DEFINE_STORE(u8, uint8_t, 0xf1)
++DEFINE_LOAD(u8, uint8_t, 0xf1)
++DEFINE_STORE(u16, uint16_t, 0xf123)
++DEFINE_LOAD(u16, uint16_t, 0xf123)
++DEFINE_STORE(u32, uint32_t, 0xff112233)
++DEFINE_LOAD(u32, uint32_t, 0xff112233)
++
++#if defined(__x86_64__) || defined(__aarch64__)
++DEFINE_STORE(u64, uint64_t, 0xf123456789abcdef)
++DEFINE_LOAD(u64, uint64_t, 0xf123456789abcdef)
++
++static void print_expected_store_u128(void)
++{
++    PRINT_EXPECTED(store_u128, __int128,
++                   "0xf122334455667788f123456789abcdef", "store");
++}
++
++static void store_u128(void)
++{
++#ifdef __x86_64__
++    _mm_store_si128(data, _mm_set_epi32(0xf1223344, 0x55667788,
++                                        0xf1234567, 0x89abcdef));
++#else
++    const uint32_t init[4] = {0x89abcdef, 0xf1234567, 0x55667788, 0xf1223344};
++    uint32x4_t vec = vld1q_u32(init);
++    vst1q_u32(data, vec);
++#endif /* __x86_64__ */
++    print_expected_store_u128();
++}
++
++static void print_expected_load_u128(void)
++{
++    PRINT_EXPECTED(load_u128, __int128,
++                   "0xf122334455667788f123456789abcdef", "load");
++}
++
++static void load_u128(void)
++{
++#ifdef __x86_64__
++    __m128i var = _mm_load_si128(data);
++#else
++    uint32x4_t var = vld1q_u32(data);
++#endif
++    (void) var;
++    print_expected_load_u128();
++}
++#endif /* __x86_64__ || __aarch64__ */
++
++#if defined(__x86_64__)
++DEFINE_ATOMIC_OP(u8, uint8_t, 0xf1)
++DEFINE_ATOMIC_OP(u16, uint16_t, 0xf123)
++DEFINE_ATOMIC_OP(u32, uint32_t, 0xff112233)
++DEFINE_ATOMIC_OP(u64, uint64_t, 0xf123456789abcdef)
++#endif /* __x86_64__ */
++
++static void *f(void *p)
++{
++    return NULL;
++}
++
++int main(void)
++{
++    /*
++     * We force creation of a second thread to enable cpu flag CF_PARALLEL.
++     * This will generate atomic operations when needed.
++     */
++    pthread_t thread;
++    pthread_create(&thread, NULL, &f, NULL);
++    pthread_join(thread, NULL);
++
++    /* allocate storage up to 128 bits */
++    data = malloc(16);
++
++    store_u8();
++    load_u8();
++
++    store_u16();
++    load_u16();
++
++    store_u32();
++    load_u32();
++
++#if defined(__x86_64__) || defined(__aarch64__)
++    store_u64();
++    load_u64();
++
++    store_u128();
++    load_u128();
++#endif /* __x86_64__ || __aarch64__ */
++
++#if defined(__x86_64__)
++    atomic_op_u8();
++    atomic_op_u16();
++    atomic_op_u32();
++    atomic_op_u64();
++#endif /* __x86_64__ */
++
++    free(data);
++}
+diff --git a/tests/tcg/alpha/Makefile.target b/tests/tcg/alpha/Makefile.target
+index fdd7ddf64e..36d8ed1eae 100644
+--- a/tests/tcg/alpha/Makefile.target
++++ b/tests/tcg/alpha/Makefile.target
+@@ -12,4 +12,7 @@ test-cmov: EXTRA_CFLAGS=-DTEST_CMOV
+ test-cmov: test-cond.c
+ 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+ 
++# Force generation of byte read/write
++test-plugin-mem-access: CFLAGS+=-mbwx
++
+ run-test-cmov: test-cmov
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index 5e3391ec9d..78b83d5575 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -170,5 +170,16 @@ run-plugin-semiconsole-with-%:
+ TESTS += semihosting semiconsole
+ endif
+ 
++# Test plugin memory access instrumentation
++run-plugin-test-plugin-mem-access-with-libmem.so: \
++	PLUGIN_ARGS=$(COMMA)print-accesses=true
++run-plugin-test-plugin-mem-access-with-libmem.so: \
++	CHECK_PLUGIN_OUTPUT_COMMAND= \
++	$(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
++	$(QEMU) $<
++
++test-plugin-mem-access: CFLAGS+=-pthread -O0
++test-plugin-mem-access: LDFLAGS+=-pthread -O0
++
+ # Update TESTS
+ TESTS += $(MULTIARCH_TESTS)
+diff --git a/tests/tcg/multiarch/check-plugin-output.sh b/tests/tcg/multiarch/check-plugin-output.sh
+new file mode 100755
+index 0000000000..80607f04b5
+--- /dev/null
++++ b/tests/tcg/multiarch/check-plugin-output.sh
+@@ -0,0 +1,36 @@
++#!/usr/bin/env bash
++
++# This script runs a given executable using qemu, and compare its standard
++# output with an expected plugin output.
++# Each line of output is searched (as a regexp) in the expected plugin output.
++
++set -euo pipefail
++
++die()
++{
++    echo "$@" 1>&2
++    exit 1
++}
++
++check()
++{
++    file=$1
++    pattern=$2
++    grep "$pattern" "$file" > /dev/null || die "\"$pattern\" not found in $file"
++}
++
++[ $# -eq 3 ] || die "usage: qemu_bin exe plugin_out_file"
++
++qemu_bin=$1; shift
++exe=$1;shift
++plugin_out=$1; shift
++
++expected()
++{
++    $qemu_bin $exe ||
++        die "running $exe failed"
++}
++
++expected | while read line; do
++    check "$plugin_out" "$line"
++done
+diff --git a/tests/tcg/ppc64/Makefile.target b/tests/tcg/ppc64/Makefile.target
+index 509a20be2b..1940886c73 100644
+--- a/tests/tcg/ppc64/Makefile.target
++++ b/tests/tcg/ppc64/Makefile.target
+@@ -55,4 +55,9 @@ PPC64_TESTS += signal_save_restore_xer
+ PPC64_TESTS += xxspltw
+ PPC64_TESTS += test-aes
+ 
++# ppc64 ABI uses function descriptors, and thus, QEMU can't find symbol for a
++# given instruction. Thus, we don't check output of mem-access plugin.
++run-plugin-test-plugin-mem-access-with-libmem.so: \
++ CHECK_PLUGIN_OUTPUT_COMMAND=
++
+ TESTS += $(PPC64_TESTS)
 -- 
 2.39.2
 
