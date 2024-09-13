@@ -2,92 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1491F977789
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 05:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA959777A9
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 06:00:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soxFs-00073a-Uz; Thu, 12 Sep 2024 23:45:56 -0400
+	id 1soxSj-0007Nj-41; Thu, 12 Sep 2024 23:59:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1soxFo-0006ju-O0
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 23:45:52 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1soxFn-0008Is-10
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 23:45:52 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-207115e3056so16596335ad.2
- for <qemu-devel@nongnu.org>; Thu, 12 Sep 2024 20:45:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1726199149; x=1726803949;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fEpDPUaFL8zPvYOx/0hsO+TqHl11ExTE7h8t0M0WvV0=;
- b=M9Q6W+G5kOXC/nbVgCiRbWvTw9f4OH0L9bmn+73h8ah9uLugww15CPlgD5G5XZewfG
- xUK4PcOSnaV42OSgN7026OqoVmuXYYYi+/EEelQ4Vcuu/0n0eKH7Ko+29bGBuAEJE0ca
- M0GdV0L0aNdhfyms3ARB3iOJ6gnkYuBdQYKmC60aviuV7/ahqF9lWdDp4BC2iitOUjNI
- 1pIu+TVBlKzrU2JfWttPyp3ZXGT9BlwGjkgVs0h2ern5G++vqTetX22ThzmLGP0nBaMd
- CFbA8ZRAiBYXlafFwIQlMlS7ELo3MUOY7NE7OioyuyolcdaYx6ANF5/6cF8gpvjQz0JW
- VOOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726199149; x=1726803949;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fEpDPUaFL8zPvYOx/0hsO+TqHl11ExTE7h8t0M0WvV0=;
- b=wmcf6OmDULvClT3J0qIHmiMiv9UH/6fZaNUz8BnHcbhrf2xzoK/32mgr4cV9l6ehPa
- Rq3UlgO/8QYuJwVMvFEb0yRkl0+eP4nKXxt7DU8lmoFykoFIpwl9ikAxgyWoayQh5uqa
- rn5q2BYnEqEnUxoxDPKkQbsDSz8XLJPPR25JX3IdmwVB2f75BskNpGTFmdbuVKBz6hcB
- VS6tHYeicg66Zg3kOKp+e6q1s071Q6LWcaeGtcU3MyO7WiLTqil3Rkauc+Ss8BtlJDTw
- oLOAQ5ldR90ts8m5uwZDZMAKXl/+3KKImqTZa6B7tmrGqn7p5wEMY4FGz6EKXawoF3Ur
- AWbQ==
-X-Gm-Message-State: AOJu0YxmmnULJzCtANfmT4+EUCTuWiT22jIj2migLZ4e8ShadwBZTiWD
- CAYl55868/IBY9mC2gRkGC2lblv+dMaGUpvSklyEwStois065DwSNjjoGnD/QNg=
-X-Google-Smtp-Source: AGHT+IH6cv5ySpOeZrGoMc1rthujaqfIP9yc75kRGlGZsMln8GOcu8qwRvK+hCqd7sMyQAdzgMIKXw==
-X-Received: by 2002:a17:902:ecd2:b0:205:3e68:7359 with SMTP id
- d9443c01a7336-2076e491acdmr62386475ad.53.1726199149406; 
- Thu, 12 Sep 2024 20:45:49 -0700 (PDT)
-Received: from localhost ([157.82.202.230])
- by smtp.gmail.com with UTF8SMTPSA id
- 41be03b00d2f7-7db1fddd501sm2490342a12.71.2024.09.12.20.45.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Sep 2024 20:45:49 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 13 Sep 2024 12:44:41 +0900
-Subject: [PATCH v16 13/13] hw/qdev: Remove opts member
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1soxSN-0006iC-5t
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 23:58:52 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1soxSJ-0000rN-Nu
+ for qemu-devel@nongnu.org; Thu, 12 Sep 2024 23:58:50 -0400
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48CMCDEI026534;
+ Fri, 13 Sep 2024 03:58:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ DTIVI+ZoQS3KBpBMOcDja0tfqPQNsTC0XTmy0fYA2FE=; b=lg5g02nuj9velaCw
+ BrfP3XcU6MVzuphndm/2apXrvvYQEhqYLw8y9ATU2UJ9/C7w6FsrWCA6ik8rJIkA
+ pVYxM4z63Ofxc2nIo+zItk4bwlGW19sSsHtOyIzsiipwp1g5ZMfxLidhNdN4z81C
+ QEiiuZE2AWMyhfIGc45CmLR9TUpLzKZCWD7FzYwZJWiWf5ex9GdEoNHSaW+WhQsS
+ XIgEsuTvhRrnxZRU6SYbmR8bxiV6nwRP6k335ZSAi75axH4RhjiylTqKTMQ4BF8Q
+ Z0mvV0jZ2RX3D3dhDKFERCEvSGoPpGlsnDc7xVyMdnvhxGY0WxH8DNm+k+WeDdT9
+ /KZ8Dw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41gy8p7gcy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Sep 2024 03:58:42 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48D3wfBZ003830
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Sep 2024 03:58:41 GMT
+Received: from [10.110.80.232] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 12 Sep
+ 2024 20:58:40 -0700
+Message-ID: <df077d1a-7718-4564-8857-06c7520b41b1@quicinc.com>
+Date: Thu, 12 Sep 2024 22:58:39 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs/fuzz: fix outdated mention to enable-sanitizers
+To: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
+ <qemu-devel@nongnu.org>
+CC: <peter.maydell@linaro.org>, <thuth@redhat.com>, <bcain@quicinc.com>
+References: <a788215960b94d863baeffb736f06e3fb94275e7.1726145226.git.quic_mathbern@quicinc.com>
+Content-Language: en-US
+From: Brian Cain <quic_bcain@quicinc.com>
+In-Reply-To: <a788215960b94d863baeffb736f06e3fb94275e7.1726145226.git.quic_mathbern@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240913-reuse-v16-13-d016b4b4f616@daynix.com>
-References: <20240913-reuse-v16-0-d016b4b4f616@daynix.com>
-In-Reply-To: <20240913-reuse-v16-0-d016b4b4f616@daynix.com>
-To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, 
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
- Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>, 
- Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: 3pn4tEgvhTcp_LolJ3u0IKRXm2j2Mk3m
+X-Proofpoint-ORIG-GUID: 3pn4tEgvhTcp_LolJ3u0IKRXm2j2Mk3m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015
+ impostorscore=0 mlxscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
+ mlxlogscore=570 lowpriorityscore=0 adultscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409130027
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_bcain@quicinc.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,78 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is no longer used.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
----
- include/hw/qdev-core.h |  4 ----
- hw/core/qdev.c         |  1 -
- system/qdev-monitor.c  | 12 +++++++-----
- 3 files changed, 7 insertions(+), 10 deletions(-)
+On 9/12/2024 7:47 AM, Matheus Tavares Bernardino wrote:
+> This options has been removed at cb771ac1f5 (meson: Split
+> --enable-sanitizers to --enable-{asan, ubsan}, 2024-08-13), so let's
+> update its last standing mention in the docs.
+>
+> Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> ---
+>   docs/devel/testing/fuzzing.rst | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/docs/devel/testing/fuzzing.rst b/docs/devel/testing/fuzzing.rst
+> index dfe1973cf8..e42d64d6ec 100644
+> --- a/docs/devel/testing/fuzzing.rst
+> +++ b/docs/devel/testing/fuzzing.rst
+> @@ -21,8 +21,9 @@ Building the fuzzers
+>   
+>   To build the fuzzers, install a recent version of clang:
+>   Configure with (substitute the clang binaries with the version you installed).
+> -Here, enable-sanitizers, is optional but it allows us to reliably detect bugs
+> -such as out-of-bounds accesses, use-after-frees, double-frees etc.::
+> +Here, enable-asan and enable-ubsan are optional but they allows us to reliably
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 77bfcbdf732a..a3757e6769f8 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -237,10 +237,6 @@ struct DeviceState {
-      * @pending_deleted_expires_ms: optional timeout for deletion events
-      */
-     int64_t pending_deleted_expires_ms;
--    /**
--     * @opts: QDict of options for the device
--     */
--    QDict *opts;
-     /**
-      * @hotplugged: was device added after PHASE_MACHINE_READY?
-      */
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index f3a996f57dee..2fc84699d432 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -706,7 +706,6 @@ static void device_finalize(Object *obj)
-         dev->canonical_path = NULL;
-     }
- 
--    qobject_unref(dev->opts);
-     g_free(dev->id);
- }
- 
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 6af6ef7d667f..3551989d5153 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -624,6 +624,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-     char *id;
-     DeviceState *dev = NULL;
-     BusState *bus = NULL;
-+    QDict *properties;
- 
-     driver = qdict_get_try_str(opts, "driver");
-     if (!driver) {
-@@ -705,13 +706,14 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-     }
- 
-     /* set properties */
--    dev->opts = qdict_clone_shallow(opts);
--    qdict_del(dev->opts, "driver");
--    qdict_del(dev->opts, "bus");
--    qdict_del(dev->opts, "id");
-+    properties = qdict_clone_shallow(opts);
-+    qdict_del(properties, "driver");
-+    qdict_del(properties, "bus");
-+    qdict_del(properties, "id");
- 
--    object_set_properties_from_keyval(&dev->parent_obj, dev->opts, from_json,
-+    object_set_properties_from_keyval(&dev->parent_obj, properties, from_json,
-                                       errp);
-+    qobject_unref(properties);
-     if (*errp) {
-         goto err_del_dev;
-     }
+s/they allows/they allow/
 
--- 
-2.46.0
+> +detect bugs such as out-of-bounds accesses, use-after-frees, double-frees
 
+IMO it should be "uses-after-free" but it's probably pretty subtle.  
+This was the original text, so feel free to leave it as-is.
+
+> +etc.::
+>   
+>       CC=clang-8 CXX=clang++-8 /path/to/configure \
+>           --enable-fuzzing --enable-asan --enable-ubsan
 
