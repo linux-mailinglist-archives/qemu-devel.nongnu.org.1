@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0179D9786E1
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 19:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC739786E2
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 19:35:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spAC2-0002Ey-Cq; Fri, 13 Sep 2024 13:34:50 -0400
+	id 1spAC3-0002Lh-MF; Fri, 13 Sep 2024 13:34:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1spABz-00027V-O2
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:34:47 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ id 1spAC1-0002D2-10
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:34:49 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1spABw-0006gX-SU
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:34:47 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2f759688444so22073981fa.1
+ id 1spABx-0006gL-3l
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 13:34:48 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-5365d3f9d34so1473596e87.3
  for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 10:34:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1726248881; x=1726853681; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Nn1a9HFZduZ/RNVuj0xIuaKX/DLxfqqaJjOeCmylyL8=;
- b=tTkfcZUmCNKGLyh2V5MO06VGEDgPobtTDAXChTRIO1YK2Jnlk0vCvsJMrb8eOglXR/
- Te4+LCHY8KFcQJBFLTty+HSKg7c3IHQryuTpmtPJuZKbhOvn5iTQF6v9+6wwsQfpB6Ut
- KDR9rLMbdSFTZFoQ2N52FaXmKPkGtKEbfYiiqZAtbq3zLMwnmn+qjBszUCYUf5FhSdxs
- +nk/H/l0Q+yGNBoWLaSYdOnoaJkFUHacWjV5E3RuvxZMusbKsYc5LaoJZVU6xkK0DNX8
- UazG1iDKJzVq4BEPTb+fnhWc+yqkgkpug/NCvCbIMdgY5EnHPf3pqRHYxyg65z3PtFif
- ncHg==
+ bh=hEZbqliSm3idSAY5YqSflW1IHfDQd2AMSDogcHs/b2s=;
+ b=PyB9+h26DpG5Sm7BcJ47cSZKSdECPj6Nz7P+muBSVt7DPu3k91gbz9kFz/KbGRHyb4
+ WcGFXDvNHIMEYCcUxcH8d1EwF3TRiteUNUiTS9A4CVzerenMb7LFOVr1xgCgXWLa5IwZ
+ SFMIiMz4AC3ymlkr2ZqSgZKm/5OLPiQqHei9kmsP8RuMGh8UAzQGAyQFIGs+FjkxYiNt
+ UTm9eI0wmUS64F/+QPOiRXYgeIpCVtexiR8IkQghkU2gvhbHL3+jeBi4oFfL6DfMg7uP
+ d0Q/kzlRGk2WMWrvV0qeDeJ243o98I0N9DK6qdWwEjvRo/N8R9TB0x4WRKJQ7K18PSwQ
+ HFNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1726248881; x=1726853681;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Nn1a9HFZduZ/RNVuj0xIuaKX/DLxfqqaJjOeCmylyL8=;
- b=iJl9rWvYOxtHay1cwdJwzrOdaYaMQEwXGZ3/6Xaq8dF8rkdRV/b4P6O4VabjQwd50E
- vh5oXZFxHkGWv8+X3tKXa7cW2gmQBrYhm29nnItRthrjWxi+W90uFDzPqpZLaQ1naNar
- 43RgpJSxH+TdkmehRC5po6GwpmM012pyPazgD4QBHm+hVQigYievhPmFL415iS3YSpTr
- lRzs0pXdByDOTUHKYAnDRNUssURV2XMRPCLhjiFHfzZLQgKYmBxv8l1OPTjIsBMe9t3S
- iQ+trBN5SJIEtFp4WM5nihgZKxvu8OVzh4A5bOdCxaY8+uzpEfwMrw5lAEtZd9lbDe81
- Lp5Q==
-X-Gm-Message-State: AOJu0Yyrq5YeKbVSGU4Q66ro5LN2X7JnfvA7ZtOFJKVyI0NXZvdzfDwY
- H9RG+N9KafaTy+9kAQOU3cfa3aY8XjKfrCUJl4mfMUwnfKaAJWTcK4aT9oKvtF8=
-X-Google-Smtp-Source: AGHT+IHuWZ6XpT3slItY2QaJSeT8M0ib7RZhha7UJ5Q3gkR/BAtI1rcyaXOFNa/bpRaoNVZCipj/CA==
-X-Received: by 2002:a05:651c:2111:b0:2f6:6202:bfd5 with SMTP id
- 38308e7fff4ca-2f787f44772mr48763821fa.34.1726248881031; 
- Fri, 13 Sep 2024 10:34:41 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c421bf637esm804991a12.3.2024.09.13.10.34.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ bh=hEZbqliSm3idSAY5YqSflW1IHfDQd2AMSDogcHs/b2s=;
+ b=sdq9l/YdbzZY6cQPrA5JZFyKQXQlrhVdXhkBPaT3ZKnEf0jKNrjunsgfgHTGyEBj6M
+ +L7cLCtHPOdE2zMkVxRlgym1Tlitl5V0YCbGD+Uy+m2tPVwRO9ALqYOFIYr2cWUQajXw
+ JZmXJc+/1RQrnlB9eFc73H0mK2z3g5VYgeCqeECjQXk0qXdfUFaZmhASrETOis1AVGW1
+ Sn4iyzuoNDM7Ex41tmPXFLi6fj7MJWuDy4coQguZVZp3bEDO+Qxk1Pz0Pt2DYmDa493Q
+ iZQh05Q+bPwcBp2KrwMTziHMpEhyiJLvKTAn70tVy2l6YsudghoqdKSf9OLIEmihgksu
+ cLZQ==
+X-Gm-Message-State: AOJu0Yz2uxgnSZJEoWjbU9yVn8sJd69/YET8qEE4C6dcyWz7NgkdFtl4
+ YEJmhdKshH2rU8MDJa+HgYmgMSQx0qJZz0uZ1i6UB+bGNA+a8ZeOYSzCfUVub3A=
+X-Google-Smtp-Source: AGHT+IFrBHxFDpHrv2jO4TDirlD9h4R4TIZSrLonhSjPuY1199f5VAfDbuz6aKP7TZWcUSHecAc3RQ==
+X-Received: by 2002:a05:6512:a90:b0:535:3dae:a14b with SMTP id
+ 2adb3069b0e04-5367feba05emr2330342e87.2.1726248880496; 
  Fri, 13 Sep 2024 10:34:40 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8d25c72eb0sm891789466b.132.2024.09.13.10.34.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Sep 2024 10:34:39 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B1EDD5F897;
+ by draig.lan (Postfix) with ESMTP id CAC045FBCB;
  Fri, 13 Sep 2024 18:26:57 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -74,17 +74,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>, devel@lists.libvirt.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Rowan Hart <rowanbhart@gmail.com>
-Subject: [PATCH 16/17] plugins: add plugin API to read guest memory
-Date: Fri, 13 Sep 2024 18:26:54 +0100
-Message-Id: <20240913172655.173873-17-alex.bennee@linaro.org>
+Subject: [PATCH 17/17] plugins: add option to dump write argument to syscall
+ plugin
+Date: Fri, 13 Sep 2024 18:26:55 +0100
+Message-Id: <20240913172655.173873-18-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240913172655.173873-1-alex.bennee@linaro.org>
 References: <20240913172655.173873-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,116 +112,206 @@ From: Rowan Hart <rowanbhart@gmail.com>
 
 Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240827215329.248434-2-rowanbhart@gmail.com>
-[AJB: tweaked cpu_memory_rw_debug call]
+Tested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20240827215329.248434-3-rowanbhart@gmail.com>
+[AJB: tweak fmt string for vaddr]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
 ---
-vAJB:
-  - explicit bool for cpu_memory_rw_debug
+vAJB
+  - tweak fmt string for PRIu64
 ---
- include/qemu/qemu-plugin.h   | 32 +++++++++++++++++++++++++++++++-
- plugins/api.c                | 20 ++++++++++++++++++++
- plugins/qemu-plugins.symbols |  1 +
- 3 files changed, 52 insertions(+), 1 deletion(-)
+ docs/about/emulation.rst    |  14 ++++-
+ tests/tcg/plugins/syscall.c | 117 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 130 insertions(+), 1 deletion(-)
 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 649ce89815..2015d6b409 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -57,11 +57,19 @@ typedef uint64_t qemu_plugin_id_t;
-  * - Remove qemu_plugin_register_vcpu_{tb, insn, mem}_exec_inline.
-  *   Those functions are replaced by *_per_vcpu variants, which guarantee
-  *   thread-safety for operations.
-+ *
-+ * version 3:
-+ * - modified arguments and return value of qemu_plugin_insn_data to copy
-+ *   the data into a user-provided buffer instead of returning a pointer
-+ *   to the data.
-+ *
-+ * version 4:
-+ * - added qemu_plugin_read_memory_vaddr
-  */
+diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
+index a4470127c9..23e4949049 100644
+--- a/docs/about/emulation.rst
++++ b/docs/about/emulation.rst
+@@ -418,6 +418,19 @@ run::
+   160          1      0
+   135          1      0
  
- extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
- 
--#define QEMU_PLUGIN_VERSION 3
-+#define QEMU_PLUGIN_VERSION 4
- 
- /**
-  * struct qemu_info_t - system information for plugins
-@@ -884,6 +892,28 @@ typedef struct {
- QEMU_PLUGIN_API
- GArray *qemu_plugin_get_registers(void);
- 
-+/**
-+ * qemu_plugin_read_memory_vaddr() - read from memory using a virtual address
-+ *
-+ * @addr: A virtual address to read from
-+ * @data: A byte array to store data into
-+ * @len: The number of bytes to read, starting from @addr
-+ *
-+ * @len bytes of data is read starting at @addr and stored into @data. If @data
-+ * is not large enough to hold @len bytes, it will be expanded to the necessary
-+ * size, reallocating if necessary. @len must be greater than 0.
-+ *
-+ * This function does not ensure writes are flushed prior to reading, so
-+ * callers should take care when calling this function in plugin callbacks to
-+ * avoid attempting to read data which may not yet be written and should use
-+ * the memory callback API instead.
-+ *
-+ * Returns true on success and false on failure.
-+ */
-+QEMU_PLUGIN_API
-+bool qemu_plugin_read_memory_vaddr(uint64_t addr,
-+                                          GByteArray *data, size_t len);
++Behaviour can be tweaked with the following arguments:
 +
- /**
-  * qemu_plugin_read_register() - read register for current vCPU
-  *
-diff --git a/plugins/api.c b/plugins/api.c
-index 3316d4a04d..24ea64e2de 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -560,6 +560,26 @@ GArray *qemu_plugin_get_registers(void)
-     return create_register_handles(regs);
++.. list-table:: Syscall plugin arguments
++  :widths: 20 80
++  :header-rows: 1
++
++  * - Option
++    - Description
++  * - print=true|false
++    - Print the number of times each syscall is called
++  * - log_writes=true|false
++    - Log the buffer of each write syscall in hexdump format
++
+ Test inline operations
+ ......................
+ 
+@@ -807,4 +820,3 @@ Other emulation features
+ When running system emulation you can also enable deterministic
+ execution which allows for repeatable record/replay debugging. See
+ :ref:`Record/Replay<replay>` for more details.
+-
+diff --git a/tests/tcg/plugins/syscall.c b/tests/tcg/plugins/syscall.c
+index 72e1a5bf90..647f478090 100644
+--- a/tests/tcg/plugins/syscall.c
++++ b/tests/tcg/plugins/syscall.c
+@@ -22,8 +22,57 @@ typedef struct {
+     int64_t errors;
+ } SyscallStats;
+ 
++struct SyscallInfo {
++    const char *name;
++    int64_t write_sysno;
++};
++
++const struct SyscallInfo arch_syscall_info[] = {
++    { "aarch64", 64 },
++    { "aarch64_be", 64 },
++    { "alpha", 4 },
++    { "arm", 4 },
++    { "armeb", 4 },
++    { "avr", -1 },
++    { "cris", -1 },
++    { "hexagon", 64 },
++    { "hppa", -1 },
++    { "i386", 4 },
++    { "loongarch64", -1 },
++    { "m68k", 4 },
++    { "microblaze", 4 },
++    { "microblazeel", 4 },
++    { "mips", 1 },
++    { "mips64", 1 },
++    { "mips64el", 1 },
++    { "mipsel", 1 },
++    { "mipsn32", 1 },
++    { "mipsn32el", 1 },
++    { "or1k", -1 },
++    { "ppc", 4 },
++    { "ppc64", 4 },
++    { "ppc64le", 4 },
++    { "riscv32", 64 },
++    { "riscv64", 64 },
++    { "rx", -1 },
++    { "s390x", -1 },
++    { "sh4", -1 },
++    { "sh4eb", -1 },
++    { "sparc", 4 },
++    { "sparc32plus", 4 },
++    { "sparc64", 4 },
++    { "tricore", -1 },
++    { "x86_64", 1 },
++    { "xtensa", 13 },
++    { "xtensaeb", 13 },
++    { NULL, -1 },
++};
++
+ static GMutex lock;
+ static GHashTable *statistics;
++static GByteArray *memory_buffer;
++static bool do_log_writes;
++static int64_t write_sysno = -1;
+ 
+ static SyscallStats *get_or_create_entry(int64_t num)
+ {
+@@ -39,6 +88,44 @@ static SyscallStats *get_or_create_entry(int64_t num)
+     return entry;
  }
  
-+bool qemu_plugin_read_memory_vaddr(vaddr addr, GByteArray *data, size_t len)
++/*
++ * Hex-dump a GByteArray to the QEMU plugin output in the format:
++ * 61 63 63 65 6c 09 09 20 20 20 66 70 75 09 09 09  | accel.....fpu...
++ * 20 6d 6f 64 75 6c 65 2d 63 6f 6d 6d 6f 6e 2e 63  | .module-common.c
++ */
++static void hexdump(const GByteArray *data)
 +{
-+    g_assert(current_cpu);
++    g_autoptr(GString) out = g_string_new("");
 +
-+    if (len == 0) {
-+        return false;
++    for (guint index = 0; index < data->len; index += 16) {
++        for (guint col = 0; col < 16; col++) {
++            if (index + col < data->len) {
++                g_string_append_printf(out, "%02x ", data->data[index + col]);
++            } else {
++                g_string_append(out, "   ");
++            }
++        }
++
++        g_string_append(out, " | ");
++
++        for (guint col = 0; col < 16; col++) {
++            if (index + col >= data->len) {
++                break;
++            }
++
++            if (g_ascii_isgraph(data->data[index + col])) {
++                g_string_append_printf(out, "%c", data->data[index + col]);
++            } else {
++                g_string_append(out, ".");
++            }
++        }
++
++        g_string_append(out, "\n");
 +    }
 +
-+    g_byte_array_set_size(data, len);
-+
-+    int result = cpu_memory_rw_debug(current_cpu, addr, data->data,
-+                                     data->len, false);
-+
-+    if (result < 0) {
-+        return false;
-+    }
-+
-+    return true;
++    qemu_plugin_outs(out->str);
 +}
 +
- int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
- {
-     g_assert(current_cpu);
-diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
-index eed9d8abd9..032661f9ea 100644
---- a/plugins/qemu-plugins.symbols
-+++ b/plugins/qemu-plugins.symbols
-@@ -21,6 +21,7 @@
-   qemu_plugin_num_vcpus;
-   qemu_plugin_outs;
-   qemu_plugin_path_to_binary;
-+  qemu_plugin_read_memory_vaddr;
-   qemu_plugin_read_register;
-   qemu_plugin_register_atexit_cb;
-   qemu_plugin_register_flush_cb;
+ static void vcpu_syscall(qemu_plugin_id_t id, unsigned int vcpu_index,
+                          int64_t num, uint64_t a1, uint64_t a2,
+                          uint64_t a3, uint64_t a4, uint64_t a5,
+@@ -54,6 +141,14 @@ static void vcpu_syscall(qemu_plugin_id_t id, unsigned int vcpu_index,
+         g_autofree gchar *out = g_strdup_printf("syscall #%" PRIi64 "\n", num);
+         qemu_plugin_outs(out);
+     }
++
++    if (do_log_writes && num == write_sysno) {
++        if (qemu_plugin_read_memory_vaddr(a2, memory_buffer, a3)) {
++            hexdump(memory_buffer);
++        } else {
++            fprintf(stderr, "Error reading memory from vaddr %"PRIu64"\n", a2);
++        }
++    }
+ }
+ 
+ static void vcpu_syscall_ret(qemu_plugin_id_t id, unsigned int vcpu_idx,
+@@ -127,6 +222,10 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+             if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_print)) {
+                 fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
+             }
++        } else if (g_strcmp0(tokens[0], "log_writes") == 0) {
++            if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_log_writes)) {
++                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
++            }
+         } else {
+             fprintf(stderr, "unsupported argument: %s\n", argv[i]);
+             return -1;
+@@ -137,6 +236,24 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+         statistics = g_hash_table_new_full(NULL, g_direct_equal, NULL, g_free);
+     }
+ 
++    if (do_log_writes) {
++        for (const struct SyscallInfo *syscall_info = arch_syscall_info;
++            syscall_info->name != NULL; syscall_info++) {
++
++            if (g_strcmp0(syscall_info->name, info->target_name) == 0) {
++                write_sysno = syscall_info->write_sysno;
++                break;
++            }
++        }
++
++        if (write_sysno == -1) {
++            fprintf(stderr, "write syscall number not found\n");
++            return -1;
++        }
++
++        memory_buffer = g_byte_array_new();
++    }
++
+     qemu_plugin_register_vcpu_syscall_cb(id, vcpu_syscall);
+     qemu_plugin_register_vcpu_syscall_ret_cb(id, vcpu_syscall_ret);
+     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
 -- 
 2.39.2
 
