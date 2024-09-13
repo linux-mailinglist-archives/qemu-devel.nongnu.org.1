@@ -2,53 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9187C978606
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 18:41:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3206F978622
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 18:48:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp9Ld-0000LY-UR; Fri, 13 Sep 2024 12:40:42 -0400
+	id 1sp9SB-0006G1-Kl; Fri, 13 Sep 2024 12:47:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1sp9LI-0007ul-Nr; Fri, 13 Sep 2024 12:40:21 -0400
-Received: from relay.virtuozzo.com ([130.117.225.111])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1sp9LG-00015Z-Un; Fri, 13 Sep 2024 12:40:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=Of+BGFkX4T73fvOvveXGD/8FZywciz8d+w+vmJhE8o8=; b=tvXwKb/KSIxC
- An5LpO3/0uVf1RjWHIUY+mKpM4sERYQEkboW42dqUtT9A1/yHucs1LRbD42B0OAw5GAy/S4hSCluZ
- 2gAkxGnMuFafddc/JlgZOGx7y5OKcIPn99/myP1qyGqAeI6vsq82M6QlKXTqqLE9DW06QxvioY44U
- riCrCV2np0b8g6Y8b23JIzIwR1kqYuTTAnArfThQ3FGeWmMJGK8EFnKuuT4Um3pcm2xu5zC1qHuqj
- Cf0emyoA79h9J3+7gfsHACflLkLV7gFc9e9VDi7jDlpv1QQkph2Rw55oDDt9BRE9Sqr2KUhDdDfUZ
- 5mMpUyriqRAJi1HKRVaZ9g==;
-Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1sp9Hz-002OPf-0Y;
- Fri, 13 Sep 2024 18:39:40 +0200
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
- eblake@redhat.com, stefanha@redhat.com, berto@igalia.com,
- andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v3 12/12] qcow2: add discard-subclusters option
-Date: Fri, 13 Sep 2024 19:39:42 +0300
-Message-Id: <20240913163942.423050-13-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240913163942.423050-1-andrey.drobyshev@virtuozzo.com>
-References: <20240913163942.423050-1-andrey.drobyshev@virtuozzo.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sp9S7-00066a-Ms
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 12:47:23 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sp9S6-0001ds-5z
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 12:47:23 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a8d3e662791so59477966b.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 09:47:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1726246040; x=1726850840; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Pz6WxGzES4RPJdz+rq0VyAzhMYB+4zn6azXaqw44G/I=;
+ b=CKqoyekwpcJyFjZ8ZYvaq8PZe3KMsGSbGlotYY7VEmUEZNtNz6Eb57JhtAbthmDaD3
+ 6FYWfrJqEmwyRlana7jINPtDwFjJROXwO0qQNsb5bEtxsL1PSvLu3rpWygexQindYlZN
+ PwLi/HI+EFD7OBYc9F85sYm0yRPMe+/HUNz4inmYWpLkiIS0ONcdz8mrPzHJqjYKfYAj
+ NkVMFn8P99zHsR4HNKScNxXDqZKigPXOm79GY8g1sRwBrs+v55y8MPaWAdifCMmDhbdH
+ tOWJysNbOMhL3ReWJyF5aACaaSMak9uqe3aUmFmPH3rZEpffYdTkzzz+zS6CSL0qGjlS
+ NYLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726246040; x=1726850840;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Pz6WxGzES4RPJdz+rq0VyAzhMYB+4zn6azXaqw44G/I=;
+ b=hbNtT4cbAMMIMTSC/cWsV6cIRnQmOkcGG4QQiYwCJ+xce8FzpR5MDec0CiQK6E/V5K
+ P/URPDKjO+Qw0CUppDjvzWem3aN/iGFaLC+IspU0zUgk0bOvDq5DSqk8tWms+i245Zay
+ a2FW2nzInPa2E7lV0jjxgt+7uRRG//nDnCJ3JgcuRhC9172t1xJz4F+FS12XyEc5BY9U
+ UeP8L0tNiNdUrNTL9WQvv0W5VW1oHCQI/7yvfMjaQyiC0AORWmR5sT/uHehzMyXgdMog
+ WJqnGJXClpkH4KtKyt2ym+ZWa8lOD9870M1dfDa1hqw60hlkNQMGOHNFSiEPMlGFYIyr
+ 8NkQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVz7MVoddQP5GWUm6p+KOEq3QSZ8mn6F4Z6Oo1tvE4cIbz7YWrnCmpdrbrrPtzInFGkLG3eZ3RtweKE@nongnu.org
+X-Gm-Message-State: AOJu0YxFiC6vrgh3ixguOkqZEmJi3sONUB1oWfIXwuRuOAl9YAQF7jjo
+ 5GrPpCLvh39Q8jwXDlcLZKRO7AlUGZ/KK4eZ7LEB1vTznNd6DU5uXrCvTINQ83XNKJnqLO6DfE3
+ w74CZ6wEiaOEo64D27PRwEaYHBwQcp6KOVzT71A==
+X-Google-Smtp-Source: AGHT+IFdygFnvEGre8kyT9nMXmagg5Grn1/zhLSAye7sNHDbpBcV8eKwP8a09iof5pm99gFXmn9d4SLba0O1anSDI94=
+X-Received: by 2002:a05:6402:1d4d:b0:5c4:14b7:b3bf with SMTP id
+ 4fb4d7f45d1cf-5c41e09687bmr3133236a12.8.1726246040178; Fri, 13 Sep 2024
+ 09:47:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=130.117.225.111;
- envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20240819135455.2957406-1-mnissler@rivosinc.com>
+ <CAFEAcA-pVJozMoPnUU9TO=0KKH3iR95rf7XLj9EuaM7+Q-VZoQ@mail.gmail.com>
+ <ZuRgV7lS75BpDUox@x1n>
+In-Reply-To: <ZuRgV7lS75BpDUox@x1n>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 13 Sep 2024 17:47:08 +0100
+Message-ID: <CAFEAcA9kSi1id2SnQWEPyM44GvSH=tPqf-Unhyk92xdy+xZkJg@mail.gmail.com>
+Subject: Re: [PATCH] softmmu: Support concurrent bounce buffers
+To: Peter Xu <peterx@redhat.com>
+Cc: Mattias Nissler <mnissler@rivosinc.com>, qemu-devel@nongnu.org, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, stefanha@redhat.com, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,149 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce Qcow2 runtime boolean option "discard-subclusters".  This
-option influences discard alignment value (either cluster_size or
-subcluster_size) and essentially makes subcluster-based discard optional.
-We disable it by default.
+On Fri, 13 Sept 2024 at 16:55, Peter Xu <peterx@redhat.com> wrote:
+>
+> On Thu, Sep 12, 2024 at 03:27:55PM +0100, Peter Maydell wrote:
+> > Coverity is pretty unhappy about this trick, because it isn't able
+> > to recognise that we can figure out the address of 'bounce'
+> > from the address of 'bounce->buffer' and free it in the
+> > address_space_unmap() code, so it thinks that every use
+> > of address_space_map(), pci_dma_map(), etc, is a memory leak.
+> > We can mark all those as false positives, of course, but it got
+> > me wondering whether maybe we should have this function return
+> > a struct that has all the information address_space_unmap()
+> > needs rather than relying on it being able to figure it out
+> > from the host memory pointer...
+>
+> Indeed that sounds like a viable option.  Looks like we don't have a lot of
+> address_space_map() users.
 
-Also tweak iotests/271 to enable this option and really test subcluster
-based discards.
+There's quite a few wrappers of it too, so it's a little hard to count.
+We might want to avoid the memory allocation in the common case
+by having the caller pass in an ASMapInfo struct to be filled
+in rather than having address_space_map() allocate-and-return one.
 
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
----
- block/qcow2.c          | 21 ++++++++++++++++++++-
- block/qcow2.h          |  2 ++
- tests/qemu-iotests/271 | 10 ++++++----
- 3 files changed, 28 insertions(+), 5 deletions(-)
-
-diff --git a/block/qcow2.c b/block/qcow2.c
-index c2086d0bd1..7c38a5be41 100644
---- a/block/qcow2.c
-+++ b/block/qcow2.c
-@@ -685,6 +685,7 @@ static const char *const mutable_opts[] = {
-     QCOW2_OPT_DISCARD_SNAPSHOT,
-     QCOW2_OPT_DISCARD_OTHER,
-     QCOW2_OPT_DISCARD_NO_UNREF,
-+    QCOW2_OPT_DISCARD_SUBCLUSTERS,
-     QCOW2_OPT_OVERLAP,
-     QCOW2_OPT_OVERLAP_TEMPLATE,
-     QCOW2_OPT_OVERLAP_MAIN_HEADER,
-@@ -734,6 +735,11 @@ static QemuOptsList qcow2_runtime_opts = {
-             .type = QEMU_OPT_BOOL,
-             .help = "Do not unreference discarded clusters",
-         },
-+        {
-+            .name = QCOW2_OPT_DISCARD_SUBCLUSTERS,
-+            .type = QEMU_OPT_BOOL,
-+            .help = "Allow subcluster aligned discard requests",
-+        },
-         {
-             .name = QCOW2_OPT_OVERLAP,
-             .type = QEMU_OPT_STRING,
-@@ -978,6 +984,7 @@ typedef struct Qcow2ReopenState {
-     int overlap_check;
-     bool discard_passthrough[QCOW2_DISCARD_MAX];
-     bool discard_no_unref;
-+    bool discard_subclusters;
-     uint64_t cache_clean_interval;
-     QCryptoBlockOpenOptions *crypto_opts; /* Disk encryption runtime options */
- } Qcow2ReopenState;
-@@ -1157,6 +1164,16 @@ qcow2_update_options_prepare(BlockDriverState *bs, Qcow2ReopenState *r,
-         goto fail;
-     }
- 
-+    r->discard_subclusters =
-+        qemu_opt_get_bool(opts, QCOW2_OPT_DISCARD_SUBCLUSTERS, false);
-+    if (r->discard_subclusters && !has_subclusters(s)) {
-+        error_setg(errp,
-+                   "Image doesn't have extended L2 entries, but option "
-+                   "'discard-subclusters' is enabled");
-+        ret = -EINVAL;
-+        goto fail;
-+    }
-+
-     switch (s->crypt_method_header) {
-     case QCOW_CRYPT_NONE:
-         if (encryptfmt) {
-@@ -1238,6 +1255,7 @@ static void qcow2_update_options_commit(BlockDriverState *bs,
-     }
- 
-     s->discard_no_unref = r->discard_no_unref;
-+    s->discard_subclusters = r->discard_subclusters;
- 
-     if (s->cache_clean_interval != r->cache_clean_interval) {
-         cache_clean_timer_del(bs);
-@@ -1981,7 +1999,8 @@ static void qcow2_refresh_limits(BlockDriverState *bs, Error **errp)
-         bs->bl.request_alignment = qcrypto_block_get_sector_size(s->crypto);
-     }
-     bs->bl.pwrite_zeroes_alignment = s->subcluster_size;
--    bs->bl.pdiscard_alignment = s->subcluster_size;
-+    bs->bl.pdiscard_alignment = s->discard_subclusters ?
-+                                s->subcluster_size : s->cluster_size;
- }
- 
- static int GRAPH_UNLOCKED
-diff --git a/block/qcow2.h b/block/qcow2.h
-index a65c185b51..4e91bdde3f 100644
---- a/block/qcow2.h
-+++ b/block/qcow2.h
-@@ -134,6 +134,7 @@
- #define QCOW2_OPT_DISCARD_SNAPSHOT "pass-discard-snapshot"
- #define QCOW2_OPT_DISCARD_OTHER "pass-discard-other"
- #define QCOW2_OPT_DISCARD_NO_UNREF "discard-no-unref"
-+#define QCOW2_OPT_DISCARD_SUBCLUSTERS "discard-subclusters"
- #define QCOW2_OPT_OVERLAP "overlap-check"
- #define QCOW2_OPT_OVERLAP_TEMPLATE "overlap-check.template"
- #define QCOW2_OPT_OVERLAP_MAIN_HEADER "overlap-check.main-header"
-@@ -387,6 +388,7 @@ typedef struct BDRVQcow2State {
-     bool discard_passthrough[QCOW2_DISCARD_MAX];
- 
-     bool discard_no_unref;
-+    bool discard_subclusters;
- 
-     int overlap_check; /* bitmask of Qcow2MetadataOverlap values */
-     bool signaled_corruption;
-diff --git a/tests/qemu-iotests/271 b/tests/qemu-iotests/271
-index 8b80682cff..d7cf3c459b 100755
---- a/tests/qemu-iotests/271
-+++ b/tests/qemu-iotests/271
-@@ -100,13 +100,14 @@ _filter_trace_fallocate()
- #      discard  -> discard
- _run_test()
- {
--    unset c sc off len cmd opt
-+    unset c sc off len cmd trace opt
-     for var in "$@"; do eval "$var"; done
-     case "${cmd:-write}" in
-         zero)
-             cmd="write -q -z";;
-         unmap)
--            opt="--trace enable=file_do_fallocate"
-+            trace="--trace enable=file_do_fallocate"
-+            opt="-c reopen -o discard-subclusters=on"
-             cmd="write -q -z -u";;
-         compress)
-             pat=$((${pat:-0} + 1))
-@@ -115,7 +116,8 @@ _run_test()
-             pat=$((${pat:-0} + 1))
-             cmd="write -q -P ${pat}";;
-         discard)
--            opt="--trace enable=file_do_fallocate"
-+            trace="--trace enable=file_do_fallocate"
-+            opt="-c reopen -o discard-subclusters=on"
-             cmd="discard -q";;
-         *)
-             echo "Unknown option $cmd"
-@@ -129,7 +131,7 @@ _run_test()
-     cmd="$cmd ${offset} ${len}"
-     raw_cmd=$(echo $cmd | sed s/-c//) # Raw images don't support -c
-     echo $cmd | sed 's/-P [0-9][0-9]\?/-P PATTERN/'
--    $QEMU_IO $opt -c "$cmd" "$TEST_IMG" 2>&1 | _filter_qemu_io | _filter_trace_fallocate
-+    $QEMU_IO $trace ${opt:+ "$opt"} -c "$cmd" "$TEST_IMG" 2>&1 | _filter_qemu_io | _filter_trace_fallocate
-     $QEMU_IO -c "$raw_cmd" -f raw "$TEST_IMG.raw" | _filter_qemu_io
-     _verify_img
-     _verify_l2_bitmap "$c"
--- 
-2.39.3
-
+-- PMM
 
