@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6169784A2
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E7997841D
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:15:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp817-0005iU-IH; Fri, 13 Sep 2024 11:15:26 -0400
+	id 1sp80m-0003ln-9R; Fri, 13 Sep 2024 11:15:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp809-00029A-To
+ id 1sp80A-0002AX-9n
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:26 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp806-0007nG-Gz
- for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:24 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42cacabd2e0so20946155e9.3
+ id 1sp807-0007nR-BR
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:25 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-42cd46f3ac9so21700985e9.3
  for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1726240461; x=1726845261; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=TKWeC4pYOAAnp+KIP7VnR06oZPWCIMY6KFnj6eH8Ao0=;
- b=sa9fcwu3HuaVJjh1bAo1qXkUrkds4EqoK83QjBa6NnW2+RzLC28L0icwrggyub/ctK
- poqnQgudFsmI+ERwmq23NGEIMc33Rg7gto21zYAAtWJg5KJoWt5E3YTU5FV98ZA36rxs
- RWeztRz62MDiZ+IXb0wOJo1IvvCtX2JxrgnEtPG6NPOxAFWm0+TEN9yBgL+UvybHrAsZ
- 7kceXoC4RILkEedX4dMahlxb0E59Xv1EG0/9hJQmqjpI0ZCA2LqlVytmnha7kV+OCYsB
- FMKbmiIHtqg/1WzisTDJmJ6P68cZkYZP7LnzhsQ72SlkKeVuxmkOqsO/w80ibGrfq5BF
- wXTQ==
+ :reply-to; bh=sMpuvKSijMzza9jyYi3YKFy2MNvxfWsjj0r4/UrtdJo=;
+ b=by1y0Ywcz/1Eb+IL7mSeHkuMLcmSASAIdSLkwszu5qP3kKMRG8J5oI3OQaRkSjhjqG
+ PSQjuAU+xotrfRvVIDv+m5v4QP1CaWoCIp9o+2VgfD0QAEUEqb1a8ovv4lvGd3K6x9EH
+ Q81thgsvtLS1E8cIz6EI8H4L1RvhriVYwydikHh8TucJVoBpcIR/P0If1TGz8DpN5Cfm
+ zmOAsv0mg001EJP0gJrsHibUQmRukoch3ujfU7ug1UXxDxwAslwbANmtSnh+Q1IkCX7h
+ N5sv8iMJdd/lC1J5O1QsEeBLHrYC2aQJZOgad4B9AMm1ObT8+7TiKg0byPK9C6xkSayj
+ UpSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1726240461; x=1726845261;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TKWeC4pYOAAnp+KIP7VnR06oZPWCIMY6KFnj6eH8Ao0=;
- b=xOTo4RQE3vpRfSBnXxwAu6R3KUQyMAMOw7p6JYxZKAos+g2s4pXbCsd8EkpPIrgaLE
- lsG21tbLGkGhBc7oZgaoiD9KQ34qVjOBc3Dn00Zu1VuuaVNKG4+Grbdwq17yV/kXE5Bx
- TAVYrp6N1ijOP6RyO9tWJbNbN0ZQp/QWu4gjP9piJLMlx5Z0lQ74MWZK5VvnnQj2wRpB
- b3CZncwrh/+lDPNAUpwedoXzt+azt45zbbAfnZkXWQuZ6q+mndwK0ha2f+BKjohrYVn+
- hdy5TmeJooU3vUDVhp1/gMix5RbniW9jC+XDZFYIiiUfshbpXsCOMBP5aMWNbW2W3czG
- mAyA==
-X-Gm-Message-State: AOJu0YywQGX9MNwYnOPpvOfTpU/wPJVehdldTa3HslaIHwIDL1RxGqWc
- Bessw3At4IVgx+sJr/YEGXMJmkc3qztv8RVUYtDGDo6uUijVVko3agEIU10JURp24+jK3TIhpHj
- O
-X-Google-Smtp-Source: AGHT+IHlfDdF0fIb0e/fxAPYpKFphnrgAweDPyWE/by9PIQ6Si8MK8vKlJgLxeQpeFF1nSDpze9Cjw==
-X-Received: by 2002:a05:600c:1e10:b0:42c:bd27:4c12 with SMTP id
- 5b1f17b1804b1-42cdb522cf7mr57774665e9.10.1726240460854; 
- Fri, 13 Sep 2024 08:14:20 -0700 (PDT)
+ bh=sMpuvKSijMzza9jyYi3YKFy2MNvxfWsjj0r4/UrtdJo=;
+ b=ciU4XIx1GBQ1PGs1zjMCrZg/Fr2DbNwT6aZFxZfLPRN+hHPqjC0TOH+aKmTd2hdKI+
+ M52ji0Et15vC+Tp1SO+fj2hsQk3OzlXy3FT0rUON63nWy5mRoarDQnRk+Qw+uwXn6xxb
+ fjIiZ0YHs7xnUlviYB8u8BnsLE10Z+yEgEFX3ZnbTauZ6drX7ehI3sz611B4Xo/cYAVz
+ voNQGxHqqpd3MAvzRzJeey5ocb9ycSZNT9d09AC5Bbvls3eCDsaSD4WAElEbtaPjhnfV
+ 33n8HNMBn/YEVtyi0BmB0K+VR0fGld1Un1muvCZfb8xRcfaBYRSe9G/dj6uiXxxMb/a+
+ gZ8A==
+X-Gm-Message-State: AOJu0YzKXqpsHKfdPZOP+eaZQVLRETMGyw5ThxPM5DOkYLQcT3vNamhy
+ sgP1SGtcYRG3Iwz0ENHLl2CY9ikijZ1T2336p6eYwVo/0sz7i+DnmibUecKgNg7auo8otlxUxfZ
+ 6
+X-Google-Smtp-Source: AGHT+IG0hfeezERxpVZcQi+LotZP+VnGZ7siNaa7pVzNaHWp2kmsHJksmim+ZVTIekqPfARImtAhiw==
+X-Received: by 2002:a05:600c:3b8e:b0:42c:b377:3f76 with SMTP id
+ 5b1f17b1804b1-42cdb54e68fmr57889745e9.17.1726240461329; 
+ Fri, 13 Sep 2024 08:14:21 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-42d9b16bfbfsm29152325e9.22.2024.09.13.08.14.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Sep 2024 08:14:20 -0700 (PDT)
+ Fri, 13 Sep 2024 08:14:21 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/27] hvf: arm: Implement and use
- hvf_get_physical_address_range
-Date: Fri, 13 Sep 2024 16:13:59 +0100
-Message-Id: <20240913151411.2167922-16-peter.maydell@linaro.org>
+Subject: [PULL 16/27] target/arm/tcg: refine cache descriptions with a wrapper
+Date: Fri, 13 Sep 2024 16:14:00 +0100
+Message-Id: <20240913151411.2167922-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240913151411.2167922-1-peter.maydell@linaro.org>
 References: <20240913151411.2167922-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,326 +92,329 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Danny Canter <danny_canter@apple.com>
+From: Alireza Sanaee <alireza.sanaee@huawei.com>
 
-This patch's main focus is to use the previously added
-hvf_get_physical_address_range to inform VM creation
-about the IPA size we need for the VM, so we can extend
-the default 36b IPA size and support VMs with 64+GB of
-RAM. This is done by freezing the memory map, computing
-the highest GPA and then (depending on if the platform
-supports an IPA size that large) telling the kernel to
-use a size >= for the VM. In pursuit of this a couple of
-things related to how we handle the physical address range
-we expose to guests were altered, but for an explanation of
-what we were doing:
+This patch allows for easier manipulation of the cache description
+register, CCSIDR. Which is helpful for testing as well. Currently,
+numbers get hard-coded and might be prone to errors.
 
-Today, to get the IPA size we were reading id_aa64mmfr0_el1's
-PARange field from a newly made vcpu. Unfortunately, HVF just
-returns the hosts PARange directly for the initial value and
-not the IPA size that will actually back the VM, so we believe
-we have much more address space than we actually do today it seems.
+Therefore, this patch adds a wrapper for different types of CPUs
+available in tcg to decribe caches. One function `make_ccsidr` supports
+two cases by carrying a parameter as FORMAT that can be LEGACY and
+CCIDX which determines the specification of the register.
 
-Starting in macOS 13.0 some APIs were introduced to be able to
-query the maximum IPA size the kernel supports, and to set the IPA
-size for a given VM. However, this still has a couple of issues
-on < macOS 15. Up until macOS 15 (and if the hardware supported
-it) the max IPA size was 39 bits which is not a valid PARange
-value, so we can't clamp down what we advertise in the vcpu's
-id_aa64mmfr0_el1 to our IPA size. Starting in macOS 15 however,
-the maximum IPA size is 40 bits (if it's supported in the hardware
-as well) which is also a valid PARange value so we can set our IPA
-size to the maximum as well as clamp down the PARange we advertise
-to the guest. This allows VMs with 64+ GB of RAM and should fix the
-oddness of the PARange situation as well.
+For CCSIDR register, 32 bit version follows specification [1].
+Conversely, 64 bit version follows specification [2].
 
-Signed-off-by: Danny Canter <danny_canter@apple.com>
-Message-id: 20240828111552.93482-4-danny_canter@apple.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[1] B4.1.19, ARM Architecture Reference Manual ARMv7-A and ARMv7-R
+edition, https://developer.arm.com/documentation/ddi0406
+[2] D23.2.29, ARM Architecture Reference Manual for A-profile Architecture,
+https://developer.arm.com/documentation/ddi0487/latest/
+
+Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240903144550.280-1-alireza.sanaee@huawei.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/hvf_arm.h      | 19 +++++++++++++
- target/arm/internals.h    | 19 +++++++++++++
- accel/hvf/hvf-accel-ops.c | 12 ++++++++-
- hw/arm/virt.c             | 31 +++++++++++++++++++++-
- target/arm/hvf/hvf.c      | 56 ++++++++++++++++++++++++++++++++++++++-
- target/arm/ptw.c          | 15 +++++++++++
- 6 files changed, 149 insertions(+), 3 deletions(-)
+ target/arm/cpu-features.h |  50 ++++++++++++++++++
+ target/arm/cpu64.c        |  19 ++++---
+ target/arm/tcg/cpu64.c    | 108 +++++++++++++++++++-------------------
+ 3 files changed, 117 insertions(+), 60 deletions(-)
 
-diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
-index e848c1d27d4..26c717b3826 100644
---- a/target/arm/hvf_arm.h
-+++ b/target/arm/hvf_arm.h
-@@ -22,4 +22,23 @@ void hvf_arm_init_debug(void);
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index cfb82c23cad..04ce2818263 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -21,6 +21,7 @@
+ #define TARGET_ARM_FEATURES_H
  
- void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
+ #include "hw/registerfields.h"
++#include "qemu/host-utils.h"
  
-+#ifdef CONFIG_HVF
+ /*
+  * Naming convention for isar_feature functions:
+@@ -1027,6 +1028,55 @@ static inline bool isar_feature_any_evt(const ARMISARegisters *id)
+     return isar_feature_aa64_evt(id) || isar_feature_aa32_evt(id);
+ }
+ 
++typedef enum {
++    CCSIDR_FORMAT_LEGACY,
++    CCSIDR_FORMAT_CCIDX,
++} CCSIDRFormat;
 +
-+uint32_t hvf_arm_get_default_ipa_bit_size(void);
-+uint32_t hvf_arm_get_max_ipa_bit_size(void);
-+
-+#else
-+
-+static inline uint32_t hvf_arm_get_default_ipa_bit_size(void)
++static inline uint64_t make_ccsidr(CCSIDRFormat format, unsigned assoc,
++                                   unsigned linesize, unsigned cachesize,
++                                   uint8_t flags)
 +{
-+    return 0;
-+}
++    unsigned lg_linesize = ctz32(linesize);
++    unsigned sets;
++    uint64_t ccsidr = 0;
 +
-+static inline uint32_t hvf_arm_get_max_ipa_bit_size(void)
-+{
-+    return 0;
-+}
++    assert(assoc != 0);
++    assert(is_power_of_2(linesize));
++    assert(lg_linesize >= 4 && lg_linesize <= 7 + 4);
 +
-+#endif
++    /* sets * associativity * linesize == cachesize. */
++    sets = cachesize / (assoc * linesize);
++    assert(cachesize % (assoc * linesize) == 0);
 +
- #endif
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 203a2dae148..c5d7b0b4929 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -450,6 +450,25 @@ static inline void update_spsel(CPUARMState *env, uint32_t imm)
-  */
- unsigned int arm_pamax(ARMCPU *cpu);
- 
-+/*
-+ * round_down_to_parange_index
-+ * @bit_size: uint8_t
-+ *
-+ * Rounds down the bit_size supplied to the first supported ARM physical
-+ * address range and returns the index for this. The index is intended to
-+ * be used to set ID_AA64MMFR0_EL1's PARANGE bits.
-+ */
-+uint8_t round_down_to_parange_index(uint8_t bit_size);
-+
-+/*
-+ * round_down_to_parange_bit_size
-+ * @bit_size: uint8_t
-+ *
-+ * Rounds down the bit_size supplied to the first supported ARM physical
-+ * address range bit size and returns this.
-+ */
-+uint8_t round_down_to_parange_bit_size(uint8_t bit_size);
-+
- /* Return true if extended addresses are enabled.
-  * This is always the case if our translation regime is 64 bit,
-  * but depends on TTBCR.EAE for 32 bit.
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index dbebf209f48..d60874d3e6b 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -53,6 +53,7 @@
- #include "exec/address-spaces.h"
- #include "exec/exec-all.h"
- #include "gdbstub/enums.h"
-+#include "hw/boards.h"
- #include "sysemu/cpus.h"
- #include "sysemu/hvf.h"
- #include "sysemu/hvf_int.h"
-@@ -319,8 +320,17 @@ static int hvf_accel_init(MachineState *ms)
-     int x;
-     hv_return_t ret;
-     HVFState *s;
-+    int pa_range = 36;
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
- 
--    ret = hvf_arch_vm_create(ms, 0);
-+    if (mc->hvf_get_physical_address_range) {
-+        pa_range = mc->hvf_get_physical_address_range(ms);
-+        if (pa_range < 0) {
-+            return -EINVAL;
-+        }
-+    }
-+
-+    ret = hvf_arch_vm_create(ms, (uint32_t)pa_range);
-     assert_hvf_ok(ret);
- 
-     s = g_new0(HVFState, 1);
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index d284a602e82..8b2b991d978 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -66,6 +66,7 @@
- #include "hw/intc/arm_gicv3_its_common.h"
- #include "hw/irq.h"
- #include "kvm_arm.h"
-+#include "hvf_arm.h"
- #include "hw/firmware/smbios.h"
- #include "qapi/visitor.h"
- #include "qapi/qapi-visit-common.h"
-@@ -3034,7 +3035,35 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
- 
- static int virt_hvf_get_physical_address_range(MachineState *ms)
- {
--    return 0;
-+    VirtMachineState *vms = VIRT_MACHINE(ms);
-+
-+    int default_ipa_size = hvf_arm_get_default_ipa_bit_size();
-+    int max_ipa_size = hvf_arm_get_max_ipa_bit_size();
-+
-+    /* We freeze the memory map to compute the highest gpa */
-+    virt_set_memmap(vms, max_ipa_size);
-+
-+    int requested_ipa_size = 64 - clz64(vms->highest_gpa);
-+
-+    /*
-+     * If we're <= the default IPA size just use the default.
-+     * If we're above the default but below the maximum, round up to
-+     * the maximum. hvf_arm_get_max_ipa_bit_size() conveniently only
-+     * returns values that are valid ARM PARange values.
-+     */
-+    if (requested_ipa_size <= default_ipa_size) {
-+        requested_ipa_size = default_ipa_size;
-+    } else if (requested_ipa_size <= max_ipa_size) {
-+        requested_ipa_size = max_ipa_size;
++    if (format == CCSIDR_FORMAT_LEGACY) {
++        /*
++         * The 32-bit CCSIDR format is:
++         *   [27:13] number of sets - 1
++         *   [12:3]  associativity - 1
++         *   [2:0]   log2(linesize) - 4
++         *           so 0 == 16 bytes, 1 == 32 bytes, 2 == 64 bytes, etc
++         */
++        ccsidr = deposit32(ccsidr, 28,  4, flags);
++        ccsidr = deposit32(ccsidr, 13, 15, sets - 1);
++        ccsidr = deposit32(ccsidr,  3, 10, assoc - 1);
++        ccsidr = deposit32(ccsidr,  0,  3, lg_linesize - 4);
 +    } else {
-+        error_report("-m and ,maxmem option values "
-+                     "require an IPA range (%d bits) larger than "
-+                     "the one supported by the host (%d bits)",
-+                     requested_ipa_size, max_ipa_size);
-+        return -1;
++        /*
++         * The 64-bit CCSIDR_EL1 format is:
++         *   [55:32] number of sets - 1
++         *   [23:3]  associativity - 1
++         *   [2:0]   log2(linesize) - 4
++         *           so 0 == 16 bytes, 1 == 32 bytes, 2 == 64 bytes, etc
++         */
++        ccsidr = deposit64(ccsidr, 32, 24, sets - 1);
++        ccsidr = deposit64(ccsidr,  3, 21, assoc - 1);
++        ccsidr = deposit64(ccsidr,  0,  3, lg_linesize - 4);
 +    }
 +
-+    return requested_ipa_size;
- }
- 
- static void virt_machine_class_init(ObjectClass *oc, void *data)
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 19964d241ed..6cea483d422 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -22,6 +22,7 @@
- #include <mach/mach_time.h>
- 
- #include "exec/address-spaces.h"
-+#include "hw/boards.h"
- #include "hw/irq.h"
- #include "qemu/main-loop.h"
- #include "sysemu/cpus.h"
-@@ -297,6 +298,8 @@ void hvf_arm_init_debug(void)
- 
- static void hvf_wfi(CPUState *cpu);
- 
-+static uint32_t chosen_ipa_bit_size;
-+
- typedef struct HVFVTimer {
-     /* Vtimer value during migration and paused state */
-     uint64_t vtimer_val;
-@@ -839,6 +842,16 @@ static uint64_t hvf_get_reg(CPUState *cpu, int rt)
-     return val;
- }
- 
-+static void clamp_id_aa64mmfr0_parange_to_ipa_size(uint64_t *id_aa64mmfr0)
-+{
-+    uint32_t ipa_size = chosen_ipa_bit_size ?
-+            chosen_ipa_bit_size : hvf_arm_get_max_ipa_bit_size();
-+
-+    /* Clamp down the PARange to the IPA size the kernel supports. */
-+    uint8_t index = round_down_to_parange_index(ipa_size);
-+    *id_aa64mmfr0 = (*id_aa64mmfr0 & ~R_ID_AA64MMFR0_PARANGE_MASK) | index;
-+}
-+
- static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
- {
-     ARMISARegisters host_isar = {};
-@@ -882,6 +895,8 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     r |= hv_vcpu_get_sys_reg(fd, HV_SYS_REG_MIDR_EL1, &ahcf->midr);
-     r |= hv_vcpu_destroy(fd);
- 
-+    clamp_id_aa64mmfr0_parange_to_ipa_size(&host_isar.id_aa64mmfr0);
-+
-     ahcf->isar = host_isar;
- 
-     /*
-@@ -904,6 +919,30 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     return r == HV_SUCCESS;
- }
- 
-+uint32_t hvf_arm_get_default_ipa_bit_size(void)
-+{
-+    uint32_t default_ipa_size;
-+    hv_return_t ret = hv_vm_config_get_default_ipa_size(&default_ipa_size);
-+    assert_hvf_ok(ret);
-+
-+    return default_ipa_size;
-+}
-+
-+uint32_t hvf_arm_get_max_ipa_bit_size(void)
-+{
-+    uint32_t max_ipa_size;
-+    hv_return_t ret = hv_vm_config_get_max_ipa_size(&max_ipa_size);
-+    assert_hvf_ok(ret);
-+
-+    /*
-+     * We clamp any IPA size we want to back the VM with to a valid PARange
-+     * value so the guest doesn't try and map memory outside of the valid range.
-+     * This logic just clamps the passed in IPA bit size to the first valid
-+     * PARange value <= to it.
-+     */
-+    return round_down_to_parange_bit_size(max_ipa_size);
-+}
-+
- void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu)
- {
-     if (!arm_host_cpu_features.dtb_compatible) {
-@@ -931,8 +970,18 @@ void hvf_arch_vcpu_destroy(CPUState *cpu)
- 
- hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
- {
-+    hv_return_t ret;
-     hv_vm_config_t config = hv_vm_config_create();
--    hv_return_t ret = hv_vm_create(config);
-+
-+    ret = hv_vm_config_set_ipa_size(config, pa_range);
-+    if (ret != HV_SUCCESS) {
-+        goto cleanup;
-+    }
-+    chosen_ipa_bit_size = pa_range;
-+
-+    ret = hv_vm_create(config);
-+
-+cleanup:
-     os_release(config);
- 
-     return ret;
-@@ -1004,6 +1053,11 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-                               &arm_cpu->isar.id_aa64mmfr0);
-     assert_hvf_ok(ret);
- 
-+    clamp_id_aa64mmfr0_parange_to_ipa_size(&arm_cpu->isar.id_aa64mmfr0);
-+    ret = hv_vcpu_set_sys_reg(cpu->accel->fd, HV_SYS_REG_ID_AA64MMFR0_EL1,
-+                              arm_cpu->isar.id_aa64mmfr0);
-+    assert_hvf_ok(ret);
-+
-     return 0;
- }
- 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 278004661bf..defd6b84de6 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -96,6 +96,21 @@ static const uint8_t pamax_map[] = {
-     [6] = 52,
- };
- 
-+uint8_t round_down_to_parange_index(uint8_t bit_size)
-+{
-+    for (int i = ARRAY_SIZE(pamax_map) - 1; i >= 0; i--) {
-+        if (pamax_map[i] <= bit_size) {
-+            return i;
-+        }
-+    }
-+    g_assert_not_reached();
-+}
-+
-+uint8_t round_down_to_parange_bit_size(uint8_t bit_size)
-+{
-+    return pamax_map[round_down_to_parange_index(bit_size)];
++    return ccsidr;
 +}
 +
  /*
-  * The cpu-specific constant value of PAMax; also used by hw/arm/virt.
-  * Note that machvirt_init calls this on a CPU that is inited but not realized!
+  * Forward to the above feature tests given an ARMCPU pointer.
+  */
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 262a1d6c0bb..458d1cee012 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -23,6 +23,7 @@
+ #include "cpu.h"
+ #include "cpregs.h"
+ #include "qemu/module.h"
++#include "qemu/units.h"
+ #include "sysemu/kvm.h"
+ #include "sysemu/hvf.h"
+ #include "sysemu/qtest.h"
+@@ -642,9 +643,12 @@ static void aarch64_a57_initfn(Object *obj)
+     cpu->isar.dbgdevid1 = 0x2;
+     cpu->isar.reset_pmcr_el0 = 0x41013000;
+     cpu->clidr = 0x0a200023;
+-    cpu->ccsidr[0] = 0x701fe00a; /* 32KB L1 dcache */
+-    cpu->ccsidr[1] = 0x201fe012; /* 48KB L1 icache */
+-    cpu->ccsidr[2] = 0x70ffe07a; /* 2048KB L2 cache */
++    /* 32KB L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 7);
++    /* 48KB L1 icache */
++    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 3, 64, 48 * KiB, 2);
++    /* 2048KB L2 cache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 64, 2 * MiB, 7);
+     cpu->dcz_blocksize = 4; /* 64 bytes */
+     cpu->gic_num_lrs = 4;
+     cpu->gic_vpribits = 5;
+@@ -700,9 +704,12 @@ static void aarch64_a53_initfn(Object *obj)
+     cpu->isar.dbgdevid1 = 0x1;
+     cpu->isar.reset_pmcr_el0 = 0x41033000;
+     cpu->clidr = 0x0a200023;
+-    cpu->ccsidr[0] = 0x700fe01a; /* 32KB L1 dcache */
+-    cpu->ccsidr[1] = 0x201fe00a; /* 32KB L1 icache */
+-    cpu->ccsidr[2] = 0x707fe07a; /* 1024KB L2 cache */
++    /* 32KB L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 7);
++    /* 32KB L1 icache */
++    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 1, 64, 32 * KiB, 2);
++    /* 1024KB L2 cache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 64, 1 * MiB, 7);
+     cpu->dcz_blocksize = 4; /* 64 bytes */
+     cpu->gic_num_lrs = 4;
+     cpu->gic_vpribits = 5;
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 79258a7c928..b9f34f044d0 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -29,32 +29,6 @@
+ #include "cpu-features.h"
+ #include "cpregs.h"
+ 
+-static uint64_t make_ccsidr64(unsigned assoc, unsigned linesize,
+-                              unsigned cachesize)
+-{
+-    unsigned lg_linesize = ctz32(linesize);
+-    unsigned sets;
+-
+-    /*
+-     * The 64-bit CCSIDR_EL1 format is:
+-     *   [55:32] number of sets - 1
+-     *   [23:3]  associativity - 1
+-     *   [2:0]   log2(linesize) - 4
+-     *           so 0 == 16 bytes, 1 == 32 bytes, 2 == 64 bytes, etc
+-     */
+-    assert(assoc != 0);
+-    assert(is_power_of_2(linesize));
+-    assert(lg_linesize >= 4 && lg_linesize <= 7 + 4);
+-
+-    /* sets * associativity * linesize == cachesize. */
+-    sets = cachesize / (assoc * linesize);
+-    assert(cachesize % (assoc * linesize) == 0);
+-
+-    return ((uint64_t)(sets - 1) << 32)
+-         | ((assoc - 1) << 3)
+-         | (lg_linesize - 4);
+-}
+-
+ static void aarch64_a35_initfn(Object *obj)
+ {
+     ARMCPU *cpu = ARM_CPU(obj);
+@@ -106,9 +80,12 @@ static void aarch64_a35_initfn(Object *obj)
+     cpu->isar.reset_pmcr_el0 = 0x410a3000;
+ 
+     /* From B2.29 Cache ID registers */
+-    cpu->ccsidr[0] = 0x700fe01a; /* 32KB L1 dcache */
+-    cpu->ccsidr[1] = 0x201fe00a; /* 32KB L1 icache */
+-    cpu->ccsidr[2] = 0x703fe03a; /* 512KB L2 cache */
++    /* 32KB L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 7);
++    /* 32KB L1 icache */
++    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 2);
++    /* 512KB L2 cache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 64, 512 * KiB, 7);
+ 
+     /* From B3.5 VGIC Type register */
+     cpu->gic_num_lrs = 4;
+@@ -272,9 +249,12 @@ static void aarch64_a55_initfn(Object *obj)
+     cpu->revidr = 0;
+ 
+     /* From B2.23 CCSIDR_EL1 */
+-    cpu->ccsidr[0] = 0x700fe01a; /* 32KB L1 dcache */
+-    cpu->ccsidr[1] = 0x200fe01a; /* 32KB L1 icache */
+-    cpu->ccsidr[2] = 0x703fe07a; /* 512KB L2 cache */
++    /* 32KB L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 7);
++    /* 32KB L1 icache */
++    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 2);
++    /* 512KB L2 cache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 64, 512 * KiB, 7);
+ 
+     /* From B2.96 SCTLR_EL3 */
+     cpu->reset_sctlr = 0x30c50838;
+@@ -338,9 +318,12 @@ static void aarch64_a72_initfn(Object *obj)
+     cpu->isar.dbgdevid1 = 0x2;
+     cpu->isar.reset_pmcr_el0 = 0x41023000;
+     cpu->clidr = 0x0a200023;
+-    cpu->ccsidr[0] = 0x701fe00a; /* 32KB L1 dcache */
+-    cpu->ccsidr[1] = 0x201fe012; /* 48KB L1 icache */
+-    cpu->ccsidr[2] = 0x707fe07a; /* 1MB L2 cache */
++    /* 32KB L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 32 * KiB, 7);
++    /* 48KB L1 dcache */
++    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 3, 64, 48 * KiB, 2);
++    /* 1MB L2 cache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 64, 1 * MiB, 7);
+     cpu->dcz_blocksize = 4; /* 64 bytes */
+     cpu->gic_num_lrs = 4;
+     cpu->gic_vpribits = 5;
+@@ -397,9 +380,12 @@ static void aarch64_a76_initfn(Object *obj)
+     cpu->revidr = 0;
+ 
+     /* From B2.18 CCSIDR_EL1 */
+-    cpu->ccsidr[0] = 0x701fe01a; /* 64KB L1 dcache */
+-    cpu->ccsidr[1] = 0x201fe01a; /* 64KB L1 icache */
+-    cpu->ccsidr[2] = 0x707fe03a; /* 512KB L2 cache */
++    /* 64KB L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 7);
++    /* 64KB L1 icache */
++    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 2);
++    /* 512KB L2 cache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 8, 64, 512 * KiB, 7);
+ 
+     /* From B2.93 SCTLR_EL3 */
+     cpu->reset_sctlr = 0x30c50838;
+@@ -449,9 +435,12 @@ static void aarch64_a64fx_initfn(Object *obj)
+     cpu->isar.id_aa64isar1 = 0x0000000000010001;
+     cpu->isar.id_aa64zfr0 = 0x0000000000000000;
+     cpu->clidr = 0x0000000080000023;
+-    cpu->ccsidr[0] = 0x7007e01c; /* 64KB L1 dcache */
+-    cpu->ccsidr[1] = 0x2007e01c; /* 64KB L1 icache */
+-    cpu->ccsidr[2] = 0x70ffe07c; /* 8MB L2 cache */
++    /* 64KB L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 256, 64 * KiB, 7);
++    /* 64KB L1 icache */
++    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 256, 64 * KiB, 2);
++    /* 8MB L2 cache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 16, 256, 8 * MiB, 7);
+     cpu->dcz_blocksize = 6; /* 256 bytes */
+     cpu->gic_num_lrs = 4;
+     cpu->gic_vpribits = 5;
+@@ -637,9 +626,12 @@ static void aarch64_neoverse_n1_initfn(Object *obj)
+     cpu->revidr = 0;
+ 
+     /* From B2.23 CCSIDR_EL1 */
+-    cpu->ccsidr[0] = 0x701fe01a; /* 64KB L1 dcache */
+-    cpu->ccsidr[1] = 0x201fe01a; /* 64KB L1 icache */
+-    cpu->ccsidr[2] = 0x70ffe03a; /* 1MB L2 cache */
++    /* 64KB L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 7);
++    /* 64KB L1 icache */
++    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 2);
++    /* 1MB L2 dcache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 8, 64, 1 * MiB, 7);
+ 
+     /* From B2.98 SCTLR_EL3 */
+     cpu->reset_sctlr = 0x30c50838;
+@@ -721,9 +713,12 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
+      * L2: 8-way set associative, 64 byte line size, either 512K or 1MB.
+      * L3: No L3 (this matches the CLIDR_EL1 value).
+      */
+-    cpu->ccsidr[0] = make_ccsidr64(4, 64, 64 * KiB); /* L1 dcache */
+-    cpu->ccsidr[1] = cpu->ccsidr[0];                 /* L1 icache */
+-    cpu->ccsidr[2] = make_ccsidr64(8, 64, 1 * MiB);  /* L2 cache */
++    /* 64KB L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 4, 64, 64 * KiB, 0);
++    /* 64KB L1 icache */
++    cpu->ccsidr[1] = cpu->ccsidr[0];
++    /* 1MB L2 cache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 8, 64, 1 * MiB, 0);
+ 
+     /* From 3.2.115 SCTLR_EL3 */
+     cpu->reset_sctlr = 0x30c50838;
+@@ -959,9 +954,12 @@ static void aarch64_a710_initfn(Object *obj)
+      * L1: 4-way set associative 64-byte line size, total either 32K or 64K.
+      * L2: 8-way set associative 64 byte line size, total either 256K or 512K.
+      */
+-    cpu->ccsidr[0] = make_ccsidr64(4, 64, 64 * KiB);   /* L1 dcache */
+-    cpu->ccsidr[1] = cpu->ccsidr[0];                   /* L1 icache */
+-    cpu->ccsidr[2] = make_ccsidr64(8, 64, 512 * KiB);  /* L2 cache */
++    /* L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 4, 64, 64 * KiB, 0);
++    /* L1 icache */
++    cpu->ccsidr[1] = cpu->ccsidr[0];
++    /* L2 cache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 8, 64, 512 * KiB, 0);
+ 
+     /* FIXME: Not documented -- copied from neoverse-v1 */
+     cpu->reset_sctlr = 0x30c50838;
+@@ -1057,10 +1055,12 @@ static void aarch64_neoverse_n2_initfn(Object *obj)
+      * L1: 4-way set associative 64-byte line size, total 64K.
+      * L2: 8-way set associative 64 byte line size, total either 512K or 1024K.
+      */
+-    cpu->ccsidr[0] = make_ccsidr64(4, 64, 64 * KiB);   /* L1 dcache */
+-    cpu->ccsidr[1] = cpu->ccsidr[0];                   /* L1 icache */
+-    cpu->ccsidr[2] = make_ccsidr64(8, 64, 512 * KiB);  /* L2 cache */
+-
++    /* L1 dcache */
++    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 4, 64, 64 * KiB, 0);
++    /* L1 icache */
++    cpu->ccsidr[1] = cpu->ccsidr[0];
++    /* L2 cache */
++    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_CCIDX, 8, 64, 512 * KiB, 0);
+     /* FIXME: Not documented -- copied from neoverse-v1 */
+     cpu->reset_sctlr = 0x30c50838;
+ 
 -- 
 2.34.1
 
