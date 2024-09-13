@@ -2,51 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC70978822
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 20:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD4A9789DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 22:20:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spBLJ-0005Aq-9H; Fri, 13 Sep 2024 14:48:29 -0400
+	id 1spClu-0007MS-Nz; Fri, 13 Sep 2024 16:20:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1spBLD-00058p-0Q; Fri, 13 Sep 2024 14:48:23 -0400
-Received: from mailout10.t-online.de ([194.25.134.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1spBL9-0006H6-2s; Fri, 13 Sep 2024 14:48:21 -0400
-Received: from fwd85.aul.t-online.de (fwd85.aul.t-online.de [10.223.144.111])
- by mailout10.t-online.de (Postfix) with SMTP id 7949345F8;
- Fri, 13 Sep 2024 20:48:00 +0200 (CEST)
-Received: from [192.168.211.200] ([93.236.144.183]) by fwd85.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1spBKo-1D6pFJ0; Fri, 13 Sep 2024 20:47:58 +0200
-Message-ID: <730a179c-99dc-4996-8e71-8d01fe42f6d1@t-online.de>
-Date: Fri, 13 Sep 2024 20:47:58 +0200
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1sp9Ip-0005ep-H0
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 12:37:47 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <r.peniaev@gmail.com>)
+ id 1sp9In-0000g5-E6
+ for qemu-devel@nongnu.org; Fri, 13 Sep 2024 12:37:46 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a8b155b5e9eso307743966b.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 09:37:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1726245463; x=1726850263; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TF1Q0HeDACQCXoujOUikZqdcfOb5UVVw4pb9ALTshEk=;
+ b=hxoHjQABCDh9blIg0BYOeeJzQVbsaVMhG4mG3J2GVPRkcPMR51LsU/4trDRVehzhji
+ eHWRHWbS2Ut5CWm1BA28XUBbqNnl0CC7tGLBRyPsUrDzw8Vt+vCmx621mrYno3CWeSOf
+ ZorrZMtF1T7IDgVM5lJF1+L+5PQ3KU+MbuoK2yguQgO4aRVa1RrJFUT/LxVrihtwuu5H
+ K4lisa2/KmaBbHzOUkYuvz4614HkxIfvbf7qjUmmEI0WO9T9E+LXce7C/crwaIa3B8vx
+ NNKITl3FQ2PXIGxWFgXCsIeosrFR88dJvPlwYUFb85U1sd32eJD4AHEuUYad/eoYsrHp
+ kErA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726245463; x=1726850263;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TF1Q0HeDACQCXoujOUikZqdcfOb5UVVw4pb9ALTshEk=;
+ b=rRZZ7R+TpSgHlfHTzVFhVsgbLC0lxMja1S6yj3LsNvv9qm9NjWcakboYm9/Cdh8lFS
+ VPl/qq5C1qhpnR9eIr8U/IiVpr7S2WuyQKVxo5He2MvOBd5MQ74TFCcwtoTWDclh5e5s
+ s3JywdCDAPzYwyamiHOuZR0YVvro/hXds4rtZ4qM2QfLSjb9dNBE8P2V82BKyzGAFEPv
+ /iAvdmbsWw4D07bVlnKxXXXcm6BY7pF98zD7y1lGJVng50Dk93GYDJrT3Ye+I526eorS
+ dyvAgda51iTV545ZNOKtMiK4jZnDsm7GsrJC4/Dlj3T7Tpd8nuLsRPoSRTC133+G3B2s
+ dNDg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWMzhN5f/W2LqqsovC/ab9d8QlDkny+lDWdp3JmYIcPNl6LZbABngmZ49F2W6ahd0pHrvELaIPXCuhC@nongnu.org
+X-Gm-Message-State: AOJu0Yxfl23zUX4+JfVtOY7oEwSu10aevpHO0w8joKJLTF0DmMsu6SuB
+ GYBVNNf5okHQtU6/B7XqaVKr8qQ0uOL2vVYXfJvp7uRp/w4v/ADo
+X-Google-Smtp-Source: AGHT+IGjWnkhvS0Y/+G726mIh+iKEiXNX+reD4dfl+LUZPlZnlUFUPtPH1aB5GSqJw3cQleoGLokgw==
+X-Received: by 2002:a17:906:7949:b0:a8d:4db8:9edf with SMTP id
+ a640c23a62f3a-a902961795cmr582598366b.42.1726245461992; 
+ Fri, 13 Sep 2024 09:37:41 -0700 (PDT)
+Received: from finn.fritz.box ([2a02:8109:8384:1400:24fe:3d15:e808:f6ec])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a8d25c7286esm878983366b.138.2024.09.13.09.37.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Sep 2024 09:37:41 -0700 (PDT)
+From: Roman Penyaev <r.peniaev@gmail.com>
+To: 
+Cc: Roman Penyaev <r.peniaev@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: [PATCH 0/2] chardev: implement backend chardev multiplexing
+Date: Fri, 13 Sep 2024 18:36:34 +0200
+Message-Id: <20240913163636.253949-1-r.peniaev@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 16/18] hw/audio/virtio-sound: fix heap buffer overflow
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-References: <cover.1726062663.git.mst@redhat.com>
- <7fc6611cad3e9627b23ce83e550b668abba6c886.1726062663.git.mst@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <7fc6611cad3e9627b23ce83e550b668abba6c886.1726062663.git.mst@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1726253278-B77FD83E-4FAD900C/0/0 CLEAN NORMAL
-X-TOI-MSGID: e4a178f7-7eee-4dce-ab5d-9825781f6b49
-Received-SPF: pass client-ip=194.25.134.21; envelope-from=vr_qemu@t-online.de;
- helo=mailout10.t-online.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=r.peniaev@gmail.com; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 13 Sep 2024 16:19:54 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,84 +94,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc: qemu-stable@nongnu.org
+Mux is a character backend (host side) device, which multiplexes
+multiple frontends with one backend device. The following is a
+few lines from the QEMU manpage [1]:
 
-stable-8.2, stable-9.0 and stable-9.1
+  A multiplexer is a "1:N" device, and here the "1" end is your
+  specified chardev backend, and the "N" end is the various parts
+  of QEMU that can talk to a chardev.
 
-> From: Volker Rümelin <vr_qemu@t-online.de>
->
-> Currently, the guest may write to the device configuration space,
-> whereas the virtio sound device specification in chapter 5.14.4
-> clearly states that the fields in the device configuration space
-> are driver-read-only.
->
-> Remove the set_config function from the virtio_snd class.
->
-> This also prevents a heap buffer overflow. See QEMU issue #2296.
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2296
-> Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-> Message-Id: <20240901130112.8242-1-vr_qemu@t-online.de>
-> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->  hw/audio/virtio-snd.c | 24 ------------------------
->  hw/audio/trace-events |  1 -
->  2 files changed, 25 deletions(-)
->
-> diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-> index d1cf5eb445..69838181dd 100644
-> --- a/hw/audio/virtio-snd.c
-> +++ b/hw/audio/virtio-snd.c
-> @@ -107,29 +107,6 @@ virtio_snd_get_config(VirtIODevice *vdev, uint8_t *config)
->  
->  }
->  
-> -static void
-> -virtio_snd_set_config(VirtIODevice *vdev, const uint8_t *config)
-> -{
-> -    VirtIOSound *s = VIRTIO_SND(vdev);
-> -    const virtio_snd_config *sndconfig =
-> -        (const virtio_snd_config *)config;
-> -
-> -
-> -   trace_virtio_snd_set_config(vdev,
-> -                               s->snd_conf.jacks,
-> -                               sndconfig->jacks,
-> -                               s->snd_conf.streams,
-> -                               sndconfig->streams,
-> -                               s->snd_conf.chmaps,
-> -                               sndconfig->chmaps);
-> -
-> -    memcpy(&s->snd_conf, sndconfig, sizeof(virtio_snd_config));
-> -    le32_to_cpus(&s->snd_conf.jacks);
-> -    le32_to_cpus(&s->snd_conf.streams);
-> -    le32_to_cpus(&s->snd_conf.chmaps);
-> -
-> -}
-> -
->  static void
->  virtio_snd_pcm_buffer_free(VirtIOSoundPCMBuffer *buffer)
->  {
-> @@ -1400,7 +1377,6 @@ static void virtio_snd_class_init(ObjectClass *klass, void *data)
->      vdc->realize = virtio_snd_realize;
->      vdc->unrealize = virtio_snd_unrealize;
->      vdc->get_config = virtio_snd_get_config;
-> -    vdc->set_config = virtio_snd_set_config;
->      vdc->get_features = get_features;
->      vdc->reset = virtio_snd_reset;
->      vdc->legacy_features = 0;
-> diff --git a/hw/audio/trace-events b/hw/audio/trace-events
-> index b1870ff224..b8ef572767 100644
-> --- a/hw/audio/trace-events
-> +++ b/hw/audio/trace-events
-> @@ -41,7 +41,6 @@ asc_update_irq(int irq, int a, int b) "set IRQ to %d (A: 0x%x B: 0x%x)"
->  
->  #virtio-snd.c
->  virtio_snd_get_config(void *vdev, uint32_t jacks, uint32_t streams, uint32_t chmaps) "snd %p: get_config jacks=%"PRIu32" streams=%"PRIu32" chmaps=%"PRIu32""
-> -virtio_snd_set_config(void *vdev, uint32_t jacks, uint32_t new_jacks, uint32_t streams, uint32_t new_streams, uint32_t chmaps, uint32_t new_chmaps) "snd %p: set_config jacks from %"PRIu32"->%"PRIu32", streams from %"PRIu32"->%"PRIu32", chmaps from %"PRIu32"->%"PRIu32
->  virtio_snd_get_features(void *vdev, uint64_t features) "snd %p: get_features 0x%"PRIx64
->  virtio_snd_vm_state_running(void) "vm state running"
->  virtio_snd_vm_state_stopped(void) "vm state stopped"
+But sadly multiple backends are not supported.
+
+This work implements multiplexing capability of several backend
+devices, which opens up an opportunity to use a single frontend
+device on the guest, which can be manipulated from several
+backend devices.
+
+The main motivation of this work is to use a virtio console
+frontend device on the guest, which can be manipulated from
+several backend devices. The following is QEMU command line
+example:
+
+  -chardev socket,path=/tmp/sock,server=on,wait=off,id=sock0 \
+  -chardev vc,id=vc0 \
+  -chardev mux,id=mux0,chardev=vc0,,sock0 \
+  -device virtconsole,chardev=mux0 \
+  -vnc 0.0.0.0:0
+
+Which creates 2 backend devices: text virtual console (`vc0`)
+and a socket (`sock0`) connected to the single virtio hvc
+console with the multiplexer (`mux0`) help. `vc0` renders
+text to an image, which can be shared over the VNC protocol.
+`sock0` is a socket backend which provides biderectional
+communication to the virtio hvc console.
+
+Once QEMU starts VNC client and any TTY emulator can be used to
+control a single hvc console, for example these two different
+consoles should have similar input and output due the buffer
+multiplexing:
+
+   # VNC client
+   vncviewer :0
+
+   # TTY emulator
+   socat unix:connect:/tmp/sock pty,link=/tmp/pty
+   tio /tmp/pty
+
+[1] https://www.qemu.org/docs/master/system/qemu-manpage.html#hxtool-6
+
+Roman Penyaev (2):
+  chardev: implement backend chardev multiplexing
+  qemu-options.hx: describe multiplexing of several backend devices
+
+ chardev/char-fe.c          |  14 +++--
+ chardev/char-mux.c         | 120 +++++++++++++++++++++++++++++--------
+ chardev/char.c             |   2 +-
+ chardev/chardev-internal.h |   7 ++-
+ qemu-options.hx            |  44 ++++++++++++--
+ 5 files changed, 151 insertions(+), 36 deletions(-)
+
+Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
+Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+-- 
+2.34.1
 
 
