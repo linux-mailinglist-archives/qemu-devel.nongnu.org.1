@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F489785A4
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 18:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB16E9785A1
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 18:19:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp901-0001J9-4P; Fri, 13 Sep 2024 12:18:21 -0400
+	id 1sp902-0001S8-BL; Fri, 13 Sep 2024 12:18:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1sp8zN-00070L-Hd; Fri, 13 Sep 2024 12:17:42 -0400
+ id 1sp8zM-0006xH-Ms; Fri, 13 Sep 2024 12:17:42 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1sp8zL-0006nK-BH; Fri, 13 Sep 2024 12:17:41 -0400
+ id 1sp8zK-0006nA-7z; Fri, 13 Sep 2024 12:17:40 -0400
 Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48DGBYtd030029;
- Fri, 13 Sep 2024 16:17:30 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48DGBZqm030124;
+ Fri, 13 Sep 2024 16:17:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-type:content-transfer-encoding; s=pp1; bh=
- 4ZkGGb8gJbe/tu0R1BNS55KR8q8Zd9kJb+fngky8LBg=; b=pifQ5+ONvbZjCiev
- QRRqtVltMrlsLArcgvYFc42JNgH3Vw+UvBG3zXQyQ9nBDtU6PIO2za4+nR4VHr7O
- IL/bRx72UQCcmmGpoQrflSpP13clUd8i6yFYx4pKLXoPqhbKh6Kure6xzyfCddoy
- GBzHtNFDtztVqahvH18e5EzhgtjSU+urouq044f2TQt6ER7EPJPqf3kjYIhzaInf
- gi+NvTyVRl2NYMT6D61v9BryeuFl0Aw4x0KcIuMIQHtjOnPrl4zYEC/xuPJG2oYU
- ypLQEy0Es7iMnIWXUoFRBsAMTpmakAqVnvkUozqc8ruLw9kqWRo+Kv54ufKHDZM4
- SebNrg==
+ LCpUFz2WhQcGF3S623CXWT9p+5Tyy4XNgbtXbXmEwN8=; b=UZjNG8Nzn3OhkJp5
+ f0e2Fi5/Vo3ECeYCPQcE4ATe5DE6Qi83Y2epVt/Q1ifBM5QFteUKElKlJh3wVhiG
+ eulqf82VsRgq/PB8N0XHAX/8xUXqf9Axevp19HQToLIgLDkwPa9yn2/fM6u9DTuR
+ awURXESX0IqegOjvuj4Wrg6muIaYvt+0aBpdHLGtW0UTMeSYjX94HxN57KWBHoUf
+ w/0S0gVg6nQML/jJKMkGCwmtsFOrJzjEm5MPVQFlAxUQHhVo0Exjld6uSZnEgwzv
+ OFK5DT0yMmph1C+WsE0Vyi9uKUVLoysTxtzYxO9IwS0DEoBQlbQ1re8gr9b3QSYi
+ KLL95g==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegxb9mh-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegxb9my-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Sep 2024 16:17:29 +0000 (GMT)
+ Fri, 13 Sep 2024 16:17:33 +0000 (GMT)
 Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48DGHTeq009740;
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48DGHTes009740;
+ Fri, 13 Sep 2024 16:17:33 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegxb9mm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Sep 2024 16:17:32 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48DF3UKv010787;
  Fri, 13 Sep 2024 16:17:29 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegxb9mf-1
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41kmb72x73-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Sep 2024 16:17:29 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48DF3KgI032099;
- Fri, 13 Sep 2024 16:17:28 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41h2nn77v6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Sep 2024 16:17:27 +0000
+ Fri, 13 Sep 2024 16:17:29 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 48DGHOcY48103912
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48DGHPPr18022868
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Sep 2024 16:17:24 GMT
+ Fri, 13 Sep 2024 16:17:25 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2BA8220049;
+ by IMSVA (Postfix) with ESMTP id A50C62004F;
+ Fri, 13 Sep 2024 16:17:25 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7255A20049;
  Fri, 13 Sep 2024 16:17:24 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ECE9A20040;
- Fri, 13 Sep 2024 16:17:22 +0000 (GMT)
 Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 13 Sep 2024 16:17:22 +0000 (GMT)
+ Fri, 13 Sep 2024 16:17:24 +0000 (GMT)
 From: Michael Kowal <kowal@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
  npiggin@gmail.com, milesg@linux.ibm.com
-Subject: [PATCH v4 12/14] pnv/xive: Update PIPR when updating CPPR
-Date: Fri, 13 Sep 2024 11:16:57 -0500
-Message-Id: <20240913161659.1981-13-kowal@linux.ibm.com>
+Subject: [PATCH v4 13/14] pnv/xive2: TIMA support for 8-byte OS context push
+ for PHYP
+Date: Fri, 13 Sep 2024 11:16:58 -0500
+Message-Id: <20240913161659.1981-14-kowal@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240913161659.1981-1-kowal@linux.ibm.com>
 References: <20240913161659.1981-1-kowal@linux.ibm.com>
@@ -77,13 +78,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZocYHg1OerphJRiWloSY7lFA6CyK1-F0
-X-Proofpoint-ORIG-GUID: voR8d9YlGm399D8rzWAWzUnztrd27aW_
+X-Proofpoint-GUID: mBJW7MY0-clkgCAuh1pnk3lAdUNfZzyV
+X-Proofpoint-ORIG-GUID: WCSy8KwGpl_O6B_txlbEh3SBaJKDrJ8b
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-13_11,2024-09-13_02,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=854
+ phishscore=0 mlxlogscore=885
  lowpriorityscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
  adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 mlxscore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
@@ -112,83 +113,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.ibm.com>
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
 
-Current code was updating the PIPR inside the xive_tctx_accept() function
-instead of the xive_tctx_set_cppr function, which is where the HW would
-have it updated.
+PHYP uses 8-byte writes to the 2nd doubleword of the OS context
+line when dispatching an OS level virtual processor.  This
+support was not used by OPAL/Linux and so was never added.
 
-Moved the update to the xive_tctx_set_cppr function which required
-additional support for pool interrupts.
+Without this support, the XIVE code doesn't notice that a new
+context is being pushed and fails to check for unpresented
+pending interrupts for that context.
 
-Fixes: cdd4de68edb6 ("ppc/xive: notify the CPU when the interrupt priority is more privileged")
 Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/intc/xive.c | 34 ++++++++++++++++++++++++++++++++--
- 1 file changed, 32 insertions(+), 2 deletions(-)
+ hw/intc/xive.c  |  2 ++
+ hw/intc/xive2.c | 24 +++++++++++++++++++-----
+ 2 files changed, 21 insertions(+), 5 deletions(-)
 
 diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 5c5c3a2dd6..738eaf624d 100644
+index 738eaf624d..3ce86b6895 100644
 --- a/hw/intc/xive.c
 +++ b/hw/intc/xive.c
-@@ -89,7 +89,6 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
- 
-         /* Reset the pending buffer bit */
-         alt_regs[TM_IPB] &= ~xive_priority_to_ipb(cppr);
--        regs[TM_PIPR] = ipb_to_pipr(alt_regs[TM_IPB]);
- 
-         /* Drop Exception bit */
-         regs[TM_NSR] &= ~mask;
-@@ -143,6 +142,8 @@ void xive_tctx_reset_signal(XiveTCTX *tctx, uint8_t ring)
- static void xive_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+@@ -596,6 +596,8 @@ static const XiveTmOp xive2_tm_operations[] = {
+                                                      NULL },
+     { XIVE_TM_HV_PAGE, TM_QW1_OS + TM_WORD2,      4, xive2_tm_push_os_ctx,
+                                                      NULL },
++    { XIVE_TM_HV_PAGE, TM_QW1_OS + TM_WORD2,      8, xive2_tm_push_os_ctx,
++                                                     NULL },
+     { XIVE_TM_OS_PAGE, TM_QW1_OS + TM_LGS,        1, xive_tm_set_os_lgs,
+                                                      NULL },
+     { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR,  1, xive_tm_set_hv_cppr,
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index 2e41bd9edb..d1df35e9b3 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -597,17 +597,31 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
+ void xive2_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+                           hwaddr offset, uint64_t value, unsigned size)
  {
-     uint8_t *regs = &tctx->regs[ring];
-+    uint8_t pipr_min;
-+    uint8_t ring_min;
+-    uint32_t cam = value;
+-    uint32_t qw1w2 = cpu_to_be32(cam);
++    uint32_t cam;
++    uint32_t qw1w2;
++    uint64_t qw1dw1;
+     uint8_t nvp_blk;
+     uint32_t nvp_idx;
+     bool vo;
+     bool do_restore;
  
-     trace_xive_tctx_set_cppr(tctx->cs->cpu_index, ring,
-                              regs[TM_IPB], regs[TM_PIPR],
-@@ -154,8 +155,37 @@ static void xive_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
- 
-     tctx->regs[ring + TM_CPPR] = cppr;
- 
-+    /*
-+     * Recompute the PIPR based on local pending interrupts.  The PHYS
-+     * ring must take the minimum of both the PHYS and POOL PIPR values.
-+     */
-+    pipr_min = ipb_to_pipr(regs[TM_IPB]);
-+    ring_min = ring;
-+
-+    /* PHYS updates also depend on POOL values */
-+    if (ring == TM_QW3_HV_PHYS) {
-+        uint8_t *pool_regs = &tctx->regs[TM_QW2_HV_POOL];
-+
-+        /* POOL values only matter if POOL ctx is valid */
-+        if (pool_regs[TM_WORD2] & 0x80) {
-+
-+            uint8_t pool_pipr = ipb_to_pipr(pool_regs[TM_IPB]);
-+
-+            /*
-+             * Determine highest priority interrupt and
-+             * remember which ring has it.
-+             */
-+            if (pool_pipr < pipr_min) {
-+                pipr_min = pool_pipr;
-+                ring_min = TM_QW2_HV_POOL;
-+            }
-+        }
+-    xive2_cam_decode(cam, &nvp_blk, &nvp_idx, &vo, &do_restore);
+-
+     /* First update the thead context */
+-    memcpy(&tctx->regs[TM_QW1_OS + TM_WORD2], &qw1w2, 4);
++    switch (size) {
++    case 4:
++        cam = value;
++        qw1w2 = cpu_to_be32(cam);
++        memcpy(&tctx->regs[TM_QW1_OS + TM_WORD2], &qw1w2, 4);
++        break;
++    case 8:
++        cam = value >> 32;
++        qw1dw1 = cpu_to_be64(value);
++        memcpy(&tctx->regs[TM_QW1_OS + TM_WORD2], &qw1dw1, 8);
++        break;
++    default:
++        g_assert_not_reached();
 +    }
 +
-+    regs[TM_PIPR] = pipr_min;
-+
-     /* CPPR has changed, check if we need to raise a pending exception */
--    xive_tctx_notify(tctx, ring);
-+    xive_tctx_notify(tctx, ring_min);
- }
++    xive2_cam_decode(cam, &nvp_blk, &nvp_idx, &vo, &do_restore);
  
- void xive_tctx_ipb_update(XiveTCTX *tctx, uint8_t ring, uint8_t ipb)
+     /* Check the interrupt pending bits */
+     if (vo) {
 -- 
 2.43.0
 
