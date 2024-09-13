@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBFF697859D
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 18:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4A29785A6
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 18:20:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp8zI-0006NP-S2; Fri, 13 Sep 2024 12:17:36 -0400
+	id 1sp8z8-0005rw-CH; Fri, 13 Sep 2024 12:17:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1sp8z4-0005qz-1M; Fri, 13 Sep 2024 12:17:22 -0400
+ id 1sp8z2-0005pl-6m; Fri, 13 Sep 2024 12:17:20 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1sp8z2-0006jb-4h; Fri, 13 Sep 2024 12:17:21 -0400
+ id 1sp8z0-0006iw-1J; Fri, 13 Sep 2024 12:17:19 -0400
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48DGBYa3003690;
- Fri, 13 Sep 2024 16:17:11 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48DGBYJU003681;
+ Fri, 13 Sep 2024 16:17:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:mime-version:content-type
- :content-transfer-encoding; s=pp1; bh=XmvU8qCvVzU0MF2i0QpXEoBFpI
- CWtORXT5pbPcOicE8=; b=PJLpaIjYk1LKDMgpNZ4QlbD8BTUvf/kuZbtAD5jrVM
- juxSbZr8zMBqEZQXzXk1tmYHUyvMgxO1ynYuoPGxKpfxBSMQMSptXEbrl3cbUpgI
- 91dxXP15V72Df3FL7wJ7eezQZPI0sS+m0ET+YqLrd16m5IptDrgUrNW7+nYARU8Z
- CGorO+4uxvCeWQ1+iNo8XTRTYyewRCAUXUpdEfVDekhWGe0jwl+wzifrE/WmIAU4
- 7UeKgCLO5UX75SzgSBSXipl05MhECKrJsxwt2prPPycQMDa/S4XQaxoFrMgWADqG
- p0dz2w6hvA1iF8Xt71jrWZJvGAWgMNbUrsGf8z5FzfZw==
+ :to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-type:content-transfer-encoding; s=pp1; bh=
+ mHsNQeXs4PpWGsaGov1yM8HWLUtZAb/pHCepRuxKe/w=; b=a0e7gIlqGjazjQ8K
+ 1Rbyp1wnCf0ICgakmhkDnAMBZObWotelHNKs+5xdTjI6gV2TRCA5uU+IClshxcXJ
+ /AjelqQbTcse/eWs/XVFyY4m4jgQb2mouRMcUI753Ggqe58CK6JPCo1VYggDemtf
+ zQInJ45pX5msSeqh+vkskupi/nR/ggA/8htr9H4jMazE8kHsXMpkCH5AERM22EUZ
+ gvTu2niD4ttJhNWBvyUqrYoxEfzivbMpH2qt360QP1zoiVsdr9Uhio8S11rhkECZ
+ gQSLfN/Yl9i3C8Np4V44pj1p7ydueUHVbq1ucVcW+ihtvjWHkdhIJRWmk9KEj8O/
+ 6w0dIg==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gejb39m3-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gejb39mc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Sep 2024 16:17:11 +0000 (GMT)
+ Fri, 13 Sep 2024 16:17:13 +0000 (GMT)
 Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48DGDG2A005955;
- Fri, 13 Sep 2024 16:17:10 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gejb39m0-1
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48DGHChw014129;
+ Fri, 13 Sep 2024 16:17:12 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gejb39m9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Sep 2024 16:17:10 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48DFh8hn013566;
- Fri, 13 Sep 2024 16:17:09 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3cmq30q-1
+ Fri, 13 Sep 2024 16:17:12 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48DFGMWH010729;
+ Fri, 13 Sep 2024 16:17:11 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41kmb72x5k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Sep 2024 16:17:09 +0000
+ Fri, 13 Sep 2024 16:17:11 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 48DGH6Hh38732148
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48DGH7E048103882
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Sep 2024 16:17:06 GMT
+ Fri, 13 Sep 2024 16:17:07 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 27C032004D;
+ by IMSVA (Postfix) with ESMTP id A59762004D;
+ Fri, 13 Sep 2024 16:17:07 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6EF0A20040;
  Fri, 13 Sep 2024 16:17:06 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E74B120040;
- Fri, 13 Sep 2024 16:17:04 +0000 (GMT)
 Received: from gfwr518.rchland.ibm.com (unknown [9.10.239.106])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 13 Sep 2024 16:17:04 +0000 (GMT)
+ Fri, 13 Sep 2024 16:17:06 +0000 (GMT)
 From: Michael Kowal <kowal@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, clg@kaod.org, fbarrat@linux.ibm.com,
  npiggin@gmail.com, milesg@linux.ibm.com
-Subject: [PATCH v4 00/14] XIVE2 changes for TIMA operations
-Date: Fri, 13 Sep 2024 11:16:45 -0500
-Message-Id: <20240913161659.1981-1-kowal@linux.ibm.com>
+Subject: [PATCH v4 01/14] pnv/xive: TIMA patch sets pre-req alignment and
+ formatting changes
+Date: Fri, 13 Sep 2024 11:16:46 -0500
+Message-Id: <20240913161659.1981-2-kowal@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20240913161659.1981-1-kowal@linux.ibm.com>
+References: <20240913161659.1981-1-kowal@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: tAkt1Cn9pRymEZt42Tzx62huAtaiplAx
-X-Proofpoint-GUID: farvDHPy9CUfKBfoIBO4_NvluwHqbYse
+X-Proofpoint-ORIG-GUID: GosZ1450DF4b1eAtmOlQfEPU7J12H29y
+X-Proofpoint-GUID: FAe7Igj_Bs_s8bogavHzseUylETv6Lfl
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-13_11,2024-09-13_02,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501 mlxscore=0
- phishscore=0 mlxlogscore=718 spamscore=0 impostorscore=0 adultscore=0
+ phishscore=0 mlxlogscore=723 spamscore=0 impostorscore=0 adultscore=0
  bulkscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
  definitions=main-2409130113
@@ -109,121 +113,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In XIVE Gen 2 there are many operations that were not modeled and are
-needed for PowerVM.  These changes are associated with the following Thread
-Interrupt Management Area subjects:
- - OS context
- - Thread context
- - Pulling contexts to 'cache lines'
- - Pool targets
- - Enhaced trace data for XIVE Gen2
+From: Michael Kowal <kowal@linux.vnet.ibm.com>
 
-version 4:
-- fixed rebase error in patch set 9 xive2_cam_decode().  Complete changes
-  for this are in patch set 10.
-- version 3 reviewed tags:
-  - added 10/14
+Making some pre-requisite alignment changes ahead of the following patch
+sets.  Making these changes now will ease the review of the patch sets.
 
-version 3:
-- moved some of ring functions from patch set 9 to 10
-- version 2 reviewed-by tags:
-$ b4 am 20240909211038.27440-1-kowal@linux.ibm.com
-Grabbing thread from lore.kernel.org/all/20240909211038.27440-1-kowal@linux.ibm.com/t.mbox.gz
-Analyzing 23 messages in the thread
-Looking for additional code-review trailers on lore.kernel.org
+Checkpatch wants the closing comment '*/' on a separate line, unless it is
+on the same line as the starting comment '/*'.
+
+There are also changes to prevent lines from spanning 80 columns.
+
+Changed block of defines from:
+   #define A 1  /* original define comment is not
+                 * preferred, but not flagged... */
+   #define B 2  /* Newly added define comment
+                 * is flagged with a warning */
+To:
+   #define A 1  /* original define comment is */
+                /* now fine, no warning...    */
+   #define B 2  /* Newly added define comment */
+                /* is fine...                 */
+
+Signed-off-by: Michael Kowal <kowal@linux.vnet.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
-  [PATCH v2 1/14] pnv/xive: TIMA patch sets pre-req alignment and formatting changes
-  [PATCH v2 2/14] pnv/xive2: Define OGEN field in the TIMA
-  [PATCH v2 3/14] ppc/xive2: Support TIMA "Pull OS Context to Odd Thread Reporting Line"
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH v2 4/14] pnv/xive2: Support for "OS LGS Push" TIMA operation
-  [PATCH v2 5/14] ppc/xive2: Dump more NVP state with 'info pic'
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH v2 6/14] ppc/xive2: Dump the VP-group and crowd tables with 'info pic'
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH v2 7/14] ppc/xive2: Allow 1-byte write of Target field in TIMA
-  [PATCH v2 8/14] ppc/xive2: Support "Pull Thread Context to Register" operation
-  [PATCH v2 9/14] ppc/xive2: Change context/ring specific functions to be generic
-  [PATCH v2 10/14] ppc/xive2: Support "Pull Thread Context to Odd Thread Reporting Line"
-  [PATCH v2 11/14] pnv/xive: Add special handling for pool targets
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH v2 12/14] pnv/xive: Update PIPR when updating CPPR
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH v2 13/14] pnv/xive2: TIMA support for 8-byte OS context push for PHYP
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH v2 14/14] pnv/xive2: TIMA CI ops using alternative offsets or byte lengths
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
+ include/hw/ppc/xive_regs.h | 32 ++++++++---------
+ hw/intc/xive.c             | 72 +++++++++++++++++++++++++-------------
+ 2 files changed, 64 insertions(+), 40 deletions(-)
 
-version 2:
-- use dma_memory_write() instead of cpu_physical_memory_write()
-- use ternery operator in NVG/NVC pnv_xive2_vst_read/write()
-- removed xive2_nvgc_set_backlog() until it is needed
-- re-defined word 2 valid bits since it is the same in each Reporting
-- provided better fix for possible NSR operation overflow
-- moved changes for operations that can occur on ring, in a new patch set (10/13)
-- version 1 reviewed-by tags:
-$b4 am 20240801203008.11224-1-kowal@linux.ibm.com
-Analyzing 35 messages in the thread
-Analyzing 0 code-review messages
----
-  [PATCH 1/13] pnv/xive: TIMA patch sets pre-req alignment and formatting changes
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH 2/13] pnv/xive2: Define OGEN field in the TIMA
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH 3/13] ppc/xive2: Support TIMA "Pull OS Context to Odd Thread Reporting Line"
-  [PATCH 4/13] pnv/xive2: Support for "OS LGS Push" TIMA operation
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH 5/13] ppc/xive2: Dump more NVP state with 'info pic'
-  [PATCH 6/13] ppc/xive2: Dump the VP-group and crowd tables with 'info pic'
-  [PATCH 7/13] ppc/xive2: Allow 1-byte write of Target field in TIMA
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH 8/13] ppc/xive2: Support "Pull Thread Context to Register" operation
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH 9/13] ppc/xive2: Support "Pull Thread Context to Odd Thread Reporting Line"
-  [PATCH 10/13] pnv/xive: Add special handling for pool targets
-  [PATCH 11/13] pnv/xive: Update PIPR when updating CPPR
-  [PATCH 12/13] pnv/xive2: TIMA support for 8-byte OS context push for PHYP
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-  [PATCH 13/13] pnv/xive2: TIMA CI ops using alternative offsets or byte lengths
-    + Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Frederic Barrat (4):
-  pnv/xive2: Define OGEN field in the TIMA
-  ppc/xive2: Support TIMA "Pull OS Context to Odd Thread Reporting Line"
-  ppc/xive2: Dump more NVP state with 'info pic'
-  ppc/xive2: Dump the VP-group and crowd tables with 'info pic'
-
-
-Frederic Barrat (4):
-  pnv/xive2: Define OGEN field in the TIMA
-  ppc/xive2: Support TIMA "Pull OS Context to Odd Thread Reporting Line"
-  ppc/xive2: Dump more NVP state with 'info pic'
-  ppc/xive2: Dump the VP-group and crowd tables with 'info pic'
-
-Glenn Miles (7):
-  pnv/xive2: Support for "OS LGS Push" TIMA operation
-  ppc/xive2: Allow 1-byte write of Target field in TIMA
-  ppc/xive2: Support "Pull Thread Context to Register" operation
-  ppc/xive2: Support "Pull Thread Context to Odd Thread Reporting Line"
-  pnv/xive: Add special handling for pool targets
-  pnv/xive: Update PIPR when updating CPPR
-  pnv/xive2: TIMA support for 8-byte OS context push for PHYP
-
-Michael Kowal (3):
-  pnv/xive: TIMA patch sets pre-req alignment and formatting changes
-  ppc/xive2: Change context/ring specific functions to be generic
-  pnv/xive2: TIMA CI ops using alternative offsets or byte lengths
-
- include/hw/ppc/xive.h       |   2 +-
- include/hw/ppc/xive2.h      |  18 ++
- include/hw/ppc/xive2_regs.h |  25 ++-
- include/hw/ppc/xive_regs.h  |  45 +++--
- hw/intc/pnv_xive2.c         |  44 ++++-
- hw/intc/xive.c              | 201 ++++++++++++++++++-----
- hw/intc/xive2.c             | 317 ++++++++++++++++++++++++++++++------
- 7 files changed, 537 insertions(+), 115 deletions(-)
-
---
+diff --git a/include/hw/ppc/xive_regs.h b/include/hw/ppc/xive_regs.h
+index b9db7abc2e..9d52d464d9 100644
+--- a/include/hw/ppc/xive_regs.h
++++ b/include/hw/ppc/xive_regs.h
+@@ -114,23 +114,23 @@
+  * Then we have all these "special" CI ops at these offset that trigger
+  * all sorts of side effects:
+  */
+-#define TM_SPC_ACK_EBB          0x800   /* Load8 ack EBB to reg*/
+-#define TM_SPC_ACK_OS_REG       0x810   /* Load16 ack OS irq to reg */
++#define TM_SPC_ACK_EBB          0x800   /* Load8 ack EBB to reg               */
++#define TM_SPC_ACK_OS_REG       0x810   /* Load16 ack OS irq to reg           */
+ #define TM_SPC_PUSH_USR_CTX     0x808   /* Store32 Push/Validate user context */
+-#define TM_SPC_PULL_USR_CTX     0x808   /* Load32 Pull/Invalidate user
+-                                         * context */
+-#define TM_SPC_SET_OS_PENDING   0x812   /* Store8 Set OS irq pending bit */
+-#define TM_SPC_PULL_OS_CTX      0x818   /* Load32/Load64 Pull/Invalidate OS
+-                                         * context to reg */
+-#define TM_SPC_PULL_POOL_CTX    0x828   /* Load32/Load64 Pull/Invalidate Pool
+-                                         * context to reg*/
+-#define TM_SPC_ACK_HV_REG       0x830   /* Load16 ack HV irq to reg */
+-#define TM_SPC_PULL_USR_CTX_OL  0xc08   /* Store8 Pull/Inval usr ctx to odd
+-                                         * line */
+-#define TM_SPC_ACK_OS_EL        0xc10   /* Store8 ack OS irq to even line */
+-#define TM_SPC_ACK_HV_POOL_EL   0xc20   /* Store8 ack HV evt pool to even
+-                                         * line */
+-#define TM_SPC_ACK_HV_EL        0xc30   /* Store8 ack HV irq to even line */
++#define TM_SPC_PULL_USR_CTX     0x808   /* Load32 Pull/Invalidate user        */
++                                        /* context                            */
++#define TM_SPC_SET_OS_PENDING   0x812   /* Store8 Set OS irq pending bit      */
++#define TM_SPC_PULL_OS_CTX      0x818   /* Load32/Load64 Pull/Invalidate OS   */
++                                        /* context to reg                     */
++#define TM_SPC_PULL_POOL_CTX    0x828   /* Load32/Load64 Pull/Invalidate Pool */
++                                        /* context to reg                     */
++#define TM_SPC_ACK_HV_REG       0x830   /* Load16 ack HV irq to reg           */
++#define TM_SPC_PULL_USR_CTX_OL  0xc08   /* Store8 Pull/Inval usr ctx to odd   */
++                                        /* line                               */
++#define TM_SPC_ACK_OS_EL        0xc10   /* Store8 ack OS irq to even line     */
++#define TM_SPC_ACK_HV_POOL_EL   0xc20   /* Store8 ack HV evt pool to even     */
++                                        /* line                               */
++#define TM_SPC_ACK_HV_EL        0xc30   /* Store8 ack HV irq to even line     */
+ /* XXX more... */
+ 
+ /* NSR fields for the various QW ack types */
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index 5a02dd8e02..2fb38e2102 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -488,20 +488,32 @@ static const XiveTmOp xive_tm_operations[] = {
+      * MMIOs below 2K : raw values and special operations without side
+      * effects
+      */
+-    { XIVE_TM_OS_PAGE, TM_QW1_OS + TM_CPPR,   1, xive_tm_set_os_cppr, NULL },
+-    { XIVE_TM_HV_PAGE, TM_QW1_OS + TM_WORD2,     4, xive_tm_push_os_ctx, NULL },
+-    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR, 1, xive_tm_set_hv_cppr, NULL },
+-    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, xive_tm_vt_push, NULL },
+-    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, NULL, xive_tm_vt_poll },
++    { XIVE_TM_OS_PAGE, TM_QW1_OS + TM_CPPR,       1, xive_tm_set_os_cppr,
++                                                     NULL },
++    { XIVE_TM_HV_PAGE, TM_QW1_OS + TM_WORD2,      4, xive_tm_push_os_ctx,
++                                                     NULL },
++    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR,  1, xive_tm_set_hv_cppr,
++                                                     NULL },
++    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, xive_tm_vt_push,
++                                                     NULL },
++    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, NULL,
++                                                     xive_tm_vt_poll },
+ 
+     /* MMIOs above 2K : special operations with side effects */
+-    { XIVE_TM_OS_PAGE, TM_SPC_ACK_OS_REG,     2, NULL, xive_tm_ack_os_reg },
+-    { XIVE_TM_OS_PAGE, TM_SPC_SET_OS_PENDING, 1, xive_tm_set_os_pending, NULL },
+-    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,    4, NULL, xive_tm_pull_os_ctx },
+-    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,    8, NULL, xive_tm_pull_os_ctx },
+-    { XIVE_TM_HV_PAGE, TM_SPC_ACK_HV_REG,     2, NULL, xive_tm_ack_hv_reg },
+-    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,  4, NULL, xive_tm_pull_pool_ctx },
+-    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,  8, NULL, xive_tm_pull_pool_ctx },
++    { XIVE_TM_OS_PAGE, TM_SPC_ACK_OS_REG,         2, NULL,
++                                                     xive_tm_ack_os_reg },
++    { XIVE_TM_OS_PAGE, TM_SPC_SET_OS_PENDING,     1, xive_tm_set_os_pending,
++                                                     NULL },
++    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,        4, NULL,
++                                                     xive_tm_pull_os_ctx },
++    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,        8, NULL,
++                                                     xive_tm_pull_os_ctx },
++    { XIVE_TM_HV_PAGE, TM_SPC_ACK_HV_REG,         2, NULL,
++                                                     xive_tm_ack_hv_reg },
++    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,      4, NULL,
++                                                     xive_tm_pull_pool_ctx },
++    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,      8, NULL,
++                                                     xive_tm_pull_pool_ctx },
+ };
+ 
+ static const XiveTmOp xive2_tm_operations[] = {
+@@ -509,20 +521,32 @@ static const XiveTmOp xive2_tm_operations[] = {
+      * MMIOs below 2K : raw values and special operations without side
+      * effects
+      */
+-    { XIVE_TM_OS_PAGE, TM_QW1_OS + TM_CPPR,   1, xive_tm_set_os_cppr, NULL },
+-    { XIVE_TM_HV_PAGE, TM_QW1_OS + TM_WORD2,  4, xive2_tm_push_os_ctx, NULL },
+-    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR, 1, xive_tm_set_hv_cppr, NULL },
+-    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, xive_tm_vt_push, NULL },
+-    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, NULL, xive_tm_vt_poll },
++    { XIVE_TM_OS_PAGE, TM_QW1_OS + TM_CPPR,       1, xive_tm_set_os_cppr,
++                                                     NULL },
++    { XIVE_TM_HV_PAGE, TM_QW1_OS + TM_WORD2,      4, xive2_tm_push_os_ctx,
++                                                     NULL },
++    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR,  1, xive_tm_set_hv_cppr,
++                                                     NULL },
++    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, xive_tm_vt_push,
++                                                     NULL },
++    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, NULL,
++                                                     xive_tm_vt_poll },
+ 
+     /* MMIOs above 2K : special operations with side effects */
+-    { XIVE_TM_OS_PAGE, TM_SPC_ACK_OS_REG,     2, NULL, xive_tm_ack_os_reg },
+-    { XIVE_TM_OS_PAGE, TM_SPC_SET_OS_PENDING, 1, xive_tm_set_os_pending, NULL },
+-    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,    4, NULL, xive2_tm_pull_os_ctx },
+-    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,    8, NULL, xive2_tm_pull_os_ctx },
+-    { XIVE_TM_HV_PAGE, TM_SPC_ACK_HV_REG,     2, NULL, xive_tm_ack_hv_reg },
+-    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,  4, NULL, xive_tm_pull_pool_ctx },
+-    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,  8, NULL, xive_tm_pull_pool_ctx },
++    { XIVE_TM_OS_PAGE, TM_SPC_ACK_OS_REG,         2, NULL,
++                                                     xive_tm_ack_os_reg },
++    { XIVE_TM_OS_PAGE, TM_SPC_SET_OS_PENDING,     1, xive_tm_set_os_pending,
++                                                     NULL },
++    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,        4, NULL,
++                                                     xive2_tm_pull_os_ctx },
++    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,        8, NULL,
++                                                     xive2_tm_pull_os_ctx },
++    { XIVE_TM_HV_PAGE, TM_SPC_ACK_HV_REG,         2, NULL,
++                                                     xive_tm_ack_hv_reg },
++    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,      4, NULL,
++                                                     xive_tm_pull_pool_ctx },
++    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,      8, NULL,
++                                                     xive_tm_pull_pool_ctx },
+ };
+ 
+ static const XiveTmOp *xive_tm_find_op(XivePresenter *xptr, hwaddr offset,
+-- 
 2.43.0
 
 
