@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1625978483
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A74C597842E
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:16:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp815-0004Yj-4N; Fri, 13 Sep 2024 11:15:23 -0400
+	id 1sp81B-00069C-RZ; Fri, 13 Sep 2024 11:15:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp80D-0002M6-Ai
+ id 1sp80D-0002NY-ON
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:29 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp80A-0007p2-Sq
+ id 1sp80B-0007pE-BT
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:29 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-37747c1d928so744815f8f.1
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-42cc8782869so22030935e9.2
  for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726240465; x=1726845265; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726240466; x=1726845266; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SdBENGCYVeHnIteVeEyvDPFnPAvCbtcxZIQLKQyP3eU=;
- b=YpEVlmrvy0n8UVcKxw+RvAT6jHUe0sbXubyUzcGccN7RSQEcSFwI2ws7JxRQMPGJYz
- L7bqScTWdzElmJwSqegkxC5eeg3W7fV+1FvGnqpPhLRuqL4uTZjehDu05rg/nE2Nwsp4
- SRL6gicn71C7Ux0Mgxz31jiJl1bOz3CTnzksm7YWmPHXTVq92ehhCiiUKeC+NKr7GqBs
- zOWhX2yHSFrP2s2iekND+KNA1hx7EsvL4ntd8EUWFR106ApSs7NpBOMAR9xBQSfJKliI
- gEv/LbZKt/iVUAzy8MTk6ErJ3XTU1bx+TvofXyo5Sojm5RJkQwncWaEJT6x6pDQbSuy5
- 5ydw==
+ :reply-to; bh=+xOK2ZrZb1liyDsXayAy9xBW8YsGkjzSUb/zEYjVuT4=;
+ b=eBftLHR3dLFmsAZufPsgCRSPncnhp61qjBgTiSg2HcwpOCBsgGM85xu3iJjl3RmBBb
+ wUKdqA2+iPAkKF01tZ16p9HLhX1rKQ66k7eYnN+zp9KBBb9Fl0Z8GWsSWJX0w79VQo6g
+ YRpVWGWAEhqEav13W/9csqfYuMV6OQ3ESXytJKM3aYZikcoR+Q81T5VGnwXV4UF1Jmgt
+ A1/TKc+ZpYn0IDzT3kiGRdIbBz/dymLkQwsDjJjWlgGTZhnWcF+86js0e8omUI8Ponca
+ gSrofWHLyl55k3r56g4x3Ok6wyZiLnTrDdXfyiSTZWF6CJsXS8SSvWwmYZjYeztrWvAz
+ 1mCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726240465; x=1726845265;
+ d=1e100.net; s=20230601; t=1726240466; x=1726845266;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SdBENGCYVeHnIteVeEyvDPFnPAvCbtcxZIQLKQyP3eU=;
- b=gdextGy39qhXOtDC8oRJiOGDyRnTlrUVEosCD3wDsxvxlLJjyoCFhh4JRwmsHqoKxZ
- UB16lXT5rb/Adej4ijjsEVJE1E7J4tioM2ak3MbiXIPsMADT8Sp8B1VQulwI59cXPUgZ
- X39b3ltYYxEVioxZTw7Mg5Pu67kjWuE8at6eXKkzEmwbEX+1KhINgYni7x9QUQDz2Pxr
- xAWZZhanVuqXA7oV5ciCd0V2Ug8Gzal3z8nEo3gnRz5EqeN68jx7SGaknz1YN4me/v9A
- 9ljQ+TpXOsTVHre/3bDd8wqDvD7wD2e7jiYnDQ8jP/SZXPcQQ64ILrFIa27IbJITl0DC
- v8Uw==
-X-Gm-Message-State: AOJu0Yz/FcWYjmeNTTnRbV+dohub4XNBEbCZuZSZgULXzWEXaTCwSIYg
- baY4Xxv0x//KVibKkfI/5xU3BihLjK3pnj7s0kKBSle+6xn5Gffzqhw7PpbgCwsPkI1JZPTVv9G
- C
-X-Google-Smtp-Source: AGHT+IHqTUnm0eIFsETyDK5qcPdmD3nx4Pkic5UaKt45z5LCdGwuvdvDkMAM0mFLwRVhe/cBtVtoiw==
-X-Received: by 2002:a05:6000:b82:b0:371:828a:741d with SMTP id
- ffacd0b85a97d-378d61e2866mr2136777f8f.21.1726240465350; 
+ bh=+xOK2ZrZb1liyDsXayAy9xBW8YsGkjzSUb/zEYjVuT4=;
+ b=TfDMwaz521rHVi1k987MRJgKkap2ugXubOyqpJVU2Q93zvKGLf2hICDt+2uB2toEac
+ kPaU0UZNSzolmrzZZVACIeSd9lf6yOnEnkPcM6wQzvk54RMugaO2bxMjzYfbRi3/cjoF
+ E76sgeLL3sXIeil9vXdXrjwhGNtIv29QhykkN8iUEPvFsEXEXNX+YU1mOqvUYxsvlMJT
+ GA8VSP27vnVjgxWpYezQb4H9nOxPn/Rhdhw2C2ZLNJISKMlT1YQm/OKFDo74qa+eMe83
+ rkETWOVUz307QxzBlZ+YAGcY+LvZ1f3OAJQusAo1yKy01nsYsGxRUPv1r8ZqjA6rHgu9
+ OqcQ==
+X-Gm-Message-State: AOJu0YzBr/kT2yK9ehzSNMUQAtNA7zLBAnYTXhwlSpbbDIxOUPrRgi+q
+ wqiWHzlSyWCy82/4OPCKTExSlBvOJ4QNNTQxEvbggFHe4V2gzW0lKuKfeRx0nrMBmtmsSnyV92j
+ V
+X-Google-Smtp-Source: AGHT+IHxUDfU2VHMruB5dvPrXB9Ntp1GvXhJu9zIrnmDolYYqqZcCoFZXPFuwJhT0V53uGBdSRb/XQ==
+X-Received: by 2002:a05:600c:1c85:b0:42c:b9a5:ebae with SMTP id
+ 5b1f17b1804b1-42cdb5385c8mr53628995e9.9.1726240465774; 
  Fri, 13 Sep 2024 08:14:25 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,16 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 13 Sep 2024 08:14:25 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 22/27] hw/net/can/xlnx-versal-canfd: Simplify DLC conversions
-Date: Fri, 13 Sep 2024 16:14:06 +0100
-Message-Id: <20240913151411.2167922-23-peter.maydell@linaro.org>
+Subject: [PULL 23/27] hw/net/can/xlnx-versal-canfd: Fix FIFO issues
+Date: Fri, 13 Sep 2024 16:14:07 +0100
+Message-Id: <20240913151411.2167922-24-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240913151411.2167922-1-peter.maydell@linaro.org>
 References: <20240913151411.2167922-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,141 +93,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Doug Brown <doug@schmorgal.com>
 
-Use QEMU's helper functions can_dlc2len() and can_len2dlc() for
-translating between the raw DLC value and the SocketCAN length value.
-This also has the side effect of correctly handling received CAN FD
-frames with a DLC of 0-8, which was broken previously.
+The read index should not be changed when storing a new message into the
+RX or TX FIFO. Changing it at this point will cause the reader to get
+out of sync. The wrapping of the read index is already handled by the
+pre-write functions for the FIFO status registers anyway.
+
+Additionally, the calculation for wrapping the store index was off by
+one, which caused new messages to be written to the wrong location in
+the FIFO. This caused incorrect messages to be delivered.
 
 Signed-off-by: Doug Brown <doug@schmorgal.com>
-Reviewed-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
 Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
-Message-id: 20240827034927.66659-7-doug@schmorgal.com
+Message-id: 20240827034927.66659-8-doug@schmorgal.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/net/can/xlnx-versal-canfd.c | 67 ++--------------------------------
- 1 file changed, 4 insertions(+), 63 deletions(-)
+ hw/net/can/xlnx-versal-canfd.c | 36 +++-------------------------------
+ 1 file changed, 3 insertions(+), 33 deletions(-)
 
 diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
-index bcfffee1cc2..ccfed364cc9 100644
+index ccfed364cc9..e148bd7b465 100644
 --- a/hw/net/can/xlnx-versal-canfd.c
 +++ b/hw/net/can/xlnx-versal-canfd.c
-@@ -678,8 +678,6 @@ REG32(RB_DW15_REGISTER_1, 0x4144)
-     FIELD(RB_DW15_REGISTER_1, DATA_BYTES62, 8, 8)
-     FIELD(RB_DW15_REGISTER_1, DATA_BYTES63, 0, 8)
+@@ -1144,18 +1144,8 @@ static void update_rx_sequential(XlnxVersalCANFDState *s,
+             read_index = ARRAY_FIELD_EX32(s->regs, RX_FIFO_STATUS_REGISTER, RI);
+             store_index = read_index + fill_level;
  
--static uint8_t canfd_dlc_array[8] = {8, 12, 16, 20, 24, 32, 48, 64};
--
- static void canfd_update_irq(XlnxVersalCANFDState *s)
- {
-     const bool irq = (s->regs[R_INTERRUPT_STATUS_REGISTER] &
-@@ -897,59 +895,19 @@ static void regs2frame(XlnxVersalCANFDState *s, qemu_can_frame *frame,
-     }
- 
-     if (FIELD_EX32(dlc_reg_val, TB0_DLC_REGISTER, FDF)) {
--        /*
--         * CANFD frame.
--         * Converting dlc(0 to 15) 4 Byte data to plain length(i.e. 0 to 64)
--         * 1 Byte data. This is done to make it work with SocketCAN.
--         * On actual CANFD frame, this value can't be more than 0xF.
--         * Conversion table for DLC to plain length:
--         *
--         *  DLC                        Plain Length
--         *  0 - 8                      0 - 8
--         *  9                          9 - 12
--         *  10                         13 - 16
--         *  11                         17 - 20
--         *  12                         21 - 24
--         *  13                         25 - 32
--         *  14                         33 - 48
--         *  15                         49 - 64
--         */
--
-         frame->flags |= QEMU_CAN_FRMF_TYPE_FD;
- 
--        if (dlc_value < 8) {
--            frame->can_dlc = dlc_value;
--        } else {
--            assert((dlc_value - 8) < ARRAY_SIZE(canfd_dlc_array));
--            frame->can_dlc = canfd_dlc_array[dlc_value - 8];
--        }
--
-         if (FIELD_EX32(dlc_reg_val, TB0_DLC_REGISTER, BRS)) {
-             frame->flags |= QEMU_CAN_FRMF_BRS;
-         }
-     } else {
--        /*
--         * FD Format bit not set that means it is a CAN Frame.
--         * Conversion table for classic CAN:
--         *
--         *  DLC                        Plain Length
--         *  0 - 7                      0 - 7
--         *  8 - 15                     8
--         */
--
--        if (dlc_value > 8) {
--            frame->can_dlc = 8;
--            qemu_log_mask(LOG_GUEST_ERROR, "Maximum DLC value for Classic CAN"
--                          " frame is 8. Only 8 byte data will be sent.\n");
--        } else {
--            frame->can_dlc = dlc_value;
--        }
--
-         if (is_rtr) {
-             frame->can_id |= QEMU_CAN_RTR_FLAG;
-         }
-     }
- 
-+    frame->can_dlc = can_dlc2len(dlc_value);
-+
-     for (j = 0; j < frame->can_dlc; j++) {
-         val = 8 * (3 - i);
- 
-@@ -1007,7 +965,6 @@ static void store_rx_sequential(XlnxVersalCANFDState *s,
-                                 bool rx_fifo_id, uint8_t filter_index)
- {
-     int i;
--    bool is_canfd_frame;
-     uint8_t dlc = frame->can_dlc;
-     uint8_t rx_reg_num = 0;
-     uint32_t dlc_reg_val = 0;
-@@ -1053,17 +1010,10 @@ static void store_rx_sequential(XlnxVersalCANFDState *s,
- 
-         s->regs[store_location] = frame_to_reg_id(frame);
- 
--        dlc = frame->can_dlc;
-+        dlc_reg_val = FIELD_DP32(0, RB_DLC_REGISTER, DLC, can_len2dlc(dlc));
- 
-         if (frame->flags & QEMU_CAN_FRMF_TYPE_FD) {
--            is_canfd_frame = true;
--
--            /* Store dlc value in Xilinx specific format. */
--            for (i = 0; i < ARRAY_SIZE(canfd_dlc_array); i++) {
--                if (canfd_dlc_array[i] == frame->can_dlc) {
--                    dlc_reg_val = FIELD_DP32(0, RB_DLC_REGISTER, DLC, 8 + i);
--                }
+-            if (read_index == s->cfg.rx0_fifo - 1) {
+-                /*
+-                 * When ri is s->cfg.rx0_fifo - 1 i.e. max, it goes cyclic that
+-                 * means we reset the ri to 0x0.
+-                 */
+-                read_index = 0;
+-                ARRAY_FIELD_DP32(s->regs, RX_FIFO_STATUS_REGISTER, RI,
+-                                 read_index);
 -            }
-+            dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, FDF, 1);
- 
-             if (frame->flags & QEMU_CAN_FRMF_BRS) {
-                 dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, BRS, 1);
-@@ -1071,17 +1021,8 @@ static void store_rx_sequential(XlnxVersalCANFDState *s,
-             if (frame->flags & QEMU_CAN_FRMF_ESI) {
-                 dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, ESI, 1);
+-
+             if (store_index > s->cfg.rx0_fifo - 1) {
+-                store_index -= s->cfg.rx0_fifo - 1;
++                store_index -= s->cfg.rx0_fifo;
              }
--        } else {
--            is_canfd_frame = false;
--
--            if (frame->can_dlc > 8) {
--                dlc = 8;
+ 
+             store_location = R_RB_ID_REGISTER +
+@@ -1172,18 +1162,8 @@ static void update_rx_sequential(XlnxVersalCANFDState *s,
+                                           RI_1);
+             store_index = read_index + fill_level;
+ 
+-            if (read_index == s->cfg.rx1_fifo - 1) {
+-                /*
+-                 * When ri is s->cfg.rx1_fifo - 1 i.e. max, it goes cyclic that
+-                 * means we reset the ri to 0x0.
+-                 */
+-                read_index = 0;
+-                ARRAY_FIELD_DP32(s->regs, RX_FIFO_STATUS_REGISTER, RI_1,
+-                                 read_index);
 -            }
 -
--            dlc_reg_val = FIELD_DP32(0, RB_DLC_REGISTER, DLC, dlc);
-         }
+             if (store_index > s->cfg.rx1_fifo - 1) {
+-                store_index -= s->cfg.rx1_fifo - 1;
++                store_index -= s->cfg.rx1_fifo;
+             }
  
--        dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, FDF, is_canfd_frame);
-         dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, TIMESTAMP, rx_timestamp);
-         dlc_reg_val |= FIELD_DP32(0, RB_DLC_REGISTER, MATCHED_FILTER_INDEX,
-                                   filter_index);
+             store_location = R_RB_ID_REGISTER_1 +
+@@ -1265,18 +1245,8 @@ static void tx_fifo_stamp(XlnxVersalCANFDState *s, uint32_t tb0_regid)
+                           " Discarding the message\n");
+             ARRAY_FIELD_DP32(s->regs, INTERRUPT_STATUS_REGISTER, TXEOFLW, 1);
+         } else {
+-            if (read_index == s->cfg.tx_fifo - 1) {
+-                /*
+-                 * When ri is s->cfg.tx_fifo - 1 i.e. max, it goes cyclic that
+-                 * means we reset the ri to 0x0.
+-                 */
+-                read_index = 0;
+-                ARRAY_FIELD_DP32(s->regs, TX_EVENT_FIFO_STATUS_REGISTER, TXE_RI,
+-                                 read_index);
+-            }
+-
+             if (store_index > s->cfg.tx_fifo - 1) {
+-                store_index -= s->cfg.tx_fifo - 1;
++                store_index -= s->cfg.tx_fifo;
+             }
+ 
+             assert(store_index < s->cfg.tx_fifo);
 -- 
 2.34.1
 
