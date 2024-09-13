@@ -2,88 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA959777A9
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 06:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1551B9777C4
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 06:16:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1soxSj-0007Nj-41; Thu, 12 Sep 2024 23:59:13 -0400
+	id 1soxh5-0001PG-3h; Fri, 13 Sep 2024 00:14:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
- id 1soxSN-0006iC-5t
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 23:58:52 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1soxh1-0001Ig-Dv; Fri, 13 Sep 2024 00:13:59 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
- id 1soxSJ-0000rN-Nu
- for qemu-devel@nongnu.org; Thu, 12 Sep 2024 23:58:50 -0400
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48CMCDEI026534;
- Fri, 13 Sep 2024 03:58:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- DTIVI+ZoQS3KBpBMOcDja0tfqPQNsTC0XTmy0fYA2FE=; b=lg5g02nuj9velaCw
- BrfP3XcU6MVzuphndm/2apXrvvYQEhqYLw8y9ATU2UJ9/C7w6FsrWCA6ik8rJIkA
- pVYxM4z63Ofxc2nIo+zItk4bwlGW19sSsHtOyIzsiipwp1g5ZMfxLidhNdN4z81C
- QEiiuZE2AWMyhfIGc45CmLR9TUpLzKZCWD7FzYwZJWiWf5ex9GdEoNHSaW+WhQsS
- XIgEsuTvhRrnxZRU6SYbmR8bxiV6nwRP6k335ZSAi75axH4RhjiylTqKTMQ4BF8Q
- Z0mvV0jZ2RX3D3dhDKFERCEvSGoPpGlsnDc7xVyMdnvhxGY0WxH8DNm+k+WeDdT9
- /KZ8Dw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41gy8p7gcy-1
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1soxgz-0002Vx-8x; Fri, 13 Sep 2024 00:13:59 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48CH8foX006920;
+ Fri, 13 Sep 2024 04:13:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=pp1; bh=c2zgAuUXOY8QTIAR3DQMvUQI+Q
+ AAPNnc90kLP8WkU5M=; b=KmgWMCO5r7ygGMJYy5PBB473azrCI7ibDMH6uz2LRV
+ ok/akgzPeY1GU9MBb/83uHczPdKpy+Di+DaV7SpxfuuyoxE7dGFDia3khe8eIFEO
+ 9w8WoYAMNVpBACSR9iyC1BjMTbbd2DQeY92UfMo0B3SFKMXOBvYohDlUawlonFKM
+ iGRqejmwUiNlOjkK16cEKK2+hLqwDubIaTZ8xolb7IxfI/YDdtWSVB2z2eYfXzWH
+ ISJUq3NnJNhrMBzmVylsK2pOa9Pd3kX61dUE09CkDhwfBHPIWQyhsqaZZFc3jLvH
+ jedwp32/CvWSRoqXBmu5DmDLtm/Wj8KkmkWBI80S3MjQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gefyy8m5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Sep 2024 03:58:42 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
- [10.47.97.35])
- by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48D3wfBZ003830
+ Fri, 13 Sep 2024 04:13:46 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48D4DjQ8010927;
+ Fri, 13 Sep 2024 04:13:45 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gefyy8m3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Sep 2024 03:58:41 GMT
-Received: from [10.110.80.232] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 12 Sep
- 2024 20:58:40 -0700
-Message-ID: <df077d1a-7718-4564-8857-06c7520b41b1@quicinc.com>
-Date: Thu, 12 Sep 2024 22:58:39 -0500
+ Fri, 13 Sep 2024 04:13:45 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48D2Sxvi014576;
+ Fri, 13 Sep 2024 04:13:45 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3cmkmaq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Sep 2024 04:13:44 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48D4Dhnw41222562
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 13 Sep 2024 04:13:43 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4A2302004E;
+ Fri, 13 Sep 2024 04:13:43 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 574C92004D;
+ Fri, 13 Sep 2024 04:13:42 +0000 (GMT)
+Received: from ltcrain34-lp1.aus.stglabs.ibm.com (unknown [9.3.101.40])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 13 Sep 2024 04:13:42 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Cc: npiggin@gmail.com, balaton@eik.bme.hu, danielhb413@gmail.com
+Subject: [PATCH v3 00/10] misc ppc improvements/optimizations
+Date: Fri, 13 Sep 2024 09:43:27 +0530
+Message-ID: <20240913041337.912876-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs/fuzz: fix outdated mention to enable-sanitizers
-To: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
- <qemu-devel@nongnu.org>
-CC: <peter.maydell@linaro.org>, <thuth@redhat.com>, <bcain@quicinc.com>
-References: <a788215960b94d863baeffb736f06e3fb94275e7.1726145226.git.quic_mathbern@quicinc.com>
-Content-Language: en-US
-From: Brian Cain <quic_bcain@quicinc.com>
-In-Reply-To: <a788215960b94d863baeffb736f06e3fb94275e7.1726145226.git.quic_mathbern@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: 3pn4tEgvhTcp_LolJ3u0IKRXm2j2Mk3m
-X-Proofpoint-ORIG-GUID: 3pn4tEgvhTcp_LolJ3u0IKRXm2j2Mk3m
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dNJen3rEjOuH4jPEyCYDpRSqICPvkt47
+X-Proofpoint-ORIG-GUID: fnz8PpTPALSiWh1cyE2oiuRDxo4l9i5D
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+ definitions=2024-09-13_01,2024-09-12_01,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015
- impostorscore=0 mlxscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
- mlxlogscore=570 lowpriorityscore=0 adultscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409130027
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_bcain@quicinc.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ mlxscore=0 malwarescore=0
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=302 priorityscore=1501
+ adultscore=0 clxscore=1011 spamscore=0 bulkscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409130028
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,38 +107,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This a set of misc ppc arch specific code improvements/optimizations.
+This version of series extended improvements to p7 and p8 alongwith
+additional minor improvements.
 
-On 9/12/2024 7:47 AM, Matheus Tavares Bernardino wrote:
-> This options has been removed at cb771ac1f5 (meson: Split
-> --enable-sanitizers to --enable-{asan, ubsan}, 2024-08-13), so let's
-> update its last standing mention in the docs.
->
-> Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-> ---
->   docs/devel/testing/fuzzing.rst | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/docs/devel/testing/fuzzing.rst b/docs/devel/testing/fuzzing.rst
-> index dfe1973cf8..e42d64d6ec 100644
-> --- a/docs/devel/testing/fuzzing.rst
-> +++ b/docs/devel/testing/fuzzing.rst
-> @@ -21,8 +21,9 @@ Building the fuzzers
->   
->   To build the fuzzers, install a recent version of clang:
->   Configure with (substitute the clang binaries with the version you installed).
-> -Here, enable-sanitizers, is optional but it allows us to reliably detect bugs
-> -such as out-of-bounds accesses, use-after-frees, double-frees etc.::
-> +Here, enable-asan and enable-ubsan are optional but they allows us to reliably
+Since patch 7/7 of v2 series have been picked by Aditya in his patchset
+for P11 support, I have excluded that patch in this series and based on
+top of his v6 series which contains the required patch as 1/5.
+Based on: <20240731055022.696051-1-adityag@linux.ibm.com>
 
-s/they allows/they allow/
+Changelog:
+v3: extended improvements to other Power arch p7, p8 (Nick)
+    other minor improvements
+v2: addressed review comments from BALATON Zoltan
+v1: Initial patch
 
-> +detect bugs such as out-of-bounds accesses, use-after-frees, double-frees
+Harsh Prateek Bora (10):
+  target/ppc: use locally stored msr and avoid indirect access
+  target/ppc: optimize hreg_compute_pmu_hflags_value
+  target/ppc: optimize hreg_compute_pmu_hflags_value
+  target/ppc: optimize p9 exception handling routines
+  target/ppc: optimize p9 exception handling routines for lpcr
+  target/ppc: reduce duplicate code between init_proc_POWER{9, 10}
+  target/ppc: optimize p8 exception handling routines
+  target/ppc: optimize p7 exception handling routines
+  target/ppc: simplify var usage in ppc_next_unmasked_interrupt
+  target/ppc: combine multiple ail checks into one
 
-IMO it should be "uses-after-free" but it's probably pretty subtle.  
-This was the original text, so feel free to leave it as-is.
+ target/ppc/cpu_init.c    |  58 ++--------
+ target/ppc/excp_helper.c | 230 ++++++++++++++++++++-------------------
+ target/ppc/helper_regs.c |  19 ++--
+ 3 files changed, 141 insertions(+), 166 deletions(-)
 
-> +etc.::
->   
->       CC=clang-8 CXX=clang++-8 /path/to/configure \
->           --enable-fuzzing --enable-asan --enable-ubsan
+-- 
+2.45.2
+
 
