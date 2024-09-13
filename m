@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B0797840E
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B4D797843A
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Sep 2024 17:16:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sp809-0001wL-NT; Fri, 13 Sep 2024 11:14:25 -0400
+	id 1sp80F-0002Be-Bk; Fri, 13 Sep 2024 11:14:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp803-0001gC-WA
+ id 1sp804-0001gx-6N
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:20 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sp801-0007lX-GZ
+ id 1sp801-0007lZ-MC
  for qemu-devel@nongnu.org; Fri, 13 Sep 2024 11:14:19 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-42cbbb1727eso19964585e9.2
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-42ca4e0299eso18601355e9.2
  for <qemu-devel@nongnu.org>; Fri, 13 Sep 2024 08:14:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1726240456; x=1726845256; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=g85Nw8e2tTDyn0qB7KAq1h44RJ0NB7pCYIPMzzFh5bY=;
- b=YcSGCXB2qqeIWFb5yCexYVDFfnfOne6AFMb2MGq4WiMnxI04JF8JoGADz1KeP2/Oia
- lfwrgfE1dEoUl9PTolojBs1BybEbwrPmOp0iYVwK3EfRmTL9AuOK1bmJKKYwSgDKBFOv
- mbaGuhwxgzBaq/uU6rJz+wmaqbYnStCS6py0n03yPrMIj/WZZUdlynvbwlq0euJL6fhu
- m06WCpvx4IWFBaamFnlie3tc/4SdpNucKgKj1mExAb82jy2L35acPH1/kDLKMogUDqQW
- NG/DlSvL8k+ErtPtPoYwmznTFQ46vAWtpf8WPneksyuXQTU56SnN92N26Bg+fR0jUPtj
- yz+Q==
+ :reply-to; bh=4imojfIsJ60JAMsYjzxe7fUUa1MPhY4EYRSKYHUjSoQ=;
+ b=CGXt5n6XUxQa7AGXusN8fiyhY2VY0ma3HMKe8PJDvgrIV0htmyjd86F3PEKgtEpPYg
+ tgeCMIacCDpWDTL4acPZjgEN8M578kQMK3liLYyK6McASYNPdq3RyhINOlJbW0jPsCd/
+ HV7VZcPGWLb7joSgmuJq7eXYea/2er8tKDLRWb/rJ+ED3XHdZs4t+5UwQQW7dIneISjK
+ Um0Sy5RhogLrdQ0xcOsSvpNyjPZY26cMJRLaigyVmtSmDiQDf5kaAfy1Iu02GVB3MCa8
+ jW6S3awyqwORaaR2aE/pypRedlgC5ttv7mqbhZcPPWhSVn7Sc+6o4YzY7v+x+JWwjWtH
+ PStw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1726240456; x=1726845256;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g85Nw8e2tTDyn0qB7KAq1h44RJ0NB7pCYIPMzzFh5bY=;
- b=VQiFc28wUSFjl1KKjqoUUh96PRIfKPPIOYViasNxk/KjYtSTNFhOIuCP2hMCJ9Y5Zm
- XxEsTDhhNsu1kUbP4biSqsP4tdam1JrblW3Rm5F9RMYHX/u1U7IkszN6QGBrO1RaxJDu
- 6L+LG4ouFp8GFvpAJ+L4ZCophejak82FFkmmwG+UeTnPjXNMAFjhxBuWRA+bk6/63ym4
- sG48ZVePvkWYHDRVhYd7V66HRMTAhXgwUwERIJqsvmc140UZFoCydC7vRJRbsMMTRrxB
- 6HulKrjBtybRo+ALsmGWrO5NkSaa2QBkUh413edh3kDW9co2sS7agqkBTq1h2TI3WXAf
- PMBQ==
-X-Gm-Message-State: AOJu0YwVVA39Wn568Ki+d8/F4RppbCqnyTf79hS2xj+RNn+vrYfSoKUv
- wV9iRAEhUjyZfu8MHJgoTNJPbvn0RPFgjeoDByLG8iA/y99M6XcyDxRuOPbXpR6nBszWBW3EJMJ
- n
-X-Google-Smtp-Source: AGHT+IG2He7/xjI3q3Kwvg0xTy2Alek7HVv28kSdQtfABWGvxI6w9o9ZZKRVj6rpMSiJ9cC+LTPydQ==
-X-Received: by 2002:a05:600c:297:b0:42c:afea:2a10 with SMTP id
- 5b1f17b1804b1-42cdb54d5e8mr55524545e9.21.1726240455406; 
+ bh=4imojfIsJ60JAMsYjzxe7fUUa1MPhY4EYRSKYHUjSoQ=;
+ b=tCiMO7QQFTc+PyNTKLzGIO418MH3qTNHNEiMbGt1hTAR1678/Vk5QRBUJdhEclykOk
+ AXqukmGEaDmevEXyr4lt1QxnEKB3pT3l/dn2RBFiYJ4zql+AIJyVQuvLHBWhsPdl8JOv
+ Sh78FcT9imQyikxca7MGR7Ua27Ascp+bSUUORzxi4umgk9dKWmFRzi8pEB+DhkkelKjy
+ WianlMuLkGjCcVnu4uQD34t7MquXMqPQMiEicPLx3A7r7INc4nrO73No1tRnZOnR9vG4
+ t5a/0FSpjd47D0/Nb7lsUTimOtIaPeLF88qIMEbNlSZKB+Y+zEjQWCPZHuHC1BAl7/6Q
+ Uq1Q==
+X-Gm-Message-State: AOJu0YyHi+zGh4teOsMR2KGoGvsS0Z8ntBaktLBnIvR7lbjjTzWV7XUa
+ hc8vBiT27+nYexCI7oAzvpR+IuEE+Sl3attCpTJ4Bp6+mqWIfdG27/Hx0p2tymnatJX+vudC+tG
+ o
+X-Google-Smtp-Source: AGHT+IGOI4LNzrulSA+u/5UmOus/Px7Og6GOHll1hGy1pxaNZAGdBlDkWz1jkNfZTO62sd3CFErv7A==
+X-Received: by 2002:a05:600c:1e1a:b0:426:5fbe:bf75 with SMTP id
+ 5b1f17b1804b1-42cdb567190mr51997755e9.23.1726240455887; 
  Fri, 13 Sep 2024 08:14:15 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 13 Sep 2024 08:14:15 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/27] target/alpha, hppa: Remove unused parent_reset fields
-Date: Fri, 13 Sep 2024 16:13:49 +0100
-Message-Id: <20240913151411.2167922-6-peter.maydell@linaro.org>
+Subject: [PULL 06/27] hw: Define new device_class_set_legacy_reset()
+Date: Fri, 13 Sep 2024 16:13:50 +0100
+Message-Id: <20240913151411.2167922-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240913151411.2167922-1-peter.maydell@linaro.org>
 References: <20240913151411.2167922-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,63 +92,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Alpha and HPPA CPU class structs include a 'parent_reset'
-field which is never used; delete them.
+Define a device_class_set_legacy_reset() function which
+sets the DeviceClass::reset field. This serves two purposes:
+ * it makes it clearer to the person writing code that
+   DeviceClass::reset is now legacy and they should look for
+   the new alternative (which is Resettable)
+ * it makes it easier to rename the reset field (which in turn
+   makes it easier to find places that call it)
 
-(These targets don't seem to implement reset at all; if they did they
-should do it using the three-phase reset mechanism, which uses a
-'ResettablePhases parent_phases' field instead of the old
-'DeviceReset parent_reset' field.)
+The Coccinelle script can be used to automatically convert code that
+was doing an open-coded assignment to DeviceClass::reset to call
+device_class_set_legacy_reset() instead.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240830145812.1967042-6-peter.maydell@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240830145812.1967042-7-peter.maydell@linaro.org
 ---
- target/alpha/cpu.h | 2 --
- target/hppa/cpu.h  | 2 --
- 2 files changed, 4 deletions(-)
+ scripts/coccinelle/device-reset.cocci | 30 +++++++++++++++++++++++++++
+ include/hw/qdev-core.h                | 13 ++++++++++++
+ hw/core/qdev.c                        |  5 +++++
+ 3 files changed, 48 insertions(+)
+ create mode 100644 scripts/coccinelle/device-reset.cocci
 
-diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
-index f9e2ecb90ab..3556d3227f8 100644
---- a/target/alpha/cpu.h
-+++ b/target/alpha/cpu.h
-@@ -267,7 +267,6 @@ struct ArchCPU {
+diff --git a/scripts/coccinelle/device-reset.cocci b/scripts/coccinelle/device-reset.cocci
+new file mode 100644
+index 00000000000..510042afcca
+--- /dev/null
++++ b/scripts/coccinelle/device-reset.cocci
+@@ -0,0 +1,30 @@
++// Convert opencoded DeviceClass::reset assignments to calls to
++// device_class_set_legacy_reset()
++//
++// Copyright Linaro Ltd 2024
++// This work is licensed under the terms of the GNU GPLv2 or later.
++//
++// spatch --macro-file scripts/cocci-macro-file.h \
++//        --sp-file scripts/coccinelle/device-reset.cocci \
++//        --keep-comments --smpl-spacing --in-place --include-headers --dir hw
++//
++// For simplicity we assume some things about the code we're modifying
++// that happen to be true for all our targets:
++//  * all cpu_class_set_parent_reset() callsites have a 'DeviceClass *dc' local
++//  * the parent reset field in the target CPU class is 'parent_reset'
++//  * no reset function already has a 'dev' local
++
++@@
++identifier dc, resetfn;
++@@
++  DeviceClass *dc;
++  ...
++- dc->reset = resetfn;
+++ device_class_set_legacy_reset(dc, resetfn);
++@@
++identifier dc, resetfn;
++@@
++  DeviceClass *dc;
++  ...
++- dc->reset = &resetfn;
+++ device_class_set_legacy_reset(dc, resetfn);
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 18c7845ce9b..ade85c31e05 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -953,6 +953,19 @@ void device_class_set_parent_realize(DeviceClass *dc,
+                                      DeviceRealize dev_realize,
+                                      DeviceRealize *parent_realize);
+ 
++/**
++ * device_class_set_legacy_reset(): set the DeviceClass::reset method
++ * @dc: The device class
++ * @dev_reset: the reset function
++ *
++ * This function sets the DeviceClass::reset method. This is widely
++ * used in existing code, but new code should prefer to use the
++ * Resettable API as documented in docs/devel/reset.rst.
++ * In addition, devices which need to chain to their parent class's
++ * reset methods or which need to be subclassed must use Resettable.
++ */
++void device_class_set_legacy_reset(DeviceClass *dc,
++                                   DeviceReset dev_reset);
+ 
  /**
-  * AlphaCPUClass:
-  * @parent_realize: The parent class' realize handler.
-- * @parent_reset: The parent class' reset handler.
-  *
-  * An Alpha CPU model.
-  */
-@@ -275,7 +274,6 @@ struct AlphaCPUClass {
-     CPUClass parent_class;
+  * device_class_set_parent_unrealize() - set up for chaining unrealize fns
+diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+index cf811580621..51827858ce7 100644
+--- a/hw/core/qdev.c
++++ b/hw/core/qdev.c
+@@ -844,6 +844,11 @@ static void device_class_init(ObjectClass *class, void *data)
+                                    offsetof(DeviceState, parent_bus), NULL, 0);
+ }
  
-     DeviceRealize parent_realize;
--    DeviceReset parent_reset;
- };
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 43074d80bfa..f4e051f1767 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -281,7 +281,6 @@ struct ArchCPU {
- /**
-  * HPPACPUClass:
-  * @parent_realize: The parent class' realize handler.
-- * @parent_reset: The parent class' reset handler.
-  *
-  * An HPPA CPU model.
-  */
-@@ -289,7 +288,6 @@ struct HPPACPUClass {
-     CPUClass parent_class;
- 
-     DeviceRealize parent_realize;
--    DeviceReset parent_reset;
- };
- 
- #include "exec/cpu-all.h"
++void device_class_set_legacy_reset(DeviceClass *dc, DeviceReset dev_reset)
++{
++    dc->reset = dev_reset;
++}
++
+ void device_class_set_parent_realize(DeviceClass *dc,
+                                      DeviceRealize dev_realize,
+                                      DeviceRealize *parent_realize)
 -- 
 2.34.1
 
