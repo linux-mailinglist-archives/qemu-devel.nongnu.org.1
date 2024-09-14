@@ -2,122 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCF8978E11
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Sep 2024 07:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EEC978E58
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Sep 2024 08:17:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spLYC-0004LQ-OD; Sat, 14 Sep 2024 01:42:28 -0400
+	id 1spM2r-0000FR-2w; Sat, 14 Sep 2024 02:14:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1spLY2-0004Jz-BP; Sat, 14 Sep 2024 01:42:18 -0400
-Received: from mail-me3aus01olkn2082f.outbound.protection.outlook.com
- ([2a01:111:f403:2818::82f]
- helo=AUS01-ME3-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1spM2k-0008IP-MM; Sat, 14 Sep 2024 02:14:02 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <junjie.mao@hotmail.com>)
- id 1spLY0-0006YT-91; Sat, 14 Sep 2024 01:42:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iN3v10rksByaGiY+RxycG0OSzLnAxqn9h8A7IixnbDd91lnOJlwOhjVTBKOqVs5QU+k9fK0gqFVQaQylPNhVCxr2lg2wFtPyYb3ERP7jblJm4oZh6TKoNqn/lF3yJxSlS3R6ltfKn8bzEylyK+4tdyg8VOpTaJWUckrd7hLWh/cQaLcnmazBbQgi3JFRgGEZmIFwhgRrc0kfB6XTm0Qm6U18rcZf4GrNHU2HaVv2TyJ8Y1wX+jjzYkX9oVo3FLef2qeNpyHckE0XyfZdN3UbNq92D00d/2WPoNZLL9HnYu87FNyhA/FLVHaJ1B0KyCfpLuaP4/8rGF5WWMV0i4Idhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RrlhA2NYPKDNxxpJDq+PmbQPLDkna++VhF1AuAnw2M8=;
- b=hUEw3bdnRXv+0PnkSRk0S7BWjcRwEzygmi/dxI3Mh32JDUE26IsKjeEots8q9pvsv6bfsP42H3CavfGAmdPFQOizjWpVba5TMNwOCBUmslGhf2CU8jZCr30mzWBjE5H5uxlAQeud4k+K3apc7jxoJzdS7ynCqWRrCuiY7MTipA0Bk+Zpu6U/xR4bisU7RkSsab74/n3F+HBm+2Y/BrpxV7TCtQNDUap267fHEmBr5zrN2vJPkXBaqmAVA5NHwg0KCR3+qC6nXS2Ydn8iHEOD71GzBNp/tMm+fywYJuSlqnF9DchhgkImGDwTpIXhVUcDN2hqn6pgwStCLF9oKxIIGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RrlhA2NYPKDNxxpJDq+PmbQPLDkna++VhF1AuAnw2M8=;
- b=tpkdG9aUlXPtEW4iQUZUbXrEZ9JH3/CNWEiaesuTlYr4sG3PLbb72vjZ4Uv3+c79ypjtbwbGM5TZQhEBUnzH9PPBL+4ScN4QM8AbQK7B/UCinsyyZGARaEMfD0Vdzbm4PWgtBIsI5IJg6ib62lNB+qK594hLBlm+tX5DQjMNg9PqgtuVlE1X4Mg8eAa3ZUvXmpFi9a/xOefuFRAHqqgbIIXV4Ct3BWyBhMIMn845JGuYId0BddfInZ+ktf/1N1UHyRdS6zWRoJ56B91hKLiemO/uIIz4LOt9fYC0VARkoFuFB17xDZ6V0dpcIriDyHmFpcowQD/NQrEcTEacRISL2A==
-Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:282::22)
- by SY7P300MB0241.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:233::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.21; Sat, 14 Sep
- 2024 05:42:04 +0000
-Received: from SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- ([fe80::aea3:2365:f9e8:5bd]) by SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- ([fe80::aea3:2365:f9e8:5bd%2]) with mapi id 15.20.7962.021; Sat, 14 Sep 2024
- 05:42:04 +0000
-From: Junjie Mao <junjie.mao@hotmail.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?=
- Lureau <marcandre.lureau@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>,  Richard Henderson
- <richard.henderson@linaro.org>,  Gustavo Romero
- <gustavo.romero@linaro.org>,  Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,  Peter
- Maydell <peter.maydell@linaro.org>,  Zhao Liu <zhao1.liu@intel.com>,  John
- Snow <jsnow@redhat.com>,  Cleber Rosa <crosa@redhat.com>,  Beraldo Leal
- <bleal@redhat.com>,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- qemu-arm@nongnu.org
-Subject: Re: [PATCH v10 7/9] rust: add crate to expose bindings and interfaces
-References: <20240910-rust-pl011-v10-0-85a89ee33c40@linaro.org>
- <20240910-rust-pl011-v10-7-85a89ee33c40@linaro.org>
-Date: Sat, 14 Sep 2024 13:41:54 +0800
-In-Reply-To: <20240910-rust-pl011-v10-7-85a89ee33c40@linaro.org> (Manos
- Pitsidianakis's message of "Tue, 10 Sep 2024 15:35:13 +0300")
-Message-ID: <SY0P300MB10267592970B0FCEA04059BA95662@SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
-Content-Type: text/plain
-X-ClientProxiedBy: PS2PR01CA0057.apcprd01.prod.exchangelabs.com
- (2603:1096:300:57::21) To SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:282::22)
-X-Microsoft-Original-Message-ID: <871q1mkd0d.fsf@hotmail.com>
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1spM2h-0000wa-MU; Sat, 14 Sep 2024 02:14:02 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 5B11C5C5933;
+ Sat, 14 Sep 2024 06:13:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED497C4CECE;
+ Sat, 14 Sep 2024 06:13:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1726294434;
+ bh=ho1GkjqYgfLb6Wn3WjhFkRZ3Tu0BWcXl5dAnnC3KX5E=;
+ h=From:To:Cc:Subject:Date:From;
+ b=oJ8JUqm2e9/APSBpFes514sT+WBUSn8wATDRqYZtupcvGtQRPwxtjHJu7s4aHR09I
+ Djj+oBPux7/qMkb6ZxoJFYfFjNyE2vDChiJoZhSk46PyTlPfM+qYMUCKylrlqEoEQJ
+ U+6HYNGKwoy+qiGmu7JoX4iQgSstjvP+ihMWutgC0lpDrbR8pzvmk/QgeJrQcW2gMX
+ AMQvmcSOL6PUzzqQ2wjmhikRyNXkWgEp+X+fWq/4n8/gyoedBXLqxezyg1jmMMcYnh
+ nGZDPo6IEbwpeFXa1YssoXjtYUqqHCYTri0FVOoyc+trrUUSMi5SXJvp/QUazrOE73
+ XXnfX6Iua9CcQ==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+ (envelope-from <mchehab+huawei@kernel.org>)
+ id 1spM2Z-00000003V5Q-3uzV; Sat, 14 Sep 2024 08:13:51 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
+ Eric Blake <eblake@redhat.com>, John Snow <jsnow@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH v10 00/21] Add ACPI CPER firmware first error injection on ARM
+ emulation
+Date: Sat, 14 Sep 2024 08:13:21 +0200
+Message-ID: <cover.1726293808.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SY0P300MB1026:EE_|SY7P300MB0241:EE_
-X-MS-Office365-Filtering-Correlation-Id: a95b4102-87b8-4962-c218-08dcd47ff68e
-X-Microsoft-Antispam: BCL:0;
- ARA:14566002|8060799006|461199028|19110799003|5072599009|15080799006|7092599003|4302099013|3412199025|440099028|1602099012;
-X-Microsoft-Antispam-Message-Info: x2vzjMnObisTnPzPUADsInq3lMp5GoUgFdPJeQJqmGOWrw+jX2+1fpGOEX2KzzK++gbdyIXDqe2nUTFL9PW9ETOaJVGv086QqBhtIX9yZxNiq+/HSXzasS2ro88GF4tqRTi1/bBvwDYeGheQfZ5+zFnn6rzZisubUrv9c3k9BdY0KSIc/DA7glB/AMkNKNGGlY75v3GRTJ2Xhof3yExsYCMjMX7uGW7Pp2RLIE/g0za7uIdhQWMmMAGAlvx0jHZ8OcVlrm0fRrvuSQsolZJxHDabU40duQylzuLLWM33i2QbgCJRHkRNS7PPhmq58c8e/owJFAqPyqIj7hSx7F4Z6ybGPOklEdTN5ovTRmJx2/o3I3nTINqNFx6blPb4ScrM1LpZx+xdUVyF2TlY8WToUiHVTGIN4PeQlxD36wbwLlCyKsbNpRI17/PxdmrAnd/NtSn7rRPCNZMgAssnQx6393/LYElbsnysEdvrIEjwH8NmBgswUuXyVJHrvnVuzdVyrXo4sF7xwcjYFq0Vq+CIykRIK1Ha+xgDx1GAV45+mobQ2N139QQMVSV9gxmI249ivvI3V+9KY95GOwuV6xLkYIjo8abF7SDnFgM5+9qpQtMbpA8iZVeZd8jIOC35wzAp+oTOrU8QGf8YnPKhj2ihZLZgWqdA6NLtNVT63e2Jy9OkCP1QZam6glc7lManMZCMK8ygUo1a0PBhZLSTCt5qe6hczRYd1TA2PcOaAf09HOsY6F4fHO7GQZM8EP5sqizMm8C4Pw8+5Dkw+rDzkuUSf2cPU2zcYQqrbQwjbtoKXuVOk418UdBRV0SsrBtqWi+7UaHDWtoL9w/Nlh/KtiV0tC+96qN2aVUIX0SWY3Qtf5JJsnKNAMS2GYLPuLGdeZDy8/slYOjs/fRgSFkXY9wvJQ==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0A9O+5TcDgpZfFxlzVSizL0pbeJdXfO25Swkw+GPQ71k8mIWfZXnXff27+2N?=
- =?us-ascii?Q?0JyrJrNQwD+vN5v5Vb6k6hc7GLfxirwkW3HouXPjnb9XaZLqQlIuYR7Vf2cu?=
- =?us-ascii?Q?Ub2qsmW8d4FaU2RfbOSS9biQDx5NOGJ27WULdO5m3bkSSY72CydYheWLPqjR?=
- =?us-ascii?Q?Swv7ASSSwqm+kakXCpFLIF3JjKd7XpABBt5dNDlPTDmamoH3OeWpnWTqe+YK?=
- =?us-ascii?Q?JDyuEDW8uJhXGQiacr0RTuxHBblp+0wpqBZIGH5PoBo3d0Z4Zstp3Ghto1oj?=
- =?us-ascii?Q?MGolFG4cpBpcYCyoqilr20LqCKA3+VVWmqvCVB4UBHLhKJmQ+SqTrlTLxZKw?=
- =?us-ascii?Q?4E2k7YSGm5R1ajiGq0wbVCN2n/PRgdqIKwFoJ5veKPollOfJ4HxJDCj1Enqu?=
- =?us-ascii?Q?oGzEQuc2PkX6QiwO+DP4vX4oQMjSyAeumXilJ6jK86XEpDjzflFH4nfXNL1L?=
- =?us-ascii?Q?S1aAFxLXwYFuoo32XxT/B/BTQr/4lTOyOnof3KhLk+VoW28Sjark3UWmbhTU?=
- =?us-ascii?Q?36DWRdKXztN5ehue3XuK1mNnPEhrzWjmvrkxN96zbkX3gZooROSorH9TLtOO?=
- =?us-ascii?Q?Hr9hwYlQnESp0KcZ0eelekJp/DipRAxViGsV2ZLHfZI7sUPHcmmLN/RgFLz4?=
- =?us-ascii?Q?nd1POVA4CxElUKOj9ceTopPI8zHFg2NHOAOPgpelBNpemr2pxdgz/lOq9PJx?=
- =?us-ascii?Q?bGeAg10uhyBuwhrhM6XeopXLWBg3ekGhGjVXLq+OCJP8W4k3I8bpxaiRx/bN?=
- =?us-ascii?Q?E/tPWbIrdziG5surharkkF7VgIsoqKY3gf2WBJUY0WaWpQo5e8S2fO/KQdcT?=
- =?us-ascii?Q?G8RmyTvfnqYHR2Q+8sQKaXwTjaD4du57a0VSVkM1Hm8jFgmMorNnq9oKwvZw?=
- =?us-ascii?Q?yVKVeHiyF7QPC/sciP6W3Q41FmwMPNki2C3WMQ0dQfLXxcpxTMNSOoYVBKND?=
- =?us-ascii?Q?VwxwnMJWRmJ+iRSU1QD4lS9jZW4qKf0KE0fD7YubH7odN/H51j+TUDPpEPb3?=
- =?us-ascii?Q?RUpVoOWShD65rPAZAKYwya/7iqIykc0v6BMS0v83m0wz0OB9RFDf4ey+KP6G?=
- =?us-ascii?Q?82eZD4oz9VgOjeMGPg8Cd+GkgeoU07P+8R3N9cZgNhHltLVhHbXDWUNMvQyw?=
- =?us-ascii?Q?W5Om8D4kKUMDKrtEmVbCHhqYlED4ZJ0pCAEP1x+tVwsGX5KfWHxEQp8FfXnL?=
- =?us-ascii?Q?n++Etxbo0UylSDvBqpg9069GkyBghBqlP9arYfcaaD8bAhGRtyu/IO+5R0w?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-448bf.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: a95b4102-87b8-4962-c218-08dcd47ff68e
-X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB1026.AUSP300.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2024 05:42:04.4738 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY7P300MB0241
-Received-SPF: pass client-ip=2a01:111:f403:2818::82f;
- envelope-from=junjie.mao@hotmail.com;
- helo=AUS01-ME3-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=139.178.84.217;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -71
+X-Spam_score: -7.2
+X-Spam_bar: -------
+X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.147,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,53 +78,200 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+This series add support for injecting generic CPER records.  Such records
+are generated outside QEMU via a provided script.
 
-> Add rust/qemu-api, which exposes rust-bindgen generated FFI bindings and
-> provides some declaration macros for symbols visible to the rest of
-> QEMU.
->
-> Co-authored-by: Junjie Mao <junjie.mao@intel.com>
-> Co-authored-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Junjie Mao <junjie.mao@intel.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
-[snip]
-> diff --git a/rust/qemu-api/src/device_class.rs b/rust/qemu-api/src/device_class.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..69ee912c333c3dce8bc127a286acaadd57ca20b3
-> --- /dev/null
-> +++ b/rust/qemu-api/src/device_class.rs
-> @@ -0,0 +1,128 @@
-> +// Copyright 2024, Linaro Limited
-> +// Author(s): Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +use std::sync::OnceLock;
-> +
-> +use crate::bindings::Property;
-> +
-> +#[macro_export]
-> +macro_rules! device_class_init {
-> +    ($func:ident, props => $props:ident, realize_fn => $realize_fn:expr, reset_fn => $reset_fn:expr, vmsd => $vmsd:ident$(,)*) => {
-> +        #[no_mangle]
-> +        pub unsafe extern "C" fn $func(
-> +            klass: *mut $crate::bindings::ObjectClass,
-> +            _: *mut ::core::ffi::c_void,
-> +        ) {
-> +            let mut dc =
-> +                ::core::ptr::NonNull::new(klass.cast::<$crate::bindings::DeviceClass>()).unwrap();
-> +            dc.as_mut().realize = $realize_fn;
-> +            dc.as_mut().reset = $reset_fn;
+On this  version,  the patch reworking the way offsets are calculated were
+split on several other patches, to make one logical change per patch and
+make review easier.
 
-A recent change to qdev-core.h [1] renames reset to legacy_reset. You
-may want to rebase the series and update this to
-dc.as_mut().legacy_reset accordingly.
+Despite the number of patches increased from 12 to 21, there is just one
+real new patch (as the other ones are a split from a big change):
 
-[1] https://lore.kernel.org/qemu-devel/20240913151411.2167922-9-peter.maydell@linaro.org/
+  acpi/generic_event_device: Update GHES migration to cover hest addr
+
+---
+
+v10:
+- Patch 1 split on several patches to make reviews easier;
+- Added a migration patch;
+- CPER QMP command was renamed;
+- Updated some comments to better reflect exact ACPI version;
+- Removed a code to reset acks when OSPM fails to read records;
+- Removed a duplicated config GHES_CPER symbol;
+- There is  now an arch-independent namespace for GHES source IDs;
+- Fixed the size of hest_ghes_notify array when creating tables;
+- acpi-hest.json is now a section of ACPI;
+- QMP command renamed from @ghes-cper to inject-ghes-error.
+
+v9:
+- Patches reorganized to make easier for reviewers;
+- source ID is now guest-OS specific;
+- Some patches got a revision history since v8;
+- Several minor cleanups.
+
+v8:
+- Fix one of the BIOS links that were incorrect;
+- Changed mem error internal injection to use a common code;
+- No more hardcoded values for CPER: instead of using just the
+  payload at the QAPI, it now has the full raw CPER there;
+- Error injection script now supports changing fields at the
+  Generic Error Data section of the CPER;
+- Several minor cleanups.
+
+v7:
+- Change the way offsets are calculated and used on HEST table.
+  Now, it is compatible with migrations as all offsets are relative
+  to the HEST table;
+- GHES interface is now more generic: the entire CPER is sent via
+  QMP, instead of just the payload;
+- Some code cleanups to make the code more robust;
+- The python script now uses QEMUMonitorProtocol class.
+
+v6:
+- PNP0C33 device creation moved to aml-build.c;
+- acpi_ghes record functions now use ACPI notify parameter,
+  instead of source ID;
+- the number of source IDs is now automatically calculated;
+- some code cleanups and function/var renames;
+- some fixes and cleanups at the error injection script;
+- ghes cper stub now produces an error if cper JSON is not compiled;
+- Offset calculation logic for GHES was refactored;
+- Updated documentation to reflect the GHES allocated size;
+- Added a x-mpidr object for QOM usage;
+- Added a patch making usage of x-mpidr field at ARM injection
+  script;
+
+v5:
+- CPER guid is now passing as string;
+- raw-data is now passed with base64 encode;
+- Removed several GPIO left-overs from arm/virt.c changes;
+- Lots of cleanups and improvements at the error injection script.
+  It now better handles QMP dialog and doesn't print debug messages.
+  Also, code was split on two modules, to make easier to add more
+  error injection commands.
+
+v4:
+- CPER generation moved to happen outside QEMU;
+- One patch adding support for mpidr query was removed.
+
+v3:
+- patch 1 cleanups with some comment changes and adding another place where
+  the poweroff GPIO define should be used. No changes on other patches (except
+  due to conflict resolution).
+
+v2:
+- added a new patch using a define for GPIO power pin;
+- patch 2 changed to also use a define for generic error GPIO pin;
+- a couple cleanups at patch 2 removing uneeded else clauses.
+
+Example of generating a CPER record:
+
+$ scripts/ghes_inject.py -d arm -p 0xdeadbeef
+GUID: e19e3d16-bc11-11e4-9caa-c2051d5d46b0
+Generic Error Status Block (20 bytes):
+      00000000  01 00 00 00 00 00 00 00 00 00 00 00 90 00 00 00   ................
+      00000010  00 00 00 00                                       ....
+
+Generic Error Data Entry (72 bytes):
+      00000000  16 3d 9e e1 11 bc e4 11 9c aa c2 05 1d 5d 46 b0   .=...........]F.
+      00000010  00 00 00 00 00 03 00 00 48 00 00 00 00 00 00 00   ........H.......
+      00000020  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+      00000030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+      00000040  00 00 00 00 00 00 00 00                           ........
+
+Payload (72 bytes):
+      00000000  05 00 00 00 01 00 00 00 48 00 00 00 00 00 00 00   ........H.......
+      00000010  00 00 00 80 00 00 00 00 10 05 0f 00 00 00 00 00   ................
+      00000020  00 00 00 00 00 00 00 00 00 20 14 00 02 01 00 03   ......... ......
+      00000030  0f 00 91 00 00 00 00 00 ef be ad de 00 00 00 00   ................
+      00000040  ef be ad de 00 00 00 00                           ........
+
+Error injected.
+
+[    9.358364] {1}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
+[    9.359027] {1}[Hardware Error]: event severity: recoverable
+[    9.359586] {1}[Hardware Error]:  Error 0, type: recoverable
+[    9.360124] {1}[Hardware Error]:   section_type: ARM processor error
+[    9.360561] {1}[Hardware Error]:   MIDR: 0x00000000000f0510
+[    9.361160] {1}[Hardware Error]:   Multiprocessor Affinity Register (MPIDR): 0x0000000080000000
+[    9.361643] {1}[Hardware Error]:   running state: 0x0
+[    9.362142] {1}[Hardware Error]:   Power State Coordination Interface state: 0
+[    9.362682] {1}[Hardware Error]:   Error info structure 0:
+[    9.363030] {1}[Hardware Error]:   num errors: 2
+[    9.363656] {1}[Hardware Error]:    error_type: 0x02: cache error
+[    9.364163] {1}[Hardware Error]:    error_info: 0x000000000091000f
+[    9.364834] {1}[Hardware Error]:     transaction type: Data Access
+[    9.365599] {1}[Hardware Error]:     cache error, operation type: Data write
+[    9.366441] {1}[Hardware Error]:     cache level: 2
+[    9.367005] {1}[Hardware Error]:     processor context not corrupted
+[    9.367753] {1}[Hardware Error]:    physical fault address: 0x00000000deadbeef
+[    9.374267] Memory failure: 0xdeadb: recovery action for free buddy page: Recovered
+
+Such script currently supports arm processor error CPER, but can easily be
+extended to other GHES notification types.
+
+
+Mauro Carvalho Chehab (21):
+  acpi/ghes: add a firmware file with HEST address
+  acpi/generic_event_device: Update GHES migration to cover hest addr
+  acpi/ghes: get rid of ACPI_HEST_SRC_ID_RESERVED
+  acpi/ghes: simplify acpi_ghes_record_errors() code
+  acpi/ghes: better handle source_id and notification
+  acpi/ghes: Remove a duplicated out of bounds check
+  acpi/ghes: rework the logic to handle HEST source ID
+  acpi/ghes: Change the type for source_id
+  acpi/ghes: Don't hardcode the number of sources on ghes
+  acpi/ghes: make the GHES record generation more generic
+  acpi/ghes: don't crash QEMU if ghes GED is not found
+  acpi/ghes: rename etc/hardware_error file macros
+  acpi/ghes: better name GHES memory error function
+  acpi/ghes: add a notifier to notify when error data is ready
+  acpi/generic_event_device: add an APEI error device
+  arm/virt: Wire up a GED error device for ACPI / GHES
+  qapi/acpi-hest: add an interface to do generic CPER error injection
+  docs: acpi_hest_ghes: fix documentation for CPER size
+  scripts/ghes_inject: add a script to generate GHES error inject
+  target/arm: add an experimental mpidr arm cpu property object
+  scripts/arm_processor_error.py: retrieve mpidr if not filled
+
+ MAINTAINERS                            |  10 +
+ docs/specs/acpi_hest_ghes.rst          |   6 +-
+ hw/acpi/Kconfig                        |   5 +
+ hw/acpi/aml-build.c                    |  10 +
+ hw/acpi/generic_event_device.c         |  19 +-
+ hw/acpi/ghes-stub.c                    |   2 +-
+ hw/acpi/ghes.c                         | 312 +++++++----
+ hw/acpi/ghes_cper.c                    |  32 ++
+ hw/acpi/ghes_cper_stub.c               |  19 +
+ hw/acpi/meson.build                    |   2 +
+ hw/arm/virt-acpi-build.c               |  12 +-
+ hw/arm/virt.c                          |  19 +-
+ include/hw/acpi/acpi_dev_interface.h   |   1 +
+ include/hw/acpi/aml-build.h            |   2 +
+ include/hw/acpi/generic_event_device.h |   1 +
+ include/hw/acpi/ghes.h                 |  37 +-
+ include/hw/arm/virt.h                  |   2 +
+ qapi/acpi-hest.json                    |  35 ++
+ qapi/meson.build                       |   1 +
+ qapi/qapi-schema.json                  |   1 +
+ scripts/arm_processor_error.py         | 388 ++++++++++++++
+ scripts/ghes_inject.py                 |  51 ++
+ scripts/qmp_helper.py                  | 702 +++++++++++++++++++++++++
+ target/arm/cpu.c                       |   1 +
+ target/arm/cpu.h                       |   1 +
+ target/arm/helper.c                    |  10 +-
+ target/arm/kvm.c                       |   3 +-
+ 27 files changed, 1552 insertions(+), 132 deletions(-)
+ create mode 100644 hw/acpi/ghes_cper.c
+ create mode 100644 hw/acpi/ghes_cper_stub.c
+ create mode 100644 qapi/acpi-hest.json
+ create mode 100644 scripts/arm_processor_error.py
+ create mode 100755 scripts/ghes_inject.py
+ create mode 100644 scripts/qmp_helper.py
 
 -- 
-Best Regards
-Junjie Mao
+2.46.0
+
+
 
