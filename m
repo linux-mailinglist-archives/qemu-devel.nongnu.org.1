@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E944A979793
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 17:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D91B979792
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 17:28:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spr9M-0007dp-G5; Sun, 15 Sep 2024 11:26:56 -0400
+	id 1spr9R-0007sx-7v; Sun, 15 Sep 2024 11:27:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1spr9L-0007bf-Hh
- for qemu-devel@nongnu.org; Sun, 15 Sep 2024 11:26:55 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1spr9O-0007mq-B4
+ for qemu-devel@nongnu.org; Sun, 15 Sep 2024 11:26:58 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1spr9J-0008Ff-BK
- for qemu-devel@nongnu.org; Sun, 15 Sep 2024 11:26:55 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2053525bd90so20691335ad.0
- for <qemu-devel@nongnu.org>; Sun, 15 Sep 2024 08:26:53 -0700 (PDT)
+ id 1spr9M-0008Ga-Pi
+ for qemu-devel@nongnu.org; Sun, 15 Sep 2024 11:26:58 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2053525bd90so20691535ad.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Sep 2024 08:26:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726414011; x=1727018811; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1726414015; x=1727018815; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7+bsO6A/4UIjh+UAI8JcbcWlILl99UyeWUeQ1BHs21E=;
- b=K0byiNSSIMXTHAy/Dhh7swYJqNUT5hc7RbiapbwJbQErbB3oUYoRLkKCLkjPLItl8M
- BOwFFFA5/pfH19R9Ndhy3uJ+yAsigXIhPxC0qsadkqUDfM+nIpIeO2ug22O0x4bXt72Y
- yrfmh1MLH4/bTQZoGzOBclYqxj7YREFxKZa0NlxlG64x/5EERhDPsYpzyiJ0KnHVvqBa
- YSTxcJU7V1cR654EgryzpJRdnc5n2YOSDkIQVuSb+qFhFmSrOdBiUFHje2MRMJTFhQaj
- pwnYIdQdGtS/yihrU/Fg0Rl0njMYlQ8q0ieG8KAU1nervRvw1WXgOy96TmT0mrgdpgs8
- EMpw==
+ bh=gy74LlRTmtwc1XLq4kdnjaS7OlYM0YhDmnWN/nXgpX8=;
+ b=l8KBLw7gczQDl1hfyBEIlFf0GgGntPZV5aqAYDQ2Yx3t0zWTLuOe+xKXcZrFDg/pFY
+ HN/+6xm/ayNLelalJrgk2lIkd5A396Ek6r+bOM2DxvTJcivVnPGNJqWb0dVezwWxzyLp
+ pdpjJEt0FdQNyIJGjm8HXddjWWH3oVdHCdQ55QDzkA5v1dKqpzHAS/d8LLTX1F9FQ3Vs
+ ShfmyAt8UOM/19FCi0v+saFzBqePHzqEEuc5qMuSY2/3kjbLF6WnMuGpBW32Fu9rUENU
+ y58LbrGzAngfVhVaRzWXQH/tGoOdzmX+ljBkMJCaIPI7RPqIF6x+SHKweLD/C7TrvqDC
+ LyfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726414011; x=1727018811;
+ d=1e100.net; s=20230601; t=1726414015; x=1727018815;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7+bsO6A/4UIjh+UAI8JcbcWlILl99UyeWUeQ1BHs21E=;
- b=qTpnNQni14efuRWLfEFlVGFUm4PpiJ6pINnwad+IkU7sVxtDpf8raq61yeuNR9AKwl
- CT9crlpZhD1geTdHAUVAy3ONn+/SSx5J+fpXVmuDJflblyUvMv88toXNlGclS7cUfIHR
- jkBTwXTO4Xo3aKKDS5HzCo2bN5vROJNxSTrtLl4CIqS+LTJzJfe7g9ntoCg98GrSCHce
- 7TQsh1D4tpCNMVNZ0rMstWpT9b/B4QxA6URSsuGntcn9McwGwnVYj3wIwnrcD8x5RsLe
- qOiRUQhznIv0V+N5ktOUlvLnmfSaD46TeSEV4R23ykTNdE/sFTUjsCUP77x4co0rbsmM
- ccGg==
-X-Gm-Message-State: AOJu0Yx/b2fZkBob6S3C2sw02Wj8uVIOrsNAOkAN/aoEN014AGLNm519
- TqqC9ojE6fA+5lnbTLgBatbvsHh2ZezBGdv6JH0cO4fBBTjpz2w+p4Ig5Q==
-X-Google-Smtp-Source: AGHT+IHajRv6ps20JaJ5GAH87n0s7KU/cz+Doxlsa5GI4ILV5fINSOx7qA3HAyZQwmBpfl1t1UePlQ==
-X-Received: by 2002:a17:902:d508:b0:205:6a4c:9a20 with SMTP id
- d9443c01a7336-2078253009bmr124516825ad.34.1726414011247; 
- Sun, 15 Sep 2024 08:26:51 -0700 (PDT)
+ bh=gy74LlRTmtwc1XLq4kdnjaS7OlYM0YhDmnWN/nXgpX8=;
+ b=DLFuH85oWdbckO2VzJcNmf3v/WY+VUk1pI3yEasErW7/JaCKgcCK4rTOI1IfhGOkqr
+ M7O4Jk0Md2imEog/EabRvWulk2tyc9XKugbdHsO5PDnhgvE1F/0gvgdpICCqUMsamRi6
+ sXVD/uLvtBUdh4nI4fcmwp2Ki21WdQORzzL81LScUSzUN+ABcH1e0+rulhR1w7krvycs
+ yhLLQa8MdETRvB2tzq7poykQjRDLhrDXrFvNMbQmcMYosvzv/uODub0ICuubsEl1mp9x
+ D6n0Y0mPUQ1qGnrwc5jwCFm8T7EP8mT6EN84HMbO+VQ0ItaQQUYNgID9p0KODAh4Hj83
+ ks6A==
+X-Gm-Message-State: AOJu0YyTeZLZmIIxxTUXhHZ37n49+mL1axwavN/baFjebM+uAbLWCUS6
+ z8JGICp9tycjDtp1deAkc0/DMvHnNYOkG98p7WfuEmxtB3cNcT98PMx0OA==
+X-Google-Smtp-Source: AGHT+IHau58JLY6Ku78VHDiG8lI6bEgv1JT5MyREJC1gNngDW8GMmQs7Qj0Bt5JBSf+soxAw6ti3XQ==
+X-Received: by 2002:a17:902:db0f:b0:1fb:7c7f:6458 with SMTP id
+ d9443c01a7336-2078243596dmr163949055ad.32.1726414015027; 
+ Sun, 15 Sep 2024 08:26:55 -0700 (PDT)
 Received: from localhost.localdomain (14-200-149-22.tpgi.com.au.
  [14.200.149.22]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-207946f34c1sm22554335ad.184.2024.09.15.08.26.48
+ d9443c01a7336-207946f34c1sm22554335ad.184.2024.09.15.08.26.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Sep 2024 08:26:50 -0700 (PDT)
+ Sun, 15 Sep 2024 08:26:53 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Corbin <mark@dibsco.co.uk>, Warner Losh <imp@bsdimp.com>,
  Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v6 14/17] bsd-user: Implement RISC-V signal trampoline setup
- functions
-Date: Mon, 16 Sep 2024 01:25:51 +1000
-Message-Id: <20240915152554.8394-15-itachis@FreeBSD.org>
+Subject: [PATCH v6 15/17] bsd-user: Implement 'get_mcontext' for RISC-V
+Date: Mon, 16 Sep 2024 01:25:52 +1000
+Message-Id: <20240915152554.8394-16-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240915152554.8394-1-itachis@FreeBSD.org>
 References: <20240915152554.8394-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=itachis6234@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=itachis6234@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,17 +97,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Corbin <mark@dibsco.co.uk>
 
-Added functions for setting up the RISC-V signal trampoline and signal
-frame:
-
-'set_sigtramp_args()': Configures the RISC-V CPU state with arguments
-for the signal handler. It sets up the registers with the signal
-number,pointers to the signal info and user context, the signal handler
-address, and the signal frame pointer.
-
-'setup_sigframe_arch()': Initializes the signal frame with the current
-machine context.This function copies the context from the CPU state to
-the signal frame, preparing it for the signal handler.
+Added the 'get_mcontext' function to extract and populate
+the RISC-V machine context from the CPU state.
+This function is used to gather the current state of the
+general-purpose registers and store it in a 'target_mcontext_'
+structure.
 
 Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
@@ -116,77 +109,68 @@ Signed-off-by: Warner Losh <imp@bsdimp.com>
 Co-authored-by: Warner Losh <imp@bsdimp.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/riscv/signal.c | 63 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 63 insertions(+)
- create mode 100644 bsd-user/riscv/signal.c
+ bsd-user/riscv/signal.c | 53 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
 diff --git a/bsd-user/riscv/signal.c b/bsd-user/riscv/signal.c
-new file mode 100644
-index 0000000000..2597fec2fd
---- /dev/null
+index 2597fec2fd..072ad821d2 100644
+--- a/bsd-user/riscv/signal.c
 +++ b/bsd-user/riscv/signal.c
-@@ -0,0 +1,63 @@
-+/*
-+ *  RISC-V signal definitions
-+ *
-+ *  Copyright (c) 2019 Mark Corbin
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+#include "qemu/osdep.h"
-+
-+#include "qemu.h"
+@@ -61,3 +61,56 @@ abi_long setup_sigframe_arch(CPURISCVState *env, abi_ulong frame_addr,
+     get_mcontext(env, mcp, flags);
+     return 0;
+ }
 +
 +/*
-+ * Compare with sendsig() in riscv/riscv/exec_machdep.c
-+ * Assumes that target stack frame memory is locked.
++ * Compare with get_mcontext() in riscv/riscv/machdep.c
++ * Assumes that the memory is locked if mcp points to user memory.
 + */
-+abi_long
-+set_sigtramp_args(CPURISCVState *regs, int sig, struct target_sigframe *frame,
-+    abi_ulong frame_addr, struct target_sigaction *ka)
++abi_long get_mcontext(CPURISCVState *regs, target_mcontext_t *mcp,
++        int flags)
 +{
-+    /*
-+     * Arguments to signal handler:
-+     *  a0 (10) = signal number
-+     *  a1 (11) = siginfo pointer
-+     *  a2 (12) = ucontext pointer
-+     *  pc      = signal pointer handler
-+     *  sp (2)  = sigframe pointer
-+     *  ra (1)  = sigtramp at base of user stack
-+     */
 +
-+     regs->gpr[xA0] = sig;
-+     regs->gpr[xA1] = frame_addr +
-+         offsetof(struct target_sigframe, sf_si);
-+     regs->gpr[xA2] = frame_addr +
-+         offsetof(struct target_sigframe, sf_uc);
-+     regs->pc = ka->_sa_handler;
-+     regs->gpr[xSP] = frame_addr;
-+     regs->gpr[xRA] = TARGET_PS_STRINGS - TARGET_SZSIGCODE;
-+     return 0;
-+}
++    mcp->mc_gpregs.gp_t[0] = tswap64(regs->gpr[5]);
++    mcp->mc_gpregs.gp_t[1] = tswap64(regs->gpr[6]);
++    mcp->mc_gpregs.gp_t[2] = tswap64(regs->gpr[7]);
++    mcp->mc_gpregs.gp_t[3] = tswap64(regs->gpr[28]);
++    mcp->mc_gpregs.gp_t[4] = tswap64(regs->gpr[29]);
++    mcp->mc_gpregs.gp_t[5] = tswap64(regs->gpr[30]);
++    mcp->mc_gpregs.gp_t[6] = tswap64(regs->gpr[31]);
 +
-+/*
-+ * Compare to riscv/riscv/exec_machdep.c sendsig()
-+ * Assumes that the memory is locked if frame points to user memory.
-+ */
-+abi_long setup_sigframe_arch(CPURISCVState *env, abi_ulong frame_addr,
-+                             struct target_sigframe *frame, int flags)
-+{
-+    target_mcontext_t *mcp = &frame->sf_uc.uc_mcontext;
++    mcp->mc_gpregs.gp_s[0] = tswap64(regs->gpr[8]);
++    mcp->mc_gpregs.gp_s[1] = tswap64(regs->gpr[9]);
++    mcp->mc_gpregs.gp_s[2] = tswap64(regs->gpr[18]);
++    mcp->mc_gpregs.gp_s[3] = tswap64(regs->gpr[19]);
++    mcp->mc_gpregs.gp_s[4] = tswap64(regs->gpr[20]);
++    mcp->mc_gpregs.gp_s[5] = tswap64(regs->gpr[21]);
++    mcp->mc_gpregs.gp_s[6] = tswap64(regs->gpr[22]);
++    mcp->mc_gpregs.gp_s[7] = tswap64(regs->gpr[23]);
++    mcp->mc_gpregs.gp_s[8] = tswap64(regs->gpr[24]);
++    mcp->mc_gpregs.gp_s[9] = tswap64(regs->gpr[25]);
++    mcp->mc_gpregs.gp_s[10] = tswap64(regs->gpr[26]);
++    mcp->mc_gpregs.gp_s[11] = tswap64(regs->gpr[27]);
 +
-+    get_mcontext(env, mcp, flags);
++    mcp->mc_gpregs.gp_a[0] = tswap64(regs->gpr[10]);
++    mcp->mc_gpregs.gp_a[1] = tswap64(regs->gpr[11]);
++    mcp->mc_gpregs.gp_a[2] = tswap64(regs->gpr[12]);
++    mcp->mc_gpregs.gp_a[3] = tswap64(regs->gpr[13]);
++    mcp->mc_gpregs.gp_a[4] = tswap64(regs->gpr[14]);
++    mcp->mc_gpregs.gp_a[5] = tswap64(regs->gpr[15]);
++    mcp->mc_gpregs.gp_a[6] = tswap64(regs->gpr[16]);
++    mcp->mc_gpregs.gp_a[7] = tswap64(regs->gpr[17]);
++
++    if (flags & TARGET_MC_GET_CLEAR_RET) {
++        mcp->mc_gpregs.gp_a[0] = 0; /* a0 */
++        mcp->mc_gpregs.gp_a[1] = 0; /* a1 */
++        mcp->mc_gpregs.gp_t[0] = 0; /* clear syscall error */
++    }
++
++    mcp->mc_gpregs.gp_ra = tswap64(regs->gpr[1]);
++    mcp->mc_gpregs.gp_sp = tswap64(regs->gpr[2]);
++    mcp->mc_gpregs.gp_gp = tswap64(regs->gpr[3]);
++    mcp->mc_gpregs.gp_tp = tswap64(regs->gpr[4]);
++    mcp->mc_gpregs.gp_sepc = tswap64(regs->pc);
++
 +    return 0;
 +}
 -- 
