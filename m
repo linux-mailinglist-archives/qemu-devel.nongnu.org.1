@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9EA9793EB
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F929793EC
 	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 03:08:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spdj1-0000u7-2i; Sat, 14 Sep 2024 21:06:51 -0400
+	id 1spdj4-00014U-0q; Sat, 14 Sep 2024 21:06:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1spdiz-0000t5-NZ
- for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:06:50 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1spdj2-0000zk-3x
+ for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:06:52 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1spdix-00049e-Q7
- for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:06:49 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-6bce380eb96so1970201a12.0
- for <qemu-devel@nongnu.org>; Sat, 14 Sep 2024 18:06:47 -0700 (PDT)
+ id 1spdj0-00049y-Jv
+ for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:06:51 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-2068bee21d8so35516785ad.2
+ for <qemu-devel@nongnu.org>; Sat, 14 Sep 2024 18:06:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1726362406; x=1726967206;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1726362409; x=1726967209;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=4bGD+HHT9hE1vC5vN+cFdhZQySMyDMT8fezz30sguFg=;
- b=mDZpjSDhCEHoJPCR55Y5xExGC5T0bExLysG4Qoj1a+PStjvcbuFCLBZwGJZsQkUMpD
- HEBoTg6YBL6wU/HE3qnZXRQoaBd0sksjrWLE4XLe/+lEpAModcMoy1cJ8C9bAY68O5yX
- jSxio3+KPxBQn3F6mSfB7bpiCPDg3IEXPr0gQGI8i4cUEBNj7T85w9mhN7QxCj2hErIe
- 8mbEHKMSkBsOMUdCqwTDK0AZytV4N7pyYw7AnbvxwENe7kMQqnKzGY4IknHTwyCpmH1U
- vgnraHWUwVHGGuLONRR7gF9UCRy7oWMi3aL1s+jFx/G1j/qc5HMsoVVtckAtlo+MDrnC
- GCnA==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=nyASwxYCvsAWNh9neSNt2c74xLjhwEcHZ/10RfBTDG4=;
+ b=hiDR48N6aDcvyk8H+iKvRXOqMTDTtTV516zlxxv8hYxyJcyOXsYu6tiWaaNJd9h3RP
+ 7zsw+slMHSUZkVWCaa/yiLOJn0CoeAjuQJfHCXtaO+hxIihgVfHTcVpVzxZw7yC1CQbd
+ NfD8C3RstBwau952/WUZ4hLR/WaxVSN/iaiCINPi2n51s8MAu7tFp3uIZbuN/KzC2zjs
+ vBRIWEAPQcc1qNQrKeFEKbbQ7mQ3zy4HsMmRE3l8ZY33jNyADo1rCCzI6FjK8y+8ecf/
+ Rm2diPTqBKyN2O5zVdlko1tfxci941+5lmHRTz1OvvmeD0P1rbgQhWL4DJfw4659Z/Zf
+ SQZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726362406; x=1726967206;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4bGD+HHT9hE1vC5vN+cFdhZQySMyDMT8fezz30sguFg=;
- b=cmNF8VI6o1zye4sKZ1usDzzd6kGHArBbothss3XheS5mUVPUIBgyS6Uu1TUUikdNsF
- iTZ058ei2TS3lcTSbmwutyZtBQ9PQsJqyr4QiQ9ZKLT81iJXCISWWt0dKImfiTe8s7n8
- i++dZLKtvyiNQp53nNteW8fiJDkZz2HKeE/3NEU9szi/I4EcOKUbSntuVuOCEGXb5LEC
- 9NGu+BvFq0l9eRjmRfsUoNJ5NTEtNfxZ6SVGauQ3TsZyGEuEto2fGlctqAVrssZBFi2/
- RsWV6IWSckxYCfQibhikWDxkNOXZfPlxFrnI8F212D/dlLFq21UJ49QjSoKUtle7uYfw
- KrAQ==
-X-Gm-Message-State: AOJu0Yzow1aQI0VZYJk54hoDLKDBQBI4TGAF2opOvgG30JdoXFV704Aa
- KUuLe+4vFnc1Jpx66KT7rXY4fFmeIe09F/ZRfvmQ88mpB2JTmYcotRHKVoTnkXc=
-X-Google-Smtp-Source: AGHT+IFZKa+kfAN6Dn59q+nSRWt+VamKm83Fkc8PZDy/DgFlDgYCzUR+UlDxblBzQsCXZAhp2Sh/3A==
-X-Received: by 2002:a17:90a:8a8e:b0:2cf:c9ab:e740 with SMTP id
- 98e67ed59e1d1-2db9ffc208bmr11350257a91.11.1726362405673; 
- Sat, 14 Sep 2024 18:06:45 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726362409; x=1726967209;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nyASwxYCvsAWNh9neSNt2c74xLjhwEcHZ/10RfBTDG4=;
+ b=aLIHkFzwjIN3TJgwQS7VuQH/aZIc5BnXdx45qun3EZGo/jizSc8dRBCJiQurVsK032
+ ambrFsoMeI4icRFLc+ROW8apvW6bSs/9tysUHqwGfFtl5zJCArioAx8P9NxiAql/svnC
+ kza4a3MzAwj/mNc47tMf1m38Rwe+B4PwRbvirIf8MG+joP9mttJIIfrrjaCNTVe+weKU
+ 9qDFWhjyIfIeJQiwtUpjE5gn60GI7AROA8t314Mxhdf53jbNSU6knM+CozMOinEMbhvZ
+ iOxTdF2hPSYIPyXZ72JYuNPCwYhKZLxjibdKln26S5IsFcIq62Ha7TUSsvX3rfcHZiwC
+ typQ==
+X-Gm-Message-State: AOJu0Ywq3BRojZDGAoBYYY/ZuXhn/zPYN139J+pqhs+1Ua+YKpfEJt1b
+ I+3ftD5UzQfZC1pvTN4Sl2Huk5TvzycZjwUmQwLIrs8haBgvHBWpngl8FbmGyNQ=
+X-Google-Smtp-Source: AGHT+IHgpNugcE3lXIRjZoDH3JdOq3mqlLpmE4nNvjSoxswpdwMiTt+008Pzku+Vt/Ta1svudNcKcg==
+X-Received: by 2002:a17:902:da8d:b0:205:6552:1099 with SMTP id
+ d9443c01a7336-2076e31f984mr179183195ad.8.1726362409213; 
+ Sat, 14 Sep 2024 18:06:49 -0700 (PDT)
 Received: from localhost ([210.160.217.68])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2dbcfcbb42fsm2218895a91.4.2024.09.14.18.06.43
+ d9443c01a7336-207947666a3sm14713435ad.308.2024.09.14.18.06.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 14 Sep 2024 18:06:45 -0700 (PDT)
+ Sat, 14 Sep 2024 18:06:48 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 0/7] virtio-net fixes
-Date: Sun, 15 Sep 2024 10:06:38 +0900
-Message-Id: <20240915-queue-v1-0-b49bd49b926d@daynix.com>
+Date: Sun, 15 Sep 2024 10:06:39 +0900
+Subject: [PATCH 1/7] net: checksum: Convert data to void *
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAB4z5mYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDSwNz3cLS1NJU3TQTI1NLY/NEc2ODNCWg2oKi1LTMCrA50bG1tQD3nl6
- LVwAAAA==
+Message-Id: <20240915-queue-v1-1-b49bd49b926d@daynix.com>
+References: <20240915-queue-v1-0-b49bd49b926d@daynix.com>
+In-Reply-To: <20240915-queue-v1-0-b49bd49b926d@daynix.com>
 To: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>, 
- qemu-stable@nongnu.org
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::530;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::630;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,35 +91,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most of this series are fixes for software RSS and hash reporting, which
-should have no production user.
-
-However there is one exception; patch "virtio-net: Fix size check in
-dhclient workaround" fixes an out-of-bound access that can be triggered
-for anyone who don't use vhost. It has Cc: qemu-stable@nongnu.org and
-can be applied independently.
+Convert the data parameter of net_checksum_calculate() to void * to
+save unnecessary casts for callers.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Akihiko Odaki (7):
-      net: checksum: Convert data to void *
-      virtio-net: Fix size check in dhclient workaround
-      virtio-net: Do not check for the queue before RSS
-      virtio-net: Fix hash reporting when the queue changes
-      virtio-net: Initialize hash reporting values
-      virtio-net: Copy received header to buffer
-      virtio-net: Fix num_buffers for version 1
+ include/net/checksum.h | 2 +-
+ net/checksum.c         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
- include/net/checksum.h |   2 +-
- hw/net/virtio-net.c    | 109 ++++++++++++++++++++++++++++---------------------
- net/checksum.c         |   4 +-
- 3 files changed, 65 insertions(+), 50 deletions(-)
----
-base-commit: 31669121a01a14732f57c49400bc239cf9fd505f
-change-id: 20240907-queue-f425937a730f
+diff --git a/include/net/checksum.h b/include/net/checksum.h
+index 7dec37e56c78..188e4cca0b7f 100644
+--- a/include/net/checksum.h
++++ b/include/net/checksum.h
+@@ -30,7 +30,7 @@ uint32_t net_checksum_add_cont(int len, uint8_t *buf, int seq);
+ uint16_t net_checksum_finish(uint32_t sum);
+ uint16_t net_checksum_tcpudp(uint16_t length, uint16_t proto,
+                              uint8_t *addrs, uint8_t *buf);
+-void net_checksum_calculate(uint8_t *data, int length, int csum_flag);
++void net_checksum_calculate(void *data, int length, int csum_flag);
+ 
+ static inline uint32_t
+ net_checksum_add(int len, uint8_t *buf)
+diff --git a/net/checksum.c b/net/checksum.c
+index 1a957e4c0b10..537457d89d07 100644
+--- a/net/checksum.c
++++ b/net/checksum.c
+@@ -57,7 +57,7 @@ uint16_t net_checksum_tcpudp(uint16_t length, uint16_t proto,
+     return net_checksum_finish(sum);
+ }
+ 
+-void net_checksum_calculate(uint8_t *data, int length, int csum_flag)
++void net_checksum_calculate(void *data, int length, int csum_flag)
+ {
+     int mac_hdr_len, ip_len;
+     struct ip_header *ip;
+@@ -101,7 +101,7 @@ void net_checksum_calculate(uint8_t *data, int length, int csum_flag)
+         return;
+     }
+ 
+-    ip = (struct ip_header *)(data + mac_hdr_len);
++    ip = (struct ip_header *)((uint8_t *)data + mac_hdr_len);
+ 
+     if (IP_HEADER_VERSION(ip) != IP_HEADER_VERSION_4) {
+         return; /* not IPv4 */
 
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.46.0
 
 
