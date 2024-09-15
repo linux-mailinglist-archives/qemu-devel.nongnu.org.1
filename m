@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E729793F1
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 03:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F39979434
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 03:25:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spdjQ-00021o-Dt; Sat, 14 Sep 2024 21:07:16 -0400
+	id 1spe05-0002Vy-4g; Sat, 14 Sep 2024 21:24:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1spdjL-0001jH-8y
- for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:07:11 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1spe01-0002VO-O2
+ for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:24:25 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1spdjJ-0004BC-RA
- for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:07:11 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2057c6c57b5so20003875ad.1
- for <qemu-devel@nongnu.org>; Sat, 14 Sep 2024 18:07:09 -0700 (PDT)
+ id 1spdzz-0005Qi-MJ
+ for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:24:25 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-71923d87be4so1527144b3a.0
+ for <qemu-devel@nongnu.org>; Sat, 14 Sep 2024 18:24:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1726362428; x=1726967228;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1726363461; x=1726968261;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=kQxCBgxm/ZP4fJCB6KnHjmojyAzDFXk1SCp1ExesX4Y=;
- b=cpzL3AztCvU2enqhlVnGyDshw67BJpJ/79jNcRAR9W6TJNnbvr4BFu1yf7qMQWIzsF
- OS4QEzmAFqtwMVjKlXo+qHA35dhvqyTx8i3bCIxbMJo+SsMa5fAVJpUYvAJtUK7Imvry
- DKbcGlpomT8cjj6ox/fk5oPyBZK53VIwljleJAQkztyepYoWHB4MYsJcOKaunOzl+jKw
- 7aj1BAck4aCsFzLiUJHqQS5ripKbb52EBskN2lZn2PzFetSzG2qIHjKVlq48l91K4mwr
- 04X1gwWvBK1ywYYRojW3JIGJYWzBCxmQJxsHu5qlyAGybX2Yog1zvPfheMepkX4Q04Kw
- Sr8w==
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mUoXegguz70cN78pSn5Nu/1+Slky6PRyeNuaO5Bjsrk=;
+ b=Rig9dcdlIE7WbglAwd35OB7qPdoSGFBDuzhx687eQXHlRWRVtBQd7ilo7AbsHeTCCi
+ 3sdIEaLmDMOBv4tXa6OB/5/SmXkyAM5tJ4loyfNUCRZbJ4yTVfXRtVCHbejdcop9S5GB
+ iVLbaI1XnnFVUBEX/lA9QPny3aD1KFa1QmZiCOPrUQKU9ZNTZvduGhv/1N3S5k1EONOS
+ Doo4CDgGtISTpzY/5QE3J7mDK0+If9DbK/J8bdqj1mzXn/yj8XosCdp3RMZ/vVUszUNl
+ XiGfFbnycZmL59ngHJTohvmOLP40zvdx1hhxiCPNIECKcE91l4D6Kn/FD0YdTQco6xLI
+ ClCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726362428; x=1726967228;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kQxCBgxm/ZP4fJCB6KnHjmojyAzDFXk1SCp1ExesX4Y=;
- b=HcuGwirLguZAYQzZgWKlXRYkCclqOZ3J65f9EmCBfD/CtRrSTD5f5tmGFBX4/AuGeb
- Px1JcEOTnjzM3lPbs/NSh0OSSAGbL4KXMGdvCbpQcRSa+32Zi+cDeXzNbopDpuOf1mf3
- YLYXz+LoamSWfX77Ly/QVrjaGgUm6coV27enOL/IlY8IkTZ/Ou21d82xKYWav0tUmIbZ
- 5mAzUONMsqOZnKNVIjDrRZBiuouXOjwppjLefNirDJyIRmVd+E0sNHrAUPPEqylJa9YT
- +/6keZLnBCqPFUOYW1OpiauWji0PHHV6ouxmbytsmHsQMDw+y+W5ws5OFq8RA8vmmCVN
- vF4w==
-X-Gm-Message-State: AOJu0Yy/MKYeMveaTEqBNTPz4mhFjTnP4k+L6BbWTLkr92P9+DMY9G3N
- 41AMk3hj5avArBWBoKRdQcHgcSax+4mefTbIsexoNZKw52na+tc4LKnLnQItdsy1vnMhs56i9Wk
- NgNs=
-X-Google-Smtp-Source: AGHT+IE5KKFfEpJ2xzzxh14vIVXCI4ZOxNxkuiBNxATWFlg3jr0BXvZFV6v5DzGLj3Q1SPriWTyrtA==
-X-Received: by 2002:a17:902:d2c8:b0:206:892c:b758 with SMTP id
- d9443c01a7336-2074c5ff323mr250823715ad.13.1726362428486; 
- Sat, 14 Sep 2024 18:07:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726363461; x=1726968261;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mUoXegguz70cN78pSn5Nu/1+Slky6PRyeNuaO5Bjsrk=;
+ b=VH95bbCuXeyQT+xWPhmcSHRzHBxJBJVECcpczqpxyXomG9ivXboF6Vthg+ImcLJJJ9
+ LAXZgTZB34O1xcedUjbRlzdgd7IRnujIx6LH0cp8dBFjIogWOObFL/HivfPZtd9Y8tx3
+ 1dS7fcki/7d69KTqRhrvgrXmFrhN4AdNIh7cbPgK37UKvXxN5IBoYOAAAweUxNhe6w0l
+ uwVrP33CIz9i5MqcK17TogpgxAu171Zzs7PTCShu7r7NIm/ZgDmryjfxP2Hu73JXb9O5
+ +0x3LNkfTlaEYR3Z6u/Z8hNh0WZ05sCgnvMotCCrrhnTT9LNGqkYEP5RgGBYqryqJS2t
+ aYrw==
+X-Gm-Message-State: AOJu0YzfiI10z2Z/AxLJ4Itq7Kn+FFYAR5O4DMCnTy4X4Z6y2f91+MpM
+ Fwau/gu5+hNWdCpmKN+3T6IDjxoneFDlH54U7KLB0nZlugo38fzspSX0BgBFxeeJRS8Nj32b/tW
+ NXQY=
+X-Google-Smtp-Source: AGHT+IFnQu39Y8AR3vluVy08+1nLZIh4vnlMvjRktX5D6qqv1xOc5oy4+4BWRELfKtgIo8BNVbugMg==
+X-Received: by 2002:a05:6a00:1799:b0:714:1bd8:35f7 with SMTP id
+ d2e1a72fcca58-71936a60297mr10353064b3a.15.1726363461195; 
+ Sat, 14 Sep 2024 18:24:21 -0700 (PDT)
 Received: from localhost ([210.160.217.68])
  by smtp.gmail.com with UTF8SMTPSA id
- 41be03b00d2f7-7db4999f05bsm1765261a12.81.2024.09.14.18.07.07
+ d2e1a72fcca58-71944bc7bcbsm1517670b3a.205.2024.09.14.18.24.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 14 Sep 2024 18:07:08 -0700 (PDT)
+ Sat, 14 Sep 2024 18:24:20 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 15 Sep 2024 10:06:45 +0900
-Subject: [PATCH 7/7] virtio-net: Fix num_buffers for version 1
+Subject: [PATCH RFC v3 00/11] virtio-net: Offload hashing without eBPF
+Date: Sun, 15 Sep 2024 10:23:41 +0900
+Message-Id: <20240915-hash-v3-0-79cb08d28647@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240915-queue-v1-7-b49bd49b926d@daynix.com>
-References: <20240915-queue-v1-0-b49bd49b926d@daynix.com>
-In-Reply-To: <20240915-queue-v1-0-b49bd49b926d@daynix.com>
-To: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-B4-Tracking: v=1; b=H4sIAB035mYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDCyML3YzE4gxdMyMLYyPLRBPTFJMUJaDSgqLUtMwKsDHRSkFuzkqxtbU
+ AGvYp0lsAAAA=
+To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ Andrew Melnychenko <andrew@daynix.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::430;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,30 +95,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The specification says the device MUST set num_buffers to 1 if
-VIRTIO_NET_F_MRG_RXBUF has not been negotiated.
+Based-on: <20240915-queue-v1-0-b49bd49b926d@daynix.com>
+("[PATCH 0/7] virtio-net fixes")
 
-Fixes: df91055db5c9 ("virtio-net: enable virtio 1.0")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+I'm proposing to add a feature to offload virtio-net RSS/hash report to
+Linux. This series contain patches to utilize the proposed Linux feature.
+The patches for Linux are available at:
+https://lore.kernel.org/r/20240915-rss-v3-0-c630015db082@daynix.com/
+
+This work will be presented at LPC 2024:
+https://lpc.events/event/18/contributions/1963/
+
 ---
- hw/net/virtio-net.c | 2 ++
- 1 file changed, 2 insertions(+)
+Akihiko Odaki (11):
+      qdev-properties: DEFINE_PROP_ON_OFF_AUTO_BIT()
+      net/vhost-vdpa: Report hashing capability
+      virtio-net: Move virtio_net_get_features() down
+      virtio-net: Retrieve peer hashing capability
+      net/vhost-vdpa: Remove dummy SetSteeringEBPF
+      virtio-net: Add hash type options
+      net: Allow configuring virtio hashing
+      virtio-net: Use qemu_set_vnet_hash()
+      virtio-net: Offload hashing without vhost
+      tap: Report virtio-net hashing support on Linux
+      docs/devel/ebpf_rss.rst: Update for peer RSS
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index ca4e22344f78..b4a3fb575c7c 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1982,6 +1982,8 @@ static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t *buf,
-                                     offsetof(typeof(hdr),
-                                              virtio_net.hdr.num_buffers),
-                                     sizeof(hdr.virtio_net.hdr.num_buffers));
-+            } else {
-+                hdr.virtio_net.hdr.num_buffers = cpu_to_le16(1);
-             }
- 
-             guest_offset = n->has_vnet_hdr ?
+ docs/devel/ebpf_rss.rst        |  23 ++-
+ include/hw/qdev-properties.h   |  18 +++
+ include/hw/virtio/virtio-net.h |   6 +-
+ include/net/net.h              |  20 +++
+ net/tap-linux.h                |   2 +
+ net/tap_int.h                  |   3 +
+ hw/core/qdev-properties.c      |  66 ++++++++-
+ hw/net/virtio-net.c            | 327 +++++++++++++++++++++++++++++------------
+ net/net.c                      |  14 ++
+ net/tap-bsd.c                  |  10 ++
+ net/tap-linux.c                |  18 +++
+ net/tap-solaris.c              |  10 ++
+ net/tap-stub.c                 |  10 ++
+ net/tap.c                      |  15 ++
+ net/vhost-vdpa.c               |  41 +++++-
+ 15 files changed, 473 insertions(+), 110 deletions(-)
+---
+base-commit: decf357a35b1201b34cc37c47b4b027f9601855e
+change-id: 20240828-hash-628329a45d4d
 
+Best regards,
 -- 
-2.46.0
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
