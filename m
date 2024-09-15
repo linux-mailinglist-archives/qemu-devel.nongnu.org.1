@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F39979434
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E7E5979435
 	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 03:25:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spe05-0002Vy-4g; Sat, 14 Sep 2024 21:24:29 -0400
+	id 1spe0C-0002fn-R8; Sat, 14 Sep 2024 21:24:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1spe01-0002VO-O2
- for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:24:25 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1spe0A-0002fI-Ho
+ for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:24:34 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1spdzz-0005Qi-MJ
- for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:24:25 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-71923d87be4so1527144b3a.0
- for <qemu-devel@nongnu.org>; Sat, 14 Sep 2024 18:24:22 -0700 (PDT)
+ id 1spe08-0005Qz-U6
+ for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:24:34 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2057c6c57b5so20035115ad.1
+ for <qemu-devel@nongnu.org>; Sat, 14 Sep 2024 18:24:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1726363461; x=1726968261;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1726363471; x=1726968271;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mUoXegguz70cN78pSn5Nu/1+Slky6PRyeNuaO5Bjsrk=;
- b=Rig9dcdlIE7WbglAwd35OB7qPdoSGFBDuzhx687eQXHlRWRVtBQd7ilo7AbsHeTCCi
- 3sdIEaLmDMOBv4tXa6OB/5/SmXkyAM5tJ4loyfNUCRZbJ4yTVfXRtVCHbejdcop9S5GB
- iVLbaI1XnnFVUBEX/lA9QPny3aD1KFa1QmZiCOPrUQKU9ZNTZvduGhv/1N3S5k1EONOS
- Doo4CDgGtISTpzY/5QE3J7mDK0+If9DbK/J8bdqj1mzXn/yj8XosCdp3RMZ/vVUszUNl
- XiGfFbnycZmL59ngHJTohvmOLP40zvdx1hhxiCPNIECKcE91l4D6Kn/FD0YdTQco6xLI
- ClCQ==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=x8JfiA3K2oY/K7D1EGS4G8XFPBDM/W8pC6fABdWUS7w=;
+ b=MKA+YygOeIxl3C7acEB84UVgJR+nsKZaSbbdwIGWKePFRiEpzPThpaboTtOt5XeJsi
+ mIWiV3h/ossRatW8cJFI9WLPvQyV6CBl5BNneBuVge5Wp2MGPNrhMkdZMEXcMSwuCaWV
+ ZSlgITIkJdTNvxXw+4iql/st1KRYfqJPb+8KN+xVMhw2wjmogoHjZqTiWIpM70HmKv6g
+ P8pttHi44zduDxKiDLF0yibuch/Q/wlkYKmaGc+xsOr3Xv+ob1jH+lHRcqmCfCsvlF2g
+ qwdcsGdOzWZIXm7h/2/fYruC6v8crZRSUntUdJ+WKfNb2RdRgEK+KdRVX1PATi7hdHGQ
+ m8Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726363461; x=1726968261;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mUoXegguz70cN78pSn5Nu/1+Slky6PRyeNuaO5Bjsrk=;
- b=VH95bbCuXeyQT+xWPhmcSHRzHBxJBJVECcpczqpxyXomG9ivXboF6Vthg+ImcLJJJ9
- LAXZgTZB34O1xcedUjbRlzdgd7IRnujIx6LH0cp8dBFjIogWOObFL/HivfPZtd9Y8tx3
- 1dS7fcki/7d69KTqRhrvgrXmFrhN4AdNIh7cbPgK37UKvXxN5IBoYOAAAweUxNhe6w0l
- uwVrP33CIz9i5MqcK17TogpgxAu171Zzs7PTCShu7r7NIm/ZgDmryjfxP2Hu73JXb9O5
- +0x3LNkfTlaEYR3Z6u/Z8hNh0WZ05sCgnvMotCCrrhnTT9LNGqkYEP5RgGBYqryqJS2t
- aYrw==
-X-Gm-Message-State: AOJu0YzfiI10z2Z/AxLJ4Itq7Kn+FFYAR5O4DMCnTy4X4Z6y2f91+MpM
- Fwau/gu5+hNWdCpmKN+3T6IDjxoneFDlH54U7KLB0nZlugo38fzspSX0BgBFxeeJRS8Nj32b/tW
- NXQY=
-X-Google-Smtp-Source: AGHT+IFnQu39Y8AR3vluVy08+1nLZIh4vnlMvjRktX5D6qqv1xOc5oy4+4BWRELfKtgIo8BNVbugMg==
-X-Received: by 2002:a05:6a00:1799:b0:714:1bd8:35f7 with SMTP id
- d2e1a72fcca58-71936a60297mr10353064b3a.15.1726363461195; 
- Sat, 14 Sep 2024 18:24:21 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726363471; x=1726968271;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=x8JfiA3K2oY/K7D1EGS4G8XFPBDM/W8pC6fABdWUS7w=;
+ b=MmyBhUUDH4Qe0j9QrmCADqPXRnnusroQ1XqPsmmu8MA9N+EIOode+72Et+YVVhqmdA
+ E60xgR4GyvvNmXg4S1ZoGIgRANA18PBG+V74mWDs/jP6hrWZRVXFZFch3ZiAWIwuRFIV
+ 6o+8Y8eDy408G0U3pfDKZApgMlmNCNyjeaAEzmzM/7CktX2nAvdDjcUmexdIE/wulAT1
+ En7NvCgy3G0aqsS/3VdVVRn7dKWe+1r1oRI9XVxjNWyGUafL5Eb+pwkKX04RjPgIyIp0
+ DpIEBdHvknWvwwjiScnKHh9mpmRJ7bp/QRL2PpAcB+E5TDXVunwQEO3NcOWvJZzmDRyL
+ Uu6g==
+X-Gm-Message-State: AOJu0YzpH3qDfay6HqnG3kPa7HWpg7rjlGLh14UEDasu+vjSFHghwSJT
+ OlLL/cZsc3K0c22mBa7r2RJ74oDa2EWrMqb9I9uc0lzNi3cq0HGFbEDZG73lITTq6TOeKx5o/67
+ RxQ4=
+X-Google-Smtp-Source: AGHT+IFY+DFDC/s7GYMQfy9lmUxtxsS5VJtq0iysOlN0P/b70Yc+gxN1J+o/stsVZYk8fjr7KsiERQ==
+X-Received: by 2002:a17:902:e751:b0:205:866d:177d with SMTP id
+ d9443c01a7336-2076e5f7af6mr147218985ad.21.1726363470588; 
+ Sat, 14 Sep 2024 18:24:30 -0700 (PDT)
 Received: from localhost ([210.160.217.68])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-71944bc7bcbsm1517670b3a.205.2024.09.14.18.24.15
+ d9443c01a7336-207945da563sm14846865ad.60.2024.09.14.18.24.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 14 Sep 2024 18:24:20 -0700 (PDT)
+ Sat, 14 Sep 2024 18:24:30 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH RFC v3 00/11] virtio-net: Offload hashing without eBPF
-Date: Sun, 15 Sep 2024 10:23:41 +0900
-Message-Id: <20240915-hash-v3-0-79cb08d28647@daynix.com>
+Date: Sun, 15 Sep 2024 10:23:42 +0900
+Subject: [PATCH RFC v3 01/11] qdev-properties:
+ DEFINE_PROP_ON_OFF_AUTO_BIT()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAB035mYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
- vPSU3UzU4B8JSMDIxMDCyML3YzE4gxdMyMLYyPLRBPTFJMUJaDSgqLUtMwKsDHRSkFuzkqxtbU
- AGvYp0lsAAAA=
+Message-Id: <20240915-hash-v3-1-79cb08d28647@daynix.com>
+References: <20240915-hash-v3-0-79cb08d28647@daynix.com>
+In-Reply-To: <20240915-hash-v3-0-79cb08d28647@daynix.com>
 To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
  Andrew Melnychenko <andrew@daynix.com>, 
  "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::430;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x430.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::635;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,53 +95,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: <20240915-queue-v1-0-b49bd49b926d@daynix.com>
-("[PATCH 0/7] virtio-net fixes")
-
-I'm proposing to add a feature to offload virtio-net RSS/hash report to
-Linux. This series contain patches to utilize the proposed Linux feature.
-The patches for Linux are available at:
-https://lore.kernel.org/r/20240915-rss-v3-0-c630015db082@daynix.com/
-
-This work will be presented at LPC 2024:
-https://lpc.events/event/18/contributions/1963/
-
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Akihiko Odaki (11):
-      qdev-properties: DEFINE_PROP_ON_OFF_AUTO_BIT()
-      net/vhost-vdpa: Report hashing capability
-      virtio-net: Move virtio_net_get_features() down
-      virtio-net: Retrieve peer hashing capability
-      net/vhost-vdpa: Remove dummy SetSteeringEBPF
-      virtio-net: Add hash type options
-      net: Allow configuring virtio hashing
-      virtio-net: Use qemu_set_vnet_hash()
-      virtio-net: Offload hashing without vhost
-      tap: Report virtio-net hashing support on Linux
-      docs/devel/ebpf_rss.rst: Update for peer RSS
+ include/hw/qdev-properties.h | 18 ++++++++++++
+ hw/core/qdev-properties.c    | 66 +++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 83 insertions(+), 1 deletion(-)
 
- docs/devel/ebpf_rss.rst        |  23 ++-
- include/hw/qdev-properties.h   |  18 +++
- include/hw/virtio/virtio-net.h |   6 +-
- include/net/net.h              |  20 +++
- net/tap-linux.h                |   2 +
- net/tap_int.h                  |   3 +
- hw/core/qdev-properties.c      |  66 ++++++++-
- hw/net/virtio-net.c            | 327 +++++++++++++++++++++++++++++------------
- net/net.c                      |  14 ++
- net/tap-bsd.c                  |  10 ++
- net/tap-linux.c                |  18 +++
- net/tap-solaris.c              |  10 ++
- net/tap-stub.c                 |  10 ++
- net/tap.c                      |  15 ++
- net/vhost-vdpa.c               |  41 +++++-
- 15 files changed, 473 insertions(+), 110 deletions(-)
----
-base-commit: decf357a35b1201b34cc37c47b4b027f9601855e
-change-id: 20240828-hash-628329a45d4d
+diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
+index 09aa04ca1e27..678837569784 100644
+--- a/include/hw/qdev-properties.h
++++ b/include/hw/qdev-properties.h
+@@ -43,10 +43,21 @@ struct PropertyInfo {
+     ObjectPropertyRelease *release;
+ };
+ 
++/**
++ * struct OnOffAutoBit - OnOffAuto storage with 64 elements.
++ * @on_bits: Bitmap of elements with "on".
++ * @auto_bits: Bitmap of elements with "auto".
++ */
++typedef struct OnOffAutoBit {
++    uint32_t on_bits;
++    uint32_t auto_bits;
++} OnOffAutoBit;
++
+ 
+ /*** qdev-properties.c ***/
+ 
+ extern const PropertyInfo qdev_prop_bit;
++extern const PropertyInfo qdev_prop_on_off_auto_bit;
+ extern const PropertyInfo qdev_prop_bit64;
+ extern const PropertyInfo qdev_prop_bool;
+ extern const PropertyInfo qdev_prop_enum;
+@@ -86,6 +97,13 @@ extern const PropertyInfo qdev_prop_link;
+                 .set_default = true,                            \
+                 .defval.u    = (bool)_defval)
+ 
++#define DEFINE_PROP_ON_OFF_AUTO_BIT(_name, _state, _field, _bit, _defval) \
++    DEFINE_PROP(_name, _state, _field, qdev_prop_on_off_auto_bit,         \
++                OnOffAutoBit,                                             \
++                .bitnr    = (_bit),                                       \
++                .set_default = true,                                      \
++                .defval.i = (OnOffAuto)_defval)
++
+ #define DEFINE_PROP_UNSIGNED(_name, _state, _field, _defval, _prop, _type) \
+     DEFINE_PROP(_name, _state, _field, _prop, _type,                       \
+                 .set_default = true,                                       \
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 86a583574dd0..e1ff992e7177 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -133,7 +133,8 @@ const PropertyInfo qdev_prop_enum = {
+ 
+ static uint32_t qdev_get_prop_mask(Property *prop)
+ {
+-    assert(prop->info == &qdev_prop_bit);
++    assert(prop->info == &qdev_prop_bit ||
++           prop->info == &qdev_prop_on_off_auto_bit);
+     return 0x1 << prop->bitnr;
+ }
+ 
+@@ -183,6 +184,69 @@ const PropertyInfo qdev_prop_bit = {
+     .set_default_value = set_default_value_bool,
+ };
+ 
++static void prop_get_on_off_auto_bit(Object *obj, Visitor *v,
++                                     const char *name, void *opaque,
++                                     Error **errp)
++{
++    Property *prop = opaque;
++    OnOffAutoBit *p = object_field_prop_ptr(obj, prop);
++    int value;
++    uint32_t mask = qdev_get_prop_mask(prop);
++
++    if (p->auto_bits & mask) {
++        value = ON_OFF_AUTO_AUTO;
++    } else if (p->on_bits & mask) {
++        value = ON_OFF_AUTO_ON;
++    } else {
++        value = ON_OFF_AUTO_OFF;
++    }
++
++    visit_type_enum(v, name, &value, &OnOffAuto_lookup, errp);
++}
++
++static void prop_set_on_off_auto_bit(Object *obj, Visitor *v,
++                                     const char *name, void *opaque,
++                                     Error **errp)
++{
++    Property *prop = opaque;
++    OnOffAutoBit *p = object_field_prop_ptr(obj, prop);
++    bool bool_value;
++    int value;
++    uint32_t mask = qdev_get_prop_mask(prop);
++
++    if (visit_type_bool(v, name, &bool_value, NULL)) {
++        value = bool_value ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
++    } else if (!visit_type_enum(v, name, &value, &OnOffAuto_lookup, errp)) {
++        return;
++    }
++
++    switch (value) {
++    case ON_OFF_AUTO_AUTO:
++        p->on_bits &= ~mask;
++        p->auto_bits |= mask;
++        break;
++
++    case ON_OFF_AUTO_ON:
++        p->on_bits |= mask;
++        p->auto_bits &= ~mask;
++        break;
++
++    case ON_OFF_AUTO_OFF:
++        p->on_bits &= ~mask;
++        p->auto_bits &= ~mask;
++        break;
++    }
++}
++
++const PropertyInfo qdev_prop_on_off_auto_bit = {
++    .name  = "OnOffAuto",
++    .description = "on/off/auto",
++    .enum_table = &OnOffAuto_lookup,
++    .get = prop_get_on_off_auto_bit,
++    .set = prop_set_on_off_auto_bit,
++    .set_default_value = qdev_propinfo_set_default_value_enum,
++};
++
+ /* Bit64 */
+ 
+ static uint64_t qdev_get_prop_mask64(Property *prop)
 
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.46.0
 
 
