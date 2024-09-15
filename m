@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A3397943C
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 03:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBA3979436
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 03:25:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spe0t-0004Hs-C0; Sat, 14 Sep 2024 21:25:20 -0400
+	id 1spe0w-0004Yz-GO; Sat, 14 Sep 2024 21:25:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1spe0o-0003xl-Oq
- for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:25:15 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1spe0s-0004G4-1G
+ for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:25:18 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1spe0l-0005e1-GW
- for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:25:12 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-7db233cef22so1546151a12.0
- for <qemu-devel@nongnu.org>; Sat, 14 Sep 2024 18:25:11 -0700 (PDT)
+ id 1spe0q-0005eM-5p
+ for qemu-devel@nongnu.org; Sat, 14 Sep 2024 21:25:17 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-7d916b6a73aso2007253a12.1
+ for <qemu-devel@nongnu.org>; Sat, 14 Sep 2024 18:25:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1726363510; x=1726968310;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1726363514; x=1726968314;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4hKy6WeHKTopFFsCzB6TpUBLh4s+GMB0sadGqV/W3WI=;
- b=ZzS83AF2shJRW8YQIuSmQWzgKzs7IivQKMnNGbIZqetfE0z0hjS0kFhSLLhx1Sz8dX
- k2ubC/5xvFVZgo2AulPzUWEJiGtKP69HPiaShUpbf5+3M6AZDdCArlCijfXhf9p2PD6+
- GQ4AmoIlxzbseCplMwyCQL4Vr2txK12Pfl4SQSgKO7ajBidihkiwynHbcEeRvQug4nqE
- VQZeEovCOIFjag/5AJd38pICr3eWkvGoOWpSXepYxyXSGLQ1CtxXhqKZQcR/EbxX/KXd
- y/lYMjNC7Hu0hooWyAGQj30elqujkocpCvewmfMITc5eItDXTf5oT4tDTMTWxniCSNLm
- AsBQ==
+ :reply-to; bh=mCu6mvOatJtGAfDwhnsDWwsDctuJ051UjuOLN4ujdpw=;
+ b=mFWFcqPDgh+WOy90CwYEQlYq+JtksSvMfq+99kIz9mtVa+F8wV9x9KkEFl0yl0lb7o
+ Yz6JvXnseMwhlYL8S8t8jzlEcokrf8wBB3c4/ETtXINWa9ONUA7E4llJY1tZD91XOqgN
+ r6BCFQuhrRTkVx6a3rNSrje5iqJI7paYWjJerDt8LLVuF+143TuehflbLC+SvP3Otshc
+ XYS2K3k1cqmotzEeYqlt/ZCJZ9Sg+KuxJf8LPUjAPNkczj5jFx0mj1X9evGZ6CMU2sQz
+ Mn9IMUNwXW8zLTk+UcasiRZROp2s76+1pMTyo44TFtIO92EomGTVO9mwSUQDNVzyPqRL
+ KTFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726363510; x=1726968310;
+ d=1e100.net; s=20230601; t=1726363514; x=1726968314;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4hKy6WeHKTopFFsCzB6TpUBLh4s+GMB0sadGqV/W3WI=;
- b=iuo22EtbubUrL9y8zis76eYIhzO7CG21drl3dcJigsISNLVO+9T4NMnvp/Aqcgn3D4
- pxbcwMrh1VJs9+l2abiVLvDQHWUME6WmBlrSUhvV5VOvNArhuanMm1eh+AuaeWGpc3Zl
- o/wuXxTaK43PFdf1rv7YGJjX8KukT6sTPc7IfZShBN0DHL1a8efDqA0k6EUt8/a7S5zA
- H+K8oA0v6tyOiPZvBQlw3sQueVs/cxQukUfn1ZL9SwpOTze0rECNhZD2JT6vSv48Mgu3
- dF1H/Y2m8sPJ+YtBdOCQ3x4MU+rSwY+17VuizVGzhTG3OLdoVmyRjKpEj4bkYmeU5T/o
- ebpg==
-X-Gm-Message-State: AOJu0YwMXzeFljg7/POoPbBjCk7dXF5UtEpGvFzloAWeaSDAOdnGOPJa
- Eg3v8Dp2UB6BectTPRKp+0ANMSUbt1eKCWbc6kHeeoBu8RAUyVLaZh9Lc2s9qdZgBLS0Ml4rRVB
- SxRc=
-X-Google-Smtp-Source: AGHT+IHvjDZm5dOITED6jlH+QLrINXDdVtfofu/VErlAJom+yvrzk3xn+e8c/63yvqQAHdGHpOFS1g==
-X-Received: by 2002:a05:6a20:c996:b0:1c6:a680:ef3d with SMTP id
- adf61e73a8af0-1d112db5de9mr11528046637.28.1726363509887; 
- Sat, 14 Sep 2024 18:25:09 -0700 (PDT)
+ bh=mCu6mvOatJtGAfDwhnsDWwsDctuJ051UjuOLN4ujdpw=;
+ b=EBDMxaQt0PnMF1SyGU4RSE7qCBVHLVyROYAJB54gEAUk/BM8/HQCmtD7f7rrafqenF
+ dkSM98gXQ/h9g3aw507JM9p4HyZrq3Zt7qNihuLeXQLcx1YlmUdaGYluZF9kzbmziPaV
+ gEfJbfSgQYoUbmsPpmhMgUsXgueSvAJ0cmgY6kETUmo/sRMWwmptyGfeCFTecN9aLWuN
+ iLeeAREg7js/bFYtYr/5OdEJHHt9ev/JuiU4DPMJM7zYDgjeldhUi18FDKkCFRhTGLQT
+ VrT4rGivkfUVzghz3O4WV+GSeZwJi7jXWZiBD57UCaShcK4cfvB4fGleoq+gb8rrRewH
+ 9GGA==
+X-Gm-Message-State: AOJu0YyNnW/47xlHdTcU5OXVD/Xb+y7DLSvM5vjK7boP8xWcxTO/+Zlw
+ MbwbAB8x+FkZxywH31Ies+3LDJZg8CO3+6V6lGu99RekkBjZzU/3lmm0llyHKV6mGpvdNzLxk16
+ +Xdw=
+X-Google-Smtp-Source: AGHT+IHfSNLfVM5uZbgj+f8joU/AHheFTp5H/z7qAU+HCi1JJSSFicx8EO6oW/VsKjIyJDCXlG32Hw==
+X-Received: by 2002:a05:6a21:3981:b0:1d1:13de:68c6 with SMTP id
+ adf61e73a8af0-1d113de68camr12429962637.29.1726363514157; 
+ Sat, 14 Sep 2024 18:25:14 -0700 (PDT)
 Received: from localhost ([210.160.217.68])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-71944a980b4sm1528308b3a.34.2024.09.14.18.25.07
+ 41be03b00d2f7-7db4998b773sm1760892a12.57.2024.09.14.18.25.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 14 Sep 2024 18:25:09 -0700 (PDT)
+ Sat, 14 Sep 2024 18:25:13 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 15 Sep 2024 10:23:50 +0900
-Subject: [PATCH RFC v3 09/11] virtio-net: Offload hashing without vhost
+Date: Sun, 15 Sep 2024 10:23:51 +0900
+Subject: [PATCH RFC v3 10/11] tap: Report virtio-net hashing support on Linux
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240915-hash-v3-9-79cb08d28647@daynix.com>
+Message-Id: <20240915-hash-v3-10-79cb08d28647@daynix.com>
 References: <20240915-hash-v3-0-79cb08d28647@daynix.com>
 In-Reply-To: <20240915-hash-v3-0-79cb08d28647@daynix.com>
 To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
@@ -71,8 +71,8 @@ To: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::52e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,49 +94,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is necessary to offload hashing to tap.
+This allows offloading virtio-net hashing to tap on Linux.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/net/virtio-net.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ net/tap-linux.h   |  1 +
+ net/tap_int.h     |  1 +
+ net/tap-bsd.c     |  5 +++++
+ net/tap-linux.c   | 13 +++++++++++++
+ net/tap-solaris.c |  5 +++++
+ net/tap-stub.c    |  5 +++++
+ net/tap.c         |  8 ++++++++
+ 7 files changed, 38 insertions(+)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index be6759d1c0f4..72493b652bf5 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1695,7 +1695,11 @@ static size_t receive_header(VirtIONet *n, struct virtio_net_hdr *hdr,
+diff --git a/net/tap-linux.h b/net/tap-linux.h
+index 5fac64c24f99..c773609c799e 100644
+--- a/net/tap-linux.h
++++ b/net/tap-linux.h
+@@ -32,6 +32,7 @@
+ #define TUNSETVNETLE _IOW('T', 220, int)
+ #define TUNSETVNETBE _IOW('T', 222, int)
+ #define TUNSETSTEERINGEBPF _IOR('T', 224, int)
++#define TUNGETVNETHASHCAP _IOR('T', 228, NetVnetHash)
+ #define TUNSETVNETHASH _IOW('T', 229, NetVnetHash)
+ 
+ #endif
+diff --git a/net/tap_int.h b/net/tap_int.h
+index e1b53e343397..84a88841b720 100644
+--- a/net/tap_int.h
++++ b/net/tap_int.h
+@@ -36,6 +36,7 @@ ssize_t tap_read_packet(int tapfd, uint8_t *buf, int maxlen);
+ 
+ void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
+ int tap_probe_vnet_hdr(int fd, Error **errp);
++bool tap_probe_vnet_hash_supported_types(int fd, uint32_t *types);
+ int tap_probe_has_ufo(int fd);
+ int tap_probe_has_uso(int fd);
+ void tap_fd_set_offload(int fd, int csum, int tso4, int tso6, int ecn, int ufo,
+diff --git a/net/tap-bsd.c b/net/tap-bsd.c
+index 2eee0c0a0ec5..142e1abe0420 100644
+--- a/net/tap-bsd.c
++++ b/net/tap-bsd.c
+@@ -217,6 +217,11 @@ int tap_probe_has_uso(int fd)
+     return 0;
+ }
+ 
++bool tap_probe_vnet_hash_supported_types(int fd, uint32_t *types)
++{
++    return false;
++}
++
+ void tap_fd_set_vnet_hdr_len(int fd, int len)
  {
-     size_t hdr_len = n->guest_hdr_len;
+ }
+diff --git a/net/tap-linux.c b/net/tap-linux.c
+index e96d38eec922..a601cb1ed2d9 100644
+--- a/net/tap-linux.c
++++ b/net/tap-linux.c
+@@ -185,6 +185,19 @@ int tap_probe_has_uso(int fd)
+     return 1;
+ }
  
--    memcpy(hdr, buf, sizeof(struct virtio_net_hdr));
-+    memcpy(hdr, buf,
-+           n->rss_data.populate_hash &&
-+           n->rss_data.enabled && !n->rss_data.enabled_software_rss ?
-+           sizeof(struct virtio_net_hdr_v1_hash) :
-+           sizeof(struct virtio_net_hdr));
++bool tap_probe_vnet_hash_supported_types(int fd, uint32_t *types)
++{
++    NetVnetHash hash;
++
++    if (ioctl(fd, TUNGETVNETHASHCAP, &hash)) {
++        return false;
++    }
++
++    *types = hash.types;
++
++    return true;
++}
++
+ void tap_fd_set_vnet_hdr_len(int fd, int len)
+ {
+     if (ioctl(fd, TUNSETVNETHDRSZ, &len) == -1) {
+diff --git a/net/tap-solaris.c b/net/tap-solaris.c
+index c65104b84e93..00d1c850680d 100644
+--- a/net/tap-solaris.c
++++ b/net/tap-solaris.c
+@@ -221,6 +221,11 @@ int tap_probe_has_uso(int fd)
+     return 0;
+ }
  
-     *buf_offset = n->host_hdr_len;
-     work_around_broken_dhclient(hdr, &hdr_len, buf, buf_size, buf_offset);
-@@ -3072,11 +3076,13 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
-     }
++bool tap_probe_vnet_hash_supported_types(int fd, uint32_t *types)
++{
++    return false;
++}
++
+ void tap_fd_set_vnet_hdr_len(int fd, int len)
+ {
+ }
+diff --git a/net/tap-stub.c b/net/tap-stub.c
+index 5bdc76216b7f..a4718654fbeb 100644
+--- a/net/tap-stub.c
++++ b/net/tap-stub.c
+@@ -52,6 +52,11 @@ int tap_probe_has_uso(int fd)
+     return 0;
+ }
  
-     if (!get_vhost_net(nc->peer)) {
--        if (!use_own_hash) {
--            virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
--            virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
--        } else if (virtio_has_feature(features, VIRTIO_NET_F_RSS)) {
--            virtio_net_load_ebpf(n);
-+        if (!use_peer_hash) {
-+            if (!use_own_hash) {
-+                virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
-+                virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
-+            } else if (virtio_has_feature(features, VIRTIO_NET_F_RSS)) {
-+                virtio_net_load_ebpf(n);
-+            }
-         }
++bool tap_probe_vnet_hash_supported_types(int fd, uint32_t *types)
++{
++    return false;
++}
++
+ void tap_fd_set_vnet_hdr_len(int fd, int len)
+ {
+ }
+diff --git a/net/tap.c b/net/tap.c
+index 8d451c745d70..e17565c2ac3c 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -248,6 +248,13 @@ static void tap_set_vnet_hdr_len(NetClientState *nc, int len)
+     s->using_vnet_hdr = true;
+ }
  
-         return features;
++static bool tap_get_vnet_hash_supported_types(NetClientState *nc,
++                                              uint32_t *types)
++{
++    TAPState *s = DO_UPCAST(TAPState, nc, nc);
++    return tap_probe_vnet_hash_supported_types(s->fd, types);
++}
++
+ static void tap_set_vnet_hash(NetClientState *nc, const NetVnetHash *hash)
+ {
+     TAPState *s = DO_UPCAST(TAPState, nc, nc);
+@@ -350,6 +357,7 @@ static NetClientInfo net_tap_info = {
+     .has_vnet_hdr_len = tap_has_vnet_hdr_len,
+     .set_offload = tap_set_offload,
+     .set_vnet_hdr_len = tap_set_vnet_hdr_len,
++    .get_vnet_hash_supported_types = tap_get_vnet_hash_supported_types,
+     .set_vnet_hash = tap_set_vnet_hash,
+     .set_vnet_le = tap_set_vnet_le,
+     .set_vnet_be = tap_set_vnet_be,
 
 -- 
 2.46.0
