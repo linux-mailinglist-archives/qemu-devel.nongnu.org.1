@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939969797C5
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 18:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4779797C4
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 18:10:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sproM-00031d-Rm; Sun, 15 Sep 2024 12:09:18 -0400
+	id 1sproU-0003Dt-Tq; Sun, 15 Sep 2024 12:09:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1sproJ-0002sV-Pf
- for qemu-devel@nongnu.org; Sun, 15 Sep 2024 12:09:15 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1sproM-00033w-LI
+ for qemu-devel@nongnu.org; Sun, 15 Sep 2024 12:09:18 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1sproH-0006P3-QN
- for qemu-devel@nongnu.org; Sun, 15 Sep 2024 12:09:15 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-717934728adso2743027b3a.2
- for <qemu-devel@nongnu.org>; Sun, 15 Sep 2024 09:09:13 -0700 (PDT)
+ id 1sproL-0006PX-2g
+ for qemu-devel@nongnu.org; Sun, 15 Sep 2024 12:09:18 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-718e285544fso1966191b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Sep 2024 09:09:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1726416552; x=1727021352;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1726416555; x=1727021355;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i5g6CmFxoxPUE5mXYvXg3z4LzjNCvav86tcPdIXvVHo=;
- b=gqI1n1AZXkYScqS5zInpAyXQysUlph4zpIOySUl9eKF4gpA2k2n13eGQHtQpeKVjOy
- /gEQG2b9CK0+In8FuACUwh+VrxcJQkMNV1n1eeKVlgIpBA9uhbxfAdx6pqIWn8bT6xNl
- MqCYMGMe5fTYUftOecfBdBY21Uax9nVgTIDBHdvsystQ7qZhgk33BrDZqrbReYzPXppu
- tKcASraLofywuGX3//56iZWAI8ovN2b00Jwnzfm6AYKtmHVfgEzo1I+DN43nkw/AaODJ
- c88ZAoZ+5hyaFGasb4NKBqSFZnD8eYzQZaP0ARb7S3jtLo0Xocg0evVQvFluc3Mh8V2l
- ePww==
+ bh=bQRFeU81jcoENLpfNtd5Au7rCLXiDo8NwDyNJcevB8Q=;
+ b=asqfHek8p83xx66MaWOxWub16DpVVGlpBeGKdYOJhyQfUBofwyUueI2FMtzfWB7I8o
+ 3Q+QEz4jRae5mY5NbR0YgfavKPmRj+GLuO0MJezS6cQ42oNtnfJV0FfPOTj0yZ17Ze8O
+ C52tGXnAdwnkfK9sMhsFEAy7cxZWUSWjPLD+7EeWcule9PVjB+qE1jE2uq7OKc0jp9I7
+ kJVu9/8OQs5HiCBsYnwMf9hSoBOnPR2F5xEePJR+Rl8hxVVmk16mF4aE3Dl0zWQduAKf
+ sYAyy25TBwx8i68/WZYOk0ls86Dexht9x0D4yanI/ELBWVy0/6xBWxXNo+9EBLMONiN3
+ jjYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726416552; x=1727021352;
+ d=1e100.net; s=20230601; t=1726416555; x=1727021355;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i5g6CmFxoxPUE5mXYvXg3z4LzjNCvav86tcPdIXvVHo=;
- b=cEPDngfRqlOL/2AnoLQJccxgLwMqqn7xnrL7Uo0s5R4mq0yIr6W+ZnmB7WTWm6JPKY
- UbGRlRj522d4LYLc27NGfcowlTbF76d5sSCXciF+qp/nej0kRyt3b6kIjv6CDNcDpjcD
- QElaSB7ft/U0rZwDLdUe3cqOHI4W0SUlM24NYCi/3sbUmXvTmhLt2tADaPTJUDWtUFn+
- gsOOy8Jz7jkmQAaei2vyqpwFFmbZbQasJzZx3ltZgQiAPy0NTECqHBbD39BzwxeF+rDX
- GHx6o4wUZodRoYU7u0vtfx5yh1pYAMkLdKRuyd261ZPIBctThHza+oxlNiu1EJAdSZ07
- 4CNg==
-X-Gm-Message-State: AOJu0Yxc4zOLLNOPAnDrJEKdN2V4KmgO/9Hqh40RzQPprCZLc61ZhMdU
- Vqp4KMLTS7dwcFdEPaO+ZcZF4+6MFQ70QVKtQFJA3XW9myUGCJGdWwOY7gPsZZYw4fJ8p7KAPuF
- RLZx+AA==
-X-Google-Smtp-Source: AGHT+IGOubS0qQwcM949ApoEklLQVYHXrT33G57vSY5G+WB3aG7GvQzHiNgrf0Yw0nHjjfj27waYrA==
-X-Received: by 2002:a05:6a00:2352:b0:714:3831:ec91 with SMTP id
- d2e1a72fcca58-71926213e47mr18367228b3a.25.1726416551092; 
- Sun, 15 Sep 2024 09:09:11 -0700 (PDT)
+ bh=bQRFeU81jcoENLpfNtd5Au7rCLXiDo8NwDyNJcevB8Q=;
+ b=xVfVBBThNPA8OndyotvRrJjK4h6X/NeTfTsEHB/wNU39AqrxtHufdC02ev9LUVJ7ov
+ vApwPp0ObOaHvEihFxQKrtxi2mh8UX4tQAF1u03K/QO2TmW093PRRDGaSjCBFa/RVrRN
+ h44MXKHvf8v/RQSRD+G8St+XXNwPQHY7ITOscNhy+V70tZndQGOLTPf690ekIM3H1J8h
+ 8LCdYFtEX6ym2eOkolHv5ffhzpoFeOWZnZNItphmtcZuSyUTVydMtNbmafJKgA0HH8pM
+ Sqh6P2wVZ4A1DfFUuit3Tbyf5bCSun1kzWln4GRte2hMIHqMnL2eErfJhQ8bYAvm28j0
+ T91A==
+X-Gm-Message-State: AOJu0Yz+H61wdDaYsxCkAmM4cHy9juJ/cyxYBmPSvG+Gf+rNu8TPTJ2t
+ 3FFVcFJ8J5FoRGTULK0KVD3DIUv6XOciC7pRfPSXsKJtO5Wd1SJrvYxVqFltcSq1Ys/dTWuRe3x
+ GZmVEDA==
+X-Google-Smtp-Source: AGHT+IG0e0TCV+nv2O3GJ2JNvVUMgF7RXhLFswJCVRXgnavSu6kqBOUL+WqWbDn24u846J6GkiPd3A==
+X-Received: by 2002:a05:6a00:1ad3:b0:717:88b6:6b1e with SMTP id
+ d2e1a72fcca58-71936adf416mr13975811b3a.18.1726416554838; 
+ Sun, 15 Sep 2024 09:09:14 -0700 (PDT)
 Received: from localhost.localdomain ([118.114.94.247])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71944bb5967sm2344795b3a.182.2024.09.15.09.09.07
+ d2e1a72fcca58-71944bb5967sm2344795b3a.182.2024.09.15.09.09.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Sep 2024 09:09:10 -0700 (PDT)
+ Sun, 15 Sep 2024 09:09:14 -0700 (PDT)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -65,16 +65,17 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH v1 4/7] migration: Implment background sync watcher
-Date: Mon, 16 Sep 2024 00:08:47 +0800
-Message-Id: <4c105e23be9a2d1a6be71e6abf9c938a4d091dfc.1726390099.git.yong.huang@smartx.com>
+Subject: [PATCH v1 5/7] migration: Support background dirty bitmap sync and
+ throttle
+Date: Mon, 16 Sep 2024 00:08:48 +0800
+Message-Id: <d74bc4ffb073c886bc566e7d771910db844cec1b.1726390099.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1726390098.git.yong.huang@smartx.com>
 References: <cover.1726390098.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=yong.huang@smartx.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,171 +97,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The background sync watcher is used to detect that if the
-iteration lasts a long time, if so, trigger the background
-sync.
+When VM is configured with huge memory, the current throttle logic
+doesn't look like to scale, because migration_trigger_throttle()
+is only called for each iteration, so it won't be invoked for a long
+time if one iteration can take a long time.
+
+The background sync and throttle aim to fix the above issue by
+synchronizing the remote dirty bitmap and triggering the throttle
+once detect that iteration lasts a long time.
+
+This is a trade-off between synchronization overhead and CPU throttle
+impact.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- migration/ram.c        | 110 +++++++++++++++++++++++++++++++++++++++++
- migration/ram.h        |   3 ++
- migration/trace-events |   3 ++
- 3 files changed, 116 insertions(+)
+ migration/migration.c        | 12 +++++++++++
+ tests/qtest/migration-test.c | 39 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index ca5a1b5f16..799eaa0382 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -416,6 +416,11 @@ struct RAMState {
-      * RAM migration.
-      */
-     unsigned int postcopy_bmap_sync_requested;
-+
-+    /* Background throttle information */
-+    bool background_sync_running;
-+    QemuThread background_sync_thread;
-+    QemuSemaphore quit_sem;
- };
- typedef struct RAMState RAMState;
+diff --git a/migration/migration.c b/migration/migration.c
+index 055d527ff6..af8b22fa15 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1416,6 +1416,7 @@ static void migrate_fd_cleanup(MigrationState *s)
  
-@@ -1125,6 +1130,111 @@ static void migration_bitmap_sync(RAMState *rs,
+         trace_migrate_fd_cleanup();
+         bql_unlock();
++        migration_background_sync_cleanup();
+         if (s->migration_thread_running) {
+             qemu_thread_join(&s->thread);
+             s->migration_thread_running = false;
+@@ -3263,6 +3264,7 @@ static MigIterateState migration_iteration_run(MigrationState *s)
+ 
+     if ((!pending_size || pending_size < s->threshold_size) && can_switchover) {
+         trace_migration_thread_low_pending(pending_size);
++        migration_background_sync_cleanup();
+         migration_completion(s);
+         return MIG_ITERATE_BREAK;
      }
+@@ -3508,6 +3510,16 @@ static void *migration_thread(void *opaque)
+     ret = qemu_savevm_state_setup(s->to_dst_file, &local_err);
+     bql_unlock();
+ 
++    if (!migrate_dirty_limit()) {
++        /*
++         * Initiate the background sync watcher in order to guarantee
++         * that the CPU throttling acts appropriately. Dirty Limit
++         * doesn't use CPU throttle to make guest down, so ignore that
++         * case.
++         */
++        migration_background_sync_setup();
++    }
++
+     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
+                                MIGRATION_STATUS_ACTIVE);
+ 
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index b796a90cad..e0e94d26be 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -281,6 +281,11 @@ static uint64_t get_migration_pass(QTestState *who)
+     return read_ram_property_int(who, "iteration-count");
  }
  
-+/*
-+ * Iteration lasting more than five seconds is undesirable;
-+ * launch a background dirty bitmap sync.
-+ */
-+#define MIGRATION_MAX_ITERATION_DURATION  5
-+
-+static void *migration_background_sync_watcher(void *opaque)
++static uint64_t get_dirty_sync_count(QTestState *who)
 +{
-+    RAMState *rs = opaque;
-+    uint64_t iter_cnt, prev_iter_cnt = 2;
-+    bool iter_cnt_unchanged = false;
-+    int max_pct = migrate_max_cpu_throttle();
++    return read_ram_property_int(who, "dirty-sync-count");
++}
 +
-+    trace_migration_background_sync_watcher_start();
-+    rcu_register_thread();
+ static void read_blocktime(QTestState *who)
+ {
+     QDict *rsp_return;
+@@ -468,6 +473,12 @@ static void migrate_ensure_converge(QTestState *who)
+     migrate_set_parameter_int(who, "downtime-limit", 30 * 1000);
+ }
+ 
++static void migrate_ensure_iteration_last_long(QTestState *who)
++{
++    /* Set 10Byte/s bandwidth limit to make the iteration last long enough */
++    migrate_set_parameter_int(who, "max-bandwidth", 10);
++}
 +
-+    while (qatomic_read(&rs->background_sync_running)) {
-+        int cur_pct = cpu_throttle_get_percentage();
-+        if ((cur_pct == max_pct) || (!migration_is_active())) {
-+            break;
-+        }
+ /*
+  * Our goal is to ensure that we run a single full migration
+  * iteration, and also dirty memory, ensuring that at least
+@@ -2791,6 +2802,10 @@ static void test_migrate_auto_converge(void)
+      * so we need to decrease a bandwidth.
+      */
+     const int64_t init_pct = 5, inc_pct = 25, max_pct = 95;
++    uint64_t prev_iter_cnt = 0, iter_cnt;
++    uint64_t iter_cnt_changes = 0;
++    uint64_t prev_dirty_sync_cnt = 0, dirty_sync_cnt;
++    uint64_t dirty_sync_cnt_changes = 0;
+ 
+     if (test_migrate_start(&from, &to, uri, &args)) {
+         return;
+@@ -2827,6 +2842,30 @@ static void test_migrate_auto_converge(void)
+     } while (true);
+     /* The first percentage of throttling should be at least init_pct */
+     g_assert_cmpint(percentage, >=, init_pct);
 +
-+        if (qemu_sem_timedwait(&rs->quit_sem, 1000) == 0) {
-+            /* We were woken by background_sync_cleanup, quit */
-+            break;
-+        }
++    /* Make sure the iteration take a long time enough */
++    migrate_ensure_iteration_last_long(from);
 +
-+        /*
-+         * The first iteration copies all memory anyhow and has no
-+         * effect on guest performance, therefore omit it to avoid
-+         * paying extra for the sync penalty.
-+         */
-+        iter_cnt = stat64_get(&mig_stats.iteration_count);
-+        if (iter_cnt <= 1) {
-+            continue;
-+        }
-+
-+        iter_cnt_unchanged = (iter_cnt == prev_iter_cnt);
++    /*
++     * End the loop when the dirty sync count or iteration count changes.
++     */
++    while (iter_cnt_changes < 2 && dirty_sync_cnt_changes < 2) {
++        usleep(1000 * 1000);
++        iter_cnt = get_migration_pass(from);
++        iter_cnt_changes += (iter_cnt != prev_iter_cnt);
 +        prev_iter_cnt = iter_cnt;
 +
-+        if (iter_cnt_unchanged) {
-+            int64_t curr_time, iter_duration;
-+
-+            curr_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-+            iter_duration = curr_time - rs->time_last_bitmap_sync;
-+
-+            if (iter_duration >
-+                    MIGRATION_MAX_ITERATION_DURATION * 1000) {
-+                sync_mode = RAMBLOCK_SYN_MODERN;
-+                bql_lock();
-+                trace_migration_background_sync();
-+                WITH_RCU_READ_LOCK_GUARD() {
-+                    migration_bitmap_sync(rs, false, true);
-+                }
-+                bql_unlock();
-+            }
-+        }
++        dirty_sync_cnt = get_dirty_sync_count(from);
++        dirty_sync_cnt_changes += (dirty_sync_cnt != prev_dirty_sync_cnt);
++        prev_dirty_sync_cnt = dirty_sync_cnt;
 +    }
 +
-+    qatomic_set(&rs->background_sync_running, 0);
++    /*
++     * The dirty sync count must have changed because we are in the same
++     * iteration.
++     */
++    g_assert_cmpint(iter_cnt_changes , < , dirty_sync_cnt_changes);
 +
-+    rcu_unregister_thread();
-+    trace_migration_background_sync_watcher_end();
-+
-+    return NULL;
-+}
-+
-+void migration_background_sync_setup(void)
-+{
-+    RAMState *rs = ram_state;
-+
-+    if (!rs) {
-+        return;
-+    }
-+
-+    if (qatomic_read(&rs->background_sync_running)) {
-+        return;
-+    }
-+
-+    qemu_sem_init(&rs->quit_sem, 0);
-+    qatomic_set(&rs->background_sync_running, 1);
-+
-+    qemu_thread_create(&rs->background_sync_thread,
-+                       NULL, migration_background_sync_watcher,
-+                       rs, QEMU_THREAD_JOINABLE);
-+}
-+
-+void migration_background_sync_cleanup(void)
-+{
-+    RAMState *rs = ram_state;
-+
-+    if (!rs) {
-+        return;
-+    }
-+
-+    if (!qatomic_read(&rs->background_sync_running)) {
-+        return;
-+    }
-+
-+    qatomic_set(&rs->background_sync_running, 0);
-+    qemu_sem_post(&rs->quit_sem);
-+    qemu_thread_join(&rs->background_sync_thread);
-+    qemu_sem_destroy(&rs->quit_sem);
-+}
-+
- static void migration_bitmap_sync_precopy(RAMState *rs, bool last_stage)
- {
-     Error *local_err = NULL;
-diff --git a/migration/ram.h b/migration/ram.h
-index bc0318b834..0315d22a66 100644
---- a/migration/ram.h
-+++ b/migration/ram.h
-@@ -93,4 +93,7 @@ void ram_write_tracking_prepare(void);
- int ram_write_tracking_start(void);
- void ram_write_tracking_stop(void);
+     /* Now, when we tested that throttling works, let it converge */
+     migrate_ensure_converge(from);
  
-+/* Migration background sync */
-+void migration_background_sync_setup(void);
-+void migration_background_sync_cleanup(void);
- #endif
-diff --git a/migration/trace-events b/migration/trace-events
-index c65902f042..4f95f9fe14 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -92,6 +92,9 @@ qemu_file_fclose(void) ""
- # ram.c
- get_queued_page(const char *block_name, uint64_t tmp_offset, unsigned long page_abs) "%s/0x%" PRIx64 " page_abs=0x%lx"
- get_queued_page_not_dirty(const char *block_name, uint64_t tmp_offset, unsigned long page_abs) "%s/0x%" PRIx64 " page_abs=0x%lx"
-+migration_background_sync(void) ""
-+migration_background_sync_watcher_start(void) ""
-+migration_background_sync_watcher_end(void) ""
- migration_bitmap_sync_start(void) ""
- migration_bitmap_sync_end(uint64_t dirty_pages) "dirty_pages %" PRIu64
- migration_bitmap_clear_dirty(char *str, uint64_t start, uint64_t size, unsigned long page) "rb %s start 0x%"PRIx64" size 0x%"PRIx64" page 0x%lx"
 -- 
 2.39.1
 
