@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E51E97978A
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 17:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 498C9979785
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 17:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spr97-0006ow-7c; Sun, 15 Sep 2024 11:26:41 -0400
+	id 1spr9B-00071b-IF; Sun, 15 Sep 2024 11:26:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1spr94-0006ks-Ve
- for qemu-devel@nongnu.org; Sun, 15 Sep 2024 11:26:38 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1spr99-00070H-1h
+ for qemu-devel@nongnu.org; Sun, 15 Sep 2024 11:26:43 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1spr93-0008D5-8i
- for qemu-devel@nongnu.org; Sun, 15 Sep 2024 11:26:38 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2054feabfc3so29904915ad.1
- for <qemu-devel@nongnu.org>; Sun, 15 Sep 2024 08:26:36 -0700 (PDT)
+ id 1spr97-0008Dp-4W
+ for qemu-devel@nongnu.org; Sun, 15 Sep 2024 11:26:42 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-20536dcc6e9so17594765ad.2
+ for <qemu-devel@nongnu.org>; Sun, 15 Sep 2024 08:26:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726413995; x=1727018795; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1726413999; x=1727018799; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UhgZSr77cs856626csVUMKafDNElH2DCETLtbp74JlY=;
- b=AMSToZ9UjwoC8D9IKxAxOoZdt5ydqY7khAOpGuuPXK6AhqgIpAb6O5ACn9FVX9ySu+
- yuHcDUr5wdefDOtJe/+r58cndH+GkOlmg3UineeQ1DMIU7QCT/zVddB1B2whuyvKYOW1
- YqJ52j/kKh2lGPnB/vCmSvVbEmzC4J5zqzHIZh8J/gk8ENQtS9WEDIvsAM71FYvPBkQL
- OWz0MSFQ8O8q3dGkKA5xH/lOomakEWbdvEkAHgygr6ud9Pv3nZ7kI9nikPQ/CBCY/3Oo
- U0mLsDNa7XjlSvcCAZqDC5hhDvWo0JX0CIci3TgGCdv8T1xzCd/L1dneMODgrQoAEM5q
- XleQ==
+ bh=BISuETtEj/uI6CddQsRG+h5xaQo8IxKpbRWv0bTNq7U=;
+ b=QzvOlAz6nxcUE/S32bIzaAJH24aUgCnQ5lso9vmYWZt/8+EXdzZFvsOG62QkkWuhSt
+ AGnwHtuXgo1LuI9Cv8ebc7Ro6NHJlKXQ1AO0bO7oG0RrF+Bz0u3W08ExsrMxAss3EtJ3
+ f9cR5MTg7u0EVW8bGnlVgJo8PNc0mdXgAAgBtW8BIGL/oJfLhyHgpr0wOlX7RBjszdGX
+ tRCSO1TkU5OAwDnTBdExOkjye3O375fYVpgHplXRNntSEzgmmUuB91UaqUk0JQTYqtXt
+ 9bl2dWZDFi0029RPP2H+J6O3Ung0s1J+m+S46Bov2GrV1Z7WzstG3pnG7Y8NQGXCzD4h
+ KdHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726413995; x=1727018795;
+ d=1e100.net; s=20230601; t=1726413999; x=1727018799;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UhgZSr77cs856626csVUMKafDNElH2DCETLtbp74JlY=;
- b=asaM0InVYWohiMkNUj/XAXoySZwGcYc+To8AOov9u/gtdKjcisc4b/H3PuJIOdEDqR
- PonckuHPK23UFNsLgPYlrfFdcNja5Qjxf37bDk7FplkN9+KLXJGkNm90zId6uDok/Vb3
- B5qq45DWzWXxDlII+hLyaf1f1GFPYrwP73APaGs5SPWpjIYWlbVxFSQJmGdLkF5N2doC
- D7FwzOTKORWQ9+d/6iwXjqvpAj1iYmRA9pAtqhcmpIwRU4FcblkXLeJxGLmbMJmxiIMB
- +/VNPc1poxZmvxddon41KcBi0NB8EA806ENs0n0nRBzMOePdStHb4yA/PIlZF6wFCS0P
- 7m4A==
-X-Gm-Message-State: AOJu0YwQJXqG7FurafqBHd96vSUzU0/gPzYStB8lKwNcUO7OovIe5aau
- ii/BXbaKoGAzcL+cXAPlVKs5bpyzTLg28k0o54czqbqEE2t272vjmzTf4w==
-X-Google-Smtp-Source: AGHT+IEJbXRt0/kGfVjZKKqguJX2pseBesfsDqFkqeoIcWDjoDoezZ2ZQWD8IRJ1/xK0JYe7pcZHRg==
-X-Received: by 2002:a17:902:e2c2:b0:205:7574:3b87 with SMTP id
- d9443c01a7336-2076e347efdmr140700875ad.15.1726413995352; 
- Sun, 15 Sep 2024 08:26:35 -0700 (PDT)
+ bh=BISuETtEj/uI6CddQsRG+h5xaQo8IxKpbRWv0bTNq7U=;
+ b=u0e3mn/LVVJfP3mxhvEuw8z7GrJYERao6k/1YwkCSQx4cGocMiaYM9hUUMrXdhmdyh
+ ++Fbx1Ch4ZRcDS2735A5lZhA2NBnpf1bWuybHk/ohnO+gt9gcG+/na60Klvqd4ozN2YW
+ H6McUpwqjIGo18MmGCdklqnv7cnoZtbiJeY2hSK3tQfXDyMYcC4qiEBPfQEwYFnVHknc
+ T+mEvn5RdoOJU98lHRDpdQRGv9A/Q3bvhUh+BQMl0vf4hvBuxFBUPaKm7hMhUzer+Wh8
+ eK2r+HeW7fZ7Hf9zmqyiZynCMLU0H5dAFR/MgsiHV47coWO6WNyvqF7rjRf9K1nL9WPp
+ egbA==
+X-Gm-Message-State: AOJu0Yx7AW1wctlJAtDzzl91uJRfd8qrmhX4eAY/waX7tuvWFcJ7McY/
+ nfd5IrfFzfZKDR5/zNI5u5NamRHE57FoXlilBwXyohz/M16UsANejrP0Og==
+X-Google-Smtp-Source: AGHT+IFR82IUU2zfi3g1Tl/RsKGQG9U75SCHRfcpF53yvPAVLV9ZxkXxsJVT4ajUrPQeUaVOS8QMLA==
+X-Received: by 2002:a17:903:22c4:b0:205:73d9:9ce9 with SMTP id
+ d9443c01a7336-2078193f82emr133660525ad.0.1726413999221; 
+ Sun, 15 Sep 2024 08:26:39 -0700 (PDT)
 Received: from localhost.localdomain (14-200-149-22.tpgi.com.au.
  [14.200.149.22]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-207946f34c1sm22554335ad.184.2024.09.15.08.26.32
+ d9443c01a7336-207946f34c1sm22554335ad.184.2024.09.15.08.26.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Sep 2024 08:26:34 -0700 (PDT)
+ Sun, 15 Sep 2024 08:26:37 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Corbin <mark@dibsco.co.uk>, Warner Losh <imp@bsdimp.com>,
- Ajeet Singh <itachis@FreeBSD.org>, Jessica Clarke <jrtc27@jrtc27.com>,
- Kyle Evans <kevans@FreeBSD.org>,
+ Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v6 09/17] bsd-user: Add RISC-V thread setup and initialization
- support
-Date: Mon, 16 Sep 2024 01:25:46 +1000
-Message-Id: <20240915152554.8394-10-itachis@FreeBSD.org>
+Subject: [PATCH v6 10/17] bsd-user: Define RISC-V VM parameters and helper
+ functions
+Date: Mon, 16 Sep 2024 01:25:47 +1000
+Message-Id: <20240915152554.8394-11-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240915152554.8394-1-itachis@FreeBSD.org>
 References: <20240915152554.8394-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=itachis6234@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=itachis6234@gmail.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,31 +98,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Corbin <mark@dibsco.co.uk>
 
-Implemented functions for setting up and initializing threads in the
-RISC-V architecture.
-The 'target_thread_set_upcall' function sets up the stack pointer,
-program counter, and function argument for new threads.
-The 'target_thread_init' function initializes thread registers based on
-the provided image information.
+Added definitions for RISC-V VM parameters, including maximum and
+default sizes for text, data, and stack, as well as address space
+limits.
+Implemented helper functions for retrieving and setting specific
+values in the CPU state, such as stack pointer and return values.
 
 Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Co-authored-by: Jessica Clarke <jrtc27@jrtc27.com>
-Co-authored-by: Kyle Evans <kevans@FreeBSD.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/riscv/target_arch_thread.h | 47 +++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
- create mode 100644 bsd-user/riscv/target_arch_thread.h
+ bsd-user/riscv/target_arch_vmparam.h | 53 ++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
+ create mode 100644 bsd-user/riscv/target_arch_vmparam.h
 
-diff --git a/bsd-user/riscv/target_arch_thread.h b/bsd-user/riscv/target_arch_thread.h
+diff --git a/bsd-user/riscv/target_arch_vmparam.h b/bsd-user/riscv/target_arch_vmparam.h
 new file mode 100644
-index 0000000000..95cd0b6ad7
+index 0000000000..0f2486def1
 --- /dev/null
-+++ b/bsd-user/riscv/target_arch_thread.h
-@@ -0,0 +1,47 @@
++++ b/bsd-user/riscv/target_arch_vmparam.h
+@@ -0,0 +1,53 @@
 +/*
-+ *  RISC-V thread support
++ *  RISC-V VM parameters definitions
 + *
 + *  Copyright (c) 2019 Mark Corbin
 + *
@@ -141,34 +137,40 @@ index 0000000000..95cd0b6ad7
 + *  along with this program; if not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#ifndef TARGET_ARCH_THREAD_H
-+#define TARGET_ARCH_THREAD_H
++#ifndef TARGET_ARCH_VMPARAM_H
++#define TARGET_ARCH_VMPARAM_H
 +
-+/* Compare with cpu_set_upcall() in riscv/riscv/vm_machdep.c */
-+static inline void target_thread_set_upcall(CPURISCVState *regs,
-+    abi_ulong entry, abi_ulong arg, abi_ulong stack_base,
-+    abi_ulong stack_size)
++#include "cpu.h"
++
++/* Compare with riscv/include/vmparam.h */
++#define TARGET_MAXTSIZ      (1 * GiB)           /* max text size */
++#define TARGET_DFLDSIZ      (128 * MiB)         /* initial data size limit */
++#define TARGET_MAXDSIZ      (1 * GiB)           /* max data size */
++#define TARGET_DFLSSIZ      (128 * MiB)         /* initial stack size limit */
++#define TARGET_MAXSSIZ      (1 * GiB)           /* max stack size */
++#define TARGET_SGROWSIZ     (128 * KiB)         /* amount to grow stack */
++
++#define TARGET_VM_MINUSER_ADDRESS   (0x0000000000000000UL)
++#define TARGET_VM_MAXUSER_ADDRESS   (0x0000004000000000UL)
++
++#define TARGET_USRSTACK (TARGET_VM_MAXUSER_ADDRESS - TARGET_PAGE_SIZE)
++
++static inline abi_ulong get_sp_from_cpustate(CPURISCVState *state)
 +{
-+    abi_ulong sp;
-+
-+    sp = ROUND_DOWN(stack_base + stack_size, 16);
-+
-+    regs->gpr[xSP] = sp;
-+    regs->pc = entry;
-+    regs->gpr[xA0] = arg;
++    return state->gpr[xSP];
 +}
 +
-+/* Compare with exec_setregs() in riscv/riscv/machdep.c */
-+static inline void target_thread_init(struct target_pt_regs *regs,
-+    struct image_info *infop)
++static inline void set_second_rval(CPURISCVState *state, abi_ulong retval2)
 +{
-+    regs->sepc = infop->entry;
-+    regs->regs[xRA] = infop->entry;
-+    regs->regs[xA0] = infop->start_stack;
-+    regs->regs[xSP] = ROUND_DOWN(infop->start_stack, 16);
++    state->gpr[xA1] = retval2;
 +}
 +
-+#endif /* TARGET_ARCH_THREAD_H */
++static inline abi_ulong get_second_rval(CPURISCVState *state)
++{
++    return state->gpr[xA1];
++}
++
++#endif /* TARGET_ARCH_VMPARAM_H */
 -- 
 2.34.1
 
