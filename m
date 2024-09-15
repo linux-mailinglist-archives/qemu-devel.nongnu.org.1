@@ -2,70 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64E997971D
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 16:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA109797C6
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 18:12:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1spqCK-0003bA-Rb; Sun, 15 Sep 2024 10:25:56 -0400
+	id 1sprrN-0008WG-DG; Sun, 15 Sep 2024 12:12:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1spoov-0006NL-VI; Sun, 15 Sep 2024 08:57:42 -0400
-Received: from zproxy4.enst.fr ([137.194.2.223])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1spoot-0003c6-9d; Sun, 15 Sep 2024 08:57:41 -0400
-Received: from localhost (localhost [IPv6:::1])
- by zproxy4.enst.fr (Postfix) with ESMTP id AB901207A0;
- Sun, 15 Sep 2024 14:57:33 +0200 (CEST)
-Received: from zproxy4.enst.fr ([IPv6:::1])
- by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id wXTK8bTEcPei; Sun, 15 Sep 2024 14:57:33 +0200 (CEST)
-Received: from localhost (localhost [IPv6:::1])
- by zproxy4.enst.fr (Postfix) with ESMTP id 16B372074D;
- Sun, 15 Sep 2024 14:57:33 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr 16B372074D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1726405053;
- bh=61IWChj066lC9mznhlQQqTTzjbiEacGVJFsxPyAEhhg=;
- h=From:To:Date:Message-ID:MIME-Version;
- b=I5Ao+IIOdcUvb9i44/9u34fcDHRZ7eLuNYu7oSEpRK2lQQHhxYKWkCy42jwsFFewJ
- 3o2JnNOvVzC0TI14qncbYqTVkujOjtOAOwcIW+h9bV9SpAz1in4rPxpbbdbt47QFWl
- J1s3LRm/23uRIRiKfX4OX2FL/4NuYlBApkmzbols=
-X-Virus-Scanned: amavis at enst.fr
-Received: from zproxy4.enst.fr ([IPv6:::1])
- by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id rOHjoqyqAgXH; Sun, 15 Sep 2024 14:57:32 +0200 (CEST)
-Received: from inesv-Inspiron-3501.enst.fr (unknown
- [IPv6:2a04:8ec0:0:124::190c])
- by zproxy4.enst.fr (Postfix) with ESMTPSA id 0059F2070E;
- Sun, 15 Sep 2024 14:57:31 +0200 (CEST)
-From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-Subject: [PATCH] hw/display: Fix mirrored output in dm163
-Date: Sun, 15 Sep 2024 14:57:00 +0200
-Message-ID: <20240915125725.33099-1-ines.varhol@telecom-paris.fr>
-X-Mailer: git-send-email 2.45.2
+ (Exim 4.90_1) (envelope-from <alexjlzheng@gmail.com>)
+ id 1spqdK-0002Ve-Qq
+ for qemu-devel@nongnu.org; Sun, 15 Sep 2024 10:53:50 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alexjlzheng@gmail.com>)
+ id 1spqdJ-0002d0-9c
+ for qemu-devel@nongnu.org; Sun, 15 Sep 2024 10:53:50 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2053a0bd0a6so36369395ad.3
+ for <qemu-devel@nongnu.org>; Sun, 15 Sep 2024 07:53:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1726412027; x=1727016827; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HnRBZVVsLc2RgPkyyuRiMWILDlwwxPSC4bPpaB3I5mw=;
+ b=e6xd7z+cB3dR/wwxQUk8QeA86BiW872Rv9tF0/Tb/8GBvIKyoYb8OrnBzZPHkSavCp
+ 5mjqZI+YF+0wbofDRDDbJlHIqK98J5y8CD2qEtcXdyoN1GyVemET5Q9XCVKDxbNEYcWM
+ 76aTmpMcfrA0rKCUyOgyi9YJIFddv9C4Ey3brZ39LCkoYVkRmHES3Vc+eT9BSWYP1Bny
+ a8gWZbIR0cV/q14dHvYcxfdMbqMarq7yJyeLyN/LSUZlPLtIOUIECRT5jdZlbRQWrhk8
+ w0zLo3c/+ew44gxl+oiKq/Vd1swDeQWKYEnXblbCXS+caWnW5kYD56oX7PsUTiLJwoiq
+ i0XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726412027; x=1727016827;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HnRBZVVsLc2RgPkyyuRiMWILDlwwxPSC4bPpaB3I5mw=;
+ b=Pkq98+nCFcW2/+BXTMAxh0IVwFgJnirHgDFIhNxsUxiiCl8H3fHO1O2SSVXtZW0xc/
+ nhy/drTTayJVIy23n4iU1JWPKxnOUS4I2uCCtMMp92Jlu4+KKtNOsFNQNsq2AKol4kR5
+ W0sX+atEqVZ5OP1iPn+L+JUCEr1+lMIPEBqIHv0VJKxUhvM/XZ6PVM6bLwsAAq4Y5Y7G
+ aTRehJACqP5HhUMkmtoBOLtXTye973OZGNVOuKZILlW/fpSF/qCesJGUMvmM0Y6wyO38
+ zMglG8CqSwY+YczLN+N7BsJYHNDWvaDr89YKTDi7Lkg7XNP+QgYrRmMaFtyz/47yBiwU
+ Fpjw==
+X-Gm-Message-State: AOJu0Yzj/k7Sfe4Xl3SkiACJAK9xQiuTLSShfzTUqCrBVj93HiX7+4Yn
+ yUC8IaXjVuRKqDfcceFCheuCZ5iWWuRmBjPNk77DWcRc3Hv3wluN
+X-Google-Smtp-Source: AGHT+IF0aOiJAlm78Qgt1wrHkVnN8EzE5u8tf7958w0SgWLsqYBYQy+zW8YWGgD6VtIhol5HbA3onw==
+X-Received: by 2002:a17:902:e94d:b0:205:5f36:ffa0 with SMTP id
+ d9443c01a7336-2076e393a75mr190707485ad.35.1726412027246; 
+ Sun, 15 Sep 2024 07:53:47 -0700 (PDT)
+Received: from localhost.localdomain ([119.28.17.178])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-207945da80fsm22413005ad.5.2024.09.15.07.53.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 15 Sep 2024 07:53:46 -0700 (PDT)
+From: alexjlzheng@gmail.com
+X-Google-Original-From: alexjlzheng@tencent.com
+To: pbonzini@redhat.com,
+	berrange@redhat.com,
+	eduardo@habkost.net
+Cc: qemu-devel@nongnu.org,
+	Jinliang Zheng <alexjlzheng@tencent.com>
+Subject: [PATCH] qom: fix NULL pointer in object_initialize_with_type()
+Date: Sun, 15 Sep 2024 22:53:39 +0800
+Message-ID: <20240915145339.1368029-1-alexjlzheng@tencent.com>
+X-Mailer: git-send-email 2.41.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=137.194.2.223;
- envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy4.enst.fr
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=alexjlzheng@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sun, 15 Sep 2024 10:25:54 -0400
+X-Mailman-Approved-At: Sun, 15 Sep 2024 12:12:19 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,33 +93,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DM163 is an emulated 8x8 LED matrix. This commit flips the image
-horizontally so it's rendered the same way as on the hardware.
+From: Jinliang Zheng <alexjlzheng@tencent.com>
 
-Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+Currently, object_initialize_with_type() calls object_class_property_init_all()
+before initializing Object->properties. This may cause Object->properties to
+still be NULL when we call object_property_add() on Object.
+
+For exmaple, if we extend DEFINE_PROP_ARRAY() to a version with a default value
+other than 0:
+	#define DEFINE_PROP_ARRAY_EXAMPLE(_name, _state, _field,	\
+				_arrayfield, _arrayprop, _arraytype)	\
+		DEFINE_PROP((PROP_ARRAY_LEN_PREFIX _name),		\
+			_state, _field, qdev_prop_arraylen_virtio_net,	\
+			uint32_t,					\
+			.set_default = true,				\
+			.defval.u = <non-zero>,				\
+			.arrayinfo = &(_arrayprop),			\
+			.arrayfieldsize = sizeof(_arraytype),		\
+			.arrayoffset = offsetof(_state, _arrayfield))
+We should have:
+	object_initialize_with_type
+	  object_class_property_init_all
+	    ObjectProperty->init() / object_property_init_defval
+	      ...
+	        set_prop_arraylen
+	          object_property_add
+	            object_property_try_add
+	              g_hash_table_insert(Object->properties)	<- NULL
+	  obj->properties = g_hash_table_new_full()		<- initializing
+
+This patch fixes the above problem by exchanging the order of Ojbect->properties
+initialization and object_class_property_init_all().
+
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
 ---
- hw/display/dm163.c | 2 +-
+ qom/object.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/display/dm163.c b/hw/display/dm163.c
-index f92aee371d..75a91f62bd 100644
---- a/hw/display/dm163.c
-+++ b/hw/display/dm163.c
-@@ -271,7 +271,7 @@ static uint32_t *update_display_of_row(DM163State *s,=
- uint32_t *dest,
-                                        unsigned row)
- {
-     for (unsigned _ =3D 0; _ < LED_SQUARE_SIZE; _++) {
--        for (int x =3D 0; x < RGB_MATRIX_NUM_COLS * LED_SQUARE_SIZE; x++=
-) {
-+        for (int x =3D RGB_MATRIX_NUM_COLS * LED_SQUARE_SIZE - 1; x >=3D=
- 0; x--) {
-             /* UI layer guarantees that there's 32 bits per pixel (Mar 2=
-024) */
-             *dest++ =3D s->buffer[s->buffer_idx_of_row[row]][x / LED_SQU=
-ARE_SIZE];
-         }
---=20
-2.45.2
+diff --git a/qom/object.c b/qom/object.c
+index 157a45c5f8..734b52f048 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -556,9 +556,9 @@ static void object_initialize_with_type(Object *obj, size_t size, TypeImpl *type
+     memset(obj, 0, type->instance_size);
+     obj->class = type->class;
+     object_ref(obj);
+-    object_class_property_init_all(obj);
+     obj->properties = g_hash_table_new_full(g_str_hash, g_str_equal,
+                                             NULL, object_property_free);
++    object_class_property_init_all(obj);
+     object_init_with_type(obj, type);
+     object_post_init_with_type(obj, type);
+ }
+-- 
+2.41.1
 
 
