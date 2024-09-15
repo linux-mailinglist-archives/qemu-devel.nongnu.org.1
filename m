@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA109797C6
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 18:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4063B979784
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Sep 2024 17:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sprrN-0008WG-DG; Sun, 15 Sep 2024 12:12:25 -0400
+	id 1spr8h-0005OR-Cv; Sun, 15 Sep 2024 11:26:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexjlzheng@gmail.com>)
- id 1spqdK-0002Ve-Qq
- for qemu-devel@nongnu.org; Sun, 15 Sep 2024 10:53:50 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
+ id 1spr8d-0005Nq-7O
+ for qemu-devel@nongnu.org; Sun, 15 Sep 2024 11:26:11 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alexjlzheng@gmail.com>)
- id 1spqdJ-0002d0-9c
- for qemu-devel@nongnu.org; Sun, 15 Sep 2024 10:53:50 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-2053a0bd0a6so36369395ad.3
- for <qemu-devel@nongnu.org>; Sun, 15 Sep 2024 07:53:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
+ id 1spr8b-00089W-Ij
+ for qemu-devel@nongnu.org; Sun, 15 Sep 2024 11:26:10 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-20551e2f1f8so27338565ad.2
+ for <qemu-devel@nongnu.org>; Sun, 15 Sep 2024 08:26:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726412027; x=1727016827; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1726413967; x=1727018767; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=HnRBZVVsLc2RgPkyyuRiMWILDlwwxPSC4bPpaB3I5mw=;
- b=e6xd7z+cB3dR/wwxQUk8QeA86BiW872Rv9tF0/Tb/8GBvIKyoYb8OrnBzZPHkSavCp
- 5mjqZI+YF+0wbofDRDDbJlHIqK98J5y8CD2qEtcXdyoN1GyVemET5Q9XCVKDxbNEYcWM
- 76aTmpMcfrA0rKCUyOgyi9YJIFddv9C4Ey3brZ39LCkoYVkRmHES3Vc+eT9BSWYP1Bny
- a8gWZbIR0cV/q14dHvYcxfdMbqMarq7yJyeLyN/LSUZlPLtIOUIECRT5jdZlbRQWrhk8
- w0zLo3c/+ew44gxl+oiKq/Vd1swDeQWKYEnXblbCXS+caWnW5kYD56oX7PsUTiLJwoiq
- i0XA==
+ bh=2CIVaOsJyx0xl/tJKXU94DniFfARDg5CfcNJk6ZugCU=;
+ b=l4AiN5yp4ByPC5Hr3nx89BtsZhNJWVtcN1GlnpuNUScud6NbrcKmMpIjZ0/icto6zt
+ q2a30OLBAnQUtI9Lo4k/oAIPJ08Kzzt7IElLWhTbBlndITRqngGoHJn/QWX4FkSrwTyG
+ u8GLCNAlPEQqBHNUd+/qER+/7dPEd9Lt7Hf0eMDh3GL1JIfY+RERYYX+8t9to3CYu/C/
+ RBoFLa43sJVwkxB6VOXbAE2mOGSTxxkR29y0PYWuf/OF25jtx/RUy8CTlIp9EPKAtg6n
+ xusWtqsOPB5zo9XyaXFOTMD81IruB01Ha/nW0cKP2jpoNqJflwDfzXqVj6CPxvs9c8Sy
+ mHEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726412027; x=1727016827;
+ d=1e100.net; s=20230601; t=1726413967; x=1727018767;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=HnRBZVVsLc2RgPkyyuRiMWILDlwwxPSC4bPpaB3I5mw=;
- b=Pkq98+nCFcW2/+BXTMAxh0IVwFgJnirHgDFIhNxsUxiiCl8H3fHO1O2SSVXtZW0xc/
- nhy/drTTayJVIy23n4iU1JWPKxnOUS4I2uCCtMMp92Jlu4+KKtNOsFNQNsq2AKol4kR5
- W0sX+atEqVZ5OP1iPn+L+JUCEr1+lMIPEBqIHv0VJKxUhvM/XZ6PVM6bLwsAAq4Y5Y7G
- aTRehJACqP5HhUMkmtoBOLtXTye973OZGNVOuKZILlW/fpSF/qCesJGUMvmM0Y6wyO38
- zMglG8CqSwY+YczLN+N7BsJYHNDWvaDr89YKTDi7Lkg7XNP+QgYrRmMaFtyz/47yBiwU
- Fpjw==
-X-Gm-Message-State: AOJu0Yzj/k7Sfe4Xl3SkiACJAK9xQiuTLSShfzTUqCrBVj93HiX7+4Yn
- yUC8IaXjVuRKqDfcceFCheuCZ5iWWuRmBjPNk77DWcRc3Hv3wluN
-X-Google-Smtp-Source: AGHT+IF0aOiJAlm78Qgt1wrHkVnN8EzE5u8tf7958w0SgWLsqYBYQy+zW8YWGgD6VtIhol5HbA3onw==
-X-Received: by 2002:a17:902:e94d:b0:205:5f36:ffa0 with SMTP id
- d9443c01a7336-2076e393a75mr190707485ad.35.1726412027246; 
- Sun, 15 Sep 2024 07:53:47 -0700 (PDT)
-Received: from localhost.localdomain ([119.28.17.178])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-207945da80fsm22413005ad.5.2024.09.15.07.53.45
+ bh=2CIVaOsJyx0xl/tJKXU94DniFfARDg5CfcNJk6ZugCU=;
+ b=GqKIr2bXUSSNj/UNLf3rFFgbjQPiT1V3NaCn/T957TuzZcvUBURJv1MP63J6PbmH4z
+ D3c4aouCWNrN1aqWRe8TaB0/sM88ZxFMWo8Sxrzy2Lj2SKZy4+mP8CPDWOjQbzVqmBDL
+ YIB6yRMVxzcK7dsdGKZNYpVYV1PQWspW37aT9M0GzH03/yVzRe1fSAS+ujSWvks4Ax82
+ dWgKR3LQnQ6NG0yTNpqOWIAOg2bnM4RYGgSqEktNNDPpn82GH6QeYPUwPTgtxJf405sU
+ lcl+eRrJU4XOQjKTlXRhheFs73/PJxZMdhxxJmLbVOxqTkdHix2iZ5+jEYK4viuPZa8l
+ l3Bw==
+X-Gm-Message-State: AOJu0YwAdf3EhX1vcVq8cgctdrApPoDFP9S8ZYYnbPGGcu/Vt+ri7CFx
+ EfsaHMHoI0+jQGh8d3cJbY6lAbbXEUuSzPLCA5SaOFnuyggpK/iw0ihPpw==
+X-Google-Smtp-Source: AGHT+IHBMw0DC9BVzRU7/FSamRSJhpPwUWjShMu2Hjaycg9yPcWUoT/gOM1N0tSwt8LE7tx1MWt7cA==
+X-Received: by 2002:a17:902:e80c:b0:207:20c5:42c with SMTP id
+ d9443c01a7336-20782a69ebemr155622365ad.45.1726413966393; 
+ Sun, 15 Sep 2024 08:26:06 -0700 (PDT)
+Received: from localhost.localdomain (14-200-149-22.tpgi.com.au.
+ [14.200.149.22]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-207946f34c1sm22554335ad.184.2024.09.15.08.26.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Sep 2024 07:53:46 -0700 (PDT)
-From: alexjlzheng@gmail.com
-X-Google-Original-From: alexjlzheng@tencent.com
-To: pbonzini@redhat.com,
-	berrange@redhat.com,
-	eduardo@habkost.net
-Cc: qemu-devel@nongnu.org,
-	Jinliang Zheng <alexjlzheng@tencent.com>
-Subject: [PATCH] qom: fix NULL pointer in object_initialize_with_type()
-Date: Sun, 15 Sep 2024 22:53:39 +0800
-Message-ID: <20240915145339.1368029-1-alexjlzheng@tencent.com>
-X-Mailer: git-send-email 2.41.1
+ Sun, 15 Sep 2024 08:26:05 -0700 (PDT)
+From: Ajeet Singh <itachis6234@gmail.com>
+X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
+To: qemu-devel@nongnu.org
+Cc: Mark Corbin <mark@dibsco.co.uk>, Warner Losh <imp@bsdimp.com>,
+ Ajeet Singh <itachis@FreeBSD.org>
+Subject: [PATCH v6 00/17] bsd-user: Comprehensive RISCV Support
+Date: Mon, 16 Sep 2024 01:25:37 +1000
+Message-Id: <20240915152554.8394-1-itachis@FreeBSD.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=alexjlzheng@gmail.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=itachis6234@gmail.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sun, 15 Sep 2024 12:12:19 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,59 +91,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jinliang Zheng <alexjlzheng@tencent.com>
+Key Changes Compared to Version 5:
+In target_arch_sigtramp.h removed static const,
+as there was a compile-time constant issue
 
-Currently, object_initialize_with_type() calls object_class_property_init_all()
-before initializing Object->properties. This may cause Object->properties to
-still be NULL when we call object_property_add() on Object.
+Mark Corbin (15):
+  bsd-user: Implement RISC-V CPU initialization and main loop
+  bsd-user: Add RISC-V CPU execution loop and syscall handling
+  bsd-user: Implement RISC-V CPU register cloning and reset functions
+  bsd-user: Implement RISC-V TLS register setup
+  bsd-user: Add RISC-V ELF definitions and hardware capability detection
+  bsd-user: Define RISC-V register structures and register copying
+  bsd-user: Add RISC-V signal trampoline setup function
+  bsd-user: Implement RISC-V sysarch system call emulation
+  bsd-user: Add RISC-V thread setup and initialization support
+  bsd-user: Define RISC-V VM parameters and helper functions
+  bsd-user: Define RISC-V system call structures and constants
+  bsd-user: Define RISC-V signal handling structures and constants
+  bsd-user: Implement RISC-V signal trampoline setup functions
+  bsd-user: Implement 'get_mcontext' for RISC-V
+  bsd-user: Implement set_mcontext and get_ucontext_sigreturn for RISCV
 
-For exmaple, if we extend DEFINE_PROP_ARRAY() to a version with a default value
-other than 0:
-	#define DEFINE_PROP_ARRAY_EXAMPLE(_name, _state, _field,	\
-				_arrayfield, _arrayprop, _arraytype)	\
-		DEFINE_PROP((PROP_ARRAY_LEN_PREFIX _name),		\
-			_state, _field, qdev_prop_arraylen_virtio_net,	\
-			uint32_t,					\
-			.set_default = true,				\
-			.defval.u = <non-zero>,				\
-			.arrayinfo = &(_arrayprop),			\
-			.arrayfieldsize = sizeof(_arraytype),		\
-			.arrayoffset = offsetof(_state, _arrayfield))
-We should have:
-	object_initialize_with_type
-	  object_class_property_init_all
-	    ObjectProperty->init() / object_property_init_defval
-	      ...
-	        set_prop_arraylen
-	          object_property_add
-	            object_property_try_add
-	              g_hash_table_insert(Object->properties)	<- NULL
-	  obj->properties = g_hash_table_new_full()		<- initializing
+Warner Losh (2):
+  bsd-user: Add generic RISC-V64 target definitions
+  bsd-user: Add RISC-V 64-bit Target Configuration and Debug XML Files
 
-This patch fixes the above problem by exchanging the order of Ojbect->properties
-initialization and object_class_property_init_all().
+ bsd-user/riscv/signal.c               | 170 ++++++++++++++++++++++++++
+ bsd-user/riscv/target.h               |  20 +++
+ bsd-user/riscv/target_arch.h          |  27 ++++
+ bsd-user/riscv/target_arch_cpu.c      |  29 +++++
+ bsd-user/riscv/target_arch_cpu.h      | 147 ++++++++++++++++++++++
+ bsd-user/riscv/target_arch_elf.h      |  42 +++++++
+ bsd-user/riscv/target_arch_reg.h      |  88 +++++++++++++
+ bsd-user/riscv/target_arch_signal.h   |  75 ++++++++++++
+ bsd-user/riscv/target_arch_sigtramp.h |  41 +++++++
+ bsd-user/riscv/target_arch_sysarch.h  |  41 +++++++
+ bsd-user/riscv/target_arch_thread.h   |  47 +++++++
+ bsd-user/riscv/target_arch_vmparam.h  |  53 ++++++++
+ bsd-user/riscv/target_syscall.h       |  38 ++++++
+ configs/targets/riscv64-bsd-user.mak  |   4 +
+ 14 files changed, 822 insertions(+)
+ create mode 100644 bsd-user/riscv/signal.c
+ create mode 100644 bsd-user/riscv/target.h
+ create mode 100644 bsd-user/riscv/target_arch.h
+ create mode 100644 bsd-user/riscv/target_arch_cpu.c
+ create mode 100644 bsd-user/riscv/target_arch_cpu.h
+ create mode 100644 bsd-user/riscv/target_arch_elf.h
+ create mode 100644 bsd-user/riscv/target_arch_reg.h
+ create mode 100644 bsd-user/riscv/target_arch_signal.h
+ create mode 100644 bsd-user/riscv/target_arch_sigtramp.h
+ create mode 100644 bsd-user/riscv/target_arch_sysarch.h
+ create mode 100644 bsd-user/riscv/target_arch_thread.h
+ create mode 100644 bsd-user/riscv/target_arch_vmparam.h
+ create mode 100644 bsd-user/riscv/target_syscall.h
+ create mode 100644 configs/targets/riscv64-bsd-user.mak
 
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
----
- qom/object.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/qom/object.c b/qom/object.c
-index 157a45c5f8..734b52f048 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -556,9 +556,9 @@ static void object_initialize_with_type(Object *obj, size_t size, TypeImpl *type
-     memset(obj, 0, type->instance_size);
-     obj->class = type->class;
-     object_ref(obj);
--    object_class_property_init_all(obj);
-     obj->properties = g_hash_table_new_full(g_str_hash, g_str_equal,
-                                             NULL, object_property_free);
-+    object_class_property_init_all(obj);
-     object_init_with_type(obj, type);
-     object_post_init_with_type(obj, type);
- }
 -- 
-2.41.1
+2.34.1
 
 
