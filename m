@@ -2,88 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D96497A579
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 17:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7B997A57C
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 17:52:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqDx3-0000yK-Bk; Mon, 16 Sep 2024 11:47:45 -0400
+	id 1sqE0p-0006KD-Qf; Mon, 16 Sep 2024 11:51:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sqDx1-0000xZ-DU
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 11:47:43 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
+ id 1sqE0l-0006JS-D0; Mon, 16 Sep 2024 11:51:35 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sqDwz-0008HP-Mf
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 11:47:43 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-374b25263a3so2254129f8f.0
- for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 08:47:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
+ id 1sqE0j-0000T1-KH; Mon, 16 Sep 2024 11:51:35 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2057835395aso53611245ad.3; 
+ Mon, 16 Sep 2024 08:51:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726501659; x=1727106459; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Iq68o4q1dJBRsArL1BPPmrvqHQKZ03b38ETKhLW16V4=;
- b=UBy+mIo3wgRxGVjD3uq/HMejNglZ1ECOQf8mnAlMHD2w/ykIjVHGKmzbUwXySwE0CN
- iXOoz00hiA0C7SCw5CbjMS1RegEMFX23Cp1jloCjplD19w62PSj5+SrchYscwYntkA6h
- QUKJcJ3M30qpKw3sMt8l0ohdSZOq1sBzAHo/v0HdyqmhWA0MbI+0s/C1voaDIeGeRbrZ
- iBJOKtjnTITi+y1se91vgYW7WKInIuVuviXP6V+ZQBJ7tWWPg9FxRWr6iRef0PTB3LA2
- 4LjWB2uzzQAcR0PCmwrt+Mt4VguTM+Ql+jZktEo4O1XjA9MxxBnc1+Wltyeb2prtpK52
- U1tw==
+ d=gmail.com; s=20230601; t=1726501891; x=1727106691; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=bBtvoVox2RUSeTNQwgs4Yx+VK6plG325eHNyeYJHDms=;
+ b=kGF2ossFGXqReMTt3XVbCXA4mm5g0HZlD8ThWRJZ1u5INZDstTpENxb5SXfRsJE7t0
+ 2ZevJbOANd07A3XVTPjSC2pu7BD75llyV5+9k6DKpwlY/zP70N1XYEVtR0FGtN8GUXyy
+ erc80spAs6D0PTkmETbWj2rgzTvHv/b2TXA97GHmLhEhC0r7YYE1ubCLnY2LvBuqRO5o
+ kM1Z8p+aLJz/rHakJ+QTEOgU2kXczTyAAbsnRfKUbkUbwL4zqcN4PU9RdSIFq5+QnFPw
+ P5ZDTozzP6cCFClWT0wK0+8C3MnEGv9IJTvnmpU0WfPibQ4Y9eKQOpdMBxmW5/aL37Xe
+ xzng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726501659; x=1727106459;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Iq68o4q1dJBRsArL1BPPmrvqHQKZ03b38ETKhLW16V4=;
- b=mDRct3+OlE/fXEClHzQ2h2ZCA8ECZn7I+cc7DquAFBpD0BjksN2AtBT0P6hL4D2WPY
- Gxl1lS+gKY/j9W54InvBJJnwkAu6iJiWwJ7IEbTP446HBphgGO3GjuK86OdIR3oXP1bq
- WQrSt0YjM8Rmfp9/aPHz4JhbGzz7eX4QU3iO6dUJtzhnI9iRiT7ID0zcWe33ZIEAD3VE
- kly63ClaAGbV3+btJE63O0Qd3IJv0z94TQn47X3Vdm+xjPj09/5QJ+YUhS+ySVdpYOmL
- HGqcAaMM1TG01nJzfceHtPBLqu8vG6Ca/O2T4fglRKiLOHgD1QAieVcZYypY5MfCE2+d
- yzPg==
+ d=1e100.net; s=20230601; t=1726501891; x=1727106691;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bBtvoVox2RUSeTNQwgs4Yx+VK6plG325eHNyeYJHDms=;
+ b=cM3oZAGOw4ZAyoek8MJrKC5fHV/XTRTNVadT4otPuAJVJ3CmA81OkVEYV1O91LjUNW
+ N7SCf1xEQKI7PvrvO0/bWEcz1lq8TWil9c00op/OFchBwzWUHZDnivtB2/SRAYyQGo1T
+ 2S4JTIBrLfoSJS4Et135c/y8RHHWXWdriv6cvE4YXBWHxSWIVJGmeuh6m78C9hmpfj8u
+ BaDaHbalKsNAxqH8SeakvxBB/ac8RjVKc1aoSO6HJi9nUkMM3n/8Lqu+K+gOdwh/dMYW
+ WQFRWINJ40771U025OwXCWHk0RhSPnuONm5A3Y8+lnvapL/S2W7rgWI5TMJaCfBqtv0p
+ mM8A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWL9KCnawUg7RrfWyffVcnzylRSQUtpLHq5yYE8PdgEEItbC9GQIrhaGD/mRqDyqiknWzexzMPwa6o7@nongnu.org
-X-Gm-Message-State: AOJu0YxHpdL2Lv2p7o639LhKDZNw49gS2EInw55FQ5y/yFTgzhWszFBl
- +Sag1nNJqOTLtoGE64q0Pyd46wk0pQZrD0U/xLWJ84k/jcRRKcQpl1ZcmE85z7M75XPQmb6nfLo
- 221M=
-X-Google-Smtp-Source: AGHT+IGXy8BQUDal3DIYXKmoi5YFNt9foj+na1c8/woAhWP/blU55tgsEWaiMmmfvOlkLa04Kaij1Q==
-X-Received: by 2002:a05:6000:2a7:b0:374:c2cf:c01c with SMTP id
- ffacd0b85a97d-378d6253625mr6755332f8f.48.1726501659099; 
- Mon, 16 Sep 2024 08:47:39 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-378e71f0529sm7638537f8f.6.2024.09.16.08.47.38
+ AJvYcCU6/bNVF8iLYG2tP2qoIXppJNoM3p2hqTAyVVLnxAzQrqtTn0Q5hnyB3KUkYNhYhW5rU8HjeVydt1vS@nongnu.org
+X-Gm-Message-State: AOJu0YxUhjoPY2QWumqmcLVZC533hpb2S85/NJPNC7Rl2ieQb5+t+YSv
+ 7zchQODryuOt4rLKDFb0L492q25QVqi9S4We2ztDhGvgQxMshcAicRUwfurG
+X-Google-Smtp-Source: AGHT+IFkrxqg1J629tZEzrB779L8AnNm4k8pQoQf3hXbKEdGkDmCPo6or8rL9kd34/bP/ogJA+vbsw==
+X-Received: by 2002:a17:903:22c3:b0:206:bbaa:84e9 with SMTP id
+ d9443c01a7336-2076e3eaadfmr247964125ad.47.1726501890582; 
+ Mon, 16 Sep 2024 08:51:30 -0700 (PDT)
+Received: from localhost.localdomain (27-32-110-191.tpgi.com.au.
+ [27.32.110.191]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-207946046cbsm37482545ad.105.2024.09.16.08.51.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Sep 2024 08:47:38 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9F45E5F87D;
- Mon, 16 Sep 2024 16:47:37 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Brian Cain <quic_bcain@quicinc.com>
-Cc: Brian Cain <bcain@quicinc.com>,  <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] tests/tcg/multiarch: Define _LARGEFILE64_SOURCE
-In-Reply-To: <b6ef0a81-1153-4aca-9e27-570c2f0a6853@quicinc.com> (Brian Cain's
- message of "Mon, 16 Sep 2024 09:23:21 -0500")
-References: <20240907023924.1394728-1-bcain@quicinc.com>
- <0298a6cc-2c75-4cb9-8f9c-146c0173fc31@quicinc.com>
- <87wmjbg2th.fsf@draig.linaro.org>
- <b6ef0a81-1153-4aca-9e27-570c2f0a6853@quicinc.com>
-User-Agent: mu4e 1.12.6; emacs 29.4
-Date: Mon, 16 Sep 2024 16:47:37 +0100
-Message-ID: <87msk7fvmu.fsf@draig.linaro.org>
+ Mon, 16 Sep 2024 08:51:30 -0700 (PDT)
+From: Ajeet Singh <itachis6234@gmail.com>
+X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
+To: qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Mark Corbin <mark@dibsco.co.uk>, qemu-riscv@nongnu.org,
+ Warner Losh <imp@bsdimp.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Ajeet Singh <itachis@FreeBSD.org>
+Subject: [PATCH v7 00/17] bsd-user: Comprehensive RISCV Support
+Date: Tue, 17 Sep 2024 01:51:02 +1000
+Message-Id: <20240916155119.14610-1-itachis@FreeBSD.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=itachis6234@gmail.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,79 +94,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Brian Cain <quic_bcain@quicinc.com> writes:
+Key Changes Compared to Version 6:
+Included "signal-common.h" in target_arch_cpu.h
 
-> On 9/16/2024 8:12 AM, Alex Benn=C3=A9e wrote:
->> Brian Cain <quic_bcain@quicinc.com> writes:
->>
->>> On 9/6/2024 9:39 PM, Brian Cain wrote:
->>>> With newer clang builds (19.x), there's a warning for implicit function
->>>> declarations and it rejects linux-test.c.
->>>>
->>>> glibc/musl's readdir64() declaration in dirent is guarded by
->>>> _LARGEFILE64_SOURCE, so we'll define it to fix the warning.
->>>>
->>>>         BUILD   hexagon-linux-user guest-tests
->>>>       /local/mnt/workspace/upstream/toolchain_for_hexagon/qemu/tests/t=
-cg/multiarch/linux/linux-test.c:189:14: error: call to undeclared function =
-'readdir64'; ISO C99 and later do not support implicit function declaration=
-s [-Wimplicit-function-declaration]
->>>>         189 |         de =3D readdir64(dir);
->>>>             |              ^
->>>>
->>>> Signed-off-by: Brian Cain <bcain@quicinc.com>
->>>> ---
->>>>    tests/tcg/multiarch/linux/linux-test.c | 1 +
->>>>    1 file changed, 1 insertion(+)
->>>>
->>>> diff --git a/tests/tcg/multiarch/linux/linux-test.c b/tests/tcg/multia=
-rch/linux/linux-test.c
->>>> index 64f57cb287..4e0e862ad9 100644
->>>> --- a/tests/tcg/multiarch/linux/linux-test.c
->>>> +++ b/tests/tcg/multiarch/linux/linux-test.c
->>>> @@ -17,6 +17,7 @@
->>>>     *  along with this program; if not, see <http://www.gnu.org/licens=
-es/>.
->>>>     */
->>>>    #define _GNU_SOURCE
->>>> +#define _LARGEFILE64_SOURCE
->>>>    #include <stdarg.h>
->>>>    #include <stdlib.h>
->>>>    #include <stdio.h>
->>>
->>> Alex -- what do you think about this one?
->> Actually scratch that, this is a 32 compat hack:
->>
->>    1f442da51e (tests/tcg/multiarch: fix 32bit linux-test on 64bit host)
->>
->> Is the __USE_LARGEFILE64 symbol in the hexagon headers?
->>
-> musl does not define/use __USE_LARGEFILE64, no.=C2=A0 If it's well defined
-> I could examine whether it makes sense to add this feature to musl,
-> though.=C2=A0 How does __USE_LARGEFILE64 differ from _LARGEFILE64_SOURCE?=
-=C2=A0
-> Is it more appropriate to define that here?
+Mark Corbin (15):
+  bsd-user: Implement RISC-V CPU initialization and main loop
+  bsd-user: Add RISC-V CPU execution loop and syscall handling
+  bsd-user: Implement RISC-V CPU register cloning and reset functions
+  bsd-user: Implement RISC-V TLS register setup
+  bsd-user: Add RISC-V ELF definitions and hardware capability detection
+  bsd-user: Define RISC-V register structures and register copying
+  bsd-user: Add RISC-V signal trampoline setup function
+  bsd-user: Implement RISC-V sysarch system call emulation
+  bsd-user: Add RISC-V thread setup and initialization support
+  bsd-user: Define RISC-V VM parameters and helper functions
+  bsd-user: Define RISC-V system call structures and constants
+  bsd-user: Define RISC-V signal handling structures and constants
+  bsd-user: Implement RISC-V signal trampoline setup functions
+  bsd-user: Implement 'get_mcontext' for RISC-V
+  bsd-user: Implement set_mcontext and get_ucontext_sigreturn for RISCV
 
-Digging into the GNU source _LARGEFILE* is the correct define, the __USE
-flags are internal. features.h says:
+Warner Losh (2):
+  bsd-user: Add generic RISC-V64 target definitions
+  bsd-user: Add RISC-V 64-bit Target Configuration and Debug XML Files
 
-   _LARGEFILE_SOURCE    Some more functions for correct standard I/O.
-   _LARGEFILE64_SOURCE  Additional functionality from LFS for large files.
+ bsd-user/riscv/signal.c               | 170 ++++++++++++++++++++++++++
+ bsd-user/riscv/target.h               |  20 +++
+ bsd-user/riscv/target_arch.h          |  27 ++++
+ bsd-user/riscv/target_arch_cpu.c      |  29 +++++
+ bsd-user/riscv/target_arch_cpu.h      | 148 ++++++++++++++++++++++
+ bsd-user/riscv/target_arch_elf.h      |  42 +++++++
+ bsd-user/riscv/target_arch_reg.h      |  88 +++++++++++++
+ bsd-user/riscv/target_arch_signal.h   |  75 ++++++++++++
+ bsd-user/riscv/target_arch_sigtramp.h |  41 +++++++
+ bsd-user/riscv/target_arch_sysarch.h  |  41 +++++++
+ bsd-user/riscv/target_arch_thread.h   |  47 +++++++
+ bsd-user/riscv/target_arch_vmparam.h  |  53 ++++++++
+ bsd-user/riscv/target_syscall.h       |  38 ++++++
+ configs/targets/riscv64-bsd-user.mak  |   4 +
+ 14 files changed, 823 insertions(+)
+ create mode 100644 bsd-user/riscv/signal.c
+ create mode 100644 bsd-user/riscv/target.h
+ create mode 100644 bsd-user/riscv/target_arch.h
+ create mode 100644 bsd-user/riscv/target_arch_cpu.c
+ create mode 100644 bsd-user/riscv/target_arch_cpu.h
+ create mode 100644 bsd-user/riscv/target_arch_elf.h
+ create mode 100644 bsd-user/riscv/target_arch_reg.h
+ create mode 100644 bsd-user/riscv/target_arch_signal.h
+ create mode 100644 bsd-user/riscv/target_arch_sigtramp.h
+ create mode 100644 bsd-user/riscv/target_arch_sysarch.h
+ create mode 100644 bsd-user/riscv/target_arch_thread.h
+ create mode 100644 bsd-user/riscv/target_arch_vmparam.h
+ create mode 100644 bsd-user/riscv/target_syscall.h
+ create mode 100644 configs/targets/riscv64-bsd-user.mak
 
-although looking at _LARGEFILE64_SOURCE should be defined by
-_GNU_SOURCE which is already set for linux-test.c
+-- 
+2.34.1
 
-According to the musl WHATSNEW:
-
-  compatibility:
-  - make _GNU_SOURCE imply _LARGEFILE64_SOURCE
-
-So is this a hexagon only thing?
-
->
-> -Brian
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
