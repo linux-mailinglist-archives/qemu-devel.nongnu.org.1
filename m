@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659A9979D70
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 10:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B5B979D56
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 10:56:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sq7VZ-0001ot-Sc; Mon, 16 Sep 2024 04:54:57 -0400
+	id 1sq7VZ-0001j4-0C; Mon, 16 Sep 2024 04:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sq7V6-0000QL-MB
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:54:29 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1sq7V8-0000XT-Ar
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:54:31 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sq7Up-0005Dp-8U
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:54:28 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-42cb2191107so31972825e9.1
- for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 01:54:10 -0700 (PDT)
+ id 1sq7Uq-0005E2-Rk
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:54:30 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-5367ae52a01so3294291e87.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 01:54:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726476850; x=1727081650; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726476851; x=1727081651; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wdCrRRlRbQfrNYdX9012mUfHcuVziNRXWE1crIIitX8=;
- b=aAj8LQO8sfdN72nmwp/oeo9vlw+PQbC1gqmemm77W3q5YPwZA6hs3C6kf4X1MQTKXL
- 4TWNnxwv72dp2oVGuidg6ktEgrxyeOepeV8GmXbitd5wrfwBMRJfjBJyaY9RwRT7C3Zx
- zv/rI3tyCsHKWua0WJiiVXGZW3xu9lWCuVAR6ctPvjS6tzB0KPTZyyuIreOdo8E7HbGC
- IC/t3MawgqA31sRA0LQfHBcSXXZxBc65bP3Lz/pm3/3kXgOvDSlCrAWx80etOruryNTf
- 6CiNMpx1WKi+RfZ4xITFyAtsMxMYpVzQ1M865J6HWzjU6vsx5mJEGbZUm6iBErMUNJML
- Rl6A==
+ bh=mlT6xKCM1MHGEdfr2CcDhKWOabJzOeHlvX+jZ2i+MVk=;
+ b=xMK+nSwB9XzwUW5iheJut5EN9Q0Pl/TC6LbBgQyO/rU7/1sDEIEgy0Q1SD0glREyJl
+ 0n8UXrLOpJow8U+i/Fu+B1ou+F6NAbPJHNm/yHvxAuXV/XR4ueRwLOnilq2eHp7EyYo/
+ ryrGSk/dwrsxNEiOhwHVFGrr4gYr4Iv8YIU+yXPYaI1rIs1Izdrf5+keATzWXUSV0MDs
+ 946a7p/nGT/XOwwZu6S8oZAqt1d03DrlGIZluSf0gZro2Q/NEAREN0OxNreh8T9QAgdb
+ JA645aiBPY1HSivVSBDfqvqFZIY3A2pThC3n0cNYt91tM8ZnwNuBQdUhqEjXyJ2PfPMh
+ w8xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726476850; x=1727081650;
+ d=1e100.net; s=20230601; t=1726476851; x=1727081651;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wdCrRRlRbQfrNYdX9012mUfHcuVziNRXWE1crIIitX8=;
- b=iSXLRADJkfYB1Go5TaYgFjT8iRLx0JO9D8hIOvFfOg8GT4u5jW2vDOlkwIXkGHCSl6
- E2KG9MMJMN0n4t/ZyO/HyPCLBqFV86x189X7p4/DZXavBhzohYJYrKVAp00A15kI+/YE
- wAMMO5y4bjXesWu0wrMQo+23gL9FxgAcwnD99GKSNZwOFRuRYbWy44vGRi2/Tn1DE8+Q
- uRb4xndovPZNav7krWoraqTQbm1GjUHBTIPPQtUwe4qNR3AmK0qwyPNngAiljW16RAUp
- d/tcWwOoizWchchVn6ne6mje/Eya2JmHCs6KmYpxLrjIZWodq9TW+Wz67VAziY4u+g8+
- i3ww==
-X-Gm-Message-State: AOJu0Yy3NxKZXC9/7246cB8pJDfme8AiXDYyDh11KJ99uYNS3ncWT7Zn
- Oz+USIY4GkGZNBIjATOrQVOhuyVeNfm0/pdVM14Sgg9pCoN2NP/VhZTnTfsY8LA=
-X-Google-Smtp-Source: AGHT+IEUo2zCSJoAcfYzlnOzFML2Y6zAZpROqGFgxaHmZ0jIkU7+sea7zLY5RrSQzXu6VAb7LtEhww==
-X-Received: by 2002:a05:600c:3b1d:b0:42a:a6aa:4135 with SMTP id
- 5b1f17b1804b1-42cdb53fab7mr86097495e9.20.1726476849465; 
+ bh=mlT6xKCM1MHGEdfr2CcDhKWOabJzOeHlvX+jZ2i+MVk=;
+ b=ToI1VaKyiTIWLjMp6UBqT9blqM9VTPYHpXv+X4u1VK2XFWjvz0JKbnjoy5A67HCijL
+ 5mdinZd6LR1x2/WaqHwMDyzMoYVbtC83l6hICbtmjlzzfsOYgcmC9dNzGDs+ULDG6bmz
+ enpuAJ2dJpl7nMRer3Ab3KKWc2IMOO4Zr3g8XZq22bqcSw9HPXmySLk6aVDXIJxLdBVi
+ +oG8y0mvqcRmKX63AlpgIyhpouaYjt3sqPCm2b3JqRCr8raI5wUWI7GuceWeKPwMUOp/
+ GdwDmL5VjvHgopQPwNwqOU3KQBtGjmCnk7oahndFrnhRY12d5A8fW0Z0dCCLxOvdRVSp
+ WDEQ==
+X-Gm-Message-State: AOJu0YyOkkXdvMthw0G+HT0Ix7qo3WaQ/5dW8HOshU8K0QVkhWoMRDXn
+ wfI9LObnghfKY71Tx+dQuB5Qo2jnJV82z/qzAIpnRUEP9ULn6u8QTV+Tsxq0j8I=
+X-Google-Smtp-Source: AGHT+IGHj2nwGb6uYQqusZSHRh4xCFnMqnszUIn0COKRzOPHViC17d1ZY9Dr4GyEBiWapaBgAg6Bhg==
+X-Received: by 2002:a05:6512:3a8c:b0:52e:987f:cfc6 with SMTP id
+ 2adb3069b0e04-5367ff32c42mr4417081e87.51.1726476849860; 
  Mon, 16 Sep 2024 01:54:09 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-378e78044dfsm6572115f8f.94.2024.09.16.01.54.02
+ 5b1f17b1804b1-42da242138bsm70655045e9.35.2024.09.16.01.54.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 16 Sep 2024 01:54:04 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2CD275F952;
+ by draig.lan (Postfix) with ESMTP id 444DC5FC60;
  Mon, 16 Sep 2024 09:54:01 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -71,26 +71,25 @@ Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
  David Hildenbrand <david@redhat.com>, devel@lists.libvirt.org,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Xingtao Yao <yaoxt.fnst@fujitsu.com>
-Subject: [PATCH v2 09/18] tests/tcg/multiarch: add test for plugin memory
- access
-Date: Mon, 16 Sep 2024 09:53:51 +0100
-Message-Id: <20240916085400.1046925-10-alex.bennee@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 10/18] tests/tcg: clean up output of memory system test
+Date: Mon, 16 Sep 2024 09:53:52 +0100
+Message-Id: <20240916085400.1046925-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240916085400.1046925-1-alex.bennee@linaro.org>
 References: <20240916085400.1046925-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,311 +105,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+This is useful information when debugging memory issues so lets
+improve by:
 
-Add an explicit test to check expected memory values are read/written.
-8,16,32 load/store are tested for all arch.
-64,128 load/store are tested for aarch64/x64.
-atomic operations (8,16,32,64) are tested for x64 only.
+  - include the ptr address for u8 fills (like the others)
+  - indicate the number of operations for reads and writes
+  - explicitly note when we are flushing
+  - move the fill printf to after the reset
 
-By default, atomic accesses are non atomic if a single cpu is running,
-so we force creation of a second one by creating a new thread first.
-
-load/store helpers code path can't be triggered easily in user mode (no
-softmmu), so we can't test it here.
-
-Output of test-plugin-mem-access.c is the list of expected patterns in
-plugin output. By reading stdout, we can compare to plugins output and
-have a multiarch test.
-
-Can be run with:
-make -C build/tests/tcg/$ARCH-linux-user run-plugin-test-plugin-mem-access-with-libmem.so
-
-Tested-by: Xingtao Yao <yaoxt.fnst@fujitsu.com>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240910172033.1427812-7-pierrick.bouvier@linaro.org>
+Message-Id: <20240910140733.4007719-20-alex.bennee@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/tcg/multiarch/test-plugin-mem-access.c | 177 +++++++++++++++++++
- tests/tcg/alpha/Makefile.target              |   3 +
- tests/tcg/multiarch/Makefile.target          |  11 ++
- tests/tcg/multiarch/check-plugin-output.sh   |  36 ++++
- tests/tcg/ppc64/Makefile.target              |   5 +
- 5 files changed, 232 insertions(+)
- create mode 100644 tests/tcg/multiarch/test-plugin-mem-access.c
- create mode 100755 tests/tcg/multiarch/check-plugin-output.sh
+ tests/tcg/multiarch/system/memory.c | 47 ++++++++++++++++++-----------
+ 1 file changed, 29 insertions(+), 18 deletions(-)
 
-diff --git a/tests/tcg/multiarch/test-plugin-mem-access.c b/tests/tcg/multiarch/test-plugin-mem-access.c
-new file mode 100644
-index 0000000000..057b9aac9f
---- /dev/null
-+++ b/tests/tcg/multiarch/test-plugin-mem-access.c
-@@ -0,0 +1,177 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * Check if we detect all memory accesses expected using plugin API.
-+ * Used in conjunction with ./check-plugin-mem-access.sh check script.
-+ * Output of this program is the list of patterns expected in plugin output.
-+ *
-+ * 8,16,32 load/store are tested for all arch.
-+ * 64,128 load/store are tested for aarch64/x64.
-+ * atomic operations (8,16,32,64) are tested for x64 only.
-+ */
-+
-+#include <pthread.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+
-+#if defined(__x86_64__)
-+#include <emmintrin.h>
-+#elif defined(__aarch64__)
-+#include <arm_neon.h>
-+#endif /* __x86_64__ */
-+
-+static void *data;
-+
-+/* ,store_u8,.*,8,store,0xf1 */
-+#define PRINT_EXPECTED(function, type, value, action)                 \
-+do {                                                                  \
-+    printf(",%s,.*,%d,%s,%s\n",                                       \
-+           #function, (int) sizeof(type) * 8, action, value);         \
-+}                                                                     \
-+while (0)
-+
-+#define DEFINE_STORE(name, type, value)                  \
-+                                                         \
-+static void print_expected_store_##name(void)            \
-+{                                                        \
-+    PRINT_EXPECTED(store_##name, type, #value, "store"); \
-+}                                                        \
-+                                                         \
-+static void store_##name(void)                           \
-+{                                                        \
-+    *((type *)data) = value;                             \
-+    print_expected_store_##name();                       \
-+}
-+
-+#define DEFINE_ATOMIC_OP(name, type, value)                    \
-+                                                               \
-+static void print_expected_atomic_op_##name(void)              \
-+{                                                              \
-+    PRINT_EXPECTED(atomic_op_##name, type, "0x0*42", "load");  \
-+    PRINT_EXPECTED(atomic_op_##name, type, #value, "store");   \
-+}                                                              \
-+                                                               \
-+static void atomic_op_##name(void)                             \
-+{                                                              \
-+    *((type *)data) = 0x42;                                    \
-+    __sync_val_compare_and_swap((type *)data, 0x42, value);    \
-+    print_expected_atomic_op_##name();                         \
-+}
-+
-+#define DEFINE_LOAD(name, type, value)                  \
-+                                                        \
-+static void print_expected_load_##name(void)            \
-+{                                                       \
-+    PRINT_EXPECTED(load_##name, type, #value, "load");  \
-+}                                                       \
-+                                                        \
-+static void load_##name(void)                           \
-+{                                                       \
-+                                                        \
-+    /* volatile forces load to be generated. */         \
-+    volatile type src = *((type *) data);               \
-+    volatile type dest = src;                           \
-+    (void)src, (void)dest;                              \
-+    print_expected_load_##name();                       \
-+}
-+
-+DEFINE_STORE(u8, uint8_t, 0xf1)
-+DEFINE_LOAD(u8, uint8_t, 0xf1)
-+DEFINE_STORE(u16, uint16_t, 0xf123)
-+DEFINE_LOAD(u16, uint16_t, 0xf123)
-+DEFINE_STORE(u32, uint32_t, 0xff112233)
-+DEFINE_LOAD(u32, uint32_t, 0xff112233)
-+
-+#if defined(__x86_64__) || defined(__aarch64__)
-+DEFINE_STORE(u64, uint64_t, 0xf123456789abcdef)
-+DEFINE_LOAD(u64, uint64_t, 0xf123456789abcdef)
-+
-+static void print_expected_store_u128(void)
-+{
-+    PRINT_EXPECTED(store_u128, __int128,
-+                   "0xf122334455667788f123456789abcdef", "store");
-+}
-+
-+static void store_u128(void)
-+{
-+#ifdef __x86_64__
-+    _mm_store_si128(data, _mm_set_epi32(0xf1223344, 0x55667788,
-+                                        0xf1234567, 0x89abcdef));
-+#else
-+    const uint32_t init[4] = {0x89abcdef, 0xf1234567, 0x55667788, 0xf1223344};
-+    uint32x4_t vec = vld1q_u32(init);
-+    vst1q_u32(data, vec);
-+#endif /* __x86_64__ */
-+    print_expected_store_u128();
-+}
-+
-+static void print_expected_load_u128(void)
-+{
-+    PRINT_EXPECTED(load_u128, __int128,
-+                   "0xf122334455667788f123456789abcdef", "load");
-+}
-+
-+static void load_u128(void)
-+{
-+#ifdef __x86_64__
-+    __m128i var = _mm_load_si128(data);
-+#else
-+    uint32x4_t var = vld1q_u32(data);
-+#endif
-+    (void) var;
-+    print_expected_load_u128();
-+}
-+#endif /* __x86_64__ || __aarch64__ */
-+
-+#if defined(__x86_64__)
-+DEFINE_ATOMIC_OP(u8, uint8_t, 0xf1)
-+DEFINE_ATOMIC_OP(u16, uint16_t, 0xf123)
-+DEFINE_ATOMIC_OP(u32, uint32_t, 0xff112233)
-+DEFINE_ATOMIC_OP(u64, uint64_t, 0xf123456789abcdef)
-+#endif /* __x86_64__ */
-+
-+static void *f(void *p)
-+{
-+    return NULL;
-+}
-+
-+int main(void)
-+{
-+    /*
-+     * We force creation of a second thread to enable cpu flag CF_PARALLEL.
-+     * This will generate atomic operations when needed.
-+     */
-+    pthread_t thread;
-+    pthread_create(&thread, NULL, &f, NULL);
-+    pthread_join(thread, NULL);
-+
-+    /* allocate storage up to 128 bits */
-+    data = malloc(16);
-+
-+    store_u8();
-+    load_u8();
-+
-+    store_u16();
-+    load_u16();
-+
-+    store_u32();
-+    load_u32();
-+
-+#if defined(__x86_64__) || defined(__aarch64__)
-+    store_u64();
-+    load_u64();
-+
-+    store_u128();
-+    load_u128();
-+#endif /* __x86_64__ || __aarch64__ */
-+
-+#if defined(__x86_64__)
-+    atomic_op_u8();
-+    atomic_op_u16();
-+    atomic_op_u32();
-+    atomic_op_u64();
-+#endif /* __x86_64__ */
-+
-+    free(data);
-+}
-diff --git a/tests/tcg/alpha/Makefile.target b/tests/tcg/alpha/Makefile.target
-index fdd7ddf64e..36d8ed1eae 100644
---- a/tests/tcg/alpha/Makefile.target
-+++ b/tests/tcg/alpha/Makefile.target
-@@ -12,4 +12,7 @@ test-cmov: EXTRA_CFLAGS=-DTEST_CMOV
- test-cmov: test-cond.c
- 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+diff --git a/tests/tcg/multiarch/system/memory.c b/tests/tcg/multiarch/system/memory.c
+index 6eb2eb16f7..8f2371975d 100644
+--- a/tests/tcg/multiarch/system/memory.c
++++ b/tests/tcg/multiarch/system/memory.c
+@@ -63,12 +63,14 @@ static void init_test_data_u8(int unused_offset)
+     int i;
+     (void)(unused_offset);
  
-+# Force generation of byte read/write
-+test-plugin-mem-access: CFLAGS+=-mbwx
+-    ml_printf("Filling test area with u8:");
++    ml_printf("Filling test area with u8 (%p):", ptr);
 +
- run-test-cmov: test-cmov
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 5e3391ec9d..78b83d5575 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -170,5 +170,16 @@ run-plugin-semiconsole-with-%:
- TESTS += semihosting semiconsole
- endif
+     for (i = 0; i < TEST_SIZE; i++) {
+         *ptr++ = BYTE_NEXT(count);
+         pdot(i);
+     }
+-    ml_printf("done\n");
++
++    ml_printf("done %d @ %p\n", i, ptr);
+ }
  
-+# Test plugin memory access instrumentation
-+run-plugin-test-plugin-mem-access-with-libmem.so: \
-+	PLUGIN_ARGS=$(COMMA)print-accesses=true
-+run-plugin-test-plugin-mem-access-with-libmem.so: \
-+	CHECK_PLUGIN_OUTPUT_COMMAND= \
-+	$(SRC_PATH)/tests/tcg/multiarch/check-plugin-output.sh \
-+	$(QEMU) $<
-+
-+test-plugin-mem-access: CFLAGS+=-pthread -O0
-+test-plugin-mem-access: LDFLAGS+=-pthread -O0
-+
- # Update TESTS
- TESTS += $(MULTIARCH_TESTS)
-diff --git a/tests/tcg/multiarch/check-plugin-output.sh b/tests/tcg/multiarch/check-plugin-output.sh
-new file mode 100755
-index 0000000000..80607f04b5
---- /dev/null
-+++ b/tests/tcg/multiarch/check-plugin-output.sh
-@@ -0,0 +1,36 @@
-+#!/usr/bin/env bash
-+
-+# This script runs a given executable using qemu, and compare its standard
-+# output with an expected plugin output.
-+# Each line of output is searched (as a regexp) in the expected plugin output.
-+
-+set -euo pipefail
-+
-+die()
-+{
-+    echo "$@" 1>&2
-+    exit 1
-+}
-+
-+check()
-+{
-+    file=$1
-+    pattern=$2
-+    grep "$pattern" "$file" > /dev/null || die "\"$pattern\" not found in $file"
-+}
-+
-+[ $# -eq 3 ] || die "usage: qemu_bin exe plugin_out_file"
-+
-+qemu_bin=$1; shift
-+exe=$1;shift
-+plugin_out=$1; shift
-+
-+expected()
-+{
-+    $qemu_bin $exe ||
-+        die "running $exe failed"
-+}
-+
-+expected | while read line; do
-+    check "$plugin_out" "$line"
-+done
-diff --git a/tests/tcg/ppc64/Makefile.target b/tests/tcg/ppc64/Makefile.target
-index 509a20be2b..1940886c73 100644
---- a/tests/tcg/ppc64/Makefile.target
-+++ b/tests/tcg/ppc64/Makefile.target
-@@ -55,4 +55,9 @@ PPC64_TESTS += signal_save_restore_xer
- PPC64_TESTS += xxspltw
- PPC64_TESTS += test-aes
+ /*
+@@ -94,7 +96,7 @@ static void init_test_data_s8(bool neg_first)
+         *ptr++ = get_byte(i, !neg_first);
+         pdot(i);
+     }
+-    ml_printf("done\n");
++    ml_printf("done %d @ %p\n", i * 2, ptr);
+ }
  
-+# ppc64 ABI uses function descriptors, and thus, QEMU can't find symbol for a
-+# given instruction. Thus, we don't check output of mem-access plugin.
-+run-plugin-test-plugin-mem-access-with-libmem.so: \
-+ CHECK_PLUGIN_OUTPUT_COMMAND=
+ /*
+@@ -105,9 +107,18 @@ static void reset_start_data(int offset)
+ {
+     uint32_t *ptr = (uint32_t *) &test_data[0];
+     int i;
 +
- TESTS += $(PPC64_TESTS)
++    if (!offset) {
++        return;
++    }
++
++    ml_printf("Flushing %d bytes from %p: ", offset, ptr);
++
+     for (i = 0; i < offset; i++) {
+         *ptr++ = 0;
+     }
++
++    ml_printf("done %d @ %p\n", i, ptr);
+ }
+ 
+ static void init_test_data_u16(int offset)
+@@ -117,17 +128,17 @@ static void init_test_data_u16(int offset)
+     const int max = (TEST_SIZE - offset) / sizeof(word);
+     int i;
+ 
+-    ml_printf("Filling test area with u16 (offset %d, %p):", offset, ptr);
+-
+     reset_start_data(offset);
+ 
++    ml_printf("Filling test area with u16 (offset %d, %p):", offset, ptr);
++
+     for (i = 0; i < max; i++) {
+         uint16_t low = BYTE_NEXT(count), high = BYTE_NEXT(count);
+         word = BYTE_SHIFT(high, 1) | BYTE_SHIFT(low, 0);
+         *ptr++ = word;
+         pdot(i);
+     }
+-    ml_printf("done @ %p\n", ptr);
++    ml_printf("done %d @ %p\n", i, ptr);
+ }
+ 
+ static void init_test_data_u32(int offset)
+@@ -137,10 +148,10 @@ static void init_test_data_u32(int offset)
+     const int max = (TEST_SIZE - offset) / sizeof(word);
+     int i;
+ 
+-    ml_printf("Filling test area with u32 (offset %d, %p):", offset, ptr);
+-
+     reset_start_data(offset);
+ 
++    ml_printf("Filling test area with u32 (offset %d, %p):", offset, ptr);
++
+     for (i = 0; i < max; i++) {
+         uint32_t b4 = BYTE_NEXT(count), b3 = BYTE_NEXT(count);
+         uint32_t b2 = BYTE_NEXT(count), b1 = BYTE_NEXT(count);
+@@ -149,7 +160,7 @@ static void init_test_data_u32(int offset)
+         *ptr++ = word;
+         pdot(i);
+     }
+-    ml_printf("done @ %p\n", ptr);
++    ml_printf("done %d @ %p\n", i, ptr);
+ }
+ 
+ static void init_test_data_u64(int offset)
+@@ -159,10 +170,10 @@ static void init_test_data_u64(int offset)
+     const int max = (TEST_SIZE - offset) / sizeof(word);
+     int i;
+ 
+-    ml_printf("Filling test area with u64 (offset %d, %p):", offset, ptr);
+-
+     reset_start_data(offset);
+ 
++    ml_printf("Filling test area with u64 (offset %d, %p):", offset, ptr);
++
+     for (i = 0; i < max; i++) {
+         uint64_t b8 = BYTE_NEXT(count), b7 = BYTE_NEXT(count);
+         uint64_t b6 = BYTE_NEXT(count), b5 = BYTE_NEXT(count);
+@@ -174,7 +185,7 @@ static void init_test_data_u64(int offset)
+         *ptr++ = word;
+         pdot(i);
+     }
+-    ml_printf("done @ %p\n", ptr);
++    ml_printf("done %d @ %p\n", i, ptr);
+ }
+ 
+ static bool read_test_data_u16(int offset)
+@@ -198,7 +209,7 @@ static bool read_test_data_u16(int offset)
+         }
+ 
+     }
+-    ml_printf("done @ %p\n", ptr);
++    ml_printf("done %d @ %p\n", i, ptr);
+     return true;
+ }
+ 
+@@ -239,7 +250,7 @@ static bool read_test_data_u32(int offset)
+             pdot(i);
+         }
+     }
+-    ml_printf("done @ %p\n", ptr);
++    ml_printf("done %d @ %p\n", i, ptr);
+     return true;
+ }
+ 
+@@ -293,7 +304,7 @@ static bool read_test_data_u64(int offset)
+             pdot(i);
+         }
+     }
+-    ml_printf("done @ %p\n", ptr);
++    ml_printf("done %d @ %p\n", i, ptr);
+     return true;
+ }
+ 
+@@ -365,7 +376,7 @@ static bool read_test_data_s8(int offset, bool neg_first)
+             return false;
+         }
+     }
+-    ml_printf("done @ %p\n", ptr);
++    ml_printf("done %d @ %p\n", i * 2, ptr);
+     return true;
+ }
+ 
+@@ -398,7 +409,7 @@ static bool read_test_data_s16(int offset, bool neg_first)
+             return false;
+         }
+     }
+-    ml_printf("done @ %p\n", ptr);
++    ml_printf("done %d @ %p\n", i, ptr);
+     return true;
+ }
+ 
+@@ -431,7 +442,7 @@ static bool read_test_data_s32(int offset, bool neg_first)
+             return false;
+         }
+     }
+-    ml_printf("done @ %p\n", ptr);
++    ml_printf("done %d @ %p\n", i, ptr);
+     return true;
+ }
+ 
 -- 
 2.39.5
 
