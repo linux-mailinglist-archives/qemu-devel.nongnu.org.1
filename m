@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCB497A794
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 21:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1246D97A790
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 20:59:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqGvn-0000O6-AH; Mon, 16 Sep 2024 14:58:39 -0400
+	id 1sqGvl-0000Bo-6z; Mon, 16 Sep 2024 14:58:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqGvl-0000G6-Cn
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 14:58:37 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqGvj-00007E-Om
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 14:58:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqGvi-0003KR-5a
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 14:58:37 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqGvi-0003KN-2w
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 14:58:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1726513113;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LG2mEw1/r4S1WhNW7U+z1sZ5wnGQ4zIP5gZeiXtyUyo=;
- b=aOvKvja9hB/Mwy3nKoF41swRsULGXrys04XHH7UTYC2NUzy+H/ktYI+NUImpeWGGJWBOAt
- Y2yOp3m8ySPP8zAIDQ5daNonPi0O7rB+yf4xAbtk3xw4gEyLTAZfG0cIj8EGidG22JRvHn
- aKwqL/f23uJ9248sVwXGzIpeWvg4VXs=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=idXAmc9dosGve1KohATcdwt35F9vOe5dYXXAu7W5+8o=;
+ b=Cz4qleZT/tZCJfMfdtrLf7Tp7gH6wSfwx2Aqz9OHRnnTmas8FKH85gq4otu98KqQyMgGBr
+ t1ZceFIYtS4lvdRFZqVzg5i4DxKdoL/xhBqJFH1IuurKcVfNre078qBiG+/mpJ9SlhPQ84
+ c3rm9EZz5DS2jsw7eIqRZC+VRZxJhUs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-Ve9U0XopNEyrE4_GkGDGRA-1; Mon,
- 16 Sep 2024 14:57:25 -0400
-X-MC-Unique: Ve9U0XopNEyrE4_GkGDGRA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-pbnYlPV0NrCJTFr7Xm7VSQ-1; Mon,
+ 16 Sep 2024 14:57:27 -0400
+X-MC-Unique: pbnYlPV0NrCJTFr7Xm7VSQ-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D2A711953948; Mon, 16 Sep 2024 18:57:23 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 019EB1955D53; Mon, 16 Sep 2024 18:57:26 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.44])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 08C6019560AA; Mon, 16 Sep 2024 18:57:21 +0000 (UTC)
+ id 2B94819560AA; Mon, 16 Sep 2024 18:57:23 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 05/12] hw/i2c/aspeed: Introduce a new dma_dram_offset attribute
- in AspeedI2Cbus
-Date: Mon, 16 Sep 2024 20:57:01 +0200
-Message-ID: <20240916185708.574546-6-clg@redhat.com>
+Subject: [PULL 06/12] hw/i2c/aspeed: Add AST2700 support
+Date: Mon, 16 Sep 2024 20:57:02 +0200
+Message-ID: <20240916185708.574546-7-clg@redhat.com>
 In-Reply-To: <20240916185708.574546-1-clg@redhat.com>
 References: <20240916185708.574546-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -65,7 +64,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,216 +82,122 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-The "Current DMA Operating Address Status(0x50)" register of
-I2C new mode has been removed in AST2700.
-This register is used for debugging and it is a read only register.
+Introduce a new ast2700 class to support AST2700.
+The I2C bus register memory regions and
+I2C bus pool buffer memory regions are discontinuous
+and they do not back compatible AST2600.
 
-To support AST2700 DMA mode, introduce a new
-dma_dram_offset class attribute in AspeedI2Cbus to save the
-current DMA operating address.
+Add a new ast2700 i2c class init function to match the
+address of I2C bus register and pool buffer from the datasheet.
 
-ASPEED AST2700 SOC is a 64 bits quad core CPUs (Cortex-a35)
-And the base address of dram is "0x4 00000000" which
-is 64bits address.
-
-Set the dma_dram_offset data type to uint64_t for
-64 bits dram address DMA support.
-
-Both "DMA Mode Buffer Address Register(I2CD24 old mode)" and
-"DMA Operating Address Status (I2CC50 new mode)" are used for showing the
-low part dram offset bits [31:0], so change to read/write both register bits [31:0] in
-bus register read/write functions.
-
-The aspeed_i2c_bus_vmstate is changed again and version is not increased
-because it was done earlier in the same series.
+An I2C controller registers owns 8KB address space.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/i2c/aspeed_i2c.h |  9 +------
- hw/i2c/aspeed_i2c.c         | 51 +++++++++++++++++++++++--------------
- 2 files changed, 33 insertions(+), 27 deletions(-)
+ include/hw/i2c/aspeed_i2c.h |  1 +
+ hw/i2c/aspeed_i2c.c         | 62 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
 diff --git a/include/hw/i2c/aspeed_i2c.h b/include/hw/i2c/aspeed_i2c.h
-index b42c4dc5844b..bdaea3207db2 100644
+index bdaea3207db2..4f23dc10c3e1 100644
 --- a/include/hw/i2c/aspeed_i2c.h
 +++ b/include/hw/i2c/aspeed_i2c.h
-@@ -248,6 +248,7 @@ struct AspeedI2CBus {
+@@ -31,6 +31,7 @@
+ #define TYPE_ASPEED_2500_I2C TYPE_ASPEED_I2C "-ast2500"
+ #define TYPE_ASPEED_2600_I2C TYPE_ASPEED_I2C "-ast2600"
+ #define TYPE_ASPEED_1030_I2C TYPE_ASPEED_I2C "-ast1030"
++#define TYPE_ASPEED_2700_I2C TYPE_ASPEED_I2C "-ast2700"
+ OBJECT_DECLARE_TYPE(AspeedI2CState, AspeedI2CClass, ASPEED_I2C)
  
-     uint32_t regs[ASPEED_I2C_NEW_NUM_REG];
-     uint8_t pool[ASPEED_I2C_BUS_POOL_SIZE];
-+    uint64_t dma_dram_offset;
- };
- 
- struct AspeedI2CState {
-@@ -369,14 +370,6 @@ static inline uint32_t aspeed_i2c_bus_dma_len_offset(AspeedI2CBus *bus)
-     return R_I2CD_DMA_LEN;
- }
- 
--static inline uint32_t aspeed_i2c_bus_dma_addr_offset(AspeedI2CBus *bus)
--{
--    if (aspeed_i2c_is_new_mode(bus->controller)) {
--        return R_I2CC_DMA_ADDR;
--    }
--    return R_I2CD_DMA_ADDR;
--}
--
- static inline bool aspeed_i2c_bus_is_master(AspeedI2CBus *bus)
- {
-     return SHARED_ARRAY_FIELD_EX32(bus->regs, aspeed_i2c_bus_ctrl_offset(bus),
+ #define ASPEED_I2C_NR_BUSSES 16
 diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
-index 9fb246ba009e..a17dd2526319 100644
+index a17dd2526319..c61bafcb9ad4 100644
 --- a/hw/i2c/aspeed_i2c.c
 +++ b/hw/i2c/aspeed_i2c.c
-@@ -114,7 +114,10 @@ static uint64_t aspeed_i2c_bus_old_read(AspeedI2CBus *bus, hwaddr offset,
-         if (!aic->has_dma) {
-             qemu_log_mask(LOG_GUEST_ERROR, "%s: No DMA support\n",  __func__);
-             value = -1;
-+            break;
-         }
-+
-+        value = extract64(bus->dma_dram_offset, 0, 32);
-         break;
-     case A_I2CD_DMA_LEN:
-         if (!aic->has_dma) {
-@@ -150,9 +153,7 @@ static uint64_t aspeed_i2c_bus_new_read(AspeedI2CBus *bus, hwaddr offset,
-     case A_I2CM_DMA_TX_ADDR:
-     case A_I2CM_DMA_RX_ADDR:
-     case A_I2CM_DMA_LEN_STS:
--    case A_I2CC_DMA_ADDR:
-     case A_I2CC_DMA_LEN:
--
-     case A_I2CS_DEV_ADDR:
-     case A_I2CS_DMA_RX_ADDR:
-     case A_I2CS_DMA_LEN:
-@@ -161,6 +162,9 @@ static uint64_t aspeed_i2c_bus_new_read(AspeedI2CBus *bus, hwaddr offset,
-     case A_I2CS_DMA_LEN_STS:
-         /* Value is already set, don't do anything. */
-         break;
-+    case A_I2CC_DMA_ADDR:
-+        value = extract64(bus->dma_dram_offset, 0, 32);
-+        break;
-     case A_I2CS_INTR_STS:
-         break;
-     case A_I2CM_CMD:
-@@ -210,18 +214,18 @@ static int aspeed_i2c_dma_read(AspeedI2CBus *bus, uint8_t *data)
+@@ -1102,6 +1102,41 @@ static void aspeed_i2c_instance_init(Object *obj)
+  *   0xDA0 ... 0xDBF: Device 14 buffer
+  *   0xDC0 ... 0xDDF: Device 15 buffer (15 and 16 unused in AST1030)
+  *   0xDE0 ... 0xDFF: Device 16 buffer
++ *
++ * Address Definitions (AST2700)
++ *   0x000 ... 0x0FF: Global Register
++ *   0x100 ... 0x17F: Device 0
++ *   0x1A0 ... 0x1BF: Device 0 buffer
++ *   0x200 ... 0x27F: Device 1
++ *   0x2A0 ... 0x2BF: Device 1 buffer
++ *   0x300 ... 0x37F: Device 2
++ *   0x3A0 ... 0x3BF: Device 2 buffer
++ *   0x400 ... 0x47F: Device 3
++ *   0x4A0 ... 0x4BF: Device 3 buffer
++ *   0x500 ... 0x57F: Device 4
++ *   0x5A0 ... 0x5BF: Device 4 buffer
++ *   0x600 ... 0x67F: Device 5
++ *   0x6A0 ... 0x6BF: Device 5 buffer
++ *   0x700 ... 0x77F: Device 6
++ *   0x7A0 ... 0x7BF: Device 6 buffer
++ *   0x800 ... 0x87F: Device 7
++ *   0x8A0 ... 0x8BF: Device 7 buffer
++ *   0x900 ... 0x97F: Device 8
++ *   0x9A0 ... 0x9BF: Device 8 buffer
++ *   0xA00 ... 0xA7F: Device 9
++ *   0xAA0 ... 0xABF: Device 9 buffer
++ *   0xB00 ... 0xB7F: Device 10
++ *   0xBA0 ... 0xBBF: Device 10 buffer
++ *   0xC00 ... 0xC7F: Device 11
++ *   0xCA0 ... 0xCBF: Device 11 buffer
++ *   0xD00 ... 0xD7F: Device 12
++ *   0xDA0 ... 0xDBF: Device 12 buffer
++ *   0xE00 ... 0xE7F: Device 13
++ *   0xEA0 ... 0xEBF: Device 13 buffer
++ *   0xF00 ... 0xF7F: Device 14
++ *   0xFA0 ... 0xFBF: Device 14 buffer
++ *   0x1000 ... 0x107F: Device 15
++ *   0x10A0 ... 0x10BF: Device 15 buffer
+  */
+ static void aspeed_i2c_realize(DeviceState *dev, Error **errp)
  {
-     MemTxResult result;
-     AspeedI2CState *s = bus->controller;
--    uint32_t reg_dma_addr = aspeed_i2c_bus_dma_addr_offset(bus);
-     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
- 
--    result = address_space_read(&s->dram_as, bus->regs[reg_dma_addr],
-+    result = address_space_read(&s->dram_as, bus->dma_dram_offset,
-                                 MEMTXATTRS_UNSPECIFIED, data, 1);
-     if (result != MEMTX_OK) {
--        qemu_log_mask(LOG_GUEST_ERROR, "%s: DRAM read failed @%08x\n",
--                      __func__, bus->regs[reg_dma_addr]);
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: DRAM read failed @%" PRIx64 "\n",
-+                      __func__, bus->dma_dram_offset);
-         return -1;
-     }
- 
--    bus->regs[reg_dma_addr]++;
-+    bus->dma_dram_offset++;
-     bus->regs[reg_dma_len]--;
-     return 0;
- }
-@@ -291,7 +295,6 @@ static void aspeed_i2c_bus_recv(AspeedI2CBus *bus)
-     uint32_t reg_pool_ctrl = aspeed_i2c_bus_pool_ctrl_offset(bus);
-     uint32_t reg_byte_buf = aspeed_i2c_bus_byte_buf_offset(bus);
-     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
--    uint32_t reg_dma_addr = aspeed_i2c_bus_dma_addr_offset(bus);
-     int pool_rx_count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl,
-                                                 RX_SIZE) + 1;
- 
-@@ -323,14 +326,17 @@ static void aspeed_i2c_bus_recv(AspeedI2CBus *bus)
-             data = i2c_recv(bus->bus);
-             trace_aspeed_i2c_bus_recv("DMA", bus->regs[reg_dma_len],
-                                       bus->regs[reg_dma_len], data);
--            result = address_space_write(&s->dram_as, bus->regs[reg_dma_addr],
-+
-+            result = address_space_write(&s->dram_as, bus->dma_dram_offset,
-                                          MEMTXATTRS_UNSPECIFIED, &data, 1);
-             if (result != MEMTX_OK) {
--                qemu_log_mask(LOG_GUEST_ERROR, "%s: DRAM write failed @%08x\n",
--                              __func__, bus->regs[reg_dma_addr]);
-+                qemu_log_mask(LOG_GUEST_ERROR,
-+                              "%s: DRAM write failed @%" PRIx64 "\n",
-+                              __func__, bus->dma_dram_offset);
-                 return;
-             }
--            bus->regs[reg_dma_addr]++;
-+
-+            bus->dma_dram_offset++;
-             bus->regs[reg_dma_len]--;
-             /* In new mode, keep track of how many bytes we RXed */
-             if (aspeed_i2c_is_new_mode(bus->controller)) {
-@@ -636,14 +642,18 @@ static void aspeed_i2c_bus_new_write(AspeedI2CBus *bus, hwaddr offset,
-     case A_I2CM_DMA_TX_ADDR:
-         bus->regs[R_I2CM_DMA_TX_ADDR] = FIELD_EX32(value, I2CM_DMA_TX_ADDR,
-                                                    ADDR);
--        bus->regs[R_I2CC_DMA_ADDR] = FIELD_EX32(value, I2CM_DMA_TX_ADDR, ADDR);
-+        bus->dma_dram_offset =
-+            deposit64(bus->dma_dram_offset, 0, 32,
-+                      FIELD_EX32(value, I2CM_DMA_TX_ADDR, ADDR));
-         bus->regs[R_I2CC_DMA_LEN] = ARRAY_FIELD_EX32(bus->regs, I2CM_DMA_LEN,
-                                                      TX_BUF_LEN) + 1;
-         break;
-     case A_I2CM_DMA_RX_ADDR:
-         bus->regs[R_I2CM_DMA_RX_ADDR] = FIELD_EX32(value, I2CM_DMA_RX_ADDR,
-                                                    ADDR);
--        bus->regs[R_I2CC_DMA_ADDR] = FIELD_EX32(value, I2CM_DMA_RX_ADDR, ADDR);
-+        bus->dma_dram_offset =
-+            deposit64(bus->dma_dram_offset, 0, 32,
-+                      FIELD_EX32(value, I2CM_DMA_RX_ADDR, ADDR));
-         bus->regs[R_I2CC_DMA_LEN] = ARRAY_FIELD_EX32(bus->regs, I2CM_DMA_LEN,
-                                                      RX_BUF_LEN) + 1;
-         break;
-@@ -811,7 +821,8 @@ static void aspeed_i2c_bus_old_write(AspeedI2CBus *bus, hwaddr offset,
-             break;
-         }
- 
--        bus->regs[R_I2CD_DMA_ADDR] = value & 0x3ffffffc;
-+        bus->dma_dram_offset = deposit64(bus->dma_dram_offset, 0, 32,
-+                                         value & 0x3ffffffc);
-         break;
- 
-     case A_I2CD_DMA_LEN:
-@@ -983,6 +994,7 @@ static const VMStateDescription aspeed_i2c_bus_vmstate = {
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, AspeedI2CBus, ASPEED_I2C_NEW_NUM_REG),
-         VMSTATE_UINT8_ARRAY(pool, AspeedI2CBus, ASPEED_I2C_BUS_POOL_SIZE),
-+        VMSTATE_UINT64(dma_dram_offset, AspeedI2CBus),
-         VMSTATE_END_OF_LIST()
-     }
+@@ -1501,6 +1536,32 @@ static const TypeInfo aspeed_1030_i2c_info = {
+     .class_init = aspeed_1030_i2c_class_init,
  };
-@@ -1188,8 +1200,9 @@ static int aspeed_i2c_bus_new_slave_event(AspeedI2CBus *bus,
-             return -1;
-         }
-         ARRAY_FIELD_DP32(bus->regs, I2CS_DMA_LEN_STS, RX_LEN, 0);
--        bus->regs[R_I2CC_DMA_ADDR] =
--            ARRAY_FIELD_EX32(bus->regs, I2CS_DMA_RX_ADDR, ADDR);
-+        bus->dma_dram_offset =
-+            deposit64(bus->dma_dram_offset, 0, 32,
-+                      ARRAY_FIELD_EX32(bus->regs, I2CS_DMA_RX_ADDR, ADDR));
-         bus->regs[R_I2CC_DMA_LEN] =
-             ARRAY_FIELD_EX32(bus->regs, I2CS_DMA_LEN, RX_BUF_LEN) + 1;
-         i2c_ack(bus->bus);
-@@ -1255,10 +1268,10 @@ static int aspeed_i2c_bus_slave_event(I2CSlave *slave, enum i2c_event event)
- static void aspeed_i2c_bus_new_slave_send_async(AspeedI2CBus *bus, uint8_t data)
- {
-     assert(address_space_write(&bus->controller->dram_as,
--                               bus->regs[R_I2CC_DMA_ADDR],
-+                               bus->dma_dram_offset,
-                                MEMTXATTRS_UNSPECIFIED, &data, 1) == MEMTX_OK);
  
--    bus->regs[R_I2CC_DMA_ADDR]++;
-+    bus->dma_dram_offset++;
-     bus->regs[R_I2CC_DMA_LEN]--;
-     ARRAY_FIELD_DP32(bus->regs, I2CS_DMA_LEN_STS, RX_LEN,
-                      ARRAY_FIELD_EX32(bus->regs, I2CS_DMA_LEN_STS, RX_LEN) + 1);
++static void aspeed_2700_i2c_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    AspeedI2CClass *aic = ASPEED_I2C_CLASS(klass);
++
++    dc->desc = "ASPEED 2700 I2C Controller";
++
++    aic->num_busses = 16;
++    aic->reg_size = 0x80;
++    aic->reg_gap_size = 0x80;
++    aic->gap = -1; /* no gap */
++    aic->bus_get_irq = aspeed_2600_i2c_bus_get_irq;
++    aic->pool_size = 0x20;
++    aic->pool_gap_size = 0xe0;
++    aic->pool_base = 0x1a0;
++    aic->bus_pool_base = aspeed_2500_i2c_bus_pool_base;
++    aic->has_dma = true;
++    aic->mem_size = 0x2000;
++}
++
++static const TypeInfo aspeed_2700_i2c_info = {
++    .name = TYPE_ASPEED_2700_I2C,
++    .parent = TYPE_ASPEED_I2C,
++    .class_init = aspeed_2700_i2c_class_init,
++};
++
+ static void aspeed_i2c_register_types(void)
+ {
+     type_register_static(&aspeed_i2c_bus_info);
+@@ -1510,6 +1571,7 @@ static void aspeed_i2c_register_types(void)
+     type_register_static(&aspeed_2500_i2c_info);
+     type_register_static(&aspeed_2600_i2c_info);
+     type_register_static(&aspeed_1030_i2c_info);
++    type_register_static(&aspeed_2700_i2c_info);
+ }
+ 
+ type_init(aspeed_i2c_register_types)
 -- 
 2.46.0
 
