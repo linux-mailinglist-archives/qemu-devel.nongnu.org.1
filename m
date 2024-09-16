@@ -2,95 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6522979D62
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 10:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49681979DD2
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 11:06:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sq7VZ-0001of-Mc; Mon, 16 Sep 2024 04:54:57 -0400
+	id 1sq7fh-0001Mn-LJ; Mon, 16 Sep 2024 05:05:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sq7VD-0000ps-LQ
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:54:35 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sq7ff-0001Fd-2y
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 05:05:23 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sq7Uu-0005F7-GF
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:54:35 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-42cb6f3a5bcso39669845e9.2
- for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 01:54:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sq7fd-0006nm-Ef
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 05:05:22 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5c4226a5af8so3662657a12.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 02:05:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726476855; x=1727081655; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1726477519; x=1727082319; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WWhpWDyIZgZQNjk9OdCuUgywH4MF2qEBFr+67oTYvJA=;
- b=DmMnDlOL3I0RX9ozBGc/MI6CrqvDC/IoEUA+2p9DIMNQDBZ3nKChnWdVtdXbX9ArbC
- C13UsPs38xYYVQEzYfQwBKH0DM9eD2tEIOsOlfurpyjpd4AyhLgRAZbAkcQVjPIv9WN/
- PDTGDHI4A1pouRYHgD+5DgRwyKQjixzgJDBqMBpww5dsagPmRXqEFAK/JZ3ocTEVMM0Q
- ROYufXHg/9S5kv6pJwJC1pVQt2FPdmYfFTzl2Pxhe5tGlQH845gpnXIBcFrlW9HY91Ne
- uowSyhA1Kg0q/fIehbTDfRAS1+VBytbuaXAg9QqlIyovnftVyMjmorZ6zYjFKY3Lwbzl
- Tggw==
+ bh=KcVFsIezf3rekh22EaVvx4H7uocZC9nm0qD+BPLdntM=;
+ b=Bapjd6/psxmgepTNLzwmJYtnHcmB5u4QIwpl9VqE874HJ8YZQMR3y2jp82ixpdJTqQ
+ CpMrgbT0zQe6rfov2Tf/b45U+Q87PePEJtuJu/g025ueQi8Vwz2nrlVGPL/AdaVNCCet
+ Cfy1exqqmnSaUjYTtH5BZJe+UZM2LkYab5+EsKoU0ZoDvMWoMcUw8LO3HpT42lEmSG63
+ 6EDltfqhj6GRAwpvWbPXt/D35yQab8rpYGwpu2eTHGWPd6SRPKSP4v8yqcHnr68QBw77
+ GVQI+/x8rCTBtuCOlR81u3p7D4cBQBBK0kRQ1KemPUDJBMbwo7URsVZXi8CqJ+x8N/tG
+ Xbpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726476855; x=1727081655;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1726477519; x=1727082319;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WWhpWDyIZgZQNjk9OdCuUgywH4MF2qEBFr+67oTYvJA=;
- b=o5JTCuzqZ5B9L5mV6dYfdn+p+ZHrU8afIx//qXpf5b/zElDjcMChuUG29mJghyxTsr
- GM4OmxSupmM/V2O7CsGCPdsWfdRCAnGR0ngsoVIDgHc0/yPbhJVuQZKaiUWVOHJWlOzs
- emfP1iiYeAGGszLa3brnHoHDwToEAckP0NnVY1eTm4BBLzCDpNqo318W12oJEV3xP2dU
- INV/XKWXUGvoAI3Vffgt3BhXP7XdORORHpaePnhe0CJ1Df1DNy10a20GrlIXGt1snDLq
- mUw2OjqE+5+u/+6fEi5T2ROFFmyPyMmmZ8s514Hda7dzC7znZX7c6xGXupH08eCC4pVP
- czoA==
-X-Gm-Message-State: AOJu0YyLp5Vt0F8U4Kh/W2FNVec64lIH4G5oRK2V+9adLUekwKapT2KA
- fwf3VR3CMNwviH2J1PGVORk/TCvDmT/BKpxcOg4Qrg91JyUYqkmOJ6on4SLNjFk=
-X-Google-Smtp-Source: AGHT+IEsOHCq9fWYmjKXebt6b/Cu+oKL3YCXyXi6X81L76TQAUrtgkITumA4HrdTIuueFVEC202jXQ==
-X-Received: by 2002:a05:600c:4f01:b0:42c:aeaa:6b0d with SMTP id
- 5b1f17b1804b1-42d907205a5mr105040045e9.9.1726476855029; 
- Mon, 16 Sep 2024 01:54:15 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42d9b05da47sm106194315e9.17.2024.09.16.01.54.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Sep 2024 01:54:10 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 124CA5F8F2;
- Mon, 16 Sep 2024 09:54:02 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Eduardo Habkost <eduardo@habkost.net>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
- David Hildenbrand <david@redhat.com>, devel@lists.libvirt.org,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Elisha Hollander <just4now666666@gmail.com>
-Subject: [PATCH v2 18/18] contrib/plugins: avoid hanging program
-Date: Mon, 16 Sep 2024 09:54:00 +0100
-Message-Id: <20240916085400.1046925-19-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20240916085400.1046925-1-alex.bennee@linaro.org>
-References: <20240916085400.1046925-1-alex.bennee@linaro.org>
+ bh=KcVFsIezf3rekh22EaVvx4H7uocZC9nm0qD+BPLdntM=;
+ b=roi/C9SJxEi+0/bUO7p8gunmwz2qPNghZYmRdz+ZeKg4mzhbCeumrJQJyystMZMVbM
+ Gf+HNnvTWLBcGc7fTb77Kd0eLjFXB0xqhgN7sbmUkIEPTNKgp6SkFx3U41pCLQKe7Mb/
+ bvGQRqKKPm24Sgyv7pI7jkDJIJhyMrqOwT1YrBNA3eC/ChAWZZH0XqCwhg6XCMBJ2oaB
+ D6GbKa8EqG5CubUT4HaT+1CVd7Ihao4W1mkVrr9cTzZ0n4txNFks3PmhYxSJOR7Hw6pl
+ XbdP/ReKhBwuHUqjGH+/UzKNWJDuG4uhdsBA5QkmkQF1fMYNBWfdlRBy7O+tOVB4dUR+
+ OmYg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVqUQtqbP3ike2YbHIA79zcsgmbKbD9wnoNdVdiKjyi4Zh84pgJs04H6uqg3liBc7d3E0GhPyuqD0v2@nongnu.org
+X-Gm-Message-State: AOJu0YxUygpTbTp51Op3281JQbWEycglw0ZHOOVcrFP14fQf7pypuH84
+ YZuZWbTr47ahxAnzn6kh7mO+M8PkXCneELlX1x/BUJyAehC8ZVlwiqjXoYHK6SspnBUsqK1RAoB
+ aHB0c2MLThxYS2nTnmroMOXTZAZfkFlTNCHVBnVoR/efwYw9b
+X-Google-Smtp-Source: AGHT+IFd7yAeGy4t2jD6gzql6ccxcEvqbLkmJSrW7TajeAAuUVEsGYwEvg9TuwacS8HFwHUq6RhdXNtB5DHJqPMDxq0=
+X-Received: by 2002:a05:6402:d1:b0:5a3:a4d7:caf5 with SMTP id
+ 4fb4d7f45d1cf-5c413e5f5b9mr10079247a12.36.1726477519327; Mon, 16 Sep 2024
+ 02:05:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+References: <20240819135455.2957406-1-mnissler@rivosinc.com>
+ <CAFEAcA-pVJozMoPnUU9TO=0KKH3iR95rf7XLj9EuaM7+Q-VZoQ@mail.gmail.com>
+ <ZuRgV7lS75BpDUox@x1n>
+ <CAFEAcA9kSi1id2SnQWEPyM44GvSH=tPqf-Unhyk92xdy+xZkJg@mail.gmail.com>
+ <CAGNS4Ta6Zcoa_ShNihTqeM+Z4jbk2O2hRTeGddtYq2zwra+xCQ@mail.gmail.com>
+In-Reply-To: <CAGNS4Ta6Zcoa_ShNihTqeM+Z4jbk2O2hRTeGddtYq2zwra+xCQ@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 16 Sep 2024 10:05:07 +0100
+Message-ID: <CAFEAcA8Q50P3Eb8_fJgpYQ21PYoHnoUiDz0NhX5KAma552+=Hw@mail.gmail.com>
+Subject: Re: [PATCH] softmmu: Support concurrent bounce buffers
+To: Mattias Nissler <mnissler@rivosinc.com>
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, stefanha@redhat.com, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,34 +97,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Although we asks for instructions per second we work in quanta and
-that cannot be 0. Fail to load the plugin instead and report the
-minimum IPS we can handle.
+On Mon, 16 Sept 2024 at 08:35, Mattias Nissler <mnissler@rivosinc.com> wrot=
+e:
+>
+> On Fri, Sep 13, 2024 at 6:47=E2=80=AFPM Peter Maydell <peter.maydell@lina=
+ro.org> wrote:
+> >
+> > On Fri, 13 Sept 2024 at 16:55, Peter Xu <peterx@redhat.com> wrote:
+> > >
+> > > On Thu, Sep 12, 2024 at 03:27:55PM +0100, Peter Maydell wrote:
+> > > > Coverity is pretty unhappy about this trick, because it isn't able
+> > > > to recognise that we can figure out the address of 'bounce'
+> > > > from the address of 'bounce->buffer' and free it in the
+> > > > address_space_unmap() code, so it thinks that every use
+> > > > of address_space_map(), pci_dma_map(), etc, is a memory leak.
+> > > > We can mark all those as false positives, of course, but it got
+> > > > me wondering whether maybe we should have this function return
+> > > > a struct that has all the information address_space_unmap()
+> > > > needs rather than relying on it being able to figure it out
+> > > > from the host memory pointer...
+> > >
+> > > Indeed that sounds like a viable option.  Looks like we don't have a =
+lot of
+> > > address_space_map() users.
+> >
+> > There's quite a few wrappers of it too, so it's a little hard to count.
+> > We might want to avoid the memory allocation in the common case
+> > by having the caller pass in an ASMapInfo struct to be filled
+> > in rather than having address_space_map() allocate-and-return one.
+>
+> Hm, this would work, but not only does it complicate the code
+> consuming address_space_map, but it also increases memory footprint (a
+> pointer being replaced by a struct of sizeof(BounceBuffer) if done
+> naively), plus there's an additional pointer indirection (I'm doubtful
+> whether this can be optimized away by the compiler). I haven't done
+> any measurements of these effects, so can't say anything definitive,
+> but this seems pretty costly just to appease coverity...
+>
+> Is there no way to inform coverity that a resource pointer is being
+> transmuted into a handle, so it can track that instead? Given that
+> pointer tricks like this and container_of usage is quite frequent, I
+> would expect coverity to have a better strategy to handle these rather
+> than suppressing false positive leak reports?
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reported-by: Elisha Hollander <just4now666666@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- contrib/plugins/ips.c | 5 +++++
- 1 file changed, 5 insertions(+)
+It's not purely that I want to appease Coverity. I also
+think for human readers that the current trick with passing
+back a pointer into host memory and relying on being able to
+get back to either the MR or to the bounce-buffer struct
+from that is pretty tricky. Would we have designed it that
+way if we weren't starting with the pre-existing address_space_map()
+function signature?
 
-diff --git a/contrib/plugins/ips.c b/contrib/plugins/ips.c
-index 29fa556d0f..6f078689dc 100644
---- a/contrib/plugins/ips.c
-+++ b/contrib/plugins/ips.c
-@@ -152,6 +152,11 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-     vcpus = qemu_plugin_scoreboard_new(sizeof(vCPUTime));
-     max_insn_per_quantum = max_insn_per_second / NUM_TIME_UPDATE_PER_SEC;
- 
-+    if (max_insn_per_quantum == 0) {
-+        fprintf(stderr, "minimum of %d instructions per second needed\n", NUM_TIME_UPDATE_PER_SEC);
-+        return -1;
-+    }
-+
-     time_handle = qemu_plugin_request_time_control();
-     g_assert(time_handle);
- 
--- 
-2.39.5
-
+thanks
+-- PMM
 
