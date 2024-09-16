@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4476397A585
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 17:52:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B55097A58C
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 17:53:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqE1w-0001xd-A1; Mon, 16 Sep 2024 11:52:48 -0400
+	id 1sqE1u-0001hK-4x; Mon, 16 Sep 2024 11:52:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sqE1l-0000Zi-M4; Mon, 16 Sep 2024 11:52:38 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1sqE1o-0000w1-Jh; Mon, 16 Sep 2024 11:52:40 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sqE1k-0000Xt-1J; Mon, 16 Sep 2024 11:52:37 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-20551e2f1f8so37601955ad.2; 
- Mon, 16 Sep 2024 08:52:34 -0700 (PDT)
+ id 1sqE1n-0000Y7-0Y; Mon, 16 Sep 2024 11:52:40 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-205909afad3so47653695ad.2; 
+ Mon, 16 Sep 2024 08:52:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726501953; x=1727106753; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1726501957; x=1727106757; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9FVE9uwE5SGNsSu9ob6L64WLDml4rbiZ/hyx7tyV/IQ=;
- b=RXzDzT12l9RcGYG7tcWJC9u45rU3PYFcQgXQKE6eEF1KC4ZC9mxFouRqoXyKeV3nIA
- GuCgqlBzp04BT9mI+VAObY8qPeA4N88/9yvn6w9e1WGyh6yjnHEzhniZBYfhYFmhKGSN
- iewxDVVcd3txf0ztYlffp+DgnYgZ+DWQEM/YoBFrKGbqgw+Igq4Mqq6pzvk3E9EunmVy
- yBjyfCJgWiiCWYT/QOvnOqCtbcJxKUjFqgjy2d1CaSfhv+CA6HypyPgFnAjZ92mVUkaD
- 9cJj6b/r6pe0RgKYl2Ip9zDmTBdUEvuz5NTM+Bq9B/o64yHAPXtfjbSRptt6S0VJPxbU
- 9d2Q==
+ bh=yaqkhcr8XXVjz3AUT5s3kLltD+ErMtVDTb6FVMqoohs=;
+ b=SniowYEu2Ls+XDjIQZeeBDMXttEtXx+RhU6YQBfFb5/AWTi7JlIiDKnb7woBztiM+B
+ hQa/s+Ifz7x5K34Rc57/CIBszIGiW/598nUnKrVEJUcRa6W3lahA8ZY2c72a2LyMBt5W
+ pKYWAV6B90LXXIxe2O4YGPKW4FWvuTbh3L4G6aLgBKWRGYalE7sPzsKtFsLFoCGItzv1
+ p3f/hV9Ot1/0LhY6a8xsXYWJhlqG1BWHPJQVziWX3S1obT84+X9H8JrQFkG7qLX0GEDv
+ GPJUomXLMM/Ht1TAXzwoPIi76a99VJcAesFtVyIJenbbbw2eJJnL7yHI8OHWC1hSzJd4
+ d2Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726501953; x=1727106753;
+ d=1e100.net; s=20230601; t=1726501957; x=1727106757;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9FVE9uwE5SGNsSu9ob6L64WLDml4rbiZ/hyx7tyV/IQ=;
- b=p6RgLkwD5HIeruk2hqLm3ywMGzABw8zoqXUHIpBFyjh/8EOrqiy6AY83E/wshJS4DK
- UDv8G7vPKvLAmSj6e4cf5EoNE6Cw12eL0SSGVzS1NAtFzmpg2g3/aEkhVpmbNvhiaGyy
- iq204Ua1lWX+5+0VIIZMV7Y6V7ErHgA7EA9vlCFPfT9F2GW7mJvvjNp3sBhBLTC62bV/
- 7NfHzPnmBtg8G8ClzY5jDXpt+B9fv/T18Yt6yD6EU6CLLHQJYg4kLrErvE9Mc/5OGcIE
- r3BpGS8XGZ1I81NoUupc0pSJnhqeCf1BFUMZT2nK5ptnC6z7F/GNrtv/ta1vIyg8uYY/
- 4jwg==
+ bh=yaqkhcr8XXVjz3AUT5s3kLltD+ErMtVDTb6FVMqoohs=;
+ b=k0gPnuCYhMFYd18d9lsULvs8k4aSAJoP3nXhkCRQFozoCK2uEqeTI/ZU2P1Yu7E4XJ
+ /WSTLvSwjg3FgP+HgJpgl2rTEQ0JpZ3Uth6z0sYc3/5WV+JuQnOHbF/A3hW+4sESKj4i
+ wGuXttZZyEKCnCbh1G6FoD7FYxtAc7VWwEB0Mi+4XVXoLKbds0ygJlI1QFaqqFSSxM1b
+ 8VCqHEJNxsuNrHF3IDtnWXhRd6X8DGk8PzUEWcT+FWT+qW16ilVxFQicYI+Y9sNRZ5RJ
+ zLhQ6/scugZ/6VWel32U6Ohw3HDpqKc7lvqRpBMxHPqWCux356LisRUzYZLi6nu0hAgg
+ BheA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVqbqTI3vkPS6ba3JsOkCZucdAyPhBL7xTQmdrFBjEXmohAGFAfYqChu0Oz0iRW5/iZmYjrmrKWBkLW@nongnu.org
-X-Gm-Message-State: AOJu0YwUYk8gvdUaSQzNW71s8wGK5FdQBuWXEs4acEtqNULYcTasaA7o
- /Tq0+mgVliWSrOIVk+1i0T5OawJEO0ZggCviREY+Oj1u0xcesOkOeQjzzDN4
-X-Google-Smtp-Source: AGHT+IE55KmlKhv1zMhh6nsp+UgIPfgnxdbe3RXEK30/h8iiRSqPTyMzAbzSB7Ae8dwhGpRrBDXVtg==
-X-Received: by 2002:a17:902:fc8f:b0:203:a051:a29b with SMTP id
- d9443c01a7336-20781b46b35mr203161165ad.7.1726501953081; 
- Mon, 16 Sep 2024 08:52:33 -0700 (PDT)
+ AJvYcCUpfmesb/cL0etB6BzlDLnFjVJwOBP/IGkqOHljRO9i6pQAfNM8ygZbHhit5NsbhMX4TibTpxnz2ikF@nongnu.org
+X-Gm-Message-State: AOJu0Yzl9DD2nNnZbBD+dRJ2PDcZ8UgJ8CakXpHH+ltmRyUeXUGiJkvJ
+ In/7esL5uG8CSB+0NMI7EF/XZkYD1dTLdARsop1gqd8o/1mMX0MCmDQyBQCr
+X-Google-Smtp-Source: AGHT+IH5p/iRr7iIS/Ny3bBbsGfR12QgknIk5rUaknXx+oSjoKlfkMkwxShX7afkWPvgJ5+Y8Tkpig==
+X-Received: by 2002:a17:902:f550:b0:205:4e4a:72d9 with SMTP id
+ d9443c01a7336-2076e30651fmr265652415ad.7.1726501956810; 
+ Mon, 16 Sep 2024 08:52:36 -0700 (PDT)
 Received: from localhost.localdomain (27-32-110-191.tpgi.com.au.
  [27.32.110.191]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-207946046cbsm37482545ad.105.2024.09.16.08.52.29
+ d9443c01a7336-207946046cbsm37482545ad.105.2024.09.16.08.52.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Sep 2024 08:52:32 -0700 (PDT)
+ Mon, 16 Sep 2024 08:52:36 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
@@ -65,17 +65,17 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v7 16/17] bsd-user: Implement set_mcontext and
- get_ucontext_sigreturn for RISCV
-Date: Tue, 17 Sep 2024 01:51:18 +1000
-Message-Id: <20240916155119.14610-17-itachis@FreeBSD.org>
+Subject: [PATCH v7 17/17] bsd-user: Add RISC-V 64-bit Target Configuration and
+ Debug XML Files
+Date: Tue, 17 Sep 2024 01:51:19 +1000
+Message-Id: <20240916155119.14610-18-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240916155119.14610-1-itachis@FreeBSD.org>
 References: <20240916155119.14610-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=itachis6234@gmail.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=itachis6234@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,84 +99,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Corbin <mark@dibsco.co.uk>
+From: Warner Losh <imp@bsdimp.com>
 
-Added implementations for 'set_mcontext' and 'get_ucontext_sigreturn'
-functions for RISC-V architecture,
-Both functions ensure that the CPU state and user context are properly
-managed.
+Added configuration for RISC-V 64-bit target to the build system.
 
-Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Co-authored-by: Warner Losh <imp@bsdimp.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/riscv/signal.c | 54 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+ configs/targets/riscv64-bsd-user.mak | 4 ++++
+ 1 file changed, 4 insertions(+)
+ create mode 100644 configs/targets/riscv64-bsd-user.mak
 
-diff --git a/bsd-user/riscv/signal.c b/bsd-user/riscv/signal.c
-index 072ad821d2..10c940cd49 100644
---- a/bsd-user/riscv/signal.c
-+++ b/bsd-user/riscv/signal.c
-@@ -114,3 +114,57 @@ abi_long get_mcontext(CPURISCVState *regs, target_mcontext_t *mcp,
- 
-     return 0;
- }
-+
-+/* Compare with set_mcontext() in riscv/riscv/exec_machdep.c */
-+abi_long set_mcontext(CPURISCVState *regs, target_mcontext_t *mcp,
-+        int srflag)
-+{
-+
-+    regs->gpr[5] = tswap64(mcp->mc_gpregs.gp_t[0]);
-+    regs->gpr[6] = tswap64(mcp->mc_gpregs.gp_t[1]);
-+    regs->gpr[7] = tswap64(mcp->mc_gpregs.gp_t[2]);
-+    regs->gpr[28] = tswap64(mcp->mc_gpregs.gp_t[3]);
-+    regs->gpr[29] = tswap64(mcp->mc_gpregs.gp_t[4]);
-+    regs->gpr[30] = tswap64(mcp->mc_gpregs.gp_t[5]);
-+    regs->gpr[31] = tswap64(mcp->mc_gpregs.gp_t[6]);
-+
-+    regs->gpr[8] = tswap64(mcp->mc_gpregs.gp_s[0]);
-+    regs->gpr[9] = tswap64(mcp->mc_gpregs.gp_s[1]);
-+    regs->gpr[18] = tswap64(mcp->mc_gpregs.gp_s[2]);
-+    regs->gpr[19] = tswap64(mcp->mc_gpregs.gp_s[3]);
-+    regs->gpr[20] = tswap64(mcp->mc_gpregs.gp_s[4]);
-+    regs->gpr[21] = tswap64(mcp->mc_gpregs.gp_s[5]);
-+    regs->gpr[22] = tswap64(mcp->mc_gpregs.gp_s[6]);
-+    regs->gpr[23] = tswap64(mcp->mc_gpregs.gp_s[7]);
-+    regs->gpr[24] = tswap64(mcp->mc_gpregs.gp_s[8]);
-+    regs->gpr[25] = tswap64(mcp->mc_gpregs.gp_s[9]);
-+    regs->gpr[26] = tswap64(mcp->mc_gpregs.gp_s[10]);
-+    regs->gpr[27] = tswap64(mcp->mc_gpregs.gp_s[11]);
-+
-+    regs->gpr[10] = tswap64(mcp->mc_gpregs.gp_a[0]);
-+    regs->gpr[11] = tswap64(mcp->mc_gpregs.gp_a[1]);
-+    regs->gpr[12] = tswap64(mcp->mc_gpregs.gp_a[2]);
-+    regs->gpr[13] = tswap64(mcp->mc_gpregs.gp_a[3]);
-+    regs->gpr[14] = tswap64(mcp->mc_gpregs.gp_a[4]);
-+    regs->gpr[15] = tswap64(mcp->mc_gpregs.gp_a[5]);
-+    regs->gpr[16] = tswap64(mcp->mc_gpregs.gp_a[6]);
-+    regs->gpr[17] = tswap64(mcp->mc_gpregs.gp_a[7]);
-+
-+
-+    regs->gpr[1] = tswap64(mcp->mc_gpregs.gp_ra);
-+    regs->gpr[2] = tswap64(mcp->mc_gpregs.gp_sp);
-+    regs->gpr[3] = tswap64(mcp->mc_gpregs.gp_gp);
-+    regs->gpr[4] = tswap64(mcp->mc_gpregs.gp_tp);
-+    regs->pc = tswap64(mcp->mc_gpregs.gp_sepc);
-+
-+    return 0;
-+}
-+
-+/* Compare with sys_sigreturn() in riscv/riscv/machdep.c */
-+abi_long get_ucontext_sigreturn(CPURISCVState *regs,
-+                        abi_ulong target_sf, abi_ulong *target_uc)
-+{
-+
-+    *target_uc = target_sf;
-+    return 0;
-+}
+diff --git a/configs/targets/riscv64-bsd-user.mak b/configs/targets/riscv64-bsd-user.mak
+new file mode 100644
+index 0000000000..191c2c483f
+--- /dev/null
++++ b/configs/targets/riscv64-bsd-user.mak
+@@ -0,0 +1,4 @@
++TARGET_ARCH=riscv64
++TARGET_BASE_ARCH=riscv
++TARGET_ABI_DIR=riscv
++TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml
 -- 
 2.34.1
 
