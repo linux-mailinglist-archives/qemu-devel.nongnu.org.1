@@ -2,97 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D44979D13
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 10:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E2A979D53
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 10:56:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sq7Iv-0001pP-4x; Mon, 16 Sep 2024 04:41:53 -0400
+	id 1sq7V2-0008W4-Bn; Mon, 16 Sep 2024 04:54:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sq7Ij-0001ml-Bs
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:41:44 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1sq7Uu-0008VT-Mt
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:54:16 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sq7Ig-0003bL-9c
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:41:40 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-42cb1758e41so23804335e9.1
- for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 01:41:37 -0700 (PDT)
+ id 1sq7Uh-0005Bl-Tt
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:54:16 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-374c3eef39eso2514313f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 01:54:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726476096; x=1727080896; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6zwcKW8cKBFR7rQucA22Lvh615WezakPNuIDv/yEP9U=;
- b=T9Q4B8/qrbZ84V8uCSf3P/Q3euo9jy8BL7XaGUbkrXyCJ5uD4MSjVJFL6UeervO/G9
- I4T1gmkjdIlUrEpn1IdEc83aysTc1k1LKftND7Bm7BmI+DFzuw56acJRcDOrkTuLH4dx
- 3g9t3Ab/rLVakCjUNw/8ACE3jHQ7KsBL7hGDYtMjIiI5IndA8Hgte50tos/P9AYhMNUW
- jbeTk28FpW/ZNeVrziVuv2V0e3Eh6L0fGas04sSdMhWHftkfYOUTnsIPnX0Jkx57AQWR
- xXDSCXti44margsjgf9ZVI7FzmLLSsUQrFiGi2e9N3u82ipqE4E15erm+fY4zYJVVzOz
- HhYA==
+ d=linaro.org; s=google; t=1726476842; x=1727081642; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xkQtOkT0mjAWCNWbGOh+IDm1Jz0PRhLROXuJtsV3Xts=;
+ b=oVgRYBHGUtM1IsfJJAm/RlQUn4Ky5+g1LRfSSlZmcMvQpRbS8WOvUfnkrmL7qmHDNz
+ wRCBmzyV89oCTh0YrkpuiE+sS2Amp26F7G5ahATe/kD2o8PwijuvuZxB+Ajv70c0UrPb
+ Vt62r/R1/MtaEA3mRYqeEO905dUPKq3t9qmzYIrmnH0W0mtbhlvBR83vjHx8BHtXy6p3
+ CMS7eB994BGvdRkDm0ilVfot3jr2gcElxs9IPk1nvLmxOWoHRX0Hm62ynVXXshzb2Jra
+ V/+8rZZWkXDvETcD0JTFOPEDdkzGHm6iQSpRs3nMUGh7VrQzBVc3OVPQFZZQUTuXMSjK
+ c5YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726476096; x=1727080896;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=6zwcKW8cKBFR7rQucA22Lvh615WezakPNuIDv/yEP9U=;
- b=cnEEzbRehdhK+fxOZkgOW09TEaMOn86tvh36qd1z6JMryc2WaBDDtjFpFaYChV+R2b
- SE2NgPjNtunmj536wQd70SvYJyvqo6E3dlMWPJ5+x1DXF3i+pZ3pdMT7/75sGInJJack
- 3l67D6dFs8gGk3Rl5VRnD+v2EHxAZYgkrk9gNZGomaGSWc6XyxFzoSsWCMAZ176lielh
- hc/TlFm8kgaE3cdTX6qcRaIIiAgcvzRkOv8ret8h/Bnd3H7NfWxgojn0t6eQKfWq7E2/
- 9hYaTktsrp/+59rpBIVbr3IyYtkA8Zdy0AhCJGIEHFWEj/OPB1bmmW6Rs3R/FXus8Vj/
- EIFA==
-X-Gm-Message-State: AOJu0YziWV5It+VrWHry1wpeK3oJP+V2tw6/n7rGDJgImC8k4OJ4/g81
- 1H+rulFWJoL3lTnzfmJ/C8myvovWctY1bzS5Xi7QcFEwiXLJLIK3Fzo+FuDAvTA=
-X-Google-Smtp-Source: AGHT+IFahcVuBpaJbgK44I1ljDyjsGuvMv9Cj55WUyvMej+YnOG0gByoqKtGIqQRXFkjkO2EaxQtSw==
-X-Received: by 2002:a05:600c:4e51:b0:426:5dc8:6a63 with SMTP id
- 5b1f17b1804b1-42d964e0f37mr72512925e9.30.1726476096193; 
- Mon, 16 Sep 2024 01:41:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726476842; x=1727081642;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xkQtOkT0mjAWCNWbGOh+IDm1Jz0PRhLROXuJtsV3Xts=;
+ b=cEGt4fpf3KYk/+TpU1DWUXS/CS4qYxGCMj0/UAU7Bk+xf0kenwjsLu0E+L/ZC9hANB
+ IrRf+pUAaj+ZeY1j2z55UM7jSYZrowTkvSbfrPh4LNh0u5drRtJUtQrY4rdQ5JDZBMdN
+ BrPP5zczByoeoR5dHJ/dE900C9u9mPu1c2Cl0KZjlgmtsHJWrFkaMhxcdkf5Jw0+AQeO
+ BzcoZ0CiFs+slvtNSKejakYsXA1Hd3aqko3hqQIS/9gnuF5klcgr2WBwAYWBfIeLIWBN
+ 1vbD4FDfHannCo2CY1FbZhaQTskVQR5GwVRPeJBBCoXyZI+LGl2ztLAgeMzes6Qhd3QY
+ yVBA==
+X-Gm-Message-State: AOJu0YxMb+OlvbQCT5OAMZzbYA3kPr2caKTVNeZLA6ahgdP3YHfil4xO
+ d8rutHZeTt2hiVrB+iIq/anFnZ2N6s8ycZbvrr0LHCYVXThaztQFretnji5XwFk=
+X-Google-Smtp-Source: AGHT+IFLSJ+C7djOlxzmSs/LcXG8I7h8IsJ7q2bz7FsS7lw3aGogw+oFwvstYtwzeww+m8UYg8TGqQ==
+X-Received: by 2002:adf:fcd2:0:b0:374:c8cc:1bb1 with SMTP id
+ ffacd0b85a97d-378c2d51632mr8423847f8f.39.1726476841621; 
+ Mon, 16 Sep 2024 01:54:01 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42d9b189a83sm104275345e9.34.2024.09.16.01.41.35
+ ffacd0b85a97d-378e73e862esm6678795f8f.45.2024.09.16.01.54.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Sep 2024 01:41:35 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B58365F87D;
- Mon, 16 Sep 2024 09:41:34 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Richard Henderson
- <richard.henderson@linaro.org>,  devel@lists.libvirt.org,  Thomas Huth
- <thuth@redhat.com>,  Mahmoud Mandour <ma.mandourr@gmail.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,  qemu-ppc@nongnu.org,  Zhao Liu
- <zhao1.liu@intel.com>,  Yanan Wang <wangyanan55@huawei.com>,  Eduardo
- Habkost <eduardo@habkost.net>,  qemu-s390x@nongnu.org,  Alexandre Iooss
- <erdnaxe@crans.org>,  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,  Daniel Henrique Barboza
- <danielhb413@gmail.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH 11/17] tests/tcg: only read/write 64 bit words on 64 bit
- systems
-In-Reply-To: <c56f2b0b-3028-4b89-8289-e20519cdcdb7@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 13 Sep 2024 22:15:40
- +0200")
-References: <20240913172655.173873-1-alex.bennee@linaro.org>
- <20240913172655.173873-12-alex.bennee@linaro.org>
- <c56f2b0b-3028-4b89-8289-e20519cdcdb7@linaro.org>
-User-Agent: mu4e 1.12.6; emacs 29.4
-Date: Mon, 16 Sep 2024 09:41:34 +0100
-Message-ID: <875xqwgfcx.fsf@draig.linaro.org>
+ Mon, 16 Sep 2024 01:54:01 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 446C45F87D;
+ Mon, 16 Sep 2024 09:54:00 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
+ David Hildenbrand <david@redhat.com>, devel@lists.libvirt.org,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 00/18] tcg plugins pre-PR (deprecations, mem apis,
+ contrib plugins)
+Date: Mon, 16 Sep 2024 09:53:42 +0100
+Message-Id: <20240916085400.1046925-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,89 +102,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+I think all these are ready to go having been mostly reviewed in previous
+series. The following still need review:
 
-> On 13/9/24 19:26, Alex Benn=C3=A9e wrote:
->> While the compilers will generally happily synthesise a 64 bit value
->> for you on 32 bit systems it doesn't exercise anything on QEMU. It
->> also makes it hard to accurately compare the accesses to test_data
->> when instrumenting.
->> Message-Id: <20240910140733.4007719-21-alex.bennee@linaro.org>
->> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> ---
->>   tests/tcg/multiarch/system/memory.c | 26 +++++++++++++++++++-------
->>   1 file changed, 19 insertions(+), 7 deletions(-)
->> diff --git a/tests/tcg/multiarch/system/memory.c
->> b/tests/tcg/multiarch/system/memory.c
->> index 8f2371975d..680dd4800b 100644
->> --- a/tests/tcg/multiarch/system/memory.c
->> +++ b/tests/tcg/multiarch/system/memory.c
->> @@ -163,6 +163,7 @@ static void init_test_data_u32(int offset)
->>       ml_printf("done %d @ %p\n", i, ptr);
->>   }
->>   +#if __SIZEOF_POINTER__ =3D=3D 8
->
->>=3D ? :)
+  util/timer: avoid deadlock when shutting down
+  tests/tcg: add a system test to check memory instrumentation
+  tests/tcg: ensure s390x-softmmu output redirected
+  tests/tcg/multiarch: add test for plugin memory access (0 acks, 1 sobs, 1 tbs)
 
-Ahh I was confused by the email quoting. Do we actually have any systems
-with bigger pointers or is this just for future proofing?
+v2
+  - fix some nits
+  - included fix to ips posted as an RFC before
 
->
->>   static void init_test_data_u64(int offset)
->>   {
->>       uint8_t count =3D 0;
->> @@ -187,6 +188,7 @@ static void init_test_data_u64(int offset)
->>       }
->>       ml_printf("done %d @ %p\n", i, ptr);
->>   }
->> +#endif
->>     static bool read_test_data_u16(int offset)
->>   {
->> @@ -254,6 +256,7 @@ static bool read_test_data_u32(int offset)
->>       return true;
->>   }
->>   +#if __SIZEOF_POINTER__ =3D=3D 8
->>   static bool read_test_data_u64(int offset)
->>   {
->>       uint64_t word, *ptr =3D (uint64_t *)&test_data[offset];
->> @@ -307,11 +310,16 @@ static bool read_test_data_u64(int offset)
->>       ml_printf("done %d @ %p\n", i, ptr);
->>       return true;
->>   }
->> +#endif
->>     /* Read the test data and verify at various offsets */
->> -read_ufn read_ufns[] =3D { read_test_data_u16,
->> -                         read_test_data_u32,
->> -                         read_test_data_u64 };
->> +read_ufn read_ufns[] =3D {
->> +    read_test_data_u16,
->> +    read_test_data_u32,
->> +#if __SIZEOF_POINTER__ =3D=3D 8
->> +    read_test_data_u64
->> +#endif
->> +};
->>     bool do_unsigned_reads(int start_off)
->>   {
->> @@ -476,10 +484,14 @@ bool do_signed_reads(bool neg_first)
->>       return ok;
->>   }
->>   -init_ufn init_ufns[] =3D { init_test_data_u8,
->> -                         init_test_data_u16,
->> -                         init_test_data_u32,
->> -                         init_test_data_u64 };
->> +init_ufn init_ufns[] =3D {
->> +    init_test_data_u8,
->> +    init_test_data_u16,
->> +    init_test_data_u32,
->> +#if __SIZEOF_POINTER__ =3D=3D 8
->> +    init_test_data_u64
->> +#endif
->> +};
->>     int main(void)
->>   {
+Alex.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Akihiko Odaki (1):
+  contrib/plugins: Add a plugin to generate basic block vectors
+
+Alex Bennée (9):
+  deprecation: don't enable TCG plugins by default on 32 bit hosts
+  deprecation: don't enable TCG plugins by default with TCI
+  contrib/plugins: control flow plugin
+  tests/tcg: clean up output of memory system test
+  tests/tcg: only read/write 64 bit words on 64 bit systems
+  tests/tcg: ensure s390x-softmmu output redirected
+  tests/tcg: add a system test to check memory instrumentation
+  util/timer: avoid deadlock when shutting down
+  contrib/plugins: avoid hanging program
+
+Pierrick Bouvier (6):
+  plugins: save value during memory accesses
+  plugins: extend API to get latest memory value accessed
+  tests/tcg: add mechanism to run specific tests with plugins
+  tests/tcg: allow to check output of plugins
+  tests/tcg/plugins/mem: add option to print memory accesses
+  tests/tcg/multiarch: add test for plugin memory access
+
+Rowan Hart (2):
+  plugins: add plugin API to read guest memory
+  plugins: add option to dump write argument to syscall plugin
+
+ docs/about/deprecated.rst                     |  19 +
+ docs/about/emulation.rst                      |  44 +-
+ configure                                     |  32 +-
+ accel/tcg/atomic_template.h                   |  66 ++-
+ include/hw/core/cpu.h                         |   4 +
+ include/qemu/plugin.h                         |   4 +
+ include/qemu/qemu-plugin.h                    |  64 ++-
+ contrib/plugins/bbv.c                         | 158 +++++++
+ contrib/plugins/cflow.c                       | 384 ++++++++++++++++++
+ contrib/plugins/ips.c                         |   5 +
+ plugins/api.c                                 |  53 +++
+ plugins/core.c                                |   6 +
+ tcg/tcg-op-ldst.c                             |  66 ++-
+ tests/tcg/multiarch/system/memory.c           | 123 ++++--
+ tests/tcg/multiarch/test-plugin-mem-access.c  | 177 ++++++++
+ tests/tcg/plugins/mem.c                       | 248 ++++++++++-
+ tests/tcg/plugins/syscall.c                   | 117 ++++++
+ util/qemu-timer.c                             |  14 +-
+ accel/tcg/atomic_common.c.inc                 |  13 +-
+ accel/tcg/ldst_common.c.inc                   |  38 +-
+ contrib/plugins/Makefile                      |   2 +
+ plugins/qemu-plugins.symbols                  |   2 +
+ tests/tcg/Makefile.target                     |  12 +-
+ tests/tcg/alpha/Makefile.softmmu-target       |   2 +-
+ tests/tcg/alpha/Makefile.target               |   3 +
+ tests/tcg/multiarch/Makefile.target           |  11 +
+ tests/tcg/multiarch/check-plugin-output.sh    |  36 ++
+ .../multiarch/system/Makefile.softmmu-target  |   6 +
+ .../system/validate-memory-counts.py          | 129 ++++++
+ tests/tcg/ppc64/Makefile.target               |   5 +
+ tests/tcg/s390x/Makefile.softmmu-target       |   8 +-
+ 31 files changed, 1768 insertions(+), 83 deletions(-)
+ create mode 100644 contrib/plugins/bbv.c
+ create mode 100644 contrib/plugins/cflow.c
+ create mode 100644 tests/tcg/multiarch/test-plugin-mem-access.c
+ create mode 100755 tests/tcg/multiarch/check-plugin-output.sh
+ create mode 100755 tests/tcg/multiarch/system/validate-memory-counts.py
+
+-- 
+2.39.5
+
 
