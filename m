@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B55097A58C
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 17:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3215397A5B4
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 18:07:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqE1u-0001hK-4x; Mon, 16 Sep 2024 11:52:46 -0400
+	id 1sqEET-00015g-Iu; Mon, 16 Sep 2024 12:05:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sqE1o-0000w1-Jh; Mon, 16 Sep 2024 11:52:40 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sqE1n-0000Y7-0Y; Mon, 16 Sep 2024 11:52:40 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-205909afad3so47653695ad.2; 
- Mon, 16 Sep 2024 08:52:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726501957; x=1727106757; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yaqkhcr8XXVjz3AUT5s3kLltD+ErMtVDTb6FVMqoohs=;
- b=SniowYEu2Ls+XDjIQZeeBDMXttEtXx+RhU6YQBfFb5/AWTi7JlIiDKnb7woBztiM+B
- hQa/s+Ifz7x5K34Rc57/CIBszIGiW/598nUnKrVEJUcRa6W3lahA8ZY2c72a2LyMBt5W
- pKYWAV6B90LXXIxe2O4YGPKW4FWvuTbh3L4G6aLgBKWRGYalE7sPzsKtFsLFoCGItzv1
- p3f/hV9Ot1/0LhY6a8xsXYWJhlqG1BWHPJQVziWX3S1obT84+X9H8JrQFkG7qLX0GEDv
- GPJUomXLMM/Ht1TAXzwoPIi76a99VJcAesFtVyIJenbbbw2eJJnL7yHI8OHWC1hSzJd4
- d2Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726501957; x=1727106757;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yaqkhcr8XXVjz3AUT5s3kLltD+ErMtVDTb6FVMqoohs=;
- b=k0gPnuCYhMFYd18d9lsULvs8k4aSAJoP3nXhkCRQFozoCK2uEqeTI/ZU2P1Yu7E4XJ
- /WSTLvSwjg3FgP+HgJpgl2rTEQ0JpZ3Uth6z0sYc3/5WV+JuQnOHbF/A3hW+4sESKj4i
- wGuXttZZyEKCnCbh1G6FoD7FYxtAc7VWwEB0Mi+4XVXoLKbds0ygJlI1QFaqqFSSxM1b
- 8VCqHEJNxsuNrHF3IDtnWXhRd6X8DGk8PzUEWcT+FWT+qW16ilVxFQicYI+Y9sNRZ5RJ
- zLhQ6/scugZ/6VWel32U6Ohw3HDpqKc7lvqRpBMxHPqWCux356LisRUzYZLi6nu0hAgg
- BheA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUpfmesb/cL0etB6BzlDLnFjVJwOBP/IGkqOHljRO9i6pQAfNM8ygZbHhit5NsbhMX4TibTpxnz2ikF@nongnu.org
-X-Gm-Message-State: AOJu0Yzl9DD2nNnZbBD+dRJ2PDcZ8UgJ8CakXpHH+ltmRyUeXUGiJkvJ
- In/7esL5uG8CSB+0NMI7EF/XZkYD1dTLdARsop1gqd8o/1mMX0MCmDQyBQCr
-X-Google-Smtp-Source: AGHT+IH5p/iRr7iIS/Ny3bBbsGfR12QgknIk5rUaknXx+oSjoKlfkMkwxShX7afkWPvgJ5+Y8Tkpig==
-X-Received: by 2002:a17:902:f550:b0:205:4e4a:72d9 with SMTP id
- d9443c01a7336-2076e30651fmr265652415ad.7.1726501956810; 
- Mon, 16 Sep 2024 08:52:36 -0700 (PDT)
-Received: from localhost.localdomain (27-32-110-191.tpgi.com.au.
- [27.32.110.191]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-207946046cbsm37482545ad.105.2024.09.16.08.52.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Sep 2024 08:52:36 -0700 (PDT)
-From: Ajeet Singh <itachis6234@gmail.com>
-X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
-To: qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Mark Corbin <mark@dibsco.co.uk>, qemu-riscv@nongnu.org,
- Warner Losh <imp@bsdimp.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Ajeet Singh <itachis@FreeBSD.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v7 17/17] bsd-user: Add RISC-V 64-bit Target Configuration and
- Debug XML Files
-Date: Tue, 17 Sep 2024 01:51:19 +1000
-Message-Id: <20240916155119.14610-18-itachis@FreeBSD.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240916155119.14610-1-itachis@FreeBSD.org>
-References: <20240916155119.14610-1-itachis@FreeBSD.org>
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1sqEEH-0000Ty-PX
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 12:05:35 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1sqEEF-0001vT-Kv
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 12:05:33 -0400
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48GCbdqv006521;
+ Mon, 16 Sep 2024 16:05:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ har+liRnHIlw5CbzBQiJz2Hh5LqpbLEz00hkB+AXuCE=; b=AFlD62LuN0kVRUmw
+ gEw6JXMmondBs+yFXYGch4s+2g9vFpDhVWu0oV2+uahkQgZeNPGRTS9oHcP5lGwD
+ l5v+gImcufdAWsI3pRWm8E6HifUPsm84PtYE6cMBPn/GupVTi3zquaQQ+wPNsrlN
+ IqLHvLYgs6s24wjhCtbvaBg2jtWo5mhohyEQih6JIqD4SLVYEBR+E/fxcaDpu3Hv
+ MqYvq1hzY9KDZjcCzrATrxmUiG5U/+G+5QOvAgClcpzRMjHHEYgnOCQJY3xNJZ38
+ 0OUtQ45CtCAOlg1MlOyLwHighLrW7xv7puppzHqG2x3++2oxegCuj+4Tntc4//q8
+ tUY/AA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41n4gcvh3g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Sep 2024 16:05:28 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48GG5RRd018462
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Sep 2024 16:05:27 GMT
+Received: from [10.222.168.90] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 16 Sep
+ 2024 09:05:26 -0700
+Message-ID: <6404a2e7-0d29-42e5-b4ff-f7d7aba1939f@quicinc.com>
+Date: Mon, 16 Sep 2024 11:05:25 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/tcg/multiarch: Define _LARGEFILE64_SOURCE
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+CC: Brian Cain <bcain@quicinc.com>, <qemu-devel@nongnu.org>
+References: <20240907023924.1394728-1-bcain@quicinc.com>
+ <0298a6cc-2c75-4cb9-8f9c-146c0173fc31@quicinc.com>
+ <87wmjbg2th.fsf@draig.linaro.org>
+ <b6ef0a81-1153-4aca-9e27-570c2f0a6853@quicinc.com>
+ <87msk7fvmu.fsf@draig.linaro.org>
+Content-Language: en-US
+From: Brian Cain <quic_bcain@quicinc.com>
+In-Reply-To: <87msk7fvmu.fsf@draig.linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=itachis6234@gmail.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: FyPXEM3Iw9UzHFldFzQdghyIht8MM8r4
+X-Proofpoint-GUID: FyPXEM3Iw9UzHFldFzQdghyIht8MM8r4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ bulkscore=0 clxscore=1015 spamscore=0 adultscore=0 lowpriorityscore=0
+ mlxlogscore=999 impostorscore=0 mlxscore=0 priorityscore=1501 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409160105
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_bcain@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,29 +103,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
 
-Added configuration for RISC-V 64-bit target to the build system.
+On 9/16/2024 10:47 AM, Alex Bennée wrote:
+> Brian Cain <quic_bcain@quicinc.com> writes:
+>
+>> On 9/16/2024 8:12 AM, Alex Bennée wrote:
+>>> Brian Cain <quic_bcain@quicinc.com> writes:
+>>>
+>>>> On 9/6/2024 9:39 PM, Brian Cain wrote:
+>>>>> With newer clang builds (19.x), there's a warning for implicit function
+>>>>> declarations and it rejects linux-test.c.
+>>>>>
+>>>>> glibc/musl's readdir64() declaration in dirent is guarded by
+>>>>> _LARGEFILE64_SOURCE, so we'll define it to fix the warning.
+>>>>>
+>>>>>          BUILD   hexagon-linux-user guest-tests
+>>>>>        /local/mnt/workspace/upstream/toolchain_for_hexagon/qemu/tests/tcg/multiarch/linux/linux-test.c:189:14: error: call to undeclared function 'readdir64'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+>>>>>          189 |         de = readdir64(dir);
+>>>>>              |              ^
+>>>>>
+>>>>> Signed-off-by: Brian Cain <bcain@quicinc.com>
+>>>>> ---
+>>>>>     tests/tcg/multiarch/linux/linux-test.c | 1 +
+>>>>>     1 file changed, 1 insertion(+)
+>>>>>
+>>>>> diff --git a/tests/tcg/multiarch/linux/linux-test.c b/tests/tcg/multiarch/linux/linux-test.c
+>>>>> index 64f57cb287..4e0e862ad9 100644
+>>>>> --- a/tests/tcg/multiarch/linux/linux-test.c
+>>>>> +++ b/tests/tcg/multiarch/linux/linux-test.c
+>>>>> @@ -17,6 +17,7 @@
+>>>>>      *  along with this program; if not, see <http://www.gnu.org/licenses/>.
+>>>>>      */
+>>>>>     #define _GNU_SOURCE
+>>>>> +#define _LARGEFILE64_SOURCE
+>>>>>     #include <stdarg.h>
+>>>>>     #include <stdlib.h>
+>>>>>     #include <stdio.h>
+>>>> Alex -- what do you think about this one?
+>>> Actually scratch that, this is a 32 compat hack:
+>>>
+>>>     1f442da51e (tests/tcg/multiarch: fix 32bit linux-test on 64bit host)
+>>>
+>>> Is the __USE_LARGEFILE64 symbol in the hexagon headers?
+>>>
+>> musl does not define/use __USE_LARGEFILE64, no.  If it's well defined
+>> I could examine whether it makes sense to add this feature to musl,
+>> though.  How does __USE_LARGEFILE64 differ from _LARGEFILE64_SOURCE?
+>> Is it more appropriate to define that here?
+> Digging into the GNU source _LARGEFILE* is the correct define, the __USE
+> flags are internal. features.h says:
+>
+>     _LARGEFILE_SOURCE    Some more functions for correct standard I/O.
+>     _LARGEFILE64_SOURCE  Additional functionality from LFS for large files.
+>
+> although looking at _LARGEFILE64_SOURCE should be defined by
+> _GNU_SOURCE which is already set for linux-test.c
+>
+> According to the musl WHATSNEW:
+>
+>    compatibility:
+>    - make _GNU_SOURCE imply _LARGEFILE64_SOURCE
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
-Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- configs/targets/riscv64-bsd-user.mak | 4 ++++
- 1 file changed, 4 insertions(+)
- create mode 100644 configs/targets/riscv64-bsd-user.mak
+Yeah, I just noticed that myself. I guess I will look at how it's done 
+and see if I can fix this so it's more general and can include this case.
 
-diff --git a/configs/targets/riscv64-bsd-user.mak b/configs/targets/riscv64-bsd-user.mak
-new file mode 100644
-index 0000000000..191c2c483f
---- /dev/null
-+++ b/configs/targets/riscv64-bsd-user.mak
-@@ -0,0 +1,4 @@
-+TARGET_ARCH=riscv64
-+TARGET_BASE_ARCH=riscv
-+TARGET_ABI_DIR=riscv
-+TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml
--- 
-2.34.1
-
+> So is this a hexagon only thing?
+It's not - I expect it would impact any architecture using musl.
+>> -Brian
 
