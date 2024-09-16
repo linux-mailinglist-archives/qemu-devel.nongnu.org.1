@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A306979DC2
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 11:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6522979D62
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 10:57:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sq7dh-0000HY-Mc; Mon, 16 Sep 2024 05:03:21 -0400
+	id 1sq7VZ-0001of-Mc; Mon, 16 Sep 2024 04:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sq7dd-00004r-PK
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 05:03:17 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1sq7VD-0000ps-LQ
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:54:35 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sq7da-0006TX-24
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 05:03:17 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-375e5c12042so2254272f8f.3
- for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 02:03:13 -0700 (PDT)
+ id 1sq7Uu-0005F7-GF
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 04:54:35 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-42cb6f3a5bcso39669845e9.2
+ for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 01:54:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726477392; x=1727082192; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726476855; x=1727081655; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U65BhC2x8p0opV4eVz/mjZrnRxZWN1usFEftwKCpBYI=;
- b=WfrT7smF8riUJdd/6h145zPnBnuj2TnoIxvE98DCg8xqOd+WjozSpuXmXhIt5z8k0E
- t7wsmzbLmJcAFGk+xGvxKZVvqlrSzvtNCql5wRASvaJOnO1oOJLCkzcpTThYqbqoUxpe
- TThVm+SakRWV+yoeTuEPtl1KxVD186+Z8LzXczxPUT8SkEZXAtzFaU3fqmJEH6QeUDhT
- vr/y7iy9oiSGkYltCb7TVAFFdc+plxm7j2QBTfAbi1VX8iTi2cNWtZkjM1Shs8fMbzT9
- qq0Sjm+Z4IdtDIab/7p3EBM8yKkcVgieIA5PvQH0lIzjFvGBusOK1pM678yg3Ilkypmi
- 7Chg==
+ bh=WWhpWDyIZgZQNjk9OdCuUgywH4MF2qEBFr+67oTYvJA=;
+ b=DmMnDlOL3I0RX9ozBGc/MI6CrqvDC/IoEUA+2p9DIMNQDBZ3nKChnWdVtdXbX9ArbC
+ C13UsPs38xYYVQEzYfQwBKH0DM9eD2tEIOsOlfurpyjpd4AyhLgRAZbAkcQVjPIv9WN/
+ PDTGDHI4A1pouRYHgD+5DgRwyKQjixzgJDBqMBpww5dsagPmRXqEFAK/JZ3ocTEVMM0Q
+ ROYufXHg/9S5kv6pJwJC1pVQt2FPdmYfFTzl2Pxhe5tGlQH845gpnXIBcFrlW9HY91Ne
+ uowSyhA1Kg0q/fIehbTDfRAS1+VBytbuaXAg9QqlIyovnftVyMjmorZ6zYjFKY3Lwbzl
+ Tggw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726477392; x=1727082192;
+ d=1e100.net; s=20230601; t=1726476855; x=1727081655;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U65BhC2x8p0opV4eVz/mjZrnRxZWN1usFEftwKCpBYI=;
- b=d2/iMhV0oUMltKX4sCCuCwsVCPfF8pcgaM74TEqlr7SJ6uEfCHpsVygbYXMKQD+cxA
- nJ1NfRCi2F6Gf8JKldtvpqihSNfJasSerOPZi+uj+Fey/c0KXhzM8/1mh+URWPNKG8II
- CUhOlNfYAEEScqImM/t+e7wAQ72jKKm9cL4+HHhFJghhtyC3T8nKFtP9r2MFUCdngoLW
- uVrrEy7cdzEvJy/lxZ/CxVBFHgMeV+DEsrm0GR+YUWDIPwVzMjSLx3VMiNVFuQLfN7nn
- nSuzDf+m6fo5W/bpjt9kIrXKm0fFLDhRZfYweA4hJ00kGmrIDFndk1uQlaN2sHfEVBNK
- pcSA==
-X-Gm-Message-State: AOJu0YyexnCwluaX7Q2h9Jqz5lsQqLcLSif94RbPfyLcdgCmXx7AodAH
- wp7a8x3pgVym2gCkT74ZNsfS3m+EIJsfcLJUP0VAa30XO/iCrrLJA2HGJsKw+fE=
-X-Google-Smtp-Source: AGHT+IEUj37DLR+apiOF1A7V6eetNxiNCZIuQGst+RyRSXUppdiifzsC75DC4PmH9Xtjo6lmJwJWnw==
-X-Received: by 2002:adf:fc0a:0:b0:371:8c61:577c with SMTP id
- ffacd0b85a97d-378c2d121c0mr7853546f8f.26.1726477392184; 
- Mon, 16 Sep 2024 02:03:12 -0700 (PDT)
+ bh=WWhpWDyIZgZQNjk9OdCuUgywH4MF2qEBFr+67oTYvJA=;
+ b=o5JTCuzqZ5B9L5mV6dYfdn+p+ZHrU8afIx//qXpf5b/zElDjcMChuUG29mJghyxTsr
+ GM4OmxSupmM/V2O7CsGCPdsWfdRCAnGR0ngsoVIDgHc0/yPbhJVuQZKaiUWVOHJWlOzs
+ emfP1iiYeAGGszLa3brnHoHDwToEAckP0NnVY1eTm4BBLzCDpNqo318W12oJEV3xP2dU
+ INV/XKWXUGvoAI3Vffgt3BhXP7XdORORHpaePnhe0CJ1Df1DNy10a20GrlIXGt1snDLq
+ mUw2OjqE+5+u/+6fEi5T2ROFFmyPyMmmZ8s514Hda7dzC7znZX7c6xGXupH08eCC4pVP
+ czoA==
+X-Gm-Message-State: AOJu0YyLp5Vt0F8U4Kh/W2FNVec64lIH4G5oRK2V+9adLUekwKapT2KA
+ fwf3VR3CMNwviH2J1PGVORk/TCvDmT/BKpxcOg4Qrg91JyUYqkmOJ6on4SLNjFk=
+X-Google-Smtp-Source: AGHT+IEsOHCq9fWYmjKXebt6b/Cu+oKL3YCXyXi6X81L76TQAUrtgkITumA4HrdTIuueFVEC202jXQ==
+X-Received: by 2002:a05:600c:4f01:b0:42c:aeaa:6b0d with SMTP id
+ 5b1f17b1804b1-42d907205a5mr105040045e9.9.1726476855029; 
+ Mon, 16 Sep 2024 01:54:15 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-378e780015dsm6635115f8f.69.2024.09.16.02.03.10
+ 5b1f17b1804b1-42d9b05da47sm106194315e9.17.2024.09.16.01.54.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Sep 2024 02:03:11 -0700 (PDT)
+ Mon, 16 Sep 2024 01:54:10 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id F1A375FCE4;
- Mon, 16 Sep 2024 09:54:01 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 124CA5F8F2;
+ Mon, 16 Sep 2024 09:54:02 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
@@ -72,26 +72,25 @@ Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Rowan Hart <rowanbhart@gmail.com>
-Subject: [PATCH v2 17/18] plugins: add option to dump write argument to
- syscall plugin
-Date: Mon, 16 Sep 2024 09:53:59 +0100
-Message-Id: <20240916085400.1046925-18-alex.bennee@linaro.org>
+ Elisha Hollander <just4now666666@gmail.com>
+Subject: [PATCH v2 18/18] contrib/plugins: avoid hanging program
+Date: Mon, 16 Sep 2024 09:54:00 +0100
+Message-Id: <20240916085400.1046925-19-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240916085400.1046925-1-alex.bennee@linaro.org>
 References: <20240916085400.1046925-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,212 +106,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rowan Hart <rowanbhart@gmail.com>
+Although we asks for instructions per second we work in quanta and
+that cannot be 0. Fail to load the plugin instead and report the
+minimum IPS we can handle.
 
-Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Tested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240827215329.248434-3-rowanbhart@gmail.com>
-[AJB: tweak fmt string for vaddr]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
+Reported-by: Elisha Hollander <just4now666666@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-vAJB
-  - tweak fmt string for PRIu64
-v2
-  - add static to arch_syscall_info
----
- docs/about/emulation.rst    |  14 ++++-
- tests/tcg/plugins/syscall.c | 117 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 130 insertions(+), 1 deletion(-)
+ contrib/plugins/ips.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index a4470127c9..23e4949049 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -418,6 +418,19 @@ run::
-   160          1      0
-   135          1      0
+diff --git a/contrib/plugins/ips.c b/contrib/plugins/ips.c
+index 29fa556d0f..6f078689dc 100644
+--- a/contrib/plugins/ips.c
++++ b/contrib/plugins/ips.c
+@@ -152,6 +152,11 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+     vcpus = qemu_plugin_scoreboard_new(sizeof(vCPUTime));
+     max_insn_per_quantum = max_insn_per_second / NUM_TIME_UPDATE_PER_SEC;
  
-+Behaviour can be tweaked with the following arguments:
-+
-+.. list-table:: Syscall plugin arguments
-+  :widths: 20 80
-+  :header-rows: 1
-+
-+  * - Option
-+    - Description
-+  * - print=true|false
-+    - Print the number of times each syscall is called
-+  * - log_writes=true|false
-+    - Log the buffer of each write syscall in hexdump format
-+
- Test inline operations
- ......................
- 
-@@ -807,4 +820,3 @@ Other emulation features
- When running system emulation you can also enable deterministic
- execution which allows for repeatable record/replay debugging. See
- :ref:`Record/Replay<replay>` for more details.
--
-diff --git a/tests/tcg/plugins/syscall.c b/tests/tcg/plugins/syscall.c
-index 72e1a5bf90..89dc7f49b1 100644
---- a/tests/tcg/plugins/syscall.c
-+++ b/tests/tcg/plugins/syscall.c
-@@ -22,8 +22,57 @@ typedef struct {
-     int64_t errors;
- } SyscallStats;
- 
-+struct SyscallInfo {
-+    const char *name;
-+    int64_t write_sysno;
-+};
-+
-+static const struct SyscallInfo arch_syscall_info[] = {
-+    { "aarch64", 64 },
-+    { "aarch64_be", 64 },
-+    { "alpha", 4 },
-+    { "arm", 4 },
-+    { "armeb", 4 },
-+    { "avr", -1 },
-+    { "cris", -1 },
-+    { "hexagon", 64 },
-+    { "hppa", -1 },
-+    { "i386", 4 },
-+    { "loongarch64", -1 },
-+    { "m68k", 4 },
-+    { "microblaze", 4 },
-+    { "microblazeel", 4 },
-+    { "mips", 1 },
-+    { "mips64", 1 },
-+    { "mips64el", 1 },
-+    { "mipsel", 1 },
-+    { "mipsn32", 1 },
-+    { "mipsn32el", 1 },
-+    { "or1k", -1 },
-+    { "ppc", 4 },
-+    { "ppc64", 4 },
-+    { "ppc64le", 4 },
-+    { "riscv32", 64 },
-+    { "riscv64", 64 },
-+    { "rx", -1 },
-+    { "s390x", -1 },
-+    { "sh4", -1 },
-+    { "sh4eb", -1 },
-+    { "sparc", 4 },
-+    { "sparc32plus", 4 },
-+    { "sparc64", 4 },
-+    { "tricore", -1 },
-+    { "x86_64", 1 },
-+    { "xtensa", 13 },
-+    { "xtensaeb", 13 },
-+    { NULL, -1 },
-+};
-+
- static GMutex lock;
- static GHashTable *statistics;
-+static GByteArray *memory_buffer;
-+static bool do_log_writes;
-+static int64_t write_sysno = -1;
- 
- static SyscallStats *get_or_create_entry(int64_t num)
- {
-@@ -39,6 +88,44 @@ static SyscallStats *get_or_create_entry(int64_t num)
-     return entry;
- }
- 
-+/*
-+ * Hex-dump a GByteArray to the QEMU plugin output in the format:
-+ * 61 63 63 65 6c 09 09 20 20 20 66 70 75 09 09 09  | accel.....fpu...
-+ * 20 6d 6f 64 75 6c 65 2d 63 6f 6d 6d 6f 6e 2e 63  | .module-common.c
-+ */
-+static void hexdump(const GByteArray *data)
-+{
-+    g_autoptr(GString) out = g_string_new("");
-+
-+    for (guint index = 0; index < data->len; index += 16) {
-+        for (guint col = 0; col < 16; col++) {
-+            if (index + col < data->len) {
-+                g_string_append_printf(out, "%02x ", data->data[index + col]);
-+            } else {
-+                g_string_append(out, "   ");
-+            }
-+        }
-+
-+        g_string_append(out, " | ");
-+
-+        for (guint col = 0; col < 16; col++) {
-+            if (index + col >= data->len) {
-+                break;
-+            }
-+
-+            if (g_ascii_isgraph(data->data[index + col])) {
-+                g_string_append_printf(out, "%c", data->data[index + col]);
-+            } else {
-+                g_string_append(out, ".");
-+            }
-+        }
-+
-+        g_string_append(out, "\n");
++    if (max_insn_per_quantum == 0) {
++        fprintf(stderr, "minimum of %d instructions per second needed\n", NUM_TIME_UPDATE_PER_SEC);
++        return -1;
 +    }
 +
-+    qemu_plugin_outs(out->str);
-+}
-+
- static void vcpu_syscall(qemu_plugin_id_t id, unsigned int vcpu_index,
-                          int64_t num, uint64_t a1, uint64_t a2,
-                          uint64_t a3, uint64_t a4, uint64_t a5,
-@@ -54,6 +141,14 @@ static void vcpu_syscall(qemu_plugin_id_t id, unsigned int vcpu_index,
-         g_autofree gchar *out = g_strdup_printf("syscall #%" PRIi64 "\n", num);
-         qemu_plugin_outs(out);
-     }
-+
-+    if (do_log_writes && num == write_sysno) {
-+        if (qemu_plugin_read_memory_vaddr(a2, memory_buffer, a3)) {
-+            hexdump(memory_buffer);
-+        } else {
-+            fprintf(stderr, "Error reading memory from vaddr %"PRIu64"\n", a2);
-+        }
-+    }
- }
+     time_handle = qemu_plugin_request_time_control();
+     g_assert(time_handle);
  
- static void vcpu_syscall_ret(qemu_plugin_id_t id, unsigned int vcpu_idx,
-@@ -127,6 +222,10 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-             if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_print)) {
-                 fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-             }
-+        } else if (g_strcmp0(tokens[0], "log_writes") == 0) {
-+            if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_log_writes)) {
-+                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-+            }
-         } else {
-             fprintf(stderr, "unsupported argument: %s\n", argv[i]);
-             return -1;
-@@ -137,6 +236,24 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-         statistics = g_hash_table_new_full(NULL, g_direct_equal, NULL, g_free);
-     }
- 
-+    if (do_log_writes) {
-+        for (const struct SyscallInfo *syscall_info = arch_syscall_info;
-+            syscall_info->name != NULL; syscall_info++) {
-+
-+            if (g_strcmp0(syscall_info->name, info->target_name) == 0) {
-+                write_sysno = syscall_info->write_sysno;
-+                break;
-+            }
-+        }
-+
-+        if (write_sysno == -1) {
-+            fprintf(stderr, "write syscall number not found\n");
-+            return -1;
-+        }
-+
-+        memory_buffer = g_byte_array_new();
-+    }
-+
-     qemu_plugin_register_vcpu_syscall_cb(id, vcpu_syscall);
-     qemu_plugin_register_vcpu_syscall_ret_cb(id, vcpu_syscall_ret);
-     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
 -- 
 2.39.5
 
