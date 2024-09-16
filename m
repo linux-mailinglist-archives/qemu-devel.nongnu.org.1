@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDF097A4C5
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 17:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C4697A4D5
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 17:09:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqDFz-0007Yw-Vw; Mon, 16 Sep 2024 11:03:16 -0400
+	id 1sqDLc-0004V7-Op; Mon, 16 Sep 2024 11:09:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sqDFw-0007YS-PA
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 11:03:12 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1sqDLa-0004Tt-Qf
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 11:09:03 -0400
+Received: from mail-io1-xd2d.google.com ([2607:f8b0:4864:20::d2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sqDFt-0003cM-0I
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 11:03:10 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5c3ed267a7bso5813853a12.3
- for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 08:03:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1sqDLZ-000481-3I
+ for qemu-devel@nongnu.org; Mon, 16 Sep 2024 11:09:02 -0400
+Received: by mail-io1-xd2d.google.com with SMTP id
+ ca18e2360f4ac-82d24e18dfcso176639939f.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 08:08:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726498987; x=1727103787; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kTS3gBhLViHhhMXoM+4avk4HTdmFPf/JKzaEjggmhGk=;
- b=LbNtZJl+K+i4bwHmilS3/NZUWDCY/qZa03cikm7M9Ec9g9gr8yvyHiO5CczM21j1b8
- ehCnWkxI2fHzVchmQ31txRygZxFEDUeTRVNzIyWCBAQsklp4DToKXa6rPn4Qce+TckC5
- j20akLnAjwl+hAdn+oWr9ZEYNk6tu8aCSvj+paLu2a0hXTVgWH8PTnaO6PBqCflSjNBD
- imBTEOImr2zBRkxtA8tZenxCk5Y9Sfj+u+AuGuL7fA8VWQE/aa3+fuJnKwpO3uTYGH3H
- 7Et+jV/py1uSXjv9RPTjztP4sEiW/+DojgMPRDZPaRT67z/aIqMpSITAeKqrTlGexOET
- aRpQ==
+ d=gmail.com; s=20230601; t=1726499338; x=1727104138; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Vu2bW3oPLPtiaOMxv8oJDWfzTzC5BBzl6CK0bwZlSkE=;
+ b=WPm/b0iQGyZQIg9QZaUPfrS5iWBVXP9gdgk46vIqlwDb7tadKIquhRm0adAjKPUiyu
+ a+J+mtswONNbago9EPrT6Zybe2naf9wSXLNsEH6Bqy9wJEyfG6hBgVj3kzxEe/ju9nmX
+ TPylMJXUt6nJfXouyXpAxRZRGNh8GzRz9Q+igRyYc0XTRbe6aOzh+W1jW1/QhSZ+8y5w
+ wt08ntT7IqXvYISbGSogOKEatbrm85ZezMisVBeVAZB0snqJM55+x6DwrCBhe9sSPBkX
+ pEzUS+dl24b5zs70eQ/4VOf0mbuUmfx2/6nNVm220e9MxBg4wsD6NPXtXfoTmq/S73+3
+ HDNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726498987; x=1727103787;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kTS3gBhLViHhhMXoM+4avk4HTdmFPf/JKzaEjggmhGk=;
- b=MvwRzq9UCOB1mxzIDlhJEJbeh9JNWKVYk0qOHanDs7ks9qBVYdTEPnKFYm7YupWSXN
- bYMiG+Ro7LBLZR8aVguZR69CDiuLkckTDPvqmiQ/FmZ1TQMbJQ4rvTwDCIRG4sA4prH2
- pC4F5nLoYOxq78Tox1BKTmN2lDs9ypeai/ylDLqi6W1Ia2DMS/yI1OfN3qUTvzhjI5u4
- VhzX/ecSY2fjxL1QTxLzoNVFMo1C1CdLm/xtmfuK4n9/S/0TK6KW8PioY5vb3SFBNx5D
- PcunebilBRaLkCau1yxyrHTiDcFhJCgELQkz61COpPdhV0y7FJGC5M6bRAPrYeqcw2f9
- ns9A==
-X-Gm-Message-State: AOJu0YxnOirS1zTMuG3p94F16O+vX9ol3edjpXBxkX9feaiWx1Cgmc1O
- i8XeMInvKULsMzZ9zFcTkPb4M6y60DKC75cHoYY0jvOTGzx8naNUSAkUUg/5L9xEUmovAmQZ/+H
- XwwJ58sm14fCKpQIkQMRhO/HyoPRLKl9dt6sXcg==
-X-Google-Smtp-Source: AGHT+IHi73ZCw6gAHdIA4ntUTH1gKVVEnmiFkZWTBgyDpbWaK4ggJSnhdN0Fheb5k5CQbmwHjB1/nA1cSgwBmWSgSuA=
-X-Received: by 2002:a05:6402:13cd:b0:5c4:3150:5ab8 with SMTP id
- 4fb4d7f45d1cf-5c431505f2amr4899018a12.17.1726498986865; Mon, 16 Sep 2024
- 08:03:06 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726499338; x=1727104138;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Vu2bW3oPLPtiaOMxv8oJDWfzTzC5BBzl6CK0bwZlSkE=;
+ b=NFMIKDvmxoP7xAfXX/6DGsNNc0TC3tMpyvXD1GcKYS8sPvP5HFo6nq0iMtN90hgIDH
+ /vj4EoA1GR6fj1vkk0eRDYoeYhbwpy0FQSl793p5GgUR76y190o1ZDqqa34sLphMJ3Jt
+ GRcFrhQAgKpUcdSVqSB19WrV1sNuvLn9E1PNtjG5P4VC3jWM4AtgsuVHCVXZj/OvaJgO
+ Oe9aa4OFBQpTsIBD6h0MWfeYGW5tqaV4icejlwv8TjOh7HoFryl8VE5gFPO3h/j0hG6U
+ fsZlzdsDlKJzOiV71dfES4V/Kw1D21qxm0RG+5BhLL+Y2IGmXDiqbnbmtYUiK+BqLwUc
+ VZHQ==
+X-Gm-Message-State: AOJu0Yz7V+DbSWNtmS2zxkgW+254Of1l3NjmCeGhueIFz+EI/QswNx63
+ eecvRMCBL70vE+BY915geZzOUwyVeR3Stmf4nvvAwmuGFaR79iy9y9B5DCKI
+X-Google-Smtp-Source: AGHT+IH1gIPF3EhKwbuaRZX0PCyEdS4IBTEEIWk/DkQLPPf+Ots073bm8ldHhRNAHmGef5GuPCQXYg==
+X-Received: by 2002:a05:6602:26ca:b0:82a:4c58:e1e0 with SMTP id
+ ca18e2360f4ac-82d1f93f6dcmr1923382739f.12.1726499337890; 
+ Mon, 16 Sep 2024 08:08:57 -0700 (PDT)
+Received: from gmail.com (ip190-5-140-142.intercom.com.sv. [190.5.140.142])
+ by smtp.gmail.com with ESMTPSA id
+ 8926c6da1cb9f-4d37ed351ebsm1525037173.141.2024.09.16.08.08.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Sep 2024 08:08:56 -0700 (PDT)
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
+ peter.maydell@linaro.org, alex.bennee@linaro.org, edgar.iglesias@amd.com,
+ xen-devel@lists.xenproject.org
+Subject: [PATCH v1 0/4] hw/arm: xenpvh: Enable PCI for ARM PVH
+Date: Mon, 16 Sep 2024 17:08:48 +0200
+Message-ID: <20240916150853.1216703-1-edgar.iglesias@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20240916122603.71615-1-kraxel@redhat.com>
-In-Reply-To: <20240916122603.71615-1-kraxel@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 16 Sep 2024 16:02:55 +0100
-Message-ID: <CAFEAcA92v0UByDWykb7P=Ecd206WO+WNzdU2U=Q51o-fepPUFw@mail.gmail.com>
-Subject: Re: [PULL 0/4] Edk2 stable202408 20240916 patches
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Song Gao <gaosong@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2d;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-io1-xd2d.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,64 +90,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 16 Sept 2024 at 13:28, Gerd Hoffmann <kraxel@redhat.com> wrote:
->
-> The following changes since commit ea9cdbcf3a0b8d5497cddf87990f1b39d8f3bb=
-0a:
->
->   Merge tag 'hw-misc-20240913' of https://github.com/philmd/qemu into sta=
-ging (2024-09-15 18:27:40 +0100)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/kraxel/qemu.git tags/edk2-stable202408-20240916-pull=
--request
->
-> for you to fetch changes up to 2b759fbc9a70258a244f98da3415947dccc2702e:
->
->   add loongarch binaries for edk2-stable202408 (2024-09-16 14:21:34 +0200=
-)
->
-> ----------------------------------------------------------------
-> edk2: update to 2024-08 stable tag
->
-> ----------------------------------------------------------------
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Hi; this fails CI:
+Enable PCI on the ARM PVH machine. First we add a way to control the use
+of buffered IOREQ's since those are not supported on Xen/ARM.
+Finally we enable the PCI support.
 
-https://gitlab.com/qemu-project/qemu/-/jobs/7835418334
+I've published some instructions on how to try this including the work in
+progress Xen side of the PVH PCI support:
+https://github.com/edgarigl/docs/blob/master/xen/pvh/virtio-pci-dom0less.md
 
-449/942 qemu:qtest+qtest-aarch64 / qtest-aarch64/bios-tables-test
-ERROR 50.07s killed by signal 6 SIGABRT
->>> MALLOC_PERTURB_=3D179 QTEST_QEMU_BINARY=3D./qemu-system-aarch64 PYTHON=
-=3D/home/gitlab-runner/builds/E8PpwMky/0/qemu-project/qemu/build/pyvenv/bin=
-/python3 G_TEST_DBUS_DAEMON=3D/home/gitlab-runner/builds/E8PpwMky/0/qemu-pr=
-oject/qemu/tests/dbus-vmstate-daemon.sh QTEST_QEMU_IMG=3D./qemu-img QTEST_Q=
-EMU_STORAGE_DAEMON_BINARY=3D./storage-daemon/qemu-storage-daemon /home/gitl=
-ab-runner/builds/E8PpwMky/0/qemu-project/qemu/build/tests/qtest/bios-tables=
--test --tap -k
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80 =E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95
-stderr:
-acpi-test: Warning! SSDT binary file mismatch. Actual
-[aml:/tmp/aml-9FJ0T2], Expected
-[aml:tests/data/acpi/aarch64/virt/SSDT.memhp].
-See source file tests/qtest/bios-tables-test.c for instructions on how
-to update expected files.
-to see ASL diff between mismatched files install IASL, rebuild QEMU
-from scratch and re-run tests with V=3D1 environment variable set**
-ERROR:../tests/qtest/bios-tables-test.c:553:test_acpi_asl: assertion
-failed: (all_tables_match)
-(test program exited with status code -6)
+Cheers,
+Edgar
 
-thanks
--- PMM
+Edgar E. Iglesias (4):
+  xen: Expose handle_bufioreq in xen_register_ioreq
+  hw/xen: xenpvh: Disable buffered IOREQs for ARM
+  hw/xen: xenpvh: Add pci-intx-irq-base property
+  hw/arm: xenpvh: Enable PCI for ARM PVH
+
+ hw/arm/xen-pvh.c                |  17 ++++++
+ hw/i386/xen/xen-hvm.c           |   4 +-
+ hw/i386/xen/xen-pvh.c           |   3 +
+ hw/xen/xen-hvm-common.c         | 100 +++++++++++++++++++-------------
+ hw/xen/xen-pvh-common.c         |  40 ++++++++++++-
+ include/hw/xen/xen-hvm-common.h |   3 +
+ include/hw/xen/xen-pvh-common.h |   3 +
+ include/hw/xen/xen_native.h     |   3 +-
+ 8 files changed, 129 insertions(+), 44 deletions(-)
+
+-- 
+2.43.0
+
 
