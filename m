@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE00E97A4D4
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 17:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 315D097A4DF
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Sep 2024 17:10:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqDLl-0004ub-DA; Mon, 16 Sep 2024 11:09:13 -0400
+	id 1sqDLo-00056e-JV; Mon, 16 Sep 2024 11:09:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sqDLi-0004qE-Ns
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 11:09:11 -0400
-Received: from mail-io1-xd2f.google.com ([2607:f8b0:4864:20::d2f])
+ id 1sqDLl-0004xG-I4; Mon, 16 Sep 2024 11:09:13 -0400
+Received: from mail-il1-x136.google.com ([2607:f8b0:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sqDLh-00049G-AT
- for qemu-devel@nongnu.org; Mon, 16 Sep 2024 11:09:10 -0400
-Received: by mail-io1-xd2f.google.com with SMTP id
- ca18e2360f4ac-82cda617e1aso337109639f.2
- for <qemu-devel@nongnu.org>; Mon, 16 Sep 2024 08:09:08 -0700 (PDT)
+ id 1sqDLk-00049S-0H; Mon, 16 Sep 2024 11:09:13 -0400
+Received: by mail-il1-x136.google.com with SMTP id
+ e9e14a558f8ab-39f54ab8e69so17853595ab.1; 
+ Mon, 16 Sep 2024 08:09:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726499346; x=1727104146; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1726499349; x=1727104149; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OyzI0RstvYLpuGfxES5qaxdspprmer1imsnsZ+RTJfc=;
- b=hPjegOjaj6g/Fpn3KqVmmC//55ZZHS8bMUAOEsbg3NilqqzJT1RTF+hgga/fxi0QSb
- bzevm1WahAXBKWjSCk1dwxzcciOVGQF4xvuJghsmA9YOpVEmprpbHRu2w/8o5QhVB9oC
- r6fCfF6cHH/W0lrfRoFwLHmwZAJeAuNli/OxC4w6DrQNeUMHmeD6Eqcbxd7kTNCdY2h2
- tF4NAq7M3sQpLyz7ZnCovryV6tPagsDGm9uXSyVx5JD38PCRBWqI+PMFn6udm9tCHDa+
- XEUNJrExi6bjrvsPu2gO7W/EHfX6QizS01UTvCwjDR+MBeL2zorVWhAw0FxKN83R5C6f
- AZlw==
+ bh=tIDS2BgSDN2sYeAiwQv8u9Oegpn8pHfzCYrmX62ewXA=;
+ b=nIkpclEsIgGOjCSYa2bRLF0AQhYQ/L9WpgWXPPMGUa/2ExnR/Bu21VThvQmnx7ErZJ
+ eZQyMzZlL63vD3LFPDfJr4/WE1d8aFuK2cI79edpC/hLX7Uzdgdb0g7ZMRMug4ESwAZ5
+ B8SpAhvl/xamYhTWIogPQyXf8fxb4k58Zgyxv+0vH4jdjArxyCahIxH4G/EJHb3Zj/5j
+ a3dh51Ct12KC9SO/Mcm0mxC5prkID+0m0tX5ojirVxB99v/aeZZTz+RHuWiaydssrCax
+ JsnkYBlBzSyI3CA24CH3SBKb+cK8p6h2VSVhnqE6wqOeLQFk6H221gvKfIMoGLznlTUV
+ 7msg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726499346; x=1727104146;
+ d=1e100.net; s=20230601; t=1726499349; x=1727104149;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OyzI0RstvYLpuGfxES5qaxdspprmer1imsnsZ+RTJfc=;
- b=r7K1VAt3z1Z//2DWybcD17r4OpW8sjbyRQc7ijSwd6vlkdbjRnaRATqxzx5w7nS3Pz
- /Vvi8hvc/5A5UlCjT0KG7B8mxJnxP3oDMP9HWDJnzaPazImWKmnQ5Qz8Ma5rUXvFQQcU
- F070lz7aOpltsZ3ncrkT+IV0e40dAoach9fMCc/hJhemijsiJPebggFg7F4AcfKRhw4a
- XHVZlLuQTDq+DqsPLP+nJ6xjzo53uH81O6Xn5WL44f57LQqNkwepVcGSSFQEHaOLrEJm
- 3q2CxTkcOlgnaKrqAOfBvNTAeD4zF/fzTmabCvW5MAziAjmb70++03XPtyvwMmTzZMkN
- bNKw==
-X-Gm-Message-State: AOJu0Yw6RDMoAn/ZpmmPorO37lTLe/AqI1LuibHaZltRJpqr4iGMwyQb
- 206t2sqQfeW3x59emT0DAwZFOjgt0KOSWVfj5dN/tl+4iJ2rmkEMPQJrrHQm
-X-Google-Smtp-Source: AGHT+IFk3CkyeCYvrPI4xTDPi8u/IiZ0rmyEE85GTpP+WG+LffchGyM0QorbzWrvqbgokOTwFKRghA==
-X-Received: by 2002:a05:6602:3420:b0:82c:f30d:fc9b with SMTP id
- ca18e2360f4ac-82d1f982f5dmr1267148039f.13.1726499345949; 
- Mon, 16 Sep 2024 08:09:05 -0700 (PDT)
+ bh=tIDS2BgSDN2sYeAiwQv8u9Oegpn8pHfzCYrmX62ewXA=;
+ b=pfnwRUhF0Eg0PoBdDGkNy17fe3XxUUwvdWDMWXPm7cr/9L6lLVnDm/2eumIZeHKeVE
+ IoubFhQRx9fPfaSqvL1hK0IyiKwgmV6BbYHbZA8gXb7Upf1080F8R2m8+v8zHRFWiWZ8
+ J3j9x1Soqh4OLR5UaANToKkqxwQITbnQ12h9DWu7OpBfAkdqbc1nfN/VduzHrLaee/gB
+ smZjKBSecQ9V5++Dx65nOIrndT4RADxt6DnCkvIhyNCAnLxd53C+uKOFXNPJcIOv1vwz
+ Jbb9EJeMAtryO6GNlHjtBc9Redh5PW5WjqmGCntgwK/bu5N2lupN4aP9SZlrMz3DY9Uk
+ PJFQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWEbhVUxx/FZu16eIpHCdLP8BDtQH/CjlBqvfHXvZE3F2ofSp8G0hS6SeP9CMgU1uDA0o+9E9lKqQ==@nongnu.org
+X-Gm-Message-State: AOJu0YxbGKaZ/axh7sD8imC+X5dcTzlDFeOCxt3CLTjPgA/R0zpjiVny
+ QT7A7ZzQC7XhTck50c7fCF7wcwhDtyWW0A46eLql6Red75QKNfocXxlFN492
+X-Google-Smtp-Source: AGHT+IE86ZuS/7NQzNvR5tLVOdqaKbQKcpupAoW/xUcVW9ix1XY+RyPuORlI+lKWYit0Zg+iCQOwZg==
+X-Received: by 2002:a05:6e02:12c5:b0:39f:325f:78e6 with SMTP id
+ e9e14a558f8ab-3a0845a0d55mr130717185ab.0.1726499349478; 
+ Mon, 16 Sep 2024 08:09:09 -0700 (PDT)
 Received: from gmail.com (ip190-5-140-142.intercom.com.sv. [190.5.140.142])
  by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-82d49338889sm161572039f.38.2024.09.16.08.09.04
+ e9e14a558f8ab-3a092e9005csm16897935ab.79.2024.09.16.08.09.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Sep 2024 08:09:05 -0700 (PDT)
+ Mon, 16 Sep 2024 08:09:08 -0700 (PDT)
 From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
  peter.maydell@linaro.org, alex.bennee@linaro.org, edgar.iglesias@amd.com,
- xen-devel@lists.xenproject.org,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v1 3/4] hw/xen: xenpvh: Add pci-intx-irq-base property
-Date: Mon, 16 Sep 2024 17:08:51 +0200
-Message-ID: <20240916150853.1216703-4-edgar.iglesias@gmail.com>
+ xen-devel@lists.xenproject.org, qemu-arm@nongnu.org
+Subject: [PATCH v1 4/4] hw/arm: xenpvh: Enable PCI for ARM PVH
+Date: Mon, 16 Sep 2024 17:08:52 +0200
+Message-ID: <20240916150853.1216703-5-edgar.iglesias@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240916150853.1216703-1-edgar.iglesias@gmail.com>
 References: <20240916150853.1216703-1-edgar.iglesias@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d2f;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-io1-xd2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::136;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-il1-x136.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -96,72 +95,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
+Enable PCI support for the ARM Xen PVH machine.
+
 Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
- hw/xen/xen-pvh-common.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ hw/arm/xen-pvh.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/hw/xen/xen-pvh-common.c b/hw/xen/xen-pvh-common.c
-index 76a9b2b945..218ac851cf 100644
---- a/hw/xen/xen-pvh-common.c
-+++ b/hw/xen/xen-pvh-common.c
-@@ -218,6 +218,11 @@ static void xen_pvh_init(MachineState *ms)
-             error_report("pci-ecam-size only supports values 0 or 0x10000000");
-             exit(EXIT_FAILURE);
-         }
-+        if (!s->cfg.pci_intx_irq_base) {
-+            error_report("PCI enabled but pci-intx-irq-base not set");
-+            exit(EXIT_FAILURE);
-+        }
-+
-         xenpvh_gpex_init(s, xpc, sysmem);
-     }
+diff --git a/hw/arm/xen-pvh.c b/hw/arm/xen-pvh.c
+index 28af3910ea..33f0dd5982 100644
+--- a/hw/arm/xen-pvh.c
++++ b/hw/arm/xen-pvh.c
+@@ -39,6 +39,16 @@ static void xen_arm_instance_init(Object *obj)
+                                          VIRTIO_MMIO_DEV_SIZE };
+ }
  
-@@ -273,6 +278,30 @@ XEN_PVH_PROP_MEMMAP(pci_ecam)
- XEN_PVH_PROP_MEMMAP(pci_mmio)
- XEN_PVH_PROP_MEMMAP(pci_mmio_high)
- 
-+static void xen_pvh_set_pci_intx_irq_base(Object *obj, Visitor *v,
-+                                          const char *name, void *opaque,
-+                                          Error **errp)
++static void xen_pvh_set_pci_intx_irq(void *opaque, int intx_irq, int level)
 +{
-+    XenPVHMachineState *xp = XEN_PVH_MACHINE(obj);
-+    uint32_t value;
++    XenPVHMachineState *s = XEN_PVH_MACHINE(opaque);
++    int irq = s->cfg.pci_intx_irq_base + intx_irq;
 +
-+    if (!visit_type_uint32(v, name, &value, errp)) {
-+        return;
++    if (xendevicemodel_set_irq_level(xen_dmod, xen_domid, irq, level)) {
++        error_report("xendevicemodel_set_pci_intx_level failed");
 +    }
-+
-+    xp->cfg.pci_intx_irq_base = value;
 +}
 +
-+static void xen_pvh_get_pci_intx_irq_base(Object *obj, Visitor *v,
-+                                          const char *name, void *opaque,
-+                                          Error **errp)
-+{
-+    XenPVHMachineState *xp = XEN_PVH_MACHINE(obj);
-+    uint32_t value = xp->cfg.pci_intx_irq_base;
-+
-+    visit_type_uint32(v, name, &value, errp);
-+}
-+
- void xen_pvh_class_setup_common_props(XenPVHMachineClass *xpc)
+ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
  {
-     ObjectClass *oc = OBJECT_CLASS(xpc);
-@@ -318,6 +347,13 @@ do {                                                                      \
-         OC_MEMMAP_PROP(oc, "pci-ecam", pci_ecam);
-         OC_MEMMAP_PROP(oc, "pci-mmio", pci_mmio);
-         OC_MEMMAP_PROP(oc, "pci-mmio-high", pci_mmio_high);
-+
-+        object_class_property_add(oc, "pci-intx-irq-base", "uint32_t",
-+                                  xen_pvh_get_pci_intx_irq_base,
-+                                  xen_pvh_set_pci_intx_irq_base,
-+                                  NULL, NULL);
-+        object_class_property_set_description(oc, "pci-intx-irq-base",
-+                                  "Set PCI INTX interrupt base line.");
-     }
+     XenPVHMachineClass *xpc = XEN_PVH_MACHINE_CLASS(oc);
+@@ -69,7 +79,11 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
+     /* Xen/ARM does not use buffered IOREQs.  */
+     xpc->handle_bufioreq = HVM_IOREQSRV_BUFIOREQ_OFF;
  
- #ifdef CONFIG_TPM
++    /* PCI INTX delivery.  */
++    xpc->set_pci_intx_irq = xen_pvh_set_pci_intx_irq;
++
+     /* List of supported features known to work on PVH ARM.  */
++    xpc->has_pci = true;
+     xpc->has_tpm = true;
+     xpc->has_virtio_mmio = true;
+ 
 -- 
 2.43.0
 
