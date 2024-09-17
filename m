@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5587E97AEE0
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DAAB97AEDD
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:34:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqVWr-0006rS-KY; Tue, 17 Sep 2024 06:33:53 -0400
+	id 1sqVWY-0006Ef-Dz; Tue, 17 Sep 2024 06:33:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVl-000670-UE
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVl-000673-V1
  for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVi-0006kB-B1
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVj-0006kU-Ns
  for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726569161;
+ s=mimecast20190719; t=1726569163;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YxJmrVQlvQu9QUMfYcSyI+hnNGbhivvfaSAO8ZA+A3c=;
- b=bbc1kX8b/964b/SKz6OlxVAbAEgs1T/uDmbTPUE2Tvbbm4OpMQchahH63iz8UUmfj9yg/Q
- RqGclBoNHDhmIwTA2jluZvbPt5oJFkZO167ycgxysPAIylCfnzEb9ADQg7KiOg3nNuRmb3
- 8oYMFNMKK0fs5tzVAnrecVtQzxsATpk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=T3S03emqiACR4UcCYsadHUuF/xYoupzmjS6f8Wz8fGI=;
+ b=f3J109aLbxZqSTgxxtlYANm09wKIQoQE6ZNccJ6JX19R4tRzuEPkBgWwX39ZpDW3w8HhhV
+ Nz9rqS2PO7h7MX/zbDIk1IvMKSROShSdKGVaCCRndqL2Ax5zlLgx/gHcgnu5dZp/oSFM1P
+ N4R0WLCpQZZMIy1j8WOLiW0zeKhjxn8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-z0Db3RvoM5GS81srm1lCQQ-1; Tue,
- 17 Sep 2024 06:32:39 -0400
-X-MC-Unique: z0Db3RvoM5GS81srm1lCQQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-xKVJ5f8ENia4xZ-MZNMlvg-1; Tue,
+ 17 Sep 2024 06:32:41 -0400
+X-MC-Unique: xKVJ5f8ENia4xZ-MZNMlvg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A117C1955D47; Tue, 17 Sep 2024 10:32:38 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A771A1955D59; Tue, 17 Sep 2024 10:32:40 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.193.154])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2BD3219560B0; Tue, 17 Sep 2024 10:32:36 +0000 (UTC)
+ id 195CF19560B0; Tue, 17 Sep 2024 10:32:38 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
-Subject: [PULL 2/8] vfio/igd: return an invalid generation for unknown devices
-Date: Tue, 17 Sep 2024 12:32:23 +0200
-Message-ID: <20240917103229.876515-3-clg@redhat.com>
+Subject: [PULL 3/8] vfio/igd: support legacy mode for all known generations
+Date: Tue, 17 Sep 2024 12:32:24 +0200
+Message-ID: <20240917103229.876515-4-clg@redhat.com>
 In-Reply-To: <20240917103229.876515-1-clg@redhat.com>
 References: <20240917103229.876515-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,37 +82,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Corvin Köhne <corvin.koehne@gmail.com>
 
-Intel changes it's specification quite often e.g. the location and size
-of the BDSM register has change for gen 11 devices and later. This
-causes our emulation to fail on those devices. So, it's impossible for
-us to use a suitable default value for unknown devices. Instead of
-returning a random generation value and hoping that everthing works
-fine, we should verify that different devices are working and add them
-to our list of known devices.
+We're soon going to add support for legacy mode to ElkhartLake and
+TigerLake devices. Those are gen 11 and 12 devices. At the moment, all
+devices identified by our igd_gen function do support legacy mode. This
+won't change when adding our new devices of gen 11 and 12. Therefore, it
+makes more sense to accept legacy mode for all known devices instead of
+maintaining a long list of known good generations. If we add a new
+generation to igd_gen which doesn't support legacy mode for some reason,
+it'll be easy to advance the check to reject legacy mode for this
+specific generation.
 
 Signed-off-by: Corvin Köhne <c.koehne@beckhoff.com>
 Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
 ---
- hw/vfio/igd.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ hw/vfio/igd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index d320d032a7f3b19df0d055178f6fefe4bdfd8668..650a323ddaac746de780103ca857256709c0e0aa 100644
+index 650a323ddaac746de780103ca857256709c0e0aa..d5e57656a8b7bb207b421977f9a2c76943d4a899 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -90,7 +90,11 @@ static int igd_gen(VFIOPCIDevice *vdev)
-         return 8;
-     }
- 
--    return 8; /* Assume newer is compatible */
-+    /*
-+     * Unfortunately, Intel changes it's specification quite often. This makes
-+     * it impossible to use a suitable default value for unknown devices.
-+     */
-+    return -1;
- }
- 
- typedef struct VFIOIGDQuirk {
+@@ -416,7 +416,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+      * devices maintain compatibility with generation 8.
+      */
+     gen = igd_gen(vdev);
+-    if (gen != 6 && gen != 8) {
++    if (gen == -1) {
+         error_report("IGD device %s is unsupported in legacy mode, "
+                      "try SandyBridge or newer", vdev->vbasedev.name);
+         return;
 -- 
 2.46.0
 
