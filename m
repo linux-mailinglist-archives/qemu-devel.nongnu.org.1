@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5886797B409
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8B297B400
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:14:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqchs-000406-7L; Tue, 17 Sep 2024 14:13:45 -0400
+	id 1sqci8-0005mM-OQ; Tue, 17 Sep 2024 14:14:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqchL-00038V-30; Tue, 17 Sep 2024 14:13:14 -0400
+ id 1sqchM-0003CM-0m; Tue, 17 Sep 2024 14:13:14 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqchI-0002vP-Re; Tue, 17 Sep 2024 14:13:10 -0400
+ id 1sqchK-0002vR-7h; Tue, 17 Sep 2024 14:13:11 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9F58E8FBFD;
- Tue, 17 Sep 2024 21:12:50 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 5CDBA8FBFE;
+ Tue, 17 Sep 2024 21:12:51 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 50F7313E75D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id DDAF413E75E;
  Tue, 17 Sep 2024 21:13:06 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 v2 00/82] Patch Round-up for stable 9.0.3,
- freeze on 2024-09-16 (frozen)
-Date: Tue, 17 Sep 2024 21:12:43 +0300
-Message-Id: <20240917181256.634732-1-mjt@tls.msk.ru>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 70/82] gitlab: migrate the s390x custom machine to 22.04
+Date: Tue, 17 Sep 2024 21:12:44 +0300
+Message-Id: <20240917181256.634732-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <qemu-stable-9.0.3-20240917211142@cover.tls.msk.ru>
+References: <qemu-stable-9.0.3-20240917211142@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,192 +58,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v9.0.3:
+From: Alex Bennée <alex.bennee@linaro.org>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.0
+20.04 is dead (from QEMU's point of view), long live 22.04!
 
-Patch freeze is 2024-09-16 (frozen), and the release is planned for 2024-09-18:
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240426153938.1707723-3-alex.bennee@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 108d99742af1fa6e977dcfac9d4151b7915e33a3)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-  https://wiki.qemu.org/Planning/9.0
+diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
+index a0e79acd39..29e52df283 100644
+--- a/.gitlab-ci.d/custom-runners.yml
++++ b/.gitlab-ci.d/custom-runners.yml
+@@ -29,7 +29,7 @@
+       junit: build/meson-logs/testlog.junit.xml
+ 
+ include:
+-  - local: '/.gitlab-ci.d/custom-runners/ubuntu-20.04-s390x.yml'
++  - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml'
+   - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml'
+   - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml'
+   - local: '/.gitlab-ci.d/custom-runners/centos-stream-8-x86_64.yml'
+diff --git a/.gitlab-ci.d/custom-runners/ubuntu-20.04-s390x.yml b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
+similarity index 88%
+rename from .gitlab-ci.d/custom-runners/ubuntu-20.04-s390x.yml
+rename to .gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
+index cdae6c5212..85e2809573 100644
+--- a/.gitlab-ci.d/custom-runners/ubuntu-20.04-s390x.yml
++++ b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
+@@ -1,13 +1,13 @@
+-# All ubuntu-20.04 jobs should run successfully in an environment
++# All ubuntu-22.04 jobs should run successfully in an environment
+ # setup by the scripts/ci/setup/build-environment.yml task
+-# "Install basic packages to build QEMU on Ubuntu 20.04/20.04"
++# "Install basic packages to build QEMU on Ubuntu 22.04"
+ 
+-ubuntu-20.04-s390x-all-linux-static:
++ubuntu-22.04-s390x-all-linux-static:
+  extends: .custom_runner_template
+  needs: []
+  stage: build
+  tags:
+- - ubuntu_20.04
++ - ubuntu_22.04
+  - s390x
+  rules:
+  - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
+@@ -23,12 +23,12 @@ ubuntu-20.04-s390x-all-linux-static:
+  - make --output-sync check-tcg
+  - make --output-sync -j`nproc` check
+ 
+-ubuntu-20.04-s390x-all:
++ubuntu-22.04-s390x-all:
+  extends: .custom_runner_template
+  needs: []
+  stage: build
+  tags:
+- - ubuntu_20.04
++ - ubuntu_22.04
+  - s390x
+  timeout: 75m
+  rules:
+@@ -42,12 +42,12 @@ ubuntu-20.04-s390x-all:
+  - make --output-sync -j`nproc`
+  - make --output-sync -j`nproc` check
+ 
+-ubuntu-20.04-s390x-alldbg:
++ubuntu-22.04-s390x-alldbg:
+  extends: .custom_runner_template
+  needs: []
+  stage: build
+  tags:
+- - ubuntu_20.04
++ - ubuntu_22.04
+  - s390x
+  rules:
+  - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
+@@ -65,12 +65,12 @@ ubuntu-20.04-s390x-alldbg:
+  - make --output-sync -j`nproc`
+  - make --output-sync -j`nproc` check
+ 
+-ubuntu-20.04-s390x-clang:
++ubuntu-22.04-s390x-clang:
+  extends: .custom_runner_template
+  needs: []
+  stage: build
+  tags:
+- - ubuntu_20.04
++ - ubuntu_22.04
+  - s390x
+  rules:
+  - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
+@@ -87,11 +87,11 @@ ubuntu-20.04-s390x-clang:
+  - make --output-sync -j`nproc`
+  - make --output-sync -j`nproc` check
+ 
+-ubuntu-20.04-s390x-tci:
++ubuntu-22.04-s390x-tci:
+  needs: []
+  stage: build
+  tags:
+- - ubuntu_20.04
++ - ubuntu_22.04
+  - s390x
+  rules:
+  - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
+@@ -107,12 +107,12 @@ ubuntu-20.04-s390x-tci:
+    || { cat config.log meson-logs/meson-log.txt; exit 1; }
+  - make --output-sync -j`nproc`
+ 
+-ubuntu-20.04-s390x-notcg:
++ubuntu-22.04-s390x-notcg:
+  extends: .custom_runner_template
+  needs: []
+  stage: build
+  tags:
+- - ubuntu_20.04
++ - ubuntu_22.04
+  - s390x
+  rules:
+  - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
+-- 
+2.39.5
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
-
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01* a4975023fb13 Fiona Ebner:
-   hw/scsi/lsi53c895a: bump instruction limit in scripts processing to fix 
-   regression
-02* 57a8a80d1a5b Fiona Ebner:
-   scsi: fix regression and honor bootindex again for legacy drives
-03* 3becc9390810 Markus Armbruster:
-   qapi/qom: Document feature unstable of @x-vfio-user-server
-04* 5669d26ec614 Peter Maydell:
-   target/arm: Fix handling of LDAPR/STLR with negative offset
-05* 25489b521b61 Peter Maydell:
-   target/arm: LDAPR should honour SCTLR_ELx.nAA
-06* 31d93fedf41c Daniyal Khan:
-   target/arm: Use float_status copy in sme_fmopa_s
-07* 207d30b5fdb5 Richard Henderson:
-   target/arm: Use FPST_F16 for SME FMOPA (widening)
-08* 30a1690f2402 Akihiko Odaki:
-   hvf: arm: Do not advance PC when raising an exception
-09* c510fe78f1b7 Zheyu Ma:
-   hw/nvme: fix memory leak in nvme_dsm
-10* a207d5f87d66 Zhao Liu:
-   hw/cxl/cxl-host: Fix segmentation fault when getting cxl-fmw property
-11* 98e77e3dd8dd Manos Pitsidianakis:
-   virtio-snd: add max size bounds check in input cb
-12* 9b6083465fb8 Manos Pitsidianakis:
-   virtio-snd: check for invalid param shift operands
-13* a3c8d7e38550 Clément Mathieu--Drif:
-   intel_iommu: fix FRCD construction macro
-14* 13be929aff80 Paolo Bonzini:
-   target/i386: do not crash if microvm guest uses SGX CPUID leaves
-15* 903cc9e1173e songziming:
-   chardev/char-win-stdio.c: restore old console mode
-16* 2465c89fb983 Bibo Mao:
-   hw/intc/loongson_ipi: Access memory in little endian
-17* 0c2086bc7360 Philippe Mathieu-Daudé:
-   hw/intc/loongson_ipi: Fix resource leak
-18* a18ffbcf8b9f Song Gao:
-   target/loongarch: Fix helper_lddir() a CID INTEGER_OVERFLOW issue
-19* 851495571d14 Peter Maydell:
-   util/async.c: Forbid negative min/max in 
-   aio_context_set_thread_pool_params()
-20* e0bf95443ee9 Sergey Dyasli:
-   Revert "qemu-char: do not operate on sources from finalize callbacks"
-21* d72479b11797 Thomas Huth:
-   hw/virtio: Fix the de-initialization of vhost-user devices
-22* 83340193b991 Richard Henderson:
-   target/rx: Use target_ulong for address in LI
-23* 546d574b11e0 Frederik van Hövell:
-   hw/char/bcm2835_aux: Fix assert when receive FIFO fills up
-24* 0892fffc2aba Peter Maydell:
-   hw/misc/bcm2835_property: Fix handling of FRAMEBUFFER_SET_PALETTE
-25* 56f1c0db928a Peter Maydell:
-   target/arm: Don't assert for 128-bit tile accesses when SVL is 128
-26* ea3f5a90f036 Peter Maydell:
-   target/arm: Fix UMOPA/UMOPS of 16-bit values
-27* 76916dfa89e8 Peter Maydell:
-   target/arm: Avoid shifts by -1 in tszimm_shr() and tszimm_shl()
-28* f573ac059ed0 Peter Maydell:
-   target/arm: Ignore SMCR_EL2.LEN and SVCR_EL2.LEN if EL2 is not enabled
-29* 48e5b5f994bc Peter Maydell:
-   docs/sphinx/depfile.py: Handle env.doc2path() returning a Path not a str
-30* 9a45b0761628 Peter Maydell:
-   hw/i386/amd_iommu: Don't leak memory in amdvi_update_iotlb()
-31* 5a558be93ad6 Marco Palumbi:
-   hw/arm/mps2-tz.c: fix RX/TX interrupts order
-32* 55f9f4ee018c Peter Maydell:
-   target/arm: Handle denormals correctly for FMOPA (widening)
-33* f1595ceb9aad Akihiko Odaki:
-   virtio-net: Ensure queue index fits with RSS
-34* f937309fbdbb thomas:
-   virtio-net: Fix network stall at the host side waiting for kick
-35* 64f75f57f9d2 David Woodhouse:
-   net: Reinstate '-net nic, model=help' output as documented in man page
-36* 0bd5b9284fa9 Fabiano Rosas:
-   migration/multifd: Fix multifd_send_setup cleanup when channel creation 
-   fails
-37* 5b0c2742c839 Ilya Leoshkevich:
-   linux-user/elfload: Fix pr_pid values in core files
-38* ac63755b2001 Richard Henderson:
-   target/i386: Fix VSIB decode
-39* 682a05280504 Richard Henderson:
-   tcg/ppc: Sync tcg_out_test and constraints
-40* ed5a159c3de4 Philippe Mathieu-Daudé:
-   hw/sd/sdhci: Reset @data_count index on invalid ADMA transfers
-41* b881cf00c99e Amjad Alsharafi:
-   vvfat: Fix bug in writing to middle of file
-42* 21b25a0e466a Amjad Alsharafi:
-   vvfat: Fix usage of `info.file.offset`
-43* f60a6f7e17bf Amjad Alsharafi:
-   vvfat: Fix wrong checks for cluster mappings invariant
-44* 5eed3db33650 Amjad Alsharafi:
-   vvfat: Fix reading files with non-continuous clusters
-45* c8f60bfb4345 Amjad Alsharafi:
-   iotests: Add `vvfat` tests
-46* fb1c2aaa981e Eric Blake:
-   nbd/server: Plumb in new args to nbd_client_add()
-47* c8a76dbd90c2 Eric Blake:
-   nbd/server: CVE-2024-7409: Cap default max-connections to 100
-48* b9b72cb3ce15 Eric Blake:
-   nbd/server: CVE-2024-7409: Drop non-negotiating clients
-49* 3e7ef738c846 Eric Blake:
-   nbd/server: CVE-2024-7409: Close stray clients at server-stop
-50* 3874f5f73c44 Eric Blake:
-   nbd/server: CVE-2024-7409: Avoid use-after-free when closing server
-51* fa62cb989a91 David Woodhouse:
-   net: Fix '-net nic,model=' for non-help arguments
-52* 446e5e8b4515 Jianzhou Yue:
-   hw/core/ptimer: fix timer zero period condition for freq > 1GHz
-53* 547c4e50929e Stefano Garzarella:
-   block/blkio: use FUA flag on write zeroes only if supported
-54* 416f2b16c02c Richard Henderson:
-   target/i386: Do not apply REX to MMX operands
-55* 8e0c9a9efa21 Richard Henderson:
-   target/arm: Clear high SVE elements in handle_vec_simd_wshli
-56* 150c24f34e9c Peter Maydell:
-   target/arm: Update translation regime comment for new features
-57* 4c2c04746932 Peter Maydell:
-   target/arm: Fix usage of MMU indexes when EL3 is AArch32
-58* 940d802b24e6 Alexander Ivanov:
-   module: Prevent crash by resetting local_err in module_load_qom_all()
-59* fe68cc0923eb Alyssa Ross:
-   target/hexagon: don't look for static glib
-60* 3aefee3ec01e Richard Henderson:
-   linux-user: Preserve NULL hit in target_mmap subroutines
-61* 12d36294a2d9 Richard Henderson:
-   target/sparc: Restrict STQF to sparcv9
-62* 87e012f29f2e Peter Maydell:
-   crypto/tlscredspsk: Free username on finalize
-63* 6a22121c4f25 Klaus Jensen:
-   hw/nvme: fix leak of uninitialized memory in io_mgmt_recv
-64* a8e63ff289d1 Cindy Lu:
-   virtio-pci: Fix the use of an uninitialized irqfd
-65* 4c107870e8b2 Peter Maydell:
-   migration/multifd: Free MultiFDRecvParams::data
-66* a4ad4a9d98f7 Richard Henderson:
-   linux-user: Handle short reads in mmap_h_gt_g
-67* 94962ff00d09 Nicholas Piggin:
-   Revert "replay: stop us hanging in rr_wait_io_event"
-68* 7d14471a1218 Volker Rümelin:
-   hw/audio/virtio-snd: fix invalid param check
-69* ead5078cf1a5 Helge Deller:
-   target/hppa: Fix PSW V-bit packaging in cpu_hppa_get for hppa64
-70 108d99742af1 Alex Bennée:
-   gitlab: migrate the s390x custom machine to 22.04
-71 203beb6f0474 Arman Nabiev:
-   target/ppc: Fix migration of CPUs with TLB_EMB TLB type
-72 b84f06c2bee7 David Hildenbrand:
-   softmmu/physmem: fix memory leak in dirty_memory_extend()
-73 c72cab5ad9f8 Tiago Pasqualini:
-   crypto: run qcrypto_pbkdf2_count_iters in a new thread
-74 e6c09ea4f9e5 Daniel P. Berrangé:
-   crypto: check gnutls & gcrypt support the requested pbkdf hash
-75 586ac2c67d70 Daniel P. Berrangé:
-   crypto: avoid leak of ctx when bad cipher mode is given
-76 d6192f3f7593 Haoran Zhang:
-   hw/display/vhost-user-gpu.c: fix vhost_user_gpu_chr_read()
-77 d0068b746a0a Alex Bennée:
-   tests/docker: remove debian-armel-cross
-78 19d2111059c8 Alex Bennée:
-   tests/docker: update debian i686 and mipsel images to bookworm
-79 7fc6611cad3e Volker Rümelin:
-   hw/audio/virtio-sound: fix heap buffer overflow
-80 110684c9a69a Jan Klötzke:
-   hw/intc/arm_gic: fix spurious level triggered interrupts
-81 ae23cd00170b Gert Wollny:
-   ui/sdl2: set swap interval explicitly when OpenGL is enabled
-82 8d5ab746b1e6 Daniel P. Berrangé:
-   gitlab: fix logic for changing docker tag on stable branches
-
-(commit(s) marked with * were in previous series and are not resent)
 
