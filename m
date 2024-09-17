@@ -2,39 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECFF797B3F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC5897B3FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:14:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqcfY-0007Nb-Mi; Tue, 17 Sep 2024 14:11:20 -0400
+	id 1sqcfa-0007cQ-3v; Tue, 17 Sep 2024 14:11:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqcfS-0006xd-Gs; Tue, 17 Sep 2024 14:11:15 -0400
+ id 1sqcfS-0006yd-Ka; Tue, 17 Sep 2024 14:11:15 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqcfQ-0002h6-6d; Tue, 17 Sep 2024 14:11:14 -0400
+ id 1sqcfQ-0002hI-PS; Tue, 17 Sep 2024 14:11:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C1AFE8FBDB;
- Tue, 17 Sep 2024 21:10:50 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id CBECC8FBDC;
+ Tue, 17 Sep 2024 21:10:51 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 390D513E752;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0BA5613E753;
  Tue, 17 Sep 2024 21:11:06 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Arman Nabiev <nabiev.arman13@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
+Cc: qemu-stable@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.7 55/65] target/ppc: Fix migration of CPUs with TLB_EMB
- TLB type
-Date: Tue, 17 Sep 2024 21:10:44 +0300
-Message-Id: <20240917181054.633974-3-mjt@tls.msk.ru>
+Subject: [Stable-8.2.7 56/65] softmmu/physmem: fix memory leak in
+ dirty_memory_extend()
+Date: Tue, 17 Sep 2024 21:10:45 +0300
+Message-Id: <20240917181054.633974-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-8.2.7-20240917211019@cover.tls.msk.ru>
 References: <qemu-stable-8.2.7-20240917211019@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,52 +62,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Arman Nabiev <nabiev.arman13@gmail.com>
+From: David Hildenbrand <david@redhat.com>
 
-In vmstate_tlbemb a cut-and-paste error meant we gave
-this vmstate subsection the same "cpu/tlb6xx" name as
-the vmstate_tlb6xx subsection. This breaks migration load
-for any CPU using the TLB_EMB CPU type, because when we
-see the "tlb6xx" name in the incoming data we try to
-interpret it as a vmstate_tlb6xx subsection, which it
-isn't the right format for:
+As reported by Peter, we might be leaking memory when removing the
+highest RAMBlock (in the weird ram_addr_t space), and adding a new one.
 
- $ qemu-system-ppc -drive
- if=none,format=qcow2,file=/home/petmay01/test-images/virt/dummy.qcow2
- -monitor stdio -M bamboo
- QEMU 9.0.92 monitor - type 'help' for more information
- (qemu) savevm foo
- (qemu) loadvm foo
- Missing section footer for cpu
- Error: Error -22 while loading VM state
+We will fail to realize that we already allocated bitmaps for more
+dirty memory blocks, and effectively discard the pointers to them.
 
-Correct the incorrect vmstate section name. Since migration
-for these CPU types was completely broken before, we don't
-need to care that this is a migration compatibility break.
+Fix it by getting rid of last_ram_page() and by remembering the number
+of dirty memory blocks that have been allocated already.
 
-This affects the PPC 405, 440, 460 and e200 CPU families.
+While at it, let's use "unsigned int" for the number of blocks, which
+should be sufficient until we reach ~32 exabytes.
 
+Looks like this leak was introduced as we switched from using a single
+bitmap_zero_extend() to allocating multiple bitmaps:
+bitmap_zero_extend() relies on g_renew() which should have taken care of
+this.
+
+Resolves: https://lkml.kernel.org/r/CAFEAcA-k7a+VObGAfCFNygQNfCKL=AfX6A4kScq=VSSK0peqPg@mail.gmail.com
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 5b82b703b69a ("memory: RCU ram_list.dirty_memory[] for safe RAM hotplug")
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Tested-by: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2522
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Arman Nabiev <nabiev.arman13@gmail.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 203beb6f047467a4abfc8267c234393cea3f471c)
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/r/20240828090743.128647-1-david@redhat.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+(cherry picked from commit b84f06c2bee727b3870b4eeccbe3a45c5aea14c1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: context fix due to lack of
+ v9.0.0-rc4-49-g15f7a80c49cb "RAMBlock: Add support of KVM private guest memfd")
 
-diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-index 68cbdffecd..3e010f3a07 100644
---- a/target/ppc/machine.c
-+++ b/target/ppc/machine.c
-@@ -621,7 +621,7 @@ static bool tlbemb_needed(void *opaque)
+diff --git a/include/exec/ramlist.h b/include/exec/ramlist.h
+index 2ad2a81acc..d9cfe530be 100644
+--- a/include/exec/ramlist.h
++++ b/include/exec/ramlist.h
+@@ -50,6 +50,7 @@ typedef struct RAMList {
+     /* RCU-enabled, writes protected by the ramlist lock. */
+     QLIST_HEAD(, RAMBlock) blocks;
+     DirtyMemoryBlocks *dirty_memory[DIRTY_MEMORY_NUM];
++    unsigned int num_dirty_blocks;
+     uint32_t version;
+     QLIST_HEAD(, RAMBlockNotifier) ramblock_notifiers;
+ } RAMList;
+diff --git a/system/physmem.c b/system/physmem.c
+index a63853a7bc..073e6c6124 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -1499,18 +1499,6 @@ static ram_addr_t find_ram_offset(ram_addr_t size)
+     return offset;
  }
  
- static const VMStateDescription vmstate_tlbemb = {
--    .name = "cpu/tlb6xx",
-+    .name = "cpu/tlbemb",
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = tlbemb_needed,
+-static unsigned long last_ram_page(void)
+-{
+-    RAMBlock *block;
+-    ram_addr_t last = 0;
+-
+-    RCU_READ_LOCK_GUARD();
+-    RAMBLOCK_FOREACH(block) {
+-        last = MAX(last, block->offset + block->max_length);
+-    }
+-    return last >> TARGET_PAGE_BITS;
+-}
+-
+ static void qemu_ram_setup_dump(void *addr, ram_addr_t size)
+ {
+     int ret;
+@@ -1763,13 +1751,11 @@ void qemu_ram_msync(RAMBlock *block, ram_addr_t start, ram_addr_t length)
+ }
+ 
+ /* Called with ram_list.mutex held */
+-static void dirty_memory_extend(ram_addr_t old_ram_size,
+-                                ram_addr_t new_ram_size)
++static void dirty_memory_extend(ram_addr_t new_ram_size)
+ {
+-    ram_addr_t old_num_blocks = DIV_ROUND_UP(old_ram_size,
+-                                             DIRTY_MEMORY_BLOCK_SIZE);
+-    ram_addr_t new_num_blocks = DIV_ROUND_UP(new_ram_size,
+-                                             DIRTY_MEMORY_BLOCK_SIZE);
++    unsigned int old_num_blocks = ram_list.num_dirty_blocks;
++    unsigned int new_num_blocks = DIV_ROUND_UP(new_ram_size,
++                                               DIRTY_MEMORY_BLOCK_SIZE);
+     int i;
+ 
+     /* Only need to extend if block count increased */
+@@ -1801,6 +1787,8 @@ static void dirty_memory_extend(ram_addr_t old_ram_size,
+             g_free_rcu(old_blocks, rcu);
+         }
+     }
++
++    ram_list.num_dirty_blocks = new_num_blocks;
+ }
+ 
+ static void ram_block_add(RAMBlock *new_block, Error **errp)
+@@ -1809,11 +1797,9 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+     const bool shared = qemu_ram_is_shared(new_block);
+     RAMBlock *block;
+     RAMBlock *last_block = NULL;
+-    ram_addr_t old_ram_size, new_ram_size;
++    ram_addr_t ram_size;
+     Error *err = NULL;
+ 
+-    old_ram_size = last_ram_page();
+-
+     qemu_mutex_lock_ramlist();
+     new_block->offset = find_ram_offset(new_block->max_length);
+ 
+@@ -1841,11 +1827,8 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+         }
+     }
+ 
+-    new_ram_size = MAX(old_ram_size,
+-              (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS);
+-    if (new_ram_size > old_ram_size) {
+-        dirty_memory_extend(old_ram_size, new_ram_size);
+-    }
++    ram_size = (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS;
++    dirty_memory_extend(ram_size);
+     /* Keep the list sorted from biggest to smallest block.  Unlike QTAILQ,
+      * QLIST (which has an RCU-friendly variant) does not have insertion at
+      * tail, so save the last element in last_block.
 -- 
 2.39.5
 
