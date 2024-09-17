@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1F797ACEA
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 10:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1A497ACEF
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 10:38:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqTiO-00082s-T3; Tue, 17 Sep 2024 04:37:40 -0400
+	id 1sqTiR-0008FU-FQ; Tue, 17 Sep 2024 04:37:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sqTiN-0007xX-68
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:37:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sqTiP-000854-0y
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:37:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sqTiL-0006Dw-IH
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:37:38 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sqTiN-0006E5-Lt
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:37:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726562256;
+ s=mimecast20190719; t=1726562258;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cQV4dLPvgzGlPMhKSmvh+b3FRZfVIgNpQ8FZLUAJEsI=;
- b=XBOcJAjghkb8jnXWpnEDjVbu6Nqov+TcbVxLW16weNtFcORFJRFv/66foA8VcEMzjvk0uI
- KbzGUq8wVS9cZayYqYoomN1PbfeT4gQmc0PHhl2+WhiuoFOPL7ydK5bbztJiyYQGLZ6akh
- vsOVKbknZb41PcmF8DN3qq1GPDg5XeE=
+ bh=DzceLVyM2xacnXHavYwusyljAWcEQdStwSuMyu4CVY0=;
+ b=Z9oYdWkKA7P24wq/08K67tvUYeLvp5FzV6BPUhOHzrAtwvoxTo9fYhWkdSRUC7Y+ISQwmW
+ JlQsGRa85Q1pcVxxHS2JgWGW8MlTr0j0RCZM9BsvsJcgXGELn6BXKC9wMW4cESaFlDRBMT
+ i+lPRUraxXn7dBIXa/Cb3VYit65h7mc=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-bbMEuRxVPUSx_nZE0TnA4w-1; Tue,
- 17 Sep 2024 04:37:33 -0400
-X-MC-Unique: bbMEuRxVPUSx_nZE0TnA4w-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-381-E7_tYwHnP2CqwygmM8DruA-1; Tue,
+ 17 Sep 2024 04:37:36 -0400
+X-MC-Unique: E7_tYwHnP2CqwygmM8DruA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4646B195604F; Tue, 17 Sep 2024 08:37:32 +0000 (UTC)
+ id 970A919560BF; Tue, 17 Sep 2024 08:37:35 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.193.72])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F36AB19560AD; Tue, 17 Sep 2024 08:37:31 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6350219560A3; Tue, 17 Sep 2024 08:37:34 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 0F0C618009B8; Tue, 17 Sep 2024 10:37:18 +0200 (CEST)
+ id 1E8EE18009BE; Tue, 17 Sep 2024 10:37:18 +0200 (CEST)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
@@ -53,15 +53,15 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 6/7] tests/acpi: update aarch64/virt/SSDT.memhp
-Date: Tue, 17 Sep 2024 10:37:00 +0200
-Message-ID: <20240917083709.571436-7-kraxel@redhat.com>
+Subject: [PULL 7/7] tests/acpi: disallow acpi test data updates
+Date: Tue, 17 Sep 2024 10:37:01 +0200
+Message-ID: <20240917083709.571436-8-kraxel@redhat.com>
 In-Reply-To: <20240917083709.571436-1-kraxel@redhat.com>
 References: <20240917083709.571436-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,27 +85,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Address (and checksum) change due to firmware image size change.
-
- DefinitionBlock ("", "SSDT", 1, "BOCHS ", "NVDIMM", 0x00000001)
- [ ... ]
--    Name (MEMA, 0x43C80000)
-+    Name (MEMA, 0x43DA0000)
-
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- tests/data/acpi/aarch64/virt/SSDT.memhp | Bin 1817 -> 1817 bytes
- 1 file changed, 0 insertions(+), 0 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/data/acpi/aarch64/virt/SSDT.memhp b/tests/data/acpi/aarch64/virt/SSDT.memhp
-index fb3dcde5a10936667ad75a759b8bd444a7b19fc2..1deb1d2832201a5da7501821f1ea20d3eecb08b2 100644
-GIT binary patch
-delta 22
-dcmbQqH<OPmIM^jblAVEpan43AUUsHi&Hz111wsG-
-
-delta 22
-dcmbQqH<OPmIM^jblAVEpaot8PUUsGv&Hz2O1wsG-
-
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 00137acabc71..dfb8523c8bf4 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,2 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/aarch64/virt/SSDT.memhp",
 -- 
 2.46.0
 
