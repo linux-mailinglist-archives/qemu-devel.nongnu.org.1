@@ -2,71 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1220097AFCF
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 13:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 128A997AFDE
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 13:55:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqWda-0004GF-Tp; Tue, 17 Sep 2024 07:44:54 -0400
+	id 1sqWnI-00078m-FZ; Tue, 17 Sep 2024 07:54:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sqWdZ-0004B1-8G
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 07:44:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alexei.filippov@syntacore.com>)
+ id 1sqWnG-00077J-Jn; Tue, 17 Sep 2024 07:54:54 -0400
+Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sqWdX-0001hs-T2
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 07:44:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726573491;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0hl4fs5RZqZqahC6uPbPpXv4+BsjwiXseHkWVPvs8Bs=;
- b=PAbQmORSmycyaKi0+3YPOdtJu6qsb+k7EaXk/PJAhRgor83CH1fCBOnw5phsGKFxMsu1Ba
- KqNR82og/OJXbZz86YAkSiN2B4+YzwBhazORms0gGEIDR4IN2g4DpEqG6oGkMbxskISrdu
- dttZ75QtCPUilMiUOMPBJoeWi1zIKhI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-FuHLSCK7MI-sksGiAsPrpQ-1; Tue,
- 17 Sep 2024 07:44:47 -0400
-X-MC-Unique: FuHLSCK7MI-sksGiAsPrpQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E62F01955F3E; Tue, 17 Sep 2024 11:44:46 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.70])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3098E19560AA; Tue, 17 Sep 2024 11:44:44 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, Dmitry Frolov <frolov@swemel.ru>
-Subject: [PULL 1/1] hw/block: fix uint32 overflow
-Date: Tue, 17 Sep 2024 13:43:13 +0200
-Message-ID: <20240917114313.616836-2-stefanha@redhat.com>
-In-Reply-To: <20240917114313.616836-1-stefanha@redhat.com>
-References: <20240917114313.616836-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <alexei.filippov@syntacore.com>)
+ id 1sqWnD-0003BS-At; Tue, 17 Sep 2024 07:54:54 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com D07C5C0002
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-04; t=1726574080;
+ bh=0b+6vJn1T0D5RZfp8GAXyY+hCJJIU3UK4EfWpiPrbFA=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=jBL8iHH6VstOOej18g7r+F/v44Qv9gfcmvv7ld2O5RzwqqNiXe9FWAZJv2S9j1/l/
+ OD9nzBxtSY+Gqyqj17s2gfqJpL/jcuGUlI+7eW0BTznX6JerVL3Zp9TvkF4+MqwBlW
+ 5vR/j4XjfpR21QezxwoqX/gzpwcALc181+4f1+QASJVecQ0obpvgd39qeamzNCoEkA
+ cjQNJ4S/vThUOhjhK6BG7cNyyBndTr/cn7dk6MwsG5KOVMEHnioXxCbT3ZOFclirst
+ Ab5DhBMjwjM+ZFuO3Royjo+X3NoxGEXjdcB48VS57V6VJDUsHhXEnlTX2gWknjLQdm
+ WVgQJStuAj4Rg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-03; t=1726574080;
+ bh=0b+6vJn1T0D5RZfp8GAXyY+hCJJIU3UK4EfWpiPrbFA=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=t2uJsMR0G1AgTUOTuc0ZCjh4cTlOUWONyrGLUyLMnv1fMDYdc52FqstUV4s2DfULa
+ uootGu9j+KmF06DUG5mmShzwfBpZgNh6hIyOt/z/ley9Is/a2fW0cyXxTzgIv4sxJv
+ ThbBMNyz82/PTCmQmOFTQmBuU3Cp44YFhnFvMxhOA5ItCeqT2407FhfRfeAYl40W4a
+ TICzjApiOHu2jeSITtfnD8+VaorBwLL0QnSJJMHXEW+oigBetd0dISJjsW9stembCV
+ S5y+MWA+Msw1tFvdFZdAE+TcDmWvpfpQBZ/b+CUbUFpm4W/8xuhZvUX+H/1hJGPDMU
+ /D4pLUGO5/aAA==
+From: Alexei Filippov <alexei.filippov@syntacore.com>
+To: <ajones@ventanamicro.com>
+CC: <alexei.filippov@syntacore.com>, <alistair.francis@wdc.com>,
+ <alistair23@gmail.com>, <apatel@ventanamicro.com>, <bin.meng@windriver.com>,
+ <dbarboza@ventanamicro.com>, <liwei1518@gmail.com>, <palmer@dabbelt.com>,
+ <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>,
+ <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH v9] target/riscv/kvm/kvm-cpu.c: kvm_riscv_handle_sbi() fail
+ with vendor-specific SBI
+Date: Tue, 17 Sep 2024 14:54:33 +0300
+Message-ID: <20240917115433.38503-1-alexei.filippov@syntacore.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240626-1420003b7d88d892be22a719@orel>
+References: <20240626-1420003b7d88d892be22a719@orel>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+X-ClientProxiedBy: T-EXCH-07.corp.yadro.com (172.17.11.57) To
+ T-EXCH-12.corp.yadro.com (172.17.11.143)
+Received-SPF: permerror client-ip=89.207.88.248;
+ envelope-from=alexei.filippov@syntacore.com; helo=mta-04.yadro.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SORTED_RECIPS=2.499,
+ SPF_HELO_NONE=0.001, T_SPF_PERMERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,34 +79,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dmitry Frolov <frolov@swemel.ru>
+kvm_riscv_handle_sbi() may return not supported return code to not
+trigger qemu abort with vendor-specific sbi.
 
-The product bs->bl.zone_size * (bs->bl.nr_zones - 1) may overflow
-uint32.
+Add new error path to provide proper error in case of
+qemu_chr_fe_read_all() may not return sizeof(ch), because exactly zero
+just means we failed to read input, which can happen, so
+telling the SBI caller we failed to read, but telling the caller of this
+function that we successfully emulated the SBI call, is correct. However,
+anything else, other than sizeof(ch), means something unexpected happened,
+so we should return an error.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Added SBI related return code's defines.
 
-Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
-Message-id: 20240917080356.270576-2-frolov@swemel.ru
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
+Fixes: 4eb47125 ("target/riscv: Handle KVM_EXIT_RISCV_SBI exit")
 ---
- hw/block/virtio-blk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/kvm/kvm-cpu.c         | 10 ++++++----
+ target/riscv/sbi_ecall_interface.h | 12 ++++++++++++
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 73bdfd6122..115795392c 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -700,7 +700,7 @@ static int virtio_blk_handle_zone_mgmt(VirtIOBlockReq *req, BlockZoneOp op)
-     } else {
-         if (bs->bl.zone_size > capacity - offset) {
-             /* The zoned device allows the last smaller zone. */
--            len = capacity - bs->bl.zone_size * (bs->bl.nr_zones - 1);
-+            len = capacity - bs->bl.zone_size * (bs->bl.nr_zones - 1ull);
-         } else {
-             len = bs->bl.zone_size;
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index f6e3156b8d..9f2ca67c9f 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1517,19 +1517,21 @@ static int kvm_riscv_handle_sbi(CPUState *cs, struct kvm_run *run)
+         ret = qemu_chr_fe_read_all(serial_hd(0)->be, &ch, sizeof(ch));
+         if (ret == sizeof(ch)) {
+             run->riscv_sbi.ret[0] = ch;
+-        } else {
++            ret = 0;
++        } else if (ret == 0) {
+             run->riscv_sbi.ret[0] = -1;
++        } else {
++            ret = -1;
          }
+-        ret = 0;
+         break;
+     case SBI_EXT_DBCN:
+         kvm_riscv_handle_sbi_dbcn(cs, run);
+         break;
+     default:
+         qemu_log_mask(LOG_UNIMP,
+-                      "%s: un-handled SBI EXIT, specific reasons is %lu\n",
++                      "%s: Unhandled SBI exit with extension-id %lu\n",
+                       __func__, run->riscv_sbi.extension_id);
+-        ret = -1;
++        run->riscv_sbi.ret[0] = SBI_ERR_NOT_SUPPORTED;
+         break;
+     }
+     return ret;
+diff --git a/target/riscv/sbi_ecall_interface.h b/target/riscv/sbi_ecall_interface.h
+index 7dfe5f72c6..4df0accd78 100644
+--- a/target/riscv/sbi_ecall_interface.h
++++ b/target/riscv/sbi_ecall_interface.h
+@@ -86,4 +86,16 @@
+ #define SBI_EXT_VENDOR_END              0x09FFFFFF
+ /* clang-format on */
+ 
++/* SBI return error codes */
++#define SBI_SUCCESS                  0
++#define SBI_ERR_FAILURE             -1
++#define SBI_ERR_NOT_SUPPORTED       -2
++#define SBI_ERR_INVALID_PARAM       -3
++#define SBI_ERR_DENIED              -4
++#define SBI_ERR_INVALID_ADDRESS     -5
++#define SBI_ERR_ALREADY_AVAILABLE   -6
++#define SBI_ERR_ALREADY_STARTED     -7
++#define SBI_ERR_ALREADY_STOPPED     -8
++#define SBI_ERR_NO_SHMEM            -9
++
+ #endif
 -- 
-2.46.0
+2.34.1
 
 
