@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4E097AEEB
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7601B97AEF4
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:36:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqVYq-0001MC-S8; Tue, 17 Sep 2024 06:35:56 -0400
+	id 1sqVYu-0001dS-7u; Tue, 17 Sep 2024 06:36:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVYm-00016h-WE
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:35:53 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVYp-0001Kt-DM
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:35:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVYl-0007Fg-G1
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:35:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVYn-0007G8-Ey
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:35:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726569350;
+ s=mimecast20190719; t=1726569352;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hoBwxfYdwuiiKMEu2bGkI4nHXMwWTkGKladO/9RWyPk=;
- b=a8o4ilCSvpldNgVJ/Qo6CNmpqSioFoogmtw31L77DkrmTZKj6TRGvYwmMwbCQi8DsXnUCe
- RYaNupWaNFAcyhl6Kt+dsUJfjnX5fyo20UpWENHdVg9i7m8t+iVWOvKAT5lxcqe8uoKXES
- q/lKWqPs4i0yqLrUgTW0K81U4JgQ9+0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ZcfVKoeae24MG5eyTk1wCTBA/OGBxqokEt5gUe0kV28=;
+ b=Td08Al6dtzeDH60a1wxBOH7TWNrVa8cKplBC8tjKJRITYIgE3gyU4++ivd42CrApUrNxv6
+ AWao4zxZLH2WyTLE/PYNr0A7J/bpdUfnJjU0ldv4P75kEgacdNjDXYcwCx35cqXFUCAdYR
+ ytrdAIdZX4U95uoHzhHpdLiZQr/x7aE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-422-_lJVB5RxM9ujUc_JWiBuug-1; Tue,
- 17 Sep 2024 06:35:49 -0400
-X-MC-Unique: _lJVB5RxM9ujUc_JWiBuug-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-128-Dip0trEUNOKbiSB-qgMovw-1; Tue,
+ 17 Sep 2024 06:35:51 -0400
+X-MC-Unique: Dip0trEUNOKbiSB-qgMovw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 939C519560BF; Tue, 17 Sep 2024 10:35:48 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A1AA41956089; Tue, 17 Sep 2024 10:35:50 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.158])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9A4C119560A3; Tue, 17 Sep 2024 10:35:46 +0000 (UTC)
+ id 30A6019560A3; Tue, 17 Sep 2024 10:35:48 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/17] tests/qtest/boot-order-test: Make the machine name
- mandatory in this test
-Date: Tue, 17 Sep 2024 12:35:25 +0200
-Message-ID: <20240917103540.149144-3-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 03/17] tests/qtest/hd-geo-test: Check for availability of "pc"
+ machine before using it
+Date: Tue, 17 Sep 2024 12:35:26 +0200
+Message-ID: <20240917103540.149144-4-thuth@redhat.com>
 In-Reply-To: <20240917103540.149144-1-thuth@redhat.com>
 References: <20240917103540.149144-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -80,39 +78,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's make sure that we always pass a machine name to the test_boot_orders()
-function, so we can check whether the machine is available in the binary
-and skip the test in case it is not included in the build.
+In case QEMU has been configured with "--without-default-devices", the
+"pc" machine type might be missing in the binary. We should check for
+its availability before using it.
 
-Message-ID: <20240905191434.694440-4-thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240905191434.694440-5-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/boot-order-test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/qtest/hd-geo-test.c | 71 +++++++++++++++++++++------------------
+ 1 file changed, 38 insertions(+), 33 deletions(-)
 
-diff --git a/tests/qtest/boot-order-test.c b/tests/qtest/boot-order-test.c
-index 8f2b6ef05a..c67b8cfe16 100644
---- a/tests/qtest/boot-order-test.c
-+++ b/tests/qtest/boot-order-test.c
-@@ -31,7 +31,7 @@ static void test_a_boot_order(const char *machine,
-     uint64_t actual;
-     QTestState *qts;
- 
--    if (machine && !qtest_has_machine(machine)) {
-+    if (!qtest_has_machine(machine)) {
-         g_test_skip("Machine is not available");
-         return;
+diff --git a/tests/qtest/hd-geo-test.c b/tests/qtest/hd-geo-test.c
+index d08bffad91..85eb8d7668 100644
+--- a/tests/qtest/hd-geo-test.c
++++ b/tests/qtest/hd-geo-test.c
+@@ -1074,17 +1074,26 @@ int main(int argc, char **argv)
+         }
      }
-@@ -107,7 +107,7 @@ static const boot_order_test test_cases_pc[] = {
  
- static void test_pc_boot_order(void)
- {
--    test_boot_orders(NULL, read_boot_order_pc, test_cases_pc);
-+    test_boot_orders("pc", read_boot_order_pc, test_cases_pc);
- }
+-    qtest_add_func("hd-geo/ide/none", test_ide_none);
+-    qtest_add_func("hd-geo/ide/drive/mbr/blank", test_ide_drive_mbr_blank);
+-    qtest_add_func("hd-geo/ide/drive/mbr/lba", test_ide_drive_mbr_lba);
+-    qtest_add_func("hd-geo/ide/drive/mbr/chs", test_ide_drive_mbr_chs);
+-    qtest_add_func("hd-geo/ide/drive/cd_0", test_ide_drive_cd_0);
+-    qtest_add_func("hd-geo/ide/device/mbr/blank", test_ide_device_mbr_blank);
+-    qtest_add_func("hd-geo/ide/device/mbr/lba", test_ide_device_mbr_lba);
+-    qtest_add_func("hd-geo/ide/device/mbr/chs", test_ide_device_mbr_chs);
+-    qtest_add_func("hd-geo/ide/device/user/chs", test_ide_device_user_chs);
+-    qtest_add_func("hd-geo/ide/device/user/chst", test_ide_device_user_chst);
+-    if (have_qemu_img()) {
++    if (qtest_has_machine("pc")) {
++        qtest_add_func("hd-geo/ide/none", test_ide_none);
++        qtest_add_func("hd-geo/ide/drive/mbr/blank", test_ide_drive_mbr_blank);
++        qtest_add_func("hd-geo/ide/drive/mbr/lba", test_ide_drive_mbr_lba);
++        qtest_add_func("hd-geo/ide/drive/mbr/chs", test_ide_drive_mbr_chs);
++        qtest_add_func("hd-geo/ide/drive/cd_0", test_ide_drive_cd_0);
++        qtest_add_func("hd-geo/ide/device/mbr/blank", test_ide_device_mbr_blank);
++        qtest_add_func("hd-geo/ide/device/mbr/lba", test_ide_device_mbr_lba);
++        qtest_add_func("hd-geo/ide/device/mbr/chs", test_ide_device_mbr_chs);
++        qtest_add_func("hd-geo/ide/device/user/chs", test_ide_device_user_chs);
++        qtest_add_func("hd-geo/ide/device/user/chst", test_ide_device_user_chst);
++    }
++
++    if (!have_qemu_img()) {
++        g_test_message("QTEST_QEMU_IMG not set or qemu-img missing; "
++                       "skipping hd-geo/override/* tests");
++        goto test_add_done;
++    }
++
++    if (qtest_has_machine("pc")) {
+         qtest_add_func("hd-geo/override/ide", test_override_ide);
+         if (qtest_has_device("lsi53c895a")) {
+             qtest_add_func("hd-geo/override/scsi", test_override_scsi);
+@@ -1104,30 +1113,26 @@ int main(int argc, char **argv)
+             qtest_add_func("hd-geo/override/virtio_blk",
+                            test_override_virtio_blk);
+         }
++    }
  
- static uint64_t read_boot_order_pmac(QTestState *qts)
+-        if (qtest_has_machine("q35")) {
+-            qtest_add_func("hd-geo/override/sata", test_override_sata);
+-            qtest_add_func("hd-geo/override/zero_chs_q35",
+-                           test_override_zero_chs_q35);
+-            if (qtest_has_device("lsi53c895a")) {
+-                qtest_add_func("hd-geo/override/scsi_q35",
+-                               test_override_scsi_q35);
+-            }
+-            if (qtest_has_device("virtio-scsi-pci")) {
+-                qtest_add_func("hd-geo/override/scsi_hot_unplug_q35",
+-                               test_override_scsi_hot_unplug_q35);
+-            }
+-            if (qtest_has_device("virtio-blk-pci")) {
+-                qtest_add_func("hd-geo/override/virtio_hot_unplug_q35",
+-                               test_override_virtio_hot_unplug_q35);
+-                qtest_add_func("hd-geo/override/virtio_blk_q35",
+-                               test_override_virtio_blk_q35);
+-            }
+-
++    if (qtest_has_machine("q35")) {
++        qtest_add_func("hd-geo/override/sata", test_override_sata);
++        qtest_add_func("hd-geo/override/zero_chs_q35",
++                       test_override_zero_chs_q35);
++        if (qtest_has_device("lsi53c895a")) {
++            qtest_add_func("hd-geo/override/scsi_q35",
++                           test_override_scsi_q35);
++        }
++        if (qtest_has_device("virtio-scsi-pci")) {
++            qtest_add_func("hd-geo/override/scsi_hot_unplug_q35",
++                           test_override_scsi_hot_unplug_q35);
++        }
++        if (qtest_has_device("virtio-blk-pci")) {
++            qtest_add_func("hd-geo/override/virtio_hot_unplug_q35",
++                           test_override_virtio_hot_unplug_q35);
++            qtest_add_func("hd-geo/override/virtio_blk_q35",
++                           test_override_virtio_blk_q35);
+         }
+-    } else {
+-        g_test_message("QTEST_QEMU_IMG not set or qemu-img missing; "
+-                       "skipping hd-geo/override/* tests");
+     }
+ 
+ test_add_done:
 -- 
 2.46.0
 
