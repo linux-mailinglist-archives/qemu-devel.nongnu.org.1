@@ -2,60 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17AB97AEF8
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F4E497AF03
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:38:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqVZY-0004Xc-7K; Tue, 17 Sep 2024 06:36:40 -0400
+	id 1sqVZf-0006ge-KL; Tue, 17 Sep 2024 06:36:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZ8-00044G-AA
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZF-0004kt-7K
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZ6-0007LE-Q4
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:13 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZB-0007Lv-0w
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726569372;
+ s=mimecast20190719; t=1726569376;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TvVrh6vqILKkbVGpDKaYq80XG1PO1QYdQIXKP3XRj2Y=;
- b=TPMTiCiR6tEYt7JWKKrQbzVQ7Hp7VSUjXqqtZsEwEaIlK1C8rHK7JaIZTjuRakZd8e+KFt
- 5cGtDV3mxoZ8aQAlsdNiKjEedXRArI7OQKhKomM7ELciLlJsJ4el0nzjQ51tKr8nQxD6SP
- 5w8wkQKYtCJ+/oz52w83aOtUCtD0Cog=
+ bh=v26HX4KfoH9FCWLXXwdsNQjAtd1ysIY14tKOsxB2S4Q=;
+ b=WviGX4aG+E8ZsQzO7r0eddMk8zlKP7Pc4KN+i8fdlC6WPmsUlba5fPPrqkaV/NSN4OIFiL
+ 2Wg/AVx8U0enK17U9UsbGItxhQO8rRJDnZYuU+Yina5rtmtsBQA+nfyXNZHaYdcX19kcQ9
+ LNu7W0iQ+Ej/49Ehmsv4NbVAlvJWQF0=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-247-1uBcJolTNMOzqnuJGc3luQ-1; Tue,
- 17 Sep 2024 06:36:08 -0400
-X-MC-Unique: 1uBcJolTNMOzqnuJGc3luQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-M8bql_FwP96PkuWRzHnlYw-1; Tue,
+ 17 Sep 2024 06:36:13 -0400
+X-MC-Unique: M8bql_FwP96PkuWRzHnlYw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A61431956069; Tue, 17 Sep 2024 10:36:07 +0000 (UTC)
+ id BF0D61955D4E; Tue, 17 Sep 2024 10:36:11 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.158])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6ED971955DC7; Tue, 17 Sep 2024 10:36:05 +0000 (UTC)
+ id 3CAEA1955DA1; Tue, 17 Sep 2024 10:36:07 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 09/17] tests/unit: replace assert(0) with g_assert_not_reached()
-Date: Tue, 17 Sep 2024 12:35:32 +0200
-Message-ID: <20240917103540.149144-10-thuth@redhat.com>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Farman <farman@linux.ibm.com>
+Subject: [PULL 10/17] include/hw/s390x: replace assert(false) with
+ g_assert_not_reached()
+Date: Tue, 17 Sep 2024 12:35:33 +0200
+Message-ID: <20240917103540.149144-11-thuth@redhat.com>
 In-Reply-To: <20240917103540.149144-1-thuth@redhat.com>
 References: <20240917103540.149144-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,35 +88,28 @@ g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240912073921.453203-14-pierrick.bouvier@linaro.org>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Message-ID: <20240912073921.453203-15-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/unit/test-xs-node.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/hw/s390x/cpu-topology.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/unit/test-xs-node.c b/tests/unit/test-xs-node.c
-index ac94e7ed6c..2f447a73fb 100644
---- a/tests/unit/test-xs-node.c
-+++ b/tests/unit/test-xs-node.c
-@@ -212,7 +212,7 @@ static void compare_tx(gpointer key, gpointer val, gpointer opaque)
-         printf("Comparison failure in TX %u after serdes:\n", tx_id);
-         dump_ref("Original", t1->root, 0);
-         dump_ref("Deserialised", t2->root, 0);
--        g_assert(0);
-+        g_assert_not_reached();
-     }
-     g_assert(t1->nr_nodes == t2->nr_nodes);
+diff --git a/include/hw/s390x/cpu-topology.h b/include/hw/s390x/cpu-topology.h
+index a11b1baa77..9283c948e3 100644
+--- a/include/hw/s390x/cpu-topology.h
++++ b/include/hw/s390x/cpu-topology.h
+@@ -57,7 +57,7 @@ static inline void s390_topology_setup_cpu(MachineState *ms,
+ static inline void s390_topology_reset(void)
+ {
+     /* Unreachable, CPU topology not implemented for TCG */
+-    assert(false);
++    g_assert_not_reached();
  }
-@@ -257,7 +257,7 @@ static void check_serdes(XenstoreImplState *s)
-         printf("Comparison failure in main tree after serdes:\n");
-         dump_ref("Original", s->root, 0);
-         dump_ref("Deserialised", s2->root, 0);
--        g_assert(0);
-+        g_assert_not_reached();
-     }
+ #endif
  
-     nr_transactions1 = g_hash_table_size(s->transactions);
 -- 
 2.46.0
 
