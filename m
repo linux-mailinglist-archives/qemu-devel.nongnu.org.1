@@ -2,62 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C6297AEE2
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D6B97AEE9
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:35:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqVXX-0000R7-BF; Tue, 17 Sep 2024 06:34:36 -0400
+	id 1sqVYo-00011r-VF; Tue, 17 Sep 2024 06:35:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVx-0006BI-B7
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:33:01 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVYj-0000nu-Nw
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:35:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVv-0006mz-6K
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:57 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVYh-0007EF-To
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:35:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726569174;
+ s=mimecast20190719; t=1726569347;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9UUhaiQXzIvprq7xcvOrSmnVdqtyNaGsgzXjK0jOJ0E=;
- b=AbeT4852xeXvoz+LNWs7+SAegqLS5REcYnMesTBPCX0NR1FPsl+VHjaAnREns0WQL+2LHx
- T0mESdTNL2bg6FXPMIbuCqHqAmWKnZQsuaAdgDgGgicfKCzBviCVb/XwyhADSgbezANTdR
- T/yEh4qimlWAyfYjYF/TlcfiYrkGSDA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding;
+ bh=I/kQvYXXNA9PfnVpMRMcO+46aqwkomR8VO9CAsh4dC8=;
+ b=L7YKhxUNZ7czQRzVchEOnrVp4dOHYMnsbHGfroT2Vqi4XdvuMUJpqHDMsYrWVfGM372B7K
+ TmykO+jh99Ne2GTxUrOMx6oNY5SBlHiigamkja0+tB+I+qzcoQiUUim/2cSsKRuAOTpouN
+ ozOQ0JaaEnXBx4N7Fmfq301EbVmarBA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-114-PLdSC4ZgOx6rnMj1CHMMEg-1; Tue,
- 17 Sep 2024 06:32:51 -0400
-X-MC-Unique: PLdSC4ZgOx6rnMj1CHMMEg-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-302-P_94joMKMqWWIVN0Dbpj6w-1; Tue,
+ 17 Sep 2024 06:35:44 -0400
+X-MC-Unique: P_94joMKMqWWIVN0Dbpj6w-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 20A301955F43; Tue, 17 Sep 2024 10:32:50 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.193.154])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ABE8819560AA; Tue, 17 Sep 2024 10:32:48 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DC0481953945; Tue, 17 Sep 2024 10:35:43 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.158])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 49AEA19560A3; Tue, 17 Sep 2024 10:35:41 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>,
- =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
-Subject: [PULL 8/8] vfio/igd: correctly calculate stolen memory size for gen 9
- and later
-Date: Tue, 17 Sep 2024 12:32:29 +0200
-Message-ID: <20240917103229.876515-9-clg@redhat.com>
-In-Reply-To: <20240917103229.876515-1-clg@redhat.com>
-References: <20240917103229.876515-1-clg@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 00/17] s390x and test patches
+Date: Tue, 17 Sep 2024 12:35:23 +0200
+Message-ID: <20240917103540.149144-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,48 +75,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Corvin Köhne <corvin.koehne@gmail.com>
+ Hi!
 
-We have to update the calculation of the stolen memory size because
-we've seen devices using values of 0xf0 and above for the graphics mode
-select field. The new calculation was taken from the linux kernel [1].
+The following changes since commit ea9cdbcf3a0b8d5497cddf87990f1b39d8f3bb0a:
 
-[1] https://github.com/torvalds/linux/blob/7c626ce4bae1ac14f60076d00eafe71af30450ba/arch/x86/kernel/early-quirks.c#L455-L460
+  Merge tag 'hw-misc-20240913' of https://github.com/philmd/qemu into staging (2024-09-15 18:27:40 +0100)
 
-Signed-off-by: Corvin Köhne <c.koehne@beckhoff.com>
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
----
- hw/vfio/igd.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+are available in the Git repository at:
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 0751c43eae04aac5152c627af648319151ee1e39..a95d441f68661c23eee976be5d74b2da354f9498 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -488,11 +488,18 @@ static int igd_get_stolen_mb(int gen, uint32_t gmch)
-         gms = (gmch >> 8) & 0xff;
-     }
- 
--    if (gms > 0x10) {
--        error_report("Unsupported IGD GMS value 0x%x", gms);
--        return 0;
-+    if (gen < 9) {
-+        if (gms > 0x10) {
-+            error_report("Unsupported IGD GMS value 0x%x", gms);
-+            return 0;
-+        }
-+        return gms * 32;
-+    } else {
-+        if (gms < 0xf0)
-+            return gms * 32;
-+        else
-+            return gms * 4 + 4;
-     }
--    return gms * 32;
- }
- 
- void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
--- 
-2.46.0
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-09-17
+
+for you to fetch changes up to 66659fe76d3577b2cc3aa36d3935e3a2e9558e82:
+
+  .gitlab-ci.d/crossbuilds.yml: Force 'make check' to -j2 for cross-i686-tci (2024-09-17 10:53:13 +0200)
+
+----------------------------------------------------------------
+* Make all qtest targets work with "--without-default-devices"
+* Replace assert(0) and assert(false) in qtests and s390x code
+* Enable the device aliases for or1k
+* Some other small test improvements
+
+----------------------------------------------------------------
+Daniel P. Berrangé (1):
+      gitlab: fix logic for changing docker tag on stable branches
+
+Matheus Tavares Bernardino (1):
+      docs/fuzz: fix outdated mention to enable-sanitizers
+
+Peter Maydell (1):
+      .gitlab-ci.d/crossbuilds.yml: Force 'make check' to -j2 for cross-i686-tci
+
+Philippe Mathieu-Daudé (1):
+      system: Sort QEMU_ARCH_VIRTIO_PCI definition
+
+Pierrick Bouvier (5):
+      tests/qtest: replace assert(0) with g_assert_not_reached()
+      tests/unit: replace assert(0) with g_assert_not_reached()
+      include/hw/s390x: replace assert(false) with g_assert_not_reached()
+      tests/qtest: replace assert(false) with g_assert_not_reached()
+      tests/qtest: remove break after g_assert_not_reached()
+
+Thomas Huth (8):
+      tests/qtest/cdrom-test: Improve the machine detection in the cdrom test
+      tests/qtest/boot-order-test: Make the machine name mandatory in this test
+      tests/qtest/hd-geo-test: Check for availability of "pc" machine before using it
+      tests/qtest/meson.build: Add more CONFIG switches checks for the x86 tests
+      tests/qtest: Disable numa-test if the default machine is not available
+      .gitlab-ci.d/buildtest: Build most targets in the build-without-defaults job
+      system: Enable the device aliases for or1k, too
+      tests/functional: Move the mips64el fuloong2e test into the thorough category
+
+ docs/devel/testing/fuzzing.rst  |  5 +--
+ include/hw/s390x/cpu-topology.h |  2 +-
+ system/qdev-monitor.c           | 18 ++++++----
+ tests/qtest/boot-order-test.c   |  4 +--
+ tests/qtest/cdrom-test.c        | 77 ++++++++++++++++++++++-------------------
+ tests/qtest/hd-geo-test.c       | 71 +++++++++++++++++++------------------
+ tests/qtest/ipmi-bt-test.c      |  2 +-
+ tests/qtest/ipmi-kcs-test.c     |  4 +--
+ tests/qtest/migration-helpers.c |  1 -
+ tests/qtest/numa-test.c         | 10 +++---
+ tests/qtest/rtl8139-test.c      |  2 +-
+ tests/unit/test-xs-node.c       |  4 +--
+ .gitlab-ci.d/base.yml           |  2 +-
+ .gitlab-ci.d/buildtest.yml      |  9 +----
+ .gitlab-ci.d/crossbuilds.yml    |  4 +--
+ tests/functional/meson.build    |  5 +--
+ tests/qtest/meson.build         | 31 +++++++++--------
+ 17 files changed, 131 insertions(+), 120 deletions(-)
 
 
