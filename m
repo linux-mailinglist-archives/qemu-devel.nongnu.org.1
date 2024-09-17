@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9044F97B28C
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 18:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C95B197B28E
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 18:03:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqadZ-0005rE-5R; Tue, 17 Sep 2024 12:01:09 -0400
+	id 1sqada-0005vK-ME; Tue, 17 Sep 2024 12:01:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1sqadV-0005i8-6N
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 12:01:05 -0400
+ id 1sqadW-0005lV-LF
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 12:01:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1sqadS-0003d3-4s
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 12:01:04 -0400
+ id 1sqadU-0003gF-Vg
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 12:01:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726588861;
+ s=mimecast20190719; t=1726588863;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CQ57VPFhj0J7dTLtPr/fFqy6l9Ee5cMcJ/yzr5U87U0=;
- b=dMx0+SY5M2dM9fiVIQSCLrIqyL2TRNDRGrPUxEL5NQ7dki4V2vM17zD7qOSe8ccPEbBQoq
- 41g00nzLaiwzUQWRoqNujtwKx1CU7LB2gR5fHooQwkensnbTVRdwwKWjWfGN0M7YbT0rp6
- avZs4/uNIw+PWhVCrwaIhKfkLWXv6Do=
+ bh=s/ofPsoeUxqxDQv2RABQLnVI8pNi50vFOv5/rQ2rWf0=;
+ b=hNAl6iL7OiJ+/MRZ32Ws9QDC4FSSIzpTMhN2vRyxWG1lJ1Zel7s3KVgpLTrYWfOfN2yjtS
+ 0k2oIdu5vSCR7Dh/0G5Sn5m9hIbEEX2wkxg+sZzgY/oquoG2w0O0/ty1eykJcCeHSA6XFI
+ 7IKFm18cQtiZ2m8QoolxMKpEgE1G+2g=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-33-hBDiW7BwNNGR4qqIdhTkZg-1; Tue,
- 17 Sep 2024 12:00:59 -0400
-X-MC-Unique: hBDiW7BwNNGR4qqIdhTkZg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-lmdaCVsgNu-c0V9JHBsEug-1; Tue,
+ 17 Sep 2024 12:01:02 -0400
+X-MC-Unique: lmdaCVsgNu-c0V9JHBsEug-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BAF0A1944AA7
- for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 16:00:58 +0000 (UTC)
+ id 618261944AA4
+ for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 16:01:01 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.45.226.82])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7E03B30001A1; Tue, 17 Sep 2024 16:00:57 +0000 (UTC)
+ id 348F630001A4; Tue, 17 Sep 2024 16:00:58 +0000 (UTC)
 From: Vitaly Kuznetsov <vkuznets@redhat.com>
 To: qemu-devel@nongnu.org,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH RESEND v4 3/4] target/i386: Make sure SynIC state is really
- updated before KVM_RUN
-Date: Tue, 17 Sep 2024 18:00:50 +0200
-Message-ID: <20240917160051.2637594-4-vkuznets@redhat.com>
+Subject: [PATCH RESEND v4 4/4] docs/system: Add recommendations to Hyper-V
+ enlightenments doc
+Date: Tue, 17 Sep 2024 18:00:51 +0200
+Message-ID: <20240917160051.2637594-5-vkuznets@redhat.com>
 In-Reply-To: <20240917160051.2637594-1-vkuznets@redhat.com>
 References: <20240917160051.2637594-1-vkuznets@redhat.com>
 MIME-Version: 1.0
@@ -82,50 +82,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'hyperv_synic' test from KVM unittests was observed to be flaky on certain
-hardware (hangs sometimes). Debugging shows that the problem happens in
-hyperv_sint_route_new() when the test tries to set up a new SynIC
-route. The function bails out on:
+While hyperv.rst already has all currently implemented Hyper-V
+enlightenments documented, it may be unclear what is the recommended set to
+achieve the best result. Add the corresponding section to the doc.
 
- if (!synic->sctl_enabled) {
-         goto cleanup;
- }
-
-but the test writes to HV_X64_MSR_SCONTROL just before it starts
-establishing SINT routes. Further investigation shows that
-synic_update() (called from async_synic_update()) happens after the SINT
-setup attempt and not before. Apparently, the comment before
-async_safe_run_on_cpu() in kvm_hv_handle_exit() does not correctly describe
-the guarantees async_safe_run_on_cpu() gives. In particular, async worked
-added to a CPU is actually processed from qemu_wait_io_event() which is not
-always called before KVM_RUN, i.e. kvm_cpu_exec() checks whether an exit
-request is pending for a CPU and if not, keeps running the vCPU until it
-meets an exit it can't handle internally. Hyper-V specific MSR writes are
-not automatically trigger an exit.
-
-Fix the issue by simply raising an exit request for the vCPU where SynIC
-update was queued. This is not a performance critical path as SynIC state
-does not get updated so often (and async_safe_run_on_cpu() is a big hammer
-anyways).
-
-Reported-by: Jan Richter <jarichte@redhat.com>
 Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 ---
- target/i386/kvm/hyperv.c | 1 +
- 1 file changed, 1 insertion(+)
+ docs/system/i386/hyperv.rst | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
-index b94f12acc2c9..70b89cacf94b 100644
---- a/target/i386/kvm/hyperv.c
-+++ b/target/i386/kvm/hyperv.c
-@@ -80,6 +80,7 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit)
-          * necessary because memory hierarchy is being changed
-          */
-         async_safe_run_on_cpu(CPU(cpu), async_synic_update, RUN_ON_CPU_NULL);
-+        cpu_exit(CPU(cpu));
+diff --git a/docs/system/i386/hyperv.rst b/docs/system/i386/hyperv.rst
+index 009947e39141..1c1de77feb65 100644
+--- a/docs/system/i386/hyperv.rst
++++ b/docs/system/i386/hyperv.rst
+@@ -283,6 +283,36 @@ Supplementary features
+   feature alters this behavior and only allows the guest to use exposed Hyper-V
+   enlightenments.
  
-         return EXCP_INTERRUPT;
-     case KVM_EXIT_HYPERV_HCALL: {
++Recommendations
++---------------
++
++To achieve the best performance of Windows and Hyper-V guests and unless there
++are any specific requirements (e.g. migration to older QEMU/KVM versions,
++emulating specific Hyper-V version, ...), it is recommended to enable all
++currently implemented Hyper-V enlightenments with the following exceptions:
++
++- ``hv-syndbg``, ``hv-passthrough``, ``hv-enforce-cpuid`` should not be enabled
++  in production configurations as these are debugging/development features.
++- ``hv-reset`` can be avoided as modern Hyper-V versions don't expose it.
++- ``hv-evmcs`` can (and should) be enabled on Intel CPUs only. While the feature
++  is only used in nested configurations (Hyper-V, WSL2), enabling it for regular
++  Windows guests should not have any negative effects.
++- ``hv-no-nonarch-coresharing`` must only be enabled if vCPUs are properly pinned
++  so no non-architectural core sharing is possible.
++- ``hv-vendor-id``, ``hv-version-id-build``, ``hv-version-id-major``,
++  ``hv-version-id-minor``, ``hv-version-id-spack``, ``hv-version-id-sbranch``,
++  ``hv-version-id-snumber`` can be left unchanged, guests are not supposed to
++  behave differently when different Hyper-V version is presented to them.
++- ``hv-crash`` must only be enabled if the crash information is consumed via
++  QAPI by higher levels of the virtualization stack. Enabling this feature
++  effectively prevents Windows from creating dumps upon crashes.
++- ``hv-reenlightenment`` can only be used on hardware which supports TSC
++  scaling or when guest migration is not needed.
++- ``hv-spinlocks`` should be set to e.g. 0xfff when host CPUs are overcommited
++  (meaning there are other scheduled tasks or guests) and can be left unchanged
++  from the default value (0xffffffff) otherwise.
++- ``hv-avic``/``hv-apicv`` should not be enabled if the hardware does not
++  support APIC virtualization (Intel APICv, AMD AVIC).
+ 
+ Useful links
+ ------------
 -- 
 2.46.0
 
