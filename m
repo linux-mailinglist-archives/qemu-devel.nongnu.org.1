@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BEA97AD3E
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 10:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A8C97AD3F
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 10:54:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqTvg-0007B3-O2; Tue, 17 Sep 2024 04:51:25 -0400
+	id 1sqTvn-0007Mu-Nh; Tue, 17 Sep 2024 04:51:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sqTvZ-0007AY-SF
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:51:18 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sqTvj-0007MN-NL
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:51:27 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sqTvS-0008VV-B8
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:51:17 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-42bb7298bdeso54918955e9.1
- for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 01:51:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sqTvT-0008Vt-Fh
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:51:25 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-42cb7a2e4d6so44547065e9.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 01:51:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726563062; x=1727167862; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=x9moB1E/VDJ5fnyL71mYaVTWUUZjOZEXCkhdsWVB8kc=;
- b=vOWgVCgVfbzF+S5FRy0/52wsD3j5kU6XKl6CjyufGUZdz8cYrggpE1gKBLUiu110yJ
- xnpS+YucC0on1Erl+fJrN66TcvMCCFK8o+DP9+oyqSwdwO5J9/8zLuzwLRFlPhbcYIsR
- vsJB3l83YvqWL7QtDZhgNFREd/Gan7haEa3WHk0kRDXRPXIj+v6+D3XLlr2/E/UjD2SM
- eGadSotAsx/RMG6An5XtLJuG4Azk6AoqzGIoAItYIkKE7FAtKm0t8+IA02dQsMj69dF4
- AnqvtCaglQeaml1cpory4b3jtI7WQyUrugYloL42gw3dQwMz4M+0XWmKMNsCzre4+1PX
- E6PA==
+ d=linaro.org; s=google; t=1726563067; x=1727167867; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cSYHu5lBYgP+YuUarCXjaJs9Yl4nMxFLvamP9MQ79yg=;
+ b=QsjtFGM39D8cZcs0OAE25i3TMCyxiBkBSXhKIt72H1d6xBtRUCRODSiklg25t1rbWv
+ FYDtbzHpyWiE51MRY3TNbevKgQmZkpqysTNjIA+8mLh6/bEibTQ66O4etg1q6eA4kHfq
+ W3n29XrcGR4ym+WQOB1YJGC8rLICOprBafQCAWu8Lv1v5opKy0BCBCsnu7+aGyI9x1uz
+ RpV7Aquwq8pktb2wJMn+8Ot3qdxdARtdZEJ3idCnsR8DOG17nmix1YpwGec4V804W1pN
+ QcjGDifwtBTzdLB/3CdrnqX9eeKe2nqqLOakKK+Rp79+Nnkt5WOqPMFFzJf6tvvUYFzK
+ p4GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726563062; x=1727167862;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=x9moB1E/VDJ5fnyL71mYaVTWUUZjOZEXCkhdsWVB8kc=;
- b=HXDp2CcXEzop90WMjRL1ZIxntYLzOT3kJY2P5hWRf2nzyUZLK8b6UMBce+2/+mG0P2
- xIT1zUgaKW3YbJECKm7gFqhXIPIb5PvbBXLEbMznLBK16MbhJX27AZK1aWmgc0Ofho1q
- xKshaFuyXTUf4rPz0nfCSka4+DEsjtA722bjppNVZN7wQLqEFOuoL08eUQVcJIbiDb+6
- vSIAX2Rc85hfJWtYjOqVmr4MYe9Zv7kak1Ger9TFf9t8aSl/Koo2eWbLAAMavUjqdEh9
- N5RpPgrcF2Krqv8QHwi2MwMhywRoyWzPHOch/I8U2zOi7ipNgjBNnQoB10dK0AMYwvA5
- X0tA==
-X-Gm-Message-State: AOJu0YzSoLBQC6/kFyadG9DxI7hBxNc6xiDN1n85WOPOzwqBsOSpukMv
- d2RtIRl7pD93gC7xYQWrngoXgq021sDfze73Z6yxaClLgHpvwIjhwd5ckR3B2NUMp4oc9gK+lZN
- c
-X-Google-Smtp-Source: AGHT+IGFLHuYRJGu8aTvi5YblBJ1xpepH2Eyi/zBEoNw763otOJtAU0G9iuXfAqwoO2iyjpikfdOyQ==
-X-Received: by 2002:a05:600c:4714:b0:42c:aef3:4388 with SMTP id
- 5b1f17b1804b1-42d9070a3e7mr154826645e9.6.1726563061453; 
- Tue, 17 Sep 2024 01:51:01 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726563067; x=1727167867;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cSYHu5lBYgP+YuUarCXjaJs9Yl4nMxFLvamP9MQ79yg=;
+ b=npY6yaP0G3qYPtHGMzySe9v2dbbHucjXdPl4uWrZm7yi390WFBMURYBKr+bEaTqFws
+ 3IwKvXovz/UF5CdGkUJ4mzeG6eRhx4/SjI1wyGAW0ZAGR9gZbVl9xcPAWs8xBolQeb8g
+ tVSKBxpyuXDTn3Sb9eFLElh47D4Ry9yldF+rhJD8OkVL7sB6+AGbbaeJ3Gn46CsIkXur
+ nnSikCL9ZbKl4SVOkCQrBjfIDW4TdXyuRl0iJHtALkv33UIyk74UrF6cvDO0vUtSG2hs
+ wedT2HRZGO3Qa/c1jjfN3i7oJ1ONOX3QKEy8ygOtGLDset+MiAkOjjLDFvreIkJAPMez
+ hRgA==
+X-Gm-Message-State: AOJu0YzVDP7OaVTf2iybYWX7y4Y1mMD9fwuw7ZP7cy+OKgMNLqB5TIgv
+ P6xO5HwWUQCrgKkiGJTehCOwSEPRK+McHw3s0XrFOnrKqwe8lh7nJSYi369wFB/l1yBCNjKfIvD
+ wDHM=
+X-Google-Smtp-Source: AGHT+IGVgam6pQh1MOtIgKCFNO9doLYN/GbfP6pAXbzFSHjpkWa1yOXld6hwpktMiXmnTDSJZyWkmw==
+X-Received: by 2002:a05:600c:5121:b0:42c:b377:3f5f with SMTP id
+ 5b1f17b1804b1-42cdb547e96mr135717025e9.14.1726563066903; 
+ Tue, 17 Sep 2024 01:51:06 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.131.223])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-378e780016asm9021193f8f.85.2024.09.17.01.50.59
+ 5b1f17b1804b1-42d9b189986sm129889615e9.29.2024.09.17.01.51.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 17 Sep 2024 01:51:00 -0700 (PDT)
+ Tue, 17 Sep 2024 01:51:06 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -61,21 +62,22 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 0/3] ci: Replace macOS coverage from release 13 to 15
-Date: Tue, 17 Sep 2024 10:50:55 +0200
-Message-ID: <20240917085058.1740-1-philmd@linaro.org>
+Subject: [PATCH 1/3] tests/unit: Really build pbkdf test on macOS
+Date: Tue, 17 Sep 2024 10:50:56 +0200
+Message-ID: <20240917085058.1740-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240917085058.1740-1-philmd@linaro.org>
+References: <20240917085058.1740-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,30 +94,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-macOS 15 "Sequoia" was just released. Add support and coverage.
-According to our support policy, we stop supporting the previous
-major release two years after the the new major release has been
-published. macOS 13 (Ventura) was released on October 2022: time
-to drop it (well, in 2 weeks, but posting the patches now for
-review, to be merged in October).
+Fix a typo to run the pbkdf crypto cipher tests on macOS.
 
-Regards,
+ $ make check-unit
+   ...
+   87/102 qemu:unit / test-crypto-pbkdf      OK      2.35s   17 subtests passed
 
-Phil.
+Fixes: ebe0302ac8 ("tests/unit: build pbkdf test on macOS")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tests/unit/test-crypto-pbkdf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Philippe Mathieu-Daudé (3):
-  tests/unit: Really build pbkdf test on macOS
-  .gitlab-ci.d/cirrus: Drop support for macOS 13 (Ventura)
-  .gitlab-ci.d/cirrus: Add manual testing of macOS 15 (Sequoia)
-
- tests/unit/test-crypto-pbkdf.c                       | 2 +-
- .gitlab-ci.d/cirrus.yml                              | 8 ++++----
- .gitlab-ci.d/cirrus/{macos-13.vars => macos-15.vars} | 2 +-
- tests/lcitool/libvirt-ci                             | 2 +-
- tests/lcitool/refresh                                | 2 +-
- 5 files changed, 8 insertions(+), 8 deletions(-)
- rename .gitlab-ci.d/cirrus/{macos-13.vars => macos-15.vars} (95%)
-
+diff --git a/tests/unit/test-crypto-pbkdf.c b/tests/unit/test-crypto-pbkdf.c
+index b477cf4e4b..12ee808fbc 100644
+--- a/tests/unit/test-crypto-pbkdf.c
++++ b/tests/unit/test-crypto-pbkdf.c
+@@ -25,7 +25,7 @@
+ #include <sys/resource.h>
+ #endif
+ 
+-#if defined(_WIN32) || defined(RUSAGE_THREAD) || defined(CONFIG_DARWNI)
++#if defined(_WIN32) || defined(RUSAGE_THREAD) || defined(CONFIG_DARWIN)
+ #include "crypto/pbkdf.h"
+ 
+ typedef struct QCryptoPbkdfTestData QCryptoPbkdfTestData;
 -- 
 2.45.2
 
