@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA5D97B291
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 18:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B4F97B2BA
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 18:14:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqae8-00078i-TN; Tue, 17 Sep 2024 12:01:44 -0400
+	id 1sqapk-0002u2-NN; Tue, 17 Sep 2024 12:13:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sqae6-0006y5-4t
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 12:01:42 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1sqapi-0002t2-EM
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 12:13:42 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sqae4-0003xB-C3
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 12:01:41 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5c42f406e29so4874123a12.2
- for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 09:01:39 -0700 (PDT)
+ id 1sqapg-00058s-Pq
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 12:13:42 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-42e5e758093so22443675e9.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 09:13:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726588899; x=1727193699; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=q/5xsMMvS7v+dj2//klH1BoTXqckiobFqW8DVaXBLmU=;
- b=QtNDx7tGhhdErKdphT4IFjN9WzCeNdm5tlW39WIQ6xl94juncWAh7aDwevgKLxZGUk
- vdIAlgZnTpri2f59mluqdyjn3Vw2ZS0wHt28DE44xGtjGjAR3XkifliRHBqcI/9qbkU2
- eVIltmMafrFJzqKCBpOrT3sXN/GWr6EQu07ycnD5WxRjJYDo93KMgr7WnAQAHkQNAiiv
- NeqSU+JtiClucQXR+C0skvZP11S/N+2bKX2jgHaMX1N84NuCInuG474LMvf0MarCUUAm
- t7jTmyjZCZvFFmpD1g7ZRf9DcMp0XCuOV9DZ7m1EVEcmRITX5VTpSnVGYxc4jyLnDtQ4
- V9vQ==
+ d=linaro.org; s=google; t=1726589619; x=1727194419; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DXtzhQMzXPZEve28/UaAqCjf2VzfUHrh5WPlBaS6+B8=;
+ b=A0lKXmhEmNAuHefngrdFrV7DWnU2wLPIdHJtwbAaUmmvXpArbRxYmi1vLtY9YnwZAr
+ CBQ0Kp9TZLe23YPbwKm4eN974rB8OZM3btn702yooP5VLp+OPJOw2IxYUvn0K8b6MG/h
+ uDrGnGpjQ8zgl4dgt2+Ey7DyIZcuTXk+uYukqOwqRExStAvLKNPn40Lv0MuTk98hJcBl
+ Wb03anBCDrs80sG+XBWGr6vvZY/2IK4nDCmOFPYKmqNAx+gok0RBaoT4imHGoWmkxcPC
+ nnRAG//fboh7ilMj96qapODBHnevZS2q7OuEjjpmpDvUmjV4JBRN9RNBygPd1Y2l1Hbk
+ KOoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726588899; x=1727193699;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1726589619; x=1727194419;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=q/5xsMMvS7v+dj2//klH1BoTXqckiobFqW8DVaXBLmU=;
- b=Xl1ZVkOSBlEVEYRuhkNHyqgpegUt/sl0UD0LR3ccYnIFfCIOxC2evZ3F25xUIAgST0
- VRupY/IWHh8vHZ5cznNSTWmG21xsSycV/azF4bSJE4P3zZVGuPdhPs5zwMqQXYQ+Ptuu
- 8C9jYtQVulXjCzsnasRVvu8Eh2+PU6ge6HIYl7reKS0ArTHHnzmLbpJoMnb/goSFWOjL
- Ua7Hjzvfh7Yp/PTAnNLe82kjA4P3RSNRRbTaXgulemoPr88yKFPdex6NqiXcWdy7LseP
- EtZxV78iBRr47f1bJE4NwVnUUqvwTOdUktykeco5wwTKipSJDELccrKFVAbjKcEAg3k3
- ZjGA==
-X-Gm-Message-State: AOJu0YxC/w9nL2auzCkqAnjhnuR9nEFg1NqPRgehz8MYSl9RCBlgFJMm
- TXjMOfj77SfywZ5tyrcgTGZLbqgz6AXblgbozjDB/JPajLV5OFbiqt/PEYLOpt9SbPP2xN/Cz3Y
- RWBUAcEjfDZP8w7luQ4fWu5DCJzQJ9FpurC+RXw==
-X-Google-Smtp-Source: AGHT+IHVLtKorG+3+Ssr7T5KZdbroUTdgr/azS+YzYe3rzcrwOqtpTjQiNTj6wOofkfLo2n4lx5Rh4brQgtS2NFxdlU=
-X-Received: by 2002:aa7:c3c9:0:b0:5be:cdaf:1c09 with SMTP id
- 4fb4d7f45d1cf-5c413e50f05mr14939988a12.28.1726588898256; Tue, 17 Sep 2024
- 09:01:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240910-b4-move-to-freebsd-v5-0-0fb66d803c93@linaro.org>
-In-Reply-To: <20240910-b4-move-to-freebsd-v5-0-0fb66d803c93@linaro.org>
+ bh=DXtzhQMzXPZEve28/UaAqCjf2VzfUHrh5WPlBaS6+B8=;
+ b=eFnGr+3FgApt6Q5AyWRfc9kZC4AZuCTfC5nMEJu34wArDpFYR/htw/oULmTKTIZ5Lm
+ jRbyea/qhONURDy5L/9XDdYwc4V2RljbuAfhX0OgYIXvc04onCw2xCemFevcYoxIfizx
+ DLusKnDj3/7S9BLiiqg9C424QN6s2SJ7vLlp/e5QM0WD4R9O+28Kw4bEdWwrlnjtb+ms
+ 0ULVA48y4B68AEsytdU+jnd/BJjlt8gYQ5Z26RRj914Fy0z1plIphbT2Ixm7TDBWgljH
+ JMi4Dc7YCf9kDTtCvaMK/XZnWQaTVQVkoAxC8J4J4vFgqmi7AYIRJxsnwguPto2d0QAM
+ kjYQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWzxxb/Rr9jK5678dPPGpe0d08LEc7/w4TZuJZ+xadElUTABwW/G+aLT+GaFfWluwyVA9t26GcYbMx4@nongnu.org
+X-Gm-Message-State: AOJu0YxsaP/sJGJlA7fDXvwAgZ7Q7FlzcYePp9GyDmwmxf5LWEUmbOKD
+ oBeJaTdevyVl48PK+otuCmrR+BLf1cfKNOCb0e832McEFRq/QXlFKTV8Mtw9OCEzSoFjgA4vI7S
+ A
+X-Google-Smtp-Source: AGHT+IGOYD1SMKzFNatlx75NXEPR3jE/Yq3Y3OTAhbtDaKYYm8zWFzkZy74EsaCfHUuY0NGF6aqXJQ==
+X-Received: by 2002:a05:600c:1987:b0:42c:b22e:fbfa with SMTP id
+ 5b1f17b1804b1-42d9082a660mr101034345e9.21.1726589618704; 
+ Tue, 17 Sep 2024 09:13:38 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42da22b8b5asm107810295e9.7.2024.09.17.09.13.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Sep 2024 09:13:38 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 17 Sep 2024 17:01:27 +0100
-Message-ID: <CAFEAcA9W4h4TDr+d_xE9MB4Jc+bCeAS5r0MyH8tuMWssDcRqvw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/4] tests: updates for aarch64/sbsa-ref
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Radoslaw Biernacki <rad@semihalf.com>, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Subject: [PATCH] target/arm: Correct ID_AA64ISAR1_EL1 value for neoverse-v1
+Date: Tue, 17 Sep 2024 17:13:37 +0100
+Message-Id: <20240917161337.3012188-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,21 +92,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 10 Sept 2024 at 10:48, Marcin Juszkiewicz
-<marcin.juszkiewicz@linaro.org> wrote:
->
-> We want test to run on default cpu settings. For now it is plain
-> Neoverse-N2 but we are considering either disabling PAuth or going with
-> 'impdef' way.
->
-> We want to have some non-Linux OS in testing in case one of changes keep
-> Linux booting but crash elsewhere. So far OpenBSD was used for it but we
-> move to FreeBSD 14.x due to longer support cycles (OpenBSD 7.3 we use is
-> already EoL).
->
-> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+The Neoverse-V1 TRM is a bit confused about the layout of the
+ID_AA64ISAR1_EL1 register, and so its table 3-6 has the wrong value
+for this ID register.  Trust instead section 3.2.74's list of which
+fields are set.
 
-Applied to target-arm.next, thanks.
+This means that we stop incorrectly reporting FEAT_XS as present, and
+now report the presence of FEAT_BF16.
 
--- PMM
+Cc: qemu-stable@nongnu.org
+Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/tcg/cpu64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index b9f34f044d0..01689208286 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -677,7 +677,7 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
+     cpu->isar.id_aa64dfr0  = 0x000001f210305519ull;
+     cpu->isar.id_aa64dfr1 = 0x00000000;
+     cpu->isar.id_aa64isar0 = 0x1011111110212120ull; /* with FEAT_RNG */
+-    cpu->isar.id_aa64isar1 = 0x0111000001211032ull;
++    cpu->isar.id_aa64isar1 = 0x0011100001211032ull;
+     cpu->isar.id_aa64mmfr0 = 0x0000000000101125ull;
+     cpu->isar.id_aa64mmfr1 = 0x0000000010212122ull;
+     cpu->isar.id_aa64mmfr2 = 0x0220011102101011ull;
+-- 
+2.34.1
+
 
