@@ -2,98 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF95197B3D4
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 19:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B21797B3E8
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:10:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqcLy-0003t8-Mm; Tue, 17 Sep 2024 13:51:06 -0400
+	id 1sqcdI-00040c-1u; Tue, 17 Sep 2024 14:09:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqcLu-0003sb-1v
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 13:51:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1sqcdC-0003n4-Ob; Tue, 17 Sep 2024 14:08:54 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqcLs-0008P1-9m
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 13:51:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726595458;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=F7/Fi6PmNfuZpYDoiVI88kcvYhhDj+dpJdMCImVSfEw=;
- b=TBq7xT+dfXFPoCn8OP6HlZ9pcoVr5IBQ/RPKgG1U0e4sdoYQUtOVH9sWMc46BOjjoqII57
- 0SSYGXl8CuSnXppxf0Tna6k+mbrLZcczSXTi2UM+crVeaggEuEKWObADIihYy5tuB/Qs5t
- DfZvrDiChgFPkLm/zZtEIAvWRLLuKEU=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-Ch47Z0iONeaf0dIiOssM9w-1; Tue, 17 Sep 2024 13:50:51 -0400
-X-MC-Unique: Ch47Z0iONeaf0dIiOssM9w-1
-Received: by mail-ua1-f70.google.com with SMTP id
- a1e0cc1a2514c-848917ba13aso1070693241.3
- for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 10:50:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726595451; x=1727200251;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=F7/Fi6PmNfuZpYDoiVI88kcvYhhDj+dpJdMCImVSfEw=;
- b=hLZ5HpAuuIu9zQCjDC3NIKlJlMRnSQ34SweMk7u64FwbeMBEi6DZf17wXRvtU29rtZ
- ApqQRscsocibBIUJGi4iS5/15XafRh+nlPqj21Nf2PLkHzW29Mbmeu0/Kwx3hfA1woTf
- ZtuIoLAdGQnCHcB8Go9vw3V8NqIx0cE+/89IoTPg+ItywrtcgQ+ku53AfmwFkv4PZEAd
- ejnXhq3RYmNidb5dGz5s5G0Uo8npzhwkmZu2caKiOB+tN8nuM/TtNHLcAHEQcfLkeke0
- Uuo1iJZDhvkL10iJrXYD425XMv/ibkVLWB+hdMCXdopuNOr0rtUg6nPslw0TALo9g81f
- cICA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUrX4jQ6OKI0XgVj5+zZZM7pdiTXJRuqRYtqp8ApRQiPc2uUKGqrK7KEv8Jzklq+dF3uIIJuHC8EtE8@nongnu.org
-X-Gm-Message-State: AOJu0YyY9RFOrFUtL5lBo/WsedPfRCB7V5JH/xk2+rJRSAm5L3j+zX97
- CL4650gwVHA+UwuawZE5vmgUrbVZce+HVi0e3Id57o5WJ6jlZcdZ9goQtlFL9oZPM7z1Agk0Lx7
- 2YloPpiZcvw4vhfNWURUjoVKI+ppj/1mOuYyQnn/LkMfusNzF1AZv
-X-Received: by 2002:a05:6102:c87:b0:49b:cb56:1083 with SMTP id
- ada2fe7eead31-49d415d6fffmr14774146137.28.1726595451222; 
- Tue, 17 Sep 2024 10:50:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEgChNrUCBpbzblUTMcqeS84o+kKJMjH3ZEKf0HtFnsc1JaZ+z37d+tX3gW3oI6c4uESgP1yg==
-X-Received: by 2002:a05:6102:c87:b0:49b:cb56:1083 with SMTP id
- ada2fe7eead31-49d415d6fffmr14774115137.28.1726595450817; 
- Tue, 17 Sep 2024 10:50:50 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c58c691deasm36708426d6.80.2024.09.17.10.50.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Sep 2024 10:50:50 -0700 (PDT)
-Date: Tue, 17 Sep 2024 13:50:48 -0400
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, mail@maciej.szmigiero.name,
- Alex Williamson <alex.williamson@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 12/17] migration/multifd: Device state transfer
- support - send side
-Message-ID: <ZunBeBnqpgAIpt4Z@x1n>
-References: <fdcfd68dfcf3b20278a4495eb639905b2a8e8ff3.1724701542.git.maciej.szmigiero@oracle.com>
- <87h6b4nosy.fsf@suse.de> <ZuCickYhs3nf2ERC@x1n>
- <87zfoc1zms.fsf@suse.de> <ZuOGAb3988ExsrHi@x1n>
- <87o74r1yfw.fsf@suse.de> <ZuRJ8i4T_vUzrawY@x1n>
- <87ldzv1tpb.fsf@suse.de> <ZuRYouLwikc4OYye@x1n>
- <45f44392-cb56-4341-ab1d-7d7f28554c77@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1sqcdA-0002MV-Ko; Tue, 17 Sep 2024 14:08:54 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 9B4EC8FBC0;
+ Tue, 17 Sep 2024 21:08:23 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4BFF013E742;
+ Tue, 17 Sep 2024 21:08:39 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.14 v2 00/47] Patch Round-up for stable 7.2.14,
+ freeze on 2024-09-16 (frozen)
+Date: Tue, 17 Sep 2024 21:08:29 +0300
+Message-Id: <20240917180836.633380-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <45f44392-cb56-4341-ab1d-7d7f28554c77@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,86 +56,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 17, 2024 at 07:07:10PM +0200, Cédric Le Goater wrote:
-> [ ... ]
-> 
-> > > > I as a patch writer always like to do that when it's essential.  Normally
-> > > > the case is I don't have enough reviewer resources to help me get a better
-> > > > design, or discuss about it.
-> > > 
-> > > Right, but we can't keep providing a moving target. See the thread pool
-> > > discussion for an example. It's hard to work that way. The discussion
-> > > here is similar, we introduced the union, now we're moving to the
-> > > struct. And you're right that the changes here are small, so let's not
-> > > get caught in that.
-> > 
-> > What's your suggestion on the thread pool?  Should we merge the change
-> > where vfio creates the threads on its own (assuming vfio maintainers are ok
-> > with it)?
-> > 
-> > I would say no, that's what I suggested.  I'd start with reusing
-> > ThreadPool, then we found issue when Stefan reported worry on abusing the
-> > API.  All these discussions seem sensible to me so far.  We can't rush on
-> > these until we figure things out step by step.  I don't see a way.
-> > 
-> > I saw Cedric suggesting to not even create a thread on recv side.  I am not
-> > sure whether that's easy, but I'd agree with Cedric if possible.  I think
-> > Maciej could have a point where it can block mutlifd threads, aka, IO
-> > threads, which might be unwanted.
-> 
-> Sorry, If I am adding noise on this topic. I made this suggestion
-> because I spotted some asymmetry in the proposal.
-> 
-> The send and recv implementation in VFIO relies on different
-> interfaces with different level of complexity. The send part is
-> using a set of multifd callbacks called from multifd threads,
-> if I am correct. Whereas the recv part is directly implemented
-> in VFIO with local thread(s?) doing their own state receive cookery.
+The following patches are queued for QEMU stable v7.2.14:
 
-Yeh, the send/recv sides are indeed not fully symmetrical in the case of
-multifd - the recv side is more IO-driven, e.g., QEMU reacts based on what
-it receives (which was encoded in the headers of the received packets).
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-The src is more of a generic consumer / producer model where threads can
-enqueue tasks / data to different iochannels.
+Patch freeze is 2024-09-16 (frozen), and the release is planned for 2024-09-18:
 
-> 
-> I was expecting a common interface to minimize assumptions on both
-> ends. It doesn't have to be callback based. It could be a set of
-> services a subsystem could use to transfer state in parallel.
-> <side note>
->      VFIO migration is driven by numerous callbacks and it is
->      difficult to understand the context in which these are called.
->      Adding more callbacks might not be the best approach.
-> </side note>
-> 
-> The other comment was on optimisation. If this is an optimisation
-> then I would expect, first, a non-optimized version not using threads
-> (on the recv side).
+  https://wiki.qemu.org/Planning/7.2
 
-As commented in a previous email, I had a feeling that Maciej wanted to
-avoid blocking multifd threads when applying VFIO data chunks to the kernel
-driver, but Maciej please correct me.. I could be wrong.
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-To me I think I'm fine even if it blocks multifd threads, as it'll only
-happen when with VFIO (we may want to consider n_multifd_threads to be
-based on num of vfio devices then, so we still always have some idle
-threads taking IOs out of the NIC buffers).
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
-So I agree with Cedric that if we can provide a functional working version
-first then we can at least go with the simpler approach first.
+Thanks!
 
-> 
-> VFIO Migration is a "new" feature which needs some more run-in.
-> That said, it is stable, MLX5 VFs devices have good support, you
-> can rely on me to evaluate the future respins.
-> 
-> Thanks,
-> 
-> C.
-> 
+/mjt
 
--- 
-Peter Xu
+--------------------------------------
+01* 3becc9390810 Markus Armbruster:
+   qapi/qom: Document feature unstable of @x-vfio-user-server
+02* 31d93fedf41c Daniyal Khan:
+   target/arm: Use float_status copy in sme_fmopa_s
+03* 207d30b5fdb5 Richard Henderson:
+   target/arm: Use FPST_F16 for SME FMOPA (widening)
+04* c510fe78f1b7 Zheyu Ma:
+   hw/nvme: fix memory leak in nvme_dsm
+05* a207d5f87d66 Zhao Liu:
+   hw/cxl/cxl-host: Fix segmentation fault when getting cxl-fmw property
+06* a3c8d7e38550 Clément Mathieu--Drif:
+   intel_iommu: fix FRCD construction macro
+07* 13be929aff80 Paolo Bonzini:
+   target/i386: do not crash if microvm guest uses SGX CPUID leaves
+08* 903cc9e1173e songziming:
+   chardev/char-win-stdio.c: restore old console mode
+09* 2465c89fb983 Bibo Mao:
+   hw/intc/loongson_ipi: Access memory in little endian
+10* 851495571d14 Peter Maydell:
+   util/async.c: Forbid negative min/max in 
+   aio_context_set_thread_pool_params()
+11* d72479b11797 Thomas Huth:
+   hw/virtio: Fix the de-initialization of vhost-user devices
+12* 83340193b991 Richard Henderson:
+   target/rx: Use target_ulong for address in LI
+13* 546d574b11e0 Frederik van Hövell:
+   hw/char/bcm2835_aux: Fix assert when receive FIFO fills up
+14* 0892fffc2aba Peter Maydell:
+   hw/misc/bcm2835_property: Fix handling of FRAMEBUFFER_SET_PALETTE
+15* 56f1c0db928a Peter Maydell:
+   target/arm: Don't assert for 128-bit tile accesses when SVL is 128
+16* ea3f5a90f036 Peter Maydell:
+   target/arm: Fix UMOPA/UMOPS of 16-bit values
+17* 76916dfa89e8 Peter Maydell:
+   target/arm: Avoid shifts by -1 in tszimm_shr() and tszimm_shl()
+18* f573ac059ed0 Peter Maydell:
+   target/arm: Ignore SMCR_EL2.LEN and SVCR_EL2.LEN if EL2 is not enabled
+19* 48e5b5f994bc Peter Maydell:
+   docs/sphinx/depfile.py: Handle env.doc2path() returning a Path not a str
+20* 9a45b0761628 Peter Maydell:
+   hw/i386/amd_iommu: Don't leak memory in amdvi_update_iotlb()
+21* 5a558be93ad6 Marco Palumbi:
+   hw/arm/mps2-tz.c: fix RX/TX interrupts order
+22* 55f9f4ee018c Peter Maydell:
+   target/arm: Handle denormals correctly for FMOPA (widening)
+23* f1595ceb9aad Akihiko Odaki:
+   virtio-net: Ensure queue index fits with RSS
+24* f937309fbdbb thomas:
+   virtio-net: Fix network stall at the host side waiting for kick
+25* ed5a159c3de4 Philippe Mathieu-Daudé:
+   hw/sd/sdhci: Reset @data_count index on invalid ADMA transfers
+26* b881cf00c99e Amjad Alsharafi:
+   vvfat: Fix bug in writing to middle of file
+27* 21b25a0e466a Amjad Alsharafi:
+   vvfat: Fix usage of `info.file.offset`
+28* f60a6f7e17bf Amjad Alsharafi:
+   vvfat: Fix wrong checks for cluster mappings invariant
+29* 5eed3db33650 Amjad Alsharafi:
+   vvfat: Fix reading files with non-continuous clusters
+30* c8f60bfb4345 Amjad Alsharafi:
+   iotests: Add `vvfat` tests
+31* fb1c2aaa981e Eric Blake:
+   nbd/server: Plumb in new args to nbd_client_add()
+32* c8a76dbd90c2 Eric Blake:
+   nbd/server: CVE-2024-7409: Cap default max-connections to 100
+33* b9b72cb3ce15 Eric Blake:
+   nbd/server: CVE-2024-7409: Drop non-negotiating clients
+34* 3e7ef738c846 Eric Blake:
+   nbd/server: CVE-2024-7409: Close stray clients at server-stop
+35* 3874f5f73c44 Eric Blake:
+   nbd/server: CVE-2024-7409: Avoid use-after-free when closing server
+36* 446e5e8b4515 Jianzhou Yue:
+   hw/core/ptimer: fix timer zero period condition for freq > 1GHz
+37* 547c4e50929e Stefano Garzarella:
+   block/blkio: use FUA flag on write zeroes only if supported
+38* 416f2b16c02c Richard Henderson:
+   target/i386: Do not apply REX to MMX operands
+39* 940d802b24e6 Alexander Ivanov:
+   module: Prevent crash by resetting local_err in module_load_qom_all()
+40* 87e012f29f2e Peter Maydell:
+   crypto/tlscredspsk: Free username on finalize
+41 108d99742af1 Alex Bennée:
+   gitlab: migrate the s390x custom machine to 22.04
+42 b84f06c2bee7 David Hildenbrand:
+   softmmu/physmem: fix memory leak in dirty_memory_extend()
+43 c72cab5ad9f8 Tiago Pasqualini:
+   crypto: run qcrypto_pbkdf2_count_iters in a new thread
+44 e6c09ea4f9e5 Daniel P. Berrangé:
+   crypto: check gnutls & gcrypt support the requested pbkdf hash
+45 d6192f3f7593 Haoran Zhang:
+   hw/display/vhost-user-gpu.c: fix vhost_user_gpu_chr_read()
+46 d0068b746a0a Alex Bennée:
+   tests/docker: remove debian-armel-cross
+47 110684c9a69a Jan Klötzke:
+   hw/intc/arm_gic: fix spurious level triggered interrupts
 
+(commit(s) marked with * were in previous series and are not resent)
 
