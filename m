@@ -2,74 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1A497ACEF
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 10:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BEA97AD3E
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 10:54:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqTiR-0008FU-FQ; Tue, 17 Sep 2024 04:37:43 -0400
+	id 1sqTvg-0007B3-O2; Tue, 17 Sep 2024 04:51:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sqTiP-000854-0y
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:37:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sqTiN-0006E5-Lt
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:37:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726562258;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DzceLVyM2xacnXHavYwusyljAWcEQdStwSuMyu4CVY0=;
- b=Z9oYdWkKA7P24wq/08K67tvUYeLvp5FzV6BPUhOHzrAtwvoxTo9fYhWkdSRUC7Y+ISQwmW
- JlQsGRa85Q1pcVxxHS2JgWGW8MlTr0j0RCZM9BsvsJcgXGELn6BXKC9wMW4cESaFlDRBMT
- i+lPRUraxXn7dBIXa/Cb3VYit65h7mc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-381-E7_tYwHnP2CqwygmM8DruA-1; Tue,
- 17 Sep 2024 04:37:36 -0400
-X-MC-Unique: E7_tYwHnP2CqwygmM8DruA-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 970A919560BF; Tue, 17 Sep 2024 08:37:35 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.72])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6350219560A3; Tue, 17 Sep 2024 08:37:34 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 1E8EE18009BE; Tue, 17 Sep 2024 10:37:18 +0200 (CEST)
-From: Gerd Hoffmann <kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sqTvZ-0007AY-SF
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:51:18 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sqTvS-0008VV-B8
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 04:51:17 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42bb7298bdeso54918955e9.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 01:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1726563062; x=1727167862; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=x9moB1E/VDJ5fnyL71mYaVTWUUZjOZEXCkhdsWVB8kc=;
+ b=vOWgVCgVfbzF+S5FRy0/52wsD3j5kU6XKl6CjyufGUZdz8cYrggpE1gKBLUiu110yJ
+ xnpS+YucC0on1Erl+fJrN66TcvMCCFK8o+DP9+oyqSwdwO5J9/8zLuzwLRFlPhbcYIsR
+ vsJB3l83YvqWL7QtDZhgNFREd/Gan7haEa3WHk0kRDXRPXIj+v6+D3XLlr2/E/UjD2SM
+ eGadSotAsx/RMG6An5XtLJuG4Azk6AoqzGIoAItYIkKE7FAtKm0t8+IA02dQsMj69dF4
+ AnqvtCaglQeaml1cpory4b3jtI7WQyUrugYloL42gw3dQwMz4M+0XWmKMNsCzre4+1PX
+ E6PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726563062; x=1727167862;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=x9moB1E/VDJ5fnyL71mYaVTWUUZjOZEXCkhdsWVB8kc=;
+ b=HXDp2CcXEzop90WMjRL1ZIxntYLzOT3kJY2P5hWRf2nzyUZLK8b6UMBce+2/+mG0P2
+ xIT1zUgaKW3YbJECKm7gFqhXIPIb5PvbBXLEbMznLBK16MbhJX27AZK1aWmgc0Ofho1q
+ xKshaFuyXTUf4rPz0nfCSka4+DEsjtA722bjppNVZN7wQLqEFOuoL08eUQVcJIbiDb+6
+ vSIAX2Rc85hfJWtYjOqVmr4MYe9Zv7kak1Ger9TFf9t8aSl/Koo2eWbLAAMavUjqdEh9
+ N5RpPgrcF2Krqv8QHwi2MwMhywRoyWzPHOch/I8U2zOi7ipNgjBNnQoB10dK0AMYwvA5
+ X0tA==
+X-Gm-Message-State: AOJu0YzSoLBQC6/kFyadG9DxI7hBxNc6xiDN1n85WOPOzwqBsOSpukMv
+ d2RtIRl7pD93gC7xYQWrngoXgq021sDfze73Z6yxaClLgHpvwIjhwd5ckR3B2NUMp4oc9gK+lZN
+ c
+X-Google-Smtp-Source: AGHT+IGFLHuYRJGu8aTvi5YblBJ1xpepH2Eyi/zBEoNw763otOJtAU0G9iuXfAqwoO2iyjpikfdOyQ==
+X-Received: by 2002:a05:600c:4714:b0:42c:aef3:4388 with SMTP id
+ 5b1f17b1804b1-42d9070a3e7mr154826645e9.6.1726563061453; 
+ Tue, 17 Sep 2024 01:51:01 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.131.223])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-378e780016asm9021193f8f.85.2024.09.17.01.50.59
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 17 Sep 2024 01:51:00 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Song Gao <gaosong@loongson.cn>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 7/7] tests/acpi: disallow acpi test data updates
-Date: Tue, 17 Sep 2024 10:37:01 +0200
-Message-ID: <20240917083709.571436-8-kraxel@redhat.com>
-In-Reply-To: <20240917083709.571436-1-kraxel@redhat.com>
-References: <20240917083709.571436-1-kraxel@redhat.com>
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 0/3] ci: Replace macOS coverage from release 13 to 15
+Date: Tue, 17 Sep 2024 10:50:55 +0200
+Message-ID: <20240917085058.1740-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,19 +92,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- tests/qtest/bios-tables-test-allowed-diff.h | 1 -
- 1 file changed, 1 deletion(-)
+macOS 15 "Sequoia" was just released. Add support and coverage.
+According to our support policy, we stop supporting the previous
+major release two years after the the new major release has been
+published. macOS 13 (Ventura) was released on October 2022: time
+to drop it (well, in 2 weeks, but posting the patches now for
+review, to be merged in October).
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 00137acabc71..dfb8523c8bf4 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/aarch64/virt/SSDT.memhp",
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (3):
+  tests/unit: Really build pbkdf test on macOS
+  .gitlab-ci.d/cirrus: Drop support for macOS 13 (Ventura)
+  .gitlab-ci.d/cirrus: Add manual testing of macOS 15 (Sequoia)
+
+ tests/unit/test-crypto-pbkdf.c                       | 2 +-
+ .gitlab-ci.d/cirrus.yml                              | 8 ++++----
+ .gitlab-ci.d/cirrus/{macos-13.vars => macos-15.vars} | 2 +-
+ tests/lcitool/libvirt-ci                             | 2 +-
+ tests/lcitool/refresh                                | 2 +-
+ 5 files changed, 8 insertions(+), 8 deletions(-)
+ rename .gitlab-ci.d/cirrus/{macos-13.vars => macos-15.vars} (95%)
+
 -- 
-2.46.0
+2.45.2
 
 
