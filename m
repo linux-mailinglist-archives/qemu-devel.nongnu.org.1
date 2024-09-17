@@ -2,49 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BB997AD8E
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 11:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC31D97ADC7
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 11:22:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqU8i-0003zF-69; Tue, 17 Sep 2024 05:04:52 -0400
+	id 1sqUP7-00048N-4I; Tue, 17 Sep 2024 05:21:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqU8a-0003th-15; Tue, 17 Sep 2024 05:04:44 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from
+ <bounce-md_30504962.66e945cd.v1-e27f722b0ed54d45a655e0b25a0ff57c@bounce.vates.tech>)
+ id 1sqUOo-0003vx-PA
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 05:21:31 -0400
+Received: from mail178-25.suw51.mandrillapp.com ([198.2.178.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqU6h-0001mR-5G; Tue, 17 Sep 2024 05:04:43 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E1CB38F99C;
- Tue, 17 Sep 2024 12:02:16 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0FFBB13DCDA;
- Tue, 17 Sep 2024 12:02:31 +0300 (MSK)
-Message-ID: <eeb45c7c-7662-4731-9186-069cec320674@tls.msk.ru>
-Date: Tue, 17 Sep 2024 12:02:31 +0300
+ (Exim 4.90_1) (envelope-from
+ <bounce-md_30504962.66e945cd.v1-e27f722b0ed54d45a655e0b25a0ff57c@bounce.vates.tech>)
+ id 1sqUOg-0004bb-Ce
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 05:21:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+ s=mte1; t=1726563789; x=1726824289;
+ bh=idgHq/67RwTh/JAU2CY11c6P488Cq/ZprPkWSuRtEWo=;
+ h=From:Subject:To:Cc:Message-Id:References:In-Reply-To:Feedback-ID:
+ Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
+ Subject:From;
+ b=y7DvJs4Hxsn4JLVmNpGcS/U68XfUaF8rrreQqaMyfsWr57x51w/gZOLnSHh9FYoLq
+ v0El7OYZSv3dYXZQ84yqoQKLXsMDq+ABBYs4JWvmTAAC/yBE7Ts9QERAyvQtHQ9xVU
+ +RSEUsnJ0/m5RtsqUsa4onkOBdlhRfWiSTfIYr0jlIEAplxWaRJyX/ixNLBfgfuIn7
+ TIPloBhIno21jULq+Kyf0WZ85zc/JuK4qGUx1998+0i4jSRd3SL1kDfhic5vxJY9IQ
+ mbwFqGLoE4MomzdHg4Tv03iM+UtcoETYIwLHf6wxRv5pyBaSbQ568Kr/beW4sznpCZ
+ dgBjw6ZpngKgA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
+ t=1726563789; x=1726824289; i=anthony.perard@vates.tech;
+ bh=idgHq/67RwTh/JAU2CY11c6P488Cq/ZprPkWSuRtEWo=;
+ h=From:Subject:To:Cc:Message-Id:References:In-Reply-To:Feedback-ID:
+ Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
+ Subject:From;
+ b=IdHoTxLALCDT2E/JIVanYcU0kZrwAIq3s4sQ426OmJa8dqMs2lBFidjd5tsQUkpl7
+ adqVy9U8nUVDL32KENv3qqr9F7G7KhUCOL2rPHXOKRwWHfeji777GlCVsi6UQGGi8T
+ +4E5l7nFqUE6E5+bDgUn3ht33YRssqhJwJKcU+o9n2UJfDiZ3YlqLJauV+bTDr/0l7
+ Q1mxwbz9BXMir0N012B0C+DbI2T8EiG98bO49fnXLBUTf//AH8yxX0q68O5r1uxQu9
+ Eoc3TxIpHq97xxM9l31sesKU+JRisOzYremWi7vSHyLuQESlsL+wDy5YQCYmo2Uahg
+ L5xP2ulOKd3yw==
+Received: from pmta13.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
+ by mail178-25.suw51.mandrillapp.com (Mailchimp) with ESMTP id
+ 4X7G5n5cl3z4f3jsx
+ for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 09:03:09 +0000 (GMT)
+From: Anthony PERARD <anthony.perard@vates.tech>
+Subject: =?utf-8?Q?Re:=20[PATCH]=20hw/xen:=20Remove=20deadcode?=
+Received: from [37.26.189.201] by mandrillapp.com id
+ e27f722b0ed54d45a655e0b25a0ff57c; Tue, 17 Sep 2024 09:03:09 +0000
+X-Bm-Disclaimer: Yes
+X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
+X-Bm-Transport-Timestamp: 1726563788336
+To: dave@treblig.org
+Cc: sstabellini@kernel.org, paul@xen.org, edgar.iglesias@gmail.com,
+ xen-devel@lists.xenproject.org, qemu-devel@nongnu.org, anthony@xenproject.org
+Message-Id: <ZulFy+S9b243+EQy@l14>
+References: <20240917002212.330893-1-dave@treblig.org>
+In-Reply-To: <20240917002212.330893-1-dave@treblig.org>
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,
+ =20including=20all=20headers,
+ =20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.e27f722b0ed54d45a655e0b25a0ff57c?=
+X-Mandrill-User: md_30504962
+Feedback-ID: 30504962:30504962.20240917:md
+Date: Tue, 17 Sep 2024 09:03:09 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/unit: Really build pbkdf test on macOS
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20240917065736.27883-1-philmd@linaro.org>
- <Zuk7tnWvKyxhJzOT@redhat.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <Zuk7tnWvKyxhJzOT@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.2.178.25;
+ envelope-from=bounce-md_30504962.66e945cd.v1-e27f722b0ed54d45a655e0b25a0ff57c@bounce.vates.tech;
+ helo=mail178-25.suw51.mandrillapp.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,17 +96,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17.09.2024 11:20, Daniel P. Berrangé wrote:
-> On Tue, Sep 17, 2024 at 08:57:36AM +0200, Philippe Mathieu-Daudé wrote:
->> Fix a typo to run the pbkdf crypto cipher tests on macOS.
->>
->>   $ make check-unit
->>     ...
->>     87/102 qemu:unit / test-crypto-pbkdf      OK      2.35s   17 subtests passed
->>
->> Fixes: ebe0302ac8 ("tests/unit: build pbkdf test on macOS")
+On Tue, Sep 17, 2024 at 01:22:12AM +0100, dave@treblig.org wrote:
+> From: "Dr. David Alan Gilbert" <dave@treblig.org>
+> 
+> xen_be_copy_grant_refs is unused since 2019's
+>   19f87870ba ("xen: remove the legacy 'xen_disk' backend")
+> 
+> xen_config_dev_console is unused since 2018's
+>   6d7c06c213 ("Remove broken Xen PV domain builder")
+> 
+> Remove them.
+> 
+> Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 
-Picked up for trivial-patches tree, thanks!
+Acked-by: Anthony PERARD <anthony.perard@vates.tech>
 
-/mjt
+Thanks,
+
+-- 
+
+Anthony Perard | Vates XCP-ng Developer
+
+XCP-ng & Xen Orchestra - Vates solutions
+
+web: https://vates.tech
 
