@@ -2,38 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C07C97B404
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3527D97B402
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:15:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqcin-0006jd-5v; Tue, 17 Sep 2024 14:14:45 -0400
+	id 1sqchv-0004sA-Q4; Tue, 17 Sep 2024 14:13:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqchR-0003ba-Kp; Tue, 17 Sep 2024 14:13:20 -0400
+ id 1sqchT-0003is-Ge; Tue, 17 Sep 2024 14:13:20 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqchN-0002vs-SX; Tue, 17 Sep 2024 14:13:16 -0400
+ id 1sqchR-0002w9-OT; Tue, 17 Sep 2024 14:13:19 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 55FC88FC00;
- Tue, 17 Sep 2024 21:12:53 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 188248FC01;
+ Tue, 17 Sep 2024 21:12:54 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6D5B113E760;
- Tue, 17 Sep 2024 21:13:08 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9466E13E761;
+ Tue, 17 Sep 2024 21:13:09 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, David Hildenbrand <david@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Tiago Pasqualini <tiago.pasqualini@canonical.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 72/82] softmmu/physmem: fix memory leak in
- dirty_memory_extend()
-Date: Tue, 17 Sep 2024 21:12:46 +0300
-Message-Id: <20240917181256.634732-4-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 73/82] crypto: run qcrypto_pbkdf2_count_iters in a new
+ thread
+Date: Tue, 17 Sep 2024 21:12:47 +0300
+Message-Id: <20240917181256.634732-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.3-20240917211142@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240917211142@cover.tls.msk.ru>
@@ -62,133 +59,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Hildenbrand <david@redhat.com>
+From: Tiago Pasqualini <tiago.pasqualini@canonical.com>
 
-As reported by Peter, we might be leaking memory when removing the
-highest RAMBlock (in the weird ram_addr_t space), and adding a new one.
+CPU time accounting in the kernel has been demonstrated to have a
+sawtooth pattern[1][2]. This can cause the getrusage system call to
+not be as accurate as we are expecting, which can cause this calculation
+to stall.
 
-We will fail to realize that we already allocated bitmaps for more
-dirty memory blocks, and effectively discard the pointers to them.
+The kernel discussions shows that this inaccuracy happens when CPU time
+gets big enough, so this patch changes qcrypto_pbkdf2_count_iters to run
+in a fresh thread to avoid this inaccuracy. It also adds a sanity check
+to fail the process if CPU time is not accounted.
 
-Fix it by getting rid of last_ram_page() and by remembering the number
-of dirty memory blocks that have been allocated already.
+[1] https://lore.kernel.org/lkml/159231011694.16989.16351419333851309713.tip-bot2@tip-bot2/
+[2] https://lore.kernel.org/lkml/20221226031010.4079885-1-maxing.lan@bytedance.com/t/#m1c7f2fdc0ea742776a70fd1aa2a2e414c437f534
 
-While at it, let's use "unsigned int" for the number of blocks, which
-should be sufficient until we reach ~32 exabytes.
-
-Looks like this leak was introduced as we switched from using a single
-bitmap_zero_extend() to allocating multiple bitmaps:
-bitmap_zero_extend() relies on g_renew() which should have taken care of
-this.
-
-Resolves: https://lkml.kernel.org/r/CAFEAcA-k7a+VObGAfCFNygQNfCKL=AfX6A4kScq=VSSK0peqPg@mail.gmail.com
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Fixes: 5b82b703b69a ("memory: RCU ram_list.dirty_memory[] for safe RAM hotplug")
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Tested-by: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-stable@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/r/20240828090743.128647-1-david@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit b84f06c2bee727b3870b4eeccbe3a45c5aea14c1)
+Resolves: #2398
+Signed-off-by: Tiago Pasqualini <tiago.pasqualini@canonical.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+(cherry picked from commit c72cab5ad9f849bbcfcf4be7952b8b8946cc626e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: context fix due to lack of
- v9.0.0-rc4-49-g15f7a80c49cb "RAMBlock: Add support of KVM private guest memfd")
 
-diff --git a/include/exec/ramlist.h b/include/exec/ramlist.h
-index 2ad2a81acc..d9cfe530be 100644
---- a/include/exec/ramlist.h
-+++ b/include/exec/ramlist.h
-@@ -50,6 +50,7 @@ typedef struct RAMList {
-     /* RCU-enabled, writes protected by the ramlist lock. */
-     QLIST_HEAD(, RAMBlock) blocks;
-     DirtyMemoryBlocks *dirty_memory[DIRTY_MEMORY_NUM];
-+    unsigned int num_dirty_blocks;
-     uint32_t version;
-     QLIST_HEAD(, RAMBlockNotifier) ramblock_notifiers;
- } RAMList;
-diff --git a/system/physmem.c b/system/physmem.c
-index a4fe3d2bf8..78f7db1121 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1497,18 +1497,6 @@ static ram_addr_t find_ram_offset(ram_addr_t size)
-     return offset;
+diff --git a/crypto/pbkdf.c b/crypto/pbkdf.c
+index 8d198c152c..d1c06ef3ed 100644
+--- a/crypto/pbkdf.c
++++ b/crypto/pbkdf.c
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/thread.h"
+ #include "qapi/error.h"
+ #include "crypto/pbkdf.h"
+ #ifndef _WIN32
+@@ -85,12 +86,28 @@ static int qcrypto_pbkdf2_get_thread_cpu(unsigned long long *val_ms,
+ #endif
  }
  
--static unsigned long last_ram_page(void)
--{
--    RAMBlock *block;
--    ram_addr_t last = 0;
--
--    RCU_READ_LOCK_GUARD();
--    RAMBLOCK_FOREACH(block) {
--        last = MAX(last, block->offset + block->max_length);
--    }
--    return last >> TARGET_PAGE_BITS;
--}
--
- static void qemu_ram_setup_dump(void *addr, ram_addr_t size)
- {
-     int ret;
-@@ -1762,13 +1750,11 @@ void qemu_ram_msync(RAMBlock *block, ram_addr_t start, ram_addr_t length)
- }
- 
- /* Called with ram_list.mutex held */
--static void dirty_memory_extend(ram_addr_t old_ram_size,
--                                ram_addr_t new_ram_size)
-+static void dirty_memory_extend(ram_addr_t new_ram_size)
- {
--    ram_addr_t old_num_blocks = DIV_ROUND_UP(old_ram_size,
--                                             DIRTY_MEMORY_BLOCK_SIZE);
--    ram_addr_t new_num_blocks = DIV_ROUND_UP(new_ram_size,
--                                             DIRTY_MEMORY_BLOCK_SIZE);
-+    unsigned int old_num_blocks = ram_list.num_dirty_blocks;
-+    unsigned int new_num_blocks = DIV_ROUND_UP(new_ram_size,
-+                                               DIRTY_MEMORY_BLOCK_SIZE);
-     int i;
- 
-     /* Only need to extend if block count increased */
-@@ -1800,6 +1786,8 @@ static void dirty_memory_extend(ram_addr_t old_ram_size,
-             g_free_rcu(old_blocks, rcu);
-         }
-     }
+-uint64_t qcrypto_pbkdf2_count_iters(QCryptoHashAlgorithm hash,
+-                                    const uint8_t *key, size_t nkey,
+-                                    const uint8_t *salt, size_t nsalt,
+-                                    size_t nout,
+-                                    Error **errp)
++typedef struct CountItersData {
++    QCryptoHashAlgorithm hash;
++    const uint8_t *key;
++    size_t nkey;
++    const uint8_t *salt;
++    size_t nsalt;
++    size_t nout;
++    uint64_t iterations;
++    Error **errp;
++} CountItersData;
 +
-+    ram_list.num_dirty_blocks = new_num_blocks;
++static void *threaded_qcrypto_pbkdf2_count_iters(void *data)
+ {
++    CountItersData *iters_data = (CountItersData *) data;
++    QCryptoHashAlgorithm hash = iters_data->hash;
++    const uint8_t *key = iters_data->key;
++    size_t nkey = iters_data->nkey;
++    const uint8_t *salt = iters_data->salt;
++    size_t nsalt = iters_data->nsalt;
++    size_t nout = iters_data->nout;
++    Error **errp = iters_data->errp;
++
+     uint64_t ret = -1;
+     g_autofree uint8_t *out = g_new(uint8_t, nout);
+     uint64_t iterations = (1 << 15);
+@@ -114,7 +131,10 @@ uint64_t qcrypto_pbkdf2_count_iters(QCryptoHashAlgorithm hash,
+ 
+         delta_ms = end_ms - start_ms;
+ 
+-        if (delta_ms > 500) {
++        if (delta_ms == 0) { /* sanity check */
++            error_setg(errp, "Unable to get accurate CPU usage");
++            goto cleanup;
++        } else if (delta_ms > 500) {
+             break;
+         } else if (delta_ms < 100) {
+             iterations = iterations * 10;
+@@ -129,5 +149,24 @@ uint64_t qcrypto_pbkdf2_count_iters(QCryptoHashAlgorithm hash,
+ 
+  cleanup:
+     memset(out, 0, nout);
+-    return ret;
++    iters_data->iterations = ret;
++    return NULL;
++}
++
++uint64_t qcrypto_pbkdf2_count_iters(QCryptoHashAlgorithm hash,
++                                    const uint8_t *key, size_t nkey,
++                                    const uint8_t *salt, size_t nsalt,
++                                    size_t nout,
++                                    Error **errp)
++{
++    CountItersData data = {
++        hash, key, nkey, salt, nsalt, nout, 0, errp
++    };
++    QemuThread thread;
++
++    qemu_thread_create(&thread, "pbkdf2", threaded_qcrypto_pbkdf2_count_iters,
++                       &data, QEMU_THREAD_JOINABLE);
++    qemu_thread_join(&thread);
++
++    return data.iterations;
  }
- 
- static void ram_block_add(RAMBlock *new_block, Error **errp)
-@@ -1808,11 +1796,9 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-     const bool shared = qemu_ram_is_shared(new_block);
-     RAMBlock *block;
-     RAMBlock *last_block = NULL;
--    ram_addr_t old_ram_size, new_ram_size;
-+    ram_addr_t ram_size;
-     Error *err = NULL;
- 
--    old_ram_size = last_ram_page();
--
-     qemu_mutex_lock_ramlist();
-     new_block->offset = find_ram_offset(new_block->max_length);
- 
-@@ -1840,11 +1826,8 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-         }
-     }
- 
--    new_ram_size = MAX(old_ram_size,
--              (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS);
--    if (new_ram_size > old_ram_size) {
--        dirty_memory_extend(old_ram_size, new_ram_size);
--    }
-+    ram_size = (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS;
-+    dirty_memory_extend(ram_size);
-     /* Keep the list sorted from biggest to smallest block.  Unlike QTAILQ,
-      * QLIST (which has an RCU-friendly variant) does not have insertion at
-      * tail, so save the last element in last_block.
 -- 
 2.39.5
 
