@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F6B97AEDF
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C78397AEE5
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:35:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqVWw-0006yX-BX; Tue, 17 Sep 2024 06:33:58 -0400
+	id 1sqVWr-0006u3-Kc; Tue, 17 Sep 2024 06:33:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVp-00069F-IB
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVp-00069E-9v
  for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVn-0006lc-Ol
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVn-0006lZ-Gj
  for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726569167;
+ s=mimecast20190719; t=1726569166;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h1I319d7l3peW813h/MQKdOblm5RNBXb6q0NhABxO9g=;
- b=ZN0gy4Hjc303TQ0JL8c1nmzyaskKtDtWocJIs5nobPmcIS14GC5YXSOQZPfyMRntKt8rCF
- 0nim6dE3N48TW5K9Al17Owo4K1SHjWsOSCpdVidBML5J53FaeBxlPNRQgvaGOliXIl/57V
- 9LTdqzfmzvJ9oc5WxfpjBIXM9IykhBQ=
+ bh=cr/KNX13Ma/cPvi3HN0YGKqnJcU5fnq6s329bntpUAs=;
+ b=gUUm7H9hivYUuMNgtmLzp5AvgQr9VqFW+JkLIF1D2JyIQvd9X3PXp3SKrold8DjhGPspIq
+ aE8vkpbi+CoqiXzO9/p0cf0GYWy+vOjX+OQGYqGuaZrFZORLwk97E8d2EzL3w486CvAXZ6
+ WbSWMbgDQUqHbJfEJhgZLxJxyitESwE=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-QXtJmuonNFWRewJ6ikWFXg-1; Tue,
- 17 Sep 2024 06:32:43 -0400
-X-MC-Unique: QXtJmuonNFWRewJ6ikWFXg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-192-14_JnZ7HOUmu9ol1eOcG_Q-1; Tue,
+ 17 Sep 2024 06:32:45 -0400
+X-MC-Unique: 14_JnZ7HOUmu9ol1eOcG_Q-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C5ABD1955D4A; Tue, 17 Sep 2024 10:32:42 +0000 (UTC)
+ id 8D7351955D4A; Tue, 17 Sep 2024 10:32:44 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.193.154])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1D76D19560AA; Tue, 17 Sep 2024 10:32:40 +0000 (UTC)
+ id 00F9B19560AA; Tue, 17 Sep 2024 10:32:42 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
-Subject: [PULL 4/8] vfio/igd: use new BDSM register location and size for gen
- 11 and later
-Date: Tue, 17 Sep 2024 12:32:25 +0200
-Message-ID: <20240917103229.876515-5-clg@redhat.com>
+Subject: [PULL 5/8] vfio/igd: add new bar0 quirk to emulate BDSM mirror
+Date: Tue, 17 Sep 2024 12:32:26 +0200
+Message-ID: <20240917103229.876515-6-clg@redhat.com>
 In-Reply-To: <20240917103229.876515-1-clg@redhat.com>
 References: <20240917103229.876515-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,84 +82,161 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Corvin Köhne <corvin.koehne@gmail.com>
 
-Intel changed the location and size of the BDSM register for gen 11
-devices and later. We have to adjust our emulation for these devices to
-properly support them.
+The BDSM register is mirrored into MMIO space at least for gen 11 and
+later devices. Unfortunately, the Windows driver reads the register
+value from MMIO space instead of PCI config space for those devices [1].
+Therefore, we either have to keep a 1:1 mapping for the host and guest
+address or we have to emulate the MMIO register too. Using the igd in
+legacy mode is already hard due to it's many constraints. Keeping a 1:1
+mapping may not work in all cases and makes it even harder to use. An
+MMIO emulation has to trap the whole MMIO page. This makes accesses to
+this page slower compared to using second level address translation.
+Nevertheless, it doesn't have any constraints and I haven't noticed any
+performance degradation yet making it a better solution.
+
+[1] https://github.com/projectacrn/acrn-hypervisor/blob/5c351bee0f6ae46250eefc07f44b4a31e770f3cf/devicemodel/hw/pci/passthrough.c#L650-L653
 
 Signed-off-by: Corvin Köhne <c.koehne@beckhoff.com>
 Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
 ---
- hw/vfio/igd.c | 31 ++++++++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 7 deletions(-)
+ hw/vfio/pci.h        |  1 +
+ hw/vfio/igd.c        | 98 ++++++++++++++++++++++++++++++++++++++++++++
+ hw/vfio/pci-quirks.c |  1 +
+ 3 files changed, 100 insertions(+)
 
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index bf67df2fbc09b3d0fd97d25dfaa5290ab33b03ea..5ad090a22976e9493c726cbb2b1b9911abfbd8c4 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -215,6 +215,7 @@ void vfio_setup_resetfn_quirk(VFIOPCIDevice *vdev);
+ bool vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp);
+ void vfio_quirk_reset(VFIOPCIDevice *vdev);
+ VFIOQuirk *vfio_quirk_alloc(int nr_mem);
++void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr);
+ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr);
+ 
+ extern const PropertyInfo qdev_prop_nv_gpudirect_clique;
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index d5e57656a8b7bb207b421977f9a2c76943d4a899..0b6533bbf7cc37c570f332636a292c26326cd870 100644
+index 0b6533bbf7cc37c570f332636a292c26326cd870..0d68c6a45169238b274706d29d9be11455c37f76 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -100,11 +100,12 @@ static int igd_gen(VFIOPCIDevice *vdev)
- typedef struct VFIOIGDQuirk {
-     struct VFIOPCIDevice *vdev;
-     uint32_t index;
--    uint32_t bdsm;
-+    uint64_t bdsm;
- } VFIOIGDQuirk;
+@@ -374,6 +374,104 @@ static const MemoryRegionOps vfio_igd_index_quirk = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
+ };
  
- #define IGD_GMCH 0x50 /* Graphics Control Register */
- #define IGD_BDSM 0x5c /* Base Data of Stolen Memory */
-+#define IGD_BDSM_GEN11 0xc0 /* Base Data of Stolen Memory of gen 11 and later */
- 
- 
- /*
-@@ -313,9 +314,13 @@ static void vfio_igd_quirk_data_write(void *opaque, hwaddr addr,
-      */
-     if ((igd->index % 4 == 1) && igd->index < vfio_igd_gtt_max(vdev)) {
-         if (gen < 8 || (igd->index % 8 == 1)) {
--            uint32_t base;
-+            uint64_t base;
- 
--            base = pci_get_long(vdev->pdev.config + IGD_BDSM);
-+            if (gen < 11) {
-+                base = pci_get_long(vdev->pdev.config + IGD_BDSM);
-+            } else {
-+                base = pci_get_quad(vdev->pdev.config + IGD_BDSM_GEN11);
-+            }
-             if (!base) {
-                 hw_error("vfio-igd: Guest attempted to program IGD GTT before "
-                          "BIOS reserved stolen memory.  Unsupported BIOS?");
-@@ -519,7 +524,13 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     igd = quirk->data = g_malloc0(sizeof(*igd));
-     igd->vdev = vdev;
-     igd->index = ~0;
--    igd->bdsm = vfio_pci_read_config(&vdev->pdev, IGD_BDSM, 4);
-+    if (gen < 11) {
-+        igd->bdsm = vfio_pci_read_config(&vdev->pdev, IGD_BDSM, 4);
-+    } else {
-+        igd->bdsm = vfio_pci_read_config(&vdev->pdev, IGD_BDSM_GEN11, 4);
-+        igd->bdsm |=
-+            (uint64_t)vfio_pci_read_config(&vdev->pdev, IGD_BDSM_GEN11 + 4, 4) << 32;
++#define IGD_BDSM_MMIO_OFFSET 0x1080C0
++
++static uint64_t vfio_igd_quirk_bdsm_read(void *opaque,
++                                          hwaddr addr, unsigned size)
++{
++    VFIOPCIDevice *vdev = opaque;
++    uint64_t offset;
++
++    offset = IGD_BDSM_GEN11 + addr;
++
++    switch (size) {
++    case 1:
++        return pci_get_byte(vdev->pdev.config + offset);
++    case 2:
++        return pci_get_word(vdev->pdev.config + offset);
++    case 4:
++        return pci_get_long(vdev->pdev.config + offset);
++    case 8:
++        return pci_get_quad(vdev->pdev.config + offset);
++    default:
++        hw_error("igd: unsupported read size, %u bytes", size);
++        break;
 +    }
-     igd->bdsm &= ~((1 * MiB) - 1); /* 1MB aligned */
- 
-     memory_region_init_io(&quirk->mem[0], OBJECT(vdev), &vfio_igd_index_quirk,
-@@ -577,9 +588,15 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     pci_set_long(vdev->emulated_config_bits + IGD_GMCH, ~0);
- 
-     /* BDSM is read-write, emulated.  The BIOS needs to be able to write it */
--    pci_set_long(vdev->pdev.config + IGD_BDSM, 0);
--    pci_set_long(vdev->pdev.wmask + IGD_BDSM, ~0);
--    pci_set_long(vdev->emulated_config_bits + IGD_BDSM, ~0);
-+    if (gen < 11) {
-+        pci_set_long(vdev->pdev.config + IGD_BDSM, 0);
-+        pci_set_long(vdev->pdev.wmask + IGD_BDSM, ~0);
-+        pci_set_long(vdev->emulated_config_bits + IGD_BDSM, ~0);
-+    } else {
-+        pci_set_quad(vdev->pdev.config + IGD_BDSM_GEN11, 0);
-+        pci_set_quad(vdev->pdev.wmask + IGD_BDSM_GEN11, ~0);
-+        pci_set_quad(vdev->emulated_config_bits + IGD_BDSM_GEN11, ~0);
++
++    return 0;
++}
++
++static void vfio_igd_quirk_bdsm_write(void *opaque, hwaddr addr,
++                                       uint64_t data, unsigned size)
++{
++    VFIOPCIDevice *vdev = opaque;
++    uint64_t offset;
++
++    offset = IGD_BDSM_GEN11 + addr;
++
++    switch (size) {
++    case 1:
++        pci_set_byte(vdev->pdev.config + offset, data);
++        break;
++    case 2:
++        pci_set_word(vdev->pdev.config + offset, data);
++        break;
++    case 4:
++        pci_set_long(vdev->pdev.config + offset, data);
++        break;
++    case 8:
++        pci_set_quad(vdev->pdev.config + offset, data);
++        break;
++    default:
++        hw_error("igd: unsupported read size, %u bytes", size);
++        break;
 +    }
- 
-     /*
-      * This IOBAR gives us access to GTTADR, which allows us to write to
++}
++
++static const MemoryRegionOps vfio_igd_bdsm_quirk = {
++    .read = vfio_igd_quirk_bdsm_read,
++    .write = vfio_igd_quirk_bdsm_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++};
++
++void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
++{
++    VFIOQuirk *quirk;
++    int gen;
++
++    /*
++     * This must be an Intel VGA device at address 00:02.0 for us to even
++     * consider enabling legacy mode. Some driver have dependencies on the PCI
++     * bus address.
++     */
++    if (!vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, PCI_ANY_ID) ||
++        !vfio_is_vga(vdev) || nr != 0 ||
++        &vdev->pdev != pci_find_device(pci_device_root_bus(&vdev->pdev),
++                                       0, PCI_DEVFN(0x2, 0))) {
++        return;
++    }
++
++    /*
++     * Only on IGD devices of gen 11 and above, the BDSM register is mirrored
++     * into MMIO space and read from MMIO space by the Windows driver.
++     */
++    gen = igd_gen(vdev);
++    if (gen < 11) {
++        return;
++    }
++
++    quirk = vfio_quirk_alloc(1);
++    quirk->data = vdev;
++
++    memory_region_init_io(&quirk->mem[0], OBJECT(vdev), &vfio_igd_bdsm_quirk,
++                          vdev, "vfio-igd-bdsm-quirk", 8);
++    memory_region_add_subregion_overlap(vdev->bars[0].region.mem,
++                                        IGD_BDSM_MMIO_OFFSET, &quirk->mem[0],
++                                        1);
++
++    QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
++}
++
+ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+ {
+     g_autofree struct vfio_region_info *rom = NULL;
+diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+index 39dae72497e0315eeb580dbcd5255c58bc38c8ed..d37f722cce0975631dd691b92a1f36568718b454 100644
+--- a/hw/vfio/pci-quirks.c
++++ b/hw/vfio/pci-quirks.c
+@@ -1259,6 +1259,7 @@ void vfio_bar_quirk_setup(VFIOPCIDevice *vdev, int nr)
+     vfio_probe_nvidia_bar0_quirk(vdev, nr);
+     vfio_probe_rtl8168_bar2_quirk(vdev, nr);
+ #ifdef CONFIG_VFIO_IGD
++    vfio_probe_igd_bar0_quirk(vdev, nr);
+     vfio_probe_igd_bar4_quirk(vdev, nr);
+ #endif
+ }
 -- 
 2.46.0
 
