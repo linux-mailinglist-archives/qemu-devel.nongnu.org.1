@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A33E97B567
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 23:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF5A97B563
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 23:57:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqgAk-0007DC-4D; Tue, 17 Sep 2024 17:55:46 -0400
+	id 1sqgAk-0007GA-OL; Tue, 17 Sep 2024 17:55:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqgAM-0006at-ED
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqgAN-0006fb-J3
  for qemu-devel@nongnu.org; Tue, 17 Sep 2024 17:55:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqgAK-0004tC-Cy
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 17:55:21 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqgAL-0004t2-Fe
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 17:55:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726610119;
+ s=mimecast20190719; t=1726610118;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uEH7XELrrgRUk7dJEbjSFoDATfJsQ4JEpBQhyHZoeiU=;
- b=FafSL/+ibCRgWqJ+zV1rgjBpli9+JiJpx6x9BuJdAvt+u6yKku/moohUAtNIPVNO0q7jOO
- UYryzCDWC96xgK0BxbpkrTfiBGogVHwugWw/jZOtCdN9ruBMXkGzXFqmTE2Ey08h6UTe/m
- VeSQBoZKF2xSDhVBREqNT/xwpj7mNPg=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=w4/INXL/PVn5TMqQnxTEKZfK/Si8TZmajwPGuc+4jWg=;
+ b=b67fgO63h2sce1KVP2b4E0V4sas3bVdpSoEHZgcUuw+X0wI4sH9stgbBJRomgZnvMl1XRU
+ 6gRne43jBht2Io/3he9nKhAAzxEboxzwY+7ljiJ91rOMIspZfBHmf2utzcBr3AJTGr/KvA
+ bNzyGG0WGizW08UNw//Cs6Ae1KPOCKA=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-28-tWoJL2xQNAyiFutzB4K7PQ-1; Tue, 17 Sep 2024 17:55:16 -0400
-X-MC-Unique: tWoJL2xQNAyiFutzB4K7PQ-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7a9cfe4442cso987160085a.3
- for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 14:55:16 -0700 (PDT)
+ us-mta-463-suaYEBHfPOiWrD1SG2zn0g-1; Tue, 17 Sep 2024 17:55:17 -0400
+X-MC-Unique: suaYEBHfPOiWrD1SG2zn0g-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7a1d0b29198so1374602785a.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 14:55:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1726610116; x=1727214916;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uEH7XELrrgRUk7dJEbjSFoDATfJsQ4JEpBQhyHZoeiU=;
- b=hiYH3kpRI0dwXIbrudDjkwyPEQxW+P7IsrCQCYkoZXaW1SBMViSGsp1H9TMcEQsfeh
- q8nNdLCyMpgLAqGJXW7I01yp0Gy58NrqbN8pnMR6ZsT8+Kvkeet5N+GcA5RFysODRFwo
- 2OGQ0aIojBiI3VdgyUnSiD/PC343N1BoISTjDLckXF23YKtyX8ZexlwQKC6QGWotlZZa
- x8rtXzEUx1OobDj/a+qxJ3WHyP8Bhm9OiM/J92GrEyZGWU0qsTtDRkZNvJfoQR5MAkkd
- 176FTIrudVvE2IGIPTheWXUR78h26qugcI5wExFjKFYbyG6PS0PlKd5oD48wkgveYeFF
- EFHQ==
-X-Gm-Message-State: AOJu0YxyVQ1DUJ4N//hAkorPO8Sfg8zcOJlJtG/IwKuGIZltGYATWa4q
- ixCynApz/Da61CK/9B8BLpXY2nptBCB5H99OqfZWJQRC8rPun0oXvpZBDpmJiv275s5pWWAmwVh
- u9rBDQefS4lbucXxNCdccmtjXQFtB13OdaXdfWDp1GI8GwZRWZLcVFu18xfDJKxMfNNlVJzavnb
- SyMkC3rG5Z0BQ3Mr8X7htt0D4V7Sa7NwRzMw==
-X-Received: by 2002:a05:620a:3954:b0:79f:197d:fe92 with SMTP id
- af79cd13be357-7a9e5ee7bc3mr3393235185a.2.1726610115819; 
- Tue, 17 Sep 2024 14:55:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEAxOc+2TLVFD4V5QSj73rFIH/CJ80tUcVmOunent265Iq4wxz+IWfQhp9ClAUSp/Z+CADqdw==
-X-Received: by 2002:a05:620a:3954:b0:79f:197d:fe92 with SMTP id
- af79cd13be357-7a9e5ee7bc3mr3393230985a.2.1726610115305; 
- Tue, 17 Sep 2024 14:55:15 -0700 (PDT)
+ bh=w4/INXL/PVn5TMqQnxTEKZfK/Si8TZmajwPGuc+4jWg=;
+ b=uDPBK6vqXczL+dVKZWDkwl/02pkkjJC+1WGYa8Hd3BY3o91CpoF08FxNdpDSdr3Efh
+ qE4WX+eh09UUzmpvviPPp6eIRVnA6y7MdimB6nG4hywvdUzmjNVJ1zXlBBTRQvFQrGP9
+ lFxkh9LYkfxT9dGORtCoUs6Z08OtPalpnLXyL7iI4Q4bGjappQ5sVrWb+os329WNX6Af
+ bGpPWVJCMTUl/bZajVbfjYDgbMV+Kq1aHqpoQdjmscPiy2Vz7w2M7SxO5F/wOkpb2CyO
+ ATno7AlArOr4RWxp0l93EGA5e3iT5jDlSU9vqsgFt5o/oDXeEk3QPmEFZvGlOZUQDQNv
+ zkzg==
+X-Gm-Message-State: AOJu0Yym+vvg1PnbIFP9cfTKS/lyHsNg4PXfShViS/Kc/KWmgzHltyo/
+ gBZFoTHy1XGdMHbhEz8UsNZ9MoYwALd/ivNPhGr1AvGMs2F/c2mtFeQ4FFnmSKZfWyLxSqhtuzn
+ EXBMPFTHVWnIQohWIvpAWxyDnju9pCB8LBhV/Vy4uaxkx4g+gpkbU5cYN7QKTPiBltLe37wAfRr
+ 4HADnH7eSGfNEHMt4WUfgsvq1N8JUemNTVOA==
+X-Received: by 2002:a05:620a:4013:b0:7a9:bd68:462e with SMTP id
+ af79cd13be357-7a9e5ef6732mr2798297685a.20.1726610116619; 
+ Tue, 17 Sep 2024 14:55:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhtYvqJwDzOTsDK6yi5bgA/PvlgQRsE6/BHv5sXkoub+pWaENuY2uuPMbZ0QGBcc0hpj2Z6Q==
+X-Received: by 2002:a05:620a:4013:b0:7a9:bd68:462e with SMTP id
+ af79cd13be357-7a9e5ef6732mr2798296085a.20.1726610116249; 
+ Tue, 17 Sep 2024 14:55:16 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7ab3e97c9fasm402869685a.28.2024.09.17.14.55.14
+ af79cd13be357-7ab3e97c9fasm402869685a.28.2024.09.17.14.55.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Sep 2024 14:55:14 -0700 (PDT)
+ Tue, 17 Sep 2024 14:55:15 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- "Fea.Wang" <fea.wang@sifive.com>, qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 4/6] softmmu/physmem.c: Keep transaction attribute in
- address_space_map()
-Date: Tue, 17 Sep 2024 17:55:04 -0400
-Message-ID: <20240917215506.472181-5-peterx@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 5/6] migration/savevm: Remove extra load cleanup calls
+Date: Tue, 17 Sep 2024 17:55:05 -0400
+Message-ID: <20240917215506.472181-6-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240917215506.472181-1-peterx@redhat.com>
 References: <20240917215506.472181-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,7 +82,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,35 +98,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Fea.Wang" <fea.wang@sifive.com>
+From: Fabiano Rosas <farosas@suse.de>
 
-The follow-up transactions may use the data in the attribution, so keep
-the value of attribution from the function parameter just as
-flatview_translate() above.
+There are two qemu_loadvm_state_cleanup() calls that were introduced
+when qemu_loadvm_state_setup() was still called before loading the
+configuration section, so there was state to be cleaned up if the
+header checks failed.
 
-Signed-off-by: Fea.Wang <fea.wang@sifive.com>
-Cc: qemu-stable@nongnu.org
-Fixes: f26404fbee ("Make address_space_map() take a MemTxAttrs argument")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20240912070404.2993976-2-fea.wang@sifive.com
+However, commit 9e14b84908 ("migration/savevm: load_header before
+load_setup") has moved that configuration section part to
+qemu_loadvm_state_header() which now happens before
+qemu_loadvm_state_setup().
+
+Remove the cleanup calls that are now misplaced.
+
+Note that we didn't use Fixes because it's benign to cleanup() even if
+setup() is not invoked.  So this patch is not needed for stable, as it
+falls into cleanup category.
+
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/20240917185802.15619-2-farosas@suse.de
+[peterx: added last paragraph of commit message]
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- system/physmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ migration/savevm.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index d71a2b1bbd..dc1db3a384 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -3274,7 +3274,7 @@ void *address_space_map(AddressSpace *as,
-         bounce->len = l;
- 
-         if (!is_write) {
--            flatview_read(fv, addr, MEMTXATTRS_UNSPECIFIED,
-+            flatview_read(fv, addr, attrs,
-                           bounce->buffer, l);
+diff --git a/migration/savevm.c b/migration/savevm.c
+index d500eae979..d0759694fd 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2732,13 +2732,11 @@ static int qemu_loadvm_state_header(QEMUFile *f)
+     if (migrate_get_current()->send_configuration) {
+         if (qemu_get_byte(f) != QEMU_VM_CONFIGURATION) {
+             error_report("Configuration section missing");
+-            qemu_loadvm_state_cleanup();
+             return -EINVAL;
          }
+         ret = vmstate_load_state(f, &vmstate_configuration, &savevm_state, 0);
  
+         if (ret) {
+-            qemu_loadvm_state_cleanup();
+             return ret;
+         }
+     }
 -- 
 2.45.0
 
