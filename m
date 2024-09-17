@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DAAB97AEDD
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F6B97AEDF
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:34:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqVWY-0006Ef-Dz; Tue, 17 Sep 2024 06:33:35 -0400
+	id 1sqVWw-0006yX-BX; Tue, 17 Sep 2024 06:33:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVl-000673-V1
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:47 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVp-00069F-IB
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVj-0006kU-Ns
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:45 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVn-0006lc-Ol
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726569163;
+ s=mimecast20190719; t=1726569167;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T3S03emqiACR4UcCYsadHUuF/xYoupzmjS6f8Wz8fGI=;
- b=f3J109aLbxZqSTgxxtlYANm09wKIQoQE6ZNccJ6JX19R4tRzuEPkBgWwX39ZpDW3w8HhhV
- Nz9rqS2PO7h7MX/zbDIk1IvMKSROShSdKGVaCCRndqL2Ax5zlLgx/gHcgnu5dZp/oSFM1P
- N4R0WLCpQZZMIy1j8WOLiW0zeKhjxn8=
+ bh=h1I319d7l3peW813h/MQKdOblm5RNBXb6q0NhABxO9g=;
+ b=ZN0gy4Hjc303TQ0JL8c1nmzyaskKtDtWocJIs5nobPmcIS14GC5YXSOQZPfyMRntKt8rCF
+ 0nim6dE3N48TW5K9Al17Owo4K1SHjWsOSCpdVidBML5J53FaeBxlPNRQgvaGOliXIl/57V
+ 9LTdqzfmzvJ9oc5WxfpjBIXM9IykhBQ=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-xKVJ5f8ENia4xZ-MZNMlvg-1; Tue,
- 17 Sep 2024 06:32:41 -0400
-X-MC-Unique: xKVJ5f8ENia4xZ-MZNMlvg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-QXtJmuonNFWRewJ6ikWFXg-1; Tue,
+ 17 Sep 2024 06:32:43 -0400
+X-MC-Unique: QXtJmuonNFWRewJ6ikWFXg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A771A1955D59; Tue, 17 Sep 2024 10:32:40 +0000 (UTC)
+ id C5ABD1955D4A; Tue, 17 Sep 2024 10:32:42 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.193.154])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 195CF19560B0; Tue, 17 Sep 2024 10:32:38 +0000 (UTC)
+ id 1D76D19560AA; Tue, 17 Sep 2024 10:32:40 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
-Subject: [PULL 3/8] vfio/igd: support legacy mode for all known generations
-Date: Tue, 17 Sep 2024 12:32:24 +0200
-Message-ID: <20240917103229.876515-4-clg@redhat.com>
+Subject: [PULL 4/8] vfio/igd: use new BDSM register location and size for gen
+ 11 and later
+Date: Tue, 17 Sep 2024 12:32:25 +0200
+Message-ID: <20240917103229.876515-5-clg@redhat.com>
 In-Reply-To: <20240917103229.876515-1-clg@redhat.com>
 References: <20240917103229.876515-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,35 +83,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Corvin Köhne <corvin.koehne@gmail.com>
 
-We're soon going to add support for legacy mode to ElkhartLake and
-TigerLake devices. Those are gen 11 and 12 devices. At the moment, all
-devices identified by our igd_gen function do support legacy mode. This
-won't change when adding our new devices of gen 11 and 12. Therefore, it
-makes more sense to accept legacy mode for all known devices instead of
-maintaining a long list of known good generations. If we add a new
-generation to igd_gen which doesn't support legacy mode for some reason,
-it'll be easy to advance the check to reject legacy mode for this
-specific generation.
+Intel changed the location and size of the BDSM register for gen 11
+devices and later. We have to adjust our emulation for these devices to
+properly support them.
 
 Signed-off-by: Corvin Köhne <c.koehne@beckhoff.com>
 Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
 ---
- hw/vfio/igd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/vfio/igd.c | 31 ++++++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 7 deletions(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 650a323ddaac746de780103ca857256709c0e0aa..d5e57656a8b7bb207b421977f9a2c76943d4a899 100644
+index d5e57656a8b7bb207b421977f9a2c76943d4a899..0b6533bbf7cc37c570f332636a292c26326cd870 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -416,7 +416,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-      * devices maintain compatibility with generation 8.
+@@ -100,11 +100,12 @@ static int igd_gen(VFIOPCIDevice *vdev)
+ typedef struct VFIOIGDQuirk {
+     struct VFIOPCIDevice *vdev;
+     uint32_t index;
+-    uint32_t bdsm;
++    uint64_t bdsm;
+ } VFIOIGDQuirk;
+ 
+ #define IGD_GMCH 0x50 /* Graphics Control Register */
+ #define IGD_BDSM 0x5c /* Base Data of Stolen Memory */
++#define IGD_BDSM_GEN11 0xc0 /* Base Data of Stolen Memory of gen 11 and later */
+ 
+ 
+ /*
+@@ -313,9 +314,13 @@ static void vfio_igd_quirk_data_write(void *opaque, hwaddr addr,
       */
-     gen = igd_gen(vdev);
--    if (gen != 6 && gen != 8) {
-+    if (gen == -1) {
-         error_report("IGD device %s is unsupported in legacy mode, "
-                      "try SandyBridge or newer", vdev->vbasedev.name);
-         return;
+     if ((igd->index % 4 == 1) && igd->index < vfio_igd_gtt_max(vdev)) {
+         if (gen < 8 || (igd->index % 8 == 1)) {
+-            uint32_t base;
++            uint64_t base;
+ 
+-            base = pci_get_long(vdev->pdev.config + IGD_BDSM);
++            if (gen < 11) {
++                base = pci_get_long(vdev->pdev.config + IGD_BDSM);
++            } else {
++                base = pci_get_quad(vdev->pdev.config + IGD_BDSM_GEN11);
++            }
+             if (!base) {
+                 hw_error("vfio-igd: Guest attempted to program IGD GTT before "
+                          "BIOS reserved stolen memory.  Unsupported BIOS?");
+@@ -519,7 +524,13 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+     igd = quirk->data = g_malloc0(sizeof(*igd));
+     igd->vdev = vdev;
+     igd->index = ~0;
+-    igd->bdsm = vfio_pci_read_config(&vdev->pdev, IGD_BDSM, 4);
++    if (gen < 11) {
++        igd->bdsm = vfio_pci_read_config(&vdev->pdev, IGD_BDSM, 4);
++    } else {
++        igd->bdsm = vfio_pci_read_config(&vdev->pdev, IGD_BDSM_GEN11, 4);
++        igd->bdsm |=
++            (uint64_t)vfio_pci_read_config(&vdev->pdev, IGD_BDSM_GEN11 + 4, 4) << 32;
++    }
+     igd->bdsm &= ~((1 * MiB) - 1); /* 1MB aligned */
+ 
+     memory_region_init_io(&quirk->mem[0], OBJECT(vdev), &vfio_igd_index_quirk,
+@@ -577,9 +588,15 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+     pci_set_long(vdev->emulated_config_bits + IGD_GMCH, ~0);
+ 
+     /* BDSM is read-write, emulated.  The BIOS needs to be able to write it */
+-    pci_set_long(vdev->pdev.config + IGD_BDSM, 0);
+-    pci_set_long(vdev->pdev.wmask + IGD_BDSM, ~0);
+-    pci_set_long(vdev->emulated_config_bits + IGD_BDSM, ~0);
++    if (gen < 11) {
++        pci_set_long(vdev->pdev.config + IGD_BDSM, 0);
++        pci_set_long(vdev->pdev.wmask + IGD_BDSM, ~0);
++        pci_set_long(vdev->emulated_config_bits + IGD_BDSM, ~0);
++    } else {
++        pci_set_quad(vdev->pdev.config + IGD_BDSM_GEN11, 0);
++        pci_set_quad(vdev->pdev.wmask + IGD_BDSM_GEN11, ~0);
++        pci_set_quad(vdev->emulated_config_bits + IGD_BDSM_GEN11, ~0);
++    }
+ 
+     /*
+      * This IOBAR gives us access to GTTADR, which allows us to write to
 -- 
 2.46.0
 
