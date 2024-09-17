@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C885397AEDE
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A5897AEE8
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:35:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqVXC-0007mr-8u; Tue, 17 Sep 2024 06:34:15 -0400
+	id 1sqVWm-0006b1-SN; Tue, 17 Sep 2024 06:33:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVw-0006Aq-0k
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:58 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVw-0006BA-Jd
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:33:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVu-0006mm-EI
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:55 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqVVu-0006mu-UC
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:32:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726569173;
+ s=mimecast20190719; t=1726569174;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pvMgCCSHl7wtmesWqXipgo4wqrU5BcL03zHHu5pQgKo=;
- b=My8Sf5L0Lc/R5mK6KcBJMxyLmTxfWy7tRLDJjrZTm5feRniAqEw3m/fADDNWJ53cXrzXs5
- a2puzZTcSF9yOAGRY0XVQLH1z/7T/BtlRfl1dkQkYfMtAudKVhXM/OJX+EKHLVaXrWtTyL
- b/cS9vsWSj8GPassamnQVXvh0gHGxC4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=HE4LPiIytCKu+JhxwChIGIhq1x6MX/XG0Gp6icN+mLY=;
+ b=erfBVMXKmHoEJDVt6rWFNdlCaa2I+tHM2TcyZDmfeZGSQI7gd2mkoeCMN0kv2fsp+H96/d
+ +NI1/n1/f1GnfkZKaXDpg8h9ryCXG2KFwwJD2r2AKFQ1PXTzGuOX7suG9iOZJAJ8jnIHZc
+ cbcTFOjFAGaqHOBT/G1eJyZbvcUCTTA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-247-DiS8cdz3MUG-uttdvEw6Pg-1; Tue,
- 17 Sep 2024 06:32:47 -0400
-X-MC-Unique: DiS8cdz3MUG-uttdvEw6Pg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-YgwbVuPPO1yMbN49vohlEg-1; Tue,
+ 17 Sep 2024 06:32:49 -0400
+X-MC-Unique: YgwbVuPPO1yMbN49vohlEg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 788401955F79; Tue, 17 Sep 2024 10:32:46 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5C14A1955F41; Tue, 17 Sep 2024 10:32:48 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.193.154])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DD1EB19560AA; Tue, 17 Sep 2024 10:32:44 +0000 (UTC)
+ id CA64D19560AA; Tue, 17 Sep 2024 10:32:46 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
-Subject: [PULL 6/8] vfio/igd: add ID's for ElkhartLake and TigerLake
-Date: Tue, 17 Sep 2024 12:32:27 +0200
-Message-ID: <20240917103229.876515-7-clg@redhat.com>
+Subject: [PULL 7/8] vfio/igd: don't set stolen memory size to zero
+Date: Tue, 17 Sep 2024 12:32:28 +0200
+Message-ID: <20240917103229.876515-8-clg@redhat.com>
 In-Reply-To: <20240917103229.876515-1-clg@redhat.com>
 References: <20240917103229.876515-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,34 +82,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Corvin Köhne <corvin.koehne@gmail.com>
 
-ElkhartLake and TigerLake devices were tested in legacy mode with Linux
-and Windows VMs. Both are working properly. It's likely that other Intel
-GPUs of gen 11 and 12 like IceLake device are working too. However,
-we're only adding known good devices for now.
+The stolen memory is required for the GOP (EFI) driver and the Windows
+driver. While the GOP driver seems to work with any stolen memory size,
+the Windows driver will crash if the size doesn't match the size
+allocated by the host BIOS. For that reason, it doesn't make sense to
+overwrite the stolen memory size. It's true that this wastes some VM
+memory. In the worst case, the stolen memory can take up more than a GB.
+However, that's uncommon. Additionally, it's likely that a bunch of RAM
+is assigned to VMs making use of GPU passthrough.
 
 Signed-off-by: Corvin Köhne <c.koehne@beckhoff.com>
 Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
 ---
- hw/vfio/igd.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/vfio/igd.c | 35 ++++++++++++++++++-----------------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 0d68c6a45169238b274706d29d9be11455c37f76..8a41b16421b425688dd2cacd3a113efbad82e91b 100644
+index 8a41b16421b425688dd2cacd3a113efbad82e91b..0751c43eae04aac5152c627af648319151ee1e39 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -88,6 +88,12 @@ static int igd_gen(VFIOPCIDevice *vdev)
-     case 0x2200:
-     case 0x5900:
-         return 8;
-+    /* ElkhartLake */
-+    case 0x4500:
-+        return 11;
-+    /* TigerLake */
-+    case 0x9A00:
-+        return 12;
+@@ -478,6 +478,23 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+     QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, quirk, next);
+ }
+ 
++static int igd_get_stolen_mb(int gen, uint32_t gmch)
++{
++    int gms;
++
++    if (gen < 8) {
++        gms = (gmch >> 3) & 0x1f;
++    } else {
++        gms = (gmch >> 8) & 0xff;
++    }
++
++    if (gms > 0x10) {
++        error_report("Unsupported IGD GMS value 0x%x", gms);
++        return 0;
++    }
++    return gms * 32;
++}
++
+ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+ {
+     g_autofree struct vfio_region_info *rom = NULL;
+@@ -655,23 +672,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+         ggms_mb = 1 << ggms_mb;
      }
  
+-    /*
+-     * Assume we have no GMS memory, but allow it to be overridden by device
+-     * option (experimental).  The spec doesn't actually allow zero GMS when
+-     * when IVD (IGD VGA Disable) is clear, but the claim is that it's unused,
+-     * so let's not waste VM memory for it.
+-     */
+-    gmch &= ~((gen < 8 ? 0x1f : 0xff) << (gen < 8 ? 3 : 8));
+-
+-    if (vdev->igd_gms) {
+-        if (vdev->igd_gms <= 0x10) {
+-            gms_mb = vdev->igd_gms * 32;
+-            gmch |= vdev->igd_gms << (gen < 8 ? 3 : 8);
+-        } else {
+-            error_report("Unsupported IGD GMS value 0x%x", vdev->igd_gms);
+-            vdev->igd_gms = 0;
+-        }
+-    }
++    gms_mb = igd_get_stolen_mb(gen, gmch);
+ 
      /*
+      * Request reserved memory for stolen memory via fw_cfg.  VM firmware
 -- 
 2.46.0
 
