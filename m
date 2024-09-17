@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2538797AF0D
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E3897AF09
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:38:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqVZf-0006fN-B4; Tue, 17 Sep 2024 06:36:47 -0400
+	id 1sqVZk-0007HE-Gt; Tue, 17 Sep 2024 06:36:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZU-0005ko-Qx
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:39 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZT-0005fc-LM
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZS-0007P5-95
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:36 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZS-0007P2-7j
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726569393;
+ s=mimecast20190719; t=1726569392;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=d1vj5ToQF59mCXnGbk3jhU9jOV2k4O8GdW9zZaANvp0=;
- b=XGzXEqV4KYVtbWYwNWoO6yg9n1yPaa0rWNLJ/jGLflg1di61Axhex1lqiLAde0MSbhH03y
- XHw9Yo4Rdq6lDYfQ3eRH8hcLhHGher+uNJ5MtZqJBEmJi8HzmZZ9kW6qiYFIEjRu7eODmd
- cuHNly6Hnvq1lXbEBdhsCZzU52DyK0g=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=n4EpXxOh9friBx8H3P9NsHJCHGUYXkNGqZuppeYoFEw=;
+ b=imPwT1L4qqWq4klL+vj3TOsA/IMViiKrTXiFnXYMa5LOWGBI+TbL6YnzLNqRZLe9Xcp1PG
+ yNypSXqscny2F6LciBCZ3lepOBNlgvP2CSNYMemLG4xFgIOT7c2vXxlAWmcYykA3iBhSll
+ IQdAuzJy+hxTYgTxTyQw2D4dVqCN7ug=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-k3_EgerpNOmGRFpofMLBoQ-1; Tue,
- 17 Sep 2024 06:36:29 -0400
-X-MC-Unique: k3_EgerpNOmGRFpofMLBoQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-341-82mHJqaGOwy5l_F4fF5z0g-1; Tue,
+ 17 Sep 2024 06:36:31 -0400
+X-MC-Unique: 82mHJqaGOwy5l_F4fF5z0g-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 854801956096; Tue, 17 Sep 2024 10:36:28 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B354F19560BF; Tue, 17 Sep 2024 10:36:30 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.158])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CA7C41955DC8; Tue, 17 Sep 2024 10:36:26 +0000 (UTC)
+ id 85A4A1955DC7; Tue, 17 Sep 2024 10:36:29 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 16/17] tests/functional: Move the mips64el fuloong2e test into
- the thorough category
-Date: Tue, 17 Sep 2024 12:35:39 +0200
-Message-ID: <20240917103540.149144-17-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 17/17] .gitlab-ci.d/crossbuilds.yml: Force 'make check' to -j2
+ for cross-i686-tci
+Date: Tue, 17 Sep 2024 12:35:40 +0200
+Message-ID: <20240917103540.149144-18-thuth@redhat.com>
 In-Reply-To: <20240917103540.149144-1-thuth@redhat.com>
 References: <20240917103540.149144-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -80,34 +78,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit d2fce37597c2 added a test that downloads an asset from the
-internet, so this test should not be run by default anymore and be
-put into the thorough category instead.
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Message-ID: <20240913175140.3329083-1-thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+In commit 1374ed49e1453c300 we forced the cross-i686-tci job to -j1 to
+see if this helped with test timeouts. It seems to help with that but
+on the other hand we now sometimes run into the overall 60 minute
+job timeout. Try -j2 instead.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240916134913.2540486-1-peter.maydell@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/meson.build | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ .gitlab-ci.d/crossbuilds.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 975e609073..8d5520349d 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -86,11 +86,8 @@ tests_mipsel_system_thorough = [
-   'mipsel_malta',
- ]
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 1e21d082aa..95dfc39224 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -62,11 +62,11 @@ cross-i686-tci:
+     IMAGE: debian-i686-cross
+     ACCEL: tcg-interpreter
+     EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
+-    # Force tests to run in series, to see whether this
++    # Force tests to run with reduced parallelism, to see whether this
+     # reduces the flakiness of this CI job. The CI
+     # environment by default shows us 8 CPUs and so we
+     # would otherwise be using a parallelism of 9.
+-    MAKE_CHECK_ARGS: check check-tcg -j1
++    MAKE_CHECK_ARGS: check check-tcg -j2
  
--tests_mips64el_system_quick = [
--  'mips64el_fuloong2e',
--]
--
- tests_mips64el_system_thorough = [
-+  'mips64el_fuloong2e',
-   'mips64el_loongson3v',
-   'mips64el_malta',
- ]
+ cross-mipsel-system:
+   extends: .cross_system_build_job
 -- 
 2.46.0
 
