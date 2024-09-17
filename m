@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D993697B48D
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 22:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 065A097B565
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 23:57:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqeg4-00026L-4Y; Tue, 17 Sep 2024 16:20:00 -0400
+	id 1sqgAK-0006OU-Iy; Tue, 17 Sep 2024 17:55:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqeg1-0001zC-JR
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 16:19:57 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqgAF-0006Mi-6s
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 17:55:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqeg0-0003O1-4C
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 16:19:57 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqgAD-0004hC-Jk
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 17:55:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726604394;
+ s=mimecast20190719; t=1726610111;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Nq0uthfWvOLTRsb4iK86UMrnfE1qXStyXmn7C7zUaUs=;
- b=G83relxazJ6C+R5RYCNbatWfBfZJOIrhlGgPc4V1Wc3hPagjo3FhWbtADQJvAAZi31Oh4M
- aqcTsVVhXtMs8MIPuQe5LMappwK3miLJ84+Df/IriB2gcgXYK765xrcZxCPf3SReD2UlQW
- uTBZIlBxsC+36+Jw7bs5Po7CXt+eS28=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=IDANZhxftsiqaGKiWyuK2SCkmD4yE6+OuVSzfGQjGNM=;
+ b=ZEaSbOOK2sGS+1ITujEg5g17hiffuOd3yF7umCPalzfF250TRI3/LMbupU97t2iV2Lih4J
+ 5qALS8jYh2Co3M8pEFlyMINb6R3EbfCmHY3+dzjIz5wsVX70c/OYb90mK7dvMqbNc4YMbt
+ kqkdvIGHiSwT3BZ9GLwJPs1aj7kudJM=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-WxzfrHL7Ptyz4Lpk0Se2SA-1; Tue, 17 Sep 2024 16:19:53 -0400
-X-MC-Unique: WxzfrHL7Ptyz4Lpk0Se2SA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7a7d9c328c9so1161026885a.1
- for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 13:19:53 -0700 (PDT)
+ us-mta-588-6LgmlIS1O5GwgZcjlIymbQ-1; Tue, 17 Sep 2024 17:55:10 -0400
+X-MC-Unique: 6LgmlIS1O5GwgZcjlIymbQ-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7ac9b08cb77so289137485a.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 14:55:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726604393; x=1727209193;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Nq0uthfWvOLTRsb4iK86UMrnfE1qXStyXmn7C7zUaUs=;
- b=Ys0ziXl9/AvyxG1Qx5516h2BaOIHKDfWrIJBXT3s0iwNG2NeWuK7c8//FI3bOVg2G9
- QXT+Nhl11iw+Y1SoX3Z4kwsy2DOWoc734E3nTPnUoVUsEY2jLGlnEd1x68SYTT24om0p
- tpSwZvwjulLgGhR9sMo9N3W6dD2nlK50gajo9POBmpm7nNq4vNX1SGUfY82avkgWXq3Y
- tMowKmac9x4vhR6776F7ahEMbmGpNfRC6PB61rBRk36qn4tuZFfSuE6Wk+bIhbj6QZ/a
- LNJQ18pScdYaV6pcH3QZUPb3LzWjlqvIn0vnohBa9d4dPN/ZS1kwKPixBRfRtrUjbFgr
- /Fjg==
-X-Gm-Message-State: AOJu0YyFh4+AUJ57zZAWlDbtBcVRla36gSpg/uZaPZA7Xey+Qi8Rnv5W
- S7azYWBQex8ecGzfsSMDpCTWuZxcMpgXBKDN/CL4AIIbTdB8L8ZMCOeUtrgiZComY4FfjJhCVe1
- Xfi6fHrGv/gd4fdn5z1nAa5tlKOZg0/fyZmhKXVxdO2TnWi3OL1eG
-X-Received: by 2002:a05:620a:298b:b0:7a7:fdef:27a with SMTP id
- af79cd13be357-7a9e5f9100fmr3834421085a.58.1726604392910; 
- Tue, 17 Sep 2024 13:19:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKDuI/6jY+IDgmrxXwK7m0vUyGBXCQxG5dZRyQptI///Sg+8AucOtf+ALVRdd6vHodObEtuw==
-X-Received: by 2002:a05:620a:298b:b0:7a7:fdef:27a with SMTP id
- af79cd13be357-7a9e5f9100fmr3834416685a.58.1726604392390; 
- Tue, 17 Sep 2024 13:19:52 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ d=1e100.net; s=20230601; t=1726610110; x=1727214910;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IDANZhxftsiqaGKiWyuK2SCkmD4yE6+OuVSzfGQjGNM=;
+ b=DIXMkMychv/6g8r0dhRQCLGLJDXgMLm5S1AAX8ueOWytjnYLjPiHUWyUc6GJLLtIbN
+ K8cM9kpK6xiBO8b+7CdDvnichL3zg/DF5XxM57V2yKUIbPHA+qIPGuasyWDponyrTjPp
+ gUohzSaDQnxMh0WGEDSkqSyYdz7bJPTgx47zt1vqc3yMoE96b2vUdorV78+82T/P8Q7M
+ ImpDPAxr52dWVqacIqge2CUreAZIMLZPJBkwveCT/H62uOwshBcDjRx6SgCXOerrJjaQ
+ Pch/2cy8lindeGc/vh8fe4THsT53PlXRH+ZmVT4aFeVjS06dUYbVqF731sy8hm3cn1Vp
+ yMEQ==
+X-Gm-Message-State: AOJu0YytvKYUJyD0Cv6ptIzznpDPe02T/AOEExB4mho/QDZ2Q6R9I1P1
+ T5xzIDawAuF8Op04LQGHhLcgzcTAu8DEmOLl2ClPd9bAUfF5kfDxdT96tfxk3xL4tmFrTeDDqcT
+ IrzwBXCA/UhMHKk+XGP+lUoww+rEbz+rBZZr/ClYVHUWOHFRJwe5lSyH+rBIb17SBBoJz5hGMzT
+ LszGELIta8SecK0zA+Red0uhxG2oOOD15/9A==
+X-Received: by 2002:a05:620a:4105:b0:7a9:c203:7c2f with SMTP id
+ af79cd13be357-7a9e5eea55amr3174729685a.4.1726610109882; 
+ Tue, 17 Sep 2024 14:55:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFwLdQoioNb8Dgkcu5KckYFZUTM+SGkhCLBG8mRnodWNkeLNuJ0NqLlfZV3H0ioylu3hl086g==
+X-Received: by 2002:a05:620a:4105:b0:7a9:c203:7c2f with SMTP id
+ af79cd13be357-7a9e5eea55amr3174724685a.4.1726610109304; 
+ Tue, 17 Sep 2024 14:55:09 -0700 (PDT)
+Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7ab3e9b39e9sm390438785a.54.2024.09.17.13.19.51
+ af79cd13be357-7ab3e97c9fasm402869685a.28.2024.09.17.14.55.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Sep 2024 13:19:51 -0700 (PDT)
-Date: Tue, 17 Sep 2024 16:19:49 -0400
+ Tue, 17 Sep 2024 14:55:08 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Gao Shiyuan <gaoshiyuan@baidu.com>, Zuo Boqun <zuoboqun@baidu.com>
-Subject: Re: [PULL 14/18] virtio-pci: Add lookup subregion of VirtIOPCIRegion
- MR
-Message-ID: <ZunkZfN8Th5ofRLs@x1n>
-References: <cover.1726062663.git.mst@redhat.com>
- <ffa8a3e3b2e6ff017113b98d500d6a9e05b1560a.1726062663.git.mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com, David Hildenbrand <david@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 0/6] Migration 20240917 patches
+Date: Tue, 17 Sep 2024 17:55:00 -0400
+Message-ID: <20240917215506.472181-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ffa8a3e3b2e6ff017113b98d500d6a9e05b1560a.1726062663.git.mst@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -98,49 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 11, 2024 at 09:52:08AM -0400, Michael S. Tsirkin wrote:
-> From: Gao Shiyuan <gaoshiyuan@baidu.com>
-> 
-> Now virtio_address_space_lookup only lookup common/isr/device/notify
-> MR and exclude their subregions.
-> 
-> When VHOST_USER_PROTOCOL_F_HOST_NOTIFIER enable, the notify MR has
-> host-notifier subregions and we need use host-notifier MR to
-> notify the hardware accelerator directly instead of eventfd notify.
-> 
-> Further more, maybe common/isr/device MR also has subregions in
-> the future, so need memory_region_find for each MR incluing
-> their subregions.
-> 
-> Add lookup subregion of VirtIOPCIRegion MR instead of only lookup container MR.
-> 
-> Fixes: a93c8d8 ("virtio-pci: Replace modern_as with direct access to modern_bar")
-> Co-developed-by: Zuo Boqun <zuoboqun@baidu.com>
-> Signed-off-by: Gao Shiyuan <gaoshiyuan@baidu.com>
-> Signed-off-by: Zuo Boqun <zuoboqun@baidu.com>
-> Message-Id: <20240903120304.97833-1-gaoshiyuan@baidu.com>
-> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+The following changes since commit 2b81c046252fbfb375ad30632362fc16e6e22bd5:
 
-Hi,
+  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2024-09-17 14:02:18 +0100)
 
-QEMU master currently crashes with below cmdlines on my system:
+are available in the Git repository at:
 
-qemu_bin=./qemu-system-x86_64
-$qemu_bin -accel kvm -m 4g \
-          -name peter-vm,debug-threads=on -msg timestamp=on \
-          -nographic -cpu host -smp 4 \
-          -device ioh3420,id=pcie.1,chassis=1 \
-          -netdev user,id=net0 \
-          -device virtio-net-pci,netdev=net0,bus=pcie.1
+  https://gitlab.com/peterx/qemu.git tags/migration-20240917-pull-request
 
-qemu-system-x86_64: ../hw/virtio/virtio-pci.c:620: virtio_address_space_lookup: Assertion `mrs.mr' failed.
+for you to fetch changes up to 7b8b4c0e59d2b7928836072536a5528820d8a041:
 
-Bisection goes to this patch..
+  migration/multifd: Fix rb->receivedmap cleanup race (2024-09-17 17:50:45 -0400)
 
-Thanks,
+----------------------------------------------------------------
+Migration pull for 9.2
+
+- Fabiano's patch to move two tests to slow tests.
+- Peter's patch to fix qatzip builds
+- Stefan's multifd-zstd fix on unsigned diff comparisons
+- Fea's bug fix to consistently use memattrs when map() address space
+- Fabiano's bug fix on multifd race condition against receivedmap
+
+----------------------------------------------------------------
+
+Fabiano Rosas (3):
+  tests/qtest/migration: Move a couple of slow tests under g_test_slow
+  migration/savevm: Remove extra load cleanup calls
+  migration/multifd: Fix rb->receivedmap cleanup race
+
+Fea.Wang (1):
+  softmmu/physmem.c: Keep transaction attribute in address_space_map()
+
+Peter Xu (1):
+  migration/multifd: Fix build for qatzip
+
+Stefan Weil (1):
+  migration/multifd: Fix loop conditions in multifd_zstd_send_prepare
+    and multifd_zstd_recv
+
+ migration/migration.c        |  5 +++++
+ migration/multifd-qatzip.c   | 18 +++++++++---------
+ migration/multifd-zstd.c     |  8 ++++----
+ migration/savevm.c           |  8 ++++----
+ system/physmem.c             |  2 +-
+ tests/qtest/migration-test.c |  8 +++++---
+ 6 files changed, 28 insertions(+), 21 deletions(-)
 
 -- 
-Peter Xu
+2.45.0
 
 
