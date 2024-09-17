@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4AC97AEFD
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E312197AF0A
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 12:39:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqVZ7-0003fd-IN; Tue, 17 Sep 2024 06:36:13 -0400
+	id 1sqVZX-0004SZ-DF; Tue, 17 Sep 2024 06:36:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZ3-0003P0-9R
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZ8-00045K-Ev
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZ1-0007Jn-8u
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sqVZ6-0007Kz-S0
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 06:36:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726569366;
+ s=mimecast20190719; t=1726569371;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XldxWb0RlV+xcNY1P5SMSbRJ0GkamDxu2m0Xz/9wE0k=;
- b=PPP3SrS+cXHZeOAMKIIdcLru7lrKm8QkoSLdhOupYJx+CO8pfHjlljGJIx7De2SwbtNgEa
- 77rqAz2clZu271s3q9o+QxuP8SjVAyt4zOAbfMkJOBGSSR/k8wX7kXgOnf3GL+CT7XiS3U
- Rm1wX5TCQbTSBePT/UsqJtAMnB7xAqA=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=2A0bMQNYir9UiOIApKS5SDLnl+/c9VOLN14bZaqlyWE=;
+ b=NdjpxfAbzSDvACG3IlDkmSHdEIbCwKPw6E3hnjtPn85yvK0gJUUn/f0Ml1fzuTILyFPb4+
+ lx/1gMZx5c7/OWG7+C9lxGsGYhS4n2ASX9Uo0RdwTjrQLHHXkxgwYLOmhgWoqWwejJN5ZJ
+ nOrrUH36RfHHq7YkmqmHsS9kYxSc8sA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-166-vbyHEuj8NsmoDYPtuT5fjw-1; Tue,
- 17 Sep 2024 06:36:03 -0400
-X-MC-Unique: vbyHEuj8NsmoDYPtuT5fjw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-255-x2MMbfEENSijvHX_W6gpqw-1; Tue,
+ 17 Sep 2024 06:36:05 -0400
+X-MC-Unique: x2MMbfEENSijvHX_W6gpqw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7D55F1954209; Tue, 17 Sep 2024 10:36:01 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D40441956048; Tue, 17 Sep 2024 10:36:04 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.158])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EC9951955F54; Tue, 17 Sep 2024 10:35:57 +0000 (UTC)
+ id BB6061955F54; Tue, 17 Sep 2024 10:36:02 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 07/17] gitlab: fix logic for changing docker tag on stable
- branches
-Date: Tue, 17 Sep 2024 12:35:30 +0200
-Message-ID: <20240917103540.149144-8-thuth@redhat.com>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 08/17] tests/qtest: replace assert(0) with
+ g_assert_not_reached()
+Date: Tue, 17 Sep 2024 12:35:31 +0200
+Message-ID: <20240917103540.149144-9-thuth@redhat.com>
 In-Reply-To: <20240917103540.149144-1-thuth@redhat.com>
 References: <20240917103540.149144-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,45 +80,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-This fixes:
+This patch is part of a series that moves towards a consistent use of
+g_assert_not_reached() rather than an ad hoc mix of different
+assertion mechanisms.
 
-  commit e28112d00703abd136e2411d23931f4f891c9244
-  Author: Daniel P. Berrangé <berrange@redhat.com>
-  Date:   Thu Jun 8 17:40:16 2023 +0100
-
-    gitlab: stable staging branches publish containers in a separate tag
-
-Due to a copy+paste mistake, that commit included "QEMU_JOB_SKIPPED"
-in the final rule that was meant to be a 'catch all' for staging
-branches.
-
-As a result stable branches are still splattering dockers from the
-primary development branch.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Tested-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20240906140958.84755-1-berrange@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-ID: <20240912073921.453203-13-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/base.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/ipmi-bt-test.c  | 2 +-
+ tests/qtest/ipmi-kcs-test.c | 4 ++--
+ tests/qtest/rtl8139-test.c  | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
-index bf3d8efab6..25b88aaa06 100644
---- a/.gitlab-ci.d/base.yml
-+++ b/.gitlab-ci.d/base.yml
-@@ -128,7 +128,7 @@ variables:
-       when: manual
+diff --git a/tests/qtest/ipmi-bt-test.c b/tests/qtest/ipmi-bt-test.c
+index 383239bcd4..13f7c841f5 100644
+--- a/tests/qtest/ipmi-bt-test.c
++++ b/tests/qtest/ipmi-bt-test.c
+@@ -251,7 +251,7 @@ static void emu_msg_handler(void)
+         msg[msg_len++] = 0xa0;
+         write_emu_msg(msg, msg_len);
+     } else {
+-        g_assert(0);
++        g_assert_not_reached();
+     }
+ }
  
-     # Jobs can run if any jobs they depend on were successful
--    - if: '$QEMU_JOB_SKIPPED && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /staging-[[:digit:]]+\.[[:digit:]]/'
-+    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /staging-[[:digit:]]+\.[[:digit:]]/'
-       when: on_success
-       variables:
-         QEMU_CI_CONTAINER_TAG: $CI_COMMIT_REF_SLUG
+diff --git a/tests/qtest/ipmi-kcs-test.c b/tests/qtest/ipmi-kcs-test.c
+index afc24dd3e4..3186c6ad64 100644
+--- a/tests/qtest/ipmi-kcs-test.c
++++ b/tests/qtest/ipmi-kcs-test.c
+@@ -145,7 +145,7 @@ static void kcs_cmd(uint8_t *cmd, unsigned int cmd_len,
+         break;
+ 
+     default:
+-        g_assert(0);
++        g_assert_not_reached();
+     }
+     *rsp_len = j;
+ }
+@@ -184,7 +184,7 @@ static void kcs_abort(uint8_t *cmd, unsigned int cmd_len,
+         break;
+ 
+     default:
+-        g_assert(0);
++        g_assert_not_reached();
+     }
+ 
+     /* Start the abort here */
+diff --git a/tests/qtest/rtl8139-test.c b/tests/qtest/rtl8139-test.c
+index eedf90f65a..55f671f2f5 100644
+--- a/tests/qtest/rtl8139-test.c
++++ b/tests/qtest/rtl8139-test.c
+@@ -65,7 +65,7 @@ PORT(IntrMask, w, 0x3c)
+ PORT(IntrStatus, w, 0x3E)
+ PORT(TimerInt, l, 0x54)
+ 
+-#define fatal(...) do { g_test_message(__VA_ARGS__); g_assert(0); } while (0)
++#define fatal(...) do { g_test_message(__VA_ARGS__); g_assert_not_reached(); } while (0)
+ 
+ static void test_timer(void)
+ {
 -- 
 2.46.0
 
