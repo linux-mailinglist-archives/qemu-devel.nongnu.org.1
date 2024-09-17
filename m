@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D598597B40D
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0613897B412
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:20:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqckV-0007mQ-Bb; Tue, 17 Sep 2024 14:16:29 -0400
+	id 1sqcky-0003Ft-2R; Tue, 17 Sep 2024 14:16:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqchr-0005Vu-GJ; Tue, 17 Sep 2024 14:13:43 -0400
+ id 1sqchv-0005nt-3s; Tue, 17 Sep 2024 14:13:48 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqcho-0002yI-Pk; Tue, 17 Sep 2024 14:13:42 -0400
+ id 1sqcht-0002yc-BB; Tue, 17 Sep 2024 14:13:46 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 647EF8FC07;
- Tue, 17 Sep 2024 21:12:59 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2F6038FC09;
+ Tue, 17 Sep 2024 21:13:00 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id DF9A613E767;
- Tue, 17 Sep 2024 21:13:14 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id A7F4013E768;
+ Tue, 17 Sep 2024 21:13:15 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 79/82] hw/audio/virtio-sound: fix heap buffer overflow
-Date: Tue, 17 Sep 2024 21:12:53 +0300
-Message-Id: <20240917181256.634732-11-mjt@tls.msk.ru>
+ =?UTF-8?q?Jan=20Kl=C3=B6tzke?= <jan.kloetzke@kernkonzept.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 80/82] hw/intc/arm_gic: fix spurious level triggered
+ interrupts
+Date: Tue, 17 Sep 2024 21:12:54 +0300
+Message-Id: <20240917181256.634732-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.3-20240917211142@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240917211142@cover.tls.msk.ru>
@@ -58,79 +59,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+From: Jan Klötzke <jan.kloetzke@kernkonzept.com>
 
-Currently, the guest may write to the device configuration space,
-whereas the virtio sound device specification in chapter 5.14.4
-clearly states that the fields in the device configuration space
-are driver-read-only.
+On GICv2 and later, level triggered interrupts are pending when either
+the interrupt line is asserted or the interrupt was made pending by a
+GICD_ISPENDRn write. Making a level triggered interrupt pending by
+software persists until either the interrupt is acknowledged or cleared
+by writing GICD_ICPENDRn. As long as the interrupt line is asserted,
+the interrupt is pending in any case.
 
-Remove the set_config function from the virtio_snd class.
+This logic is transparently implemented in gic_test_pending() for
+GICv1 and GICv2.  The function combines the "pending" irq_state flag
+(used for edge triggered interrupts and software requests) and the
+line status (tracked in the "level" field).  However, we also
+incorrectly set the pending flag on a guest write to GICD_ISENABLERn
+if the line of a level triggered interrupt was asserted.  This keeps
+the interrupt pending even if the line is de-asserted after some
+time.
 
-This also prevents a heap buffer overflow. See QEMU issue #2296.
+This incorrect logic is a leftover of the initial 11MPCore GIC
+implementation.  That handles things slightly differently to the
+architected GICv1 and GICv2.  The 11MPCore TRM does not give a lot of
+detail on the corner cases of its GIC's behaviour, and historically
+we have not wanted to investigate exactly what it does in reality, so
+QEMU's GIC model takes the approach of "retain our existing behaviour
+for 11MPCore, and implement the architectural standard for later GIC
+revisions".
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2296
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20240901130112.8242-1-vr_qemu@t-online.de>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 7fc6611cad3e9627b23ce83e550b668abba6c886)
+On that basis, commit 8d999995e45c10 in 2013 is where we added the
+"level-triggered interrupt with the line asserted" handling to
+gic_test_pending(), and we deliberately kept the old behaviour of
+gic_test_pending() for REV_11MPCORE.  That commit should have added
+the "only if 11MPCore" condition to the setting of the pending bit on
+writes to GICD_ISENABLERn, but forgot it.
+
+Add the missing "if REV_11MPCORE" condition, so that our behaviour
+on GICv1 and GICv2 matches the GIC architecture requirements.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 8d999995e45c10 ("arm_gic: Fix GIC pending behavior")
+Signed-off-by: Jan Klötzke <jan.kloetzke@kernkonzept.com>
+Message-id: 20240911114826.3558302-1-jan.kloetzke@kernkonzept.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: expanded comment a little and converted to coding-style form;
+ expanded commit message with the historical backstory]
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 110684c9a69a02cbabfbddcd3afa921826ad565c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/audio/trace-events b/hw/audio/trace-events
-index b1870ff224..b8ef572767 100644
---- a/hw/audio/trace-events
-+++ b/hw/audio/trace-events
-@@ -41,7 +41,6 @@ asc_update_irq(int irq, int a, int b) "set IRQ to %d (A: 0x%x B: 0x%x)"
- 
- #virtio-snd.c
- virtio_snd_get_config(void *vdev, uint32_t jacks, uint32_t streams, uint32_t chmaps) "snd %p: get_config jacks=%"PRIu32" streams=%"PRIu32" chmaps=%"PRIu32""
--virtio_snd_set_config(void *vdev, uint32_t jacks, uint32_t new_jacks, uint32_t streams, uint32_t new_streams, uint32_t chmaps, uint32_t new_chmaps) "snd %p: set_config jacks from %"PRIu32"->%"PRIu32", streams from %"PRIu32"->%"PRIu32", chmaps from %"PRIu32"->%"PRIu32
- virtio_snd_get_features(void *vdev, uint64_t features) "snd %p: get_features 0x%"PRIx64
- virtio_snd_vm_state_running(void) "vm state running"
- virtio_snd_vm_state_stopped(void) "vm state stopped"
-diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-index 95f55a02f1..3f9b336ad4 100644
---- a/hw/audio/virtio-snd.c
-+++ b/hw/audio/virtio-snd.c
-@@ -107,29 +107,6 @@ virtio_snd_get_config(VirtIODevice *vdev, uint8_t *config)
- 
- }
- 
--static void
--virtio_snd_set_config(VirtIODevice *vdev, const uint8_t *config)
--{
--    VirtIOSound *s = VIRTIO_SND(vdev);
--    const virtio_snd_config *sndconfig =
--        (const virtio_snd_config *)config;
--
--
--   trace_virtio_snd_set_config(vdev,
--                               s->snd_conf.jacks,
--                               sndconfig->jacks,
--                               s->snd_conf.streams,
--                               sndconfig->streams,
--                               s->snd_conf.chmaps,
--                               sndconfig->chmaps);
--
--    memcpy(&s->snd_conf, sndconfig, sizeof(virtio_snd_config));
--    le32_to_cpus(&s->snd_conf.jacks);
--    le32_to_cpus(&s->snd_conf.streams);
--    le32_to_cpus(&s->snd_conf.chmaps);
--
--}
--
- static void
- virtio_snd_pcm_buffer_free(VirtIOSoundPCMBuffer *buffer)
- {
-@@ -1400,7 +1377,6 @@ static void virtio_snd_class_init(ObjectClass *klass, void *data)
-     vdc->realize = virtio_snd_realize;
-     vdc->unrealize = virtio_snd_unrealize;
-     vdc->get_config = virtio_snd_get_config;
--    vdc->set_config = virtio_snd_set_config;
-     vdc->get_features = get_features;
-     vdc->reset = virtio_snd_reset;
-     vdc->legacy_features = 0;
+diff --git a/hw/intc/arm_gic.c b/hw/intc/arm_gic.c
+index e4b8437f8b..f0582f7a49 100644
+--- a/hw/intc/arm_gic.c
++++ b/hw/intc/arm_gic.c
+@@ -1263,9 +1263,14 @@ static void gic_dist_writeb(void *opaque, hwaddr offset,
+                     trace_gic_enable_irq(irq + i);
+                 }
+                 GIC_DIST_SET_ENABLED(irq + i, cm);
+-                /* If a raised level triggered IRQ enabled then mark
+-                   is as pending.  */
+-                if (GIC_DIST_TEST_LEVEL(irq + i, mask)
++                /*
++                 * If a raised level triggered IRQ enabled then mark
++                 * it as pending on 11MPCore. For other GIC revisions we
++                 * handle the "level triggered and line asserted" check
++                 * at the other end in gic_test_pending().
++                 */
++                if (s->revision == REV_11MPCORE
++                        && GIC_DIST_TEST_LEVEL(irq + i, mask)
+                         && !GIC_DIST_TEST_EDGE_TRIGGER(irq + i)) {
+                     DPRINTF("Set %d pending mask %x\n", irq + i, mask);
+                     GIC_DIST_SET_PENDING(irq + i, mask);
 -- 
 2.39.5
 
