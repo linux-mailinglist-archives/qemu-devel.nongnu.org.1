@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB0E97B41E
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9849697B40C
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Sep 2024 20:17:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqcsK-0003Sx-D8; Tue, 17 Sep 2024 14:24:34 -0400
+	id 1sqcjE-0001lN-V3; Tue, 17 Sep 2024 14:15:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqcrc-0002gF-6w; Tue, 17 Sep 2024 14:23:48 -0400
+ id 1sqchZ-0004Bh-II; Tue, 17 Sep 2024 14:13:28 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sqcrZ-0003tF-Tb; Tue, 17 Sep 2024 14:23:47 -0400
+ id 1sqchW-0002wf-Qs; Tue, 17 Sep 2024 14:13:25 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D4BEE8FC02;
- Tue, 17 Sep 2024 21:12:54 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id B79598FC03;
+ Tue, 17 Sep 2024 21:12:55 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 59EE713E762;
- Tue, 17 Sep 2024 21:13:10 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2410B13E763;
+ Tue, 17 Sep 2024 21:13:11 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.3 74/82] crypto: check gnutls & gcrypt support the
- requested pbkdf hash
-Date: Tue, 17 Sep 2024 21:12:48 +0300
-Message-Id: <20240917181256.634732-6-mjt@tls.msk.ru>
+Subject: [Stable-9.0.3 75/82] crypto: avoid leak of ctx when bad cipher mode
+ is given
+Date: Tue, 17 Sep 2024 21:12:49 +0300
+Message-Id: <20240917181256.634732-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.0.3-20240917211142@cover.tls.msk.ru>
 References: <qemu-stable-9.0.3-20240917211142@cover.tls.msk.ru>
@@ -62,42 +63,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-Both gnutls and gcrypt can be configured to exclude support for certain
-algorithms via a runtime check against system crypto policies. Thus it
-is not sufficient to have a compile time test for hash support in their
-pbkdf implementations.
-
+Fixes: Coverity CID 1546884
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-(cherry picked from commit e6c09ea4f9e5f8af92a6453642b84b9efd52892f)
+(cherry picked from commit 586ac2c67d707c2588766c5195d94fa553cc25af)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/crypto/pbkdf-gcrypt.c b/crypto/pbkdf-gcrypt.c
-index a8d8e64f4d..bc0719c831 100644
---- a/crypto/pbkdf-gcrypt.c
-+++ b/crypto/pbkdf-gcrypt.c
-@@ -33,7 +33,7 @@ bool qcrypto_pbkdf2_supports(QCryptoHashAlgorithm hash)
-     case QCRYPTO_HASH_ALG_SHA384:
-     case QCRYPTO_HASH_ALG_SHA512:
-     case QCRYPTO_HASH_ALG_RIPEMD160:
--        return true;
-+        return qcrypto_hash_supports(hash);
-     default:
-         return false;
-     }
-diff --git a/crypto/pbkdf-gnutls.c b/crypto/pbkdf-gnutls.c
-index 2dfbbd382c..911b565bea 100644
---- a/crypto/pbkdf-gnutls.c
-+++ b/crypto/pbkdf-gnutls.c
-@@ -33,7 +33,7 @@ bool qcrypto_pbkdf2_supports(QCryptoHashAlgorithm hash)
-     case QCRYPTO_HASH_ALG_SHA384:
-     case QCRYPTO_HASH_ALG_SHA512:
-     case QCRYPTO_HASH_ALG_RIPEMD160:
--        return true;
-+        return qcrypto_hash_supports(hash);
-     default:
-         return false;
-     }
+diff --git a/crypto/cipher-nettle.c.inc b/crypto/cipher-nettle.c.inc
+index 42b39e18a2..766de036ba 100644
+--- a/crypto/cipher-nettle.c.inc
++++ b/crypto/cipher-nettle.c.inc
+@@ -734,16 +734,19 @@ static QCryptoCipher *qcrypto_cipher_ctx_new(QCryptoCipherAlgorithm alg,
+ #ifdef CONFIG_CRYPTO_SM4
+     case QCRYPTO_CIPHER_ALG_SM4:
+         {
+-            QCryptoNettleSm4 *ctx = g_new0(QCryptoNettleSm4, 1);
++            QCryptoNettleSm4 *ctx;
++            const QCryptoCipherDriver *drv;
+ 
+             switch (mode) {
+             case QCRYPTO_CIPHER_MODE_ECB:
+-                ctx->base.driver = &qcrypto_nettle_sm4_driver_ecb;
++                drv = &qcrypto_nettle_sm4_driver_ecb;
+                 break;
+             default:
+                 goto bad_cipher_mode;
+             }
+ 
++            ctx = g_new0(QCryptoNettleSm4, 1);
++            ctx->base.driver = drv;
+             sm4_set_encrypt_key(&ctx->key[0], key);
+             sm4_set_decrypt_key(&ctx->key[1], key);
+ 
 -- 
 2.39.5
 
