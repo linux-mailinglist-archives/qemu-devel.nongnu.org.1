@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0300997B665
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 02:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E19DE97B666
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 02:04:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqi9K-0008U2-Gn; Tue, 17 Sep 2024 20:02:26 -0400
+	id 1sqi9L-00006e-5z; Tue, 17 Sep 2024 20:02:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqi9E-0008T4-W9
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqi9F-0008TN-CP
  for qemu-devel@nongnu.org; Tue, 17 Sep 2024 20:02:21 -0400
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqi9D-0006Nk-8Z
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqi9D-0006Nm-71
  for qemu-devel@nongnu.org; Tue, 17 Sep 2024 20:02:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
  h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
- :Subject; bh=7PXY9LaACWi1khJh2Sr7LKiTgvtybRcQTaTGtu2blv0=; b=HXblDzGGASsZPFms
- FGNs0uO28T6rfNTwLYC7DfiBJAn5WakZM+ilG5s5BGPdQ1vjp/tmLVXgr59vOo0J4gARi6nkOCz2w
- u+jBTYPj8PKvk3sVel1DpRvPu91hq/HIjVQ7wLQNAjrT0Cc5Fio5o+WDxGKvsO99Q4IVZrRtIpmMa
- c3hHjkDA45OGcvU1SDvej+lC6dbAxFiPI2TGYXmBuKN6eDLA2Qw+cANJbwa/zz/FcwUZ3ttNltgrw
- fOD7GdbSIDe5VqgBrm0aHxhj2Krp0mBsgESmmCoPh6+bDbsKAe2nk8d6aAzvyidlZnjTEHDiyMALJ
- tAmaMiPiX9sQVyRpAA==;
+ :Subject; bh=bD3rvGM9bKH1LNpdoa6AoyOCSg7fPA7SsO5lOyd/K/s=; b=rC1Bd1IySEFRS370
+ mNhK6WcF0pHDH1eVMWMgdPkoh5eEjA6O0SyveyCOKNBt2IQPf+gRTM5HR6LaQaWB1+wm1paAzVrK9
+ y0ua0+YIt3WdH1FBUyih3TJtts+kSmhY1LXsDc2ZDeB3jDmf+api4mXHazQLMVMwN7a7Lc6zKg9Tk
+ EppATigC6PX5spBUbFqLqLrjjp7S1AzQ1YEJGEXCvH/7j55raWuz3oVxoJOoUF4Ff9lKAVRutT53T
+ Z8vJnbBNoDJPaicWA/DHijolIbjlIhJ9aTyX3oOaYIPaQjlpR+WfMpKh9+aH3CAq3tBTbIH9LLLN+
+ 2YnNmArgBMuK+P/2HQ==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
  by mx.treblig.org with esmtp (Exim 4.96)
- (envelope-from <dave@treblig.org>) id 1sqi99-006Dj5-1z;
- Wed, 18 Sep 2024 00:02:15 +0000
+ (envelope-from <dave@treblig.org>) id 1sqi9A-006Dj5-19;
+ Wed, 18 Sep 2024 00:02:16 +0000
 From: dave@treblig.org
 To: peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com
 Cc: qemu-devel@nongnu.org,
 	"Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH 0/3] Migration deadcode removal
-Date: Wed, 18 Sep 2024 01:02:04 +0100
-Message-ID: <20240918000207.182683-1-dave@treblig.org>
+Subject: [PATCH 1/3] migration: Remove migrate_cap_set
+Date: Wed, 18 Sep 2024 01:02:05 +0100
+Message-ID: <20240918000207.182683-2-dave@treblig.org>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240918000207.182683-1-dave@treblig.org>
+References: <20240918000207.182683-1-dave@treblig.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dave@treblig.org;
@@ -64,28 +66,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-Hi,
-  This is a set of deadcode removal around migration
-found by looking for unused symbols.
+migrate_cap_set has been unused since
+  18d154f575 ("migration: Remove 'blk/-b' option from migrate commands")
 
-  Note this does remove the old zero-blocks
-capability, but it's been meaningless anyway since block
-migration went.
+Remove it.
 
-Dave
+Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+---
+ migration/options.c | 20 --------------------
+ migration/options.h |  1 -
+ 2 files changed, 21 deletions(-)
 
-Dr. David Alan Gilbert (3):
-  migration: Remove migrate_cap_set
-  migration: Remove unused zero-blocks capability
-  migration: Remove unused socket_send_channel_create_sync
-
- migration/options.c | 28 ----------------------------
- migration/options.h |  2 --
- migration/socket.c  | 18 ------------------
- migration/socket.h  |  1 -
- qapi/migration.json | 10 +---------
- 5 files changed, 1 insertion(+), 58 deletions(-)
-
+diff --git a/migration/options.c b/migration/options.c
+index 147cd2b8fd..9460c5dee9 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -605,26 +605,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+     return true;
+ }
+ 
+-bool migrate_cap_set(int cap, bool value, Error **errp)
+-{
+-    MigrationState *s = migrate_get_current();
+-    bool new_caps[MIGRATION_CAPABILITY__MAX];
+-
+-    if (migration_is_running()) {
+-        error_setg(errp, "There's a migration process in progress");
+-        return false;
+-    }
+-
+-    memcpy(new_caps, s->capabilities, sizeof(new_caps));
+-    new_caps[cap] = value;
+-
+-    if (!migrate_caps_check(s->capabilities, new_caps, errp)) {
+-        return false;
+-    }
+-    s->capabilities[cap] = value;
+-    return true;
+-}
+-
+ MigrationCapabilityStatusList *qmp_query_migrate_capabilities(Error **errp)
+ {
+     MigrationCapabilityStatusList *head = NULL, **tail = &head;
+diff --git a/migration/options.h b/migration/options.h
+index a0bd6edc06..36e7b3723f 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -58,7 +58,6 @@ bool migrate_tls(void);
+ /* capabilities helpers */
+ 
+ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp);
+-bool migrate_cap_set(int cap, bool value, Error **errp);
+ 
+ /* parameters */
+ 
 -- 
 2.46.0
 
