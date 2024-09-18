@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946A497C087
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 21:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F6397C08A
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 21:30:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sr0Gu-0005F3-Ud; Wed, 18 Sep 2024 15:23:29 -0400
+	id 1sr0Gu-0005DJ-M4; Wed, 18 Sep 2024 15:23:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3oijrZgUKCt0S9UHOFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--tavip.bounces.google.com>)
- id 1sr0Gq-0004yk-FN
+ <3pCjrZgUKCt8UBWJQHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--tavip.bounces.google.com>)
+ id 1sr0Gq-0004zn-NT
  for qemu-devel@nongnu.org; Wed, 18 Sep 2024 15:23:24 -0400
-Received: from mail-pf1-x44a.google.com ([2607:f8b0:4864:20::44a])
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3oijrZgUKCt0S9UHOFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--tavip.bounces.google.com>)
- id 1sr0Gj-0007LO-6U
+ <3pCjrZgUKCt8UBWJQHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--tavip.bounces.google.com>)
+ id 1sr0Gk-0007LV-Dn
  for qemu-devel@nongnu.org; Wed, 18 Sep 2024 15:23:24 -0400
-Received: by mail-pf1-x44a.google.com with SMTP id
- d2e1a72fcca58-7190c5e73cdso70076b3a.0
- for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 12:23:16 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-6cf78470a56so1039607b3.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 12:23:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=google.com; s=20230601; t=1726687396; x=1727292196; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=HAeQSkzCEZePNcBoJDM3Baj/gg8gWSiJ00m+9JcT8kk=;
- b=La1t+hQSvIpIzhNkt4ZK2cZOodFfJoYMEaNucVtqEDLJrIVfZLzMT2x55JXZh4tLB/
- 4WwdcSjH5TiyokSZ3GqKvgF/ylCHPBza5mCEUaAwm1LRkpNsILZw/eMTSgLjbOSxC44y
- wpVDZ8dqarkuc1jBLi+D1cCFZ3Gx46IO9fvU797MLZJzOw68cgM3gDhvE5QBDmfr66AE
- 9vfmj3APyEo7TXPlZfOLe8TgtCr2QKsPm0CGYR5sNQksS+9XLpXKFSZB3dCDYNkGBqLg
- 1VmXT2GWX9wlUP/lDjLNawfprf5Gv78NSZidQb004WAxrl4kjC0TKCNfjEUjwWlcudxj
- 4Rlg==
+ bh=tgyt/8vZ0Kkxni+t/Qt5H/c3qmR/V6KsxWglrLdS5aA=;
+ b=XrbUwKN44hlEOIN09M9YuaRyNWw1MUK02mCwY7H/ob6QIIpjBvFMFyEap8+UQLxSZK
+ RB8DAVZ5eSWvoPEMDZc9SoZo3DCbdH2Tx8biySRhkmL9QD9OzwbvXz45SzVx3NpYObkO
+ nt7ouN0lR8TFjTEccFbpWUlp8IkZqFRNo7uEbEJz03tU5d9+hoJMjBo4pKAn2g6FHRW9
+ FphpaaoC0dD6EVhH1wCi0XhUof0UrcOc3uCE6OWKFTJE2RtdDme+aQJG0taPhV58h6zs
+ PHYQOJZhW/ue5USEkuuD/C0BZwfu4TP1nxcAqVYmsr1LkahQIslf9Zu1M9IFQcz53HPz
+ 6IrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1726687396; x=1727292196;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HAeQSkzCEZePNcBoJDM3Baj/gg8gWSiJ00m+9JcT8kk=;
- b=DvXUU/7ZV8YT2CXCvW1NC39N83lKvgZsd/c+pNlF8lnlRYhzdXesVK6bphy0KmL9cV
- KFo0iFGlzTHjQqH27FfbHxnTuQKM+bGxuQnys52JnihZm+BvNdqJyij3BEi1TF05DtEB
- exh/2Hra/4/S2XaJdTN88XoquqaqCArH83Dg3INhZ8o7vSjLjuH/Fl1ek29NdMrOIVvb
- PnbhJ1n8vKJlUK0nhdR430OltdDJIEFxBAeEL8xxv9o75FkBlf5oLsHET/mH9pP6qSlX
- eL2pSu9y8mJzqJUqoeLVtSIsMHInljgA7NVzsGsLJKa6ay7Oy+xTjwUpv4CFtr6PpMxQ
- K9ZA==
-X-Gm-Message-State: AOJu0YxKGpi+GA3f/GBw7VpkrXQ7kCeLconLtsyZnAvWWTTU8ba+QOdL
- 4i07Uf+cJEJHB7FxC55JrMnAq0Vs/YVC4VoStZma1lUZfeFTprrgutfchqMSd/pIyanx8/N5OaN
- qZI1TRO+lAxuKHU6pZNRUNry3oj18mrE+B68CelQrnKp71tKHp5SLy5HaSAziRzWCc0x+LQnq+H
- NNa0HFi2xzBY64dV2LxSKKExAcQg==
-X-Google-Smtp-Source: AGHT+IH/spwBa/RW2I4havofNbqgYsgAOCFZH9EYDh4e0eOpSDIEzvZpVU3Q0GkyWPVOI4PV3m3Ed4U+Kg==
+ bh=tgyt/8vZ0Kkxni+t/Qt5H/c3qmR/V6KsxWglrLdS5aA=;
+ b=WC77wg+If3elrq1ZzFxuM6NxzclLCS26qTsbcJQZVSFbaEHXGkyuNNAYfrYhQxpcwP
+ nLoJzdEw6YndHIEpblmmVD2ZFmeRvRiEUxU4qZyaNlJXZRZfnj9EnIpluql14eJt8euU
+ ZseAFs2X4+d4AIEmjmD59SU7zQi+gf+aiNk8rEjVrnHeV7LHYJXRv8wgsl31iens4l1w
+ OAfRJTMYSV3Qb+HKa/omj66Vu+MzQ1G6AUHVsgKY6DBURnhiXxcYNtbqexNlQkFw8rPL
+ 0lM3Po91b71RK3Jpn19EWAFqq8qFza2kgCDos0Np+Nbi2hs49P0/iZ7OLxu5Zf0d1tKD
+ r9qg==
+X-Gm-Message-State: AOJu0YwuRHX21bcbUJTKoGFgbh5sFfpY+GBKdtQAFNkIxmTT9/kkEgFQ
+ sRn+ie/UV20gDRVL6BkYCEfKN2K/SWFPzDH8w+nv8wnH9pH4NYxfPDAtvINxfD+E8IjAWHpVfHX
+ aipNtK8Bt+lJhHNKjhvyDH/XCHdcXhJAIltXyDOXdWfxH4oYBhNGsK1P8/w3lldqBkNTy2NDrgL
+ nLKHMVimT4miaYvCdUfs3RpXYjpA==
+X-Google-Smtp-Source: AGHT+IHGlz2QkqYoML4WrvIGl5kkiShYVCOM+CLgoK0zw7k/KfMNxrpCcoOLA6jFC7qyQ6ZhMhi+RmQMaQ==
 X-Received: from warp10.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:750])
- (user=tavip job=sendgmr) by 2002:a62:e20d:0:b0:714:1436:1cef with
- SMTP id
- d2e1a72fcca58-719263496a4mr52109b3a.6.1726687394459; Wed, 18 Sep 2024
- 12:23:14 -0700 (PDT)
-Date: Wed, 18 Sep 2024 12:22:38 -0700
+ (user=tavip job=sendgmr) by 2002:a05:690c:4d43:b0:6db:cd39:4dad
+ with SMTP id
+ 00721157ae682-6dbcd395214mr10277957b3.5.1726687396411; Wed, 18 Sep 2024
+ 12:23:16 -0700 (PDT)
+Date: Wed, 18 Sep 2024 12:22:39 -0700
 In-Reply-To: <20240918192254.3136903-1-tavip@google.com>
 Mime-Version: 1.0
 References: <20240918192254.3136903-1-tavip@google.com>
 X-Mailer: git-send-email 2.46.0.662.g92d0881bb0-goog
-Message-ID: <20240918192254.3136903-11-tavip@google.com>
-Subject: [PATCH 10/25] hw/misc: add support for RT500's clock controller
+Message-ID: <20240918192254.3136903-12-tavip@google.com>
+Subject: [PATCH 11/25] hw/ssi: add support for flexspi
 From: Octavian Purdila <tavip@google.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com, 
@@ -70,17 +70,16 @@ Cc: qemu-arm@nongnu.org, stefanst@google.com, pbonzini@redhat.com,
  alistair@alistair23.me, thuth@redhat.com, philmd@linaro.org, jsnow@redhat.com, 
  crosa@redhat.com, lvivier@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::44a;
- envelope-from=3oijrZgUKCt0S9UHOFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--tavip.bounces.google.com;
- helo=mail-pf1-x44a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=3pCjrZgUKCt8UBWJQHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--tavip.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
 X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=no autolearn_force=no
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,45 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It supports system and audio PLL initialization and SYSTICK and
-OSTIMER clock source selection.
+This is mostly a stub which completes SPI transactions as noops
+by masking out the error interrupts and never clearing the IPCMDDONE
+interrupt.
 
-The patch includes automatically generated headers which contains the
-register layout and helpers.
+Although incomplete, this allows software that uses NXP's mcuxpresso
+SDK to run the SDK board initialization functions.
 
-The headers can be regenerated with the svd-rt500-clkctl0 and
-svd-rt500-clkctl1 targets when the build is configured with
---enable-mcux-soc-svd.
+It also supports AHB memory access, aka XIP, for now as simple RAM
+memory regions.
+
+The patch includes an automatically generated header which contains
+the register layout and helpers.
+
+The header can be regenerated with the svd-flexspi target when the
+build is configured with --enable-mcux-soc-svd.
 
 Signed-off-by: Octavian Purdila <tavip@google.com>
 ---
- include/hw/arm/svd/rt500_clkctl0.h | 2483 ++++++++++++++++++++
- include/hw/arm/svd/rt500_clkctl1.h | 3396 ++++++++++++++++++++++++++++
- include/hw/misc/rt500_clk_freqs.h  |   18 +
- include/hw/misc/rt500_clkctl0.h    |   35 +
- include/hw/misc/rt500_clkctl1.h    |   36 +
- hw/misc/rt500_clkctl0.c            |  253 +++
- hw/misc/rt500_clkctl1.c            |  238 ++
- hw/arm/Kconfig                     |    5 +
- hw/arm/svd/meson.build             |    6 +
- hw/misc/Kconfig                    |    3 +
- hw/misc/meson.build                |    1 +
- hw/misc/trace-events               |    8 +
- 12 files changed, 6482 insertions(+)
- create mode 100644 include/hw/arm/svd/rt500_clkctl0.h
- create mode 100644 include/hw/arm/svd/rt500_clkctl1.h
- create mode 100644 include/hw/misc/rt500_clk_freqs.h
- create mode 100644 include/hw/misc/rt500_clkctl0.h
- create mode 100644 include/hw/misc/rt500_clkctl1.h
- create mode 100644 hw/misc/rt500_clkctl0.c
- create mode 100644 hw/misc/rt500_clkctl1.c
+ include/hw/arm/svd/flexspi.h | 2656 ++++++++++++++++++++++++++++++++++
+ include/hw/ssi/flexspi.h     |   31 +
+ hw/ssi/flexspi.c             |  181 +++
+ hw/arm/svd/meson.build       |    3 +
+ hw/ssi/Kconfig               |    4 +
+ hw/ssi/meson.build           |    1 +
+ hw/ssi/trace-events          |    4 +
+ 7 files changed, 2880 insertions(+)
+ create mode 100644 include/hw/arm/svd/flexspi.h
+ create mode 100644 include/hw/ssi/flexspi.h
+ create mode 100644 hw/ssi/flexspi.c
 
-diff --git a/include/hw/arm/svd/rt500_clkctl0.h b/include/hw/arm/svd/rt500_clkctl0.h
+diff --git a/include/hw/arm/svd/flexspi.h b/include/hw/arm/svd/flexspi.h
 new file mode 100644
-index 0000000000..b5c86eed3e
+index 0000000000..828e2d6a7d
 --- /dev/null
-+++ b/include/hw/arm/svd/rt500_clkctl0.h
-@@ -0,0 +1,2483 @@
++++ b/include/hw/arm/svd/flexspi.h
+@@ -0,0 +1,2656 @@
 +/*
 + * Copyright 2016-2023 NXP SPDX-License-Identifier: BSD-3-Clause
 + *
@@ -144,5890 +140,2661 @@ index 0000000000..b5c86eed3e
 +
 +#include "hw/register.h"
 +
-+/* Clock Controller 0 */
-+#define RT500_CLKCTL0_REGS_NO (490)
-+
-+/* Clock Control 0 */
-+REG32(RT500_CLKCTL0_PSCCTL0, 16);
-+/* DSP clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, DSP_CLK, 1, 1);
-+/* 128KB ROM Controller clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, ROM_CTRLR_CLK, 2, 1);
-+/* AXI Switch clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, AXI_SWITCH_CLK, 3, 1);
-+/* AXI Controller clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, AXI_CTLR_CLK, 4, 1);
-+/* POWERQUAD clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, POWERQUAD_CLK, 8, 1);
-+/* CASPER clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, CASPER_CLK, 9, 1);
-+/* HASHCRYPT clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, HASHCRYPT_CLK, 10, 1);
-+/* PUF clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, PUF_CLK, 11, 1);
-+/* Random Number Generator (RNG) clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, RNG_CLK, 12, 1);
-+/* FLEXSPI0 / OTFAD clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, FLEXSPI0_OTFAD_CLK, 16, 1);
-+/* OTP Controller clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, OTP_CTLR_CLK, 17, 1);
-+/* FLEXSPI1 clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, FLEXSPI1_CLK, 18, 1);
-+/* USB HS PHY clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, USBHS_PHY_CLK, 20, 1);
-+/* USB HS Device clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, USBHS_DEVICE_CLK, 21, 1);
-+/* USB HS Host clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, USBHS_HOST_CLK, 22, 1);
-+/* USB HS SRAM clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, USBHS_SRAM_CLK, 23, 1);
-+/* SCT clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, SCT_CLK, 24, 1);
-+/* GPU clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, GPU_CLK, 26, 1);
-+/* Display Controller clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, DISPLAY_CTLR_CLK, 27, 1);
-+/* MIPI-DSI Controller clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, MIPI_DSI_CTLR_CLK, 28, 1);
-+/* Smart DMA clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL0, SMARTDMA_CLK, 30, 1);
-+
-+/* Clock Control 1 */
-+REG32(RT500_CLKCTL0_PSCCTL1, 20);
-+/* SDIO0 clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL1, SDIO0_CLK, 2, 1);
-+/* SDIO1 clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL1, SDIO1_CLK, 3, 1);
-+/* ACMP0 clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL1, ACMP0_CLK, 15, 1);
-+/* ADC0 clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL1, ADC0_CLK, 16, 1);
-+/* SHSGPIO0 clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL1, SHSGPIO0_CLK, 24, 1);
-+
-+/* Clock Control 2 */
-+REG32(RT500_CLKCTL0_PSCCTL2, 24);
-+/* Micro-Tick Timer 0 clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL2, UTICK0_CLK, 0, 1);
-+/* Watchdog Timer 0 clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL2, WWDT0_CLK, 1, 1);
-+/* Power Management Controller clock control */
-+FIELD(RT500_CLKCTL0_PSCCTL2, PMC_CLK, 29, 1);
-+
-+/* Clock Control 0 Set */
-+REG32(RT500_CLKCTL0_PSCCTL0_SET, 64);
-+/* DSP clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, DSP_CLK, 1, 1);
-+/* 128KB ROM Controller clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, ROM_CTRLR_CLK, 2, 1);
-+/* AXI Switch clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, AXI_SWITCH_CLK, 3, 1);
-+/* AXI Controller clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, AXI_CTLR_CLK, 4, 1);
-+/* POWERQUAD clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, POWERQUAD_CLK, 8, 1);
-+/* CASPER clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, CASPER_CLK, 9, 1);
-+/* HASHCRYPT clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, HASHCRYPT_CLK, 10, 1);
-+/* PUF clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, PUF_CLK, 11, 1);
-+/* Random Number Generator (RNG) clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, RNG_CLK, 12, 1);
-+/* FLEXSPI0 / OTFAD clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, FLEXSPI0_OTFAD_CLK, 16, 1);
-+/* OTP Controller clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, OTP_CTLR_CLK, 17, 1);
-+/* FLEXSPI1 clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, FLEXSPI1_CLK, 18, 1);
-+/* USB HS PHY clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, USBHS_PHY_CLK, 20, 1);
-+/* USB HS Device clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, USBHS_DEVICE_CLK, 21, 1);
-+/* USB HS Host clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, USBHS_HOST_CLK, 22, 1);
-+/* USB HS SRAM clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, USBHS_SRAM_CLK, 23, 1);
-+/* SCT clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, SCT_CLK, 24, 1);
-+/* GPU clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, GPU_CLK, 26, 1);
-+/* Display Controller clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, DISPLAY_CTLR_CLK, 27, 1);
-+/* MIPI-DSI Controller clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, MIPI_DSI_CTLR_CLK, 28, 1);
-+/* Smart DMA clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_SET, SMARTDMA_CLK, 30, 1);
-+
-+/* Clock Control 1 Set */
-+REG32(RT500_CLKCTL0_PSCCTL1_SET, 68);
-+/* SDIO0 clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL1_SET, SDIO0_CLK, 2, 1);
-+/* SDIO1 clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL1_SET, SDIO1_CLK, 3, 1);
-+/* ACMP0 clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL1_SET, ACMP0_CLK, 15, 1);
-+/* ADC0 clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL1_SET, ADC0_CLK, 16, 1);
-+/* SHSGPIO0 clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL1_SET, SHSGPIO0_CLK, 24, 1);
-+
-+/* Clock Control 2 Set */
-+REG32(RT500_CLKCTL0_PSCCTL2_SET, 72);
-+/* Micro-Tick Timer 0 clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL2_SET, UTICK0_CLK, 0, 1);
-+/* Watchdog Timer 0 clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL2_SET, WWDT0_CLK, 1, 1);
-+/* Power Management Controller clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL2_SET, PMC, 29, 1);
-+
-+/* Clock Control 0 Clear */
-+REG32(RT500_CLKCTL0_PSCCTL0_CLR, 112);
-+/* DSP clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, DSP_CLK, 1, 1);
-+/* 128KB ROM Controller clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, ROM_CTRLR_CLK, 2, 1);
-+/* AXI Switch clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, AXI_SWITCH_CLK, 3, 1);
-+/* AXI Controller clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, AXI_CTLR_CLK, 4, 1);
-+/* POWERQUAD clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, POWERQUAD_CLK, 8, 1);
-+/* CASPER clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, CASPER_CLK, 9, 1);
-+/* HASHCRYPT clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, HASHCRYPT_CLK, 10, 1);
-+/* PUF clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, PUF_CLK, 11, 1);
-+/* RNG clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, RNG_CLK, 12, 1);
-+/* FLEXSPI0 / OTFAD clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, FLEXSPI0_OTFAD_CLK, 16, 1);
-+/* OTP Controller clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, OTP_CTLR_CLK, 17, 1);
-+/* FLEXSPI1 clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, FLEXSPI1_CLK, 18, 1);
-+/* USB HS PHY clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, USBHS_PHY_CLK, 20, 1);
-+/* USB HS Device clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, USBHS_DEVICE_CLK, 21, 1);
-+/* USB HS Host clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, USBHS_HOST_CLK, 22, 1);
-+/* USB HS SRAM clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, USBHS_SRAM_CLK, 23, 1);
-+/* SCT clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, SCT_CLK, 24, 1);
-+/* GPU clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, GPU_CLK, 26, 1);
-+/* Display Controller clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, DISPLAY_CTLR_CLK, 27, 1);
-+/* MIPI-DSI Controller clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, MIPI_DSI_CTLR_CLK, 28, 1);
-+/* Smart DMA clock set */
-+FIELD(RT500_CLKCTL0_PSCCTL0_CLR, SMARTDMA_CLK, 30, 1);
-+
-+/* Clock Control 1 Clear */
-+REG32(RT500_CLKCTL0_PSCCTL1_CLR, 116);
-+/* SDIO0 clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL1_CLR, SDIO0_CLK, 2, 1);
-+/* SDIO1 clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL1_CLR, SDIO1_CLK, 3, 1);
-+/* ACMP0 clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL1_CLR, ACMP0_CLK, 15, 1);
-+/* ADC0 clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL1_CLR, ADC0_CLK, 16, 1);
-+/* SHSGPIO0 clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL1_CLR, SHSGPIO0_CLK, 24, 1);
-+
-+/* Clock Control 2 Clear */
-+REG32(RT500_CLKCTL0_PSCCTL2_CLR, 120);
-+/* Micro-Tick Timer 0 clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL2_CLR, UTICK0_CLK, 0, 1);
-+/* Watchdog Timer 0 clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL2_CLR, WWDT0_CLK, 1, 1);
-+/* Power Management Controller clock clear */
-+FIELD(RT500_CLKCTL0_PSCCTL2_CLR, PMC_CLK, 29, 1);
-+
-+/* Free Running Oscillator Control */
-+REG32(RT500_CLKCTL0_FRO_CONTROL, 128);
-+/* Expected Count */
-+FIELD(RT500_CLKCTL0_FRO_CONTROL, EXP_COUNT, 0, 16);
-+/* Threshold Range Upper Limit */
-+FIELD(RT500_CLKCTL0_FRO_CONTROL, THRESH_RANGE_UP, 16, 5);
-+/* Threshold Range Lower Limit */
-+FIELD(RT500_CLKCTL0_FRO_CONTROL, THRESH_RANGE_LOW, 21, 5);
-+/* Enable Tuning */
-+FIELD(RT500_CLKCTL0_FRO_CONTROL, ENA_TUNE, 31, 1);
-+
-+/* Free Running Oscillator Captured Value */
-+REG32(RT500_CLKCTL0_FRO_CAPVAL, 132);
-+/* Captured Value */
-+FIELD(RT500_CLKCTL0_FRO_CAPVAL, CAPVAL, 0, 16);
-+/* Data Valid */
-+FIELD(RT500_CLKCTL0_FRO_CAPVAL, DATA_VALID, 31, 1);
-+
-+/* Free Running Oscillator Trim */
-+REG32(RT500_CLKCTL0_FRO_RDTRIM, 140);
-+/* It is the trim value supplied to the oscillator */
-+FIELD(RT500_CLKCTL0_FRO_RDTRIM, TRIM, 0, 11);
-+
-+/* Free Running OscillatorSC Trim */
-+REG32(RT500_CLKCTL0_FRO_SCTRIM, 144);
-+/* sc_trim value for the oscillator. */
-+FIELD(RT500_CLKCTL0_FRO_SCTRIM, TRIM, 0, 6);
-+
-+/* FRO Clock Divider */
-+REG32(RT500_CLKCTL0_FRODIVSEL, 264);
-+/* Select clock */
-+FIELD(RT500_CLKCTL0_FRODIVSEL, SEL, 0, 2);
-+
-+/* FRO Clock Status */
-+REG32(RT500_CLKCTL0_FROCLKSTATUS, 268);
-+/* FRO Clock OK */
-+FIELD(RT500_CLKCTL0_FROCLKSTATUS, CLK_OK, 0, 1);
-+
-+/* FRO Enable Register */
-+REG32(RT500_CLKCTL0_FRODIVOEN, 272);
-+/* FRO Divided-by-1 Clock Enable */
-+FIELD(RT500_CLKCTL0_FRODIVOEN, FRO_DIV1_O_EN, 0, 1);
-+/* FRO Divided-by-2 Clock Enable */
-+FIELD(RT500_CLKCTL0_FRODIVOEN, FRO_DIV2_O_EN, 1, 1);
-+/* FRO Divided-by-4 Clock Enable */
-+FIELD(RT500_CLKCTL0_FRODIVOEN, FRO_DIV4_O_EN, 2, 1);
-+/* FRO Divided-by-8 Clock Enable */
-+FIELD(RT500_CLKCTL0_FRODIVOEN, FRO_DIV8_O_EN, 3, 1);
-+/* FRO Divided-by-16 Clock Enable */
-+FIELD(RT500_CLKCTL0_FRODIVOEN, FRO_DIV16_O_EN, 4, 1);
-+
-+/* Low Frequency Clock Divider */
-+REG32(RT500_CLKCTL0_LOWFREQCLKDIV, 304);
-+/* Low Frequency Clock Divider Value */
-+FIELD(RT500_CLKCTL0_LOWFREQCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_LOWFREQCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_LOWFREQCLKDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL0_LOWFREQCLKDIV, REQFLAG, 31, 1);
-+
-+/* System Oscillator Control 0 */
-+REG32(RT500_CLKCTL0_SYSOSCCTL0, 352);
-+/* Low Power Mode Enable */
-+FIELD(RT500_CLKCTL0_SYSOSCCTL0, LP_ENABLE, 0, 1);
-+/* Bypass Enable */
-+FIELD(RT500_CLKCTL0_SYSOSCCTL0, BYPASS_ENABLE, 1, 1);
-+
-+/* OSC Clock Source Select */
-+REG32(RT500_CLKCTL0_SYSOSCBYPASS, 360);
-+/* Select SYSOSC Bypass */
-+FIELD(RT500_CLKCTL0_SYSOSCBYPASS, SEL, 0, 3);
-+
-+/* Low Power Oscillator Control 0 */
-+REG32(RT500_CLKCTL0_LPOSCCTL0, 400);
-+/* LPOSC Clock Ready */
-+FIELD(RT500_CLKCTL0_LPOSCCTL0, CLKRDY, 31, 1);
-+
-+/* 32 KHz Oscillator Control 0 */
-+REG32(RT500_CLKCTL0_OSC32KHZCTL0, 448);
-+/* 32 KHz Oscillator Enable */
-+FIELD(RT500_CLKCTL0_OSC32KHZCTL0, ENA32KHZ, 0, 1);
-+
-+/* System PLL 0 Clock Select */
-+REG32(RT500_CLKCTL0_SYSPLL0CLKSEL, 512);
-+/* System PLL0 Reference Input Clock Source */
-+FIELD(RT500_CLKCTL0_SYSPLL0CLKSEL, SEL, 0, 3);
-+
-+/* System PLL0 Control 0 */
-+REG32(RT500_CLKCTL0_SYSPLL0CTL0, 516);
-+/* SYSPLL0 BYPASS Mode */
-+FIELD(RT500_CLKCTL0_SYSPLL0CTL0, BYPASS, 0, 1);
-+/* SYSPLL0 Reset */
-+FIELD(RT500_CLKCTL0_SYSPLL0CTL0, RESET, 1, 1);
-+/* Hold Ring Off Control */
-+FIELD(RT500_CLKCTL0_SYSPLL0CTL0, HOLDRINGOFF_ENA, 13, 1);
-+/* Multiplication Factor */
-+FIELD(RT500_CLKCTL0_SYSPLL0CTL0, MULT, 16, 8);
-+
-+/* System PLL0 Lock Time Div2 */
-+REG32(RT500_CLKCTL0_SYSPLL0LOCKTIMEDIV2, 524);
-+/* SYSPLL0 Lock Time Divide-by-2 */
-+FIELD(RT500_CLKCTL0_SYSPLL0LOCKTIMEDIV2, LOCKTIMEDIV2, 0, 16);
-+
-+/* System PLL0 Numerator */
-+REG32(RT500_CLKCTL0_SYSPLL0NUM, 528);
-+/* Numerator of the SYSPLL0 fractional loop divider */
-+FIELD(RT500_CLKCTL0_SYSPLL0NUM, NUM, 0, 30);
-+
-+/* System PLL0 Denominator */
-+REG32(RT500_CLKCTL0_SYSPLL0DENOM, 532);
-+/* Denominator of the SYSPLL0 fractional loop divider */
-+FIELD(RT500_CLKCTL0_SYSPLL0DENOM, DENOM, 0, 30);
-+
-+/* System PLL0 PFD */
-+REG32(RT500_CLKCTL0_SYSPLL0PFD, 536);
-+/* PLL Fractional Divider 0 */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD0, 0, 6);
-+/* PFD0 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD0_CLKRDY, 6, 1);
-+/* PFD0 Clock Gate */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD0_CLKGATE, 7, 1);
-+/* PLL Fractional Divider 1 */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD1, 8, 6);
-+/* PFD1 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD1_CLKRDY, 14, 1);
-+/* PFD1 Clock Gate */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD1_CLKGATE, 15, 1);
-+/* PLL Fractional Divider 2 */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD2, 16, 6);
-+/* PFD2 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD2_CLKRDY, 22, 1);
-+/* PFD2 Clock Gate */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD2_CLKGATE, 23, 1);
-+/* PLL Fractional Divider 3 */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD3, 24, 6);
-+/* PFD3 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD3_CLKRDY, 30, 1);
-+/* PFD3 Clock Gate */
-+FIELD(RT500_CLKCTL0_SYSPLL0PFD, PFD3_CLKGATE, 31, 1);
-+
-+/* Main PLL Clock Divider */
-+REG32(RT500_CLKCTL0_MAINPLLCLKDIV, 576);
-+/* Low Frequency Clock Divider Value */
-+FIELD(RT500_CLKCTL0_MAINPLLCLKDIV, DIV, 0, 8);
-+/* Resets the divider counter */
-+FIELD(RT500_CLKCTL0_MAINPLLCLKDIV, RESET, 29, 1);
-+/* Halts the divider counter */
-+FIELD(RT500_CLKCTL0_MAINPLLCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_MAINPLLCLKDIV, REQFLAG, 31, 1);
-+
-+/* DSP PLL Clock Divider */
-+REG32(RT500_CLKCTL0_DSPPLLCLKDIV, 580);
-+/* Low Frequency Clock Divider Value */
-+FIELD(RT500_CLKCTL0_DSPPLLCLKDIV, DIV, 0, 8);
-+/* Resets the divider counter */
-+FIELD(RT500_CLKCTL0_DSPPLLCLKDIV, RESET, 29, 1);
-+/* Halts the divider counter */
-+FIELD(RT500_CLKCTL0_DSPPLLCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_DSPPLLCLKDIV, REQFLAG, 31, 1);
-+
-+/* AUX0 PLL Clock Divider */
-+REG32(RT500_CLKCTL0_AUX0PLLCLKDIV, 584);
-+/* Low Frequency Clock Divider Value */
-+FIELD(RT500_CLKCTL0_AUX0PLLCLKDIV, DIV, 0, 8);
-+/* Resets the divider counter */
-+FIELD(RT500_CLKCTL0_AUX0PLLCLKDIV, RESET, 29, 1);
-+/* Halts the divider counter */
-+FIELD(RT500_CLKCTL0_AUX0PLLCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_AUX0PLLCLKDIV, REQFLAG, 31, 1);
-+
-+/* AUX1 PLL Clock Divider */
-+REG32(RT500_CLKCTL0_AUX1PLLCLKDIV, 588);
-+/* Low Frequency Clock Divider Value */
-+FIELD(RT500_CLKCTL0_AUX1PLLCLKDIV, DIV, 0, 8);
-+/* Resets the divider counter */
-+FIELD(RT500_CLKCTL0_AUX1PLLCLKDIV, RESET, 29, 1);
-+/* Halts the divider counter */
-+FIELD(RT500_CLKCTL0_AUX1PLLCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_AUX1PLLCLKDIV, REQFLAG, 31, 1);
-+
-+/* System CPU AHB Clock Divider */
-+REG32(RT500_CLKCTL0_SYSCPUAHBCLKDIV, 1024);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_SYSCPUAHBCLKDIV, DIV, 0, 8);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_SYSCPUAHBCLKDIV, REQFLAG, 31, 1);
-+
-+/* Main Clock Select A */
-+REG32(RT500_CLKCTL0_MAINCLKSELA, 1072);
-+/* Control Main 1st Stage Control Clock Source */
-+FIELD(RT500_CLKCTL0_MAINCLKSELA, SEL, 0, 2);
-+
-+/* Main Clock Select B */
-+REG32(RT500_CLKCTL0_MAINCLKSELB, 1076);
-+/* Main Clock Source Selection */
-+FIELD(RT500_CLKCTL0_MAINCLKSELB, SEL, 0, 2);
-+
-+/* PFC divider 0 (trace clock) */
-+REG32(RT500_CLKCTL0_PFC0DIV, 1280);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_PFC0DIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_PFC0DIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_PFC0DIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_PFC0DIV, REQFLAG, 31, 1);
-+
-+/* PFC divider 1 (USB HS PHY bus clock) */
-+REG32(RT500_CLKCTL0_PFC1DIV, 1284);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_PFC1DIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_PFC1DIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_PFC1DIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_PFC1DIV, REQFLAG, 31, 1);
-+
-+/* FlexSPI0 Functional Clock Select */
-+REG32(RT500_CLKCTL0_FLEXSPI0FCLKSEL, 1568);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_FLEXSPI0FCLKSEL, SEL, 0, 3);
-+
-+/* FlexSPI0 Functional Clock Divider */
-+REG32(RT500_CLKCTL0_FLEXSPI0FCLKDIV, 1572);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_FLEXSPI0FCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_FLEXSPI0FCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_FLEXSPI0FCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_FLEXSPI0FCLKDIV, REQFLAG, 31, 1);
-+
-+/* FlexSPI1 Functional Clock Select */
-+REG32(RT500_CLKCTL0_FLEXSPI1FCLKSEL, 1584);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_FLEXSPI1FCLKSEL, SEL, 0, 3);
-+
-+/* FlexSPI1 Functional Clock Divider */
-+REG32(RT500_CLKCTL0_FLEXSPI1FCLKDIV, 1588);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_FLEXSPI1FCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_FLEXSPI1FCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_FLEXSPI1FCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_FLEXSPI1FCLKDIV, REQFLAG, 31, 1);
-+
-+/* SCT Functional Clock Select */
-+REG32(RT500_CLKCTL0_SCTFCLKSEL, 1600);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_SCTFCLKSEL, SEL, 0, 3);
-+
-+/* SCT Functional Clock Divider */
-+REG32(RT500_CLKCTL0_SCTIN7CLKDIV, 1604);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_SCTIN7CLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_SCTIN7CLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_SCTIN7CLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_SCTIN7CLKDIV, REQFLAG, 31, 1);
-+
-+/* High Speed USB Functional Clock Select */
-+REG32(RT500_CLKCTL0_USBHSFCLKSEL, 1632);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_USBHSFCLKSEL, SEL, 0, 3);
-+
-+/* High Speed USB Functional Clock Divider */
-+REG32(RT500_CLKCTL0_USBHSFCLKDIV, 1636);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_USBHSFCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_USBHSFCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_USBHSFCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_USBHSFCLKDIV, REQFLAG, 31, 1);
-+
-+/* SDIO0 Functional Clock Select */
-+REG32(RT500_CLKCTL0_SDIO0FCLKSEL, 1664);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_SDIO0FCLKSEL, SEL, 0, 3);
-+
-+/* SDIO0 Functional Clock Divider */
-+REG32(RT500_CLKCTL0_SDIO0FCLKDIV, 1668);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_SDIO0FCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_SDIO0FCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_SDIO0FCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_SDIO0FCLKDIV, REQFLAG, 31, 1);
-+
-+/* SDIO1 Functional Clock Select */
-+REG32(RT500_CLKCTL0_SDIO1FCLKSEL, 1680);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_SDIO1FCLKSEL, SEL, 0, 3);
-+
-+/* SDIO1 Functional Clock Divider */
-+REG32(RT500_CLKCTL0_SDIO1FCLKDIV, 1684);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_SDIO1FCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_SDIO1FCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_SDIO1FCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_SDIO1FCLKDIV, REQFLAG, 31, 1);
-+
-+/* ADC0 Functional Clock Select 0 */
-+REG32(RT500_CLKCTL0_ADC0FCLKSEL0, 1744);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_ADC0FCLKSEL0, SEL, 0, 3);
-+
-+/* ADC0 Functional Clock Select 1 */
-+REG32(RT500_CLKCTL0_ADC0FCLKSEL1, 1748);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_ADC0FCLKSEL1, SEL, 0, 3);
-+
-+/* ADC0 Functional Clock Divider */
-+REG32(RT500_CLKCTL0_ADC0FCLKDIV, 1752);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_ADC0FCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_ADC0FCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_ADC0FCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_ADC0FCLKDIV, REQFLAG, 31, 1);
-+
-+/* UTICK Functional Clock Select */
-+REG32(RT500_CLKCTL0_UTICKFCLKSEL, 1792);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_UTICKFCLKSEL, SEL, 0, 3);
-+
-+/* WDT0 Functional Clock Select */
-+REG32(RT500_CLKCTL0_WDT0FCLKSEL, 1824);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_WDT0FCLKSEL, SEL, 0, 3);
-+
-+/* 32 KHz Wake Clock Source Select */
-+REG32(RT500_CLKCTL0_A32KHZWAKECLKSEL, 1840);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_A32KHZWAKECLKSEL, SEL, 0, 3);
-+
-+/* 32 KHz Wake Clock Divider */
-+REG32(RT500_CLKCTL0_A32KHZWAKECLKDIV, 1844);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_A32KHZWAKECLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_A32KHZWAKECLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_A32KHZWAKECLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_A32KHZWAKECLKDIV, REQFLAG, 31, 1);
-+
-+/* SYSTICK Functional Clock Select */
-+REG32(RT500_CLKCTL0_SYSTICKFCLKSEL, 1888);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_SYSTICKFCLKSEL, SEL, 0, 3);
-+
-+/* SYSTICK Functional Clock Divider */
-+REG32(RT500_CLKCTL0_SYSTICKFCLKDIV, 1892);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_SYSTICKFCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_SYSTICKFCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_SYSTICKFCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_SYSTICKFCLKDIV, REQFLAG, 31, 1);
-+
-+/* MIPI-DSI PHY Clock Select */
-+REG32(RT500_CLKCTL0_DPHYCLKSEL, 1904);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_DPHYCLKSEL, SEL, 0, 3);
-+
-+/* MIPI-DSI PHY Clock Divider */
-+REG32(RT500_CLKCTL0_DPHYCLKDIV, 1908);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_DPHYCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_DPHYCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_DPHYCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_DPHYCLKDIV, REQFLAG, 31, 1);
-+
-+/* MIPI-DSI DPHY Escape Mode Clock Select */
-+REG32(RT500_CLKCTL0_DPHYESCCLKSEL, 1912);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_DPHYESCCLKSEL, SEL, 0, 3);
-+
-+/* MIPI-DSI DPHY Escape Mode Receive Clock Divider */
-+REG32(RT500_CLKCTL0_DPHYESCRXCLKDIV, 1916);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_DPHYESCRXCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_DPHYESCRXCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_DPHYESCRXCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_DPHYESCRXCLKDIV, REQFLAG, 31, 1);
-+
-+/* MIPI-DSI DPHY Escape Mode Tramsmit Clock Divider */
-+REG32(RT500_CLKCTL0_DPHYESCTXCLKDIV, 1920);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_DPHYESCTXCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_DPHYESCTXCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_DPHYESCTXCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_DPHYESCTXCLKDIV, REQFLAG, 31, 1);
-+
-+/* GPU Clock Select */
-+REG32(RT500_CLKCTL0_GPUCLKSEL, 1936);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_GPUCLKSEL, SEL, 0, 3);
-+
-+/* GPU Clock Divider */
-+REG32(RT500_CLKCTL0_GPUCLKDIV, 1940);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_GPUCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_GPUCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_GPUCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_GPUCLKDIV, REQFLAG, 31, 1);
-+
-+/* LCDIF Pixel Clock Select */
-+REG32(RT500_CLKCTL0_DCPIXELCLKSEL, 1952);
-+/* Select Clock Source */
-+FIELD(RT500_CLKCTL0_DCPIXELCLKSEL, SEL, 0, 3);
-+
-+/* LCDIF Pixel Clock Divider */
-+REG32(RT500_CLKCTL0_DCPIXELCLKDIV, 1956);
-+/* Clock Divider Value Selection */
-+FIELD(RT500_CLKCTL0_DCPIXELCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL0_DCPIXELCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL0_DCPIXELCLKDIV, HALT, 30, 1);
-+/* Divider status flag */
-+FIELD(RT500_CLKCTL0_DCPIXELCLKDIV, REQFLAG, 31, 1);
++/* FlexSPI */
++#define FLEXSPI_REGS_NO (267)
++
++/* Module Control Register 0 */
++REG32(FLEXSPI_MCR0, 0);
++/* Software Reset */
++FIELD(FLEXSPI_MCR0, SWRESET, 0, 1);
++/* Module Disable */
++FIELD(FLEXSPI_MCR0, MDIS, 1, 1);
++/* Sample Clock source selection for Flash Reading */
++FIELD(FLEXSPI_MCR0, RXCLKSRC, 4, 2);
++/* Serial root clock */
++FIELD(FLEXSPI_MCR0, SERCLKDIV, 8, 3);
++/* Half Speed Serial Flash Access Enable. */
++FIELD(FLEXSPI_MCR0, HSEN, 11, 1);
++/* Doze mode enable bit */
++FIELD(FLEXSPI_MCR0, DOZEEN, 12, 1);
++/*
++ * This bit is used to enable SCLK output free-running. For FPGA applications,
++ * the external device may use SCLK as reference clock to its internal PLL.
++ */
++FIELD(FLEXSPI_MCR0, SCKFREERUNEN, 14, 1);
++/* This bit is used to enable/disable the data learning feature. */
++FIELD(FLEXSPI_MCR0, LEARNEN, 15, 1);
++/* Timeout wait cycle for IP command grant. */
++FIELD(FLEXSPI_MCR0, IPGRANTWAIT, 16, 8);
++/* Timeout wait cycle for AHB command grant. */
++FIELD(FLEXSPI_MCR0, AHBGRANTWAIT, 24, 8);
++
++/* Module Control Register 1 */
++REG32(FLEXSPI_MCR1, 4);
++/* AHB Bus wait */
++FIELD(FLEXSPI_MCR1, AHBBUSWAIT, 0, 16);
++/*
++ * Command Sequence Execution will timeout and abort after SEQWAIT * 1024
++ * Serial Root Clock cycles. When sequence execution timeout occurs, there will
++ * be an interrupt generated (INTR[SEQTIMEOUT]) if this interrupt is enabled
++ * (INTEN[SEQTIMEOUTEN] is set 0x1) and AHB command is ignored by arbitrator.
++ */
++FIELD(FLEXSPI_MCR1, SEQWAIT, 16, 16);
++
++/* Module Control Register 2 */
++REG32(FLEXSPI_MCR2, 8);
++/* Clear AHB buffer */
++FIELD(FLEXSPI_MCR2, CLRAHBBUFOPT, 11, 1);
++/*
++ * The sampling clock phase selection will be reset to phase 0 when this bit is
++ * written with 0x1. This bit will be auto-cleared immediately.
++ */
++FIELD(FLEXSPI_MCR2, CLRLEARNPHASE, 14, 1);
++/*
++ * All external devices are same devices (both in type and size) for
++ * A1/A2/B1/B2.
++ */
++FIELD(FLEXSPI_MCR2, SAMEDEVICEEN, 15, 1);
++/*
++ * Wait cycle (in AHB clock cycle) for idle state before suspended command
++ * sequence resumed.
++ */
++FIELD(FLEXSPI_MCR2, RESUMEWAIT, 24, 8);
++
++/* AHB Bus Control Register */
++REG32(FLEXSPI_AHBCR, 12);
++/* Parallel mode enabled for AHB triggered Command (both read and write). */
++FIELD(FLEXSPI_AHBCR, APAREN, 0, 1);
++/* Clear the status/pointers of AHB TX Buffer. Auto-cleared. */
++FIELD(FLEXSPI_AHBCR, CLRAHBTXBUF, 2, 1);
++/* Enable AHB bus cachable read access support. */
++FIELD(FLEXSPI_AHBCR, CACHABLEEN, 3, 1);
++/* Enable AHB bus bufferable write access support. */
++FIELD(FLEXSPI_AHBCR, BUFFERABLEEN, 4, 1);
++/* AHB Read Prefetch Enable. */
++FIELD(FLEXSPI_AHBCR, PREFETCHEN, 5, 1);
++/*
++ * AHB Read Address option bit. This option bit is intended to remove AHB burst
++ * start address alignment limitation.
++ */
++FIELD(FLEXSPI_AHBCR, READADDROPT, 6, 1);
++/* AHB Read Resume Disable */
++FIELD(FLEXSPI_AHBCR, RESUMEDISABLE, 7, 1);
++/* AHB Read Size Alignment */
++FIELD(FLEXSPI_AHBCR, READSZALIGN, 10, 1);
++
++/* Interrupt Enable Register */
++REG32(FLEXSPI_INTEN, 16);
++/* IP triggered Command Sequences Execution finished interrupt enable. */
++FIELD(FLEXSPI_INTEN, IPCMDDONEEN, 0, 1);
++/* IP triggered Command Sequences Grant Timeout interrupt enable. */
++FIELD(FLEXSPI_INTEN, IPCMDGEEN, 1, 1);
++/* AHB triggered Command Sequences Grant Timeout interrupt enable. */
++FIELD(FLEXSPI_INTEN, AHBCMDGEEN, 2, 1);
++/* IP triggered Command Sequences Error Detected interrupt enable. */
++FIELD(FLEXSPI_INTEN, IPCMDERREN, 3, 1);
++/* AHB triggered Command Sequences Error Detected interrupt enable. */
++FIELD(FLEXSPI_INTEN, AHBCMDERREN, 4, 1);
++/* IP RX FIFO WaterMark available interrupt enable. */
++FIELD(FLEXSPI_INTEN, IPRXWAEN, 5, 1);
++/* IP TX FIFO WaterMark empty interrupt enable. */
++FIELD(FLEXSPI_INTEN, IPTXWEEN, 6, 1);
++/* Data Learning failed interrupt enable. */
++FIELD(FLEXSPI_INTEN, DATALEARNFAILEN, 7, 1);
++/*
++ * SCLK is stopped during command sequence because Async RX FIFO full interrupt
++ * enable.
++ */
++FIELD(FLEXSPI_INTEN, SCKSTOPBYRDEN, 8, 1);
++/*
++ * SCLK is stopped during command sequence because Async TX FIFO empty
++ * interrupt enable.
++ */
++FIELD(FLEXSPI_INTEN, SCKSTOPBYWREN, 9, 1);
++/* AHB Bus error interrupt enable. */
++FIELD(FLEXSPI_INTEN, AHBBUSERROREN, 10, 1);
++/* Sequence execution timeout interrupt enable. */
++FIELD(FLEXSPI_INTEN, SEQTIMEOUTEN, 11, 1);
++/* OTFAD key blob processing done interrupt enable. */
++FIELD(FLEXSPI_INTEN, KEYDONEEN, 12, 1);
++/* OTFAD key blob processing error interrupt enable. */
++FIELD(FLEXSPI_INTEN, KEYERROREN, 13, 1);
++
++/* Interrupt Register */
++REG32(FLEXSPI_INTR, 20);
++/*
++ * IP triggered Command Sequences Execution finished interrupt. This interrupt
++ * is also generated when there is IPCMDGE or IPCMDERR interrupt generated.
++ */
++FIELD(FLEXSPI_INTR, IPCMDDONE, 0, 1);
++/* IP triggered Command Sequences Grant Timeout interrupt. */
++FIELD(FLEXSPI_INTR, IPCMDGE, 1, 1);
++/* AHB triggered Command Sequences Grant Timeout interrupt. */
++FIELD(FLEXSPI_INTR, AHBCMDGE, 2, 1);
++/*
++ * IP triggered Command Sequences Error Detected interrupt. When an error
++ * detected for IP command, this command will be ignored and not executed at
++ * all.
++ */
++FIELD(FLEXSPI_INTR, IPCMDERR, 3, 1);
++/*
++ * AHB triggered Command Sequences Error Detected interrupt. When an error
++ * detected for AHB command, this command will be ignored and not executed at
++ * all.
++ */
++FIELD(FLEXSPI_INTR, AHBCMDERR, 4, 1);
++/* IP RX FIFO watermark available interrupt. */
++FIELD(FLEXSPI_INTR, IPRXWA, 5, 1);
++/* IP TX FIFO watermark empty interrupt. */
++FIELD(FLEXSPI_INTR, IPTXWE, 6, 1);
++/* Data Learning failed interrupt. */
++FIELD(FLEXSPI_INTR, DATALEARNFAIL, 7, 1);
++/*
++ * SCLK is stopped during command sequence because Async RX FIFO full
++ * interrupt.
++ */
++FIELD(FLEXSPI_INTR, SCKSTOPBYRD, 8, 1);
++/*
++ * SCLK is stopped during command sequence because Async TX FIFO empty
++ * interrupt.
++ */
++FIELD(FLEXSPI_INTR, SCKSTOPBYWR, 9, 1);
++/*
++ * AHB Bus timeout or AHB bus illegal access Flash during OTFAD key blob
++ * processing interrupt.
++ */
++FIELD(FLEXSPI_INTR, AHBBUSERROR, 10, 1);
++/* Sequence execution timeout interrupt. */
++FIELD(FLEXSPI_INTR, SEQTIMEOUT, 11, 1);
++/* OTFAD key blob processing done interrupt. */
++FIELD(FLEXSPI_INTR, KEYDONE, 12, 1);
++/* OTFAD key blob processing error interrupt. */
++FIELD(FLEXSPI_INTR, KEYERROR, 13, 1);
++
++/* LUT Key Register */
++REG32(FLEXSPI_LUTKEY, 24);
++/* The Key to lock or unlock LUT. */
++FIELD(FLEXSPI_LUTKEY, KEY, 0, 32);
++
++/* LUT Control Register */
++REG32(FLEXSPI_LUTCR, 28);
++/* Lock LUT */
++FIELD(FLEXSPI_LUTCR, LOCK, 0, 1);
++/* Unlock LUT */
++FIELD(FLEXSPI_LUTCR, UNLOCK, 1, 1);
++
++/* AHB RX Buffer 0 Control Register 0 */
++REG32(FLEXSPI_AHBRXBUF0CR0, 32);
++/* AHB RX Buffer Size in 64 bits. */
++FIELD(FLEXSPI_AHBRXBUF0CR0, BUFSZ, 0, 8);
++/* This AHB RX Buffer is assigned according to AHB Master with ID (MSTR_ID). */
++FIELD(FLEXSPI_AHBRXBUF0CR0, MSTRID, 16, 4);
++/*
++ * This priority for AHB Master Read which this AHB RX Buffer is assigned. 7 is
++ * the highest priority, 0 the lowest.
++ */
++FIELD(FLEXSPI_AHBRXBUF0CR0, PRIORITY, 24, 3);
++/* AHB Read Prefetch Enable for current AHB RX Buffer corresponding Master. */
++FIELD(FLEXSPI_AHBRXBUF0CR0, PREFETCHEN, 31, 1);
++
++/* AHB RX Buffer 1 Control Register 0 */
++REG32(FLEXSPI_AHBRXBUF1CR0, 36);
++/* AHB RX Buffer Size in 64 bits. */
++FIELD(FLEXSPI_AHBRXBUF1CR0, BUFSZ, 0, 8);
++/* This AHB RX Buffer is assigned according to AHB Master with ID (MSTR_ID). */
++FIELD(FLEXSPI_AHBRXBUF1CR0, MSTRID, 16, 4);
++/*
++ * This priority for AHB Master Read which this AHB RX Buffer is assigned. 7 is
++ * the highest priority, 0 the lowest.
++ */
++FIELD(FLEXSPI_AHBRXBUF1CR0, PRIORITY, 24, 3);
++/* AHB Read Prefetch Enable for current AHB RX Buffer corresponding Master. */
++FIELD(FLEXSPI_AHBRXBUF1CR0, PREFETCHEN, 31, 1);
++
++/* AHB RX Buffer 2 Control Register 0 */
++REG32(FLEXSPI_AHBRXBUF2CR0, 40);
++/* AHB RX Buffer Size in 64 bits. */
++FIELD(FLEXSPI_AHBRXBUF2CR0, BUFSZ, 0, 8);
++/* This AHB RX Buffer is assigned according to AHB Master with ID (MSTR_ID). */
++FIELD(FLEXSPI_AHBRXBUF2CR0, MSTRID, 16, 4);
++/*
++ * This priority for AHB Master Read which this AHB RX Buffer is assigned. 7 is
++ * the highest priority, 0 the lowest.
++ */
++FIELD(FLEXSPI_AHBRXBUF2CR0, PRIORITY, 24, 3);
++/* AHB Read Prefetch Enable for current AHB RX Buffer corresponding Master. */
++FIELD(FLEXSPI_AHBRXBUF2CR0, PREFETCHEN, 31, 1);
++
++/* AHB RX Buffer 3 Control Register 0 */
++REG32(FLEXSPI_AHBRXBUF3CR0, 44);
++/* AHB RX Buffer Size in 64 bits. */
++FIELD(FLEXSPI_AHBRXBUF3CR0, BUFSZ, 0, 8);
++/* This AHB RX Buffer is assigned according to AHB Master with ID (MSTR_ID). */
++FIELD(FLEXSPI_AHBRXBUF3CR0, MSTRID, 16, 4);
++/*
++ * This priority for AHB Master Read which this AHB RX Buffer is assigned. 7 is
++ * the highest priority, 0 the lowest.
++ */
++FIELD(FLEXSPI_AHBRXBUF3CR0, PRIORITY, 24, 3);
++/* AHB Read Prefetch Enable for current AHB RX Buffer corresponding Master. */
++FIELD(FLEXSPI_AHBRXBUF3CR0, PREFETCHEN, 31, 1);
++
++/* AHB RX Buffer 4 Control Register 0 */
++REG32(FLEXSPI_AHBRXBUF4CR0, 48);
++/* AHB RX Buffer Size in 64 bits. */
++FIELD(FLEXSPI_AHBRXBUF4CR0, BUFSZ, 0, 8);
++/* This AHB RX Buffer is assigned according to AHB Master with ID (MSTR_ID). */
++FIELD(FLEXSPI_AHBRXBUF4CR0, MSTRID, 16, 4);
++/*
++ * This priority for AHB Master Read which this AHB RX Buffer is assigned. 7 is
++ * the highest priority, 0 the lowest.
++ */
++FIELD(FLEXSPI_AHBRXBUF4CR0, PRIORITY, 24, 3);
++/* AHB Read Prefetch Enable for current AHB RX Buffer corresponding Master. */
++FIELD(FLEXSPI_AHBRXBUF4CR0, PREFETCHEN, 31, 1);
++
++/* AHB RX Buffer 5 Control Register 0 */
++REG32(FLEXSPI_AHBRXBUF5CR0, 52);
++/* AHB RX Buffer Size in 64 bits. */
++FIELD(FLEXSPI_AHBRXBUF5CR0, BUFSZ, 0, 8);
++/* This AHB RX Buffer is assigned according to AHB Master with ID (MSTR_ID). */
++FIELD(FLEXSPI_AHBRXBUF5CR0, MSTRID, 16, 4);
++/*
++ * This priority for AHB Master Read which this AHB RX Buffer is assigned. 7 is
++ * the highest priority, 0 the lowest.
++ */
++FIELD(FLEXSPI_AHBRXBUF5CR0, PRIORITY, 24, 3);
++/* AHB Read Prefetch Enable for current AHB RX Buffer corresponding Master. */
++FIELD(FLEXSPI_AHBRXBUF5CR0, PREFETCHEN, 31, 1);
++
++/* AHB RX Buffer 6 Control Register 0 */
++REG32(FLEXSPI_AHBRXBUF6CR0, 56);
++/* AHB RX Buffer Size in 64 bits. */
++FIELD(FLEXSPI_AHBRXBUF6CR0, BUFSZ, 0, 8);
++/* This AHB RX Buffer is assigned according to AHB Master with ID (MSTR_ID). */
++FIELD(FLEXSPI_AHBRXBUF6CR0, MSTRID, 16, 4);
++/*
++ * This priority for AHB Master Read which this AHB RX Buffer is assigned. 7 is
++ * the highest priority, 0 the lowest.
++ */
++FIELD(FLEXSPI_AHBRXBUF6CR0, PRIORITY, 24, 3);
++/* AHB Read Prefetch Enable for current AHB RX Buffer corresponding Master. */
++FIELD(FLEXSPI_AHBRXBUF6CR0, PREFETCHEN, 31, 1);
++
++/* AHB RX Buffer 7 Control Register 0 */
++REG32(FLEXSPI_AHBRXBUF7CR0, 60);
++/* AHB RX Buffer Size in 64 bits. */
++FIELD(FLEXSPI_AHBRXBUF7CR0, BUFSZ, 0, 8);
++/* This AHB RX Buffer is assigned according to AHB Master with ID (MSTR_ID). */
++FIELD(FLEXSPI_AHBRXBUF7CR0, MSTRID, 16, 4);
++/*
++ * This priority for AHB Master Read which this AHB RX Buffer is assigned. 7 is
++ * the highest priority, 0 the lowest.
++ */
++FIELD(FLEXSPI_AHBRXBUF7CR0, PRIORITY, 24, 3);
++/* AHB Read Prefetch Enable for current AHB RX Buffer corresponding Master. */
++FIELD(FLEXSPI_AHBRXBUF7CR0, PREFETCHEN, 31, 1);
++
++/* Flash Control Register 0 */
++REG32(FLEXSPI_FLSHA1CR0, 96);
++/* Flash Size in KByte. */
++FIELD(FLEXSPI_FLSHA1CR0, FLSHSZ, 0, 23);
++
++/* Flash Control Register 0 */
++REG32(FLEXSPI_FLSHA2CR0, 100);
++/* Flash Size in KByte. */
++FIELD(FLEXSPI_FLSHA2CR0, FLSHSZ, 0, 23);
++
++/* Flash Control Register 0 */
++REG32(FLEXSPI_FLSHB1CR0, 104);
++/* Flash Size in KByte. */
++FIELD(FLEXSPI_FLSHB1CR0, FLSHSZ, 0, 23);
++
++/* Flash Control Register 0 */
++REG32(FLEXSPI_FLSHB2CR0, 108);
++/* Flash Size in KByte. */
++FIELD(FLEXSPI_FLSHB2CR0, FLSHSZ, 0, 23);
++
++/* Flash Control Register 1 */
++REG32(FLEXSPI_FLSHCR1A1, 112);
++/* Serial Flash CS setup time. */
++FIELD(FLEXSPI_FLSHCR1A1, TCSS, 0, 5);
++/* Serial Flash CS Hold time. */
++FIELD(FLEXSPI_FLSHCR1A1, TCSH, 5, 5);
++/* Word Addressable. */
++FIELD(FLEXSPI_FLSHCR1A1, WA, 10, 1);
++/* Column Address Size. */
++FIELD(FLEXSPI_FLSHCR1A1, CAS, 11, 4);
++/* CS interval unit */
++FIELD(FLEXSPI_FLSHCR1A1, CSINTERVALUNIT, 15, 1);
++/*
++ * This field is used to set the minimum interval between flash device chip
++ * select deassertion and flash device chip select assertion. If external flash
++ * has a limitation on the interval between command sequences, this field
++ * should be set accordingly. If there is no limitation, set this field with
++ * value 0x0.
++ */
++FIELD(FLEXSPI_FLSHCR1A1, CSINTERVAL, 16, 16);
++
++/* Flash Control Register 1 */
++REG32(FLEXSPI_FLSHCR1A2, 116);
++/* Serial Flash CS setup time. */
++FIELD(FLEXSPI_FLSHCR1A2, TCSS, 0, 5);
++/* Serial Flash CS Hold time. */
++FIELD(FLEXSPI_FLSHCR1A2, TCSH, 5, 5);
++/* Word Addressable. */
++FIELD(FLEXSPI_FLSHCR1A2, WA, 10, 1);
++/* Column Address Size. */
++FIELD(FLEXSPI_FLSHCR1A2, CAS, 11, 4);
++/* CS interval unit */
++FIELD(FLEXSPI_FLSHCR1A2, CSINTERVALUNIT, 15, 1);
++/*
++ * This field is used to set the minimum interval between flash device chip
++ * select deassertion and flash device chip select assertion. If external flash
++ * has a limitation on the interval between command sequences, this field
++ * should be set accordingly. If there is no limitation, set this field with
++ * value 0x0.
++ */
++FIELD(FLEXSPI_FLSHCR1A2, CSINTERVAL, 16, 16);
++
++/* Flash Control Register 1 */
++REG32(FLEXSPI_FLSHCR1B1, 120);
++/* Serial Flash CS setup time. */
++FIELD(FLEXSPI_FLSHCR1B1, TCSS, 0, 5);
++/* Serial Flash CS Hold time. */
++FIELD(FLEXSPI_FLSHCR1B1, TCSH, 5, 5);
++/* Word Addressable. */
++FIELD(FLEXSPI_FLSHCR1B1, WA, 10, 1);
++/* Column Address Size. */
++FIELD(FLEXSPI_FLSHCR1B1, CAS, 11, 4);
++/* CS interval unit */
++FIELD(FLEXSPI_FLSHCR1B1, CSINTERVALUNIT, 15, 1);
++/*
++ * This field is used to set the minimum interval between flash device chip
++ * select deassertion and flash device chip select assertion. If external flash
++ * has a limitation on the interval between command sequences, this field
++ * should be set accordingly. If there is no limitation, set this field with
++ * value 0x0.
++ */
++FIELD(FLEXSPI_FLSHCR1B1, CSINTERVAL, 16, 16);
++
++/* Flash Control Register 1 */
++REG32(FLEXSPI_FLSHCR1B2, 124);
++/* Serial Flash CS setup time. */
++FIELD(FLEXSPI_FLSHCR1B2, TCSS, 0, 5);
++/* Serial Flash CS Hold time. */
++FIELD(FLEXSPI_FLSHCR1B2, TCSH, 5, 5);
++/* Word Addressable. */
++FIELD(FLEXSPI_FLSHCR1B2, WA, 10, 1);
++/* Column Address Size. */
++FIELD(FLEXSPI_FLSHCR1B2, CAS, 11, 4);
++/* CS interval unit */
++FIELD(FLEXSPI_FLSHCR1B2, CSINTERVALUNIT, 15, 1);
++/*
++ * This field is used to set the minimum interval between flash device chip
++ * select deassertion and flash device chip select assertion. If external flash
++ * has a limitation on the interval between command sequences, this field
++ * should be set accordingly. If there is no limitation, set this field with
++ * value 0x0.
++ */
++FIELD(FLEXSPI_FLSHCR1B2, CSINTERVAL, 16, 16);
++
++/* Flash Control Register 2 */
++REG32(FLEXSPI_FLSHCR2A1, 128);
++/* Sequence Index for AHB Read triggered Command in LUT. */
++FIELD(FLEXSPI_FLSHCR2A1, ARDSEQID, 0, 4);
++/* Sequence Number for AHB Read triggered Command in LUT. */
++FIELD(FLEXSPI_FLSHCR2A1, ARDSEQNUM, 5, 3);
++/* Sequence Index for AHB Write triggered Command. */
++FIELD(FLEXSPI_FLSHCR2A1, AWRSEQID, 8, 4);
++/* Sequence Number for AHB Write triggered Command. */
++FIELD(FLEXSPI_FLSHCR2A1, AWRSEQNUM, 13, 3);
++/*
++ * For certain devices (such as FPGA), it need some time to write data into
++ * internal memory after the command sequences finished on FlexSPI interface.
++ * If another Read command sequence comes before previous programming finished
++ * internally, the read data may be wrong. This field is used to hold AHB Bus
++ * ready for AHB write access to wait the programming finished in external
++ * device. Then there will be no AHB read command triggered before the
++ * programming finished in external device. The Wait cycle between AHB
++ * triggered command sequences finished on FlexSPI interface and AHB return Bus
++ * ready: AWRWAIT * AWRWAITUNIT
++ */
++FIELD(FLEXSPI_FLSHCR2A1, AWRWAIT, 16, 12);
++/* AWRWAIT unit */
++FIELD(FLEXSPI_FLSHCR2A1, AWRWAITUNIT, 28, 3);
++/*
++ * Clear the instruction pointer which is internally saved pointer by
++ * JMP_ON_CS.
++ */
++FIELD(FLEXSPI_FLSHCR2A1, CLRINSTRPTR, 31, 1);
++
++/* Flash Control Register 2 */
++REG32(FLEXSPI_FLSHCR2A2, 132);
++/* Sequence Index for AHB Read triggered Command in LUT. */
++FIELD(FLEXSPI_FLSHCR2A2, ARDSEQID, 0, 4);
++/* Sequence Number for AHB Read triggered Command in LUT. */
++FIELD(FLEXSPI_FLSHCR2A2, ARDSEQNUM, 5, 3);
++/* Sequence Index for AHB Write triggered Command. */
++FIELD(FLEXSPI_FLSHCR2A2, AWRSEQID, 8, 4);
++/* Sequence Number for AHB Write triggered Command. */
++FIELD(FLEXSPI_FLSHCR2A2, AWRSEQNUM, 13, 3);
++/*
++ * For certain devices (such as FPGA), it need some time to write data into
++ * internal memory after the command sequences finished on FlexSPI interface.
++ * If another Read command sequence comes before previous programming finished
++ * internally, the read data may be wrong. This field is used to hold AHB Bus
++ * ready for AHB write access to wait the programming finished in external
++ * device. Then there will be no AHB read command triggered before the
++ * programming finished in external device. The Wait cycle between AHB
++ * triggered command sequences finished on FlexSPI interface and AHB return Bus
++ * ready: AWRWAIT * AWRWAITUNIT
++ */
++FIELD(FLEXSPI_FLSHCR2A2, AWRWAIT, 16, 12);
++/* AWRWAIT unit */
++FIELD(FLEXSPI_FLSHCR2A2, AWRWAITUNIT, 28, 3);
++/*
++ * Clear the instruction pointer which is internally saved pointer by
++ * JMP_ON_CS.
++ */
++FIELD(FLEXSPI_FLSHCR2A2, CLRINSTRPTR, 31, 1);
++
++/* Flash Control Register 2 */
++REG32(FLEXSPI_FLSHCR2B1, 136);
++/* Sequence Index for AHB Read triggered Command in LUT. */
++FIELD(FLEXSPI_FLSHCR2B1, ARDSEQID, 0, 4);
++/* Sequence Number for AHB Read triggered Command in LUT. */
++FIELD(FLEXSPI_FLSHCR2B1, ARDSEQNUM, 5, 3);
++/* Sequence Index for AHB Write triggered Command. */
++FIELD(FLEXSPI_FLSHCR2B1, AWRSEQID, 8, 4);
++/* Sequence Number for AHB Write triggered Command. */
++FIELD(FLEXSPI_FLSHCR2B1, AWRSEQNUM, 13, 3);
++/*
++ * For certain devices (such as FPGA), it need some time to write data into
++ * internal memory after the command sequences finished on FlexSPI interface.
++ * If another Read command sequence comes before previous programming finished
++ * internally, the read data may be wrong. This field is used to hold AHB Bus
++ * ready for AHB write access to wait the programming finished in external
++ * device. Then there will be no AHB read command triggered before the
++ * programming finished in external device. The Wait cycle between AHB
++ * triggered command sequences finished on FlexSPI interface and AHB return Bus
++ * ready: AWRWAIT * AWRWAITUNIT
++ */
++FIELD(FLEXSPI_FLSHCR2B1, AWRWAIT, 16, 12);
++/* AWRWAIT unit */
++FIELD(FLEXSPI_FLSHCR2B1, AWRWAITUNIT, 28, 3);
++/*
++ * Clear the instruction pointer which is internally saved pointer by
++ * JMP_ON_CS.
++ */
++FIELD(FLEXSPI_FLSHCR2B1, CLRINSTRPTR, 31, 1);
++
++/* Flash Control Register 2 */
++REG32(FLEXSPI_FLSHCR2B2, 140);
++/* Sequence Index for AHB Read triggered Command in LUT. */
++FIELD(FLEXSPI_FLSHCR2B2, ARDSEQID, 0, 4);
++/* Sequence Number for AHB Read triggered Command in LUT. */
++FIELD(FLEXSPI_FLSHCR2B2, ARDSEQNUM, 5, 3);
++/* Sequence Index for AHB Write triggered Command. */
++FIELD(FLEXSPI_FLSHCR2B2, AWRSEQID, 8, 4);
++/* Sequence Number for AHB Write triggered Command. */
++FIELD(FLEXSPI_FLSHCR2B2, AWRSEQNUM, 13, 3);
++/*
++ * For certain devices (such as FPGA), it need some time to write data into
++ * internal memory after the command sequences finished on FlexSPI interface.
++ * If another Read command sequence comes before previous programming finished
++ * internally, the read data may be wrong. This field is used to hold AHB Bus
++ * ready for AHB write access to wait the programming finished in external
++ * device. Then there will be no AHB read command triggered before the
++ * programming finished in external device. The Wait cycle between AHB
++ * triggered command sequences finished on FlexSPI interface and AHB return Bus
++ * ready: AWRWAIT * AWRWAITUNIT
++ */
++FIELD(FLEXSPI_FLSHCR2B2, AWRWAIT, 16, 12);
++/* AWRWAIT unit */
++FIELD(FLEXSPI_FLSHCR2B2, AWRWAITUNIT, 28, 3);
++/*
++ * Clear the instruction pointer which is internally saved pointer by
++ * JMP_ON_CS.
++ */
++FIELD(FLEXSPI_FLSHCR2B2, CLRINSTRPTR, 31, 1);
++
++/* Flash Control Register 4 */
++REG32(FLEXSPI_FLSHCR4, 148);
++/*
++ * Write mask option bit 1. This option bit could be used to remove AHB and IP
++ * write burst start address alignment limitation.
++ */
++FIELD(FLEXSPI_FLSHCR4, WMOPT1, 0, 1);
++/*
++ * Write mask enable bit for flash device on port A. When write mask function
++ * is needed for memory device on port A, this bit must be set.
++ */
++FIELD(FLEXSPI_FLSHCR4, WMENA, 2, 1);
++
++/* IP Control Register 0 */
++REG32(FLEXSPI_IPCR0, 160);
++/* Serial Flash Address for IP command. */
++FIELD(FLEXSPI_IPCR0, SFAR, 0, 32);
++
++/* IP Control Register 1 */
++REG32(FLEXSPI_IPCR1, 164);
++/* Flash Read/Program Data Size (in Bytes) for IP command. */
++FIELD(FLEXSPI_IPCR1, IDATSZ, 0, 16);
++/* Sequence Index in LUT for IP command. */
++FIELD(FLEXSPI_IPCR1, ISEQID, 16, 4);
++/* Sequence Number for IP command: ISEQNUM+1. */
++FIELD(FLEXSPI_IPCR1, ISEQNUM, 24, 3);
++/* Parallel mode Enabled for IP command. */
++FIELD(FLEXSPI_IPCR1, IPAREN, 31, 1);
++
++/* IP Command Register */
++REG32(FLEXSPI_IPCMD, 176);
++/* Setting this bit will trigger an IP Command. */
++FIELD(FLEXSPI_IPCMD, TRG, 0, 1);
++
++/* Data Learn Pattern Register */
++REG32(FLEXSPI_DLPR, 180);
++/* Data Learning Pattern. */
++FIELD(FLEXSPI_DLPR, DLP, 0, 32);
++
++/* IP RX FIFO Control Register */
++REG32(FLEXSPI_IPRXFCR, 184);
++/* Clear all valid data entries in IP RX FIFO. */
++FIELD(FLEXSPI_IPRXFCR, CLRIPRXF, 0, 1);
++/* IP RX FIFO reading by DMA enabled. */
++FIELD(FLEXSPI_IPRXFCR, RXDMAEN, 1, 1);
++/* Watermark level is (RXWMRK+1)*64 bits. */
++FIELD(FLEXSPI_IPRXFCR, RXWMRK, 2, 7);
++
++/* IP TX FIFO Control Register */
++REG32(FLEXSPI_IPTXFCR, 188);
++/* Clear all valid data entries in IP TX FIFO. */
++FIELD(FLEXSPI_IPTXFCR, CLRIPTXF, 0, 1);
++/* IP TX FIFO filling by DMA enabled. */
++FIELD(FLEXSPI_IPTXFCR, TXDMAEN, 1, 1);
++/* Watermark level is (TXWMRK+1)*64 Bits. */
++FIELD(FLEXSPI_IPTXFCR, TXWMRK, 2, 7);
++
++/* DLL Control Register 0 */
++REG32(FLEXSPI_DLLCRA, 192);
++/* DLL calibration enable. */
++FIELD(FLEXSPI_DLLCRA, DLLEN, 0, 1);
++/* DLL reset */
++FIELD(FLEXSPI_DLLCRA, DLLRESET, 1, 1);
++/*
++ * The delay target for slave delay line is: ((SLVDLYTARGET+1) * 1/32 * clock
++ * cycle of reference clock (serial root clock). If serial root clock is >= 100
++ * MHz, DLLEN set to 0x1, OVRDEN set to =0x0, then SLVDLYTARGET setting of 0 is
++ * recommended.
++ */
++FIELD(FLEXSPI_DLLCRA, SLVDLYTARGET, 3, 4);
++/* Slave clock delay line delay cell number selection override enable. */
++FIELD(FLEXSPI_DLLCRA, OVRDEN, 8, 1);
++/* Slave clock delay line delay cell number selection override value. */
++FIELD(FLEXSPI_DLLCRA, OVRDVAL, 9, 6);
++
++/* DLL Control Register 0 */
++REG32(FLEXSPI_DLLCRB, 196);
++/* DLL calibration enable. */
++FIELD(FLEXSPI_DLLCRB, DLLEN, 0, 1);
++/* DLL reset */
++FIELD(FLEXSPI_DLLCRB, DLLRESET, 1, 1);
++/*
++ * The delay target for slave delay line is: ((SLVDLYTARGET+1) * 1/32 * clock
++ * cycle of reference clock (serial root clock). If serial root clock is >= 100
++ * MHz, DLLEN set to 0x1, OVRDEN set to =0x0, then SLVDLYTARGET setting of 0 is
++ * recommended.
++ */
++FIELD(FLEXSPI_DLLCRB, SLVDLYTARGET, 3, 4);
++/* Slave clock delay line delay cell number selection override enable. */
++FIELD(FLEXSPI_DLLCRB, OVRDEN, 8, 1);
++/* Slave clock delay line delay cell number selection override value. */
++FIELD(FLEXSPI_DLLCRB, OVRDVAL, 9, 6);
++
++/* Status Register 0 */
++REG32(FLEXSPI_STS0, 224);
++/*
++ * This status bit indicates the state machine in SEQ_CTL is idle and there is
++ * command sequence executing on FlexSPI interface.
++ */
++FIELD(FLEXSPI_STS0, SEQIDLE, 0, 1);
++/*
++ * This status bit indicates the state machine in ARB_CTL is busy and there is
++ * command sequence granted by arbitrator and not finished yet on FlexSPI
++ * interface. When ARB_CTL state (ARBIDLE=0x1) is idle, there will be no
++ * transaction on FlexSPI interface also (SEQIDLE=0x1). So this bit should be
++ * polled to wait for FlexSPI controller become idle instead of SEQIDLE.
++ */
++FIELD(FLEXSPI_STS0, ARBIDLE, 1, 1);
++/*
++ * This status field indicates the trigger source of current command sequence
++ * granted by arbitrator. This field value is meaningless when ARB_CTL is not
++ * busy (STS0[ARBIDLE]=0x1).
++ */
++FIELD(FLEXSPI_STS0, ARBCMDSRC, 2, 2);
++/* Indicate the sampling clock phase selection on Port A after Data Learning. */
++FIELD(FLEXSPI_STS0, DATALEARNPHASEA, 4, 4);
++
++/* Status Register 1 */
++REG32(FLEXSPI_STS1, 228);
++/*
++ * Indicates the sequence index when an AHB command error is detected. This
++ * field will be cleared when INTR[AHBCMDERR] is write-1-clear(w1c).
++ */
++FIELD(FLEXSPI_STS1, AHBCMDERRID, 0, 4);
++/*
++ * Indicates the Error Code when AHB command Error detected. This field will be
++ * cleared when INTR[AHBCMDERR] is write-1-clear(w1c).
++ */
++FIELD(FLEXSPI_STS1, AHBCMDERRCODE, 8, 4);
++/* Indicates the sequence Index when IP command error detected. */
++FIELD(FLEXSPI_STS1, IPCMDERRID, 16, 4);
++/*
++ * Indicates the Error Code when IP command Error detected. This field will be
++ * cleared when INTR[IPCMDERR] is write-1-clear(w1c).
++ */
++FIELD(FLEXSPI_STS1, IPCMDERRCODE, 24, 4);
++
++/* Status Register 2 */
++REG32(FLEXSPI_STS2, 232);
++/* Flash A sample clock slave delay line locked. */
++FIELD(FLEXSPI_STS2, ASLVLOCK, 0, 1);
++/* Flash A sample clock reference delay line locked. */
++FIELD(FLEXSPI_STS2, AREFLOCK, 1, 1);
++/* Flash A sample clock slave delay line delay cell number selection . */
++FIELD(FLEXSPI_STS2, ASLVSEL, 2, 6);
++/* Flash A sample clock reference delay line delay cell number selection. */
++FIELD(FLEXSPI_STS2, AREFSEL, 8, 6);
++/* Flash B sample clock slave delay line locked. */
++FIELD(FLEXSPI_STS2, BSLVLOCK, 16, 1);
++/* Flash B sample clock reference delay line locked. */
++FIELD(FLEXSPI_STS2, BREFLOCK, 17, 1);
++/* Flash B sample clock slave delay line delay cell number selection. */
++FIELD(FLEXSPI_STS2, BSLVSEL, 18, 6);
++/* Flash B sample clock reference delay line delay cell number selection. */
++FIELD(FLEXSPI_STS2, BREFSEL, 24, 6);
++
++/* AHB Suspend Status Register */
++REG32(FLEXSPI_AHBSPNDSTS, 236);
++/* Indicates if an AHB read prefetch command sequence has been suspended. */
++FIELD(FLEXSPI_AHBSPNDSTS, ACTIVE, 0, 1);
++/* AHB RX BUF ID for suspended command sequence. */
++FIELD(FLEXSPI_AHBSPNDSTS, BUFID, 1, 3);
++/* The Data size left for suspended command sequence (in byte). */
++FIELD(FLEXSPI_AHBSPNDSTS, DATLFT, 16, 16);
++
++/* IP RX FIFO Status Register */
++REG32(FLEXSPI_IPRXFSTS, 240);
++/* Fill level of IP RX FIFO. */
++FIELD(FLEXSPI_IPRXFSTS, FILL, 0, 8);
++/* Total Read Data Counter: RDCNTR * 64 Bits. */
++FIELD(FLEXSPI_IPRXFSTS, RDCNTR, 16, 16);
++
++/* IP TX FIFO Status Register */
++REG32(FLEXSPI_IPTXFSTS, 244);
++/* Fill level of IP TX FIFO. */
++FIELD(FLEXSPI_IPTXFSTS, FILL, 0, 8);
++/* Total Write Data Counter: WRCNTR * 64 Bits. */
++FIELD(FLEXSPI_IPTXFSTS, WRCNTR, 16, 16);
++
++/* IP RX FIFO Data Register x */
++REG32(FLEXSPI_RFDR0, 256);
++REG32(FLEXSPI_RFDR1, 260);
++REG32(FLEXSPI_RFDR2, 264);
++REG32(FLEXSPI_RFDR3, 268);
++REG32(FLEXSPI_RFDR4, 272);
++REG32(FLEXSPI_RFDR5, 276);
++REG32(FLEXSPI_RFDR6, 280);
++REG32(FLEXSPI_RFDR7, 284);
++REG32(FLEXSPI_RFDR8, 288);
++REG32(FLEXSPI_RFDR9, 292);
++REG32(FLEXSPI_RFDR10, 296);
++REG32(FLEXSPI_RFDR11, 300);
++REG32(FLEXSPI_RFDR12, 304);
++REG32(FLEXSPI_RFDR13, 308);
++REG32(FLEXSPI_RFDR14, 312);
++REG32(FLEXSPI_RFDR15, 316);
++REG32(FLEXSPI_RFDR16, 320);
++REG32(FLEXSPI_RFDR17, 324);
++REG32(FLEXSPI_RFDR18, 328);
++REG32(FLEXSPI_RFDR19, 332);
++REG32(FLEXSPI_RFDR20, 336);
++REG32(FLEXSPI_RFDR21, 340);
++REG32(FLEXSPI_RFDR22, 344);
++REG32(FLEXSPI_RFDR23, 348);
++REG32(FLEXSPI_RFDR24, 352);
++REG32(FLEXSPI_RFDR25, 356);
++REG32(FLEXSPI_RFDR26, 360);
++REG32(FLEXSPI_RFDR27, 364);
++REG32(FLEXSPI_RFDR28, 368);
++REG32(FLEXSPI_RFDR29, 372);
++REG32(FLEXSPI_RFDR30, 376);
++REG32(FLEXSPI_RFDR31, 380);
++/* RX Data. */
++SHARED_FIELD(FLEXSPI_RFDR_RXDATA, 0, 32);
++
++/* IP TX FIFO Data Register x */
++REG32(FLEXSPI_TFDR0, 384);
++REG32(FLEXSPI_TFDR1, 388);
++REG32(FLEXSPI_TFDR2, 392);
++REG32(FLEXSPI_TFDR3, 396);
++REG32(FLEXSPI_TFDR4, 400);
++REG32(FLEXSPI_TFDR5, 404);
++REG32(FLEXSPI_TFDR6, 408);
++REG32(FLEXSPI_TFDR7, 412);
++REG32(FLEXSPI_TFDR8, 416);
++REG32(FLEXSPI_TFDR9, 420);
++REG32(FLEXSPI_TFDR10, 424);
++REG32(FLEXSPI_TFDR11, 428);
++REG32(FLEXSPI_TFDR12, 432);
++REG32(FLEXSPI_TFDR13, 436);
++REG32(FLEXSPI_TFDR14, 440);
++REG32(FLEXSPI_TFDR15, 444);
++REG32(FLEXSPI_TFDR16, 448);
++REG32(FLEXSPI_TFDR17, 452);
++REG32(FLEXSPI_TFDR18, 456);
++REG32(FLEXSPI_TFDR19, 460);
++REG32(FLEXSPI_TFDR20, 464);
++REG32(FLEXSPI_TFDR21, 468);
++REG32(FLEXSPI_TFDR22, 472);
++REG32(FLEXSPI_TFDR23, 476);
++REG32(FLEXSPI_TFDR24, 480);
++REG32(FLEXSPI_TFDR25, 484);
++REG32(FLEXSPI_TFDR26, 488);
++REG32(FLEXSPI_TFDR27, 492);
++REG32(FLEXSPI_TFDR28, 496);
++REG32(FLEXSPI_TFDR29, 500);
++REG32(FLEXSPI_TFDR30, 504);
++REG32(FLEXSPI_TFDR31, 508);
++/* TX Data */
++SHARED_FIELD(FLEXSPI_TFDR_TXDATA, 0, 32);
++
++/* LUT x */
++REG32(FLEXSPI_LUT0, 512);
++REG32(FLEXSPI_LUT1, 516);
++REG32(FLEXSPI_LUT2, 520);
++REG32(FLEXSPI_LUT3, 524);
++REG32(FLEXSPI_LUT4, 528);
++REG32(FLEXSPI_LUT5, 532);
++REG32(FLEXSPI_LUT6, 536);
++REG32(FLEXSPI_LUT7, 540);
++REG32(FLEXSPI_LUT8, 544);
++REG32(FLEXSPI_LUT9, 548);
++REG32(FLEXSPI_LUT10, 552);
++REG32(FLEXSPI_LUT11, 556);
++REG32(FLEXSPI_LUT12, 560);
++REG32(FLEXSPI_LUT13, 564);
++REG32(FLEXSPI_LUT14, 568);
++REG32(FLEXSPI_LUT15, 572);
++REG32(FLEXSPI_LUT16, 576);
++REG32(FLEXSPI_LUT17, 580);
++REG32(FLEXSPI_LUT18, 584);
++REG32(FLEXSPI_LUT19, 588);
++REG32(FLEXSPI_LUT20, 592);
++REG32(FLEXSPI_LUT21, 596);
++REG32(FLEXSPI_LUT22, 600);
++REG32(FLEXSPI_LUT23, 604);
++REG32(FLEXSPI_LUT24, 608);
++REG32(FLEXSPI_LUT25, 612);
++REG32(FLEXSPI_LUT26, 616);
++REG32(FLEXSPI_LUT27, 620);
++REG32(FLEXSPI_LUT28, 624);
++REG32(FLEXSPI_LUT29, 628);
++REG32(FLEXSPI_LUT30, 632);
++REG32(FLEXSPI_LUT31, 636);
++REG32(FLEXSPI_LUT32, 640);
++REG32(FLEXSPI_LUT33, 644);
++REG32(FLEXSPI_LUT34, 648);
++REG32(FLEXSPI_LUT35, 652);
++REG32(FLEXSPI_LUT36, 656);
++REG32(FLEXSPI_LUT37, 660);
++REG32(FLEXSPI_LUT38, 664);
++REG32(FLEXSPI_LUT39, 668);
++REG32(FLEXSPI_LUT40, 672);
++REG32(FLEXSPI_LUT41, 676);
++REG32(FLEXSPI_LUT42, 680);
++REG32(FLEXSPI_LUT43, 684);
++REG32(FLEXSPI_LUT44, 688);
++REG32(FLEXSPI_LUT45, 692);
++REG32(FLEXSPI_LUT46, 696);
++REG32(FLEXSPI_LUT47, 700);
++REG32(FLEXSPI_LUT48, 704);
++REG32(FLEXSPI_LUT49, 708);
++REG32(FLEXSPI_LUT50, 712);
++REG32(FLEXSPI_LUT51, 716);
++REG32(FLEXSPI_LUT52, 720);
++REG32(FLEXSPI_LUT53, 724);
++REG32(FLEXSPI_LUT54, 728);
++REG32(FLEXSPI_LUT55, 732);
++REG32(FLEXSPI_LUT56, 736);
++REG32(FLEXSPI_LUT57, 740);
++REG32(FLEXSPI_LUT58, 744);
++REG32(FLEXSPI_LUT59, 748);
++REG32(FLEXSPI_LUT60, 752);
++REG32(FLEXSPI_LUT61, 756);
++REG32(FLEXSPI_LUT62, 760);
++REG32(FLEXSPI_LUT63, 764);
++/* OPERAND0 */
++SHARED_FIELD(FLEXSPI_LUT_OPERAND0, 0, 8);
++/* NUM_PADS0 */
++SHARED_FIELD(FLEXSPI_LUT_NUM_PADS0, 8, 2);
++/* OPCODE */
++SHARED_FIELD(FLEXSPI_LUT_OPCODE0, 10, 6);
++/* OPERAND1 */
++SHARED_FIELD(FLEXSPI_LUT_OPERAND1, 16, 8);
++/* NUM_PADS1 */
++SHARED_FIELD(FLEXSPI_LUT_NUM_PADS1, 24, 2);
++/* OPCODE1 */
++SHARED_FIELD(FLEXSPI_LUT_OPCODE1, 26, 6);
++
++/* HADDR REMAP START ADDR */
++REG32(FLEXSPI_HADDRSTART, 1056);
++/* AHB Bus address remap function enable */
++FIELD(FLEXSPI_HADDRSTART, REMAPEN, 0, 1);
++/* HADDR start address */
++FIELD(FLEXSPI_HADDRSTART, ADDRSTART, 12, 20);
++
++/* HADDR REMAP END ADDR */
++REG32(FLEXSPI_HADDREND, 1060);
++/* HADDR remap range's end address, 4K aligned */
++FIELD(FLEXSPI_HADDREND, ENDSTART, 12, 20);
++
++/* HADDR REMAP OFFSET */
++REG32(FLEXSPI_HADDROFFSET, 1064);
++/*
++ * HADDR offset field, remapped address will be
++ * ADDR[31:12]=ADDR_original[31:12]+ADDROFFSET
++ */
++FIELD(FLEXSPI_HADDROFFSET, ADDROFFSET, 12, 20);
++
++
++typedef enum {
++    /* No impact */
++    FLEXSPI_MCR0_SWRESET_val0 = 0,
++    /* Software reset */
++    FLEXSPI_MCR0_SWRESET_val1 = 1,
++} FLEXSPI_MCR0_SWRESET_Enum;
++
++typedef enum {
++    /* No impact */
++    FLEXSPI_MCR0_MDIS_val0 = 0,
++    /* Module disable */
++    FLEXSPI_MCR0_MDIS_val1 = 1,
++} FLEXSPI_MCR0_MDIS_Enum;
 +
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_DSP_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_DSP_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_DSP_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_ROM_CTRLR_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_ROM_CTRLR_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_ROM_CTRLR_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_AXI_SWITCH_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_AXI_SWITCH_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_AXI_SWITCH_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_AXI_CTLR_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_AXI_CTLR_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_AXI_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_POWERQUAD_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_POWERQUAD_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_POWERQUAD_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_CASPER_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_CASPER_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_CASPER_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_HASHCRYPT_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_HASHCRYPT_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_HASHCRYPT_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_PUF_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_PUF_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_PUF_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_RNG_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_RNG_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_RNG_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_FLEXSPI0_OTFAD_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_FLEXSPI0_OTFAD_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_FLEXSPI0_OTFAD_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_OTP_CTLR_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_OTP_CTLR_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_OTP_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_FLEXSPI1_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_FLEXSPI1_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_FLEXSPI1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_USBHS_PHY_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_USBHS_PHY_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_USBHS_PHY_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_USBHS_DEVICE_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_USBHS_DEVICE_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_USBHS_DEVICE_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_USBHS_HOST_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_USBHS_HOST_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_USBHS_HOST_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_USBHS_SRAM_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_USBHS_SRAM_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_USBHS_SRAM_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_SCT_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_SCT_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_SCT_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_GPU_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_GPU_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_GPU_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_DISPLAY_CTLR_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_DISPLAY_CTLR_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_DISPLAY_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_MIPI_DSI_CTLR_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_MIPI_DSI_CTLR_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_MIPI_DSI_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL0_SMARTDMA_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL0_SMARTDMA_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL0_SMARTDMA_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL1_SDIO0_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL1_SDIO0_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL1_SDIO0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL1_SDIO1_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL1_SDIO1_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL1_SDIO1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL1_ACMP0_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL1_ACMP0_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL1_ACMP0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL1_ADC0_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL1_ADC0_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL1_ADC0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL1_SHSGPIO0_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL1_SHSGPIO0_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL1_SHSGPIO0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL2_UTICK0_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL2_UTICK0_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL2_UTICK0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL2_WWDT0_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL2_WWDT0_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL2_WWDT0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_PSCCTL2_PMC_CLK_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_PSCCTL2_PMC_CLK_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_PSCCTL2_PMC_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_DSP_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_DSP_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_DSP_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_ROM_CTRLR_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_ROM_CTRLR_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_ROM_CTRLR_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_AXI_SWITCH_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_AXI_SWITCH_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_AXI_SWITCH_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_AXI_CTLR_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_AXI_CTLR_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_AXI_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_POWERQUAD_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_POWERQUAD_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_POWERQUAD_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_CASPER_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_CASPER_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_CASPER_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_HASHCRYPT_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_HASHCRYPT_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_HASHCRYPT_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_PUF_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_PUF_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_PUF_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_RNG_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_RNG_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_RNG_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_FLEXSPI0_OTFAD_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_FLEXSPI0_OTFAD_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_FLEXSPI0_OTFAD_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_OTP_CTLR_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_OTP_CTLR_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_OTP_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_FLEXSPI1_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_FLEXSPI1_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_FLEXSPI1_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_USBHS_PHY_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_USBHS_PHY_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_USBHS_PHY_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_USBHS_DEVICE_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_USBHS_DEVICE_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_USBHS_DEVICE_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_USBHS_HOST_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_USBHS_HOST_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_USBHS_HOST_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_USBHS_SRAM_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_USBHS_SRAM_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_USBHS_SRAM_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_SCT_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_SCT_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_SCT_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_GPU_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_GPU_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_GPU_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_DISPLAY_CTLR_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_DISPLAY_CTLR_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_DISPLAY_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_MIPI_DSI_CTLR_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_MIPI_DSI_CTLR_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_MIPI_DSI_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_SET_SMARTDMA_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_SET_SMARTDMA_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL0_SET_SMARTDMA_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL1_SET_SDIO0_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL1 register */
-+    RT500_CLKCTL0_PSCCTL1_SET_SDIO0_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL1_SET_SDIO0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL1_SET_SDIO1_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL1 register */
-+    RT500_CLKCTL0_PSCCTL1_SET_SDIO1_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL1_SET_SDIO1_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL1_SET_ACMP0_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL1 register */
-+    RT500_CLKCTL0_PSCCTL1_SET_ACMP0_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL1_SET_ACMP0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL1_SET_ADC0_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL1 register */
-+    RT500_CLKCTL0_PSCCTL1_SET_ADC0_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL1_SET_ADC0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL1_SET_SHSGPIO0_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL1 register */
-+    RT500_CLKCTL0_PSCCTL1_SET_SHSGPIO0_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL1_SET_SHSGPIO0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL2_SET_UTICK0_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL2 register */
-+    RT500_CLKCTL0_PSCCTL2_SET_UTICK0_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL2_SET_UTICK0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL2_SET_WWDT0_CLK_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL2 register */
-+    RT500_CLKCTL0_PSCCTL2_SET_WWDT0_CLK_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL2_SET_WWDT0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL2_SET_PMC_NO_EFFECT = 0,
-+    /* Sets the corresponding bit in PSCCTL2 register */
-+    RT500_CLKCTL0_PSCCTL2_SET_PMC_CLK_ENABLE_SET = 1,
-+} RT500_CLKCTL0_PSCCTL2_SET_PMC_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_DSP_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_DSP_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_DSP_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_ROM_CTRLR_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_ROM_CTRLR_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_ROM_CTRLR_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_AXI_SWITCH_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_AXI_SWITCH_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_AXI_SWITCH_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_AXI_CTLR_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_AXI_CTLR_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_AXI_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_POWERQUAD_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_POWERQUAD_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_POWERQUAD_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_CASPER_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_CASPER_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_CASPER_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_HASHCRYPT_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_HASHCRYPT_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_HASHCRYPT_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_PUF_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_PUF_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_PUF_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_RNG_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_RNG_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_RNG_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_FLEXSPI0_OTFAD_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_FLEXSPI0_OTFAD_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_FLEXSPI0_OTFAD_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_OTP_CTLR_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_OTP_CTLR_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_OTP_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_FLEXSPI1_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_FLEXSPI1_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_FLEXSPI1_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_USBHS_PHY_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_USBHS_PHY_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_USBHS_PHY_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_USBHS_DEVICE_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_USBHS_DEVICE_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_USBHS_DEVICE_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_USBHS_HOST_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_USBHS_HOST_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_USBHS_HOST_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_USBHS_SRAM_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_USBHS_SRAM_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_USBHS_SRAM_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_SCT_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_SCT_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_SCT_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_GPU_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_GPU_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_GPU_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_DISPLAY_CTLR_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_DISPLAY_CTLR_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_DISPLAY_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_MIPI_DSI_CTLR_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_MIPI_DSI_CTLR_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_MIPI_DSI_CTLR_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL0_CLR_SMARTDMA_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL0 register */
-+    RT500_CLKCTL0_PSCCTL0_CLR_SMARTDMA_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL0_CLR_SMARTDMA_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL1_CLR_SDIO0_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL1 register */
-+    RT500_CLKCTL0_PSCCTL1_CLR_SDIO0_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL1_CLR_SDIO0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL1_CLR_SDIO1_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL1 register */
-+    RT500_CLKCTL0_PSCCTL1_CLR_SDIO1_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL1_CLR_SDIO1_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL1_CLR_ACMP0_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL1 register */
-+    RT500_CLKCTL0_PSCCTL1_CLR_ACMP0_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL1_CLR_ACMP0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL1_CLR_ADC0_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL1 register */
-+    RT500_CLKCTL0_PSCCTL1_CLR_ADC0_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL1_CLR_ADC0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL1_CLR_SHSGPIO0_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL1 register */
-+    RT500_CLKCTL0_PSCCTL1_CLR_SHSGPIO0_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL1_CLR_SHSGPIO0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL2_CLR_UTICK0_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL2 register */
-+    RT500_CLKCTL0_PSCCTL2_CLR_UTICK0_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL2_CLR_UTICK0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL2_CLR_WWDT0_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL2 register */
-+    RT500_CLKCTL0_PSCCTL2_CLR_WWDT0_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL2_CLR_WWDT0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PSCCTL2_CLR_PMC_CLK_NO_EFFECT = 0,
-+    /* Clears the corresponding bit in PSCCTL2 register */
-+    RT500_CLKCTL0_PSCCTL2_CLR_PMC_CLK_CLK_ENABLE_CLEAR = 1,
-+} RT500_CLKCTL0_PSCCTL2_CLR_PMC_CLK_Enum;
-+
-+typedef enum {
-+    /* Stop tuning */
-+    RT500_CLKCTL0_FRO_CONTROL_ENA_TUNE_ENA_TUNE_CLEAR = 0,
-+    /* Start tuning */
-+    RT500_CLKCTL0_FRO_CONTROL_ENA_TUNE_ENA_TUNE_START = 1,
-+} RT500_CLKCTL0_FRO_CONTROL_ENA_TUNE_Enum;
-+
-+typedef enum {
-+    /* CAPVAL data is not valid */
-+    RT500_CLKCTL0_FRO_CAPVAL_DATA_VALID_DATA_NOT_VALID = 0,
-+    /* CAPVAL data is valid */
-+    RT500_CLKCTL0_FRO_CAPVAL_DATA_VALID_DATA_VALID = 1,
-+} RT500_CLKCTL0_FRO_CAPVAL_DATA_VALID_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV2 */
-+    RT500_CLKCTL0_FRODIVSEL_SEL_DIVIDEBY2 = 0,
-+    /* FRO_DIV4 */
-+    RT500_CLKCTL0_FRODIVSEL_SEL_DIVIDEBY4 = 1,
-+    /* FRO_DIV8 */
-+    RT500_CLKCTL0_FRODIVSEL_SEL_DIVIDEBY8 = 2,
-+    /* FRO_DIV16 */
-+    RT500_CLKCTL0_FRODIVSEL_SEL_DIVIDEBY16 = 3,
-+} RT500_CLKCTL0_FRODIVSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO clock has not yet reached 10% frequency accuracy */
-+    RT500_CLKCTL0_FROCLKSTATUS_CLK_OK_CLK_NOT_OK = 0,
-+    /* FRO clock has reached 10% frequency accuracy */
-+    RT500_CLKCTL0_FROCLKSTATUS_CLK_OK_CLK_OK = 1,
-+} RT500_CLKCTL0_FROCLKSTATUS_CLK_OK_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_FRODIVOEN_FRO_DIV1_O_EN_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_FRODIVOEN_FRO_DIV1_O_EN_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_FRODIVOEN_FRO_DIV1_O_EN_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_FRODIVOEN_FRO_DIV2_O_EN_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_FRODIVOEN_FRO_DIV2_O_EN_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_FRODIVOEN_FRO_DIV2_O_EN_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_FRODIVOEN_FRO_DIV4_O_EN_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_FRODIVOEN_FRO_DIV4_O_EN_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_FRODIVOEN_FRO_DIV4_O_EN_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_FRODIVOEN_FRO_DIV8_O_EN_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_FRODIVOEN_FRO_DIV8_O_EN_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_FRODIVOEN_FRO_DIV8_O_EN_Enum;
-+
-+typedef enum {
-+    /* Disable clock */
-+    RT500_CLKCTL0_FRODIVOEN_FRO_DIV16_O_EN_CLK_DISABLE = 0,
-+    /* Enable clock */
-+    RT500_CLKCTL0_FRODIVOEN_FRO_DIV16_O_EN_CLK_ENABLE = 1,
-+} RT500_CLKCTL0_FRODIVOEN_FRO_DIV16_O_EN_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_LOWFREQCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_LOWFREQCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_LOWFREQCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_LOWFREQCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_LOWFREQCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_LOWFREQCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The Divider change has finished */
-+    RT500_CLKCTL0_LOWFREQCLKDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed */
-+    RT500_CLKCTL0_LOWFREQCLKDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL0_LOWFREQCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Enable High Gain Mode (HP) */
-+    RT500_CLKCTL0_SYSOSCCTL0_LP_ENABLE_HIGH_GAIN_ENABLE = 0,
-+    /* Enable Low Power mode (LP) */
-+    RT500_CLKCTL0_SYSOSCCTL0_LP_ENABLE_LOW_POWER_ENABLE = 1,
-+} RT500_CLKCTL0_SYSOSCCTL0_LP_ENABLE_Enum;
-+
 +typedef enum {
-+    /* Enable Normal mode. Oscillation with crystal connected. */
-+    RT500_CLKCTL0_SYSOSCCTL0_BYPASS_ENABLE_NORMAL_ENABLE = 0,
 +    /*
-+     * Enable Bypass mode. In this mode a clock can be directly input into the
-+     * XTALIN pin.
++     * Dummy Read strobe generated by FlexSPI Controller and loopback
++     * internally.
 +     */
-+    RT500_CLKCTL0_SYSOSCCTL0_BYPASS_ENABLE_BYPASS_ENABLE = 1,
-+} RT500_CLKCTL0_SYSOSCCTL0_BYPASS_ENABLE_Enum;
-+
-+typedef enum {
-+    /* Select OSC Clock */
-+    RT500_CLKCTL0_SYSOSCBYPASS_SEL_SYOSC_CLOCK = 0,
-+    /* Select Clock IN clock */
-+    RT500_CLKCTL0_SYSOSCBYPASS_SEL_CLOCK_IN = 1,
-+    /* None; this may be selected to reduce power when no output is needed */
-+    RT500_CLKCTL0_SYSOSCBYPASS_SEL_NONE = 7,
-+} RT500_CLKCTL0_SYSOSCBYPASS_SEL_Enum;
-+
-+typedef enum {
-+    /* LPOSC clock is not ready */
-+    RT500_CLKCTL0_LPOSCCTL0_CLKRDY_CLK_NOT_READY = 0,
-+    /* LPOSC clock is ready */
-+    RT500_CLKCTL0_LPOSCCTL0_CLKRDY_CLK_READY = 1,
-+} RT500_CLKCTL0_LPOSCCTL0_CLKRDY_Enum;
-+
-+typedef enum {
-+    /* Disable oscillator */
-+    RT500_CLKCTL0_OSC32KHZCTL0_ENA32KHZ_ENA32KHZ_DISABLE = 0,
-+    /* Enable oscillator */
-+    RT500_CLKCTL0_OSC32KHZCTL0_ENA32KHZ_ENA32KHZ_ENABLE = 1,
-+} RT500_CLKCTL0_OSC32KHZCTL0_ENA32KHZ_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV8 Clock */
-+    RT500_CLKCTL0_SYSPLL0CLKSEL_SEL_FRRO_DIV8 = 0,
-+    /* OSC_CLK clock */
-+    RT500_CLKCTL0_SYSPLL0CLKSEL_SEL_OSC_CLK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL0_SYSPLL0CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_SYSPLL0CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* PFD outputs are PFD-programmed clocks */
-+    RT500_CLKCTL0_SYSPLL0CTL0_BYPASS_PFD = 0,
++    FLEXSPI_MCR0_RXCLKSRC_val0 = 0,
 +    /*
-+     * Bypass Mode: PFD outputs are sourced directly from rhe reference input
-+     * clock
++     * Dummy Read strobe generated by FlexSPI Controller and loopback from DQS
++     * pad.
 +     */
-+    RT500_CLKCTL0_SYSPLL0CTL0_BYPASS_BYPASS = 1,
-+} RT500_CLKCTL0_SYSPLL0CTL0_BYPASS_Enum;
++    FLEXSPI_MCR0_RXCLKSRC_val1 = 1,
++    /* Flash provided Read strobe and input from DQS pad */
++    FLEXSPI_MCR0_RXCLKSRC_val3 = 3,
++} FLEXSPI_MCR0_RXCLKSRC_Enum;
++
++typedef enum {
++    /* Divided by 1 */
++    FLEXSPI_MCR0_SERCLKDIV_val0 = 0,
++    /* Divided by 2 */
++    FLEXSPI_MCR0_SERCLKDIV_val1 = 1,
++    /* Divided by 3 */
++    FLEXSPI_MCR0_SERCLKDIV_val2 = 2,
++    /* Divided by 4 */
++    FLEXSPI_MCR0_SERCLKDIV_val3 = 3,
++    /* Divided by 5 */
++    FLEXSPI_MCR0_SERCLKDIV_val4 = 4,
++    /* Divided by 6 */
++    FLEXSPI_MCR0_SERCLKDIV_val5 = 5,
++    /* Divided by 7 */
++    FLEXSPI_MCR0_SERCLKDIV_val6 = 6,
++    /* Divided by 8 */
++    FLEXSPI_MCR0_SERCLKDIV_val7 = 7,
++} FLEXSPI_MCR0_SERCLKDIV_Enum;
++
++typedef enum {
++    /* Disable divide by 2 of serial flash clock for half clock frequency. */
++    FLEXSPI_MCR0_HSEN_val0 = 0,
++    /* Enable divide by 2 of serial flash clock for half clock frequency. */
++    FLEXSPI_MCR0_HSEN_val1 = 1,
++} FLEXSPI_MCR0_HSEN_Enum;
++
++typedef enum {
++    /*
++     * Doze mode support disabled. AHB clock and serial clock will not be gated
++     * off when there is doze mode request from system.
++     */
++    FLEXSPI_MCR0_DOZEEN_val0 = 0,
++    /*
++     * Doze mode support enabled. AHB clock and serial clock will be gated off
++     * when there is doze mode request from system.
++     */
++    FLEXSPI_MCR0_DOZEEN_val1 = 1,
++} FLEXSPI_MCR0_DOZEEN_Enum;
++
++typedef enum {
++    /* Disable SCLK output free-running. */
++    FLEXSPI_MCR0_SCKFREERUNEN_DISABLE = 0,
++    /* Enable SCLK output free-running. */
++    FLEXSPI_MCR0_SCKFREERUNEN_ENABLE = 1,
++} FLEXSPI_MCR0_SCKFREERUNEN_Enum;
++
++typedef enum {
++    /* Disable the data learning feature. */
++    FLEXSPI_MCR0_LEARNEN_DISABLE = 0,
++    /* Enable the data learning feature. */
++    FLEXSPI_MCR0_LEARNEN_ENABLE = 1,
++} FLEXSPI_MCR0_LEARNEN_Enum;
++
++typedef enum {
++    /*
++     * AHB RX/TX Buffer will not be cleared automatically when FlexSPI returns
++     * Stop mode ACK.
++     */
++    FLEXSPI_MCR2_CLRAHBBUFOPT_val0 = 0,
++    /*
++     * AHB RX/TX Buffer will be cleared automatically when FlexSPI returns Stop
++     * mode ACK.
++     */
++    FLEXSPI_MCR2_CLRAHBBUFOPT_val1 = 1,
++} FLEXSPI_MCR2_CLRAHBBUFOPT_Enum;
++
++typedef enum {
++    /* No impact */
++    FLEXSPI_MCR2_CLRLEARNPHASE_val0 = 0,
++    /*
++     * The sampling clock phase selection will be reset to phase 0 when this
++     * bit is written with 0x1. This bit will be auto-cleared immediately.
++     */
++    FLEXSPI_MCR2_CLRLEARNPHASE_val1 = 1,
++} FLEXSPI_MCR2_CLRLEARNPHASE_Enum;
++
++typedef enum {
++    /*
++     * In Individual mode, FLSHA1CRx/FLSHA2CRx/FLSHB1CRx/FLSHB2CRx register
++     * setting will be applied to Flash A1/A2/B1/B2 separately. In Parallel
++     * mode, FLSHA1CRx register setting will be applied to Flash A1 and B1,
++     * FLSHA2CRx register setting will be applied to Flash A2 and B2.
++     * FLSHB1CRx/FLSHB2CRx register setting will be ignored.
++     */
++    FLEXSPI_MCR2_SAMEDEVICEEN_individual_parallel = 0,
++    /*
++     * FLSHA1CR0/FLSHA1CR1/FLSHA1CR2 register setting will be applied to Flash
++     * A1/A2/B1/B2. FLSHA2CRx/FLSHB1CRx/FLSHB2CRx will be ignored.
++     */
++    FLEXSPI_MCR2_SAMEDEVICEEN_ENABLE = 1,
++} FLEXSPI_MCR2_SAMEDEVICEEN_Enum;
++
++typedef enum {
++    /* Flash will be accessed in Individual mode. */
++    FLEXSPI_AHBCR_APAREN_individual = 0,
++    /* Flash will be accessed in Parallel mode. */
++    FLEXSPI_AHBCR_APAREN_ENABLE = 1,
++} FLEXSPI_AHBCR_APAREN_Enum;
++
++typedef enum {
++    /* No function. */
++    FLEXSPI_AHBCR_CLRAHBTXBUF_val0 = 0,
++    /* Clear operation enable. */
++    FLEXSPI_AHBCR_CLRAHBTXBUF_val1 = 1,
++} FLEXSPI_AHBCR_CLRAHBTXBUF_Enum;
++
++typedef enum {
++    /*
++     * Disabled. When there is AHB bus cachable read access, FlexSPI will not
++     * check whether it hit AHB TX Buffer.
++     */
++    FLEXSPI_AHBCR_CACHABLEEN_val0 = 0,
++    /*
++     * Enabled. When there is AHB bus cachable read access, FlexSPI will check
++     * whether it hit AHB TX Buffer first.
++     */
++    FLEXSPI_AHBCR_CACHABLEEN_val1 = 1,
++} FLEXSPI_AHBCR_CACHABLEEN_Enum;
++
++typedef enum {
++    /*
++     * Disabled. For all AHB write accesses (bufferable or non-bufferable),
++     * FlexSPI will return AHB Bus ready after all data is transmitted to
++     * external device and AHB command finished.
++     */
++    FLEXSPI_AHBCR_BUFFERABLEEN_val0 = 0,
++    /*
++     * Enabled. For AHB bufferable write access, FlexSPI will return AHB Bus
++     * ready when the AHB command is granted by arbitrator and will not wait
++     * for AHB command finished.
++     */
++    FLEXSPI_AHBCR_BUFFERABLEEN_val1 = 1,
++} FLEXSPI_AHBCR_BUFFERABLEEN_Enum;
++
++typedef enum {
++    /*
++     * There is AHB read burst start address alignment limitation when flash is
++     * accessed in parallel mode or flash is word-addressable.
++     */
++    FLEXSPI_AHBCR_READADDROPT_val0 = 0,
++    /*
++     * There is no AHB read burst start address alignment limitation. FlexSPI
++     * will fetch more data than AHB burst required to meet the alignment
++     * requirement.
++     */
++    FLEXSPI_AHBCR_READADDROPT_val1 = 1,
++} FLEXSPI_AHBCR_READADDROPT_Enum;
++
++typedef enum {
++    /* Suspended AHB read prefetch will start to resume when AHB is IDLE */
++    FLEXSPI_AHBCR_RESUMEDISABLE_val0 = 0,
++    /* Suspended AHB read prefetch will not resume once it is aborted */
++    FLEXSPI_AHBCR_RESUMEDISABLE_val1 = 1,
++} FLEXSPI_AHBCR_RESUMEDISABLE_Enum;
++
++typedef enum {
++    /*
++     * AHB read size will be decided by other register setting like
++     * PREFETCH_EN,OTFAD_EN...
++     */
++    FLEXSPI_AHBCR_READSZALIGN_val0 = 0,
++    /* AHB read size to up size to 8 bytes aligned, no prefetching */
++    FLEXSPI_AHBCR_READSZALIGN_val1 = 1,
++} FLEXSPI_AHBCR_READSZALIGN_Enum;
++
++typedef enum {
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_IPCMDDONEEN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_IPCMDDONEEN_value1 = 1,
++} FLEXSPI_INTEN_IPCMDDONEEN_Enum;
 +
++typedef enum {
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_IPCMDGEEN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_IPCMDGEEN_value1 = 1,
++} FLEXSPI_INTEN_IPCMDGEEN_Enum;
++
 +typedef enum {
-+    /* SYSPLL0 reset is removed */
-+    RT500_CLKCTL0_SYSPLL0CTL0_RESET_NO_RESET = 0,
-+    /* SYSPLL0 is placed into reset */
-+    RT500_CLKCTL0_SYSPLL0CTL0_RESET_RESET = 1,
-+} RT500_CLKCTL0_SYSPLL0CTL0_RESET_Enum;
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_AHBCMDGEEN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_AHBCMDGEEN_value1 = 1,
++} FLEXSPI_INTEN_AHBCMDGEEN_Enum;
 +
 +typedef enum {
-+    /* Disable */
-+    RT500_CLKCTL0_SYSPLL0CTL0_HOLDRINGOFF_ENA_DISABLE = 0,
-+    /* Enable */
-+    RT500_CLKCTL0_SYSPLL0CTL0_HOLDRINGOFF_ENA_ENABLE = 1,
-+} RT500_CLKCTL0_SYSPLL0CTL0_HOLDRINGOFF_ENA_Enum;
-+
-+typedef enum {
-+    /* Multiply by 16 */
-+    RT500_CLKCTL0_SYSPLL0CTL0_MULT_DIV16 = 16,
-+    /* Multiply by 17 */
-+    RT500_CLKCTL0_SYSPLL0CTL0_MULT_DIV17 = 17,
-+    /* Multiply by 18 */
-+    RT500_CLKCTL0_SYSPLL0CTL0_MULT_DIV18 = 18,
-+    /* Multiply by 19 */
-+    RT500_CLKCTL0_SYSPLL0CTL0_MULT_DIV19 = 19,
-+    /* Multiply by 20 */
-+    RT500_CLKCTL0_SYSPLL0CTL0_MULT_DIV20 = 20,
-+    /* Multiply by 21 */
-+    RT500_CLKCTL0_SYSPLL0CTL0_MULT_DIV21 = 21,
-+    /* Multiply by 22 */
-+    RT500_CLKCTL0_SYSPLL0CTL0_MULT_DIV22 = 22,
-+} RT500_CLKCTL0_SYSPLL0CTL0_MULT_Enum;
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_IPCMDERREN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_IPCMDERREN_value1 = 1,
++} FLEXSPI_INTEN_IPCMDERREN_Enum;
 +
 +typedef enum {
-+    /* PFD0 clock is not ready */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD0_CLKRDY_NOTREADY = 0,
-+    /* PFD0 clock is ready */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD0_CLKRDY_READY = 1,
-+} RT500_CLKCTL0_SYSPLL0PFD_PFD0_CLKRDY_Enum;
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_AHBCMDERREN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_AHBCMDERREN_value1 = 1,
++} FLEXSPI_INTEN_AHBCMDERREN_Enum;
 +
 +typedef enum {
-+    /* PFD0 clock is not gated */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD0_CLKGATE_NOTGATED = 0,
-+    /* PFD0 clock is gated */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD0_CLKGATE_GATED = 1,
-+} RT500_CLKCTL0_SYSPLL0PFD_PFD0_CLKGATE_Enum;
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_IPRXWAEN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_IPRXWAEN_value1 = 1,
++} FLEXSPI_INTEN_IPRXWAEN_Enum;
 +
 +typedef enum {
-+    /* PFD1 clock is not ready */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD1_CLKRDY_NOTREADY = 0,
-+    /* PFD1 clock is ready */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD1_CLKRDY_READY = 1,
-+} RT500_CLKCTL0_SYSPLL0PFD_PFD1_CLKRDY_Enum;
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_IPTXWEEN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_IPTXWEEN_value1 = 1,
++} FLEXSPI_INTEN_IPTXWEEN_Enum;
 +
 +typedef enum {
-+    /* PFD1 clock is not gated */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD1_CLKGATE_NOTGATED = 0,
-+    /* PFD1 clock is gated */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD1_CLKGATE_GATED = 1,
-+} RT500_CLKCTL0_SYSPLL0PFD_PFD1_CLKGATE_Enum;
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_DATALEARNFAILEN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_DATALEARNFAILEN_value1 = 1,
++} FLEXSPI_INTEN_DATALEARNFAILEN_Enum;
 +
 +typedef enum {
-+    /* PFD2 clock is not ready */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD2_CLKRDY_NOTREADY = 0,
-+    /* PFD2 clock is ready */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD2_CLKRDY_READY = 1,
-+} RT500_CLKCTL0_SYSPLL0PFD_PFD2_CLKRDY_Enum;
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_SCKSTOPBYRDEN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_SCKSTOPBYRDEN_value1 = 1,
++} FLEXSPI_INTEN_SCKSTOPBYRDEN_Enum;
 +
-+typedef enum {
-+    /* PFD2 clock is not gated */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD2_CLKGATE_NOTGATED = 0,
-+    /* PFD2 clock is gated */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD2_CLKGATE_GATED = 1,
-+} RT500_CLKCTL0_SYSPLL0PFD_PFD2_CLKGATE_Enum;
++typedef enum {
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_SCKSTOPBYWREN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_SCKSTOPBYWREN_value1 = 1,
++} FLEXSPI_INTEN_SCKSTOPBYWREN_Enum;
 +
 +typedef enum {
-+    /* PFD3 clock is not ready */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD3_CLKRDY_NOTREADY = 0,
-+    /* PFD3 clock is ready */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD3_CLKRDY_READY = 1,
-+} RT500_CLKCTL0_SYSPLL0PFD_PFD3_CLKRDY_Enum;
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_AHBBUSERROREN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_AHBBUSERROREN_value1 = 1,
++} FLEXSPI_INTEN_AHBBUSERROREN_Enum;
 +
 +typedef enum {
-+    /* PFD3 clock is not gated */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD3_CLKGATE_NOTGATED = 0,
-+    /* PFD3 clock is gated */
-+    RT500_CLKCTL0_SYSPLL0PFD_PFD3_CLKGATE_GATED = 1,
-+} RT500_CLKCTL0_SYSPLL0PFD_PFD3_CLKGATE_Enum;
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_SEQTIMEOUTEN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_SEQTIMEOUTEN_value1 = 1,
++} FLEXSPI_INTEN_SEQTIMEOUTEN_Enum;
 +
 +typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_SYSCPUAHBCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_SYSCPUAHBCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_SYSCPUAHBCLKDIV_REQFLAG_Enum;
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_KEYDONEEN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_KEYDONEEN_value1 = 1,
++} FLEXSPI_INTEN_KEYDONEEN_Enum;
 +
++typedef enum {
++    /* Disable interrupt or no impact */
++    FLEXSPI_INTEN_KEYERROREN_value0 = 0,
++    /* Enable interrupt */
++    FLEXSPI_INTEN_KEYERROREN_value1 = 1,
++} FLEXSPI_INTEN_KEYERROREN_Enum;
++
++typedef enum {
++    /* No impact */
++    FLEXSPI_LUTCR_LOCK_value0 = 0,
++    /* Lock LUT, LUT will be locked and can't be written */
++    FLEXSPI_LUTCR_LOCK_value1 = 1,
++} FLEXSPI_LUTCR_LOCK_Enum;
++
++typedef enum {
++    /* No impact */
++    FLEXSPI_LUTCR_UNLOCK_value0 = 0,
++    /* Unlock LUT, the LUT can be written */
++    FLEXSPI_LUTCR_UNLOCK_value1 = 1,
++} FLEXSPI_LUTCR_UNLOCK_Enum;
++
++typedef enum {
++    /* No prefetch */
++    FLEXSPI_AHBRXBUF0CR0_PREFETCHEN_value0 = 0,
++    /* Prefetch enable */
++    FLEXSPI_AHBRXBUF0CR0_PREFETCHEN_value1 = 1,
++} FLEXSPI_AHBRXBUF0CR0_PREFETCHEN_Enum;
++
++typedef enum {
++    /* No prefetch */
++    FLEXSPI_AHBRXBUF1CR0_PREFETCHEN_value0 = 0,
++    /* Prefetch enable */
++    FLEXSPI_AHBRXBUF1CR0_PREFETCHEN_value1 = 1,
++} FLEXSPI_AHBRXBUF1CR0_PREFETCHEN_Enum;
++
 +typedef enum {
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL0_MAINCLKSELA_SEL_LPOSC = 0,
-+    /* FRODIV which is the output of the FRODIVSEL mux */
-+    RT500_CLKCTL0_MAINCLKSELA_SEL_FRO_8 = 1,
-+    /* OSC_CLK clock */
-+    RT500_CLKCTL0_MAINCLKSELA_SEL_OSC_CLK = 2,
-+    /* FRO_DIV1 clock */
-+    RT500_CLKCTL0_MAINCLKSELA_SEL_FRO = 3,
-+} RT500_CLKCTL0_MAINCLKSELA_SEL_Enum;
-+
-+typedef enum {
-+    /* MAINCLKSELA 1st Stage Clock */
-+    RT500_CLKCTL0_MAINCLKSELB_SEL_MAINCLKSELA = 0,
-+    /* Main System PLL Clock */
-+    RT500_CLKCTL0_MAINCLKSELB_SEL_SYSPLL = 1,
-+    /* RTC 32 KHz Clock */
-+    RT500_CLKCTL0_MAINCLKSELB_SEL_RTC32KHZ = 2,
-+} RT500_CLKCTL0_MAINCLKSELB_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PFC0DIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_PFC0DIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_PFC0DIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PFC0DIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_PFC0DIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_PFC0DIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_PFC0DIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_PFC0DIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_PFC0DIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PFC1DIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_PFC1DIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_PFC1DIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_PFC1DIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_PFC1DIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_PFC1DIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_PFC1DIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_PFC1DIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_PFC1DIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL0_FLEXSPI0FCLKSEL_SEL_MAIN = 0,
-+    /* Main System PLL Clock */
-+    RT500_CLKCTL0_FLEXSPI0FCLKSEL_SEL_PLL = 1,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL0_FLEXSPI0FCLKSEL_SEL_AUX0_PLL = 2,
-+    /* FRO_DIV1 Clock */
-+    RT500_CLKCTL0_FLEXSPI0FCLKSEL_SEL_FRO_192M = 3,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL0_FLEXSPI0FCLKSEL_SEL_AUX1_PLL = 4,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_FLEXSPI0FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_FLEXSPI0FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_FLEXSPI0FCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_FLEXSPI0FCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_FLEXSPI0FCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_FLEXSPI0FCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_FLEXSPI0FCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_FLEXSPI0FCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_FLEXSPI0FCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_FLEXSPI0FCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_FLEXSPI0FCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL0_FLEXSPI1FCLKSEL_SEL_MAIN = 0,
-+    /* Main System PLL Clock */
-+    RT500_CLKCTL0_FLEXSPI1FCLKSEL_SEL_PLL = 1,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL0_FLEXSPI1FCLKSEL_SEL_AUX0_PLL = 2,
-+    /* FRO_DIV1 Clock */
-+    RT500_CLKCTL0_FLEXSPI1FCLKSEL_SEL_FRO_192M = 3,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL0_FLEXSPI1FCLKSEL_SEL_AUX1_PLL = 4,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_FLEXSPI1FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_FLEXSPI1FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_FLEXSPI1FCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_FLEXSPI1FCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_FLEXSPI1FCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_FLEXSPI1FCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_FLEXSPI1FCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_FLEXSPI1FCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_FLEXSPI1FCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_FLEXSPI1FCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_FLEXSPI1FCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL0_SCTFCLKSEL_SEL_MAIN = 0,
-+    /* Main System PLL Clock */
-+    RT500_CLKCTL0_SCTFCLKSEL_SEL_PLL = 1,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL0_SCTFCLKSEL_SEL_AUX0_PLL = 2,
-+    /* FRO_DIV1 Clock */
-+    RT500_CLKCTL0_SCTFCLKSEL_SEL_FRO_192M = 3,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL0_SCTFCLKSEL_SEL_AUX1_PLL = 4,
-+    /* AUDIO PLL Clock */
-+    RT500_CLKCTL0_SCTFCLKSEL_SEL_AUDIO_PLL = 5,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_SCTFCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_SCTFCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_SCTIN7CLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_SCTIN7CLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_SCTIN7CLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_SCTIN7CLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_SCTIN7CLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_SCTIN7CLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_SCTIN7CLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_SCTIN7CLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_SCTIN7CLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* OSC_CLK Clock */
-+    RT500_CLKCTL0_USBHSFCLKSEL_SEL_OSC_CLK = 0,
-+    /* Main Clock */
-+    RT500_CLKCTL0_USBHSFCLKSEL_SEL_MAIN = 1,
-+    /* AUX0_PLL_CLOCK */
-+    RT500_CLKCTL0_USBHSFCLKSEL_SEL_AUX0_PLL_CLOCK = 3,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_USBHSFCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_USBHSFCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_USBHSFCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_USBHSFCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_USBHSFCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_USBHSFCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_USBHSFCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_USBHSFCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_USBHSFCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_USBHSFCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_USBHSFCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL0_SDIO0FCLKSEL_SEL_MAIN = 0,
-+    /* System PLL Clock */
-+    RT500_CLKCTL0_SDIO0FCLKSEL_SEL_PLL = 1,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL0_SDIO0FCLKSEL_SEL_AUX0_PLL = 2,
-+    /* FRO_DIV2 */
-+    RT500_CLKCTL0_SDIO0FCLKSEL_SEL_FRO_DIV2 = 3,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL0_SDIO0FCLKSEL_SEL_AUX1_PLL = 4,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_SDIO0FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_SDIO0FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_SDIO0FCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_SDIO0FCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_SDIO0FCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_SDIO0FCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_SDIO0FCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_SDIO0FCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_SDIO0FCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_SDIO0FCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_SDIO0FCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL0_SDIO1FCLKSEL_SEL_MAIN = 0,
-+    /* Main System PLL Clock */
-+    RT500_CLKCTL0_SDIO1FCLKSEL_SEL_PLL = 1,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL0_SDIO1FCLKSEL_SEL_AUX0_PLL = 2,
-+    /* FRO_DIV2 */
-+    RT500_CLKCTL0_SDIO1FCLKSEL_SEL_FRO_DIV2 = 3,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL0_SDIO1FCLKSEL_SEL_AUX1_PLL = 4,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_SDIO1FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_SDIO1FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_SDIO1FCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_SDIO1FCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_SDIO1FCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_SDIO1FCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_SDIO1FCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_SDIO1FCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_SDIO1FCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_SDIO1FCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_SDIO1FCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* OSC_CLK Clock */
-+    RT500_CLKCTL0_ADC0FCLKSEL0_SEL_OSC_CLK = 0,
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL0_ADC0FCLKSEL0_SEL_LPOSC = 1,
-+    /* FRO_DIV4 */
-+    RT500_CLKCTL0_ADC0FCLKSEL0_SEL_FRO_DIV4 = 2,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_ADC0FCLKSEL0_SEL_NONE = 7,
-+} RT500_CLKCTL0_ADC0FCLKSEL0_SEL_Enum;
-+
-+typedef enum {
-+    /* ADC0FCLKSEL0 Multiplexed Output */
-+    RT500_CLKCTL0_ADC0FCLKSEL1_SEL_ADC0FCLKSEL0_MUX = 0,
-+    /* SYSPLL0 MAIN_CLK (PFD0 Output) */
-+    RT500_CLKCTL0_ADC0FCLKSEL1_SEL_SYSPLL0_MAIN = 1,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL0_ADC0FCLKSEL1_SEL_SYSPLL0_AUX0_PLL = 2,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL0_ADC0FCLKSEL1_SEL_SYSPLL0_AUX1_PLL = 3,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_ADC0FCLKSEL1_SEL_NONE = 7,
-+} RT500_CLKCTL0_ADC0FCLKSEL1_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_ADC0FCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_ADC0FCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_ADC0FCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_ADC0FCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_ADC0FCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_ADC0FCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_ADC0FCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_ADC0FCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_ADC0FCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL0_UTICKFCLKSEL_SEL_LPOSC = 0,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_UTICKFCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_UTICKFCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL0_WDT0FCLKSEL_SEL_LPOSC = 0,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_WDT0FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_WDT0FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* 32 KHz */
-+    RT500_CLKCTL0_A32KHZWAKECLKSEL_SEL_A32KHZ = 0,
-+    /* Low Power Oscillator Clock (LPOSC); divided by 32 by default */
-+    RT500_CLKCTL0_A32KHZWAKECLKSEL_SEL_LPOSC = 1,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_A32KHZWAKECLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_A32KHZWAKECLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_A32KHZWAKECLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_A32KHZWAKECLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_A32KHZWAKECLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_A32KHZWAKECLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_A32KHZWAKECLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_A32KHZWAKECLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_A32KHZWAKECLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_A32KHZWAKECLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_A32KHZWAKECLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Systick Divider Output Clock */
-+    RT500_CLKCTL0_SYSTICKFCLKSEL_SEL_SYSTICK_DIV_OUTPUT = 0,
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL0_SYSTICKFCLKSEL_SEL_LPOSC = 1,
-+    /* 32 KHz RTC Clock */
-+    RT500_CLKCTL0_SYSTICKFCLKSEL_SEL_A32KHZ_RTC = 2,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_SYSTICKFCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_SYSTICKFCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_SYSTICKFCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_SYSTICKFCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_SYSTICKFCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_SYSTICKFCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_SYSTICKFCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_SYSTICKFCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_SYSTICKFCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_SYSTICKFCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_SYSTICKFCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV1 Clock */
-+    RT500_CLKCTL0_DPHYCLKSEL_SEL_FRO = 0,
-+    /* SYSPLL0 MAIN_CLK (PFD0 Output) */
-+    RT500_CLKCTL0_DPHYCLKSEL_SEL_SYSPLL0_MAIN = 1,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL0_DPHYCLKSEL_SEL_SYSPLL0_AUX0 = 2,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL0_DPHYCLKSEL_SEL_SYSPLL0_AUX1 = 3,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_DPHYCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_DPHYCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_DPHYCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_DPHYCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_DPHYCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_DPHYCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_DPHYCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_DPHYCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_DPHYCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_DPHYCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_DPHYCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV1 clock */
-+    RT500_CLKCTL0_DPHYESCCLKSEL_SEL_FRO_DIV1 = 0,
-+    /* FRO_DIV16 Clock */
-+    RT500_CLKCTL0_DPHYESCCLKSEL_SEL_FRO_DIV16 = 1,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_DPHYESCCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_DPHYESCCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_DPHYESCRXCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_DPHYESCRXCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_DPHYESCRXCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_DPHYESCRXCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_DPHYESCRXCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_DPHYESCRXCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_DPHYESCRXCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_DPHYESCRXCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_DPHYESCRXCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_DPHYESCTXCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_DPHYESCTXCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_DPHYESCTXCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_DPHYESCTXCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_DPHYESCTXCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_DPHYESCTXCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_DPHYESCTXCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_DPHYESCTXCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_DPHYESCTXCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL0_GPUCLKSEL_SEL_MAIN = 0,
-+    /* FRO_DIV1 clock */
-+    RT500_CLKCTL0_GPUCLKSEL_SEL_FRO = 1,
-+    /* SYSPLL0 MAIN_CLK (PFD0 Output) */
-+    RT500_CLKCTL0_GPUCLKSEL_SEL_SYSPLL0_MAIN = 2,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL0_GPUCLKSEL_SEL_SYSPLL0_AUX0 = 3,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL0_GPUCLKSEL_SEL_SYSPLL0_AUX1 = 4,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_GPUCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_GPUCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_GPUCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_GPUCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_GPUCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_GPUCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_GPUCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_GPUCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_GPUCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_GPUCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_GPUCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* MIPI-DSI PHY Clock */
-+    RT500_CLKCTL0_DCPIXELCLKSEL_SEL_MIPI_DSI_PHY = 0,
-+    /* Main Clock */
-+    RT500_CLKCTL0_DCPIXELCLKSEL_SEL_MAIN = 1,
-+    /* FRO_DIV1 Clock */
-+    RT500_CLKCTL0_DCPIXELCLKSEL_SEL_FRO = 2,
-+    /* SYSPLL0 MAIN_CLK (PFD0 Output) */
-+    RT500_CLKCTL0_DCPIXELCLKSEL_SEL_SYSPLL0_MAIN = 3,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL0_DCPIXELCLKSEL_SEL_SYSPLL0_AUX0 = 4,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL0_DCPIXELCLKSEL_SEL_SYSPLL0_AUX1 = 5,
-+    /* None; this may be selected to reduce power when no output is needed. */
-+    RT500_CLKCTL0_DCPIXELCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL0_DCPIXELCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_DCPIXELCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL0_DCPIXELCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL0_DCPIXELCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL0_DCPIXELCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL0_DCPIXELCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL0_DCPIXELCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The change to the divider value has finished */
-+    RT500_CLKCTL0_DCPIXELCLKDIV_REQFLAG_DIVIDER_READY = 0,
-+    /* A change is being made to the divider value */
-+    RT500_CLKCTL0_DCPIXELCLKDIV_REQFLAG_DIVIDER_NOT_READY = 1,
-+} RT500_CLKCTL0_DCPIXELCLKDIV_REQFLAG_Enum;
-+
-+
-+#define RT500_CLKCTL0_REGISTER_ACCESS_INFO_ARRAY(_name) \
-+    struct RegisterAccessInfo _name[RT500_CLKCTL0_REGS_NO] = { \
-+        [0 ... RT500_CLKCTL0_REGS_NO - 1] = { \
++    /* No prefetch */
++    FLEXSPI_AHBRXBUF2CR0_PREFETCHEN_value0 = 0,
++    /* Prefetch enable */
++    FLEXSPI_AHBRXBUF2CR0_PREFETCHEN_value1 = 1,
++} FLEXSPI_AHBRXBUF2CR0_PREFETCHEN_Enum;
++
++typedef enum {
++    /* No prefetch */
++    FLEXSPI_AHBRXBUF3CR0_PREFETCHEN_value0 = 0,
++    /* Prefetch enable */
++    FLEXSPI_AHBRXBUF3CR0_PREFETCHEN_value1 = 1,
++} FLEXSPI_AHBRXBUF3CR0_PREFETCHEN_Enum;
++
++typedef enum {
++    /* No prefetch */
++    FLEXSPI_AHBRXBUF4CR0_PREFETCHEN_value0 = 0,
++    /* Prefetch enable */
++    FLEXSPI_AHBRXBUF4CR0_PREFETCHEN_value1 = 1,
++} FLEXSPI_AHBRXBUF4CR0_PREFETCHEN_Enum;
++
++typedef enum {
++    /* No prefetch */
++    FLEXSPI_AHBRXBUF5CR0_PREFETCHEN_value0 = 0,
++    /* Prefetch enable */
++    FLEXSPI_AHBRXBUF5CR0_PREFETCHEN_value1 = 1,
++} FLEXSPI_AHBRXBUF5CR0_PREFETCHEN_Enum;
++
++typedef enum {
++    /* No prefetch */
++    FLEXSPI_AHBRXBUF6CR0_PREFETCHEN_value0 = 0,
++    /* Prefetch enable */
++    FLEXSPI_AHBRXBUF6CR0_PREFETCHEN_value1 = 1,
++} FLEXSPI_AHBRXBUF6CR0_PREFETCHEN_Enum;
++
++typedef enum {
++    /* No prefetch */
++    FLEXSPI_AHBRXBUF7CR0_PREFETCHEN_value0 = 0,
++    /* Prefetch enable */
++    FLEXSPI_AHBRXBUF7CR0_PREFETCHEN_value1 = 1,
++} FLEXSPI_AHBRXBUF7CR0_PREFETCHEN_Enum;
++
++typedef enum {
++    /* This bit should be set as 0 when external Flash is byte addressable. */
++    FLEXSPI_FLSHCR1A1_WA_value0 = 0,
++    /*
++     * This bit should be set as 1 when external Flash is word addressable. If
++     * Flash is word addressable, it should be accessed in terms of 16 bits. At
++     * this time, FlexSPI will not transmit Flash address bit 0 to external
++     * Flash.
++     */
++    FLEXSPI_FLSHCR1A1_WA_value1 = 1,
++} FLEXSPI_FLSHCR1A1_WA_Enum;
++
++typedef enum {
++    /* The CS interval unit is 1 serial clock cycle */
++    FLEXSPI_FLSHCR1A1_CSINTERVALUNIT_val0 = 0,
++    /* The CS interval unit is 256 serial clock cycle */
++    FLEXSPI_FLSHCR1A1_CSINTERVALUNIT_val1 = 1,
++} FLEXSPI_FLSHCR1A1_CSINTERVALUNIT_Enum;
++
++typedef enum {
++    /* This bit should be set as 0 when external Flash is byte addressable. */
++    FLEXSPI_FLSHCR1A2_WA_value0 = 0,
++    /*
++     * This bit should be set as 1 when external Flash is word addressable. If
++     * Flash is word addressable, it should be accessed in terms of 16 bits. At
++     * this time, FlexSPI will not transmit Flash address bit 0 to external
++     * Flash.
++     */
++    FLEXSPI_FLSHCR1A2_WA_value1 = 1,
++} FLEXSPI_FLSHCR1A2_WA_Enum;
++
++typedef enum {
++    /* The CS interval unit is 1 serial clock cycle */
++    FLEXSPI_FLSHCR1A2_CSINTERVALUNIT_val0 = 0,
++    /* The CS interval unit is 256 serial clock cycle */
++    FLEXSPI_FLSHCR1A2_CSINTERVALUNIT_val1 = 1,
++} FLEXSPI_FLSHCR1A2_CSINTERVALUNIT_Enum;
++
++typedef enum {
++    /* This bit should be set as 0 when external Flash is byte addressable. */
++    FLEXSPI_FLSHCR1B1_WA_value0 = 0,
++    /*
++     * This bit should be set as 1 when external Flash is word addressable. If
++     * Flash is word addressable, it should be accessed in terms of 16 bits. At
++     * this time, FlexSPI will not transmit Flash address bit 0 to external
++     * Flash.
++     */
++    FLEXSPI_FLSHCR1B1_WA_value1 = 1,
++} FLEXSPI_FLSHCR1B1_WA_Enum;
++
++typedef enum {
++    /* The CS interval unit is 1 serial clock cycle */
++    FLEXSPI_FLSHCR1B1_CSINTERVALUNIT_val0 = 0,
++    /* The CS interval unit is 256 serial clock cycle */
++    FLEXSPI_FLSHCR1B1_CSINTERVALUNIT_val1 = 1,
++} FLEXSPI_FLSHCR1B1_CSINTERVALUNIT_Enum;
++
++typedef enum {
++    /* This bit should be set as 0 when external Flash is byte addressable. */
++    FLEXSPI_FLSHCR1B2_WA_value0 = 0,
++    /*
++     * This bit should be set as 1 when external Flash is word addressable. If
++     * Flash is word addressable, it should be accessed in terms of 16 bits. At
++     * this time, FlexSPI will not transmit Flash address bit 0 to external
++     * Flash.
++     */
++    FLEXSPI_FLSHCR1B2_WA_value1 = 1,
++} FLEXSPI_FLSHCR1B2_WA_Enum;
++
++typedef enum {
++    /* The CS interval unit is 1 serial clock cycle */
++    FLEXSPI_FLSHCR1B2_CSINTERVALUNIT_val0 = 0,
++    /* The CS interval unit is 256 serial clock cycle */
++    FLEXSPI_FLSHCR1B2_CSINTERVALUNIT_val1 = 1,
++} FLEXSPI_FLSHCR1B2_CSINTERVALUNIT_Enum;
++
++typedef enum {
++    /* The AWRWAIT unit is 2 AHB clock cycle */
++    FLEXSPI_FLSHCR2A1_AWRWAITUNIT_val0 = 0,
++    /* The AWRWAIT unit is 8 AHB clock cycle */
++    FLEXSPI_FLSHCR2A1_AWRWAITUNIT_val1 = 1,
++    /* The AWRWAIT unit is 32 AHB clock cycle */
++    FLEXSPI_FLSHCR2A1_AWRWAITUNIT_val2 = 2,
++    /* The AWRWAIT unit is 128 AHB clock cycle */
++    FLEXSPI_FLSHCR2A1_AWRWAITUNIT_val3 = 3,
++    /* The AWRWAIT unit is 512 AHB clock cycle */
++    FLEXSPI_FLSHCR2A1_AWRWAITUNIT_val4 = 4,
++    /* The AWRWAIT unit is 2048 AHB clock cycle */
++    FLEXSPI_FLSHCR2A1_AWRWAITUNIT_val5 = 5,
++    /* The AWRWAIT unit is 8192 AHB clock cycle */
++    FLEXSPI_FLSHCR2A1_AWRWAITUNIT_val6 = 6,
++    /* The AWRWAIT unit is 32768 AHB clock cycle */
++    FLEXSPI_FLSHCR2A1_AWRWAITUNIT_val7 = 7,
++} FLEXSPI_FLSHCR2A1_AWRWAITUNIT_Enum;
++
++typedef enum {
++    /* The AWRWAIT unit is 2 AHB clock cycle */
++    FLEXSPI_FLSHCR2A2_AWRWAITUNIT_val0 = 0,
++    /* The AWRWAIT unit is 8 AHB clock cycle */
++    FLEXSPI_FLSHCR2A2_AWRWAITUNIT_val1 = 1,
++    /* The AWRWAIT unit is 32 AHB clock cycle */
++    FLEXSPI_FLSHCR2A2_AWRWAITUNIT_val2 = 2,
++    /* The AWRWAIT unit is 128 AHB clock cycle */
++    FLEXSPI_FLSHCR2A2_AWRWAITUNIT_val3 = 3,
++    /* The AWRWAIT unit is 512 AHB clock cycle */
++    FLEXSPI_FLSHCR2A2_AWRWAITUNIT_val4 = 4,
++    /* The AWRWAIT unit is 2048 AHB clock cycle */
++    FLEXSPI_FLSHCR2A2_AWRWAITUNIT_val5 = 5,
++    /* The AWRWAIT unit is 8192 AHB clock cycle */
++    FLEXSPI_FLSHCR2A2_AWRWAITUNIT_val6 = 6,
++    /* The AWRWAIT unit is 32768 AHB clock cycle */
++    FLEXSPI_FLSHCR2A2_AWRWAITUNIT_val7 = 7,
++} FLEXSPI_FLSHCR2A2_AWRWAITUNIT_Enum;
++
++typedef enum {
++    /* The AWRWAIT unit is 2 AHB clock cycle */
++    FLEXSPI_FLSHCR2B1_AWRWAITUNIT_val0 = 0,
++    /* The AWRWAIT unit is 8 AHB clock cycle */
++    FLEXSPI_FLSHCR2B1_AWRWAITUNIT_val1 = 1,
++    /* The AWRWAIT unit is 32 AHB clock cycle */
++    FLEXSPI_FLSHCR2B1_AWRWAITUNIT_val2 = 2,
++    /* The AWRWAIT unit is 128 AHB clock cycle */
++    FLEXSPI_FLSHCR2B1_AWRWAITUNIT_val3 = 3,
++    /* The AWRWAIT unit is 512 AHB clock cycle */
++    FLEXSPI_FLSHCR2B1_AWRWAITUNIT_val4 = 4,
++    /* The AWRWAIT unit is 2048 AHB clock cycle */
++    FLEXSPI_FLSHCR2B1_AWRWAITUNIT_val5 = 5,
++    /* The AWRWAIT unit is 8192 AHB clock cycle */
++    FLEXSPI_FLSHCR2B1_AWRWAITUNIT_val6 = 6,
++    /* The AWRWAIT unit is 32768 AHB clock cycle */
++    FLEXSPI_FLSHCR2B1_AWRWAITUNIT_val7 = 7,
++} FLEXSPI_FLSHCR2B1_AWRWAITUNIT_Enum;
++
++typedef enum {
++    /* The AWRWAIT unit is 2 AHB clock cycle */
++    FLEXSPI_FLSHCR2B2_AWRWAITUNIT_val0 = 0,
++    /* The AWRWAIT unit is 8 AHB clock cycle */
++    FLEXSPI_FLSHCR2B2_AWRWAITUNIT_val1 = 1,
++    /* The AWRWAIT unit is 32 AHB clock cycle */
++    FLEXSPI_FLSHCR2B2_AWRWAITUNIT_val2 = 2,
++    /* The AWRWAIT unit is 128 AHB clock cycle */
++    FLEXSPI_FLSHCR2B2_AWRWAITUNIT_val3 = 3,
++    /* The AWRWAIT unit is 512 AHB clock cycle */
++    FLEXSPI_FLSHCR2B2_AWRWAITUNIT_val4 = 4,
++    /* The AWRWAIT unit is 2048 AHB clock cycle */
++    FLEXSPI_FLSHCR2B2_AWRWAITUNIT_val5 = 5,
++    /* The AWRWAIT unit is 8192 AHB clock cycle */
++    FLEXSPI_FLSHCR2B2_AWRWAITUNIT_val6 = 6,
++    /* The AWRWAIT unit is 32768 AHB clock cycle */
++    FLEXSPI_FLSHCR2B2_AWRWAITUNIT_val7 = 7,
++} FLEXSPI_FLSHCR2B2_AWRWAITUNIT_Enum;
++
++typedef enum {
++    /*
++     * DQS pin will be used as Write Mask when writing to external device.
++     * There is no limitation on AHB/IP write burst start address alignment
++     * when flash is accessed in individual mode.
++     */
++    FLEXSPI_FLSHCR4_WMOPT1_DISABLE = 0,
++    /*
++     * DQS pin will not be used as Write Mask when writing to external device.
++     * There is limitation on AHB/IP write burst start address alignment when
++     * flash is accessed in individual mode.
++     */
++    FLEXSPI_FLSHCR4_WMOPT1_ENABLE = 1,
++} FLEXSPI_FLSHCR4_WMOPT1_Enum;
++
++typedef enum {
++    /*
++     * Write mask is disabled, DQS(RWDS) pin will not be driven when writing to
++     * external device.
++     */
++    FLEXSPI_FLSHCR4_WMENA_val0 = 0,
++    /*
++     * Write mask is enabled, DQS(RWDS) pin will be driven by FlexSPI as write
++     * mask output when writing to external device.
++     */
++    FLEXSPI_FLSHCR4_WMENA_val1 = 1,
++} FLEXSPI_FLSHCR4_WMENA_Enum;
++
++typedef enum {
++    /* Flash will be accessed in Individual mode. */
++    FLEXSPI_IPCR1_IPAREN_DISABLE = 0,
++    /* Flash will be accessed in Parallel mode. */
++    FLEXSPI_IPCR1_IPAREN_ENABLE = 1,
++} FLEXSPI_IPCR1_IPAREN_Enum;
++
++typedef enum {
++    /* No function. */
++    FLEXSPI_IPRXFCR_CLRIPRXF_value0 = 0,
++    /* A clock cycle pulse to clear all valid data entries in IP RX FIFO. */
++    FLEXSPI_IPRXFCR_CLRIPRXF_value1 = 1,
++} FLEXSPI_IPRXFCR_CLRIPRXF_Enum;
++
++typedef enum {
++    /* IP RX FIFO would be read by processor. */
++    FLEXSPI_IPRXFCR_RXDMAEN_val0 = 0,
++    /* IP RX FIFO would be read by DMA. */
++    FLEXSPI_IPRXFCR_RXDMAEN_val1 = 1,
++} FLEXSPI_IPRXFCR_RXDMAEN_Enum;
++
++typedef enum {
++    /* No function. */
++    FLEXSPI_IPTXFCR_CLRIPTXF_value0 = 0,
++    /* A clock cycle pulse to clear all valid data entries in IP TX FIFO. */
++    FLEXSPI_IPTXFCR_CLRIPTXF_value1 = 1,
++} FLEXSPI_IPTXFCR_CLRIPTXF_Enum;
++
++typedef enum {
++    /* IP TX FIFO would be filled by processor. */
++    FLEXSPI_IPTXFCR_TXDMAEN_val0 = 0,
++    /* IP TX FIFO would be filled by DMA. */
++    FLEXSPI_IPTXFCR_TXDMAEN_val1 = 1,
++} FLEXSPI_IPTXFCR_TXDMAEN_Enum;
++
++typedef enum {
++    /* DLL calibration is disabled */
++    FLEXSPI_DLLCRA_DLLEN_value0 = 0,
++    /* DLL calibration is enabled */
++    FLEXSPI_DLLCRA_DLLEN_value1 = 1,
++} FLEXSPI_DLLCRA_DLLEN_Enum;
++
++typedef enum {
++    /* No function. */
++    FLEXSPI_DLLCRA_DLLRESET_value0 = 0,
++    /* Software could force a reset on DLL by setting this field to 0x1. */
++    FLEXSPI_DLLCRA_DLLRESET_value1 = 1,
++} FLEXSPI_DLLCRA_DLLRESET_Enum;
++
++typedef enum {
++    /*
++     * Slave clock delay line delay cell number selection override is disabled.
++     */
++    FLEXSPI_DLLCRA_OVRDEN_value0 = 0,
++    /*
++     * Slave clock delay line delay cell number selection override is enabled.
++     */
++    FLEXSPI_DLLCRA_OVRDEN_value1 = 1,
++} FLEXSPI_DLLCRA_OVRDEN_Enum;
++
++typedef enum {
++    /* DLL calibration is disabled */
++    FLEXSPI_DLLCRB_DLLEN_value0 = 0,
++    /* DLL calibration is enabled */
++    FLEXSPI_DLLCRB_DLLEN_value1 = 1,
++} FLEXSPI_DLLCRB_DLLEN_Enum;
++
++typedef enum {
++    /* No function. */
++    FLEXSPI_DLLCRB_DLLRESET_value0 = 0,
++    /* Software could force a reset on DLL by setting this field to 0x1. */
++    FLEXSPI_DLLCRB_DLLRESET_value1 = 1,
++} FLEXSPI_DLLCRB_DLLRESET_Enum;
++
++typedef enum {
++    /*
++     * Slave clock delay line delay cell number selection override is disabled.
++     */
++    FLEXSPI_DLLCRB_OVRDEN_value0 = 0,
++    /*
++     * Slave clock delay line delay cell number selection override is enabled.
++     */
++    FLEXSPI_DLLCRB_OVRDEN_value1 = 1,
++} FLEXSPI_DLLCRB_OVRDEN_Enum;
++
++typedef enum {
++    /* State machine in SEQ_CTL is not idle. */
++    FLEXSPI_STS0_SEQIDLE_value0 = 0,
++    /* State machine in SEQ_CTL is idle. */
++    FLEXSPI_STS0_SEQIDLE_value1 = 1,
++} FLEXSPI_STS0_SEQIDLE_Enum;
++
++typedef enum {
++    /* Triggered by AHB read command. */
++    FLEXSPI_STS0_ARBCMDSRC_val0 = 0,
++    /* Triggered by AHB write command. */
++    FLEXSPI_STS0_ARBCMDSRC_val1 = 1,
++    /*
++     * Triggered by IP command (triggered by setting register bit IPCMD[TRG]).
++     */
++    FLEXSPI_STS0_ARBCMDSRC_val2 = 2,
++    /* Triggered by suspended command (resumed). */
++    FLEXSPI_STS0_ARBCMDSRC_val3 = 3,
++} FLEXSPI_STS0_ARBCMDSRC_Enum;
++
++typedef enum {
++    /* No error. */
++    FLEXSPI_STS1_AHBCMDERRCODE_val0 = 0,
++    /* AHB Write command with JMP_ON_CS instruction used in the sequence. */
++    FLEXSPI_STS1_AHBCMDERRCODE_val2 = 2,
++    /* There is unknown instruction opcode in the sequence. */
++    FLEXSPI_STS1_AHBCMDERRCODE_val3 = 3,
++    /* Instruction DUMMY_SDR/DUMMY_RWDS_SDR used in DDR sequence. */
++    FLEXSPI_STS1_AHBCMDERRCODE_val4 = 4,
++    /* Instruction DUMMY_DDR/DUMMY_RWDS_DDR used in SDR sequence. */
++    FLEXSPI_STS1_AHBCMDERRCODE_val5 = 5,
++    /* Sequence execution timeout. */
++    FLEXSPI_STS1_AHBCMDERRCODE_val6 = 14,
++} FLEXSPI_STS1_AHBCMDERRCODE_Enum;
++
++typedef enum {
++    /* No error. */
++    FLEXSPI_STS1_IPCMDERRCODE_val0 = 0,
++    /* IP command with JMP_ON_CS instruction used in the sequence. */
++    FLEXSPI_STS1_IPCMDERRCODE_val2 = 2,
++    /* There is unknown instruction opcode in the sequence. */
++    FLEXSPI_STS1_IPCMDERRCODE_val3 = 3,
++    /* Instruction DUMMY_SDR/DUMMY_RWDS_SDR used in DDR sequence. */
++    FLEXSPI_STS1_IPCMDERRCODE_val4 = 4,
++    /* Instruction DUMMY_DDR/DUMMY_RWDS_DDR used in SDR sequence. */
++    FLEXSPI_STS1_IPCMDERRCODE_val5 = 5,
++    /*
++     * Flash access start address exceed the whole flash address range
++     * (A1/A2/B1/B2).
++     */
++    FLEXSPI_STS1_IPCMDERRCODE_val6 = 6,
++    /* Sequence execution timeout. */
++    FLEXSPI_STS1_IPCMDERRCODE_val7 = 14,
++    /* Flash boundary crossed. */
++    FLEXSPI_STS1_IPCMDERRCODE_val8 = 15,
++} FLEXSPI_STS1_IPCMDERRCODE_Enum;
++
++typedef enum {
++    /* Flash A sample clock slave delay line is not locked */
++    FLEXSPI_STS2_ASLVLOCK_val0 = 0,
++    /* Flash A sample clock slave delay line is locked */
++    FLEXSPI_STS2_ASLVLOCK_val1 = 1,
++} FLEXSPI_STS2_ASLVLOCK_Enum;
++
++typedef enum {
++    /* Flash A sample clock reference delay line is not locked */
++    FLEXSPI_STS2_AREFLOCK_val0 = 0,
++    /* Flash A sample clock reference delay line is locked */
++    FLEXSPI_STS2_AREFLOCK_val1 = 1,
++} FLEXSPI_STS2_AREFLOCK_Enum;
++
++typedef enum {
++    /* Flash B sample clock slave delay line is not locked. */
++    FLEXSPI_STS2_BSLVLOCK_val0 = 0,
++    /* Flash B sample clock slave delay line is locked. */
++    FLEXSPI_STS2_BSLVLOCK_val1 = 1,
++} FLEXSPI_STS2_BSLVLOCK_Enum;
++
++typedef enum {
++    /* Flash B sample clock reference delay line is not locked. */
++    FLEXSPI_STS2_BREFLOCK_val0 = 0,
++    /* Flash B sample clock reference delay line is locked. */
++    FLEXSPI_STS2_BREFLOCK_val1 = 1,
++} FLEXSPI_STS2_BREFLOCK_Enum;
++
++typedef enum {
++    /* No suspended AHB read prefetch command. */
++    FLEXSPI_AHBSPNDSTS_ACTIVE_val0 = 0,
++    /* An AHB read prefetch command sequence has been suspended. */
++    FLEXSPI_AHBSPNDSTS_ACTIVE_val1 = 1,
++} FLEXSPI_AHBSPNDSTS_ACTIVE_Enum;
++
++typedef enum {
++    /* HADDR REMAP Disabled */
++    FLEXSPI_HADDRSTART_REMAPEN_val0 = 0,
++    /* HADDR REMAP Enabled */
++    FLEXSPI_HADDRSTART_REMAPEN_val1 = 1,
++} FLEXSPI_HADDRSTART_REMAPEN_Enum;
++
++
++#define FLEXSPI_REGISTER_ACCESS_INFO_ARRAY(_name) \
++    struct RegisterAccessInfo _name[FLEXSPI_REGS_NO] = { \
++        [0 ... FLEXSPI_REGS_NO - 1] = { \
 +            .name = "", \
 +            .addr = -1, \
 +        }, \
-+        [R_RT500_CLKCTL0_PSCCTL0] = { \
-+            .name = "PSCCTL0", \
++        [R_FLEXSPI_MCR0] = { \
++            .name = "MCR0", \
++            .addr = 0x0, \
++            .ro = 0x20CC, \
++            .reset = 0xFFFF80C2, \
++        }, \
++        [R_FLEXSPI_MCR1] = { \
++            .name = "MCR1", \
++            .addr = 0x4, \
++            .ro = 0x0, \
++            .reset = 0xFFFFFFFF, \
++        }, \
++        [R_FLEXSPI_MCR2] = { \
++            .name = "MCR2", \
++            .addr = 0x8, \
++            .ro = 0xFF37FF, \
++            .reset = 0x200081F7, \
++        }, \
++        [R_FLEXSPI_AHBCR] = { \
++            .name = "AHBCR", \
++            .addr = 0xC, \
++            .ro = 0xFFFFFB02, \
++            .reset = 0x18, \
++        }, \
++        [R_FLEXSPI_INTEN] = { \
++            .name = "INTEN", \
 +            .addr = 0x10, \
-+            .ro = 0xA208E0E1, \
-+            .reset = 0x5, \
++            .ro = 0xFFFFC000, \
++            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_PSCCTL1] = { \
-+            .name = "PSCCTL1", \
++        [R_FLEXSPI_INTR] = { \
++            .name = "INTR", \
 +            .addr = 0x14, \
-+            .ro = 0xFEFE7FF3, \
++            .ro = 0xFFFFE000, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_PSCCTL2] = { \
-+            .name = "PSCCTL2", \
++        [R_FLEXSPI_LUTKEY] = { \
++            .name = "LUTKEY", \
 +            .addr = 0x18, \
-+            .ro = 0xDFFFFFFC, \
-+            .reset = 0x0, \
++            .ro = 0x0, \
++            .reset = 0x5AF05AF0, \
 +        }, \
-+        [R_RT500_CLKCTL0_PSCCTL0_SET] = { \
-+            .name = "PSCCTL0_SET", \
-+            .addr = 0x40, \
-+            .ro = 0xA208E0E1, \
-+            .reset = 0x0, \
++        [R_FLEXSPI_LUTCR] = { \
++            .name = "LUTCR", \
++            .addr = 0x1C, \
++            .ro = 0xFFFFFFFC, \
++            .reset = 0x2, \
 +        }, \
-+        [R_RT500_CLKCTL0_PSCCTL1_SET] = { \
-+            .name = "PSCCTL1_SET", \
-+            .addr = 0x44, \
-+            .ro = 0xFEFE7FF3, \
-+            .reset = 0x0, \
++        [R_FLEXSPI_AHBRXBUF0CR0] = { \
++            .name = "AHBRXBUF0CR0", \
++            .addr = 0x20, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80000010, \
 +        }, \
-+        [R_RT500_CLKCTL0_PSCCTL2_SET] = { \
-+            .name = "PSCCTL2_SET", \
-+            .addr = 0x48, \
-+            .ro = 0xDFFFFFFC, \
-+            .reset = 0x0, \
++        [R_FLEXSPI_AHBRXBUF1CR0] = { \
++            .name = "AHBRXBUF1CR0", \
++            .addr = 0x24, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80010010, \
 +        }, \
-+        [R_RT500_CLKCTL0_PSCCTL0_CLR] = { \
-+            .name = "PSCCTL0_CLR", \
++        [R_FLEXSPI_AHBRXBUF2CR0] = { \
++            .name = "AHBRXBUF2CR0", \
++            .addr = 0x28, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80020010, \
++        }, \
++        [R_FLEXSPI_AHBRXBUF3CR0] = { \
++            .name = "AHBRXBUF3CR0", \
++            .addr = 0x2C, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80030010, \
++        }, \
++        [R_FLEXSPI_AHBRXBUF4CR0] = { \
++            .name = "AHBRXBUF4CR0", \
++            .addr = 0x30, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80040010, \
++        }, \
++        [R_FLEXSPI_AHBRXBUF5CR0] = { \
++            .name = "AHBRXBUF5CR0", \
++            .addr = 0x34, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80050010, \
++        }, \
++        [R_FLEXSPI_AHBRXBUF6CR0] = { \
++            .name = "AHBRXBUF6CR0", \
++            .addr = 0x38, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80060010, \
++        }, \
++        [R_FLEXSPI_AHBRXBUF7CR0] = { \
++            .name = "AHBRXBUF7CR0", \
++            .addr = 0x3C, \
++            .ro = 0x78F0FF00, \
++            .reset = 0x80070010, \
++        }, \
++        [R_FLEXSPI_FLSHA1CR0] = { \
++            .name = "FLSHA1CR0", \
++            .addr = 0x60, \
++            .ro = 0xFF800000, \
++            .reset = 0x10000, \
++        }, \
++        [R_FLEXSPI_FLSHA2CR0] = { \
++            .name = "FLSHA2CR0", \
++            .addr = 0x64, \
++            .ro = 0xFF800000, \
++            .reset = 0x10000, \
++        }, \
++        [R_FLEXSPI_FLSHB1CR0] = { \
++            .name = "FLSHB1CR0", \
++            .addr = 0x68, \
++            .ro = 0xFF800000, \
++            .reset = 0x10000, \
++        }, \
++        [R_FLEXSPI_FLSHB2CR0] = { \
++            .name = "FLSHB2CR0", \
++            .addr = 0x6C, \
++            .ro = 0xFF800000, \
++            .reset = 0x10000, \
++        }, \
++        [R_FLEXSPI_FLSHCR1A1] = { \
++            .name = "FLSHCR1A1", \
 +            .addr = 0x70, \
-+            .ro = 0xA208E0E1, \
-+            .reset = 0x0, \
++            .ro = 0x0, \
++            .reset = 0x63, \
 +        }, \
-+        [R_RT500_CLKCTL0_PSCCTL1_CLR] = { \
-+            .name = "PSCCTL1_CLR", \
++        [R_FLEXSPI_FLSHCR1A2] = { \
++            .name = "FLSHCR1A2", \
 +            .addr = 0x74, \
-+            .ro = 0xFEFE7FF3, \
-+            .reset = 0x0, \
++            .ro = 0x0, \
++            .reset = 0x63, \
 +        }, \
-+        [R_RT500_CLKCTL0_PSCCTL2_CLR] = { \
-+            .name = "PSCCTL2_CLR", \
++        [R_FLEXSPI_FLSHCR1B1] = { \
++            .name = "FLSHCR1B1", \
 +            .addr = 0x78, \
-+            .ro = 0xDFFFFFFC, \
-+            .reset = 0x0, \
++            .ro = 0x0, \
++            .reset = 0x63, \
 +        }, \
-+        [R_RT500_CLKCTL0_FRO_CONTROL] = { \
-+            .name = "FRO_CONTROL", \
++        [R_FLEXSPI_FLSHCR1B2] = { \
++            .name = "FLSHCR1B2", \
++            .addr = 0x7C, \
++            .ro = 0x0, \
++            .reset = 0x63, \
++        }, \
++        [R_FLEXSPI_FLSHCR2A1] = { \
++            .name = "FLSHCR2A1", \
 +            .addr = 0x80, \
-+            .ro = 0x7C000000, \
++            .ro = 0x1010, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_FRO_CAPVAL] = { \
-+            .name = "FRO_CAPVAL", \
++        [R_FLEXSPI_FLSHCR2A2] = { \
++            .name = "FLSHCR2A2", \
 +            .addr = 0x84, \
++            .ro = 0x1010, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_FLSHCR2B1] = { \
++            .name = "FLSHCR2B1", \
++            .addr = 0x88, \
++            .ro = 0x1010, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_FLSHCR2B2] = { \
++            .name = "FLSHCR2B2", \
++            .addr = 0x8C, \
++            .ro = 0x1010, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_FLSHCR4] = { \
++            .name = "FLSHCR4", \
++            .addr = 0x94, \
++            .ro = 0xFFFFFFFA, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_IPCR0] = { \
++            .name = "IPCR0", \
++            .addr = 0xA0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_IPCR1] = { \
++            .name = "IPCR1", \
++            .addr = 0xA4, \
++            .ro = 0x78F00000, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_IPCMD] = { \
++            .name = "IPCMD", \
++            .addr = 0xB0, \
++            .ro = 0xFFFFFFFE, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_DLPR] = { \
++            .name = "DLPR", \
++            .addr = 0xB4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_IPRXFCR] = { \
++            .name = "IPRXFCR", \
++            .addr = 0xB8, \
++            .ro = 0xFFFFFE00, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_IPTXFCR] = { \
++            .name = "IPTXFCR", \
++            .addr = 0xBC, \
++            .ro = 0xFFFFFE00, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_DLLCRA] = { \
++            .name = "DLLCRA", \
++            .addr = 0xC0, \
++            .ro = 0xFFFF8084, \
++            .reset = 0x100, \
++        }, \
++        [R_FLEXSPI_DLLCRB] = { \
++            .name = "DLLCRB", \
++            .addr = 0xC4, \
++            .ro = 0xFFFF8084, \
++            .reset = 0x100, \
++        }, \
++        [R_FLEXSPI_STS0] = { \
++            .name = "STS0", \
++            .addr = 0xE0, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x2, \
++        }, \
++        [R_FLEXSPI_STS1] = { \
++            .name = "STS1", \
++            .addr = 0xE4, \
 +            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_FRO_RDTRIM] = { \
-+            .name = "FRO_RDTRIM", \
-+            .addr = 0x8C, \
-+            .ro = 0xFFFFF800, \
-+            .reset = 0x3BF, \
++        [R_FLEXSPI_STS2] = { \
++            .name = "STS2", \
++            .addr = 0xE8, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x1000100, \
 +        }, \
-+        [R_RT500_CLKCTL0_FRO_SCTRIM] = { \
-+            .name = "FRO_SCTRIM", \
-+            .addr = 0x90, \
-+            .ro = 0xFFFFFFC0, \
-+            .reset = 0x20, \
-+        }, \
-+        [R_RT500_CLKCTL0_FRODIVSEL] = { \
-+            .name = "FRODIVSEL", \
-+            .addr = 0x108, \
-+            .ro = 0xFFFFFFFC, \
++        [R_FLEXSPI_AHBSPNDSTS] = { \
++            .name = "AHBSPNDSTS", \
++            .addr = 0xEC, \
++            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_FROCLKSTATUS] = { \
-+            .name = "FROCLKSTATUS", \
++        [R_FLEXSPI_IPRXFSTS] = { \
++            .name = "IPRXFSTS", \
++            .addr = 0xF0, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_IPTXFSTS] = { \
++            .name = "IPTXFSTS", \
++            .addr = 0xF4, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR0] = { \
++            .name = "RFDR0", \
++            .addr = 0x100, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR1] = { \
++            .name = "RFDR1", \
++            .addr = 0x104, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR2] = { \
++            .name = "RFDR2", \
++            .addr = 0x108, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR3] = { \
++            .name = "RFDR3", \
 +            .addr = 0x10C, \
 +            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_FRODIVOEN] = { \
-+            .name = "FRODIVOEN", \
++        [R_FLEXSPI_RFDR4] = { \
++            .name = "RFDR4", \
 +            .addr = 0x110, \
-+            .ro = 0xFFFFFFE0, \
++            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_LOWFREQCLKDIV] = { \
-+            .name = "LOWFREQCLKDIV", \
++        [R_FLEXSPI_RFDR5] = { \
++            .name = "RFDR5", \
++            .addr = 0x114, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR6] = { \
++            .name = "RFDR6", \
++            .addr = 0x118, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR7] = { \
++            .name = "RFDR7", \
++            .addr = 0x11C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR8] = { \
++            .name = "RFDR8", \
++            .addr = 0x120, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR9] = { \
++            .name = "RFDR9", \
++            .addr = 0x124, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR10] = { \
++            .name = "RFDR10", \
++            .addr = 0x128, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR11] = { \
++            .name = "RFDR11", \
++            .addr = 0x12C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR12] = { \
++            .name = "RFDR12", \
 +            .addr = 0x130, \
-+            .ro = 0x1FFFFF00, \
++            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_SYSOSCCTL0] = { \
-+            .name = "SYSOSCCTL0", \
++        [R_FLEXSPI_RFDR13] = { \
++            .name = "RFDR13", \
++            .addr = 0x134, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR14] = { \
++            .name = "RFDR14", \
++            .addr = 0x138, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR15] = { \
++            .name = "RFDR15", \
++            .addr = 0x13C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR16] = { \
++            .name = "RFDR16", \
++            .addr = 0x140, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR17] = { \
++            .name = "RFDR17", \
++            .addr = 0x144, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR18] = { \
++            .name = "RFDR18", \
++            .addr = 0x148, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR19] = { \
++            .name = "RFDR19", \
++            .addr = 0x14C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR20] = { \
++            .name = "RFDR20", \
++            .addr = 0x150, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR21] = { \
++            .name = "RFDR21", \
++            .addr = 0x154, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR22] = { \
++            .name = "RFDR22", \
++            .addr = 0x158, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR23] = { \
++            .name = "RFDR23", \
++            .addr = 0x15C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR24] = { \
++            .name = "RFDR24", \
 +            .addr = 0x160, \
-+            .ro = 0xFFFFFFFC, \
++            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_SYSOSCBYPASS] = { \
-+            .name = "SYSOSCBYPASS", \
++        [R_FLEXSPI_RFDR25] = { \
++            .name = "RFDR25", \
++            .addr = 0x164, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR26] = { \
++            .name = "RFDR26", \
 +            .addr = 0x168, \
-+            .ro = 0xFFFFFFF8, \
++            .ro = 0xFFFFFFFF, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_LPOSCCTL0] = { \
-+            .name = "LPOSCCTL0", \
++        [R_FLEXSPI_RFDR27] = { \
++            .name = "RFDR27", \
++            .addr = 0x16C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR28] = { \
++            .name = "RFDR28", \
++            .addr = 0x170, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR29] = { \
++            .name = "RFDR29", \
++            .addr = 0x174, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR30] = { \
++            .name = "RFDR30", \
++            .addr = 0x178, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_RFDR31] = { \
++            .name = "RFDR31", \
++            .addr = 0x17C, \
++            .ro = 0xFFFFFFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR0] = { \
++            .name = "TFDR0", \
++            .addr = 0x180, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR1] = { \
++            .name = "TFDR1", \
++            .addr = 0x184, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR2] = { \
++            .name = "TFDR2", \
++            .addr = 0x188, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR3] = { \
++            .name = "TFDR3", \
++            .addr = 0x18C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR4] = { \
++            .name = "TFDR4", \
 +            .addr = 0x190, \
-+            .ro = 0x7FFFFFFF, \
-+            .reset = 0x807BC4D4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_OSC32KHZCTL0] = { \
-+            .name = "OSC32KHZCTL0", \
++        [R_FLEXSPI_TFDR5] = { \
++            .name = "TFDR5", \
++            .addr = 0x194, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR6] = { \
++            .name = "TFDR6", \
++            .addr = 0x198, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR7] = { \
++            .name = "TFDR7", \
++            .addr = 0x19C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR8] = { \
++            .name = "TFDR8", \
++            .addr = 0x1A0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR9] = { \
++            .name = "TFDR9", \
++            .addr = 0x1A4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR10] = { \
++            .name = "TFDR10", \
++            .addr = 0x1A8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR11] = { \
++            .name = "TFDR11", \
++            .addr = 0x1AC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR12] = { \
++            .name = "TFDR12", \
++            .addr = 0x1B0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR13] = { \
++            .name = "TFDR13", \
++            .addr = 0x1B4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR14] = { \
++            .name = "TFDR14", \
++            .addr = 0x1B8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR15] = { \
++            .name = "TFDR15", \
++            .addr = 0x1BC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR16] = { \
++            .name = "TFDR16", \
 +            .addr = 0x1C0, \
-+            .ro = 0xFFFFFFFE, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_SYSPLL0CLKSEL] = { \
-+            .name = "SYSPLL0CLKSEL", \
++        [R_FLEXSPI_TFDR17] = { \
++            .name = "TFDR17", \
++            .addr = 0x1C4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR18] = { \
++            .name = "TFDR18", \
++            .addr = 0x1C8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR19] = { \
++            .name = "TFDR19", \
++            .addr = 0x1CC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR20] = { \
++            .name = "TFDR20", \
++            .addr = 0x1D0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR21] = { \
++            .name = "TFDR21", \
++            .addr = 0x1D4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR22] = { \
++            .name = "TFDR22", \
++            .addr = 0x1D8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR23] = { \
++            .name = "TFDR23", \
++            .addr = 0x1DC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR24] = { \
++            .name = "TFDR24", \
++            .addr = 0x1E0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR25] = { \
++            .name = "TFDR25", \
++            .addr = 0x1E4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR26] = { \
++            .name = "TFDR26", \
++            .addr = 0x1E8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR27] = { \
++            .name = "TFDR27", \
++            .addr = 0x1EC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR28] = { \
++            .name = "TFDR28", \
++            .addr = 0x1F0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR29] = { \
++            .name = "TFDR29", \
++            .addr = 0x1F4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR30] = { \
++            .name = "TFDR30", \
++            .addr = 0x1F8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_TFDR31] = { \
++            .name = "TFDR31", \
++            .addr = 0x1FC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT0] = { \
++            .name = "LUT0", \
 +            .addr = 0x200, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_SYSPLL0CTL0] = { \
-+            .name = "SYSPLL0CTL0", \
++        [R_FLEXSPI_LUT1] = { \
++            .name = "LUT1", \
 +            .addr = 0x204, \
-+            .ro = 0xFF00DFFC, \
-+            .reset = 0x160002, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_SYSPLL0LOCKTIMEDIV2] = { \
-+            .name = "SYSPLL0LOCKTIMEDIV2", \
++        [R_FLEXSPI_LUT2] = { \
++            .name = "LUT2", \
++            .addr = 0x208, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT3] = { \
++            .name = "LUT3", \
 +            .addr = 0x20C, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xCAFE, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_SYSPLL0NUM] = { \
-+            .name = "SYSPLL0NUM", \
++        [R_FLEXSPI_LUT4] = { \
++            .name = "LUT4", \
 +            .addr = 0x210, \
-+            .ro = 0xC0000000, \
-+            .reset = 0x4DD2F15, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_SYSPLL0DENOM] = { \
-+            .name = "SYSPLL0DENOM", \
++        [R_FLEXSPI_LUT5] = { \
++            .name = "LUT5", \
 +            .addr = 0x214, \
-+            .ro = 0xC0000000, \
-+            .reset = 0x1FFFFFDB, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_SYSPLL0PFD] = { \
-+            .name = "SYSPLL0PFD", \
++        [R_FLEXSPI_LUT6] = { \
++            .name = "LUT6", \
 +            .addr = 0x218, \
 +            .ro = 0x0, \
-+            .reset = 0x80808080, \
-+        }, \
-+        [R_RT500_CLKCTL0_MAINPLLCLKDIV] = { \
-+            .name = "MAINPLLCLKDIV", \
-+            .addr = 0x240, \
-+            .ro = 0x1FFFFF00, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL0_DSPPLLCLKDIV] = { \
-+            .name = "DSPPLLCLKDIV", \
++        [R_FLEXSPI_LUT7] = { \
++            .name = "LUT7", \
++            .addr = 0x21C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT8] = { \
++            .name = "LUT8", \
++            .addr = 0x220, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT9] = { \
++            .name = "LUT9", \
++            .addr = 0x224, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT10] = { \
++            .name = "LUT10", \
++            .addr = 0x228, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT11] = { \
++            .name = "LUT11", \
++            .addr = 0x22C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT12] = { \
++            .name = "LUT12", \
++            .addr = 0x230, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT13] = { \
++            .name = "LUT13", \
++            .addr = 0x234, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT14] = { \
++            .name = "LUT14", \
++            .addr = 0x238, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT15] = { \
++            .name = "LUT15", \
++            .addr = 0x23C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT16] = { \
++            .name = "LUT16", \
++            .addr = 0x240, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT17] = { \
++            .name = "LUT17", \
 +            .addr = 0x244, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL0_AUX0PLLCLKDIV] = { \
-+            .name = "AUX0PLLCLKDIV", \
-+            .addr = 0x248, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL0_AUX1PLLCLKDIV] = { \
-+            .name = "AUX1PLLCLKDIV", \
-+            .addr = 0x24C, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL0_SYSCPUAHBCLKDIV] = { \
-+            .name = "SYSCPUAHBCLKDIV", \
-+            .addr = 0x400, \
-+            .ro = 0x7FFFFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL0_MAINCLKSELA] = { \
-+            .name = "MAINCLKSELA", \
-+            .addr = 0x430, \
-+            .ro = 0xFFFFFFFC, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL0_MAINCLKSELB] = { \
-+            .name = "MAINCLKSELB", \
-+            .addr = 0x434, \
-+            .ro = 0xFFFFFFFC, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL0_PFC0DIV] = { \
-+            .name = "PFC0DIV", \
-+            .addr = 0x500, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_PFC1DIV] = { \
-+            .name = "PFC1DIV", \
-+            .addr = 0x504, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_FLEXSPI0FCLKSEL] = { \
-+            .name = "FLEXSPI0FCLKSEL", \
-+            .addr = 0x620, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_FLEXSPI0FCLKDIV] = { \
-+            .name = "FLEXSPI0FCLKDIV", \
-+            .addr = 0x624, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_FLEXSPI1FCLKSEL] = { \
-+            .name = "FLEXSPI1FCLKSEL", \
-+            .addr = 0x630, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_FLEXSPI1FCLKDIV] = { \
-+            .name = "FLEXSPI1FCLKDIV", \
-+            .addr = 0x634, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_SCTFCLKSEL] = { \
-+            .name = "SCTFCLKSEL", \
-+            .addr = 0x640, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_SCTIN7CLKDIV] = { \
-+            .name = "SCTIN7CLKDIV", \
-+            .addr = 0x644, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_USBHSFCLKSEL] = { \
-+            .name = "USBHSFCLKSEL", \
-+            .addr = 0x660, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_USBHSFCLKDIV] = { \
-+            .name = "USBHSFCLKDIV", \
-+            .addr = 0x664, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_SDIO0FCLKSEL] = { \
-+            .name = "SDIO0FCLKSEL", \
-+            .addr = 0x680, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_SDIO0FCLKDIV] = { \
-+            .name = "SDIO0FCLKDIV", \
-+            .addr = 0x684, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_SDIO1FCLKSEL] = { \
-+            .name = "SDIO1FCLKSEL", \
-+            .addr = 0x690, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_SDIO1FCLKDIV] = { \
-+            .name = "SDIO1FCLKDIV", \
-+            .addr = 0x694, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_ADC0FCLKSEL0] = { \
-+            .name = "ADC0FCLKSEL0", \
-+            .addr = 0x6D0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_ADC0FCLKSEL1] = { \
-+            .name = "ADC0FCLKSEL1", \
-+            .addr = 0x6D4, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_ADC0FCLKDIV] = { \
-+            .name = "ADC0FCLKDIV", \
-+            .addr = 0x6D8, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_UTICKFCLKSEL] = { \
-+            .name = "UTICKFCLKSEL", \
-+            .addr = 0x700, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_WDT0FCLKSEL] = { \
-+            .name = "WDT0FCLKSEL", \
-+            .addr = 0x720, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL0_A32KHZWAKECLKSEL] = { \
-+            .name = "A32KHZWAKECLKSEL", \
-+            .addr = 0x730, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x1, \
-+        }, \
-+        [R_RT500_CLKCTL0_A32KHZWAKECLKDIV] = { \
-+            .name = "A32KHZWAKECLKDIV", \
-+            .addr = 0x734, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x1F, \
-+        }, \
-+        [R_RT500_CLKCTL0_SYSTICKFCLKSEL] = { \
-+            .name = "SYSTICKFCLKSEL", \
-+            .addr = 0x760, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_SYSTICKFCLKDIV] = { \
-+            .name = "SYSTICKFCLKDIV", \
-+            .addr = 0x764, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_DPHYCLKSEL] = { \
-+            .name = "DPHYCLKSEL", \
-+            .addr = 0x770, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_DPHYCLKDIV] = { \
-+            .name = "DPHYCLKDIV", \
-+            .addr = 0x774, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_DPHYESCCLKSEL] = { \
-+            .name = "DPHYESCCLKSEL", \
-+            .addr = 0x778, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_DPHYESCRXCLKDIV] = { \
-+            .name = "DPHYESCRXCLKDIV", \
-+            .addr = 0x77C, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000010, \
-+        }, \
-+        [R_RT500_CLKCTL0_DPHYESCTXCLKDIV] = { \
-+            .name = "DPHYESCTXCLKDIV", \
-+            .addr = 0x780, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000011, \
-+        }, \
-+        [R_RT500_CLKCTL0_GPUCLKSEL] = { \
-+            .name = "GPUCLKSEL", \
-+            .addr = 0x790, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_GPUCLKDIV] = { \
-+            .name = "GPUCLKDIV", \
-+            .addr = 0x794, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL0_DCPIXELCLKSEL] = { \
-+            .name = "DCPIXELCLKSEL", \
-+            .addr = 0x7A0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL0_DCPIXELCLKDIV] = { \
-+            .name = "DCPIXELCLKDIV", \
-+            .addr = 0x7A4, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+    }
-diff --git a/include/hw/arm/svd/rt500_clkctl1.h b/include/hw/arm/svd/rt500_clkctl1.h
-new file mode 100644
-index 0000000000..5a83129c6e
---- /dev/null
-+++ b/include/hw/arm/svd/rt500_clkctl1.h
-@@ -0,0 +1,3396 @@
-+/*
-+ * Copyright 2016-2023 NXP SPDX-License-Identifier: BSD-3-Clause
-+ *
-+ * Automatically generated by svd-gen-header.py from MIMXRT595S_cm33.xml
-+ */
-+#pragma once
-+
-+#include "hw/register.h"
-+
-+/* Clock Controller 1 */
-+#define RT500_CLKCTL1_REGS_NO (526)
-+
-+/* Clock Control 0 */
-+REG32(RT500_CLKCTL1_PSCCTL0, 16);
-+/* Flexcomm Interface 0 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC0_CLK, 8, 1);
-+/* Flexcomm Interface 1 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC1_CLK, 9, 1);
-+/* Flexcomm Interface 2 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC2_CLK, 10, 1);
-+/* Flexcomm Interface 3 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC3_CLK, 11, 1);
-+/* Flexcomm Interface 4 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC4_CLK, 12, 1);
-+/* Flexcomm Interface 5 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC5_CLK, 13, 1);
-+/* Flexcomm Interface 6 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC6_CLK, 14, 1);
-+/* Flexcomm Interface 7 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC7_CLK, 15, 1);
-+/* Flexcomm Interface 8 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC8_CLK, 16, 1);
-+/* Flexcomm Interface 9 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC9_CLK, 17, 1);
-+/* Flexcomm Interface 10 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC10_CLK, 18, 1);
-+/* Flexcomm Interface 11 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC11_CLK, 19, 1);
-+/* Flexcomm Interface 12 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC12_CLK, 20, 1);
-+/* Flexcomm Interface 13 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC13_CLK, 21, 1);
-+/* Flexcomm Interface 14 SPI clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC14_SPI_CLK, 22, 1);
-+/* Flexcomm Interface 15 I2C clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC15_I2C_CLK, 23, 1);
-+/* DMIC0 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, DMIC0, 24, 1);
-+/* Flexcomm Interface 16 SPI clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FC16_SPI_CLK, 25, 1);
-+/* OS event timer bus clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, OSEVENT_TIMER, 27, 1);
-+/* FlexIO clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0, FlexIO, 29, 1);
-+
-+/* Clock Control 1 */
-+REG32(RT500_CLKCTL1_PSCCTL1, 20);
-+/* Non-secure GPIO0 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, HSGPIO0_CLK, 0, 1);
-+/* Non-secure GPIO1 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, HSGPIO1_CLK, 1, 1);
-+/* Non-secure GPIO2 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, HSGPIO2_CLK, 2, 1);
-+/* Non-secure GPIO3 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, HSGPIO3_CLK, 3, 1);
-+/* Non-secure GPIO4 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, HSGPIO4_CLK, 4, 1);
-+/* Non-secure GPIO5 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, HSGPIO5_CLK, 5, 1);
-+/* Non-secure GPIO6 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, HSGPIO6_CLK, 6, 1);
-+/* Non-secure GPIO7 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, HSGPIO7_CLK, 7, 1);
-+/* CRC clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, CRC_CLK, 16, 1);
-+/* DMAC0 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, DMAC0_CLK, 23, 1);
-+/* DMAC1 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, DMAC1_CLK, 24, 1);
-+/* Messaging Unit clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, MU_CLK, 28, 1);
-+/* Semaphore clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, SEMA_CLK, 29, 1);
-+/* Frequency Measurement clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1, FREQME_CLK, 31, 1);
-+
-+/* Clock Control 2 */
-+REG32(RT500_CLKCTL1_PSCCTL2, 24);
-+/* CT32BIT bit timer 0 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, CT32BIT0_CLK, 0, 1);
-+/* CT32BIT bit timer 1 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, CT32BIT1_CLK, 1, 1);
-+/* CT32BIT bit timer 2 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, CT32BIT2_CLK, 2, 1);
-+/* CT32BIT bit timer 3 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, CT32BIT3_CLK, 3, 1);
-+/* CT32BIT bit timer 4 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, CT32BIT4_CLK, 4, 1);
-+/* RTC clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, RTCLITE_CLK, 7, 1);
-+/* Multi-Rate Timer 0 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, MRT0_CLK, 8, 1);
-+/* Watchdog Timer 1 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, WWDT1_CLK, 10, 1);
-+/* I3C0 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, I3C0_CLK, 16, 1);
-+/* I3C1 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, I3C1_CLK, 17, 1);
-+/* PINT clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, GPIOINTCTL_CLK, 30, 1);
-+/* INPUTMUX clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL2, PIMCTL_CLK, 31, 1);
-+
-+/* Clock Set 0 */
-+REG32(RT500_CLKCTL1_PSCCTL0_SET, 64);
-+/* Flexcomm Interface 0 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC0_CLK, 8, 1);
-+/* Flexcomm Interface 1 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC1_CLK, 9, 1);
-+/* Flexcomm Interface 2 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC2_CLK, 10, 1);
-+/* Flexcomm Interface 3 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC3_CLK, 11, 1);
-+/* Flexcomm Interface 4 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC4_CLK, 12, 1);
-+/* Flexcomm Interface 5 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC5_CLK, 13, 1);
-+/* Flexcomm Interface 6 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC6_CLK, 14, 1);
-+/* Flexcomm Interface 7 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC7_CLK, 15, 1);
-+/* Flexcomm Interface 8 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC8_CLK, 16, 1);
-+/* Flexcomm Interface 9 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC9_CLK, 17, 1);
-+/* Flexcomm Interface 10 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC10_CLK, 18, 1);
-+/* Flexcomm Interface 11 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC11_CLK, 19, 1);
-+/* Flexcomm Interface 12 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC12_CLK, 20, 1);
-+/* Flexcomm Interface 13 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC13_CLK, 21, 1);
-+/* Flexcomm Interface 14 SPI clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC14_SPI_CLK, 22, 1);
-+/* Flexcomm Interface 15 I2C clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC15_I2C_CLK, 23, 1);
-+/* DMIC0 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, DMIC0, 24, 1);
-+/* Flexcomm Interface 16 SPI clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FC16_SPI_CLK, 25, 1);
-+/* OS event timer bus clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, OSEVENT_TIMER, 27, 1);
-+/* FlexIO clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL0_SET, FlexIO, 29, 1);
-+
-+/* Clock Set 1 */
-+REG32(RT500_CLKCTL1_PSCCTL1_SET, 68);
-+/* Non-secure GPIO0 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, HSGPIO0_CLK, 0, 1);
-+/* Non-secure GPIO1 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, HSGPIO1_CLK, 1, 1);
-+/* Non-secure GPIO2 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, HSGPIO2_CLK, 2, 1);
-+/* Non-secure GPIO3 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, HSGPIO3_CLK, 3, 1);
-+/* Non-secure GPIO4 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, HSGPIO4_CLK, 4, 1);
-+/* Non-secure GPIO5 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, HSGPIO5_CLK, 5, 1);
-+/* Non-secure GPIO6 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, HSGPIO6_CLK, 6, 1);
-+/* Non-secure GPIO7 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, HSGPIO7_CLK, 7, 1);
-+/* CRC clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, CRC_CLK, 16, 1);
-+/* DMAC0 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, DMAC0_CLK, 23, 1);
-+/* DMAC1 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, DMAC1_CLK, 24, 1);
-+/* Messaging Unit clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, MU_CLK, 28, 1);
-+/* Semaphore clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, SEMA_CLK, 29, 1);
-+/* Frequency Measurement clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL1_SET, FREQME_CLK, 31, 1);
-+
-+/* Clock Set 2 */
-+REG32(RT500_CLKCTL1_PSCCTL2_SET, 72);
-+/* CT32BIT bit timer 0 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, CT32BIT0_CLK, 0, 1);
-+/* CT32BIT bit timer 1 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, CT32BIT1_CLK, 1, 1);
-+/* CT32BIT bit timer 2 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, CT32BIT2_CLK, 2, 1);
-+/* CT32BIT bit timer 3 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, CT32BIT3_CLK, 3, 1);
-+/* CT32BIT bit timer 4 clock set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, CT32BIT4_CLK, 4, 1);
-+/* RTC clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, RTCLITE_CLK, 7, 1);
-+/* Multi-Rate Timer 0 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, MRT0_CLK, 8, 1);
-+/* Watchdog Timer 1 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, WWDT1_CLK, 10, 1);
-+/* I3C0 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, I3C0_CLK, 16, 1);
-+/* I3C1 clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, I3C1_CLK, 17, 1);
-+/* PINT clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, GPIOINTCTL_CLK, 30, 1);
-+/* INPUTMUX clock control set */
-+FIELD(RT500_CLKCTL1_PSCCTL2_SET, PIMCTL_CLK, 31, 1);
-+
-+/* Clock Clear 0 */
-+REG32(RT500_CLKCTL1_PSCCTL0_CLR, 112);
-+/* Flexcomm Interface 0 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC0_CLK, 8, 1);
-+/* Flexcomm Interface 1 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC1_CLK, 9, 1);
-+/* Flexcomm Interface 2 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC2_CLK, 10, 1);
-+/* Flexcomm Interface 3 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC3_CLK, 11, 1);
-+/* Flexcomm Interface 4 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC4_CLK, 12, 1);
-+/* Flexcomm Interface 5 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC5_CLK, 13, 1);
-+/* Flexcomm Interface 6 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC6_CLK, 14, 1);
-+/* Flexcomm Interface 7 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC7_CLK, 15, 1);
-+/* Flexcomm Interface 8 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC8_CLK, 16, 1);
-+/* Flexcomm Interface 9 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC9_CLK, 17, 1);
-+/* Flexcomm Interface 10 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC10_CLK, 18, 1);
-+/* Flexcomm Interface 11 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC11_CLK, 19, 1);
-+/* Flexcomm Interface 12 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC12_CLK, 20, 1);
-+/* Flexcomm Interface 13 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC13_CLK, 21, 1);
-+/* Flexcomm Interface 14 SPI clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC14_SPI_CLK, 22, 1);
-+/* Flexcomm Interface 15 I2C clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC15_I2C_CLK, 23, 1);
-+/* DMIC0 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, DMIC0, 24, 1);
-+/* Flexcomm Interface 16 SPI clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FC16_SPI_CLK, 25, 1);
-+/* OS event timer bus clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, OSEVENT_TIMER, 27, 1);
-+/* FlexIO clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL0_CLR, FlexIO, 29, 1);
-+
-+/* Clock Clear 1 */
-+REG32(RT500_CLKCTL1_PSCCTL1_CLR, 116);
-+/* Non-secure GPIO0 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, HSGPIO0_CLK, 0, 1);
-+/* Non-secure GPIO1 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, HSGPIO1_CLK, 1, 1);
-+/* Non-secure GPIO2 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, HSGPIO2_CLK, 2, 1);
-+/* Non-secure GPIO3 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, HSGPIO3_CLK, 3, 1);
-+/* Non-secure GPIO4 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, HSGPIO4_CLK, 4, 1);
-+/* Non-secure GPIO5 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, HSGPIO5_CLK, 5, 1);
-+/* Non-secure GPIO6 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, HSGPIO6_CLK, 6, 1);
-+/* Non-secure GPIO7 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, HSGPIO7_CLK, 7, 1);
-+/* CRC clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, CRC_CLK, 16, 1);
-+/* DMAC0 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, DMAC0_CLK, 23, 1);
-+/* DMAC1 clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, DMAC1_CLK, 24, 1);
-+/* Messaging Unit clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, MU_CLK, 28, 1);
-+/* Semaphore clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, SEMA_CLK, 29, 1);
-+/* Frequency Measurement clock control */
-+FIELD(RT500_CLKCTL1_PSCCTL1_CLR, FREQME_CLK, 31, 1);
-+
-+/* Clock Clear 2 */
-+REG32(RT500_CLKCTL1_PSCCTL2_CLR, 120);
-+/* CT32BIT bit timer 0 clock clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, CT32BIT0_CLK, 0, 1);
-+/* CT32BIT bit timer 1 clock clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, CT32BIT1_CLK, 1, 1);
-+/* CT32BIT bit timer 2 clock clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, CT32BIT2_CLK, 2, 1);
-+/* CT32BIT bit timer 3 clock clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, CT32BIT3_CLK, 3, 1);
-+/* CT32BIT bit timer 4 clock clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, CT32BIT4_CLK, 4, 1);
-+/* RTC clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, RTCLITE_CLK, 7, 1);
-+/* Multi-Rate Timer 0 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, MRT0_CLK, 8, 1);
-+/* Watchdog Timer 1 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, WWDT1_CLK, 10, 1);
-+/* I3C0 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, I3C0_CLK, 16, 1);
-+/* I3C1 clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, I3C1_CLK, 17, 1);
-+/* PINT clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, GPIOINTCTL_CLK, 30, 1);
-+/* INPUTMUX clock control clear */
-+FIELD(RT500_CLKCTL1_PSCCTL2_CLR, PIMCTL_CLK, 31, 1);
-+
-+/* Audio PLL0 Clock Select */
-+REG32(RT500_CLKCTL1_AUDIOPLL0CLKSEL, 512);
-+/* Audio PLL0 Clock Select */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0CLKSEL, SEL, 0, 3);
-+
-+/* Audio PLL0 Control 0 */
-+REG32(RT500_CLKCTL1_AUDIOPLL0CTL0, 516);
-+/* AUDIOPLL0 BYPASS Mode */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0CTL0, BYPASS, 0, 1);
-+/* AUDIOPLL0 Reset */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0CTL0, RESET, 1, 1);
-+/* Hold Ring Off Control */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0CTL0, HOLDRINGOFF_ENA, 13, 1);
-+/* Multiplication Factor */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0CTL0, MULT, 16, 8);
-+
-+/* Audio PLL0 Lock Time Divide-by-2 */
-+REG32(RT500_CLKCTL1_AUDIOPLL0LOCKTIMEDIV2, 524);
-+/* AUDIOPLL0 Lock Time Divide-by-2 */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0LOCKTIMEDIV2, LOCKTIMEDIV2, 0, 16);
-+
-+/* Audio PLL0 Numerator */
-+REG32(RT500_CLKCTL1_AUDIOPLL0NUM, 528);
-+/* Numerator */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0NUM, NUM, 0, 30);
-+
-+/* Audio PLL0 Denominator */
-+REG32(RT500_CLKCTL1_AUDIOPLL0DENOM, 532);
-+/* Denominator */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0DENOM, DENOM, 0, 30);
-+
-+/* Audio PLL0 PFD */
-+REG32(RT500_CLKCTL1_AUDIOPLL0PFD, 536);
-+/* PLL Fractional Divider 0 */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD0, 0, 6);
-+/* PFD0 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD0_CLKRDY, 6, 1);
-+/* PFD0 Clock Gate */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD0_CLKGATE, 7, 1);
-+/* PLL Fractional Divider 1 */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD1, 8, 6);
-+/* PFD1 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD1_CLKRDY, 14, 1);
-+/* PFD1 Clock Gate */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD1_CLKGATE, 15, 1);
-+/* PLL Fractional Divider 2 */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD2, 16, 6);
-+/* PFD2 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD2_CLKRDY, 22, 1);
-+/* PFD2 Clock Gate */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD2_CLKGATE, 23, 1);
-+/* PLL Fractional Divider 3 */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD3, 24, 6);
-+/* PFD3 Clock Ready Status Flag */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD3_CLKRDY, 30, 1);
-+/* PFD3 Clock Gate */
-+FIELD(RT500_CLKCTL1_AUDIOPLL0PFD, PFD3_CLKGATE, 31, 1);
-+
-+/* Audio PLL Clock Divider */
-+REG32(RT500_CLKCTL1_AUDIOPLLCLKDIV, 576);
-+/* Audio PLL Clock Divider Value */
-+FIELD(RT500_CLKCTL1_AUDIOPLLCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_AUDIOPLLCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL1_AUDIOPLLCLKDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_AUDIOPLLCLKDIV, REQFLAG, 31, 1);
-+
-+/* DSP CPU Clock Divider */
-+REG32(RT500_CLKCTL1_DSPCPUCLKDIV, 1024);
-+/* DSP Clock Divider Value */
-+FIELD(RT500_CLKCTL1_DSPCPUCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_DSPCPUCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL1_DSPCPUCLKDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_DSPCPUCLKDIV, REQFLAG, 31, 1);
-+
-+/* DSP CPU Clock Select A */
-+REG32(RT500_CLKCTL1_DSPCPUCLKSELA, 1072);
-+/* DSP Main 1st Stage Control Clock Source */
-+FIELD(RT500_CLKCTL1_DSPCPUCLKSELA, SEL, 0, 2);
-+
-+/* DSP CPU Clock Select B */
-+REG32(RT500_CLKCTL1_DSPCPUCLKSELB, 1076);
-+/* Main Clock Source */
-+FIELD(RT500_CLKCTL1_DSPCPUCLKSELB, SEL, 0, 2);
-+
-+/* OS Event Timer Functional Clock Select */
-+REG32(RT500_CLKCTL1_OSEVENTTFCLKSEL, 1152);
-+/* OS Event Timer Functional Clock Source */
-+FIELD(RT500_CLKCTL1_OSEVENTTFCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 0 Clock Select */
-+REG32(RT500_CLKCTL1_FRG0CLKSEL, 1280);
-+/* Fractional Generator 0 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG0CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 0 Control */
-+REG32(RT500_CLKCTL1_FRG0CTL, 1284);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG0CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG0CTL, MULT, 8, 8);
-+
-+/* Flexcomm0 Clock Select */
-+REG32(RT500_CLKCTL1_FC0FCLKSEL, 1288);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC0FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 1 Clock Select */
-+REG32(RT500_CLKCTL1_FRG1CLKSEL, 1312);
-+/* Fractional Generator 1 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG1CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 1 Control */
-+REG32(RT500_CLKCTL1_FRG1CTL, 1316);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG1CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG1CTL, MULT, 8, 8);
-+
-+/* Flexcomm1 Clock Select */
-+REG32(RT500_CLKCTL1_FC1FCLKSEL, 1320);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC1FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 2 Clock Select */
-+REG32(RT500_CLKCTL1_FRG2CLKSEL, 1344);
-+/* Fractional Generator 2 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG2CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 2 Control */
-+REG32(RT500_CLKCTL1_FRG2CTL, 1348);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG2CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG2CTL, MULT, 8, 8);
-+
-+/* Flexcomm2 Clock Select */
-+REG32(RT500_CLKCTL1_FC2FCLKSEL, 1352);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC2FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 3 Clock Select */
-+REG32(RT500_CLKCTL1_FRG3CLKSEL, 1376);
-+/* Fractional Generator 3 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG3CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 3 Control */
-+REG32(RT500_CLKCTL1_FRG3CTL, 1380);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG3CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG3CTL, MULT, 8, 8);
-+
-+/* Flexcomm3 Clock Select */
-+REG32(RT500_CLKCTL1_FC3FCLKSEL, 1384);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC3FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 4 Clock Select */
-+REG32(RT500_CLKCTL1_FRG4CLKSEL, 1408);
-+/* Fractional Generator 4 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG4CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 4 Control */
-+REG32(RT500_CLKCTL1_FRG4CTL, 1412);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG4CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG4CTL, MULT, 8, 8);
-+
-+/* Flexcomm4 Clock Select */
-+REG32(RT500_CLKCTL1_FC4FCLKSEL, 1416);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC4FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 5 Clock Select */
-+REG32(RT500_CLKCTL1_FRG5CLKSEL, 1440);
-+/* Fractional Generator 5 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG5CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 5 Control */
-+REG32(RT500_CLKCTL1_FRG5CTL, 1444);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG5CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG5CTL, MULT, 8, 8);
-+
-+/* Flexcomm5 Clock Select */
-+REG32(RT500_CLKCTL1_FC5FCLKSEL, 1448);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC5FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 6 Clock Select */
-+REG32(RT500_CLKCTL1_FRG6CLKSEL, 1472);
-+/* Fractional Generator 6 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG6CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 6 Control */
-+REG32(RT500_CLKCTL1_FRG6CTL, 1476);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG6CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG6CTL, MULT, 8, 8);
-+
-+/* Flexcomm6 Clock Select */
-+REG32(RT500_CLKCTL1_FC6FCLKSEL, 1480);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC6FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 7 Clock Select */
-+REG32(RT500_CLKCTL1_FRG7CLKSEL, 1504);
-+/* Fractional Generator 7 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG7CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 7 Control */
-+REG32(RT500_CLKCTL1_FRG7CTL, 1508);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG7CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG7CTL, MULT, 8, 8);
-+
-+/* Flexcomm7 Clock Select */
-+REG32(RT500_CLKCTL1_FC7FCLKSEL, 1512);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC7FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 8 Clock Select */
-+REG32(RT500_CLKCTL1_FRG8CLKSEL, 1536);
-+/* Fractional Generator 8 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG8CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 8 Control */
-+REG32(RT500_CLKCTL1_FRG8CTL, 1540);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG8CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG8CTL, MULT, 8, 8);
-+
-+/* Flexcomm8 Clock Select */
-+REG32(RT500_CLKCTL1_FC8FCLKSEL, 1544);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC8FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 9 Clock Select */
-+REG32(RT500_CLKCTL1_FRG9CLKSEL, 1568);
-+/* Fractional Generator 9 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG9CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 9 Control */
-+REG32(RT500_CLKCTL1_FRG9CTL, 1572);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG9CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG9CTL, MULT, 8, 8);
-+
-+/* Flexcomm9 Clock Select */
-+REG32(RT500_CLKCTL1_FC9FCLKSEL, 1576);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC9FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 10 Clock Select */
-+REG32(RT500_CLKCTL1_FRG10CLKSEL, 1600);
-+/* Fractional Generator 10 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG10CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 10 Control */
-+REG32(RT500_CLKCTL1_FRG10CTL, 1604);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG10CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG10CTL, MULT, 8, 8);
-+
-+/* Flexcomm10 Clock Select */
-+REG32(RT500_CLKCTL1_FC10FCLKSEL, 1608);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC10FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 11 Clock Select */
-+REG32(RT500_CLKCTL1_FRG11CLKSEL, 1632);
-+/* Fractional Generator 11 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG11CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 11 Control */
-+REG32(RT500_CLKCTL1_FRG11CTL, 1636);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG11CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG11CTL, MULT, 8, 8);
-+
-+/* Flexcomm11 Clock Select */
-+REG32(RT500_CLKCTL1_FC11FCLKSEL, 1640);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC11FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 12 Clock Select */
-+REG32(RT500_CLKCTL1_FRG12CLKSEL, 1664);
-+/* Fractional Generator 12 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG12CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 12 Control */
-+REG32(RT500_CLKCTL1_FRG12CTL, 1668);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG12CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG12CTL, MULT, 8, 8);
-+
-+/* Flexcomm12 Clock Select */
-+REG32(RT500_CLKCTL1_FC12FCLKSEL, 1672);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC12FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 13 Clock Select */
-+REG32(RT500_CLKCTL1_FRG13CLKSEL, 1696);
-+/* Fractional Generator 13 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG13CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 13 Control */
-+REG32(RT500_CLKCTL1_FRG13CTL, 1700);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG13CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG13CTL, MULT, 8, 8);
-+
-+/* Flexcomm13 Clock Select */
-+REG32(RT500_CLKCTL1_FC13FCLKSEL, 1704);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC13FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 14 Clock Select */
-+REG32(RT500_CLKCTL1_FRG14CLKSEL, 1728);
-+/* Fractional Generator 14 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG14CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 14 Control */
-+REG32(RT500_CLKCTL1_FRG14CTL, 1732);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG14CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG14CTL, MULT, 8, 8);
-+
-+/* Flexcomm14 Clock Select */
-+REG32(RT500_CLKCTL1_FC14FCLKSEL, 1736);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC14FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 15 Clock Select */
-+REG32(RT500_CLKCTL1_FRG15CLKSEL, 1760);
-+/* Fractional Generator 15 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG15CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 15 Control */
-+REG32(RT500_CLKCTL1_FRG15CTL, 1764);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG15CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG15CTL, MULT, 8, 8);
-+
-+/* Flexcomm15 Clock Select */
-+REG32(RT500_CLKCTL1_FC15FCLKSEL, 1768);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC15FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 16 Clock Select */
-+REG32(RT500_CLKCTL1_FRG16CLKSEL, 1792);
-+/* Fractional Generator 16 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG16CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 16 Control */
-+REG32(RT500_CLKCTL1_FRG16CTL, 1796);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG16CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG16CTL, MULT, 8, 8);
-+
-+/* Flexcomm16 Clock Select */
-+REG32(RT500_CLKCTL1_FC16FCLKSEL, 1800);
-+/* Flexcomm Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FC16FCLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 17 Clock Select */
-+REG32(RT500_CLKCTL1_FRG17CLKSEL, 1824);
-+/* Fractional Generator 17 Clock Source */
-+FIELD(RT500_CLKCTL1_FRG17CLKSEL, SEL, 0, 3);
-+
-+/* Fractional Rate Generator 17 Control */
-+REG32(RT500_CLKCTL1_FRG17CTL, 1828);
-+/*
-+ * Denominator of the fractional divider: DIV is equal to the programmed value
-+ * +1
-+ */
-+FIELD(RT500_CLKCTL1_FRG17CTL, DIV, 0, 8);
-+/*
-+ * Numerator of the fractional divider: MULT is equal to the programmed value.
-+ */
-+FIELD(RT500_CLKCTL1_FRG17CTL, MULT, 8, 8);
-+
-+/* FlexIO Clock Select */
-+REG32(RT500_CLKCTL1_FLEXIOCLKSEL, 1832);
-+/* FlexIO Functional Clock Source */
-+FIELD(RT500_CLKCTL1_FLEXIOCLKSEL, SEL, 0, 3);
-+
-+/* FlexIO Clock Divider */
-+REG32(RT500_CLKCTL1_FLEXIOCLKDIV, 1856);
-+/* FLEXIO Clock Divider Value */
-+FIELD(RT500_CLKCTL1_FLEXIOCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_FLEXIOCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL1_FLEXIOCLKDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_FLEXIOCLKDIV, REQFLAG, 31, 1);
-+
-+/* Fractional Rate Generator PLL Clock Divider */
-+REG32(RT500_CLKCTL1_FRGPLLCLKDIV, 1888);
-+/* FRG PLL Clock Divider Value */
-+FIELD(RT500_CLKCTL1_FRGPLLCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_FRGPLLCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL1_FRGPLLCLKDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_FRGPLLCLKDIV, REQFLAG, 31, 1);
-+
-+/* DMIC0 Functional Clock Select */
-+REG32(RT500_CLKCTL1_DMIC0FCLKSEL, 1920);
-+/* DMIC Functional Clock Source */
-+FIELD(RT500_CLKCTL1_DMIC0FCLKSEL, SEL, 0, 3);
-+
-+/* DMIC0 Functional Clock Divider */
-+REG32(RT500_CLKCTL1_DMIC0FCLKDIV, 1924);
-+/* 32 KHz Wake Clock Divider Value */
-+FIELD(RT500_CLKCTL1_DMIC0FCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_DMIC0FCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL1_DMIC0FCLKDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_DMIC0FCLKDIV, REQFLAG, 31, 1);
-+
-+/* CT32BIT bit timer index Functional Clock Select */
-+REG32(RT500_CLKCTL1_CT32BITFCLKSEL0, 1952);
-+REG32(RT500_CLKCTL1_CT32BITFCLKSEL1, 1956);
-+REG32(RT500_CLKCTL1_CT32BITFCLKSEL2, 1960);
-+REG32(RT500_CLKCTL1_CT32BITFCLKSEL3, 1964);
-+REG32(RT500_CLKCTL1_CT32BITFCLKSEL4, 1968);
-+/* CT32BIT bit timer 0 Functional Clock Source */
-+SHARED_FIELD(RT500_CLKCTL1_CT32BITFCLKSEL_SEL, 0, 3);
-+
-+/* Audio MCLK Clock Select */
-+REG32(RT500_CLKCTL1_AUDIOMCLKSEL, 1984);
-+/* Audio MCLK Clock Source Select */
-+FIELD(RT500_CLKCTL1_AUDIOMCLKSEL, SEL, 0, 3);
-+
-+/* Audio MCLK Clock Divider */
-+REG32(RT500_CLKCTL1_AUDIOMCLKDIV, 1988);
-+/* Audio MCLK Clock Divider Value */
-+FIELD(RT500_CLKCTL1_AUDIOMCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_AUDIOMCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL1_AUDIOMCLKDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_AUDIOMCLKDIV, REQFLAG, 31, 1);
-+
-+/* CLKOUT Clock Select 0 */
-+REG32(RT500_CLKCTL1_CLKOUTSEL0, 2016);
-+/* Clock Output Select 1st Stage */
-+FIELD(RT500_CLKCTL1_CLKOUTSEL0, SEL, 0, 3);
-+
-+/* CLKOUT Clock Select 1 */
-+REG32(RT500_CLKCTL1_CLKOUTSEL1, 2020);
-+/* Clock Out Source */
-+FIELD(RT500_CLKCTL1_CLKOUTSEL1, SEL, 0, 3);
-+
-+/* CLKOUT Functional Clock Divider */
-+REG32(RT500_CLKCTL1_CLKOUTFCLKDIV, 2024);
-+/* Clock-Out Clock Divider Value */
-+FIELD(RT500_CLKCTL1_CLKOUTFCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_CLKOUTFCLKDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL1_CLKOUTFCLKDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_CLKOUTFCLKDIV, REQFLAG, 31, 1);
-+
-+/* I3C0, I3C1 Functional Clock Select */
-+REG32(RT500_CLKCTL1_I3C01FCLKSEL, 2048);
-+/* I3C0, I3C1 Clock Source */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSEL, SEL, 0, 3);
-+
-+/* I3C0, I3C1 Functional Slow Time Control Clock Select */
-+REG32(RT500_CLKCTL1_I3C01FCLKSTCSEL, 2052);
-+/* I3C0, I3C1 Clock Source */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSTCSEL, SEL, 0, 3);
-+
-+/* I3C0, I3C1 Functional Slow Time Control Clock Divider */
-+REG32(RT500_CLKCTL1_I3C01FCLKSTCDIV, 2056);
-+/* I3C0, I3C1 Clock Divider Value */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSTCDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSTCDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSTCDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSTCDIV, REQFLAG, 31, 1);
-+
-+/* I3C0, I3C1 Functional Slow Clock Divider */
-+REG32(RT500_CLKCTL1_I3C01FCLKSDIV, 2060);
-+/* I3C0, I3C1 Clock Divider Value */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSDIV, RESET, 29, 1);
-+/* Halt the Divider Counter */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSDIV, REQFLAG, 31, 1);
-+
-+/* I3C0, I3C1 Functional Clock Divider */
-+REG32(RT500_CLKCTL1_I3C01FCLKDIV, 2064);
-+/* I3C0, I3C1 Clock Divider Value */
-+FIELD(RT500_CLKCTL1_I3C01FCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_I3C01FCLKDIV, RESET, 29, 1);
-+/* Halts the Divider Counter */
-+FIELD(RT500_CLKCTL1_I3C01FCLKDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_I3C01FCLKDIV, REQFLAG, 31, 1);
-+
-+/* I3C01 Functional Clock Select */
-+REG32(RT500_CLKCTL1_I3C01FCLKSTSTCLKSEL, 2068);
-+/* I3C0, I3C1 FCLK Test Clock Source */
-+FIELD(RT500_CLKCTL1_I3C01FCLKSTSTCLKSEL, SEL, 0, 3);
-+
-+/* Watchdog Timer 1 Functional Clock Select */
-+REG32(RT500_CLKCTL1_WDT1FCLKSEL, 2080);
-+/* WDT1 Functional Clock Source */
-+FIELD(RT500_CLKCTL1_WDT1FCLKSEL, SEL, 0, 3);
-+
-+/* Analog Comparator 0 Clock Select */
-+REG32(RT500_CLKCTL1_ACMP0FCLKSEL, 2096);
-+/* ACMP0 Fast Functional Clock Source */
-+FIELD(RT500_CLKCTL1_ACMP0FCLKSEL, SEL, 0, 3);
-+
-+/* Analog comparator 0 FCLK divider */
-+REG32(RT500_CLKCTL1_ACMP0FCLKDIV, 2100);
-+/* Clock Out Clock Divider Value */
-+FIELD(RT500_CLKCTL1_ACMP0FCLKDIV, DIV, 0, 8);
-+/* Reset the Divider Counter */
-+FIELD(RT500_CLKCTL1_ACMP0FCLKDIV, RESET, 29, 1);
-+/* Halts the Divider Counter */
-+FIELD(RT500_CLKCTL1_ACMP0FCLKDIV, HALT, 30, 1);
-+/* Divider Status Flag */
-+FIELD(RT500_CLKCTL1_ACMP0FCLKDIV, REQFLAG, 31, 1);
-+
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC0_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC1_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC2_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC2_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC2_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC3_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC3_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC3_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC4_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC4_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC4_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC5_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC5_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC5_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC6_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC6_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC6_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC7_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC7_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC7_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC8_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC8_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC8_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC9_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC9_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC9_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC10_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC10_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC10_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC11_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC11_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC11_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC12_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC12_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC12_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC13_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC13_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC13_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC14_SPI_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC14_SPI_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC14_SPI_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC15_I2C_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC15_I2C_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC15_I2C_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_DMIC0_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_DMIC0_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_DMIC0_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC16_SPI_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FC16_SPI_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FC16_SPI_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_OSEVENT_TIMER_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_OSEVENT_TIMER_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_OSEVENT_TIMER_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FlexIO_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL0_FlexIO_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_FlexIO_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO0_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_HSGPIO0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO1_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_HSGPIO1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO2_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO2_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_HSGPIO2_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO3_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO3_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_HSGPIO3_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO4_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO4_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_HSGPIO4_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO5_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO5_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_HSGPIO5_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO6_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO6_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_HSGPIO6_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO7_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_HSGPIO7_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_HSGPIO7_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_CRC_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_CRC_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CRC_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_DMAC0_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_DMAC0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_DMAC0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_DMAC1_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_DMAC1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_DMAC1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_MU_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_MU_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_MU_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_SEMA_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_SEMA_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SEMA_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL1_FREQME_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL1_FREQME_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_FREQME_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CT32BIT0_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CT32BIT0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CT32BIT0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CT32BIT1_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CT32BIT1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CT32BIT1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CT32BIT2_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CT32BIT2_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CT32BIT2_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CT32BIT3_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CT32BIT3_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CT32BIT3_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CT32BIT4_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CT32BIT4_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CT32BIT4_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_RTCLITE_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_RTCLITE_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_RTCLITE_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_MRT0_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_MRT0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_MRT0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_WWDT1_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_WWDT1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_WWDT1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_I3C0_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_I3C0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_I3C0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_I3C1_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_I3C1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_I3C1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_GPIOINTCTL_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_GPIOINTCTL_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_GPIOINTCTL_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_PIMCTL_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_PIMCTL_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_PIMCTL_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC0_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC1_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC1_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC2_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC2_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC2_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC3_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC3_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC3_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC4_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC4_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC4_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC5_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC5_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC5_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC6_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC6_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC6_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC7_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC7_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC7_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC8_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC8_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC8_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC9_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC9_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC9_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC10_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC10_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC10_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC11_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC11_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC11_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC12_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC12_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC12_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC13_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC13_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC13_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC14_SPI_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC14_SPI_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC14_SPI_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC15_I2C_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC15_I2C_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC15_I2C_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_DMIC0_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_DMIC0_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_DMIC0_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC16_SPI_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FC16_SPI_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FC16_SPI_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_OSEVENT_TIMER_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_OSEVENT_TIMER_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_OSEVENT_TIMER_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_SET_FlexIO_DISABLE = 0,
-+    /* Sets the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_SET_FlexIO_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_SET_FlexIO_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO0_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_HSGPIO0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO1_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_HSGPIO1_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO2_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO2_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_HSGPIO2_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO3_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO3_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_HSGPIO3_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO4_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO4_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_HSGPIO4_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO5_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO5_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_HSGPIO5_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO6_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO6_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_HSGPIO6_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO7_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_HSGPIO7_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_HSGPIO7_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_CRC_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_CRC_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_CRC_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_DMAC0_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_DMAC0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_DMAC0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_DMAC1_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_DMAC1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_DMAC1_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_MU_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_MU_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_MU_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_SEMA_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_SEMA_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_SEMA_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_SET_FREQME_CLK_DISABLE = 0,
-+    /* Sets the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_SET_FREQME_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_SET_FREQME_CLK_Enum;
-+
-+typedef enum {
-+    /* No Effect */
-+    RT500_CLKCTL1_PSCCTL2_SET_CT32BIT0_CLK_NO_EFFECT = 0,
-+    /* Set Bit */
-+    RT500_CLKCTL1_PSCCTL2_SET_CT32BIT0_CLK_SET_BIT = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_CT32BIT0_CLK_Enum;
-+
-+typedef enum {
-+    /* No Effect */
-+    RT500_CLKCTL1_PSCCTL2_SET_CT32BIT1_CLK_NO_EFFECT = 0,
-+    /* Set Bit */
-+    RT500_CLKCTL1_PSCCTL2_SET_CT32BIT1_CLK_SET_BIT = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_CT32BIT1_CLK_Enum;
-+
-+typedef enum {
-+    /* No Effect */
-+    RT500_CLKCTL1_PSCCTL2_SET_CT32BIT2_CLK_NO_EFFECT = 0,
-+    /* Set Bit */
-+    RT500_CLKCTL1_PSCCTL2_SET_CT32BIT2_CLK_SET_BIT = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_CT32BIT2_CLK_Enum;
-+
-+typedef enum {
-+    /* No Effect */
-+    RT500_CLKCTL1_PSCCTL2_SET_CT32BIT3_CLK_NO_EFFECT = 0,
-+    /* Set Bit */
-+    RT500_CLKCTL1_PSCCTL2_SET_CT32BIT3_CLK_SET_BIT = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_CT32BIT3_CLK_Enum;
-+
-+typedef enum {
-+    /* No Effect */
-+    RT500_CLKCTL1_PSCCTL2_SET_CT32BIT4_CLK_NO_EFFECT = 0,
-+    /* Set Bit */
-+    RT500_CLKCTL1_PSCCTL2_SET_CT32BIT4_CLK_SET_BIT = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_CT32BIT4_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_RTCLITE_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_RTCLITE_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_RTCLITE_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_MRT0_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_MRT0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_MRT0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_WWDT1_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_WWDT1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_WWDT1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_I3C0_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_I3C0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_I3C0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_I3C1_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_I3C1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_I3C1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_GPIOINTCTL_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_GPIOINTCTL_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_GPIOINTCTL_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_PIMCTL_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_SET_PIMCTL_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_SET_PIMCTL_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC0_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC1_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC1_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC2_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC2_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC2_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC3_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC3_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC3_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC4_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC4_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC4_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC5_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC5_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC5_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC6_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC6_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC6_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC7_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC7_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC7_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC8_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC8_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC8_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC9_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC9_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC9_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC10_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC10_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC10_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC11_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC11_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC11_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC12_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC12_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC12_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC13_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC13_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC13_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC14_SPI_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC14_SPI_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC14_SPI_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC15_I2C_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC15_I2C_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC15_I2C_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_DMIC0_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_DMIC0_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_DMIC0_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC16_SPI_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FC16_SPI_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FC16_SPI_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_OSEVENT_TIMER_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_OSEVENT_TIMER_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_OSEVENT_TIMER_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FlexIO_DISABLE = 0,
-+    /* Clears the PSCCTL0 bit */
-+    RT500_CLKCTL1_PSCCTL0_CLR_FlexIO_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL0_CLR_FlexIO_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO0_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO1_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO1_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO2_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO2_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO2_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO3_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO3_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO3_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO4_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO4_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO4_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO5_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO5_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO5_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO6_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO6_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO6_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO7_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO7_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_HSGPIO7_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_CRC_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_CRC_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_CRC_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_DMAC0_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_DMAC0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_DMAC0_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_DMAC1_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_DMAC1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_DMAC1_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_MU_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_MU_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_MU_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_SEMA_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_SEMA_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_SEMA_CLK_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_PSCCTL1_CLR_FREQME_CLK_DISABLE = 0,
-+    /* Clears the PSCCTL1 bit */
-+    RT500_CLKCTL1_PSCCTL1_CLR_FREQME_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL1_CLR_FREQME_CLK_Enum;
-+
-+typedef enum {
-+    /* No Effect */
-+    RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT0_CLK_NO_EFFECT = 0,
-+    /* Set Bit */
-+    RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT0_CLK_SET_BIT = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT0_CLK_Enum;
-+
-+typedef enum {
-+    /* No Effect */
-+    RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT1_CLK_NO_EFFECT = 0,
-+    /* Set Bit */
-+    RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT1_CLK_SET_BIT = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT1_CLK_Enum;
-+
-+typedef enum {
-+    /* No Effect */
-+    RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT2_CLK_NO_EFFECT = 0,
-+    /* Set Bit */
-+    RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT2_CLK_SET_BIT = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT2_CLK_Enum;
-+
-+typedef enum {
-+    /* No Effect */
-+    RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT3_CLK_NO_EFFECT = 0,
-+    /* Set Bit */
-+    RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT3_CLK_SET_BIT = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT3_CLK_Enum;
-+
-+typedef enum {
-+    /* No Effect */
-+    RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT4_CLK_NO_EFFECT = 0,
-+    /* Set Bit */
-+    RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT4_CLK_SET_BIT = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_CT32BIT4_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_RTCLITE_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_RTCLITE_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_RTCLITE_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_MRT0_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_MRT0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_MRT0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_WWDT1_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_WWDT1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_WWDT1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_I3C0_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_I3C0_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_I3C0_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_I3C1_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_I3C1_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_I3C1_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_GPIOINTCTL_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_GPIOINTCTL_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_GPIOINTCTL_CLK_Enum;
-+
-+typedef enum {
-+    /* Disable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_PIMCTL_CLK_DISABLE = 0,
-+    /* Enable Clock */
-+    RT500_CLKCTL1_PSCCTL2_CLR_PIMCTL_CLK_ENABLE = 1,
-+} RT500_CLKCTL1_PSCCTL2_CLR_PIMCTL_CLK_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV8 */
-+    RT500_CLKCTL1_AUDIOPLL0CLKSEL_SEL_FRRO_DIV8 = 0,
-+    /* OSC_CLK clock (User-Selectable) */
-+    RT500_CLKCTL1_AUDIOPLL0CLKSEL_SEL_OSC_CLK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_AUDIOPLL0CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_AUDIOPLL0CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* PFD outputs are PFD-programmed clocks */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_BYPASS_PFD = 0,
-+    /*
-+     * Bypass Mode. PFD outputs are sourced directly from the reference input
-+     * clock
-+     */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_BYPASS_BYPASS = 1,
-+} RT500_CLKCTL1_AUDIOPLL0CTL0_BYPASS_Enum;
-+
-+typedef enum {
-+    /* AUDIOPLL0 reset is removed */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_RESET_NO_RESET = 0,
-+    /* AUDIOPLL0 is placed into reset */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_RESET_RESET = 1,
-+} RT500_CLKCTL1_AUDIOPLL0CTL0_RESET_Enum;
-+
-+typedef enum {
-+    /* Disable */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_HOLDRINGOFF_ENA_DISABLE = 0,
-+    /* Enable */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_HOLDRINGOFF_ENA_ENABLE = 1,
-+} RT500_CLKCTL1_AUDIOPLL0CTL0_HOLDRINGOFF_ENA_Enum;
-+
-+typedef enum {
-+    /* Multiply by 16 */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_MULT_DIV16 = 16,
-+    /* Multiply by 17 */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_MULT_DIV17 = 17,
-+    /* Multiply by 18 */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_MULT_DIV18 = 18,
-+    /* Multiply by 19 */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_MULT_DIV19 = 19,
-+    /* Multiply by 20 */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_MULT_DIV20 = 20,
-+    /* Multiply by 21 */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_MULT_DIV21 = 21,
-+    /* Multiply by 22 */
-+    RT500_CLKCTL1_AUDIOPLL0CTL0_MULT_DIV22 = 22,
-+} RT500_CLKCTL1_AUDIOPLL0CTL0_MULT_Enum;
-+
-+typedef enum {
-+    /* Not ready */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD0_CLKRDY_NOT_READY = 0,
-+    /* Ready */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD0_CLKRDY_READY = 1,
-+} RT500_CLKCTL1_AUDIOPLL0PFD_PFD0_CLKRDY_Enum;
-+
-+typedef enum {
-+    /* PFD0 clock is not gated */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD0_CLKGATE_NOT_GATED = 0,
-+    /* PFD0 clock is gated */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD0_CLKGATE_GATED = 1,
-+} RT500_CLKCTL1_AUDIOPLL0PFD_PFD0_CLKGATE_Enum;
-+
-+typedef enum {
-+    /* Not ready */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD1_CLKRDY_NOT_READY = 0,
-+    /* Ready */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD1_CLKRDY_READY = 1,
-+} RT500_CLKCTL1_AUDIOPLL0PFD_PFD1_CLKRDY_Enum;
-+
-+typedef enum {
-+    /* PFD1 clock is not gated */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD1_CLKGATE_NOT_GATED = 0,
-+    /* PFD1 clock is gated */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD1_CLKGATE_GATED = 1,
-+} RT500_CLKCTL1_AUDIOPLL0PFD_PFD1_CLKGATE_Enum;
-+
-+typedef enum {
-+    /* Not ready */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD2_CLKRDY_NOT_READY = 0,
-+    /* Ready */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD2_CLKRDY_READY = 1,
-+} RT500_CLKCTL1_AUDIOPLL0PFD_PFD2_CLKRDY_Enum;
-+
-+typedef enum {
-+    /* PFD2 clock is not gated */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD2_CLKGATE_NOT_GATED = 0,
-+    /* PFD2 clock is gated */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD2_CLKGATE_GATED = 1,
-+} RT500_CLKCTL1_AUDIOPLL0PFD_PFD2_CLKGATE_Enum;
-+
-+typedef enum {
-+    /* Not ready */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD3_CLKRDY_NOT_READY = 0,
-+    /* Ready */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD3_CLKRDY_READY = 1,
-+} RT500_CLKCTL1_AUDIOPLL0PFD_PFD3_CLKRDY_Enum;
-+
-+typedef enum {
-+    /* PFD3 clock is not gated */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD3_CLKGATE_NOT_GATED = 0,
-+    /* PFD3 clock is gated */
-+    RT500_CLKCTL1_AUDIOPLL0PFD_PFD3_CLKGATE_GATED = 1,
-+} RT500_CLKCTL1_AUDIOPLL0PFD_PFD3_CLKGATE_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_AUDIOPLLCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_AUDIOPLLCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_AUDIOPLLCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_AUDIOPLLCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_AUDIOPLLCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_AUDIOPLLCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /* The Divider change has finished */
-+    RT500_CLKCTL1_AUDIOPLLCLKDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed */
-+    RT500_CLKCTL1_AUDIOPLLCLKDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_AUDIOPLLCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_DSPCPUCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_DSPCPUCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_DSPCPUCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_DSPCPUCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_DSPCPUCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_DSPCPUCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /*
-+     * The Divider change has finished (clock being divided must be running for
-+     * this status to change).
-+     */
-+    RT500_CLKCTL1_DSPCPUCLKDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed. */
-+    RT500_CLKCTL1_DSPCPUCLKDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_DSPCPUCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV1 Clock */
-+    RT500_CLKCTL1_DSPCPUCLKSELA_SEL_FRO = 0,
-+    /* OSC_CLK Clock */
-+    RT500_CLKCTL1_DSPCPUCLKSELA_SEL_OSC_CLK = 1,
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL1_DSPCPUCLKSELA_SEL_LPOSC = 2,
-+} RT500_CLKCTL1_DSPCPUCLKSELA_SEL_Enum;
-+
-+typedef enum {
-+    /* MAINCLKSELA 1st Stage Clock */
-+    RT500_CLKCTL1_DSPCPUCLKSELB_SEL_MAINCLKSELA = 0,
-+    /* Main System PLL Clock */
-+    RT500_CLKCTL1_DSPCPUCLKSELB_SEL_MAIN_PLL = 1,
-+    /* DSP System PLL Clock */
-+    RT500_CLKCTL1_DSPCPUCLKSELB_SEL_DSP_PLL = 2,
-+    /* RTC 32 KHz Clock */
-+    RT500_CLKCTL1_DSPCPUCLKSELB_SEL_RTC_32KHZ = 3,
-+} RT500_CLKCTL1_DSPCPUCLKSELB_SEL_Enum;
-+
-+typedef enum {
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL1_OSEVENTTFCLKSEL_SEL_LPOSC = 0,
-+    /* RTC 32 KHz Clock */
-+    RT500_CLKCTL1_OSEVENTTFCLKSEL_SEL_RTC_32KHZ = 1,
-+    /* HCLK Free-Running Clock (Global Time Stamping) */
-+    RT500_CLKCTL1_OSEVENTTFCLKSEL_SEL_TEAL = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_OSEVENTTFCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_OSEVENTTFCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG0CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG0CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG0CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG0CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG0CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC0FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC0FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC0FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC0FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG1CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG1CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG1CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG1CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG1CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC1FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC1FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC1FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC1FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG2CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG2CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG2CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG2CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG2CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC2FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC2FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC2FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC2FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG3CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG3CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG3CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG3CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG3CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC3FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC3FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC3FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC3FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG4CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG4CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG4CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG4CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG4CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC4FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC4FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC4FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC4FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG5CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG5CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG5CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG5CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG5CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC5FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC5FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC5FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC5FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG6CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG6CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG6CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG6CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG6CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC6FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC6FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC6FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC6FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG7CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG7CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG7CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG7CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG7CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC7FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC7FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC7FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC7FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG8CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG8CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG8CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG8CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG8CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC8FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC8FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC8FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC8FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG9CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG9CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG9CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG9CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG9CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC9FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC9FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC9FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC9FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG10CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG10CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG10CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG10CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG10CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC10FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC10FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC10FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC10FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG11CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG11CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG11CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG11CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG11CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC11FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC11FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC11FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC11FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG12CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG12CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG12CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG12CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG12CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC12FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC12FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC12FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC12FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG13CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG13CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG13CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG13CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG13CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC13FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC13FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC13FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC13FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG14CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG14CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG14CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG14CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG14CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC14FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC14FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC14FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC14FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG15CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG15CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG15CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG15CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG15CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC15FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC15FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC15FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC15FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG16CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG16CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG16CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG16CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG16CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FC16FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FC16FCLKSEL_SEL_MASTER_CLOCK = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FC16FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FC16FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_FRG17CLKSEL_SEL_MAIN = 0,
-+    /* FRG PLL Clock */
-+    RT500_CLKCTL1_FRG17CLKSEL_SEL_FRG_PLL = 1,
-+    /* FRO_DIV4 clock */
-+    RT500_CLKCTL1_FRG17CLKSEL_SEL_FRRO_DIV4 = 2,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FRG17CLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FRG17CLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV2 Clock */
-+    RT500_CLKCTL1_FLEXIOCLKSEL_SEL_FRRO_DIV2 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_FLEXIOCLKSEL_SEL_OSC_CLK = 1,
-+    /* Master Clock In */
-+    RT500_CLKCTL1_FLEXIOCLKSEL_SEL_MASTER_CLKIN = 2,
-+    /* FC17 FRG Clock */
-+    RT500_CLKCTL1_FLEXIOCLKSEL_SEL_FC17_FRG = 3,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_FLEXIOCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_FLEXIOCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_FLEXIOCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_FLEXIOCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_FLEXIOCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_FLEXIOCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_FLEXIOCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_FLEXIOCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /*
-+     * The Divider change has finished (clock being divided must be running for
-+     * this status to change).
-+     */
-+    RT500_CLKCTL1_FLEXIOCLKDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed */
-+    RT500_CLKCTL1_FLEXIOCLKDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_FLEXIOCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_FRGPLLCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_FRGPLLCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_FRGPLLCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_FRGPLLCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_FRGPLLCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_FRGPLLCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /*
-+     * The Divider change has finished (clock being divided must be running for
-+     * this status to change).
-+     */
-+    RT500_CLKCTL1_FRGPLLCLKDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed. */
-+    RT500_CLKCTL1_FRGPLLCLKDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_FRGPLLCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* FRO Clock (Divided-by-4 selection) */
-+    RT500_CLKCTL1_DMIC0FCLKSEL_SEL_FRRO_DIV4 = 0,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_DMIC0FCLKSEL_SEL_AUDIO_PLL = 1,
-+    /* Master Clock In */
-+    RT500_CLKCTL1_DMIC0FCLKSEL_SEL_MASTER_CLOCK = 2,
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL1_DMIC0FCLKSEL_SEL_LPOSC = 3,
-+    /* 32 KHz Wake Clock */
-+    RT500_CLKCTL1_DMIC0FCLKSEL_SEL_WAKE_32KHZ = 4,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_DMIC0FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_DMIC0FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_DMIC0FCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_DMIC0FCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_DMIC0FCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_DMIC0FCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_DMIC0FCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_DMIC0FCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /*
-+     * The Divider change has finished (clock being divided must be running for
-+     * this status to change).
-+     */
-+    RT500_CLKCTL1_DMIC0FCLKDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed. */
-+    RT500_CLKCTL1_DMIC0FCLKDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_DMIC0FCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_CT32BITFCLKSEL_SEL_MAIN = 0,
-+    /* FRO_DIV1 Clock */
-+    RT500_CLKCTL1_CT32BITFCLKSEL_SEL_FRO = 1,
-+    /* Audio PLL Clock */
-+    RT500_CLKCTL1_CT32BITFCLKSEL_SEL_AUDIO_PLL = 2,
-+    /* Master Clock In */
-+    RT500_CLKCTL1_CT32BITFCLKSEL_SEL_MASTER_CLOCK = 3,
-+    /* 32 KHZ Wake Clock */
-+    RT500_CLKCTL1_CT32BITFCLKSEL_SEL_WAKE_32KHZ = 4,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_CT32BITFCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_CT32BITFCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* FRO_DIV8 Clock */
-+    RT500_CLKCTL1_AUDIOMCLKSEL_SEL_FRRO_DIV8 = 0,
-+    /* AUDIO PLL Clock (Shared Domain) */
-+    RT500_CLKCTL1_AUDIOMCLKSEL_SEL_AUDIO_PLL = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_AUDIOMCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_AUDIOMCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_AUDIOMCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_AUDIOMCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_AUDIOMCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_AUDIOMCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_AUDIOMCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_AUDIOMCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /*
-+     * The Divider change has finished (clock being divided must be running for
-+     * this status to change).
-+     */
-+    RT500_CLKCTL1_AUDIOMCLKDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed. */
-+    RT500_CLKCTL1_AUDIOMCLKDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_AUDIOMCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* OSC_CLK Clock */
-+    RT500_CLKCTL1_CLKOUTSEL0_SEL_OSC_CLK = 0,
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL1_CLKOUTSEL0_SEL_LPOSC = 1,
-+    /* FRO_DIV2 Clock */
-+    RT500_CLKCTL1_CLKOUTSEL0_SEL_FRO = 2,
-+    /* Main Clock */
-+    RT500_CLKCTL1_CLKOUTSEL0_SEL_MAIN = 3,
-+    /* DSP Main Clock */
-+    RT500_CLKCTL1_CLKOUTSEL0_SEL_DSP_MAIN = 4,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_CLKOUTSEL0_SEL_NONE = 7,
-+} RT500_CLKCTL1_CLKOUTSEL0_SEL_Enum;
-+
-+typedef enum {
-+    /* CLKOUTSEL0 Multiplexed Output */
-+    RT500_CLKCTL1_CLKOUTSEL1_SEL_CLKOUTSEL0_MUX_OUT = 0,
-+    /* Main System PLL Clock */
-+    RT500_CLKCTL1_CLKOUTSEL1_SEL_MAIN_PLL = 1,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL1_CLKOUTSEL1_SEL_SYSPLL0_AUX0_PLL = 2,
-+    /* DSP PLL Clock */
-+    RT500_CLKCTL1_CLKOUTSEL1_SEL_DSP_PLL = 3,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL1_CLKOUTSEL1_SEL_SYSPLL0_AUX1_PLL = 4,
-+    /* AUDIO PLL Clock */
-+    RT500_CLKCTL1_CLKOUTSEL1_SEL_AUDIO_PLL = 5,
-+    /* 32 KHz RTC Clock */
-+    RT500_CLKCTL1_CLKOUTSEL1_SEL_RTC_32KHZ = 6,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_CLKOUTSEL1_SEL_NONE = 7,
-+} RT500_CLKCTL1_CLKOUTSEL1_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_CLKOUTFCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_CLKOUTFCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_CLKOUTFCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_CLKOUTFCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_CLKOUTFCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_CLKOUTFCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /*
-+     * The Divider change has finished (clock being divided must be running for
-+     * this status to change).
-+     */
-+    RT500_CLKCTL1_CLKOUTFCLKDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed */
-+    RT500_CLKCTL1_CLKOUTFCLKDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_CLKOUTFCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_I3C01FCLKSEL_SEL_MAIN = 0,
-+    /* FRO_DIV8 Clock */
-+    RT500_CLKCTL1_I3C01FCLKSEL_SEL_FRRO_DIV8 = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_I3C01FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_I3C01FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* I3C0 FCLK */
-+    RT500_CLKCTL1_I3C01FCLKSTCSEL_SEL_I3C0 = 0,
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL1_I3C01FCLKSTCSEL_SEL_LPOSC = 1,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_I3C01FCLKSTCSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_I3C01FCLKSTCSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_I3C01FCLKSTCDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_I3C01FCLKSTCDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_I3C01FCLKSTCDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_I3C01FCLKSTCDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_I3C01FCLKSTCDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_I3C01FCLKSTCDIV_HALT_Enum;
-+
-+typedef enum {
-+    /*
-+     * The Divider change has finished (clock being divided must be running for
-+     * this status to change).
-+     */
-+    RT500_CLKCTL1_I3C01FCLKSTCDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed. */
-+    RT500_CLKCTL1_I3C01FCLKSTCDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_I3C01FCLKSTCDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_I3C01FCLKSDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_I3C01FCLKSDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_I3C01FCLKSDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_I3C01FCLKSDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_I3C01FCLKSDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_I3C01FCLKSDIV_HALT_Enum;
-+
-+typedef enum {
-+    /*
-+     * The Divider change has finished (clock being divided must be running for
-+     * this status to change).
-+     */
-+    RT500_CLKCTL1_I3C01FCLKSDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed. */
-+    RT500_CLKCTL1_I3C01FCLKSDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_I3C01FCLKSDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_I3C01FCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_I3C01FCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_I3C01FCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_I3C01FCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_I3C01FCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_I3C01FCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /*
-+     * The Divider change has finished (clock being divided must be running for
-+     * this status to change).
-+     */
-+    RT500_CLKCTL1_I3C01FCLKDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed. */
-+    RT500_CLKCTL1_I3C01FCLKDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_I3C01FCLKDIV_REQFLAG_Enum;
-+
-+typedef enum {
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL1_I3C01FCLKSTSTCLKSEL_SEL_LPOSC = 0,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_I3C01FCLKSTSTCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_I3C01FCLKSTSTCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Low Power Oscillator Clock (LPOSC) */
-+    RT500_CLKCTL1_WDT1FCLKSEL_SEL_LPOSC = 0,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_WDT1FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_WDT1FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* Main Clock */
-+    RT500_CLKCTL1_ACMP0FCLKSEL_SEL_MAIN = 0,
-+    /* FRO_DIV4 Clock */
-+    RT500_CLKCTL1_ACMP0FCLKSEL_SEL_FRRO_DIV4 = 1,
-+    /* SYSPLL0 AUX0_PLL_Clock */
-+    RT500_CLKCTL1_ACMP0FCLKSEL_SEL_SYSPLL0_AUX0_PLL = 2,
-+    /* SYSPLL0 AUX1_PLL_Clock */
-+    RT500_CLKCTL1_ACMP0FCLKSEL_SEL_SYSPLL0_AUX1_PLL = 3,
-+    /* None, output gated to reduce power */
-+    RT500_CLKCTL1_ACMP0FCLKSEL_SEL_NONE = 7,
-+} RT500_CLKCTL1_ACMP0FCLKSEL_SEL_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_ACMP0FCLKDIV_RESET_DIVIDER_COUNTER_NOT_RESET = 0,
-+    /* Reset the Divider Counter */
-+    RT500_CLKCTL1_ACMP0FCLKDIV_RESET_DIVIDER_COUNTER_RESET = 1,
-+} RT500_CLKCTL1_ACMP0FCLKDIV_RESET_Enum;
-+
-+typedef enum {
-+    /* No effect */
-+    RT500_CLKCTL1_ACMP0FCLKDIV_HALT_DIVIDER_COUNTER_NOT_HALT = 0,
-+    /* Halt (stop) the Divider Counter */
-+    RT500_CLKCTL1_ACMP0FCLKDIV_HALT_DIVIDER_COUNTER_HALT = 1,
-+} RT500_CLKCTL1_ACMP0FCLKDIV_HALT_Enum;
-+
-+typedef enum {
-+    /*
-+     * The Divider change has finished (clock being divided must be running for
-+     * this status to change).
-+     */
-+    RT500_CLKCTL1_ACMP0FCLKDIV_REQFLAG_REQFLAG_CHANGE_FINISHED = 0,
-+    /* The Divider value has changed. */
-+    RT500_CLKCTL1_ACMP0FCLKDIV_REQFLAG_REQFLAG_CHANGED = 1,
-+} RT500_CLKCTL1_ACMP0FCLKDIV_REQFLAG_Enum;
-+
-+
-+#define RT500_CLKCTL1_REGISTER_ACCESS_INFO_ARRAY(_name) \
-+    struct RegisterAccessInfo _name[RT500_CLKCTL1_REGS_NO] = { \
-+        [0 ... RT500_CLKCTL1_REGS_NO - 1] = { \
-+            .name = "", \
-+            .addr = -1, \
-+        }, \
-+        [R_RT500_CLKCTL1_PSCCTL0] = { \
-+            .name = "PSCCTL0", \
-+            .addr = 0x10, \
-+            .ro = 0xD40000FF, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL1_PSCCTL1] = { \
-+            .name = "PSCCTL1", \
-+            .addr = 0x14, \
-+            .ro = 0x4E7EFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL1_PSCCTL2] = { \
-+            .name = "PSCCTL2", \
-+            .addr = 0x18, \
-+            .ro = 0x3FFCFA60, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL1_PSCCTL0_SET] = { \
-+            .name = "PSCCTL0_SET", \
-+            .addr = 0x40, \
-+            .ro = 0xD40000FF, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL1_PSCCTL1_SET] = { \
-+            .name = "PSCCTL1_SET", \
-+            .addr = 0x44, \
-+            .ro = 0x4E7EFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL1_PSCCTL2_SET] = { \
-+            .name = "PSCCTL2_SET", \
-+            .addr = 0x48, \
-+            .ro = 0x3FFCFA60, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL1_PSCCTL0_CLR] = { \
-+            .name = "PSCCTL0_CLR", \
-+            .addr = 0x70, \
-+            .ro = 0xD40000FF, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL1_PSCCTL1_CLR] = { \
-+            .name = "PSCCTL1_CLR", \
-+            .addr = 0x74, \
-+            .ro = 0x4E7EFF00, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL1_PSCCTL2_CLR] = { \
-+            .name = "PSCCTL2_CLR", \
-+            .addr = 0x78, \
-+            .ro = 0x3FFCFA60, \
-+            .reset = 0x0, \
-+        }, \
-+        [R_RT500_CLKCTL1_AUDIOPLL0CLKSEL] = { \
-+            .name = "AUDIOPLL0CLKSEL", \
-+            .addr = 0x200, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_AUDIOPLL0CTL0] = { \
-+            .name = "AUDIOPLL0CTL0", \
-+            .addr = 0x204, \
-+            .ro = 0xFF00DFFC, \
-+            .reset = 0x160002, \
-+        }, \
-+        [R_RT500_CLKCTL1_AUDIOPLL0LOCKTIMEDIV2] = { \
-+            .name = "AUDIOPLL0LOCKTIMEDIV2", \
-+            .addr = 0x20C, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xCAFE, \
-+        }, \
-+        [R_RT500_CLKCTL1_AUDIOPLL0NUM] = { \
-+            .name = "AUDIOPLL0NUM", \
-+            .addr = 0x210, \
-+            .ro = 0xC0000000, \
-+            .reset = 0x4DD2F15, \
-+        }, \
-+        [R_RT500_CLKCTL1_AUDIOPLL0DENOM] = { \
-+            .name = "AUDIOPLL0DENOM", \
-+            .addr = 0x214, \
-+            .ro = 0xC0000000, \
-+            .reset = 0x1FFFFFDB, \
-+        }, \
-+        [R_RT500_CLKCTL1_AUDIOPLL0PFD] = { \
-+            .name = "AUDIOPLL0PFD", \
-+            .addr = 0x218, \
 +            .ro = 0x0, \
-+            .reset = 0x80808080, \
-+        }, \
-+        [R_RT500_CLKCTL1_AUDIOPLLCLKDIV] = { \
-+            .name = "AUDIOPLLCLKDIV", \
-+            .addr = 0x240, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL1_DSPCPUCLKDIV] = { \
-+            .name = "DSPCPUCLKDIV", \
-+            .addr = 0x400, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL1_DSPCPUCLKSELA] = { \
-+            .name = "DSPCPUCLKSELA", \
-+            .addr = 0x430, \
-+            .ro = 0xFFFFFFFC, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL1_DSPCPUCLKSELB] = { \
-+            .name = "DSPCPUCLKSELB", \
-+            .addr = 0x434, \
-+            .ro = 0xFFFFFFFC, \
++        [R_FLEXSPI_LUT18] = { \
++            .name = "LUT18", \
++            .addr = 0x248, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL1_OSEVENTTFCLKSEL] = { \
-+            .name = "OSEVENTTFCLKSEL", \
-+            .addr = 0x480, \
-+            .ro = 0xFFFFFFF8, \
++        [R_FLEXSPI_LUT19] = { \
++            .name = "LUT19", \
++            .addr = 0x24C, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL1_FRG0CLKSEL] = { \
-+            .name = "FRG0CLKSEL", \
-+            .addr = 0x500, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG0CTL] = { \
-+            .name = "FRG0CTL", \
-+            .addr = 0x504, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC0FCLKSEL] = { \
-+            .name = "FC0FCLKSEL", \
-+            .addr = 0x508, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG1CLKSEL] = { \
-+            .name = "FRG1CLKSEL", \
-+            .addr = 0x520, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG1CTL] = { \
-+            .name = "FRG1CTL", \
-+            .addr = 0x524, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC1FCLKSEL] = { \
-+            .name = "FC1FCLKSEL", \
-+            .addr = 0x528, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG2CLKSEL] = { \
-+            .name = "FRG2CLKSEL", \
-+            .addr = 0x540, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG2CTL] = { \
-+            .name = "FRG2CTL", \
-+            .addr = 0x544, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC2FCLKSEL] = { \
-+            .name = "FC2FCLKSEL", \
-+            .addr = 0x548, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG3CLKSEL] = { \
-+            .name = "FRG3CLKSEL", \
-+            .addr = 0x560, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG3CTL] = { \
-+            .name = "FRG3CTL", \
-+            .addr = 0x564, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC3FCLKSEL] = { \
-+            .name = "FC3FCLKSEL", \
-+            .addr = 0x568, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG4CLKSEL] = { \
-+            .name = "FRG4CLKSEL", \
-+            .addr = 0x580, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG4CTL] = { \
-+            .name = "FRG4CTL", \
-+            .addr = 0x584, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC4FCLKSEL] = { \
-+            .name = "FC4FCLKSEL", \
-+            .addr = 0x588, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG5CLKSEL] = { \
-+            .name = "FRG5CLKSEL", \
-+            .addr = 0x5A0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG5CTL] = { \
-+            .name = "FRG5CTL", \
-+            .addr = 0x5A4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC5FCLKSEL] = { \
-+            .name = "FC5FCLKSEL", \
-+            .addr = 0x5A8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG6CLKSEL] = { \
-+            .name = "FRG6CLKSEL", \
-+            .addr = 0x5C0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG6CTL] = { \
-+            .name = "FRG6CTL", \
-+            .addr = 0x5C4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC6FCLKSEL] = { \
-+            .name = "FC6FCLKSEL", \
-+            .addr = 0x5C8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG7CLKSEL] = { \
-+            .name = "FRG7CLKSEL", \
-+            .addr = 0x5E0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG7CTL] = { \
-+            .name = "FRG7CTL", \
-+            .addr = 0x5E4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC7FCLKSEL] = { \
-+            .name = "FC7FCLKSEL", \
-+            .addr = 0x5E8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG8CLKSEL] = { \
-+            .name = "FRG8CLKSEL", \
-+            .addr = 0x600, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG8CTL] = { \
-+            .name = "FRG8CTL", \
-+            .addr = 0x604, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC8FCLKSEL] = { \
-+            .name = "FC8FCLKSEL", \
-+            .addr = 0x608, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG9CLKSEL] = { \
-+            .name = "FRG9CLKSEL", \
-+            .addr = 0x620, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG9CTL] = { \
-+            .name = "FRG9CTL", \
-+            .addr = 0x624, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC9FCLKSEL] = { \
-+            .name = "FC9FCLKSEL", \
-+            .addr = 0x628, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG10CLKSEL] = { \
-+            .name = "FRG10CLKSEL", \
-+            .addr = 0x640, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG10CTL] = { \
-+            .name = "FRG10CTL", \
-+            .addr = 0x644, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC10FCLKSEL] = { \
-+            .name = "FC10FCLKSEL", \
-+            .addr = 0x648, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG11CLKSEL] = { \
-+            .name = "FRG11CLKSEL", \
-+            .addr = 0x660, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG11CTL] = { \
-+            .name = "FRG11CTL", \
-+            .addr = 0x664, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC11FCLKSEL] = { \
-+            .name = "FC11FCLKSEL", \
-+            .addr = 0x668, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG12CLKSEL] = { \
-+            .name = "FRG12CLKSEL", \
-+            .addr = 0x680, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG12CTL] = { \
-+            .name = "FRG12CTL", \
-+            .addr = 0x684, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC12FCLKSEL] = { \
-+            .name = "FC12FCLKSEL", \
-+            .addr = 0x688, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG13CLKSEL] = { \
-+            .name = "FRG13CLKSEL", \
-+            .addr = 0x6A0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG13CTL] = { \
-+            .name = "FRG13CTL", \
-+            .addr = 0x6A4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC13FCLKSEL] = { \
-+            .name = "FC13FCLKSEL", \
-+            .addr = 0x6A8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG14CLKSEL] = { \
-+            .name = "FRG14CLKSEL", \
-+            .addr = 0x6C0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG14CTL] = { \
-+            .name = "FRG14CTL", \
-+            .addr = 0x6C4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC14FCLKSEL] = { \
-+            .name = "FC14FCLKSEL", \
-+            .addr = 0x6C8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG15CLKSEL] = { \
-+            .name = "FRG15CLKSEL", \
-+            .addr = 0x6E0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG15CTL] = { \
-+            .name = "FRG15CTL", \
-+            .addr = 0x6E4, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC15FCLKSEL] = { \
-+            .name = "FC15FCLKSEL", \
-+            .addr = 0x6E8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG16CLKSEL] = { \
-+            .name = "FRG16CLKSEL", \
-+            .addr = 0x700, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG16CTL] = { \
-+            .name = "FRG16CTL", \
-+            .addr = 0x704, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FC16FCLKSEL] = { \
-+            .name = "FC16FCLKSEL", \
-+            .addr = 0x708, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG17CLKSEL] = { \
-+            .name = "FRG17CLKSEL", \
-+            .addr = 0x720, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRG17CTL] = { \
-+            .name = "FRG17CTL", \
-+            .addr = 0x724, \
-+            .ro = 0xFFFF0000, \
-+            .reset = 0xFF, \
-+        }, \
-+        [R_RT500_CLKCTL1_FLEXIOCLKSEL] = { \
-+            .name = "FLEXIOCLKSEL", \
-+            .addr = 0x728, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_FLEXIOCLKDIV] = { \
-+            .name = "FLEXIOCLKDIV", \
-+            .addr = 0x740, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL1_FRGPLLCLKDIV] = { \
-+            .name = "FRGPLLCLKDIV", \
-+            .addr = 0x760, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL1_DMIC0FCLKSEL] = { \
-+            .name = "DMIC0FCLKSEL", \
-+            .addr = 0x780, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_DMIC0FCLKDIV] = { \
-+            .name = "DMIC0FCLKDIV", \
-+            .addr = 0x784, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL1_CT32BITFCLKSEL0] = { \
-+            .name = "CT32BITFCLKSEL0", \
-+            .addr = 0x7A0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_CT32BITFCLKSEL1] = { \
-+            .name = "CT32BITFCLKSEL1", \
-+            .addr = 0x7A4, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_CT32BITFCLKSEL2] = { \
-+            .name = "CT32BITFCLKSEL2", \
-+            .addr = 0x7A8, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_CT32BITFCLKSEL3] = { \
-+            .name = "CT32BITFCLKSEL3", \
-+            .addr = 0x7AC, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_CT32BITFCLKSEL4] = { \
-+            .name = "CT32BITFCLKSEL4", \
-+            .addr = 0x7B0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_AUDIOMCLKSEL] = { \
-+            .name = "AUDIOMCLKSEL", \
-+            .addr = 0x7C0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_AUDIOMCLKDIV] = { \
-+            .name = "AUDIOMCLKDIV", \
-+            .addr = 0x7C4, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL1_CLKOUTSEL0] = { \
-+            .name = "CLKOUTSEL0", \
-+            .addr = 0x7E0, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_CLKOUTSEL1] = { \
-+            .name = "CLKOUTSEL1", \
-+            .addr = 0x7E4, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_CLKOUTFCLKDIV] = { \
-+            .name = "CLKOUTFCLKDIV", \
-+            .addr = 0x7E8, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL1_I3C01FCLKSEL] = { \
-+            .name = "I3C01FCLKSEL", \
-+            .addr = 0x800, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_I3C01FCLKSTCSEL] = { \
-+            .name = "I3C01FCLKSTCSEL", \
-+            .addr = 0x804, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
-+        }, \
-+        [R_RT500_CLKCTL1_I3C01FCLKSTCDIV] = { \
-+            .name = "I3C01FCLKSTCDIV", \
-+            .addr = 0x808, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL1_I3C01FCLKSDIV] = { \
-+            .name = "I3C01FCLKSDIV", \
-+            .addr = 0x80C, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL1_I3C01FCLKDIV] = { \
-+            .name = "I3C01FCLKDIV", \
-+            .addr = 0x810, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
-+        }, \
-+        [R_RT500_CLKCTL1_I3C01FCLKSTSTCLKSEL] = { \
-+            .name = "I3C01FCLKSTSTCLKSEL", \
-+            .addr = 0x814, \
-+            .ro = 0xFFFFFFF8, \
++        [R_FLEXSPI_LUT20] = { \
++            .name = "LUT20", \
++            .addr = 0x250, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL1_WDT1FCLKSEL] = { \
-+            .name = "WDT1FCLKSEL", \
-+            .addr = 0x820, \
-+            .ro = 0xFFFFFFF8, \
++        [R_FLEXSPI_LUT21] = { \
++            .name = "LUT21", \
++            .addr = 0x254, \
++            .ro = 0x0, \
 +            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL1_ACMP0FCLKSEL] = { \
-+            .name = "ACMP0FCLKSEL", \
-+            .addr = 0x830, \
-+            .ro = 0xFFFFFFF8, \
-+            .reset = 0x7, \
++        [R_FLEXSPI_LUT22] = { \
++            .name = "LUT22", \
++            .addr = 0x258, \
++            .ro = 0x0, \
++            .reset = 0x0, \
 +        }, \
-+        [R_RT500_CLKCTL1_ACMP0FCLKDIV] = { \
-+            .name = "ACMP0FCLKDIV", \
-+            .addr = 0x834, \
-+            .ro = 0x1FFFFF00, \
-+            .reset = 0x40000000, \
++        [R_FLEXSPI_LUT23] = { \
++            .name = "LUT23", \
++            .addr = 0x25C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT24] = { \
++            .name = "LUT24", \
++            .addr = 0x260, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT25] = { \
++            .name = "LUT25", \
++            .addr = 0x264, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT26] = { \
++            .name = "LUT26", \
++            .addr = 0x268, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT27] = { \
++            .name = "LUT27", \
++            .addr = 0x26C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT28] = { \
++            .name = "LUT28", \
++            .addr = 0x270, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT29] = { \
++            .name = "LUT29", \
++            .addr = 0x274, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT30] = { \
++            .name = "LUT30", \
++            .addr = 0x278, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT31] = { \
++            .name = "LUT31", \
++            .addr = 0x27C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT32] = { \
++            .name = "LUT32", \
++            .addr = 0x280, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT33] = { \
++            .name = "LUT33", \
++            .addr = 0x284, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT34] = { \
++            .name = "LUT34", \
++            .addr = 0x288, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT35] = { \
++            .name = "LUT35", \
++            .addr = 0x28C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT36] = { \
++            .name = "LUT36", \
++            .addr = 0x290, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT37] = { \
++            .name = "LUT37", \
++            .addr = 0x294, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT38] = { \
++            .name = "LUT38", \
++            .addr = 0x298, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT39] = { \
++            .name = "LUT39", \
++            .addr = 0x29C, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT40] = { \
++            .name = "LUT40", \
++            .addr = 0x2A0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT41] = { \
++            .name = "LUT41", \
++            .addr = 0x2A4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT42] = { \
++            .name = "LUT42", \
++            .addr = 0x2A8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT43] = { \
++            .name = "LUT43", \
++            .addr = 0x2AC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT44] = { \
++            .name = "LUT44", \
++            .addr = 0x2B0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT45] = { \
++            .name = "LUT45", \
++            .addr = 0x2B4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT46] = { \
++            .name = "LUT46", \
++            .addr = 0x2B8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT47] = { \
++            .name = "LUT47", \
++            .addr = 0x2BC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT48] = { \
++            .name = "LUT48", \
++            .addr = 0x2C0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT49] = { \
++            .name = "LUT49", \
++            .addr = 0x2C4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT50] = { \
++            .name = "LUT50", \
++            .addr = 0x2C8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT51] = { \
++            .name = "LUT51", \
++            .addr = 0x2CC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT52] = { \
++            .name = "LUT52", \
++            .addr = 0x2D0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT53] = { \
++            .name = "LUT53", \
++            .addr = 0x2D4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT54] = { \
++            .name = "LUT54", \
++            .addr = 0x2D8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT55] = { \
++            .name = "LUT55", \
++            .addr = 0x2DC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT56] = { \
++            .name = "LUT56", \
++            .addr = 0x2E0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT57] = { \
++            .name = "LUT57", \
++            .addr = 0x2E4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT58] = { \
++            .name = "LUT58", \
++            .addr = 0x2E8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT59] = { \
++            .name = "LUT59", \
++            .addr = 0x2EC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT60] = { \
++            .name = "LUT60", \
++            .addr = 0x2F0, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT61] = { \
++            .name = "LUT61", \
++            .addr = 0x2F4, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT62] = { \
++            .name = "LUT62", \
++            .addr = 0x2F8, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_LUT63] = { \
++            .name = "LUT63", \
++            .addr = 0x2FC, \
++            .ro = 0x0, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_HADDRSTART] = { \
++            .name = "HADDRSTART", \
++            .addr = 0x420, \
++            .ro = 0xFFE, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_HADDREND] = { \
++            .name = "HADDREND", \
++            .addr = 0x424, \
++            .ro = 0xFFF, \
++            .reset = 0x0, \
++        }, \
++        [R_FLEXSPI_HADDROFFSET] = { \
++            .name = "HADDROFFSET", \
++            .addr = 0x428, \
++            .ro = 0xFFF, \
++            .reset = 0x0, \
 +        }, \
 +    }
-diff --git a/include/hw/misc/rt500_clk_freqs.h b/include/hw/misc/rt500_clk_freqs.h
+diff --git a/include/hw/ssi/flexspi.h b/include/hw/ssi/flexspi.h
 new file mode 100644
-index 0000000000..1e366d4967
+index 0000000000..51699e1ceb
 --- /dev/null
-+++ b/include/hw/misc/rt500_clk_freqs.h
-@@ -0,0 +1,18 @@
++++ b/include/hw/ssi/flexspi.h
+@@ -0,0 +1,31 @@
 +/*
-+ * QEMU model for RT500 Clock Controller
++ * QEMU model for FLEXSPI
 + *
 + * Copyright (c) 2024 Google LLC
 + *
@@ -6037,104 +2804,34 @@ index 0000000000..1e366d4967
 + * See the COPYING file in the top-level directory.
 + */
 +
-+#ifndef HW_MISC_RT500_CLK_FREQS_H
-+#define HW_MISC_RT500_CLK_FREQS_H
++#ifndef HW_RT500_FLEXSPI_H
++#define HW_RT500_FLEXSPI_H
 +
-+#define RTC32KHZ_CLK_HZ 32000
-+#define LPOSC_CLK_HZ 1000000
-+
-+#endif /* HW_MISC_RT500_CLK_FREQS_H */
-diff --git a/include/hw/misc/rt500_clkctl0.h b/include/hw/misc/rt500_clkctl0.h
-new file mode 100644
-index 0000000000..890743a2ce
---- /dev/null
-+++ b/include/hw/misc/rt500_clkctl0.h
-@@ -0,0 +1,35 @@
-+/*
-+ * QEMU model for RT500 Clock Controller
-+ *
-+ * Copyright (c) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef HW_MISC_RT500_CLKCTL0_H
-+#define HW_MISC_RT500_CLKCTL0_H
-+
-+#include "hw/arm/svd/rt500_clkctl0.h"
 +#include "hw/sysbus.h"
++#include "hw/ssi/ssi.h"
++#include "hw/arm/svd/flexspi.h"
 +
-+#define TYPE_RT500_CLKCTL0 "rt500-clkctl0"
-+#define RT500_CLKCTL0(o) OBJECT_CHECK(RT500ClkCtl0State, o, TYPE_RT500_CLKCTL0)
-+
-+#define SYSTICKFCLKSEL_DIVOUT 0
-+#define SYSTICKFCLKSEL_LPOSC 1
-+#define SYSTICKFCLKSEL_32KHZRTC 2
-+#define SYSTICKFCLKSEL_NONE 7
++#define TYPE_FLEXSPI "flexspi"
++#define FLEXSPI(obj) OBJECT_CHECK(FlexSpiState, (obj), TYPE_FLEXSPI)
 +
 +typedef struct {
 +    SysBusDevice parent_obj;
 +
 +    MemoryRegion mmio;
-+    uint32_t regs[RT500_CLKCTL0_REGS_NO];
-+    Clock *systick_clk;
-+    Clock *sysclk;
-+} RT500ClkCtl0State;
++    uint32_t regs[FLEXSPI_REGS_NO];
++    MemoryRegion mem;
++    uint64_t mmap_size;
++} FlexSpiState;
 +
-+#endif /* HW_MISC_RT500_CLKCTL0_H */
-diff --git a/include/hw/misc/rt500_clkctl1.h b/include/hw/misc/rt500_clkctl1.h
++#endif /* HW_RT500_FLEXSPI_H */
+diff --git a/hw/ssi/flexspi.c b/hw/ssi/flexspi.c
 new file mode 100644
-index 0000000000..8b012b1357
+index 0000000000..d5d9e4f098
 --- /dev/null
-+++ b/include/hw/misc/rt500_clkctl1.h
-@@ -0,0 +1,36 @@
++++ b/hw/ssi/flexspi.c
+@@ -0,0 +1,181 @@
 +/*
-+ * QEMU model for RT500 Clock Controller
-+ *
-+ * Copyright (c) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+
-+#ifndef HW_MISC_RT500_CLKCTL1_H
-+#define HW_MISC_RT500_CLKCTL1_H
-+
-+#include "hw/arm/svd/rt500_clkctl1.h"
-+#include "hw/sysbus.h"
-+
-+#define TYPE_RT500_CLKCTL1 "rt500-clkctl1"
-+#define RT500_CLKCTL1(o) OBJECT_CHECK(RT500ClkCtl1State, o, TYPE_RT500_CLKCTL1)
-+
-+#define OSEVENTTFCLKSEL_LPOSC 0
-+#define OSEVENTTFCLKSEL_32KHZRTC 1
-+#define OSEVENTTFCLKSEL_HCLK 2
-+#define OSEVENTTFCLKSEL_NONE 7
-+
-+typedef struct {
-+    SysBusDevice parent_obj;
-+
-+    MemoryRegion mmio;
-+    uint32_t regs[RT500_CLKCTL1_REGS_NO];
-+    Clock *sysclk;
-+    Clock *ostimer_clk;
-+} RT500ClkCtl1State;
-+
-+#endif /* HW_MISC_RT500_CLKCTL1_H */
-diff --git a/hw/misc/rt500_clkctl0.c b/hw/misc/rt500_clkctl0.c
-new file mode 100644
-index 0000000000..7e7b176719
---- /dev/null
-+++ b/hw/misc/rt500_clkctl0.c
-@@ -0,0 +1,253 @@
-+/*
-+ * QEMU model for RT500 Clock Controller
++ * QEMU model for FLEXSPI
 + *
 + * Copyright (c) 2024 Google LLC
 + *
@@ -6145,187 +2842,33 @@ index 0000000000..7e7b176719
 + */
 +
 +#include "qemu/osdep.h"
-+#include "hw/clock.h"
-+#include "hw/irq.h"
-+#include "hw/qdev-clock.h"
-+#include "hw/qdev-properties.h"
++#include "qemu/mmap-alloc.h"
 +#include "qemu/log.h"
 +#include "qemu/module.h"
-+#include "exec/address-spaces.h"
++#include "qemu/units.h"
++#include "hw/irq.h"
++#include "hw/qdev-properties.h"
++#include "hw/qdev-properties-system.h"
 +#include "migration/vmstate.h"
-+#include "hw/misc/rt500_clkctl0.h"
-+#include "hw/misc/rt500_clk_freqs.h"
++#include "exec/address-spaces.h"
++#include "hw/ssi/flexspi.h"
++#include "hw/arm/svd/flexspi.h"
 +
 +#include "trace.h"
 +
-+#define REG(s, reg) (s->regs[R_RT500_CLKCTL0_##reg])
-+#define RF_RD(s, reg, field) \
-+    ARRAY_FIELD_EX32(s->regs, RT500_CLKCTL0_##reg, field)
++#define REG(s, reg) (s->regs[R_FLEXSPI_##reg])
 +#define RF_WR(s, reg, field, val) \
-+    ARRAY_FIELD_DP32(s->regs, RT500_CLKCTL0_##reg, field, val)
++    ARRAY_FIELD_DP32(s->regs, FLEXSPI_##reg, field, val)
++#define RF_RD(s, reg, field) \
++    ARRAY_FIELD_EX32(s->regs, FLEXSPI_##reg, field)
 +
-+static const RT500_CLKCTL0_REGISTER_ACCESS_INFO_ARRAY(reg_info);
++static FLEXSPI_REGISTER_ACCESS_INFO_ARRAY(reg_info);
 +
-+static MemTxResult rt500_clkctl0_read(void *opaque, hwaddr addr,
-+                                      uint64_t *data, unsigned size,
-+                                      MemTxAttrs attrs)
++static void flexspi_reset_enter(Object *obj, ResetType type)
 +{
-+    RT500ClkCtl0State *s = opaque;
-+    const struct RegisterAccessInfo *rai = &reg_info[addr / 4];
++    FlexSpiState *s = FLEXSPI(obj);
 +
-+    switch (addr) {
-+    case A_RT500_CLKCTL0_PSCCTL0_SET:
-+    case A_RT500_CLKCTL0_PSCCTL1_SET:
-+    case A_RT500_CLKCTL0_PSCCTL2_SET:
-+    case A_RT500_CLKCTL0_PSCCTL0_CLR:
-+    case A_RT500_CLKCTL0_PSCCTL1_CLR:
-+    case A_RT500_CLKCTL0_PSCCTL2_CLR:
-+        /* write only registers */
-+        return MEMTX_ERROR;
-+    default:
-+        *data = s->regs[addr / 4];
-+        break;
-+    }
-+
-+    trace_rt500_clkctl0_reg_read(rai->name, addr, *data);
-+    return MEMTX_OK;
-+}
-+
-+static inline void set_systick_clk_from_div(RT500ClkCtl0State *s)
-+{
-+    uint32_t div = RF_RD(s, SYSTICKFCLKDIV, DIV) + 1;
-+    uint32_t rate = clock_get_hz(s->sysclk);
-+
-+    clock_set_hz(s->systick_clk, rate / div);
-+}
-+
-+static MemTxResult rt500_clkctl0_write(void *opaque, hwaddr addr,
-+                                       uint64_t value, unsigned size,
-+                                       MemTxAttrs attrs)
-+{
-+    RT500ClkCtl0State *s = opaque;
-+    const struct RegisterAccessInfo *rai = &reg_info[addr / 4];
-+    struct RegisterInfo ri = {
-+        .data = &s->regs[addr / 4],
-+        .data_size = 4,
-+        .access = rai,
-+    };
-+
-+    trace_rt500_clkctl0_reg_write(rai->name, addr, value);
-+
-+    switch (addr) {
-+    case A_RT500_CLKCTL0_PSCCTL0:
-+    case A_RT500_CLKCTL0_PSCCTL1:
-+    case A_RT500_CLKCTL0_PSCCTL2:
-+    {
-+        register_write(&ri, value, ~0, NULL, false);
-+        break;
-+    }
-+    case A_RT500_CLKCTL0_PSCCTL0_SET:
-+    case A_RT500_CLKCTL0_PSCCTL1_SET:
-+    case A_RT500_CLKCTL0_PSCCTL2_SET:
-+    {
-+        uint32_t tmp;
-+
-+        tmp = A_RT500_CLKCTL0_PSCCTL0 + (addr - A_RT500_CLKCTL0_PSCCTL0_SET);
-+        s->regs[tmp / 4] |= value;
-+        break;
-+    }
-+    case A_RT500_CLKCTL0_PSCCTL0_CLR:
-+    case A_RT500_CLKCTL0_PSCCTL1_CLR:
-+    case A_RT500_CLKCTL0_PSCCTL2_CLR:
-+    {
-+        uint32_t tmp;
-+
-+        tmp = A_RT500_CLKCTL0_PSCCTL0 + (addr - A_RT500_CLKCTL0_PSCCTL0_CLR);
-+        s->regs[tmp / 4] &= ~value;
-+        break;
-+    }
-+    default:
-+        register_write(&ri, value, ~0, NULL, false);
-+    }
-+
-+    switch (addr) {
-+    case A_RT500_CLKCTL0_SYSPLL0PFD:
-+    {
-+        if (!RF_RD(s, SYSPLL0PFD, PFD0_CLKGATE)) {
-+            RF_WR(s, SYSPLL0PFD, PFD0_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, SYSPLL0PFD, PFD0_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, SYSPLL0PFD, PFD1_CLKGATE)) {
-+            RF_WR(s, SYSPLL0PFD, PFD1_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, SYSPLL0PFD, PFD1_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, SYSPLL0PFD, PFD2_CLKGATE)) {
-+            RF_WR(s, SYSPLL0PFD, PFD2_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, SYSPLL0PFD, PFD2_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, SYSPLL0PFD, PFD3_CLKGATE)) {
-+            RF_WR(s, SYSPLL0PFD, PFD3_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, SYSPLL0PFD, PFD3_CLKRDY, 0);
-+        }
-+        break;
-+    }
-+    case A_RT500_CLKCTL0_SYSTICKFCLKSEL:
-+    {
-+        switch (RF_RD(s, SYSTICKFCLKSEL, SEL)) {
-+        case SYSTICKFCLKSEL_DIVOUT:
-+        {
-+            set_systick_clk_from_div(s);
-+            break;
-+        }
-+        case SYSTICKFCLKSEL_LPOSC:
-+        {
-+            clock_set_hz(s->systick_clk, LPOSC_CLK_HZ);
-+            break;
-+        }
-+        case SYSTICKFCLKSEL_32KHZRTC:
-+        {
-+            clock_set_hz(s->systick_clk, RTC32KHZ_CLK_HZ);
-+            break;
-+        }
-+        case SYSTICKFCLKSEL_NONE:
-+        {
-+            clock_set_hz(s->systick_clk, 0);
-+            break;
-+        }
-+        }
-+        clock_propagate(s->systick_clk);
-+        break;
-+    }
-+    case A_RT500_CLKCTL0_SYSTICKFCLKDIV:
-+    {
-+        if (RF_RD(s, SYSTICKFCLKSEL, SEL) == SYSTICKFCLKSEL_DIVOUT) {
-+            set_systick_clk_from_div(s);
-+            clock_propagate(s->systick_clk);
-+        }
-+        break;
-+    }
-+    }
-+
-+    return MEMTX_OK;
-+}
-+
-+static const MemoryRegionOps rt500_clkctl0_ops = {
-+    .read_with_attrs = rt500_clkctl0_read,
-+    .write_with_attrs = rt500_clkctl0_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+        .unaligned = false,
-+    },
-+};
-+
-+static void rt500_clkctl0_reset_enter(Object *obj, ResetType type)
-+{
-+    RT500ClkCtl0State *s = RT500_CLKCTL0(obj);
-+
-+    for (int i = 0; i < RT500_CLKCTL0_REGS_NO; i++) {
++    for (int i = 0; i < FLEXSPI_REGS_NO; i++) {
 +        hwaddr addr = reg_info[i].addr;
 +
 +        if (addr != -1) {
@@ -6339,124 +2882,34 @@ index 0000000000..7e7b176719
 +        }
 +    }
 +
-+    /* clock OK immediately after reset */
-+    REG(s, FROCLKSTATUS) = 0x00000001;
++    /* idle immediately after reset */
++    RF_WR(s, STS0, SEQIDLE, 1);
 +}
 +
-+static void rt500_clkctl0_init(Object *obj)
++static MemTxResult flexspi_read(void *opaque, hwaddr addr,
++                                     uint64_t *data, unsigned size,
++                                     MemTxAttrs attrs)
 +{
-+    RT500ClkCtl0State *s = RT500_CLKCTL0(obj);
-+
-+    memory_region_init_io(&s->mmio, obj, &rt500_clkctl0_ops, s,
-+                          TYPE_RT500_CLKCTL0, sizeof(s->regs));
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+    s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
-+    s->systick_clk = qdev_init_clock_out(DEVICE(s), "systick_clk");
-+}
-+
-+static const VMStateDescription vmstate_rt500_clkctl0 = {
-+    .name = "rt500-clkctl0",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(regs, RT500ClkCtl0State, RT500_CLKCTL0_REGS_NO),
-+        VMSTATE_CLOCK(systick_clk, RT500ClkCtl0State),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void rt500_clkctl0_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
-+
-+    rc->phases.enter = rt500_clkctl0_reset_enter;
-+    dc->vmsd = &vmstate_rt500_clkctl0;
-+}
-+
-+static const TypeInfo rt500_clkctl0_types[] = {
-+    {
-+        .name          = TYPE_RT500_CLKCTL0,
-+        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(RT500ClkCtl0State),
-+        .instance_init = rt500_clkctl0_init,
-+        .class_init    = rt500_clkctl0_class_init,
-+    },
-+};
-+
-+DEFINE_TYPES(rt500_clkctl0_types);
-+
-diff --git a/hw/misc/rt500_clkctl1.c b/hw/misc/rt500_clkctl1.c
-new file mode 100644
-index 0000000000..ed234ce0f6
---- /dev/null
-+++ b/hw/misc/rt500_clkctl1.c
-@@ -0,0 +1,238 @@
-+/*
-+ * QEMU model for RT500 Clock Controller
-+ *
-+ * Copyright (c) 2024 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/clock.h"
-+#include "hw/irq.h"
-+#include "hw/qdev-clock.h"
-+#include "hw/qdev-properties.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "exec/address-spaces.h"
-+#include "migration/vmstate.h"
-+#include "hw/misc/rt500_clkctl1.h"
-+#include "hw/misc/rt500_clk_freqs.h"
-+
-+#include "trace.h"
-+
-+#define REG(s, reg) (s->regs[R_RT500_CLKCTL1_##reg])
-+#define RF_RD(s, reg, field) \
-+    ARRAY_FIELD_EX32(s->regs, RT500_CLKCTL1_##reg, field)
-+#define RF_WR(s, reg, field, val) \
-+    ARRAY_FIELD_DP32(s->regs, RT500_CLKCTL1_##reg, field, val)
-+
-+static RT500_CLKCTL1_REGISTER_ACCESS_INFO_ARRAY(reg_info);
-+
-+static MemTxResult rt500_clkctl1_read(void *opaque, hwaddr addr,
-+                                      uint64_t *data, unsigned size,
-+                                      MemTxAttrs attrs)
-+{
-+    RT500ClkCtl1State *s = opaque;
++    FlexSpiState *s = opaque;
 +    const struct RegisterAccessInfo *rai = &reg_info[addr / 4];
 +    MemTxResult ret = MEMTX_OK;
 +
 +    switch (addr) {
-+    case A_RT500_CLKCTL1_PSCCTL0_SET:
-+    case A_RT500_CLKCTL1_PSCCTL1_SET:
-+    case A_RT500_CLKCTL1_PSCCTL2_SET:
-+    case A_RT500_CLKCTL1_PSCCTL0_CLR:
-+    case A_RT500_CLKCTL1_PSCCTL1_CLR:
-+    case A_RT500_CLKCTL1_PSCCTL2_CLR:
-+        /* write only registers */
-+        ret = MEMTX_ERROR;
-+        break;
 +    default:
 +        *data = s->regs[addr / 4];
 +        break;
 +    }
 +
-+    trace_rt500_clkctl1_reg_read(rai->name, addr, *data);
++    trace_flexspi_reg_read(DEVICE(s)->id, rai->name, addr, *data);
 +    return ret;
 +}
 +
-+static MemTxResult rt500_clkctl1_write(void *opaque, hwaddr addr,
-+                                       uint64_t value, unsigned size,
-+                                       MemTxAttrs attrs)
++
++static MemTxResult flexspi_write(void *opaque, hwaddr addr,
++                                      uint64_t value, unsigned size,
++                                      MemTxAttrs attrs)
 +{
-+    RT500ClkCtl1State *s = opaque;
++    FlexSpiState *s = opaque;
 +    const struct RegisterAccessInfo *rai = &reg_info[addr / 4];
 +    struct RegisterInfo ri = {
 +        .data = &s->regs[addr / 4],
@@ -6464,237 +2917,145 @@ index 0000000000..ed234ce0f6
 +        .access = rai,
 +    };
 +
-+    trace_rt500_clkctl1_reg_write(rai->name, addr, value);
++    trace_flexspi_reg_write(DEVICE(s)->id, rai->name, addr, value);
 +
 +    switch (addr) {
-+    case A_RT500_CLKCTL1_PSCCTL0:
-+    case A_RT500_CLKCTL1_PSCCTL1:
-+    case A_RT500_CLKCTL1_PSCCTL2:
++    case A_FLEXSPI_MCR0:
 +    {
-+        s->regs[addr / 4] = value | s->regs[addr / 4];
++        register_write(&ri, value, ~0, NULL, false);
++
++        if (RF_RD(s, MCR0, SWRESET)) {
++            RF_WR(s, MCR0, SWRESET, 0);
++        }
 +        break;
 +    }
-+    case A_RT500_CLKCTL1_PSCCTL0_SET:
-+    case A_RT500_CLKCTL1_PSCCTL1_SET:
-+    case A_RT500_CLKCTL1_PSCCTL2_SET:
++    case A_FLEXSPI_INTR:
 +    {
-+        uint32_t tmp;
-+
-+        tmp = A_RT500_CLKCTL1_PSCCTL0 + (addr - A_RT500_CLKCTL1_PSCCTL0_SET);
-+        s->regs[tmp / 4] |= value;
-+        break;
-+    }
-+    case A_RT500_CLKCTL1_PSCCTL0_CLR:
-+    case A_RT500_CLKCTL1_PSCCTL1_CLR:
-+    case A_RT500_CLKCTL1_PSCCTL2_CLR:
-+    {
-+        uint32_t tmp;
-+
-+        tmp = A_RT500_CLKCTL1_PSCCTL0 + (addr - A_RT500_CLKCTL1_PSCCTL0_CLR);
-+        s->regs[tmp / 4] &= ~value;
++        /* fake SPI transfer completion */
++        RF_WR(s, INTR, IPCMDDONE, 1);
 +        break;
 +    }
 +    default:
 +        register_write(&ri, value, ~0, NULL, false);
-+    }
-+
-+    switch (addr) {
-+    case A_RT500_CLKCTL1_AUDIOPLL0PFD:
-+    {
-+        if (!RF_RD(s, AUDIOPLL0PFD, PFD0_CLKGATE)) {
-+            RF_WR(s, AUDIOPLL0PFD, PFD0_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, AUDIOPLL0PFD, PFD0_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, AUDIOPLL0PFD, PFD1_CLKGATE)) {
-+            RF_WR(s, AUDIOPLL0PFD, PFD1_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, AUDIOPLL0PFD, PFD1_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, AUDIOPLL0PFD, PFD2_CLKGATE)) {
-+            RF_WR(s, AUDIOPLL0PFD, PFD2_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, AUDIOPLL0PFD, PFD2_CLKRDY, 0);
-+        }
-+        if (!RF_RD(s, AUDIOPLL0PFD, PFD3_CLKGATE)) {
-+            RF_WR(s, AUDIOPLL0PFD, PFD3_CLKRDY, 1);
-+        } else {
-+            RF_WR(s, AUDIOPLL0PFD, PFD3_CLKRDY, 0);
-+        }
 +        break;
-+    }
-+    case A_RT500_CLKCTL1_OSEVENTTFCLKSEL:
-+    {
-+        switch (RF_RD(s, OSEVENTTFCLKSEL, SEL)) {
-+        case OSEVENTTFCLKSEL_LPOSC:
-+        {
-+            clock_set_hz(s->ostimer_clk, LPOSC_CLK_HZ);
-+            break;
-+        }
-+        case OSEVENTTFCLKSEL_32KHZRTC:
-+        {
-+            clock_set_hz(s->ostimer_clk, RTC32KHZ_CLK_HZ);
-+            break;
-+        }
-+        case OSEVENTTFCLKSEL_HCLK:
-+        {
-+            clock_set_hz(s->ostimer_clk, clock_get_hz(s->sysclk));
-+            break;
-+        }
-+        case OSEVENTTFCLKSEL_NONE:
-+        {
-+            clock_set_hz(s->ostimer_clk, 0);
-+            break;
-+        }
-+        }
-+
-+        clock_propagate(s->ostimer_clk);
-+        break;
-+    }
 +    }
 +
 +    return MEMTX_OK;
 +}
 +
-+
-+static const MemoryRegionOps rt500_clkctl1_ops = {
-+    .read_with_attrs = rt500_clkctl1_read,
-+    .write_with_attrs = rt500_clkctl1_write,
++static const MemoryRegionOps flexspi_ops = {
++    .read_with_attrs = flexspi_read,
++    .write_with_attrs = flexspi_write,
 +    .endianness = DEVICE_NATIVE_ENDIAN,
 +    .valid = {
-+        .min_access_size = 4,
++        .min_access_size = 1,
 +        .max_access_size = 4,
 +        .unaligned = false,
 +    },
 +};
 +
-+static void rt500_clkctl1_reset(Object *obj, ResetType type)
++static Property flexspi_properties[] = {
++    DEFINE_PROP_UINT64("mmap_size", FlexSpiState, mmap_size, 0),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void flexspi_init(Object *obj)
 +{
-+    RT500ClkCtl1State *s = RT500_CLKCTL1(obj);
++    FlexSpiState *s = FLEXSPI(obj);
 +
-+    for (int i = 0; i < RT500_CLKCTL1_REGS_NO; i++) {
-+        hwaddr addr = reg_info[i].addr;
++    memory_region_init_io(&s->mmio, obj, &flexspi_ops, s, TYPE_FLEXSPI,
++                          sizeof(s->regs));
++    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
++}
 +
-+        if (addr != -1) {
-+            struct RegisterInfo ri = {
-+                .data = &s->regs[addr / 4],
-+                .data_size = 4,
-+                .access = &reg_info[i],
-+            };
++static void flexspi_realize(DeviceState *dev, Error **errp)
++{
++    FlexSpiState *s = FLEXSPI(dev);
 +
-+            register_reset(&ri);
-+        }
++    if (s->mmap_size) {
++        memory_region_init_ram(&s->mem, OBJECT(s), DEVICE(s)->id, s->mmap_size,
++                               NULL);
++        sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->mem);
 +    }
 +}
 +
-+static void rt500_clkctl1_init(Object *obj)
-+{
-+    RT500ClkCtl1State *s = RT500_CLKCTL1(obj);
-+
-+    memory_region_init_io(&s->mmio, obj, &rt500_clkctl1_ops, s,
-+                          TYPE_RT500_CLKCTL1, sizeof(s->regs));
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+    s->sysclk = qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0);
-+    s->ostimer_clk = qdev_init_clock_out(DEVICE(s), "ostimer_clk");
-+}
-+
-+static const VMStateDescription vmstate_rt500_clkctl1 = {
-+    .name = "rt500-clkctl1",
++static const VMStateDescription vmstate_flexspi = {
++    .name = "flexspi",
 +    .version_id = 1,
 +    .minimum_version_id = 1,
 +    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(regs, RT500ClkCtl1State, RT500_CLKCTL1_REGS_NO),
-+        VMSTATE_CLOCK(ostimer_clk, RT500ClkCtl1State),
++        VMSTATE_UINT32_ARRAY(regs, FlexSpiState, FLEXSPI_REGS_NO),
 +        VMSTATE_END_OF_LIST()
 +    }
 +};
 +
-+static void rt500_clkctl1_class_init(ObjectClass *klass, void *data)
++static void flexspi_class_init(ObjectClass *klass, void *data)
 +{
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
 +    DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
 +
-+    rc->phases.enter = rt500_clkctl1_reset;
-+    dc->vmsd = &vmstate_rt500_clkctl1;
-+
++    rc->phases.enter = flexspi_reset_enter;
++    dc->realize = flexspi_realize;
++    dc->vmsd = &vmstate_flexspi;
++    device_class_set_props(dc, flexspi_properties);
 +}
 +
-+static const TypeInfo rt500_clkctl1_types[] = {
++static const TypeInfo flexspi_types[] = {
 +    {
-+        .name          = TYPE_RT500_CLKCTL1,
++        .name          = TYPE_FLEXSPI,
 +        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(RT500ClkCtl1State),
-+        .instance_init = rt500_clkctl1_init,
-+        .class_init    = rt500_clkctl1_class_init,
-+    }
++        .instance_size = sizeof(FlexSpiState),
++        .instance_init = flexspi_init,
++        .class_init    = flexspi_class_init,
++    },
 +};
 +
-+DEFINE_TYPES(rt500_clkctl1_types);
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 1ad60da7aa..668135bc85 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -712,3 +712,8 @@ config ARMSSE
-     select UNIMP
-     select SSE_COUNTER
-     select SSE_TIMER
-+
-+config RT500
-+    bool
-+    select FLEXCOMM
-+    select RT500_CLKCTL
++DEFINE_TYPES(flexspi_types);
 diff --git a/hw/arm/svd/meson.build b/hw/arm/svd/meson.build
-index 7f1c847caf..d017010b73 100644
+index d017010b73..7e59eda0d3 100644
 --- a/hw/arm/svd/meson.build
 +++ b/hw/arm/svd/meson.build
-@@ -13,4 +13,10 @@ if get_option('mcux-soc-svd')
-   run_target('svd-flexcomm-spi', command: svd_gen_header +
-     [ '-i', rt595, '-o', '@SOURCE_ROOT@/include/hw/arm/svd/flexcomm_spi.h',
-       '-p', 'SPI0', '-t', 'FLEXCOMM_SPI'])
-+  run_target('svd-rt500-clkctl0', command: svd_gen_header +
-+    [ '-i', rt595, '-o', '@SOURCE_ROOT@/include/hw/arm/svd/rt500_clkctl0.h',
-+      '-p', 'CLKCTL0', '-t', 'RT500_CLKCTL0'])
-+  run_target('svd-rt500-clkctl1', command: svd_gen_header +
-+    [ '-i', rt595, '-o', '@SOURCE_ROOT@/include/hw/arm/svd/rt500_clkctl1.h',
-+      '-p', 'CLKCTL1', '-t', 'RT500_CLKCTL1'])
+@@ -19,4 +19,7 @@ if get_option('mcux-soc-svd')
+   run_target('svd-rt500-clkctl1', command: svd_gen_header +
+     [ '-i', rt595, '-o', '@SOURCE_ROOT@/include/hw/arm/svd/rt500_clkctl1.h',
+       '-p', 'CLKCTL1', '-t', 'RT500_CLKCTL1'])
++  run_target('svd-flexspi', command: svd_gen_header +
++    [ '-i', rt595, '-o', '@SOURCE_ROOT@/include/hw/arm/svd/flexspi.h',
++      '-p', 'FLEXSPI0', '-t', 'FLEXSPI'])
  endif
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index b373e651e1..02feb93840 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -218,4 +218,7 @@ config FLEXCOMM
-     select I2C
+diff --git a/hw/ssi/Kconfig b/hw/ssi/Kconfig
+index 8d180de7cf..e3de40e6b6 100644
+--- a/hw/ssi/Kconfig
++++ b/hw/ssi/Kconfig
+@@ -28,3 +28,7 @@ config BCM2835_SPI
+ config PNV_SPI
+     bool
      select SSI
- 
-+config RT500_CLKCTL
++
++config FLEXSPI
 +    bool
++    select SSI
+diff --git a/hw/ssi/meson.build b/hw/ssi/meson.build
+index 4039e6d18d..1822c5e6c7 100644
+--- a/hw/ssi/meson.build
++++ b/hw/ssi/meson.build
+@@ -14,3 +14,4 @@ system_ss.add(when: 'CONFIG_IBEX', if_true: files('ibex_spi_host.c'))
+ system_ss.add(when: 'CONFIG_BCM2835_SPI', if_true: files('bcm2835_spi.c'))
+ system_ss.add(when: 'CONFIG_PNV_SPI', if_true: files('pnv_spi.c'))
+ system_ss.add(when: 'CONFIG_FLEXCOMM', if_true: files('flexcomm_spi.c'))
++system_ss.add(when: 'CONFIG_FLEXSPI', if_true: files('flexspi.c'))
+diff --git a/hw/ssi/trace-events b/hw/ssi/trace-events
+index f849f1f8be..dd2f04cb22 100644
+--- a/hw/ssi/trace-events
++++ b/hw/ssi/trace-events
+@@ -58,3 +58,7 @@ pnv_spi_RDR_match(const char* result) "%s"
+ flexcomm_spi_reg_read(const char *id, const char *reg_name, uint32_t addr, uint32_t val) " %s: %s[0x%04x] -> 0x%08x"
+ flexcomm_spi_reg_write(const char *id, const char *reg_name, uint32_t addr, uint32_t val) "%s: %s[0x%04x] <- 0x%08x"
+ flexcomm_spi_irq(const char *id, bool irq, bool fifoirqs, bool perirqs, bool enabled) "%s: %d %d %d %d"
 +
- source macio/Kconfig
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 749f688e84..e6d97b387c 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -159,3 +159,4 @@ system_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa_ec.c'))
- system_ss.add(when: 'CONFIG_LASI', if_true: files('lasi.c'))
- 
- system_ss.add(when: 'CONFIG_FLEXCOMM', if_true: files('flexcomm.c'))
-+system_ss.add(when: 'CONFIG_RT500_CLKCTL', if_true: files('rt500_clkctl0.c', 'rt500_clkctl1.c'))
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index dc245905dc..b19393dd36 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -368,3 +368,11 @@ flexcomm_irq(const char *id, uint8_t irq) "%s %d"
- flexcomm_reg_read(const char *devname, const char *regname, uint32_t addr, uint32_t val) "%s: %s[0x%04x] -> 0x%08x"
- flexcomm_reg_write(const char *dename, const char *regname, uint32_t addr, uint32_t val) "%s: %s[0x%04x] <- 0x%08x"
- flexcomm_fifostat(const char *id, uint32_t fifostat, uint32_t fifoinstat) "%s: %08x %08x"
-+
-+# rt500_clkctl0.c
-+rt500_clkctl0_reg_read(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] -> 0x%08x"
-+rt500_clkctl0_reg_write(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] <- 0x%08x"
-+
-+# rt500_clkctl1.c
-+rt500_clkctl1_reg_read(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] -> 0x%08x"
-+rt500_clkctl1_reg_write(const char *regname, uint32_t addr, uint32_t val) "%s[0x%04x] <- 0x%08x"
++# flexspi.c
++flexspi_reg_read(const char *id, const char *reg_name, uint32_t addr, uint32_t val) " %s: %s[0x%04x] -> 0x%08x"
++flexspi_reg_write(const char *id, const char *reg_name, uint32_t addr, uint32_t val) "%s: %s[0x%04x] <- 0x%08x"
 -- 
 2.46.0.662.g92d0881bb0-goog
 
