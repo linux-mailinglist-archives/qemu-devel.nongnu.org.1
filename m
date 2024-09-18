@@ -2,73 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4A997BCB0
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 15:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6F297BC2C
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 14:23:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1squJK-0003wx-OG; Wed, 18 Sep 2024 09:01:34 -0400
+	id 1sqthN-0001AU-Db; Wed, 18 Sep 2024 08:22:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jic23@kernel.org>) id 1sqtYC-0000Bu-Gj
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 08:12:52 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sqth1-00015F-Ly
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 08:22:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jic23@kernel.org>) id 1sqtY9-0006No-Qd
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 08:12:52 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 74EE05C5C12;
- Wed, 18 Sep 2024 12:12:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC95C4CEC3;
- Wed, 18 Sep 2024 12:12:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1726661560;
- bh=JhhkhILXtZKx/eR4sDSXtFMm6W/kF+QdN4He/iQd1f0=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=dGhzJulw1a5X0/TNcFR50ne2LNTyx8BnT6b88El3p8QD8p48GikDrlMGb95vAjId3
- ra/kKmI2c1OxrghmVkXO7sHwF0gqf3rWkKwVVh9eDz+EtitSak9gTziJbOU2TIXjEx
- 1l6UKSCN+sjOMOBD4+43wKfDVSebFR3GoEAk1vY2/YJ9du6Say2GnkhTuOz+rYal9m
- Kg1TI/suMIsAiWPe6dRCuZV5hT2mQLDF7dKzOFAW1ZPMef89kM/pOTSw9AEGymtLP/
- 0dJ+cawez/ehQHOyPjTTKgrvpvOCSyHcbYXSMMJC5BqEswFcdrGmeC1iDMcNdmOoZQ
- jHrKKpe/bC7bA==
-Date: Wed, 18 Sep 2024 13:12:32 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: John Groves <John@groves.net>, <linuxarm@huawei.com>, David Hildenbrand
- <david@redhat.com>, linux-mm <linux-mm@kvack.org>, linux-cxl
- <linux-cxl@vger.kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Ira Weiny
- <ira.weiny@intel.com>, virtualization <virtualization@lists.linux.dev>,
- Oscar Salvador <osalvador@suse.de>, qemu-devel <qemu-devel@nongnu.org>,
- Dave Jiang <dave.jiang@intel.com>, "Dan Williams"
- <dan.j.williams@intel.com>, "Wangkefeng (OS Kernel Lab)"
- <wangkefeng.wang@huawei.com>, John Groves <jgroves@micron.com>, Fan Ni
- <fan.ni@samsung.com>, Navneet Singh <navneet.singh@intel.com>, "
- =?UTF-8?B?4oCcTWljaGFlbA==?= S. =?UTF-8?B?VHNpcmtpbuKAnQ==?="
- <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Philippe
- =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-Subject: Re: [RFC] Virtualizing tagged disaggregated memory capacity (app
- specific, multi host shared)
-Message-ID: <20240918131232.6fa02096@jic23-huawei>
-In-Reply-To: <20240917205048.00001e34@huawei.com>
-References: <20240815172223.00001ca7@Huawei.com>
- <sjz2xzwkgkq6bun5lssqbsimbggczarotpjdhcsq3itoq5h7jc@x5ormqciwofo>
- <20240819164024.00005a0a@Huawei.com>
- <20240917205048.00001e34@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sqtgy-0007LS-2W
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 08:21:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1726662113;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GzfVzlmfEDIal0FGOmG929QVA1cSXOjk3xpvWuwpbVE=;
+ b=XeEX/tIg3oZZKZ2ZcCPgnintoOg8vkiK4l2ITHFcj6q6zCSR7zPWrmk8ik6zpkLqfMhxFI
+ 3JVbFPMYkzdbyfGNLho6njyR32Z14II/iRmVAMwUEwsM7XJqeBIyQg2KriiMMo2qmCiHPO
+ pbhoEq+USWA5zpWUpcEcfUeqciIjZas=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-155-SP3SlPXGP5ingvrpRJV7BA-1; Wed, 18 Sep 2024 08:21:50 -0400
+X-MC-Unique: SP3SlPXGP5ingvrpRJV7BA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-374c960ee7aso3896277f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 05:21:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726662110; x=1727266910;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GzfVzlmfEDIal0FGOmG929QVA1cSXOjk3xpvWuwpbVE=;
+ b=J5gvwL+Pm0o5vWk5H2bxKyzQ7OaceAUCMz6wMuizgjm7dUeMnHjX76xEPMZ9MmiT8j
+ 2RWTrVtb/cdmVb4PZzrs1eA6pjVMZOeb6A+UlcTc8JVjB7vcMnZmDIzYVa9sMe8vbyeD
+ fKlxm31IUySIeoJ1PdW8OxIsxfp+DML1VcWa8iJI+/M7lFjQOq4xSHhJxTjp1h3mmKvm
+ A9UgLpZLZ7aW7wePZEyPJkD5tgKXSlIdftp4gvpCXmyMl1jh0JkRhxZ/XFmE+KGfZMRb
+ l1TXC7TjXfT9j6+gngbr4NJHdDJPwxSC9YiIMlo3BDPOPObc+mOeRLnA72TnTG/JsWhH
+ UzIA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWWk0ScCJ3J4efoOf0C4MC3FzBwauEu7jaY/eA4xOF6/roWNvi6cBXj7ftyWU47XjPirB6IikTFCOtZ@nongnu.org
+X-Gm-Message-State: AOJu0YwGFAwfzlCO1As+gjyj0fEkrTJobZYwlOUyPnakR6fzM09+YZLw
+ Mc8EI8KbuSiEhTZ+VDOq3/btyuPUPQo3DBLF+lOMZEhniDJdvwIdXKeQv6gj+9G2v2+PrGIseDa
+ ldA6Is+MEposKUjm8gGpEmw4XBDU5uzDvHkBhSuXR2r5KZzFpmtTd
+X-Received: by 2002:adf:cd8b:0:b0:378:8f2f:905f with SMTP id
+ ffacd0b85a97d-378d61d4d27mr14322175f8f.11.1726662109574; 
+ Wed, 18 Sep 2024 05:21:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFffAWseuab53raL510pbuU7srN1JqGpMfTnm5vp0NMQ4CFNNAQTb6Hg6Ut5fG0+uKX0aiFxQ==
+X-Received: by 2002:adf:cd8b:0:b0:378:8f2f:905f with SMTP id
+ ffacd0b85a97d-378d61d4d27mr14322146f8f.11.1726662109045; 
+ Wed, 18 Sep 2024 05:21:49 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-378e73e80fcsm12135518f8f.36.2024.09.18.05.21.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Sep 2024 05:21:48 -0700 (PDT)
+Date: Wed, 18 Sep 2024 14:21:47 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ Ani Sinha <anisinha@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ "Jason A . Donenfeld" <Jason@zx2c4.com>, Thomas =?UTF-8?B?V2Vpw59zY2h1?=
+ =?UTF-8?B?aA==?= <thomas@t-8ch.de>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 1/2] acpi: ged: Add macro for acpi sleep control
+ register
+Message-ID: <20240918142147.50ef7b60@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240918014206.2165821-2-maobibo@loongson.cn>
+References: <20240918014206.2165821-1-maobibo@loongson.cn>
+ <20240918014206.2165821-2-maobibo@loongson.cn>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=jic23@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 18 Sep 2024 09:01:29 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,229 +107,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 17 Sep 2024 20:56:53 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Wed, 18 Sep 2024 09:42:05 +0800
+Bibo Mao <maobibo@loongson.cn> wrote:
 
-> On Tue, 17 Sep 2024 19:37:21 +0000
-> Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+> Macro definition is added for acpi sleep control register, ged emulation
+> driver can use the macro , also it can be used in FDT table if ged is
+> exposed with FDT table.
 > 
-> > Plan is currently to meet at lpc registration desk 2pm tomorrow Wednesday and we will find a room.
-> >  
-> 
-> And now the internet maybe knows my phone number (serves me right for using
-> my company mobile app that auto added a signature)
-> I might have been lucky and it didn't hit the archives because
-> the formatting was too broken..
-> 
-> Anyhow, see some of you tomorrow.  I didn't manage to borrow a jabra mic
-> so remote will be tricky but feel free to reach out and we might be
-> able to sort something.
-> 
-> Intent is this will be in informal BoF so we'll figure out the scope
-> at the start of the meeting.
-> 
-> Sorry for the noise!
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 
-Hack room 1.14 now if anyone is looking for us.
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 
-
+> ---
+>  hw/acpi/generic_event_device.c         | 6 +++---
+>  include/hw/acpi/generic_event_device.h | 7 +++++--
+>  2 files changed, 8 insertions(+), 5 deletions(-)
 > 
-> Jonathan
+> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+> index 15b4c3ebbf..d00f5a6c1c 100644
+> --- a/hw/acpi/generic_event_device.c
+> +++ b/hw/acpi/generic_event_device.c
+> @@ -201,9 +201,9 @@ static void ged_regs_write(void *opaque, hwaddr addr, uint64_t data,
 >  
-> > J
-> > On Sun, 18 Aug 2024 21:12:34 -0500
-> > John Groves <John@groves.net> wrote:
-> >   
-> > > On 24/08/15 05:22PM, Jonathan Cameron wrote:    
-> > > > Introduction
-> > > > ============
-> > > >
-> > > > If we think application specific memory (including inter-host shared memory) is
-> > > > a thing, it will also be a thing people want to use with virtual machines,
-> > > > potentially nested. So how do we present it at the Host to VM boundary?
-> > > >
-> > > > This RFC is perhaps premature given we haven't yet merged upstream support for
-> > > > the bare metal case. However I'd like to get the discussion going given we've
-> > > > touched briefly on this in a number of CXL sync calls and it is clear no one is    
-> > >
-> > > Excellent write-up, thanks Jonathan.
-> > >
-> > > Hannes' idea of an in-person discussion at LPC is a great idea - count me in.    
-> > 
-> > Had a feeling you might say that ;)
-> >   
-> > >
-> > > As the proprietor of famfs [1] I have many thoughts.
-> > >
-> > > First, I like the concept of application-specific memory (ASM), but I wonder
-> > > if there might be a better term for it. ASM suggests that there is one
-> > > application, but I'd suggest that a more concise statement of the concept
-> > > is that the Linux kernel never accesses or mutates the memory - even though
-> > > multiple apps might share it (e.g. via famfs). It's a subtle point, but
-> > > an important one for RAS etc. ASM might better be called non-kernel-managed
-> > > memory - though that name does not have as good a ring to it. Will mull this
-> > > over further...    
-> > 
-> > Naming is always the hard bit :)  I agree that one doesn't work for
-> > shared capacity. You can tell I didn't start there :)
-> >   
-> > >
-> > > Now a few level-setting comments on CXL and Dynamic Capacity Devices (DCDs),
-> > > some of which will be obvious to many of you:
-> > >
-> > > * A DCD is just a memory device with an allocator and host-level
-> > >   access-control built in.
-> > > * Usable memory from a DCD is not available until the fabric manger (likely
-> > >   on behalf of an orchestrator) performs an Initiate Dynamic Capacity Add
-> > >   command to the DCD.
-> > > * A DCD allocation has a tag (uuid) which is the invariant way of identifying
-> > >   the memory from that allocation.
-> > > * The tag becomes known to the host from the DCD extents provided via
-> > >   a CXL event following succesful allocation.
-> > > * The memory associated with a tagged allocation will surface as a dax device
-> > >   on each host that has access to it. But of course dax device naming &
-> > >   numbering won't be consistent across separate hosts - so we need to use
-> > >   the uuid's to find specific memory.
-> > >
-> > > A few less foundational observations:
-> > >
-> > > * It does not make sense to "online" shared or sharable memory as system-ram,
-> > >   because system-ram gets zeroed, which blows up use cases for sharable memory.
-> > >   So the default for sharable memory must be devdax mode.    
-> > (CXL specific diversion)
-> > 
-> > Absolutely agree this this. There is a 'corner' that irritates me in the spec though
-> > which is that there is no distinction between shareable and shared capacity.
-> > If we are in a constrained setup with limited HPA or DPA space, we may not want
-> > to have separate DCD regions for these.  Thus it is plausible that an orchestrator
-> > might tell a memory appliance to present memory for general use and yet it
-> > surfaces as shareable.  So there may need to be an opt in path at least for
-> > going ahead and using this memory as normal RAM.
-> >   
-> > > * Tags are mandatory for sharable allocations, and allowed but optional for
-> > >   non-sharable allocations. The implication is that non-sharable allocations
-> > >   may get onlined automatically as system-ram, so we don't need a namespace
-> > >   for those. (I argued for mandatory tags on all allocations - hey you don't
-> > >   have to use them - but encountered objections and dropped it.)
-> > > * CXL access control only goes to host root ports; CXL has no concept of
-> > >   giving access to a VM. So some component on a host (perhaps logically
-> > >   an orchestrator component) needs to plumb memory to VMs as appropriate.    
-> > 
-> > Yes.  It's some mashup of an orchestrator and VMM / libvirt, local library
-> > of your choice. We can just group into into the ill defined concept of
-> > a distributed orchestrator.
-> >   
-> > >
-> > > So tags are a namespace to find specific memory "allocations" (which in the
-> > > CXL consortium, we usually refer to as "tagged capacity").
-> > >
-> > > In an orchestrated environment, the orchestrator would allocate resources
-> > > (including tagged memory capacity), make that capacity visible on the right
-> > > host(s), and then provide the tag when starting the app if needed.
-> > >
-> > > if (e.g.) the memory cotains a famfs file system, famfs needs the uuid of the
-> > > root memory allocation to find the right memory device. Once mounted, it's a
-> > > file sytem so apps can be directed to the mount path. Apps that consume the
-> > > dax devices directly also need the uuid because /dev/dax0.0 is not invariant
-> > > across a cluster...
-> > >
-> > > I have been assuming that when the CXL stack discovers a new DCD allocation,
-> > > it will configure the devdax device and provide some way to find it by tag.
-> > > /sys/cxl/<tag>/dev or whatever. That works as far as it goes, but I'm coming
-> > > around to thinking that the uuid-to-dax map should not be overtly CXL-specific.    
-> > 
-> > Agreed. Whether that's a nice kernel side thing, or a utility pulling data
-> > from various kernel subsystem interfaces doesn't really matter. I'd prefer
-> > the kernel presents this but maybe that won't work for some reason.
-> >   
-> > >
-> > > General thoughts regarding VMs and qemu
-> > >
-> > > Physical connections to CXL memory are handled by physical servers. I don't
-> > > think there is a scenario in which a VM should interact directly with the
-> > > pcie function(s) of CXL devices. They will be configured as dax devices
-> > > (findable by their tags!) by the host OS, and should be provided to VMs
-> > > (when appropriate) as DAX devices. And software in a VM needs to be able to
-> > > find the right DAX device the same way it would running on bare metal - by
-> > > the tag.    
-> > 
-> > Limiting to typical type 3 memory pool devices. Agreed. The other CXL device
-> > types are a can or worms for another day.
-> >   
-> > >
-> > > Qemu can already get memory from files (-object memory-backend-file,...), and
-> > > I believe this works whether it's an actual file or a devdax device. So far,
-> > > so good.
-> > >
-> > > Qemu can back a virtual pmem device by one of these, but currently (AFAIK)
-> > > not a virtual devdax device. I think virtual devdax is needed as a first-class
-> > > abstraction. If we can add the tag as a property of the memory-backend-file,
-> > > we're almost there - we just need away to lookup a daxdev by tag.    
-> > 
-> > I'm not sure that is simple. We'd need to define a new interface capable of:
-> > 1) Hotplug - potentially of many separate regions (think nested VMs).
-> >    That more or less rules out using separate devices on a discoverable hotpluggable
-> >    bus. We'd run out of bus numbers too quickly if putting them on PCI.
-> >    ACPI style hotplug is worse because we have to provision slots at the outset.
-> > 2) Runtime provision of metadata - performance data very least (bandwidth /
-> >    latency etc). In theory could wire up ACPI _HMA but no one has ever bothered.
-> > 3) Probably do want async error signaling.  We 'could' do that with
-> >    FW first error injection - I'm not sure it's a good idea but it's definitely
-> >    an option.
-> > 
-> > A locked down CXL device is a bit more than that, but not very much more.
-> > It's easy to fake registers for things that are always in one state so
-> > that the software stack is happy.
-> > 
-> > virtio-mem has some of the parts and could perhaps be augmented
-> > to support this use case with the advantage of no implicit tie to CXL.
-> > 
-> >   
-> > >
-> > > Summary thoughts:
-> > >
-> > > * A mechanism for resolving tags to "tagged capacity" devdax devices is
-> > >   essential (and I don't think there are specific proposals about this
-> > >   mechanism so far).    
-> > 
-> > Agreed.
-> >   
-> > > * Said mechanism should not be explicitly CXL-specific.    
-> > 
-> > Somewhat agreed, but I don't want to invent a new spec just to avoid explicit
-> > ties to CXL. I'm not against using CXL to present HBM / ACPI Specific Purpose
-> > memory for example to a VM. It will trivially work if that is what a user
-> > wants to do and also illustrates that this stuff doesn't necessarily just
-> > apply to capacity on a memory pool - it might just be 'weird' memory on the host.
-> >   
-> > > * Finding a tagged capacity devdax device in a VM should work the same as it
-> > >   does running on bare metal.    
-> > 
-> > Absolutely - that's a requirement.
-> >   
-> > > * The file-backed (and devdax-backed) devdax abstraction is needed in qemu.    
-> > 
-> > Maybe. I'm not convinced the abstraction is needed at that particular level.
-> >   
-> > > * Beyond that, I'm not yet sure what the lookup mechanism should be. Extra
-> > >   points for being easy to implement in both physical and virtual systems.    
-> > 
-> > For physical systems we aren't going to get agreement :(  For the systems
-> > I have visibility of there will be some diversity in hardware, but the
-> > presentation to userspace and up consistency should be doable.
-> > 
-> > Jonathan
-> >   
-> > >
-> > > Thanks for teeing this up!
-> > > John
-> > >
-> > >
-> > > [1] https://github.com/cxl-micron-reskit/famfs/blob/master/README.md
-> > >    
-> > 
-> > 
-> >   
-> 
+>      switch (addr) {
+>      case ACPI_GED_REG_SLEEP_CTL:
+> -        slp_typ = (data >> 2) & 0x07;
+> -        slp_en  = (data >> 5) & 0x01;
+> -        if (slp_en && slp_typ == 5) {
+> +        slp_typ = (data >> ACPI_GED_SLP_TYP_POS) & ACPI_GED_SLP_TYP_MASK;
+> +        slp_en  = !!(data & ACPI_GED_SLP_EN);
+> +        if (slp_en && slp_typ == ACPI_GED_SLP_TYP_S5) {
+>              qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+>          }
+>          return;
+> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+> index 40af3550b5..d2dac87b4a 100644
+> --- a/include/hw/acpi/generic_event_device.h
+> +++ b/include/hw/acpi/generic_event_device.h
+> @@ -81,8 +81,11 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+>  /* ACPI_GED_REG_RESET value for reset*/
+>  #define ACPI_GED_RESET_VALUE       0x42
+>  
+> -/* ACPI_GED_REG_SLEEP_CTL.SLP_TYP value for S5 (aka poweroff) */
+> -#define ACPI_GED_SLP_TYP_S5        0x05
+> +/* [ACPI 5.0 Chapter 4.8.3.7] Sleep Control and Status Register */
+> +#define ACPI_GED_SLP_TYP_POS       0x2   /* SLP_TYPx Bit Offset */
+> +#define ACPI_GED_SLP_TYP_MASK      0x07  /* SLP_TYPx 3-bit mask */
+> +#define ACPI_GED_SLP_TYP_S5        0x05  /* System _S5 State (Soft Off) */
+> +#define ACPI_GED_SLP_EN            0x20  /* SLP_EN write-only bit */
+>  
+>  #define GED_DEVICE      "GED"
+>  #define AML_GED_EVT_REG "EREG"
 
 
