@@ -2,47 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F7397BCB1
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 15:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2617297B8A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 09:44:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1squJK-0003wU-L1; Wed, 18 Sep 2024 09:01:34 -0400
+	id 1sqpLF-0001GF-Fl; Wed, 18 Sep 2024 03:43:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ubuntu@ubuntu>) id 1sqp4q-0007Rf-1G
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 03:26:16 -0400
-Received: from [222.128.9.250] (helo=ubuntu)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1sqpLC-0001Eo-F9
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 03:43:10 -0400
+Received: from mout.kundenserver.de ([212.227.17.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ubuntu@ubuntu>) id 1sqp4n-0000TG-Tq
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 03:26:15 -0400
-Received: by ubuntu (Postfix, from userid 1000)
- id 5E7E242E1; Wed, 18 Sep 2024 07:19:55 +0000 (UTC)
-From: xiangwencheng@gmail.com
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1sqpLA-0001lQ-1f
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 03:43:10 -0400
+Received: from quad ([82.64.211.94]) by mrelayeu.kundenserver.de (mreue107
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1MuDoR-1rz8rE2VxN-00v13H; Wed, 18
+ Sep 2024 09:42:57 +0200
+From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
-Cc: mst@redhat.com,
-	BillXiang <xiangwencheng@gmail.com>
-Subject: [PATCH v4] vhsot-user: Do not wait for reply for not sent
- VHOST_USER_SET_LOG_BASE
-Date: Wed, 18 Sep 2024 07:19:30 +0000
-Message-ID: <20240918071930.28771-1-xiangwencheng@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Cc: Brian Cain <bcain@quicinc.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH 0/3] linux-user: Update syscall numbers
+Date: Wed, 18 Sep 2024 09:42:53 +0200
+Message-ID: <20240918074256.720617-1-laurent@vivier.eu>
+X-Mailer: git-send-email 2.46.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 222.128.9.250 (failed)
-Received-SPF: none client-ip=222.128.9.250; envelope-from=ubuntu@ubuntu;
- helo=ubuntu
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_CUSTOM_MED=0.001,
- FORGED_GMAIL_RCVD=1, FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- FSL_HELO_NON_FQDN_1=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- HELO_NO_DOMAIN=0.166, NML_ADSP_CUSTOM_MED=0.9, RDNS_NONE=0.793, SPF_NONE=0.001,
- SPOOFED_FREEMAIL=0.001, SPOOFED_FREEMAIL_NO_RDNS=0.001,
- SPOOF_GMAIL_MID=0.001 autolearn=no autolearn_force=no
+X-Provags-ID: V03:K1:yC72yETysonw8mzsfz2f6FBqNqaxfQYgP9TYW1CWjdEb15Ukq0g
+ p0h5WkTK3YD6kJu3is/XbWe+5uoBxaMdcJbJ52DAG0slOcjpzCrO4Q8swoXX7qgsIpnHEIx
+ Qb0T4kBnnWdYzvfT7R2xFsP66CJa4DgVb46sVRE3jAzPbS98Kg12BxmVxz3BDwj9xKc4iy2
+ g6dc6WbEE6Yiv4zvNprmw==
+UI-OutboundReport: notjunk:1;M01:P0:sZRS+eDjaGg=;ZG2P58lQ+pFsgNC7ZIl5G2ghe+5
+ ZMdJgHYQOtsq1DL36pxSsdCTs7BzUsc0+URXdymNOAPF1QFvg8zLEge1ZT2iQ7B5stQ+3IDPp
+ WCYrDG89x/CcL+x6qQwwrF9HUUXQ6zMdtKZOLSR33VcZHNcyGrhxsbUNQ1fIWpmA92xdqalEg
+ dXbx0SDJW239GgYNzTGWAeqsmPMwifs/r+/gyDRtPSoLQfCzX3CkImmIKcq9E9PPfZlewpfU6
+ /7YRXLXnY9zuj+MYbYTWL5CrGqwKYnrxp4UjF3as82NCdPvDEzJafU1kXZVc5XhHBZFU7/iqy
+ nfIABLqx2TRIyqBJfSl2Q6Oh0w3EUDeUK5tY4J0tHDqZgtHN7emgjJaVqEPT6vtr5XakPftrb
+ TEQaTRONbN13JpDXJWiIedivMQIG2zdOX+lTDJaYZk+Oqt2Phn1R3hv9DVAMVdu77zmupPS4L
+ HXW/uFeQKrvkL5kfWPwvZr6MUuXYF4+KFoQXcwD8NYAlOhsMenrjBVn/1GhPRvUK9+09ZcxkV
+ Y2dn2wm4JUSh6nagquCRk5efZlkJMb+1QOMjXGUNH1NTbLDVM3SH96SRQOaxvUXaNgcWLqraV
+ 14aSwPjTXeirZd4TLtqj++4sIenxyG+trBBVa6vXIH4wa9VqCzixx5JbcvAyJmE2kJxVaqsuY
+ kblXJgv9EJlT99cGQp8XBqMeTRw+cNhXx44yZ5RLL3GJMhRM0h/EwShMcA+QNIUMybh/rgTe4
+ tb64qF4pQ7MWDI8Q94OfHU2bngrHY1ZkQ==
+Received-SPF: pass client-ip=212.227.17.10; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-1.048, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 18 Sep 2024 09:01:29 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,40 +70,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BillXiang <xiangwencheng@gmail.com>
+Run scripts/gensyscalls.sh, scripts/update-mips-syscall-args.sh
+and scripts/update-syscalltbl.sh to update syscall numbers to
+linux v6.10
 
-Clean up commit 7c211eb078c4 ("vhost-user: Skip unnecessary duplicated 
-VHOST_USER_SET_LOG_BASE requests") which has added VHOST_USER_SET_LOG_BASE
-to vhost_user_per_device_request and will not send it in vhost_user_write
-when vq_index != 0 but still wait for replies in vhost_user_set_log_base
-for those not sent msgs which will cause qemu hangs up.
-So we add check in this patch to read reply only when vq_index == 0.
+Laurent Vivier (3):
+  linux-user: update syscall_nr.h to Linux v6.10
+  linux-user, mips: update syscall-args-o32.c.inc to Linux v6.10
+  linux-user: update syscall.tbl to Linux v6.10
 
+ linux-user/aarch64/syscall_nr.h        | 19 ++++++-
+ linux-user/alpha/syscall.tbl           | 28 +++++++---
+ linux-user/arm/syscall.tbl             | 24 +++++++--
+ linux-user/hexagon/syscall_nr.h        | 20 +++++++-
+ linux-user/hppa/syscall.tbl            | 41 ++++++++++-----
+ linux-user/i386/syscall_32.tbl         | 28 +++++++---
+ linux-user/loongarch64/syscall_nr.h    | 14 ++++-
+ linux-user/m68k/syscall.tbl            | 22 ++++++--
+ linux-user/microblaze/syscall.tbl      | 22 ++++++--
+ linux-user/mips/syscall-args-o32.c.inc | 20 ++++++++
+ linux-user/mips/syscall_o32.tbl        | 36 +++++++++----
+ linux-user/mips64/syscall_n32.tbl      | 32 +++++++++---
+ linux-user/mips64/syscall_n64.tbl      | 20 +++++++-
+ linux-user/openrisc/syscall_nr.h       | 18 ++++++-
+ linux-user/ppc/syscall.tbl             | 71 ++++++++++++++++++--------
+ linux-user/riscv/syscall32_nr.h        | 23 +++++++--
+ linux-user/riscv/syscall64_nr.h        | 23 +++++++--
+ linux-user/s390x/syscall.tbl           | 34 ++++++++----
+ linux-user/sh4/syscall.tbl             | 25 +++++++--
+ linux-user/sparc/syscall.tbl           | 40 ++++++++++-----
+ linux-user/x86_64/syscall_64.tbl       | 22 ++++++--
+ linux-user/xtensa/syscall.tbl          | 22 ++++++--
+ 22 files changed, 486 insertions(+), 118 deletions(-)
 
-Signed-off-by: BillXiang <xiangwencheng@gmail.com>
----
-V3[1] -> V4:
- - rewrite the commit log to make it clear
-
-[1]https://lists.nongnu.org/archive/html/qemu-devel/2024-09/msg01852.html
----
- hw/virtio/vhost-user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 00561daa06..fd12992d15 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -460,7 +460,7 @@ static int vhost_user_set_log_base(struct vhost_dev *dev, uint64_t base,
-         return ret;
-     }
- 
--    if (shmfd) {
-+    if (shmfd && dev->vq_index == 0) {
-         msg.hdr.size = 0;
-         ret = vhost_user_read(dev, &msg);
-         if (ret < 0) {
 -- 
-2.30.0
+2.46.0
 
 
