@@ -2,86 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F7497C7B0
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 12:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D245397BDF6
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 16:26:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srE1h-00050Y-P2; Thu, 19 Sep 2024 06:04:41 -0400
+	id 1sqvcW-0001xV-A1; Wed, 18 Sep 2024 10:25:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1srE1g-0004xh-2J
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 06:04:40 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1srE1e-0002Ge-Ca
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 06:04:39 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2f74e613a10so8925641fa.1
- for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 03:04:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726740276; x=1727345076; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BGYhlLzLoZazpQNoUKwBs3Uwl//YODb3fkfgd9Ni2AY=;
- b=Nq+iT4dCHIOy5LzOYEeqGgDnPpwbc0X5hPI8DwFFrOyPkiZWo4XS55NifxadxKweQa
- i7TuWq1hyc49ssI973ypkC3QDz556ygSEqmwqiIqJW/946t2PvEv2d1Ae8Ia/Z/qlNdL
- MUr39hMLJvivBwQwUXriMEVHZ7tVj5FeJVC/Nh49DR3sM9yR76zAelV09KRUMPnlZBxD
- fe4p5I9r47m3M4sizZj8dR31QDnIVYeK3GA+mldpB1livP1IzLWvCDEbyJXIQpRnMkz2
- OCK86X3HV/X6T9XbvU3sYROldJr2E2UERDjbyFj1h2kz8R0m3Hx5pu1yFOVPJ3n62xwZ
- AbkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726740276; x=1727345076;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BGYhlLzLoZazpQNoUKwBs3Uwl//YODb3fkfgd9Ni2AY=;
- b=KGI1AxK/blkjM2UjqgLWxbnUtObNJoCL7jS5KXiHVteosWkFjvwh6iaqJ7jQ3YTtv/
- /SwwUlB9kxFiK6fS20uDbEwPhRKNK59ryncg3bGgJ7Y9FAjj5DswHtOQMAiXzG1AZdmS
- jYH9Zbrmv/rNUKbta17pggzhJcqstB9932W+FYCUO9FM7Mt2gMN+QGCsBJjFKK7qvvez
- EkDaJM2uII20plYjdtwa2SB4s+jPlUG8gPuj9vV4boCWJPRFQXTdyaefV0KD4Sbp5YfF
- uCZ0nFhq1+hbsl+ZfThNlmWr58w8FfMar7L3t8MjIVgNHK4ABvN4lBgpiz/lIVV7o5yz
- lIjw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUPOOpLLtP69KIT6nFf20klR7CV+5Mdaaj38EC4KCZlVNuzE6LAef1+JsQzk2sLWbqrPd7MmtI2WE4Q@nongnu.org
-X-Gm-Message-State: AOJu0Yw97xTH3gqJuoFdjEZAZxvkU9CfguYC0AuC5W2pa5bOZPiAxR24
- eShcUh5Iz+QL9Ve5XBwqwzslglgA+aS8OCjKr7TaUo/yL5ewZ/koAlWsD7EF5jk=
-X-Google-Smtp-Source: AGHT+IE5fH1aMGmxhfSelj6lK7DKfqK1pbbTebNQOejyCSH9031Szd5ZZaNUSYO2grLh+iLmuOh2CQ==
-X-Received: by 2002:a05:651c:a0a:b0:2f7:562d:cb6c with SMTP id
- 38308e7fff4ca-2f7918e95aamr148567571fa.2.1726740276497; 
- Thu, 19 Sep 2024 03:04:36 -0700 (PDT)
-Received: from [10.133.7.245] ([83.68.141.146])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90610f3aaesm701574766b.53.2024.09.19.03.04.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Sep 2024 03:04:36 -0700 (PDT)
-Message-ID: <3850d20c-65dc-478f-a7f3-ea18d6b37c0e@linaro.org>
-Date: Wed, 18 Sep 2024 16:24:16 +0200
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqvcP-0001wf-Ab
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 10:25:21 -0400
+Received: from mx.treblig.org ([2a00:1098:5b::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqvcN-000665-5O
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 10:25:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+ :Subject; bh=zzKoXLNSbgT4ekD+Si/uyzQ7GGkoBXyqSY4TRsOQpd8=; b=bhSZkq1JHVjwNc8O
+ M7IgIhaIR4qI9dpmw0CivUD0FE9c125g5oPypOv8NfhXU71o32789Kj1yx0rqjHCsrAwXauPX/wPI
+ onrUQ6MDzArL4+mhi3jgpWu1vr7Cggepem6Ge0nQtDGfgpHo9ZXTY39teGhaOQMJcGIsWMIn6uT4z
+ j/+kAdIwkru6NkOTCscEMfnwSIpNw0wgQOx3GkDeXOOqv75oL9Vw6DAqTFmJGroWDm8By8ibLq72G
+ w0QLPFZHz7Co6tJbGNRJdiTnzPIs0pPelx+b8ZayEnjIHkBkPWa6trxdJQTOvjRD0sV+sWHcbtOmS
+ 0q1gsLB/MKrJuwG1kA==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+ by mx.treblig.org with esmtp (Exim 4.96)
+ (envelope-from <dave@treblig.org>) id 1sqvcK-006Ixf-1N;
+ Wed, 18 Sep 2024 14:25:16 +0000
+From: dave@treblig.org
+To: peterx@redhat.com
+Cc: qemu-devel@nongnu.org,
+	"Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: [PATCH] util/iova-tree: Remove deadcode
+Date: Wed, 18 Sep 2024 15:25:15 +0100
+Message-ID: <20240918142515.153074-1-dave@treblig.org>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/qemu-iotests/testenv: Use the "virt" machine for
- or1k
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-trivial@nongnu.org, Jia Liu <proljc@gmail.com>
-References: <20240917193028.320400-1-thuth@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240917193028.320400-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x234.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dave@treblig.org;
+ helo=mx.treblig.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,21 +62,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/17/24 21:30, Thomas Huth wrote:
-> When compiling QEMU just with "--target-list=or1k-softmmu", there
-> are 8 iotests failing that try to use PCI devices - but the default
-> or1k machine does not have a PCI bus. The "virt" machine is better
-> suited for running the iotests than the or1k default machine since
-> it provides PCI and thus e.g. support for virtio-blk and virtio-scsi,
-> too. With this change, there are no failing iotests anymore when
-> using the qemu-system-or1k binary for running the tests.
-> 
-> Signed-off-by: Thomas Huth<thuth@redhat.com>
-> ---
->   tests/qemu-iotests/testenv.py | 1 +
->   1 file changed, 1 insertion(+)
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+iova_tree_find_address, and iova_tree_foreach have never been
+used since the code was originally added by:
+  eecf5eedbd ("util: implement simple iova tree")
 
-r~
+Remove them.
+
+Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+---
+ include/qemu/iova-tree.h | 25 -------------------------
+ util/iova-tree.c         | 23 -----------------------
+ 2 files changed, 48 deletions(-)
+
+diff --git a/include/qemu/iova-tree.h b/include/qemu/iova-tree.h
+index 2a10a7052e..44a45931d5 100644
+--- a/include/qemu/iova-tree.h
++++ b/include/qemu/iova-tree.h
+@@ -111,31 +111,6 @@ const DMAMap *iova_tree_find(const IOVATree *tree, const DMAMap *map);
+  */
+ const DMAMap *iova_tree_find_iova(const IOVATree *tree, const DMAMap *map);
+ 
+-/**
+- * iova_tree_find_address:
+- *
+- * @tree: the iova tree to search from
+- * @iova: the iova address to find
+- *
+- * Similar to iova_tree_find(), but it tries to find mapping with
+- * range iova=iova & size=0.
+- *
+- * Return: same as iova_tree_find().
+- */
+-const DMAMap *iova_tree_find_address(const IOVATree *tree, hwaddr iova);
+-
+-/**
+- * iova_tree_foreach:
+- *
+- * @tree: the iova tree to iterate on
+- * @iterator: the iterator for the mappings, return true to stop
+- *
+- * Iterate over the iova tree.
+- *
+- * Return: 1 if found any overlap, 0 if not, <0 if error.
+- */
+-void iova_tree_foreach(IOVATree *tree, iova_tree_iterator iterator);
+-
+ /**
+  * iova_tree_alloc_map:
+  *
+diff --git a/util/iova-tree.c b/util/iova-tree.c
+index 536789797e..06295e2755 100644
+--- a/util/iova-tree.c
++++ b/util/iova-tree.c
+@@ -115,13 +115,6 @@ const DMAMap *iova_tree_find_iova(const IOVATree *tree, const DMAMap *map)
+     return args.result;
+ }
+ 
+-const DMAMap *iova_tree_find_address(const IOVATree *tree, hwaddr iova)
+-{
+-    const DMAMap map = { .iova = iova, .size = 0 };
+-
+-    return iova_tree_find(tree, &map);
+-}
+-
+ static inline void iova_tree_insert_internal(GTree *gtree, DMAMap *range)
+ {
+     /* Key and value are sharing the same range data */
+@@ -148,22 +141,6 @@ int iova_tree_insert(IOVATree *tree, const DMAMap *map)
+     return IOVA_OK;
+ }
+ 
+-static gboolean iova_tree_traverse(gpointer key, gpointer value,
+-                                gpointer data)
+-{
+-    iova_tree_iterator iterator = data;
+-    DMAMap *map = key;
+-
+-    g_assert(key == value);
+-
+-    return iterator(map);
+-}
+-
+-void iova_tree_foreach(IOVATree *tree, iova_tree_iterator iterator)
+-{
+-    g_tree_foreach(tree->tree, iova_tree_traverse, iterator);
+-}
+-
+ void iova_tree_remove(IOVATree *tree, DMAMap map)
+ {
+     const DMAMap *overlap;
+-- 
+2.46.0
+
 
