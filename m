@@ -2,84 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852F397BC9B
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 14:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D0297BCC3
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 15:07:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1squD0-0003gi-Fk; Wed, 18 Sep 2024 08:55:02 -0400
+	id 1squOG-0004jY-Bf; Wed, 18 Sep 2024 09:06:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1squCv-0003Yd-OW
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 08:54:59 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1squCs-0002pO-2F
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 08:54:57 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-374d29ad8a7so4756576f8f.2
- for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 05:54:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726664092; x=1727268892; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lG+Q8S7Fct5ef/VuA95TQ7RdVMOBfi9LTalM/pVY76g=;
- b=nZ4uQSziFqvC6DmS1XVLpOFijMpRNxsA1stNjDT+LL1z3bQbuQwZZdYtEnP0IiS1Yn
- pIUbTMn7sK7a6xOg92PdNmj160kPtlewD/kM0+djNNHDjfZX9B48D70OEZWTEZTC8Vy8
- yIL7K9MeMajcXZIqjwwu3biM5mHsZr23so0q/lrO0h4FA3BEinNozNTztXyf/SnrmYlL
- L9L6ri9zjJxlRcuW7Cgxi5UWf9SLq8CVZv+/rBteiFR0C7G9amOUo4k9AINSnigkfxed
- QYu2pcG/yGJBv8pWc4hTUqEZZP4Ls38kaGa7moqwt3neV6BY6aA/f54RtoJan0Mgombq
- fv5w==
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1squOE-0004ib-5e
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 09:06:38 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1squOB-0004Ln-SR
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 09:06:37 -0400
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 90C6E3F594
+ for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 13:06:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1726664792;
+ bh=8l2x542gYIchymchoFuMWg32uMUCoYpfBV/jXlvRWAk=;
+ h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+ In-Reply-To:Content-Type;
+ b=PG7SvGYRuAHjL/d5F0CeYdwgdrZJZ09hIvIBF+xe6dHYse1SZgAFUxvqeUJJgoxrF
+ xHEbXKid76HeNo1FkhEYH7sFO6+zlwpmzprUmE2C7BQpfZe6kovI6RiF99D1K0pOnM
+ MKO1QLYKvvJE4y/c/HyzLtIc6y8vBjoA0c+rnAJwve8U4ChL6ClZYsWZ+lk7O7bxic
+ dAKzXY9o0rRbfornP+y0jlcI0qaYcAsxbSMp8Mfviq/+ircRLev6zCxJUdJbXdAYUJ
+ VE/sBDEsbFu+GnFHlmOgrOYSJpGHgp65bdMy/fAhnQlv+n7w3VN3IfNVpPLjghgNrU
+ aXNLWxfu2KYLw==
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-42cb236ad4aso44199405e9.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 06:06:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726664092; x=1727268892;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lG+Q8S7Fct5ef/VuA95TQ7RdVMOBfi9LTalM/pVY76g=;
- b=eVbLnWGpk1Ws7aKtq0adq940phwUn5tG3XLixgtKG1VIyG7s534gFy2A8DM11SxDM4
- stbz+hdsvbqylqSdiqFTwaXmKbKhjo0h8Rsw6cgGKuW4CG7Tf6mZLSg63P4Eiu7C4OxE
- EXOiAQ013gR4koZXmPW59Y45stqUTH7SgDqyCvyfF7zIrU4MJgf8R5tRtkCYRXL8E6to
- 0d1S6CjHhhypOVxVDJV9RhTxAf4fipuAwObV3JmgjInjvCbTEvNoW4vNDzfBd+tZQUmp
- wldVdgNBRKAIXE9XFyJKkSKb3bfNMZGRBTlmmsCQZp6GYcrGPUbs9A42aF3rf74MsQSP
- dDdw==
-X-Gm-Message-State: AOJu0Yxo5J6B4b45QcXNwSCA6KBkESs6UVjakoJIKCdDkLtd2k4X1unq
- T1N73bhL+quSVoinGYet2l01aqL65CMjWkP7TDmuDes1GR/6yg+7CG5olDfpS4x1aYatAidB5SF
- h
-X-Google-Smtp-Source: AGHT+IEcMktMLkLRiG9fFlQ0vXktisDT0E+rpzj+sgkqzy5ZxbfY1M00cK7fnDf7jboLibneT1jp5A==
-X-Received: by 2002:a5d:6789:0:b0:374:b960:f847 with SMTP id
- ffacd0b85a97d-378c2d51750mr11808484f8f.41.1726664092065; 
- Wed, 18 Sep 2024 05:54:52 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1726664792; x=1727269592;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8l2x542gYIchymchoFuMWg32uMUCoYpfBV/jXlvRWAk=;
+ b=PoBYBaAMc9JJ7vXmvok7/Y9NmrPnZGywogVrs99zs3GXZU5RwukPCJ5QZCu1VzgSn4
+ NJN65RSORdpnWCXCDBb8dhgOKA5mBpXvaRg+Uh0m+SmAE6jZJmyb5mmvSyTr2GbQNeuz
+ z85QApEFZ36xtCwpw0EFhgfSt+KSxm2QRJbLOYWZvnEbgHqemppukqITE1M5VkPJIUGJ
+ LDIq7RNO1Qc/hZY2JikROdTfrW5VOD7kQ5LCKE33vrtPwrGprZ9oabTgCEaCrG0hI7hv
+ DyJNyF4HRiNVYn+UiSOzvUmotyNTIFqJYaC92PxAwTGfsoFAeRtsS0jetcM5mpU7cdEn
+ P9tg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXnmNtfDk7vooz33pxkbSzESCnK9WkiBAG34gs5uWrKWiLvHQYzPq0Xe/kPibjPWDozdpMYdujDBQeU@nongnu.org
+X-Gm-Message-State: AOJu0YzRjdEVy2BvocKxYH2IynJ6+xhrGbmmbE7hKk1u58aG575oMTQz
+ orG1VOYbA4TP5LR1ugOBwWW9MuvjiFy1mj/gQNUmvwyEQteTV2pjapTdB8KBFfsW98PjP74Nw5H
+ m3spfVF1Izr145BFYTrkoQg+d4PBHRBvREiapoPZxcGkt7PkZTaod0/PyaiTBB8CXI05M
+X-Received: by 2002:a05:600c:511b:b0:42c:a72a:e8f4 with SMTP id
+ 5b1f17b1804b1-42cdb5317cbmr172610045e9.14.1726664791863; 
+ Wed, 18 Sep 2024 06:06:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENUt5bat+VyuH/X8ftjxUcPkWydjb9viwhSYt5aRmGL/qmuhxrHiMPPpyLNd/r+qN+rQ2zTw==
+X-Received: by 2002:a05:600c:511b:b0:42c:a72a:e8f4 with SMTP id
+ 5b1f17b1804b1-42cdb5317cbmr172609685e9.14.1726664791267; 
+ Wed, 18 Sep 2024 06:06:31 -0700 (PDT)
+Received: from [192.168.103.101]
+ (dynamic-046-114-111-082.46.114.pool.telefonica.de. [46.114.111.82])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42e7051335fsm16410645e9.30.2024.09.18.05.54.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Sep 2024 05:54:51 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 2/2] .gitlab-ci.d: Make separate collapsible log sections for
- build and test
-Date: Wed, 18 Sep 2024 13:54:49 +0100
-Message-Id: <20240918125449.3125571-3-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240918125449.3125571-1-peter.maydell@linaro.org>
-References: <20240918125449.3125571-1-peter.maydell@linaro.org>
+ ffacd0b85a97d-378e73f99b0sm12303634f8f.60.2024.09.18.06.06.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Sep 2024 06:06:30 -0700 (PDT)
+Message-ID: <bab7a5ce-74b6-49ae-b610-9a0f624addc0@canonical.com>
+Date: Wed, 18 Sep 2024 15:06:28 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] target/riscv: enable floating point unit
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, Anup Patel <anup@brainfault.org>,
+ Atish Patra <atishp@atishpatra.org>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Andrew Jones <ajones@ventanamicro.com>
+References: <20240916181633.366449-1-heinrich.schuchardt@canonical.com>
+ <20240917-f45624310204491aede04703@orel>
+ <15c359a4-b3c1-4cb0-be2e-d5ca5537bc5b@canonical.com>
+ <20240917-b13c51d41030029c70aab785@orel>
+ <8b24728f-8b6e-4c79-91f6-7cbb79494550@canonical.com>
+ <20240918-039d1e3bebf2231bd452a5ad@orel>
+ <CAFEAcA-Yg9=5naRVVCwma0Ug0vFZfikqc6_YiRQTrfBpoz9Bjw@mail.gmail.com>
+Content-Language: en-US
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <CAFEAcA-Yg9=5naRVVCwma0Ug0vFZfikqc6_YiRQTrfBpoz9Bjw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=185.125.188.122;
+ envelope-from=heinrich.schuchardt@canonical.com;
+ helo=smtp-relay-internal-0.canonical.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,243 +124,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GitLab lets a CI job create its own collapsible log sections by
-emitting special escape codes, as documented here:
+On 18.09.24 13:10, Peter Maydell wrote:
+> On Wed, 18 Sept 2024 at 07:06, Andrew Jones <ajones@ventanamicro.com> wrote:
+>>
+>> On Tue, Sep 17, 2024 at 06:45:21PM GMT, Heinrich Schuchardt wrote:
+>> ...
+>>> When thinking about the migration of virtual machines shouldn't QEMU be in
+>>> control of the initial state of vcpus instead of KVM?
+>>>
+>>
+>> Thinking about this more, I'm inclined to agree. Initial state and reset
+>> state should be traits of the VMM (potentially influenced by the user)
+>> rather than KVM.
+> 
+> Mmm. IIRC the way this works on Arm at least is that at some point
+> post-reset and before running the VM we do a QEMU->kernel state
+> sync, which means that whatever the kernel does with the CPU state
+> doesn't matter, only what QEMU's idea of reset is. Looking at the
+> source I think the way this happens is that kvm_cpu_synchronize_post_reset()
+> arranges to do a kvm_arch_put_registers(). (For Arm we have to do
+> some fiddling around to make sure our CPU state is in the right
+> place for that put_registers to DTRT, which is what kvm_arm_reset_vcpu()
+> is doing, but that's a consequence of the way we chose to handle
+> migration and in particular migration of system registers rather than
+> something necessarily every architecture wants to be doing.)
+> 
+> This also works for reset of the vCPU on a guest-reboot. We don't
+> tell KVM to reset the vCPU, we just set up the vCPU state on the
+> QEMU side and then do a QEMU->kernel state sync of it.
+> 
+> -- PMM
 
-https://docs.gitlab.com/ee/ci/yaml/script.html#expand-and-collapse-job-log-sections
+Thanks Peter for looking into this.
 
-Use these to make "configure", "build" and "test" separate
-collapsible stages.
+QEMU's cpu_synchronize_all_post_init() and 
+do_kvm_cpu_synchronize_post_reset() both end up in 
+kvm_arch_put_registers() and that is long after Linux 
+kvm_arch_vcpu_create() has been setting some FPU state. See the output 
+below.
 
-As recommended by the GitLab docs, we use some shell which is
-sourced in the CI job to define functions to emit the magic
-lines that start and end sections, to hide the ugliness of
-the printf lines from the log.
+kvm_arch_put_registers() copies the CSRs by calling 
+kvm_riscv_put_regs_csr(). Here we can find:
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- .gitlab-ci.d/buildtest-template.yml  | 14 ++++++++++++++
- .gitlab-ci.d/buildtest.yml           |  1 +
- .gitlab-ci.d/crossbuild-template.yml | 25 ++++++++++++++++++++++++
- scripts/ci/gitlab-ci-section         | 29 ++++++++++++++++++++++++++++
- 4 files changed, 69 insertions(+)
- create mode 100644 scripts/ci/gitlab-ci-section
+     KVM_RISCV_SET_CSR(cs, env, sstatus, env->mstatus);
 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 5f2fc7e6f49..8c69c60d215 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -8,8 +8,11 @@
-     key: "$CI_JOB_NAME"
-     when: always
-   before_script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start setup "Pre-script setup"
-     - JOBS=$(expr $(nproc) + 1)
-     - cat /packages.txt
-+    - section_end setup
-   script:
-     - export CCACHE_BASEDIR="$(pwd)"
-     - export CCACHE_DIR="$CCACHE_BASEDIR/ccache"
-@@ -19,6 +22,7 @@
-     - mkdir build
-     - cd build
-     - ccache --zero-stats
-+    - section_start configure "Running configure"
-     - ../configure --enable-werror --disable-docs --enable-fdt=system
-           ${TARGETS:+--target-list="$TARGETS"}
-           $CONFIGURE_ARGS ||
-@@ -27,11 +31,16 @@
-       then
-         pyvenv/bin/meson configure . -Dbackend_max_links="$LD_JOBS" ;
-       fi || exit 1;
-+    - section_end configure
-+    - section_start build "Building QEMU"
-     - $MAKE -j"$JOBS"
-+    - section_end build
-+    - section_start test "Running tests"
-     - if test -n "$MAKE_CHECK_ARGS";
-       then
-         $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
-       fi
-+    - section_end test
-     - ccache --show-stats
- 
- # We jump some hoops in common_test_job_template to avoid
-@@ -54,6 +63,8 @@
-   stage: test
-   image: $CI_REGISTRY_IMAGE/qemu/$IMAGE:$QEMU_CI_CONTAINER_TAG
-   script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start buildenv "Setting up to run tests"
-     - scripts/git-submodule.sh update roms/SLOF
-     - meson subprojects download $(cd build/subprojects && echo *)
-     - cd build
-@@ -63,7 +74,10 @@
-     - if [ "x${QEMU_TEST_CACHE_DIR}" != "x" ]; then
-         $MAKE precache-functional ;
-       fi
-+    - section_end buildenv
-+    - section_start test "Running tests"
-     - $MAKE NINJA=":" $MAKE_CHECK_ARGS
-+    - section_end test
- 
- .native_test_job_template:
-   extends: .common_test_job_template
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 2ab8c4806e4..87848c2ffe8 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -188,6 +188,7 @@ build-previous-qemu:
-     # Override the default flags as we need more to grab the old version
-     GIT_FETCH_EXTRA_FLAGS: --prune --quiet
-   before_script:
-+    - source scripts/ci/gitlab-ci-section
-     - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
-     - git remote add upstream https://gitlab.com/qemu-project/qemu
-     - git fetch upstream refs/tags/$QEMU_PREV_VERSION:refs/tags/$QEMU_PREV_VERSION
-diff --git a/.gitlab-ci.d/crossbuild-template.yml b/.gitlab-ci.d/crossbuild-template.yml
-index d1cb7a35dbf..45a98103554 100644
---- a/.gitlab-ci.d/crossbuild-template.yml
-+++ b/.gitlab-ci.d/crossbuild-template.yml
-@@ -9,8 +9,11 @@
-     when: always
-   timeout: 80m
-   before_script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start setup "Pre-script setup"
-     - JOBS=$(expr $(nproc) + 1)
-     - cat /packages.txt
-+    - section_end setup
-   script:
-     - export CCACHE_BASEDIR="$(pwd)"
-     - export CCACHE_DIR="$CCACHE_BASEDIR/ccache"
-@@ -19,22 +22,30 @@
-     - mkdir build
-     - cd build
-     - ccache --zero-stats
-+    - section_start configure "Running configure"
-     - ../configure --enable-werror --disable-docs --enable-fdt=system
-         --disable-user $QEMU_CONFIGURE_OPTS $EXTRA_CONFIGURE_OPTS
-         --target-list-exclude="arm-softmmu
-           i386-softmmu microblaze-softmmu mips-softmmu mipsel-softmmu
-           mips64-softmmu ppc-softmmu riscv32-softmmu sh4-softmmu
-           sparc-softmmu xtensa-softmmu $CROSS_SKIP_TARGETS"
-+    - section_end configure
-+    - section_start build "Building QEMU"
-     - make -j"$JOBS" all check-build
-+    - section_end build
-+    - section_start test "Running tests"
-     - if test -n "$MAKE_CHECK_ARGS";
-       then
-         $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
-       fi
-+    - section_end test
-+    - section_start installer "Building the installer"
-     - if grep -q "EXESUF=.exe" config-host.mak;
-       then make installer;
-       version="$(git describe --match v[0-9]* 2>/dev/null || git rev-parse --short HEAD)";
-       mv -v qemu-setup*.exe qemu-setup-${version}.exe;
-       fi
-+    - section_end installer
-     - ccache --show-stats
- 
- # Job to cross-build specific accelerators.
-@@ -52,6 +63,7 @@
-       - ccache/
-     key: "$CI_JOB_NAME"
-   before_script:
-+    - source scripts/ci/gitlab-ci-section
-     - JOBS=$(expr $(nproc) + 1)
-   script:
-     - export CCACHE_BASEDIR="$(pwd)"
-@@ -60,13 +72,19 @@
-     - export PATH="$CCACHE_WRAPPERSDIR:$PATH"
-     - mkdir build
-     - cd build
-+    - section_start configure "Running configure"
-     - ../configure --enable-werror --disable-docs $QEMU_CONFIGURE_OPTS
-         --disable-tools --enable-${ACCEL:-kvm} $EXTRA_CONFIGURE_OPTS
-+    - section_end configure
-+    - section_start build "Building QEMU"
-     - make -j"$JOBS" all check-build
-+    - section_end build
-+    - section_start test "Running tests"
-     - if test -n "$MAKE_CHECK_ARGS";
-       then
-         $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
-       fi
-+    - section_end test
- 
- .cross_user_build_job:
-   extends: .base_job_template
-@@ -77,6 +95,7 @@
-       - ccache/
-     key: "$CI_JOB_NAME"
-   before_script:
-+    - source scripts/ci/gitlab-ci-section
-     - JOBS=$(expr $(nproc) + 1)
-   script:
-     - export CCACHE_BASEDIR="$(pwd)"
-@@ -84,16 +103,22 @@
-     - export CCACHE_MAXSIZE="500M"
-     - mkdir build
-     - cd build
-+    - section_start configure "Running configure"
-     - ../configure --enable-werror --disable-docs $QEMU_CONFIGURE_OPTS
-         --disable-system --target-list-exclude="aarch64_be-linux-user
-           alpha-linux-user m68k-linux-user microblazeel-linux-user
-           or1k-linux-user ppc-linux-user sparc-linux-user
-           xtensa-linux-user $CROSS_SKIP_TARGETS"
-+    - section_end configure
-+    - section_start build "Building QEMU"
-     - make -j"$JOBS" all check-build
-+    - section_end build
-+    - section_start test "Running tests"
-     - if test -n "$MAKE_CHECK_ARGS";
-       then
-         $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
-       fi
-+    - section_end test
- 
- # We can still run some tests on some of our cross build jobs. They can add this
- # template to their extends to save the build logs and test results
-diff --git a/scripts/ci/gitlab-ci-section b/scripts/ci/gitlab-ci-section
-new file mode 100644
-index 00000000000..9bbe80420d6
---- /dev/null
-+++ b/scripts/ci/gitlab-ci-section
-@@ -0,0 +1,29 @@
-+# Copyright (c) 2024 Linaro Ltd
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+# gitlab-ci-section: This is a shell script fragment which defines
-+# functions section_start and section_end which will emit marker lines
-+# that GitLab will interpret as the beginning or end of a "collapsible
-+# section" in a CI job log. See
-+# https://docs.gitlab.com/ee/ci/yaml/script.html#expand-and-collapse-job-log-sections
-+#
-+# This is intended to be sourced in the before_script section of
-+# a CI config; the section_start and section_end functions will
-+# then be available for use in the before_script and script sections.
-+
-+# Section names are [-_.A-Za-z0-9] and the section_start pairs with
-+# a section_end with the same section name.
-+# The description can be any printable text without newlines; this is
-+# what will appear in the log.
-+
-+# Usage:
-+# section_start section_name "Description of the section"
-+section_start () {
-+    printf "section_start:%s:%s\r\e[0K%s\n" "$(date +%s)" "$1" "$2"
-+}
-+
-+# Usage:
-+# section_end section_name
-+section_end () {
-+    printf "section_end:%s:%s\r\e[0K\n" "$(date +%s)" "$1"
-+}
--- 
-2.34.1
+This call enables or disables the FPU according to the value of 
+env->mstatus.
+
+So we need to set the desired state of the floating point unit in QEMU. 
+And this is what the current patch does both for TCG and KVM.
+
+Best regards
+
+Heinrich
+
+
+$ qemu-system-riscv64 -M virt -accel kvm -nographic -kernel payload.bin
+QEMU qemu_init: Entry
+QEMU qmp_x_exit_preconfig: Entry
+[ 3503.369249] kvm_arch_vcpu_create: Entry
+[ 3503.369669] kvm_riscv_vcpu_fp_reset: At entry FS=0
+[ 3503.369966] kvm_riscv_vcpu_fp_reset: At exit FS=8192
+[ 3503.370256] kvm_arch_vcpu_create: Exit
+[ 3503.378620] kvm_arch_vcpu_create: Entry
+[ 3503.379123] kvm_riscv_vcpu_fp_reset: At entry FS=0
+[ 3503.379610] kvm_riscv_vcpu_fp_reset: At exit FS=8192
+[ 3503.380111] kvm_arch_vcpu_create: Exit
+[ 3503.394837] kvm_arch_vcpu_create: Entry
+[ 3503.395238] kvm_riscv_vcpu_fp_reset: At entry FS=0
+[ 3503.395585] kvm_riscv_vcpu_fp_reset: At exit FS=8192
+[ 3503.395947] kvm_arch_vcpu_create: Exit
+[ 3503.397023] kvm_riscv_vcpu_set_reg_config:
+[ 3503.398066] kvm_riscv_vcpu_set_reg_config:
+[ 3503.398430] kvm_riscv_vcpu_set_reg_config:
+QEMU riscv_cpu_reset_hold: Entry
+QEMU kvm_riscv_reset_vcpu: Entry
+QEMU kvm_riscv_reset_vcpu: Exit
+QEMU riscv_cpu_reset_hold: Exit
+QEMU qemu_machine_creation_done: Entry
+QEMU qdev_machine_creation_done: Entry
+QEMU cpu_synchronize_all_post_init: Entry
+QEMU cpu_synchronize_post_init: Entry
+QEMU kvm_cpu_synchronize_post_init: Entry
+QEMU do_kvm_cpu_synchronize_post_init: Entry
+QEMU kvm_arch_put_registers: Entry
+QEMU kvm_riscv_put_regs_csr: Entry
+QEMU kvm_riscv_put_regs_csr: Exit
+QEMU kvm_arch_put_registers: Exit
+QEMU do_kvm_cpu_synchronize_post_init: Exit
+QEMU kvm_cpu_synchronize_post_init: Exit
+QEMU cpu_synchronize_post_init: Exit
+QEMU cpu_synchronize_all_post_init: Exit
+QEMU qemu_system_reset: Entry
+QEMU kvm_arch_get_registers: Entry
+QEMU riscv_cpu_reset_hold: Entry
+QEMU kvm_riscv_reset_vcpu: Entry
+QEMU kvm_riscv_reset_vcpu: Exit
+QEMU riscv_cpu_reset_hold: Exit
+QEMU cpu_synchronize_all_post_reset: Entry
+QEMU cpu_synchronize_post_reset: Entry
+QEMU do_kvm_cpu_synchronize_post_reset: Entry
+QEMU kvm_arch_put_registers: Entry
+QEMU kvm_riscv_put_regs_csr: Entry
+QEMU kvm_riscv_put_regs_csr: Exit
+QEMU kvm_riscv_sync_mpstate_to_kvm: Entry
+QEMU kvm_riscv_sync_mpstate_to_kvm: Exit
+QEMU kvm_arch_put_registers: Exit
+QEMU do_kvm_cpu_synchronize_post_reset: Exit
+QEMU cpu_synchronize_post_reset: Exit
+QEMU cpu_synchronize_all_post_reset: Exit
+QEMU qemu_system_reset: Exit
+QEMU qdev_machine_creation_done: Exit
+QEMU qmp_x_exit_preconfig: Exit
+QEMU qemu_init: Exit
+QEMU kvm_cpu_exec: Entry
+[ 3503.566493] kvm_arch_vcpu_ioctl_run: run->ext_reason 0
+QEMU kvm_cpu_exec: Exit
+QEMU kvm_cpu_exec: Entry
+[ 3503.568338] kvm_arch_vcpu_ioctl_run: run->ext_reason 0
+[ 3503.568740] kvm_riscv_check_vcpu_requests: Entry
+[ 3503.569534] kvm_riscv_check_vcpu_requests: Entry
+
+Test payload
+============
 
 
