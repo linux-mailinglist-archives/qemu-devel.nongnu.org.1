@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8963697B667
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 02:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 001D597B664
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 02:03:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqi9M-0000A3-Ef; Tue, 17 Sep 2024 20:02:28 -0400
+	id 1sqi9Q-0000Pq-OY; Tue, 17 Sep 2024 20:02:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqi9G-0008UE-AV
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 20:02:23 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqi9J-00004y-TF
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 20:02:26 -0400
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqi9D-0006Np-Kd
- for qemu-devel@nongnu.org; Tue, 17 Sep 2024 20:02:22 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqi9I-0006OL-Ey
+ for qemu-devel@nongnu.org; Tue, 17 Sep 2024 20:02:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
  h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
- :Subject; bh=gWSsjX1LZaUqlQr3wzl8g0MVhTupUsNLSrpZVJHlMmI=; b=Em7lRfOfqvKhsYBK
- 82I6Fdn0J8E9dz1YpW8JdQlOTZD3PCPVFe+02PzMPSFWSqtNr3iplQal9FEKtnT+cb1RdF9Igbxj6
- k12jzOizp6Y85XrzmR2pzs7zevOhy8jBK70l1nNNqJD4YWo+VKiPx2CVHTEqAf50ZX1xgBRWh+GCi
- JzdIG0zhFa4vOosFhiYpWZVD9jRG7Zvr450zI/en2iqdiD5ZbCPA9H0A0+9eBEG5b1tjGxBB3sA+F
- u3DMaocBMokaPAuUVLliiVachFb7jKgWWayeR+B02Q4ZF8jQ9rlTx4Oqyfw4Lt6AWDD8tBT2Yqrz7
- 3lkPxISoAbpxZkdkcw==;
+ :Subject; bh=VXIh1OpJ2WnHoB3ZdnaHZH2OsRh0yz520CNkxHpQVeg=; b=AgYORbIEnl0L1WdC
+ 0Gh8CjNZ4Ndp69wRWEhATTrqNUlYBvs1fLY5Y6tuhjFAGshYumyIaO4bg8MqEzuuyw3d/yw8HjOR2
+ jNEVwKe2ViENMGio/ZwN0eq2K5yPf0q87DlMUwuPTxxGNpcJyvAv7dFx1Mp2YlhckaADZ1+5brI8A
+ eFIqZdYE5KVTHvKyCodVnoCIwavebRucqXNkx6Zwd31SiQYBNszEmiU+ypjOZO3Dq62dolig7bZk0
+ Tv+7vauZYsuWXpLlASLPYai5pKOrlxKLvHBaD2ZELya4NECz0wRQ2wWiwNYr+Do8aLt/XlM41Brem
+ YdI5yT18KTFomRAi5A==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
  by mx.treblig.org with esmtp (Exim 4.96)
- (envelope-from <dave@treblig.org>) id 1sqi9B-006Dj5-03;
- Wed, 18 Sep 2024 00:02:17 +0000
+ (envelope-from <dave@treblig.org>) id 1sqi9F-006Dj5-27;
+ Wed, 18 Sep 2024 00:02:21 +0000
 From: dave@treblig.org
 To: peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com
 Cc: qemu-devel@nongnu.org,
 	"Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH 2/3] migration: Remove unused zero-blocks capability
-Date: Wed, 18 Sep 2024 01:02:06 +0100
-Message-ID: <20240918000207.182683-3-dave@treblig.org>
+Subject: [PATCH 3/3] migration: Remove unused socket_send_channel_create_sync
+Date: Wed, 18 Sep 2024 01:02:07 +0100
+Message-ID: <20240918000207.182683-4-dave@treblig.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240918000207.182683-1-dave@treblig.org>
 References: <20240918000207.182683-1-dave@treblig.org>
@@ -66,95 +66,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-migrate_zero_blocks is unused since
-  eef0bae3a7 ("migration: Remove block migration")
+socket_send_channel_create_sync only use was removed by
+  d0edb8a173 ("migration: Create the postcopy preempt channel asynchronously")
 
 Remove it.
-That whole zero-blocks capability was just for old-school
-block migration anyway.
-
-Remove the capability as well.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 ---
- migration/options.c |  8 --------
- migration/options.h |  1 -
- qapi/migration.json | 10 +---------
- 3 files changed, 1 insertion(+), 18 deletions(-)
+ migration/socket.c | 18 ------------------
+ migration/socket.h |  1 -
+ 2 files changed, 19 deletions(-)
 
-diff --git a/migration/options.c b/migration/options.c
-index 9460c5dee9..997e060612 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -177,7 +177,6 @@ Property migration_properties[] = {
-     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
-     DEFINE_PROP_MIG_CAP("x-rdma-pin-all", MIGRATION_CAPABILITY_RDMA_PIN_ALL),
-     DEFINE_PROP_MIG_CAP("x-auto-converge", MIGRATION_CAPABILITY_AUTO_CONVERGE),
--    DEFINE_PROP_MIG_CAP("x-zero-blocks", MIGRATION_CAPABILITY_ZERO_BLOCKS),
-     DEFINE_PROP_MIG_CAP("x-events", MIGRATION_CAPABILITY_EVENTS),
-     DEFINE_PROP_MIG_CAP("x-postcopy-ram", MIGRATION_CAPABILITY_POSTCOPY_RAM),
-     DEFINE_PROP_MIG_CAP("x-postcopy-preempt",
-@@ -339,13 +338,6 @@ bool migrate_xbzrle(void)
-     return s->capabilities[MIGRATION_CAPABILITY_XBZRLE];
+diff --git a/migration/socket.c b/migration/socket.c
+index 9ab89b1e08..5ec65b8c03 100644
+--- a/migration/socket.c
++++ b/migration/socket.c
+@@ -42,24 +42,6 @@ void socket_send_channel_create(QIOTaskFunc f, void *data)
+                                      f, data, NULL, NULL);
  }
  
--bool migrate_zero_blocks(void)
+-QIOChannel *socket_send_channel_create_sync(Error **errp)
 -{
--    MigrationState *s = migrate_get_current();
+-    QIOChannelSocket *sioc = qio_channel_socket_new();
 -
--    return s->capabilities[MIGRATION_CAPABILITY_ZERO_BLOCKS];
+-    if (!outgoing_args.saddr) {
+-        object_unref(OBJECT(sioc));
+-        error_setg(errp, "Initial sock address not set!");
+-        return NULL;
+-    }
+-
+-    if (qio_channel_socket_connect_sync(sioc, outgoing_args.saddr, errp) < 0) {
+-        object_unref(OBJECT(sioc));
+-        return NULL;
+-    }
+-
+-    return QIO_CHANNEL(sioc);
 -}
 -
- bool migrate_zero_copy_send(void)
- {
-     MigrationState *s = migrate_get_current();
-diff --git a/migration/options.h b/migration/options.h
-index 36e7b3723f..79084eed0d 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -40,7 +40,6 @@ bool migrate_release_ram(void);
- bool migrate_return_path(void);
- bool migrate_validate_uuid(void);
- bool migrate_xbzrle(void);
--bool migrate_zero_blocks(void);
- bool migrate_zero_copy_send(void);
+ struct SocketConnectData {
+     MigrationState *s;
+     char *hostname;
+diff --git a/migration/socket.h b/migration/socket.h
+index 46c233ecd2..04ebbe95a1 100644
+--- a/migration/socket.h
++++ b/migration/socket.h
+@@ -22,7 +22,6 @@
+ #include "qemu/sockets.h"
  
- /*
-diff --git a/qapi/migration.json b/qapi/migration.json
-index b66cccf107..82d0fc962e 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -389,13 +389,6 @@
- #     footprint is mlock()'d on demand or all at once.  Refer to
- #     docs/rdma.txt for usage.  Disabled by default.  (since 2.0)
- #
--# @zero-blocks: During storage migration encode blocks of zeroes
--#     efficiently.  This essentially saves 1MB of zeroes per block on
--#     the wire.  Enabling requires source and target VM to support
--#     this feature.  To enable it is sufficient to enable the
--#     capability on the source VM.  The feature is disabled by
--#     default.  (since 1.6)
--#
- # @events: generate events for each migration state change (since 2.4)
- #
- # @auto-converge: If enabled, QEMU will automatically throttle down
-@@ -483,7 +476,7 @@
- # Since: 1.2
- ##
- { 'enum': 'MigrationCapability',
--  'data': ['xbzrle', 'rdma-pin-all', 'auto-converge', 'zero-blocks',
-+  'data': ['xbzrle', 'rdma-pin-all', 'auto-converge',
-            'events', 'postcopy-ram',
-            { 'name': 'x-colo', 'features': [ 'unstable' ] },
-            'release-ram',
-@@ -542,7 +535,6 @@
- #           {"state": false, "capability": "xbzrle"},
- #           {"state": false, "capability": "rdma-pin-all"},
- #           {"state": false, "capability": "auto-converge"},
--#           {"state": false, "capability": "zero-blocks"},
- #           {"state": true, "capability": "events"},
- #           {"state": false, "capability": "postcopy-ram"},
- #           {"state": false, "capability": "x-colo"}
+ void socket_send_channel_create(QIOTaskFunc f, void *data);
+-QIOChannel *socket_send_channel_create_sync(Error **errp);
+ 
+ void socket_start_incoming_migration(SocketAddress *saddr, Error **errp);
+ 
 -- 
 2.46.0
 
