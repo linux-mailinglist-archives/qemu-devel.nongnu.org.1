@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4136697C7B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 12:06:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5D197C7B5
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 12:06:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srE1o-0005Mg-Uf; Thu, 19 Sep 2024 06:04:48 -0400
+	id 1srE1w-0005db-HP; Thu, 19 Sep 2024 06:04:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1srE1j-00059v-KH
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 06:04:43 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ id 1srE1k-0005Cj-Dl
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 06:04:45 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1srE1h-0002HG-OV
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 06:04:43 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a8d100e9ce0so78140566b.2
- for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 03:04:41 -0700 (PDT)
+ id 1srE1i-0002HS-ST
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 06:04:44 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2f029e9c9cfso7020141fa.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 03:04:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726740280; x=1727345080; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726740281; x=1727345081; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pkb9RoMieZB7x0grFP61zIkg4zRv8Ds7sTpiRSCuqVY=;
- b=qsZOLYpyDGcvhUGbaqhCso4AeoBNKveChvHX4JNU8xAXuJ76sdgMav24M8Dj0I2MZn
- O1y7JRSg3EFXVq34OBDkYUiPUlPRlWy7xbphgmy/2rSMDmzYAK5drzc4i6fLye8Ts2fb
- 7NLdsMklpTEYK1zoAYYNxorZUSF5rcx+mEdMbcLS6grenn7dF2RW+GpmW/XlnarKvuOO
- WgjNzkN0rJ7HFSQ+Gwwk03/CTu0d+3T1AsckHAtVB9vYxiu40izJT7V205kPj6dLkPOz
- UWmTFONPyNzHnKwSKij2AHQuWc7ka0gv20zhv5Ys+6+0SwlRKU8AAZEcggnljyI47VfJ
- CC2w==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=fmS1/Ofwu6iA+fLaTig1MjOvX0L/Q3AH1i6riQXDoWE=;
+ b=XjCmCc8dlGxNDmSE+DOFThJ26nq4m9dM2aOeCWkwIV9IxJig4/0MZPfN0NDDhb8lox
+ encGuZ9YuCDN3oQAGB13Dmf8ZLElaFcFSbPoFgH7iY31TKOCKM6kEX6P6SZMSlCWzKfw
+ 23cj+1IARfWBGKAk417COliH8G+GSS2Rt4mbRH/RXzv9lPFOVVpvI8JhXvN9+1Y1PylP
+ Y8qkzgPwcMSxEAjuCyNMCohFEpygFHsp1SxLHOh8d80tIjNS7yUBZy+VmvF+k4Yj3Nl6
+ M9u9rv4hVO8tnlleM8Luw+SZNOxhOZnBy4WGdPXbgcQ4qulPaVpnxBku+GrkXw8lEA4N
+ hX8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726740280; x=1727345080;
+ d=1e100.net; s=20230601; t=1726740281; x=1727345081;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pkb9RoMieZB7x0grFP61zIkg4zRv8Ds7sTpiRSCuqVY=;
- b=PjS3Z8blFfUV8MtZM7dhsefMcdyQ6gS91SKkNCbIC506DwgY12bt+mVMFMMhvqfXov
- vd7Fjs9GdobErndBCPF56Csuwl9tnevEHFuTWl0wmx6IpuFpEpa53ce3NR36bf3ClAw7
- p/ElbKYEVKv10Zfdu+4gYMQ+qrDoalKXexKpA3Eg10AmOFc0OrV6uwBbYRsAXE8inCtK
- /zPJ8+yXz6RymRRgU4NNQafiReoLisfvdPg1o5hXYhXqb/IFw8G0nFqd2yhF6aJLnnuD
- F2+6i9IlDRReslQaQH6LdFhdRBL2PLpdqQCx2vwZnLE7k6grupGYznhxfAKkQ2MCMHsL
- /S6A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWWmA5SzhsqCWZSncISXvewcOCTeaHXVvq/zkVdf35pmpVyxe2WYwpESccl3+gKCdGsZFS0KfFfpHA6@nongnu.org
-X-Gm-Message-State: AOJu0YzFLj4Sk0cWZzruoLc9ZudkHH0dtZwIprs7IgsGfOgw5RWfdCSK
- 8h6/LHFWpHxL39sGBmXxdI8oESZIH58j8uODITO2BkgILtBVlirnPYax4MXaGFc=
-X-Google-Smtp-Source: AGHT+IEiYf0vDmd1hmiet1Nxw2vKyN16OJHyyFeZTNvhYEY0pShiNSwywlc/0dmN6iRGOqg+E++dtQ==
-X-Received: by 2002:a17:907:e295:b0:a86:7e2d:f10b with SMTP id
- a640c23a62f3a-a90294ced3bmr2292115366b.37.1726740279980; 
- Thu, 19 Sep 2024 03:04:39 -0700 (PDT)
+ bh=fmS1/Ofwu6iA+fLaTig1MjOvX0L/Q3AH1i6riQXDoWE=;
+ b=FeF8ju9XIiKTufp9KxuCzRr8IxEtD7fAeLq9SPO2pMgFR+iOrjKwL/02p1Aov0pNur
+ FuJuCjvZEWNYHwdo/ROP3OBXuh0J/z9RqFIWVLhW0HaIb+BhehniyYiY/3qVBCV/PYJU
+ ADLMU9CK0twMoc5M/uFxRsnBbEQirJvW5LEMvJ9FrnVdscaiA+EFZzyIi7+INqFePndx
+ ajfUWmVT8NauVj44FfBEDrdtS/VF7BhQand1ILObLIKif8UAeGJilMG07162VPuVsayO
+ 9qVw35KanRn5hIyyUCaZYN0B/twQH8b7Q/j0tDwgGRL1UYjZohoQbWpOQqF7wu+WXusz
+ XZxg==
+X-Gm-Message-State: AOJu0YxizKBRUp8jkEOf3WiEGWp7c0WBknECeJ9PJMmrEAENd/Q7VcyD
+ V6cGzCkW6l2caNcrjGecryBBIcifINODVLJMdDJ2PxuXBWKmbxV4SelW7ilTaFLpDcpbWUvsEsJ
+ KPjo=
+X-Google-Smtp-Source: AGHT+IFJsjPOYuh+DPTgXxo7KkE/1XrPEs2WFn9xsAtbTaIH9XlvVOJSiC18bAMO45GbVHp/9iZilg==
+X-Received: by 2002:a2e:84a:0:b0:2f7:5777:cf14 with SMTP id
+ 38308e7fff4ca-2f7935c342bmr108841901fa.35.1726740280905; 
+ Thu, 19 Sep 2024 03:04:40 -0700 (PDT)
 Received: from [10.133.7.245] ([83.68.141.146])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90610f3aaesm701574766b.53.2024.09.19.03.04.39
+ a640c23a62f3a-a90610f3aaesm701574766b.53.2024.09.19.03.04.40
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Sep 2024 03:04:39 -0700 (PDT)
-Message-ID: <68b03a32-94f7-4823-9698-9af6f6552a0d@linaro.org>
-Date: Wed, 18 Sep 2024 16:34:49 +0200
+ Thu, 19 Sep 2024 03:04:40 -0700 (PDT)
+Message-ID: <ab10b656-c389-47cd-ae20-3287e1f73688@linaro.org>
+Date: Wed, 18 Sep 2024 16:38:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] gitlab-ci: Make separate sections for build and test
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-References: <20240918125449.3125571-1-peter.maydell@linaro.org>
+Subject: Re: [PATCH 1/1] target/riscv: enable floating point unit
+To: qemu-devel@nongnu.org
+References: <20240916181633.366449-1-heinrich.schuchardt@canonical.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240918125449.3125571-1-peter.maydell@linaro.org>
+In-Reply-To: <20240916181633.366449-1-heinrich.schuchardt@canonical.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -98,13 +94,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/18/24 14:54, Peter Maydell wrote:
-> Peter Maydell (2):
->    .gitlab-ci.d: Split build and test in cross build job templates
->    .gitlab-ci.d: Make separate collapsible log sections for build and
->      test
+On 9/16/24 20:16, Heinrich Schuchardt wrote:
+> +        env->mstatus = set_field(env->mstatus, MSTATUS_FS, env->misa_mxl);
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Using mxl is definitely wrong here.
+
 
 r~
 
