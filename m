@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6CB97BF90
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 19:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AD197BF8A
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 19:15:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqyGT-0007MO-Fr; Wed, 18 Sep 2024 13:14:53 -0400
+	id 1sqyGU-0007QU-3v; Wed, 18 Sep 2024 13:14:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sqyGO-00072d-9Y
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 13:14:48 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ id 1sqyGR-0007Fm-Ay
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 13:14:51 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sqyGM-0001sX-9m
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 13:14:48 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2d88c0f8e79so5760082a91.3
- for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 10:14:45 -0700 (PDT)
+ id 1sqyGP-0001tb-Ga
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 13:14:51 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-7d4fbe62bf5so3588960a12.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 10:14:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1726679685; x=1727284485; darn=nongnu.org;
+ d=sifive.com; s=google; t=1726679688; x=1727284488; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+Yad8rwljItd1lBOHF5l5s1r+xJNloMy2zxgaSK2408=;
- b=iivNQSNuAS4ATLOyxwEViiJUowCSZcTN+Ar8VK2PnaiIHjbWLOojqZ4egIGJGnABFv
- bqIehIhu2QdXjFlfiM7zcg1IUo/HC4LOs3PrmVq2B6jHt+AVaLSV58yyzKxDNsUCumjG
- I+VNEkIkwCdbJlPBbRr/A/kw3dcoHTwf/buVj9Qcb8flkK083Axp6GpjdDdDcHNxX8m6
- n8n7icYFch2BIyYrj+fiG0xTLWnUjn3c5+AZG125kudOYEtlFOlM8IQVwOeywsSDMe08
- HMabrKqPP2B8jhFFMGMHsIBn0iFtIQ/Ab6CfE6yxohzJY1fIKH0Et0a23sAKJxEsfJZw
- m/Hw==
+ bh=4UxyC5GgURxAdr6hpB+84kRGnovowUYOR8ViU/IS7gA=;
+ b=V9MiIywUhIwCOW3ByvstVLKqFjkn3Nc4zMWhkwk9s8BhZS3xkVjI5RZvvgPjy3e2H0
+ 2fqJDiSw9fUPC1xkzfuSh2o4wkWhpYnlI2yptBm4YNJjpRxbnjBjzJyRxc66EFDs4Lcw
+ Fd4DvO66NBBYW1YdwQeeY2SN6Ei00J1fJriOXzU5tZ7YbaBmDqvSp0qOKO1C7ldIpHF6
+ EOuJzMk3MCqTs2Kk5IelryjqZLBcVsIkfKwTzi/v6OXGlrnL9vV3Qbbc7kg/4FmHz3u0
+ m+uKuilOjh/Qk0xUHekDflPlpyRmvM04LyMKT0XUv07gJ9XvAKgjGy94pBrv+ki32wOp
+ bmrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726679685; x=1727284485;
+ d=1e100.net; s=20230601; t=1726679688; x=1727284488;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+Yad8rwljItd1lBOHF5l5s1r+xJNloMy2zxgaSK2408=;
- b=mwXe+WW5JYnAGvZQMv2AnPbcoC41OX5FEkhNNz6RPIx1Qn25xEH6PQ1AMMPo7up9/r
- onGULGh9BHA+7JdU/4U3oqgIV1qvXhoFWuWNrE5P5TtZWEIclPkrErZe54RbMdtsEH2z
- Sv5oO1xzJ4Tlm7QiviBSON29Hgkx9v0D5wCsnLDq6rg8Q4BdiwcARodnSs+2/EH6+R96
- VbJHsB9vwDfhOgBL93Pg7F0NzeQ5QY/0rGrvfOCD/4TPcyeepnJ6kpfF5hsMky42BKYD
- 6BIJzo/xIIFd7Hu+EAlouSTVkJqKk76JNPujlZhSs4H/c0Xmz5EENo8Ag6tOIK/rxFH7
- l23w==
-X-Gm-Message-State: AOJu0YzpmEE5RslQeTScYKe8hOW8rHqh0wqLfWd72h8GgCKKJDHgvvR4
- rcM4Wqv4O5rWaavZvRO9CyabAal6Qsvjtvg4Molr/r+j/k9gIiu1xHobp3kjZPuqww36/eEmeUD
- +oRy9hC9bSs50CJTaCcwqIGMyNGxzKcGRoXde+uQuoqpp/nHS17W74i95rkmVFvfH/kbVgwRlkV
- jR6lrJEhMs7YfP/asYKRFJDUF6POQtc1qDhzr6aQ==
-X-Google-Smtp-Source: AGHT+IHl/cq+jQ767dFrl98tnvZkUQ/QQHF12lnR5PjK9WvWtCvhlaP10/fDNWK6ANt8Iq4QJQPHRw==
-X-Received: by 2002:a17:90b:110f:b0:2c3:40b7:1f6d with SMTP id
- 98e67ed59e1d1-2db9fe8d7b7mr29095182a91.0.1726679684525; 
- Wed, 18 Sep 2024 10:14:44 -0700 (PDT)
+ bh=4UxyC5GgURxAdr6hpB+84kRGnovowUYOR8ViU/IS7gA=;
+ b=XjpDkKeB16bD049atSJwnMVqfF2q5zw2Unr9vdlgqEdhbx2jwknRXWUXiVRsnrAWWG
+ 53HPDd33AGs9SUgOmq6cM+zFfNhTN+30SGgsjevxcm3a38JuReJFDsj3IVtVs1homc/f
+ Z0Sjv0BFi4vualGc4Qurt3lf02ipfy5pnZgbM3I9i/2sV9S4nM5GcYsoe+Eu3gKxsi4U
+ qXYMTDrDRK4WQpEePBEKB8ekZ8QYwXICPzztMMUX41yhKM1aj66XsuWlJczIb5RLBAoi
+ idTZ09/YcKV8ps6Sogpq2czlEspENyedNBW+ReFHTvs73LKfn5WEYsDTVgp9An/VIyAz
+ PDwg==
+X-Gm-Message-State: AOJu0YxMJVBu0NWAy1vVjafOmbaoeO2wDTaoocEDxiahDczSlPaxPQg4
+ he5dvbYv4uum4mgez1C4fr4isp/KENGrlQ//nK+heL/oa0BwdLzN/90CQL2Ob1T17Vwg/Woblzl
+ PpGaXRdZs5y5qWrojnXgkCrL+1gkgfaxg5TqLX9gtx4BHUMuXqL7fnHbo0WMlFiDYl/l1TT4ao1
+ npxjtXNcYd9Sqkg2s8fG/FBGCgfWWPemq9yhqwng==
+X-Google-Smtp-Source: AGHT+IHI7ntPiOdCMMKzQ979btH68h6+Jh4QvzEUE6JCbBWAiTHJBbIQTDMJrslSfzhSYHzn5nwAmw==
+X-Received: by 2002:a17:90b:886:b0:2cf:eaec:d74c with SMTP id
+ 98e67ed59e1d1-2dbb9df6432mr21429460a91.16.1726679687711; 
+ Wed, 18 Sep 2024 10:14:47 -0700 (PDT)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2dd608e2318sm1914577a91.32.2024.09.18.10.14.42
+ 98e67ed59e1d1-2dd608e2318sm1914577a91.32.2024.09.18.10.14.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Sep 2024 10:14:44 -0700 (PDT)
+ Wed, 18 Sep 2024 10:14:47 -0700 (PDT)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -67,17 +67,17 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, richard.henderson@linaro.org,
  negge@google.com, Max Chou <max.chou@sifive.com>
-Subject: [PATCH v6 4/7] target/riscv: rvv: Provide a fast path using direct
- access to host ram for unit-stride whole register load/store
-Date: Thu, 19 Sep 2024 01:14:09 +0800
-Message-Id: <20240918171412.150107-5-max.chou@sifive.com>
+Subject: [PATCH v6 5/7] target/riscv: rvv: Provide a fast path using direct
+ access to host ram for unit-stride load-only-first load instructions
+Date: Thu, 19 Sep 2024 01:14:10 +0800
+Message-Id: <20240918171412.150107-6-max.chou@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240918171412.150107-1-max.chou@sifive.com>
 References: <20240918171412.150107-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=max.chou@sifive.com; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=max.chou@sifive.com; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,173 +100,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vector unit-stride whole register load/store instructions are
-similar to unmasked unit-stride load/store instructions that is suitable
-to be optimized by using a direct access to host ram fast path.
-
-Because the vector whole register load/store instructions do not need to
-handle the tail agnostic, so remove the vstart early exit checking.
+The unmasked unit-stride fault-only-first load instructions are similar
+to the unmasked unit-stride load/store instructions that is suitable to
+be optimized by using a direct access to host ram fast path.
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/vector_helper.c | 129 +++++++++++++++++++----------------
- 1 file changed, 70 insertions(+), 59 deletions(-)
+ target/riscv/vector_helper.c | 98 ++++++++++++++++++++++++++----------
+ 1 file changed, 71 insertions(+), 27 deletions(-)
 
 diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index c2fcf8b3a00..824e6401736 100644
+index 824e6401736..59009a940ff 100644
 --- a/target/riscv/vector_helper.c
 +++ b/target/riscv/vector_helper.c
-@@ -665,80 +665,91 @@ GEN_VEXT_LDFF(vle64ff_v, int64_t, lde_d_tlb)
+@@ -557,18 +557,18 @@ GEN_VEXT_ST_INDEX(vsxei64_64_v, int64_t, idx_d, ste_d_tlb)
+  * unit-stride fault-only-fisrt load instructions
   */
- static void
- vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
--                vext_ldst_elem_fn_tlb *ldst_elem, uint32_t log2_esz,
--                uintptr_t ra)
-+                vext_ldst_elem_fn_tlb *ldst_tlb,
-+                vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
-+                uintptr_t ra, bool is_load)
+ static inline void
+-vext_ldff(void *vd, void *v0, target_ulong base,
+-          CPURISCVState *env, uint32_t desc,
+-          vext_ldst_elem_fn_tlb *ldst_elem,
+-          uint32_t log2_esz, uintptr_t ra)
++vext_ldff(void *vd, void *v0, target_ulong base, CPURISCVState *env,
++          uint32_t desc, vext_ldst_elem_fn_tlb *ldst_tlb,
++          vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz, uintptr_t ra)
  {
--    uint32_t i, k, off, pos;
-+    target_ulong page_split, elems, addr;
+     uint32_t i, k, vl = 0;
      uint32_t nf = vext_nf(desc);
-     uint32_t vlenb = riscv_cpu_cfg(env)->vlenb;
-     uint32_t max_elems = vlenb >> log2_esz;
-+    uint32_t evl = nf * max_elems;
-+    uint32_t esz = 1 << log2_esz;
-+    int mmu_index = riscv_env_mmu_index(env, false);
+     uint32_t vm = vext_vm(desc);
+     uint32_t max_elems = vext_max_elems(desc, log2_esz);
+     uint32_t esz = 1 << log2_esz;
++    uint32_t msize = nf * esz;
+     uint32_t vma = vext_vma(desc);
+-    target_ulong addr, offset, remain;
++    target_ulong addr, offset, remain, page_split, elems;
+     int mmu_index = riscv_env_mmu_index(env, false);
  
--    if (env->vstart >= ((vlenb * nf) >> log2_esz)) {
--        env->vstart = 0;
--        return;
-+    /* Calculate the page range of first page */
-+    addr = base + (env->vstart << log2_esz);
-+    page_split = -(addr | TARGET_PAGE_MASK);
-+    /* Get number of elements */
-+    elems = page_split / esz;
-+    if (unlikely(env->vstart + elems >= evl)) {
-+        elems = evl - env->vstart;
+     VSTART_CHECK_EARLY_EXIT(env);
+@@ -617,19 +617,63 @@ ProbeSuccess:
+     if (vl != 0) {
+         env->vl = vl;
      }
- 
--    k = env->vstart / max_elems;
--    off = env->vstart % max_elems;
--
--    if (off) {
--        /* load/store rest of elements of current segment pointed by vstart */
--        for (pos = off; pos < max_elems; pos++, env->vstart++) {
--            target_ulong addr = base + ((pos + k * max_elems) << log2_esz);
--            ldst_elem(env, adjust_addr(env, addr), pos + k * max_elems, vd,
--                      ra);
--        }
--        k++;
-+    /* Load/store elements in the first page */
-+    if (likely(elems)) {
-+        vext_page_ldst_us(env, vd, addr, elems, 1, max_elems, log2_esz,
-+                          is_load, mmu_index, ldst_tlb, ldst_host, ra);
-     }
- 
--    /* load/store elements for rest of segments */
--    for (; k < nf; k++) {
--        for (i = 0; i < max_elems; i++, env->vstart++) {
--            target_ulong addr = base + ((i + k * max_elems) << log2_esz);
+-    for (i = env->vstart; i < env->vl; i++) {
+-        k = 0;
+-        while (k < nf) {
+-            if (!vm && !vext_elem_mask(v0, i)) {
+-                /* set masked-off elements to 1s */
+-                vext_set_elems_1s(vd, vma, (i + k * max_elems) * esz,
+-                                  (i + k * max_elems + 1) * esz);
+-                k++;
+-                continue;
++
++    if (env->vstart < env->vl) {
++        if (vm) {
++            /* Calculate the page range of first page */
++            addr = base + ((env->vstart * nf) << log2_esz);
++            page_split = -(addr | TARGET_PAGE_MASK);
++            /* Get number of elements */
++            elems = page_split / msize;
++            if (unlikely(env->vstart + elems >= env->vl)) {
++                elems = env->vl - env->vstart;
++            }
++
++            /* Load/store elements in the first page */
++            if (likely(elems)) {
++                vext_page_ldst_us(env, vd, addr, elems, nf, max_elems,
++                                  log2_esz, true, mmu_index, ldst_tlb,
++                                  ldst_host, ra);
++            }
++
++            /* Load/store elements in the second page */
++            if (unlikely(env->vstart < env->vl)) {
++                /* Cross page element */
++                if (unlikely(page_split % msize)) {
++                    for (k = 0; k < nf; k++) {
++                        addr = base + ((env->vstart * nf + k) << log2_esz);
++                        ldst_tlb(env, adjust_addr(env, addr),
++                                 env->vstart + k * max_elems, vd, ra);
++                    }
++                    env->vstart++;
++                }
++
++                addr = base + ((env->vstart * nf) << log2_esz);
++                /* Get number of elements of second page */
++                elems = env->vl - env->vstart;
++
++                /* Load/store elements in the second page */
++                vext_page_ldst_us(env, vd, addr, elems, nf, max_elems,
++                                  log2_esz, true, mmu_index, ldst_tlb,
++                                  ldst_host, ra);
++            }
++        } else {
++            for (i = env->vstart; i < env->vl; i++) {
++                k = 0;
++                while (k < nf) {
++                    if (!vext_elem_mask(v0, i)) {
++                        /* set masked-off elements to 1s */
++                        vext_set_elems_1s(vd, vma, (i + k * max_elems) * esz,
++                                          (i + k * max_elems + 1) * esz);
++                        k++;
++                        continue;
++                    }
++                    addr = base + ((i * nf + k) << log2_esz);
++                    ldst_tlb(env, adjust_addr(env, addr), i + k * max_elems,
++                             vd, ra);
++                    k++;
++                }
+             }
+-            addr = base + ((i * nf + k) << log2_esz);
 -            ldst_elem(env, adjust_addr(env, addr), i + k * max_elems, vd, ra);
-+    /* Load/store elements in the second page */
-+    if (unlikely(env->vstart < evl)) {
-+        /* Cross page element */
-+        if (unlikely(page_split % esz)) {
-+            addr = base + (env->vstart << log2_esz);
-+            ldst_tlb(env, adjust_addr(env, addr), env->vstart, vd, ra);
-+            env->vstart++;
+-            k++;
          }
-+
-+        addr = base + (env->vstart << log2_esz);
-+        /* Get number of elements of second page */
-+        elems = evl - env->vstart;
-+
-+        /* Load/store elements in the second page */
-+        vext_page_ldst_us(env, vd, addr, elems, 1, max_elems, log2_esz,
-+                          is_load, mmu_index, ldst_tlb, ldst_host, ra);
      }
- 
      env->vstart = 0;
+@@ -637,18 +681,18 @@ ProbeSuccess:
+     vext_set_tail_elems_1s(env->vl, vd, desc, nf, esz, max_elems);
  }
  
--#define GEN_VEXT_LD_WHOLE(NAME, ETYPE, LOAD_FN)      \
--void HELPER(NAME)(void *vd, target_ulong base,       \
--                  CPURISCVState *env, uint32_t desc) \
--{                                                    \
--    vext_ldst_whole(vd, base, env, desc, LOAD_FN,    \
--                    ctzl(sizeof(ETYPE)), GETPC());   \
--}
--
--GEN_VEXT_LD_WHOLE(vl1re8_v,  int8_t,  lde_b_tlb)
--GEN_VEXT_LD_WHOLE(vl1re16_v, int16_t, lde_h_tlb)
--GEN_VEXT_LD_WHOLE(vl1re32_v, int32_t, lde_w_tlb)
--GEN_VEXT_LD_WHOLE(vl1re64_v, int64_t, lde_d_tlb)
--GEN_VEXT_LD_WHOLE(vl2re8_v,  int8_t,  lde_b_tlb)
--GEN_VEXT_LD_WHOLE(vl2re16_v, int16_t, lde_h_tlb)
--GEN_VEXT_LD_WHOLE(vl2re32_v, int32_t, lde_w_tlb)
--GEN_VEXT_LD_WHOLE(vl2re64_v, int64_t, lde_d_tlb)
--GEN_VEXT_LD_WHOLE(vl4re8_v,  int8_t,  lde_b_tlb)
--GEN_VEXT_LD_WHOLE(vl4re16_v, int16_t, lde_h_tlb)
--GEN_VEXT_LD_WHOLE(vl4re32_v, int32_t, lde_w_tlb)
--GEN_VEXT_LD_WHOLE(vl4re64_v, int64_t, lde_d_tlb)
--GEN_VEXT_LD_WHOLE(vl8re8_v,  int8_t,  lde_b_tlb)
--GEN_VEXT_LD_WHOLE(vl8re16_v, int16_t, lde_h_tlb)
--GEN_VEXT_LD_WHOLE(vl8re32_v, int32_t, lde_w_tlb)
--GEN_VEXT_LD_WHOLE(vl8re64_v, int64_t, lde_d_tlb)
--
--#define GEN_VEXT_ST_WHOLE(NAME, ETYPE, STORE_FN)     \
--void HELPER(NAME)(void *vd, target_ulong base,       \
--                  CPURISCVState *env, uint32_t desc) \
--{                                                    \
--    vext_ldst_whole(vd, base, env, desc, STORE_FN,   \
--                    ctzl(sizeof(ETYPE)), GETPC());   \
--}
--
--GEN_VEXT_ST_WHOLE(vs1r_v, int8_t, ste_b_tlb)
--GEN_VEXT_ST_WHOLE(vs2r_v, int8_t, ste_b_tlb)
--GEN_VEXT_ST_WHOLE(vs4r_v, int8_t, ste_b_tlb)
--GEN_VEXT_ST_WHOLE(vs8r_v, int8_t, ste_b_tlb)
-+#define GEN_VEXT_LD_WHOLE(NAME, ETYPE, LOAD_FN_TLB, LOAD_FN_HOST)   \
-+void HELPER(NAME)(void *vd, target_ulong base, CPURISCVState *env,  \
-+                  uint32_t desc)                                    \
-+{                                                                   \
-+    vext_ldst_whole(vd, base, env, desc, LOAD_FN_TLB, LOAD_FN_HOST, \
-+                    ctzl(sizeof(ETYPE)), GETPC(), true);            \
-+}
-+
-+GEN_VEXT_LD_WHOLE(vl1re8_v,  int8_t,  lde_b_tlb, lde_b_host)
-+GEN_VEXT_LD_WHOLE(vl1re16_v, int16_t, lde_h_tlb, lde_h_host)
-+GEN_VEXT_LD_WHOLE(vl1re32_v, int32_t, lde_w_tlb, lde_w_host)
-+GEN_VEXT_LD_WHOLE(vl1re64_v, int64_t, lde_d_tlb, lde_d_host)
-+GEN_VEXT_LD_WHOLE(vl2re8_v,  int8_t,  lde_b_tlb, lde_b_host)
-+GEN_VEXT_LD_WHOLE(vl2re16_v, int16_t, lde_h_tlb, lde_h_host)
-+GEN_VEXT_LD_WHOLE(vl2re32_v, int32_t, lde_w_tlb, lde_w_host)
-+GEN_VEXT_LD_WHOLE(vl2re64_v, int64_t, lde_d_tlb, lde_d_host)
-+GEN_VEXT_LD_WHOLE(vl4re8_v,  int8_t,  lde_b_tlb, lde_b_host)
-+GEN_VEXT_LD_WHOLE(vl4re16_v, int16_t, lde_h_tlb, lde_h_host)
-+GEN_VEXT_LD_WHOLE(vl4re32_v, int32_t, lde_w_tlb, lde_w_host)
-+GEN_VEXT_LD_WHOLE(vl4re64_v, int64_t, lde_d_tlb, lde_d_host)
-+GEN_VEXT_LD_WHOLE(vl8re8_v,  int8_t,  lde_b_tlb, lde_b_host)
-+GEN_VEXT_LD_WHOLE(vl8re16_v, int16_t, lde_h_tlb, lde_h_host)
-+GEN_VEXT_LD_WHOLE(vl8re32_v, int32_t, lde_w_tlb, lde_w_host)
-+GEN_VEXT_LD_WHOLE(vl8re64_v, int64_t, lde_d_tlb, lde_d_host)
-+
-+#define GEN_VEXT_ST_WHOLE(NAME, ETYPE, STORE_FN_TLB, STORE_FN_HOST)     \
-+void HELPER(NAME)(void *vd, target_ulong base, CPURISCVState *env,      \
-+                  uint32_t desc)                                        \
-+{                                                                       \
-+    vext_ldst_whole(vd, base, env, desc, STORE_FN_TLB, STORE_FN_HOST,   \
-+                    ctzl(sizeof(ETYPE)), GETPC(), false);               \
-+}
-+
-+GEN_VEXT_ST_WHOLE(vs1r_v, int8_t, ste_b_tlb, ste_b_host)
-+GEN_VEXT_ST_WHOLE(vs2r_v, int8_t, ste_b_tlb, ste_b_host)
-+GEN_VEXT_ST_WHOLE(vs4r_v, int8_t, ste_b_tlb, ste_b_host)
-+GEN_VEXT_ST_WHOLE(vs8r_v, int8_t, ste_b_tlb, ste_b_host)
+-#define GEN_VEXT_LDFF(NAME, ETYPE, LOAD_FN)               \
+-void HELPER(NAME)(void *vd, void *v0, target_ulong base,  \
+-                  CPURISCVState *env, uint32_t desc)      \
+-{                                                         \
+-    vext_ldff(vd, v0, base, env, desc, LOAD_FN,           \
+-              ctzl(sizeof(ETYPE)), GETPC());              \
++#define GEN_VEXT_LDFF(NAME, ETYPE, LOAD_FN_TLB, LOAD_FN_HOST)   \
++void HELPER(NAME)(void *vd, void *v0, target_ulong base,        \
++                  CPURISCVState *env, uint32_t desc)            \
++{                                                               \
++    vext_ldff(vd, v0, base, env, desc, LOAD_FN_TLB,             \
++              LOAD_FN_HOST, ctzl(sizeof(ETYPE)), GETPC());      \
+ }
  
- /*
-  * Vector Integer Arithmetic Instructions
+-GEN_VEXT_LDFF(vle8ff_v,  int8_t,  lde_b_tlb)
+-GEN_VEXT_LDFF(vle16ff_v, int16_t, lde_h_tlb)
+-GEN_VEXT_LDFF(vle32ff_v, int32_t, lde_w_tlb)
+-GEN_VEXT_LDFF(vle64ff_v, int64_t, lde_d_tlb)
++GEN_VEXT_LDFF(vle8ff_v,  int8_t,  lde_b_tlb, lde_b_host)
++GEN_VEXT_LDFF(vle16ff_v, int16_t, lde_h_tlb, lde_h_host)
++GEN_VEXT_LDFF(vle32ff_v, int32_t, lde_w_tlb, lde_w_host)
++GEN_VEXT_LDFF(vle64ff_v, int64_t, lde_d_tlb, lde_d_host)
+ 
+ #define DO_SWAP(N, M) (M)
+ #define DO_AND(N, M)  (N & M)
 -- 
 2.34.1
 
