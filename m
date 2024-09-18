@@ -2,92 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A3397C7B6
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 12:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FCB097BDF8
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 16:28:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srE1n-00059e-GM; Thu, 19 Sep 2024 06:04:47 -0400
+	id 1sqvee-0007Rg-Qx; Wed, 18 Sep 2024 10:27:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1srE1i-00055k-FE
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 06:04:42 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1srE1g-0002Gv-Bb
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 06:04:41 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a8d24f98215so82039566b.1
- for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 03:04:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726740279; x=1727345079; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=81ACQ82gDj72T87fy7/My8kXXhxYI09wt3YtDri9Pls=;
- b=M6Dyj09H+11MBxr7CMiaNRcJJrgsheNKIYRWdRAevKtlA5bLTVvK1gtvt+aZcK9ovt
- Xj9e9F/i73Nb/SdRAZmo3r3UeWFK9070KaMTYKHmC4QJn3mhb6bUrY7d5SMFIb8XKUkG
- E5JBcLjykqkjVhyycKHK85hxyBOyo7yGiXsT8KGPHSaVzahqPvEdE58U72PGHWw+1c7c
- 1aogejzh7w3D9AGZo+wjABfUnSB5D+smN25zHiD+Y2wKB8V7xv21G9SwGEveiwggxhQC
- oX67BNjQ261gWL38JFosizzz3TfKjYzcDHEZvNpClOajuTa6q2uxMMNHHVdUjfy1zNSb
- PPFA==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqvea-0007QZ-E5
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 10:27:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sqveX-0006SB-Aa
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 10:27:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1726669651;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FIgVPU3TLKPEsCMv1wjFkbv85I5TqpwZPw2NbHOb//M=;
+ b=btw8kzd6afAw5l62prDMoDMdyvzxZOoC9ovoqKtc1nP7z6KQTHHsYL9bWKrbh2QwpPAnWA
+ 069xjk3QRqiFQlIf/k1RVK1hKZjAloqAarYmh/B/L29GswyDUASuec7nlcgUGAwxLHnR3n
+ R07B8m68k2yL/EBKyZ8WCSZL4/BsyH8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-437-8wD0HAKyPDmz02GqpUwDKA-1; Wed, 18 Sep 2024 10:27:28 -0400
+X-MC-Unique: 8wD0HAKyPDmz02GqpUwDKA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-42cbcf60722so51512095e9.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 07:27:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726740279; x=1727345079;
+ d=1e100.net; s=20230601; t=1726669647; x=1727274447;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=81ACQ82gDj72T87fy7/My8kXXhxYI09wt3YtDri9Pls=;
- b=nrVE+0/1JM04ZFny14duBZUMaQwwhkw1Ah6iMF/P3cinH3UxCMPF6nuRrfBsJAGocC
- 1Oy0xPwcpWxCoVoN+GXX4s/gJ2hg+7mVrtDc7kVgjmNAzJmGNxn8alIEi5aExDELF3Yn
- RqVhagAAfBQPH/hQveydP3KORpMPmWBuhSLLP9ffB64CpEr87KBjfp+0oI8ArPc4gUtD
- 9ytLoAN1u92RX0AbidD6NI7IX/lUgxDFMxbDd1AQCrtyMNDTePbqkEiGV4p382hj9k2p
- hZJlPke2YgpMNvqi8RhS7YoztaVETHpCXMuCcCFO25WjruAlXSdWoDJzOa+DQMJ9BA+a
- BDHw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWEawVdCRAVNSe5rzKcg31y6D70133UUZjQakZwekCmaM+6ciIe55oRYMVkQvImkadnZ5Mze/m3vz5Q@nongnu.org
-X-Gm-Message-State: AOJu0YxMNf9pOVFFfwj+4WeNqp/7womu1olTJKdLWtUrQclN1JO1W6bY
- xAUaxi5rxBBuBJiC46IQV1sQvlGI95NXxzWlk0rWx0UAiWAv8C3SRG5UxmKxesw=
-X-Google-Smtp-Source: AGHT+IE+Yatp9E73lkXWZgN6JDVIz6cIW61Qna3MKjZXdj3GufiJylKkykMDQkuD494+LUPA/H02Qw==
-X-Received: by 2002:a17:907:980e:b0:a77:cca9:b212 with SMTP id
- a640c23a62f3a-a9048048388mr2008383566b.45.1726740278668; 
- Thu, 19 Sep 2024 03:04:38 -0700 (PDT)
-Received: from [10.133.7.245] ([83.68.141.146])
+ bh=FIgVPU3TLKPEsCMv1wjFkbv85I5TqpwZPw2NbHOb//M=;
+ b=QrC8gKItU37qmUrAicGnwDsPhH+Rn8navtdg+5Xi4730cSM7fa+VloPhPXDUPg0tOh
+ iY1v7qTUGUZz04mxDWn9CnDP9UTiRbzog34W+bgSqQrTlCDGnntLTcI6I0PkLdRs+net
+ q9j+ZbBFz38asWtCoImewqUFxWTNQCHjB9Xiv1kphof3KBGpcky00N9ePn0J7ynggWsG
+ F70yplSVqQmPpjdHSI/b31aDNFlEJKU/swkPS03HfNIoRMKfnp1CE93lpKD2SISEoKMy
+ tzrlszowW17AJGtCuOXpFWJ138XUDKJkxlX6c1l6Pm1Da78U7I+X/oTMB208SKFjLds8
+ q7Zw==
+X-Gm-Message-State: AOJu0YznpY6wTgub39HMtEGylzZCrOyj9OJvy1ogiggCiy0JoWEntx4N
+ i2pGB9VNT/WtEXk3IkiKq/A5PwZXp2pFdgOmLRX74n7mAxqtaeLUkHa77bCDGSeCBxwH24VBY4y
+ Ma22dPA9vS8wZ0mXU7osiunG5FWu6pjYhqQzu0uklg1C2nGZSa2B2
+X-Received: by 2002:a05:600c:548a:b0:42c:bc60:5332 with SMTP id
+ 5b1f17b1804b1-42cdb54eda5mr150614525e9.19.1726669647150; 
+ Wed, 18 Sep 2024 07:27:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFThXfqY8CNcjvealDz2b5nSaUA5TMA0zwDQapFLdvhHMpAVpWewquNcGOaTca4hTKT37rU8g==
+X-Received: by 2002:a05:600c:548a:b0:42c:bc60:5332 with SMTP id
+ 5b1f17b1804b1-42cdb54eda5mr150614325e9.19.1726669646644; 
+ Wed, 18 Sep 2024 07:27:26 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90610f3aaesm701574766b.53.2024.09.19.03.04.37
+ 5b1f17b1804b1-42e7053856esm18287175e9.33.2024.09.18.07.27.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Sep 2024 03:04:38 -0700 (PDT)
-Message-ID: <20e20fde-830f-4314-a944-e7973bda5d8c@linaro.org>
-Date: Wed, 18 Sep 2024 16:27:16 +0200
+ Wed, 18 Sep 2024 07:27:26 -0700 (PDT)
+Message-ID: <b143662e-67a1-4edf-8bfa-cf43039989a8@redhat.com>
+Date: Wed, 18 Sep 2024 16:27:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/12] tcg/riscv: Add basic support for vector
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
- Swung0x48 <swung0x48@outlook.com>,
- TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-References: <20240911132630.461-1-zhiwei_liu@linux.alibaba.com>
- <20240911132630.461-3-zhiwei_liu@linux.alibaba.com>
- <0d591570-02c6-48c9-9e3f-ef47ac20ce7d@linaro.org>
- <b87e7a7e-41fd-4b26-bde3-9adca9babb24@linux.alibaba.com>
- <33101e38-080d-4444-a8c3-9d01827e243f@linaro.org>
- <b88244bc-aaf7-42f9-a90f-e4027ac72ebf@linux.alibaba.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <b88244bc-aaf7-42f9-a90f-e4027ac72ebf@linux.alibaba.com>
+Subject: Re: [PATCH v16 02/13] hw/ppc/spapr_pci: Do not create DT for disabled
+ PCI device
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
+References: <20240913-reuse-v16-0-d016b4b4f616@daynix.com>
+ <20240913-reuse-v16-2-d016b4b4f616@daynix.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240913-reuse-v16-2-d016b4b4f616@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,65 +114,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/18/24 12:43, LIU Zhiwei wrote:
+Hello,
+
+Adding :
+
+   Harsh for QEMU/PPC pseries machine,
+   Shivaprasad for KVM/PPC VFIO and IOMMU support.
+
+Could you please give us your feedback on these changes ?
+
+Thanks,
+
+C.
+
+  
+
+  On 9/13/24 05:44, Akihiko Odaki wrote:
+> Disabled means it is a disabled SR-IOV VF or it is powered off, and
+> hidden from the guest.
 > 
-> On 2024/9/18 18:11, Richard Henderson wrote:
->> On 9/18/24 07:17, LIU Zhiwei wrote:
->>>
->>> On 2024/9/12 2:41, Richard Henderson wrote:
->>>> On 9/11/24 06:26, LIU Zhiwei wrote:
->>>>> From: Swung0x48<swung0x48@outlook.com>
->>>>>
->>>>> The RISC-V vector instruction set utilizes the LMUL field to group
->>>>> multiple registers, enabling variable-length vector registers. This
->>>>> implementation uses only the first register number of each group while
->>>>> reserving the other register numbers within the group.
->>>>>
->>>>> In TCG, each VEC_IR can have 3 types (TCG_TYPE_V64/128/256), and the
->>>>> host runtime needs to adjust LMUL based on the type to use different
->>>>> register groups.
->>>>>
->>>>> This presents challenges for TCG's register allocation. Currently, we
->>>>> avoid modifying the register allocation part of TCG and only expose the
->>>>> minimum number of vector registers.
->>>>>
->>>>> For example, when the host vlen is 64 bits and type is TCG_TYPE_V256, with
->>>>> LMUL equal to 4, we use 4 vector registers as one register group. We can
->>>>> use a maximum of 8 register groups, but the V0 register number is reserved
->>>>> as a mask register, so we can effectively use at most 7 register groups.
->>>>> Moreover, when type is smaller than TCG_TYPE_V256, only 7 registers are
->>>>> forced to be used. This is because TCG cannot yet dynamically constrain
->>>>> registers with type; likewise, when the host vlen is 128 bits and
->>>>> TCG_TYPE_V256, we can use at most 15 registers.
->>>>>
->>>>> There is not much pressure on vector register allocation in TCG now, so
->>>>> using 7 registers is feasible and will not have a major impact on code
->>>>> generation.
->>>>>
->>>>> This patch:
->>>>> 1. Reserves vector register 0 for use as a mask register.
->>>>> 2. When using register groups, reserves the additional registers within
->>>>>     each group.
->>>>>
->>>>> Signed-off-by: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
->>>>> Co-authored-by: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
->>>>
->>>> If there is a co-author, there should be another Signed-off-by.
->>>
->>> This patch has added a tag:
->>>
->>> Signed-off-by: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
->>>
->>>
->>> Do you mean we should add the same tag twice?
->>
->> The from line is "Swung0x48 <swung0x48@outlook.com>".
->> If this is an alternate email for TANG Tiancheng,
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   hw/ppc/spapr_pci.c | 4 ++++
+>   1 file changed, 4 insertions(+)
 > 
-> No, Swung0x48 is another author.
+> diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+> index 7cf9904c3546..f63182a03c41 100644
+> --- a/hw/ppc/spapr_pci.c
+> +++ b/hw/ppc/spapr_pci.c
+> @@ -1296,6 +1296,10 @@ static void spapr_dt_pci_device_cb(PCIBus *bus, PCIDevice *pdev,
+>           return;
+>       }
+>   
+> +    if (!pdev->enabled) {
+> +        return;
+> +    }
+> +
+>       err = spapr_dt_pci_device(p->sphb, pdev, p->fdt, p->offset);
+>       if (err < 0) {
+>           p->err = err;
+> 
 
-Then we need a proper Signed-off-by line from that author.
-
-
-r~
 
