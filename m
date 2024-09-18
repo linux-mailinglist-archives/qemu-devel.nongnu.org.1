@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB1D97C027
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 20:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A04097C02E
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 20:44:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqzTL-0002El-J7; Wed, 18 Sep 2024 14:32:15 -0400
+	id 1sqzeL-0007Iu-3o; Wed, 18 Sep 2024 14:43:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqzTG-000219-O3
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 14:32:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqzTE-000210-OU
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 14:32:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726684328;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wcORaTdOlKE0GN8MprplNyrFUTHIsXM5RvJ3/UsElD0=;
- b=fVC5PCWMc7js8wj6Qhfpf7xCRSuNVotVrdJCd+fCl8/CXgagkLRiydnGU3c9l2G0B0VYQV
- gBUQb+W4PZkaqfCFY+zKHWH4VR7rRYkjijy7+uHeEudk64fHmRi/d1bN+Vukd4fPj+SBgH
- sP2ERPkfCDaLVO6buv+hjcFTaM35R2g=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-SbdMavxVNFWNVKZRe1qzUQ-1; Wed, 18 Sep 2024 14:32:06 -0400
-X-MC-Unique: SbdMavxVNFWNVKZRe1qzUQ-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6c3702d3ecfso146035236d6.0
- for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 11:32:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sqzeI-0007Ho-T1
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 14:43:34 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sqzeH-0003EZ-7u
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 14:43:34 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-7cf5e179b68so28878a12.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 11:43:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1726685011; x=1727289811; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mUn3vVs3PAg1jpdzhe1s5TNbomjixUrUyStKSozflik=;
+ b=ulb7wqBepRucEHj4QUvMrsCAOjWZvG+K+jv7VVt+TAByo2PDptSHQk7JmlKBdLM9OZ
+ fDkgNoaxb08EvvERhOp7H+oxHq5CGET5DvH05G+WHyXej7OJPaOT6kEhkSfqCdP5xjQr
+ Mr1us1RNXvwI3Na1aV/lrpPHkpumeGm8mNzWhOzdbrorZyW7KxU/tFwragTZ8tyuI2qT
+ otNiIQSQx1UOht2YkTQwdJ+nOYqxMs6xAUqMFJKS1u++x0yRRih5cy2XOP7JvQEAlpGC
+ 3He8BkTkggZzOyADeSjJUeGzT/VMHII5mR7KGxG01HMWrICXmEQVv3Fz4dq19a1zBhR6
+ SOkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726684326; x=1727289126;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wcORaTdOlKE0GN8MprplNyrFUTHIsXM5RvJ3/UsElD0=;
- b=no2rMXAP7Tmz9M1sSJe0ytiLLbA7HEpe+a0l6EsJ/2m+DahDZAGoymdWCRnRIBL0hT
- aOX3ju9dZrgRG6rGZoj0gME4goYyxFlKo/vAJPIe5V2M1MBQNyqmW4bJkSQMEo7KeGQn
- ltr39HonlDF4M/loqAx6xyMKPZfar5Tby0aAA8GsjvN4t64pd5lkkEzV4Mpg9MALUbD2
- Jf3q7Tzi8FK18/3oTdefAnjSaUcd1lx93pD2utgfqubv9LlyAaVgIvkZDeuBnRNRCslF
- TegTnNyvIgHVQNykGn1gTT2IJctRs3GDIk915Gi/+vGC5cEljlp4Vs8R6wv2qqVyGBck
- PqKQ==
-X-Gm-Message-State: AOJu0YxSDNJxNpDzK7P+CabtgxpF/VudCUX3INrcjwR8YyyprXWUP6aM
- 4IxipK3p7zblelCzi8EkvjGJT9joG6ITIhIm9ZzClMXJH2o69PA9iGTJJ+ttijUF6ioMKr5l8U0
- BrKbEAZdkHU+ShUIH3g0QKNm1sZWZGrOzN649wFVnfrhrk6zonH4wXWrvqHVj8WDaoRaxE5tX3/
- CDPn0Hyy7ecbv1Q1rofRVd61BHTFTPeN2QnA==
-X-Received: by 2002:a05:6214:45a1:b0:6c3:5d09:cf8a with SMTP id
- 6a1803df08f44-6c5735685cemr388022686d6.26.1726684325727; 
- Wed, 18 Sep 2024 11:32:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGXFYWKFgiIiQNDUCgj/GfFeJlifIaFPAalwWfksM3aEif90jC2SVvLMS0Lz9rbi/QuHgkd1Q==
-X-Received: by 2002:a05:6214:45a1:b0:6c3:5d09:cf8a with SMTP id
- 6a1803df08f44-6c5735685cemr388022266d6.26.1726684325316; 
- Wed, 18 Sep 2024 11:32:05 -0700 (PDT)
-Received: from x1n.. (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c75e494a28sm30486d6.68.2024.09.18.11.32.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Sep 2024 11:32:04 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
- peterx@redhat.com, qemu-stable@nongnu.org
-Subject: [PULL v2 6/6] migration/multifd: Fix rb->receivedmap cleanup race
-Date: Wed, 18 Sep 2024 14:31:51 -0400
-Message-ID: <20240918183151.6413-7-peterx@redhat.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240918183151.6413-1-peterx@redhat.com>
-References: <20240918183151.6413-1-peterx@redhat.com>
+ d=1e100.net; s=20230601; t=1726685011; x=1727289811;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mUn3vVs3PAg1jpdzhe1s5TNbomjixUrUyStKSozflik=;
+ b=RSzUa0/0426ngFOJekf7Hk/MCKz6cB6yUKNVNJ2V4Y/2RXIXZIkV4RCMLbFM7NGp2K
+ xRf7e7UaWYMT3F3cbASXk1/iYoD3bYHPTyTJGLJL6IRVpLFTVkOOZtakiraTWqDq3VE8
+ kYx3QAdKopYU+xU5FrxZTW72lpP6TBlvmD4V8/2i8T609sqWwHHPuN77TgSMYGpWIdcH
+ VcO4t8NIqADQmC4gFC/tQMOGjB164gqD5+KPcg+D1f0YsD76hJ+2+SlV+IbU80tRIMC8
+ pr0gYf7UTlZkm425M3Nq64w5gre59kQlzjTlrJpIurfcRbGtbkvkCeG8f45iayNY9fMb
+ X/0w==
+X-Gm-Message-State: AOJu0Yyg/kXAJ+zDgnQA+lZ0MP4rRXv5mNjsNerqY7qZ7LQd/Mb2sx83
+ 3WE2fWg1N/wowAw6BOvlo6kiflJ7cfpDmIEtmBwC5ZEISrKmOm3nFCtU9Z7xbT8=
+X-Google-Smtp-Source: AGHT+IFNeFvI+FeuoqaUjf+7LYg1q2d4BRxyYfcT+Awcekb89xJtzurLWQ9NV8ISzhOhgL4Ksf90ww==
+X-Received: by 2002:a05:6a21:3401:b0:1cf:49a6:992a with SMTP id
+ adf61e73a8af0-1d2fcad220amr858776637.21.1726685011098; 
+ Wed, 18 Sep 2024 11:43:31 -0700 (PDT)
+Received: from [192.168.1.67] (216-180-64-156.dyn.novuscom.net.
+ [216.180.64.156]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71944b7afaesm7010644b3a.130.2024.09.18.11.43.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Sep 2024 11:43:30 -0700 (PDT)
+Message-ID: <c1f77391-a939-4fa6-98fa-c50622a71ede@linaro.org>
+Date: Wed, 18 Sep 2024 11:43:29 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] tcg: Fix branch/label link during plugin expansion
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20240910212351.977753-1-richard.henderson@linaro.org>
+ <f7f1cb70-08f8-48aa-9db7-cc7a119a4234@linaro.org>
+ <87jzffrgw0.fsf@draig.linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <87jzffrgw0.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,88 +96,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
-
-Fix a segmentation fault in multifd when rb->receivedmap is cleared
-too early.
-
-After commit 5ef7e26bdb ("migration/multifd: solve zero page causing
-multiple page faults"), multifd started using the rb->receivedmap
-bitmap, which belongs to ram.c and is initialized and *freed* from the
-ram SaveVMHandlers.
-
-Multifd threads are live until migration_incoming_state_destroy(),
-which is called after qemu_loadvm_state_cleanup(), leading to a crash
-when accessing rb->receivedmap.
-
-process_incoming_migration_co()        ...
-  qemu_loadvm_state()                  multifd_nocomp_recv()
-    qemu_loadvm_state_cleanup()          ramblock_recv_bitmap_set_offset()
-      rb->receivedmap = NULL               set_bit_atomic(..., rb->receivedmap)
-  ...
-  migration_incoming_state_destroy()
-    multifd_recv_cleanup()
-      multifd_recv_terminate_threads(NULL)
-
-Move the loadvm cleanup into migration_incoming_state_destroy(), after
-multifd_recv_cleanup() to ensure multifd threads have already exited
-when rb->receivedmap is cleared.
-
-Adjust the postcopy listen thread comment to indicate that we still
-want to skip the cpu synchronization.
-
-CC: qemu-stable@nongnu.org
-Fixes: 5ef7e26bdb ("migration/multifd: solve zero page causing multiple page faults")
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240917185802.15619-3-farosas@suse.de
-[peterx: added comment in migration_incoming_state_destroy()]
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/migration.c | 5 +++++
- migration/savevm.c    | 6 ++++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/migration/migration.c b/migration/migration.c
-index 3dea06d577..ae2be31557 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -378,6 +378,11 @@ void migration_incoming_state_destroy(void)
-     struct MigrationIncomingState *mis = migration_incoming_get_current();
- 
-     multifd_recv_cleanup();
-+    /*
-+     * RAM state cleanup needs to happen after multifd cleanup, because
-+     * multifd threads can use some of its states (receivedmap).
-+     */
-+    qemu_loadvm_state_cleanup();
- 
-     if (mis->to_src_file) {
-         /* Tell source that we are done */
-diff --git a/migration/savevm.c b/migration/savevm.c
-index d0759694fd..7e1e27182a 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2979,7 +2979,10 @@ int qemu_loadvm_state(QEMUFile *f)
-     trace_qemu_loadvm_state_post_main(ret);
- 
-     if (mis->have_listen_thread) {
--        /* Listen thread still going, can't clean up yet */
-+        /*
-+         * Postcopy listen thread still going, don't synchronize the
-+         * cpus yet.
-+         */
-         return ret;
-     }
- 
-@@ -3022,7 +3025,6 @@ int qemu_loadvm_state(QEMUFile *f)
-         }
-     }
- 
--    qemu_loadvm_state_cleanup();
-     cpu_synchronize_all_post_init();
- 
-     return ret;
--- 
-2.45.0
-
+T24gOS8xMy8yNCAwMzoyMywgQWxleCBCZW5uw6llIHdyb3RlOg0KPiBSaWNoYXJkIEhlbmRl
+cnNvbiA8cmljaGFyZC5oZW5kZXJzb25AbGluYXJvLm9yZz4gd3JpdGVzOg0KPiANCj4+IE9u
+IDkvMTAvMjQgMTQ6MjMsIFJpY2hhcmQgSGVuZGVyc29uIHdyb3RlOg0KPj4+IFdpdGggdGNn
+X2xhc3Rfb3AoKSwgd2UgYWx3YXlzIGdldCB0aGUgbGFzdCBvcCBvZiB0aGUgc3RyZWFtLg0K
+Pj4+IFdpdGggVENHQ29udGV4dC5lbWl0X2JlZm9yZV9vcCwgdGhlIG1vc3QgcmVjZW50bHkg
+ZW1pdHRlZCBvcA0KPj4+IGlzIG5vIGxvbmdlciB0aGUgbGFzdCBvcC4NCj4+PiBJbnN0ZWFk
+LCBwYXNzIHRoZSBvcCBiZWluZyBlbWl0dGVkIGJhY2sgZnJvbSB0aGUgYWxsb2NhdG9yIHNv
+DQo+Pj4gdGhhdCB3ZSBjYW4gbGluayBpdCB0byB0aGUgbGFiZWwgd2l0aG91dCBuZWVkaW5n
+IHRvIGxvb2sgaXQgdXAuDQo+Pg0KPj4gT2gsIEkgbWVhbnQgdG8gcG9pbnQgb3V0IGZyb20g
+d2hlbmNlIHRoaXMgY29tZXMuDQo+PiBUaGUgcGx1Z2luIHVzZXMgYSBjb25kaXRpb25hbA0K
+PiANCj4gICAgICBzaXplX3Qgbl9pbnNucyA9IHFlbXVfcGx1Z2luX3RiX25faW5zbnModGIp
+Ow0KPiAgICAgIHFlbXVfcGx1Z2luX3U2NCBxdWFudHVtX2luc24gPQ0KPiAgICAgICAgICBx
+ZW11X3BsdWdpbl9zY29yZWJvYXJkX3U2NF9pbl9zdHJ1Y3QodmNwdXMsIHZDUFVUaW1lLCBx
+dWFudHVtX2luc24pOw0KPiAgICAgIC8qIGNvdW50IChhbmQgZXZlbnR1YWxseSB0cmFwKSBv
+bmNlIHBlciB0YiAqLw0KPiAgICAgIHFlbXVfcGx1Z2luX3JlZ2lzdGVyX3ZjcHVfdGJfZXhl
+Y19pbmxpbmVfcGVyX3ZjcHUoDQo+ICAgICAgICAgIHRiLCBRRU1VX1BMVUdJTl9JTkxJTkVf
+QUREX1U2NCwgcXVhbnR1bV9pbnNuLCBuX2luc25zKTsNCj4gDQo+PiAgIGxkX2kzMiB0bXAx
+OCxlbnYsJDB4ZmZmZmZmZmZmZmZmZGIxMA0KPj4gICBtdWxfaTMyIHRtcDE4LHRtcDE4LCQw
+eDE4DQo+PiAgIGV4dF9pMzJfaTY0IHRtcDE3LHRtcDE4DQo+PiAgIGFkZF9pNjQgdG1wMTcs
+dG1wMTcsJDB4NTc1NDEwZWRhZGM4DQo+IA0KPiAgICAgIHFlbXVfcGx1Z2luX3JlZ2lzdGVy
+X3ZjcHVfdGJfZXhlY19jb25kX2NiKA0KPiAgICAgICAgICB0YiwgZXZlcnlfcXVhbnR1bV9p
+bnNuLA0KPiAgICAgICAgICBRRU1VX1BMVUdJTl9DQl9OT19SRUdTLCBRRU1VX1BMVUdJTl9D
+T05EX0dFLA0KPiAgICAgICAgICBxdWFudHVtX2luc24sIG1heF9pbnNuX3Blcl9xdWFudHVt
+LCBOVUxMKTsNCj4gDQo+ID8NCj4gDQo+PiAgIGxkX2k2NCB0bXAyMSx0bXAxNywkMHgwDQo+
+PiAgIGJyY29uZF9pNjQgdG1wMjEsJDB4MCxsdHUsJEwxDQo+PiAgIGxkX2kzMiB0bXAxOCxl
+bnYsJDB4ZmZmZmZmZmZmZmZmZGIxMA0KPj4gICBjYWxsIHBsdWdpbigweDc5YTJhYmZkZTY2
+YSksJDB4MSwkMCx0bXAxOCwkMHgwDQo+PiAgIHNldF9sYWJlbCAkTDENCj4+DQo+PiBOb3Rl
+IHRoYXQgdGhlIGJyYW5jaCBpcyBYIDwgMCAodW5zaWduZWQpLCB3aGljaCBpcyBhbHdheXMg
+ZmFsc2UsIGFuZA0KPj4gdGh1cyB0aGUgYnJhbmNoIGlzIG9wdGltaXplZCBhd2F5Lg0KPiAN
+Cj4gSSdtIG9idmlvdXNseSBtaXNzaW5nIHNvbWV0aGluZyByZWFkaW5nIHRoaXMuIEhvdyBj
+YW4gVENHIGtub3cgdGhlIHN0YXRlDQo+IG9mIHRoZSBzY29yZWJvYXJkIHZhcmlhYmxlcyBh
+bmQgb3B0aW1pc2UgYXdheSB0aGUgYnJhbmNoPw0KPiANCg0KVGhlIGNvbnN0YW50IGFnYWlu
+c3Qgd2hpY2ggd2UgY29tcGFyZSBzY29yZWJvYXJkIGVudHJ5IHZhbHVlIGlzIGtub3duIGF0
+IA0KdHJhbnNsYXRpb24gdGltZS4NCg0KPj4NCj4+DQo+PiByfg0KPiANCg==
 
