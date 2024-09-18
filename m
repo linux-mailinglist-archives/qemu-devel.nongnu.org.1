@@ -2,89 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E38E97BF8B
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 19:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3BD97BFEC
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 19:55:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqyGc-0007vr-Dh; Wed, 18 Sep 2024 13:15:02 -0400
+	id 1sqys9-0006T2-DG; Wed, 18 Sep 2024 13:53:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sqyGY-0007lA-TI
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 13:15:00 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sqys6-0006Ra-UT
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 13:53:46 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sqyGX-0001vK-4t
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 13:14:58 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-7db637d1e4eso2509775a12.2
- for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 10:14:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sqys5-00063x-1U
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 13:53:46 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5c26815e174so3484a12.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 10:53:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1726679694; x=1727284494; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=f408neNmJiHRMFNBITqjdfGcu6sd/hAmiLVrUqm2xBk=;
- b=ZHUYgjXDcDxRq2RdAX2ki5uX15Vgl0RZNgHH57zghRvRfUcRvze05mVuLHz2cmpi7J
- PvNDs9R/6xSzcvd8wbHqF8AQR2Vpq9MsAGYfeOOrIJVZrdKdo8mmU1500RklL4/ZNs4E
- xmc5pFn4vNrwX4pOdydljN6uo+bwWsaJgG/tyElyQJHFtCR80G/xK/Acp8ArVC048MEi
- FHIBQ+0DbXE6fE0IpPrVUwiDLd/pTanld+uAIl6xslaNaZJLTdjPAjLVPun/9+18s+Jk
- avCA+7tOWoo+XIb3l4LzTct9HDpKAWgDcQUBa5wa8VkeX4F+OJ/Fspjkd/rqPo3bMFRw
- FBqg==
+ d=linaro.org; s=google; t=1726682023; x=1727286823; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=QCT5Ncw0JAkP3JDT5lUd0SIEm7Hpho3lH6DrSESBd00=;
+ b=QLIz9W5iAnpF4/95ilKn1511vh3qnwls07yeuAEtK/YdYYwygT6epGxU+nAMRDLmxn
+ 5bjJ0r6o+jes7eRzyKF1L4BfmSECb0HYf/busVAmHHqkiRRb6KPwnA7fZCeBlncU5khD
+ omiUq4I2beg0tSjbTr1rtUGvg3A4768nvSZtIYLTcvYPmIq3ufFHKE5VOAuKanSZyZ/n
+ YhD0dVLpF+ALkSodcytpaGHHP4ArgpIOLkkVGLu9iHUCUmowp3Lwl9mTTh+dZ9gJxYt6
+ flf2OzeCEBZOymSwNyeBKqCjmrxkfSx9EL4BHCwHfALBxc1nxKaTDjRNGyw6rZ0st3i1
+ y5lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726679694; x=1727284494;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=f408neNmJiHRMFNBITqjdfGcu6sd/hAmiLVrUqm2xBk=;
- b=vRhAPw15x1XM8u4bqvcnl79gDHBB5ZnwdFn+BYUmys/5nW2viw73WZvH0pQupH4AcV
- s1053z7g+H4ZTOjD0OhAtIc9bAk3W8KIZkmGceZXOjbkA22yhn9ZKShECdmmoies2DlV
- eDwE4PRHSvKrttZl0po4zb65fghID2ubjPj+EDX51ng4WAbHQiJQtvnOQ+I+mBjtCLFk
- HeK/j+Sgl4g0sFrHehjM173cBx5UTE1m+zfHGDNSfq+D5tEAlGu42/Gb6JIfrjySvEve
- y4MWaxhYANbZuw8LOHRIlywpB58k1JzUhUGh0LXfvPNDgY810yWRwEYoqgXvp3JPMZQ9
- cfZg==
-X-Gm-Message-State: AOJu0YxZhXR6fmYWlDVx2QT4qu6F3e07n4eb1CXrZ57jBKPLSLg3Glia
- I0xw81u5EAj9HlYsm+4L4Xoc6mkbLfeXlnBLHBd9VWLuKX+Kc5PClh0Ox1uDTY9mAl3b7AGD2t8
- wv/Yt+rB9tK3PvAa63kDwMBTAd3/Xp5hdBsVdKtfuwfSBqjqyYaMgv0M/5lVooHVJl0g5LvyUNk
- 9pOfZ4AxUeH2JgmbG/VGEwqJj8Z3LMsOLMV8kqIA==
-X-Google-Smtp-Source: AGHT+IGE90+JXk1/9HlzshqC/Q6QpcF2o6vJM8Xbn1n6a1qvv2LOTEKJguy44zgsNP1e6DDtTd2ABg==
-X-Received: by 2002:a05:6a21:1646:b0:1cf:3ec5:e779 with SMTP id
- adf61e73a8af0-1cf75d7fc8emr32031945637.5.1726679694350; 
- Wed, 18 Sep 2024 10:14:54 -0700 (PDT)
-Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
- [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2dd608e2318sm1914577a91.32.2024.09.18.10.14.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Sep 2024 10:14:54 -0700 (PDT)
-From: Max Chou <max.chou@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, richard.henderson@linaro.org,
- negge@google.com, Max Chou <max.chou@sifive.com>
-Subject: [PATCH v6 7/7] target/riscv: Inline unit-stride ld/st and
- corresponding functions for performance
-Date: Thu, 19 Sep 2024 01:14:12 +0800
-Message-Id: <20240918171412.150107-8-max.chou@sifive.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240918171412.150107-1-max.chou@sifive.com>
-References: <20240918171412.150107-1-max.chou@sifive.com>
+ d=1e100.net; s=20230601; t=1726682023; x=1727286823;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QCT5Ncw0JAkP3JDT5lUd0SIEm7Hpho3lH6DrSESBd00=;
+ b=ZR2BXmKaxiVlI/KxkQY44EFr7j7T3w2Kj3AhrJq78+MOAqzQ8tAwGvG5/71BGO0sL4
+ x/H5r1PCqiz/T+cfcNWZADQnN/PgyR65uM0L/RRHlOFyB0028qMly+YdihAGoSJdNyQv
+ D5YQQEEwbAnz2eb/UAfOKMIkj7D2Zdb1HgI+ZCM9/yLOI2S/1wOJ80e6FMg2J5mLzLE2
+ lPIOLDGJv2y5pXsVDUAJrOZPWxofz5DwFbJLexZ2ga25pFo8adLpZRF/NjEwMo68RzYM
+ zYsWATPM6Toc0oaMz25DCT3BF3BBS8wQWAecaB32aAOxs3yYolYy/s0yiPOXWH1wdTgh
+ x9/w==
+X-Gm-Message-State: AOJu0YxdT9jkF3tot/QXs/Pvs5PvTWkBTvHes4W4ZETKWqmeMcidss6n
+ 40Q78JkZj9OolJdA/d0/RIQ1YXV6jLui5Ck5X0PNEkTrbuur2EQLwVUuoypS6ctD9j+Xw9QUfv9
+ PUJWnGvSuCTg4k+92yHLpTo0WbuIiR6v/6G7MRhmI/RipjOUgxho=
+X-Google-Smtp-Source: AGHT+IGrBjRqFAzD3G9wcEW748dyYg5U4/JXY6tG22ZciI8Grl2Pw/3DyygGEWGBSmR2Q2zK+WWThHgdI3wXwnXTVNE=
+X-Received: by 2002:a05:6402:2b8f:b0:5c2:5c7f:60cb with SMTP id
+ 4fb4d7f45d1cf-5c41e1b5883mr17316914a12.34.1726682022424; Wed, 18 Sep 2024
+ 10:53:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=max.chou@sifive.com; helo=mail-pg1-x52e.google.com
+References: <20240917215506.472181-1-peterx@redhat.com>
+In-Reply-To: <20240917215506.472181-1-peterx@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 18 Sep 2024 18:53:31 +0100
+Message-ID: <CAFEAcA-vBV0DieO=-bwdV46T08A6pR0EnRUNNrE_Q++SAC0Uxg@mail.gmail.com>
+Subject: Re: [PULL 0/6] Migration 20240917 patches
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,87 +86,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the vector unit-stride load/store helper functions. the vext_ldst_us
-& vext_ldst_whole functions corresponding most of the execution time.
-Inline the functions can avoid the function call overhead to improve the
-helper function performance.
+On Tue, 17 Sept 2024 at 22:56, Peter Xu <peterx@redhat.com> wrote:
+>
+> The following changes since commit 2b81c046252fbfb375ad30632362fc16e6e22bd5:
+>
+>   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2024-09-17 14:02:18 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/peterx/qemu.git tags/migration-20240917-pull-request
+>
+> for you to fetch changes up to 7b8b4c0e59d2b7928836072536a5528820d8a041:
+>
+>   migration/multifd: Fix rb->receivedmap cleanup race (2024-09-17 17:50:45 -0400)
+>
+> ----------------------------------------------------------------
+> Migration pull for 9.2
+>
+> - Fabiano's patch to move two tests to slow tests.
+> - Peter's patch to fix qatzip builds
+> - Stefan's multifd-zstd fix on unsigned diff comparisons
+> - Fea's bug fix to consistently use memattrs when map() address space
+> - Fabiano's bug fix on multifd race condition against receivedmap
+>
+> ----------------------------------------------------------------
+>
+> Fabiano Rosas (3):
+>   tests/qtest/migration: Move a couple of slow tests under g_test_slow
+>   migration/savevm: Remove extra load cleanup calls
+>   migration/multifd: Fix rb->receivedmap cleanup race
+>
+> Fea.Wang (1):
+>   softmmu/physmem.c: Keep transaction attribute in address_space_map()
+>
+> Peter Xu (1):
+>   migration/multifd: Fix build for qatzip
+>
+> Stefan Weil (1):
+>   migration/multifd: Fix loop conditions in multifd_zstd_send_prepare
+>     and multifd_zstd_recv
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/riscv/vector_helper.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ERROR: pull request includes commits attributed to list
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 654d5e111f3..0d5ed950486 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -152,14 +152,16 @@ typedef void vext_ldst_elem_fn_tlb(CPURISCVState *env, abi_ptr addr,
- typedef void vext_ldst_elem_fn_host(void *vd, uint32_t idx, void *host);
- 
- #define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)             \
--static void NAME##_tlb(CPURISCVState *env, abi_ptr addr,    \
-+static inline QEMU_ALWAYS_INLINE                            \
-+void NAME##_tlb(CPURISCVState *env, abi_ptr addr,           \
-                 uint32_t idx, void *vd, uintptr_t retaddr)  \
- {                                                           \
-     ETYPE *cur = ((ETYPE *)vd + H(idx));                    \
-     *cur = cpu_##LDSUF##_data_ra(env, addr, retaddr);       \
- }                                                           \
-                                                             \
--static void NAME##_host(void *vd, uint32_t idx, void *host) \
-+static inline QEMU_ALWAYS_INLINE                            \
-+void NAME##_host(void *vd, uint32_t idx, void *host)        \
- {                                                           \
-     ETYPE *cur = ((ETYPE *)vd + H(idx));                    \
-     *cur = (ETYPE)LDSUF##_p(host);                          \
-@@ -171,14 +173,16 @@ GEN_VEXT_LD_ELEM(lde_w, uint32_t, H4, ldl)
- GEN_VEXT_LD_ELEM(lde_d, uint64_t, H8, ldq)
- 
- #define GEN_VEXT_ST_ELEM(NAME, ETYPE, H, STSUF)             \
--static void NAME##_tlb(CPURISCVState *env, abi_ptr addr,    \
-+static inline QEMU_ALWAYS_INLINE                            \
-+void NAME##_tlb(CPURISCVState *env, abi_ptr addr,           \
-                 uint32_t idx, void *vd, uintptr_t retaddr)  \
- {                                                           \
-     ETYPE data = *((ETYPE *)vd + H(idx));                   \
-     cpu_##STSUF##_data_ra(env, addr, data, retaddr);        \
- }                                                           \
-                                                             \
--static void NAME##_host(void *vd, uint32_t idx, void *host) \
-+static inline QEMU_ALWAYS_INLINE                            \
-+void NAME##_host(void *vd, uint32_t idx, void *host)        \
- {                                                           \
-     ETYPE data = *((ETYPE *)vd + H(idx));                   \
-     STSUF##_p(host, data);                                  \
-@@ -317,7 +321,7 @@ GEN_VEXT_ST_STRIDE(vsse64_v, int64_t, ste_d_tlb)
-  */
- 
- /* unmasked unit-stride load and store operation */
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
-                   uint32_t elems, uint32_t nf, uint32_t max_elems,
-                   uint32_t log2_esz, bool is_load, int mmu_index,
-@@ -369,7 +373,7 @@ vext_page_ldst_us(CPURISCVState *env, void *vd, target_ulong addr,
-     }
- }
- 
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-              vext_ldst_elem_fn_tlb *ldst_tlb,
-              vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
-@@ -756,7 +760,7 @@ GEN_VEXT_LDFF(vle64ff_v, int64_t, lde_d_tlb, lde_d_host)
- /*
-  * load and store whole register instructions
-  */
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-                 vext_ldst_elem_fn_tlb *ldst_tlb,
-                 vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
--- 
-2.34.1
+specifically:
+commit ebb47ddce00a1d681124f2e248022a0a5310daa8
+Author: Stefan Weil via <qemu-devel@nongnu.org>
+migration/multifd: Fix loop conditions in multifd_zstd_send_prepare
+and multifd_zstd_recv
 
+(git log --no-mailmap will show you this. The check in my scripting
+that catches it is:
+if git shortlog --author='qemu-.*@nongnu\.org' master..staging | grep .; then
+    echo "ERROR: pull request includes commits attributed to list"
+    exit 1
+fi
+
+if you want to automate finding it.)
+
+Can you fix this and resend, please?
+
+thanks
+-- PMM
 
