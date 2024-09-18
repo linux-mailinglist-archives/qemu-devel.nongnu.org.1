@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C666B97BF4F
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 18:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A146997BF4D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 18:52:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqxu5-00089C-O9; Wed, 18 Sep 2024 12:51:45 -0400
+	id 1sqxtj-0007R3-DG; Wed, 18 Sep 2024 12:51:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1sqxty-0007oM-QE; Wed, 18 Sep 2024 12:51:39 -0400
+ id 1sqxtg-0007Q5-N2; Wed, 18 Sep 2024 12:51:20 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1sqxtx-0007kN-EN; Wed, 18 Sep 2024 12:51:38 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48IEZALw013596;
- Wed, 18 Sep 2024 16:51:08 GMT
+ id 1sqxte-0007kY-Ue; Wed, 18 Sep 2024 12:51:20 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48IEZAwF032416;
+ Wed, 18 Sep 2024 16:51:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:mime-version:content-type
- :content-transfer-encoding; s=pp1; bh=ZfeU1qc5JhrVK9/tpNB907/44Y
- ITwVbuXx+cOQeVAxc=; b=ntF4JmI9xGLFcuOgGokv0HaZJvCkMkBB7IkckOCsOS
- CcYjrv0RqScGY+4YKvQhfyPGxxukRNA6tWM6IlZb2F+D6j5BX3KOXune5t7IZBKj
- wecia+bpY3btYB/sUicmKpVryyIU0qbza0SSMemdnfHw+Arzbd4U8KIrayuxGyGy
- 5YCd2y8wo0j/FHKN3icnyTcV30/mu+ZN0CdnRzdXVP5osMzGbww4XpwxdUWn9V3w
- WNSMjPYG7ekYSo6ibV3apxofnrQe+XzucQQAI47XaSNPI8TZ6rX7FJn8M1zj1nH6
- RHjGTKXyZwQc+SIHQVg0NbVJezRYq8yA17aDFCmrq9MA==
+ :to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-type:content-transfer-encoding; s=pp1; bh=
+ 2AZRtsIeqCN7UCQf9k33nGUf1SpHjQGUE0vnE0xZn4M=; b=RHlpCcs4fFsCD2H6
+ Koejyx2oWskvUW2LgJZsfwsJyNtJfN3JboQbQJDbN9/nZbNqCT4cu4gBxZ7s5/20
+ 6X2WgFgw17o3bC8//sbp9O0dSVbkeHmNRDdfbKE0EUsWP+nwo8nLfpkjYOra3RX3
+ 7jcHkG67YWRbhE8U/ABY6PiwSDNgEBOWhf6ZSPY4fITrXBaEzi3kuEGXmVsUT7eK
+ lXH0Y4+Y1JOd7BZCcrgaVyFy4AStGUXMFXVU7y0evUnywQUZFesH4NDcWpDQbNiD
+ gg0cSS/HwJpAlm6GKW0G2EV8nsYba0pdpuFlWWiNgkwBMLwEm1xnovBo44gIqLIK
+ WuZ1bg==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n41aq43b-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3vny5jb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Sep 2024 16:51:07 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48IGp7gh000442;
- Wed, 18 Sep 2024 16:51:07 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n41aq434-1
+ Wed, 18 Sep 2024 16:51:12 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48IGlKOj010815;
+ Wed, 18 Sep 2024 16:51:12 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3vny5j6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Sep 2024 16:51:07 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48IEbGIx001884;
- Wed, 18 Sep 2024 16:51:06 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41nqh3uy4d-1
+ Wed, 18 Sep 2024 16:51:12 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48IGe8SS001184;
+ Wed, 18 Sep 2024 16:51:11 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41nntqc8w1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Sep 2024 16:51:06 +0000
+ Wed, 18 Sep 2024 16:51:11 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 48IGp2lV32244174
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48IGp70F36962800
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Sep 2024 16:51:03 GMT
+ Wed, 18 Sep 2024 16:51:07 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D3AAC20049;
- Wed, 18 Sep 2024 16:51:02 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id D0B0B2004D;
+ Wed, 18 Sep 2024 16:51:07 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B90E720040;
- Wed, 18 Sep 2024 16:51:00 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B92B320049;
+ Wed, 18 Sep 2024 16:51:05 +0000 (GMT)
 Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 18 Sep 2024 16:51:00 +0000 (GMT)
+ Wed, 18 Sep 2024 16:51:05 +0000 (GMT)
 From: Chalapathi V <chalapathi.v@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
@@ -69,26 +70,27 @@ Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
  chalapathi.v@linux.ibm.com, saif.abrar@linux.ibm.com,
  dantan@linux.vnet.ibm.com, milesg@linux.ibm.com, philmd@linaro.org,
  alistair@alistair23.me
-Subject: [PATCH-for-9.2 v3 0/3] hw/ssi/pnv_spi: Remove PnvXferBuffer and
- get_seq_index()
-Date: Wed, 18 Sep 2024 11:50:42 -0500
-Message-Id: <20240918165045.21298-1-chalapathi.v@linux.ibm.com>
+Subject: [PATCH v3 1/3] MAINTAINERS: Cover PowerPC SPI model in PowerNV section
+Date: Wed, 18 Sep 2024 11:50:43 -0500
+Message-Id: <20240918165045.21298-2-chalapathi.v@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20240918165045.21298-1-chalapathi.v@linux.ibm.com>
+References: <20240918165045.21298-1-chalapathi.v@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LFdPT8xd8liXFxPlVQFxzeVJCd92sz-Q
-X-Proofpoint-ORIG-GUID: ScyyJOVX8hvvwMksPWpAEDaTqL6zu8n2
+X-Proofpoint-ORIG-GUID: fNarIWQv5o4Z4E-aEmtTlghLMLifTdw2
+X-Proofpoint-GUID: SstyA5OAibA2cXUQUHYnHck3rPsVtNS2
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-18_10,2024-09-18_01,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 suspectscore=0 mlxscore=0 mlxlogscore=661 bulkscore=0
- impostorscore=0 phishscore=0 priorityscore=1501 spamscore=0 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409180110
+ adultscore=0 mlxlogscore=705
+ priorityscore=1501 phishscore=0 clxscore=1015 malwarescore=0 bulkscore=0
+ impostorscore=0 spamscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409180110
 Received-SPF: pass client-ip=148.163.158.5;
  envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -114,33 +116,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+From: "Philippe Mathieu-Daudé" <philmd@linaro.org>
 
-v3:
-1. Update the PowerNV maintainer section to include hw/ssi/pnv_spi*
-2. Use of PnvXferBuffer results in a additonal process overhead due to
-frequent dynamic allocations and hence use an existing Fifo8 buffer.
-3. Use a local variable seq_index and use it with in while loop instead
-of repeatedly calling get_seq_index() and make sure s->seq_op doesn't
-overrun when seq_index is incremented.
+It is unfair to let the PowerNV SPI model to the SSI
+maintainers. Also include the PowerNV ones.
 
-Tested:
-passed make check and make check-avocado
+Fixes: 29318db133 ("hw/ssi: Add SPI model")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Supersedes: <20240807202804.56038-1-philmd@linaro.org>
+Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Philippe Mathieu-Daudé (1):
-  MAINTAINERS: Cover PowerPC SPI model in PowerNV section
-
-Chalapathi V (2):
-  hw/ssi/pnv_spi: Replace PnvXferBuffer with Fifo8 structure
-  hw/ssi/pnv_spi: Use local var seq_index instead of get_seq_index().
-
- MAINTAINERS              |   2 +
- include/hw/ssi/pnv_spi.h |   3 +
- hw/ssi/pnv_spi.c         | 228 +++++++++++++++------------------------
- 3 files changed, 89 insertions(+), 144 deletions(-)
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ffacd60f40..b11c4edaf0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1541,8 +1541,10 @@ F: hw/ppc/pnv*
+ F: hw/intc/pnv*
+ F: hw/intc/xics_pnv.c
+ F: hw/pci-host/pnv*
++F: hw/ssi/pnv_spi.c
+ F: include/hw/ppc/pnv*
+ F: include/hw/pci-host/pnv*
++F: hw/ssi/pnv_spi*
+ F: pc-bios/skiboot.lid
+ F: tests/qtest/pnv*
+ F: tests/functional/test_ppc64_powernv.py
 -- 
 2.39.5
 
