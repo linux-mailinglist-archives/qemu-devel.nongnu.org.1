@@ -2,90 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6385897B832
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 08:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3783497B83C
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 08:55:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqoV9-0006zf-6t; Wed, 18 Sep 2024 02:49:23 -0400
+	id 1sqoaO-0003X8-DL; Wed, 18 Sep 2024 02:54:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1sqoUz-0006yH-Lo
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 02:49:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1sqoUt-0004st-Ug
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 02:49:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726642145;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=I2+Iq2NW1mAJWJH/AFlvZG7ScqDqeQUBPTWOpbwuzGQ=;
- b=T9a78nA/K+Wn2sYPiazcebbKQ0JBoNz8uUv+El4mcazrpf/N76qi6uRc5ErhNHyQTjCytj
- y8iG9Khd5FHGfaGlDekfFRSwaaxOCCIYWzRAAFT2NmG13POkCUqenHzVfEajt8xmANrVm7
- wFP7XxJbyEKm84j3TIgm7M/ZQJlxBPc=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-170-zEpizykbOEWxdM0zhN9NWw-1; Wed, 18 Sep 2024 02:49:03 -0400
-X-MC-Unique: zEpizykbOEWxdM0zhN9NWw-1
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-717912c8f27so7969179b3a.1
- for <qemu-devel@nongnu.org>; Tue, 17 Sep 2024 23:49:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726642142; x=1727246942;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=I2+Iq2NW1mAJWJH/AFlvZG7ScqDqeQUBPTWOpbwuzGQ=;
- b=q0nsMjUDMhLMKh9pTJGxkc3tegYqzQ8ZrSnvU+LsVFstvIzio8XGEjmxN09MDd0Os/
- E2ddrffb+dvIN4oihoDwXqMW9AE8jTlWJhBJJ4LnPKXH6jEipYZohYUuMZvKwl3FzHag
- 6OMqMMlEWY8uDSLkCZq1BFbkFUG/yKgm7ZS089gCT8hQsK4oT4quQ0e2ACchOkbD5cqG
- HZBvqT06+v8owAmCt7SLm2kKjp2kno71PqT11wq/GCDfVgH1vwxDZNHnFigEkUnqCAd7
- aSs4UMEytTiw0aP3DhUSRJJmmVzhhCp2NeheABHH5RHJAiIC8eMb7y2vLx5MmxZZCzwj
- R0Lw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUogzDF3kATAaIgk1FuLDVvffw6D2P+r6jKbTG8zFEw21Zu8Gl5rIxNLj/QpJMTz1MT7qUeDYgPZyC2@nongnu.org
-X-Gm-Message-State: AOJu0YzEgOvlNZPkq4AnBy7GDl/hgWNieRIst+XkCIchCp1lRmCbulO5
- tt3q1ti5tCMNL+WbT2m5oFt/rl4nbbT00IWNAVQUen0KjW7qc+FVr3wBgjcMeG/C6ZrRZ7fSk85
- ZDEqhW28iQeEAPZ7NVkm3GoXtqcs093K4y5rRJwbJN5Bk8ZL2CyAL
-X-Received: by 2002:a05:6a00:3d4c:b0:717:90cd:7943 with SMTP id
- d2e1a72fcca58-71926218480mr30676633b3a.28.1726642142508; 
- Tue, 17 Sep 2024 23:49:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHysm0eNTRSPiC0f2N5l9SEg6j9aCH62mHEh3RjWGZoKymFQhjstZ8NujqAiS4vntN7BKgfXQ==
-X-Received: by 2002:a05:6a00:3d4c:b0:717:90cd:7943 with SMTP id
- d2e1a72fcca58-71926218480mr30676619b3a.28.1726642142062; 
- Tue, 17 Sep 2024 23:49:02 -0700 (PDT)
-Received: from localhost.localdomain ([27.6.219.91])
- by smtp.googlemail.com with ESMTPSA id
- d2e1a72fcca58-71944a977aesm6098340b3a.25.2024.09.17.23.48.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Sep 2024 23:49:01 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1sqoaB-0002xj-Is
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 02:54:35 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1sqoa7-0005OS-Sf
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 02:54:35 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8Bx9+gieepmqH4KAA--.22902S3;
+ Wed, 18 Sep 2024 14:54:26 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMAxSeYieepmKlQJAA--.53115S2;
+ Wed, 18 Sep 2024 14:54:26 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Ani Sinha <anisinha@redhat.com>,
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v3] memory: notify hypervisor of all eventfds during listener
- (de)registration
-Date: Wed, 18 Sep 2024 12:18:53 +0530
-Message-ID: <20240918064853.30678-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.42.0
+Subject: [PATCH v2 0/8] hw/intc/loongarch_pch: Split into pic common and pic
+Date: Wed, 18 Sep 2024 14:54:18 +0800
+Message-Id: <20240918065426.2341823-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qMiowMAxSeYieepmKlQJAA--.53115S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,161 +61,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When a new listener for an address space is registered, the hypervisor must be
-informed of all existing eventfds for that address space by calling
-eventfd_add() for that listener. Similarly, when a listener is de-registered
-from an address space, the hypervisor must be informed of all existing eventfds
-for that address space with a call to eventfd_del().
+In order to support irqchip_in_kenrel method, split loongarch pch pic
+driver into two parts, pic common and pic TCG driver. LoongArch pic common
+driver includes vmstate and property interface, also vmstate load and
+store interface is defined in pic common driver.
 
-Same is also true for coalesced io. Send coalesced io add/del listener
-notifications if any flatrage for the address space registered with the
-listener intersects with any coalesced io range.
+In future LoongArch pic kvm driver can inherit from pic common driver.
 
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
 ---
- system/memory.c | 83 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+v1 ... v2:
+  1. Reorganize the patchset, put macro and structure moving patch as
+     first one
+  2. Split the patchset with smaller patch, so that it is easier to
+     review
+---
+Bibo Mao (8):
+  include: Add loongarch_pic_common header file
+  include: Move struct LoongArchPCHPIC to loongarch_pic_common header
+    file
+  hw/intc/loongarch_pch: Merge instance_init() into realize()
+  hw/intc/loongarch_pch: Rename LoongArchPCHPIC with
+    LoongArchPICCommonState
+  hw/intc/loongarch_pch: Move some functions to file
+    loongarch_pic_common
+  hw/intc/loongarch_pch: Inherit from loongarch_pic_common
+  hw/intc/loongarch_pch: Add pre_save and post_load interfaces
+  hw/intc/loongarch_pch: Code cleanup about loongarch_pch_pic
 
-changelog:
-v2: tags added, indentation fixed, commit log fixed, code cleanup.
-v3: Peter's suggestions included.
+ hw/intc/loongarch_pch_pic.c            | 106 ++++++++-----------------
+ hw/intc/loongarch_pic_common.c         |  97 ++++++++++++++++++++++
+ hw/intc/meson.build                    |   2 +-
+ hw/loongarch/virt.c                    |   2 +-
+ include/hw/intc/loongarch_pch_pic.h    |  70 ++++------------
+ include/hw/intc/loongarch_pic_common.h |  82 +++++++++++++++++++
+ 6 files changed, 230 insertions(+), 129 deletions(-)
+ create mode 100644 hw/intc/loongarch_pic_common.c
+ create mode 100644 include/hw/intc/loongarch_pic_common.h
 
-diff --git a/system/memory.c b/system/memory.c
-index f6f6fee6d8..85f6834cb3 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -941,6 +941,38 @@ static void flat_range_coalesced_io_add(FlatRange *fr, AddressSpace *as)
-     }
- }
- 
-+static void
-+flat_range_coalesced_io_notify_listener_add_del(FlatRange *fr,
-+                                                MemoryRegionSection *mrs,
-+                                                MemoryListener *listener,
-+                                                AddressSpace *as, bool add)
-+{
-+    CoalescedMemoryRange *cmr;
-+    MemoryRegion *mr = fr->mr;
-+    AddrRange tmp;
-+
-+    QTAILQ_FOREACH(cmr, &mr->coalesced, link) {
-+        tmp = addrrange_shift(cmr->addr,
-+                              int128_sub(fr->addr.start,
-+                                         int128_make64(fr->offset_in_region)));
-+
-+        if (!addrrange_intersects(tmp, fr->addr)) {
-+            return;
-+        }
-+        tmp = addrrange_intersection(tmp, fr->addr);
-+
-+        if (add && listener->coalesced_io_add) {
-+            listener->coalesced_io_add(listener, mrs,
-+                                       int128_get64(tmp.start),
-+                                       int128_get64(tmp.size));
-+        } else if (!add && listener->coalesced_io_del) {
-+            listener->coalesced_io_del(listener, mrs,
-+                                       int128_get64(tmp.start),
-+                                       int128_get64(tmp.size));
-+        }
-+    }
-+}
-+
- static void address_space_update_topology_pass(AddressSpace *as,
-                                                const FlatView *old_view,
-                                                const FlatView *new_view,
-@@ -3015,8 +3047,10 @@ void memory_global_dirty_log_stop(unsigned int flags)
- static void listener_add_address_space(MemoryListener *listener,
-                                        AddressSpace *as)
- {
-+    unsigned i;
-     FlatView *view;
-     FlatRange *fr;
-+    MemoryRegionIoeventfd *fd;
- 
-     if (listener->begin) {
-         listener->begin(listener);
-@@ -3041,10 +3075,34 @@ static void listener_add_address_space(MemoryListener *listener,
-         if (listener->region_add) {
-             listener->region_add(listener, &section);
-         }
-+
-+        /* send coalesced io add notifications */
-+        flat_range_coalesced_io_notify_listener_add_del(fr, &section,
-+                                                        listener, as, true);
-+
-         if (fr->dirty_log_mask && listener->log_start) {
-             listener->log_start(listener, &section, 0, fr->dirty_log_mask);
-         }
-     }
-+
-+    /*
-+     * register all eventfds for this address space for the newly registered
-+     * listener.
-+     */
-+    for (i = 0; i < as->ioeventfd_nb; i++) {
-+        fd = &as->ioeventfds[i];
-+        MemoryRegionSection section = (MemoryRegionSection) {
-+            .fv = view,
-+            .offset_within_address_space = int128_get64(fd->addr.start),
-+            .size = fd->addr.size,
-+        };
-+
-+        if (listener->eventfd_add) {
-+            listener->eventfd_add(listener, &section,
-+                                  fd->match_data, fd->data, fd->e);
-+        }
-+    }
-+
-     if (listener->commit) {
-         listener->commit(listener);
-     }
-@@ -3054,8 +3112,10 @@ static void listener_add_address_space(MemoryListener *listener,
- static void listener_del_address_space(MemoryListener *listener,
-                                        AddressSpace *as)
- {
-+    unsigned i;
-     FlatView *view;
-     FlatRange *fr;
-+    MemoryRegionIoeventfd *fd;
- 
-     if (listener->begin) {
-         listener->begin(listener);
-@@ -3067,10 +3127,33 @@ static void listener_del_address_space(MemoryListener *listener,
-         if (fr->dirty_log_mask && listener->log_stop) {
-             listener->log_stop(listener, &section, fr->dirty_log_mask, 0);
-         }
-+
-+        /* send coalesced io del notifications */
-+        flat_range_coalesced_io_notify_listener_add_del(fr, &section,
-+                                                        listener, as, false);
-         if (listener->region_del) {
-             listener->region_del(listener, &section);
-         }
-     }
-+
-+    /*
-+     * de-register all eventfds for this address space for the current
-+     * listener.
-+     */
-+    for (i = 0; i < as->ioeventfd_nb; i++) {
-+        fd = &as->ioeventfds[i];
-+        MemoryRegionSection section = (MemoryRegionSection) {
-+            .fv = view,
-+            .offset_within_address_space = int128_get64(fd->addr.start),
-+            .size = fd->addr.size,
-+        };
-+
-+        if (listener->eventfd_del) {
-+            listener->eventfd_del(listener, &section,
-+                                  fd->match_data, fd->data, fd->e);
-+        }
-+    }
-+
-     if (listener->commit) {
-         listener->commit(listener);
-     }
+
+base-commit: 2b81c046252fbfb375ad30632362fc16e6e22bd5
 -- 
-2.42.0
+2.39.3
 
 
