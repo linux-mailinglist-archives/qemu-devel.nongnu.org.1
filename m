@@ -2,88 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F6D97BF3B
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 18:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C666B97BF4F
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 18:52:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqxnD-0002ll-8s; Wed, 18 Sep 2024 12:44:39 -0400
+	id 1sqxu5-00089C-O9; Wed, 18 Sep 2024 12:51:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqxn4-0002hp-CM
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 12:44:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1sqxty-0007oM-QE; Wed, 18 Sep 2024 12:51:39 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sqxn1-00072a-2L
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 12:44:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726677866;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uj+sgWn8upkTsVFo2DikLkVHuJVGMxpTC6nqQ5i6ZxM=;
- b=MnuKggmSWQEt7RwTj7Ew/lZAiWlOuu3i0C6efVUsqN4xkD8VIphDjOwECEyN5vTSeH6W8O
- AF8AqEbnxv/MX/PDicjXrOoP5K1zneTpbjC8EYtNHVY36sNWf7o/Ge4uY1RMOu/C14ILcJ
- KVr7cOd4oZN2pxQeNc8r4ukHSodNfds=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-NKC6M-5MNEaLuuvrXW2fLA-1; Wed, 18 Sep 2024 12:44:22 -0400
-X-MC-Unique: NKC6M-5MNEaLuuvrXW2fLA-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6c5be17fa0fso13149106d6.3
- for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 09:44:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726677862; x=1727282662;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uj+sgWn8upkTsVFo2DikLkVHuJVGMxpTC6nqQ5i6ZxM=;
- b=InDSERLWKHuhveSHsZfFQvux49q8RJU7yySfj//IHxq5uQ9VziM4kF6bw+WPYpxtGW
- 4PyjyUrHZBNn3KE7atB+QcnrWWi+hIQS83KSf2crkur2xSAOlYtTmAj8k9IVUP5p3eh6
- PdUNdU9J30SPJol0IL4NgUPK2GBNc05kBzTRIgRRGuALdlYX3zhePhYiY1knoecfQYej
- EBlbngolnVcgO0fentHeTgNo0ehUb0k6w4Gs4lmA4YmIKgp86CAh76KJfvrUV4raVn3Z
- 6pNn/OVb9qSqNM/Mw6RnV7BH0193LM40l32G9v8fXWOcPRIXiX3OCfTzaQzRUh+1Cz87
- 93Og==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXknhfzWWamR/9dyqB4Rd7wWeosVYCsYAVHjrz+mDE9ew5f/bB27anlZZud57BNURLwQH+FbiTUz6qB@nongnu.org
-X-Gm-Message-State: AOJu0YyDiUHbSXfORR1mwa5j2VOAHHSBkW32csPxbwMMo9pX5vGGixgS
- 4BK4D3vwRxp0s3ePeyRvwuTFuB3f2PKTx5MIM8xjy5B9sunGlL5a3/ycrkNB9w8VV+nrtm0eFKl
- tD1x/p7IHlSyzVmhMZX3pS6DrzNUALfjduoH8BKmF0nP/Co7FAySB
-X-Received: by 2002:a05:6214:3991:b0:6c3:5395:fe81 with SMTP id
- 6a1803df08f44-6c5735a3b5amr311582426d6.53.1726677862075; 
- Wed, 18 Sep 2024 09:44:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIsmuGhDFO8FGnwP37Wr2YC+545o1TYFV9v8yAb+yiVrr4gZ0EzI+hm4lKCA/YsgOVvHobZA==
-X-Received: by 2002:a05:6214:3991:b0:6c3:5395:fe81 with SMTP id
- 6a1803df08f44-6c5735a3b5amr311582206d6.53.1726677861744; 
- Wed, 18 Sep 2024 09:44:21 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c58c636769sm45900336d6.55.2024.09.18.09.44.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Sep 2024 09:44:21 -0700 (PDT)
-Date: Wed, 18 Sep 2024 12:44:19 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v3] memory: notify hypervisor of all eventfds during
- listener (de)registration
-Message-ID: <ZusDY1NziNoet-BS@x1n>
-References: <20240918064853.30678-1-anisinha@redhat.com>
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1sqxtx-0007kN-EN; Wed, 18 Sep 2024 12:51:38 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48IEZALw013596;
+ Wed, 18 Sep 2024 16:51:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version:content-type
+ :content-transfer-encoding; s=pp1; bh=ZfeU1qc5JhrVK9/tpNB907/44Y
+ ITwVbuXx+cOQeVAxc=; b=ntF4JmI9xGLFcuOgGokv0HaZJvCkMkBB7IkckOCsOS
+ CcYjrv0RqScGY+4YKvQhfyPGxxukRNA6tWM6IlZb2F+D6j5BX3KOXune5t7IZBKj
+ wecia+bpY3btYB/sUicmKpVryyIU0qbza0SSMemdnfHw+Arzbd4U8KIrayuxGyGy
+ 5YCd2y8wo0j/FHKN3icnyTcV30/mu+ZN0CdnRzdXVP5osMzGbww4XpwxdUWn9V3w
+ WNSMjPYG7ekYSo6ibV3apxofnrQe+XzucQQAI47XaSNPI8TZ6rX7FJn8M1zj1nH6
+ RHjGTKXyZwQc+SIHQVg0NbVJezRYq8yA17aDFCmrq9MA==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n41aq43b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Sep 2024 16:51:07 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48IGp7gh000442;
+ Wed, 18 Sep 2024 16:51:07 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n41aq434-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Sep 2024 16:51:07 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48IEbGIx001884;
+ Wed, 18 Sep 2024 16:51:06 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41nqh3uy4d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Sep 2024 16:51:06 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48IGp2lV32244174
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 18 Sep 2024 16:51:03 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D3AAC20049;
+ Wed, 18 Sep 2024 16:51:02 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B90E720040;
+ Wed, 18 Sep 2024 16:51:00 +0000 (GMT)
+Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 18 Sep 2024 16:51:00 +0000 (GMT)
+From: Chalapathi V <chalapathi.v@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ clg@kaod.org, calebs@linux.ibm.com, chalapathi.v@ibm.com,
+ chalapathi.v@linux.ibm.com, saif.abrar@linux.ibm.com,
+ dantan@linux.vnet.ibm.com, milesg@linux.ibm.com, philmd@linaro.org,
+ alistair@alistair23.me
+Subject: [PATCH-for-9.2 v3 0/3] hw/ssi/pnv_spi: Remove PnvXferBuffer and
+ get_seq_index()
+Date: Wed, 18 Sep 2024 11:50:42 -0500
+Message-Id: <20240918165045.21298-1-chalapathi.v@linux.ibm.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240918064853.30678-1-anisinha@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: LFdPT8xd8liXFxPlVQFxzeVJCd92sz-Q
+X-Proofpoint-ORIG-GUID: ScyyJOVX8hvvwMksPWpAEDaTqL6zu8n2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-18_10,2024-09-18_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 mlxlogscore=661 bulkscore=0
+ impostorscore=0 phishscore=0 priorityscore=1501 spamscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409180110
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,23 +114,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 18, 2024 at 12:18:53PM +0530, Ani Sinha wrote:
-> When a new listener for an address space is registered, the hypervisor must be
-> informed of all existing eventfds for that address space by calling
-> eventfd_add() for that listener. Similarly, when a listener is de-registered
-> from an address space, the hypervisor must be informed of all existing eventfds
-> for that address space with a call to eventfd_del().
-> 
-> Same is also true for coalesced io. Send coalesced io add/del listener
-> notifications if any flatrage for the address space registered with the
-> listener intersects with any coalesced io range.
-> 
-> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Hello,
 
-queued, thanks.
+v3:
+1. Update the PowerNV maintainer section to include hw/ssi/pnv_spi*
+2. Use of PnvXferBuffer results in a additonal process overhead due to
+frequent dynamic allocations and hence use an existing Fifo8 buffer.
+3. Use a local variable seq_index and use it with in while loop instead
+of repeatedly calling get_seq_index() and make sure s->seq_op doesn't
+overrun when seq_index is incremented.
+
+Tested:
+passed make check and make check-avocado
+
+Supersedes: <20240807202804.56038-1-philmd@linaro.org>
+
+Philippe Mathieu-Daudé (1):
+  MAINTAINERS: Cover PowerPC SPI model in PowerNV section
+
+Chalapathi V (2):
+  hw/ssi/pnv_spi: Replace PnvXferBuffer with Fifo8 structure
+  hw/ssi/pnv_spi: Use local var seq_index instead of get_seq_index().
+
+ MAINTAINERS              |   2 +
+ include/hw/ssi/pnv_spi.h |   3 +
+ hw/ssi/pnv_spi.c         | 228 +++++++++++++++------------------------
+ 3 files changed, 89 insertions(+), 144 deletions(-)
 
 -- 
-Peter Xu
+2.39.5
 
 
