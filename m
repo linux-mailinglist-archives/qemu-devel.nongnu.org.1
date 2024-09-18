@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B38B97BE28
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 16:42:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8D197BE46
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Sep 2024 16:57:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sqvs2-0002YD-QG; Wed, 18 Sep 2024 10:41:30 -0400
+	id 1sqw68-0004DI-FU; Wed, 18 Sep 2024 10:56:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqvrz-0002XE-RM
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 10:41:27 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqw5f-0004Ba-65
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 10:55:36 -0400
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqvrx-000830-TF
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 10:41:27 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1sqw5b-0001K9-Gr
+ for qemu-devel@nongnu.org; Wed, 18 Sep 2024 10:55:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
  h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
- :Subject; bh=duIpVja2IciimkjsL6ZlCIrh1k+IkfpZ8i92Aao3lcs=; b=D221AUGTWrSuWbvq
- FKip+YIX2EASZm1dPBMJw0CxxC+hU0Cvj5hfd+JpLWuK2ptoZRbIxalMwMm5Lb6VeJ+Gi5VkqIfUo
- LW1t24uhPNe6SzfryEfNtwVf6Q1GEvFx+lA0oAZelGm19jfYjTsiE/tiY+uDaoheGP9UNHBaIrQke
- QDfElfdc22lJ1fmF2e6AEFsJRgf98+W4Q58L7MWq5uv4Q6HoSAfET1g7yZARu4/8PSesnWhViTs7Y
- oCbKnPeeNteZJ46Mt0J0W4ygNjnH0O/f1ERGXaFWHPuSSYYWRjSjiFIyrmxA8RIzuAwzCrH3IiL3/
- MyeL5DzCPma1iPgoFQ==;
+ :Subject; bh=fmyHye/CXY14f9OebJymcWWeWUTF5P44pN60IKtXDaM=; b=WawC5ahre5loMdUz
+ rP00yP6R326voYShVrJhnZtdsW5YO4m88omZ0oB02kEDlC1bynAp/xNQPE0iPRlDB3Few3QrY2SMF
+ U+MjwhJAA7LUf6NV+V+lZ80+jRMU7/DNIkJEzuFJvuw432CIKfvEQkDlt2NMf/hqkJIPaCE35Ytfg
+ Ymj1rILzZVw1t1axYTFgKl0Cl2MEle1KxwYj2fJ++gSy0FuJEtRPcu9yoSE1IYT5gM3bqPtaKh7HU
+ SbcdcwiajuB3uoUt5sRC0DHO9MjsPCPvLXZJLa/pgKH4OvSjroCqu/No5G3LQHTM3uul+1f62RhEg
+ J8XgLkO1mzy/gAtD4g==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
  by mx.treblig.org with esmtp (Exim 4.96)
- (envelope-from <dave@treblig.org>) id 1sqvru-006J2w-39;
- Wed, 18 Sep 2024 14:41:23 +0000
+ (envelope-from <dave@treblig.org>) id 1sqw5Y-006J9c-3C;
+ Wed, 18 Sep 2024 14:55:29 +0000
 From: dave@treblig.org
-To: mst@redhat.com,
-	pbonzini@redhat.com
-Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
- "Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH] hw/char: Remove unused serial_set_frequency
-Date: Wed, 18 Sep 2024 15:41:22 +0100
-Message-ID: <20240918144122.155351-1-dave@treblig.org>
+To: berrange@redhat.com
+Cc: qemu-devel@nongnu.org,
+	"Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: [PATCH] crypto: Remove unused DER string functions
+Date: Wed, 18 Sep 2024 15:55:28 +0100
+Message-ID: <20240918145528.157035-1-dave@treblig.org>
 X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,51 +64,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-serial_set_frequnecy has been unused since it was added in 2009:
-  038eaf82c8 ("serial: Add interface to set reference oscillator frequency")
+qcrypto_der_encode_octet_str_begin and _end have been unused
+since they were added in
+  3b34ccad66 ("crypto: Support DER encodings")
 
-It looks like the 'baudbase' is now a property anyway so the wrapper
-isn't needed.
-
-Remove it.
+Remove them.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 ---
- hw/char/serial.c         | 7 -------
- include/hw/char/serial.h | 2 --
- 2 files changed, 9 deletions(-)
+ crypto/der.c | 13 -------------
+ crypto/der.h | 22 ----------------------
+ 2 files changed, 35 deletions(-)
 
-diff --git a/hw/char/serial.c b/hw/char/serial.c
-index d8b2db5082..6c5c4a23c7 100644
---- a/hw/char/serial.c
-+++ b/hw/char/serial.c
-@@ -951,13 +951,6 @@ static void serial_unrealize(DeviceState *dev)
-     qemu_unregister_reset(serial_reset, s);
+diff --git a/crypto/der.c b/crypto/der.c
+index ebbecfc3fe..81367524c3 100644
+--- a/crypto/der.c
++++ b/crypto/der.c
+@@ -408,19 +408,6 @@ void qcrypto_der_encode_octet_str(QCryptoEncodeContext *ctx,
+     qcrypto_der_encode_prim(ctx, tag, src, src_len);
  }
  
--/* Change the main reference oscillator frequency. */
--void serial_set_frequency(SerialState *s, uint32_t frequency)
+-void qcrypto_der_encode_octet_str_begin(QCryptoEncodeContext *ctx)
 -{
--    s->baudbase = frequency;
--    serial_update_parameters(s);
+-    uint8_t tag = QCRYPTO_DER_TAG(QCRYPTO_DER_TAG_CLASS_UNIV,
+-                                  QCRYPTO_DER_TAG_ENC_PRIM,
+-                                  QCRYPTO_DER_TYPE_TAG_OCT_STR);
+-    qcrypto_der_encode_cons_begin(ctx, tag);
 -}
 -
- const MemoryRegionOps serial_io_ops = {
-     .read = serial_ioport_read,
-     .write = serial_ioport_write,
-diff --git a/include/hw/char/serial.h b/include/hw/char/serial.h
-index 6e14099ee7..40aad21df3 100644
---- a/include/hw/char/serial.h
-+++ b/include/hw/char/serial.h
-@@ -93,8 +93,6 @@ struct SerialMM {
- extern const VMStateDescription vmstate_serial;
- extern const MemoryRegionOps serial_io_ops;
- 
--void serial_set_frequency(SerialState *s, uint32_t frequency);
+-void qcrypto_der_encode_octet_str_end(QCryptoEncodeContext *ctx)
+-{
+-    qcrypto_der_encode_cons_end(ctx);
+-}
 -
- #define TYPE_SERIAL "serial"
- OBJECT_DECLARE_SIMPLE_TYPE(SerialState, SERIAL)
+ size_t qcrypto_der_encode_ctx_buffer_len(QCryptoEncodeContext *ctx)
+ {
+     return ctx->root.dlen;
+diff --git a/crypto/der.h b/crypto/der.h
+index f4ba6da28a..bcfa4a2495 100644
+--- a/crypto/der.h
++++ b/crypto/der.h
+@@ -242,28 +242,6 @@ void qcrypto_der_encode_null(QCryptoEncodeContext *ctx);
+ void qcrypto_der_encode_octet_str(QCryptoEncodeContext *ctx,
+                                   const uint8_t *src, size_t src_len);
  
+-/**
+- * qcrypto_der_encode_octet_str_begin:
+- * @ctx: the encode context.
+- *
+- * Start encoding a octet string, All fields between
+- * qcrypto_der_encode_octet_str_begin and qcrypto_der_encode_octet_str_end
+- * are encoded as an octet string. This is useful when we need to encode a
+- * encoded SEQUENCE as OCTET STRING.
+- */
+-void qcrypto_der_encode_octet_str_begin(QCryptoEncodeContext *ctx);
+-
+-/**
+- * qcrypto_der_encode_octet_str_end:
+- * @ctx: the encode context.
+- *
+- * Finish encoding a octet string, All fields between
+- * qcrypto_der_encode_octet_str_begin and qcrypto_der_encode_octet_str_end
+- * are encoded as an octet string. This is useful when we need to encode a
+- * encoded SEQUENCE as OCTET STRING.
+- */
+-void qcrypto_der_encode_octet_str_end(QCryptoEncodeContext *ctx);
+-
+ /**
+  * qcrypto_der_encode_ctx_buffer_len:
+  * @ctx: the encode context.
 -- 
 2.46.0
 
