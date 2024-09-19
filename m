@@ -2,118 +2,123 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C08197C355
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 06:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EABE897C38C
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 06:49:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sr8qj-0001Xr-It; Thu, 19 Sep 2024 00:33:01 -0400
+	id 1sr94D-0007JW-5z; Thu, 19 Sep 2024 00:46:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1sr8qg-0001W8-AO; Thu, 19 Sep 2024 00:32:58 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1sr8qe-0005ib-GT; Thu, 19 Sep 2024 00:32:58 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48J06gWb032764;
- Thu, 19 Sep 2024 04:32:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:date:mime-version:subject:to:cc:references:from
- :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=/
- /yJ0NNspX/NjhT+l80KXGos5UAotpfB9myc1LXLROk=; b=HDoLNTgG01OosqJKz
- 6DUtJdmgAWyktND2QrB0Ptwy8xND0s0NZJ1BCElEJFkdrF9x0/Qk5drOIqwo4REU
- aEwnyGXj2BzmV+B2ZKmYI3GMweRy2H1yj+bmgcr2i+BiJWZ77Rwrl1/y/ISwUGAR
- W0HDPb/L3qQveTquKHxHV6peweue8OME8t1RJlr1IYk8cfa9T6mTRhbDPJsK9Bhn
- DW3YHPSQbaRB8BU+OognT/EGLa7DYcrjClhmEY/stNUf4ZGyoMEay0iLWQ50Sssk
- wx4Llm0jj8WotdnTj5h/4lXQiO/Fg+Wa4seRBcHZiXAbJTglF8f2R44IZe7zc8P0
- D55sw==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41pht8sm1n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Sep 2024 04:32:40 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48J4Wdbx026638;
- Thu, 19 Sep 2024 04:32:40 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41pht8sm1f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Sep 2024 04:32:39 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48J4Ikdj030649;
- Thu, 19 Sep 2024 04:32:39 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41npanf2un-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Sep 2024 04:32:39 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 48J4WbB341943300
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Sep 2024 04:32:37 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BE9715805E;
- Thu, 19 Sep 2024 04:32:37 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A953E58059;
- Thu, 19 Sep 2024 04:32:32 +0000 (GMT)
-Received: from [9.109.242.165] (unknown [9.109.242.165])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 19 Sep 2024 04:32:32 +0000 (GMT)
-Message-ID: <013649bd-4fa2-4a8f-a1a6-c466e14cb787@linux.ibm.com>
-Date: Thu, 19 Sep 2024 10:02:27 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 02/13] hw/ppc/spapr_pci: Do not create DT for disabled
- PCI device
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sr947-0007FJ-PW
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:46:52 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sr945-00074Y-Pi
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:46:51 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-656d8b346d2so243053a12.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 21:46:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1726721207; x=1727326007; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=okWQnCc9i+a9qTeP/CljeFJtPOK3zSl+MYdGWF+XBiU=;
+ b=VrhlSWTc9V5dHH2sQc/rklQx7Oc6XSVZfVRXWGzvVwOhL2j8EWlsjmYAJyxIo179sU
+ a6rUp3xXSfus6GftUtzDYeQfTkYt/cmpmXzqnZLvM7y4cfq17IKkQm33Sx50XBvpf18d
+ DYjn2luzFQ0xmIsNVFIXY1pmWnWmX8nuYqq9XotnZfApli9mImRS4PTU6tUhv+FxyQE/
+ Fl1K1Y+NAffQdbqorSS0LPhbqkHgTRrljm0HGsEH7XTJ7tZ58u+XhDdJlZwrwqTbQjc4
+ xoffcQ/3DSIHoN+vmqw+JK16cJ9gCwOBw1KLwZKnEKEonsuBVmZqTqpeqb1bluyYsL1y
+ yhyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726721207; x=1727326007;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=okWQnCc9i+a9qTeP/CljeFJtPOK3zSl+MYdGWF+XBiU=;
+ b=cNVk60AJIA3zZyBNtieaQ76A5vYDT8r7LrOfZNYDrUNJRUIjraafqRwjm3zQB/a5vq
+ mvSrCpscEdvtwBb6nqmBY5dPj2jZCsfL9wazu8Z2S9QFeJJ3+sGQVpPS/b7LUsWDZvta
+ w33RAtEUFz6Gkfy2l3B/8zdzpOc8+Dg5p5M1F76IzZsmNRoHee8x8yuA0Js1Ag9V3VLS
+ k9QeRfQeS0LpYncGky5oEiAwFMWJwysC3kxSJ2xQsk702pKnIC5E2GbOjEX7Pq5eqoWb
+ PRcqTy1kYx86LKENmSveS+fSNKxMx0rHWUFvpBUgRSv2/RSu21ufpqxoJOUjmDMxj1Wk
+ 81vQ==
+X-Gm-Message-State: AOJu0YyhQwFWwSJnc1mTX9CBbKPqTTCpavpO33Oo2jFrWc+YTS5uv4ke
+ tOr8vVSnDWar/7K964fqJepAnpmvE/jvCx0fvMZhnvhrIbMNW2GFoFkR200p5lm3Q2SoIOqq09b
+ mOmIwyA==
+X-Google-Smtp-Source: AGHT+IFTeoz0sc18zegnRwG9uqK1i/tdvMiZIsB+jYHs0tQzrYbWKu22/eeI4GvU6Dyul2n7o0JIuw==
+X-Received: by 2002:a05:6a21:1690:b0:1cf:4348:d5c8 with SMTP id
+ adf61e73a8af0-1d112e8bfaemr31800828637.39.1726721206933; 
+ Wed, 18 Sep 2024 21:46:46 -0700 (PDT)
+Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71944bc279csm7478601b3a.188.2024.09.18.21.46.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Sep 2024 21:46:46 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Hyman Huang <yong.huang@smartx.com>, Halil Pasic <pasic@linux.ibm.com>,
+ kvm@vger.kernel.org, Bin Meng <bmeng.cn@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-s390x@nongnu.org,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Hanna Reitz <hreitz@redhat.com>, Klaus Jensen <its@irrelevant.dk>,
+ Corey Minyard <minyard@acm.org>, Laurent Vivier <laurent@vivier.eu>,
+ WANG Xuerui <git@xen0n.name>, Thomas Huth <thuth@redhat.com>,
+ Rob Herring <robh@kernel.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Nicholas Piggin <npiggin@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>, Fam Zheng <fam@euphon.net>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Keith Busch <kbusch@kernel.org>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-riscv@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Markus Armbruster <armbru@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
-References: <20240913-reuse-v16-0-d016b4b4f616@daynix.com>
- <20240913-reuse-v16-2-d016b4b4f616@daynix.com>
- <b143662e-67a1-4edf-8bfa-cf43039989a8@redhat.com>
-Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <b143662e-67a1-4edf-8bfa-cf43039989a8@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Jason Wang <jasowang@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ "Richard W.M. Jones" <rjones@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-arm@nongnu.org,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-ppc@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-block@nongnu.org,
+ Joel Stanley <joel@jms.id.au>, Weiwei Li <liwei1518@gmail.com>,
+ Kevin Wolf <kwolf@redhat.com>, Helge Deller <deller@gmx.de>,
+ Yanan Wang <wangyanan55@huawei.com>, Michael Rolnik <mrolnik@gmail.com>,
+ Jesper Devantier <foss@defmacro.it>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 00/34] Use g_assert_not_reached instead of (g_)assert(0,
+ false)
+Date: Wed, 18 Sep 2024 21:46:07 -0700
+Message-Id: <20240919044641.386068-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: sFSxDv2kaXYYB2Ii4jyFCCd9Z0KwAPRb
-X-Proofpoint-ORIG-GUID: gYjhne8AV71192j6B1ocQq16ZtcseQ7l
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-19_02,2024-09-18_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 bulkscore=0 suspectscore=0 priorityscore=1501 adultscore=0
- mlxlogscore=999 mlxscore=0 clxscore=1011 malwarescore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409190025
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,57 +134,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This series cleans up all usages of assert/g_assert who are supposed to stop
+execution of QEMU. We replace those by g_assert_not_reached().
+It was suggested recently when cleaning codebase to build QEMU with gcc
+and tsan: https://lore.kernel.org/qemu-devel/54bb02a6-1b12-460a-97f6-3f478ef766c6@linaro.org/.
 
+In more, cleanup useless break and return after g_assert_not_reached();
 
-On 9/18/24 19:57, Cédric Le Goater wrote:
-> Hello,
-> 
-> Adding :
-> 
->    Harsh for QEMU/PPC pseries machine,
->    Shivaprasad for KVM/PPC VFIO and IOMMU support.
-> 
-> Could you please give us your feedback on these changes ?
-> 
-> Thanks,
-> 
-> C.
-> 
-> 
-> 
->   On 9/13/24 05:44, Akihiko Odaki wrote:
->> Disabled means it is a disabled SR-IOV VF or it is powered off, and
->> hidden from the guest.
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   hw/ppc/spapr_pci.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
->> index 7cf9904c3546..f63182a03c41 100644
->> --- a/hw/ppc/spapr_pci.c
->> +++ b/hw/ppc/spapr_pci.c
->> @@ -1296,6 +1296,10 @@ static void spapr_dt_pci_device_cb(PCIBus *bus, 
->> PCIDevice *pdev,
->>           return;
->>       }
->> +    if (!pdev->enabled) {
->> +        return;
->> +    }
->> +
+And finally, ensure with scripts/checkpatch.pl that we don't reintroduce
+(g_)assert(false) in the future.
 
-While I will let Shivaprasad comment from IO perspective, I would like 
-to suggest merging this condition with the error condition check 
-preceding it.
+New commits (removing return) need review.
 
-regards,
-Harsh
+Tested that it build warning free with gcc and clang.
 
->>       err = spapr_dt_pci_device(p->sphb, pdev, p->fdt, p->offset);
->>       if (err < 0) {
->>           p->err = err;
->>
-> 
-> 
+If a maintainer could pull the whole series, this would be much more easier than
+integrating various parts of it in different subsystems. Thanks!
+
+v3
+- drop changes on .promela files
+- some changes were already merged
+
+v2
+- align backslashes for some changes
+- add summary in all commits message
+- remove redundant comment
+
+v1
+https://lore.kernel.org/qemu-devel/20240910221606.1817478-1-pierrick.bouvier@linaro.org/T/#t
+
+Pierrick Bouvier (34):
+  hw/acpi: replace assert(0) with g_assert_not_reached()
+  hw/arm: replace assert(0) with g_assert_not_reached()
+  hw/net: replace assert(0) with g_assert_not_reached()
+  migration: replace assert(0) with g_assert_not_reached()
+  qobject: replace assert(0) with g_assert_not_reached()
+  target/ppc: replace assert(0) with g_assert_not_reached()
+  block: replace assert(false) with g_assert_not_reached()
+  hw/hyperv: replace assert(false) with g_assert_not_reached()
+  hw/net: replace assert(false) with g_assert_not_reached()
+  hw/nvme: replace assert(false) with g_assert_not_reached()
+  hw/pci: replace assert(false) with g_assert_not_reached()
+  hw/ppc: replace assert(false) with g_assert_not_reached()
+  migration: replace assert(false) with g_assert_not_reached()
+  target/i386/kvm: replace assert(false) with g_assert_not_reached()
+  accel/tcg: remove break after g_assert_not_reached()
+  block: remove break after g_assert_not_reached()
+  hw/acpi: remove break after g_assert_not_reached()
+  hw/net: remove break after g_assert_not_reached()
+  hw/scsi: remove break after g_assert_not_reached()
+  hw/tpm: remove break after g_assert_not_reached()
+  target/arm: remove break after g_assert_not_reached()
+  target/riscv: remove break after g_assert_not_reached()
+  fpu: remove break after g_assert_not_reached()
+  tcg/loongarch64: remove break after g_assert_not_reached()
+  include/qemu: remove return after g_assert_not_reached()
+  hw/hyperv: remove return after g_assert_not_reached()
+  hw/net: remove return after g_assert_not_reached()
+  hw/pci: remove return after g_assert_not_reached()
+  hw/ppc: remove return after g_assert_not_reached()
+  migration: remove return after g_assert_not_reached()
+  qobject: remove return after g_assert_not_reached()
+  qom: remove return after g_assert_not_reached()
+  tests/qtest: remove return after g_assert_not_reached()
+  scripts/checkpatch.pl: emit error when using assert(false)
+
+ include/qemu/pmem.h                     |  1 -
+ accel/tcg/plugin-gen.c                  |  1 -
+ block/qcow2.c                           |  2 +-
+ block/ssh.c                             |  1 -
+ hw/acpi/aml-build.c                     |  3 +--
+ hw/arm/highbank.c                       |  2 +-
+ hw/hyperv/hyperv_testdev.c              |  7 +++----
+ hw/hyperv/vmbus.c                       | 15 ++++++---------
+ hw/net/e1000e_core.c                    |  4 +---
+ hw/net/i82596.c                         |  2 +-
+ hw/net/igb_core.c                       |  4 +---
+ hw/net/net_rx_pkt.c                     |  3 +--
+ hw/net/vmxnet3.c                        |  1 -
+ hw/nvme/ctrl.c                          |  8 ++++----
+ hw/pci/pci-stub.c                       |  6 ++----
+ hw/ppc/ppc.c                            |  1 -
+ hw/ppc/spapr_events.c                   |  3 +--
+ hw/scsi/virtio-scsi.c                   |  1 -
+ hw/tpm/tpm_spapr.c                      |  1 -
+ migration/dirtyrate.c                   |  3 +--
+ migration/migration-hmp-cmds.c          |  2 +-
+ migration/postcopy-ram.c                | 21 +++++++--------------
+ migration/ram.c                         |  8 +++-----
+ qobject/qlit.c                          |  2 +-
+ qobject/qnum.c                          | 12 ++++--------
+ qom/object.c                            |  1 -
+ target/arm/hyp_gdbstub.c                |  1 -
+ target/i386/kvm/kvm.c                   |  4 ++--
+ target/ppc/dfp_helper.c                 |  8 ++++----
+ target/ppc/mmu_helper.c                 |  2 +-
+ target/riscv/monitor.c                  |  1 -
+ tests/qtest/acpi-utils.c                |  1 -
+ fpu/softfloat-parts.c.inc               |  2 --
+ target/riscv/insn_trans/trans_rvv.c.inc |  2 --
+ tcg/loongarch64/tcg-target.c.inc        |  1 -
+ scripts/checkpatch.pl                   |  3 +++
+ 36 files changed, 50 insertions(+), 90 deletions(-)
+
+-- 
+2.39.5
+
 
