@@ -2,71 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E106B97CD7C
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 20:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CF897CDCF
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 20:46:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srLfG-0004qV-Py; Thu, 19 Sep 2024 14:14:03 -0400
+	id 1srM9m-0000dq-CJ; Thu, 19 Sep 2024 14:45:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1srLf4-0004pY-M8; Thu, 19 Sep 2024 14:13:50 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1srM9j-0000cY-WC
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 14:45:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1srLf2-0004KJ-3C; Thu, 19 Sep 2024 14:13:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726769628; x=1758305628;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=H8UFqDiYL88Y39+LVctMDhnXcCsvsv1vrNjASa8mq+4=;
- b=Ws5nlnADIF4fwxgt4rQ9zJhgrFyYXkN0gVDJ89EbqRRaSTdE2IGkLLSS
- A+I9hwPpvWnubzNTsx4OBbC5jzxCj8K98P33mK0fjtTlohBo4auqLBKR4
- yOXrC3GpREbLGZo0yZdv7/ORPsKMaW0crzAWcR7X4Qh7ufepNnD1iX2lM
- TMIVAs91yTv36WTQPcKjXziCYDY2pfohyUj1vyUaR9Yp8VBMPfejPO4Y5
- UsvA8Kft0gX3O5eO+KAFsA/Cpk01uGDLHUgzc9jN92CK6fbUFmkaUM2gI
- JFBrGm4yhmwHsX90Dqb03QFDeyQVhevi6sE4zE8m+6cOttJm/SVTcMOpc A==;
-X-CSE-ConnectionGUID: ywOpPxwWRNe4iO7SUMIxVA==
-X-CSE-MsgGUID: KzoaS5i7SEivR+drVDvHOw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="51165921"
-X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; d="scan'208";a="51165921"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Sep 2024 11:13:43 -0700
-X-CSE-ConnectionGUID: 02qoweJLTjuCBYmUotqFRg==
-X-CSE-MsgGUID: T7l3D1lrTdCIU3pn9NkX5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; d="scan'208";a="74805726"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa005.jf.intel.com with ESMTP; 19 Sep 2024 11:13:41 -0700
-Date: Fri, 20 Sep 2024 02:29:46 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Chuang Xu <xuchuangxclwt@bytedance.com>, imammedo@redhat.com
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xieyongji@bytedance.com,
- chaiwen.cc@bytedance.com, qemu-stable@nongnu.org,
- Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>, zhao1.liu@intel.com
-Subject: Re: [PATCH v3] i386/cpu: fixup number of addressable IDs for logical
- processors in the physical package
-Message-ID: <ZuxtmjZBGGwNaVwl@intel.com>
-References: <20240918131815.8543-1-xuchuangxclwt@bytedance.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1srM9e-00085n-NW
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 14:45:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1726771525;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0NOOPSwgBmptuEr8Xcr2EN/01UHX9UtE7SlfEgvtAAE=;
+ b=XjFdTAkH6N//JnKxnQzidvuRsKNCZadht5oZv/lFAK+E/zM7FZuBiELqnxqxkKAczh7+Xh
+ +mDWjHukLuEcyQjPr1KfiiPcdkJ82s3SU266q/teeTqwzV0derk+UaZAqaRUP0xWGhV/1f
+ V7GTixWnJhJEEC7tWtNgAwMzxP1H6X4=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-Lc_uzdRhOEqrnRXx6Mo5ZA-1; Thu, 19 Sep 2024 14:45:23 -0400
+X-MC-Unique: Lc_uzdRhOEqrnRXx6Mo5ZA-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-7d4dee4dfdcso1329008a12.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 11:45:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726771523; x=1727376323;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0NOOPSwgBmptuEr8Xcr2EN/01UHX9UtE7SlfEgvtAAE=;
+ b=TDOB+yfMO3Hvzi2PpSucj6GC6fm6iVh5gCbHnNFbUnfgLcP68ld3gbZ0oK+5DszJpq
+ RzdIw4jXJ12LImkqR12c9CfV8NGBrHJL27KcjzIbaHVdhCpXK+8b76uDYA5hPJ/lbUxc
+ tVmP2dgZLLe9uuj2Fo2PbNLv1vFAEpq1Rlcu0zJ8lbNJmO5eFmLZ7kpufQLnwhgwzuhd
+ SXg6UOkDjCh/42l1aOuu5JIaGX9oJIIi8gEOTQBjVzSpxf/ZkDtK13cPolnJ/Z8ROqTe
+ ZTNwFdXx/HSCmI93KNpNtaqnIBMfmQWL6agA1ztE0XCZNmNc+Zqio2qa55xWc3oTjWxB
+ 4N7Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX2Gwq/ceoQQmYs7cFQVKLXjJ3B8oGqNL0Eew4mXK0Pl0X1CHYs6dMyWnOx9ebgqF3Bl32Bx8d0EJeh@nongnu.org
+X-Gm-Message-State: AOJu0YwMkiymH6/on1NeXHHGAc66lf39FYSdunHSO+KupT8GQj0zfymq
+ WqmNfEAWjOxt3tAMHeV7iOLYUdxohaUI9xHZg9az0xPHA/M9p7gzQe4fpsNk80S7YgO/nJjOeaJ
+ Iz63mV4zuWsELyKlXFeyLZhsdCqMYAqSLS/XYYaj4G+GBpIATr5c9
+X-Received: by 2002:a17:90a:3da3:b0:2d8:6f73:55a with SMTP id
+ 98e67ed59e1d1-2dd7f6c1852mr440660a91.25.1726771522723; 
+ Thu, 19 Sep 2024 11:45:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHKjPtFak4af+kRUqfoqhA6iXJMhmt9S4HLYKIxuhPoFK7jku9rTH+3E/SBVpDJX3fluhe2HQ==
+X-Received: by 2002:a17:90a:3da3:b0:2d8:6f73:55a with SMTP id
+ 98e67ed59e1d1-2dd7f6c1852mr440644a91.25.1726771522412; 
+ Thu, 19 Sep 2024 11:45:22 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2dd6ee7bffcsm2308567a91.8.2024.09.19.11.45.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Sep 2024 11:45:21 -0700 (PDT)
+Date: Thu, 19 Sep 2024 14:45:12 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Yong Huang <yong.huang@smartx.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v1 1/7] migration: Introduce structs for background sync
+Message-ID: <ZuxxOObKqS_G0Ela@x1n>
+References: <cover.1726390098.git.yong.huang@smartx.com>
+ <531750c8d7b6c09f877b5f335a60fab402c168be.1726390098.git.yong.huang@smartx.com>
+ <87msk7z4l3.fsf@suse.de>
+ <CAK9dgmb_rK5HJOGTG=KXKgH=e2e8JV8aqoOWUHBEyjnc-+kiqg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240918131815.8543-1-xuchuangxclwt@bytedance.com>
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK9dgmb_rK5HJOGTG=KXKgH=e2e8JV8aqoOWUHBEyjnc-+kiqg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,81 +107,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Chuang and Igor,
-
-Sorry for late reply,
-
-On Wed, Sep 18, 2024 at 09:18:15PM +0800, Chuang Xu wrote:
-> Date: Wed, 18 Sep 2024 21:18:15 +0800
-> From: Chuang Xu <xuchuangxclwt@bytedance.com>
-> Subject: [PATCH v3] i386/cpu: fixup number of addressable IDs for logical
->  processors in the physical package
-> X-Mailer: git-send-email 2.24.3 (Apple Git-128)
+On Tue, Sep 17, 2024 at 02:48:03PM +0800, Yong Huang wrote:
+> On Tue, Sep 17, 2024 at 5:11 AM Fabiano Rosas <farosas@suse.de> wrote:
 > 
-> When QEMU is started with:
-> -cpu host,migratable=on,host-cache-info=on,l3-cache=off
-> -smp 180,sockets=2,dies=1,cores=45,threads=2
+> > Hyman Huang <yong.huang@smartx.com> writes:
+> >
+> > > shadow_bmap, iter_bmap and iter_dirty_pages are introduced
+> > > to satisfy the need for background sync.
+> > >
+> > > Meanwhile, introduce enumeration of sync method.
+> > >
+> > > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> > > ---
+> > >  include/exec/ramblock.h | 45 +++++++++++++++++++++++++++++++++++++++++
+> > >  migration/ram.c         |  6 ++++++
+> > >  2 files changed, 51 insertions(+)
+> > >
+> > > diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
+> > > index 0babd105c0..0e327bc0ae 100644
+> > > --- a/include/exec/ramblock.h
+> > > +++ b/include/exec/ramblock.h
+> > > @@ -24,6 +24,30 @@
+> > >  #include "qemu/rcu.h"
+> > >  #include "exec/ramlist.h"
+> > >
+> > > +/* Possible bits for cpu_physical_memory_sync_dirty_bitmap */
+> > > +
+> > > +/*
+> > > + * The old-fashioned sync, which is, in turn, used for CPU
+> > > + * throttle and memory transfer.
+> >
 > 
-> Try to execute "cpuid -1 -l 1 -r" in guest, we'll obtain a value of 90 for
-> CPUID.01H.EBX[23:16], while the expected value is 128. And Try to
-> execute "cpuid -1 -l 4 -r" in guest, we'll obtain a value of 63 for
-> CPUID.04H.EAX[31:26] as expected.
+> Using the traditional sync method, the page sending logic iterates
+> the "bmap" to transfer dirty pages while the CPU throttle logic
+> counts the amount of new dirty pages and detects convergence.
+> There are two uses for "bmap".
 > 
-> As (1+CPUID.04H.EAX[31:26]) round up to the nearest power-of-2 integer,
-> we'd beter round up CPUID.01H.EBX[23:16] to the nearest power-of-2
-> integer too. Otherwise we may encounter unexpected results in guest.
+> Using the modern sync method, "bmap" is used for transfer
+> dirty pages and "iter_bmap" is used to track new dirty pages.
 > 
-> For example, when QEMU is started with CLI above and xtopology is disabled,
-> guest kernel 5.15.120 uses CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26]) to
-> calculate threads-per-core in detect_ht(). Then guest will get "90/(1+63)=1"
-> as the result, even though theads-per-core should actually be 2.
 > 
-> So let us round up CPUID.01H.EBX[23:16] to the nearest power-of-2 integer
-> to solve the unexpected result.
+> > I'm not sure I follow what "in turn" is supposed to mean in this
+> > sentence. Could you clarify?
+> >
 > 
-> Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-> Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
-> Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
-> ---
->  target/i386/cpu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Here I want to express "in sequence".  But failed obviously. :(
 > 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 4c2e6f3a71..3710ae5283 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -6417,7 +6417,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->          }
->          *edx = env->features[FEAT_1_EDX];
->          if (threads_per_pkg > 1) {
-> -            *ebx |= threads_per_pkg << 16;
-> +            *ebx |= pow2ceil(threads_per_pkg) << 16;
+> 
+> >
+> > > + */
+> > > +#define RAMBLOCK_SYN_LEGACY_ITER   (1U << 0)
+> >
+> > So ITER is as opposed to background? I'm a bit confused with the terms.
+> >
+> 
+> Yes.
+> 
+> 
+> >
+> > > +
+> > > +/*
+> > > + * The modern sync, which is, in turn, used for CPU throttle
+> > > + * and memory transfer.
+> > > + */
+> > > +#define RAMBLOCK_SYN_MODERN_ITER   (1U << 1)
+> > > +
+> > > +/* The modern sync, which is used for CPU throttle only */
+> > > +#define RAMBLOCK_SYN_MODERN_BACKGROUND    (1U << 2)
+> >
+> > What's the plan for the "legacy" part? To be removed soon? Do we want to
+> > remove it now? Maybe better to not use the modern/legacy terms unless we
+> > want to give the impression that the legacy one is discontinued.
+> >
+> 
+> The bitmap they utilized to track the dirty page information was the
+> distinction between the "legacy iteration" and the "modern iteration."
+> The "iter_bmap" field is used by the "modern iteration" while the "bmap"
+> field is used by the "legacy iteration."
+> 
+> Since the refinement is now transparent and there is no API available to
+> change the sync method, I actually want to remove it right now in order
+> to simplify the logic. I'll include it in the next version.
 
-Yes, the fix is right.
+How confident do we think the new way is better than the old?
 
-About the "Maximum number of addressable IDs", the commit 88dd4ca06c83
-("i386/cpu: Use APIC ID info to encode cache topo in CPUID[4]")
-introduced the new way to calculate.
+If it'll be 100% / always better, I agree we can consider removing the old.
+But is it always better?  At least it consumes much more resources..
 
-The pow2ceil() works for current SMP topology, but may be wrong on
-hybrid topology, as the reason I listed in the commit message:
+Otherwise, we can still leave that logic as-is but use a migration property
+to turn it on only on new machines I think.
 
-> The nearest power-of-2 integer can be calculated by pow2ceil() or by
-> using APIC ID offset/width (like L3 topology using 1 << die_offset [3]).
+Besides, could you explain why the solution needs to be this complex?  My
+previous question was that we sync dirty too less, while auto converge
+relies on dirty information, so that means auto converge can be adjusted
+too unfrequently.
 
-> But in fact, CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26]
-> are associated with APIC ID. For example, in linux kernel, the field
-> "num_threads_sharing" (Bits 25 - 14) is parsed with APIC ID. And for
-> another example, on Alder Lake P, the CPUID.04H:EAX[bits 31:26] is not
-> matched with actual core numbers and it's calculated by:
-> "(1 << (pkg_offset - core_offset)) - 1".
+However I wonder whether that can be achieved in a simpler manner by
+e.g. invoke migration_bitmap_sync_precopy() more frequently during
+migration, for example, in ram_save_iterate() - not every time but the
+iterate() is invoked much more frequent, and maybe we can do sync from time
+to time.
 
-Using APIC ID offset to calculate is the hardware's approach, so I tried
-to use APIC ID instead of pow2ceil() and replaced all pow2ceil() case.
+I also don't see why we need a separate thread, plus two new bitmaps, to
+achieve this..  I didn't read in-depth yet, but I thought dirty sync
+requires bql anyway, then I don't yet understand why the two bitmaps are
+required.  If the bitmaps are introduced in the 1st patch, IMO it'll be
+great to explain clearly on why they're needed here.
 
-Hi Igor, do you agree? :-)
+Thanks,
 
-Best Regards,
-Zhao
+-- 
+Peter Xu
 
 
