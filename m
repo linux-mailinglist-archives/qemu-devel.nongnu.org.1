@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F002397CA60
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E5B97CA61
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:48:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srHUk-00083d-BF; Thu, 19 Sep 2024 09:46:54 -0400
+	id 1srHUj-00081G-O3; Thu, 19 Sep 2024 09:46:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1srHUg-0007qE-KW
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:46:50 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1srHUW-0007CV-0H
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:46:45 -0400
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1srHUQ-0005zl-UM
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:46:40 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1srHUQ-0005zn-UP
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:46:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
  h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
- :Subject; bh=KrajGmYAtlRM8qcr9rCRYTxgOyGTlHDlDTPA25yNl6M=; b=DyyNixIh7Mwcpt9I
- exQIvCDteWktIf5tSe8suM5xApvyfo3h7WXidD4FokOUzOIMLX3fDhOT4662exP+QUMgqsLYxJXVK
- ugoGwprSI3Mp5IqkSkuOg/wibPK1CHN9mGzG7RBz0ybFTXFZ99nEWj1/2iTrHxf24ynlyZF7sAarq
- /dW3j1xbl1NLFHluMhuykV/KDGXgHrcXbFP8ubQCDiXteqZX9jiEEx/Xjw6quuPtOFBkQxIfTpf0i
- QO/mlOm6xPkrvmQvbLEysomQmtyqGNl5j15eYhtL09BQFsYhLVprdocSTzm6rAAJ+3K+lmagoOOqS
- sDB222UoXxZubOupZg==;
+ :Subject; bh=iIi4XYDAIN0x4iyYQPhfWqN51Z2+zfNdJj4hCZEgqfc=; b=CHOnsEnZlnN+ASYZ
+ l9UGUbxCQvTBQ9Isib7/6RxLwxpvQQWB+Y3kSZRZ5uaBfgLZ6e9r0wDzB8uq+hbyJTBZToexVvmIH
+ ahqf3UcWVZ++l4neARVgfijLXErvtgB7+zEtbFrVUf6WZO+iHcbWZRjnWEKJsjvtXNmqZl5f7Q1wO
+ g76x+DYKQKUR8VVSfK/CzWGEKJ5QDWac4fxsS4L0xNruUzKYaXsCbzyO+Zb2lfoCseEhheG6yhsMe
+ b2CLom8BFSd0eIQH43pn3OSb7iAoDJY8hcrYVkFYrYM76QQMimUAGV7Rkfevx8gmW7c5VZUu9RAhC
+ frWgqGobQk1Dzloy3Q==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
  by mx.treblig.org with esmtp (Exim 4.96)
- (envelope-from <dave@treblig.org>) id 1srHUJ-006QOJ-2y;
- Thu, 19 Sep 2024 13:46:27 +0000
+ (envelope-from <dave@treblig.org>) id 1srHUK-006QOJ-2B;
+ Thu, 19 Sep 2024 13:46:28 +0000
 From: dave@treblig.org
 To: peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com
 Cc: qemu-devel@nongnu.org,
 	"Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH v2 0/7] Migration deadcode removal
-Date: Thu, 19 Sep 2024 14:46:19 +0100
-Message-ID: <20240919134626.166183-1-dave@treblig.org>
+Subject: [PATCH v2 1/7] migration: Remove migrate_cap_set
+Date: Thu, 19 Sep 2024 14:46:20 +0100
+Message-ID: <20240919134626.166183-2-dave@treblig.org>
 X-Mailer: git-send-email 2.46.1
+In-Reply-To: <20240919134626.166183-1-dave@treblig.org>
+References: <20240919134626.166183-1-dave@treblig.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dave@treblig.org;
@@ -64,40 +66,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-  This is a set of deadcode removal around migration
-found by looking for unused symbols.
+migrate_cap_set has been unused since
+  18d154f575 ("migration: Remove 'blk/-b' option from migrate commands")
 
-v2
-   Don't remove the zero-blocks capability yet
-   add Fabiano's deprecation text patch.
-   Use the uffd helpers in postcopy rather than
-     removing most of them.
-   Remove one.
+Remove it.
 
-Dave
+Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/options.c | 20 --------------------
+ migration/options.h |  1 -
+ 2 files changed, 21 deletions(-)
 
-Dr. David Alan Gilbert (6):
-  migration: Remove migrate_cap_set
-  migration: Remove unused migrate_zero_blocks
-  migration: Remove unused socket_send_channel_create_sync
-  util/userfaultfd: Return -errno on error
-  migration/postcopy: Use uffd helpers
-  util/userfaultfd: Remove unused uffd_poll_events
-
-Fabiano Rosas (1):
-  migration: Deprecate zero-blocks capability
-
- docs/about/deprecated.rst  |  6 +++++
- include/qemu/userfaultfd.h |  1 -
- migration/options.c        | 31 ++++--------------------
- migration/options.h        |  2 --
- migration/postcopy-ram.c   | 47 ++++++++++--------------------------
- migration/socket.c         | 18 --------------
- migration/socket.h         |  1 -
- qapi/migration.json        |  5 +++-
- util/userfaultfd.c         | 49 ++++++++++----------------------------
- 9 files changed, 39 insertions(+), 121 deletions(-)
-
+diff --git a/migration/options.c b/migration/options.c
+index 147cd2b8fd..9460c5dee9 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -605,26 +605,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+     return true;
+ }
+ 
+-bool migrate_cap_set(int cap, bool value, Error **errp)
+-{
+-    MigrationState *s = migrate_get_current();
+-    bool new_caps[MIGRATION_CAPABILITY__MAX];
+-
+-    if (migration_is_running()) {
+-        error_setg(errp, "There's a migration process in progress");
+-        return false;
+-    }
+-
+-    memcpy(new_caps, s->capabilities, sizeof(new_caps));
+-    new_caps[cap] = value;
+-
+-    if (!migrate_caps_check(s->capabilities, new_caps, errp)) {
+-        return false;
+-    }
+-    s->capabilities[cap] = value;
+-    return true;
+-}
+-
+ MigrationCapabilityStatusList *qmp_query_migrate_capabilities(Error **errp)
+ {
+     MigrationCapabilityStatusList *head = NULL, **tail = &head;
+diff --git a/migration/options.h b/migration/options.h
+index a0bd6edc06..36e7b3723f 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -58,7 +58,6 @@ bool migrate_tls(void);
+ /* capabilities helpers */
+ 
+ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp);
+-bool migrate_cap_set(int cap, bool value, Error **errp);
+ 
+ /* parameters */
+ 
 -- 
 2.46.1
 
