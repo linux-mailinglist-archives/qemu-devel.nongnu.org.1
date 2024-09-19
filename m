@@ -2,56 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6345B97C3BC
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 07:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1445297CA31
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:36:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sr9Ga-0007nj-8A; Thu, 19 Sep 2024 00:59:44 -0400
+	id 1srHJM-0002sI-7j; Thu, 19 Sep 2024 09:35:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1sr9GP-0007GY-FI
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:59:37 -0400
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1sr9GN-0000yM-Dh
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:59:33 -0400
-Received: from [192.168.3.57] (unknown [78.37.10.254])
- by mail.ispras.ru (Postfix) with ESMTPSA id 5787B40755F3;
- Thu, 19 Sep 2024 04:59:26 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 5787B40755F3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1726721966;
- bh=sgMPNZPs/phctBLOuiqfsU4PjUMnbzSqyL6pHFhwjrQ=;
- h=Date:Subject:To:References:From:In-Reply-To:From;
- b=CuwZ5uHqRLffuXb99GkPZLY4hWmisvCRawOzXCQN6j04g3Dqlh2BvA/eaP1MRQlY5
- VuMTPbAejGcxfs0OGAOLf537IgB0uMmO6ru8slX0S78WXrjJjNAbsjnTtY5guwJMO8
- IYv71xtOc8UMpywdl9aOCamryOAWShEreWQaFtMg=
-Message-ID: <2bb2f9ba-a431-49c4-8be2-e50b47cb4089@ispras.ru>
-Date: Thu, 19 Sep 2024 07:59:26 +0300
+ (Exim 4.90_1) (envelope-from <chao.gao@intel.com>)
+ id 1sr9RN-0001bj-9w
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 01:10:53 -0400
+Received: from mgamail.intel.com ([198.175.65.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chao.gao@intel.com>)
+ id 1sr9RK-00023X-Mk
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 01:10:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1726722651; x=1758258651;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=TK45IQc09A6cua+tN+o4oqoEEfoNXkZlIHxFO6UzYiQ=;
+ b=FQH2R5LLBYxTdHw313j121evTrHCxnVhDsZPxijWKsthK7DIw4M/3/rc
+ T78kI232aKmMA+MmeVciSQHKC9T6sO+l2Gud23okaGvSQ8mzigyptPYSg
+ Wmq4eCpvidd4aamA1yHAz6G2yXSRtcI6bMcpR0DlVgXwSigT72Lv0LsMF
+ ozY/TW6vFjwUbN3adUBQaPtJdIY4WWWfsz7WjudEZ5Jjzcqk0PUaL37Fn
+ e8SGUHUmZRcGbtNg7e+q0Y7alIl8v8mLB8eeK2A8E6xRYIprCGJ52o5no
+ 4R6zYNyZiqYeu9tTEWPGRF225uLVKuaNYaAgwmqCu/PTqis5w2HVBD1Gy g==;
+X-CSE-ConnectionGUID: waoQu/buRnKjCpkQjhR9DQ==
+X-CSE-MsgGUID: EZ+N5OUUQxCEXorREhJ/VA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25817914"
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="25817914"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2024 22:10:47 -0700
+X-CSE-ConnectionGUID: VrGo1ugBS46s1jR5GFIyJA==
+X-CSE-MsgGUID: 9vdgGrpLQWm9QqQ+7/HrFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="100629752"
+Received: from spr.sh.intel.com ([10.239.53.31])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2024 22:10:45 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, jmattson@google.com,
+ pawan.kumar.gupta@linux.intel.com, jon@nutanix.com,
+ Chao Gao <chao.gao@intel.com>
+Subject: [PATCH] target/i386: Add more features enumerated by CPUID.7.2.EDX
+Date: Thu, 19 Sep 2024 13:10:11 +0800
+Message-ID: <20240919051011.118309-1-chao.gao@intel.com>
+X-Mailer: git-send-email 2.46.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] replay: Remove unused replay_disable_events
-To: dave@treblig.org, pavel.dovgaluk@ispras.ru, pbonzini@redhat.com,
- qemu-devel@nongnu.org
-References: <20240918234005.466999-1-dave@treblig.org>
-Content-Language: en-US
-From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20240918234005.466999-1-dave@treblig.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.17; envelope-from=chao.gao@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 19 Sep 2024 09:34:48 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,54 +81,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
+Following 5 bits in CPUID.7.2.EDX are supported by KVM. Add their
+supports in QEMU. Each of them indicates certain bits of IA32_SPEC_CTRL
+are supported. Those bits can control CPU speculation behavior which can
+be used to defend against side-channel attacks.
 
-On 19.09.2024 02:40, dave@treblig.org wrote:
-> From: "Dr. David Alan Gilbert" <dave@treblig.org>
-> 
-> replay_disable_events has been unused since 2019's
->    c8aa7895eb ("replay: don't drain/flush bdrv queue while RR is working")
-> 
-> Remove it.
-> 
-> Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-> ---
->   include/sysemu/replay.h | 2 --
->   replay/replay-events.c  | 9 ---------
->   2 files changed, 11 deletions(-)
-> 
-> diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
-> index 8102fa54f0..cba74fa9bc 100644
-> --- a/include/sysemu/replay.h
-> +++ b/include/sysemu/replay.h
-> @@ -117,8 +117,6 @@ void replay_async_events(void);
->   
->   /* Asynchronous events queue */
->   
-> -/*! Disables storing events in the queue */
-> -void replay_disable_events(void);
->   /*! Enables storing events in the queue */
->   void replay_enable_events(void);
->   /*! Returns true when saving events is enabled */
-> diff --git a/replay/replay-events.c b/replay/replay-events.c
-> index af0721cc1a..2e46eda6bf 100644
-> --- a/replay/replay-events.c
-> +++ b/replay/replay-events.c
-> @@ -92,15 +92,6 @@ void replay_flush_events(void)
->       }
->   }
->   
-> -void replay_disable_events(void)
-> -{
-> -    if (replay_mode != REPLAY_MODE_NONE) {
-> -        events_enabled = false;
-> -        /* Flush events queue before waiting of completion */
-> -        replay_flush_events();
-> -    }
-> -}
-> -
->   /*! Adds specified async event to the queue */
->   void replay_add_event(ReplayAsyncEventKind event_kind,
->                         void *opaque,
+bit0: intel-psfd
+  if 1, indicates bit 7 of the IA32_SPEC_CTRL MSR is supported. Bit 7 of
+  this MSR disables Fast Store Forwarding Predictor without disabling
+  Speculative Store Bypass
+
+bit1: ipred-ctrl
+  If 1, indicates bits 3 and 4 of the IA32_SPEC_CTRL MSR are supported.
+  Bit 3 of this MSR enables IPRED_DIS control for CPL3. Bit 4 of this
+  MSR enables IPRED_DIS control for CPL0/1/2
+
+bit2: rrsba-ctrl
+  If 1, indicates bits 5 and 6 of the IA32_SPEC_CTRL MSR are supported.
+  Bit 5 of this MSR disables RRSBA behavior for CPL3. Bit 6 of this MSR
+  disables RRSBA behavior for CPL0/1/2
+
+bit3: ddpd-u
+  If 1, indicates bit 8 of the IA32_SPEC_CTRL MSR is supported. Bit 8 of
+  this MSR disables Data Dependent Prefetcher.
+
+bit4: bhi-ctrl
+  if 1, indicates bit 10 of the IA32_SPEC_CTRL MSR is supported. Bit 10
+  of this MSR enables BHI_DIS_S behavior.
+
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+---
+ target/i386/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 85ef7452c0..18ba958f46 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1148,8 +1148,8 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+     [FEAT_7_2_EDX] = {
+         .type = CPUID_FEATURE_WORD,
+         .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            NULL, "mcdt-no", NULL, NULL,
++            "intel-psfd", "ipred-ctrl", "rrsba-ctrl", "ddpd-u",
++            "bhi-ctrl", "mcdt-no", NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+-- 
+2.46.1
 
 
