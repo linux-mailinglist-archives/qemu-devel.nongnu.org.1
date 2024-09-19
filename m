@@ -2,73 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E4E97C9E2
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB1497C9E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:15:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srGwp-0006TR-CL; Thu, 19 Sep 2024 09:11:51 -0400
+	id 1srGwz-00075P-Gs; Thu, 19 Sep 2024 09:12:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1srGwY-0005bm-UJ
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:37 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1srGwv-0006wU-K1
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:57 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1srGwW-000169-BB
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:34 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-42cae4eb026so7860475e9.0
- for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:11:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1srGwt-00019u-B2
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:57 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a8a7903cb7dso56740366b.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:11:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726751490; x=1727356290; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GJ3T7V06j5SeC8WLjBRAZGv39MO7ps0i73GVtRbGI+U=;
- b=h2R7AAGt42/tO3Vq7oQnLZ5umhwO5nIbrVm7PYQAUYPNJIfnwhGZJcxFY32xq7UfSA
- xIFnAgaB86fbQgBcv7p9omdnx3KLn/v4DfyQf2tr++8166fYGkWrJ+DoZnBITJpvfkTu
- bEALHBaWOiPRhS2wjIHGjOz7P8LLW7DImrIde/lW3aS9AukSXlkmQow7nl3bdvZCbqzb
- rpYs2fAz/1jKFO3MnF8OlvFhnOfcgN67dgidYBu3TH0yEd5C4ytfzQxL/MO+ptAYY3Am
- O2uNA8oi+2OUTOEtyx+CmrRmH+9nSqbjAcrz3xuJ2r4uI8/gHFhsvbTX+oRtJEtoWtZ2
- ZE5w==
+ d=linaro.org; s=google; t=1726751513; x=1727356313; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wOh3f59vIQEM1sqQ2WN1asCa5iff+GQlUxHH7szOQUY=;
+ b=zl765BxXkCM3NSYQVugfDQ4wX55b7amnLHCZB2I7trDOBZzpVUgFt8bD58fykzMFdd
+ dggKfcnPmF4JDvjvOLBo1qik5VZtbLrilK7yUNvZnpPFODqsA7S5PftIzF341mXCgsRY
+ NxuxCFa1PHLhUwE2D/QbmMN56eZjC3/lQJmafLMutCu8hH6F72GoeCZ0UUZc8taBpq84
+ /lE21I+IXStyHnUgeAUT5eE+is7qUHqfNsK03zO/u+p51Wi1M+kKgjQ1VwqTrv4MF5OV
+ nFeno+IZe3lL97hCLd8+6k/pcSNw57D2p6SvUO2xf8SN7jpkB4GjuwG0V25OUePrCnom
+ uXeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726751490; x=1727356290;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GJ3T7V06j5SeC8WLjBRAZGv39MO7ps0i73GVtRbGI+U=;
- b=f2ycUfYo0nBJhBcLqKqk0yTcFvymXDFYvpZxdPaWlUFiIzHT55u66NJwhAwvvWw8iq
- fPO1Rv1e4gdRe400DqmJpkVmfmVexpuLkZimH2c5WqYetddRRavZHNjWkXhyh2kijdSP
- +DNY56uuWqAmu/kJJ3zisIjI1anDuCo1r99gooIJnZL59BznGufNRg57T02bUdgtDGWG
- 1wj4a4Q+HEoNFzntJf7dq0b7AjFhdmvirYztmqpFcTCh+jVGkkPpb4163l6gv8ohzcsN
- oae3fsA3Ftr3vk939hAvZ5oNFiPyihFbiGtaDBgak1IzW8bNvoT8qM5IEZ3GZMnlYaTn
- k5LA==
-X-Gm-Message-State: AOJu0Yx2n4QrDpSjTDitxdIlJfhee942ryM70/3Pz0Otsd7qh53eUHsn
- sjDl30Dcsu6NBe/dZl1Ouu/rH/bS4fufIuVdv9ZOyrEHcNzCMxepy5yZFGhQC/yICkgB/9hBtcc
- 4
-X-Google-Smtp-Source: AGHT+IG9fNNU3svTMXjspO4yglnsMyjg177coSysAKvBvXsEbbTb3coZp0v6wz1YvTHSe6EPgQ+7cg==
-X-Received: by 2002:a05:600c:4fc2:b0:42c:af2a:dcf4 with SMTP id
- 5b1f17b1804b1-42cdb56ae3dmr160130205e9.27.1726751490007; 
- Thu, 19 Sep 2024 06:11:30 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42e754091d3sm21667845e9.10.2024.09.19.06.11.29
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1726751513; x=1727356313;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=wOh3f59vIQEM1sqQ2WN1asCa5iff+GQlUxHH7szOQUY=;
+ b=V+LTq1XXraXRpvj8LRrPM7xP+Ht6ftmgGT8UKnf2abX5H4piELOSeg1dwc2w3vdDtW
+ LmKsROcei+zlU4KjyjcDKNNiN/NeXXjtnfpwnrr8sJWattl6prBbx+Wikk+q5ZvT3YyF
+ v6eFyRD/3fG36nhYfl8W04nrEbrH2H/i38OeNjtyQKKs09iP23Yye2miorVHWLYAGptI
+ A4ikgJfsv+rTc2VW0h1wqTFCs2oHHfH9sceGvJiXV8y+r6u9m/4scqNvAVfpj4SiUpcH
+ LiRoAHrwfYu3lL2cpMNJg2CZ3jzlBcMvqn31Kh1ux8n7WzRFkp7Ig7NuLnJ9zd05dfhI
+ 7Bmg==
+X-Gm-Message-State: AOJu0Yw7ggiL5Rn6relLgzdJEcbkUcznRp2ASgU3poL6XDfuBbC1YpX8
+ mfG860gGo9QlgU+O9ToSrBdGUan3V3+VMM8fZkv2PsOf0zUbz2VOtmSkm/pTh78=
+X-Google-Smtp-Source: AGHT+IHaOcTgPADUixEc584Qzu0jx2qbwPPYLoELt4yOQUt4al2eST+S8x1+Uw9Q8KigXHh81Hq2yg==
+X-Received: by 2002:a05:6402:c4a:b0:5c4:8b7:d93d with SMTP id
+ 4fb4d7f45d1cf-5c41e193760mr31381511a12.18.1726751513266; 
+ Thu, 19 Sep 2024 06:11:53 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5c42bb89cebsm5935169a12.60.2024.09.19.06.11.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Sep 2024 06:11:29 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 38/38] docs/devel: Remove nested-papr.txt
-Date: Thu, 19 Sep 2024 14:11:06 +0100
-Message-Id: <20240919131106.3362543-39-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240919131106.3362543-1-peter.maydell@linaro.org>
-References: <20240919131106.3362543-1-peter.maydell@linaro.org>
+ Thu, 19 Sep 2024 06:11:52 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 03E705F8A7;
+ Thu, 19 Sep 2024 14:11:51 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL 00/18] tcg plugins (deprecations, mem apis, contrib plugins)
+In-Reply-To: <CAFEAcA8tdyELui0=jYFObZO1=O_isJ-c1e0s4ZCbMVyfsrY=9A@mail.gmail.com>
+ (Peter Maydell's message of "Thu, 19 Sep 2024 10:50:50 +0100")
+References: <20240918210712.2336854-1-alex.bennee@linaro.org>
+ <CAFEAcA8tdyELui0=jYFObZO1=O_isJ-c1e0s4ZCbMVyfsrY=9A@mail.gmail.com>
+User-Agent: mu4e 1.12.6; emacs 29.4
+Date: Thu, 19 Sep 2024 14:11:50 +0100
+Message-ID: <875xqrg549.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,150 +96,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-docs/devel/nested-papr.txt is entirely (apart from the initial
-paragraph) a partial copy of the kernel documentation
-https://docs.kernel.org/arch/powerpc/kvm-nested.html
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-There's no benefit to the QEMU docs to converting this to rST,
-so instead delete it. Anybody needing to know the API and
-protocol for the guest to communicate with the hypervisor
-to created nested VMs should refer to the authoratitative
-documentation in the kernel docs.
+> On Wed, 18 Sept 2024 at 22:08, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
+wrote:
+>>
+>> The following changes since commit 2b81c046252fbfb375ad30632362fc16e6e22=
+bd5:
+>>
+>>   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu int=
+o staging (2024-09-17 14:02:18 +0100)
+>>
+>> are available in the Git repository at:
+>>
+>>   https://gitlab.com/stsquad/qemu.git tags/pull-tcg-plugin-memory-180924=
+-2
+>>
+>> for you to fetch changes up to a33f4871e0a0f4bf1cb037ab29fae7df7f2fc658:
+>>
+>>   contrib/plugins: avoid hanging program (2024-09-18 21:02:36 +0100)
+>>
+>> ----------------------------------------------------------------
+>> TCG plugin memory instrumentation updates
+>>
+>>   - deprecate plugins on 32 bit hosts
+>>   - deprecate plugins with TCI
+>>   - extend memory API to save value
+>>   - add check-tcg tests to exercise new memory API
+>>   - fix timer deadlock with non-changing timer
+>>   - add basic block vector plugin to contrib
+>>   - add cflow plugin to contrib
+>>   - extend syscall plugin to dump write memory
+>>   - validate ips plugin arguments meet minimum slice value
+>>
+>> ----------------------------------------------------------------
+>
+> Fails to build on macos:
+> https://gitlab.com/qemu-project/qemu/-/jobs/7865151156
+>
+> ../tests/tcg/plugins/mem.c:12:10: fatal error: 'endian.h' file not found
+>
+> endian.h is a Linuxism.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-id: 20240816133318.3603114-1-peter.maydell@linaro.org
----
- docs/devel/nested-papr.txt | 119 -------------------------------------
- 1 file changed, 119 deletions(-)
- delete mode 100644 docs/devel/nested-papr.txt
+Doh - I'd written it off the failure as waiting for the MacOS bump and
+didn't see the actual error. I'll see what we can do.
 
-diff --git a/docs/devel/nested-papr.txt b/docs/devel/nested-papr.txt
-deleted file mode 100644
-index 90943650db9..00000000000
---- a/docs/devel/nested-papr.txt
-+++ /dev/null
-@@ -1,119 +0,0 @@
--Nested PAPR API (aka KVM on PowerVM)
--====================================
--
--This API aims at providing support to enable nested virtualization with
--KVM on PowerVM. While the existing support for nested KVM on PowerNV was
--introduced with cap-nested-hv option, however, with a slight design change,
--to enable this on papr/pseries, a new cap-nested-papr option is added. eg:
--
--  qemu-system-ppc64 -cpu POWER10 -machine pseries,cap-nested-papr=true ...
--
--Work by:
--    Michael Neuling <mikey@neuling.org>
--    Vaibhav Jain <vaibhav@linux.ibm.com>
--    Jordan Niethe <jniethe5@gmail.com>
--    Harsh Prateek Bora <harshpb@linux.ibm.com>
--    Shivaprasad G Bhat <sbhat@linux.ibm.com>
--    Kautuk Consul <kconsul@linux.vnet.ibm.com>
--
--Below taken from the kernel documentation:
--
--Introduction
--============
--
--This document explains how a guest operating system can act as a
--hypervisor and run nested guests through the use of hypercalls, if the
--hypervisor has implemented them. The terms L0, L1, and L2 are used to
--refer to different software entities. L0 is the hypervisor mode entity
--that would normally be called the "host" or "hypervisor". L1 is a
--guest virtual machine that is directly run under L0 and is initiated
--and controlled by L0. L2 is a guest virtual machine that is initiated
--and controlled by L1 acting as a hypervisor. A significant design change
--wrt existing API is that now the entire L2 state is maintained within L0.
--
--Existing Nested-HV API
--======================
--
--Linux/KVM has had support for Nesting as an L0 or L1 since 2018
--
--The L0 code was added::
--
--   commit 8e3f5fc1045dc49fd175b978c5457f5f51e7a2ce
--   Author: Paul Mackerras <paulus@ozlabs.org>
--   Date:   Mon Oct 8 16:31:03 2018 +1100
--   KVM: PPC: Book3S HV: Framework and hcall stubs for nested virtualization
--
--The L1 code was added::
--
--   commit 360cae313702cdd0b90f82c261a8302fecef030a
--   Author: Paul Mackerras <paulus@ozlabs.org>
--   Date:   Mon Oct 8 16:31:04 2018 +1100
--   KVM: PPC: Book3S HV: Nested guest entry via hypercall
--
--This API works primarily using a signal hcall h_enter_nested(). This
--call made by the L1 to tell the L0 to start an L2 vCPU with the given
--state. The L0 then starts this L2 and runs until an L2 exit condition
--is reached. Once the L2 exits, the state of the L2 is given back to
--the L1 by the L0. The full L2 vCPU state is always transferred from
--and to L1 when the L2 is run. The L0 doesn't keep any state on the L2
--vCPU (except in the short sequence in the L0 on L1 -> L2 entry and L2
---> L1 exit).
--
--The only state kept by the L0 is the partition table. The L1 registers
--it's partition table using the h_set_partition_table() hcall. All
--other state held by the L0 about the L2s is cached state (such as
--shadow page tables).
--
--The L1 may run any L2 or vCPU without first informing the L0. It
--simply starts the vCPU using h_enter_nested(). The creation of L2s and
--vCPUs is done implicitly whenever h_enter_nested() is called.
--
--In this document, we call this existing API the v1 API.
--
--New PAPR API
--===============
--
--The new PAPR API changes from the v1 API such that the creating L2 and
--associated vCPUs is explicit. In this document, we call this the v2
--API.
--
--h_enter_nested() is replaced with H_GUEST_VCPU_RUN().  Before this can
--be called the L1 must explicitly create the L2 using h_guest_create()
--and any associated vCPUs() created with h_guest_create_vCPU(). Getting
--and setting vCPU state can also be performed using h_guest_{g|s}et
--hcall.
--
--The basic execution flow is for an L1 to create an L2, run it, and
--delete it is:
--
--- L1 and L0 negotiate capabilities with H_GUEST_{G,S}ET_CAPABILITIES()
--  (normally at L1 boot time).
--
--- L1 requests the L0 to create an L2 with H_GUEST_CREATE() and receives a token
--
--- L1 requests the L0 to create an L2 vCPU with H_GUEST_CREATE_VCPU()
--
--- L1 and L0 communicate the vCPU state using the H_GUEST_{G,S}ET() hcall
--
--- L1 requests the L0 to run the vCPU using H_GUEST_RUN_VCPU() hcall
--
--- L1 deletes L2 with H_GUEST_DELETE()
--
--For more details, please refer:
--
--[1] Linux Kernel documentation (upstream documentation commit):
--
--commit 476652297f94a2e5e5ef29e734b0da37ade94110
--Author: Michael Neuling <mikey@neuling.org>
--Date:   Thu Sep 14 13:06:00 2023 +1000
--
--    docs: powerpc: Document nested KVM on POWER
--
--    Document support for nested KVM on POWER using the existing API as well
--    as the new PAPR API. This includes the new HCALL interface and how it
--    used by KVM.
--
--    Signed-off-by: Michael Neuling <mikey@neuling.org>
--    Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
--    Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
--    Link: https://msgid.link/20230914030600.16993-12-jniethe5@gmail.com
--- 
-2.34.1
+>
+> While I'm looking at the code, this caught my eye:
+>
+>     case QEMU_PLUGIN_MEM_VALUE_U64:
+>     {
+>         uint64_t *p =3D (uint64_t *) &ri->data[offset];
+>         uint64_t val =3D be ? htobe64(value.data.u64) : htole64(value.dat=
+a.u64);
+>         if (is_store) {
+>             *p =3D val;
+>         } else if (*p !=3D val) {
+>             unseen_data =3D true;
+>         }
+>         break;
+>     }
+>
+> Casting a random byte pointer to uint64_t* like that
+> and dereferencing it isn't valid -- it can fault if
+> it's not aligned correctly.
 
+Hmm in the normal case of x86 hosts we will never hit this. I guess we
+could do a memcpy step and then the byteswap?
+
+> I suspect the plugin needs to define versions of at least some
+> of the functionality in qemu's include/qemu/bswap.h.
+
+Could it be included directly without bringing in the rest of QEMU's
+include deps?
+
+>
+> thanks
+> -- PMM
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
