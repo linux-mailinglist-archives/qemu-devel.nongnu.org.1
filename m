@@ -2,125 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2776C97C38D
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 06:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6345B97C3BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 07:00:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sr95V-0005tm-9g; Thu, 19 Sep 2024 00:48:17 -0400
+	id 1sr9Ga-0007nj-8A; Thu, 19 Sep 2024 00:59:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sr95K-0004d7-5I
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:48:06 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sr95A-0007ct-7j
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:48:05 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-71979bf5e7aso286533b3a.1
- for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 21:47:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726721274; x=1727326074; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tx1S3zr1/95ZbSlSEpzuV5Mw8JtyoYuXcwzt94aV9gc=;
- b=ijMa0qxjLOc4wZGyL5BJhjeWgydP8FmQJ7JMbVCgiVct3SiW9cZHzl7cAHYKWgXmMB
- zJj9IFzhknOjAk4Vg1g5agrkdlTyS9NDvvmfzwcXOYBgGMRTbzOh+cy7f4iKi7KEtwbZ
- W8Sa38byNtjvyubL4sWvDUNNcBOdyhxzImsTH1KVVrIWeRPUt1n8o7pLrf0GaME/xFue
- HAMqyB8gmzevSunGST39yfVaWSRfdNV1R20h3vLhdwtoVArJWCkW+QMDS/UGxqs4eqXl
- YD1aTA9wsnrlhhrWrrI9EbN9C/HFwfhzoe14ZYj5KITXedKKOrmX5Rd7ud56ygY8CVdF
- N8oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726721274; x=1727326074;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tx1S3zr1/95ZbSlSEpzuV5Mw8JtyoYuXcwzt94aV9gc=;
- b=QDiJIMxR4/7lpAGXAa+s0pg6r1oq5D0/tYT51QpWptXYov1QejlKBqskrfvocTdfeE
- U2/ek52GEHw0uN0PL5Ie3zvJuPYaG6RUP/ogFfKKXEMdkZ8iRxcB7t1VdCGDc+uPL336
- 905y1HN6MPgPpgXpatwKRdh0qKVT7VYt3luGZ3wgdM2M6E0SKyXP3ncD5Ps09QHVJHoW
- y5rUIJ30b37LxsAPF1SN9Mwasmb4usYe8jfUjjWq2xou6HHPN8IPzH76aUlEAYuBY6MM
- 4T09LvDhvvjRGzdA8JqRnvLF31HCeEcQRdhmPpcNQEEBQTHK8KYzZyS+ai+KG2bgPEfM
- Gs8A==
-X-Gm-Message-State: AOJu0YyKUa66P5O9Wnyp9q7lqQhQria53zgrpIiuzuj0zRl+bhISjiMc
- 82ehB92TPvuV5O1xy+DM6NgMwlA6Mw3+PNWNljdGgO4B0HUbZbcOZJ4ffjFuP8t5BB8IeepFmSn
- BMc/ziQ==
-X-Google-Smtp-Source: AGHT+IGxUDLX/EdmxHd8lBwEQSgvpOMo5EV+rxbHrbQJ6oH4Ek//dhdYk+b8MbHM5eBQ51CMojJGfw==
-X-Received: by 2002:a05:6a00:190d:b0:714:1e36:3bcb with SMTP id
- d2e1a72fcca58-7192606bcb9mr34659991b3a.9.1726721273726; 
- Wed, 18 Sep 2024 21:47:53 -0700 (PDT)
-Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71944bc279csm7478601b3a.188.2024.09.18.21.47.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Sep 2024 21:47:53 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Hyman Huang <yong.huang@smartx.com>, Halil Pasic <pasic@linux.ibm.com>,
- kvm@vger.kernel.org, Bin Meng <bmeng.cn@gmail.com>,
- Peter Xu <peterx@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-s390x@nongnu.org,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Hanna Reitz <hreitz@redhat.com>, Klaus Jensen <its@irrelevant.dk>,
- Corey Minyard <minyard@acm.org>, Laurent Vivier <laurent@vivier.eu>,
- WANG Xuerui <git@xen0n.name>, Thomas Huth <thuth@redhat.com>,
- Rob Herring <robh@kernel.org>, Eduardo Habkost <eduardo@habkost.net>,
- Nicholas Piggin <npiggin@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- Ani Sinha <anisinha@redhat.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>, Fam Zheng <fam@euphon.net>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Keith Busch <kbusch@kernel.org>,
- Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-riscv@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Jason Wang <jasowang@redhat.com>, Eric Farman <farman@linux.ibm.com>,
- "Richard W.M. Jones" <rjones@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Fabiano Rosas <farosas@suse.de>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-arm@nongnu.org,
- Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-ppc@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-block@nongnu.org,
- Joel Stanley <joel@jms.id.au>, Weiwei Li <liwei1518@gmail.com>,
- Kevin Wolf <kwolf@redhat.com>, Helge Deller <deller@gmx.de>,
- Yanan Wang <wangyanan55@huawei.com>, Michael Rolnik <mrolnik@gmail.com>,
- Jesper Devantier <foss@defmacro.it>, Marcelo Tosatti <mtosatti@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 34/34] scripts/checkpatch.pl: emit error when using
- assert(false)
-Date: Wed, 18 Sep 2024 21:46:41 -0700
-Message-Id: <20240919044641.386068-35-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20240919044641.386068-1-pierrick.bouvier@linaro.org>
-References: <20240919044641.386068-1-pierrick.bouvier@linaro.org>
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1sr9GP-0007GY-FI
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:59:37 -0400
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1sr9GN-0000yM-Dh
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:59:33 -0400
+Received: from [192.168.3.57] (unknown [78.37.10.254])
+ by mail.ispras.ru (Postfix) with ESMTPSA id 5787B40755F3;
+ Thu, 19 Sep 2024 04:59:26 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 5787B40755F3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+ s=default; t=1726721966;
+ bh=sgMPNZPs/phctBLOuiqfsU4PjUMnbzSqyL6pHFhwjrQ=;
+ h=Date:Subject:To:References:From:In-Reply-To:From;
+ b=CuwZ5uHqRLffuXb99GkPZLY4hWmisvCRawOzXCQN6j04g3Dqlh2BvA/eaP1MRQlY5
+ VuMTPbAejGcxfs0OGAOLf537IgB0uMmO6ru8slX0S78WXrjJjNAbsjnTtY5guwJMO8
+ IYv71xtOc8UMpywdl9aOCamryOAWShEreWQaFtMg=
+Message-ID: <2bb2f9ba-a431-49c4-8be2-e50b47cb4089@ispras.ru>
+Date: Thu, 19 Sep 2024 07:59:26 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] replay: Remove unused replay_disable_events
+To: dave@treblig.org, pavel.dovgaluk@ispras.ru, pbonzini@redhat.com,
+ qemu-devel@nongnu.org
+References: <20240918234005.466999-1-dave@treblig.org>
+Content-Language: en-US
+From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
+In-Reply-To: <20240918234005.466999-1-dave@treblig.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=83.149.199.84;
+ envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -136,31 +66,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch is part of a series that moves towards a consistent use of
-g_assert_not_reached() rather than an ad hoc mix of different
-assertion mechanisms.
+Reviewed-by: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- scripts/checkpatch.pl | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 65b6f46f905..fa9c12230eb 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3102,6 +3102,9 @@ sub process {
- 		if ($line =~ /\b(g_)?assert\(0\)/) {
- 			ERROR("use g_assert_not_reached() instead of assert(0)\n" . $herecurr);
- 		}
-+		if ($line =~ /\b(g_)?assert\(false\)/) {
-+			ERROR("use g_assert_not_reached() instead of assert(false)\n" . $herecurr);
-+		}
- 		if ($line =~ /\bstrerrorname_np\(/) {
- 			ERROR("use strerror() instead of strerrorname_np()\n" . $herecurr);
- 		}
--- 
-2.39.5
+On 19.09.2024 02:40, dave@treblig.org wrote:
+> From: "Dr. David Alan Gilbert" <dave@treblig.org>
+> 
+> replay_disable_events has been unused since 2019's
+>    c8aa7895eb ("replay: don't drain/flush bdrv queue while RR is working")
+> 
+> Remove it.
+> 
+> Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+> ---
+>   include/sysemu/replay.h | 2 --
+>   replay/replay-events.c  | 9 ---------
+>   2 files changed, 11 deletions(-)
+> 
+> diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
+> index 8102fa54f0..cba74fa9bc 100644
+> --- a/include/sysemu/replay.h
+> +++ b/include/sysemu/replay.h
+> @@ -117,8 +117,6 @@ void replay_async_events(void);
+>   
+>   /* Asynchronous events queue */
+>   
+> -/*! Disables storing events in the queue */
+> -void replay_disable_events(void);
+>   /*! Enables storing events in the queue */
+>   void replay_enable_events(void);
+>   /*! Returns true when saving events is enabled */
+> diff --git a/replay/replay-events.c b/replay/replay-events.c
+> index af0721cc1a..2e46eda6bf 100644
+> --- a/replay/replay-events.c
+> +++ b/replay/replay-events.c
+> @@ -92,15 +92,6 @@ void replay_flush_events(void)
+>       }
+>   }
+>   
+> -void replay_disable_events(void)
+> -{
+> -    if (replay_mode != REPLAY_MODE_NONE) {
+> -        events_enabled = false;
+> -        /* Flush events queue before waiting of completion */
+> -        replay_flush_events();
+> -    }
+> -}
+> -
+>   /*! Adds specified async event to the queue */
+>   void replay_add_event(ReplayAsyncEventKind event_kind,
+>                         void *opaque,
 
 
