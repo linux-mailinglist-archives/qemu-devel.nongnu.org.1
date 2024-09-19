@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F4597C9F9
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E5F97C9CA
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:13:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srGwt-0006kj-Jf; Thu, 19 Sep 2024 09:11:55 -0400
+	id 1srGwv-0006tW-HG; Thu, 19 Sep 2024 09:11:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1srGwV-0005NH-8v
+ id 1srGwV-0005NJ-9R
  for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:32 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1srGwR-00014K-DT
+ id 1srGwR-00014R-DZ
  for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:30 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-374c180d123so519039f8f.3
- for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:11:26 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-42cba8340beso12227225e9.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:11:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726751485; x=1727356285; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726751486; x=1727356286; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=VwKnY+1IgXpvlla7/Vsb9u5qFB4I2Y8EFn85fywIH7o=;
- b=J6oG9BIN9S75Fvzra1bnZ7VORsjtVtVwNFnqG13oWDkuDjfhZGHS+d2bPF/ZQ+XnzA
- wm1vr2CmJk0uOiS3WmxqvCloA/gW3b/tFP1BeZ81rJH5paeoLVel7n4j37U9C2fejF9L
- 8uNuO+fKBbi9Cdnd+GuV43Fw2g027bAQInLM6yNLcnDwQjG4fVWGd4ynQmo9A/o9S2tn
- rcDb6jyvEru5nyXKU11m/qA9t4TaewjQGECpMplKQ5r4VPbwnpR5tHX/MC067dxTtEjg
- 6188uSlMj1JNJOf4lsEsCJUFNBBS7sOdTracXJTTS87Cs+uiWk/vFu3WdcxJejpG4t6s
- AcsA==
+ :reply-to; bh=3kQBlK5vS8qxp5uwCgrYf9PWvy5sZQf/8kseDk6bM60=;
+ b=oRSwHkG385YBs8d6P5++mEnyXpnB3U8XXrRxlNnpauYGO45Ti5rr+CUhbzVgAYWWH6
+ 5XYUXdwIhyltTJk5lXlqnYXSYkVr5ku5q6dDMUQZ+m3s1UjiA8jNA4KMYG271RE4ML/Z
+ 9YSkeeHbu98U4f3eNBglxmP7C5GznVNLSXWfeLUQ+Vd6MlF/Lhfx5iRulkdfCulSl7HO
+ V1B15hXlGwxXbYG4OZ1oRrWTQcPoZBpn0abHq4ymCwXVogorY0vyopHdkF0pr0kU/JTY
+ bmaWqskdAfejLsF6PW6Q9OQBWUH4TMDTg8uS2k0a2A8eCKtHvrrsjzXOJhxmi1cKxPql
+ wAtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726751485; x=1727356285;
+ d=1e100.net; s=20230601; t=1726751486; x=1727356286;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VwKnY+1IgXpvlla7/Vsb9u5qFB4I2Y8EFn85fywIH7o=;
- b=in5Nchr7QXfwy+rZFvbGyg78HibiabQfevxpHYRCz3CUrTMiaaSMP5FBZkJG7a7mcW
- We43Ln3G5IdiR0GfzxL43IPsZFjcHG5GQwZQkl+ZYk6Gb+5l+jX/DY/og2Cdp9/6PZQG
- eVqLB4gRLRQVXyroHgnsVlD3Fzd8WRJB0LeA57pP10j2iyiOqSttVLN+TQERAiiUJcmL
- bLi/Sqt4xCzNK1fC1Q8ziQMlXKD3+Cs2w7YbQAxRgjVbsxy+LSa/IHR0TuorxGF0UmdQ
- N8bK8K1SM+TD8pnFNe4d5SxvMNpFeBJWvSJIWFLYKC3KqqFoLYJWsWuZzCkztEmaIphH
- k7yA==
-X-Gm-Message-State: AOJu0YyhklA3JceKYJK1VH6k3t+7YWm/0YC/pwK0qT5hosHWYMxNVjJX
- O3dNVtOYoAyAsj1lvrowteR9UqS8jNW3cgML2sZU4j22LPXyX6HaVD/W1ZB3wKsa6o2fZBVSHV9
- +
-X-Google-Smtp-Source: AGHT+IFLqS3DgFJlFVIRZzd6PSUHvYxhnY75kvjIdedbIu/hesgYkSW048XzDt0rCvPwBu56NfNByw==
-X-Received: by 2002:a05:6000:1bca:b0:374:c847:85c with SMTP id
- ffacd0b85a97d-378d61e2c1fmr10713956f8f.24.1726751485348; 
+ bh=3kQBlK5vS8qxp5uwCgrYf9PWvy5sZQf/8kseDk6bM60=;
+ b=f7PdBmv1lqgWhYQ0F7fFmq4r8osLJJfdqTQi/KX27x0KzHFsGFH5OdjagqBo5RZWnN
+ QJ4cEI2Df8MhDaPK7CinFmbXrIW+pMJV8McV6BYGIVdZKYnuh9zCER7RVcEc5YolizaP
+ uSFzu+9+3Hsflcd7Yef/kFpPmOuxOaZkHNyismxjiwRB8Q7DBbLJblHVo0jkzSRFbIyR
+ tP4unL/W2R/DX4CMvpNUFOQdSkf2XZmnoc1IdASZsIssg8KpjwOhG6xIuzspnANbW17q
+ sIu/1pejcU7rXK1xl0mr5Vy2kbxK5GrWuL2BZFWOZ7NEgoRT8hz+ZctNSitnDiS+++dP
+ U/uw==
+X-Gm-Message-State: AOJu0YxOQwRXmMQo1yd/BF0uM8PJJUCLrxBQMZCDyG6mk1pIMgkJAVmq
+ AvdiPpA2eq3Ado6IF+JKAFFD0XfMX35oNqNC0ZJupZMplRP/wKOR+Lb4U3oeWQIvYs1BqYmtYK2
+ H
+X-Google-Smtp-Source: AGHT+IFa+dOG0pOI7n+VojTWeDwV747e3DbYLq8XIqFlWqJ34wdhk0Mwx7m5/7k61s8zhq8HLGhdhA==
+X-Received: by 2002:a05:600c:1c9d:b0:42c:b377:3f55 with SMTP id
+ 5b1f17b1804b1-42e743f263bmr19515345e9.3.1726751485895; 
  Thu, 19 Sep 2024 06:11:25 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42e754091d3sm21667845e9.10.2024.09.19.06.11.24
+ 5b1f17b1804b1-42e754091d3sm21667845e9.10.2024.09.19.06.11.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 19 Sep 2024 06:11:25 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 30/38] hw/char/stm32l4x5_usart.c: Enable USART ACK bit response
-Date: Thu, 19 Sep 2024 14:10:58 +0100
-Message-Id: <20240919131106.3362543-31-peter.maydell@linaro.org>
+Subject: [PULL 31/38] tests: use default cpu for aarch64/sbsa-ref
+Date: Thu, 19 Sep 2024 14:10:59 +0100
+Message-Id: <20240919131106.3362543-32-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240919131106.3362543-1-peter.maydell@linaro.org>
 References: <20240919131106.3362543-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,127 +91,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jacob Abrams <satur9nine@gmail.com>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-SW modifying USART_CR1 TE bit should cuase HW to respond by altering
-USART_ISR TEACK bit, and likewise for RE and REACK bit.
+We want to run tests using default cpu without having to remember which
+Arm core is it.
 
-This resolves some but not all issues necessary for the official STM USART
-HAL driver to function as is.
+Change Neoverse-N1 (old default) test to use default cpu (Neoverse-N2 at
+the moment).
 
-Fixes: 87b77e6e01ca ("hw/char/stm32l4x5_usart: Enable serial read and write")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2540
-Signed-off-by: Jacob Abrams <satur9nine@gmail.com>
-Message-id: 20240911043255.51966-1-satur9nine@gmail.com
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Message-id: 20240910-b4-move-to-freebsd-v5-1-0fb66d803c93@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/char/stm32l4x5_usart.c          | 16 +++++++++++++
- tests/qtest/stm32l4x5_usart-test.c | 36 +++++++++++++++++++++++++++++-
- 2 files changed, 51 insertions(+), 1 deletion(-)
+ tests/functional/test_aarch64_sbsaref.py | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/hw/char/stm32l4x5_usart.c b/hw/char/stm32l4x5_usart.c
-index fc5dcac0c45..3cf200c080d 100644
---- a/hw/char/stm32l4x5_usart.c
-+++ b/hw/char/stm32l4x5_usart.c
-@@ -154,6 +154,21 @@ REG32(RDR, 0x24)
- REG32(TDR, 0x28)
-     FIELD(TDR, TDR, 0, 9)
+diff --git a/tests/functional/test_aarch64_sbsaref.py b/tests/functional/test_aarch64_sbsaref.py
+index f31c2a60b61..528882f4fa9 100755
+--- a/tests/functional/test_aarch64_sbsaref.py
++++ b/tests/functional/test_aarch64_sbsaref.py
+@@ -110,16 +110,17 @@ def test_sbsaref_edk2_firmware(self):
+     # This tests the whole boot chain from EFI to Userspace
+     # We only boot a whole OS for the current top level CPU and GIC
+     # Other test profiles should use more minimal boots
+-    def boot_alpine_linux(self, cpu):
++    def boot_alpine_linux(self, cpu=None):
+         self.fetch_firmware()
  
-+static void stm32l4x5_update_isr(Stm32l4x5UsartBaseState *s)
-+{
-+    if (s->cr1 & R_CR1_TE_MASK) {
-+        s->isr |= R_ISR_TEACK_MASK;
-+    } else {
-+        s->isr &= ~R_ISR_TEACK_MASK;
-+    }
-+
-+    if (s->cr1 & R_CR1_RE_MASK) {
-+        s->isr |= R_ISR_REACK_MASK;
-+    } else {
-+        s->isr &= ~R_ISR_REACK_MASK;
-+    }
-+}
-+
- static void stm32l4x5_update_irq(Stm32l4x5UsartBaseState *s)
- {
-     if (((s->isr & R_ISR_WUF_MASK) && (s->cr3 & R_CR3_WUFIE_MASK))        ||
-@@ -456,6 +471,7 @@ static void stm32l4x5_usart_base_write(void *opaque, hwaddr addr,
-     case A_CR1:
-         s->cr1 = value;
-         stm32l4x5_update_params(s);
-+        stm32l4x5_update_isr(s);
-         stm32l4x5_update_irq(s);
-         return;
-     case A_CR2:
-diff --git a/tests/qtest/stm32l4x5_usart-test.c b/tests/qtest/stm32l4x5_usart-test.c
-index c175ff3064f..64cebda60f0 100644
---- a/tests/qtest/stm32l4x5_usart-test.c
-+++ b/tests/qtest/stm32l4x5_usart-test.c
-@@ -36,6 +36,8 @@ REG32(GTPR, 0x10)
- REG32(RTOR, 0x14)
- REG32(RQR, 0x18)
- REG32(ISR, 0x1C)
-+    FIELD(ISR, REACK, 22, 1)
-+    FIELD(ISR, TEACK, 21, 1)
-     FIELD(ISR, TXE, 7, 1)
-     FIELD(ISR, RXNE, 5, 1)
-     FIELD(ISR, ORE, 3, 1)
-@@ -191,7 +193,7 @@ static void init_uart(QTestState *qts)
+         iso_path = self.ASSET_ALPINE_ISO.fetch()
  
-     /* Enable the transmitter, the receiver and the USART. */
-     qtest_writel(qts, (USART1_BASE_ADDR + A_CR1),
--        R_CR1_UE_MASK | R_CR1_RE_MASK | R_CR1_TE_MASK);
-+        cr1 | R_CR1_UE_MASK | R_CR1_RE_MASK | R_CR1_TE_MASK);
- }
+         self.vm.set_console()
+         self.vm.add_args(
+-            "-cpu", cpu,
+             "-drive", f"file={iso_path},media=cdrom,format=raw",
+         )
++        if cpu:
++            self.vm.add_args("-cpu", cpu)
  
- static void test_write_read(void)
-@@ -298,6 +300,37 @@ static void test_send_str(void)
-     qtest_quit(qts);
- }
+         self.vm.launch()
+         wait_for_console_pattern(self, "Welcome to Alpine Linux 3.17")
+@@ -127,8 +128,8 @@ def boot_alpine_linux(self, cpu):
+     def test_sbsaref_alpine_linux_cortex_a57(self):
+         self.boot_alpine_linux("cortex-a57")
  
-+static void test_ack(void)
-+{
-+    uint32_t cr1;
-+    uint32_t isr;
-+    QTestState *qts = qtest_init("-M b-l475e-iot01a");
-+
-+    init_uart(qts);
-+
-+    cr1 = qtest_readl(qts, (USART1_BASE_ADDR + A_CR1));
-+
-+    /* Disable the transmitter and receiver. */
-+    qtest_writel(qts, (USART1_BASE_ADDR + A_CR1),
-+        cr1 & ~(R_CR1_RE_MASK | R_CR1_TE_MASK));
-+
-+    /* Test ISR ACK for transmitter and receiver disabled */
-+    isr = qtest_readl(qts, (USART1_BASE_ADDR + A_ISR));
-+    g_assert_false(isr & R_ISR_TEACK_MASK);
-+    g_assert_false(isr & R_ISR_REACK_MASK);
-+
-+    /* Enable the transmitter and receiver. */
-+    qtest_writel(qts, (USART1_BASE_ADDR + A_CR1),
-+        cr1 | (R_CR1_RE_MASK | R_CR1_TE_MASK));
-+
-+    /* Test ISR ACK for transmitter and receiver disabled */
-+    isr = qtest_readl(qts, (USART1_BASE_ADDR + A_ISR));
-+    g_assert_true(isr & R_ISR_TEACK_MASK);
-+    g_assert_true(isr & R_ISR_REACK_MASK);
-+
-+    qtest_quit(qts);
-+}
-+
- int main(int argc, char **argv)
- {
-     int ret;
-@@ -310,6 +343,7 @@ int main(int argc, char **argv)
-     qtest_add_func("stm32l4x5/usart/send_char", test_send_char);
-     qtest_add_func("stm32l4x5/usart/receive_str", test_receive_str);
-     qtest_add_func("stm32l4x5/usart/send_str", test_send_str);
-+    qtest_add_func("stm32l4x5/usart/ack", test_ack);
-     ret = g_test_run();
+-    def test_sbsaref_alpine_linux_neoverse_n1(self):
+-        self.boot_alpine_linux("neoverse-n1")
++    def test_sbsaref_alpine_linux_default_cpu(self):
++        self.boot_alpine_linux()
  
-     return ret;
+     def test_sbsaref_alpine_linux_max_pauth_off(self):
+         self.boot_alpine_linux("max,pauth=off")
+@@ -148,16 +149,17 @@ def test_sbsaref_alpine_linux_max(self):
+     # This tests the whole boot chain from EFI to Userspace
+     # We only boot a whole OS for the current top level CPU and GIC
+     # Other test profiles should use more minimal boots
+-    def boot_openbsd73(self, cpu):
++    def boot_openbsd73(self, cpu=None):
+         self.fetch_firmware()
+ 
+         img_path = self.ASSET_OPENBSD_ISO.fetch()
+ 
+         self.vm.set_console()
+         self.vm.add_args(
+-            "-cpu", cpu,
+             "-drive", f"file={img_path},format=raw,snapshot=on",
+         )
++        if cpu:
++            self.vm.add_args("-cpu", cpu)
+ 
+         self.vm.launch()
+         wait_for_console_pattern(self,
+@@ -167,8 +169,8 @@ def boot_openbsd73(self, cpu):
+     def test_sbsaref_openbsd73_cortex_a57(self):
+         self.boot_openbsd73("cortex-a57")
+ 
+-    def test_sbsaref_openbsd73_neoverse_n1(self):
+-        self.boot_openbsd73("neoverse-n1")
++    def test_sbsaref_openbsd73_default_cpu(self):
++        self.boot_openbsd73()
+ 
+     def test_sbsaref_openbsd73_max_pauth_off(self):
+         self.boot_openbsd73("max,pauth=off")
 -- 
 2.34.1
 
