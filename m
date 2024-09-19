@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFADF97C27E
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 03:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5A597C28F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 03:41:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sr65F-00010z-Gx; Wed, 18 Sep 2024 21:35:49 -0400
+	id 1sr69E-0005ZT-Uf; Wed, 18 Sep 2024 21:39:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yaozhenguo1@gmail.com>)
- id 1sr65C-00010E-Tv
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 21:35:47 -0400
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yaozhenguo1@gmail.com>)
- id 1sr65A-0004QW-Ul
- for qemu-devel@nongnu.org; Wed, 18 Sep 2024 21:35:46 -0400
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-68518bc1407so3082557b3.2
- for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 18:35:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726709743; x=1727314543; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=B+KAxMpxoyRSjFMZowl3Lnxq8wuVXNRVxinGAz4ryuI=;
- b=NjK15IRZhpOTbKfP8m7wAqwVj6kq/qNW6b1YSZQczcvXLswXwuO44kF8lXLC9U1TmR
- zic/uPm3ohk2Y7e4Y4+wia7W+31+1mj73PuZy4evJFyaePQQ1aOWB/pyXiTE1OWPDVe8
- BTtY7Yie+Vdj5/D504X+X6cIt0xvDVI8SazXRpRrbykwt2TkM8blJCTS8qvcmqbo7Bcc
- iPoTy6st2O9g+7+VMUzSnfOCS/KVphq4AE8IThLSD+eqkAcEzvXGJOR95ETPtUzbt25+
- e6JajR8cUep57/p/3EXvBOqiyr91AYK3DXxV1AmRyBRs2DtZm0+ieIIy56dLThbCVlw5
- uwug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726709743; x=1727314543;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=B+KAxMpxoyRSjFMZowl3Lnxq8wuVXNRVxinGAz4ryuI=;
- b=MaUzH40++tSmRAM0MfWCX64Q/YSidojlkZQv+xWoczFislUur6k9IAORiO97ltSrOc
- HJjtqOaWyvXZcoZ/Vk1q+A4RY7b6EjzmI05g89vwBCzZb+PVkhXK23hYPRolb2nKJhV7
- uUiAlG0+F0d58LugcURKHKu9yRWQEkhJBSmFj5Q52sTRxXQ9QnrjlULV3wNYkpwT5gLG
- 1Sfa9IhnoibE7C9B/Xyl8uuCse/RYR1EO9MG8XrTKJzt4iGM30AraBYMIBSU/KILFivk
- aTTY+cd2JjzzbdPOLFqjuRh5y+45tB2tUE0BMQSUCpCzl2+RAvbvzVUltmridUjG4uyf
- Ltgw==
-X-Gm-Message-State: AOJu0Yw6jnbBrT/qTlKgYmam9mJtRlZrOa5UCbyGmsPkFKfpIc93CHh+
- WVDG9LY8Ly/s8JdBGKRFenxvBJzQTglp+ROdQVnDta/NRQuDut6eUT0uebmufHVw1rCwEfVzXxz
- evtlK7J6WTGSvvKTOLmZ+sEgd1rI=
-X-Google-Smtp-Source: AGHT+IH5yWV2MTB8GD8ZBPOObocuxasEfpd0rtreicJN6RTpSYFBYudUl1giVLvL8zdlJ72EkJJA4I6ks7sihkMucqk=
-X-Received: by 2002:a05:690c:7091:b0:6db:3b2f:a18a with SMTP id
- 00721157ae682-6dbcc2610b5mr199461987b3.11.1726709742955; Wed, 18 Sep 2024
- 18:35:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sr69B-0005TQ-Ew; Wed, 18 Sep 2024 21:39:53 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sr697-0004rf-JR; Wed, 18 Sep 2024 21:39:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1726709990; x=1758245990;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=K7k8zT2pC2Ua/GM9HyO6OV2PCDkPiDON6WM4+oMcQIY=;
+ b=epiF8gCpOyIc++GlTdhZsEVgvEo44j+6zBqntgKkDWtZ6ooCtiqnWbbp
+ tboPeeIFUCibKhMpva67ybXesZgRZCvhMuTMUPWZC5OkXKBaUVdDr4ce7
+ QUeGN2knahHVNHLW5tH5DapyLlia5fkOkyjgXkZeSaZ9dz1+dl935neU4
+ 436NMqhMJlUO4TiMrC4gEy88sPs4baSFhX/hEe09AyyDelUADVrzvcNbA
+ MBkEy/IVC+CnuAId6fHGQE3FLde0j4rjnKuP41wx1BjUXBEFkSTBL+CVy
+ yn1+ZwLaBq0TG5qc87WIr3l1YO0UtpjoT61qqSwVyudyyJY0+YyB4Tu5O A==;
+X-CSE-ConnectionGUID: KTC51HQrQDaQ59r0h1+D6g==
+X-CSE-MsgGUID: NHcLlfsES5qns0FOwBhCxw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25797791"
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="25797791"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2024 18:39:45 -0700
+X-CSE-ConnectionGUID: y6jal28nTNeMFfqn5T21WQ==
+X-CSE-MsgGUID: ey6y18zkRiG4+rnv5jrt3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="70058463"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by orviesa006.jf.intel.com with ESMTP; 18 Sep 2024 18:39:38 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-ppc@nongnu.org,
+ qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [RFC v2 00/15] qom-topo: Abstract CPU Topology Level to Topology
+ Device
+Date: Thu, 19 Sep 2024 09:55:18 +0800
+Message-Id: <20240919015533.766754-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240913080800.40816-1-yaozhenguo@jd.com>
-In-Reply-To: <20240913080800.40816-1-yaozhenguo@jd.com>
-From: Zhenguo Yao <yaozhenguo1@gmail.com>
-Date: Thu, 19 Sep 2024 09:35:31 +0800
-Message-ID: <CA+WzARnvD-S8pMb7Uma6Sw=20RfcTuGDj+gZo_cxqkqgXvypJg@mail.gmail.com>
-Subject: Re: [PATCH V1] virtio/vhost-user: fix qemu abort when hotunplug
- vhost-user-net device
-To: alex.bennee@linaro.org, mst@redhat.com, sgarzare@redhat.com
-Cc: qemu-devel@nongnu.org, yaozhenguo@jd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=yaozhenguo1@gmail.com; helo=mail-yw1-x1134.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,197 +97,503 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-yaozhenguo <yaozhenguo1@gmail.com> =E4=BA=8E2024=E5=B9=B49=E6=9C=8813=E6=97=
-=A5=E5=91=A8=E4=BA=94 16:08=E5=86=99=E9=81=93=EF=BC=9A
->
-> During the process of hot-unplug in vhost-user-net NIC, vhost_user_cleanu=
-p
-> may add same rcu node to rcu list. Function calls are as follows:
->
-> vhost_user_cleanup
->     ->vhost_user_host_notifier_remove
->         ->call_rcu(n, vhost_user_host_notifier_free, rcu);
->     ->g_free_rcu(n, rcu);
->
-> When this happens, QEMU will abort in try_dequeue:
->
-> if (head =3D=3D &dummy && qatomic_mb_read(&tail) =3D=3D &dummy.next) {
->     abort();
-> }
->
-> Backtrace is as follows:
-> 0  __pthread_kill_implementation () at /usr/lib64/libc.so.6
-> 1  raise () at /usr/lib64/libc.so.6
-> 2  abort () at /usr/lib64/libc.so.6
-> 3  try_dequeue () at ../util/rcu.c:235
-> 4  call_rcu_thread (0) at ../util/rcu.c:288
-> 5  qemu_thread_start (0) at ../util/qemu-thread-posix.c:541
-> 6  start_thread () at /usr/lib64/libc.so.6
-> 7  clone3 () at /usr/lib64/libc.so.6
->
-> Reason for the abort is that adding two identical nodes to the rcu list w=
-ill
-> cause it becomes a ring. After dummy node is added to the tail of the lis=
-t in
-> try_dequeue, the ring is opened. But lead to a situation that only one no=
-de is
-> added to list and rcu_call_count is added twice. This will cause try_dequ=
-eue
-> abort.
->
-> This issue happens when n->addr !=3D 0 in vhost_user_host_notifier_remove=
-. It can
-> happens in a hotplug stress test with a 32queue vhost-user-net type NIC.
-> Because n->addr is set in VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG func=
-tion.
-> during device hotplug process and it is cleared in vhost_dev_stop during =
-device
-> hot-unplug. Since VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG is a message=
- sent
-> by DPDK to qemu, it is asynchronous. So, there is no guaranteed order bet=
-ween
-> the two processes of setting n->addr and clearing n->addr. If setting n->=
-addr
-> in hotplug occurs after clearing n->addr in hotunplug, the issue will occ=
-ur.
-> So, it is necessary to merge g_free_rcu and vhost_user_host_notifier_free=
- into
-> one rcu node.
->
-> Fixes: 503e355465 ("virtio/vhost-user: dynamically assign VhostUserHostNo=
-tifiers")
->
-> Signed-off-by: yaozhenguo <yaozhenguo@jd.com>
-> ---
->  hw/virtio/vhost-user.c         | 34 ++++++++++++++++++----------------
->  include/hw/virtio/vhost-user.h |  1 +
->  2 files changed, 19 insertions(+), 16 deletions(-)
->
-> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index 00561da..b2da3cf 100644
-> --- a/hw/virtio/vhost-user.c
-> +++ b/hw/virtio/vhost-user.c
-> @@ -1185,9 +1185,16 @@ static int vhost_user_set_vring_num(struct vhost_d=
-ev *dev,
->
->  static void vhost_user_host_notifier_free(VhostUserHostNotifier *n)
->  {
-> -    assert(n && n->unmap_addr);
-> -    munmap(n->unmap_addr, qemu_real_host_page_size());
-> -    n->unmap_addr =3D NULL;
-> +    if (n->unmap_addr) {
-> +        munmap(n->unmap_addr, qemu_real_host_page_size());
-> +        n->unmap_addr =3D NULL;
-> +    }
-> +    if (n->need_free) {
-> +        memory_region_transaction_begin();
-> +        object_unparent(OBJECT(&n->mr));
-> +        memory_region_transaction_commit();
-> +        g_free(n);
-> +    }
->  }
->
->  /*
-> @@ -1195,17 +1202,20 @@ static void vhost_user_host_notifier_free(VhostUs=
-erHostNotifier *n)
->   * under rcu.
->   */
->  static void vhost_user_host_notifier_remove(VhostUserHostNotifier *n,
-> -                                            VirtIODevice *vdev)
-> +                                            VirtIODevice *vdev, bool fre=
-e)
->  {
->      if (n->addr) {
->          if (vdev) {
-> +            memory_region_transaction_begin();
->              virtio_queue_set_host_notifier_mr(vdev, n->idx, &n->mr, fals=
-e);
-> +            memory_region_transaction_commit();
->          }
->          assert(!n->unmap_addr);
->          n->unmap_addr =3D n->addr;
->          n->addr =3D NULL;
-> -        call_rcu(n, vhost_user_host_notifier_free, rcu);
->      }
-> +    n->need_free =3D free;
-> +    call_rcu(n, vhost_user_host_notifier_free, rcu);
->  }
+Hi all,
 
-This brings up another problem. When the device is initialized,
-problems may occur when the execution times of
-vhost_user_get_vring_base and
-vhost_user_backend_handle_vring_host_notifier are relatively close,
-and the same node is submitted to the rcu list. This happened during
-our regression testing. Therefore, modifications must be made to avoid
-this problem.
+After ten months, now I bring our 2nd attempt on CPU topology device
+back to mail list.
 
-vhost_user_get_vring_base
-    vhost_user_host_notifier_remove(n, dev->vdev, false);
-vhost_user_backend_handle_vring_host_notifier
-    vhost_user_host_notifier_remove(n, dev->vdev, false);
->
->  static int vhost_user_set_vring_base(struct vhost_dev *dev,
-> @@ -1280,7 +1290,7 @@ static int vhost_user_get_vring_base(struct vhost_d=
-ev *dev,
->
->      VhostUserHostNotifier *n =3D fetch_notifier(u->user, ring->index);
->      if (n) {
-> -        vhost_user_host_notifier_remove(n, dev->vdev);
-> +        vhost_user_host_notifier_remove(n, dev->vdev, false);
->      }
->
->      ret =3D vhost_user_write(dev, &msg, NULL, 0);
-> @@ -1562,7 +1572,7 @@ static int vhost_user_backend_handle_vring_host_not=
-ifier(struct vhost_dev *dev,
->       * new mapped address.
->       */
->      n =3D fetch_or_create_notifier(user, queue_idx);
-> -    vhost_user_host_notifier_remove(n, vdev);
-> +    vhost_user_host_notifier_remove(n, vdev, false);
->
->      if (area->u64 & VHOST_USER_VRING_NOFD_MASK) {
->          return 0;
-> @@ -2737,13 +2747,7 @@ static void vhost_user_state_destroy(gpointer data=
-)
->  {
->      VhostUserHostNotifier *n =3D (VhostUserHostNotifier *) data;
->      if (n) {
-> -        vhost_user_host_notifier_remove(n, NULL);
-> -        object_unparent(OBJECT(&n->mr));
-> -        /*
-> -         * We can't free until vhost_user_host_notifier_remove has
-> -         * done it's thing so schedule the free with RCU.
-> -         */
-> -        g_free_rcu(n, rcu);
-> +        vhost_user_host_notifier_remove(n, NULL, true);
->      }
->  }
->
-> @@ -2765,9 +2769,7 @@ void vhost_user_cleanup(VhostUserState *user)
->      if (!user->chr) {
->          return;
->      }
-> -    memory_region_transaction_begin();
->      user->notifiers =3D (GPtrArray *) g_ptr_array_free(user->notifiers, =
-true);
-> -    memory_region_transaction_commit();
->      user->chr =3D NULL;
->  }
->
-> diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-use=
-r.h
-> index 324cd86..a171f29 100644
-> --- a/include/hw/virtio/vhost-user.h
-> +++ b/include/hw/virtio/vhost-user.h
-> @@ -54,6 +54,7 @@ typedef struct VhostUserHostNotifier {
->      void *addr;
->      void *unmap_addr;
->      int idx;
-> +    bool need_free;
->  } VhostUserHostNotifier;
->
->  /**
-> --
-> 1.8.3.1
->
+This series is still a practical implementation of Daniel’s idea
+[0] from early last year on how to achieve hybrid topology based on QOM
+abstraction.
+
+And this series is a preliminary step for introducing hybrid (aka,
+heterogeneous) CPU topology to QEMU. With the QOM topology support
+introduced in this series, for future hybrid CPU topology, QEMU will
+allow users to customize the topology tree via CLI using the -device
+command.
+
+Compared to v1 [1], the goals of v2 stay the same:
+1. Abstract a special class of device - "CPU topology device' - to
+   handle CPU topology relationship.
+2. Derive all CPU topology related devices, including existing CPU/core
+   devices, as well as newly added module/die/socket devices, from "CPU
+   topology device".
+3. Build a CPU topology device tree based on the topology relationships
+   represented by the CPU topology devices.
+
+The main difference between v1 and v2 is that v2 introduces the special
+CPU bus to manage topology. The current QEMU Bus abstraction effectively
+manages the topology between devices, so applying it to CPU topology can
+avoid introducing an additional set of logic to handle topology
+relationships. Therefore, compared to v1, the code in v2 can be
+significantly reduced. (About why we made this change, pls refer the
+last two paragraphs in Section 3. "History of QOM (CPU) Topology".)
+
+In addition, v2 removes the support about user custom topology creation
+from CLI. Since this part has more opens, the subsequent hybrid (CPU)
+topology v2 will discuss this.
+
+This series make x86 support the topology tree as the example. I also
+hope that eventually all architectures and machines in QEMU will accept
+QOM topology.
+
+Patches are based on my previous SMP cache topology series [2] (in fact,
+I rebase both them at the commit 2b81c046252f ("Merge tag 'block-pull-
+request' of https://gitlab.com/stefanha/qemu into staging")).
+
+As ARM may has potential need for hybrid topology, I also add ARM folks
+in this thread.
+
+This is a huge cover letter and a huge series, thank you for your
+patience and time! And welcome your feedback and comments!
+
+
+1. Summary about What We Did?
+=============================
+
+Before introducing the background, please allow me to briefly outline
+the main work of this series. This will help relate it to the
+continuous efforts and discussions of the past decade.
+
+
+* Implement CPU topology device/bus abstraction and topology tree.
+
+This series implements a topology tree for (x86) machine like the
+following:
+
+                                        
+              ┌────────────────┐        
+              │                │        
+              │  MachineState  │        
+              │                │        
+              └───────┬────────┘        
+                      │                 
+                ┌─────┼─────┐           
+                │  CPU Slot │           
+                └─────┬─────┘           
+                  ┌───┼───┐             
+                  │CPU Bus│             
+                  └───┬───┘             
+                      │                 
+                ┌─────▼─────┐           
+                │ CPU Socket│           
+                └─────┬─────┘           
+                  ┌───┼───┐             
+                  │CPU Bus│             
+                  └───┬───┘             
+                      │                 
+                ┌─────▼─────┐           
+                │  CPU Die  │           
+                └─────┬─────┘           
+                  ┌───┼───┐             
+                  │CPU Bus│             
+                  └───┬───┘             
+                      │                 
+                ┌─────▼─────┐           
+                │  CPU Die  │           
+                └─────┬─────┘           
+                  ┌───┼───┐             
+                  │CPU Bus│             
+                  └───┬───┘             
+               ┌──────┴──────┐          
+         ┌─────▼─────┐ ┌─────▼─────┐    
+         │ CPU Module│ │ CPU Module│    
+         └─────┬─────┘ └─────┬─────┘    
+           ┌───┼───┐     ┌───┼───┐      
+           │CPU Bus│     │CPU Bus│      
+           └───┬───┘     └───┬───┘      
+               │             │          
+         ┌─────▼─────┐ ┌─────▼─────┐    
+         │  CPU Core │ │  CPU Core │    
+         └─────┬─────┘ └─────┬─────┘    
+           ┌───┼───┐     ┌───┼───┐      
+           │CPU Bus│     │CPU Bus│      
+           └──┬────┘     └────┬──┘      
+          ┌───┴───┐       ┌───┴───┐     
+       ┌──▼──┐ ┌──▼──┐ ┌──▼──┐ ┌──▼──┐  
+       │ CPU │ │ CPU │ │ CPU │ │ CPU │  
+       └─────┘ └─────┘ └─────┘ └─────┘  
+                                        
+The Socket/Die/Module/Core/CPU are all the devices derived from CPU
+topology device ("CPUTopoState") and are connected through the "CPU
+bus", hierarchy by hierarchy.
+
+The root of above topology tree is a CPU bus bridge named "CPU Slot",
+which is plugged in MachineState. The CPU Slot is designed to replace
+the current MachineState.smp to manage all CPU topologies. It will
+listen to the realize() and unrealize() of the CPU topology device
+and update the topology information to monitor topology tree updates
+and the plug/unplug event of topology devices.
+
+
+* Based on topology tree, make qom-path match topology relationship.
+
+This is implemented by re-parenting the topology device to its actual
+topological parent in the tree. This is an CPU example:
+
+  {
+      "props": {
+          "core-id": 0,
+          "die-id": 0,
+          "module-id": 0,
+          "socket-id": 0,
+          "thread-id": 0
+      },
+      "qom-path": "/machine/peripheral/cpu-slot/sock0/die0/core0/host-x86_64-cpu[0]",
+      "type": "host-x86_64-cpu",
+      "vcpus-count": 1
+  }
+
+
+* Introduce "bus-finder" to convert CPU's topology ID properties
+  (thread-id/core-id, etc) to specific "CPU bus".
+
+At present, topology ID properties are used to find free slot in
+possible_cpus[]. Once there's the CPU bus, it's necessary to use such
+properties to locate the proper parent CPU bus when adding the CPU from
+CLI. The "bus-finder" is an "INTERFACE" to help qdev search parent bus
+with device's properties.
+
+
+2. What's the Problem?
+======================
+
+As computer architectures continue to innovate, the need for hybrid
+(aka, heterogeneous) topology of virtual machine in QEMU is growing.
+
+Hybrid topology includes hybrid CPU topology and hybrid cache topology:
+
+- Hybrid CPU topology:
+
+Hybrid CPU topology refers to systems that use more than one kind of
+processor or cores [3] with the same ISA. The typical example is intel
+hybrid architecture with 2 core types [4], which will even have hybrid
+die topology [5]. And we can see that not only Intel, but also ARM and
+AMD's heterogeneous platforms will have the ability to support
+virtualization.
+
+- Hybrid cache topology:
+
+Not only Intel's hybrid platforms introduced complex hybrid cache
+topology, but more platforms have also seen the strong demand for hybrid
+cache topology definition (e.g. ARM [6]). Although cache topology is
+strictly speaking a separate topology from CPU topology, in terms of the
+actual processor build process and the current QEMU's way to define
+cache topology (e.g., i386 [7] & ARM [8]), cache topology is and should
+be dependent on CPU topology to be defined. Even for the SMP CPU case,
+the hyrbid cache topology is also useful to define different caches at
+same level (e.g., AMD x3D). The hybrid cache topology will depend on the
+implementation of the hybrid CPU topology, which is our future work.
+
+
+The benefits of introducing hybrid topology for QEMU include:
+ * Allow QEMU to emulate complex heterogeneous CPU hardware.
+ * Hybrid topology information in Guest can help Guest improve
+   performance and achieve better power efficiency based on Host's
+   hardware difference.
+ * Enable hybrid features in Guest, for example, Intel's hybrid PMU.
+
+Obviously, -smp is not enough. And though QEMU could define different
+properties for CPUs (like S390s [9]), it's not enough to handle or
+express complicated topology replationship.
+
+Therefore, we're trying to figure out a proper way to define hybrid
+topology in QEMU.
+
+This series, implementing QOM (CPU) topology, is the foundation of our
+hybrid topology support.
+
+
+3. History of QOM (CPU) Topology
+================================
+
+The intent of QOM topology is not to stop at QOM CPUs, but to abstract
+more CPU topology levels.
+
+In fact, it's not a new term.
+
+Back in 2014, Fan proposed [10] a hierarchical tree based on QOM node,
+QOM sockets, QOM cores and QOM cpu. Andreas also propsed [11] socket/
+core/thread QOM model to create hierarchical topology in place. From
+the discussion at that time, the hierarchy topology tree representation
+was what people (Igor said [12]) wanted. However, this work was not
+continued.
+
+Then Bharata proposed to "CPU group" concept to handle CPU hotplug, but
+eventually matintainers accepted the cpu-core abstraction [13] to
+support core granularity hotplug for SPAPR. Until now, the only user of
+cpu-core is still PPC (PNV core and SPAPR core).
+
+Cpu-cluster was introduced by Luc [14] to organize CPUs in different
+containers to support GDB for TCG case. Though this abstraction was
+descripted as: "mainly an internal QEMU representation and does not
+necessarily match with the notion of clusters on the real hardware",
+its name and function actually make it easy to correspond to the
+physical cluster/smp cluster (the difference, of course, is that TCG
+cluster collects CPUs directly, while the cluster as a CPU topology
+level collect cores, but this difference is not the impediment gap to
+convert "TCG " cluster to "general" cluster).
+
+As CPU architectures evolve, QEMU has supported more topology levels
+(module, cluster, die, book and drawer), while the existing cpu-core
+and cpu-cluster abstractions become fragmented.
+
+And now, the need for defining hybrid topology has prompted us to
+rethink the QOM topology.
+
+Daniel suggested [0] to use -object interfaces to define CPU topology,
+and we absorbed his design idea. But in practice we found that -device
+looked like a better approach to take advantage of the current QOM CPU
+device, cpu-core device and cpu-cluster device. Therefore, this is this
+RFC to enhance CPU topology related devices.
+
+The v1 RFC [1] has implemented the CPU topology device abstraction.
+However, the parent topology device and child topology device were not
+connected via a bus. Instead, a bus-like topology management mechanism
+was implemented separately for topology devices. Additionally, since the
+topology device in v1 was busless, adding devices via CLI does not
+support child<> connections. v1 faced significant difficulties to
+support child<> creation in the CLI.
+
+Therefore, v2 learned from v1’s lessons and directly abstracted the
+"virtual" CPU bus (however, strictly speaking, there are prototypes in
+reality, such as the interconnect bus/ring bus) to utilize the existing
+bus mechanism for topology management. This also reduces the burden for
+subsequent hybrid topology series to create the topology tree via CLI.
+
+
+4. Design Overview
+==================
+
+4.1. General CPU Topology Device
+================================
+
+We introduce a new topology device type as the basic abstraction, then
+all levels of the CPU topology are derived from this general CPU
+topology device type.
+
+This topology device is the basic unit for building the topology tree.
+Children topology devices are inserted into the queue of the parent, and
+the child<> property is created between the children and their parent so
+that the qom-path could reflect topology relationship.
+
+At the same time, to manage the topology relationship between parent
+device and child device, we introduce CPU bus to utilize existing
+device topology management ability of Qbus.
+
+Additionally, as the root of the topology tree, we introduce a special
+"cpu-slot". It is created by the machine at machine's initialization and
+collects the topology devices created for the machine, and builds the
+CPU topology tree.
+
+The cpu-slot is also responsible for statistics on global topology
+information, and whenever there is a new topology child, the cpu-slot as
+root is notified to update topology informantion. In addition, different
+architectures have different requirements for topology (e.g., support
+for different levels), and such limitations/properties are applied to
+cpu-slot, which is checked when adding the new child topology unit in
+topology tree.
+
+
+4.2. Derived QOM Topology Devices
+=================================
+
+Based on the new general topology device type, (currently for x86) we
+convert CPU and cpu-core from general devices to topology devices.
+
+And we also abstract cpu-module, cpu-die and cpu-socket as topology
+devices for x86's use.
+
+
+4.3. "bus-finder" Interface to Convert Topology IDs to Topology Bus
+===================================================================
+
+Currently CPUs (across arches) use topology IDs to find the free slot
+in possible_cpus[].
+
+For x86 CPU, the related properties include "thread-id"/"core-id"/
+"module-id"/"die-id"/"socket-id", and "apicid". But actually, APIC ID
+is the combanition of topology IDs.
+
+Those topology IDs implicitly maps the CPU to a (non-existent) topology
+tree. Now, we have the real topology tree. Then it's natural to use
+such topology IDs to search the proper topology parent in the tree.
+
+In particular, when we transform the CPU into a CPU topology device with
+the bus_type, then this transformation is necessary to help find the
+correct parent bus (on parent topology device).
+
+Therefore, we introduce the "bus-finder" interface, which provides the
+hook in qdev_device_add_from_qdict(), allowing arch CPU to use topology
+ID properties to find the parent bus.
+
+
+4.4. Topology Tree building
+===========================
+
+At present, possible_cpus[] provides the CPU level (for PPC, core level)
+topology.
+
+It's difficult to completely discard possible_cpus[] and build the
+topology tree entirely from scratch. 
+
+In v2, we take a compromise: after the -smp parsing is done, machine
+creates a topology tree, but only contains the hierarchies from the
+highest level up to the level higher than posssible_cpus[]. For x86,
+possible_cpus[] contains CPUs, so that the initial topology tree will
+have the hierarchies from socket level to core level.
+
+Then when arch machine initialize CPUs,
+MachineClass.possible_cpu_arch_ids() will creates CPUs in
+possible_cpus[], and the CPU topology abstraction under the CPU device
+will insert the created CPUs into the topology tree based on the topology
+ID properties, so that a topology tree is completed.
+
+
+5. Future TODOs
+===============
+
+The current QOM topology RFC is only the very first step to introduce
+the most basic QOM support, and it tries to be as compatible as possible
+with existing SMP facilities.
+
+The ultimate goal is to completely replace the current smp-related
+topology structures with cpu-slot.
+
+There are many TODOs:
+
+* Add unit tests.
+* Support QOM topology for all architectures.
+* Get rid of MachineState.smp and MachineClass.smp_props with cpu-slot.
+...
+
+
+6. Patch Summary
+================
+
+Patch 01-02: Necessary change for qdev to support CPU topology via bus.
+Ptach 03-06: Introduce CPU topology device abstraction and CPU slot in
+             machine.
+Patch 07-09: Abstract all topology levels to topology devices (for x86).
+Patch 10-11: Build topology tree for machine.
+Patch 12-15: Enable topology tree for x86 machine.
+
+
+7. Reference
+============
+
+[0]:  Daniel's suggestion about QOM topology:
+      https://lore.kernel.org/qemu-devel/Y+o9VIV64mjXTcpF@redhat.com/
+[1]:  [RFC 00/41] qom-topo: Abstract Everything about CPU Topology
+      https://lore.kernel.org/qemu-devel/20231130144203.2307629-1-zhao1.liu@linux.intel.com/
+[2]:  [PATCH v2 0/7] Introduce SMP Cache Topology
+      https://lore.kernel.org/qemu-devel/20240908125920.1160236-1-zhao1.liu@intel.com/
+[3]:  Heterogeneous computing:
+      https://en.wikipedia.org/wiki/Heterogeneous_computing
+[4]:  12th gen’s Intel hybrid technology:
+      https://www.intel.com/content/www/us/en/support/articles/000091896/processors.html
+[5]:  Intel Meteor Lake (14th gen) architecture overview:
+      https://www.intel.com/content/www/us/en/content-details/788851/meteor-lake-architecture-overview.html
+[6]:  Need of ARM heterogeneous cache topology (by Yanan):
+      https://mail.gnu.org/archive/html/qemu-devel/2023-02/msg05139.html
+[7]:  Cache topology implementation for i386:
+      https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg08251.html
+[8]:  Cluster for ARM to define shared L2 cache and L3 tag (by Yanan):
+      https://lore.kernel.org/all/20211228092221.21068-1-wangyanan55@huawei.com/
+[9]:  S390x topology document (by Nina):
+      https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg04842.html
+[10]: [PATCH v1 0/4] prebuild cpu QOM tree /machine/node/socket/core
+      ->link-cpu (by Fan):
+      https://lore.kernel.org/all/cover.1395217538.git.chen.fan.fnst@cn.fujitsu.com/
+[11]: [PATCH RFC 0/4] target-i386: PC socket/core/thread modeling,
+      part 1 (by Andreas):
+      https://lore.kernel.org/all/1427131923-4670-1-git-send-email-afaerber@suse.de/
+[12]: "Now we want to have similar QOM tree for introspection which
+      helps express topology as well" (by Igor):
+      https://lore.kernel.org/all/20150407170734.51faac90@igors-macbook-pro.local/
+[13]: [for-2.7 PATCH v3 06/15] cpu: Abstract CPU core type (by Bharata)
+      https://lore.kernel.org/all/1463024905-28401-7-git-send-email-bharata@linux.vnet.ibm.com/
+[14]: [PATCH v8 01/16] hw/cpu: introduce CPU clusters (by Luc):
+      https://lore.kernel.org/all/20181207090135.7651-2-luc.michel@greensocs.com/
+
+Thanks and Best Regards,
+Zhao
+
+---
+Zhao Liu (15):
+  qdev: Add pointer to BusChild in DeviceState
+  qdev: Add the interface to reparent the device
+  hw/cpu: Introduce CPU topology device and CPU bus
+  hw/cpu: Introduce CPU slot to manage CPU topology
+  qdev: Add method in BusClass to customize device index
+  hw/core: Create CPU slot in MachineState to manage CPU topology tree
+  hw/core/cpu: Convert CPU from general device to topology device
+  hw/cpu/core: Convert cpu-core from general device to topology device
+  hw/cpu: Abstract module/die/socket levels as topology devices
+  hw/machine: Build smp topology tree from -smp
+  hw/core: Support topology tree in none machine for compatibility
+  hw/i386: Allow i386 to create new CPUs in topology tree
+  system/qdev-monitor: Introduce bus-finder interface for compatibility
+    with bus-less plug behavior
+  i386/cpu: Support CPU plugged in topology tree via bus-finder
+  i386: Support topology device tree
+
+ MAINTAINERS                     |  12 ++
+ accel/kvm/kvm-all.c             |   4 +-
+ hw/core/cpu-common.c            |  42 +++-
+ hw/core/machine.c               |   7 +
+ hw/core/null-machine.c          |   5 +
+ hw/core/qdev.c                  |  89 +++++++--
+ hw/cpu/core.c                   |   9 +-
+ hw/cpu/cpu-slot.c               | 327 ++++++++++++++++++++++++++++++++
+ hw/cpu/cpu-topology.c           | 216 +++++++++++++++++++++
+ hw/cpu/die.c                    |  34 ++++
+ hw/cpu/meson.build              |   6 +
+ hw/cpu/module.c                 |  34 ++++
+ hw/cpu/socket.c                 |  34 ++++
+ hw/i386/microvm.c               |  13 +-
+ hw/i386/x86-common.c            | 226 +++++++++++++++-------
+ hw/i386/x86.c                   |   2 +
+ hw/pci-host/pnv_phb.c           |  59 ++----
+ hw/ppc/pnv_core.c               |  11 +-
+ hw/ppc/spapr_cpu_core.c         |  12 +-
+ include/hw/boards.h             |  11 ++
+ include/hw/core/cpu.h           |   7 +-
+ include/hw/cpu/core.h           |   3 +-
+ include/hw/cpu/cpu-slot.h       |  79 ++++++++
+ include/hw/cpu/cpu-topology.h   |  69 +++++++
+ include/hw/cpu/die.h            |  29 +++
+ include/hw/cpu/module.h         |  29 +++
+ include/hw/cpu/socket.h         |  29 +++
+ include/hw/i386/x86.h           |   2 +
+ include/hw/ppc/pnv_core.h       |   3 +-
+ include/hw/ppc/spapr_cpu_core.h |   4 +-
+ include/hw/qdev-core.h          |   9 +
+ include/monitor/bus-finder.h    |  41 ++++
+ include/qemu/bitops.h           |   5 +
+ include/qemu/typedefs.h         |   3 +
+ stubs/hotplug-stubs.c           |   5 +
+ system/bus-finder.c             |  46 +++++
+ system/meson.build              |   1 +
+ system/qdev-monitor.c           |  41 +++-
+ system/vl.c                     |   4 +
+ target/i386/cpu.c               |  13 ++
+ target/ppc/kvm.c                |   2 +-
+ 41 files changed, 1417 insertions(+), 160 deletions(-)
+ create mode 100644 hw/cpu/cpu-slot.c
+ create mode 100644 hw/cpu/cpu-topology.c
+ create mode 100644 hw/cpu/die.c
+ create mode 100644 hw/cpu/module.c
+ create mode 100644 hw/cpu/socket.c
+ create mode 100644 include/hw/cpu/cpu-slot.h
+ create mode 100644 include/hw/cpu/cpu-topology.h
+ create mode 100644 include/hw/cpu/die.h
+ create mode 100644 include/hw/cpu/module.h
+ create mode 100644 include/hw/cpu/socket.h
+ create mode 100644 include/monitor/bus-finder.h
+ create mode 100644 system/bus-finder.c
+
+-- 
+2.34.1
+
 
