@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB6297C410
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 07:59:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CC7997C40A
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 07:57:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srA9l-0001dY-I1; Thu, 19 Sep 2024 01:56:45 -0400
+	id 1srA9u-0002oV-3s; Thu, 19 Sep 2024 01:56:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1srA9V-000850-Nn; Thu, 19 Sep 2024 01:56:31 -0400
+ id 1srA9b-00009L-40; Thu, 19 Sep 2024 01:56:35 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1srA9T-0007Pn-Jo; Thu, 19 Sep 2024 01:56:29 -0400
+ id 1srA9Z-0007Pn-4W; Thu, 19 Sep 2024 01:56:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726725388; x=1758261388;
+ t=1726725393; x=1758261393;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qJ6NOfIv6xlTy3/VIJhTGfDVU1kuzHahvjHb/mzi/Yo=;
- b=LsmKbLxpZTAkAH9jt6PBGr6/UZknrMPlgV6vV+3bld22PrV2K89H1iZH
- /yb6HdebgURDLpI6ejbtntqueouJwq2u/tqo/Mq5R1oFHyYywU/5zDGhT
- oXYQxriK/yDKGrYS0n4tjudxDRSDFt1ANMC9TZc3CfQ7m0VLZn1ze9mBn
- 8cX8RyrCoWhZnrWat8XHHb52cHB0uFWkT2d1ijIcoy8n8yug8xvC/GXNR
- OGeceFlhLzOnpK++qXc6ishUOkh/N45J65h6GZlfqnplfDG/9KPOU1rBO
- dDaQuxdbKe8sHNM4UMTCglp40qu7ig/EqbaYC7OzVuvGyM2mRR7bRc2Pm w==;
-X-CSE-ConnectionGUID: A4doQjUaRy6y9668g3yoeA==
-X-CSE-MsgGUID: lUA6d5dLSu2HgYTyDokJPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25813697"
-X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="25813697"
+ bh=Oni1QkPfkrICnCBlh4UeJn1VwjE0CfJhi05hbONHUs0=;
+ b=DTFAEm5ddw+fYAPze0C+t50KPF/nvDuL1J4fR/+a651FYDQvY10coPJW
+ lJ7ArFOdc8z1uJPzipEDx4uAWzsJJknpu+LejoGKVADBaRSh0Z52EQ+ai
+ oJFt6il4gqEHrfrciVMGImBoPfee9s0J/m28vRVvpnMnMCEvSGhNKYx/4
+ 3NWf2U9ux+z35xA6l/+HSzkLFdhbpyJfFaBAmRqIysahrtb9wZ2rjx+ec
+ 8/o9wWK2R0XsIGPQPjdu8EM7YNa1cmNS8w18S/COoxl6WdWb+gL22K1XC
+ tCP6nafwlrIfvr2S65HydqMOnz4Rr+tafqK770Hn7nAvFGMTCnceFSL6X Q==;
+X-CSE-ConnectionGUID: Di4gmf2kQbGkl/nHaEBeMw==
+X-CSE-MsgGUID: LHKPljn0TJiCp0ky7LDpGA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25813718"
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="25813718"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 22:56:26 -0700
-X-CSE-ConnectionGUID: RNragx4JQm++GP/Zqhw+Sw==
-X-CSE-MsgGUID: ix81mjh5Tfy9LecwpDpOIA==
+ 18 Sep 2024 22:56:32 -0700
+X-CSE-ConnectionGUID: Sel7rERnT/aTpdzbHPcXrg==
+X-CSE-MsgGUID: dLracHQoTbOgKrV0muLpCQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="69418793"
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="69418804"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 18 Sep 2024 22:56:20 -0700
+ by fmviesa006.fm.intel.com with ESMTP; 18 Sep 2024 22:56:26 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -60,10 +60,10 @@ To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC v2 09/12] i386: Introduce x86 CPU core abstractions
-Date: Thu, 19 Sep 2024 14:11:25 +0800
-Message-Id: <20240919061128.769139-10-zhao1.liu@intel.com>
+ Zhao Liu <zhao1.liu@intel.com>, Zhuocheng Ding <zhuocheng.ding@intel.com>
+Subject: [RFC v2 10/12] i386/cpu: Support Intel hybrid CPUID
+Date: Thu, 19 Sep 2024 14:11:26 +0800
+Message-Id: <20240919061128.769139-11-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240919061128.769139-1-zhao1.liu@intel.com>
 References: <20240919061128.769139-1-zhao1.liu@intel.com>
@@ -94,152 +94,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Abstract 3 core types for i386: common core, Intel Core (P-core) and
-Intel atom (E-core). This is in preparation for creating the hybrid
-topology from the CLI.
+For hybrid cpu topology, Intel exposes these CPUIDs [1]:
+1. Set CPUID.07H.0H:EDX.Hybrid[bit 15]. With setting as 1, the processor
+   is identified as a hybrid part.
+2. Have CPUID.1AH leaf. Set core type and native model ID in
+   CPUID.1AH:EAX. Because the native model ID is currently useless for
+   the software, no need to emulate.
 
+For hybrid related CPUIDs, especially CPUID.07H.0H:EDX.Hybrid[bit 15],
+there's no need to expose this feature in feature_word_info[] to allow
+user to set directly, because hybrid features depend on the specific
+core type information, and this information needs to be gathered
+together with hybrid cpu topology.
+
+[1]: SDM, vol.2, Ch.3, 3.2 Instructions (A-L), CPUID-CPU Identification
+
+Co-Developed-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
+Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/core.c      | 56 +++++++++++++++++++++++++++++++++++++++++
- target/i386/core.h      | 53 ++++++++++++++++++++++++++++++++++++++
- target/i386/meson.build |  1 +
- 3 files changed, 110 insertions(+)
- create mode 100644 target/i386/core.c
- create mode 100644 target/i386/core.h
+ target/i386/cpu.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++
+ target/i386/cpu.h |  5 ++++
+ 2 files changed, 63 insertions(+)
 
-diff --git a/target/i386/core.c b/target/i386/core.c
-new file mode 100644
-index 000000000000..d76186a6a070
---- /dev/null
-+++ b/target/i386/core.c
-@@ -0,0 +1,56 @@
-+/*
-+ * x86 CPU core
-+ *
-+ * Copyright (C) 2024 Intel Corporation.
-+ *
-+ * Author: Zhao Liu <zhao1.liu@intel.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * later.  See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index fb54c2c100a0..2f0e7f3d5ad7 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -22,6 +22,7 @@
+ #include "qemu/cutils.h"
+ #include "qemu/qemu-print.h"
+ #include "qemu/hw-version.h"
 +#include "core.h"
+ #include "cpu.h"
+ #include "tcg/helper-tcg.h"
+ #include "sysemu/hvf.h"
+@@ -743,6 +744,10 @@ static CPUCacheInfo legacy_l3_cache = {
+ #define INTEL_AMX_TMUL_MAX_K           0x10
+ #define INTEL_AMX_TMUL_MAX_N           0x40
+ 
++/* CPUID Leaf 0x1A constants: */
++#define INTEL_HYBRID_TYPE_ATOM         0x20
++#define INTEL_HYBRID_TYPE_CORE         0x40
 +
-+static void x86_common_core_class_init(ObjectClass *oc, void *data)
-+{
-+    X86CPUCoreClass *cc = X86_CPU_CORE_CLASS(oc);
+ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+                               uint32_t vendor2, uint32_t vendor3)
+ {
+@@ -6580,6 +6585,11 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+                 *ecx |= CPUID_7_0_ECX_OSPKE;
+             }
+             *edx = env->features[FEAT_7_0_EDX]; /* Feature flags */
 +
-+    cc->core_type = COMMON_CORE;
-+}
++            if (env->parent_core_type != COMMON_CORE &&
++                (IS_INTEL_CPU(env) || !cpu->vendor_cpuid_only)) {
++                *edx |= CPUID_7_0_EDX_HYBRID;
++            }
+         } else if (count == 1) {
+             *eax = env->features[FEAT_7_1_EAX];
+             *edx = env->features[FEAT_7_1_EDX];
+@@ -6800,6 +6810,31 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         }
+         break;
+     }
++    case 0x1A:
++        /* Hybrid Information Enumeration */
++        *eax = 0;
++        *ebx = 0;
++        *ecx = 0;
++        *edx = 0;
++        if (env->parent_core_type != COMMON_CORE &&
++            (IS_INTEL_CPU(env) || !cpu->vendor_cpuid_only)) {
++            /*
++             * CPUID.1AH:EAX.[bits 23-0] indicates "native model ID of the
++             * core". Since this field currently is useless for software,
++             * no need to emulate.
++             */
++            switch (env->parent_core_type) {
++            case INTEL_ATOM:
++                *eax = INTEL_HYBRID_TYPE_ATOM << 24;
++                break;
++            case INTEL_CORE:
++                *eax = INTEL_HYBRID_TYPE_CORE << 24;
++                break;
++            default:
++                g_assert_not_reached();
++            }
++        }
++        break;
+     case 0x1D: {
+         /* AMX TILE, for now hardcoded for Sapphire Rapids*/
+         *eax = 0;
+@@ -7459,6 +7494,14 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+             }
+         }
+ 
++        /*
++         * Intel CPU topology with hybrid cores support requires CPUID.1AH.
++         */
++        if (env->parent_core_type != COMMON_CORE &&
++            (IS_INTEL_CPU(env) || !cpu->vendor_cpuid_only)) {
++            x86_cpu_adjust_level(cpu, &env->cpuid_min_level, 0x1A);
++        }
 +
-+static void x86_intel_atom_class_init(ObjectClass *oc, void *data)
-+{
-+    X86CPUCoreClass *cc = X86_CPU_CORE_CLASS(oc);
+         /*
+          * Intel CPU topology with multi-dies support requires CPUID[0x1F].
+          * For AMD Rome/Milan, cpuid level is 0x10, and guest OS should detect
+@@ -7650,6 +7693,20 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
++    /*
++     * TODO: Introduce parent_pre_realize to make sure topology device
++     * can realize first.
++     */
++    if (dev->parent_bus && dev->parent_bus->parent) {
++        DeviceState *parent = dev->parent_bus->parent;
++        X86CPUCore *core =
++            (X86CPUCore *)object_dynamic_cast(OBJECT(parent),
++                                              TYPE_X86_CPU_CORE);
++        if (core) {
++            env->parent_core_type = X86_CPU_CORE_GET_CLASS(core)->core_type;
++        }
++    }
 +
-+    cc->core_type = INTEL_ATOM;
-+}
+     /*
+      * Process Hyper-V enlightenments.
+      * Note: this currently has to happen before the expansion of CPU features.
+@@ -8048,6 +8105,7 @@ static void x86_cpu_initfn(Object *obj)
+     CPUX86State *env = &cpu->env;
+ 
+     x86_cpu_init_default_topo(cpu);
++    env->parent_core_type = COMMON_CORE;
+ 
+     object_property_add(obj, "feature-words", "X86CPUFeatureWordInfo",
+                         x86_cpu_get_feature_words,
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index afe2b5fd3382..38236df547e6 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -21,6 +21,7 @@
+ #define I386_CPU_H
+ 
+ #include "sysemu/tcg.h"
++#include "core.h"
+ #include "cpu-qom.h"
+ #include "kvm/hyperv-proto.h"
+ #include "exec/cpu-defs.h"
+@@ -920,6 +921,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ #define CPUID_7_0_EDX_AVX512_VP2INTERSECT (1U << 8)
+ /* SERIALIZE instruction */
+ #define CPUID_7_0_EDX_SERIALIZE         (1U << 14)
++/* Hybrid */
++#define CPUID_7_0_EDX_HYBRID            (1U << 15)
+ /* TSX Suspend Load Address Tracking instruction */
+ #define CPUID_7_0_EDX_TSX_LDTRK         (1U << 16)
+ /* Architectural LBRs */
+@@ -1996,6 +1999,8 @@ typedef struct CPUArchState {
+ 
+     /* Bitmap of available CPU topology levels for this CPU. */
+     DECLARE_BITMAP(avail_cpu_topo, CPU_TOPOLOGY_LEVEL__MAX);
 +
-+static void x86_intel_core_class_init(ObjectClass *oc, void *data)
-+{
-+    X86CPUCoreClass *cc = X86_CPU_CORE_CLASS(oc);
-+
-+    cc->core_type = INTEL_CORE;
-+}
-+
-+static const TypeInfo x86_cpu_core_infos[] = {
-+    {
-+        .name = TYPE_X86_CPU_CORE,
-+        .parent = TYPE_CPU_CORE,
-+        .class_size = sizeof(X86CPUCoreClass),
-+        .class_init = x86_common_core_class_init,
-+        .instance_size = sizeof(X86CPUCore),
-+    },
-+    {
-+        .parent = TYPE_X86_CPU_CORE,
-+        .name = X86_CPU_CORE_TYPE_NAME("intel-atom"),
-+        .class_init = x86_intel_atom_class_init,
-+    },
-+    {
-+        .parent = TYPE_X86_CPU_CORE,
-+        .name = X86_CPU_CORE_TYPE_NAME("intel-core"),
-+        .class_init = x86_intel_core_class_init,
-+    },
-+};
-+
-+DEFINE_TYPES(x86_cpu_core_infos)
-diff --git a/target/i386/core.h b/target/i386/core.h
-new file mode 100644
-index 000000000000..b942153b2c0d
---- /dev/null
-+++ b/target/i386/core.h
-@@ -0,0 +1,53 @@
-+/*
-+ * x86 CPU core header
-+ *
-+ * Copyright (C) 2024 Intel Corporation.
-+ *
-+ * Author: Zhao Liu <zhao1.liu@intel.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * later.  See the COPYING file in the top-level directory.
-+ */
-+
-+#include "hw/cpu/core.h"
-+#include "hw/cpu/cpu-topology.h"
-+#include "qom/object.h"
-+
-+#ifndef I386_CORE_H
-+#define I386_CORE_H
-+
-+#ifdef TARGET_X86_64
-+#define TYPE_X86_PREFIX "x86-"
-+#else
-+#define TYPE_X86_PREFIX "i386-"
-+#endif
-+
-+#define TYPE_X86_CPU_CORE TYPE_X86_PREFIX "core"
-+
-+OBJECT_DECLARE_TYPE(X86CPUCore, X86CPUCoreClass, X86_CPU_CORE)
-+
-+typedef enum {
-+    COMMON_CORE = 0,
-+    INTEL_ATOM,
-+    INTEL_CORE,
-+} X86CoreType;
-+
-+struct X86CPUCoreClass {
-+    /*< private >*/
-+    CPUTopoClass parent_class;
-+
-+    /*< public >*/
-+    DeviceRealize parent_realize;
-+    X86CoreType core_type;
-+};
-+
-+struct X86CPUCore {
-+    /*< private >*/
-+    CPUCore parent_obj;
-+
-+    /*< public >*/
-+};
-+
-+#define X86_CPU_CORE_TYPE_NAME(core_type_str) (TYPE_X86_PREFIX core_type_str)
-+
-+#endif /* I386_CORE_H */
-diff --git a/target/i386/meson.build b/target/i386/meson.build
-index 075117989b9d..80a32526d98b 100644
---- a/target/i386/meson.build
-+++ b/target/i386/meson.build
-@@ -18,6 +18,7 @@ i386_system_ss.add(files(
-   'arch_memory_mapping.c',
-   'machine.c',
-   'monitor.c',
-+  'core.c',
-   'cpu-apic.c',
-   'cpu-sysemu.c',
- ))
++    X86CoreType parent_core_type;
+ } CPUX86State;
+ 
+ struct kvm_msrs;
 -- 
 2.34.1
 
