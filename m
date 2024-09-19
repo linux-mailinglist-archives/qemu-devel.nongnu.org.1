@@ -2,59 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771AD97C99D
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50BE297C9C5
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:12:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srGmJ-0007cO-GE; Thu, 19 Sep 2024 09:00:59 -0400
+	id 1srGwI-0004UU-EB; Thu, 19 Sep 2024 09:11:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1srGm2-0007VX-Rg
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:00:44 -0400
-Received: from mx.treblig.org ([2a00:1098:5b::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1srGly-0008H3-UN
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:00:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=+hFMzqNydeSJA06lUWtRksv4/SAG4KXCx6CD3FpiZQs=; b=UfHWj+R1/bwRMQpd
- W0RXu/eHirS4DmmvIDt4zHMiJwwQWuZQv7gvq4U4bfSmzoTlwhDlyBkW4/q/2Z+yQvaPkvoLMcEyS
- XJhXqXlJA5GxiketsAloCoMcoK/qB2kVYtmsg1LldJwgLeU3HcsJQlYdeST5hH38tX5v7/5OccV4p
- ZmsCsfcx+QpkFtcr7WmJNtOcaQUGJ9QuQgEo8FNHSy22WNWKQqn5esEdSVLY2EL7GzOqYMPtphpp/
- GBqa5sA5oQij6SrtMJ8ftRLEc2N08qKwg0DbmL91TlR2KiT/gDnhZrjsRrvmO05phVc2anQHs2t7+
- H7j52NItghh37o7uDw==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
- (envelope-from <dg@treblig.org>) id 1srGlu-006Q4d-0O;
- Thu, 19 Sep 2024 13:00:34 +0000
-Date: Thu, 19 Sep 2024 13:00:34 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: Markus Armbruster <armbru@redhat.com>, Peter Xu <peterx@redhat.com>,
- eblake@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/3] migration: Remove unused zero-blocks capability
-Message-ID: <ZuwgcgLfOHkOMqHT@gallifrey>
-References: <20240918000207.182683-1-dave@treblig.org>
- <20240918000207.182683-3-dave@treblig.org>
- <87msk54ifb.fsf@pond.sub.org> <Zur_d4m4D3QSHYOu@x1n>
- <87ttecrkqe.fsf@pond.sub.org> <87tteber7o.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1srGwD-0004SY-M3
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:14 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1srGwA-0000zf-8I
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:13 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-42cbbb1727eso6873695e9.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:11:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1726751468; x=1727356268; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=r6qZbo86lth5ph2IZAKT1oQepksceXIwdiF3RrFlxPk=;
+ b=SRuAVKvDdcMgvTtqHShSpfRDRDGVi/VQLJW3+B7n1Gb5BG+OpP5g1BHIbjoh9NWoXK
+ jAqPWJEv/OxZgv4C7a21uDDB+wRuEbZY0GFMOVbTmkzyeSDOgLtgTC7cCP4QpA4OO0mY
+ vvkN54eUxTbP9XMPK/aOA19rH8IsUzdqJVC8dAy5pVJQVWOcDGAgPfFmdkXI7YgCKddJ
+ IoFn45mJsUKkeOyvNNJJ/3JNopAapJ6wPUCGeSN8R3KPth6HC5hHAUkcKgyVWwzW9OVt
+ fNC8yXTr/vKWeyqCRMN17wGQOUBSRenAjYw1Z7YofWLlznzO6nNXVAYNOM8F1P5qVYoO
+ 6eFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726751468; x=1727356268;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=r6qZbo86lth5ph2IZAKT1oQepksceXIwdiF3RrFlxPk=;
+ b=eMR0bQnTPm4aMmPQfyudWvgtnZW7jD/MH+ADDg8gJpGX857SbNB6v5uvtKgJiYg/6f
+ sJ7//ETBpWFa7DLckoygeiyhHNSqmQ2j6jAp1P3pgPu0oLhV86Bmoe/FZsDA73X2gbuv
+ +CI4SzzPHEcmY2K/ZzV0/KBvWiSPlupw+MPUQTxkaLDY4nM3abZdjrE/o+5K9Y59UQAJ
+ rN3sdWfz6j8KbbRvXWwjqnIrRa9575eqMWGG9V/j3f96swko3ahA0t0/VDclreG04XY/
+ MqA+8EGPgGh8MxaYqgtu8v01dBIiK+70x3W/9KKH9rKVlDVlIkIr4qlciFwxWD+jCBsR
+ GzHA==
+X-Gm-Message-State: AOJu0YyhjfS3VbNwrs+fffCLsn+Lx0I55f8EgoN7zkumlENTr+SWd8tG
+ 7DWY5KpSkcrNU/58hmP7MhKuJOxuVAlGnr9xpFLj6MjgiJw2jHqQv9/zu+SqMiZAVLReNb7YPlJ
+ v
+X-Google-Smtp-Source: AGHT+IGd/gA2UT2gAh3x8CxUtTMlm2fWBJsL6nIjQovQULI+LTm+JYJp0PpZ/xXSJGLqz7AbMVbxFQ==
+X-Received: by 2002:a5d:428f:0:b0:374:bce8:16bc with SMTP id
+ ffacd0b85a97d-378c2d5b135mr12718009f8f.48.1726751467719; 
+ Thu, 19 Sep 2024 06:11:07 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42e754091d3sm21667845e9.10.2024.09.19.06.11.07
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Sep 2024 06:11:07 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/38] target-arm queue
+Date: Thu, 19 Sep 2024 14:10:28 +0100
+Message-Id: <20240919131106.3362543-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <87tteber7o.fsf@suse.de>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
-X-Uptime: 12:59:35 up 134 days, 13 min,  1 user,  load average: 0.02, 0.01,
- 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,222 +89,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Fabiano Rosas (farosas@suse.de) wrote:
-> Markus Armbruster <armbru@redhat.com> writes:
-> 
-> > Peter Xu <peterx@redhat.com> writes:
-> >
-> >> On Wed, Sep 18, 2024 at 07:52:56AM +0200, Markus Armbruster wrote:
-> >>> dave@treblig.org writes:
-> >>> 
-> >>> > From: "Dr. David Alan Gilbert" <dave@treblig.org>
-> >>> >
-> >>> > migrate_zero_blocks is unused since
-> >>> >   eef0bae3a7 ("migration: Remove block migration")
-> >>> >
-> >>> > Remove it.
-> >>> > That whole zero-blocks capability was just for old-school
-> >>> > block migration anyway.
-> >>> >
-> >>> > Remove the capability as well.
-> >>> >
-> >>> > Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-> >>> > ---
-> >>> >  migration/options.c |  8 --------
-> >>> >  migration/options.h |  1 -
-> >>> >  qapi/migration.json | 10 +---------
-> >>> >  3 files changed, 1 insertion(+), 18 deletions(-)
-> >>> >
-> >>> > diff --git a/migration/options.c b/migration/options.c
-> >>> > index 9460c5dee9..997e060612 100644
-> >>> > --- a/migration/options.c
-> >>> > +++ b/migration/options.c
-> >>> > @@ -177,7 +177,6 @@ Property migration_properties[] = {
-> >>> >      DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
-> >>> >      DEFINE_PROP_MIG_CAP("x-rdma-pin-all", MIGRATION_CAPABILITY_RDMA_PIN_ALL),
-> >>> >      DEFINE_PROP_MIG_CAP("x-auto-converge", MIGRATION_CAPABILITY_AUTO_CONVERGE),
-> >>> > -    DEFINE_PROP_MIG_CAP("x-zero-blocks", MIGRATION_CAPABILITY_ZERO_BLOCKS),
-> >>> >      DEFINE_PROP_MIG_CAP("x-events", MIGRATION_CAPABILITY_EVENTS),
-> >>> >      DEFINE_PROP_MIG_CAP("x-postcopy-ram", MIGRATION_CAPABILITY_POSTCOPY_RAM),
-> >>> >      DEFINE_PROP_MIG_CAP("x-postcopy-preempt",
-> >>> 
-> >>> Property of (pseudo-)device "migration".  The "x-" prefix suggests we
-> >>> expect management software not to rely on it.  Okay.
-> >>> 
-> >>> [...]
-> >>> 
-> >>> > diff --git a/qapi/migration.json b/qapi/migration.json
-> >>> > index b66cccf107..82d0fc962e 100644
-> >>> > --- a/qapi/migration.json
-> >>> > +++ b/qapi/migration.json
-> >>> > @@ -389,13 +389,6 @@
-> >>> >  #     footprint is mlock()'d on demand or all at once.  Refer to
-> >>> >  #     docs/rdma.txt for usage.  Disabled by default.  (since 2.0)
-> >>> >  #
-> >>> > -# @zero-blocks: During storage migration encode blocks of zeroes
-> >>> > -#     efficiently.  This essentially saves 1MB of zeroes per block on
-> >>> > -#     the wire.  Enabling requires source and target VM to support
-> >>> > -#     this feature.  To enable it is sufficient to enable the
-> >>> > -#     capability on the source VM.  The feature is disabled by
-> >>> > -#     default.  (since 1.6)
-> >>> > -#
-> >>> >  # @events: generate events for each migration state change (since 2.4)
-> >>> >  #
-> >>> >  # @auto-converge: If enabled, QEMU will automatically throttle down
-> >>> > @@ -483,7 +476,7 @@
-> >>> >  # Since: 1.2
-> >>> >  ##
-> >>> >  { 'enum': 'MigrationCapability',
-> >>> > -  'data': ['xbzrle', 'rdma-pin-all', 'auto-converge', 'zero-blocks',
-> >>> > +  'data': ['xbzrle', 'rdma-pin-all', 'auto-converge',
-> >>> >             'events', 'postcopy-ram',
-> >>> >             { 'name': 'x-colo', 'features': [ 'unstable' ] },
-> >>> >             'release-ram',
-> >>> 
-> >>> This is used by migrate-set-capabilities and query-migrate-capabilities,
-> >>> via ['MigrationCapabilityStatus'].
-> >>> 
-> >>> query-migrate-capabilities is unaffected: it couldn't return zero-blocks
-> >>> anymore even before the patch.
-> >>> 
-> >>> migrate-set-capabilities changes incompatibly, I'm afraid.  Before the
-> >>> patch:
-> >>> 
-> >>>     {"execute": "migrate-set-capabilities", "arguments": {"capabilities": [{"capability": "zero-blocks", "state": true}]}}
-> >>>     {"return": {}}
-> >>> 
-> >>> Afterwards:
-> >>> 
-> >>>     {"error": {"class": "GenericError", "desc": "Parameter 'capability' does not accept value 'zero-blocks'"}}
-> >>> 
-> >>> If we had somehow rejected the capability when it made no sense,
-> >>> removing it now it never makes sense would be obviously fine.
-> >>> 
-> >>> The straight & narrow path is to deprecate now, remove later.
-> >>
-> >> I wonder whether we can make this one simpler, as IIUC this cap depends on
-> >> the block migration feature, which properly went through the deprecation
-> >> process and got removed in the previous release.
-> >>
-> >> IOW, currently QEMU behaves the same with this cap on/off, ignoring it
-> >> completely.  I think it means the deprecation message (even if we provide
-> >> some for two extra releases..) wouldn't be anything helpful as anyone who
-> >> uses this feature already got affected before this patch.. this feature,
-> >> together with block migration, are simply all gone already?
-> >
-> > We break compatibility for users who supply capability @zero-blocks even
-> > though they are not using block migration.
-> >
-> > Before this patch, the capability is silently ignored.
-> >
-> > Afterwards, we reject it.
-> >
-> > This harmless misuse was *not* affected by our prior removal of block
-> > migration.
-> >
-> > It *is* affected by the proposed removal of the capability.
-> 
-> How does this policy_skip thing works? Could we automatically warn
-> whenever a capability has the 'deprecated' feature in migration.json?
-> 
-> Also, some of the incompatibility errors in migrate_caps_check() could
-> be simplified with something like a new:
-> 'features': [ 'conflicts': [ 'cap1', 'cap2' ] ]
-> to indicate which caps are incompatible between themselves.
-> 
-> >
-> > We either treat this in struct accordance to our rules: deprecate now,
-> > remove later.  Or we bend our them:
-> >
-> >>> If we believe nothing relies on it, we can bend the rules and remove
-> >>> right away.
-> >
-> > Not for me to decide.
-> >
-> 
-> I'm fine either way, but in any case:
+The following changes since commit 14556211bc6d7125a44d5b5df90caba019b0ec0e:
 
-OK, so I'll split my code to just remove the dead function rather than the
-actual capability; Thanks for Fabiano for doing the Deprecation stuff!
+  Merge tag 'qemu-macppc-20240918' of https://github.com/mcayland/qemu into staging (2024-09-18 20:59:10 +0100)
 
-Dave
+are available in the Git repository at:
 
-> -- >8 --
-> >From 3ff313a52e37b8cb407c900d7a1aa266560aebb7 Mon Sep 17 00:00:00 2001
-> From: Fabiano Rosas <farosas@suse.de>
-> Date: Thu, 19 Sep 2024 09:49:44 -0300
-> Subject: [PATCH] migration: Deprecate zero-blocks capability
-> 
-> The zero-blocks capability was meant to be used along with the block
-> migration, which has been removed already in commit eef0bae3a7
-> ("migration: Remove block migration").
-> 
-> Setting zero-blocks is currently a noop, but the outright removal of
-> the capability would cause and error in case some users are still
-> setting it. Put the capability through the deprecation process.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  docs/about/deprecated.rst | 6 ++++++
->  migration/options.c       | 4 ++++
->  qapi/migration.json       | 5 ++++-
->  3 files changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index ed31d4b0b2..47cabb6fcc 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -476,3 +476,9 @@ usage of providing a file descriptor to a plain file has been
->  deprecated in favor of explicitly using the ``file:`` URI with the
->  file descriptor being passed as an ``fdset``. Refer to the ``add-fd``
->  command documentation for details on the ``fdset`` usage.
-> +
-> +``zero-blocks`` capability (since 9.2)
-> +''''''''''''''''''''''''''''''''''''''
-> +
-> +The ``zero-blocks`` capability was part of the block migration which
-> +doesn't exist anymore since it was removed in QEMU v9.1.
-> diff --git a/migration/options.c b/migration/options.c
-> index 147cd2b8fd..b828bad0d9 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -457,6 +457,10 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
->      ERRP_GUARD();
->      MigrationIncomingState *mis = migration_incoming_get_current();
->  
-> +    if (new_caps[MIGRATION_CAPABILITY_ZERO_BLOCKS]) {
-> +        warn_report("zero-blocks capability is deprecated");
-> +    }
-> +
->  #ifndef CONFIG_REPLICATION
->      if (new_caps[MIGRATION_CAPABILITY_X_COLO]) {
->          error_setg(errp, "QEMU compiled without replication module"
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index b66cccf107..3af6aa1740 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -479,11 +479,14 @@
->  # Features:
->  #
->  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
-> +# @deprecated: Member @zero-blocks is deprecated as being part of
-> +#     block migration which was already removed.
->  #
->  # Since: 1.2
->  ##
->  { 'enum': 'MigrationCapability',
-> -  'data': ['xbzrle', 'rdma-pin-all', 'auto-converge', 'zero-blocks',
-> +  'data': ['xbzrle', 'rdma-pin-all', 'auto-converge',
-> +           { 'name': 'zero-blocks', 'features': [ 'deprecated' ] },
->             'events', 'postcopy-ram',
->             { 'name': 'x-colo', 'features': [ 'unstable' ] },
->             'release-ram',
-> -- 
-> 2.35.3
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240919
+
+for you to fetch changes up to 89b30b4921e51bb47313d2d8fdc3d7bce987e4c5:
+
+  docs/devel: Remove nested-papr.txt (2024-09-19 13:33:15 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * target/arm: Correct ID_AA64ISAR1_EL1 value for neoverse-v1
+ * target/arm: More conversions to decodetree of A64 SIMD insns
+ * hw/char/stm32l4x5_usart.c: Enable USART ACK bit response
+ * tests: update aarch64/sbsa-ref tests
+ * kvm: minor Coverity nit fixes
+ * docs/devel: Remove nested-papr.txt
+
+----------------------------------------------------------------
+Jacob Abrams (1):
+      hw/char/stm32l4x5_usart.c: Enable USART ACK bit response
+
+Marcin Juszkiewicz (4):
+      tests: use default cpu for aarch64/sbsa-ref
+      tests: add FreeBSD tests for aarch64/sbsa-ref
+      tests: expand timeout information for aarch64/sbsa-ref
+      tests: drop OpenBSD tests for aarch64/sbsa-ref
+
+Peter Maydell (4):
+      kvm: Make 'mmap_size' be 'int' in kvm_init_vcpu(), do_kvm_destroy_vcpu()
+      kvm: Remove unreachable code in kvm_dirty_ring_reaper_thread()
+      target/arm: Correct ID_AA64ISAR1_EL1 value for neoverse-v1
+      docs/devel: Remove nested-papr.txt
+
+Richard Henderson (29):
+      target/arm: Replace tcg_gen_dupi_vec with constants in gengvec.c
+      target/arm: Replace tcg_gen_dupi_vec with constants in translate-sve.c
+      target/arm: Use cmpsel in gen_ushl_vec
+      target/arm: Use cmpsel in gen_sshl_vec
+      target/arm: Use tcg_gen_extract2_i64 for EXT
+      target/arm: Convert EXT to decodetree
+      target/arm: Convert TBL, TBX to decodetree
+      target/arm: Convert UZP, TRN, ZIP to decodetree
+      target/arm: Simplify do_reduction_op
+      target/arm: Convert ADDV, *ADDLV, *MAXV, *MINV to decodetree
+      target/arm: Convert FMAXNMV, FMINNMV, FMAXV, FMINV to decodetree
+      target/arm: Convert FMOVI (scalar, immediate) to decodetree
+      target/arm: Convert MOVI, FMOV, ORR, BIC (vector immediate) to decodetree
+      target/arm: Introduce gen_gvec_sshr, gen_gvec_ushr
+      target/arm: Fix whitespace near gen_srshr64_i64
+      target/arm: Convert handle_vec_simd_shri to decodetree
+      target/arm: Convert handle_vec_simd_shli to decodetree
+      target/arm: Use {, s}extract in handle_vec_simd_wshli
+      target/arm: Convert SSHLL, USHLL to decodetree
+      target/arm: Push tcg_rnd into handle_shri_with_rndacc
+      target/arm: Split out subroutines of handle_shri_with_rndacc
+      target/arm: Convert SHRN, RSHRN to decodetree
+      target/arm: Convert handle_scalar_simd_shri to decodetree
+      target/arm: Convert handle_scalar_simd_shli to decodetree
+      target/arm: Convert VQSHL, VQSHLU to gvec
+      target/arm: Widen NeonGenNarrowEnvFn return to 64 bits
+      target/arm: Convert SQSHL, UQSHL, SQSHLU (immediate) to decodetree
+      target/arm: Convert vector [US]QSHRN, [US]QRSHRN, SQSHRUN to decodetree
+      target/arm: Convert scalar [US]QSHRN, [US]QRSHRN, SQSHRUN to decodetree
+
+ docs/devel/nested-papr.txt               |  119 --
+ target/arm/helper.h                      |   34 +-
+ target/arm/tcg/translate.h               |   14 +-
+ target/arm/tcg/a64.decode                |  257 ++++
+ target/arm/tcg/neon-dp.decode            |    6 +-
+ accel/kvm/kvm-all.c                      |   10 +-
+ hw/char/stm32l4x5_usart.c                |   16 +
+ target/arm/tcg/cpu64.c                   |    2 +-
+ target/arm/tcg/gengvec.c                 |  121 +-
+ target/arm/tcg/neon_helper.c             |   76 +-
+ target/arm/tcg/translate-a64.c           | 2081 +++++++++++++-----------------
+ target/arm/tcg/translate-neon.c          |  179 +--
+ target/arm/tcg/translate-sve.c           |  128 +-
+ tests/qtest/stm32l4x5_usart-test.c       |   36 +-
+ tests/functional/test_aarch64_sbsaref.py |   58 +-
+ 15 files changed, 1479 insertions(+), 1658 deletions(-)
+ delete mode 100644 docs/devel/nested-papr.txt
 
