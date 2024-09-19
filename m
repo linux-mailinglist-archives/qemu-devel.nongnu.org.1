@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC5C97CA0C
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF89D97CA0D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:19:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srGwq-0006Yw-TE; Thu, 19 Sep 2024 09:11:52 -0400
+	id 1srGwn-0006NQ-Mg; Thu, 19 Sep 2024 09:11:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1srGwW-0005SV-KX
+ id 1srGwX-0005Wq-Mv
  for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:36 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1srGwU-00015l-R9
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:32 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-42cde6b5094so6862945e9.3
- for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:11:29 -0700 (PDT)
+ id 1srGwU-00015p-SS
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:33 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-42cacabd2e0so6929605e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:11:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726751488; x=1727356288; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726751489; x=1727356289; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ZCeS0QeY0z/qj60fli0tjdGpJJ8vGB++h8x42DCkDKw=;
- b=RRrmAJ2hgoueDiAevHZyFMfdISEjO3HiCcgodakdtBQrsDVHipslRfJmf2lzTELByM
- Row2wxc1yE818Hw2lfCsB6nde08gwe4lZHxzBXqV52KQA+BvkEI0lswbnpGV+5LrBQZo
- dTzIysPq5XiKUVJ7kTshb3Tv6m90SbCRFjMJNNkr49fdHnDxbkfG/5rybVHXqXl7jDdv
- vFt3THjsu42PUCfwRFoqlzoUSpyhWHdUV1jL251zX5zQh4rgDbZI73xCQs1OGl6C3YnP
- RwXQoc9xyg7rnCOa0VHRNR3UYwcthnULIaQ/yc1uAQw+9kZ7hf8VUUBVFz/yuT4bJESS
- 8f9Q==
+ :reply-to; bh=2kJBVTVE3hu5xqrb4mWZcjRn/GfkKIqvu4GFHzWSmhk=;
+ b=etH4A9JUNJzVvD86qbiEcWGjCnQ4n5eGTaZuw29ctxWERJ0NNaM5JtFTic/y/MhFQj
+ PD3WME6ZitxA/Ag+YIEVKwy/2nONoGiQnRHrgZ0U5POii1jlHpLBPH7cWibhXtsLItwW
+ o0nt7dbhgVisFo8Xw83aBFp8g9UQ85dlmSi9UvNr/2jJAPqOuA2lP9f+SfWsuqiVU6cN
+ dSflwu0T7AY+PtmnkwhrSyUkA7cGT7O/iZeBXPkwKA8EwCRBYMlsPpIiSsnMjVh2uXAR
+ RtBkLk3kGMh8wirBg0bSYYVAMB1iObP1WbzGyNQ9V5Jkf4XhUj6OYzkGmgBdB9ZA0B4J
+ ACnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726751488; x=1727356288;
+ d=1e100.net; s=20230601; t=1726751489; x=1727356289;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZCeS0QeY0z/qj60fli0tjdGpJJ8vGB++h8x42DCkDKw=;
- b=ge6RcSTSu3yGTCCh7vl+7kRKjbq9evd4oQZrHqEbLB/CsRrsYIRmVuJvuaYCqoZJpe
- IstzS+cTxJtRPvKu8vVQPyXCjhg4cn8Uk/rKCbILlFSPrjoOhw23QVXvwDuykvFv4E0Q
- mAZbBMcY/EycjJ6FrqCncAq9ea6mlBpK+0d25Yf7nwEnTJZEPt7bvu88u9d0Put/w030
- jjfvJjn6J6NBeiodY+2+NWVnmViDFAdHawY1Y/LoadFeUIYZn5X3FCtAX0HE5PZ0Ebfh
- cPN4CvSDQnONuIWbsIEhpXE6wMEv6hxF4veuhvrdtvUocjG2vC4aQu0KZeD3Swor2oyc
- Yk6Q==
-X-Gm-Message-State: AOJu0Yxd1hj6enBuHTlPBzNAWmSZTCMkvg9xSaopr7QTfQ5CECot6N3K
- LAL4CPVVZVg38WcrnSujQURM+yQccciP4NrGO+rPZWa+nNcOyIrFNYQOm+AbhuOfKtm+teJdPVk
- d
-X-Google-Smtp-Source: AGHT+IGjrzYPeme1g9GeC/M5P7545KXsQyQETUXPnobCw8MjFr3du2AaPKusu84bmUfnOAdB45D9Mw==
-X-Received: by 2002:a05:600c:4709:b0:42c:ac9f:b505 with SMTP id
- 5b1f17b1804b1-42cdb58e130mr171475045e9.31.1726751488540; 
- Thu, 19 Sep 2024 06:11:28 -0700 (PDT)
+ bh=2kJBVTVE3hu5xqrb4mWZcjRn/GfkKIqvu4GFHzWSmhk=;
+ b=AhU5NZaO2Ma/tQbPDfMSuwAJuqGa1ucfpSQiIB2LdZnppyYUkUKQDUSio/f5ibO6yw
+ NvrGnQd9N2Qtio2IoZHBonVmDwGTCr+0EctsDJdrqjalX7kHdl6v7orc97hgY5csum5a
+ 2rb0NaDe53zKazQmqoSwZjv5GBvGx9Mr/G9cK2+Tz6VZeWPTj+AKbiDubIpoxhf4H25/
+ HJZC6E01DiNfeZQxHHW4dAXn3+azPur+/3cNNej4mfHH3YT9q2tNAfp5Yo1sdrDLHujy
+ 0Jo51q2+GIQ843w7ilkQ2sY7NiaVljURU2WKlXcEJ4cMwuOdwZxHXxdOVuJ45ZJkaqS/
+ J6Gg==
+X-Gm-Message-State: AOJu0Yw8BGgRrq+j/a69PjC0CmL+IJ+m3+8zDsUZC8eojklVYYYmxNP9
+ 9SZTFpa8WH5tjswT7bkOUXDKEX87po5vGzTqHA7rMPIEvo5pJQyesl3mZhoAt07kUBR1/qiTHfJ
+ n
+X-Google-Smtp-Source: AGHT+IECwEh/qkofVwg1XdzLI2LdG7u+H0EnErGFD8OfoEQO++RDocbpAbhsfoqR3p1tPMHnMb4mNw==
+X-Received: by 2002:a05:600c:4e94:b0:42c:a574:6362 with SMTP id
+ 5b1f17b1804b1-42cdb522c74mr170364475e9.11.1726751489023; 
+ Thu, 19 Sep 2024 06:11:29 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-42e754091d3sm21667845e9.10.2024.09.19.06.11.28
@@ -59,18 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 19 Sep 2024 06:11:28 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 35/38] kvm: Make 'mmap_size' be 'int' in kvm_init_vcpu(),
- do_kvm_destroy_vcpu()
-Date: Thu, 19 Sep 2024 14:11:03 +0100
-Message-Id: <20240919131106.3362543-36-peter.maydell@linaro.org>
+Subject: [PULL 36/38] kvm: Remove unreachable code in
+ kvm_dirty_ring_reaper_thread()
+Date: Thu, 19 Sep 2024 14:11:04 +0100
+Message-Id: <20240919131106.3362543-37-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240919131106.3362543-1-peter.maydell@linaro.org>
 References: <20240919131106.3362543-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,46 +92,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In kvm_init_vcpu()and do_kvm_destroy_vcpu(), the return value from
-  kvm_ioctl(..., KVM_GET_VCPU_MMAP_SIZE, ...)
-is an 'int', but we put it into a 'long' logal variable mmap_size.
-Coverity then complains that there might be a truncation when we copy
-that value into the 'int ret' which we use for returning a value in
-an error-exit codepath. This can't ever actually overflow because
-the value was in an 'int' to start with, but it makes more sense
-to use 'int' for mmap_size so we don't do the widen-then-narrow
-sequence in the first place.
+The code at the tail end of the loop in kvm_dirty_ring_reaper_thread()
+is unreachable, because there is no way for execution to leave the
+loop. Replace it with a g_assert_not_reached().
 
-Resolves: Coverity CID 1547515
+(The code has always been unreachable, right from the start
+when the function was added in commit b4420f198dd8.)
+
+Resolves: Coverity CID 1547687
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240815131206.3231819-2-peter.maydell@linaro.org
+Message-id: 20240815131206.3231819-3-peter.maydell@linaro.org
 ---
- accel/kvm/kvm-all.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ accel/kvm/kvm-all.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index beb1988d12c..6c4cb263ba3 100644
+index 6c4cb263ba3..fe4cd721d9b 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -414,7 +414,7 @@ int kvm_create_and_park_vcpu(CPUState *cpu)
- static int do_kvm_destroy_vcpu(CPUState *cpu)
- {
-     KVMState *s = kvm_state;
--    long mmap_size;
-+    int mmap_size;
-     int ret = 0;
+@@ -1525,11 +1525,7 @@ static void *kvm_dirty_ring_reaper_thread(void *data)
+         r->reaper_iteration++;
+     }
  
-     trace_kvm_destroy_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
-@@ -459,7 +459,7 @@ void kvm_destroy_vcpu(CPUState *cpu)
- int kvm_init_vcpu(CPUState *cpu, Error **errp)
- {
-     KVMState *s = kvm_state;
--    long mmap_size;
-+    int mmap_size;
-     int ret;
+-    trace_kvm_dirty_ring_reaper("exit");
+-
+-    rcu_unregister_thread();
+-
+-    return NULL;
++    g_assert_not_reached();
+ }
  
-     trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+ static void kvm_dirty_ring_reaper_init(KVMState *s)
 -- 
 2.34.1
 
