@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A21B497C414
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 08:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BC997C406
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 07:56:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srA9i-00017n-Kr; Thu, 19 Sep 2024 01:56:42 -0400
+	id 1srA9h-0000yt-Ir; Thu, 19 Sep 2024 01:56:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1srA96-00066M-9u; Thu, 19 Sep 2024 01:56:07 -0400
+ id 1srA97-0006An-E1; Thu, 19 Sep 2024 01:56:10 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1srA91-0007Mt-RH; Thu, 19 Sep 2024 01:56:03 -0400
+ id 1srA94-0007Mx-5r; Thu, 19 Sep 2024 01:56:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726725360; x=1758261360;
+ t=1726725362; x=1758261362;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CwVrpvp1WDScgEYLWjHPu+YgDBg0b3NbDgIP9DAGUe8=;
- b=beRd1qGqvdk9X6315+XZAJjWw5uRzK8JCzzNoGAFMTesyTDLRdFQvqQc
- QlaVsXOHS1fU6WDuRk1ON8aRZe6XZwzWdUIDGo3tphFR1ei7wFJ5ACLW5
- ISipIWb0/DNwfE0O6BDEBXXMliTLcDeRjNcZo9xxZ81yzUHgtmBsbbVks
- i9AyqHtlaXlxnihO7S4aPeuFuxuqytl3A4mBmQn5A4exstncbNmiER0dR
- 8hHSI7L51IaZOGfbyMAT/1FUq/uqKdQyFrATT0isB9Sq912As4f6Ww1G0
- ULmFpm6T7j+VSpBH5vhVIUzofpsL6nDinj0elCNpKLmFkx0kl6iJfNYzY A==;
-X-CSE-ConnectionGUID: WrzRQWdiT0WKDsz0+NL1oA==
-X-CSE-MsgGUID: yx4M9gbjRyGYQB/ejwZHqQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25813515"
-X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="25813515"
+ bh=T5fYW0Qp5HK4dCgA8zTvCnqjoH/YS2wAEp4x5hqFcPU=;
+ b=AgIUn0wAOmyWH5nd+5LYF06Ul+SQb8qqvtyp//P6flDeTDou7al/BY7O
+ HS1rTvC4kau7YzUiqRkGXLhQudBVpbhvGJ4NbIw0poN1hJp/fzx3w4HkF
+ ccFHma0oWfKIm3tqgTgbyf7LwdzZ/BFKpG+/uJ7Oa+7Pe5l8fqmp5VvJf
+ EDSy5/xDAWEPw/pTO0gDs8Q0azw9M3oUurbp96XSjauI0+juWNEk8Modb
+ EkxsqjmM5nkiy9YURvm4ER2SRW7ZXuij/AwsyRaJ+SDBrj5yomIv36luZ
+ Cz+HTCKriBEQA0b2bUr+vT506YGBv0+VYQT3+Dq9MDH+bVrqfSMr2OHEl w==;
+X-CSE-ConnectionGUID: 1D8MgndRRIyk482ALta/6Q==
+X-CSE-MsgGUID: SwImmHm/QMSyfeMLYr4Amw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25813539"
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="25813539"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 22:55:49 -0700
-X-CSE-ConnectionGUID: cnG4W7PSTWykvtbW1B+1LQ==
-X-CSE-MsgGUID: X7u2e1dAQ1u80SUmmx+ZsA==
+ 18 Sep 2024 22:55:55 -0700
+X-CSE-ConnectionGUID: izHbtgFiQeKuhayuq/BgHg==
+X-CSE-MsgGUID: 8GpqZCUxQfG5uQ4iHEKGyg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="69418644"
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="69418665"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 18 Sep 2024 22:55:43 -0700
+ by fmviesa006.fm.intel.com with ESMTP; 18 Sep 2024 22:55:49 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -61,9 +61,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC v2 03/12] system/vl: Create CPU topology devices from CLI early
-Date: Thu, 19 Sep 2024 14:11:19 +0800
-Message-Id: <20240919061128.769139-4-zhao1.liu@intel.com>
+Subject: [RFC v2 04/12] hw/core/machine: Split machine initialization around
+ qemu_add_cli_devices_early()
+Date: Thu, 19 Sep 2024 14:11:20 +0800
+Message-Id: <20240919061128.769139-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240919061128.769139-1-zhao1.liu@intel.com>
 References: <20240919061128.769139-1-zhao1.liu@intel.com>
@@ -94,117 +95,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Custom topology will allow user to build CPU topology from CLI totally,
-and this replaces machine's default CPU creation process (*_init_cpus()
-in MachineClass.init()).
+Split machine initialization and machine_run_board_init() into two parts
+around qemu_add_cli_devices_early(), allowing initialization to continue
+after the CPU creation from the CLI.
 
-For the machine's initialization, there may be CPU dependencies in the
-remaining initialization after the CPU creation.
-
-To address such dependencies, create the CPU topology device (including
-CPU devices) from the CLI earlier, so that the latter part of machine
-initialization can be separated after qemu_add_cli_devices_early().
+This enables machine to place the initialization steps with CPU
+dependencies in post_init().
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- system/vl.c | 55 +++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 36 insertions(+), 19 deletions(-)
+ hw/core/machine.c   | 10 ++++++++++
+ include/hw/boards.h |  2 ++
+ system/vl.c         |  4 +++-
+ 3 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index c40364e2f091..8540454aa1c2 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1211,8 +1211,9 @@ static int device_help_func(void *opaque, QemuOpts *opts, Error **errp)
- static int device_init_func(void *opaque, QemuOpts *opts, Error **errp)
- {
-     DeviceState *dev;
-+    long *category = opaque;
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 076bd365197b..7b4ac5ac52b2 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1645,6 +1645,16 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
  
--    dev = qdev_device_add(opts, NULL, errp);
-+    dev = qdev_device_add(opts, category, errp);
-     if (!dev && *errp) {
-         error_report_err(*errp);
-         return -1;
-@@ -2623,6 +2624,36 @@ static void qemu_init_displays(void)
-     }
+     accel_init_interfaces(ACCEL_GET_CLASS(machine->accelerator));
+     machine_class->init(machine);
++}
++
++void machine_run_board_post_init(MachineState *machine, Error **errp)
++{
++    MachineClass *machine_class = MACHINE_GET_CLASS(machine);
++
++    if (machine_class->post_init) {
++        machine_class->post_init(machine);
++    }
++
+     phase_advance(PHASE_MACHINE_INITIALIZED);
  }
  
-+static void qemu_add_devices(long *category)
-+{
-+    DeviceOption *opt;
-+
-+    qemu_opts_foreach(qemu_find_opts("device"),
-+                      device_init_func, category, &error_fatal);
-+    QTAILQ_FOREACH(opt, &device_opts, next) {
-+        DeviceState *dev;
-+        loc_push_restore(&opt->loc);
-+        /*
-+         * TODO Eventually we should call qmp_device_add() here to make sure it
-+         * behaves the same, but QMP still has to accept incorrectly typed
-+         * options until libvirt is fixed and we want to be strict on the CLI
-+         * from the start, so call qdev_device_add_from_qdict() directly for
-+         * now.
-+         */
-+        dev = qdev_device_add_from_qdict(opt->opts, category,
-+                                         true, &error_fatal);
-+        object_unref(OBJECT(dev));
-+        loc_pop(&opt->loc);
-+    }
-+}
-+
-+static void qemu_add_cli_devices_early(void)
-+{
-+    long category = DEVICE_CATEGORY_CPU_DEF;
-+
-+    qemu_add_devices(&category);
-+}
-+
- static void qemu_init_board(void)
- {
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index a49677466ef6..9f706223e848 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -33,6 +33,7 @@ const char *machine_class_default_cpu_type(MachineClass *mc);
+ 
+ void machine_add_audiodev_property(MachineClass *mc);
+ void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp);
++void machine_run_board_post_init(MachineState *machine, Error **errp);
+ bool machine_usb(MachineState *machine);
+ int machine_phandle_start(MachineState *machine);
+ bool machine_dump_guest_core(MachineState *machine);
+@@ -271,6 +272,7 @@ struct MachineClass {
+     const char *deprecation_reason;
+ 
+     void (*init)(MachineState *state);
++    void (*post_init)(MachineState *state);
+     void (*reset)(MachineState *state, ShutdownCause reason);
+     void (*wakeup)(MachineState *state);
+     int (*kvm_type)(MachineState *machine, const char *arg);
+diff --git a/system/vl.c b/system/vl.c
+index 8540454aa1c2..00370f7a52aa 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2659,12 +2659,14 @@ static void qemu_init_board(void)
      /* process plugin before CPUs are created, but once -smp has been parsed */
-@@ -2631,6 +2662,9 @@ static void qemu_init_board(void)
-     /* From here on we enter MACHINE_PHASE_INITIALIZED.  */
+     qemu_plugin_load_list(&plugin_list, &error_fatal);
+ 
+-    /* From here on we enter MACHINE_PHASE_INITIALIZED.  */
      machine_run_board_init(current_machine, mem_path, &error_fatal);
  
-+    /* Create CPU topology device if any. */
-+    qemu_add_cli_devices_early();
+     /* Create CPU topology device if any. */
+     qemu_add_cli_devices_early();
+ 
++    /* From here on we enter MACHINE_PHASE_INITIALIZED.  */
++    machine_run_board_post_init(current_machine, &error_fatal);
 +
      drive_check_orphaned();
  
      realtime_init();
-@@ -2638,8 +2672,6 @@ static void qemu_init_board(void)
- 
- static void qemu_create_cli_devices(void)
- {
--    DeviceOption *opt;
--
-     soundhw_init();
- 
-     qemu_opts_foreach(qemu_find_opts("fw_cfg"),
-@@ -2653,22 +2685,7 @@ static void qemu_create_cli_devices(void)
- 
-     /* init generic devices */
-     rom_set_order_override(FW_CFG_ORDER_OVERRIDE_DEVICE);
--    qemu_opts_foreach(qemu_find_opts("device"),
--                      device_init_func, NULL, &error_fatal);
--    QTAILQ_FOREACH(opt, &device_opts, next) {
--        DeviceState *dev;
--        loc_push_restore(&opt->loc);
--        /*
--         * TODO Eventually we should call qmp_device_add() here to make sure it
--         * behaves the same, but QMP still has to accept incorrectly typed
--         * options until libvirt is fixed and we want to be strict on the CLI
--         * from the start, so call qdev_device_add_from_qdict() directly for
--         * now.
--         */
--        dev = qdev_device_add_from_qdict(opt->opts, NULL, true, &error_fatal);
--        object_unref(OBJECT(dev));
--        loc_pop(&opt->loc);
--    }
-+    qemu_add_devices(NULL);
-     rom_reset_order_override();
- }
- 
 -- 
 2.34.1
 
