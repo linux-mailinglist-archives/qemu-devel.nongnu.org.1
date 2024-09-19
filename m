@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30FD97C295
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 03:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7C897C29B
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 03:42:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sr6Ag-00052f-6l; Wed, 18 Sep 2024 21:41:26 -0400
+	id 1sr6BE-0007fW-1O; Wed, 18 Sep 2024 21:42:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sr6Ac-0004f3-9p; Wed, 18 Sep 2024 21:41:22 -0400
+ id 1sr6Ai-0005e6-LX; Wed, 18 Sep 2024 21:41:29 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sr6Aa-0005AN-0D; Wed, 18 Sep 2024 21:41:21 -0400
+ id 1sr6Ag-0005AN-HF; Wed, 18 Sep 2024 21:41:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726710080; x=1758246080;
+ t=1726710087; x=1758246087;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=e8uNe2XyBy//pc+Jdrf2eDU6ylT8TdayHazakj6xvUI=;
- b=G3djzK7Mj/4MZtkq46m6Jt4ZRpmHLMEPTJ8nYt0si4D237mWzb7IU1g8
- cErLbcAv0K5xEoJuw+Emkfj5iONxqlCoXgc9JKkPCFEeWT31mkASE6bPz
- NEM+2k9xSBy/kQGM2niJovDIUEI9hdBkQTTy/Qa23PhsUbTL4Vl+70jFo
- PZ6gZSjcFZ+sgfuawx6b1j4irvaJcOoHMMdkxlmgLj1VHuySV0sIan7tz
- UFjRiN9UH/83P1cwxDk8DiaLp/Z52hBx/ayb1cwkFkX6U8xjKkmdqOOb3
- GOXEazu2yr026PFGs2Lh9IDia5lkfHEW5d3H9OvSwNh4CNsuapdnr/FG7 w==;
-X-CSE-ConnectionGUID: MXF3snzYSB6MNdffbT7MRw==
-X-CSE-MsgGUID: Yl92eHFvTSCb7PVchPibcg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25798108"
-X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="25798108"
+ bh=R/RyqBpSFLfGANKmP2zWrU5SVWm2/qn58wOc7/+Iwms=;
+ b=XRiBW6ThyhwYtqtWmCat7Nkuhj9Q1bXN9eTlg4EL5iKAbFzOTk0r3KTO
+ xJn/HYJaSEgfDDTlNF035HVY+j8rISVETTbFRvQtYIGztjC376yygHSud
+ yJbtU4sggvLsMdQE/nvHrvlVejCyqqghVbyZTmvfdVqaTdHIk8AZ1MWs0
+ 3tC6a+QHQoeJVgnkFm3ISmF7pcD8KPL2+w74/R3RY5VA9QgCMNFFrQM00
+ f0ORavhaXIZdFeBBbZ9eYUw476raJ4bIv3ImFlRQU4uCjAvN6Bc2KWJRT
+ L1JRBDBm7m3gSBPfDuF+vay7eLo1pIBSNsESE3uIYfR6EvgIlKfLJPOjL Q==;
+X-CSE-ConnectionGUID: aj7RdIABSOCedBi7ma9zGg==
+X-CSE-MsgGUID: 4yyXbx2sT56P+ToiUA9AKQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25798138"
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="25798138"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 18:41:17 -0700
-X-CSE-ConnectionGUID: FdACOWMXSMOp94R+MXOELA==
-X-CSE-MsgGUID: Wk9cMGQHQpOW5if6nrEZ5A==
+ 18 Sep 2024 18:41:25 -0700
+X-CSE-ConnectionGUID: szNCjQVpTIWjD4Z0T6eu4A==
+X-CSE-MsgGUID: 4gQNKxRUT0GdnsrB0gseZg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="70058986"
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="70059004"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa006.jf.intel.com with ESMTP; 18 Sep 2024 18:41:11 -0700
+ by orviesa006.jf.intel.com with ESMTP; 18 Sep 2024 18:41:18 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -64,10 +64,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-ppc@nongnu.org,
  qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC v2 14/15] i386/cpu: Support CPU plugged in topology tree via
- bus-finder
-Date: Thu, 19 Sep 2024 09:55:32 +0800
-Message-Id: <20240919015533.766754-15-zhao1.liu@intel.com>
+Subject: [RFC v2 15/15] i386: Support topology device tree
+Date: Thu, 19 Sep 2024 09:55:33 +0800
+Message-Id: <20240919015533.766754-16-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240919015533.766754-1-zhao1.liu@intel.com>
 References: <20240919015533.766754-1-zhao1.liu@intel.com>
@@ -98,213 +97,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use topology sub IDs or APIC ID to locate parent topology device and
-bus.
+Support complete QOM CPu topology tree for x86 machine, and specify
+bus_type for x86 CPU so that all x86 CPUs will be added in the topology
+tree.
 
-This process naturally verifies the correctness of topology-related IDs,
-making it possible to drop the existing topology ID sanity checks once
-x86 machine supports topology tree.
+Since the CPU slot make the machine as the hotplug handler for all
+topology devices, hotplug related hooks may used to handle other
+topology devices besides the CPU. Thus, make microvm not assume that
+the device is only a CPU when implementing the relevant hooks.
+
+Additionally, drop code paths that are not needed by the topology tree
+implementation.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/i386/x86-common.c  | 99 ++++++++++++++++++++++++++++++++++---------
- include/hw/i386/x86.h |  2 +
- target/i386/cpu.c     | 11 +++++
- 3 files changed, 91 insertions(+), 21 deletions(-)
+ hw/i386/microvm.c    | 13 +++++---
+ hw/i386/x86-common.c | 78 +++++---------------------------------------
+ hw/i386/x86.c        |  2 ++
+ target/i386/cpu.c    |  2 ++
+ 4 files changed, 21 insertions(+), 74 deletions(-)
 
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index a7f082b0a90b..d837aadc9dea 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -208,6 +208,65 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
-     }
+diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+index 40edcee7af29..49a897db50fc 100644
+--- a/hw/i386/microvm.c
++++ b/hw/i386/microvm.c
+@@ -417,16 +417,21 @@ static void microvm_fix_kernel_cmdline(MachineState *machine)
+ static void microvm_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+                                        DeviceState *dev, Error **errp)
+ {
+-    X86CPU *cpu = X86_CPU(dev);
++    if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
++        X86CPU *cpu;
++        cpu = X86_CPU(dev);
+ 
+-    cpu->host_phys_bits = true; /* need reliable phys-bits */
+-    x86_cpu_pre_plug(hotplug_dev, dev, errp);
++        cpu->host_phys_bits = true; /* need reliable phys-bits */
++        x86_cpu_pre_plug(hotplug_dev, dev, errp);
++    }
  }
  
-+static void x86_fixup_topo_ids(MachineState *ms, X86CPU *cpu)
-+{
-+    /*
-+     * die-id was optional in QEMU 4.0 and older, so keep it optional
-+     * if there's only one die per socket.
-+     */
-+    if (cpu->module_id < 0 && ms->smp.modules == 1) {
-+        cpu->module_id = 0;
+ static void microvm_device_plug_cb(HotplugHandler *hotplug_dev,
+                                    DeviceState *dev, Error **errp)
+ {
+-    x86_cpu_plug(hotplug_dev, dev, errp);
++    if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
++        x86_cpu_plug(hotplug_dev, dev, errp);
 +    }
-+
-+    /*
-+     * module-id was optional in QEMU 9.0 and older, so keep it optional
-+     * if there's only one module per die.
-+     */
-+    if (cpu->die_id < 0 && ms->smp.dies == 1) {
-+        cpu->die_id = 0;
-+    }
-+}
-+
-+BusState *x86_cpu_get_parent_bus(DeviceState *dev)
-+{
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    X86MachineState *x86ms = X86_MACHINE(ms);
-+    X86CPU *cpu = X86_CPU(dev);
+ }
+ 
+ static void microvm_device_unplug_request_cb(HotplugHandler *hotplug_dev,
+diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+index d837aadc9dea..75d4b2f3d43a 100644
+--- a/hw/i386/x86-common.c
++++ b/hw/i386/x86-common.c
+@@ -129,26 +129,18 @@ static void x86_cpu_new(X86MachineState *x86ms, int index,
+                         int64_t apic_id, Error **errp)
+ {
+     MachineState *ms = MACHINE(x86ms);
+-    MachineClass *mc = MACHINE_GET_CLASS(ms);
+     Object *cpu = object_new(ms->cpu_type);
+     DeviceState *dev = DEVICE(cpu);
+     BusState *bus = NULL;
 +    X86CPUTopoIDs topo_ids;
 +    X86CPUTopoInfo topo_info;
-+    BusState *bus;
-+
-+    x86_fixup_topo_ids(ms, cpu);
+ 
+-    /*
+-     * Once x86 machine supports topo_tree_supported, x86 CPU would
+-     * also have bus_type.
+-     */
+-    if (mc->smp_props.topo_tree_supported) {
+-        X86CPUTopoIDs topo_ids;
+-        X86CPUTopoInfo topo_info;
+-
+-        init_topo_info(&topo_info, x86ms);
+-        x86_topo_ids_from_apicid(apic_id, &topo_info, &topo_ids);
+-        bus = x86_find_topo_bus(ms, &topo_ids);
 +    init_topo_info(&topo_info, x86ms);
-+
-+    if (cpu->apic_id == UNASSIGNED_APIC_ID) {
-+        /* TODO: Make the thread_id and bus index of CPU the same. */
-+        topo_ids.smt_id = cpu->thread_id;
-+        topo_ids.core_id = cpu->core_id;
-+        topo_ids.module_id = cpu->module_id;
-+        topo_ids.die_id = cpu->die_id;
-+        topo_ids.pkg_id = cpu->socket_id;
-+    } else {
-+        x86_topo_ids_from_apicid(cpu->apic_id, &topo_info, &topo_ids);
-+    }
-+
++    x86_topo_ids_from_apicid(apic_id, &topo_info, &topo_ids);
 +    bus = x86_find_topo_bus(ms, &topo_ids);
-+
-+    /*
-+     * If APIC ID is not set,
-+     * set it based on socket/die/module/core/thread properties.
-+     *
-+     * The children walking result proves topo ids are valid.
-+     * Though module and die are optional, topology tree will create
-+     * at least 1 instance by default if the machine supports.
-+     */
-+    if (bus && cpu->apic_id == UNASSIGNED_APIC_ID) {
-+        cpu->apic_id = x86_apicid_from_topo_ids(&topo_info, &topo_ids);
-+    }
-+
-+    return bus;
-+}
-+
- void x86_rtc_set_cpus_count(ISADevice *s, uint16_t cpus_count)
- {
-     MC146818RtcState *rtc = MC146818_RTC(s);
-@@ -340,6 +399,7 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+ 
+-        /* Only with dev->id, CPU can be inserted into topology tree. */
+-        dev->id = g_strdup_printf("%s[%d]", ms->cpu_type, index);
+-    }
++    /* Only with dev->id, CPU can be inserted into topology tree. */
++    dev->id = g_strdup_printf("%s[%d]", ms->cpu_type, index);
+ 
+     if (!object_property_set_uint(cpu, "apic-id", apic_id, errp)) {
+         goto out;
+@@ -399,10 +391,7 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
      X86CPU *cpu = X86_CPU(dev);
      CPUX86State *env = &cpu->env;
      MachineState *ms = MACHINE(hotplug_dev);
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
+-    MachineClass *mc = MACHINE_GET_CLASS(ms);
      X86MachineState *x86ms = X86_MACHINE(hotplug_dev);
-     unsigned int smp_cores = ms->smp.cores;
-     unsigned int smp_threads = ms->smp.threads;
-@@ -374,26 +434,9 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+-    unsigned int smp_cores = ms->smp.cores;
+-    unsigned int smp_threads = ms->smp.threads;
+     X86CPUTopoInfo topo_info;
+ 
+     if (!object_dynamic_cast(OBJECT(cpu), ms->cpu_type)) {
+@@ -434,58 +423,7 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
          set_bit(CPU_TOPOLOGY_LEVEL_DIE, env->avail_cpu_topo);
      }
  
--    /*
--     * If APIC ID is not set,
--     * set it based on socket/die/module/core/thread properties.
--     */
--    if (cpu->apic_id == UNASSIGNED_APIC_ID) {
--        /*
--         * die-id was optional in QEMU 4.0 and older, so keep it optional
--         * if there's only one die per socket.
--         */
--        if (cpu->die_id < 0 && ms->smp.dies == 1) {
--            cpu->die_id = 0;
+-    if (cpu->apic_id == UNASSIGNED_APIC_ID &&
+-        !mc->smp_props.topo_tree_supported) {
+-        x86_fixup_topo_ids(ms, cpu);
+-
+-        if (cpu->socket_id < 0) {
+-            error_setg(errp, "CPU socket-id is not set");
+-            return;
+-        } else if (cpu->socket_id > ms->smp.sockets - 1) {
+-            error_setg(errp, "Invalid CPU socket-id: %u must be in range 0:%u",
+-                       cpu->socket_id, ms->smp.sockets - 1);
+-            return;
+-        }
+-        if (cpu->die_id < 0) {
+-            error_setg(errp, "CPU die-id is not set");
+-            return;
+-        } else if (cpu->die_id > ms->smp.dies - 1) {
+-            error_setg(errp, "Invalid CPU die-id: %u must be in range 0:%u",
+-                       cpu->die_id, ms->smp.dies - 1);
+-        }
+-        if (cpu->module_id < 0) {
+-            error_setg(errp, "CPU module-id is not set");
+-            return;
+-        } else if (cpu->module_id > ms->smp.modules - 1) {
+-            error_setg(errp, "Invalid CPU module-id: %u must be in range 0:%u",
+-                       cpu->module_id, ms->smp.modules - 1);
+-            return;
+-        }
+-        if (cpu->core_id < 0) {
+-            error_setg(errp, "CPU core-id is not set");
+-            return;
+-        } else if (cpu->core_id > (smp_cores - 1)) {
+-            error_setg(errp, "Invalid CPU core-id: %u must be in range 0:%u",
+-                       cpu->core_id, smp_cores - 1);
+-            return;
+-        }
+-        if (cpu->thread_id < 0) {
+-            error_setg(errp, "CPU thread-id is not set");
+-            return;
+-        } else if (cpu->thread_id > (smp_threads - 1)) {
+-            error_setg(errp, "Invalid CPU thread-id: %u must be in range 0:%u",
+-                       cpu->thread_id, smp_threads - 1);
+-            return;
 -        }
 -
--        /*
--         * module-id was optional in QEMU 9.0 and older, so keep it optional
--         * if there's only one module per die.
--         */
--        if (cpu->module_id < 0 && ms->smp.modules == 1) {
--            cpu->module_id = 0;
--        }
-+    if (cpu->apic_id == UNASSIGNED_APIC_ID &&
-+        !mc->smp_props.topo_tree_supported) {
-+        x86_fixup_topo_ids(ms, cpu);
- 
-         if (cpu->socket_id < 0) {
-             error_setg(errp, "CPU socket-id is not set");
-@@ -409,7 +452,6 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
-         } else if (cpu->die_id > ms->smp.dies - 1) {
-             error_setg(errp, "Invalid CPU die-id: %u must be in range 0:%u",
-                        cpu->die_id, ms->smp.dies - 1);
--            return;
-         }
-         if (cpu->module_id < 0) {
-             error_setg(errp, "CPU module-id is not set");
-@@ -442,6 +484,21 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
-         topo_ids.core_id = cpu->core_id;
-         topo_ids.smt_id = cpu->thread_id;
-         cpu->apic_id = x86_apicid_from_topo_ids(&topo_info, &topo_ids);
-+    } else if (cpu->apic_id == UNASSIGNED_APIC_ID &&
-+               mc->smp_props.topo_tree_supported) {
-+        /*
-+         * For this case, CPU is added by specifying the bus. Under the
-+         * topology tree, specifying only the bus should be feasible, but
-+         * the topology represented by the bus, topo ids, or apic id must
-+         * be consistent.
-+         *
-+         * To simplify, the case with only the bus specified is not supported
-+         * at this time.
-+         */
-+        if (x86_cpu_get_parent_bus(dev) != dev->parent_bus) {
-+            error_setg(errp, "Invalid CPU topology ids");
-+            return;
-+        }
-     }
- 
-     cpu_slot = x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, &idx);
-diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-index d43cb3908e65..2a62b4b8d08c 100644
---- a/include/hw/i386/x86.h
-+++ b/include/hw/i386/x86.h
-@@ -138,6 +138,8 @@ void x86_load_linux(X86MachineState *x86ms,
- bool x86_machine_is_smm_enabled(const X86MachineState *x86ms);
- bool x86_machine_is_acpi_enabled(const X86MachineState *x86ms);
- 
-+BusState *x86_cpu_get_parent_bus(DeviceState *dev);
-+
- /* Global System Interrupts */
- 
- #define ACPI_BUILD_PCI_IRQS ((1<<5) | (1<<9) | (1<<10) | (1<<11))
+-        topo_ids.pkg_id = cpu->socket_id;
+-        topo_ids.die_id = cpu->die_id;
+-        topo_ids.module_id = cpu->module_id;
+-        topo_ids.core_id = cpu->core_id;
+-        topo_ids.smt_id = cpu->thread_id;
+-        cpu->apic_id = x86_apicid_from_topo_ids(&topo_info, &topo_ids);
+-    } else if (cpu->apic_id == UNASSIGNED_APIC_ID &&
+-               mc->smp_props.topo_tree_supported) {
++    if (cpu->apic_id == UNASSIGNED_APIC_ID) {
+         /*
+          * For this case, CPU is added by specifying the bus. Under the
+          * topology tree, specifying only the bus should be feasible, but
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index 01fc5e656272..cdf7b81ad0e3 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -381,6 +381,8 @@ static void x86_machine_class_init(ObjectClass *oc, void *data)
+     mc->cpu_index_to_instance_props = x86_cpu_index_to_props;
+     mc->get_default_cpu_node_id = x86_get_default_cpu_node_id;
+     mc->possible_cpu_arch_ids = x86_possible_cpu_arch_ids;
++    mc->smp_props.arch_id_topo_level = CPU_TOPOLOGY_LEVEL_THREAD;
++    mc->smp_props.topo_tree_supported = true;
+     mc->kvm_type = x86_kvm_type;
+     x86mc->save_tsc_khz = true;
+     x86mc->fwcfg_dma_enabled = true;
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 6d9f7dc0872a..90221ceb7313 100644
+index 90221ceb7313..fb54c2c100a0 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -35,12 +35,14 @@
- #include "standard-headers/asm-x86/kvm_para.h"
- #include "hw/qdev-properties.h"
- #include "hw/i386/topology.h"
-+#include "monitor/bus-finder.h"
+@@ -8473,6 +8473,8 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
  #ifndef CONFIG_USER_ONLY
- #include "sysemu/reset.h"
- #include "qapi/qapi-commands-machine-target.h"
- #include "exec/address-spaces.h"
- #include "hw/boards.h"
- #include "hw/i386/sgx-epc.h"
-+#include "hw/i386/x86.h"
+     BusFinderClass *bfc = BUS_FINDER_CLASS(oc);
+     bfc->find_bus = x86_cpu_get_parent_bus;
++
++    dc->bus_type = TYPE_CPU_BUS;
  #endif
  
- #include "disas/capstone.h"
-@@ -8468,6 +8470,11 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
- 
-     dc->user_creatable = true;
- 
-+#ifndef CONFIG_USER_ONLY
-+    BusFinderClass *bfc = BUS_FINDER_CLASS(oc);
-+    bfc->find_bus = x86_cpu_get_parent_bus;
-+#endif
-+
      object_class_property_add(oc, "family", "int",
-                               x86_cpuid_version_get_family,
-                               x86_cpuid_version_set_family, NULL, NULL);
-@@ -8520,6 +8527,10 @@ static const TypeInfo x86_cpu_type_info = {
-     .abstract = true,
-     .class_size = sizeof(X86CPUClass),
-     .class_init = x86_cpu_common_class_init,
-+    .interfaces = (InterfaceInfo[]) {
-+        { TYPE_BUS_FINDER },
-+        { }
-+    }
- };
- 
- /* "base" CPU model, used by query-cpu-model-expansion */
 -- 
 2.34.1
 
