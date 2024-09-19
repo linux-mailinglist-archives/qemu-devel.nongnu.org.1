@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF61E97C29E
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 03:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6031F97C298
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 03:42:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sr69e-0006b2-2b; Wed, 18 Sep 2024 21:40:22 -0400
+	id 1sr69e-0006y8-Va; Wed, 18 Sep 2024 21:40:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sr69T-0006Mj-39; Wed, 18 Sep 2024 21:40:12 -0400
+ id 1sr69X-0006VA-HX; Wed, 18 Sep 2024 21:40:15 -0400
 Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sr69O-0004sM-Tf; Wed, 18 Sep 2024 21:40:09 -0400
+ id 1sr69V-0004sM-HX; Wed, 18 Sep 2024 21:40:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726710007; x=1758246007;
+ t=1726710014; x=1758246014;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=pjDCYfWGmtcfHCeQzycylmOPTR/6NQwIB6dWf4c73R0=;
- b=c6C7PWmS8ISxG+CKi6FNNG9l2nZy98ivxl/B/sUSvcaLndqs+g2qt8GP
- 0/PzkYh3IOgmAl1N4vphSsm1+lgvWlwYKda58s8/WF6iuNvyXkVyQJqFQ
- 6YO2f5xsFo0a8md4owGajA9JlA1eEGSW3TYoPM/sJU6vPqh89Z8c2BMFb
- ztForJ9nTCPQHZv3pv3z0/UXjRaQdUOD1N1ssmk8WtJ4ZThh1ZT3sQfqu
- cLWDwwyM95Lt+zp1GuejeJHaQeIyrXibMz3DZ9yb8RpHr1X6AoTpMCKb1
- sEbDe0gnJAqqltrWJMlHYpViNen5O85dsWIe+ImbbdUgfKPSm45belTS6 Q==;
-X-CSE-ConnectionGUID: 69DW9Xg4Qv28+c6A3UZTFQ==
-X-CSE-MsgGUID: ddffMdBqSF6MBLdY5q45jw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25797841"
-X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="25797841"
+ bh=F7jWrurI1XVWfEeDSjk70sFPKqku+j5BACGGdK6zY9w=;
+ b=ZPX7dzyq5jw7trgy7ycKP+tucFWEGqXZ2m/AVheA/CXOJauTIni63/J/
+ mgOCektyCbJOMoCa01aEQbltw9ODZMXz+hTyN05oBAfzFijMrcKQuFmpZ
+ irMQoi6385scApVA9NpDmVggSkfnbO1r6632fnNBXWakHGxGON4tPtvZe
+ YLkQaxXwUN0cNbh9nGkJcHrpNXvF+zW7XfOZFpjjd6vtP4bjAM4PtVLLm
+ aQBbiT4MIQcaNShbZhX+vMJCBCSAM2dEnLQRiexKnUaagd6jv2Xw0aTHf
+ 1oXg06H9bNTtMvtPxHcmmYorevHIwe+98NMDcnV4IkuolkltCKjucQOjy w==;
+X-CSE-ConnectionGUID: FXmAoYI2Sh+Wo2oUmCiC3A==
+X-CSE-MsgGUID: zYtSrsS0Q26Hr850g5lJ9g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25797856"
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="25797856"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 18:40:05 -0700
-X-CSE-ConnectionGUID: XUKsPmtXTHeJZs8nwwQdZA==
-X-CSE-MsgGUID: 3BLglI8fRXKMxyszbBq4aA==
+ 18 Sep 2024 18:40:12 -0700
+X-CSE-ConnectionGUID: VQKFuNgeQburcx//Eizfqw==
+X-CSE-MsgGUID: 5cDjh2NdT+qSFPCfiK9wyw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="70058586"
+X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; d="scan'208";a="70058644"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa006.jf.intel.com with ESMTP; 18 Sep 2024 18:39:58 -0700
+ by orviesa006.jf.intel.com with ESMTP; 18 Sep 2024 18:40:05 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
@@ -64,9 +64,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-ppc@nongnu.org,
  qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC v2 03/15] hw/cpu: Introduce CPU topology device and CPU bus
-Date: Thu, 19 Sep 2024 09:55:21 +0800
-Message-Id: <20240919015533.766754-4-zhao1.liu@intel.com>
+Subject: [RFC v2 04/15] hw/cpu: Introduce CPU slot to manage CPU topology
+Date: Thu, 19 Sep 2024 09:55:22 +0800
+Message-Id: <20240919015533.766754-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240919015533.766754-1-zhao1.liu@intel.com>
 References: <20240919015533.766754-1-zhao1.liu@intel.com>
@@ -97,71 +97,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hybrid (or heterogeneous) CPU topology needs to be expressed as
-a topology tree, which requires to abstract all the CPU topology
-level as the objects.
+When there's a CPU topology tree, original MachineState.smp (CpuTopology
+structure) is not enough to dynamically monitor changes of the tree or
+update topology information in time.
 
-At present, QEMU already has the CPU device, core device and cluster
-device (for TCG), so that it's natual to introduce more topology
-related devices instead of abstractong native QEMU objects.
-
-To make it easier to deal with topological relationships, introduce
-the general and abstract CPU topology device, and also introduce the
-CPU bus to connect such CPU topology devices.
-
-With the underlying CPU topology device abstraction, all the CPU
-topology levels could be derived from it as subclasses. Then the
-specific devices, such as CPU, core, or future module/die/socket devices
-etc, don't have to care about topology relationship, and the underlying
-CPU topology abstraction and CPU bus will take care of everything and
-build the topology tree.
-
-Note, for the user created topology devices, they are specified the
-default object parent (one of the peripheral containers: "/peripheral"
-or "/peripheral-anon"). It's necessary to fixup their parent object
-to correct topology parent, so that it can make their canonical path
-in qtree match the actual topological hierarchies relationship. This
-is done by cpu_topo_set_parent() when topology device realizes.
+To address this, introduce the CPU slot, as the root of CPU topology
+tree, which is used to update and maintain global topological statistics
+by listening any changes of topology device (realize() and unrealize()).
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- MAINTAINERS                   |   2 +
- hw/cpu/cpu-topology.c         | 179 ++++++++++++++++++++++++++++++++++
- hw/cpu/meson.build            |   2 +
- include/hw/cpu/cpu-topology.h |  68 +++++++++++++
- include/qemu/typedefs.h       |   2 +
- stubs/hotplug-stubs.c         |   5 +
- 6 files changed, 258 insertions(+)
- create mode 100644 hw/cpu/cpu-topology.c
- create mode 100644 include/hw/cpu/cpu-topology.h
+ MAINTAINERS               |   2 +
+ hw/cpu/cpu-slot.c         | 140 ++++++++++++++++++++++++++++++++++++++
+ hw/cpu/meson.build        |   1 +
+ include/hw/cpu/cpu-slot.h |  72 ++++++++++++++++++++
+ 4 files changed, 215 insertions(+)
+ create mode 100644 hw/cpu/cpu-slot.c
+ create mode 100644 include/hw/cpu/cpu-slot.h
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index ffacd60f4075..230267597b5f 100644
+index 230267597b5f..8e5b2cd91dca 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1884,12 +1884,14 @@ F: hw/core/machine-smp.c
+@@ -1884,6 +1884,7 @@ F: hw/core/machine-smp.c
  F: hw/core/null-machine.c
  F: hw/core/numa.c
  F: hw/cpu/cluster.c
-+F: hw/cpu/cpu-topology.c
++F: hw/cpu/cpu-slot.c
+ F: hw/cpu/cpu-topology.c
  F: qapi/machine.json
  F: qapi/machine-common.json
- F: qapi/machine-target.json
+@@ -1891,6 +1892,7 @@ F: qapi/machine-target.json
  F: include/hw/boards.h
  F: include/hw/core/cpu.h
  F: include/hw/cpu/cluster.h
-+F: include/hw/cpu/cpu-topology.h
++F: include/hw/cpu/cpu-slot.h
+ F: include/hw/cpu/cpu-topology.h
  F: include/sysemu/numa.h
  F: tests/functional/test_cpu_queries.py
- F: tests/functional/test_empty_cpu_model.py
-diff --git a/hw/cpu/cpu-topology.c b/hw/cpu/cpu-topology.c
+diff --git a/hw/cpu/cpu-slot.c b/hw/cpu/cpu-slot.c
 new file mode 100644
-index 000000000000..e68c06132e7d
+index 000000000000..66ef8d9faa97
 --- /dev/null
-+++ b/hw/cpu/cpu-topology.c
-@@ -0,0 +1,179 @@
++++ b/hw/cpu/cpu-slot.c
+@@ -0,0 +1,140 @@
 +/*
-+ * General CPU topology device abstraction
++ * CPU slot abstraction - manage CPU topology
 + *
 + * Copyright (C) 2024 Intel Corporation.
 + *
@@ -173,190 +154,153 @@ index 000000000000..e68c06132e7d
 +
 +#include "qemu/osdep.h"
 +
++#include "hw/boards.h"
++#include "hw/cpu/cpu-slot.h"
 +#include "hw/cpu/cpu-topology.h"
 +#include "hw/qdev-core.h"
 +#include "hw/qdev-properties.h"
 +#include "hw/sysbus.h"
 +#include "qapi/error.h"
 +
-+/* Roll up until topology root to check. */
-+static bool cpu_parent_check_topology(DeviceState *parent,
-+                                      DeviceState *dev,
-+                                      Error **errp)
++static void cpu_slot_add_topo_info(CPUSlot *slot, CPUTopoState *topo)
 +{
-+    BusClass *bc;
++    CpuTopologyLevel level = GET_CPU_TOPO_LEVEL(topo);
++    CPUTopoStatEntry *entry;
++    int instances_num;
 +
-+    if (!parent || !parent->parent_bus ||
-+        object_dynamic_cast(OBJECT(parent->parent_bus), TYPE_CPU_BUS)) {
-+        return true;
++    entry = &slot->stat.entries[level];
++    entry->total_instances++;
++
++    instances_num = cpu_topo_get_instances_num(topo);
++    if (instances_num > entry->max_instances) {
++        entry->max_instances = instances_num;
 +    }
 +
-+    bc = BUS_GET_CLASS(parent->parent_bus);
-+    if (bc->check_address) {
-+        return bc->check_address(parent->parent_bus, dev, errp);
++    set_bit(level, slot->stat.curr_levels);
++
++    return;
++}
++
++static void cpu_slot_device_realize(DeviceListener *listener,
++                                    DeviceState *dev)
++{
++    CPUSlot *slot = container_of(listener, CPUSlot, listener);
++    CPUTopoState *topo;
++
++    if (!object_dynamic_cast(OBJECT(dev), TYPE_CPU_TOPO)) {
++        return;
 +    }
 +
-+    return true;
++    topo = CPU_TOPO(dev);
++    cpu_slot_add_topo_info(slot, topo);
 +}
 +
-+static bool cpu_bus_check_address(BusState *bus, DeviceState *dev,
-+                                  Error **errp)
++static void cpu_slot_del_topo_info(CPUSlot *slot, CPUTopoState *topo)
 +{
-+    CPUBusState *cbus = CPU_BUS(bus);
++    CpuTopologyLevel level = GET_CPU_TOPO_LEVEL(topo);
++    CPUTopoStatEntry *entry;
 +
-+    if (cbus->check_topology) {
-+        return cbus->check_topology(CPU_BUS(bus), CPU_TOPO(dev), errp);
++    entry = &slot->stat.entries[level];
++    entry->total_instances--;
++
++    return;
++}
++
++static void cpu_slot_device_unrealize(DeviceListener *listener,
++                                      DeviceState *dev)
++{
++    CPUSlot *slot = container_of(listener, CPUSlot, listener);
++    CPUTopoState *topo;
++
++    if (!object_dynamic_cast(OBJECT(dev), TYPE_CPU_TOPO)) {
++        return;
 +    }
 +
-+    return cpu_parent_check_topology(bus->parent, dev, errp);
++    topo = CPU_TOPO(dev);
++    cpu_slot_del_topo_info(slot, topo);
 +}
 +
-+static void cpu_bus_class_init(ObjectClass *oc, void *data)
-+{
-+    BusClass *bc = BUS_CLASS(oc);
-+
-+    bc->check_address = cpu_bus_check_address;
-+}
-+
-+static const TypeInfo cpu_bus_type_info = {
-+    .name = TYPE_CPU_BUS,
-+    .parent = TYPE_BUS,
-+    .class_init = cpu_bus_class_init,
-+    .instance_size = sizeof(CPUBusState),
++DeviceListener cpu_slot_device_listener = {
++    .realize = cpu_slot_device_realize,
++    .unrealize = cpu_slot_device_unrealize,
 +};
 +
-+static bool cpu_topo_set_parent(CPUTopoState *topo, Error **errp)
++static bool slot_bus_check_topology(CPUBusState *cbus,
++                                    CPUTopoState *topo,
++                                    Error **errp)
 +{
-+    DeviceState *dev = DEVICE(topo);
-+    BusState *bus = dev->parent_bus;
-+    CPUTopoState *parent_topo = NULL;
-+    Object *parent;
++    CPUSlot *slot = CPU_SLOT(BUS(cbus)->parent);
++    CpuTopologyLevel level = GET_CPU_TOPO_LEVEL(topo);
 +
-+    if (!bus || !bus->parent) {
-+        return true;
-+    }
-+
-+    if (topo->parent) {
-+        error_setg(errp, "cpu topo: %s already have the parent?",
-+                   object_get_typename(OBJECT(topo)));
++    if (!test_bit(level, slot->supported_levels)) {
++        error_setg(errp, "cpu topo: level %s is not supported",
++                   CpuTopologyLevel_str(level));
 +        return false;
 +    }
-+
-+    parent = OBJECT(bus->parent);
-+    if (object_dynamic_cast(parent, TYPE_CPU_TOPO)) {
-+        parent_topo = CPU_TOPO(parent);
-+
-+        if (GET_CPU_TOPO_LEVEL(topo) >= GET_CPU_TOPO_LEVEL(parent_topo)) {
-+            error_setg(errp, "cpu topo: current level (%s) should be "
-+                       "lower than parent (%s) level",
-+                       object_get_typename(OBJECT(topo)),
-+                       object_get_typename(parent));
-+            return false;
-+        }
-+    }
-+
-+    if (dev->id) {
-+        /*
-+         * Reparent topology device to make child<> match topological
-+         * relationship.
-+         */
-+        if (!qdev_set_parent(dev, bus, parent, NULL, errp)) {
-+            return false;
-+        }
-+    }
-+
-+    topo->parent = parent_topo;
 +    return true;
 +}
 +
-+static void cpu_topo_realize(DeviceState *dev, Error **errp)
++static void cpu_slot_realize(DeviceState *dev, Error **errp)
 +{
-+    CPUTopoState *topo = CPU_TOPO(dev);
-+    CPUTopoClass *tc = CPU_TOPO_GET_CLASS(topo);
-+    HotplugHandler *hotplug_handler;
++    CPUSlot *slot = CPU_SLOT(dev);
 +
-+    if (tc->level == CPU_TOPOLOGY_LEVEL_INVALID) {
-+        error_setg(errp, "cpu topo: no level specified type: %s",
-+                   object_get_typename(OBJECT(dev)));
-+        return;
-+    }
++    slot->listener = cpu_slot_device_listener;
++    device_listener_register(&slot->listener);
 +
-+    if (!cpu_topo_set_parent(topo, errp)) {
-+        return;
-+    }
-+
-+    topo->bus = CPU_BUS(qbus_new(TYPE_CPU_BUS, dev, dev->id));
-+    hotplug_handler = qdev_get_bus_hotplug_handler(dev);
-+    if (hotplug_handler) {
-+        qbus_set_hotplug_handler(BUS(topo->bus), OBJECT(hotplug_handler));
-+    }
++    qbus_init(&slot->bus, sizeof(CPUBusState),
++              TYPE_CPU_BUS, dev, "cpu-slot");
++    slot->bus.check_topology = slot_bus_check_topology;
 +}
 +
-+static void cpu_topo_class_init(ObjectClass *oc, void *data)
++static void cpu_slot_unrealize(DeviceState *dev)
++{
++    CPUSlot *slot = CPU_SLOT(dev);
++
++    device_listener_unregister(&slot->listener);
++}
++
++static void cpu_slot_class_init(ObjectClass *oc, void *data)
 +{
 +    DeviceClass *dc = DEVICE_CLASS(oc);
-+    CPUTopoClass *tc = CPU_TOPO_CLASS(oc);
 +
-+    set_bit(DEVICE_CATEGORY_CPU, dc->categories);
-+    dc->realize = cpu_topo_realize;
-+
-+    /*
-+     * If people doesn't want a topology tree, it's necessary to
-+     * derive a child class and override this as NULL.
-+     */
-+    dc->bus_type = TYPE_CPU_BUS;
-+
-+    /*
-+     * The general topo device is not hotpluggable by default.
-+     * If any topo device needs hotplug support, this flag must be
-+     * overridden.
-+     */
-+    dc->hotpluggable = false;
-+
-+    tc->level = CPU_TOPOLOGY_LEVEL_INVALID;
++    set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
++    dc->realize = cpu_slot_realize;
++    dc->unrealize = cpu_slot_unrealize;
 +}
 +
-+static const TypeInfo cpu_topo_type_info = {
-+    .name = TYPE_CPU_TOPO,
-+    .parent = TYPE_DEVICE,
-+    .abstract = true,
-+    .class_size = sizeof(CPUTopoClass),
-+    .class_init = cpu_topo_class_init,
-+    .instance_size = sizeof(CPUTopoState),
++static const TypeInfo cpu_slot_type_info = {
++    .name = TYPE_CPU_SLOT,
++    .parent = TYPE_SYS_BUS_DEVICE,
++    .class_init = cpu_slot_class_init,
++    .instance_size = sizeof(CPUSlot),
 +};
 +
-+static void cpu_topo_register_types(void)
++static void cpu_slot_register_types(void)
 +{
-+    type_register_static(&cpu_bus_type_info);
-+    type_register_static(&cpu_topo_type_info);
++    type_register_static(&cpu_slot_type_info);
 +}
 +
-+type_init(cpu_topo_register_types)
-+
-+int cpu_topo_get_instances_num(CPUTopoState *topo)
-+{
-+    BusState *bus = DEVICE(topo)->parent_bus;
-+
-+    return bus ? bus->num_children : 1;
-+}
++type_init(cpu_slot_register_types)
 diff --git a/hw/cpu/meson.build b/hw/cpu/meson.build
-index 9d36bf8ae2c1..6c6546646608 100644
+index 6c6546646608..358e2b3960fa 100644
 --- a/hw/cpu/meson.build
 +++ b/hw/cpu/meson.build
-@@ -1,3 +1,5 @@
-+common_ss.add(files('cpu-topology.c'))
-+
+@@ -1,6 +1,7 @@
+ common_ss.add(files('cpu-topology.c'))
+ 
  system_ss.add(files('core.c'))
++system_ss.add(files('cpu-slot.c'))
  system_ss.add(when: 'CONFIG_CPU_CLUSTER', if_true: files('cluster.c'))
  
-diff --git a/include/hw/cpu/cpu-topology.h b/include/hw/cpu/cpu-topology.h
+ system_ss.add(when: 'CONFIG_ARM11MPCORE', if_true: files('arm11mpcore.c'))
+diff --git a/include/hw/cpu/cpu-slot.h b/include/hw/cpu/cpu-slot.h
 new file mode 100644
-index 000000000000..7a447ad16ee7
+index 000000000000..9d02d5de578e
 --- /dev/null
-+++ b/include/hw/cpu/cpu-topology.h
-@@ -0,0 +1,68 @@
++++ b/include/hw/cpu/cpu-slot.h
+@@ -0,0 +1,72 @@
 +/*
-+ * General CPU topology device abstraction
++ * CPU slot abstraction header
 + *
 + * Copyright (C) 2024 Intel Corporation.
 + *
@@ -366,94 +310,67 @@ index 000000000000..7a447ad16ee7
 + * later.  See the COPYING file in the top-level directory.
 + */
 +
-+#ifndef CPU_TOPO_H
-+#define CPU_TOPO_H
++#ifndef CPU_SLOT_H
++#define CPU_SLOT_H
 +
++#include "hw/cpu/cpu-topology.h"
 +#include "hw/qdev-core.h"
++#include "hw/sysbus.h"
 +#include "qapi/qapi-types-machine-common.h"
 +#include "qom/object.h"
 +
-+#define TYPE_CPU_BUS "cpu-bus"
-+OBJECT_DECLARE_SIMPLE_TYPE(CPUBusState, CPU_BUS)
++/**
++ * CPUTopoStatEntry:
++ * @total_instances: Total number of topological instances at the same level
++ *                   that are currently inserted in CPU slot
++ * @max_instances: Maximum number of topological instances at the same level
++ *                 under the parent topological container
++ */
++typedef struct CPUTopoStatEntry {
++    int total_instances;
++    int max_instances;
++} CPUTopoStatEntry;
 +
 +/**
-+ * CPUBusState:
-+ * @check_topology: Method to check if @topo is supported by @cbus.
++ * CPUTopoStat:
++ * @entries: Detail count information for valid topology levels under
++ *           CPU slot
++ * @curr_levels: Current CPU topology levels inserted in CPU slot
 + */
-+struct CPUBusState {
-+    /*< private >*/
-+    BusState parent_obj;
++typedef struct CPUTopoStat {
++    /* TODO: Exclude invalid and default levels. */
++    CPUTopoStatEntry entries[CPU_TOPOLOGY_LEVEL__MAX];
++    DECLARE_BITMAP(curr_levels, CPU_TOPOLOGY_LEVEL__MAX);
++} CPUTopoStat;
 +
-+    /*< public >*/
-+    bool (*check_topology)(CPUBusState *cbus, CPUTopoState *topo,
-+                           Error **errp);
-+};
-+
-+#define TYPE_CPU_TOPO "cpu-topo"
-+OBJECT_DECLARE_TYPE(CPUTopoState, CPUTopoClass, CPU_TOPO)
++#define TYPE_CPU_SLOT "cpu-slot"
++OBJECT_DECLARE_SIMPLE_TYPE(CPUSlot, CPU_SLOT)
 +
 +/**
-+ * CPUTopoClass:
-+ * @level: Topology level for this CPUTopoClass.
++ * CPUSlot:
++ * @cores: Queue consisting of all the cores in the topology tree
++ *     where the cpu-slot is the root. cpu-slot can maintain similar
++ *     queues for other topology levels to facilitate traversal
++ *     when necessary.
++ * @stat: Topological statistics for topology tree.
++ * @bus: CPU bus to add the children topology device.
++ * @supported_levels: Supported topology levels for topology tree.
++ * @listener: Hooks to listen realize() and unrealize() of topology
++ *            device.
 + */
-+struct CPUTopoClass {
++struct CPUSlot {
 +    /*< private >*/
-+    DeviceClass parent_class;
++    SysBusDevice parent_obj;
 +
 +    /*< public >*/
-+    CpuTopologyLevel level;
++    CPUBusState bus;
++    CPUTopoStat stat;
++    DECLARE_BITMAP(supported_levels, CPU_TOPOLOGY_LEVEL__MAX);
++
++    DeviceListener listener;
 +};
 +
-+/**
-+ * CPUTopoState:
-+ * @parent: Topology parent of this topology device.
-+ * @bus: The CPU bus to add the children device.
-+ */
-+struct CPUTopoState {
-+    /*< private >*/
-+    DeviceState parent_obj;
-+
-+    /*< public >*/
-+    struct CPUTopoState *parent;
-+    CPUBusState *bus;
-+};
-+
-+#define GET_CPU_TOPO_LEVEL(topo)    (CPU_TOPO_GET_CLASS(topo)->level)
-+
-+int cpu_topo_get_instances_num(CPUTopoState *topo);
-+
-+#endif /* CPU_TOPO_H */
-diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index aef41c4e67ce..d62d8687403f 100644
---- a/include/qemu/typedefs.h
-+++ b/include/qemu/typedefs.h
-@@ -39,8 +39,10 @@ typedef struct Chardev Chardev;
- typedef struct Clock Clock;
- typedef struct ConfidentialGuestSupport ConfidentialGuestSupport;
- typedef struct CPUArchState CPUArchState;
-+typedef struct CPUBusState CPUBusState;
- typedef struct CPUPluginState CPUPluginState;
- typedef struct CPUState CPUState;
-+typedef struct CPUTopoState CPUTopoState;
- typedef struct DeviceState DeviceState;
- typedef struct DirtyBitmapSnapshot DirtyBitmapSnapshot;
- typedef struct DisasContextBase DisasContextBase;
-diff --git a/stubs/hotplug-stubs.c b/stubs/hotplug-stubs.c
-index 7aadaa29bd57..791fae079d6d 100644
---- a/stubs/hotplug-stubs.c
-+++ b/stubs/hotplug-stubs.c
-@@ -19,6 +19,11 @@ HotplugHandler *qdev_get_hotplug_handler(DeviceState *dev)
-     return NULL;
- }
- 
-+HotplugHandler *qdev_get_bus_hotplug_handler(DeviceState *dev)
-+{
-+    return NULL;
-+}
-+
- void hotplug_handler_pre_plug(HotplugHandler *plug_handler,
-                               DeviceState *plugged_dev,
-                               Error **errp)
++#endif /* CPU_SLOT_H */
 -- 
 2.34.1
 
