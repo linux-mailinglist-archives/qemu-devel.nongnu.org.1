@@ -2,74 +2,167 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16AEF97C90D
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 14:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4287A97CA2F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:36:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srGBU-0000NM-Og; Thu, 19 Sep 2024 08:22:56 -0400
+	id 1srHJL-0002XX-Va; Thu, 19 Sep 2024 09:35:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1srGBQ-0000Ms-Az
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 08:22:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <doug.miller@cornelisnetworks.com>)
+ id 1srGK5-0005dQ-CQ
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 08:31:49 -0400
+Received: from mail-westcentralusazon11020082.outbound.protection.outlook.com
+ ([40.93.198.82] helo=CY4PR05CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1srGBO-0002hb-G5
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 08:22:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726748569;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=v+4WpyakNj7oc7igHZt55+ubkW4SSf3rFd/kSp3Nz4M=;
- b=VuynKm96M//FPpxesXTMM4QrDcTXJOUG4oCJqeASBlJqJ7gTmTpbDTz63HD4GcauYdFCsm
- ENQzekyv7x0abNxJppsgT74zI7GtKXY0e7BIXQYAj7xJkKwnA6MKWDDBf7/m3wwAKW+u0F
- HM6DRojrTE+097FEyrFt575vTbf8keM=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-TNSxzHbkNnK028CZj_yciw-1; Thu,
- 19 Sep 2024 08:22:48 -0400
-X-MC-Unique: TNSxzHbkNnK028CZj_yciw-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8BA7019560B7; Thu, 19 Sep 2024 12:22:46 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.226.100])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 280A41956052; Thu, 19 Sep 2024 12:22:42 +0000 (UTC)
-Date: Thu, 19 Sep 2024 14:22:39 +0200
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, eduardo@habkost.net,
- marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, zhao1.liu@intel.com, eblake@redhat.com,
- armbru@redhat.com, ajones@ventanamicro.com
-Subject: Re: [PATCH] qapi, machine-qmp-cmds.c: query-accelerator support
-Message-ID: <ZuwXjyqhxwHBEvR_@redhat.com>
-References: <20240919112056.620917-1-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <doug.miller@cornelisnetworks.com>)
+ id 1srGK3-0003oD-9W
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 08:31:49 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xriuoFsx5wDCl+gUAclYDJvyeXdP2AsSVTL3hldiwxhKkWllD30KmEtnNV9a7a0JTX21cN6gghEAYD+8GzdZEotUV2neO/0DWN/bWyzAE4JSU+vbJDv//u7ogd/uL3fW2oKquF9QCRISx/o+OZ48QqroReSenW8dIc6m4NdBZGa2f0gkma6e99xC+l8b7Po25JusyLhPfB8GufD4Z5QLMy4LjfInflvjCK8cWMfwyJtxMxxqlw83MN/rVR9ZmImwHcUPgglKAjhnRgvobyECC7mzPt4d7wGncmfiwcWDtXAKDkNJhKro5u2E+zO93YiVrWCrEKHa6oth9rpaGs24kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S0V7mlzriMTD9e8u/w2A45urO7L0/XKAw9eGBTfQu2M=;
+ b=uJB7BmEy+gM5uDtlKd0KQgohTXW8BExruf5qR8RTA5HSAxmA0nig0EyKr5//DtsRJpAP3B/XgfDtZ9cwauefj/DZLDmlwxPRlEKePZn9CdjmuCTHEiBrjflgnS2hNtXPxx7sqX0+cjY8O09Kctj+bFwjlfwGrUANoeASbBRN5Eaqj/tRedxwhmuNNYanwsSoGg02PqkmtBiSx4kO3YIfYxMKsU9/R+phUqCNEXiL2isVUuU1Xu7p1frm0IQ3nvMfHh8zMrXzBJ0oxNZs+l74H7VcukSqqb8OEuS+9REK6CTjigt3becPb5EOcPFebtlXXqEnM3fMFcZPWenBjhwobw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cornelisnetworks.com; dmarc=pass action=none
+ header.from=cornelisnetworks.com; dkim=pass header.d=cornelisnetworks.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cornelisnetworks.com; 
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=S0V7mlzriMTD9e8u/w2A45urO7L0/XKAw9eGBTfQu2M=;
+ b=cjE1Ai6LEmUL79bW2UdZUrseJttkobdkYDAZGFNvKhJs+CUJb0yxBPZikO9k1OaChriFdrHV5qzTcMHZDVSEaaZnvxWxHmyQU/AAmfWZb/Df1rm8eXrV4cQqxpsOa0ZeZkgzyKBpFRYHWkCA9UPE3YehhiqUaO9URlyP8JhonsKzGvoY9YZSdFk0z+0mhdAy9T4OpCpm/ziGXR9M6ZCBEuysWj4OTqqh3s+J4+M09NNEtUie4r/aGhFhkTRVJF0TsdGyN8kmhDOYRbOPxQ1mgrC0+Mf/0wadSXKgOZcJmP/8MUYers9+3n3fflsIo/JtnOC8TbtbKWU267vzbTJ9Nw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cornelisnetworks.com;
+Received: from PH7PR01MB8146.prod.exchangelabs.com (2603:10b6:510:2bd::18) by
+ CH0PR01MB7091.prod.exchangelabs.com (2603:10b6:610:f1::8) with
+ Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7982.22; Thu, 19 Sep 2024 12:26:37 +0000
+Received: from PH7PR01MB8146.prod.exchangelabs.com
+ ([fe80::2972:642:93d1:e9d4]) by PH7PR01MB8146.prod.exchangelabs.com
+ ([fe80::2972:642:93d1:e9d4%5]) with mapi id 15.20.7982.016; Thu, 19 Sep 2024
+ 12:26:36 +0000
+Message-ID: <8da76a79-444b-46f4-96db-309d03689220@cornelisnetworks.com>
+Date: Thu, 19 Sep 2024 07:26:33 -0500
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: qemu-devel@nongnu.org, virtualization@lists.linux.dev,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: "Dalessandro, Dennis" <dennis.dalessandro@cornelisnetworks.com>
+From: Doug Miller <doug.miller@cornelisnetworks.com>
+Subject: Looking for help and advice on using RPMSG-over-VIRTIO
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: CH0PR08CA0017.namprd08.prod.outlook.com
+ (2603:10b6:610:33::22) To PH7PR01MB8146.prod.exchangelabs.com
+ (2603:10b6:510:2bd::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240919112056.620917-1-dbarboza@ventanamicro.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR01MB8146:EE_|CH0PR01MB7091:EE_
+X-MS-Office365-Filtering-Correlation-Id: e44552d3-de39-433e-f357-08dcd8a64df7
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?OHlCd29VZ0VpNEY4OEdJZUhaRE10dWxPajI5OFNyK29SY3hTRHRsRkNGMCt2?=
+ =?utf-8?B?aVprczBUbXNLdFZCY2I1NkF2ZW5UUEtmNW9uYjlaSEFpcmhOalJuTFFSemxn?=
+ =?utf-8?B?WFMxdmppVW1UL0ZFVGg4bVJOeGV5SFg4djkrbjdyYzc0dkthK0dyNm10RllN?=
+ =?utf-8?B?VStPQ1FtQndwUTFodGhNVC9xUFpJcGlHOHFYT0M5cGNuazdmNm8xbFQ5b0di?=
+ =?utf-8?B?cWJjZUJGSkJrYUNXWUNrR29ZOUplK2c2UXdpRy80dmVKRjkrWFFZL21UcWVx?=
+ =?utf-8?B?RVlRU0k0enFOREwrODk3QVI2YmlFUVNyRDcxM2NtYlJvaGZYOU5qV2tVU2hq?=
+ =?utf-8?B?aXFsdW1zT3J5QjB0QWdibEdxY0NkanhZcUNZMkhxQXIxd1VuTmFDdTI0RTc4?=
+ =?utf-8?B?THRRT21NWjhZdzE4bVJ1dTBLcllRNHBnTTJjR1E3TzVDRFFTcTVCWEo0SXJY?=
+ =?utf-8?B?aEhrb1FTdCtNVU43aHFsNlFNL1AxRGdJWFlCODllWm1GUldGbCtwOXh3NkZM?=
+ =?utf-8?B?K2hNRVNHOTdVRDJyVGdrVUh2K1ZacnRHRFlPODBzRVBFWEZJb0hBZnR5YXJ3?=
+ =?utf-8?B?RnhnWlgrZHNwa05BbGdOSExua2hqVG5CSkszMTdFV21MSzBYWXZKVVlYRm15?=
+ =?utf-8?B?eDZ4cnlXVWxFY29qTDVrcGpZME1BbW56Y2ZCWldyQ3RpcGdMeGVHbjBMYW0v?=
+ =?utf-8?B?T2hiVHBxeUhsKzMwMWFUZ1BwZDVURnZ6bkJocjlUeHlBK0RWbnJyWUF4dkxW?=
+ =?utf-8?B?Z3NWcW9GZ1cwTUhoNUs3TGVkNFZqWmZlSVppeDVhdk0yMFdtVU5OeEtLWWFs?=
+ =?utf-8?B?aVBER3RhbGdGZDNZWkxOeTJMVFN6OUJ4Y2xnZHRrVDdFR25mU0V4Vjc4cWx4?=
+ =?utf-8?B?R1A1VUFJYUhxc2JjY3kvMGVudnV3dHd5ZHlzc1FnTkV5TitHWkYwekFmTURN?=
+ =?utf-8?B?T2JJUUlOK0pjU3FiaXYyOG1keTR4US9XNjZkNnJ5MlkreTh3TWFkY0kyUFNE?=
+ =?utf-8?B?NzRlYUxqZmZNayt6bERMWDkyc3dLWUsrcUNEb00xa25IeU5KSDkzbCtGSnFr?=
+ =?utf-8?B?VUxKOE9PQjIvWk5nYklBeDMrVTk0TlhEYlVyQi9SRDRHelU4aW80cTd3TE15?=
+ =?utf-8?B?ZVdocGhqWmdFWFBUL0pIS2d1M0ptTHFxOGlkQzN3cUpsSzVhQTBMN3pqMlZl?=
+ =?utf-8?B?U2VzUk0vU0VDSXVnMG5McUNaWnRobjFDWWR2Ym4xMGR1SEhRdjRUdVdLYktt?=
+ =?utf-8?B?VGNUQW1QbnNUekZYWitpOHBrZGwyR2RSeGppQUdvTjVDRDFUdmFNZndqQS9B?=
+ =?utf-8?B?NkxTaVRVOGpsOTZtenJxemY1YThONTJXbHJBZWxvSHBjZERJc3MzTVNWTEhP?=
+ =?utf-8?B?b3ZUUlhjS3FRdHlMcVNJVDdXbkZwZzluY0QyZE8ralVDZHcwMlZVdi9NMlpr?=
+ =?utf-8?B?REVnWXJlZkRSTUJ2SExtQmxnbFI1Z215VWdIOHR5em5mNTBia2t4TGYyQW1P?=
+ =?utf-8?B?d0JaTVprVXlOQTRVaVdRQm0zQ2VQcDYxQUZKRWZkME9pTHlXdUF0Nlg5ZUxm?=
+ =?utf-8?B?ZjUxeHpoOUl0c041cnZkbkhZZFFNSmZ6bkh1d0lhNXBMN2tXZDcwRTAvcHA3?=
+ =?utf-8?B?TnRFU3NxbVAydGRSMEJWNnEybXErckdLQXhidWRWZ2pVbENJMXlkeVI5ZS9z?=
+ =?utf-8?B?Wkh3azZQY201SWw3T1NJUXNydkwxcnhlN1dhVzJxL2tmaWhHeDExOUcvVDdl?=
+ =?utf-8?B?bzVSNWt3TWpuZUx3NG5iaVJWc0p4Q0FHczFweXZ5KzBTUUNDVkhMeUVVVGZE?=
+ =?utf-8?B?Wi9XZ2hhMk5wS2k5Q3ZxUT09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR01MB8146.prod.exchangelabs.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dHpZckFDOVZ5Mk12LzBpMmc2bXZDN0ovbGQ1TmovK2p1VHlIYVZVWFlNY1or?=
+ =?utf-8?B?TjFrMXNHckx1aC9lZGRYQlR2dElzUStKeVZkN1lzNDE2YkQzQjBEdFBJUzZI?=
+ =?utf-8?B?dkFCdlNNei83ZkYwLzNrUXhQRXhVcjErQkVnbFFLMkYvV0k4YjFhR3dGU3ZK?=
+ =?utf-8?B?ckZVaGlEdFFRNUJCUFgvMzVDTFB0eVJyVlA0TWlnZjBOaVYwdGNwKzkvbWs5?=
+ =?utf-8?B?ZytDMlhLV0JlK1NJMFFHUCt1QU5qQVJ6TlVUSmwvZmRGdnpYREZsVWkvNnBu?=
+ =?utf-8?B?dEFMV24xU0RhOUpMWWlLUlBkT0xYaHZyZUgvcUZoVERpMVg3aGdLbit6WFNI?=
+ =?utf-8?B?TitUL2pXY2Rody8rM2ZRcHpyOUk2V3ZjOWNwQitXcGZMSmxSRytvR0JFNHJ5?=
+ =?utf-8?B?anZzRmJUMkhZa0JlWlVaSmdGZnpSK2pTL013Mks1TWhmdlZPV2tXa2hHb2NX?=
+ =?utf-8?B?QUhOcEpiY3c1Slcxb3RTM2hxY095SDNCVVIxQ0NxbnoyWDJ4RVQwOGxiaUpT?=
+ =?utf-8?B?UkNJeWQ3bytiQXdnaWZpSkc0R3hkc3lKbHE1UnhBVDFsWjBOWXp4bHJGaEFD?=
+ =?utf-8?B?MjZCU0M4YmkwcnF1b1J5ZlVrVUhEZFpyd1FSaFNEZG5yQUF3b0FpRVNxbzF4?=
+ =?utf-8?B?a2NyZlNhRTB4UzRkbGhmUUJudXJJY1B0VUZDUDJrVENEb0piZ0VES2JNMm5V?=
+ =?utf-8?B?bjZBQ0VmSzBCRC8rMk5mb1NmZ1AwZ1FabHliNytMWnlUbUJhOGxjb0FPZ2xK?=
+ =?utf-8?B?dXZEV1ZHQjNYSENMcHYyVHJvTzd5U1hxLzVRTHo1cEhWT1YzMEl3dy96TzRB?=
+ =?utf-8?B?MTBwVi9uQXN4QTgvdVA0cCtOOTlrU0hOM0d6MWNjTlBoTi92a043RmVqZTVD?=
+ =?utf-8?B?Q0hpM00zcWJnakUzV2dGYU5RUEt5dTVIcVJ0Nkp0R0ZTaTBsbVBLaDNDV2F6?=
+ =?utf-8?B?TW1hVjZoSWxBZlc2Y3UrTlAxUzBFNDA4aWNwYlZDRjR1bFpWVkFxVXVLNWdW?=
+ =?utf-8?B?THJ3eG9qS1NwZGNreXZOdXZOYXFjZDAzTm1RYzVRUHBTL3IvczVwcFZNUm85?=
+ =?utf-8?B?VUw5bG9wcmhVUHIxM0NhK25qVkhLS2V2TG9aUzNTeDg2UjhBblk4M0hCRHZQ?=
+ =?utf-8?B?MlVqbzZadXNidGovQXhQc1NES1FZNE9RV2trdnc3emZpdWV6SUpRMFdRSEtB?=
+ =?utf-8?B?Y2FNZ1pSMGVlNGFpa3dJS09KS3B2UEtzTmZHZE12TWZEaFhNa0NTVzVZNWha?=
+ =?utf-8?B?emdFenlFaUhiSUxuc2JXdkJyVGgyWk9hempBcHc5alZ1N3kxNmZGOFJBOG5M?=
+ =?utf-8?B?MEVJV0NHYkNmUUs5K2toOHh1SzJXM2FsYjVQekN6dlN5Y1poS2lnc0I2L3NF?=
+ =?utf-8?B?Rng0bk4zbnhUUHp2L3V1TVVsckJVUmtPR1F3RDZOWkRyc3h5ZGVoSFpmUHpq?=
+ =?utf-8?B?SHd0bFBCTWxiaWVxM0F5SFpPaGRIWG8wc2NXZHBuZ2ZlOTV5OTlRNm9JQTlE?=
+ =?utf-8?B?TGw3LzhLMkV6Rk45MVBCd1VtS2NuNVZKVjhyVzVGU045Z1NGOUVXZmxtY2dZ?=
+ =?utf-8?B?ZGJ5V3VsVWYrWk13cFRwdkw2d3R6WWNVWDUwWE1YREVEaTdVNWU5VzV5SzBY?=
+ =?utf-8?B?cENRc3dKY2kzaktDNWpkR0FCcExJL3UxU0lSVGhIQlpuWFkxVHJIRVdNdU1P?=
+ =?utf-8?B?WU5LbmdZQjVFem9BejYrd3Uxaks2UFVycUFPSVJwTzYrazlBN0xFRTJVMVNo?=
+ =?utf-8?B?KzlsNlJuUzdQVlRYVkhmZTVNNnJ3enY1YkdKUFAxQkNiblJKMWE4S1lucDkx?=
+ =?utf-8?B?QTJaVzhBdFhmZkw2Wkp6d2FHZi9uY0owMUdONXFRYTNVbTdjZi8xbEhjclk2?=
+ =?utf-8?B?bkxBalVITm5JTmw0Nnd1OXgvRkROMldUMWtudFQ0dlF5cFRjTzkycjZVeVVi?=
+ =?utf-8?B?c2hhWVJCVi9PLzNKcW9JbXQwSEg3blRGMms2ZnhJVHRPQWdKKzBPZ2tkZG1X?=
+ =?utf-8?B?dU9FMFQ5N0J5eHNJNzhKc25LT29XNkFOMXRNQ1FaMURrZkE1TWNreXVvYjRD?=
+ =?utf-8?B?RlJGNExNUjk1WWNQTENxZHFsREozeE9XZEVoS05aeXRLTzY3UmJpVGFJR1Nh?=
+ =?utf-8?B?T1N4NStlM2NrS2J0VXp0Q3k2ekV1N1JZSXZGUy90eE9VQ1VPRTB3RWIwQ0RZ?=
+ =?utf-8?Q?Dzdu9tG/7T40XzaLKWGTQPw=3D?=
+X-OriginatorOrg: cornelisnetworks.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e44552d3-de39-433e-f357-08dcd8a64df7
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR01MB8146.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2024 12:26:36.5537 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4dbdb7da-74ee-4b45-8747-ef5ce5ebe68a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JkdwetDwcEcayQC7YL28z7CHgiyN3ZTz76Zg4Ozomp4TYIYWf5bPC+H9xwtzoyKBYFvEXT+cBlTHI0PYRhmpvYH066D5mMfuFZOCO6woId3+6CIBGeyEKolKDD7Sng1Z
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR01MB7091
+Received-SPF: pass client-ip=40.93.198.82;
+ envelope-from=doug.miller@cornelisnetworks.com;
+ helo=CY4PR05CU001.outbound.protection.outlook.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-1.048, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 19 Sep 2024 09:34:46 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,155 +174,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 19, 2024 at 08:20:56AM -0300, Daniel Henrique Barboza wrote:
-> Add a QMP command that shows all specific properties of the current
-> accelerator in use.
+I am working on adding SR-IOV for a new adapter and need to find a way
+to communicate between guest and host drivers without using the adapter
+hardware. I have been looking at RPMSG-over-VIRTIO as a way to this, but
+have not been able to figure out how the host would setup the RPMSG
+device needed for this.
 
-Why do we need to expose /everything/ ?
+I have seen at least one bug in virtio_rpmsg_bus that was discovered and
+fixed by qemu developers, and so am hoping there may be some experience
+with rpmsg here that can help.
 
-> 
-> This can be used as a complement of other APIs like query-machines and
-> query-cpu-model-expansion, allowing management to get a more complete
-> picture of the running QEMU process.
+I see an example in the Linux kernel for using rpmsg from the guest
+(client) side, in samples/rpmsg/rpmsg_client_sample.c. What I'm having
+difficulty with is finding examples or documentation on how to do the
+host side. I have heard that the VMMs may also play a role in setting
+this up, or are doing something similar, but so far I am not able to
+find code examples in qemu or libvert.
 
-query-machines doesn't return every single QOM property, just
-a hand selected set of information pieces.
+Any help would be appreciated,
+Doug
 
-The query-cpu-model-expansion does return everything, but I
-consider that command to be bad design, as it doesn't distinguish
-between hardware CPU features, and QEMU QOM properties
-
-> 
-> This is the output with a x86_64 TCG guest:
-> 
-> $ ./build/qemu-system-x86_64 -S  -display none -accel tcg -qmp tcp:localhost:1234,server,wait=off
-> 
-> $ ./scripts/qmp/qmp-shell localhost:1234
-> Welcome to the QMP low-level shell!
-> Connected to QEMU 9.1.50
-> 
-> (QEMU) query-accelerator
-> {"return": {"name": "tcg", "props": {"one-insn-per-tb": false, "thread": "multi", "tb-size": 0, "split-wx": false, "type": "tcg-accel"}}}
-> 
-> And for a x86_64 KVM guest:
-> 
-> $ ./build/qemu-system-x86_64 -S  -display none -accel kvm -qmp tcp:localhost:1234,server,wait=off
-> 
-> $ ./scripts/qmp/qmp-shell localhost:1234
-> Welcome to the QMP low-level shell!
-> Connected to QEMU 9.1.50
-> 
-> (QEMU) query-accelerator
-> {"return": {"name": "KVM", "props": {"mem-container-smram[0]": "", "xen-gnttab-max-frames": 64, "device": "", "xen-version": 0, "mem-smram[0]": "", "notify-window": 0, "dirty-ring-size": 0, "kvm-shadow-mem": -1, "type": "kvm-accel", "notify-vmexit": "run", "xen-evtchn-max-pirq": 256}}}
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  hw/core/machine-qmp-cmds.c | 34 ++++++++++++++++++++++++++++++++++
->  qapi/machine.json          | 27 +++++++++++++++++++++++++++
->  2 files changed, 61 insertions(+)
-> 
-> diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-> index 130217da8f..eac803bf36 100644
-> --- a/hw/core/machine-qmp-cmds.c
-> +++ b/hw/core/machine-qmp-cmds.c
-
-> +AccelInfo *qmp_query_accelerator(Error **errp)
-> +{
-> +    AccelState *accel = current_accel();
-> +    AccelClass *acc = ACCEL_GET_CLASS(accel);
-> +    AccelInfo *info = g_new0(AccelInfo, 1);
-> +    QDict *qdict_out = qdict_new();
-> +    ObjectPropertyIterator iter;
-> +    ObjectProperty *prop;
-> +
-> +    info->name = g_strdup(acc->name);
-> +
-> +    object_property_iter_init(&iter, OBJECT(accel));
-> +    while ((prop = object_property_iter_next(&iter))) {
-> +        QObject *value;
-> +
-> +        if (!prop->get) {
-> +            continue;
-> +        }
-> +
-> +        value = object_property_get_qobject(OBJECT(accel), prop->name,
-> +                                                  &error_abort);
-> +        qdict_put_obj(qdict_out, prop->name, value);
-> +    }
-
-I'm not at all convinced trhat we should be exposing every single
-QOM property on the accelerator class as public QMP data
-
-> +
-> +    if (!qdict_size(qdict_out)) {
-> +        qobject_unref(qdict_out);
-> +    } else {
-> +        info->props = QOBJECT(qdict_out);
-> +    }
-> +
-> +    return info;
-> +}
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index a6b8795b09..d0d527d1eb 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -1898,3 +1898,30 @@
->  { 'command': 'x-query-interrupt-controllers',
->    'returns': 'HumanReadableText',
->    'features': [ 'unstable' ]}
-> +
-> +##
-> +# @AccelInfo:
-> +#
-> +# Information about the current accelerator.
-> +#
-> +# @name: the name of the current accelerator being used
-> +#
-> +# @props: a dictionary of the accelerator properties
-> +#
-> +# Since: 9.2
-> +##
-> +{ 'struct': 'AccelInfo',
-> +  'data': { 'name': 'str',
-> +            '*props': 'any' } }
-
-This is way too open ended. IMHO ideally we would never add more
-instances of the 'any' type, as it has many downsides
-
- - zero documentation about what is available
- - no version info about when each prop was introduced
- - no ability to tag fields as deprecated
-
-For this new API, IMHO 'name' should be an enumeration of the
-accelerator types, and thenm 'props' should be a discrinated
-union of accelerator specific structs
-
-> +
-> +##
-> +# @query-accelerator:
-> +#
-> +# Shows information about the accelerator in use.
-> +#
-> +# Returns: a CpuModelExpansionInfo describing the expanded CPU model
-> +#
-> +# Since: 9.2
-> +##
-> +{ 'command': 'query-accelerator',
-> +  'returns': 'AccelInfo' }
-> -- 
-> 2.45.2
-> 
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+External recipient
 
