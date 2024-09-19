@@ -2,78 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB1497C9E5
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D4E97CA10
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srGwz-00075P-Gs; Thu, 19 Sep 2024 09:12:01 -0400
+	id 1srH0I-0001Og-HF; Thu, 19 Sep 2024 09:15:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1srGwv-0006wU-K1
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:57 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1srH06-0000rG-Mb
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:15:16 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1srGwt-00019u-B2
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:11:57 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a8a7903cb7dso56740366b.3
- for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:11:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1srH02-0001WH-LJ
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:15:13 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5c3d20eed0bso1068324a12.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:15:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726751513; x=1727356313; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1726751709; x=1727356509; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wOh3f59vIQEM1sqQ2WN1asCa5iff+GQlUxHH7szOQUY=;
- b=zl765BxXkCM3NSYQVugfDQ4wX55b7amnLHCZB2I7trDOBZzpVUgFt8bD58fykzMFdd
- dggKfcnPmF4JDvjvOLBo1qik5VZtbLrilK7yUNvZnpPFODqsA7S5PftIzF341mXCgsRY
- NxuxCFa1PHLhUwE2D/QbmMN56eZjC3/lQJmafLMutCu8hH6F72GoeCZ0UUZc8taBpq84
- /lE21I+IXStyHnUgeAUT5eE+is7qUHqfNsK03zO/u+p51Wi1M+kKgjQ1VwqTrv4MF5OV
- nFeno+IZe3lL97hCLd8+6k/pcSNw57D2p6SvUO2xf8SN7jpkB4GjuwG0V25OUePrCnom
- uXeQ==
+ bh=fFGE1BTMD8PgEyANRQyAdpYr6j7ELrOQUa9Nz8kkLRg=;
+ b=jLy+1CuEXs+Q5DFmR1aXDdSkVvw2OpQeqLOhi4TrCZpyhXyNpv7BfCGfFDTXkZqkOg
+ EiXBNPincourvw83ZjF47OaDOpwCEVCtBMejsd5yJMzm0JVMuD6LInX85zHG4MBBpe58
+ MTeMPN8jw2ao2vx5zMLAs7K4fHk3Z47rE2rm4zgBkmr5f0HgpmIypl3ADsVF7sBDAjxN
+ BdjsqeEHt7FF7HsG2ijSRxXx216+ZEeyR9KuZL6CGrL+0736dcN28810BJepaS5C2p+G
+ tfNoYcU3DCXgvlY8muOQLXBkHgd+VoSEKuOMNN5kWJ3gRZLXvmNjboMKcdU4cSiTwyRT
+ WZQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726751513; x=1727356313;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=wOh3f59vIQEM1sqQ2WN1asCa5iff+GQlUxHH7szOQUY=;
- b=V+LTq1XXraXRpvj8LRrPM7xP+Ht6ftmgGT8UKnf2abX5H4piELOSeg1dwc2w3vdDtW
- LmKsROcei+zlU4KjyjcDKNNiN/NeXXjtnfpwnrr8sJWattl6prBbx+Wikk+q5ZvT3YyF
- v6eFyRD/3fG36nhYfl8W04nrEbrH2H/i38OeNjtyQKKs09iP23Yye2miorVHWLYAGptI
- A4ikgJfsv+rTc2VW0h1wqTFCs2oHHfH9sceGvJiXV8y+r6u9m/4scqNvAVfpj4SiUpcH
- LiRoAHrwfYu3lL2cpMNJg2CZ3jzlBcMvqn31Kh1ux8n7WzRFkp7Ig7NuLnJ9zd05dfhI
- 7Bmg==
-X-Gm-Message-State: AOJu0Yw7ggiL5Rn6relLgzdJEcbkUcznRp2ASgU3poL6XDfuBbC1YpX8
- mfG860gGo9QlgU+O9ToSrBdGUan3V3+VMM8fZkv2PsOf0zUbz2VOtmSkm/pTh78=
-X-Google-Smtp-Source: AGHT+IHaOcTgPADUixEc584Qzu0jx2qbwPPYLoELt4yOQUt4al2eST+S8x1+Uw9Q8KigXHh81Hq2yg==
-X-Received: by 2002:a05:6402:c4a:b0:5c4:8b7:d93d with SMTP id
- 4fb4d7f45d1cf-5c41e193760mr31381511a12.18.1726751513266; 
- Thu, 19 Sep 2024 06:11:53 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c42bb89cebsm5935169a12.60.2024.09.19.06.11.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Sep 2024 06:11:52 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 03E705F8A7;
- Thu, 19 Sep 2024 14:11:51 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/18] tcg plugins (deprecations, mem apis, contrib plugins)
-In-Reply-To: <CAFEAcA8tdyELui0=jYFObZO1=O_isJ-c1e0s4ZCbMVyfsrY=9A@mail.gmail.com>
- (Peter Maydell's message of "Thu, 19 Sep 2024 10:50:50 +0100")
+ d=1e100.net; s=20230601; t=1726751709; x=1727356509;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fFGE1BTMD8PgEyANRQyAdpYr6j7ELrOQUa9Nz8kkLRg=;
+ b=c4U1kciwdM0iGSgaNwNvy7S7ErjBR/0QxTl04BhRl8kHmhmutqfwQohfbjppy8SX+q
+ R9HOBSMbHo5GILJXo4n/RGcWQ5XWaG12HbktMnNDLuj3R06whgGWhCHyxE/1ItC1px79
+ 8b0GZqMYDKr0BRdjdODJOwUmfXrsA32KpwE0J2TrQ11DioWoqj0YW2yNzHC1hSVuCqyl
+ hf3rQzECuWvoRt0oUrr0+EZ/II91XVxuOzP7rULjLTW7HDuaxXDaDv3kLWh9kC9ExA6y
+ QoZB8LDTkCMaE5sYbk7ebk417/BogNm19nhBg5ZAaMqa8ZfofH/OtL/AoNpukgU+jRex
+ HMcQ==
+X-Gm-Message-State: AOJu0Yw5aug7AJhdTqIh3E7Av4A9wXBb5AwVmOvJlX2xJh8kaiBwhldt
+ J+1jgjDpeBK1d0EVdWf5267UAWSwxskGztmudT1UjFKZzb/uBj2aAEhklud6HffteZVA8oewXYx
+ bHXZVlF7B/ZOiNLOF0sbrHR9klAkRYdQVcCQqrH7vMFis8BJG
+X-Google-Smtp-Source: AGHT+IECY+knqYtslkktAtnY5bLyNAt+5QhZH10vTv50sMurd9AuAZN+vv2ZVkSV6SUCKPVpICRCHt+x71iwpUBtxic=
+X-Received: by 2002:a05:6402:1ec9:b0:5c4:4dfd:9fd5 with SMTP id
+ 4fb4d7f45d1cf-5c44dfda03emr5331227a12.29.1726751708815; Thu, 19 Sep 2024
+ 06:15:08 -0700 (PDT)
+MIME-Version: 1.0
 References: <20240918210712.2336854-1-alex.bennee@linaro.org>
  <CAFEAcA8tdyELui0=jYFObZO1=O_isJ-c1e0s4ZCbMVyfsrY=9A@mail.gmail.com>
-User-Agent: mu4e 1.12.6; emacs 29.4
-Date: Thu, 19 Sep 2024 14:11:50 +0100
-Message-ID: <875xqrg549.fsf@draig.linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ <875xqrg549.fsf@draig.linaro.org>
+In-Reply-To: <875xqrg549.fsf@draig.linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 19 Sep 2024 14:14:57 +0100
+Message-ID: <CAFEAcA8UGKtZLNZZVQiDryjst93AkQTKhQrBQ573+J21C-y4QA@mail.gmail.com>
+Subject: Re: [PULL 00/18] tcg plugins (deprecations, mem apis, contrib plugins)
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,85 +89,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
-
-> On Wed, 18 Sept 2024 at 22:08, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
-wrote:
->>
->> The following changes since commit 2b81c046252fbfb375ad30632362fc16e6e22=
-bd5:
->>
->>   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu int=
-o staging (2024-09-17 14:02:18 +0100)
->>
->> are available in the Git repository at:
->>
->>   https://gitlab.com/stsquad/qemu.git tags/pull-tcg-plugin-memory-180924=
--2
->>
->> for you to fetch changes up to a33f4871e0a0f4bf1cb037ab29fae7df7f2fc658:
->>
->>   contrib/plugins: avoid hanging program (2024-09-18 21:02:36 +0100)
->>
->> ----------------------------------------------------------------
->> TCG plugin memory instrumentation updates
->>
->>   - deprecate plugins on 32 bit hosts
->>   - deprecate plugins with TCI
->>   - extend memory API to save value
->>   - add check-tcg tests to exercise new memory API
->>   - fix timer deadlock with non-changing timer
->>   - add basic block vector plugin to contrib
->>   - add cflow plugin to contrib
->>   - extend syscall plugin to dump write memory
->>   - validate ips plugin arguments meet minimum slice value
->>
->> ----------------------------------------------------------------
+On Thu, 19 Sept 2024 at 14:11, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
+ote:
 >
-> Fails to build on macos:
-> https://gitlab.com/qemu-project/qemu/-/jobs/7865151156
+> Peter Maydell <peter.maydell@linaro.org> writes:
+> > While I'm looking at the code, this caught my eye:
+> >
+> >     case QEMU_PLUGIN_MEM_VALUE_U64:
+> >     {
+> >         uint64_t *p =3D (uint64_t *) &ri->data[offset];
+> >         uint64_t val =3D be ? htobe64(value.data.u64) : htole64(value.d=
+ata.u64);
+> >         if (is_store) {
+> >             *p =3D val;
+> >         } else if (*p !=3D val) {
+> >             unseen_data =3D true;
+> >         }
+> >         break;
+> >     }
+> >
+> > Casting a random byte pointer to uint64_t* like that
+> > and dereferencing it isn't valid -- it can fault if
+> > it's not aligned correctly.
 >
-> ../tests/tcg/plugins/mem.c:12:10: fatal error: 'endian.h' file not found
->
-> endian.h is a Linuxism.
+> Hmm in the normal case of x86 hosts we will never hit this.
 
-Doh - I'd written it off the failure as waiting for the MacOS bump and
-didn't see the actual error. I'll see what we can do.
+Not necessarily -- some x86 SIMD insns enforce alignment.
 
->
-> While I'm looking at the code, this caught my eye:
->
->     case QEMU_PLUGIN_MEM_VALUE_U64:
->     {
->         uint64_t *p =3D (uint64_t *) &ri->data[offset];
->         uint64_t val =3D be ? htobe64(value.data.u64) : htole64(value.dat=
-a.u64);
->         if (is_store) {
->             *p =3D val;
->         } else if (*p !=3D val) {
->             unseen_data =3D true;
->         }
->         break;
->     }
->
-> Casting a random byte pointer to uint64_t* like that
-> and dereferencing it isn't valid -- it can fault if
-> it's not aligned correctly.
+> I guess we
+> could do a memcpy step and then the byteswap?
 
-Hmm in the normal case of x86 hosts we will never hit this. I guess we
-could do a memcpy step and then the byteswap?
+That's what bswap.h does, yes.
 
-> I suspect the plugin needs to define versions of at least some
-> of the functionality in qemu's include/qemu/bswap.h.
+> Could it be included directly without bringing in the rest of QEMU's
+> include deps?
 
-Could it be included directly without bringing in the rest of QEMU's
-include deps?
+It's technically quite close to standalone I think,
+but I think it would be a bad idea to directly include
+it because once you put QEMU's include/ on the plugin
+compile include path then that's a slippery slope to
+the plugins not actually being standalone code any more.
 
->
-> thanks
-> -- PMM
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+-- PMM
 
