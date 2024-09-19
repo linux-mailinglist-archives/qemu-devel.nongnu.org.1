@@ -2,97 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D2697CEB8
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 23:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BD097CEBC
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 23:18:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srORP-0008EK-37; Thu, 19 Sep 2024 17:11:55 -0400
+	id 1srOWk-0004LE-69; Thu, 19 Sep 2024 17:17:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1srORM-0008Do-Un
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 17:11:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1srORK-0000CN-N7
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 17:11:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726780308;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lF38y5BjJ2J2/qW+mdNleFzYhGqmRK5WPAWeu9e+6fA=;
- b=K2DfgBriAwvF3oUfyMWEf5QGuvypp4IGr/kXU6++qf4DVSVJiP1r0lWFmjwr1aW/ImhMvx
- 3ohjWWoHdulhVZWVAzn9nO+OT2VfHaPHOgXOdq6frIdZ1PxUmSvrAmChq5NWKNAimUqyfm
- Oe+W2BOmTLuJI+QyzMNFZCggW3z56QE=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-nEobC0pVNO-gtCp1xJsW9Q-1; Thu, 19 Sep 2024 17:11:47 -0400
-X-MC-Unique: nEobC0pVNO-gtCp1xJsW9Q-1
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-6ddb9b15af3so28640587b3.1
- for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 14:11:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726780306; x=1727385106;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <gregorhaas1997@gmail.com>)
+ id 1srOWh-0004JZ-VT; Thu, 19 Sep 2024 17:17:23 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gregorhaas1997@gmail.com>)
+ id 1srOWf-0000gH-RN; Thu, 19 Sep 2024 17:17:23 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-2054e22ce3fso14506085ad.2; 
+ Thu, 19 Sep 2024 14:17:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1726780639; x=1727385439; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lF38y5BjJ2J2/qW+mdNleFzYhGqmRK5WPAWeu9e+6fA=;
- b=EQ5dwKnG1K5SyD85DRLdVfVUJ08j7DM/1il+4PRGEe00+dd7WBaiS2yFzGA6PoTVYO
- KmRLMJiVi0o/77nDpWGurBJow1GT5h4EqplCY8iOVm1qbwTIx/yjQkWWxgsOSrV56ISp
- +t0U1Wlo1yUbZ/jYbEUF7KT4q6sjOuMm0gzJ9Cc8/H4MHPrFQbhJZaNP7zsyQ9XFH0nf
- IqWFJscQT2zlc+tjCg7veKowhTffC7EJvQvsgWTngYYNHQ0G23pBzFqKVOTvCPrUIgSP
- 58XkLro1TNf8xcwGSa1+JZs2TyeYCuz/yD9q5Lkf2yh3b3g4l8hky/kesWzyfAyYbQKv
- glFw==
+ bh=EoSjHxGhf0A2MNCQwDDUg4rIGiQy/h0AKZYL30BhkPs=;
+ b=Ez744S5PTHBsbh8mWDkUqO3om/zja+oAHw1q5uzOdXoSBABQZOUpkn9Up9VGDGsn8j
+ D6Ujl0tKhko+WDDFU9GUgC+cBkp0nPX4mjVH9LkiV9MWVe8Aayi4QX+Qb74roVGtOkz+
+ 9JrUjW+w9T0G4PoPopNoaQAnspL3MXF3319Zu9GLRfCaRSjryPdq1zKw1VM2KNBl4YSX
+ xTM3kfDVsxqiGlkNNgMnQOS+74CEl0vUgc0q1EVWFcqASRbLtwcyVUwZ89G4YUYmKLKE
+ lpAXE4o4vuJoPtZlYw4k1hAlBNxhFiTIpyKly8VKyEqLNbmSD89ItBH9o77kwUgrONE3
+ QrgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726780639; x=1727385439;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EoSjHxGhf0A2MNCQwDDUg4rIGiQy/h0AKZYL30BhkPs=;
+ b=OyZDXexKFfiM25D00XM/ikhsiTKsbnZbhCjsDfWZr8031H5e0evEt81P2VPjCAw6BV
+ vCPmMxz1w7/HfPCKxhueTjE9u84nrv7HS9ZZZep1ZZb+qGLHuJEiLbCN7IX8oBPuk9ir
+ HII+GpHp+bcRcyJTsl/3peA4l5D8TIFnByy18xAawj5weCtCDiU18E3Js4yB1ze4/kFa
+ c8qbH9nbbxpkpzLcX56CjKIHTJIooiViSwKV6RM7324oI1cUHLJxwXtKL9RiUP6XEVDC
+ PvTpp1733PJRnpg2Sz4bdQrcTZxr+aonJ+VgjQdFa9gYzJ9gxtrIWztTp0P0RQ8yhXCe
+ F6XQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWwoJJTPuaNFf4duAZQcgtWZrk4b4IBOn6AomTOx4XmjDo8bQ5g0enBdqT8olmy8EHh0BruEWHftHoc@nongnu.org
-X-Gm-Message-State: AOJu0YxknCV0PmYdawEDWogcmPko/wX7pv6GXQFzjHn39JOgb263dv6Z
- M1s77Hg5LKbNVTrhYriK5gf5JkcGZb/mvozixhigr5X3ZQonBeY1jQlAcm/+YljzHPFWQ1wKsxc
- S4DSj9HppzkCFHgMbmVhwfrMGLsfjZRCyob2c7Y/K5wHGCp32irXd
-X-Received: by 2002:a05:690c:385:b0:6dd:d1b5:c645 with SMTP id
- 00721157ae682-6dfeeec59b0mr12162797b3.31.1726780306591; 
- Thu, 19 Sep 2024 14:11:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFe6Jt22MXDY+FdTcMMsqCLjNfe6dAK/Pfj0Mm0P+RxDsUhKLq0MES74rw+mKY7e1rSDH62uw==
-X-Received: by 2002:a05:690c:385:b0:6dd:d1b5:c645 with SMTP id
- 00721157ae682-6dfeeec59b0mr12162547b3.31.1726780306223; 
- Thu, 19 Sep 2024 14:11:46 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-45b178f2de1sm10704671cf.62.2024.09.19.14.11.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Sep 2024 14:11:44 -0700 (PDT)
-Date: Thu, 19 Sep 2024 17:11:41 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc: Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 08/17] migration: Add load_finish handler and
- associated functions
-Message-ID: <ZuyTjQJujZo6tw9p@x1n>
-References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
- <1a7599896decdbae61cee385739dc0badc9b4364.1724701542.git.maciej.szmigiero@oracle.com>
- <Zt9UjvvbeUZQlGNY@x1n>
- <d245c8b6-b765-42e1-a5ec-bdb46494cec4@maciej.szmigiero.name>
+ AJvYcCWQky7WNVY5ayWMqzqwLw8cyiDL17SRXMWb5zHruCB+k/K/750Dcq7HkTX3RgZDPcshzGQj93DL/tAf@nongnu.org,
+ AJvYcCXiSu7zO4FcmMD7h93GxaTs7kanT+mgeo90S1VIffPKTh4kSxcwx/gqK3VH/w8KnjRZF+1ubdC+cAEOJw==@nongnu.org
+X-Gm-Message-State: AOJu0YwAO3LXCNxMGjSLBNimDL9IBAoJUhC/eh7IcLQ3Ww5qlZkbgEZ1
+ J+NfaoPgzxm8yjAKUy8CgwplSIs/Ps9IAQIzzi70vewqwdqFGPX6ohqKERonmex3BE5Fb0C2lgi
+ tWJAk4hnBM550X29gxJp7zPRgZso=
+X-Google-Smtp-Source: AGHT+IHAvGMT4xeFtLIjE6EjMcJl2/vC+wLjcFSVbyA8+lR9ePxEbtdjGl5qTFACGv5YpvFSqsQYDFi4sgPo32XRcpQ=
+X-Received: by 2002:a17:902:f7c5:b0:207:45f1:d1fe with SMTP id
+ d9443c01a7336-208d843e28dmr4947685ad.61.1726780639256; Thu, 19 Sep 2024
+ 14:17:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d245c8b6-b765-42e1-a5ec-bdb46494cec4@maciej.szmigiero.name>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240805210444.497723-1-gregorhaas1997@gmail.com>
+ <CAKmqyKM_qgc+wwrDRzZM1yda=dZziM=1rGU2_SDeJU9PTnacVg@mail.gmail.com>
+ <20240917-2683603a6ea10148772d365e@orel>
+In-Reply-To: <20240917-2683603a6ea10148772d365e@orel>
+From: Gregor Haas <gregorhaas1997@gmail.com>
+Date: Thu, 19 Sep 2024 14:16:42 -0700
+Message-ID: <CAMqWt3ofKAZVMjDcpA=xYcwaRw9ZJ51o1g+pp2vobVoyT2ODkQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/1] Add support for generating OpenSBI domains in the
+ device tree
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, 
+ atishp@rivosinc.com, dbarboza@ventanamicro.com, alistair.francis@wdc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=gregorhaas1997@gmail.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,120 +94,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 19, 2024 at 09:49:10PM +0200, Maciej S. Szmigiero wrote:
-> On 9.09.2024 22:03, Peter Xu wrote:
-> > On Tue, Aug 27, 2024 at 07:54:27PM +0200, Maciej S. Szmigiero wrote:
-> > > From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-> > > 
-> > > load_finish SaveVMHandler allows migration code to poll whether
-> > > a device-specific asynchronous device state loading operation had finished.
-> > > 
-> > > In order to avoid calling this handler needlessly the device is supposed
-> > > to notify the migration code of its possible readiness via a call to
-> > > qemu_loadvm_load_finish_ready_broadcast() while holding
-> > > qemu_loadvm_load_finish_ready_lock.
-> > > 
-> > > Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-> > > ---
-> > >   include/migration/register.h | 21 +++++++++++++++
-> > >   migration/migration.c        |  6 +++++
-> > >   migration/migration.h        |  3 +++
-> > >   migration/savevm.c           | 52 ++++++++++++++++++++++++++++++++++++
-> > >   migration/savevm.h           |  4 +++
-> > >   5 files changed, 86 insertions(+)
-> > > 
-> > > diff --git a/include/migration/register.h b/include/migration/register.h
-> > > index 4a578f140713..44d8cf5192ae 100644
-> > > --- a/include/migration/register.h
-> > > +++ b/include/migration/register.h
-> > > @@ -278,6 +278,27 @@ typedef struct SaveVMHandlers {
-> > >       int (*load_state_buffer)(void *opaque, char *data, size_t data_size,
-> > >                                Error **errp);
-> > > +    /**
-> > > +     * @load_finish
-> > > +     *
-> > > +     * Poll whether all asynchronous device state loading had finished.
-> > > +     * Not called on the load failure path.
-> > > +     *
-> > > +     * Called while holding the qemu_loadvm_load_finish_ready_lock.
-> > > +     *
-> > > +     * If this method signals "not ready" then it might not be called
-> > > +     * again until qemu_loadvm_load_finish_ready_broadcast() is invoked
-> > > +     * while holding qemu_loadvm_load_finish_ready_lock.
-> > 
-> > [1]
-> > 
-> > > +     *
-> > > +     * @opaque: data pointer passed to register_savevm_live()
-> > > +     * @is_finished: whether the loading had finished (output parameter)
-> > > +     * @errp: pointer to Error*, to store an error if it happens.
-> > > +     *
-> > > +     * Returns zero to indicate success and negative for error
-> > > +     * It's not an error that the loading still hasn't finished.
-> > > +     */
-> > > +    int (*load_finish)(void *opaque, bool *is_finished, Error **errp);
-> > 
-> > The load_finish() semantics is a bit weird, especially above [1] on "only
-> > allowed to be called once if ..." and also on the locks.
-> 
-> The point of this remark is that a driver needs to call
-> qemu_loadvm_load_finish_ready_broadcast() if it wants for the migration
-> core to call its load_finish handler again.
-> 
-> > It looks to me vfio_load_finish() also does the final load of the device.
-> > 
-> > I wonder whether that final load can be done in the threads,
-> 
-> Here, the problem is that current VFIO VMState has to be loaded from the main
-> migration thread as it internally calls QEMU core address space modification
-> methods which explode if called from another thread(s).
+Hi Drew,
 
-Ahh, I see.  I'm trying to make dest qemu loadvm in a thread too and yield
-BQL if possible, when that's ready then in your case here IIUC you can
-simply take BQL in whichever thread that loads it.. but yeah it's not ready
-at least..
+On Tue, Sep 17, 2024 at 5:45=E2=80=AFAM Andrew Jones <ajones@ventanamicro.c=
+om> wrote:
+>
+> On Mon, Sep 09, 2024 at 01:27:05PM GMT, Alistair Francis wrote:
+> > On Tue, Aug 6, 2024 at 7:05=E2=80=AFAM Gregor Haas <gregorhaas1997@gmai=
+l.com> wrote:
+> > >
+> > > This patch series adds support for specifying OpenSBI domains on the =
+QEMU
+> > > command line. A simple example of what this looks like is below, incl=
+uding
+> > > mapping the board's UART into the secondary domain:
+> >
+> > Thanks for the patch, sorry it took me so long to look into this
+> >
+> > >
+> > > qemu-system-riscv64 -machine virt -bios fw_jump.bin -cpu max -smp 2 -=
+m 4G -nographic \
+> > >         -device opensbi-memregion,id=3Dmem,base=3D0xBC000000,order=3D=
+26,mmio=3Dfalse \
+> > >         -device opensbi-memregion,id=3Duart,base=3D0x10000000,order=
+=3D12,mmio=3Dtrue,device0=3D"/soc/serial@10000000" \
+> > >         -device opensbi-domain,id=3Ddomain,possible-harts=3D0-1,boot-=
+hart=3D0x0,next-addr=3D0xBC000000,next-mode=3D1,region0=3Dmem,perms0=3D0x3f=
+,region1=3Duart,perms1=3D0x3f
+> >
+> > This will need documentation added under docs (probably under
+> > docs/system/riscv) of how this should be used.
+> >
+> > I'm not convinced this is something we want though. A user can dump
+> > the QEMU DTB and edit it to support OpenSBI domains if they want.
+> >
+>
+> I also feel like this is just pushing the population of device tree
+> nodes from an editor of a .dts file to the QEMU command line. If some
+> generation is needed, then maybe we need a script, possibly one which
+> has the same command line inputs as proposed here. afaik, we haven't
+> typically taken patches which help overlay the generated devicetree
+> with additional nodes. For example, see [1] for one such proposal
+> and rejection.
+>
+> [1] https://lore.kernel.org/all/20210926183410.256484-1-sjg@chromium.org/
+> Thanks,
+> drew
 
-Would it be possible vfio_save_complete_precopy_async_thread_config_state()
-be done in VFIO's save_live_complete_precopy() through the main channel
-somehow?  IOW, does it rely on iterative data to be fetched first from
-kernel, or completely separate states?  And just curious: how large is it
-normally (and I suppose this decides whether it's applicable to be sent via
-the main channel at all..)?
+Thanks for the link! After reading through that chain, I can see that there=
+ is
+typically high resistance to guest-specific device tree patches. As such, I=
+'ll
+probably abandon this patch series rather than doing more work to clean it =
+up.
+I do wonder why there is so much resistance to these types of changes when =
+the
+need for them arises so often in various boot firmwares.
 
-> 
-> > then after
-> > everything loaded the device post a semaphore telling the main thread to
-> > continue.  See e.g.:
-> > 
-> >      if (migrate_switchover_ack()) {
-> >          qemu_loadvm_state_switchover_ack_needed(mis);
-> >      }
-> > 
-> > IIUC, VFIO can register load_complete_ack similarly so it only sem_post()
-> > when all things are loaded?  We can then get rid of this slightly awkward
-> > interface.  I had a feeling that things can be simplified (e.g., if the
-> > thread will take care of loading the final vmstate then the mutex is also
-> > not needed? etc.).
-> 
-> With just a single call to switchover_ack_needed per VFIO device it would
-> need to do a blocking wait for the device buffers and config state load
-> to finish, therefore blocking other VFIO devices from potentially loading
-> their config state if they are ready to begin this operation earlier.
-
-I am not sure I get you here, loading VFIO device states (I mean, the
-non-iterable part) will need to be done sequentially IIUC due to what you
-said and should rely on BQL, so I don't know how that could happen
-concurrently for now.  But I think indeed BQL is a problem.
-
-So IMHO this recv side interface so far is the major pain that I really
-want to avoid (comparing to the rest) in the series.  Let's see whether we
-can come up with something better..
-
-One other (probably not pretty..) idea is when waiting here in the main
-thread it yields BQL, then other threads can take it and load the VFIO
-final chunk of data.  But I could miss something else.
-
--- 
-Peter Xu
-
+Thanks,
+Gregor
 
