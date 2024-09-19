@@ -2,95 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3B497CA6B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2E697CA7C
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:50:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srHWK-0008Kj-Ig; Thu, 19 Sep 2024 09:48:32 -0400
+	id 1srHXi-0007A1-S3; Thu, 19 Sep 2024 09:49:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
- id 1srHWD-0007rs-LA
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:48:26 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1srHXg-000748-2t
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:49:56 -0400
+Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
- id 1srHW9-0006Hf-Nu
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:48:23 -0400
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48J95LPs018552;
- Thu, 19 Sep 2024 13:48:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- 7Go0Ej3Z79lI7HiaPl5Kgq64gcqAv8TRJ9Cfmvf84W4=; b=b2LxrUnqIgP6bZLO
- ADo19mgpAM6sM2uPG5w3IuLxsT3ZmZzRKEtsS+BIEiEGKGlVO/b4qyf6HSf2gr3n
- 3LelgjWZlHHb6LA7v5jZWhayASUDIWhzv5I3mO8pAnpBFQ/1JzPRF+5n+WAWJbhH
- U4pGul6awY5w7p3KRgQvz90eO3TPYe69gl3leYY8kx/GRRKGm+fJFLqUrJSllu5J
- 3PJjFWz/2liU7pZ28kg2j2M12lBRKDgsKVxt6yNvKQiEKtW1WiDiIJBM86vYyi2e
- hRQWg8PMBdcIrPnDpN97taaYmRir5I09krkCPODC5exzGOFSwzo2g/lKbl25HmUk
- i/y+Lw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41n4hf5gy6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Sep 2024 13:48:17 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
- [10.47.97.35])
- by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48JDmFow029370
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Sep 2024 13:48:15 GMT
-Received: from [10.110.61.117] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 19 Sep
- 2024 06:48:15 -0700
-Message-ID: <ad6e864e-4a5e-435d-9ab3-23834e692f55@quicinc.com>
-Date: Thu, 19 Sep 2024 08:48:14 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/tcg/multiarch: Define _LARGEFILE64_SOURCE
-From: Brian Cain <quic_bcain@quicinc.com>
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-CC: Brian Cain <bcain@quicinc.com>, <qemu-devel@nongnu.org>
-References: <20240907023924.1394728-1-bcain@quicinc.com>
- <0298a6cc-2c75-4cb9-8f9c-146c0173fc31@quicinc.com>
- <87wmjbg2th.fsf@draig.linaro.org>
- <b6ef0a81-1153-4aca-9e27-570c2f0a6853@quicinc.com>
- <87msk7fvmu.fsf@draig.linaro.org>
- <6404a2e7-0d29-42e5-b4ff-f7d7aba1939f@quicinc.com>
- <7c6a19b6-049a-4e3f-afef-eb561b6dfcff@quicinc.com>
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1srHXc-0006Mi-8X
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:49:55 -0400
+To: David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, Jason Wang
+ <jasowang@redhat.com>, "Zuo,Boqun" <zuoboqun@baidu.com>, "alxndr@bu.edu"
+ <alxndr@bu.edu>, "thuth@redhat.com" <thuth@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "Gao,Shiyuan"
+ <gaoshiyuan@baidu.com>
+Subject: Re: [PATCH v3 1/1] virtio-pci: Add lookup subregion of
+ VirtIOPCIRegion MR
+Thread-Topic: [PATCH v3 1/1] virtio-pci: Add lookup subregion of
+ VirtIOPCIRegion MR
+Thread-Index: AQHbCpq+8JD0HFaZskiEbYf/lnfsEg==
+Date: Thu, 19 Sep 2024 13:49:26 +0000
+Message-ID: <33842f6145ba42c5a9b021ba31054a7f@baidu.com>
+References: <20240903120304.97833-1-gaoshiyuan@baidu.com>,
+ <b7f9dad2-29d9-42e6-97b0-32be6c077391@redhat.com>
+In-Reply-To: <b7f9dad2-29d9-42e6-97b0-32be6c077391@redhat.com>
+Accept-Language: en-US, zh-CN
 Content-Language: en-US
-In-Reply-To: <7c6a19b6-049a-4e3f-afef-eb561b6dfcff@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: bb2ZtsTI4753ChRmKaojAEqFE9pzlMdp
-X-Proofpoint-GUID: bb2ZtsTI4753ChRmKaojAEqFE9pzlMdp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- suspectscore=0 bulkscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015
- mlxlogscore=999 adultscore=0 malwarescore=0 phishscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
- definitions=main-2409190091
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_bcain@quicinc.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.22.192.143]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-FEAS-Client-IP: 172.31.51.44
+X-FE-Last-Public-Client-IP: 100.100.100.60
+X-FE-Policy-ID: 52:10:53:SYSTEM
+Received-SPF: pass client-ip=111.206.215.185;
+ envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,112 +65,196 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+From:  "Gao,Shiyuan" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 9/16/2024 11:31 AM, Brian Cain wrote:
->
-> On 9/16/2024 11:05 AM, Brian Cain wrote:
+>> Now virtio_address_space_lookup only lookup common/isr/device/notify
+>> MR and exclude their subregions.
 >>
->> On 9/16/2024 10:47 AM, Alex Bennée wrote:
->>> Brian Cain <quic_bcain@quicinc.com> writes:
->>>
->>>> On 9/16/2024 8:12 AM, Alex Bennée wrote:
->>>>> Brian Cain <quic_bcain@quicinc.com> writes:
->>>>>
->>>>>> On 9/6/2024 9:39 PM, Brian Cain wrote:
->>>>>>> With newer clang builds (19.x), there's a warning for implicit 
->>>>>>> function
->>>>>>> declarations and it rejects linux-test.c.
->>>>>>>
->>>>>>> glibc/musl's readdir64() declaration in dirent is guarded by
->>>>>>> _LARGEFILE64_SOURCE, so we'll define it to fix the warning.
->>>>>>>
->>>>>>>          BUILD   hexagon-linux-user guest-tests
->>>>>>> /local/mnt/workspace/upstream/toolchain_for_hexagon/qemu/tests/tcg/multiarch/linux/linux-test.c:189:14: 
->>>>>>> error: call to undeclared function 'readdir64'; ISO C99 and 
->>>>>>> later do not support implicit function declarations 
->>>>>>> [-Wimplicit-function-declaration]
->>>>>>>          189 |         de = readdir64(dir);
->>>>>>>              |              ^
->>>>>>>
->>>>>>> Signed-off-by: Brian Cain <bcain@quicinc.com>
->>>>>>> ---
->>>>>>>     tests/tcg/multiarch/linux/linux-test.c | 1 +
->>>>>>>     1 file changed, 1 insertion(+)
->>>>>>>
->>>>>>> diff --git a/tests/tcg/multiarch/linux/linux-test.c 
->>>>>>> b/tests/tcg/multiarch/linux/linux-test.c
->>>>>>> index 64f57cb287..4e0e862ad9 100644
->>>>>>> --- a/tests/tcg/multiarch/linux/linux-test.c
->>>>>>> +++ b/tests/tcg/multiarch/linux/linux-test.c
->>>>>>> @@ -17,6 +17,7 @@
->>>>>>>      *  along with this program; if not, see 
->>>>>>> <http://www.gnu.org/licenses/>.
->>>>>>>      */
->>>>>>>     #define _GNU_SOURCE
->>>>>>> +#define _LARGEFILE64_SOURCE
->>>>>>>     #include <stdarg.h>
->>>>>>>     #include <stdlib.h>
->>>>>>>     #include <stdio.h>
->>>>>> Alex -- what do you think about this one?
->>>>> Actually scratch that, this is a 32 compat hack:
->>>>>
->>>>>     1f442da51e (tests/tcg/multiarch: fix 32bit linux-test on 64bit 
->>>>> host)
->>>>>
->>>>> Is the __USE_LARGEFILE64 symbol in the hexagon headers?
->>>>>
->>>> musl does not define/use __USE_LARGEFILE64, no.  If it's well defined
->>>> I could examine whether it makes sense to add this feature to musl,
->>>> though.  How does __USE_LARGEFILE64 differ from _LARGEFILE64_SOURCE?
->>>> Is it more appropriate to define that here?
->>> Digging into the GNU source _LARGEFILE* is the correct define, the 
->>> __USE
->>> flags are internal. features.h says:
->>>
->>>     _LARGEFILE_SOURCE    Some more functions for correct standard I/O.
->>>     _LARGEFILE64_SOURCE  Additional functionality from LFS for large 
->>> files.
->>>
->>> although looking at _LARGEFILE64_SOURCE should be defined by
->>> _GNU_SOURCE which is already set for linux-test.c
->>>
->>> According to the musl WHATSNEW:
->>>
->>>    compatibility:
->>>    - make _GNU_SOURCE imply _LARGEFILE64_SOURCE
+>> When VHOST_USER_PROTOCOL_F_HOST_NOTIFIER enable, the notify MR has
+>> host-notifier subregions and we need use host-notifier MR to
+>> notify the hardware accelerator directly instead of eventfd notify.
 >>
->> Yeah, I just noticed that myself. I guess I will look at how it's 
->> done and see if I can fix this so it's more general and can include 
->> this case.
+>> Further more, maybe common/isr/device MR also has subregions in
+>> the future, so need memory_region_find for each MR incluing
+>> their subregions.
 >>
->>> So is this a hexagon only thing?
->> It's not - I expect it would impact any architecture using musl.
+>> Add lookup subregion of VirtIOPCIRegion MR instead of only lookup contai=
+ner MR.
 >>
+>> Fixes: a93c8d8 ("virtio-pci: Replace modern_as with direct access to mod=
+ern_bar")
+>>
+>> Co-developed-by: Zuo Boqun <zuoboqun@baidu.com>
+>> Signed-off-by: Gao Shiyuan <gaoshiyuan@baidu.com>
+>> Signed-off-by: Zuo Boqun <zuoboqun@baidu.com>
+>> ---
+>>=A0=A0 hw/virtio/virtio-pci.c | 8 ++++++--
+>>=A0=A0 1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> ---
+>> v2 -> v3:
+>> * modify commit message
+>> * remove unused variable and move mrs to the inner block
+>> * replace error_report with assert
+>>
+>> v1 -> v2:
+>> * modify commit message
+>> * replace direct iteration over subregions with memory_region_find.
+>>
+>> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+>> index 524b63e5c7..4d832fe845 100644
+>> --- a/hw/virtio/virtio-pci.c
+>> +++ b/hw/virtio/virtio-pci.c
+>> @@ -615,8 +615,12 @@ static MemoryRegion *virtio_address_space_lookup(Vi=
+rtIOPCIProxy *proxy,
+>>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 reg =3D &proxy->regs[i];
+>>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (*off >=3D reg->offset &&
+>>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 *off + len <=3D reg->offset + =
+reg->size) {
+>> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 *off -=3D reg->offset;
+>> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return &reg->mr;
+>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MemoryRegionSection mrs =3D memory_re=
+gion_find(&reg->mr,
+>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 *off - reg->offset, len);
+>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 assert(mrs.mr);
 >
-> Hmm.  The _GNU_SOURCE guard was deliberately removed in 
-> 25e6fee27f4a293728dd15b659170e7b9c7db9bc (see below).  IMO the 
-> relevant text is "portable software should be prepared for them not to 
-> exist" and " the intent is that this be a very short-term measure and 
-> that the macros be removed entirely in the next release cycle."  
-> They're still there, guarded by only _LARGEFILE64_SOURCE.  I will 
-> bring up the question about what the future plan for this is on the 
-> musl list, but I also think that the appropriate, portable thing to do 
-> is to change the test case regardless of musl's plans.  If there were 
-> some other conformant C library it could implement it the same way.  
-> IIUC the relevant specification is here 
-> https://unix.org/version2/whatsnew/lfs20mar.html
+>We are able to trigger that assert:
 >
+>https://gitlab.com/qemu-project/qemu/-/issues/2576
 >
+>Can you take a look and send a fix?
+>
+>--
+>Cheers,
+>
+>David / dhildenb
 
-After discussion on the musl list, the suggestion was to use 
-_FILE_OFFSET_BITS to get portable behavior without relying on non-POSIX 
-LFS64: https://www.openwall.com/lists/musl/2024/09/18/5
+This problem is caused by the incorrect usage of the `memory_region_find` f=
+unction.
+`memory_region_find` need find address_space of the search MR, howerver the
+VirtIOPCIRegion->regs[i].mr cann't find address_space, such as
 
-I'll test this suggestion out and send a new patch.
+memory-region: pci_bridge_pci
+  0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci
+    000000a000000000-000000a000003fff (prio 1, i/o): virtio-pci
+      000000a000000000-000000a000000fff (prio 0, i/o): virtio-pci-common-vi=
+rtio-balloon
+      000000a000001000-000000a000001fff (prio 0, i/o): virtio-pci-isr-virti=
+o-balloon
+      000000a000002000-000000a000002fff (prio 0, i/o): virtio-pci-device-vi=
+rtio-balloon
+      000000a000003000-000000a000003fff (prio 0, i/o): virtio-pci-notify-vi=
+rtio-balloon
 
--Brian
+memory_region_find
+  --> memory_region_find_rcu
+    --> memory_region_to_address_space
+      --> return NULL
 
+So memory_region_find cann't find these MR that not under address_space, Is=
+ this as expected?
+
+There are two ways to solve this problem.
+
+* One is direct iteration over subregions of search MR instead of memory_re=
+gion_find.
+If use this method, we will make it more general to handle multi-level
+subregion scenarios, even though they do not currently exist.
+
+@@ -610,13 +610,22 @@ static MemoryRegion
+*virtio_address_space_lookup(VirtIOPCIProxy *proxy,
+ {
+     int i;
+     VirtIOPCIRegion *reg;
++    MemoryRegion *mr, *submr;
+
+     for (i =3D 0; i < ARRAY_SIZE(proxy->regs); ++i) {
+         reg =3D &proxy->regs[i];
+         if (*off >=3D reg->offset &&
+             *off + len <=3D reg->offset + reg->size) {
+             *off -=3D reg->offset;
+-            return &reg->mr;
++            mr =3D &reg->mr;
++            QTAILQ_FOREACH(submr, &mr->subregions, subregions_link) {
++                if (*off >=3D submr->addr &&
++                    *off + len < submr->addr + submr->size) {
++                    *off -=3D submr->addr;
++                    return submr;
++                }
++            }
++            return mr;
+         }
+     }
+
+* Another is add address_space for VirtIOPCIProxy and PCIBridge, so memory_=
+region_find
+will find the address_space of the search MR.
+
+diff --git a/hw/pci/pci_bridge.c b/hw/pci/pci_bridge.c
+index 6a4e38856d..07873c478f 100644
+--- a/hw/pci/pci_bridge.c
++++ b/hw/pci/pci_bridge.c
+@@ -380,6 +380,7 @@ void pci_bridge_initfn(PCIDevice *dev, const char *type=
+name)
+     sec_bus->map_irq =3D br->map_irq ? br->map_irq : pci_swizzle_map_irq_f=
+n;
+     sec_bus->address_space_mem =3D &br->address_space_mem;
+     memory_region_init(&br->address_space_mem, OBJECT(br), "pci_bridge_pci=
+", UINT64_MAX);
++    address_space_init(&br->as_mem, &br->address_space_mem, "pci_bridge_pc=
+i");
+     sec_bus->address_space_io =3D &br->address_space_io;
+     memory_region_init(&br->address_space_io, OBJECT(br), "pci_bridge_io",
+                        4 * GiB);
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 4d832fe845..83e020c0f6 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2180,6 +2180,8 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Er=
+ror **errp)
+                        /* PCI BAR regions must be powers of 2 */
+                        pow2ceil(proxy->notify.offset + proxy->notify.size)=
+);
+
++    address_space_init(&proxy->modern_as, &proxy->modern_bar, "virtio-pci"=
+);
++
+     if (proxy->disable_legacy =3D=3D ON_OFF_AUTO_AUTO) {
+         proxy->disable_legacy =3D pcie_port ? ON_OFF_AUTO_ON : ON_OFF_AUTO=
+_OFF;
+     }
+diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
+index 5cd452115a..2e807760e4 100644
+--- a/include/hw/pci/pci_bridge.h
++++ b/include/hw/pci/pci_bridge.h
+@@ -72,6 +72,7 @@ struct PCIBridge {
+      */
+     MemoryRegion address_space_mem;
+     MemoryRegion address_space_io;
++    AddressSpace as_mem;
+
+     PCIBridgeWindows windows;
+
+diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.=
+h
+index 9e67ba38c7..fddceaaa47 100644
+--- a/include/hw/virtio/virtio-pci.h
++++ b/include/hw/virtio/virtio-pci.h
+@@ -147,6 +147,7 @@ struct VirtIOPCIProxy {
+     };
+     MemoryRegion modern_bar;
+     MemoryRegion io_bar;
++    AddressSpace modern_as;
+     uint32_t legacy_io_bar_idx;
+     uint32_t msix_bar_idx;
+     uint32_t modern_io_bar_idx;
+Maybe revert 1f881ea4a444ef36a8b6907b0b82be4b3af253a2 can also solve this a=
+nd the
+orignal problem.
+
+Does anyone have any suggestions?=
 
