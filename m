@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D4E97CA10
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E4E97CA30
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:36:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srH0I-0001Og-HF; Thu, 19 Sep 2024 09:15:26 -0400
+	id 1srHJL-0002qY-Sb; Thu, 19 Sep 2024 09:35:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1srH06-0000rG-Mb
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:15:16 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1srHJ0-0001Zu-08
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:34:48 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1srH02-0001WH-LJ
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:15:13 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5c3d20eed0bso1068324a12.0
- for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:15:10 -0700 (PDT)
+ id 1srHIw-0004Rs-0B
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:34:43 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5c3ca32974fso1049577a12.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Sep 2024 06:34:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726751709; x=1727356509; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fFGE1BTMD8PgEyANRQyAdpYr6j7ELrOQUa9Nz8kkLRg=;
- b=jLy+1CuEXs+Q5DFmR1aXDdSkVvw2OpQeqLOhi4TrCZpyhXyNpv7BfCGfFDTXkZqkOg
- EiXBNPincourvw83ZjF47OaDOpwCEVCtBMejsd5yJMzm0JVMuD6LInX85zHG4MBBpe58
- MTeMPN8jw2ao2vx5zMLAs7K4fHk3Z47rE2rm4zgBkmr5f0HgpmIypl3ADsVF7sBDAjxN
- BdjsqeEHt7FF7HsG2ijSRxXx216+ZEeyR9KuZL6CGrL+0736dcN28810BJepaS5C2p+G
- tfNoYcU3DCXgvlY8muOQLXBkHgd+VoSEKuOMNN5kWJ3gRZLXvmNjboMKcdU4cSiTwyRT
- WZQQ==
+ d=linaro.org; s=google; t=1726752880; x=1727357680; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=dVOwl7TVYAuQCiKaTOD+iwg1613vIkWsU7lmwzlxW+I=;
+ b=AVqwGDfwwbemFyzRkEK36tkabpEoh+gOSjw66N8HqoIDO8Id+MJCBRsjJvwYqpNofM
+ mZRQUn386/hwgBqPbrpSHZIRI/6/lyulviokKFB/Qtg34nhO4Djiu66EVFzM6Li0tcCa
+ /jxAOsPwE83MBWPGi9ux8cZ6Z1X1jxa+LixWWjvy6wxQ6VRP/3f/Ne9ZXWXQWXejb56i
+ ttcSW8eeWz/O6pnBtNDIiXs0ALEU7qb5kdZ/U3u+ambW0+U6KVwsRJgcPRJ4Ts6F1G0D
+ 9Zj6UqG6YZD66WtcXuhSBz5lX/gZzXqvGY7aSSSLn6mdnjiw6Tx5y4bwDr6ZbScJYj/s
+ 4X/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726751709; x=1727356509;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fFGE1BTMD8PgEyANRQyAdpYr6j7ELrOQUa9Nz8kkLRg=;
- b=c4U1kciwdM0iGSgaNwNvy7S7ErjBR/0QxTl04BhRl8kHmhmutqfwQohfbjppy8SX+q
- R9HOBSMbHo5GILJXo4n/RGcWQ5XWaG12HbktMnNDLuj3R06whgGWhCHyxE/1ItC1px79
- 8b0GZqMYDKr0BRdjdODJOwUmfXrsA32KpwE0J2TrQ11DioWoqj0YW2yNzHC1hSVuCqyl
- hf3rQzECuWvoRt0oUrr0+EZ/II91XVxuOzP7rULjLTW7HDuaxXDaDv3kLWh9kC9ExA6y
- QoZB8LDTkCMaE5sYbk7ebk417/BogNm19nhBg5ZAaMqa8ZfofH/OtL/AoNpukgU+jRex
- HMcQ==
-X-Gm-Message-State: AOJu0Yw5aug7AJhdTqIh3E7Av4A9wXBb5AwVmOvJlX2xJh8kaiBwhldt
- J+1jgjDpeBK1d0EVdWf5267UAWSwxskGztmudT1UjFKZzb/uBj2aAEhklud6HffteZVA8oewXYx
- bHXZVlF7B/ZOiNLOF0sbrHR9klAkRYdQVcCQqrH7vMFis8BJG
-X-Google-Smtp-Source: AGHT+IECY+knqYtslkktAtnY5bLyNAt+5QhZH10vTv50sMurd9AuAZN+vv2ZVkSV6SUCKPVpICRCHt+x71iwpUBtxic=
-X-Received: by 2002:a05:6402:1ec9:b0:5c4:4dfd:9fd5 with SMTP id
- 4fb4d7f45d1cf-5c44dfda03emr5331227a12.29.1726751708815; Thu, 19 Sep 2024
- 06:15:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726752880; x=1727357680;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dVOwl7TVYAuQCiKaTOD+iwg1613vIkWsU7lmwzlxW+I=;
+ b=L3/3C7Mes+0gHJMhpD0h7V5lwNehfCMnyWlDfjEHZVWGfMgNTiV1alHdYcQyLm5MaS
+ T9dcoTmMw5FbSUslwTrsKtD12Q84arlejE7OPB96cGadFqKR91wW4pJCYeNIQENAtypU
+ fX8p5t9x6BreUq6gmRCIwXajs/2ll1gU3EVFzc/pcVVAC/qYJihUC0tGfiLvxifBxLf2
+ aHB1GsMD1opJsJ4sp4x5xq7e2RgFd8KFg/LGY/Zuvd1dwGL3/KjKjpyw57jq3LYL0nDe
+ B38ATmaNSUpXQtExhgE4ogITE2TULy6REqL8erUkyGhmWMbPzjTUNeLHMcD1paGuZO5O
+ dqIQ==
+X-Gm-Message-State: AOJu0YxjMzj585v3tDiZb6lZOX+KYrh8QLYaHOy9NKgd09Aa5eFnBN53
+ iXNB5/7cug3topTax8pxlM8dXE5QhXenak+v94YWANf6eLvS3For+6AgBh3t8yqEwHy6ixnGKIJ
+ NB3iGIK8USCTYrmjAxUJPtLKGin6p1SWjrar6v6F9BxegdQ7D
+X-Google-Smtp-Source: AGHT+IGCPA7EPY+dCI71UJyAZPV20SjoqdnWXYnzvZkAxUA9UrbnIEFjCGREml3MWwQV9TsY+eSwFxC1l6q0zDdizKI=
+X-Received: by 2002:a05:6402:4303:b0:5c4:2343:1236 with SMTP id
+ 4fb4d7f45d1cf-5c4234314d9mr18169049a12.4.1726752880259; Thu, 19 Sep 2024
+ 06:34:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240918210712.2336854-1-alex.bennee@linaro.org>
- <CAFEAcA8tdyELui0=jYFObZO1=O_isJ-c1e0s4ZCbMVyfsrY=9A@mail.gmail.com>
- <875xqrg549.fsf@draig.linaro.org>
-In-Reply-To: <875xqrg549.fsf@draig.linaro.org>
+References: <20240918183151.6413-1-peterx@redhat.com>
+ <CAFEAcA9MsybcOa9pGeU7EHuqvRqfBk4TSwYR_tkHF2Xbc19Yuw@mail.gmail.com>
+ <ZuwSGJODsyj_bA4P@x1n>
+In-Reply-To: <ZuwSGJODsyj_bA4P@x1n>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 19 Sep 2024 14:14:57 +0100
-Message-ID: <CAFEAcA8UGKtZLNZZVQiDryjst93AkQTKhQrBQ573+J21C-y4QA@mail.gmail.com>
-Subject: Re: [PULL 00/18] tcg plugins (deprecations, mem apis, contrib plugins)
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org
+Date: Thu, 19 Sep 2024 14:34:28 +0100
+Message-ID: <CAFEAcA_9HKtTciFtrs9T9PG06GgYdoDoCASeBi7wO9CswA=1tw@mail.gmail.com>
+Subject: Re: [PULL v2 0/6] Migration 20240917 patches
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ David Hildenbrand <david@redhat.com>, Fabiano Rosas <farosas@suse.de>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,46 +88,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 19 Sept 2024 at 14:11, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
-ote:
+On Thu, 19 Sept 2024 at 12:59, Peter Xu <peterx@redhat.com> wrote:
 >
-> Peter Maydell <peter.maydell@linaro.org> writes:
-> > While I'm looking at the code, this caught my eye:
-> >
-> >     case QEMU_PLUGIN_MEM_VALUE_U64:
-> >     {
-> >         uint64_t *p =3D (uint64_t *) &ri->data[offset];
-> >         uint64_t val =3D be ? htobe64(value.data.u64) : htole64(value.d=
-ata.u64);
-> >         if (is_store) {
-> >             *p =3D val;
-> >         } else if (*p !=3D val) {
-> >             unseen_data =3D true;
-> >         }
-> >         break;
-> >     }
-> >
-> > Casting a random byte pointer to uint64_t* like that
-> > and dereferencing it isn't valid -- it can fault if
-> > it's not aligned correctly.
+> On Thu, Sep 19, 2024 at 10:08:25AM +0100, Peter Maydell wrote:
+> > Thanks for looking at the issues with the migration tests.
+> > This run went through first time without my needing to retry any
+> > jobs, so fingers crossed that we have at least improved the reliability.
+> > (I have a feeling there's still something funny with the k8s runners,
+> > but that's not migration-test specific, it's just that test tends
+> > to be the longest running and so most likely to be affected.)
 >
-> Hmm in the normal case of x86 hosts we will never hit this.
+> Kudos all go to Fabiano for debugging the hard problem.
+>
+> And yes, please let either of us know if it fails again, we can either keep
+> looking, or still can disable it when necessary (if it takes long to debug).
 
-Not necessarily -- some x86 SIMD insns enforce alignment.
+On the subject of potential races in the migration code,
+there's a couple of outstanding Coverity issues that might
+be worth looking at. If they're false-positives let me know
+and I can reclassify them in Coverity.
 
-> I guess we
-> could do a memcpy step and then the byteswap?
+CID 1527402: In migrate_fd_cleanup() Coverity thinks there's
+a race because we read s->to_dst_file in the "if (s->to_dst_file)"
+check without holding the qemu_file_lock. This might be a
+false-positive because the race Coverity identifies happens
+if two threads both call migrate_fd_cleanup() at the same
+time, which is probably not permitted. (But OTOH taking a
+mutex gets you for free any necessary memory barriers...)
 
-That's what bswap.h does, yes.
+CID 1527413: In postcopy_pause_incoming() we read
+mis->postcopy_qemufile_dst without holding the
+postcopy_prio_thread_mutex which we use to protect the write
+to that field, so Coverity thinks there's a race if two
+threads call this function at once.
 
-> Could it be included directly without bringing in the rest of QEMU's
-> include deps?
+(The only other migration Coverity issue is CID 1560071,
+which is the "better to use pstrcpy()" not-really-a-bug
+we discussed in another thread.)
 
-It's technically quite close to standalone I think,
-but I think it would be a bad idea to directly include
-it because once you put QEMU's include/ on the plugin
-compile include path then that's a slippery slope to
-the plugins not actually being standalone code any more.
-
+thanks
 -- PMM
 
