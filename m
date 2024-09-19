@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7E497C38F
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 06:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C741697C3AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 06:52:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sr94N-00084v-MK; Thu, 19 Sep 2024 00:47:07 -0400
+	id 1sr94S-0008RH-8L; Thu, 19 Sep 2024 00:47:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sr94K-0007xE-PY
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:47:04 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1sr94N-0008CI-W2
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:47:08 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sr94E-00077V-80
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:47:04 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-7198cb6bb02so269225b3a.3
- for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 21:46:57 -0700 (PDT)
+ id 1sr94G-00078W-4d
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 00:47:07 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-718e11e4186so381547b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Sep 2024 21:46:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726721217; x=1727326017; darn=nongnu.org;
+ d=linaro.org; s=google; t=1726721218; x=1727326018; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KJkmiG3PhPpYsgMJ7XkEBDNaPQyoDU9Xw+XJyRk65WE=;
- b=rdY8ydl4cUE2I9J8VfSYfEQaWCcmyFPvQKqfgoHdeknoJrb4JZhEPs6yiJEQ+OnC1E
- nnK5U+KAyKU8+Ju21Z1BE3YZ2kBLUjmzuHYIAVDT88X/tUIAubkeTFQrfArw0/QUym9g
- WJTwicOnVExEg79EER511wLkK9J5M3kxpZ2t+zv+j+OINIwvn8Z2zjtyjIyHg8PH+0vy
- Mlccob5vdo+EDtu06zl3GgkOUjvglqhmNtS/yBoARU77fgawsy69EvHLw1ZI97Xr7H10
- 6CU0JDM2LzYNcdY7NXxJY7eVnAcTiFaGyATz94Xzsl+hu8q0wHNBwz3GRtvjVfyDMlfR
- 98qA==
+ bh=qqlshtAdWrkwK7VFTA+7O6AV+UQemh0VvOj30SlF0fo=;
+ b=XsggXCWzxJk6PrUfLz3lsbeqthfKq9nFR0rR3Ii4rZNzadWNER1yaL2rBH98RJ1Iee
+ gonneFTUhp/fr6rikT0KHNFd3IL5ao+45YpavDbO3lr2U3zdgqfDwH26ixqmRPyH+VBS
+ XZIHvIvhjSuMIdldk+3OuiHPXm0qU+LmRhv3GyfjjGfSbo6WU0NvyE+Tvz9SECqgmorv
+ V7AE8sKzd9SokMBwon3HQ2FcnQmhwaXK1V/IcJEy9sgBJ88cmx6KCsPB2vo2qLF/O60h
+ 5ok+Zv5/QMuQgROP5sFalhsEjtIWS8OXJGgo61gGaPPU52+J/u8XeEO/bPudknEHhKRy
+ t75Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726721217; x=1727326017;
+ d=1e100.net; s=20230601; t=1726721218; x=1727326018;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KJkmiG3PhPpYsgMJ7XkEBDNaPQyoDU9Xw+XJyRk65WE=;
- b=u6/3eFcNpAMuzml7+fUGqqU1wmTUOWjkWr+MHBRGzHrdLdkGv82isorz/Hxvz0HaZL
- VXh622+Smw5YVmI+vE6WsirkNF2vBi2gCfFI88K2d/mjPc0cU32ern5m1PHKSLMxjnIc
- 2DOsWgrAga/EYFhHlu/QlIkT4F5OpNuPK3cFaXdqtldke4DoQOsflk3hRPU8RkGrb76q
- EsvPYqe6DJ1Q2w67Rm2QcUBYtE1ViwVt+81a44Bmv6raawl1JfKkDBBez9ApGQzSwWAQ
- MHHM9sEXW6d3L6D4S8RohGMo7jfKJPEtPeoIHBSwJnZbsbiMQbXW8oTdsP5cplvlPh5G
- Vb1Q==
-X-Gm-Message-State: AOJu0YyNp2Ep79jqMA021/KQOrTguAQj8FNsd5DFvilbHzICBgvKyTOs
- mgdUnXZxJ20hdEH9XE8OmQ1coCXDKXPXZuIhFTlbV2jzRCM2b0qVVbMAV7L4N/K0RcjoEGVMvuu
- zHrI9Gw==
-X-Google-Smtp-Source: AGHT+IFI8OaToJZDzbcw+Y/dxaLu3fYE/OJ9AAnzLLztALk/zezzILuHxXxJLn5xpki0Ylem6dbZgA==
-X-Received: by 2002:a05:6a00:2401:b0:718:dd53:70db with SMTP id
- d2e1a72fcca58-7192606c438mr38378490b3a.11.1726721216563; 
- Wed, 18 Sep 2024 21:46:56 -0700 (PDT)
+ bh=qqlshtAdWrkwK7VFTA+7O6AV+UQemh0VvOj30SlF0fo=;
+ b=I9V6/DB3HS5r3YNkTmNCfbvX8dPy1IYZ11rlyHIGPPIv0B7B4A2Jr6847+nv/0WTNY
+ Ryhhiydhdi3S8m+iMy2JJEy1PhRNejkkkb6n5+YmCxK21iHkIN2OfbK9FDsDM7X5JTWk
+ RwmRtLDzGXAXNrpEnMfZacDzFyOPsiakic2bZHXraCgq/rabxOjNrGmfy192CvF0r4GX
+ CnZbavRABO6Kc8zPiHDNugTaFao7wGq1PWHN6VuzjsOkwdRzix8S3gipSP7L+d3rVP+K
+ kgZF0MC09+5yJfkR6yAWh8Eusd5Fa8FkdpFXwdegFtLK98Z4+GIz8fNE/S5x2nR3pC74
+ Ndtg==
+X-Gm-Message-State: AOJu0YxUq9uP4y2YUWmCsdqcXGBPGzrautyuoKfWTP7LXPjyNW8oMilj
+ Zp22plxcjZ4NqdvXXxV4JsOucwCRTIe/HYsDIeluoOS6OoDUAKgJA5iO6mohzuWJbq29Qg0zaPr
+ 5xFsReg==
+X-Google-Smtp-Source: AGHT+IG0bmr1+1NNMTp9lkGEAqdgH7QtfGqFeAcXE6p0/9GQ6ISEzkrmQKWYgaOl03thN+dHJUIl8w==
+X-Received: by 2002:a05:6a00:2d11:b0:714:2198:26a1 with SMTP id
+ d2e1a72fcca58-7192620d8d3mr36118214b3a.27.1726721218493; 
+ Wed, 18 Sep 2024 21:46:58 -0700 (PDT)
 Received: from linaro.. (216-180-64-156.dyn.novuscom.net. [216.180.64.156])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71944bc279csm7478601b3a.188.2024.09.18.21.46.54
+ d2e1a72fcca58-71944bc279csm7478601b3a.188.2024.09.18.21.46.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Sep 2024 21:46:56 -0700 (PDT)
+ Wed, 18 Sep 2024 21:46:58 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>,
@@ -103,17 +103,17 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Jesper Devantier <foss@defmacro.it>, Marcelo Tosatti <mtosatti@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 05/34] qobject: replace assert(0) with
+Subject: [PATCH v3 06/34] target/ppc: replace assert(0) with
  g_assert_not_reached()
-Date: Wed, 18 Sep 2024 21:46:12 -0700
-Message-Id: <20240919044641.386068-6-pierrick.bouvier@linaro.org>
+Date: Wed, 18 Sep 2024 21:46:13 -0700
+Message-Id: <20240919044641.386068-7-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240919044641.386068-1-pierrick.bouvier@linaro.org>
 References: <20240919044641.386068-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -141,66 +141,66 @@ g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qobject/qlit.c | 2 +-
- qobject/qnum.c | 8 ++++----
+ target/ppc/dfp_helper.c | 8 ++++----
+ target/ppc/mmu_helper.c | 2 +-
  2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/qobject/qlit.c b/qobject/qlit.c
-index be8332136c2..a62865b6423 100644
---- a/qobject/qlit.c
-+++ b/qobject/qlit.c
-@@ -118,7 +118,7 @@ QObject *qobject_from_qlit(const QLitObject *qlit)
-     case QTYPE_QBOOL:
-         return QOBJECT(qbool_from_bool(qlit->value.qbool));
+diff --git a/target/ppc/dfp_helper.c b/target/ppc/dfp_helper.c
+index 5967ea07a92..ecc3f793267 100644
+--- a/target/ppc/dfp_helper.c
++++ b/target/ppc/dfp_helper.c
+@@ -249,7 +249,7 @@ static void dfp_set_FPRF_from_FRT_with_context(struct PPC_DFP *dfp,
+         fprf = 0x05;
+         break;
      default:
+-        assert(0); /* should never get here */
++        g_assert_not_reached();
+     }
+     dfp->env->fpscr &= ~FP_FPRF;
+     dfp->env->fpscr |= (fprf << FPSCR_FPRF);
+@@ -1243,7 +1243,7 @@ void helper_##op(CPUPPCState *env, ppc_fprp_t *t, ppc_fprp_t *b) \
+         } else if (decNumberIsQNaN(&dfp.b)) {                  \
+             vt.VsrD(1) = -2;                                   \
+         } else {                                               \
+-            assert(0);                                         \
++            g_assert_not_reached();                            \
+         }                                                      \
+         set_dfp64(t, &vt);                                     \
+     } else {                                                   \
+@@ -1252,7 +1252,7 @@ void helper_##op(CPUPPCState *env, ppc_fprp_t *t, ppc_fprp_t *b) \
+         } else if ((size) == 128) {                            \
+             vt.VsrD(1) = dfp.b.exponent + 6176;                \
+         } else {                                               \
+-            assert(0);                                         \
++            g_assert_not_reached();                            \
+         }                                                      \
+         set_dfp64(t, &vt);                                     \
+     }                                                          \
+@@ -1300,7 +1300,7 @@ void helper_##op(CPUPPCState *env, ppc_fprp_t *t, ppc_fprp_t *a,          \
+         raw_inf = 0x1e000;                                                \
+         bias = 6176;                                                      \
+     } else {                                                              \
+-        assert(0);                                                        \
++        g_assert_not_reached();                                           \
+     }                                                                     \
+                                                                           \
+     if (unlikely((exp < 0) || (exp > max_exp))) {                         \
+diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
+index b0a0676beba..b167b37e0ab 100644
+--- a/target/ppc/mmu_helper.c
++++ b/target/ppc/mmu_helper.c
+@@ -316,7 +316,7 @@ void ppc_tlb_invalidate_one(CPUPPCState *env, target_ulong addr)
+         break;
+     default:
+         /* Should never reach here with other MMU models */
 -        assert(0);
 +        g_assert_not_reached();
      }
- 
-     return NULL;
-diff --git a/qobject/qnum.c b/qobject/qnum.c
-index 2bbeaedc7b4..2138b563a9f 100644
---- a/qobject/qnum.c
-+++ b/qobject/qnum.c
-@@ -85,7 +85,7 @@ bool qnum_get_try_int(const QNum *qn, int64_t *val)
-         return false;
-     }
- 
--    assert(0);
-+    g_assert_not_reached();
-     return false;
- }
- 
-@@ -123,7 +123,7 @@ bool qnum_get_try_uint(const QNum *qn, uint64_t *val)
-         return false;
-     }
- 
--    assert(0);
-+    g_assert_not_reached();
-     return false;
- }
- 
-@@ -156,7 +156,7 @@ double qnum_get_double(QNum *qn)
-         return qn->u.dbl;
-     }
- 
--    assert(0);
-+    g_assert_not_reached();
-     return 0.0;
- }
- 
-@@ -172,7 +172,7 @@ char *qnum_to_string(QNum *qn)
-         return g_strdup_printf("%.17g", qn->u.dbl);
-     }
- 
--    assert(0);
-+    g_assert_not_reached();
-     return NULL;
- }
- 
+ #else
+     ppc_tlb_invalidate_all(env);
 -- 
 2.39.5
 
