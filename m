@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB0E97CDE3
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 20:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 578B997CDE7
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 20:59:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srMM2-00076R-AB; Thu, 19 Sep 2024 14:58:14 -0400
+	id 1srMMA-0007J7-Mk; Thu, 19 Sep 2024 14:58:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1srMM0-0006yh-2M
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 14:58:12 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1srMM7-0007IW-7j
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 14:58:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1srMLy-0001NJ-HM
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 14:58:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1srMM5-0001Nc-MB
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 14:58:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726772289;
+ s=mimecast20190719; t=1726772296;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UwlFYwPN+QHlMLSj5ERxLP4JF1V2FyHI7rXBw43Qfsw=;
- b=ApV4d/vlwcTftegBfz6rF1ujKYwgiad8C80OtEaGYmhpAwpap0QaFkSq7dLQEgqxY8Aozk
- 2CZVuDc2NjqoGX+lpI6Akvk/W44QH9ZZCCEQPPy6C56ivndzzOXJN26RXcA3CEBtEtgXJg
- 3cgLdKArei2Txg2mnQRRDPDmOdaO8qE=
+ bh=cXKmNyfO/xawcB6OvqDOE+mIxb46hce82XDAqY/bvD8=;
+ b=hccCg76m+R60h+M31JSPzsANPjFjwFRDNvTf017fUebLEN+WcimI2l7mlHV1oLLBmC3VjU
+ UYAEEDGcHYELKw/yEL730MGUthW9TiFJSQBVtYbxJIpjoaTSNuR0k12nWKOxMKpOsGE0wq
+ pA9eQ/Wilg/e7Nm4ZSn0jgXsOpfniUQ=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-470-NACYhpGvOAq5qkHqBQGWTQ-1; Thu,
- 19 Sep 2024 14:58:06 -0400
-X-MC-Unique: NACYhpGvOAq5qkHqBQGWTQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-vftAswZiNJCaKm5jHeH26Q-1; Thu,
+ 19 Sep 2024 14:58:10 -0400
+X-MC-Unique: vftAswZiNJCaKm5jHeH26Q-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8A8F0193584E; Thu, 19 Sep 2024 18:58:05 +0000 (UTC)
+ id 549B319373DF; Thu, 19 Sep 2024 18:58:09 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.46])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AE2A019560AA; Thu, 19 Sep 2024 18:58:01 +0000 (UTC)
+ id 4C96C19560AA; Thu, 19 Sep 2024 18:58:06 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -49,9 +49,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Magnus Damm <magnus.damm@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 2/7] tests/functional: Convert the vexpressa9 Avocado test
-Date: Thu, 19 Sep 2024 20:57:42 +0200
-Message-ID: <20240919185749.71222-3-thuth@redhat.com>
+Subject: [PATCH 3/7] tests/functional: Convert the xtensa lx60 Avocado test
+Date: Thu, 19 Sep 2024 20:57:43 +0200
+Message-ID: <20240919185749.71222-4-thuth@redhat.com>
 In-Reply-To: <20240919185749.71222-1-thuth@redhat.com>
 References: <20240919185749.71222-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,66 +86,66 @@ Use the new launch_kernel function to convert this test in a simple way.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                           |  1 +
- tests/avocado/boot_linux_console.py   |  9 ---------
- tests/functional/meson.build          |  1 +
- tests/functional/test_arm_vexpress.py | 26 ++++++++++++++++++++++++++
- 4 files changed, 28 insertions(+), 9 deletions(-)
- create mode 100755 tests/functional/test_arm_vexpress.py
+ MAINTAINERS                          |  1 +
+ tests/avocado/boot_linux_console.py  |  9 ---------
+ tests/functional/meson.build         |  4 ++++
+ tests/functional/test_xtensa_lx60.py | 26 ++++++++++++++++++++++++++
+ 4 files changed, 31 insertions(+), 9 deletions(-)
+ create mode 100755 tests/functional/test_xtensa_lx60.py
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index ffacd60f40..7f7f4c2be6 100644
+index 7f7f4c2be6..a75d6ba7d2 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1005,6 +1005,7 @@ S: Maintained
- F: hw/arm/vexpress.c
- F: hw/display/sii9022.c
- F: docs/system/arm/vexpress.rst
-+F: tests/functional/test_arm_vexpress.py
+@@ -1915,6 +1915,7 @@ S: Maintained
+ F: hw/xtensa/xtfpga.c
+ F: hw/net/opencores_eth.c
+ F: include/hw/xtensa/mx_pic.h
++F: tests/functional/test_xtensa_lx60.py
  
- Versatile PB
- M: Peter Maydell <peter.maydell@linaro.org>
+ Devices
+ -------
 diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 6c50284986..7a776c2818 100644
+index 7a776c2818..cf58499c84 100644
 --- a/tests/avocado/boot_linux_console.py
 +++ b/tests/avocado/boot_linux_console.py
-@@ -893,15 +893,6 @@ def do_test_advcal_2018(self, day, tar_hash, kernel_name, console=0):
-         self.vm.launch()
-         self.wait_for_console_pattern('QEMU advent calendar')
- 
--    def test_arm_vexpressa9(self):
--        """
--        :avocado: tags=arch:arm
--        :avocado: tags=machine:vexpress-a9
--        """
--        tar_hash = '32b7677ce8b6f1471fb0059865f451169934245b'
--        self.vm.add_args('-dtb', self.workdir + '/day16/vexpress-v2p-ca9.dtb')
--        self.do_test_advcal_2018('16', tar_hash, 'winter.zImage')
--
-     def test_arm_ast2600_debian(self):
+@@ -1027,12 +1027,3 @@ def test_sparc_ss20(self):
          """
-         :avocado: tags=arch:arm
+         tar_hash = 'b18550d5d61c7615d989a06edace051017726a9f'
+         self.do_test_advcal_2018('11', tar_hash, 'zImage.elf')
+-
+-    def test_xtensa_lx60(self):
+-        """
+-        :avocado: tags=arch:xtensa
+-        :avocado: tags=machine:lx60
+-        :avocado: tags=cpu:dc233c
+-        """
+-        tar_hash = '49e88d9933742f0164b60839886c9739cb7a0d34'
+-        self.do_test_advcal_2018('02', tar_hash, 'santas-sleigh-ride.elf')
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 8d5520349d..3fc1bb192d 100644
+index 3fc1bb192d..8fd852f4ab 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -50,6 +50,7 @@ tests_arm_system_thorough = [
-   'arm_canona1100',
-   'arm_integratorcp',
-   'arm_raspi2',
-+  'arm_vexpress',
+@@ -145,6 +145,10 @@ tests_x86_64_system_thorough = [
+   'virtio_gpu',
  ]
  
- tests_arm_linuxuser_thorough = [
-diff --git a/tests/functional/test_arm_vexpress.py b/tests/functional/test_arm_vexpress.py
++tests_xtensa_system_thorough = [
++  'xtensa_lx60',
++]
++
+ precache_all = []
+ foreach speed : ['quick', 'thorough']
+   foreach dir : target_dirs
+diff --git a/tests/functional/test_xtensa_lx60.py b/tests/functional/test_xtensa_lx60.py
 new file mode 100755
-index 0000000000..cc6015112b
+index 0000000000..8ce5206a4f
 --- /dev/null
-+++ b/tests/functional/test_arm_vexpress.py
++++ b/tests/functional/test_xtensa_lx60.py
 @@ -0,0 +1,26 @@
 +#!/usr/bin/env python3
 +#
-+# Functional test that boots a Linux kernel on an versatile express machine
++# Functional test that boots a Linux kernel on an xtensa lx650 machine
 +# and checks the console
 +#
 +# SPDX-License-Identifier: GPL-2.0-or-later
@@ -153,18 +153,18 @@ index 0000000000..cc6015112b
 +from qemu_test import LinuxKernelTest, Asset
 +from qemu_test.utils import archive_extract
 +
-+class VExpressTest(LinuxKernelTest):
++class XTensaLX60Test(LinuxKernelTest):
 +
-+    ASSET_DAY16 = Asset(
-+        'https://www.qemu-advent-calendar.org/2018/download/day16.tar.xz',
-+        '63311adb2d4c4e7a73214a86d29988add87266a909719c56acfadd026b4110a7')
++    ASSET_DAY02 = Asset(
++        'https://www.qemu-advent-calendar.org/2018/download/day02.tar.xz',
++        '68ff07f9b3fd3df36d015eb46299ba44748e94bfbb2d5295fddc1a8d4a9fd324')
 +
-+    def test_arm_vexpressa9(self):
-+        self.set_machine('vexpress-a9')
-+        file_path = self.ASSET_DAY16.fetch()
++    def test_xtensa_lx60(self):
++        self.set_machine('lx60')
++        self.cpu = 'dc233c'
++        file_path = self.ASSET_DAY02.fetch()
 +        archive_extract(file_path, self.workdir)
-+        self.launch_kernel(self.workdir + '/day16/winter.zImage',
-+                           dtb=self.workdir + '/day16/vexpress-v2p-ca9.dtb',
++        self.launch_kernel(self.workdir + '/day02/santas-sleigh-ride.elf',
 +                           wait_for='QEMU advent calendar')
 +
 +if __name__ == '__main__':
