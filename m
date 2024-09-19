@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9883E97CE36
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 21:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C63497CE37
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 21:49:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srN9c-0004Ua-Bh; Thu, 19 Sep 2024 15:49:28 -0400
+	id 1srN9o-0005lO-Ol; Thu, 19 Sep 2024 15:49:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1srN9Z-0004IA-As
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 15:49:25 -0400
+ id 1srN9m-0005cU-Bw
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 15:49:38 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1srN9X-00079g-Gu
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 15:49:25 -0400
+ id 1srN9k-0007AE-W7
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 15:49:38 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1srN9P-0000c4-PD; Thu, 19 Sep 2024 21:49:15 +0200
-Message-ID: <d245c8b6-b765-42e1-a5ec-bdb46494cec4@maciej.szmigiero.name>
-Date: Thu, 19 Sep 2024 21:49:10 +0200
+ id 1srN9c-0000cN-Ds; Thu, 19 Sep 2024 21:49:28 +0200
+Message-ID: <fd568ce1-802b-4846-81be-9521d35ff3f6@maciej.szmigiero.name>
+Date: Thu, 19 Sep 2024 21:49:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/17] migration: Add load_finish handler and
- associated functions
+Subject: Re: [PATCH v2 09/17] migration/multifd: Device state transfer support
+ - receive side
 To: Peter Xu <peterx@redhat.com>
 Cc: Fabiano Rosas <farosas@suse.de>,
  Alex Williamson <alex.williamson@redhat.com>,
@@ -37,8 +37,10 @@ Cc: Fabiano Rosas <farosas@suse.de>,
  Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>,
  qemu-devel@nongnu.org
 References: <cover.1724701542.git.maciej.szmigiero@oracle.com>
- <1a7599896decdbae61cee385739dc0badc9b4364.1724701542.git.maciej.szmigiero@oracle.com>
- <Zt9UjvvbeUZQlGNY@x1n>
+ <84141182083a8417c25b4d82a9c4b6228b22ac67.1724701542.git.maciej.szmigiero@oracle.com>
+ <87ttf1n4lm.fsf@suse.de>
+ <00eeacd5-ad27-4899-8526-0941b30e759d@maciej.szmigiero.name>
+ <Zt9R6hJSTRtB7s9e@x1n>
 Content-Language: en-US, pl-PL
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
@@ -82,7 +84,7 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  xNT833IQSNqyuEnxG9/M82yYa+9ClBiRKM2JyvgnBEbiWA15rAQkOqZGJfFJ3bmTFePx4R/I
  ZVehUxCRY5IS1FLe16tymf9lCASrPXnkO2+hkHpBCwt75wnccS3DwtIGqwagVVmciCxAFg9E
  WZ4dI5B0IUziKtBxgwJG4xY5rp7WbzywjCeaaKubtcLQ9bSBkkK4U8Fu58g6Hg==
-In-Reply-To: <Zt9UjvvbeUZQlGNY@x1n>
+In-Reply-To: <Zt9R6hJSTRtB7s9e@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=37.28.154.113;
@@ -108,92 +110,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9.09.2024 22:03, Peter Xu wrote:
-> On Tue, Aug 27, 2024 at 07:54:27PM +0200, Maciej S. Szmigiero wrote:
->> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+On 9.09.2024 21:52, Peter Xu wrote:
+> On Mon, Sep 02, 2024 at 10:12:01PM +0200, Maciej S. Szmigiero wrote:
+>>>> diff --git a/migration/multifd.h b/migration/multifd.h
+>>>> index a3e35196d179..a8f3e4838c01 100644
+>>>> --- a/migration/multifd.h
+>>>> +++ b/migration/multifd.h
+>>>> @@ -45,6 +45,12 @@ MultiFDRecvData *multifd_get_recv_data(void);
+>>>>    #define MULTIFD_FLAG_QPL (4 << 1)
+>>>>    #define MULTIFD_FLAG_UADK (8 << 1)
+>>>> +/*
+>>>> + * If set it means that this packet contains device state
+>>>> + * (MultiFDPacketDeviceState_t), not RAM data (MultiFDPacket_t).
+>>>> + */
+>>>> +#define MULTIFD_FLAG_DEVICE_STATE (1 << 4)
+>>>
+>>> Overlaps with UADK. I assume on purpose because device_state doesn't
+>>> support compression? Might be worth a comment.
+>>>
 >>
->> load_finish SaveVMHandler allows migration code to poll whether
->> a device-specific asynchronous device state loading operation had finished.
+>> Yes, the device state transfer bit stream does not support compression
+>> so it is not a problem since these "compression type" flags will never
+>> be set in such bit stream anyway.
 >>
->> In order to avoid calling this handler needlessly the device is supposed
->> to notify the migration code of its possible readiness via a call to
->> qemu_loadvm_load_finish_ready_broadcast() while holding
->> qemu_loadvm_load_finish_ready_lock.
->>
->> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
->> ---
->>   include/migration/register.h | 21 +++++++++++++++
->>   migration/migration.c        |  6 +++++
->>   migration/migration.h        |  3 +++
->>   migration/savevm.c           | 52 ++++++++++++++++++++++++++++++++++++
->>   migration/savevm.h           |  4 +++
->>   5 files changed, 86 insertions(+)
->>
->> diff --git a/include/migration/register.h b/include/migration/register.h
->> index 4a578f140713..44d8cf5192ae 100644
->> --- a/include/migration/register.h
->> +++ b/include/migration/register.h
->> @@ -278,6 +278,27 @@ typedef struct SaveVMHandlers {
->>       int (*load_state_buffer)(void *opaque, char *data, size_t data_size,
->>                                Error **errp);
->>   
->> +    /**
->> +     * @load_finish
->> +     *
->> +     * Poll whether all asynchronous device state loading had finished.
->> +     * Not called on the load failure path.
->> +     *
->> +     * Called while holding the qemu_loadvm_load_finish_ready_lock.
->> +     *
->> +     * If this method signals "not ready" then it might not be called
->> +     * again until qemu_loadvm_load_finish_ready_broadcast() is invoked
->> +     * while holding qemu_loadvm_load_finish_ready_lock.
+>> Will add a relevant comment here.
 > 
-> [1]
+> Why reuse?  Would using a new bit easier if we still have plenty of bits
+> (just to tell what is what directly from a stream dump)?
 > 
->> +     *
->> +     * @opaque: data pointer passed to register_savevm_live()
->> +     * @is_finished: whether the loading had finished (output parameter)
->> +     * @errp: pointer to Error*, to store an error if it happens.
->> +     *
->> +     * Returns zero to indicate success and negative for error
->> +     * It's not an error that the loading still hasn't finished.
->> +     */
->> +    int (*load_finish)(void *opaque, bool *is_finished, Error **errp);
-> 
-> The load_finish() semantics is a bit weird, especially above [1] on "only
-> allowed to be called once if ..." and also on the locks.
 
-The point of this remark is that a driver needs to call
-qemu_loadvm_load_finish_ready_broadcast() if it wants for the migration
-core to call its load_finish handler again.
-
-> It looks to me vfio_load_finish() also does the final load of the device.
-> 
-> I wonder whether that final load can be done in the threads, 
-
-Here, the problem is that current VFIO VMState has to be loaded from the main
-migration thread as it internally calls QEMU core address space modification
-methods which explode if called from another thread(s).
-
-> then after
-> everything loaded the device post a semaphore telling the main thread to
-> continue.  See e.g.:
-> 
->      if (migrate_switchover_ack()) {
->          qemu_loadvm_state_switchover_ack_needed(mis);
->      }
-> 
-> IIUC, VFIO can register load_complete_ack similarly so it only sem_post()
-> when all things are loaded?  We can then get rid of this slightly awkward
-> interface.  I had a feeling that things can be simplified (e.g., if the
-> thread will take care of loading the final vmstate then the mutex is also
-> not needed? etc.).
-
-With just a single call to switchover_ack_needed per VFIO device it would
-need to do a blocking wait for the device buffers and config state load
-to finish, therefore blocking other VFIO devices from potentially loading
-their config state if they are ready to begin this operation earlier.
+Will move that flag to the next unique bit then.
 
 Thanks,
 Maciej
