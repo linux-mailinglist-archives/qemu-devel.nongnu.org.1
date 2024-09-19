@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912FC97CA62
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E762597CA7D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Sep 2024 15:50:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srHUg-0007ec-Aq; Thu, 19 Sep 2024 09:46:50 -0400
+	id 1srHXc-0006gm-Dj; Thu, 19 Sep 2024 09:49:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1srHUU-00078G-Sc
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:46:39 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1srHXU-0006JE-97
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:49:45 -0400
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1srHUQ-00060C-UT
- for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:46:38 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1srHXR-0006Mq-P3
+ for qemu-devel@nongnu.org; Thu, 19 Sep 2024 09:49:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
  h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
- :Subject; bh=Ms2aBAQ13vf0pUFCc2B0msBVzqbN2IXx+OGBi5iEVWk=; b=sCaWngQK1cv1KaXT
- nYVu+vgsWJLvBnHFQ0IcHWRnY7x7FJ1EPo6La4sFs7S1zyCILWW8OFUYVK8c66neS7qJP5wdHc1/w
- ss+jqlZWJhQnbiEuk8bFvYI51X0Rvfgudy4nIa7/5Y8Cw9CoOV+ZCsAN6g1qUvSQaoO8YMYQCpBNF
- /T8vI0SKfIiU5y4X1mL0Dw1VbFD3SIoJ6Qz9zLjjbcrvrbChW63hM5nLqJVO+LUPh9YDl0/jlQJSY
- r48jfUR2fv/6OKpVThE2jys1lWLtu8ccohqMKIQmEVPsKEoMcEwU03onLBGXNkmwdw4SmmVjXlRGN
- G7GjPonexS0qK4GhdQ==;
+ :Subject; bh=WpHNe7TXr6HaQLeHukME84FM+iJR/rwtrGszqmqqelg=; b=D/FvDNOIihSCBkgc
+ 24gXXwSu23d7IUR7FeSAiKLEPrrfSeogTd4CiyfhurCkKcZ2+D3+HmbosO8BXrKtzfJH9ulNY2O/Z
+ d026odqINELDLDh0wl2J1Rt6pnWs5/tmTXwcqEWHCLE+46PrpjvrZP7i4JGlEdKWJzkhML1VqekUq
+ UmeP6gkbrq8Hmkfku910AtSDRnMam0XkGpFd+p9DRPqh+WC73X7qRgG9oTK49T615Tt65/AjQlGAi
+ yYRXr9UxW23GJrZrhXi1DXLUmf1J0LC7yiG5rM3wrSe4ojaACFrGzM+9k2SK6DbW9hsFgCw82kr2i
+ A+CFMNqAkxvvFuO0bg==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
  by mx.treblig.org with esmtp (Exim 4.96)
- (envelope-from <dave@treblig.org>) id 1srHUN-006QOJ-2y;
- Thu, 19 Sep 2024 13:46:31 +0000
+ (envelope-from <dave@treblig.org>) id 1srHXM-006QOJ-03;
+ Thu, 19 Sep 2024 13:49:36 +0000
 From: dave@treblig.org
 To: peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com
 Cc: qemu-devel@nongnu.org,
 	"Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH v2 6/7] migration/postcopy: Use uffd helpers
-Date: Thu, 19 Sep 2024 14:46:25 +0100
-Message-ID: <20240919134626.166183-7-dave@treblig.org>
+Subject: [PATCH v2 7/7] util/userfaultfd: Remove unused uffd_poll_events
+Date: Thu, 19 Sep 2024 14:46:26 +0100
+Message-ID: <20240919134626.166183-8-dave@treblig.org>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240919134626.166183-1-dave@treblig.org>
 References: <20240919134626.166183-1-dave@treblig.org>
@@ -66,105 +66,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-Use the uffd_copy_page, uffd_zero_page and uffd_wakeup helpers
-rather than calling ioctl ourselves.
-
-They return -errno on error, and print an error_report themselves.
-I think this actually makes postcopy_place_page actually more
-consistent in it's callers.
+uffd_poll_events has been unused since it was added; it's also
+just a wrapper around a plain old poll call, so doesn't add anything.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 ---
- migration/postcopy-ram.c | 47 +++++++++++-----------------------------
- 1 file changed, 13 insertions(+), 34 deletions(-)
+ include/qemu/userfaultfd.h |  1 -
+ util/userfaultfd.c         | 28 ----------------------------
+ 2 files changed, 29 deletions(-)
 
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 1c374b7ea1..e2b318d3da 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -746,18 +746,9 @@ int postcopy_wake_shared(struct PostCopyFD *pcfd,
-                          RAMBlock *rb)
- {
-     size_t pagesize = qemu_ram_pagesize(rb);
--    struct uffdio_range range;
--    int ret;
-     trace_postcopy_wake_shared(client_addr, qemu_ram_get_idstr(rb));
--    range.start = ROUND_DOWN(client_addr, pagesize);
--    range.len = pagesize;
--    ret = ioctl(pcfd->fd, UFFDIO_WAKE, &range);
--    if (ret) {
--        error_report("%s: Failed to wake: %zx in %s (%s)",
--                     __func__, (size_t)client_addr, qemu_ram_get_idstr(rb),
--                     strerror(errno));
--    }
--    return ret;
-+    return uffd_wakeup(pcfd->fd, (void *)ROUND_DOWN(client_addr, pagesize),
-+                       pagesize);
+diff --git a/include/qemu/userfaultfd.h b/include/qemu/userfaultfd.h
+index 18a4314212..a1979308d7 100644
+--- a/include/qemu/userfaultfd.h
++++ b/include/qemu/userfaultfd.h
+@@ -39,7 +39,6 @@ int uffd_copy_page(int uffd_fd, void *dst_addr, void *src_addr,
+ int uffd_zero_page(int uffd_fd, void *addr, uint64_t length, bool dont_wake);
+ int uffd_wakeup(int uffd_fd, void *addr, uint64_t length);
+ int uffd_read_events(int uffd_fd, struct uffd_msg *msgs, int count);
+-bool uffd_poll_events(int uffd_fd, int tmo);
+ 
+ #endif /* CONFIG_LINUX */
+ 
+diff --git a/util/userfaultfd.c b/util/userfaultfd.c
+index 518d5c3586..2396104f23 100644
+--- a/util/userfaultfd.c
++++ b/util/userfaultfd.c
+@@ -358,31 +358,3 @@ int uffd_read_events(int uffd_fd, struct uffd_msg *msgs, int count)
+ 
+     return (int) (res / sizeof(struct uffd_msg));
  }
- 
- static int postcopy_request_page(MigrationIncomingState *mis, RAMBlock *rb,
-@@ -1275,18 +1266,10 @@ static int qemu_ufd_copy_ioctl(MigrationIncomingState *mis, void *host_addr,
-     int ret;
- 
-     if (from_addr) {
--        struct uffdio_copy copy_struct;
--        copy_struct.dst = (uint64_t)(uintptr_t)host_addr;
--        copy_struct.src = (uint64_t)(uintptr_t)from_addr;
--        copy_struct.len = pagesize;
--        copy_struct.mode = 0;
--        ret = ioctl(userfault_fd, UFFDIO_COPY, &copy_struct);
-+        ret = uffd_copy_page(userfault_fd, host_addr, from_addr, pagesize,
-+                             false);
-     } else {
--        struct uffdio_zeropage zero_struct;
--        zero_struct.range.start = (uint64_t)(uintptr_t)host_addr;
--        zero_struct.range.len = pagesize;
--        zero_struct.mode = 0;
--        ret = ioctl(userfault_fd, UFFDIO_ZEROPAGE, &zero_struct);
-+        ret = uffd_zero_page(userfault_fd, host_addr, pagesize, false);
-     }
-     if (!ret) {
-         qemu_mutex_lock(&mis->page_request_mutex);
-@@ -1343,18 +1326,16 @@ int postcopy_place_page(MigrationIncomingState *mis, void *host, void *from,
-                         RAMBlock *rb)
- {
-     size_t pagesize = qemu_ram_pagesize(rb);
-+    int e;
- 
-     /* copy also acks to the kernel waking the stalled thread up
-      * TODO: We can inhibit that ack and only do it if it was requested
-      * which would be slightly cheaper, but we'd have to be careful
-      * of the order of updating our page state.
-      */
--    if (qemu_ufd_copy_ioctl(mis, host, from, pagesize, rb)) {
--        int e = errno;
--        error_report("%s: %s copy host: %p from: %p (size: %zd)",
--                     __func__, strerror(e), host, from, pagesize);
 -
--        return -e;
-+    e = qemu_ufd_copy_ioctl(mis, host, from, pagesize, rb);
-+    if (e) {
-+        return e;
-     }
- 
-     trace_postcopy_place_page(host);
-@@ -1376,12 +1357,10 @@ int postcopy_place_page_zero(MigrationIncomingState *mis, void *host,
-      * but it's not available for everything (e.g. hugetlbpages)
-      */
-     if (qemu_ram_is_uf_zeroable(rb)) {
--        if (qemu_ufd_copy_ioctl(mis, host, NULL, pagesize, rb)) {
--            int e = errno;
--            error_report("%s: %s zero host: %p",
--                         __func__, strerror(e), host);
+-/**
+- * uffd_poll_events: poll UFFD file descriptor for read
+- *
+- * Returns true if events are available for read, false otherwise
+- *
+- * @uffd_fd: UFFD file descriptor
+- * @tmo: timeout value
+- */
+-bool uffd_poll_events(int uffd_fd, int tmo)
+-{
+-    int res;
+-    struct pollfd poll_fd = { .fd = uffd_fd, .events = POLLIN, .revents = 0 };
 -
--            return -e;
-+        int e;
-+        e = qemu_ufd_copy_ioctl(mis, host, NULL, pagesize, rb);
-+        if (e) {
-+            return e;
-         }
-         return postcopy_notify_shared_wake(rb,
-                                            qemu_ram_block_host_offset(rb,
+-    do {
+-        res = poll(&poll_fd, 1, tmo);
+-    } while (res < 0 && errno == EINTR);
+-
+-    if (res == 0) {
+-        return false;
+-    }
+-    if (res < 0) {
+-        error_report("uffd_poll_events() failed: errno=%i", errno);
+-        return false;
+-    }
+-
+-    return (poll_fd.revents & POLLIN) != 0;
+-}
 -- 
 2.46.1
 
