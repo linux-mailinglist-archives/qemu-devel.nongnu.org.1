@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DA697D1ED
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:44:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8524097D1EE
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:45:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYHS-0008UI-5o; Fri, 20 Sep 2024 03:42:18 -0400
+	id 1srYHY-0000W5-Oq; Fri, 20 Sep 2024 03:42:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYHF-0007iT-KI; Fri, 20 Sep 2024 03:42:06 -0400
+ id 1srYHF-0007iX-Kg; Fri, 20 Sep 2024 03:42:06 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYHA-0000Fw-08; Fri, 20 Sep 2024 03:42:04 -0400
+ id 1srYHD-0000GL-JO; Fri, 20 Sep 2024 03:42:05 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D016A90860;
- Fri, 20 Sep 2024 10:41:20 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 560DB90861;
+ Fri, 20 Sep 2024 10:41:21 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 729751409E3;
+ by tsrv.corpit.ru (Postfix) with ESMTP id F394A1409E4;
  Fri, 20 Sep 2024 10:41:40 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 10/22] envlist: Remove unused envlist_parse
-Date: Fri, 20 Sep 2024 10:41:22 +0300
-Message-Id: <20240920074134.664961-11-mjt@tls.msk.ru>
+Subject: [PULL 11/22] hw/sysbus: Remove unused sysbus_mmio_unmap
+Date: Fri, 20 Sep 2024 10:41:23 +0300
+Message-Id: <20240920074134.664961-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,120 +60,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-envlist_parse, envlist_parse_set, envlist_parse_unset were added
-in 2009 but never used, see:
-  04a6dfebb6 ("linux-user: Add generic env variable handling")
+The last use of sysbus_mmio_unmap was removed by
+  981b1c6266 ("spapr/xive: rework the mapping the KVM memory regions")
 
-Remove them.
+Remove it.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- include/qemu/envlist.h |  2 --
- util/envlist.c         | 69 ------------------------------------------
- 2 files changed, 71 deletions(-)
+ hw/core/sysbus.c    | 10 ----------
+ include/hw/sysbus.h |  1 -
+ 2 files changed, 11 deletions(-)
 
-diff --git a/include/qemu/envlist.h b/include/qemu/envlist.h
-index 6006dfae44..b2883f6659 100644
---- a/include/qemu/envlist.h
-+++ b/include/qemu/envlist.h
-@@ -7,8 +7,6 @@ envlist_t *envlist_create(void);
- void envlist_free(envlist_t *);
- int envlist_setenv(envlist_t *, const char *);
- int envlist_unsetenv(envlist_t *, const char *);
--int envlist_parse_set(envlist_t *, const char *);
--int envlist_parse_unset(envlist_t *, const char *);
- char **envlist_to_environ(const envlist_t *, size_t *);
- 
- #endif /* ENVLIST_H */
-diff --git a/util/envlist.c b/util/envlist.c
-index db937c0427..15fdbb109d 100644
---- a/util/envlist.c
-+++ b/util/envlist.c
-@@ -12,9 +12,6 @@ struct envlist {
-     size_t el_count;                        /* number of entries */
- };
- 
--static int envlist_parse(envlist_t *envlist,
--    const char *env, int (*)(envlist_t *, const char *));
--
- /*
-  * Allocates new envlist and returns pointer to it.
-  */
-@@ -51,72 +48,6 @@ envlist_free(envlist_t *envlist)
-     g_free(envlist);
+diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
+index ad34fb7344..e64d99c8ed 100644
+--- a/hw/core/sysbus.c
++++ b/hw/core/sysbus.c
+@@ -154,16 +154,6 @@ static void sysbus_mmio_map_common(SysBusDevice *dev, int n, hwaddr addr,
+     }
  }
  
--/*
-- * Parses comma separated list of set/modify environment
-- * variable entries and updates given enlist accordingly.
-- *
-- * For example:
-- *     envlist_parse(el, "HOME=foo,SHELL=/bin/sh");
-- *
-- * inserts/sets environment variables HOME and SHELL.
-- *
-- * Returns 0 on success, errno otherwise.
-- */
--int
--envlist_parse_set(envlist_t *envlist, const char *env)
+-void sysbus_mmio_unmap(SysBusDevice *dev, int n)
 -{
--    return (envlist_parse(envlist, env, &envlist_setenv));
+-    assert(n >= 0 && n < dev->num_mmio);
+-
+-    if (dev->mmio[n].addr != (hwaddr)-1) {
+-        memory_region_del_subregion(get_system_memory(), dev->mmio[n].memory);
+-        dev->mmio[n].addr = (hwaddr)-1;
+-    }
 -}
 -
--/*
-- * Parses comma separated list of unset environment variable
-- * entries and removes given variables from given envlist.
-- *
-- * Returns 0 on success, errno otherwise.
-- */
--int
--envlist_parse_unset(envlist_t *envlist, const char *env)
--{
--    return (envlist_parse(envlist, env, &envlist_unsetenv));
--}
--
--/*
-- * Parses comma separated list of set, modify or unset entries
-- * and calls given callback for each entry.
-- *
-- * Returns 0 in case of success, errno otherwise.
-- */
--static int
--envlist_parse(envlist_t *envlist, const char *env,
--    int (*callback)(envlist_t *, const char *))
--{
--    char *tmpenv, *envvar;
--    char *envsave = NULL;
--    int ret = 0;
--    assert(callback != NULL);
--
--    if ((envlist == NULL) || (env == NULL))
--        return (EINVAL);
--
--    tmpenv = g_strdup(env);
--    envsave = tmpenv;
--
--    do {
--        envvar = strchr(tmpenv, ',');
--        if (envvar != NULL) {
--            *envvar = '\0';
--        }
--        if ((*callback)(envlist, tmpenv) != 0) {
--            ret = errno;
--            break;
--        }
--        tmpenv = envvar + 1;
--    } while (envvar != NULL);
--
--    g_free(envsave);
--    return ret;
--}
--
- /*
-  * Sets environment value to envlist in similar manner
-  * than putenv(3).
+ void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr)
+ {
+     sysbus_mmio_map_common(dev, n, addr, false, 0);
+diff --git a/include/hw/sysbus.h b/include/hw/sysbus.h
+index 3cb29a480e..c9b1e0e90e 100644
+--- a/include/hw/sysbus.h
++++ b/include/hw/sysbus.h
+@@ -82,7 +82,6 @@ qemu_irq sysbus_get_connected_irq(SysBusDevice *dev, int n);
+ void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr);
+ void sysbus_mmio_map_overlap(SysBusDevice *dev, int n, hwaddr addr,
+                              int priority);
+-void sysbus_mmio_unmap(SysBusDevice *dev, int n);
+ 
+ bool sysbus_realize(SysBusDevice *dev, Error **errp);
+ bool sysbus_realize_and_unref(SysBusDevice *dev, Error **errp);
 -- 
 2.39.5
 
