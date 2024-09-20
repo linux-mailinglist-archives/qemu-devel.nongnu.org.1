@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73AD97D200
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5794897D1FE
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:48:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYID-0004g0-DA; Fri, 20 Sep 2024 03:43:06 -0400
+	id 1srYIX-0005VD-O4; Fri, 20 Sep 2024 03:43:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYI7-0004Ra-Do; Fri, 20 Sep 2024 03:42:59 -0400
+ id 1srYIA-0004pS-Is; Fri, 20 Sep 2024 03:43:03 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYI5-0000LG-1b; Fri, 20 Sep 2024 03:42:59 -0400
+ id 1srYI8-0000Le-1x; Fri, 20 Sep 2024 03:43:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E95D990869;
- Fri, 20 Sep 2024 10:41:25 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 6FB759086A;
+ Fri, 20 Sep 2024 10:41:26 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 906371409EC;
- Fri, 20 Sep 2024 10:41:45 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 176F71409ED;
+ Fri, 20 Sep 2024 10:41:46 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 19/22] license: Simplify GPL-2.0-or-later license descriptions
-Date: Fri, 20 Sep 2024 10:41:31 +0300
-Message-Id: <20240920074134.664961-20-mjt@tls.msk.ru>
+Subject: [PULL 20/22] license: Update deprecated SPDX tag LGPL-2.0+ to
+ LGPL-2.0-or-later
+Date: Fri, 20 Sep 2024 10:41:32 +0300
+Message-Id: <20240920074134.664961-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
@@ -60,136 +61,288 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Since the "2 | 3+" expression can be simplified as "2+",
-it is pointless to mention the GPLv3 license.
+The 'LGPL-2.0+' license identifier has been deprecated since license
+list version 2.0rc2 [1] and replaced by the 'LGPL-2.0-or-later' [2]
+tag.
 
-Add the corresponding SPDX identifier to remove all doubt.
+[1] https://spdx.org/licenses/LGPL-2.0+.html
+[2] https://spdx.org/licenses/LGPL-2.0-or-later.html
 
+Mechanical patch running:
+
+  $ sed -i -e s/LGPL-2.0+/LGPL-2.0-or-later/ \
+    $(git grep -l 'SPDX-License-Identifier: LGPL-2.0+$')
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- block/vdi.c                  | 4 +++-
- hw/net/eepro100.c            | 4 +++-
- hw/ppc/rs6000_mc.c           | 4 +++-
- include/qemu/timed-average.h | 4 +++-
- qemu.nsi                     | 4 +++-
- util/timed-average.c         | 4 +++-
- 6 files changed, 18 insertions(+), 6 deletions(-)
+ gdbstub/gdbstub.c             | 2 +-
+ gdbstub/syscalls.c            | 2 +-
+ gdbstub/system.c              | 2 +-
+ gdbstub/user-target.c         | 2 +-
+ gdbstub/user.c                | 2 +-
+ include/gdbstub/syscalls.h    | 2 +-
+ include/gdbstub/user.h        | 2 +-
+ target/alpha/cpu-param.h      | 2 +-
+ target/arm/cpu-param.h        | 2 +-
+ target/hppa/cpu-param.h       | 2 +-
+ target/i386/cpu-param.h       | 2 +-
+ target/m68k/cpu-param.h       | 2 +-
+ target/microblaze/cpu-param.h | 2 +-
+ target/mips/cpu-param.h       | 2 +-
+ target/openrisc/cpu-param.h   | 2 +-
+ target/ppc/cpu-param.h        | 2 +-
+ target/sh4/cpu-param.h        | 2 +-
+ target/sparc/cpu-param.h      | 2 +-
+ target/sparc/insns.decode     | 2 +-
+ 19 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/block/vdi.c b/block/vdi.c
-index 6363da08ce..149e15c831 100644
---- a/block/vdi.c
-+++ b/block/vdi.c
-@@ -3,10 +3,12 @@
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index d08568cea0..b1def7e71d 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -20,7 +20,7 @@
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
   *
-  * Copyright (c) 2009, 2012 Stefan Weil
-  *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 2 of the License, or
-- * (at your option) version 3 or any later version.
-+ * (at your option) any later version.
-  *
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-diff --git a/hw/net/eepro100.c b/hw/net/eepro100.c
-index d9a70c4544..c8a88b9813 100644
---- a/hw/net/eepro100.c
-+++ b/hw/net/eepro100.c
-@@ -6,10 +6,12 @@
-  * Portions of the code are copies from grub / etherboot eepro100.c
-  * and linux e100.c.
-  *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 2 of the License, or
-- * (at your option) version 3 or any later version.
-+ * (at your option) any later version.
-  *
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-diff --git a/hw/ppc/rs6000_mc.c b/hw/ppc/rs6000_mc.c
-index e6ec4b4c40..07b0b664d9 100644
---- a/hw/ppc/rs6000_mc.c
-+++ b/hw/ppc/rs6000_mc.c
-@@ -3,10 +3,12 @@
-  *
-  * Copyright (c) 2017 Hervé Poussineau
-  *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 2 of the License, or
-- * (at your option) version 3 or any later version.
-+ * (at your option) any later version.
-  *
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-diff --git a/include/qemu/timed-average.h b/include/qemu/timed-average.h
-index 08245e7a10..dfd8d653fa 100644
---- a/include/qemu/timed-average.h
-+++ b/include/qemu/timed-average.h
-@@ -8,10 +8,12 @@
-  *   Benoît Canet <benoit.canet@nodalink.com>
-  *   Alberto Garcia <berto@igalia.com>
-  *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 2 of the License, or
-- * (at your option) version 3 or any later version.
-+ * (at your option) any later version.
-  *
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-diff --git a/qemu.nsi b/qemu.nsi
-index 564d617d11..b186f223e1 100644
---- a/qemu.nsi
-+++ b/qemu.nsi
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #include "qemu/osdep.h"
+diff --git a/gdbstub/syscalls.c b/gdbstub/syscalls.c
+index 4e1295b782..4ddd5cae06 100644
+--- a/gdbstub/syscalls.c
++++ b/gdbstub/syscalls.c
 @@ -7,7 +7,7 @@
- ; This program is free software: you can redistribute it and/or modify
- ; it under the terms of the GNU General Public License as published by
- ; the Free Software Foundation, either version 2 of the License, or
--; (at your option) version 3 or any later version.
-+; (at your option) any later version.
- ;
- ; This program is distributed in the hope that it will be useful,
- ; but WITHOUT ANY WARRANTY; without even the implied warranty of
-@@ -16,6 +16,8 @@
- ;
- ; You should have received a copy of the GNU General Public License
- ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+;
-+; SPDX-License-Identifier: GPL-2.0-or-later
- 
- ; NSIS_WIN32_MAKENSIS
- 
-diff --git a/util/timed-average.c b/util/timed-average.c
-index 2b49d532ce..5b5c22afd8 100644
---- a/util/timed-average.c
-+++ b/util/timed-average.c
-@@ -8,10 +8,12 @@
-  *   Benoît Canet <benoit.canet@nodalink.com>
-  *   Alberto Garcia <berto@igalia.com>
+  * Copyright (c) 2003-2005 Fabrice Bellard
+  * Copyright (c) 2023 Linaro Ltd
   *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 2 of the License, or
-- * (at your option) version 3 or any later version.
-+ * (at your option) any later version.
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #include "qemu/osdep.h"
+diff --git a/gdbstub/system.c b/gdbstub/system.c
+index 1ad87fe7fd..c9f236e94f 100644
+--- a/gdbstub/system.c
++++ b/gdbstub/system.c
+@@ -7,7 +7,7 @@
+  * Copyright (c) 2003-2005 Fabrice Bellard
+  * Copyright (c) 2022 Linaro Ltd
   *
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #include "qemu/osdep.h"
+diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
+index b5e01fd8b0..22bf4008c0 100644
+--- a/gdbstub/user-target.c
++++ b/gdbstub/user-target.c
+@@ -4,7 +4,7 @@
+  * Copyright (c) 2003-2005 Fabrice Bellard
+  * Copyright (c) 2022 Linaro Ltd
+  *
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #include "qemu/osdep.h"
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index b36033bc7a..0b4bfa9c48 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -6,7 +6,7 @@
+  * Copyright (c) 2003-2005 Fabrice Bellard
+  * Copyright (c) 2022 Linaro Ltd
+  *
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #include "qemu/osdep.h"
+diff --git a/include/gdbstub/syscalls.h b/include/gdbstub/syscalls.h
+index 54ff7245a1..d63228e96b 100644
+--- a/include/gdbstub/syscalls.h
++++ b/include/gdbstub/syscalls.h
+@@ -3,7 +3,7 @@
+  *
+  * Copyright (c) 2023 Linaro Ltd
+  *
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef _SYSCALLS_H_
+diff --git a/include/gdbstub/user.h b/include/gdbstub/user.h
+index 3b8358e3da..654986d483 100644
+--- a/include/gdbstub/user.h
++++ b/include/gdbstub/user.h
+@@ -3,7 +3,7 @@
+  *
+  * Copyright (c) 2022 Linaro Ltd
+  *
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef GDBSTUB_USER_H
+diff --git a/target/alpha/cpu-param.h b/target/alpha/cpu-param.h
+index 5ce213a9a1..c21ddf1afd 100644
+--- a/target/alpha/cpu-param.h
++++ b/target/alpha/cpu-param.h
+@@ -2,7 +2,7 @@
+  * Alpha cpu parameters for qemu.
+  *
+  * Copyright (c) 2007 Jocelyn Mayer
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef ALPHA_CPU_PARAM_H
+diff --git a/target/arm/cpu-param.h b/target/arm/cpu-param.h
+index fa6cae0e3a..bed29613c8 100644
+--- a/target/arm/cpu-param.h
++++ b/target/arm/cpu-param.h
+@@ -2,7 +2,7 @@
+  * ARM cpu parameters for qemu.
+  *
+  * Copyright (c) 2003 Fabrice Bellard
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef ARM_CPU_PARAM_H
+diff --git a/target/hppa/cpu-param.h b/target/hppa/cpu-param.h
+index 473d489f01..ef3200f0f3 100644
+--- a/target/hppa/cpu-param.h
++++ b/target/hppa/cpu-param.h
+@@ -2,7 +2,7 @@
+  * PA-RISC cpu parameters for qemu.
+  *
+  * Copyright (c) 2016 Richard Henderson <rth@twiddle.net>
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef HPPA_CPU_PARAM_H
+diff --git a/target/i386/cpu-param.h b/target/i386/cpu-param.h
+index 5e15335203..8c75abe141 100644
+--- a/target/i386/cpu-param.h
++++ b/target/i386/cpu-param.h
+@@ -2,7 +2,7 @@
+  * i386 cpu parameters for qemu.
+  *
+  * Copyright (c) 2003 Fabrice Bellard
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef I386_CPU_PARAM_H
+diff --git a/target/m68k/cpu-param.h b/target/m68k/cpu-param.h
+index 39dcbcece8..5bbe623ba7 100644
+--- a/target/m68k/cpu-param.h
++++ b/target/m68k/cpu-param.h
+@@ -2,7 +2,7 @@
+  * m68k cpu parameters for qemu.
+  *
+  * Copyright (c) 2005-2007 CodeSourcery
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef M68K_CPU_PARAM_H
+diff --git a/target/microblaze/cpu-param.h b/target/microblaze/cpu-param.h
+index e530fead1c..00efb509e3 100644
+--- a/target/microblaze/cpu-param.h
++++ b/target/microblaze/cpu-param.h
+@@ -2,7 +2,7 @@
+  * MicroBlaze cpu parameters for qemu.
+  *
+  * Copyright (c) 2009 Edgar E. Iglesias
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef MICROBLAZE_CPU_PARAM_H
+diff --git a/target/mips/cpu-param.h b/target/mips/cpu-param.h
+index 6f6ac1688f..f3a37e2dbe 100644
+--- a/target/mips/cpu-param.h
++++ b/target/mips/cpu-param.h
+@@ -1,7 +1,7 @@
+ /*
+  * MIPS cpu parameters for qemu.
+  *
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef MIPS_CPU_PARAM_H
+diff --git a/target/openrisc/cpu-param.h b/target/openrisc/cpu-param.h
+index fbfc0f568b..6169ed9f55 100644
+--- a/target/openrisc/cpu-param.h
++++ b/target/openrisc/cpu-param.h
+@@ -2,7 +2,7 @@
+  * OpenRISC cpu parameters for qemu.
+  *
+  * Copyright (c) 2011-2012 Jia Liu <proljc@gmail.com>
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef OPENRISC_CPU_PARAM_H
+diff --git a/target/ppc/cpu-param.h b/target/ppc/cpu-param.h
+index 77c5ed9a67..9c481b9f6c 100644
+--- a/target/ppc/cpu-param.h
++++ b/target/ppc/cpu-param.h
+@@ -2,7 +2,7 @@
+  * PowerPC cpu parameters for qemu.
+  *
+  * Copyright (c) 2007 Jocelyn Mayer
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef PPC_CPU_PARAM_H
+diff --git a/target/sh4/cpu-param.h b/target/sh4/cpu-param.h
+index a7cdb7edb6..a30ba992b3 100644
+--- a/target/sh4/cpu-param.h
++++ b/target/sh4/cpu-param.h
+@@ -2,7 +2,7 @@
+  * SH4 cpu parameters for qemu.
+  *
+  * Copyright (c) 2005 Samuel Tardieu
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef SH4_CPU_PARAM_H
+diff --git a/target/sparc/cpu-param.h b/target/sparc/cpu-param.h
+index 82293fb844..14105dc18b 100644
+--- a/target/sparc/cpu-param.h
++++ b/target/sparc/cpu-param.h
+@@ -1,7 +1,7 @@
+ /*
+  * Sparc cpu parameters for qemu.
+  *
+- * SPDX-License-Identifier: LGPL-2.0+
++ * SPDX-License-Identifier: LGPL-2.0-or-later
+  */
+ 
+ #ifndef SPARC_CPU_PARAM_H
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index 923f348580..989c20b44a 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: LGPL-2.0+
++# SPDX-License-Identifier: LGPL-2.0-or-later
+ #
+ # Sparc instruction decode definitions.
+ # Copyright (c) 2023 Richard Henderson <rth@twiddle.net>
 -- 
 2.39.5
 
