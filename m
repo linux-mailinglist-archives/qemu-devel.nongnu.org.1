@@ -2,142 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FC897D0C9
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 06:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A96697D085
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 06:21:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srVVi-00053C-KB; Fri, 20 Sep 2024 00:44:50 -0400
+	id 1srV7r-0000dE-5z; Fri, 20 Sep 2024 00:20:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <swung0x48@outlook.com>)
- id 1srUq3-00079z-FF; Fri, 20 Sep 2024 00:01:47 -0400
-Received: from mail-me3aus01olkn2081a.outbound.protection.outlook.com
- ([2a01:111:f403:2818::81a]
- helo=AUS01-ME3-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1srV7n-0000b0-Dg; Fri, 20 Sep 2024 00:20:07 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <swung0x48@outlook.com>)
- id 1srUq0-0003TK-Oo; Fri, 20 Sep 2024 00:01:47 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RKT+Qjknt5JNoMHrgj/YJqWRxmaOykPqor+rAFUb8KYtYdglYIss+M5zGxcGlADfiuNO+Otd+ZT3DWrUoWQ6CGQpl6HcfOBkIIGljzmHotbl0fgfCw10dJOOi6tiHA+d52b/BjtTx2ecBpBM28R2ycIJuqdKPnjkRhhzha8HLaipmUMfdXHOi0QMTS7WFtttiPQfH4oQvhCiVJ67XWvq8jih1Pp/kJCM2wTvAzpg3grcPOOvG0QJrocRCCF+wRZ1c/JYR8sqRONVu76khcpiB6o0RqvHGzZBH67rY5IhVkirITe6UhJXb8c+N3HfMWURTpaimSsqWErev3Hu6HPZtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ex7raIjRS9Vz/xflVtDRKgPcFKc0WMt++ecnfwwBym0=;
- b=BqFXaDxT9dcxujOziXx2lY7V7pc7+5YxMDRoZjmHyLBZsT+C+QG3lYpITTrlqcDXLki63fxmzbKKFsKkvIO3eRWu62OgOATppVUfnDrIQNAz1kmPZOMju2ebBViYljdSQe+Ki+oJORWTOg2ciWZRxXdhcrgPGi+JiIOrG9I2oKfwTUN5DYmP57VPNX6eEAzYKvbwh8zEthT43bhWkuKsSuhjdOVGHNixBmVRFQc7iXoINOtBDltEFJ4OWevkDg+IHeifSM4epHNibMd0l3B/aitxKG8y8hNw3CRf/M6AewbTsl3sEDCB3waq2Joghya8MR4x11LUZ46jpon8TJbR2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ex7raIjRS9Vz/xflVtDRKgPcFKc0WMt++ecnfwwBym0=;
- b=egwty39qNpSVwdUQTJIyaOiK0IvQLCPHEuay/lwfRTowjqYJ2HhOzq5HxQc5bMsvTlVK0mGU/XhTd+vP/pHYbtMP1aaIALDc4hPsBAX1RfEUaezebymSbrarQEDi8wF+vdiM25OZP84fb0Ww4VgbpOltIoDeKo+DJljOOlGdlaf3/1ND752RyKhz5wihSDrQLRrp8t3ZriiaVZr7NDW2uG/h7lnYN2ovQsxtwoBARH7T+De7dKVDdlyOiBGaj+JnGS48lFhLggxcYEz6UwNQ3rtVGW7EFQ1sjUKpsOt8tZ5WlQILgQ6DHgSyoQOnr/vX1a9OEGA2nj9PeTzHEHpkbQ==
-Received: from SY8P300MB0282.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:262::8) by
- SY8P300MB0571.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:299::14) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7982.17; Fri, 20 Sep 2024 04:01:35 +0000
-Received: from SY8P300MB0282.AUSP300.PROD.OUTLOOK.COM
- ([fe80::70b2:a779:d7b3:2e0f]) by SY8P300MB0282.AUSP300.PROD.OUTLOOK.COM
- ([fe80::70b2:a779:d7b3:2e0f%4]) with mapi id 15.20.7962.022; Fri, 20 Sep 2024
- 04:01:35 +0000
-From: 0x48 Swung <swung0x48@outlook.com>
-To: Richard Henderson <richard.henderson@linaro.org>, LIU Zhiwei
- <zhiwei_liu@linux.alibaba.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>, "palmer@dabbelt.com"
- <palmer@dabbelt.com>, "alistair.francis@wdc.com" <alistair.francis@wdc.com>,
- "dbarboza@ventanamicro.com" <dbarboza@ventanamicro.com>,
- "liwei1518@gmail.com" <liwei1518@gmail.com>, "bmeng.cn@gmail.com"
- <bmeng.cn@gmail.com>, TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Subject: Re: [PATCH v4 02/12] tcg/riscv: Add basic support for vector
-Thread-Topic: [PATCH v4 02/12] tcg/riscv: Add basic support for vector
-Thread-Index: AQHbBE6HkCjgGq4WQkCpc+O+WxTXqLJS672AgAofvACAAFJBAIAACN+AgAA+ggCAAlv36A==
-Date: Fri, 20 Sep 2024 04:01:35 +0000
-Message-ID: <SY8P300MB02825DF878585DDC68EB088CE06C2@SY8P300MB0282.AUSP300.PROD.OUTLOOK.COM>
-References: <20240911132630.461-1-zhiwei_liu@linux.alibaba.com>
- <20240911132630.461-3-zhiwei_liu@linux.alibaba.com>
- <0d591570-02c6-48c9-9e3f-ef47ac20ce7d@linaro.org>
- <b87e7a7e-41fd-4b26-bde3-9adca9babb24@linux.alibaba.com>
- <33101e38-080d-4444-a8c3-9d01827e243f@linaro.org>
- <b88244bc-aaf7-42f9-a90f-e4027ac72ebf@linux.alibaba.com>
- <20e20fde-830f-4314-a944-e7973bda5d8c@linaro.org>
-In-Reply-To: <20e20fde-830f-4314-a944-e7973bda5d8c@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-reactions: allow
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SY8P300MB0282:EE_|SY8P300MB0571:EE_
-x-ms-office365-filtering-correlation-id: 9b5b4a7b-79a6-4e34-d1ef-08dcd928eb61
-x-microsoft-antispam: BCL:0;
- ARA:14566002|8060799006|19110799003|14030799003|461199028|15080799006|12050799009|7092599003|9400799024|440099028|3412199025|4302099013|3430499032|102099032|1602099012|10035399004;
-x-microsoft-antispam-message-info: =?us-ascii?Q?qmmZ1r53EyJ+XpcHotY8eJ0tsVfxQluGEtl81zKU6VqrdGxO3qBElSyrsbfm?=
- =?us-ascii?Q?qUNRcgylDRQH4ecvYzWwU2nyya77mlPUVMIPKDW3eGnwjXY9aJa12JuUN4d2?=
- =?us-ascii?Q?qK8eIUfIDAVbv3LIdBLsyl6IBVMD02N2kS+7YKYcgrastJQGjpMLo4r7zg4g?=
- =?us-ascii?Q?saQcwPw/fK5NfbfipgYRgacBrLGjZN23FCq8Zwn6e0k5Mqd37b1QQcLdqMT3?=
- =?us-ascii?Q?B1B2KJxSYYxXhJ6afVYDMr52fzQ4CmjeibdslHyeVNdnd64gYzvtJOxaBC8D?=
- =?us-ascii?Q?vin491yvCNvXA7AvmHBXiKBtn0Nb8zxEcSjCiWXkIpBNO0e0nn61yPi034gH?=
- =?us-ascii?Q?UGnee6VnXMH4mvqdjIXejpTxEmno5HryEttkfuk3Xh/zDsCwA1gOQr7IlspO?=
- =?us-ascii?Q?HLL62vJzED1tJko0NuhcrdPAJSfCkcG2GL/6fothZayNqNzNnIU92Q5qIzIS?=
- =?us-ascii?Q?EW+4ZvivF9zZY7HKcZ4qUhwaVytHe8Q0gXgbmVPg5IR6XitArA25KNSNQb2x?=
- =?us-ascii?Q?Z6DKomRZ/4ZAgLFK1Dtdj97PLo1IFS0HS88juWkZobIsXifJujnuT71pGs2U?=
- =?us-ascii?Q?lpz2brMLNwl6d3jMMX20eEjrnubAtn34v8omhDWKnYny0gLCW9i6Petu1UZT?=
- =?us-ascii?Q?AeGgcv1Tv8BzMhf0HwCUxr1BkC1NAr3nbANWPm62Bn/Sb2ws6OkxPaU7Bpcl?=
- =?us-ascii?Q?Z40foQPrpXPPq6TFNvMw2LwliH0KS7PQhgF7RieYq9oQM183FB9TaTPaUmfu?=
- =?us-ascii?Q?OxJo5TnomSmWZqDU/284rOu/neSYc305e/BsEfVFRmSkUrcNNtGEJgznFuMx?=
- =?us-ascii?Q?WxNKBwp/tjBoLa7G50QnKvgA4XFb+8fxQniMK8SNqIk+ykzQc41R0CHPfYnG?=
- =?us-ascii?Q?qeKq0vrwUuRQk1LXb4U3juU2uV/oRSB9IGmZnWzWhHRtBZ5igVeZ96wcSf2s?=
- =?us-ascii?Q?Ncw4C00Ur5WwXv4MVmjr/A=3D=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?LObRskrN3EMe+SWFUyPVAqO6jA8j0lYHA4ipcdynIjECcqzwZcN0s5k1pyg3?=
- =?us-ascii?Q?EXikJ/q2QCLjXNl0er3EEVGwlk2x9oZHn2S6y3sOY/xFlO6khW2y1aqPdxSD?=
- =?us-ascii?Q?JILjHyFuA+BBkDMO8Kzfh6ZLk2KiFPvqSKki0p0h5us+QzSNJpc7hVg77vm7?=
- =?us-ascii?Q?hMYX48LBqbLSS4EtumJlgyiNt8lj7syrmEail+NZ1rRAe4dW14nPZHF4RamS?=
- =?us-ascii?Q?+S3x7nwe+HOK4O8909uKVjDqIJaUUa0GMpTiCnUY0/B2gAZv1FPrYOl9fpZ6?=
- =?us-ascii?Q?jbMntgnuSiQxdct1hFoSEzqgkNVRUBdo9UyyRFai0jYAmn0q8kv/Zg3to4gc?=
- =?us-ascii?Q?fqXgc0HMVM1ZeqwS5IeTsh+8DUSQeSreLTqlkq9Ar5jkW7vvuEQE20og8t6E?=
- =?us-ascii?Q?C+HPT86riq7GuAZMNhZvHvktbcQpcZgxeAGS09O4O6QWN34Y+jBaSQn1XqxS?=
- =?us-ascii?Q?cFLdjfIoiiHwn7rcb9nZnwihkxNWVXTYZ9baBHQAMWVo0ZzcMtsu0Ul3tYeE?=
- =?us-ascii?Q?bSL4Li9+wAntgQ33ZUQilGTUJT9ShS/gBlKRmaCwlqoGx4nhlUMPmj6cGKLZ?=
- =?us-ascii?Q?+XoDvNcX0UG1TDG0Uj2W9PpOQP6YL6oi4yXkvm2p9uYSZXNk+fLoE4fVuJd2?=
- =?us-ascii?Q?F9P3TpMzq+jC0yBcEVhhsRd53Cybg9zIy5zMglUAVNPz9mk/qPH1X/UtzSLc?=
- =?us-ascii?Q?y6oQT/r8BUuHVlfa4/9Vh9ZIGxk5nd5KnrUHJC9FzSJKykGjJ6BdLCNhJScq?=
- =?us-ascii?Q?PtPz86c+D/iQf0IPwpYs8k+GtZy2Q1ObA49ZFNXFN4Kw+r0uKU4hJD/hwSLE?=
- =?us-ascii?Q?I3FF5FRBHDr1sAoCdJojyolnZUqnR6VV+9ZtU/fVR1YgalGq9ar+BEIuqKSq?=
- =?us-ascii?Q?Yy9JrrvHL6n0FhkuCcX8IV9fgf9ObN+pt33KivFLWkPDF+BL2CId/rEFsRbo?=
- =?us-ascii?Q?R+MqIEKQH1HgLyhOgoPjFGY8+l2Db11KoNzNDiH14EuTDgH7VqtNXNskXcOt?=
- =?us-ascii?Q?BXR0E8mhkjYbot7inI7F8RB9390QTKs0x+VYR0lEcRH0QH51gO9zQ5oMAjm3?=
- =?us-ascii?Q?bGmi8lu/kxMHTuSbj94foRBR+PdvnBmF3e+Wl54eMQ8reoqgPIQ/P6/Y+sC+?=
- =?us-ascii?Q?jweBgGtjNDnmcy3wirA/5Sj5Y8XIFtrMVRGkCvKodZVe+3vM5JdPb8VafV7A?=
- =?us-ascii?Q?WlsTkv4/XCrqNOpMmH5+EDhkFNUE2Age36u9Vfo5bNdT79ag7XMSuVQi9qOP?=
- =?us-ascii?Q?XnDlf480qzBXjRquYYTA?=
-Content-Type: multipart/alternative;
- boundary="_000_SY8P300MB02825DF878585DDC68EB088CE06C2SY8P300MB0282AUSP_"
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1srV7k-0006RM-S2; Fri, 20 Sep 2024 00:20:07 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 8C7B990795;
+ Fri, 20 Sep 2024 07:19:31 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1172D1408B9;
+ Fri, 20 Sep 2024 07:19:50 +0300 (MSK)
+Message-ID: <9bdb65d0-2f7f-4e3d-9234-8a6aab348abd@tls.msk.ru>
+Date: Fri, 20 Sep 2024 07:19:36 +0300
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SY8P300MB0282.AUSP300.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b5b4a7b-79a6-4e34-d1ef-08dcd928eb61
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2024 04:01:35.0379 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY8P300MB0571
-Received-SPF: pass client-ip=2a01:111:f403:2818::81a;
- envelope-from=swung0x48@outlook.com;
- helo=AUS01-ME3-obe.outbound.protection.outlook.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+From: Michael Tokarev <mjt@tls.msk.ru>
+Subject: [ANNOUNCE] QEMU 7.2.14 Stable released
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+Content-Language: en-US, ru-RU
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------2QzKX1nwXH8Goby9jELfgldR"
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 20 Sep 2024 00:44:48 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -152,300 +100,267 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_SY8P300MB02825DF878585DDC68EB088CE06C2SY8P300MB0282AUSP_
-Content-Type: text/plain; charset="us-ascii"
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------2QzKX1nwXH8Goby9jELfgldR
+Content-Type: multipart/mixed; boundary="------------JYf3GJIJZZqhaxNbWpWGb2II";
+ protected-headers="v1"
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+Message-ID: <9bdb65d0-2f7f-4e3d-9234-8a6aab348abd@tls.msk.ru>
+Subject: [ANNOUNCE] QEMU 7.2.14 Stable released
+
+--------------JYf3GJIJZZqhaxNbWpWGb2II
+Content-Type: multipart/mixed; boundary="------------3fND6wALOo0XjhzHJ3D0B2Vt"
+
+--------------3fND6wALOo0XjhzHJ3D0B2Vt
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+
+SGkgZXZlcnlvbmUsDQoNClRoZSBRRU1VIHY3LjIuMTQgc3RhYmxlIHJlbGVhc2UgaXMgbm93
+IGF2YWlsYWJsZS4NCg0KWW91IGNhbiBncmFiIHRoZSB0YXJiYWxsIGZyb20gb3VyIGRvd25s
+b2FkIHBhZ2UgaGVyZToNCg0KICAgaHR0cHM6Ly93d3cucWVtdS5vcmcvZG93bmxvYWQvI3Nv
+dXJjZQ0KDQogICBodHRwczovL2Rvd25sb2FkLnFlbXUub3JnL3FlbXUtNy4yLjE0LnRhci54
+eg0KICAgaHR0cHM6Ly9kb3dubG9hZC5xZW11Lm9yZy9xZW11LTcuMi4xNC50YXIueHouc2ln
+IChzaWduYXR1cmUpDQoNCnY3LjIuMTQgaXMgbm93IHRhZ2dlZCBpbiB0aGUgb2ZmaWNpYWwg
+cWVtdS5naXQgcmVwb3NpdG9yeSwgYW5kIHRoZQ0Kc3RhYmxlLTcuMiBicmFuY2ggaGFzIGJl
+ZW4gdXBkYXRlZCBhY2NvcmRpbmdseToNCg0KICAgaHR0cHM6Ly9naXRsYWIuY29tL3FlbXUt
+cHJvamVjdC9xZW11Ly0vY29tbWl0cy9zdGFibGUtNy4yDQoNClRoZXJlIGFyZSA0NyBjaGFu
+Z2VzIHNpbmNlIHRoZSBwcmV2aW91cyB2Ny4yLjEzIHJlbGVhc2UuDQoNClRoYW5rIHlvdSBl
+dmVyeW9uZSB3aG8gaGFzIGJlZW4gaW52b2x2ZWQgYW5kIGhlbHBlZCB3aXRoIHRoZSBzdGFi
+bGUgc2VyaWVzIQ0KDQovbWp0DQoNCkNoYW5nZWxvZyAoc3RhYmxlLTcuMi1oYXNoIG1hc3Rl
+ci1oYXNoIEF1dGhvciBOYW1lOiBDb21tbWl0LVN1YmplY3QpOg0KDQoyYzdmOWRjYTE0IE1p
+Y2hhZWwgVG9rYXJldjoNCiAgVXBkYXRlIHZlcnNpb24gZm9yIDcuMi4xNCByZWxlYXNlDQpj
+ZGMwNDhlODEwIDExMDY4NGM5YTYgSmFuIEtsw7Z0emtlOg0KICBody9pbnRjL2FybV9naWM6
+IGZpeCBzcHVyaW91cyBsZXZlbCB0cmlnZ2VyZWQgaW50ZXJydXB0cw0KMTBhYzAwZjdiMiBk
+MDA2OGI3NDZhIEFsZXggQmVubsOpZToNCiAgdGVzdHMvZG9ja2VyOiByZW1vdmUgZGViaWFu
+LWFybWVsLWNyb3NzDQpiNjBjNjFkYmI4IGQ2MTkyZjNmNzUgSGFvcmFuIFpoYW5nOg0KICBo
+dy9kaXNwbGF5L3Zob3N0LXVzZXItZ3B1LmM6IGZpeCB2aG9zdF91c2VyX2dwdV9jaHJfcmVh
+ZCgpDQpiODM2ZTlmOGMzIGU2YzA5ZWE0ZjkgRGFuaWVsIFAuIEJlcnJhbmfDqToNCiAgY3J5
+cHRvOiBjaGVjayBnbnV0bHMgJiBnY3J5cHQgc3VwcG9ydCB0aGUgcmVxdWVzdGVkIHBia2Rm
+IGhhc2gNCmQwYzk5ZWRmOTUgYzcyY2FiNWFkOSBUaWFnbyBQYXNxdWFsaW5pOg0KICBjcnlw
+dG86IHJ1biBxY3J5cHRvX3Bia2RmMl9jb3VudF9pdGVycyBpbiBhIG5ldyB0aHJlYWQNCjIx
+Y2UyZmI4ZjMgYjg0ZjA2YzJiZSBEYXZpZCBIaWxkZW5icmFuZDoNCiAgc29mdG1tdS9waHlz
+bWVtOiBmaXggbWVtb3J5IGxlYWsgaW4gZGlydHlfbWVtb3J5X2V4dGVuZCgpDQowMjc4Mzlm
+ZTAzIDEwOGQ5OTc0MmEgQWxleCBCZW5uw6llOg0KICBnaXRsYWI6IG1pZ3JhdGUgdGhlIHMz
+OTB4IGN1c3RvbSBtYWNoaW5lIHRvIDIyLjA0DQphNjM4MTdkMDM0IDg3ZTAxMmYyOWYgUGV0
+ZXIgTWF5ZGVsbDoNCiAgY3J5cHRvL3Rsc2NyZWRzcHNrOiBGcmVlIHVzZXJuYW1lIG9uIGZp
+bmFsaXplDQpmNGU4ZDk4MGZjIDk0MGQ4MDJiMjQgQWxleGFuZGVyIEl2YW5vdjoNCiAgbW9k
+dWxlOiBQcmV2ZW50IGNyYXNoIGJ5IHJlc2V0dGluZyBsb2NhbF9lcnIgaW4gbW9kdWxlX2xv
+YWRfcW9tX2FsbCgpDQo2ZWZmZDZhZDcyIDQxNmYyYjE2YzAgUmljaGFyZCBIZW5kZXJzb246
+DQogIHRhcmdldC9pMzg2OiBEbyBub3QgYXBwbHkgUkVYIHRvIE1NWCBvcGVyYW5kcw0KNGVj
+ZDI4MmFkYyA1NDdjNGU1MDkyIFN0ZWZhbm8gR2FyemFyZWxsYToNCiAgYmxvY2svYmxraW86
+IHVzZSBGVUEgZmxhZyBvbiB3cml0ZSB6ZXJvZXMgb25seSBpZiBzdXBwb3J0ZWQNCmIyZWJm
+Mzc1YzAgNDQ2ZTVlOGI0NSBKaWFuemhvdSBZdWU6DQogIGh3L2NvcmUvcHRpbWVyOiBmaXgg
+dGltZXIgemVybyBwZXJpb2QgY29uZGl0aW9uIGZvciBmcmVxID4gMUdIeg0KZmU1NDc4Mzdi
+ZiAzODc0ZjVmNzNjIEVyaWMgQmxha2U6DQogIG5iZC9zZXJ2ZXI6IENWRS0yMDI0LTc0MDk6
+IEF2b2lkIHVzZS1hZnRlci1mcmVlIHdoZW4gY2xvc2luZyBzZXJ2ZXINCjlkZjVjMTMzYzkg
+M2U3ZWY3MzhjOCBFcmljIEJsYWtlOg0KICBuYmQvc2VydmVyOiBDVkUtMjAyNC03NDA5OiBD
+bG9zZSBzdHJheSBjbGllbnRzIGF0IHNlcnZlci1zdG9wDQo3ZDMxNzc2ZDdmIGI5YjcyY2Iz
+Y2UgRXJpYyBCbGFrZToNCiAgbmJkL3NlcnZlcjogQ1ZFLTIwMjQtNzQwOTogRHJvcCBub24t
+bmVnb3RpYXRpbmcgY2xpZW50cw0KZGJmOTQ2YzI1MSBjOGE3NmRiZDkwIEVyaWMgQmxha2U6
+DQogIG5iZC9zZXJ2ZXI6IENWRS0yMDI0LTc0MDk6IENhcCBkZWZhdWx0IG1heC1jb25uZWN0
+aW9ucyB0byAxMDANCmNiNDhhNzA4OWIgZmIxYzJhYWE5OCBFcmljIEJsYWtlOg0KICBuYmQv
+c2VydmVyOiBQbHVtYiBpbiBuZXcgYXJncyB0byBuYmRfY2xpZW50X2FkZCgpDQpjMTc5NzU0
+YzNjIGM4ZjYwYmZiNDMgQW1qYWQgQWxzaGFyYWZpOg0KICBpb3Rlc3RzOiBBZGQgYHZ2ZmF0
+YCB0ZXN0cw0KM2YyN2ZkOTUzNiA1ZWVkM2RiMzM2IEFtamFkIEFsc2hhcmFmaToNCiAgdnZm
+YXQ6IEZpeCByZWFkaW5nIGZpbGVzIHdpdGggbm9uLWNvbnRpbnVvdXMgY2x1c3RlcnMNCmUy
+MTcxZjI0YmUgZjYwYTZmN2UxNyBBbWphZCBBbHNoYXJhZmk6DQogIHZ2ZmF0OiBGaXggd3Jv
+bmcgY2hlY2tzIGZvciBjbHVzdGVyIG1hcHBpbmdzIGludmFyaWFudA0KN2RjY2I0ZmQwYiAy
+MWIyNWEwZTQ2IEFtamFkIEFsc2hhcmFmaToNCiAgdnZmYXQ6IEZpeCB1c2FnZSBvZiBgaW5m
+by5maWxlLm9mZnNldGANCjE3OTYyZTFlYTggYjg4MWNmMDBjOSBBbWphZCBBbHNoYXJhZmk6
+DQogIHZ2ZmF0OiBGaXggYnVnIGluIHdyaXRpbmcgdG8gbWlkZGxlIG9mIGZpbGUNCmZjMmU3
+MDZmNGMgZWQ1YTE1OWMzZCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqToNCiAgaHcvc2Qvc2Ro
+Y2k6IFJlc2V0IEBkYXRhX2NvdW50IGluZGV4IG9uIGludmFsaWQgQURNQSB0cmFuc2ZlcnMN
+CjY4MWUzMzhlZTYgZjkzNzMwOWZiZCB0aG9tYXM6DQogIHZpcnRpby1uZXQ6IEZpeCBuZXR3
+b3JrIHN0YWxsIGF0IHRoZSBob3N0IHNpZGUgd2FpdGluZyBmb3Iga2ljaw0KZDI0NzZjZWQy
+ZSBmMTU5NWNlYjlhIEFraWhpa28gT2Rha2k6DQogIHZpcnRpby1uZXQ6IEVuc3VyZSBxdWV1
+ZSBpbmRleCBmaXRzIHdpdGggUlNTDQozMThhMGIwNTU2IDU1ZjlmNGVlMDEgUGV0ZXIgTWF5
+ZGVsbDoNCiAgdGFyZ2V0L2FybTogSGFuZGxlIGRlbm9ybWFscyBjb3JyZWN0bHkgZm9yIEZN
+T1BBICh3aWRlbmluZykNCjljZTA1ZmJjOTggNWE1NThiZTkzYSBNYXJjbyBQYWx1bWJpOg0K
+ICBody9hcm0vbXBzMi10ei5jOiBmaXggUlgvVFggaW50ZXJydXB0cyBvcmRlcg0KNDFlMGNh
+OGJjOCA5YTQ1YjA3NjE2IFBldGVyIE1heWRlbGw6DQogIGh3L2kzODYvYW1kX2lvbW11OiBE
+b24ndCBsZWFrIG1lbW9yeSBpbiBhbWR2aV91cGRhdGVfaW90bGIoKQ0KNzAxMjAyYTVhNCA0
+OGU1YjVmOTk0IFBldGVyIE1heWRlbGw6DQogIGRvY3Mvc3BoaW54L2RlcGZpbGUucHk6IEhh
+bmRsZSBlbnYuZG9jMnBhdGgoKSByZXR1cm5pbmcgYSBQYXRoIG5vdCBhIHN0cg0KNzNjMjU4
+YzllZCBmNTczYWMwNTllIFBldGVyIE1heWRlbGw6DQogIHRhcmdldC9hcm06IElnbm9yZSBT
+TUNSX0VMMi5MRU4gYW5kIFNWQ1JfRUwyLkxFTiBpZiBFTDIgaXMgbm90IGVuYWJsZWQNCjA4
+NjdjN2ZhMzMgNzY5MTZkZmE4OSBQZXRlciBNYXlkZWxsOg0KICB0YXJnZXQvYXJtOiBBdm9p
+ZCBzaGlmdHMgYnkgLTEgaW4gdHN6aW1tX3NocigpIGFuZCB0c3ppbW1fc2hsKCkNCjU5YjRj
+MjM3OGMgZWEzZjVhOTBmMCBQZXRlciBNYXlkZWxsOg0KICB0YXJnZXQvYXJtOiBGaXggVU1P
+UEEvVU1PUFMgb2YgMTYtYml0IHZhbHVlcw0KODdmZDg0ODcyOSA1NmYxYzBkYjkyIFBldGVy
+IE1heWRlbGw6DQogIHRhcmdldC9hcm06IERvbid0IGFzc2VydCBmb3IgMTI4LWJpdCB0aWxl
+IGFjY2Vzc2VzIHdoZW4gU1ZMIGlzIDEyOA0KNWQ2NDI3NTUxNyAwODkyZmZmYzJhIFBldGVy
+IE1heWRlbGw6DQogIGh3L21pc2MvYmNtMjgzNV9wcm9wZXJ0eTogRml4IGhhbmRsaW5nIG9m
+IEZSQU1FQlVGRkVSX1NFVF9QQUxFVFRFDQpkNzNmZGJiMWQ0IDU0NmQ1NzRiMTEgRnJlZGVy
+aWsgdmFuIEjDtnZlbGw6DQogIGh3L2NoYXIvYmNtMjgzNV9hdXg6IEZpeCBhc3NlcnQgd2hl
+biByZWNlaXZlIEZJRk8gZmlsbHMgdXANCmU5MjliOTE4NmUgODMzNDAxOTNiOSBSaWNoYXJk
+IEhlbmRlcnNvbjoNCiAgdGFyZ2V0L3J4OiBVc2UgdGFyZ2V0X3Vsb25nIGZvciBhZGRyZXNz
+IGluIExJDQo0YWEzNTk4MTcwIGQ3MjQ3OWIxMTcgVGhvbWFzIEh1dGg6DQogIGh3L3ZpcnRp
+bzogRml4IHRoZSBkZS1pbml0aWFsaXphdGlvbiBvZiB2aG9zdC11c2VyIGRldmljZXMNCmYw
+NDNmN2Q4YmUgODUxNDk1NTcxZCBQZXRlciBNYXlkZWxsOg0KICB1dGlsL2FzeW5jLmM6IEZv
+cmJpZCBuZWdhdGl2ZSBtaW4vbWF4IGluIA0KYWlvX2NvbnRleHRfc2V0X3RocmVhZF9wb29s
+X3BhcmFtcygpDQpjYTgzNGJjYzRkIDI0NjVjODlmYjkgQmlibyBNYW86DQogIGh3L2ludGMv
+bG9vbmdzb25faXBpOiBBY2Nlc3MgbWVtb3J5IGluIGxpdHRsZSBlbmRpYW4NCjRkMmUyOGJm
+MmQgOTAzY2M5ZTExNyBzb25nemltaW5nOg0KICBjaGFyZGV2L2NoYXItd2luLXN0ZGlvLmM6
+IHJlc3RvcmUgb2xkIGNvbnNvbGUgbW9kZQ0KYWRmZTk1ZTFjYSAxM2JlOTI5YWZmIFBhb2xv
+IEJvbnppbmk6DQogIHRhcmdldC9pMzg2OiBkbyBub3QgY3Jhc2ggaWYgbWljcm92bSBndWVz
+dCB1c2VzIFNHWCBDUFVJRCBsZWF2ZXMNCjcxODJmNGRmMjIgYTNjOGQ3ZTM4NSBDbMOpbWVu
+dCBNYXRoaWV1LS1EcmlmOg0KICBpbnRlbF9pb21tdTogZml4IEZSQ0QgY29uc3RydWN0aW9u
+IG1hY3JvDQo4YmZlMGY4ZGRhIGEyMDdkNWY4N2QgWmhhbyBMaXU6DQogIGh3L2N4bC9jeGwt
+aG9zdDogRml4IHNlZ21lbnRhdGlvbiBmYXVsdCB3aGVuIGdldHRpbmcgY3hsLWZtdyBwcm9w
+ZXJ0eQ0KODI3NDk3ZGNmZSBjNTEwZmU3OGYxIFpoZXl1IE1hOg0KICBody9udm1lOiBmaXgg
+bWVtb3J5IGxlYWsgaW4gbnZtZV9kc20NCmQ1MzczZDdiZGIgMjA3ZDMwYjVmZCBSaWNoYXJk
+IEhlbmRlcnNvbjoNCiAgdGFyZ2V0L2FybTogVXNlIEZQU1RfRjE2IGZvciBTTUUgRk1PUEEg
+KHdpZGVuaW5nKQ0KYmU3MzU1MzNkNSAzMWQ5M2ZlZGY0IERhbml5YWwgS2hhbjoNCiAgdGFy
+Z2V0L2FybTogVXNlIGZsb2F0X3N0YXR1cyBjb3B5IGluIHNtZV9mbW9wYV9zDQpmYWEzYjZk
+Njc4IDNiZWNjOTM5MDggTWFya3VzIEFybWJydXN0ZXI6DQogIHFhcGkvcW9tOiBEb2N1bWVu
+dCBmZWF0dXJlIHVuc3RhYmxlIG9mIEB4LXZmaW8tdXNlci1zZXJ2ZXINCg0K
+--------------3fND6wALOo0XjhzHJ3D0B2Vt
+Content-Type: application/pgp-keys; name="OpenPGP_0x61AD3D98ECDF2C8E.asc"
+Content-Disposition: attachment; filename="OpenPGP_0x61AD3D98ECDF2C8E.asc"
+Content-Description: OpenPGP public key
 Content-Transfer-Encoding: quoted-printable
 
-Hey everyone! Late to the party. Life happens sometimes ;)
-Just discovered this patch and this mail list, and I'd like to provide some=
- background story here.
-<https://github.com/plctlab/plct-qemu/tree/plct-riscv-backend-rvv>I origina=
-lly provided my initial implementation in a downstream repo last year, name=
-ly https://github.com/plctlab/plct-qemu/tree/plct-riscv-backend-rvv .
-I'm new to contributing to qemu and also take part in the open-source commu=
-nity upstreaming process as a whole, so I may make mistakes in my following=
- claims, but I see some confusion here:
-1. The PLCT branch (which includes my original commits) is open-sourced usi=
-ng GPLv2, which follows QEMU's upstream repo. So according to the license, =
-my modification should be EXPLICITLY shown in the patch, but I haven't seen=
- any.
-2. I do consent upstreaming my patch last year, in the form of a patch subm=
-itted with modifications from T-head, and on behalf of them. And it was agr=
-eed back in the days that I can be mentioned as one of the authors. But it =
-turns out that there's no "sign-off", "author", "co-author" line mentioning=
- me. If I don't speak out in this situation, does it imply that this patch =
-is purely LIU Zhiwei's work and have nothing to do with me?
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-I'd like LIU to separate my patch and his modification to two separate patc=
-hes, and explicitly name where are those patches coming from, so that this =
-patch can comply to GPLv2 license and can we clarify those misunderstanding=
-s.
+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
+YU3lDguR31r4RETwuvI=3D
+=3D/6h1
+-----END PGP PUBLIC KEY BLOCK-----
 
-I don't want to take it personally , but I do smell something's wrong going=
- on here...
+--------------3fND6wALOo0XjhzHJ3D0B2Vt--
 
-Best Regards,
-Swung0x48 (aka. Huang Shiyuan)
+--------------JYf3GJIJZZqhaxNbWpWGb2II--
 
-Get Outlook for Android<https://aka.ms/AAb9ysg>
-________________________________
-From: Richard Henderson <richard.henderson@linaro.org>
-Sent: Wednesday, September 18, 2024 10:27:16 PM
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>; qemu-devel@nongnu.org <qemu-=
-devel@nongnu.org>
-Cc: qemu-riscv@nongnu.org <qemu-riscv@nongnu.org>; palmer@dabbelt.com <palm=
-er@dabbelt.com>; alistair.francis@wdc.com <alistair.francis@wdc.com>; dbarb=
-oza@ventanamicro.com <dbarboza@ventanamicro.com>; liwei1518@gmail.com <liwe=
-i1518@gmail.com>; bmeng.cn@gmail.com <bmeng.cn@gmail.com>; Swung0x48 <swung=
-0x48@outlook.com>; TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Subject: Re: [PATCH v4 02/12] tcg/riscv: Add basic support for vector
+--------------2QzKX1nwXH8Goby9jELfgldR
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-On 9/18/24 12:43, LIU Zhiwei wrote:
->
-> On 2024/9/18 18:11, Richard Henderson wrote:
->> On 9/18/24 07:17, LIU Zhiwei wrote:
->>>
->>> On 2024/9/12 2:41, Richard Henderson wrote:
->>>> On 9/11/24 06:26, LIU Zhiwei wrote:
->>>>> From: Swung0x48<swung0x48@outlook.com>
->>>>>
->>>>> The RISC-V vector instruction set utilizes the LMUL field to group
->>>>> multiple registers, enabling variable-length vector registers. This
->>>>> implementation uses only the first register number of each group whil=
-e
->>>>> reserving the other register numbers within the group.
->>>>>
->>>>> In TCG, each VEC_IR can have 3 types (TCG_TYPE_V64/128/256), and the
->>>>> host runtime needs to adjust LMUL based on the type to use different
->>>>> register groups.
->>>>>
->>>>> This presents challenges for TCG's register allocation. Currently, we
->>>>> avoid modifying the register allocation part of TCG and only expose t=
-he
->>>>> minimum number of vector registers.
->>>>>
->>>>> For example, when the host vlen is 64 bits and type is TCG_TYPE_V256,=
- with
->>>>> LMUL equal to 4, we use 4 vector registers as one register group. We =
-can
->>>>> use a maximum of 8 register groups, but the V0 register number is res=
-erved
->>>>> as a mask register, so we can effectively use at most 7 register grou=
-ps.
->>>>> Moreover, when type is smaller than TCG_TYPE_V256, only 7 registers a=
-re
->>>>> forced to be used. This is because TCG cannot yet dynamically constra=
-in
->>>>> registers with type; likewise, when the host vlen is 128 bits and
->>>>> TCG_TYPE_V256, we can use at most 15 registers.
->>>>>
->>>>> There is not much pressure on vector register allocation in TCG now, =
-so
->>>>> using 7 registers is feasible and will not have a major impact on cod=
-e
->>>>> generation.
->>>>>
->>>>> This patch:
->>>>> 1. Reserves vector register 0 for use as a mask register.
->>>>> 2. When using register groups, reserves the additional registers with=
-in
->>>>>     each group.
->>>>>
->>>>> Signed-off-by: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
->>>>> Co-authored-by: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
->>>>
->>>> If there is a co-author, there should be another Signed-off-by.
->>>
->>> This patch has added a tag:
->>>
->>> Signed-off-by: TANG Tiancheng<tangtiancheng.ttc@alibaba-inc.com>
->>>
->>>
->>> Do you mean we should add the same tag twice?
->>
->> The from line is "Swung0x48 <swung0x48@outlook.com>".
->> If this is an alternate email for TANG Tiancheng,
->
-> No, Swung0x48 is another author.
+-----BEGIN PGP SIGNATURE-----
 
-Then we need a proper Signed-off-by line from that author.
+iQIzBAEBCgAdFiEEZKoqtTHVaQM2a/75gqpKJDselHgFAmbs99kACgkQgqpKJDse
+lHg77hAAt2V8dIk9ipZgXer+mBuL8DmiH9T37qpDXYDV9VeKU8VFDr1mKSE+Oi1W
+3f2P1oL+iKPBFGrvxuYn1Jms53/EPYoqGyRyOGe2VaR26NIOQEhzF1kJBYgVFJO0
+yrsabGrwOZBk1X0aLhD06w2vVdU31ix1BfyPYezQ+0x+OJY4JW1eP8vZRfj0F3Aa
+3K8OwBZAyrHh0d/kiWEP7OfjEHiiYsgt1d02Z9ziFodN9KQg1GPxsQRUL17QOzUl
+7pV0N5sm0KUpiyq8WBJr8zvUCCaFsPFU3sQhYq2uhMWFSOxdQT/64b/DBmEjsinP
+G0GO7aXzNkNsvF/VLPhz15uTmMzlUAISsGjJqeGTE0lZGRgdapS2RLBkKg272RQ1
+bbQHIhGax3ionXXF1bkN7a7Zh2B88nDu3Qn6RY0MZlc1QJ2s4/iYunqJMe/OYJh3
+Z0jbiitHC80Y8fYpPEoLHD51Q/NH1og8DTjNRLweRJVL5g5JiAOrE7re6b2612yl
+EXOhHx2N3BZPluDaRulrcEW3KmcV4kH3CSMdr5YvFMljxnjWaFovygLRdWAfEI3S
+P/Ziw3wconGCJLI91WrEpHLVrAfTBtNcD6IDoEKzL5WHo33dhlwcgUd1MG66mMpj
+vib45bGA8DfPRAJ/ZOb7UgfNxCkSuRC6Ea4I4FyqC2uNe3vtL8g=
+=gm+2
+-----END PGP SIGNATURE-----
 
-
-r~
-
---_000_SY8P300MB02825DF878585DDC68EB088CE06C2SY8P300MB0282AUSP_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-</head>
-<body>
-<div dir=3D"auto">Hey ever<span>yone! Late to the&nbsp;<span>party. Life ha=
-ppens sometimes ;)</span></span></div>
-<div dir=3D"auto"><span><span>Just discovered this patch and this mail list=
-, and I'd like to provide some back<span>ground story here.</span></span></=
-span></div>
-<div dir=3D"auto"><a rel=3D"noreferrer noopener" href=3D"https://github.com=
-/plctlab/plct-qemu/tree/plct-riscv-backend-rvv"></a>I originally provided m=
-y initial implementation in a downstream repo last year, namely&nbsp;<a rel=
-=3D"noreferrer noopener" href=3D"https://github.com/plctlab/plct-qemu/tree/=
-plct-riscv-backend-rvv" style=3D"font-family: sans-serif; font-size: medium=
-; font-style: normal; font-variant-ligatures: normal; font-variant-caps: no=
-rmal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: sta=
-rt; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -=
-webkit-text-stroke-width: 0px; white-space: normal; color: rgb(0, 120, 212)=
-; background-color: rgb(255, 255, 255);">https://github.com/plctlab/plct-qe=
-mu/tree/plct-riscv-backend-rvv</a>&nbsp;.</div>
-<div dir=3D"auto">I'm new to contributing to qemu and also take part in the=
- open-source community upstreaming process as a whole, so I may make mistak=
-es in my following claims, but I see some confusion here:</div>
-<div dir=3D"auto">1. The PLCT branch (which includes my original commits) i=
-s open-sourced using GPLv2, which follows QEMU's upstream repo. So acc<span=
->ording to the license, my modification should be EXPLICITLY shown in the p=
-atch, but I haven't seen any.</span></div>
-<div dir=3D"auto"><span>2. I do consent upstreaming my patch last year, in =
-the form of a patch submitted with modifications from T-head, and on behalf=
- of them. And it was agreed back in the days that I can be mentioned as one=
- of the authors. But it turns<span>
- out that there's no &quot;sign-off&quot;, &quot;author&quot;, &quot;co-aut=
-hor&quot; line mentioning me. If I don't speak out in this situ<span>ation,=
- does it imply that this patch is purely LIU Zhiwei's work and have nothing=
- to&nbsp;<span>do with me?</span></span></span></span></div>
-<div dir=3D"auto"><span><span><span><span><br>
-</span></span></span></span></div>
-<div dir=3D"auto"><span><span><span><span>I'd like LIU to separate my patch=
- and his modifi<span>cation to two separate patches, and explicitly name wh=
-ere are tho<span>se patches com<span>ing from, so that this patch can compl=
-y to GPLv2 license and can we clarify
- those misun<span>derstandings.</span></span></span></span></span></span></=
-span></span></div>
-<div dir=3D"auto"><span><span><span><span><br>
-</span></span></span></span></div>
-<div dir=3D"auto"><span><span><span><span>I don't want to take it&nbsp;<spa=
-n>personally , but I do smell something's wrong going on here...</span></sp=
-an></span></span></span></div>
-<div dir=3D"auto"><span><span><span><span><span><br>
-</span></span></span></span></span></div>
-<div dir=3D"auto"><span><span><span><span><span>Best Rega<span>rds,</span><=
-/span></span></span></span></span></div>
-<div dir=3D"auto"><span><span><span><span><span><span>Swung0x48 (aka. Huang=
- Shiyuan)</span></span></span></span></span></span></div>
-<div><br>
-</div>
-<div id=3D"ms-outlook-mobile-signature" dir=3D"auto">Get <a href=3D"https:/=
-/aka.ms/AAb9ysg">
-Outlook for Android</a></div>
-<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
-<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
-yle=3D"font-size:11pt" color=3D"#000000"><b>From:</b> Richard Henderson &lt=
-;richard.henderson@linaro.org&gt;<br>
-<b>Sent:</b> Wednesday, September 18, 2024 10:27:16 PM<br>
-<b>To:</b> LIU Zhiwei &lt;zhiwei_liu@linux.alibaba.com&gt;; qemu-devel@nong=
-nu.org &lt;qemu-devel@nongnu.org&gt;<br>
-<b>Cc:</b> qemu-riscv@nongnu.org &lt;qemu-riscv@nongnu.org&gt;; palmer@dabb=
-elt.com &lt;palmer@dabbelt.com&gt;; alistair.francis@wdc.com &lt;alistair.f=
-rancis@wdc.com&gt;; dbarboza@ventanamicro.com &lt;dbarboza@ventanamicro.com=
-&gt;; liwei1518@gmail.com &lt;liwei1518@gmail.com&gt;; bmeng.cn@gmail.com
- &lt;bmeng.cn@gmail.com&gt;; Swung0x48 &lt;swung0x48@outlook.com&gt;; TANG =
-Tiancheng &lt;tangtiancheng.ttc@alibaba-inc.com&gt;<br>
-<b>Subject:</b> Re: [PATCH v4 02/12] tcg/riscv: Add basic support for vecto=
-r</font>
-<div>&nbsp;</div>
-</div>
-<div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt;=
-">
-<div class=3D"PlainText">On 9/18/24 12:43, LIU Zhiwei wrote:<br>
-&gt; <br>
-&gt; On 2024/9/18 18:11, Richard Henderson wrote:<br>
-&gt;&gt; On 9/18/24 07:17, LIU Zhiwei wrote:<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; On 2024/9/12 2:41, Richard Henderson wrote:<br>
-&gt;&gt;&gt;&gt; On 9/11/24 06:26, LIU Zhiwei wrote:<br>
-&gt;&gt;&gt;&gt;&gt; From: Swung0x48&lt;swung0x48@outlook.com&gt;<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; The RISC-V vector instruction set utilizes the LMUL fi=
-eld to group<br>
-&gt;&gt;&gt;&gt;&gt; multiple registers, enabling variable-length vector re=
-gisters. This<br>
-&gt;&gt;&gt;&gt;&gt; implementation uses only the first register number of =
-each group while<br>
-&gt;&gt;&gt;&gt;&gt; reserving the other register numbers within the group.=
-<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; In TCG, each VEC_IR can have 3 types (TCG_TYPE_V64/128=
-/256), and the<br>
-&gt;&gt;&gt;&gt;&gt; host runtime needs to adjust LMUL based on the type to=
- use different<br>
-&gt;&gt;&gt;&gt;&gt; register groups.<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; This presents challenges for TCG's register allocation=
-. Currently, we<br>
-&gt;&gt;&gt;&gt;&gt; avoid modifying the register allocation part of TCG an=
-d only expose the<br>
-&gt;&gt;&gt;&gt;&gt; minimum number of vector registers.<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; For example, when the host vlen is 64 bits and type is=
- TCG_TYPE_V256, with<br>
-&gt;&gt;&gt;&gt;&gt; LMUL equal to 4, we use 4 vector registers as one regi=
-ster group. We can<br>
-&gt;&gt;&gt;&gt;&gt; use a maximum of 8 register groups, but the V0 registe=
-r number is reserved<br>
-&gt;&gt;&gt;&gt;&gt; as a mask register, so we can effectively use at most =
-7 register groups.<br>
-&gt;&gt;&gt;&gt;&gt; Moreover, when type is smaller than TCG_TYPE_V256, onl=
-y 7 registers are<br>
-&gt;&gt;&gt;&gt;&gt; forced to be used. This is because TCG cannot yet dyna=
-mically constrain<br>
-&gt;&gt;&gt;&gt;&gt; registers with type; likewise, when the host vlen is 1=
-28 bits and<br>
-&gt;&gt;&gt;&gt;&gt; TCG_TYPE_V256, we can use at most 15 registers.<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; There is not much pressure on vector register allocati=
-on in TCG now, so<br>
-&gt;&gt;&gt;&gt;&gt; using 7 registers is feasible and will not have a majo=
-r impact on code<br>
-&gt;&gt;&gt;&gt;&gt; generation.<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; This patch:<br>
-&gt;&gt;&gt;&gt;&gt; 1. Reserves vector register 0 for use as a mask regist=
-er.<br>
-&gt;&gt;&gt;&gt;&gt; 2. When using register groups, reserves the additional=
- registers within<br>
-&gt;&gt;&gt;&gt;&gt; &nbsp;&nbsp;&nbsp; each group.<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; Signed-off-by: TANG Tiancheng&lt;tangtiancheng.ttc@ali=
-baba-inc.com&gt;<br>
-&gt;&gt;&gt;&gt;&gt; Co-authored-by: TANG Tiancheng&lt;tangtiancheng.ttc@al=
-ibaba-inc.com&gt;<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; If there is a co-author, there should be another Signed-of=
-f-by.<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; This patch has added a tag:<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; Signed-off-by: TANG Tiancheng&lt;tangtiancheng.ttc@alibaba-inc=
-.com&gt;<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; Do you mean we should add the same tag twice?<br>
-&gt;&gt;<br>
-&gt;&gt; The from line is &quot;Swung0x48 &lt;swung0x48@outlook.com&gt;&quo=
-t;.<br>
-&gt;&gt; If this is an alternate email for TANG Tiancheng,<br>
-&gt; <br>
-&gt; No, Swung0x48 is another author.<br>
-<br>
-Then we need a proper Signed-off-by line from that author.<br>
-<br>
-<br>
-r~<br>
-</div>
-</span></font></div>
-</body>
-</html>
-
---_000_SY8P300MB02825DF878585DDC68EB088CE06C2SY8P300MB0282AUSP_--
+--------------2QzKX1nwXH8Goby9jELfgldR--
 
