@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C9497D1E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C731997D1E4
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:42:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYHB-0007J9-3k; Fri, 20 Sep 2024 03:42:01 -0400
+	id 1srYHH-0007UR-Nj; Fri, 20 Sep 2024 03:42:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYH8-0007Cz-6A; Fri, 20 Sep 2024 03:41:58 -0400
+ id 1srYH8-0007Eu-KZ; Fri, 20 Sep 2024 03:41:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYH6-0000FC-Kd; Fri, 20 Sep 2024 03:41:57 -0400
+ id 1srYH7-0000FO-1F; Fri, 20 Sep 2024 03:41:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 053D79085D;
+ by isrv.corpit.ru (Postfix) with ESMTP id A8F479085E;
  Fri, 20 Sep 2024 10:41:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 94FE81409E0;
- Fri, 20 Sep 2024 10:41:38 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2B7C41409E1;
+ Fri, 20 Sep 2024 10:41:39 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 07/22] tests/unit: Really build pbkdf test on macOS
-Date: Fri, 20 Sep 2024 10:41:19 +0300
-Message-Id: <20240920074134.664961-8-mjt@tls.msk.ru>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 08/22] hw/virtio/Kconfig: Include vhost-user-scmi only on arm
+ targets
+Date: Fri, 20 Sep 2024 10:41:20 +0300
+Message-Id: <20240920074134.664961-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,36 +58,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-Fix a typo to run the pbkdf crypto cipher tests on macOS.
+The System Control and Management Interface is specific to arm
+machines, so don't include this device in non-arm targets.
 
- $ make check-unit
-   ...
-   87/102 qemu:unit / test-crypto-pbkdf      OK      2.35s   17 subtests passed
-
-Fixes: ebe0302ac8 ("tests/unit: build pbkdf test on macOS")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Milan Zamazal <mzamazal@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/unit/test-crypto-pbkdf.c | 2 +-
+ hw/virtio/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/unit/test-crypto-pbkdf.c b/tests/unit/test-crypto-pbkdf.c
-index b477cf4e4b..12ee808fbc 100644
---- a/tests/unit/test-crypto-pbkdf.c
-+++ b/tests/unit/test-crypto-pbkdf.c
-@@ -25,7 +25,7 @@
- #include <sys/resource.h>
- #endif
- 
--#if defined(_WIN32) || defined(RUSAGE_THREAD) || defined(CONFIG_DARWNI)
-+#if defined(_WIN32) || defined(RUSAGE_THREAD) || defined(CONFIG_DARWIN)
- #include "crypto/pbkdf.h"
- 
- typedef struct QCryptoPbkdfTestData QCryptoPbkdfTestData;
+diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
+index aa63ff7fd4..bea5be4d4a 100644
+--- a/hw/virtio/Kconfig
++++ b/hw/virtio/Kconfig
+@@ -109,4 +109,4 @@ config VHOST_USER_SND
+ config VHOST_USER_SCMI
+     bool
+     default y
+-    depends on VIRTIO && VHOST_USER
++    depends on VIRTIO && VHOST_USER && ARM
 -- 
 2.39.5
 
