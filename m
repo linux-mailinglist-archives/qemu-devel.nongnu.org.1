@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483BA97D1E8
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 226E297D1F4
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:46:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYI1-0002Ez-1L; Fri, 20 Sep 2024 03:42:53 -0400
+	id 1srYI5-0003qc-KV; Fri, 20 Sep 2024 03:42:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYHg-0001XT-BP; Fri, 20 Sep 2024 03:42:33 -0400
+ id 1srYHj-0001rQ-9s; Fri, 20 Sep 2024 03:42:37 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYHe-0000Iz-H1; Fri, 20 Sep 2024 03:42:31 -0400
+ id 1srYHh-0000JL-GN; Fri, 20 Sep 2024 03:42:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id ACBF790865;
- Fri, 20 Sep 2024 10:41:23 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3B3E890866;
+ Fri, 20 Sep 2024 10:41:24 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 335A11409E8;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D24FC1409E9;
  Fri, 20 Sep 2024 10:41:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 15/22] tests/functional: Put the or1k_sim test into the slow
- category
-Date: Fri, 20 Sep 2024 10:41:27 +0300
-Message-Id: <20240920074134.664961-16-mjt@tls.msk.ru>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 16/22] target/hexagon: Rename macros.inc -> macros.h.inc
+Date: Fri, 20 Sep 2024 10:41:28 +0300
+Message-Id: <20240920074134.664961-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,30 +58,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Looks like a copy-n-paste mistake while adding the or1k_sim test
-here: The test downloads an asset from the internet, so it should
-be in the thorough category, not in the quick one.
+Since commits 139c1837db ("meson: rename included C source files
+to .c.inc") and 0979ed017f ("meson: rename .inc.h files to .h.inc"),
+EMU standard procedure for included header files is to use *.h.inc.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+Besides, since commit 6a0057aa22 ("docs/devel: make a statement
+about includes") this is documented in the Coding Style:
+
+  If you do use template header files they should be named with
+  the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
+  being included for expansion.
+
+Therefore rename "macros.inc" as "macros.h.inc".
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Brian Cain <bcain@quicinc.com>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/functional/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/hexagon/gen_idef_parser_funcs.py                 | 2 +-
+ target/hexagon/idef-parser/README.rst                   | 4 ++--
+ target/hexagon/idef-parser/{macros.inc => macros.h.inc} | 0
+ target/hexagon/meson.build                              | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+ rename target/hexagon/idef-parser/{macros.inc => macros.h.inc} (100%)
 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 8d5520349d..4352e5919b 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -92,7 +92,7 @@ tests_mips64el_system_thorough = [
-   'mips64el_malta',
- ]
+diff --git a/target/hexagon/gen_idef_parser_funcs.py b/target/hexagon/gen_idef_parser_funcs.py
+index eb494abba8..72f11c68ca 100644
+--- a/target/hexagon/gen_idef_parser_funcs.py
++++ b/target/hexagon/gen_idef_parser_funcs.py
+@@ -50,7 +50,7 @@ def main():
+     tagimms = hex_common.get_tagimms()
  
--tests_or1k_system_quick = [
-+tests_or1k_system_thorough = [
-   'or1k_sim',
- ]
+     with open(sys.argv[-1], "w") as f:
+-        f.write('#include "macros.inc"\n\n')
++        f.write('#include "macros.h.inc"\n\n')
+ 
+         for tag in hex_common.tags:
+             ## Skip the priv instructions
+diff --git a/target/hexagon/idef-parser/README.rst b/target/hexagon/idef-parser/README.rst
+index d0aa34309b..7199177ee3 100644
+--- a/target/hexagon/idef-parser/README.rst
++++ b/target/hexagon/idef-parser/README.rst
+@@ -138,7 +138,7 @@ we obtain the pseudo code
+ with macros such as ``fJUMPR`` intact.
+ 
+ The second step is to expand macros into a form suitable for our parser.
+-These macros are defined in ``idef-parser/macros.inc`` and the step is
++These macros are defined in ``idef-parser/macros.h.inc`` and the step is
+ carried out by the ``prepare`` script which runs the C preprocessor on
+ ``idef_parser_input.h.inc`` to produce
+ ``idef_parser_input.preprocessed.h.inc``.
+@@ -266,7 +266,7 @@ in plain C is defined as
+     #define fABS(A) (((A) < 0) ? (-(A)) : (A))
+ 
+ and returns the absolute value of the argument ``A``. This macro is not included
+-in ``idef-parser/macros.inc`` and as such is not expanded and kept as a "call"
++in ``idef-parser/macros.h.inc`` and as such is not expanded and kept as a "call"
+ ``fABS(...)``. Reason being, that ``fABS`` is easier to match and map to
+ ``tcg_gen_abs_<width>``, compared to the full ternary expression above. Loads of
+ macros in ``macros.h`` are kept unexpanded to aid in parsing, as seen in the
+diff --git a/target/hexagon/idef-parser/macros.inc b/target/hexagon/idef-parser/macros.h.inc
+similarity index 100%
+rename from target/hexagon/idef-parser/macros.inc
+rename to target/hexagon/idef-parser/macros.h.inc
+diff --git a/target/hexagon/meson.build b/target/hexagon/meson.build
+index 9ea1f4fc59..f1723778a6 100644
+--- a/target/hexagon/meson.build
++++ b/target/hexagon/meson.build
+@@ -284,7 +284,7 @@ if idef_parser_enabled and 'hexagon-linux-user' in target_dirs
+         'idef_parser_input.preprocessed.h.inc',
+         output: 'idef_parser_input.preprocessed.h.inc',
+         input: idef_parser_input_generated,
+-        depend_files: [idef_parser_dir / 'macros.inc'],
++        depend_files: [idef_parser_dir / 'macros.h.inc'],
+         command: [idef_parser_dir / 'prepare', '@INPUT@', '-I' + idef_parser_dir, '-o', '@OUTPUT@'],
+     )
  
 -- 
 2.39.5
