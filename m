@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F3997D1F9
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 886C197D1EF
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:45:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYI7-00049b-P2; Fri, 20 Sep 2024 03:42:59 -0400
+	id 1srYIC-0004cY-1V; Fri, 20 Sep 2024 03:43:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYI3-0003m4-H9; Fri, 20 Sep 2024 03:42:55 -0400
+ id 1srYI6-0004IZ-ME; Fri, 20 Sep 2024 03:42:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYI1-0000JV-MB; Fri, 20 Sep 2024 03:42:55 -0400
+ id 1srYI4-0000Jr-ND; Fri, 20 Sep 2024 03:42:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B8AF890867;
- Fri, 20 Sep 2024 10:41:24 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 6BC1F90868;
+ Fri, 20 Sep 2024 10:41:25 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5FA171409EA;
+ by tsrv.corpit.ru (Postfix) with ESMTP id DD2ED1409EB;
  Fri, 20 Sep 2024 10:41:44 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 17/22] tests/bench: Rename test_akcipher_keys.inc ->
- test_akcipher_keys.c.inc
-Date: Fri, 20 Sep 2024 10:41:29 +0300
-Message-Id: <20240920074134.664961-18-mjt@tls.msk.ru>
+ qemu-trivial@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 18/22] tests/functional: Correct typo in test_netdev_ethtool.py
+ SPDX tag
+Date: Fri, 20 Sep 2024 10:41:30 +0300
+Message-Id: <20240920074134.664961-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
@@ -61,45 +63,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Since commit 139c1837db ("meson: rename included C source files
-to .c.inc"), QEMU standard procedure for included C files is to
-use *.c.inc.
-
-Besides, since commit 6a0057aa22 ("docs/devel: make a statement
-about includes") this is documented in the Coding Style:
-
-  If you do use template header files they should be named with
-  the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
-  being included for expansion.
-
-Rename "test_akcipher_keys.inc" as "test_akcipher_keys.c.inc".
-
+Cc: Alex Bennée <alex.bennee@linaro.org>
+Fixes: 9f95111474 ("tests/avocado: re-factor igb test to avoid timeouts")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/bench/benchmark-crypto-akcipher.c                         | 2 +-
- .../bench/{test_akcipher_keys.inc => test_akcipher_keys.c.inc}  | 0
- 2 files changed, 1 insertion(+), 1 deletion(-)
- rename tests/bench/{test_akcipher_keys.inc => test_akcipher_keys.c.inc} (100%)
+ tests/functional/test_netdev_ethtool.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/bench/benchmark-crypto-akcipher.c b/tests/bench/benchmark-crypto-akcipher.c
-index 750c7e89ee..0a6e5db1d6 100644
---- a/tests/bench/benchmark-crypto-akcipher.c
-+++ b/tests/bench/benchmark-crypto-akcipher.c
-@@ -16,7 +16,7 @@
- #include "crypto/akcipher.h"
- #include "standard-headers/linux/virtio_crypto.h"
+diff --git a/tests/functional/test_netdev_ethtool.py b/tests/functional/test_netdev_ethtool.py
+index d5b911c918..ee1a397bd2 100755
+--- a/tests/functional/test_netdev_ethtool.py
++++ b/tests/functional/test_netdev_ethtool.py
+@@ -5,7 +5,7 @@
+ # This test leverages ethtool's --test sequence to validate network
+ # device behaviour.
+ #
+-# SPDX-License-Identifier: GPL-2.0-or-late
++# SPDX-License-Identifier: GPL-2.0-or-later
  
--#include "test_akcipher_keys.inc"
-+#include "test_akcipher_keys.c.inc"
- 
- static QCryptoAkCipher *create_rsa_akcipher(const uint8_t *priv_key,
-                                             size_t keylen,
-diff --git a/tests/bench/test_akcipher_keys.inc b/tests/bench/test_akcipher_keys.c.inc
-similarity index 100%
-rename from tests/bench/test_akcipher_keys.inc
-rename to tests/bench/test_akcipher_keys.c.inc
+ from unittest import skip
+ from qemu_test import QemuSystemTest, Asset
 -- 
 2.39.5
 
