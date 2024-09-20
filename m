@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7092D97D1F0
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C9497D1E6
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:42:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYHA-0007Eq-2q; Fri, 20 Sep 2024 03:42:00 -0400
+	id 1srYHB-0007J9-3k; Fri, 20 Sep 2024 03:42:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYH5-00071v-Lr; Fri, 20 Sep 2024 03:41:55 -0400
+ id 1srYH8-0007Cz-6A; Fri, 20 Sep 2024 03:41:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYH3-0000EM-W3; Fri, 20 Sep 2024 03:41:55 -0400
+ id 1srYH6-0000FC-Kd; Fri, 20 Sep 2024 03:41:57 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 739729085C;
- Fri, 20 Sep 2024 10:41:18 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 053D79085D;
+ Fri, 20 Sep 2024 10:41:19 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1C62A1409DF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 94FE81409E0;
  Fri, 20 Sep 2024 10:41:38 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Bibo Mao <maobibo@loongson.cn>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 06/22] hw/loongarch/virt: Add description for virt machine type
-Date: Fri, 20 Sep 2024 10:41:18 +0300
-Message-Id: <20240920074134.664961-7-mjt@tls.msk.ru>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 07/22] tests/unit: Really build pbkdf test on macOS
+Date: Fri, 20 Sep 2024 10:41:19 +0300
+Message-Id: <20240920074134.664961-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,44 +58,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The description about virt machine type is removed by mistake, add
-new description here. Here is output result with command
-"./qemu-system-loongarch64 -M help"
+Fix a typo to run the pbkdf crypto cipher tests on macOS.
 
-Supported machines are:
-none                 empty machine
-virt                 QEMU LoongArch Virtual Machine (default)
-x-remote             Experimental remote machine
+ $ make check-unit
+   ...
+   87/102 qemu:unit / test-crypto-pbkdf      OK      2.35s   17 subtests passed
 
-Without the patch, it shows as follows:
-Supported machines are:
-none                 empty machine
-virt                 (null) (default)
-x-remote             Experimental remote machine
-
-Fixes: ef2f11454c(hw/loongarch/virt: Replace Loongson IPI with LoongArch IPI)
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Fixes: ebe0302ac8 ("tests/unit: build pbkdf test on macOS")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/loongarch/virt.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/unit/test-crypto-pbkdf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 81b1f9486f..75980b6e3c 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -1403,6 +1403,7 @@ static void virt_class_init(ObjectClass *oc, void *data)
-     mc->init = virt_init;
-     mc->default_cpu_type = LOONGARCH_CPU_TYPE_NAME("la464");
-     mc->default_ram_id = "loongarch.ram";
-+    mc->desc = "QEMU LoongArch Virtual Machine";
-     mc->max_cpus = LOONGARCH_MAX_CPUS;
-     mc->is_default = 1;
-     mc->default_kernel_irqchip_split = false;
+diff --git a/tests/unit/test-crypto-pbkdf.c b/tests/unit/test-crypto-pbkdf.c
+index b477cf4e4b..12ee808fbc 100644
+--- a/tests/unit/test-crypto-pbkdf.c
++++ b/tests/unit/test-crypto-pbkdf.c
+@@ -25,7 +25,7 @@
+ #include <sys/resource.h>
+ #endif
+ 
+-#if defined(_WIN32) || defined(RUSAGE_THREAD) || defined(CONFIG_DARWNI)
++#if defined(_WIN32) || defined(RUSAGE_THREAD) || defined(CONFIG_DARWIN)
+ #include "crypto/pbkdf.h"
+ 
+ typedef struct QCryptoPbkdfTestData QCryptoPbkdfTestData;
 -- 
 2.39.5
 
