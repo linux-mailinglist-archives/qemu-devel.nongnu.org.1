@@ -2,38 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE27197D181
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 842EB97D192
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:13:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srXlh-0004db-BB; Fri, 20 Sep 2024 03:09:29 -0400
+	id 1srXpH-0001ij-U6; Fri, 20 Sep 2024 03:13:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srXld-0004bv-9g; Fri, 20 Sep 2024 03:09:25 -0400
+ id 1srXp2-0001hj-CN; Fri, 20 Sep 2024 03:12:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srXlb-0003rn-3C; Fri, 20 Sep 2024 03:09:25 -0400
+ id 1srXp0-0004MG-22; Fri, 20 Sep 2024 03:12:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BE69A90831;
- Fri, 20 Sep 2024 10:08:56 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id D329890839;
+ Fri, 20 Sep 2024 10:12:28 +0300 (MSK)
 Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3D42E1409A3;
- Fri, 20 Sep 2024 10:09:15 +0300 (MSK)
-Message-ID: <d5a856a7-5d8e-4e33-a2a7-9e76df98a985@tls.msk.ru>
-Date: Fri, 20 Sep 2024 10:09:08 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7CD9F1409AA;
+ Fri, 20 Sep 2024 10:12:48 +0300 (MSK)
+Message-ID: <42b6d6da-4ca0-490d-abe3-5bcf1ce9c331@tls.msk.ru>
+Date: Fri, 20 Sep 2024 10:12:47 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] misc: Rename included template headers using '.inc'
- suffix
+Subject: Re: [PATCH v3 0/5] license: Fix typos and update SPDX tags
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Brian Cain <bcain@quicinc.com>, qemu-trivial@nongnu.org,
- Anton Johansson <anjo@rev.ng>, Alessandro Di Federico <ale@rev.ng>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-References: <20240910112833.27594-1-philmd@linaro.org>
+Cc: qemu-trivial@nongnu.org
+References: <20240911151206.60368-1-philmd@linaro.org>
 Content-Language: en-US, ru-RU
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
@@ -79,7 +76,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  YPkzzso6HT7rlapB5nulYmplJZSZ4RmE1ATZKf+wUPocDu6N10LtBNbwHWTT5NLtxNJAJAvl
  ojis6H1kRWZE/n5buyPY2NYeyWfjjrerOYt3er55n4C1I88RSCTGeejVmXWuo65QD2epvzE6
  3GgKngeVm7shlp7+d3D3+fAAHTvulQQqV3jOodz+B4yzuZ7WljkNrmrWrH8aI4uA98c=
-In-Reply-To: <20240910112833.27594-1-philmd@linaro.org>
+In-Reply-To: <20240911151206.60368-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -105,18 +102,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10.09.2024 14:28, Philippe Mathieu-Daudé wrote:
-> Follow Coding Style:
+On 11.09.2024 18:12, Philippe Mathieu-Daudé wrote:
+> Series fully reviewed (thanks Thomas & Richard)
 > 
->    If you do use template header files they should be named with
->    the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
->    being included for expansion.
+> Since v2:
+> . Updated few missed "2 | 3+" expressions
 > 
-> Philippe Mathieu-Daudé (2):
->    target/hexagon: Rename macros.inc -> macros.h.inc
->    tests/bench: Rename test_akcipher_keys.inc -> test_akcipher_keys.c.inc
+> Since v1:
+> . Updated regex to cover all GPL-2.0* cases.
+> 
+> - Fix a pair of typos
+> - Upgrade the deprecated GPL-2.0+/LGPL-2.0+ SPDX tags
+>    to GPL-2.0-only / GPL-2.0-or-later / LGPL-2.0-or-later.
+> 
+> Philippe Mathieu-Daudé (5):
+>    tests/functional: Correct typo in test_netdev_ethtool.py SPDX tag
+>    license: Simplify GPL-2.0-or-later license descriptions
+>    license: Update deprecated SPDX tag LGPL-2.0+ to LGPL-2.0-or-later
+>    license: Update deprecated SPDX tag GPL-2.0+ to GPL-2.0-or-later
+>    license: Update deprecated SPDX tag GPL-2.0 to GPL-2.0-only
 
-Picked up for the trivial-patches tree, thanks!
+Picked up for the trivial-patches tree, minus the cris hunk in 3/5.
+
+Thanks,
 
 /mjt
 
