@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8524097D1EE
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3579297D1F8
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:47:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYHY-0000W5-Oq; Fri, 20 Sep 2024 03:42:24 -0400
+	id 1srYHu-0001Uz-6k; Fri, 20 Sep 2024 03:42:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYHF-0007iX-Kg; Fri, 20 Sep 2024 03:42:06 -0400
+ id 1srYHd-0001GX-3T; Fri, 20 Sep 2024 03:42:29 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYHD-0000GL-JO; Fri, 20 Sep 2024 03:42:05 -0400
+ id 1srYHb-0000Gn-57; Fri, 20 Sep 2024 03:42:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 560DB90861;
+ by isrv.corpit.ru (Postfix) with ESMTP id D0BE690862;
  Fri, 20 Sep 2024 10:41:21 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id F394A1409E4;
- Fri, 20 Sep 2024 10:41:40 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 787951409E5;
+ Fri, 20 Sep 2024 10:41:41 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 11/22] hw/sysbus: Remove unused sysbus_mmio_unmap
-Date: Fri, 20 Sep 2024 10:41:23 +0300
-Message-Id: <20240920074134.664961-12-mjt@tls.msk.ru>
+Subject: [PULL 12/22] util/cutils: Remove unused qemu_get_exec_dir
+Date: Fri, 20 Sep 2024 10:41:24 +0300
+Message-Id: <20240920074134.664961-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,53 +59,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-The last use of sysbus_mmio_unmap was removed by
-  981b1c6266 ("spapr/xive: rework the mapping the KVM memory regions")
+qemu_get_exec_dir has been unused since commit:
+  5bebe03f51 ("util/cutils: Clean up global variable shadowing in get_relocated_path()")
 
-Remove it.
+Remove it, and fix up a comment that pointed to it.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/core/sysbus.c    | 10 ----------
- include/hw/sysbus.h |  1 -
- 2 files changed, 11 deletions(-)
+ include/qemu/cutils.h | 5 +----
+ util/cutils.c         | 5 -----
+ 2 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
-index ad34fb7344..e64d99c8ed 100644
---- a/hw/core/sysbus.c
-+++ b/hw/core/sysbus.c
-@@ -154,16 +154,6 @@ static void sysbus_mmio_map_common(SysBusDevice *dev, int n, hwaddr addr,
-     }
+diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
+index da15547bfb..34a9b9b220 100644
+--- a/include/qemu/cutils.h
++++ b/include/qemu/cutils.h
+@@ -241,13 +241,10 @@ int uleb128_decode_small(const uint8_t *in, uint32_t *n);
+ int qemu_pstrcmp0(const char **str1, const char **str2);
+ 
+ /* Find program directory, and save it for later usage with
+- * qemu_get_exec_dir().
++ * get_relocated_path().
+  * Try OS specific API first, if not working, parse from argv0. */
+ void qemu_init_exec_dir(const char *argv0);
+ 
+-/* Get the saved exec dir.  */
+-const char *qemu_get_exec_dir(void);
+-
+ /**
+  * get_relocated_path:
+  * @dir: the directory (typically a `CONFIG_*DIR` variable) to be relocated.
+diff --git a/util/cutils.c b/util/cutils.c
+index 42364039a5..9803f11a59 100644
+--- a/util/cutils.c
++++ b/util/cutils.c
+@@ -1144,11 +1144,6 @@ void qemu_init_exec_dir(const char *argv0)
+ #endif
  }
  
--void sysbus_mmio_unmap(SysBusDevice *dev, int n)
+-const char *qemu_get_exec_dir(void)
 -{
--    assert(n >= 0 && n < dev->num_mmio);
--
--    if (dev->mmio[n].addr != (hwaddr)-1) {
--        memory_region_del_subregion(get_system_memory(), dev->mmio[n].memory);
--        dev->mmio[n].addr = (hwaddr)-1;
--    }
+-    return exec_dir;
 -}
 -
- void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr)
+ char *get_relocated_path(const char *dir)
  {
-     sysbus_mmio_map_common(dev, n, addr, false, 0);
-diff --git a/include/hw/sysbus.h b/include/hw/sysbus.h
-index 3cb29a480e..c9b1e0e90e 100644
---- a/include/hw/sysbus.h
-+++ b/include/hw/sysbus.h
-@@ -82,7 +82,6 @@ qemu_irq sysbus_get_connected_irq(SysBusDevice *dev, int n);
- void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr);
- void sysbus_mmio_map_overlap(SysBusDevice *dev, int n, hwaddr addr,
-                              int priority);
--void sysbus_mmio_unmap(SysBusDevice *dev, int n);
- 
- bool sysbus_realize(SysBusDevice *dev, Error **errp);
- bool sysbus_realize_and_unref(SysBusDevice *dev, Error **errp);
+     size_t prefix_len = strlen(CONFIG_PREFIX);
 -- 
 2.39.5
 
