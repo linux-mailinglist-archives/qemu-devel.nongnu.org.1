@@ -2,87 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923E297D395
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 11:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAFD97D396
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 11:24:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srZrH-0003F4-Qs; Fri, 20 Sep 2024 05:23:23 -0400
+	id 1srZsR-0007AG-OM; Fri, 20 Sep 2024 05:24:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1srZrB-0003Bn-6c
- for qemu-devel@nongnu.org; Fri, 20 Sep 2024 05:23:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1srZsP-00071k-7H; Fri, 20 Sep 2024 05:24:33 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1srZr8-0005kJ-Ie
- for qemu-devel@nongnu.org; Fri, 20 Sep 2024 05:23:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1726824192;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qxw6PMzIIQ8321N8dRUGogio3BQmRFaboyj9yMBY/Nc=;
- b=eFq8pGvwEQgtEzdw72Qm8InXasspOWuEELDpOLAxNSvYvt9UhWCfISp0OgSe7MF0vgp3dS
- vQ28lo2lJ5lWEvQVy8IVLMZGQapxOHB+kfnkO9AjT90Oo26dQrUG5AlPg/K8Gre8ryRuOV
- Eqa7A2JufI7R5C50g3jt6KwgU/MSmo8=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-cPyVrWlsOpe4duw9jEV_ZA-1; Fri, 20 Sep 2024 05:23:11 -0400
-X-MC-Unique: cPyVrWlsOpe4duw9jEV_ZA-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2f661aaceadso16272191fa.3
- for <qemu-devel@nongnu.org>; Fri, 20 Sep 2024 02:23:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726824189; x=1727428989;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qxw6PMzIIQ8321N8dRUGogio3BQmRFaboyj9yMBY/Nc=;
- b=S0Rg2p8PO8545RlLEc5bHtS33BaKonSIaEBIepVcH419ipm3rlDZCeovVXcrzk/yD/
- DJURt5+KY0NVfpq004moSchMOF0wnEUdk97eS4ZGjJBTfjLAWlEI0h5SNGGNCy4cFZXP
- NqIq2IY6iVO/M9SuLZBhAI8hHoJzHt60EUfB5UnlRnOa0aTPnC0KL8/6FUeHafLQAg3c
- y/JV/zfZvFHtxo0I6jmi/2Tto+aOdUV+G41r8jrZk48QKb7MT0SRrVp2+nxWXJPomNHD
- BGA1ED4lExTcxopSIk6K+PDtujIpZq4U0W6L3Mybr1XRxxemfxWeHZx5ZsnXm4DDMzva
- mZBg==
-X-Gm-Message-State: AOJu0YwznecZ/c+pO7IZD6yePxIOr6+XrHTG2w3chRCe06jrcQnU0PBI
- tNkap3pL+A8rgjyA+R/9ffj+fiiD3onxIunDwQ+/svVyZ7i04E0WPxMxpEjGx2nd4JRJr1iAwRu
- sX0N38OqCfmlZ9Qw+MP/oGOdH31uQdUYSyK9VY3riSJYSiXHgUnJml03UajeBg7lEDX2imDlztW
- fgmni+VPoV7/hicmIU13GNQ82mQsWa6zzs
-X-Received: by 2002:a05:6512:3e07:b0:536:554a:24ba with SMTP id
- 2adb3069b0e04-536ac32e481mr1158600e87.39.1726824188874; 
- Fri, 20 Sep 2024 02:23:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEto5fQUmDwo48YFbz6sijqYo+HYshJ1ETJebTq/iQotuS/EwD6IvLCR483/8vxx9UHhqzxJw==
-X-Received: by 2002:a05:6512:3e07:b0:536:554a:24ba with SMTP id
- 2adb3069b0e04-536ac32e481mr1158572e87.39.1726824188275; 
- Fri, 20 Sep 2024 02:23:08 -0700 (PDT)
-Received: from top.fritz.box (p4fd6b76f.dip0.t-ipconnect.de. [79.214.183.111])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c42bb5fcf5sm6978771a12.57.2024.09.20.02.23.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Sep 2024 02:23:07 -0700 (PDT)
-From: Michael Vogt <mvogt@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Michael Vogt <michael.vogt@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Michael Vogt <mvogt@redhat.com>
-Subject: [PATCH v6 1/1] linux-user: add openat2 support in linux-user
-Date: Fri, 20 Sep 2024 11:22:20 +0200
-Message-ID: <65bb234d769980a3b10a655ed19f87966c714e06.1726817664.git.mvogt@redhat.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1726817664.git.mvogt@redhat.com>
-References: <cover.1726817664.git.mvogt@redhat.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1srZsM-0005r8-JS; Fri, 20 Sep 2024 05:24:32 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48K597cX007575;
+ Fri, 20 Sep 2024 09:24:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+ OXLo01Q6QlTjqvClIqMJ3ynBMhJ9G35lqem6Y0ZQkHg=; b=eBhifdmaWykCcCr+
+ yaiLAVVxkPxhTqPiq2BRaqFl8Zzk5t/UI6HDMpoVtbYGi4ZyXXb4MiQBm2tA3M5l
+ NXFaQA7DD41IW0eLU1I1M66uz5baIgt4EoLh5MBuGLgCN5rQZXiDuYHFB7uMUD95
+ PKiF8io3DvzSUWJ/zJV6c8eTllpt+jbkwD9UylSNRQeM5Q7/Zx8ZVH6gvVd3DBiy
+ ogfQVnxvNFHoljDzdQv7eF1prNF0fKTujwmmYdi6X+7ediJ4N7vsAP957YDSp1+H
+ /f7gY6druPZf5efoFrjnE5ftM8yoPuw1MYjkEOeb4mz/sqdGuFLL/lrc3fsdSHry
+ siiRVQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41pht91vnm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2024 09:24:27 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48K9ORUq022766;
+ Fri, 20 Sep 2024 09:24:27 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41pht91vnj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2024 09:24:27 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48K7wWgS000762;
+ Fri, 20 Sep 2024 09:24:26 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41nntqpbxw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Sep 2024 09:24:26 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48K9OOCq55902550
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Sep 2024 09:24:24 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4DD3D20043;
+ Fri, 20 Sep 2024 09:24:24 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D6A4A20040;
+ Fri, 20 Sep 2024 09:24:23 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.152.108.100])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Sep 2024 09:24:23 +0000 (GMT)
+Message-ID: <d0c4fff589298c113d1eb43de87e7f1fb0fb18c9.camel@linux.ibm.com>
+Subject: Re: [PATCH] target/ppc: Fix lxvx/stxvx facility check
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Claudio Fontana <cfontana@suse.de>, Fabiano Rosas <farosas@suse.de>,
+ qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>, Daniel
+ Henrique Barboza <danielhb413@gmail.com>
+Date: Fri, 20 Sep 2024 11:24:23 +0200
+In-Reply-To: <b9231ac0-d4b7-4565-b2aa-5ceff3a7e672@suse.de>
+References: <20240911141651.6914-1-farosas@suse.de>
+ <9e6212ca-5c2f-459c-a59d-11fbdb796c07@suse.de>
+ <bcdc7a95-09de-4a2e-a45c-aa4a539afc06@suse.de>
+ <b9231ac0-d4b7-4565-b2aa-5ceff3a7e672@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mvogt@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: FuYetwBzBNMTFG9MEe9kmBYksJ41KO-s
+X-Proofpoint-ORIG-GUID: jkDDeCZ0hSSW_DObsB2I0Lp1o8biFUdU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-20_04,2024-09-19_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ phishscore=0 bulkscore=0 suspectscore=0 priorityscore=1501 adultscore=0
+ mlxlogscore=999 mlxscore=0 clxscore=1011 malwarescore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409200063
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,214 +117,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds support for the `openat2()` syscall in the
-`linux-user` userspace emulator.
+On Thu, 2024-09-19 at 13:36 +0200, Claudio Fontana wrote:
+> ping, adding Richard.
+>=20
+> We will need to include this downstream because of the breakage its
+> lack causes.
+> It is already reviewed by me, but some TCG maintainer indicating it
+> will be included in some queue would help,
+>=20
+> Thanks,
+>=20
+> Claudio
+>=20
+> On 9/18/24 17:11, Claudio Fontana wrote:
+> > Adding Ilya FYI.
+> >=20
+> > Ciao,
+> >=20
+> > Claudio
+> >=20
+> > On 9/11/24 18:19, Claudio Fontana wrote:
+> > > On 9/11/24 16:16, Fabiano Rosas wrote:
+> > > > The XT check for the lxvx/stxvx instructions is currently
+> > > > inverted. This was introduced during the move to decodetree.
+> > > >=20
+> > > > From the ISA:
+> > > > =C2=A0 Chapter 7. Vector-Scalar Extension Facility
+> > > > =C2=A0 Load VSX Vector Indexed X-form
+> > > >=20
+> > > > =C2=A0 lxvx XT,RA,RB
+> > > > =C2=A0 if TX=3D0 & MSR.VSX=3D0 then VSX_Unavailable()
+> > > > =C2=A0 if TX=3D1 & MSR.VEC=3D0 then Vector_Unavailable()
+> > > > =C2=A0 ...
+> > > > =C2=A0 Let XT be the value 32=C3=97TX + T.
+> > > >=20
+> > > > The code currently does the opposite:
+> > > >=20
+> > > > =C2=A0=C2=A0=C2=A0 if (paired || a->rt >=3D 32) {
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 REQUIRE_VSX(ctx);
+> > > > =C2=A0=C2=A0=C2=A0 } else {
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 REQUIRE_VECTOR(ctx);
+> > > > =C2=A0=C2=A0=C2=A0 }
+> > > >=20
+> > > > This was already fixed for lxv/stxv at commit "2cc0e449d1
+> > > > (target/ppc:
+> > > > Fix lxv/stxv MSR facility check)", but the indexed forms were
+> > > > missed.
+> > > >=20
+> > > > Cc: qemu-stable@nongnu.org
+> > > > Fixes: 70426b5bb7 ("target/ppc: moved stxvx and lxvx from
+> > > > legacy to decodtree")
+> > > > Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> > > > ---
+> > > > =C2=A0target/ppc/translate/vsx-impl.c.inc | 2 +-
+> > > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> > > >=20
+> > > > diff --git a/target/ppc/translate/vsx-impl.c.inc
+> > > > b/target/ppc/translate/vsx-impl.c.inc
+> > > > index 40a87ddc4a..a869f30e86 100644
+> > > > --- a/target/ppc/translate/vsx-impl.c.inc
+> > > > +++ b/target/ppc/translate/vsx-impl.c.inc
+> > > > @@ -2244,7 +2244,7 @@ static bool do_lstxv_PLS_D(DisasContext
+> > > > *ctx, arg_PLS_D *a,
+> > > > =C2=A0
+> > > > =C2=A0static bool do_lstxv_X(DisasContext *ctx, arg_X *a, bool
+> > > > store, bool paired)
+> > > > =C2=A0{
+> > > > -=C2=A0=C2=A0=C2=A0 if (paired || a->rt >=3D 32) {
+> > > > +=C2=A0=C2=A0=C2=A0 if (paired || a->rt < 32) {
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 REQUIRE_VSX(ctx);
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0 } else {
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 REQUIRE_VECTOR(ctx=
+);
+> > >=20
+> > > Reviewed-by: Claudio Fontana <cfontana@suse.de>
 
-It is implemented by extracting a new helper `maybe_do_fake_open()`
-out of the exiting `do_guest_openat()` and share that with the
-new `do_guest_openat2()`. Unfortunately we cannot just make
-do_guest_openat2() a superset of do_guest_openat() because the
-openat2() syscall is stricter with the argument checking and
-will return an error for invalid flags or mode combinations (which
-open()/openat() will ignore).
+FWIW
 
-The implementation is similar to SYSCALL_DEFINE(openat2), i.e.
-a new `copy_struct_from_user()` is used that works the same
-as the kernels version to support backwards-compatibility
-for struct syscall argument.
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Instead of including openat2.h we create a copy of `open_how`
-as `open_how_ver0` to ensure that if the structure grows we
-can log a LOG_UNIMP warning.
-
-Note that in this commit using openat2() for a "faked" file in
-/proc will ignore the "resolve" flags. This is not great but it
-seems similar to the exiting behavior when openat() is called
-with a dirfd to "/proc". Here too the fake file lookup may
-not catch the special file because "realpath()" is used to
-determine if the path is in /proc. Alternatively to ignoring
-we could simply fail with `-TARGET_ENOSYS` (or similar) if
-`resolve` flags are passed and we found something that looks
-like a file in /proc that needs faking.
-
-Signed-off-by: Michael Vogt <mvogt@redhat.com>
-Buglink: https://github.com/osbuild/bootc-image-builder/issues/619
----
- linux-user/syscall.c      | 108 +++++++++++++++++++++++++++++++++++++-
- linux-user/syscall_defs.h |   7 +++
- 2 files changed, 113 insertions(+), 2 deletions(-)
-
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index b693aeff5b..68ebda4ec8 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -602,6 +602,34 @@ static int check_zeroed_user(abi_long addr, size_t ksize, size_t usize)
-     return 1;
- }
- 
-+/*
-+ * Copies a target struct to a host struct, in a way that guarantees
-+ * backwards-compatibility for struct syscall arguments.
-+ *
-+ * Similar to kernels uaccess.h:copy_struct_from_user()
-+ */
-+static int
-+copy_struct_from_user(void *dst, size_t ksize, abi_ptr src, size_t usize)
-+{
-+    size_t size = MIN(ksize, usize);
-+    size_t rest = MAX(ksize, usize) - size;
-+
-+    /* Deal with trailing bytes. */
-+    if (usize < ksize) {
-+        memset(dst + size, 0, rest);
-+    } else if (usize > ksize) {
-+        int ret = check_zeroed_user(src, ksize, usize);
-+        if (ret <= 0) {
-+            return ret ?: -TARGET_E2BIG;
-+        }
-+    }
-+    /* Copy the interoperable parts of the struct. */
-+    if (copy_from_user(dst, src, size)) {
-+        return -TARGET_EFAULT;
-+    }
-+    return 0;
-+}
-+
- #define safe_syscall0(type, name) \
- static type safe_##name(void) \
- { \
-@@ -653,6 +681,15 @@ safe_syscall3(ssize_t, read, int, fd, void *, buff, size_t, count)
- safe_syscall3(ssize_t, write, int, fd, const void *, buff, size_t, count)
- safe_syscall4(int, openat, int, dirfd, const char *, pathname, \
-               int, flags, mode_t, mode)
-+
-+struct open_how_ver0 {
-+    __u64 flags;
-+    __u64 mode;
-+    __u64 resolve;
-+};
-+safe_syscall4(int, openat2, int, dirfd, const char *, pathname, \
-+              const struct open_how_ver0 *, how, size_t, size)
-+
- #if defined(TARGET_NR_wait4) || defined(TARGET_NR_waitpid)
- safe_syscall4(pid_t, wait4, pid_t, pid, int *, status, int, options, \
-               struct rusage *, rusage)
-@@ -8334,8 +8371,9 @@ static int open_net_route(CPUArchState *cpu_env, int fd)
- }
- #endif
- 
--int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
--                    int flags, mode_t mode, bool safe)
-+static int maybe_do_fake_open(CPUArchState *cpu_env, int dirfd,
-+                              const char *fname, int flags, mode_t mode,
-+                              bool safe)
- {
-     g_autofree char *proc_name = NULL;
-     const char *pathname;
-@@ -8418,6 +8456,17 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-         return fd;
-     }
- 
-+    return -2;
-+}
-+
-+int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
-+                    int flags, mode_t mode, bool safe)
-+{
-+    int fd = maybe_do_fake_open(cpu_env, dirfd, pathname, flags, mode, safe);
-+    if (fd > -2) {
-+        return fd;
-+    }
-+
-     if (safe) {
-         return safe_openat(dirfd, path(pathname), flags, mode);
-     } else {
-@@ -8425,6 +8474,56 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-     }
- }
- 
-+
-+static int do_openat2(CPUArchState *cpu_env, abi_long dirfd,
-+                      abi_ptr guest_pathname, abi_ptr guest_open_how,
-+                      abi_long guest_size)
-+{
-+    struct open_how_ver0 how = {0};
-+    char *pathname;
-+    int ret;
-+
-+    if (guest_size < sizeof(struct target_open_how_ver0)) {
-+        return -TARGET_EINVAL;
-+    }
-+    ret = copy_struct_from_user(&how, sizeof(how), guest_open_how, guest_size);
-+    if (ret) {
-+        if (ret == -TARGET_E2BIG) {
-+            qemu_log_mask(LOG_UNIMP,
-+                          "Unimplemented openat2 open_how size: %lu\n",
-+                          guest_size);
-+        }
-+        return ret;
-+    }
-+    pathname = lock_user_string(guest_pathname);
-+    if (!pathname) {
-+        return -TARGET_EFAULT;
-+    }
-+
-+    how.flags = target_to_host_bitmask(how.flags, fcntl_flags_tbl);
-+    how.mode = tswap64(how.mode);
-+    how.resolve = tswap64(how.resolve);
-+
-+    /*
-+     * Ideally we would pass "how->resolve" flags into this helper too but
-+     * the lookup for files that need faking is based on "realpath()" so
-+     * neither a dirfd for "proc" nor restrictions via "resolve" flags can
-+     * be honored right now.
-+     */
-+    int fd = maybe_do_fake_open(cpu_env, dirfd, pathname, how.flags, how.mode,
-+                                true);
-+    if (fd > -2) {
-+        ret = get_errno(fd);
-+    } else {
-+        ret = get_errno(safe_openat2(dirfd, pathname, &how,
-+                                     sizeof(struct open_how_ver0)));
-+    }
-+
-+    fd_trans_unregister(ret);
-+    unlock_user(pathname, guest_pathname, 0);
-+    return ret;
-+}
-+
- ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz)
- {
-     ssize_t ret;
-@@ -9197,6 +9296,11 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         fd_trans_unregister(ret);
-         unlock_user(p, arg2, 0);
-         return ret;
-+#if defined(TARGET_NR_openat2)
-+    case TARGET_NR_openat2:
-+        ret = do_openat2(cpu_env, arg1, arg2, arg3, arg4);
-+        return ret;
-+#endif
- #if defined(TARGET_NR_name_to_handle_at) && defined(CONFIG_OPEN_BY_HANDLE)
-     case TARGET_NR_name_to_handle_at:
-         ret = do_name_to_handle_at(arg1, arg2, arg3, arg4, arg5);
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 8ed53904ed..b83fa34663 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -2753,4 +2753,11 @@ struct target_sched_param {
-     abi_int sched_priority;
- };
- 
-+/* from kernel's include/uapi/linux/openat2.h */
-+struct target_open_how_ver0 {
-+    abi_ullong flags;
-+    abi_ullong mode;
-+    abi_ullong resolve;
-+};
-+
- #endif
--- 
-2.45.2
-
+But I'm not a maintainer, I guess Richard will need to pick it up.
 
