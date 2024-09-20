@@ -2,54 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5770997D361
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 11:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE5997D62B
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 15:32:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srZbn-00066s-Cs; Fri, 20 Sep 2024 05:07:23 -0400
+	id 1srdjO-0001eG-Qw; Fri, 20 Sep 2024 09:31:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1srZbY-0005D2-DY
- for qemu-devel@nongnu.org; Fri, 20 Sep 2024 05:07:10 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1srZbU-00045L-SW
- for qemu-devel@nongnu.org; Fri, 20 Sep 2024 05:07:07 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8CxSOnLOu1mXu8LAA--.26462S3;
- Fri, 20 Sep 2024 17:05:15 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMBxn+TDOu1mdmoKAA--.59343S12;
- Fri, 20 Sep 2024 17:05:14 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH 10/10] hw/intc/loongarch_extioi: Code cleanup about
- loongarch_extioi
-Date: Fri, 20 Sep 2024 17:05:07 +0800
-Message-Id: <20240920090507.2692125-11-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240920090507.2692125-1-maobibo@loongson.cn>
-References: <20240920090507.2692125-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1srZat-0001Vs-K0
+ for qemu-devel@nongnu.org; Fri, 20 Sep 2024 05:06:29 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gourry@gourry.net>) id 1srZar-00043G-8Y
+ for qemu-devel@nongnu.org; Fri, 20 Sep 2024 05:06:26 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a8d43657255so259130766b.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Sep 2024 02:06:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gourry.net; s=google; t=1726823182; x=1727427982; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=5ea6kApel9704WtmafZwie6CE4udCD/ZWEKovHegrZg=;
+ b=dg+fdGnrtiNvhgF6sEfXi/4NkGAK/FKpCn2uFpA5fFrlH0SvorNenUD3rhETmyz5ZF
+ ZlhtPCVJg6niWj6eZk3g+pzmAB1MvRlWpJnUFyN5fvUqXJIKDQPFiGVZK+H5TwvnQGKy
+ ChWNJ0a95ViuT3pq6C1Tg1RERLZodmHoGXc97vK9gkWQoDVYbugMl/3vn7YZ/rg4piXC
+ nSvLjENKlSBj4n6B6m7+0jKj0dOLedJMJHuPN43dSXq0rMBThFByrQQ3VzQmd4KTA6WL
+ rSCP3xdz3rXOXQKhfQQ8xu/GgN6+xqZABxOZdsmUhivDPXH0uY1VBPILGaBPsjppMe/w
+ UEsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726823182; x=1727427982;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5ea6kApel9704WtmafZwie6CE4udCD/ZWEKovHegrZg=;
+ b=QOSw0gxm/mn8njsNDbRh5cu+FLuqiHFE5taYwspjSBcbcm1Sui7IyenEo1bs4WsbNd
+ Oin6EVfPxPsVL1/azunaf5bYvOFM4p/traDbhdESC6KrX37j0jwf5a+yWzxFcV8tnXtV
+ F/TK8nWRAS0bVKx6zitz3eHi0CdxiCdvQeP76Jt6UhIYxTZNPRaep7QdkFBB2OlyXx9d
+ FA1lcUqYpcLh/NAaoEKXgJ1yEvCDFs4GvgnuyDw5ckIL6XIdMv7zgIle7a5YXZWp0AvN
+ HG+TBnRFv8FjdT5OTRzBQvzzkUJ5HS6Iur3DLTrFp//y69q3V6OKRkY+kQ8TrBEI9KZO
+ gaRg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUzlQCYOTLHbhwgqE0mjTwvEppeon5IVFLm/2XhTGSnT3n0b0yj6ybX4fhJpxDWK3R+xQJkJaIVS7/C@nongnu.org
+X-Gm-Message-State: AOJu0Yzo6HytYTwqp/kAaBf2qFypUd2uKf3E5Im4cOeYX77Rx23fo5ng
+ ev+s9bd0s2LFHY4wDc7/bUaKawXIVx/Lq6It+2MSvZGXJjaLn9YsH/m3MRK5e1w=
+X-Google-Smtp-Source: AGHT+IHS5Ou0XIJ4uflfTtxR3ETCTI4FJBbvqfkbaPfxDAC5XJ69GFR67U4wnEW673qhczAiNcFAYw==
+X-Received: by 2002:a17:906:cad6:b0:a8d:25d3:65e4 with SMTP id
+ a640c23a62f3a-a90d4ffcb11mr164635366b.36.1726823182340; 
+ Fri, 20 Sep 2024 02:06:22 -0700 (PDT)
+Received: from PC2K9PVX.TheFacebook.com ([83.68.141.146])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a90610f4971sm821742366b.90.2024.09.20.02.06.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 20 Sep 2024 02:06:21 -0700 (PDT)
+Date: Fri, 20 Sep 2024 11:06:09 +0200
+From: Gregory Price <gourry@gourry.net>
+To: David Hildenbrand <david@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org, Davidlohr Bueso <dave@stgolabs.net>,
+ Ira Weiny <ira.weiny@intel.com>, John Groves <John@groves.net>,
+ virtualization@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
+ qemu-devel@nongnu.org, Dave Jiang <dave.jiang@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, linuxarm@huawei.com,
+ wangkefeng.wang@huawei.com, John Groves <jgroves@micron.com>,
+ Fan Ni <fan.ni@samsung.com>, Navneet Singh <navneet.singh@intel.com>,
+ =?utf-8?B?4oCcTWljaGFlbCBTLiBUc2lya2lu4oCd?= <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [RFC] Virtualizing tagged disaggregated memory capacity (app
+ specific, multi host shared)
+Message-ID: <Zu07AU3aUrHBMXaw@PC2K9PVX.TheFacebook.com>
+References: <20240815172223.00001ca7@Huawei.com>
+ <fc05d089-ce04-42d2-a0d7-ea32fd73fe90@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxn+TDOu1mdmoKAA--.59343S12
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fc05d089-ce04-42d2-a0d7-ea32fd73fe90@redhat.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=gourry@gourry.net; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 20 Sep 2024 09:31:23 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,152 +103,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove definition about LoongArchExtIOI and LOONGARCH_EXTIOI, and
-replace them with LoongArchExtIOICommonState and macro
-LOONGARCH_EXTIOI_COMMON separately. Also remove unnecessary header
-files.
+> > 2. Coarse grained memory increases for 'normal' memory.
+> >     Can use memory hot-plug. Recovery of capacity likely to only be possible on
+> >     VM shutdown.
+> 
+> Is there are reason "movable" (ZONE_MOVABLE) is not an option, at least in
+> some setups? If not, why?
+>
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- hw/intc/loongarch_extioi.c         | 31 ++++++++++++++----------------
- include/hw/intc/loongarch_extioi.h |  2 --
- 2 files changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
-index adaf9dc2c5..e4b05d4363 100644
---- a/hw/intc/loongarch_extioi.c
-+++ b/hw/intc/loongarch_extioi.c
-@@ -10,16 +10,13 @@
- #include "qemu/log.h"
- #include "qapi/error.h"
- #include "hw/irq.h"
--#include "hw/sysbus.h"
- #include "hw/loongarch/virt.h"
--#include "hw/qdev-properties.h"
- #include "exec/address-spaces.h"
- #include "hw/intc/loongarch_extioi.h"
--#include "migration/vmstate.h"
- #include "trace.h"
- 
- 
--static void extioi_update_irq(LoongArchExtIOI *s, int irq, int level)
-+static void extioi_update_irq(LoongArchExtIOICommonState *s, int irq, int level)
- {
-     int ipnum, cpu, found, irq_index, irq_mask;
- 
-@@ -54,7 +51,7 @@ static void extioi_update_irq(LoongArchExtIOI *s, int irq, int level)
- 
- static void extioi_setirq(void *opaque, int irq, int level)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
-     trace_loongarch_extioi_setirq(irq, level);
-     if (level) {
-         /*
-@@ -72,7 +69,7 @@ static void extioi_setirq(void *opaque, int irq, int level)
- static MemTxResult extioi_readw(void *opaque, hwaddr addr, uint64_t *data,
-                                 unsigned size, MemTxAttrs attrs)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
-     unsigned long offset = addr & 0xffff;
-     uint32_t index, cpu;
- 
-@@ -111,7 +108,7 @@ static MemTxResult extioi_readw(void *opaque, hwaddr addr, uint64_t *data,
-     return MEMTX_OK;
- }
- 
--static inline void extioi_enable_irq(LoongArchExtIOI *s, int index,\
-+static inline void extioi_enable_irq(LoongArchExtIOICommonState *s, int index,\
-                                      uint32_t mask, int level)
- {
-     uint32_t val;
-@@ -130,8 +127,8 @@ static inline void extioi_enable_irq(LoongArchExtIOI *s, int index,\
-     }
- }
- 
--static inline void extioi_update_sw_coremap(LoongArchExtIOI *s, int irq,
--                                            uint64_t val, bool notify)
-+static inline void extioi_update_sw_coremap(LoongArchExtIOICommonState *s,
-+                                            int irq, uint64_t val, bool notify)
- {
-     int i, cpu;
- 
-@@ -167,8 +164,8 @@ static inline void extioi_update_sw_coremap(LoongArchExtIOI *s, int irq,
-     }
- }
- 
--static inline void extioi_update_sw_ipmap(LoongArchExtIOI *s, int index,
--                                          uint64_t val)
-+static inline void extioi_update_sw_ipmap(LoongArchExtIOICommonState *s,
-+                                          int index, uint64_t val)
- {
-     int i;
-     uint8_t ipnum;
-@@ -191,7 +188,7 @@ static MemTxResult extioi_writew(void *opaque, hwaddr addr,
-                           uint64_t val, unsigned size,
-                           MemTxAttrs attrs)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
-     int cpu, index, old_data, irq;
-     uint32_t offset;
- 
-@@ -271,7 +268,7 @@ static const MemoryRegionOps extioi_ops = {
- static MemTxResult extioi_virt_readw(void *opaque, hwaddr addr, uint64_t *data,
-                                      unsigned size, MemTxAttrs attrs)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
- 
-     switch (addr) {
-     case EXTIOI_VIRT_FEATURES:
-@@ -291,7 +288,7 @@ static MemTxResult extioi_virt_writew(void *opaque, hwaddr addr,
-                           uint64_t val, unsigned size,
-                           MemTxAttrs attrs)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
- 
-     switch (addr) {
-     case EXTIOI_VIRT_FEATURES:
-@@ -370,21 +367,21 @@ static void loongarch_extioi_realize(DeviceState *dev, Error **errp)
- 
- static void loongarch_extioi_unrealize(DeviceState *dev)
- {
--    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI(dev);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(dev);
- 
-     g_free(s->cpu);
- }
- 
- static void loongarch_extioi_reset(DeviceState *d)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(d);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(d);
- 
-     s->status = 0;
- }
- 
- static int vmstate_extioi_post_load(void *opaque, int version_id)
- {
--    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    LoongArchExtIOICommonState *s = LOONGARCH_EXTIOI_COMMON(opaque);
-     int i, start_irq;
- 
-     for (i = 0; i < (EXTIOI_IRQS / 4); i++) {
-diff --git a/include/hw/intc/loongarch_extioi.h b/include/hw/intc/loongarch_extioi.h
-index cc160c52dc..351f18afcf 100644
---- a/include/hw/intc/loongarch_extioi.h
-+++ b/include/hw/intc/loongarch_extioi.h
-@@ -24,6 +24,4 @@ struct LoongArchExtIOIClass {
-     DeviceUnrealize parent_unrealize;
- };
- 
--#define LoongArchExtIOI         LoongArchExtIOICommonState
--#define LOONGARCH_EXTIOI(obj)   ((LoongArchExtIOICommonState *)obj)
- #endif /* LOONGARCH_EXTIOI_H */
--- 
-2.39.3
+This seems like a bit of a muddied conversation.
 
+"'normal' memory" has no defined meaning - so lets clear this up a bit
+
+There is:
+* System-RAM (memory managed by kernel allocators)
+* Special Purpose Memory (generally presented as DAX)
+
+System-RAM is managed as zones - the relevant ones are
+* ZONE_NORMAL allows both movable and non-movable allocations
+* ZONE_MOVABLE only allows non-movable allocations
+  (Caveat: this generally only applies to allocation, you can
+   violate this with stuff like pinning)
+
+Hotplug can be thought of as two discrete mechanisms
+* Exposing capacity to the kernel (CXL DCD Transactions)
+* Exposing capacity to allocators (mm/memory-hotplug.c)
+
+1) if the intent is to primarily utilize dynamic capacity for VMs, then
+   the host does not need (read: should not need) to map the memory as
+   System-RAM in the host. The VMM should be made to consume it directly
+   via DAX or otherwise.
+
+   That capacity is almost by definition "Capital G Guaranteed" to be
+   reclaimable regardless of what the guest does. A VMM can force a guest
+   to let go of resources - that's its job.
+
+2) if the intent is to provide dynamic capacity to a host as System-RAM, then
+   recoverability is dictated by system usage of that capacity. If onlined
+   into ZONE_MOVABLE, then if the system has avoided doing things like pinning
+   those pages it should *generally* be recoverable (but not guaranteed).
+
+
+For the virtualization discussion:
+
+Hotplug and recoverability is a non-issue.  The capacity should never be
+exposed to system allocators and the VMM should be made to consume special
+purpose memory directly. That's on the VMM/orchestration software to get right.
+
+
+For the host System-RAM discussion:
+
+Auto-onlined hotplug capacity presently defaults to ZONE_NORMAL, but we
+discussed (yesterday, at Plumbers) changing this default to ZONE_MOVABLE.
+
+The only concern is when insufficient ZONE_NORMAL exists to support
+ZONE_MOVABLE capacity - but this is unlikely to be the general scenario AND
+can be mitigated w/ existing mechanisms.
+
+Manually onlined capacity defaults to ZONE_MOVABLE.
+
+It would be nice to make this behavior consistent, since the general opinion
+appears to be that this capacity should default to ZONE_MOVABLE.
+
+~Gregory
 
