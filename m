@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D38F197D1E9
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 260C597D1E5
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:42:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYH1-0006Z9-LT; Fri, 20 Sep 2024 03:41:51 -0400
+	id 1srYH8-00075t-C9; Fri, 20 Sep 2024 03:41:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYGu-0006Jv-Vr; Fri, 20 Sep 2024 03:41:44 -0400
+ id 1srYH5-00070D-71; Fri, 20 Sep 2024 03:41:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYGt-0000Bq-5S; Fri, 20 Sep 2024 03:41:44 -0400
+ id 1srYGw-0000Cm-9Y; Fri, 20 Sep 2024 03:41:54 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C666D90859;
- Fri, 20 Sep 2024 10:41:16 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 4C7C49085A;
+ Fri, 20 Sep 2024 10:41:17 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 555DB1409DC;
+ by tsrv.corpit.ru (Postfix) with ESMTP id EC9781409DD;
  Fri, 20 Sep 2024 10:41:36 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-trivial@nongnu.org
-Subject: [PULL 03/22] linux-user/syscall.c: eliminate other explicit LFS usages
-Date: Fri, 20 Sep 2024 10:41:15 +0300
-Message-Id: <20240920074134.664961-4-mjt@tls.msk.ru>
+Cc: Tejas Vipin <tejasvipin76@gmail.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 04/22] ppc: fix incorrect spelling of PowerMac
+Date: Fri, 20 Sep 2024 10:41:16 +0300
+Message-Id: <20240920074134.664961-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,103 +58,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we alwasy build with LFS enabled, and with -D_FILE_OFFSET_BITS=64
-in particular, there is no need to use 64bit versions of various system
-calls and constants, regular ones will do just fine.  Eliminate a few
-last uses of the following constructs in linux-user/syscall.c:
-  off64_t
-  ftruncate64()
-  lseek64()
-  pread64()
-  pwrite64()
+From: Tejas Vipin <tejasvipin76@gmail.com>
 
-This way it can be built on systems where the 64bit variants of
-everything is not defined (since the system always uses 64bit
-variants), such as on recent MUSL.
+PowerMac is spelled as PowerMAC (Media Access Control) in some places.
+This is misleading.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2215
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2297
+Signed-off-by: Tejas Vipin <tejasvipin76@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ docs/system/ppc/powermac.rst | 4 ++--
+ hw/ppc/mac_newworld.c        | 2 +-
+ hw/ppc/mac_oldworld.c        | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 48c459e515..a666986189 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7265,7 +7265,7 @@ static inline abi_long target_truncate64(CPUArchState *cpu_env, const char *arg1
-         arg2 = arg3;
-         arg3 = arg4;
-     }
--    return get_errno(truncate64(arg1, target_offset64(arg2, arg3)));
-+    return get_errno(truncate(arg1, target_offset64(arg2, arg3)));
- }
- #endif
+diff --git a/docs/system/ppc/powermac.rst b/docs/system/ppc/powermac.rst
+index 04334ba210..3eac81c491 100644
+--- a/docs/system/ppc/powermac.rst
++++ b/docs/system/ppc/powermac.rst
+@@ -4,8 +4,8 @@ PowerMac family boards (``g3beige``, ``mac99``)
+ Use the executable ``qemu-system-ppc`` to simulate a complete PowerMac
+ PowerPC system.
  
-@@ -7279,7 +7279,7 @@ static inline abi_long target_ftruncate64(CPUArchState *cpu_env, abi_long arg1,
-         arg2 = arg3;
-         arg3 = arg4;
-     }
--    return get_errno(ftruncate64(arg1, target_offset64(arg2, arg3)));
-+    return get_errno(ftruncate(arg1, target_offset64(arg2, arg3)));
- }
- #endif
+-- ``g3beige``              Heathrow based PowerMAC
+-- ``mac99``                Mac99 based PowerMAC
++- ``g3beige``              Heathrow based PowerMac
++- ``mac99``                Mac99 based PowerMac
  
-@@ -8664,7 +8664,7 @@ static int do_getdents(abi_long dirfd, abi_long arg2, abi_long count)
-     void *tdirp;
-     int hlen, hoff, toff;
-     int hreclen, treclen;
--    off64_t prev_diroff = 0;
-+    off_t prev_diroff = 0;
+ Supported devices
+ -----------------
+diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
+index ff9e490c4e..9d249a506c 100644
+--- a/hw/ppc/mac_newworld.c
++++ b/hw/ppc/mac_newworld.c
+@@ -571,7 +571,7 @@ static void core99_machine_class_init(ObjectClass *oc, void *data)
+     MachineClass *mc = MACHINE_CLASS(oc);
+     FWPathProviderClass *fwc = FW_PATH_PROVIDER_CLASS(oc);
  
-     hdirp = g_try_malloc(count);
-     if (!hdirp) {
-@@ -8717,7 +8717,7 @@ static int do_getdents(abi_long dirfd, abi_long arg2, abi_long count)
-              * Return what we have, resetting the file pointer to the
-              * location of the first record not returned.
-              */
--            lseek64(dirfd, prev_diroff, SEEK_SET);
-+            lseek(dirfd, prev_diroff, SEEK_SET);
-             break;
-         }
+-    mc->desc = "Mac99 based PowerMAC";
++    mc->desc = "Mac99 based PowerMac";
+     mc->init = ppc_core99_init;
+     mc->block_default_type = IF_IDE;
+     /* SMP is not supported currently */
+diff --git a/hw/ppc/mac_oldworld.c b/hw/ppc/mac_oldworld.c
+index 1981d3d8f6..eef3261002 100644
+--- a/hw/ppc/mac_oldworld.c
++++ b/hw/ppc/mac_oldworld.c
+@@ -411,7 +411,7 @@ static void heathrow_class_init(ObjectClass *oc, void *data)
+     MachineClass *mc = MACHINE_CLASS(oc);
+     FWPathProviderClass *fwc = FW_PATH_PROVIDER_CLASS(oc);
  
-@@ -8751,7 +8751,7 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
-     void *tdirp;
-     int hlen, hoff, toff;
-     int hreclen, treclen;
--    off64_t prev_diroff = 0;
-+    off_t prev_diroff = 0;
- 
-     hdirp = g_try_malloc(count);
-     if (!hdirp) {
-@@ -8793,7 +8793,7 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
-              * Return what we have, resetting the file pointer to the
-              * location of the first record not returned.
-              */
--            lseek64(dirfd, prev_diroff, SEEK_SET);
-+            lseek(dirfd, prev_diroff, SEEK_SET);
-             break;
-         }
- 
-@@ -11524,7 +11524,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 return -TARGET_EFAULT;
-             }
-         }
--        ret = get_errno(pread64(arg1, p, arg3, target_offset64(arg4, arg5)));
-+        ret = get_errno(pread(arg1, p, arg3, target_offset64(arg4, arg5)));
-         unlock_user(p, arg2, ret);
-         return ret;
-     case TARGET_NR_pwrite64:
-@@ -11541,7 +11541,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 return -TARGET_EFAULT;
-             }
-         }
--        ret = get_errno(pwrite64(arg1, p, arg3, target_offset64(arg4, arg5)));
-+        ret = get_errno(pwrite(arg1, p, arg3, target_offset64(arg4, arg5)));
-         unlock_user(p, arg2, 0);
-         return ret;
- #endif
+-    mc->desc = "Heathrow based PowerMAC";
++    mc->desc = "Heathrow based PowerMac";
+     mc->init = ppc_heathrow_init;
+     mc->block_default_type = IF_IDE;
+     /* SMP is not supported currently */
 -- 
 2.39.5
 
