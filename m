@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE4F97D1E7
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A127497D1F5
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:47:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYHZ-0000fI-7U; Fri, 20 Sep 2024 03:42:25 -0400
+	id 1srYI3-0003Sj-Kb; Fri, 20 Sep 2024 03:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYHI-00080j-Jr; Fri, 20 Sep 2024 03:42:11 -0400
+ id 1srYHf-0001Vt-Uw; Fri, 20 Sep 2024 03:42:32 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYHH-0000Gl-0O; Fri, 20 Sep 2024 03:42:08 -0400
+ id 1srYHe-0000HE-0L; Fri, 20 Sep 2024 03:42:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 70C0590863;
- Fri, 20 Sep 2024 10:41:22 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 11F5990864;
+ Fri, 20 Sep 2024 10:41:23 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 00DEF1409E6;
- Fri, 20 Sep 2024 10:41:41 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9358A1409E7;
+ Fri, 20 Sep 2024 10:41:42 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 13/22] tests/qemu-iotests/testenv: Use the "virt" machine for
- or1k
-Date: Fri, 20 Sep 2024 10:41:25 +0300
-Message-Id: <20240920074134.664961-14-mjt@tls.msk.ru>
+Subject: [PULL 14/22] tests/qemu-iotests/testenv: Use the "r2d" machine for
+ sh4/sh4eb
+Date: Fri, 20 Sep 2024 10:41:26 +0300
+Message-Id: <20240920074134.664961-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
@@ -60,34 +60,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-When compiling QEMU just with "--target-list=or1k-softmmu", there
-are 8 iotests failing that try to use PCI devices - but the default
-or1k machine does not have a PCI bus. The "virt" machine is better
-suited for running the iotests than the or1k default machine since
-it provides PCI and thus e.g. support for virtio-blk and virtio-scsi,
-too. With this change, there are no failing iotests anymore when
-using the qemu-system-or1k binary for running the tests.
+Commit 0ea0538fae516f9b4 removed the default machine of the sh4
+binaries, so a lot of iotests are failing now without such a default
+machine. Teach the iotest harness to use the "r2d" machine instead
+to fix this problem.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/qemu-iotests/testenv.py | 1 +
- 1 file changed, 1 insertion(+)
+ tests/qemu-iotests/testenv.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.py
-index c8848f2ec2..0b32eec119 100644
+index 0b32eec119..6326e46b7b 100644
 --- a/tests/qemu-iotests/testenv.py
 +++ b/tests/qemu-iotests/testenv.py
-@@ -240,6 +240,7 @@ def __init__(self, source_dir: str, build_dir: str,
-             ('aarch64', 'virt'),
-             ('avr', 'mega2560'),
-             ('m68k', 'virt'),
-+            ('or1k', 'virt'),
+@@ -244,6 +244,8 @@ def __init__(self, source_dir: str, build_dir: str,
              ('riscv32', 'virt'),
              ('riscv64', 'virt'),
              ('rx', 'gdbsim-r5f562n8'),
++            ('sh4', 'r2d'),
++            ('sh4eb', 'r2d'),
+             ('tricore', 'tricore_testboard')
+         )
+         for suffix, machine in machine_map:
 -- 
 2.39.5
 
