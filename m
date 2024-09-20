@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF6F97D1FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7092D97D1F0
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:46:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYH5-0006uJ-7o; Fri, 20 Sep 2024 03:41:55 -0400
+	id 1srYHA-0007Eq-2q; Fri, 20 Sep 2024 03:42:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYH2-0006nJ-4W; Fri, 20 Sep 2024 03:41:52 -0400
+ id 1srYH5-00071v-Lr; Fri, 20 Sep 2024 03:41:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYGw-0000Cp-Bl; Fri, 20 Sep 2024 03:41:51 -0400
+ id 1srYH3-0000EM-W3; Fri, 20 Sep 2024 03:41:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EAE7B9085B;
- Fri, 20 Sep 2024 10:41:17 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 739729085C;
+ Fri, 20 Sep 2024 10:41:18 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6DC781409DE;
- Fri, 20 Sep 2024 10:41:37 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1C62A1409DF;
+ Fri, 20 Sep 2024 10:41:38 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-trivial@nongnu.org,
+Cc: Bibo Mao <maobibo@loongson.cn>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 05/22] hw/mips/jazz: fix typo in in-built NIC alias
-Date: Fri, 20 Sep 2024 10:41:17 +0300
-Message-Id: <20240920074134.664961-6-mjt@tls.msk.ru>
+Subject: [PULL 06/22] hw/loongarch/virt: Add description for virt machine type
+Date: Fri, 20 Sep 2024 10:41:18 +0300
+Message-Id: <20240920074134.664961-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,35 +57,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+From: Bibo Mao <maobibo@loongson.cn>
 
-Commit e104edbb9d ("hw/mips/jazz: use qemu_find_nic_info()") contained a typo
-in the NIC alias which caused initialisation of the in-built dp83932 NIC to fail
-when using the normal -nic user,model=dp83932 command line.
+The description about virt machine type is removed by mistake, add
+new description here. Here is output result with command
+"./qemu-system-loongarch64 -M help"
 
-Fixes: e104edbb9d ("hw/mips/jazz: use qemu_find_nic_info()")
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+Supported machines are:
+none                 empty machine
+virt                 QEMU LoongArch Virtual Machine (default)
+x-remote             Experimental remote machine
+
+Without the patch, it shows as follows:
+Supported machines are:
+none                 empty machine
+virt                 (null) (default)
+x-remote             Experimental remote machine
+
+Fixes: ef2f11454c(hw/loongarch/virt: Replace Loongson IPI with LoongArch IPI)
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/mips/jazz.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/loongarch/virt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
-index 1bc17e69d3..0d44e19707 100644
---- a/hw/mips/jazz.c
-+++ b/hw/mips/jazz.c
-@@ -128,7 +128,7 @@ static void mips_jazz_init_net(IOMMUMemoryRegion *rc4030_dma_mr,
-     uint8_t *prom;
-     NICInfo *nd;
- 
--    nd = qemu_find_nic_info("dp8393x", true, "dp82932");
-+    nd = qemu_find_nic_info("dp8393x", true, "dp83932");
-     if (!nd) {
-         return;
-     }
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 81b1f9486f..75980b6e3c 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -1403,6 +1403,7 @@ static void virt_class_init(ObjectClass *oc, void *data)
+     mc->init = virt_init;
+     mc->default_cpu_type = LOONGARCH_CPU_TYPE_NAME("la464");
+     mc->default_ram_id = "loongarch.ram";
++    mc->desc = "QEMU LoongArch Virtual Machine";
+     mc->max_cpus = LOONGARCH_MAX_CPUS;
+     mc->is_default = 1;
+     mc->default_kernel_irqchip_split = false;
 -- 
 2.39.5
 
