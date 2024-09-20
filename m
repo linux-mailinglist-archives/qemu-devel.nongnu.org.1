@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0251D97D34D
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7A897D350
 	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 11:06:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srZZx-00071A-Ph; Fri, 20 Sep 2024 05:05:31 -0400
+	id 1srZZw-0006wk-Fu; Fri, 20 Sep 2024 05:05:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1srZZs-0006jf-6C
- for qemu-devel@nongnu.org; Fri, 20 Sep 2024 05:05:24 -0400
+ id 1srZZq-0006fk-9G
+ for qemu-devel@nongnu.org; Fri, 20 Sep 2024 05:05:22 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1srZZm-0003xU-Pz
+ (envelope-from <maobibo@loongson.cn>) id 1srZZm-0003xZ-Kv
  for qemu-devel@nongnu.org; Fri, 20 Sep 2024 05:05:22 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8CxxujHOu1mT+8LAA--.26546S3;
- Fri, 20 Sep 2024 17:05:11 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxhejIOu1mUO8LAA--.26797S3;
+ Fri, 20 Sep 2024 17:05:12 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMBxn+TDOu1mdmoKAA--.59343S6;
+ by front1 (Coremail) with SMTP id qMiowMBxn+TDOu1mdmoKAA--.59343S7;
  Fri, 20 Sep 2024 17:05:11 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH 04/10] hw/intc/loongarch_extioi: Rename LoongArchExtIOI with
- LoongArchExtIOICommonState
-Date: Fri, 20 Sep 2024 17:05:01 +0800
-Message-Id: <20240920090507.2692125-5-maobibo@loongson.cn>
+Subject: [PATCH 05/10] hw/intc/loongarch_extioi: Add common realize interface
+Date: Fri, 20 Sep 2024 17:05:02 +0800
+Message-Id: <20240920090507.2692125-6-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240920090507.2692125-1-maobibo@loongson.cn>
 References: <20240920090507.2692125-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxn+TDOu1mdmoKAA--.59343S6
+X-CM-TRANSID: qMiowMBxn+TDOu1mdmoKAA--.59343S7
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,82 +63,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With some structure such as vmstate and property, rename LoongArchExtIOI
-with LoongArchExtIOICommonState, these common structure will be moved
-to common file.
+Add common realize function, it is only to check validity of property.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- hw/intc/loongarch_extioi.c | 41 +++++++++++++++++++++++---------------
- 1 file changed, 25 insertions(+), 16 deletions(-)
+ hw/intc/loongarch_extioi.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
-index 02dc4e6db3..409d4a85da 100644
+index 409d4a85da..8ac246c2e6 100644
 --- a/hw/intc/loongarch_extioi.c
 +++ b/hw/intc/loongarch_extioi.c
-@@ -396,6 +396,11 @@ static int vmstate_extioi_post_load(void *opaque, int version_id)
-     return 0;
- }
+@@ -323,14 +323,27 @@ static const MemoryRegionOps extioi_virt_ops = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
+ };
  
-+static int loongarch_extioi_common_post_load(void *opaque, int version_id)
++static void loongarch_extioi_common_realize(DeviceState *dev, Error **errp)
 +{
-+    return vmstate_extioi_post_load(opaque, version_id);
++    LoongArchExtIOICommonState *s = (LoongArchExtIOICommonState *)dev;
++    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
++
++    if (s->num_cpu == 0) {
++        error_setg(errp, "num-cpu must be at least 1");
++        return;
++    }
 +}
 +
- static const VMStateDescription vmstate_extioi_core = {
-     .name = "extioi-core",
-     .version_id = 1,
-@@ -407,31 +412,35 @@ static const VMStateDescription vmstate_extioi_core = {
- };
+ static void loongarch_extioi_realize(DeviceState *dev, Error **errp)
+ {
+     LoongArchExtIOI *s = LOONGARCH_EXTIOI(dev);
+     SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
++    Error *local_err = NULL;
+     int i, pin;
  
- static const VMStateDescription vmstate_loongarch_extioi = {
--    .name = TYPE_LOONGARCH_EXTIOI,
-+    .name = "loongarch.extioi",
-     .version_id = 3,
-     .minimum_version_id = 3,
--    .post_load = vmstate_extioi_post_load,
-+    .post_load = loongarch_extioi_common_post_load,
-     .fields = (const VMStateField[]) {
--        VMSTATE_UINT32_ARRAY(bounce, LoongArchExtIOI, EXTIOI_IRQS_GROUP_COUNT),
--        VMSTATE_UINT32_ARRAY(nodetype, LoongArchExtIOI,
-+        VMSTATE_UINT32_ARRAY(bounce, LoongArchExtIOICommonState,
-+                             EXTIOI_IRQS_GROUP_COUNT),
-+        VMSTATE_UINT32_ARRAY(nodetype, LoongArchExtIOICommonState,
-                              EXTIOI_IRQS_NODETYPE_COUNT / 2),
--        VMSTATE_UINT32_ARRAY(enable, LoongArchExtIOI, EXTIOI_IRQS / 32),
--        VMSTATE_UINT32_ARRAY(isr, LoongArchExtIOI, EXTIOI_IRQS / 32),
--        VMSTATE_UINT32_ARRAY(ipmap, LoongArchExtIOI, EXTIOI_IRQS_IPMAP_SIZE / 4),
--        VMSTATE_UINT32_ARRAY(coremap, LoongArchExtIOI, EXTIOI_IRQS / 4),
--
--        VMSTATE_STRUCT_VARRAY_POINTER_UINT32(cpu, LoongArchExtIOI, num_cpu,
--                         vmstate_extioi_core, ExtIOICore),
--        VMSTATE_UINT32(features, LoongArchExtIOI),
--        VMSTATE_UINT32(status, LoongArchExtIOI),
-+        VMSTATE_UINT32_ARRAY(enable, LoongArchExtIOICommonState,
-+                             EXTIOI_IRQS / 32),
-+        VMSTATE_UINT32_ARRAY(isr, LoongArchExtIOICommonState,
-+                             EXTIOI_IRQS / 32),
-+        VMSTATE_UINT32_ARRAY(ipmap, LoongArchExtIOICommonState,
-+                             EXTIOI_IRQS_IPMAP_SIZE / 4),
-+        VMSTATE_UINT32_ARRAY(coremap, LoongArchExtIOICommonState,
-+                             EXTIOI_IRQS / 4),
-+        VMSTATE_STRUCT_VARRAY_POINTER_UINT32(cpu, LoongArchExtIOICommonState,
-+                             num_cpu, vmstate_extioi_core, ExtIOICore),
-+        VMSTATE_UINT32(features, LoongArchExtIOICommonState),
-+        VMSTATE_UINT32(status, LoongArchExtIOICommonState),
-         VMSTATE_END_OF_LIST()
+-    if (s->num_cpu == 0) {
+-        error_setg(errp, "num-cpu must be at least 1");
++    loongarch_extioi_common_realize(dev, &local_err);
++    if (local_err) {
++        error_propagate(errp, local_err);
+         return;
      }
- };
- 
- static Property extioi_properties[] = {
--    DEFINE_PROP_UINT32("num-cpu", LoongArchExtIOI, num_cpu, 1),
--    DEFINE_PROP_BIT("has-virtualization-extension", LoongArchExtIOI, features,
--                    EXTIOI_HAS_VIRT_EXTENSION, 0),
-+    DEFINE_PROP_UINT32("num-cpu", LoongArchExtIOICommonState, num_cpu, 1),
-+    DEFINE_PROP_BIT("has-virtualization-extension", LoongArchExtIOICommonState,
-+                    features, EXTIOI_HAS_VIRT_EXTENSION, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
  
 -- 
 2.39.3
