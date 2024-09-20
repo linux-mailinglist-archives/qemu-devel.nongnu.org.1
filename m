@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A127497D1F5
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 483BA97D1E8
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Sep 2024 09:43:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1srYI3-0003Sj-Kb; Fri, 20 Sep 2024 03:42:55 -0400
+	id 1srYI1-0002Ez-1L; Fri, 20 Sep 2024 03:42:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYHf-0001Vt-Uw; Fri, 20 Sep 2024 03:42:32 -0400
+ id 1srYHg-0001XT-BP; Fri, 20 Sep 2024 03:42:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1srYHe-0000HE-0L; Fri, 20 Sep 2024 03:42:31 -0400
+ id 1srYHe-0000Iz-H1; Fri, 20 Sep 2024 03:42:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 11F5990864;
+ by isrv.corpit.ru (Postfix) with ESMTP id ACBF790865;
  Fri, 20 Sep 2024 10:41:23 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9358A1409E7;
- Fri, 20 Sep 2024 10:41:42 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 335A11409E8;
+ Fri, 20 Sep 2024 10:41:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 14/22] tests/qemu-iotests/testenv: Use the "r2d" machine for
- sh4/sh4eb
-Date: Fri, 20 Sep 2024 10:41:26 +0300
-Message-Id: <20240920074134.664961-15-mjt@tls.msk.ru>
+Subject: [PULL 15/22] tests/functional: Put the or1k_sim test into the slow
+ category
+Date: Fri, 20 Sep 2024 10:41:27 +0300
+Message-Id: <20240920074134.664961-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
 References: <20240920074134.664961-1-mjt@tls.msk.ru>
@@ -60,30 +60,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Commit 0ea0538fae516f9b4 removed the default machine of the sh4
-binaries, so a lot of iotests are failing now without such a default
-machine. Teach the iotest harness to use the "r2d" machine instead
-to fix this problem.
+Looks like a copy-n-paste mistake while adding the or1k_sim test
+here: The test downloads an asset from the internet, so it should
+be in the thorough category, not in the quick one.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/qemu-iotests/testenv.py | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/functional/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.py
-index 0b32eec119..6326e46b7b 100644
---- a/tests/qemu-iotests/testenv.py
-+++ b/tests/qemu-iotests/testenv.py
-@@ -244,6 +244,8 @@ def __init__(self, source_dir: str, build_dir: str,
-             ('riscv32', 'virt'),
-             ('riscv64', 'virt'),
-             ('rx', 'gdbsim-r5f562n8'),
-+            ('sh4', 'r2d'),
-+            ('sh4eb', 'r2d'),
-             ('tricore', 'tricore_testboard')
-         )
-         for suffix, machine in machine_map:
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 8d5520349d..4352e5919b 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -92,7 +92,7 @@ tests_mips64el_system_thorough = [
+   'mips64el_malta',
+ ]
+ 
+-tests_or1k_system_quick = [
++tests_or1k_system_thorough = [
+   'or1k_sim',
+ ]
+ 
 -- 
 2.39.5
 
