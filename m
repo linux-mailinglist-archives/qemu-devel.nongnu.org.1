@@ -2,61 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C1D97DDE9
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Sep 2024 18:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8F197DE13
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Sep 2024 19:19:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ss3DI-00009m-V0; Sat, 21 Sep 2024 12:44:04 -0400
+	id 1ss3jp-0004jT-NY; Sat, 21 Sep 2024 13:17:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <me@nikitashushura.com>)
- id 1ss3DG-00008W-65
- for qemu-devel@nongnu.org; Sat, 21 Sep 2024 12:44:02 -0400
-Received: from mail-4317.proton.ch ([185.70.43.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <me@nikitashushura.com>)
- id 1ss3DE-0004zC-Hq
- for qemu-devel@nongnu.org; Sat, 21 Sep 2024 12:44:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nikitashushura.com;
- s=protonmail; t=1726937037; x=1727196237;
- bh=Xx6Js4iGgbGQOsO4T0rtRdX9oAdowWMajldiUEcOs1I=;
- h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
- Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
- Message-ID:BIMI-Selector;
- b=Peogg5oUTIw11PU05vCva3MaayO7Vs8E4ZpSJiLNd3D+lxeVs5fY9RvFA4asofZ1o
- YepyunmQ5jngvVnGEiSIkanwwvKe9cK/8tHV/wntYA0lWkd8FtOCkf+j9epZEUu8oA
- ey1lK3iqD8xR1l3tQPyjh9dCo63ywEAwh+wFVdYZCZ9zZJpS62XjrUrUlnuXuXt/Tf
- TlbY/+BKZKuZwiIHNzAPsfqJ+C5cjlP6HrDe+e1/2rQFRvEqo5ploPmjqzzgWfsnks
- A4eyNX+in2ATBvRu+PF9qESUI2aw+n9/7nKI5zOnSPieiMncH1h2jrUONK15Ic0vuE
- Bxc1165tymmiw==
-Date: Sat, 21 Sep 2024 16:43:51 +0000
-To: qemu-devel@nongnu.org
-From: Nikita Shushura <me@nikitashushura.com>
-Cc: Nikita Shushura <me@nikitashushura.com>,
- =?utf-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>,
- Frederic Konrad <konrad.frederic@yahoo.fr>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH v2 2/2] hw/sparc/leon3: add second uart with extended
- interrupt usage
-Message-ID: <20240921164322.1883-2-me@nikitashushura.com>
-In-Reply-To: <20240921164322.1883-1-me@nikitashushura.com>
-References: <20240921164322.1883-1-me@nikitashushura.com>
-Feedback-ID: 120968030:user:proton
-X-Pm-Message-ID: 86ea7e2cf6d3bf7a698856e714fb3bb140424ed6
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1ss3jn-0004hj-Dg
+ for qemu-devel@nongnu.org; Sat, 21 Sep 2024 13:17:39 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1ss3jl-0003RS-8h
+ for qemu-devel@nongnu.org; Sat, 21 Sep 2024 13:17:39 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2068bee21d8so32346395ad.2
+ for <qemu-devel@nongnu.org>; Sat, 21 Sep 2024 10:17:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1726939055; x=1727543855; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5QIfwYnj28dbyfqQGicsC1g7gzc3sH3uQhlT+pdMYmo=;
+ b=bI+3MsxYhW7MZjRG+0JmuoircYrFap/bU0uL54fcW3uAGPT7MtmsKGvYSnSdBHZuRb
+ Bjmyqpm05/EYaekHRieM6V0I9wt3PhI6RIW5MiJKw88AYOmsVb1Dj6XCVggGghPuerlN
+ EpsRRf/dRNR1cgHBVmNnxi6GeOZrxsplewbbSGmW3zgBk8YCFbGdLI0+Rz2WCE0gQLAN
+ EJBQuVXTTctqzXJV6JXzxRj3TEUU4qjKhy3DYCutQMTYj8AGnro38PLbdBKlJ15r08JS
+ iBHYKSFQab38WKV/5GhMGA01YdFQLypF0kAL5cPdJl1yG1M3upaPyKNRse5tx3Y8f4Cl
+ Qjig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1726939055; x=1727543855;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5QIfwYnj28dbyfqQGicsC1g7gzc3sH3uQhlT+pdMYmo=;
+ b=Qd6zvHRjyUpfMerrzQ3dFJW6MklPvj77HV6WVdwwOUliKP2LqtzQZZG8ImaDG77o0h
+ 96t5qmxkaXLWXOuAzgGmhWsAE9u5O3+xU+bkpwHAFcq+D4WiH5TvuvPxot9LvVMqAuTQ
+ ZemYAOelgf5GutIDqKnp/laHvMKPmAUrQypNUXGENaOjPLcO50qIc63+CMYAWA9WCC1G
+ 5Xuev7o7pXB4eYrcyl4WRU0sGPlQH/QOmFZKUVyxSH/veAdDHO71AqJwi8u8YT9d5w70
+ WFIOBFTtE1oNkiKIo2BDK5fZMVeXUltSQ7pdMD3yhkPGZWcnznHjMPMyKS/c3fp1qQKg
+ nKPg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWDPT9a3AJehR0COjaGePyiPBy8ylmCbGBls1hhA6VknKaMU2cDiImDrUlsanf+y3ExYOYvxRysdiGV@nongnu.org
+X-Gm-Message-State: AOJu0Ywx3lyk5OOjdv8RaRCC8da4zesDOfTqK+RTaQA0IEtKquDLsBYk
+ 0vR0NMhPG4aIVI7JFS3Wtd9u/PfoRSke0+RYS477P+IGxXKGvGi3ICWXy1xkxVw=
+X-Google-Smtp-Source: AGHT+IGCHq6dHoF1hLQSzBS4ZKckpDb60o8d8hEbpkrNX9vslc2M5CPcylcCFp+oZu4yq1Ajo8nb3Q==
+X-Received: by 2002:a17:902:f689:b0:205:5f36:ffb1 with SMTP id
+ d9443c01a7336-208d844719amr77488215ad.37.1726939055499; 
+ Sat, 21 Sep 2024 10:17:35 -0700 (PDT)
+Received: from [192.168.68.110] ([187.101.184.93])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-207946d2928sm110835495ad.120.2024.09.21.10.17.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 21 Sep 2024 10:17:35 -0700 (PDT)
+Message-ID: <b14b124d-7a46-44eb-8f49-8efca8f4a31f@ventanamicro.com>
+Date: Sat, 21 Sep 2024 14:17:30 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=185.70.43.17; envelope-from=me@nikitashushura.com;
- helo=mail-4317.proton.ch
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/12] tcg/riscv: Add basic support for vector
+To: 0x48 Swung <swung0x48@outlook.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "liwei1518@gmail.com" <liwei1518@gmail.com>,
+ "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
+ "palmer@dabbelt.com" <palmer@dabbelt.com>,
+ "alistair.francis@wdc.com" <alistair.francis@wdc.com>,
+ "bmeng.cn@gmail.com" <bmeng.cn@gmail.com>,
+ TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+References: <20240911132630.461-1-zhiwei_liu@linux.alibaba.com>
+ <20240911132630.461-3-zhiwei_liu@linux.alibaba.com>
+ <0d591570-02c6-48c9-9e3f-ef47ac20ce7d@linaro.org>
+ <b87e7a7e-41fd-4b26-bde3-9adca9babb24@linux.alibaba.com>
+ <33101e38-080d-4444-a8c3-9d01827e243f@linaro.org>
+ <b88244bc-aaf7-42f9-a90f-e4027ac72ebf@linux.alibaba.com>
+ <20e20fde-830f-4314-a944-e7973bda5d8c@linaro.org>
+ <SY8P300MB02825DF878585DDC68EB088CE06C2@SY8P300MB0282.AUSP300.PROD.OUTLOOK.COM>
+ <a7973dea-a430-473f-b0e9-c85fdeda1ac3@linux.alibaba.com>
+ <SY8P300MB02821B61B859969B5A044EB6E06D2@SY8P300MB0282.AUSP300.PROD.OUTLOOK.COM>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <SY8P300MB02821B61B859969B5A044EB6E06D2@SY8P300MB0282.AUSP300.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_FMBLA_NEWDOM=1.499, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,152 +112,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Nikita Shushura <me@nikitashushura.com>
----
- hw/sparc/leon3.c | 63 +++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 46 insertions(+), 17 deletions(-)
-
-diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
-index 6aaa04cb19..c559854e5e 100644
---- a/hw/sparc/leon3.c
-+++ b/hw/sparc/leon3.c
-@@ -54,10 +54,14 @@
- #define LEON3_PROM_OFFSET    (0x00000000)
- #define LEON3_RAM_OFFSET     (0x40000000)
-=20
--#define MAX_CPUS  4
-+#define MAX_CPUS  (4)
-+#define LEON3_EIRQ (12)
-=20
--#define LEON3_UART_OFFSET  (0x80000100)
--#define LEON3_UART_IRQ     (3)
-+#define LEON3_UART0_OFFSET  (0x80000100)
-+#define LEON3_UART0_IRQ     (2)
-+
-+#define LEON3_UART1_OFFSET  (0x80100100)
-+#define LEON3_UART1_IRQ     (17)
-=20
- #define LEON3_IRQMP_OFFSET (0x80000200)
-=20
-@@ -65,7 +69,8 @@
- #define LEON3_TIMER_IRQ    (6)
- #define LEON3_TIMER_COUNT  (2)
-=20
--#define LEON3_APB_PNP_OFFSET (0x800FF000)
-+#define LEON3_APB1_PNP_OFFSET (0x800FF000)
-+#define LEON3_APB2_PNP_OFFSET (0x801FF000)
- #define LEON3_AHB_PNP_OFFSET (0xFFFFF000)
-=20
- typedef struct ResetData {
-@@ -122,7 +127,8 @@ static void write_bootloader(void *ptr, hwaddr kernel_a=
-ddr)
-=20
-     /* Initialize the UARTs                                        */
-     /* *UART_CONTROL =3D UART_RECEIVE_ENABLE | UART_TRANSMIT_ENABLE; */
--    p =3D gen_store_u32(p, 0x80000108, 3);
-+    p =3D gen_store_u32(p, LEON3_UART0_OFFSET + 0x8, 3);
-+    p =3D gen_store_u32(p, LEON3_UART1_OFFSET + 0x8, 3);
-=20
-     /* Initialize the TIMER 0                                      */
-     /* *GPTIMER_SCALER_RELOAD =3D 40 - 1;                            */
-@@ -271,7 +277,8 @@ static void leon3_generic_hw_init(MachineState *machine=
-)
-     DeviceState *dev, *irqmpdev;
-     int i;
-     AHBPnp *ahb_pnp;
--    APBPnp *apb_pnp;
-+    APBPnp *apb1_pnp;
-+    APBPnp *apb2_pnp;
-=20
-     reset_info =3D g_malloc0(sizeof(ResetData));
-=20
-@@ -298,10 +305,19 @@ static void leon3_generic_hw_init(MachineState *machi=
-ne)
-                             GRLIB_LEON3_DEV, GRLIB_AHB_MASTER,
-                             GRLIB_CPU_AREA);
-=20
--    apb_pnp =3D GRLIB_APB_PNP(qdev_new(TYPE_GRLIB_APB_PNP));
--    sysbus_realize_and_unref(SYS_BUS_DEVICE(apb_pnp), &error_fatal);
--    sysbus_mmio_map(SYS_BUS_DEVICE(apb_pnp), 0, LEON3_APB_PNP_OFFSET);
--    grlib_ahb_pnp_add_entry(ahb_pnp, LEON3_APB_PNP_OFFSET, 0xFFF,
-+    /* Initialize APB1 */
-+    apb1_pnp =3D GRLIB_APB_PNP(qdev_new(TYPE_GRLIB_APB_PNP));
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(apb1_pnp), &error_fatal);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(apb1_pnp), 0, LEON3_APB1_PNP_OFFSET);
-+    grlib_ahb_pnp_add_entry(ahb_pnp, LEON3_APB1_PNP_OFFSET, 0xFFF,
-+                            GRLIB_VENDOR_GAISLER, GRLIB_APBMST_DEV,
-+                            GRLIB_AHB_SLAVE, GRLIB_AHBMEM_AREA);
-+
-+    /* Initialize APB2 */
-+    apb2_pnp =3D GRLIB_APB_PNP(qdev_new(TYPE_GRLIB_APB_PNP));
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(apb2_pnp), &error_fatal);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(apb2_pnp), 0, LEON3_APB2_PNP_OFFSET);
-+    grlib_ahb_pnp_add_entry(ahb_pnp, LEON3_APB2_PNP_OFFSET, 0xFFF,
-                             GRLIB_VENDOR_GAISLER, GRLIB_APBMST_DEV,
-                             GRLIB_AHB_SLAVE, GRLIB_AHBMEM_AREA);
-=20
-@@ -309,6 +325,8 @@ static void leon3_generic_hw_init(MachineState *machine=
-)
-     irqmpdev =3D qdev_new(TYPE_GRLIB_IRQMP);
-     object_property_set_int(OBJECT(irqmpdev), "ncpus", machine->smp.cpus,
-                             &error_fatal);
-+    /*object_property_set_int(OBJECT(irqmpdev), "eirq", LEON3_EIRQ,*/
-+    /*                        &error_fatal);*/
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(irqmpdev), &error_fatal);
-=20
-     for (i =3D 0; i < machine->smp.cpus; i++) {
-@@ -325,7 +343,7 @@ static void leon3_generic_hw_init(MachineState *machine=
-)
-     }
-=20
-     sysbus_mmio_map(SYS_BUS_DEVICE(irqmpdev), 0, LEON3_IRQMP_OFFSET);
--    grlib_apb_pnp_add_entry(apb_pnp, LEON3_IRQMP_OFFSET, 0xFFF,
-+    grlib_apb_pnp_add_entry(apb1_pnp, LEON3_IRQMP_OFFSET, 0xFFF,
-                             GRLIB_VENDOR_GAISLER, GRLIB_IRQMP_DEV,
-                             2, 0, GRLIB_APBIO_AREA);
-=20
-@@ -417,20 +435,31 @@ static void leon3_generic_hw_init(MachineState *machi=
-ne)
-                            qdev_get_gpio_in(irqmpdev, LEON3_TIMER_IRQ + i)=
-);
-     }
-=20
--    grlib_apb_pnp_add_entry(apb_pnp, LEON3_TIMER_OFFSET, 0xFFF,
-+    grlib_apb_pnp_add_entry(apb1_pnp, LEON3_TIMER_OFFSET, 0xFFF,
-                             GRLIB_VENDOR_GAISLER, GRLIB_GPTIMER_DEV,
-                             0, LEON3_TIMER_IRQ, GRLIB_APBIO_AREA);
-=20
--    /* Allocate uart */
-+    /* Allocate UART0 */
-     dev =3D qdev_new(TYPE_GRLIB_APB_UART);
-     qdev_prop_set_chr(dev, "chrdev", serial_hd(0));
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
--    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, LEON3_UART_OFFSET);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, LEON3_UART0_OFFSET);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0,
-+                       qdev_get_gpio_in(irqmpdev, LEON3_UART0_IRQ));
-+    grlib_apb_pnp_add_entry(apb1_pnp, LEON3_UART0_OFFSET, 0xFFF,
-+                            GRLIB_VENDOR_GAISLER, GRLIB_APBUART_DEV, 1,
-+                            LEON3_UART0_IRQ, GRLIB_APBIO_AREA);
-+
-+    /* Allocate UART1 */
-+    dev =3D qdev_new(TYPE_GRLIB_APB_UART);
-+    qdev_prop_set_chr(dev, "chrdev", serial_hd(1));
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, LEON3_UART1_OFFSET);
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0,
--                       qdev_get_gpio_in(irqmpdev, LEON3_UART_IRQ));
--    grlib_apb_pnp_add_entry(apb_pnp, LEON3_UART_OFFSET, 0xFFF,
-+                       qdev_get_gpio_in(irqmpdev, LEON3_UART1_IRQ));
-+    grlib_apb_pnp_add_entry(apb1_pnp, LEON3_UART1_OFFSET, 0xFFF,
-                             GRLIB_VENDOR_GAISLER, GRLIB_APBUART_DEV, 1,
--                            LEON3_UART_IRQ, GRLIB_APBIO_AREA);
-+                            LEON3_UART1_IRQ, GRLIB_APBIO_AREA);
- }
-=20
- static void leon3_generic_machine_init(MachineClass *mc)
---=20
-2.46.1
-
-
+DQoNCk9uIDkvMjEvMjQgMTI6NTYgUE0sIDB4NDggU3d1bmcgd3JvdGU6DQo+IFNpZ25lZC1v
+ZmYtYnk6IEh1YW5nIFNoaXl1YW4gPHN3dW5nMHg0OEBvdXRsb29rLmNvbSA8bWFpbHRvOnN3
+dW5nMHg0OEBvdXRsb29rLmNvbT4+DQo+IA0KPiBUaGlzIGlzIHRoZSB0YWcuIElzIHRoaXMg
+ZmluZSBvciBkbyBJIG5lZWQgdG8gZG8gc29tZXRoaW5nIGVsc2U/IFRoYW5rcyBmb3IgdGhl
+IGhlbHAgZnJvbSBldmVyeWJvZHkgaW4gdGhpcyBsaXN0IQ0KDQpUaGFua3MhIFRoaXMgaXMg
+ZW5vdWdoLiBaaGl3ZWkgY2FuIGFkZCB0aGUgdGFnIGluIHRoZSBwYXRjaCBpbiB2NS4NCg0K
+DQpEYW5pZWwNCg0KPiANCj4+IOWcqCAyMDI05bm0OeaciDIw5pel77yMMjI6MjjvvIxMSVUg
+Wmhpd2VpIDx6aGl3ZWlfbGl1QGxpbnV4LmFsaWJhYmEuY29tPiDlhpnpgZPvvJoNCj4+DQo+
+PiDvu78NCj4+DQo+Pg0KPj4gT24gMjAyNC85LzIwIDEyOjAxLCAweDQ4IFN3dW5nIHdyb3Rl
+Og0KPj4+IEhleSBldmVyeW9uZSEgTGF0ZSB0byB0aGUgcGFydHkuIExpZmUgaGFwcGVucyBz
+b21ldGltZXMgOykNCj4+PiBKdXN0IGRpc2NvdmVyZWQgdGhpcyBwYXRjaCBhbmQgdGhpcyBt
+YWlsIGxpc3QsIGFuZCBJJ2QgbGlrZSB0byBwcm92aWRlIHNvbWUgYmFja2dyb3VuZCBzdG9y
+eSBoZXJlLg0KPj4+IEkgb3JpZ2luYWxseSBwcm92aWRlZCBteSBpbml0aWFsIGltcGxlbWVu
+dGF0aW9uIGluIGEgZG93bnN0cmVhbSByZXBvIGxhc3QgeWVhciwgbmFtZWx5IGh0dHBzOi8v
+Z2l0aHViLmNvbS9wbGN0bGFiL3BsY3QtcWVtdS90cmVlL3BsY3QtcmlzY3YtYmFja2VuZC1y
+dnbCoC4NCj4+PiBJJ20gbmV3IHRvIGNvbnRyaWJ1dGluZyB0byBxZW11IGFuZCBhbHNvIHRh
+a2UgcGFydCBpbiB0aGUgb3Blbi1zb3VyY2UgY29tbXVuaXR5IHVwc3RyZWFtaW5nIHByb2Nl
+c3MgYXMgYSB3aG9sZSwgc28gSSBtYXkgbWFrZSBtaXN0YWtlcyBpbiBteSBmb2xsb3dpbmcg
+Y2xhaW1zLCBidXQgSSBzZWUgc29tZSBjb25mdXNpb24gaGVyZToNCj4+PiAxLiBUaGUgUExD
+VCBicmFuY2ggKHdoaWNoIGluY2x1ZGVzIG15IG9yaWdpbmFsIGNvbW1pdHMpIGlzIG9wZW4t
+c291cmNlZCB1c2luZyBHUEx2Miwgd2hpY2ggZm9sbG93cyBRRU1VJ3MgdXBzdHJlYW0gcmVw
+by4gU28gYWNjb3JkaW5nIHRvIHRoZSBsaWNlbnNlLCBteSBtb2RpZmljYXRpb24gc2hvdWxk
+IGJlIEVYUExJQ0lUTFkgc2hvd24gaW4gdGhlIHBhdGNoLCBidXQgSSBoYXZlbid0IHNlZW4g
+YW55Lg0KPj4+IDIuIEkgZG8gY29uc2VudCB1cHN0cmVhbWluZyBteSBwYXRjaCBsYXN0IHll
+YXIsIGluIHRoZSBmb3JtIG9mIGEgcGF0Y2ggc3VibWl0dGVkIHdpdGggbW9kaWZpY2F0aW9u
+cyBmcm9tIFQtaGVhZCwgYW5kIG9uIGJlaGFsZiBvZiB0aGVtLiBBbmQgaXQgd2FzIGFncmVl
+ZCBiYWNrIGluIHRoZSBkYXlzIHRoYXQgSSBjYW4gYmUgbWVudGlvbmVkIGFzIG9uZSBvZiB0
+aGUgYXV0aG9ycy4gQnV0IGl0IHR1cm5zb3V0IHRoYXQgdGhlcmUncyBubyAic2lnbi1vZmYi
+LCAiYXV0aG9yIiwgImNvLWF1dGhvciIgbGluZSBtZW50aW9uaW5nIG1lLiBJZiBJIGRvbid0
+IHNwZWFrIG91dCBpbiB0aGlzIHNpdHVhdGlvbiwgZG9lcyBpdCBpbXBseSB0aGF0IHRoaXMg
+cGF0Y2ggaXMgcHVyZWx5IExJVSBaaGl3ZWkncyB3b3JrIGFuZCBoYXZlIG5vdGhpbmcgdG8g
+ZG8gd2l0aCBtZT8NCj4+Pg0KPj4+IEknZCBsaWtlIExJVSB0byBzZXBhcmF0ZSBteSBwYXRj
+aCBhbmQgaGlzIG1vZGlmaWNhdGlvbiB0byB0d28gc2VwYXJhdGUgcGF0Y2hlcywgYW5kIGV4
+cGxpY2l0bHkgbmFtZSB3aGVyZSBhcmUgdGhvc2UgcGF0Y2hlcyBjb21pbmcgZnJvbSwgc28g
+dGhhdCB0aGlzIHBhdGNoIGNhbiBjb21wbHkgdG8gR1BMdjIgbGljZW5zZSBhbmQgY2FuIHdl
+IGNsYXJpZnkgdGhvc2UgbWlzdW5kZXJzdGFuZGluZ3MuDQo+Pj4NCj4+PiBJIGRvbid0IHdh
+bnQgdG8gdGFrZSBpdCBwZXJzb25hbGx5ICwgYnV0IEkgZG8gc21lbGwgc29tZXRoaW5nJ3Mg
+d3JvbmcgZ29pbmcgb24gaGVyZS4uLg0KPj4NCj4+IEkgdGhpbmsgdGhlcmUgd2FzIGEgbWlz
+dW5kZXJzdGFuZGluZy4gQnV0IEkgd2lsbCBub3QgZXhwbGFpbiBpdCB0b28gbXVjaCBoZXJl
+LiBJZiB5b3UgYWdyZWUsIHBsZWFzZSBkb24ndCBibG9jayB0aGlzIHdvcmsgYW5kIHNlbmQg
+dGhlIHRhZyBhcyBEYW5pZWwgYW5kIE1hcmt1cyBwb2ludCBvdXQuDQo+Pg0KPj4gVGhhbmtz
+LA0KPj4gWmhpd2VpDQo+Pg0KPj4+DQo+Pj4gQmVzdCBSZWdhcmRzLA0KPj4+IFN3dW5nMHg0
+OCAoYWthLiBIdWFuZyBTaGl5dWFuKQ0KPj4+DQo+Pj4gR2V0IE91dGxvb2sgZm9yIEFuZHJv
+aWQgPGh0dHBzOi8vYWthLm1zL0FBYjl5c2c+DQo+Pj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+
+Pj4gKkZyb206KiBSaWNoYXJkIEhlbmRlcnNvbiA8cmljaGFyZC5oZW5kZXJzb25AbGluYXJv
+Lm9yZz4NCj4+PiAqU2VudDoqIFdlZG5lc2RheSwgU2VwdGVtYmVyIDE4LCAyMDI0IDEwOjI3
+OjE2IFBNDQo+Pj4gKlRvOiogTElVIFpoaXdlaSA8emhpd2VpX2xpdUBsaW51eC5hbGliYWJh
+LmNvbT47IHFlbXUtZGV2ZWxAbm9uZ251Lm9yZyA8cWVtdS1kZXZlbEBub25nbnUub3JnPg0K
+Pj4+ICpDYzoqIHFlbXUtcmlzY3ZAbm9uZ251Lm9yZyA8cWVtdS1yaXNjdkBub25nbnUub3Jn
+PjsgcGFsbWVyQGRhYmJlbHQuY29tIDxwYWxtZXJAZGFiYmVsdC5jb20+OyBhbGlzdGFpci5m
+cmFuY2lzQHdkYy5jb20gPGFsaXN0YWlyLmZyYW5jaXNAd2RjLmNvbT47IGRiYXJib3phQHZl
+bnRhbmFtaWNyby5jb20gPGRiYXJib3phQHZlbnRhbmFtaWNyby5jb20+OyBsaXdlaTE1MThA
+Z21haWwuY29tIDxsaXdlaTE1MThAZ21haWwuY29tPjsgYm1lbmcuY25AZ21haWwuY29tIDxi
+bWVuZy5jbkBnbWFpbC5jb20+OyBTd3VuZzB4NDggPHN3dW5nMHg0OEBvdXRsb29rLmNvbT47
+IFRBTkcgVGlhbmNoZW5nIDx0YW5ndGlhbmNoZW5nLnR0Y0BhbGliYWJhLWluYy5jb20+DQo+
+Pj4gKlN1YmplY3Q6KiBSZTogW1BBVENIIHY0IDAyLzEyXSB0Y2cvcmlzY3Y6IEFkZCBiYXNp
+YyBzdXBwb3J0IGZvciB2ZWN0b3INCj4+PiBPbiA5LzE4LzI0IDEyOjQzLCBMSVUgWmhpd2Vp
+IHdyb3RlOg0KPj4+ID4gDQo+Pj4gPiBPbiAyMDI0LzkvMTggMTg6MTEsIFJpY2hhcmQgSGVu
+ZGVyc29uIHdyb3RlOg0KPj4+ID4+IE9uIDkvMTgvMjQgMDc6MTcsIExJVSBaaGl3ZWkgd3Jv
+dGU6DQo+Pj4gPj4+DQo+Pj4gPj4+IE9uIDIwMjQvOS8xMiAyOjQxLCBSaWNoYXJkIEhlbmRl
+cnNvbiB3cm90ZToNCj4+PiA+Pj4+IE9uIDkvMTEvMjQgMDY6MjYsIExJVSBaaGl3ZWkgd3Jv
+dGU6DQo+Pj4gPj4+Pj4gRnJvbTogU3d1bmcweDQ4PHN3dW5nMHg0OEBvdXRsb29rLmNvbT4N
+Cj4+PiA+Pj4+Pg0KPj4+ID4+Pj4+IFRoZSBSSVNDLVYgdmVjdG9yIGluc3RydWN0aW9uIHNl
+dCB1dGlsaXplcyB0aGUgTE1VTCBmaWVsZCB0byBncm91cA0KPj4+ID4+Pj4+IG11bHRpcGxl
+IHJlZ2lzdGVycywgZW5hYmxpbmcgdmFyaWFibGUtbGVuZ3RoIHZlY3RvciByZWdpc3RlcnMu
+IFRoaXMNCj4+PiA+Pj4+PiBpbXBsZW1lbnRhdGlvbiB1c2VzIG9ubHkgdGhlIGZpcnN0IHJl
+Z2lzdGVyIG51bWJlciBvZiBlYWNoIGdyb3VwIHdoaWxlDQo+Pj4gPj4+Pj4gcmVzZXJ2aW5n
+IHRoZSBvdGhlciByZWdpc3RlciBudW1iZXJzIHdpdGhpbiB0aGUgZ3JvdXAuDQo+Pj4gPj4+
+Pj4NCj4+PiA+Pj4+PiBJbiBUQ0csIGVhY2ggVkVDX0lSIGNhbiBoYXZlIDMgdHlwZXMgKFRD
+R19UWVBFX1Y2NC8xMjgvMjU2KSwgYW5kIHRoZQ0KPj4+ID4+Pj4+IGhvc3QgcnVudGltZSBu
+ZWVkcyB0byBhZGp1c3QgTE1VTCBiYXNlZCBvbiB0aGUgdHlwZSB0byB1c2UgZGlmZmVyZW50
+DQo+Pj4gPj4+Pj4gcmVnaXN0ZXIgZ3JvdXBzLg0KPj4+ID4+Pj4+DQo+Pj4gPj4+Pj4gVGhp
+cyBwcmVzZW50cyBjaGFsbGVuZ2VzIGZvciBUQ0cncyByZWdpc3RlciBhbGxvY2F0aW9uLiBD
+dXJyZW50bHksIHdlDQo+Pj4gPj4+Pj4gYXZvaWQgbW9kaWZ5aW5nIHRoZSByZWdpc3RlciBh
+bGxvY2F0aW9uIHBhcnQgb2YgVENHIGFuZCBvbmx5IGV4cG9zZSB0aGUNCj4+PiA+Pj4+PiBt
+aW5pbXVtIG51bWJlciBvZiB2ZWN0b3IgcmVnaXN0ZXJzLg0KPj4+ID4+Pj4+DQo+Pj4gPj4+
+Pj4gRm9yIGV4YW1wbGUsIHdoZW4gdGhlIGhvc3QgdmxlbiBpcyA2NCBiaXRzIGFuZCB0eXBl
+IGlzIFRDR19UWVBFX1YyNTYsIHdpdGgNCj4+PiA+Pj4+PiBMTVVMIGVxdWFsIHRvIDQsIHdl
+IHVzZSA0IHZlY3RvciByZWdpc3RlcnMgYXMgb25lIHJlZ2lzdGVyIGdyb3VwLiBXZSBjYW4N
+Cj4+PiA+Pj4+PiB1c2UgYSBtYXhpbXVtIG9mIDggcmVnaXN0ZXIgZ3JvdXBzLCBidXQgdGhl
+IFYwIHJlZ2lzdGVyIG51bWJlciBpcyByZXNlcnZlZA0KPj4+ID4+Pj4+IGFzIGEgbWFzayBy
+ZWdpc3Rlciwgc28gd2UgY2FuIGVmZmVjdGl2ZWx5IHVzZSBhdCBtb3N0IDcgcmVnaXN0ZXIg
+Z3JvdXBzLg0KPj4+ID4+Pj4+IE1vcmVvdmVyLCB3aGVuIHR5cGUgaXMgc21hbGxlciB0aGFu
+IFRDR19UWVBFX1YyNTYsIG9ubHkgNyByZWdpc3RlcnMgYXJlDQo+Pj4gPj4+Pj4gZm9yY2Vk
+IHRvIGJlIHVzZWQuIFRoaXMgaXMgYmVjYXVzZSBUQ0cgY2Fubm90IHlldCBkeW5hbWljYWxs
+eSBjb25zdHJhaW4NCj4+PiA+Pj4+PiByZWdpc3RlcnMgd2l0aCB0eXBlOyBsaWtld2lzZSwg
+d2hlbiB0aGUgaG9zdCB2bGVuIGlzIDEyOCBiaXRzIGFuZA0KPj4+ID4+Pj4+IFRDR19UWVBF
+X1YyNTYsIHdlIGNhbiB1c2UgYXQgbW9zdCAxNSByZWdpc3RlcnMuDQo+Pj4gPj4+Pj4NCj4+
+PiA+Pj4+PiBUaGVyZSBpcyBub3QgbXVjaCBwcmVzc3VyZSBvbiB2ZWN0b3IgcmVnaXN0ZXIg
+YWxsb2NhdGlvbiBpbiBUQ0cgbm93LCBzbw0KPj4+ID4+Pj4+IHVzaW5nIDcgcmVnaXN0ZXJz
+IGlzIGZlYXNpYmxlIGFuZCB3aWxsIG5vdCBoYXZlIGEgbWFqb3IgaW1wYWN0IG9uIGNvZGUN
+Cj4+PiA+Pj4+PiBnZW5lcmF0aW9uLg0KPj4+ID4+Pj4+DQo+Pj4gPj4+Pj4gVGhpcyBwYXRj
+aDoNCj4+PiA+Pj4+PiAxLiBSZXNlcnZlcyB2ZWN0b3IgcmVnaXN0ZXIgMCBmb3IgdXNlIGFz
+IGEgbWFzayByZWdpc3Rlci4NCj4+PiA+Pj4+PiAyLiBXaGVuIHVzaW5nIHJlZ2lzdGVyIGdy
+b3VwcywgcmVzZXJ2ZXMgdGhlIGFkZGl0aW9uYWwgcmVnaXN0ZXJzIHdpdGhpbg0KPj4+ID4+
+Pj4+IMKgwqDCoCBlYWNoIGdyb3VwLg0KPj4+ID4+Pj4+DQo+Pj4gPj4+Pj4gU2lnbmVkLW9m
+Zi1ieTogVEFORyBUaWFuY2hlbmc8dGFuZ3RpYW5jaGVuZy50dGNAYWxpYmFiYS1pbmMuY29t
+Pg0KPj4+ID4+Pj4+IENvLWF1dGhvcmVkLWJ5OiBUQU5HIFRpYW5jaGVuZzx0YW5ndGlhbmNo
+ZW5nLnR0Y0BhbGliYWJhLWluYy5jb20+DQo+Pj4gPj4+Pg0KPj4+ID4+Pj4gSWYgdGhlcmUg
+aXMgYSBjby1hdXRob3IsIHRoZXJlIHNob3VsZCBiZSBhbm90aGVyIFNpZ25lZC1vZmYtYnku
+DQo+Pj4gPj4+DQo+Pj4gPj4+IFRoaXMgcGF0Y2ggaGFzIGFkZGVkIGEgdGFnOg0KPj4+ID4+
+Pg0KPj4+ID4+PiBTaWduZWQtb2ZmLWJ5OiBUQU5HIFRpYW5jaGVuZzx0YW5ndGlhbmNoZW5n
+LnR0Y0BhbGliYWJhLWluYy5jb20+DQo+Pj4gPj4+DQo+Pj4gPj4+DQo+Pj4gPj4+IERvIHlv
+dSBtZWFuIHdlIHNob3VsZCBhZGQgdGhlIHNhbWUgdGFnIHR3aWNlPw0KPj4+ID4+DQo+Pj4g
+Pj4gVGhlIGZyb20gbGluZSBpcyAiU3d1bmcweDQ4IDxzd3VuZzB4NDhAb3V0bG9vay5jb20+
+Ii4NCj4+PiA+PiBJZiB0aGlzIGlzIGFuIGFsdGVybmF0ZSBlbWFpbCBmb3IgVEFORyBUaWFu
+Y2hlbmcsDQo+Pj4gPiANCj4+PiA+IE5vLCBTd3VuZzB4NDggaXMgYW5vdGhlciBhdXRob3Iu
+DQo+Pj4NCj4+PiBUaGVuIHdlIG5lZWQgYSBwcm9wZXIgU2lnbmVkLW9mZi1ieSBsaW5lIGZy
+b20gdGhhdCBhdXRob3IuDQo+Pj4NCj4+Pg0KPj4+IHJ+DQo=
 
