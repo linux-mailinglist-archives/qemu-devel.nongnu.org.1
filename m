@@ -2,61 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1123397DCEC
-	for <lists+qemu-devel@lfdr.de>; Sat, 21 Sep 2024 13:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E7497DD57
+	for <lists+qemu-devel@lfdr.de>; Sat, 21 Sep 2024 15:14:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sry86-000466-Ur; Sat, 21 Sep 2024 07:18:23 -0400
+	id 1srzuo-0007dI-Oi; Sat, 21 Sep 2024 09:12:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1sry83-00045c-Gh
- for qemu-devel@nongnu.org; Sat, 21 Sep 2024 07:18:19 -0400
-Received: from zoidberg.rfc1149.net ([195.154.227.159])
+ (Exim 4.90_1) (envelope-from <jiaqingtong@huawei.com>)
+ id 1sryN9-0001s7-51
+ for qemu-devel@nongnu.org; Sat, 21 Sep 2024 07:33:55 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1sry7y-0002Pu-Jm
- for qemu-devel@nongnu.org; Sat, 21 Sep 2024 07:18:17 -0400
-Received: from 127.0.0.1 (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits)
- server-digest SHA256) (Client did not present a certificate)
- by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 9304A80024;
- Sat, 21 Sep 2024 13:18:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rfc1149.net; s=smtp;
- t=1726917482; bh=dK/yPxXPauAEim6HBUPxRz1AFv3b62eYEFHJAy5aWEo=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date;
- b=DCPyiKfG7O/zAlM7trar3sh7c6wszT3vUtuRdcHVUbGWVbLWgrxkHK0f356nF4dro
- mD3XjA3AUZ8jPlrTL3znf7NuGB77WtZGT1vwaX1UYUD9vSlj/pnkcFkAsZtmEwuv2s
- +1Adh7aGhxHQlmabozY05RyfQ6h/D1T+LTc5yhHPqnKjxEerkmgpByZ0pgZWEpcqJT
- U5Dd/LLaOWVqQlE6/E03orETt4WTnWmyzCdOip8gIttd30GpTxlM1TKe6k+Cdanngn
- VSbbVBF/eVp/++csOwjeBBPtuq2frfWSUQ4QPiGBZMTr1i01uhO7PEYvCG2B48soQ/
- BL3YnZk89EU8w==
-From: Samuel Tardieu <sam@rfc1149.net>
-To: =?utf-8?Q?In=C3=A8s?= Varhol <ines.varhol@telecom-paris.fr>
-Cc: qemu-devel@nongnu.org,   Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,   Jacob Abrams
- <satur9nine@gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: Update STM32L4x5 and B-L475E-IOT01A
- maintainers
-In-Reply-To: <20240921104751.43671-1-ines.varhol@telecom-paris.fr>
- (=?utf-8?Q?=22In=C3=A8s?=
- Varhol"'s message of "Sat, 21 Sep 2024 12:47:16 +0200")
-References: <20240921104751.43671-1-ines.varhol@telecom-paris.fr>
-Date: Sat, 21 Sep 2024 13:18:02 +0200
-Message-ID: <87settdzmd.fsf@rfc1149.net>
+ (Exim 4.90_1) (envelope-from <jiaqingtong@huawei.com>)
+ id 1sryN5-0003zf-Ed
+ for qemu-devel@nongnu.org; Sat, 21 Sep 2024 07:33:54 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+ by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4X9nFT15zzz1ym08
+ for <qemu-devel@nongnu.org>; Sat, 21 Sep 2024 19:33:33 +0800 (CST)
+Received: from kwepemj100001.china.huawei.com (unknown [7.202.195.246])
+ by mail.maildlp.com (Postfix) with ESMTPS id 53098140259
+ for <qemu-devel@nongnu.org>; Sat, 21 Sep 2024 19:33:32 +0800 (CST)
+Received: from [10.174.176.198] (10.174.176.198) by
+ kwepemj100001.china.huawei.com (7.202.195.246) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 21 Sep 2024 19:33:31 +0800
+Message-ID: <eba4b2cf-cf64-4237-aaf6-8aa521c77007@huawei.com>
+Date: Sat, 21 Sep 2024 19:33:31 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
- helo=zoidberg.rfc1149.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+To: <qemu-devel@nongnu.org>
+Subject: RTC time could run slow 3s than host time when clock=vm & base=UTC
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.176.198]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemj100001.china.huawei.com (7.202.195.246)
+Received-SPF: pass client-ip=45.249.212.32;
+ envelope-from=jiaqingtong@huawei.com; helo=szxga06-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sat, 21 Sep 2024 09:12:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,22 +60,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  =?UTF-8?B?6LS+5bqG5b2k?= <jiaqingtong@huawei.com>
+From:  =?UTF-8?B?6LS+5bqG5b2k?= via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In=C3=A8s Varhol <ines.varhol@telecom-paris.fr> writes:
+When start qemu with -rtc base=utc,clock=vm, sometime guest time can 
+slower 3s than host.
 
-> It has been a learning experience to contribute to QEMU for our
-> end-of-studies project. For a few months now, Arnaud and I aren't
-> actively involved anymore as we lack time and access to the hardware.
-> Therefore it's high time to update the maintainers file: from now on,
-> Samuel Tardieu who is behind the project will be taking up the role of
-> maintainer.
->
-> This commit updates maintainers and the list of files, and places the
-> two devices in alphabetical order.
->
-> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+There's no problem (also didn't be noticed) as we often start ntp 
+service, who will adjust our system time.
 
-Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+But let's talk about if we havn't enable NTP service(for example system 
+just booted)
+
+After inspect into the code, i found that there are two problem we 
+should think about:
+
+1） The RTC time accuracy problem
+
+1. in the call chains 
+rtc_realizefn->rtc_set_date_from_host->qemu_get_timedate->qemu_ref_timedate,
+
+the qemu_clock_get_ms(clock) / 1000 will lost ~0.999s at max.
+
+2. In the call chains cmos_ioport_read->rtc_update_time, the guest_sec = 
+guest_nsec / NANOSECONDS_PER_SECOND
+
+will also lost ~0.999s at max.
+
+3. after this[1] merged, in configure_rtc, the rtc_ref_start_datetime = 
+qemu_clock_get_ms(QEMU_CLOCK_HOST) / 1000
+
+will also lost ~0.999s at max.
+
+Therefore, total about 3s the guest time will behind the host.
+
+So what precision should we offer? the RTC Hardware's precision is 
+second(that means the smallest step is 1 second,
+
+not the accurate like time error about 8.6 to 1.7 seconds per day),
+
+
+2）The ref start datetime
+
+After this[1] merged, which intend to solve the -rtc 
+base=DATETIME,clock=vm's problem ("It restores determinism
+
+of guest execution when used with clock=vm and specified base value.").
+
+"-rtc base=utc,clock=vm"'s ref start date time changed from the host 
+time of the current executing code to
+
+the const time of executing configure_rtc(rtc_ref_start_datetime = 
+qemu_clock_get_ms(QEMU_CLOCK_HOST) / 1000;).
+
+This will add additional time(current approx. 0.4s or other, depend on 
+code executing time and how many class_init
+
+  executed etc.),which start from configure_rtc to rtc device init, into 
+guest time.
+
+Hence, should we try to split -rtc base=utc,clock=vm's ref start date 
+time to the original current host time
+
+qemu_clock_get_ms(QEMU_CLOCK_HOST),not the time(rtc_ref_start_datetime) 
+save in configure_rtc,
+
+to achieve more accurate time?(or other better method)
+
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2018-10/msg03577.html
+
 
