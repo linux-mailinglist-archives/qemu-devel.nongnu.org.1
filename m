@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709AF97E15F
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B60497E16D
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssLHm-0001pZ-0j; Sun, 22 Sep 2024 08:01:54 -0400
+	id 1ssLIb-0004O0-7s; Sun, 22 Sep 2024 08:02:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHL-0000vv-ON
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:33 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1ssLHP-0000x1-Ra
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:37 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHH-0002O1-Sx
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:26 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5c42384c517so4354267a12.3
- for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:23 -0700 (PDT)
+ id 1ssLHJ-0002O9-6h
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:28 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5c5b954c359so1133739a12.1
+ for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727006482; x=1727611282; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727006483; x=1727611283; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wC8NJvzs4xm1iFMunKJrmEEYWEWZeuBA49NgWvG2FqE=;
- b=rKPiyRQ1kiwfqHh5tDcwj1gWjpAvm0zjGP8f6kzYEJ/WEoBsz8SXEsyrXMmb7WLdfJ
- R20Mm6LgBQuBiRosJALADU3HiS9SABJdIswX+EwvKFFju94WdulJ9J2ZjC5mwzjAIGBR
- sTox+BE9RmlR2dpNpgr7rM+ZAtcPywfrGMxTB9/BlDHuJLF2AsGqGiDZNb4noIPdhO1N
- LSSnJkexAlQYuLQMk+R0XEZs11a1242U0NLPV2UmQJAbmQP2/PGyXQQ64oOCcF0yi7Wj
- 2WVb+d7rFXLz5Kqa8K+JgB4x5Pacjd93Ws8nkapW2gUSdhzusCHBnCAaJUxiHfuD7gYR
- lpAg==
+ bh=Z2ZjvXoH00iViMW0slYpXozl5B8ORorypWDbC2UouOc=;
+ b=FW4yZx0M90I7GvgyIyKy+MokEVi+Qw4pMOQCpuFbtHoaadtQSgIqfX/1WCJrpRytr1
+ EDQPfE7eQbxlcyqITHFVuoXP27dYT7ypmRwXXnThYIhT3ShNuE35YgspXmILqfpbX2Z6
+ iVOmI/aFPwQAj/P4AaHJbsKZSIDbsvBKzTOv/BqoF7FOeeICOci+A9meNqmLCYXtfRgI
+ TfyNMX93uDxWSYLs4prG8GK3CzPiY+WEXQ2Mcl/9ogAIJ9CxZfkmodGblG7VKPMntETT
+ ess+hOHr65L7bk4Do7KSSM+lx5J5vgrA3hInn1ndoNJP6G6J7yekBXSG1Y6ihwEQF66a
+ 6dXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727006482; x=1727611282;
+ d=1e100.net; s=20230601; t=1727006483; x=1727611283;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wC8NJvzs4xm1iFMunKJrmEEYWEWZeuBA49NgWvG2FqE=;
- b=ZwW1TPOfZdmAOnTRvFlBDO51qM6d+abrQX3ITG1ir83+qOaE6XcQ+qfLkmnSXbX9k8
- vRcdor8R7ndo19IgNNp8+kJrW6cTk23vGraAWDjIV3Kb8udjcCH2z0FFcxqXlgq6Zg/t
- z/H8wH5l137TH1soqpz5zPKx9v/p83Aggs+E4mS7KIWRfEXr1nHYs2U7e60Wpe6QXvzq
- XE8T7Hep0BTQB5Bmz7xmsFjweOJYnsw6/0SeQGc/RSFAdUrDVcbFRGlVXlQkeSLCCEbz
- UIfjMQy/k29g5cHw+leTyx+AtLpj7UEDFNWkpmG7P1R2HPN5/ZUtTPFClUQJnAux7XWJ
- f6XA==
-X-Gm-Message-State: AOJu0Yw+LfefqnrmIdJ7t0/NQXuIshEIC1NiKBMf5ZIetnvUXuPPQPE2
- fCd9blXk8DSVmg9CNMWYAAPkjknWH4OobY5bd5Wy3wuZqrh1QRRZsUe3j5tDVJkGCP9DrjJo+M1
- 2KJM=
-X-Google-Smtp-Source: AGHT+IEEECOMDBBeoR8stvilyVAV3hx4s6NM/ob+J6D8P752AmVU0BTLM50gJMIQ0F0/N9wqN33nDQ==
-X-Received: by 2002:a17:907:f763:b0:a8d:7210:e295 with SMTP id
- a640c23a62f3a-a90d549c41cmr722351566b.10.1727006482198; 
+ bh=Z2ZjvXoH00iViMW0slYpXozl5B8ORorypWDbC2UouOc=;
+ b=ryVGjv6Uc2d0DKvlI9P5xbVW4IJu8J706RK0PfxVmiC+bd95IYEHG7Bsb4OzI5H/6i
+ pH2zWNegKkkfLYdWpL8U2Qo7rHmUDv0MX9YE/LgU84P7bAff66D+jUHVKs5+LeY7k196
+ V4dWPsvjiKu4c7JKQb778KYItblQ8aFM8PBQpyw1Ve4ZHhiV6uB3HMDi/xHlunShuO/Y
+ TQxfc+JQY24X+m1v8LD8wsoLTzN6mUWUF64l18sOruiNCoFpRdzCC47EVPXAr0uvha4e
+ P4e0+ZH7T8ZZGFvmOo/W+GcXS+L/W8C//XYSp+zZCfvQxwAQaCbnCeANAG4k09TJFjsK
+ nxQQ==
+X-Gm-Message-State: AOJu0Yx74TyOUIyA+lNILS5QqudsJFtIRzNlPzjd2/3O+tEk61N4Tl38
+ cUiXyj52XIgknqJZ/p4s6UTIBpa/OQ437py3dTFtonMm/soDbhaHYlMfJeKGS1rQeBrR8eaubKc
+ WQZU=
+X-Google-Smtp-Source: AGHT+IHFb3pxBUy7fhOJMIUAYjLdkAb56xiyQIiktsaI4aWjVzaga0MqcIAy/XmathJc7rjpPumQeA==
+X-Received: by 2002:a17:907:7b92:b0:a8a:9246:7f57 with SMTP id
+ a640c23a62f3a-a90d4fbcd4dmr1057994666b.4.1727006482864; 
  Sun, 22 Sep 2024 05:01:22 -0700 (PDT)
 Received: from stoup.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.21
+ a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Sep 2024 05:01:21 -0700 (PDT)
+ Sun, 22 Sep 2024 05:01:22 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PULL 14/31] tcg/i386: Implement cmp_vec with avx512 insns
-Date: Sun, 22 Sep 2024 14:00:55 +0200
-Message-ID: <20240922120112.5067-15-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 15/31] tcg/i386: Add predicate parameters to tcg_out_evex_opc
+Date: Sun, 22 Sep 2024 14:00:56 +0200
+Message-ID: <20240922120112.5067-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240922120112.5067-1-richard.henderson@linaro.org>
 References: <20240922120112.5067-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,119 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The sse/avx instruction set only has EQ and GT as direct comparisons.
-Other signed comparisons can be generated from swapping and inversion.
-However unsigned comparisons are not available and must be transformed
-to signed comparisons by biasing the inputs.
+Extend tcg_out_evex_opc to handle the predicate and
+zero-merging parameters of the evex prefix.
 
-The avx512 instruction set has a complete set of comparisons, with
-results placed into a predicate register.  We can produce the normal
-cmp_vec result by using VPMOVM2*.
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target.c.inc | 64 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 63 insertions(+), 1 deletion(-)
+ tcg/i386/tcg-target.c.inc | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index 210389955d..b1d642fc67 100644
+index b1d642fc67..f94a2a2385 100644
 --- a/tcg/i386/tcg-target.c.inc
 +++ b/tcg/i386/tcg-target.c.inc
-@@ -413,6 +413,14 @@ static bool tcg_target_const_match(int64_t val, int ct,
- #define OPC_UD2         (0x0b | P_EXT)
- #define OPC_VPBLENDD    (0x02 | P_EXT3A | P_DATA16)
- #define OPC_VPBLENDVB   (0x4c | P_EXT3A | P_DATA16)
-+#define OPC_VPCMPB      (0x3f | P_EXT3A | P_DATA16 | P_EVEX)
-+#define OPC_VPCMPUB     (0x3e | P_EXT3A | P_DATA16 | P_EVEX)
-+#define OPC_VPCMPW      (0x3f | P_EXT3A | P_DATA16 | P_VEXW | P_EVEX)
-+#define OPC_VPCMPUW     (0x3e | P_EXT3A | P_DATA16 | P_VEXW | P_EVEX)
-+#define OPC_VPCMPD      (0x1f | P_EXT3A | P_DATA16 | P_EVEX)
-+#define OPC_VPCMPUD     (0x1e | P_EXT3A | P_DATA16 | P_EVEX)
-+#define OPC_VPCMPQ      (0x1f | P_EXT3A | P_DATA16 | P_VEXW | P_EVEX)
-+#define OPC_VPCMPUQ     (0x1e | P_EXT3A | P_DATA16 | P_VEXW | P_EVEX)
- #define OPC_VPINSRB     (0x20 | P_EXT3A | P_DATA16)
- #define OPC_VPINSRW     (0xc4 | P_EXT | P_DATA16)
- #define OPC_VBROADCASTSS (0x18 | P_EXT38 | P_DATA16)
-@@ -421,6 +429,10 @@ static bool tcg_target_const_match(int64_t val, int ct,
- #define OPC_VPBROADCASTW (0x79 | P_EXT38 | P_DATA16)
- #define OPC_VPBROADCASTD (0x58 | P_EXT38 | P_DATA16)
- #define OPC_VPBROADCASTQ (0x59 | P_EXT38 | P_DATA16)
-+#define OPC_VPMOVM2B    (0x28 | P_EXT38 | P_SIMDF3 | P_EVEX)
-+#define OPC_VPMOVM2W    (0x28 | P_EXT38 | P_SIMDF3 | P_VEXW | P_EVEX)
-+#define OPC_VPMOVM2D    (0x38 | P_EXT38 | P_SIMDF3 | P_EVEX)
-+#define OPC_VPMOVM2Q    (0x38 | P_EXT38 | P_SIMDF3 | P_VEXW | P_EVEX)
- #define OPC_VPERMQ      (0x00 | P_EXT3A | P_DATA16 | P_VEXW)
- #define OPC_VPERM2I128  (0x46 | P_EXT3A | P_DATA16 | P_VEXL)
- #define OPC_VPROLVD     (0x15 | P_EXT38 | P_DATA16 | P_EVEX)
-@@ -3110,9 +3122,59 @@ static bool tcg_out_cmp_vec_noinv(TCGContext *s, TCGType type, unsigned vece,
-     return fixup & NEED_INV;
+@@ -674,7 +674,7 @@ static void tcg_out_vex_opc(TCGContext *s, int opc, int r, int v,
  }
  
-+static void tcg_out_cmp_vec_k1(TCGContext *s, TCGType type, unsigned vece,
-+                               TCGReg v1, TCGReg v2, TCGCond cond)
-+{
-+    static const int cmpm_insn[2][4] = {
-+        { OPC_VPCMPB, OPC_VPCMPW, OPC_VPCMPD, OPC_VPCMPQ },
-+        { OPC_VPCMPUB, OPC_VPCMPUW, OPC_VPCMPUD, OPC_VPCMPUQ }
-+    };
-+    static const int cond_ext[16] = {
-+        [TCG_COND_EQ] = 0,
-+        [TCG_COND_NE] = 4,
-+        [TCG_COND_LT] = 1,
-+        [TCG_COND_LTU] = 1,
-+        [TCG_COND_LE] = 2,
-+        [TCG_COND_LEU] = 2,
-+        [TCG_COND_NEVER] = 3,
-+        [TCG_COND_GE] = 5,
-+        [TCG_COND_GEU] = 5,
-+        [TCG_COND_GT] = 6,
-+        [TCG_COND_GTU] = 6,
-+        [TCG_COND_ALWAYS] = 7,
-+    };
-+
-+    tcg_out_vex_modrm_type(s, cmpm_insn[is_unsigned_cond(cond)][vece],
-+                           /* k1 */ 1, v1, v2, type);
-+    tcg_out8(s, cond_ext[cond]);
-+}
-+
-+static void tcg_out_k1_to_vec(TCGContext *s, TCGType type,
-+                              unsigned vece, TCGReg dest)
-+{
-+    static const int movm_insn[] = {
-+        OPC_VPMOVM2B, OPC_VPMOVM2W, OPC_VPMOVM2D, OPC_VPMOVM2Q
-+    };
-+    tcg_out_vex_modrm_type(s, movm_insn[vece], dest, 0, /* k1 */ 1, type);
-+}
-+
- static void tcg_out_cmp_vec(TCGContext *s, TCGType type, unsigned vece,
-                             TCGReg v0, TCGReg v1, TCGReg v2, TCGCond cond)
+ static void tcg_out_evex_opc(TCGContext *s, int opc, int r, int v,
+-                             int rm, int index)
++                             int rm, int index, int aaa, bool z)
  {
-+    /*
-+     * With avx512, we have a complete set of comparisons into mask.
-+     * Unless there's a single insn expansion for the comparision,
-+     * expand via a mask in k1.
-+     */
-+    if ((vece <= MO_16 ? have_avx512bw : have_avx512dq)
-+        && cond != TCG_COND_EQ
-+        && cond != TCG_COND_LT
-+        && cond != TCG_COND_GT) {
-+        tcg_out_cmp_vec_k1(s, type, vece, v1, v2, cond);
-+        tcg_out_k1_to_vec(s, type, vece, v0);
-+        return;
-+    }
-+
-     if (tcg_out_cmp_vec_noinv(s, type, vece, v0, v1, v2, cond)) {
-         tcg_out_dupi_vec(s, type, vece, TCG_TMP_VEC, -1);
-         tcg_out_vex_modrm_type(s, OPC_PXOR, v0, v0, TCG_TMP_VEC, type);
-@@ -4078,7 +4140,7 @@ static TCGCond expand_vec_cond(TCGType type, unsigned vece,
-      * We must bias the inputs so that they become signed.
-      * All other swapping and inversion are handled during code generation.
-      */
--    if (vece == MO_64 && is_unsigned_cond(cond)) {
-+    if (vece == MO_64 && !have_avx512dq && is_unsigned_cond(cond)) {
-         TCGv_vec v1 = temp_tcgv_vec(arg_temp(*a1));
-         TCGv_vec v2 = temp_tcgv_vec(arg_temp(*a2));
-         TCGv_vec t1 = tcg_temp_new_vec(type);
+     /* The entire 4-byte evex prefix; with R' and V' set. */
+     uint32_t p = 0x08041062;
+@@ -711,7 +711,9 @@ static void tcg_out_evex_opc(TCGContext *s, int opc, int r, int v,
+     p = deposit32(p, 16, 2, pp);
+     p = deposit32(p, 19, 4, ~v);
+     p = deposit32(p, 23, 1, (opc & P_VEXW) != 0);
++    p = deposit32(p, 24, 3, aaa);
+     p = deposit32(p, 29, 2, (opc & P_VEXL) != 0);
++    p = deposit32(p, 31, 1, z);
+ 
+     tcg_out32(s, p);
+     tcg_out8(s, opc);
+@@ -720,7 +722,7 @@ static void tcg_out_evex_opc(TCGContext *s, int opc, int r, int v,
+ static void tcg_out_vex_modrm(TCGContext *s, int opc, int r, int v, int rm)
+ {
+     if (opc & P_EVEX) {
+-        tcg_out_evex_opc(s, opc, r, v, rm, 0);
++        tcg_out_evex_opc(s, opc, r, v, rm, 0, 0, false);
+     } else {
+         tcg_out_vex_opc(s, opc, r, v, rm, 0);
+     }
 -- 
 2.43.0
 
