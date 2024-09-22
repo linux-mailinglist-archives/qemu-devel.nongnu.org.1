@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277D597E070
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 09:27:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C171097E0C4
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 11:46:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssGyf-0003rZ-Kx; Sun, 22 Sep 2024 03:25:53 -0400
+	id 1ssJ9E-00083U-Cq; Sun, 22 Sep 2024 05:44:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssGyd-0003qN-Kf
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 03:25:51 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
+ id 1ssJ9C-00082u-HO
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 05:44:54 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssGyb-0007Kj-Rg
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 03:25:51 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a8d446adf6eso500233666b.2
- for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 00:25:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
+ id 1ssJ98-0005hF-E4
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 05:44:52 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-206aee40676so28107655ad.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 02:44:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1726989948; x=1727594748; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DpLGzJQHei6frqI6iPVCYXklQeyawOObuAZvyEzurHM=;
- b=ZMw5puWYB5l9KspI2VYFaCgi7VZow/L6Ktv1BouQv9aUdqMt1ksaJr5Y8vFnWmFjj1
- u5zZJJZHvQuWi4FErJcRka2WZc2m1pWMRZhqBmFRfdUbNgEBpXe/PkTuOVXBamL8qZdP
- mMas9XnngbYE8XQ84T54Er/j8F47fl9GhB/jLxrbqbmNdjN9Wag2FZfoaS+IHDWCy9tm
- BMnGlpEC5zN7dDSFsNeSCvaO+4J2YIbb/XnrX/I5QupFTL1I21WI4Xw3W6TDRBIiuDkZ
- pj/hN7xeDMM6heIRQMyz/LZ1UP3+xvkP89tPyMduRhtfe1yiCqxsZybcqvPxMsK/3v/U
- j/sg==
+ d=gmail.com; s=20230601; t=1726998287; x=1727603087; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8kemn36F03mkvrvLgWnLWYYNjZvY8JaW2q2s0FVa8zM=;
+ b=PWsEFwKVwuW5KbsQ5eSD25cEN2qufUuD43CVT/OJ5PkeGQv5qrdg6M0Ugfla08FhT+
+ +MnJpinRrQqpZbkialEESbWkNVejhpDDklMcJZbTeKAive44IksHOosVcFQo9LWw/yjb
+ QCfl0s7PEXYqOvmmaheFZVHi3AUIP2JET3AVgSzcpxwL+mb5ictUOda5+L05ghFTJlX3
+ p2sV8JTxlcd+YbAVvvkM4KnIAwaDo1sE2g8ZJ4PtLpoPFZG1/j9KgfXZz1ELM6f7e70e
+ uYrUj7wVVxCExIVGRA6dkFQ4iCiHLsp5YGqPRChP5W/5/6QC5Kncs7Hj+1RIIurwX+Hz
+ 8e3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726989948; x=1727594748;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DpLGzJQHei6frqI6iPVCYXklQeyawOObuAZvyEzurHM=;
- b=xJusAsEU7NAysoOSQgJLnScYxYHR6YrNuWOSEWvzlEsvhHRXa303NdjWrZEUXmKPZb
- XrqutNcyC4AgCaO4o9j90+KxV1AJjW5Zv5PI22YWexvpDAL9taIiPdCFg6cvZ18MZiCx
- wieH1pJqGjOHpl7LLH7g3JfO91kgH2hRgHGl5gMgSVJU+i59/ypZNaAG7KrxODl0603v
- uf57orIVv4Kf4BsA8r6PoRWIYoKlB9hXdepROJPQhb0j1dDyD2cJTPk12XZe3PpTvz1n
- feCHEsYPnHqmNKteQRxMwdl5pgNM8naNlrQ+9aveAztP1fszi1BTUlU88YqRqbw3dZZo
- x6TQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVpsEM3EDiyhsZ0wC6WHVMH6zeNFzi6k2e8gM3nWnxNlyDs8K4vmMKm8GZMXAvyYY6M0wGqhUXB/ARz@nongnu.org
-X-Gm-Message-State: AOJu0Yx4N5FZqabvCKsw2un+cGibRRNEoQXdRshwdf3NY3N4HnjU7Qxr
- uBbNMNyP4TkOVFrC/4bow6T5h/G4pUs/0/ndj1/YJRqYVl9Sq0oYFMCpRwP6P+s=
-X-Google-Smtp-Source: AGHT+IFZqCWFDGBHZXL/lh+TJdhfcCuqC6XCDlgs6pRtUMc8clKvrFEwNAbFMPcnTpJu9qnFSi4NpA==
-X-Received: by 2002:a17:907:e2c9:b0:a8a:906d:b485 with SMTP id
- a640c23a62f3a-a90d4ffaf55mr717383666b.26.1726989948249; 
- Sun, 22 Sep 2024 00:25:48 -0700 (PDT)
-Received: from [10.5.50.249] (90-181-218-29.rco.o2.cz. [90.181.218.29])
+ d=1e100.net; s=20230601; t=1726998287; x=1727603087;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8kemn36F03mkvrvLgWnLWYYNjZvY8JaW2q2s0FVa8zM=;
+ b=PxBTJuphf78MFvxRPzen0uVPNAbYkxfYpps02ISxPQW8rdvQeR6TPu0mnlPhp3v+w4
+ KvqErGxsqjAueJ8/oo5TrvSbh0wS2/VBIeIWo9arWtX+3SPB5q3f5OMH3g2+4XKgXIjR
+ 55EpMSODJkgaAgWKNxikiXShwiACjFLMk2iw1vy/4RT7/8qCLVYrca5tfLMeczn1mdyR
+ HGck6bK43xmpXsNVmysk/0dUtGa3DrpAbURb+VaztKgYKj/88grtFv+jGjQxpVZcty98
+ z7L9xC6dkcew+j6WacZNFwEptzprzQnRkejGiibHAdP/eua+OIZGcR0JOR3GWPUa6eVN
+ qCcw==
+X-Gm-Message-State: AOJu0YwKEif1+DNOhRDPmkI4FbtgyBmANjcVYlWXQNacN1OWwOBKBwtZ
+ 2wQvnwunHNKAGYrz4WvRBFPM15097bKXAhgh1v7XR2YNdm5vIxpJ3hp1Pw==
+X-Google-Smtp-Source: AGHT+IEb8Bz/1760P//JY00+K0UXkNUXHezEnkSfNQ6K/Iz1vD9ZQyHdMPxkn92O5yNeQbjLZJz1kQ==
+X-Received: by 2002:a17:902:f610:b0:207:8e6f:ed99 with SMTP id
+ d9443c01a7336-208d83258acmr138879945ad.11.1726998287161; 
+ Sun, 22 Sep 2024 02:44:47 -0700 (PDT)
+Received: from localhost.localdomain ([103.103.35.151])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c42bb949bdsm8933384a12.84.2024.09.22.00.25.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 22 Sep 2024 00:25:47 -0700 (PDT)
-Message-ID: <4c10bbdd-41fc-4d7a-98d3-9ba1556519a1@linaro.org>
-Date: Sun, 22 Sep 2024 09:25:45 +0200
+ d9443c01a7336-20794735810sm117622885ad.278.2024.09.22.02.44.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 22 Sep 2024 02:44:46 -0700 (PDT)
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: graf@amazon.com, agraf@csgraf.de, stefanha@redhat.com, pbonzini@redhat.com,
+ slp@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
+ mst@redhat.com, marcel.apfelbaum@gmail.com, berrange@redhat.com,
+ philmd@linaro.org
+Subject: [PATCH v7 0/5] AWS Nitro Enclave emulation support
+Date: Sun, 22 Sep 2024 15:44:36 +0600
+Message-Id: <20240922094441.23802-1-dorjoychy111@gmail.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/1] linux-user: add openat2 support in linux-user
-To: Michael Vogt <mvogt@redhat.com>, qemu-devel@nongnu.org
-Cc: Michael Vogt <michael.vogt@gmail.com>, Laurent Vivier <laurent@vivier.eu>
-References: <cover.1726817664.git.mvogt@redhat.com>
- <65bb234d769980a3b10a655ed19f87966c714e06.1726817664.git.mvogt@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <65bb234d769980a3b10a655ed19f87966c714e06.1726817664.git.mvogt@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=dorjoychy111@gmail.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,46 +92,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/20/24 11:22, Michael Vogt wrote:
-> +static int do_openat2(CPUArchState *cpu_env, abi_long dirfd,
-> +                      abi_ptr guest_pathname, abi_ptr guest_open_how,
-> +                      abi_long guest_size)
+This is v7 submission for AWS Nitro Enclave emulation in QEMU. From the QEMU side
+the implementation for nitro enclaves is complete. v6 is at:
+https://lore.kernel.org/qemu-devel/20240905195735.16911-1-dorjoychy111@gmail.com/T/#t
 
-abi_ulong guest_size, as the "real" type is the unsigned size_t.
+Changes in v7:
+    - rebased with master as the first 3 crypto patches got in master now
+    - had to change some QCRYPTO_HASH_ALG refs to QCRYPTO_HASH_ALGO (with an 'O')
+as that got changed in master
+    - had to re-do the libvirt-ci update patch as I got a conflict from master
+    - renamed handle_* functions in virtio-nsm.c to be not camel case
 
-> +            qemu_log_mask(LOG_UNIMP,
-> +                          "Unimplemented openat2 open_how size: %lu\n",
-> +                          guest_size);
+Changes in v6:
+    - updated MAINTAINERS in the commit that introduced eif.c, eif.h files
+    - used iov_to_buf and iov_from_buf in virtio-nsm.c handle_input
+    - used g_new0 for iovec_list instead of g_malloc
+    - updated documentation as now the vsock backend work[6] has been merged in
+rust-vmm's vhost-device-vsock
 
-Use of %lu, and host "long" in general, is always wrong in qemu.
+Changes in v5:
+    - bunch of use of glib utilities like g_autofree, g_memdup2, GList etc
+    - updated libvirt-ci and added libcbor dependency
+    - files in this patch are built under libcbor and gnutls dependency check now and
+libcbor dependency has been moved to root meson.build file
+    - separated and re-ordered commits as suggested
+    - user_data and nonce are added as null to attestation when empty and payload_map_size is fixed
+    - variables in eif.c have been shortened for readability
 
-You did not build test everything: this errors out for 32-bit guests.
-We must use TARGET_ABI_LONG_lu here.
+Changes in v4:
+    - fixed error_setv assertion failed. I could not reproduce this but I think
+this was happening because I did not set Error *err = NULL in x86_load_eif
+    - qemu_cbor.. helpers moved to a separate file now
+    - libcbor version requirement reduced from 0.8.0 to 0.7.0
+    - replaced GChecksum uses with qcrypto apis
+    - timestamp multiplied by 1000 in virtio-nsm
+    - user_data and nonce are now included in attestation even when they are empty
+    - added x509-utils in crypto
+    - added G_CHECKSUM_SHA384 support in hash-glib.c
+    - PCR3 and PCR4 can be set from nitro-enclave machine options. I did not add
+the options for virtio-nsm device though. I think the PCR states are set by
+machines so it made sense to add the options for machine only.
 
-> @@ -9197,6 +9296,11 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
->           fd_trans_unregister(ret);
->           unlock_user(p, arg2, 0);
->           return ret;
-> +#if defined(TARGET_NR_openat2)
-> +    case TARGET_NR_openat2:
-> +        ret = do_openat2(cpu_env, arg1, arg2, arg3, arg4);
-> +        return ret;
-> +#endif
+Changes in v3:
+    - Support for virtio-nsm device
+    - The EIF related logic has been removed from microvm.c i.e., the logic is
+contained in enclave related code
+    - For vsock emulation in nitro-enclave, now vhost-user-vsock is being used
+instead of vhost-vsock (more details in the cover-letter below)
+    - updated documentation accordingly
 
-TARGET_NR_openat2 is universally defined.
-This ifdef is not required.
+Changes in v2:
+    - moved eif.c and eif.h files from hw/i386 to hw/core
 
-An update to strace.list is missing.
+Hi,
 
-Finally, this does not pass LTP.  In particular,
+Hope everyone is doing well. This is a patch series adding AWS Nitro Enclave[1]
+emulation support in QEMU. Alexander Graf is mentoring me on this work. I have
+a gitlab branch where you can view the patches in the gitlab web UI for each commit:
+https://gitlab.com/dorjoy03/qemu/-/tree/nitro-enclave-emulation
 
-src/testcases/kernel/syscalls/openat2/openat202.c:62: TFAIL: resolve-no-magiclinks: 
-openat2() passed unexpectedly
+AWS nitro enclaves is an Amazon EC2[2] feature that allows creating isolated
+execution environments, called enclaves, from Amazon EC2 instances, which are
+used for processing highly sensitive data. Enclaves have no persistent storage
+and no external networking. The enclave VMs are based on Firecracker microvm
+and have a vhost-vsock device for communication with the parent EC2 instance
+that spawned it and a Nitro Secure Module (NSM) device for cryptographic
+attestation. The parent instance VM always has CID 3 while the enclave VM gets
+a dynamic CID. The enclave VMs can communicate with the parent instance over
+various ports to CID 3, for example, the init process inside an enclave sends a
+heartbeat to port 9000 upon boot, expecting a heartbeat reply, letting the
+parent instance know that the enclave VM has successfully booted.
 
-With RESOLVE_NO_MAGICLINKS, the open of /proc/self/exe handled by maybe_do_fake_open 
-should fail with ELOOP.  I *think* that's the only magic link that we handle there, but 
-please double check.
+From inside an EC2 instance, nitro-cli[3] is used to spawn an enclave VM using
+an EIF (Enclave Image Format)[4] file. EIF files can be built using nitro-cli
+as well. The EIF specification can be found in the README of the github
+aws-nitro-enclaves-image-format repository[4]. An EIF file contains the kernel,
+cmdline and ramdisk(s) in different sections which are used to boot the enclave
+VM.
 
+Adding nitro enclave emulation support in QEMU will make the life of AWS Nitro
+Enclave users easier as they will be able to test their EIF images locally
+without having to run real nitro enclaves which can be difficult for debugging
+due to its roots in security. This will also make quick prototyping easier.
 
-r~
+In QEMU, the new nitro-enclave machine type is implemented based on the microvm
+machine type similar to how AWS Nitro Enclaves are based on Firecracker microvm.
+
+The vsock emulation support is added using vhost-user-vsock device. This is
+needed as nitro VMs always talk to parent VM (CID 3) but there is no support for
+sibling VM communication in vhost-vsock. So to run nitro-enclave, a process that
+does vsock emulation in user-space like vhost-device-vsock[5] from rust-vmm must
+be run. I am working on adding proxying using vsock (right now it uses unix
+domain socket) to the host machine in vhost-device-vsock which I have already
+posted a PR[6] in rust-vmm repo. This will allow users to run the necessary parent
+VM applications in the host machine instead of a separate VM with CID 3. Update:
+this has been merged now.
+
+A new device virtio-nsm support has been added to QEMU. This device is built-into
+the nitro-enclave VM. The virtio-nsm spec can be found here[7].
+
+For local testing you need to generate a hello.eif image by first building
+nitro-cli locally[8]. Then you can use nitro-cli to build a hello.eif image[9].
+More details about testing can be found in the docs/system/i386/nitro-enclave.rst
+file.
+
+Thanks.
+
+Regards,
+Dorjoy
+
+[1] https://docs.aws.amazon.com/enclaves/latest/user/nitro-enclave.html
+[2] https://aws.amazon.com/ec2/
+[3] https://docs.aws.amazon.com/enclaves/latest/user/getting-started.html
+[4] https://github.com/aws/aws-nitro-enclaves-image-format?tab=readme-ov-file#enclave-image-file-eif-specification
+[5] https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-vsock
+[6] https://github.com/rust-vmm/vhost-device/pull/706
+[7] https://lists.oasis-open.org/archives/virtio-comment/202310/msg00387.html
+[8] https://github.com/aws/aws-nitro-enclaves-cli/blob/main/docs/ubuntu_20.04_how_to_install_nitro_cli_from_github_sources.md
+[9] https://github.com/aws/aws-nitro-enclaves-cli/blob/main/examples/x86_64/hello/README.md
+
+Dorjoy Chowdhury (5):
+  tests/lcitool: Update libvirt-ci and add libcbor dependency
+  device/virtio-nsm: Support for Nitro Secure Module device
+  hw/core: Add Enclave Image Format (EIF) related helpers
+  machine/nitro-enclave: New machine type for AWS Nitro Enclaves
+  docs/nitro-enclave: Documentation for nitro-enclave machine type
+
+ .gitlab-ci.d/cirrus/macos-13.vars             |    2 +-
+ .gitlab-ci.d/cirrus/macos-14.vars             |    2 +-
+ MAINTAINERS                                   |   20 +
+ backends/hostmem-memfd.c                      |    2 -
+ configs/devices/i386-softmmu/default.mak      |    1 +
+ docs/system/i386/nitro-enclave.rst            |   78 +
+ hw/core/eif.c                                 |  719 +++++++
+ hw/core/eif.h                                 |   22 +
+ hw/core/machine.c                             |   71 +-
+ hw/core/meson.build                           |    3 +
+ hw/i386/Kconfig                               |    6 +
+ hw/i386/meson.build                           |    3 +
+ hw/i386/microvm.c                             |    6 +-
+ hw/i386/nitro_enclave.c                       |  355 ++++
+ hw/virtio/Kconfig                             |    5 +
+ hw/virtio/cbor-helpers.c                      |  326 ++++
+ hw/virtio/meson.build                         |    6 +
+ hw/virtio/virtio-nsm-pci.c                    |   73 +
+ hw/virtio/virtio-nsm.c                        | 1665 +++++++++++++++++
+ include/hw/boards.h                           |    2 +
+ include/hw/i386/microvm.h                     |    2 +
+ include/hw/i386/nitro_enclave.h               |   62 +
+ include/hw/virtio/cbor-helpers.h              |   46 +
+ include/hw/virtio/virtio-nsm.h                |   59 +
+ include/sysemu/hostmem.h                      |    2 +
+ meson.build                                   |    2 +
+ .../ci/setup/ubuntu/ubuntu-2204-aarch64.yaml  |    1 +
+ .../ci/setup/ubuntu/ubuntu-2204-s390x.yaml    |    1 +
+ tests/docker/dockerfiles/alpine.docker        |    1 +
+ .../dockerfiles/debian-amd64-cross.docker     |    1 +
+ .../dockerfiles/debian-arm64-cross.docker     |    1 +
+ .../dockerfiles/debian-armhf-cross.docker     |    1 +
+ .../dockerfiles/debian-i686-cross.docker      |    1 +
+ .../dockerfiles/debian-mips64el-cross.docker  |    1 +
+ .../dockerfiles/debian-mipsel-cross.docker    |    1 +
+ .../dockerfiles/debian-ppc64el-cross.docker   |    1 +
+ .../dockerfiles/debian-s390x-cross.docker     |    1 +
+ tests/docker/dockerfiles/debian.docker        |    1 +
+ tests/docker/dockerfiles/fedora.docker        |    1 +
+ tests/docker/dockerfiles/opensuse-leap.docker |    3 +-
+ tests/docker/dockerfiles/ubuntu2204.docker    |    1 +
+ tests/lcitool/libvirt-ci                      |    2 +-
+ tests/lcitool/projects/qemu.yml               |    1 +
+ 43 files changed, 3520 insertions(+), 40 deletions(-)
+ create mode 100644 docs/system/i386/nitro-enclave.rst
+ create mode 100644 hw/core/eif.c
+ create mode 100644 hw/core/eif.h
+ create mode 100644 hw/i386/nitro_enclave.c
+ create mode 100644 hw/virtio/cbor-helpers.c
+ create mode 100644 hw/virtio/virtio-nsm-pci.c
+ create mode 100644 hw/virtio/virtio-nsm.c
+ create mode 100644 include/hw/i386/nitro_enclave.h
+ create mode 100644 include/hw/virtio/cbor-helpers.h
+ create mode 100644 include/hw/virtio/virtio-nsm.h
+
+-- 
+2.39.5
+
 
