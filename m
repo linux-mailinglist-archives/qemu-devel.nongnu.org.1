@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B4897E16A
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E0D97E176
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:06:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssLIQ-0003Vx-8P; Sun, 22 Sep 2024 08:02:36 -0400
+	id 1ssLHf-0001e7-Vd; Sun, 22 Sep 2024 08:01:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHP-0000x5-UO
+ id 1ssLHP-0000x7-VS
  for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:37 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHL-0002Ow-IZ
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:30 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a8a789c4fc5so757466066b.0
+ id 1ssLHM-0002P1-6K
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:31 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a8d60e23b33so440197266b.0
  for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727006486; x=1727611286; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727006487; x=1727611287; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nf2KKD8gpkfqLcprZUwSXAhZF2kW47U2PBUtTXC4uSQ=;
- b=JTqqg2XkgWDGpSgv+3Rcx2QikqSdNlbbtO+ceZq5vOly/Wp+QPz2yhd8FmtnvLx7ge
- K14SJsZrDfmv9IL+sOexpNL0SB7g9jStJ9radWLbYxpLGuCyxUNZ786iWnHV2+uWnONu
- 5iV43NIieB3hPyJdt6pLIkxXO7NqCgn5p+XR42/pg4MU6VqYip481SlUVzlGRV/7vcuN
- wN4Y025ekQ4sQWA+/oHb++/1++4Rasq5wdyKBqlsFWnurP+o8COlvRbVlYw8g5k8Rwqd
- tT5KL1u6iRrt3+foyvLlvk5ePyzo1d/4jMon0znLjwz88z5SBd7FR3G3pVdHzjG9z4V4
- Ku3g==
+ bh=iOGLN+zm8mGiA4+i5QuWHNFagj04fy3fGZDQcrAHPyk=;
+ b=y5QqlDYmvdteTw5Dlsk/0kjpJwd/ftQzADiMsSZ0SDXZUvVfzfSNwio+Pc1GL2L6fT
+ 6a/51g/rvsJceYXFOu4ezyqrJPrExE55Z9ygY6nJiC/snNt8MinLf86mKnSShweMb0Or
+ T9Iq54/7K546fYXTAIQxop7ZDShLjsjQaJyUIN2fTeUCSBhR0TvSRfF2rViGBeVuOqcE
+ mGwlsGbm+N2KgZU44RUFKyDfZ2oZocjmo18NGJnyiL0DGYtEhtdn6y8k9L109ZWd4EXh
+ hatFGw8yoZnORdSuuLlSpoX4lWkBm79AdjEPkvUHHUBVyllp3/ovFv3f7SvdKc4CapR7
+ Mb3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727006486; x=1727611286;
+ d=1e100.net; s=20230601; t=1727006487; x=1727611287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nf2KKD8gpkfqLcprZUwSXAhZF2kW47U2PBUtTXC4uSQ=;
- b=Zg95Gjgj+15ek5ZMKQnGe2dL0qlGU2G3aoimAri83i7MrZZZmSsOy8lJP+7ZkPNNQ7
- gVT22wXM1t4irH0qzqclsAL5P/isjfSc4ubI4zxYRgDn9HmM+qCWVDYSQz6cyxUoMfg2
- kJeJWl5QebuF8YSMeNKkVDRXUTF8TLAgMYbEeE0GvWBYnAPtPiVuIyJFvsq7pAJbqUtK
- /99wizR4nnLwHZpW4oLyHIUIKirjGukR0UgIeVcuek4WWL4OtZ3WJW8vdCOpc779xKSf
- g0AhWcTfE623mpd/NC7FlqzVtKoTf9UHZ8DZlN5DDLr0WsuFumIg6+dycu0TwVyrPfDb
- rGtw==
-X-Gm-Message-State: AOJu0YwXj/4+LBvgClZ6vrQYJivAwuRkoSEkJGh4Fo0jgCrBW5bzGvFl
- Ni0LL9ZUPIfT+yv4Cs2kdpcGxQgzvUghYghqpWfpl64PfsxLPLGBQBz9+ncnLMDW7p1FNlRtFSG
- Pe8s=
-X-Google-Smtp-Source: AGHT+IGurQixq/GTnnOHE85suiegFp2TuDiYOHA1f4mf7TLXs1aG5R3Bt4nrBALEV58Iv/Hg0W388A==
-X-Received: by 2002:a17:907:3ea8:b0:a8d:2281:94d9 with SMTP id
- a640c23a62f3a-a90c1d6f9c0mr1456859866b.23.1727006486091; 
+ bh=iOGLN+zm8mGiA4+i5QuWHNFagj04fy3fGZDQcrAHPyk=;
+ b=SrUWNDAb6Xte/lFC0MrKt/jdSpOZv96FFXoGo1K8QaJanABeCSIzKF2z3H39OdSQph
+ KHp928e54gQSZCNPLO5y1rhdUo8K3L/I132FWQRRkAkM0Y0lv9TYbUwNR3M0scSInLiT
+ SzsaZnQBWZLM06aPwwnpWm1uObVqKRVUGtu4MJPV5cRItHKQPEEzifrTrn/Hq54wooVX
+ thf1fK8b33zGOhOjW476kAuFzJDP0Jvpw1n/zUo17WfboQwDCRDl9lzwsKpSTk3TXQfF
+ ScaVZQm43zNSeZsita2oBksVIPGPycS6/GBd2yadOvd2Xj5KzfpwkrA19Qxrn6ihFDMq
+ 7JpQ==
+X-Gm-Message-State: AOJu0YxBSUJRphiXXWRI/Ebp6W7vxVKfmUgHLr2aeAg8xeV2Tn6F5uqv
+ pJQMNHCu3h2avjdix3HLt5ZrovUGfenzxto5S+ekLP/uqVl9WJQHhDPUC93HjcZH2oxy/2XreAx
+ vqB0=
+X-Google-Smtp-Source: AGHT+IEZilWYOctO4hdhhSb5hqu971mYWdZBfK1ALylhIxHwJ55pUiDhpjyjBUO24TahNqMwuE3Tfg==
+X-Received: by 2002:a17:906:7949:b0:a8d:128a:cc49 with SMTP id
+ a640c23a62f3a-a90d57793f4mr777587766b.52.1727006486822; 
  Sun, 22 Sep 2024 05:01:26 -0700 (PDT)
 Received: from stoup.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.25
+ a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Sep 2024 05:01:25 -0700 (PDT)
+ Sun, 22 Sep 2024 05:01:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PULL 21/31] tcg/s390x: Optimize cmpsel with constant 0/-1 arguments
-Date: Sun, 22 Sep 2024 14:01:02 +0200
-Message-ID: <20240922120112.5067-22-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org, Fabiano Rosas <farosas@suse.de>,
+ qemu-stable@nongnu.org, Claudio Fontana <cfontana@suse.de>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 22/31] target/ppc: Fix lxvx/stxvx facility check
+Date: Sun, 22 Sep 2024 14:01:03 +0200
+Message-ID: <20240922120112.5067-23-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240922120112.5067-1-richard.henderson@linaro.org>
 References: <20240922120112.5067-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,123 +95,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These can be simplified to and/or/andc/orc,
-avoiding the load of the constantinto a register.
+From: Fabiano Rosas <farosas@suse.de>
 
+The XT check for the lxvx/stxvx instructions is currently
+inverted. This was introduced during the move to decodetree.
+
+>From the ISA:
+  Chapter 7. Vector-Scalar Extension Facility
+  Load VSX Vector Indexed X-form
+
+  lxvx XT,RA,RB
+  if TX=0 & MSR.VSX=0 then VSX_Unavailable()
+  if TX=1 & MSR.VEC=0 then Vector_Unavailable()
+  ...
+  Let XT be the value 32×TX + T.
+
+The code currently does the opposite:
+
+    if (paired || a->rt >= 32) {
+        REQUIRE_VSX(ctx);
+    } else {
+        REQUIRE_VECTOR(ctx);
+    }
+
+This was already fixed for lxv/stxv at commit "2cc0e449d1 (target/ppc:
+Fix lxv/stxv MSR facility check)", but the indexed forms were missed.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 70426b5bb7 ("target/ppc: moved stxvx and lxvx from legacy to decodtree")
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Claudio Fontana <cfontana@suse.de>
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Message-ID: <20240911141651.6914-1-farosas@suse.de>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/s390x/tcg-target-con-set.h |  3 ++-
- tcg/s390x/tcg-target-con-str.h |  1 +
- tcg/s390x/tcg-target.c.inc     | 40 ++++++++++++++++++++++++++--------
- 3 files changed, 34 insertions(+), 10 deletions(-)
+ target/ppc/translate/vsx-impl.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tcg/s390x/tcg-target-con-set.h b/tcg/s390x/tcg-target-con-set.h
-index 670089086d..370e4b1295 100644
---- a/tcg/s390x/tcg-target-con-set.h
-+++ b/tcg/s390x/tcg-target-con-set.h
-@@ -38,7 +38,8 @@ C_O1_I2(r, rZ, r)
- C_O1_I2(v, v, r)
- C_O1_I2(v, v, v)
- C_O1_I3(v, v, v, v)
--C_O1_I4(v, v, v, v, v)
-+C_O1_I4(v, v, v, vZ, v)
-+C_O1_I4(v, v, v, vZM, v)
- C_O1_I4(r, r, ri, rI, r)
- C_O1_I4(r, r, rC, rI, r)
- C_O2_I1(o, m, r)
-diff --git a/tcg/s390x/tcg-target-con-str.h b/tcg/s390x/tcg-target-con-str.h
-index 745f6c0df5..3e574e0662 100644
---- a/tcg/s390x/tcg-target-con-str.h
-+++ b/tcg/s390x/tcg-target-con-str.h
-@@ -20,6 +20,7 @@ CONST('C', TCG_CT_CONST_CMP)
- CONST('I', TCG_CT_CONST_S16)
- CONST('J', TCG_CT_CONST_S32)
- CONST('K', TCG_CT_CONST_P32)
-+CONST('M', TCG_CT_CONST_M1)
- CONST('N', TCG_CT_CONST_INV)
- CONST('R', TCG_CT_CONST_INVRISBG)
- CONST('U', TCG_CT_CONST_U32)
-diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
-index e044168826..a5d57197a4 100644
---- a/tcg/s390x/tcg-target.c.inc
-+++ b/tcg/s390x/tcg-target.c.inc
-@@ -36,6 +36,7 @@
- #define TCG_CT_CONST_INV        (1 << 13)
- #define TCG_CT_CONST_INVRISBG   (1 << 14)
- #define TCG_CT_CONST_CMP        (1 << 15)
-+#define TCG_CT_CONST_M1         (1 << 16)
+diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
+index 40a87ddc4a..a869f30e86 100644
+--- a/target/ppc/translate/vsx-impl.c.inc
++++ b/target/ppc/translate/vsx-impl.c.inc
+@@ -2244,7 +2244,7 @@ static bool do_lstxv_PLS_D(DisasContext *ctx, arg_PLS_D *a,
  
- #define ALL_GENERAL_REGS     MAKE_64BIT_MASK(0, 16)
- #define ALL_VECTOR_REGS      MAKE_64BIT_MASK(32, 32)
-@@ -607,6 +608,9 @@ static bool tcg_target_const_match(int64_t val, int ct,
-     if ((ct & TCG_CT_CONST_ZERO) && val == 0) {
-         return true;
-     }
-+    if ((ct & TCG_CT_CONST_M1) && val == -1) {
-+        return true;
-+    }
- 
-     if (ct & TCG_CT_CONST_INV) {
-         val = ~val;
-@@ -2904,15 +2908,30 @@ static void tcg_out_cmp_vec(TCGContext *s, unsigned vece, TCGReg a0,
- }
- 
- static void tcg_out_cmpsel_vec(TCGContext *s, unsigned vece, TCGReg a0,
--                               TCGReg c1, TCGReg c2,
--                               TCGReg v3, TCGReg v4, TCGCond cond)
-+                               TCGReg c1, TCGReg c2, TCGArg v3,
-+                               int const_v3, TCGReg v4, TCGCond cond)
+ static bool do_lstxv_X(DisasContext *ctx, arg_X *a, bool store, bool paired)
  {
--    if (tcg_out_cmp_vec_noinv(s, vece, TCG_VEC_TMP0, c1, c2, cond)) {
--        TCGReg swap = v3;
--        v3 = v4;
--        v4 = swap;
-+    bool inv = tcg_out_cmp_vec_noinv(s, vece, TCG_VEC_TMP0, c1, c2, cond);
-+
-+    if (!const_v3) {
-+        if (inv) {
-+            tcg_out_insn(s, VRRe, VSEL, a0, v4, v3, TCG_VEC_TMP0);
-+        } else {
-+            tcg_out_insn(s, VRRe, VSEL, a0, v3, v4, TCG_VEC_TMP0);
-+        }
-+    } else if (v3) {
-+        if (inv) {
-+            tcg_out_insn(s, VRRc, VOC, a0, v4, TCG_VEC_TMP0, 0);
-+        } else {
-+            tcg_out_insn(s, VRRc, VO, a0, v4, TCG_VEC_TMP0, 0);
-+        }
-+    } else {
-+        if (inv) {
-+            tcg_out_insn(s, VRRc, VN, a0, v4, TCG_VEC_TMP0, 0);
-+        } else {
-+            tcg_out_insn(s, VRRc, VNC, a0, v4, TCG_VEC_TMP0, 0);
-+        }
-     }
--    tcg_out_insn(s, VRRe, VSEL, a0, v3, v4, TCG_VEC_TMP0);
- }
- 
- static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-@@ -3036,7 +3055,8 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-         tcg_out_cmp_vec(s, vece, a0, a1, a2, args[3]);
-         break;
-     case INDEX_op_cmpsel_vec:
--        tcg_out_cmpsel_vec(s, vece, a0, a1, a2, args[3], args[4], args[5]);
-+        tcg_out_cmpsel_vec(s, vece, a0, a1, a2, args[3], const_args[3],
-+                           args[4], args[5]);
-         break;
- 
-     case INDEX_op_s390_vuph_vec:
-@@ -3388,7 +3408,9 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_bitsel_vec:
-         return C_O1_I3(v, v, v, v);
-     case INDEX_op_cmpsel_vec:
--        return C_O1_I4(v, v, v, v, v);
-+        return (TCG_TARGET_HAS_orc_vec
-+                ? C_O1_I4(v, v, v, vZM, v)
-+                : C_O1_I4(v, v, v, vZ, v));
- 
-     default:
-         g_assert_not_reached();
+-    if (paired || a->rt >= 32) {
++    if (paired || a->rt < 32) {
+         REQUIRE_VSX(ctx);
+     } else {
+         REQUIRE_VECTOR(ctx);
 -- 
 2.43.0
 
