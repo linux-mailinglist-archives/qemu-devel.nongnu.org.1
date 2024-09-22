@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78EE97E17E
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFF397E17C
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:06:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssLIf-0005xD-Cb; Sun, 22 Sep 2024 08:02:49 -0400
+	id 1ssLI8-0002jp-8q; Sun, 22 Sep 2024 08:02:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHJ-0000vi-Hn
+ id 1ssLHJ-0000vl-JE
  for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:33 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHE-0002Mw-2Y
+ id 1ssLHE-0002Mz-2m
  for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:24 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-42cb57f8b41so43990255e9.0
- for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:18 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a8d0d0aea3cso465511166b.3
+ for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727006477; x=1727611277; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727006478; x=1727611278; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tnL0glGXZj+IRh5HnNxFKu2Xl8Anqsqr5rwYjln/1tc=;
- b=w507mkp1IZNUPXrstPBWao5s3e72vZRwnOxRJfwHQMZe+D2vA7vagVLTyN+98QQEjX
- qJmb3tjrapacZBgUfIZFl/ckU4/nnOjitWIV+GiR6xyG0yPj+6RAAnCTsgh1X/s5lzOI
- QRNEspGhzp1mM2LolNc0HTrYOHY7ODuvoHwf437erDbmLz6MPSVqMxJAD2aqgmQBr8YS
- na4HadB5TeQfANZD14SvHE4zVHzxFfj3t/QOl+7tiVgWjTSe/fOwo8jjXtstkL89Iu/z
- fqGJRhdBi6XsA0IWm3c3dKqsQXFQCwLCGV2wRANj2uWDeVQsF5es/51UGECLlZsR6feC
- QaIg==
+ bh=/08vmd3pJmcPxGI9Dvd5g1DO6IpTA5tvF/u1ewyB0/g=;
+ b=SaSbg2XAvqY8xSeUpt2HSnkNVxUiEkJGUFf/pqQoYr013l68zn0Taeygz8nrxwcU1x
+ d8CbhPgLKsQ0uXLtQ9nSvjvIVix5BnrrewId1aos2rqkrdz3diuuppsrPsx4we0GP1rX
+ fdE4T5YGxOIIz7ox3c8emQMLFzRMiP+aE9ySwcCZX4fITjkcjcDNzvWw51kJB1R/r2kf
+ Uf7uV3rTafE0cdav4aR2D3nth1OFldix98Iwxgzzy4GsV4neozrK20KuVJHUKZ8INu7H
+ SVuEtWkTnvSYhP3n7W28cZmsnlydxx3fPcmgg9DifnjB/BPVg6yMeWfeT0GyN2PAzNZb
+ dnKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727006477; x=1727611277;
+ d=1e100.net; s=20230601; t=1727006478; x=1727611278;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tnL0glGXZj+IRh5HnNxFKu2Xl8Anqsqr5rwYjln/1tc=;
- b=P0/KfJGHWgoV5dsU1z1NEIR8rlXtjIXhTKnBzsDZCBc2PtUAyRVI9JrL7yEWktfmRB
- SZQANJFw3sDk9200BK7ns0dxUU8xzCtcEn0b7Hdx81D0KZyDlixVx9yecRPsj3pCI5bN
- D4NA17DBImdJNfesBwWO7Jm4xzkFnMg/tmcLGWWccPdzzhdDeE87dPoun1zcQ2pzJxz/
- OvjcBfVTaxzGS3AWvTvtFSca5uypJanlxKkTnALeeRDmQC0kxYF0tRnfdQfkh+x+//yV
- eCLEhf+J2fxLKVQh90bXoAG8boCzLhiIhYQi6CEE/tLXuEgBX0rlXIeoqsMujI0OTIcA
- mAnQ==
-X-Gm-Message-State: AOJu0YwDk/VK+BgUsy0ZRJP8FXyrsIf8+aW9FsDggi63Q19LwD1jQi26
- syDz77wx+8krxEfEs3zj1VKNQnnafkbUzdlDJeZb4Cb04ePkHyQpYbFkySqlxVL53LiXT1uSk1b
- dpPM=
-X-Google-Smtp-Source: AGHT+IGpjIN+2spqbhtYCGbonsJ7n0CSOPmIp2dluvMr8lsXHPupBlZML9cIh7U3qxNHT15NCYXkUg==
-X-Received: by 2002:a5d:5585:0:b0:371:8e3c:5c with SMTP id
- ffacd0b85a97d-37a422532b6mr7236713f8f.7.1727006477356; 
+ bh=/08vmd3pJmcPxGI9Dvd5g1DO6IpTA5tvF/u1ewyB0/g=;
+ b=So5gT4UsCwzVbvy53FPCowU7msUimrodrLDuIJuVb3IOh1xK0FvQA7dCtapzZX+agm
+ UbmnGJyCN4BJjkBVatjlFwrKOgiVYOamC9cufjod36kcD6WZnRs6CitYIxUp8CpCQAea
+ dC/pubqhIL6R1JxkVZCTmsRKewNnn+4dIHeQZM7Eba0bZDHC+UqkUqd+f2Abw0Hal9vH
+ 5di7mjQWhPGfjqtugsLMdN/xR3ny805xFTqDbRrZKilRniAMemMlcN8XkEIzaMfJqt4O
+ T7ZPWMH/R94QRB2A0jBI8dY00na7IkTB8rdVlCyKGzB4mo/f1xsRt2mSTdc6u4hZsI2M
+ A2dA==
+X-Gm-Message-State: AOJu0YzT7NLZitktcgcnaarDmhYAwDfi1p6s/X6sYHLPLqWVWqwYKsT9
+ YQK2QlIXnxK7LDeVEIe2glDy1cNZyjkYM1tzMygS8fSqd6U9dPiemC9ZZNSORtn/bNxSbAMxknh
+ 15PQ=
+X-Google-Smtp-Source: AGHT+IGO1OVWVjckRxqbG1TK3n2GrGQmTm9/YXASMM+LviK15f4FB1BqSwSO2HheUmVZ891NILrb9A==
+X-Received: by 2002:a17:907:d26:b0:a8a:cc5a:7f3a with SMTP id
+ a640c23a62f3a-a90d51270f2mr859065366b.49.1727006477920; 
  Sun, 22 Sep 2024 05:01:17 -0700 (PDT)
 Received: from stoup.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.16
+ a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 22 Sep 2024 05:01:17 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PULL 06/31] tcg/i386: Do not expand cmp_vec early
-Date: Sun, 22 Sep 2024 14:00:47 +0200
-Message-ID: <20240922120112.5067-7-richard.henderson@linaro.org>
+Subject: [PULL 07/31] tcg/i386: Do not expand cmpsel_vec early
+Date: Sun, 22 Sep 2024 14:00:48 +0200
+Message-ID: <20240922120112.5067-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240922120112.5067-1-richard.henderson@linaro.org>
 References: <20240922120112.5067-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,297 +92,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move most of expansion to opcode generation, leaving the
-conversion of unsigned to signed to be done in the early phase.
-Small inefficiencies, but not incorrect results, are introduced
-until cmpsel_vec is converted in the next patch.
+Expand during output instead of during opcode generation.
+Remove x86_vpblendvb_vec opcode, this this removes the only user.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target.c.inc | 223 +++++++++++++++++---------------------
- 1 file changed, 100 insertions(+), 123 deletions(-)
+ tcg/i386/tcg-target-con-set.h |  1 +
+ tcg/i386/tcg-target.h         |  2 +-
+ tcg/i386/tcg-target.opc.h     |  1 -
+ tcg/i386/tcg-target.c.inc     | 84 +++++++++++++++++++++--------------
+ 4 files changed, 53 insertions(+), 35 deletions(-)
 
+diff --git a/tcg/i386/tcg-target-con-set.h b/tcg/i386/tcg-target-con-set.h
+index e24241cfa2..da4411d96b 100644
+--- a/tcg/i386/tcg-target-con-set.h
++++ b/tcg/i386/tcg-target-con-set.h
+@@ -50,6 +50,7 @@ C_N1_I2(r, r, r)
+ C_N1_I2(r, r, rW)
+ C_O1_I3(x, 0, x, x)
+ C_O1_I3(x, x, x, x)
++C_O1_I4(x, x, x, x, x)
+ C_O1_I4(r, r, reT, r, 0)
+ C_O1_I4(r, r, r, ri, ri)
+ C_O2_I1(r, r, L)
+diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
+index 2f67a97e05..342be30c4c 100644
+--- a/tcg/i386/tcg-target.h
++++ b/tcg/i386/tcg-target.h
+@@ -223,7 +223,7 @@ typedef enum {
+ #define TCG_TARGET_HAS_sat_vec          1
+ #define TCG_TARGET_HAS_minmax_vec       1
+ #define TCG_TARGET_HAS_bitsel_vec       have_avx512vl
+-#define TCG_TARGET_HAS_cmpsel_vec       -1
++#define TCG_TARGET_HAS_cmpsel_vec       1
+ #define TCG_TARGET_HAS_tst_vec          0
+ 
+ #define TCG_TARGET_deposit_i32_valid(ofs, len) \
+diff --git a/tcg/i386/tcg-target.opc.h b/tcg/i386/tcg-target.opc.h
+index b5f403e35e..4ffc084bda 100644
+--- a/tcg/i386/tcg-target.opc.h
++++ b/tcg/i386/tcg-target.opc.h
+@@ -25,7 +25,6 @@
+  */
+ 
+ DEF(x86_shufps_vec, 1, 2, 1, IMPLVEC)
+-DEF(x86_vpblendvb_vec, 1, 3, 0, IMPLVEC)
+ DEF(x86_blend_vec, 1, 2, 1, IMPLVEC)
+ DEF(x86_packss_vec, 1, 2, 0, IMPLVEC)
+ DEF(x86_packus_vec, 1, 2, 0, IMPLVEC)
 diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index af71a397b1..278e567b56 100644
+index 278e567b56..a04dc7d270 100644
 --- a/tcg/i386/tcg-target.c.inc
 +++ b/tcg/i386/tcg-target.c.inc
-@@ -3029,6 +3029,92 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
- #undef OP_32_64
+@@ -3115,6 +3115,19 @@ static void tcg_out_cmp_vec(TCGContext *s, TCGType type, unsigned vece,
+     }
  }
  
-+static int const umin_insn[4] = {
-+    OPC_PMINUB, OPC_PMINUW, OPC_PMINUD, OPC_VPMINUQ
-+};
-+
-+static int const umax_insn[4] = {
-+    OPC_PMAXUB, OPC_PMAXUW, OPC_PMAXUD, OPC_VPMAXUQ
-+};
-+
-+static bool tcg_out_cmp_vec_noinv(TCGContext *s, TCGType type, unsigned vece,
-+                                  TCGReg v0, TCGReg v1, TCGReg v2, TCGCond cond)
++static void tcg_out_cmpsel_vec(TCGContext *s, TCGType type, unsigned vece,
++                               TCGReg v0, TCGReg c1, TCGReg c2,
++                               TCGReg v3, TCGReg v4, TCGCond cond)
 +{
-+    static int const cmpeq_insn[4] = {
-+        OPC_PCMPEQB, OPC_PCMPEQW, OPC_PCMPEQD, OPC_PCMPEQQ
-+    };
-+    static int const cmpgt_insn[4] = {
-+        OPC_PCMPGTB, OPC_PCMPGTW, OPC_PCMPGTD, OPC_PCMPGTQ
-+    };
-+
-+    enum {
-+        NEED_INV  = 1,
-+        NEED_SWAP = 2,
-+        NEED_UMIN = 4,
-+        NEED_UMAX = 8,
-+        INVALID   = 16,
-+    };
-+    static const uint8_t cond_fixup[16] = {
-+        [0 ... 15] = INVALID,
-+        [TCG_COND_EQ] = 0,
-+        [TCG_COND_GT] = 0,
-+        [TCG_COND_NE] = NEED_INV,
-+        [TCG_COND_LE] = NEED_INV,
-+        [TCG_COND_LT] = NEED_SWAP,
-+        [TCG_COND_GE] = NEED_SWAP | NEED_INV,
-+        [TCG_COND_LEU] = NEED_UMIN,
-+        [TCG_COND_GTU] = NEED_UMIN | NEED_INV,
-+        [TCG_COND_GEU] = NEED_UMAX,
-+        [TCG_COND_LTU] = NEED_UMAX | NEED_INV,
-+    };
-+    int fixup = cond_fixup[cond];
-+
-+    assert(!(fixup & INVALID));
-+
-+    if (fixup & NEED_INV) {
-+        cond = tcg_invert_cond(cond);
++    if (tcg_out_cmp_vec_noinv(s, type, vece, TCG_TMP_VEC, c1, c2, cond)) {
++        TCGReg swap = v3;
++        v3 = v4;
++        v4 = swap;
 +    }
-+
-+    if (fixup & NEED_SWAP) {
-+        TCGReg swap = v1;
-+        v1 = v2;
-+        v2 = swap;
-+        cond = tcg_swap_cond(cond);
-+    }
-+
-+    if (fixup & (NEED_UMIN | NEED_UMAX)) {
-+        int op = (fixup & NEED_UMIN ? umin_insn[vece] : umax_insn[vece]);
-+
-+        /* avx2 does not have 64-bit min/max; adjusted during expand. */
-+        assert(vece <= MO_32);
-+
-+        tcg_out_vex_modrm_type(s, op, TCG_TMP_VEC, v1, v2, type);
-+        v2 = TCG_TMP_VEC;
-+        cond = TCG_COND_EQ;
-+    }
-+
-+    switch (cond) {
-+    case TCG_COND_EQ:
-+        tcg_out_vex_modrm_type(s, cmpeq_insn[vece], v0, v1, v2, type);
-+        break;
-+    case TCG_COND_GT:
-+        tcg_out_vex_modrm_type(s, cmpgt_insn[vece], v0, v1, v2, type);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+    return fixup & NEED_INV;
-+}
-+
-+static void tcg_out_cmp_vec(TCGContext *s, TCGType type, unsigned vece,
-+                            TCGReg v0, TCGReg v1, TCGReg v2, TCGCond cond)
-+{
-+    if (tcg_out_cmp_vec_noinv(s, type, vece, v0, v1, v2, cond)) {
-+        tcg_out_dupi_vec(s, type, vece, TCG_TMP_VEC, -1);
-+        tcg_out_vex_modrm_type(s, OPC_PXOR, v0, v0, TCG_TMP_VEC, type);
-+    }
++    tcg_out_vex_modrm_type(s, OPC_VPBLENDVB, v0, v4, v3, type);
++    tcg_out8(s, (TCG_TMP_VEC - TCG_REG_XMM0) << 4);
 +}
 +
  static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
                             unsigned vecl, unsigned vece,
                             const TCGArg args[TCG_MAX_OP_ARGS],
-@@ -3058,12 +3144,6 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-     static int const shift_imm_insn[4] = {
-         OPC_UD2, OPC_PSHIFTW_Ib, OPC_PSHIFTD_Ib, OPC_PSHIFTQ_Ib
-     };
--    static int const cmpeq_insn[4] = {
--        OPC_PCMPEQB, OPC_PCMPEQW, OPC_PCMPEQD, OPC_PCMPEQQ
--    };
--    static int const cmpgt_insn[4] = {
--        OPC_PCMPGTB, OPC_PCMPGTW, OPC_PCMPGTD, OPC_PCMPGTQ
--    };
-     static int const punpckl_insn[4] = {
-         OPC_PUNPCKLBW, OPC_PUNPCKLWD, OPC_PUNPCKLDQ, OPC_PUNPCKLQDQ
-     };
-@@ -3082,12 +3162,6 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-     static int const smax_insn[4] = {
-         OPC_PMAXSB, OPC_PMAXSW, OPC_PMAXSD, OPC_VPMAXSQ
-     };
--    static int const umin_insn[4] = {
--        OPC_PMINUB, OPC_PMINUW, OPC_PMINUD, OPC_VPMINUQ
--    };
--    static int const umax_insn[4] = {
--        OPC_PMAXUB, OPC_PMAXUW, OPC_PMAXUD, OPC_VPMAXUQ
--    };
-     static int const rotlv_insn[4] = {
-         OPC_UD2, OPC_UD2, OPC_VPROLVD, OPC_VPROLVQ
-     };
-@@ -3243,15 +3317,8 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+@@ -3320,6 +3333,11 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+         tcg_out_cmp_vec(s, type, vece, a0, a1, a2, args[3]);
+         break;
+ 
++    case INDEX_op_cmpsel_vec:
++        tcg_out_cmpsel_vec(s, type, vece, a0, a1, a2,
++                           args[3], args[4], args[5]);
++        break;
++
+     case INDEX_op_andc_vec:
+         insn = OPC_PANDN;
+         tcg_out_vex_modrm_type(s, insn, a0, a2, a1, type);
+@@ -3431,11 +3449,6 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+         tcg_out8(s, sub);
+         break;
+ 
+-    case INDEX_op_x86_vpblendvb_vec:
+-        tcg_out_vex_modrm_type(s, OPC_VPBLENDVB, a0, a1, a2, type);
+-        tcg_out8(s, args[3] << 4);
+-        break;
+-
+     case INDEX_op_x86_psrldq_vec:
+         tcg_out_vex_modrm(s, OPC_GRP14, 3, a0, a1);
+         tcg_out8(s, a2);
+@@ -3701,8 +3714,9 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+         return C_O1_I3(x, 0, x, x);
+ 
+     case INDEX_op_bitsel_vec:
+-    case INDEX_op_x86_vpblendvb_vec:
+         return C_O1_I3(x, x, x, x);
++    case INDEX_op_cmpsel_vec:
++        return C_O1_I4(x, x, x, x, x);
+ 
+     default:
+         g_assert_not_reached();
+@@ -4038,8 +4052,8 @@ static void expand_vec_mul(TCGType type, unsigned vece,
+     }
+ }
+ 
+-static void expand_vec_cmp(TCGType type, unsigned vece, TCGv_vec v0,
+-                           TCGv_vec v1, TCGv_vec v2, TCGCond cond)
++static TCGCond expand_vec_cond(TCGType type, unsigned vece,
++                               TCGArg *a1, TCGArg *a2, TCGCond cond)
+ {
+     /*
+      * Without AVX512, there are no 64-bit unsigned comparisons.
+@@ -4047,46 +4061,50 @@ static void expand_vec_cmp(TCGType type, unsigned vece, TCGv_vec v0,
+      * All other swapping and inversion are handled during code generation.
+      */
+     if (vece == MO_64 && is_unsigned_cond(cond)) {
++        TCGv_vec v1 = temp_tcgv_vec(arg_temp(*a1));
++        TCGv_vec v2 = temp_tcgv_vec(arg_temp(*a2));
+         TCGv_vec t1 = tcg_temp_new_vec(type);
+         TCGv_vec t2 = tcg_temp_new_vec(type);
+         TCGv_vec t3 = tcg_constant_vec(type, vece, 1ull << ((8 << vece) - 1));
+ 
+         tcg_gen_sub_vec(vece, t1, v1, t3);
+         tcg_gen_sub_vec(vece, t2, v2, t3);
+-        v1 = t1;
+-        v2 = t2;
++        *a1 = tcgv_vec_arg(t1);
++        *a2 = tcgv_vec_arg(t2);
+         cond = tcg_signed_cond(cond);
+     }
+-
+-    /* Expand directly; do not recurse.  */
+-    vec_gen_4(INDEX_op_cmp_vec, type, vece,
+-              tcgv_vec_arg(v0), tcgv_vec_arg(v1), tcgv_vec_arg(v2), cond);
++    return cond;
+ }
+ 
+-static void expand_vec_cmpsel(TCGType type, unsigned vece, TCGv_vec v0,
+-                              TCGv_vec c1, TCGv_vec c2,
+-                              TCGv_vec v3, TCGv_vec v4, TCGCond cond)
++static void expand_vec_cmp(TCGType type, unsigned vece, TCGArg a0,
++                           TCGArg a1, TCGArg a2, TCGCond cond)
+ {
+-    TCGv_vec t = tcg_temp_new_vec(type);
++    cond = expand_vec_cond(type, vece, &a1, &a2, cond);
++    /* Expand directly; do not recurse.  */
++    vec_gen_4(INDEX_op_cmp_vec, type, vece, a0, a1, a2, cond);
++}
+ 
+-    expand_vec_cmp(type, vece, t, c1, c2, cond);
+-    vec_gen_4(INDEX_op_x86_vpblendvb_vec, type, vece,
+-              tcgv_vec_arg(v0), tcgv_vec_arg(v4),
+-              tcgv_vec_arg(v3), tcgv_vec_arg(t));
+-    tcg_temp_free_vec(t);
++static void expand_vec_cmpsel(TCGType type, unsigned vece, TCGArg a0,
++                              TCGArg a1, TCGArg a2,
++                              TCGArg a3, TCGArg a4, TCGCond cond)
++{
++    cond = expand_vec_cond(type, vece, &a1, &a2, cond);
++    /* Expand directly; do not recurse.  */
++    vec_gen_6(INDEX_op_cmpsel_vec, type, vece, a0, a1, a2, a3, a4, cond);
+ }
+ 
+ void tcg_expand_vec_op(TCGOpcode opc, TCGType type, unsigned vece,
+                        TCGArg a0, ...)
+ {
+     va_list va;
+-    TCGArg a2;
+-    TCGv_vec v0, v1, v2, v3, v4;
++    TCGArg a1, a2, a3, a4, a5;
++    TCGv_vec v0, v1, v2;
+ 
+     va_start(va, a0);
+-    v0 = temp_tcgv_vec(arg_temp(a0));
+-    v1 = temp_tcgv_vec(arg_temp(va_arg(va, TCGArg)));
++    a1 = va_arg(va, TCGArg);
+     a2 = va_arg(va, TCGArg);
++    v0 = temp_tcgv_vec(arg_temp(a0));
++    v1 = temp_tcgv_vec(arg_temp(a1));
+ 
+     switch (opc) {
+     case INDEX_op_shli_vec:
+@@ -4122,15 +4140,15 @@ void tcg_expand_vec_op(TCGOpcode opc, TCGType type, unsigned vece,
          break;
  
      case INDEX_op_cmp_vec:
--        sub = args[3];
--        if (sub == TCG_COND_EQ) {
--            insn = cmpeq_insn[vece];
--        } else if (sub == TCG_COND_GT) {
--            insn = cmpgt_insn[vece];
--        } else {
--            g_assert_not_reached();
--        }
--        goto gen_simd;
-+        tcg_out_cmp_vec(s, type, vece, a0, a1, a2, args[3]);
-+        break;
+-        v2 = temp_tcgv_vec(arg_temp(a2));
+-        expand_vec_cmp(type, vece, v0, v1, v2, va_arg(va, TCGArg));
++        a3 = va_arg(va, TCGArg);
++        expand_vec_cmp(type, vece, a0, a1, a2, a3);
+         break;
  
-     case INDEX_op_andc_vec:
-         insn = OPC_PANDN;
-@@ -3971,88 +4038,19 @@ static void expand_vec_mul(TCGType type, unsigned vece,
-     }
- }
+     case INDEX_op_cmpsel_vec:
+-        v2 = temp_tcgv_vec(arg_temp(a2));
+-        v3 = temp_tcgv_vec(arg_temp(va_arg(va, TCGArg)));
+-        v4 = temp_tcgv_vec(arg_temp(va_arg(va, TCGArg)));
+-        expand_vec_cmpsel(type, vece, v0, v1, v2, v3, v4, va_arg(va, TCGArg));
++        a3 = va_arg(va, TCGArg);
++        a4 = va_arg(va, TCGArg);
++        a5 = va_arg(va, TCGArg);
++        expand_vec_cmpsel(type, vece, a0, a1, a2, a3, a4, a5);
+         break;
  
--static bool expand_vec_cmp_noinv(TCGType type, unsigned vece, TCGv_vec v0,
--                                 TCGv_vec v1, TCGv_vec v2, TCGCond cond)
-+static void expand_vec_cmp(TCGType type, unsigned vece, TCGv_vec v0,
-+                           TCGv_vec v1, TCGv_vec v2, TCGCond cond)
- {
--    enum {
--        NEED_INV  = 1,
--        NEED_SWAP = 2,
--        NEED_BIAS = 4,
--        NEED_UMIN = 8,
--        NEED_UMAX = 16,
--    };
--    TCGv_vec t1, t2, t3;
--    uint8_t fixup;
-+    /*
-+     * Without AVX512, there are no 64-bit unsigned comparisons.
-+     * We must bias the inputs so that they become signed.
-+     * All other swapping and inversion are handled during code generation.
-+     */
-+    if (vece == MO_64 && is_unsigned_cond(cond)) {
-+        TCGv_vec t1 = tcg_temp_new_vec(type);
-+        TCGv_vec t2 = tcg_temp_new_vec(type);
-+        TCGv_vec t3 = tcg_constant_vec(type, vece, 1ull << ((8 << vece) - 1));
- 
--    switch (cond) {
--    case TCG_COND_EQ:
--    case TCG_COND_GT:
--        fixup = 0;
--        break;
--    case TCG_COND_NE:
--    case TCG_COND_LE:
--        fixup = NEED_INV;
--        break;
--    case TCG_COND_LT:
--        fixup = NEED_SWAP;
--        break;
--    case TCG_COND_GE:
--        fixup = NEED_SWAP | NEED_INV;
--        break;
--    case TCG_COND_LEU:
--        if (tcg_can_emit_vec_op(INDEX_op_umin_vec, type, vece)) {
--            fixup = NEED_UMIN;
--        } else {
--            fixup = NEED_BIAS | NEED_INV;
--        }
--        break;
--    case TCG_COND_GTU:
--        if (tcg_can_emit_vec_op(INDEX_op_umin_vec, type, vece)) {
--            fixup = NEED_UMIN | NEED_INV;
--        } else {
--            fixup = NEED_BIAS;
--        }
--        break;
--    case TCG_COND_GEU:
--        if (tcg_can_emit_vec_op(INDEX_op_umax_vec, type, vece)) {
--            fixup = NEED_UMAX;
--        } else {
--            fixup = NEED_BIAS | NEED_SWAP | NEED_INV;
--        }
--        break;
--    case TCG_COND_LTU:
--        if (tcg_can_emit_vec_op(INDEX_op_umax_vec, type, vece)) {
--            fixup = NEED_UMAX | NEED_INV;
--        } else {
--            fixup = NEED_BIAS | NEED_SWAP;
--        }
--        break;
--    default:
--        g_assert_not_reached();
--    }
--
--    if (fixup & NEED_INV) {
--        cond = tcg_invert_cond(cond);
--    }
--    if (fixup & NEED_SWAP) {
--        t1 = v1, v1 = v2, v2 = t1;
--        cond = tcg_swap_cond(cond);
--    }
--
--    t1 = t2 = NULL;
--    if (fixup & (NEED_UMIN | NEED_UMAX)) {
--        t1 = tcg_temp_new_vec(type);
--        if (fixup & NEED_UMIN) {
--            tcg_gen_umin_vec(vece, t1, v1, v2);
--        } else {
--            tcg_gen_umax_vec(vece, t1, v1, v2);
--        }
--        v2 = t1;
--        cond = TCG_COND_EQ;
--    } else if (fixup & NEED_BIAS) {
--        t1 = tcg_temp_new_vec(type);
--        t2 = tcg_temp_new_vec(type);
--        t3 = tcg_constant_vec(type, vece, 1ull << ((8 << vece) - 1));
-         tcg_gen_sub_vec(vece, t1, v1, t3);
-         tcg_gen_sub_vec(vece, t2, v2, t3);
-         v1 = t1;
-@@ -4060,26 +4058,9 @@ static bool expand_vec_cmp_noinv(TCGType type, unsigned vece, TCGv_vec v0,
-         cond = tcg_signed_cond(cond);
-     }
- 
--    tcg_debug_assert(cond == TCG_COND_EQ || cond == TCG_COND_GT);
-     /* Expand directly; do not recurse.  */
-     vec_gen_4(INDEX_op_cmp_vec, type, vece,
-               tcgv_vec_arg(v0), tcgv_vec_arg(v1), tcgv_vec_arg(v2), cond);
--
--    if (t1) {
--        tcg_temp_free_vec(t1);
--        if (t2) {
--            tcg_temp_free_vec(t2);
--        }
--    }
--    return fixup & NEED_INV;
--}
--
--static void expand_vec_cmp(TCGType type, unsigned vece, TCGv_vec v0,
--                           TCGv_vec v1, TCGv_vec v2, TCGCond cond)
--{
--    if (expand_vec_cmp_noinv(type, vece, v0, v1, v2, cond)) {
--        tcg_gen_not_vec(vece, v0, v0);
--    }
- }
- 
- static void expand_vec_cmpsel(TCGType type, unsigned vece, TCGv_vec v0,
-@@ -4088,11 +4069,7 @@ static void expand_vec_cmpsel(TCGType type, unsigned vece, TCGv_vec v0,
- {
-     TCGv_vec t = tcg_temp_new_vec(type);
- 
--    if (expand_vec_cmp_noinv(type, vece, t, c1, c2, cond)) {
--        /* Invert the sense of the compare by swapping arguments.  */
--        TCGv_vec x;
--        x = v3, v3 = v4, v4 = x;
--    }
-+    expand_vec_cmp(type, vece, t, c1, c2, cond);
-     vec_gen_4(INDEX_op_x86_vpblendvb_vec, type, vece,
-               tcgv_vec_arg(v0), tcgv_vec_arg(v4),
-               tcgv_vec_arg(v3), tcgv_vec_arg(t));
+     default:
 -- 
 2.43.0
 
