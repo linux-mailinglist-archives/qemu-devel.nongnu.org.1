@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180AA97E16B
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C4397E162
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:03:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssLHe-0001Wf-VL; Sun, 22 Sep 2024 08:01:46 -0400
+	id 1ssLHu-00027h-5B; Sun, 22 Sep 2024 08:02:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHG-0000vC-SB
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:31 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ id 1ssLHE-0000uv-A0
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:27 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHC-0002Md-N3
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:20 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a8d2b4a5bf1so492572666b.2
- for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:16 -0700 (PDT)
+ id 1ssLHB-0002Mh-O0
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:19 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a83562f9be9so385212566b.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727006475; x=1727611275; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727006476; x=1727611276; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6Cw3gAeD8wEnk+7LA9VieK3VzfanKWkt65wfBPmlUjU=;
- b=VEQQVb1rbBwOVNMPa5I7hTKW/6hJmp3KeG/ktncHYvuhWLDWRS1paVW+ZAgSfTpL95
- Tpcjn1jU2GYaKTMZkis5SM+hokoMLK701LSP4FOZLmd5FkCpQv5BwbgFdWI5GcXl2jZl
- xg7ptFPlk+NUlgWSKQOg1Q+dZ6NOetVmn/MbNcN3E6GTHrxUATMB0CVNH6qVsuW04FX8
- BYsbGg7xpyYKIzk6fQmxT6cSCsOkxrIpSFaNY9D/v6Co7ToCZRUkhG3HqofpD21YTn4p
- wBZgSevw3P+7iPq0N3uzLN7E5gxrjgzlBe2olF0bTGdidjdwDphcwj9XqhHPmQGKMsUe
- nK9w==
+ bh=tN0OHUrqQbUaQCGulY54+8M9t2g2sAjn/2PDGh46k0c=;
+ b=mf12EP4ZMWiB8OTaS6Zp8eSqEgw+5cl22ll95th01aUo/10Ei//cvNYJtIci4W6Ahi
+ XjciAERfJsuViTH0OgL88CYZvdpt+6UMBDPkJCBiFwbABib+NnapLSQ6UAKkBjtGrE7S
+ Qqwx++W7HA3XzPzuLluDJRB7r60jvx4sAdAgKK0xsOyaelsBulqM+0czaPR5G323W3xK
+ b+r0T/M7zmVfPvQ2XeqITj8ni7uUElsXkzA3BLJJqsnMm3b0+bUHdMXqlUUZpA8JMxRo
+ X/fZxwH1g7r5799bsUI5JYGi8s8MPshd2B+BekhUU8sW2/UMYhRrtH+qhPTEcdWwIj+X
+ ZVdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727006475; x=1727611275;
+ d=1e100.net; s=20230601; t=1727006476; x=1727611276;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6Cw3gAeD8wEnk+7LA9VieK3VzfanKWkt65wfBPmlUjU=;
- b=Ft78XXUt1kYJBVK/T5Y74smzpqTUoi3rYrTxkHdqEjJPpkqX2XklokX5K0kpAXxe8V
- I7q02iR4gO0yzg+FTbIzWYsjGaCntP6fkUbpQTWdU88PRt0ntLOPyOXRkg7abse2Qzr8
- XJi/MBEsNpB+zUb4erq41rRO4442CmfLKAanjw5VlKX+A+MvfudwN3djvoE+c7ATxzM9
- zjlHYGeZI2e+4cTQwJrZENSpDo8iSifYoee8hSJA36yGzokov4j9KnvfeqIYn0xXrCB7
- YvDyAra2EW1BC/8MCT+y2/rso0Mtk8Ic8UTK2SVnCpAMApP/Ye93liLc1dwe7K5VmLPy
- 0ooQ==
-X-Gm-Message-State: AOJu0YxRix+6akPadIjS4Ja+9A7uFsTJAbmzDrZ/oaO0IskR1ifstKhh
- jZMWCnWBuGz4CS/e7fyeTb6ln4qIo5W6mC+BnwvwTz0G8LYPnbQNM6/M4NJ36WNQvS6x9Hfbd6k
- f8OA=
-X-Google-Smtp-Source: AGHT+IGBCxftqz6ZLHd2pCpCyPSWujIoplxQTmv3WRbpC/7ZKDIqCeFfDeqluIsJNHBfXmb1PNMtMg==
-X-Received: by 2002:a17:906:6a10:b0:a90:3492:9ad8 with SMTP id
- a640c23a62f3a-a90d51a7139mr930694866b.65.1727006475560; 
- Sun, 22 Sep 2024 05:01:15 -0700 (PDT)
+ bh=tN0OHUrqQbUaQCGulY54+8M9t2g2sAjn/2PDGh46k0c=;
+ b=Na+Wlf9IYydMetG+FtYKUogZexDLFkqyIupOSxkgHm61FCuk9xaRCdg71zjzenJj51
+ WOiFGsNJbMo1sZbKHXOUKm9dXXDvo1wt3W6CoetDro2mMsA7M5wofvhcAn3BRMWGChWF
+ RWOvgu2MYdokLNC4XkseOkhHO9vDluX26LoOusdpNDNgmxOF9uDqACjvjQGjXOrEzkcJ
+ U79Dfm+liDXHLRY5ygg/AAF3OgsROQwuq3Wewnc0M7mpxVW+/lCb29JvqUhK1mLTU6AL
+ b2JgGfDUyFt+0IS0poKwI4va3ZYDaDNsy7HTlHSKUt2qm6/KXTIaspxYHXJlr4EmnRKD
+ Ssmg==
+X-Gm-Message-State: AOJu0YwAp5x6C+bxCnbMWzHPcfzBTu2sMzAMhXzoEUpOiNDwXsHJ9Oiu
+ mYNcBZXcEWfaquPvX6pl11sAus653pPQK4hHavmoDxM6HuT3v8i4CjU+p2iWmxWlRxKhCOE8Tjk
+ rPz0=
+X-Google-Smtp-Source: AGHT+IGHgQ9jvZVBF+10ELyJfLqZHh1WnHYjBc6CNy2I+eCS41NZaDiQG6GFn5rVQ3xEhWJaLhYUqQ==
+X-Received: by 2002:a17:906:6a07:b0:a90:c411:24e6 with SMTP id
+ a640c23a62f3a-a90d5160783mr762794266b.61.1727006476100; 
+ Sun, 22 Sep 2024 05:01:16 -0700 (PDT)
 Received: from stoup.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
  by smtp.gmail.com with ESMTPSA id
  a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.15
@@ -60,20 +60,18 @@ Received: from stoup.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
- TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>, qemu-stable@nongnu.org,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/31] tcg: Fix iteration step in 32-bit gvec operation
-Date: Sun, 22 Sep 2024 14:00:44 +0200
-Message-ID: <20240922120112.5067-4-richard.henderson@linaro.org>
+Subject: [PULL 04/31] tcg: Export vec_gen_6
+Date: Sun, 22 Sep 2024 14:00:45 +0200
+Message-ID: <20240922120112.5067-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240922120112.5067-1-richard.henderson@linaro.org>
 References: <20240922120112.5067-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,38 +94,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+Add declaration to tcg-internal.h, making it available for
+use from tcg backend vector expanders.
 
-The loop in the 32-bit case of the vector compare operation
-was incorrectly incrementing by 8 bytes per iteration instead
-of 4 bytes. This caused the function to process only half of
-the intended elements.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 9622c697d1 (tcg: Add gvec compare with immediate and scalar operand)
-Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240904142739.854-2-zhiwei_liu@linux.alibaba.com>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg-op-gvec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tcg/tcg-internal.h | 2 ++
+ tcg/tcg-op-vec.c   | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
-index 0308732d9b..78ee1ced80 100644
---- a/tcg/tcg-op-gvec.c
-+++ b/tcg/tcg-op-gvec.c
-@@ -3939,7 +3939,7 @@ void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
-         uint32_t i;
+diff --git a/tcg/tcg-internal.h b/tcg/tcg-internal.h
+index d18f49f5d3..8099248076 100644
+--- a/tcg/tcg-internal.h
++++ b/tcg/tcg-internal.h
+@@ -102,5 +102,7 @@ TCGOp *tcg_gen_op6(TCGOpcode, TCGArg, TCGArg, TCGArg, TCGArg, TCGArg, TCGArg);
+ void vec_gen_2(TCGOpcode, TCGType, unsigned, TCGArg, TCGArg);
+ void vec_gen_3(TCGOpcode, TCGType, unsigned, TCGArg, TCGArg, TCGArg);
+ void vec_gen_4(TCGOpcode, TCGType, unsigned, TCGArg, TCGArg, TCGArg, TCGArg);
++void vec_gen_6(TCGOpcode opc, TCGType type, unsigned vece, TCGArg r,
++               TCGArg a, TCGArg b, TCGArg c, TCGArg d, TCGArg e);
  
-         tcg_gen_extrl_i64_i32(t1, c);
--        for (i = 0; i < oprsz; i += 8) {
-+        for (i = 0; i < oprsz; i += 4) {
-             tcg_gen_ld_i32(t0, tcg_env, aofs + i);
-             tcg_gen_negsetcond_i32(cond, t0, t0, t1);
-             tcg_gen_st_i32(t0, tcg_env, dofs + i);
+ #endif /* TCG_INTERNAL_H */
+diff --git a/tcg/tcg-op-vec.c b/tcg/tcg-op-vec.c
+index 84af210bc0..d4bb4aee74 100644
+--- a/tcg/tcg-op-vec.c
++++ b/tcg/tcg-op-vec.c
+@@ -172,8 +172,8 @@ void vec_gen_4(TCGOpcode opc, TCGType type, unsigned vece,
+     op->args[3] = c;
+ }
+ 
+-static void vec_gen_6(TCGOpcode opc, TCGType type, unsigned vece, TCGArg r,
+-                      TCGArg a, TCGArg b, TCGArg c, TCGArg d, TCGArg e)
++void vec_gen_6(TCGOpcode opc, TCGType type, unsigned vece, TCGArg r,
++               TCGArg a, TCGArg b, TCGArg c, TCGArg d, TCGArg e)
+ {
+     TCGOp *op = tcg_emit_op(opc, 6);
+     TCGOP_VECL(op) = type - TCG_TYPE_V64;
 -- 
 2.43.0
 
