@@ -2,61 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999CE97E20B
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 16:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD7097E1FD
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 16:33:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssNpW-0006Jq-Ja; Sun, 22 Sep 2024 10:44:54 -0400
+	id 1ssNdS-0005cp-K0; Sun, 22 Sep 2024 10:32:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu@yeah.net>) id 1ssMaG-0002wW-Bi
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 09:25:04 -0400
-Received: from mail-m16.yeah.net ([220.197.32.18])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <chao.liu@yeah.net>) id 1ssMaA-00030E-3C
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 09:25:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
- s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=Blphx
- XN4un5YW9VRPae4/DTWRYrwXOalOhZwPQUcgHY=; b=MxCCIprcFCdJdWZ9ud5jh
- mLX+cuZ94DPwlVA63YONsc4nqmUZ4Hgn6C8QW3/PDmiH07R7Sg9/hyDk1XFyGkOm
- snBGQ5TLzzxUfTtuI2SbxFpPWmJg17vNhrQ2DClwhf8XyodzgugLK70B83FA9wSD
- Q88IzlKDivwQkoINXAZ0BU=
-Received: from localhost.localdomain (unknown [])
- by gzsmtp1 (Coremail) with SMTP id Mc8vCgAH56yXGvBmHbLdAA--.24843S4;
- Sun, 22 Sep 2024 21:24:40 +0800 (CST)
-From: Chao Liu <chao.liu@yeah.net>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, bin.meng@windriver.com, edgar.iglesias@gmail.com,
- alistair@alistair23.me, Chao Liu <chao.liu@yeah.net>
-Subject: [PATCH v1 2/2] xilink-zynq-devcfg: Fix up for memory address range
- size not set correctly
-Date: Sun, 22 Sep 2024 21:24:33 +0800
-Message-ID: <6b113649cdde1e8938393b859601dfeaba79d9af.1727008203.git.chao.liu@yeah.net>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <cover.1727008203.git.chao.liu@yeah.net>
-References: <cover.1727008203.git.chao.liu@yeah.net>
+ (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
+ id 1ssNdQ-0005bL-Ni
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 10:32:24 -0400
+Received: from mail-qv1-xf30.google.com ([2607:f8b0:4864:20::f30])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
+ id 1ssNdN-0008Tz-Uy
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 10:32:24 -0400
+Received: by mail-qv1-xf30.google.com with SMTP id
+ 6a1803df08f44-6c548eb3354so28241226d6.2
+ for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 07:32:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1727015541; x=1727620341; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6n8uu98JW3p9HIkkqL6tJyuEOISV6y2Jmx3W9SB87lg=;
+ b=RWTdqC+YZ+LShPPCI5LBI3WCDoQfDlC/PFElkkkKPoOMpB5ccrA/QCfHkti6x52hKr
+ WpB3RANpOenp4LOubGBj++yPhI0yrQ2sYDT7vUI2Q5bdppWZTxTn1lkluUX+MRjOQCVE
+ KM3Rm95Vhx/gIMOksbOvm5kGUtb/EzQmIJbu0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727015541; x=1727620341;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6n8uu98JW3p9HIkkqL6tJyuEOISV6y2Jmx3W9SB87lg=;
+ b=b/4R2i1hJNmLIicRaqfDBPRdRhp+16mQ1QDAwZ4qWN6urQv+z+ZQBmcdV4GOkuQvsT
+ 0j/pAwGf+iQg4AohINjL5MM+CBDKKWrMWMc9mg/WP/CKZwJ3Uil03OA3oNr1ipAPDDcM
+ sRVLKofOgcMVN8wzJgCCCbSGfujEnPTMPJthPPGUTIhBl+UeoioNlExnOm9KVKtZABCN
+ NALO3AMAmhrNrFDJFNSlcIzDH2yqEC73G64Uuk3MnUNsJyY3BfNkbMDVRSlHrETLnCzN
+ W7jJ5yZYFitQGY6SnAP5lL/YX0b/xLhANtFgQYsujI3nSZInbRbe1/r8ZFXrVNzel9Dj
+ bp3A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVj+2k8yijB09hg7dOU7AVxogS13bT5m6jLLYJOu8b1sBjdFc2zlbGXKfseDxjqU/HHfeGr7rYRuobG@nongnu.org
+X-Gm-Message-State: AOJu0YyJxgmOBz3le7UTzKkaIE+tKyJ4evYj31GFt5qgF0jGOM5nBOqa
+ ojpNpFRI6yDnzYPot/MIePnJBO9DAhO1AEDSZjSVj0Ic0sm6eq6qXl6Kjeqehg==
+X-Google-Smtp-Source: AGHT+IEOW1lHmBpHqJRjdv3TRzWdC8qqi4QXxOYsWfbZ9JhhucrEJr06ZZ5n9qJp/xLLIDZ2afKTUg==
+X-Received: by 2002:a05:6214:54c3:b0:6c3:5db2:d99d with SMTP id
+ 6a1803df08f44-6c7bd54841bmr156122896d6.21.1727015540882; 
+ Sun, 22 Sep 2024 07:32:20 -0700 (PDT)
+Received: from denia.c.googlers.com.com
+ (122.213.145.34.bc.googleusercontent.com. [34.145.213.122])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6c75e557d6csm37956366d6.98.2024.09.22.07.32.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 22 Sep 2024 07:32:20 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH 0/3] Fix WinXP ISO boot using the dc390/am53C974 SCSI device
+Date: Sun, 22 Sep 2024 14:31:08 +0000
+Message-ID: <20240922143216.662873-1-ribalda@chromium.org>
+X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: Mc8vCgAH56yXGvBmHbLdAA--.24843S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrWr4kCw47CF1ftFy5Jr4Utwb_yoWxXrg_C3
- 45Aay3Wr4DJr4UZwnYyrW8tr1SvwnYkr1SgF1jk34DXF4UGF4fZr45t3Wvq3Z7X3yUCrsx
- uF129F9rXay5XjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUnPEfUUUUUU==
-X-Originating-IP: [117.173.244.102]
-X-CM-SenderInfo: pfkd0hxolxq5hhdkh0dhw/1tbiCRBiKGbv+gM4wQAAsa
-Received-SPF: pass client-ip=220.197.32.18; envelope-from=chao.liu@yeah.net;
- helo=mail-m16.yeah.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f30;
+ envelope-from=ribalda@chromium.org; helo=mail-qv1-xf30.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.129,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sun, 22 Sep 2024 10:44:51 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,25 +94,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Chao Liu <chao.liu@yeah.net>
----
- hw/dma/xlnx-zynq-devcfg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Mark Cave-Ayland reported that after landing the pre-computed _PRT, the
+above mentioned testcase failed to pass.
 
-diff --git a/hw/dma/xlnx-zynq-devcfg.c b/hw/dma/xlnx-zynq-devcfg.c
-index b8544d0731..7170353a62 100644
---- a/hw/dma/xlnx-zynq-devcfg.c
-+++ b/hw/dma/xlnx-zynq-devcfg.c
-@@ -372,7 +372,7 @@ static void xlnx_zynq_devcfg_init(Object *obj)
-                               s->regs_info, s->regs,
-                               &xlnx_zynq_devcfg_reg_ops,
-                               XLNX_ZYNQ_DEVCFG_ERR_DEBUG,
--                              XLNX_ZYNQ_DEVCFG_R_MAX);
-+                              XLNX_ZYNQ_DEVCFG_R_MAX * 4);
-     memory_region_add_subregion(&s->iomem,
-                                 A_CTRL,
-                                 &reg_array->mem);
+It seems that it is due to WinXP not handling properly a variable
+package. Let's replace it.
+
+
+Unfortunately, the ASL diff is not the best (or I cannot produce
+something better):
+
+12c12
+<  *     Length           0x00003917 (14615)
+---
+>  *     Length           0x00003914 (14612)
+14c14
+<  *     Checksum         0xD9
+---
+>  *     Checksum         0x09
+
+Ricardo Ribalda (3):
+  tests/acpi: pc: allow DSDT acpi table changes
+  hw/i386/acpi-build: return a non-var package from _PRT()
+  tests/acpi: pc: update golden masters for DSDT
+
+ hw/i386/acpi-build.c                 |   2 +-
+ tests/data/acpi/x86/pc/DSDT          | Bin 8527 -> 8526 bytes
+ tests/data/acpi/x86/pc/DSDT.acpierst | Bin 8438 -> 8437 bytes
+ tests/data/acpi/x86/pc/DSDT.acpihmat | Bin 9852 -> 9851 bytes
+ tests/data/acpi/x86/pc/DSDT.bridge   | Bin 15398 -> 15397 bytes
+ tests/data/acpi/x86/pc/DSDT.cphp     | Bin 8991 -> 8990 bytes
+ tests/data/acpi/x86/pc/DSDT.dimmpxm  | Bin 10181 -> 10180 bytes
+ tests/data/acpi/x86/pc/DSDT.hpbridge | Bin 8478 -> 8477 bytes
+ tests/data/acpi/x86/pc/DSDT.hpbrroot | Bin 5034 -> 5033 bytes
+ tests/data/acpi/x86/pc/DSDT.ipmikcs  | Bin 8599 -> 8598 bytes
+ tests/data/acpi/x86/pc/DSDT.memhp    | Bin 9886 -> 9885 bytes
+ tests/data/acpi/x86/pc/DSDT.nohpet   | Bin 8385 -> 8384 bytes
+ tests/data/acpi/x86/pc/DSDT.numamem  | Bin 8533 -> 8532 bytes
+ tests/data/acpi/x86/pc/DSDT.roothp   | Bin 12320 -> 12319 bytes
+ tests/data/acpi/x86/q35/DSDT.cxl     | Bin 13148 -> 13146 bytes
+ tests/data/acpi/x86/q35/DSDT.viot    | Bin 14615 -> 14612 bytes
+ 16 files changed, 1 insertion(+), 1 deletion(-)
+
 -- 
-2.46.1
+2.46.0.792.g87dc391469-goog
 
 
