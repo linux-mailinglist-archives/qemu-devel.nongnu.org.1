@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5E497E175
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 180AA97E16B
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:03:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssLHg-0001dK-1h; Sun, 22 Sep 2024 08:01:48 -0400
+	id 1ssLHe-0001Wf-VL; Sun, 22 Sep 2024 08:01:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHE-0000uw-A8
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:27 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ id 1ssLHG-0000vC-SB
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:31 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHA-0002MU-LY
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:18 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a9018103214so486881966b.3
- for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:15 -0700 (PDT)
+ id 1ssLHC-0002Md-N3
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:20 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a8d2b4a5bf1so492572666b.2
+ for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1727006475; x=1727611275; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QJqgUpVqE8mzIAzakADKSQmb3mmZO+Sr3Tev2BkN3Qc=;
- b=KPdtXXYoj+nbBGYZB3BUzFx3MmlnviCKp8rbKNjVeDbwgk/v+bwQ6q3TIfhQxYX0py
- w0OomtjMVtx4oGwWJQ2uXMy10GRuv1k3HQO/ytb15i2jTNegY4Y46UOgUWK8YbcKE1gk
- xFQgvlHLPnPTONsaiCEDsfIOQMGrMGra/Dw5njbX9VnTXeKgs/OY3/9GiB5f45mMVaga
- 0ooCQxfCd5DbgohE5nPUPMqvAtucM/b4STv3szahL8MPSPEvlg+WltamvH8fjJvVNb72
- Ud/5JP/1fIzho4ho0tL6wrjHep3+7vP1kEKd9ulmXOvvd9a9ytncd7XAqjXnmBATFBGi
- NELA==
+ bh=6Cw3gAeD8wEnk+7LA9VieK3VzfanKWkt65wfBPmlUjU=;
+ b=VEQQVb1rbBwOVNMPa5I7hTKW/6hJmp3KeG/ktncHYvuhWLDWRS1paVW+ZAgSfTpL95
+ Tpcjn1jU2GYaKTMZkis5SM+hokoMLK701LSP4FOZLmd5FkCpQv5BwbgFdWI5GcXl2jZl
+ xg7ptFPlk+NUlgWSKQOg1Q+dZ6NOetVmn/MbNcN3E6GTHrxUATMB0CVNH6qVsuW04FX8
+ BYsbGg7xpyYKIzk6fQmxT6cSCsOkxrIpSFaNY9D/v6Co7ToCZRUkhG3HqofpD21YTn4p
+ wBZgSevw3P+7iPq0N3uzLN7E5gxrjgzlBe2olF0bTGdidjdwDphcwj9XqhHPmQGKMsUe
+ nK9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1727006475; x=1727611275;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QJqgUpVqE8mzIAzakADKSQmb3mmZO+Sr3Tev2BkN3Qc=;
- b=HlKNcMxtZMc23Xc/5BtFx7WHdDO6jlAqQhFveOgCQyH7Xiv7CpKyq7iFkYk9N/qZ5A
- /3tpcj5WY/uSMvUY6aONU/xWZzJoAiL7M3b5hzLrFOwojWJxMhc0JnbLA3RpZ2a1HrV3
- R2A4lFIva663v40ZI54FIOM1WqElAj+61N4aKQinlI/hMJkvu20PrfmlmstQPMud2O1x
- 58mbQez9yfofSpVdPmyxg9V+thy2j6wJgtQ5WRwLWpVfTHNTwy0dOqXld+Z47xSvroDC
- ZJfyti6PA08JlBKQZmKlDU3TtgkJu/v5X8m6/mIVMUUUKHJHgFdj4vUiR1025cCWoJKO
- oCzA==
-X-Gm-Message-State: AOJu0Yxw9+hhph3wKwlH77PRoMIKJIhVFZS7rAdQHERTeGXii5yp4RGR
- loTuqtOaqj+KIlWNXGxHvLN4jN32jp8tVwv29Gubsk9i/4o0rQTerfrADhkhyuWJB3XG6CbCChi
- Rmd8=
-X-Google-Smtp-Source: AGHT+IHubmoyrZjVUEr1r3XZxZhrwPg1migFE1dr1umHMNV+/gPsqDJnXuI4rQwdecma4LFwcOzqhQ==
-X-Received: by 2002:a17:907:a4b:b0:a86:aee7:9736 with SMTP id
- a640c23a62f3a-a90d59257d4mr898993066b.46.1727006474801; 
- Sun, 22 Sep 2024 05:01:14 -0700 (PDT)
+ bh=6Cw3gAeD8wEnk+7LA9VieK3VzfanKWkt65wfBPmlUjU=;
+ b=Ft78XXUt1kYJBVK/T5Y74smzpqTUoi3rYrTxkHdqEjJPpkqX2XklokX5K0kpAXxe8V
+ I7q02iR4gO0yzg+FTbIzWYsjGaCntP6fkUbpQTWdU88PRt0ntLOPyOXRkg7abse2Qzr8
+ XJi/MBEsNpB+zUb4erq41rRO4442CmfLKAanjw5VlKX+A+MvfudwN3djvoE+c7ATxzM9
+ zjlHYGeZI2e+4cTQwJrZENSpDo8iSifYoee8hSJA36yGzokov4j9KnvfeqIYn0xXrCB7
+ YvDyAra2EW1BC/8MCT+y2/rso0Mtk8Ic8UTK2SVnCpAMApP/Ye93liLc1dwe7K5VmLPy
+ 0ooQ==
+X-Gm-Message-State: AOJu0YxRix+6akPadIjS4Ja+9A7uFsTJAbmzDrZ/oaO0IskR1ifstKhh
+ jZMWCnWBuGz4CS/e7fyeTb6ln4qIo5W6mC+BnwvwTz0G8LYPnbQNM6/M4NJ36WNQvS6x9Hfbd6k
+ f8OA=
+X-Google-Smtp-Source: AGHT+IGBCxftqz6ZLHd2pCpCyPSWujIoplxQTmv3WRbpC/7ZKDIqCeFfDeqluIsJNHBfXmb1PNMtMg==
+X-Received: by 2002:a17:906:6a10:b0:a90:3492:9ad8 with SMTP id
+ a640c23a62f3a-a90d51a7139mr930694866b.65.1727006475560; 
+ Sun, 22 Sep 2024 05:01:15 -0700 (PDT)
 Received: from stoup.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.14
+ a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Sep 2024 05:01:14 -0700 (PDT)
+ Sun, 22 Sep 2024 05:01:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Elisha Hollander <just4now666666@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 02/31] tcg: Propagate new TCGOp to add_as_label_use
-Date: Sun, 22 Sep 2024 14:00:43 +0200
-Message-ID: <20240922120112.5067-3-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org,
+ TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>, qemu-stable@nongnu.org,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 03/31] tcg: Fix iteration step in 32-bit gvec operation
+Date: Sun, 22 Sep 2024 14:00:44 +0200
+Message-ID: <20240922120112.5067-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240922120112.5067-1-richard.henderson@linaro.org>
 References: <20240922120112.5067-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,153 +96,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The use of tcg_last_op does not interact well with
-TCGContext.emit_before_op, resulting in the label
-being linked to something other than the branch op.
+From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
 
-In this case it is easier to simply collect the emitted
-branch op and pass it directly to add_as_label_use.
+The loop in the 32-bit case of the vector compare operation
+was incorrectly incrementing by 8 bytes per iteration instead
+of 4 bytes. This caused the function to process only half of
+the intended elements.
 
-Reported-by: Elisha Hollander <just4now666666@gmail.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-stable@nongnu.org
+Fixes: 9622c697d1 (tcg: Add gvec compare with immediate and scalar operand)
+Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240904142739.854-2-zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tcg/tcg-op.c | 63 ++++++++++++++++++++++++++--------------------------
- 1 file changed, 32 insertions(+), 31 deletions(-)
+ tcg/tcg-op-gvec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index 28c41b37a4..4a7e705367 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -117,9 +117,9 @@ static void DNI tcg_gen_op1_i64(TCGOpcode opc, TCGv_i64 a1)
-     tcg_gen_op1(opc, tcgv_i64_arg(a1));
- }
+diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
+index 0308732d9b..78ee1ced80 100644
+--- a/tcg/tcg-op-gvec.c
++++ b/tcg/tcg-op-gvec.c
+@@ -3939,7 +3939,7 @@ void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
+         uint32_t i;
  
--static void DNI tcg_gen_op1i(TCGOpcode opc, TCGArg a1)
-+static TCGOp * DNI tcg_gen_op1i(TCGOpcode opc, TCGArg a1)
- {
--    tcg_gen_op1(opc, a1);
-+    return tcg_gen_op1(opc, a1);
- }
- 
- static void DNI tcg_gen_op2_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2)
-@@ -196,16 +196,16 @@ static void DNI tcg_gen_op4i_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-                 tcgv_i64_arg(a3), a4);
- }
- 
--static void DNI tcg_gen_op4ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                                  TCGArg a3, TCGArg a4)
-+static TCGOp * DNI tcg_gen_op4ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                     TCGArg a3, TCGArg a4)
- {
--    tcg_gen_op4(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2), a3, a4);
-+    return tcg_gen_op4(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2), a3, a4);
- }
- 
--static void DNI tcg_gen_op4ii_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
--                                  TCGArg a3, TCGArg a4)
-+static TCGOp * DNI tcg_gen_op4ii_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-+                                     TCGArg a3, TCGArg a4)
- {
--    tcg_gen_op4(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2), a3, a4);
-+    return tcg_gen_op4(opc, tcgv_i64_arg(a1), tcgv_i64_arg(a2), a3, a4);
- }
- 
- static void DNI tcg_gen_op5_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-@@ -270,12 +270,12 @@ static void DNI tcg_gen_op6i_i64(TCGOpcode opc, TCGv_i64 a1, TCGv_i64 a2,
-                 tcgv_i64_arg(a3), tcgv_i64_arg(a4), tcgv_i64_arg(a5), a6);
- }
- 
--static void DNI tcg_gen_op6ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
--                                  TCGv_i32 a3, TCGv_i32 a4,
--                                  TCGArg a5, TCGArg a6)
-+static TCGOp * DNI tcg_gen_op6ii_i32(TCGOpcode opc, TCGv_i32 a1, TCGv_i32 a2,
-+                                     TCGv_i32 a3, TCGv_i32 a4,
-+                                     TCGArg a5, TCGArg a6)
- {
--    tcg_gen_op6(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
--                tcgv_i32_arg(a3), tcgv_i32_arg(a4), a5, a6);
-+    return tcg_gen_op6(opc, tcgv_i32_arg(a1), tcgv_i32_arg(a2),
-+                       tcgv_i32_arg(a3), tcgv_i32_arg(a4), a5, a6);
- }
- 
- /* Generic ops.  */
-@@ -286,18 +286,17 @@ void gen_set_label(TCGLabel *l)
-     tcg_gen_op1(INDEX_op_set_label, label_arg(l));
- }
- 
--static void add_last_as_label_use(TCGLabel *l)
-+static void add_as_label_use(TCGLabel *l, TCGOp *op)
- {
-     TCGLabelUse *u = tcg_malloc(sizeof(TCGLabelUse));
- 
--    u->op = tcg_last_op();
-+    u->op = op;
-     QSIMPLEQ_INSERT_TAIL(&l->branches, u, next);
- }
- 
- void tcg_gen_br(TCGLabel *l)
- {
--    tcg_gen_op1(INDEX_op_br, label_arg(l));
--    add_last_as_label_use(l);
-+    add_as_label_use(l, tcg_gen_op1(INDEX_op_br, label_arg(l)));
- }
- 
- void tcg_gen_mb(TCGBar mb_type)
-@@ -514,8 +513,9 @@ void tcg_gen_brcond_i32(TCGCond cond, TCGv_i32 arg1, TCGv_i32 arg2, TCGLabel *l)
-     if (cond == TCG_COND_ALWAYS) {
-         tcg_gen_br(l);
-     } else if (cond != TCG_COND_NEVER) {
--        tcg_gen_op4ii_i32(INDEX_op_brcond_i32, arg1, arg2, cond, label_arg(l));
--        add_last_as_label_use(l);
-+        TCGOp *op = tcg_gen_op4ii_i32(INDEX_op_brcond_i32,
-+                                      arg1, arg2, cond, label_arg(l));
-+        add_as_label_use(l, op);
-     }
- }
- 
-@@ -1934,15 +1934,16 @@ void tcg_gen_brcond_i64(TCGCond cond, TCGv_i64 arg1, TCGv_i64 arg2, TCGLabel *l)
-     if (cond == TCG_COND_ALWAYS) {
-         tcg_gen_br(l);
-     } else if (cond != TCG_COND_NEVER) {
-+        TCGOp *op;
-         if (TCG_TARGET_REG_BITS == 32) {
--            tcg_gen_op6ii_i32(INDEX_op_brcond2_i32, TCGV_LOW(arg1),
--                              TCGV_HIGH(arg1), TCGV_LOW(arg2),
--                              TCGV_HIGH(arg2), cond, label_arg(l));
-+            op = tcg_gen_op6ii_i32(INDEX_op_brcond2_i32, TCGV_LOW(arg1),
-+                                   TCGV_HIGH(arg1), TCGV_LOW(arg2),
-+                                   TCGV_HIGH(arg2), cond, label_arg(l));
-         } else {
--            tcg_gen_op4ii_i64(INDEX_op_brcond_i64, arg1, arg2, cond,
--                              label_arg(l));
-+            op = tcg_gen_op4ii_i64(INDEX_op_brcond_i64, arg1, arg2, cond,
-+                                   label_arg(l));
-         }
--        add_last_as_label_use(l);
-+        add_as_label_use(l, op);
-     }
- }
- 
-@@ -1953,12 +1954,12 @@ void tcg_gen_brcondi_i64(TCGCond cond, TCGv_i64 arg1, int64_t arg2, TCGLabel *l)
-     } else if (cond == TCG_COND_ALWAYS) {
-         tcg_gen_br(l);
-     } else if (cond != TCG_COND_NEVER) {
--        tcg_gen_op6ii_i32(INDEX_op_brcond2_i32,
--                          TCGV_LOW(arg1), TCGV_HIGH(arg1),
--                          tcg_constant_i32(arg2),
--                          tcg_constant_i32(arg2 >> 32),
--                          cond, label_arg(l));
--        add_last_as_label_use(l);
-+        TCGOp *op = tcg_gen_op6ii_i32(INDEX_op_brcond2_i32,
-+                                      TCGV_LOW(arg1), TCGV_HIGH(arg1),
-+                                      tcg_constant_i32(arg2),
-+                                      tcg_constant_i32(arg2 >> 32),
-+                                      cond, label_arg(l));
-+        add_as_label_use(l, op);
-     }
- }
- 
+         tcg_gen_extrl_i64_i32(t1, c);
+-        for (i = 0; i < oprsz; i += 8) {
++        for (i = 0; i < oprsz; i += 4) {
+             tcg_gen_ld_i32(t0, tcg_env, aofs + i);
+             tcg_gen_negsetcond_i32(cond, t0, t0, t1);
+             tcg_gen_st_i32(t0, tcg_env, dofs + i);
 -- 
 2.43.0
 
