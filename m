@@ -2,81 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D49297E177
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF4C097E199
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:45:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssLIq-0007NL-Da; Sun, 22 Sep 2024 08:03:00 -0400
+	id 1ssLwv-0004o0-Ee; Sun, 22 Sep 2024 08:44:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHW-00015v-IW
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:38 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHT-0002R2-EB
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:38 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a8d51a7d6f5so500914466b.2
- for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727006493; x=1727611293; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FMF6RMQzTkGIjOqPFaNa6l8f7P3+Jaf1fsLuA2qYISY=;
- b=tbT1ZRtRcKrh8jPc+q9UljlXkuvxA1a6mBUguH2IJ0BVKQTUljbtfRfVS0/UlZtA4A
- MprmZSzQMCWq4EG2YnusDccJLkOT2tVBMqN6OMJIYZFMrFKJUYRdHyigZKtasg1o9fyk
- sNno8wjvAIJHvKGlSjNJk8ykSL1oTuZLGcd3MGnckCJfY7PTPtFeFemiaIBeMg0uIBNQ
- o6PSv71DeTfW8d9Jbfvhwza4CcGmdSOcmM8nCgcYi31hIb0Gf46Jqe6BeM2pfQ6ppBxH
- hTI5+XZD6LanZEwdM4bE8IprN4bhgmzNiaBDtm9HHxaEQPpcs0VtfMMl/eRmlZjzujxv
- sPsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727006493; x=1727611293;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FMF6RMQzTkGIjOqPFaNa6l8f7P3+Jaf1fsLuA2qYISY=;
- b=OpfWCK9UhVOrf7EArCbpANXdSzNqRS3a2+05veMm3xfNv4sekO16iNoaFz6x9CcXCc
- 7io4ZX8MOF2Gl9UBcxR1VTZoEt40Dcm0QKE8FvoL2040y4AsR1b7vOXt9TZsoxEo4kVy
- WCGbr5TIMpP+QCQnXXzmInaPGwDi7sHDiYT66k5A8mAfOTTB0kqTBtLAzJoVVq/tC289
- JiNl3lUHRm6yAXTNw/GmEBXGAN8EpO/bnrTEy9Z8nF4kK5Ug28k61iS7ow24dG7ASMGg
- 7UBjcplE7teXj1zlZF2lMnPP2O6LEComg+LtPiq2svCh+ozSoZVPGQ+IJ4qB3UfsiuUZ
- vl6g==
-X-Gm-Message-State: AOJu0YzCV+sK4VLJJj0Xb1M3lUNcx8+NlZpT1EJEhnpcSZ6bkPe/ZyjA
- W4usEGwXbyN8Lfya1wjV3rq9pqbgl+6r7cPJ6fUCMFAHIcmM+Ja+zYu5AYIfC7jc4elyC7rP+Le
- 5G+A=
-X-Google-Smtp-Source: AGHT+IEsIYByDZc8iG9sZTFcfZc8ybRAMKqypZ6Dp3+U799fhdgl+1afT7093xDCESWaoko2I4WX5w==
-X-Received: by 2002:a17:907:1b10:b0:a90:4199:2a73 with SMTP id
- a640c23a62f3a-a90d4fdea16mr835489166b.5.1727006493364; 
- Sun, 22 Sep 2024 05:01:33 -0700 (PDT)
-Received: from stoup.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Sep 2024 05:01:33 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 31/31] linux-user: update syscall.tbl to Linux v6.11
-Date: Sun, 22 Sep 2024 14:01:12 +0200
-Message-ID: <20240922120112.5067-32-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240922120112.5067-1-richard.henderson@linaro.org>
-References: <20240922120112.5067-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1ssLwt-0004nR-HH
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:44:23 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1ssLwr-0007is-Mz
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:44:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=88Ku+xzJp+s2JUCdl87cjJjwqKBmN77zB8CURmOlaXo=; b=KtIQ+stMAkmFqmAF8aiCl0wkmf
+ ISzLibGBgHWaZNNvVxG9xIxpnkfT/VnbRHZ454EkFSdm9wCA4fmJ+urEkjTKXlo9PjoP0pXFj3pOa
+ WwtCAGHXhOsc62zSlR6y0RvytxmypcW6KvDrdocBJH7GbXenlVvHBUFcEm7Uj4LsHw9ajWa1n1dZy
+ +o+fnNVL+hcoIFq92Q70udd2Wev62+undpwtQfgJfRjOkSYXflsrvJtlLGc6bhwpumu3i+rS87sZ6
+ 9S2XIcReFkwcTqWqu4nmc/ub7FqvrgSLKW0dnW8BI1Ewk933XYYzyvWPZpTBQs7bJ1VK9JKs5RAFq
+ KZ/VSoQXmRQEqtPdXxxjALAtbSXW7DqZq/tx4YlaSLOZPWhMyQEvJk+1657JzwB+JTUlnC+NB3e1x
+ Ye45E31LKntWTTmu0hSj9oFwpdM2DLCafkI3BZvuMIx7GzBmwZuk+N4RlR6L2KZj9HwVsQVpzL5Cj
+ Vcgqi/KaVJTXP734shb4lasq9atAYblUPnX6jlR6xvuVhWUPuBcuFJhKSh+ESIR7ZcweIxNNnfLdU
+ A4kvIAlAyOu70BpqW6zTyaOhZ8SjsgYMWYAZepGmBh4LVqKytuXTvTWID6scJy6VTsVqQVy9wpjp9
+ R9VdwNnNUVLhPC6zTWfBJLHyABm0EC0Zxm53Xmuuk=;
+Received: from [2a00:23c4:8bb8:7000:41b:8fca:3a2a:2286]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1ssLwe-0009Iq-JZ; Sun, 22 Sep 2024 13:44:12 +0100
+Message-ID: <11610cb4-ad33-46ec-b5c1-f57a9cd8dd3c@ilande.co.uk>
+Date: Sun, 22 Sep 2024 13:44:11 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62c.google.com
+User-Agent: Mozilla Thunderbird
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Magnus Damm <magnus.damm@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
+References: <20240919185749.71222-1-thuth@redhat.com>
+ <20240919185749.71222-5-thuth@redhat.com>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20240919185749.71222-5-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb8:7000:41b:8fca:3a2a:2286
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 4/7] tests/functional: Convert the SPARCStation Avocado
+ test
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,103 +106,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laurent Vivier <laurent@vivier.eu>
+On 19/09/2024 19:57, Thomas Huth wrote:
 
-Updated running scripts/update-syscalltbl.sh
+> Use the new launch_kernel function to convert this test in a simple way.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS                          |  1 +
+>   tests/avocado/boot_linux_console.py  |  8 --------
+>   tests/functional/meson.build         |  4 ++++
+>   tests/functional/test_sparc_sun4m.py | 25 +++++++++++++++++++++++++
+>   4 files changed, 30 insertions(+), 8 deletions(-)
+>   create mode 100755 tests/functional/test_sparc_sun4m.py
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a75d6ba7d2..b85a3fc529 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1693,6 +1693,7 @@ F: include/hw/nvram/sun_nvram.h
+>   F: include/hw/sparc/sparc32_dma.h
+>   F: include/hw/sparc/sun4m_iommu.h
+>   F: pc-bios/openbios-sparc32
+> +F: tests/functional/test_sparc_sun4m.py
+>   
+>   Sun4u
+>   M: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+> index cf58499c84..900af67412 100644
+> --- a/tests/avocado/boot_linux_console.py
+> +++ b/tests/avocado/boot_linux_console.py
+> @@ -1019,11 +1019,3 @@ def test_sh4_r2d(self):
+>           tar_hash = 'fe06a4fd8ccbf2e27928d64472939d47829d4c7e'
+>           self.vm.add_args('-append', 'console=ttySC1')
+>           self.do_test_advcal_2018('09', tar_hash, 'zImage', console=1)
+> -
+> -    def test_sparc_ss20(self):
+> -        """
+> -        :avocado: tags=arch:sparc
+> -        :avocado: tags=machine:SS-20
+> -        """
+> -        tar_hash = 'b18550d5d61c7615d989a06edace051017726a9f'
+> -        self.do_test_advcal_2018('11', tar_hash, 'zImage.elf')
+> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+> index 8fd852f4ab..8aacd15cf3 100644
+> --- a/tests/functional/meson.build
+> +++ b/tests/functional/meson.build
+> @@ -125,6 +125,10 @@ tests_s390x_system_thorough = [
+>     's390x_topology',
+>   ]
+>   
+> +tests_sparc_system_thorough = [
+> +  'sparc_sun4m',
+> +]
+> +
+>   tests_sparc64_system_thorough = [
+>     'sparc64_sun4u',
+>   ]
+> diff --git a/tests/functional/test_sparc_sun4m.py b/tests/functional/test_sparc_sun4m.py
+> new file mode 100755
+> index 0000000000..b334375820
+> --- /dev/null
+> +++ b/tests/functional/test_sparc_sun4m.py
+> @@ -0,0 +1,25 @@
+> +#!/usr/bin/env python3
+> +#
+> +# Functional test that boots a Linux kernel on a sparc sun4m machine
+> +# and checks the console
+> +#
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +from qemu_test import LinuxKernelTest, Asset
+> +from qemu_test.utils import archive_extract
+> +
+> +class Sun4mTest(LinuxKernelTest):
+> +
+> +    ASSET_DAY11 = Asset(
+> +        'https://www.qemu-advent-calendar.org/2018/download/day11.tar.xz',
+> +        'c776533ba756bf4dd3f1fc4c024fb50ef0d853e05c5f5ddf0900a32d1eaa49e0')
+> +
+> +    def test_sparc_ss20(self):
+> +        self.set_machine('SS-20')
+> +        file_path = self.ASSET_DAY11.fetch()
+> +        archive_extract(file_path, self.workdir)
+> +        self.launch_kernel(self.workdir + '/day11/zImage.elf',
+> +                           wait_for='QEMU advent calendar')
+> +
+> +if __name__ == '__main__':
+> +    LinuxKernelTest.main()
 
-Signed-off-by: Laurent Vivier <laurent@vivier.eu>
-Message-ID: <20240920151034.859533-7-laurent@vivier.eu>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/arm/syscall.tbl       | 1 +
- linux-user/i386/syscall_32.tbl   | 7 ++++---
- linux-user/x86_64/syscall_64.tbl | 8 +++++---
- 3 files changed, 10 insertions(+), 6 deletions(-)
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-diff --git a/linux-user/arm/syscall.tbl b/linux-user/arm/syscall.tbl
-index 2ed7d229c8..23c98203c4 100644
---- a/linux-user/arm/syscall.tbl
-+++ b/linux-user/arm/syscall.tbl
-@@ -1,3 +1,4 @@
-+# SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note
- #
- # Linux system call numbers and entry vectors
- #
-diff --git a/linux-user/i386/syscall_32.tbl b/linux-user/i386/syscall_32.tbl
-index d6ebcab1d8..534c74b14f 100644
---- a/linux-user/i386/syscall_32.tbl
-+++ b/linux-user/i386/syscall_32.tbl
-@@ -1,8 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note
- #
- # 32-bit system call numbers and entry vectors
- #
- # The format is:
--# <number> <abi> <name> <entry point> <compat entry point>
-+# <number> <abi> <name> <entry point> [<compat entry point> [noreturn]]
- #
- # The __ia32_sys and __ia32_compat_sys stubs are created on-the-fly for
- # sys_*() system calls and compat_sys_*() compat system calls if
-@@ -12,7 +13,7 @@
- # The abi is always "i386" for this file.
- #
- 0	i386	restart_syscall		sys_restart_syscall
--1	i386	exit			sys_exit
-+1	i386	exit			sys_exit			-			noreturn
- 2	i386	fork			sys_fork
- 3	i386	read			sys_read
- 4	i386	write			sys_write
-@@ -263,7 +264,7 @@
- 249	i386	io_cancel		sys_io_cancel
- 250	i386	fadvise64		sys_ia32_fadvise64
- # 251 is available for reuse (was briefly sys_set_zone_reclaim)
--252	i386	exit_group		sys_exit_group
-+252	i386	exit_group		sys_exit_group			-			noreturn
- 253	i386	lookup_dcookie
- 254	i386	epoll_create		sys_epoll_create
- 255	i386	epoll_ctl		sys_epoll_ctl
-diff --git a/linux-user/x86_64/syscall_64.tbl b/linux-user/x86_64/syscall_64.tbl
-index a396f6e6ab..7093ee21c0 100644
---- a/linux-user/x86_64/syscall_64.tbl
-+++ b/linux-user/x86_64/syscall_64.tbl
-@@ -1,8 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note
- #
- # 64-bit system call numbers and entry vectors
- #
- # The format is:
--# <number> <abi> <name> <entry point>
-+# <number> <abi> <name> <entry point> [<compat entry point> [noreturn]]
- #
- # The __x64_sys_*() stubs are created on-the-fly for sys_*() system calls
- #
-@@ -68,7 +69,7 @@
- 57	common	fork			sys_fork
- 58	common	vfork			sys_vfork
- 59	64	execve			sys_execve
--60	common	exit			sys_exit
-+60	common	exit			sys_exit			-			noreturn
- 61	common	wait4			sys_wait4
- 62	common	kill			sys_kill
- 63	common	uname			sys_newuname
-@@ -239,7 +240,7 @@
- 228	common	clock_gettime		sys_clock_gettime
- 229	common	clock_getres		sys_clock_getres
- 230	common	clock_nanosleep		sys_clock_nanosleep
--231	common	exit_group		sys_exit_group
-+231	common	exit_group		sys_exit_group			-			noreturn
- 232	common	epoll_wait		sys_epoll_wait
- 233	common	epoll_ctl		sys_epoll_ctl
- 234	common	tgkill			sys_tgkill
-@@ -343,6 +344,7 @@
- 332	common	statx			sys_statx
- 333	common	io_pgetevents		sys_io_pgetevents
- 334	common	rseq			sys_rseq
-+335	common	uretprobe		sys_uretprobe
- # don't use numbers 387 through 423, add new calls after the last
- # 'common' entry
- 424	common	pidfd_send_signal	sys_pidfd_send_signal
--- 
-2.43.0
+
+ATB,
+
+Mark.
 
 
