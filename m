@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C171097E0C4
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 11:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5314A97E0C0
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 11:46:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssJ9E-00083U-Cq; Sun, 22 Sep 2024 05:44:56 -0400
+	id 1ssJ9M-0008D6-Ls; Sun, 22 Sep 2024 05:45:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1ssJ9C-00082u-HO
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 05:44:54 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1ssJ9F-00089E-7w
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 05:44:57 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1ssJ98-0005hF-E4
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 05:44:52 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-206aee40676so28107655ad.0
- for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 02:44:48 -0700 (PDT)
+ id 1ssJ9C-0005hO-AQ
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 05:44:56 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-20792913262so41064905ad.3
+ for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 02:44:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1726998287; x=1727603087; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=8kemn36F03mkvrvLgWnLWYYNjZvY8JaW2q2s0FVa8zM=;
- b=PWsEFwKVwuW5KbsQ5eSD25cEN2qufUuD43CVT/OJ5PkeGQv5qrdg6M0Ugfla08FhT+
- +MnJpinRrQqpZbkialEESbWkNVejhpDDklMcJZbTeKAive44IksHOosVcFQo9LWw/yjb
- QCfl0s7PEXYqOvmmaheFZVHi3AUIP2JET3AVgSzcpxwL+mb5ictUOda5+L05ghFTJlX3
- p2sV8JTxlcd+YbAVvvkM4KnIAwaDo1sE2g8ZJ4PtLpoPFZG1/j9KgfXZz1ELM6f7e70e
- uYrUj7wVVxCExIVGRA6dkFQ4iCiHLsp5YGqPRChP5W/5/6QC5Kncs7Hj+1RIIurwX+Hz
- 8e3Q==
+ d=gmail.com; s=20230601; t=1726998291; x=1727603091; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DVzrDT+KxGME8mgWs55kNvgaP/5TLp45Y0ruLXCeHMY=;
+ b=RjNpIJ04vHJcy+fd8H2kTZnvYXwtMh0rZhKDBABlKMuNYi2g3ujMQSk84OLdiChqGS
+ jthniZor0ijCYuZx3qxXB1UnDovtPnaM1Z4dEuFZRXnn/1/L3FsZk188ydsviwWFhucC
+ /XcWYssxyRRcpmaoV5TX2bqm0lMaz3P1p4T6I41aLrzEZoDkE7vrlwRO9AfnyTJ9pvkJ
+ 5m/d+u0dUL/uNf7YNuHYDJnh4hURhM3vOOVrAPqpRucRnlx8ZiOQSXmpXtPONyXWZhY/
+ Ej/53Sv+COM5WtskHYqfywEC4dzlp5tB2lEcqof3kc7SaPs8YHQCpPxddkb4t+aRCG/E
+ 7vjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1726998287; x=1727603087;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8kemn36F03mkvrvLgWnLWYYNjZvY8JaW2q2s0FVa8zM=;
- b=PxBTJuphf78MFvxRPzen0uVPNAbYkxfYpps02ISxPQW8rdvQeR6TPu0mnlPhp3v+w4
- KvqErGxsqjAueJ8/oo5TrvSbh0wS2/VBIeIWo9arWtX+3SPB5q3f5OMH3g2+4XKgXIjR
- 55EpMSODJkgaAgWKNxikiXShwiACjFLMk2iw1vy/4RT7/8qCLVYrca5tfLMeczn1mdyR
- HGck6bK43xmpXsNVmysk/0dUtGa3DrpAbURb+VaztKgYKj/88grtFv+jGjQxpVZcty98
- z7L9xC6dkcew+j6WacZNFwEptzprzQnRkejGiibHAdP/eua+OIZGcR0JOR3GWPUa6eVN
- qCcw==
-X-Gm-Message-State: AOJu0YwKEif1+DNOhRDPmkI4FbtgyBmANjcVYlWXQNacN1OWwOBKBwtZ
- 2wQvnwunHNKAGYrz4WvRBFPM15097bKXAhgh1v7XR2YNdm5vIxpJ3hp1Pw==
-X-Google-Smtp-Source: AGHT+IEb8Bz/1760P//JY00+K0UXkNUXHezEnkSfNQ6K/Iz1vD9ZQyHdMPxkn92O5yNeQbjLZJz1kQ==
-X-Received: by 2002:a17:902:f610:b0:207:8e6f:ed99 with SMTP id
- d9443c01a7336-208d83258acmr138879945ad.11.1726998287161; 
- Sun, 22 Sep 2024 02:44:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1726998291; x=1727603091;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DVzrDT+KxGME8mgWs55kNvgaP/5TLp45Y0ruLXCeHMY=;
+ b=g9lFBbOlLSx/d2a9jG25NiXmj5lH5qrtP+O36arSg6GDIZE3bNCp4TlW1eMsASC0Cc
+ axAG+ZOQ69sZEovL9Vr+Fizgf1M71bIZA9Le7m6XPfQgWqwTGvP8JO3F1SGC9vHysG4q
+ R5keehLPmtnD5zy84VjAktBgp4JHHeNPcdI4/CK77TmCfQ8opV3IbHbGQZ7BrDITUCtI
+ vI6g5jRvV7Z7NiReeKUqjZd0Bgn8Z0Vs913uzLyDSMOegzqgRs8OAX5/jwCRZNEpYkNU
+ IcZwWyUK+OVF4vdETCE6oMg4ww0YxBYb6CX/hFOJQL0SFjUzE8uVYBGZfhqZ0WHtwUHD
+ 8hfw==
+X-Gm-Message-State: AOJu0YzkhsTregnnYw+oM0QcC1T87k6SENRnxA/c8ER5dBHEpKBST7DC
+ 1UIxq3TWTyFKsEdPDmjVx3v4E07j3kCWaXBKhcZAtT0Rn/DcugWkGc1WnQ==
+X-Google-Smtp-Source: AGHT+IFyJLlLL4BVhnZ+8mxE51sIAwbDQ6Rl073LIM+sP4sB1clT9gEEIQPQRfPm+ZD7bZXerrzgDw==
+X-Received: by 2002:a17:902:e551:b0:202:2d:c87 with SMTP id
+ d9443c01a7336-208d833b3ebmr135038735ad.12.1726998290826; 
+ Sun, 22 Sep 2024 02:44:50 -0700 (PDT)
 Received: from localhost.localdomain ([103.103.35.151])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20794735810sm117622885ad.278.2024.09.22.02.44.43
+ d9443c01a7336-20794735810sm117622885ad.278.2024.09.22.02.44.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Sep 2024 02:44:46 -0700 (PDT)
+ Sun, 22 Sep 2024 02:44:50 -0700 (PDT)
 From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: graf@amazon.com, agraf@csgraf.de, stefanha@redhat.com, pbonzini@redhat.com,
  slp@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  mst@redhat.com, marcel.apfelbaum@gmail.com, berrange@redhat.com,
  philmd@linaro.org
-Subject: [PATCH v7 0/5] AWS Nitro Enclave emulation support
-Date: Sun, 22 Sep 2024 15:44:36 +0600
-Message-Id: <20240922094441.23802-1-dorjoychy111@gmail.com>
+Subject: [PATCH v7 1/5] tests/lcitool: Update libvirt-ci and add libcbor
+ dependency
+Date: Sun, 22 Sep 2024 15:44:37 +0600
+Message-Id: <20240922094441.23802-2-dorjoychy111@gmail.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20240922094441.23802-1-dorjoychy111@gmail.com>
+References: <20240922094441.23802-1-dorjoychy111@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=dorjoychy111@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=dorjoychy111@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: 15
 X-Spam_score: 1.5
 X-Spam_bar: +
@@ -92,187 +96,268 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is v7 submission for AWS Nitro Enclave emulation in QEMU. From the QEMU side
-the implementation for nitro enclaves is complete. v6 is at:
-https://lore.kernel.org/qemu-devel/20240905195735.16911-1-dorjoychy111@gmail.com/T/#t
+libcbor dependecy is necessary for adding virtio-nsm and nitro-enclave
+machine support in the following commits. libvirt-ci has already been
+updated with the dependency upstream and this commit updates libvirt-ci
+submodule in QEMU to latest upstream. Also the libcbor dependency has
+been added to tests/lcitool/projects/qemu.yml.
 
-Changes in v7:
-    - rebased with master as the first 3 crypto patches got in master now
-    - had to change some QCRYPTO_HASH_ALG refs to QCRYPTO_HASH_ALGO (with an 'O')
-as that got changed in master
-    - had to re-do the libvirt-ci update patch as I got a conflict from master
-    - renamed handle_* functions in virtio-nsm.c to be not camel case
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+---
+ .gitlab-ci.d/cirrus/macos-13.vars                     | 2 +-
+ .gitlab-ci.d/cirrus/macos-14.vars                     | 2 +-
+ scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml      | 1 +
+ scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml        | 1 +
+ tests/docker/dockerfiles/alpine.docker                | 1 +
+ tests/docker/dockerfiles/debian-amd64-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-arm64-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-armhf-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-i686-cross.docker     | 1 +
+ tests/docker/dockerfiles/debian-mips64el-cross.docker | 1 +
+ tests/docker/dockerfiles/debian-mipsel-cross.docker   | 1 +
+ tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 1 +
+ tests/docker/dockerfiles/debian-s390x-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian.docker                | 1 +
+ tests/docker/dockerfiles/fedora.docker                | 1 +
+ tests/docker/dockerfiles/opensuse-leap.docker         | 3 ++-
+ tests/docker/dockerfiles/ubuntu2204.docker            | 1 +
+ tests/lcitool/libvirt-ci                              | 2 +-
+ tests/lcitool/projects/qemu.yml                       | 1 +
+ 19 files changed, 20 insertions(+), 4 deletions(-)
 
-Changes in v6:
-    - updated MAINTAINERS in the commit that introduced eif.c, eif.h files
-    - used iov_to_buf and iov_from_buf in virtio-nsm.c handle_input
-    - used g_new0 for iovec_list instead of g_malloc
-    - updated documentation as now the vsock backend work[6] has been merged in
-rust-vmm's vhost-device-vsock
-
-Changes in v5:
-    - bunch of use of glib utilities like g_autofree, g_memdup2, GList etc
-    - updated libvirt-ci and added libcbor dependency
-    - files in this patch are built under libcbor and gnutls dependency check now and
-libcbor dependency has been moved to root meson.build file
-    - separated and re-ordered commits as suggested
-    - user_data and nonce are added as null to attestation when empty and payload_map_size is fixed
-    - variables in eif.c have been shortened for readability
-
-Changes in v4:
-    - fixed error_setv assertion failed. I could not reproduce this but I think
-this was happening because I did not set Error *err = NULL in x86_load_eif
-    - qemu_cbor.. helpers moved to a separate file now
-    - libcbor version requirement reduced from 0.8.0 to 0.7.0
-    - replaced GChecksum uses with qcrypto apis
-    - timestamp multiplied by 1000 in virtio-nsm
-    - user_data and nonce are now included in attestation even when they are empty
-    - added x509-utils in crypto
-    - added G_CHECKSUM_SHA384 support in hash-glib.c
-    - PCR3 and PCR4 can be set from nitro-enclave machine options. I did not add
-the options for virtio-nsm device though. I think the PCR states are set by
-machines so it made sense to add the options for machine only.
-
-Changes in v3:
-    - Support for virtio-nsm device
-    - The EIF related logic has been removed from microvm.c i.e., the logic is
-contained in enclave related code
-    - For vsock emulation in nitro-enclave, now vhost-user-vsock is being used
-instead of vhost-vsock (more details in the cover-letter below)
-    - updated documentation accordingly
-
-Changes in v2:
-    - moved eif.c and eif.h files from hw/i386 to hw/core
-
-Hi,
-
-Hope everyone is doing well. This is a patch series adding AWS Nitro Enclave[1]
-emulation support in QEMU. Alexander Graf is mentoring me on this work. I have
-a gitlab branch where you can view the patches in the gitlab web UI for each commit:
-https://gitlab.com/dorjoy03/qemu/-/tree/nitro-enclave-emulation
-
-AWS nitro enclaves is an Amazon EC2[2] feature that allows creating isolated
-execution environments, called enclaves, from Amazon EC2 instances, which are
-used for processing highly sensitive data. Enclaves have no persistent storage
-and no external networking. The enclave VMs are based on Firecracker microvm
-and have a vhost-vsock device for communication with the parent EC2 instance
-that spawned it and a Nitro Secure Module (NSM) device for cryptographic
-attestation. The parent instance VM always has CID 3 while the enclave VM gets
-a dynamic CID. The enclave VMs can communicate with the parent instance over
-various ports to CID 3, for example, the init process inside an enclave sends a
-heartbeat to port 9000 upon boot, expecting a heartbeat reply, letting the
-parent instance know that the enclave VM has successfully booted.
-
-From inside an EC2 instance, nitro-cli[3] is used to spawn an enclave VM using
-an EIF (Enclave Image Format)[4] file. EIF files can be built using nitro-cli
-as well. The EIF specification can be found in the README of the github
-aws-nitro-enclaves-image-format repository[4]. An EIF file contains the kernel,
-cmdline and ramdisk(s) in different sections which are used to boot the enclave
-VM.
-
-Adding nitro enclave emulation support in QEMU will make the life of AWS Nitro
-Enclave users easier as they will be able to test their EIF images locally
-without having to run real nitro enclaves which can be difficult for debugging
-due to its roots in security. This will also make quick prototyping easier.
-
-In QEMU, the new nitro-enclave machine type is implemented based on the microvm
-machine type similar to how AWS Nitro Enclaves are based on Firecracker microvm.
-
-The vsock emulation support is added using vhost-user-vsock device. This is
-needed as nitro VMs always talk to parent VM (CID 3) but there is no support for
-sibling VM communication in vhost-vsock. So to run nitro-enclave, a process that
-does vsock emulation in user-space like vhost-device-vsock[5] from rust-vmm must
-be run. I am working on adding proxying using vsock (right now it uses unix
-domain socket) to the host machine in vhost-device-vsock which I have already
-posted a PR[6] in rust-vmm repo. This will allow users to run the necessary parent
-VM applications in the host machine instead of a separate VM with CID 3. Update:
-this has been merged now.
-
-A new device virtio-nsm support has been added to QEMU. This device is built-into
-the nitro-enclave VM. The virtio-nsm spec can be found here[7].
-
-For local testing you need to generate a hello.eif image by first building
-nitro-cli locally[8]. Then you can use nitro-cli to build a hello.eif image[9].
-More details about testing can be found in the docs/system/i386/nitro-enclave.rst
-file.
-
-Thanks.
-
-Regards,
-Dorjoy
-
-[1] https://docs.aws.amazon.com/enclaves/latest/user/nitro-enclave.html
-[2] https://aws.amazon.com/ec2/
-[3] https://docs.aws.amazon.com/enclaves/latest/user/getting-started.html
-[4] https://github.com/aws/aws-nitro-enclaves-image-format?tab=readme-ov-file#enclave-image-file-eif-specification
-[5] https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-vsock
-[6] https://github.com/rust-vmm/vhost-device/pull/706
-[7] https://lists.oasis-open.org/archives/virtio-comment/202310/msg00387.html
-[8] https://github.com/aws/aws-nitro-enclaves-cli/blob/main/docs/ubuntu_20.04_how_to_install_nitro_cli_from_github_sources.md
-[9] https://github.com/aws/aws-nitro-enclaves-cli/blob/main/examples/x86_64/hello/README.md
-
-Dorjoy Chowdhury (5):
-  tests/lcitool: Update libvirt-ci and add libcbor dependency
-  device/virtio-nsm: Support for Nitro Secure Module device
-  hw/core: Add Enclave Image Format (EIF) related helpers
-  machine/nitro-enclave: New machine type for AWS Nitro Enclaves
-  docs/nitro-enclave: Documentation for nitro-enclave machine type
-
- .gitlab-ci.d/cirrus/macos-13.vars             |    2 +-
- .gitlab-ci.d/cirrus/macos-14.vars             |    2 +-
- MAINTAINERS                                   |   20 +
- backends/hostmem-memfd.c                      |    2 -
- configs/devices/i386-softmmu/default.mak      |    1 +
- docs/system/i386/nitro-enclave.rst            |   78 +
- hw/core/eif.c                                 |  719 +++++++
- hw/core/eif.h                                 |   22 +
- hw/core/machine.c                             |   71 +-
- hw/core/meson.build                           |    3 +
- hw/i386/Kconfig                               |    6 +
- hw/i386/meson.build                           |    3 +
- hw/i386/microvm.c                             |    6 +-
- hw/i386/nitro_enclave.c                       |  355 ++++
- hw/virtio/Kconfig                             |    5 +
- hw/virtio/cbor-helpers.c                      |  326 ++++
- hw/virtio/meson.build                         |    6 +
- hw/virtio/virtio-nsm-pci.c                    |   73 +
- hw/virtio/virtio-nsm.c                        | 1665 +++++++++++++++++
- include/hw/boards.h                           |    2 +
- include/hw/i386/microvm.h                     |    2 +
- include/hw/i386/nitro_enclave.h               |   62 +
- include/hw/virtio/cbor-helpers.h              |   46 +
- include/hw/virtio/virtio-nsm.h                |   59 +
- include/sysemu/hostmem.h                      |    2 +
- meson.build                                   |    2 +
- .../ci/setup/ubuntu/ubuntu-2204-aarch64.yaml  |    1 +
- .../ci/setup/ubuntu/ubuntu-2204-s390x.yaml    |    1 +
- tests/docker/dockerfiles/alpine.docker        |    1 +
- .../dockerfiles/debian-amd64-cross.docker     |    1 +
- .../dockerfiles/debian-arm64-cross.docker     |    1 +
- .../dockerfiles/debian-armhf-cross.docker     |    1 +
- .../dockerfiles/debian-i686-cross.docker      |    1 +
- .../dockerfiles/debian-mips64el-cross.docker  |    1 +
- .../dockerfiles/debian-mipsel-cross.docker    |    1 +
- .../dockerfiles/debian-ppc64el-cross.docker   |    1 +
- .../dockerfiles/debian-s390x-cross.docker     |    1 +
- tests/docker/dockerfiles/debian.docker        |    1 +
- tests/docker/dockerfiles/fedora.docker        |    1 +
- tests/docker/dockerfiles/opensuse-leap.docker |    3 +-
- tests/docker/dockerfiles/ubuntu2204.docker    |    1 +
- tests/lcitool/libvirt-ci                      |    2 +-
- tests/lcitool/projects/qemu.yml               |    1 +
- 43 files changed, 3520 insertions(+), 40 deletions(-)
- create mode 100644 docs/system/i386/nitro-enclave.rst
- create mode 100644 hw/core/eif.c
- create mode 100644 hw/core/eif.h
- create mode 100644 hw/i386/nitro_enclave.c
- create mode 100644 hw/virtio/cbor-helpers.c
- create mode 100644 hw/virtio/virtio-nsm-pci.c
- create mode 100644 hw/virtio/virtio-nsm.c
- create mode 100644 include/hw/i386/nitro_enclave.h
- create mode 100644 include/hw/virtio/cbor-helpers.h
- create mode 100644 include/hw/virtio/virtio-nsm.h
-
+diff --git a/.gitlab-ci.d/cirrus/macos-13.vars b/.gitlab-ci.d/cirrus/macos-13.vars
+index ac3fa3a847..b10b7f34de 100644
+--- a/.gitlab-ci.d/cirrus/macos-13.vars
++++ b/.gitlab-ci.d/cirrus/macos-13.vars
+@@ -11,6 +11,6 @@ MAKE='/opt/homebrew/bin/gmake'
+ NINJA='/opt/homebrew/bin/ninja'
+ PACKAGING_COMMAND='brew'
+ PIP3='/opt/homebrew/bin/pip3'
+-PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
++PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libcbor libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
+ PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+ PYTHON='/opt/homebrew/bin/python3'
+diff --git a/.gitlab-ci.d/cirrus/macos-14.vars b/.gitlab-ci.d/cirrus/macos-14.vars
+index 24cfec3b89..2bbab50ca0 100644
+--- a/.gitlab-ci.d/cirrus/macos-14.vars
++++ b/.gitlab-ci.d/cirrus/macos-14.vars
+@@ -11,6 +11,6 @@ MAKE='/opt/homebrew/bin/gmake'
+ NINJA='/opt/homebrew/bin/ninja'
+ PACKAGING_COMMAND='brew'
+ PIP3='/opt/homebrew/bin/pip3'
+-PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
++PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libcbor libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
+ PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+ PYTHON='/opt/homebrew/bin/python3'
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
+index 71a0f0c433..4fb3c7555f 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
+@@ -35,6 +35,7 @@ packages:
+   - libcacard-dev
+   - libcap-ng-dev
+   - libcapstone-dev
++  - libcbor-dev
+   - libcmocka-dev
+   - libcurl4-gnutls-dev
+   - libdaxctl-dev
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
+index d8de967b18..d79399caf3 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
+@@ -35,6 +35,7 @@ packages:
+   - libcacard-dev
+   - libcap-ng-dev
+   - libcapstone-dev
++  - libcbor-dev
+   - libcmocka-dev
+   - libcurl4-gnutls-dev
+   - libdaxctl-dev
+diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
+index 54b9721997..a0136181d3 100644
+--- a/tests/docker/dockerfiles/alpine.docker
++++ b/tests/docker/dockerfiles/alpine.docker
+@@ -45,6 +45,7 @@ RUN apk update && \
+         libaio-dev \
+         libbpf-dev \
+         libcap-ng-dev \
++        libcbor-dev \
+         libdrm-dev \
+         libepoxy-dev \
+         libffi-dev \
+diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
+index 136c3a79a1..5c5a753aca 100644
+--- a/tests/docker/dockerfiles/debian-amd64-cross.docker
++++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:amd64 \
+                       libcap-ng-dev:amd64 \
+                       libcapstone-dev:amd64 \
++                      libcbor-dev:amd64 \
+                       libcmocka-dev:amd64 \
+                       libcurl4-gnutls-dev:amd64 \
+                       libdaxctl-dev:amd64 \
+diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
+index 233f6ee1de..7724b5f7fb 100644
+--- a/tests/docker/dockerfiles/debian-arm64-cross.docker
++++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:arm64 \
+                       libcap-ng-dev:arm64 \
+                       libcapstone-dev:arm64 \
++                      libcbor-dev:arm64 \
+                       libcmocka-dev:arm64 \
+                       libcurl4-gnutls-dev:arm64 \
+                       libdaxctl-dev:arm64 \
+diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
+index f26385e0b9..d64c2a2cbd 100644
+--- a/tests/docker/dockerfiles/debian-armhf-cross.docker
++++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:armhf \
+                       libcap-ng-dev:armhf \
+                       libcapstone-dev:armhf \
++                      libcbor-dev:armhf \
+                       libcmocka-dev:armhf \
+                       libcurl4-gnutls-dev:armhf \
+                       libdaxctl-dev:armhf \
+diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
+index 2328ee1732..f4501866f9 100644
+--- a/tests/docker/dockerfiles/debian-i686-cross.docker
++++ b/tests/docker/dockerfiles/debian-i686-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:i386 \
+                       libcap-ng-dev:i386 \
+                       libcapstone-dev:i386 \
++                      libcbor-dev:i386 \
+                       libcmocka-dev:i386 \
+                       libcurl4-gnutls-dev:i386 \
+                       libdaxctl-dev:i386 \
+diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+index 2862785692..c375921c2d 100644
+--- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+@@ -94,6 +94,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:mips64el \
+                       libcap-ng-dev:mips64el \
+                       libcapstone-dev:mips64el \
++                      libcbor-dev:mips64el \
+                       libcmocka-dev:mips64el \
+                       libcurl4-gnutls-dev:mips64el \
+                       libdaxctl-dev:mips64el \
+diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+index 4ac314e22e..0fcb88a174 100644
+--- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
++++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+@@ -91,6 +91,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:mipsel \
+                       libcap-ng-dev:mipsel \
+                       libcapstone-dev:mipsel \
++                      libcbor-dev:mipsel \
+                       libcmocka-dev:mipsel \
+                       libcurl4-gnutls-dev:mipsel \
+                       libdaxctl-dev:mipsel \
+diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+index 8c1dcec9cf..393d0300c6 100644
+--- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:ppc64el \
+                       libcap-ng-dev:ppc64el \
+                       libcapstone-dev:ppc64el \
++                      libcbor-dev:ppc64el \
+                       libcmocka-dev:ppc64el \
+                       libcurl4-gnutls-dev:ppc64el \
+                       libdaxctl-dev:ppc64el \
+diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
+index 72668e0315..cbe590080d 100644
+--- a/tests/docker/dockerfiles/debian-s390x-cross.docker
++++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
+@@ -92,6 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev:s390x \
+                       libcap-ng-dev:s390x \
+                       libcapstone-dev:s390x \
++                      libcbor-dev:s390x \
+                       libcmocka-dev:s390x \
+                       libcurl4-gnutls-dev:s390x \
+                       libdaxctl-dev:s390x \
+diff --git a/tests/docker/dockerfiles/debian.docker b/tests/docker/dockerfiles/debian.docker
+index 42bd0067d1..631fe6b671 100644
+--- a/tests/docker/dockerfiles/debian.docker
++++ b/tests/docker/dockerfiles/debian.docker
+@@ -41,6 +41,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev \
+                       libcap-ng-dev \
+                       libcapstone-dev \
++                      libcbor-dev \
+                       libcmocka-dev \
+                       libcurl4-gnutls-dev \
+                       libdaxctl-dev \
+diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
+index ecdefaff1a..a01c004cfa 100644
+--- a/tests/docker/dockerfiles/fedora.docker
++++ b/tests/docker/dockerfiles/fedora.docker
+@@ -61,6 +61,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                libbpf-devel \
+                libcacard-devel \
+                libcap-ng-devel \
++               libcbor-devel \
+                libcmocka-devel \
+                libcurl-devel \
+                libdrm-devel \
+diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
+index 66143621fe..751919c1ec 100644
+--- a/tests/docker/dockerfiles/opensuse-leap.docker
++++ b/tests/docker/dockerfiles/opensuse-leap.docker
+@@ -4,7 +4,7 @@
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+-FROM registry.opensuse.org/opensuse/leap:15.5
++FROM registry.opensuse.org/opensuse/leap:15.6
+ 
+ RUN zypper update -y && \
+     zypper install -y \
+@@ -46,6 +46,7 @@ RUN zypper update -y && \
+            libbz2-devel \
+            libcacard-devel \
+            libcap-ng-devel \
++           libcbor-devel \
+            libcmocka-devel \
+            libcurl-devel \
+            libdrm-devel \
+diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
+index 3a7de6a318..ecd5c4fd08 100644
+--- a/tests/docker/dockerfiles/ubuntu2204.docker
++++ b/tests/docker/dockerfiles/ubuntu2204.docker
+@@ -41,6 +41,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcacard-dev \
+                       libcap-ng-dev \
+                       libcapstone-dev \
++                      libcbor-dev \
+                       libcmocka-dev \
+                       libcurl4-gnutls-dev \
+                       libdaxctl-dev \
+diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+index 789b4601bc..a8253ca565 160000
+--- a/tests/lcitool/libvirt-ci
++++ b/tests/lcitool/libvirt-ci
+@@ -1 +1 @@
+-Subproject commit 789b4601bce4e01f43fdb6ad4ce5ab4e46674440
++Subproject commit a8253ca5656c34c1d91f2c1170bd0cbf117358f1
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 252e871f80..35878951b6 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -42,6 +42,7 @@ packages:
+  - libc-static
+  - libcacard
+  - libcap-ng
++ - libcbor
+  - libcurl
+  - libdrm
+  - libepoxy
 -- 
 2.39.5
 
