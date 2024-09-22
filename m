@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E3797E180
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A73097E161
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:03:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssLIq-0007Qz-Tr; Sun, 22 Sep 2024 08:03:01 -0400
+	id 1ssLIk-0006Zx-LF; Sun, 22 Sep 2024 08:02:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHW-00015D-EX
+ id 1ssLHW-00015T-Gp
  for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:38 -0400
 Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ssLHP-0002Ps-KL
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:36 -0400
+ id 1ssLHR-0002Pw-Lq
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:37 -0400
 Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a8b155b5e9eso497537466b.1
- for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:30 -0700 (PDT)
+ a640c23a62f3a-a90349aa7e5so499940266b.0
+ for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1727006490; x=1727611290; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JWYHZE7l7ENra38P1AapjTcTu1OoaMuyBt2zstCKACg=;
- b=uhDkbdVKMaqX80/nPYQZcRhN8Ex22klhrxF95M08jQLy0m78eLPvhp9N2tmGNV/BbP
- VIyJ9h+s3NencIerU7K/RpBgpFIuklS/S352c0AP+E+lmRyCkxs122sdzBh0houlP6Ti
- FAuMMC+zK3mHyDLgfGsMzQYkULteOkB8ZovkOWw9g+Ihz4aT1QayHMsEEsn9snVbLPn7
- y3lNXyWuHSgdF6XuiVRBV1o3HL4wwSB3KJJERCxCtGcaDxMwgvLRG8hxfBe1mNlQ/We9
- z2sxjMwrU/6WbO50REWbvBnWA/Q9J7yijQxVoErFepmSsZ6n+YjlKtfbpEhpU/wc2Zd8
- 7jJg==
+ bh=s6d57KzsN1bF2wqW5163e/cLPPfmTSMzxIZv0Uzl3Iw=;
+ b=nlTxCGxRmhIhUoPG06pdDpO/x6ZXUrLIYmQgV3NybiUavef9Lj+trXGXRuw0prbuvF
+ uQ4rr2zdNjYDn6xPzPiR5BxD5RypaabClG+++wDeN2xfeylOEFb87Md7ffNLHoekq1+q
+ M9EKgeD4LG9uOvzGh7abGv2c7KcDytG/P+mxzy4YVyOerRjknAl65qs+YH0NWEfp/LzD
+ ukSAG/APuM6mp+OauIIP25/h5blj89Ry4RjenY4SGzz1DQ3brte+nh8OM/Jz+OzDJ8ZP
+ Gg5fMcGSEhhjzxT35TMVg7se/XMUKPu+7VT1LcsxXn8IMvHJTtbJqZpU1NeKXjmhRHiw
+ RJ8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1727006490; x=1727611290;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JWYHZE7l7ENra38P1AapjTcTu1OoaMuyBt2zstCKACg=;
- b=GOFp5ao7a6AKty+nNW8/0lOFgu2BqveQyGYGSzRnUxkR0gCjdZQCDsaZu1L/+vGI41
- rlIL+6jwnG+SwPhVYVyYFSAfI+/hIMOMsmsk/epFhb4dPpa6KpGibImcv0uGcq3TurXP
- 5RrBqXVvtJfZqKxWVTJ+cJzsiZwhVmpLSgxtgOnyMqzstR9TyTDnbT0xCQPkv9RO+KNK
- 0kiciFQXC/aqdWjnsO9LBEiLSPZxR1GSYVEMIf1cYLQwxpWZQk9MvTh/qpquomHiVl9J
- BJfLt30j3w+8S3Ud/GAuJhDdjz/SyzR+slWjCQUNuu394Z28ZeZPvlxKtEzMb7Rml8fv
- kveg==
-X-Gm-Message-State: AOJu0YzWl4EtI7PCOYacWatB0QGUf1l/oVAwNzvYORYYQluudpB65JA2
- 8qeB5HWyCGlgzHjGcvCM98AJD+xLCb3Ak/rAvAJHKkWTkA98whqVSQ7wjN3Dx+W+UnYs5YfwKqJ
- HmSQ=
-X-Google-Smtp-Source: AGHT+IGNyYgjgEPRitwt1S2OpKkN69ucq3srToUvTd+wOIligLskKk2kfM3erBroGTLEzNt4Hs6Fag==
-X-Received: by 2002:a17:907:d2de:b0:a7a:97ca:3059 with SMTP id
- a640c23a62f3a-a90d5005f45mr750708166b.34.1727006489524; 
- Sun, 22 Sep 2024 05:01:29 -0700 (PDT)
+ bh=s6d57KzsN1bF2wqW5163e/cLPPfmTSMzxIZv0Uzl3Iw=;
+ b=pOM0dVukzPKAj4NBNF7AJ/ANI9uKiaAzFm23GN/Ps/EZ7gNAU1mdCFEUYiL9KxJX1v
+ 6Ng2tE00TumtxfodgwzcVaUsLiDyWIl4KyZ0CsJ4jXcL1LOcnHgLnF7LsMErExlcscud
+ EpvN5inG1F3Fsnl4MRzgaw0vjbltk0QDFIANGvk29kWnnysoAe8j3HOTEy3h4W0OQqE/
+ y0VK+MYvYfETTflTN57uu1ZIbFnm50Gk+ocxGx7z9IUzQLmCqAcseZ8DnReRjWfTkZEr
+ VGHH4Kxyx17Ks6J49+eXoRcf+G6/fG+z5dW/T74vgE3Z7Pjq/vAfGa4TGoI35lUShBrY
+ 8a6g==
+X-Gm-Message-State: AOJu0YzTGi1LdjT8+T7hvJwJu9H4PUReF4WFNwNnrsCnYZ+yHAJVXkQW
+ gwq0GKSs+prn4zbsH8SOs5YKWexOXr2edZYwHjQYHz1qPp8JqlpY+ju+T59HNzh9cvnOwehk8bb
+ 6NYQ=
+X-Google-Smtp-Source: AGHT+IFoRbNp7uRXez3d/aV18oa/q1BI+mdNb0fMGSkewPIzwWETFBnsMgr66TJPzdVAamU12wxH9A==
+X-Received: by 2002:a17:907:3f17:b0:a86:c252:aaa2 with SMTP id
+ a640c23a62f3a-a90d592845cmr857055766b.51.1727006490272; 
+ Sun, 22 Sep 2024 05:01:30 -0700 (PDT)
 Received: from stoup.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
  by smtp.gmail.com with ESMTPSA id
  a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.29
@@ -61,9 +61,9 @@ From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
 	Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 26/31] linux-user,aarch64: move to syscalltbl file
-Date: Sun, 22 Sep 2024 14:01:07 +0200
-Message-ID: <20240922120112.5067-27-richard.henderson@linaro.org>
+Subject: [PULL 27/31] linux-user,openrisc: move to syscalltbl file
+Date: Sun, 22 Sep 2024 14:01:08 +0200
+Message-ID: <20240922120112.5067-28-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240922120112.5067-1-richard.henderson@linaro.org>
 References: <20240922120112.5067-1-richard.henderson@linaro.org>
@@ -95,45 +95,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Laurent Vivier <laurent@vivier.eu>
 
-Since kernel v6.11 aarch64 has moved from syscall_nr.h file
-to syscall_64.tbl (See e632bca07c8e ("arm64: generate 64-bit
-syscall.tbl"))
+Since kernel v6.11 openrisc has moved from syscall_nr.h file
+to syscall.tbl (See 77122bf9e3df ("openrisc: convert to generic syscall
+table"))
 
 Update linux-user scripts to be able to retrieve syscall numbers
-from linux syscall_64.tbl instead of syscall_nr.h.
-New syscall_64.tbl is imported from linux v6.11 using
-updated scripts/update-syscalltbl.sh
+from linux syscall.tbl instead of syscall_nr.h.
+New syscall.tbl is imported from linux v6.11 using updated
+scripts/update-syscalltbl.sh
 
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
-Message-ID: <20240920151034.859533-2-laurent@vivier.eu>
+Message-ID: <20240920151034.859533-3-laurent@vivier.eu>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/aarch64/syscall_nr.h           | 331 +-----------------
- configs/targets/aarch64-linux-user.mak    |   2 +
- configs/targets/aarch64_be-linux-user.mak |   2 +
- linux-user/aarch64/meson.build            |   6 +
- linux-user/aarch64/syscall_64.tbl         | 405 ++++++++++++++++++++++
- linux-user/aarch64/syscallhdr.sh          |  28 ++
- scripts/gensyscalls.sh                    |   1 -
- scripts/update-syscalltbl.sh              |   1 +
- 8 files changed, 445 insertions(+), 331 deletions(-)
- create mode 100644 linux-user/aarch64/syscall_64.tbl
- create mode 100644 linux-user/aarch64/syscallhdr.sh
+ linux-user/openrisc/syscall_nr.h    | 350 ------------------------
+ configs/targets/or1k-linux-user.mak |   2 +
+ linux-user/meson.build              |   1 +
+ linux-user/openrisc/meson.build     |   5 +
+ linux-user/openrisc/syscall.tbl     | 405 ++++++++++++++++++++++++++++
+ linux-user/openrisc/syscallhdr.sh   |  28 ++
+ scripts/gensyscalls.sh              |   2 -
+ scripts/update-syscalltbl.sh        |   1 +
+ 8 files changed, 442 insertions(+), 352 deletions(-)
+ delete mode 100644 linux-user/openrisc/syscall_nr.h
+ create mode 100644 linux-user/openrisc/meson.build
+ create mode 100644 linux-user/openrisc/syscall.tbl
+ create mode 100644 linux-user/openrisc/syscallhdr.sh
 
-diff --git a/linux-user/aarch64/syscall_nr.h b/linux-user/aarch64/syscall_nr.h
-index c2e09ed5c5..760302cb3e 100644
---- a/linux-user/aarch64/syscall_nr.h
-+++ b/linux-user/aarch64/syscall_nr.h
-@@ -1,330 +1 @@
+diff --git a/linux-user/openrisc/syscall_nr.h b/linux-user/openrisc/syscall_nr.h
+deleted file mode 100644
+index 2b66f99ea6..0000000000
+--- a/linux-user/openrisc/syscall_nr.h
++++ /dev/null
+@@ -1,350 +0,0 @@
 -/*
 - * This file contains the system call numbers.
 - * Do not modify.
 - * This file is generated by scripts/gensyscalls.sh
 - */
--#ifndef LINUX_USER_AARCH64_SYSCALL_NR_H
--#define LINUX_USER_AARCH64_SYSCALL_NR_H
+-#ifndef LINUX_USER_OPENRISC_SYSCALL_NR_H
+-#define LINUX_USER_OPENRISC_SYSCALL_NR_H
 -
 -#define TARGET_NR_io_setup 0
+-#define TARGET_NR_or1k_atomic TARGET_NR_arch_specific_syscall
 -#define TARGET_NR_io_destroy 1
 -#define TARGET_NR_io_submit 2
 -#define TARGET_NR_io_cancel 3
@@ -158,7 +162,7 @@ index c2e09ed5c5..760302cb3e 100644
 -#define TARGET_NR_epoll_pwait 22
 -#define TARGET_NR_dup 23
 -#define TARGET_NR_dup3 24
--#define TARGET_NR_fcntl 25
+-#define TARGET_NR_fcntl64 25
 -#define TARGET_NR_inotify_init1 26
 -#define TARGET_NR_inotify_add_watch 27
 -#define TARGET_NR_inotify_rm_watch 28
@@ -176,10 +180,10 @@ index c2e09ed5c5..760302cb3e 100644
 -#define TARGET_NR_mount 40
 -#define TARGET_NR_pivot_root 41
 -#define TARGET_NR_nfsservctl 42
--#define TARGET_NR_statfs 43
--#define TARGET_NR_fstatfs 44
--#define TARGET_NR_truncate 45
--#define TARGET_NR_ftruncate 46
+-#define TARGET_NR_statfs64 43
+-#define TARGET_NR_fstatfs64 44
+-#define TARGET_NR_truncate64 45
+-#define TARGET_NR_ftruncate64 46
 -#define TARGET_NR_fallocate 47
 -#define TARGET_NR_faccessat 48
 -#define TARGET_NR_chdir 49
@@ -195,7 +199,7 @@ index c2e09ed5c5..760302cb3e 100644
 -#define TARGET_NR_pipe2 59
 -#define TARGET_NR_quotactl 60
 -#define TARGET_NR_getdents64 61
--#define TARGET_NR_lseek 62
+-#define TARGET_NR_llseek 62
 -#define TARGET_NR_read 63
 -#define TARGET_NR_write 64
 -#define TARGET_NR_readv 65
@@ -204,7 +208,7 @@ index c2e09ed5c5..760302cb3e 100644
 -#define TARGET_NR_pwrite64 68
 -#define TARGET_NR_preadv 69
 -#define TARGET_NR_pwritev 70
--#define TARGET_NR_sendfile 71
+-#define TARGET_NR_sendfile64 71
 -#define TARGET_NR_pselect6 72
 -#define TARGET_NR_ppoll 73
 -#define TARGET_NR_signalfd4 74
@@ -212,8 +216,8 @@ index c2e09ed5c5..760302cb3e 100644
 -#define TARGET_NR_splice 76
 -#define TARGET_NR_tee 77
 -#define TARGET_NR_readlinkat 78
--#define TARGET_NR_newfstatat 79
--#define TARGET_NR_fstat 80
+-#define TARGET_NR_fstatat64 79
+-#define TARGET_NR_fstat64 80
 -#define TARGET_NR_sync 81
 -#define TARGET_NR_fsync 82
 -#define TARGET_NR_fdatasync 83
@@ -355,8 +359,8 @@ index c2e09ed5c5..760302cb3e 100644
 -#define TARGET_NR_keyctl 219
 -#define TARGET_NR_clone 220
 -#define TARGET_NR_execve 221
--#define TARGET_NR_mmap 222
--#define TARGET_NR_fadvise64 223
+-#define TARGET_NR_mmap2 222
+-#define TARGET_NR_fadvise64_64 223
 -#define TARGET_NR_swapon 224
 -#define TARGET_NR_swapoff 225
 -#define TARGET_NR_mprotect 226
@@ -413,6 +417,26 @@ index c2e09ed5c5..760302cb3e 100644
 -#define TARGET_NR_io_pgetevents 292
 -#define TARGET_NR_rseq 293
 -#define TARGET_NR_kexec_file_load 294
+-#define TARGET_NR_clock_gettime64 403
+-#define TARGET_NR_clock_settime64 404
+-#define TARGET_NR_clock_adjtime64 405
+-#define TARGET_NR_clock_getres_time64 406
+-#define TARGET_NR_clock_nanosleep_time64 407
+-#define TARGET_NR_timer_gettime64 408
+-#define TARGET_NR_timer_settime64 409
+-#define TARGET_NR_timerfd_gettime64 410
+-#define TARGET_NR_timerfd_settime64 411
+-#define TARGET_NR_utimensat_time64 412
+-#define TARGET_NR_pselect6_time64 413
+-#define TARGET_NR_ppoll_time64 414
+-#define TARGET_NR_io_pgetevents_time64 416
+-#define TARGET_NR_recvmmsg_time64 417
+-#define TARGET_NR_mq_timedsend_time64 418
+-#define TARGET_NR_mq_timedreceive_time64 419
+-#define TARGET_NR_semtimedop_time64 420
+-#define TARGET_NR_rt_sigtimedwait_time64 421
+-#define TARGET_NR_futex_time64 422
+-#define TARGET_NR_sched_rr_get_interval_time64 423
 -#define TARGET_NR_pidfd_send_signal 424
 -#define TARGET_NR_io_uring_setup 425
 -#define TARGET_NR_io_uring_enter 426
@@ -436,7 +460,6 @@ index c2e09ed5c5..760302cb3e 100644
 -#define TARGET_NR_landlock_create_ruleset 444
 -#define TARGET_NR_landlock_add_rule 445
 -#define TARGET_NR_landlock_restrict_self 446
--#define TARGET_NR_memfd_secret 447
 -#define TARGET_NR_process_mrelease 448
 -#define TARGET_NR_futex_waitv 449
 -#define TARGET_NR_set_mempolicy_home_node 450
@@ -454,47 +477,44 @@ index c2e09ed5c5..760302cb3e 100644
 -#define TARGET_NR_mseal 462
 -#define TARGET_NR_syscalls 463
 -
--#endif /* LINUX_USER_AARCH64_SYSCALL_NR_H */
-+#include "syscall_64_nr.h"
-diff --git a/configs/targets/aarch64-linux-user.mak b/configs/targets/aarch64-linux-user.mak
-index 8f0ed21d76..4c6570f56a 100644
---- a/configs/targets/aarch64-linux-user.mak
-+++ b/configs/targets/aarch64-linux-user.mak
-@@ -4,3 +4,5 @@ TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch
- TARGET_HAS_BFLT=y
- CONFIG_SEMIHOSTING=y
- CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
-+TARGET_SYSTBL_ABI=common,64,renameat,rlimit,memfd_secret
-+TARGET_SYSTBL=syscall_64.tbl
-diff --git a/configs/targets/aarch64_be-linux-user.mak b/configs/targets/aarch64_be-linux-user.mak
-index acb5620cdb..778d22b2a9 100644
---- a/configs/targets/aarch64_be-linux-user.mak
-+++ b/configs/targets/aarch64_be-linux-user.mak
-@@ -5,3 +5,5 @@ TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch
- TARGET_HAS_BFLT=y
- CONFIG_SEMIHOSTING=y
- CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
-+TARGET_SYSTBL_ABI=common,64,renameat,rlimit,memfd_secret
-+TARGET_SYSTBL=syscall_64.tbl
-diff --git a/linux-user/aarch64/meson.build b/linux-user/aarch64/meson.build
-index f75bb3cd75..f25a67a21e 100644
---- a/linux-user/aarch64/meson.build
-+++ b/linux-user/aarch64/meson.build
-@@ -11,3 +11,9 @@ vdso_le_inc = gen_vdso.process('vdso-le.so',
- linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [vdso_be_inc, vdso_le_inc])
- 
- linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [files('mte_user_helper.c')])
-+
+-#endif /* LINUX_USER_OPENRISC_SYSCALL_NR_H */
+diff --git a/configs/targets/or1k-linux-user.mak b/configs/targets/or1k-linux-user.mak
+index 39558f77ec..eecb1e2241 100644
+--- a/configs/targets/or1k-linux-user.mak
++++ b/configs/targets/or1k-linux-user.mak
+@@ -1,2 +1,4 @@
+ TARGET_ARCH=openrisc
+ TARGET_BIG_ENDIAN=y
++TARGET_SYSTBL_ABI=common,32,or1k,time32,stat64,rlimit,renameat
++TARGET_SYSTBL=syscall.tbl
+diff --git a/linux-user/meson.build b/linux-user/meson.build
+index bc41e8c3bc..cfbaf9741d 100644
+--- a/linux-user/meson.build
++++ b/linux-user/meson.build
+@@ -45,6 +45,7 @@ subdir('m68k')
+ subdir('microblaze')
+ subdir('mips64')
+ subdir('mips')
++subdir('openrisc')
+ subdir('ppc')
+ subdir('riscv')
+ subdir('s390x')
+diff --git a/linux-user/openrisc/meson.build b/linux-user/openrisc/meson.build
+new file mode 100644
+index 0000000000..273e7a0c38
+--- /dev/null
++++ b/linux-user/openrisc/meson.build
+@@ -0,0 +1,5 @@
 +syscall_nr_generators += {
-+  'aarch64': generator(sh,
++  'openrisc': generator(sh,
 +                      arguments: [ meson.current_source_dir() / 'syscallhdr.sh', '@INPUT@', '@OUTPUT@', '@EXTRA_ARGS@' ],
 +                      output: '@BASENAME@_nr.h')
 +}
-diff --git a/linux-user/aarch64/syscall_64.tbl b/linux-user/aarch64/syscall_64.tbl
+diff --git a/linux-user/openrisc/syscall.tbl b/linux-user/openrisc/syscall.tbl
 new file mode 100644
 index 0000000000..845e24eb37
 --- /dev/null
-+++ b/linux-user/aarch64/syscall_64.tbl
++++ b/linux-user/openrisc/syscall.tbl
 @@ -0,0 +1,405 @@
 +# SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note
 +#
@@ -901,11 +921,11 @@ index 0000000000..845e24eb37
 +460	common	lsm_set_self_attr		sys_lsm_set_self_attr
 +461	common	lsm_list_modules		sys_lsm_list_modules
 +462	common	mseal				sys_mseal
-diff --git a/linux-user/aarch64/syscallhdr.sh b/linux-user/aarch64/syscallhdr.sh
+diff --git a/linux-user/openrisc/syscallhdr.sh b/linux-user/openrisc/syscallhdr.sh
 new file mode 100644
-index 0000000000..dd6b586b1b
+index 0000000000..047e9f77c7
 --- /dev/null
-+++ b/linux-user/aarch64/syscallhdr.sh
++++ b/linux-user/openrisc/syscallhdr.sh
 @@ -0,0 +1,28 @@
 +#!/bin/sh
 +# SPDX-License-Identifier: GPL-2.0
@@ -916,7 +936,7 @@ index 0000000000..dd6b586b1b
 +prefix="$4"
 +offset="$5"
 +
-+fileguard=LINUX_USER_AARCH64_`basename "$out" | sed \
++fileguard=LINUX_USER_OPENRISC_`basename "$out" | sed \
 +    -e 'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/' \
 +    -e 's/[^A-Z0-9_]/_/g' -e 's/__/_/g'`
 +grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
@@ -924,7 +944,7 @@ index 0000000000..dd6b586b1b
 +    echo "#define ${fileguard} 1"
 +    echo ""
 +
-+    while read nr abi name entry compat; do
++    while read nr abi name entry ; do
 +    if [ -z "$offset" ]; then
 +        echo "#define TARGET_NR_${prefix}${name} $nr"
 +    else
@@ -936,29 +956,30 @@ index 0000000000..dd6b586b1b
 +    echo "#endif /* ${fileguard} */"
 +) > "$out"
 diff --git a/scripts/gensyscalls.sh b/scripts/gensyscalls.sh
-index 84957280da..8b9896390c 100755
+index 8b9896390c..68de3f1aca 100755
 --- a/scripts/gensyscalls.sh
 +++ b/scripts/gensyscalls.sh
-@@ -93,7 +93,6 @@ generate_syscall_nr()
+@@ -93,8 +93,6 @@ generate_syscall_nr()
  mkdir "$TMP/asm"
  > "$TMP/asm/bitsperlong.h"
  
--generate_syscall_nr arm64 64 "$output/linux-user/aarch64/syscall_nr.h"
- generate_syscall_nr openrisc 32 "$output/linux-user/openrisc/syscall_nr.h"
- 
+-generate_syscall_nr openrisc 32 "$output/linux-user/openrisc/syscall_nr.h"
+-
  generate_syscall_nr riscv 32 "$output/linux-user/riscv/syscall32_nr.h"
+ generate_syscall_nr riscv 64 "$output/linux-user/riscv/syscall64_nr.h"
+ generate_syscall_nr hexagon 32 "$output/linux-user/hexagon/syscall_nr.h"
 diff --git a/scripts/update-syscalltbl.sh b/scripts/update-syscalltbl.sh
-index 2d23e56800..b62f27e011 100755
+index b62f27e011..c3f898fd9f 100755
 --- a/scripts/update-syscalltbl.sh
 +++ b/scripts/update-syscalltbl.sh
-@@ -1,6 +1,7 @@
- TBL_LIST="\
- arch/alpha/kernel/syscalls/syscall.tbl,linux-user/alpha/syscall.tbl \
- arch/arm/tools/syscall.tbl,linux-user/arm/syscall.tbl \
-+scripts/syscall.tbl,linux-user/aarch64/syscall_64.tbl \
- arch/m68k/kernel/syscalls/syscall.tbl,linux-user/m68k/syscall.tbl \
- arch/microblaze/kernel/syscalls/syscall.tbl,linux-user/microblaze/syscall.tbl \
+@@ -7,6 +7,7 @@ arch/microblaze/kernel/syscalls/syscall.tbl,linux-user/microblaze/syscall.tbl \
  arch/mips/kernel/syscalls/syscall_n32.tbl,linux-user/mips64/syscall_n32.tbl \
+ arch/mips/kernel/syscalls/syscall_n64.tbl,linux-user/mips64/syscall_n64.tbl \
+ arch/mips/kernel/syscalls/syscall_o32.tbl,linux-user/mips/syscall_o32.tbl \
++scripts/syscall.tbl,linux-user/openrisc/syscall.tbl \
+ arch/parisc/kernel/syscalls/syscall.tbl,linux-user/hppa/syscall.tbl \
+ arch/powerpc/kernel/syscalls/syscall.tbl,linux-user/ppc/syscall.tbl \
+ arch/s390/kernel/syscalls/syscall.tbl,linux-user/s390x/syscall.tbl \
 -- 
 2.43.0
 
