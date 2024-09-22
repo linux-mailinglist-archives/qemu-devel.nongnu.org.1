@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D0F97E1FF
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB2D97E1FE
 	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 16:33:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssNdT-0005g7-NA; Sun, 22 Sep 2024 10:32:27 -0400
+	id 1ssNdW-0005sg-97; Sun, 22 Sep 2024 10:32:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
- id 1ssNdR-0005c9-Lk
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 10:32:25 -0400
-Received: from mail-qv1-xf30.google.com ([2607:f8b0:4864:20::f30])
+ id 1ssNdU-0005oh-Tn
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 10:32:28 -0400
+Received: from mail-qv1-xf34.google.com ([2607:f8b0:4864:20::f34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
- id 1ssNdQ-0008U4-6H
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 10:32:25 -0400
-Received: by mail-qv1-xf30.google.com with SMTP id
- 6a1803df08f44-6c34fb4f65eso33858566d6.0
- for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 07:32:23 -0700 (PDT)
+ id 1ssNdT-0008UM-E7
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 10:32:28 -0400
+Received: by mail-qv1-xf34.google.com with SMTP id
+ 6a1803df08f44-6c51d1df755so30127876d6.1
+ for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 07:32:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1727015543; x=1727620343; darn=nongnu.org;
+ d=chromium.org; s=google; t=1727015545; x=1727620345; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qZjTA1FcwiRqQ/YYlZO/lsysD2HXG7PCXuxP+u0+bvI=;
- b=NyFnQ+0+4IiL0lLG+IeelmXpgmXbHwlvr2XpytjkAB9RGvg0Qax0LrlhAulk8dIWQy
- DEUyr8fi0FNomZnlU3M3mw3ZdGXfQRja4luH01O8Z4BpibG5tZCSUGnFnvywrP3Q46SN
- UkqVmQJv8XRKgMA5pZgh/XHTK19p3Pih8nP6k=
+ bh=e36ZfoJHjFKyIPloG9KFhoN84Whs6fQqjPKWB4YXiC8=;
+ b=fTCuOerFdUm31MD/1Y2TrDbpYWyIiYYjI6uNcg3OUCKArksex6UFi3zFy8Z7tw0sCU
+ X7IP3e42UyoZNh3pP0IuRI3Fi6OGaSYTj/NKc0QvagxDRJPSiM2rqx0EutHrIcHHw8b7
+ 1kLvp3YjL683Cgd1iOsvm2pMbWJUWuZhDBmrg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727015543; x=1727620343;
+ d=1e100.net; s=20230601; t=1727015545; x=1727620345;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qZjTA1FcwiRqQ/YYlZO/lsysD2HXG7PCXuxP+u0+bvI=;
- b=ltIWhJD1IstzISMZb82VBmpPEzV9DPfyGf8Ncq72CdN3d5USSh1AJ8LrMuNG8Amvwd
- vNFA5pOeDklKNHJKLXIEdu0fLELMmqqFS1qw1lhJa6JglZJHqQ1t7MB8vJLmGYxuex3y
- MhqNI0tqL1Z2g8P1V0+ejXzijy1gRLN/HUpXba9klzKAIvdFFyd3nn4UIdndDCChrJwL
- uqE7p0O1vPYgT1EoQCXV2uhBiupOMGSA3ECbhUkswiCppf3/y8QNtBwtDWWAM75p8PD0
- /k7K1//lNDNCgRqYWecUaWCMctO/hleVTw+HhEN867XuXJFqRJmKLFOnZhjUFmxikdb8
- Phlw==
+ bh=e36ZfoJHjFKyIPloG9KFhoN84Whs6fQqjPKWB4YXiC8=;
+ b=ZvxOG7qVkOIOee2Agl+jbBQ1MRMX6Hq2NJf4dwNwVnEMGexdK8MWhUAzpzKUpA4Bxp
+ UxmvVmvufzEp86Hj/z3c5RDBXCfFgLONUiftkaWaMv37fpFR5tgPRiVs01nUZCS85geb
+ SwIBUVt73i11uktSgaiwnd7GaNvbiLg3L5CRjnr7y+fspuRnGwsegYYBjKNb7WCf0mDD
+ WyJpYUcO25CEgzfmXN3xg6AxL1KUYPUwmphDDtVcjYptLl/wP/VglswhR93uiMQP9f7n
+ 6rtw2ftIE9jg7BShFWfdHtNuuWj1C4Txr1WbtIniIKy5W1tHLB4VnxMvRy8lbIWMVpxb
+ FTww==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX/Uv2ukfS7NzwhlVCue5F8H2XDSwnfyUT1TkDYK7ksh2LX7t5ERz4Y7wHtCuYI8J4OZlTmltjgE/Es@nongnu.org
-X-Gm-Message-State: AOJu0YxWtPk0iZyeZihfZ2Ihln/jiMsm4rXW60MHVxzwygQ++q+t8Kkf
- sn5jt376ENyWIUKz4cUdIDv2TWAg6F6Zot0JQ5RCS+Rp5DRKPLmBbZYg7oih5w==
-X-Google-Smtp-Source: AGHT+IGt4H5B4WtzsJPk87MCxfzPsBYBWk4GseS6CIunvXwQj4bO1MOGvVlOpsXnmw5A0MHxHYtTig==
-X-Received: by 2002:a05:6214:3c87:b0:6c5:f93d:4b0a with SMTP id
- 6a1803df08f44-6c7bc6ce52bmr143295176d6.5.1727015542900; 
- Sun, 22 Sep 2024 07:32:22 -0700 (PDT)
+ AJvYcCWT2Mk3k/4x9xR0CiFMcmT64+/q/xGnppQuVV+UxQs/be6MmSUy3GKTC+JVlWcLn1HReVCDH0HaRE2S@nongnu.org
+X-Gm-Message-State: AOJu0Yxm+W8ukxHgpWWPP6FBeevSpzR631HNG28NDMwO1CLftqxdRUSP
+ qNenFv/bR56cuef287fEa3K5HDVZ6GdTq+nwKjGWEEhXlq5Lvi9OADQWtubI2g==
+X-Google-Smtp-Source: AGHT+IHnOG69LdDdnXzyx3ecdQUNZvX7KRasBG098wYvvMHQHfnDcBtvGkEcTDVkVgYiNZgI64DPrw==
+X-Received: by 2002:a05:6214:2f83:b0:6c5:4f37:2b51 with SMTP id
+ 6a1803df08f44-6c7bd51f466mr172603916d6.28.1727015545223; 
+ Sun, 22 Sep 2024 07:32:25 -0700 (PDT)
 Received: from denia.c.googlers.com.com
  (122.213.145.34.bc.googleusercontent.com. [34.145.213.122])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6c75e557d6csm37956366d6.98.2024.09.22.07.32.20
+ 6a1803df08f44-6c75e557d6csm37956366d6.98.2024.09.22.07.32.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Sep 2024 07:32:21 -0700 (PDT)
+ Sun, 22 Sep 2024 07:32:23 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
 To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>,
@@ -65,16 +65,16 @@ To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Cc: Ricardo Ribalda <ribalda@chromium.org>
-Subject: [PATCH 1/3] tests/acpi: pc: allow DSDT acpi table changes
-Date: Sun, 22 Sep 2024 14:31:09 +0000
-Message-ID: <20240922143216.662873-2-ribalda@chromium.org>
+Subject: [PATCH 2/3] hw/i386/acpi-build: return a non-var package from _PRT()
+Date: Sun, 22 Sep 2024 14:31:10 +0000
+Message-ID: <20240922143216.662873-3-ribalda@chromium.org>
 X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
 In-Reply-To: <20240922143216.662873-1-ribalda@chromium.org>
 References: <20240922143216.662873-1-ribalda@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f30;
- envelope-from=ribalda@chromium.org; helo=mail-qv1-xf30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f34;
+ envelope-from=ribalda@chromium.org; helo=mail-qv1-xf34.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,32 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Windows XP seems to have issues when _PRT() returns a variable package.
+We know in advance the size, so we can return a fixed package instead.
+
+https://lore.kernel.org/qemu-devel/c82d9331-a8ce-4bb0-b51f-2ee789e27c86@ilande.co.uk/T/#m541190c942676bccf7a7f7fbcb450d94a4e2da53
+Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Fixes: 99cb2c6c7b ("hw/i386/acpi-build: Return a pre-computed _PRT table")
+Closes: https://lore.kernel.org/all/eb11c984-ebe4-4a09-9d71-1e9db7fe7e6f@ilande.co.uk/
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ hw/i386/acpi-build.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..f81f4e2469 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,16 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/x86/pc/DSDT",
-+"tests/data/acpi/x86/pc/DSDT.acpierst",
-+"tests/data/acpi/x86/pc/DSDT.acpihmat",
-+"tests/data/acpi/x86/pc/DSDT.bridge",
-+"tests/data/acpi/x86/pc/DSDT.cphp",
-+"tests/data/acpi/x86/pc/DSDT.dimmpxm",
-+"tests/data/acpi/x86/pc/DSDT.hpbridge",
-+"tests/data/acpi/x86/pc/DSDT.hpbrroot",
-+"tests/data/acpi/x86/pc/DSDT.ipmikcs",
-+"tests/data/acpi/x86/pc/DSDT.memhp",
-+"tests/data/acpi/x86/pc/DSDT.nohpet",
-+"tests/data/acpi/x86/pc/DSDT.numamem",
-+"tests/data/acpi/x86/pc/DSDT.roothp",
-+"tests/data/acpi/x86/q35/DSDT.cxl",
-+"tests/data/acpi/x86/q35/DSDT.viot",
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 4967aa7459..e7db51afba 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -741,7 +741,7 @@ static Aml *build_prt(bool is_pci0_prt)
+     int pin;
+ 
+     method = aml_method("_PRT", 0, AML_NOTSERIALIZED);
+-    rt_pkg = aml_varpackage(nroutes);
++    rt_pkg = aml_package(nroutes);
+ 
+     for (pin = 0; pin < nroutes; pin++) {
+         Aml *pkg = aml_package(4);
 -- 
 2.46.0.792.g87dc391469-goog
 
