@@ -2,95 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DF697E15A
-	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 13:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A09C797E167
+	for <lists+qemu-devel@lfdr.de>; Sun, 22 Sep 2024 14:03:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssLDr-0004xc-QJ; Sun, 22 Sep 2024 07:57:51 -0400
+	id 1ssLHv-0002U1-Gi; Sun, 22 Sep 2024 08:02:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1ssLDp-0004x6-Bi
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 07:57:49 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1ssLDn-0001kY-I3
- for qemu-devel@nongnu.org; Sun, 22 Sep 2024 07:57:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=4frdvPwgJ+kiRi8Yuh/O4hxXpitZpmRM0nyZ2nU7V7s=; b=YLQ2Vy9OsXmq8QBTs2fH2f6GK5
- henW8Hn3FmPE57yCQcxwQZh5YsA5dxSEqvMk9I+qd4gfo6r/nvSm2B534t4imSnLLaTnAVzJ56uM7
- pyv5iZy+bo56ZkRkhDWSWQ3Lujt8MYhlUXsDkCLwUW7xRTb8PtTc5wyXgHLaQtyO62TSVTWCtTfSV
- kzHfnc0E5/cr+En15faUoW0K0ErG3OoOwbm4IYmSXAtE3mnxulIG36hgsc7KdJUFQN+2rp5ly8cRG
- R3OD90jNiaOadKdR937RIw8iRPIE6wjxpYUBT+gxBo+qcPf1jNBu/uBQsqXcLxVlpyhkLCYdbx7c6
- FTG4SYOWaQSF3dbfh2XXD6T3fH6MOoh5LkZniM3Inl+dxQSjPbjFMZuzeJDyiFDeQu3SpzO8hWLOH
- YXkDhx+zR9jB9WNcrgJvuOjYfPzyV+XuO6uMliBNMpNjeSlhG/hwefjjIfK/JbJlxaBz6VSQGfj3z
- A/SWw3yOlNGf+wp/1GLf2NFW3vWXKuy8XzTnd7yz2V5rELesNEhYHWYVuBpsML2+wyq8vlmi6FM3r
- fz5Dq7XAPzH5j0mat4Gb1GK40LfBVLJ5fnewkd6ViuVLuEQvwf7n+Z8oCkmL4KFtu0juKmhBOWg0I
- IHKcSUTMpdNUK1kGKOT2joSbPxkSwdfSqppRoc72M=;
-Received: from [2a00:23c4:8bb8:7000:41b:8fca:3a2a:2286]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1ssLDZ-00092u-1q; Sun, 22 Sep 2024 12:57:37 +0100
-Message-ID: <eb11c984-ebe4-4a09-9d71-1e9db7fe7e6f@ilande.co.uk>
-Date: Sun, 22 Sep 2024 12:57:32 +0100
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ssLHG-0000vA-Ru
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:31 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ssLHA-0002MO-LV
+ for qemu-devel@nongnu.org; Sun, 22 Sep 2024 08:01:20 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a8d13b83511so413727066b.2
+ for <qemu-devel@nongnu.org>; Sun, 22 Sep 2024 05:01:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1727006474; x=1727611274; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qf6+jenRzI/cRzyRq8XapwCu9KrmtXXYElrtDEDayls=;
+ b=Fle0AzM0yR4iMWMCNBy0ZFYkDqMzW0NYouw3N4rOuwxuHxuHhBCsfdLI7gCDPx0wjW
+ ViOQqjpdHiz8QS+aJ+RkOzwYDF72IlE+1WXnLWBtDd5LX0ATAyIIaL6HQZsCE2fE4jJC
+ 1k6SRQAd8TxaKEs6Re27R0Yo0Vkth8pcO7kEiVSszffGoV3qeljSHqLKPSMdMwwYg5I3
+ HRUHAfZyqZbmmDxcKdMyShuGnXvee55ssDouLNhnVg5DiOlnFc2FaxnNLInnWFhVxavx
+ Ac+dN1uPXkDnniE+l4haqcXztuogNPuDRzN0npx4HMQILXVOV8RlESxNNFhyq/I+OfDW
+ zdLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727006474; x=1727611274;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qf6+jenRzI/cRzyRq8XapwCu9KrmtXXYElrtDEDayls=;
+ b=KO/AMW2ukTxg51LlqZsdRlAlY/8AWgokDLV5YatWue4EldUlROLsWNI/ATmMh0wb1y
+ BUB9fVu5WywefYW5uSfzBZXg5MAgvyNWAHlmhMQU8WGMUidgBo78uC8kNbHsrX8jNXpW
+ 49lVCPOWgCetRvzwyOlT4QvnkREvztoaMk8ukyLBDt7sRS1MXUakO+zfTVCMgkF21FuS
+ ZbmkIhAx4WVGR/LdKVPsqpXTPLXMNFneWByULKlUGU92IRd6gZ/JBX6y1Xwiy15+cbtt
+ XQAP93l5p8PbU3VmIt+2gGjTw0jOGv/+SVzdZkEe3TfsgisVLtofAkPDGuBbyTZL4D+c
+ Y4EA==
+X-Gm-Message-State: AOJu0YwFXOlNmTDFnF1wV88sqxWAkCaV4/e5Hv31VkbeDyq4Z5TFO9g5
+ d0ll5QsvugC3DFCF8esrpjCipbUln4UvmeKmvUkjAunBV9ALPQLdTUVKUBvUFAJYtPYUE5FJB+I
+ n2Yw=
+X-Google-Smtp-Source: AGHT+IGdVszDFu2zRr/AzNy6nSnmo1EIuMHHnXhMg1OMTg8O7rPE2pKo5jpseBGYu+MpPdY2JxmIYg==
+X-Received: by 2002:a17:907:708:b0:a8a:8c4c:3e2a with SMTP id
+ a640c23a62f3a-a90d56db727mr873385366b.23.1727006473373; 
+ Sun, 22 Sep 2024 05:01:13 -0700 (PDT)
+Received: from stoup.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a90612df525sm1067909966b.159.2024.09.22.05.01.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 22 Sep 2024 05:01:13 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PULL 00/31] tcg + linux-user patch queue
+Date: Sun, 22 Sep 2024 14:00:41 +0200
+Message-ID: <20240922120112.5067-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Igor Mammedov <imammedo@redhat.com>, Ricardo Ribalda <ribalda@chromium.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
- righi.andrea@gmail.com
-References: <20240814115736.1580337-1-ribalda@chromium.org>
- <20240821164553.63007e25@imammedo.users.ipa.redhat.com>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20240821164553.63007e25@imammedo.users.ipa.redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb8:7000:41b:8fca:3a2a:2286
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v5 0/3] hw/i386/acpi: Pre-compute the _PRT table
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,89 +90,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/08/2024 15:45, Igor Mammedov wrote:
+The following changes since commit 01dc65a3bc262ab1bec8fe89775e9bbfa627becb:
 
-> On Wed, 14 Aug 2024 11:56:08 +0000
-> Ricardo Ribalda <ribalda@chromium.org> wrote:
-> 
->> Today for x86 the _PRT() table is computed in runtime.
->> Under some configurations, computing the _PRT table can take more than
->> 30 seconds and the ACPI timeout is violated.
->>
->> This patchset modifies _PRT() to return a pre-computed table.
-> 
-> To be sure we are not breaking anything boot tested it with
-> rhel6.7/9.0, winxp, ws2022
+  Merge tag 'pull-target-arm-20240919' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-09-19 14:15:15 +0100)
 
-Hi Ricardo/Igor,
+are available in the Git repository at:
 
-Unfortunately it seems that this series (and in particular commit 99cb2c6c7b 
-("hw/i386/acpi-build: Return a pre-computed _PRT table") breaks my WinXP ISO boot 
-test case using the dc390/am53C974 SCSI device.
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240922
 
-Current master hangs when booting WinXP from a dc390 SCSI CD just after loading the 
-kernel device drivers and displaying "Setup is starting Windows" instead of 
-proceeding to the "Welcome to Setup" screen.
+for you to fetch changes up to c4d80fa63e823dc8dbf094b29e39b6978a3073b6:
 
-Note that there is a separate timeout issue caused by a bug in SeaBIOS which is fixed 
-in the SeaBIOS repository as commit 2424e4c0 ("esp-scsi: indicate acceptance of 
-MESSAGE IN phase data"). As the QEMU SeaBIOS binaries haven't yet been updated to 
-contain this fix, I've uploaded a pre-built bios.bin to 
-https://www.ilande.co.uk/tmp/qemu/bios.bin to help reproduce the issue.
+  linux-user: update syscall.tbl to Linux v6.11 (2024-09-22 09:30:18 +0200)
 
-Once the above file is downloaded the issue can be reproduced with the command line 
-below:
+----------------------------------------------------------------
+target/ppc: Fix lxvx/stxvx facility check
+linux-user: update syscall_nr.h to Linux v6.10
+linux-user: update syscall.tbl to Linux v6.11
+tcg: Fix iteration step in 32-bit gvec operation
+tcg: Propagate new TCGOp to add_as_label_use
+tcg/*: Do not expand cmp_vec, cmpsel_vec early
+tcg/optimize: Fold movcond with true and false values identical
+tcg/optimize: Optimize cmp_vec and cmpsel_vec
+tcg/optimize: Optimize bitsel_vec
+tcg/i386: Optimize cmpsel with constant 0 operand 3.
+tcg/i386: Implement cmp_vec with avx512 insns
+tcg/i386: Implement cmpsel_vec with avx512 insns
+tcg/i386: Implement vector TST{EQ,NE} for avx512
+tcg/ppc: Implement cmpsel_vec and optimize with constant 0/-1 arguments
+tcg/s390x: Implement cmpsel_vec and optimize with constant 0/-1 arguments
 
-./qemu-system-x86_64 \
-   -m 1G \
-   -device dc390,id=scsi0 \
-   -device scsi-cd,drive=drive0,bus=scsi0.0,channel=0,scsi-id=6,lun=0 \
-   -drive file=winxp.iso,if=none,id=drive0 \
-   -vga cirrus \
-   -boot d \
-   -trace 'esp*' \
-   -bios bios.bin
+----------------------------------------------------------------
+Fabiano Rosas (1):
+      target/ppc: Fix lxvx/stxvx facility check
 
-With the ESP tracing enabled it is possible to see that WinXP appears to get stuck in 
-a loop trying to send a SCSI command followed by a "Bus Reset". Reverting 99cb2c6c7b 
-allows the WinXP ISO to boot to the "Welcome to Setup" screen as before.
+Laurent Vivier (9):
+      linux-user: update syscall_nr.h to Linux v6.10
+      linux-user, mips: update syscall-args-o32.c.inc to Linux v6.10
+      linux-user: update syscall.tbl to Linux v6.10
+      linux-user,aarch64: move to syscalltbl file
+      linux-user,openrisc: move to syscalltbl file
+      linux-user,riscv: move to syscalltbl file
+      linux-user,hexagon: move to syscalltbl file
+      linux-user,loongarch: move to syscalltbl file
+      linux-user: update syscall.tbl to Linux v6.11
 
+Richard Henderson (20):
+      tcg: Return TCGOp from tcg_gen_op[1-6]
+      tcg: Propagate new TCGOp to add_as_label_use
+      tcg: Export vec_gen_6
+      tcg/i386: Split out tcg_out_vex_modrm_type
+      tcg/i386: Do not expand cmp_vec early
+      tcg/i386: Do not expand cmpsel_vec early
+      tcg/ppc: Do not expand cmp_vec early
+      tcg/s390x: Do not expand cmp_vec early
+      tcg/optimize: Fold movcond with true and false values identical
+      tcg/optimize: Optimize cmp_vec and cmpsel_vec
+      tcg/optimize: Optimize bitsel_vec
+      tcg/i386: Optimize cmpsel with constant 0 operand 3.
+      tcg/i386: Implement cmp_vec with avx512 insns
+      tcg/i386: Add predicate parameters to tcg_out_evex_opc
+      tcg/i386: Implement cmpsel_vec with avx512 insns
+      tcg/i386: Implement vector TST{EQ,NE} for avx512
+      tcg/ppc: Implement cmpsel_vec
+      tcg/ppc: Optimize cmpsel with constant 0/-1 arguments
+      tcg/s390x: Implement cmpsel_vec
+      tcg/s390x: Optimize cmpsel with constant 0/-1 arguments
 
-ATB,
+TANG Tiancheng (1):
+      tcg: Fix iteration step in 32-bit gvec operation
 
-Mark.
-
->> Changelog v3->v4 Thanks Richard:
->> - Make link_name struct static
->>
->> Changelog v3->v4 Thanks Igor:
->> - Add missing files to tests/qtest/bios-tables-test-allowed-diff.h
->>
->> Changelog v2->v3 Thanks Michael:
->> - Code style
->> - Add cover letter
->>
->> Ricardo Ribalda (3):
->>    tests/acpi: pc: allow DSDT acpi table changes
->>    hw/i386/acpi-build: Return a pre-computed _PRT table
->>    tests/acpi: pc: update golden masters for DSDT
->>
->>   hw/i386/acpi-build.c                 | 120 +++++----------------------
->>   tests/data/acpi/x86/pc/DSDT          | Bin 6830 -> 8527 bytes
->>   tests/data/acpi/x86/pc/DSDT.acpierst | Bin 6741 -> 8438 bytes
->>   tests/data/acpi/x86/pc/DSDT.acpihmat | Bin 8155 -> 9852 bytes
->>   tests/data/acpi/x86/pc/DSDT.bridge   | Bin 13701 -> 15398 bytes
->>   tests/data/acpi/x86/pc/DSDT.cphp     | Bin 7294 -> 8991 bytes
->>   tests/data/acpi/x86/pc/DSDT.dimmpxm  | Bin 8484 -> 10181 bytes
->>   tests/data/acpi/x86/pc/DSDT.hpbridge | Bin 6781 -> 8478 bytes
->>   tests/data/acpi/x86/pc/DSDT.hpbrroot | Bin 3337 -> 5034 bytes
->>   tests/data/acpi/x86/pc/DSDT.ipmikcs  | Bin 6902 -> 8599 bytes
->>   tests/data/acpi/x86/pc/DSDT.memhp    | Bin 8189 -> 9886 bytes
->>   tests/data/acpi/x86/pc/DSDT.nohpet   | Bin 6688 -> 8385 bytes
->>   tests/data/acpi/x86/pc/DSDT.numamem  | Bin 6836 -> 8533 bytes
->>   tests/data/acpi/x86/pc/DSDT.roothp   | Bin 10623 -> 12320 bytes
->>   tests/data/acpi/x86/q35/DSDT.cxl     | Bin 9714 -> 13148 bytes
->>   tests/data/acpi/x86/q35/DSDT.viot    | Bin 9464 -> 14615 bytes
->>   16 files changed, 22 insertions(+), 98 deletions(-)
-
+ linux-user/aarch64/syscall_nr.h            | 314 +------------------
+ linux-user/hexagon/syscall_nr.h            | 332 --------------------
+ linux-user/loongarch64/syscall_nr.h        | 312 ------------------
+ linux-user/openrisc/syscall_nr.h           | 334 --------------------
+ linux-user/riscv/syscall32_nr.h            | 308 ------------------
+ linux-user/riscv/syscall64_nr.h            | 314 -------------------
+ linux-user/riscv/syscall_nr.h              |  15 -
+ linux-user/syscall_defs.h                  |   7 +-
+ tcg/i386/tcg-target-con-set.h              |   1 +
+ tcg/i386/tcg-target-con-str.h              |   1 +
+ tcg/i386/tcg-target.h                      |   4 +-
+ tcg/i386/tcg-target.opc.h                  |   1 -
+ tcg/ppc/tcg-target-con-set.h               |   1 +
+ tcg/ppc/tcg-target.h                       |   2 +-
+ tcg/s390x/tcg-target-con-set.h             |   2 +
+ tcg/s390x/tcg-target-con-str.h             |   1 +
+ tcg/s390x/tcg-target.h                     |   2 +-
+ tcg/tcg-internal.h                         |  14 +-
+ linux-user/riscv/cpu_loop.c                |   2 +-
+ tcg/optimize.c                             |  99 ++++++
+ tcg/tcg-op-gvec.c                          |   2 +-
+ tcg/tcg-op-vec.c                           |   4 +-
+ tcg/tcg-op.c                               |  86 ++---
+ configs/targets/aarch64-linux-user.mak     |   2 +
+ configs/targets/aarch64_be-linux-user.mak  |   2 +
+ configs/targets/hexagon-linux-user.mak     |   2 +
+ configs/targets/loongarch64-linux-user.mak |   2 +
+ configs/targets/or1k-linux-user.mak        |   2 +
+ configs/targets/riscv32-linux-user.mak     |   3 +
+ configs/targets/riscv64-linux-user.mak     |   3 +
+ linux-user/aarch64/meson.build             |   6 +
+ linux-user/aarch64/syscall_64.tbl          | 405 ++++++++++++++++++++++++
+ linux-user/aarch64/syscallhdr.sh           |  28 ++
+ linux-user/alpha/syscall.tbl               |  28 +-
+ linux-user/arm/syscall.tbl                 |  25 +-
+ linux-user/hexagon/meson.build             |   6 +
+ linux-user/hexagon/syscall.tbl             | 405 ++++++++++++++++++++++++
+ linux-user/hexagon/syscallhdr.sh           |  28 ++
+ linux-user/hppa/syscall.tbl                |  41 ++-
+ linux-user/i386/syscall_32.tbl             |  35 ++-
+ linux-user/loongarch64/meson.build         |   7 +
+ linux-user/loongarch64/syscall.tbl         | 405 ++++++++++++++++++++++++
+ linux-user/loongarch64/syscallhdr.sh       |  28 ++
+ linux-user/m68k/syscall.tbl                |  22 +-
+ linux-user/meson.build                     |   2 +
+ linux-user/microblaze/syscall.tbl          |  22 +-
+ linux-user/mips/syscall-args-o32.c.inc     |  20 ++
+ linux-user/mips/syscall_o32.tbl            |  36 ++-
+ linux-user/mips64/syscall_n32.tbl          |  32 +-
+ linux-user/mips64/syscall_n64.tbl          |  20 +-
+ linux-user/openrisc/meson.build            |   5 +
+ linux-user/openrisc/syscall.tbl            | 405 ++++++++++++++++++++++++
+ linux-user/openrisc/syscallhdr.sh          |  28 ++
+ linux-user/ppc/syscall.tbl                 |  71 +++--
+ linux-user/riscv/meson.build               |   6 +
+ linux-user/riscv/syscall.tbl               | 405 ++++++++++++++++++++++++
+ linux-user/riscv/syscallhdr.sh             |  28 ++
+ linux-user/s390x/syscall.tbl               |  34 +-
+ linux-user/sh4/syscall.tbl                 |  25 +-
+ linux-user/sparc/syscall.tbl               |  40 ++-
+ linux-user/x86_64/syscall_64.tbl           |  30 +-
+ linux-user/xtensa/syscall.tbl              |  22 +-
+ scripts/gensyscalls.sh                     | 103 ------
+ scripts/update-syscalltbl.sh               |   5 +
+ target/ppc/translate/vsx-impl.c.inc        |   2 +-
+ tcg/i386/tcg-target.c.inc                  | 488 ++++++++++++++++++-----------
+ tcg/ppc/tcg-target.c.inc                   | 254 +++++++++------
+ tcg/s390x/tcg-target.c.inc                 | 195 ++++++------
+ 68 files changed, 3361 insertions(+), 2560 deletions(-)
+ delete mode 100644 linux-user/hexagon/syscall_nr.h
+ delete mode 100644 linux-user/loongarch64/syscall_nr.h
+ delete mode 100644 linux-user/openrisc/syscall_nr.h
+ delete mode 100644 linux-user/riscv/syscall32_nr.h
+ delete mode 100644 linux-user/riscv/syscall64_nr.h
+ delete mode 100644 linux-user/riscv/syscall_nr.h
+ create mode 100644 linux-user/aarch64/syscall_64.tbl
+ create mode 100644 linux-user/aarch64/syscallhdr.sh
+ create mode 100644 linux-user/hexagon/meson.build
+ create mode 100644 linux-user/hexagon/syscall.tbl
+ create mode 100644 linux-user/hexagon/syscallhdr.sh
+ create mode 100644 linux-user/loongarch64/syscall.tbl
+ create mode 100644 linux-user/loongarch64/syscallhdr.sh
+ create mode 100644 linux-user/openrisc/meson.build
+ create mode 100644 linux-user/openrisc/syscall.tbl
+ create mode 100644 linux-user/openrisc/syscallhdr.sh
+ create mode 100644 linux-user/riscv/syscall.tbl
+ create mode 100644 linux-user/riscv/syscallhdr.sh
+ delete mode 100755 scripts/gensyscalls.sh
 
