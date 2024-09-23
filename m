@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2227097EF2F
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB2697EF2D
 	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 18:24:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sslps-00079L-TQ; Mon, 23 Sep 2024 12:22:52 -0400
+	id 1sslpz-0007rO-L7; Mon, 23 Sep 2024 12:22:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpY-0006VB-1N
- for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:32 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpW-0006TD-9A
+ for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:30 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpQ-0000bI-Ry
- for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:31 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48NG8I2k012818;
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpQ-0000bD-9d
+ for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:25 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48NEBjmJ018607;
  Mon, 23 Sep 2024 16:22:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:content-transfer-encoding
- :mime-version; s=pp1; bh=T0Mfm1u3RqJjDjfSiYtkCQIr9cdPLq2u+hhg3lm
- gesA=; b=eiU/5LyNJxyzcMLQ4hVcoXsuIQudM5mTBJ5SlwBm82BoMkH3gFYAhPS
- f1w/vOOfRPVLzky5LcG/63x/7oCkYL4hq/oh+s9zT0xmw9uNCmCTvukWPXHqpkOs
- ImRzs7L3PUvuohLP6B//nMHTbeGxHGu68XZ1hswbmn8cAT1UNcWhE+Ivn5LGrZaP
- tNw7uOTLt3PzUs+gfHGyjk4FHQc7LDCZbX6ygo7CwDBH07zQNBcejqN0vPuUbS+e
- Q+tmHBmyjCEs1uA6ssMT9jQbm94V2ldxKUGvNxjizAywZQXoPcvohlD9P2Ga7zdY
- PdYp5qUKFUsR6mvIpYRh8+/biWZHMIQ==
+ :to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding; s=pp1; bh=H/4pU4i5/TvIp
+ LOuS2srJQ6STt98S9+c6PDZGCJOhcs=; b=D88uY6FZCf9y6dqnYhWp1VUK2+kFb
+ EMz6jBsjklzpdgXBJi1VePQtE2c1LYo+z5KErW9Mga8gpuZhI23QHmxOx3Mx/6aV
+ 3viTLMlazkxnbZD5qYfKauW+SsxgQC7YOiWHQBQRAF7+tRvGpg1eMSBT/olDcbR/
+ QDSkKqKXkC3373UXhjSlE3z7Rt9AFlHUIhpmF1AucFYRFKhDg59l1qsoTMkQc0qH
+ 5mm+WK2IaFqEWNBUxsvqx5tZPIufsng0u6yGCG4rH/YJIS9x30AnvxB5lte9UZA6
+ Bqlf+z8WlXe9vj1DW4PQqKvfmFDS5ezNHeZJzNXVwj3qQwje/AieUBQPw==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41snna58rj-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41skjrd0ed-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 23 Sep 2024 16:22:20 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48NGMJMk012179;
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48NGMJuP024285;
  Mon, 23 Sep 2024 16:22:19 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41snna58rg-1
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41skjrd0e9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 23 Sep 2024 16:22:19 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48NDH0BO000636;
- Mon, 23 Sep 2024 16:22:18 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41t8fufp6k-1
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48NEF4Sb012489;
+ Mon, 23 Sep 2024 16:22:19 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41t9fpqg06-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2024 16:22:18 +0000
+ Mon, 23 Sep 2024 16:22:19 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 48NGMGIe42598856
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48NGMHX349414524
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Sep 2024 16:22:16 GMT
+ Mon, 23 Sep 2024 16:22:17 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9B4F220043;
- Mon, 23 Sep 2024 16:22:16 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 18AF620043;
+ Mon, 23 Sep 2024 16:22:17 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 41C4A20040;
+ by IMSVA (Postfix) with ESMTP id ADF2620040;
  Mon, 23 Sep 2024 16:22:16 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.179.24.235])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -68,27 +68,28 @@ To: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 00/18] Stop all qemu-cpu threads on a breakpoint
-Date: Mon, 23 Sep 2024 18:12:55 +0200
-Message-ID: <20240923162208.90745-1-iii@linux.ibm.com>
+Subject: [PATCH 01/18] gdbstub: Make gdb_get_char() static
+Date: Mon, 23 Sep 2024 18:12:56 +0200
+Message-ID: <20240923162208.90745-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.46.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: CaY9Bp7UbTiSlnFDdGaRAcZXdKOfrlnx
-X-Proofpoint-ORIG-GUID: 9zolA3zJ9LCMz6EwGIqr2wEhHEDt5Hws
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20240923162208.90745-1-iii@linux.ibm.com>
+References: <20240923162208.90745-1-iii@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: hMpXotHra_VQdfz7B4WDiTsAqgEylC6I
+X-Proofpoint-ORIG-GUID: -9953Ptl3K7PnSGlBKiOWkYgTlKHvMUV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-23_12,2024-09-23_01,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0
- mlxscore=0 mlxlogscore=710 spamscore=0 impostorscore=0 priorityscore=1501
- phishscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0
+ mlxscore=0 priorityscore=1501
+ spamscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0
+ clxscore=1015 malwarescore=0 mlxlogscore=931 bulkscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
- definitions=main-2409230121
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ definitions=main-2409230117
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -112,96 +113,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+It's user-only since commit a7e0f9bd2ace ("gdbstub: abstract target
+specific details from gdb_put_packet_binary").
 
-On reporting a breakpoint in a non-non-stop mode, GDB remotes must stop
-all threads. Currently qemu-user doesn't do that, breaking the
-debugging session for at least two reasons: concurrent access to the
-GDB socket, and an assertion within GDB [1].
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ gdbstub/internals.h | 2 --
+ gdbstub/user.c      | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-This series fixes this by importing pause_all_vcpus() from qemu-system.
-This in turn requires introducing BQL and a few stubs to qemu-user.
-
-Best regards,
-Ilya
-
-[1] https://gitlab.com/qemu-project/qemu/-/issues/2465
-
-Ilya Leoshkevich (18):
-  gdbstub: Make gdb_get_char() static
-  gdbstub: Move phy_memory_mode to GDBSystemState
-  gdbstub: Move gdb_syscall_mode to GDBSyscallState
-  gdbstub: Factor out gdb_try_stop()
-  accel/tcg: Factor out cpu_exec_user()
-  qemu-thread: Introduce QEMU_MUTEX_INITIALIZER
-  qemu-thread: Introduce QEMU_COND_INITIALIZER
-  replay: Add replay_mutex_{lock,unlock}() stubs for qemu-user
-  qemu-timer: Provide qemu_clock_enable() stub for qemu-user
-  cpu: Use BQL in qemu-user
-  accel/tcg: Unify user implementations of qemu_cpu_kick()
-  cpu: Track CPUs executing syscalls
-  cpu: Implement cpu_thread_is_idle() for qemu-user
-  cpu: Introduce cpu_is_paused()
-  cpu: Set current_cpu early in qemu-user
-  cpu: Allow pausing and resuming CPUs in qemu-user
-  gdbstub: Pause all CPUs before sending stop replies
-  tests/tcg: Stress test thread breakpoints
-
- accel/tcg/user-exec-stub.c                    |   4 -
- accel/tcg/user-exec.c                         |  55 ++++++
- bsd-user/aarch64/target_arch_cpu.h            |   6 +-
- bsd-user/arm/target_arch_cpu.h                |   5 +-
- bsd-user/freebsd/os-syscall.c                 |  10 +
- bsd-user/i386/target_arch_cpu.h               |   5 +-
- bsd-user/main.c                               |   8 +-
- bsd-user/x86_64/target_arch_cpu.h             |   5 +-
- cpu-common.c                                  | 179 ++++++++++++++++++
- gdbstub/gdbstub.c                             |  17 +-
- gdbstub/internals.h                           |   4 +-
- gdbstub/syscalls.c                            |  20 +-
- gdbstub/system.c                              |  18 +-
- gdbstub/user.c                                |  28 ++-
- include/exec/cpu-common.h                     |  15 ++
- include/exec/replay-core.h                    |  13 ++
- include/hw/core/cpu.h                         |   1 +
- include/qemu/thread-posix.h                   |   8 +
- include/qemu/thread-win32.h                   |   8 +
- include/sysemu/cpus.h                         |   6 -
- include/sysemu/replay.h                       |  13 --
- linux-user/aarch64/cpu_loop.c                 |   5 +-
- linux-user/alpha/cpu_loop.c                   |   5 +-
- linux-user/arm/cpu_loop.c                     |   5 +-
- linux-user/hexagon/cpu_loop.c                 |   5 +-
- linux-user/hppa/cpu_loop.c                    |   5 +-
- linux-user/i386/cpu_loop.c                    |   5 +-
- linux-user/loongarch64/cpu_loop.c             |   5 +-
- linux-user/m68k/cpu_loop.c                    |   5 +-
- linux-user/main.c                             |   9 +-
- linux-user/microblaze/cpu_loop.c              |   5 +-
- linux-user/mips/cpu_loop.c                    |   5 +-
- linux-user/openrisc/cpu_loop.c                |   5 +-
- linux-user/ppc/cpu_loop.c                     |   5 +-
- linux-user/riscv/cpu_loop.c                   |   5 +-
- linux-user/s390x/cpu_loop.c                   |   5 +-
- linux-user/sh4/cpu_loop.c                     |   5 +-
- linux-user/sparc/cpu_loop.c                   |   5 +-
- linux-user/syscall.c                          |  12 ++
- linux-user/xtensa/cpu_loop.c                  |   5 +-
- replay/stubs-system.c                         |   8 +
- stubs/meson.build                             |   8 +
- stubs/qemu-timer.c                            |   6 +
- stubs/replay-mutex.c                          |  10 +
- stubs/replay-tools.c                          |   8 -
- system/cpus.c                                 | 172 +----------------
- tests/tcg/multiarch/Makefile.target           |  13 +-
- .../gdbstub/test-thread-breakpoint-stress.py  |  28 +++
- .../tcg/multiarch/thread-breakpoint-stress.c  |  92 +++++++++
- 49 files changed, 552 insertions(+), 327 deletions(-)
- create mode 100644 stubs/qemu-timer.c
- create mode 100644 stubs/replay-mutex.c
- create mode 100644 tests/tcg/multiarch/gdbstub/test-thread-breakpoint-stress.py
- create mode 100644 tests/tcg/multiarch/thread-breakpoint-stress.c
-
+diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+index bf5a5c63029..5acc36846f3 100644
+--- a/gdbstub/internals.h
++++ b/gdbstub/internals.h
+@@ -142,8 +142,6 @@ void gdb_create_default_process(GDBState *s);
+ int gdb_signal_to_target(int sig);
+ int gdb_target_signal_to_gdb(int sig);
+ 
+-int gdb_get_char(void); /* user only */
+-
+ /**
+  * gdb_continue() - handle continue in mode specific way.
+  */
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index b36033bc7a2..6a493c5ba3a 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -103,7 +103,7 @@ typedef struct {
+ 
+ static GDBUserState gdbserver_user_state;
+ 
+-int gdb_get_char(void)
++static int gdb_get_char(void)
+ {
+     uint8_t ch;
+     int ret;
 -- 
 2.46.0
 
