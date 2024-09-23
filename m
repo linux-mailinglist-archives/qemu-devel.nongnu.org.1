@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C405297EF3D
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 18:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82CB397EF38
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 18:26:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sslpj-0006ge-9h; Mon, 23 Sep 2024 12:22:43 -0400
+	id 1sslps-000790-5D; Mon, 23 Sep 2024 12:22:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpW-0006TF-A9
- for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:31 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpZ-0006XQ-NT
+ for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:35 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpQ-0000bL-9Z
- for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:26 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48NFT66b019038;
- Mon, 23 Sep 2024 16:22:22 GMT
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpV-0000c9-6x
+ for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:33 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48N3ge9T015793;
+ Mon, 23 Sep 2024 16:22:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=Cgy2qk6HjG5JJ
- 0WOIKaJYPb+2l7viaNGKxXp7rBP3wA=; b=BY34Lw+Za2uXpz3BekbNO9Tocry5z
- HvNpyS/3UJtG27CQDK4mQ9OKma2oXyrpv/qHUN2j7Ict5Wy6RRkQ1nwH+TB+8s03
- zBPXp1neVmjjM8rp4/kc+oojFxJto3mgBcFfKLoTilnSJup76pu4Hro/BX8JAvz4
- Na2qzvXqzsU3+ovIj4O7hw5TeZS980PTGx/+S8rE8vhXbYESoEJS8nGYgSgj/xoB
- 5oNtKgikWYN2JXf88T2Dp62XaJvODGMhL2p/9IabbiE1Te9Z3JqvTr0MzTREpEJT
- JMCrRgT1QwFO0lzEuGA7CxhVNBu6cZBy2bCXgSMFqayTL1kTnBAg2d1XA==
+ :mime-version:content-transfer-encoding; s=pp1; bh=ykbgOs+Qb6ZSM
+ Dq+eqthx7Au/caWdgCO0evwfHJo8Ys=; b=T85k0tOAdv7MKW1YLGYse972Oo/sB
+ 2nZsci/fiei/hn3PnITC0KUpUaDq6P4GaCHeOArNJhHszurb8GUrMQyzASIZYpFF
+ 5R5NqZ8VV5jAk4kUDZe4JLslJ9aaPUcmKGdwOdk/LJzZHWCr8b8fW7wS+1DA71SU
+ xwrXbIASbOuVvMtUkfXc0eKl25d8kmCHDtsdijW3xGY5bFX5icvmP8s8HwoVblKV
+ atJgMsqOAzQDIqU6fh7V876SWY3T6gGnDl0up6kZhM0uQjx2OMYynG/g8fY3alld
+ YegbnqhjJJEedKW7SwtLPp6pvqicjuc/ar8m2x+qKqVfg6gSJB4wBjYuw==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41skjrd0eh-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41sntw558x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2024 16:22:21 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48NGML0P024405;
- Mon, 23 Sep 2024 16:22:21 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41skjrd0ee-1
+ Mon, 23 Sep 2024 16:22:24 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48NGMMpf032099;
+ Mon, 23 Sep 2024 16:22:24 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41sntw558p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2024 16:22:21 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48NDoOSU000622;
+ Mon, 23 Sep 2024 16:22:24 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48NDhh9Z008707;
  Mon, 23 Sep 2024 16:22:20 GMT
 Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41t8fufp6m-1
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41t8v0ym0e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 23 Sep 2024 16:22:20 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
  by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 48NGMIjW34996878
+ 48NGMIMF24773346
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Mon, 23 Sep 2024 16:22:18 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 63ABE20043;
+ by IMSVA (Postfix) with ESMTP id CC22A20043;
  Mon, 23 Sep 2024 16:22:18 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0E11C20040;
+ by IMSVA (Postfix) with ESMTP id 767442004D;
  Mon, 23 Sep 2024 16:22:18 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.179.24.235])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 23 Sep 2024 16:22:17 +0000 (GMT)
+ Mon, 23 Sep 2024 16:22:18 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 04/18] gdbstub: Factor out gdb_try_stop()
-Date: Mon, 23 Sep 2024 18:12:59 +0200
-Message-ID: <20240923162208.90745-5-iii@linux.ibm.com>
+Subject: [PATCH 05/18] accel/tcg: Factor out cpu_exec_user()
+Date: Mon, 23 Sep 2024 18:13:00 +0200
+Message-ID: <20240923162208.90745-6-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240923162208.90745-1-iii@linux.ibm.com>
 References: <20240923162208.90745-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xakpJiLLpjgt5mD9eqLYmM4nzM1TwfPA
-X-Proofpoint-ORIG-GUID: D1d0S_wUiDJIIZLAL65EciPuO6IrQ_2R
+X-Proofpoint-ORIG-GUID: Q1bTbAzMFirASzwuIpC_ZPj8dMONCBXA
+X-Proofpoint-GUID: ccqZCz8M9PKIMyXUIvRoXJCfQ7yZN_Xt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-23_12,2024-09-23_01,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501
- spamscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0
- clxscore=1015 malwarescore=0 mlxlogscore=878 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
- definitions=main-2409230117
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ malwarescore=0 spamscore=0
+ mlxscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015
+ priorityscore=1501 adultscore=0 mlxlogscore=491 bulkscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409230121
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -113,161 +113,407 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move checking and setting allow_stop_reply into a function.
+All linux-user cpu_loop() implementations contain the same sequence
+of function calls. Factor them out so that they can be changed in one
+place.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- gdbstub/gdbstub.c   | 15 +++++++++++----
- gdbstub/internals.h |  2 ++
- gdbstub/system.c    |  6 ++----
- gdbstub/user.c      | 11 ++++-------
- 4 files changed, 19 insertions(+), 15 deletions(-)
+ accel/tcg/user-exec.c              | 12 ++++++++++++
+ bsd-user/aarch64/target_arch_cpu.h |  6 +-----
+ bsd-user/arm/target_arch_cpu.h     |  5 +----
+ bsd-user/i386/target_arch_cpu.h    |  5 +----
+ bsd-user/x86_64/target_arch_cpu.h  |  5 +----
+ include/exec/cpu-common.h          |  2 ++
+ linux-user/aarch64/cpu_loop.c      |  5 +----
+ linux-user/alpha/cpu_loop.c        |  5 +----
+ linux-user/arm/cpu_loop.c          |  5 +----
+ linux-user/hexagon/cpu_loop.c      |  5 +----
+ linux-user/hppa/cpu_loop.c         |  5 +----
+ linux-user/i386/cpu_loop.c         |  5 +----
+ linux-user/loongarch64/cpu_loop.c  |  5 +----
+ linux-user/m68k/cpu_loop.c         |  5 +----
+ linux-user/microblaze/cpu_loop.c   |  5 +----
+ linux-user/mips/cpu_loop.c         |  5 +----
+ linux-user/openrisc/cpu_loop.c     |  5 +----
+ linux-user/ppc/cpu_loop.c          |  5 +----
+ linux-user/riscv/cpu_loop.c        |  5 +----
+ linux-user/s390x/cpu_loop.c        |  5 +----
+ linux-user/sh4/cpu_loop.c          |  5 +----
+ linux-user/sparc/cpu_loop.c        |  5 +----
+ linux-user/xtensa/cpu_loop.c       |  5 +----
+ 23 files changed, 35 insertions(+), 85 deletions(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index d08568cea0e..a096104b07a 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -1422,11 +1422,10 @@ static void handle_v_attach(GArray *params, void *user_ctx)
-     gdbserver_state.g_cpu = cpu;
-     gdbserver_state.c_cpu = cpu;
- 
--    if (gdbserver_state.allow_stop_reply) {
-+    if (gdb_try_stop()) {
-         g_string_printf(gdbserver_state.str_buf, "T%02xthread:", GDB_SIGNAL_TRAP);
-         gdb_append_thread_id(cpu, gdbserver_state.str_buf);
-         g_string_append_c(gdbserver_state.str_buf, ';');
--        gdbserver_state.allow_stop_reply = false;
- cleanup:
-         gdb_put_strbuf();
-     }
-@@ -2016,12 +2015,11 @@ static void handle_gen_set(GArray *params, void *user_ctx)
- 
- static void handle_target_halt(GArray *params, void *user_ctx)
- {
--    if (gdbserver_state.allow_stop_reply) {
-+    if (gdb_try_stop()) {
-         g_string_printf(gdbserver_state.str_buf, "T%02xthread:", GDB_SIGNAL_TRAP);
-         gdb_append_thread_id(gdbserver_state.c_cpu, gdbserver_state.str_buf);
-         g_string_append_c(gdbserver_state.str_buf, ';');
-         gdb_put_strbuf();
--        gdbserver_state.allow_stop_reply = false;
-     }
-     /*
-      * Remove all the breakpoints when this query is issued,
-@@ -2493,3 +2491,12 @@ void gdb_create_default_process(GDBState *s)
-     process->target_xml = NULL;
- }
- 
-+bool gdb_try_stop(void)
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 7ddc47b0ba4..ca3e8e988ee 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -1288,3 +1288,15 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+ #define DATA_SIZE 16
+ #include "atomic_template.h"
+ #endif
++
++int cpu_exec_user(CPUState *cs)
 +{
-+    if (!gdbserver_state.allow_stop_reply) {
-+        return false;
-+    }
++    int trapnr;
 +
-+    gdbserver_state.allow_stop_reply = false;
-+    return true;
++    cpu_exec_start(cs);
++    trapnr = cpu_exec(cs);
++    cpu_exec_end(cs);
++    process_queued_cpu_work(cs);
++
++    return trapnr;
 +}
-diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index 5acc36846f3..310861e581b 100644
---- a/gdbstub/internals.h
-+++ b/gdbstub/internals.h
-@@ -215,4 +215,6 @@ void gdb_breakpoint_remove_all(CPUState *cs);
- int gdb_target_memory_rw_debug(CPUState *cs, hwaddr addr,
-                                uint8_t *buf, int len, bool is_write);
+diff --git a/bsd-user/aarch64/target_arch_cpu.h b/bsd-user/aarch64/target_arch_cpu.h
+index b288e0d069b..6ab6c07e973 100644
+--- a/bsd-user/aarch64/target_arch_cpu.h
++++ b/bsd-user/aarch64/target_arch_cpu.h
+@@ -51,11 +51,7 @@ static inline void target_cpu_loop(CPUARMState *env)
+     abi_long ret;
  
-+bool gdb_try_stop(void);
-+
- #endif /* GDBSTUB_INTERNALS_H */
-diff --git a/gdbstub/system.c b/gdbstub/system.c
-index 5ce357c6c2b..fbe9528569c 100644
---- a/gdbstub/system.c
-+++ b/gdbstub/system.c
-@@ -141,7 +141,7 @@ static void gdb_vm_state_change(void *opaque, bool running, RunState state)
-         return;
-     }
+     for (;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
+-
++        trapnr = cpu_exec_user(cs);
+         switch (trapnr) {
+         case EXCP_SWI:
+             /* See arm64/arm64/trap.c cpu_fetch_syscall_args() */
+diff --git a/bsd-user/arm/target_arch_cpu.h b/bsd-user/arm/target_arch_cpu.h
+index 517d0087644..2fa97c168c0 100644
+--- a/bsd-user/arm/target_arch_cpu.h
++++ b/bsd-user/arm/target_arch_cpu.h
+@@ -43,10 +43,7 @@ static inline void target_cpu_loop(CPUARMState *env)
+     CPUState *cs = env_cpu(env);
  
--    if (!gdbserver_state.allow_stop_reply) {
-+    if (!gdb_try_stop()) {
-         return;
-     }
+     for (;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+         switch (trapnr) {
+         case EXCP_UDEF:
+         case EXCP_NOCP:
+diff --git a/bsd-user/i386/target_arch_cpu.h b/bsd-user/i386/target_arch_cpu.h
+index 9bf2c4244b7..cbc4d77daba 100644
+--- a/bsd-user/i386/target_arch_cpu.h
++++ b/bsd-user/i386/target_arch_cpu.h
+@@ -110,10 +110,7 @@ static inline void target_cpu_loop(CPUX86State *env)
+     /* target_siginfo_t info; */
  
-@@ -211,7 +211,6 @@ static void gdb_vm_state_change(void *opaque, bool running, RunState state)
+     for (;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
  
- send_packet:
-     gdb_put_packet(buf->str);
--    gdbserver_state.allow_stop_reply = false;
+         switch (trapnr) {
+         case 0x80: {
+diff --git a/bsd-user/x86_64/target_arch_cpu.h b/bsd-user/x86_64/target_arch_cpu.h
+index 4094d61da1a..5442056d009 100644
+--- a/bsd-user/x86_64/target_arch_cpu.h
++++ b/bsd-user/x86_64/target_arch_cpu.h
+@@ -118,10 +118,7 @@ static inline void target_cpu_loop(CPUX86State *env)
+     /* target_siginfo_t info; */
  
-     /* disable single step if it was enabled */
-     cpu_single_step(cpu, 0);
-@@ -428,10 +427,9 @@ void gdb_exit(int code)
+     for (;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
  
-     trace_gdbstub_op_exiting((uint8_t)code);
+         switch (trapnr) {
+         case EXCP_SYSCALL:
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 2e1b499cb71..4a7b43f9aa3 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -226,6 +226,8 @@ G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
  
--    if (gdbserver_state.allow_stop_reply) {
-+    if (gdb_try_stop()) {
-         snprintf(buf, sizeof(buf), "W%02x", (uint8_t)code);
-         gdb_put_packet(buf);
--        gdbserver_state.allow_stop_reply = false;
-     }
+ /* accel/tcg/cpu-exec.c */
+ int cpu_exec(CPUState *cpu);
++/* accel/tcg/user-exec.c */
++int cpu_exec_user(CPUState *cs);
  
-     qemu_chr_fe_deinit(&gdbserver_system_state.chr, true);
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index 6a493c5ba3a..77ba227fc3b 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -181,10 +181,9 @@ void gdb_exit(int code)
+ /**
+  * env_archcpu(env)
+diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
+index 71cdc8be50c..9104996fd46 100644
+--- a/linux-user/aarch64/cpu_loop.c
++++ b/linux-user/aarch64/cpu_loop.c
+@@ -83,10 +83,7 @@ void cpu_loop(CPUARMState *env)
+     abi_long ret;
  
-     trace_gdbstub_op_exiting((uint8_t)code);
+     for (;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
  
--    if (gdbserver_state.allow_stop_reply) {
-+    if (gdb_try_stop()) {
-         snprintf(buf, sizeof(buf), "W%02x", (uint8_t)code);
-         gdb_put_packet(buf);
--        gdbserver_state.allow_stop_reply = false;
-     }
+         switch (trapnr) {
+         case EXCP_SWI:
+diff --git a/linux-user/alpha/cpu_loop.c b/linux-user/alpha/cpu_loop.c
+index 2ea039aa71f..dda42aa9ee7 100644
+--- a/linux-user/alpha/cpu_loop.c
++++ b/linux-user/alpha/cpu_loop.c
+@@ -32,10 +32,7 @@ void cpu_loop(CPUAlphaState *env)
+     while (1) {
+         bool arch_interrupt = true;
  
- }
-@@ -222,7 +221,7 @@ int gdb_handlesig(CPUState *cpu, int sig, const char *reason, void *siginfo,
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
  
-     if (sig != 0) {
-         gdb_set_stop_cpu(cpu);
--        if (gdbserver_state.allow_stop_reply) {
-+        if (gdb_try_stop()) {
-             g_string_printf(gdbserver_state.str_buf,
-                             "T%02xthread:", gdb_target_signal_to_gdb(sig));
-             gdb_append_thread_id(cpu, gdbserver_state.str_buf);
-@@ -231,7 +230,6 @@ int gdb_handlesig(CPUState *cpu, int sig, const char *reason, void *siginfo,
-                 g_string_append(gdbserver_state.str_buf, reason);
-             }
-             gdb_put_strbuf();
--            gdbserver_state.allow_stop_reply = false;
-         }
-     }
-     /*
-@@ -276,13 +274,12 @@ void gdb_signalled(CPUArchState *env, int sig)
-     char buf[4];
+         switch (trapnr) {
+         case EXCP_RESET:
+diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
+index ec665862d93..81fb01c4f95 100644
+--- a/linux-user/arm/cpu_loop.c
++++ b/linux-user/arm/cpu_loop.c
+@@ -325,10 +325,7 @@ void cpu_loop(CPUARMState *env)
+     abi_ulong ret;
  
-     if (!gdbserver_state.init || gdbserver_user_state.fd < 0 ||
--        !gdbserver_state.allow_stop_reply) {
-+        !gdb_try_stop()) {
-         return;
-     }
+     for(;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
  
-     snprintf(buf, sizeof(buf), "X%02x", gdb_target_signal_to_gdb(sig));
-     gdb_put_packet(buf);
--    gdbserver_state.allow_stop_reply = false;
- }
+         switch(trapnr) {
+         case EXCP_UDEF:
+diff --git a/linux-user/hexagon/cpu_loop.c b/linux-user/hexagon/cpu_loop.c
+index d41159e52ad..678d8a42abb 100644
+--- a/linux-user/hexagon/cpu_loop.c
++++ b/linux-user/hexagon/cpu_loop.c
+@@ -33,10 +33,7 @@ void cpu_loop(CPUHexagonState *env)
+     target_ulong ret;
  
- static void gdb_accept_init(int fd)
-@@ -502,7 +499,7 @@ void gdbserver_fork_end(CPUState *cpu, pid_t pid)
-         gdbserver_user_state.fork_peer_pid = pid;
-         gdbserver_user_state.fork_peer_tid = pid;
+     for (;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
  
--        if (!gdbserver_state.allow_stop_reply) {
-+        if (!gdb_try_stop()) {
-             goto fail;
-         }
-         g_string_printf(gdbserver_state.str_buf,
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
+diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
+index bc093b8fe8b..121763a56cb 100644
+--- a/linux-user/hppa/cpu_loop.c
++++ b/linux-user/hppa/cpu_loop.c
+@@ -114,10 +114,7 @@ void cpu_loop(CPUHPPAState *env)
+     int trapnr;
+ 
+     while (1) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch (trapnr) {
+         case EXCP_SYSCALL:
+diff --git a/linux-user/i386/cpu_loop.c b/linux-user/i386/cpu_loop.c
+index 92beb6830cc..8707a3eaf25 100644
+--- a/linux-user/i386/cpu_loop.c
++++ b/linux-user/i386/cpu_loop.c
+@@ -210,10 +210,7 @@ void cpu_loop(CPUX86State *env)
+     abi_ulong ret;
+ 
+     for(;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch(trapnr) {
+         case 0x80:
+diff --git a/linux-user/loongarch64/cpu_loop.c b/linux-user/loongarch64/cpu_loop.c
+index 73d7b6796a4..1735c1c4ff1 100644
+--- a/linux-user/loongarch64/cpu_loop.c
++++ b/linux-user/loongarch64/cpu_loop.c
+@@ -18,10 +18,7 @@ void cpu_loop(CPULoongArchState *env)
+     abi_long ret;
+ 
+     for (;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
+diff --git a/linux-user/m68k/cpu_loop.c b/linux-user/m68k/cpu_loop.c
+index f79b8e4ab05..8e2f9161c64 100644
+--- a/linux-user/m68k/cpu_loop.c
++++ b/linux-user/m68k/cpu_loop.c
+@@ -30,10 +30,7 @@ void cpu_loop(CPUM68KState *env)
+     unsigned int n;
+ 
+     for(;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch(trapnr) {
+         case EXCP_ILLEGAL:
+diff --git a/linux-user/microblaze/cpu_loop.c b/linux-user/microblaze/cpu_loop.c
+index 212e62d0a62..3867a62c07b 100644
+--- a/linux-user/microblaze/cpu_loop.c
++++ b/linux-user/microblaze/cpu_loop.c
+@@ -29,10 +29,7 @@ void cpu_loop(CPUMBState *env)
+     CPUState *cs = env_cpu(env);
+ 
+     while (1) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
+diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
+index 462387a0737..d14af50cbbe 100644
+--- a/linux-user/mips/cpu_loop.c
++++ b/linux-user/mips/cpu_loop.c
+@@ -71,10 +71,7 @@ void cpu_loop(CPUMIPSState *env)
+ # endif
+ 
+     for(;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch(trapnr) {
+         case EXCP_SYSCALL:
+diff --git a/linux-user/openrisc/cpu_loop.c b/linux-user/openrisc/cpu_loop.c
+index a7aa586c8f9..f1eb799bd27 100644
+--- a/linux-user/openrisc/cpu_loop.c
++++ b/linux-user/openrisc/cpu_loop.c
+@@ -30,10 +30,7 @@ void cpu_loop(CPUOpenRISCState *env)
+     abi_long ret;
+ 
+     for (;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch (trapnr) {
+         case EXCP_SYSCALL:
+diff --git a/linux-user/ppc/cpu_loop.c b/linux-user/ppc/cpu_loop.c
+index 02204ad8beb..53a6ad996f3 100644
+--- a/linux-user/ppc/cpu_loop.c
++++ b/linux-user/ppc/cpu_loop.c
+@@ -74,10 +74,7 @@ void cpu_loop(CPUPPCState *env)
+     for(;;) {
+         bool arch_interrupt;
+ 
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         arch_interrupt = true;
+         switch (trapnr) {
+diff --git a/linux-user/riscv/cpu_loop.c b/linux-user/riscv/cpu_loop.c
+index 52c49c2e426..e9013b312d2 100644
+--- a/linux-user/riscv/cpu_loop.c
++++ b/linux-user/riscv/cpu_loop.c
+@@ -33,10 +33,7 @@ void cpu_loop(CPURISCVState *env)
+     target_ulong ret;
+ 
+     for (;;) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
+diff --git a/linux-user/s390x/cpu_loop.c b/linux-user/s390x/cpu_loop.c
+index 8b7ac2879ef..d8231403b65 100644
+--- a/linux-user/s390x/cpu_loop.c
++++ b/linux-user/s390x/cpu_loop.c
+@@ -61,10 +61,7 @@ void cpu_loop(CPUS390XState *env)
+     abi_long ret;
+ 
+     while (1) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
+diff --git a/linux-user/sh4/cpu_loop.c b/linux-user/sh4/cpu_loop.c
+index c805f9db110..282d955ee92 100644
+--- a/linux-user/sh4/cpu_loop.c
++++ b/linux-user/sh4/cpu_loop.c
+@@ -31,10 +31,7 @@ void cpu_loop(CPUSH4State *env)
+     while (1) {
+         bool arch_interrupt = true;
+ 
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch (trapnr) {
+         case 0x160:
+diff --git a/linux-user/sparc/cpu_loop.c b/linux-user/sparc/cpu_loop.c
+index 50424a54df5..8923a44d607 100644
+--- a/linux-user/sparc/cpu_loop.c
++++ b/linux-user/sparc/cpu_loop.c
+@@ -217,10 +217,7 @@ void cpu_loop (CPUSPARCState *env)
+     abi_long ret;
+ 
+     while (1) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         switch (trapnr) {
+         case TARGET_TT_SYSCALL:
+diff --git a/linux-user/xtensa/cpu_loop.c b/linux-user/xtensa/cpu_loop.c
+index d51ce053926..7eb21415213 100644
+--- a/linux-user/xtensa/cpu_loop.c
++++ b/linux-user/xtensa/cpu_loop.c
+@@ -130,10 +130,7 @@ void cpu_loop(CPUXtensaState *env)
+     int trapnr;
+ 
+     while (1) {
+-        cpu_exec_start(cs);
+-        trapnr = cpu_exec(cs);
+-        cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        trapnr = cpu_exec_user(cs);
+ 
+         env->sregs[PS] &= ~PS_EXCM;
+         switch (trapnr) {
 -- 
 2.46.0
 
