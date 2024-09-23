@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCCF97E8C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 11:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0BC97E8D1
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 11:34:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssfPw-0003nb-3C; Mon, 23 Sep 2024 05:31:40 -0400
+	id 1ssfPr-0003Rz-HJ; Mon, 23 Sep 2024 05:31:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1ssfPm-00038k-2v; Mon, 23 Sep 2024 05:31:30 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ id 1ssfPn-0003Eo-Da; Mon, 23 Sep 2024 05:31:31 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1ssfPk-00070l-Gd; Mon, 23 Sep 2024 05:31:29 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a8d4979b843so515733366b.3; 
- Mon, 23 Sep 2024 02:31:27 -0700 (PDT)
+ id 1ssfPl-000710-RF; Mon, 23 Sep 2024 05:31:31 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a7a843bef98so554382366b.2; 
+ Mon, 23 Sep 2024 02:31:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727083886; x=1727688686; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727083887; x=1727688687; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zl1UfkNK4uOLHCCNuOFOWU9ZrQRdFQX35RLscGjdLrg=;
- b=ZI6DeI83QKfJ4XJyOPtFx6yd82FRXvckX31wtc9R1JN5ZWc22mNR1PQS+Ds14Ltn63
- jRYyDbfxxPRaHLXIGoudNMa8vtxWVpmj9ccUKc8zxV03mwu2Jab55LF9ExIO2I07LOr7
- 24q25ryAOmaQb44s/PhkMGLU/yYyxbbMEbnSGJj9gxozLKT0zS8QIqoiULW+TFqJWPXe
- Yt0UsjqoO2jQD49/Usd1MUTHiRjOFdkEJe+D6v5tN7IkJaLTc5/J3Sbs+QNIpVFBJdJc
- I35ElocJkkNnmlQu0QdRPYXfsarurLqdrtlnyagUIVUYGsSOnfip40EKMeLEqBRDNkHR
- 0S1Q==
+ bh=vTAYFcyEYOewFDEdRGbYScC4E5SZ9wSdgr4ijamJJiA=;
+ b=PLQ00/hKHClPGaUAWOkwfju8iYzqyLRmN2deK3KaScJfD/l+yO51C8RnO6AFBWnonk
+ Aw9E7/otsr1AgKPToUjDY3dExtPGM9FQ5NuplW2GUUo5pJdmTLcfymvp+E5eitWJ/J3x
+ F0G6hktYBQ9aVighKq/bay172H/rsDLxyfeXr+kvC1GBYXmaEGyca87oUBPs+ciQPoD/
+ /8OBLdE24xGqeZthdp9dC720VaxiLGiThuB78VDsQnhGyPHsFlcM+nhfHRLYhntLJO3x
+ t/oW3mCl2+lza+dVE95SVyi404sihN5PE4n4jWQmVCYBFnv0d2R7dDYjyFaU3BZQmIRn
+ QP6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727083886; x=1727688686;
+ d=1e100.net; s=20230601; t=1727083887; x=1727688687;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zl1UfkNK4uOLHCCNuOFOWU9ZrQRdFQX35RLscGjdLrg=;
- b=pFS+sXWsfEV8jODDdpazqEZriP+xK3E5leOLGxn6vkm+RpUARlncutOXaKtugk6Z+M
- JaUQApxo6CoX3JWrlvN0u0ZI2eWFtdjOP53lQ0hZSrHCzumqpVd6HUsogqnWf4Qy0QAq
- f8Xd4w8qHm4bPbZFX+gh5W2AkQ4f5wAUF7kK7xymDapXHFZ5fYFBovEKRziaPUHPCFee
- PCWwNUl2zUXK0WJTZ5Kx+0w4AlHzcG+1eGb7YdiU2IWoNS4OhsGcL03tEr19nUc5w3uD
- GzcsPeOEJKd+rU4tljKM7q9RrihsE8Z5O4Fw9ZkSXeN3YtcsXUGd5Eu8/BxIxSyrlpdV
- DC+Q==
+ bh=vTAYFcyEYOewFDEdRGbYScC4E5SZ9wSdgr4ijamJJiA=;
+ b=CB97WnazrMfu5BK/6J3z440QJwhdLioeJJ8Xmjtre78/efdEiPyWpDDbFQYMHDRt+A
+ 2d2fIyTRPV6/nxNppf+SzzE2dwASzX369N1RtANtxSyPgiWc7FDqhbCrY6To+KVHnRkK
+ fRLErew2R1PknEOEWRytEyhfw2yIJ+oHsDGZvL6RbEU4JaoNb8sTyB3O5FN/Mw8kMtCg
+ eP8CpjG/E9ExWxT44PuYuxMmu4oDjZYnqW+XK3uljXRcVUqH3hrOxXgRjwDy/0mQEY47
+ nSict8mKaL+nOlnk5A4fFkrNV7+fADTKXlHMUq8vfp8sjFC5q9e79X/mzrBR0qRnLZ50
+ 5yfw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVpfj2jCN4ygkE0Bed0+qvecp6kefa7Xol3obw3BHfLeAoIiFkAlKdhs8br8Ez4fMgjn3Rn8LP9+ME=@nongnu.org,
- AJvYcCXg51gwYCMSFyabTyvUY77WtL2tjqOEEc5wHlkm1LXJDIu1U7omlUq11pWUpGoRJWGl3NmOeWXYr8gj@nongnu.org
-X-Gm-Message-State: AOJu0YyknBVhsY/iNMz3K4XviiXWBNrTO7zV0HHDmVzHPTGmCpP1NCun
- Fs/f7C6NVjYEqTFtaCaxKF1dYpq8yGRZbtjaJCIOqWpYr4eAtOtwbu6nZQ==
-X-Google-Smtp-Source: AGHT+IEKW+H3JsoS1O6yo6rqI9yZQ5idQ/Pyi1NG+Wti/sIMHZ50/3bbzras5gWuWJo45UTyamhbSQ==
-X-Received: by 2002:a17:907:e603:b0:a90:344a:7db6 with SMTP id
- a640c23a62f3a-a90d583ba97mr1079142466b.62.1727083885793; 
- Mon, 23 Sep 2024 02:31:25 -0700 (PDT)
+ AJvYcCUWb8OlSvFhKIG9Q3hw9BLoOzsuprEEyerbSJJm4UIaQFfD9rO6kaylAoEjL4IS4n961utuimR405ed@nongnu.org,
+ AJvYcCXjE0lvwM1ZU6OIecR96YVb+PJDzTHtmwVvsrgpssGU1ZNU09CiaGN1zM/YJsGV0znXRqeBPiGBXpk=@nongnu.org
+X-Gm-Message-State: AOJu0YwxT22xCV1arOWqIT1BpMHfg6yeN7Ktw6z/gEN7yv1otjwdoqBH
+ LHwMmGiiC2hJ5LSGV71gVnqQoZWTFmK4Swd/a58HdnSt32KdlZooqLqSfg==
+X-Google-Smtp-Source: AGHT+IH7kOrGrs11twdPlGMngsYp2+d8ZkGLvegXkfNGuiCd4ENUXx5IN9HSNg7mJ0Qd0ZRKninr8g==
+X-Received: by 2002:a17:906:d25b:b0:a86:f960:411d with SMTP id
+ a640c23a62f3a-a90d4fdf842mr1140067166b.2.1727083887158; 
+ Mon, 23 Sep 2024 02:31:27 -0700 (PDT)
 Received: from archlinux.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90612b3f6fsm1188747166b.107.2024.09.23.02.31.24
+ a640c23a62f3a-a90612b3f6fsm1188747166b.107.2024.09.23.02.31.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Sep 2024 02:31:25 -0700 (PDT)
+ Mon, 23 Sep 2024 02:31:26 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
@@ -69,16 +69,16 @@ Cc: Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
  Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 15/23] hw/ppc/mpc8544_guts: Prefer DEFINE_TYPES() macro
-Date: Mon, 23 Sep 2024 11:30:08 +0200
-Message-ID: <20240923093016.66437-16-shentey@gmail.com>
+Subject: [PATCH 16/23] hw/net/fsl_etsec/etsec: Prefer DEFINE_TYPES() macro
+Date: Mon, 23 Sep 2024 11:30:09 +0200
+Message-ID: <20240923093016.66437-17-shentey@gmail.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240923093016.66437-1-shentey@gmail.com>
 References: <20240923093016.66437-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,45 +103,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/ppc/mpc8544_guts.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ hw/net/fsl_etsec/etsec.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/hw/ppc/mpc8544_guts.c b/hw/ppc/mpc8544_guts.c
-index 6688fd44c3..cbb1e3adda 100644
---- a/hw/ppc/mpc8544_guts.c
-+++ b/hw/ppc/mpc8544_guts.c
-@@ -18,7 +18,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/module.h"
+diff --git a/hw/net/fsl_etsec/etsec.c b/hw/net/fsl_etsec/etsec.c
+index 3fdd16ef2e..9bd886b996 100644
+--- a/hw/net/fsl_etsec/etsec.c
++++ b/hw/net/fsl_etsec/etsec.c
+@@ -36,7 +36,6 @@
+ #include "registers.h"
+ #include "qapi/error.h"
  #include "qemu/log.h"
- #include "sysemu/runstate.h"
- #include "cpu.h"
-@@ -141,16 +140,13 @@ static void mpc8544_guts_initfn(Object *obj)
-     sysbus_init_mmio(d, &s->iomem);
+-#include "qemu/module.h"
+ 
+ /* #define HEX_DUMP */
+ /* #define DEBUG_REGISTER */
+@@ -431,17 +430,14 @@ static void etsec_class_init(ObjectClass *klass, void *data)
+     dc->user_creatable = true;
  }
  
--static const TypeInfo mpc8544_guts_info = {
--    .name          = TYPE_MPC8544_GUTS,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(GutsState),
--    .instance_init = mpc8544_guts_initfn,
+-static const TypeInfo etsec_info = {
+-    .name                  = TYPE_ETSEC_COMMON,
+-    .parent                = TYPE_SYS_BUS_DEVICE,
+-    .instance_size         = sizeof(eTSEC),
+-    .class_init            = etsec_class_init,
+-    .instance_init         = etsec_instance_init,
 +static const TypeInfo types[] = {
 +    {
-+        .name          = TYPE_MPC8544_GUTS,
++        .name          = TYPE_ETSEC_COMMON,
 +        .parent        = TYPE_SYS_BUS_DEVICE,
-+        .instance_size = sizeof(GutsState),
-+        .instance_init = mpc8544_guts_initfn,
++        .instance_size = sizeof(eTSEC),
++        .class_init    = etsec_class_init,
++        .instance_init = etsec_instance_init,
 +    },
  };
  
--static void mpc8544_guts_register_types(void)
+-static void etsec_register_types(void)
 -{
--    type_register_static(&mpc8544_guts_info);
+-    type_register_static(&etsec_info);
 -}
 -
--type_init(mpc8544_guts_register_types)
+-type_init(etsec_register_types)
 +DEFINE_TYPES(types)
 -- 
 2.46.1
