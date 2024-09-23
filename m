@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C08C97EF3C
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 18:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACDD97EF3E
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 18:27:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sslpo-0006qT-RP; Mon, 23 Sep 2024 12:22:48 -0400
+	id 1sslpq-0006qm-D0; Mon, 23 Sep 2024 12:22:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpb-0006Xi-Tq
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpb-0006Xl-VH
  for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:36 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpV-0000cJ-Va
- for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:34 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48NDIrm7015231;
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sslpW-0000cL-0p
+ for qemu-devel@nongnu.org; Mon, 23 Sep 2024 12:22:33 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48NAIFSe027592;
  Mon, 23 Sep 2024 16:22:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=4oMT0GZlyJvgn
- 2L4HOXrCiFpso5i/Pzu7DPF0kfbHT8=; b=FlAB/q4OVfoIO+8UY+2lG0+bfVSOJ
- 3IYs7i0HHYWRjHkzyJ1eDLuNk7XK2u26I1e+j13D7gnmsAldRze8I/mQldm65RBu
- vgOmoVl8WR/mx132TVuLTbFllv33aTueUhO+UOgVyi2alOgnYU2BdDLj8tDwwX+M
- 5hNriWq2sCiImz3RI88H+sUjzEarn+9N5/dZsZQZi2DkC76NZ9//a9+Cpd1MIdJK
- Ue+MPG3HbVM5I9Q+D2Nco3uDVsCKE9DRGvPBkuaxiSC+WBoQ/AVbIlJlLWFghg0i
- wDbyTrtTKz3NqmmQ1N/HRyGAv8FIgQ9TMWFOg1NP0R4r0W+5QYhIN6j5A==
+ :mime-version:content-transfer-encoding; s=pp1; bh=WN3/U2+USrWvM
+ Y+DeKvu28fORRmLsnH2CzE0ZonIXnk=; b=Ft3KeRToI2r8rzifjPFk5tR/Yi1Mw
+ gTW8dH/zm5Vz7n6wtFSTGBpqlLu4SMDE0BdjnunqNSSWawxmuR3GUqLfMmX37tR8
+ jOh2kgrBgd5KcP/hvxIXKmqseZOy6HrmCP/RsFnZLbjn7ucc8Qv3ApNj8rzDQC37
+ ED6XWztdBNzVzKfsFfeEX+h0fMozZm2rEckBJf7GeM/p5e8NrnC+5z3c083Qi7/R
+ T3YP0m/rLFnX5ITc79fbdUPlAgniZBkcYiWF7NP4zLuFHV2YU3MiogtLsYuBobFs
+ MHPBe1NSCRay2JE90C/93xee7lOSi6NUmY4IUH3eTIM+Rk1+ijP8a2emg==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41sntw5592-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41snt14pcq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 23 Sep 2024 16:22:26 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48NGMP3a032226;
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48NGJFhW018370;
  Mon, 23 Sep 2024 16:22:25 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41sntw558y-1
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41snt14pcm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 23 Sep 2024 16:22:25 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48NG0Fcn020814;
- Mon, 23 Sep 2024 16:22:24 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41tb62y41m-1
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48NEF4Sd012489;
+ Mon, 23 Sep 2024 16:22:25 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41t9fpqg0e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Sep 2024 16:22:24 +0000
+ Mon, 23 Sep 2024 16:22:25 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 48NGMMNb49545574
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48NGMN4J49611236
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Sep 2024 16:22:22 GMT
+ Mon, 23 Sep 2024 16:22:23 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BB12720040;
- Mon, 23 Sep 2024 16:22:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3393A20040;
+ Mon, 23 Sep 2024 16:22:23 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6727C20043;
+ by IMSVA (Postfix) with ESMTP id CD63320043;
  Mon, 23 Sep 2024 16:22:22 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.179.24.235])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -68,28 +68,28 @@ To: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 14/18] cpu: Introduce cpu_is_paused()
-Date: Mon, 23 Sep 2024 18:13:09 +0200
-Message-ID: <20240923162208.90745-15-iii@linux.ibm.com>
+Subject: [PATCH 15/18] cpu: Set current_cpu early in qemu-user
+Date: Mon, 23 Sep 2024 18:13:10 +0200
+Message-ID: <20240923162208.90745-16-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240923162208.90745-1-iii@linux.ibm.com>
 References: <20240923162208.90745-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: l_qiXPHN0cmCGPsIQpWXFEgGa00wfl09
-X-Proofpoint-GUID: aJBNhVT0OsHHZNMySpPKPGuvxhTNlzjj
+X-Proofpoint-ORIG-GUID: Ccg1hI_Opm5eyXFZ-7BIrDFlOQ6cooJD
+X-Proofpoint-GUID: AhV3feqNPaNBasTvtutqeCZnAgkB0LIj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-23_12,2024-09-23_01,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 mlxlogscore=964 bulkscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409230121
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ adultscore=0 mlxlogscore=778
+ priorityscore=1501 suspectscore=0 mlxscore=0 clxscore=1015 impostorscore=0
+ malwarescore=0 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409230121
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -113,65 +113,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A qemu-system CPU is considered paused as a result of an external
-request. A qemu-user CPU, in addition to that, should be considered
-paused when it's executing a syscall.
+qemu_plugin_get_registers() may be called before cpu_exec(), and it
+requires current_cpu.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- accel/tcg/user-exec.c     | 5 +++++
- include/exec/cpu-common.h | 1 +
- system/cpus.c             | 7 ++++++-
- 3 files changed, 12 insertions(+), 1 deletion(-)
+ bsd-user/main.c      | 1 +
+ linux-user/main.c    | 1 +
+ linux-user/syscall.c | 1 +
+ 3 files changed, 3 insertions(+)
 
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 57a13c81fc4..de4753cded7 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -1329,3 +1329,8 @@ bool cpu_thread_is_idle(CPUState *cpu)
- 
-     return ret == -1 ? true : ret;
- }
-+
-+bool cpu_is_paused(CPUState *cpu)
-+{
-+    return cpu->stopped || cpu->in_syscall;
-+}
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index d7fc24bc13d..e8b530ed889 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -233,6 +233,7 @@ void cpu_exit_syscall(CPUState *cs);
- 
- int cpu_thread_is_idle_common(CPUState *cpu);
- bool cpu_thread_is_idle(CPUState *cpu);
-+bool cpu_is_paused(CPUState *cpu);
- 
- /**
-  * env_archcpu(env)
-diff --git a/system/cpus.c b/system/cpus.c
-index 13072be26fa..407140c41f6 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -530,12 +530,17 @@ void cpu_resume(CPUState *cpu)
-     qemu_cpu_kick(cpu);
- }
- 
-+bool cpu_is_paused(CPUState *cpu)
-+{
-+    return cpu->stopped;
-+}
-+
- static bool all_vcpus_paused(void)
- {
-     CPUState *cpu;
- 
-     CPU_FOREACH(cpu) {
--        if (!cpu->stopped) {
-+        if (!cpu_is_paused(cpu)) {
-             return false;
-         }
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index b424a21f643..fb70aadbcee 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -617,6 +617,7 @@ int main(int argc, char **argv)
+         gdbserver_start(gdbstub);
+         gdb_handlesig(cpu, 0, NULL, NULL, 0);
      }
++    current_cpu = cpu;
+     cpu_loop(env);
+     /* never exits */
+     return 0;
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 60091cf3053..4a794445d72 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -1022,6 +1022,7 @@ int main(int argc, char **argv, char **envp)
+     qemu_semihosting_guestfd_init();
+ #endif
+ 
++    current_cpu = cpu;
+     cpu_loop(env);
+     /* never exits */
+     return 0;
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 344c2e65234..46a8ba7098c 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -6531,6 +6531,7 @@ static void *clone_func(void *arg)
+     pthread_mutex_lock(&clone_lock);
+     pthread_mutex_unlock(&clone_lock);
+     bql_lock();
++    current_cpu = cpu;
+     cpu_loop(env);
+     /* never exits */
+     return NULL;
 -- 
 2.46.0
 
