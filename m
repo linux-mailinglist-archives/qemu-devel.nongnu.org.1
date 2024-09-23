@@ -2,74 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBBDA97ED95
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 17:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2493297ED4D
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 16:45:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sskdN-0004GT-Vd; Mon, 23 Sep 2024 11:05:54 -0400
+	id 1sskIf-0000lb-Lp; Mon, 23 Sep 2024 10:44:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rj2814288312@gmail.com>)
- id 1sskAu-0007ms-0E; Mon, 23 Sep 2024 10:36:28 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rj2814288312@gmail.com>)
- id 1sskAr-0004tc-SK; Mon, 23 Sep 2024 10:36:27 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-5e1c65eb68aso2852571eaf.2; 
- Mon, 23 Sep 2024 07:36:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727102183; x=1727706983; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=uphcwsGEMMWQEhL/JXoEHNiPQNibELta0tncOu/YlL0=;
- b=PPFitLeQlZt9z3emEJ3QNPs0nRiYvDvVQOGpOjq+00t36f8sTXcwRiEYqB9I4LbaSc
- TvrSfF9WDAVnhsvpkCO3DyvtoctPuMi661zj8eXHjj7v8ZQSmSAvHZbJTLoci+7ObS4G
- HmOfErzqM0NOlkNerVsxrLSurInqbdR2oJzKG7w07Bv9DvD50H3n8gsVvQnhr/u3kWp4
- V+yR0CApRZ0X7//bQTMqBLH67/hCReryD48CoMvApTrwsXB9/VSUfyZFPrPTTHIe1/II
- 488wPc6Xi6OwQ+qEgNS964LGx2zx85sR0sVbkgmPIz/1atksa8/ELKCnepVPkDv0TDeQ
- Cfag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727102183; x=1727706983;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uphcwsGEMMWQEhL/JXoEHNiPQNibELta0tncOu/YlL0=;
- b=MrtbYCvjCr61f22KAhKw7VI0kHGee8niKMO+l2aMCSSe0v9P4AJVQ/vJCkY5dRrqwb
- 4J4dQM24NFuvD80qaYq8wS6dJeWRdJDb0116g7U17M7WE6m7g1u9n5DpZVSrtFz5PJMk
- hvic5hv7hD6T6//I0N4lyvQsHOTj3mQfDuQAty6A8uFVmOrede5tlY2N1KTNxDpKHMaP
- JWIXkDHgFQIpqm8T272QFEkhS+nhFTt3xOtF6dCgMvFPHbcbdpZ6eQY15ToJBBlABEZI
- qCiVlhNX76k7X0WliahRUMt9EfWKRADDr8Z3xAscpwzKe1MIvdeVhzhGO4pYJlF7E0q5
- mnoQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXEI6AZaQOGei+AKUtDSa6oWgHFh/SYGs/n1ZmUgxJ1fFLWczwQtZ1hpHBLpxaR8C2ZF5MKnMWIBJHX@nongnu.org
-X-Gm-Message-State: AOJu0Yxrz98vu75wAYRBblTAt1zBW/K1DdF5SIXuIX+FPQ1syw+4KDtU
- UrqaWTCyKpfbv11DuUUnsLajGyZePCQ4d3NcwM+0U+JQhsdfEiMuPRCjjeV/bpTfNMbdOIkr7kl
- +ur8bhZ3TMqXbeMptTbzewKgYkVJqT59z1tPmvw==
-X-Google-Smtp-Source: AGHT+IGYkUSbRxTep63D8TPmRNbPSBCX5JQ0ZEWHyE74UNVjRspTtXR+/e1kMelr++5rRh/OifuyR0RZyZfS8MRFRCY=
-X-Received: by 2002:a05:6358:7e91:b0:1ac:65e7:9399 with SMTP id
- e5c5f4694b2df-1bc99d18d9dmr234253355d.9.1727102182857; Mon, 23 Sep 2024
- 07:36:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1sskIG-0000iv-8O
+ for qemu-devel@nongnu.org; Mon, 23 Sep 2024 10:44:05 -0400
+Received: from fout-a6-smtp.messagingengine.com ([103.168.172.149])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1sskHy-0005Zv-Cj
+ for qemu-devel@nongnu.org; Mon, 23 Sep 2024 10:43:48 -0400
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal
+ [10.202.2.49])
+ by mailfout.phl.internal (Postfix) with ESMTP id 3598713801CB;
+ Mon, 23 Sep 2024 10:43:45 -0400 (EDT)
+Received: from phl-imap-12 ([10.202.2.86])
+ by phl-compute-09.internal (MEProxy); Mon, 23 Sep 2024 10:43:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1727102625;
+ x=1727189025; bh=ljOcLPXS4Y4TW/5zsTCd8vjqIR+szAz2TFhbTFza510=; b=
+ chM4w2lWeFxTycbTWs010KCdAlcBaTH3uocCWua686nA58xUksQzOQ/MxSN96v+N
+ UZIlXfUyeVdtUeiZKSvsfg3pJcIuJjUUmbpvRv4/I8H2AXien4vKSksCh7Gl2ya5
+ 5pG6Zf4PxreT1v5pVit6rLOJOsCSVgwJ4ZTtseMOnz2JIu/G8FrfP9iNOri/5Fhz
+ O1Fz7i0qHlYGU7yKW5bnNMYrMumTcZT0oGnII5uW2zzSKRUXxPsUv/KnAgu5vgDv
+ QnoFh3k9EvwaSNPhcdWiDcq0aWVjU5TJtUyqlYML4WSQBn0DeWZmjG51Q5xl41lT
+ 6kDgoBe3mdWyUknpycz+gw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727102625; x=
+ 1727189025; bh=ljOcLPXS4Y4TW/5zsTCd8vjqIR+szAz2TFhbTFza510=; b=Y
+ s2BtSJ/7p9nWfLcQKeNgFvXSfDpas3FWje9t8S6N6EzmPiSvAws0AAKwx9X/NZP7
+ TrasAli0t5nXNOG81BItGwT/IaTsMzUPDqsy6OJ03gDbS/NusR7LlAeq9xqnOQK0
+ WfMddVpX09uJaOWOASlrlOa1hsw46CCJwuqgYU6y8G5pZePd31bpqeNT7LcKNa8v
+ dKnFu/uWNOpe68JnCTazUvLDyt1Z7/Z5MF7Bz4tLwLkd62jjc7EuPop/M+t/9h7W
+ 0uRZlumqdQQYU1hx+YxDoBGqpEPQl3uhp1teYYvFOrr3ETu9bcJFk7ICbk6LfjwL
+ nUYS6cvQ5dyhTJWPLjq/g==
+X-ME-Sender: <xms:oH7xZlrh7YVr6kSVmloZcQ7utQN7rGTk9DTZ1AzS783bdF4QyaE3yQ>
+ <xme:oH7xZnrrrdG1xwI-f_cf-Kjeovzuphao6ldanX_ANiq4unpmXEe9nzGU9uAjzFKVw
+ VCh3dKS_cK_sJUTXCI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudelledgkeduucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+ rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+ htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+ necuhfhrohhmpedflfhirgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfh
+ hlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepveeuffetfeekhefhtdfhleef
+ ffejvdffkefgieeuudegkeegjeevtdffieeltdeunecuffhomhgrihhnpehgihhthhhusg
+ drtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhm
+ pehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhope
+ efpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehgrghoshhonhhgsehlohhonhhg
+ shhonhdrtghnpdhrtghpthhtohepmhgrohgsihgsoheslhhoohhnghhsohhnrdgtnhdprh
+ gtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhg
+X-ME-Proxy: <xmx:oH7xZiM3dWCfpeFR1_eZTymsTqZkmYpIauHz49ZVmHHFkP8MESu6ZA>
+ <xmx:oH7xZg5YmdTE5MqQ43BxTALcdX7rXhhJKl2vBhFvDj05mGy_6x7tqQ>
+ <xmx:oH7xZk7Wktdwy_8Mg3aZR15StjbCQOaJtv7V33_Lz8W8q6eFR9MrYA>
+ <xmx:oH7xZojv3Wo2Ri300qjOTMMsLUQQq4l_KXGNfbhDdLdT3f6355YMDg>
+ <xmx:oX7xZkEfGSX-pBEXFg2GWQWItEwlIDLdegFEUxelnhyhOi-dbldN-abM>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+ id 9633C1C20066; Mon, 23 Sep 2024 10:43:44 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-From: jie ren <rj2814288312@gmail.com>
-Date: Mon, 23 Sep 2024 22:36:11 +0800
-Message-ID: <CAAsTPeaOec5UcWJOApsHxzs+-ZYotHLhiPhaWBXT9bw=Z9zjkg@mail.gmail.com>
-Subject: Using ubuntu24.4 system qemu-system-aarch64 +gdb-multiarch to debug
- the kernel, setting breakpoints cannot be stopped
-To: qemu-discuss@nongnu.org, qemu-devel@nongnu.org, gdb@sourceware.org
-Content-Type: multipart/alternative; boundary="00000000000019a5bf0622ca50be"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=rj2814288312@gmail.com; helo=mail-oo1-xc2a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Date: Mon, 23 Sep 2024 15:43:23 +0100
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: gaosong <gaosong@loongson.cn>, "QEMU devel" <qemu-devel@nongnu.org>
+Cc: "Bibo Mao" <maobibo@loongson.cn>
+Message-Id: <40448724-937a-452e-bd8f-e0b9e4c040c1@app.fastmail.com>
+In-Reply-To: <866bab1c-5374-4be4-d92d-831d40b48b11@loongson.cn>
+References: <20240914-loongarch-booting-v1-0-1517cae11c10@flygoat.com>
+ <866bab1c-5374-4be4-d92d-831d40b48b11@loongson.cn>
+Subject: Re: [PATCH 0/2] hw/loongarch/booting: Booting protocol refactoring
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=103.168.172.149;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fout-a6-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 23 Sep 2024 11:05:49 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,246 +109,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000019a5bf0622ca50be
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi, I have a question for help
-
-    I recently  Using ubuntu24.4 system qemu-system-aarch64 +gdb-multiarch
-to debug the kernel, setting breakpoints cannot be stopped.
-
-   system information:
-
-        ubuntu version: 22.04
-
-        Debug kernel version:  5.0.0
-
-        qemu version:
-
-=C2=B7 qemu-system-aarch64 --version
-
-=C2=B7 QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.2)
-
-=C2=B7 Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project develop=
-ers
 
 
-gdb version:
-
-=C2=B7 gdb-multiarch --version
-
-=C2=B7 GNU gdb (Ubuntu 15.0.50.20240403-0ubuntu1) 15.0.50.20240403-git
-
-=C2=B7 Copyright (C) 2024 Free Software Foundation, Inc.
-
-=C2=B7 License GPLv3+: GNU GPL version 3 or later <
-http://gnu.org/licenses/gpl.html>
-
-=C2=B7 This is free software: you are free to change and redistribute it.
-
-=C2=B7 There is NO WARRANTY, to the extent permitted by law.
-
-
-Steps to reproduce:
-
-    1. Boot the system using qemu:
-
-1. qemu-system-aarch64 -machine virt -cpu cortex-a57 -machine type=3Dvirt -=
-m
-1024 -smp 4 -kernel arch/arm64/boot/Image --append "noinitrd root=3D/dev/vd=
-a
-rw console=3DttyAMA0 loglevel=3D8" -nographic -drive
-if=3Dnone,file=3Drootfs_ext4.img,id=3Dhd0 -device virtio-blk-device,drive=
-=3Dhd0
---fsdev local,id=3Dkmod_dev,path=3D$PWD/kmodules,security_model=3Dnone -dev=
-ice
-virtio-9p-device,fsdev=3Dkmod_dev,mount_tag=3Dkmod_mount -S -s
-
-
-Use gdb-multiarch to connect and debug:
-
-
-gdb-multiarch vmlinux
-
-(gdb) target remote localhost:1234
-
-Remote debugging using localhost:1234
-
-0x0000000040000000 in ?? ()
-
-(gdb) b start_kernel
-
-Breakpoint 1 at 0xffff2000126704ec: file init/main.c, line 538.
-
-(gdb) c
-
-Continuing.
-
---00000000000019a5bf0622ca50be
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><p>Hi, I have a question for help<br>
-</p>
-<p>=C2=A0=C2=A0=C2=A0 I recently=C2=A0 Using ubuntu24.4 system qemu-system-=
-aarch64=20
-+gdb-multiarch to debug the kernel, setting breakpoints cannot be=20
-stopped.</p>
-<p>=C2=A0=C2=A0 system information:</p>
-<p>=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 ubuntu version: 22.04</p>
-<p>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Debug kernel version:=C2=A0 <=
-span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><font face=
-=3D"Calibri">5.0.0</font></span></p>
-<p><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><font fa=
-ce=3D"Calibri">=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu version:=C2=
-=A0 </font></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt">=C2=
-=B7=C2=A0</span><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.=
-5pt"><font face=3D"Calibri">qemu-system-aarch64 --version</font></span><spa=
-n style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt">=C2=
-=B7=C2=A0</span><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.=
-5pt"><font face=3D"Calibri">QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-=
-0ubuntu1.2)</font></span><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font=
--size:10.5pt"></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt">=C2=
-=B7=C2=A0</span><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.=
-5pt"><font face=3D"Calibri">Copyright (c) 2003-2023 Fabrice Bellard and the=
- QEMU Project developers</font></span><span style=3D"font-family:=E5=AE=8B=
-=E4=BD=93;font-size:10.5pt"><br>
-  </span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><br=
+=E5=9C=A82024=E5=B9=B49=E6=9C=8823=E6=97=A5=E4=B9=9D=E6=9C=88 =E4=B8=8B=E5=
+=8D=881:34=EF=BC=8Cgaosong=E5=86=99=E9=81=93=EF=BC=9A
+> =E5=9C=A8 2024/9/14 =E4=B8=8B=E5=8D=888:10, Jiaxun Yang =E5=86=99=E9=81=
+=93:
+>> Hi all,
+>>
+>> This series refactored booting protocol generation code
+>> to better accommodate different host ABI / Alignment and
+>> endianess.
+>>
+>> It also enhanced LoongArch32 support.
+> Hi,
 >
-  </span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt">gdb=
- version:</span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt">=C2=
-=B7=C2=A0</span><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=
-=BD=93;font-size:10pt"><font face=3D"Courier New">gdb-multiarch --version</=
-font></span><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=BD=
-=93;font-size:10pt"></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt">=C2=
-=B7=C2=A0</span><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=
-=BD=93;font-size:10pt"><font face=3D"Courier New">GNU gdb (Ubuntu 15.0.50.2=
-0240403-0ubuntu1) 15.0.50.20240403-git</font></span><span class=3D"gmail-15=
-" style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt"></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt">=C2=
-=B7=C2=A0</span><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=
-=BD=93;font-size:10pt"><font face=3D"Courier New">Copyright (C) 2024 Free S=
-oftware Foundation, Inc.</font></span><span class=3D"gmail-15" style=3D"fon=
-t-family:=E5=AE=8B=E4=BD=93;font-size:10pt"></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt">=C2=
-=B7=C2=A0</span><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=
-=BD=93;font-size:10pt"><font face=3D"Courier New">License GPLv3+: GNU GPL v=
-ersion 3 or later &lt;<a href=3D"http://gnu.org/licenses/gpl.html">http://g=
-nu.org/licenses/gpl.html</a>&gt;</font></span><span class=3D"gmail-15" styl=
-e=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt"></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt">=C2=
-=B7=C2=A0</span><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=
-=BD=93;font-size:10pt"><font face=3D"Courier New">This is free software: yo=
-u are free to change and redistribute it.</font></span><span class=3D"gmail=
--15" style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt"></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10pt">=C2=
-=B7=C2=A0</span><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=
-=BD=93;font-size:10pt"><font face=3D"Courier New">There is NO WARRANTY, to =
-the extent permitted by law.</font></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:&quot;Courier New&quot;;font-size:10pt">=
-<br></span></p><p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom=
-:5pt;margin-left:36pt"><span style=3D"font-family:&quot;Courier New&quot;;f=
-ont-size:10pt">Steps to reproduce:</span><br></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=BD=93;fo=
-nt-size:10pt"><font face=3D"Courier New">=C2=A0 =C2=A0 1. Boot the system u=
-sing qemu:=C2=A0=C2=A0 </font></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:72pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:12pt">1.=C2=
-=A0</span><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=BD=93;=
-font-size:10pt"><font face=3D"Courier New">qemu-system-aarch64
- -machine virt -cpu cortex-a57 -machine type=3Dvirt -m 1024 -smp 4 -kernel
- arch/arm64/boot/Image --append &quot;noinitrd root=3D/dev/vda rw=20
-console=3DttyAMA0 loglevel=3D8&quot; -nographic -drive=20
-if=3Dnone,file=3Drootfs_ext4.img,id=3Dhd0 -device virtio-blk-device,drive=
-=3Dhd0=20
---fsdev local,id=3Dkmod_dev,path=3D$PWD/kmodules,security_model=3Dnone -dev=
-ice
- virtio-9p-device,fsdev=3Dkmod_dev,mount_tag=3Dkmod_mount -S -s</font></spa=
-n><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=BD=93;font-siz=
-e:10pt"><br>
-  </span></p><p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5=
-pt;margin-left:72pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-siz=
-e:13.3333px;text-align:-webkit-center"><br></span></p><p class=3D"MsoNormal=
-" style=3D"margin-top:5pt;margin-bottom:5pt;margin-left:72pt"><span style=
-=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:13.3333px;text-align:-webkit-c=
-enter">Use gdb-multiarch to connect and debug:</span><br></p>
-<p class=3D"MsoNormal" style=3D"text-align:center;margin-top:5pt;margin-bot=
-tom:5pt;margin-left:72pt"><span class=3D"gmail-15" style=3D"font-family:=E5=
-=AE=8B=E4=BD=93;font-size:10pt"><br>
-  </span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:72pt"><span class=3D"gmail-15" style=3D"font-family:&quot;Courier New&quo=
-t;;font-size:10pt">gdb-multiarch vmlinux</span><span style=3D"font-family:C=
-alibri;font-size:10.5pt"></span></p>
-<p class=3D"MsoNormal" align=3D"justify" style=3D"margin-top:5pt;margin-bot=
-tom:5pt;margin-left:42pt;text-indent:21pt;text-align:justify"><span style=
-=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><font face=3D"Calibri"=
->(gdb) target remote localhost:1234</font></span><span style=3D"font-family=
-:=E5=AE=8B=E4=BD=93;font-size:10.5pt"></span></p>
-<p class=3D"MsoNormal" align=3D"justify" style=3D"margin-top:5pt;margin-bot=
-tom:5pt;margin-left:42pt;text-indent:21pt;text-align:justify"><span style=
-=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><font face=3D"Calibri"=
->Remote debugging using localhost:1234</font></span><span style=3D"font-fam=
-ily:=E5=AE=8B=E4=BD=93;font-size:10.5pt"></span></p>
-<p class=3D"MsoNormal" align=3D"justify" style=3D"margin-top:5pt;margin-bot=
-tom:5pt;margin-left:42pt;text-indent:21pt;text-align:justify"><span style=
-=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><font face=3D"Calibri"=
->0x0000000040000000 in ?? ()</font></span><span style=3D"font-family:=E5=AE=
-=8B=E4=BD=93;font-size:10.5pt"></span></p>
-<p class=3D"MsoNormal" align=3D"justify" style=3D"margin-top:5pt;margin-bot=
-tom:5pt;margin-left:42pt;text-indent:21pt;text-align:justify"><span style=
-=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><font face=3D"Calibri"=
->(gdb) b start_kernel</font></span><span style=3D"font-family:=E5=AE=8B=E4=
-=BD=93;font-size:10.5pt"></span></p>
-<p class=3D"MsoNormal" align=3D"justify" style=3D"margin-top:5pt;margin-bot=
-tom:5pt;margin-left:42pt;text-indent:21pt;text-align:justify"><span style=
-=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><font face=3D"Calibri"=
->Breakpoint 1 at 0xffff2000126704ec: file init/main.c, line 538.</font></sp=
-an><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"></span><=
-/p>
-<p class=3D"MsoNormal" align=3D"justify" style=3D"margin-top:5pt;margin-bot=
-tom:5pt;margin-left:42pt;text-indent:21pt;text-align:justify"><span style=
-=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><font face=3D"Calibri"=
->(gdb) c</font></span><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-si=
-ze:10.5pt"></span></p>
-<p class=3D"MsoNormal" align=3D"justify" style=3D"margin-top:5pt;margin-bot=
-tom:5pt;margin-left:42pt;text-indent:21pt;text-align:justify"><span style=
-=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><font face=3D"Calibri"=
->Continuing.</font></span><span style=3D"font-family:=E5=AE=8B=E4=BD=93;fon=
-t-size:10.5pt"></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:72pt"></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span class=3D"gmail-15" style=3D"font-family:=E5=AE=8B=E4=BD=93;fo=
-nt-size:10pt"></span></p>
-<p class=3D"MsoNormal" style=3D"margin-top:5pt;margin-bottom:5pt;margin-lef=
-t:36pt"><span style=3D"font-family:=E5=AE=8B=E4=BD=93;font-size:10.5pt"><br=
+> I tested LoongArch64 and it works well.
 >
-</span></p>
-<p></p>
-<p></p>
-<p>=C2=A0 =C2=A0=C2=A0</p></div>
+> But how to test LoongArch32? Could you provide an example?
 
---00000000000019a5bf0622ca50be--
+I have a W.I.P. LoonngArch 32 kernel tree[1] that can boot in QEMU,
+but it still requires many other fixes in QEMU TCG.
+
+32-bit stuff is just a bonus to this series and the main motivation
+is to improve booting protocol quality.
+
+Thanks
+
+[1]: https://github.com/FlyGoat/linux/tree/b4/la32
+>
+> Thanks.
+> Song Gao
+>> Thanks
+>>
+>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>> ---
+>> Jiaxun Yang (2):
+>>        hw/loongarch/boot: Refactor EFI booting protocol generation
+>>        hw/loongarch/boot: Rework boot code generation
+>>
+>>   hw/loongarch/boot.c         | 321 ++++++++++++++++++++++++++++-----=
+-----------
+>>   include/hw/loongarch/boot.h | 106 ++++++++++++---
+>>   2 files changed, 293 insertions(+), 134 deletions(-)
+>> ---
+>> base-commit: 28ae3179fc52d2e4d870b635c4a412aab99759e7
+>> change-id: 20240914-loongarch-booting-b5ae3f4976b7
+>>
+>> Best regards,
+
+--=20
+- Jiaxun
 
