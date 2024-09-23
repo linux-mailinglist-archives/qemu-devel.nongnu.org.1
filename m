@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08ED97E8F3
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 11:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E8697E8FD
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 11:44:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssfaO-0000CC-UH; Mon, 23 Sep 2024 05:42:29 -0400
+	id 1ssfaR-0000Vz-Dp; Mon, 23 Sep 2024 05:42:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ssfaI-0008NQ-6n; Mon, 23 Sep 2024 05:42:22 -0400
+ id 1ssfaL-00008T-Ap; Mon, 23 Sep 2024 05:42:25 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1ssfaE-0008C9-UH; Mon, 23 Sep 2024 05:42:21 -0400
+ id 1ssfaJ-0008C9-M8; Mon, 23 Sep 2024 05:42:25 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Mon, 23 Sep
@@ -30,13 +30,15 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH 0/5] Support GPIO for AST2700
-Date: Mon, 23 Sep 2024 17:42:00 +0800
-Message-ID: <20240923094206.1455783-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH 1/5] hw/gpio/aspeed: Fix coding style
+Date: Mon, 23 Sep 2024 17:42:01 +0800
+Message-ID: <20240923094206.1455783-2-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240923094206.1455783-1-jamin_lin@aspeedtech.com>
+References: <20240923094206.1455783-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -62,20 +64,41 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1: support GPIO for AST2700
+Fix coding style issues from checkpatch.pl
 
-Jamin Lin (5):
-  hw/gpio/aspeed: Fix coding style
-  hw/gpio/aspeed: Support to set the different memory size
-  hw/gpio/aspeed: Support different memory region ops
-  hw/gpio/aspeed: Add AST2700 support
-  aspeed/soc: Support GPIO for AST2700
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+---
+ hw/gpio/aspeed_gpio.c         | 3 ++-
+ include/hw/gpio/aspeed_gpio.h | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
- hw/arm/aspeed_ast27x0.c       |  18 +-
- hw/gpio/aspeed_gpio.c         | 390 +++++++++++++++++++++++++++++++++-
- include/hw/gpio/aspeed_gpio.h |   4 +-
- 3 files changed, 405 insertions(+), 7 deletions(-)
-
+diff --git a/hw/gpio/aspeed_gpio.c b/hw/gpio/aspeed_gpio.c
+index 71756664dd..901b576144 100644
+--- a/hw/gpio/aspeed_gpio.c
++++ b/hw/gpio/aspeed_gpio.c
+@@ -340,7 +340,8 @@ static void aspeed_gpio_set_pin_level(AspeedGPIOState *s, uint32_t set_idx,
+         value &= ~pin_mask;
+     }
+ 
+-    aspeed_gpio_update(s, &s->sets[set_idx], value, ~s->sets[set_idx].direction);
++    aspeed_gpio_update(s, &s->sets[set_idx], value,
++                       ~s->sets[set_idx].direction);
+ }
+ 
+ /*
+diff --git a/include/hw/gpio/aspeed_gpio.h b/include/hw/gpio/aspeed_gpio.h
+index 90a12ae318..39febda9ea 100644
+--- a/include/hw/gpio/aspeed_gpio.h
++++ b/include/hw/gpio/aspeed_gpio.h
+@@ -88,7 +88,7 @@ struct AspeedGPIOState {
+     qemu_irq irq;
+     qemu_irq gpios[ASPEED_GPIO_MAX_NR_SETS][ASPEED_GPIOS_PER_SET];
+ 
+-/* Parallel GPIO Registers */
++    /* Parallel GPIO Registers */
+     uint32_t debounce_regs[ASPEED_GPIO_NR_DEBOUNCE_REGS];
+     struct GPIOSets {
+         uint32_t data_value; /* Reflects pin values */
 -- 
 2.34.1
 
