@@ -2,82 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6E597E9B9
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 12:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE79897E9CE
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 12:18:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssg7L-0001f2-EN; Mon, 23 Sep 2024 06:16:31 -0400
+	id 1ssg9P-0002hP-LI; Mon, 23 Sep 2024 06:18:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1ssg7I-0001VV-3l; Mon, 23 Sep 2024 06:16:29 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1ssg7G-0003n3-7t; Mon, 23 Sep 2024 06:16:27 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a8d13b83511so507825566b.2; 
- Mon, 23 Sep 2024 03:16:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727086584; x=1727691384; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iW9Nb8JYiU7FYlwU62yCNJWG+ELvo3kziCKhcjaKlnk=;
- b=ASsz3Q0rQ99i5i5NnLloRJU95pgwtPqmc3ePOLazHa38bPzD1VIYG4uBny7cxmVsYN
- NXUrHXr4OCULKgefp0YYwnEdvLbgZpnlPB+kjYJj2fQaxXDN3orlGKIHvwm4VqrSQI3i
- ifrH2K/IyQTuagfXKS10hCScA4Y/eT05gnsdFo9wFtkBhO0kWzM0+jmqhuSWIyhfBc76
- aCkeP8nTmBufSD7m6tCziD1UJC2afGhsBFCLoTS1YC7ekWq4FPouPEvqJRZh9urMcgC0
- 1yBVAUOXZNays6YNHwqcFu0+zpvnrRrf0RVROaDIHQqaHE9G7ckNv1oEca/KK1eeVYu1
- j5tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727086584; x=1727691384;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iW9Nb8JYiU7FYlwU62yCNJWG+ELvo3kziCKhcjaKlnk=;
- b=wS/yzOjCXjpbZWiiIA4NZXWfPhOK4JO7KkHP6mRq/YmwlmuKLS83YpFcF2ir/rHzj3
- 6Z3h7Uq8XwFy9fEHCydGuZCZ2ZpBDk4+jnUkMP4pjAjPYxWwcJblB0rG3cQ1si4Y9DIA
- mud8ah8cYnTTPlkfveCEPuuBpTE7Johl/tc4p3neXAlCyoEOHwndx5M4XJBB5FyMaWKj
- ttdXuuSJoU/9PwaWLDO8nYAHbkYmBr9iLqIVb4gRiEF13u3tXoZqIIFhdy/rfqKHconi
- MMbI+S44RacjNt1r0m+Vi+q5VyBJmOO8X8NxlMWdoeSttYrib8f2FZafaONqEnaabej5
- fVVg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVHrs+4Um5yAj9n10VsOOieP5Ys1s3fKXJGSiYhQq7yz+7aCHteyDAKhl/aySnPCdC+YG2vTMOugg==@nongnu.org
-X-Gm-Message-State: AOJu0YwUp626aFAou/CSYQwNf+8dKiq+vvp31GaEgT7wUWhaJOrUzEXB
- aDxELzuw8s8FxzWR47WabduKpghW2hQD/c23XUx3PSrVZJsL1UepgxzCvQ==
-X-Google-Smtp-Source: AGHT+IFzDg9rF7QWcx+azBaWgHy519glAU7tWioYphCjR1Cs849WfTmBHBj2sEc+bhZiVLTzn+8MBQ==
-X-Received: by 2002:a17:907:7f90:b0:a91:7af:d3f2 with SMTP id
- a640c23a62f3a-a9107afd632mr313835266b.63.1727086583504; 
- Mon, 23 Sep 2024 03:16:23 -0700 (PDT)
-Received: from archlinux.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90610f43e9sm1187655566b.72.2024.09.23.03.16.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Sep 2024 03:16:23 -0700 (PDT)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 3/3] hw/ppc/e500: Reuse TYPE_GPIO_POWEROFF
-Date: Mon, 23 Sep 2024 12:15:54 +0200
-Message-ID: <20240923101554.12900-4-shentey@gmail.com>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20240923101554.12900-1-shentey@gmail.com>
-References: <20240923101554.12900-1-shentey@gmail.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1ssg99-0001YW-TY; Mon, 23 Sep 2024 06:18:25 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1ssg96-0003wZ-Jt; Mon, 23 Sep 2024 06:18:23 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 54CF64E600E;
+ Mon, 23 Sep 2024 12:18:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id 18U2WAA6vl0j; Mon, 23 Sep 2024 12:18:16 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 64DFB4E601D; Mon, 23 Sep 2024 12:18:16 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6307F746F60;
+ Mon, 23 Sep 2024 12:18:16 +0200 (CEST)
+Date: Mon, 23 Sep 2024 12:18:16 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, 
+ qemu-ppc@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ Corey Minyard <cminyard@mvista.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-block@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>, 
+ =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@redhat.com>
+Subject: Re: [PATCH 04/23] hw/ppc/e500: Remove unused "irqs" parameter
+In-Reply-To: <20240923093016.66437-5-shentey@gmail.com>
+Message-ID: <ace58703-2b52-c116-625c-18c26a58041f@eik.bme.hu>
+References: <20240923093016.66437-1-shentey@gmail.com>
+ <20240923093016.66437-5-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,83 +71,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ppce500 machine provides a device tree node whose compatible property is
-"gpio-poweroff". This matches TYPE_GPIO_POWEROFF like used in the ARM virt
-machine, so reuse it.
+On Mon, 23 Sep 2024, Bernhard Beschow wrote:
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- hw/ppc/e500.c  | 15 +++------------
- hw/ppc/Kconfig |  1 +
- 2 files changed, 4 insertions(+), 12 deletions(-)
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index 3bd12b54ab..af74b32c13 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -30,7 +30,6 @@
- #include "sysemu/sysemu.h"
- #include "sysemu/kvm.h"
- #include "sysemu/reset.h"
--#include "sysemu/runstate.h"
- #include "kvm_ppc.h"
- #include "sysemu/device_tree.h"
- #include "hw/ppc/openpic.h"
-@@ -47,7 +46,6 @@
- #include "hw/platform-bus.h"
- #include "hw/net/fsl_etsec/etsec.h"
- #include "hw/i2c/i2c.h"
--#include "hw/irq.h"
- #include "hw/sd/sdhci.h"
- #include "hw/misc/unimp.h"
- 
-@@ -892,13 +890,6 @@ static DeviceState *ppce500_init_mpic(PPCE500MachineState *pms,
-     return dev;
- }
- 
--static void ppce500_power_off(void *opaque, int line, int on)
--{
--    if (on) {
--        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
--    }
--}
--
- void ppce500_init(MachineState *machine)
- {
-     MemoryRegion *address_space_mem = get_system_memory();
-@@ -1086,7 +1077,7 @@ void ppce500_init(MachineState *machine)
-     sysbus_create_simple("e500-spin", pmc->spin_base, NULL);
- 
-     if (pmc->has_mpc8xxx_gpio) {
--        qemu_irq poweroff_irq;
-+        DeviceState *poweroff_dev;
- 
-         dev = qdev_new("mpc8xxx_gpio");
-         s = SYS_BUS_DEVICE(dev);
-@@ -1096,8 +1087,8 @@ void ppce500_init(MachineState *machine)
-                                     sysbus_mmio_get_region(s, 0));
- 
-         /* Power Off GPIO at Pin 0 */
--        poweroff_irq = qemu_allocate_irq(ppce500_power_off, NULL, 0);
--        qdev_connect_gpio_out(dev, 0, poweroff_irq);
-+        poweroff_dev = sysbus_create_simple("gpio-poweroff", -1, NULL);
-+        qdev_connect_gpio_out(dev, 0, qdev_get_gpio_in(poweroff_dev, 0));
-     }
- 
-     /* Platform Bus Device */
-diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-index 5addad1124..31764ef909 100644
---- a/hw/ppc/Kconfig
-+++ b/hw/ppc/Kconfig
-@@ -158,6 +158,7 @@ config E500
-     imply VIRTIO_PCI
-     select ETSEC
-     select GPIO_MPC8XXX
-+    select GPIO_POWEROFF
-     select OPENPIC
-     select PFLASH_CFI01
-     select PLATFORM_BUS
--- 
-2.46.1
-
+> ---
+> hw/ppc/e500.c | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+> index 32996c188e..228287b457 100644
+> --- a/hw/ppc/e500.c
+> +++ b/hw/ppc/e500.c
+> @@ -825,7 +825,7 @@ static DeviceState *ppce500_init_mpic_qemu(PPCE500MachineState *pms,
+> }
+>
+> static DeviceState *ppce500_init_mpic_kvm(const PPCE500MachineClass *pmc,
+> -                                          IrqLines *irqs, Error **errp)
+> +                                          Error **errp)
+> {
+> #ifdef CONFIG_KVM
+>     DeviceState *dev;
+> @@ -865,7 +865,7 @@ static DeviceState *ppce500_init_mpic(PPCE500MachineState *pms,
+>         Error *err = NULL;
+>
+>         if (kvm_kernel_irqchip_allowed()) {
+> -            dev = ppce500_init_mpic_kvm(pmc, irqs, &err);
+> +            dev = ppce500_init_mpic_kvm(pmc, &err);
+>         }
+>         if (kvm_kernel_irqchip_required() && !dev) {
+>             error_reportf_err(err,
+>
 
