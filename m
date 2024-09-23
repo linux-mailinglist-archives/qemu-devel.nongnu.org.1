@@ -2,65 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D39797E528
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 05:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ABD097E581
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 06:49:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssaBq-0006PG-7U; Sun, 22 Sep 2024 23:56:46 -0400
+	id 1ssazJ-0007Iy-W5; Mon, 23 Sep 2024 00:47:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1ssaBo-0006Mp-2y; Sun, 22 Sep 2024 23:56:44 -0400
-Received: from dedi548.your-server.de ([85.10.215.148])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1ssazG-0007HG-11; Mon, 23 Sep 2024 00:47:50 -0400
+Received: from out30-101.freemail.mail.aliyun.com ([115.124.30.101])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1ssaBm-00013E-12; Sun, 22 Sep 2024 23:56:43 -0400
-Received: from sslproxy04.your-server.de ([78.46.152.42])
- by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1ssaBh-0004WL-0g; Mon, 23 Sep 2024 05:56:37 +0200
-Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
- by sslproxy04.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1ssaBh-0002vG-1n; Mon, 23 Sep 2024 05:56:36 +0200
-Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 64F4648006F;
- Mon, 23 Sep 2024 05:56:36 +0200 (CEST)
-Received: from mail.embedded-brains.de ([127.0.0.1])
- by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
- with ESMTP id na2rX6Ff2n7Q; Mon, 23 Sep 2024 05:56:35 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id BBA7B4801B4;
- Mon, 23 Sep 2024 05:56:35 +0200 (CEST)
-X-Virus-Scanned: amavis at zimbra.eb.localhost
-Received: from mail.embedded-brains.de ([127.0.0.1])
- by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
- with ESMTP id 1gEO8IJpPNGn; Mon, 23 Sep 2024 05:56:35 +0200 (CEST)
-Received: from zimbra.eb.localhost (unknown [192.168.96.242])
- by mail.embedded-brains.de (Postfix) with ESMTPSA id 980404801AF;
- Mon, 23 Sep 2024 05:56:35 +0200 (CEST)
-From: Sebastian Huber <sebastian.huber@embedded-brains.de>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH 2/2] hw/arm/xilinx_zynq: Add CPU1 reset
-Date: Mon, 23 Sep 2024 05:56:32 +0200
-Message-Id: <20240923035632.81304-3-sebastian.huber@embedded-brains.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240923035632.81304-1-sebastian.huber@embedded-brains.de>
-References: <20240923035632.81304-1-sebastian.huber@embedded-brains.de>
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1ssazD-0005Pe-97; Mon, 23 Sep 2024 00:47:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1727066854; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+ bh=kxhh9s+5tBWKzOSw7z0mWEfmZte4xbou4jJc687yGUQ=;
+ b=onJKN16j/e4Ux5DQjCpVpCprBpchtfmElm/AyNdDzY2NyNkMFGXR09j/AZw7oWySEEEU1mTqv9mhOPAj/iFCz4jJOPosq6n0s3/p5fmZlUQ7BRK0ECaCX5nzr5tMP+7F++qOkQtmMJu2SfCE5MSrbMoltiUObiYYFdNsEe3ufJw=
+Received: from 30.166.64.122(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0WFSQYmX_1727066852) by smtp.aliyun-inc.com;
+ Mon, 23 Sep 2024 12:47:33 +0800
+Message-ID: <8f4fb8f4-508b-40f0-ac9e-f3f591b5aae5@linux.alibaba.com>
+Date: Mon, 23 Sep 2024 12:46:24 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Authenticated-Sender: smtp-embedded@poldi-networks.de
-X-Virus-Scanned: Clear (ClamAV 1.0.5/27406/Sun Sep 22 10:30:52 2024)
-Received-SPF: pass client-ip=85.10.215.148;
- envelope-from=sebastian.huber@embedded-brains.de; helo=dedi548.your-server.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 03/12] tcg/riscv: Add vset{i}vli and ld/st vec ops
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
+ TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
+References: <20240911132630.461-1-zhiwei_liu@linux.alibaba.com>
+ <20240911132630.461-4-zhiwei_liu@linux.alibaba.com>
+ <0dba42ab-83fb-44f8-9802-1f2e53bb89ba@linaro.org>
+Content-Language: en-US
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <0dba42ab-83fb-44f8-9802-1f2e53bb89ba@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.30.101;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-101.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,71 +68,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After a system reset (SRST), the CPU1 should execute a wfe instruction
-and then load the start address from 0xfffffff0:
 
-https://docs.amd.com/r/en-US/ug585-zynq-7000-SoC-TRM/Starting-Code-on-CPU=
--1
+On 2024/9/22 12:46, Richard Henderson wrote:
+> On 9/11/24 15:26, LIU Zhiwei wrote:
+>> @@ -2129,6 +2389,7 @@ static void tcg_target_qemu_prologue(TCGContext 
+>> *s)
+>>     static void tcg_out_tb_start(TCGContext *s)
+>>   {
+>> +    s->riscv_cur_type = TCG_TYPE_COUNT;
+>>       /* nothing to do */
+>>   }
+>
+> I recently realized that the vector config is call-clobbered.
+> We need this reset as well in tcg_out_call_int(), 
+OK.
+> and prepare_host_addr().
+>
+> In prepare_host_addr, place the reset just after the two calls to 
+> new_ldst_label().
 
-Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
----
- hw/arm/xilinx_zynq.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+As slow path will also cal tcg_out_call_init, can we only reset after 
+tcg_out_call_init?
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index 37c234f5ab..0ee4a39a28 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -64,6 +64,8 @@ static const int dma_irqs[8] =3D {
-=20
- #define BOARD_SETUP_ADDR        0x100
-=20
-+#define SECONDARY_SETUP_ADDR    0xFFFFFFE8
-+
- #define SLCR_LOCK_OFFSET        0x004
- #define SLCR_UNLOCK_OFFSET      0x008
- #define SLCR_ARM_PLL_OFFSET     0x100
-@@ -112,6 +114,28 @@ static void zynq_write_board_setup(ARMCPU *cpu,
-                        sizeof(board_setup_blob), BOARD_SETUP_ADDR);
- }
-=20
-+static void zynq_secondary_cpu_reset(ARMCPU *cpu,
-+                                     const struct arm_boot_info *info)
-+{
-+    /*
-+     * After a system reset (SRST), the CPU1 should execute a wfe instru=
-ction
-+     * and then load the start address from 0xfffffff0:
-+     *
-+     * https://docs.amd.com/r/en-US/ug585-zynq-7000-SoC-TRM/Starting-Cod=
-e-on-CPU-1
-+     */
-+    uint32_t secondary_setup_blob[] =3D {
-+        0xe320f002, /* wfe */
-+        0xe51ff004, /* ldr pc, [pc, #-4] */
-+        SECONDARY_SETUP_ADDR
-+    };
-+    for (int n =3D 0; n < ARRAY_SIZE(secondary_setup_blob); n++) {
-+        secondary_setup_blob[n] =3D tswap32(secondary_setup_blob[n]);
-+    }
-+    rom_add_blob_fixed("secondary-setup", secondary_setup_blob,
-+                       sizeof(secondary_setup_blob), SECONDARY_SETUP_ADD=
-R);
-+    cpu_set_pc(CPU(cpu), SECONDARY_SETUP_ADDR);
-+}
-+
- static struct arm_boot_info zynq_binfo =3D {};
-=20
- static void gem_init(uint32_t base, qemu_irq irq)
-@@ -378,6 +402,7 @@ static void zynq_init(MachineState *machine)
-     zynq_binfo.loader_start =3D 0;
-     zynq_binfo.board_setup_addr =3D BOARD_SETUP_ADDR;
-     zynq_binfo.write_board_setup =3D zynq_write_board_setup;
-+    zynq_binfo.secondary_cpu_reset_hook =3D zynq_secondary_cpu_reset;
-=20
-     arm_load_kernel(zynq_machine->cpu[0], machine, &zynq_binfo);
- }
---=20
-2.35.3
+Thanks,
+Zhiwei
 
+>
+>
+> r~
 
