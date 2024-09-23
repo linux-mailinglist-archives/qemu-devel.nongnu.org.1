@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B816E97E8CE
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 11:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3BA97E8D3
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 11:34:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssfPY-0002Dv-Tg; Mon, 23 Sep 2024 05:31:16 -0400
+	id 1ssfPZ-0002JQ-Qu; Mon, 23 Sep 2024 05:31:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1ssfPV-00025j-US; Mon, 23 Sep 2024 05:31:13 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ id 1ssfPY-0002FI-CU; Mon, 23 Sep 2024 05:31:16 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1ssfPT-0006xg-9y; Mon, 23 Sep 2024 05:31:12 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a8d2b24b7a8so940166866b.1; 
- Mon, 23 Sep 2024 02:31:10 -0700 (PDT)
+ id 1ssfPV-0006xs-PZ; Mon, 23 Sep 2024 05:31:16 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a8d51a7d6f5so614214066b.2; 
+ Mon, 23 Sep 2024 02:31:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727083868; x=1727688668; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727083870; x=1727688670; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w4QKCLTnYRmG6RbJry6AnrnojW0x9+VCIRXbxcRAKqY=;
- b=DHaLVgxo6VVLPM5cUV/BFL+h+bmrCxlWzDEJIEDvNeNGztLnwTe3OPvOjDXvkewEXH
- STdpYuhBWNDKT81u/xOFUbF3LiuEjeL+S7w9zL+g6fQu9LXPPZvcSvDy+l2Q8bTka/xn
- d5So9e5ZTFTNaMaWrsVuwI+eSKsI37oF3lAdgTkb0ac7aAR6nXIU2dyXYqJFpO/vn8j2
- iXGMVlhBE/sufw52RZVSee9NbKuwEwBmPxLTQnqdEju6KEXgWU94xv8Z82i6evheOpbT
- XlygGBO0M/DEkiYKWrpYqEM3Wh0DpwNZot2eeCNeiAH/frUTdvR230jhkrTFaI9Ae743
- 7Mag==
+ bh=QwsoQdUrJVWYxvUgDYuKBFMf0v5P53ou5sqi+kSdVbs=;
+ b=eRPu9/NLDZyWvWoorAOmXVrUIXZU8URNj0I7sZKCbAa3S56vG1DtUppbqf+K2/FTAY
+ yPdHFfas9qNdutyDogRV8IA7Mja8J6bzQYt8v7WNourd4yRJnUQKHgAi6YC7gz7ITrm0
+ 5TsYvuODR7di1ooLx2kSQlclmOuCCool0mbjbCLGOfSixSbd9CZujtERXfzg05Kcaz38
+ ZsGihV5NblB6wmQx4arDwdaqsTmK5dQO5nq+wd3Pp/khDuy2CbeeMw4E80YjdyeufB2i
+ IPXBxuyB0QH9sXni1NtLB+LPlPM7xHhtqDTUx8Ky5n9pzsBQ+5KCTchLmcQK/msV33ws
+ fwcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727083868; x=1727688668;
+ d=1e100.net; s=20230601; t=1727083870; x=1727688670;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w4QKCLTnYRmG6RbJry6AnrnojW0x9+VCIRXbxcRAKqY=;
- b=K0wD7zbc49WYyJXLv+hP7QB4/Zk8Zf5As7j4URU/IET8rEowNIywkO6wSXQglSZJjG
- f0fRuadVCybs0N7PTQ/9dXCKPU+0C2AEijE9KjcSvc2FVx3XVYeLMH2GJJVsRVijWXAt
- WtfH8Z1BUwWMKoFXoMx3qO6/vfOQZWFkR2g1U1sDV0EPAXywQ1kph1p4G3/GpGGtc6ml
- ZIDI0LMx/BNl3RZxNxu6Owq8paCX6QxFCCYkNOlyin+git7ya9hmy6UoZ9hMoCyPaQMa
- UYYNRTx9gXk5VqilaZiT0fzyUh+C3ODUx85+KwH0AMCRHtrnpI++Yn9AVpGfrrv6ogL9
- 9vMA==
+ bh=QwsoQdUrJVWYxvUgDYuKBFMf0v5P53ou5sqi+kSdVbs=;
+ b=RuRqpKxR9ahJjq9gt/xn9B8XvsUDpmyrg+Jajj2+/ZS9LQ3RxOQzdFjpNnfothhs1x
+ DxRF073zPsoGjmytnz6U9txMsH6OlCu9tD4+pmZpFSUVFbYsrCk6K6UDns0ATQgk2yHu
+ mQIa5qk6uIJhbWJOfg2t3fVjdYennOX2Q5/HDPMIP9JHLI6ceJ50+SqJFGBQeqeDSGi8
+ c+NYtRg3REDn3OCSKMYPs90PPShEAgpZV8n4aiDIMtuCdElOnU9LL4zPGpGWVFUDWWlm
+ +tf1BzRR4+btUtIffBmHSbea5SLKiGexuRzMHgzbWr47+OUVtVDPichGJaPKOBinN5x6
+ 1qdQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUacCS3oRPF07xKBd1HRFhSclBHF7LF55jOASskpiInuQ5ia4xs26S89GyQwDtPeJ/t7Jq7uJ3hoCJY@nongnu.org,
- AJvYcCWiJ1+XNF8f896sujxWHilT8dW7hj0SUm4nvvNo9cTvLJuHf8bRv2Y1SZROTN25PG68Um+BzUB9kgU=@nongnu.org
-X-Gm-Message-State: AOJu0YzNcHqRdY9nbP4ytIqiS55jQXCBWB2XN6wUSRECh1Lez5wBPkPu
- A5J33B6a4wGCzxizxVI5gFx39ehVo5TTJdnA468AK3voWu3IQHW3G8sb9w==
-X-Google-Smtp-Source: AGHT+IGPr5k4lTfDwH8Hzdc+kNUjPn/92EN4rGVwxClEJG/iwvJPVOVc1ujyM8Ee/YYCEoDnxYji9Q==
-X-Received: by 2002:a17:907:a0e:b0:a90:3494:2aa9 with SMTP id
- a640c23a62f3a-a90c1c363c1mr1628386966b.2.1727083868126; 
- Mon, 23 Sep 2024 02:31:08 -0700 (PDT)
+ AJvYcCUQD2LZ/SQ6v3VAZaw+LYkmpnNmc3dQqKBXeV3ILoNoGKH0oqV2Ej4YQDLdykCaeX8RV3Qw9Nh/SIQ=@nongnu.org,
+ AJvYcCURCnFKgQI+9Etfd8AwFTIyTJYW0ohYicAU0aZRy7OjxCjhymztVCV5iK1oKLiQC0FePOgXItvyQNuK@nongnu.org
+X-Gm-Message-State: AOJu0YxjDCECXVfQ+0jXKpXZPMh3NyPyIhDsM4WF8Hn4O9Y8At7xoaHr
+ X9QlWYw6gNZ/WAsk6b/eF+x9/zqBl1pF5fAkevqCwl2hrDLoFSGGwnXlIg==
+X-Google-Smtp-Source: AGHT+IFkEwvgPFvsRjXEL7W5AqBarn2pB08glC2ZukVll0DZqIc/t2lr7n2Yg4Rw34hRsJ767JDAaw==
+X-Received: by 2002:a17:907:7d87:b0:a7a:b561:3575 with SMTP id
+ a640c23a62f3a-a90d5168094mr1093817466b.56.1727083870015; 
+ Mon, 23 Sep 2024 02:31:10 -0700 (PDT)
 Received: from archlinux.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90612b3f6fsm1188747166b.107.2024.09.23.02.31.06
+ a640c23a62f3a-a90612b3f6fsm1188747166b.107.2024.09.23.02.31.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Sep 2024 02:31:07 -0700 (PDT)
+ Mon, 23 Sep 2024 02:31:08 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
@@ -69,17 +69,17 @@ Cc: Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
  Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 05/23] hw/ppc/e500: Add missing device tree properties to i2c
- controller node
-Date: Mon, 23 Sep 2024 11:29:58 +0200
-Message-ID: <20240923093016.66437-6-shentey@gmail.com>
+Subject: [PATCH 06/23] hw/ppc/e500: Use SysBusDevice API to access TYPE_CCSR's
+ internal resources
+Date: Mon, 23 Sep 2024 11:29:59 +0200
+Message-ID: <20240923093016.66437-7-shentey@gmail.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240923093016.66437-1-shentey@gmail.com>
 References: <20240923093016.66437-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,32 +102,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When compiling a decompiled device tree blob created with dumpdtb, dtc complains
-with:
-
-  /soc@e0000000/i2c@3000: incorrect #address-cells for I2C bus
-  /soc@e0000000/i2c@3000: incorrect #size-cells for I2C bus
-
-Fix this by adding the missing device tree properties.
+Rather than accessing the attributes of TYPE_CCSR directly, use the SysBusDevice
+API which exists exactly for that purpose. Furthermore, registering the memory
+region with the SysBusDevice API makes it show up in QMP's `info qom-tree`
+command.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/ppc/e500.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/pci-host/ppce500.c | 10 +++++-----
+ hw/ppc/e500.c         |  8 ++++----
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
+diff --git a/hw/pci-host/ppce500.c b/hw/pci-host/ppce500.c
+index 95b983b2b3..97e5d47cec 100644
+--- a/hw/pci-host/ppce500.c
++++ b/hw/pci-host/ppce500.c
+@@ -16,7 +16,6 @@
+ 
+ #include "qemu/osdep.h"
+ #include "hw/irq.h"
+-#include "hw/ppc/e500-ccsr.h"
+ #include "hw/qdev-properties.h"
+ #include "migration/vmstate.h"
+ #include "hw/pci/pci_device.h"
+@@ -419,11 +418,12 @@ static const VMStateDescription vmstate_ppce500_pci = {
+ static void e500_pcihost_bridge_realize(PCIDevice *d, Error **errp)
+ {
+     PPCE500PCIBridgeState *b = PPC_E500_PCI_BRIDGE(d);
+-    PPCE500CCSRState *ccsr = CCSR(container_get(qdev_get_machine(),
+-                                  "/e500-ccsr"));
++    SysBusDevice *ccsr = SYS_BUS_DEVICE(container_get(qdev_get_machine(),
++                                                      "/e500-ccsr"));
++    MemoryRegion *ccsr_space = sysbus_mmio_get_region(ccsr, 0);
+ 
+-    memory_region_init_alias(&b->bar0, OBJECT(ccsr), "e500-pci-bar0", &ccsr->ccsr_space,
+-                             0, int128_get64(ccsr->ccsr_space.size));
++    memory_region_init_alias(&b->bar0, OBJECT(ccsr), "e500-pci-bar0",
++                             ccsr_space, 0, int128_get64(ccsr_space->size));
+     pci_register_bar(d, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &b->bar0);
+ }
+ 
 diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index 228287b457..e2a4f265a5 100644
+index e2a4f265a5..2225533e33 100644
 --- a/hw/ppc/e500.c
 +++ b/hw/ppc/e500.c
-@@ -196,6 +196,8 @@ static void dt_i2c_create(void *fdt, const char *soc, const char *mpic,
-     qemu_fdt_setprop_cells(fdt, i2c, "cell-index", 0);
-     qemu_fdt_setprop_cells(fdt, i2c, "interrupts", irq0, 0x2);
-     qemu_fdt_setprop_phandle(fdt, i2c, "interrupt-parent", mpic);
-+    qemu_fdt_setprop_cell(fdt, i2c, "#size-cells", 0);
-+    qemu_fdt_setprop_cell(fdt, i2c, "#address-cells", 1);
-     qemu_fdt_setprop_string(fdt, "/aliases", alias, i2c);
+@@ -924,7 +924,6 @@ void ppce500_init(MachineState *machine)
+     DriveInfo *dinfo;
+     MemoryRegion *ccsr_addr_space;
+     SysBusDevice *s;
+-    PPCE500CCSRState *ccsr;
+     I2CBus *i2c;
  
-     g_free(i2c);
+     irqs = g_new0(IrqLines, smp_cpus);
+@@ -980,10 +979,10 @@ void ppce500_init(MachineState *machine)
+     memory_region_add_subregion(address_space_mem, 0, machine->ram);
+ 
+     dev = qdev_new("e500-ccsr");
++    s = SYS_BUS_DEVICE(dev);
+     object_property_add_child(OBJECT(machine), "e500-ccsr", OBJECT(dev));
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-    ccsr = CCSR(dev);
+-    ccsr_addr_space = &ccsr->ccsr_space;
++    sysbus_realize_and_unref(s, &error_fatal);
++    ccsr_addr_space = sysbus_mmio_get_region(s, 0);
+     memory_region_add_subregion(address_space_mem, pmc->ccsrbar_base,
+                                 ccsr_addr_space);
+ 
+@@ -1270,6 +1269,7 @@ static void e500_ccsr_initfn(Object *obj)
+     PPCE500CCSRState *ccsr = CCSR(obj);
+     memory_region_init(&ccsr->ccsr_space, obj, "e500-ccsr",
+                        MPC8544_CCSRBAR_SIZE);
++    sysbus_init_mmio(SYS_BUS_DEVICE(ccsr), &ccsr->ccsr_space);
+ }
+ 
+ static const TypeInfo e500_ccsr_info = {
 -- 
 2.46.1
 
