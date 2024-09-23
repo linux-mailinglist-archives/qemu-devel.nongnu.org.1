@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3BA97E8D3
-	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 11:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD2497E8BE
+	for <lists+qemu-devel@lfdr.de>; Mon, 23 Sep 2024 11:32:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssfPZ-0002JQ-Qu; Mon, 23 Sep 2024 05:31:17 -0400
+	id 1ssfPj-0002sz-LU; Mon, 23 Sep 2024 05:31:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1ssfPY-0002FI-CU; Mon, 23 Sep 2024 05:31:16 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ id 1ssfPZ-0002LO-Qt; Mon, 23 Sep 2024 05:31:17 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1ssfPV-0006xs-PZ; Mon, 23 Sep 2024 05:31:16 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a8d51a7d6f5so614214066b.2; 
- Mon, 23 Sep 2024 02:31:11 -0700 (PDT)
+ id 1ssfPX-0006y9-L2; Mon, 23 Sep 2024 05:31:17 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-5356aa9a0afso6216749e87.2; 
+ Mon, 23 Sep 2024 02:31:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727083870; x=1727688670; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727083872; x=1727688672; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QwsoQdUrJVWYxvUgDYuKBFMf0v5P53ou5sqi+kSdVbs=;
- b=eRPu9/NLDZyWvWoorAOmXVrUIXZU8URNj0I7sZKCbAa3S56vG1DtUppbqf+K2/FTAY
- yPdHFfas9qNdutyDogRV8IA7Mja8J6bzQYt8v7WNourd4yRJnUQKHgAi6YC7gz7ITrm0
- 5TsYvuODR7di1ooLx2kSQlclmOuCCool0mbjbCLGOfSixSbd9CZujtERXfzg05Kcaz38
- ZsGihV5NblB6wmQx4arDwdaqsTmK5dQO5nq+wd3Pp/khDuy2CbeeMw4E80YjdyeufB2i
- IPXBxuyB0QH9sXni1NtLB+LPlPM7xHhtqDTUx8Ky5n9pzsBQ+5KCTchLmcQK/msV33ws
- fwcA==
+ bh=8dnNWB1tKdPz2ILQ+8Fnny+ubgZlPn6x4nw7p7w7r+Y=;
+ b=MVNp+fP7kfwziKFeXvoohG1nLxUlpLh3jTDtcfcIJunZ4lJ7BhYl1DB9w2bKvuVdqy
+ j4+fUprMaUNnLsgO8ZikJytoQeNFDIjEose1Vwl9UZkEQLE2HV4nAa0Y3/5cZrnIrILC
+ pwaRSig800lmDrTqfuTIx+Q2M3vXXYmw/m44VZlZTY8rsXqB2KxbLYHf3RHYVdm1lfPq
+ 2gP2dc5JKlPj5nPp31TXvKBqKJd7ZwBxs5V1PkKihwF9V4f9NOIKh8dY8lsLd5nwzL2I
+ aC+L7gYgNB5R3vPyklqGFNKl07ayPwffmQKNuTvTmofs7gAYlGMQpAhXM25u3KLLuS4F
+ mF/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727083870; x=1727688670;
+ d=1e100.net; s=20230601; t=1727083872; x=1727688672;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QwsoQdUrJVWYxvUgDYuKBFMf0v5P53ou5sqi+kSdVbs=;
- b=RuRqpKxR9ahJjq9gt/xn9B8XvsUDpmyrg+Jajj2+/ZS9LQ3RxOQzdFjpNnfothhs1x
- DxRF073zPsoGjmytnz6U9txMsH6OlCu9tD4+pmZpFSUVFbYsrCk6K6UDns0ATQgk2yHu
- mQIa5qk6uIJhbWJOfg2t3fVjdYennOX2Q5/HDPMIP9JHLI6ceJ50+SqJFGBQeqeDSGi8
- c+NYtRg3REDn3OCSKMYPs90PPShEAgpZV8n4aiDIMtuCdElOnU9LL4zPGpGWVFUDWWlm
- +tf1BzRR4+btUtIffBmHSbea5SLKiGexuRzMHgzbWr47+OUVtVDPichGJaPKOBinN5x6
- 1qdQ==
+ bh=8dnNWB1tKdPz2ILQ+8Fnny+ubgZlPn6x4nw7p7w7r+Y=;
+ b=H6rorrKGFdOl2FoDqXhGVPj1B1+50fAYCfFWh/wzgM6TT8xoAFwRWgjw/Yo0fPcHmA
+ YX3MlzsBZUCFF+NKTxohdVOZFD4H5prULfXL+8e55zK7Yfuwr0ymja3lFnW+N6UlzB+Y
+ lOXbqW2HjzfhEr+xxRe0c5NKIQBqn/1n1l6a7FXAmWqSDh6pMhUvDp3RTZCQ8ta4VEOU
+ X2msqTIgOrqz1XZkUTjhcKDjroqyu3uB0q9tG8ed93R2/J1OzYSJcM4U1Qrw9CyktouH
+ we2PZnlEphMcrNJYFlBruqTx/AmQEjQtTB8VnKTKCUSxI07KewQMhLDSDX69+tk8Iz+b
+ ZxUw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUQD2LZ/SQ6v3VAZaw+LYkmpnNmc3dQqKBXeV3ILoNoGKH0oqV2Ej4YQDLdykCaeX8RV3Qw9Nh/SIQ=@nongnu.org,
- AJvYcCURCnFKgQI+9Etfd8AwFTIyTJYW0ohYicAU0aZRy7OjxCjhymztVCV5iK1oKLiQC0FePOgXItvyQNuK@nongnu.org
-X-Gm-Message-State: AOJu0YxjDCECXVfQ+0jXKpXZPMh3NyPyIhDsM4WF8Hn4O9Y8At7xoaHr
- X9QlWYw6gNZ/WAsk6b/eF+x9/zqBl1pF5fAkevqCwl2hrDLoFSGGwnXlIg==
-X-Google-Smtp-Source: AGHT+IFkEwvgPFvsRjXEL7W5AqBarn2pB08glC2ZukVll0DZqIc/t2lr7n2Yg4Rw34hRsJ767JDAaw==
-X-Received: by 2002:a17:907:7d87:b0:a7a:b561:3575 with SMTP id
- a640c23a62f3a-a90d5168094mr1093817466b.56.1727083870015; 
- Mon, 23 Sep 2024 02:31:10 -0700 (PDT)
+ AJvYcCUtjblENNODsRKVrvo+ImqX9Tnsfbtr3U3cHOs8q1geopdUK4ju5gLgyFmaUt/0lT+btYt3LTFrvuVa@nongnu.org,
+ AJvYcCVzHxojqMuX/nk/FTYC7+fRw4j8FF4+jnSxoHthziGnOJsSI0CVGqvgt2tQ7/xte37uPDI15ApC4tA=@nongnu.org
+X-Gm-Message-State: AOJu0YzaSDvLeMmWbrauIl4SmDUGuD5QpbAzcwx8CBfoUjMMHE8KKaR4
+ USeg9cMk0tGv9UvCVnXGqi5zX5uTcDRKZA2UrpJMRfuSZE3RqXgZ74begA==
+X-Google-Smtp-Source: AGHT+IHcv1XM/XdU/R0ABNQsgcs+p8SK6GKNTprFTr8urPgVkse5sGszB6o2CksHWFgjIx8imMOsww==
+X-Received: by 2002:ac2:4c4d:0:b0:533:45c9:67fe with SMTP id
+ 2adb3069b0e04-536ac32ef59mr6896874e87.48.1727083871927; 
+ Mon, 23 Sep 2024 02:31:11 -0700 (PDT)
 Received: from archlinux.. (90-181-218-29.rco.o2.cz. [90.181.218.29])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a90612b3f6fsm1188747166b.107.2024.09.23.02.31.08
+ a640c23a62f3a-a90612b3f6fsm1188747166b.107.2024.09.23.02.31.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 23 Sep 2024 02:31:08 -0700 (PDT)
+ Mon, 23 Sep 2024 02:31:11 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
@@ -69,17 +69,16 @@ Cc: Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
  Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 06/23] hw/ppc/e500: Use SysBusDevice API to access TYPE_CCSR's
- internal resources
-Date: Mon, 23 Sep 2024 11:29:59 +0200
-Message-ID: <20240923093016.66437-7-shentey@gmail.com>
+Subject: [PATCH 07/23] hw/ppc/e500: Extract ppce500_ccsr.c
+Date: Mon, 23 Sep 2024 11:30:00 +0200
+Message-ID: <20240923093016.66437-8-shentey@gmail.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240923093016.66437-1-shentey@gmail.com>
 References: <20240923093016.66437-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=shentey@gmail.com; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,80 +101,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than accessing the attributes of TYPE_CCSR directly, use the SysBusDevice
-API which exists exactly for that purpose. Furthermore, registering the memory
-region with the SysBusDevice API makes it show up in QMP's `info qom-tree`
-command.
+The device model already has a header file. Also extract its implementation into
+an accompanying source file like other e500 devices.
+
+This commit is also a preparation for the next commit.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/pci-host/ppce500.c | 10 +++++-----
- hw/ppc/e500.c         |  8 ++++----
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ MAINTAINERS           |  2 +-
+ hw/ppc/e500-ccsr.h    |  2 ++
+ hw/ppc/e500.c         | 17 -----------------
+ hw/ppc/ppce500_ccsr.c | 38 ++++++++++++++++++++++++++++++++++++++
+ hw/ppc/meson.build    |  1 +
+ 5 files changed, 42 insertions(+), 18 deletions(-)
+ create mode 100644 hw/ppc/ppce500_ccsr.c
 
-diff --git a/hw/pci-host/ppce500.c b/hw/pci-host/ppce500.c
-index 95b983b2b3..97e5d47cec 100644
---- a/hw/pci-host/ppce500.c
-+++ b/hw/pci-host/ppce500.c
-@@ -16,7 +16,6 @@
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ffacd60f40..b7c8b7ae72 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1433,7 +1433,7 @@ e500
+ L: qemu-ppc@nongnu.org
+ S: Orphan
+ F: hw/ppc/e500*
+-F: hw/ppc/ppce500_spin.c
++F: hw/ppc/ppce500_*.c
+ F: hw/gpio/mpc8xxx.c
+ F: hw/i2c/mpc_i2c.c
+ F: hw/net/fsl_etsec/
+diff --git a/hw/ppc/e500-ccsr.h b/hw/ppc/e500-ccsr.h
+index 249c17be3b..3ab7e72568 100644
+--- a/hw/ppc/e500-ccsr.h
++++ b/hw/ppc/e500-ccsr.h
+@@ -4,6 +4,8 @@
+ #include "hw/sysbus.h"
+ #include "qom/object.h"
  
- #include "qemu/osdep.h"
- #include "hw/irq.h"
--#include "hw/ppc/e500-ccsr.h"
- #include "hw/qdev-properties.h"
- #include "migration/vmstate.h"
- #include "hw/pci/pci_device.h"
-@@ -419,11 +418,12 @@ static const VMStateDescription vmstate_ppce500_pci = {
- static void e500_pcihost_bridge_realize(PCIDevice *d, Error **errp)
- {
-     PPCE500PCIBridgeState *b = PPC_E500_PCI_BRIDGE(d);
--    PPCE500CCSRState *ccsr = CCSR(container_get(qdev_get_machine(),
--                                  "/e500-ccsr"));
-+    SysBusDevice *ccsr = SYS_BUS_DEVICE(container_get(qdev_get_machine(),
-+                                                      "/e500-ccsr"));
-+    MemoryRegion *ccsr_space = sysbus_mmio_get_region(ccsr, 0);
- 
--    memory_region_init_alias(&b->bar0, OBJECT(ccsr), "e500-pci-bar0", &ccsr->ccsr_space,
--                             0, int128_get64(ccsr->ccsr_space.size));
-+    memory_region_init_alias(&b->bar0, OBJECT(ccsr), "e500-pci-bar0",
-+                             ccsr_space, 0, int128_get64(ccsr_space->size));
-     pci_register_bar(d, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &b->bar0);
- }
- 
++#define MPC8544_CCSRBAR_SIZE       0x00100000ULL
++
+ struct PPCE500CCSRState {
+     /*< private >*/
+     SysBusDevice parent;
 diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index e2a4f265a5..2225533e33 100644
+index 2225533e33..4ee4304a8a 100644
 --- a/hw/ppc/e500.c
 +++ b/hw/ppc/e500.c
-@@ -924,7 +924,6 @@ void ppce500_init(MachineState *machine)
-     DriveInfo *dinfo;
-     MemoryRegion *ccsr_addr_space;
-     SysBusDevice *s;
--    PPCE500CCSRState *ccsr;
-     I2CBus *i2c;
+@@ -61,7 +61,6 @@
+ #define RAM_SIZES_ALIGN            (64 * MiB)
  
-     irqs = g_new0(IrqLines, smp_cpus);
-@@ -980,10 +979,10 @@ void ppce500_init(MachineState *machine)
-     memory_region_add_subregion(address_space_mem, 0, machine->ram);
- 
-     dev = qdev_new("e500-ccsr");
-+    s = SYS_BUS_DEVICE(dev);
-     object_property_add_child(OBJECT(machine), "e500-ccsr", OBJECT(dev));
--    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
--    ccsr = CCSR(dev);
--    ccsr_addr_space = &ccsr->ccsr_space;
-+    sysbus_realize_and_unref(s, &error_fatal);
-+    ccsr_addr_space = sysbus_mmio_get_region(s, 0);
-     memory_region_add_subregion(address_space_mem, pmc->ccsrbar_base,
-                                 ccsr_addr_space);
- 
-@@ -1270,6 +1269,7 @@ static void e500_ccsr_initfn(Object *obj)
-     PPCE500CCSRState *ccsr = CCSR(obj);
-     memory_region_init(&ccsr->ccsr_space, obj, "e500-ccsr",
-                        MPC8544_CCSRBAR_SIZE);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(ccsr), &ccsr->ccsr_space);
+ /* TODO: parameterize */
+-#define MPC8544_CCSRBAR_SIZE       0x00100000ULL
+ #define MPC8544_MPIC_REGS_OFFSET   0x40000ULL
+ #define MPC8544_MSI_REGS_OFFSET   0x41600ULL
+ #define MPC8544_SERIAL0_REGS_OFFSET 0x4500ULL
+@@ -1264,21 +1263,6 @@ void ppce500_init(MachineState *machine)
+     pms->boot_info.dt_size = dt_size;
  }
  
- static const TypeInfo e500_ccsr_info = {
+-static void e500_ccsr_initfn(Object *obj)
+-{
+-    PPCE500CCSRState *ccsr = CCSR(obj);
+-    memory_region_init(&ccsr->ccsr_space, obj, "e500-ccsr",
+-                       MPC8544_CCSRBAR_SIZE);
+-    sysbus_init_mmio(SYS_BUS_DEVICE(ccsr), &ccsr->ccsr_space);
+-}
+-
+-static const TypeInfo e500_ccsr_info = {
+-    .name          = TYPE_CCSR,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(PPCE500CCSRState),
+-    .instance_init = e500_ccsr_initfn,
+-};
+-
+ static const TypeInfo ppce500_info = {
+     .name          = TYPE_PPCE500_MACHINE,
+     .parent        = TYPE_MACHINE,
+@@ -1289,7 +1273,6 @@ static const TypeInfo ppce500_info = {
+ 
+ static void e500_register_types(void)
+ {
+-    type_register_static(&e500_ccsr_info);
+     type_register_static(&ppce500_info);
+ }
+ 
+diff --git a/hw/ppc/ppce500_ccsr.c b/hw/ppc/ppce500_ccsr.c
+new file mode 100644
+index 0000000000..191a9ceec3
+--- /dev/null
++++ b/hw/ppc/ppce500_ccsr.c
+@@ -0,0 +1,38 @@
++/*
++ * QEMU PowerPC E500 embedded processors CCSR space emulation
++ *
++ * Copyright (C) 2009 Freescale Semiconductor, Inc. All rights reserved.
++ *
++ * Author: Yu Liu,     <yu.liu@freescale.com>
++ *
++ * This file is derived from hw/ppc440_bamboo.c,
++ * the copyright for that material belongs to the original owners.
++ *
++ * This is free software; you can redistribute it and/or modify
++ * it under the terms of  the GNU General  Public License as published by
++ * the Free Software Foundation;  either version 2 of the  License, or
++ * (at your option) any later version.
++ */
++
++#include "qemu/osdep.h"
++#include "e500-ccsr.h"
++
++static void e500_ccsr_init(Object *obj)
++{
++    PPCE500CCSRState *ccsr = CCSR(obj);
++
++    memory_region_init(&ccsr->ccsr_space, obj, "e500-ccsr",
++                       MPC8544_CCSRBAR_SIZE);
++    sysbus_init_mmio(SYS_BUS_DEVICE(ccsr), &ccsr->ccsr_space);
++}
++
++static const TypeInfo types[] = {
++    {
++        .name          = TYPE_CCSR,
++        .parent        = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(PPCE500CCSRState),
++        .instance_init = e500_ccsr_init,
++    },
++};
++
++DEFINE_TYPES(types)
+diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
+index 7cd9189869..43c746795a 100644
+--- a/hw/ppc/meson.build
++++ b/hw/ppc/meson.build
+@@ -81,6 +81,7 @@ ppc_ss.add(when: 'CONFIG_MPC8544DS', if_true: files('mpc8544ds.c'))
+ ppc_ss.add(when: 'CONFIG_E500', if_true: files(
+   'e500.c',
+   'mpc8544_guts.c',
++  'ppce500_ccsr.c',
+   'ppce500_spin.c'
+ ))
+ # PowerPC 440 Xilinx ML507 reference board.
 -- 
 2.46.1
 
