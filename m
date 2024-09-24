@@ -2,88 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E18E984D9E
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 070F6984E25
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:52:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stDtt-0000Ok-2r; Tue, 24 Sep 2024 18:20:53 -0400
+	id 1stEMg-0002Cr-7D; Tue, 24 Sep 2024 18:50:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDtm-0008Bm-SN
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:20:46 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDtl-000219-9J
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:20:46 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-7193010d386so4903298b3a.1
- for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:20:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727216443; x=1727821243; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Rm2PciGct0eK86VEsTnJsW2Sf41E6+hfctylwipX0gc=;
- b=ikBcfVgQ1/fYcaRG+XKK/AG7MpBumrhAfRc35sANKtfmb8/pENxB2P7X1r6MWiH8VG
- sT+7kHW1IJjDP8sbSnnpM+/MnAvwmvxViXKRzm+xjY1JoXbzOqoaYX5gTtJqgZ/FV3oH
- +TITnsn25VLa1G3rNMfdUU8QyyK+fXFvW+fA9naWQDfQPT2+zBSZuAO1R9/zRJMM18bH
- WZr5tNH5nediSwzeEhnbzRq25YUac2MbMJem6VVjIi4ojXgscSxZZtQ6ZgslrebJbOhp
- 3Uj34txtCHdvzZxD88iUddIq/3YCvH+hET3izvrhP/Z7PnbY1J91tq7xi2xG5cXE6kmF
- t0sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727216443; x=1727821243;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Rm2PciGct0eK86VEsTnJsW2Sf41E6+hfctylwipX0gc=;
- b=JfX5X+0qzqp0wro43DsP1yYAwVcdRjuJOGRFPlKjysSrnbSx1maisCyLxQHx3G8bk6
- STIGEjkxBjJh94pGpxvMjfPhb5Z7NWiekPJ8hkftcAD18uP7DNKC5NK5H1Jr+b3acISX
- uznYJNm4yOZrHT1SjoVWyyUmFyUqPY3tzMKY+lvpT/95Sn/eAq+N8bnC7lBzI6qANwCb
- JRivNyKeBcU1BsVU02fmasKOYkw/VmETQsJFwOv3ZprC5DdYcvrHj65lNZBuzfZXS4dp
- R69hXGM3nzgBepA9Be55sbuzLLrCJkPFJQElRKFHA5FFe4vnkh16F5Qu2VyBcLEMVNdl
- VBMg==
-X-Gm-Message-State: AOJu0Ywmbd5V6etTVDVCY/Euhb9HVOcCy+BbJrzoM9jDVjLmg7/rP1fB
- wSOw8la7TaCb/wDgXeN8slH/ckAuJwe07T44otTdG3STvkXOSbBDDvxhsQ==
-X-Google-Smtp-Source: AGHT+IFbTawxPktrfLJYVk+YVzZkLTuBUBCpGjcYu4ZaLKuE5AmJLYGRGZg3+M4EWGPcVFOJtZhdZw==
-X-Received: by 2002:a05:6a00:3cc2:b0:714:228d:e9f5 with SMTP id
- d2e1a72fcca58-71b0aaa5bc0mr1343716b3a.2.1727216442660; 
- Tue, 24 Sep 2024 15:20:42 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.20.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Sep 2024 15:20:42 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Warner Losh <imp@bsdimp.com>,
- Ajeet Singh <itachis@FreeBSD.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 47/47] bsd-user: Add RISC-V 64-bit Target Configuration and
- Debug XML Files
-Date: Wed, 25 Sep 2024 08:17:48 +1000
-Message-ID: <20240924221751.2688389-48-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20240924221751.2688389-1-alistair.francis@wdc.com>
-References: <20240924221751.2688389-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1stEMe-00025n-3p
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:50:36 -0400
+Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1stEMZ-000512-4P
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:50:33 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id 84241A43940;
+ Tue, 24 Sep 2024 22:50:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896B2C4CEC4;
+ Tue, 24 Sep 2024 22:50:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1727218227;
+ bh=WY7GBY9CmGZjlKT1uQZTMBjVj8h1f+9V38/gLybIUlg=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=GUtb77YZXKcoaURuFX2Gx8b/f2VaSpcS5leKUfRS03azeaaINJkMzogdtp0ryAncr
+ 0MFibmUjlPSlj8NDOk4/CNtfAssB7yYdYjSUJW3CmddmycbOxZuoMRASCiQ/cMO4gK
+ cgGhkdV5pHpp0NkTA1Z8TK3zMniLrvHGJm+Q9VnYx+SI708ol6o8Yg1J/jlvaXbf+5
+ oAn0qoWpcE+qA0hzoOkwzb+tdlUlp08CY2HN8ayPsZMXBAGGd5ApH0HXCLC2Os3kFc
+ fZkmW3oadpiFGdZQFSe8ONn8eYFI2toyaiADe95mKzna2cMhrg/yVoLJnx4RI19Ese
+ VRIWx945sYd8Q==
+Date: Tue, 24 Sep 2024 15:50:22 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+cc: qemu-devel@nongnu.org, sstabellini@kernel.org, anthony@xenproject.org, 
+ paul@xen.org, peter.maydell@linaro.org, alex.bennee@linaro.org, 
+ edgar.iglesias@amd.com, xen-devel@lists.xenproject.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH v2 1/4] hw/xen: Expose handle_bufioreq in
+ xen_register_ioreq
+In-Reply-To: <20240923145520.1323504-2-edgar.iglesias@gmail.com>
+Message-ID: <alpine.DEB.2.22.394.2409241550140.1417852@ubuntu-linux-20-04-desktop>
+References: <20240923145520.1323504-1-edgar.iglesias@gmail.com>
+ <20240923145520.1323504-2-edgar.iglesias@gmail.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
+ envelope-from=sstabellini@kernel.org; helo=nyc.source.kernel.org
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.09,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_FILL_THIS_FORM_SHORT=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,31 +78,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
+On Mon, 23 Sep 2024, Edgar E. Iglesias wrote:
+> From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+> 
+> Expose handle_bufioreq in xen_register_ioreq().
+> This is to allow machines to enable or disable buffered ioreqs.
+> 
+> No functional change since all callers still set it to
+> HVM_IOREQSRV_BUFIOREQ_ATOMIC.
+> 
+> Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 
-Added configuration for RISC-V 64-bit target to the build system.
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
-Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240916155119.14610-18-itachis@FreeBSD.org>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- configs/targets/riscv64-bsd-user.mak | 4 ++++
- 1 file changed, 4 insertions(+)
- create mode 100644 configs/targets/riscv64-bsd-user.mak
 
-diff --git a/configs/targets/riscv64-bsd-user.mak b/configs/targets/riscv64-bsd-user.mak
-new file mode 100644
-index 0000000000..191c2c483f
---- /dev/null
-+++ b/configs/targets/riscv64-bsd-user.mak
-@@ -0,0 +1,4 @@
-+TARGET_ARCH=riscv64
-+TARGET_BASE_ARCH=riscv
-+TARGET_ABI_DIR=riscv
-+TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml
--- 
-2.46.1
-
+> ---
+>  hw/i386/xen/xen-hvm.c           |   4 +-
+>  hw/xen/xen-hvm-common.c         | 101 ++++++++++++++++++++------------
+>  hw/xen/xen-pvh-common.c         |   4 +-
+>  include/hw/xen/xen-hvm-common.h |   3 +
+>  include/hw/xen/xen_native.h     |   3 +-
+>  5 files changed, 74 insertions(+), 41 deletions(-)
+> 
+> diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+> index 4f6446600c..d3df488c48 100644
+> --- a/hw/i386/xen/xen-hvm.c
+> +++ b/hw/i386/xen/xen-hvm.c
+> @@ -614,7 +614,9 @@ void xen_hvm_init_pc(PCMachineState *pcms, MemoryRegion **ram_memory)
+>  
+>      state = g_new0(XenIOState, 1);
+>  
+> -    xen_register_ioreq(state, max_cpus, &xen_memory_listener);
+> +    xen_register_ioreq(state, max_cpus,
+> +                       HVM_IOREQSRV_BUFIOREQ_ATOMIC,
+> +                       &xen_memory_listener);
+>  
+>      xen_is_stubdomain = xen_check_stubdomain(state->xenstore);
+>  
+> diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+> index 3a9d6f981b..3ce994fc3a 100644
+> --- a/hw/xen/xen-hvm-common.c
+> +++ b/hw/xen/xen-hvm-common.c
+> @@ -667,6 +667,8 @@ static int xen_map_ioreq_server(XenIOState *state)
+>      xen_pfn_t ioreq_pfn;
+>      xen_pfn_t bufioreq_pfn;
+>      evtchn_port_t bufioreq_evtchn;
+> +    unsigned long num_frames = 1;
+> +    unsigned long frame = 1;
+>      int rc;
+>  
+>      /*
+> @@ -675,59 +677,79 @@ static int xen_map_ioreq_server(XenIOState *state)
+>       */
+>      QEMU_BUILD_BUG_ON(XENMEM_resource_ioreq_server_frame_bufioreq != 0);
+>      QEMU_BUILD_BUG_ON(XENMEM_resource_ioreq_server_frame_ioreq(0) != 1);
+> +
+> +    if (state->has_bufioreq) {
+> +        frame = 0;
+> +        num_frames = 2;
+> +    }
+>      state->fres = xenforeignmemory_map_resource(xen_fmem, xen_domid,
+>                                           XENMEM_resource_ioreq_server,
+> -                                         state->ioservid, 0, 2,
+> +                                         state->ioservid,
+> +                                         frame, num_frames,
+>                                           &addr,
+>                                           PROT_READ | PROT_WRITE, 0);
+>      if (state->fres != NULL) {
+>          trace_xen_map_resource_ioreq(state->ioservid, addr);
+> -        state->buffered_io_page = addr;
+> -        state->shared_page = addr + XC_PAGE_SIZE;
+> +        state->shared_page = addr;
+> +        if (state->has_bufioreq) {
+> +            state->buffered_io_page = addr;
+> +            state->shared_page = addr + XC_PAGE_SIZE;
+> +        }
+>      } else if (errno != EOPNOTSUPP) {
+>          error_report("failed to map ioreq server resources: error %d handle=%p",
+>                       errno, xen_xc);
+>          return -1;
+>      }
+>  
+> -    rc = xen_get_ioreq_server_info(xen_domid, state->ioservid,
+> -                                   (state->shared_page == NULL) ?
+> -                                   &ioreq_pfn : NULL,
+> -                                   (state->buffered_io_page == NULL) ?
+> -                                   &bufioreq_pfn : NULL,
+> -                                   &bufioreq_evtchn);
+> -    if (rc < 0) {
+> -        error_report("failed to get ioreq server info: error %d handle=%p",
+> -                     errno, xen_xc);
+> -        return rc;
+> -    }
+> -
+> -    if (state->shared_page == NULL) {
+> +    /*
+> +     * If we fail to map the shared page with xenforeignmemory_map_resource()
+> +     * or if we're using buffered ioreqs, we need xen_get_ioreq_server_info()
+> +     * to provide the the addresses to map the shared page and/or to get the
+> +     * event-channel port for buffered ioreqs.
+> +     */
+> +    if (state->shared_page == NULL || state->has_bufioreq) {
+>          trace_xen_map_ioreq_server_shared_page(ioreq_pfn);
+> +        rc = xen_get_ioreq_server_info(xen_domid, state->ioservid,
+> +                                       (state->shared_page == NULL) ?
+> +                                       &ioreq_pfn : NULL,
+> +                                       (state->has_bufioreq &&
+> +                                        state->buffered_io_page == NULL) ?
+> +                                       &bufioreq_pfn : NULL,
+> +                                       &bufioreq_evtchn);
+> +        if (rc < 0) {
+> +            error_report("failed to get ioreq server info: error %d handle=%p",
+> +                         errno, xen_xc);
+> +            return rc;
+> +        }
+>  
+> -        state->shared_page = xenforeignmemory_map(xen_fmem, xen_domid,
+> -                                                  PROT_READ | PROT_WRITE,
+> -                                                  1, &ioreq_pfn, NULL);
+> +        if (state->shared_page == NULL) {
+> +            trace_xen_map_ioreq_server_shared_page(ioreq_pfn);
+> +
+> +            state->shared_page = xenforeignmemory_map(xen_fmem, xen_domid,
+> +                                                      PROT_READ | PROT_WRITE,
+> +                                                      1, &ioreq_pfn, NULL);
+> +        }
+>          if (state->shared_page == NULL) {
+>              error_report("map shared IO page returned error %d handle=%p",
+>                           errno, xen_xc);
+>          }
+> -    }
+>  
+> -    if (state->buffered_io_page == NULL) {
+> -        trace_xen_map_ioreq_server_buffered_io_page(bufioreq_pfn);
+> +        if (state->has_bufioreq && state->buffered_io_page == NULL) {
+> +            trace_xen_map_ioreq_server_buffered_io_page(bufioreq_pfn);
+>  
+> -        state->buffered_io_page = xenforeignmemory_map(xen_fmem, xen_domid,
+> -                                                       PROT_READ | PROT_WRITE,
+> -                                                       1, &bufioreq_pfn,
+> -                                                       NULL);
+> -        if (state->buffered_io_page == NULL) {
+> -            error_report("map buffered IO page returned error %d", errno);
+> -            return -1;
+> +            state->buffered_io_page = xenforeignmemory_map(xen_fmem, xen_domid,
+> +                                                        PROT_READ | PROT_WRITE,
+> +                                                        1, &bufioreq_pfn,
+> +                                                        NULL);
+> +            if (state->buffered_io_page == NULL) {
+> +                error_report("map buffered IO page returned error %d", errno);
+> +                return -1;
+> +            }
+>          }
+>      }
+>  
+> -    if (state->shared_page == NULL || state->buffered_io_page == NULL) {
+> +    if (state->shared_page == NULL ||
+> +        (state->has_bufioreq && state->buffered_io_page == NULL)) {
+>          return -1;
+>      }
+>  
+> @@ -830,14 +852,15 @@ static void xen_do_ioreq_register(XenIOState *state,
+>          state->ioreq_local_port[i] = rc;
+>      }
+>  
+> -    rc = qemu_xen_evtchn_bind_interdomain(state->xce_handle, xen_domid,
+> -                                          state->bufioreq_remote_port);
+> -    if (rc == -1) {
+> -        error_report("buffered evtchn bind error %d", errno);
+> -        goto err;
+> +    if (state->has_bufioreq) {
+> +        rc = qemu_xen_evtchn_bind_interdomain(state->xce_handle, xen_domid,
+> +                                              state->bufioreq_remote_port);
+> +        if (rc == -1) {
+> +            error_report("buffered evtchn bind error %d", errno);
+> +            goto err;
+> +        }
+> +        state->bufioreq_local_port = rc;
+>      }
+> -    state->bufioreq_local_port = rc;
+> -
+>      /* Init RAM management */
+>  #ifdef XEN_COMPAT_PHYSMAP
+>      xen_map_cache_init(xen_phys_offset_to_gaddr, state);
+> @@ -865,6 +888,7 @@ err:
+>  }
+>  
+>  void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
+> +                        uint8_t handle_bufioreq,
+>                          const MemoryListener *xen_memory_listener)
+>  {
+>      int rc;
+> @@ -883,7 +907,8 @@ void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
+>          goto err;
+>      }
+>  
+> -    rc = xen_create_ioreq_server(xen_domid, &state->ioservid);
+> +    state->has_bufioreq = handle_bufioreq != HVM_IOREQSRV_BUFIOREQ_OFF;
+> +    rc = xen_create_ioreq_server(xen_domid, handle_bufioreq, &state->ioservid);
+>      if (!rc) {
+>          xen_do_ioreq_register(state, max_cpus, xen_memory_listener);
+>      } else {
+> diff --git a/hw/xen/xen-pvh-common.c b/hw/xen/xen-pvh-common.c
+> index 28d7168446..08641fdcec 100644
+> --- a/hw/xen/xen-pvh-common.c
+> +++ b/hw/xen/xen-pvh-common.c
+> @@ -194,7 +194,9 @@ static void xen_pvh_init(MachineState *ms)
+>      }
+>  
+>      xen_pvh_init_ram(s, sysmem);
+> -    xen_register_ioreq(&s->ioreq, ms->smp.max_cpus, &xen_memory_listener);
+> +    xen_register_ioreq(&s->ioreq, ms->smp.max_cpus,
+> +                       HVM_IOREQSRV_BUFIOREQ_ATOMIC,
+> +                       &xen_memory_listener);
+>  
+>      if (s->cfg.virtio_mmio_num) {
+>          xen_create_virtio_mmio_devices(s);
+> diff --git a/include/hw/xen/xen-hvm-common.h b/include/hw/xen/xen-hvm-common.h
+> index 3d796235dc..0f586c4384 100644
+> --- a/include/hw/xen/xen-hvm-common.h
+> +++ b/include/hw/xen/xen-hvm-common.h
+> @@ -81,6 +81,8 @@ typedef struct XenIOState {
+>      QLIST_HEAD(, XenPciDevice) dev_list;
+>      DeviceListener device_listener;
+>  
+> +    bool has_bufioreq;
+> +
+>      Notifier exit;
+>  } XenIOState;
+>  
+> @@ -95,6 +97,7 @@ void xen_device_unrealize(DeviceListener *listener, DeviceState *dev);
+>  
+>  void xen_hvm_change_state_handler(void *opaque, bool running, RunState rstate);
+>  void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
+> +                        uint8_t handle_bufioreq,
+>                          const MemoryListener *xen_memory_listener);
+>  
+>  void cpu_ioreq_pio(ioreq_t *req);
+> diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
+> index 1a5ad693a4..5caf91a616 100644
+> --- a/include/hw/xen/xen_native.h
+> +++ b/include/hw/xen/xen_native.h
+> @@ -464,10 +464,11 @@ static inline void xen_unmap_pcidev(domid_t dom,
+>  }
+>  
+>  static inline int xen_create_ioreq_server(domid_t dom,
+> +                                          int handle_bufioreq,
+>                                            ioservid_t *ioservid)
+>  {
+>      int rc = xendevicemodel_create_ioreq_server(xen_dmod, dom,
+> -                                                HVM_IOREQSRV_BUFIOREQ_ATOMIC,
+> +                                                handle_bufioreq,
+>                                                  ioservid);
+>  
+>      if (rc == 0) {
+> -- 
+> 2.43.0
+> 
 
