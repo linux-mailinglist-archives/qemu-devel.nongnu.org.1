@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94549984D8F
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C07B7984DB3
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:23:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stDsb-00019h-B6; Tue, 24 Sep 2024 18:19:33 -0400
+	id 1stDsi-00022w-QW; Tue, 24 Sep 2024 18:19:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDsY-0000rm-I8
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:19:30 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1stDse-0001op-8I
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:19:36 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDsW-0001iy-UR
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:19:30 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-71b070ff24dso638592b3a.2
- for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:19:28 -0700 (PDT)
+ id 1stDsc-0001jI-IB
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:19:35 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-7e6ba3f93fdso669643a12.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:19:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727216367; x=1727821167; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727216370; x=1727821170; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mjNXzgiEWyVyuZjYAU57+xA7vgC68VppCOY2z+wCZZg=;
- b=QOoR1l86deqhLHRhaEAZn+g+59L1ZLO/f9yjsYkitpLC2cEIB7N2qhD6Y2xmVbZFzf
- xqib7iYH+Qsv79A1g/XR5JHVEbDBDhatRmYirQnzGRpupQn+kHwec9U57n5Q5WOecsTf
- PJQuYXZyZ2pLt2Y6ExHypUZMeSs/+Ayh+WaxOoFFuzQdkr2jU5Ua9YYh6kJIqgTLKutA
- yWJeY3o7xSufQKHAG1Ee1as2xL7I6KJ1VeN2WOdNdWYx2/rEP2EfbOpzRe89mBaY/FS9
- LbxoM2CA21mAiRUgp3JSSprKzuJg8HiTNbW10RqmBaQxI+j60wFwL1r5l9J3fRfpr9dE
- qXww==
+ bh=XvmXuolKEh5VCCBso7oxro8MJDKi12QvfETwv+HVfmM=;
+ b=WjP0LMfuI8PkU6waAmlOyPfmAs878pLrbj0eQ7WJ+YCeKMg7bd7Wv0b2GOY0WxtwzW
+ MiIB5aeqmT9rIDz1eTUhDAlE5LiVZUMUIDLgwCqDVfnwBGcYgx7DF5bV0FTJSgNjhaOG
+ cZWdp30GbT6rVLdvRoqtrV3Ps+3hc44fMC7doBkOT4zaZTm86z6SEIZnvoScIIYceq7q
+ mGLZp7QEm3UHjPBQBwkRdHV+jZpvOw4JwE3cvt7BQuKj4EbKdxsWeiUUbW4k+ZIgIqH1
+ B8d4dXny4y/dP4BjQLOSS1wlyw8UYxjrnE8IepAfzM+Ryfr1J61C2E3CqoExfs8O44r7
+ fOjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727216367; x=1727821167;
+ d=1e100.net; s=20230601; t=1727216370; x=1727821170;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mjNXzgiEWyVyuZjYAU57+xA7vgC68VppCOY2z+wCZZg=;
- b=k95dnJgQ57lVxdYLRKMAuVVqZt+MSbDTZi7UED+a1nbwTQxfngCd4pJDAtDQ6HV9RL
- Mei5FZkoeGZzSAsfGBS1me8fZKSbzAcEoW2TICMNqWTwLVOfoUbULgKojGTmWMAaMsC6
- 6FokMXOrBnJPFIIheP7wqJ4II0wU2fAMscAqSz3+rrMxDhOcj0ori2sZaljVjRKTfvsc
- 5RX10JFbWoJFFeE9Nuk6jl64u2Zm0XMHXkvlm45ZJhlQEg7SKnWwgq2x3CPbEgzKGOPX
- X/KZyFK7HMWe7B6aCS7YoxQzLcimrCYZ+d010teupqmFiPRzPLNocxzUfQIXd5vk/J4m
- x8Sg==
-X-Gm-Message-State: AOJu0YwlCgUfSSqTdSM3e+6UQ/YiILrBfj2yRcbYpvn4WEWpZC0sA8UG
- UWze+Fmm1BsK8JG19A6MR4FBdcS/eUrcnKqWrUbH02fhsAICO0nB097GNw==
-X-Google-Smtp-Source: AGHT+IFdRpmdugdwvp57HsPTPeVPN1/oNiyZfgPBsGeFbmr6zL1qxKQ4n/ui4O6subbvgVcReOM2Kw==
-X-Received: by 2002:a05:6a00:8315:b0:718:d740:b870 with SMTP id
- d2e1a72fcca58-71b0aa95107mr865510b3a.2.1727216367381; 
- Tue, 24 Sep 2024 15:19:27 -0700 (PDT)
+ bh=XvmXuolKEh5VCCBso7oxro8MJDKi12QvfETwv+HVfmM=;
+ b=oyzK5G6OZo3gVBwJgU7JAhsxUTfgexgQ3OMJQeYUJn3XFsYSEMPmpcsPUp2CktOpLr
+ vvv74uxfc/ez0aMeLGAva1r+xJglk7CAiN999dUU10bovEps0TLjD2NAzEA92ecIz+UC
+ wM4nIzX/P4gcypZrXU5kCxwWCRcODQVebmii3XWqT1OD3vr5XtXXWQE6ZMyRNPY/yT/U
+ /TQqs45aYJzANUMnEp8luCaYg9RKdmOCCg2uQyq0GlSeIDSRp8X7tYo+BBQUWhsX432J
+ uW5ObCkxWGnYGzTxHPs0UWA35bWe8HI2GvVzW5fAUP8hdIS7fP+QYr6KXDdkYNdgGpXV
+ ETYQ==
+X-Gm-Message-State: AOJu0YzGGJcD9Fpz7AlfzwaL0y/T5GHHeKfgwuFwA409o/P+Xzozt8Lf
+ swdHS+V5UBfYyLF5tdhIWcWSvW8ZTj+WbwacFkNN3/vmkQ2Aa3nijoP+HA==
+X-Google-Smtp-Source: AGHT+IGCtAOy4Qi6A6Ow+1XFxf4aAablk8XXuapW0b+ikJpAzIywINpybzLXKG9/rkZVKJbhDW7ySw==
+X-Received: by 2002:a05:6a21:3a85:b0:1d0:3a28:d2a7 with SMTP id
+ adf61e73a8af0-1d4e0bff489mr662923637.41.1727216370100; 
+ Tue, 24 Sep 2024 15:19:30 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.19.24
+ d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.19.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Sep 2024 15:19:26 -0700 (PDT)
+ Tue, 24 Sep 2024 15:19:29 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL v2 28/47] target/riscv32: Fix masking of physical address
-Date: Wed, 25 Sep 2024 08:17:29 +1000
-Message-ID: <20240924221751.2688389-29-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Thomas Huth <thuth@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL v2 29/47] target/riscv/cpu_helper: Fix linking problem with
+ semihosting disabled
+Date: Wed, 25 Sep 2024 08:17:30 +1000
+Message-ID: <20240924221751.2688389-30-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240924221751.2688389-1-alistair.francis@wdc.com>
 References: <20240924221751.2688389-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,57 +97,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Thomas Huth <thuth@redhat.com>
 
-C doesn't extend the sign bit for unsigned types since there isn't a
-sign bit to extend. This means a promotion of a u32 to a u64 results
-in the upper 32 bits of the u64 being zero. If that result is then
-used as a mask on another u64 the upper 32 bits will be cleared. rv32
-physical addresses may be up to 34 bits wide, so we don't want to
-clear the high bits while page aligning the address. The fix is to
-use hwaddr for the mask, which, even on rv32, is 64-bits wide.
+If QEMU has been configured with "--without-default-devices", the build
+is currently failing with:
 
-Fixes: af3fc195e3c8 ("target/riscv: Change the TLB page size depends on PMP entries.")
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+ /usr/bin/ld: libqemu-riscv32-softmmu.a.p/target_riscv_cpu_helper.c.o:
+  in function `riscv_cpu_do_interrupt':
+ .../qemu/target/riscv/cpu_helper.c:1678:(.text+0x2214): undefined
+  reference to `do_common_semihosting'
+
+We always want semihosting to be enabled if TCG is available, so change
+the "imply" statements in the Kconfig file to "select", and make sure to
+avoid calling into do_common_semihosting() if TCG is not available.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240909083241.43836-2-ajones@ventanamicro.com>
+Message-ID: <20240906094858.718105-1-thuth@redhat.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/riscv/cpu_helper.c | 2 ++
+ target/riscv/Kconfig      | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 395a1d9140..4b2c72780c 100644
+index 4b2c72780c..a935377b4a 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -1323,7 +1323,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-     int ret = TRANSLATE_FAIL;
-     int mode = mmuidx_priv(mmu_idx);
-     /* default TLB page size */
--    target_ulong tlb_size = TARGET_PAGE_SIZE;
-+    hwaddr tlb_size = TARGET_PAGE_SIZE;
+@@ -1674,10 +1674,12 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+     if (!async) {
+         /* set tval to badaddr for traps with address information */
+         switch (cause) {
++#ifdef CONFIG_TCG
+         case RISCV_EXCP_SEMIHOST:
+             do_common_semihosting(cs);
+             env->pc += 4;
+             return;
++#endif
+         case RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT:
+         case RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT:
+         case RISCV_EXCP_LOAD_ADDR_MIS:
+diff --git a/target/riscv/Kconfig b/target/riscv/Kconfig
+index c332616d36..11bc09b414 100644
+--- a/target/riscv/Kconfig
++++ b/target/riscv/Kconfig
+@@ -1,9 +1,9 @@
+ config RISCV32
+     bool
+-    imply ARM_COMPATIBLE_SEMIHOSTING if TCG
++    select ARM_COMPATIBLE_SEMIHOSTING if TCG
+     select DEVICE_TREE # needed by boot.c
  
-     env->guest_phys_fault_addr = 0;
- 
-@@ -1375,7 +1375,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
- 
-                 qemu_log_mask(CPU_LOG_MMU,
-                               "%s PMP address=" HWADDR_FMT_plx " ret %d prot"
--                              " %d tlb_size " TARGET_FMT_lu "\n",
-+                              " %d tlb_size %" HWADDR_PRIu "\n",
-                               __func__, pa, ret, prot_pmp, tlb_size);
- 
-                 prot &= prot_pmp;
-@@ -1409,7 +1409,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
- 
-             qemu_log_mask(CPU_LOG_MMU,
-                           "%s PMP address=" HWADDR_FMT_plx " ret %d prot"
--                          " %d tlb_size " TARGET_FMT_lu "\n",
-+                          " %d tlb_size %" HWADDR_PRIu "\n",
-                           __func__, pa, ret, prot_pmp, tlb_size);
- 
-             prot &= prot_pmp;
+ config RISCV64
+     bool
+-    imply ARM_COMPATIBLE_SEMIHOSTING if TCG
++    select ARM_COMPATIBLE_SEMIHOSTING if TCG
+     select DEVICE_TREE # needed by boot.c
 -- 
 2.46.1
 
