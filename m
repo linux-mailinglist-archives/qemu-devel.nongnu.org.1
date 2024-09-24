@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFDD984D8B
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C41A984D99
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:21:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stDrE-0002zv-Ne; Tue, 24 Sep 2024 18:18:08 -0400
+	id 1stDrI-00039f-TW; Tue, 24 Sep 2024 18:18:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDrB-0002zS-Ek
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:05 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1stDrE-00031J-B1
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:08 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDr9-0001bA-63
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:04 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-7178df70f28so4690317b3a.2
- for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:18:02 -0700 (PDT)
+ id 1stDrC-0001bK-KN
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:08 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-71781f42f75so5522100b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:18:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727216281; x=1727821081; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=XQlrvcgJbB3asWcCqRiPRtngIvm+3WS+P7+LUT4jrhE=;
- b=SEmeuPAtJvwc6q1vw1TdZgb/4GufawcSmwe+XUVYKfZ70WWJKoEblPRY83WqRRyt2F
- G3JOguF9o5m5cUiwuZwOAXoz55FaJP0ltt4iSZQEnKEgp9jrVEK/kyLuauNqVsE2XGmp
- 7SSBNHhg49HMNNIfQBFYJPgQ3WMYh9O6+FFI0YwV84pnwmoGohC3JYlt9Inof+hFxM1+
- msG7o8raW3ebpTkBWfCi6Uf8ZipRV2XZdj+CTem7lGXqMAZ33Lb4BorwsKQz71B/qUf4
- St8iVmZ3MP3pGjFqDh9ZjkxDJKjUlk9KpZWLtPN0d/D6Fm3CSJAe15DuyPg67YlRtRRO
- 2pbQ==
+ d=gmail.com; s=20230601; t=1727216284; x=1727821084; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tNALoGxYT8shTu5z76fc9Bj/Xb/aPmADmGUdV2UZRFg=;
+ b=m6sH3iQZXoWkyroPzmoRqkysTGZRuQbSFuYkiuSQ4yla0D6/JlGuSAzSeZ2WIwoHyC
+ QirYChhRpLua+eWvTyTfvDBK6zB49HtfT71e9Qr/EPtiE3BcpRbDtNtT7K2hYEFQkPJ4
+ N6QT35PoOe9HVR5q6B5PTy5b930+lJyHO9zRwxzc2jlrwO8JYCWjy+oCD1QLDnu7eq+O
+ KjNYtzz05qqlFvZwZgdSuuQChAIzhcwdhhkrpm2uSOK35E6zndq/gjgkx1BrT61W6ur6
+ QLKJO4FksZR4N1CrDjAZN7NQJyXoMu+wDgCgItnptQnfti23oou8gwv44gyBnzBUJizj
+ ZbWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727216281; x=1727821081;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XQlrvcgJbB3asWcCqRiPRtngIvm+3WS+P7+LUT4jrhE=;
- b=N5tPOEVbcGTwYb2+N7rYy0PFQjnNml4fGFfdajfSQMVQkgj9k/SO3cDDLg5vllJKNc
- 7ZBNnMPiUSXJIOiCyW4SDjJga9cYIp9QMr3asLBrZDH6ybyVKVkfB2sN1D3+a+A4mydm
- cjNPVcDkNkSXP921mBNb7/UVY1wFXo+xcnoq2zeiOoEl20gbN5bTJMWH8lgjLQvvSanG
- Jb/jv6uz2ra1QU8PrNRQ8rNyyVa6j+u43WlqNyYg49KA8g5qvSJlbXKpBcxJqaknGctH
- qDhDY+iUbOWdTbUYILRQyAGcCZVQWIZQYH80eegKt2mzq1Q24NtmWD1tHCjZKna+401X
- v1RQ==
-X-Gm-Message-State: AOJu0YyGuzZyYdf+thXZvpPV66sePwTEbvYYIm6+sidGnDxqaSYU09Qf
- 7C4FABhd/+QlIoW7J95moJ6JEHDx2sidZvOYTp3FPowzyOuYeJrJtNWN1w==
-X-Google-Smtp-Source: AGHT+IEs2kwCpzT8uUGiwayrP7z9Ilpjwr27P2gqUnPBxe46Sp7VLgyH9wKkcqoiGdgTOi6jwlYErw==
-X-Received: by 2002:a05:6a00:130b:b0:714:1fc3:79f4 with SMTP id
- d2e1a72fcca58-71b0aaa1c84mr1018250b3a.5.1727216281255; 
- Tue, 24 Sep 2024 15:18:01 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1727216284; x=1727821084;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tNALoGxYT8shTu5z76fc9Bj/Xb/aPmADmGUdV2UZRFg=;
+ b=hN/uE0XjTtqoL7RWEjvHbQlzlheBtlIudyZ2zP5u8GO4lKVvYmJef2J+tZHoIVHWq6
+ pRNdF6h+5Py4kM8aiJN8q++I41VESz82dxJNsKRHWlOZc1opjLtxA4Sj2Aa1O08/sZZx
+ uOlZNNbUC7eZ5tuE9oATCZuXBxr5ixOvO7S8nVgvUobmTDxVW7cIw/n+FB9kn3E3UZqs
+ xHjL8ukzIYfCWqmFEmyYgUwZG78zfwuaTtJVHKqRWg6EKxbTUBWQLUKJ58xFf+sM6Flf
+ S+QRGw2vDFKfz7o9LKxVfNSrxUOzvqpDOaX4KaR0vdoJpcx7OR30UZQg2BatVevyMxEw
+ Vwvw==
+X-Gm-Message-State: AOJu0Ywq3ZyKxAnfLic57WnI2oJYQQU6/SWYi6ph6FszfomKyP89JfSm
+ f0HvFX0+YMqfNIC400fSxj4NP0jBErOpXKuFCowuMyT9nzRqOoi35RYVew==
+X-Google-Smtp-Source: AGHT+IES2g/ikU9Qe+9lJ0wSLRPqKPvkNFUTX8b/oJSwzP24hG8X9SZDCE+zUdofc6L+LXdu4OrbLQ==
+X-Received: by 2002:a05:6a21:164e:b0:1cf:5aba:eac4 with SMTP id
+ adf61e73a8af0-1d4e0ba3dc5mr847624637.41.1727216284292; 
+ Tue, 24 Sep 2024 15:18:04 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.17.59
+ d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.18.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Sep 2024 15:18:00 -0700 (PDT)
+ Tue, 24 Sep 2024 15:18:03 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 00/47] riscv-to-apply queue
-Date: Wed, 25 Sep 2024 08:17:01 +1000
-Message-ID: <20240924221751.2688389-1-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Jason Chien <jason.chien@sifive.com>,
+ Frank Chang <frank.chang@sifive.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL v2 01/47] target/riscv: Add a property to set vl to ceil(AVL/2)
+Date: Wed, 25 Sep 2024 08:17:02 +1000
+Message-ID: <20240924221751.2688389-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.1
+In-Reply-To: <20240924221751.2688389-1-alistair.francis@wdc.com>
+References: <20240924221751.2688389-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,200 +97,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 01dc65a3bc262ab1bec8fe89775e9bbfa627becb:
+From: Jason Chien <jason.chien@sifive.com>
 
-  Merge tag 'pull-target-arm-20240919' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-09-19 14:15:15 +0100)
+RVV spec allows implementations to set vl with values within
+[ceil(AVL/2),VLMAX] when VLMAX < AVL < 2*VLMAX. This commit adds a
+property "rvv_vl_half_avl" to enable setting vl = ceil(AVL/2). This
+behavior helps identify compiler issues and bugs.
 
-are available in the Git repository at:
+Signed-off-by: Jason Chien <jason.chien@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Message-ID: <20240722175004.23666-1-jason.chien@sifive.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/cpu_cfg.h       | 1 +
+ target/riscv/cpu.c           | 1 +
+ target/riscv/vector_helper.c | 2 ++
+ 3 files changed, 4 insertions(+)
 
-  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20240925-1
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 8b272fb826..96fe26d4ea 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -127,6 +127,7 @@ struct RISCVCPUConfig {
+     bool ext_smepmp;
+     bool rvv_ta_all_1s;
+     bool rvv_ma_all_1s;
++    bool rvv_vl_half_avl;
+ 
+     uint32_t mvendorid;
+     uint64_t marchid;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 4bda754b01..cc5552500a 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2661,6 +2661,7 @@ static Property riscv_cpu_properties[] = {
+ 
+     DEFINE_PROP_BOOL("rvv_ta_all_1s", RISCVCPU, cfg.rvv_ta_all_1s, false),
+     DEFINE_PROP_BOOL("rvv_ma_all_1s", RISCVCPU, cfg.rvv_ma_all_1s, false),
++    DEFINE_PROP_BOOL("rvv_vl_half_avl", RISCVCPU, cfg.rvv_vl_half_avl, false),
+ 
+     /*
+      * write_misa() is marked as experimental for now so mark
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 10a52ceb5b..072bd444b1 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -75,6 +75,8 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
+     vlmax = vext_get_vlmax(cpu->cfg.vlenb, vsew, lmul);
+     if (s1 <= vlmax) {
+         vl = s1;
++    } else if (s1 < 2 * vlmax && cpu->cfg.rvv_vl_half_avl) {
++        vl = (s1 + 1) >> 1;
+     } else {
+         vl = vlmax;
+     }
+-- 
+2.46.1
 
-for you to fetch changes up to 6bfa92c5757fe7a9580e1f6e065076777cae650f:
-
-  bsd-user: Add RISC-V 64-bit Target Configuration and Debug XML Files (2024-09-24 12:53:16 +1000)
-
-----------------------------------------------------------------
-RISC-V PR for 9.2
-
-* Add a property to set vl to ceil(AVL/2)
-* Enable numamem testing for RISC-V
-* Consider MISA bit choice in implied rule
-* Fix the za64rs priv spec requirements
-* Enable Bit Manip for OpenTitan Ibex CPU
-* Fix the group bit setting of AIA with KVM
-* Stop timer with infinite timecmp
-* Add 'fcsr' register to QEMU log as a part of F extension
-* Fix riscv64 build on musl libc
-* Add preliminary textra trigger CSR functions
-* RISC-V IOMMU support
-* RISC-V bsd-user support
-* Respect firmware ELF entry point
-* Add Svvptc extension support
-* Fix masking of rv32 physical address
-* Fix linking problem with semihosting disabled
-* Fix IMSIC interrupt state updates
-
-----------------------------------------------------------------
-Alexandre Ghiti (1):
-      target: riscv: Add Svvptc extension support
-
-Alistair Francis (1):
-      target: riscv: Enable Bit Manip for OpenTitan Ibex CPU
-
-Alvin Chang (2):
-      target/riscv: Preliminary textra trigger CSR writting support
-      target/riscv: Add textra matching condition for the triggers
-
-Andrew Jones (3):
-      target/riscv/kvm: Fix the group bit setting of AIA
-      target/riscv: Stop timer with infinite timecmp
-      target/riscv32: Fix masking of physical address
-
-Daniel Henrique Barboza (5):
-      target/riscv/tcg/tcg-cpu.c: consider MISA bit choice in implied rule
-      pci-ids.rst: add Red Hat pci-id for RISC-V IOMMU device
-      test/qtest: add riscv-iommu-pci tests
-      qtest/riscv-iommu-test: add init queues test
-      docs/specs: add riscv-iommu
-
-Haibo Xu (3):
-      tests/acpi: Add empty ACPI SRAT data file for RISC-V
-      tests/qtest/bios-tables-test.c: Enable numamem testing for RISC-V
-      tests/acpi: Add expected ACPI SRAT AML file for RISC-V
-
-Jason Chien (1):
-      target/riscv: Add a property to set vl to ceil(AVL/2)
-
-Maria Klauchek (1):
-      target/riscv/cpu.c: Add 'fcsr' register to QEMU log as a part of F extension
-
-Mark Corbin (15):
-      bsd-user: Implement RISC-V CPU initialization and main loop
-      bsd-user: Add RISC-V CPU execution loop and syscall handling
-      bsd-user: Implement RISC-V CPU register cloning and reset functions
-      bsd-user: Implement RISC-V TLS register setup
-      bsd-user: Add RISC-V ELF definitions and hardware capability detection
-      bsd-user: Define RISC-V register structures and register copying
-      bsd-user: Add RISC-V signal trampoline setup function
-      bsd-user: Implement RISC-V sysarch system call emulation
-      bsd-user: Add RISC-V thread setup and initialization support
-      bsd-user: Define RISC-V VM parameters and helper functions
-      bsd-user: Define RISC-V system call structures and constants
-      bsd-user: Define RISC-V signal handling structures and constants
-      bsd-user: Implement RISC-V signal trampoline setup functions
-      bsd-user: Implement 'get_mcontext' for RISC-V
-      bsd-user: Implement set_mcontext and get_ucontext_sigreturn for RISCV
-
-Milan P. Stanić (1):
-      util/util/cpuinfo-riscv.c: fix riscv64 build on musl libc
-
-Samuel Holland (1):
-      hw/riscv: Respect firmware ELF entry point
-
-Thomas Huth (1):
-      target/riscv/cpu_helper: Fix linking problem with semihosting disabled
-
-Tomasz Jeznach (9):
-      exec/memtxattr: add process identifier to the transaction attributes
-      hw/riscv: add riscv-iommu-bits.h
-      hw/riscv: add RISC-V IOMMU base emulation
-      hw/riscv: add riscv-iommu-pci reference device
-      hw/riscv/virt.c: support for RISC-V IOMMU PCIDevice hotplug
-      hw/riscv/riscv-iommu: add Address Translation Cache (IOATC)
-      hw/riscv/riscv-iommu: add ATS support
-      hw/riscv/riscv-iommu: add DBG support
-      hw/intc: riscv-imsic: Fix interrupt state updates.
-
-Vladimir Isaev (1):
-      target/riscv: fix za64rs enabling
-
-Warner Losh (2):
-      bsd-user: Add generic RISC-V64 target definitions
-      bsd-user: Add RISC-V 64-bit Target Configuration and Debug XML Files
-
- docs/specs/index.rst                      |    1 +
- docs/specs/pci-ids.rst                    |    2 +
- docs/specs/riscv-iommu.rst                |   90 ++
- docs/system/riscv/virt.rst                |   13 +
- configs/targets/riscv64-bsd-user.mak      |    4 +
- meson.build                               |    1 +
- bsd-user/riscv/target.h                   |   20 +
- bsd-user/riscv/target_arch.h              |   27 +
- bsd-user/riscv/target_arch_cpu.h          |  148 ++
- bsd-user/riscv/target_arch_elf.h          |   42 +
- bsd-user/riscv/target_arch_reg.h          |   88 ++
- bsd-user/riscv/target_arch_signal.h       |   75 +
- bsd-user/riscv/target_arch_sigtramp.h     |   41 +
- bsd-user/riscv/target_arch_sysarch.h      |   41 +
- bsd-user/riscv/target_arch_thread.h       |   47 +
- bsd-user/riscv/target_arch_vmparam.h      |   53 +
- bsd-user/riscv/target_syscall.h           |   38 +
- hw/riscv/riscv-iommu-bits.h               |  421 +++++
- hw/riscv/riscv-iommu.h                    |  149 ++
- hw/riscv/trace.h                          |    1 +
- include/exec/memattrs.h                   |    5 +
- include/hw/pci/pci.h                      |    1 +
- include/hw/riscv/boot.h                   |    4 +-
- include/hw/riscv/iommu.h                  |   36 +
- target/riscv/cpu_bits.h                   |   10 +
- target/riscv/cpu_cfg.h                    |    2 +
- target/riscv/debug.h                      |    3 +
- tests/qtest/libqos/riscv-iommu.h          |  101 ++
- bsd-user/riscv/signal.c                   |  170 ++
- bsd-user/riscv/target_arch_cpu.c          |   29 +
- hw/intc/riscv_imsic.c                     |   50 +-
- hw/riscv/boot.c                           |   11 +-
- hw/riscv/microchip_pfsoc.c                |    2 +-
- hw/riscv/opentitan.c                      |    3 +-
- hw/riscv/riscv-iommu-pci.c                |  202 +++
- hw/riscv/riscv-iommu.c                    | 2431 +++++++++++++++++++++++++++++
- hw/riscv/shakti_c.c                       |   13 +-
- hw/riscv/sifive_u.c                       |    4 +-
- hw/riscv/spike.c                          |    5 +-
- hw/riscv/virt.c                           |   37 +-
- target/riscv/cpu.c                        |   16 +-
- target/riscv/cpu_helper.c                 |    8 +-
- target/riscv/debug.c                      |  114 +-
- target/riscv/kvm/kvm-cpu.c                |    4 +-
- target/riscv/tcg/tcg-cpu.c                |   13 +-
- target/riscv/time_helper.c                |    1 +
- target/riscv/vector_helper.c              |    2 +
- tests/qtest/bios-tables-test.c            |   28 +
- tests/qtest/libqos/riscv-iommu.c          |   76 +
- tests/qtest/riscv-iommu-test.c            |  220 +++
- util/cpuinfo-riscv.c                      |    1 +
- hw/riscv/Kconfig                          |    4 +
- hw/riscv/meson.build                      |    1 +
- hw/riscv/trace-events                     |   17 +
- target/riscv/Kconfig                      |    4 +-
- tests/data/acpi/riscv64/virt/SRAT.numamem |  Bin 0 -> 108 bytes
- tests/qtest/libqos/meson.build            |    4 +
- tests/qtest/meson.build                   |    1 +
- 58 files changed, 4877 insertions(+), 58 deletions(-)
- create mode 100644 docs/specs/riscv-iommu.rst
- create mode 100644 configs/targets/riscv64-bsd-user.mak
- create mode 100644 bsd-user/riscv/target.h
- create mode 100644 bsd-user/riscv/target_arch.h
- create mode 100644 bsd-user/riscv/target_arch_cpu.h
- create mode 100644 bsd-user/riscv/target_arch_elf.h
- create mode 100644 bsd-user/riscv/target_arch_reg.h
- create mode 100644 bsd-user/riscv/target_arch_signal.h
- create mode 100644 bsd-user/riscv/target_arch_sigtramp.h
- create mode 100644 bsd-user/riscv/target_arch_sysarch.h
- create mode 100644 bsd-user/riscv/target_arch_thread.h
- create mode 100644 bsd-user/riscv/target_arch_vmparam.h
- create mode 100644 bsd-user/riscv/target_syscall.h
- create mode 100644 hw/riscv/riscv-iommu-bits.h
- create mode 100644 hw/riscv/riscv-iommu.h
- create mode 100644 hw/riscv/trace.h
- create mode 100644 include/hw/riscv/iommu.h
- create mode 100644 tests/qtest/libqos/riscv-iommu.h
- create mode 100644 bsd-user/riscv/signal.c
- create mode 100644 bsd-user/riscv/target_arch_cpu.c
- create mode 100644 hw/riscv/riscv-iommu-pci.c
- create mode 100644 hw/riscv/riscv-iommu.c
- create mode 100644 tests/qtest/libqos/riscv-iommu.c
- create mode 100644 tests/qtest/riscv-iommu-test.c
- create mode 100644 hw/riscv/trace-events
- create mode 100644 tests/data/acpi/riscv64/virt/SRAT.numamem
 
