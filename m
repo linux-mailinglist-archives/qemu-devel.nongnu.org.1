@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39277984DA8
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B964A984DAC
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:23:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stDrh-0004ZN-I8; Tue, 24 Sep 2024 18:18:37 -0400
+	id 1stDri-0004eg-Ta; Tue, 24 Sep 2024 18:18:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDrf-0004St-9s
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:35 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1stDrh-0004ab-Fq
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:37 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDrd-0001dr-N7
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:35 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-718d91eef2eso235701b3a.1
- for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:18:32 -0700 (PDT)
+ id 1stDrf-0001e8-T2
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:37 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-71970655611so5392053b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:18:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727216311; x=1727821111; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727216314; x=1727821114; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Dbl+YTbLgXN5l8ttn3+mnl62ViQQVuJp9Z/85bpmJ90=;
- b=NCYCreyJFOr0e+VrQQ+3T4fDVe2k9hgUeg1h79ZW+vzEM1/Kht+rmMgVhL6E6AFPwK
- XbASKXEJ5iJh8et7L8RW/hk5/R92bNIcJfyJv+Qp4NYPDagpeiakuM9jCjqsNeatpvcT
- Lb4MNM54sCNjiMIXyJpFP0HYdHFLoSRV7GgRUrh89KOL74pKVX69Fdy4zNrMg1HS4JYj
- iAC6T8p3JS/toepk0yu0LByP0Fdvc3Wwy/VNiUz6XS3jgVE11NvDm+H76OUNlUctbdCi
- n7yJ2XajKos1FW6dxhe6A6/5PhoQ8Nl+HfvlmmcZsLHZZ56u55m3ztLUuPKnx6QDgFBh
- p2kg==
+ bh=n92lSS7nLnvvFV+djWi3tX7M+BTT1mwMiaSPH8ytfJc=;
+ b=YTJdjfmMkN3ZkbtISNdLELSaGkklovdczH2V0jGy4PUTMYIRStIlkhRfcO4opE0F2Y
+ YAn2d+WmtyZ9QQ4QTeoi5QAg/1UUILkDu5bbutO6gKxDchpz6t+wX+NmE5whU6KLJIaW
+ Py3u1jsjpfmsXuN9TCDXvzx4dwtUu4Zcc7MF/2IZPdzzhdJO3S2fmELTNF/O6JJnCvHg
+ SHmNM3k919wp6AHfQhuZZTBY6lprzkh6Bagxf34J6108nqclqp11iUjDV158He9MEzWp
+ OTlnG7ZU8BgLNpdy4V93RfSQaP5KgCurVDP1TYaNkHzi1Sz0BbbZ84QqdJ0ticUymtfX
+ h5EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727216311; x=1727821111;
+ d=1e100.net; s=20230601; t=1727216314; x=1727821114;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Dbl+YTbLgXN5l8ttn3+mnl62ViQQVuJp9Z/85bpmJ90=;
- b=Fc2ckkoM8mG18+qwgGgzq78bj+AOAALJdv6vmkP/88DBrQxtTODHAcG/QXheQ0C3yq
- cxX31m6csyCroaqXV2iEw/ff6EKEw6e/HZz4wK6n2BOIzjSKxTSkrulhqcL61U379uGx
- jDwEkyw/rRthaCBLvc9l48h37cJFrq9v04dLobFRQTn5LQW+SuiQKhcjSpKbLMOTfVdz
- 5nXb7+Cf/Y0G/BVT0uyjSRXF+YOgg1mcKXsZReadUXJD+k6HY5GSSCdDNOt3k1hfXVx9
- Gghk8UGByF9pivnvm4AXnJQSbCGJP7QTg20WNh33MfxKX12u3mqRzqteVgTCcp+rmF89
- 5m/g==
-X-Gm-Message-State: AOJu0Yzxwqt1Lb/LjYceOY2exREq2Brhx1bJBKkct5BMA2bZdCHqCu1C
- 3MEe0WaRBxYW4VnLph1mRM1n+/dnO0lBcNzlW2D5ow7K3FP9OrVhGS2nZg==
-X-Google-Smtp-Source: AGHT+IHfibP0gk20EjBOkTF11aOd/OYBKLUfGn496tdVvKLFKXDyI4oZFiVv/JITy1zdoIp1d3FmKw==
-X-Received: by 2002:a05:6a00:cca:b0:708:41c4:8849 with SMTP id
- d2e1a72fcca58-71b0b2bd30bmr894507b3a.9.1727216310902; 
- Tue, 24 Sep 2024 15:18:30 -0700 (PDT)
+ bh=n92lSS7nLnvvFV+djWi3tX7M+BTT1mwMiaSPH8ytfJc=;
+ b=aAiOLyLohXzC+FnoASI29dUe87haLAzoFF9to/CNKFc8BKn9IcODC8wm6YejM6oQ0X
+ Cdo9xyGpA2bgBOKVypQEhTZDdCDm6y4p5IIFf8zrurm4iLcBINI/I5jpt3SOhQIBGeY4
+ UvSe7YaFstrRp1IhYpny/cGpIpG5azu+DCNJznM9bp+01FcZ6QGQ3PBWIPZ/UhzxOdFt
+ 4sm5QawUk+GaBZoElFk3afzqPGLtLUmLlNvDHJJB2ZAwobhZGMc0xRS46pLh0KAfP13h
+ SBrzCJPzagTcKUL7r1EajGLHmDMkJe8HvNBA3oBcGL2hLoSqDE/H2reuq6GnN8Mchqee
+ JzOQ==
+X-Gm-Message-State: AOJu0YwDmy7TiU/XMfX34Q7RaP77v8oodZmy63hogXE330tTILrYUQe4
+ o3q4hhXGO169th5I0ajBez2hyEQAKeFmtf5P2GnF59Rt5SP7Qfep1WmuyQ==
+X-Google-Smtp-Source: AGHT+IGEdTIqKnAy6AcCF3XhuLh/qcv1EjH88nOLl4I22D0zzXCOuSQxbi58sEnH1EVBcQrUaXGroQ==
+X-Received: by 2002:a05:6a00:b4e:b0:717:8da8:6ec1 with SMTP id
+ d2e1a72fcca58-71b0ac56ff2mr1126534b3a.17.1727216313642; 
+ Tue, 24 Sep 2024 15:18:33 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.18.28
+ d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.18.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Sep 2024 15:18:30 -0700 (PDT)
+ Tue, 24 Sep 2024 15:18:33 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Maria Klauchek <m.klauchek@syntacore.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com,
+ =?UTF-8?q?Milan=20P=2E=20Stani=C4=87?= <mps@arvanta.net>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 10/47] target/riscv/cpu.c: Add 'fcsr' register to QEMU log
- as a part of F extension
-Date: Wed, 25 Sep 2024 08:17:11 +1000
-Message-ID: <20240924221751.2688389-11-alistair.francis@wdc.com>
+Subject: [PULL v2 11/47] util/util/cpuinfo-riscv.c: fix riscv64 build on musl
+ libc
+Date: Wed, 25 Sep 2024 08:17:12 +1000
+Message-ID: <20240924221751.2688389-12-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240924221751.2688389-1-alistair.francis@wdc.com>
 References: <20240924221751.2688389-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,36 +99,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Maria Klauchek <m.klauchek@syntacore.com>
+From: Milan P. Stanić <mps@arvanta.net>
 
-FCSR is a part of F extension. Print it to log if FPU option is enabled.
+build fails on musl libc (alpine linux) with this error:
 
-Signed-off-by: Maria Klauchek <m.klauchek@syntacore.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+../util/cpuinfo-riscv.c: In function 'cpuinfo_init':
+../util/cpuinfo-riscv.c:63:21: error: '__NR_riscv_hwprobe' undeclared (first use in this function); did you mean 'riscv_hwprobe'?
+   63 |         if (syscall(__NR_riscv_hwprobe, &pair, 1, 0, NULL, 0) == 0
+      |                     ^~~~~~~~~~~~~~~~~~
+      |                     riscv_hwprobe
+../util/cpuinfo-riscv.c:63:21: note: each undeclared identifier is reported only once for each function it appears in
+ninja: subcommand failed
+
+add '#include "asm/unistd.h"' to util/cpuinfo-riscv.c fixes build
+
+Signed-off-by: Milan P. Stanić <mps@arvanta.net>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240902103433.18424-1-m.klauchek@syntacore.com>
+Message-ID: <20240905150702.2484-1-mps@arvanta.net>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ util/cpuinfo-riscv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index a1ca12077f..89bc3955ee 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -823,6 +823,12 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-         }
-     }
-     if (flags & CPU_DUMP_FPU) {
-+        target_ulong val = 0;
-+        RISCVException res = riscv_csrrw_debug(env, CSR_FCSR, &val, 0, 0);
-+        if (res == RISCV_EXCP_NONE) {
-+            qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
-+                    csr_ops[CSR_FCSR].name, val);
-+        }
-         for (i = 0; i < 32; i++) {
-             qemu_fprintf(f, " %-8s %016" PRIx64,
-                          riscv_fpr_regnames[i], env->fpr[i]);
+diff --git a/util/cpuinfo-riscv.c b/util/cpuinfo-riscv.c
+index 497ce12680..8cacc67645 100644
+--- a/util/cpuinfo-riscv.c
++++ b/util/cpuinfo-riscv.c
+@@ -9,6 +9,7 @@
+ #ifdef CONFIG_ASM_HWPROBE_H
+ #include <asm/hwprobe.h>
+ #include <sys/syscall.h>
++#include <asm/unistd.h>
+ #endif
+ 
+ unsigned cpuinfo;
 -- 
 2.46.1
 
