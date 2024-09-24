@@ -2,62 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151169851CF
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2FA9851F0
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:16:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stJHg-0007hT-Ac; Wed, 25 Sep 2024 00:05:49 -0400
+	id 1stJR0-000395-PF; Wed, 25 Sep 2024 00:15:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGt-0005w8-Rj; Wed, 25 Sep 2024 00:05:01 -0400
-Received: from nyc.source.kernel.org ([147.75.193.91])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGp-0001yn-8n; Wed, 25 Sep 2024 00:04:58 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 75E6BA43B67;
- Wed, 25 Sep 2024 04:04:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30403C4CED8;
- Wed, 25 Sep 2024 04:04:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1727237088;
- bh=KpPfWeFVL9I1pGqXt68avBh+cLPKBq8f9RqfgLUmWPQ=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=BSYNnVFkHyi56KbIq1Qi3cIvE1rRqscX370j3bu8jp4ULJovkifd4bg0zcd7hcQZm
- ApgeqCBFs+cMKoGecw1ZOElA//vsq+mYQHdiiX+IstUMIEOy7HY1tV/n2bnBtjvPVC
- XsjZlEdK0wmjt7RUi1oaS9wd4EsmVvyqdigts0BTmU3ZI8maHVjUHvnfCr+/Znw+ym
- mYpAHJAQjCm3r18BC2DHZ9bcd1zhAfm7yKJcxXxtvNT8gZGsI804Hdiafq0mQ8Pwdm
- 2rMD3vL4LO4lw2mLMGwjte0WIp7SIme/H1T/4q9pqQPb8b8RB4VaJQjVPP0riMVNrJ
- XkSErS4x4uhlA==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGg-0000000828b-1sm9; Wed, 25 Sep 2024 06:04:46 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Shiju Jose <shiju.jose@huawei.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH 15/15] docs: acpi_hest_ghes: fix documentation for CPER size
-Date: Wed, 25 Sep 2024 06:04:20 +0200
-Message-ID: <f6604a9dba8b5dcfe4e21d1f2a8b68ad05b265f4.1727236561.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <cover.1727236561.git.mchehab+huawei@kernel.org>
-References: <cover.1727236561.git.mchehab+huawei@kernel.org>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1stJQx-0002yV-Fz
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 00:15:23 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1stJQv-0003Qr-Ss
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 00:15:23 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a8a897bd4f1so921005266b.3
+ for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 21:15:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1727237719; x=1727842519; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=o04QcM8aD4YgLfalQRy3IgJO//9a3lI3E2/E+NIlF4o=;
+ b=gDmeUW9HLw/bt7K43T7/ODT+9ZHka7Cn2851hIQvs9vCG22Z7wHqJFkZb7TegntKnU
+ ARM1XxTzWL+kPb9HgIE224t1cL0vjGzpmF4OA/kFn2P45LFA/8o3kQUXWU+twWwp35/2
+ otzWoovhpjtUcs+bpnGYYwd+lZaZiT6SAoAffx+43Zjfs7O7Wf/+ohwaLR/lPucoOIT4
+ QD0GrqkgO+q8bKDTaZDpiiDaQ+fJanvc2L4tp0JFgPqQcXZYoLIp4479ELa2WGPyDiAL
+ Mc/cp1cn0gakdEDFOOlZ/kGJrqT04qnEdTzCtPumOKSSzNnMu9nGNPoo9qDKUr4SzL/y
+ qTWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727237719; x=1727842519;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=o04QcM8aD4YgLfalQRy3IgJO//9a3lI3E2/E+NIlF4o=;
+ b=CzP35dSIfjLk4/+Gjp78FZ5LgNsqD9gHiTtjcYJaT/XjTcl+TlAVGJ/tz6EZ9qPRDl
+ I1C4hJOHSeJLMJGamzCPjctRA1dF8udtB0Hp5qvv2UgSAWldZcraj2jgq6jG+ecFicEc
+ mnnZ3BN265KMH/X0JHQ6Po7zEH3DdwL7yBaJ5xb+6pORCqzsZfPSo//eBC5PyPrvgCPd
+ 8GiQeu/YXbGNLTRpBK+/k1b1G3grLVYgrh4uRFCrzqTgq7FNOSNNcfgr9GZaaHrLMvIc
+ mcescr1RpMGtMB41zlc5CX/4DmsrGQ1YN46lEGnyojmdKjSCk7ojt5TKEDrfwXs2e37N
+ 1HKA==
+X-Gm-Message-State: AOJu0Yz+mQwoFL7rrwFpRoTBn8zI0D31/SiT/efq49igOdDvqVmLH5yO
+ PHErRHm1JIdqDlXniNEbXMyQ8PHejaVhSKhhvVEsrCGRNWOXGc+kY4wl2f8ZnwA=
+X-Google-Smtp-Source: AGHT+IFWN2AEJlWgi2i+9otuG8VB8kjY/7J3TWm/1FXXUe6KugOlcojGlKTdI3YCDPtVrcddzGl85g==
+X-Received: by 2002:a17:907:25c5:b0:a86:9d3d:edef with SMTP id
+ a640c23a62f3a-a93a03421b2mr130028066b.12.1727237718232; 
+ Tue, 24 Sep 2024 21:15:18 -0700 (PDT)
+Received: from [10.3.28.97] ([178.17.6.11]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a93930f7911sm166511066b.172.2024.09.24.21.15.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 24 Sep 2024 21:15:17 -0700 (PDT)
+Message-ID: <8c7ed3d0-15c2-426b-baf5-304a984d2559@linaro.org>
+Date: Tue, 24 Sep 2024 13:46:43 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=147.75.193.91;
- envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.09,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/18] Stop all qemu-cpu threads on a breakpoint
+To: Ilya Leoshkevich <iii@linux.ibm.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20240923162208.90745-1-iii@linux.ibm.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240923162208.90745-1-iii@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62c.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,35 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While the spec defines a CPER size of 4KiB for each record,
-currently it is set to 1KiB. Fix the documentation and add
-a pointer to the macro name there, as this may help to keep
-it updated.
+On 9/23/24 18:12, Ilya Leoshkevich wrote:
+> Hi,
+> 
+> On reporting a breakpoint in a non-non-stop mode, GDB remotes must stop
+> all threads. Currently qemu-user doesn't do that, breaking the
+> debugging session for at least two reasons: concurrent access to the
+> GDB socket, and an assertion within GDB [1].
+> 
+> This series fixes this by importing pause_all_vcpus() from qemu-system.
+> This in turn requires introducing BQL and a few stubs to qemu-user.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
----
- docs/specs/acpi_hest_ghes.rst | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+I would have expected you to reuse (some portion of) start_exclusive, which is already 
+part of qemu-user.  Is there a reason you chose a solution which requires...
 
-diff --git a/docs/specs/acpi_hest_ghes.rst b/docs/specs/acpi_hest_ghes.rst
-index 68f1fbe0a4af..c3e9f8d9a702 100644
---- a/docs/specs/acpi_hest_ghes.rst
-+++ b/docs/specs/acpi_hest_ghes.rst
-@@ -67,8 +67,10 @@ Design Details
- (3) The address registers table contains N Error Block Address entries
-     and N Read Ack Register entries. The size for each entry is 8-byte.
-     The Error Status Data Block table contains N Error Status Data Block
--    entries. The size for each entry is 4096(0x1000) bytes. The total size
--    for the "etc/hardware_errors" fw_cfg blob is (N * 8 * 2 + N * 4096) bytes.
-+    entries. The size for each entry is defined at the source code as
-+    ACPI_GHES_MAX_RAW_DATA_LENGTH (currently 1024 bytes). The total size
-+    for the "etc/hardware_errors" fw_cfg blob is
-+    (N * 8 * 2 + N * ACPI_GHES_MAX_RAW_DATA_LENGTH) bytes.
-     N is the number of the kinds of hardware error sources.
- 
- (4) QEMU generates the ACPI linker/loader script for the firmware. The
--- 
-2.46.1
+>    replay: Add replay_mutex_{lock,unlock}() stubs for qemu-user
+>    qemu-timer: Provide qemu_clock_enable() stub for qemu-user
+>    cpu: Use BQL in qemu-user
 
+all sorts of other infrastructure?
+
+
+r~
 
