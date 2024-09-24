@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE86984677
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C940984685
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:11:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st5Hw-0002Ac-8V; Tue, 24 Sep 2024 09:09:08 -0400
+	id 1st5Hc-0001Kc-BJ; Tue, 24 Sep 2024 09:08:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5G8-0002j3-7E
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:07:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1st5G2-0002I4-EN
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:07:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5G6-0000a1-FD
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:07:15 -0400
+ id 1st5G0-0000ZJ-UM
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:07:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727183233;
+ s=mimecast20190719; t=1727183228;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8PUwcgtZt0hOyPV07gl666NOLQBNxh2UtOKTtC1Z66E=;
- b=Lzg7D4S2rW6GwAuUYPEVjuRHR7M09kr4xX20N1TpnChFT7DBGH1N4HNqzvhynHp0Oskmuv
- 6SHS5Awi5EaaJ41NfwUDaTjd2Pl99urUORHeILIM8rcaloK7mXl0luB/p7AgVonokzG0C1
- EOV3ZBze9VFMfl8+ZLKZEcFxEXYsoPM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=OgOMuueupXqkkM9j2IUo8fknwQ3ZRkaqVwWw2fZDJ0A=;
+ b=VsCxG9UmnFx0EPXqPiWVJuoPvHCvW74b66PWfSvwOUUJXOLE9GEzGRFskpJB3AujzljBl7
+ ncofKwWnwrB+jIgLJHof2W7bBtzDGmWG36NaosBBKF9bZ8gZA+RA//Ls/1BnmiViOSZzl7
+ iZilhUQcm6q0hEJijyQXNa05cH0C0cY=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-ST9bMCHzNceOrNy9cSHVgQ-1; Tue,
- 24 Sep 2024 09:07:08 -0400
-X-MC-Unique: ST9bMCHzNceOrNy9cSHVgQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-2tkFgjMxO5mDAQOmUVnLYw-1; Tue,
+ 24 Sep 2024 09:07:05 -0400
+X-MC-Unique: 2tkFgjMxO5mDAQOmUVnLYw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 67A061896E34; Tue, 24 Sep 2024 13:07:05 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5A85F18EB279; Tue, 24 Sep 2024 13:07:02 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.3])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 817061955D4B; Tue, 24 Sep 2024 13:06:54 +0000 (UTC)
+ id B1F6B193497D; Tue, 24 Sep 2024 13:07:00 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
@@ -71,17 +71,17 @@ Cc: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Stefano Garzarella <sgarzare@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 11/22] block/block-copy: fix -Werror=maybe-uninitialized
- false-positive
-Date: Tue, 24 Sep 2024 17:05:42 +0400
-Message-ID: <20240924130554.749278-12-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 12/22] migration: fix -Werror=maybe-uninitialized
+ false-positives
+Date: Tue, 24 Sep 2024 17:05:43 +0400
+Message-ID: <20240924130554.749278-13-marcandre.lureau@redhat.com>
 In-Reply-To: <20240924130554.749278-1-marcandre.lureau@redhat.com>
 References: <20240924130554.749278-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -109,26 +109,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../block/block-copy.c:591:12: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
+../migration/dirtyrate.c:186:5: error: ‘records’ may be used uninitialized [-Werror=maybe-uninitialized]
+../migration/dirtyrate.c:168:12: error: ‘gen_id’ may be used uninitialized [-Werror=maybe-uninitialized]
+../migration/migration.c:2273:5: error: ‘file’ may be used uninitialized [-Werror=maybe-uninitialized]
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Hyman Huang <yong.huang@smartx.com>
 ---
- block/block-copy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ migration/dirtyrate.c | 4 ++--
+ migration/migration.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/block/block-copy.c b/block/block-copy.c
-index cc618e4561..7265733825 100644
---- a/block/block-copy.c
-+++ b/block/block-copy.c
-@@ -568,7 +568,7 @@ static coroutine_fn int block_copy_task_entry(AioTask *task)
-     BlockCopyState *s = t->s;
-     bool error_is_read = false;
-     BlockCopyMethod method = t->method;
--    int ret;
-+    int ret = -1;
+diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
+index 1d9db81299..32f398a754 100644
+--- a/migration/dirtyrate.c
++++ b/migration/dirtyrate.c
+@@ -149,12 +149,12 @@ int64_t vcpu_calculate_dirtyrate(int64_t calc_time_ms,
+                                  unsigned int flag,
+                                  bool one_shot)
+ {
+-    DirtyPageRecord *records;
++    DirtyPageRecord *records = NULL;
+     int64_t init_time_ms;
+     int64_t duration;
+     int64_t dirtyrate;
+     int i = 0;
+-    unsigned int gen_id;
++    unsigned int gen_id = 0;
  
-     WITH_GRAPH_RDLOCK_GUARD() {
-         ret = block_copy_do_copy(s, t->req.offset, t->req.bytes, &method,
+ retry:
+     init_time_ms = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+diff --git a/migration/migration.c b/migration/migration.c
+index ae2be31557..021faee2f3 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2278,7 +2278,7 @@ static bool migrate_handle_rp_resume_ack(MigrationState *s,
+  */
+ static void migration_release_dst_files(MigrationState *ms)
+ {
+-    QEMUFile *file;
++    QEMUFile *file = NULL;
+ 
+     WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
+         /*
 -- 
 2.45.2.827.g557ae147e6
 
