@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BF998467B
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F008E98467A
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:10:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st5Fd-0008To-UY; Tue, 24 Sep 2024 09:06:46 -0400
+	id 1st5GJ-0003MI-0Z; Tue, 24 Sep 2024 09:07:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5FK-000726-Tl
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:06:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1st5FQ-0007Ri-Mo
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:06:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5FH-0000SA-AI
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:06:25 -0400
+ id 1st5FL-0000SZ-TR
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:06:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727183182;
+ s=mimecast20190719; t=1727183187;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L9TzJiPbue6ZM4XJgTlzabYUdWmkITNbnAqP3qVgNyk=;
- b=SWbc2m9/1SQ2atuO2eWGLOsVnaJTrU79xeD0h+5S8O9Jk5ulVniXUUt6qtGgLcbS4iyKGT
- r0lH5UhT6AuL+U8YHIqdi7gMg/RGJS8OBhSPzsH92eNrg2XDPgBuUQQbglANIJ9qtambRz
- ySpPQvuHudKtbZb4vF6PPP4RReUCAn4=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=JGOe2Dnp1wJG1ukQSWN3HzZdCz5Em4HGNnPdjOs5MqI=;
+ b=jL3ESGwRkWnrfyqw4izVmZvZPh1XDdEjqenYIGUA4HXUe55riR1hD8hvcvacz+2LFgCKEj
+ yDooY6tfFvCw24YA1gjVMpLhXrSQu3QwlgiaoNaGrYFAAwI0gTMtaYOCV+m2seJH2dY9VE
+ mgu59kLO9LsFRMXLRuDD/UORDNkE9FU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-318-NQx5MvfZOW66ey0QXVU29A-1; Tue,
- 24 Sep 2024 09:06:19 -0400
-X-MC-Unique: NQx5MvfZOW66ey0QXVU29A-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-KiF6AAusOZys16h76pkVMw-1; Tue,
+ 24 Sep 2024 09:06:24 -0400
+X-MC-Unique: KiF6AAusOZys16h76pkVMw-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 82FD118DB8E4; Tue, 24 Sep 2024 13:06:15 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3B53518E6E3F; Tue, 24 Sep 2024 13:06:20 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.3])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9A71519560AA; Tue, 24 Sep 2024 13:06:13 +0000 (UTC)
+ id 0139119560AD; Tue, 24 Sep 2024 13:06:18 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
@@ -71,17 +71,16 @@ Cc: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Stefano Garzarella <sgarzare@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 03/22] hw/qxl: fix -Werror=maybe-uninitialized
- false-positives
-Date: Tue, 24 Sep 2024 17:05:34 +0400
-Message-ID: <20240924130554.749278-4-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 04/22] nbd: fix -Werror=maybe-uninitialized false-positive
+Date: Tue, 24 Sep 2024 17:05:35 +0400
+Message-ID: <20240924130554.749278-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20240924130554.749278-1-marcandre.lureau@redhat.com>
 References: <20240924130554.749278-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -109,29 +108,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../hw/display/qxl.c:1352:5: error: ‘pci_region’ may be used uninitialized [-Werror=maybe-uninitialized]
-../hw/display/qxl.c:1365:22: error: ‘pci_start’ may be used uninitialized [-Werror=maybe-uninitialized]
+../nbd/client-connection.c:419:8: error: ‘wait_co’ may be used uninitialized [-Werror=maybe-uninitialized]
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- hw/display/qxl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ nbd/client-connection.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/display/qxl.c b/hw/display/qxl.c
-index 3c2b5182ca..20e13ee98d 100644
---- a/hw/display/qxl.c
-+++ b/hw/display/qxl.c
-@@ -1301,8 +1301,8 @@ static int qxl_add_memslot(PCIQXLDevice *d, uint32_t slot_id, uint64_t delta,
-     };
-     uint64_t guest_start;
-     uint64_t guest_end;
--    int pci_region;
--    pcibus_t pci_start;
-+    int pci_region = -1;
-+    pcibus_t pci_start = -1;
-     pcibus_t pci_end;
-     MemoryRegion *mr;
-     intptr_t virt_start;
+diff --git a/nbd/client-connection.c b/nbd/client-connection.c
+index f9da67c87e..b11e266807 100644
+--- a/nbd/client-connection.c
++++ b/nbd/client-connection.c
+@@ -410,7 +410,7 @@ nbd_co_establish_connection(NBDClientConnection *conn, NBDExportInfo *info,
+  */
+ void nbd_co_establish_connection_cancel(NBDClientConnection *conn)
+ {
+-    Coroutine *wait_co;
++    Coroutine *wait_co = NULL;
+ 
+     WITH_QEMU_LOCK_GUARD(&conn->mutex) {
+         wait_co = g_steal_pointer(&conn->wait_co);
 -- 
 2.45.2.827.g557ae147e6
 
