@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B07C984678
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A81984686
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:11:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st5Ii-0005s0-U9; Tue, 24 Sep 2024 09:09:58 -0400
+	id 1st5HH-0007Q5-05; Tue, 24 Sep 2024 09:08:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5Gf-0005pi-Kv
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:07:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1st5Gb-00058f-1h
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:07:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5Gc-0000ix-Cw
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:07:48 -0400
+ id 1st5GV-0000lF-Ub
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:07:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727183253;
+ s=mimecast20190719; t=1727183257;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xtGJwVXMrFzPBkMfLTJwPBwE9R7SBDoRTUi3pO0/Y7E=;
- b=V55++glXjt0+GZk8+UoJkdMi8MiEDk9eUsVLAddCLrPA3JawzU6oG+OnJHX8ki53v8Uf83
- DB4D93VZtdRG5vZVvHkTSCAchEhnP0hli+OD9QZ7xvg47XjdgvwplRrkDBZuAWAW6IqKTp
- 7zmxKKrMyTkfGS6Ipivy6d6u9Kt7RDk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=4KJE8qUD4umiZGkFcxMeE4vCoHpAfNtigMP6Qc0MhA4=;
+ b=TpLMKYug9IGJUdeu2VVVfajrIQwc+GCXDG6X60uE2oWLA/dALhCkiRGUULXp+Pk/nX+aNT
+ fkNwmoQatmAgWunAe7f0eIfHoziRH4q7L1cOmKHBuWl4cF6Xv1K4vnYiWHrdq2EmjCxp+Q
+ Pw5Ra9D2RVKfGAV3EcumK4yGyNIsVeE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-DkANmJP0Pb-AN3wY3tF21w-1; Tue,
- 24 Sep 2024 09:07:30 -0400
-X-MC-Unique: DkANmJP0Pb-AN3wY3tF21w-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-501-0ODN8lmDOnmnYRZixvcjog-1; Tue,
+ 24 Sep 2024 09:07:31 -0400
+X-MC-Unique: 0ODN8lmDOnmnYRZixvcjog-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CB6A819CC95F; Tue, 24 Sep 2024 13:07:26 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B74F918C4743; Tue, 24 Sep 2024 13:07:27 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.3])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3141B1955D44; Tue, 24 Sep 2024 13:07:17 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A9DA3197703A; Tue, 24 Sep 2024 13:07:25 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
@@ -71,17 +71,17 @@ Cc: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Stefano Garzarella <sgarzare@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 15/22] linux-user/hppa: fix -Werror=maybe-uninitialized
+Subject: [PATCH v2 16/22] target/loongarch: fix -Werror=maybe-uninitialized
  false-positive
-Date: Tue, 24 Sep 2024 17:05:46 +0400
-Message-ID: <20240924130554.749278-16-marcandre.lureau@redhat.com>
+Date: Tue, 24 Sep 2024 17:05:47 +0400
+Message-ID: <20240924130554.749278-17-marcandre.lureau@redhat.com>
 In-Reply-To: <20240924130554.749278-1-marcandre.lureau@redhat.com>
 References: <20240924130554.749278-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -91,7 +91,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.09,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,63 +109,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../linux-user/hppa/cpu_loop.c: In function ‘hppa_lws’:
-../linux-user/hppa/cpu_loop.c:106:17: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
-  106 |     env->gr[28] = ret;
+../target/loongarch/gdbstub.c:55:20: error: ‘val’ may be used uninitialized [-Werror=maybe-uninitialized]
+   55 |             return gdb_get_reg32(mem_buf, val);
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+../target/loongarch/gdbstub.c:39:18: note: ‘val’ was declared here
+   39 |         uint64_t val;
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- linux-user/hppa/cpu_loop.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/loongarch/gdbstub.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
-index bc093b8fe8..f4da95490e 100644
---- a/linux-user/hppa/cpu_loop.c
-+++ b/linux-user/hppa/cpu_loop.c
-@@ -43,7 +43,7 @@ static abi_ulong hppa_lws(CPUHPPAState *env)
-         old = tswap32(old);
-         new = tswap32(new);
-         ret = qatomic_cmpxchg((uint32_t *)g2h(cs, addr), old, new);
--        ret = tswap32(ret);
-+        env->gr[28] = tswap32(ret);
-         break;
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index 7ca245ee81..3a03cf9cba 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -34,26 +34,28 @@ void write_fcc(CPULoongArchState *env, uint64_t val)
+ int loongarch_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ {
+     CPULoongArchState *env = cpu_env(cs);
+-    uint64_t val;
+-
+-    if (0 <= n && n < 32) {
+-        val = env->gpr[n];
+-    } else if (n == 32) {
+-        /* orig_a0 */
+-        val = 0;
+-    } else if (n == 33) {
+-        val = env->pc;
+-    } else if (n == 34) {
+-        val = env->CSR_BADV;
+-    }
  
-     case 2: /* elf32 atomic "new" cmpxchg */
-@@ -64,19 +64,19 @@ static abi_ulong hppa_lws(CPUHPPAState *env)
-             old = *(uint8_t *)g2h(cs, old);
-             new = *(uint8_t *)g2h(cs, new);
-             ret = qatomic_cmpxchg((uint8_t *)g2h(cs, addr), old, new);
--            ret = ret != old;
-+            env->gr[28] = ret != old;
-             break;
-         case 1:
-             old = *(uint16_t *)g2h(cs, old);
-             new = *(uint16_t *)g2h(cs, new);
-             ret = qatomic_cmpxchg((uint16_t *)g2h(cs, addr), old, new);
--            ret = ret != old;
-+            env->gr[28] = ret != old;
-             break;
-         case 2:
-             old = *(uint32_t *)g2h(cs, old);
-             new = *(uint32_t *)g2h(cs, new);
-             ret = qatomic_cmpxchg((uint32_t *)g2h(cs, addr), old, new);
--            ret = ret != old;
-+            env->gr[28] = ret != old;
-             break;
-         case 3:
-             {
-@@ -97,13 +97,13 @@ static abi_ulong hppa_lws(CPUHPPAState *env)
-                 }
-                 end_exclusive();
- #endif
-+                env->gr[28] = ret;
-             }
-             break;
+     if (0 <= n && n <= 34) {
++        uint64_t val;
++
++        if (n < 32) {
++            val = env->gpr[n];
++        } else if (n == 32) {
++            /* orig_a0 */
++            val = 0;
++        } else if (n == 33) {
++            val = env->pc;
++        } else /* if (n == 34) */ {
++            val = env->CSR_BADV;
++        }
++
+         if (is_la64(env)) {
+             return gdb_get_reg64(mem_buf, val);
+         } else {
+             return gdb_get_reg32(mem_buf, val);
          }
-         break;
      }
- 
--    env->gr[28] = ret;
++
      return 0;
  }
  
