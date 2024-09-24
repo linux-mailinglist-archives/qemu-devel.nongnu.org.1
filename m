@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0D8984D89
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3684A984D8A
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:19:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stDrY-0003y3-Ao; Tue, 24 Sep 2024 18:18:28 -0400
+	id 1stDra-00045a-7f; Tue, 24 Sep 2024 18:18:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDrV-0003os-Ao
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:25 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1stDrY-000413-B4
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:28 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDrT-0001cm-Mf
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:25 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-7d4fa972cbeso4263486a12.2
- for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:18:23 -0700 (PDT)
+ id 1stDrW-0001dA-R7
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:28 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-71b0722f221so577449b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:18:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727216302; x=1727821102; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727216305; x=1727821105; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LVVYNdYr/IVU0wUe8Y8R5LwF4iHWDDM93QqpDvdp/Uo=;
- b=IMhzUwlFdh6iRam3pVa0fHo6/HRY/sHq5Rv1mZ4PbZGrkm/rt6TSljj8t48MtAQPP5
- HoQndlNAnCy/gjUCIHIMXsMoq9umLTGF3mtUX4HAVBBsGJEPanOfufHDzm6rARSbnkbn
- 7lDC0yHkBQLhd2h8Cn23UCGcVatvkqTSmM+OlexUHieYgezfTaaXPzgHPLcEkUDjNAX5
- zqJ8brX1/GWc9hksGlmmCo207KzMe4xh2otH1BwyfhnZhJe/AWqQmuPWDs8C/6bsAkdD
- Rl7Awnngr10mDrGnjfZ4KQ1EeaDIsrWCm7ROKFvNe496XCrHEW9ut9zH95So7O/5YFYP
- w84A==
+ bh=FcflzJeXCzeW0THHScuUblBqGSayWPSVoBUuI18HYPA=;
+ b=ISyc6PwHqr8fD8+WrJAitCWtrIWYOzPbvglIkv9tofss1AB6Nmg7wW0UVG/7zcSPbS
+ tQhRIxk53TP5gzdpWpBNFC2ZrhxWUUlUvdjC0gFQKuGRenIlz6R4sGk/WC+kqZTDc5bD
+ 2JUXAsl61/OMv+/2Q9MdDKTRVQrY83VgnbV3i/2UU0cTkA8feqeNMfNSTIOmW+BPYrWG
+ sUUFWQPIWKMteW2j/NJJmMrONjwSq8wFE3akyEvDn+aHRyDWuR3TBOR9fjJKbAvlJDId
+ vdtVXnsCwr0khwHNV11OR0NPFpdZcR40UJLJ0kWW8RyNnI5qX7GFKGP1RvAIFNhLBqAv
+ 6zUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727216302; x=1727821102;
+ d=1e100.net; s=20230601; t=1727216305; x=1727821105;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LVVYNdYr/IVU0wUe8Y8R5LwF4iHWDDM93QqpDvdp/Uo=;
- b=fZxvZo8lnYasWYzAx6e8UfIrnE4g4y8hMt21wOhgeB924OcoMEGwZ/nHmu7d2ZWfSy
- 67VmYFpsmjnyp2C+DnqlrXGT2MGF522gmZsxVxWDPeTysSiYgrUEmKjrz7nnJlcVO/2l
- 3aWk0qJcZn6PrQFTINRj3bt2nkCLqZu0Q3J7EHIluD4KYgzjtcFcB0MCEOoWAEsHU2t9
- c9qbYy3e6ZCXa28wcfM0S1f+/x38qIfXvLl9K8AeqKpfmA3NsF1drMuoGaPAxx0hGo3V
- dP8iMDGJxt5QVWF3tBSB/zwSxXbRILIKjDT1I93coh7eqnEu/hiQ8K41r73QjLjS8BBe
- fQUA==
-X-Gm-Message-State: AOJu0YydJn5iDNR0TDMuH5GOmXb8/4OF3PaFZQ9kt8OhM4upTK+IIrcx
- aqVAWrjfLaNLPWiZ044F4bd8rnyAx4AXAu099oD9xffJXDm9E4RlE/gHcg==
-X-Google-Smtp-Source: AGHT+IG/JFtlP3FMB2ZjIERqvKfz2oI8fvFMCcmlawKeIq16NeqFP6d+eUvmOzhqJ1leOc04AGAn5g==
-X-Received: by 2002:a05:6a21:a34b:b0:1d2:e90a:f4ae with SMTP id
- adf61e73a8af0-1d4e0bd1346mr717823637.33.1727216302190; 
- Tue, 24 Sep 2024 15:18:22 -0700 (PDT)
+ bh=FcflzJeXCzeW0THHScuUblBqGSayWPSVoBUuI18HYPA=;
+ b=jVDf5ThjCO1eK6Kp/M+Y8p2Jb93aVa4OkDwWeUaqmUNvfVDYFia8z+hoo03vQRtInv
+ F0gYUbMWnG94FkVghjOfYF/pOWRiX4rhtMwLkaVS9BTs1X8LCnYwyozKA+6ANz5GSymy
+ 3ua45bpcaU/acxAJE7xuej12NYH2Sup/a6myrXl7W9IyPXW223vm5iybA6o2nl7AUNln
+ gdugu7oojVtmxS1V/HgWLdjapCPHr704iKpiXRsN0j0eu3A/7Yp0bOTzQmX6LnHvenCW
+ f0IiBy/XtzmkJ9gFYCa7btwpjvFIA5MWfpapjy5VA/VoUr9i6GPYAoR8WQqEivXf9BOx
+ nEmg==
+X-Gm-Message-State: AOJu0Yw7Vp3GyG+BlsrQ8AKlSpo9MXd9HwhDx+d0bSVjGDeMRgOFf3bc
+ c8hH9JLyGpSQLjoti01+GzVmIkxutWrTGFryNlksqOxykVIIWeGc2yJZOw==
+X-Google-Smtp-Source: AGHT+IFpZo+5g4pXjdIkc5B+brBHgrAYkGbr8h2WafH0NRfhe/IuokyeQHLS/cXfnsHaP/ASpyeISw==
+X-Received: by 2002:a05:6a00:4b05:b0:706:61d5:2792 with SMTP id
+ d2e1a72fcca58-71b0aaade4bmr1083258b3a.8.1727216305180; 
+ Tue, 24 Sep 2024 15:18:25 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.18.19
+ d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.18.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Sep 2024 15:18:21 -0700 (PDT)
+ Tue, 24 Sep 2024 15:18:24 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL v2 07/47] target: riscv: Enable Bit Manip for OpenTitan Ibex CPU
-Date: Wed, 25 Sep 2024 08:17:08 +1000
-Message-ID: <20240924221751.2688389-8-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Andrew Jones <ajones@ventanamicro.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL v2 08/47] target/riscv/kvm: Fix the group bit setting of AIA
+Date: Wed, 25 Sep 2024 08:17:09 +1000
+Message-ID: <20240924221751.2688389-9-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240924221751.2688389-1-alistair.francis@wdc.com>
 References: <20240924221751.2688389-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -96,39 +97,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alistair Francis <alistair23@gmail.com>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-The OpenTitan Ibex CPU now supports the the Zba, Zbb, Zbc
-and Zbs bit-manipulation sub-extensions ratified in
-v.1.0.0 of the RISC-V Bit- Manipulation ISA Extension, so let's enable
-them in QEMU as well.
+Just as the hart bit setting of the AIA should be calculated as
+ceil(log2(max_hart_id + 1)) the group bit setting should be
+calculated as ceil(log2(max_group_id + 1)). The hart bits are
+implemented by passing max_hart_id to find_last_bit() and adding
+one to the result. Do the same for the group bit setting.
 
-1: https://github.com/lowRISC/opentitan/pull/9748
-
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240823003231.3522113-1-alistair.francis@wdc.com>
+Message-ID: <20240821075040.498945-2-ajones@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/riscv/kvm/kvm-cpu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 0f8189bcf0..a1ca12077f 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -680,6 +680,11 @@ static void rv32_ibex_cpu_init(Object *obj)
-     cpu->cfg.ext_zicsr = true;
-     cpu->cfg.pmp = true;
-     cpu->cfg.ext_smepmp = true;
-+
-+    cpu->cfg.ext_zba = true;
-+    cpu->cfg.ext_zbb = true;
-+    cpu->cfg.ext_zbc = true;
-+    cpu->cfg.ext_zbs = true;
- }
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index f6e3156b8d..341af901c5 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1695,6 +1695,7 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+     uint64_t max_hart_per_socket = 0;
+     uint64_t socket, base_hart, hart_count, socket_imsic_base, imsic_addr;
+     uint64_t socket_bits, hart_bits, guest_bits;
++    uint64_t max_group_id;
  
- static void rv32_imafcu_nommu_cpu_init(Object *obj)
+     aia_fd = kvm_create_device(kvm_state, KVM_DEV_TYPE_RISCV_AIA, false);
+ 
+@@ -1742,7 +1743,8 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+ 
+ 
+     if (socket_count > 1) {
+-        socket_bits = find_last_bit(&socket_count, BITS_PER_LONG) + 1;
++        max_group_id = socket_count - 1;
++        socket_bits = find_last_bit(&max_group_id, BITS_PER_LONG) + 1;
+         ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+                                 KVM_DEV_RISCV_AIA_CONFIG_GROUP_BITS,
+                                 &socket_bits, true, NULL);
 -- 
 2.46.1
 
