@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49995984659
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28992984662
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:06:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st5DS-0002bz-9L; Tue, 24 Sep 2024 09:04:30 -0400
+	id 1st5Da-0003ZZ-TK; Tue, 24 Sep 2024 09:04:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5DP-0002Q9-Af
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:27 -0400
+ id 1st5DX-0003O9-Py
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5DN-00006d-B2
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:26 -0400
+ id 1st5DW-00007W-4P
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727183064;
+ s=mimecast20190719; t=1727183073;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lM3KpPrye86/Cu4EqGuleHP2TkpZj/gEzbpsHn25xPs=;
- b=i1zUT4MkG6apaWthuRqGCgams2qM8FcGOgB7rQZpSHej8EvynrZKVXxH4D0zbrtB/G4Mkm
- +qT3alAOS57aI9EhRq3Rr8yPGkKiY8jiCreZZchFz3jPB6LUqlhyeE3KC8LJw4hsQ3ItpB
- J7/2mOLqwtr8OGhLnZBymQCFDI/FTLw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=T0MLcA6aNzv2RR1lKUo89sny5RQMOplmDT7BSRDnP8M=;
+ b=iRvwLdnbW7/yGiPQLlc4y8Kh875czz9mZh8WJVLDTj+aigLm5lcOaSpmjYL3JfWY5u0bw6
+ TwJmWzjjIWuv/OOxeGI7c+pC+dgymEPNtA0j5N4mLGukNWE6ibMk0DL7eLwUkiMD7i0Ub8
+ i1iBk/mIcbyJIhWn7DLgZ5/+gwUKMqM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-R_gybxswObq09NUN_dEzfg-1; Tue,
- 24 Sep 2024 09:03:14 -0400
-X-MC-Unique: R_gybxswObq09NUN_dEzfg-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-4Ckfsq_OOhyf83cqw0YumA-1; Tue,
+ 24 Sep 2024 09:03:22 -0400
+X-MC-Unique: 4Ckfsq_OOhyf83cqw0YumA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E3B1B1895D6A; Tue, 24 Sep 2024 13:03:11 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 07F7C196C434; Tue, 24 Sep 2024 13:03:20 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.3])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6CD8019560AA; Tue, 24 Sep 2024 13:03:06 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D01731956053; Tue, 24 Sep 2024 13:03:17 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -71,16 +71,16 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-block@nongnu.org,
  Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 06/22] block/mirror: fix -Werror=maybe-uninitialized
- false-positive
-Date: Tue, 24 Sep 2024 17:02:05 +0400
-Message-ID: <20240924130222.748369-7-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 07/22] block/stream: fix -Werror=maybe-uninitialized
+ false-positives
+Date: Tue, 24 Sep 2024 17:02:06 +0400
+Message-ID: <20240924130222.748369-8-marcandre.lureau@redhat.com>
 In-Reply-To: <20240924130222.748369-1-marcandre.lureau@redhat.com>
 References: <20240924130222.748369-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -91,7 +91,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.09,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,46 +109,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../block/mirror.c:404:5: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
-../block/mirror.c:895:12: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
-../block/mirror.c:578:12: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
+../block/stream.c:193:19: error: ‘unfiltered_bs’ may be used uninitialized [-Werror=maybe-uninitialized]
+../block/stream.c:176:5: error: ‘len’ may be used uninitialized [-Werror=maybe-uninitialized]
+trace/trace-block.h:906:9: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Acked-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- block/mirror.c | 6 +++---
+ block/stream.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/block/mirror.c b/block/mirror.c
-index 54e3a7ea9d..fd55a580fb 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -349,7 +349,7 @@ static void coroutine_fn mirror_co_read(void *opaque)
-     MirrorOp *op = opaque;
-     MirrorBlockJob *s = op->s;
-     int nb_chunks;
--    uint64_t ret;
-+    uint64_t ret = -1;
-     uint64_t max_bytes;
+diff --git a/block/stream.c b/block/stream.c
+index 7031eef12b..9076203193 100644
+--- a/block/stream.c
++++ b/block/stream.c
+@@ -155,8 +155,8 @@ static void stream_clean(Job *job)
+ static int coroutine_fn stream_run(Job *job, Error **errp)
+ {
+     StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
+-    BlockDriverState *unfiltered_bs;
+-    int64_t len;
++    BlockDriverState *unfiltered_bs = NULL;
++    int64_t len = -1;
+     int64_t offset = 0;
+     int error = 0;
+     int64_t n = 0; /* bytes */
+@@ -177,7 +177,7 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
  
-     max_bytes = s->granularity * s->max_iov;
-@@ -565,7 +565,7 @@ static void coroutine_fn GRAPH_UNLOCKED mirror_iteration(MirrorBlockJob *s)
- 
-     bitmap_set(s->in_flight_bitmap, offset / s->granularity, nb_chunks);
-     while (nb_chunks > 0 && offset < s->bdev_length) {
+     for ( ; offset < len; offset += n) {
+         bool copy;
 -        int ret;
 +        int ret = -1;
-         int64_t io_bytes;
-         int64_t io_bytes_acct;
-         MirrorMethod mirror_method = MIRROR_METHOD_COPY;
-@@ -841,7 +841,7 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
-     int64_t offset;
-     BlockDriverState *bs;
-     BlockDriverState *target_bs = blk_bs(s->target);
--    int ret;
-+    int ret = -1;
-     int64_t count;
  
-     bdrv_graph_co_rdlock();
+         /* Note that even when no rate limit is applied we need to yield
+          * with no pending I/O here so that bdrv_drain_all() returns.
 -- 
 2.45.2.827.g557ae147e6
 
