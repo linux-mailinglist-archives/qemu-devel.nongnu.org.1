@@ -2,47 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E7F984657
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83649984666
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:06:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st5DN-0001oa-54; Tue, 24 Sep 2024 09:04:25 -0400
+	id 1st5DL-0001gl-0A; Tue, 24 Sep 2024 09:04:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5D2-0001bj-FC
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:04 -0400
+ id 1st5D0-0001Vg-Tf
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5D0-0008Uj-5B
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:04 -0400
+ id 1st5Cz-0008UL-BX
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727183041;
+ s=mimecast20190719; t=1727183040;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=aDn+xbhknVwqQYDHpEFyaqnpTvo8uFPxKAXApNfm87I=;
- b=hUcabbcKl3ZUriF5g+9YnsY1QgUD+2DQi7wtCDfo645b56ZXGj9qAk38v/vrwB3NxfkCdR
- upIZ/GNx63JXJfvWR9bGJP+79I6cwZ13+DYA+TqmewhgujNqsHOqVIZ0j+Pg9mqbhaDDhT
- REJF2NA1qJ0WXOEPXTRmtbGSBg18Dek=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uhM4mUe4SOwd5IXKZy3s8JqZaDqEwhiZJ//8HTUJpqA=;
+ b=SNp9pXe+vY5yO0KYarWD+x5zO4Qz3EXs4X4Np2LyuKcx7Hw+lG5cYFhE+WEwnc7MF+zM5g
+ GosRsPiATXC/+CUyAtzOosdgU3g54F3Pw/75Ggp2pxDAzbu9shA+Gc9K4IKYyo3TvQiJcX
+ 5F5A3ibZtTMPWJ5b67vtCrUckxb+XwY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-ekd7rPD0P1OVJX3IMyoidA-1; Tue,
- 24 Sep 2024 09:02:34 -0400
-X-MC-Unique: ekd7rPD0P1OVJX3IMyoidA-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-hE-weEHnN_6C0hhhiAskuw-1; Tue,
+ 24 Sep 2024 09:02:41 -0400
+X-MC-Unique: hE-weEHnN_6C0hhhiAskuw-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1556E18BC639; Tue, 24 Sep 2024 13:02:31 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8B3DB18E6CDE; Tue, 24 Sep 2024 13:02:36 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.3])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 25A761956054; Tue, 24 Sep 2024 13:02:24 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6ADAC3002099; Tue, 24 Sep 2024 13:02:34 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -70,13 +71,16 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-block@nongnu.org,
  Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 00/22] -Werror=maybe-uninitialized fixes
-Date: Tue, 24 Sep 2024 17:01:59 +0400
-Message-ID: <20240924130222.748369-1-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 01/22] util/coroutine: fix -Werror=maybe-uninitialized
+ false-positive
+Date: Tue, 24 Sep 2024 17:02:00 +0400
+Message-ID: <20240924130222.748369-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20240924130222.748369-1-marcandre.lureau@redhat.com>
+References: <20240924130222.748369-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -105,76 +109,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Hi,
+../util/qemu-coroutine.c:150:8: error: ‘batch’ may be used uninitialized [-Werror=maybe-uninitialized]
 
-Depending on -Doptimization=<value>, GCC (14.2.1 here) produces different
-maybe-uninitialized warnings:
-- g: produces -Werror=maybe-uninitialized errors
-- 0: clean build
-- 1: produces -Werror=maybe-uninitialized errors
-- 2: clean build
-- 3: produces few -Werror=maybe-uninitialized errors
-- s: produces -Werror=maybe-uninitialized errors
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ util/qemu-coroutine.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Most are false-positive, because prior LOCK_GUARD should guarantee an
-initialization path. Few of them are a bit trickier. Finally, I found
-a potential related memory leak.
-
-thanks
-
-v2:
- - rebased, dropped some patches
- - added some new patches with updated code-base and newer GCC
- - added s-o-b/a-b
-
-Marc-André Lureau (22):
-  util/coroutine: fix -Werror=maybe-uninitialized false-positive
-  util/timer: fix -Werror=maybe-uninitialized false-positive
-  hw/qxl: fix -Werror=maybe-uninitialized false-positives
-  nbd: fix -Werror=maybe-uninitialized false-positive
-  block/mirror: fix -Werror=maybe-uninitialized false-positive
-  block/mirror: fix -Werror=maybe-uninitialized false-positive
-  block/stream: fix -Werror=maybe-uninitialized false-positives
-  hw/ahci: fix -Werror=maybe-uninitialized false-positive
-  hw/vhost-scsi: fix -Werror=maybe-uninitialized
-  hw/sdhci: fix -Werror=maybe-uninitialized false-positive
-  block/block-copy: fix -Werror=maybe-uninitialized false-positive
-  migration: fix -Werror=maybe-uninitialized false-positives
-  hw/virtio-blk: fix -Werror=maybe-uninitialized false-positive
-  migration: fix -Werror=maybe-uninitialized false-positive
-  linux-user/hppa: fix -Werror=maybe-uninitialized false-positive
-  target/loongarch: fix -Werror=maybe-uninitialized false-positive
-  tests: fix -Werror=maybe-uninitialized false-positive
-  hw/virtio: fix -Werror=maybe-uninitialized false-positive
-  block: fix -Werror=maybe-uninitialized false-positive
-  qom/object: fix -Werror=maybe-uninitialized
-  fsdep/9p: fix -Werror=maybe-uninitialized false-positive
-  RFC: hw/virtio: a potential leak fix
-
- block/block-copy.c                 |  2 +-
- block/file-posix.c                 |  2 +-
- block/mirror.c                     |  8 ++++----
- block/stream.c                     |  6 +++---
- fsdev/9p-iov-marshal.c             |  6 +++---
- hw/block/virtio-blk.c              |  2 +-
- hw/display/qxl.c                   |  4 ++--
- hw/ide/ahci.c                      |  3 ++-
- hw/scsi/vhost-scsi.c               |  2 +-
- hw/sd/sdhci.c                      |  2 +-
- hw/virtio/vhost-shadow-virtqueue.c |  6 ++++--
- linux-user/hppa/cpu_loop.c         | 10 +++++-----
- migration/dirtyrate.c              |  4 ++--
- migration/migration.c              |  2 +-
- migration/ram.c                    |  2 +-
- nbd/client-connection.c            |  2 +-
- qom/object.c                       |  5 ++++-
- target/loongarch/gdbstub.c         | 26 ++++++++++++++------------
- tests/unit/test-bdrv-drain.c       |  2 +-
- tests/unit/test-block-iothread.c   |  2 +-
- util/qemu-coroutine.c              |  2 +-
- util/qemu-timer.c                  |  6 +++---
- 22 files changed, 57 insertions(+), 49 deletions(-)
-
+diff --git a/util/qemu-coroutine.c b/util/qemu-coroutine.c
+index eb4eebefdf..64d6264fc7 100644
+--- a/util/qemu-coroutine.c
++++ b/util/qemu-coroutine.c
+@@ -136,7 +136,7 @@ static Coroutine *coroutine_pool_get_local(void)
+ static void coroutine_pool_refill_local(void)
+ {
+     CoroutinePool *local_pool = get_ptr_local_pool();
+-    CoroutinePoolBatch *batch;
++    CoroutinePoolBatch *batch = NULL;
+ 
+     WITH_QEMU_LOCK_GUARD(&global_pool_lock) {
+         batch = QSLIST_FIRST(&global_pool);
 -- 
 2.45.2.827.g557ae147e6
 
