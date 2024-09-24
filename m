@@ -2,48 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B767C983AB1
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 03:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDD0983AC6
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 03:30:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ssu6Z-0002wR-KC; Mon, 23 Sep 2024 21:12:39 -0400
+	id 1ssuMH-0005WD-PE; Mon, 23 Sep 2024 21:28:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1ssu6V-0002vB-TQ
- for qemu-devel@nongnu.org; Mon, 23 Sep 2024 21:12:35 -0400
-Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1ssu6P-0000XV-Al
- for qemu-devel@nongnu.org; Mon, 23 Sep 2024 21:12:35 -0400
-To: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>
-CC: <gaoshiyuan@baidu.com>, <zuoboqun@baidu.com>, <david@redhat.com>,
- <thuth@redhat.com>, <alxndr@bu.edu>, <peterx@redhat.com>,
- <qemu-devel@nongnu.org>, <imammedo@redhat.com>
-Subject: [PATCH 1/1] virtio-pci: fix memory_region_find for VirtIOPCIRegion's
- MR
-Date: Tue, 24 Sep 2024 09:11:56 +0800
-Message-ID: <20240924011156.48252-1-gaoshiyuan@baidu.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1ssuMD-0005Vk-1g
+ for qemu-devel@nongnu.org; Mon, 23 Sep 2024 21:28:49 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1ssuM9-00023O-EC
+ for qemu-devel@nongnu.org; Mon, 23 Sep 2024 21:28:48 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8CxxujDFfJm85wNAA--.30545S3;
+ Tue, 24 Sep 2024 09:28:35 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMDxcNbBFfJmZ1oNAA--.8468S3;
+ Tue, 24 Sep 2024 09:28:35 +0800 (CST)
+Subject: Re: [PATCH v4 2/2] target/loongarch: Implement lbt registers
+ save/restore function
+To: yangtiezhu <yangtiezhu@loongson.cn>
+Cc: gaosong <gaosong@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ qemu-devel@nongnu.org
+References: <20240904061859.86615-1-maobibo@loongson.cn>
+ <20240904061859.86615-3-maobibo@loongson.cn>
+ <c14c8927-bb9b-9c3f-dca7-c86f79e73770@loongson.cn>
+ <7ddb45a0-e685-2af0-749a-821cc08f22e8@loongson.cn>
+ <a15a6f5d-5f9b-2bde-1300-81bd53ca25fa@loongson.cn>
+ <c7257d12-dad4-7d1e-2fb7-876599a820a8@loongson.cn>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <e844b0f8-e85e-a026-72b3-3af4d1af19d9@loongson.cn>
+Date: Tue, 24 Sep 2024 09:28:33 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <c7257d12-dad4-7d1e-2fb7-876599a820a8@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.127.73.8]
-X-ClientProxiedBy: BJHW-MAIL-EX04.internal.baidu.com (10.127.64.14) To
- bjkjy-mail-ex26.internal.baidu.com (172.31.50.42)
-X-FEAS-Client-IP: 10.127.64.32
-X-FE-Policy-ID: 52:10:53:SYSTEM
-Received-SPF: pass client-ip=111.206.215.185;
- envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+X-CM-TRANSID: qMiowMDxcNbBFfJmZ1oNAA--.8468S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Zr18Zr1DXw1ktrW3Xry5Awc_yoW8Aw1xpa
+ sxAF45KFWUJrZ7Aw4ag3W8XrZ0qr1xGr12qw1fJry8Grs0kr1Fqr48t3sFkF9rX3yrGFyj
+ qr4UW343uF1DZabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
+ xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+ 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+ 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8czVUUU
+ UUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.417,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,126 +83,77 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Gao Shiyuan <gaoshiyuan@baidu.com>
-From:  Gao Shiyuan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As shown below, if a virtio PCI device is attached under a pci-bridge, the MR
-of VirtIOPCIRegion does not belong to any address space. So memory_region_find
-cannot be used to search for this MR.
+Hi Tiezhu,
 
-Introduce the virtio-pci and pci_bridge_pci address spaces to solve this problem.
+Does mainline gdb support to dump LBT register now?
 
-Before:
-memory-region: pci_bridge_pci
-  0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci
-    00000000fe200000-00000000fe200fff (prio 1, i/o): virtio-blk-pci-msix
-      00000000fe200000-00000000fe20016f (prio 0, i/o): msix-table
-      00000000fe200800-00000000fe200807 (prio 0, i/o): msix-pba
-    000000a000400000-000000a000403fff (prio 1, i/o): virtio-pci
-      000000a000400000-000000a000400fff (prio 0, i/o): virtio-pci-common-virtio-blk
-      000000a000401000-000000a000401fff (prio 0, i/o): virtio-pci-isr-virtio-blk
-      000000a000402000-000000a000402fff (prio 0, i/o): virtio-pci-device-virtio-blk
-      000000a000403000-000000a000403fff (prio 0, i/o): virtio-pci-notify-virtio-blk
+Regards
+Bibo Mao
 
-After:
-address-space: pci_bridge_pci
-  0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci
-    00000000fe200000-00000000fe200fff (prio 1, i/o): virtio-blk-pci-msix
-      00000000fe200000-00000000fe20016f (prio 0, i/o): msix-table
-      00000000fe200800-00000000fe200807 (prio 0, i/o): msix-pba
-    000000a000400000-000000a000403fff (prio 1, i/o): virtio-pci
-      000000a000400000-000000a000400fff (prio 0, i/o): virtio-pci-common-virtio-blk
-      000000a000401000-000000a000401fff (prio 0, i/o): virtio-pci-isr-virtio-blk
-      000000a000402000-000000a000402fff (prio 0, i/o): virtio-pci-device-virtio-blk
-      000000a000403000-000000a000403fff (prio 0, i/o): virtio-pci-notify-virtio-blk
-
-address-space: virtio-pci
-  000000a000400000-000000a000403fff (prio 1, i/o): virtio-pci
-    000000a000400000-000000a000400fff (prio 0, i/o): virtio-pci-common-virtio-blk
-    000000a000401000-000000a000401fff (prio 0, i/o): virtio-pci-isr-virtio-blk
-    000000a000402000-000000a000402fff (prio 0, i/o): virtio-pci-device-virtio-blk
-    000000a000403000-000000a000403fff (prio 0, i/o): virtio-pci-notify-virtio-blk
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2576
-Fixes: ffa8a3e ("virtio-pci: Add lookup subregion of VirtIOPCIRegion MR")
-
-Signed-off-by: Gao Shiyuan <gaoshiyuan@baidu.com>
-Signed-off-by: Zuo Boqun <zuoboqun@baidu.com>
----
- hw/pci/pci_bridge.c            | 2 ++
- hw/virtio/virtio-pci.c         | 3 +++
- include/hw/pci/pci_bridge.h    | 1 +
- include/hw/virtio/virtio-pci.h | 1 +
- 4 files changed, 7 insertions(+)
-
-diff --git a/hw/pci/pci_bridge.c b/hw/pci/pci_bridge.c
-index 6a4e38856d..74683e7445 100644
---- a/hw/pci/pci_bridge.c
-+++ b/hw/pci/pci_bridge.c
-@@ -380,6 +380,7 @@ void pci_bridge_initfn(PCIDevice *dev, const char *typename)
-     sec_bus->map_irq = br->map_irq ? br->map_irq : pci_swizzle_map_irq_fn;
-     sec_bus->address_space_mem = &br->address_space_mem;
-     memory_region_init(&br->address_space_mem, OBJECT(br), "pci_bridge_pci", UINT64_MAX);
-+    address_space_init(&br->as_mem, &br->address_space_mem, "pci_bridge_pci");
-     sec_bus->address_space_io = &br->address_space_io;
-     memory_region_init(&br->address_space_io, OBJECT(br), "pci_bridge_io",
-                        4 * GiB);
-@@ -399,6 +400,7 @@ void pci_bridge_exitfn(PCIDevice *pci_dev)
-     PCIBridge *s = PCI_BRIDGE(pci_dev);
-     assert(QLIST_EMPTY(&s->sec_bus.child));
-     QLIST_REMOVE(&s->sec_bus, sibling);
-+    address_space_destroy(&s->as_mem);
-     pci_bridge_region_del(s, &s->windows);
-     pci_bridge_region_cleanup(s, &s->windows);
-     /* object_unparent() is called automatically during device deletion */
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 4d832fe845..502b9751dc 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -2180,6 +2180,8 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
-                        /* PCI BAR regions must be powers of 2 */
-                        pow2ceil(proxy->notify.offset + proxy->notify.size));
- 
-+    address_space_init(&proxy->modern_as, &proxy->modern_bar, "virtio-pci");
-+
-     if (proxy->disable_legacy == ON_OFF_AUTO_AUTO) {
-         proxy->disable_legacy = pcie_port ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
-     }
-@@ -2275,6 +2277,7 @@ static void virtio_pci_exit(PCIDevice *pci_dev)
-         pci_is_express(pci_dev)) {
-         pcie_aer_exit(pci_dev);
-     }
-+    address_space_destroy(&proxy->modern_as);
- }
- 
- static void virtio_pci_reset(DeviceState *qdev)
-diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
-index 5cd452115a..2e807760e4 100644
---- a/include/hw/pci/pci_bridge.h
-+++ b/include/hw/pci/pci_bridge.h
-@@ -72,6 +72,7 @@ struct PCIBridge {
-      */
-     MemoryRegion address_space_mem;
-     MemoryRegion address_space_io;
-+    AddressSpace as_mem;
- 
-     PCIBridgeWindows windows;
- 
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index 9e67ba38c7..fddceaaa47 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -147,6 +147,7 @@ struct VirtIOPCIProxy {
-     };
-     MemoryRegion modern_bar;
-     MemoryRegion io_bar;
-+    AddressSpace modern_as;
-     uint32_t legacy_io_bar_idx;
-     uint32_t msix_bar_idx;
-     uint32_t modern_io_bar_idx;
--- 
-2.34.1
+On 2024/9/23 下午9:02, gaosong wrote:
+> 在 2024/9/10 上午10:24, maobibo 写道:
+>>
+>>
+>> On 2024/9/9 下午9:13, gaosong wrote:
+>>> 在 2024/9/9 下午7:52, gaosong 写道:
+>>>>
+>>>>
+>>>> 在 2024/9/4 下午2:18, Bibo Mao 写道:
+>>>>> Six registers scr0 - scr3, eflags and ftop are added in percpu 
+>>>>> vmstate.
+>>>>> And two functions kvm_loongarch_get_lbt/kvm_loongarch_put_lbt are 
+>>>>> added
+>>>>> to save/restore lbt registers.
+>>>>>
+>>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>>>> ---
+>>>>>   target/loongarch/cpu.h     | 12 ++++++++
+>>>>>   target/loongarch/kvm/kvm.c | 60 
+>>>>> ++++++++++++++++++++++++++++++++++++++
+>>>>>   target/loongarch/machine.c | 24 +++++++++++++++
+>>>>>   3 files changed, 96 insertions(+)
+>>>>>
+>>>>
+>>>> Reviewed-by: Song Gao <gaosong@loongson.cn>
+>>>>
+>>>> Thanks
+>>>> Song Gao
+>>> Hi,  this patch need rebase.
+>>>
+>>> Applying: target/loongarch: Implement lbt registers save/restore 
+>>> function
+>>> error: sha1 information is lacking or useless 
+>>> (target/loongarch/kvm/kvm.c).
+>>> error: could not build fake ancestor
+>>> Patch failed at 0001 target/loongarch: Implement lbt registers 
+>>> save/restore function
+>>
+>> Hi Song,
+>>
+>> It can apply with the latest qemu version on my side, only that it 
+>> fails to compile since kvm uapi header files need be updated.
+>>
+>> LBT patch on qemu side can be skipped here since it depends on LBT 
+>> patch merged on kernel side firstly.
+>>
+> Hi,
+> 
+> The LBT patches already merged on kernel side.
+> Could you update this series  and add a patch to support gdb LBT feature ?
+> 
+> Thanks.
+> Song Gao
+> 
+>> Regards
+>> Bibo Mao
+>>>
+>>>
+>>> Thanks.
+>>> Song Gao.
+>>>
+> 
 
 
