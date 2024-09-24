@@ -2,64 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74672984088
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 10:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F0398408D
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 10:33:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st0w6-0004wc-Oz; Tue, 24 Sep 2024 04:30:18 -0400
+	id 1st0zN-0002lS-2i; Tue, 24 Sep 2024 04:33:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhouquan@iscas.ac.cn>)
- id 1st0vz-0004eO-9c; Tue, 24 Sep 2024 04:30:14 -0400
-Received: from smtp81.cstnet.cn ([159.226.251.81] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <zhouquan@iscas.ac.cn>)
- id 1st0vx-0001lk-2P; Tue, 24 Sep 2024 04:30:10 -0400
-Received: from zq-Legion-Y7000.. (unknown [180.111.100.113])
- by APP-03 (Coremail) with SMTP id rQCowADX3saJePJmiZOeAA--.591S2;
- Tue, 24 Sep 2024 16:30:03 +0800 (CST)
-From: zhouquan@iscas.ac.cn
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com, dbarboza@ventanamicro.com, zhouquan@iscas.ac.cn
-Subject: [PATCH 2/2] target/riscv/kvm: Update kvm exts to Linux v6.11
-Date: Tue, 24 Sep 2024 16:30:01 +0800
-Message-Id: <ada40759a79c0728652ace59579aa843cb7bf53f.1727164986.git.zhouquan@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1727164986.git.zhouquan@iscas.ac.cn>
-References: <cover.1727164986.git.zhouquan@iscas.ac.cn>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1st0zJ-0002aO-T5
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 04:33:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1st0zH-00027U-Gz
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 04:33:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727166814;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Otjy7gqwp3DyWtSWvucIPdY6jcaz552jth+hDo280lY=;
+ b=OlDQRyWK8sSgclTXdtBVGcqRJLQfDa35TR6b+/+cLZual2wP5Hv0xw5K/dOQud4K5BddaA
+ 3zVnl8GSq9PPbbIgeQRSsq9kOjvmtR1IDm0dyelR8EiHAP/pOyr8wR2HPt3az0p3+KPEnF
+ SlwxZeNTx6LBMRBhGzXjH+EJmDNmC44=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-418-tPJ6yfWLMjK_FkmiTVFRjg-1; Tue, 24 Sep 2024 04:33:30 -0400
+X-MC-Unique: tPJ6yfWLMjK_FkmiTVFRjg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a7d2d414949so396764666b.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 01:33:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727166809; x=1727771609;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Otjy7gqwp3DyWtSWvucIPdY6jcaz552jth+hDo280lY=;
+ b=Lh3rP+bQa3xBlC74UxFpnMxiPVUnTAlAiUuCThpID8vaVt1sU3svoV3/CQ/cbwMqzP
+ cDDN2yI+l9EC/EjP5F4+Hg1ThJ5agZJ4sLbaUxiC2721H43pckxp1za2yI5jZgl6Ix+Y
+ 1ONdGPxqvsJ4d2f8ZWTJmGI5hLsndTI/r68ooAyxWmq9jo4AL+BCdBLHbdz3+HJiYc5d
+ 4IO1dlyNDq9HFwk8MbSRt8EmbJTY0LE4M/H1w7AfDCLdnbl059iaHBp6kg7FZ4bxM/5t
+ uVCe/LDHH1tQg6r0IRsgHGVH5CMe8UpSxK3xo1f5vSKIA02zXM2xG6ygX033rr7UGG/o
+ e3yw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWj1lMCcgQHUhH4zV1o9vsscC6zqReWN5ENwbFF+6x69dQyeXiWuQeFdzNqqShIMsXeiAl+Ir914Avz@nongnu.org
+X-Gm-Message-State: AOJu0YzxM76qT8pBAEk0u4qwW0d81hew26GQ1/WogIK4eEQgSFy3Epb9
+ mVU/Ze5ZVPvPnNkwy2NrOz5rojU4J2tDDMHeR0iy0qs8jmUn6rAzyo1CNWtb3lAEOXAsMhbI19M
+ twQYJRpgJO6Fz4eeORKEIReq3jYvWCwpbOS4fgWGjkW/A8EmPh0se
+X-Received: by 2002:a17:907:f725:b0:a8b:154b:7649 with SMTP id
+ a640c23a62f3a-a90d55dd8b2mr1332727866b.15.1727166809587; 
+ Tue, 24 Sep 2024 01:33:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGiHzdhOzuVuUPJq78tl5OkiR/kJhd7Xtjew12hUXgnBlmGhlWFcJfO98wbKg0ZmnrejtLbjA==
+X-Received: by 2002:a17:907:f725:b0:a8b:154b:7649 with SMTP id
+ a640c23a62f3a-a90d55dd8b2mr1332725166b.15.1727166809166; 
+ Tue, 24 Sep 2024 01:33:29 -0700 (PDT)
+Received: from [10.5.51.18] (90-181-218-29.rco.o2.cz. [90.181.218.29])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a93931343cfsm55994966b.193.2024.09.24.01.33.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 24 Sep 2024 01:33:28 -0700 (PDT)
+Message-ID: <2a7c68aa-e493-44e9-8e9b-7c91088ad0f2@redhat.com>
+Date: Tue, 24 Sep 2024 10:33:26 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/23] E500 Cleanup
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Corey Minyard <cminyard@mvista.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-block@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>
+References: <20240923093016.66437-1-shentey@gmail.com>
+ <cbc6d0f4-ab9d-46c5-862f-aac83c91af3a@redhat.com>
+ <E8877813-B07A-41A7-AF76-2564ECC02336@gmail.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <E8877813-B07A-41A7-AF76-2564ECC02336@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: rQCowADX3saJePJmiZOeAA--.591S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tryfXFyxurykWF1Uur45KFg_yoW8CFyUpr
- s3KFyfCrW8J348uw48trZ8Gr1UJ3yYyw4kGw4293W8JrW7CrySkF93t3ZxCa1DGa4rtryY
- vF4rWrnYkws8XwUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
- 6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
- CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
- 2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
- W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
- Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI4
- 8JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRExhL5UU
- UUU==
-X-Originating-IP: [180.111.100.113]
-X-CM-SenderInfo: 52kr31xxdqqxpvfd2hldfou0/1tbiDAcKBmbyRALGCAAAsb
-Received-SPF: pass client-ip=159.226.251.81; envelope-from=zhouquan@iscas.ac.cn;
- helo=cstnet.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,42 +110,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Quan Zhou <zhouquan@iscas.ac.cn>
+On 9/23/24 23:25, Bernhard Beschow wrote:
+> 
+> 
+> 
+> Am 23. September 2024 20:23:54 UTC schrieb "Cédric Le Goater" <clg@redhat.com>:
+>> Hello Bernhard,
+> 
+> Hi Cédric,
+> 
+>>
+>> On 9/23/24 11:29, Bernhard Beschow wrote:
+>>> This series is part of a bigger series exploring data-driven machine creation
+>>> using device tree blobs on top of the e500 machines [1]. It contains patches to
+>>> make this exploration easier which are also expected to provide value in
+>>> themselves.
+>>>
+>>> The cleanup starts with the e500 machine class itself, then proceeds with
+>>> machine-specific device models and concludes with more or less loosely related
+>>> devices. Device cleanup mostly consists of using the DEFINE_TYPES() macro.
+>>
+>> Since you recently took a look at the machine models, would you
+>> be willing to take over maintenance of the e500 ? It shouldn't
+>> be an enormous amount of work.
+> 
+> Are you referring to the machine and related devices or the CPU? I'm somewhat familiar with the P102x and could take over but the CPU would be a different beast.
 
-Add support for a few Zc* extensions, Zimop, Zcmop and Zawrs.
+Please take a look at the MAINTAINERS file. You will see it is not
+that large and the CPU target models are not part of it.
 
-Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
----
- target/riscv/kvm/kvm-cpu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index f6e3156b8d..428aaee552 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -281,7 +281,10 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
-     KVM_EXT_CFG("zihintntl", ext_zihintntl, KVM_RISCV_ISA_EXT_ZIHINTNTL),
-     KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
-     KVM_EXT_CFG("zihpm", ext_zihpm, KVM_RISCV_ISA_EXT_ZIHPM),
-+    KVM_EXT_CFG("zimop", ext_zimop, KVM_RISCV_ISA_EXT_ZIMOP),
-+    KVM_EXT_CFG("zcmop", ext_zcmop, KVM_RISCV_ISA_EXT_ZCMOP),
-     KVM_EXT_CFG("zacas", ext_zacas, KVM_RISCV_ISA_EXT_ZACAS),
-+    KVM_EXT_CFG("zawrs", ext_zawrs, KVM_RISCV_ISA_EXT_ZAWRS),
-     KVM_EXT_CFG("zfa", ext_zfa, KVM_RISCV_ISA_EXT_ZFA),
-     KVM_EXT_CFG("zfh", ext_zfh, KVM_RISCV_ISA_EXT_ZFH),
-     KVM_EXT_CFG("zfhmin", ext_zfhmin, KVM_RISCV_ISA_EXT_ZFHMIN),
-@@ -292,6 +295,10 @@ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
-     KVM_EXT_CFG("zbkc", ext_zbkc, KVM_RISCV_ISA_EXT_ZBKC),
-     KVM_EXT_CFG("zbkx", ext_zbkx, KVM_RISCV_ISA_EXT_ZBKX),
-     KVM_EXT_CFG("zbs", ext_zbs, KVM_RISCV_ISA_EXT_ZBS),
-+    KVM_EXT_CFG("zca", ext_zca, KVM_RISCV_ISA_EXT_ZCA),
-+    KVM_EXT_CFG("zcb", ext_zcb, KVM_RISCV_ISA_EXT_ZCB),
-+    KVM_EXT_CFG("zcd", ext_zcd, KVM_RISCV_ISA_EXT_ZCD),
-+    KVM_EXT_CFG("zcf", ext_zcf, KVM_RISCV_ISA_EXT_ZCF),
-     KVM_EXT_CFG("zknd", ext_zknd, KVM_RISCV_ISA_EXT_ZKND),
-     KVM_EXT_CFG("zkne", ext_zkne, KVM_RISCV_ISA_EXT_ZKNE),
-     KVM_EXT_CFG("zknh", ext_zknh, KVM_RISCV_ISA_EXT_ZKNH),
--- 
-2.34.1
+Thanks,
+
+C.
+
+  
+
+
+> 
+> Best regards,
+> Bernhard
+> 
+>>
+>> Thanks,
+>>
+>> C.
+>>
+>>
+>>
+>>> [1] https://github.com/shentok/qemu/tree/e500-fdt
+>>>
+>>> Bernhard Beschow (23):
+>>>     hw/ppc/e500: Do not leak struct boot_info
+>>>     hw/ppc/e500: Reduce scope of env pointer
+>>>     hw/ppc/e500: Prefer QOM cast
+>>>     hw/ppc/e500: Remove unused "irqs" parameter
+>>>     hw/ppc/e500: Add missing device tree properties to i2c controller node
+>>>     hw/ppc/e500: Use SysBusDevice API to access TYPE_CCSR's internal
+>>>       resources
+>>>     hw/ppc/e500: Extract ppce500_ccsr.c
+>>>     hw/ppc/ppce500_ccsr: Log access to unimplemented registers
+>>>     hw/ppc/mpc8544_guts: Populate POR PLL ratio status register
+>>>     hw/i2c/mpc_i2c: Convert DPRINTF to trace events for register access
+>>>     hw/i2c/mpc_i2c: Prefer DEFINE_TYPES() macro
+>>>     hw/pci-host/ppce500: Reuse TYPE_PPC_E500_PCI_BRIDGE define
+>>>     hw/pci-host/ppce500: Prefer DEFINE_TYPES() macro
+>>>     hw/gpio/mpc8xxx: Prefer DEFINE_TYPES() macro
+>>>     hw/ppc/mpc8544_guts: Prefer DEFINE_TYPES() macro
+>>>     hw/net/fsl_etsec/etsec: Prefer DEFINE_TYPES() macro
+>>>     hw/intc: Guard openpic_kvm.c by dedicated OPENPIC_KVM Kconfig switch
+>>>     hw/sd/sdhci: Prefer DEFINE_TYPES() macro
+>>>     hw/block/pflash_cfi01: Prefer DEFINE_TYPES() macro
+>>>     hw/i2c/smbus_eeprom: Prefer DEFINE_TYPES() macro
+>>>     hw/rtc/ds1338: Prefer DEFINE_TYPES() macro
+>>>     hw/usb/hcd-ehci-sysbus: Prefer DEFINE_TYPES() macro
+>>>     hw/vfio/platform: Let vfio_start_eventfd_injection() take
+>>>       VFIOPlatformDevice pointer
+>>>
+>>>    MAINTAINERS              |   2 +-
+>>>    hw/ppc/e500-ccsr.h       |   2 +
+>>>    hw/ppc/e500.h            |   8 +++
+>>>    hw/block/pflash_cfi01.c  |  21 +++----
+>>>    hw/gpio/mpc8xxx.c        |  22 +++-----
+>>>    hw/i2c/mpc_i2c.c         |  29 +++++-----
+>>>    hw/i2c/smbus_eeprom.c    |  19 +++----
+>>>    hw/net/fsl_etsec/etsec.c |  22 +++-----
+>>>    hw/pci-host/ppce500.c    |  54 ++++++++----------
+>>>    hw/ppc/e500.c            |  61 +++++---------------
+>>>    hw/ppc/mpc8544_guts.c    |  32 +++++++----
+>>>    hw/ppc/ppce500_ccsr.c    |  67 ++++++++++++++++++++++
+>>>    hw/rtc/ds1338.c          |  20 +++----
+>>>    hw/sd/sdhci.c            |  62 +++++++++-----------
+>>>    hw/usb/hcd-ehci-sysbus.c | 118 +++++++++++++++++----------------------
+>>>    hw/vfio/platform.c       |   7 +--
+>>>    hw/i2c/trace-events      |   5 ++
+>>>    hw/intc/Kconfig          |   4 ++
+>>>    hw/intc/meson.build      |   3 +-
+>>>    hw/ppc/meson.build       |   1 +
+>>>    hw/ppc/trace-events      |   3 +
+>>>    21 files changed, 285 insertions(+), 277 deletions(-)
+>>>    create mode 100644 hw/ppc/ppce500_ccsr.c
+>>>
+>>
+> 
 
 
