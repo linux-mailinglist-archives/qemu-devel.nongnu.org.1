@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5592D9846B2
+	by mail.lfdr.de (Postfix) with ESMTPS id 418CB9846AF
 	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:25:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st5X5-0004ov-0S; Tue, 24 Sep 2024 09:24:47 -0400
+	id 1st5X6-0004yf-2n; Tue, 24 Sep 2024 09:24:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
- id 1st5X0-0004ie-Sj
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:24:42 -0400
-Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
+ id 1st5X1-0004nI-PI
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:24:44 -0400
+Received: from mail-qt1-x835.google.com ([2607:f8b0:4864:20::835])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
- id 1st5Wz-0002vu-5W
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:24:42 -0400
-Received: by mail-qt1-x833.google.com with SMTP id
- d75a77b69052e-4581e0ed0f2so53516701cf.1
+ id 1st5Wz-0002w0-6o
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:24:43 -0400
+Received: by mail-qt1-x835.google.com with SMTP id
+ d75a77b69052e-45aeef3ce92so36543811cf.2
  for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 06:24:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1727184279; x=1727789079; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=My/SSfrXFxfEwFJIIpw6G7rBWumzz76QNdrts7qfjC4=;
- b=XK/pMzwVTmHUDaNS4+FH0RD7ZRFCQkNN3YDlxD32jgeav90rvay/C8ZR7DkMO0fXCk
- 5mRD6whu6jhOmnBVGz1m5Wbn13sBRwA1qZaWiLfok6G3GNTOP2IDM/20qXcvGPphAGcb
- bDIa+jjUmJKa7swaJiBlAo5+5m01FEHiZeUo8=
+ d=chromium.org; s=google; t=1727184280; x=1727789080; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qZjTA1FcwiRqQ/YYlZO/lsysD2HXG7PCXuxP+u0+bvI=;
+ b=XDyFQ7ZJ5gJ8ml1aH8QACWXv0VXijMPGobfD9aVWRO/73JzRDoaWPDfmngCPYLfuzD
+ hFmsmMBZgitH6BQNs8k9as08HYg/T/JnkdRVT31G8bsnVgVBlOlVijYHuobxl3SRJiMU
+ sAO4Ad8gfb2lqdAKYiNHw9Ge5LUZiubbo9JOQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727184279; x=1727789079;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=My/SSfrXFxfEwFJIIpw6G7rBWumzz76QNdrts7qfjC4=;
- b=NtSpnsCXuoh/aYV2DWDJB2iQdGcewU4C4XQ55lb5tgZDpXatQP4GuLxJBD6fugWoim
- G56awpf0TNErI6OByElXVbb1kWkLDohq75N/JKck/esf1fnSpuj6lrDVGRh0dN6hC+YO
- j9+b69sQyIVb4aMOnvj4EQf8Ry7LnRLXrHn93bb1wFmKjzoHUflWlHQq9chciKYaN8cL
- fdoS6BgjJODcZnxEuAI1MLlJugux/VceIErYVbirPthiifcUlmPjILvGCr7KLV6Ozkio
- HqPxY/bh9bmY5wMnl+1rlsWaRM0JIPNaE6HoWnkcMF4X5+CNAJMXhek4lku6gZeyv4TO
- eMRw==
+ d=1e100.net; s=20230601; t=1727184280; x=1727789080;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qZjTA1FcwiRqQ/YYlZO/lsysD2HXG7PCXuxP+u0+bvI=;
+ b=DiurNN5Tr0756euPTPY5FTHNNQcbzm/Xszrxoqt7qMD9tN7WQln0Mcd9wKh2U1DfUd
+ eMxIUtr4+xKmCp0EuO4DNttkRNVoAOP1p5zt/pj9ZVJyYn1AMKY6MExJX83DPYkOzbLu
+ 9DyXgeh9S60jRZw1qWdxuVxtgRiLr7fJBaV1KD+zqP4S/qFHXGoaSKeGPxtRj/rmZUhz
+ TovSf+GWg9Z/O1j1vBYPCwOJSwy7cyQxJnhVso+0nMdOqlbJPceBDbSoTfoj/D1V++Q+
+ 7vuaO3Ty0torxm6oTWfmnJYCAoZ0iHqvvv3GtqnIWD9ABJTSAKKaiFYJAXsRSLuSi6Bs
+ +T4A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWEJVX66hCZK/Uzkf6027+hn2JqaTxf5y4JAIxPf7mKreYAirzUY/+T1s7LIlwQU4kwK1Ut+BoVSTQW@nongnu.org
-X-Gm-Message-State: AOJu0YwqDD8BDvjlR4oN6g6yi/BalaubgN4jJ2VoVvpIVqIg9q/nVGiM
- bEOYK+auO/VkAB67C6RxcgTdpu+ic+awgx1/JrQIoxp1WgF2t2WTzx4YnuAbmQ==
-X-Google-Smtp-Source: AGHT+IGWDhmEPKYZ61x8nyPP0m5IvVvTfJrxxFayPu4RNfKJRm/+FS8JYtoKhQ380v+ZRVTiHN4KcQ==
-X-Received: by 2002:ac8:7d4c:0:b0:458:209b:5ec2 with SMTP id
- d75a77b69052e-45b4fa22749mr53984471cf.29.1727184279295; 
+ AJvYcCWspD2c1KOrCsMUfv5D4BatybQNf/1hCjRdkxI0SSOAMqKlAT9rwwoiDGvxC0D0CnF+YnUbd+WkUfXS@nongnu.org
+X-Gm-Message-State: AOJu0Ywjuy1vYVaEwB7Ucw4UvxHPEwVpdKfpOO4Zv716CwdXqgZVnQY3
+ w+wWPPlkC+IY+ZLLc6rNoEsqwUb/K/Urh7foqPwlOD+4UDDFJO2A50kpXtcwaw==
+X-Google-Smtp-Source: AGHT+IEPQsn14Z6FB2dUvoGkmKcNUlyro2uhShWzAzoe3Ax77S40wQPN6V+Ot+lQeEdqIm2a7AHs4w==
+X-Received: by 2002:a05:622a:14ce:b0:453:7533:a64f with SMTP id
+ d75a77b69052e-45b204f37f0mr216684791cf.21.1727184279946; 
  Tue, 24 Sep 2024 06:24:39 -0700 (PDT)
 Received: from denia.c.googlers.com.com
  (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-45b52579daesm6248411cf.25.2024.09.24.06.24.37
+ d75a77b69052e-45b52579daesm6248411cf.25.2024.09.24.06.24.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Sep 2024 06:24:38 -0700 (PDT)
+ Tue, 24 Sep 2024 06:24:39 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
 To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>,
@@ -64,14 +65,16 @@ To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Cc: Ricardo Ribalda <ribalda@chromium.org>
-Subject: [PATCH v2 0/3] Fix WinXP ISO boot using the dc390/am53C974 SCSI device
-Date: Tue, 24 Sep 2024 13:24:09 +0000
-Message-ID: <20240924132417.739809-1-ribalda@chromium.org>
+Subject: [PATCH v2 1/3] tests/acpi: pc: allow DSDT acpi table changes
+Date: Tue, 24 Sep 2024 13:24:10 +0000
+Message-ID: <20240924132417.739809-2-ribalda@chromium.org>
 X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
+In-Reply-To: <20240924132417.739809-1-ribalda@chromium.org>
+References: <20240924132417.739809-1-ribalda@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
- envelope-from=ribalda@chromium.org; helo=mail-qt1-x833.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::835;
+ envelope-from=ribalda@chromium.org; helo=mail-qt1-x835.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,51 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mark Cave-Ayland reported that after landing the pre-computed _PRT, the
-above mentioned testcase failed to pass.
-
-It seems that it is due to WinXP not handling properly a variable
-package. Let's replace it.
-
-
-Unfortunately, the ASL diff is not the best (or I cannot produce
-something better):
-
-12c12
-<  *     Length           0x00003917 (14615)
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
->  *     Length           0x00003914 (14612)
-14c14
-<  *     Checksum         0xD9
----
->  *     Checksum         0x09
+ tests/qtest/bios-tables-test-allowed-diff.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Diff v1:
-  - Add assert(), Thanks Igor
-
-Ricardo Ribalda (3):
-  tests/acpi: pc: allow DSDT acpi table changes
-  hw/i386/acpi-build: return a non-var package from _PRT()
-  tests/acpi: pc: update golden masters for DSDT
-
- hw/i386/acpi-build.c                 |   3 ++-
- tests/data/acpi/x86/pc/DSDT          | Bin 8527 -> 8526 bytes
- tests/data/acpi/x86/pc/DSDT.acpierst | Bin 8438 -> 8437 bytes
- tests/data/acpi/x86/pc/DSDT.acpihmat | Bin 9852 -> 9851 bytes
- tests/data/acpi/x86/pc/DSDT.bridge   | Bin 15398 -> 15397 bytes
- tests/data/acpi/x86/pc/DSDT.cphp     | Bin 8991 -> 8990 bytes
- tests/data/acpi/x86/pc/DSDT.dimmpxm  | Bin 10181 -> 10180 bytes
- tests/data/acpi/x86/pc/DSDT.hpbridge | Bin 8478 -> 8477 bytes
- tests/data/acpi/x86/pc/DSDT.hpbrroot | Bin 5034 -> 5033 bytes
- tests/data/acpi/x86/pc/DSDT.ipmikcs  | Bin 8599 -> 8598 bytes
- tests/data/acpi/x86/pc/DSDT.memhp    | Bin 9886 -> 9885 bytes
- tests/data/acpi/x86/pc/DSDT.nohpet   | Bin 8385 -> 8384 bytes
- tests/data/acpi/x86/pc/DSDT.numamem  | Bin 8533 -> 8532 bytes
- tests/data/acpi/x86/pc/DSDT.roothp   | Bin 12320 -> 12319 bytes
- tests/data/acpi/x86/q35/DSDT.cxl     | Bin 13148 -> 13146 bytes
- tests/data/acpi/x86/q35/DSDT.viot    | Bin 14615 -> 14612 bytes
- 16 files changed, 2 insertions(+), 1 deletion(-)
-
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..f81f4e2469 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,16 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/x86/pc/DSDT",
++"tests/data/acpi/x86/pc/DSDT.acpierst",
++"tests/data/acpi/x86/pc/DSDT.acpihmat",
++"tests/data/acpi/x86/pc/DSDT.bridge",
++"tests/data/acpi/x86/pc/DSDT.cphp",
++"tests/data/acpi/x86/pc/DSDT.dimmpxm",
++"tests/data/acpi/x86/pc/DSDT.hpbridge",
++"tests/data/acpi/x86/pc/DSDT.hpbrroot",
++"tests/data/acpi/x86/pc/DSDT.ipmikcs",
++"tests/data/acpi/x86/pc/DSDT.memhp",
++"tests/data/acpi/x86/pc/DSDT.nohpet",
++"tests/data/acpi/x86/pc/DSDT.numamem",
++"tests/data/acpi/x86/pc/DSDT.roothp",
++"tests/data/acpi/x86/q35/DSDT.cxl",
++"tests/data/acpi/x86/q35/DSDT.viot",
 -- 
 2.46.0.792.g87dc391469-goog
 
