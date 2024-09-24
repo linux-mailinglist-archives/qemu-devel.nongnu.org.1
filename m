@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46929984D97
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD115984DAF
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:23:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stDtU-000518-Qj; Tue, 24 Sep 2024 18:20:30 -0400
+	id 1stDtc-00066L-AH; Tue, 24 Sep 2024 18:20:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDt2-0003vY-Iw
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:20:01 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1stDt6-0004GN-6T
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:20:05 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDt0-0001l8-EZ
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:20:00 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-7db233cef22so4789564a12.0
- for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:19:57 -0700 (PDT)
+ id 1stDt4-0001lZ-8T
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:20:03 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-7e6bb2aa758so399954a12.2
+ for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:20:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727216397; x=1727821197; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727216400; x=1727821200; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bjiufCYCfp4dwYZw7XqsiQQ12Uidfoa81oVq/vx9USc=;
- b=RZsQYufmQBYMPhcjmvIPhvpreJ0yeQMRbvOpnKlG8iOj67xZzcm08MRM9Zj9V2zoJm
- VNZYIxrIHbW1NODjjreNDev/xbS6NVAFrt97e77WdlEdzbPFHFiXa0aGIrbhRH6LNqj1
- BIJtNmUuqJYl1pHr33eFA2byNcoiWUuPUPFCS3YUYFFZBhWr9ialYPmOZPqxjyirXpLW
- 7tfu4wNFTGWUcKN04lhlvI5RRdORS6Ast8Mj8hhdtjQXldoaBv1Xkpr3wgOo1xb7QgnO
- 1+NFHy2r3aUtAxrZy49FvSqtM3h3ImZaREbQhbgB/HLlyzeEnzgfo0h+Qabur3wi8i8H
- 7TMA==
+ bh=Q8VKaZcqoM11QtZfjPX4diXFfeyYeXxVNkxHlzmCkFg=;
+ b=Yd5Chas1SBCerPwftpLU1UjGbkVvFvgJ5EYxhGbDScQpj36seeFlbcgl43fUdp+ivg
+ srT+k12+zxXlmI/S5w26r4/hq634nCHVWphIiGa0LGeitX6NzTmJPWpm6WCfZfrnKAk/
+ 7xQ0W8zKu8qsCODpL2mhhh59L6yecw+x4Hexj0COLmWsSa0tYC3IrwNzDs86+gSw+ocU
+ C02qET4800nOfZiQ03s0P8oOUokrQhTVFV06xsTcALA+lTV7LRY4CxMPtq/FsBgLuout
+ PHcoLGtHFpMVO5t/zFnZEiyfSzz0rFcwsUwg5M8+SkUtgq3b6cfKr+lYibDHDkd5H3CT
+ hgEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727216397; x=1727821197;
+ d=1e100.net; s=20230601; t=1727216400; x=1727821200;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bjiufCYCfp4dwYZw7XqsiQQ12Uidfoa81oVq/vx9USc=;
- b=LLtg+oBKVCrDGH06BKee4iIodyH9sO9p9yt5GLpA3NLsehR8e8U6Vu/Ywmodyig/H9
- fjZoQ/j21krtKVEAd6XkVbUBc/KtBkdRhwGvtc8o0xTxooVO/yVaIC8dqzKbbUktCB+h
- OZwkJF4tMfeOjeVJEAsRXG0wIO0aqw9QxaOcovM2esjXslzNSgKzMMrzGcyYBLMmiDkH
- oBtq4f7nY4sVu9tj0fA/LXO7G3rejB2qGtXioN5kFHk5itOpQ5kc08n26oquW1XIcWWH
- ZVm60N5kruqm5QWHlL5iqNo2tFsawLm17cHLuMpi97OnXVyg/vbt6b16cJXyYcGlwhMS
- en/w==
-X-Gm-Message-State: AOJu0YzZB9u3c2qMUtEHg18ZdlfcnFuJtq1I9tuNMhpBG8yU7fndzz7s
- jB6q7P0EuYQnE8mH5iLhNjK4hDTcbcwxN+aqhheQrwvrqXwKPP7O0FwCKg==
-X-Google-Smtp-Source: AGHT+IFddaXlI52CZYcVJuDNzkf23EjoV34l6teGGTktr8PYMh1VkMF9myXyUFNoLrDoCB5Kq810pQ==
-X-Received: by 2002:a05:6a21:3984:b0:1cf:4bcc:eb9a with SMTP id
- adf61e73a8af0-1d4d4aac51emr897904637.13.1727216396744; 
- Tue, 24 Sep 2024 15:19:56 -0700 (PDT)
+ bh=Q8VKaZcqoM11QtZfjPX4diXFfeyYeXxVNkxHlzmCkFg=;
+ b=A3cM0pobKJTScZ/9S2Rs64VHpfRv37rzvuCwIyOJj8tM5V/Ksgo9FC2SuacK/TMxIp
+ hiANq/X0hXFySNKbNfCOEbEn+EskU2k0W9X3BpHgrGpzMOMuh0aHUV88ZRc7fg+KNLfS
+ pJiiUMSyxCo4HvmPa0Pbgu3w0jwpZ/LJUCryAT/o3o1Qlpup4F0PyLHeaDLdMnUkQiYn
+ TVSrskp9Z55vMMXotHcDD4u3rXK+/S1jxdTguYVSRlgR0ROFbLKwxbV/VMBMS79n0ocY
+ caT33QLvuT5CfYwUKsYm7mOq8kFeGmSE5d4NiYzP5yCweIf6zdZopHLPH6HUhgudWNVd
+ EEdA==
+X-Gm-Message-State: AOJu0YyqMSLjixqioTNfglwfGQbwMxQFT/aDGIwjZOwLEn53uLD9spEX
+ ntMRNfSc7T2RLqcV3LE2sN3s8ydjb+oWOXlwrVAXMomyUohfMw0iwG+ugQ==
+X-Google-Smtp-Source: AGHT+IG51jZbSVc4D5OtLu0CVs2Tz84pWLP/Q9Hkyf4Ny5K+dhuSwizzleCCHRCUB978ygsMSbApsg==
+X-Received: by 2002:a05:6a21:3403:b0:1cf:573a:bb58 with SMTP id
+ adf61e73a8af0-1d4d4b9ba6bmr722036637.40.1727216400480; 
+ Tue, 24 Sep 2024 15:20:00 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.19.53
+ d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.19.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Sep 2024 15:19:56 -0700 (PDT)
+ Tue, 24 Sep 2024 15:20:00 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
@@ -65,17 +65,16 @@ Cc: alistair23@gmail.com, Mark Corbin <mark@dibsco.co.uk>,
  Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 36/47] bsd-user: Define RISC-V register structures and
- register copying
-Date: Wed, 25 Sep 2024 08:17:37 +1000
-Message-ID: <20240924221751.2688389-37-alistair.francis@wdc.com>
+Subject: [PULL v2 37/47] bsd-user: Add RISC-V signal trampoline setup function
+Date: Wed, 25 Sep 2024 08:17:38 +1000
+Message-ID: <20240924221751.2688389-38-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240924221751.2688389-1-alistair.francis@wdc.com>
 References: <20240924221751.2688389-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -101,116 +100,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Corbin <mark@dibsco.co.uk>
 
-Added definitions for RISC-V register structures, including
-general-purpose registers and floating-point registers, in
-'target_arch_reg.h'. Implemented the 'target_copy_regs' function to
-copy register values from the CPU state to the target register
-structure, ensuring proper endianness handling using 'tswapreg'.
+Implemented the 'setup_sigtramp' function for setting up the signal
+trampoline code in the RISC-V architecture.
 
 Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240916155119.14610-7-itachis@FreeBSD.org>
+Message-ID: <20240916155119.14610-8-itachis@FreeBSD.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- bsd-user/riscv/target_arch_reg.h | 88 ++++++++++++++++++++++++++++++++
- 1 file changed, 88 insertions(+)
- create mode 100644 bsd-user/riscv/target_arch_reg.h
+ bsd-user/riscv/target_arch_sigtramp.h | 41 +++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+ create mode 100644 bsd-user/riscv/target_arch_sigtramp.h
 
-diff --git a/bsd-user/riscv/target_arch_reg.h b/bsd-user/riscv/target_arch_reg.h
+diff --git a/bsd-user/riscv/target_arch_sigtramp.h b/bsd-user/riscv/target_arch_sigtramp.h
 new file mode 100644
-index 0000000000..12b1c96b61
+index 0000000000..dfe5076739
 --- /dev/null
-+++ b/bsd-user/riscv/target_arch_reg.h
-@@ -0,0 +1,88 @@
++++ b/bsd-user/riscv/target_arch_sigtramp.h
+@@ -0,0 +1,41 @@
 +/*
-+ *  RISC-V register structures
++ * RISC-V sigcode
 + *
-+ *  Copyright (c) 2019 Mark Corbin
++ * Copyright (c) 2019 Mark Corbin
 + *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
 + *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
 + *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#ifndef TARGET_ARCH_REG_H
-+#define TARGET_ARCH_REG_H
++#ifndef TARGET_ARCH_SIGTRAMP_H
++#define TARGET_ARCH_SIGTRAMP_H
 +
-+/* Compare with riscv/include/reg.h */
-+typedef struct target_reg {
-+    uint64_t ra;            /* return address */
-+    uint64_t sp;            /* stack pointer */
-+    uint64_t gp;            /* global pointer */
-+    uint64_t tp;            /* thread pointer */
-+    uint64_t t[7];          /* temporaries */
-+    uint64_t s[12];         /* saved registers */
-+    uint64_t a[8];          /* function arguments */
-+    uint64_t sepc;          /* exception program counter */
-+    uint64_t sstatus;       /* status register */
-+} target_reg_t;
-+
-+typedef struct target_fpreg {
-+    uint64_t        fp_x[32][2];    /* Floating point registers */
-+    uint64_t        fp_fcsr;        /* Floating point control reg */
-+} target_fpreg_t;
-+
-+#define tswapreg(ptr)   tswapal(ptr)
-+
-+/* Compare with struct trapframe in riscv/include/frame.h */
-+static inline void target_copy_regs(target_reg_t *regs,
-+                                    const CPURISCVState *env)
++/* Compare with sigcode() in riscv/riscv/locore.S */
++static inline abi_long setup_sigtramp(abi_ulong offset, unsigned sigf_uc,
++        unsigned sys_sigreturn)
 +{
++    uint32_t sys_exit = TARGET_FREEBSD_NR_exit;
 +
-+    regs->ra = tswapreg(env->gpr[1]);
-+    regs->sp = tswapreg(env->gpr[2]);
-+    regs->gp = tswapreg(env->gpr[3]);
-+    regs->tp = tswapreg(env->gpr[4]);
++    uint32_t sigtramp_code[] = {
++    /*1*/ const_le32(0x00010513),                        /*mv a0, sp*/
++    /*2*/ const_le32(0x00050513 + (sigf_uc << 20)),      /*addi a0,a0,sigf_uc*/
++    /*3*/ const_le32(0x00000293 + (sys_sigreturn << 20)),/*li t0,sys_sigreturn*/
++    /*4*/ const_le32(0x00000073),                        /*ecall*/
++    /*5*/ const_le32(0x00000293 + (sys_exit << 20)),     /*li t0,sys_exit*/
++    /*6*/ const_le32(0x00000073),                        /*ecall*/
++    /*7*/ const_le32(0xFF1FF06F)                         /*b -16*/
++    };
 +
-+    regs->t[0] = tswapreg(env->gpr[5]);
-+    regs->t[1] = tswapreg(env->gpr[6]);
-+    regs->t[2] = tswapreg(env->gpr[7]);
-+    regs->t[3] = tswapreg(env->gpr[28]);
-+    regs->t[4] = tswapreg(env->gpr[29]);
-+    regs->t[5] = tswapreg(env->gpr[30]);
-+    regs->t[6] = tswapreg(env->gpr[31]);
-+
-+    regs->s[0] = tswapreg(env->gpr[8]);
-+    regs->s[1] = tswapreg(env->gpr[9]);
-+    regs->s[2] = tswapreg(env->gpr[18]);
-+    regs->s[3] = tswapreg(env->gpr[19]);
-+    regs->s[4] = tswapreg(env->gpr[20]);
-+    regs->s[5] = tswapreg(env->gpr[21]);
-+    regs->s[6] = tswapreg(env->gpr[22]);
-+    regs->s[7] = tswapreg(env->gpr[23]);
-+    regs->s[8] = tswapreg(env->gpr[24]);
-+    regs->s[9] = tswapreg(env->gpr[25]);
-+    regs->s[10] = tswapreg(env->gpr[26]);
-+    regs->s[11] = tswapreg(env->gpr[27]);
-+
-+    regs->a[0] = tswapreg(env->gpr[10]);
-+    regs->a[1] = tswapreg(env->gpr[11]);
-+    regs->a[2] = tswapreg(env->gpr[12]);
-+    regs->a[3] = tswapreg(env->gpr[13]);
-+    regs->a[4] = tswapreg(env->gpr[14]);
-+    regs->a[5] = tswapreg(env->gpr[15]);
-+    regs->a[6] = tswapreg(env->gpr[16]);
-+    regs->a[7] = tswapreg(env->gpr[17]);
-+
-+    regs->sepc = tswapreg(env->pc);
++    return memcpy_to_target(offset, sigtramp_code, TARGET_SZSIGCODE);
 +}
-+
-+#undef tswapreg
-+
-+#endif /* TARGET_ARCH_REG_H */
++#endif /* TARGET_ARCH_SIGTRAMP_H */
 -- 
 2.46.1
 
