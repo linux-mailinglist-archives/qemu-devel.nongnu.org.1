@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A1998465A
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C0298465D
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:05:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st5Cm-0000eg-2j; Tue, 24 Sep 2024 09:03:48 -0400
+	id 1st5Ct-0000yf-4h; Tue, 24 Sep 2024 09:03:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5Ck-0000Yf-5a
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:03:46 -0400
+ id 1st5Cq-0000ve-AU
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:03:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5Ci-0008Sm-OP
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:03:45 -0400
+ id 1st5Cm-0008TG-V7
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:03:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727183024;
+ s=mimecast20190719; t=1727183028;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N8oWnyTYg8AgJWFNvI249dMhAmQigPL79FgF3CC8NN0=;
- b=D3MAWwa0FjyIpS35bunc1Hpq/mESxWhnjyE34ls6biHsnUR6EAJS4iqMW1Thb7X/uN9d+t
- on2UzRVH7GDiCnjNkDyNqxsRAgJYsyANNydbpDBzhBo3KCFkuRaYGXYAh3FIdmWCcvr9wL
- mBhFM9TehLhVy0KlVz3IQHCXVenuYnw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=8PUwcgtZt0hOyPV07gl666NOLQBNxh2UtOKTtC1Z66E=;
+ b=aW9oObvOkKTR+Uk8TE0Y09II9kOHfjDBg2n8Py+DutgZoRGBAIxIGb8wpc90UU6F76Nc/f
+ 59o+gqgCfBW0eSWLb4Zrq3WvnVQQT3Us/b6/W/Gu7fgqyOyptdPyTnB9TM82tu4Sovl12m
+ naKeFl9hOo+poL43P5m6JNc9FVW/4n0=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-383-NR6X8ytKMV-Nf_oo4hew4g-1; Tue,
- 24 Sep 2024 09:03:40 -0400
-X-MC-Unique: NR6X8ytKMV-Nf_oo4hew4g-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-83-AKSq5RCkO3u1RPeT3HxpUA-1; Tue,
+ 24 Sep 2024 09:03:45 -0400
+X-MC-Unique: AKSq5RCkO3u1RPeT3HxpUA-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5371B1891BB8; Tue, 24 Sep 2024 13:03:37 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3AF0418BC63A; Tue, 24 Sep 2024 13:03:42 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.3])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EF89719560AA; Tue, 24 Sep 2024 13:03:34 +0000 (UTC)
+ id F07DE19560AD; Tue, 24 Sep 2024 13:03:40 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -71,10 +71,10 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-block@nongnu.org,
  Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 10/22] hw/sdhci: fix -Werror=maybe-uninitialized
+Subject: [PATCH v2 11/22] block/block-copy: fix -Werror=maybe-uninitialized
  false-positive
-Date: Tue, 24 Sep 2024 17:02:09 +0400
-Message-ID: <20240924130222.748369-11-marcandre.lureau@redhat.com>
+Date: Tue, 24 Sep 2024 17:02:10 +0400
+Message-ID: <20240924130222.748369-12-marcandre.lureau@redhat.com>
 In-Reply-To: <20240924130222.748369-1-marcandre.lureau@redhat.com>
 References: <20240924130222.748369-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -109,28 +109,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../hw/sd/sdhci.c:846:16: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
-
-False-positive, because "length" is non-null.
+../block/block-copy.c:591:12: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/sd/sdhci.c | 2 +-
+ block/block-copy.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 87122e4245..ed01499391 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -747,7 +747,7 @@ static void sdhci_do_adma(SDHCIState *s)
-     const uint16_t block_size = s->blksize & BLOCK_SIZE_MASK;
-     const MemTxAttrs attrs = { .memory = true };
-     ADMADescr dscr = {};
--    MemTxResult res;
-+    MemTxResult res = MEMTX_ERROR;
-     int i;
+diff --git a/block/block-copy.c b/block/block-copy.c
+index cc618e4561..7265733825 100644
+--- a/block/block-copy.c
++++ b/block/block-copy.c
+@@ -568,7 +568,7 @@ static coroutine_fn int block_copy_task_entry(AioTask *task)
+     BlockCopyState *s = t->s;
+     bool error_is_read = false;
+     BlockCopyMethod method = t->method;
+-    int ret;
++    int ret = -1;
  
-     if (s->trnmod & SDHC_TRNS_BLK_CNT_EN && !s->blkcnt) {
+     WITH_GRAPH_RDLOCK_GUARD() {
+         ret = block_copy_do_copy(s, t->req.offset, t->req.bytes, &method,
 -- 
 2.45.2.827.g557ae147e6
 
