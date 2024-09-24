@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6B1984684
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B419984687
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:12:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st5Io-0006pq-7g; Tue, 24 Sep 2024 09:10:02 -0400
+	id 1st5KL-0006M7-9G; Tue, 24 Sep 2024 09:11:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5Gp-0006bg-TM
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:08:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1st5HR-00018s-Dp
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:08:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5Gi-0000se-LZ
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:07:55 -0400
+ id 1st5HP-0000tR-5I
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:08:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727183270;
+ s=mimecast20190719; t=1727183276;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8kITW/qOItfiafJDWQ5dEslsyyB81A9V60goYSoquHw=;
- b=Z21gq+XPSPBdkJHtce0rZH3nB6sHghFv7IH+kvwUYh2JFTZU3Eg0FAmftsIAJbeAAQybwD
- hZyID65mipl5Tq3p+4pDZQRjpJIMWeF6K2dP03wKDd4ts40Dc00OuuhMAkPx3rF4NNk0Yk
- S6RAJNqtziVHybBR0zZ+YFu1pgp+OI8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=lUrGKd55q1ZNBh1Nc+f+485x2fmivUGDYmWx4uvjSn4=;
+ b=REwfVtQvIwzMHzlu5HIr/FXXreHnzPhJabKz5v81+kvQCV03aYajpvCswiYyHSmbpfjuQq
+ KCYEpo1+Q0bzQcdtj3pAOil+4IUVT5gJGRyNG2+oVV4C5XFweL090D6ASqu6LZHkuYmVZW
+ YrpETgyR3SENF4LML1LdLPRuXX0mDpI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-2T_0FyEAN5myzxBGqR1yOQ-1; Tue,
- 24 Sep 2024 09:07:47 -0400
-X-MC-Unique: 2T_0FyEAN5myzxBGqR1yOQ-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-413-VEGB2Zl4NgCd0KFx5v39jA-1; Tue,
+ 24 Sep 2024 09:07:52 -0400
+X-MC-Unique: VEGB2Zl4NgCd0KFx5v39jA-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 787561896E34; Tue, 24 Sep 2024 13:07:44 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 93DBF18E6DA6; Tue, 24 Sep 2024 13:07:49 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.3])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5275B19560AA; Tue, 24 Sep 2024 13:07:41 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 30C36195608A; Tue, 24 Sep 2024 13:07:47 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
@@ -71,16 +71,16 @@ Cc: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Stefano Garzarella <sgarzare@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 19/22] block: fix -Werror=maybe-uninitialized false-positive
-Date: Tue, 24 Sep 2024 17:05:50 +0400
-Message-ID: <20240924130554.749278-20-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 20/22] qom/object: fix -Werror=maybe-uninitialized
+Date: Tue, 24 Sep 2024 17:05:51 +0400
+Message-ID: <20240924130554.749278-21-marcandre.lureau@redhat.com>
 In-Reply-To: <20240924130554.749278-1-marcandre.lureau@redhat.com>
 References: <20240924130554.749278-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -90,7 +90,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.09,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,27 +108,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../block/file-posix.c:1405:17: error: ‘zoned’ may be used uninitialized [-Werror=maybe-uninitialized]
- 1405 |     if (ret < 0 || zoned == BLK_Z_NONE) {
+object_resolve_path_type() didn't always set *ambiguousp.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- block/file-posix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qom/object.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index ff928b5e85..90fa54352c 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -1398,7 +1398,7 @@ static void raw_refresh_zoned_limits(BlockDriverState *bs, struct stat *st,
-                                      Error **errp)
- {
-     BDRVRawState *s = bs->opaque;
--    BlockZoneModel zoned;
-+    BlockZoneModel zoned = BLK_Z_NONE;
-     int ret;
+diff --git a/qom/object.c b/qom/object.c
+index 157a45c5f8..b2120f7dc5 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -2202,6 +2202,9 @@ Object *object_resolve_path_type(const char *path, const char *typename,
+         }
+     } else {
+         obj = object_resolve_abs_path(object_get_root(), parts + 1, typename);
++        if (ambiguousp) {
++            *ambiguousp = false;
++        }
+     }
  
-     ret = get_sysfs_zoned_model(st, &zoned);
+     g_strfreev(parts);
+@@ -2227,7 +2230,7 @@ Object *object_resolve_path_at(Object *parent, const char *path)
+ 
+ Object *object_resolve_type_unambiguous(const char *typename, Error **errp)
+ {
+-    bool ambig;
++    bool ambig = false;
+     Object *o = object_resolve_path_type("", typename, &ambig);
+ 
+     if (ambig) {
 -- 
 2.45.2.827.g557ae147e6
 
