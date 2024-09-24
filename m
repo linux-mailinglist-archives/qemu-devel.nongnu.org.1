@@ -2,96 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D6B984689
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BAF298468A
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:12:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st5KR-0007A1-6L; Tue, 24 Sep 2024 09:11:43 -0400
+	id 1st5KR-0007CW-96; Tue, 24 Sep 2024 09:11:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1st5Hr-0002CG-51
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:09:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1st5KK-0006bk-5l
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:11:36 -0400
+Received: from mx22.baidu.com ([220.181.50.185] helo=baidu.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1st5Hm-0000zN-TQ
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:09:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727183337;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=h1s0ceBeRTvnLbGayZ9i7iWV0mV94cVr7jVawdKO20A=;
- b=ROyqrwPAS4kIpc2EkmKWzSTSh0n7f7nWY1cB/F/Ibd2oDDb58hYZeR1gUsyVTmtnQXkwfK
- C7o9NaNAAaZpQJHdFuiWH/QY+w1o9aTASE0uw0mRNpI0Hugrh/vJSFa5QHi6/CLlZvbegV
- gzyfuzaZD0jlTR5o6h0A5OKmB/NB0Xk=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-WJgrAw47OluoCnni-Ctfag-1; Tue,
- 24 Sep 2024 09:08:54 -0400
-X-MC-Unique: WJgrAw47OluoCnni-Ctfag-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5C5BA1955F45; Tue, 24 Sep 2024 13:08:51 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.196])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 542D7195608A; Tue, 24 Sep 2024 13:08:38 +0000 (UTC)
-Date: Tue, 24 Sep 2024 15:08:35 +0200
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>,
- Peter Xu <peterx@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Hyman Huang <yong.huang@smartx.com>, Klaus Jensen <its@irrelevant.dk>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- John Snow <jsnow@redhat.com>, Jesper Devantier <foss@defmacro.it>,
- Bin Meng <bin.meng@windriver.com>, Greg Kurz <groug@kaod.org>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Yuval Shaia <yuval.shaia.ml@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Keith Busch <kbusch@kernel.org>,
- Eric Blake <eblake@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- Gerd Hoffmann <kraxel@redhat.com>, Fam Zheng <fam@euphon.net>,
- Eduardo Habkost <eduardo@habkost.net>,
- Stefano Garzarella <sgarzare@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH v2 00/22] -Werror=maybe-uninitialized fixes
-Message-ID: <ZvK502GDuPV7jGUl@redhat.com>
-References: <20240924130554.749278-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1st5KG-0001Nn-NC
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:11:35 -0400
+To: David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+CC: "Zuo,Boqun" <zuoboqun@baidu.com>, "thuth@redhat.com" <thuth@redhat.com>,
+ "alxndr@bu.edu" <alxndr@bu.edu>, "peterx@redhat.com" <peterx@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "imammedo@redhat.com"
+ <imammedo@redhat.com>, "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+Subject: Re: [PATCH 1/1] virtio-pci: fix memory_region_find for
+ VirtIOPCIRegion's MR
+Thread-Topic: [PATCH 1/1] virtio-pci: fix memory_region_find for
+ VirtIOPCIRegion's MR
+Thread-Index: AQHbDoMZs/5ZAuajc0SkLcgCqoFn/Q==
+Date: Tue, 24 Sep 2024 13:10:16 +0000
+Message-ID: <8878123399e34a90bbac9a618be5c674@baidu.com>
+References: <20240924011156.48252-1-gaoshiyuan@baidu.com>,
+ <8d7b35ba-f9fa-446f-ac8b-471587c7666e@redhat.com>
+In-Reply-To: <8d7b35ba-f9fa-446f-ac8b-471587c7666e@redhat.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.22.192.160]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240924130554.749278-1-marcandre.lureau@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.09,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-FEAS-Client-IP: 172.31.51.57
+X-FE-Last-Public-Client-IP: 100.100.100.60
+X-FE-Policy-ID: 52:10:53:SYSTEM
+Received-SPF: pass client-ip=220.181.50.185; envelope-from=gaoshiyuan@baidu.com;
+ helo=baidu.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,37 +65,106 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-to:  "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+From:  "Gao,Shiyuan" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 24, 2024 at 05:05:31PM +0400, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> Hi,
-> 
-> Depending on -Doptimization=<value>, GCC (14.2.1 here) produces different
-> maybe-uninitialized warnings:
-> - g: produces -Werror=maybe-uninitialized errors
-> - 0: clean build
-> - 1: produces -Werror=maybe-uninitialized errors
-> - 2: clean build
-> - 3: produces few -Werror=maybe-uninitialized errors
-> - s: produces -Werror=maybe-uninitialized errors
-> 
-> Most are false-positive, because prior LOCK_GUARD should guarantee an
-> initialization path. Few of them are a bit trickier. Finally, I found
-> a potential related memory leak.
+> Make sure to version your patch series. For example, via
+> =A0=A0=A0=A0=A0=A0=A0 $ git format-patch -v1 ...
 
-In addition we now build with "-ftrivial-auto-var-init=zero", so
-any case which is missing an "= NULL" or "= 0"  initialization is
-protected.
+Thanks, the first version forgot to CC qemu-devel, I resent it. I'll add ve=
+rsion to
+next version.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+>
+> > As shown below, if a virtio PCI device is attached under a pci-bridge, =
+the MR
+> > of VirtIOPCIRegion does not belong to any address space. So memory_regi=
+on_find
+> > cannot be used to search for this MR.
+>
+> I'm starting to wonder if memory_region_find() is really the right fun
+>
+> >
+> > Introduce the virtio-pci and pci_bridge_pci address spaces to solve thi=
+s problem.
+> >
+> > Before:
+> > memory-region: pci_bridge_pci
+> >=A0=A0=A0 0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pc=
+i
+> >=A0=A0=A0=A0=A0 00000000fe200000-00000000fe200fff (prio 1, i/o): virtio-=
+blk-pci-msix
+> >=A0=A0=A0=A0=A0=A0=A0 00000000fe200000-00000000fe20016f (prio 0, i/o): m=
+six-table
+> >=A0=A0=A0=A0=A0=A0=A0 00000000fe200800-00000000fe200807 (prio 0, i/o): m=
+six-pba
+> >=A0=A0=A0=A0=A0 000000a000400000-000000a000403fff (prio 1, i/o): virtio-=
+pci
+> >=A0=A0=A0=A0=A0=A0=A0 000000a000400000-000000a000400fff (prio 0, i/o): v=
+irtio-pci-common-virtio-blk
+> >=A0=A0=A0=A0=A0=A0=A0 000000a000401000-000000a000401fff (prio 0, i/o): v=
+irtio-pci-isr-virtio-blk
+> >=A0=A0=A0=A0=A0=A0=A0 000000a000402000-000000a000402fff (prio 0, i/o): v=
+irtio-pci-device-virtio-blk
+> >=A0=A0=A0=A0=A0=A0=A0 000000a000403000-000000a000403fff (prio 0, i/o): v=
+irtio-pci-notify-virtio-blk
+> >
+> > After:
+> > address-space: pci_bridge_pci
+> >=A0=A0=A0 0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pc=
+i
+> >=A0=A0=A0=A0=A0 00000000fe200000-00000000fe200fff (prio 1, i/o): virtio-=
+blk-pci-msix
+> >=A0=A0=A0=A0=A0=A0=A0 00000000fe200000-00000000fe20016f (prio 0, i/o): m=
+six-table
+> >=A0=A0=A0=A0=A0=A0=A0 00000000fe200800-00000000fe200807 (prio 0, i/o): m=
+six-pba
+> >=A0=A0=A0=A0=A0 000000a000400000-000000a000403fff (prio 1, i/o): virtio-=
+pci
+> >=A0=A0=A0=A0=A0=A0=A0 000000a000400000-000000a000400fff (prio 0, i/o): v=
+irtio-pci-common-virtio-blk
+> >=A0=A0=A0=A0=A0=A0=A0 000000a000401000-000000a000401fff (prio 0, i/o): v=
+irtio-pci-isr-virtio-blk
+> >=A0=A0=A0=A0=A0=A0=A0 000000a000402000-000000a000402fff (prio 0, i/o): v=
+irtio-pci-device-virtio-blk
+> >=A0=A0=A0=A0=A0=A0=A0 000000a000403000-000000a000403fff (prio 0, i/o): v=
+irtio-pci-notify-virtio-blk
+> >
+> > address-space: virtio-pci
+> >=A0=A0=A0 000000a000400000-000000a000403fff (prio 1, i/o): virtio-pci
+> >=A0=A0=A0=A0=A0 000000a000400000-000000a000400fff (prio 0, i/o): virtio-=
+pci-common-virtio-blk
+> >=A0=A0=A0=A0=A0 000000a000401000-000000a000401fff (prio 0, i/o): virtio-=
+pci-isr-virtio-blk
+> >=A0=A0=A0=A0=A0 000000a000402000-000000a000402fff (prio 0, i/o): virtio-=
+pci-device-virtio-blk
+> >=A0=A0=A0=A0=A0 000000a000403000-000000a000403fff (prio 0, i/o): virtio-=
+pci-notify-virtio-blk
+> >
+> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2576
+> > Fixes: ffa8a3e ("virtio-pci: Add lookup subregion of VirtIOPCIRegion MR=
+")
+>
+> Commit id is not unique. Use 12 digits please.
 
+Thanks, I will make changes in the next version.
+
+>
+> I'm still not quite sure if memory_region_find() is really the right
+> thing to use here, but I'm no expert on that so I'm hoping virtio/PCI
+> people can review.
+>
+
+Directly traversing the subregions of VirtIOPCIRegion's MR is a relatively
+simple method(Now only notify region MR has subregion and only has one laye=
+r).
+
+But if want to be more general, we need to consider multiple layers and
+the priority of subregions, which adds complexity.
+
+I think it would be better to use memory_region_find.
+
+Does anyone have any opinions?=
 
