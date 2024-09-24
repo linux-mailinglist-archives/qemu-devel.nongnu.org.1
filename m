@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07B7984DB3
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FDC6984D94
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:20:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stDsi-00022w-QW; Tue, 24 Sep 2024 18:19:41 -0400
+	id 1stDsn-0002EC-1C; Tue, 24 Sep 2024 18:19:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDse-0001op-8I
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:19:36 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1stDse-0001rL-HS
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:19:37 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDsc-0001jI-IB
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:19:35 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-7e6ba3f93fdso669643a12.1
+ id 1stDsc-0001jK-IZ
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:19:36 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-718d91eef2eso236174b3a.1
  for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:19:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727216370; x=1727821170; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727216373; x=1727821173; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XvmXuolKEh5VCCBso7oxro8MJDKi12QvfETwv+HVfmM=;
- b=WjP0LMfuI8PkU6waAmlOyPfmAs878pLrbj0eQ7WJ+YCeKMg7bd7Wv0b2GOY0WxtwzW
- MiIB5aeqmT9rIDz1eTUhDAlE5LiVZUMUIDLgwCqDVfnwBGcYgx7DF5bV0FTJSgNjhaOG
- cZWdp30GbT6rVLdvRoqtrV3Ps+3hc44fMC7doBkOT4zaZTm86z6SEIZnvoScIIYceq7q
- mGLZp7QEm3UHjPBQBwkRdHV+jZpvOw4JwE3cvt7BQuKj4EbKdxsWeiUUbW4k+ZIgIqH1
- B8d4dXny4y/dP4BjQLOSS1wlyw8UYxjrnE8IepAfzM+Ryfr1J61C2E3CqoExfs8O44r7
- fOjw==
+ bh=33F3ya+fqBx/xYgY52iatM++wmrPToizA8MVXxMx/wE=;
+ b=L7m8IOyhnjqfkPY7k5fXfWQoxXJKNaRGJkZRd6lZUisvlgCP/WsRxbOvpK7doqYvKN
+ 359g/KQCmkZni50AOfzDB0Swf/B35IXi8rJe1Co5guqSWXqxE3/xpSc4Wk/8BbkgWo0H
+ r3dCY1Y54IW5Ihd6+eERNyf09Ff1iExwzLyVjMED0nSX8LvxFdZc0cUyftvSdhV1nGm1
+ zPS1uBFC2yXUqQAHeU0Auq2KNhsq+h2kU/Sbrvij1Yy8J4NQdYz/GaWHA5UFi/Gnv+UO
+ bh/LHiB5Hxnl2kTLa1EMl5aCtUX+PRhDIXSXMNepMrvNDHR9QjELKhYm1MJVMzW+/Z3j
+ 76uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727216370; x=1727821170;
+ d=1e100.net; s=20230601; t=1727216373; x=1727821173;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XvmXuolKEh5VCCBso7oxro8MJDKi12QvfETwv+HVfmM=;
- b=oyzK5G6OZo3gVBwJgU7JAhsxUTfgexgQ3OMJQeYUJn3XFsYSEMPmpcsPUp2CktOpLr
- vvv74uxfc/ez0aMeLGAva1r+xJglk7CAiN999dUU10bovEps0TLjD2NAzEA92ecIz+UC
- wM4nIzX/P4gcypZrXU5kCxwWCRcODQVebmii3XWqT1OD3vr5XtXXWQE6ZMyRNPY/yT/U
- /TQqs45aYJzANUMnEp8luCaYg9RKdmOCCg2uQyq0GlSeIDSRp8X7tYo+BBQUWhsX432J
- uW5ObCkxWGnYGzTxHPs0UWA35bWe8HI2GvVzW5fAUP8hdIS7fP+QYr6KXDdkYNdgGpXV
- ETYQ==
-X-Gm-Message-State: AOJu0YzGGJcD9Fpz7AlfzwaL0y/T5GHHeKfgwuFwA409o/P+Xzozt8Lf
- swdHS+V5UBfYyLF5tdhIWcWSvW8ZTj+WbwacFkNN3/vmkQ2Aa3nijoP+HA==
-X-Google-Smtp-Source: AGHT+IGCtAOy4Qi6A6Ow+1XFxf4aAablk8XXuapW0b+ikJpAzIywINpybzLXKG9/rkZVKJbhDW7ySw==
-X-Received: by 2002:a05:6a21:3a85:b0:1d0:3a28:d2a7 with SMTP id
- adf61e73a8af0-1d4e0bff489mr662923637.41.1727216370100; 
- Tue, 24 Sep 2024 15:19:30 -0700 (PDT)
+ bh=33F3ya+fqBx/xYgY52iatM++wmrPToizA8MVXxMx/wE=;
+ b=JULtTbpcGKLjeU+dLT66+6L6jlgQPM7oEhaQ2phYwxzwZRf1b+utas2xdSbe92EFOL
+ G0bSk4ejEt5bypSCIfNnW/oSl8T1XNIAtkPpiU4lhxCX0GKkFn/f3HUlp9WY6H+Ow+Gg
+ idf1fpPUfUBh5q3I1kLanLUIygCByCnolL08iX28n9xsVFYMmCbDSyk2wq/kT7WvkUSh
+ EcsbWxLJLet5otY0riTSz62EyE878wC75SqgFHs7rQ5CtDC9J3nPXzOJZAlxId0rjWya
+ DqKFb1Ku31Z8CJoBzKmTQ2ZMCDeEayr5nxQ7BkyDwhxbDCWk7jgsWnhP+Akal3JhZV0v
+ FV6A==
+X-Gm-Message-State: AOJu0YyE4a2vnYV/NcXz7qH8RSN93L5LgyNxlccneWWUXMw/AgfB0nLX
+ MTazbXK4Ngj/Rq/KY4mThwYkXMc/FZtqMZuHvIlXZJ9j9Vl9nBE9gbOTYQ==
+X-Google-Smtp-Source: AGHT+IFDC+6v15uRcyDzCsFcGFoc5TYS2qdfyO2bIt8Ui+mKEohtJQoyULRV03ulfhsNAT/NOHO8bw==
+X-Received: by 2002:a05:6a00:3d4a:b0:717:9743:e4fb with SMTP id
+ d2e1a72fcca58-71b0b2d3ebbmr1009538b3a.14.1727216372804; 
+ Tue, 24 Sep 2024 15:19:32 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.19.27
+ d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.19.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Sep 2024 15:19:29 -0700 (PDT)
+ Tue, 24 Sep 2024 15:19:32 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Thomas Huth <thuth@redhat.com>,
+Cc: alistair23@gmail.com, Tomasz Jeznach <tjeznach@rivosinc.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 29/47] target/riscv/cpu_helper: Fix linking problem with
- semihosting disabled
-Date: Wed, 25 Sep 2024 08:17:30 +1000
-Message-ID: <20240924221751.2688389-30-alistair.francis@wdc.com>
+Subject: [PULL v2 30/47] hw/intc: riscv-imsic: Fix interrupt state updates.
+Date: Wed, 25 Sep 2024 08:17:31 +1000
+Message-ID: <20240924221751.2688389-31-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240924221751.2688389-1-alistair.francis@wdc.com>
 References: <20240924221751.2688389-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,62 +96,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Tomasz Jeznach <tjeznach@rivosinc.com>
 
-If QEMU has been configured with "--without-default-devices", the build
-is currently failing with:
+The IMSIC state variable eistate[] is modified by CSR instructions
+within a range dedicated to the local CPU and by MMIO writes from any CPU.
+Access to eistate from MMIO accessors is protected by the BQL, but
+read-modify-write (RMW) sequences from CSRRW do not acquire the BQL,
+making the RMW sequence vulnerable to a race condition with MMIO access
+from a remote CPU.
 
- /usr/bin/ld: libqemu-riscv32-softmmu.a.p/target_riscv_cpu_helper.c.o:
-  in function `riscv_cpu_do_interrupt':
- .../qemu/target/riscv/cpu_helper.c:1678:(.text+0x2214): undefined
-  reference to `do_common_semihosting'
+This race can manifest as missing IPI or MSI in multi-CPU systems, eg:
 
-We always want semihosting to be enabled if TCG is available, so change
-the "imply" statements in the Kconfig file to "select", and make sure to
-avoid calling into do_common_semihosting() if TCG is not available.
+[   43.008092] watchdog: BUG: soft lockup - CPU#2 stuck for 27s! [kworker/u19:1:52]
+[   43.011723] CPU: 2 UID: 0 PID: 52 Comm: kworker/u19:1 Not tainted 6.11.0-rc6
+[   43.013070] Workqueue: events_unbound deferred_probe_work_func
+[   43.018776] [<ffffffff800b4a86>] smp_call_function_many_cond+0x190/0x5c2
+[   43.019205] [<ffffffff800b4f28>] on_each_cpu_cond_mask+0x20/0x32
+[   43.019447] [<ffffffff8001069a>] __flush_tlb_range+0xf2/0x190
+[   43.019683] [<ffffffff80010914>] flush_tlb_kernel_range+0x20/0x28
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+The interrupt line raise/lower sequence was changed to prevent a race
+between the evaluation of the eistate and the execution of the qemu_irq
+raise/lower, ensuring that the interrupt line is not incorrectly
+deactivated based on a stale topei check result. To avoid holding BQL
+all modifications of eistate are converted to atomic operations.
+
+Signed-off-by: Tomasz Jeznach <tjeznach@rivosinc.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240906094858.718105-1-thuth@redhat.com>
+Message-ID: <a7604e4d61068ca4d384ae2a1377e1521d4d0235.1725651699.git.tjeznach@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 2 ++
- target/riscv/Kconfig      | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ hw/intc/riscv_imsic.c | 50 +++++++++++++++++++++++++++----------------
+ 1 file changed, 32 insertions(+), 18 deletions(-)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 4b2c72780c..a935377b4a 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1674,10 +1674,12 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-     if (!async) {
-         /* set tval to badaddr for traps with address information */
-         switch (cause) {
-+#ifdef CONFIG_TCG
-         case RISCV_EXCP_SEMIHOST:
-             do_common_semihosting(cs);
-             env->pc += 4;
-             return;
-+#endif
-         case RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT:
-         case RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT:
-         case RISCV_EXCP_LOAD_ADDR_MIS:
-diff --git a/target/riscv/Kconfig b/target/riscv/Kconfig
-index c332616d36..11bc09b414 100644
---- a/target/riscv/Kconfig
-+++ b/target/riscv/Kconfig
-@@ -1,9 +1,9 @@
- config RISCV32
-     bool
--    imply ARM_COMPATIBLE_SEMIHOSTING if TCG
-+    select ARM_COMPATIBLE_SEMIHOSTING if TCG
-     select DEVICE_TREE # needed by boot.c
+diff --git a/hw/intc/riscv_imsic.c b/hw/intc/riscv_imsic.c
+index b90f0d731d..9ef65d4012 100644
+--- a/hw/intc/riscv_imsic.c
++++ b/hw/intc/riscv_imsic.c
+@@ -55,7 +55,7 @@ static uint32_t riscv_imsic_topei(RISCVIMSICState *imsic, uint32_t page)
+                (imsic->eithreshold[page] <= imsic->num_irqs)) ?
+                imsic->eithreshold[page] : imsic->num_irqs;
+     for (i = 1; i < max_irq; i++) {
+-        if ((imsic->eistate[base + i] & IMSIC_EISTATE_ENPEND) ==
++        if ((qatomic_read(&imsic->eistate[base + i]) & IMSIC_EISTATE_ENPEND) ==
+                 IMSIC_EISTATE_ENPEND) {
+             return (i << IMSIC_TOPEI_IID_SHIFT) | i;
+         }
+@@ -66,10 +66,24 @@ static uint32_t riscv_imsic_topei(RISCVIMSICState *imsic, uint32_t page)
  
- config RISCV64
-     bool
--    imply ARM_COMPATIBLE_SEMIHOSTING if TCG
-+    select ARM_COMPATIBLE_SEMIHOSTING if TCG
-     select DEVICE_TREE # needed by boot.c
+ static void riscv_imsic_update(RISCVIMSICState *imsic, uint32_t page)
+ {
++    uint32_t base = page * imsic->num_irqs;
++
++    /*
++     * Lower the interrupt line if necessary, then evaluate the current
++     * IMSIC state.
++     * This sequence ensures that any race between evaluating the eistate and
++     * updating the interrupt line will not result in an incorrectly
++     * deactivated connected CPU IRQ line.
++     * If multiple interrupts are pending, this sequence functions identically
++     * to qemu_irq_pulse.
++     */
++
++    if (qatomic_fetch_and(&imsic->eistate[base], ~IMSIC_EISTATE_ENPEND)) {
++        qemu_irq_lower(imsic->external_irqs[page]);
++    }
+     if (imsic->eidelivery[page] && riscv_imsic_topei(imsic, page)) {
+         qemu_irq_raise(imsic->external_irqs[page]);
+-    } else {
+-        qemu_irq_lower(imsic->external_irqs[page]);
++        qatomic_or(&imsic->eistate[base], IMSIC_EISTATE_ENPEND);
+     }
+ }
+ 
+@@ -125,12 +139,11 @@ static int riscv_imsic_topei_rmw(RISCVIMSICState *imsic, uint32_t page,
+         topei >>= IMSIC_TOPEI_IID_SHIFT;
+         base = page * imsic->num_irqs;
+         if (topei) {
+-            imsic->eistate[base + topei] &= ~IMSIC_EISTATE_PENDING;
++            qatomic_and(&imsic->eistate[base + topei], ~IMSIC_EISTATE_PENDING);
+         }
+-
+-        riscv_imsic_update(imsic, page);
+     }
+ 
++    riscv_imsic_update(imsic, page);
+     return 0;
+ }
+ 
+@@ -139,7 +152,7 @@ static int riscv_imsic_eix_rmw(RISCVIMSICState *imsic,
+                                uint32_t num, bool pend, target_ulong *val,
+                                target_ulong new_val, target_ulong wr_mask)
+ {
+-    uint32_t i, base;
++    uint32_t i, base, prev;
+     target_ulong mask;
+     uint32_t state = (pend) ? IMSIC_EISTATE_PENDING : IMSIC_EISTATE_ENABLED;
+ 
+@@ -157,10 +170,6 @@ static int riscv_imsic_eix_rmw(RISCVIMSICState *imsic,
+ 
+     if (val) {
+         *val = 0;
+-        for (i = 0; i < xlen; i++) {
+-            mask = (target_ulong)1 << i;
+-            *val |= (imsic->eistate[base + i] & state) ? mask : 0;
+-        }
+     }
+ 
+     for (i = 0; i < xlen; i++) {
+@@ -172,10 +181,15 @@ static int riscv_imsic_eix_rmw(RISCVIMSICState *imsic,
+         mask = (target_ulong)1 << i;
+         if (wr_mask & mask) {
+             if (new_val & mask) {
+-                imsic->eistate[base + i] |= state;
++                prev = qatomic_fetch_or(&imsic->eistate[base + i], state);
+             } else {
+-                imsic->eistate[base + i] &= ~state;
++                prev = qatomic_fetch_and(&imsic->eistate[base + i], ~state);
+             }
++        } else {
++            prev = qatomic_read(&imsic->eistate[base + i]);
++        }
++        if (val && (prev & state)) {
++            *val |= mask;
+         }
+     }
+ 
+@@ -302,14 +316,14 @@ static void riscv_imsic_write(void *opaque, hwaddr addr, uint64_t value,
+     page = addr >> IMSIC_MMIO_PAGE_SHIFT;
+     if ((addr & (IMSIC_MMIO_PAGE_SZ - 1)) == IMSIC_MMIO_PAGE_LE) {
+         if (value && (value < imsic->num_irqs)) {
+-            imsic->eistate[(page * imsic->num_irqs) + value] |=
+-                                                    IMSIC_EISTATE_PENDING;
++            qatomic_or(&imsic->eistate[(page * imsic->num_irqs) + value],
++                       IMSIC_EISTATE_PENDING);
++
++            /* Update CPU external interrupt status */
++            riscv_imsic_update(imsic, page);
+         }
+     }
+ 
+-    /* Update CPU external interrupt status */
+-    riscv_imsic_update(imsic, page);
+-
+     return;
+ 
+ err:
 -- 
 2.46.1
 
