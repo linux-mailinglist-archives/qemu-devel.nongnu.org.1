@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7AD984DAE
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46929984D97
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:21:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stDtR-0004Mc-JH; Tue, 24 Sep 2024 18:20:28 -0400
+	id 1stDtU-000518-Qj; Tue, 24 Sep 2024 18:20:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDt1-0003s4-US
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:20:00 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1stDt2-0003vY-Iw
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:20:01 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDsx-0001kk-Rr
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:19:58 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-71970655611so5393008b3a.0
- for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:19:54 -0700 (PDT)
+ id 1stDt0-0001l8-EZ
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:20:00 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-7db233cef22so4789564a12.0
+ for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:19:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727216393; x=1727821193; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727216397; x=1727821197; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wXscy2d/VrjAyvG14+9cedJX+vNjOcuClykgW+OR82k=;
- b=LN9p7kvPhwkh/VbXwL5/jv8BVUdJkh349SudG3JHm0mkds6V1I1VzIzareG4eAJ/K5
- wQDckboI7/wSJo/nglHHUY/HWgfzhPXuF+C1x/H7GDSmxeK/bLcS+6wZ+TTPP37DOD8i
- wFqz3b1r4qkRH/XvmWYAi/Vh5+PZzh4WdXa80zIDzqNdI+fzizr1YOGigC2H7qwz67kk
- HoLfBu8E27IZDSyu3Y0/quQyY7stY/z9Y2LX8SLtflUgs0cjuimYE756Uq90ypSkslaE
- jJGweYKkcMItrEdTNQDTdLcEwYcOfkBu2tLsZxjFumnLa5oAtTtoYprkOZC08/jBybVG
- ByFw==
+ bh=bjiufCYCfp4dwYZw7XqsiQQ12Uidfoa81oVq/vx9USc=;
+ b=RZsQYufmQBYMPhcjmvIPhvpreJ0yeQMRbvOpnKlG8iOj67xZzcm08MRM9Zj9V2zoJm
+ VNZYIxrIHbW1NODjjreNDev/xbS6NVAFrt97e77WdlEdzbPFHFiXa0aGIrbhRH6LNqj1
+ BIJtNmUuqJYl1pHr33eFA2byNcoiWUuPUPFCS3YUYFFZBhWr9ialYPmOZPqxjyirXpLW
+ 7tfu4wNFTGWUcKN04lhlvI5RRdORS6Ast8Mj8hhdtjQXldoaBv1Xkpr3wgOo1xb7QgnO
+ 1+NFHy2r3aUtAxrZy49FvSqtM3h3ImZaREbQhbgB/HLlyzeEnzgfo0h+Qabur3wi8i8H
+ 7TMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727216393; x=1727821193;
+ d=1e100.net; s=20230601; t=1727216397; x=1727821197;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wXscy2d/VrjAyvG14+9cedJX+vNjOcuClykgW+OR82k=;
- b=IFcaLexEGKz0pDZjb2+4w025yDIEKVNN+jmLO6ZIaS6uMs4+W0ehhmDig2dpprg11p
- SkfWD2qWdgyEjEJ4Kq6vIxOeStRo8lOxD/ZfI4GMrmT6O5cmnc8ZYHkS8I1vjpb57STI
- 6LPRSXFLFSxFhzPbljih5eS79pgr88wMHcmDa+zAx4Fz+APCRBPPqTRKAgzYPoLKLgtE
- Yc149t/o0ObzLVxgw9WPd10/7iuypXnfC4NkNOMsR7E1arXpOkEiUhNUYBE49xn2WgK+
- 8HXbjW7iSHDU3jxhuzM4uQoWXfUzqKQT1TTtcHO6/N0Y1SDcVZoHbFxqdqzneQQ9eQ++
- 9i9Q==
-X-Gm-Message-State: AOJu0YzE3kq9x55a8rcsmCF5YKVIjS9KTWf6184aTD+iHrpLTNvUY1is
- qnN7ojIrYzR5s2X+z4YYiZsYkYJDoEwJPtI6TaBvv1W7iqCNbwrc4HHZuQ==
-X-Google-Smtp-Source: AGHT+IE1XqGn9hDjSlCtB/SC4saMux/qsEMuMalS+nP9OLZfM/KUJsYMeIueivskuaQRUT+Bb9Nbdw==
-X-Received: by 2002:a05:6a21:3514:b0:1d2:d001:5677 with SMTP id
- adf61e73a8af0-1d4d4aaf114mr983519637.17.1727216393008; 
- Tue, 24 Sep 2024 15:19:53 -0700 (PDT)
+ bh=bjiufCYCfp4dwYZw7XqsiQQ12Uidfoa81oVq/vx9USc=;
+ b=LLtg+oBKVCrDGH06BKee4iIodyH9sO9p9yt5GLpA3NLsehR8e8U6Vu/Ywmodyig/H9
+ fjZoQ/j21krtKVEAd6XkVbUBc/KtBkdRhwGvtc8o0xTxooVO/yVaIC8dqzKbbUktCB+h
+ OZwkJF4tMfeOjeVJEAsRXG0wIO0aqw9QxaOcovM2esjXslzNSgKzMMrzGcyYBLMmiDkH
+ oBtq4f7nY4sVu9tj0fA/LXO7G3rejB2qGtXioN5kFHk5itOpQ5kc08n26oquW1XIcWWH
+ ZVm60N5kruqm5QWHlL5iqNo2tFsawLm17cHLuMpi97OnXVyg/vbt6b16cJXyYcGlwhMS
+ en/w==
+X-Gm-Message-State: AOJu0YzZB9u3c2qMUtEHg18ZdlfcnFuJtq1I9tuNMhpBG8yU7fndzz7s
+ jB6q7P0EuYQnE8mH5iLhNjK4hDTcbcwxN+aqhheQrwvrqXwKPP7O0FwCKg==
+X-Google-Smtp-Source: AGHT+IFddaXlI52CZYcVJuDNzkf23EjoV34l6teGGTktr8PYMh1VkMF9myXyUFNoLrDoCB5Kq810pQ==
+X-Received: by 2002:a05:6a21:3984:b0:1cf:4bcc:eb9a with SMTP id
+ adf61e73a8af0-1d4d4aac51emr897904637.13.1727216396744; 
+ Tue, 24 Sep 2024 15:19:56 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.19.49
+ d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.19.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Sep 2024 15:19:52 -0700 (PDT)
+ Tue, 24 Sep 2024 15:19:56 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Mark Corbin <mark@dibsco.co.uk>,
- Ajeet Singh <itachis@FreeBSD.org>, Kyle Evans <kevans@FreeBSD.org>,
+ Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 35/47] bsd-user: Add RISC-V ELF definitions and hardware
- capability detection
-Date: Wed, 25 Sep 2024 08:17:36 +1000
-Message-ID: <20240924221751.2688389-36-alistair.francis@wdc.com>
+Subject: [PULL v2 36/47] bsd-user: Define RISC-V register structures and
+ register copying
+Date: Wed, 25 Sep 2024 08:17:37 +1000
+Message-ID: <20240924221751.2688389-37-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240924221751.2688389-1-alistair.francis@wdc.com>
 References: <20240924221751.2688389-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -101,31 +101,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Corbin <mark@dibsco.co.uk>
 
-Introduced RISC-V specific ELF definitions and hardware capability
-detection.
-Additionally, a function to retrieve hardware capabilities
-('get_elf_hwcap') is implemented, which returns the common bits set in
-each CPU's ISA strings.
+Added definitions for RISC-V register structures, including
+general-purpose registers and floating-point registers, in
+'target_arch_reg.h'. Implemented the 'target_copy_regs' function to
+copy register values from the CPU state to the target register
+structure, ensuring proper endianness handling using 'tswapreg'.
 
 Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Co-authored-by: Kyle Evans <kevans@FreeBSD.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240916155119.14610-6-itachis@FreeBSD.org>
+Message-ID: <20240916155119.14610-7-itachis@FreeBSD.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- bsd-user/riscv/target_arch_elf.h | 42 ++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
- create mode 100644 bsd-user/riscv/target_arch_elf.h
+ bsd-user/riscv/target_arch_reg.h | 88 ++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
+ create mode 100644 bsd-user/riscv/target_arch_reg.h
 
-diff --git a/bsd-user/riscv/target_arch_elf.h b/bsd-user/riscv/target_arch_elf.h
+diff --git a/bsd-user/riscv/target_arch_reg.h b/bsd-user/riscv/target_arch_reg.h
 new file mode 100644
-index 0000000000..4eb915e61e
+index 0000000000..12b1c96b61
 --- /dev/null
-+++ b/bsd-user/riscv/target_arch_elf.h
-@@ -0,0 +1,42 @@
++++ b/bsd-user/riscv/target_arch_reg.h
+@@ -0,0 +1,88 @@
 +/*
-+ *  RISC-V ELF definitions
++ *  RISC-V register structures
 + *
 + *  Copyright (c) 2019 Mark Corbin
 + *
@@ -143,29 +142,75 @@ index 0000000000..4eb915e61e
 + *  along with this program; if not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#ifndef TARGET_ARCH_ELF_H
-+#define TARGET_ARCH_ELF_H
++#ifndef TARGET_ARCH_REG_H
++#define TARGET_ARCH_REG_H
 +
-+#define elf_check_arch(x) ((x) == EM_RISCV)
-+#define ELF_START_MMAP 0x80000000
-+#define ELF_ET_DYN_LOAD_ADDR    0x100000
-+#define ELF_CLASS   ELFCLASS64
++/* Compare with riscv/include/reg.h */
++typedef struct target_reg {
++    uint64_t ra;            /* return address */
++    uint64_t sp;            /* stack pointer */
++    uint64_t gp;            /* global pointer */
++    uint64_t tp;            /* thread pointer */
++    uint64_t t[7];          /* temporaries */
++    uint64_t s[12];         /* saved registers */
++    uint64_t a[8];          /* function arguments */
++    uint64_t sepc;          /* exception program counter */
++    uint64_t sstatus;       /* status register */
++} target_reg_t;
 +
-+#define ELF_DATA    ELFDATA2LSB
-+#define ELF_ARCH    EM_RISCV
++typedef struct target_fpreg {
++    uint64_t        fp_x[32][2];    /* Floating point registers */
++    uint64_t        fp_fcsr;        /* Floating point control reg */
++} target_fpreg_t;
 +
-+#define ELF_HWCAP get_elf_hwcap()
-+static uint32_t get_elf_hwcap(void)
++#define tswapreg(ptr)   tswapal(ptr)
++
++/* Compare with struct trapframe in riscv/include/frame.h */
++static inline void target_copy_regs(target_reg_t *regs,
++                                    const CPURISCVState *env)
 +{
-+    RISCVCPU *cpu = RISCV_CPU(thread_cpu);
 +
-+    return cpu->env.misa_ext_mask;
++    regs->ra = tswapreg(env->gpr[1]);
++    regs->sp = tswapreg(env->gpr[2]);
++    regs->gp = tswapreg(env->gpr[3]);
++    regs->tp = tswapreg(env->gpr[4]);
++
++    regs->t[0] = tswapreg(env->gpr[5]);
++    regs->t[1] = tswapreg(env->gpr[6]);
++    regs->t[2] = tswapreg(env->gpr[7]);
++    regs->t[3] = tswapreg(env->gpr[28]);
++    regs->t[4] = tswapreg(env->gpr[29]);
++    regs->t[5] = tswapreg(env->gpr[30]);
++    regs->t[6] = tswapreg(env->gpr[31]);
++
++    regs->s[0] = tswapreg(env->gpr[8]);
++    regs->s[1] = tswapreg(env->gpr[9]);
++    regs->s[2] = tswapreg(env->gpr[18]);
++    regs->s[3] = tswapreg(env->gpr[19]);
++    regs->s[4] = tswapreg(env->gpr[20]);
++    regs->s[5] = tswapreg(env->gpr[21]);
++    regs->s[6] = tswapreg(env->gpr[22]);
++    regs->s[7] = tswapreg(env->gpr[23]);
++    regs->s[8] = tswapreg(env->gpr[24]);
++    regs->s[9] = tswapreg(env->gpr[25]);
++    regs->s[10] = tswapreg(env->gpr[26]);
++    regs->s[11] = tswapreg(env->gpr[27]);
++
++    regs->a[0] = tswapreg(env->gpr[10]);
++    regs->a[1] = tswapreg(env->gpr[11]);
++    regs->a[2] = tswapreg(env->gpr[12]);
++    regs->a[3] = tswapreg(env->gpr[13]);
++    regs->a[4] = tswapreg(env->gpr[14]);
++    regs->a[5] = tswapreg(env->gpr[15]);
++    regs->a[6] = tswapreg(env->gpr[16]);
++    regs->a[7] = tswapreg(env->gpr[17]);
++
++    regs->sepc = tswapreg(env->pc);
 +}
 +
-+#define USE_ELF_CORE_DUMP
-+#define ELF_EXEC_PAGESIZE        4096
++#undef tswapreg
 +
-+#endif /* TARGET_ARCH_ELF_H */
++#endif /* TARGET_ARCH_REG_H */
 -- 
 2.46.1
 
