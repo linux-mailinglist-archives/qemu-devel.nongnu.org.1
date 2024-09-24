@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF6F984D96
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39277984DA8
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 00:22:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stDrd-0004HB-Rb; Tue, 24 Sep 2024 18:18:33 -0400
+	id 1stDrh-0004ZN-I8; Tue, 24 Sep 2024 18:18:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDrb-0004Bk-1y
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:31 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1stDrf-0004St-9s
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:35 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1stDrZ-0001dY-Jf
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:30 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-6bce380eb96so3904319a12.0
- for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:18:29 -0700 (PDT)
+ id 1stDrd-0001dr-N7
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 18:18:35 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-718d91eef2eso235701b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 24 Sep 2024 15:18:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727216308; x=1727821108; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727216311; x=1727821111; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Xa9h2PzZFv3YrIHuXdWRrispjI/kDmtuk2RaDtDfx7g=;
- b=Mip1fkpWoW2bi9aQd7qt7MnxiLFRHPxjejnA60ngK5kJ4XELL02vks7jTN0UlMhQ9d
- rsOBjJBXfxSi3qpujMs/7V2inASKzvvWsilziynh3aerTVLE95C0XQDmkn8qp4tO6uJ+
- yLERBmxXKhpL2JXohaPOH+i4wtFgODxSx9JNWI7r0wPDhkli0uUbJscBOc8yxzY+P0rP
- MHlBV/xSl77HNXjOl/WZzACfIeJREVRPANc2yJlHtrmZFnlMVRGKOtogsvOrsUwypR9H
- hvirQ3uOKYUAYPLzyep4e7baa9XzD3btbyNJaROh4SGlMvZeoriS8RFqiVW0sf4JYECK
- oSmQ==
+ bh=Dbl+YTbLgXN5l8ttn3+mnl62ViQQVuJp9Z/85bpmJ90=;
+ b=NCYCreyJFOr0e+VrQQ+3T4fDVe2k9hgUeg1h79ZW+vzEM1/Kht+rmMgVhL6E6AFPwK
+ XbASKXEJ5iJh8et7L8RW/hk5/R92bNIcJfyJv+Qp4NYPDagpeiakuM9jCjqsNeatpvcT
+ Lb4MNM54sCNjiMIXyJpFP0HYdHFLoSRV7GgRUrh89KOL74pKVX69Fdy4zNrMg1HS4JYj
+ iAC6T8p3JS/toepk0yu0LByP0Fdvc3Wwy/VNiUz6XS3jgVE11NvDm+H76OUNlUctbdCi
+ n7yJ2XajKos1FW6dxhe6A6/5PhoQ8Nl+HfvlmmcZsLHZZ56u55m3ztLUuPKnx6QDgFBh
+ p2kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727216308; x=1727821108;
+ d=1e100.net; s=20230601; t=1727216311; x=1727821111;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Xa9h2PzZFv3YrIHuXdWRrispjI/kDmtuk2RaDtDfx7g=;
- b=FxPH/mnJFpJE2F7x+ze/oyP2YKk20yi5gikrF11MhCxouNyaibIFLUk5vUe8dZZYDE
- Bwbs5LTdIn/xBjITXa0WgM020nXuKYIkZbP2ABnceBUbhY/cge6z+19QqBLrBODcS8ox
- XU5qaUTVaDBOeC3n34Yse5D0Zr+/7U2zTt9ihhmLeyDl0fE/qNWUWhXn8ekmoNN4erHX
- LR88JdK1cxaUnzfVCVRFY+8prQsBRP6XfYO3EXkuGoHUWa2X3E9M40lJGLqgeBHnzREz
- rcvdKFDjFCluAjEilPzpxTNkp/EBdFphcbf1iNTNQJ7U/pdWueQCW8xPCpps1ojGbpsI
- PTWA==
-X-Gm-Message-State: AOJu0YzXM5vw7w/XS2B2PZdiXCZZYsmXdJVzUjYU5PZHhpO/ZPFsLgzm
- IRLqOal5RQSM2u5gbqCcqMwPniGG6y44tMZpJuv+siLDmU6EJwXyo6pr8w==
-X-Google-Smtp-Source: AGHT+IGHA0RQgFyVImdeoY3zN2r5UCWVMKWP3Wd0qAMweLTFwitrgHvJjLCgRQuI04b2TeNKuwWtmQ==
-X-Received: by 2002:a05:6a20:9d8e:b0:1d0:2531:b2b9 with SMTP id
- adf61e73a8af0-1d4e0bbec01mr684509637.36.1727216307914; 
- Tue, 24 Sep 2024 15:18:27 -0700 (PDT)
+ bh=Dbl+YTbLgXN5l8ttn3+mnl62ViQQVuJp9Z/85bpmJ90=;
+ b=Fc2ckkoM8mG18+qwgGgzq78bj+AOAALJdv6vmkP/88DBrQxtTODHAcG/QXheQ0C3yq
+ cxX31m6csyCroaqXV2iEw/ff6EKEw6e/HZz4wK6n2BOIzjSKxTSkrulhqcL61U379uGx
+ jDwEkyw/rRthaCBLvc9l48h37cJFrq9v04dLobFRQTn5LQW+SuiQKhcjSpKbLMOTfVdz
+ 5nXb7+Cf/Y0G/BVT0uyjSRXF+YOgg1mcKXsZReadUXJD+k6HY5GSSCdDNOt3k1hfXVx9
+ Gghk8UGByF9pivnvm4AXnJQSbCGJP7QTg20WNh33MfxKX12u3mqRzqteVgTCcp+rmF89
+ 5m/g==
+X-Gm-Message-State: AOJu0Yzxwqt1Lb/LjYceOY2exREq2Brhx1bJBKkct5BMA2bZdCHqCu1C
+ 3MEe0WaRBxYW4VnLph1mRM1n+/dnO0lBcNzlW2D5ow7K3FP9OrVhGS2nZg==
+X-Google-Smtp-Source: AGHT+IHfibP0gk20EjBOkTF11aOd/OYBKLUfGn496tdVvKLFKXDyI4oZFiVv/JITy1zdoIp1d3FmKw==
+X-Received: by 2002:a05:6a00:cca:b0:708:41c4:8849 with SMTP id
+ d2e1a72fcca58-71b0b2bd30bmr894507b3a.9.1727216310902; 
+ Tue, 24 Sep 2024 15:18:30 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.18.25
+ d2e1a72fcca58-71afc8342easm1665310b3a.11.2024.09.24.15.18.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Sep 2024 15:18:27 -0700 (PDT)
+ Tue, 24 Sep 2024 15:18:30 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Andrew Jones <ajones@ventanamicro.com>,
+Cc: alistair23@gmail.com, Maria Klauchek <m.klauchek@syntacore.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 09/47] target/riscv: Stop timer with infinite timecmp
-Date: Wed, 25 Sep 2024 08:17:10 +1000
-Message-ID: <20240924221751.2688389-10-alistair.francis@wdc.com>
+Subject: [PULL v2 10/47] target/riscv/cpu.c: Add 'fcsr' register to QEMU log
+ as a part of F extension
+Date: Wed, 25 Sep 2024 08:17:11 +1000
+Message-ID: <20240924221751.2688389-11-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240924221751.2688389-1-alistair.francis@wdc.com>
 References: <20240924221751.2688389-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -96,42 +98,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Maria Klauchek <m.klauchek@syntacore.com>
 
-While the spec doesn't state it, setting timecmp to UINT64_MAX is
-another way to stop a timer, as it's considered setting the next
-timer event to occur at infinity. And, even if the time CSR does
-eventually reach UINT64_MAX, the very next tick will bring it back to
-zero, once again less than timecmp. For this reason
-riscv_timer_write_timecmp() special cases UINT64_MAX. However, if a
-previously set timecmp has not yet expired, then setting timecmp to
-UINT64_MAX to disable / stop it would not work, as the special case
-left the previous QEMU timer active, which would then still deliver
-an interrupt at that previous timecmp time. Ensure the stopped timer
-will not still deliver an interrupt by also deleting the QEMU timer
-in the UINT64_MAX special case.
+FCSR is a part of F extension. Print it to log if FPU option is enabled.
 
-Fixes: ae0edf2188b3 ("target/riscv: No need to re-start QEMU timer when timecmp == UINT64_MAX")
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Maria Klauchek <m.klauchek@syntacore.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240829084002.1805006-2-ajones@ventanamicro.com>
+Message-ID: <20240902103433.18424-1-m.klauchek@syntacore.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/time_helper.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/riscv/cpu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/riscv/time_helper.c b/target/riscv/time_helper.c
-index 8d245bed3a..bc0d9a0c4c 100644
---- a/target/riscv/time_helper.c
-+++ b/target/riscv/time_helper.c
-@@ -92,6 +92,7 @@ void riscv_timer_write_timecmp(CPURISCVState *env, QEMUTimer *timer,
-      * equals UINT64_MAX.
-      */
-     if (timecmp == UINT64_MAX) {
-+        timer_del(timer);
-         return;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index a1ca12077f..89bc3955ee 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -823,6 +823,12 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+         }
      }
- 
+     if (flags & CPU_DUMP_FPU) {
++        target_ulong val = 0;
++        RISCVException res = riscv_csrrw_debug(env, CSR_FCSR, &val, 0, 0);
++        if (res == RISCV_EXCP_NONE) {
++            qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
++                    csr_ops[CSR_FCSR].name, val);
++        }
+         for (i = 0; i < 32; i++) {
+             qemu_fprintf(f, " %-8s %016" PRIx64,
+                          riscv_fpr_regnames[i], env->fpr[i]);
 -- 
 2.46.1
 
