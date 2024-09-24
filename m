@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A9998465C
-	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49995984659
+	for <lists+qemu-devel@lfdr.de>; Tue, 24 Sep 2024 15:04:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1st5DR-0002Vr-5j; Tue, 24 Sep 2024 09:04:29 -0400
+	id 1st5DS-0002bz-9L; Tue, 24 Sep 2024 09:04:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5DG-0001zB-Ea
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1st5DP-0002Q9-Af
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1st5DE-00005m-6P
- for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:18 -0400
+ id 1st5DN-00006d-B2
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 09:04:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727183055;
+ s=mimecast20190719; t=1727183064;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=foZ7CWBn2Ic+QnOUkHIFPNTfKtf84lHEG4IMdgmc9Bo=;
- b=I5snVgt56IjHZ7KwO8EpeE2EHfmVPVpTD0Aa7ErbmttnVge4VJYNZMAgX3aB+RVq4i2VU9
- QLwQN77zsYNSx6ik3CKsIwDC1ZmFv8eLt269T+yhLiUy8Bs40MPhDjXH9FYEquoMTcPe8N
- P1kGQcY2QrVUEcmd8k9PbmmEKD3YqRw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=lM3KpPrye86/Cu4EqGuleHP2TkpZj/gEzbpsHn25xPs=;
+ b=i1zUT4MkG6apaWthuRqGCgams2qM8FcGOgB7rQZpSHej8EvynrZKVXxH4D0zbrtB/G4Mkm
+ +qT3alAOS57aI9EhRq3Rr8yPGkKiY8jiCreZZchFz3jPB6LUqlhyeE3KC8LJw4hsQ3ItpB
+ J7/2mOLqwtr8OGhLnZBymQCFDI/FTLw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-304-U_IsB855P1a-UpQ4ThNYVw-1; Tue,
- 24 Sep 2024 09:03:07 -0400
-X-MC-Unique: U_IsB855P1a-UpQ4ThNYVw-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-R_gybxswObq09NUN_dEzfg-1; Tue,
+ 24 Sep 2024 09:03:14 -0400
+X-MC-Unique: R_gybxswObq09NUN_dEzfg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 275FE18BC622; Tue, 24 Sep 2024 13:03:04 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E3B1B1895D6A; Tue, 24 Sep 2024 13:03:11 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.3])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0F8B630001A1; Tue, 24 Sep 2024 13:02:58 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6CD8019560AA; Tue, 24 Sep 2024 13:03:06 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -71,17 +71,17 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-block@nongnu.org,
  Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 05/22] block/mirror: fix -Werror=maybe-uninitialized
+Subject: [PATCH v2 06/22] block/mirror: fix -Werror=maybe-uninitialized
  false-positive
-Date: Tue, 24 Sep 2024 17:02:04 +0400
-Message-ID: <20240924130222.748369-6-marcandre.lureau@redhat.com>
+Date: Tue, 24 Sep 2024 17:02:05 +0400
+Message-ID: <20240924130222.748369-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20240924130222.748369-1-marcandre.lureau@redhat.com>
 References: <20240924130222.748369-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -109,27 +109,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../block/mirror.c:1066:22: error: ‘iostatus’ may be used uninitialized [-Werror=maybe-uninitialized]
+../block/mirror.c:404:5: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
+../block/mirror.c:895:12: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
+../block/mirror.c:578:12: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- block/mirror.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/mirror.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/block/mirror.c b/block/mirror.c
-index 61f0a717b7..54e3a7ea9d 100644
+index 54e3a7ea9d..fd55a580fb 100644
 --- a/block/mirror.c
 +++ b/block/mirror.c
-@@ -931,7 +931,7 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
-     MirrorBDSOpaque *mirror_top_opaque = s->mirror_top_bs->opaque;
+@@ -349,7 +349,7 @@ static void coroutine_fn mirror_co_read(void *opaque)
+     MirrorOp *op = opaque;
+     MirrorBlockJob *s = op->s;
+     int nb_chunks;
+-    uint64_t ret;
++    uint64_t ret = -1;
+     uint64_t max_bytes;
+ 
+     max_bytes = s->granularity * s->max_iov;
+@@ -565,7 +565,7 @@ static void coroutine_fn GRAPH_UNLOCKED mirror_iteration(MirrorBlockJob *s)
+ 
+     bitmap_set(s->in_flight_bitmap, offset / s->granularity, nb_chunks);
+     while (nb_chunks > 0 && offset < s->bdev_length) {
+-        int ret;
++        int ret = -1;
+         int64_t io_bytes;
+         int64_t io_bytes_acct;
+         MirrorMethod mirror_method = MIRROR_METHOD_COPY;
+@@ -841,7 +841,7 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
+     int64_t offset;
+     BlockDriverState *bs;
      BlockDriverState *target_bs = blk_bs(s->target);
-     bool need_drain = true;
--    BlockDeviceIoStatus iostatus;
-+    BlockDeviceIoStatus iostatus = BLOCK_DEVICE_IO_STATUS__MAX;
-     int64_t length;
-     int64_t target_length;
-     BlockDriverInfo bdi;
+-    int ret;
++    int ret = -1;
+     int64_t count;
+ 
+     bdrv_graph_co_rdlock();
 -- 
 2.45.2.827.g557ae147e6
 
