@@ -2,82 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3C59864FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 18:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081C998656B
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 19:13:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stV2q-0006Mx-75; Wed, 25 Sep 2024 12:39:16 -0400
+	id 1stVYp-0001mD-EZ; Wed, 25 Sep 2024 13:12:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1stV2n-0006LM-KJ
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 12:39:13 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1stVYO-0000KW-Le
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:55 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1stV2m-0005Tw-35
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 12:39:13 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a8d4979b843so5090466b.3
- for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 09:39:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1stVYK-0000bS-4W
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:51 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-378f90ad32dso31612f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 10:11:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1727282350; x=1727887150; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727284305; x=1727889105; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1Z435ziM7/tTwXvzSmTfZy2EC4XDAX34xouZ7aIOlIs=;
- b=LwY0OXgteTGCTGimU5Js2JGUcwhWKj38pGphZ/qZJ7iHVz1GAEPBS5qGdq4N4PxkCQ
- PCHk+2f0x90FYwCStR9iogfoiMOnM3qpFzGXgUDG1WsL4t6IUmOmTsOVnHMehBFCUW5c
- f6qYsqzxo9ImzdDl4K9uBXcSdWTBYRmPJWNBc/ssof9YxzVxW6I8xjFdzvEybjdceKkI
- xRwpLfu2aEvO/omXweedMEY3zIcG0SFIIumqYK29ScV3b9Rh8RhBr65dP2dXbIdoStiM
- F8pnqBFkWjERGpcuWWSP1PLKVi2/nX2YRUe3Z4DQo0/T1gq3s7Km9i7vIeUckqchYq39
- 2gLw==
+ bh=YKiMcMVIgaI1u5EOrQ7wt/HfEOtyQ4ZcHqLFruvQEk8=;
+ b=qgf8hvTyZaRG1U8A0vyqHLwZ5tG11Q4AgfZ4CB89J8o8N36qsW2P+678Su8vRvxdFr
+ xOmsZF2ecKibrpKKZkiIt9oNKM4zZgbsOW4Gsl+JCPWvUZgJ0kk1RT1s25ITNliAHXXT
+ i17GdsiqMk8jHcg2Ctb2mDI+H7z+VfQoIUmInBpGYf3+wMJ25CYd9TShiOelsc0k52jD
+ /57viSVYljb/RQMVBb00oGIQg2TLmyFwtbyhGI7W80WDXLAvxRhsEkQ0FZUXFazbn/oF
+ kV104mLOWrhqB7GeqMIRBQBjarsguexRkO6YxIjvwXWHUBAm6/9paXsA6EL5BmFs1cip
+ 2E6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727282350; x=1727887150;
+ d=1e100.net; s=20230601; t=1727284305; x=1727889105;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=1Z435ziM7/tTwXvzSmTfZy2EC4XDAX34xouZ7aIOlIs=;
- b=YBEjAyAeEkMEvrtop1ckXnF9X6G+BbMkz6Sbv04fo8Udr2Sz6C/L9hiD+l0+2pnQpN
- LCnbldyRwgjHFjqgtIjdy/cHZeO9iyIJOy/vCZ+j9XKmP2X/mVh5/diC6HX7TfpKkMRO
- jZpHB73YIVmxaxlIouxoz4q9RaVKXmlxafXEpYHqtm/92HziD6fb34Ap8y3L+0jjOE/z
- 2GHVaC6qH2UieP9uZlpTQYvfqknh9+bIob5eKeIQ8U38XoMbR/C+JQCkMRew/ox5KBV5
- S9FhlI72ECEdYkJynJ52r8A2YwRvtFoyDytcyGVV5jPufVr5rycy19HLtAa99oyDwfZW
- 3Kkg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU46iTeus2yoBuLFT3HFKEQ258QTWZ/9qMzw7yyeEEKzX3ojiBBwdQbzhxp+I4qaqrO4DXxF1KETbgI@nongnu.org
-X-Gm-Message-State: AOJu0YyYnRos61KEUiqMp1qXTjIqnOrfIDhXigUb6RN/PK+fKI5bMjuj
- 5LK/W4/rR6aXYOK8CbZiOQBGWSXnLk/+543+pRZqqVi9mE6vtwFqrH5To99XqKs=
-X-Google-Smtp-Source: AGHT+IERX02swcPEoiblQuuic3gAEeqmOswgPsVWcbmUh+C8ghu3DeH4LxWkSEre3wbkr5Qvqi67YQ==
-X-Received: by 2002:a17:907:9487:b0:a7a:8586:d36b with SMTP id
- a640c23a62f3a-a93a03305a3mr326532566b.3.1727282349900; 
- Wed, 25 Sep 2024 09:39:09 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9392f4fb94sm228009766b.58.2024.09.25.09.39.09
+ bh=YKiMcMVIgaI1u5EOrQ7wt/HfEOtyQ4ZcHqLFruvQEk8=;
+ b=fE/gV6THGdCbpITSzQZ4LQVT7xaY6V6bS3MVhJq8ZWJ1tgh76zNYlUAlIJ9eHWDZOl
+ 0HuUC3lKIF1wm3/mCIsVLmTVnYIEiD8AehkDRxnje7ZLLxUjn4408pdbhXMqMEvvsckh
+ Q/m6Kacx5M5AIv+pqcyCgbV14j08tSDwlQ6hIgHZyMOI6p2IEZt7np6951TSf5SIbcqE
+ RsiBQAtPraejGPPeJ63TgEuY2alyxuHWHoNYGhvnFSsf/2xOrBQF6nqVQELaiwofNjAE
+ eMbhTCEBPC9JLLTITuLMW4Rma4bhk9OL92tU0nSSMN1no9SVTot1D7vZGCA1jl1CSkMq
+ iGlA==
+X-Gm-Message-State: AOJu0YzfGPnWCz8DtU/j0nR+vkfiCskPR52vrtWu9SX0auQX1GC2+nlz
+ 0BVH37voejtXjQeaJ2TuEdeDdgkcA0lygc5lHDSpnmRF4CCUmQxH9Par+p+p/+4=
+X-Google-Smtp-Source: AGHT+IGlSP0Jlk8NPTfdGfqLOuwAKaNghDViO1/OMw6Z7pw6Tee/O07cZuWwhv/1xXRFpiFAXO7XGg==
+X-Received: by 2002:adf:fac5:0:b0:374:b685:672 with SMTP id
+ ffacd0b85a97d-37cc248b5b4mr2184119f8f.26.1727284304867; 
+ Wed, 25 Sep 2024 10:11:44 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37cbc2c226esm4455006f8f.36.2024.09.25.10.11.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Sep 2024 09:39:09 -0700 (PDT)
-From: Andrew Jones <ajones@ventanamicro.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bmeng.cn@gmail.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com
-Subject: [PATCH] hw/riscv/virt: Comment absence of #msi-cells
-Date: Wed, 25 Sep 2024 18:39:09 +0200
-Message-ID: <20240925163908.215456-2-ajones@ventanamicro.com>
-X-Mailer: git-send-email 2.46.0
+ Wed, 25 Sep 2024 10:11:41 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 542CF5F8E4;
+ Wed, 25 Sep 2024 18:11:40 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Zhao Liu <zhao1.liu@intel.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, kvm@vger.kernel.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ devel@lists.libvirt.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <thuth@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PATCH 00/10] maintainer updates (testing, gdbstub)
+Date: Wed, 25 Sep 2024 18:11:30 +0100
+Message-Id: <20240925171140.1307033-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,38 +108,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-commit 6df664f87c73 ("Revert "hw/riscv/virt.c: imsics DT: add
-'#msi-cells'"") removed #msi-cells. Now that we have a Linux
-commit to reference add a comment explaining why it was removed
-to avoid it getting added back due to DT validation failures.
+Welcome to the first post KVM forum series. We have:
 
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
----
- hw/riscv/virt.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+  - fix from Ilya for microblaze atomics
+  - Pierrick's tsan updates
+  - I've added my testing and gdbstub trees to MAINTAINERS
+  - enabled a very basic aarch64_be-linux-user test
+  - fixed the missing gdb XML fails that cause aarch64_be-linux-user to assert
+  - finally I've made the mips64el cross compiler bookworm and allow_fail
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index cef41c150aaf..4fd9c0edf038 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -552,6 +552,16 @@ static void create_fdt_one_imsic(RISCVVirtState *s, hwaddr base_addr,
-                           FDT_IMSIC_INT_CELLS);
-     qemu_fdt_setprop(ms->fdt, imsic_name, "interrupt-controller", NULL, 0);
-     qemu_fdt_setprop(ms->fdt, imsic_name, "msi-controller", NULL, 0);
-+    /*
-+     * Per the DT binding, we should also add #msi-cells with a value of zero.
-+     * But, Linux which does not include commit db8e81132cf0 ("of/irq: Support
-+     * #msi-cells=<0> in of_msi_get_domain") does not properly handle #msi-cells
-+     * with a value of zero. For this reason, the property has intentionally
-+     * been left out. It's harmless to not add it since the absence of the
-+     * property and a value of zero for the property mean the same thing.
-+     * However, since the DT binding requires the property, DT validation may
-+     * fail.
-+     */
-     qemu_fdt_setprop(ms->fdt, imsic_name, "interrupts-extended",
-                      imsic_cells, ms->smp.cpus * sizeof(uint32_t) * 2);
-     qemu_fdt_setprop(ms->fdt, imsic_name, "reg", imsic_regs,
+Alex Bennée (6):
+  testing: bump mips64el cross to bookworm and allow to fail
+  tests/docker: add NOFETCH env variable for testing
+  MAINTAINERS: mention my testing/next tree
+  MAINTAINERS: mention my gdbstub/next tree
+  config/targets: update aarch64_be-linux-user gdb XML list
+  tests/tcg: enable basic testing for aarch64_be-linux-user
+
+Ilya Leoshkevich (1):
+  tests/docker: Fix microblaze atomics
+
+Pierrick Bouvier (3):
+  meson: hide tsan related warnings
+  target/i386: fix build warning (gcc-12 -fsanitize=thread)
+  docs/devel: update tsan build documentation
+
+ MAINTAINERS                                   |  2 ++
+ docs/devel/testing/main.rst                   | 26 +++++++++++---
+ configure                                     |  5 +++
+ configs/targets/aarch64_be-linux-user.mak     |  2 +-
+ meson.build                                   | 10 +++++-
+ target/i386/kvm/kvm.c                         |  4 +--
+ tests/tcg/aarch64_be/hello.c                  | 35 +++++++++++++++++++
+ .gitlab-ci.d/container-cross.yml              |  3 ++
+ tests/docker/Makefile.include                 |  5 +--
+ .../build-toolchain.sh                        |  8 +++++
+ .../dockerfiles/debian-mips64el-cross.docker  | 10 +++---
+ .../dockerfiles/debian-toolchain.docker       |  7 ++++
+ tests/lcitool/refresh                         |  2 +-
+ tests/tcg/Makefile.target                     |  7 +++-
+ tests/tcg/aarch64_be/Makefile.target          | 17 +++++++++
+ 15 files changed, 125 insertions(+), 18 deletions(-)
+ create mode 100644 tests/tcg/aarch64_be/hello.c
+ create mode 100644 tests/tcg/aarch64_be/Makefile.target
+
 -- 
-2.46.0
+2.39.5
 
 
