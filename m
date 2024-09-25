@@ -2,61 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A143E9857CC
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:28 +0200 (CEST)
-Received: from [::1] (helo=lists1p.gnu.org)
+	by mail.lfdr.de (Postfix) with ESMTPS id 680799857D3
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:52 +0200 (CEST)
+Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPvw-0002lN-Gi; Wed, 25 Sep 2024 07:11:48 -0400
+	id 1stPw6-00037H-8j; Wed, 25 Sep 2024 07:11:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvp-00024W-RF
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvq-00028F-Do
  for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvn-0003bT-R0
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvo-0003bY-7k
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1727262699;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/kR37MkxPuif1Gz9ZYXpS2krMiMxAaq8SdO6bqCWHmA=;
- b=HZdYeQMqIy18nPMXt4nZlJlzj2f/EDb0YNAMn8wDM15Y+xP2xUEBe7VnW17A1bA6zO/Vyw
- m6ve+eObK4g50n5I3qqQ/HLdbb8KT8QLdlfxd+ZGikBMTeyhErsAyLe59rTeJympfb2WY/
- UP+rfbfD9yvhz4AH0UauJjKXhcxWJcc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=3jDoCFaq6ptf4xbGNRtIyIgr5N+u+K+f5r+zr4TCbOU=;
+ b=GcFM7sQLrsNffY7wrFo4zaz/4Aw+Y0r6T/YSIzc3321Rd5dl3vHVl233CXXsTsIuq+elqm
+ 4928KAdutnwqAZplLhYT7O5+DA/msqe/4gS8HySspwdZNwH0yszUR78uXvTiWjmodqrpDS
+ wkBYqHMK7GTpMRHvXLnLekwa6gDXXEY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-459-pzWi-xUaNNCN93WTMHlTzw-1; Wed,
- 25 Sep 2024 07:11:35 -0400
-X-MC-Unique: pzWi-xUaNNCN93WTMHlTzw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-JtXRXY7kODOHfbu2bkXKwQ-1; Wed,
+ 25 Sep 2024 07:11:38 -0400
+X-MC-Unique: JtXRXY7kODOHfbu2bkXKwQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CB2F21944DE8; Wed, 25 Sep 2024 11:11:33 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5E61419344E9; Wed, 25 Sep 2024 11:11:37 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 222661956094; Wed, 25 Sep 2024 11:11:31 +0000 (UTC)
+ id B90B31956094; Wed, 25 Sep 2024 11:11:34 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 22/44] target/i386/kvm: replace assert(false) with
- g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:10:03 +0200
-Message-ID: <20240925111029.24082-23-thuth@redhat.com>
+Subject: [PULL 23/44] accel/tcg: remove break after g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:10:04 +0200
+Message-ID: <20240925111029.24082-24-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -87,38 +85,26 @@ This patch is part of a series that moves towards a consistent use of
 g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240919044641.386068-15-pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-16-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/i386/kvm/kvm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ accel/tcg/plugin-gen.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index ada581c5d6..c8056ef83d 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -5771,7 +5771,7 @@ static int kvm_handle_rdmsr(X86CPU *cpu, struct kvm_run *run)
-         }
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index ec89a085b4..2ee4c22bef 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -251,7 +251,6 @@ static void inject_mem_cb(struct qemu_plugin_dyn_cb *cb,
+         break;
+     default:
+         g_assert_not_reached();
+-        break;
      }
- 
--    assert(false);
-+    g_assert_not_reached();
  }
  
- static int kvm_handle_wrmsr(X86CPU *cpu, struct kvm_run *run)
-@@ -5790,7 +5790,7 @@ static int kvm_handle_wrmsr(X86CPU *cpu, struct kvm_run *run)
-         }
-     }
- 
--    assert(false);
-+    g_assert_not_reached();
- }
- 
- static bool has_sgx_provisioning;
 -- 
 2.46.0
 
