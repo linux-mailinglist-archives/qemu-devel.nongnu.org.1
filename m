@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E599857E2
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC579857DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPx0-0006Q4-2j; Wed, 25 Sep 2024 07:13:02 -0400
+	id 1stPxn-0002qv-9f; Wed, 25 Sep 2024 07:13:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwT-0005hn-NW
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwX-0005yR-6T
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwS-0003wL-5P
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwV-0003xk-K9
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262739;
+ s=mimecast20190719; t=1727262742;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6/D/bPRFDYn7e9OOx5Rf9mgT3BrXmKOcHZORCuS7GII=;
- b=dtrY0VSVqP8+yYpERPiV5hShVGETuAKm2NNUaWwZiCzbUkfE2Vif2XaQk8/QnpH3w0tBcP
- Lrszx75D7orbyynM3Kc88UeaTjd+vGf9K29OyXlasdji5VaeXWVuMNpjj/R1iZ6oHW1igY
- VAbqphWIf61u5ddFpbCz6wzWXs2usAY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Vyo/LNnRGhGjQKrTujAh2NlkCB5//86Ns8KFFI34pWI=;
+ b=UnvHQGl6cUnta7lbJ9H36jrEBQg7o0USmKJAuLVHXklGYnhkGRH+tOrYw7EAV84F4yRBEW
+ 9oiV6gBS0VwV8tUgLznKLeZjN4LrG4CiN8R0tuO8EU6VqH8r2AiSHZpDpoa5z7tco8o7RQ
+ S36utVO0nhLEGbccdo+9cKBSED5F7+4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-550-NYFunm4iMpC61fgE1iq5AQ-1; Wed,
- 25 Sep 2024 07:12:16 -0400
-X-MC-Unique: NYFunm4iMpC61fgE1iq5AQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-B50DJvwZMZq296UnqNY2dQ-1; Wed,
+ 25 Sep 2024 07:12:18 -0400
+X-MC-Unique: B50DJvwZMZq296UnqNY2dQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4A473193EF47; Wed, 25 Sep 2024 11:12:15 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8BBFC1977034; Wed, 25 Sep 2024 11:12:17 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 32739195609D; Wed, 25 Sep 2024 11:12:12 +0000 (UTC)
+ id AE74A1956094; Wed, 25 Sep 2024 11:12:15 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 38/44] migration: remove return after g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:10:19 +0200
-Message-ID: <20240925111029.24082-39-thuth@redhat.com>
+Subject: [PULL 39/44] qobject: remove return after g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:10:20 +0200
+Message-ID: <20240925111029.24082-40-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -85,100 +85,50 @@ This patch is part of a series that moves towards a consistent use of
 g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240919044641.386068-31-pierrick.bouvier@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-32-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- migration/dirtyrate.c    | 1 -
- migration/postcopy-ram.c | 7 -------
- migration/ram.c          | 2 --
- 3 files changed, 10 deletions(-)
+ qobject/qnum.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index c03b13b624..5478d58de3 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -229,7 +229,6 @@ static int time_unit_to_power(TimeUnit time_unit)
-         return -3;
-     default:
-         g_assert_not_reached();
--        return 0;
+diff --git a/qobject/qnum.c b/qobject/qnum.c
+index 2138b563a9..dd8ea49565 100644
+--- a/qobject/qnum.c
++++ b/qobject/qnum.c
+@@ -86,7 +86,6 @@ bool qnum_get_try_int(const QNum *qn, int64_t *val)
      }
- }
  
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index f431bbc0d4..0fe9d83d44 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -1412,40 +1412,34 @@ int postcopy_ram_incoming_init(MigrationIncomingState *mis)
- int postcopy_ram_incoming_cleanup(MigrationIncomingState *mis)
- {
-     g_assert_not_reached();
--    return -1;
- }
- 
- int postcopy_ram_prepare_discard(MigrationIncomingState *mis)
- {
-     g_assert_not_reached();
--    return -1;
- }
- 
- int postcopy_request_shared_page(struct PostCopyFD *pcfd, RAMBlock *rb,
-                                  uint64_t client_addr, uint64_t rb_offset)
- {
-     g_assert_not_reached();
--    return -1;
- }
- 
- int postcopy_ram_incoming_setup(MigrationIncomingState *mis)
- {
-     g_assert_not_reached();
--    return -1;
- }
- 
- int postcopy_place_page(MigrationIncomingState *mis, void *host, void *from,
-                         RAMBlock *rb)
- {
-     g_assert_not_reached();
--    return -1;
- }
- 
- int postcopy_place_page_zero(MigrationIncomingState *mis, void *host,
-                         RAMBlock *rb)
- {
-     g_assert_not_reached();
--    return -1;
- }
- 
- int postcopy_wake_shared(struct PostCopyFD *pcfd,
-@@ -1453,7 +1447,6 @@ int postcopy_wake_shared(struct PostCopyFD *pcfd,
-                          RAMBlock *rb)
- {
-     g_assert_not_reached();
--    return -1;
- }
- #endif
- 
-diff --git a/migration/ram.c b/migration/ram.c
-index 0aa5d34743..81eda2736a 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1766,13 +1766,11 @@ bool ram_write_tracking_available(void)
- bool ram_write_tracking_compatible(void)
- {
      g_assert_not_reached();
 -    return false;
  }
  
- int ram_write_tracking_start(void)
- {
+ /**
+@@ -124,7 +123,6 @@ bool qnum_get_try_uint(const QNum *qn, uint64_t *val)
+     }
+ 
      g_assert_not_reached();
--    return -1;
+-    return false;
  }
  
- void ram_write_tracking_stop(void)
+ /**
+@@ -157,7 +155,6 @@ double qnum_get_double(QNum *qn)
+     }
+ 
+     g_assert_not_reached();
+-    return 0.0;
+ }
+ 
+ char *qnum_to_string(QNum *qn)
+@@ -173,7 +170,6 @@ char *qnum_to_string(QNum *qn)
+     }
+ 
+     g_assert_not_reached();
+-    return NULL;
+ }
+ 
+ /**
 -- 
 2.46.0
 
