@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DD69857D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 423E49857CA
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPxt-0003lS-82; Wed, 25 Sep 2024 07:13:49 -0400
+	id 1stPxa-0000jG-9g; Wed, 25 Sep 2024 07:13:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwJ-0004ui-Lu
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwM-00057h-Fi
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwH-0003s6-Se
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwK-0003tO-GT
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262729;
+ s=mimecast20190719; t=1727262731;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JiBT728skRmdm88rj1Bi2KyJhTYibecJXAT1gwEUtJE=;
- b=SpwYuMJdxhOoQJKrmAMF7qqN9YN6GvbNyk1fwJ2YPzjJXlEbEv+ZDYEii2+h9ZbX3mb1AN
- oJwqR59WfBqMGbYBjMbVDGjfVz+oH+NW7wd2KSsGTlwofSA1G/ZWYngCBZBYWdPs733TRw
- Jh9/z1r5lkVgZkhqNPjzrLkWNrNGKJA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=8LsBFPRu54OFkPpjDHCv9iByYs2suDLcoK9INDup2jI=;
+ b=YxgrZbuvpfDPOI4QdCCSKCNDlQPQzY40UQWYdWincSLdxOwsZAy5ec1RXqkCJvqQ629zUm
+ FTgBLdBD7qhjBbNXrwTbTT8UQS93pPl1ZhUWLwB5WxxiUB0HBK9NHkS3OwgcyThaUVJRZ5
+ VL0hQJJMNMRJYvUpTrQAd63cWUGxQLo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-mGe3v-JZNtyMHyZc5yM9OA-1; Wed,
- 25 Sep 2024 07:12:07 -0400
-X-MC-Unique: mGe3v-JZNtyMHyZc5yM9OA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-250-wwPKFfxKM6SpATKX0K3E6Q-1; Wed,
+ 25 Sep 2024 07:12:10 -0400
+X-MC-Unique: wwPKFfxKM6SpATKX0K3E6Q-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 84593197701F; Wed, 25 Sep 2024 11:12:06 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6E0CA193E8F5; Wed, 25 Sep 2024 11:12:09 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F25E31956094; Wed, 25 Sep 2024 11:12:04 +0000 (UTC)
+ id 0F7931956094; Wed, 25 Sep 2024 11:12:06 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 35/44] hw/net: remove return after g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:10:16 +0200
-Message-ID: <20240925111029.24082-36-thuth@redhat.com>
+Subject: [PULL 36/44] hw/pci: remove return after g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:10:17 +0200
+Message-ID: <20240925111029.24082-37-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -87,66 +87,30 @@ assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-28-pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-29-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/net/e1000e_core.c | 2 --
- hw/net/igb_core.c    | 2 --
- hw/net/vmxnet3.c     | 1 -
- 3 files changed, 5 deletions(-)
+ hw/pci/pci-stub.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index 248381f976..2e4c50ddba 100644
---- a/hw/net/e1000e_core.c
-+++ b/hw/net/e1000e_core.c
-@@ -562,7 +562,6 @@ e1000e_rss_calc_hash(E1000ECore *core,
-         break;
-     default:
-         g_assert_not_reached();
--        return 0;
-     }
+diff --git a/hw/pci/pci-stub.c b/hw/pci/pci-stub.c
+index c6950e21bd..3397d0c82e 100644
+--- a/hw/pci/pci-stub.c
++++ b/hw/pci/pci-stub.c
+@@ -47,13 +47,11 @@ void hmp_pcie_aer_inject_error(Monitor *mon, const QDict *qdict)
+ MSIMessage pci_get_msi_message(PCIDevice *dev, int vector)
+ {
+     g_assert_not_reached();
+-    return (MSIMessage){};
+ }
  
-     return net_rx_pkt_calc_rss_hash(pkt, type, (uint8_t *) &core->mac[RSSRK]);
-@@ -841,7 +840,6 @@ e1000e_ring_free_descr_num(E1000ECore *core, const E1000ERingInfo *r)
-     }
- 
+ uint16_t pci_requester_id(PCIDevice *dev)
+ {
      g_assert_not_reached();
 -    return 0;
  }
  
- static inline bool
-diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index 6be6140771..5dffa12c64 100644
---- a/hw/net/igb_core.c
-+++ b/hw/net/igb_core.c
-@@ -398,7 +398,6 @@ igb_rss_calc_hash(IGBCore *core, struct NetRxPkt *pkt, E1000E_RSSInfo *info)
-         break;
-     default:
-         g_assert_not_reached();
--        return 0;
-     }
- 
-     return net_rx_pkt_calc_rss_hash(pkt, type, (uint8_t *) &core->mac[RSSRK]);
-@@ -747,7 +746,6 @@ igb_ring_free_descr_num(IGBCore *core, const E1000ERingInfo *r)
-     }
- 
-     g_assert_not_reached();
--    return 0;
- }
- 
- static inline bool
-diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
-index bb8583c7ab..8aa8c46228 100644
---- a/hw/net/vmxnet3.c
-+++ b/hw/net/vmxnet3.c
-@@ -456,7 +456,6 @@ vmxnet3_setup_tx_offloads(VMXNET3State *s)
- 
-     default:
-         g_assert_not_reached();
--        return false;
-     }
- 
-     return true;
+ /* Required by ahci.c */
 -- 
 2.46.0
 
