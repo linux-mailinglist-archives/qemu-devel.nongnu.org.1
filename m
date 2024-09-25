@@ -2,60 +2,128 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D1F9857BF
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4D79857E7
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:17:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPyH-00067l-Jq; Wed, 25 Sep 2024 07:14:14 -0400
+	id 1stQ1R-0006r4-0h; Wed, 25 Sep 2024 07:17:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwi-0006tf-Tk
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stQ1I-0006Sz-Vg
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:17:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwg-00042R-Ra
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:36 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stQ1H-0004Vi-0h
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:17:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262754;
+ s=mimecast20190719; t=1727263035;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UwWnn7F0IA8668O/RtqUw3SrdoOv+JBapXUjElCJD7U=;
- b=b8FO9+Sgs4rUHecM32SCbiQlofPj+cs8QDF4TyMKhkQUyDqaXwjjFUtMUTyZv0YBlyIww5
- hR65a+vez1RzwRYyL82epJg3JQy06KLyhKJA0n4W/yxhwSytnLw+hLNW677emWLpJpxDZl
- Etn6MW357NLRR1ds4ZNjTh8AWR9mkCM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-25-bIjS_JP6OrKnqZHEVMq5cQ-1; Wed,
- 25 Sep 2024 07:12:31 -0400
-X-MC-Unique: bIjS_JP6OrKnqZHEVMq5cQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1BFDE19772E6; Wed, 25 Sep 2024 11:12:30 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BF4591956094; Wed, 25 Sep 2024 11:12:27 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 44/44] .gitlab-ci.d: Make separate collapsible log sections for
- build and test
-Date: Wed, 25 Sep 2024 13:10:25 +0200
-Message-ID: <20240925111029.24082-45-thuth@redhat.com>
-In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
-References: <20240925111029.24082-1-thuth@redhat.com>
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=CrxmWhZm2WeEWFH/BSvjYAadyyaZCQ8asT+3faJ5gTw=;
+ b=bjFPQL/4jyGEfkK1EOu1w/x8Iw7RiEoE6vOIo9zluK9lMGXzndE7JS56YMvkIyhQpX69mA
+ LmXSu5RmtfVfwt6JC/tyeLTY7y8folc2z0HLtAMA9sCVQ5XomjotIkAaGQGICRUVSPac5F
+ 9HL2cB2Zi0kEYTwbGAoVZQHZOj1gJ/g=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-686-wuxx2JcZO0ukpThzyRPHJQ-1; Wed, 25 Sep 2024 07:17:14 -0400
+X-MC-Unique: wuxx2JcZO0ukpThzyRPHJQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-42cb2c9027dso51040955e9.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 04:17:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727263033; x=1727867833;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CrxmWhZm2WeEWFH/BSvjYAadyyaZCQ8asT+3faJ5gTw=;
+ b=StfD3xeshpKPDSQbZh1Wb1By1lNua8sZgL/RglJW30jr9UFhny0JOCWTLPUz01jssW
+ pLN1g+EjyoRuWGZH9XS6jeO6vYjSG+QyezxGgsGpRurq7BolX38Gs3kUpepixGT9bNX+
+ mZTG0wPvdeuj+P8cJhLENYrdgx57KXtLIkgqmwOsWoeLlyM8BkFSEBZHytv6jSJEvzLT
+ Dfw5Iz08TUMxhnADQG2HcvBt/i6UTqVrCKPdWwIcr3spTZYhwmjuEWk2+QXa6ZtbOohV
+ MhXGil/OytAf0bmtb1lxGBOd2lJntUgEWufrDsGTTgWcje+HrjOgKW0J85lA4vDipwbq
+ 6kKQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVV3TPUb+0nMM51ViXNGTwUoeZYasolf8frbRLI7fEyM+QVpYkW97GDgLYminDHPC4ADskHc/E3Bhyx@nongnu.org
+X-Gm-Message-State: AOJu0YyJ9uMhmNj8EDdrGIYKsG/u64oWEvyvFmFJvmCcBibjMn/Rw37K
+ vsFoIbomOgGHKDuG5PapCGmT6y3GVDn66ptkdWA2aptd+fLJAWNqCQz9amdL3JSfHogUQribb6k
+ dJITJgU+CKGY1lqhZZ+7BgXQGjlXU9N32CPti23DfLmAbURe4QVfl
+X-Received: by 2002:a05:600c:1549:b0:42c:bd27:4be4 with SMTP id
+ 5b1f17b1804b1-42e9610972fmr16392105e9.8.1727263032808; 
+ Wed, 25 Sep 2024 04:17:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHO3ozH1W6NbHhH1+dw/ILbpNUmEPTP5C8G4VqvXKQFezJinJ8sq/aCmkHAEE4/oHC/IPoA4Q==
+X-Received: by 2002:a05:600c:1549:b0:42c:bd27:4be4 with SMTP id
+ 5b1f17b1804b1-42e9610972fmr16391845e9.8.1727263032324; 
+ Wed, 25 Sep 2024 04:17:12 -0700 (PDT)
+Received: from [192.168.0.7] (ip-109-42-48-176.web.vodafone.de.
+ [109.42.48.176]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42e96a1f327sm14830735e9.46.2024.09.25.04.17.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 25 Sep 2024 04:17:11 -0700 (PDT)
+Message-ID: <a3644805-e4ba-4cfb-a429-0604d7282f06@redhat.com>
+Date: Wed, 25 Sep 2024 13:17:10 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] testing: bump mips64el cross to bookworm and allow to fail
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+References: <20240923081537.3846145-1-alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240923081537.3846145-1-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -80,249 +148,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+On 23/09/2024 10.15, Alex Bennée wrote:
+> The mips64el cross setup is very broken for bullseye which has now
+> entered LTS support so is unlikely to be fixed. While we still can't
+> build the container for bookworm due to a single missing dependency
+> that will hopefully get fixed in due course. For the sake of keeping
+> the CI green we mark it as allow_fail for the time being.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+...
+> @@ -143,6 +140,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+>                         libvdeplug-dev:mips64el \
+>                         libvirglrenderer-dev:mips64el \
+>                         libvte-2.91-dev:mips64el \
+> +                      libxdp-dev:mips64el \
+>                         libzstd-dev:mips64el \
+>                         nettle-dev:mips64el \
+>                         systemtap-sdt-dev:mips64el \
 
-GitLab lets a CI job create its own collapsible log sections by
-emitting special escape codes, as documented here:
+We could also do a temporary manual hack and remove the problematic packages 
+from the list that cause the failure. I guess removing libdrm-dev:mips64el , 
+libgtk-3-dev:mips64el and the SDL2 packages might help to avoid that the 
+mesa stuff gets installed (which causes the trouble)...
+Of course this will be overwritten the next time someone runs lcitool again, 
+but with a little bit of luck, Debian already got fixed at that point in 
+time. What do you think?
 
-https://docs.gitlab.com/ee/ci/yaml/script.html#expand-and-collapse-job-log-sections
-
-Use these to make "configure", "build" and "test" separate
-collapsible stages.
-
-As recommended by the GitLab docs, we use some shell which is
-sourced in the CI job to define functions to emit the magic
-lines that start and end sections, to hide the ugliness of
-the printf lines from the log.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240918125449.3125571-3-peter.maydell@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- .gitlab-ci.d/buildtest-template.yml  | 14 ++++++++++++++
- .gitlab-ci.d/buildtest.yml           |  1 +
- .gitlab-ci.d/crossbuild-template.yml | 25 ++++++++++++++++++++++++
- scripts/ci/gitlab-ci-section         | 29 ++++++++++++++++++++++++++++
- 4 files changed, 69 insertions(+)
- create mode 100644 scripts/ci/gitlab-ci-section
-
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 5f2fc7e6f4..8c69c60d21 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -8,8 +8,11 @@
-     key: "$CI_JOB_NAME"
-     when: always
-   before_script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start setup "Pre-script setup"
-     - JOBS=$(expr $(nproc) + 1)
-     - cat /packages.txt
-+    - section_end setup
-   script:
-     - export CCACHE_BASEDIR="$(pwd)"
-     - export CCACHE_DIR="$CCACHE_BASEDIR/ccache"
-@@ -19,6 +22,7 @@
-     - mkdir build
-     - cd build
-     - ccache --zero-stats
-+    - section_start configure "Running configure"
-     - ../configure --enable-werror --disable-docs --enable-fdt=system
-           ${TARGETS:+--target-list="$TARGETS"}
-           $CONFIGURE_ARGS ||
-@@ -27,11 +31,16 @@
-       then
-         pyvenv/bin/meson configure . -Dbackend_max_links="$LD_JOBS" ;
-       fi || exit 1;
-+    - section_end configure
-+    - section_start build "Building QEMU"
-     - $MAKE -j"$JOBS"
-+    - section_end build
-+    - section_start test "Running tests"
-     - if test -n "$MAKE_CHECK_ARGS";
-       then
-         $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
-       fi
-+    - section_end test
-     - ccache --show-stats
- 
- # We jump some hoops in common_test_job_template to avoid
-@@ -54,6 +63,8 @@
-   stage: test
-   image: $CI_REGISTRY_IMAGE/qemu/$IMAGE:$QEMU_CI_CONTAINER_TAG
-   script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start buildenv "Setting up to run tests"
-     - scripts/git-submodule.sh update roms/SLOF
-     - meson subprojects download $(cd build/subprojects && echo *)
-     - cd build
-@@ -63,7 +74,10 @@
-     - if [ "x${QEMU_TEST_CACHE_DIR}" != "x" ]; then
-         $MAKE precache-functional ;
-       fi
-+    - section_end buildenv
-+    - section_start test "Running tests"
-     - $MAKE NINJA=":" $MAKE_CHECK_ARGS
-+    - section_end test
- 
- .native_test_job_template:
-   extends: .common_test_job_template
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 2ab8c4806e..87848c2ffe 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -188,6 +188,7 @@ build-previous-qemu:
-     # Override the default flags as we need more to grab the old version
-     GIT_FETCH_EXTRA_FLAGS: --prune --quiet
-   before_script:
-+    - source scripts/ci/gitlab-ci-section
-     - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
-     - git remote add upstream https://gitlab.com/qemu-project/qemu
-     - git fetch upstream refs/tags/$QEMU_PREV_VERSION:refs/tags/$QEMU_PREV_VERSION
-diff --git a/.gitlab-ci.d/crossbuild-template.yml b/.gitlab-ci.d/crossbuild-template.yml
-index d1cb7a35db..45a9810355 100644
---- a/.gitlab-ci.d/crossbuild-template.yml
-+++ b/.gitlab-ci.d/crossbuild-template.yml
-@@ -9,8 +9,11 @@
-     when: always
-   timeout: 80m
-   before_script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start setup "Pre-script setup"
-     - JOBS=$(expr $(nproc) + 1)
-     - cat /packages.txt
-+    - section_end setup
-   script:
-     - export CCACHE_BASEDIR="$(pwd)"
-     - export CCACHE_DIR="$CCACHE_BASEDIR/ccache"
-@@ -19,22 +22,30 @@
-     - mkdir build
-     - cd build
-     - ccache --zero-stats
-+    - section_start configure "Running configure"
-     - ../configure --enable-werror --disable-docs --enable-fdt=system
-         --disable-user $QEMU_CONFIGURE_OPTS $EXTRA_CONFIGURE_OPTS
-         --target-list-exclude="arm-softmmu
-           i386-softmmu microblaze-softmmu mips-softmmu mipsel-softmmu
-           mips64-softmmu ppc-softmmu riscv32-softmmu sh4-softmmu
-           sparc-softmmu xtensa-softmmu $CROSS_SKIP_TARGETS"
-+    - section_end configure
-+    - section_start build "Building QEMU"
-     - make -j"$JOBS" all check-build
-+    - section_end build
-+    - section_start test "Running tests"
-     - if test -n "$MAKE_CHECK_ARGS";
-       then
-         $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
-       fi
-+    - section_end test
-+    - section_start installer "Building the installer"
-     - if grep -q "EXESUF=.exe" config-host.mak;
-       then make installer;
-       version="$(git describe --match v[0-9]* 2>/dev/null || git rev-parse --short HEAD)";
-       mv -v qemu-setup*.exe qemu-setup-${version}.exe;
-       fi
-+    - section_end installer
-     - ccache --show-stats
- 
- # Job to cross-build specific accelerators.
-@@ -52,6 +63,7 @@
-       - ccache/
-     key: "$CI_JOB_NAME"
-   before_script:
-+    - source scripts/ci/gitlab-ci-section
-     - JOBS=$(expr $(nproc) + 1)
-   script:
-     - export CCACHE_BASEDIR="$(pwd)"
-@@ -60,13 +72,19 @@
-     - export PATH="$CCACHE_WRAPPERSDIR:$PATH"
-     - mkdir build
-     - cd build
-+    - section_start configure "Running configure"
-     - ../configure --enable-werror --disable-docs $QEMU_CONFIGURE_OPTS
-         --disable-tools --enable-${ACCEL:-kvm} $EXTRA_CONFIGURE_OPTS
-+    - section_end configure
-+    - section_start build "Building QEMU"
-     - make -j"$JOBS" all check-build
-+    - section_end build
-+    - section_start test "Running tests"
-     - if test -n "$MAKE_CHECK_ARGS";
-       then
-         $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
-       fi
-+    - section_end test
- 
- .cross_user_build_job:
-   extends: .base_job_template
-@@ -77,6 +95,7 @@
-       - ccache/
-     key: "$CI_JOB_NAME"
-   before_script:
-+    - source scripts/ci/gitlab-ci-section
-     - JOBS=$(expr $(nproc) + 1)
-   script:
-     - export CCACHE_BASEDIR="$(pwd)"
-@@ -84,16 +103,22 @@
-     - export CCACHE_MAXSIZE="500M"
-     - mkdir build
-     - cd build
-+    - section_start configure "Running configure"
-     - ../configure --enable-werror --disable-docs $QEMU_CONFIGURE_OPTS
-         --disable-system --target-list-exclude="aarch64_be-linux-user
-           alpha-linux-user m68k-linux-user microblazeel-linux-user
-           or1k-linux-user ppc-linux-user sparc-linux-user
-           xtensa-linux-user $CROSS_SKIP_TARGETS"
-+    - section_end configure
-+    - section_start build "Building QEMU"
-     - make -j"$JOBS" all check-build
-+    - section_end build
-+    - section_start test "Running tests"
-     - if test -n "$MAKE_CHECK_ARGS";
-       then
-         $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
-       fi
-+    - section_end test
- 
- # We can still run some tests on some of our cross build jobs. They can add this
- # template to their extends to save the build logs and test results
-diff --git a/scripts/ci/gitlab-ci-section b/scripts/ci/gitlab-ci-section
-new file mode 100644
-index 0000000000..9bbe80420d
---- /dev/null
-+++ b/scripts/ci/gitlab-ci-section
-@@ -0,0 +1,29 @@
-+# Copyright (c) 2024 Linaro Ltd
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+# gitlab-ci-section: This is a shell script fragment which defines
-+# functions section_start and section_end which will emit marker lines
-+# that GitLab will interpret as the beginning or end of a "collapsible
-+# section" in a CI job log. See
-+# https://docs.gitlab.com/ee/ci/yaml/script.html#expand-and-collapse-job-log-sections
-+#
-+# This is intended to be sourced in the before_script section of
-+# a CI config; the section_start and section_end functions will
-+# then be available for use in the before_script and script sections.
-+
-+# Section names are [-_.A-Za-z0-9] and the section_start pairs with
-+# a section_end with the same section name.
-+# The description can be any printable text without newlines; this is
-+# what will appear in the log.
-+
-+# Usage:
-+# section_start section_name "Description of the section"
-+section_start () {
-+    printf "section_start:%s:%s\r\e[0K%s\n" "$(date +%s)" "$1" "$2"
-+}
-+
-+# Usage:
-+# section_end section_name
-+section_end () {
-+    printf "section_end:%s:%s\r\e[0K\n" "$(date +%s)" "$1"
-+}
--- 
-2.46.0
+  Thomas
 
 
