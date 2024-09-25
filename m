@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E590F9857E5
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:46 +0200 (CEST)
-Received: from localhost ([::1] helo=lists1p.gnu.org)
+	by mail.lfdr.de (Postfix) with ESMTPS id A143E9857CC
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:28 +0200 (CEST)
+Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPvu-0002BK-CO; Wed, 25 Sep 2024 07:11:46 -0400
+	id 1stPvw-0002lN-Gi; Wed, 25 Sep 2024 07:11:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvm-0001m2-P0
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvp-00024W-RF
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvl-0003b8-9y
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:38 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvn-0003bT-R0
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262696;
+ s=mimecast20190719; t=1727262699;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cAeg+Ie663IEIZWiQO7e2V0IGemFx0hvCtiNmWMksEg=;
- b=djdQEcQXcOCBBiXjpHfl30ds//7iXZbhwQ4+9Uz8FJaVb3dwVpF/VqNDZXYrCUSxD1TOQ1
- TcSHwIfkNt4WBonsDrWdGpWjvhHC6i55I3vNw4DyKKGrRhrVC7tgXnIcJl1GuQYAWxvyQU
- 7gzqbNYahUiPc5jFuepI1m+7et76SZg=
+ bh=/kR37MkxPuif1Gz9ZYXpS2krMiMxAaq8SdO6bqCWHmA=;
+ b=HZdYeQMqIy18nPMXt4nZlJlzj2f/EDb0YNAMn8wDM15Y+xP2xUEBe7VnW17A1bA6zO/Vyw
+ m6ve+eObK4g50n5I3qqQ/HLdbb8KT8QLdlfxd+ZGikBMTeyhErsAyLe59rTeJympfb2WY/
+ UP+rfbfD9yvhz4AH0UauJjKXhcxWJcc=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-44-Wj6-SXTePXSxtUlXXGQk5Q-1; Wed,
- 25 Sep 2024 07:11:32 -0400
-X-MC-Unique: Wj6-SXTePXSxtUlXXGQk5Q-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-459-pzWi-xUaNNCN93WTMHlTzw-1; Wed,
+ 25 Sep 2024 07:11:35 -0400
+X-MC-Unique: pzWi-xUaNNCN93WTMHlTzw-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9192D1944DF9; Wed, 25 Sep 2024 11:11:31 +0000 (UTC)
+ id CB2F21944DE8; Wed, 25 Sep 2024 11:11:33 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E50731956096; Wed, 25 Sep 2024 11:11:29 +0000 (UTC)
+ id 222661956094; Wed, 25 Sep 2024 11:11:31 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 21/44] migration: replace assert(false) with
+Subject: [PULL 22/44] target/i386/kvm: replace assert(false) with
  g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:10:02 +0200
-Message-ID: <20240925111029.24082-22-thuth@redhat.com>
+Date: Wed, 25 Sep 2024 13:10:03 +0200
+Message-ID: <20240925111029.24082-23-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -86,29 +87,38 @@ This patch is part of a series that moves towards a consistent use of
 g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-14-pierrick.bouvier@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240919044641.386068-15-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- migration/dirtyrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/kvm/kvm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index 1d9db81299..c03b13b624 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -228,7 +228,7 @@ static int time_unit_to_power(TimeUnit time_unit)
-     case TIME_UNIT_MILLISECOND:
-         return -3;
-     default:
--        assert(false); /* unreachable */
-+        g_assert_not_reached();
-         return 0;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index ada581c5d6..c8056ef83d 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5771,7 +5771,7 @@ static int kvm_handle_rdmsr(X86CPU *cpu, struct kvm_run *run)
+         }
      }
+ 
+-    assert(false);
++    g_assert_not_reached();
  }
+ 
+ static int kvm_handle_wrmsr(X86CPU *cpu, struct kvm_run *run)
+@@ -5790,7 +5790,7 @@ static int kvm_handle_wrmsr(X86CPU *cpu, struct kvm_run *run)
+         }
+     }
+ 
+-    assert(false);
++    g_assert_not_reached();
+ }
+ 
+ static bool has_sgx_provisioning;
 -- 
 2.46.0
 
