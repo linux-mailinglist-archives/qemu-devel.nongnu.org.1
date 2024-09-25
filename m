@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340FF9859A2
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA469857B6
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:12:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPv9-00072Y-NN; Wed, 25 Sep 2024 07:10:59 -0400
+	id 1stPvB-0007A1-QF; Wed, 25 Sep 2024 07:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPv5-0006oJ-9t
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:10:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPv8-00071z-QY
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:10:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPv3-0003UZ-JU
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:10:55 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPv7-0003Uu-17
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:10:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262653;
+ s=mimecast20190719; t=1727262656;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HqMKBXe0Hoi2TJnCj9hPXem8jMkCoMI9j3NKCdrJ8fU=;
- b=NkxDtpl1rJb+xhL5qOIqiEetFcQ+usU20nQEiqRHXSNkMUkjy3h0WCwwjZQpSmdTmdseKZ
- zWRSQ7fYzf1/AjAzv+DV528w6nnmgyyifDdaSVlzlFVCoUCl1Nm6GIVbGr+G7yHq0o5jYu
- 3GrfxfWJiBYzvNcTYlTvagZHYwH8MgY=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=VB4nmDbjMujt0fdaIqI0rVBSF2sbIhacJKAHpqjPw3I=;
+ b=CZC4k8lGWczthkIS1potXGEqh8v3iYWnfiCcxpyTMrzwiDfpgUmgGTigVj3t0WPdxjREuo
+ IKgC8OrbGrqDZ/0NfGj5gD+sWpVabalZ60iBYN88WvMBsahHIZIlCJ/6AZ5Z0OAEhhY9KM
+ UOlFzHwBak6EFKoZwSJ6eZSHTV93U6E=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632--vCJm03HO06q7rH7AbzBQg-1; Wed,
- 25 Sep 2024 07:10:51 -0400
-X-MC-Unique: -vCJm03HO06q7rH7AbzBQg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-695-lHD06N02NiuCofo2BSol0w-1; Wed,
+ 25 Sep 2024 07:10:54 -0400
+X-MC-Unique: lHD06N02NiuCofo2BSol0w-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9DE661944DF4; Wed, 25 Sep 2024 11:10:50 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D44821955D56; Wed, 25 Sep 2024 11:10:53 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 786121956094; Wed, 25 Sep 2024 11:10:48 +0000 (UTC)
+ id 1784A1956094; Wed, 25 Sep 2024 11:10:50 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 04/44] tests/functional: Convert the SPARCStation Avocado test
-Date: Wed, 25 Sep 2024 13:09:45 +0200
-Message-ID: <20240925111029.24082-5-thuth@redhat.com>
+Subject: [PULL 05/44] tests/functional: Convert the e500 ppc64 Avocado test
+Date: Wed, 25 Sep 2024 13:09:46 +0200
+Message-ID: <20240925111029.24082-6-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -81,88 +81,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Use the new launch_kernel function to convert this test in a simple way.
 
-Message-ID: <20240919185749.71222-5-thuth@redhat.com>
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Message-ID: <20240919185749.71222-6-thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                          |  1 +
- tests/avocado/boot_linux_console.py  |  8 --------
- tests/functional/meson.build         |  4 ++++
- tests/functional/test_sparc_sun4m.py | 25 +++++++++++++++++++++++++
- 4 files changed, 30 insertions(+), 8 deletions(-)
- create mode 100755 tests/functional/test_sparc_sun4m.py
+ MAINTAINERS                         |  1 +
+ tests/avocado/boot_linux_console.py | 11 -----------
+ tests/functional/meson.build        |  1 +
+ tests/functional/test_ppc64_e500.py | 25 +++++++++++++++++++++++++
+ 4 files changed, 27 insertions(+), 11 deletions(-)
+ create mode 100755 tests/functional/test_ppc64_e500.py
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index a75d6ba7d2..b85a3fc529 100644
+index b85a3fc529..3dd80a0138 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1693,6 +1693,7 @@ F: include/hw/nvram/sun_nvram.h
- F: include/hw/sparc/sparc32_dma.h
- F: include/hw/sparc/sun4m_iommu.h
- F: pc-bios/openbios-sparc32
-+F: tests/functional/test_sparc_sun4m.py
+@@ -1445,6 +1445,7 @@ F: pc-bios/u-boot.e500
+ F: hw/intc/openpic_kvm.c
+ F: include/hw/ppc/openpic_kvm.h
+ F: docs/system/ppc/ppce500.rst
++F: tests/functional/test_ppc64_e500.py
  
- Sun4u
- M: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+ mpc8544ds
+ L: qemu-ppc@nongnu.org
 diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index cf58499c84..900af67412 100644
+index 900af67412..344c7835a2 100644
 --- a/tests/avocado/boot_linux_console.py
 +++ b/tests/avocado/boot_linux_console.py
-@@ -1019,11 +1019,3 @@ def test_sh4_r2d(self):
-         tar_hash = 'fe06a4fd8ccbf2e27928d64472939d47829d4c7e'
-         self.vm.add_args('-append', 'console=ttySC1')
-         self.do_test_advcal_2018('09', tar_hash, 'zImage', console=1)
+@@ -918,17 +918,6 @@ def test_arm_ast2600_debian(self):
+         self.wait_for_console_pattern("SMP: Total of 2 processors activated")
+         self.wait_for_console_pattern("No filesystem could mount root")
+ 
+-    def test_ppc64_e500(self):
+-        """
+-        :avocado: tags=arch:ppc64
+-        :avocado: tags=machine:ppce500
+-        :avocado: tags=cpu:e5500
+-        :avocado: tags=accel:tcg
+-        """
+-        self.require_accelerator("tcg")
+-        tar_hash = '6951d86d644b302898da2fd701739c9406527fe1'
+-        self.do_test_advcal_2018('19', tar_hash, 'uImage')
 -
--    def test_sparc_ss20(self):
--        """
--        :avocado: tags=arch:sparc
--        :avocado: tags=machine:SS-20
--        """
--        tar_hash = 'b18550d5d61c7615d989a06edace051017726a9f'
--        self.do_test_advcal_2018('11', tar_hash, 'zImage.elf')
+     def do_test_ppc64_powernv(self, proc):
+         self.require_accelerator("tcg")
+         images_url = ('https://github.com/open-power/op-build/releases/download/v2.7/')
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 8fd852f4ab..8aacd15cf3 100644
+index 8aacd15cf3..bc33332313 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -125,6 +125,10 @@ tests_s390x_system_thorough = [
-   's390x_topology',
+@@ -111,6 +111,7 @@ tests_ppc_system_thorough = [
  ]
  
-+tests_sparc_system_thorough = [
-+  'sparc_sun4m',
-+]
-+
- tests_sparc64_system_thorough = [
-   'sparc64_sun4u',
- ]
-diff --git a/tests/functional/test_sparc_sun4m.py b/tests/functional/test_sparc_sun4m.py
+ tests_ppc64_system_thorough = [
++  'ppc64_e500',
+   'ppc64_hv',
+   'ppc64_powernv',
+   'ppc64_pseries',
+diff --git a/tests/functional/test_ppc64_e500.py b/tests/functional/test_ppc64_e500.py
 new file mode 100755
-index 0000000000..b334375820
+index 0000000000..3558ae0c8c
 --- /dev/null
-+++ b/tests/functional/test_sparc_sun4m.py
++++ b/tests/functional/test_ppc64_e500.py
 @@ -0,0 +1,25 @@
 +#!/usr/bin/env python3
 +#
-+# Functional test that boots a Linux kernel on a sparc sun4m machine
-+# and checks the console
++# Boot a Linux kernel on a e500 ppc64 machine and check the console
 +#
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
 +from qemu_test import LinuxKernelTest, Asset
 +from qemu_test.utils import archive_extract
 +
-+class Sun4mTest(LinuxKernelTest):
++class E500Test(LinuxKernelTest):
 +
-+    ASSET_DAY11 = Asset(
-+        'https://www.qemu-advent-calendar.org/2018/download/day11.tar.xz',
-+        'c776533ba756bf4dd3f1fc4c024fb50ef0d853e05c5f5ddf0900a32d1eaa49e0')
++    ASSET_DAY19 = Asset(
++        'https://www.qemu-advent-calendar.org/2018/download/day19.tar.xz',
++        '20b1bb5a8488c664defbb5d283addc91a05335a936c63b3f5ff7eee74b725755')
 +
-+    def test_sparc_ss20(self):
-+        self.set_machine('SS-20')
-+        file_path = self.ASSET_DAY11.fetch()
++    def test_ppc64_e500(self):
++        self.set_machine('ppce500')
++        self.cpu = 'e5500'
++        file_path = self.ASSET_DAY19.fetch()
 +        archive_extract(file_path, self.workdir)
-+        self.launch_kernel(self.workdir + '/day11/zImage.elf',
++        self.launch_kernel(self.workdir + '/day19/uImage',
 +                           wait_for='QEMU advent calendar')
 +
 +if __name__ == '__main__':
