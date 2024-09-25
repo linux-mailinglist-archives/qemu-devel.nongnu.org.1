@@ -2,87 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6379857A0
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB479857C5
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:14:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPr7-0006ud-Jm; Wed, 25 Sep 2024 07:06:49 -0400
+	id 1stPv3-0006eL-L1; Wed, 25 Sep 2024 07:10:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1stPr1-0006fL-W9
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:06:44 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1stPqx-0002SX-Hv
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:06:42 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5c2561e8041so9068950a12.2
- for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 04:06:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1727262398; x=1727867198; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=EpP9i6Ze28i/FcZPUtLsXoDLmCcB9DyU1kqM8nyyiuM=;
- b=CcKm2mF+dsRrdGZhCuB1NpO7OXv+UZiqg+DlEU+yHsSAR0GHwg1khjN6A50peck8xp
- S2nX9XG2v5jZEnTOrkohon7LF+VGcxcbgqzWlmLV0uqwJNzQtWahZPKQZD1iK3EPOsjY
- TMfwN1wBhWPDVfmmzWugIHXsvGLdc/b0i+9i4FXe9h+Nqc4WTNxG1ymKNPYHY8ilZi55
- 5Zr/UIVxp7Kve2kQqm2sLUg6XjJXCjBydmdBaLB8dsZ2z42/QmZRKgGH7JPkopFzl00T
- 4znnz4dTZePUV84vG3o6SSciW7BLE3QhKLsYfjzOaBevfsnsgOUjecB870pfIJshYAVe
- FyOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727262398; x=1727867198;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=EpP9i6Ze28i/FcZPUtLsXoDLmCcB9DyU1kqM8nyyiuM=;
- b=oLwes6lJyaUiLl6SX1wGBzYTvxSYpgIGGDkzTaMS0zvlwvxU7NYGQgFUdpjuJYsAvY
- KWa6BdMYnpnf+ZHpFaS24/5pJw1OY8e0lfAEVVONNQOvyQzzrY/L6QmdfSnlbsTU77zg
- Vn3qfZZjMXquIGrk0nZecQVAM2TCdxOeRDUox3eEF1FGRXakSPJzgoZpvJhNr7saNMjp
- 7f0UFlRo4cNgnTUokVQY5Anig9+7BNas2BLoO6vs8/wtKYT6E9okr6fMKQqK8SaqPSpL
- e60Lg/XmpbmN061WUe1Ihma8mhDVKscRzRVCNg1657HH+3UgYcwmcNQOrD2igQHmrNKu
- UHEw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU+XuLEPML9U6CP1iSScquvJv2/VN/PjzXufrtoL3aQa48LlYMCBVB19wnXfW7rMgCfL8LRfSsl8lqA@nongnu.org
-X-Gm-Message-State: AOJu0Yxp9ST3lAGri/SnI/CM8wuaTbdfwdogv0PwhA97drwWO2loGzF7
- QJhAUmrjkgZKIXx3kv7HH9DeZPF1cdRgoJ6Vrp4HOYCCFXm+d3wJ/Wxtm7Xy1KY=
-X-Google-Smtp-Source: AGHT+IGOSh7usdh1irl41mb99BZBIwQ8EjjvywrZj8cikVL7e+xqVeujioddWG+CPmJQcrq67qiMSA==
-X-Received: by 2002:a05:6402:5d3:b0:5c2:4a98:7520 with SMTP id
- 4fb4d7f45d1cf-5c720750dc8mr2058748a12.31.1727262397457; 
- Wed, 25 Sep 2024 04:06:37 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5c5cf4c4ff7sm1740811a12.71.2024.09.25.04.06.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Sep 2024 04:06:36 -0700 (PDT)
-Date: Wed, 25 Sep 2024 13:06:35 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, kvm-riscv@lists.infradead.org
-Subject: Re: [PATCH v2 1/1] target/riscv: enable floating point unit
-Message-ID: <20240925-27610830c7f6c0235bc8b1a1@orel>
-References: <20240925061704.12440-1-heinrich.schuchardt@canonical.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPv1-0006dR-5D
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:10:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPuz-0003Ts-6w
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:10:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727262648;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1AfZmwu5X3//Ua0dr5ejW3eyiRNtFXNT7N1Uas9ZK1s=;
+ b=D1WRXyyxWq2WfNApyRPbt/zHlUgvoBGtojbNO9rJupmSOEPFkusunh8KNawx/uPg+6SjLe
+ YyFwNcn76WqSZUomcOxG/D0UFHnlcq7ZdkHtogW8EU0IJNY5SQHwcgedPLK/jteFuyDL5y
+ dKSI4qS5DcsmN2aMc/Bk4dSdTP6rJ7o=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-37-vjCDR4myP0m9OANjCCfSSQ-1; Wed,
+ 25 Sep 2024 07:10:39 -0400
+X-MC-Unique: vjCDR4myP0m9OANjCCfSSQ-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 79E4C196CE3F; Wed, 25 Sep 2024 11:10:38 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6803B1956094; Wed, 25 Sep 2024 11:10:35 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 00/44] Functional test conversion, and assert(0) cleanup
+Date: Wed, 25 Sep 2024 13:09:41 +0200
+Message-ID: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240925061704.12440-1-heinrich.schuchardt@canonical.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.108,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,60 +77,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 25, 2024 at 08:17:04AM GMT, Heinrich Schuchardt wrote:
-> The status and mstatus CSRs contain bit field FS, which control if the
-> floating point unit of RISC-V hart is enabled.
-> 
-> There seems to be no specification prescribing the value of the field when
-> entering S-mode from M-mode. But OpenSBI, as the leading SBI M-mode
-> firmware, has set a precedent by enabling the FPU by setting the value of
-> FS to 3 (dirty).
-> 
-> In TCG mode, QEMU uses OpenSBI by default. Users can reasonably expect that
-> software running QEMU in TCG mode and in KVM mode behaves similarly.
-> 
-> When QEMU in KVM mode creates a vCPU, Linux' KVM code sets FS=1 (initial)
-> in kvm_riscv_vcpu_fp_reset(). However, QEMU internally keeps a value of
-> FS=0 (off) and then synchronizes this value into KVM. Thus VS-mode software
-> is invoked with a disabled floating point unit.
-> 
-> One example of software being impacted is EDK II with TLS enabled. It
-> crashes when hitting the first floating point instruction while running
-> QEMU with --accel kvm, and runs fine with --accel tcg.
-> 
-> With this patch the FPU will be enabled when entering S-mode in KVM mode
-> and when entering M-mode in TCG mode.
-> 
-> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> ---
-> v2:
-> 	Rewrite the commit message as suggested in the v1 thread
-> 	https://lore.kernel.org/qemu-riscv/20240916181633.366449-1-heinrich.schuchardt@canonical.com/
-> ---
->  target/riscv/cpu.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 4bda754b01..c32e2721d4 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -923,6 +923,13 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
->      if (mcc->parent_phases.hold) {
->          mcc->parent_phases.hold(obj, type);
->      }
-> +    if (riscv_has_ext(env, RVF) || riscv_has_ext(env, RVD)) {
-> +        env->mstatus = set_field(env->mstatus, MSTATUS_FS, env->misa_mxl);
-> +        for (int regnr = 0; regnr < 32; ++regnr) {
-> +            env->fpr[regnr] = 0;
-> +        }
-> +        riscv_csrrw(env, CSR_FCSR, NULL, 0, -1);
-> +    }
->  #ifndef CONFIG_USER_ONLY
->      env->misa_mxl = mcc->misa_mxl_max;
->      env->priv = PRV_M;
-> -- 
-> 2.45.2
->
+The following changes since commit 01dc65a3bc262ab1bec8fe89775e9bbfa627becb:
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+  Merge tag 'pull-target-arm-20240919' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-09-19 14:15:15 +0100)
+
+are available in the Git repository at:
+
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-09-25
+
+for you to fetch changes up to dc05b2628e3913e668590ba66d9c618382d351ae:
+
+  .gitlab-ci.d: Make separate collapsible log sections for build and test (2024-09-25 09:42:06 +0200)
+
+----------------------------------------------------------------
+* Convert more Avocado tests to the new functional test framework
+* Clean up assert() statements, use g_assert_not_reached() when possible
+* Improve output of the gitlab CI jobs
+
+----------------------------------------------------------------
+Peter Maydell (2):
+      .gitlab-ci.d: Split build and test in cross build job templates
+      .gitlab-ci.d: Make separate collapsible log sections for build and test
+
+Pierrick Bouvier (34):
+      hw/acpi: replace assert(0) with g_assert_not_reached()
+      hw/arm: replace assert(0) with g_assert_not_reached()
+      hw/net: replace assert(0) with g_assert_not_reached()
+      migration: replace assert(0) with g_assert_not_reached()
+      qobject: replace assert(0) with g_assert_not_reached()
+      target/ppc: replace assert(0) with g_assert_not_reached()
+      block: replace assert(false) with g_assert_not_reached()
+      hw/hyperv: replace assert(false) with g_assert_not_reached()
+      hw/net: replace assert(false) with g_assert_not_reached()
+      hw/nvme: replace assert(false) with g_assert_not_reached()
+      hw/pci: replace assert(false) with g_assert_not_reached()
+      hw/ppc: replace assert(false) with g_assert_not_reached()
+      migration: replace assert(false) with g_assert_not_reached()
+      target/i386/kvm: replace assert(false) with g_assert_not_reached()
+      accel/tcg: remove break after g_assert_not_reached()
+      block: remove break after g_assert_not_reached()
+      hw/acpi: remove break after g_assert_not_reached()
+      hw/net: remove break after g_assert_not_reached()
+      hw/scsi: remove break after g_assert_not_reached()
+      hw/tpm: remove break after g_assert_not_reached()
+      target/arm: remove break after g_assert_not_reached()
+      target/riscv: remove break after g_assert_not_reached()
+      fpu: remove break after g_assert_not_reached()
+      tcg/loongarch64: remove break after g_assert_not_reached()
+      include/qemu: remove return after g_assert_not_reached()
+      hw/hyperv: remove return after g_assert_not_reached()
+      hw/net: remove return after g_assert_not_reached()
+      hw/pci: remove return after g_assert_not_reached()
+      hw/ppc: remove return after g_assert_not_reached()
+      migration: remove return after g_assert_not_reached()
+      qobject: remove return after g_assert_not_reached()
+      qom: remove return after g_assert_not_reached()
+      tests/qtest: remove return after g_assert_not_reached()
+      scripts/checkpatch.pl: emit error when using assert(false)
+
+Thomas Huth (8):
+      tests/functional/qemu_test: Add a function for launching kernels more easily
+      tests/functional: Convert the vexpressa9 Avocado test
+      tests/functional: Convert the xtensa lx60 Avocado test
+      tests/functional: Convert the SPARCStation Avocado test
+      tests/functional: Convert the e500 ppc64 Avocado test
+      tests/functional: Convert the mac ppc Avocado tests
+      tests/functional: Convert the r2d sh4 Avocado test
+      tests/functional: Convert the powernv tests from boot_linux_console.py
+
+ MAINTAINERS                               |   7 ++
+ include/qemu/pmem.h                       |   1 -
+ accel/tcg/plugin-gen.c                    |   1 -
+ block/qcow2.c                             |   2 +-
+ block/ssh.c                               |   1 -
+ hw/acpi/aml-build.c                       |   3 +-
+ hw/arm/highbank.c                         |   2 +-
+ hw/hyperv/hyperv_testdev.c                |   7 +-
+ hw/hyperv/vmbus.c                         |  15 ++--
+ hw/net/e1000e_core.c                      |   4 +-
+ hw/net/i82596.c                           |   2 +-
+ hw/net/igb_core.c                         |   4 +-
+ hw/net/net_rx_pkt.c                       |   3 +-
+ hw/net/vmxnet3.c                          |   1 -
+ hw/nvme/ctrl.c                            |   8 +-
+ hw/pci/pci-stub.c                         |   6 +-
+ hw/ppc/ppc.c                              |   1 -
+ hw/ppc/spapr_events.c                     |   3 +-
+ hw/scsi/virtio-scsi.c                     |   1 -
+ hw/tpm/tpm_spapr.c                        |   1 -
+ migration/dirtyrate.c                     |   3 +-
+ migration/migration-hmp-cmds.c            |   2 +-
+ migration/postcopy-ram.c                  |  21 ++---
+ migration/ram.c                           |   8 +-
+ qobject/qlit.c                            |   2 +-
+ qobject/qnum.c                            |  12 +--
+ qom/object.c                              |   1 -
+ target/arm/hyp_gdbstub.c                  |   1 -
+ target/i386/kvm/kvm.c                     |   4 +-
+ target/ppc/dfp_helper.c                   |   8 +-
+ target/ppc/mmu_helper.c                   |   2 +-
+ target/riscv/monitor.c                    |   1 -
+ tests/qtest/acpi-utils.c                  |   1 -
+ fpu/softfloat-parts.c.inc                 |   2 -
+ target/riscv/insn_trans/trans_rvv.c.inc   |   2 -
+ tcg/loongarch64/tcg-target.c.inc          |   1 -
+ .gitlab-ci.d/buildtest-template.yml       |  14 +++
+ .gitlab-ci.d/buildtest.yml                |   1 +
+ .gitlab-ci.d/crossbuild-template.yml      |  48 ++++++++++-
+ scripts/checkpatch.pl                     |   4 +
+ scripts/ci/gitlab-ci-section              |  29 +++++++
+ tests/avocado/boot_linux_console.py       | 138 ------------------------------
+ tests/functional/meson.build              |  15 ++++
+ tests/functional/qemu_test/linuxkernel.py |  12 +++
+ tests/functional/test_arm_vexpress.py     |  26 ++++++
+ tests/functional/test_ppc64_e500.py       |  25 ++++++
+ tests/functional/test_ppc64_powernv.py    |  42 ++++++++-
+ tests/functional/test_ppc_mac.py          |  38 ++++++++
+ tests/functional/test_sh4_r2d.py          |  31 +++++++
+ tests/functional/test_sparc_sun4m.py      |  25 ++++++
+ tests/functional/test_xtensa_lx60.py      |  26 ++++++
+ 51 files changed, 384 insertions(+), 234 deletions(-)
+ create mode 100644 scripts/ci/gitlab-ci-section
+ create mode 100755 tests/functional/test_arm_vexpress.py
+ create mode 100755 tests/functional/test_ppc64_e500.py
+ create mode 100755 tests/functional/test_ppc_mac.py
+ create mode 100755 tests/functional/test_sh4_r2d.py
+ create mode 100755 tests/functional/test_sparc_sun4m.py
+ create mode 100755 tests/functional/test_xtensa_lx60.py
+
 
