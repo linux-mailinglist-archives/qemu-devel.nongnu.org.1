@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9889857BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 976FA9857DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPxA-0006kE-NY; Wed, 25 Sep 2024 07:13:06 -0400
+	id 1stPxg-00017u-16; Wed, 25 Sep 2024 07:13:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw6-0003u8-7S
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwB-0004Hn-0o
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw4-0003mD-QL
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:57 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw8-0003nB-Tn
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262716;
+ s=mimecast20190719; t=1727262719;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Qdtu14VHAzFns9mQ0LRxyUg5oEigdbyZqaU2RCfM/Ds=;
- b=DvNV+8at1TqRLaHisqFZcFpcHgbLvYviwAszrAx//2NQWSmjEOuM4pgcnayeISFtaXNmYZ
- I5VuPFgrw3wB1OTjiIpMkv7TvLDD4thIVsgZAu507QUqhArLOcl1Oj80N6jVwrzQN9ZeRM
- FhwNBT44/UbsuKvCmo9SFXYn+pM1teU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Iu/VgyOBAMNIm9BxndVV79VY98Fkfv3UB6OxtHbaZ38=;
+ b=Joi3QXzmLazNUi2QaXq+jkuu8LDxHoMvkPi/eneCezaUoFAKxbQ5S8cS+ItjEc/cmtM+Eh
+ lNe+Qt66CAFy3yX1vfW1eoRItzBrpOZCJNglDa7osd3gRj9ROtF2Tz6EOChdrRxu62gb0s
+ yk+diDbhIv1X6Z7bJuV3eK/V09cE6q8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-344-r5mYz0mUPFW1p7PJSbpl9Q-1; Wed,
- 25 Sep 2024 07:11:53 -0400
-X-MC-Unique: r5mYz0mUPFW1p7PJSbpl9Q-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-mP0B9BYKMTK0TuxZZhIEAw-1; Wed,
+ 25 Sep 2024 07:11:55 -0400
+X-MC-Unique: mP0B9BYKMTK0TuxZZhIEAw-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C566B193EF4E; Wed, 25 Sep 2024 11:11:52 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DA683193E8EF; Wed, 25 Sep 2024 11:11:54 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D03F61956094; Wed, 25 Sep 2024 11:11:50 +0000 (UTC)
+ id 7601A1956094; Wed, 25 Sep 2024 11:11:53 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 29/44] target/arm: remove break after g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:10:10 +0200
-Message-ID: <20240925111029.24082-30-thuth@redhat.com>
+Subject: [PULL 30/44] target/riscv: remove break after g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:10:11 +0200
+Message-ID: <20240925111029.24082-31-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -86,25 +86,47 @@ g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-22-pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-23-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/arm/hyp_gdbstub.c | 1 -
- 1 file changed, 1 deletion(-)
+ target/riscv/monitor.c                  | 1 -
+ target/riscv/insn_trans/trans_rvv.c.inc | 2 --
+ 2 files changed, 3 deletions(-)
 
-diff --git a/target/arm/hyp_gdbstub.c b/target/arm/hyp_gdbstub.c
-index f120d55caa..1e861263b3 100644
---- a/target/arm/hyp_gdbstub.c
-+++ b/target/arm/hyp_gdbstub.c
-@@ -158,7 +158,6 @@ int insert_hw_watchpoint(target_ulong addr, target_ulong len, int type)
+diff --git a/target/riscv/monitor.c b/target/riscv/monitor.c
+index f5b1ffe6c3..100005ea4e 100644
+--- a/target/riscv/monitor.c
++++ b/target/riscv/monitor.c
+@@ -184,7 +184,6 @@ static void mem_info_svxx(Monitor *mon, CPUArchState *env)
          break;
      default:
          g_assert_not_reached();
 -        break;
      }
-     if (len <= 8) {
-         /* we align the address and set the bits in BAS */
+ 
+     /* calculate virtual address bits */
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index 3a3896ba06..f8928c44a8 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -3172,7 +3172,6 @@ static void load_element(TCGv_i64 dest, TCGv_ptr base,
+         break;
+     default:
+         g_assert_not_reached();
+-        break;
+     }
+ }
+ 
+@@ -3257,7 +3256,6 @@ static void store_element(TCGv_i64 val, TCGv_ptr base,
+         break;
+     default:
+         g_assert_not_reached();
+-        break;
+     }
+ }
+ 
 -- 
 2.46.0
 
