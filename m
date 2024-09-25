@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCD9986576
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 19:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16260986577
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 19:14:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stVYa-0000Xb-D0; Wed, 25 Sep 2024 13:12:04 -0400
+	id 1stVYq-0001pM-Jw; Wed, 25 Sep 2024 13:12:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1stVYR-0000Kl-F6
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:55 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1stVYR-0000L0-Vi
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:57 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1stVYM-0000bo-Pq
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:52 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-42cbb08a1a5so149495e9.3
- for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 10:11:48 -0700 (PDT)
+ id 1stVYO-0000dZ-3n
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:55 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-42e748f78d6so333865e9.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 10:11:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727284308; x=1727889108; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727284310; x=1727889110; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oPetPS+iPOZ9YsbRPGkth2UTt050VfI/4VOs20g6hTI=;
- b=XcxIY7M1EYFAY3vrRYScs0HQkfxAOqKXgCWtsuNtWDp1XZd/OUGc9vSuLWOttclUuO
- WgqvZLikah66c/FTWjYZG01L9w4GxBfZikhwCtTcfUp5DAyIPCgZnHADvVS/0c+skh8w
- tZAvSOyJfrtaymtsZk3R0znA4UunVMtpF2l8bdrBvyyB8RTYcT1i5IVY6SNxgCCK/xNH
- wleqXY9ohUigiQuPXUmCwXskUmcETLMxL02KH5le9AmEOHbcQDDog6xjLDPYHwIKEtk1
- C8sBSXyl++w0yXMdXbHCteXNbvL0PDyBv5b8kKP1lQC8x1riThE4xEEUK0UWVcuvTVVj
- OsKw==
+ bh=nfK3IifqQwqKch4WY/r8cAsLiv59o8B10mtnbYAB2U8=;
+ b=KVVNeOwTG5nJvIwPe+i4B/RCcHej5+x8ao0myo7jDLfe01eFTxXrC4HJxExiRC+fEe
+ EuXY/09zvfMc2IIconhlcegMqUFJMMtNNGma8y0D3oMs6RmWZg//ooh7kfMrTSy0Z6le
+ JXUu5eEiljh1g1tFIb8RU1Y2J3M11BrMcuf+Ix1J3hQYNy5/yRh1UJr3KyGC0DVSekaf
+ pn9u65wrv2vJEmJ5/hekWhwJ4vOqzUrqgcs5LQX5Tm02BXdhNjKt6326dMYBZLkHyxgO
+ WUfCUTO7SOi91DypG7jZnT+gEPWS38/JHnY2+Q8j4QKtKzhB9A/s3NUpCqz2vrTtfmEs
+ fE3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727284308; x=1727889108;
+ d=1e100.net; s=20230601; t=1727284310; x=1727889110;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oPetPS+iPOZ9YsbRPGkth2UTt050VfI/4VOs20g6hTI=;
- b=vqBY0Q3814aT2Y7iLCFWFhsHDRgS9K2GYR4Gre42TDiEj25iXb9qTSEas72mBP39ho
- b41sez9qsZdY2d8S4PxivdXSK6nNoNQ3uq3yu6I3A1RJKXn+50rPaSVPBnK+KcjKb7k5
- x05yFDZmd7RfGzpEzfaLcZxEKw6KNJUCeTKN5rScdCJLtTD8SB4hrRhbt4kR41qKXNyy
- Isyo8VTQRqRrv0ovOELdl5vq5E5KXdTzlvNnsiQ9my1I6tRaXy63H7AxVcWKN5y2jL5h
- eRnB9oIl7265eJL5J1q+0OGxqTUqRoaTeTlwhRg220L0bIiPSwaU6LNhXdrBsLULOLqY
- 7mYQ==
-X-Gm-Message-State: AOJu0YypZ6RZB5SnyThpuJbueayzFK8rpJxTFE5dMpNS2oHFvB8aEJmB
- mmAUNAVgYUeSK/6yDeFDyTWMuYdXLTqaNT8MCYC+eR92yDYu5IKoT4NO+baNyCI=
-X-Google-Smtp-Source: AGHT+IGBCTHIWfSfgWAoxWqUTo8+jlKpLyEBTIm6tcnrukMNtvBJLrfotsddLNAtN5yhINvOVzR10A==
-X-Received: by 2002:a05:600c:1c05:b0:42c:b63e:fea6 with SMTP id
- 5b1f17b1804b1-42e961362e8mr25316905e9.22.1727284307691; 
- Wed, 25 Sep 2024 10:11:47 -0700 (PDT)
+ bh=nfK3IifqQwqKch4WY/r8cAsLiv59o8B10mtnbYAB2U8=;
+ b=OydAXuWDTwO6LD8t9XzB7WicYsRz2CF9EU8YGz4GYTXZr7D5nTONRuTLyTmzWWvp+6
+ 3gsU0Qe889EMg5TldMKSCzE5n9WpSeNqsuvfNW+pttXwjzOOKeJSvT8HEc5AscFs2+/4
+ lWMrwbtK1S4C/gtpb0YMPndz5/Nd2KsxFwtqZUao6WZFrz3cenPZj80gjiJiZe/uEqao
+ UCOIj8DooPTp0ODCLdMesbOSTxPTELd4MAgrR1tcnMyXMnXk9f/QhEO2JcBU4L7UwtRD
+ 6VY+N770Wnd98wTJbjI2OChF7E8axfFz9H3W/HHD6hMcS1dmcJK4f1MeDkfU219wmL1r
+ +hmQ==
+X-Gm-Message-State: AOJu0YwyW36NNvinWpofEKHjrgVvhncpQz2QuK3LIwqxMR4AyLnpkUkw
+ sAuZWlmQIlWKYj+/t3qIE2H8QsaPGvjgFmeknEufkHJmfSpQR6VheAc81Mm8HUs=
+X-Google-Smtp-Source: AGHT+IGD3jF88KfAngOylDc8CVhYjnNX1NcQOwwW95cwuwuTfBIj06W2PgowxTm83aXeaqFntp0hUQ==
+X-Received: by 2002:a05:600c:45ce:b0:42b:af1c:66e with SMTP id
+ 5b1f17b1804b1-42e9610c1c6mr23225565e9.9.1727284310137; 
+ Wed, 25 Sep 2024 10:11:50 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42e90cd2d3dsm44179475e9.1.2024.09.25.10.11.42
+ 5b1f17b1804b1-42e969feb45sm23955035e9.20.2024.09.25.10.11.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Sep 2024 10:11:44 -0700 (PDT)
+ Wed, 25 Sep 2024 10:11:45 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1C5475FA77;
+ by draig.lan (Postfix) with ESMTP id 345F15FA8E;
  Wed, 25 Sep 2024 18:11:41 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,17 +79,18 @@ Cc: Zhao Liu <zhao1.liu@intel.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <thuth@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 08/10] MAINTAINERS: mention my gdbstub/next tree
-Date: Wed, 25 Sep 2024 18:11:38 +0100
-Message-Id: <20240925171140.1307033-9-alex.bennee@linaro.org>
+Subject: [PATCH 09/10] config/targets: update aarch64_be-linux-user gdb XML
+ list
+Date: Wed, 25 Sep 2024 18:11:39 +0100
+Message-Id: <20240925171140.1307033-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240925171140.1307033-1-alex.bennee@linaro.org>
 References: <20240925171140.1307033-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,25 +112,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make it easy for people to see what is already queued.
+Attempting to run the binary asserts when it can't find the XML entry.
+We can fix it so we don't although I suspect other stuff is broken.
 
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2580
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ configs/targets/aarch64_be-linux-user.mak | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7ac2252303..f34b8843e4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3028,6 +3028,7 @@ F: gdb-xml/
- F: tests/tcg/multiarch/gdbstub/*
- F: scripts/feature_to_c.py
- F: scripts/probe-gdb-support.py
-+T: git https://gitlab.com/stsquad/qemu gdbstub/next
- 
- Memory API
- M: Paolo Bonzini <pbonzini@redhat.com>
+diff --git a/configs/targets/aarch64_be-linux-user.mak b/configs/targets/aarch64_be-linux-user.mak
+index acb5620cdb..14623ac076 100644
+--- a/configs/targets/aarch64_be-linux-user.mak
++++ b/configs/targets/aarch64_be-linux-user.mak
+@@ -1,7 +1,7 @@
+ TARGET_ARCH=aarch64
+ TARGET_BASE_ARCH=arm
+ TARGET_BIG_ENDIAN=y
+-TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml
++TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml gdb-xml/aarch64-mte.xml
+ TARGET_HAS_BFLT=y
+ CONFIG_SEMIHOSTING=y
+ CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
 -- 
 2.39.5
 
