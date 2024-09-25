@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04739851E6
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 689C09851E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:07:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stJHO-0006jx-7Q; Wed, 25 Sep 2024 00:05:30 -0400
+	id 1stJHp-0000Jp-EJ; Wed, 25 Sep 2024 00:05:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGo-0005bd-Hc; Wed, 25 Sep 2024 00:04:54 -0400
+ id 1stJGr-0005ny-Kx; Wed, 25 Sep 2024 00:04:58 -0400
 Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGl-0001xE-Dm; Wed, 25 Sep 2024 00:04:54 -0400
+ id 1stJGp-0001yf-3r; Wed, 25 Sep 2024 00:04:57 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 51A5BA43B5A;
- Wed, 25 Sep 2024 04:04:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0962FC4AF0C;
+ by nyc.source.kernel.org (Postfix) with ESMTP id 63EF1A43B7F;
+ Wed, 25 Sep 2024 04:04:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B33C4CEDC;
  Wed, 25 Sep 2024 04:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1727237088;
- bh=NnkGCc0VIzMuspnWrynheVKTjx+UHBwx05DNA6sg8rU=;
+ bh=r/Ekx/4zQ4quyMQfFhc50qdmKk30KmpDxBPOm7Hhn44=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=MDT2RltmOJANb9f1hoXK86QgrB+oWocpdJocAWn6ljBFbNxsCWvxKbphPI4p2lUqf
- ktz2DS5iucL+Z0JJ8QZRvshoab4nxJfwM37PLub49BL5z/Nb9GtJ8wm1jjx9wxzKMf
- tDmr2rE8ZkPVa1JX+mRsLVfik2ZLtLC1LdvFtLWneqpYB0gWffrYYQ/jsF5fTZ/QD5
- tJTNfAbTi1MZyKI8WnXPvVmHumTmdLa43HgJKbEHk/ixx37XLJyWV3bDvbruaC41i1
- udb7FQeFaG+3i2enLEoSC2h6eXS8kGpZQV30BLIK+uLLU0PI8D0criYcKlKfr35jKQ
- J+9MclAn9lzwg==
+ b=f1lnW1Xh/lpaBAo0PmrH+NtG1Y2hZtGqSaDsxnATLSvBkjqyo8+W22nqi7/U+l1F6
+ ncqtAbLJ4y6CqOxnupsRKxBugAGhRm4OmwtCJZs6wqA7XMSrDBDoON/Ntj75xnNccU
+ U7tW4mcPSlzPvhlqMQZm7GxdeKeLyX26bGnEya0ze+6cCBpe15i1o+XNzwWk8NB5Yp
+ yOulBupawTZ87yHzvhDzYjHFSZJZMWEhZrlfoIhLYrwAX238xCaKdxYPLxaMx3zt21
+ EWZBYaVoeiCeFI6DTxC9JPOOqyukKvad51+L7YJfMx5Z4CERE3vpa0+mImIG3ZFae7
+ GJsg03ONOCeRA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGg-00000008285-0zAJ; Wed, 25 Sep 2024 06:04:46 +0200
+ id 1stJGg-0000000828D-1D5l; Wed, 25 Sep 2024 06:04:46 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -42,9 +42,9 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
  qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH 07/15] acpi/ghes: Change the type for source_id
-Date: Wed, 25 Sep 2024 06:04:12 +0200
-Message-ID: <427117fa409217094f5e98694913a371fb5bcda5.1727236561.git.mchehab+huawei@kernel.org>
+Subject: [PATCH 09/15] acpi/ghes: make the GHES record generation more generic
+Date: Wed, 25 Sep 2024 06:04:14 +0200
+Message-ID: <9b256923695e2202f549cbbb11dc22982cb22abf.1727236561.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <cover.1727236561.git.mchehab+huawei@kernel.org>
 References: <cover.1727236561.git.mchehab+huawei@kernel.org>
@@ -74,54 +74,219 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HEST source ID is actually a 16-bit value
+Split the code into separate functions to allow using the
+common CPER filling code by different error sources.
+
+The generic code was moved to ghes_record_cper_errors(),
+and ghes_gen_err_data_uncorrectable_recoverable() now contains
+only a logic to fill GEGB part of the record.
+
+The remaining code to generate a memory error now belongs to
+acpi_ghes_record_errors() function.
+
+A further patch will give it a better name.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- hw/acpi/ghes-stub.c    | 2 +-
- hw/acpi/ghes.c         | 2 +-
- include/hw/acpi/ghes.h | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ hw/acpi/ghes.c         | 118 +++++++++++++++++++++++++----------------
+ include/hw/acpi/ghes.h |   3 ++
+ 2 files changed, 74 insertions(+), 47 deletions(-)
 
-diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
-index c315de1802d6..2b64cbd2819a 100644
---- a/hw/acpi/ghes-stub.c
-+++ b/hw/acpi/ghes-stub.c
-@@ -11,7 +11,7 @@
- #include "qemu/osdep.h"
- #include "hw/acpi/ghes.h"
- 
--int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
-+int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
- {
-     return -1;
- }
 diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index b932b6fe2c2e..29240aa139d5 100644
+index 340a0263faf8..307b5a41d539 100644
 --- a/hw/acpi/ghes.c
 +++ b/hw/acpi/ghes.c
-@@ -383,7 +383,7 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
+@@ -181,51 +181,30 @@ static void acpi_ghes_build_append_mem_cper(GArray *table,
+     build_append_int_noprefix(table, 0, 7);
+ }
+ 
+-static int acpi_ghes_record_mem_error(uint64_t error_block_address,
+-                                      uint64_t error_physical_addr)
++static void
++ghes_gen_err_data_uncorrectable_recoverable(GArray *block,
++                                            const uint8_t *section_type,
++                                            int data_length)
+ {
+-    GArray *block;
+-
+-    /* Memory Error Section Type */
+-    const uint8_t uefi_cper_mem_sec[] =
+-          UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
+-                  0xED, 0x7C, 0x83, 0xB1);
+-
+     /* invalid fru id: ACPI 4.0: 17.3.2.6.1 Generic Error Data,
+      * Table 17-13 Generic Error Data Entry
+      */
+     QemuUUID fru_id = {};
+-    uint32_t data_length;
+ 
+-    block = g_array_new(false, true /* clear */, 1);
+-
+-    /* This is the length if adding a new generic error data entry*/
+-    data_length = ACPI_GHES_DATA_LENGTH + ACPI_GHES_MEM_CPER_LENGTH;
+     /*
+-     * It should not run out of the preallocated memory if adding a new generic
+-     * error data entry
++     * Calculate the size with this block. No need to check for
++     * too big CPER, as CPER size is checked at ghes_record_cper_errors()
+      */
+-    assert((data_length + ACPI_GHES_GESB_SIZE) <=
+-            ACPI_GHES_MAX_RAW_DATA_LENGTH);
++    data_length += ACPI_GHES_GESB_SIZE;
+ 
+     /* Build the new generic error status block header */
+     acpi_ghes_generic_error_status(block, ACPI_GEBS_UNCORRECTABLE,
+         0, 0, data_length, ACPI_CPER_SEV_RECOVERABLE);
+ 
+     /* Build this new generic error data entry header */
+-    acpi_ghes_generic_error_data(block, uefi_cper_mem_sec,
++    acpi_ghes_generic_error_data(block, section_type,
+         ACPI_CPER_SEV_RECOVERABLE, 0, 0,
+         ACPI_GHES_MEM_CPER_LENGTH, fru_id, 0);
+-
+-    /* Build the memory section CPER for above new generic error data entry */
+-    acpi_ghes_build_append_mem_cper(block, error_physical_addr);
+-
+-    /* Write the generic error data entry into guest memory */
+-    cpu_physical_memory_write(error_block_address, block->data, block->len);
+-
+-    g_array_free(block, true);
+-
+-    return 0;
+ }
+ 
+ /*
+@@ -399,14 +378,19 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
      ags->present = true;
  }
  
--int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
-+int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+-int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
++void ghes_record_cper_errors(const void *cper, size_t len,
++                             uint16_t source_id, Error **errp)
  {
      uint64_t error_block_addr, read_ack_register_addr, read_ack_register = 0;
      uint64_t start_addr;
+-    bool ret = -1;
+     AcpiGedState *acpi_ged_state;
+     AcpiGhesState *ags;
+ 
++    if (len > ACPI_GHES_MAX_RAW_DATA_LENGTH) {
++        error_setg(errp, "GHES CPER record is too big: %ld", len);
++        return;
++    }
++
+     acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
+                                                        NULL));
+     g_assert(acpi_ged_state);
+@@ -422,6 +406,10 @@ int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+                                 sizeof(error_block_addr));
+ 
+     error_block_addr = le64_to_cpu(error_block_addr);
++    if (!error_block_addr) {
++        error_setg(errp, "can not find Generic Error Status Block");
++        return;
++    }
+ 
+     /*
+      * As the current version supports only one source, the ack offset is
+@@ -434,24 +422,60 @@ int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+ 
+     /* zero means OSPM does not acknowledge the error */
+     if (!read_ack_register) {
+-        error_report("OSPM does not acknowledge previous error,"
+-            " so can not record CPER for current error anymore");
+-    } else if (error_block_addr) {
+-        read_ack_register = cpu_to_le64(0);
+-        /*
+-         * Clear the Read Ack Register, OSPM will write it to 1 when
+-         * it acknowledges this error.
+-         */
+-        cpu_physical_memory_write(read_ack_register_addr,
+-            &read_ack_register, sizeof(uint64_t));
+-
+-        ret = acpi_ghes_record_mem_error(error_block_addr,
+-                                            physical_address);
+-    } else {
+-        error_report("can not find Generic Error Status Block");
++        error_setg(errp,
++                   "OSPM does not acknowledge previous error,"
++                   " so can not record CPER for current error anymore");
++        return;
+     }
+ 
+-    return ret;
++    read_ack_register = cpu_to_le64(0);
++    /*
++        * Clear the Read Ack Register, OSPM will write it to 1 when
++        * it acknowledges this error.
++        */
++    cpu_physical_memory_write(read_ack_register_addr,
++        &read_ack_register, sizeof(uint64_t));
++
++    /* Write the generic error data entry into guest memory */
++    cpu_physical_memory_write(error_block_addr, cper, len);
++
++    return;
++}
++
++int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
++{
++    /* Memory Error Section Type */
++    const uint8_t guid[] =
++          UUID_LE(0xA5BC1114, 0x6F64, 0x4EDE, 0xB8, 0x63, 0x3E, 0x83, \
++                  0xED, 0x7C, 0x83, 0xB1);
++    Error *errp = NULL;
++    GArray *block;
++
++    if (!physical_address) {
++        error_report("can not find Generic Error Status Block for source id %d",
++                     source_id);
++        return -1;
++    }
++
++    block = g_array_new(false, true /* clear */, 1);
++
++    ghes_gen_err_data_uncorrectable_recoverable(block, guid,
++                                                ACPI_GHES_MAX_RAW_DATA_LENGTH);
++
++    /* Build the memory section CPER for above new generic error data entry */
++    acpi_ghes_build_append_mem_cper(block, physical_address);
++
++    /* Report the error */
++    ghes_record_cper_errors(block->data, block->len, source_id, &errp);
++
++    g_array_free(block, true);
++
++    if (errp) {
++        error_report_err(errp);
++        return -1;
++    }
++
++    return 0;
+ }
+ 
+ bool acpi_ghes_present(void)
 diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 50e3a25ea384..9295e46be25e 100644
+index d6e2801d9cd9..1b988ac1e2f2 100644
 --- a/include/hw/acpi/ghes.h
 +++ b/include/hw/acpi/ghes.h
-@@ -73,7 +73,7 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
+@@ -23,6 +23,7 @@
+ #define ACPI_GHES_H
+ 
+ #include "hw/acpi/bios-linker-loader.h"
++#include "qapi/error.h"
+ 
+ /*
+  * Values for Hardware Error Notification Type field
+@@ -80,6 +81,8 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
                       const char *oem_id, const char *oem_table_id);
  void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
                            GArray *hardware_errors);
--int acpi_ghes_record_errors(uint8_t source_id, uint64_t error_physical_addr);
-+int acpi_ghes_record_errors(uint16_t source_id, uint64_t error_physical_addr);
++void ghes_record_cper_errors(const void *cper, size_t len,
++                             uint16_t source_id, Error **errp);
+ int acpi_ghes_record_errors(uint16_t source_id, uint64_t error_physical_addr);
  
  /**
-  * acpi_ghes_present: Report whether ACPI GHES table is present
 -- 
 2.46.1
 
