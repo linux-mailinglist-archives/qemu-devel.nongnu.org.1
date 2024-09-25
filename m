@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BAD98517C
+	by mail.lfdr.de (Postfix) with ESMTPS id EE78698517B
 	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 05:36:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stIo2-0003Vu-NV; Tue, 24 Sep 2024 23:35:10 -0400
+	id 1stIo7-0003jr-BC; Tue, 24 Sep 2024 23:35:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1stInz-0003O6-Mz; Tue, 24 Sep 2024 23:35:07 -0400
+ id 1stIo2-0003as-Om; Tue, 24 Sep 2024 23:35:10 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1stIny-0007FP-3a; Tue, 24 Sep 2024 23:35:07 -0400
+ id 1stIo1-0007FP-4u; Tue, 24 Sep 2024 23:35:10 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Wed, 25 Sep
@@ -30,9 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v2 1/6] hw/gpio/aspeed: Fix coding style
-Date: Wed, 25 Sep 2024 11:34:49 +0800
-Message-ID: <20240925033454.4117445-2-jamin_lin@aspeedtech.com>
+Subject: [PATCH v2 2/6] hw/gpio/aspeed: Support to set the different memory
+ size
+Date: Wed, 25 Sep 2024 11:34:50 +0800
+Message-ID: <20240925033454.4117445-3-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240925033454.4117445-1-jamin_lin@aspeedtech.com>
 References: <20240925033454.4117445-1-jamin_lin@aspeedtech.com>
@@ -64,50 +65,88 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix coding style issues from checkpatch.pl
+According to the datasheet of ASPEED SOCs,
+a GPIO controller owns 4KB of register space for AST2700,
+AST2500, AST2400 and AST1030; owns 2KB of register space
+for AST2600 1.8v and owns 2KB of register space for AST2600 3.3v.
+
+It set the memory region size 2KB by default and it does not compatible
+register space for AST2700.
+
+Introduce a new class attribute to set the GPIO controller memory size
+for different ASPEED SOCs.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/gpio/aspeed_gpio.c         | 5 +++--
- include/hw/gpio/aspeed_gpio.h | 2 +-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ hw/gpio/aspeed_gpio.c         | 7 ++++++-
+ include/hw/gpio/aspeed_gpio.h | 1 +
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/hw/gpio/aspeed_gpio.c b/hw/gpio/aspeed_gpio.c
-index 71756664dd..a5886ffa43 100644
+index a5886ffa43..4b8004649b 100644
 --- a/hw/gpio/aspeed_gpio.c
 +++ b/hw/gpio/aspeed_gpio.c
-@@ -340,7 +340,8 @@ static void aspeed_gpio_set_pin_level(AspeedGPIOState *s, uint32_t set_idx,
-         value &= ~pin_mask;
+@@ -1048,7 +1048,7 @@ static void aspeed_gpio_realize(DeviceState *dev, Error **errp)
      }
  
--    aspeed_gpio_update(s, &s->sets[set_idx], value, ~s->sets[set_idx].direction);
-+    aspeed_gpio_update(s, &s->sets[set_idx], value,
-+                       ~s->sets[set_idx].direction);
+     memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_gpio_ops, s,
+-            TYPE_ASPEED_GPIO, 0x800);
++                          TYPE_ASPEED_GPIO, agc->mem_size);
+ 
+     sysbus_init_mmio(sbd, &s->iomem);
+ }
+@@ -1131,6 +1131,7 @@ static void aspeed_gpio_ast2400_class_init(ObjectClass *klass, void *data)
+     agc->nr_gpio_sets = 7;
+     agc->reg_table = aspeed_3_3v_gpios;
+     agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
++    agc->mem_size = 0x1000;
  }
  
- /*
-@@ -963,7 +964,7 @@ static void aspeed_gpio_set_pin(Object *obj, Visitor *v, const char *name,
-     aspeed_gpio_set_pin_level(s, set_idx, pin, level);
+ static void aspeed_gpio_2500_class_init(ObjectClass *klass, void *data)
+@@ -1142,6 +1143,7 @@ static void aspeed_gpio_2500_class_init(ObjectClass *klass, void *data)
+     agc->nr_gpio_sets = 8;
+     agc->reg_table = aspeed_3_3v_gpios;
+     agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
++    agc->mem_size = 0x1000;
  }
  
--/****************** Setup functions ******************/
-+/* Setup functions */
- static const GPIOSetProperties ast2400_set_props[ASPEED_GPIO_MAX_NR_SETS] = {
-     [0] = {0xffffffff,  0xffffffff,  {"A", "B", "C", "D"} },
-     [1] = {0xffffffff,  0xffffffff,  {"E", "F", "G", "H"} },
+ static void aspeed_gpio_ast2600_3_3v_class_init(ObjectClass *klass, void *data)
+@@ -1153,6 +1155,7 @@ static void aspeed_gpio_ast2600_3_3v_class_init(ObjectClass *klass, void *data)
+     agc->nr_gpio_sets = 7;
+     agc->reg_table = aspeed_3_3v_gpios;
+     agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
++    agc->mem_size = 0x800;
+ }
+ 
+ static void aspeed_gpio_ast2600_1_8v_class_init(ObjectClass *klass, void *data)
+@@ -1164,6 +1167,7 @@ static void aspeed_gpio_ast2600_1_8v_class_init(ObjectClass *klass, void *data)
+     agc->nr_gpio_sets = 2;
+     agc->reg_table = aspeed_1_8v_gpios;
+     agc->reg_table_count = GPIO_1_8V_REG_ARRAY_SIZE;
++    agc->mem_size = 0x800;
+ }
+ 
+ static void aspeed_gpio_1030_class_init(ObjectClass *klass, void *data)
+@@ -1175,6 +1179,7 @@ static void aspeed_gpio_1030_class_init(ObjectClass *klass, void *data)
+     agc->nr_gpio_sets = 6;
+     agc->reg_table = aspeed_3_3v_gpios;
+     agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
++    agc->mem_size = 0x1000;
+ }
+ 
+ static const TypeInfo aspeed_gpio_info = {
 diff --git a/include/hw/gpio/aspeed_gpio.h b/include/hw/gpio/aspeed_gpio.h
-index 90a12ae318..39febda9ea 100644
+index 39febda9ea..8cd2ff5496 100644
 --- a/include/hw/gpio/aspeed_gpio.h
 +++ b/include/hw/gpio/aspeed_gpio.h
-@@ -88,7 +88,7 @@ struct AspeedGPIOState {
-     qemu_irq irq;
-     qemu_irq gpios[ASPEED_GPIO_MAX_NR_SETS][ASPEED_GPIOS_PER_SET];
+@@ -76,6 +76,7 @@ struct AspeedGPIOClass {
+     uint32_t nr_gpio_sets;
+     const AspeedGPIOReg *reg_table;
+     unsigned reg_table_count;
++    uint64_t mem_size;
+ };
  
--/* Parallel GPIO Registers */
-+    /* Parallel GPIO Registers */
-     uint32_t debounce_regs[ASPEED_GPIO_NR_DEBOUNCE_REGS];
-     struct GPIOSets {
-         uint32_t data_value; /* Reflects pin values */
+ struct AspeedGPIOState {
 -- 
 2.34.1
 
