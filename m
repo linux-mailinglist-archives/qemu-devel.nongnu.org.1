@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976FA9857DC
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CAF19857E0
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPxg-00017u-16; Wed, 25 Sep 2024 07:13:38 -0400
+	id 1stPx4-0006eQ-1Z; Wed, 25 Sep 2024 07:13:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwB-0004Hn-0o
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:03 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwD-0004Uu-R3
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw8-0003nB-Tn
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:02 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwB-0003ot-9e
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262719;
+ s=mimecast20190719; t=1727262722;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Iu/VgyOBAMNIm9BxndVV79VY98Fkfv3UB6OxtHbaZ38=;
- b=Joi3QXzmLazNUi2QaXq+jkuu8LDxHoMvkPi/eneCezaUoFAKxbQ5S8cS+ItjEc/cmtM+Eh
- lNe+Qt66CAFy3yX1vfW1eoRItzBrpOZCJNglDa7osd3gRj9ROtF2Tz6EOChdrRxu62gb0s
- yk+diDbhIv1X6Z7bJuV3eK/V09cE6q8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=XimUXKRctEutaL5eeVB2FMjJX/ijBkVZYDuZyCoDm3I=;
+ b=M6kp8KTUsGQn4Bx6azkAgll5kcPP45y1DU5E0id7Zfc0UKwe8U69uOmm/Y4tHKIq/BDQ53
+ KrjHqLRPpWfWolVlkd0Vn+Lm57QQJ7FU/DbPWvnwynUnf4JeevgVbJVS2WSm1kV4YrGpSL
+ nIocEFP/V6iRV2VzdaPUml2C1XQiTJg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-mP0B9BYKMTK0TuxZZhIEAw-1; Wed,
- 25 Sep 2024 07:11:55 -0400
-X-MC-Unique: mP0B9BYKMTK0TuxZZhIEAw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-257-DkUUKFw3MV653hJlV5QtSA-1; Wed,
+ 25 Sep 2024 07:11:59 -0400
+X-MC-Unique: DkUUKFw3MV653hJlV5QtSA-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DA683193E8EF; Wed, 25 Sep 2024 11:11:54 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 15B7C1945105; Wed, 25 Sep 2024 11:11:57 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7601A1956094; Wed, 25 Sep 2024 11:11:53 +0000 (UTC)
+ id 7D42A1956094; Wed, 25 Sep 2024 11:11:55 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 30/44] target/riscv: remove break after g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:10:11 +0200
-Message-ID: <20240925111029.24082-31-thuth@redhat.com>
+Subject: [PULL 31/44] fpu: remove break after g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:10:12 +0200
+Message-ID: <20240925111029.24082-32-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,46 +86,32 @@ g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-23-pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-24-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/riscv/monitor.c                  | 1 -
- target/riscv/insn_trans/trans_rvv.c.inc | 2 --
- 2 files changed, 3 deletions(-)
+ fpu/softfloat-parts.c.inc | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/target/riscv/monitor.c b/target/riscv/monitor.c
-index f5b1ffe6c3..100005ea4e 100644
---- a/target/riscv/monitor.c
-+++ b/target/riscv/monitor.c
-@@ -184,7 +184,6 @@ static void mem_info_svxx(Monitor *mon, CPUArchState *env)
-         break;
-     default:
-         g_assert_not_reached();
--        break;
+diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
+index a44649f4f4..cc6e06b976 100644
+--- a/fpu/softfloat-parts.c.inc
++++ b/fpu/softfloat-parts.c.inc
+@@ -1373,7 +1373,6 @@ static FloatPartsN *partsN(minmax)(FloatPartsN *a, FloatPartsN *b,
+             break;
+         default:
+             g_assert_not_reached();
+-            break;
+         }
+         switch (b->cls) {
+         case float_class_normal:
+@@ -1386,7 +1385,6 @@ static FloatPartsN *partsN(minmax)(FloatPartsN *a, FloatPartsN *b,
+             break;
+         default:
+             g_assert_not_reached();
+-            break;
+         }
      }
- 
-     /* calculate virtual address bits */
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 3a3896ba06..f8928c44a8 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -3172,7 +3172,6 @@ static void load_element(TCGv_i64 dest, TCGv_ptr base,
-         break;
-     default:
-         g_assert_not_reached();
--        break;
-     }
- }
- 
-@@ -3257,7 +3256,6 @@ static void store_element(TCGv_i64 val, TCGv_ptr base,
-         break;
-     default:
-         g_assert_not_reached();
--        break;
-     }
- }
  
 -- 
 2.46.0
