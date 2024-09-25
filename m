@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244269857DA
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 340FF9859A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:57:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPv5-0006ng-VC; Wed, 25 Sep 2024 07:10:55 -0400
+	id 1stPv9-00072Y-NN; Wed, 25 Sep 2024 07:10:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPv3-0006i0-O6
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:10:53 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPv5-0006oJ-9t
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:10:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPv0-0003U6-LG
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:10:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPv3-0003UZ-JU
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:10:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262650;
+ s=mimecast20190719; t=1727262653;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JMtW9kfckNiAkEZQpPAq9ZCnp+lg6LHONio3NIKm0VQ=;
- b=PWw5rS7XQs8ffEtvpnU29oknxlsm6r5c9gqTAgscunsP9RhqBQEXftCzTsRH2wlizSvrIl
- YNIOUBUbcV49MQWozdPxXl5f6ZMMi/UozQatOLq6oSJxKXfTYQ4ZO9aqFj7GBIspcVxVU9
- qCQJF5YYnc+XIKj2UhdQOGuAcSb0k0Y=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=HqMKBXe0Hoi2TJnCj9hPXem8jMkCoMI9j3NKCdrJ8fU=;
+ b=NkxDtpl1rJb+xhL5qOIqiEetFcQ+usU20nQEiqRHXSNkMUkjy3h0WCwwjZQpSmdTmdseKZ
+ zWRSQ7fYzf1/AjAzv+DV528w6nnmgyyifDdaSVlzlFVCoUCl1Nm6GIVbGr+G7yHq0o5jYu
+ 3GrfxfWJiBYzvNcTYlTvagZHYwH8MgY=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-2d6T757AM7STdztEFp4FGw-1; Wed,
- 25 Sep 2024 07:10:48 -0400
-X-MC-Unique: 2d6T757AM7STdztEFp4FGw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632--vCJm03HO06q7rH7AbzBQg-1; Wed,
+ 25 Sep 2024 07:10:51 -0400
+X-MC-Unique: -vCJm03HO06q7rH7AbzBQg-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B49B6193EF79; Wed, 25 Sep 2024 11:10:47 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9DE661944DF4; Wed, 25 Sep 2024 11:10:50 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E7AD21956096; Wed, 25 Sep 2024 11:10:45 +0000 (UTC)
+ id 786121956094; Wed, 25 Sep 2024 11:10:48 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 03/44] tests/functional: Convert the xtensa lx60 Avocado test
-Date: Wed, 25 Sep 2024 13:09:44 +0200
-Message-ID: <20240925111029.24082-4-thuth@redhat.com>
+Subject: [PULL 04/44] tests/functional: Convert the SPARCStation Avocado test
+Date: Wed, 25 Sep 2024 13:09:45 +0200
+Message-ID: <20240925111029.24082-5-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,70 +81,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Use the new launch_kernel function to convert this test in a simple way.
 
-Message-ID: <20240919185749.71222-4-thuth@redhat.com>
+Message-ID: <20240919185749.71222-5-thuth@redhat.com>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
  MAINTAINERS                          |  1 +
- tests/avocado/boot_linux_console.py  |  9 ---------
+ tests/avocado/boot_linux_console.py  |  8 --------
  tests/functional/meson.build         |  4 ++++
- tests/functional/test_xtensa_lx60.py | 26 ++++++++++++++++++++++++++
- 4 files changed, 31 insertions(+), 9 deletions(-)
- create mode 100755 tests/functional/test_xtensa_lx60.py
+ tests/functional/test_sparc_sun4m.py | 25 +++++++++++++++++++++++++
+ 4 files changed, 30 insertions(+), 8 deletions(-)
+ create mode 100755 tests/functional/test_sparc_sun4m.py
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 7f7f4c2be6..a75d6ba7d2 100644
+index a75d6ba7d2..b85a3fc529 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1915,6 +1915,7 @@ S: Maintained
- F: hw/xtensa/xtfpga.c
- F: hw/net/opencores_eth.c
- F: include/hw/xtensa/mx_pic.h
-+F: tests/functional/test_xtensa_lx60.py
+@@ -1693,6 +1693,7 @@ F: include/hw/nvram/sun_nvram.h
+ F: include/hw/sparc/sparc32_dma.h
+ F: include/hw/sparc/sun4m_iommu.h
+ F: pc-bios/openbios-sparc32
++F: tests/functional/test_sparc_sun4m.py
  
- Devices
- -------
+ Sun4u
+ M: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 7a776c2818..cf58499c84 100644
+index cf58499c84..900af67412 100644
 --- a/tests/avocado/boot_linux_console.py
 +++ b/tests/avocado/boot_linux_console.py
-@@ -1027,12 +1027,3 @@ def test_sparc_ss20(self):
-         """
-         tar_hash = 'b18550d5d61c7615d989a06edace051017726a9f'
-         self.do_test_advcal_2018('11', tar_hash, 'zImage.elf')
+@@ -1019,11 +1019,3 @@ def test_sh4_r2d(self):
+         tar_hash = 'fe06a4fd8ccbf2e27928d64472939d47829d4c7e'
+         self.vm.add_args('-append', 'console=ttySC1')
+         self.do_test_advcal_2018('09', tar_hash, 'zImage', console=1)
 -
--    def test_xtensa_lx60(self):
+-    def test_sparc_ss20(self):
 -        """
--        :avocado: tags=arch:xtensa
--        :avocado: tags=machine:lx60
--        :avocado: tags=cpu:dc233c
+-        :avocado: tags=arch:sparc
+-        :avocado: tags=machine:SS-20
 -        """
--        tar_hash = '49e88d9933742f0164b60839886c9739cb7a0d34'
--        self.do_test_advcal_2018('02', tar_hash, 'santas-sleigh-ride.elf')
+-        tar_hash = 'b18550d5d61c7615d989a06edace051017726a9f'
+-        self.do_test_advcal_2018('11', tar_hash, 'zImage.elf')
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 3fc1bb192d..8fd852f4ab 100644
+index 8fd852f4ab..8aacd15cf3 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -145,6 +145,10 @@ tests_x86_64_system_thorough = [
-   'virtio_gpu',
+@@ -125,6 +125,10 @@ tests_s390x_system_thorough = [
+   's390x_topology',
  ]
  
-+tests_xtensa_system_thorough = [
-+  'xtensa_lx60',
++tests_sparc_system_thorough = [
++  'sparc_sun4m',
 +]
 +
- precache_all = []
- foreach speed : ['quick', 'thorough']
-   foreach dir : target_dirs
-diff --git a/tests/functional/test_xtensa_lx60.py b/tests/functional/test_xtensa_lx60.py
+ tests_sparc64_system_thorough = [
+   'sparc64_sun4u',
+ ]
+diff --git a/tests/functional/test_sparc_sun4m.py b/tests/functional/test_sparc_sun4m.py
 new file mode 100755
-index 0000000000..8ce5206a4f
+index 0000000000..b334375820
 --- /dev/null
-+++ b/tests/functional/test_xtensa_lx60.py
-@@ -0,0 +1,26 @@
++++ b/tests/functional/test_sparc_sun4m.py
+@@ -0,0 +1,25 @@
 +#!/usr/bin/env python3
 +#
-+# Functional test that boots a Linux kernel on an xtensa lx650 machine
++# Functional test that boots a Linux kernel on a sparc sun4m machine
 +# and checks the console
 +#
 +# SPDX-License-Identifier: GPL-2.0-or-later
@@ -152,18 +152,17 @@ index 0000000000..8ce5206a4f
 +from qemu_test import LinuxKernelTest, Asset
 +from qemu_test.utils import archive_extract
 +
-+class XTensaLX60Test(LinuxKernelTest):
++class Sun4mTest(LinuxKernelTest):
 +
-+    ASSET_DAY02 = Asset(
-+        'https://www.qemu-advent-calendar.org/2018/download/day02.tar.xz',
-+        '68ff07f9b3fd3df36d015eb46299ba44748e94bfbb2d5295fddc1a8d4a9fd324')
++    ASSET_DAY11 = Asset(
++        'https://www.qemu-advent-calendar.org/2018/download/day11.tar.xz',
++        'c776533ba756bf4dd3f1fc4c024fb50ef0d853e05c5f5ddf0900a32d1eaa49e0')
 +
-+    def test_xtensa_lx60(self):
-+        self.set_machine('lx60')
-+        self.cpu = 'dc233c'
-+        file_path = self.ASSET_DAY02.fetch()
++    def test_sparc_ss20(self):
++        self.set_machine('SS-20')
++        file_path = self.ASSET_DAY11.fetch()
 +        archive_extract(file_path, self.workdir)
-+        self.launch_kernel(self.workdir + '/day02/santas-sleigh-ride.elf',
++        self.launch_kernel(self.workdir + '/day11/zImage.elf',
 +                           wait_for='QEMU advent calendar')
 +
 +if __name__ == '__main__':
