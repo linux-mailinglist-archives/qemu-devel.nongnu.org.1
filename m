@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC44F9866E7
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE789866E8
 	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 21:30:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stXhF-00069I-BF; Wed, 25 Sep 2024 15:29:17 -0400
+	id 1stXhS-00069D-PK; Wed, 25 Sep 2024 15:29:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1stXh6-00065A-Le; Wed, 25 Sep 2024 15:29:03 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1stXh6-000659-LG; Wed, 25 Sep 2024 15:29:03 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1stXh2-0001vJ-Qj; Wed, 25 Sep 2024 15:28:58 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a90349aa7e5so31925766b.0; 
- Wed, 25 Sep 2024 12:28:54 -0700 (PDT)
+ id 1stXh2-0001ux-QL; Wed, 25 Sep 2024 15:28:58 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5c46680a71bso128109a12.2; 
+ Wed, 25 Sep 2024 12:28:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727292534; x=1727897334; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727292532; x=1727897332; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5T+uzerwROlkDdzZKXuzsYZsjWOi/nuFrXhXZ0ImgKk=;
- b=lRYaqT3SEjrqQZVaH7KyoMsnJs2RZRujiWJ39oULk1JOziOwC2vBKzVSjWL38616bT
- GiyPT3XaxvkSDqkF155ReXM4CGKHw0OAOz4zFhonY3eoRYJfsD5DXQWgDtbJRR+IDpcz
- 6dhIOBoR6q2WnmMyk/v7fkm2rgBVEcLCTiAlEBneJ7+8kQD4PYT4vxSsbcc2kqs0lZeU
- 9fSP1EQupIu1MBltFZUlJjrLTlm4nxBkkyQ+2w6rPq0Kukd9mMltpYiUfOroBOnZFk0D
- jfeU5ZIQ4/twPymdgw2QxjU9DKYTD91k8HTap099OimTZ1Ko7fMVJp9eiZE9t8OW8eCX
- 0kEA==
+ bh=EpNIGUqoKh3ApSswDw2WgMUn4lBLGk7X9nmAv792NQ0=;
+ b=BqJgN/bcfa7u3tT+EIQohiId0USDg6SPNC6ID2HbgL4f1s0gT90sXCcBEd6fKOKKBv
+ H0tuH/CtpTm/jNCcy98esdHEEyv4ghCyKTpWVTtj6X2BXCIduE1WeawHWoTasV0ZngbU
+ idWDMbVIPCWT3iWMnUCSQjYe3xM/VUuNbNs4jPZlT7gPXm//9D00R36mZo0aTsqtbFow
+ CA05Xez8+ksBl/pvaReQKUyWJ7y/Vn01ArcLQ6rNRPDyTZYAwOAYF16/5jmAei8ELv7Z
+ k5O0wpw3ylw16q+ZukkAMxuwI8wH5S4Lis8oPEOu3T+jrlH4Nem1tV/px5zi17JHRjrm
+ 17JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727292534; x=1727897334;
+ d=1e100.net; s=20230601; t=1727292532; x=1727897332;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5T+uzerwROlkDdzZKXuzsYZsjWOi/nuFrXhXZ0ImgKk=;
- b=HzYw9xm/rIRdGQKyVmkNkLcDpJ+rPriiMfQcA5wf891qUNpmN7D2o6L9JBi9dn9sw2
- sPHzF4+fSbN4TN7qEe1WVpEXhPNJvxgGh7pjG6q2wqCblAU8gdaZxkxRNOOI3ELmL2Fm
- hh08ZMDz5vvPWKMx76hCALs58RJxozW6/vBA4NWbW2dL5pGpHC03tgTS9Kvq4nErYNMs
- niwGjyNsb84VVKmsz/trysLKvoDeACvtYO7CHlEBWlErswi6jjn1VXS5t3B8v5RPBiL4
- jUT1w1WNkXW/b9mxMYWfhO4whkkwPdgzOuBtPB73TkXkTDLpmJmdv2dMl6LwMl7jfFxR
- iSwg==
+ bh=EpNIGUqoKh3ApSswDw2WgMUn4lBLGk7X9nmAv792NQ0=;
+ b=nXsr0X2L7HAPP33fOzBvFHBsBvfbk8IqfPDcuhQvfx9DnAymJB7gCFZQem8dDtZR8/
+ 90jWfpBtcCbCrThJ/QfjEvSDYrhgGIE9MVIQWKWG9myNdrBZrK6OCeZnZJHqQnyjRV4W
+ vkmd/wgi7Xhrg3+9d4XTzOsQ0yslRYtt34sHUG/g18ohGbKdIb6HZPFbz3N24dvHQClM
+ IKoSmeRYO0pOG0SfMdFyDdEIxEHFX9Jw3PD5wcQ2eSsbZW5PajQ6K3Vv9AbqiUmLTC6d
+ Y2DcbnRuhGynD7dEBsURPjfB1nw61iRP1F4FJznqvICXUoxaigEIkxwW3KhlCq0D/Clv
+ D3NA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWriNRg1J7i5pgWivvPd8pR5BBfSPsFz5ghi+WBxMhRxBpyGSmy5gsJhmhfK+YovvGhw/v736MJLcPM@nongnu.org,
- AJvYcCXVUzRcildxqr9AlSXwDflZa5XzqksQmAXBw+l38o/0ou7squ4pnfxUxZ3wlby97ZdiOtEtMh8bzpQ=@nongnu.org
-X-Gm-Message-State: AOJu0Yz7CwjCkZhZS9ACOCHD7PRQ2xluqDmEiVigIeRbWjMg89VUK+AO
- dR/F4oKm2mxL02PGJ86PXmZLjnnpPCTvWEBMzHYKG+21e9ZhpgJo
-X-Google-Smtp-Source: AGHT+IHTJdBVy1A0Rg4Id5dz/fEc9wATCGQU02dkxTt/rjuLh7AnSQMJeYOf0X0WxEJywcYKy8OL8Q==
-X-Received: by 2002:a17:907:7288:b0:a86:a30f:4aef with SMTP id
- a640c23a62f3a-a93a0360629mr393024966b.22.1727292533319; 
- Wed, 25 Sep 2024 12:28:53 -0700 (PDT)
+ AJvYcCWj5jstiBD4Lphl3c4hzcF0hEnMSFdanJjzjSMTaA86KU6dLQhJF+cCcRE+dOMVyFwIciSirveoO8ON@nongnu.org,
+ AJvYcCXTwVRiv+Boo3w9cG48ennhjuxk6c0BEvT0yLGtLSn0TcNJpJUIDDSEasaLB5+UkzMx1NNF6K4nYRA=@nongnu.org
+X-Gm-Message-State: AOJu0YyIVj1iyuiZrTeHbkyb05B3r/wVT5fxNbkoK4Z2Qf5ClYcH6i9A
+ rOien2KIavFp+K05ERr/B9eAM6zzlV11gg5QpHpy0LHBZSZyHjA8
+X-Google-Smtp-Source: AGHT+IEUcFZhlWCmeCpdutgH6haBxSnNkJoLs42N0w309Gn5ImNa/rOeZM+0fk4NjYRMvaWsy4WstQ==
+X-Received: by 2002:a05:6402:354a:b0:5c7:1ffc:f58c with SMTP id
+ 4fb4d7f45d1cf-5c720641103mr3131855a12.28.1727292531804; 
+ Wed, 25 Sep 2024 12:28:51 -0700 (PDT)
 Received: from [127.0.0.1] (dynamic-077-011-049-158.77.11.pool.telefonica.de.
  [77.11.49.158]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a9392f4fa95sm247581266b.54.2024.09.25.12.28.52
+ 4fb4d7f45d1cf-5c5cf4c4fd8sm2246241a12.69.2024.09.25.12.28.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Sep 2024 12:28:52 -0700 (PDT)
-Date: Wed, 25 Sep 2024 19:08:45 +0000
+ Wed, 25 Sep 2024 12:28:51 -0700 (PDT)
+Date: Wed, 25 Sep 2024 19:09:38 +0000
 From: Bernhard Beschow <shentey@gmail.com>
 To: BALATON Zoltan <balaton@eik.bme.hu>
 CC: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
@@ -69,18 +69,18 @@ CC: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-block@nongnu.org,
  Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>,
  =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@redhat.com>
-Subject: Re: [PATCH 01/23] hw/ppc/e500: Do not leak struct boot_info
-In-Reply-To: <755fc52d-cb33-aaf0-cbed-825321b6889f@eik.bme.hu>
+Subject: Re: [PATCH 02/23] hw/ppc/e500: Reduce scope of env pointer
+In-Reply-To: <87efb774-720a-9628-9335-fbec17e68d12@eik.bme.hu>
 References: <20240923093016.66437-1-shentey@gmail.com>
- <20240923093016.66437-2-shentey@gmail.com>
- <755fc52d-cb33-aaf0-cbed-825321b6889f@eik.bme.hu>
-Message-ID: <B263FDBA-E984-4351-81CB-1CCC09C2550E@gmail.com>
+ <20240923093016.66437-3-shentey@gmail.com>
+ <87efb774-720a-9628-9335-fbec17e68d12@eik.bme.hu>
+Message-ID: <296CB8D6-C7D5-4A13-B84B-B44D437454E2@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,112 +104,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 23=2E September 2024 10:02:10 UTC schrieb BALATON Zoltan <balaton@eik=
+Am 23=2E September 2024 10:04:48 UTC schrieb BALATON Zoltan <balaton@eik=
 =2Ebme=2Ehu>:
 >On Mon, 23 Sep 2024, Bernhard Beschow wrote:
->> The struct is allocated once with g_new0() but never free()'d=2E Fix th=
-e leakage
->> by adding an attribute to struct PPCE500MachineState which avoids the
->> allocation=2E
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->> hw/ppc/e500=2Eh |  8 ++++++++
->> hw/ppc/e500=2Ec | 17 ++++-------------
->> 2 files changed, 12 insertions(+), 13 deletions(-)
->>=20
->> diff --git a/hw/ppc/e500=2Eh b/hw/ppc/e500=2Eh
->> index 8c09ef92e4=2E=2E557ce6ad93 100644
->> --- a/hw/ppc/e500=2Eh
->> +++ b/hw/ppc/e500=2Eh
->> @@ -5,10 +5,18 @@
->> #include "hw/platform-bus=2Eh"
->> #include "qom/object=2Eh"
->>=20
->> +typedef struct boot_info {
->> +    uint32_t dt_base;
->> +    uint32_t dt_size;
->> +    uint32_t entry;
->> +} boot_info;
->> +
->> struct PPCE500MachineState {
->>     /*< private >*/
+>> The env pointer isn't used outside the for loop, so move it inside=2E A=
+fter that,
+>> the firstenv pointer is never read, so remove it=2E
 >
->While at it you could remove these private markers=2E=2E=2E
+>It's probably the other way arouns, you remove firstenv (which is the big=
+ger part of this patch) then it's clear env is not needed outside of the lo=
+op any more so can be moved there=2E The purpose of this seems to be to pre=
+serve the env of the first CPU but as it's unused yet maybe it can be remov=
+ed for now and readded later when needed=2E
 
-Will do=2E
-
->
->>     MachineState parent_obj;
->>=20
->> +    boot_info boot_info;
->> +
->
->=2E=2E=2Eand drop the new line here so only the parent_obj is followed by=
- a new line as was suggested as reccomended style=2E
-
-I'll merge struct boot_info below as C=C3=A9dric suggested=2E
+I'll fix the commit message=2E
 
 Best regards,
 Bernhard
 
 >
->Regatds,
+>Regards,
 >BALATON Zoltan
 >
->>     /* points to instance of TYPE_PLATFORM_BUS_DEVICE if
->>      * board supports dynamic sysbus devices
->>      */
+>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>> ---
+>> hw/ppc/e500=2Ec | 9 +--------
+>> 1 file changed, 1 insertion(+), 8 deletions(-)
+>>=20
 >> diff --git a/hw/ppc/e500=2Ec b/hw/ppc/e500=2Ec
->> index 3bd12b54ab=2E=2E75b051009f 100644
+>> index 75b051009f=2E=2Ef68779a1ea 100644
 >> --- a/hw/ppc/e500=2Ec
 >> +++ b/hw/ppc/e500=2Ec
->> @@ -80,13 +80,6 @@
+>> @@ -899,7 +899,6 @@ void ppce500_init(MachineState *machine)
+>>     const PPCE500MachineClass *pmc =3D PPCE500_MACHINE_GET_CLASS(machin=
+e);
+>>     MachineClass *mc =3D MACHINE_CLASS(pmc);
+>>     PCIBus *pci_bus;
+>> -    CPUPPCState *env =3D NULL;
+>>     uint64_t loadaddr;
+>>     hwaddr kernel_base =3D -1LL;
+>>     int kernel_size =3D 0;
+>> @@ -921,7 +920,6 @@ void ppce500_init(MachineState *machine)
+>>     IrqLines *irqs;
+>>     DeviceState *dev, *mpicdev;
+>>     DriveInfo *dinfo;
+>> -    CPUPPCState *firstenv =3D NULL;
+>>     MemoryRegion *ccsr_addr_space;
+>>     SysBusDevice *s;
+>>     PPCE500CCSRState *ccsr;
+>> @@ -930,6 +928,7 @@ void ppce500_init(MachineState *machine)
+>>     irqs =3D g_new0(IrqLines, smp_cpus);
+>>     for (i =3D 0; i < smp_cpus; i++) {
+>>         PowerPCCPU *cpu;
+>> +        CPUPPCState *env;
+>>         CPUState *cs;
 >>=20
->> #define PLATFORM_CLK_FREQ_HZ       (400 * 1000 * 1000)
+>>         cpu =3D POWERPC_CPU(object_new(machine->cpu_type));
+>> @@ -950,10 +949,6 @@ void ppce500_init(MachineState *machine)
+>>                                  &error_abort);
+>>         qdev_realize_and_unref(DEVICE(cs), NULL, &error_fatal);
 >>=20
->> -struct boot_info
->> -{
->> -    uint32_t dt_base;
->> -    uint32_t dt_size;
->> -    uint32_t entry;
->> -};
+>> -        if (!firstenv) {
+>> -            firstenv =3D env;
+>> -        }
 >> -
->> static uint32_t *pci_map_create(void *fdt, uint32_t mpic, int first_slo=
-t,
->>                                 int nr_slots, int *len)
->> {
->> @@ -919,7 +912,6 @@ void ppce500_init(MachineState *machine)
->>     bool kernel_as_payload;
->>     hwaddr bios_entry =3D 0;
->>     target_long payload_size;
->> -    struct boot_info *boot_info =3D NULL;
->>     int dt_size;
->>     int i;
->>     unsigned int smp_cpus =3D machine->smp=2Ecpus;
->> @@ -974,9 +966,8 @@ void ppce500_init(MachineState *machine)
->>         /* Register reset handler */
->>         if (!i) {
->>             /* Primary CPU */
->> -            boot_info =3D g_new0(struct boot_info, 1);
->>             qemu_register_reset(ppce500_cpu_reset, cpu);
->> -            env->load_info =3D boot_info;
->> +            env->load_info =3D &pms->boot_info;
->>         } else {
->>             /* Secondary CPUs */
->>             qemu_register_reset(ppce500_cpu_reset_sec, cpu);
->> @@ -1274,9 +1265,9 @@ void ppce500_init(MachineState *machine)
+>>         irqs[i]=2Eirq[OPENPIC_OUTPUT_INT] =3D
+>>             qdev_get_gpio_in(DEVICE(cpu), PPCE500_INPUT_INT);
+>>         irqs[i]=2Eirq[OPENPIC_OUTPUT_CINT] =3D
+>> @@ -974,8 +969,6 @@ void ppce500_init(MachineState *machine)
+>>         }
 >>     }
->>     assert(dt_size < DTB_MAX_SIZE);
 >>=20
->> -    boot_info->entry =3D bios_entry;
->> -    boot_info->dt_base =3D dt_base;
->> -    boot_info->dt_size =3D dt_size;
->> +    pms->boot_info=2Eentry =3D bios_entry;
->> +    pms->boot_info=2Edt_base =3D dt_base;
->> +    pms->boot_info=2Edt_size =3D dt_size;
->> }
->>=20
->> static void e500_ccsr_initfn(Object *obj)
+>> -    env =3D firstenv;
+>> -
+>>     if (!QEMU_IS_ALIGNED(machine->ram_size, RAM_SIZES_ALIGN)) {
+>>         error_report("RAM size must be multiple of %" PRIu64, RAM_SIZES=
+_ALIGN);
+>>         exit(EXIT_FAILURE);
 >>=20
 
