@@ -2,91 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C19489859BC
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 986F8985F91
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 16:00:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stQfO-0006dR-HC; Wed, 25 Sep 2024 07:58:46 -0400
+	id 1stSYM-00031J-Q6; Wed, 25 Sep 2024 09:59:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1stQf3-0005At-3R
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:58:26 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1stQf0-0000hy-Df
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:58:23 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-374c4d4f219so3661055f8f.1
- for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 04:58:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1727265501; x=1727870301;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AVwwvNZTDkJx0gmpOxGh5ddASHBGIzNT4u9n31ZE25I=;
- b=J0wQGPyARllY5uRLfP/BDQAgrxsfUDtGEDG2YS5lBv0/IeyKyceQbBpJw1nLCEWSl7
- 1DIXOLlfvwS8LaoKYRoC7gnABaVlCUZfCwQqwYkydjwM08chlyXsZk97TP8q77PCVmGu
- 2Hg7kst8IN0EyC0VBaQltaCUi08+QfD0vOHZVgdHQ+j7uH7QmSKKeMC9tEKspdORmMbJ
- YrrSA3jPhqmai+tpe/JYLyt5N4SBXUMe2ZLqFzt3sA7hOZGryFKBg4JheA8tvrEX/vNQ
- aKEh9whaLhHszlZposP8xF66pxaaHNuh4YRrzy9ozyJ3se9xTpNjFOwErR6o/DabK9Zw
- 0poA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727265501; x=1727870301;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AVwwvNZTDkJx0gmpOxGh5ddASHBGIzNT4u9n31ZE25I=;
- b=RCcXetJ80qXAeRIuimqo3mrgHu7lguMKiZrw0EJxFqIDkp2np/yjkD/KrE7e5CElqh
- KphaSKnPXkty4WlyyhVyOzqYc2O1+R2J48ry94wyrMDE7Nv6y+W0N1OjNSPyMF2RiDGN
- 8sCD+CGb156BGOAGVrC+RlJ3/vKL0xH/wrmOXVjWCFNT1QmV7cmQEsWIn0rxTnI4FbXg
- 08rF1r4taBgrq5aV3q4bgoUAf643NHy/DF4igiPTb4UKY3zJH2eBcxNGbssKJc6WRHip
- FRkj2+BwFcy+CqaILaL9+F34jI7R3b1rN35Tk93Rv8WC1ltoCryEqiNnnJzI5SoumW87
- lpRA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWEr0qFXBnQfhCeG7zCCX+ww+hyvgXknFIOYfDdEyMHyjZHJ7RxSqVdT5D+r9BAwhx31mXkPTfD4fFo@nongnu.org
-X-Gm-Message-State: AOJu0YwaENXtYzGF1pTaL2J2GAlV3Klls10FzcNgMGCOhtytN5RL57wx
- xspw1uo8xdIC/FdqjVHoZmZByUwNw2PQuVsy9xcZLTwMkhu4aXiC3AC8zdpKZJo=
-X-Google-Smtp-Source: AGHT+IEGywPzFSyZ3yorDA+A9/p0BCPmvUoHf0kXD9riXsT2wN3IoeCqNFrt6v8omhahaW+o8X0k3A==
-X-Received: by 2002:a5d:4946:0:b0:374:c1a9:b989 with SMTP id
- ffacd0b85a97d-37cc2464e4fmr1804630f8f.1.1727265500746; 
- Wed, 25 Sep 2024 04:58:20 -0700 (PDT)
-Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cbc2ab52fsm3770612f8f.13.2024.09.25.04.58.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Sep 2024 04:58:20 -0700 (PDT)
-From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
-To: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>
-Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Ved Shanbhogue <ved@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
+ (Exim 4.90_1) (envelope-from <yangtiezhu@loongson.cn>)
+ id 1stINh-0000ay-UX
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 23:07:58 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <yangtiezhu@loongson.cn>) id 1stINe-0004uo-VV
+ for qemu-devel@nongnu.org; Tue, 24 Sep 2024 23:07:57 -0400
+Received: from loongson.cn (unknown [113.200.148.30])
+ by gateway (Coremail) with SMTP id _____8Cx646AfvNmv40OAA--.908S3;
+ Wed, 25 Sep 2024 11:07:44 +0800 (CST)
+Received: from [10.130.0.149] (unknown [113.200.148.30])
+ by front2 (Coremail) with SMTP id qciowMAxZ8V7fvNmJsgRAA--.326S3;
+ Wed, 25 Sep 2024 11:07:40 +0800 (CST)
+Subject: Re: [PATCH v4 2/2] target/loongarch: Implement lbt registers
+ save/restore function
+To: maobibo <maobibo@loongson.cn>
+References: <20240904061859.86615-1-maobibo@loongson.cn>
+ <20240904061859.86615-3-maobibo@loongson.cn>
+ <c14c8927-bb9b-9c3f-dca7-c86f79e73770@loongson.cn>
+ <7ddb45a0-e685-2af0-749a-821cc08f22e8@loongson.cn>
+ <a15a6f5d-5f9b-2bde-1300-81bd53ca25fa@loongson.cn>
+ <c7257d12-dad4-7d1e-2fb7-876599a820a8@loongson.cn>
+ <e844b0f8-e85e-a026-72b3-3af4d1af19d9@loongson.cn>
+Cc: gaosong <gaosong@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
  qemu-devel@nongnu.org
-Subject: [PATCH v2 8/8] target/riscv: Add Smdbltrp ISA extension enable switch
-Date: Wed, 25 Sep 2024 13:58:06 +0200
-Message-ID: <20240925115808.77874-9-cleger@rivosinc.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240925115808.77874-1-cleger@rivosinc.com>
-References: <20240925115808.77874-1-cleger@rivosinc.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <136c79c7-4680-721b-0f0f-76b51dfd6b86@loongson.cn>
+Date: Wed, 25 Sep 2024 11:07:39 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=cleger@rivosinc.com; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <e844b0f8-e85e-a026-72b3-3af4d1af19d9@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: qciowMAxZ8V7fvNmJsgRAA--.326S3
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
+ BjDU0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26c
+ xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
+ j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxV
+ AFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E
+ 14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44
+ I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2
+ jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62
+ AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E
+ 5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAV
+ WUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY
+ 1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI
+ 0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU
+ rNtxDUUUU
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=yangtiezhu@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.21,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 25 Sep 2024 09:59:35 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,34 +85,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the switch to enable the Smdbltrp ISA extension.
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
----
- target/riscv/cpu.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index dd3351832a..44da17bc9a 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -183,6 +183,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
-     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-     ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
-+    ISA_EXT_DATA_ENTRY(smdbltrp, PRIV_VERSION_1_12_0, ext_smdbltrp),
-     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
-     ISA_EXT_DATA_ENTRY(smrnmi, PRIV_VERSION_1_12_0, ext_smrnmi),
-     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
-@@ -1492,6 +1493,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
- 
-     MULTI_EXT_CFG_BOOL("smaia", ext_smaia, false),
-+    MULTI_EXT_CFG_BOOL("smdbltrp", ext_smdbltrp, false),
-     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
-     MULTI_EXT_CFG_BOOL("smrnmi", ext_smrnmi, false),
-     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
--- 
-2.45.2
+On 09/24/2024 09:28 AM, maobibo wrote:
+> Hi Tiezhu,
+>
+> Does mainline gdb support to dump LBT register now?
+
+Yes, here are the related gdb commit and kernel code:
+
+https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=e4d74c01e773
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/loongarch/include/uapi/asm/ptrace.h#n59
+
+Thanks,
+Tiezhu
 
 
