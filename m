@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C9D9851E0
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 702B49851E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:08:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stJHM-0006MU-JW; Wed, 25 Sep 2024 00:05:28 -0400
+	id 1stJHO-0006pF-Ru; Wed, 25 Sep 2024 00:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGq-0005gx-2x; Wed, 25 Sep 2024 00:04:56 -0400
+ id 1stJGo-0005bp-M9; Wed, 25 Sep 2024 00:04:55 -0400
 Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGo-0001xz-8Y; Wed, 25 Sep 2024 00:04:55 -0400
+ id 1stJGl-0001xF-CE; Wed, 25 Sep 2024 00:04:54 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id B55E6A43B5C;
+ by nyc.source.kernel.org (Postfix) with ESMTP id 5148EA43B0E;
  Wed, 25 Sep 2024 04:04:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A688C4AF0D;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F3FC4CECD;
  Wed, 25 Sep 2024 04:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1727237088;
- bh=QMf07fLY8U2/zfLdTvC2c8psraorT7q7xlt4YyPh/QU=;
+ bh=nBKJN8HnPZNNP4hYZrf3OFUxClvSEboHXAz3CwHADyk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=NoCkAaXCNbgzC5JNjk1B8gpa1+hCFxT+vXr4FA+aSQ6/t/nfQBw2sEGso2iJtUbgk
- 0tHz9RzVNLowSEUyg5ZZxm2kIYujZOfhBRjh7MpSPijmu4zIfkaeSpNxNPJd9o5IYc
- yJ5qY2xwAdiW8pR/8TBb2PtCbZmyerG7TcIPGt7qF9hWeXi6NsJt1H/qap22JbM2N1
- tuZEMSg+o+VEEwEivddUcUvG+u63CZzfXKje86RDW2RFeRpDSZWkOZ/A1jCYEj1jHm
- ISOlYHsmMrjQ8u51Znp0aqSPRMQvHd5CzWQB4vUVpASppYn+R1fjlLgubtmxoF4l9H
- xWbzK8yI5KNrQ==
+ b=WEsdXcydUg8hMicE2Jskh4hIbo0vjmGEWzyDKWEvYLZXkJoxJh5XRKZ81icvEoToM
+ FgRMGwh6affiTmZ46KTBhmNe+bYuB0X/Rv2TQRWIkj4rH08e5GqqFetFfBfCL84Mdu
+ LSVLAGMmmjTLmd+qdmOgyCIuUjmzCA9UQhNGCt4fjol8+dT2R/oihjRfQiKW9UcwJl
+ AGCosDjve+pnfeUWpwZPx0DEGKAMSDpJeHLLVYCPRMX6Zpat4roxw+DPvjg7EWLSrH
+ QNIB6eRmCWkebo2+TrU+y/gznJsdWNO5valjr6gR6+EFb2Jm0WjhPTueP8OHhME1fL
+ BzbwjYwW4RQHQ==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGg-0000000827h-0KZH; Wed, 25 Sep 2024 06:04:46 +0200
+ id 1stJGg-0000000827k-0RNk; Wed, 25 Sep 2024 06:04:46 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -42,9 +42,9 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
  qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH 01/15] acpi/ghes: get rid of ACPI_HEST_SRC_ID_RESERVED
-Date: Wed, 25 Sep 2024 06:04:06 +0200
-Message-ID: <0518c86d8724ba7f9986727676b64c531bd26b6f.1727236561.git.mchehab+huawei@kernel.org>
+Subject: [PATCH 02/15] acpi/ghes: simplify acpi_ghes_record_errors() code
+Date: Wed, 25 Sep 2024 06:04:07 +0200
+Message-ID: <45dcc7644e2b2a04645a37e561ed7294482b0744.1727236561.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <cover.1727236561.git.mchehab+huawei@kernel.org>
 References: <cover.1727236561.git.mchehab+huawei@kernel.org>
@@ -74,62 +74,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is just duplicating ACPI_GHES_ERROR_SOURCE_COUNT, which
-has a better name. So, drop the duplication.
+Reduce the ident of the function and prepares it for
+the next changes.
+
+No functional changes.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/ghes.c         | 7 ++-----
- include/hw/acpi/ghes.h | 3 ++-
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ hw/acpi/ghes.c | 56 ++++++++++++++++++++++++++------------------------
+ 1 file changed, 29 insertions(+), 27 deletions(-)
 
 diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index e9511d9b8f71..dc217694deb9 100644
+index dc217694deb9..dacbd4d0c093 100644
 --- a/hw/acpi/ghes.c
 +++ b/hw/acpi/ghes.c
-@@ -34,9 +34,6 @@
- /* The max size in bytes for one error block */
- #define ACPI_GHES_MAX_RAW_DATA_LENGTH   (1 * KiB)
+@@ -402,40 +402,42 @@ int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
  
--/* Now only support ARMv8 SEA notification type error source */
--#define ACPI_GHES_ERROR_SOURCE_COUNT        1
--
- /* Generic Hardware Error Source version 2 */
- #define ACPI_GHES_SOURCE_GENERIC_ERROR_V2   10
+     start_addr = le64_to_cpu(ags->ghes_addr_le);
  
-@@ -396,7 +393,7 @@ int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
-     AcpiGedState *acpi_ged_state;
-     AcpiGhesState *ags;
+-    if (physical_address) {
++    if (!physical_address) {
++        return -1;
++    }
  
--    assert(source_id < ACPI_HEST_SRC_ID_RESERVED);
-+    assert(source_id < ACPI_GHES_ERROR_SOURCE_COUNT);
+-        if (source_id < ACPI_GHES_ERROR_SOURCE_COUNT) {
+-            start_addr += source_id * sizeof(uint64_t);
+-        }
++    if (source_id < ACPI_GHES_ERROR_SOURCE_COUNT) {
++        start_addr += source_id * sizeof(uint64_t);
++    }
  
-     acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
-                                                        NULL));
-@@ -407,7 +404,7 @@ int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
+-        cpu_physical_memory_read(start_addr, &error_block_addr,
+-                                 sizeof(error_block_addr));
++    cpu_physical_memory_read(start_addr, &error_block_addr,
++                                sizeof(error_block_addr));
  
-     if (physical_address) {
+-        error_block_addr = le64_to_cpu(error_block_addr);
++    error_block_addr = le64_to_cpu(error_block_addr);
  
--        if (source_id < ACPI_HEST_SRC_ID_RESERVED) {
-+        if (source_id < ACPI_GHES_ERROR_SOURCE_COUNT) {
-             start_addr += source_id * sizeof(uint64_t);
-         }
+-        read_ack_register_addr = start_addr +
+-            ACPI_GHES_ERROR_SOURCE_COUNT * sizeof(uint64_t);
++    read_ack_register_addr = start_addr +
++        ACPI_GHES_ERROR_SOURCE_COUNT * sizeof(uint64_t);
  
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 674f6958e905..59e3b8fb24b9 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -59,7 +59,8 @@ enum AcpiGhesNotifyType {
- enum {
-     ACPI_HEST_SRC_ID_SEA = 0,
-     /* future ids go here */
--    ACPI_HEST_SRC_ID_RESERVED,
-+
-+    ACPI_GHES_ERROR_SOURCE_COUNT
- };
+-        cpu_physical_memory_read(read_ack_register_addr,
+-                                 &read_ack_register, sizeof(read_ack_register));
++    cpu_physical_memory_read(read_ack_register_addr,
++                                &read_ack_register, sizeof(read_ack_register));
  
- typedef struct AcpiGhesState {
+-        /* zero means OSPM does not acknowledge the error */
+-        if (!read_ack_register) {
+-            error_report("OSPM does not acknowledge previous error,"
+-                " so can not record CPER for current error anymore");
+-        } else if (error_block_addr) {
+-            read_ack_register = cpu_to_le64(0);
+-            /*
+-             * Clear the Read Ack Register, OSPM will write it to 1 when
+-             * it acknowledges this error.
+-             */
+-            cpu_physical_memory_write(read_ack_register_addr,
+-                &read_ack_register, sizeof(uint64_t));
++    /* zero means OSPM does not acknowledge the error */
++    if (!read_ack_register) {
++        error_report("OSPM does not acknowledge previous error,"
++            " so can not record CPER for current error anymore");
++    } else if (error_block_addr) {
++        read_ack_register = cpu_to_le64(0);
++        /*
++         * Clear the Read Ack Register, OSPM will write it to 1 when
++         * it acknowledges this error.
++         */
++        cpu_physical_memory_write(read_ack_register_addr,
++            &read_ack_register, sizeof(uint64_t));
+ 
+-            ret = acpi_ghes_record_mem_error(error_block_addr,
+-                                             physical_address);
+-        } else
+-            error_report("can not find Generic Error Status Block");
++        ret = acpi_ghes_record_mem_error(error_block_addr,
++                                            physical_address);
++    } else {
++        error_report("can not find Generic Error Status Block");
+     }
+ 
+     return ret;
 -- 
 2.46.1
 
