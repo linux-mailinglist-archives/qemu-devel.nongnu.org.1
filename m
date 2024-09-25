@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123099857B8
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1979857C8
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPwP-0004jo-0E; Wed, 25 Sep 2024 07:12:18 -0400
+	id 1stPwJ-0004Np-Ix; Wed, 25 Sep 2024 07:12:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw0-0003RR-LN
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw3-0003gO-4H
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvx-0003kb-QF
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw1-0003lE-AT
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262709;
+ s=mimecast20190719; t=1727262712;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ne4RYO3T4Aggh4ZeMVL/i1+027NVJOUy/TEZpPiDrNA=;
- b=XShj1p5zMtYU0vaijU6rYG6DQ9iekELzTkBaC8nzxrpehNRQZim3bXRPBDvKRWcZ0A4+sS
- aqUOR01e+EzhdypiLfUnhdgNDChWijLcBVilJqdrlXVypNFFSj7DK6ngzcMTuNoFusZNGM
- fxGcPWQbqCYre/9HDvXdVKZ1wfnu/rc=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=tZVzphQdjGjCU5nXoYO6/Y8Dt9zYl8M8DQY574lUcWs=;
+ b=eqLAtk/ftcVN8VIRROLVYzbISHGcF4K+uzhtY/Ml65/NJe5RV1KCEjk2iTiEUZlOWJX7/s
+ bUsmNSmyx9bWsNMbkOJ4Fs2cu4zDUmauz6qPl3xFvKvdE1V1noEH1QFNHCVKELDV+mYVBF
+ SBoiXLDRIjIzv15EKvp//YIjmyaahMM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-DHRMpd3GOkuBHMZ9upNcOw-1; Wed,
- 25 Sep 2024 07:11:45 -0400
-X-MC-Unique: DHRMpd3GOkuBHMZ9upNcOw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-x7kOWLPNOi2uCKuvlviotA-1; Wed,
+ 25 Sep 2024 07:11:48 -0400
+X-MC-Unique: x7kOWLPNOi2uCKuvlviotA-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E55391944D01; Wed, 25 Sep 2024 11:11:44 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CFD9F193E8F2; Wed, 25 Sep 2024 11:11:47 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 42CCC1956094; Wed, 25 Sep 2024 11:11:43 +0000 (UTC)
+ id 72F881956094; Wed, 25 Sep 2024 11:11:45 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 26/44] hw/net: remove break after g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:10:07 +0200
-Message-ID: <20240925111029.24082-27-thuth@redhat.com>
+Subject: [PULL 27/44] hw/scsi: remove break after g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:10:08 +0200
+Message-ID: <20240925111029.24082-28-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -86,25 +86,26 @@ g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-19-pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-20-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/net/net_rx_pkt.c | 1 -
+ hw/scsi/virtio-scsi.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/hw/net/net_rx_pkt.c b/hw/net/net_rx_pkt.c
-index 6b9c4c9559..0ea8734474 100644
---- a/hw/net/net_rx_pkt.c
-+++ b/hw/net/net_rx_pkt.c
-@@ -376,7 +376,6 @@ net_rx_pkt_calc_rss_hash(struct NetRxPkt *pkt,
-         break;
+diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+index 9f02ceea09..6637cfeaf5 100644
+--- a/hw/scsi/virtio-scsi.c
++++ b/hw/scsi/virtio-scsi.c
+@@ -357,7 +357,6 @@ static void virtio_scsi_do_one_tmf_bh(VirtIOSCSIReq *req)
+ 
      default:
          g_assert_not_reached();
 -        break;
      }
  
-     net_toeplitz_key_init(&key_data, key);
+ out:
 -- 
 2.46.0
 
