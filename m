@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7D89857D4
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DD69857D7
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPxo-00035S-Iv; Wed, 25 Sep 2024 07:13:44 -0400
+	id 1stPxt-0003lS-82; Wed, 25 Sep 2024 07:13:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwJ-0004s6-0c
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwJ-0004ui-Lu
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwH-0003s2-In
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:10 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwH-0003s6-Se
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262728;
+ s=mimecast20190719; t=1727262729;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wkzBGKUlyRgU9QQA/Wd3XK/yIj4C76VWmvHNoa80fTE=;
- b=QN9NuGXm+8dFP5WANmh0JENlLNSLpFEDYCQ0t403vXbg4tpFcXLGEE9gCVWBkghcSjd3xQ
- WxcImpk36Skq3ZC3J8mGpKq7PeWf9wjAOCrtu0ZjATTGMGNvoiGkmsmgKM3e+QXgE2Xhc+
- zC8VDTgMVQ5n3AwDKDh9FllN/DSTg8o=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=JiBT728skRmdm88rj1Bi2KyJhTYibecJXAT1gwEUtJE=;
+ b=SpwYuMJdxhOoQJKrmAMF7qqN9YN6GvbNyk1fwJ2YPzjJXlEbEv+ZDYEii2+h9ZbX3mb1AN
+ oJwqR59WfBqMGbYBjMbVDGjfVz+oH+NW7wd2KSsGTlwofSA1G/ZWYngCBZBYWdPs733TRw
+ Jh9/z1r5lkVgZkhqNPjzrLkWNrNGKJA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-274-HawtOaWrMq6rbD9oxy_nEQ-1; Wed,
- 25 Sep 2024 07:12:05 -0400
-X-MC-Unique: HawtOaWrMq6rbD9oxy_nEQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-mGe3v-JZNtyMHyZc5yM9OA-1; Wed,
+ 25 Sep 2024 07:12:07 -0400
+X-MC-Unique: mGe3v-JZNtyMHyZc5yM9OA-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7FDCF19332AD; Wed, 25 Sep 2024 11:12:04 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 84593197701F; Wed, 25 Sep 2024 11:12:06 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8718E1956094; Wed, 25 Sep 2024 11:12:01 +0000 (UTC)
+ id F25E31956094; Wed, 25 Sep 2024 11:12:04 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 34/44] hw/hyperv: remove return after g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:10:15 +0200
-Message-ID: <20240925111029.24082-35-thuth@redhat.com>
+Subject: [PULL 35/44] hw/net: remove return after g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:10:16 +0200
+Message-ID: <20240925111029.24082-36-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -87,53 +87,66 @@ assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-27-pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-28-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/hyperv/hyperv_testdev.c | 1 -
- hw/hyperv/vmbus.c          | 3 ---
- 2 files changed, 4 deletions(-)
+ hw/net/e1000e_core.c | 2 --
+ hw/net/igb_core.c    | 2 --
+ hw/net/vmxnet3.c     | 1 -
+ 3 files changed, 5 deletions(-)
 
-diff --git a/hw/hyperv/hyperv_testdev.c b/hw/hyperv/hyperv_testdev.c
-index ef50e490c4..a630ca7047 100644
---- a/hw/hyperv/hyperv_testdev.c
-+++ b/hw/hyperv/hyperv_testdev.c
-@@ -89,7 +89,6 @@ static TestSintRoute *sint_route_find(HypervTestDev *dev,
-         }
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index 248381f976..2e4c50ddba 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -562,7 +562,6 @@ e1000e_rss_calc_hash(E1000ECore *core,
+         break;
+     default:
+         g_assert_not_reached();
+-        return 0;
      }
-     g_assert_not_reached();
--    return NULL;
- }
  
- static void sint_route_destroy(HypervTestDev *dev,
-diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
-index 03f415bf22..b36bd3d67d 100644
---- a/hw/hyperv/vmbus.c
-+++ b/hw/hyperv/vmbus.c
-@@ -1890,7 +1890,6 @@ static bool complete_create_gpadl(VMBus *vmbus)
+     return net_rx_pkt_calc_rss_hash(pkt, type, (uint8_t *) &core->mac[RSSRK]);
+@@ -841,7 +840,6 @@ e1000e_ring_free_descr_num(E1000ECore *core, const E1000ERingInfo *r)
      }
  
      g_assert_not_reached();
--    return false;
+-    return 0;
  }
  
- static void handle_gpadl_teardown(VMBus *vmbus,
-@@ -1947,7 +1946,6 @@ static bool complete_teardown_gpadl(VMBus *vmbus)
+ static inline bool
+diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
+index 6be6140771..5dffa12c64 100644
+--- a/hw/net/igb_core.c
++++ b/hw/net/igb_core.c
+@@ -398,7 +398,6 @@ igb_rss_calc_hash(IGBCore *core, struct NetRxPkt *pkt, E1000E_RSSInfo *info)
+         break;
+     default:
+         g_assert_not_reached();
+-        return 0;
+     }
+ 
+     return net_rx_pkt_calc_rss_hash(pkt, type, (uint8_t *) &core->mac[RSSRK]);
+@@ -747,7 +746,6 @@ igb_ring_free_descr_num(IGBCore *core, const E1000ERingInfo *r)
      }
  
      g_assert_not_reached();
--    return false;
+-    return 0;
  }
  
- static void handle_open_channel(VMBus *vmbus, vmbus_message_open_channel *msg,
-@@ -2021,7 +2019,6 @@ static bool complete_open_channel(VMBus *vmbus)
+ static inline bool
+diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
+index bb8583c7ab..8aa8c46228 100644
+--- a/hw/net/vmxnet3.c
++++ b/hw/net/vmxnet3.c
+@@ -456,7 +456,6 @@ vmxnet3_setup_tx_offloads(VMXNET3State *s)
+ 
+     default:
+         g_assert_not_reached();
+-        return false;
      }
  
-     g_assert_not_reached();
--    return false;
- }
- 
- static void vdev_reset_on_close(VMBusDevice *vdev)
+     return true;
 -- 
 2.46.0
 
