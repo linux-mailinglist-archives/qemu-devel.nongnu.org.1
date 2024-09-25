@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081C998656B
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 19:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BD1986582
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 19:15:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stVYp-0001mD-EZ; Wed, 25 Sep 2024 13:12:19 -0400
+	id 1stVYV-0000PE-RO; Wed, 25 Sep 2024 13:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1stVYO-0000KW-Le
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:55 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1stVYN-0000JO-1b
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:52 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1stVYK-0000bS-4W
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:51 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-378f90ad32dso31612f8f.0
- for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 10:11:46 -0700 (PDT)
+ id 1stVYJ-0000b5-9V
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:50 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-37cc810ce73so10585f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 10:11:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727284305; x=1727889105; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=YKiMcMVIgaI1u5EOrQ7wt/HfEOtyQ4ZcHqLFruvQEk8=;
- b=qgf8hvTyZaRG1U8A0vyqHLwZ5tG11Q4AgfZ4CB89J8o8N36qsW2P+678Su8vRvxdFr
- xOmsZF2ecKibrpKKZkiIt9oNKM4zZgbsOW4Gsl+JCPWvUZgJ0kk1RT1s25ITNliAHXXT
- i17GdsiqMk8jHcg2Ctb2mDI+H7z+VfQoIUmInBpGYf3+wMJ25CYd9TShiOelsc0k52jD
- /57viSVYljb/RQMVBb00oGIQg2TLmyFwtbyhGI7W80WDXLAvxRhsEkQ0FZUXFazbn/oF
- kV104mLOWrhqB7GeqMIRBQBjarsguexRkO6YxIjvwXWHUBAm6/9paXsA6EL5BmFs1cip
- 2E6g==
+ d=linaro.org; s=google; t=1727284302; x=1727889102; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=c3Onvi9UHbad6ukc7arbUZKYIPfwRyBIrmeNY5wtelU=;
+ b=dGX6XQxkXwLwxuiCSlgfKrvahmbsgaoZUcjptwk9LSo2lxOTjzoL4W3uk1nFsz+Sad
+ 3GI3kYdFlg/bWOleRDY2oljrvvyBckOPzIZpZAAXn8k9lojPNqNiKsIpYnQyCkFqAGOe
+ pBuzjGSJ45cHaVNixPzGw3YyBEXgliYC/KJp58N9jaOkS3rVrdNbWDMKjZffL270WXSl
+ RfZwyAbSx6MTCP5oe7GkpZxa4BRD98oJsyt16RC6qTcyRjT9kAkMAQ/Goi//UGK6Mi0A
+ GNC4eB81vbQv3lKyJOPSeTOMbnrvsnOcbA+Wom8NnSzIdcRxXuTBstuDZ3VtQE8yksun
+ Xs7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727284305; x=1727889105;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YKiMcMVIgaI1u5EOrQ7wt/HfEOtyQ4ZcHqLFruvQEk8=;
- b=fE/gV6THGdCbpITSzQZ4LQVT7xaY6V6bS3MVhJq8ZWJ1tgh76zNYlUAlIJ9eHWDZOl
- 0HuUC3lKIF1wm3/mCIsVLmTVnYIEiD8AehkDRxnje7ZLLxUjn4408pdbhXMqMEvvsckh
- Q/m6Kacx5M5AIv+pqcyCgbV14j08tSDwlQ6hIgHZyMOI6p2IEZt7np6951TSf5SIbcqE
- RsiBQAtPraejGPPeJ63TgEuY2alyxuHWHoNYGhvnFSsf/2xOrBQF6nqVQELaiwofNjAE
- eMbhTCEBPC9JLLTITuLMW4Rma4bhk9OL92tU0nSSMN1no9SVTot1D7vZGCA1jl1CSkMq
- iGlA==
-X-Gm-Message-State: AOJu0YzfGPnWCz8DtU/j0nR+vkfiCskPR52vrtWu9SX0auQX1GC2+nlz
- 0BVH37voejtXjQeaJ2TuEdeDdgkcA0lygc5lHDSpnmRF4CCUmQxH9Par+p+p/+4=
-X-Google-Smtp-Source: AGHT+IGlSP0Jlk8NPTfdGfqLOuwAKaNghDViO1/OMw6Z7pw6Tee/O07cZuWwhv/1xXRFpiFAXO7XGg==
-X-Received: by 2002:adf:fac5:0:b0:374:b685:672 with SMTP id
- ffacd0b85a97d-37cc248b5b4mr2184119f8f.26.1727284304867; 
- Wed, 25 Sep 2024 10:11:44 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1727284302; x=1727889102;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=c3Onvi9UHbad6ukc7arbUZKYIPfwRyBIrmeNY5wtelU=;
+ b=t9EkwcTA3flE8B+ralil0k+JOVDk69Nc/Uc+c07Dpn+LcrLTT+P3Ec1YKDyGrgSctW
+ Qm3Tow/5nvr3CGxF8xH9iDVWs4w68c4jApFV+sz3giKxdPYN+z+bRH/gP+d65RaeY5mB
+ i1bLaSY2xoqqKGZkzfJnHb0MFwG7Nr0Mes0axbiX2RbrldTFJZDfu1W7zZT1Qcrsyp2b
+ LEGgqFmGG6NvTd8c4BQtze6mJr4zfaoh4MrjsR6X8cDQObBKhzO4LghtBqpexEkJYsNO
+ 9j2FPK/OdSzDqDFQNvgZlh3A3jYgwnzReBhdE4QgkTxFGQ8fDMQVo6QSlKMSkDAWu21m
+ JeFQ==
+X-Gm-Message-State: AOJu0Yw7xBqoWoh1+ccEpM/ODKYRYTPV5AK95vfcwFyDSXC6uk8iC4xC
+ 7we+Klm4LLG74Fic0p8PoE9F4rmLCFCcPnGGj2xZKMMeCc3M2z7eHJ5z4gVhAzM=
+X-Google-Smtp-Source: AGHT+IGU9YspaaYUHAocJNpuK/dESiOM4/xW0oakkSg3HjbqR0jo4IN7CZSLTTUEdfpSOxiESLD4oA==
+X-Received: by 2002:adf:e341:0:b0:371:9377:975f with SMTP id
+ ffacd0b85a97d-37cc248404amr1850453f8f.25.1727284302309; 
+ Wed, 25 Sep 2024 10:11:42 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cbc2c226esm4455006f8f.36.2024.09.25.10.11.41
+ ffacd0b85a97d-37cbc2c13cesm4508393f8f.29.2024.09.25.10.11.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 25 Sep 2024 10:11:41 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 542CF5F8E4;
+ by draig.lan (Postfix) with ESMTP id 6E4A45F920;
  Wed, 25 Sep 2024 18:11:40 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,22 +78,25 @@ Cc: Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Marcelo Tosatti <mtosatti@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <thuth@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 00/10] maintainer updates (testing, gdbstub)
-Date: Wed, 25 Sep 2024 18:11:30 +0100
-Message-Id: <20240925171140.1307033-1-alex.bennee@linaro.org>
+ Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH 01/10] testing: bump mips64el cross to bookworm and allow to
+ fail
+Date: Wed, 25 Sep 2024 18:11:31 +0100
+Message-Id: <20240925171140.1307033-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20240925171140.1307033-1-alex.bennee@linaro.org>
+References: <20240925171140.1307033-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,50 +112,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Welcome to the first post KVM forum series. We have:
+The mips64el cross setup is very broken for bullseye which has now
+entered LTS support so is unlikely to be fixed. While we still can't
+build the container for bookworm due to a single missing dependency
+that will hopefully get fixed in due course. For the sake of keeping
+the CI green we mark it as allow_fail for the time being.
 
-  - fix from Ilya for microblaze atomics
-  - Pierrick's tsan updates
-  - I've added my testing and gdbstub trees to MAINTAINERS
-  - enabled a very basic aarch64_be-linux-user test
-  - fixed the missing gdb XML fails that cause aarch64_be-linux-user to assert
-  - finally I've made the mips64el cross compiler bookworm and allow_fail
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+---
+ .gitlab-ci.d/container-cross.yml                      |  3 +++
+ tests/docker/dockerfiles/debian-mips64el-cross.docker | 10 ++++------
+ tests/lcitool/refresh                                 |  2 +-
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
-Alex Bennée (6):
-  testing: bump mips64el cross to bookworm and allow to fail
-  tests/docker: add NOFETCH env variable for testing
-  MAINTAINERS: mention my testing/next tree
-  MAINTAINERS: mention my gdbstub/next tree
-  config/targets: update aarch64_be-linux-user gdb XML list
-  tests/tcg: enable basic testing for aarch64_be-linux-user
-
-Ilya Leoshkevich (1):
-  tests/docker: Fix microblaze atomics
-
-Pierrick Bouvier (3):
-  meson: hide tsan related warnings
-  target/i386: fix build warning (gcc-12 -fsanitize=thread)
-  docs/devel: update tsan build documentation
-
- MAINTAINERS                                   |  2 ++
- docs/devel/testing/main.rst                   | 26 +++++++++++---
- configure                                     |  5 +++
- configs/targets/aarch64_be-linux-user.mak     |  2 +-
- meson.build                                   | 10 +++++-
- target/i386/kvm/kvm.c                         |  4 +--
- tests/tcg/aarch64_be/hello.c                  | 35 +++++++++++++++++++
- .gitlab-ci.d/container-cross.yml              |  3 ++
- tests/docker/Makefile.include                 |  5 +--
- .../build-toolchain.sh                        |  8 +++++
- .../dockerfiles/debian-mips64el-cross.docker  | 10 +++---
- .../dockerfiles/debian-toolchain.docker       |  7 ++++
- tests/lcitool/refresh                         |  2 +-
- tests/tcg/Makefile.target                     |  7 +++-
- tests/tcg/aarch64_be/Makefile.target          | 17 +++++++++
- 15 files changed, 125 insertions(+), 18 deletions(-)
- create mode 100644 tests/tcg/aarch64_be/hello.c
- create mode 100644 tests/tcg/aarch64_be/Makefile.target
-
+diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
+index 34c0e729ad..c567926182 100644
+--- a/.gitlab-ci.d/container-cross.yml
++++ b/.gitlab-ci.d/container-cross.yml
+@@ -49,6 +49,9 @@ i686-debian-cross-container:
+ mips64el-debian-cross-container:
+   extends: .container_job_template
+   stage: containers
++  # Currently waiting for Debian to fix:
++  #  libgl1-mesa-dri:mips64el : Depends: libllvm15:mips64el but it is not going to be installed
++  allow_failure: true
+   variables:
+     NAME: debian-mips64el-cross
+ 
+diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+index 2862785692..69d6e8cd11 100644
+--- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all --cross-arch mips64el debian-11 qemu
++#  $ lcitool dockerfile --layers all --cross-arch mips64el debian-12 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+-FROM docker.io/library/debian:11-slim
++FROM docker.io/library/debian:12-slim
+ 
+ RUN export DEBIAN_FRONTEND=noninteractive && \
+     apt-get update && \
+@@ -48,16 +48,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
+-                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
+-                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       tar \
+                       tesseract-ocr \
+                       tesseract-ocr-eng \
+@@ -69,8 +68,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     dpkg-reconfigure locales && \
+     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED
+ 
+-RUN /usr/bin/pip3 install tomli
+-
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+@@ -143,6 +140,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libvdeplug-dev:mips64el \
+                       libvirglrenderer-dev:mips64el \
+                       libvte-2.91-dev:mips64el \
++                      libxdp-dev:mips64el \
+                       libzstd-dev:mips64el \
+                       nettle-dev:mips64el \
+                       systemtap-sdt-dev:mips64el \
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index 92381f3c46..a78219f7bc 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -166,7 +166,7 @@ try:
+                                             "x86_64-linux-user,"
+                                             "i386-softmmu,i386-linux-user"))
+ 
+-    generate_dockerfile("debian-mips64el-cross", "debian-11",
++    generate_dockerfile("debian-mips64el-cross", "debian-12",
+                         cross="mips64el",
+                         trailer=cross_build("mips64el-linux-gnuabi64-",
+                                             "mips64el-softmmu,mips64el-linux-user"))
 -- 
 2.39.5
 
