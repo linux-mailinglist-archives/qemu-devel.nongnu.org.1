@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE1B9857CB
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFFD9857C6
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:14:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPy9-0005EP-EI; Wed, 25 Sep 2024 07:14:05 -0400
+	id 1stPxr-0003fx-3p; Wed, 25 Sep 2024 07:13:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwe-0006ah-6J
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:33 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwf-0006gE-Kz
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwb-000402-Hb
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:30 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwd-00040q-UY
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262748;
+ s=mimecast20190719; t=1727262750;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=htGtxccsCyLJzJw3INxtPFKpLYjofSjahFL8NefGrrs=;
- b=G9Z+SsigBXA1/MPivInHic2l/XM4qqj83PG/I7Tts66myKZUuuf//lS+vFNSIsz62r0oiz
- dkBlRZJsmawyeeE6kxXjTY0iW1A2qrjzhQnpLvOKxuzDd7JvGMosa0ZfuRORPRr6/ntU4d
- vQLJ9VMa443SVsXMNeMLoQb+P9MolI4=
+ bh=mnhOt4A+tUtlf00Ic65PLK009/y0PlsO2AKKzYEyQmE=;
+ b=FW4ZubkyVexbbjSd6pRROpWiYJDbcdzSKgX/LWM0e+GzTuzOYmLCwVz03lqDSGxKhftfkS
+ I2alLeLUD5hoSjOQxL5ltfM/ykexoCsKTl0/hma8i7k1znZHopbAAaomHzhFr4elKjl7vn
+ Wd8qUpgQkopUHHHvkJ7zn2BVTO/mTFc=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-joDpd0owP4eGgj2l8crWzg-1; Wed,
- 25 Sep 2024 07:12:25 -0400
-X-MC-Unique: joDpd0owP4eGgj2l8crWzg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-s5A0gX_2OryNHjlTTnehCw-1; Wed,
+ 25 Sep 2024 07:12:28 -0400
+X-MC-Unique: s5A0gX_2OryNHjlTTnehCw-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 816AD1955E75; Wed, 25 Sep 2024 11:12:24 +0000 (UTC)
+ id 113991955E75; Wed, 25 Sep 2024 11:12:27 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9D2041956094; Wed, 25 Sep 2024 11:12:22 +0000 (UTC)
+ id 395101956094; Wed, 25 Sep 2024 11:12:24 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 42/44] scripts/checkpatch.pl: emit error when using
- assert(false)
-Date: Wed, 25 Sep 2024 13:10:23 +0200
-Message-ID: <20240925111029.24082-43-thuth@redhat.com>
+Subject: [PULL 43/44] .gitlab-ci.d: Split build and test in cross build job
+ templates
+Date: Wed, 25 Sep 2024 13:10:24 +0200
+Message-ID: <20240925111029.24082-44-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -80,36 +80,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-This patch is part of a series that moves towards a consistent use of
-g_assert_not_reached() rather than an ad hoc mix of different
-assertion mechanisms.
+In the native_build_job_template we have separate steps in the script
+for the build and the test steps.  This is helpful because then
+gitlab will give separate timestamps in the log view for each, and
+you can see how long it took to compile vs how long to test.  In the
+templates in crossbuild-template.yml, however, we do both the build
+and test in a single 'make' invocation, and so we don't get the
+separate timing information.
 
+Split the build and test, in the same way we do in the native build
+template.
+
+This will also give us a place to separate out how parallel we want
+to do the build by default from how parallel we want to do the tests
+by default, which might be helpful in future.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-35-pierrick.bouvier@linaro.org>
-[thuth: Split long line to avoid checkpatch error]
+Message-ID: <20240918125449.3125571-2-peter.maydell@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- scripts/checkpatch.pl | 4 ++++
- 1 file changed, 4 insertions(+)
+ .gitlab-ci.d/crossbuild-template.yml | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 65b6f46f90..1b21249c91 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3102,6 +3102,10 @@ sub process {
- 		if ($line =~ /\b(g_)?assert\(0\)/) {
- 			ERROR("use g_assert_not_reached() instead of assert(0)\n" . $herecurr);
- 		}
-+		if ($line =~ /\b(g_)?assert\(false\)/) {
-+			ERROR("use g_assert_not_reached() instead of assert(false)\n" .
-+			      $herecurr);
-+		}
- 		if ($line =~ /\bstrerrorname_np\(/) {
- 			ERROR("use strerror() instead of strerrorname_np()\n" . $herecurr);
- 		}
+diff --git a/.gitlab-ci.d/crossbuild-template.yml b/.gitlab-ci.d/crossbuild-template.yml
+index 2ce0432eb7..d1cb7a35db 100644
+--- a/.gitlab-ci.d/crossbuild-template.yml
++++ b/.gitlab-ci.d/crossbuild-template.yml
+@@ -9,6 +9,7 @@
+     when: always
+   timeout: 80m
+   before_script:
++    - JOBS=$(expr $(nproc) + 1)
+     - cat /packages.txt
+   script:
+     - export CCACHE_BASEDIR="$(pwd)"
+@@ -24,7 +25,11 @@
+           i386-softmmu microblaze-softmmu mips-softmmu mipsel-softmmu
+           mips64-softmmu ppc-softmmu riscv32-softmmu sh4-softmmu
+           sparc-softmmu xtensa-softmmu $CROSS_SKIP_TARGETS"
+-    - make -j$(expr $(nproc) + 1) all check-build $MAKE_CHECK_ARGS
++    - make -j"$JOBS" all check-build
++    - if test -n "$MAKE_CHECK_ARGS";
++      then
++        $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
++      fi
+     - if grep -q "EXESUF=.exe" config-host.mak;
+       then make installer;
+       version="$(git describe --match v[0-9]* 2>/dev/null || git rev-parse --short HEAD)";
+@@ -46,6 +51,8 @@
+     paths:
+       - ccache/
+     key: "$CI_JOB_NAME"
++  before_script:
++    - JOBS=$(expr $(nproc) + 1)
+   script:
+     - export CCACHE_BASEDIR="$(pwd)"
+     - export CCACHE_DIR="$CCACHE_BASEDIR/ccache"
+@@ -55,7 +62,11 @@
+     - cd build
+     - ../configure --enable-werror --disable-docs $QEMU_CONFIGURE_OPTS
+         --disable-tools --enable-${ACCEL:-kvm} $EXTRA_CONFIGURE_OPTS
+-    - make -j$(expr $(nproc) + 1) all check-build $MAKE_CHECK_ARGS
++    - make -j"$JOBS" all check-build
++    - if test -n "$MAKE_CHECK_ARGS";
++      then
++        $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
++      fi
+ 
+ .cross_user_build_job:
+   extends: .base_job_template
+@@ -65,6 +76,8 @@
+     paths:
+       - ccache/
+     key: "$CI_JOB_NAME"
++  before_script:
++    - JOBS=$(expr $(nproc) + 1)
+   script:
+     - export CCACHE_BASEDIR="$(pwd)"
+     - export CCACHE_DIR="$CCACHE_BASEDIR/ccache"
+@@ -76,7 +89,11 @@
+           alpha-linux-user m68k-linux-user microblazeel-linux-user
+           or1k-linux-user ppc-linux-user sparc-linux-user
+           xtensa-linux-user $CROSS_SKIP_TARGETS"
+-    - make -j$(expr $(nproc) + 1) all check-build $MAKE_CHECK_ARGS
++    - make -j"$JOBS" all check-build
++    - if test -n "$MAKE_CHECK_ARGS";
++      then
++        $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
++      fi
+ 
+ # We can still run some tests on some of our cross build jobs. They can add this
+ # template to their extends to save the build logs and test results
 -- 
 2.46.0
 
