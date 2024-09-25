@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CEA9857DB
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7D89857D4
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPwb-0005Rf-5Y; Wed, 25 Sep 2024 07:12:30 -0400
+	id 1stPxo-00035S-Iv; Wed, 25 Sep 2024 07:13:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwE-0004Vj-1L
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:06 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwJ-0004s6-0c
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwC-0003pA-FO
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:05 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPwH-0003s2-In
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:12:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262723;
+ s=mimecast20190719; t=1727262728;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tI4/cDzqMiZaX+QC57XjuOqEXcKPrBnOpVVF8uKbOJE=;
- b=WDwpQEjCorzA02e2gmacsGRPUDnGkYk+kt7oGXpaKWKfpU1922jSV213tcXKkwCTn08lVh
- 6bdwhpw8Yw91LKkBW3BKPstd7LIGSYToP/pyLyIKc+uwjJTs1QXqRiinDPydri8hJvJED9
- a7ubkug3hGoJaOYo9A61bxKX1yxt84E=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=wkzBGKUlyRgU9QQA/Wd3XK/yIj4C76VWmvHNoa80fTE=;
+ b=QN9NuGXm+8dFP5WANmh0JENlLNSLpFEDYCQ0t403vXbg4tpFcXLGEE9gCVWBkghcSjd3xQ
+ WxcImpk36Skq3ZC3J8mGpKq7PeWf9wjAOCrtu0ZjATTGMGNvoiGkmsmgKM3e+QXgE2Xhc+
+ zC8VDTgMVQ5n3AwDKDh9FllN/DSTg8o=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-478-QJAW_vO_Nze3j5PZXM-tVw-1; Wed,
- 25 Sep 2024 07:12:02 -0400
-X-MC-Unique: QJAW_vO_Nze3j5PZXM-tVw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-274-HawtOaWrMq6rbD9oxy_nEQ-1; Wed,
+ 25 Sep 2024 07:12:05 -0400
+X-MC-Unique: HawtOaWrMq6rbD9oxy_nEQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8061A19367B8; Wed, 25 Sep 2024 11:12:01 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7FDCF19332AD; Wed, 25 Sep 2024 11:12:04 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ED93E1956094; Wed, 25 Sep 2024 11:11:59 +0000 (UTC)
+ id 8718E1956094; Wed, 25 Sep 2024 11:12:01 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 33/44] include/qemu: remove return after g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:10:14 +0200
-Message-ID: <20240925111029.24082-34-thuth@redhat.com>
+Subject: [PULL 34/44] hw/hyperv: remove return after g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:10:15 +0200
+Message-ID: <20240925111029.24082-35-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -87,24 +87,53 @@ assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-26-pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-27-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/qemu/pmem.h | 1 -
- 1 file changed, 1 deletion(-)
+ hw/hyperv/hyperv_testdev.c | 1 -
+ hw/hyperv/vmbus.c          | 3 ---
+ 2 files changed, 4 deletions(-)
 
-diff --git a/include/qemu/pmem.h b/include/qemu/pmem.h
-index d2d7ad085c..e12a67ba2c 100644
---- a/include/qemu/pmem.h
-+++ b/include/qemu/pmem.h
-@@ -22,7 +22,6 @@ pmem_memcpy_persist(void *pmemdest, const void *src, size_t len)
-     /* If 'pmem' option is 'on', we should always have libpmem support,
-        or qemu will report a error and exit, never come here. */
+diff --git a/hw/hyperv/hyperv_testdev.c b/hw/hyperv/hyperv_testdev.c
+index ef50e490c4..a630ca7047 100644
+--- a/hw/hyperv/hyperv_testdev.c
++++ b/hw/hyperv/hyperv_testdev.c
+@@ -89,7 +89,6 @@ static TestSintRoute *sint_route_find(HypervTestDev *dev,
+         }
+     }
      g_assert_not_reached();
 -    return NULL;
  }
  
- static inline void
+ static void sint_route_destroy(HypervTestDev *dev,
+diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
+index 03f415bf22..b36bd3d67d 100644
+--- a/hw/hyperv/vmbus.c
++++ b/hw/hyperv/vmbus.c
+@@ -1890,7 +1890,6 @@ static bool complete_create_gpadl(VMBus *vmbus)
+     }
+ 
+     g_assert_not_reached();
+-    return false;
+ }
+ 
+ static void handle_gpadl_teardown(VMBus *vmbus,
+@@ -1947,7 +1946,6 @@ static bool complete_teardown_gpadl(VMBus *vmbus)
+     }
+ 
+     g_assert_not_reached();
+-    return false;
+ }
+ 
+ static void handle_open_channel(VMBus *vmbus, vmbus_message_open_channel *msg,
+@@ -2021,7 +2019,6 @@ static bool complete_open_channel(VMBus *vmbus)
+     }
+ 
+     g_assert_not_reached();
+-    return false;
+ }
+ 
+ static void vdev_reset_on_close(VMBusDevice *vdev)
 -- 
 2.46.0
 
