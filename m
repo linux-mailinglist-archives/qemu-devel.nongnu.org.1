@@ -2,66 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E177E9863C3
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 17:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 747BC9863BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 17:38:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stU5h-0007lN-Dw; Wed, 25 Sep 2024 11:38:10 -0400
+	id 1stU55-0005nB-5k; Wed, 25 Sep 2024 11:37:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jusual@redhat.com>) id 1stU5d-0007Zd-8l
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 11:38:05 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1stU53-0005l4-Mi
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 11:37:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jusual@redhat.com>) id 1stU5Z-0004I9-Nf
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 11:38:04 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1stU52-0004FI-1o
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 11:37:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727278680;
+ s=mimecast20190719; t=1727278647;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ObYTbRHSwpKo/lff7oF/ipPXIuM9J3H215MZU6dkM8M=;
- b=DH+yPJdtdGz86RHWrdS3x4Gmc+9lXJP99zPVyzv6kILaRqepVBBxFo4plpPk4sqUsAuhOM
- 09CyOMQnQ/Qb4montrsyLQE/KuMgqWArIh05mzfh15SphViVFQcy2yahd5Qju5pq2HG+XH
- ORB/im/OSFJkrtZmOSGtwhTJhyWhypw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-27-vniCtcX2OPKkisL1i03xag-1; Wed,
- 25 Sep 2024 11:36:46 -0400
-X-MC-Unique: vniCtcX2OPKkisL1i03xag-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B708818E6D22; Wed, 25 Sep 2024 15:36:44 +0000 (UTC)
-Received: from tpx1cg9.redhat.com (unknown [10.22.8.79])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6A17519560AA; Wed, 25 Sep 2024 15:36:40 +0000 (UTC)
-From: Julia Suvorova <jusual@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Song Gao <gaosong@loongson.cn>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Julia Suvorova <jusual@redhat.com>
-Subject: [PATCH 2/2] target/i386/kvm: Report which action failed in
- kvm_arch_put/get_registers
-Date: Wed, 25 Sep 2024 17:36:23 +0200
-Message-ID: <20240925153625.183600-3-jusual@redhat.com>
-In-Reply-To: <20240925153625.183600-1-jusual@redhat.com>
-References: <20240925153625.183600-1-jusual@redhat.com>
+ bh=Mwo0nQN6p28vdtVCeKttppdlVcc5ZqRPU3vfHB9F/VM=;
+ b=SXc+S2ya0tUY6NoExdH2PG30VxHzHE0HHiyV7gRroX24eACJxriBRVHQNXY2Z9eNZNc+o0
+ J8zbjZ9dT3/PeMTDeotwWNcjsJgmDvjUkiRYyOIEB9ICBN+B3LLq1HQoBB4ZFOxnHBfy05
+ VuPIv37PKrfz2/BLOmUMoAmu3rITij0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-450-FQ8sVqQZM2GBvs5YT1OVKg-1; Wed, 25 Sep 2024 11:37:26 -0400
+X-MC-Unique: FQ8sVqQZM2GBvs5YT1OVKg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-42cb374f0cdso170015e9.0
+ for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 08:37:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727278645; x=1727883445;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:subject:from:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Mwo0nQN6p28vdtVCeKttppdlVcc5ZqRPU3vfHB9F/VM=;
+ b=c2S6voqiWWFFJbBFwQLh4Z+xqTGt6YnVXRSvsUuztDnGCLA4sw/4QQyZY71GeMiGcS
+ zo7PtDYH9QSBlC+Wq0bVIn+gIaA8b12ciEekjqlTgSEI1cn0htBbsl8wk2LrvoSlrytu
+ dO3jUmIaTSWHvwekOz4tg9DXr56cpc1KM+wP4yq27e+NtBW/xwOn6a+cipY5aBb44JVH
+ 8OJpL5tllKpJZMZr4fzZnEpn4TbcBhDE52gfAPA2rB1JicpKEdYceUjvJRVzzHBC4A+c
+ Nvb/Lai7KyAwhMwHBxaUOKvIz2Ms6m6Rw+ofe9AkArI9RxNx/MJZljWsL719NZ3NYYnK
+ kvKA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX++WfHgxTBCBSQJQxMIKOFXUttZA6707PfbhfnVQoiXMruP/q/jlfrbIX7ySIdNoiL0tfJvfVjPsc5@nongnu.org
+X-Gm-Message-State: AOJu0Yx//p2Iwl7zZG8+g5a/AlBkgjTGww1fGEBrdw5+V5hnKHG/DS2r
+ jxSemWgQZvyLsIjCMDwuXfBAGZCRDsVPSaPFdIjONoH26fU/o13vRg6PYkQRvuLrsp/Iv6QHvEc
+ sehBbX6UsPkHy1buBMjNn59n4+wg5rxQ2YdfK6OjuX4M1HMYaqRKs
+X-Received: by 2002:a05:600c:3b21:b0:42c:b2a2:af3a with SMTP id
+ 5b1f17b1804b1-42f521d94damr264185e9.9.1727278644653; 
+ Wed, 25 Sep 2024 08:37:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHwl6thZEGPydbvS4ICk5EFO8ZNZJlN78DL3XxyJzjA9Rj6HcVhWupvBeB1okCMzyNr6FFXA==
+X-Received: by 2002:a05:600c:3b21:b0:42c:b2a2:af3a with SMTP id
+ 5b1f17b1804b1-42f521d94damr264015e9.9.1727278644253; 
+ Wed, 25 Sep 2024 08:37:24 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37cc60ecbccsm1564331f8f.38.2024.09.25.08.37.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 25 Sep 2024 08:37:23 -0700 (PDT)
+Message-ID: <9ee5b660-c3d1-49a4-8123-e15219fe2d60@redhat.com>
+Date: Wed, 25 Sep 2024 17:37:22 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jusual@redhat.com;
+User-Agent: Mozilla Thunderbird
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Subject: Re: [PATCH 02/23] hw/ppc/e500: Reduce scope of env pointer
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Corey Minyard <cminyard@mvista.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-block@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>
+References: <20240923093016.66437-1-shentey@gmail.com>
+ <20240923093016.66437-3-shentey@gmail.com>
+Content-Language: en-US, fr
+In-Reply-To: <20240923093016.66437-3-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -86,163 +110,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To help debug and triage future failure reports (akin to [1,2]) that
-may occur during kvm_arch_put/get_registers, the error path of each
-action is accompanied by unique error message.
+On 9/23/24 11:29, Bernhard Beschow wrote:
+> The env pointer isn't used outside the for loop, so move it inside. After that,
+> the firstenv pointer is never read, so remove it.
 
-[1] https://issues.redhat.com/browse/RHEL-7558
-[2] https://issues.redhat.com/browse/RHEL-21761
+Just wondering, have you considered introducing an PowerPCCPU array
+under the machine state ?
 
-Signed-off-by: Julia Suvorova <jusual@redhat.com>
----
- target/i386/kvm/kvm.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+This would be an intermediate step towards the introduction of an SoC
+model (in the long term)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 039ed08825..7cdc87f855 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -5133,6 +5133,7 @@ int kvm_arch_put_registers(CPUState *cpu, int level, Error **errp)
-     if (level >= KVM_PUT_RESET_STATE) {
-         ret = kvm_put_msr_feature_control(x86_cpu);
-         if (ret < 0) {
-+            error_setg_errno(errp, -ret, "Failed to set feature control MSR");
-             return ret;
-         }
-     }
-@@ -5140,12 +5141,14 @@ int kvm_arch_put_registers(CPUState *cpu, int level, Error **errp)
-     /* must be before kvm_put_nested_state so that EFER.SVME is set */
-     ret = has_sregs2 ? kvm_put_sregs2(x86_cpu) : kvm_put_sregs(x86_cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to set special registers");
-         return ret;
-     }
- 
-     if (level >= KVM_PUT_RESET_STATE) {
-         ret = kvm_put_nested_state(x86_cpu);
-         if (ret < 0) {
-+            error_setg_errno(errp, -ret, "Failed to set nested state");
-             return ret;
-         }
-     }
-@@ -5163,6 +5166,7 @@ int kvm_arch_put_registers(CPUState *cpu, int level, Error **errp)
-     if (xen_mode == XEN_EMULATE && level == KVM_PUT_FULL_STATE) {
-         ret = kvm_put_xen_state(cpu);
-         if (ret < 0) {
-+            error_setg_errno(errp, -ret, "Failed to set Xen state");
-             return ret;
-         }
-     }
-@@ -5170,37 +5174,45 @@ int kvm_arch_put_registers(CPUState *cpu, int level, Error **errp)
- 
-     ret = kvm_getput_regs(x86_cpu, 1);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to set general purpose registers");
-         return ret;
-     }
-     ret = kvm_put_xsave(x86_cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to set XSAVE");
-         return ret;
-     }
-     ret = kvm_put_xcrs(x86_cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to set XCRs");
-         return ret;
-     }
-     ret = kvm_put_msrs(x86_cpu, level);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to set MSRs");
-         return ret;
-     }
-     ret = kvm_put_vcpu_events(x86_cpu, level);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to set vCPU events");
-         return ret;
-     }
-     if (level >= KVM_PUT_RESET_STATE) {
-         ret = kvm_put_mp_state(x86_cpu);
-         if (ret < 0) {
-+            error_setg_errno(errp, -ret, "Failed to set MP state");
-             return ret;
-         }
-     }
- 
-     ret = kvm_put_tscdeadline_msr(x86_cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to set TSC deadline MSR");
-         return ret;
-     }
-     ret = kvm_put_debugregs(x86_cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to set debug registers");
-         return ret;
-     }
-     return 0;
-@@ -5215,6 +5227,7 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
- 
-     ret = kvm_get_vcpu_events(cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get vCPU events");
-         goto out;
-     }
-     /*
-@@ -5223,44 +5236,54 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
-      */
-     ret = kvm_get_mp_state(cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get MP state");
-         goto out;
-     }
-     ret = kvm_getput_regs(cpu, 0);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get general purpose registers");
-         goto out;
-     }
-     ret = kvm_get_xsave(cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get XSAVE");
-         goto out;
-     }
-     ret = kvm_get_xcrs(cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get XCRs");
-         goto out;
-     }
-     ret = has_sregs2 ? kvm_get_sregs2(cpu) : kvm_get_sregs(cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get special registers");
-         goto out;
-     }
-     ret = kvm_get_msrs(cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get MSRs");
-         goto out;
-     }
-     ret = kvm_get_apic(cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get APIC");
-         goto out;
-     }
-     ret = kvm_get_debugregs(cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get debug registers");
-         goto out;
-     }
-     ret = kvm_get_nested_state(cpu);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Failed to get nested state");
-         goto out;
-     }
- #ifdef CONFIG_XEN_EMU
-     if (xen_mode == XEN_EMULATE) {
-         ret = kvm_get_xen_state(cs);
-         if (ret < 0) {
-+            error_setg_errno(errp, -ret, "Failed to get Xen state");
-             goto out;
-         }
-     }
--- 
-2.45.0
+Thanks,
+
+C.
+
+
+
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   hw/ppc/e500.c | 9 +--------
+>   1 file changed, 1 insertion(+), 8 deletions(-)
+> 
+> diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+> index 75b051009f..f68779a1ea 100644
+> --- a/hw/ppc/e500.c
+> +++ b/hw/ppc/e500.c
+> @@ -899,7 +899,6 @@ void ppce500_init(MachineState *machine)
+>       const PPCE500MachineClass *pmc = PPCE500_MACHINE_GET_CLASS(machine);
+>       MachineClass *mc = MACHINE_CLASS(pmc);
+>       PCIBus *pci_bus;
+> -    CPUPPCState *env = NULL;
+>       uint64_t loadaddr;
+>       hwaddr kernel_base = -1LL;
+>       int kernel_size = 0;
+> @@ -921,7 +920,6 @@ void ppce500_init(MachineState *machine)
+>       IrqLines *irqs;
+>       DeviceState *dev, *mpicdev;
+>       DriveInfo *dinfo;
+> -    CPUPPCState *firstenv = NULL;
+>       MemoryRegion *ccsr_addr_space;
+>       SysBusDevice *s;
+>       PPCE500CCSRState *ccsr;
+> @@ -930,6 +928,7 @@ void ppce500_init(MachineState *machine)
+>       irqs = g_new0(IrqLines, smp_cpus);
+>       for (i = 0; i < smp_cpus; i++) {
+>           PowerPCCPU *cpu;
+> +        CPUPPCState *env;
+>           CPUState *cs;
+>   
+>           cpu = POWERPC_CPU(object_new(machine->cpu_type));
+> @@ -950,10 +949,6 @@ void ppce500_init(MachineState *machine)
+>                                    &error_abort);
+>           qdev_realize_and_unref(DEVICE(cs), NULL, &error_fatal);
+>   
+> -        if (!firstenv) {
+> -            firstenv = env;
+> -        }
+> -
+>           irqs[i].irq[OPENPIC_OUTPUT_INT] =
+>               qdev_get_gpio_in(DEVICE(cpu), PPCE500_INPUT_INT);
+>           irqs[i].irq[OPENPIC_OUTPUT_CINT] =
+> @@ -974,8 +969,6 @@ void ppce500_init(MachineState *machine)
+>           }
+>       }
+>   
+> -    env = firstenv;
+> -
+>       if (!QEMU_IS_ALIGNED(machine->ram_size, RAM_SIZES_ALIGN)) {
+>           error_report("RAM size must be multiple of %" PRIu64, RAM_SIZES_ALIGN);
+>           exit(EXIT_FAILURE);
 
 
