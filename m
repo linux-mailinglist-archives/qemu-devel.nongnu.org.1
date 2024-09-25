@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102A49857C2
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:14:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D90789857CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPvY-0000Fk-Bw; Wed, 25 Sep 2024 07:11:24 -0400
+	id 1stPvZ-0000LH-AS; Wed, 25 Sep 2024 07:11:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvV-00009u-Te
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvV-00009s-TX
  for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvR-0003WZ-5q
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvS-0003Wy-Ap
  for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262676;
+ s=mimecast20190719; t=1727262677;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hVX5F6Pv9Y4G1nUu8Eh+Z6IKHmSKXDGevjC1ZtuA1IA=;
- b=EjGXXjssFeAZ4xom40hI30+DqmwtUvEYufQgAFVuMOwxeq1uCMPLKI74vdjVkF/F2MrZhB
- wOg7TYPc/nwbc5A1PN+Va8YwKRI+KF6fA8r7eZV7gXMD/lRq8dYtn3w9s5iDUD2PgRTpPD
- UzlkWLPh0CWDOG/sYy0XfJijZ2FY/es=
+ bh=7N7BKVbWAiFjTduC3wB4ybIMZXyqbe+MoDRqWm66aDo=;
+ b=aQWwbrU3bpbb2wBl/5u8eOX09OVz6yyFEb+f5YvMfKFgIzwEskpa/TmpBfUSWRpHqG1dV/
+ mPqJK4w6/9J3UBTmU116a8TmujqfCoRWGlLY9XmMu6+/byKx7emuxLcZS9SiM7DxouHSah
+ n+A6vnRl/7PK07nR565xXb8EsSTTDaw=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-dN0GfTfrP5aMjr2fe6dJBQ-1; Wed,
- 25 Sep 2024 07:11:11 -0400
-X-MC-Unique: dN0GfTfrP5aMjr2fe6dJBQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-462-oUxlCSbcOlSGUtUM5vsKDA-1; Wed,
+ 25 Sep 2024 07:11:14 -0400
+X-MC-Unique: oUxlCSbcOlSGUtUM5vsKDA-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 42B801944DE5; Wed, 25 Sep 2024 11:11:10 +0000 (UTC)
+ id 357891944DE8; Wed, 25 Sep 2024 11:11:13 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7AF881956094; Wed, 25 Sep 2024 11:11:08 +0000 (UTC)
+ id 416E51956094; Wed, 25 Sep 2024 11:11:10 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 12/44] migration: replace assert(0) with g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:09:53 +0200
-Message-ID: <20240925111029.24082-13-thuth@redhat.com>
+Subject: [PULL 13/44] qobject: replace assert(0) with g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:09:54 +0200
+Message-ID: <20240925111029.24082-14-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -85,117 +85,68 @@ This patch is part of a series that moves towards a consistent use of
 g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240919044641.386068-5-pierrick.bouvier@linaro.org>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-6-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- migration/migration-hmp-cmds.c |  2 +-
- migration/postcopy-ram.c       | 14 +++++++-------
- migration/ram.c                |  6 +++---
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ qobject/qlit.c | 2 +-
+ qobject/qnum.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 28165cfc9e..20d1a6e219 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -640,7 +640,7 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-         visit_type_bool(v, param, &p->direct_io, &err);
-         break;
+diff --git a/qobject/qlit.c b/qobject/qlit.c
+index be8332136c..a62865b642 100644
+--- a/qobject/qlit.c
++++ b/qobject/qlit.c
+@@ -118,7 +118,7 @@ QObject *qobject_from_qlit(const QLitObject *qlit)
+     case QTYPE_QBOOL:
+         return QOBJECT(qbool_from_bool(qlit->value.qbool));
      default:
 -        assert(0);
 +        g_assert_not_reached();
      }
  
-     if (err) {
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 1c374b7ea1..f431bbc0d4 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -1411,40 +1411,40 @@ int postcopy_ram_incoming_init(MigrationIncomingState *mis)
+     return NULL;
+diff --git a/qobject/qnum.c b/qobject/qnum.c
+index 2bbeaedc7b..2138b563a9 100644
+--- a/qobject/qnum.c
++++ b/qobject/qnum.c
+@@ -85,7 +85,7 @@ bool qnum_get_try_int(const QNum *qn, int64_t *val)
+         return false;
+     }
  
- int postcopy_ram_incoming_cleanup(MigrationIncomingState *mis)
- {
--    assert(0);
-+    g_assert_not_reached();
-     return -1;
- }
- 
- int postcopy_ram_prepare_discard(MigrationIncomingState *mis)
- {
--    assert(0);
-+    g_assert_not_reached();
-     return -1;
- }
- 
- int postcopy_request_shared_page(struct PostCopyFD *pcfd, RAMBlock *rb,
-                                  uint64_t client_addr, uint64_t rb_offset)
- {
--    assert(0);
-+    g_assert_not_reached();
-     return -1;
- }
- 
- int postcopy_ram_incoming_setup(MigrationIncomingState *mis)
- {
--    assert(0);
-+    g_assert_not_reached();
-     return -1;
- }
- 
- int postcopy_place_page(MigrationIncomingState *mis, void *host, void *from,
-                         RAMBlock *rb)
- {
--    assert(0);
-+    g_assert_not_reached();
-     return -1;
- }
- 
- int postcopy_place_page_zero(MigrationIncomingState *mis, void *host,
-                         RAMBlock *rb)
- {
--    assert(0);
-+    g_assert_not_reached();
-     return -1;
- }
- 
-@@ -1452,7 +1452,7 @@ int postcopy_wake_shared(struct PostCopyFD *pcfd,
-                          uint64_t client_addr,
-                          RAMBlock *rb)
- {
--    assert(0);
-+    g_assert_not_reached();
-     return -1;
- }
- #endif
-diff --git a/migration/ram.c b/migration/ram.c
-index 67ca3d5d51..0aa5d34743 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1765,19 +1765,19 @@ bool ram_write_tracking_available(void)
- 
- bool ram_write_tracking_compatible(void)
- {
 -    assert(0);
 +    g_assert_not_reached();
      return false;
  }
  
- int ram_write_tracking_start(void)
- {
+@@ -123,7 +123,7 @@ bool qnum_get_try_uint(const QNum *qn, uint64_t *val)
+         return false;
+     }
+ 
 -    assert(0);
 +    g_assert_not_reached();
-     return -1;
+     return false;
  }
  
- void ram_write_tracking_stop(void)
- {
+@@ -156,7 +156,7 @@ double qnum_get_double(QNum *qn)
+         return qn->u.dbl;
+     }
+ 
 -    assert(0);
 +    g_assert_not_reached();
+     return 0.0;
  }
- #endif /* defined(__linux__) */
+ 
+@@ -172,7 +172,7 @@ char *qnum_to_string(QNum *qn)
+         return g_strdup_printf("%.17g", qn->u.dbl);
+     }
+ 
+-    assert(0);
++    g_assert_not_reached();
+     return NULL;
+ }
  
 -- 
 2.46.0
