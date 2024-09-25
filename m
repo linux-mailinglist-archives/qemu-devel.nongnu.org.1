@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90789857CF
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AB69857B9
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:13:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPvZ-0000LH-AS; Wed, 25 Sep 2024 07:11:25 -0400
+	id 1stPva-0000Qx-2I; Wed, 25 Sep 2024 07:11:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvV-00009s-TX
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvY-0000IP-1k
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvS-0003Wy-Ap
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvW-0003XR-CE
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262677;
+ s=mimecast20190719; t=1727262680;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7N7BKVbWAiFjTduC3wB4ybIMZXyqbe+MoDRqWm66aDo=;
- b=aQWwbrU3bpbb2wBl/5u8eOX09OVz6yyFEb+f5YvMfKFgIzwEskpa/TmpBfUSWRpHqG1dV/
- mPqJK4w6/9J3UBTmU116a8TmujqfCoRWGlLY9XmMu6+/byKx7emuxLcZS9SiM7DxouHSah
- n+A6vnRl/7PK07nR565xXb8EsSTTDaw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=FIaPitvZwBfLvSiAb1b7GqbCUaofsa86VJPizr+59Y4=;
+ b=HjvstFYnOlL/mafv0kZck0F9TZpUfGpfGzojmX3bbOMFYsUT5r71ZfCWFt25UkKLbfMwac
+ exZ9Zcc2Tfeh0lJGy5i5Cy6Dak7WWoMgYqgV00WVy3h5pJNnb7LAIv5jndOWD7dEWPkZN1
+ IZjKu+aR59lOz2bffUtZf/nI3pQKNlk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-462-oUxlCSbcOlSGUtUM5vsKDA-1; Wed,
- 25 Sep 2024 07:11:14 -0400
-X-MC-Unique: oUxlCSbcOlSGUtUM5vsKDA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-w5LFXZmbOUy143G3VC8fTQ-1; Wed,
+ 25 Sep 2024 07:11:16 -0400
+X-MC-Unique: w5LFXZmbOUy143G3VC8fTQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 357891944DE8; Wed, 25 Sep 2024 11:11:13 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 58C2619772E3; Wed, 25 Sep 2024 11:11:15 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 416E51956094; Wed, 25 Sep 2024 11:11:10 +0000 (UTC)
+ id A9633195609D; Wed, 25 Sep 2024 11:11:13 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 13/44] qobject: replace assert(0) with g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:09:54 +0200
-Message-ID: <20240925111029.24082-14-thuth@redhat.com>
+Subject: [PULL 14/44] target/ppc: replace assert(0) with g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:09:55 +0200
+Message-ID: <20240925111029.24082-15-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -86,68 +86,68 @@ g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-6-pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-7-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- qobject/qlit.c | 2 +-
- qobject/qnum.c | 8 ++++----
+ target/ppc/dfp_helper.c | 8 ++++----
+ target/ppc/mmu_helper.c | 2 +-
  2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/qobject/qlit.c b/qobject/qlit.c
-index be8332136c..a62865b642 100644
---- a/qobject/qlit.c
-+++ b/qobject/qlit.c
-@@ -118,7 +118,7 @@ QObject *qobject_from_qlit(const QLitObject *qlit)
-     case QTYPE_QBOOL:
-         return QOBJECT(qbool_from_bool(qlit->value.qbool));
+diff --git a/target/ppc/dfp_helper.c b/target/ppc/dfp_helper.c
+index 5967ea07a9..ecc3f79326 100644
+--- a/target/ppc/dfp_helper.c
++++ b/target/ppc/dfp_helper.c
+@@ -249,7 +249,7 @@ static void dfp_set_FPRF_from_FRT_with_context(struct PPC_DFP *dfp,
+         fprf = 0x05;
+         break;
      default:
+-        assert(0); /* should never get here */
++        g_assert_not_reached();
+     }
+     dfp->env->fpscr &= ~FP_FPRF;
+     dfp->env->fpscr |= (fprf << FPSCR_FPRF);
+@@ -1243,7 +1243,7 @@ void helper_##op(CPUPPCState *env, ppc_fprp_t *t, ppc_fprp_t *b) \
+         } else if (decNumberIsQNaN(&dfp.b)) {                  \
+             vt.VsrD(1) = -2;                                   \
+         } else {                                               \
+-            assert(0);                                         \
++            g_assert_not_reached();                            \
+         }                                                      \
+         set_dfp64(t, &vt);                                     \
+     } else {                                                   \
+@@ -1252,7 +1252,7 @@ void helper_##op(CPUPPCState *env, ppc_fprp_t *t, ppc_fprp_t *b) \
+         } else if ((size) == 128) {                            \
+             vt.VsrD(1) = dfp.b.exponent + 6176;                \
+         } else {                                               \
+-            assert(0);                                         \
++            g_assert_not_reached();                            \
+         }                                                      \
+         set_dfp64(t, &vt);                                     \
+     }                                                          \
+@@ -1300,7 +1300,7 @@ void helper_##op(CPUPPCState *env, ppc_fprp_t *t, ppc_fprp_t *a,          \
+         raw_inf = 0x1e000;                                                \
+         bias = 6176;                                                      \
+     } else {                                                              \
+-        assert(0);                                                        \
++        g_assert_not_reached();                                           \
+     }                                                                     \
+                                                                           \
+     if (unlikely((exp < 0) || (exp > max_exp))) {                         \
+diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
+index b0a0676beb..b167b37e0a 100644
+--- a/target/ppc/mmu_helper.c
++++ b/target/ppc/mmu_helper.c
+@@ -316,7 +316,7 @@ void ppc_tlb_invalidate_one(CPUPPCState *env, target_ulong addr)
+         break;
+     default:
+         /* Should never reach here with other MMU models */
 -        assert(0);
 +        g_assert_not_reached();
      }
- 
-     return NULL;
-diff --git a/qobject/qnum.c b/qobject/qnum.c
-index 2bbeaedc7b..2138b563a9 100644
---- a/qobject/qnum.c
-+++ b/qobject/qnum.c
-@@ -85,7 +85,7 @@ bool qnum_get_try_int(const QNum *qn, int64_t *val)
-         return false;
-     }
- 
--    assert(0);
-+    g_assert_not_reached();
-     return false;
- }
- 
-@@ -123,7 +123,7 @@ bool qnum_get_try_uint(const QNum *qn, uint64_t *val)
-         return false;
-     }
- 
--    assert(0);
-+    g_assert_not_reached();
-     return false;
- }
- 
-@@ -156,7 +156,7 @@ double qnum_get_double(QNum *qn)
-         return qn->u.dbl;
-     }
- 
--    assert(0);
-+    g_assert_not_reached();
-     return 0.0;
- }
- 
-@@ -172,7 +172,7 @@ char *qnum_to_string(QNum *qn)
-         return g_strdup_printf("%.17g", qn->u.dbl);
-     }
- 
--    assert(0);
-+    g_assert_not_reached();
-     return NULL;
- }
- 
+ #else
+     ppc_tlb_invalidate_all(env);
 -- 
 2.46.0
 
