@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16260986577
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 19:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C96986574
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 19:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stVYq-0001pM-Jw; Wed, 25 Sep 2024 13:12:20 -0400
+	id 1stVYu-0001vP-4C; Wed, 25 Sep 2024 13:12:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1stVYR-0000L0-Vi
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:57 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1stVYR-0000Kx-Hb
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:55 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1stVYO-0000dZ-3n
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:55 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-42e748f78d6so333865e9.0
- for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 10:11:51 -0700 (PDT)
+ id 1stVYM-0000cF-QL
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 13:11:54 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-42cba8340beso7769395e9.1
+ for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 10:11:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727284310; x=1727889110; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727284308; x=1727889108; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nfK3IifqQwqKch4WY/r8cAsLiv59o8B10mtnbYAB2U8=;
- b=KVVNeOwTG5nJvIwPe+i4B/RCcHej5+x8ao0myo7jDLfe01eFTxXrC4HJxExiRC+fEe
- EuXY/09zvfMc2IIconhlcegMqUFJMMtNNGma8y0D3oMs6RmWZg//ooh7kfMrTSy0Z6le
- JXUu5eEiljh1g1tFIb8RU1Y2J3M11BrMcuf+Ix1J3hQYNy5/yRh1UJr3KyGC0DVSekaf
- pn9u65wrv2vJEmJ5/hekWhwJ4vOqzUrqgcs5LQX5Tm02BXdhNjKt6326dMYBZLkHyxgO
- WUfCUTO7SOi91DypG7jZnT+gEPWS38/JHnY2+Q8j4QKtKzhB9A/s3NUpCqz2vrTtfmEs
- fE3w==
+ bh=KaJivYDlItR4YIDqMIuLxegmAwwZvWWIxpxaaVqdrBQ=;
+ b=IR84kaqn5iCqReAzD2i03JC82nHAz+os3aeXOEOw13yGB0wbCh+dKtFIAdpi7mEZS5
+ pqP29+QdceDMkzpAgAG+KeIbd4jdKelW67iixrLZRc34r6MQ2AF+pcJbXhG06Qkozu1E
+ uvLV1YTw3AkzpJsmJ+7JaMsG9nPK2ERpeRCASG2FWCENKTpAwNNvtDiBCzchHV0HL/F3
+ lLpwg/QnKwr7txSrjYmemRRmhPQoXDH1TaXDj37gDoPsBIYzwHcsH0D5gtu1SUo6XJi1
+ jGXQS0+JobGJr/53mX44xUyslDSsTfYUvA4XYksocuZ+mmigX2hggZYrVSppAW1ooGuh
+ YwVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727284310; x=1727889110;
+ d=1e100.net; s=20230601; t=1727284308; x=1727889108;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nfK3IifqQwqKch4WY/r8cAsLiv59o8B10mtnbYAB2U8=;
- b=OydAXuWDTwO6LD8t9XzB7WicYsRz2CF9EU8YGz4GYTXZr7D5nTONRuTLyTmzWWvp+6
- 3gsU0Qe889EMg5TldMKSCzE5n9WpSeNqsuvfNW+pttXwjzOOKeJSvT8HEc5AscFs2+/4
- lWMrwbtK1S4C/gtpb0YMPndz5/Nd2KsxFwtqZUao6WZFrz3cenPZj80gjiJiZe/uEqao
- UCOIj8DooPTp0ODCLdMesbOSTxPTELd4MAgrR1tcnMyXMnXk9f/QhEO2JcBU4L7UwtRD
- 6VY+N770Wnd98wTJbjI2OChF7E8axfFz9H3W/HHD6hMcS1dmcJK4f1MeDkfU219wmL1r
- +hmQ==
-X-Gm-Message-State: AOJu0YwyW36NNvinWpofEKHjrgVvhncpQz2QuK3LIwqxMR4AyLnpkUkw
- sAuZWlmQIlWKYj+/t3qIE2H8QsaPGvjgFmeknEufkHJmfSpQR6VheAc81Mm8HUs=
-X-Google-Smtp-Source: AGHT+IGD3jF88KfAngOylDc8CVhYjnNX1NcQOwwW95cwuwuTfBIj06W2PgowxTm83aXeaqFntp0hUQ==
-X-Received: by 2002:a05:600c:45ce:b0:42b:af1c:66e with SMTP id
- 5b1f17b1804b1-42e9610c1c6mr23225565e9.9.1727284310137; 
- Wed, 25 Sep 2024 10:11:50 -0700 (PDT)
+ bh=KaJivYDlItR4YIDqMIuLxegmAwwZvWWIxpxaaVqdrBQ=;
+ b=K6a8Q6ZUq6EBgaSSXx1NscTcMgKcJ/I0lHmZ/0r807Z4pOkM9tqyMz609NjKzEGsc6
+ cW1MsNGu+rMXGb/EKRQ378BQo517fLiVl+PC0BmDFPRuiDIQo717uks/7zJ+G81g8mtc
+ BWxZiI9LP5+lSSfUY/9HJeLfXcRyX2YhhoM4SRCjIAljZSwl5b5R9+NGK55b9kJZhuSN
+ NAYz7nzT4IU+ksEpGSwmekN02qID1E+zKMmYaX3lvEeumQJ7lPwfuCqPDNoQzH745SBe
+ po0iZlbJGeSk7gkY8FBmulp33kwRaaD9mc3tvFpnqXYnKHhCFqSL/Plxtm8OFnISt4HU
+ tvkQ==
+X-Gm-Message-State: AOJu0YxBL8PX7R0SQeEes8RluF98mCOysBqmd1Hs0JRElQ/tmUQ0th6o
+ W6jTKDBq5wGq8JJD1pXsDxaPF1O0aJ2bZdNEJSHt+kJDfqzP3Z9IdvqGYrMk6hU=
+X-Google-Smtp-Source: AGHT+IGEUdwdXmmXxyj5s5u8wIU8mWo+iyIURbnXAseiU9n2QlRwwUQiN93/e4JQ8cQ12tQq4BVfKQ==
+X-Received: by 2002:a05:600c:3542:b0:424:895c:b84b with SMTP id
+ 5b1f17b1804b1-42f521cb7b9mr2431035e9.4.1727284308140; 
+ Wed, 25 Sep 2024 10:11:48 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42e969feb45sm23955035e9.20.2024.09.25.10.11.43
+ 5b1f17b1804b1-42e969f1fe4sm24113855e9.14.2024.09.25.10.11.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Sep 2024 10:11:45 -0700 (PDT)
+ Wed, 25 Sep 2024 10:11:44 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 345F15FA8E;
+ by draig.lan (Postfix) with ESMTP id 4FA755FAAF;
  Wed, 25 Sep 2024 18:11:41 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,18 +79,18 @@ Cc: Zhao Liu <zhao1.liu@intel.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <thuth@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 09/10] config/targets: update aarch64_be-linux-user gdb XML
- list
-Date: Wed, 25 Sep 2024 18:11:39 +0100
-Message-Id: <20240925171140.1307033-10-alex.bennee@linaro.org>
+Subject: [PATCH 10/10] tests/tcg: enable basic testing for
+ aarch64_be-linux-user
+Date: Wed, 25 Sep 2024 18:11:40 +0100
+Message-Id: <20240925171140.1307033-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240925171140.1307033-1-alex.bennee@linaro.org>
 References: <20240925171140.1307033-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,28 +112,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Attempting to run the binary asserts when it can't find the XML entry.
-We can fix it so we don't although I suspect other stuff is broken.
+We didn't notice breakage of aarch64_be because we don't have any TCG
+tests for it. However while the existing aarch64 compiler can target
+big-endian builds no one packages a BE libc. Instead we bang some
+rocks together to do the most basic of hello world with a nostdlib
+syscall test.
 
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2580
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configs/targets/aarch64_be-linux-user.mak | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ configure                            |  5 ++++
+ tests/tcg/aarch64_be/hello.c         | 35 ++++++++++++++++++++++++++++
+ tests/tcg/Makefile.target            |  7 +++++-
+ tests/tcg/aarch64_be/Makefile.target | 17 ++++++++++++++
+ 4 files changed, 63 insertions(+), 1 deletion(-)
+ create mode 100644 tests/tcg/aarch64_be/hello.c
+ create mode 100644 tests/tcg/aarch64_be/Makefile.target
 
-diff --git a/configs/targets/aarch64_be-linux-user.mak b/configs/targets/aarch64_be-linux-user.mak
-index acb5620cdb..14623ac076 100644
---- a/configs/targets/aarch64_be-linux-user.mak
-+++ b/configs/targets/aarch64_be-linux-user.mak
-@@ -1,7 +1,7 @@
- TARGET_ARCH=aarch64
- TARGET_BASE_ARCH=arm
- TARGET_BIG_ENDIAN=y
--TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml
-+TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml gdb-xml/aarch64-mte.xml
- TARGET_HAS_BFLT=y
- CONFIG_SEMIHOSTING=y
- CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
+diff --git a/configure b/configure
+index aa7aae70fa..1aebf8ece0 100755
+--- a/configure
++++ b/configure
+@@ -1274,6 +1274,7 @@ probe_target_compiler() {
+   target_arch=${1%%-*}
+   case $target_arch in
+     aarch64) container_hosts="x86_64 aarch64" ;;
++    aarch64_be) container_hosts="x86_64 aarch64" ;;
+     alpha) container_hosts=x86_64 ;;
+     arm) container_hosts="x86_64 aarch64" ;;
+     hexagon) container_hosts=x86_64 ;;
+@@ -1303,6 +1304,10 @@ probe_target_compiler() {
+     case $target_arch in
+       # debian-all-test-cross architectures
+ 
++      aarch64_be)
++        container_image=debian-all-test-cross
++        container_cross_prefix=aarch64-linux-gnu-
++        ;;
+       hppa|m68k|mips|riscv64|sparc64)
+         container_image=debian-all-test-cross
+         ;;
+diff --git a/tests/tcg/aarch64_be/hello.c b/tests/tcg/aarch64_be/hello.c
+new file mode 100644
+index 0000000000..93c6074db1
+--- /dev/null
++++ b/tests/tcg/aarch64_be/hello.c
+@@ -0,0 +1,35 @@
++/*
++ * Non-libc syscall hello world for Aarch64 BE
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#define __NR_write 64
++#define __NR_exit 93
++
++int write(int fd, char * buf, int len)
++{
++    register int x0 __asm__("x0") = fd;
++    register char * x1 __asm__("x1") = buf;
++    register int x2 __asm__("x2") = len;
++    register int x8 __asm__("x8") = __NR_write;
++
++    asm volatile("svc #0" : : "r"(x0), "r"(x1), "r"(x2), "r"(x8));
++
++    return len;
++}
++
++void exit(int ret)
++{
++    register int x0 __asm__("x0") = ret;
++    register int x8 __asm__("x8") = __NR_exit;
++
++    asm volatile("svc #0" : : "r"(x0), "r"(x8));
++    __builtin_unreachable();
++}
++
++void _start(void)
++{
++    write(1, "Hello World\n", 12);
++    exit(0);
++}
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index 2da70b2fcf..9722145b97 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -103,9 +103,14 @@ ifeq ($(filter %-softmmu, $(TARGET)),)
+ # then the target. If there are common tests shared between
+ # sub-targets (e.g. ARM & AArch64) then it is up to
+ # $(TARGET_NAME)/Makefile.target to include the common parent
+-# architecture in its VPATH.
++# architecture in its VPATH. However some targets are so minimal we
++# can't even build the multiarch tests.
++ifneq ($(filter $(TARGET_NAME),aarch64_be),)
++-include $(SRC_PATH)/tests/tcg/$(TARGET_NAME)/Makefile.target
++else
+ -include $(SRC_PATH)/tests/tcg/multiarch/Makefile.target
+ -include $(SRC_PATH)/tests/tcg/$(TARGET_NAME)/Makefile.target
++endif
+ 
+ # Add the common build options
+ CFLAGS+=-Wall -Werror -O0 -g -fno-strict-aliasing
+diff --git a/tests/tcg/aarch64_be/Makefile.target b/tests/tcg/aarch64_be/Makefile.target
+new file mode 100644
+index 0000000000..297d2cf71c
+--- /dev/null
++++ b/tests/tcg/aarch64_be/Makefile.target
+@@ -0,0 +1,17 @@
++# -*- Mode: makefile -*-
++#
++# A super basic AArch64 BE makefile. As we don't have any big-endian
++#l ibc available the best we can do is a basic Hello World.
++
++AARCH64BE_SRC=$(SRC_PATH)/tests/tcg/aarch64_be
++VPATH += $(AARCH64BE_SRC)
++
++AARCH64BE_TEST_SRCS=$(notdir $(wildcard $(AARCH64BE_SRC)/*.c))
++AARCH64BE_TESTS=$(AARCH64BE_TEST_SRCS:.c=)
++#MULTIARCH_TESTS = $(MULTIARCH_SRCS:.c=)
++
++# We need to specify big-endian cflags
++CFLAGS +=-mbig-endian -ffreestanding
++LDFLAGS +=-nostdlib
++
++TESTS += $(AARCH64BE_TESTS)
 -- 
 2.39.5
 
