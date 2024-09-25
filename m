@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2B69851E7
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C04739851E6
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:08:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stJHN-0006Yf-TL; Wed, 25 Sep 2024 00:05:30 -0400
+	id 1stJHO-0006jx-7Q; Wed, 25 Sep 2024 00:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGo-0005ar-7n; Wed, 25 Sep 2024 00:04:54 -0400
+ id 1stJGo-0005bd-Hc; Wed, 25 Sep 2024 00:04:54 -0400
 Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGl-0001xG-AU; Wed, 25 Sep 2024 00:04:53 -0400
+ id 1stJGl-0001xE-Dm; Wed, 25 Sep 2024 00:04:54 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 51A31A43B59;
+ by nyc.source.kernel.org (Postfix) with ESMTP id 51A5BA43B5A;
  Wed, 25 Sep 2024 04:04:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07961C4CECE;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0962FC4AF0C;
  Wed, 25 Sep 2024 04:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1727237088;
- bh=BSna6PtTcJXhc2BwT04xbR58a+FIME41kCjBdqVnEa4=;
+ bh=NnkGCc0VIzMuspnWrynheVKTjx+UHBwx05DNA6sg8rU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=IBpqOl5VZruvvoSmGlu3kZ3tJ8SCyosM78IgpTjij0u3uNNeY7TjmHDdLXDSnKXcR
- ybOWAg5aVBUwYafMsD2XG2xLTJuNdhVA2ryAVFb+5oEgvu0V7c7bJI6qKknRuWuQUu
- q3v4iJ3ynhYsMI+LkM6kWZKg5qde4Q8H7vNHPwwMVtfJ+AYVpVcDDVJ+xe2pcE325G
- Q+Q/5mHab6utJL/12m30b0q2I9h0fV63yXRe/m9l6l0KAvfVnotVgJYO6EzsBRe9sl
- QkKvvV7HNfYZwRgi31YTpQnl4BEPB4TkwDdaU5Lfmiw6OIMcTKEp3I91rTaumHxI55
- +roBRiu6iz/8g==
+ b=MDT2RltmOJANb9f1hoXK86QgrB+oWocpdJocAWn6ljBFbNxsCWvxKbphPI4p2lUqf
+ ktz2DS5iucL+Z0JJ8QZRvshoab4nxJfwM37PLub49BL5z/Nb9GtJ8wm1jjx9wxzKMf
+ tDmr2rE8ZkPVa1JX+mRsLVfik2ZLtLC1LdvFtLWneqpYB0gWffrYYQ/jsF5fTZ/QD5
+ tJTNfAbTi1MZyKI8WnXPvVmHumTmdLa43HgJKbEHk/ixx37XLJyWV3bDvbruaC41i1
+ udb7FQeFaG+3i2enLEoSC2h6eXS8kGpZQV30BLIK+uLLU0PI8D0criYcKlKfr35jKQ
+ J+9MclAn9lzwg==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGg-0000000827x-0lpG; Wed, 25 Sep 2024 06:04:46 +0200
+ id 1stJGg-00000008285-0zAJ; Wed, 25 Sep 2024 06:04:46 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -42,9 +42,9 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
  qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH 05/15] acpi/ghes: Fix acpi_ghes_record_errors() argument
-Date: Wed, 25 Sep 2024 06:04:10 +0200
-Message-ID: <58444cff65cc5b9164f47db4685910a2602b7d13.1727236561.git.mchehab+huawei@kernel.org>
+Subject: [PATCH 07/15] acpi/ghes: Change the type for source_id
+Date: Wed, 25 Sep 2024 06:04:12 +0200
+Message-ID: <427117fa409217094f5e98694913a371fb5bcda5.1727236561.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <cover.1727236561.git.mchehab+huawei@kernel.org>
 References: <cover.1727236561.git.mchehab+huawei@kernel.org>
@@ -74,32 +74,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The first argument is source ID and not notification type.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-
----
-
-Changes from v8:
-- Non-rename/cleanup changes merged altogether;
-- source ID is now more generic, defined per guest target.
-  That should make easier to add support for 86.
+HEST source ID is actually a 16-bit value
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
+ hw/acpi/ghes-stub.c    | 2 +-
+ hw/acpi/ghes.c         | 2 +-
  include/hw/acpi/ghes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
+index c315de1802d6..2b64cbd2819a 100644
+--- a/hw/acpi/ghes-stub.c
++++ b/hw/acpi/ghes-stub.c
+@@ -11,7 +11,7 @@
+ #include "qemu/osdep.h"
+ #include "hw/acpi/ghes.h"
+ 
+-int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
++int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+ {
+     return -1;
+ }
+diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
+index b932b6fe2c2e..29240aa139d5 100644
+--- a/hw/acpi/ghes.c
++++ b/hw/acpi/ghes.c
+@@ -383,7 +383,7 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
+     ags->present = true;
+ }
+ 
+-int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
++int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+ {
+     uint64_t error_block_addr, read_ack_register_addr, read_ack_register = 0;
+     uint64_t start_addr;
 diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 20016c226d1f..50e3a25ea384 100644
+index 50e3a25ea384..9295e46be25e 100644
 --- a/include/hw/acpi/ghes.h
 +++ b/include/hw/acpi/ghes.h
 @@ -73,7 +73,7 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
                       const char *oem_id, const char *oem_table_id);
  void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
                            GArray *hardware_errors);
--int acpi_ghes_record_errors(uint8_t notify, uint64_t error_physical_addr);
-+int acpi_ghes_record_errors(uint8_t source_id, uint64_t error_physical_addr);
+-int acpi_ghes_record_errors(uint8_t source_id, uint64_t error_physical_addr);
++int acpi_ghes_record_errors(uint16_t source_id, uint64_t error_physical_addr);
  
  /**
   * acpi_ghes_present: Report whether ACPI GHES table is present
