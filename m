@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1979857C8
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:15:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6079857DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPwJ-0004Np-Ix; Wed, 25 Sep 2024 07:12:11 -0400
+	id 1stPwc-0005Rj-IU; Wed, 25 Sep 2024 07:12:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw3-0003gO-4H
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:56 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw5-0003r0-KF
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw1-0003lE-AT
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPw3-0003lp-3x
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727262712;
+ s=mimecast20190719; t=1727262714;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tZVzphQdjGjCU5nXoYO6/Y8Dt9zYl8M8DQY574lUcWs=;
- b=eqLAtk/ftcVN8VIRROLVYzbISHGcF4K+uzhtY/Ml65/NJe5RV1KCEjk2iTiEUZlOWJX7/s
- bUsmNSmyx9bWsNMbkOJ4Fs2cu4zDUmauz6qPl3xFvKvdE1V1noEH1QFNHCVKELDV+mYVBF
- SBoiXLDRIjIzv15EKvp//YIjmyaahMM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=7DEh6045OUJp99Ba8zmy2nR/KEr7ul1oZPdI/Kx0ia4=;
+ b=bWVZZ5gKcmAfZezb7qrskzizYC5zdobcEJh+CXXPmoLxW3h9VVZN+9axLxQFTGS2kKcnzN
+ r4rbD9vfwF8XHFq0UreTBVCFR54rth+njKddEnQNJnnM8A20DfuJk0CyC3ogMu9j6VxZA7
+ LIFAOqTza/4MPYx58PWmQgTekQ5cPbQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-x7kOWLPNOi2uCKuvlviotA-1; Wed,
- 25 Sep 2024 07:11:48 -0400
-X-MC-Unique: x7kOWLPNOi2uCKuvlviotA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-449-Mcut2KtkNPqbmUO8A6Lngg-1; Wed,
+ 25 Sep 2024 07:11:51 -0400
+X-MC-Unique: Mcut2KtkNPqbmUO8A6Lngg-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CFD9F193E8F2; Wed, 25 Sep 2024 11:11:47 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 396B81935868; Wed, 25 Sep 2024 11:11:50 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 72F881956094; Wed, 25 Sep 2024 11:11:45 +0000 (UTC)
+ id 5BB021956094; Wed, 25 Sep 2024 11:11:48 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 27/44] hw/scsi: remove break after g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:10:08 +0200
-Message-ID: <20240925111029.24082-28-thuth@redhat.com>
+Subject: [PULL 28/44] hw/tpm: remove break after g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:10:09 +0200
+Message-ID: <20240925111029.24082-29-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,26 +86,25 @@ g_assert_not_reached() rather than an ad hoc mix of different
 assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-20-pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-21-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/scsi/virtio-scsi.c | 1 -
+ hw/tpm/tpm_spapr.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 9f02ceea09..6637cfeaf5 100644
---- a/hw/scsi/virtio-scsi.c
-+++ b/hw/scsi/virtio-scsi.c
-@@ -357,7 +357,6 @@ static void virtio_scsi_do_one_tmf_bh(VirtIOSCSIReq *req)
- 
-     default:
-         g_assert_not_reached();
--        break;
-     }
- 
- out:
+diff --git a/hw/tpm/tpm_spapr.c b/hw/tpm/tpm_spapr.c
+index e084e987e6..5f7a0dfc61 100644
+--- a/hw/tpm/tpm_spapr.c
++++ b/hw/tpm/tpm_spapr.c
+@@ -206,7 +206,6 @@ static int tpm_spapr_do_crq(struct SpaprVioDevice *dev, uint8_t *crq_data)
+                 break;
+             default:
+                 g_assert_not_reached();
+-                break;
+             }
+             trace_tpm_spapr_do_crq_get_version(be32_to_cpu(local_crq.data));
+             spapr_tpm_send_crq(dev, &local_crq);
 -- 
 2.46.0
 
