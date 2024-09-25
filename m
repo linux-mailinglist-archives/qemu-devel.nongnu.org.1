@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B39986696
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 20:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB4569866E9
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 21:30:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stX9W-0002Ux-W4; Wed, 25 Sep 2024 14:54:19 -0400
+	id 1stXhU-0006S0-8l; Wed, 25 Sep 2024 15:29:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1stX9T-0002TK-16
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 14:54:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1stX9M-0004eI-RV
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 14:54:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727290448;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=R4H3cw9GB783tNwmDnZ2S++mvZzqxgZyqfHTbLELk6o=;
- b=NpG3rzzzOgqV+MGOqBje861pxQx1q0OrMB5zRqYwK4qlGAiitywCrpJE3YXbIxrpNKQeZa
- dQ5fIXFGXJhOqOkmqEjvM+seFCiwvpsqWk1ihNwRGmnbrHTVBSPMsi0bBb5i3DTcNuX1gw
- trRrpIz3s1LsOGVyV0OtCthAuStOWdY=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-110-g4TJWOmKPGWpnCApjDtqpA-1; Wed, 25 Sep 2024 14:54:06 -0400
-X-MC-Unique: g4TJWOmKPGWpnCApjDtqpA-1
-Received: by mail-pg1-f197.google.com with SMTP id
- 41be03b00d2f7-5e4df21f22dso167508a12.0
- for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 11:54:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727290445; x=1727895245;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1stXh7-00065D-UG; Wed, 25 Sep 2024 15:29:03 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1stXh4-0001wc-Gj; Wed, 25 Sep 2024 15:29:01 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a8ce5db8668so32124466b.1; 
+ Wed, 25 Sep 2024 12:28:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1727292536; x=1727897336; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=R4H3cw9GB783tNwmDnZ2S++mvZzqxgZyqfHTbLELk6o=;
- b=NxXER8DsnDifaOFA0ThJEJspxpkt2Eqv0uDE/lw4SgzkXSSmOH7vTf7mTczpXxbr5y
- o14bvPD7FLqtrCCRKeX4mzCZDi+e5FGdrLUvIr91qEYH1HlfmLLP3Bnu6Vy7Q6efBjc9
- 8KdCvIenRO/lvNHfDwdZLff0AVz/N40Fzw/TvxnIMqzUFw5lp0BCgqZBTmu3Utne3YrN
- QxNhztcYfgjEtuxRwH3LVltCa/a4jG7nCdHTuRdIwVbKVGH1vphMtD2ohqwWlFwGJ83J
- mMeMK0YU28zP/zO6rGrdlvFmQYFIXlScn1vZVvbP0eKm2O9AIt01g160HXGp/gmN2Dfk
- AGBg==
-X-Gm-Message-State: AOJu0YwyVNjU1KR8aFN/MmkepMDce2l1QLD6bTYwWH6skhjxzHD4L5+I
- z7wyp//m+h3nUQf+LULBjp1ylhKT+WYe0y0DXgovs8HhsIcYr2Hi67ae9o8MPB14A16xqPt/YWM
- 4hjSxtcQpupRNZWYAWlZnkwAZj66Qt5OHS7TcSDkd/oZ2hFGElG4t
-X-Received: by 2002:a05:6a20:ac43:b0:1d2:eaea:39d7 with SMTP id
- adf61e73a8af0-1d4ebe34daamr931394637.9.1727290445658; 
- Wed, 25 Sep 2024 11:54:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHscT7xLGL+Mdsqslt5gabiJfAB0m7sfBzAb48ZpJ6ymGAmEoA/eWwjKKRGGXMfyU9pHtJVVg==
-X-Received: by 2002:a05:6a20:ac43:b0:1d2:eaea:39d7 with SMTP id
- adf61e73a8af0-1d4ebe34daamr931373637.9.1727290445372; 
- Wed, 25 Sep 2024 11:54:05 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71afc97c202sm3041050b3a.167.2024.09.25.11.54.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Sep 2024 11:54:04 -0700 (PDT)
-Date: Wed, 25 Sep 2024 14:54:00 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Julia Suvorova <jusual@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Song Gao <gaosong@loongson.cn>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH 2/2] target/i386/kvm: Report which action failed in
- kvm_arch_put/get_registers
-Message-ID: <ZvRcSBGY4yiw84Sk@x1n>
-References: <20240925153625.183600-1-jusual@redhat.com>
- <20240925153625.183600-3-jusual@redhat.com>
+ bh=Mg74pexZQVTEGPDGWQhe3MOWTkYe255JTpYjTNv1AQs=;
+ b=UaKwXaDbi0s7w1wPoMEyDq7jcV52qXDMV7xEg8aRIqfPwK4WH0twCnVeILq8eTdtnU
+ NrhcD5c2X/lA5Idwqi+fW7gFkS1s/VZYjsf65WCOQlh+i+i/dWeGk8Sxnz30EE9ERhWp
+ 4nc4pEqIhe0cnYgQCBP57EyMA1apnBcxlQxbzX4SmheducJ9nQE2zidSnTiag4Co8PW6
+ AwF7WLwQStvxS1PZUd2M5TSNOIiM0Je66+WS1I4iStNf7Jm3AeoZEb91S1YfYFZQ1yom
+ tKQ37HjgoP09CpXlY6SnYAxGwN2IFquLnzYl4DlSGmdlI7ecDD6YGsxbfvAxwCJAddwe
+ RGRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727292536; x=1727897336;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Mg74pexZQVTEGPDGWQhe3MOWTkYe255JTpYjTNv1AQs=;
+ b=UVCWk6vp6kc5qg5OpiB2ezaA3+w+gDTV1i3ctlakOhVgepVKkCICnpbwlZy11+1ggT
+ z0aOOHv7fgYsyHsCle0wgj46O4NV/Rp3v3dO+W24YXRSjbnP8znrNCvijmRIKoJRHrKF
+ IvN9zyQ3nDL9RVDxQYNNEw95LL+HybMqkv5+uGBgfu1KYmeOE4F044+eKl4hThZjfOFE
+ OX5eCnJVnMm3J3cmwDxRuh5h9NPmQXNii/vYWbAZ/v4EPVfc1E9SN+QDca8Qphxs2Vua
+ Ba6hvin6eKSGOK0l+slDSExaGsXl1ZaZc/M9HvWJWyP4Lducm+NyWw1MrLf32ocKvXSh
+ DxSw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVdwAV2g0wMIJOeFTsiFv8+ISX04PXqh2EcQIdRnwEjJww8nuG9Y/osIRSPwVqpxw9K+Z2FdJ4AMYf2+w==@nongnu.org,
+ AJvYcCWq2Yh59s0dXU2bRIhuGdfFuH9Td7McgM2ZzQIrfd8JdIuDzxNopkNtGU2yMNv+3DYW6o8LFcPajB7E@nongnu.org,
+ AJvYcCXRKkKU+DePU0GHmqM24P7l/Wlu42HndRBiMUjT+Iz6k5FDk5P5xWd7qj12K2IvGPOTniXthM17bng=@nongnu.org
+X-Gm-Message-State: AOJu0YwcJobxQ1gUnhSb92NwxsWnIZvG7gWLcfnX2CY15dSS5VdnM5vt
+ 6mPAsWvGI4QokS4TJBRmvZxJTcCESu1Zwzf4rk1qmlzJXTFrC2c5
+X-Google-Smtp-Source: AGHT+IFIDzUskRFoEacWXBZVclm5bn5PTmav9Z+bnMT0ShXzl+/0qAwUr+TAzaO+GnMVzhChYqC76Q==
+X-Received: by 2002:a17:907:ea8:b0:a90:c411:24f8 with SMTP id
+ a640c23a62f3a-a93a03380dfmr414025066b.2.1727292536132; 
+ Wed, 25 Sep 2024 12:28:56 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-011-049-158.77.11.pool.telefonica.de.
+ [77.11.49.158]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a9392f51e82sm249305966b.71.2024.09.25.12.28.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 25 Sep 2024 12:28:55 -0700 (PDT)
+Date: Wed, 25 Sep 2024 19:02:00 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+CC: Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Corey Minyard <cminyard@mvista.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-block@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>
+Subject: Re: [PATCH 02/23] hw/ppc/e500: Reduce scope of env pointer
+In-Reply-To: <9ee5b660-c3d1-49a4-8123-e15219fe2d60@redhat.com>
+References: <20240923093016.66437-1-shentey@gmail.com>
+ <20240923093016.66437-3-shentey@gmail.com>
+ <9ee5b660-c3d1-49a4-8123-e15219fe2d60@redhat.com>
+Message-ID: <22897BC3-DDAC-4EEC-83DE-41B573232DF9@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240925153625.183600-3-jusual@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.108,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,19 +102,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 25, 2024 at 05:36:23PM +0200, Julia Suvorova wrote:
-> To help debug and triage future failure reports (akin to [1,2]) that
-> may occur during kvm_arch_put/get_registers, the error path of each
-> action is accompanied by unique error message.
-> 
-> [1] https://issues.redhat.com/browse/RHEL-7558
-> [2] https://issues.redhat.com/browse/RHEL-21761
-> 
-> Signed-off-by: Julia Suvorova <jusual@redhat.com>
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
 
--- 
-Peter Xu
+Am 25=2E September 2024 15:37:22 UTC schrieb "C=C3=A9dric Le Goater" <clg@=
+redhat=2Ecom>:
+>On 9/23/24 11:29, Bernhard Beschow wrote:
+>> The env pointer isn't used outside the for loop, so move it inside=2E A=
+fter that,
+>> the firstenv pointer is never read, so remove it=2E
+>
+>Just wondering, have you considered introducing an PowerPCCPU array
+>under the machine state ?
+>
+>This would be an intermediate step towards the introduction of an SoC
+>model (in the long term)
 
+Well, there seem to be many members in the QorIQ family with incompatible =
+offsets=2E So I experimented with dtb-driven machine creation instead to si=
+destep the whole problem=2E Once this series is merged I plan to submit an =
+RFC for that=2E
+
+Best regards,
+Bernhard
+
+>
+>Thanks,
+>
+>C=2E
+>
+>
+>
+>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>> ---
+>>   hw/ppc/e500=2Ec | 9 +--------
+>>   1 file changed, 1 insertion(+), 8 deletions(-)
+>>=20
+>> diff --git a/hw/ppc/e500=2Ec b/hw/ppc/e500=2Ec
+>> index 75b051009f=2E=2Ef68779a1ea 100644
+>> --- a/hw/ppc/e500=2Ec
+>> +++ b/hw/ppc/e500=2Ec
+>> @@ -899,7 +899,6 @@ void ppce500_init(MachineState *machine)
+>>       const PPCE500MachineClass *pmc =3D PPCE500_MACHINE_GET_CLASS(mach=
+ine);
+>>       MachineClass *mc =3D MACHINE_CLASS(pmc);
+>>       PCIBus *pci_bus;
+>> -    CPUPPCState *env =3D NULL;
+>>       uint64_t loadaddr;
+>>       hwaddr kernel_base =3D -1LL;
+>>       int kernel_size =3D 0;
+>> @@ -921,7 +920,6 @@ void ppce500_init(MachineState *machine)
+>>       IrqLines *irqs;
+>>       DeviceState *dev, *mpicdev;
+>>       DriveInfo *dinfo;
+>> -    CPUPPCState *firstenv =3D NULL;
+>>       MemoryRegion *ccsr_addr_space;
+>>       SysBusDevice *s;
+>>       PPCE500CCSRState *ccsr;
+>> @@ -930,6 +928,7 @@ void ppce500_init(MachineState *machine)
+>>       irqs =3D g_new0(IrqLines, smp_cpus);
+>>       for (i =3D 0; i < smp_cpus; i++) {
+>>           PowerPCCPU *cpu;
+>> +        CPUPPCState *env;
+>>           CPUState *cs;
+>>             cpu =3D POWERPC_CPU(object_new(machine->cpu_type));
+>> @@ -950,10 +949,6 @@ void ppce500_init(MachineState *machine)
+>>                                    &error_abort);
+>>           qdev_realize_and_unref(DEVICE(cs), NULL, &error_fatal);
+>>   -        if (!firstenv) {
+>> -            firstenv =3D env;
+>> -        }
+>> -
+>>           irqs[i]=2Eirq[OPENPIC_OUTPUT_INT] =3D
+>>               qdev_get_gpio_in(DEVICE(cpu), PPCE500_INPUT_INT);
+>>           irqs[i]=2Eirq[OPENPIC_OUTPUT_CINT] =3D
+>> @@ -974,8 +969,6 @@ void ppce500_init(MachineState *machine)
+>>           }
+>>       }
+>>   -    env =3D firstenv;
+>> -
+>>       if (!QEMU_IS_ALIGNED(machine->ram_size, RAM_SIZES_ALIGN)) {
+>>           error_report("RAM size must be multiple of %" PRIu64, RAM_SIZ=
+ES_ALIGN);
+>>           exit(EXIT_FAILURE);
+>
 
