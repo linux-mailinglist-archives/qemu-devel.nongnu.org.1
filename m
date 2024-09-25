@@ -2,75 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7DA985D19
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 15:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C40985CF1
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 14:57:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stRcx-0003Zv-Vs; Wed, 25 Sep 2024 09:00:20 -0400
+	id 1stRa0-0006XL-SM; Wed, 25 Sep 2024 08:57:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1stRct-0003Sz-Jc
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 09:00:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1stRcq-0008Tc-Hb
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 09:00:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727269209;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=rrjoMpF9/kns9trt8yQb/TJIx2Qo5Tf29m6MR5P0tCk=;
- b=Jor/XCBTcnxGr8iytsAJcAZ7mp5gz5W4+SIHvRDz3bbIVvwalHqZUUYJRRgu5RyN2t//gX
- rxQP5CU8tCrZGXTO4LYUyN2J+5jM/7LLWVX1rfEDg/CZKCumMOCfSBpG5+kaE+434uUPJh
- p0BrTUkujfLfOQW7L0tIKyTBs0o5Z0c=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-sBnzVGviNZyfYYfzwG8AXw-1; Wed,
- 25 Sep 2024 09:00:04 -0400
-X-MC-Unique: sBnzVGviNZyfYYfzwG8AXw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 074991944D3F; Wed, 25 Sep 2024 13:00:03 +0000 (UTC)
-Received: from localhost (unknown [10.33.192.244])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 812241955F0F; Wed, 25 Sep 2024 12:54:26 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, richard.henderson@linaro.org,
- gustavo.romero@linaro.org, alex.bennee@linaro.org,
- darren@os.amperecomputing.com, gankulkarni@os.amperecomputing.com
-Subject: Re: [PATCH V3] arm/kvm: add support for MTE
-In-Reply-To: <20240920073725.410373-1-gankulkarni@os.amperecomputing.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20240920073725.410373-1-gankulkarni@os.amperecomputing.com>
-User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Wed, 25 Sep 2024 14:54:22 +0200
-Message-ID: <87tte3sxkx.fsf@redhat.com>
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1stRZm-00065A-4j
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 08:57:02 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sjg@chromium.org>) id 1stRZk-000871-1r
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 08:57:01 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-53659867cbdso9941145e87.3
+ for <qemu-devel@nongnu.org>; Wed, 25 Sep 2024 05:56:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1727269017; x=1727873817; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TBhqg6rrOsSPl3tFjeJPPeRGg22MQOEOeY4bFAHpkXQ=;
+ b=bCYi56MqhCkeQyMBFvPSokobpnjRpBB0+BcGr5NzNiV+/tXl7H6HWCaElLTJWM7/SH
+ j4wz26rZmMyEYoSktFbEH/npoVNKC8/V815zmXhO1vKpqeo4eMqaKiY3urgrOL1+Vzmu
+ VBQcXSR7FxUKbpXPh/eAlLIp08+pIKA1uU4Go=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727269017; x=1727873817;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TBhqg6rrOsSPl3tFjeJPPeRGg22MQOEOeY4bFAHpkXQ=;
+ b=g2E99sUWNUnvi3b0dmyg74i9XOS65kluitZzqJGl0yVFrbS6HHGdK1DfZMlIhYjwaV
+ kCuTof2x+If0DgP41kThQOWXBvIo3z5h8LfNmnJBaLZeIaDetjUs7O7ayZy43kEwa7v4
+ iFZoGStIamQO0TqVJxCBPN+RcVPJCWabVBSwiaQw0wt3KW1Mx3gLcuU5X6aRyXJ1UC8D
+ q3v+5bzWj6cjokpBZHT7asHOe9r9KkRw6gBvaltJcKNR2NJVbXtECzh+6dwvIbAqrH3T
+ a8W4jkbdzKjaDBjmgKmZJb2N3hvvEOpLtpmI5rB+agHvGidPuKoAQa/hLeGOliQfgdHF
+ eX/A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV5uqKZschdRUWbbkNGLTocAuG5iD69MmlbK5+tWnjCD93kn/LBuViO391VBFoaIp7kBq0r+GFy96KR@nongnu.org
+X-Gm-Message-State: AOJu0YxDIuTvqZCoKnSMawnOqRa4ItDCHusLpOwvm1Rt3SO+LLyCa6Ms
+ AC7MyZpj0qaxSV4FB/cGZ9Z4xhUKaQ50lt/N7QWjjjzcLaSH9IrWPm2/V2699A==
+X-Google-Smtp-Source: AGHT+IFTgBKVQB2+Svfj82U46KunEpR9r22frwRpvBYIrZ1uRKoqgci8MINhw04VSUq3w6mrtcnWKQ==
+X-Received: by 2002:a05:6512:138d:b0:536:5339:35a6 with SMTP id
+ 2adb3069b0e04-5387756657emr1974019e87.53.1727269017147; 
+ Wed, 25 Sep 2024 05:56:57 -0700 (PDT)
+Received: from chromium.org ([82.132.187.73]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a93930f7889sm209209766b.179.2024.09.25.05.56.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 25 Sep 2024 05:56:56 -0700 (PDT)
+From: Simon Glass <sjg@chromium.org>
+To: U-Boot Mailing List <u-boot@lists.denx.de>
+Cc: Tom Rini <trini@konsulko.com>, Simon Glass <sjg@chromium.org>,
+ Albert Aribaud <albert.u.boot@aribaud.net>,
+ Andre Przywara <andre.przywara@arm.com>,
+ Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
+ Andrew Davis <afd@ti.com>, Caleb Connolly <caleb.connolly@linaro.org>,
+ =?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+ Devarsh Thakkar <devarsht@ti.com>, Gary Bisson <bisson.gary@gmail.com>,
+ Heinrich Schuchardt <xypron.glpk@gmx.de>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Kever Yang <kever.yang@rock-chips.com>,
+ Lukas Funke <lukas.funke@weidmueller.com>,
+ Manoj Sai <abbaraju.manojsai@amarulasolutions.com>,
+ Marek Vasut <marek.vasut+renesas@mailbox.org>, Marek Vasut <marex@denx.de>,
+ Mathieu Othacehe <m.othacehe@gmail.com>,
+ Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+ Michal Simek <michal.simek@amd.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Nishanth Menon <nm@ti.com>,
+ Paul Kocialkowski <contact@paulk.fr>, Peng Fan <peng.fan@nxp.com>,
+ Peter Robinson <pbrobinson@gmail.com>,
+ Quentin Schulz <quentin.schulz@cherry.de>,
+ Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Robert Marko <robert.marko@sartura.hr>, Sam Edwards <CFSworks@gmail.com>,
+ Sam Protsenko <semen.protsenko@linaro.org>,
+ Samuel Holland <samuel@sholland.org>, Sean Anderson <seanga2@gmail.com>,
+ Sughosh Ganu <sughosh.ganu@linaro.org>, Sumit Garg <sumit.garg@linaro.org>,
+ Suniel Mahesh <sunil@amarulasolutions.com>,
+ Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>,
+ Venkatesh Yadav Abbarapu <venkatesh.abbarapu@amd.com>,
+ qemu-devel@nongnu.org
+Subject: [PATCH 00/19] spl: Support a relocating jump between phases (VBE part
+ F)
+Date: Wed, 25 Sep 2024 14:55:26 +0200
+Message-ID: <20240925125622.197915-1-sjg@chromium.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=sjg@chromium.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.108,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,142 +114,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 20 2024, Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com> wrote:
 
-Mostly nit-picking below, otherwise LGTM.
+This series includes a way to deal with multiple XPL phases being
+built to run from the same region of SRAM. This is useful because it may
+not be possible to fit all the different phases in different parts of
+the SRAM. Also it is a pain to have to build them with different values
+for CONFIG_TEXT_BASE such that they can be loaded at different
+addresses.
 
-> Extend the 'mte' property for the virt machine to cover KVM as
-> well. For KVM, we don't allocate tag memory, but instead enable
-> the capability.
->
-> If MTE has been enabled, we need to disable migration, as we do not
-> yet have a way to migrate the tags as well. Therefore, MTE will stay
-> off with KVM unless requested explicitly.
->
-> This patch is rework of commit b320e21c48ce64853904bea6631c0158cc2ef227
-> which broke TCG since it made the TCG -cpu max
-> report the presence of MTE to the guest even if the board hadn't
-> enabled MTE by wiring up the tag RAM. This meant that if the guest
-> then tried to use MTE QEMU would segfault accessing the
-> non-existent tag RAM.
+The mechanism is to copy some relocation code to the top of memory, then
+load the next phase below that. Finally, the first phase jumps to the
+relocation code, which copies or decompresses the next phase,
+overwriting the first phase in the process. Finally, the relocation code
+jumps to the start of the next phase.
 
-I think the more canonical way to express this would be
+In this way the maximum amount of space can be used, particular if the
+next phase is compressed.
 
-[$AUTHOR: reworked original patch by doing X to avoid problem Y]
+For this to work, some code in U-Boot must be placed in a 'rcode'
+(relocation code) section. This ensures it can be copied as a block,
+thus reducing the amount of the first-stage code which needs to survive
+the relocation process.
 
->
-> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-> Signed-off-by: Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+For now there is a qemu-arm64 test for this feature, which ensures that
+the basic mechanism is sound. Further work will likely expand this test
+to include VPL and LZ4-compression, which so far have only been used on
+real hardware.
 
-Also, the S-o-b chain is a bit confusing that way, because you are
-listed as author of the patch, but I'm in the chain in front of you -- I
-think I should still be listed as the author?
-
-> ---
->
-> Changes since V2:
-> 	Updated with review comments.
->
-> Changes since V1:
-> 	Added code to enable MTE before reading register
-> id_aa64pfr1 (unmasked MTE bits).
->
-> This patch is boot tested on ARM64 with KVM and on X86 with TCG for mte=on
-> and default case(i.e, no mte).
->
->  hw/arm/virt.c        | 72 ++++++++++++++++++++++++++------------------
->  target/arm/cpu.c     | 11 +++++--
->  target/arm/cpu.h     |  2 ++
->  target/arm/kvm.c     | 57 +++++++++++++++++++++++++++++++++++
->  target/arm/kvm_arm.h | 19 ++++++++++++
->  5 files changed, 129 insertions(+), 32 deletions(-)
->
-
-(...)
-
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 19191c2391..8a2fc471ce 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -2390,14 +2390,21 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
->  
->  #ifndef CONFIG_USER_ONLY
->          /*
-> -         * If we do not have tag-memory provided by the machine,
-> +         * If we do not have tag-memory provided by the TCG,
-
-Maybe
-
-"If we run with TCG and do not have tag-memory provided by the machine"
-
-?
-
->           * reduce MTE support to instructions enabled at EL0.
->           * This matches Cortex-A710 BROADCASTMTE input being LOW.
->           */
-> -        if (cpu->tag_memory == NULL) {
-> +        if (tcg_enabled() && cpu->tag_memory == NULL) {
->              cpu->isar.id_aa64pfr1 =
->                  FIELD_DP64(cpu->isar.id_aa64pfr1, ID_AA64PFR1, MTE, 1);
->          }
-> +
-> +        /*
-> +         * Clear MTE bits, if not enabled in KVM mode.
-
-Maybe add "This matches the MTE bits being masked by KVM in that case."?
-
-> +         */
-> +        if (kvm_enabled() && !cpu->kvm_mte) {
-> +                FIELD_DP64(cpu->isar.id_aa64pfr1, ID_AA64PFR1, MTE, 0);
-> +        }
->  #endif
->      }
->  
-
-(...)
-
-> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> index 849e2e21b3..af7a98517d 100644
-> --- a/target/arm/kvm.c
-> +++ b/target/arm/kvm.c
-> @@ -39,6 +39,7 @@
->  #include "hw/acpi/acpi.h"
->  #include "hw/acpi/ghes.h"
->  #include "target/arm/gtimer.h"
-> +#include "migration/blocker.h"
->  
->  const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
->      KVM_CAP_LAST_INFO
-> @@ -119,6 +120,20 @@ bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
->      if (vmfd < 0) {
->          goto err;
->      }
-> +
-> +    /*
-> +     * MTE capability must be enabled by the VMM before creating
-> +     * any VCPUs. The MTE bits of the ID_AA64PFR1 register are masked
-> +     * if MTE is not enabled, allowing them to be probed correctly.
-
-This reads a bit confusing. Maybe
-
-"The MTE capability must be enabled by the VMM before creating any VCPUs
-in order to allow the MTE bits of the ID_AA64PFR1 register to be probed
-correctly, as they are masked if MTE is not enabled."
+Overall, without SPL_RELOC_LOADER enabled, this series provides a very
+small code-size benefit due to it dropping some unneeded symbols.
 
 
-> +     */
-> +    if (kvm_arm_mte_supported()) {
-> +        KVMState kvm_state;
-> +
-> +        kvm_state.fd = kvmfd;
-> +        kvm_state.vmfd = vmfd;
-> +        kvm_vm_enable_cap(&kvm_state, KVM_CAP_ARM_MTE, 0);
-> +    }
-> +
->      cpufd = ioctl(vmfd, KVM_CREATE_VCPU, 0);
->      if (cpufd < 0) {
->          goto err;
+Simon Glass (19):
+  spl: Reduce the size of the bl_len field
+  spl: Provide a way of indicating the phase to load
+  spl: Avoid including hash algorithms which are not wanted
+  spl: Provide a way to mark code needed for relocation
+  lib: Mark crc8 as relocation code
+  lib: Mark lz4 as relocation code
+  lib: Mark memcpy() and memmove() as relocation code
+  spl: Add a type for the jumper function
+  spl: Add support for a relocating jump to the next phase
+  spl: Plumb in the relocating loader
+  spl: Support jumping to VPL from TPL
+  spl: Record the correct name of the next phase
+  spl: Show how to fill in the size of the next image
+  spl: Add debugging in spl_set_header_raw_uboot()
+  arm: qemu: Allow SPL and TPL
+  arm: Add a new qemu_arm64_tpl board
+  arm: Provide an rcode section in ARMv8 link script
+  arm: qemu_arm64_tpl: Enable the relocating loader
+  CI: Add new test for reloc loader
 
-(...)
+ .azure-pipelines.yml                  |   3 +
+ .gitlab-ci.yml                        |   6 +
+ MAINTAINERS                           |   6 +
+ arch/arm/Kconfig                      |   2 +
+ arch/arm/cpu/armv8/u-boot-spl.lds     |   8 ++
+ arch/arm/dts/qemu-arm64.dts           |  17 +++
+ arch/arm/mach-qemu/Kconfig            |  20 +++
+ board/emulation/qemu-arm/Kconfig      |   2 +-
+ board/emulation/qemu-arm/MAINTAINERS  |   5 +
+ board/emulation/qemu-arm/Makefile     |   1 +
+ board/emulation/qemu-arm/qemu-arm.env |   4 +
+ board/emulation/qemu-arm/xpl.c        |  50 +++++++
+ common/spl/Kconfig                    |   9 ++
+ common/spl/Kconfig.tpl                |   9 ++
+ common/spl/Kconfig.vpl                |   8 ++
+ common/spl/Makefile                   |   1 +
+ common/spl/spl.c                      |  45 +++++--
+ common/spl/spl_reloc.c                | 182 ++++++++++++++++++++++++++
+ configs/qemu_arm64_tpl_defconfig      |  83 ++++++++++++
+ doc/develop/spl.rst                   |  35 +++++
+ include/asm-generic/sections.h        |  16 +++
+ include/spl.h                         |  57 +++++++-
+ lib/Makefile                          |   6 +-
+ lib/crc8.c                            |   5 +-
+ lib/lz4.c                             |  27 ++--
+ lib/lz4_wrapper.c                     |   2 +-
+ lib/string.c                          |   5 +-
+ test/py/tests/test_reloc.py           |  21 +++
+ 28 files changed, 604 insertions(+), 31 deletions(-)
+ create mode 100644 board/emulation/qemu-arm/xpl.c
+ create mode 100644 common/spl/spl_reloc.c
+ create mode 100644 configs/qemu_arm64_tpl_defconfig
+ create mode 100644 test/py/tests/test_reloc.py
+
+-- 
+2.43.0
 
 
