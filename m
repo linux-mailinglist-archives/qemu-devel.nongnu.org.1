@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08BAE98558E
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 10:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E675E9856DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 12:05:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stNSe-0005QL-Ef; Wed, 25 Sep 2024 04:33:24 -0400
+	id 1stOs9-0001Oc-8r; Wed, 25 Sep 2024 06:03:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1stNSc-0005PR-BO; Wed, 25 Sep 2024 04:33:22 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1stOs3-0001KF-SI
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 06:03:43 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1stNSZ-0008Os-9Z; Wed, 25 Sep 2024 04:33:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727253199; x=1758789199;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=UTcln1KFBK7MFrcaJYe3yuRWnXHRMJdd+GUaX7PtpJk=;
- b=bVbGfu9GK4LYbzpitLsu7sSGz7KfdaljRMl/qeViIiu6ZCg8OP8P2M88
- Hg2b4rQf/oW4z/+ACoOzgUxpVwCsqLMqWPLffzTIJIyTzdBalY6YIgwRF
- nVANIcizCAPhtlUT4Zrp9KzoNqlX09z4YoH3/Sk09MSL7+XKGcNSwg94i
- egj1nV5CC5OA7HR09FEMRTp9mVmzPbmSQkDSeiqoSyfGGwN7mep1K+i49
- TkjR8MmMeM32kIZfavXBCDBFLpzthNpASQKpCktg+W78ZvBLuvVFExDaj
- FHugtFfQD6zTECfLW7Cl/ySiBitQd92J64WuInZ77np+FH62L+hjVmHhE A==;
-X-CSE-ConnectionGUID: i6/seoBkTa+B3Ekg16Qw0g==
-X-CSE-MsgGUID: vtFPWxY0S3+9kkIZt5G9og==
-X-IronPort-AV: E=McAfee;i="6700,10204,11205"; a="29173398"
-X-IronPort-AV: E=Sophos;i="6.10,256,1719903600"; d="scan'208";a="29173398"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2024 01:33:14 -0700
-X-CSE-ConnectionGUID: okhitTIxSxSw0rJzj+QotQ==
-X-CSE-MsgGUID: xu4++olyRHaOEUIFJvEFfA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,256,1719903600"; d="scan'208";a="71341526"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 25 Sep 2024 01:33:12 -0700
-Date: Wed, 25 Sep 2024 16:49:19 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Chuang Xu <xuchuangxclwt@bytedance.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, xieyongji@bytedance.com,
- chaiwen.cc@bytedance.com, qemu-stable@nongnu.org,
- Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v3] i386/cpu: fixup number of addressable IDs for logical
- processors in the physical package
-Message-ID: <ZvPOj82NvTbGlxsV@intel.com>
-References: <20240918131815.8543-1-xuchuangxclwt@bytedance.com>
- <ZuxtmjZBGGwNaVwl@intel.com>
- <20240920130827.751ccfb1@imammedo.users.ipa.redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1stOrz-0002sZ-TT
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 06:03:43 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id CEC48922C8;
+ Wed, 25 Sep 2024 13:02:55 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7332B1454F3;
+ Wed, 25 Sep 2024 13:03:23 +0300 (MSK)
+Message-ID: <6c94975d-2c8e-4698-a035-1e62549c2d4a@tls.msk.ru>
+Date: Wed, 25 Sep 2024 13:03:23 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240920130827.751ccfb1@imammedo.users.ipa.redhat.com>
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.09,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] softmmu: Support concurrent bounce buffers
+To: Mattias Nissler <mnissler@rivosinc.com>, qemu-devel@nongnu.org
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, stefanha@redhat.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
+References: <20240819135455.2957406-1-mnissler@rivosinc.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240819135455.2957406-1-mnissler@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,129 +85,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 20, 2024 at 01:08:27PM +0200, Igor Mammedov wrote:
-> Date: Fri, 20 Sep 2024 13:08:27 +0200
-> From: Igor Mammedov <imammedo@redhat.com>
-> Subject: Re: [PATCH v3] i386/cpu: fixup number of addressable IDs for
->  logical processors in the physical package
-> X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+19.08.2024 16:54, Mattias Nissler wrote:
+> When DMA memory can't be directly accessed, as is the case when
+> running the device model in a separate process without shareable DMA
+> file descriptors, bounce buffering is used.
 > 
-> On Fri, 20 Sep 2024 02:29:46 +0800
-> Zhao Liu <zhao1.liu@intel.com> wrote:
+> It is not uncommon for device models to request mapping of several DMA
+> regions at the same time. Examples include:
+>   * net devices, e.g. when transmitting a packet that is split across
+>     several TX descriptors (observed with igb)
+>   * USB host controllers, when handling a packet with multiple data TRBs
+>     (observed with xhci)
 > 
-> > Hi Chuang and Igor,
-> > 
-> > Sorry for late reply,
-> > 
-> > On Wed, Sep 18, 2024 at 09:18:15PM +0800, Chuang Xu wrote:
-> > > Date: Wed, 18 Sep 2024 21:18:15 +0800
-> > > From: Chuang Xu <xuchuangxclwt@bytedance.com>
-> > > Subject: [PATCH v3] i386/cpu: fixup number of addressable IDs for logical
-> > >  processors in the physical package
-> > > X-Mailer: git-send-email 2.24.3 (Apple Git-128)
-> > > 
-> > > When QEMU is started with:
-> > > -cpu host,migratable=on,host-cache-info=on,l3-cache=off
-> > > -smp 180,sockets=2,dies=1,cores=45,threads=2
-> > > 
-> > > Try to execute "cpuid -1 -l 1 -r" in guest, we'll obtain a value of 90 for
-> > > CPUID.01H.EBX[23:16], while the expected value is 128. And Try to
-> > > execute "cpuid -1 -l 4 -r" in guest, we'll obtain a value of 63 for
-> > > CPUID.04H.EAX[31:26] as expected.
-> > > 
-> > > As (1+CPUID.04H.EAX[31:26]) round up to the nearest power-of-2 integer,
-> > > we'd beter round up CPUID.01H.EBX[23:16] to the nearest power-of-2
-> > > integer too. Otherwise we may encounter unexpected results in guest.
-> > > 
-> > > For example, when QEMU is started with CLI above and xtopology is disabled,
-> > > guest kernel 5.15.120 uses CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26]) to
-> > > calculate threads-per-core in detect_ht(). Then guest will get "90/(1+63)=1"
-> > > as the result, even though theads-per-core should actually be 2.
-> > > 
-> > > So let us round up CPUID.01H.EBX[23:16] to the nearest power-of-2 integer
-> > > to solve the unexpected result.
-> > > 
-> > > Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-> > > Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
-> > > Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
-> > > ---
-> > >  target/i386/cpu.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > > index 4c2e6f3a71..3710ae5283 100644
-> > > --- a/target/i386/cpu.c
-> > > +++ b/target/i386/cpu.c
-> > > @@ -6417,7 +6417,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> > >          }
-> > >          *edx = env->features[FEAT_1_EDX];
-> > >          if (threads_per_pkg > 1) {
-> > > -            *ebx |= threads_per_pkg << 16;
-> > > +            *ebx |= pow2ceil(threads_per_pkg) << 16;  
-> > 
-> > Yes, the fix is right.
-> > 
-> > About the "Maximum number of addressable IDs", the commit 88dd4ca06c83
-> > ("i386/cpu: Use APIC ID info to encode cache topo in CPUID[4]")
-> > introduced the new way to calculate.
-> > 
-> > The pow2ceil() works for current SMP topology, but may be wrong on
-> > hybrid topology, as the reason I listed in the commit message:
-> > 
-> > > The nearest power-of-2 integer can be calculated by pow2ceil() or by
-> > > using APIC ID offset/width (like L3 topology using 1 << die_offset [3]).  
-> > 
-> > > But in fact, CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26]
-> > > are associated with APIC ID. For example, in linux kernel, the field
-> > > "num_threads_sharing" (Bits 25 - 14) is parsed with APIC ID. And for
-> > > another example, on Alder Lake P, the CPUID.04H:EAX[bits 31:26] is not
-> > > matched with actual core numbers and it's calculated by:
-> > > "(1 << (pkg_offset - core_offset)) - 1".  
-> > 
-> > Using APIC ID offset to calculate is the hardware's approach, so I tried
-> > to use APIC ID instead of pow2ceil() and replaced all pow2ceil() case.
+> Previously, qemu only provided a single bounce buffer per AddressSpace
+> and would fail DMA map requests while the buffer was already in use. In
+> turn, this would cause DMA failures that ultimately manifest as hardware
+> errors from the guest perspective.
 > 
-> Well, hybrid case needs some more explanation then.
+> This change allocates DMA bounce buffers dynamically instead of
+> supporting only a single buffer. Thus, multiple DMA mappings work
+> correctly also when RAM can't be mmap()-ed.
 > 
-> 'pow2ceil(threads_per_pkg) << 16' - does exactly what SDM says for CPUID.01H.EBX[23:16]
-> 
-> Can you point to a spec that confirms that above is wrong and
-> explain in more details how hybrid case is supposed to work
-> and where it's documented?
->  
+> The total bounce buffer allocation size is limited individually for each
+> AddressSpace. The default limit is 4096 bytes, matching the previous
+> maximum buffer size. A new x-max-bounce-buffer-size parameter is
+> provided to configure the limit for PCI devices.
 
-This is mainly about the meaning of "addressable ID". There's a spec
-"Intel 64 Architecture Processor Topology Enumeration" [1].
+So, the issue has now become CVE-2024-8612 (information leak), with this
+commit (v9.1.0-134-g637b0aa139) being the fix.
 
-In the section 1.5.3, it mentions the "addressable ID" of CPUID.01H.
-EBX[23:16] indicates the "initial APIC ID". And for CPUID.04H:EAX[bits
-31:26], that field is "core_id", which is the part of initial APIC ID.
+Should we back-port it to previous stable releases of qemu?
+(it applies to 9.1 but not to 9.0, and I haven't tested it even in 9.1.
+If anything it needs some work for 9.0 and before)
 
-Therefore, "maximum number of addressable IDs" indicates the maximum
-number of IDs that each subfield of the APIC ID (we create based on the
-smp topology) can hold, which is related to width.
+Thanks,
 
-For example, if the width of the APIC sub ID for the thread level is 2,
-then it will hold a maximum of 4 sub IDs. For the smp system, the
-sub-topology fields of the APIC IDs are filled, so pow2ceil() is always
-valid.
-
-For hybrid, there will be holes in the sub fields, for example, 4 E
-cores form a module and a P core is exclusive to a module, for the core
-field of the E core's APIC ID, the width of the core field is at least 2
-to accommodate the IDs of the 4 cores, while the P core, though only 1
-bit width is needed, still uses the same width as the E core in order to
-align with the E core. In this case, pow2ceil() fails.
-
-And the example I mentioned before ("on Alder Lake P, the CPUID.04H:EAX[
-bits 31:26] is not matched with actual core numbers and it's calculated
-by: '(1 << (pkg_offset - core_offset)) - 1'."), has the same reason,
-that's because the APIC ID layout has the holes, and the possible APIC
-IDs are more than actual cores.
-
-[1]: https://cdrdv2-public.intel.com/759067/intel-64-architecture-processor-topology-enumeration.pdfi
-
-Regards,
-Zhao
-
+/mjt
 
