@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF15B9851E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2B69851E7
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:08:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stJHQ-0006yL-Pa; Wed, 25 Sep 2024 00:05:32 -0400
+	id 1stJHN-0006Yf-TL; Wed, 25 Sep 2024 00:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGq-0005gk-1e; Wed, 25 Sep 2024 00:04:56 -0400
+ id 1stJGo-0005ar-7n; Wed, 25 Sep 2024 00:04:54 -0400
 Received: from nyc.source.kernel.org ([147.75.193.91])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGo-0001xy-8v; Wed, 25 Sep 2024 00:04:55 -0400
+ id 1stJGl-0001xG-AU; Wed, 25 Sep 2024 00:04:53 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id B55AAA43B50;
+ by nyc.source.kernel.org (Postfix) with ESMTP id 51A31A43B59;
  Wed, 25 Sep 2024 04:04:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC31C4AF0E;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07961C4CECE;
  Wed, 25 Sep 2024 04:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1727237088;
- bh=QmS5SCan71KvTfp2vhqpTHrvyu5BMSTHUv6oVhJLzV8=;
+ bh=BSna6PtTcJXhc2BwT04xbR58a+FIME41kCjBdqVnEa4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=uUxAnzOHABHSGnDX6tOPQMc0Hi0jOdgKacLuW5IrB/HfdmwejkLT3mf/+1mhemzpc
- 5PrI3ofM7saJ5jIIuVh8QXZi6fWyXCe2sXJyLZHboiXH+Pwomo1Ri5rLt4dOHNdmQa
- PkUkjNDg3Z6YYiC1lFRHZybNX0dMxpHK6I+kmVuWKMiuXgjiehwUoaml1YghoyN/Lu
- FuwLAtiFfCzr9kDPTUB/+bL4Gr5mFCaek1oRUZRdkklK1CNoZfJ1aj8zE79060O3P8
- zyVVayZrbRoQtzqOemnlSsfADG0JiVbSg8YG+hD23DC/ZbHQm/Fm2R22S+lfOSOo7d
- VbzxdRSnIENJQ==
+ b=IBpqOl5VZruvvoSmGlu3kZ3tJ8SCyosM78IgpTjij0u3uNNeY7TjmHDdLXDSnKXcR
+ ybOWAg5aVBUwYafMsD2XG2xLTJuNdhVA2ryAVFb+5oEgvu0V7c7bJI6qKknRuWuQUu
+ q3v4iJ3ynhYsMI+LkM6kWZKg5qde4Q8H7vNHPwwMVtfJ+AYVpVcDDVJ+xe2pcE325G
+ Q+Q/5mHab6utJL/12m30b0q2I9h0fV63yXRe/m9l6l0KAvfVnotVgJYO6EzsBRe9sl
+ QkKvvV7HNfYZwRgi31YTpQnl4BEPB4TkwDdaU5Lfmiw6OIMcTKEp3I91rTaumHxI55
+ +roBRiu6iz/8g==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGg-0000000827t-0efp; Wed, 25 Sep 2024 06:04:46 +0200
+ id 1stJGg-0000000827x-0lpG; Wed, 25 Sep 2024 06:04:46 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -42,9 +42,9 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
  qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH 04/15] acpi/ghes: better handle source_id and notification
-Date: Wed, 25 Sep 2024 06:04:09 +0200
-Message-ID: <a3b54a74158fdff44e600cf0949a430891c8cb22.1727236561.git.mchehab+huawei@kernel.org>
+Subject: [PATCH 05/15] acpi/ghes: Fix acpi_ghes_record_errors() argument
+Date: Wed, 25 Sep 2024 06:04:10 +0200
+Message-ID: <58444cff65cc5b9164f47db4685910a2602b7d13.1727236561.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <cover.1727236561.git.mchehab+huawei@kernel.org>
 References: <cover.1727236561.git.mchehab+huawei@kernel.org>
@@ -74,28 +74,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GHES has two fields that are stored on HEST error source
-blocks:
-
-- notification type, which is a number defined at the ACPI spec
-  containing several arch-specific synchronous and assynchronous
-  types;
-- source id, which is a HW/FW defined number, used to distinguish
-  between different implemented hardware report mechanisms.
-
-Cleanup the logic to fill those, as they should be handled
-independently.
-
-This is a preparation for a future patch that will shift
-those fields to the HEST init function call.
+The first argument is source ID and not notification type.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
 ---
-
-Chenges from v10:
-
-- Some changes got moved to the previous patch.
 
 Changes from v8:
 - Non-rename/cleanup changes merged altogether;
@@ -104,59 +87,22 @@ Changes from v8:
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- hw/acpi/ghes.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ include/hw/acpi/ghes.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index 7b42ed59cd15..7460cd1a8d56 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -284,9 +284,13 @@ static void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker)
- }
+diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
+index 20016c226d1f..50e3a25ea384 100644
+--- a/include/hw/acpi/ghes.h
++++ b/include/hw/acpi/ghes.h
+@@ -73,7 +73,7 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
+                      const char *oem_id, const char *oem_table_id);
+ void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
+                           GArray *hardware_errors);
+-int acpi_ghes_record_errors(uint8_t notify, uint64_t error_physical_addr);
++int acpi_ghes_record_errors(uint8_t source_id, uint64_t error_physical_addr);
  
- /* Build Generic Hardware Error Source version 2 (GHESv2) */
--static void build_ghes_v2(GArray *table_data, int source_id, BIOSLinker *linker)
-+static void build_ghes_v2(GArray *table_data,
-+                          BIOSLinker *linker,
-+                          enum AcpiGhesNotifyType notify,
-+                          uint16_t source_id)
- {
-     uint64_t address_offset;
-+
-     /*
-      * Type:
-      * Generic Hardware Error Source version 2(GHESv2 - Type 10)
-@@ -316,18 +320,8 @@ static void build_ghes_v2(GArray *table_data, int source_id, BIOSLinker *linker)
-         address_offset + GAS_ADDR_OFFSET, sizeof(uint64_t),
-         ACPI_GHES_ERRORS_FW_CFG_FILE, source_id * sizeof(uint64_t));
- 
--    switch (source_id) {
--    case ACPI_HEST_SRC_ID_SEA:
--        /*
--         * Notification Structure
--         * Now only enable ARMv8 SEA notification type
--         */
--        build_ghes_hw_error_notification(table_data, ACPI_GHES_NOTIFY_SEA);
--        break;
--    default:
--        error_report("Not support this error source");
--        abort();
--    }
-+    /* Notification Structure */
-+    build_ghes_hw_error_notification(table_data, notify);
- 
-     /* Error Status Block Length */
-     build_append_int_noprefix(table_data, ACPI_GHES_MAX_RAW_DATA_LENGTH, 4);
-@@ -369,7 +363,8 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
- 
-     /* Error Source Count */
-     build_append_int_noprefix(table_data, ACPI_GHES_ERROR_SOURCE_COUNT, 4);
--    build_ghes_v2(table_data, ACPI_HEST_SRC_ID_SEA, linker);
-+    build_ghes_v2(table_data, linker,
-+                  ACPI_GHES_NOTIFY_SEA, ACPI_HEST_SRC_ID_SEA);
- 
-     acpi_table_end(linker, &table);
- }
+ /**
+  * acpi_ghes_present: Report whether ACPI GHES table is present
 -- 
 2.46.1
 
