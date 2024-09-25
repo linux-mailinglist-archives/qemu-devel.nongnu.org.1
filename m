@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597339857C3
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E65A9857E1
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 13:16:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stPvV-0008KG-3e; Wed, 25 Sep 2024 07:11:21 -0400
+	id 1stPvR-0008CX-SD; Wed, 25 Sep 2024 07:11:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvR-0008Cb-5p
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:17 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvP-000813-5h
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvO-0003WE-7V
- for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:16 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1stPvN-0003W4-Om
+ for qemu-devel@nongnu.org; Wed, 25 Sep 2024 07:11:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1727262673;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1zwoIHng/2YrhGhXdl+IAqqFZgtfXPkt04gu1iiKGeE=;
- b=DyvCRUYL8v5GJSMPHHV7BO2EYJfpwNvQiG4nZnh6EzMHJC+XEzHtVDA/mdDm3u/X8+wTik
- fi83ZesRI7m/5tBiujuVSpvcU8v3X8OPOzbyb4KBfxG19DQk+Onv0gUc+ylRc1zZs9GBb6
- Y5ZvD8chE5H03Ebfsgvc6r6gMI8ouEE=
+ bh=9wA9ErZOcHxomx3D/S9htm5cMrsPvqAXtUE6ybaQrZM=;
+ b=QOoyOWuY54k9eD4nLPjiakDqLlhyi1fWFTINeBfdu4vF1FOiEwsx7KCBfv0tDeuXVjfGdB
+ l6psmze6Oe7xu4jvJvB08NCcJWcOP6iQ8gQIHKMx5zv2OIRkk8DjZP85Cur0idT1XAuPM4
+ O04ppuauyOBcxpyrTyfwE+rxooZLwyM=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-Lr_nrNK0NGuLGFc9UiRC9g-1; Wed,
- 25 Sep 2024 07:11:06 -0400
-X-MC-Unique: Lr_nrNK0NGuLGFc9UiRC9g-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-36-wiqXa1snP76_u_53dr6UZA-1; Wed,
+ 25 Sep 2024 07:11:09 -0400
+X-MC-Unique: wiqXa1snP76_u_53dr6UZA-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
  [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A74F1193EF48; Wed, 25 Sep 2024 11:11:05 +0000 (UTC)
+ id 14BFB193EF48; Wed, 25 Sep 2024 11:11:08 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8BE161956094; Wed, 25 Sep 2024 11:11:03 +0000 (UTC)
+ id 6516A1956094; Wed, 25 Sep 2024 11:11:05 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 10/44] hw/arm: replace assert(0) with g_assert_not_reached()
-Date: Wed, 25 Sep 2024 13:09:51 +0200
-Message-ID: <20240925111029.24082-11-thuth@redhat.com>
+Subject: [PULL 11/44] hw/net: replace assert(0) with g_assert_not_reached()
+Date: Wed, 25 Sep 2024 13:09:52 +0200
+Message-ID: <20240925111029.24082-12-thuth@redhat.com>
 In-Reply-To: <20240925111029.24082-1-thuth@redhat.com>
 References: <20240925111029.24082-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -87,25 +87,25 @@ assertion mechanisms.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240919044641.386068-3-pierrick.bouvier@linaro.org>
+Message-ID: <20240919044641.386068-4-pierrick.bouvier@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/arm/highbank.c | 2 +-
+ hw/net/i82596.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
-index 6915eb63c7..f103921d49 100644
---- a/hw/arm/highbank.c
-+++ b/hw/arm/highbank.c
-@@ -199,7 +199,7 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
-         machine->cpu_type = ARM_CPU_TYPE_NAME("cortex-a15");
-         break;
-     default:
--        assert(0);
-+        g_assert_not_reached();
-     }
+diff --git a/hw/net/i82596.c b/hw/net/i82596.c
+index 6cc8292a65..cd416a00ff 100644
+--- a/hw/net/i82596.c
++++ b/hw/net/i82596.c
+@@ -282,7 +282,7 @@ static void command_loop(I82596State *s)
+         case CmdDump:
+         case CmdDiagnose:
+             printf("FIXME Command %d !!\n", cmd & 7);
+-            assert(0);
++            g_assert_not_reached();
+         }
  
-     for (n = 0; n < smp_cpus; n++) {
+         /* update status */
 -- 
 2.46.0
 
