@@ -2,62 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAF29851DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 914AB985202
+	for <lists+qemu-devel@lfdr.de>; Wed, 25 Sep 2024 06:27:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stJHZ-00075n-64; Wed, 25 Sep 2024 00:05:41 -0400
+	id 1stJbl-00012z-GZ; Wed, 25 Sep 2024 00:26:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGs-0005qd-CO; Wed, 25 Sep 2024 00:04:58 -0400
-Received: from nyc.source.kernel.org ([147.75.193.91])
+ id 1stJbS-0000z3-Qr; Wed, 25 Sep 2024 00:26:15 -0400
+Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGo-0001yN-RN; Wed, 25 Sep 2024 00:04:57 -0400
+ id 1stJbR-0004UR-0g; Wed, 25 Sep 2024 00:26:14 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id F35CEA43B68;
- Wed, 25 Sep 2024 04:04:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D6EC4CEDB;
- Wed, 25 Sep 2024 04:04:48 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id 74999A43B60;
+ Wed, 25 Sep 2024 04:26:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A92C4CEC3;
+ Wed, 25 Sep 2024 04:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1727237088;
- bh=EPNa3UpkebUjcFO0jhrd/3A1k55FLfyHJyyXhy8vljw=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=H7HNZwap8YuDFEhVgTnBWrtr0SIkRjPteonQ0lp59gxEiqbHoHeqdaNYqRhBW9Bh5
- DQkFYLkw/8OFcJu39ReVm0nRoJn1Lzd7pwmmi8SRHIgOgEpp3WFBC/K0wAYqVeKpaq
- m03uHTk+u2lEx7z/EHgQBcbi3jn0X9nU1RHki9FkqUF94D0zpThgVDIOjaX/bneJ7x
- 3spVCxmqTnDu15gzZ+SBUSA0IJrYnHEQLGEWcPaEsg9ucuUpB8suYyWXkSWTKQX+IW
- bGOpvGezG/RHUUJ/j5UbTaeOAF8N2dttUKV5u1XNiZfLn/kBEuIXIMcY3TcgC2qOCO
- jz7Tt/VsZwHRg==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab+huawei@kernel.org>)
- id 1stJGg-0000000828X-1m1D; Wed, 25 Sep 2024 06:04:46 +0200
+ s=k20201202; t=1727238367;
+ bh=Ynfd0JRm++Nr2Ee+rhT8wlroxPnjzYV/SOrelhCelmg=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=qfvajQ7WG0ypVLqcmpWxo+kxj698Cwbnm+r/0YhOX3PEe3PnWkgW57a5A2eo0Ee7D
+ B+LuTdFM+97a3BW1idyWzlu5ciUFDocJ+JUeYlmNmsb/8pEGOB4tYpXYdqzcIDnTCZ
+ L1PHsV5f8TUQQpB7xX/T3CavZr5mhYoyJqYzLq541F/A6Y5AkdSM7rFkHfAqVNVtUo
+ D5GK8ONk5257ePVWiM1eM8/8pndgpG6cmHbmVeZEtGDYE4cboH+ahc6ZQfzn7W+xyC
+ PJ53wOCz70H5DQYV8woUPwZYfC9fHOSyTq8K5uat4f5y7bnp0zP6l6fsm9biw6giaB
+ +kSl80LgePvqA==
+Date: Wed, 25 Sep 2024 06:26:00 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Shiju Jose <shiju.jose@huawei.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH 14/15] better name the offset of the hardware error firmware
-Date: Wed, 25 Sep 2024 06:04:19 +0200
-Message-ID: <94dec32ef07d95940ee63445f151899ae7b430b3.1727236561.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <cover.1727236561.git.mchehab+huawei@kernel.org>
-References: <cover.1727236561.git.mchehab+huawei@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
+ <shiju.jose@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>, Cleber Rosa <crosa@redhat.com>, Dongjiu Geng
+ <gengdongjiu1@gmail.com>, Eric Blake <eblake@redhat.com>, John Snow
+ <jsnow@redhat.com>, Markus Armbruster <armbru@redhat.com>, Michael Roth
+ <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Shannon Zhao <shannon.zhaosl@gmail.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v10 00/21] Add ACPI CPER firmware first error injection
+ on ARM emulation
+Message-ID: <20240925062600.7cbfeb19@foz.lan>
+In-Reply-To: <20240924151429.3e758b38@imammedo.users.ipa.redhat.com>
+References: <cover.1726293808.git.mchehab+huawei@kernel.org>
+ <20240917141519.57766bb6@imammedo.users.ipa.redhat.com>
+ <20240924150058.4879abe9@foz.lan>
+ <20240924151429.3e758b38@imammedo.users.ipa.redhat.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=147.75.193.91;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
  envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.09,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,78 +78,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The hardware error firmware is where HEST error structures are
-stored. Those can be GHESv2, but they can also be other types.
+Em Tue, 24 Sep 2024 15:14:29 +0200
+Igor Mammedov <imammedo@redhat.com> escreveu:
 
-Better name the location of the hardware error.
+> > 1) preparation patches:
+...
+> > 69850f550f99 acpi/generic_event_device: add an APEI error device  
+> this one doesn't belong to clean ups, I think.
+> Lets move this to #3 part
 
-No functional changes.
+Ok.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- hw/acpi/generic_event_device.c | 4 ++--
- hw/acpi/ghes.c                 | 4 ++--
- include/hw/acpi/ghes.h         | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+> > The migration logic will require some time, and I don't want to bother
+> > with the cleanup stuff while doing it. So, perhaps while I'm doing it,
+> > you could review/merge the cleanups.
+> > 
+> > We can do the same for each of the 4 above series of patches, as it
+> > makes review simpler as there will be less patches to look into on
+> > each series.
+> > 
+> > Would it work for you?  
+> 
+> other than nit above, LGTM
+> 
 
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 15b4c3ebbf24..d4dbfb45e181 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -346,7 +346,7 @@ static const VMStateDescription vmstate_ghes = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .fields = (const VMStateField[]) {
--        VMSTATE_UINT64(ghes_addr_le, AcpiGhesState),
-+        VMSTATE_UINT64(hw_error_le, AcpiGhesState),
-         VMSTATE_END_OF_LIST()
-     },
- };
-@@ -354,7 +354,7 @@ static const VMStateDescription vmstate_ghes = {
- static bool ghes_needed(void *opaque)
- {
-     AcpiGedState *s = opaque;
--    return s->ghes_state.ghes_addr_le;
-+    return s->ghes_state.hw_error_le;
- }
- 
- static const VMStateDescription vmstate_ghes_state = {
-diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index 3d03506fdaf8..8b3292be07e7 100644
---- a/hw/acpi/ghes.c
-+++ b/hw/acpi/ghes.c
-@@ -379,7 +379,7 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
- 
-     /* Create a read-write fw_cfg file for Address */
-     fw_cfg_add_file_callback(s, ACPI_HW_ERROR_ADDR_FW_CFG_FILE, NULL, NULL,
--        NULL, &(ags->ghes_addr_le), sizeof(ags->ghes_addr_le), false);
-+        NULL, &(ags->hw_error_le), sizeof(ags->hw_error_le), false);
- 
-     ags->present = true;
- }
-@@ -430,7 +430,7 @@ void ghes_record_cper_errors(const void *cper, size_t len,
-     }
-     ags = &acpi_ged_state->ghes_state;
- 
--    get_ghes_offsets(le64_to_cpu(ags->ghes_addr_le),
-+    get_ghes_offsets(le64_to_cpu(ags->hw_error_le),
-                      &cper_addr, &read_ack_register_addr);
- 
-     if (!cper_addr) {
-diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
-index 051a9322141f..e47ffacbb5c9 100644
---- a/include/hw/acpi/ghes.h
-+++ b/include/hw/acpi/ghes.h
-@@ -58,7 +58,7 @@ enum AcpiGhesNotifyType {
- };
- 
- typedef struct AcpiGhesState {
--    uint64_t ghes_addr_le;
-+    uint64_t hw_error_le;
-     bool present; /* True if GHES is present at all on this board */
- } AcpiGhesState;
- 
--- 
-2.46.1
+Ok, sent a PR with the first set (cleanups) at:
 
+	https://lore.kernel.org/qemu-devel/cover.1727236561.git.mchehab+huawei@kernel.org/
+
+You can see the full series at:
+
+	https://gitlab.com/mchehab_kernel/qemu/-/commits/qemu_submission_v11b?ref_type=heads
+
+It works fine, except for the migration part that I'm still working with.
+
+For the migration, there are how two functions at ghes.c:
+
+The one compatible with current behavior (up to version 9.1):
+	https://gitlab.com/mchehab_kernel/qemu/-/blob/qemu_submission_v11b/hw/acpi/ghes.c?ref_type=heads#L411
+
+And the new one using offsets calculated from HEST (newer versions):
+	https://gitlab.com/mchehab_kernel/qemu/-/blob/qemu_submission_v11b/hw/acpi/ghes.c?ref_type=heads#L437 
+
+With that, the migration logic can decide what function should be
+called (currently, it is just checking if hest_addr_le is zero, but
+I guess I'll need to change it to match some variable added by the
+migration path.
+
+Also, in preparation for the migration tests, I created a separate 
+branch at:
+
+	https://gitlab.com/mchehab_kernel/qemu/-/commits/ghes_on_v9.1.0?ref_type=heads
+
+which contains the same patches on the top of 9.1, except for
+the HEST ones. It also contains a hack to use ACPI_GHES_NOTIFY_GPIO
+instead of ACPI_GHES_NOTIFY_SEA.
+
+With that, we have a way to use the same error injection logic
+on both 9.1 and upstream, hopefully being enough to test if migration
+works.
+
+Thanks,
+Mauro
 
