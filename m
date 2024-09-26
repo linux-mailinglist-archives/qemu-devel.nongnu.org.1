@@ -2,73 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BCE39870FB
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Sep 2024 12:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2DE987196
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Sep 2024 12:34:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stlHY-000527-Ds; Thu, 26 Sep 2024 05:59:32 -0400
+	id 1stloJ-0003u2-Kn; Thu, 26 Sep 2024 06:33:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1stlHH-00050O-Un
- for qemu-devel@nongnu.org; Thu, 26 Sep 2024 05:59:15 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1stlHE-0005eU-0Y
- for qemu-devel@nongnu.org; Thu, 26 Sep 2024 05:59:14 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5c25f01879fso889814a12.1
- for <qemu-devel@nongnu.org>; Thu, 26 Sep 2024 02:59:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727344750; x=1727949550; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=kE+xQ2mZaipeurpR6JeNsttlF4pSYhRTtpRYC9WWWKc=;
- b=J1QRMeladfsq68JqjksMvdG9RvJn5b6MnKg0jH/7PwZbvXblVkOQ4e93TNp3dlqL15
- rlUwlU2Iq29payFIn8rkj4P9FgntyszcP8kvZZI7aYTMeZ1fI6EFfy7ZllADButM3jbb
- 7RMwIIXO1qnaNhehhp9XmOVTAr7xM/sAZ+hW1JIXM4MoUdnma67RPRxlFun/e5HbvnYc
- RMieI7AnOxm3fv5SQ/9bX6AA1Hlyzc2XacJ7rpQkERwU4qFGPvixI3aJatNbWOuzyCXD
- AvKCkLZ14h7V8wtZqnqAxo5owYay0FtLDzbnLr9XIZq2YN6rk0x4zQx7PNxnxYUDgTYv
- i/cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727344750; x=1727949550;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kE+xQ2mZaipeurpR6JeNsttlF4pSYhRTtpRYC9WWWKc=;
- b=dLt0fp5Zux1IylwMrXf8774RSk0WRE0WhLv+P+FVHAGWF02xQuLlIX326lt+vThsSO
- lvbHz9Ea7YCFbNQOUbYZ7A8pssTbGpWEoYtLUXsPHzUASPStuiik9CgKnjJHt8gyJKkr
- W8GjgDMVdrEXVhwkl7+NmWPVcUx5KfJbNw2274Qb686N5UfY1/ZYX6M+a9sZgGC5dppH
- y4b1OGK6uL6tJl/DpIP2SsqKZZcgEB+S3Fil4DXbT0vNEfmTSLM4liRWKNiv4gsiphi3
- u/yOkiyalaKz0X0460augsOjq1qlsn33uJ6PGGYFZSfzD6MI9xMSBJb6MDQvz/HLXSni
- ol9A==
-X-Gm-Message-State: AOJu0YznW7I9+nHImn71q7k/Pwt5nrdlBeEL4PQ+Cx8B7+LyFvQ3YX7N
- B6hjUWemDQofcLQo8kdriVs6hryQ5o4XY3twuto+Y0ZUWWXYdRbhL/1a2TjQukqDXMDMqKXz90Z
- tEXMPoXE4rmg64pm/PEGKhd50KI0z+xKzQ8z/AA==
-X-Google-Smtp-Source: AGHT+IFHmkhOxplo2eMccxZnipGgtJ5kFrnj7yVojrjo7wRlg02kdfAHOS/PilypLUYHcNiI7bDg0dG2AM5WjqivWqA=
-X-Received: by 2002:a05:6402:50cf:b0:5c7:2209:e709 with SMTP id
- 4fb4d7f45d1cf-5c72209e850mr3421566a12.17.1727344749906; Thu, 26 Sep 2024
- 02:59:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <bounce-md_30504962.66f53402.v1-c30f7570a69a4edea420fec1bd6ad99a@bounce.vates.tech>)
+ id 1stloF-0003so-TX
+ for qemu-devel@nongnu.org; Thu, 26 Sep 2024 06:33:20 -0400
+Received: from mail136-20.atl41.mandrillapp.com ([198.2.136.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <bounce-md_30504962.66f53402.v1-c30f7570a69a4edea420fec1bd6ad99a@bounce.vates.tech>)
+ id 1stloE-0002As-6z
+ for qemu-devel@nongnu.org; Thu, 26 Sep 2024 06:33:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+ s=mte1; t=1727345666; x=1727606166;
+ bh=t2ClioiobIx8sORcFDyjTmKyeW+IX3Hdgvdic7NBgp0=;
+ h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
+ Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
+ b=HnZErQ4eDIyU1tkzy/ukDQav2kBagREiFtyKrcAoF6HY7rc2C5XGdU8vTRmN3F7ho
+ tuCz45hYxCW+SykvtnyQgiomL3h+TKmbRq6RyJ0xlFzHlJmkCWjSA523Q0ZVLFxnEk
+ hA3UtWM0rv8BmyeCqI9hWscno3pLxaHSM9gfHGBQ/EXRO30u24MYPclWmQoWGtA7Ns
+ tDSz94ohI73prie+dJzKWR98CSrEQmKVvpTIZV1Ss+S0c4XrNVpXrcQH1LGN0INuSz
+ YkmUuI0JHqFN0EwCgPFVutcWqi8JEVGBofF6YKW/YCMuy5RZ7zOxoF5k9J6Kk9c3dn
+ 8Jen2jvanYS8g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
+ t=1727345666; x=1727606166; i=anthony.perard@vates.tech;
+ bh=t2ClioiobIx8sORcFDyjTmKyeW+IX3Hdgvdic7NBgp0=;
+ h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
+ Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
+ b=VIF5PW+gDw2e92o+F1tcQS1dhjcm0OikrqNrOB9PkG5TfrMrBLxU9wIJmFRY473c7
+ n+ozNgVkYmbl8BPBY4q8cmTTyFp56oPMyrVgAU1YUk/nyPg1g6AC8lxqmu9axGMArK
+ b9GdINRrRDe7PJ5epQpnEBW21JEBjmUvfV1CPsnBl2m0+UaoYeuT1+Xm7eCtTlXlJJ
+ PzYvWOZw8FIKTNKDAPFEKhSilep/Ysf8UE9wnbaZkMIgs+sfyi9UWFKb8ZoPf2VJgR
+ nvdLRHR7iOaNDv9s/nte44RRYzpOr/l/zBqQKubqYPTZOyZlLXkm6uNyOEc0KUZa3g
+ 5j7A8YAfcFbIg==
+Received: from pmta11.mandrill.prod.atl01.rsglab.com (localhost [127.0.0.1])
+ by mail136-20.atl41.mandrillapp.com (Mailchimp) with ESMTP id
+ 4XDqFt1jZ8zCfBbQl
+ for <qemu-devel@nongnu.org>; Thu, 26 Sep 2024 10:14:26 +0000 (GMT)
+From: Anthony PERARD <anthony.perard@vates.tech>
+Subject: =?utf-8?Q?[PATCH=200/2]=20Xen:=20Update=20sector-size=20handling=20in=20block=20backend?=
+Received: from [37.26.189.201] by mandrillapp.com id
+ c30f7570a69a4edea420fec1bd6ad99a; Thu, 26 Sep 2024 10:14:26 +0000
+X-Mailer: git-send-email 2.39.2
+X-Bm-Disclaimer: Yes
+X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
+X-Bm-Transport-Timestamp: 1727345665088
+To: qemu-devel@nongnu.org
+Cc: Anthony PERARD <anthony.perard@vates.tech>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Paul Durrant <paul@xen.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Anthony PERARD <anthony@xenproject.org>,
+ xen-devel@lists.xenproject.org, Stefano Stabellini <sstabellini@kernel.org>,
+ qemu-block@nongnu.org
+Message-Id: <20240926101334.2388-1-anthony.perard@vates.tech>
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,
+ =20including=20all=20headers,
+ =20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.c30f7570a69a4edea420fec1bd6ad99a?=
+X-Mandrill-User: md_30504962
+Feedback-ID: 30504962:30504962.20240926:md
+Date: Thu, 26 Sep 2024 10:14:26 +0000
 MIME-Version: 1.0
-References: <20240920074134.664961-1-mjt@tls.msk.ru>
-In-Reply-To: <20240920074134.664961-1-mjt@tls.msk.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 26 Sep 2024 10:58:57 +0100
-Message-ID: <CAFEAcA-FaykofbvGUupL2y3K9XpgwH8uLsWvzLs2pQ_eh21Hdg@mail.gmail.com>
-Subject: Re: [PULL 00/22] Trivial patches for 2024-09-20
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.2.136.20;
+ envelope-from=bounce-md_30504962.66f53402.v1-c30f7570a69a4edea420fec1bd6ad99a@bounce.vates.tech;
+ helo=mail136-20.atl41.mandrillapp.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,34 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 20 Sept 2024 at 08:42, Michael Tokarev <mjt@tls.msk.ru> wrote:
->
-> The following changes since commit 01dc65a3bc262ab1bec8fe89775e9bbfa627becb:
->
->   Merge tag 'pull-target-arm-20240919' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-09-19 14:15:15 +0100)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
->
-> for you to fetch changes up to 06e2329636f9c05b046ccf8aa1b245bbdfb01263:
->
->   license: Update deprecated SPDX tag GPL-2.0 to GPL-2.0-only (2024-09-20 10:11:59 +0300)
->
-> ----------------------------------------------------------------
-> trivial patches for 2024-09-20
->
-> Various things.  Including explicit-LFS usage removal for linux-user
-> which allows qemu to be built on musl, some minor tests fixes, removals
-> of unused functions, license tag fixes, and others.
->
-> ----------------------------------------------------------------
+The specification have been clarified regarding what "sector" is in Xen PV
+block protocol by Xen commit 221f2748e8da ("blkif: reconcile protocol
+specification with in-use implementations") and "feature-large-sector-size"
+have been removed.
+
+https://xenbits.xenproject.org/gitweb/?p=xen.git;a=commit;h=221f2748e8dabe8361b8cdfcffbeab9102c4c899
+
+This update the header and the backend.
+
+Thanks,
+
+Anthony PERARD (2):
+  include: update Xen public headers io/blkif.h
+  hw/block/xen-block: Update sector-size handling
+
+ hw/block/dataplane/xen-block.c      | 31 ++++++++++++-----
+ hw/block/xen-block.c                |  8 ++---
+ include/hw/xen/interface/io/blkif.h | 52 +++++++++++++++++++++--------
+ 3 files changed, 65 insertions(+), 26 deletions(-)
+
+-- 
 
 
-Applied, thanks.
+Anthony Perard | Vates XCP-ng Developer
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
-for any user-visible changes.
+XCP-ng & Xen Orchestra - Vates solutions
 
--- PMM
+web: https://vates.tech
 
