@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE8A9872F4
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Sep 2024 13:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6FB987302
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Sep 2024 13:45:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stmtd-0001Zy-EB; Thu, 26 Sep 2024 07:42:57 -0400
+	id 1stmtm-0002H6-IZ; Thu, 26 Sep 2024 07:43:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
- id 1stmt7-0000pg-RC
- for qemu-devel@nongnu.org; Thu, 26 Sep 2024 07:42:26 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ id 1stmt8-0000pi-Ie
+ for qemu-devel@nongnu.org; Thu, 26 Sep 2024 07:42:27 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
- id 1stmt5-0005lJ-7s
- for qemu-devel@nongnu.org; Thu, 26 Sep 2024 07:42:25 -0400
+ id 1stmt6-0005lQ-JR
+ for qemu-devel@nongnu.org; Thu, 26 Sep 2024 07:42:26 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id E996021AFB;
- Thu, 26 Sep 2024 11:42:21 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id BAC9B1F863;
+ Thu, 26 Sep 2024 11:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
  t=1727350942; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YjnDKcrgxo/qpq9oq3UoN2hMARfmFi8Ku0QMqQO7ht0=;
- b=m1XaZfrpdKxesRDmqT+dVLeq3t+IQp3LQ5+kbkrDBb4Q4vAWrlTvCEqhV+MQRw+8b79PM9
- nQo3Q/Y33LiXNDuFiXqbnRzarbICU5D7sljoeC+t6XpbP1QgpGngAezBzFhUNiRoxCik3P
- i0qD9nHdyt0GztbiJ/7jNXukbgosDDY=
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.com header.s=susede1 header.b=IPjpLS5s
+ bh=8yLhuXM71YMXR25B7hue3VUzsjVWVBkF+qFEQCTpXBk=;
+ b=vZPFaTK6EvzfOIsXG5d1ClMADoiugf1nmeYvIGKnEtzp2LZjVm/vLo/Qr0Cc4StbR46LLk
+ SfJ3irWsjTCuy/ulmVX/d/Y8TbWbkUUl1thQxkef8EjF5rsUv4bz5yZDXxZdEgW3XDXPX2
+ ZNIRiOUsdcuXszeskKcm/wkM5Xr3u2c=
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.com header.s=susede1 header.b=vZPFaTK6
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1727350941; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1727350942; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YjnDKcrgxo/qpq9oq3UoN2hMARfmFi8Ku0QMqQO7ht0=;
- b=IPjpLS5s0lb8M3WGy3rKt3DKP1X+rbc2pmbMrby8E1VoF+3Wmvcq5/n65kb/NTiJT+Vua7
- JHm1yFXeGrE0xhl9fd7ws50GOs+oPEuEYXCKOOJOR77vQ/SOxeujgDdC93PB1li/L7tx1z
- kAYLXMBJoHK0XwHpMdhnCjAjqMcttcM=
+ bh=8yLhuXM71YMXR25B7hue3VUzsjVWVBkF+qFEQCTpXBk=;
+ b=vZPFaTK6EvzfOIsXG5d1ClMADoiugf1nmeYvIGKnEtzp2LZjVm/vLo/Qr0Cc4StbR46LLk
+ SfJ3irWsjTCuy/ulmVX/d/Y8TbWbkUUl1thQxkef8EjF5rsUv4bz5yZDXxZdEgW3XDXPX2
+ ZNIRiOUsdcuXszeskKcm/wkM5Xr3u2c=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 36F8D13793;
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0546A13ABC;
  Thu, 26 Sep 2024 11:42:21 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id qOJkC51I9WbcRAAAD6G6ig
+ by imap1.dmz-prg2.suse.org with ESMTPSA id uMzgOp1I9WbcRAAAD6G6ig
  (envelope-from <roy.hopkins@suse.com>); Thu, 26 Sep 2024 11:42:21 +0000
 From: Roy Hopkins <roy.hopkins@suse.com>
 To: qemu-devel@nongnu.org
@@ -68,41 +68,45 @@ Cc: Roy Hopkins <roy.hopkins@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Tom Lendacky <thomas.lendacky@amd.com>,
  Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?J=C3=B6rg=20Roedel?= <jroedel@suse.com>
-Subject: [PATCH v6 04/16] hw/i386: Add igvm-cfg object and processing for IGVM
- files
-Date: Thu, 26 Sep 2024 12:41:53 +0100
-Message-ID: <9506d5c8954c78d5890d48129156abfb93691397.1727341768.git.roy.hopkins@suse.com>
+Subject: [PATCH v6 05/16] i386/pc_sysfw: Ensure sysfw flash configuration does
+ not conflict with IGVM
+Date: Thu, 26 Sep 2024 12:41:54 +0100
+Message-ID: <3255767a6d34297ec47f43f9ae9434116d3f17ba.1727341768.git.roy.hopkins@suse.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1727341768.git.roy.hopkins@suse.com>
 References: <cover.1727341768.git.roy.hopkins@suse.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E996021AFB
-X-Spamd-Result: default: False [-3.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: BAC9B1F863
+X-Spam-Score: -4.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  DWL_DNSWL_MED(-2.00)[suse.com:dkim]; SUSPICIOUS_RECIPS(1.50)[];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_SHORT(-0.20)[-1.000];
  R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
  MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCPT_COUNT_TWELVE(0.00)[19];
- ARC_NA(0.00)[]; DKIM_SIGNED(0.00)[suse.com:s=susede1];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- MIME_TRACE(0.00)[0:+]; FUZZY_BLOCKED(0.00)[rspamd.com];
- FREEMAIL_CC(0.00)[suse.com,redhat.com,gmail.com,habkost.net,alistair23.me,amd.com];
- RCVD_TLS_ALL(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.com:s=susede1];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_TWELVE(0.00)[19];
  SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:dkim,suse.com:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
- TAGGED_RCPT(0.00)[]; DKIM_TRACE(0.00)[suse.com:+];
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ FREEMAIL_CC(0.00)[suse.com,redhat.com,gmail.com,habkost.net,alistair23.me,amd.com];
+ RCVD_COUNT_TWO(0.00)[2];
  RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; TAGGED_RCPT(0.00)[];
  R_RATELIMIT(0.00)[to_ip_from(RLgjcjk3igk5en59wt86eb8xw3)];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.51
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=roy.hopkins@suse.com; helo=smtp-out1.suse.de
+ RCVD_VIA_SMTP_AUTH(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ DKIM_TRACE(0.00)[suse.com:+];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim, suse.com:mid, suse.com:email,
+ imap1.dmz-prg2.suse.org:rdns, imap1.dmz-prg2.suse.org:helo]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=roy.hopkins@suse.com; helo=smtp-out2.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -124,152 +128,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An IGVM file contains configuration of guest state that should be
-applied during configuration of the guest, before the guest is started.
+When using an IGVM file the configuration of the system firmware is
+defined by IGVM directives contained in the file. In this case the user
+should not configure any pflash devices.
 
-This patch allows the user to add an igvm-cfg object to an X86 machine
-configuration that allows an IGVM file to be configured that will be
-applied to the guest before it is started.
-
-If an IGVM configuration is provided then the IGVM file is processed at
-the end of the board initialization, before the state transition to
-PHASE_MACHINE_INITIALIZED.
+This commit skips initialization of the ROM mode when pflash0 is not set
+then checks to ensure no pflash devices have been configured when using
+IGVM, exiting with an error message if this is not the case.
 
 Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- hw/i386/pc.c          | 12 ++++++++++++
- hw/i386/pc_piix.c     | 10 ++++++++++
- hw/i386/pc_q35.c      | 10 ++++++++++
- include/hw/i386/x86.h |  3 +++
- qemu-options.hx       | 28 ++++++++++++++++++++++++++++
- 5 files changed, 63 insertions(+)
+ hw/i386/pc_sysfw.c | 31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 8d84c22458..695fc1dbfe 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1843,6 +1843,18 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     object_class_property_add_bool(oc, "fd-bootchk",
-         pc_machine_get_fd_bootchk,
-         pc_machine_set_fd_bootchk);
-+
-+#if defined(CONFIG_IGVM)
-+    object_class_property_add_link(oc, "igvm-cfg",
-+                                   TYPE_IGVM_CFG,
-+                                   offsetof(X86MachineState, igvm),
-+                                   object_property_allow_set_link,
-+                                   OBJ_PROP_LINK_STRONG);
-+    object_class_property_set_description(oc, "igvm-cfg",
-+                                          "Set IGVM configuration");
-+#endif
-+
-+
- }
+diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+index ef80281d28..f5e40b3ef6 100644
+--- a/hw/i386/pc_sysfw.c
++++ b/hw/i386/pc_sysfw.c
+@@ -219,7 +219,13 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     BlockBackend *pflash_blk[ARRAY_SIZE(pcms->flash)];
  
- static const TypeInfo pc_machine_info = {
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 2bf6865d40..5adf7da6f4 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -360,6 +360,16 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-                                x86_nvdimm_acpi_dsmio,
-                                x86ms->fw_cfg, OBJECT(pcms));
+     if (!pcmc->pci_enabled) {
+-        x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, true);
++        /*
++         * If an IGVM file is specified then the firmware must be provided
++         * in the IGVM file.
++         */
++        if (!X86_MACHINE(pcms)->igvm) {
++            x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, true);
++        }
+         return;
      }
+ 
+@@ -239,8 +245,13 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     }
+ 
+     if (!pflash_blk[0]) {
+-        /* Machine property pflash0 not set, use ROM mode */
+-        x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, false);
++        /*
++         * Machine property pflash0 not set, use ROM mode unless using IGVM,
++         * in which case the firmware must be provided by the IGVM file.
++         */
++        if (!X86_MACHINE(pcms)->igvm) {
++            x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, false);
++        }
+     } else {
+         if (kvm_enabled() && !kvm_readonly_mem_enabled()) {
+             /*
+@@ -256,6 +267,20 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     }
+ 
+     pc_system_flash_cleanup_unused(pcms);
 +
-+#if defined(CONFIG_IGVM)
-+    /* Apply guest state from IGVM if supplied */
-+    if (x86ms->igvm) {
-+        if (IGVM_CFG_GET_CLASS(x86ms->igvm)
-+                ->process(x86ms->igvm, machine->cgs, &error_fatal) < 0) {
-+            g_assert_not_reached();
++    /*
++     * The user should not have specified any pflash devices when using IGVM
++     * to configure the guest.
++     */
++    if (X86_MACHINE(pcms)->igvm) {
++        for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
++            if (pcms->flash[i]) {
++                error_report("pflash devices cannot be configured when "
++                             "using IGVM");
++                exit(1);
++            }
 +        }
 +    }
-+#endif
  }
  
- typedef enum PCSouthBridgeOption {
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 8319b6d45e..483e0a0a40 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -324,6 +324,16 @@ static void pc_q35_init(MachineState *machine)
-                                x86_nvdimm_acpi_dsmio,
-                                x86ms->fw_cfg, OBJECT(pcms));
-     }
-+
-+#if defined(CONFIG_IGVM)
-+    /* Apply guest state from IGVM if supplied */
-+    if (x86ms->igvm) {
-+        if (IGVM_CFG_GET_CLASS(x86ms->igvm)
-+                ->process(x86ms->igvm, machine->cgs, &error_fatal) < 0) {
-+            g_assert_not_reached();
-+        }
-+    }
-+#endif
- }
- 
- #define DEFINE_Q35_MACHINE(major, minor) \
-diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-index d43cb3908e..01ac29acf6 100644
---- a/include/hw/i386/x86.h
-+++ b/include/hw/i386/x86.h
-@@ -25,6 +25,7 @@
- #include "hw/intc/ioapic.h"
- #include "hw/isa/isa.h"
- #include "qom/object.h"
-+#include "sysemu/igvm-cfg.h"
- 
- struct X86MachineClass {
-     /*< private >*/
-@@ -97,6 +98,8 @@ struct X86MachineState {
-      * which means no limitation on the guest's bus locks.
-      */
-     uint64_t bus_lock_ratelimit;
-+
-+    IgvmCfg *igvm;
- };
- 
- #define X86_MACHINE_SMM              "smm"
-diff --git a/qemu-options.hx b/qemu-options.hx
-index d94e2cbbae..66292c160b 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -5927,6 +5927,34 @@ SRST
-                  -machine ...,memory-encryption=sev0 \\
-                  .....
- 
-+    ``-object igvm-cfg,file=file``
-+        Create an IGVM configuration object that defines the initial state
-+        of the guest using a file in that conforms to the Independent Guest
-+        Virtual Machine (IGVM) file format.
-+
-+        This is currently only supported by ``-machine q35`` and
-+        ``-machine pc``.
-+
-+        The ``file`` parameter is used to specify the IGVM file to load.
-+        When provided, the IGVM file is used to populate the initial
-+        memory of the virtual machine and, depending on the platform, can
-+        define the initial processor state, memory map and parameters.
-+
-+        The IGVM file is expected to contain the firmware for the virtual
-+        machine, therefore an ``igvm-cfg`` object cannot be provided along
-+        with other ways of specifying firmware, such as the ``-bios``
-+        parameter on x86 machines.
-+
-+        e.g to launch a machine providing the firmware in an IGVM file
-+
-+        .. parsed-literal::
-+
-+             # |qemu_system_x86| \\
-+                 ...... \\
-+                 -object igvm-cfg,id=igvm0,file=bios.igvm \\
-+                 -machine ...,igvm-cfg=igvm0 \\
-+                 .....
-+
-     ``-object authz-simple,id=id,identity=string``
-         Create an authorization object that will control access to
-         network services.
+ void x86_firmware_configure(hwaddr gpa, void *ptr, int size)
 -- 
 2.43.0
 
