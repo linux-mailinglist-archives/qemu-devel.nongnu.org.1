@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DDEE9872F8
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Sep 2024 13:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D679872FD
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Sep 2024 13:44:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stmtd-0001Z4-34; Thu, 26 Sep 2024 07:42:57 -0400
+	id 1stmtj-0001xt-6q; Thu, 26 Sep 2024 07:43:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
- id 1stmtD-0000sw-LM
+ id 1stmtE-0000tS-8T
  for qemu-devel@nongnu.org; Thu, 26 Sep 2024 07:42:33 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
- id 1stmtB-0005mu-Kj
- for qemu-devel@nongnu.org; Thu, 26 Sep 2024 07:42:31 -0400
+ id 1stmtC-0005n7-Ib
+ for qemu-devel@nongnu.org; Thu, 26 Sep 2024 07:42:32 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 6EE3F1F863;
- Thu, 26 Sep 2024 11:42:28 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 3DEDF21AC0;
+ Thu, 26 Sep 2024 11:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1727350948; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ t=1727350949; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xePc//Wf/ggnmLTg6GPxnEyvOai/DiB/Tupw9yXWOs0=;
- b=YwC2eHcgBOt8knnBexEGE++FyjalTN8aJzGk5a+XbmqReVtMw73R/3ltlm4oGo2iiZxgax
- mNiXUAcLRQARHX2wm53QB31hIOod31S3Zen3jnFCM3qY0IQYYN7RwmpGZuzDGg9STDbntB
- EnKMp9x8xcjm5gLZAnpBFSJLsPo5FWA=
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.com header.s=susede1 header.b=YwC2eHcg
+ bh=XdeKr6fpOZFSEbarhO1cOUTgYYQ4JnzndbD3bUzXI6g=;
+ b=u/jrdWZkQM160JoUimBM1vcqgJ1plEv7J3q7VEkamGTcRPzursfkQzoW6X+jW7A/B6PDyU
+ a5aZiGP/gQMotXOKmWyL0gzAz1FB2hxIeRRxmHNEpsfpLenwN82DetDPRxo07A4tYWjbY3
+ FDoQCUJlRqfZFmLH0oAG3nvTU2YbENY=
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.com header.s=susede1 header.b="u/jrdWZk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1727350948; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ t=1727350949; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xePc//Wf/ggnmLTg6GPxnEyvOai/DiB/Tupw9yXWOs0=;
- b=YwC2eHcgBOt8knnBexEGE++FyjalTN8aJzGk5a+XbmqReVtMw73R/3ltlm4oGo2iiZxgax
- mNiXUAcLRQARHX2wm53QB31hIOod31S3Zen3jnFCM3qY0IQYYN7RwmpGZuzDGg9STDbntB
- EnKMp9x8xcjm5gLZAnpBFSJLsPo5FWA=
+ bh=XdeKr6fpOZFSEbarhO1cOUTgYYQ4JnzndbD3bUzXI6g=;
+ b=u/jrdWZkQM160JoUimBM1vcqgJ1plEv7J3q7VEkamGTcRPzursfkQzoW6X+jW7A/B6PDyU
+ a5aZiGP/gQMotXOKmWyL0gzAz1FB2hxIeRRxmHNEpsfpLenwN82DetDPRxo07A4tYWjbY3
+ FDoQCUJlRqfZFmLH0oAG3nvTU2YbENY=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF03613793;
- Thu, 26 Sep 2024 11:42:27 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7EA1613ABC;
+ Thu, 26 Sep 2024 11:42:28 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 6NKjKKNI9WbcRAAAD6G6ig
- (envelope-from <roy.hopkins@suse.com>); Thu, 26 Sep 2024 11:42:27 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id WMLIHKRI9WbcRAAAD6G6ig
+ (envelope-from <roy.hopkins@suse.com>); Thu, 26 Sep 2024 11:42:28 +0000
 From: Roy Hopkins <roy.hopkins@suse.com>
 To: qemu-devel@nongnu.org
 Cc: Roy Hopkins <roy.hopkins@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,45 +68,43 @@ Cc: Roy Hopkins <roy.hopkins@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Tom Lendacky <thomas.lendacky@amd.com>,
  Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?J=C3=B6rg=20Roedel?= <jroedel@suse.com>
-Subject: [PATCH v6 12/16] backends/confidential-guest-support: Add
- set_guest_policy() function
-Date: Thu, 26 Sep 2024 12:42:01 +0100
-Message-ID: <a135953bee297a49bbee85f5a451c95d9d8b3acd.1727341768.git.roy.hopkins@suse.com>
+Subject: [PATCH v6 13/16] backends/igvm: Process initialization sections in
+ IGVM file
+Date: Thu, 26 Sep 2024 12:42:02 +0100
+Message-ID: <16b8e69a779afe3e15e2f99e95f8463128060842.1727341768.git.roy.hopkins@suse.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1727341768.git.roy.hopkins@suse.com>
 References: <cover.1727341768.git.roy.hopkins@suse.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6EE3F1F863
-X-Spam-Score: -4.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: 3DEDF21AC0
+X-Spamd-Result: default: False [-3.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  DWL_DNSWL_MED(-2.00)[suse.com:dkim]; SUSPICIOUS_RECIPS(1.50)[];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- NEURAL_HAM_SHORT(-0.20)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
  MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
  DKIM_SIGNED(0.00)[suse.com:s=susede1];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_TWELVE(0.00)[19];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
  RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- FREEMAIL_ENVRCPT(0.00)[gmail.com];
- FREEMAIL_CC(0.00)[suse.com,redhat.com,gmail.com,habkost.net,alistair23.me,amd.com];
- RCVD_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; ARC_NA(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_TWELVE(0.00)[19];
+ MIME_TRACE(0.00)[0:+];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:dkim,suse.com:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; TAGGED_RCPT(0.00)[];
  RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; TAGGED_RCPT(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[];
  R_RATELIMIT(0.00)[to_ip_from(RLgjcjk3igk5en59wt86eb8xw3)];
- RCVD_VIA_SMTP_AUTH(0.00)[]; RCVD_TLS_ALL(0.00)[];
- DKIM_TRACE(0.00)[suse.com:+];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim, suse.com:mid, suse.com:email,
- imap1.dmz-prg2.suse.org:rdns, imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=roy.hopkins@suse.com; helo=smtp-out2.suse.de
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.com:+];
+ TO_DN_SOME(0.00)[];
+ FREEMAIL_CC(0.00)[suse.com,redhat.com,gmail.com,habkost.net,alistair23.me,amd.com];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=roy.hopkins@suse.com; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -128,94 +126,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For confidential guests a policy can be provided that defines the
-security level, debug status, expected launch measurement and other
-parameters that define the configuration of the confidential platform.
+The initialization sections in IGVM files contain configuration that
+should be applied to the guest platform before it is started. This
+includes guest policy and other information that can affect the security
+level and the startup measurement of a guest.
 
-This commit adds a new function named set_guest_policy() that can be
-implemented by each confidential platform, such as AMD SEV to set the
-policy. This will allow configuration of the policy from a
-multi-platform resource such as an IGVM file without the IGVM processor
-requiring specific implementation details for each platform.
+This commit introduces handling of the initialization sections during
+processing of the IGVM file.
 
 Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- backends/confidential-guest-support.c     | 12 ++++++++++++
- include/exec/confidential-guest-support.h | 21 +++++++++++++++++++++
- 2 files changed, 33 insertions(+)
+ backends/igvm.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
-index c5cc6308f4..e089c74eb2 100644
---- a/backends/confidential-guest-support.c
-+++ b/backends/confidential-guest-support.c
-@@ -38,6 +38,17 @@ static int set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
-     return -1;
- }
+diff --git a/backends/igvm.c b/backends/igvm.c
+index 4dfc9b0c67..cbe833db9d 100644
+--- a/backends/igvm.c
++++ b/backends/igvm.c
+@@ -787,6 +787,27 @@ int qigvm_process_file(IgvmCfg *cfg, ConfidentialGuestSupport *cgs,
+         }
+     }
  
-+static int set_guest_policy(ConfidentialGuestPolicyType policy_type,
-+                            uint64_t policy,
-+                            void *policy_data1, uint32_t policy_data1_size,
-+                            void *policy_data2, uint32_t policy_data2_size,
-+                            Error **errp)
-+{
-+    error_setg(errp,
-+               "Setting confidential guest policy is not supported for this platform");
-+    return -1;
-+}
++    header_count =
++        igvm_header_count(ctx.file, IGVM_HEADER_SECTION_INITIALIZATION);
++    if (header_count < 0) {
++        error_setg(
++            errp,
++            "Invalid initialization header count in IGVM file. Error code: %X",
++            header_count);
++        goto cleanup_parameters;
++    }
 +
- static int get_mem_map_entry(int index, ConfidentialGuestMemoryMapEntry *entry,
-                              Error **errp)
- {
-@@ -52,6 +63,7 @@ static void confidential_guest_support_class_init(ObjectClass *oc, void *data)
-     ConfidentialGuestSupportClass *cgsc = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
-     cgsc->check_support = check_support;
-     cgsc->set_guest_state = set_guest_state;
-+    cgsc->set_guest_policy = set_guest_policy;
-     cgsc->get_mem_map_entry = get_mem_map_entry;
- }
- 
-diff --git a/include/exec/confidential-guest-support.h b/include/exec/confidential-guest-support.h
-index 9c97b83d11..d0b4b886e6 100644
---- a/include/exec/confidential-guest-support.h
-+++ b/include/exec/confidential-guest-support.h
-@@ -59,6 +59,10 @@ typedef enum ConfidentialGuestPageType {
-     CGS_PAGE_TYPE_REQUIRED_MEMORY,
- } ConfidentialGuestPageType;
- 
-+typedef enum ConfidentialGuestPolicyType {
-+    GUEST_POLICY_SEV,
-+} ConfidentialGuestPolicyType;
-+
- struct ConfidentialGuestSupport {
-     Object parent;
- 
-@@ -125,6 +129,23 @@ typedef struct ConfidentialGuestSupportClass {
-                            ConfidentialGuestPageType memory_type,
-                            uint16_t cpu_index, Error **errp);
- 
-+    /*
-+     * Set the guest policy. The policy can be used to configure the
-+     * confidential platform, such as if debug is enabled or not and can contain
-+     * information about expected launch measurements, signed verification of
-+     * guest configuration and other platform data.
-+     *
-+     * The format of the policy data is specific to each platform. For example,
-+     * SEV-SNP uses a policy bitfield in the 'policy' argument and provides an
-+     * ID block and ID authentication in the 'policy_data' parameters. The type
-+     * of policy data is identified by the 'policy_type' argument.
-+     */
-+    int (*set_guest_policy)(ConfidentialGuestPolicyType policy_type,
-+                            uint64_t policy,
-+                            void *policy_data1, uint32_t policy_data1_size,
-+                            void *policy_data2, uint32_t policy_data2_size,
-+                            Error **errp);
++    for (ctx.current_header_index = 0;
++         ctx.current_header_index < (unsigned)header_count;
++         ctx.current_header_index++) {
++        IgvmVariableHeaderType type =
++            igvm_get_header_type(ctx.file, IGVM_HEADER_SECTION_INITIALIZATION,
++                                 ctx.current_header_index);
++        if (qigvm_handler(&ctx, type, errp) < 0) {
++            goto cleanup_parameters;
++        }
++    }
 +
      /*
-      * Iterate the system memory map, getting the entry with the given index
-      * that can be populated into guest memory.
+      * Contiguous pages of data with compatible flags are grouped together in
+      * order to reduce the number of memory regions we create. Make sure the
 -- 
 2.43.0
 
