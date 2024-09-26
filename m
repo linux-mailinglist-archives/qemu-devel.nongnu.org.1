@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1135D9872E1
-	for <lists+qemu-devel@lfdr.de>; Thu, 26 Sep 2024 13:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 196849872E3
+	for <lists+qemu-devel@lfdr.de>; Thu, 26 Sep 2024 13:35:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stmkr-0000Qs-H7; Thu, 26 Sep 2024 07:33:53 -0400
+	id 1stmkq-0000OB-Lu; Thu, 26 Sep 2024 07:33:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yangyicong@huawei.com>)
- id 1stmkn-0000F5-VU
+ id 1stmkn-0000Eu-Sr
  for qemu-devel@nongnu.org; Thu, 26 Sep 2024 07:33:49 -0400
 Received: from szxga01-in.huawei.com ([45.249.212.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yangyicong@huawei.com>)
- id 1stmkk-00048K-BA
+ id 1stmkk-00048P-0g
  for qemu-devel@nongnu.org; Thu, 26 Sep 2024 07:33:49 -0400
-Received: from mail.maildlp.com (unknown [172.19.88.194])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XDrzy2DzFzySKX;
- Thu, 26 Sep 2024 19:32:30 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XDrzV2YF8zcbh2;
+ Thu, 26 Sep 2024 19:32:06 +0800 (CST)
 Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
- by mail.maildlp.com (Postfix) with ESMTPS id 7B4911401E0;
+ by mail.maildlp.com (Postfix) with ESMTPS id EFC85140390;
  Thu, 26 Sep 2024 19:33:32 +0800 (CST)
 Received: from localhost.localdomain (10.50.165.33) by
  kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Thu, 26 Sep 2024 19:33:31 +0800
+ 15.2.1258.34; Thu, 26 Sep 2024 19:33:32 +0800
 To: <mst@redhat.com>, <imammedo@redhat.com>, <peter.maydell@linaro.org>,
  <wangyanan55@huawei.com>, <anisinha@redhat.com>,
  <jonathan.cameron@huawei.com>, <qemu-devel@nongnu.org>
 CC: <shameerali.kolothum.thodi@huawei.com>, <alireza.sanaee@huawei.com>,
  <prime.zeng@hisilicon.com>, <yangyicong@hisilicon.com>, <linuxarm@huawei.com>
-Subject: [PATCH 2/5] hw/acpi/aml-build: Set identical implementation flag for
- PPTT processor nodes
-Date: Thu, 26 Sep 2024 19:33:20 +0800
-Message-ID: <20240926113323.55991-3-yangyicong@huawei.com>
+Subject: [PATCH 3/5] hw/acpi/aml-build: Build a root node in the PPTT table
+Date: Thu, 26 Sep 2024 19:33:21 +0800
+Message-ID: <20240926113323.55991-4-yangyicong@huawei.com>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20240926113323.55991-1-yangyicong@huawei.com>
 References: <20240926113323.55991-1-yangyicong@huawei.com>
@@ -74,56 +73,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Yicong Yang <yangyicong@hisilicon.com>
 
-Per ACPI 6.5 Table 5.158: Processor Structure Flags, the identical
-implementation flag indicates whether all the children processors
-of this node share the same identical implementation revision.
-Currently Linux support parsing this field [1] and maybe used to
-identify the heterogeneous platform. Since qemu only support
-homogeneous emulation, set this flag for all the processor node
-to indicates the facts when building the PPTT table. Node leaf
-is an exception since spec says this flag should be ignored
-on leaf nodes by OSPM.
+Currently we build the PPTT starting from the socket node and each
+socket will be a separate tree. For a multi-socket system it'll
+be hard for the OS to know the whole system is homogeneous or not
+(actually we're in the current implementation) since no parent node
+to telling the identical implementation informentation. Add a
+root node for indicating this.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/pptt.c?h=v6.11-rc1#n810
 Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 ---
- hw/acpi/aml-build.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ hw/acpi/aml-build.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-index 6d4517cfbe..53a06d8c1e 100644
+index 53a06d8c1e..e2717ee0e9 100644
 --- a/hw/acpi/aml-build.c
 +++ b/hw/acpi/aml-build.c
-@@ -2079,7 +2079,8 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
-             core_id = -1;
-             socket_offset = table_data->len - pptt_start;
+@@ -2059,12 +2059,25 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
+     int64_t socket_id = -1, cluster_id = -1, core_id = -1;
+     uint32_t socket_offset = 0, cluster_offset = 0, core_offset = 0;
+     uint32_t pptt_start = table_data->len;
++    uint32_t root_offset;
+     int n;
+     AcpiTable table = { .sig = "PPTT", .rev = 2,
+                         .oem_id = oem_id, .oem_table_id = oem_table_id };
+ 
+     acpi_table_begin(&table, table_data);
+ 
++    /*
++     * Build a root node for all the processor nodes. Otherwise when
++     * building a multi-socket system each socket tree are separated
++     * and will be hard for the OS like Linux to know whether the
++     * system is homogeneous.
++     */
++    root_offset = table_data->len - pptt_start;
++    build_processor_hierarchy_node(table_data,
++        (1 << 0) | /* Physical package */
++        (1 << 4), /* Identical Implementation */
++        0, 0, NULL, 0);
++
+     /*
+      * This works with the assumption that cpus[n].props.*_id has been
+      * sorted from top to down levels in mc->possible_cpu_arch_ids().
+@@ -2081,7 +2094,7 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
              build_processor_hierarchy_node(table_data,
--                (1 << 0), /* Physical package */
-+                (1 << 0) | /* Physical package */
-+                (1 << 4), /* Identical Implementation */
-                 0, socket_id, NULL, 0);
+                 (1 << 0) | /* Physical package */
+                 (1 << 4), /* Identical Implementation */
+-                0, socket_id, NULL, 0);
++                root_offset, socket_id, NULL, 0);
          }
  
-@@ -2090,7 +2091,8 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
-                 core_id = -1;
-                 cluster_offset = table_data->len - pptt_start;
-                 build_processor_hierarchy_node(table_data,
--                    (0 << 0), /* Not a physical package */
-+                    (0 << 0) | /* Not a physical package */
-+                    (1 << 4), /* Identical Implementation */
-                     socket_offset, cluster_id, NULL, 0);
-             }
-         } else {
-@@ -2108,7 +2110,8 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
-                 core_id = cpus->cpus[n].props.core_id;
-                 core_offset = table_data->len - pptt_start;
-                 build_processor_hierarchy_node(table_data,
--                    (0 << 0), /* Not a physical package */
-+                    (0 << 0) | /* Not a physical package */
-+                    (1 << 4), /* Identical Implementation */
-                     cluster_offset, core_id, NULL, 0);
-             }
- 
+         if (mc->smp_props.clusters_supported && mc->smp_props.has_clusters) {
 -- 
 2.24.0
 
