@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C350987C47
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 02:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F15987C4E
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 02:54:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1stzDJ-0004C7-B5; Thu, 26 Sep 2024 20:52:06 -0400
+	id 1stzDQ-0004iP-QD; Thu, 26 Sep 2024 20:52:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1stzD4-0003Ml-AT; Thu, 26 Sep 2024 20:51:51 -0400
+ id 1stzDO-0004e2-FT; Thu, 26 Sep 2024 20:52:10 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1stzD2-0007Is-02; Thu, 26 Sep 2024 20:51:49 -0400
+ id 1stzDM-0007JA-IS; Thu, 26 Sep 2024 20:52:10 -0400
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48QE9kbJ012810;
- Fri, 27 Sep 2024 00:51:46 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48QEPgvW014425;
+ Fri, 27 Sep 2024 00:51:47 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=uHfjc08pH5yLb
- 8ntZWfcboGUsBWrGDBaZRK8l67cf4Y=; b=Vwp69ygCiVRwVS+snKcgnkJ5WlgF8
- jmACmMfYioln1SzJSWtKW0XuNTUe4z++ooG2CYxel3WCDy1STV/a0Ryr7XDNqWXp
- tc3k0NgaHY8PwlGd8fvkhDyv1sMXR8wy0uHfVDQZK13O5TZorYGcZ1kQYWHnY7Ie
- v9yUPK/FA2nsi3dcebB5rjv+yn1ph+AxnH7MwwhNi5xfn2+V1D+1saX92uDSO+72
- 85qqhuryjzogK3xAW+GGDlZ68OqbyJ65uZ8W1N3BjgEdvx3LpnFl86eEv883sdQH
- h7qqTtINSYqb7Fj5A4x/+J8r5gPNeXuEOzZPi1qjkQIQ/uH3FJMfsFNBQ==
+ :mime-version:content-transfer-encoding; s=pp1; bh=6e9oPsm8hQZni
+ 7/OB3ZD4dKfUpHqmOZqsEtdSifYz6Q=; b=q82fseRCPAdNOnhjj912qiqs63Bkb
+ U2JQuKj/LUP19BFgs9ylQbTlQQVG2hzBPIjtjV5lQziicPp4VDUvAXjrW8tnsPyg
+ 6Ra8l3hY0li2Zm9DjHmiwP3mz7smLAitZuZoleRSuwqmGcFmGKtr+aVgMHERvYQM
+ QrxcIs/VyS/dBpCBSiuT5vzwS99xwgovUjdBNk14pnUSVySmjVG9gu62nNScoSYh
+ lFxU+4m284gZTq/wPzPreSWeJTeFr+OYNcL0BtSuc3I6PL6xiTu2YHGLIqM9v+B/
+ pD9Th5aHtGa329ZBAMzi5YypYxGZ2lEztacgDfAnZUDbutiLW1jmI1dpQ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41smjk91s7-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41smjk91sb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Sep 2024 00:51:46 +0000 (GMT)
+ Fri, 27 Sep 2024 00:51:47 +0000 (GMT)
 Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48R0pW49006298;
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48R0pkQQ006877;
  Fri, 27 Sep 2024 00:51:46 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41smjk91s3-1
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41smjk91s8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 27 Sep 2024 00:51:46 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48QN2l5H020843;
- Fri, 27 Sep 2024 00:51:45 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41tb63htug-1
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48QLUbsm012521;
+ Fri, 27 Sep 2024 00:51:46 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41t9fqa62k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Sep 2024 00:51:45 +0000
+ Fri, 27 Sep 2024 00:51:46 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
  [10.241.53.104])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 48R0phku29491760
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 48R0pjoE40698138
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Sep 2024 00:51:44 GMT
+ Fri, 27 Sep 2024 00:51:45 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A020A58056;
- Fri, 27 Sep 2024 00:51:43 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E9C1B5805D;
+ Fri, 27 Sep 2024 00:51:44 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2BAD758052;
- Fri, 27 Sep 2024 00:51:43 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7244D58052;
+ Fri, 27 Sep 2024 00:51:44 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.61.154.26])
  by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 27 Sep 2024 00:51:43 +0000 (GMT)
+ Fri, 27 Sep 2024 00:51:44 +0000 (GMT)
 From: jrossi@linux.ibm.com
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
 Cc: frankja@linux.ibm.com, jrossi@linux.ibm.com
-Subject: [PATCH 16/18] s390x: Rebuild IPLB for SCSI device directly from
- DIAG308
-Date: Thu, 26 Sep 2024 20:51:15 -0400
-Message-ID: <20240927005117.1679506-17-jrossi@linux.ibm.com>
+Subject: [PATCH 17/18] pc-bios/s390x: Enable multi-device boot loop
+Date: Thu, 26 Sep 2024 20:51:16 -0400
+Message-ID: <20240927005117.1679506-18-jrossi@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20240927005117.1679506-1-jrossi@linux.ibm.com>
 References: <20240927005117.1679506-1-jrossi@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: LAhH2Au13pH-IdnU83BhulcnOFxTWFHb
-X-Proofpoint-GUID: ExDmkUPhSt_qFimikMkMhwyo0nG_DHyY
+X-Proofpoint-ORIG-GUID: UdqBxPRqSw5MsjP2qbjuJthhza6vomRC
+X-Proofpoint-GUID: Qhy5XlSIck-Ab6TPJW5JW0dYQh4omiWG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-26_06,2024-09-26_01,2024-09-02_01
@@ -84,7 +83,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  impostorscore=0 adultscore=0 malwarescore=0 suspectscore=0 bulkscore=0
  spamscore=0 mlxscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxlogscore=953 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2408220000 definitions=main-2409270002
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -113,288 +112,231 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jared Rossi <jrossi@linux.ibm.com>
 
-Because virtio-scsi type devices use a non-architected IPLB pbt code they cannot
-be set and stored normally. Instead, the IPLB must be rebuilt during re-ipl.
-
-As s390x does not natively support multiple boot devices, the devno field is
-used to store the position in the boot order for the device.
-
-Handling the rebuild as part of DIAG308 removes the need to check the devices
-for invalid IPLBs later in the IPL.
+Allow attempts to boot from multiple IPL devices. If the first device fails to
+IPL, select the pre-built IPLB for the next device in the boot order and attempt
+to IPL from it. Continue this process until IPL is successful or there are no
+devices left to try.
 
 Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
 
 ---
- hw/s390x/ipl.h              |  11 ++--
- include/hw/s390x/ipl/qipl.h |   3 +-
- hw/s390x/ipl.c              | 104 ++++++++++--------------------------
- pc-bios/s390-ccw/jump2ipl.c |  11 ++--
- target/s390x/diag.c         |   9 +++-
- 5 files changed, 54 insertions(+), 84 deletions(-)
+ pc-bios/s390-ccw/iplb.h     | 23 +++++++++++++
+ pc-bios/s390-ccw/jump2ipl.c |  7 ++--
+ pc-bios/s390-ccw/main.c     | 68 +++++++++++++++----------------------
+ pc-bios/s390-ccw/netmain.c  |  3 +-
+ 4 files changed, 56 insertions(+), 45 deletions(-)
 
-diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
-index e4af8e3782..d1ebc384d8 100644
---- a/hw/s390x/ipl.h
-+++ b/hw/s390x/ipl.h
-@@ -24,6 +24,7 @@
+diff --git a/pc-bios/s390-ccw/iplb.h b/pc-bios/s390-ccw/iplb.h
+index 16643f5879..d58fe71974 100644
+--- a/pc-bios/s390-ccw/iplb.h
++++ b/pc-bios/s390-ccw/iplb.h
+@@ -17,6 +17,7 @@
+ #endif
  
- void s390_ipl_convert_loadparm(char *ascii_lp, uint8_t *ebcdic_lp);
- void s390_ipl_fmt_loadparm(uint8_t *loadparm, char *str, Error **errp);
-+void s390_rebuild_iplb(uint16_t index, IplParameterBlock *iplb);
- void s390_ipl_update_diag308(IplParameterBlock *iplb);
- int s390_ipl_prepare_pv_header(Error **errp);
- int s390_ipl_pv_unpack(void);
-@@ -65,7 +66,8 @@ struct S390IPLState {
-     bool enforce_bios;
-     bool iplb_valid;
-     bool iplb_valid_pv;
--    bool netboot;
-+    bool rebuilt_iplb;
-+    uint16_t iplb_index;
-     /* reset related properties don't have to be migrated or reset */
-     enum s390_reset reset_type;
-     int reset_cpu_index;
-@@ -172,11 +174,14 @@ static inline bool iplb_valid_pv(IplParameterBlock *iplb)
+ #include <qipl.h>
++#include <string.h>
  
- static inline bool iplb_valid(IplParameterBlock *iplb)
- {
-+    uint32_t len = be32_to_cpu(iplb->len);
-+
-     switch (iplb->pbt) {
-     case S390_IPL_TYPE_FCP:
--        return be32_to_cpu(iplb->len) >= S390_IPLB_MIN_FCP_LEN;
-+        return len >= S390_IPLB_MIN_FCP_LEN;
-     case S390_IPL_TYPE_CCW:
--        return be32_to_cpu(iplb->len) >= S390_IPLB_MIN_CCW_LEN;
-+        return (len >= S390_IPLB_MIN_CCW_LEN);
-+    case S390_IPL_TYPE_QEMU_SCSI:
-     default:
-         return false;
-     }
-diff --git a/include/hw/s390x/ipl/qipl.h b/include/hw/s390x/ipl/qipl.h
-index 15342ac5cd..0f518adb62 100644
---- a/include/hw/s390x/ipl/qipl.h
-+++ b/include/hw/s390x/ipl/qipl.h
-@@ -28,7 +28,8 @@
-  */
- struct QemuIplParameters {
-     uint8_t  qipl_flags;
--    uint8_t  reserved1[3];
-+    uint8_t  index;
-+    uint8_t  reserved1[2];
-     uint64_t reserved2;
-     uint32_t boot_menu_timeout;
-     uint8_t  reserved3[2];
-diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-index ba66847b9c..86c995b580 100644
---- a/hw/s390x/ipl.c
-+++ b/hw/s390x/ipl.c
-@@ -448,7 +448,6 @@ void s390_ipl_convert_loadparm(char *ascii_lp, uint8_t *ebcdic_lp)
- 
- static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
- {
--    S390IPLState *ipl = get_ipl_device();
-     CcwDevice *ccw_dev = NULL;
-     SCSIDevice *sd;
-     int devtype;
-@@ -481,9 +480,6 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
-             iplb->ccw.ssid = ccw_dev->sch->ssid & 3;
-             break;
-         case CCW_DEVTYPE_VIRTIO_NET:
--            /* The S390IPLState netboot is true if ANY IPLB may use netboot */
--            ipl->netboot = true;
--            /* Fall through to CCW_DEVTYPE_VIRTIO case */
-         case CCW_DEVTYPE_VIRTIO:
-             iplb->len = cpu_to_be32(S390_IPLB_MIN_CCW_LEN);
-             iplb->blk0_len =
-@@ -508,6 +504,16 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
-     return false;
+ extern QemuIplParameters qipl;
+ extern IplParameterBlock iplb __attribute__((__aligned__(PAGE_SIZE)));
+@@ -49,4 +50,26 @@ static inline bool set_iplb(IplParameterBlock *iplb)
+     return manage_iplb(iplb, false);
  }
  
++/*
++ * The IPL started on the device, but failed in some way.  If the IPLB chain
++ * still has more devices left to try, use the next device in order.
++ */
++static inline bool load_next_iplb(void)
++{
++    IplParameterBlock *next_iplb;
 +
-+void s390_rebuild_iplb(uint16_t dev_index, IplParameterBlock *iplb) {
-+    S390IPLState *ipl = get_ipl_device();
-+    uint16_t index;
-+    index = ipl->rebuilt_iplb ? ipl->iplb_index : dev_index;
-+
-+    ipl->rebuilt_iplb = s390_build_iplb(get_boot_device(index), iplb);
-+    ipl->iplb_index = index;
-+}
-+
- static bool s390_init_all_iplbs(S390IPLState *ipl)
- {
-     int iplb_num = 0;
-@@ -560,44 +566,6 @@ static bool s390_init_all_iplbs(S390IPLState *ipl)
-     return iplb_num;
- }
- 
--static bool is_virtio_ccw_device_of_type(IplParameterBlock *iplb,
--                                         int virtio_id)
--{
--    uint8_t cssid;
--    uint8_t ssid;
--    uint16_t devno;
--    uint16_t schid;
--    SubchDev *sch = NULL;
--
--    if (iplb->pbt != S390_IPL_TYPE_CCW) {
--        return false;
--    }
--
--    devno = be16_to_cpu(iplb->ccw.devno);
--    ssid = iplb->ccw.ssid & 3;
--
--    for (schid = 0; schid < MAX_SCHID; schid++) {
--        for (cssid = 0; cssid < MAX_CSSID; cssid++) {
--            sch = css_find_subch(1, cssid, ssid, schid);
--
--            if (sch && sch->devno == devno) {
--                return sch->id.cu_model == virtio_id;
--            }
--        }
--    }
--    return false;
--}
--
--static bool is_virtio_net_device(IplParameterBlock *iplb)
--{
--    return is_virtio_ccw_device_of_type(iplb, VIRTIO_ID_NET);
--}
--
--static bool is_virtio_scsi_device(IplParameterBlock *iplb)
--{
--    return is_virtio_ccw_device_of_type(iplb, VIRTIO_ID_SCSI);
--}
--
- static void update_machine_ipl_properties(IplParameterBlock *iplb)
- {
-     Object *machine = qdev_get_machine();
-@@ -637,7 +605,7 @@ void s390_ipl_update_diag308(IplParameterBlock *iplb)
-         ipl->iplb = *iplb;
-         ipl->iplb_valid = true;
-     }
--    ipl->netboot = is_virtio_net_device(iplb);
-+
-     update_machine_ipl_properties(iplb);
- }
- 
-@@ -661,35 +629,33 @@ IplParameterBlock *s390_ipl_get_iplb(void)
-     return &ipl->iplb;
- }
- 
--void s390_ipl_reset_request(CPUState *cs, enum s390_reset reset_type)
-+static void s390_ipl_prepare_qipl(S390CPU *cpu)
- {
-     S390IPLState *ipl = get_ipl_device();
-+    uint8_t *addr;
-+    uint64_t len = 4096;
-+
-+    addr = cpu_physical_memory_map(cpu->env.psa, &len, true);
-+    if (!addr || len < QIPL_ADDRESS + sizeof(QemuIplParameters)) {
-+        error_report("Cannot set QEMU IPL parameters");
-+        return;
++    if (qipl.chain_len < 1) {
++        return false;
 +    }
 +
-+    memcpy(addr + QIPL_ADDRESS, &ipl->qipl, sizeof(QemuIplParameters));
-+    cpu_physical_memory_unmap(addr, len, 1, len);
++    qipl.index++;
++    next_iplb = (IplParameterBlock *) qipl.next_iplb;
++    memcpy(&iplb, next_iplb, sizeof(IplParameterBlock));
++
++    qipl.chain_len--;
++    qipl.next_iplb = qipl.next_iplb + sizeof(IplParameterBlock);
++
++    return true;
 +}
- 
-+void s390_ipl_reset_request(CPUState *cs, enum s390_reset reset_type)
-+{
-+    S390IPLState *ipl = get_ipl_device();
-     if (reset_type == S390_RESET_EXTERNAL || reset_type == S390_RESET_REIPL) {
-         /* use CPU 0 for full resets */
-         ipl->reset_cpu_index = 0;
-     } else {
-         ipl->reset_cpu_index = cs->cpu_index;
-     }
--    ipl->reset_type = reset_type;
- 
--    if (reset_type == S390_RESET_REIPL &&
--        ipl->iplb_valid &&
--        !ipl->netboot &&
--        ipl->iplb.pbt == S390_IPL_TYPE_CCW &&
--        is_virtio_scsi_device(&ipl->iplb)) {
--        CcwDevice *ccw_dev = s390_get_ccw_device(get_boot_device(0), NULL);
--
--        if (ccw_dev &&
--            cpu_to_be16(ccw_dev->sch->devno) == ipl->iplb.ccw.devno &&
--            (ccw_dev->sch->ssid & 3) == ipl->iplb.ccw.ssid) {
--            /*
--             * this is the original boot device's SCSI
--             * so restore IPL parameter info from it
--             */
--            ipl->iplb_valid = s390_build_iplb(get_boot_device(0), &ipl->iplb);
--        }
--    }
-+    ipl->reset_type = reset_type;
-     if (reset_type == S390_RESET_MODIFIED_CLEAR ||
-         reset_type == S390_RESET_LOAD_NORMAL ||
-         reset_type == S390_RESET_PV) {
-@@ -725,20 +691,6 @@ void s390_ipl_clear_reset_request(void)
-     ipl->reset_cpu_index = 0;
- }
- 
--static void s390_ipl_prepare_qipl(S390CPU *cpu)
--{
--    S390IPLState *ipl = get_ipl_device();
--    uint8_t *addr;
--    uint64_t len = 4096;
--
--    addr = cpu_physical_memory_map(cpu->env.psa, &len, true);
--    if (!addr || len < QIPL_ADDRESS + sizeof(QemuIplParameters)) {
--        error_report("Cannot set QEMU IPL parameters");
--        return;
--    }
--    memcpy(addr + QIPL_ADDRESS, &ipl->qipl, sizeof(QemuIplParameters));
--    cpu_physical_memory_unmap(addr, len, 1, len);
--}
- 
- int s390_ipl_prepare_pv_header(Error **errp)
- {
++
+ #endif /* IPLB_H */
 diff --git a/pc-bios/s390-ccw/jump2ipl.c b/pc-bios/s390-ccw/jump2ipl.c
-index d45aec6694..bcf0e12f02 100644
+index bcf0e12f02..afe1888511 100644
 --- a/pc-bios/s390-ccw/jump2ipl.c
 +++ b/pc-bios/s390-ccw/jump2ipl.c
-@@ -39,10 +39,15 @@ int jump_to_IPL_code(uint64_t address)
-     write_subsystem_identification();
-     write_iplb_location();
- 
--    /* prevent unknown IPL types in the guest */
-+    /*
-+     * The IPLB for QEMU SCSI type devices must be rebuilt during re-ipl. The
-+     * iplb.devno is set to the boot position of the target SCSI device.
-+     */
+@@ -45,9 +45,10 @@ int jump_to_IPL_code(uint64_t address)
+      */
      if (iplb.pbt == S390_IPL_TYPE_QEMU_SCSI) {
--        iplb.pbt = S390_IPL_TYPE_CCW;
--        set_iplb(&iplb);
-+        iplb.devno = qipl.index;
-+        if (!set_iplb(&iplb)) {
-+            panic("Failed to set IPLB");
-+        }
+         iplb.devno = qipl.index;
+-        if (!set_iplb(&iplb)) {
+-            panic("Failed to set IPLB");
+-        }
++    }
++
++    if (!set_iplb(&iplb)) {
++        panic("Failed to set IPLB");
      }
  
      /*
-diff --git a/target/s390x/diag.c b/target/s390x/diag.c
-index 27ffd48576..a1fd54ddac 100644
---- a/target/s390x/diag.c
-+++ b/target/s390x/diag.c
-@@ -133,7 +133,14 @@ void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
+diff --git a/pc-bios/s390-ccw/main.c b/pc-bios/s390-ccw/main.c
+index d7c457e0ed..e38eedd83a 100644
+--- a/pc-bios/s390-ccw/main.c
++++ b/pc-bios/s390-ccw/main.c
+@@ -23,7 +23,7 @@ static SubChannelId blk_schid = { .one = 1 };
+ static char loadparm_str[LOADPARM_LEN + 1];
+ QemuIplParameters qipl;
+ IplParameterBlock iplb __attribute__((__aligned__(PAGE_SIZE)));
+-static bool have_iplb;
++bool have_iplb;
+ static uint16_t cutype;
+ LowCore *lowcore; /* Yes, this *is* a pointer to address 0 */
  
-         valid = subcode == DIAG308_PV_SET ? iplb_valid_pv(iplb) : iplb_valid(iplb);
-         if (!valid) {
--            env->regs[r1 + 1] = DIAG_308_RC_INVALID;
-+            if (subcode == DIAG308_SET && iplb->pbt == S390_IPL_TYPE_QEMU_SCSI) {
-+                s390_rebuild_iplb(iplb->devno, iplb);
-+                s390_ipl_update_diag308(iplb);
-+                env->regs[r1 + 1] = DIAG_308_RC_OK;
-+            } else {
-+                env->regs[r1 + 1] = DIAG_308_RC_INVALID;
-+            }
+@@ -55,6 +55,12 @@ void write_iplb_location(void)
+     }
+ }
+ 
++static void copy_qipl(void)
++{
++    QemuIplParameters *early_qipl = (QemuIplParameters *)QIPL_ADDRESS;
++    memcpy(&qipl, early_qipl, sizeof(QemuIplParameters));
++}
 +
-             goto out;
-         }
+ unsigned int get_loadparm_index(void)
+ {
+     return atoi(loadparm_str);
+@@ -152,6 +158,7 @@ static void menu_setup(void)
  
+     /* If loadparm was set to any other value, then do not enable menu */
+     if (memcmp(loadparm_str, LOADPARM_EMPTY, LOADPARM_LEN) != 0) {
++        menu_set_parms(qipl.qipl_flags && ~BOOT_MENU_FLAG_MASK, 0);
+         return;
+     }
+ 
+@@ -183,7 +190,10 @@ static void css_setup(void)
+ static void boot_setup(void)
+ {
+     char lpmsg[] = "LOADPARM=[________]\n";
+-    have_iplb = store_iplb(&iplb);
++
++    if (!have_iplb) {
++        have_iplb = store_iplb(&iplb);
++    }
+ 
+     if (memcmp(iplb.loadparm, "@@@@@@@@", LOADPARM_LEN) != 0) {
+         ebcdic_to_ascii((char *) iplb.loadparm, loadparm_str, LOADPARM_LEN);
+@@ -191,6 +201,10 @@ static void boot_setup(void)
+         sclp_get_loadparm_ascii(loadparm_str);
+     }
+ 
++    if (have_iplb) {
++        menu_setup();
++    }
++
+     memcpy(lpmsg + 10, loadparm_str, 8);
+     puts(lpmsg);
+ 
+@@ -208,6 +222,7 @@ static bool find_boot_device(void)
+ 
+     switch (iplb.pbt) {
+     case S390_IPL_TYPE_CCW:
++        vdev->scsi_device_selected = false;
+         debug_print_int("device no. ", iplb.ccw.devno);
+         blk_schid.ssid = iplb.ccw.ssid & 0x3;
+         debug_print_int("ssid ", blk_schid.ssid);
+@@ -231,15 +246,8 @@ static bool find_boot_device(void)
+ static int virtio_setup(void)
+ {
+     VDev *vdev = virtio_get_device();
+-    QemuIplParameters *early_qipl = (QemuIplParameters *)QIPL_ADDRESS;
+     int ret;
+ 
+-    memcpy(&qipl, early_qipl, sizeof(QemuIplParameters));
+-
+-    if (have_iplb) {
+-        menu_setup();
+-    }
+-
+     switch (vdev->senseid.cu_model) {
+     case VIRTIO_ID_NET:
+         puts("Network boot device detected");
+@@ -281,41 +289,19 @@ static void ipl_boot_device(void)
+     }
+ }
+ 
+-/*
+- * No boot device has been specified, so we have to scan through the
+- * channels to find one.
+- */
+-static void probe_boot_device(void)
+-{
+-    int ssid, sch_no, ret;
+-
+-    for (ssid = 0; ssid < 0x3; ssid++) {
+-        blk_schid.ssid = ssid;
+-        for (sch_no = 0; sch_no < 0x10000; sch_no++) {
+-            ret = is_dev_possibly_bootable(-1, sch_no);
+-            if (ret < 0) {
+-                break;
+-            }
+-            if (ret == true) {
+-                ipl_boot_device(); /* Only returns if unsuccessful */
+-                return;
+-            }
+-        }
+-    }
+-
+-    puts("Could not find a suitable boot device (none specified)");
+-}
+-
+ void main(void)
+ {
++    copy_qipl();
+     sclp_setup();
+     css_setup();
+-    boot_setup();
+-    if (have_iplb && find_boot_device()) {
+-        ipl_boot_device();
+-    } else {
+-        probe_boot_device();
+-    }
++    do {
++        boot_setup();
++        if (have_iplb && find_boot_device()) {
++            ipl_boot_device();
++        }
++        have_iplb = load_next_iplb();
++    } while (have_iplb);
++
++    panic("No suitable device for IPL. Halting...");
+ 
+-    panic("Failed to IPL. Halting...");
+ }
+diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
+index 013f94d932..734e980c6b 100644
+--- a/pc-bios/s390-ccw/netmain.c
++++ b/pc-bios/s390-ccw/netmain.c
+@@ -41,6 +41,7 @@
+ #define DEFAULT_TFTP_RETRIES 20
+ 
+ extern char _start[];
++extern bool have_iplb;
+ 
+ #define KERNEL_ADDR             ((void *)0L)
+ #define KERNEL_MAX_SIZE         ((long)_start)
+@@ -478,7 +479,7 @@ static int virtio_setup(void)
+      */
+     enable_mss_facility();
+ 
+-    if (store_iplb(&iplb)) {
++    if (have_iplb || store_iplb(&iplb)) {
+         if (iplb.pbt != S390_IPL_TYPE_CCW) {
+             puts("IPL_TYPE_CCW expected");
+         }
 -- 
 2.45.1
 
