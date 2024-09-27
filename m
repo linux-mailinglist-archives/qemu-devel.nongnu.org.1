@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A265988C05
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 23:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD2EA988C06
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 23:52:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suIrg-0000Ql-EJ; Fri, 27 Sep 2024 17:51:04 -0400
+	id 1suIrw-0001Ye-JW; Fri, 27 Sep 2024 17:51:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suIrd-0000HE-Qj
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:51:02 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suIrm-0000vG-Tr
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:51:14 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suIrc-0004Vs-5l
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:51:01 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-42cb0f28bfbso21653065e9.1
- for <qemu-devel@nongnu.org>; Fri, 27 Sep 2024 14:50:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suIrk-0004Wk-BL
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:51:09 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-37cdb6ebc1cso557105f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 27 Sep 2024 14:51:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727473858; x=1728078658; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727473865; x=1728078665; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=22wtNkwk6lzPh2EtQj85F8jLpnswm9ZtwKSArURcwyA=;
- b=QkPRz+pLdQLCCNe5nHr11o0PskxIzuY4EDdbERvaQYDHYbQVdeCMQI/DieiTDjkcmI
- yuNnDwzpRw3XpjoJ2psCF3wedv7NNYKUQYfanIFSOah1tEEvoOttj6wOqqIW7YbAsO8R
- u7qbowIJL1IOEzGOOyCvAl9hkkQ8J/vZ+SlKDiLnhXZxQkhXltKLyiwSWxw+IqvS8Y62
- djdUSrZr5wtuVjn/aK+IkjBfA7Oijmzosb3s6XDI1uT77sxmDgtszAHXp0lFzUnfGmCR
- kbc/kp0uMXJz+52HZ+4p2v3cvEwC7m+nya64IpV/47kYrGlbFxPwazguh/Vzrk2PfbxG
- l6rg==
+ bh=ncMwuXMgt8w0SPLSq4FNQgB95v0Fxit0yyRMSKvDcb8=;
+ b=scF2UBIIBiYiLDbYDnsB3QYay6mBwhBxAgIghWKzonYoLiGLKitRMA8Oi9rm7OkZau
+ StavgAwciko8YWhNNPF4zLopqce67vrrXmAsZQmPVEfh6tuobs/DEY2lB4ahCaGoODG5
+ 3EoqZINZAfL8MrXZ7hr72/e0tE5u3yzMVqw8XXndflzsTVVPCNyxhC3+H8A+sP4V+Wrt
+ GCEmM0aQwOvxyXiqPkCL9LgZB6G93g+ldLCPNcV1046Qy7CUh9SpA7G9dOVkiTCUQvU9
+ bR5ekydBwGTOKEoYSxKE0gPfkCIWI8anFXPf3ccZruY7MspXJLdBnK1lkST9XlyZdr+B
+ E1pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727473858; x=1728078658;
+ d=1e100.net; s=20230601; t=1727473865; x=1728078665;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=22wtNkwk6lzPh2EtQj85F8jLpnswm9ZtwKSArURcwyA=;
- b=BVz07ZlZdIZ7EQizuzxa9xoEXYEQDh4Bse6N/+OsnablZH1dvB9rnk81BeMZf5A2Qb
- 4uG7giuguMLarVPxeOxeCPZpC3QjVMfxQZnjfcxgHV/JqiAmk3yUoZNEd+XATLIqfakp
- PebZArw5HSUNonzAudUDNN414iKJTVJDz+15wv/4WTKUB31neAe6hCZQJhXlvTqcy7xu
- 9hkybcmoFs4RQITnWti1hNETZ2OKPV+BFHGkNO2mlvt39B60qOed2uYa159eDGECnwlu
- pFagjcY8t3U6AzOqeNjofueNnjSufmYJsyhEmytDQ4A30so/68uDE03KOeEUsPsdiJA3
- oStg==
-X-Gm-Message-State: AOJu0YyXgpcLXU21KOmWK0pUNYV5HVtqizFCeibMmBN1ZOlv4txQJjjJ
- +hReW5eYgOAVV4mvhjCPWzZCpxAlG9cZ5fpPAdKgsn5D9SjhIYIF3IfnvTfjhWfOxEKB9qxzJE7
- f
-X-Google-Smtp-Source: AGHT+IFSzDpLlLLuQHk/1iyS/V0pFwnNOy4PLtvz4GdTzYXXWjp/4VZ7/GCGPZBO+aKp7E/DduA54Q==
-X-Received: by 2002:a5d:6802:0:b0:374:c040:b00e with SMTP id
- ffacd0b85a97d-37cd5ae3362mr2642552f8f.39.1727473857983; 
- Fri, 27 Sep 2024 14:50:57 -0700 (PDT)
+ bh=ncMwuXMgt8w0SPLSq4FNQgB95v0Fxit0yyRMSKvDcb8=;
+ b=eLZ9UiJW6ePYEDuUuqsC8iV+7OY3pNmjlsIjMaKZCrM5OdZGauqNdOoj1/YI3jJ0j5
+ Hiar4iWnVrJNps3RXBKw65qcgSKqXBNoyOxoQjaUO5UAqQVl4ZyNgn+LC10EcRoSzf7T
+ DlH+8rYsnpDZH5s6Vo57BPQ2OK1K4HTpcTdYaUZ1K6JAADwnVPTnLaWnbf4iIKtV37L1
+ yehzYGms/8VwQd1uAaQD52Te3eMCKraFyUHi0nxCs37+ceKfoSLLtRebOZpO6z27cJ/X
+ A2f8E74rOpEQNOnF24UChsPzf+zolE/1g35LDNHy6WZ0+Y4ak3mjAbNVI9Fw65Far9X8
+ MQog==
+X-Gm-Message-State: AOJu0YwB5lDF+w8PVweCO6l482qufhBcLUqYK4gjiMYf1W5frOaSnJ5b
+ loh/3FUMZkrlEFzVYe2jaWZJnnbliaQWKmAaFBYo4u7hZSyp0c7/w6+3/TiB8lCNkGiv7hByQ8B
+ +
+X-Google-Smtp-Source: AGHT+IEBAbxD2guHS7kxHuoSHqUr9V2OViIGn0xcMxSiEVBN4ZIL2QhZTS4108ZUqyKQMoygrsHxSQ==
+X-Received: by 2002:a05:6000:52:b0:37c:d244:bdb1 with SMTP id
+ ffacd0b85a97d-37cd5ad83c8mr2643155f8f.26.1727473865525; 
+ Fri, 27 Sep 2024 14:51:05 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.217.136])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd564d2d2sm3476685f8f.1.2024.09.27.14.50.55
+ ffacd0b85a97d-37cd565dd86sm3420517f8f.27.2024.09.27.14.51.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 27 Sep 2024 14:50:56 -0700 (PDT)
+ Fri, 27 Sep 2024 14:51:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -63,17 +63,17 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Alexey Kardashevskiy <aik@ozlabs.ru>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 2/4] hw/ppc/spapr_vof: Simplify LD/ST API uses
-Date: Fri, 27 Sep 2024 23:50:38 +0200
-Message-ID: <20240927215040.20552-3-philmd@linaro.org>
+Subject: [PATCH v2 3/4] hw/ppc/vof: Simplify LD/ST API uses
+Date: Fri, 27 Sep 2024 23:50:39 +0200
+Message-ID: <20240927215040.20552-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240927215040.20552-1-philmd@linaro.org>
 References: <20240927215040.20552-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -95,53 +95,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Directly call ldn_be_p once instead of ldl_be_p / ldq_be_p.
+Instead of be32_to_cpu (equivalent of ldl_be_p) and ldq_be_p,
+use ldn_be_p(). Similarly instead of cpu_to_be32 (equiv. stl_be_p)
+and cpu_to_be64 (equiv. stq_be_p), use stn_be_p().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr_vof.c | 27 +++++++++------------------
- 1 file changed, 9 insertions(+), 18 deletions(-)
+ hw/ppc/vof.c | 26 +++++++++-----------------
+ 1 file changed, 9 insertions(+), 17 deletions(-)
 
-diff --git a/hw/ppc/spapr_vof.c b/hw/ppc/spapr_vof.c
-index c02eaacfed..d238a44d88 100644
---- a/hw/ppc/spapr_vof.c
-+++ b/hw/ppc/spapr_vof.c
-@@ -136,26 +136,17 @@ bool spapr_vof_setprop(MachineState *ms, const char *path, const char *propname,
-             vof->bootargs = g_strndup(val, vallen);
-             return true;
+diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
+index b5b6514d79..e2549ab786 100644
+--- a/hw/ppc/vof.c
++++ b/hw/ppc/vof.c
+@@ -628,6 +628,7 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
+     const uint8_t *mem0_reg;
+     g_autofree uint8_t *avail = NULL;
+     uint8_t *availcur;
++    size_t elsz;
+ 
+     if (!fdt || !claimed) {
+         return;
+@@ -645,11 +646,8 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
+ 
+     mem0_reg = fdt_getprop(fdt, offset, "reg", &proplen);
+     g_assert(mem0_reg && proplen == sizeof(uint32_t) * (ac + sc));
+-    if (sc == 2) {
+-        mem0_end = ldq_be_p(mem0_reg + sizeof(uint32_t) * ac);
+-    } else {
+-        mem0_end = be32_to_cpu(*(uint32_t *)(mem0_reg + sizeof(uint32_t) * ac));
+-    }
++    elsz = sc * sizeof(uint32_t);
++    mem0_end = ldn_be_p(mem0_reg + sizeof(uint32_t) * ac, elsz);
+ 
+     g_array_sort(claimed, of_claimed_compare_func);
+     vof_claimed_dump(claimed);
+@@ -674,18 +672,12 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
+             size = mem0_end - start;
          }
--        if (strcmp(propname, "linux,initrd-start") == 0) {
--            if (vallen == sizeof(uint32_t)) {
--                spapr->initrd_base = ldl_be_p(val);
--                return true;
-+        switch (vallen) {
-+        case 4:
-+        case 8:
-+            if (strcmp(propname, "linux,initrd-start") == 0) {
-+                spapr->initrd_base = ldn_be_p(val, vallen);
-             }
--            if (vallen == sizeof(uint64_t)) {
--                spapr->initrd_base = ldq_be_p(val);
--                return true;
--            }
--            return false;
+ 
+-        if (ac == 2) {
+-            *(uint64_t *) availcur = cpu_to_be64(start);
+-        } else {
+-            *(uint32_t *) availcur = cpu_to_be32(start);
 -        }
--        if (strcmp(propname, "linux,initrd-end") == 0) {
--            if (vallen == sizeof(uint32_t)) {
--                spapr->initrd_size = ldl_be_p(val) - spapr->initrd_base;
--                return true;
--            }
--            if (vallen == sizeof(uint64_t)) {
--                spapr->initrd_size = ldq_be_p(val) - spapr->initrd_base;
--                return true;
-+            if (strcmp(propname, "linux,initrd-end") == 0) {
-+                spapr->initrd_size = ldn_be_p(val, vallen);
-             }
-+            return true;
-+        default:
-             return false;
-         }
-     }
+-        availcur += sizeof(uint32_t) * ac;
+-        if (sc == 2) {
+-            *(uint64_t *) availcur = cpu_to_be64(size);
+-        } else {
+-            *(uint32_t *) availcur = cpu_to_be32(size);
+-        }
+-        availcur += sizeof(uint32_t) * sc;
++        elsz = ac * sizeof(uint32_t);
++        stn_be_p(&availcur, elsz, start);
++        availcur += elsz;
++        elsz = sc * sizeof(uint32_t);
++        stn_be_p(&availcur, elsz, size);
++        availcur += elsz;
+ 
+         if (size) {
+             trace_vof_avail(c.start + c.size, c.start + c.size + size, size);
 -- 
 2.45.2
 
