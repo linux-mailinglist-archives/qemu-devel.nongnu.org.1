@@ -2,53 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1066F98805A
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 10:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E479880D3
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 10:53:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1su6Qz-0007qb-Qt; Fri, 27 Sep 2024 04:34:41 -0400
+	id 1su6iB-0005R1-6t; Fri, 27 Sep 2024 04:52:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1su6Qh-00079C-MN; Fri, 27 Sep 2024 04:34:26 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1su6Qf-0003ff-VK; Fri, 27 Sep 2024 04:34:23 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 27 Sep
- 2024 16:33:53 +0800
-Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Fri, 27 Sep 2024 16:33:53 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, Thomas Huth <thuth@redhat.com>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "open list:ASPEED
- BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v5 7/7] hw/gpio/aspeed: Add test case for AST2700
-Date: Fri, 27 Sep 2024 16:33:51 +0800
-Message-ID: <20240927083351.2637798-8-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240927083351.2637798-1-jamin_lin@aspeedtech.com>
-References: <20240927083351.2637798-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <chao.liu@yeah.net>) id 1su6i4-0005J6-Li
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 04:52:20 -0400
+Received: from mail-m16.yeah.net ([220.197.32.17])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <chao.liu@yeah.net>) id 1su6i0-0005oR-5f
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 04:52:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+ s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=cH1uO
+ /jZ4N875H+lKdc9i+XyQ72WmTPa9RRpilxjzNI=; b=XFXyDhBIW0ZwAODcvxhWL
+ HEgIYbcSB6r/C+X8ful4F6bWoSOnbre5GYneJTwLg/bKT+6gpYsZdHpUp5/4ZlaJ
+ tIc9xaw6e5xjZn4A9WA0Yg90OGfRfTbj+8Q4EcGnROkNvchnutaC28UnXidINOjY
+ BVmpAT40XLJlJr8l8U1cj8=
+Received: from localhost.localdomain (unknown [])
+ by gzsmtp1 (Coremail) with SMTP id Mc8vCgD31KoOcvZmhEQ4AQ--.49283S2;
+ Fri, 27 Sep 2024 16:51:26 +0800 (CST)
+From: Chao Liu <chao.liu@yeah.net>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, bin.meng@windriver.com, edgar.iglesias@gmail.com,
+ alistair@alistair23.me, Chao Liu <chao.liu@yeah.net>
+Subject: [PATCH v2 0/2] Drop ignore_memory_transaction_failures for xilink_zynq
+Date: Fri, 27 Sep 2024 16:51:17 +0800
+Message-ID: <cover.1727425255.git.chao.liu@yeah.net>
+X-Mailer: git-send-email 2.46.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-CM-TRANSID: Mc8vCgD31KoOcvZmhEQ4AQ--.49283S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw4DAr13tFy3CrWrAr17GFg_yoW8try5pr
+ 4rKa15KryrGrn7XrZ3Wan7GF4Fqwn3Aan5Gr47A34agFZxCr9ay395KayYq347WFnFqF1f
+ Xr1jva1F9w17taDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jXku7UUUUU=
+X-Originating-IP: [117.173.247.123]
+X-CM-SenderInfo: pfkd0hxolxq5hhdkh0dhw/1tbiCxhnKGb2K8rKhAAAsj
+Received-SPF: pass client-ip=220.197.32.17; envelope-from=chao.liu@yeah.net;
+ helo=mail-m16.yeah.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,114 +64,70 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add test case to test GPIO output and input pins from A0 to D7 for AST2700.
+Hi, thank you for your prompt reply, it's a great encouragement to me!
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- tests/qtest/aspeed_gpio-test.c | 68 ++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+Based on your review suggestions, I have improved the v1 patch.
 
-diff --git a/tests/qtest/aspeed_gpio-test.c b/tests/qtest/aspeed_gpio-test.c
-index d38f51d719..9d978b70e0 100644
---- a/tests/qtest/aspeed_gpio-test.c
-+++ b/tests/qtest/aspeed_gpio-test.c
-@@ -33,6 +33,10 @@
- #define GPIO_ABCD_DATA_VALUE 0x000
- #define GPIO_ABCD_DIRECTION  0x004
- 
-+/* AST2700 */
-+#define AST2700_GPIO_BASE 0x14C0B000
-+#define GPIOA0_CONTROL 0x180
-+
- static void test_set_colocated_pins(const void *data)
- {
-     QTestState *s = (QTestState *)data;
-@@ -72,8 +76,64 @@ static void test_set_input_pins(const void *data)
-     g_assert_cmphex(value, ==, 0xffffffff);
- }
- 
-+static void test_2700_output_pins(const void *data)
-+{
-+    QTestState *s = (QTestState *)data;
-+    uint32_t offset = 0;
-+    uint32_t value = 0;
-+    uint32_t pin = 0;
-+
-+    for (char c = 'A'; c <= 'D'; c++) {
-+        for (int i = 0; i < 8; i++) {
-+            offset = AST2700_GPIO_BASE + GPIOA0_CONTROL + (pin * 4);
-+
-+            /* output direction and output hi */
-+            qtest_writel(s, offset, 0x00000003);
-+            value = qtest_readl(s, offset);
-+            g_assert_cmphex(value, ==, 0x00000003);
-+
-+            /* output direction and output low */
-+            qtest_writel(s, offset, 0x00000002);
-+            value = qtest_readl(s, offset);
-+            g_assert_cmphex(value, ==, 0x00000002);
-+            pin++;
-+        }
-+    }
-+}
-+
-+static void test_2700_input_pins(const void *data)
-+{
-+    QTestState *s = (QTestState *)data;
-+    char name[16];
-+    uint32_t offset = 0;
-+    uint32_t value = 0;
-+    uint32_t pin = 0;
-+
-+    for (char c = 'A'; c <= 'D'; c++) {
-+        for (int i = 0; i < 8; i++) {
-+            sprintf(name, "gpio%c%d", c, i);
-+            offset = AST2700_GPIO_BASE + GPIOA0_CONTROL + (pin * 4);
-+            /* input direction */
-+            qtest_writel(s, offset, 0);
-+
-+            /* set input */
-+            qtest_qom_set_bool(s, "/machine/soc/gpio", name, true);
-+            value = qtest_readl(s, offset);
-+            g_assert_cmphex(value, ==, 0x00002000);
-+
-+            /* clear input */
-+            qtest_qom_set_bool(s, "/machine/soc/gpio", name, false);
-+            value = qtest_readl(s, offset);
-+            g_assert_cmphex(value, ==, 0);
-+            pin++;
-+        }
-+    }
-+}
-+
-+
- int main(int argc, char **argv)
- {
-+    const char *arch = qtest_get_arch();
-     QTestState *s;
-     int r;
- 
-@@ -83,6 +143,14 @@ int main(int argc, char **argv)
-     qtest_add_data_func("/ast2600/gpio/set_colocated_pins", s,
-                         test_set_colocated_pins);
-     qtest_add_data_func("/ast2600/gpio/set_input_pins", s, test_set_input_pins);
-+
-+    if (strcmp(arch, "aarch64") == 0) {
-+        s = qtest_init("-machine ast2700-evb");
-+        qtest_add_data_func("/ast2700/gpio/input_pins",
-+                            s, test_2700_input_pins);
-+        qtest_add_data_func("/ast2700/gpio/out_pins", s, test_2700_output_pins);
-+    }
-+
-     r = g_test_run();
-     qtest_quit(s);
- 
+By using create_unimplemented_device() during the initialization phase,
+I added a "znyq.umip" device early on, which covers the 32-bit address space
+of GPA. This can better serve as a replacement for the effect of the
+ignore_memory_transaction_failures flag.
+
+Since create_unimplemented_device() sets the priority of the
+memory region (mr) to -100, normally created devices will override the address
+segments corresponding to the unimplemented devices.
+
+Even if our test set is not sufficiently comprehensive, we can create an
+unimp_device for the maximum address space allowed by the board. This prevents
+the guest system from triggering unexpected exceptions when accessing
+unimplemented devices or regions.
+
+Additionally, I still use create_unimplemented_device() for other
+unimplemented devices. This makes it easier to debug when these devices
+are added later.
+
+Finally, here are my testing steps:
+
+Step 1, Referring to the Xilinx Wiki,
+I compiled a Linux kernel binary image for convenience in testing.
+You can directly obtain it via:
+
+git clone https://github.com/zevorn/QEMU_CPUFreq_Zynq.git
+
+Step 2, Use the following command to run the QEMU:
+
+./qemu/build/qemu-system-arm -M xilinx-zynq-a9 \
+-serial /dev/null \
+-serial mon:stdio \
+-display none \
+-kernel QEMU_CPUFreq_Zynq/Prebuilt_functional/kernel_standard_linux/uImage \
+-dtb QEMU_CPUFreq_Zynq/Prebuilt_functional/my_devicetree.dtb \
+--initrd QEMU_CPUFreq_Zynq/Prebuilt_functional/umy_ramdisk.image.gz
+
+If there are no issues during execution and it boots successfully
+into the terminal, for example:
+
+...
+
+PetaLinux 2016.4 zedboard-zynq7 /dev/ttyPS0
+zedboard-zynq7 login: 
+root
+root@zedboard-zynq7:~#
+
+
+Chao Liu (2):
+  xilink_zynq: Add various missing unimplemented devices
+  xilink-zynq-devcfg: Fix up for memory address range size not set
+    correctly
+
+ hw/arm/xilinx_zynq.c      | 46 ++++++++++++++++++++++++++++++++++++++-
+ hw/dma/xlnx-zynq-devcfg.c |  2 +-
+ 2 files changed, 46 insertions(+), 2 deletions(-)
+
 -- 
-2.34.1
+2.46.1
 
 
