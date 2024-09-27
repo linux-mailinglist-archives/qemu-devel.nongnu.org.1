@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747B7987E2D
+	by mail.lfdr.de (Postfix) with ESMTPS id 723F3987E2C
 	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 08:13:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1su4Cd-0004UO-5N; Fri, 27 Sep 2024 02:11:43 -0400
+	id 1su4Cm-0005CN-IR; Fri, 27 Sep 2024 02:11:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1su4CS-0004RZ-Ia; Fri, 27 Sep 2024 02:11:33 -0400
+ id 1su4CV-0004TO-Fl; Fri, 27 Sep 2024 02:11:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1su4CP-0003ET-Qn; Fri, 27 Sep 2024 02:11:32 -0400
+ id 1su4CT-0003FR-Sv; Fri, 27 Sep 2024 02:11:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 26E5E92D12;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3301192D13;
  Fri, 27 Sep 2024 09:10:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 96F01146704;
+ by tsrv.corpit.ru (Postfix) with SMTP id A2EBB146705;
  Fri, 27 Sep 2024 09:11:21 +0300 (MSK)
-Received: (nullmailer pid 573341 invoked by uid 1000);
+Received: (nullmailer pid 573344 invoked by uid 1000);
  Fri, 27 Sep 2024 06:11:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 01/27] qemu-img: measure: convert img_size to signed,
+Subject: [PATCH 02/27] qemu-img: create: convert img_size to signed,
  simplify handling
-Date: Fri, 27 Sep 2024 09:10:55 +0300
-Message-Id: <20240927061121.573271-2-mjt@tls.msk.ru>
+Date: Fri, 27 Sep 2024 09:10:56 +0300
+Message-Id: <20240927061121.573271-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240927061121.573271-1-mjt@tls.msk.ru>
 References: <20240927061121.573271-1-mjt@tls.msk.ru>
@@ -60,74 +60,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_opt_set_number() expects signed int64_t.
-
-Use int64_t instead of uint64_t for img_size, use -1 as "unset"
-value instead of UINT64_MAX, and do not require temporary sval
-for conversion from string.
+Initializing an unsigned as -1, or using temporary
+sval for conversion is awkward.  Since we don't allow
+other "negative" values anyway, use signed value and
+pass it to bdrv_img_create() (where it is properly
+converted to unsigned), simplifying code.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qemu-img.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ qemu-img.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 7668f86769..6e7ac2048f 100644
+index 6e7ac2048f..fe22986931 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -5364,7 +5364,7 @@ static int img_measure(int argc, char **argv)
-     QemuOpts *sn_opts = NULL;
-     QemuOptsList *create_opts = NULL;
-     bool image_opts = false;
--    uint64_t img_size = UINT64_MAX;
+@@ -511,7 +511,7 @@ static int64_t cvtnum(const char *name, const char *value)
+ static int img_create(int argc, char **argv)
+ {
+     int c;
+-    uint64_t img_size = -1;
 +    int64_t img_size = -1;
-     BlockMeasureInfo *info = NULL;
-     Error *local_err = NULL;
-     int ret = 1;
-@@ -5422,16 +5422,11 @@ static int img_measure(int argc, char **argv)
-             }
-             break;
-         case OPTION_SIZE:
--        {
--            int64_t sval;
+     const char *fmt = "raw";
+     const char *base_fmt = NULL;
+     const char *filename;
+@@ -582,13 +582,10 @@ static int img_create(int argc, char **argv)
+ 
+     /* Get image size, if specified */
+     if (optind < argc) {
+-        int64_t sval;
 -
--            sval = cvtnum("image size", optarg);
--            if (sval < 0) {
-+            img_size = cvtnum("image size", optarg);
-+            if (img_size < 0) {
-                 goto out;
-             }
--            img_size = (uint64_t)sval;
--        }
--        break;
-+            break;
+-        sval = cvtnum("image size", argv[optind++]);
+-        if (sval < 0) {
++        img_size = cvtnum("image size", argv[optind++]);
++        if (img_size < 0) {
+             goto fail;
          }
+-        img_size = (uint64_t)sval;
      }
- 
-@@ -5446,11 +5441,11 @@ static int img_measure(int argc, char **argv)
-         error_report("--image-opts, -f, and -l require a filename argument.");
-         goto out;
-     }
--    if (filename && img_size != UINT64_MAX) {
-+    if (filename && img_size != -1) {
-         error_report("--size N cannot be used together with a filename.");
-         goto out;
-     }
--    if (!filename && img_size == UINT64_MAX) {
-+    if (!filename && img_size == -1) {
-         error_report("Either --size N or one filename must be specified.");
-         goto out;
-     }
-@@ -5498,7 +5493,7 @@ static int img_measure(int argc, char **argv)
-             goto out;
-         }
-     }
--    if (img_size != UINT64_MAX) {
-+    if (img_size != -1) {
-         qemu_opt_set_number(opts, BLOCK_OPT_SIZE, img_size, &error_abort);
-     }
- 
+     if (optind != argc) {
+         error_exit("Unexpected argument: %s", argv[optind]);
 -- 
 2.39.5
 
