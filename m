@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DCA7988A2D
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 20:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F98988A2E
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 20:40:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suFsv-00076R-Nc; Fri, 27 Sep 2024 14:40:09 -0400
+	id 1suFsf-0006Hr-W5; Fri, 27 Sep 2024 14:39:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1suFsr-0006we-0A; Fri, 27 Sep 2024 14:40:05 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1suFsb-0006Dl-HX; Fri, 27 Sep 2024 14:39:49 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1suFso-00024U-Rj; Fri, 27 Sep 2024 14:40:04 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48RHMavk018461;
- Fri, 27 Sep 2024 18:39:35 GMT
+ id 1suFsa-00024c-0e; Fri, 27 Sep 2024 14:39:49 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48RHMZ3v010391;
+ Fri, 27 Sep 2024 18:39:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
  :reply-to:mime-version:content-transfer-encoding; s=
- corp-2023-11-20; bh=Y2ScNx7uhiDnRyw9+fg5cWmlnPTsA01dpbRI8RLsQyY=; b=
- QSTmCtlZLvKrPAWlcjMXi61cwKD5Dawmox9VOnaaeUHXZgDtCjKQaqTQBMzCUza8
- +a5Wgk7D8oZEK1uT08oIP9GdZfZ2M8KGMa0o2J4CK08CGyJ0+67TlzoYovrmPI/f
- zhhf10bzFSXRwUGq63lRg+o0ZBCMH+tEZR3fiJChLoq2dWjH/BAarNxYMooO69cE
- c96pck/9xaxIijMXBpb9G9e4B6XCInHjDUM4W7BAhEsGu3NmC3biB7sgSlKSV5P5
- La/t7+up3QPllTWLYQ1N/9Tf6ncV6s78lyBSClxCa3ChJz+42VDvOwMBVpx95wMk
- rSKXGb1t9bcUzy6COMrW0Q==
+ corp-2023-11-20; bh=ZoS9VTmubQZKW7D17UNywEPYHCq3GI69ubjqd16eJtQ=; b=
+ Mg6mUe5tnrALSEDRqkLSdSqBIAL04cddHk+IyApUHzDNig2AN/3yU85huans4bKg
+ 4/7v+1/r+iNMc0/7nMpeXuZsSxx5Hne2WXBdET1lvCzK6A97dkogJLbgGGEk6fGD
+ Sjf5XHmAiuTsb3iTHqlzIu5GATPnhBtL8Sc6uQ7cDfO95pDDz489eTtrQP5FPRQI
+ /M54sImo+WC/zac4lEvqVDY4uE5s1ESMHx2rM3btrdcrl4PCzLkto6GhCVih5nst
+ 6HuRqXxhGVw+iOiw/eWPRSWJ4c89rjEMF6T5oESigC0N5SUsKis4CcEhuF9ZBWQW
+ SXaHZ90qaod76mOCf2tXUw==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41sn2d0jw8-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41smjddrbu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Sep 2024 18:39:34 +0000 (GMT)
+ Fri, 27 Sep 2024 18:39:40 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 48RHSZDh032841; Fri, 27 Sep 2024 18:39:33 GMT
+ with ESMTP id 48RGsb36032825; Fri, 27 Sep 2024 18:39:39 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 41smkm8fma-1
+ 41smkm8fnv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Sep 2024 18:39:33 +0000
+ Fri, 27 Sep 2024 18:39:39 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48RIdIoX009004;
- Fri, 27 Sep 2024 18:39:32 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48RIdIoZ009004;
+ Fri, 27 Sep 2024 18:39:38 GMT
 Received: from localhost.localdomain (dhcp-10-175-14-34.vpn.oracle.com
  [10.175.14.34])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 41smkm8ff6-3; Fri, 27 Sep 2024 18:39:32 +0000
+ 41smkm8ff6-4; Fri, 27 Sep 2024 18:39:38 +0000
 From: Annie Li <annie.li@oracle.com>
 To: qemu-devel@nongnu.org, qemu-arm@nongnu.org, imammedo@redhat.com
 Cc: dave@treblig.org, mst@redhat.com, anisinha@redhat.com,
@@ -59,9 +59,9 @@ Cc: dave@treblig.org, mst@redhat.com, anisinha@redhat.com,
  wangyanan55@huawei.com, zhao1.liu@intel.com, pbonzini@redhat.com,
  richard.henderson@linaro.org, eblake@redhat.com, armbru@redhat.com,
  annie.li@oracle.com, miguel.luis@oracle.com
-Subject: [RFC V2 PATCH 02/11] acpi: Implement control method sleep button
-Date: Fri, 27 Sep 2024 14:38:57 -0400
-Message-ID: <20240927183906.1248-3-annie.li@oracle.com>
+Subject: [RFC V2 PATCH 03/11] test/acpi: allow DSDT table changes
+Date: Fri, 27 Sep 2024 14:38:58 -0400
+Message-ID: <20240927183906.1248-4-annie.li@oracle.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240927183906.1248-1-annie.li@oracle.com>
 References: <20240927183906.1248-1-annie.li@oracle.com>
@@ -75,16 +75,16 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  mlxlogscore=999 malwarescore=0 adultscore=0 bulkscore=0 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
  definitions=main-2409270135
-X-Proofpoint-GUID: 0dNhWGXxYG-hmIw3q3XSreHD5bhy5CA9
-X-Proofpoint-ORIG-GUID: 0dNhWGXxYG-hmIw3q3XSreHD5bhy5CA9
-Received-SPF: pass client-ip=205.220.165.32; envelope-from=annie.li@oracle.com;
- helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: WGhNb5z16FuRQ4r8KGkHRbuv9Pb8V7ix
+X-Proofpoint-GUID: WGhNb5z16FuRQ4r8KGkHRbuv9Pb8V7ix
+Received-SPF: pass client-ip=205.220.177.32; envelope-from=annie.li@oracle.com;
+ helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,120 +103,58 @@ Reply-To: miguel.luis@oracle.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The control method sleep button is added, as well as its GPE event
-handler.
-
-Co-developed-by: Miguel Luis <miguel.luis@oracle.com>
 Signed-off-by: Annie Li <annie.li@oracle.com>
 ---
- hw/acpi/control_method_device.c         | 54 +++++++++++++++++++++++++
- hw/acpi/meson.build                     |  1 +
- include/hw/acpi/control_method_device.h | 25 ++++++++++++
- 3 files changed, 80 insertions(+)
+ tests/qtest/bios-tables-test-allowed-diff.h | 41 +++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/hw/acpi/control_method_device.c b/hw/acpi/control_method_device.c
-new file mode 100644
-index 0000000000..f52c190352
---- /dev/null
-+++ b/hw/acpi/control_method_device.c
-@@ -0,0 +1,54 @@
-+/*
-+ * Control method devices
-+ *
-+ * Copyright (c) 2023 Oracle and/or its affiliates.
-+ *
-+ *
-+ * Authors:
-+ *     Annie Li <annie.li@oracle.com>
-+ *
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/acpi/control_method_device.h"
-+#include "hw/mem/nvdimm.h"
-+
-+void acpi_dsdt_add_sleep_button(Aml *scope)
-+{
-+    Aml *dev = aml_device("\\_SB."ACPI_SLEEP_BUTTON_DEVICE);
-+    aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0C0E")));
-+    Aml *pkg = aml_package(2);
-+    aml_append(pkg, aml_int(0x01));
-+    aml_append(pkg, aml_int(0x04));
-+    aml_append(dev, aml_name_decl("_PRW", pkg));
-+    aml_append(dev, aml_operation_region("\\Boo", AML_SYSTEM_IO,
-+                                         aml_int(0x201), 0x1));
-+    Aml *field = aml_field("\\Boo", AML_BYTE_ACC, AML_NOLOCK,
-+                           AML_WRITE_AS_ZEROS);
-+    aml_append(field, aml_named_field("SBP", 1));
-+    aml_append(field, aml_named_field("SBW", 1));
-+    aml_append(dev, field);
-+    aml_append(scope, dev);
-+}
-+
-+void acpi_dsdt_add_sleep_gpe_event_handler(Aml *scope)
-+{
-+     Aml *method = aml_method("_L07", 0, AML_NOTSERIALIZED);
-+     Aml *condition = aml_if(aml_name("\\_SB.SLPB.SBP"));
-+     aml_append(condition, aml_store(aml_int(1), aml_name("\\_SB.SLPB.SBP")));
-+     aml_append(condition,
-+                aml_notify(aml_name("\\_SB."ACPI_SLEEP_BUTTON_DEVICE),
-+                                    aml_int(0x80)));
-+     aml_append(method, condition);
-+     condition = aml_if(aml_name("\\_SB.SLPB.SBW"));
-+     aml_append(condition, aml_store(aml_int(1), aml_name("\\_SB.SLPB.SBW")));
-+     aml_append(condition,
-+                aml_notify(aml_name("\\_SB."ACPI_SLEEP_BUTTON_DEVICE),
-+                                    aml_int(0x2)));
-+     aml_append(method, condition);
-+     aml_append(scope, method);
-+}
-diff --git a/hw/acpi/meson.build b/hw/acpi/meson.build
-index fa5c07db90..0b4f1b432d 100644
---- a/hw/acpi/meson.build
-+++ b/hw/acpi/meson.build
-@@ -17,6 +17,7 @@ acpi_ss.add(when: 'CONFIG_ACPI_PCI', if_true: files('pci.c'))
- acpi_ss.add(when: 'CONFIG_ACPI_CXL', if_true: files('cxl.c'), if_false: files('cxl-stub.c'))
- acpi_ss.add(when: 'CONFIG_ACPI_VMGENID', if_true: files('vmgenid.c'))
- acpi_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('generic_event_device.c'))
-+acpi_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('control_method_device.c'))
- acpi_ss.add(when: 'CONFIG_ACPI_HMAT', if_true: files('hmat.c'))
- acpi_ss.add(when: 'CONFIG_ACPI_APEI', if_true: files('ghes.c'), if_false: files('ghes-stub.c'))
- acpi_ss.add(when: 'CONFIG_ACPI_PIIX4', if_true: files('piix4.c'))
-diff --git a/include/hw/acpi/control_method_device.h b/include/hw/acpi/control_method_device.h
-new file mode 100644
-index 0000000000..87f8d6fd59
---- /dev/null
-+++ b/include/hw/acpi/control_method_device.h
-@@ -0,0 +1,25 @@
-+/*
-+ * Control method devices
-+ *
-+ * Copyright (c) 2023 Oracle and/or its affiliates.
-+ *
-+ *
-+ * Authors:
-+ *     Annie Li <annie.li@oracle.com>
-+ *
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ */
-+
-+
-+#ifndef HW_ACPI_CONTROL_METHOD_DEVICE_H
-+#define HW_ACPI_CONTROL_NETHOD_DEVICE_H
-+
-+#define ACPI_SLEEP_BUTTON_DEVICE "SLPB"
-+
-+void acpi_dsdt_add_sleep_button(Aml *scope);
-+void acpi_dsdt_add_sleep_gpe_event_handler(Aml *scope);
-+
-+#endif
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..512d40665d 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,42 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/x86/pc/DSDT",
++"tests/data/acpi/x86/pc/DSDT.acpierst",
++"tests/data/acpi/x86/pc/DSDT.acpihmat",
++"tests/data/acpi/x86/pc/DSDT.bridge",
++"tests/data/acpi/x86/pc/DSDT.cphp",
++"tests/data/acpi/x86/pc/DSDT.dimmpxm",
++"tests/data/acpi/x86/pc/DSDT.hpbridge",
++"tests/data/acpi/x86/pc/DSDT.hpbrroot",
++"tests/data/acpi/x86/pc/DSDT.ipmikcs",
++"tests/data/acpi/x86/pc/DSDT.memhp",
++"tests/data/acpi/x86/pc/DSDT.nohpet",
++"tests/data/acpi/x86/pc/DSDT.numamem",
++"tests/data/acpi/x86/pc/DSDT.roothp",
++"tests/data/acpi/x86/q35/DSDT",
++"tests/data/acpi/x86/q35/DSDT.acpierst",
++"tests/data/acpi/x86/q35/DSDT.acpihmat",
++"tests/data/acpi/x86/q35/DSDT.acpihmat-noinitiator",
++"tests/data/acpi/x86/q35/DSDT.applesmc",
++"tests/data/acpi/x86/q35/DSDT.bridge",
++"tests/data/acpi/x86/q35/DSDT.core-count",
++"tests/data/acpi/x86/q35/DSDT.core-count2",
++"tests/data/acpi/x86/q35/DSDT.cphp",
++"tests/data/acpi/x86/q35/DSDT.cxl",
++"tests/data/acpi/x86/q35/DSDT.dimmpxm",
++"tests/data/acpi/x86/q35/DSDT.ipmibt",
++"tests/data/acpi/x86/q35/DSDT.ipmismbus",
++"tests/data/acpi/x86/q35/DSDT.ivrs",
++"tests/data/acpi/x86/q35/DSDT.memhp",
++"tests/data/acpi/x86/q35/DSDT.mmio64",
++"tests/data/acpi/x86/q35/DSDT.multi-bridge",
++"tests/data/acpi/x86/q35/DSDT.noacpihp",
++"tests/data/acpi/x86/q35/DSDT.nohpet",
++"tests/data/acpi/x86/q35/DSDT.numamem",
++"tests/data/acpi/x86/q35/DSDT.pvpanic-isa",
++"tests/data/acpi/x86/q35/DSDT.thread-count",
++"tests/data/acpi/x86/q35/DSDT.thread-count2",
++"tests/data/acpi/x86/q35/DSDT.tis.tpm12",
++"tests/data/acpi/x86/q35/DSDT.tis.tpm2",
++"tests/data/acpi/x86/q35/DSDT.type4-count",
++"tests/data/acpi/x86/q35/DSDT.viot",
++"tests/data/acpi/x86/q35/DSDT.xapic",
 -- 
 2.43.5
 
