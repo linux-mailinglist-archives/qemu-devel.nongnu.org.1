@@ -2,89 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBE5987D7A
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 06:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62736987E2A
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 08:13:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1su2Hk-0004SE-1a; Fri, 27 Sep 2024 00:08:52 -0400
+	id 1su4Cg-0004fZ-Fv; Fri, 27 Sep 2024 02:11:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1su2Hi-0004RV-0F
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 00:08:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1su4CS-0004Ra-MJ; Fri, 27 Sep 2024 02:11:33 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1su2Hf-0006Ic-0c
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 00:08:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727410126;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4/j/AxdBrkewXMOzyUEvIq4nN98IrFCYqkQ7zh0Sml8=;
- b=aWEirnEQQrGIYuw9rVqhejmVwMw5qJcdGeBN1DKHSl4jpu2TvcFoZSRkithkrUQtNe4MeK
- oooYCfunRbxeBGUHuGQ9OyaPLDlLt5g0jiWOU8i72m2rBTf340oRf97De80e5UP/6DjDEN
- 2/lTJI3RASrYPFBGBhC2ORfkd1kgUZw=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-167-HomMsMxcMsaJw8pdOxwaqw-1; Fri, 27 Sep 2024 00:08:38 -0400
-X-MC-Unique: HomMsMxcMsaJw8pdOxwaqw-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-7174c6cbdbaso2160921b3a.2
- for <qemu-devel@nongnu.org>; Thu, 26 Sep 2024 21:08:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727410117; x=1728014917;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4/j/AxdBrkewXMOzyUEvIq4nN98IrFCYqkQ7zh0Sml8=;
- b=klI5kDw3rItzq5L1BqOIGTzOwf3tMkBeyaHiKW0XQ3rXKu6l7NVQHaPNRNaFiNrgbn
- S2ZWUi7uREEEwQfWM6r93BE/Edo5P9S/PrmtCG4j2MEAV6ueB3rtjtrszo172JEr0idl
- 7Vp7VRG9PwxWMEvw+FhqNBcTgmLFeYHWZ9mgJIsj15q7+wbO8JtXQBGiuT4JEReCEnCG
- WlQZggIznAUXxTPp+/ypeaUPv9KNQC93Sm6zRciQyjE6TbIh+8L8NT2an0nKW7T7Gibl
- 04xFEGOiZljZ/LBwA0T5VOGizcaF29FzwgM5zCFrAU6C4Z2VXDaZibXzGEFXIhk3WbVB
- S3Pw==
-X-Gm-Message-State: AOJu0YzhYbk0V7ZcaOxLYkZ1ZypNGUrCiMO29KqABARe9WHqGjCJwIMo
- UNpP3DDVnrgKVUVcw6yC7q0dwDAhaRVcSn6vgFa08B99oqWYvgHC7AI/cnBTBTWjEbV179m/PEM
- 9UPi6LHwo7SZJ3NQ3OQmrPUxvjvJEL90WE0132AdyMWk8LZ6px+DnRqpE1Rg+HNp6oyehizcqZ8
- o7TGCywgg4UH0LHEmcqGJcwP3oR7s=
-X-Received: by 2002:a05:6a20:cd8f:b0:1d2:eb9d:997d with SMTP id
- adf61e73a8af0-1d4fa64d8ebmr2456912637.7.1727410117449; 
- Thu, 26 Sep 2024 21:08:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/v/hEwStb3REk4nGNgfQHycwyjuAjnHjFWJ1lr4rCphbI0/323/eUwD+gwfY7mgPTPxGQo0qd7v7xiqnOcVk=
-X-Received: by 2002:a05:6a20:cd8f:b0:1d2:eb9d:997d with SMTP id
- adf61e73a8af0-1d4fa64d8ebmr2456889637.7.1727410117055; Thu, 26 Sep 2024
- 21:08:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1su4CP-0003ER-GT; Fri, 27 Sep 2024 02:11:32 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 1DCE092D11;
+ Fri, 27 Sep 2024 09:10:51 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 7E183146703;
+ Fri, 27 Sep 2024 09:11:21 +0300 (MSK)
+Received: (nullmailer pid 573337 invoked by uid 1000);
+ Fri, 27 Sep 2024 06:11:21 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Kevin Wolf <kwolf@redhat.com>
+Subject: [PATCH resend v3 00/27] qemu-img: refersh options and --help handling,
+ cleanups
+Date: Fri, 27 Sep 2024 09:10:54 +0300
+Message-Id: <20240927061121.573271-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <20240911052255.1294071-1-zhenzhong.duan@intel.com>
- <20240911052255.1294071-18-zhenzhong.duan@intel.com>
-In-Reply-To: <20240911052255.1294071-18-zhenzhong.duan@intel.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 27 Sep 2024 12:08:23 +0800
-Message-ID: <CACGkMEv3qADLZoxhemew9e_8HnG_xbYqDtKnVp3VqK8U9Fiq0A@mail.gmail.com>
-Subject: Re: [PATCH v3 17/17] tests/qtest: Add intel-iommu test
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: qemu-devel@nongnu.org, alex.williamson@redhat.com, clg@redhat.com, 
- eric.auger@redhat.com, mst@redhat.com, peterx@redhat.com, jgg@nvidia.com, 
- nicolinc@nvidia.com, joao.m.martins@oracle.com, 
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com, 
- chao.p.peng@intel.com, Thomas Huth <thuth@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,21 +59,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 11, 2024 at 1:27=E2=80=AFPM Zhenzhong Duan <zhenzhong.duan@inte=
-l.com> wrote:
->
-> Add the framework to test the intel-iommu device.
->
-> Currently only tested cap/ecap bits correctness in scalable
-> modern mode. Also tested cap/ecap bits consistency before
-> and after system reset.
->
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Acked-by: Thomas Huth <thuth@redhat.com>
-> Reviewed-by: Cl=C3=A9ment Mathieu--Drif<clement.mathieu--drif@eviden.com>
+This is a re-send of this patchset from Apr-24, after multiple pings.
+I rebased it on top of current qemu/master, though nothing has really
+changed - it is still the same changes.  We should either apply it or
+drop it if it is not appropriate for some reason.  Complete silence
+for half a year isn't really nice, I think :)
+----
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+Quite big patchset trying to implement normal, readable qemu-img --help
+(and qemu-img COMMAND --help) output with readable descriptions, and
+adding many long options in the process.
 
-Thanks
+In the end I stopped using qemu-img-opts.hx in qemu-img.c, perhaps
+this can be avoided, with only list of commands and their desrciptions
+kept there, but I don't see big advantage here.  The same list should
+be included in docs/tools/qemu-img.rst, - this is not done now.
+
+Also each command syntax isn't reflected in the doc for now, because
+I want to give good names for options first, - and there, we've quite
+some inconsistences and questions.  For example, measure --output=OFMT
+-O OFMT, - this is priceless :)  I've no idea why we have this ugly
+--output=json thing, why not have --json? ;)  I gave the desired
+format long name --target-format to avoid clash with --output.
+
+For rebase, src vs tgt probably should be renamed in local variables
+too, and I'm not even sure I've got the caches right. For caches,
+the thing is inconsistent across commands.
+
+For compare, I used --a-format/--b-format (for -f/-F), - this can
+be made --souce-format and --target-format, to compare source (file1)
+with target (file2).
+
+For bitmap, things are scary, I'm not sure what -b SRC_FILENAME
+really means, - for now I gave it --source option, but this does
+not make it more clear, suggestions welcome.
+
+There are many other inconsistencies, I can't fix them all in one go.
+
+Changes since v2:
+
+ - added Dan's R-Bs
+ - refined couple cvtnum conversions
+ - dropped "stop printing error twice in a few places"
+
+Michael Tokarev (27):
+  qemu-img: measure: convert img_size to signed, simplify handling
+  qemu-img: create: convert img_size to signed, simplify handling
+  qemu-img: global option processing and error printing
+  qemu-img: pass current cmd info into command handlers
+  qemu-img: create: refresh options/--help
+  qemu-img: factor out parse_output_format() and use it in the code
+  qemu-img: check: refresh options/--help
+  qemu-img: simplify --repair error message
+  qemu-img: commit: refresh options/--help
+  qemu-img: compare: refresh options/--help
+  qemu-img: convert: refresh options/--help
+  qemu-img: info: refresh options/--help
+  qemu-img: map: refresh options/--help
+  qemu-img: snapshot: allow specifying -f fmt
+  qemu-img: snapshot: make -l (list) the default, simplify option handling
+  qemu-img: snapshot: refresh options/--help
+  qemu-img: rebase: refresh options/--help
+  qemu-img: resize: do not always eat last argument
+  qemu-img: resize: refresh options/--help
+  qemu-img: amend: refresh options/--help
+  qemu-img: bench: refresh options/--help
+  qemu-img: bitmap: refresh options/--help
+  qemu-img: dd: refresh options/--help
+  qemu-img: measure: refresh options/--help
+  qemu-img: implement short --help, remove global help() function
+  qemu-img: inline list of supported commands, remove qemu-img-cmds.h
+    include
+  qemu-img: extend cvtnum() and use it in more places
+
+ docs/tools/qemu-img.rst    |    4 +-
+ qemu-img-cmds.hx           |    4 +-
+ qemu-img.c                 | 1311 ++++++++++++++++++++++--------------
+ tests/qemu-iotests/049.out |    9 +-
+ 4 files changed, 821 insertions(+), 507 deletions(-)
+
+-- 
+2.39.5
 
 
