@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E823987E36
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 08:14:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4026B987E38
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 08:15:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1su4DC-0006z2-Re; Fri, 27 Sep 2024 02:12:19 -0400
+	id 1su4DD-00071m-63; Fri, 27 Sep 2024 02:12:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1su4D5-0006Y2-Ka; Fri, 27 Sep 2024 02:12:13 -0400
+ id 1su4D8-0006ns-PV; Fri, 27 Sep 2024 02:12:15 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1su4D3-0003Hd-QQ; Fri, 27 Sep 2024 02:12:11 -0400
+ id 1su4D6-0003Sb-Uo; Fri, 27 Sep 2024 02:12:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BCE4892D1D;
+ by isrv.corpit.ru (Postfix) with ESMTP id C8F6492D1E;
  Fri, 27 Sep 2024 09:10:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3879D14670F;
+ by tsrv.corpit.ru (Postfix) with SMTP id 44B72146710;
  Fri, 27 Sep 2024 09:11:22 +0300 (MSK)
-Received: (nullmailer pid 573374 invoked by uid 1000);
+Received: (nullmailer pid 573377 invoked by uid 1000);
  Fri, 27 Sep 2024 06:11:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 12/27] qemu-img: info: refresh options/--help
-Date: Fri, 27 Sep 2024 09:11:06 +0300
-Message-Id: <20240927061121.573271-13-mjt@tls.msk.ru>
+Subject: [PATCH 13/27] qemu-img: map: refresh options/--help
+Date: Fri, 27 Sep 2024 09:11:07 +0300
+Message-Id: <20240927061121.573271-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240927061121.573271-1-mjt@tls.msk.ru>
 References: <20240927061121.573271-1-mjt@tls.msk.ru>
@@ -59,52 +59,38 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Add missing long options and --help output.
-Also add -b short option for --backing-chain, and remove
-now-unused OPTION_BACKING_CHAIN.
 
 While at it, remove unused option_index variable.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 40 +++++++++++++++++++++++++++-------------
- 1 file changed, 27 insertions(+), 13 deletions(-)
+ qemu-img.c | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 0a32d890e3..34c4cd86de 100644
+index 34c4cd86de..84e2e53fb7 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -65,7 +65,6 @@ typedef struct img_cmd_t {
- 
- enum {
-     OPTION_OUTPUT = 256,
--    OPTION_BACKING_CHAIN = 257,
-     OPTION_OBJECT = 258,
-     OPTION_IMAGE_OPTS = 259,
-     OPTION_PATTERN = 260,
-@@ -3220,31 +3219,44 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
+@@ -3454,7 +3454,6 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
  
      fmt = NULL;
-     for(;;) {
+     for (;;) {
 -        int option_index = 0;
          static const struct option long_options[] = {
              {"help", no_argument, 0, 'h'},
              {"format", required_argument, 0, 'f'},
-             {"output", required_argument, 0, OPTION_OUTPUT},
--            {"backing-chain", no_argument, 0, OPTION_BACKING_CHAIN},
-+            {"backing-chain", no_argument, 0, 'b'},
-             {"object", required_argument, 0, OPTION_OBJECT},
-             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-             {"force-share", no_argument, 0, 'U'},
+@@ -3466,20 +3465,33 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
+             {"max-length", required_argument, 0, 'l'},
              {0, 0, 0, 0}
          };
--        c = getopt_long(argc, argv, ":f:hU",
+-        c = getopt_long(argc, argv, ":f:s:l:hU",
 -                        long_options, &option_index);
-+        c = getopt_long(argc, argv, "f:hbU",
++        c = getopt_long(argc, argv, "f:s:l:hU",
 +                        long_options, NULL);
          if (c == -1) {
              break;
          }
-         switch(c) {
+         switch (c) {
 -        case ':':
 -            missing_argument(argv[optind - 1]);
 -            break;
@@ -114,39 +100,29 @@ index 0a32d890e3..34c4cd86de 100644
          case 'h':
 -            help();
 +            cmd_help(ccmd,
-+"[-f FMT | --image-opts] [-b] [-U] [--object OBJDEF]\n"
-+"        [--output human|json] FILENAME\n"
++"[-f FMT | --image-opts] [--object OBJDEF] [--output human|json]\n"
++"        [--start-offset OFFSET] [--max-length LENGTH] [-U] FILENAME\n"
 +,
 +"  -f, --format FMT\n"
 +"     specify FILENAME image format explicitly\n"
 +"  --image-opts\n"
 +"     indicates that FILENAME is a complete image specification\n"
 +"     instead of a file name (incompatible with --format)\n"
-+"  -b, --backing-chain\n"
-+"     display information about backing chaing\n"
-+"  (in case the image is stacked\n"
++"  --start-offset OFFSET\n"
++"  --max-length LENGTH\n"
++"  --output human|json\n"
++"     specify output format name (default human)\n"
 +"  -U, --force-share\n"
 +"     open image in shared mode for concurrent access\n"
 +"  --object OBJDEF\n"
 +"     QEMU user-creatable object (eg encryption key)\n"
-+"  --output human|json\n"
-+"     specify output format name (default human)\n"
 +"  FILENAME\n"
 +"     image file name (or specification with --image-opts)\n"
 +);
              break;
          case 'f':
              fmt = optarg;
-@@ -3255,7 +3267,7 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
-         case OPTION_OUTPUT:
-             output_format = parse_output_format(argv[0], optarg);
-             break;
--        case OPTION_BACKING_CHAIN:
-+        case 'b':
-             chain = true;
-             break;
-         case OPTION_OBJECT:
-@@ -3264,6 +3276,8 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
+@@ -3508,6 +3520,8 @@ static int img_map(const img_cmd_t *ccmd, int argc, char **argv)
          case OPTION_IMAGE_OPTS:
              image_opts = true;
              break;
