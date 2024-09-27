@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB3D9889AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 19:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 857E19889B3
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 19:31:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suEmk-00061y-OS; Fri, 27 Sep 2024 13:29:42 -0400
+	id 1suEmr-0006Ck-FD; Fri, 27 Sep 2024 13:29:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Santosh.Shukla@amd.com>)
- id 1suEmf-00061E-QJ
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 13:29:38 -0400
-Received: from mail-co1nam11on2060e.outbound.protection.outlook.com
- ([2a01:111:f403:2416::60e]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ id 1suEmo-0006Ba-Sa
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 13:29:46 -0400
+Received: from mail-bn8nam12on20612.outbound.protection.outlook.com
+ ([2a01:111:f403:2418::612]
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Santosh.Shukla@amd.com>)
- id 1suEmd-0002dY-Ih
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 13:29:37 -0400
+ id 1suEmn-0002eA-44
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 13:29:46 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j6SEc9R106CTgaJbc4jV9LfkuwKO8WlkYxCp/jUwAnHR6Xk86Pi0ph9ZHCJ1VlGUCh/dutUf9dV00YLA6Q76HPMmKHFLPZqDeBJHWteuJ9ltais95wtEU5RuT+W8DnxLoLZyQJybSlHJbII0os8mVxV2ZL03PvpxjFPC0MkAL73YikkCzygVUxgnrpz4NJq37dYJ7Q07cY0n0ngfAmhEk4hIJUUTuY1aW5DEpHFRNZqFEm1+YTIaxve/+YM85mOyto9OArh40eJWOxt9vhOoMdfUe3xIZImMYCvsPUibpvWGCXw1LayfpxM2LT47TiGQbORN/dFmbJhQxWW1OrLcpg==
+ b=bwpbdGryz9nwn4no4ORTXP/z+iE+2tiJnXUIvsgQu/zKANNSp0pl/ef71sXLaDsfXAoDQWRWKx0+2LpuKyvdpMMQoPJ+Gq68noygYk6l1rMJDeaoltxGbEghMMw7PMWl3iV/OgJUNRV0u5WPPv9H2MKdYMju/dJ7nrpTNXB/CcaY2gnCOhk20bNYXzzipYgjMQUB1CAUet5hWE5hjOMD11/bWNrzWIg6kir9dWgQBAM0c5GsWo0rI1E7b1sGOs91dMRY538ITh8RoYkp2oO2vXpAJZsFR5q0gPqtj7woQ0smnCAOcQYfvm5qXcAHFxw8mBJ8J5ON6/xyGlaluDV5ww==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=506TJr/hIgLG0b0xZ3zdlV40jZVwnWGQGUGSU/ePYpc=;
- b=ca6w2X/KorCrzM4BhNgST1ESs5L3fUbdhRs48O5WGSIVso2pRaMgu8EQ5so8EzS2+o0sQaLAd+CEt5/AtcVVdvb+1HfR2w5PHkQ3MUjAoEJr34MSsYBx9yEfcOrkRofFs1GefeopeyWkPTkM+4N/kZRc4RPPd03vOox2sXOqJCtVyCvGW4tDEcTGmrBP5ZXmfOpE8YbVDw/KBJpMWoi4edBbu8IV+ikv0HAMxTcOZGupFVoXegLVF2lrDTjnIKyIepbRdhcA73D81NyzbxTnbp0GprmqeGvrPPfK0fTPw+kOJyCdBrrL7Mk/PIX3f1gKyPO/raC58mVF1S4WXZo+wQ==
+ bh=kbPagA3ro7p329hS9wZ6cPPM5pH1ke2fvkL4QxUmXzg=;
+ b=MSC/utmNqj6clVcn5qqP5q6bZEK2OHWZH9cUV5mGU9HxSjXtSf6ofhfbhuXrk+ZnB/+ZQy1GWKXhAbZ/Je271LPpLu/7pJpUoJGs3dK7/YDUABsnrmgW5pwX4x7aNK/+l/v3vxFvQLKfE8SzqPouS+DESEAB2TqAkFT29O+oNQrLQhj10Ok/kEsdokVhC32G8L/A2A0P/bObD69cPg9Kr0FOu/oaA7gnLMGycjHrxYGHaAf+0yLNk7wMpuJ2FD0cXJ3SHFbEWVGtZJPb3esAQcewFD//QNPGdnkGAk3kj9oQsquWeYbo1U/8AfehvJGM3C0SxKEBCQk0blB2UhBA9Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=506TJr/hIgLG0b0xZ3zdlV40jZVwnWGQGUGSU/ePYpc=;
- b=k0BZnGlLCi4hnAnWIIwClt+ZFvlfiSxVCM/QD8U3mL1Pn48bn5XFa2/UPb3DUjmBhI8yeguT16IbTMughDKh0RzVSMyuNEJ33WfViKF89F3+OtQyvxxOeBF+OmkCuUpJRuKXpPys0KqErPoWcS6wtMdTfyCevpgJwUiLqpPkNy0=
-Received: from CH0PR04CA0106.namprd04.prod.outlook.com (2603:10b6:610:75::21)
- by SJ1PR12MB6314.namprd12.prod.outlook.com (2603:10b6:a03:457::9)
+ bh=kbPagA3ro7p329hS9wZ6cPPM5pH1ke2fvkL4QxUmXzg=;
+ b=ibHV1xfPKunR4rlW6iPvTtNzkGgcFDzhrqGJKYmejDa5/Sb9zX7Mlcj2r3EmhvlPdTYderiTU0joLLQjW+0MO0jCNZgx+g7udMbllwH1c3SOWx5MnvluAS7iUynUimCpAjKJ9BGEhOare7PanNbS2Nd8gClLwCgJYjYvE4Jq6lk=
+Received: from CH2PR11CA0030.namprd11.prod.outlook.com (2603:10b6:610:54::40)
+ by IA0PR12MB8983.namprd12.prod.outlook.com (2603:10b6:208:490::17)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.24; Fri, 27 Sep
- 2024 17:29:26 +0000
-Received: from CH3PEPF00000011.namprd21.prod.outlook.com
- (2603:10b6:610:75:cafe::9) by CH0PR04CA0106.outlook.office365.com
- (2603:10b6:610:75::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.21; Fri, 27 Sep
+ 2024 17:29:37 +0000
+Received: from CH3PEPF00000015.namprd21.prod.outlook.com
+ (2603:10b6:610:54:cafe::96) by CH2PR11CA0030.outlook.office365.com
+ (2603:10b6:610:54::40) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.22 via Frontend
- Transport; Fri, 27 Sep 2024 17:29:26 +0000
+ Transport; Fri, 27 Sep 2024 17:29:37 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -52,23 +52,25 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH3PEPF00000011.mail.protection.outlook.com (10.167.244.116) with Microsoft
+ CH3PEPF00000015.mail.protection.outlook.com (10.167.244.120) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8026.0 via Frontend Transport; Fri, 27 Sep 2024 17:29:25 +0000
+ 15.20.8026.0 via Frontend Transport; Fri, 27 Sep 2024 17:29:37 +0000
 Received: from volcano-ed17host-rhel.amd.com (10.180.168.240) by
  SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 27 Sep 2024 12:29:25 -0500
+ 15.1.2507.39; Fri, 27 Sep 2024 12:29:36 -0500
 From: Santosh Shukla <santosh.shukla@amd.com>
 To: <qemu-devel@nongnu.org>
 CC: <pbonzini@redhat.com>, <joao.m.martins@oracle.com>,
  <Suravee.Suthikulpanit@amd.com>, <vasant.hegde@amd.com>,
  <mtosatti@redhat.com>, <mst@redhat.com>, <marcel.apfelbaum@gmail.com>,
  <santosh.shukla@amd.com>, <alejandro.j.jimenez@oracle.com>
-Subject: [PATCH v3 0/5] Interrupt Remap support for emulated amd viommu
-Date: Fri, 27 Sep 2024 12:29:08 -0500
-Message-ID: <20240927172913.121477-1-santosh.shukla@amd.com>
+Subject: [PATCH v3 1/5] amd_iommu: Rename variable mmio to mr_mmio
+Date: Fri, 27 Sep 2024 12:29:09 -0500
+Message-ID: <20240927172913.121477-2-santosh.shukla@amd.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20240927172913.121477-1-santosh.shukla@amd.com>
+References: <20240927172913.121477-1-santosh.shukla@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -77,54 +79,54 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000011:EE_|SJ1PR12MB6314:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef67c15e-051f-4530-e3b0-08dcdf19ef25
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000015:EE_|IA0PR12MB8983:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad2ec6ff-4355-4bf2-41d6-08dcdf19f605
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|376014|1800799024|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?KqXhBDfAIpRs2CpRlXCuFRM9NDvwqJ4BI8bw4iQfmXvOWlQRdBEWXVa/IPy0?=
- =?us-ascii?Q?3DUD7/LiKlj5OfWcvR7Ls3pFMcjH3UrfkuFr+FVHC1/mxrxbasbOVE6aom76?=
- =?us-ascii?Q?AA+htt0zPHOSyKWwkzJCeI5QY7vwdNtX+2r9VJNsLSnl3w60pJKTgcgqiOcN?=
- =?us-ascii?Q?ga/vdeGrlywcy0+wEsg1S/Zz2a7JlcQeRMFYt3SWdIOZ0HlXMNt6lz6qUSU3?=
- =?us-ascii?Q?zV1BnrYKETomeQ+8rjpOJ62h/AQNVr8NO+JORa9oNdTHJz/mBQ0ebM0EI1Bu?=
- =?us-ascii?Q?3DcUyosp3vpv4uLPdH+7ZaS3Yqoq8EtEHgIUUqvb3OF965aVTMv5XbuqHIDG?=
- =?us-ascii?Q?WEbwUKxpMG7K6tRBaPYgkvIFNBsUXiik+lSk72UbW36ZUVzyPVNsFhrXIQLk?=
- =?us-ascii?Q?iugXyvo00Nod/jg2XLa7DcRFgqXjPHQjFom4TlZApjHAC5k3Ijyd7O4LuD2l?=
- =?us-ascii?Q?r3m90OJH6mgtmGQ6BO/mxaDg1am6b0Qb/q2Qf3vujSn/a1R11m5s7XHnpKeb?=
- =?us-ascii?Q?Fss43kSL79dSgHJ/MgDZ+IwqFfFg7V90FROf8qo7nHslzowHOx6gVvIU9aI7?=
- =?us-ascii?Q?o0bi8TZRb9NFZWZuoN7IiGWU6bZF7Pat0DrEaF8h7XVbGOyI4KR2I5nbl01k?=
- =?us-ascii?Q?V3vP4+2PNaNVZPA2vMIX/ZKjSuhCZeNfCNoQbbCDsilx9zHEXMdaRQcv5uXe?=
- =?us-ascii?Q?xX22fqrASCA7KKqnI+MkeuepgQb8pUsD/U+Q6wLCdrtayhpqiEZdB42GZ8Ls?=
- =?us-ascii?Q?7wOFoEmDhwCzzdGq2oyR5T4jAz8VEQhzBpQ+N6t6jfaQU45H8N8eAEqcUOjL?=
- =?us-ascii?Q?13RwjX7AxNjDSnwf/6NLMWnrnYw08l3/ZJL4bwBRTU+h9c600nD8UBClyEIS?=
- =?us-ascii?Q?pIzOrKEfOgy6Y49dwKNNK/foi7Ow4G99bO1y9whizUpl5Et09MsjFddNXKjt?=
- =?us-ascii?Q?M2aJX6i1z17bu7H50Lr8mCF88dn0pvBUCtNZ4JXIE7dPrdhLsHrRnFv7PNAc?=
- =?us-ascii?Q?iLhXPW2ORPTYtrQ2t74yrjdApQREfFB3nIoHSRZtxSR1QLvvKg31RHd3h7yl?=
- =?us-ascii?Q?tKYOMSimOlfH2V/M4gAb4Iz3Nf2DSYsCmtDLimGY335Z8In0xPYUWc3AFx0z?=
- =?us-ascii?Q?/RPUZdbF2J9gl3ZJv0GmlSKixfZ1wYzy1EUV5u0dCdCC+HPdlunVTBliLjKZ?=
- =?us-ascii?Q?KU+h3zUciKGZyFzdGqGUGV03BeBJ8OjGe/x03hNfMBGNmtXJJteIWFVH5Ywf?=
- =?us-ascii?Q?G4UZ8lyENLrNNPJb15JkwSyI7oTd3M33QM6fnK5mnftCRIS69Jx2TtL0PpKO?=
- =?us-ascii?Q?KhN5TVqBXMG0H8DcDG455JBLRaAloAm4a3zj/eOur8TUKP2PU0foClbawzxA?=
- =?us-ascii?Q?qR1iWIdPLFOgUnyeyYZDztvbn8B/gJ7g+zjc24rGONNKNDp9E+mfWtALgesO?=
- =?us-ascii?Q?ZGhTcBOH85DqsY7Fc2ipFdAFGzXNjtT3eQUnNp2FjX3ge13tf/c+Uw=3D=3D?=
+ ARA:13230040|376014|1800799024|82310400026|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?mfsC9yRZ0uoV4du6zmMsVhZVqofQyyM0/729+QKgl2BqcD4RlX46Juqau8Fn?=
+ =?us-ascii?Q?UhCH0YaTAUP+8ABgUf7e9elG5CyrBLnngxKXkEZW889Ksq0bFgsM8nVZbKAM?=
+ =?us-ascii?Q?FYByxAo0UP4RUkYI6W+WKnq72jIel1U3MT5te8Rc3FSsiThEkcPdWCO+n/s+?=
+ =?us-ascii?Q?bzpsDtpU4b8IVy3gunUoYc0NjSFoU5Nj2hQCUOAD8N9H5M4fulE7Kso3u8Xf?=
+ =?us-ascii?Q?PR58k0NrKdYcgHCRQrMKMoDJfNubUDCKCw6qrzbObCcXBKVWS1L9QvwiP0lE?=
+ =?us-ascii?Q?bFRwDjgF4apwWJx+P7K70mZ3Nuqs8Ogz1MmSXOLeFQmKbILvTZN9vdwSYrmU?=
+ =?us-ascii?Q?npyon6JGRIf2IknPlsScNyIF3RKAZIt8tn+Fi01USCQNypo+atJphT6LCPlp?=
+ =?us-ascii?Q?LnGudnuH9F8XCLCdbsTejM0b9PxUXUWopMVK+X+TaNwLMDc4t81D6roeNfMa?=
+ =?us-ascii?Q?HTqDFBiA8a9n9rxFNI1UtmG30B6jwRsNWBsFC7o0fJe+MjCVOI3fWGbrNPd/?=
+ =?us-ascii?Q?r7EsOMmTpAjZZvu6nZUo8r/4oMsfxaTyCnhm6tcdUkU4Dp5GSupre8olVZ1H?=
+ =?us-ascii?Q?OWzmRbWXf9/yjEnGCiYTWYPIcVDiDVcTZ7pFrugSHEFmhsErN6qe4JAb7Xxx?=
+ =?us-ascii?Q?zlkBu+NKRebudTaJB9KGQIX8leM/D6fVGtztJGSrZYW7kL4Yvg9uziYtJGfg?=
+ =?us-ascii?Q?uzcvchoN9pxCjWNLyBeeLgDRIKmCOLn6ykIobZlvhq6nVtvZCd98Da9lWeka?=
+ =?us-ascii?Q?AJHcpqtkzqG2PxEd3H/tkjjeZU/Zgr4CImSegqPFm5ubomqQtB4wI8fckmF4?=
+ =?us-ascii?Q?Fq0/gJOooxOD5YA7a3UnHzORgNP3AjPPSh1wxUXVQNsWeS56tlK6xckfIqH1?=
+ =?us-ascii?Q?SzSr2gCLjhRyweizBchePehz+dsxktWY1LUs59NOAA+3xRaPhd9uLzzozpAk?=
+ =?us-ascii?Q?fi20nqoMfUES9YF8+3JHL+E1Bxa6NPTi3zSqUvEpmtTV0jFzwRGTXxTIt8Ai?=
+ =?us-ascii?Q?qXKVH5aAeACLlCrhDMvU8ndbji0yRauacWb7HdOIoN8f5w52QPlXj7lRghlx?=
+ =?us-ascii?Q?EZvG8PG4pukAUQEPXPsqGp2tiK4uduHFMMbBukIkKGkuD5kjBE3UEO2596Wx?=
+ =?us-ascii?Q?32LEaoUjfM/xkL3Drc4QJArdVQlAWmijBJN3pM8zSIN7IrdrC5vYTyLcCMRr?=
+ =?us-ascii?Q?IbOwg41pOO+tD9QFi3yrot9QM5+JWSvbOSC9Q6+2tns1hhFXfuC0UOnKhvI1?=
+ =?us-ascii?Q?D9ZWWLwdNi+9QV4pL0Gd+xYFzRGw52M9yN6e/hswBcRuJ8JE0BW8WERF3fwh?=
+ =?us-ascii?Q?9JpCsWADNp7FUAvCHNEbhYYpcvYOhhA5LBm864Or75KTpmHC6Pdx5Sm97dGa?=
+ =?us-ascii?Q?jWGFtMMeyQGwAdUkFEabVB5bUwX4oxY8DAMUowZHhoQZADNMEI92MLu8NfrM?=
+ =?us-ascii?Q?t7M6CtkB30VUMyq+9895UPmaNIHGWQHw?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013); DIR:OUT;
+ SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2024 17:29:25.8557 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef67c15e-051f-4530-e3b0-08dcdf19ef25
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2024 17:29:37.3702 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad2ec6ff-4355-4bf2-41d6-08dcdf19f605
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH3PEPF00000011.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CH3PEPF00000015.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6314
-Received-SPF: permerror client-ip=2a01:111:f403:2416::60e;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8983
+Received-SPF: permerror client-ip=2a01:111:f403:2418::612;
  envelope-from=Santosh.Shukla@amd.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
@@ -146,51 +148,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Series adds following feature support for emulated amd vIOMMU
-1) Pass Through(PT) mode
-2) Interrupt Remapping(IR) mode
+From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 
-1) PT mode
-Introducing the shared 'nodma' memory region that can be aliased
-by all the devices in the PT mode. Shared memory with aliasing
-approach will help run VM faster when lot of devices attached to
-VM.
+Rename the MMIO memory region variable 'mmio' to 'mr_mmio'
+so to correctly name align with struct AMDVIState::variable type.
 
-2) IR mode
-Shared IR memory region with aliasing approach proposed for the
-reason mentioned in 1). Also add support to invalidate Interrupt
-remaping table(IRT).
+No functional change intended.
 
-Series based on e10cd93872c31332b002c933a798ab0bc51705a4
+Reviewed-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Signed-off-by: Santosh Shukla <santosh.shukla@amd.com>
+---
+ hw/i386/acpi-build.c | 4 ++--
+ hw/i386/amd_iommu.c  | 6 +++---
+ hw/i386/amd_iommu.h  | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-Testing:
-1. nvme/fio testing for VM with > 255 vCPU with xtsup=on and x2apic
-enabled
-2. Windows Server 2022 VM testing for > 255 vCPU.
-
-Change History:
-
-v3:
-- Incorporated Alejandro's v2 nits comment.
-
-V2:
-- https://lore.kernel.org/qemu-devel/20240916143116.169693-1-santosh.shukla@amd.com/
-
-V1:
-- https://lore.kernel.org/all/20240904100257.184851-3-santosh.shukla@amd.com/T/
-
-Suravee Suthikulpanit (5):
-  amd_iommu: Rename variable mmio to mr_mmio
-  amd_iommu: Add support for pass though mode
-  amd_iommu: Use shared memory region for Interrupt Remapping
-  amd_iommu: Send notification when invalidate interrupt entry cache
-  amd_iommu: Check APIC ID > 255 for XTSup
-
- hw/i386/acpi-build.c |  4 +-
- hw/i386/amd_iommu.c  | 98 +++++++++++++++++++++++++++++++++++---------
- hw/i386/amd_iommu.h  |  5 ++-
- 3 files changed, 85 insertions(+), 22 deletions(-)
-
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 4967aa745902..5c6920f90d05 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -2321,7 +2321,7 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
+     /* Capability offset */
+     build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
+     /* IOMMU base address */
+-    build_append_int_noprefix(table_data, s->mmio.addr, 8);
++    build_append_int_noprefix(table_data, s->mr_mmio.addr, 8);
+     /* PCI Segment Group */
+     build_append_int_noprefix(table_data, 0, 2);
+     /* IOMMU info */
+@@ -2356,7 +2356,7 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
+     /* Capability offset */
+     build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
+     /* IOMMU base address */
+-    build_append_int_noprefix(table_data, s->mmio.addr, 8);
++    build_append_int_noprefix(table_data, s->mr_mmio.addr, 8);
+     /* PCI Segment Group */
+     build_append_int_noprefix(table_data, 0, 2);
+     /* IOMMU info */
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 464f0b666e69..abb64ea507be 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1598,10 +1598,10 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+     x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
+ 
+     /* set up MMIO */
+-    memory_region_init_io(&s->mmio, OBJECT(s), &mmio_mem_ops, s, "amdvi-mmio",
+-                          AMDVI_MMIO_SIZE);
++    memory_region_init_io(&s->mr_mmio, OBJECT(s), &mmio_mem_ops, s,
++                          "amdvi-mmio", AMDVI_MMIO_SIZE);
+     memory_region_add_subregion(get_system_memory(), AMDVI_BASE_ADDR,
+-                                &s->mmio);
++                                &s->mr_mmio);
+     pci_setup_iommu(bus, &amdvi_iommu_ops, s);
+     amdvi_init(s);
+ }
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 73619fe9eaa7..e5c2ae94f243 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -353,7 +353,7 @@ struct AMDVIState {
+     uint32_t pprlog_head;        /* ppr log head */
+     uint32_t pprlog_tail;        /* ppr log tail */
+ 
+-    MemoryRegion mmio;                 /* MMIO region                  */
++    MemoryRegion mr_mmio;              /* MMIO region                  */
+     uint8_t mmior[AMDVI_MMIO_SIZE];    /* read/write MMIO              */
+     uint8_t w1cmask[AMDVI_MMIO_SIZE];  /* read/write 1 clear mask      */
+     uint8_t romask[AMDVI_MMIO_SIZE];   /* MMIO read/only mask          */
 -- 
 2.43.5
 
