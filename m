@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5DA988A30
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 20:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BEA988A34
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 20:41:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suFt0-0007LZ-1m; Fri, 27 Sep 2024 14:40:14 -0400
+	id 1suFt6-0007Vo-Nu; Fri, 27 Sep 2024 14:40:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1suFsw-0007Ez-PZ; Fri, 27 Sep 2024 14:40:10 -0400
+ id 1suFt0-0007QJ-KI; Fri, 27 Sep 2024 14:40:14 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1suFst-0002IB-Mh; Fri, 27 Sep 2024 14:40:10 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48RHMY1E018988;
- Fri, 27 Sep 2024 18:39:59 GMT
+ id 1suFsy-0002Iu-PL; Fri, 27 Sep 2024 14:40:14 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48RHMYk2003724;
+ Fri, 27 Sep 2024 18:40:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
  :reply-to:mime-version:content-transfer-encoding; s=
- corp-2023-11-20; bh=WUAIwnS3VoVePc+BcDnyeq7tmpb2t4i1TH6as8Pihzk=; b=
- KumB2B4JZgLBxH34uPQ6xzyHCdRvK9FkVsUdqerwI7zKdDsSEJOe9Z7ctUCN+2/k
- 5WuurtYRDV45j7amzOYvSJCXEE4BmI7BDdte8HChO0T8gY02Ockfx/1jpmj6zCGz
- d+Mwo3S9+eqYavZFujNcd0AvTBI0soUrU+SSnNG8EuS6vVYx9EvapS+QfzKp7cTS
- yMt8z2vmew+1Xp2NJYVIYNZQsAzGUpdpbyH2kPTwEdPgQ8az+yeG4XoB/LT6Ra2d
- gx5tFd2ZCZ+NQezflnwn4dQXyL0y8E5qLnDBhvJ3Nwfh3II+7CM2DXqV//7Wphwr
- NrZzAw9G7k3FBpqZdBGkjA==
+ corp-2023-11-20; bh=r1MC4/Y3JJVNOxZK9r+3XatXL0NbxdTuvIqRLdo/CvA=; b=
+ oGiSoNp2ex41bN4Fz3ByTARXdKW1HWRmRG9odW4VVPx7mfwATvUr5HzD0dABflu6
+ c/cJytzZDvSSVr8Y9xlYvtXHao5pKI/0I9hjNFQsh9ESMb6O14Ixn0vKcCoIOJ9Y
+ 32asseDXywy766Kyp22N+RSYjSnTxyzEnazzvHQeBc+emOw+KEBK3nBWs4+24aeE
+ ah+/S+DwiYh7mMK0cRtWRXNGYxdi3gFqOrE8iFeLjyugDQfx0bVaQcAdNauvoDC7
+ 3S74Iozk9Me0qgc0fBHi7H/5w/7BTDOPRXkbmgQ+h6SWMAD0UJhG7hLpbdOk/Lpr
+ gaTt/g8whxWtJOd1insahg==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41smr1gh7g-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41sppuge27-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Sep 2024 18:39:58 +0000 (GMT)
+ Fri, 27 Sep 2024 18:40:05 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 48RIT3eu032853; Fri, 27 Sep 2024 18:39:57 GMT
+ with ESMTP id 48RIBHR3032871; Fri, 27 Sep 2024 18:40:03 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 41smkm8g03-1
+ 41smkm8gae-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Sep 2024 18:39:57 +0000
+ Fri, 27 Sep 2024 18:40:03 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48RIdIof009004;
- Fri, 27 Sep 2024 18:39:56 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48RIdIoh009004;
+ Fri, 27 Sep 2024 18:40:03 GMT
 Received: from localhost.localdomain (dhcp-10-175-14-34.vpn.oracle.com
  [10.175.14.34])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 41smkm8ff6-7; Fri, 27 Sep 2024 18:39:55 +0000
+ 41smkm8ff6-8; Fri, 27 Sep 2024 18:40:02 +0000
 From: Annie Li <annie.li@oracle.com>
 To: qemu-devel@nongnu.org, qemu-arm@nongnu.org, imammedo@redhat.com
 Cc: dave@treblig.org, mst@redhat.com, anisinha@redhat.com,
@@ -59,10 +59,9 @@ Cc: dave@treblig.org, mst@redhat.com, anisinha@redhat.com,
  wangyanan55@huawei.com, zhao1.liu@intel.com, pbonzini@redhat.com,
  richard.henderson@linaro.org, eblake@redhat.com, armbru@redhat.com,
  annie.li@oracle.com, miguel.luis@oracle.com
-Subject: [RFC V2 PATCH 06/11] acpi: Send the GPE event of suspend and wakeup
- for x86
-Date: Fri, 27 Sep 2024 14:39:01 -0400
-Message-ID: <20240927183906.1248-7-annie.li@oracle.com>
+Subject: [RFC V2 PATCH 07/11] hw/acpi: Add ACPI GED support for the sleep event
+Date: Fri, 27 Sep 2024 14:39:02 -0400
+Message-ID: <20240927183906.1248-8-annie.li@oracle.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240927183906.1248-1-annie.li@oracle.com>
 References: <20240927183906.1248-1-annie.li@oracle.com>
@@ -76,8 +75,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  mlxlogscore=999 malwarescore=0 adultscore=0 bulkscore=0 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
  definitions=main-2409270135
-X-Proofpoint-ORIG-GUID: 6i4fyM18r8xUOUBqJ7JTKYz2wxw8CX3W
-X-Proofpoint-GUID: 6i4fyM18r8xUOUBqJ7JTKYz2wxw8CX3W
+X-Proofpoint-GUID: oq34muK8_Tvzlk6a2yOY0b0aEEU91JZX
+X-Proofpoint-ORIG-GUID: oq34muK8_Tvzlk6a2yOY0b0aEEU91JZX
 Received-SPF: pass client-ip=205.220.165.32; envelope-from=annie.li@oracle.com;
  helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -104,96 +103,70 @@ Reply-To: miguel.luis@oracle.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The GPE event is triggered to notify the guest to suppend or
-wakeup itself.
+From: Miguel Luis <miguel.luis@oracle.com>
 
-Signed-off-by: Annie Li <annie.li@oracle.com>
+Add support for ACPI GED sleep event on the ACPI device interface so that
+HW-reduced systems can enable guests to sleep.
+
+Signed-off-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- hw/acpi/core.c                       | 17 +++++++++++++----
- hw/core/machine-qmp-cmds.c           |  2 ++
- include/hw/acpi/acpi.h               |  1 +
- include/hw/acpi/acpi_dev_interface.h |  1 +
- 4 files changed, 17 insertions(+), 4 deletions(-)
+ hw/acpi/generic_event_device.c         | 9 +++++++++
+ include/hw/acpi/generic_event_device.h | 1 +
+ 2 files changed, 10 insertions(+)
 
-diff --git a/hw/acpi/core.c b/hw/acpi/core.c
-index ec5e127d17..e5c3ff9a54 100644
---- a/hw/acpi/core.c
-+++ b/hw/acpi/core.c
-@@ -354,6 +354,16 @@ int acpi_get_slic_oem(AcpiSlicOem *oem)
-     return -1;
- }
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index 15b4c3ebbf..934bc65476 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -13,6 +13,7 @@
+ #include "qapi/error.h"
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/generic_event_device.h"
++#include "hw/acpi/control_method_device.h"
+ #include "hw/irq.h"
+ #include "hw/mem/pc-dimm.h"
+ #include "hw/mem/nvdimm.h"
+@@ -26,6 +27,7 @@ static const uint32_t ged_supported_events[] = {
+     ACPI_GED_PWR_DOWN_EVT,
+     ACPI_GED_NVDIMM_HOTPLUG_EVT,
+     ACPI_GED_CPU_HOTPLUG_EVT,
++    ACPI_GED_SLEEP_EVT,
+ };
  
-+void acpi_send_sleep_wakeup_event(void)
-+{
-+    Object *obj = object_resolve_path_type("", TYPE_ACPI_DEVICE_IF, NULL);
-+
-+    if (obj) {
-+        /* Send _GPE.L07 event */
-+        acpi_send_event(DEVICE(obj), ACPI_SLEEP_STATUS);
-+    }
-+}
-+
- static void acpi_notify_wakeup(Notifier *notifier, void *data)
- {
-     ACPIREGS *ar = container_of(notifier, ACPIREGS, wakeup);
-@@ -369,10 +379,9 @@ static void acpi_notify_wakeup(Notifier *notifier, void *data)
-             (ACPI_BITMASK_WAKE_STATUS | ACPI_BITMASK_TIMER_STATUS);
-         break;
-     case QEMU_WAKEUP_REASON_OTHER:
--        /* ACPI_BITMASK_WAKE_STATUS should be set on resume.
--           Pretend that resume was caused by power button */
--        ar->pm1.evt.sts |=
--            (ACPI_BITMASK_WAKE_STATUS | ACPI_BITMASK_POWER_BUTTON_STATUS);
-+        /* ACPI_BITMASK_WAKE_STATUS should be set on resume. */
-+        ar->pm1.evt.sts |= ACPI_BITMASK_WAKE_STATUS;
-+        acpi_send_sleep_wakeup_event();
-         break;
-     default:
-         break;
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 770f8189ba..010bba05f3 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -9,6 +9,7 @@
+ /*
+@@ -121,6 +123,11 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
+                            aml_notify(aml_name("\\_SB.NVDR"),
+                                       aml_int(0x80)));
+                 break;
++            case ACPI_GED_SLEEP_EVT:
++                aml_append(if_ctx,
++                           aml_notify(aml_name(ACPI_SLEEP_BUTTON_DEVICE),
++                                      aml_int(0x80)));
++                break;
+             default:
+                 /*
+                  * Please make sure all the events in ged_supported_events[]
+@@ -295,6 +302,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+         sel = ACPI_GED_MEM_HOTPLUG_EVT;
+     } else if (ev & ACPI_POWER_DOWN_STATUS) {
+         sel = ACPI_GED_PWR_DOWN_EVT;
++    } else if (ev & ACPI_SLEEP_STATUS) {
++        sel = ACPI_GED_SLEEP_EVT;
+     } else if (ev & ACPI_NVDIMM_HOTPLUG_STATUS) {
+         sel = ACPI_GED_NVDIMM_HOTPLUG_EVT;
+     } else if (ev & ACPI_CPU_HOTPLUG_STATUS) {
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index 40af3550b5..9d7496669a 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -98,6 +98,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+ #define ACPI_GED_PWR_DOWN_EVT      0x2
+ #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
+ #define ACPI_GED_CPU_HOTPLUG_EVT    0x8
++#define ACPI_GED_SLEEP_EVT         0x10
  
- #include "qemu/osdep.h"
- #include "hw/acpi/vmgenid.h"
-+#include "hw/acpi/acpi.h"
- #include "hw/boards.h"
- #include "hw/intc/intc.h"
- #include "hw/mem/memory-device.h"
-@@ -283,6 +284,7 @@ void qmp_system_sleep(Error **errp)
-                    "suspend from running is not supported by this guest");
-         return;
-     }
-+    acpi_send_sleep_wakeup_event();
- }
- 
- void qmp_system_powerdown(Error **errp)
-diff --git a/include/hw/acpi/acpi.h b/include/hw/acpi/acpi.h
-index e0e51e85b4..07e31aa138 100644
---- a/include/hw/acpi/acpi.h
-+++ b/include/hw/acpi/acpi.h
-@@ -181,6 +181,7 @@ uint32_t acpi_gpe_ioport_readb(ACPIREGS *ar, uint32_t addr);
- 
- void acpi_send_gpe_event(ACPIREGS *ar, qemu_irq irq,
-                          AcpiEventStatusBits status);
-+void acpi_send_sleep_wakeup_event(void);
- 
- void acpi_update_sci(ACPIREGS *acpi_regs, qemu_irq irq);
- 
-diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_dev_interface.h
-index 68d9d15f50..1cb050cd3a 100644
---- a/include/hw/acpi/acpi_dev_interface.h
-+++ b/include/hw/acpi/acpi_dev_interface.h
-@@ -13,6 +13,7 @@ typedef enum {
-     ACPI_NVDIMM_HOTPLUG_STATUS = 16,
-     ACPI_VMGENID_CHANGE_STATUS = 32,
-     ACPI_POWER_DOWN_STATUS = 64,
-+    ACPI_SLEEP_STATUS = 128,
- } AcpiEventStatusBits;
- 
- #define TYPE_ACPI_DEVICE_IF "acpi-device-interface"
+ typedef struct GEDState {
+     MemoryRegion evt;
 -- 
 2.43.5
 
