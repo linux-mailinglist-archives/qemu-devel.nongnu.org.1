@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE16988A33
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 20:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9225988A40
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 20:42:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suFtB-0007gO-T7; Fri, 27 Sep 2024 14:40:25 -0400
+	id 1suFtW-000842-G1; Fri, 27 Sep 2024 14:40:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1suFt7-0007ah-DA; Fri, 27 Sep 2024 14:40:21 -0400
+ id 1suFtE-0007qD-1H; Fri, 27 Sep 2024 14:40:29 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1suFt5-0002Jp-Sp; Fri, 27 Sep 2024 14:40:21 -0400
+ id 1suFtC-0002KN-8t; Fri, 27 Sep 2024 14:40:27 -0400
 Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48RHMbn0032355;
- Fri, 27 Sep 2024 18:40:12 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48RHMbn2032355;
+ Fri, 27 Sep 2024 18:40:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references
  :reply-to:mime-version:content-transfer-encoding; s=
- corp-2023-11-20; bh=inndt6ew6MTEcC6kmRfkoTY6qU9U3jastIodPwqdQos=; b=
- Xa+ZALnN9X4H+25sdnv2cmXax2QbWp+RbHhxnpYDOue8Q7lU8Vx4tb25i0rk0kca
- swLZn3fv8wBdhukgVcM08xIRixZitRdWB+8BxF00g+YScj/GlTJVKTiQ505Aw6CM
- zJ3qAeA1GvBZFlcBRJt4AjobrWJLXlNojrSe7eeNyA16GfMmtp8Xbhj/mNUGUkv2
- W0CpRYt6cAGYmDtheBvT/fEhkBDgIE/45V6f7EmZYXAtxsRLZjrNSo0+VrtkVWeF
- zDWqPbWA2bt7UdLvHAfOsxlpQia4Dml9raleROkmbr916edNiR2HsBy7MRTRMTpH
- Q25aDOmLU6fpIt5LG7zVzA==
+ corp-2023-11-20; bh=mbjiV8400H7bzf4lI60mywWUq/qn6oPHqXerlfqzuaU=; b=
+ fs/766anhsB7deUwEbFakfH9ZUYUwjXpIe1wpv+uflFmesuwm+zM7ur0DTHsiqq/
+ 2/6gaqMsr0scU0xRvMa16sc3s566vgUMfcadGis0VLLurI9P5p8C2VIINLmWiy7G
+ PTesTPF9WYeeONrPlT24rbGf2FLxGQdXy+E/OwLH8qq5AKKLCI4k3kCInTRiaygh
+ 4FUrjF2MRCjyCJsic6yK3RhKpecCEqyI1o3IIFc81BInwJ99phED8KG0K6BvrO9O
+ +KMGx/zwM30z5yvSbzwJtzWEJmWSF3jYd2oTIl0b7iHE0tvhfSKmgJsqdils14Bf
+ FCrvDrjcTnIzOt7wZmTYmQ==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41sp1ar9e1-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41sp1ar9e7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Sep 2024 18:40:12 +0000 (GMT)
+ Fri, 27 Sep 2024 18:40:19 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 48RIA5lt032892; Fri, 27 Sep 2024 18:40:10 GMT
+ with ESMTP id 48RHkEV3032954; Fri, 27 Sep 2024 18:40:17 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 41smkm8gjn-1
+ 41smkm8gqy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Sep 2024 18:40:10 +0000
+ Fri, 27 Sep 2024 18:40:17 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48RIdIoj009004;
- Fri, 27 Sep 2024 18:40:09 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48RIdIol009004;
+ Fri, 27 Sep 2024 18:40:17 GMT
 Received: from localhost.localdomain (dhcp-10-175-14-34.vpn.oracle.com
  [10.175.14.34])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 41smkm8ff6-9; Fri, 27 Sep 2024 18:40:09 +0000
+ 41smkm8ff6-10; Fri, 27 Sep 2024 18:40:16 +0000
 From: Annie Li <annie.li@oracle.com>
 To: qemu-devel@nongnu.org, qemu-arm@nongnu.org, imammedo@redhat.com
 Cc: dave@treblig.org, mst@redhat.com, anisinha@redhat.com,
@@ -59,10 +59,9 @@ Cc: dave@treblig.org, mst@redhat.com, anisinha@redhat.com,
  wangyanan55@huawei.com, zhao1.liu@intel.com, pbonzini@redhat.com,
  richard.henderson@linaro.org, eblake@redhat.com, armbru@redhat.com,
  annie.li@oracle.com, miguel.luis@oracle.com
-Subject: [RFC V2 PATCH 08/11] tests/acpi: allow FACP and DSDT table changes
- for arm/virt
-Date: Fri, 27 Sep 2024 14:39:03 -0400
-Message-ID: <20240927183906.1248-9-annie.li@oracle.com>
+Subject: [RFC V2 PATCH 09/11] hw/arm: enable sleep support for arm/virt
+Date: Fri, 27 Sep 2024 14:39:04 -0400
+Message-ID: <20240927183906.1248-10-annie.li@oracle.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240927183906.1248-1-annie.li@oracle.com>
 References: <20240927183906.1248-1-annie.li@oracle.com>
@@ -76,8 +75,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  mlxlogscore=999 malwarescore=0 adultscore=0 bulkscore=0 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
  definitions=main-2409270135
-X-Proofpoint-ORIG-GUID: 595fO0j4qbCA8aJwtyAjaqmLQKpJjjjy
-X-Proofpoint-GUID: 595fO0j4qbCA8aJwtyAjaqmLQKpJjjjy
+X-Proofpoint-ORIG-GUID: 8bwulBmtk26lQ1F8CScoJaJboc2LWne8
+X-Proofpoint-GUID: 8bwulBmtk26lQ1F8CScoJaJboc2LWne8
 Received-SPF: pass client-ip=205.220.165.32; envelope-from=annie.li@oracle.com;
  helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -106,25 +105,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Miguel Luis <miguel.luis@oracle.com>
 
-List changed files for FACP and DSDT table changes for the arm/virt.
+Include the ACPI control method device into arm/virt ACPI tables and the
+corresponding handling which enables triggering the event.
 
 Signed-off-by: Miguel Luis <miguel.luis@oracle.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/arm/virt-acpi-build.c | 13 +++++++++++++
+ hw/arm/virt.c            | 13 ++++++++++++-
+ include/hw/arm/virt.h    |  1 +
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..dcc7c2306d 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,7 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/virt/DSDT",
-+"tests/data/acpi/virt/DSDT.acpihmatvirt",
-+"tests/data/acpi/virt/DSDT.memhp",
-+"tests/data/acpi/virt/DSDT.pxb",
-+"tests/data/acpi/virt/DSDT.topology",
-+"tests/data/acpi/virt/FACP",
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index f76fb117ad..ef68d69024 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -41,6 +41,7 @@
+ #include "hw/acpi/pci.h"
+ #include "hw/acpi/memory_hotplug.h"
+ #include "hw/acpi/generic_event_device.h"
++#include "hw/acpi/control_method_device.h"
+ #include "hw/acpi/tpm.h"
+ #include "hw/acpi/hmat.h"
+ #include "hw/pci/pcie_host.h"
+@@ -779,6 +780,17 @@ static void build_fadt_rev6(GArray *table_data, BIOSLinker *linker,
+         .rev = 6,
+         .minor_ver = 3,
+         .flags = 1 << ACPI_FADT_F_HW_REDUCED_ACPI,
++        /* ACPI 5.0: 4.8.3.7 Sleep Control and Status Registers */
++        .sleep_ctl = {
++            .space_id = AML_AS_SYSTEM_MEMORY,
++            .bit_width = 8,
++            .address = vms->memmap[VIRT_ACPI_GED].base + ACPI_GED_REG_SLEEP_CTL,
++        },
++        .sleep_sts = {
++            .space_id = AML_AS_SYSTEM_MEMORY,
++            .bit_width = 8,
++            .address = vms->memmap[VIRT_ACPI_GED].base + ACPI_GED_REG_SLEEP_STS,
++        },
+         .xdsdt_tbl_offset = &dsdt_tbl_offset,
+     };
+ 
+@@ -858,6 +870,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+     }
+ 
+     acpi_dsdt_add_power_button(scope);
++    acpi_dsdt_add_sleep_button(scope);
+ #ifdef CONFIG_TPM
+     acpi_dsdt_add_tpm(scope, vms);
+ #endif
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 687fe0bb8b..6be80f042f 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -677,7 +677,7 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
+     DeviceState *dev;
+     MachineState *ms = MACHINE(vms);
+     int irq = vms->irqmap[VIRT_ACPI_GED];
+-    uint32_t event = ACPI_GED_PWR_DOWN_EVT;
++    uint32_t event = ACPI_GED_PWR_DOWN_EVT | ACPI_GED_SLEEP_EVT;
+ 
+     if (ms->ram_slots) {
+         event |= ACPI_GED_MEM_HOTPLUG_EVT;
+@@ -996,6 +996,14 @@ static void create_rtc(const VirtMachineState *vms)
+     g_free(nodename);
+ }
+ 
++static void virt_sleep_req(Notifier *n, void *opaque)
++{
++    VirtMachineState *s = container_of(n, VirtMachineState, sleep_notifier);
++
++    if (s->acpi_dev) {
++        acpi_send_event(s->acpi_dev, ACPI_SLEEP_STATUS);
++    }
++}
+ static DeviceState *gpio_key_dev;
+ static void virt_powerdown_req(Notifier *n, void *opaque)
+ {
+@@ -2393,6 +2401,9 @@ static void machvirt_init(MachineState *machine)
+         create_gpio_devices(vms, VIRT_SECURE_GPIO, secure_sysmem);
+     }
+ 
++     /* connect sleep request */
++     vms->sleep_notifier.notify = virt_sleep_req;
++
+      /* connect powerdown request */
+      vms->powerdown_notifier.notify = virt_powerdown_req;
+      qemu_register_powerdown_notifier(&vms->powerdown_notifier);
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index a4d937ed45..75725d8740 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -175,6 +175,7 @@ struct VirtMachineState {
+     DeviceState *gic;
+     DeviceState *acpi_dev;
+     Notifier powerdown_notifier;
++    Notifier sleep_notifier;
+     PCIBus *bus;
+     char *oem_id;
+     char *oem_table_id;
 -- 
 2.43.5
 
