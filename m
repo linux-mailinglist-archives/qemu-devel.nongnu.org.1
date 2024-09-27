@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C06F987D7C
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 06:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A87DD987D80
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 06:10:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1su2HM-0003Vv-Db; Fri, 27 Sep 2024 00:08:28 -0400
+	id 1su2HQ-0003la-3Y; Fri, 27 Sep 2024 00:08:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1su2HK-0003Or-1R
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 00:08:26 -0400
+ id 1su2HO-0003fm-6Z
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 00:08:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1su2HI-0006GT-Gb
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 00:08:25 -0400
+ id 1su2HM-0006Gt-Ho
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 00:08:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727410102;
+ s=mimecast20190719; t=1727410107;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=s7tzts8FG+d/e1j+wzWbfvK4LxyPeqzPVYQemVOR5mI=;
- b=YhstneL4a/w+zq4gUgJqrjWtGGOp8+8CmXkGjz0f63MZOwU86/QpsSZSWADmKXns1nriN/
- NytlcNPa0JroFjyWPWi0LElvIICwT3UAqm1eVdYbC2CCXE1V6DhgGamiQV5BBt1Ep6zLUL
- 2xVMonH5LGKxGz5/DmF8yXxSFGvsMIY=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MLfni3CLJOklyG1pO15JsPu/PMYFhLs8eL45Jq3qITA=;
+ b=WlyjPE5wIVcGzA7DaiuH/nzjVPKa1E3LZBz2Fz/lLf0gieRDj6+v/3aGouMpSQFfl5yhVr
+ PuowXwG7UGhmqLZvG5pDpVWZbWNR96feV2mvV9bQRSiDatREla6FVtOWFQJhgcHVRqWM1s
+ HTUHvDhq/atbKE120L3buCQW9sW8dJU=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-97-kxckg9feMMCtnLZBLMc-uw-1; Fri, 27 Sep 2024 00:08:20 -0400
-X-MC-Unique: kxckg9feMMCtnLZBLMc-uw-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-2e0d1a1de58so10947a91.2
- for <qemu-devel@nongnu.org>; Thu, 26 Sep 2024 21:08:20 -0700 (PDT)
+ us-mta-453-3zPe_-u8N5SgEQN6kKBZlQ-1; Fri, 27 Sep 2024 00:08:24 -0400
+X-MC-Unique: 3zPe_-u8N5SgEQN6kKBZlQ-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-2e0853aafceso2146466a91.1
+ for <qemu-devel@nongnu.org>; Thu, 26 Sep 2024 21:08:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727410100; x=1728014900;
+ d=1e100.net; s=20230601; t=1727410103; x=1728014903;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s7tzts8FG+d/e1j+wzWbfvK4LxyPeqzPVYQemVOR5mI=;
- b=QILMlcPycrJITjNO7YzNeoNe/xDEkaV3HL2fSIEpDfV73HwDyIJ1EUdI5uMwi+p2ef
- s4HW6XbnEw8hscFfSfckXGQGgS4Tx7kMq1udkSH1JxZBtJNp9lQSgjY/j2MIjuSOEbJC
- 3OprxGyAShEkbCjUs/953jzc4xSZbwGrHG5neckC5SO1Qz0xidwMryWhQobn7x3bxigj
- JXL+P0UHjl3zu96XPe+Jhd5XBuVgpB0+yNiKtYORgxB69kyMowlE2Q6cZGvUw66b7tUu
- 1OqzKRB/cf6DZ4kBpr9l7LpmAAjQn9TUGDMaLIENgB3Ex5ou5xYyf4rWLJpRkenPC17s
- 4uXg==
-X-Gm-Message-State: AOJu0YybpJON5vDUymjxp785F0r66+n33GQV0K5iwa11qvGh4eHq/h6h
- O2E2RzCzeucFH9wsRxMk+t9CsH5x8q3qvS8OIgU1tJgK+hy1wlt4U8R5GilFhWZTjbqVE6PUwgI
- Ui49SbIj87OuRtasiPil8GfkIQ3O7+7Q5YLYYdQJfUp/rjib1IhU4H38KsBkX8qumTJf2uGbxyI
- vveE+w4OxsP9pQouJJ4UijKNcO/00=
-X-Received: by 2002:a17:90a:bf03:b0:2dd:6969:208e with SMTP id
- 98e67ed59e1d1-2e0b899c3admr2379988a91.3.1727410099816; 
- Thu, 26 Sep 2024 21:08:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEfXWVoerCUbReUrw50FYJYOejvCfDN5wtFS4cPBmI1zOEX/3PtjAfYFk8wMVwHedOAX16HrpMKEbIZdD0Abgw=
-X-Received: by 2002:a17:90a:bf03:b0:2dd:6969:208e with SMTP id
- 98e67ed59e1d1-2e0b899c3admr2379960a91.3.1727410099387; Thu, 26 Sep 2024
- 21:08:19 -0700 (PDT)
+ bh=MLfni3CLJOklyG1pO15JsPu/PMYFhLs8eL45Jq3qITA=;
+ b=mDWuufvxyAU9ox9NLiaC+yd8yQMNR+RDu3oeVyhhpn6B5tqOuXwCpyMEbrzNmBqxOt
+ mN4irX2mOlzuur4I8EkEjn8sgQrp7G+6AFrveigBLNyLMGvY1vQLRccmuA7PkcAPE1Xz
+ aBgf2Oj6FouI41JOR5VYKQMhB0o0scPzhgsND8IvRONaONkTPMQAcneRKokRMyLdpSw2
+ rJlLR/4w3KlJSGuUuhofbE1pi1CDSKJpaXXXxxCYW1hb/LBg4hOLpRqsdFcPvHn13NNY
+ SlLvXGnJE3kGKxZW4RQ8siw4d+LVUuQpRlMn9xJgybi6dWmVrdTsvvk3wWmekHrR8Vb2
+ +OqA==
+X-Gm-Message-State: AOJu0YwqF3UOS4Sbp2xM4svtEbTcsL/g/TXQOdLzFLXEUR5Lb7R3g4Fv
+ r0IEYTaCe/4PHwYTE50saZHrqwPRhso9nEfjzYQ2Q3iGo704H0kaNL+hnueDlUMKizbSPmln0Ld
+ /o3JCEdEMkART3GBYZkMoDdipk3k6ypBV6i/sWAk6LFjGXBlT3gVF526SIn/w5rbNzSi4qqYVMl
+ bbIm1Cx7N1sQaWhbJEf/mhze38G3o=
+X-Received: by 2002:a17:90a:ad87:b0:2c8:6bfa:bbf1 with SMTP id
+ 98e67ed59e1d1-2e0b8d55554mr2492682a91.23.1727410103639; 
+ Thu, 26 Sep 2024 21:08:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlo6ETK2Ecj6Be6hry6At158timW1IXMKPfnVoKW04LiaBes2eeQ4gUqEzyorbd6hxzzv+/8ICYgTk/Bng8aA=
+X-Received: by 2002:a17:90a:ad87:b0:2c8:6bfa:bbf1 with SMTP id
+ 98e67ed59e1d1-2e0b8d55554mr2492655a91.23.1727410103142; Thu, 26 Sep 2024
+ 21:08:23 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240911052255.1294071-1-zhenzhong.duan@intel.com>
- <20240911052255.1294071-15-zhenzhong.duan@intel.com>
-In-Reply-To: <20240911052255.1294071-15-zhenzhong.duan@intel.com>
+ <20240911052255.1294071-13-zhenzhong.duan@intel.com>
+In-Reply-To: <20240911052255.1294071-13-zhenzhong.duan@intel.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 27 Sep 2024 12:08:06 +0800
-Message-ID: <CACGkMEuV=ZdnGE7N=YehCxpNiVPXai=WUdgJjnxVxwzBnTMEOQ@mail.gmail.com>
-Subject: Re: [PATCH v3 14/17] intel_iommu: Set default aw_bits to 48 in
- scalable modern mode
+Date: Fri, 27 Sep 2024 12:08:10 +0800
+Message-ID: <CACGkMEscZB9f6toOcm_+3pQknDgnp3r6MvzbejB9BVEsKz7rjA@mail.gmail.com>
+Subject: Re: [PATCH v3 12/17] intel_iommu: Add support for PASID-based device
+ IOTLB invalidation
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Cc: qemu-devel@nongnu.org, alex.williamson@redhat.com, clg@redhat.com, 
  eric.auger@redhat.com, mst@redhat.com, peterx@redhat.com, jgg@nvidia.com, 
@@ -107,82 +107,136 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Wed, Sep 11, 2024 at 1:27=E2=80=AFPM Zhenzhong Duan <zhenzhong.duan@inte=
 l.com> wrote:
 >
-> According to VTD spec, stage-1 page table could support 4-level and
-> 5-level paging.
+> From: Cl=C3=A9ment Mathieu--Drif <clement.mathieu--drif@eviden.com>
 >
-> However, 5-level paging translation emulation is unsupported yet.
-> That means the only supported value for aw_bits is 48.
->
-> So default aw_bits to 48 in scalable modern mode. In other cases,
-> it is still default to 39 for compatibility.
->
-> Add a check to ensure user specified value is 48 in modern mode
-> for now.
->
+> Signed-off-by: Cl=C3=A9ment Mathieu--Drif <clement.mathieu--drif@eviden.c=
+om>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Cl=C3=A9ment Mathieu--Drif<clement.mathieu--drif@eviden.com>
 > ---
->  include/hw/i386/intel_iommu.h |  2 +-
->  hw/i386/intel_iommu.c         | 10 +++++++++-
->  2 files changed, 10 insertions(+), 2 deletions(-)
+>  hw/i386/intel_iommu_internal.h | 11 ++++++++
+>  hw/i386/intel_iommu.c          | 50 ++++++++++++++++++++++++++++++++++
+>  2 files changed, 61 insertions(+)
 >
-> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.=
-h
-> index b843d069cc..48134bda11 100644
-> --- a/include/hw/i386/intel_iommu.h
-> +++ b/include/hw/i386/intel_iommu.h
-> @@ -45,7 +45,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState, INTEL_IOMMU=
-_DEVICE)
->  #define DMAR_REG_SIZE               0x230
->  #define VTD_HOST_AW_39BIT           39
->  #define VTD_HOST_AW_48BIT           48
-> -#define VTD_HOST_ADDRESS_WIDTH      VTD_HOST_AW_39BIT
-> +#define VTD_HOST_AW_AUTO            0xff
->  #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
+> diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_interna=
+l.h
+> index 4f2c3a9350..52bdbf3bc5 100644
+> --- a/hw/i386/intel_iommu_internal.h
+> +++ b/hw/i386/intel_iommu_internal.h
+> @@ -375,6 +375,7 @@ typedef union VTDInvDesc VTDInvDesc;
+>  #define VTD_INV_DESC_WAIT               0x5 /* Invalidation Wait Descrip=
+tor */
+>  #define VTD_INV_DESC_PIOTLB             0x6 /* PASID-IOTLB Invalidate De=
+sc */
+>  #define VTD_INV_DESC_PC                 0x7 /* PASID-cache Invalidate De=
+sc */
+> +#define VTD_INV_DESC_DEV_PIOTLB         0x8 /* PASID-based-DIOTLB inv_de=
+sc*/
+>  #define VTD_INV_DESC_NONE               0   /* Not an Invalidate Descrip=
+tor */
 >
->  #define DMAR_REPORT_F_INTR          (1)
+>  /* Masks for Invalidation Wait Descriptor*/
+> @@ -413,6 +414,16 @@ typedef union VTDInvDesc VTDInvDesc;
+>  #define VTD_INV_DESC_DEVICE_IOTLB_RSVD_HI 0xffeULL
+>  #define VTD_INV_DESC_DEVICE_IOTLB_RSVD_LO 0xffff0000ffe0fff8
+>
+> +/* Mask for PASID Device IOTLB Invalidate Descriptor */
+> +#define VTD_INV_DESC_PASID_DEVICE_IOTLB_ADDR(val) ((val) & \
+> +                                                   0xfffffffffffff000ULL=
+)
+> +#define VTD_INV_DESC_PASID_DEVICE_IOTLB_SIZE(val) ((val >> 11) & 0x1)
+> +#define VTD_INV_DESC_PASID_DEVICE_IOTLB_GLOBAL(val) ((val) & 0x1)
+> +#define VTD_INV_DESC_PASID_DEVICE_IOTLB_SID(val) (((val) >> 16) & 0xffff=
+ULL)
+> +#define VTD_INV_DESC_PASID_DEVICE_IOTLB_PASID(val) ((val >> 32) & 0xffff=
+fULL)
+> +#define VTD_INV_DESC_PASID_DEVICE_IOTLB_RSVD_HI 0x7feULL
+> +#define VTD_INV_DESC_PASID_DEVICE_IOTLB_RSVD_LO 0xfff000000000f000ULL
+> +
+>  /* Rsvd field masks for spte */
+>  #define VTD_SPTE_SNP 0x800ULL
+>
 > diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index c25211ddaf..949f120456 100644
+> index d28c862598..4cf56924e1 100644
 > --- a/hw/i386/intel_iommu.c
 > +++ b/hw/i386/intel_iommu.c
-> @@ -3771,7 +3771,7 @@ static Property vtd_properties[] =3D {
->                              ON_OFF_AUTO_AUTO),
->      DEFINE_PROP_BOOL("x-buggy-eim", IntelIOMMUState, buggy_eim, false),
->      DEFINE_PROP_UINT8("aw-bits", IntelIOMMUState, aw_bits,
-> -                      VTD_HOST_ADDRESS_WIDTH),
-> +                      VTD_HOST_AW_AUTO),
-
-Such command line API seems to be wired.
-
-I think we can stick the current default and when scalable modern is
-enabled by aw is not specified, we can change aw to 48?
-
->      DEFINE_PROP_BOOL("caching-mode", IntelIOMMUState, caching_mode, FALS=
-E),
->      DEFINE_PROP_BOOL("x-scalable-mode", IntelIOMMUState, scalable_mode, =
-FALSE),
->      DEFINE_PROP_BOOL("snoop-control", IntelIOMMUState, snoop_control, fa=
-lse),
-> @@ -4686,6 +4686,14 @@ static bool vtd_decide_config(IntelIOMMUState *s, =
-Error **errp)
->          }
->      }
+> @@ -3017,6 +3017,49 @@ static void do_invalidate_device_tlb(VTDAddressSpa=
+ce *vtd_dev_as,
+>      memory_region_notify_iommu(&vtd_dev_as->iommu, 0, event);
+>  }
 >
-> +    if (s->aw_bits =3D=3D VTD_HOST_AW_AUTO) {
-> +        if (s->scalable_modern) {
-> +            s->aw_bits =3D VTD_HOST_AW_48BIT;
-> +        } else {
-> +            s->aw_bits =3D VTD_HOST_AW_39BIT;
-> +        }
+> +static bool vtd_process_device_piotlb_desc(IntelIOMMUState *s,
+> +                                           VTDInvDesc *inv_desc)
+> +{
+> +    uint16_t sid;
+> +    VTDAddressSpace *vtd_dev_as;
+> +    bool size;
+> +    bool global;
+> +    hwaddr addr;
+> +    uint32_t pasid;
+> +
+> +    if ((inv_desc->hi & VTD_INV_DESC_PASID_DEVICE_IOTLB_RSVD_HI) ||
+> +         (inv_desc->lo & VTD_INV_DESC_PASID_DEVICE_IOTLB_RSVD_LO)) {
+> +        error_report_once("%s: invalid pasid-based dev iotlb inv desc:"
+> +                          "hi=3D%"PRIx64 "(reserved nonzero)",
+> +                          __func__, inv_desc->hi);
+> +        return false;
 > +    }
 > +
->      if ((s->aw_bits !=3D VTD_HOST_AW_39BIT) &&
->          (s->aw_bits !=3D VTD_HOST_AW_48BIT) &&
->          !s->scalable_modern) {
+> +    global =3D VTD_INV_DESC_PASID_DEVICE_IOTLB_GLOBAL(inv_desc->hi);
+> +    size =3D VTD_INV_DESC_PASID_DEVICE_IOTLB_SIZE(inv_desc->hi);
+> +    addr =3D VTD_INV_DESC_PASID_DEVICE_IOTLB_ADDR(inv_desc->hi);
+> +    sid =3D VTD_INV_DESC_PASID_DEVICE_IOTLB_SID(inv_desc->lo);
+> +    if (global) {
+> +        QLIST_FOREACH(vtd_dev_as, &s->vtd_as_with_notifiers, next) {
+> +            if ((vtd_dev_as->pasid !=3D PCI_NO_PASID) &&
+> +                (PCI_BUILD_BDF(pci_bus_num(vtd_dev_as->bus),
+> +                                           vtd_dev_as->devfn) =3D=3D sid=
+)) {
+> +                do_invalidate_device_tlb(vtd_dev_as, size, addr);
+> +            }
+> +        }
+> +    } else {
+> +        pasid =3D VTD_INV_DESC_PASID_DEVICE_IOTLB_PASID(inv_desc->lo);
+> +        vtd_dev_as =3D vtd_get_as_by_sid_and_pasid(s, sid, pasid);
+> +        if (!vtd_dev_as) {
+> +            return true;
+> +        }
+> +
+> +        do_invalidate_device_tlb(vtd_dev_as, size, addr);
+
+Question:
+
+I wonder if current vhost (which has a device IOTLB abstraction via
+virtio-pci) can work with this (PASID based IOTLB invalidation)
+
+THanks
+
+
+> +    }
+> +
+> +    return true;
+> +}
+> +
+>  static bool vtd_process_device_iotlb_desc(IntelIOMMUState *s,
+>                                            VTDInvDesc *inv_desc)
+>  {
+> @@ -3111,6 +3154,13 @@ static bool vtd_process_inv_desc(IntelIOMMUState *=
+s)
+>          }
+>          break;
+>
+> +    case VTD_INV_DESC_DEV_PIOTLB:
+> +        trace_vtd_inv_desc("device-piotlb", inv_desc.hi, inv_desc.lo);
+> +        if (!vtd_process_device_piotlb_desc(s, &inv_desc)) {
+> +            return false;
+> +        }
+> +        break;
+> +
+>      case VTD_INV_DESC_DEVICE:
+>          trace_vtd_inv_desc("device", inv_desc.hi, inv_desc.lo);
+>          if (!vtd_process_device_iotlb_desc(s, &inv_desc)) {
 > --
 > 2.34.1
 >
-
-Thanks
 
 
