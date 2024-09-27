@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393E8987F7D
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 09:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3772A987F80
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 09:33:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1su5ST-0001XG-Uu; Fri, 27 Sep 2024 03:32:09 -0400
+	id 1su5SW-0001j2-W4; Fri, 27 Sep 2024 03:32:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1su5SR-0001QA-9h; Fri, 27 Sep 2024 03:32:07 -0400
+ id 1su5SU-0001bT-3x; Fri, 27 Sep 2024 03:32:10 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1su5SP-0004DY-IS; Fri, 27 Sep 2024 03:32:07 -0400
+ id 1su5SS-0004DY-8c; Fri, 27 Sep 2024 03:32:09 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 27 Sep
@@ -33,10 +33,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
  <clg@redhat.com>
-Subject: [PATCH v4 2/7] hw/gpio/aspeed: Support to set the different memory
- size
-Date: Fri, 27 Sep 2024 15:31:39 +0800
-Message-ID: <20240927073144.2303522-3-jamin_lin@aspeedtech.com>
+Subject: [PATCH v4 3/7] hw/gpio/aspeed: Support different memory region ops
+Date: Fri, 27 Sep 2024 15:31:40 +0800
+Message-ID: <20240927073144.2303522-4-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240927073144.2303522-1-jamin_lin@aspeedtech.com>
 References: <20240927073144.2303522-1-jamin_lin@aspeedtech.com>
@@ -68,16 +67,22 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the datasheet of ASPEED SOCs, a GPIO controller owns 4KB of
-register space for AST2700, AST2500, AST2400 and AST1030; owns 2KB of
-register space for AST2600 1.8v and owns 2KB of register space for
-AST2600 3.3v.
+It set "aspeed_gpio_ops" struct which containing read and write callbacks
+to be used when I/O is performed on the GPIO region.
 
-It set the memory region size 2KB by default and it does not compatible
-register space for AST2700.
+Besides, in the previous design of ASPEED SOCs, one register is used for
+setting one function for 32 GPIO pins.
+ex: GPIO000 is used for setting data value for GPIO A, B, C and D in AST2600.
+ex: GPIO004 is used for setting direction for GPIO A, B, C and D in AST2600.
 
-Introduce a new class attribute to set the GPIO controller memory size
-for different ASPEED SOCs.
+However, the register set have a significant change in AST2700.
+Each GPIO pin has their own control register. In other words, users are able to
+set one GPIO pin’s direction, interrupt enable, input mask and so on
+in one register. The aspeed_gpio_read/aspeed_gpio_write callback functions
+are not compatible AST2700.
+
+Introduce a new "const MemoryRegionOps *" attribute in AspeedGPIOClass and
+use it in aspeed_gpio_realize function.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
@@ -87,67 +92,67 @@ Reviewed-by: Cédric Le Goater <clg@redhat.com>
  2 files changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/hw/gpio/aspeed_gpio.c b/hw/gpio/aspeed_gpio.c
-index 00fb72a509..564459ad4f 100644
+index 564459ad4f..8725606aec 100644
 --- a/hw/gpio/aspeed_gpio.c
 +++ b/hw/gpio/aspeed_gpio.c
-@@ -1047,7 +1047,7 @@ static void aspeed_gpio_realize(DeviceState *dev, Error **errp)
+@@ -1046,7 +1046,7 @@ static void aspeed_gpio_realize(DeviceState *dev, Error **errp)
+         }
      }
  
-     memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_gpio_ops, s,
--            TYPE_ASPEED_GPIO, 0x800);
-+                          TYPE_ASPEED_GPIO, agc->mem_size);
+-    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_gpio_ops, s,
++    memory_region_init_io(&s->iomem, OBJECT(s), agc->reg_ops, s,
+                           TYPE_ASPEED_GPIO, agc->mem_size);
  
      sysbus_init_mmio(sbd, &s->iomem);
- }
-@@ -1130,6 +1130,7 @@ static void aspeed_gpio_ast2400_class_init(ObjectClass *klass, void *data)
-     agc->nr_gpio_sets = 7;
+@@ -1131,6 +1131,7 @@ static void aspeed_gpio_ast2400_class_init(ObjectClass *klass, void *data)
      agc->reg_table = aspeed_3_3v_gpios;
      agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
-+    agc->mem_size = 0x1000;
+     agc->mem_size = 0x1000;
++    agc->reg_ops = &aspeed_gpio_ops;
  }
  
  static void aspeed_gpio_2500_class_init(ObjectClass *klass, void *data)
-@@ -1141,6 +1142,7 @@ static void aspeed_gpio_2500_class_init(ObjectClass *klass, void *data)
-     agc->nr_gpio_sets = 8;
+@@ -1143,6 +1144,7 @@ static void aspeed_gpio_2500_class_init(ObjectClass *klass, void *data)
      agc->reg_table = aspeed_3_3v_gpios;
      agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
-+    agc->mem_size = 0x1000;
+     agc->mem_size = 0x1000;
++    agc->reg_ops = &aspeed_gpio_ops;
  }
  
  static void aspeed_gpio_ast2600_3_3v_class_init(ObjectClass *klass, void *data)
-@@ -1152,6 +1154,7 @@ static void aspeed_gpio_ast2600_3_3v_class_init(ObjectClass *klass, void *data)
-     agc->nr_gpio_sets = 7;
+@@ -1155,6 +1157,7 @@ static void aspeed_gpio_ast2600_3_3v_class_init(ObjectClass *klass, void *data)
      agc->reg_table = aspeed_3_3v_gpios;
      agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
-+    agc->mem_size = 0x800;
+     agc->mem_size = 0x800;
++    agc->reg_ops = &aspeed_gpio_ops;
  }
  
  static void aspeed_gpio_ast2600_1_8v_class_init(ObjectClass *klass, void *data)
-@@ -1163,6 +1166,7 @@ static void aspeed_gpio_ast2600_1_8v_class_init(ObjectClass *klass, void *data)
-     agc->nr_gpio_sets = 2;
+@@ -1167,6 +1170,7 @@ static void aspeed_gpio_ast2600_1_8v_class_init(ObjectClass *klass, void *data)
      agc->reg_table = aspeed_1_8v_gpios;
      agc->reg_table_count = GPIO_1_8V_REG_ARRAY_SIZE;
-+    agc->mem_size = 0x800;
+     agc->mem_size = 0x800;
++    agc->reg_ops = &aspeed_gpio_ops;
  }
  
  static void aspeed_gpio_1030_class_init(ObjectClass *klass, void *data)
-@@ -1174,6 +1178,7 @@ static void aspeed_gpio_1030_class_init(ObjectClass *klass, void *data)
-     agc->nr_gpio_sets = 6;
+@@ -1179,6 +1183,7 @@ static void aspeed_gpio_1030_class_init(ObjectClass *klass, void *data)
      agc->reg_table = aspeed_3_3v_gpios;
      agc->reg_table_count = GPIO_3_3V_REG_ARRAY_SIZE;
-+    agc->mem_size = 0x1000;
+     agc->mem_size = 0x1000;
++    agc->reg_ops = &aspeed_gpio_ops;
  }
  
  static const TypeInfo aspeed_gpio_info = {
 diff --git a/include/hw/gpio/aspeed_gpio.h b/include/hw/gpio/aspeed_gpio.h
-index 39febda9ea..8cd2ff5496 100644
+index 8cd2ff5496..e1e6c54333 100644
 --- a/include/hw/gpio/aspeed_gpio.h
 +++ b/include/hw/gpio/aspeed_gpio.h
-@@ -76,6 +76,7 @@ struct AspeedGPIOClass {
-     uint32_t nr_gpio_sets;
+@@ -77,6 +77,7 @@ struct AspeedGPIOClass {
      const AspeedGPIOReg *reg_table;
      unsigned reg_table_count;
-+    uint64_t mem_size;
+     uint64_t mem_size;
++    const MemoryRegionOps *reg_ops;
  };
  
  struct AspeedGPIOState {
