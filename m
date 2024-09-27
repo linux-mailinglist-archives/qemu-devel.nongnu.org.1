@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC13988BD1
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 23:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43023988BFA
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 23:47:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suIaX-00085L-EQ; Fri, 27 Sep 2024 17:33:21 -0400
+	id 1suImd-0003wg-Is; Fri, 27 Sep 2024 17:45:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suIaU-000848-3W
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:33:18 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suImb-0003v8-NL
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:45:49 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suIaR-0002Bz-73
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:33:17 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-42cd46f3a26so22019055e9.2
- for <qemu-devel@nongnu.org>; Fri, 27 Sep 2024 14:33:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suImP-0003tt-AD
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:45:38 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42cba8340beso22508765e9.1
+ for <qemu-devel@nongnu.org>; Fri, 27 Sep 2024 14:45:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727472793; x=1728077593; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SzfY49PdtDNfg8MFK3xCv1xPYUCRuDNi4q0ni0OdsL8=;
- b=JVX5arCoYWC+C6Lf40m52DPwvV+ZAfhYckcspO+5YKA+EPlAHQ2vUeTxt+kS8d2QI5
- 5pbmcvOz1VxbYC7r72dr+f8YX0hyqeZCHAi/F9F0gySJxycfnwwAxKN8Hg7TojjuAFkw
- QaeVefqccJV1OHK+aMTw24pQldJ6S5k9YVWQgSaRIWUkvj9FXI/xOEtRJO6Xft1oGC6P
- l8pM0HR09pj94+A3DAuEbqP0EJySbqxVijBIE4Z9O4kviSQFrmiICmcxy9MpOUDGLdjF
- OVQBX3V6Gsfdde0u+kAyNsmTiMjQZ4Aqwm3P78dh2DNhaN72DIro7KODxapCOXL2yA3U
- v2WA==
+ d=linaro.org; s=google; t=1727473535; x=1728078335; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8FAFiSDjqWLgEQX5cTL85SBND1KMRxlAjrYJKgtvFoY=;
+ b=vPHZ+jIR72za9EyIvLAXJeJCkVXFWsXn1xzG+8mOZ3Ac9rDm0FMVeFk2bZ2UW1mrvk
+ zUF62qsscUpVM5uUcxGwvdZA70tqoOGvBc8nusJw0xWPC+UEZBNGk4Wy7nc7XsQGlCB7
+ 9WZEQOTNJRXn4ZL5DDIcLxqL2Q+FW3dGfX4h3RinpmQUA1/pV+OIBtI8IH4CTDUgDy45
+ hueW7LT7MbaQB0KysaNZpALgi2+hT9tHeHgC7+MurWz1EdIm3MPqJvPVVcFkavL0fbQ7
+ RH/IVax4aCbvNMjjD2zuOr88sVi0+EdLENkFMdGi81mcYte5CeiROJuknE6tavBk+EOF
+ aBzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727472793; x=1728077593;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SzfY49PdtDNfg8MFK3xCv1xPYUCRuDNi4q0ni0OdsL8=;
- b=oABCGH92hADpG3i0yVZXGtXF6ltSbpuRXcP9PeBneDbvDTLCQ4fIFDpnuKUcXmOocA
- sxuM+vxlLWfwysG8M5jG3UApUNL6vsN7e/qp9TPKKSFeagDkVwMaibVqtoi/UeUwo8XQ
- txl4Xc4qvTr4YRQSKdJuQhkQ0yzSGgiRh082jFoJPr26riy1/t4LaEOPFwMTC0b0y5rK
- uazBuIKIaYEdGN1NGCP8IFKqhISoxl3eXSljihvIRD0MJqxpGQah7JlfsfYsvaAGLeKm
- L5qj+1gJ4kO3cDwjzuOIKT0mwMNIRGdkdZkLw7xbWSC2y23LUatR4eIntwzVYBLD6edV
- DfLw==
-X-Gm-Message-State: AOJu0YwVfJSzrAg4xb+X68KJyVAGtZi1bF1OyWq04i4rZvgHhDxBb05b
- vt+RHOxVWUD551ah6Vk39OjHBsutMwlmTHo77kVEEv9/6TCNgUpAw4Sum2xaravYmgGCQc+Ld4x
- n
-X-Google-Smtp-Source: AGHT+IEDbN5vatdsYGseitQaJDR/KbxBcX9wc4+nGPVd+ZGQBFk6sy7z/I8GFmhqx3co02xnMCTNmQ==
-X-Received: by 2002:a05:600c:1c23:b0:42c:b6db:4270 with SMTP id
- 5b1f17b1804b1-42f58432debmr29042835e9.11.1727472793332; 
- Fri, 27 Sep 2024 14:33:13 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1727473535; x=1728078335;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8FAFiSDjqWLgEQX5cTL85SBND1KMRxlAjrYJKgtvFoY=;
+ b=MzqLSdppgf5hbv1jxhe27qwZD9GmnDE1EuKRt6qC4UHpTbvscwhW34PgXIko69tQvt
+ sgXmQf6WSD/q40HYjwKhC/TkqiLqFh1L8oKD95sci5xS1ScO13H8pN0xWotPd0pyQWtt
+ xSaJYUMWMflaEsXMRYi0FzJ8wLtWty0xZb6LPQZ64suCWa4/xM7a35q3tRkiMO+K4FXN
+ odhYcOr395TeJij1Es7zzQaR9NDVjOpsTzz5cYp+2AoLC1nt2WDqhZl/MrtkvCuL3IlI
+ G04OGVFwbaN2kYjUj32BQbPaEhh/4i7tgDtVF+EyzEeze9GXsgepf8dDE+Cu7XLrik++
+ cHIA==
+X-Gm-Message-State: AOJu0Yz1PdtvUw4p2792NBtLJSB4bQ1oB7nR3IlgLVFBQKXaQHk1FCwe
+ k0tFZL5aY0b6h+24sW4+oHFX/Ns3eCh+cfwTInxsRUafeqRgKa5RIXzEbdINtbx7XIJeTL30QRa
+ N
+X-Google-Smtp-Source: AGHT+IHG9Xq5YG3NtoL3/Fizyz22Mo/QWHGL89Zcu7ks38GkRYS7JN9KZsnlZuI8IUA3AfBdhsAy3Q==
+X-Received: by 2002:a05:600c:1988:b0:42c:b73b:fb43 with SMTP id
+ 5b1f17b1804b1-42f5220105bmr53303435e9.12.1727473534591; 
+ Fri, 27 Sep 2024 14:45:34 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.217.136])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42e96a3622bsm84360715e9.35.2024.09.27.14.33.10
+ 5b1f17b1804b1-42e969f2083sm83472645e9.15.2024.09.27.14.45.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 27 Sep 2024 14:33:11 -0700 (PDT)
+ Fri, 27 Sep 2024 14:45:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Song Gao <gaosong@loongson.cn>,
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, qemu-ppc@nongnu.org,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Jason Wang <jasowang@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] hw/loongarch/fw_cfg: Build in common_ss[]
-Date: Fri, 27 Sep 2024 23:32:54 +0200
-Message-ID: <20240927213254.17552-3-philmd@linaro.org>
+Subject: [PATCH 0/4] hw/ppc & net: Simplify LD/ST API uses
+Date: Fri, 27 Sep 2024 23:45:27 +0200
+Message-ID: <20240927214531.20242-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240927213254.17552-1-philmd@linaro.org>
-References: <20240927213254.17552-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -92,27 +93,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nothing in LoongArch fw_cfg.c requires target specific definitions.
+Use ldN / stN methods to access variable lengths.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/loongarch/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Philippe Mathieu-Daudé (4):
+  hw/ppc/spapr_nvdimm: Simplify LD/ST API uses
+  hw/ppc/spapr_vof: Simplify LD/ST API uses
+  hw/ppc/vof: Simplify LD/ST API uses
+  net/l2tpv3: Simplify LD/ST API uses
 
-diff --git a/hw/loongarch/meson.build b/hw/loongarch/meson.build
-index bce7ebac97..005f017e21 100644
---- a/hw/loongarch/meson.build
-+++ b/hw/loongarch/meson.build
-@@ -1,8 +1,8 @@
- loongarch_ss = ss.source_set()
- loongarch_ss.add(files(
--    'fw_cfg.c',
-     'boot.c',
- ))
-+common_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: files('fw_cfg.c'))
- loongarch_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: files('virt.c'))
- loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-build.c'))
- 
+ hw/ppc/spapr_nvdimm.c | 47 ++++---------------------------------------
+ hw/ppc/spapr_vof.c    | 27 +++++++++----------------
+ hw/ppc/vof.c          |  6 +-----
+ net/l2tpv3.c          |  6 +-----
+ 4 files changed, 15 insertions(+), 71 deletions(-)
+
 -- 
 2.45.2
 
