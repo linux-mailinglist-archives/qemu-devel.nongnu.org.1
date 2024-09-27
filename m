@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 130BD987E37
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 08:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC04987E31
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 08:13:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1su4EJ-0004Rb-2W; Fri, 27 Sep 2024 02:13:27 -0400
+	id 1su4EI-0004My-I6; Fri, 27 Sep 2024 02:13:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1su4E0-000344-BQ; Fri, 27 Sep 2024 02:13:11 -0400
+ id 1su4E6-0003aQ-OS; Fri, 27 Sep 2024 02:13:15 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1su4Dy-0003VB-Ea; Fri, 27 Sep 2024 02:13:08 -0400
+ id 1su4E0-0003VM-49; Fri, 27 Sep 2024 02:13:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 629FB92D26;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6ECEF92D27;
  Fri, 27 Sep 2024 09:10:52 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C704C146718;
+ by tsrv.corpit.ru (Postfix) with SMTP id DE809146719;
  Fri, 27 Sep 2024 09:11:22 +0300 (MSK)
-Received: (nullmailer pid 573403 invoked by uid 1000);
+Received: (nullmailer pid 573406 invoked by uid 1000);
  Fri, 27 Sep 2024 06:11:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 21/27] qemu-img: bench: refresh options/--help
-Date: Fri, 27 Sep 2024 09:11:15 +0300
-Message-Id: <20240927061121.573271-22-mjt@tls.msk.ru>
+Subject: [PATCH 22/27] qemu-img: bitmap: refresh options/--help
+Date: Fri, 27 Sep 2024 09:11:16 +0300
+Message-Id: <20240927061121.573271-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240927061121.573271-1-mjt@tls.msk.ru>
 References: <20240927061121.573271-1-mjt@tls.msk.ru>
@@ -62,38 +62,19 @@ Add missing long options and --help output.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 64 +++++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 54 insertions(+), 10 deletions(-)
+ qemu-img.c | 40 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 32 insertions(+), 8 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 76000c485c..fff537df26 100644
+index fff537df26..7c20a5772d 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -4849,28 +4849,70 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
-     for (;;) {
-         static const struct option long_options[] = {
-             {"help", no_argument, 0, 'h'},
--            {"flush-interval", required_argument, 0, OPTION_FLUSH_INTERVAL},
-+            {"format", required_argument, 0, 'f'},
-             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-+            {"cache", required_argument, 0, 't'},
-+            {"count", required_argument, 0, 'c'},
-+            {"depth", required_argument, 0, 'd'},
-+            {"offset", required_argument, 0, 'o'},
-+            {"buffer-size", required_argument, 0, 's'},
-+            {"step-size", required_argument, 0, 'S'},
-+            {"aio", required_argument, 0, 'i'},
-+            {"native", no_argument, 0, 'n'},
-+            {"write", no_argument, 0, 'w'},
-             {"pattern", required_argument, 0, OPTION_PATTERN},
-+            {"flush-interval", required_argument, 0, OPTION_FLUSH_INTERVAL},
-             {"no-drain", no_argument, 0, OPTION_NO_DRAIN},
-             {"force-share", no_argument, 0, 'U'},
+@@ -5170,20 +5170,42 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
+             {"source-format", required_argument, 0, 'F'},
              {0, 0, 0, 0}
          };
--        c = getopt_long(argc, argv, ":hc:d:f:ni:o:qs:S:t:wU", long_options,
--                        NULL);
-+        c = getopt_long(argc, argv, "hc:d:f:ni:o:qs:S:t:wU",
+-        c = getopt_long(argc, argv, ":b:f:F:g:h", long_options, NULL);
++        c = getopt_long(argc, argv, "b:f:F:g:h",
 +                        long_options, NULL);
          if (c == -1) {
              break;
@@ -109,48 +90,37 @@ index 76000c485c..fff537df26 100644
          case 'h':
 -            help();
 +            cmd_help(ccmd,
-+"[-f FMT | --image-opts] [-t CACHE] [-c COUNT] [-d DEPTH]\n"
-+"        [-o OFFSET] [-s BUFFER_SIZE] [-S STEP_SIZE] [-i AIO] [-n]\n"
-+"        [-w [--pattern PATTERN] [--flush-interval INTERVAL [--no-drain]]]\n"
++"( --merge SOURCE | --add | --remove | --clear |\n"
++"                --enable | --disable ).. [-f FMT | --image-opts]\n"
++"        [ -b SRC_FILENAME [-F SOURCE_FMT]] [-g SIZE[KMGTPE]] [--object OBJDEF]\n"
++"        FILENAME BITMAP\n"
 +,
-+"  -q, --quiet\n"
-+"     quiet operations\n"
 +"  -f, --format FMT\n"
 +"     specify FILENAME format explicitly\n"
 +"  --image-opts\n"
 +"     indicates that FILENAME is a complete image specification\n"
 +"     instead of a file name (incompatible with --format)\n"
-+"  -t, --cache CACHE\n"
-+"     cache mode for FILENAME (" BDRV_DEFAULT_CACHE ")\n"
-+"  -c, --count COUNT\n"
-+"     number of I/O requests to perform\n"
-+"  -s, --buffer-size BUFFER_SIZE\n"
-+"     size of each I/O request\n"
-+"  -d, --depth DEPTH\n"
-+"     number of requests to perform in parallel\n"
-+"  -o, --offset OFFSET\n"
-+"     start first request at this OFFSET\n"
-+"  -S, --step-size STEP_SIZE\n"
-+"     each next request offset increment\n"
-+"  -i, --aio AIO\n"
-+"     async-io backend (threads, native, io_uring)\n"
-+"  -n, --native\n"
-+"     use native AIO backend if possible\n"
-+"  -w, --write\n"
-+"     perform write test (default is read)\n"
-+"  --pattern PATTERN\n"
-+"     write this pattern byte instead of zero\n"
-+"  --flush-interval FLUSH_INTERVAL\n"
-+"     issue flush after this number of requests\n"
-+"  --no-drain\n"
-+"     do not wait when flushing pending requests\n"
-+"  -U, --force-share\n"
-+"     open images in shared mode for concurrent access\n"
++"  --add\n"
++"     creates BITMAP, enables to record future edits\n"
++"   -g, --granularity SIZE[KMGTPE]\n"
++"     sets non-default bitmap granularity for --add to this size\n"
++"  --remove\n"
++"     removes BITMAP\n"
++"  --clear\n"
++"     clears BITMAP\n"
++"  --enable, --disable\n"
++"     starts and stops recording future edits to BITMAP\n"
++"  --merge SRC_FILENAME\n"
++"     merges contents of SRC_FILENAME bitmap into BITMAP\n"
++"   -b, --source-file SRC_FILENAME\n"
++"     select alternative source file for --merge\n"
++"   -F, --source-format SRC_FMT\n"
++"     specify format for SRC_FILENAME explicitly\n"
 +);
              break;
-         case 'c':
-         {
-@@ -4987,6 +5029,8 @@ static int img_bench(const img_cmd_t *ccmd, int argc, char **argv)
+         case 'b':
+             src_filename = optarg;
+@@ -5239,6 +5261,8 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
          case OPTION_IMAGE_OPTS:
              image_opts = true;
              break;
