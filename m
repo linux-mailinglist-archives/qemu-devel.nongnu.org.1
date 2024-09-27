@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CACF988414
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 14:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83EB4988638
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 15:26:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1su9w0-00058u-N3; Fri, 27 Sep 2024 08:18:57 -0400
+	id 1suAz9-0005BJ-ES; Fri, 27 Sep 2024 09:26:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1su9vn-00057E-HH
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 08:18:43 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <trdthg47@gmail.com>)
+ id 1su50L-0000OU-QD; Fri, 27 Sep 2024 03:03:05 -0400
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1su9va-0002DD-CL
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 08:18:43 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5c87ab540b3so2593665a12.1
- for <qemu-devel@nongnu.org>; Fri, 27 Sep 2024 05:18:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <trdthg47@gmail.com>)
+ id 1su50J-0000oQ-Jb; Fri, 27 Sep 2024 03:03:04 -0400
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-710e910dd7dso1191699a34.2; 
+ Fri, 27 Sep 2024 00:03:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727439508; x=1728044308; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=qdWRG4GaPdJjcB8GvK3caSKLz2XLy6IwWrOQgLRSVhU=;
- b=tEPy7ka8+qyrU10z522gTIXjvtZtjC/n/R2KvRklwonW3GCdRuvFQCH7enDska2cUj
- X3UtB3a+GYJdB/V41Mpf5fwT3fUslBi3AGthP3KI7pMnfcmjk6PcpJDfQFhGP95ag/1I
- v/0XG+GFnrN2mFW9RlMRY2Fz4a6Ql5MVfX0Jkv2mKzz4dMJ88Eafq89/dQWvgJktOsVE
- 6M0oL3uVKFQVgWcHpJDSBTsd3Ns8uMFR5Q+AG5HgKGWpzafssKlhvLHVlAB+/jbCnAO5
- 1HzJrRnoOULNC998zRVouJ6LUkfhqyRgdLIDtqcn7scPyYYU8hVax4/H4zVivYYutxYI
- MAtQ==
+ d=gmail.com; s=20230601; t=1727420581; x=1728025381; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TvI9qw5LAWNZpYaJ0urC7M+CoFwaemgKRzivOqo/UZc=;
+ b=fGENAApT+U9uADkTUQHazMOud22EOm4HR/JfEJoKc175jOTPkKN+Q53eqPfz9y4Gag
+ GTQIBqaWeZWISZuXS28BubRGDCiY/Mrh6F2rUg3waqJR7IfrtzN7v1Z+iL7gSugO9zHX
+ +MSxyq2yWG1BRZnqDr5eYYWU89uO1Ry/TsXp/UJ4ycEJbDkjMjD0ai6RhuZ9hKWJXTXQ
+ MQKJiCwHOfRTa4NKeuykBLHQbUAIIj9KLVsnDSkrHwDdmaS0ES/e4vVHGv3bsqVicqvJ
+ fe5eaZ4AMDAckRc3E2yljclUmdcHhsIkp2NAN+RMNgtnvzdRn3FOw8uHYUQ5FUx5lHX9
+ BRgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727439508; x=1728044308;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1727420581; x=1728025381;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=qdWRG4GaPdJjcB8GvK3caSKLz2XLy6IwWrOQgLRSVhU=;
- b=noxBJwulpdZ9xJbIygJG/H01lFzXMbTJFVzjU2U3PKPbhaOqN3mdVHXGdAK8s2fqAQ
- +RmBCt37CUWJq5V/OGK2EfQHRi714XAmCRkG/LHSGoFK+q1JzbmMVrjr672kdwwNqBXs
- RuSg23VcMDBiUzt5Oq6c7HuQkW26+p8/pDdWNFh763pY7kBHWDDZ9l0jGpQJL6mquEeE
- yZhHHG5+kVKSfOVFTnOqDtxhk+PxoKVqmEPljM+BvTuTqrqDAQOctKur8+BpTw+FP3Gp
- nNxpB6Htj1Kbw2CF1PYn/DiOZLYvs2GFmjN4GpTvJAZaLIU3nKKI7xiigGtUfZpBmZbt
- dw4Q==
-X-Gm-Message-State: AOJu0YxZDYrDziKcOtoUCT5M3d7wwQYULnC84jEji66SyJQ1QKzmG5ko
- oA392Dod60NLGp84CdRCV3cLdMrUTw190mZjDGHL4J5oFghkdAqatcrNVMmw5wR0fuPny+lBf3A
- SMjhf5MDA2R7/Wye37iMIbh9nAXbEbIs9QMBQFA==
-X-Google-Smtp-Source: AGHT+IHauj8a5MMHAu/3l26AcOGVcGbslBa0e2VTG+9NAqB5hIjrhBw47iCgLMkgugiOLjK64MS9pfXPcC0FK+YoN2Q=
-X-Received: by 2002:a05:6402:2481:b0:5c4:aea:5833 with SMTP id
- 4fb4d7f45d1cf-5c882484124mr3464084a12.18.1727439508214; Fri, 27 Sep 2024
- 05:18:28 -0700 (PDT)
+ bh=TvI9qw5LAWNZpYaJ0urC7M+CoFwaemgKRzivOqo/UZc=;
+ b=LgoshaDjgc7HPTLoxIWNzC09vYhCmrjOwuuiBe6m73Tgc1XU+tWD05f+zpQNlYTZhv
+ HgHxfX5e4oAHcrYRyL2d6owGUOyOHv9kAfdLnmENDWhgtoN7AhAfnKOYcll4G57QLfwI
+ gJTbONSJ37z4mjLeO6GQDMPJQxfg13sc1SyqJvqfIWMt0U4hWEoI6C6zl3pddEQkx2qE
+ JR9x/T6uf1W75XlfZnJKdus3c7REBcQLqteFnM5KJxHSIOwDXgDG1YXPx5n9HM2up1Sc
+ 5vaIvJWaju20D3/UiblQRVh41yeFVZhtmxbHLvEZuFy/Yr7nIe09lJDIHbFTpiY7yZB6
+ S5tA==
+X-Gm-Message-State: AOJu0YzjWZAhTceUTEB70yR30pc7ZvYEmS1AcEPFxFLxFboZbHkbmQTS
+ LBrxyAZqRr8+6zz1lX+uDG5gh/2yM4Wskfq46J126Er8LcjBuQpdKfHBf4AbJbk=
+X-Google-Smtp-Source: AGHT+IGdrX7rjZgBcko51d9fxy+GqiQi2O7d1vBrLdA3tBEqGISwObz+mT2hZ8/tj36n4jpNzuyu7Q==
+X-Received: by 2002:a05:6358:784:b0:1b1:acd5:dd98 with SMTP id
+ e5c5f4694b2df-1becbc4b5f1mr164103755d.7.1727420580871; 
+ Fri, 27 Sep 2024 00:03:00 -0700 (PDT)
+Received: from localhost.localdomain ([124.16.141.247])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-7e6db294ebdsm947830a12.19.2024.09.27.00.02.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 27 Sep 2024 00:03:00 -0700 (PDT)
+From: MingZhu Yan <trdthg47@gmail.com>
+X-Google-Original-From: MingZhu Yan <yanmingzhu@iscas.ac.cn>
+To: qemu-riscv@nongnu.org
+Cc: qemu-devel@nongnu.org, trdthg47@gmail.com,
+ MingZhu Yan <yanmingzhu@iscas.ac.cn>
+Subject: [PATCH] hw/char/riscv_htif: Fix htif_mm_write that causes infinite
+ loop in ACT.
+Date: Fri, 27 Sep 2024 15:00:18 +0800
+Message-Id: <20240927070018.10121-1-yanmingzhu@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <cover.1727425255.git.chao.liu@yeah.net>
-In-Reply-To: <cover.1727425255.git.chao.liu@yeah.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 27 Sep 2024 13:18:15 +0100
-Message-ID: <CAFEAcA8Kb-ym=Zd1TzcWuqRVbaKAG4TDF3VmZ8EfnBWW-B_Cyg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Drop ignore_memory_transaction_failures for
- xilink_zynq
-To: Chao Liu <chao.liu@yeah.net>
-Cc: qemu-devel@nongnu.org, bin.meng@windriver.com, edgar.iglesias@gmail.com, 
- alistair@alistair23.me
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=trdthg47@gmail.com; helo=mail-ot1-x332.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 27 Sep 2024 09:25:49 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,32 +90,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 27 Sept 2024 at 09:52, Chao Liu <chao.liu@yeah.net> wrote:
->
-> Hi, thank you for your prompt reply, it's a great encouragement to me!
->
-> Based on your review suggestions, I have improved the v1 patch.
->
-> By using create_unimplemented_device() during the initialization phase,
-> I added a "znyq.umip" device early on, which covers the 32-bit address space
-> of GPA. This can better serve as a replacement for the effect of the
-> ignore_memory_transaction_failures flag.
->
-> Since create_unimplemented_device() sets the priority of the
-> memory region (mr) to -100, normally created devices will override the address
-> segments corresponding to the unimplemented devices.
->
-> Even if our test set is not sufficiently comprehensive, we can create an
-> unimp_device for the maximum address space allowed by the board. This prevents
-> the guest system from triggering unexpected exceptions when accessing
-> unimplemented devices or regions.
+Applications sometimes only write the lower 32-bit payload bytes, this is used
+in ACT tests. As a workaround, this refers to the solution of sail-riscv.
+if the payload is written a few times with the same value, we process the whole
+htif command anyway.
 
-What would be the benefit of doing that? If we're going to
-say "we'll make accesses to regions without devices not
-generate faults", the simplest way to do that is to
-leave the ignore_memory_transaction_failures flag set
-the way it is.
+Signed-off-by: MingZhu Yan <yanmingzhu@iscas.ac.cn>
+---
+ hw/char/riscv_htif.c | 35 +++++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
-thanks
--- PMM
+diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c
+index 9bef60def1..d74cce3bef 100644
+--- a/hw/char/riscv_htif.c
++++ b/hw/char/riscv_htif.c
+@@ -65,16 +65,8 @@ void htif_symbol_callback(const char *st_name, int st_info, uint64_t st_value,
+ {
+     if (strcmp("fromhost", st_name) == 0) {
+         fromhost_addr = st_value;
+-        if (st_size != 8) {
+-            error_report("HTIF fromhost must be 8 bytes");
+-            exit(1);
+-        }
+     } else if (strcmp("tohost", st_name) == 0) {
+         tohost_addr = st_value;
+-        if (st_size != 8) {
+-            error_report("HTIF tohost must be 8 bytes");
+-            exit(1);
+-        }
+     } else if (strcmp("begin_signature", st_name) == 0) {
+         begin_sig_addr = st_value;
+     } else if (strcmp("end_signature", st_name) == 0) {
+@@ -290,18 +282,26 @@ static void htif_mm_write(void *opaque, hwaddr addr,
+                           uint64_t value, unsigned size)
+ {
+     HTIFState *s = opaque;
+-    if (addr == TOHOST_OFFSET1) {
+-        if (s->tohost == 0x0) {
+-            s->allow_tohost = 1;
+-            s->tohost = value & 0xFFFFFFFF;
++    int htif_cmd_write = 0;
++    if (size == 8 && addr == TOHOST_OFFSET1) {
++        htif_cmd_write = 1;
++        s->tohost = value;
++        htif_handle_tohost_write(s, s->tohost);
++    } else if (size == 4 && addr == TOHOST_OFFSET1) {
++        if ((value) == (s->tohost & 0xFFFF)) {
++            s->allow_tohost = s->allow_tohost + 1;
+         } else {
+             s->allow_tohost = 0;
+         }
+-    } else if (addr == TOHOST_OFFSET2) {
+-        if (s->allow_tohost) {
+-            s->tohost |= value << 32;
+-            htif_handle_tohost_write(s, s->tohost);
++        s->tohost = deposit64(s->tohost, 0, 32, value);
++    } else if (size == 4 && addr == TOHOST_OFFSET2) {
++        if ((value & 0xFF) == (s->tohost & 0xFF00)) {
++            s->allow_tohost = s->allow_tohost + 1;
++        } else {
++            s->allow_tohost = 1;
+         }
++        htif_cmd_write = 1;
++        s->tohost = deposit64(s->tohost, 32, 32, value);
+     } else if (addr == FROMHOST_OFFSET1) {
+         s->fromhost_inprogress = 1;
+         s->fromhost = value & 0xFFFFFFFF;
+@@ -312,6 +312,9 @@ static void htif_mm_write(void *opaque, hwaddr addr,
+         qemu_log("Invalid htif write: address %016" PRIx64 "\n",
+             (uint64_t)addr);
+     }
++    if ((s->tohost == 1 && htif_cmd_write) || s->allow_tohost > 2) {
++        htif_handle_tohost_write(s, s->tohost);
++    }
+ }
+ 
+ static const MemoryRegionOps htif_mm_ops = {
+-- 
+2.34.1
+
 
