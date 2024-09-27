@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BBE987D82
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 06:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C06F987D7C
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 06:09:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1su2HK-0003Nu-8R; Fri, 27 Sep 2024 00:08:26 -0400
+	id 1su2HM-0003Vv-Db; Fri, 27 Sep 2024 00:08:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1su2HI-0003IJ-E6
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 00:08:24 -0400
+ id 1su2HK-0003Or-1R
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 00:08:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1su2HH-0006GN-1Y
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 00:08:24 -0400
+ id 1su2HI-0006GT-Gb
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 00:08:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1727410102;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Mts5FMdKVGfo/GCTYbe4NHGIhp/QJz0rnXTnU5j202M=;
- b=XVWJwyHwQz3lDN8OqXW+Kt+aIkPAK4q8u90YPFx+KttZV181rk1Qx2zk1I0M2jXfu39xoR
- 2PsgqR+Bl1zSk3ftQ5xJcah2Qz1h8EtlC4+hRMFHYRhCi2Yi2XBhDjCuX68f6Js/QJT6ch
- NtwTjRwZGgqT7/ArU9QW7Gr3FO2RyrE=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=s7tzts8FG+d/e1j+wzWbfvK4LxyPeqzPVYQemVOR5mI=;
+ b=YhstneL4a/w+zq4gUgJqrjWtGGOp8+8CmXkGjz0f63MZOwU86/QpsSZSWADmKXns1nriN/
+ NytlcNPa0JroFjyWPWi0LElvIICwT3UAqm1eVdYbC2CCXE1V6DhgGamiQV5BBt1Ep6zLUL
+ 2xVMonH5LGKxGz5/DmF8yXxSFGvsMIY=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-v4_IgLiRNe2AjPipEbrB8Q-1; Fri, 27 Sep 2024 00:08:18 -0400
-X-MC-Unique: v4_IgLiRNe2AjPipEbrB8Q-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-2e082ab2ad2so2272542a91.2
- for <qemu-devel@nongnu.org>; Thu, 26 Sep 2024 21:08:18 -0700 (PDT)
+ us-mta-97-kxckg9feMMCtnLZBLMc-uw-1; Fri, 27 Sep 2024 00:08:20 -0400
+X-MC-Unique: kxckg9feMMCtnLZBLMc-uw-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-2e0d1a1de58so10947a91.2
+ for <qemu-devel@nongnu.org>; Thu, 26 Sep 2024 21:08:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727410097; x=1728014897;
+ d=1e100.net; s=20230601; t=1727410100; x=1728014900;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Mts5FMdKVGfo/GCTYbe4NHGIhp/QJz0rnXTnU5j202M=;
- b=DI5Pj8TQ5oR8jLfRBx8cObQ14IUccSIIwviy2mrXLtfH49DegICiIjIoDLTOLs91T/
- 78p57QOvGqpduwopxEpWPN+258jxlM2tdSnW4gVgA10CfH7F0M5ODBqMRl8j4pwvFMOK
- AxnDbEqx9XvxSJIOHR6qoFn4u+r9kZ6VAQF1sQhxCUmBpd2QgYYlt3smn+NJvK3BufoD
- d2IBZ3Nl8iFb/bIk5bmKAJc3RI77+gEwS5BMDa2yV3+3T7xmtvFbCYHioZbj7n9xP8Ha
- JIWmJ/eBJmxVgk8aLBvcZhevRQp7YANVvGhvJt8rR20n85Mqfgv0HDi9BFJzUPGmm6ue
- 2o4Q==
-X-Gm-Message-State: AOJu0YwbY2anaxiiO+kgFn9QcFpC2Udtwsf/7xFCN7AV5WUAM4Ml+16S
- XmJXukwdQhdoo8nyFU2usCQ96suVCNUmHTI6hzF5fjN/A4olpuANulrEAdqNFVwS80iAOUr+qpP
- JJGhTJ42v/8YyYLnyVtJPDInilQx3AUu7J8WPF5XK/OXGJ1GFkfKiZc7nRm/7eWDEAgghdapA8q
- czxq6ZluNyFRuvHN92EzTZDGOvIC8=
-X-Received: by 2002:a17:90b:3d0:b0:2e0:adbd:78ec with SMTP id
- 98e67ed59e1d1-2e0b8ee1139mr2231400a91.39.1727410097415; 
- Thu, 26 Sep 2024 21:08:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHCq3lONO0P10YVW6gZb+8J4sne+F1Mx8V3S1iFB7u2C1un8PBkCjozc22r26I0cAake9tvhXy9VKnBlAwhMqw=
-X-Received: by 2002:a17:90b:3d0:b0:2e0:adbd:78ec with SMTP id
- 98e67ed59e1d1-2e0b8ee1139mr2231380a91.39.1727410096948; Thu, 26 Sep 2024
- 21:08:16 -0700 (PDT)
+ bh=s7tzts8FG+d/e1j+wzWbfvK4LxyPeqzPVYQemVOR5mI=;
+ b=QILMlcPycrJITjNO7YzNeoNe/xDEkaV3HL2fSIEpDfV73HwDyIJ1EUdI5uMwi+p2ef
+ s4HW6XbnEw8hscFfSfckXGQGgS4Tx7kMq1udkSH1JxZBtJNp9lQSgjY/j2MIjuSOEbJC
+ 3OprxGyAShEkbCjUs/953jzc4xSZbwGrHG5neckC5SO1Qz0xidwMryWhQobn7x3bxigj
+ JXL+P0UHjl3zu96XPe+Jhd5XBuVgpB0+yNiKtYORgxB69kyMowlE2Q6cZGvUw66b7tUu
+ 1OqzKRB/cf6DZ4kBpr9l7LpmAAjQn9TUGDMaLIENgB3Ex5ou5xYyf4rWLJpRkenPC17s
+ 4uXg==
+X-Gm-Message-State: AOJu0YybpJON5vDUymjxp785F0r66+n33GQV0K5iwa11qvGh4eHq/h6h
+ O2E2RzCzeucFH9wsRxMk+t9CsH5x8q3qvS8OIgU1tJgK+hy1wlt4U8R5GilFhWZTjbqVE6PUwgI
+ Ui49SbIj87OuRtasiPil8GfkIQ3O7+7Q5YLYYdQJfUp/rjib1IhU4H38KsBkX8qumTJf2uGbxyI
+ vveE+w4OxsP9pQouJJ4UijKNcO/00=
+X-Received: by 2002:a17:90a:bf03:b0:2dd:6969:208e with SMTP id
+ 98e67ed59e1d1-2e0b899c3admr2379988a91.3.1727410099816; 
+ Thu, 26 Sep 2024 21:08:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEfXWVoerCUbReUrw50FYJYOejvCfDN5wtFS4cPBmI1zOEX/3PtjAfYFk8wMVwHedOAX16HrpMKEbIZdD0Abgw=
+X-Received: by 2002:a17:90a:bf03:b0:2dd:6969:208e with SMTP id
+ 98e67ed59e1d1-2e0b899c3admr2379960a91.3.1727410099387; Thu, 26 Sep 2024
+ 21:08:19 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240911052255.1294071-1-zhenzhong.duan@intel.com>
- <20240911052255.1294071-12-zhenzhong.duan@intel.com>
-In-Reply-To: <20240911052255.1294071-12-zhenzhong.duan@intel.com>
+ <20240911052255.1294071-15-zhenzhong.duan@intel.com>
+In-Reply-To: <20240911052255.1294071-15-zhenzhong.duan@intel.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 27 Sep 2024 12:08:04 +0800
-Message-ID: <CACGkMEs5cwOpUonpdDnSNVfCT=0FQFvMAXhP50ZS=L9e+5ANXw@mail.gmail.com>
-Subject: Re: [PATCH v3 11/17] intel_iommu: Add an internal API to find an
- address space with PASID
+Date: Fri, 27 Sep 2024 12:08:06 +0800
+Message-ID: <CACGkMEuV=ZdnGE7N=YehCxpNiVPXai=WUdgJjnxVxwzBnTMEOQ@mail.gmail.com>
+Subject: Re: [PATCH v3 14/17] intel_iommu: Set default aw_bits to 48 in
+ scalable modern mode
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Cc: qemu-devel@nongnu.org, alex.williamson@redhat.com, clg@redhat.com, 
  eric.auger@redhat.com, mst@redhat.com, peterx@redhat.com, jgg@nvidia.com, 
  nicolinc@nvidia.com, joao.m.martins@oracle.com, 
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com, 
- chao.p.peng@intel.com, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <eduardo@habkost.net>
+ chao.p.peng@intel.com, Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
@@ -104,19 +104,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 11, 2024 at 1:26=E2=80=AFPM Zhenzhong Duan <zhenzhong.duan@inte=
+On Wed, Sep 11, 2024 at 1:27=E2=80=AFPM Zhenzhong Duan <zhenzhong.duan@inte=
 l.com> wrote:
 >
-> From: Cl=C3=A9ment Mathieu--Drif <clement.mathieu--drif@eviden.com>
+> According to VTD spec, stage-1 page table could support 4-level and
+> 5-level paging.
 >
-> This will be used to implement the device IOTLB invalidation
+> However, 5-level paging translation emulation is unsupported yet.
+> That means the only supported value for aw_bits is 48.
 >
-> Signed-off-by: Cl=C3=A9ment Mathieu--Drif <clement.mathieu--drif@eviden.c=
-om>
+> So default aw_bits to 48 in scalable modern mode. In other cases,
+> it is still default to 39 for compatibility.
+>
+> Add a check to ensure user specified value is 48 in modern mode
+> for now.
+>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Reviewed-by: Cl=C3=A9ment Mathieu--Drif<clement.mathieu--drif@eviden.com>
 > ---
+>  include/hw/i386/intel_iommu.h |  2 +-
+>  hw/i386/intel_iommu.c         | 10 +++++++++-
+>  2 files changed, 10 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.=
+h
+> index b843d069cc..48134bda11 100644
+> --- a/include/hw/i386/intel_iommu.h
+> +++ b/include/hw/i386/intel_iommu.h
+> @@ -45,7 +45,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState, INTEL_IOMMU=
+_DEVICE)
+>  #define DMAR_REG_SIZE               0x230
+>  #define VTD_HOST_AW_39BIT           39
+>  #define VTD_HOST_AW_48BIT           48
+> -#define VTD_HOST_ADDRESS_WIDTH      VTD_HOST_AW_39BIT
+> +#define VTD_HOST_AW_AUTO            0xff
+>  #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
+>
+>  #define DMAR_REPORT_F_INTR          (1)
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index c25211ddaf..949f120456 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -3771,7 +3771,7 @@ static Property vtd_properties[] =3D {
+>                              ON_OFF_AUTO_AUTO),
+>      DEFINE_PROP_BOOL("x-buggy-eim", IntelIOMMUState, buggy_eim, false),
+>      DEFINE_PROP_UINT8("aw-bits", IntelIOMMUState, aw_bits,
+> -                      VTD_HOST_ADDRESS_WIDTH),
+> +                      VTD_HOST_AW_AUTO),
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+Such command line API seems to be wired.
+
+I think we can stick the current default and when scalable modern is
+enabled by aw is not specified, we can change aw to 48?
+
+>      DEFINE_PROP_BOOL("caching-mode", IntelIOMMUState, caching_mode, FALS=
+E),
+>      DEFINE_PROP_BOOL("x-scalable-mode", IntelIOMMUState, scalable_mode, =
+FALSE),
+>      DEFINE_PROP_BOOL("snoop-control", IntelIOMMUState, snoop_control, fa=
+lse),
+> @@ -4686,6 +4686,14 @@ static bool vtd_decide_config(IntelIOMMUState *s, =
+Error **errp)
+>          }
+>      }
+>
+> +    if (s->aw_bits =3D=3D VTD_HOST_AW_AUTO) {
+> +        if (s->scalable_modern) {
+> +            s->aw_bits =3D VTD_HOST_AW_48BIT;
+> +        } else {
+> +            s->aw_bits =3D VTD_HOST_AW_39BIT;
+> +        }
+> +    }
+> +
+>      if ((s->aw_bits !=3D VTD_HOST_AW_39BIT) &&
+>          (s->aw_bits !=3D VTD_HOST_AW_48BIT) &&
+>          !s->scalable_modern) {
+> --
+> 2.34.1
+>
 
 Thanks
 
