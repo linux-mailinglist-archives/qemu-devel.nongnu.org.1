@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F11988BF9
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA0D988BF7
 	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 23:47:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suImf-00043F-FM; Fri, 27 Sep 2024 17:45:53 -0400
+	id 1suImh-0004B1-2l; Fri, 27 Sep 2024 17:45:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suImd-0003xY-BC
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:45:51 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suIme-00041w-E1
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:45:52 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suImb-0003uL-H3
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:45:50 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-42cd74c0d16so23948515e9.1
- for <qemu-devel@nongnu.org>; Fri, 27 Sep 2024 14:45:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1suImc-0003ul-D7
+ for qemu-devel@nongnu.org; Fri, 27 Sep 2024 17:45:52 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-42cb57f8b41so31140305e9.0
+ for <qemu-devel@nongnu.org>; Fri, 27 Sep 2024 14:45:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727473541; x=1728078341; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727473548; x=1728078348; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Tq/WU8YFou4tlFTr5oZ2aHrtwQxQNFO3jd7/jY9s2dw=;
- b=AiQIJV9iswhWv7xNmxJS/55KZIHsUX5nPKpfD/KMi4F0ZJ3i7o/rPNbMJ4I5xqdTXA
- uB0/mdPLgGX6AeRJVYyWYyQwYGJ86GdgNC24ADTMRP9WZb5bv461SmTPKkffVFHe/Iqo
- og/yq26oBoj+tHinuEl877OkTbFUd3vMQuiXE1a/Rhdz8blfMr+YyCwRDJbbyNTZs31r
- hQbQnBvm5e/eIkbX75cy2pMPm2QqF1FM0yxCc11Gf4+gipP4cOwf2ABj5mTQgjSEfsVR
- pSuxHE1T2Q78yb4VRvxKXPBF1y/ghDVDaXkyp4umbqCLDYgngYHql8g5RVCcRdyUWApT
- JJ2Q==
+ bh=22wtNkwk6lzPh2EtQj85F8jLpnswm9ZtwKSArURcwyA=;
+ b=kckBDP6Gj8mRwxqqub8ykpcyjo9SSY8HO2InTJsE555j0cClfcPJckjrJ24KZ98AQU
+ 83o24sXLCICkhf3uykxlhbqGTcCXJMGtBmiySu0cHK928bCb9axT4eG2HFLZ0+WsEbQJ
+ FTTz41TczOF11z9UYtlDAOp9gej0nucMJOMlvF40BFbrTBRJVk97TXykdNgLcc/edTKY
+ rm2546QzsSmRueIjv6n/uYy2XoXWdleXrjm3CzXvMlbx7R78ujFnRAF+GRQ0OuTkj6FY
+ Cs35ndeETsiI2jQlqMTEYrE3gpKxfvz3akxBfvJPZYgJ1PtjwBXD61T+C14sQ6Waq+nv
+ RJ3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727473541; x=1728078341;
+ d=1e100.net; s=20230601; t=1727473548; x=1728078348;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Tq/WU8YFou4tlFTr5oZ2aHrtwQxQNFO3jd7/jY9s2dw=;
- b=kI/fx4Xw6YgmDZTFJhEZ2wU04uLs4jvSGpqEI2820EpvKsVAGUfKdg8PbWLZJRTfD8
- byUqMcAoYR2dEMLkupt7gTJFLJyuli/10xxMe+xaydjSWxJVtpcFUBeKsFUd1fpj9BrN
- RUNjXbmX0qJ3ipQFSpBUIF6/NW4ozekcxTrT4wTk1Ve5ZseppO4eTfgih9Jrt3n+xvd8
- Fe3SCDCpBRSXVuAvfv17I8NBw9pGFMnVRBoWmKey2JWTFWq74SpgQJG3aT+quzF7Bgrh
- wITZbRyvFwj5AjJ5yqoD9JYqGppr/oZyjVrypLFJUJFjIYegZfoOP6sQm18g34TL2rqj
- yYQA==
-X-Gm-Message-State: AOJu0YyNMvnlWMJ+p1Y7TfIAfgaogje0ZutvxaHeen+Vi7COggnDckYt
- zeqELAnRdeBkzbsVMlJe+k/e0KjRYwVQK3PM2j4lYn76EDktvnNVFkXE7q2F5L0uHZLIH4azItc
- +
-X-Google-Smtp-Source: AGHT+IGGJC8+9f2DLcXYz7UNT52MIcCJvmAtXpq0ltLtc2B0EdD1vwXm4xFrnfWyN4YA2qQjOpTVdg==
-X-Received: by 2002:a05:600c:4f86:b0:42c:bae0:f066 with SMTP id
- 5b1f17b1804b1-42f58434768mr30930125e9.13.1727473541180; 
- Fri, 27 Sep 2024 14:45:41 -0700 (PDT)
+ bh=22wtNkwk6lzPh2EtQj85F8jLpnswm9ZtwKSArURcwyA=;
+ b=M9V3JONEa4gPPBVK70xsldO1OvbjauMECKzAj1T1u7CgtmOcj4iBYu6c0xs48Jiw/e
+ tLfbKIm7gJXRDZhNf/zy+r1AwMnxqgVwXWAMXBJlHUzcE780WsrqOEp7u41IhF0vuISC
+ 9B/U1ZA2wRCKvr4+VkKD6NZy50ho/4skY07I980MZLpM34jM8TIcR2JxzxwLRFck276S
+ +eF4sIFW5RpjpNWlWGgCtnsdE7UMorGZKLMaOWSFweLuPrTe8P69S1lhgql+EUYx0KQc
+ vXZdb76GZFPMr9yYnbxX57i/dBhLC4n6J6lyH7h5k5rBBs7AD/C/C72fF5vtnrgyVNqv
+ NWRA==
+X-Gm-Message-State: AOJu0YwgLmB9KI+4i70IkHJCJbSS+naK0TCxIurEzOP81xj93hly3n+T
+ 0p0t3n8JKQD+Haab6rH62vNGF2+W8jl1bmEHhF8nG1JS5/MHyqbHlIptWBnYaTGFAGUuDC0j9LF
+ e
+X-Google-Smtp-Source: AGHT+IGpYOfRFumm9XZdJwLyZz8guaI/2hF7CixvTFkmE+6dfS5poM0464o5AoPoz4/J6RPtwL0Z+Q==
+X-Received: by 2002:a05:600c:1d1e:b0:42b:ac3d:3abc with SMTP id
+ 5b1f17b1804b1-42f584976b0mr42968425e9.24.1727473548533; 
+ Fri, 27 Sep 2024 14:45:48 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.217.136])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42e96a36292sm84637645e9.32.2024.09.27.14.45.38
+ ffacd0b85a97d-37cd564ce91sm3460609f8f.2.2024.09.27.14.45.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 27 Sep 2024 14:45:39 -0700 (PDT)
+ Fri, 27 Sep 2024 14:45:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
@@ -64,17 +64,17 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Jason Wang <jasowang@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/4] hw/ppc/spapr_nvdimm: Simplify LD/ST API uses
-Date: Fri, 27 Sep 2024 23:45:28 +0200
-Message-ID: <20240927214531.20242-2-philmd@linaro.org>
+Subject: [PATCH 2/4] hw/ppc/spapr_vof: Simplify LD/ST API uses
+Date: Fri, 27 Sep 2024 23:45:29 +0200
+Message-ID: <20240927214531.20242-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240927214531.20242-1-philmd@linaro.org>
 References: <20240927214531.20242-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -96,86 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ldn/stn methods handle the access size, no need for the switch case.
+Directly call ldn_be_p once instead of ldl_be_p / ldq_be_p.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr_nvdimm.c | 47 ++++---------------------------------------
- 1 file changed, 4 insertions(+), 43 deletions(-)
+ hw/ppc/spapr_vof.c | 27 +++++++++------------------
+ 1 file changed, 9 insertions(+), 18 deletions(-)
 
-diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
-index 7d2dfe5e3d..5af0b13370 100644
---- a/hw/ppc/spapr_nvdimm.c
-+++ b/hw/ppc/spapr_nvdimm.c
-@@ -250,7 +250,6 @@ static target_ulong h_scm_read_metadata(PowerPCCPU *cpu,
-     SpaprDrc *drc = spapr_drc_by_index(drc_index);
-     NVDIMMDevice *nvdimm;
-     NVDIMMClass *ddc;
--    uint64_t data = 0;
-     uint8_t buf[8] = { 0 };
- 
-     if (!drc || !drc->dev ||
-@@ -272,24 +271,7 @@ static target_ulong h_scm_read_metadata(PowerPCCPU *cpu,
-     ddc = NVDIMM_GET_CLASS(nvdimm);
-     ddc->read_label_data(nvdimm, buf, len, offset);
- 
--    switch (len) {
--    case 1:
--        data = ldub_p(buf);
--        break;
--    case 2:
--        data = lduw_be_p(buf);
--        break;
--    case 4:
--        data = ldl_be_p(buf);
--        break;
--    case 8:
--        data = ldq_be_p(buf);
--        break;
--    default:
--        g_assert_not_reached();
--    }
--
--    args[0] = data;
-+    args[0] = ldn_be_p(buf, len);
- 
-     return H_SUCCESS;
- }
-@@ -325,31 +307,10 @@ static target_ulong h_scm_write_metadata(PowerPCCPU *cpu,
-         return H_P2;
+diff --git a/hw/ppc/spapr_vof.c b/hw/ppc/spapr_vof.c
+index c02eaacfed..d238a44d88 100644
+--- a/hw/ppc/spapr_vof.c
++++ b/hw/ppc/spapr_vof.c
+@@ -136,26 +136,17 @@ bool spapr_vof_setprop(MachineState *ms, const char *path, const char *propname,
+             vof->bootargs = g_strndup(val, vallen);
+             return true;
+         }
+-        if (strcmp(propname, "linux,initrd-start") == 0) {
+-            if (vallen == sizeof(uint32_t)) {
+-                spapr->initrd_base = ldl_be_p(val);
+-                return true;
++        switch (vallen) {
++        case 4:
++        case 8:
++            if (strcmp(propname, "linux,initrd-start") == 0) {
++                spapr->initrd_base = ldn_be_p(val, vallen);
+             }
+-            if (vallen == sizeof(uint64_t)) {
+-                spapr->initrd_base = ldq_be_p(val);
+-                return true;
+-            }
+-            return false;
+-        }
+-        if (strcmp(propname, "linux,initrd-end") == 0) {
+-            if (vallen == sizeof(uint32_t)) {
+-                spapr->initrd_size = ldl_be_p(val) - spapr->initrd_base;
+-                return true;
+-            }
+-            if (vallen == sizeof(uint64_t)) {
+-                spapr->initrd_size = ldq_be_p(val) - spapr->initrd_base;
+-                return true;
++            if (strcmp(propname, "linux,initrd-end") == 0) {
++                spapr->initrd_size = ldn_be_p(val, vallen);
+             }
++            return true;
++        default:
+             return false;
+         }
      }
- 
--    switch (len) {
--    case 1:
--        if (data & 0xffffffffffffff00) {
--            return H_P2;
--        }
--        stb_p(buf, data);
--        break;
--    case 2:
--        if (data & 0xffffffffffff0000) {
--            return H_P2;
--        }
--        stw_be_p(buf, data);
--        break;
--    case 4:
--        if (data & 0xffffffff00000000) {
--            return H_P2;
--        }
--        stl_be_p(buf, data);
--        break;
--    case 8:
--        stq_be_p(buf, data);
--        break;
--    default:
--            g_assert_not_reached();
-+    if (len < 8 && extract64(data, 8 * len, 64 - 8 * len)) {
-+        return H_P2;
-     }
-+    stn_be_p(buf, data, len);
- 
-     ddc = NVDIMM_GET_CLASS(nvdimm);
-     ddc->write_label_data(nvdimm, buf, len, offset);
 -- 
 2.45.2
 
