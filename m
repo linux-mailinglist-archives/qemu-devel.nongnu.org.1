@@ -2,83 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F6A987F71
-	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 09:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6D3987F7B
+	for <lists+qemu-devel@lfdr.de>; Fri, 27 Sep 2024 09:32:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1su5PR-0004ni-0W; Fri, 27 Sep 2024 03:29:01 -0400
+	id 1su5SR-0001Lx-2D; Fri, 27 Sep 2024 03:32:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1su5PO-0004me-9r
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 03:28:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1su5SJ-0001Hh-E7; Fri, 27 Sep 2024 03:32:00 -0400
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1su5PM-0003hw-6Q
- for qemu-devel@nongnu.org; Fri, 27 Sep 2024 03:28:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727422133;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lZlhgHa5oCyR8W4JGBxbbHBPORbeVYoXF5r7knvJEH4=;
- b=EaMH6FWm3YgEX0BsUwgb/SFGwcyHuvq0lGcRUynbBI6utbK9ldLA9peYMfDgPLhZkEkSYp
- QAkiC4pWu37n9pNIAnQ0f7zaxjmw7eG+IsdB/hbr2t93dlntFRMcCkCbOeAGw8rwTqh40d
- bn0BRQ8sZmp+1h4EHXVLCLYisIwAYPA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-198-yKZolCNkM3Cm3ao-9UD-tQ-1; Fri,
- 27 Sep 2024 03:28:49 -0400
-X-MC-Unique: yKZolCNkM3Cm3ao-9UD-tQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 60353193610E; Fri, 27 Sep 2024 07:28:47 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.47])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2E1951956086; Fri, 27 Sep 2024 07:28:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2BBE721E6A28; Fri, 27 Sep 2024 09:28:43 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,  qemu-devel
- <qemu-devel@nongnu.org>,  Manos Pitsidianakis
- <manos.pitsidianakis@linaro.org>,  Hanna Reitz <hreitz@redhat.com>,  Peter
- Maydell <peter.maydell@linaro.org>,
- pkg-qemu-devel@lists.alioth.debian.org,  Michael Tokarev
- <mjt@tls.msk.ru>,  ncopa@alpinelinux.org,  bofh@freebsd.org,
- emulation@freebsd.org,  virtualization@gentoo.org,  dilfridge@gentoo.org,
- hi@alyssa.is,  edolstra+nixpkgs@gmail.com,  brad@comstyle.com,  Paolo
- Bonzini <pbonzini@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Stefan
- Hajnoczi <stefanha@redhat.com>,  dvzrv@archlinux.org,
- anatol.pomozov@gmail.com,  Miroslav Rezanina <mrezanin@redhat.com>
-Subject: Re: Rust BoF and maintainer minutes and planning the roadmap to Rust
-In-Reply-To: <ZvWPH1f6ZnvH1iYZ@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Thu, 26 Sep 2024 17:43:11 +0100")
-References: <871q16fq9c.fsf@draig.linaro.org> <ZvWPH1f6ZnvH1iYZ@redhat.com>
-Date: Fri, 27 Sep 2024 09:28:43 +0200
-Message-ID: <875xqh4kt0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1su5SE-0004DY-Gd; Fri, 27 Sep 2024 03:31:58 -0400
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 27 Sep
+ 2024 15:31:44 +0800
+Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
+ Transport; Fri, 27 Sep 2024 15:31:44 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
+ Stanley" <joel@jms.id.au>, Thomas Huth <thuth@redhat.com>, Laurent Vivier
+ <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "open list:ASPEED
+ BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ <yunlin.tang@aspeedtech.com>
+Subject: [PATCH v4 0/7] Support GPIO for AST2700
+Date: Fri, 27 Sep 2024 15:31:37 +0800
+Message-ID: <20240927073144.2303522-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.131,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,63 +59,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+v1: Support GPIO for AST2700
+v2: Fix clear incorrect interrupt status and adds reviewer suggestions
+v3: remove nested conditionals and adds reviewer suggestions
+v4: add test cases to test GPIO for AST2700 and update commit messages
 
-> On Thu, Sep 26, 2024 at 03:23:11PM +0100, Alex Benn=C3=A9e wrote:
+Jamin Lin (7):
+  hw/gpio/aspeed: Fix coding style
+  hw/gpio/aspeed: Support to set the different memory size
+  hw/gpio/aspeed: Support different memory region ops
+  hw/gpio/aspeed: Fix clear incorrect interrupt status for GPIO index
+    mode
+  hw/gpio/aspeed: Add AST2700 support
+  aspeed/soc: Support GPIO for AST2700 and correct irq 130
+  hw/gpio/aspeed: Add test case for AST2700
 
-[...]
+ hw/arm/aspeed_ast27x0.c        |  18 +-
+ hw/gpio/aspeed_gpio.c          | 427 +++++++++++++++++++++++++++++++--
+ include/hw/gpio/aspeed_gpio.h  |   4 +-
+ tests/qtest/aspeed_gpio-test.c |  64 +++++
+ 4 files changed, 494 insertions(+), 19 deletions(-)
 
->> One issue that came up is how we handle adequately reviewing code when
->> most of the maintainers are experienced C coders but might not know much
->> about Rust. While we want to avoid the situation of developers vetoing
->> conversion there should be communication ahead of any serious work to
->> avoid rust contributions coming out of the blue. If a maintainer feels
->> they cannot maintain a bunch of unfamiliar rust code the submitter
->> should be prepared to find people willing to become a maintainers as
->> unmaintained drive-by submissions are not useful for the long term
->> health of the project.
->
-> Yep, communication is critical, if proposing to rewrite existing
-> functionality. Drowning maintainers in conversion patches without
-> warning is a guaranteed way to create friction between people.
->
->> With relative inexperience there was a concern we could inadvertently
->> introduce technical debt in the code base (C-like Rust vs Rusty rust).
->> What can we do to mitigate that issue?
->
-> On a long enough time frame, all exiting code can be considered
-> technical debt. Given the relatively sparse Rust experiance
-> across our community, we're guaranteed to make more design
-> mistakes in the first few years. Mitigating this is important,
-> but at the same time, we should also accept we're not going
-> to get everything perfect.
->
-> One thing our community is very good at is obsessing about
-> perfection of patch series. I can forsee us doing that to an
-> even greater extent with any Rust conversions of code. If we
-> are not careful we could really harm  our overall productivity
-> by spending too much time striving for a perfect Rust abstraction
-> first time out, even though many of us would still be relative
-> newcomers to Rust, such that we don't know what we don't know.
->
-> IOW, we need to be pragmatic about accepting some level of
-> technical debt at times. Especially if there are cases where
-> our Rust design is held back by existing C code, we might be
-> better off temporarily accepting sub-optimal Rust, to avoid
-> immediately refactoring piles of C code, and tackle the problems
-> later.
-
-A deliberate approach to explore some before we go all in could mitigate
-the risk of taking on too much technical debt.
-
-We obviously need to write instances of each interesting class of things
-to ferret out the problems, and design good interfaces.  I'd recommend
-to write few instances, ideally one, then let them mature some before we
-create many more of them.  Prioritize gaining experience over quantity.
-
-[...]
+-- 
+2.34.1
 
 
