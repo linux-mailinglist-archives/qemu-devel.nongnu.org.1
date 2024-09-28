@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C32988EFF
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Sep 2024 12:41:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A3B988F00
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Sep 2024 12:46:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suUs6-0005n9-4F; Sat, 28 Sep 2024 06:40:18 -0400
+	id 1suUxL-00072h-EI; Sat, 28 Sep 2024 06:45:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1suUs2-0005lz-LJ
- for qemu-devel@nongnu.org; Sat, 28 Sep 2024 06:40:14 -0400
-Received: from mout.kundenserver.de ([212.227.126.131])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1suUxF-000729-4o
+ for qemu-devel@nongnu.org; Sat, 28 Sep 2024 06:45:37 -0400
+Received: from mout.kundenserver.de ([212.227.126.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1suUs0-0000Mr-Qc
- for qemu-devel@nongnu.org; Sat, 28 Sep 2024 06:40:14 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1suUxC-0000sE-Vp
+ for qemu-devel@nongnu.org; Sat, 28 Sep 2024 06:45:36 -0400
 Received: from [192.168.100.1] ([82.64.211.94]) by mrelayeu.kundenserver.de
- (mreue010 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1MQuwR-1sWU6g3FLT-00Jq0U; Sat, 28 Sep 2024 12:40:01 +0200
-Message-ID: <09a456b8-b8e4-4cf4-af4b-bb79f7b1bfb5@vivier.eu>
-Date: Sat, 28 Sep 2024 12:40:00 +0200
+ (mreue009 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1MMoXE-1sbj5B3ZaO-00SfbG; Sat, 28 Sep 2024 12:45:29 +0200
+Message-ID: <4e626934-2651-4971-898d-4669d1b02500@vivier.eu>
+Date: Sat, 28 Sep 2024 12:45:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] linux-user: add strace support for openat2
+Subject: Re: [PATCH v7 1/2] linux-user: add openat2 support in linux-user
 To: Michael Vogt <mvogt@redhat.com>, qemu-devel@nongnu.org
 Cc: Michael Vogt <michael.vogt@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>
 References: <cover.1727119903.git.mvogt@redhat.com>
- <dba054de9c2285aa0908cae22ede2c082ed5af7c.1727119903.git.mvogt@redhat.com>
+ <b0820319bcdc7f619fa875a168da7ac163955c3b.1727119903.git.mvogt@redhat.com>
 Content-Language: fr
 From: Laurent Vivier <laurent@vivier.eu>
 Autocrypt: addr=laurent@vivier.eu; keydata=
@@ -73,31 +73,31 @@ Autocrypt: addr=laurent@vivier.eu; keydata=
  OpKgu3nD0ahBDqANU/ZmNNarBJEwvM2vfusmNnWm3QMIwxNuJghRyuFfx694Im1js0ZY3LEU
  JGSHFG4ZynA+ZFUPA6Xf0wHeJOxGKCGIyeKORsteIqgnkINW9fnKJw2pgk8qHkwVc3Vu+wGS
  ZiJK0xFusPQehjWTHn9WjMG1zvQ5TQQHxau/2FkP45+nRPco6vVFQe8JmgtRF8WFJA==
-In-Reply-To: <dba054de9c2285aa0908cae22ede2c082ed5af7c.1727119903.git.mvogt@redhat.com>
+In-Reply-To: <b0820319bcdc7f619fa875a168da7ac163955c3b.1727119903.git.mvogt@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:QpB4qgc7zZTD8GEUMz8XPG1Irx2PUxNhlBsNjZS1FPqNfv7loZP
- 7noz5fzjd4Ut39ZMqEn9gUlPt/U9r5qto9+PZEDLTuxdleLyMIJXoSGQyH4s1MduCUHZ1fw
- Q9jkECuLWSnIEgxbuf0g+ingRycWvqwNrnDYf/anGai6epYsp3BEyNnB0xz31QoyHpFeBFl
- oAmtB8QWc8DLYVscJt4xw==
-UI-OutboundReport: notjunk:1;M01:P0:vVNyz16ZyOU=;EgF+7bUtwCzeAOpwn85tlwUkPDd
- HeV1JqvWHKx5S5Vl+QwcWzMy1T3uAG14xdSjogr9Fe43sNkN4BkjfnK9USEWAJrTd4A5eAPNh
- Jqukk7c5Ohfpyx57YAQjENcS4xGcjlWHpe1SRcJXpkViyy/oq8/4zD/cfZ1o0dzCGBVgLaOPM
- LNiA/yLYc1hFXc5QibENUHX9nP2z0rTSeBvXR2DxqjrltohCupLuyAXPi7QCl/jY+8bavPpbB
- jAmd3xol7+i56CHL1DIyM1cUVIJL0q7cDB0Lnj+NO6FWii1pxlbPclIkYfma/7dc1y85g/J6q
- oqmakNHy5hYVeukEoOak1dT2epfeoO9aqiOgf9f7BucbRi4kk5BaNirZRr9zrU30UdoJ+3u2f
- UWnDH1o5i/33GupeHFg9ylMw13QDIgCfgSiCzbdQ5o3SVQZpPBAC8ePFKMuEJad4KC96KeFd7
- /g2XfWAf2KOtIQ3K8nY0Adz5XVnRhJQyK5ghquugQncsauB8+hy7bZzKhIu6pTehczbHV/K+0
- Kw+s0Gj1CSP5Mky4RtYpGvabmoDpVIS2+PJwXVzixHWeTrL09Ykg487aMMtY969G3r6ZmDD7H
- mMltCL8AohCqIZ7IEovewrBQIhRTYLtjqBYs1GCOrrmM4zi10kGabmVu+S2oSRPvn9W1Wco4Q
- fplQXHG4AUAmvzg4bJaWwhveP4zdiTyzi//NRCSdmlKZ0kiiUllIorG6ePYCInY3OITPpAuj/
- LvTcWt1mbhTMyqVbpJ8uCqwJ+bGep29og==
-Received-SPF: pass client-ip=212.227.126.131; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:QhAg1U+QBja+uNCpwqjFd5Rz0fLgsY75ZKhzh41DnP3VGk0qM4K
+ 9iuXY9d2vhsg5dlcfWx3OSZHbY+M/wl0Q+EFgCZYn/ipUJH+X10ZsMxnKRxE+CuMrIvPpMI
+ sACpbYU0crSduYQ+bAvJoa5YIiXQOCkYz7WO5DjRb86uX4essRA34Ys69LWnJIkTJ91e0W5
+ f0qHmZ+9zokkaJgGBUifQ==
+UI-OutboundReport: notjunk:1;M01:P0:VWN+bx9KMzY=;dPdytaNn3PpGjONGgVz0aYFUa3Q
+ 6xzRLd9wBbv0VuP2QSCXNhvwVhRk2dUmRiZLpRowIuB6zog9AKDiLeeY09aBmFCn7MMmFyCw4
+ yVU/L0Y7xUe7E8vdMosRAmFdtEMMu4cKqkgLmaw47HWVAYAXnNUMR9uW8U0kSTxdtlVQHZovg
+ SNKN6kxXC38X/xuT5zBedELY5KltPkq/M5Ths5475yVq3qRvSgdTYhp32Fiyx4K57Gh5gCtzd
+ b1XTMFA6fgmSPQZyPb4CvjSxYRe8MBSTKeWbTRflNZW7MeS3NBe0x4z1pQcCIEWY7tEmAmIf1
+ 1nxBcrxguo480NRKRlBUyBg4+oGFSPjwyKbOVnQudP7859I4fzTI48+gZE1QUoNE9UZbtQaOd
+ wwh1krj5jOydJcRku3Jc+ZRPNwmqqEvYItyDRK6FajGOt9kXi0cHpn/Gb3cXRtjScg0L99mXL
+ VWzcOVTj43GJfws3XzfPnyJWdVaqwycMkB+qb+e/BgAnsYOgN7ARwASSeIN1UpQk0nJpVq6X0
+ ZusThAxA/uz7SSKbJh7dDGFEQcQXMHT656OS358UzYfUj6BMGSKzwiI7/RWdxCjKyLGsOGcjr
+ yA204+UrQIlHia/uiS2teDPnpZR/J9C8aqBUyLOgKAOKrmzVTxwyjKvuCgupdK1Q+ZWDWga7q
+ W7ksjbirGUaq9te9vw+aJetlh+uGhPVepggO0WzzPqrTIjmwZNolP3TuQFosdVc18gzYqk9b7
+ b6rTxP4HvuTkNOfsCuao/YMKqcBfgmrmw==
+Received-SPF: pass client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H3=0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -117,110 +117,85 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Le 23/09/2024 à 21:37, Michael Vogt a écrit :
-> This commit adds support for the `openat2()` to `QEMU_STRACE`. It
-> will use the `openat2.h` header if available to create user
-> readable flags for the `resolve` argument but does not require
-> the header otherwise.
+> This commit adds support for the `openat2()` syscall in the
+> `linux-user` userspace emulator.
 > 
-> It also makes `copy_struct_from_user()` available via `qemu.h`
-> and `open_how_ver0` via `syscall_defs.h` so that strace.c can use
-> them.
+> It is implemented by extracting a new helper `maybe_do_fake_open()`
+> out of the exiting `do_guest_openat()` and share that with the
+> new `do_guest_openat2()`. Unfortunately we cannot just make
+> do_guest_openat2() a superset of do_guest_openat() because the
+> openat2() syscall is stricter with the argument checking and
+> will return an error for invalid flags or mode combinations (which
+> open()/openat() will ignore).
+> 
+> The implementation is similar to SYSCALL_DEFINE(openat2), i.e.
+> a new `copy_struct_from_user()` is used that works the same
+> as the kernels version to support backwards-compatibility
+> for struct syscall argument.
+> 
+> Instead of including openat2.h we create a copy of `open_how`
+> as `open_how_ver0` to ensure that if the structure grows we
+> can log a LOG_UNIMP warning.
+> 
+> Note that in this commit using openat2() for a "faked" file in
+> /proc will honor the "resolve" flags for
+> RESOLVE_NO_{MAGIC,SYM}LINKS for path based access to /proc/self/exe
+> (which is the only magic link we support for faked files).
+> Note it will not catch special access via e.g. dirfd. This is not
+> great but it seems similar to the exiting behavior when openat()
+> is called with a dirfd to "/proc". Here too the fake file lookup
+> may not catch the special file because no dirfd is used to
+> determine if the path is in /proc.
 > 
 > Signed-off-by: Michael Vogt <mvogt@redhat.com>
+> Buglink: https://github.com/osbuild/bootc-image-builder/issues/619
 > ---
->   linux-user/qemu.h         |  9 +++++++++
->   linux-user/strace.c       | 40 +++++++++++++++++++++++++++++++++++++++
->   linux-user/strace.list    |  3 +++
->   linux-user/syscall.c      |  8 +-------
->   linux-user/syscall_defs.h |  5 +++++
->   meson.build               |  1 +
->   6 files changed, 59 insertions(+), 7 deletions(-)
+>   linux-user/syscall.c      | 105 +++++++++++++++++++++++++++++++++++++-
+>   linux-user/syscall_defs.h |  13 +++++
+>   2 files changed, 116 insertions(+), 2 deletions(-)
 > 
-> diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-> index 2e90a97175..98ad848ab2 100644
-> --- a/linux-user/qemu.h
-> +++ b/linux-user/qemu.h
-> @@ -313,6 +313,15 @@ static inline bool access_ok(CPUState *cpu, int type,
->   int copy_from_user(void *hptr, abi_ulong gaddr, ssize_t len);
->   int copy_to_user(abi_ulong gaddr, void *hptr, ssize_t len);
->   
-> +/*
-> + * copy_struct_from_user() copies a target struct to a host struct, in
-> + * a way that guarantees backwards-compatibility for struct syscall
-> + * arguments.
-> + *
-> + * Similar to kernels uaccess.h:copy_struct_from_user()
-> + */
-> +int copy_struct_from_user(void *dst, size_t ksize, abi_ptr src, size_t usize);
-> +
->   /* Functions for accessing guest memory.  The tget and tput functions
->      read/write single values, byteswapping as necessary.  The lock_user function
->      gets a pointer to a contiguous area of guest memory, but does not perform
-> diff --git a/linux-user/strace.c b/linux-user/strace.c
-> index b4d1098170..77d5108e5d 100644
-> --- a/linux-user/strace.c
-> +++ b/linux-user/strace.c
-> @@ -13,6 +13,9 @@
->   #include <linux/if_packet.h>
->   #include <linux/in6.h>
->   #include <linux/netlink.h>
-> +#ifdef HAVE_OPENAT2_H
-> +#include <linux/openat2.h>
-> +#endif
->   #include <sched.h>
->   #include "qemu.h"
->   #include "user-internals.h"
-> @@ -1063,6 +1066,18 @@ UNUSED static const struct flags open_flags[] = {
->       FLAG_END,
->   };
->   
-> +UNUSED static const struct flags openat2_resolve_flags[] = {
-> +#ifdef HAVE_OPENAT2_H
-> +    FLAG_GENERIC(RESOLVE_NO_XDEV),
-> +    FLAG_GENERIC(RESOLVE_NO_MAGICLINKS),
-> +    FLAG_GENERIC(RESOLVE_NO_SYMLINKS),
-> +    FLAG_GENERIC(RESOLVE_BENEATH),
-> +    FLAG_GENERIC(RESOLVE_IN_ROOT),
-> +    FLAG_GENERIC(RESOLVE_CACHED),
-> +#endif
-> +    FLAG_END,
-> +};
-> +
->   UNUSED static const struct flags mount_flags[] = {
->   #ifdef MS_BIND
->       FLAG_GENERIC(MS_BIND),
-> @@ -3483,6 +3498,31 @@ print_openat(CPUArchState *cpu_env, const struct syscallname *name,
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index b693aeff5b..8c5d68ef85 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -602,6 +602,34 @@ static int check_zeroed_user(abi_long addr, size_t ksize, size_t usize)
+>       return 1;
 >   }
->   #endif
->   
-> +#ifdef TARGET_NR_openat2
-> +static void
-> +print_openat2(CPUArchState *cpu_env, const struct syscallname *name,
-> +              abi_long arg0, abi_long arg1, abi_long arg2,
-> +              abi_long arg3, abi_long arg4, abi_long arg5)
+...
+> +
+> +static int do_openat2(CPUArchState *cpu_env, abi_long dirfd,
+> +                      abi_ptr guest_pathname, abi_ptr guest_open_how,
+> +                      abi_ulong guest_size)
 > +{
 > +    struct open_how_ver0 how = {0};
+> +    char *pathname;
+> +    int ret;
 > +
-> +    print_syscall_prologue(name);
-> +    print_at_dirfd(arg0, 0);
-> +    print_string(arg1, 0);
-> +    if (copy_struct_from_user(&how, sizeof(how), arg2, arg3) == 0) {
-
-I think you need also to tswap64() all the fields of how.
-
-> +        print_open_flags(how.flags, 0);
-> +        if (how.flags & TARGET_O_CREAT) {
-> +            print_file_mode(how.mode, 0);
-> +        }
-> +        print_flags(openat2_resolve_flags, how.resolve, 0);
-> +    } else {
-> +        print_pointer(arg2, 0);
+> +    if (guest_size < sizeof(struct target_open_how_ver0)) {
+> +        return -TARGET_EINVAL;
 > +    }
-> +    print_raw_param("size=" TARGET_ABI_FMT_lu, arg3, 1);
+> +    ret = copy_struct_from_user(&how, sizeof(how), guest_open_how, guest_size);
+> +    if (ret) {
+> +        if (ret == -TARGET_E2BIG) {
+> +            qemu_log_mask(LOG_UNIMP,
+> +                          "Unimplemented openat2 open_how size: "
+> +                          TARGET_ABI_FMT_lu "\n", guest_size);
+> +        }
+> +        return ret;
+> +    }
+> +    pathname = lock_user_string(guest_pathname);
+> +    if (!pathname) {
+> +        return -TARGET_EFAULT;
+> +    }
+> +
+> +    how.flags = target_to_host_bitmask(how.flags, fcntl_flags_tbl);
 
-Why the "size="?
-You can write: print_raw_param(TARGET_ABI_FMT_lu, arg3, 1);
+I think you need also a tswap64(how.flags) here.
+
+Otherwise:
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
 Thanks,
 Laurent
+
 
