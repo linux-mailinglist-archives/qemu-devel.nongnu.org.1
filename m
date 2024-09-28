@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A70988DE0
-	for <lists+qemu-devel@lfdr.de>; Sat, 28 Sep 2024 07:09:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0CF988EAA
+	for <lists+qemu-devel@lfdr.de>; Sat, 28 Sep 2024 11:00:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suPgU-0001ZH-LG; Sat, 28 Sep 2024 01:07:58 -0400
+	id 1suTHA-0007ss-0h; Sat, 28 Sep 2024 04:58:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1suPgQ-0001Y2-Pq
- for qemu-devel@nongnu.org; Sat, 28 Sep 2024 01:07:54 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1suTH8-0007rv-1C
+ for qemu-devel@nongnu.org; Sat, 28 Sep 2024 04:58:02 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1suPgM-0000o3-Mc
- for qemu-devel@nongnu.org; Sat, 28 Sep 2024 01:07:54 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-5e77a1c5ec6so650044eaf.2
- for <qemu-devel@nongnu.org>; Fri, 27 Sep 2024 22:07:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1suTH5-0002F9-NU
+ for qemu-devel@nongnu.org; Sat, 28 Sep 2024 04:58:01 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-37cdb6ebc1cso672053f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 28 Sep 2024 01:57:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1727500066; x=1728104866;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1727513877; x=1728118677;
  darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Yp0/k05xsBF/LDecO+41WOD7fuZjkp64JeEbjnVDa+8=;
- b=JuM3FX6IFiUwHramHiSjNFQ6jyEBA0XMQ+F02JOp9XI0HGJV18mhjVFrXCvTgRL2JY
- O1RYkD1uIhq+f77vg24VNL/qv4HwvZ7sZEIlxFD307Zj0EP9d164KEeholckk8JTScVE
- aC1aoEG4nEKsjPM9PhOrKjOkW4e3Bh3Zj8hIZaO6q2boYauDU+isHXxZg+ivr5YCWTN/
- /29W1+mfu7s68wGOrACvqES/7o6hIQ4QgFhF5hJbPYMHuKwG+mr8MQ1OwEvaLngw6dGi
- 5Y4ogDrxuy+hPfb8kGt8sMQsINVTKbkhFMFfkMYHPHTEb8SpddVQfHLH7s4ac+wiTUfN
- K4og==
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ezdNH92l/f3wZ8d6SIBGztD5KzOv8BJuw8J/3sO/X/A=;
+ b=NjykWxFD9zq33XisnaiQdho+EM0xDvK/OugtBMY8a4BgPJd2GjHSiw5ekaihggrF5R
+ 8erTC1e3PSDXu5tGEsQgKdSry4C16xA3UycaPDjpWA8i+gQT5Rs++V3h0Q5OwVr+2SwU
+ N5Uj5apeniI1+x8y8oVrrNeHvpfF8GBAzFGC5iODa65mFzH/WE3CsD0McIi4XU38K+Vi
+ eEC+1kmyW02jW1HkSGHCCd8RTcGzemFFs7LDLMx6nt5uH0HL1W25Rhmz3SEOPQnhWR+M
+ wPamdTk0V25SMt44IXzn0H5Kcd+QkAHAUiFb5QcexCxnsSeXuy/qITXLKxTboRqyqim0
+ uaLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727500066; x=1728104866;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1727513877; x=1728118677;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Yp0/k05xsBF/LDecO+41WOD7fuZjkp64JeEbjnVDa+8=;
- b=YzW49O7l9UnfmfqxJENvdl7mjtb0dScyrHK2tPD0Eo17xOhmzi6jAjOQoklDmKmfVb
- WNw5TiS8Us0JSNbQvcDc9Wf1r/1lZ5Tw16P8wu4EJ257PtYuu0LlPiwt8b5cb2eEyGaZ
- 7PqBcGpnZzOsOD9mgVCKtfFd4oa/xShQ4dhmABIMMbZL31Efwwye+HB/VO7rdJ6vDvPD
- M5dyDIX7Itwj3f2txkkwQPup2EhM3iv/bRnBR7COcB1YiBwCoVq41amrgoUkz7rR8MQF
- 0bYtOpCFNGWg3IPZynVlWcwVXfIIodfs32qfpSf3iUodC5eF9tzkhxEIDa+WUd681Ofy
- H5EA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW1sBqs5xA+l0rudRL1LsBiO5l4VxVQ67OzxpXFOd5Ap2Kdk+nw09tL/U5VHQcbD3YrK9Cy3Z3r8gwS@nongnu.org
-X-Gm-Message-State: AOJu0Ywz8Xb3KG0d8VQTxYA6fSq6SwKFcW+KDBHUQI9MGQZbU4oFr14d
- f5Y4qS18CXbdm5dSttBytzihiTyx6bc5e6XrQ5iPUtKbz85Gm9q0Yu6aWl4mf7qPjgGc1kJo+eu
- LGh5+z9MtC2PBb5n8B9hh1+52YIkAfVHZO8Kymw==
-X-Google-Smtp-Source: AGHT+IF5wQGJaslKIOlKYZuHmgYCpwlsKOIngBmM98S3miqujun+vG+Tq96/BJL2b0tXf2+gafzWwYpOsGt86wClq90=
-X-Received: by 2002:a05:6870:498d:b0:261:1339:1cb9 with SMTP id
- 586e51a60fabf-28710bd1554mr3868971fac.35.1727500065369; Fri, 27 Sep 2024
- 22:07:45 -0700 (PDT)
+ bh=ezdNH92l/f3wZ8d6SIBGztD5KzOv8BJuw8J/3sO/X/A=;
+ b=imDRllYPkalNagrS6LCj3yoghk6YAquFMT8urT6sDIFUOilOcNIXSe1vap1fruxw4S
+ ng2JFcf+V+9CG1MrrPt7GSrNUl938Z1sibeXrH99ZHQXMdNfEF6bk8A2pGBmB9Mm4pGw
+ OaM04qNn1lX+3O7bOOQZRxtY/NgfvGuZcECgveCXx+P8OOF/QCNzVqEbnwjjdg+1ZS4P
+ mwIQhL8gxGvE91MkMvFefD+86ylnljWRzyeZ7LaEj2XYbN8W0Xlz5C1+43qaMznZPMge
+ 5A1XwrHk0RPiny9QPWzd1Os5hI0ejj5CifgwNb9MQ4QnzOtvcoWocOx87tP/EJrRpo3q
+ OboQ==
+X-Gm-Message-State: AOJu0Yw5k8NYGx1cbXWVIJnL2V4Z4OwugelWAbSjnpSd5XfVyW/rDsvn
+ l3np9VrI3oB3uSvu7G5WK7YpQV1eEjZz8+KtbEQ0PYjrMYto5BkL3nw1eC6ehuQxxqYhFCaPAnX
+ vrg==
+X-Google-Smtp-Source: AGHT+IGOAP9rTRljyxi9JqbpvbLNmgeGfivG1g4QKSm4v05bpUkbj2vIrasV19luqwA++uTrzyKfxQ==
+X-Received: by 2002:adf:e982:0:b0:374:b31e:3b36 with SMTP id
+ ffacd0b85a97d-37cd5aaf6a4mr3438174f8f.6.1727513876788; 
+ Sat, 28 Sep 2024 01:57:56 -0700 (PDT)
+Received: from localhost.localdomain ([2001:4bb8:2ae:e42d:7dbb:76ba:120d:8a28])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37cd57423afsm4313167f8f.90.2024.09.28.01.57.40
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Sat, 28 Sep 2024 01:57:56 -0700 (PDT)
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+To: qemu-devel@nongnu.org
+Cc: agraf@csgraf.de, phil@philjordan.eu, peter.maydell@linaro.org,
+ pbonzini@redhat.com, rad@semihalf.com, quic_llindhol@quicinc.com,
+ marcin.juszkiewicz@linaro.org, stefanha@redhat.com, mst@redhat.com,
+ slp@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, gaosong@loongson.cn, jiaxun.yang@flygoat.com,
+ chenhuacai@kernel.org, kwolf@redhat.com, hreitz@redhat.com,
+ philmd@linaro.org, shorne@gmail.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ jcmvbkbc@gmail.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ akihiko.odaki@daynix.com, qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ qemu-riscv@nongnu.org
+Subject: [PATCH v3 00/14] macOS PV Graphics and new vmapple machine type
+Date: Sat, 28 Sep 2024 10:57:13 +0200
+Message-Id: <20240928085727.56883-1-phil@philjordan.eu>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 MIME-Version: 1.0
-References: <cover.1726390098.git.yong.huang@smartx.com>
- <531750c8d7b6c09f877b5f335a60fab402c168be.1726390098.git.yong.huang@smartx.com>
- <87msk7z4l3.fsf@suse.de>
- <CAK9dgmb_rK5HJOGTG=KXKgH=e2e8JV8aqoOWUHBEyjnc-+kiqg@mail.gmail.com>
- <ZuxxOObKqS_G0Ela@x1n>
- <CAK9dgmYaE=poiwLQqD6qbjJQdgPLMn8cW8VO47xYFTBkNiUVLA@mail.gmail.com>
- <ZvRh0RhkUC-eLbjo@x1n>
- <CAK9dgmbi1VSXvxFjziH5PjaoiaQwBJ3z4ff1BAojtm26VTThUQ@mail.gmail.com>
- <ZvW8LxJsv3pRWom_@x1n>
- <CAK9dgma-RFQ3akWDFHW5VhMPOdbT4nizSrixQK9x4W7W249raQ@mail.gmail.com>
- <ZvbQ0RQx-zxOeo4Y@x1n>
-In-Reply-To: <ZvbQ0RQx-zxOeo4Y@x1n>
-From: Yong Huang <yong.huang@smartx.com>
-Date: Sat, 28 Sep 2024 13:07:29 +0800
-Message-ID: <CAK9dgma00TxZBYi50o0EBCUcrEp9_z_G6B23uhnCEMGkvp3=hA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/7] migration: Introduce structs for background sync
-To: Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Eric Blake <eblake@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, David Hildenbrand <david@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000bf05b4062326f3f8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=yong.huang@smartx.com; helo=mail-oo1-xc30.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: neutral client-ip=2a00:1450:4864:20::433;
+ envelope-from=phil@philjordan.eu; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,260 +101,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000bf05b4062326f3f8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+(Apologies to anyone who has received more than one version of this
+series of emails; my git-send-email was misconfigured and this is
+a new attempt.)
 
-On Fri, Sep 27, 2024 at 11:35=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote=
-:
+This patch set introduces a new ARM and macOS HVF specific machine type
+called "vmapple", as well as a family of display devices based on the
+ParavirtualizedGraphics.framework in macOS. One of the display adapter
+variants, apple-gfx-vmapple, is required for the new machine type, while
+apple-gfx-pci can be used to enable 3D graphics acceleration with x86-64
+macOS guest OSes.
 
-> On Fri, Sep 27, 2024 at 10:50:01AM +0800, Yong Huang wrote:
-> > On Fri, Sep 27, 2024 at 3:55=E2=80=AFAM Peter Xu <peterx@redhat.com> wr=
-ote:
-> >
-> > > On Fri, Sep 27, 2024 at 02:13:47AM +0800, Yong Huang wrote:
-> > > > On Thu, Sep 26, 2024 at 3:17=E2=80=AFAM Peter Xu <peterx@redhat.com=
-> wrote:
-> > > >
-> > > > > On Fri, Sep 20, 2024 at 10:43:31AM +0800, Yong Huang wrote:
-> > > > > > Yes, invoke migration_bitmap_sync_precopy more frequently is
-> also my
-> > > > > > first idea but it involves bitmap updating and interfere with t=
-he
-> > > > > behavior
-> > > > > > of page sending, it also affects the migration information stat=
-s
-> and
-> > > > > > interfere other migration logic such as migration_update_rates(=
-).
-> > > > >
-> > > > > Could you elaborate?
-> > > > >
-> > > > > For example, what happens if we start to sync in
-> ram_save_iterate() for
-> > > > > some time intervals (e.g. 5 seconds)?
-> > > > >
-> > > >
-> > > > I didn't try to sync in ram_save_iterate but in the
-> > > > migration_bitmap_sync_precopy.
-> > > >
-> > > > If we use the migration_bitmap_sync_precopy in the ram_save_iterate
-> > > > function,
-> > > > This approach seems to be correct. However, the bitmap will be
-> updated as
-> > > > the
-> > > > migration thread iterates through each dirty page in the RAMBlock
-> list.
-> > > > Compared
-> > > > to the existing implementation, this is different but still
-> > > straightforward;
-> > > > I'll give it a shot soon to see if it works.
-> > >
-> > > It's still serialized in the migration thread, so I'd expect it is
-> similar
-> > >
-> >
-> > What does "serialized" mean?
->
-> I meant sync() never happens before concurrently with RAM pages being
-> iterated, simply because sync() previously only happens in the migration
-> thread, which is still the same thread that initiate the movement of page=
-s.
->
-> >
-> > How about we:
-> > 1. invoke the migration_bitmap_sync_precopy in a timer(bg_sync_timer)
-> hook,
-> >    every 5 seconds.
-> > 2. register the bg_sync_timer in the main loop when the machine starts
-> like
-> >     throttle_timer
-> > 3. activate the timer when ram_save_iterate gets called and deactivate
-> it in
-> >     the ram_save_cleanup gracefully during migration.
-> >
-> > I think it is simple enough and also isn't "serialized"?
->
-> If you want to do that with timer that's ok, but then IIUC it doesn't nee=
-d
-> to involve ram.c code at all.
->
+Previous versions of this patch set were submitted semi-separately:
+the original vmapple patch set by Alexander Graf included a monolithic
+implementation of apple-gfx-vmapple. I subsequently reviewed and reworked
+the latter to support the PCI variant of the device as well and submitted
+the result in isolation. As requested in subsequent review, I have now
+recombined this with the original vmapple patch set, which I have updated
+and improved in a few ways as well.
 
-The timer hook will call the migration_bitmap_sync_precopy()
-which is implemented in ram.c, maybe we can define the hook
-function in ram.c and expose it in ram.h?
+The vmapple machine type approximates the configuration in macOS's own
+Virtualization.framework when running arm64 macOS guests. In addition to
+generic components such as a GICv3 and an XHCI USB controller, it
+includes nonstandard extensions to the virtio block device, a special
+"hardware" aes engine, a configuration device, a pvpanic variant, a
+"backdoor" interface, and of course the apple-gfx paravirtualised display
+adapter.
+
+There are currently a few limitations to this which aren't intrinsic,
+just imperfect emulation of the VZF, but it's good enough to be just
+about usable for some purposes:
+
+ * macOS 12 guests only. Versions 13+ currently fail during early boot.
+ * macOS 11+ arm64 hosts only, with hvf accel. (Perhaps some differences
+   between Apple M series CPUs and TCG's aarch64 implementation? macOS
+   hosts only because ParavirtualizedGraphics.framework is a black box
+   implementing most of the logic behind the apple-gfx device.)
+ * PCI devices use legacy IRQs, not MSI/MSI-X. As far as I can tell,
+   we'd need to include the GICv3 ITS, but it's unclear to me what
+   exactly needs wiring up.
+ * Due to lack of MSI(-X), event delivery from USB devices to the guest
+   macOS isn't working correctly. My current conclusion is that the
+   OS's XHCI driver simply was never designed to work with legacy IRQs.
+   The upshot is that keyboard and mouse/tablet input is very laggy.
+   The solution would be to implement MSI(-X) support or figure out how
+   to make hcd-xhci-sysbus work with the macOS guest, if at all possible.
+   (EHCI and UHCI/OHCI controllers are not an option as the VMAPPLE
+   guest kernel does not include drivers for these.)
+ * The guest OS must first be provisioned using Virtualization.framework;
+   the disk images can subsequently be used in Qemu. (See docs.)
+
+The apple-gfx device can be used independently from the vmapple machine
+type, at least in the PCI variant. It mainly targets x86-64 macOS guests
+from version 11 on, but also includes a UEFI bootrom for basic
+framebuffer mode. macOS 11 is also required on the host side, as well
+as a GPU that supports the Metal API. On the guest side, this provides
+3D acceleration/GPGPU support with a baseline Metal feature set,
+irrespective of the host GPU's feature set. A few limitations in the
+current integration:
+
+ * Although it works fine with TCG, it does not work correctly
+   cross-architecture: x86-64 guests on arm64 hosts appear to make
+   some boot progress, but rendering is corrupted. I suspect
+   incompatible texture memory layouts; I have no idea if this is
+   fixable.
+ * ParavirtualizedGraphics.framework and the guest driver support
+   multi-headed configurations. The current Qemu integration always
+   connects precisely 1 display.
+ * State serialisation and deserialisation is currently not
+   implemented, though supported in principle by the framework.
+   Both apple-gfx variants thus set up a migration blocker.
+ * Rendering efficiency could be better. The GPU-rendered guest
+   framebuffer is copied to system memory and uses Qemu's usual
+   CPU-based drawing. For maximum efficiency, the Metal texture
+   containing the guest framebuffer could be drawn directly to
+   a Metal view in the host window, staying on the GPU. (Similar
+   to the OpenGL/virgl render path on other platforms.)
+
+---
+
+v2 -> v3:
+
+ * Merged the apple-gfx and vmapple patchsets.
+ * Squashed a bunch of later apple-gfx patches into the main one.
+   (dGPU support, queried MMIO area size, host GPU picking logic.)
+ * Rebased on latest upstream, fixing any breakages due to internal
+   Qemu API changes.
+ * apple-gfx: Switched to re-entrant MMIO. This is supported by the
+   underlying framework and simplifies the MMIO forwarding code which
+   was previously different on x86-64 vs aarch64.
+ * vmapple: Fixes for minor bugs and comments from the last round of
+   review.
+ * vmapple aes, conf, apple-gfx: Switched reset methods to implement
+   the ResettableClass base's interface.
+ * vmapple: switched from virtio-hid to an XHCI USB controller and
+   USB mouse and tablet devices. macOS does not provide drivers for
+   virtio HID devices, at least not in version 12's vmapple kernel.
+   So input now sort of works (interrupt issues) rather than not
+   at all. Use network-based remote access to the guest OS as a
+   work-around.
 
 
->
-> You can rely on cpu_throttle_get_percentage() too just like the throttle
-> timer, and it'll work naturally with migration because outside migration
-> the throttle will be cleared (cpu_throttle_stop() at finish/fail/cancel..=
-).
->
+Alexander Graf (9):
+  hw: Add vmapple subdir
+  hw/misc/pvpanic: Add MMIO interface
+  hvf: arm: Ignore writes to CNTP_CTL_EL0
+  gpex: Allow more than 4 legacy IRQs
+  hw/vmapple/aes: Introduce aes engine
+  hw/vmapple/bdif: Introduce vmapple backdoor interface
+  hw/vmapple/cfg: Introduce vmapple cfg region
+  hw/vmapple/virtio-blk: Add support for apple virtio-blk
+  hw/vmapple/vmapple: Add vmapple machine type
 
-Relying on cpu_throttle_get_percentage() may miss the sync time window
-during the second iteration when it last a long time while the throtlle
-hasn't  started yet. I'll think through your idea and apply it as possible.
+Phil Dennis-Jordan (5):
+  hw/display/apple-gfx: Introduce ParavirtualizedGraphics.Framework
+    support
+  hw/display/apple-gfx: Adds PCI implementation
+  ui/cocoa: Adds non-app runloop on main thread mode
+  hw/display/apple-gfx: Adds configurable mode list
+  MAINTAINERS: Add myself as maintainer for apple-gfx, reviewer for HVF
 
+ MAINTAINERS                     |  15 +
+ docs/system/arm/vmapple.rst     |  63 +++
+ docs/system/target-arm.rst      |   1 +
+ hw/Kconfig                      |   1 +
+ hw/arm/sbsa-ref.c               |   2 +-
+ hw/arm/virt.c                   |   2 +-
+ hw/block/virtio-blk.c           |  19 +-
+ hw/display/Kconfig              |  14 +
+ hw/display/apple-gfx-pci.m      | 179 +++++++++
+ hw/display/apple-gfx-vmapple.m  | 215 ++++++++++
+ hw/display/apple-gfx.h          |  72 ++++
+ hw/display/apple-gfx.m          | 668 ++++++++++++++++++++++++++++++++
+ hw/display/meson.build          |   3 +
+ hw/display/trace-events         |  26 ++
+ hw/i386/microvm.c               |   2 +-
+ hw/loongarch/virt.c             |   2 +-
+ hw/meson.build                  |   1 +
+ hw/mips/loongson3_virt.c        |   2 +-
+ hw/misc/Kconfig                 |   4 +
+ hw/misc/meson.build             |   1 +
+ hw/misc/pvpanic-mmio.c          |  61 +++
+ hw/openrisc/virt.c              |  12 +-
+ hw/pci-host/gpex.c              |  36 +-
+ hw/riscv/virt.c                 |  12 +-
+ hw/vmapple/Kconfig              |  32 ++
+ hw/vmapple/aes.c                | 584 ++++++++++++++++++++++++++++
+ hw/vmapple/bdif.c               | 245 ++++++++++++
+ hw/vmapple/cfg.c                | 106 +++++
+ hw/vmapple/meson.build          |   5 +
+ hw/vmapple/trace-events         |  26 ++
+ hw/vmapple/trace.h              |   1 +
+ hw/vmapple/virtio-blk.c         | 212 ++++++++++
+ hw/vmapple/vmapple.c            | 661 +++++++++++++++++++++++++++++++
+ hw/xtensa/virt.c                |   2 +-
+ include/hw/misc/pvpanic.h       |   1 +
+ include/hw/pci-host/gpex.h      |   7 +-
+ include/hw/pci/pci_ids.h        |   1 +
+ include/hw/virtio/virtio-blk.h  |  12 +-
+ include/hw/vmapple/bdif.h       |  31 ++
+ include/hw/vmapple/cfg.h        |  68 ++++
+ include/hw/vmapple/virtio-blk.h |  39 ++
+ include/qemu-main.h             |   2 +
+ meson.build                     |   5 +
+ target/arm/hvf/hvf.c            |   9 +
+ ui/cocoa.m                      |  15 +-
+ 45 files changed, 3443 insertions(+), 34 deletions(-)
+ create mode 100644 docs/system/arm/vmapple.rst
+ create mode 100644 hw/display/apple-gfx-pci.m
+ create mode 100644 hw/display/apple-gfx-vmapple.m
+ create mode 100644 hw/display/apple-gfx.h
+ create mode 100644 hw/display/apple-gfx.m
+ create mode 100644 hw/misc/pvpanic-mmio.c
+ create mode 100644 hw/vmapple/Kconfig
+ create mode 100644 hw/vmapple/aes.c
+ create mode 100644 hw/vmapple/bdif.c
+ create mode 100644 hw/vmapple/cfg.c
+ create mode 100644 hw/vmapple/meson.build
+ create mode 100644 hw/vmapple/trace-events
+ create mode 100644 hw/vmapple/trace.h
+ create mode 100644 hw/vmapple/virtio-blk.c
+ create mode 100644 hw/vmapple/vmapple.c
+ create mode 100644 include/hw/vmapple/bdif.h
+ create mode 100644 include/hw/vmapple/cfg.h
+ create mode 100644 include/hw/vmapple/virtio-blk.h
 
->
-> Then it also gracefully align the async thread sync() that it only happen=
-s
-> with auto-converge is enabled.  Yeh that may look better.. and stick the
-> code together with cpu-throttle.c seems nice.
->
-> Side note: one thing regarind to sync() is ram_init_bitmaps() sync once,
-> while I don't see why it's necessary.  I remember I tried to remove it bu=
-t
-> maybe I hit some issues and I didn't dig further.  If you're working on
-> sync() anyway not sure whether you'd like to have a look.
->
-> --
-> Peter Xu
->
->
-Thanks,
-Yong
+-- 
+2.39.3 (Apple Git-145)
 
---=20
-Best regards
-
---000000000000bf05b4062326f3f8
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
-t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
-ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 27, 20=
-24 at 11:35=E2=80=AFPM Peter Xu &lt;<a href=3D"mailto:peterx@redhat.com">pe=
-terx@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" s=
-tyle=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:so=
-lid;border-left-color:rgb(204,204,204);padding-left:1ex">On Fri, Sep 27, 20=
-24 at 10:50:01AM +0800, Yong Huang wrote:<br>
-&gt; On Fri, Sep 27, 2024 at 3:55=E2=80=AFAM Peter Xu &lt;<a href=3D"mailto=
-:peterx@redhat.com" target=3D"_blank">peterx@redhat.com</a>&gt; wrote:<br>
-&gt; <br>
-&gt; &gt; On Fri, Sep 27, 2024 at 02:13:47AM +0800, Yong Huang wrote:<br>
-&gt; &gt; &gt; On Thu, Sep 26, 2024 at 3:17=E2=80=AFAM Peter Xu &lt;<a href=
-=3D"mailto:peterx@redhat.com" target=3D"_blank">peterx@redhat.com</a>&gt; w=
-rote:<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; On Fri, Sep 20, 2024 at 10:43:31AM +0800, Yong Huang wr=
-ote:<br>
-&gt; &gt; &gt; &gt; &gt; Yes, invoke migration_bitmap_sync_precopy more fre=
-quently is also my<br>
-&gt; &gt; &gt; &gt; &gt; first idea but it involves bitmap updating and int=
-erfere with the<br>
-&gt; &gt; &gt; &gt; behavior<br>
-&gt; &gt; &gt; &gt; &gt; of page sending, it also affects the migration inf=
-ormation stats and<br>
-&gt; &gt; &gt; &gt; &gt; interfere other migration logic such as migration_=
-update_rates().<br>
-&gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; Could you elaborate?<br>
-&gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt; &gt; For example, what happens if we start to sync in ram_sa=
-ve_iterate() for<br>
-&gt; &gt; &gt; &gt; some time intervals (e.g. 5 seconds)?<br>
-&gt; &gt; &gt; &gt;<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; I didn&#39;t try to sync in ram_save_iterate but in the<br>
-&gt; &gt; &gt; migration_bitmap_sync_precopy.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; If we use the migration_bitmap_sync_precopy in the ram_save_=
-iterate<br>
-&gt; &gt; &gt; function,<br>
-&gt; &gt; &gt; This approach seems to be correct. However, the bitmap will =
-be updated as<br>
-&gt; &gt; &gt; the<br>
-&gt; &gt; &gt; migration thread iterates through each dirty page in the RAM=
-Block list.<br>
-&gt; &gt; &gt; Compared<br>
-&gt; &gt; &gt; to the existing implementation, this is different but still<=
-br>
-&gt; &gt; straightforward;<br>
-&gt; &gt; &gt; I&#39;ll give it a shot soon to see if it works.<br>
-&gt; &gt;<br>
-&gt; &gt; It&#39;s still serialized in the migration thread, so I&#39;d exp=
-ect it is similar<br>
-&gt; &gt;<br>
-&gt; <br>
-&gt; What does &quot;serialized&quot; mean?<br>
-<br>
-I meant sync() never happens before concurrently with RAM pages being<br>
-iterated, simply because sync() previously only happens in the migration<br=
->
-thread, which is still the same thread that initiate the movement of pages.=
-<br>
-<br>
-&gt; <br>
-&gt; How about we:<br>
-&gt; 1. invoke the migration_bitmap_sync_precopy in a timer(bg_sync_timer) =
-hook,<br>
-&gt;=C2=A0 =C2=A0 every 5 seconds.<br>
-&gt; 2. register the bg_sync_timer in the main loop when the machine starts=
- like<br>
-&gt;=C2=A0 =C2=A0 =C2=A0throttle_timer<br>
-&gt; 3. activate the timer when ram_save_iterate gets called and deactivate=
- it in<br>
-&gt;=C2=A0 =C2=A0 =C2=A0the ram_save_cleanup gracefully during migration.<b=
-r>
-&gt; <br>
-&gt; I think it is simple enough and also isn&#39;t &quot;serialized&quot;?=
-<br>
-<br>
-If you want to do that with timer that&#39;s ok, but then IIUC it doesn&#39=
-;t need<br>
-to involve ram.c code at all.<br></blockquote><div><br></div><div><div styl=
-e=3D"font-family:&quot;comic sans ms&quot;,sans-serif" class=3D"gmail_defau=
-lt">The timer hook will call the migration_bitmap_sync_precopy()=C2=A0</div=
-><div style=3D"font-family:&quot;comic sans ms&quot;,sans-serif" class=3D"g=
-mail_default">which is implemented in ram.c, maybe we can define the hook</=
-div><div style=3D"font-family:&quot;comic sans ms&quot;,sans-serif" class=
-=3D"gmail_default">function in ram.c and expose it in ram.h?</div></div><di=
-v>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px=
- 0.8ex;border-left-width:1px;border-left-style:solid;border-left-color:rgb(=
-204,204,204);padding-left:1ex">
-<br>
-You can rely on cpu_throttle_get_percentage() too just like the throttle<br=
->
-timer, and it&#39;ll work naturally with migration because outside migratio=
-n<br>
-the throttle will be cleared (cpu_throttle_stop() at finish/fail/cancel..).=
-<br></blockquote><div><br></div><div><div class=3D"gmail_default"><font fac=
-e=3D"comic sans ms, sans-serif">Relying on=C2=A0cpu_throttle_get_percentage=
-() may miss the sync time window</font></div><div class=3D"gmail_default"><=
-font face=3D"comic sans ms, sans-serif">during the second iteration when it=
- last a long time while the throtlle=C2=A0</font></div><div class=3D"gmail_=
-default"><font face=3D"comic sans ms, sans-serif">hasn&#39;t =C2=A0started =
-yet. I&#39;ll think through your idea and apply it as possible.</font></div=
-></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0=
-px 0px 0px 0.8ex;border-left-width:1px;border-left-style:solid;border-left-=
-color:rgb(204,204,204);padding-left:1ex">
-<br>
-Then it also gracefully align the async thread sync() that it only happens<=
-br>
-with auto-converge is enabled.=C2=A0 Yeh that may look better.. and stick t=
-he<br>
-code together with cpu-throttle.c seems nice.<br>
-<br>
-Side note: one thing regarind to sync() is ram_init_bitmaps() sync once,<br=
->
-while I don&#39;t see why it&#39;s necessary.=C2=A0 I remember I tried to r=
-emove it but<br>
-maybe I hit some issues and I didn&#39;t dig further.=C2=A0 If you&#39;re w=
-orking on<br>
-sync() anyway not sure whether you&#39;d like to have a look.<br>
-<br>
--- <br>
-Peter Xu<br>
-<br>
-</blockquote></div><br clear=3D"all"><div><div style=3D"font-family:&quot;c=
-omic sans ms&quot;,sans-serif" class=3D"gmail_default">Thanks,</div><div st=
-yle=3D"font-family:&quot;comic sans ms&quot;,sans-serif" class=3D"gmail_def=
-ault">Yong</div><br></div><span class=3D"gmail_signature_prefix">-- </span>=
-<br><div dir=3D"ltr" class=3D"gmail_signature"><div dir=3D"ltr"><font face=
-=3D"comic sans ms, sans-serif">Best regards</font></div></div></div>
-
---000000000000bf05b4062326f3f8--
 
