@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF8E98967C
+	by mail.lfdr.de (Postfix) with ESMTPS id 321E398967D
 	for <lists+qemu-devel@lfdr.de>; Sun, 29 Sep 2024 19:15:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suxVW-0007jH-AV; Sun, 29 Sep 2024 13:14:54 -0400
+	id 1suxVZ-0007xF-N9; Sun, 29 Sep 2024 13:14:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1suxVS-0007gH-MW
- for qemu-devel@nongnu.org; Sun, 29 Sep 2024 13:14:50 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1suxVU-0007ha-Ug
+ for qemu-devel@nongnu.org; Sun, 29 Sep 2024 13:14:53 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1suxVQ-0003Zc-R5
- for qemu-devel@nongnu.org; Sun, 29 Sep 2024 13:14:50 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-7db90a28cf6so3274122a12.0
- for <qemu-devel@nongnu.org>; Sun, 29 Sep 2024 10:14:48 -0700 (PDT)
+ id 1suxVT-0003Zq-3N
+ for qemu-devel@nongnu.org; Sun, 29 Sep 2024 13:14:52 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-7ae3d7222d4so3186218a12.3
+ for <qemu-devel@nongnu.org>; Sun, 29 Sep 2024 10:14:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1727630087; x=1728234887;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1727630089; x=1728234889;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=07wA5zG/1d+R2WMpD9te0aExZ2w/43FEpg9CjU1sU5s=;
- b=Mz0cdj8+JXR5XZyZx32HGRm5YMjb9G3iZLKIa189iuS1OiiyCuovNAUE7kV4B9yX9/
- sMe5jJaJbFu/uUbwKnoAAVHkYTU6cHUq5VdXRxEyuJWHY+L0BeDGdzzbC7C8wa9p59Ri
- jdpUy8R6YOznKBK3gEwYhMmm9cQg+0eQT4rFqCixaVn3DCkjrCbTgO4YQdAuv6cGbYDv
- 962GGqtzOc6TKdh4qBXj/4Rd/x/elrBOgXKwl7RgC4xYG1TDqa/FwZnh7alS81W4ODmh
- bccRJRVhQxx4QmOhe5ETzA6GGn1sZaQ+2ZdnArpO+R5SqQf1iJZL+vy5RlQJ6an7drAq
- zhcA==
+ bh=lct2qG6Dr1J/Ztgltsu8rr9H+Svw6tNcIbTwP/vog4Y=;
+ b=UnSNkSeOqiuFMB+uvia+aY7X5SIqhxLhDn7MbtUX+tMtcVWhYbCQ4GYkaZXw/TK4g3
+ lk22LjqZy6XUHAwXTq60MoYUC5YB8/BLcveM35sV8WOTn4Obyq6pdV2B1avyPYB4vSss
+ w9gDDORjJoLzEES5lA3GruKZmqV5Eqikwh9Px2rMwkDm9PsGtmae4MVL1oQRdaoa9urb
+ 672Q1eoN82jxSSaAJWu8UQ+H0XKPzeSkroQ9Cmetm5aOeSHJF/0DWpZ6r2gVPYNUsbYZ
+ udJ3PFnodFZL/lYzC0vC1t0EzH6rVpLW6dBPTvXqjPqzClWOs24V8+8jszllytEr1lDg
+ 3Mlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727630087; x=1728234887;
+ d=1e100.net; s=20230601; t=1727630089; x=1728234889;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=07wA5zG/1d+R2WMpD9te0aExZ2w/43FEpg9CjU1sU5s=;
- b=N2jC06XI0YZtgjMA8bSdEdFYul78Ykw9Fk4I2gY2GwstNuE5WeDXdIND5unGgV2llM
- rxY0+wh0GhFonNLbbacQ0E6kIPcoixv4if+tooSJM0k5ma/uU9x7bNCxqt30JxN4zl4a
- ey5j8cTfITQyYovEUVyodcRlS464aA3xA2spntLwmmr4yEDTJCdN0cInxCyROT+vaMWn
- VzlAUNe9fbeOR3uCEQvap7B/lqOIRXZMLvMIZwGryp2wxCn/AYQE/bomFMjjt0i1sog/
- w2mGyULDiUF+uNhpCtYg80K4AdBa8RUaiL/i2ZeKz68BJS4rA5qIZh7D/e1ZdO3Jfy4E
- sSeg==
-X-Gm-Message-State: AOJu0Ywu5ixznUWAjvt2LeH58QR4FhmnvmzS6DFw1d4J2L8lSTPl/Mfc
- 2Fgm3dy4+lfNLdQLKsEv3sbzY4K+2pVEgUJsWB4r27NLCaSnYXOaiQhLj1RTnQHU4AUd9YRId0W
- ahsg=
-X-Google-Smtp-Source: AGHT+IGBLcGT94nzH90KtP3n54E/O8/Eifq2ZhQHwyZoHaddaW+Tnh8H3cWm4JjbAQK1SQg8ZDAmvw==
-X-Received: by 2002:a17:90b:19ca:b0:2e0:7e80:2011 with SMTP id
- 98e67ed59e1d1-2e09121de91mr20742707a91.16.1727630086510; 
- Sun, 29 Sep 2024 10:14:46 -0700 (PDT)
+ bh=lct2qG6Dr1J/Ztgltsu8rr9H+Svw6tNcIbTwP/vog4Y=;
+ b=LUcQvK1NucBE/x83HYxg9cS7s6La7YCMywHd8F2SOrGhMy8Jn+FT5GsmQBvJmeqMB4
+ 8aiho5Tfc+/8enjZQbcqiTzWKNDhoAnhZEhNT34iqIDqdhjsZYqDjpeVifC0v4tHhwWl
+ FiOkppoG8RUKqZVO1r2/XaJE4FCYQXhw4jYi/VJCvQ79u/BPsMy2mPTmZAkp+QwnS7wj
+ iunQEyaLn/aHzvtE/JKkDSuPoQkXBzHSEetnD8DKGprZiQVmSHtn7orRXTw8ORATH7SL
+ MMFmcTniAfDo9f0eq8OvHkZvi7dNXdVfrXvnCRxYwxEyYLtI6KwnbSzhyDeAUT6nXt6p
+ 0k5w==
+X-Gm-Message-State: AOJu0YxIK2Ze8F8TuwgQWUtc6lykMS5XNwcm0YBIHqmdl8xLAnkD9NCV
+ zPo5Iz0Zd7XQxyoy4Mv0js1spRvwPNP646QNwAIZL5DlLxkQiZFTuIMAW4gUD05oiqVdewUk8sN
+ D1t8=
+X-Google-Smtp-Source: AGHT+IEys5TL+ki4JGSvJ3ApkUnwu2Pcw64XyFhbq1WYeQv3iYqy1KnTKXjyyo4gLaL+yBXjeikr0w==
+X-Received: by 2002:a17:90b:104:b0:2d3:c088:9c54 with SMTP id
+ 98e67ed59e1d1-2e0b876d788mr10752186a91.6.1727630088876; 
+ Sun, 29 Sep 2024 10:14:48 -0700 (PDT)
 Received: from Hyman-Dev-Euler.zelin.local ([85.208.104.155])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e06e1e09e2sm9597408a91.32.2024.09.29.10.14.44
+ 98e67ed59e1d1-2e06e1e09e2sm9597408a91.32.2024.09.29.10.14.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 29 Sep 2024 10:14:46 -0700 (PDT)
+ Sun, 29 Sep 2024 10:14:48 -0700 (PDT)
 From: yong.huang@smartx.com
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, yong.huang@smartx.com
-Subject: [PATCH v2 2/3] qapi/migration: Introduce cpu-throttle-responsive
- parameter
-Date: Mon, 30 Sep 2024 01:14:27 +0800
-Message-Id: <a469edd24adcd6c1f1c6476e522fbc959ee22d68.1727630000.git.yong.huang@smartx.com>
+Subject: [PATCH v2 3/3] migration: Support responsive CPU throttle
+Date: Mon, 30 Sep 2024 01:14:28 +0800
+Message-Id: <3a383e563cc57c77320af805c8b8ece4e68eebea.1727630000.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <cover.1727630000.git.yong.huang@smartx.com>
 References: <cover.1727630000.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=yong.huang@smartx.com; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=yong.huang@smartx.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,184 +96,160 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
-To enable the responsive throttle that will be implemented
-in the next commit, introduce the cpu-responsive-throttle
-parameter.
+Currently, the convergence algorithm determines that the migration
+cannot converge according to the following principle:
+The dirty pages generated in current iteration exceed a specific
+percentage (throttle-trigger-threshold, 50 by default) of the number
+of transmissions. Let's refer to this criteria as the "dirty rate".
+If this criteria is met more than or equal to twice
+(dirty_rate_high_cnt >= 2), the throttle percentage increased.
+
+In most cases, above implementation is appropriate. However, for a
+VM with high memory overload, each iteration is time-consuming.
+The VM's computing performance may be throttled at a high percentage
+and last for a long time due to the repeated confirmation behavior.
+Which may be intolerable for some computationally sensitive software
+in the VM.
+
+As the comment mentioned in the migration_trigger_throttle function,
+in order to avoid erroneous detection, the original algorithm confirms
+the criteria repeatedly. Put differently, the criteria does not need
+to be validated again once the detection is more reliable.
+
+In the refinement, in order to make the detection more accurate, we
+introduce another criteria, called the "dirty ratio" to determine
+the migration convergence. The "dirty ratio" is the ratio of
+bytes_xfer_period and bytes_dirty_period. When the algorithm
+repeatedly detects that the "dirty ratio" of current sync is lower
+than the previous, the algorithm determines that the migration cannot
+converge. For the "dirty rate" and "dirty ratio", if one of the two
+criteria is met, the penalty percentage would be increased. This
+makes CPU throttle more responsively and therefor saves the time of
+the entire iteration and therefore reduces the time of VM performance
+degradation.
+
+In conclusion, this refinement significantly reduces the processing
+time required for the throttle percentage step to its maximum while
+the VM is under a high memory load.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- migration/migration-hmp-cmds.c |  8 ++++++++
- migration/options.c            | 20 ++++++++++++++++++++
- migration/options.h            |  1 +
- qapi/migration.json            | 16 +++++++++++++++-
- 4 files changed, 44 insertions(+), 1 deletion(-)
+ migration/ram.c              | 55 ++++++++++++++++++++++++++++++++++--
+ migration/trace-events       |  1 +
+ tests/qtest/migration-test.c |  1 +
+ 3 files changed, 55 insertions(+), 2 deletions(-)
 
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 28165cfc9e..e7c292fa51 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -264,6 +264,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "%s: %s\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_CPU_THROTTLE_TAILSLOW),
-             params->cpu_throttle_tailslow ? "on" : "off");
-+        assert(params->has_cpu_throttle_responsive);
-+        monitor_printf(mon, "%s: %s\n",
-+            MigrationParameter_str(MIGRATION_PARAMETER_CPU_THROTTLE_RESPONSIVE),
-+            params->cpu_throttle_responsive ? "on" : "off");
-         assert(params->has_max_cpu_throttle);
-         monitor_printf(mon, "%s: %u\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_MAX_CPU_THROTTLE),
-@@ -512,6 +516,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-         p->has_cpu_throttle_tailslow = true;
-         visit_type_bool(v, param, &p->cpu_throttle_tailslow, &err);
-         break;
-+    case MIGRATION_PARAMETER_CPU_THROTTLE_RESPONSIVE:
-+        p->has_cpu_throttle_responsive = true;
-+        visit_type_bool(v, param, &p->cpu_throttle_responsive, &err);
-+        break;
-     case MIGRATION_PARAMETER_MAX_CPU_THROTTLE:
-         p->has_max_cpu_throttle = true;
-         visit_type_uint8(v, param, &p->max_cpu_throttle, &err);
-diff --git a/migration/options.c b/migration/options.c
-index 147cd2b8fd..568d5b1074 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -111,6 +111,8 @@ Property migration_properties[] = {
-                       DEFAULT_MIGRATE_CPU_THROTTLE_INCREMENT),
-     DEFINE_PROP_BOOL("x-cpu-throttle-tailslow", MigrationState,
-                       parameters.cpu_throttle_tailslow, false),
-+    DEFINE_PROP_BOOL("x-cpu-throttle-responsive", MigrationState,
-+                      parameters.cpu_throttle_responsive, false),
-     DEFINE_PROP_SIZE("x-max-bandwidth", MigrationState,
-                       parameters.max_bandwidth, MAX_THROTTLE),
-     DEFINE_PROP_SIZE("avail-switchover-bandwidth", MigrationState,
-@@ -705,6 +707,13 @@ uint8_t migrate_cpu_throttle_initial(void)
-     return s->parameters.cpu_throttle_initial;
+diff --git a/migration/ram.c b/migration/ram.c
+index 995bae1ac9..c36fed5135 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -420,6 +420,12 @@ struct RAMState {
+      * RAM migration.
+      */
+     unsigned int postcopy_bmap_sync_requested;
++
++    /*
++     * Ratio of bytes_dirty_period and bytes_xfer_period in the
++     * previous sync.
++     */
++    uint64_t dirty_ratio_pct;
+ };
+ typedef struct RAMState RAMState;
+ 
+@@ -1019,6 +1025,43 @@ static void migration_dirty_limit_guest(void)
+     trace_migration_dirty_limit_guest(quota_dirtyrate);
  }
  
-+bool migrate_cpu_throttle_responsive(void)
++static bool migration_dirty_ratio_high(RAMState *rs)
 +{
-+    MigrationState *s = migrate_get_current();
++    static int dirty_ratio_high_cnt;
++    uint64_t threshold = migrate_throttle_trigger_threshold();
++    uint64_t bytes_xfer_period =
++        migration_transferred_bytes() - rs->bytes_xfer_prev;
++    uint64_t bytes_dirty_period = rs->num_dirty_pages_period * TARGET_PAGE_SIZE;
++    bool dirty_ratio_high = false;
++    uint64_t prev, curr;
 +
-+    return s->parameters.cpu_throttle_responsive;
++    /* Calculate the dirty ratio percentage */
++    curr = 100 * (bytes_dirty_period * 1.0 / bytes_xfer_period);
++
++    prev = rs->dirty_ratio_pct;
++    rs->dirty_ratio_pct = curr;
++
++    if (prev == 0) {
++        return false;
++    }
++
++    /*
++     * If current dirty ratio is greater than previouse, determine
++     * that the migration do not converge.
++     */
++    if (curr > threshold && curr >= prev) {
++        trace_migration_dirty_ratio_high(curr, prev);
++        dirty_ratio_high_cnt++;
++    }
++
++    if (dirty_ratio_high_cnt >= 2) {
++        dirty_ratio_high = true;
++        dirty_ratio_high_cnt = 0;
++    }
++
++    return dirty_ratio_high;
 +}
 +
- bool migrate_cpu_throttle_tailslow(void)
+ static void migration_trigger_throttle(RAMState *rs)
  {
-     MigrationState *s = migrate_get_current();
-@@ -891,6 +900,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
-     params->cpu_throttle_increment = s->parameters.cpu_throttle_increment;
-     params->has_cpu_throttle_tailslow = true;
-     params->cpu_throttle_tailslow = s->parameters.cpu_throttle_tailslow;
-+    params->has_cpu_throttle_responsive = true;
-+    params->cpu_throttle_responsive = s->parameters.cpu_throttle_responsive;
-     params->tls_creds = g_strdup(s->parameters.tls_creds);
-     params->tls_hostname = g_strdup(s->parameters.tls_hostname);
-     params->tls_authz = g_strdup(s->parameters.tls_authz ?
-@@ -959,6 +970,7 @@ void migrate_params_init(MigrationParameters *params)
-     params->has_cpu_throttle_initial = true;
-     params->has_cpu_throttle_increment = true;
-     params->has_cpu_throttle_tailslow = true;
-+    params->has_cpu_throttle_responsive = true;
-     params->has_max_bandwidth = true;
-     params->has_downtime_limit = true;
-     params->has_x_checkpoint_delay = true;
-@@ -1191,6 +1203,10 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-         dest->cpu_throttle_tailslow = params->cpu_throttle_tailslow;
-     }
- 
-+    if (params->has_cpu_throttle_responsive) {
-+        dest->cpu_throttle_responsive = params->cpu_throttle_responsive;
-+    }
+     uint64_t threshold = migrate_throttle_trigger_threshold();
+@@ -1026,6 +1069,11 @@ static void migration_trigger_throttle(RAMState *rs)
+         migration_transferred_bytes() - rs->bytes_xfer_prev;
+     uint64_t bytes_dirty_period = rs->num_dirty_pages_period * TARGET_PAGE_SIZE;
+     uint64_t bytes_dirty_threshold = bytes_xfer_period * threshold / 100;
++    bool dirty_ratio_high = false;
 +
-     if (params->tls_creds) {
-         assert(params->tls_creds->type == QTYPE_QSTRING);
-         dest->tls_creds = params->tls_creds->u.s;
-@@ -1302,6 +1318,10 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-         s->parameters.cpu_throttle_tailslow = params->cpu_throttle_tailslow;
-     }
- 
-+    if (params->has_cpu_throttle_responsive) {
-+        s->parameters.cpu_throttle_responsive = params->cpu_throttle_responsive;
++    if (migrate_cpu_throttle_responsive() && (bytes_xfer_period != 0)) {
++        dirty_ratio_high = migration_dirty_ratio_high(rs);
 +    }
+ 
+     /*
+      * The following detection logic can be refined later. For now:
+@@ -1035,8 +1083,11 @@ static void migration_trigger_throttle(RAMState *rs)
+      * twice, start or increase throttling.
+      */
+     if ((bytes_dirty_period > bytes_dirty_threshold) &&
+-        (++rs->dirty_rate_high_cnt >= 2)) {
+-        rs->dirty_rate_high_cnt = 0;
++        ((++rs->dirty_rate_high_cnt >= 2) || dirty_ratio_high)) {
 +
-     if (params->tls_creds) {
-         g_free(s->parameters.tls_creds);
-         assert(params->tls_creds->type == QTYPE_QSTRING);
-diff --git a/migration/options.h b/migration/options.h
-index a0bd6edc06..28caab83cd 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -68,6 +68,7 @@ bool migrate_has_block_bitmap_mapping(void);
- uint32_t migrate_checkpoint_delay(void);
- uint8_t migrate_cpu_throttle_increment(void);
- uint8_t migrate_cpu_throttle_initial(void);
-+bool migrate_cpu_throttle_responsive(void);
- bool migrate_cpu_throttle_tailslow(void);
- bool migrate_direct_io(void);
- uint64_t migrate_downtime_limit(void);
-diff --git a/qapi/migration.json b/qapi/migration.json
-index b66cccf107..7322bfdd39 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -728,6 +728,10 @@
- #     be excessive at tail stage.  The default value is false.  (Since
- #     5.1)
- #
-+# @cpu-throttle-responsive: Make CPU throttling more responsive by
-+#                           introduce an extra detection metric of
-+#                           migration convergence.  (Since 9.2)
-+#
- # @tls-creds: ID of the 'tls-creds' object that provides credentials
- #     for establishing a TLS connection over the migration data
- #     channel.  On the outgoing side of the migration, the credentials
-@@ -853,7 +857,7 @@
-            'announce-rounds', 'announce-step',
-            'throttle-trigger-threshold',
-            'cpu-throttle-initial', 'cpu-throttle-increment',
--           'cpu-throttle-tailslow',
-+           'cpu-throttle-tailslow', 'cpu-throttle-responsive',
-            'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
-            'avail-switchover-bandwidth', 'downtime-limit',
-            { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
-@@ -909,6 +913,10 @@
- #     be excessive at tail stage.  The default value is false.  (Since
- #     5.1)
- #
-+# @cpu-throttle-responsive: Make CPU throttling more responsive by
-+#                           introduce an extra detection metric of
-+#                           migration convergence.  (Since 9.1)
-+#
- # @tls-creds: ID of the 'tls-creds' object that provides credentials
- #     for establishing a TLS connection over the migration data
- #     channel.  On the outgoing side of the migration, the credentials
-@@ -1041,6 +1049,7 @@
-             '*cpu-throttle-initial': 'uint8',
-             '*cpu-throttle-increment': 'uint8',
-             '*cpu-throttle-tailslow': 'bool',
-+            '*cpu-throttle-responsive': 'bool',
-             '*tls-creds': 'StrOrNull',
-             '*tls-hostname': 'StrOrNull',
-             '*tls-authz': 'StrOrNull',
-@@ -1123,6 +1132,10 @@
- #     be excessive at tail stage.  The default value is false.  (Since
- #     5.1)
- #
-+# @cpu-throttle-responsive: Make CPU throttling more responsive by
-+#                           introduce an extra detection metric of
-+#                           migration convergence. (Since 9.1)
-+#
- # @tls-creds: ID of the 'tls-creds' object that provides credentials
- #     for establishing a TLS connection over the migration data
- #     channel.  On the outgoing side of the migration, the credentials
-@@ -1248,6 +1261,7 @@
-             '*cpu-throttle-initial': 'uint8',
-             '*cpu-throttle-increment': 'uint8',
-             '*cpu-throttle-tailslow': 'bool',
-+            '*cpu-throttle-responsive': 'bool',
-             '*tls-creds': 'str',
-             '*tls-hostname': 'str',
-             '*tls-authz': 'str',
++        rs->dirty_rate_high_cnt =
++            rs->dirty_rate_high_cnt >= 2 ? 0 : rs->dirty_rate_high_cnt;
++
+         if (migrate_auto_converge()) {
+             trace_migration_throttle();
+             mig_throttle_guest_down(bytes_dirty_period,
+diff --git a/migration/trace-events b/migration/trace-events
+index 3f09e7f383..19a1ff7973 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -96,6 +96,7 @@ get_queued_page_not_dirty(const char *block_name, uint64_t tmp_offset, unsigned
+ migration_bitmap_sync_start(void) ""
+ migration_bitmap_sync_end(uint64_t dirty_pages) "dirty_pages %" PRIu64
+ migration_bitmap_clear_dirty(char *str, uint64_t start, uint64_t size, unsigned long page) "rb %s start 0x%"PRIx64" size 0x%"PRIx64" page 0x%lx"
++migration_dirty_ratio_high(uint64_t cur, uint64_t prev) "current ratio: %" PRIu64 " previous ratio: %" PRIu64
+ migration_throttle(void) ""
+ migration_dirty_limit_guest(int64_t dirtyrate) "guest dirty page rate limit %" PRIi64 " MB/s"
+ ram_discard_range(const char *rbname, uint64_t start, size_t len) "%s: start: %" PRIx64 " %zx"
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 3296f5244d..acdc1d6358 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -2807,6 +2807,7 @@ static void test_migrate_auto_converge(void)
+     migrate_set_parameter_int(from, "cpu-throttle-initial", init_pct);
+     migrate_set_parameter_int(from, "cpu-throttle-increment", inc_pct);
+     migrate_set_parameter_int(from, "max-cpu-throttle", max_pct);
++    migrate_set_parameter_bool(from, "cpu-throttle-responsive", true);
+ 
+     /*
+      * Set the initial parameters so that the migration could not converge
 -- 
 2.27.0
 
