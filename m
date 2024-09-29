@@ -2,65 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3166E9893B1
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Sep 2024 10:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6167A9893C5
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Sep 2024 10:36:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sup5m-0000ke-VC; Sun, 29 Sep 2024 04:15:48 -0400
+	id 1supOe-0006iy-92; Sun, 29 Sep 2024 04:35:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1sup5L-0000iK-U2
- for qemu-devel@nongnu.org; Sun, 29 Sep 2024 04:15:19 -0400
+ id 1supOZ-0006hZ-E8
+ for qemu-devel@nongnu.org; Sun, 29 Sep 2024 04:35:12 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1sup5I-0004Y0-Sz
- for qemu-devel@nongnu.org; Sun, 29 Sep 2024 04:15:19 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxVemIDPlmdLsDAA--.3375S3;
- Sun, 29 Sep 2024 16:15:05 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front2 (Coremail) with SMTP id qciowMBxOsaFDPlmQt0XAA--.20438S3;
- Sun, 29 Sep 2024 16:15:04 +0800 (CST)
-Subject: Re: [PATCH 0/2] hw/loongarch: Build fw_cfg.c as common object
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20240927213254.17552-1-philmd@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <b376eb0f-0ecc-e288-9e9d-fd9b13f0a17d@loongson.cn>
-Date: Sun, 29 Sep 2024 16:15:44 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (envelope-from <gaosong@loongson.cn>) id 1supOS-0006Gd-83
+ for qemu-devel@nongnu.org; Sun, 29 Sep 2024 04:35:07 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxrnMwEflmz70DAA--.3376S3;
+ Sun, 29 Sep 2024 16:34:56 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMBxn+QtEflmFt0UAA--.54891S2;
+ Sun, 29 Sep 2024 16:34:53 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PULL 0/7] loongarch-to-apply queue
+Date: Sun, 29 Sep 2024 16:17:17 +0800
+Message-Id: <20240929081724.2139556-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-In-Reply-To: <20240927213254.17552-1-philmd@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qciowMBxOsaFDPlmQt0XAA--.20438S3
+X-CM-TRANSID: qMiowMBxn+QtEflmFt0UAA--.54891S2
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
- BjDU0xBIdaVrnRJUUUBmb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26c
- xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
- j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxV
- AFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x02
- 67AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6x
- ACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E
- 87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0V
- AS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCF54CYxVAaw2AFwI0_Jrv_JF1l4I8I3I0E
- 4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGw
- C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48J
- MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMI
- IF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E
- 87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7pnQUUUUU
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
  helo=mail.loongson.cn
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.165,
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -78,23 +61,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2024/9/28 上午5:32, Philippe Mathieu-Daudé 写道:
-> LoongArch fw_cfg.c doesn't use target specific declarations,
-> build it as common object.
->
-> Philippe Mathieu-Daudé (2):
->    hw/loongarch/virt: Remove unnecessary 'cpu.h' inclusion
->    hw/loongarch/fw_cfg: Build in common_ss[]
->
->   include/hw/loongarch/virt.h | 1 -
->   hw/loongarch/meson.build    | 2 +-
->   2 files changed, 1 insertion(+), 2 deletions(-)
->
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+The following changes since commit 3b14a767eaca3df5534a162851f04787b363670e:
 
-Applied to loongarch-next.
+  Merge tag 'qemu-openbios-20240924' of https://github.com/mcayland/qemu into staging (2024-09-28 12:34:44 +0100)
 
-Thanks.
-Song Gao
+are available in the Git repository at:
+
+  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240929
+
+for you to fetch changes up to f7c8ef7bad7495d8c84b262a8b243efe39e56b13:
+
+  hw/loongarch/fw_cfg: Build in common_ss[] (2024-09-29 16:22:56 +0800)
+
+----------------------------------------------------------------
+pull-loongarch-20240929
+
+----------------------------------------------------------------
+Bibo Mao (3):
+      acpi: ged: Add macro for acpi sleep control register
+      hw/loongarch/virt: Add FDT table support with acpi ged pm register
+      target/loongarch: Avoid bits shift exceeding width of bool type
+
+Jiaxun Yang (2):
+      hw/loongarch/boot: Refactor EFI booting protocol generation
+      hw/loongarch/boot: Rework boot code generation
+
+Philippe Mathieu-Daudé (2):
+      hw/loongarch/virt: Remove unnecessary 'cpu.h' inclusion
+      hw/loongarch/fw_cfg: Build in common_ss[]
+
+ hw/acpi/generic_event_device.c         |   6 +-
+ hw/loongarch/boot.c                    | 321 +++++++++++++++++++++------------
+ hw/loongarch/meson.build               |   2 +-
+ hw/loongarch/virt.c                    |  39 ++++
+ include/hw/acpi/generic_event_device.h |   7 +-
+ include/hw/loongarch/boot.h            | 106 +++++++++--
+ include/hw/loongarch/virt.h            |   1 -
+ target/loongarch/arch_dump.c           |   6 +-
+ 8 files changed, 342 insertions(+), 146 deletions(-)
 
 
