@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BCB79895C7
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Sep 2024 15:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FFF29895C6
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Sep 2024 15:45:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1suuDV-0004g5-At; Sun, 29 Sep 2024 09:44:05 -0400
+	id 1suuDV-0004ir-Oz; Sun, 29 Sep 2024 09:44:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1suuDS-0004eh-G6; Sun, 29 Sep 2024 09:44:02 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ id 1suuDT-0004fR-1J; Sun, 29 Sep 2024 09:44:03 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1suuDQ-0008OW-Fg; Sun, 29 Sep 2024 09:44:01 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a8d6d0fe021so608719766b.1; 
- Sun, 29 Sep 2024 06:43:59 -0700 (PDT)
+ id 1suuDR-0008OZ-F0; Sun, 29 Sep 2024 09:44:02 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a8a897bd4f1so527632766b.3; 
+ Sun, 29 Sep 2024 06:44:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727617438; x=1728222238; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Ar0Umd7lNogNSDYCVnXv2sbYzqaVB3nv1Jnbqyb2TPk=;
- b=UYD1y9KMHva6mdlsbfCo4yz+h6tH00k9yiHGKTpOPKZ00R5H4hKFrq1kvl91sqwTqJ
- fugjZDRvSB9r3t0smPYFBPsi3MpQzsckxxz8QifDuev3ye1TOz6wbSBoX6kz4FSTLwyQ
- 9FOWxFvzv4L4tRB/TPbN399b+lTIXDRIUkdpPB2aa+n0Ac1E/Oos7ZAswKHELwMqxLLu
- V6uixgVscfryUaisFz4EOI0xvME9f0+iMzTOsSmI7Ks10zQvt0lRqiIMn6R2gIXUgiS5
- 5d2vzZamfKhRZIXYdd7xTRTWVfcY0+rixR45eJa7GDoSEbO9lCJxSSCGMLQZaBmKtUW6
- TVog==
+ d=gmail.com; s=20230601; t=1727617439; x=1728222239; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CtwsPRJ0G+vOcECLaC2xnLMNp7yAtpiAKrMCbcRHmo4=;
+ b=Ou85RapjqrNvo7lYsQje7ktsOje5oiRC7oIl6KsuSvGmjlPQtjV/WynkeUUZOUq4w7
+ H2FEVPXu90mod7Cw5QLsp+qCsi0HdlNlF71XZ6NWRWxEjjoic8EdayCqXZO2UC+1fAYu
+ Z4fW71hVyVfn9iMRmkebMMdDkouNKveFUmC/f3+STnJ8rCH1DgfFRYU/nsGaMQG1BBdV
+ Bgo8vg9swXX+FTScdFCB2QQblMFn33L1NXhq7/ADWej/tnAr4Wm8pN7k/4iLx/JDGCgh
+ Nhgdkk+tzIDyP9lLaygHghP0ZrUSx0oZ/pIiYoks6DCupI13jwznKt2ERaiepHjfACL4
+ N9ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727617438; x=1728222238;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Ar0Umd7lNogNSDYCVnXv2sbYzqaVB3nv1Jnbqyb2TPk=;
- b=FtMlX1td43rYj06yfQtWgNRHDVnl31TGAZLlpzc7IEzQqPiqZ2kHHBefRs6qvrh1SZ
- lSd+MzpFaFIvjtTc3N5E7ah+2dfYwTp4abFp4Mdaqzczi8RDO2804MDkurrx4mm7FyfJ
- 7w2RPvtDWDQc400OI7waBiCOwU6L8/1rIv6fV2FzF9lsvGjMu545fOYcAvUNNBFFlH0c
- 8iEiCtjvcs86fx5va37fXmVP3Lkv1KqfKz3key/NHMJdf47+DUS2Fe4XtnO+UZU9A5yf
- rwYuk+3GNQtmD1Y9fo5cR8OcL5JpcvzY54HNdLfIBBgwlt48ZTdYwq8C4YaGM4yOUKal
- gc2g==
+ d=1e100.net; s=20230601; t=1727617439; x=1728222239;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CtwsPRJ0G+vOcECLaC2xnLMNp7yAtpiAKrMCbcRHmo4=;
+ b=W+hRT3nRyAT9B/eZGYo40dpgE0G7CB+HhNn3ztahUDccE6zwlJAaNUHCZ1ehePBEgq
+ R2979WUnswlwJ6CrokyFl2EqRdBr2XZWFF8WlXkF5fJPmau8fUDScI0gx/y5TTfRcqPd
+ JEUxGVCnv+7mv93Oinkv5CkFcpmFYqqz2zhJD61jz3yroIdw8UAPqdF1qTM/rSo3iGKX
+ 3A69fPNGoH02t02+XJdNTNbnIDDIDIEdEAMywql0ilSpAs7jLlSE1HP7pKUQMTnC4I6P
+ ive4C7YnBPXbpHO19UTRzdyoNgf43peefDkbtpf/3R50nYyZ6VlDOzDITKGGwM9dq2sj
+ kM2w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUff43zL9rIT/uHirZA7GGbyjj1w/Yg+P9MqxcFh4ctMXm7bmhWhXsz8ZGjFg5B1rSRifnxTdxPyK8g@nongnu.org
-X-Gm-Message-State: AOJu0YzHutemay35rx+zbEe4shF5OTBq/tctpah2ztQaLEjUgqEhie6i
- qogYjHwW0G/eUSVwxggnpQ7B5PJFclTaCZSWDS3XmeESRX84y89CvcGWyWcY
-X-Google-Smtp-Source: AGHT+IHK+nmXoissWzF2xY5w1HOb6YseyhAFJLktVtjilfa+o77KZ6dULS1mX0684h3ggazFdLYdQQ==
-X-Received: by 2002:a17:906:dac3:b0:a8b:c9d4:5cef with SMTP id
- a640c23a62f3a-a93c4946a7cmr972023166b.29.1727617437713; 
- Sun, 29 Sep 2024 06:43:57 -0700 (PDT)
+ AJvYcCWnNKgsuf6FkXP0KncJhn9LOZCnien4jDgG9XY8YjVfuiOX23VzUWGQap/Qh8WXr3YW3aGn7U/J1H6H@nongnu.org
+X-Gm-Message-State: AOJu0Yw1hRW4sM4jtWNAfpZ0Nno+8EvcC3kkcZRKftEdJrnIEIqNlAX6
+ NEIF+KpBRJ+Xm3VhRHAumW5UKSOd2HaKC5zN4kCvUT1NuOtVKtnXg+ly8clL
+X-Google-Smtp-Source: AGHT+IHOGMWQw2i2EuzyPY8wpLPvrG0MdbFZXxU/aXtcofiJz9cKDLTZU/pw9uvEN5oPgLtbj/rBuA==
+X-Received: by 2002:a17:907:7f1f:b0:a8d:3e29:a82d with SMTP id
+ a640c23a62f3a-a93c492ab45mr907400566b.37.1727617438869; 
+ Sun, 29 Sep 2024 06:43:58 -0700 (PDT)
 Received: from groves.fkb.profitbricks.net
  (ip5f5af605.dynamic.kabel-deutschland.de. [95.90.246.5])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a93c2775934sm377029866b.35.2024.09.29.06.43.56
+ a640c23a62f3a-a93c2775934sm377029866b.35.2024.09.29.06.43.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 29 Sep 2024 06:43:57 -0700 (PDT)
+ Sun, 29 Sep 2024 06:43:58 -0700 (PDT)
 From: Sam Li <faithilikerun@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  hare@suse.de, Eric Blake <eblake@redhat.com>, dmitry.fomichev@wdc.com,
  dlemoal@kernel.org, Sam Li <faithilikerun@gmail.com>
-Subject: [PATCH v9 0/4] Add full zoned storage emulation to qcow2 driver
-Date: Sun, 29 Sep 2024 15:43:52 +0200
-Message-Id: <20240929134356.562086-1-faithilikerun@gmail.com>
+Subject: [PATCH v9 1/4] docs/qcow2: add the zoned format feature
+Date: Sun, 29 Sep 2024 15:43:53 +0200
+Message-Id: <20240929134356.562086-2-faithilikerun@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240929134356.562086-1-faithilikerun@gmail.com>
+References: <20240929134356.562086-1-faithilikerun@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=faithilikerun@gmail.com; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=faithilikerun@gmail.com; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,106 +94,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series add a new extension - zoned format - to the
-qcow2 driver thereby allowing full zoned storage emulation on
-the qcow2 img file. Users can attach such a qcow2 file to the
-guest as a zoned device.
+Add the specs for the zoned format feature of the qcow2 driver.
+The qcow2 file then can emulate real zoned devices, either passed
+through by virtio-blk device or NVMe ZNS drive to the guest
+given zoned information.
 
-Write pointer are preserved in the zoned metadata. It will be
-recovered after power cycle. Meanwhile, any open (implicit or
-explicit) zone will show up as closed.
+Signed-off-by: Sam Li <faithilikerun@gmail.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ docs/system/qemu-block-drivers.rst.inc | 42 ++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-Zone states are in memory. Read-only and offline states are
-device-internal events, which are not considerred in qcow2
-emulation for simplicity. The other zone states
-(closed, empty, full) can be inferred from write poiner
-values, presistent across QEMU reboots. The open states are
-kept in memory using open zone lists.
-
-To create a qcow2 file with zoned format, use command like this:
-
-Then add it to the QEMU command line:
-    -blockdev node-name=drive1,driver=qcow2,file.driver=file,file.filename=../qemu/test.qcow2 \
-    -device virtio-blk-pci,drive=drive1 \
-
-v8->v9:
-- fix compilation err after modifying types
-
-v7->v8:
-- sets default values for zoned img confurations [Markus, Damien]
-- changes the type of zone_size, zone_capacity from uint32_t to uint64_t [Stefan]
-- fix docs [Stefan]
-- modify append writes to increase concurrency [Damien, Stefan]
-- use tailqueue to track active zones [Stefan]
-- fix undefined behavior of ranges_overlap()
-- fix the iotest of case 2(1)
-
-v6->v7:
-- modify zone resource managemant (style) [Damien]
-- fix accessing list with negative index err
-- add some tests for zrm in iotests
-- address review comments [Markus]
-
-v5->v6:
-- fix docs and specs [Eric, Markus, Stefan]
-- add general sanity checks for zoned device configurations while creation and opening [Eric]
-- fix LRU when implicitly open a zone for a long time [Stefan]
-
-v4->v5:
-- add incompatible bit for zoned format [Eric]
-- fix and manage zone resources via LRU [Damien]
-- renaming functions and fields, spec changes [Markus, Damien]
-- add closed zone list
-- make qemu iotests for zoned device consecutive [Stefan]
-
-v3->v4:
-- use QLIST for implicit, explicit open zones management [Stefan]
-- keep zone states in memory and drop state bits in wp metadata structure [Damien, Stefan]
-- change zone resource management and iotests accordingly
-- add tracing for number of implicit zones
-- address review comments [Stefan, Markus]:
-  * documentation, config, style
-
-v2->v3:
-- drop zoned_profile option [Klaus]
-- reformat doc comments of qcow2 [Markus]
-- add input validation and checks for zoned information [Stefan]
-- code style: format, comments, documentation, naming [Stefan]
-- add tracing function for wp tracking [Stefan]
-- reconstruct io path in check_zone_resources [Stefan]
-
-v1->v2:
-- add more tests to qemu-io zoned commands
-- make zone append change state to full when wp reaches end
-- add documentation to qcow2 zoned extension header
-- address review comments (Stefan):
-  * fix zoned_mata allocation size
-  * use bitwise or than addition
-  * fix wp index overflow and locking
-  * cleanups: comments, naming
-
-Sam Li (4):
-  docs/qcow2: add the zoned format feature
-  qcow2: add configurations for zoned format extension
-  qcow2: add zoned emulation capability
-  iotests: test the zoned format feature for qcow2 file
-
- block/file-posix.c                       |    2 +-
- block/qcow2.c                            | 1112 +++++++++++++++++++++-
- block/qcow2.h                            |   39 +-
- block/trace-events                       |    2 +
- docs/interop/qcow2.txt                   |  107 ++-
- docs/system/qemu-block-drivers.rst.inc   |   42 +
- include/block/block_int-common.h         |   15 +-
- include/qemu/queue.h                     |    1 +
- include/qemu/range.h                     |    4 +
- qapi/block-core.json                     |   69 +-
- tests/qemu-iotests/tests/zoned-qcow2     |  148 +++
- tests/qemu-iotests/tests/zoned-qcow2.out |  173 ++++
- 12 files changed, 1702 insertions(+), 12 deletions(-)
- create mode 100755 tests/qemu-iotests/tests/zoned-qcow2
- create mode 100644 tests/qemu-iotests/tests/zoned-qcow2.out
-
+diff --git a/docs/system/qemu-block-drivers.rst.inc b/docs/system/qemu-block-drivers.rst.inc
+index 384e95ba76..5066c943d5 100644
+--- a/docs/system/qemu-block-drivers.rst.inc
++++ b/docs/system/qemu-block-drivers.rst.inc
+@@ -172,6 +172,48 @@ This section describes each format and the options that are supported for it.
+     filename`` to check if the NOCOW flag is set or not (Capital 'C' is
+     NOCOW flag).
+ 
++  .. option:: zone.mode
++    If this is set to ``host-managed``, the image is an emulated zoned
++    block device. This option is only valid to emulated zoned device files.
++
++  .. option:: zone.size
++
++    The size of a zone in bytes. The device is divided into zones of this
++    size with the exception of the last zone, which may be smaller.
++
++  .. option:: zone.capacity
++
++    The initial capacity value, in bytes, for all zones. The capacity must
++    be less than or equal to zone size. If the last zone is smaller, then
++    its capacity is capped.
++
++    The zone capacity is per zone and may be different between zones in real
++    devices. QCow2 sets all zones to the same capacity.
++
++  .. option:: zone.conventional_zones
++
++    The number of conventional zones of the zoned device.
++
++  .. option:: zone.max_active_zones
++
++    The limit of the zones with implicit open, explicit open or closed state.
++
++    The max active zones must be less or equal to the number of SWR
++    (sequential write required) zones of the device.
++
++  .. option:: zone.max_open_zones
++
++    The maximal allowed open zones. The max open zones must not be larger than
++    the max active zones.
++
++    If the limits of open zones or active zones are equal to the number of
++    SWR zones, then it is the same as having no limits.
++
++  .. option:: zone.max_append_bytes
++
++    The number of bytes in a zone append request that can be issued to the
++    device. It must be 512-byte aligned and less than the zone capacity.
++
+ .. program:: image-formats
+ .. option:: qed
+ 
 -- 
 2.34.1
 
