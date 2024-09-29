@@ -2,51 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F099893CC
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Sep 2024 10:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 573239893FB
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Sep 2024 11:09:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1supOn-00070X-Gz; Sun, 29 Sep 2024 04:35:25 -0400
+	id 1supub-0002Ig-G7; Sun, 29 Sep 2024 05:08:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1supOd-0006ne-S8
- for qemu-devel@nongnu.org; Sun, 29 Sep 2024 04:35:16 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1supOa-0006SC-E3
- for qemu-devel@nongnu.org; Sun, 29 Sep 2024 04:35:15 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxUeg+Eflm7b0DAA--.3332S3;
- Sun, 29 Sep 2024 16:35:10 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxn+QtEflmFt0UAA--.54891S9;
- Sun, 29 Sep 2024 16:35:10 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 7/7] hw/loongarch/fw_cfg: Build in common_ss[]
-Date: Sun, 29 Sep 2024 16:17:24 +0800
-Message-Id: <20240929081724.2139556-8-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240929081724.2139556-1-gaosong@loongson.cn>
-References: <20240929081724.2139556-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1supuY-0002IC-Uf
+ for qemu-devel@nongnu.org; Sun, 29 Sep 2024 05:08:15 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1supuW-0001bp-RK
+ for qemu-devel@nongnu.org; Sun, 29 Sep 2024 05:08:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1727600893; x=1759136893;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=btMm3h7haR/kH4uf+Fo7KWuvXPTV+Bhi5whJgwA9hKU=;
+ b=EkOG0xaKL7HRNWAGgeBl2bU65Ou3SBq1YOOlVnGZGpWNGYa41vq3ajKn
+ Zt414jKfAuisxGPcCwidt6BTYxaj2kRB4RiIHXRRB+Gd1A0zdOgHE9B62
+ ChiRLVZtD++HYimolxtx2LtvsKuIsLkuwPcuzJtZGIO5e8HlGaxuhYFzG
+ 4snSjxL3llXKidIy5tBl7Ur/zNEvRH0PDmekJKLridYM95JMdyZOHUnC2
+ sGewYQYQ4o1q+W0XFz78zVS9W0D3dJFK3+Ku43vUl11ZpLtwB382mtCn/
+ CJaOJHnQyUF8tJTQRrNwbCDFrs5N+kgiIEMUc3gHHpkWrrvavpt44AUAl A==;
+X-CSE-ConnectionGUID: wX3XCMN4QSy7ZdjpZusJnA==
+X-CSE-MsgGUID: eSTOJuL5Q/6KkVVz+CVhow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11209"; a="26876755"
+X-IronPort-AV: E=Sophos;i="6.11,162,1725346800"; d="scan'208";a="26876755"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2024 02:08:08 -0700
+X-CSE-ConnectionGUID: 6ySUs4oKSIq249WDdTW9ng==
+X-CSE-MsgGUID: XFsS0/BzToSPOcQKTlj28g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,162,1725346800"; d="scan'208";a="77798932"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by orviesa003.jf.intel.com with ESMTP; 29 Sep 2024 02:08:07 -0700
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ xiaoyao.li@intel.com, qemu-devel@nongnu.org
+Subject: [PATCH v2] i386/cpu: Drop the check of phys_bits in
+ host_cpu_realizefn()
+Date: Sun, 29 Sep 2024 04:57:47 -0400
+Message-Id: <20240929085747.2023198-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxn+QtEflmFt0UAA--.54891S9
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.095,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -64,32 +79,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+The check of cpu->phys_bits to be in range between
+[32, TARGET_PHYS_ADDR_SPACE_BITS] in host_cpu_realizefn()
+is duplicated with check in x86_cpu_realizefn().
 
-Nothing in LoongArch fw_cfg.c requires target specific definitions.
+Since the ckeck in x86_cpu_realizefn() is called later and can cover all
+the x86 cases. Remove the one in host_cpu_realizefn().
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240927213254.17552-3-philmd@linaro.org>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
+Opportunistically adjust cpu->phys_bits directly in
+host_cpu_adjust_phys_bits(), which matches more with the function name.
+
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/loongarch/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+ - make host_cpu_adjust_phys_bits() return void and adjust
+   cpu->phys_bits inside it.
+---
+ target/i386/host-cpu.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/hw/loongarch/meson.build b/hw/loongarch/meson.build
-index bce7ebac97..005f017e21 100644
---- a/hw/loongarch/meson.build
-+++ b/hw/loongarch/meson.build
-@@ -1,8 +1,8 @@
- loongarch_ss = ss.source_set()
- loongarch_ss.add(files(
--    'fw_cfg.c',
-     'boot.c',
- ))
-+common_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: files('fw_cfg.c'))
- loongarch_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: files('virt.c'))
- loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-build.c'))
+diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
+index 8b8bf5afeccf..03b9d1b169a5 100644
+--- a/target/i386/host-cpu.c
++++ b/target/i386/host-cpu.c
+@@ -42,7 +42,7 @@ static uint32_t host_cpu_phys_bits(void)
+     return host_phys_bits;
+ }
  
+-static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
++static void host_cpu_adjust_phys_bits(X86CPU *cpu)
+ {
+     uint32_t host_phys_bits = host_cpu_phys_bits();
+     uint32_t phys_bits = cpu->phys_bits;
+@@ -66,7 +66,7 @@ static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
+         }
+     }
+ 
+-    return phys_bits;
++    cpu->phys_bits = phys_bits;
+ }
+ 
+ bool host_cpu_realizefn(CPUState *cs, Error **errp)
+@@ -75,17 +75,7 @@ bool host_cpu_realizefn(CPUState *cs, Error **errp)
+     CPUX86State *env = &cpu->env;
+ 
+     if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
+-        uint32_t phys_bits = host_cpu_adjust_phys_bits(cpu);
+-
+-        if (phys_bits &&
+-            (phys_bits > TARGET_PHYS_ADDR_SPACE_BITS ||
+-             phys_bits < 32)) {
+-            error_setg(errp, "phys-bits should be between 32 and %u "
+-                       " (but is %u)",
+-                       TARGET_PHYS_ADDR_SPACE_BITS, phys_bits);
+-            return false;
+-        }
+-        cpu->phys_bits = phys_bits;
++        host_cpu_adjust_phys_bits(cpu);
+     }
+     return true;
+ }
 -- 
 2.34.1
 
