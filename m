@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630BF9893C6
-	for <lists+qemu-devel@lfdr.de>; Sun, 29 Sep 2024 10:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B94309893CD
+	for <lists+qemu-devel@lfdr.de>; Sun, 29 Sep 2024 10:37:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1supOq-0007Jy-Hn; Sun, 29 Sep 2024 04:35:28 -0400
+	id 1supOn-00071n-Tk; Sun, 29 Sep 2024 04:35:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1supOd-0006m4-EM
+ id 1supOd-0006nI-On
  for qemu-devel@nongnu.org; Sun, 29 Sep 2024 04:35:16 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1supOa-0006SA-8l
+ (envelope-from <gaosong@loongson.cn>) id 1supOa-0006SE-Er
  for qemu-devel@nongnu.org; Sun, 29 Sep 2024 04:35:15 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxfWs9Eflm6L0DAA--.3365S3;
- Sun, 29 Sep 2024 16:35:09 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Dx+3I+Eflm7r0DAA--.3252S3;
+ Sun, 29 Sep 2024 16:35:10 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxn+QtEflmFt0UAA--.54891S6;
- Sun, 29 Sep 2024 16:35:07 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMBxn+QtEflmFt0UAA--.54891S7;
+ Sun, 29 Sep 2024 16:35:08 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 4/7] hw/loongarch/boot: Rework boot code generation
-Date: Sun, 29 Sep 2024 16:17:21 +0800
-Message-Id: <20240929081724.2139556-5-gaosong@loongson.cn>
+Cc: peter.maydell@linaro.org, Bibo Mao <maobibo@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 5/7] target/loongarch: Avoid bits shift exceeding width of bool
+ type
+Date: Sun, 29 Sep 2024 16:17:22 +0800
+Message-Id: <20240929081724.2139556-6-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240929081724.2139556-1-gaosong@loongson.cn>
 References: <20240929081724.2139556-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxn+QtEflmFt0UAA--.54891S6
+X-CM-TRANSID: qMiowMBxn+QtEflmFt0UAA--.54891S7
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,147 +64,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-Use stl_p to write instructions so that host endian conversion
-will be performed.
+Variable env->cf[i] is defined as bool type, it is treated as int type
+with shift operation. However the max possible width is 56 for the shift
+operation, exceeding the width of int type. And there is existing api
+read_fcc() which is converted to u64 type with bitwise shift, it can be
+used to dump fp registers into coredump note segment.
 
-Replace mailbox read/write on LoongArch32 systems with 32bit IOCSR
-instructions to prevent illegal instructions.
-
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240914-loongarch-booting-v1-2-1517cae11c10@flygoat.com>
+Resolves: Coverity CID 1561133
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240914064645.2099169-1-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/loongarch/boot.c | 107 ++++++++++++++++++++++++--------------------
- 1 file changed, 59 insertions(+), 48 deletions(-)
+ target/loongarch/arch_dump.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index 4d01c01594..5a1cc5b79b 100644
---- a/hw/loongarch/boot.c
-+++ b/hw/loongarch/boot.c
-@@ -22,53 +22,64 @@ unsigned memmap_entries;
- ram_addr_t initrd_offset;
- uint64_t initrd_size;
+diff --git a/target/loongarch/arch_dump.c b/target/loongarch/arch_dump.c
+index 4986db970e..d9e1120333 100644
+--- a/target/loongarch/arch_dump.c
++++ b/target/loongarch/arch_dump.c
+@@ -97,11 +97,7 @@ static int loongarch_write_elf64_fprpreg(WriteCoreDumpFunction f,
  
--static const unsigned int slave_boot_code[] = {
--                  /* Configure reset ebase.                    */
--    0x0400302c,   /* csrwr      $t0, LOONGARCH_CSR_EENTRY      */
+     loongarch_note_init(&note, s, "CORE", 5, NT_PRFPREG, sizeof(note.fpu));
+     note.fpu.fcsr = cpu_to_dump64(s, env->fcsr0);
 -
--                  /* Disable interrupt.                        */
--    0x0380100c,   /* ori        $t0, $zero,0x4                 */
--    0x04000180,   /* csrxchg    $zero, $t0, LOONGARCH_CSR_CRMD */
--
--                  /* Clear mailbox.                            */
--    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
--    0x038081ad,   /* ori        $t1, $t1, CORE_BUF_20          */
--    0x06481da0,   /* iocsrwr.d  $zero, $t1                     */
--
--                  /* Enable IPI interrupt.                     */
--    0x1400002c,   /* lu12i.w    $t0, 1(0x1)                    */
--    0x0400118c,   /* csrxchg    $t0, $t0, LOONGARCH_CSR_ECFG   */
--    0x02fffc0c,   /* addi.d     $t0, $r0,-1(0xfff)             */
--    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
--    0x038011ad,   /* ori        $t1, $t1, CORE_EN_OFF          */
--    0x064819ac,   /* iocsrwr.w  $t0, $t1                       */
--    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
--    0x038081ad,   /* ori        $t1, $t1, CORE_BUF_20          */
--
--                  /* Wait for wakeup  <.L11>:                  */
--    0x06488000,   /* idle       0x0                            */
--    0x03400000,   /* andi       $zero, $zero, 0x0              */
--    0x064809ac,   /* iocsrrd.w  $t0, $t1                       */
--    0x43fff59f,   /* beqz       $t0, -12(0x7ffff4) # 48 <.L11> */
--
--                  /* Read and clear IPI interrupt.             */
--    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
--    0x064809ac,   /* iocsrrd.w  $t0, $t1                       */
--    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
--    0x038031ad,   /* ori        $t1, $t1, CORE_CLEAR_OFF       */
--    0x064819ac,   /* iocsrwr.w  $t0, $t1                       */
--
--                  /* Disable  IPI interrupt.                   */
--    0x1400002c,   /* lu12i.w    $t0, 1(0x1)                    */
--    0x04001180,   /* csrxchg    $zero, $t0, LOONGARCH_CSR_ECFG */
--
--                  /* Read mail buf and jump to specified entry */
--    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
--    0x038081ad,   /* ori        $t1, $t1, CORE_BUF_20          */
--    0x06480dac,   /* iocsrrd.d  $t0, $t1                       */
--    0x00150181,   /* move       $ra, $t0                       */
--    0x4c000020,   /* jirl       $zero, $ra,0                   */
--};
-+static void generate_secondary_boot_code(void *boot_code, bool is_64bit)
-+{
-+    uint32_t *p = boot_code;
-+
-+    /* Configure reset ebase. */
-+    stl_p(p++, 0x0400302c); /* csrwr      $t0, LOONGARCH_CSR_EENTRY  */
-+
-+    /* Disable interrupt. */
-+    stl_p(p++, 0x0380100c); /* ori        $t0, $zero,0x4             */
-+    stl_p(p++, 0x04000180); /* csrxchg    $zero, $t0, LOONGARCH_CSR_CRMD */
-+
-+    /* Clear mailbox. */
-+    stl_p(p++, 0x1400002d); /* lu12i.w    $t1, 1(0x1)                */
-+    stl_p(p++, 0x038081ad); /* ori        $t1, $t1, CORE_BUF_20      */
-+    if (is_64bit) {
-+        stl_p(p++, 0x06481da0); /* iocsrwr.d  $zero, $t1             */
-+    } else {
-+        stl_p(p++, 0x064819a0); /* iocsrwr.w  $zero, $t1             */
-+    }
-+
-+    /* Enable IPI interrupt. */
-+    stl_p(p++, 0x1400002c); /* lu12i.w    $t0, 1(0x1)                */
-+    stl_p(p++, 0x0400118c); /* csrxchg    $t0, $t0, LOONGARCH_CSR_ECFG */
-+    stl_p(p++, 0x02fffc0c); /* addi.d     $t0, $r0, -1(0xfff)        */
-+    stl_p(p++, 0x1400002d); /* lu12i.w    $t1, 1(0x1)                */
-+    stl_p(p++, 0x038011ad); /* ori        $t1, $t1, CORE_EN_OFF      */
-+    stl_p(p++, 0x064819ac); /* iocsrwr.w  $t0, $t1                   */
-+    stl_p(p++, 0x1400002d); /* lu12i.w    $t1, 1(0x1)                */
-+    stl_p(p++, 0x038081ad); /* ori        $t1, $t1, CORE_BUF_20      */
-+
-+    /* Wait for wakeup <.L11>: */
-+    stl_p(p++, 0x06488000); /* idle       0x0                        */
-+    stl_p(p++, 0x03400000); /* andi       $zero, $zero, 0x0          */
-+    stl_p(p++, 0x064809ac); /* iocsrrd.w  $t0, $t1                   */
-+    stl_p(p++, 0x43fff59f); /* beqz       $t0, -12(0x7ffff4) # 48 <.L11> */
-+
-+    /* Read and clear IPI interrupt. */
-+    stl_p(p++, 0x1400002d); /* lu12i.w    $t1, 1(0x1)                */
-+    stl_p(p++, 0x064809ac); /* iocsrrd.w  $t0, $t1                   */
-+    stl_p(p++, 0x1400002d); /* lu12i.w    $t1, 1(0x1)                */
-+    stl_p(p++, 0x038031ad); /* ori        $t1, $t1, CORE_CLEAR_OFF   */
-+    stl_p(p++, 0x064819ac); /* iocsrwr.w  $t0, $t1                   */
-+
-+    /* Disable IPI interrupt. */
-+    stl_p(p++, 0x1400002c); /* lu12i.w    $t0, 1(0x1)                */
-+    stl_p(p++, 0x04001180); /* csrxchg    $zero, $t0, LOONGARCH_CSR_ECFG */
-+
-+    /* Read mail buf and jump to specified entry. */
-+    stl_p(p++, 0x1400002d); /* lu12i.w    $t1, 1(0x1)                */
-+    stl_p(p++, 0x038081ad); /* ori        $t1, $t1, CORE_BUF_20      */
-+    if (is_64bit) {
-+        stl_p(p++, 0x06480dac); /* iocsrrd.d  $t0, $t1               */
-+    } else {
-+        stl_p(p++, 0x064809ac); /* iocsrrd.w  $t0, $t1               */
-+    }
-+    stl_p(p++, 0x00150181); /* move       $ra, $t0                   */
-+    stl_p(p++, 0x4c000020); /* jirl       $zero, $ra, 0              */
-+}
+-    for (i = 0; i < 8; i++) {
+-        note.fpu.fcc |= env->cf[i] << (8 * i);
+-    }
+-    note.fpu.fcc = cpu_to_dump64(s, note.fpu.fcc);
++    note.fpu.fcc = cpu_to_dump64(s, read_fcc(env));
  
- static inline void *guidcpy(void *dst, const void *src)
- {
-@@ -379,7 +390,7 @@ static void loongarch_direct_kernel_boot(struct loongarch_boot_info *info)
- 
-     /* Load slave boot code at pflash0 . */
-     void *boot_code = g_malloc0(VIRT_FLASH0_SIZE);
--    memcpy(boot_code, &slave_boot_code, sizeof(slave_boot_code));
-+    generate_secondary_boot_code(boot_code, is_la64(&lacpu->env));
-     rom_add_blob_fixed("boot_code", boot_code, VIRT_FLASH0_SIZE, VIRT_FLASH0_BASE);
- 
-     CPU_FOREACH(cs) {
+     for (i = 0; i < 32; ++i) {
+         note.fpu.fpr[i] = cpu_to_dump64(s, env->fpr[i].vreg.UD[0]);
 -- 
 2.34.1
 
