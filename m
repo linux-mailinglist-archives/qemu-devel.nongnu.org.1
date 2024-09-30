@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF84E989C94
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AC8989C6D
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:17:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svBZr-0002ii-Ca; Mon, 30 Sep 2024 04:16:26 -0400
+	id 1svBZb-0002Z6-Nq; Mon, 30 Sep 2024 04:16:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svBZ0-0001oa-Fu
+ id 1svBZ2-0001wy-MK
  for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:15:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svBYy-0005b8-KE
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:15:26 -0400
+ id 1svBYz-0005bg-T7
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:15:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727684117;
+ s=mimecast20190719; t=1727684124;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uhM4mUe4SOwd5IXKZy3s8JqZaDqEwhiZJ//8HTUJpqA=;
- b=Ch4Whv2j9R197+jzSjcRjuiW0CmVieGj89fzeubgfr2BUNbycbsek9D246u2r99LylzVFy
- 57R2wahLkNN3ckletGNtEQyIbSjU5jPIW2Oh+tO3WF9xNDHqWfjEuKUqF62kOch17QbZEp
- qb8w/gskVfZZhX782ma/KrhjMSO+Xxg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=VEGksA9KrAjdYdb0jvqfGMpZ0DaihQHvTeMRO5FF8lk=;
+ b=g7nggetlr9GrX+AACGnU3Gqw2eGvTfcZHtTwmMTvAgtU2yfZE5M0f3zGfZZSSvausTCKVJ
+ ekaf2ZvBDeax5SFRB81bka7YC7GvQZwABqE3vWEgbTaaZ2j8rGZvAe8gCKPu2S8oQoHuCA
+ hKus2FONJnv1GtwIe1FKXSotLR7Sfzk=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-302-mA9Is9HaNXWrdIuKt0TPMw-1; Mon,
- 30 Sep 2024 04:15:16 -0400
-X-MC-Unique: mA9Is9HaNXWrdIuKt0TPMw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-qX4FTc1uONqEi645OQOQNQ-1; Mon,
+ 30 Sep 2024 04:15:20 -0400
+X-MC-Unique: qX4FTc1uONqEi645OQOQNQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 555A8193316E; Mon, 30 Sep 2024 08:15:13 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 09AC0191917C; Mon, 30 Sep 2024 08:15:18 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 349551979061; Mon, 30 Sep 2024 08:15:10 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E355E19560AD; Mon, 30 Sep 2024 08:15:16 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>,
@@ -70,17 +70,17 @@ Cc: Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Yuval Shaia <yuval.shaia.ml@gmail.com>, Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v3 01/22] util/coroutine: fix -Werror=maybe-uninitialized
+Subject: [PATCH v3 02/22] util/timer: fix -Werror=maybe-uninitialized
  false-positive
-Date: Mon, 30 Sep 2024 12:14:36 +0400
-Message-ID: <20240930081458.1926382-2-marcandre.lureau@redhat.com>
+Date: Mon, 30 Sep 2024 12:14:37 +0400
+Message-ID: <20240930081458.1926382-3-marcandre.lureau@redhat.com>
 In-Reply-To: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
 References: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -108,27 +108,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../util/qemu-coroutine.c:150:8: error: ‘batch’ may be used uninitialized [-Werror=maybe-uninitialized]
+../util/qemu-timer.c:198:24: error: ‘expire_time’ may be used uninitialized [-Werror=maybe-uninitialized]
+../util/qemu-timer.c:476:8: error: ‘rearm’ may be used uninitialized [-Werror=maybe-uninitialized]
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- util/qemu-coroutine.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ util/qemu-timer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/util/qemu-coroutine.c b/util/qemu-coroutine.c
-index eb4eebefdf..64d6264fc7 100644
---- a/util/qemu-coroutine.c
-+++ b/util/qemu-coroutine.c
-@@ -136,7 +136,7 @@ static Coroutine *coroutine_pool_get_local(void)
- static void coroutine_pool_refill_local(void)
- {
-     CoroutinePool *local_pool = get_ptr_local_pool();
--    CoroutinePoolBatch *batch;
-+    CoroutinePoolBatch *batch = NULL;
+diff --git a/util/qemu-timer.c b/util/qemu-timer.c
+index 6b1533bc2a..d5e33490fc 100644
+--- a/util/qemu-timer.c
++++ b/util/qemu-timer.c
+@@ -182,7 +182,7 @@ bool qemu_clock_has_timers(QEMUClockType type)
  
-     WITH_QEMU_LOCK_GUARD(&global_pool_lock) {
-         batch = QSLIST_FIRST(&global_pool);
+ bool timerlist_expired(QEMUTimerList *timer_list)
+ {
+-    int64_t expire_time;
++    int64_t expire_time = 0;
+ 
+     if (!qatomic_read(&timer_list->active_timers)) {
+         return false;
+@@ -212,7 +212,7 @@ bool qemu_clock_expired(QEMUClockType type)
+ int64_t timerlist_deadline_ns(QEMUTimerList *timer_list)
+ {
+     int64_t delta;
+-    int64_t expire_time;
++    int64_t expire_time = 0;
+ 
+     if (!qatomic_read(&timer_list->active_timers)) {
+         return -1;
+@@ -461,7 +461,7 @@ void timer_mod_ns(QEMUTimer *ts, int64_t expire_time)
+ void timer_mod_anticipate_ns(QEMUTimer *ts, int64_t expire_time)
+ {
+     QEMUTimerList *timer_list = ts->timer_list;
+-    bool rearm;
++    bool rearm = false;
+ 
+     WITH_QEMU_LOCK_GUARD(&timer_list->active_timers_lock) {
+         if (ts->expire_time == -1 || ts->expire_time > expire_time) {
 -- 
 2.45.2.827.g557ae147e6
 
