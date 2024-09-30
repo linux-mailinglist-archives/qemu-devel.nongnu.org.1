@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A26989C89
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 100DB989CA0
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:21:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svBbg-0007sF-Du; Mon, 30 Sep 2024 04:18:16 -0400
+	id 1svBcr-0007Te-1A; Mon, 30 Sep 2024 04:19:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svBaB-0004dV-PO
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:16:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1svBaO-0005Ea-Je
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:17:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svBa9-0005qG-1C
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:16:38 -0400
+ id 1svBaL-0005sH-N8
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:16:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727684196;
+ s=mimecast20190719; t=1727684205;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n8dGE0A38f5VTr5H+JPJ+JEIz9Dt2fSH4V7WEzu6LPU=;
- b=COaj88y/I5Q5S0mNdwqxHu+aw6i6OzHzckvxBZNxFNshKIb2ldc+ig2DnhZ0ZHfntWhlA7
- JSZlPqCSzOnKpwtvQRjlDYK6rzqbrAv8UstjcAFfnKPE+hOskZFBfRFQkdnj4bsa0T1d8a
- mrBybZDcJYHRoC5mWc3AzWyA7hrzlBE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=NBIdUVg4Ambg7bYy+M68UshrEz83KnaBQNGOPS+kl2w=;
+ b=BL16SZV9MT7VREegDOOGcT5WLFv1+yM3hk3nxd4j1iJjiffzv+fVpz2G3mvsE0qtAw/hqS
+ fBVjY2Cmw4w3i0noON/9tSZSCoQknlTXPw3RovvSL0YeN2bStFma4G1vfveO3s9LAkYAJe
+ e8GrnoXJNQ0q2rAQJc6s2fvzJOkSEJs=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-395-leZvvJVBOCydAAzUohkKSg-1; Mon,
- 30 Sep 2024 04:16:32 -0400
-X-MC-Unique: leZvvJVBOCydAAzUohkKSg-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-muZz1Fg8Peq94dAr0jhFLA-1; Mon,
+ 30 Sep 2024 04:16:41 -0400
+X-MC-Unique: muZz1Fg8Peq94dAr0jhFLA-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D71661933140; Mon, 30 Sep 2024 08:16:29 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1F24A190598D; Mon, 30 Sep 2024 08:16:38 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D10F91955DC7; Mon, 30 Sep 2024 08:16:27 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 65E7619373D7; Mon, 30 Sep 2024 08:16:32 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>,
@@ -70,17 +70,17 @@ Cc: Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Yuval Shaia <yuval.shaia.ml@gmail.com>, Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v3 12/22] migration: fix -Werror=maybe-uninitialized
- false-positives
-Date: Mon, 30 Sep 2024 12:14:47 +0400
-Message-ID: <20240930081458.1926382-13-marcandre.lureau@redhat.com>
+Subject: [PATCH v3 13/22] hw/virtio-blk: fix -Werror=maybe-uninitialized
+ false-positive
+Date: Mon, 30 Sep 2024 12:14:48 +0400
+Message-ID: <20240930081458.1926382-14-marcandre.lureau@redhat.com>
 In-Reply-To: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
 References: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -90,7 +90,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.095,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,50 +108,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../migration/dirtyrate.c:186:5: error: ‘records’ may be used uninitialized [-Werror=maybe-uninitialized]
-../migration/dirtyrate.c:168:12: error: ‘gen_id’ may be used uninitialized [-Werror=maybe-uninitialized]
-../migration/migration.c:2273:5: error: ‘file’ may be used uninitialized [-Werror=maybe-uninitialized]
+../hw/block/virtio-blk.c:1212:12: error: ‘rq’ may be used uninitialized [-Werror=maybe-uninitialized]
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Acked-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Hyman Huang <yong.huang@smartx.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- migration/dirtyrate.c | 4 ++--
- migration/migration.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ hw/block/virtio-blk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index 5478d58de3..233acb0855 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -149,12 +149,12 @@ int64_t vcpu_calculate_dirtyrate(int64_t calc_time_ms,
-                                  unsigned int flag,
-                                  bool one_shot)
- {
--    DirtyPageRecord *records;
-+    DirtyPageRecord *records = NULL;
-     int64_t init_time_ms;
-     int64_t duration;
-     int64_t dirtyrate;
-     int i = 0;
--    unsigned int gen_id;
-+    unsigned int gen_id = 0;
+diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+index 115795392c..9166d7974d 100644
+--- a/hw/block/virtio-blk.c
++++ b/hw/block/virtio-blk.c
+@@ -1060,7 +1060,7 @@ static void virtio_blk_dma_restart_cb(void *opaque, bool running,
+     VirtIOBlock *s = opaque;
+     uint16_t num_queues = s->conf.num_queues;
+     g_autofree VirtIOBlockReq **vq_rq = NULL;
+-    VirtIOBlockReq *rq;
++    VirtIOBlockReq *rq = NULL;
  
- retry:
-     init_time_ms = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-diff --git a/migration/migration.c b/migration/migration.c
-index ae2be31557..021faee2f3 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2278,7 +2278,7 @@ static bool migrate_handle_rp_resume_ack(MigrationState *s,
-  */
- static void migration_release_dst_files(MigrationState *ms)
- {
--    QEMUFile *file;
-+    QEMUFile *file = NULL;
- 
-     WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-         /*
+     if (!running) {
+         return;
 -- 
 2.45.2.827.g557ae147e6
 
