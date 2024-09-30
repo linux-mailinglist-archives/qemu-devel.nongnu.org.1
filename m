@@ -2,126 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60A0989C22
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C54989C34
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:08:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svBMP-0001hs-6k; Mon, 30 Sep 2024 04:02:26 -0400
+	id 1svBSW-0000a2-Iu; Mon, 30 Sep 2024 04:08:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svBML-0001ZD-9s
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:02:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1svBSO-0000Mb-IK
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:08:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svBMI-0003pO-CH
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:02:19 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1svBSM-0004hS-RQ
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:08:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727683337;
+ s=mimecast20190719; t=1727683713;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=iNtMwZTj/+c0HKUmVd3UmfiXisfu1RQCgpnUTXEh/lg=;
- b=SGmax21TVsOUIMbGY/IEC/8Lb+qXCwhKMKNIi/RmO6S9WLEL1XvNTPu5uCB2RxeMNYj7Zp
- AcWceG5VgqoWIno5P+2z/3B2OJ7yXr+HxDenxE99v+BrJoal+2TW0tKs3D8L2O+k9ggJbM
- JCzz+TAbX3T1VgIKGgw6zrr+87VKl9A=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=gLcrxA89quyj9PBJmO6u8kraN+hv3PjIw3p//FZwKrE=;
+ b=DGPuIVpmLJgpk4pSHT3agUkdLBwMAufxG65jqNbB+/ckW8q7Fc+HmANQtJPnR0YeVKhMsG
+ ZRgZgkrhdPhdvuJh394TK/Ys2uhptOj9J+f3FbX023x2AjLNi7OsYLy92Z4JspSc7pXDq2
+ 02GtIP9kEjJbqrVKW/oLipTeCvozs9c=
+Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
+ [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-348-x4hq7sujOCGH1w-hgGf6Aw-1; Mon, 30 Sep 2024 04:02:14 -0400
-X-MC-Unique: x4hq7sujOCGH1w-hgGf6Aw-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4582182b6afso94284601cf.0
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 01:02:14 -0700 (PDT)
+ us-mta-663-7fojj74eMDuZn6o33oQx-A-1; Mon, 30 Sep 2024 04:08:32 -0400
+X-MC-Unique: 7fojj74eMDuZn6o33oQx-A-1
+Received: by mail-yb1-f199.google.com with SMTP id
+ 3f1490d57ef6-e25d62bfe12so5786796276.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 01:08:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727683334; x=1728288134;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iNtMwZTj/+c0HKUmVd3UmfiXisfu1RQCgpnUTXEh/lg=;
- b=w+7CujcRPpH4uybJ5luwDCpwBs1AbUHJoAO4fEk0oZYi7nNJJ2qqGiUFOlvNQjaR3y
- rfwWNkYbxJkOXjbzg998SZlm9CnBEcKbuZhHZSD5Lbj203NmESPDlLRpDdsnPFg0PflH
- +VREilHGCOVr06kaMAMXTinQk+0epHOuHmlqHGH5ahXnMNhYd+zqXaOtT+kZekgLxQCg
- +CQKWoslm60ZXQHhpDXthQv1ScDEFc1bbIuhZgMi+35+yPAzmW7sFkN8TGwxRN6G+HmK
- jBmQhDgvnbbeWhN5+j0yHb4aBd+VZeEUJK1jrvwirkYeLOZM8J5C4hGBEkOrpDFeFJgi
- F9WA==
+ d=1e100.net; s=20230601; t=1727683711; x=1728288511;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gLcrxA89quyj9PBJmO6u8kraN+hv3PjIw3p//FZwKrE=;
+ b=mM2fKQtXL87C3I1Qng2otFawUvDxeScrHvJ2jH865U6ruLRXUHUeqwMswj7dXdVDFx
+ tIKb+Kx4IliR4zDmbCrcNf3wG2E4AaspKmuxqzmdpzs59lHnJ/2JSIlurfW8H75Qb246
+ 8FP8Flicu0uU56Au8E7s61Wjx1VkEmMDotmMiX0Lqk5Rm24EJKBh1ksh2kAJIvgGhEBD
+ XZR18rYp4VmLOuZr+PXmC+uv8ZbG+rkLxPOa1U3LLSGOewge5na0fi0Lx8fzpy6HNOmC
+ bR22CcGn8baQEW9c8A3QFck3yFkf4tOGs9OwxPrE1N8lWHypglV894RlQBJlP1z+HD/u
+ DXnQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUCn79ULBXel/E++9p2tm/6uE7LTYm9xcSpO+Jm+7pNAC1MzItWgduVyycbfjHZHcK9wWIuq5/CItS6@nongnu.org
-X-Gm-Message-State: AOJu0Yy0iSbOQvXFR30ba58RBV1Z3ilE9SiwS7tyg6tmIlu5LVgAa7Ky
- MVf6sOQCvyXaCjAywo5yt5mnyGeqi6T+oltiWfYv86bEbYFVzMZhdHYFQ4YRcRaS5jC+NW77+47
- 7iuEu7cI8B3JM5mpKQQNlrtUi+64T7ziPHMXOwC2eXG7iu7Hu9mqy
-X-Received: by 2002:ac8:5ad6:0:b0:458:3399:5177 with SMTP id
- d75a77b69052e-45c9f247689mr149788471cf.27.1727683334102; 
- Mon, 30 Sep 2024 01:02:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEUx+v9SItV2YqlBSD4XGpqH8JtO92dp/LqjiB59mDXatDBZnuxEatq3qtLyb+8RH5SnmSnpg==
-X-Received: by 2002:ac8:5ad6:0:b0:458:3399:5177 with SMTP id
- d75a77b69052e-45c9f247689mr149788191cf.27.1727683333685; 
- Mon, 30 Sep 2024 01:02:13 -0700 (PDT)
-Received: from [192.168.0.7] (ip-109-42-48-176.web.vodafone.de.
- [109.42.48.176]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-45c9f2b6d4asm34282481cf.21.2024.09.30.01.02.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Sep 2024 01:02:13 -0700 (PDT)
-Message-ID: <963571ae-84ea-4290-ba24-794cb5008b84@redhat.com>
-Date: Mon, 30 Sep 2024 10:02:09 +0200
+ AJvYcCWSbKZIoOHZkwt79CAjvyrRUJ8uIfRZUpBIgU+9kgjmjz4yZSBNsIb+EqD07Vz4CmWPC/U4DcVxQKj4@nongnu.org
+X-Gm-Message-State: AOJu0YydHA8jxq2DQyVu8/gD8hUBeBUVx0B3DqPp/NiSDJbBxzzMqKgO
+ amwCgXRQxrp1ev0kHYfBTkT1zBejyGzgBxr00hsi+EsDRKj/ObEBhfptwUO1Sedcac1EaG7m6gn
+ ZUhlBD3yP3MRokUHn+agPZQm202q9rlVZDV2VY661OQ0wYBYI8lxpKQq7qIv/TJxibJi9Y/9qyI
+ oTLKmDLRNG3hH1+3lVZkDnUgxAt7Y=
+X-Received: by 2002:a05:6902:f85:b0:e25:dace:d4a8 with SMTP id
+ 3f1490d57ef6-e2604c7b5bbmr6888059276.41.1727683711453; 
+ Mon, 30 Sep 2024 01:08:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRflEfSbdkEu8iRCF5fXida0/ho3N+UK72uEp4JsuhGeW5kZlgKMq9AMetxBZVQTR32oj11R/wLwm7ze3ievU=
+X-Received: by 2002:a05:6902:f85:b0:e25:dace:d4a8 with SMTP id
+ 3f1490d57ef6-e2604c7b5bbmr6888053276.41.1727683711006; Mon, 30 Sep 2024
+ 01:08:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] hw/loongarch/fw_cfg: Build in common_ss[]
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Song Gao <gaosong@loongson.cn>
-References: <20240927213254.17552-1-philmd@linaro.org>
- <20240927213254.17552-3-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240927213254.17552-3-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+References: <20240924130554.749278-1-marcandre.lureau@redhat.com>
+ <20240924130554.749278-19-marcandre.lureau@redhat.com>
+ <CAJaqyWegTNj7dBjueoV_-WVUSKYZQ=ELesmE_7PPiuWeNwoFJA@mail.gmail.com>
+In-Reply-To: <CAJaqyWegTNj7dBjueoV_-WVUSKYZQ=ELesmE_7PPiuWeNwoFJA@mail.gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Mon, 30 Sep 2024 10:08:19 +0200
+Message-ID: <CAGxU2F67P0rJLgXz-UowDgPVsE-6uyemvcefoej40qpAL97N5w@mail.gmail.com>
+Subject: Re: [PATCH v2 18/22] hw/virtio: fix -Werror=maybe-uninitialized
+ false-positive
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org, 
+ Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
+ Bin Meng <bmeng.cn@gmail.com>, 
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Hyman Huang <yong.huang@smartx.com>, 
+ Klaus Jensen <its@irrelevant.dk>, Alexandre Iooss <erdnaxe@crans.org>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ John Snow <jsnow@redhat.com>, Jesper Devantier <foss@defmacro.it>,
+ Bin Meng <bin.meng@windriver.com>, 
+ Greg Kurz <groug@kaod.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, Fabiano Rosas <farosas@suse.de>,
+ Keith Busch <kbusch@kernel.org>, Eric Blake <eblake@redhat.com>,
+ qemu-block@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ Fam Zheng <fam@euphon.net>, Eduardo Habkost <eduardo@habkost.net>,
+ Hanna Reitz <hreitz@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -146,29 +122,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/09/2024 23.32, Philippe Mathieu-Daudé wrote:
-> Nothing in LoongArch fw_cfg.c requires target specific definitions.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/loongarch/meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/loongarch/meson.build b/hw/loongarch/meson.build
-> index bce7ebac97..005f017e21 100644
-> --- a/hw/loongarch/meson.build
-> +++ b/hw/loongarch/meson.build
-> @@ -1,8 +1,8 @@
->   loongarch_ss = ss.source_set()
->   loongarch_ss.add(files(
-> -    'fw_cfg.c',
->       'boot.c',
->   ))
-> +common_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: files('fw_cfg.c'))
->   loongarch_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: files('virt.c'))
->   loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-build.c'))
->   
+On Fri, Sep 27, 2024 at 3:05=E2=80=AFPM Eugenio Perez Martin
+<eperezma@redhat.com> wrote:
+>
+> On Tue, Sep 24, 2024 at 3:07=E2=80=AFPM <marcandre.lureau@redhat.com> wro=
+te:
+> >
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >
+> > ../hw/virtio/vhost-shadow-virtqueue.c:545:13: error: =E2=80=98r=E2=80=
+=99 may be used uninitialized [-Werror=3Dmaybe-uninitialized]
+> >
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > ---
+> >  hw/virtio/vhost-shadow-virtqueue.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shado=
+w-virtqueue.c
+> > index fc5f408f77..cd29cc795b 100644
+> > --- a/hw/virtio/vhost-shadow-virtqueue.c
+> > +++ b/hw/virtio/vhost-shadow-virtqueue.c
+> > @@ -526,7 +526,7 @@ static void vhost_svq_flush(VhostShadowVirtqueue *s=
+vq,
+> >  size_t vhost_svq_poll(VhostShadowVirtqueue *svq, size_t num)
+> >  {
+> >      size_t len =3D 0;
+> > -    uint32_t r;
+> > +    uint32_t r =3D 0;
+> >
+>
+> I understand this is a bulk changeset to avoid the warning, but does
+> this mean we cannot use pointer arguments to just return information
+> anymore? vhost_svq_get_buf just write to it, it never reads it.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Sure we can, the problem here is that vhost_svq_get_buf() might return
+without having written there (in the error path).
+
+>
+> If you post a second version and it is convenient for you, it would be
+> useful to move it inside of the while.
+
+I think it is the only way, if we keep it out we have the problem from
+the second loop on (always in the error path).
+
+>
+> Any way we solve it,
+>
+> Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+>
+> >      while (num--) {
+> >          int64_t start_us =3D g_get_monotonic_time();
+> > --
+> > 2.45.2.827.g557ae147e6
+> >
+>
 
 
