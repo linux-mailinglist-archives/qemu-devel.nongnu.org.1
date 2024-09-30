@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E4798AA56
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 18:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2AD98AAA8
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 19:09:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svJe7-0004pl-TK; Mon, 30 Sep 2024 12:53:16 -0400
+	id 1svJsq-00074u-Ew; Mon, 30 Sep 2024 13:08:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1svJdz-0004Ia-Bt
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 12:53:08 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1svJdw-0007iW-QM
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 12:53:07 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42e5e758093so36836435e9.1
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 09:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1727715182; x=1728319982;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=f94PuGbY3o4nfnvd44/JCW0gaP0F8DVpfbjuvceZQ8U=;
- b=JkH5oGH9DJva8Fivoql3C99H2fXH8SKhexXjymblxqLbm/iS8MyBHv9nEkknAdQrxw
- rhoojI4lGGo69VxFtct++1GszzO9Z5X0oBha6gpcS4blXKAl1Yp13wQ0XF1LfbsPGy7z
- pEWxP/LU3iUkqGvohGWfGL7TSjTWL8G+0wYj2WA+7TaCXCPLewzsfhXPJT0lPWzBH8WC
- gx3EvZbWbldI7FlQxbcusYdds0I+t+nMFLbh3ldXKokkWdzu0glsnuK4Vg+aDzxRhj/t
- OpVp7LuKhVt+tCfe9TCmcH7VUEe0eynTyC/TuUqOPni09XjKxGFbeT7LFvWYSE2GjS8D
- ZdTw==
+ (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1svJsl-0006t0-Kh
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 13:08:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1svJsh-0001Cl-D5
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 13:08:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727716091;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=XoRTZpdJx0N12M7VOOreMYE4Nl0UPkLH+sK6s3QQ2Sg=;
+ b=GagzCSTp05/MXP8EWHFzIA58tckDgoslkSlsNE/ab2rCy41NkDvikjTjq4rwoBiiOSGCFz
+ xOAY8WWPiqflKS/lfo/b1d/VutW9tXZqnFs2vuwZnSMxPdmKajuKR9fxwY/vFBXnafmJIZ
+ AUuL/3TWjLvKqvIW5R/Qh5z1LHn23T4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-332-KXDTQ1_2NJ6AxuGs8tsdUg-1; Mon, 30 Sep 2024 13:08:09 -0400
+X-MC-Unique: KXDTQ1_2NJ6AxuGs8tsdUg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-37cdd84aa87so1264021f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 10:08:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727715182; x=1728319982;
+ d=1e100.net; s=20230601; t=1727716087; x=1728320887;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=f94PuGbY3o4nfnvd44/JCW0gaP0F8DVpfbjuvceZQ8U=;
- b=fgTpzGr6O2hslTPiWH/F1CWeY3epOjj1WMCDuEJVPQb+UtphNnt2tHhaHvm6hkQ/HH
- Zp1vlCxWyBN+n4VFd93xzAKKZPBUJxfheM+vvqR00CsTsEDEcbQnW/3CxAV4utqQ+7aD
- /FbxAE2h4BGdHJaP7zOMcnhmDi03oa3yD7eb7cfhwGoSY0ULerotMzK8Nr7dV/rHx6ko
- 5cwyWf3mKBXylQGpTL2iqgehgCvtfytkFfaVlI3NfDlLV4aEyiqgbK2myGx8Sxr6KhLw
- gUJmooHXOFXRm6rUg9OnZSV9AQK3/d78atJrltlghxccZtGtg+ed0iN893RVnkRQJ0Ya
- WT1A==
-X-Gm-Message-State: AOJu0YzwGW9JzrGKtfb2Sr3ZE/gpYDzAyCT1ii30LwIQyq9R6TMbabGn
- gVG4rAy0jvKNU6JICPWvO5vdEsjw4SedJvEEXG3uA1p+lm3g1AnHomgMJe0bvsYWvYgkk8scI/k
- TdQU=
-X-Google-Smtp-Source: AGHT+IHsu7sT9MgFfB5pjqN9V2Mf5/k+CIAC2noYd3q64RZWb2Z+b8uDRgFzzxBQqdfb0WCiXsxTWA==
-X-Received: by 2002:adf:edc9:0:b0:37c:c5d6:b2d2 with SMTP id
- ffacd0b85a97d-37cd59df35amr7965088f8f.0.1727715181929; 
- Mon, 30 Sep 2024 09:53:01 -0700 (PDT)
-Received: from rockhopper.. (214.11.169.217.in-addr.arpa. [217.169.11.214])
+ bh=XoRTZpdJx0N12M7VOOreMYE4Nl0UPkLH+sK6s3QQ2Sg=;
+ b=QjcgwktXcEPpOBxNmJFEHMgPT8hg7MiWssRCSxL+h2F/BxBB/IxVXsfKSseQB4VAi3
+ Tc5QZ28FaYD7v9D7pzr5lHttsR+sd6/hyla7AXiWCvi1bniT+JR+a0OogVlANXL9d3tn
+ LSUN6/NgX7OQ+ATQ05y0ogv629EaiZn6B+sBj5o/s9JwR58beX0+RvZtbEPeNIIAyAJ+
+ dZMlB9XPz2WzIetFv3gpoy5erGhsEntZ/Lk8IOzNug0TqRNdfXeJMl67nQwEb9LrGDAS
+ AKtqEZ6fUn+ulaP8Ppkoyf6sF/RP9/GGv2CcW8A450y/uvBWKARdS/nJFzao7r1qpZdc
+ /cag==
+X-Gm-Message-State: AOJu0YzPi4e5ZVxESUUq660S4UEWFUGgsTJfLcZFTi5HVMxFk6zNvdmV
+ QgJ08GYk0KlvuBICCzCiRGsiDQmpg6iIHcqA0DTrNs7H83vTWhNjUZNPiw7KUzQbW/ZccFwYFXD
+ oKPLIpKkt4wF2//xHNSFbm5bcwPjO2mNuQCHl6GklYyz0AJwGwLiTvWGM2yV0NHCSzpOQgi983w
+ qica2s0TGgpETXOZdtS2lHgwBrJ42gRA6Q
+X-Received: by 2002:a05:6000:c9:b0:37c:cbd8:66cf with SMTP id
+ ffacd0b85a97d-37cd5aed753mr7392967f8f.48.1727716087028; 
+ Mon, 30 Sep 2024 10:08:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE39En/efBAL7fy5pRXCgAhDxGywgGr0oMrQsJSRq3mmqZBaAnK3tR7W0JFwAMjCuj/kJ1YOA==
+X-Received: by 2002:a05:6000:c9:b0:37c:cbd8:66cf with SMTP id
+ ffacd0b85a97d-37cd5aed753mr7392949f8f.48.1727716086589; 
+ Mon, 30 Sep 2024 10:08:06 -0700 (PDT)
+Received: from top.fritz.box (p4fdf9fd8.dip0.t-ipconnect.de. [79.223.159.216])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd56e665asm9400515f8f.64.2024.09.30.09.53.00
+ 5b1f17b1804b1-42e96a36251sm156842415e9.37.2024.09.30.10.08.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Sep 2024 09:53:01 -0700 (PDT)
-From: Rob Bradford <rbradford@rivosinc.com>
+ Mon, 30 Sep 2024 10:08:06 -0700 (PDT)
+From: Michael Vogt <mvogt@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Rob Bradford <rbradford@rivosinc.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PATCH] target/riscv: Set vtype.vill on CPU reset
-Date: Mon, 30 Sep 2024 17:52:57 +0100
-Message-ID: <20240930165258.72258-1-rbradford@rivosinc.com>
-X-Mailer: git-send-email 2.46.0
+Cc: Michael Vogt <michael.vogt@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Michael Vogt <mvogt@redhat.com>
+Subject: [PATCH v8 0/2] linux-user: add openat2 support in linux-user
+Date: Mon, 30 Sep 2024 19:07:17 +0200
+Message-ID: <cover.1727715697.git.mvogt@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mvogt@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,32 +97,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The RISC-V unprivileged specification "31.3.11. State of Vector
-Extension at Reset" has a note that recommends vtype.vill be set on
-reset as part of ensuring that the vector extension have a consistent
-state at reset.
+This is v8 of the openat2 support in linux-user. Thanks for the
+feedback from Laurent on v7, really appreciated.
 
-This change now makes QEMU consistent with Spike which sets vtype.vill
-on reset.
+This version addresses the feedback for v7. It's mostly details, see
+the changelog below.
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
----
- target/riscv/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 4bda754b01..af602e3caf 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -997,6 +997,7 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
-     cs->exception_index = RISCV_EXCP_NONE;
-     env->load_res = -1;
-     set_default_nan_mode(1, &env->fp_status);
-+    env->vill = true;
- 
- #ifndef CONFIG_USER_ONLY
-     if (cpu->cfg.debug) {
+Looking forward to your feedback/ideas!
+
+Thanks,
+ Michael
+
+
+v7 -> v8
+- use "tswap64(how.flags)" in do_openat2()
+- drop printing "size=" from strace.c
+
+v6 -> v7
+- use abi_ulong in guest_size
+- use TARGET_ABI_FMT_lu to format guest size in qemu_log_mask()
+- drop #ifdef for TARGET_NR_openat2
+- fix LTP test by checking for RESOLVE_NO_{MAGIC,SYM}LINKS in
+  maybe_do_fake_open()
+- add support for openat2 in strace.c
+- add copy_struct_from_user definition to qemu.h
+- add open_how_v0 to syscall_defs.h
+
+v5 -> v6
+- do not use get_errno(fd) in do_guest_openat()
+- do not put declarations in the middle of the code
+- do not return early in do_openat2() when we get a faked file
+
+v4 -> v5
+- drop "*use_returned_fd" from maybe_do_fake_open() and use return value
+  -2 to signal to the caller to continue
+- keep "pathname" in parameter to do_guest_openat() for a cleaner diff
+- fix two missing get_errno(fd)
+
+v3 -> v4:
+- fix typos in the commit message
+
+v2 -> v3:
+- fix coding style (braches)
+- improve argument args/naming in do_openat2()
+- merge do_openat2/do_guest_openat2
+- do size checks first in do_openat2
+- add "copy_struct_from_user" and use in "do_openat2()"
+- drop using openat2.h and create "struct open_how_v0"
+- log if open_how guest struct is bigger than our supported struct
+
+v1 -> v2:
+- do not include <sys/syscall.h>
+- drop do_guest_openat2 from qemu.h and make static
+- drop "safe" from do_guest_openat2
+- ensure maybe_do_fake_open() is correct about when the result should
+  be used or not
+- Extract do_openat2() helper from do_syscall1()
+- Call user_unlock* if a lock call fails
+- Fix silly incorrect use of "target_open_how" when "open_how" is required
+- Fix coding style comments
+- Fix validation of arg4 in openat2
+- Fix missing zero initialization of open_how
+- Define target_open_how with abi_* types
+- Warn about unimplemented size if "size" of openat2 is bigger than
+  target_open_how
+
+Michael Vogt (2):
+  linux-user: add openat2 support in linux-user
+  linux-user: add strace support for openat2
+
+ linux-user/qemu.h         |  9 ++++
+ linux-user/strace.c       | 40 ++++++++++++++++
+ linux-user/strace.list    |  3 ++
+ linux-user/syscall.c      | 99 ++++++++++++++++++++++++++++++++++++++-
+ linux-user/syscall_defs.h | 18 +++++++
+ meson.build               |  1 +
+ 6 files changed, 168 insertions(+), 2 deletions(-)
+
 -- 
-2.46.0
+2.45.2
 
 
