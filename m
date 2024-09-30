@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC51989E40
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6638E989E6A
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:33:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svCjh-0001ew-0o; Mon, 30 Sep 2024 05:30:33 -0400
+	id 1svCjx-0002PL-OY; Mon, 30 Sep 2024 05:30:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1svCje-0001Yp-MX
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:30:30 -0400
+ id 1svCjk-00029P-3a
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:30:36 -0400
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1svCjc-000759-Bz
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:30:30 -0400
+ id 1svCjg-000759-TY
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:30:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727688628; x=1759224628;
+ t=1727688633; x=1759224633;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vvv1A2RxGmOZBTtdJUB9VyzUA6GsfGfVX5QahLYvDR0=;
- b=JUOJwmiBBRQEwfg/JCACnoznrXqVjtGPXBWozscsR3DwaaU+yAZ4Bvnm
- nUtkRCaEB9NUUDSbo1t2VgYOTLDcooBwl3Yi0+clRSNi75nuxoJvINKvb
- /pVXleWZ5e1wVuYpDOo9VWKLwqS4/ZtCK7JMIQ2bfPHMY752Qe9AU7NXj
- tKTbYspadCbHdhIyVuCpSvZrrJfR1ZHtN/Mq7ycWJuvezPv1bvKoEQnkW
- Sh8n8IRKKVkFKPpr44UC4l+2Il4VtNTMVBlwaizTEZmBflWEhDHA6e5ZS
- BtcXQYi+qNBBBcSL4t7zmCK/Mp6G5A3qP1xvTxNtl7a/xTm5XGf4Qidf6 g==;
-X-CSE-ConnectionGUID: kc+rhhouQA2RHFpXriPD6w==
-X-CSE-MsgGUID: TYVBoAt2TnqKDWrzAAVsvQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26721815"
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26721815"
+ bh=tN9YMZp1tfxoGEW1iXDop2n32WieujyyUjL+UuYiCkM=;
+ b=bLoWGpl7yuVtks9CX2ZnK7usXfVj1avFKBNtOcpl1U3H637+LyXrZffp
+ W3TUBgJCL2LsIjf2U3yCLo53Y+q6p64GoM+jWzFO+i+fgLlliueOIFXgT
+ YcJmHJp8bMldnGdt3pB0bnCWYOO8AiL8Lpnbs8R3kpVr2qmh0V6zjczTf
+ ON0rcR/OJvRjbPvOcBYwoZA/c3muGVE8yz/JtabIkWtYWKr06b5gazw2g
+ 9KH/n+S6hux2tsUr0Cb+tEI4tD9y5Eb3wlOJLJdH/fzBkTLjm6gneIyTa
+ A8Ac68uwaIQGhWIsn9oVDqIJzGG+DQ5EkyXC/sCiH9jJ1HaPJ9mEF+ZaN Q==;
+X-CSE-ConnectionGUID: wqFaKs3LQESk2o1LAZRUUQ==
+X-CSE-MsgGUID: w7icyubjQMquIdFlD2WUdg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26721835"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26721835"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 02:30:27 -0700
-X-CSE-ConnectionGUID: fwtY279lTBOzxkdAKYO2cA==
-X-CSE-MsgGUID: auT4xg5WTQ+ZQBQ/EtGaiQ==
+ 30 Sep 2024 02:30:32 -0700
+X-CSE-ConnectionGUID: K7hadIoITS2fINvwPAR2Jw==
+X-CSE-MsgGUID: XjaeZGj0Q3y50JCwz2gtVw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="77749857"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="77749869"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 02:30:23 -0700
+ 30 Sep 2024 02:30:27 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,14 +51,14 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v4 11/17] intel_iommu: Add an internal API to find an address
- space with PASID
-Date: Mon, 30 Sep 2024 17:26:25 +0800
-Message-Id: <20240930092631.2997543-12-zhenzhong.duan@intel.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH v4 12/17] intel_iommu: Add support for PASID-based device
+ IOTLB invalidation
+Date: Mon, 30 Sep 2024 17:26:26 +0800
+Message-Id: <20240930092631.2997543-13-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
 References: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
@@ -91,80 +91,110 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
 
-This will be used to implement the device IOTLB invalidation
-
 Signed-off-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/i386/intel_iommu.c | 39 ++++++++++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 15 deletions(-)
+ hw/i386/intel_iommu_internal.h | 11 ++++++++
+ hw/i386/intel_iommu.c          | 50 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+)
 
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+index 20d922d600..2702edd27f 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -376,6 +376,7 @@ typedef union VTDInvDesc VTDInvDesc;
+ #define VTD_INV_DESC_WAIT               0x5 /* Invalidation Wait Descriptor */
+ #define VTD_INV_DESC_PIOTLB             0x6 /* PASID-IOTLB Invalidate Desc */
+ #define VTD_INV_DESC_PC                 0x7 /* PASID-cache Invalidate Desc */
++#define VTD_INV_DESC_DEV_PIOTLB         0x8 /* PASID-based-DIOTLB inv_desc*/
+ #define VTD_INV_DESC_NONE               0   /* Not an Invalidate Descriptor */
+ 
+ /* Masks for Invalidation Wait Descriptor*/
+@@ -414,6 +415,16 @@ typedef union VTDInvDesc VTDInvDesc;
+ #define VTD_INV_DESC_DEVICE_IOTLB_RSVD_HI 0xffeULL
+ #define VTD_INV_DESC_DEVICE_IOTLB_RSVD_LO 0xffff0000ffe0f1f0
+ 
++/* Mask for PASID Device IOTLB Invalidate Descriptor */
++#define VTD_INV_DESC_PASID_DEVICE_IOTLB_ADDR(val) ((val) & \
++                                                   0xfffffffffffff000ULL)
++#define VTD_INV_DESC_PASID_DEVICE_IOTLB_SIZE(val) ((val >> 11) & 0x1)
++#define VTD_INV_DESC_PASID_DEVICE_IOTLB_GLOBAL(val) ((val) & 0x1)
++#define VTD_INV_DESC_PASID_DEVICE_IOTLB_SID(val) (((val) >> 16) & 0xffffULL)
++#define VTD_INV_DESC_PASID_DEVICE_IOTLB_PASID(val) ((val >> 32) & 0xfffffULL)
++#define VTD_INV_DESC_PASID_DEVICE_IOTLB_RSVD_HI 0x7feULL
++#define VTD_INV_DESC_PASID_DEVICE_IOTLB_RSVD_LO 0xfff000000000f000ULL
++
+ /* Rsvd field masks for spte */
+ #define VTD_SPTE_SNP 0x800ULL
+ 
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 289278ce30..a1596ba47d 100644
+index a1596ba47d..5ea59167b3 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -70,6 +70,11 @@ struct vtd_hiod_key {
-     uint8_t devfn;
- };
- 
-+struct vtd_as_raw_key {
-+    uint16_t sid;
-+    uint32_t pasid;
-+};
-+
- struct vtd_iotlb_key {
-     uint64_t gfn;
-     uint32_t pasid;
-@@ -1875,29 +1880,33 @@ static inline bool vtd_is_interrupt_addr(hwaddr addr)
-     return VTD_INTERRUPT_ADDR_FIRST <= addr && addr <= VTD_INTERRUPT_ADDR_LAST;
+@@ -3020,6 +3020,49 @@ static void do_invalidate_device_tlb(VTDAddressSpace *vtd_dev_as,
+     memory_region_notify_iommu(&vtd_dev_as->iommu, 0, event);
  }
  
--static gboolean vtd_find_as_by_sid(gpointer key, gpointer value,
--                                   gpointer user_data)
-+static gboolean vtd_find_as_by_sid_and_pasid(gpointer key, gpointer value,
-+                                             gpointer user_data)
- {
-     struct vtd_as_key *as_key = (struct vtd_as_key *)key;
--    uint16_t target_sid = *(uint16_t *)user_data;
-+    struct vtd_as_raw_key target = *(struct vtd_as_raw_key *)user_data;
-     uint16_t sid = PCI_BUILD_BDF(pci_bus_num(as_key->bus), as_key->devfn);
--    return sid == target_sid;
-+
-+    return (as_key->pasid == target.pasid) &&
-+           (sid == target.sid);
- }
- 
--static VTDAddressSpace *vtd_get_as_by_sid(IntelIOMMUState *s, uint16_t sid)
-+static VTDAddressSpace *vtd_get_as_by_sid_and_pasid(IntelIOMMUState *s,
-+                                                    uint16_t sid,
-+                                                    uint32_t pasid)
- {
--    uint8_t bus_num = PCI_BUS_NUM(sid);
--    VTDAddressSpace *vtd_as = s->vtd_as_cache[bus_num];
--
--    if (vtd_as &&
--        (sid == PCI_BUILD_BDF(pci_bus_num(vtd_as->bus), vtd_as->devfn))) {
--        return vtd_as;
--    }
-+    struct vtd_as_raw_key key = {
-+        .sid = sid,
-+        .pasid = pasid
-+    };
- 
--    vtd_as = g_hash_table_find(s->vtd_address_spaces, vtd_find_as_by_sid, &sid);
--    s->vtd_as_cache[bus_num] = vtd_as;
-+    return g_hash_table_find(s->vtd_address_spaces,
-+                             vtd_find_as_by_sid_and_pasid, &key);
-+}
- 
--    return vtd_as;
-+static VTDAddressSpace *vtd_get_as_by_sid(IntelIOMMUState *s, uint16_t sid)
++static bool vtd_process_device_piotlb_desc(IntelIOMMUState *s,
++                                           VTDInvDesc *inv_desc)
 +{
-+    return vtd_get_as_by_sid_and_pasid(s, sid, PCI_NO_PASID);
- }
++    uint16_t sid;
++    VTDAddressSpace *vtd_dev_as;
++    bool size;
++    bool global;
++    hwaddr addr;
++    uint32_t pasid;
++
++    if ((inv_desc->hi & VTD_INV_DESC_PASID_DEVICE_IOTLB_RSVD_HI) ||
++         (inv_desc->lo & VTD_INV_DESC_PASID_DEVICE_IOTLB_RSVD_LO)) {
++        error_report_once("%s: invalid pasid-based dev iotlb inv desc:"
++                          "hi=%"PRIx64 "(reserved nonzero)",
++                          __func__, inv_desc->hi);
++        return false;
++    }
++
++    global = VTD_INV_DESC_PASID_DEVICE_IOTLB_GLOBAL(inv_desc->hi);
++    size = VTD_INV_DESC_PASID_DEVICE_IOTLB_SIZE(inv_desc->hi);
++    addr = VTD_INV_DESC_PASID_DEVICE_IOTLB_ADDR(inv_desc->hi);
++    sid = VTD_INV_DESC_PASID_DEVICE_IOTLB_SID(inv_desc->lo);
++    if (global) {
++        QLIST_FOREACH(vtd_dev_as, &s->vtd_as_with_notifiers, next) {
++            if ((vtd_dev_as->pasid != PCI_NO_PASID) &&
++                (PCI_BUILD_BDF(pci_bus_num(vtd_dev_as->bus),
++                                           vtd_dev_as->devfn) == sid)) {
++                do_invalidate_device_tlb(vtd_dev_as, size, addr);
++            }
++        }
++    } else {
++        pasid = VTD_INV_DESC_PASID_DEVICE_IOTLB_PASID(inv_desc->lo);
++        vtd_dev_as = vtd_get_as_by_sid_and_pasid(s, sid, pasid);
++        if (!vtd_dev_as) {
++            return true;
++        }
++
++        do_invalidate_device_tlb(vtd_dev_as, size, addr);
++    }
++
++    return true;
++}
++
+ static bool vtd_process_device_iotlb_desc(IntelIOMMUState *s,
+                                           VTDInvDesc *inv_desc)
+ {
+@@ -3106,6 +3149,13 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
+         }
+         break;
  
- static void vtd_pt_enable_fast_path(IntelIOMMUState *s, uint16_t source_id)
++    case VTD_INV_DESC_DEV_PIOTLB:
++        trace_vtd_inv_desc("device-piotlb", inv_desc.hi, inv_desc.lo);
++        if (!vtd_process_device_piotlb_desc(s, &inv_desc)) {
++            return false;
++        }
++        break;
++
+     case VTD_INV_DESC_DEVICE:
+         trace_vtd_inv_desc("device", inv_desc.hi, inv_desc.lo);
+         if (!vtd_process_device_iotlb_desc(s, &inv_desc)) {
 -- 
 2.34.1
 
