@@ -2,134 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF7398A2A0
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 14:35:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A659698A371
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 14:50:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svFcE-0001CO-M7; Mon, 30 Sep 2024 08:35:02 -0400
+	id 1svFpS-00083I-Lo; Mon, 30 Sep 2024 08:48:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svFbo-0000hl-Ud
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 08:34:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svFbm-0004FS-J7
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 08:34:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727699673;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=aoSeuLY9UWFmpMQ+AY7vlw3aBU62b1kgsIBRGluWfww=;
- b=csCpKTfga5N+4YELsZwLJrgZstR3t0qevB14aV3v5Rxad+6qfZdFBipkQRyyQ1e7fvClKt
- 4guKmU19Fksh49ISHdHVE8Kqx5SoaIi3TcV0j71HnVWrXnTZp1LLy/mXYi/MiqRCn7184x
- I/wq0nYLXqsvshYaBWbCE++hYgvXlY4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-157-GJM3VuVoO7C-SYu6w0acmA-1; Mon, 30 Sep 2024 08:34:30 -0400
-X-MC-Unique: GJM3VuVoO7C-SYu6w0acmA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-42cb33e6299so32923095e9.2
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 05:34:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svFpO-00080J-5L
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 08:48:38 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svFpL-00067z-Sw
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 08:48:37 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-37ce14ab7eeso1593045f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 05:48:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1727700514; x=1728305314; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=uzm24+ZWrwMOuzZZfqf6biduFwcmS7XxAWWZizuNc3E=;
+ b=kcaRKTLWVdxSp1v+2AuVQcUs2z2lVsjzt9aXB2dk5UhXcrWa8YThKD57qG0teJlZQU
+ vikNhyN/jDUjreo8rPPUBSh5Nj/BpZWgL9K5mAreWGd87jAJ8oVq0EMiyFJia9dehKZj
+ IH4LdSDunIqEOrJHKSfywXg0mie9YjEswGxsd52uW5z8lTnku1axNOVQY7xACBWe1Qxa
+ E3+46HRGOi2Jgs89uo2c1n5/pQvySCqAL9HZpQ5P7oYdiaDN+JB6RKqJvLHCctBLHo3K
+ RPQrGfl0caDoPEyt1JRmo4HYWd3PnEjOlRcnOvpA4Qz1DDaoD+c1A5F1HGg0Y9gxmqDW
+ m/dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727699669; x=1728304469;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aoSeuLY9UWFmpMQ+AY7vlw3aBU62b1kgsIBRGluWfww=;
- b=diL3nFB4dLA02o1SC74500ZU5RGz7fr3VVfWLE6ET8psWl55dNaquNnURokfbj63pE
- 2ZQ3Ht/s0PX5zT2ergdv6pfUqE+IGOLN1dceqPj8ZkwqhhFhCzA0mqgPGKmp37Vv+F4I
- C4BmUgGOQrC5rrhw5kufX95PqjMGbHWbymYHgMpGfPD5CNpSpK42OmF7QMYUIqpROfF2
- Ahle7lmu1Jpp0STU/NHdHhPc9o1ECkAt4OxS5NJ6yIRxUpPvI+E3xKQ7jl3GzrQ8cPPB
- O0Gpw1sRNNpOPR/ioJARj3/8a6K5sBlYJ6LhNwNx4RqcNb9y7esv4JO3Q14xt4qkuij5
- rNJQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUGxhlbJqT2K7CGUjzMoGLIpekNKYAMhH9j+E22HhwTv/83ef/lPiQEq5bmsMz7f1zHp9OgqZ2/Ct93@nongnu.org
-X-Gm-Message-State: AOJu0YwUjvEhraWxnEsgyU/1NbYGL5WycZTO/lbc4UMSSLsR1s7lauuX
- htfEG73Om4CdU6THlg5yIV3K62mpZHNM9ymhLdLCD9ImE/cS2FpSWE/oY0DffzdJyFvax/W79zy
- fVh+s2+m9XLBy4vvBDgMoBAS4w8eQiFBNvmhwhNTiflLqFHDdijAU
-X-Received: by 2002:a05:600c:a02:b0:42c:c003:edd8 with SMTP id
- 5b1f17b1804b1-42f5840a6d1mr87723085e9.6.1727699669251; 
- Mon, 30 Sep 2024 05:34:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzBAvvZCoqg82YsY5diXu6p9StCnYziyc9ZcjsGLBE0CSFo7OFDijwoBSfw5jJk80sPqe0Zg==
-X-Received: by 2002:a05:600c:a02:b0:42c:c003:edd8 with SMTP id
- 5b1f17b1804b1-42f5840a6d1mr87722855e9.6.1727699668839; 
- Mon, 30 Sep 2024 05:34:28 -0700 (PDT)
-Received: from [192.168.0.7] (ip-109-42-48-176.web.vodafone.de.
- [109.42.48.176]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd572fa3bsm8977125f8f.70.2024.09.30.05.34.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Sep 2024 05:34:28 -0700 (PDT)
-Message-ID: <b92d7158-90e6-47b4-afe3-685b9ebb7b1a@redhat.com>
-Date: Mon, 30 Sep 2024 14:34:27 +0200
+ d=1e100.net; s=20230601; t=1727700514; x=1728305314;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uzm24+ZWrwMOuzZZfqf6biduFwcmS7XxAWWZizuNc3E=;
+ b=l06mVPExR3rA8x5CxfE5+cIa9VtbHS4En8TGLv6g7tjczfxPSLoEL0udUIMF4J1TDP
+ 5JY4D3dW2fTS06bqH5aP9P9dFNVVjmRcqJ9gQvLv5MNcxhHbQtBkeQH4pifEmBjXHYyD
+ BupnaHHtzun57zpVhRI2Ljc6rdr0sF5JvxbPoextOjCLCy/4nUCDDPMh3ZSXLGHQbKRM
+ UPzZ+cnev6KN7pITTC034xq8AEsrAhchJuV7hdDRgPpsHb0EtbtWb9V/n/bRIl6Xnjq1
+ eF7e/cdRp7e6iFkGpEw7jVTuIGtJP4FYIXCu5j2Cj0eI1f5cxyfEmgTq5py7Bo3JJErk
+ X6pw==
+X-Gm-Message-State: AOJu0Yx6zYGxod/v0/9I5pTx4GewVMAKqctQNT/Du2qDgKirduuW0dug
+ DzYzHlT6hzi9g+0JUCBlvG0ZjRpoa+obM8ybo5vTPADWttzG/uhKpokBQoA+NZO+d2KW+QWJiym
+ B
+X-Google-Smtp-Source: AGHT+IG+WpDxktDwhDeAB7ZoaSFd8qPxhHZHMtpY9pSMS0NDmTy9YHm3YWJCoEIAfidwgw3P3C9cOg==
+X-Received: by 2002:adf:fa88:0:b0:37c:cce6:997d with SMTP id
+ ffacd0b85a97d-37cd5a8c952mr11781297f8f.20.1727700513641; 
+ Mon, 30 Sep 2024 05:48:33 -0700 (PDT)
+Received: from localhost.localdomain ([78.196.4.158])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-37cd56e6408sm8975801f8f.48.2024.09.30.05.48.32
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 30 Sep 2024 05:48:33 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-riscv@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Anton Johansson <anjo@rev.ng>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] hw/riscv/spike: Replace tswap64() by ldq_endian_p()
+Date: Mon, 30 Sep 2024 14:48:31 +0200
+Message-ID: <20240930124831.54232-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 18/18] docs/system: Update documentation for s390x IPL
-To: jrossi@linux.ibm.com, qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: frankja@linux.ibm.com
-References: <20240927005117.1679506-1-jrossi@linux.ibm.com>
- <20240927005117.1679506-19-jrossi@linux.ibm.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240927005117.1679506-19-jrossi@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,38 +95,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/09/2024 02.51, jrossi@linux.ibm.com wrote:
-> From: Jared Rossi <jrossi@linux.ibm.com>
-> 
-> Update docs to show that s390x PC BIOS can support more than one boot device.
-> 
-> Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
-> 
-> ---
->   docs/system/bootindex.rst         | 7 ++++---
->   docs/system/s390x/bootdevices.rst | 9 ++++++---
->   2 files changed, 10 insertions(+), 6 deletions(-)
-> 
-> diff --git a/docs/system/bootindex.rst b/docs/system/bootindex.rst
-> index 8b057f812f..142ae1a0a2 100644
-> --- a/docs/system/bootindex.rst
-> +++ b/docs/system/bootindex.rst
-> @@ -49,10 +49,11 @@ Limitations
->   -----------
->   
->   Some firmware has limitations on which devices can be considered for
-> -booting.  For instance, the PC BIOS boot specification allows only one
-> -disk to be bootable.  If boot from disk fails for some reason, the BIOS
-> +booting.  For instance, the x86 PC BIOS boot specification allows only one
-> +disk to be bootable.  If boot from disk fails for some reason, the x86 BIOS
->   won't retry booting from other disk.  It can still try to boot from
-> -floppy or net, though.
-> +floppy or net, though. In the case of s390x PC BIOS, the BIOS will try up to
-> +8 total devices, any number of which may be disks.
+Hold the target endianness in HTIFState::target_is_bigendian.
+Pass the target endianness as argument to htif_mm_init().
+Replace tswap64() calls by ldq_endian_p() ones.
 
-I'd just say "s390x BIOS" - or "s390x firmware", but using the term "PC" 
-with s390x sounds wrong to me ;-)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+Based-on: <20240930073450.33195-2-philmd@linaro.org>
+          "qemu/bswap: Introduce ld/st_endian_p() API"
 
-  Thomas
+Note: this is a non-QOM device!
+---
+ include/hw/char/riscv_htif.h |  4 +++-
+ hw/char/riscv_htif.c         | 17 +++++++++++------
+ hw/riscv/spike.c             |  2 +-
+ 3 files changed, 15 insertions(+), 8 deletions(-)
+
+diff --git a/include/hw/char/riscv_htif.h b/include/hw/char/riscv_htif.h
+index df493fdf6b..24868ddfe1 100644
+--- a/include/hw/char/riscv_htif.h
++++ b/include/hw/char/riscv_htif.h
+@@ -35,6 +35,7 @@ typedef struct HTIFState {
+     hwaddr tohost_offset;
+     hwaddr fromhost_offset;
+     MemoryRegion mmio;
++    bool target_is_bigendian;
+ 
+     CharBackend chr;
+     uint64_t pending_read;
+@@ -49,6 +50,7 @@ void htif_symbol_callback(const char *st_name, int st_info, uint64_t st_value,
+ 
+ /* legacy pre qom */
+ HTIFState *htif_mm_init(MemoryRegion *address_space, Chardev *chr,
+-                        uint64_t nonelf_base, bool custom_base);
++                        uint64_t nonelf_base, bool custom_base,
++                        bool target_is_bigendian);
+ 
+ #endif
+diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c
+index 9bef60def1..77951f3c76 100644
+--- a/hw/char/riscv_htif.c
++++ b/hw/char/riscv_htif.c
+@@ -30,7 +30,6 @@
+ #include "qemu/timer.h"
+ #include "qemu/error-report.h"
+ #include "exec/address-spaces.h"
+-#include "exec/tswap.h"
+ #include "sysemu/dma.h"
+ #include "sysemu/runstate.h"
+ 
+@@ -211,13 +210,17 @@ static void htif_handle_tohost_write(HTIFState *s, uint64_t val_written)
+                     SHUTDOWN_CAUSE_GUEST_SHUTDOWN, exit_code);
+                 return;
+             } else {
++                bool be = s->target_is_bigendian;
+                 uint64_t syscall[8];
++
+                 cpu_physical_memory_read(payload, syscall, sizeof(syscall));
+-                if (tswap64(syscall[0]) == PK_SYS_WRITE &&
+-                    tswap64(syscall[1]) == HTIF_DEV_CONSOLE &&
+-                    tswap64(syscall[3]) == HTIF_CONSOLE_CMD_PUTC) {
++                if (ldq_endian_p(be, &syscall[0]) == PK_SYS_WRITE &&
++                    ldq_endian_p(be, &syscall[1]) == HTIF_DEV_CONSOLE &&
++                    ldq_endian_p(be, &syscall[3]) == HTIF_CONSOLE_CMD_PUTC) {
+                     uint8_t ch;
+-                    cpu_physical_memory_read(tswap64(syscall[2]), &ch, 1);
++
++                    cpu_physical_memory_read(ldl_endian_p(be, &syscall[2]),
++                                             &ch, 1);
+                     qemu_chr_fe_write(&s->chr, &ch, 1);
+                     resp = 0x100 | (uint8_t)payload;
+                 } else {
+@@ -320,7 +323,8 @@ static const MemoryRegionOps htif_mm_ops = {
+ };
+ 
+ HTIFState *htif_mm_init(MemoryRegion *address_space, Chardev *chr,
+-                        uint64_t nonelf_base, bool custom_base)
++                        uint64_t nonelf_base, bool custom_base,
++                        bool target_is_bigendian)
+ {
+     uint64_t base, size, tohost_offset, fromhost_offset;
+ 
+@@ -345,6 +349,7 @@ HTIFState *htif_mm_init(MemoryRegion *address_space, Chardev *chr,
+     s->pending_read = 0;
+     s->allow_tohost = 0;
+     s->fromhost_inprogress = 0;
++    s->target_is_bigendian = target_is_bigendian;
+     qemu_chr_fe_init(&s->chr, chr, &error_abort);
+     qemu_chr_fe_set_handlers(&s->chr, htif_can_recv, htif_recv, htif_event,
+         htif_be_change, s, NULL, true);
+diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
+index 64074395bc..0989cd4a41 100644
+--- a/hw/riscv/spike.c
++++ b/hw/riscv/spike.c
+@@ -327,7 +327,7 @@ static void spike_board_init(MachineState *machine)
+ 
+     /* initialize HTIF using symbols found in load_kernel */
+     htif_mm_init(system_memory, serial_hd(0), memmap[SPIKE_HTIF].base,
+-                 htif_custom_base);
++                 htif_custom_base, TARGET_BIG_ENDIAN);
+ }
+ 
+ static void spike_set_signature(Object *obj, const char *val, Error **errp)
+-- 
+2.45.2
 
 
