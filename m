@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6E0989C2A
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71492989C33
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:08:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svBOk-0001dA-FD; Mon, 30 Sep 2024 04:04:50 -0400
+	id 1svBSF-000852-UW; Mon, 30 Sep 2024 04:08:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svBOi-0001XZ-A1
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:04:48 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svBS7-0007jd-Qy
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:08:22 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svBOg-00044R-Gc
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:04:48 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2fad15b3eeeso3659651fa.2
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 01:04:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svBS6-0004gM-3p
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:08:19 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-539983beb19so260803e87.3
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 01:08:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727683484; x=1728288284; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727683696; x=1728288496; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=No3UNTdnI2PUra55xn+9Km9SFh7ve86YSqv3e3Ulz3I=;
- b=cGPdYwHRMNimol0TN8CzfspVViAIYwiGSabVLXFxGnD4btuGQQGohQukOcNkjmgvQQ
- 253CwH0aWgoBikt8ApJaW9zFH8rg8nbtll7ESjOxUP0+9LaUk0kYueitgCjj0b4GJDQ5
- i9VFJLOgUtwl8EbeVwildaI1RHgWiiP0dm9cZoO9hkmvOIZ2uisbz6aD6gpuN0sYVMqy
- 0BtMsdAwQE6AWIju+0fR4RKdaFud1FnmYzdwiXkwGOqvxTgpkDGM5p6YEDG2beDW89Eu
- Xc82v9Q14d/aBC3pRmKHUF0VCviJuUSIpBKx11isqElYoaJLQGtfJW4iRZa+UgFCiXLM
- IxfQ==
+ bh=olm5MEqTuo7Wlc02c6b6qRoX+TEZG1pRsM1M0qwZSUk=;
+ b=zqYpeUnr5WZA45prmYu8Gq1tJDrjSlC5TvyqDbwUsFFYlrq4fDUwdTtmg+1DYtILMf
+ 9Ql0337t9wlEqMnUALEeIKRpg4UUySrFkTIW9DiXqAG0e7N1fDdh85PaGLBCVFm4oW1/
+ 64yhC179Lxti3xaxkj+tKf6s8pJ9F4tRShTPuH9NKzaLAXYatEy8qtJ1WBPLF9fiStEW
+ bX9E0ccFGLmJZLAHyJpqh4DM7mfedJOCwFKHviBHESiGtkdX2cA+6sbh1ZkguugJuP7Q
+ tQNcbunvwrzJ2mL3CJRoePe8XoYJ5qeG25ZSYR7x39139YzksZpDmLHYnYr/dtZ5OsAW
+ 9uTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727683484; x=1728288284;
+ d=1e100.net; s=20230601; t=1727683696; x=1728288496;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=No3UNTdnI2PUra55xn+9Km9SFh7ve86YSqv3e3Ulz3I=;
- b=hYk5IAzsllT3SPsrocYSWb8gmQxV90G7Ie0+OZ1fhcSCdK0v4EBLpArZrBFl4xmbMK
- Lr1BJ43ZJ2Ylel5zqmV90dzlGIcXMyXmuBwEJ/3QgRfOWBzEg2n7dOHw6d01k6nc7pJi
- 9RsT7nNAI8RRKCRS9TFVYs2a/mRTjmDON03gj0BvZa5if0VopQBSjRDhPPlBaDQaB9JW
- M5uyr1Y+joAMpnIpw6B+xGzFynaUiXDMGEo+NBZn5XUNnJNOYVXxS+9yBAP8HIWJ5Aww
- Ysvo67ay7m3BQrU+IpyDpK3jvXmU9saGppWxX/FDc6TnV5YBDXegrJN4cTFX6S+PcXJE
- 9qxA==
-X-Gm-Message-State: AOJu0YzezijOssdQiF3TVwCONsPWX4oue2ap5ZioFqOlsRuokz0OJusr
- SAzT1WmEC5uTFCQTifKMA4/sEyIZILLHbXX+hrYZHC9obl5VhZX3nOxWtGtQpXx+nRuQHWXicFi
- wWlc=
-X-Google-Smtp-Source: AGHT+IFRv3VLtyKO7mNdwt1H9m+lBB/oi2IabLTun7tIx7ArAk7aBJ8x8BS7GDBx16sOWJESKh3XrQ==
-X-Received: by 2002:a05:600c:4f01:b0:42c:afea:2a10 with SMTP id
- 5b1f17b1804b1-42f58441814mr91713325e9.21.1727681778254; 
- Mon, 30 Sep 2024 00:36:18 -0700 (PDT)
+ bh=olm5MEqTuo7Wlc02c6b6qRoX+TEZG1pRsM1M0qwZSUk=;
+ b=s6e5oV/mHVEbXYdZBnrjg5mvv+VStNyuvQq2AsvdD+8jhLn+4SacmB6Kqm5wNXd8mc
+ 3887/QRzD+zDPy07pRaaK1SczqIwRs+o12PDf8+3mdifhuEi2aZz1r1f2/6zSTQR4ggG
+ F8RaVJcl7Bs4Fgy+Y69nxCN47ALj5YTM4NiIcgt9v58cWFuUMkgDZd2h7BNSW0/burvg
+ cO9Vi6NqHAfHa7sboPqfPXlhkEUmtlWoZgdOcOA2VC/HdiATNOFvR97uJsZWu69nBKmQ
+ n/FDBVelehWuHzqP7rvf0H7L8ie94dtZ4+gAzOdAVePBzSqfXBw/uBcBg0bin1XKO3u+
+ P51A==
+X-Gm-Message-State: AOJu0Yxnzes+YMx1m+SzTqHjHzXADtHInBGYuEW/x5ofjyvWp34rw6qs
+ o3fsX3Q+zz9h1YCELbKqfWmuHz802/4ZA+kdDBjSECSa6Vr5nGlfhyEfFOHAgr+/mUIBubMqIsF
+ CRZw=
+X-Google-Smtp-Source: AGHT+IFJ/LX8GVVEsOLDWrfB7Tgyojyz4e841ap2Xfa6UE1pQYhd3FzF3SxsSMfp08WAfw2JTro3Mg==
+X-Received: by 2002:a5d:690f:0:b0:37c:d4ba:1127 with SMTP id
+ ffacd0b85a97d-37cd5a8791dmr6298056f8f.16.1727681786225; 
+ Mon, 30 Sep 2024 00:36:26 -0700 (PDT)
 Received: from localhost.localdomain (186.red-88-28-13.dynamicip.rima-tde.net.
  [88.28.13.186]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42e96a54dd4sm141894255e9.45.2024.09.30.00.36.14
+ ffacd0b85a97d-37cd56e6665sm8343859f8f.54.2024.09.30.00.36.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Sep 2024 00:36:17 -0700 (PDT)
+ Mon, 30 Sep 2024 00:36:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
@@ -71,23 +71,23 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Aurelien Jarno <aurelien@aurel32.net>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, Paul Burton <paulburton@kernel.org>
-Subject: [PATCH 10/13] hw/virtio/virtio-access: Use ld/st_endian_phys() API
-Date: Mon, 30 Sep 2024 09:34:47 +0200
-Message-ID: <20240930073450.33195-11-philmd@linaro.org>
+Subject: [PATCH 11/13] hw/pci/pci_device: Add PCI_DMA_DEFINE_LDST_END() macro
+Date: Mon, 30 Sep 2024 09:34:48 +0200
+Message-ID: <20240930073450.33195-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240930073450.33195-1-philmd@linaro.org>
 References: <20240930073450.33195-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,78 +103,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refactor to use the recently introduced ld/st_endian_phys() API.
-No logical change intended.
+Define both endianness variants with a single macro.
+Useful to add yet other endian specific definitions
+in the next commit.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/virtio/virtio-access.h | 27 +++++----------------------
- 1 file changed, 5 insertions(+), 22 deletions(-)
+ include/hw/pci/pci_device.h | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-access.h b/include/hw/virtio/virtio-access.h
-index b920874be8..37a42407ea 100644
---- a/include/hw/virtio/virtio-access.h
-+++ b/include/hw/virtio/virtio-access.h
-@@ -43,30 +43,21 @@ static inline uint16_t virtio_lduw_phys(VirtIODevice *vdev, hwaddr pa)
- {
-     AddressSpace *dma_as = vdev->dma_as;
+diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+index 91df40f989..ff619241a4 100644
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -298,13 +298,14 @@ static inline MemTxResult pci_dma_write(PCIDevice *dev, dma_addr_t addr,
+         return st##_s##_dma(pci_get_address_space(dev), addr, val, attrs); \
+     }
  
--    if (virtio_access_is_big_endian(vdev)) {
--        return lduw_be_phys(dma_as, pa);
--    }
--    return lduw_le_phys(dma_as, pa);
-+    return lduw_endian_phys(virtio_access_is_big_endian(vdev), dma_as, pa);
- }
++#define PCI_DMA_DEFINE_LDST_END(_l, _s, _bits) \
++    PCI_DMA_DEFINE_LDST(_l##_le, _s##_le, _bits) \
++    PCI_DMA_DEFINE_LDST(_l##_be, _s##_be, _bits)
++
+ PCI_DMA_DEFINE_LDST(ub, b, 8);
+-PCI_DMA_DEFINE_LDST(uw_le, w_le, 16)
+-PCI_DMA_DEFINE_LDST(l_le, l_le, 32);
+-PCI_DMA_DEFINE_LDST(q_le, q_le, 64);
+-PCI_DMA_DEFINE_LDST(uw_be, w_be, 16)
+-PCI_DMA_DEFINE_LDST(l_be, l_be, 32);
+-PCI_DMA_DEFINE_LDST(q_be, q_be, 64);
++PCI_DMA_DEFINE_LDST_END(uw, w, 16)
++PCI_DMA_DEFINE_LDST_END(l,  l, 32)
++PCI_DMA_DEFINE_LDST_END(q,  q, 64)
  
- static inline uint32_t virtio_ldl_phys(VirtIODevice *vdev, hwaddr pa)
- {
-     AddressSpace *dma_as = vdev->dma_as;
+ #undef PCI_DMA_DEFINE_LDST
  
--    if (virtio_access_is_big_endian(vdev)) {
--        return ldl_be_phys(dma_as, pa);
--    }
--    return ldl_le_phys(dma_as, pa);
-+    return ldl_endian_phys(virtio_access_is_big_endian(vdev), dma_as, pa);
- }
- 
- static inline uint64_t virtio_ldq_phys(VirtIODevice *vdev, hwaddr pa)
- {
-     AddressSpace *dma_as = vdev->dma_as;
- 
--    if (virtio_access_is_big_endian(vdev)) {
--        return ldq_be_phys(dma_as, pa);
--    }
--    return ldq_le_phys(dma_as, pa);
-+    return ldq_endian_phys(virtio_access_is_big_endian(vdev), dma_as, pa);
- }
- 
- static inline void virtio_stw_phys(VirtIODevice *vdev, hwaddr pa,
-@@ -74,11 +65,7 @@ static inline void virtio_stw_phys(VirtIODevice *vdev, hwaddr pa,
- {
-     AddressSpace *dma_as = vdev->dma_as;
- 
--    if (virtio_access_is_big_endian(vdev)) {
--        stw_be_phys(dma_as, pa, value);
--    } else {
--        stw_le_phys(dma_as, pa, value);
--    }
-+    stw_endian_phys(virtio_access_is_big_endian(vdev), dma_as, pa, value);
- }
- 
- static inline void virtio_stl_phys(VirtIODevice *vdev, hwaddr pa,
-@@ -86,11 +73,7 @@ static inline void virtio_stl_phys(VirtIODevice *vdev, hwaddr pa,
- {
-     AddressSpace *dma_as = vdev->dma_as;
- 
--    if (virtio_access_is_big_endian(vdev)) {
--        stl_be_phys(dma_as, pa, value);
--    } else {
--        stl_le_phys(dma_as, pa, value);
--    }
-+    stl_endian_phys(virtio_access_is_big_endian(vdev), dma_as, pa, value);
- }
- 
- static inline void virtio_stw_p(VirtIODevice *vdev, void *ptr, uint16_t v)
 -- 
 2.45.2
 
