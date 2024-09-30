@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9ECF98A397
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B05898A396
 	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 14:54:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svFuH-0007eh-6u; Mon, 30 Sep 2024 08:53:41 -0400
+	id 1svFuL-0007zb-VR; Mon, 30 Sep 2024 08:53:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svFuE-0007W0-7x
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 08:53:38 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svFuJ-0007ro-Ll
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 08:53:43 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svFuC-0006Wu-Q2
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 08:53:37 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-37cd831ab06so1418699f8f.0
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 05:53:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svFuH-0006XJ-Fo
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 08:53:43 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3770320574aso2876327f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 05:53:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727700815; x=1728305615; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727700819; x=1728305619; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A54AZmXL2K4S/evyBU6Z+PuWbfLne3N1JrnXSUgIbU0=;
- b=HNdzUcD4gvsy9Ns/BR8ooXmFkvlNx2q/oMMNsz/qSsu8GHRUYoRpcOMeWUn3dXXHQg
- mf5piQpj5tuMcvWOOSkRl3340++lJ0d9DB4jrpXjoc9XgTl/Ni/5jvRCEllMWUeiUFoZ
- git3ZKWz1ipwDJCx02EGRNtZIWYTpiG4cFknajZr+fKpxkz7s4j56E/JeLoh7QGReEVx
- FlcWjyHVAeRkFCBYrj/1oW3awCmXhAxhqziwp5Xov8qaFA4HrDhr1SafPuCHmu5R8/Zp
- xxk6slTEBm9N2DqO/2sPPof9dk7tBrwHPV00HB7xtCgovrsbueZAWaBLTQotMwXvWgmI
- 3UmQ==
+ bh=Gtv6IX/KV3JKuyckPwlUPbMBU1EPVCs+bl/6v1epcQg=;
+ b=i3VM0qHDQ8Wzpow6zGMOrnoaOKnOGjXReO7NPUhYO1fqCAQPTLwcR8TvPIscWk2YAL
+ U2+xtfTUaKSR83F+s/gt/rFE07001rb4CWsfk/AIYI7CN/BJjRjEe5eT2Uhw003A8Maq
+ 1Pb6f9JXScG5LTsB3pF8/UJ0F5TWHlIUqtS+AuiptIEmIgPwRJMluJCDNIhBIiOCYOew
+ aSOLODDs6gShLWcfJU3B22rWhMOJncJ4KHjCiMIXVm9AYJngw+G/ikrcT3FUSPS4pmKE
+ uiTtvt+erbmY5MoItpSr0qq6lYzv4fBwafISh2tMLV5yJfGSuJvNcV9aFw6DvACtlTvG
+ EBAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727700815; x=1728305615;
+ d=1e100.net; s=20230601; t=1727700819; x=1728305619;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A54AZmXL2K4S/evyBU6Z+PuWbfLne3N1JrnXSUgIbU0=;
- b=mrfops0Ryaunqb1y7FFe2Cq12ViI8BWPezI1T5t0bR+SpL3jAfutvtb9nnvsE4YBub
- 0qU+ufLckH/DcCPfs5Z0eXngZYE0u7m7roO3X/dqZpA8agLiRZJAhA+YdgPZZNFAn7R4
- RN1Iuj4zTr+K2CWeWwOlnrNJRUNahxKUJsMiNjnYMgui36Bq4ju/o6jRzfZjAT0UaN17
- pAsYQMBqkrYMypEfyXIoutn1VUnB9jqUq3hJfBLLcWGXQLJhvDsV8EXR38R0ISLSqTJy
- KSlLrlHVwSe1oJRw+712zhRx6TK6dNjwgoGdK6Mqx+84kgR6oMZRf291s8c+kNdRduX9
- siBA==
-X-Gm-Message-State: AOJu0YzJmxfm35f9OdHspeJNRUK/4O6hB1LFF4ZEWoL/Y5btpLIL0HW8
- Jj5vQbi0Y64u8ZuIFUJBeZXzgljVG1/VLw7zYiBpCJI/VHW7iLA/UfFeK29Yk9lY4JritK4vAgY
- wzqs=
-X-Google-Smtp-Source: AGHT+IG6FA1okpu2QB/TxZQl+zaSrG3+73s6gMHVvjez1IzAcrSzTh3/M3PoQrnOI32cQeogUZ+Dig==
-X-Received: by 2002:adf:f1ce:0:b0:371:82ec:206f with SMTP id
- ffacd0b85a97d-37cd5aa9c14mr6128167f8f.16.1727700815008; 
- Mon, 30 Sep 2024 05:53:35 -0700 (PDT)
+ bh=Gtv6IX/KV3JKuyckPwlUPbMBU1EPVCs+bl/6v1epcQg=;
+ b=S0r2TDw6xqze54siXMYL4e6dlTBEL7eYAuqdcsMR5kfEZNyfxJfOEYKT3VQNXTauQw
+ ZOqB7XMIVuaoJDb2vCyZlqgdWJOnlLb4FCD4TqfLpGFy8ZrTomZnjd1ccccKNPYK0eiR
+ lhAOPCXcfryK2Ts+nARIUCJK9sHHr3gYND8+Tv1Ig/CbQ0utkQJquoblDSY8Q5k7L/gb
+ knVv34n9Wz15xfkhXpWCsVePv1Txw11j4J/zJeFHwS5jQMBQPBtf+p9l4YRAlgfS9bTN
+ qk4cvU/8yx9KDfmtaL7c9ctqE5cnUW6HDYs3b2ejM5TsK7YBQJ2URMsEhjQgAgxqkzyT
+ 0mww==
+X-Gm-Message-State: AOJu0YzdxvKjjN1qW9wLxB17tkapruGle6T0cg/is0L8dKLbVmfcuZah
+ hgbE8C39jRRMaWeHgSNUck0JE3PxI3oRS9vDgD8GYhOMJPtCZX1bI+za/g4ViiE7GHCX/9jkRx1
+ zNwQ=
+X-Google-Smtp-Source: AGHT+IGvlyMVD8GqdUuXqC7ZuTDpdqn6SoaisFx8JGE/Rxou76lyPx6d2syn+uUCOCW350lIfgVirA==
+X-Received: by 2002:a5d:4d0e:0:b0:374:cbe8:6f43 with SMTP id
+ ffacd0b85a97d-37cd5a9c921mr6466471f8f.33.1727700819587; 
+ Mon, 30 Sep 2024 05:53:39 -0700 (PDT)
 Received: from localhost.localdomain ([78.196.4.158])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd57450c7sm8943227f8f.101.2024.09.30.05.53.34
+ ffacd0b85a97d-37cd56e6547sm9077147f8f.58.2024.09.30.05.53.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Sep 2024 05:53:34 -0700 (PDT)
+ Mon, 30 Sep 2024 05:53:39 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -63,17 +63,17 @@ Cc: Thomas Huth <thuth@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-ppc@nongnu.org,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/3] hw/ppc/sam460ex: Replace tswap32() by stl_endian_p()
-Date: Mon, 30 Sep 2024 14:53:22 +0200
-Message-ID: <20240930125323.54671-3-philmd@linaro.org>
+Subject: [PATCH 3/3] hw/ppc/virtex_ml507: Replace tswap32() by stl_endian_p()
+Date: Mon, 30 Sep 2024 14:53:23 +0200
+Message-ID: <20240930125323.54671-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240930125323.54671-1-philmd@linaro.org>
 References: <20240930125323.54671-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,35 +103,22 @@ Get the vCPU endianness calling ppc_cpu_is_big_endian().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/sam460ex.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ hw/ppc/virtex_ml507.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-index 8dc75fb9f0..6257ddbec6 100644
---- a/hw/ppc/sam460ex.c
-+++ b/hw/ppc/sam460ex.c
-@@ -248,10 +248,11 @@ static void mmubooke_create_initial_mapping(CPUPPCState *env,
- static void main_cpu_reset(void *opaque)
- {
-     PowerPCCPU *cpu = opaque;
-+    CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
-     struct boot_info *bi = env->load_info;
+diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
+index c49da1f46f..135dcbde06 100644
+--- a/hw/ppc/virtex_ml507.c
++++ b/hw/ppc/virtex_ml507.c
+@@ -141,7 +141,7 @@ static void main_cpu_reset(void *opaque)
  
--    cpu_reset(CPU(cpu));
-+    cpu_reset(cs);
+     /* Create a mapping for the kernel.  */
+     mmubooke_create_initial_mapping(env, 0, 0);
+-    env->gpr[6] = tswap32(EPAPR_MAGIC);
++    stl_endian_p(ppc_cpu_is_big_endian(CPU(cpu)), &env->gpr[6], EPAPR_MAGIC);
+     env->gpr[7] = bi->ima_size;
+ }
  
-     /* either we have a kernel to boot or we jump to U-Boot */
-     if (bi->entry != UBOOT_ENTRY) {
-@@ -261,7 +262,7 @@ static void main_cpu_reset(void *opaque)
- 
-         /* Create a mapping for the kernel.  */
-         mmubooke_create_initial_mapping(env, 0, 0);
--        env->gpr[6] = tswap32(EPAPR_MAGIC);
-+        stl_endian_p(ppc_cpu_is_big_endian(cs), &env->gpr[6], EPAPR_MAGIC);
-         env->gpr[7] = (16 * MiB) - 8; /* bi->ima_size; */
- 
-     } else {
 -- 
 2.45.2
 
