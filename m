@@ -2,92 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27CE398A690
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 16:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D9298A6A3
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 16:08:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svGxe-0000NX-AN; Mon, 30 Sep 2024 10:01:14 -0400
+	id 1svH2q-0006TH-6e; Mon, 30 Sep 2024 10:06:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1svGxb-0000Mp-Qz
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 10:01:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1svGxW-00058w-81
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 10:01:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727704864;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0R6TqmoLl9GfAyCYAem3TbQrqMPOA5hJYkONmcy3DD0=;
- b=PDBZ7IUpMtK89wAqDmwZN5rHxRqbYs0nSWO7u5fC2G3cb/h/X/Kngp0+lj3khyxaG7p4Mu
- YQqjwcQ0fzsyEPbtWQF61pLAfXYpZxEIZQlXnK36HqOs2BpyuYr0Pjmt7BsNBDz/iT70Bs
- ICgxJgT4VDaCggSmJY3DwZFJbC6loaE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-ZYED2lTWN1eITk7wGPscQw-1; Mon, 30 Sep 2024 10:01:02 -0400
-X-MC-Unique: ZYED2lTWN1eITk7wGPscQw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-37ccbace251so2268079f8f.3
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 07:01:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727704862; x=1728309662;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1svH2o-0006Pi-6e
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 10:06:34 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1svH2m-0005jd-AW
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 10:06:33 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5c8844f0ccaso3889417a12.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 07:06:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1727705190; x=1728309990; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0R6TqmoLl9GfAyCYAem3TbQrqMPOA5hJYkONmcy3DD0=;
- b=Y7jwCkmEYHmavRwddAmLsMAW/OLfYREV/wlnDXKbixh+YEfHicPxr0S5jDXN4qmXS8
- lCSXIT2kbTxc35wtNpKRO5jurc7MjOAPvUOvNzeg3QLXtH/fwvwpMDujUn7bLrjcjGqH
- TftrLv0V/h6BRf2A6ktjdYbaODSMtsFfJcc+AFPIqv7EGn4YGCg915MfASoc40txbMO/
- 9k/rmEhk4P9ezhAfSbG2bIz5Xbc7Ts/gKdsqHW9iC84c+t+DP2YFomuWkFi9zUSVv7KQ
- iRY8v2MmNuw8Ya7+GM+zxuK5QnUAo4wbrLnhthcxNplZnPjIj/5kVBUGeOuDo3AgGdYt
- JMJA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW+5yohU+pdPZ5AaGDtrCJmdE91Hycd/Xyd5d6mep7Xs3lMPUdk6K43XcgvE7z+CLUkJuBY5sIqymhB@nongnu.org
-X-Gm-Message-State: AOJu0Yz0BthiijXkyNdus7SYzER5gsdpBJ6dYRoCrj0HCdyvJ3u8D0Rj
- AmOxvi5vAGyNQ/gjVQ6Ynx3xW9ZNA7Y1JU6k3wR+apaMgnT1riywDmJ/utREy4ShVLf2CaCBY32
- Ne5elNJtjueTav5IwufdsxGx+Yr2b3JPyZARfYm9dqCGlTfRDRmAf
-X-Received: by 2002:a5d:6882:0:b0:371:8319:4dbd with SMTP id
- ffacd0b85a97d-37cd5a77b2emr7005781f8f.17.1727704861701; 
- Mon, 30 Sep 2024 07:01:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEoWs4iiZQRBJa1T11d371vKpdehtim/qm/4bBWR8JTskGpEI8aUjN8wzvzibTOgbagTw6wbA==
-X-Received: by 2002:a5d:6882:0:b0:371:8319:4dbd with SMTP id
- ffacd0b85a97d-37cd5a77b2emr7005751f8f.17.1727704861132; 
- Mon, 30 Sep 2024 07:01:01 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc7:55d:ca3b:807c:fdd2:f46d:60e7])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd575de8fsm9042266f8f.116.2024.09.30.07.00.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Sep 2024 07:01:00 -0700 (PDT)
-Date: Mon, 30 Sep 2024 10:00:57 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Gao Shiyuan <gaoshiyuan@baidu.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, zuoboqun@baidu.com,
- thuth@redhat.com, alxndr@bu.edu, peterx@redhat.com,
- qemu-devel@nongnu.org, imammedo@redhat.com
-Subject: Re: [PATCH 1/1] virtio-pci: fix memory_region_find for
- VirtIOPCIRegion's MR
-Message-ID: <20240930100043-mutt-send-email-mst@kernel.org>
-References: <20240924011156.48252-1-gaoshiyuan@baidu.com>
- <8d7b35ba-f9fa-446f-ac8b-471587c7666e@redhat.com>
+ bh=pxxUIsBHLE7oynpVymU+n9qMCquRJ8sQDxemGTRkvJY=;
+ b=AibAqaGOdqKE+n8WJKH38J0f6Toz/YB/D3CAUfaslX9ov/ZzUkWzoVbUAQamRwZOv/
+ PrB4L8kBJLgZvpsllEqInXc2MexQuMG+MMwnRe2N0iGS8vJ0V+aDYJApKc2reA3MGHGs
+ Df7/rKqkPsJGsGQUT+DNYyPPhP/762RkvoHNDI2Wqxsp6f9VgVvWNWf25TCDs7qGcTtP
+ zEDEfu6iLws6wUuDNfsfMzP0MfvvuvaHINreIeEVCUAdCXB4T0SvXHx9ziUToi9IAmAo
+ KcMBQtHXZkRva3DMwgOLqfOt3nvIZJXT0mK9bbXaczOG81cqWHTDUSINCu4iB+1ZDmie
+ gWdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727705190; x=1728309990;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pxxUIsBHLE7oynpVymU+n9qMCquRJ8sQDxemGTRkvJY=;
+ b=KJCf0FM5TQM17ALTFylmskllRVRNOx3ZwjWicKsJNRAsTVpk/p7/lP8M0Ij1jBT4Pk
+ eJtwpd9mNHbXT+GewUyAr6CO58dv/zhFBHix+xCIFIRYiKjBrltxO52t4kiVppEIG99a
+ LwRT8AmW8q5R3yYxE0gBb4nVrdhBr4aIhexenQkt7Ze8Nr726uz7AVM5pX2VxoOO3jl0
+ +zuKeCm3ZKtBsqAgv+1zDJQbqWNddyiv206yh/lSYu/t4UJmUYnwy5pnsrZli3Gtqw/k
+ eTKvhK3BVUD2SNSiRFm9wQThMwnalAGHvD92ZkkVcz3jeUwo8X1xSL7JsOhrEvVFE/Te
+ lNNA==
+X-Gm-Message-State: AOJu0YzgB0Gr6PiOwU5kRaYaju6PWcf6KbPuPrxt26IeuJ+L7wrZYDd/
+ IYffP26mMwQC/vvThm1UPHhWo1HWkb6rDSzvXXclm54E3RsClvoXPXDYjTC0mwtuZIzpqeJgXgv
+ U4AmLb/PGBw1XvIjwPqiJtoWKvGmSW4NQiJSkpb+02XvgQeNn
+X-Google-Smtp-Source: AGHT+IG7p5E5SdGjSvWuTTeTraepgldiGwmLY4M9paYNZOg+zpjMcgP55F7XRyFcr3wvWVc9AZaql6qIdhbo0n8DQrA=
+X-Received: by 2002:a05:6402:27cb:b0:5c8:83f1:2531 with SMTP id
+ 4fb4d7f45d1cf-5c883f12765mr10695448a12.28.1727705190241; Mon, 30 Sep 2024
+ 07:06:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d7b35ba-f9fa-446f-ac8b-471587c7666e@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240929081724.2139556-1-gaosong@loongson.cn>
+In-Reply-To: <20240929081724.2139556-1-gaosong@loongson.cn>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 30 Sep 2024 15:06:17 +0100
+Message-ID: <CAFEAcA-zgk0rJPqBhHQQwV-pQ-eR8+Mo5F+U3=F31NRk9Vy9tw@mail.gmail.com>
+Subject: Re: [PULL 0/7] loongarch-to-apply queue
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,67 +87,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 24, 2024 at 02:31:20PM +0200, David Hildenbrand wrote:
-> On 24.09.24 03:11, Gao Shiyuan wrote:
-> 
-> Make sure to version your patch series. For example, via
-> 	$ git format-patch -v1 ...
-> 
-> > As shown below, if a virtio PCI device is attached under a pci-bridge, the MR
-> > of VirtIOPCIRegion does not belong to any address space. So memory_region_find
-> > cannot be used to search for this MR.
-> 
-> I'm starting to wonder if memory_region_find() is really the right fun
-> 
-> > 
-> > Introduce the virtio-pci and pci_bridge_pci address spaces to solve this problem.
-> > 
-> > Before:
-> > memory-region: pci_bridge_pci
-> >    0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci
-> >      00000000fe200000-00000000fe200fff (prio 1, i/o): virtio-blk-pci-msix
-> >        00000000fe200000-00000000fe20016f (prio 0, i/o): msix-table
-> >        00000000fe200800-00000000fe200807 (prio 0, i/o): msix-pba
-> >      000000a000400000-000000a000403fff (prio 1, i/o): virtio-pci
-> >        000000a000400000-000000a000400fff (prio 0, i/o): virtio-pci-common-virtio-blk
-> >        000000a000401000-000000a000401fff (prio 0, i/o): virtio-pci-isr-virtio-blk
-> >        000000a000402000-000000a000402fff (prio 0, i/o): virtio-pci-device-virtio-blk
-> >        000000a000403000-000000a000403fff (prio 0, i/o): virtio-pci-notify-virtio-blk
-> > 
-> > After:
-> > address-space: pci_bridge_pci
-> >    0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci
-> >      00000000fe200000-00000000fe200fff (prio 1, i/o): virtio-blk-pci-msix
-> >        00000000fe200000-00000000fe20016f (prio 0, i/o): msix-table
-> >        00000000fe200800-00000000fe200807 (prio 0, i/o): msix-pba
-> >      000000a000400000-000000a000403fff (prio 1, i/o): virtio-pci
-> >        000000a000400000-000000a000400fff (prio 0, i/o): virtio-pci-common-virtio-blk
-> >        000000a000401000-000000a000401fff (prio 0, i/o): virtio-pci-isr-virtio-blk
-> >        000000a000402000-000000a000402fff (prio 0, i/o): virtio-pci-device-virtio-blk
-> >        000000a000403000-000000a000403fff (prio 0, i/o): virtio-pci-notify-virtio-blk
-> > 
-> > address-space: virtio-pci
-> >    000000a000400000-000000a000403fff (prio 1, i/o): virtio-pci
-> >      000000a000400000-000000a000400fff (prio 0, i/o): virtio-pci-common-virtio-blk
-> >      000000a000401000-000000a000401fff (prio 0, i/o): virtio-pci-isr-virtio-blk
-> >      000000a000402000-000000a000402fff (prio 0, i/o): virtio-pci-device-virtio-blk
-> >      000000a000403000-000000a000403fff (prio 0, i/o): virtio-pci-notify-virtio-blk
-> > 
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2576
-> > Fixes: ffa8a3e ("virtio-pci: Add lookup subregion of VirtIOPCIRegion MR")
-> 
-> Commit id is not unique. Use 12 digits please.
-> 
-> I'm still not quite sure if memory_region_find() is really the right thing
-> to use here, but I'm no expert on that so I'm hoping virtio/PCI people can
-> review.
+On Sun, 29 Sept 2024 at 09:35, Song Gao <gaosong@loongson.cn> wrote:
+>
+> The following changes since commit 3b14a767eaca3df5534a162851f04787b36367=
+0e:
+>
+>   Merge tag 'qemu-openbios-20240924' of https://github.com/mcayland/qemu =
+into staging (2024-09-28 12:34:44 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240929
+>
+> for you to fetch changes up to f7c8ef7bad7495d8c84b262a8b243efe39e56b13:
+>
+>   hw/loongarch/fw_cfg: Build in common_ss[] (2024-09-29 16:22:56 +0800)
+>
+> ----------------------------------------------------------------
+> pull-loongarch-20240929
+>
+> ----------------------------------------------------------------
 
-I donnu, what would you use?
+Hi; this fails to build on 32-bit hosts:
 
 
-> -- 
-> Cheers,
-> 
-> David / dhildenb
+https://gitlab.com/qemu-project/qemu/-/jobs/7953018819
+https://gitlab.com/qemu-project/qemu/-/jobs/7953018846
 
+../hw/loongarch/boot.c: In function =E2=80=98init_systab_32=E2=80=99:
+../hw/loongarch/boot.c:187:10: error: cast to pointer from integer of
+different size [-Werror=3Dint-to-pointer-cast]
+187 |           ((typeof(p))((uintptr_t)(s) + \
+    |            ^
+../hw/loongarch/boot.c:201:9: note: in expansion of macro =E2=80=98BOOTP_AL=
+IGN_PTR_UP=E2=80=99
+201 |      p =3D BOOTP_ALIGN_PTR_UP(p, start, EFI_TABLE_ALIGN); \
+    |          ^~~~~~~~~~~~~~~~~~
+../hw/loongarch/boot.c:243:1: note: in expansion of macro =E2=80=98EFI_INIT=
+_SYSTAB_GEN=E2=80=99
+243 | EFI_INIT_SYSTAB_GEN(32)
+    | ^~~~~~~~~~~~~~~~~~~
+../hw/loongarch/boot.c:187:10: error: cast to pointer from integer of
+different size [-Werror=3Dint-to-pointer-cast]
+187 |          ((typeof(p))((uintptr_t)(s) + \
+    |           ^
+
+etc.
+
+This happens because if the argument 'n' to BOOTP_ALIGN_PTR_UP()
+is a 64-bit type (as EFI_TABLE_ALIGN happens to be) then the
+expression ends up being calculated as 64-bits, which is bigger
+than the type of a pointer on these hosts.
+
+-- PMM
 
