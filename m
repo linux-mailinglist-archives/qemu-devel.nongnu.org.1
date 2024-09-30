@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3997989BDB
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 09:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB969989C1A
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:02:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svB9H-0007if-Jc; Mon, 30 Sep 2024 03:48:51 -0400
+	id 1svBM4-0007m8-0N; Mon, 30 Sep 2024 04:02:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svB8p-0006Sq-KY
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 03:48:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svBLs-0007dn-Gi
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:01:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svB8i-00014w-TT
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 03:48:22 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svBLq-0003kp-3s
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:01:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727682490;
+ s=mimecast20190719; t=1727683308;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=4iNNZrootspfg2gduT2ooCpydO7QcA9dvNd/l3Iqr+s=;
- b=FsTSkf26lREaJDpbpAeCeade4JANUkchlel5R5CO4wbAWPa+g/ZDP/1bPlvk+/zjC5YmUK
- 8AYG88rh+Ok6kC483sLzYixvCerJZ+F4iXBiKoz3vlhgpr4/OG+IQX8FZpEV2XIzmL5FGy
- JbxCNNwQ44NgDqhkYoZ3oSDduyWtjZk=
-Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
- [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gFp792KiYkMcspOv6jogDxfYkblBolu9/DJtSswKON0=;
+ b=UP7FHYx6HxMx/36CIkE8TQJ7JX83gxIm0MCsktlgA0qtFNZ4jDc36j5nXVOLbPWN75lofk
+ TIPIabDq5OJfp0jr9TK0AFu5bw107cghFatXP92mMXg7kxTmSlDbLpYYRjpTKO/R1sczIu
+ BhJykKlbhR1jjsJMA+aPYbJKZri08wU=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-139-nlbZYI15N0yAURHDCwuHQg-1; Mon, 30 Sep 2024 03:48:09 -0400
-X-MC-Unique: nlbZYI15N0yAURHDCwuHQg-1
-Received: by mail-vk1-f200.google.com with SMTP id
- 71dfb90a1353d-507919285f4so543963e0c.1
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 00:48:09 -0700 (PDT)
+ us-mta-517-aY0cJEOtPPibUXEkuiWj0A-1; Mon, 30 Sep 2024 04:01:46 -0400
+X-MC-Unique: aY0cJEOtPPibUXEkuiWj0A-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7ae55f12031so34723485a.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 01:01:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727682488; x=1728287288;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4iNNZrootspfg2gduT2ooCpydO7QcA9dvNd/l3Iqr+s=;
- b=jFMzQ/SovDFEOJ3P7EwdLGQ+J9aBGT2h7/p/qUsdA9iiX8CqM6bUZys9p0fqnv3Vfd
- /1UBv8sCv5418f0bfH3WLRMHw3SZGnF/2t3hJjhrLGHiqOh2Mvyaqpy7pEIeDEC4ORrx
- QQ3lc3XPVAu/qlmxTsu6SMYpRN7U9dcY0A+z9UdHjjL6JXdPtofZQ7yFuF4AxKFYF5UU
- 7eFpMiKVd18zdcRYzpfQczbA5kkKKuDejwYQxSMR5h9QeUtrd2wcVWNgrZe+eu2P3CBD
- GsRedRKK+4rkHdcRD64Xkh1k2DydlULchWpCLjel6k2GAxcRL7xMScPbBNDWm3/O31bc
- 5XtQ==
+ d=1e100.net; s=20230601; t=1727683306; x=1728288106;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gFp792KiYkMcspOv6jogDxfYkblBolu9/DJtSswKON0=;
+ b=ToAX2K1ZvDDp6BuQVqflaTKoiVMNxG7nmIPRAK1iwUszki6V6Ngh53kI42z8aYY2jJ
+ UF9ZYfdiOqWqMbSzTF5yZABk4zetzivzjILGMRqFPIjadXEVhCTje4juZZqHXRXGNCN0
+ GtF1lf/n/hqfKwQIqB2kPvrW8DnX8+v+KCr9n0g6MpJRZ8s+SYWV12cFWEXwCJZhE7Ww
+ 4DGoVQbhxbZa3+6o0K/pCIAdyEWfD4yWhvAg6uUCeW+taZI1RJKiQeqo74Q8kS9kckrz
+ t9+vVhP1Bx26JGBOV9erVa0rYSvaBpCQGbEAP5CMYlNJR14vNhutk5Xd9QU+JPlzgW1L
+ XCBQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXHmK2IqXkSF5sL04UYxUtku5Cl69KPakXCxdkhTBjKfc1Ns0Z0g1HXQqsAqL18gnKO26M5t/cSb+5i@nongnu.org
-X-Gm-Message-State: AOJu0YwHUmr2P1HzX8LTyUQq7SI1ZmgIjBMEKRvIg5PT0qkStmQ+HboN
- iwznWX/VTlF58xCQbzKNQLNFYiKWP4V6OQgUM1t5PQwbqHgQS062GdTd6aLnMT/hnHPHxh3ktpe
- FLVhP6QRwZybIwxTS9bXklz5cp2esdkwrom5WG35OuyK4zhwQU3btWdJPI1i7t9w=
-X-Received: by 2002:a05:6122:3b17:b0:509:e278:c286 with SMTP id
- 71dfb90a1353d-509e278c95fmr1694678e0c.6.1727682488588; 
- Mon, 30 Sep 2024 00:48:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhAxXf73J+XSxlewYkxcEe2F6/kvGHewHSA6VKy/xEudPbZZiImAbGnOKtk42SxDm+m2at7Q==
-X-Received: by 2002:a05:6122:3b17:b0:509:e278:c286 with SMTP id
- 71dfb90a1353d-509e278c95fmr1694667e0c.6.1727682488168; 
- Mon, 30 Sep 2024 00:48:08 -0700 (PDT)
+ AJvYcCVgj4BtZ4kOekJGZTLucgAH7Ql2ZX8BnY5d7/QR+VF2pSTdw3z14JKQqepwfAjxoo+m0fsgUBuqsQGs@nongnu.org
+X-Gm-Message-State: AOJu0YzqnO1+TP37qWROp4vmS/rARDDWA+pGoFvHwLRqTypQg+ksXhaq
+ kEE0kBhnbccKxOYgis6oCh+cNg2y4B7T0MNaP21EaTjAXrZ9p9Z0y1zJt61LZsn5RcAPS0+MQoK
+ dlQcqFJQEALpzKCPzMa3ioG/Lkal9TNmIBsf6lH+31kMpB1Gj4dvh
+X-Received: by 2002:a05:620a:4688:b0:7a2:32e:3c47 with SMTP id
+ af79cd13be357-7ae3784b744mr1801936585a.34.1727683306244; 
+ Mon, 30 Sep 2024 01:01:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFH3w6f5fa09+ADawoYDjcUoKiB8ZctWNlB9ImTPayBuSQ6yNMk5L8FEw4pFn0zZfLwr1vBGQ==
+X-Received: by 2002:a05:620a:4688:b0:7a2:32e:3c47 with SMTP id
+ af79cd13be357-7ae3784b744mr1801933585a.34.1727683305843; 
+ Mon, 30 Sep 2024 01:01:45 -0700 (PDT)
 Received: from [192.168.0.7] (ip-109-42-48-176.web.vodafone.de.
  [109.42.48.176]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7ae37841796sm388002385a.111.2024.09.30.00.48.06
+ af79cd13be357-7ae377d5143sm391500985a.32.2024.09.30.01.01.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Sep 2024 00:48:07 -0700 (PDT)
-Message-ID: <f0d95299-48ca-4c23-bf68-dda8e499ad7f@redhat.com>
-Date: Mon, 30 Sep 2024 09:48:03 +0200
+ Mon, 30 Sep 2024 01:01:45 -0700 (PDT)
+Message-ID: <25a7c940-5a08-4f53-a2ea-80883cbaab13@redhat.com>
+Date: Mon, 30 Sep 2024 10:01:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/18] pc-bios/s390-ccw: Remove panics from SCSI IPL path
-To: jrossi@linux.ibm.com, qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: frankja@linux.ibm.com
-References: <20240927005117.1679506-1-jrossi@linux.ibm.com>
- <20240927005117.1679506-10-jrossi@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 1/2] hw/loongarch/virt: Remove unnecessary 'cpu.h'
+ inclusion
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Song Gao <gaosong@loongson.cn>,
+ QEMU Trivial <qemu-trivial@nongnu.org>
+References: <20240927213254.17552-1-philmd@linaro.org>
+ <20240927213254.17552-2-philmd@linaro.org>
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -117,9 +120,9 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240927005117.1679506-10-jrossi@linux.ibm.com>
+In-Reply-To: <20240927213254.17552-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -145,75 +148,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/09/2024 02.51, jrossi@linux.ibm.com wrote:
-> From: Jared Rossi <jrossi@linux.ibm.com>
-> 
-> Remove panic-on-error from virtio-scsi IPL specific functions so that error
-> recovery may be possible in the future.
-> 
-> Functions that would previously panic now provide a return code.
-> 
-> Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
-> 
+On 27/09/2024 23.32, Philippe Mathieu-Daudé wrote:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
-...
-> @@ -572,23 +575,37 @@ static void zipl_load_segment(ComponentEntry *entry)
->               }
->               address = virtio_load_direct(cur_desc[0], cur_desc[1], 0,
->                                            (void *)address);
-> -            IPL_assert(address != -1, "zIPL load segment failed");
-> +            if (!address) {
-
-Shouldn't that be "if (address == -1)" or "if (address < 0)" instead?
-
-Hmm, virtio_load_direct() seems to return an "unsigned long", so maybe that 
-one rather needs to be fixed, too?
-
-> +                puts("zIPL load segment failed");
-> +                return -EIO;
-> +            }
->           }
->       } while (blockno);
-> +
-> +    return 0;
->   }
-...
-> @@ -78,24 +84,30 @@ static void prepare_request(VDev *vdev, const void *cdb, int cdb_size,
->       }
->   }
+>   include/hw/loongarch/virt.h | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+> index c373e48f27..9ba47793ef 100644
+> --- a/include/hw/loongarch/virt.h
+> +++ b/include/hw/loongarch/virt.h
+> @@ -8,7 +8,6 @@
+>   #ifndef HW_LOONGARCH_H
+>   #define HW_LOONGARCH_H
 >   
-> -static inline void vs_io_assert(bool term, const char *msg)
-> +static inline bool vs_io_assert(bool term, const char *msg)
->   {
-> -    if (!term) {
-> -        virtio_scsi_verify_response(&resp, msg);
-> +    if (!term && !virtio_scsi_verify_response(&resp, msg)) {
+> -#include "target/loongarch/cpu.h"
+>   #include "hw/boards.h"
+>   #include "qemu/queue.h"
+>   #include "hw/block/flash.h"
 
-Should that be "||" instead of "&&" ?
-
-> +        return false;
->       }
-> +
-> +    return true;
->   }
->   
-> -static void vs_run(const char *title, VirtioCmd *cmd, VDev *vdev,
-> +static int vs_run(const char *title, VirtioCmd *cmd, VDev *vdev,
->                      const void *cdb, int cdb_size,
->                      void *data, uint32_t data_size)
->   {
->       prepare_request(vdev, cdb, cdb_size, data, data_size);
-> -    vs_io_assert(virtio_run(vdev, VR_REQUEST, cmd) == 0, title);
-> +    if (!vs_io_assert(virtio_run(vdev, VR_REQUEST, cmd) == 0, title)) {
-> +        puts(title);
-
-Shouldn't there be a "return -1;" or something similar here?
-
-> +    }
-> +
-> +    return 0;
->   }
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
