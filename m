@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A2E989C7A
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7755E989C7C
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:18:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svBbA-0006K0-MH; Mon, 30 Sep 2024 04:17:41 -0400
+	id 1svBbk-00084p-G7; Mon, 30 Sep 2024 04:18:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svBZa-00035N-KX
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:16:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1svBZj-0003N7-BE
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:16:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svBZY-0005hl-EC
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:16:02 -0400
+ id 1svBZh-0005iW-Au
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:16:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727684159;
+ s=mimecast20190719; t=1727684168;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FCeKBonFNyUflZYNMAOxtHXtj8QpjqLDQ64BJECt8as=;
- b=aebhQ44N1lwnZ/5hLL1xoNtvplnQ8vgs6TjCX04X0QXPoeeuuC/hLYZSgPd/mawthZNzYm
- ga1/pzEv8sRWzijifhE7G9vVsxxQleDa5IxHWXRy9ntHtxvbLX5JoD8APOSg/syz3KYPyD
- iUOS56kLpDykyGJ94lG8Caw+MQpVbvI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=S4lvvbjCPot7FkZgTAJ+Z+t9T/rbkKdAOw4U4JfZh7Q=;
+ b=PVxEKGSF+2PHtLm6JmoufrwKdftk1jvZKUt8n20OxHoEmPrugDSKX9x7lrTr5HrdW3khSg
+ 5jZCexAaSF0gZTtHUTv1BvR70U5kUy8f2U40qAUxcC+vl8sYP6NvvhMeCdLDTArgp4+i/V
+ HGeSH5bZGEglSm+Zwu7RyVqw8uLbih4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-454-gTTXg1I8Og-16VJtiXkRWQ-1; Mon,
- 30 Sep 2024 04:15:56 -0400
-X-MC-Unique: gTTXg1I8Og-16VJtiXkRWQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-M8jJGWD5PamBeFxunsqrCA-1; Mon,
+ 30 Sep 2024 04:16:02 -0400
+X-MC-Unique: M8jJGWD5PamBeFxunsqrCA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C362A192D0E1; Mon, 30 Sep 2024 08:15:53 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1EEF619030A7; Mon, 30 Sep 2024 08:16:00 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D87651979060; Mon, 30 Sep 2024 08:15:51 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 4E36E19541A0; Mon, 30 Sep 2024 08:15:56 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>,
@@ -70,17 +70,17 @@ Cc: Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Yuval Shaia <yuval.shaia.ml@gmail.com>, Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v3 06/22] block/mirror: fix -Werror=maybe-uninitialized
- false-positive
-Date: Mon, 30 Sep 2024 12:14:41 +0400
-Message-ID: <20240930081458.1926382-7-marcandre.lureau@redhat.com>
+Subject: [PATCH v3 07/22] block/stream: fix -Werror=maybe-uninitialized
+ false-positives
+Date: Mon, 30 Sep 2024 12:14:42 +0400
+Message-ID: <20240930081458.1926382-8-marcandre.lureau@redhat.com>
 In-Reply-To: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
 References: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -108,49 +108,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../block/mirror.c:404:5: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
-../block/mirror.c:895:12: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
-../block/mirror.c:578:12: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
-
-Change a variable to int, as suggested by Manos: "bdrv_co_preadv()
-which is int and is passed as an int argument to mirror_read_complete()"
+../block/stream.c:193:19: error: ‘unfiltered_bs’ may be used uninitialized [-Werror=maybe-uninitialized]
+../block/stream.c:176:5: error: ‘len’ may be used uninitialized [-Werror=maybe-uninitialized]
+trace/trace-block.h:906:9: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Acked-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- block/mirror.c | 6 +++---
+ block/stream.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/block/mirror.c b/block/mirror.c
-index 54e3a7ea9d..2afe700b4d 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -349,7 +349,7 @@ static void coroutine_fn mirror_co_read(void *opaque)
-     MirrorOp *op = opaque;
-     MirrorBlockJob *s = op->s;
-     int nb_chunks;
--    uint64_t ret;
-+    int ret = -1;
-     uint64_t max_bytes;
+diff --git a/block/stream.c b/block/stream.c
+index 7031eef12b..9076203193 100644
+--- a/block/stream.c
++++ b/block/stream.c
+@@ -155,8 +155,8 @@ static void stream_clean(Job *job)
+ static int coroutine_fn stream_run(Job *job, Error **errp)
+ {
+     StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
+-    BlockDriverState *unfiltered_bs;
+-    int64_t len;
++    BlockDriverState *unfiltered_bs = NULL;
++    int64_t len = -1;
+     int64_t offset = 0;
+     int error = 0;
+     int64_t n = 0; /* bytes */
+@@ -177,7 +177,7 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
  
-     max_bytes = s->granularity * s->max_iov;
-@@ -565,7 +565,7 @@ static void coroutine_fn GRAPH_UNLOCKED mirror_iteration(MirrorBlockJob *s)
- 
-     bitmap_set(s->in_flight_bitmap, offset / s->granularity, nb_chunks);
-     while (nb_chunks > 0 && offset < s->bdev_length) {
+     for ( ; offset < len; offset += n) {
+         bool copy;
 -        int ret;
 +        int ret = -1;
-         int64_t io_bytes;
-         int64_t io_bytes_acct;
-         MirrorMethod mirror_method = MIRROR_METHOD_COPY;
-@@ -841,7 +841,7 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
-     int64_t offset;
-     BlockDriverState *bs;
-     BlockDriverState *target_bs = blk_bs(s->target);
--    int ret;
-+    int ret = -1;
-     int64_t count;
  
-     bdrv_graph_co_rdlock();
+         /* Note that even when no rate limit is applied we need to yield
+          * with no pending I/O here so that bdrv_drain_all() returns.
 -- 
 2.45.2.827.g557ae147e6
 
