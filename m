@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9145498AFAA
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 00:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE8198AFB0
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 00:13:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svOcy-00039y-41; Mon, 30 Sep 2024 18:12:24 -0400
+	id 1svOd4-0003NE-ML; Mon, 30 Sep 2024 18:12:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svOcv-000392-NQ
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 18:12:21 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svOd2-0003MF-Ng
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 18:12:28 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svOct-0002eU-Jp
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 18:12:21 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a7aa086b077so716929366b.0
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 15:12:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svOd1-0002fi-0s
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 18:12:28 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a8d2daa2262so558028366b.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 15:12:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727734338; x=1728339138; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727734345; x=1728339145; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zYZS2o413t5NEWqhqyvJRLT8+V/Algd2PuxZZg9wbeU=;
- b=mG2tj/ValrGJJuWgAGmFoQHkedMOcpOP7WAVKwquaBrqyFgR/WyLXhDZ8tyXOA48cL
- +SKrjfkHm52lX2x3sJ68FSeg/1urgcgYhWxswbAs341886T6Xg3Mfo87zJOXeHwT4Cac
- rPbfqPmrrEPViPxoQRfpQulR8tpwzqsX9Z5gdEuCmqHNdVjAwMrS6Nv/laEplSrjjW1R
- VMeir8cUg7U49euieU0I7BpoTIVXRkYWQcPCFUJelovtuXflKbOUdlAGtMBW1klshzFG
- pkmFxvxj1/ZdEKgZOAXuDv+yfLlFqEH80zjr8Jzb2JKal5eRvtLNerhLVXB8bUgK87tq
- 4zYA==
+ bh=grjpT5kTsMGjq3j1/lhkj4QBsxYe83DKBpMh5569Dgk=;
+ b=oSF4xcxeKpE9rOxFKXgwYX/rgsKqXmEebX3rX+TPysuaXUbwll4HfpAr9tDt8ugRZ1
+ QbLlLPuC5APuBkiiEpF71ap/Ry8PeWohncBn0Dw4FekV78+YuDOwkMfyz9fotNg1RGb7
+ Av2+7KEB9zVA+M/TWs+JLLhQ27RGKjjUxRnem1Bwmqy7oc4vuHoeluQHBXQTLgbcWtP/
+ yMtfv8an3VCF5hAHWco6y3J2bdXCSsv68umCbCp9+1M0OwrknQxkyMZfsSQbQt49iZmd
+ PBTP8BoXKiojN3ghkZzU1eyfeX2XoXuyVWEkAtaXA3gwt5uNYUlGqSnGh7vpJfgeWNWT
+ 0Z6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727734338; x=1728339138;
+ d=1e100.net; s=20230601; t=1727734345; x=1728339145;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zYZS2o413t5NEWqhqyvJRLT8+V/Algd2PuxZZg9wbeU=;
- b=tZR/fW98pnuI5cwQ5G4KA+x/6YgACcdj0q3yaZ5d/lJmuLy1q3D9PGmolIV4c/GA1M
- wGnI5re/+EzmsYVdVEY4t98mya1cxOXOATV/datjHOtYL0CJUxf37ADD638EmPzwRzyB
- bjbvv1srtxaj7cd2iHRRduX3vs9+kzlRqkcKih+2SBZADmq+x04khThVLNzQGvSXXlmF
- QCMxDTpUdy4bFZr7DXiDjGLHCTrdtxYB0x3WzYgK1sumwWfyVhA2cvAgvNL2A7JHep6k
- cOnisZH1/Rhgbg+yTqMoEvGpG0wy8Mc39jCZsJ3GdistEQDaHLTAjLO8iITlc1YmWqin
- RGPA==
-X-Gm-Message-State: AOJu0Yx13SOiHRY1vx32T4iLD0WqFNqhD6NbhUCzH0cHbp8oD9gtdyWr
- PUWchYsSldHWTQpuafAZ87HW7MdoTynWpwZ1gkhHw3n07wWKVtYRF24xrLhn99EzDyqFl6KWpgi
- 8d1I=
-X-Google-Smtp-Source: AGHT+IExdxcYq81zX9FJW1somPfFXnJrlrB3XUOVOuJ5BuFtV0StTj0KDem5UMjns62Iq90Ng7Rz4g==
-X-Received: by 2002:a17:907:3f25:b0:a8a:926a:d002 with SMTP id
- a640c23a62f3a-a93c48f5b97mr1500610166b.12.1727734337632; 
- Mon, 30 Sep 2024 15:12:17 -0700 (PDT)
+ bh=grjpT5kTsMGjq3j1/lhkj4QBsxYe83DKBpMh5569Dgk=;
+ b=OKi7Zl/qH9HKov04XGwsy6ohN+34NO/+Bu1YrrHDPcuZjyHzC3UocdSBh8O6HbjeT+
+ gkltoAiXeuf69ekI0N91TjeICiX4QQ2I8KifVwhXWfucUT+9rvZlw5o7ioDaUVLbhjWD
+ povbnMxt0nGuH69tdmFln32o1kiPyTvjhfx3mSkC1UTBEI8lZVLwPpcNDzBwwkliXQ1x
+ K8hAqtD2cOpgvlfvmxEMxxnoDS841wbgr8J74YJtYfMBh+dhDp4doD8XfFfWo7SaZ99n
+ muTuv5FgYBR2EXiAkDuO8WV+ntDRi5SNxykFvcIUStwxxz0xAr7t0pacj6/wHJMmLimn
+ vZXQ==
+X-Gm-Message-State: AOJu0YzYAcvJACtVIf3nvTUxS7lPfJbu8ra8Jgp+oLKaKw4DosfDogbG
+ MJjtX7WYgd3hTlZG2o4HGGSLls1qVPcKYNj1qdl9JuJ2mvkLK+jaBlkxxNFutwT3lkf6TLNyi1L
+ DnIE=
+X-Google-Smtp-Source: AGHT+IEPcXLt1smhJ29KzmCwdkPXbe7bSABmFoFrN9SDqqX5WbSIEsUbxQdEZD9tZa3e3hF5oGDGhA==
+X-Received: by 2002:a17:907:928b:b0:a89:f5f6:395 with SMTP id
+ a640c23a62f3a-a93c48f0902mr1722277466b.1.1727734344660; 
+ Mon, 30 Sep 2024 15:12:24 -0700 (PDT)
 Received: from localhost.localdomain (46.170.88.92.rev.sfr.net. [92.88.170.46])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a93c2947fbesm593809866b.128.2024.09.30.15.12.14
+ a640c23a62f3a-a93c299ac60sm596492866b.221.2024.09.30.15.12.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Sep 2024 15:12:16 -0700 (PDT)
+ Mon, 30 Sep 2024 15:12:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair@alistair23.me>,
@@ -69,18 +69,17 @@ Cc: Alistair Francis <alistair@alistair23.me>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Jamin Lin <jamin_lin@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
  Anton Johansson <anjo@rev.ng>
-Subject: [PATCH 1/3] target/arm: Expose arm_cpu_code_is_big_endian() prototype
- in 'cpu.h'
-Date: Tue,  1 Oct 2024 00:12:02 +0200
-Message-ID: <20240930221205.59101-2-philmd@linaro.org>
+Subject: [PATCH 2/3] hw/arm: Have arm_write_bootloader() take a ARMCPU argument
+Date: Tue,  1 Oct 2024 00:12:03 +0200
+Message-ID: <20240930221205.59101-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240930221205.59101-1-philmd@linaro.org>
 References: <20240930221205.59101-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,110 +102,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expose arm_cpu_code_is_big_endian() so it can be used by hw/ code.
-Use it in few places where it was open coded.
+The next commit will replace tswap32() calls by stl_endian_p()
+ones in bootloader.c. In order to do that, we'll need to know
+the vCPU endianness. This information is retrievable with
+arm_cpu_code_is_big_endian(), but we need to access CPUARMState.
+As a first step, pass ARMCPU as argument to arm_write_bootloader()
+so it'll be able to access cpu->env.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/cpu.h              | 7 +++++++
- linux-user/aarch64/cpu_loop.c | 4 ++--
- linux-user/arm/cpu_loop.c     | 4 ++--
- target/arm/cpu.c              | 6 ++----
- 4 files changed, 13 insertions(+), 8 deletions(-)
+ include/hw/arm/boot.h | 9 ++++++---
+ hw/arm/aspeed.c       | 3 +--
+ hw/arm/boot.c         | 9 +++++----
+ hw/arm/raspi.c        | 4 ++--
+ 4 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index f065756c5c..da8f2b2ec8 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -3057,6 +3057,13 @@ static inline bool arm_cpu_data_is_big_endian(CPUARMState *env)
-     }
+diff --git a/include/hw/arm/boot.h b/include/hw/arm/boot.h
+index 80c492d742..3d1226ab00 100644
+--- a/include/hw/arm/boot.h
++++ b/include/hw/arm/boot.h
+@@ -206,13 +206,15 @@ typedef struct ARMInsnFixup {
+ /**
+  * arm_write_bootloader - write a bootloader to guest memory
+  * @name: name of the bootloader blob
+- * @as: AddressSpace to write the bootloader
++ * @cpu: handle to the first CPU object
++ * @info: handle to the boot info struct
+  * @addr: guest address to write it
+  * @insns: the blob to be loaded
+  * @fixupcontext: context to be used for any fixups in @insns
+  *
+  * Write a bootloader to guest memory at address @addr in the address
+- * space @as. @name is the name to use for the resulting ROM blob, so
++ * space returned by @arm_boot_address_space().
++ * @name is the name to use for the resulting ROM blob, so
+  * it should be unique in the system and reasonably identifiable for debugging.
+  *
+  * @insns must be an array of ARMInsnFixup structs, each of which has
+@@ -228,7 +230,8 @@ typedef struct ARMInsnFixup {
+  * the entries that @insns refers to.
+  */
+ void arm_write_bootloader(const char *name,
+-                          AddressSpace *as, hwaddr addr,
++                          ARMCPU *cpu, const struct arm_boot_info *info,
++                          hwaddr addr,
+                           const ARMInsnFixup *insns,
+                           const uint32_t *fixupcontext);
+ 
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index cf0c6c580b..cf5fb92238 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -217,7 +217,6 @@ struct AspeedMachineState {
+ static void aspeed_write_smpboot(ARMCPU *cpu,
+                                  const struct arm_boot_info *info)
+ {
+-    AddressSpace *as = arm_boot_address_space(cpu, info);
+     static const ARMInsnFixup poll_mailbox_ready[] = {
+         /*
+          * r2 = per-cpu go sign value
+@@ -244,7 +243,7 @@ static void aspeed_write_smpboot(ARMCPU *cpu,
+     };
+     static const uint32_t fixupcontext[FIXUP_MAX] = { 0 };
+ 
+-    arm_write_bootloader("aspeed.smpboot", as, info->smp_loader_start,
++    arm_write_bootloader("aspeed.smpboot", cpu, info, info->smp_loader_start,
+                          poll_mailbox_ready, fixupcontext);
  }
  
-+static inline bool bswap_code(bool sctlr_b);
-+
-+static inline bool arm_cpu_code_is_big_endian(CPUARMState *env)
-+{
-+    return bswap_code(arm_sctlr_b(env));
-+}
-+
- #include "exec/cpu-all.h"
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index 5301d8d318..6efd21f9c2 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -131,10 +131,12 @@ static const ARMInsnFixup smpboot[] = {
+ };
  
- /*
-diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
-index 71cdc8be50..68ff3c14f8 100644
---- a/linux-user/aarch64/cpu_loop.c
-+++ b/linux-user/aarch64/cpu_loop.c
-@@ -29,7 +29,7 @@
- 
- #define get_user_code_u32(x, gaddr, env)                \
-     ({ abi_long __r = get_user_u32((x), (gaddr));       \
--        if (!__r && bswap_code(arm_sctlr_b(env))) {     \
-+        if (!__r && arm_cpu_code_is_big_endian(env)) {  \
-             (x) = bswap32(x);                           \
-         }                                               \
-         __r;                                            \
-@@ -37,7 +37,7 @@
- 
- #define get_user_code_u16(x, gaddr, env)                \
-     ({ abi_long __r = get_user_u16((x), (gaddr));       \
--        if (!__r && bswap_code(arm_sctlr_b(env))) {     \
-+        if (!__r && arm_cpu_code_is_big_endian(env)) {  \
-             (x) = bswap16(x);                           \
-         }                                               \
-         __r;                                            \
-diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
-index ec665862d9..0cc056be31 100644
---- a/linux-user/arm/cpu_loop.c
-+++ b/linux-user/arm/cpu_loop.c
-@@ -29,7 +29,7 @@
- 
- #define get_user_code_u32(x, gaddr, env)                \
-     ({ abi_long __r = get_user_u32((x), (gaddr));       \
--        if (!__r && bswap_code(arm_sctlr_b(env))) {     \
-+        if (!__r && arm_cpu_code_is_big_endian(env)) {  \
-             (x) = bswap32(x);                           \
-         }                                               \
-         __r;                                            \
-@@ -37,7 +37,7 @@
- 
- #define get_user_code_u16(x, gaddr, env)                \
-     ({ abi_long __r = get_user_u16((x), (gaddr));       \
--        if (!__r && bswap_code(arm_sctlr_b(env))) {     \
-+        if (!__r && arm_cpu_code_is_big_endian(env)) {  \
-             (x) = bswap16(x);                           \
-         }                                               \
-         __r;                                            \
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 19191c2391..f3198ee2f2 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1167,7 +1167,6 @@ static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
+ void arm_write_bootloader(const char *name,
+-                          AddressSpace *as, hwaddr addr,
++                          ARMCPU *cpu, const struct arm_boot_info *info,
++                          hwaddr addr,
+                           const ARMInsnFixup *insns,
+                           const uint32_t *fixupcontext)
  {
-     ARMCPU *ac = ARM_CPU(cpu);
-     CPUARMState *env = &ac->env;
--    bool sctlr_b;
++    AddressSpace *as = arm_boot_address_space(cpu, info);
+     /* Fix up the specified bootloader fragment and write it into
+      * guest memory using rom_add_blob_fixed(). fixupcontext is
+      * an array giving the values to write in for the fixup types
+@@ -185,7 +187,6 @@ static void default_write_secondary(ARMCPU *cpu,
+                                     const struct arm_boot_info *info)
+ {
+     uint32_t fixupcontext[FIXUP_MAX];
+-    AddressSpace *as = arm_boot_address_space(cpu, info);
  
-     if (is_a64(env)) {
-         info->cap_arch = CS_ARCH_ARM64;
-@@ -1194,8 +1193,7 @@ static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
-         info->cap_mode = cap_mode;
+     fixupcontext[FIXUP_GIC_CPU_IF] = info->gic_cpu_if_addr;
+     fixupcontext[FIXUP_BOOTREG] = info->smp_bootreg_addr;
+@@ -195,7 +196,7 @@ static void default_write_secondary(ARMCPU *cpu,
+         fixupcontext[FIXUP_DSB] = CP15_DSB_INSN;
      }
  
--    sctlr_b = arm_sctlr_b(env);
--    if (bswap_code(sctlr_b)) {
-+    if (arm_cpu_code_is_big_endian(env)) {
- #if TARGET_BIG_ENDIAN
-         info->endian = BFD_ENDIAN_LITTLE;
- #else
-@@ -1204,7 +1202,7 @@ static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
-     }
-     info->flags &= ~INSN_ARM_BE32;
- #ifndef CONFIG_USER_ONLY
--    if (sctlr_b) {
-+    if (arm_sctlr_b(env)) {
-         info->flags |= INSN_ARM_BE32;
-     }
- #endif
+-    arm_write_bootloader("smpboot", as, info->smp_loader_start,
++    arm_write_bootloader("smpboot", cpu, info, info->smp_loader_start,
+                          smpboot, fixupcontext);
+ }
+ 
+@@ -1128,7 +1129,7 @@ static void arm_setup_direct_kernel_boot(ARMCPU *cpu,
+         fixupcontext[FIXUP_ENTRYPOINT_LO] = entry;
+         fixupcontext[FIXUP_ENTRYPOINT_HI] = entry >> 32;
+ 
+-        arm_write_bootloader("bootloader", as, info->loader_start,
++        arm_write_bootloader("bootloader", cpu, info, info->loader_start,
+                              primary_loader, fixupcontext);
+ 
+         if (info->write_board_setup) {
+diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
+index a7a662f40d..84fffe2a02 100644
+--- a/hw/arm/raspi.c
++++ b/hw/arm/raspi.c
+@@ -137,7 +137,7 @@ static void write_smpboot(ARMCPU *cpu, const struct arm_boot_info *info)
+     QEMU_BUILD_BUG_ON((BOARDSETUP_ADDR & 0xf) != 0
+                       || (BOARDSETUP_ADDR >> 4) >= 0x100);
+ 
+-    arm_write_bootloader("raspi_smpboot", arm_boot_address_space(cpu, info),
++    arm_write_bootloader("raspi_smpboot", cpu, info,
+                          info->smp_loader_start, smpboot, fixupcontext);
+ }
+ 
+@@ -172,7 +172,7 @@ static void write_smpboot64(ARMCPU *cpu, const struct arm_boot_info *info)
+         0, 0, 0, 0
+     };
+ 
+-    arm_write_bootloader("raspi_smpboot", as, info->smp_loader_start,
++    arm_write_bootloader("raspi_smpboot", cpu, info, info->smp_loader_start,
+                          smpboot, fixupcontext);
+     rom_add_blob_fixed_as("raspi_spintables", spintables, sizeof(spintables),
+                           SPINTABLE_ADDR, as);
 -- 
 2.45.2
 
