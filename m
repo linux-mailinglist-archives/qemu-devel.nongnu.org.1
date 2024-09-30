@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE6B98AFC4
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 00:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97CDD98B09E
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 01:06:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svOjn-0005Ky-SH; Mon, 30 Sep 2024 18:19:27 -0400
+	id 1svPRg-00057I-Jv; Mon, 30 Sep 2024 19:04:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svOji-00056g-TV
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 18:19:24 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1svPRd-00056n-UE
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 19:04:45 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svOjf-0003P6-RC
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 18:19:22 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a8d446adf6eso839472666b.2
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 15:19:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1svPRc-000082-03
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 19:04:45 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-7198cb6bb02so3568901b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 16:04:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727734758; x=1728339558; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tv2jZnZjCbdt84MPax+EcsJ9zOY57sXyrwaIyw3HRws=;
- b=tvTwCNsMasqGfGqFhrzQo1XfGN9cUgxadrr7E9/AIM3wqog6fXjWVMEGCi8RuZogDD
- Us8NgG78LWA1+2BAwWUXnsCNX3R3fR5nTuMCgJ5yJgU499CIRKoS27p8lXKxitN2tjpu
- k7Mf3VskVGSGOsiuw/+GldRiws9soujGE2YJPaflTRyvu+MQQQp5gZ0AIWU7UndyFE3L
- ewVXIl771KIv4Bf8SyazXISTPCNj/x6NHxVdDem9P6KDV9v4pkpQtHdV+g50kz4Iw7M5
- ij3wIFi0xh7sq3HTijidMAVCWCZlDw3PT+yoH+6/5f0ur7nvWh4pStwvINVXihqdCyr3
- 86hw==
+ d=ventanamicro.com; s=google; t=1727737482; x=1728342282; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lhPtAn0FNIgR8zD7aBydQZI2nciEOVwJhYhwxleCpSM=;
+ b=AdtutiuO9xoISY0qKfwhVsgK3YX3cBc4Q2Zvrn1N3UdJQczlqOjk2yisTNhB2MlK5c
+ 3peOcBhNFw3GH0H4o8810Sr2EicvnEL1sp8ijpYeZdyOAu8LTK43Niojx3jraSOFgV7d
+ /5Z10buvwCamjw5DuL4oFi5/HvyhOPswof+XGCApAJIG49lJugoK92qr4gT7tMoXAZLe
+ 4lGNR6nYYP5LNO6DWoWQcySlU1YEC7FklHpwwBvDXsH9Y+os7DjXFnucLwSDNwtJLW4Y
+ tFXbc/mUbkPloWql93+E0eZ/VPJr3SYlArLDkFND1L1U0/f7k6X4vwFiC5aDoPkcctax
+ vPFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727734758; x=1728339558;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tv2jZnZjCbdt84MPax+EcsJ9zOY57sXyrwaIyw3HRws=;
- b=iWJ6Rf85EkfNzuzQB/SqSLew/GoyVn4aXLpQW9DuieEEuleE9L+M0HLA826cDVjsXf
- zx28uddbPrluByBgMXkALwINsG+1RZNDtp0ahq3zIs+mLXxGsLh63xkN67qXIrPXLh6N
- DirE6QuULujr/Z5T+IUmzMuL4dpKaHgiRK0hHezOdEusVyQr18lJ4m0d2+/aSAq7NhC6
- czkRFfPIp/FyBMGURKvOriLRSAv/Gkb4nbN/qp0Y3HG3Csaxq1uEl/X+IfIg4NzQDQLr
- G65w2iNwuo8JsBe4dIoGQw1gASMEsDjwIYpJvjmSoiyVKUKSkLgIPKYHv2Ku7jCyoBXt
- TtYg==
-X-Gm-Message-State: AOJu0YziE5mQP/vOegRlPO0YZ2eql2cAQsczzJHF02+IBirXupoeGb+v
- kZXfZnniw5QD3yVVGoqX7pGbDICRbZylnSvhXcG/iEPUzKsITbm0ScdGCXDsnh/7Ga7M7KNViLs
- KTSQ=
-X-Google-Smtp-Source: AGHT+IFgptAQHamlNG5ZjPg1lh4Ew1icU7YGlSdzipE6lGBbFDYm+R2avO0pq5boi4/4K9G5+sUfNw==
-X-Received: by 2002:a17:906:4788:b0:a86:789f:c756 with SMTP id
- a640c23a62f3a-a93c4aa461cmr1512175266b.53.1727734757719; 
- Mon, 30 Sep 2024 15:19:17 -0700 (PDT)
-Received: from localhost.localdomain (46.170.88.92.rev.sfr.net. [92.88.170.46])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a93c2947e3esm593668566b.111.2024.09.30.15.19.16
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Sep 2024 15:19:17 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Zhao Liu <zhao1.liu@intel.com>, Thomas Huth <thuth@redhat.com>,
- Anton Johansson <anjo@rev.ng>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH 2/2] hw/core/machine: Extract compat properties to
- machine-compat.c
-Date: Tue,  1 Oct 2024 00:19:00 +0200
-Message-ID: <20240930221900.59525-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240930221900.59525-1-philmd@linaro.org>
-References: <20240930221900.59525-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1727737482; x=1728342282;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lhPtAn0FNIgR8zD7aBydQZI2nciEOVwJhYhwxleCpSM=;
+ b=cIU1mtgKjuFFNxunkXukLTPgCM2QKL37ICkyoJY9hcs8KDfBJ/LITycRW4JGsC8TpD
+ oTg1VVv/Knr61xAj5JvP8eOSK80t0bMULc3q3AGrYXEOj1E93GgcrUXDjfCDyiqJmQ1V
+ VjCLssalEvTKPPVsYYdl1zrUE1bIz/UZ2F5PjGZS0Sdt6v421phnuyS/ajJCww9uUd3K
+ E38U5V/7URLbnC7RnPTMFaHIybbEJpjedZ+t1OgcZv1u30FDMLAXsgUaOrID/65mTC7m
+ rh+L9H64gJDxdIfIB4DYUCOZfS1g9ekdbYVEsksIoS5zIV4cOdDDz1gNewkEp+Xr5j9M
+ dSLA==
+X-Gm-Message-State: AOJu0Yxp+LbJ+BsySQfA8c6Q4p4JuzjuDktJgNenSGuJx++V6RAJzSDg
+ V8+SUaHbJlz+i7l0cv1ZdjjOZCDtb5/Iy5ZOTG4k5kPtmW53zTAcY7/b1nGcLjo=
+X-Google-Smtp-Source: AGHT+IGgK4tkIUyAtsqOC3hXi9OR10OvZWowuB67XE7pRB5gSYLCug3DUy0yqqw3gjT4zXa0pFKohA==
+X-Received: by 2002:a05:6a00:3d09:b0:717:9897:1405 with SMTP id
+ d2e1a72fcca58-71b2605d8c8mr22189840b3a.17.1727737481532; 
+ Mon, 30 Sep 2024 16:04:41 -0700 (PDT)
+Received: from [192.168.68.110] (200-206-229-93.dsl.telesp.net.br.
+ [200.206.229.93]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71b26515dbcsm6743994b3a.138.2024.09.30.16.04.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 30 Sep 2024 16:04:41 -0700 (PDT)
+Message-ID: <25d74ba0-d13a-4a13-be03-d57f53dd1bce@ventanamicro.com>
+Date: Mon, 30 Sep 2024 20:04:38 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL v2 00/47] riscv-to-apply queue
+To: Ilya Leoshkevich <iii@linux.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
+References: <20240924221751.2688389-1-alistair.francis@wdc.com>
+ <CAFEAcA9Sb-fpNhm-6DPwss5zMpw=nEp31Wt6q1OA6DqCg3wKEg@mail.gmail.com>
+ <13ee9889-b503-45ea-a074-ffafbd052c4e@ventanamicro.com>
+ <4e3ab59f55937b846fc214f3c3ca3e15c4afb19c.camel@linux.ibm.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <4e3ab59f55937b846fc214f3c3ca3e15c4afb19c.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ URI_DOTEDU=1.999 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,630 +98,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract machine compat properties to machine-compat.c.
-Add the unit to the meson specific_ss[] source set so
-we can use target specific (poisoned) definitions.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- MAINTAINERS              |   1 +
- hw/core/machine-compat.c | 287 +++++++++++++++++++++++++++++++++++++++
- hw/core/machine.c        | 277 -------------------------------------
- hw/core/meson.build      |   3 +
- 4 files changed, 291 insertions(+), 277 deletions(-)
- create mode 100644 hw/core/machine-compat.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 62f5255f40..b89e2dae9e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1886,6 +1886,7 @@ F: hw/core/cpu-common.c
- F: hw/core/cpu-sysemu.c
- F: hw/core/machine-qmp-cmds.c
- F: hw/core/machine.c
-+F: hw/core/machine-compat.c
- F: hw/core/machine-smp.c
- F: hw/core/null-machine.c
- F: hw/core/numa.c
-diff --git a/hw/core/machine-compat.c b/hw/core/machine-compat.c
-new file mode 100644
-index 0000000000..6bed588ec1
---- /dev/null
-+++ b/hw/core/machine-compat.c
-@@ -0,0 +1,287 @@
-+/*
-+ * QEMU Machine compatibility properties
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/qdev-core.h"
-+#include "hw/pci/pci_bridge.h"
-+#include "hw/virtio/virtio-pci.h"
-+#include "hw/virtio/virtio-net.h"
-+#include "hw/virtio/virtio-iommu.h"
-+
-+GlobalProperty hw_compat_9_1[] = {
-+};
-+const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
-+
-+GlobalProperty hw_compat_9_0[] = {
-+    { "arm-cpu", "backcompat-cntfrq", "true" },
-+    { "scsi-hd", "migrate-emulated-scsi-request", "false" },
-+    { "scsi-cd", "migrate-emulated-scsi-request", "false" },
-+    { "vfio-pci", "skip-vsc-check", "false" },
-+    { "virtio-pci", "x-pcie-pm-no-soft-reset", "off" },
-+    { "sd-card", "spec_version", "2" },
-+};
-+const size_t hw_compat_9_0_len = G_N_ELEMENTS(hw_compat_9_0);
-+
-+GlobalProperty hw_compat_8_2[] = {
-+    { "migration", "zero-page-detection", "legacy"},
-+    { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
-+    { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
-+    { "virtio-gpu-device", "x-scanout-vmstate-version", "1" },
-+};
-+const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
-+
-+GlobalProperty hw_compat_8_1[] = {
-+    { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
-+    { "ramfb", "x-migrate", "off" },
-+    { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" },
-+    { "igb", "x-pcie-flr-init", "off" },
-+    { TYPE_VIRTIO_NET, "host_uso", "off"},
-+    { TYPE_VIRTIO_NET, "guest_uso4", "off"},
-+    { TYPE_VIRTIO_NET, "guest_uso6", "off"},
-+};
-+const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
-+
-+GlobalProperty hw_compat_8_0[] = {
-+    { "migration", "multifd-flush-after-each-section", "on"},
-+    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
-+};
-+const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
-+
-+GlobalProperty hw_compat_7_2[] = {
-+    { "e1000e", "migrate-timadj", "off" },
-+    { "virtio-mem", "x-early-migration", "false" },
-+    { "migration", "x-preempt-pre-7-2", "true" },
-+    { TYPE_PCI_DEVICE, "x-pcie-err-unc-mask", "off" },
-+};
-+const size_t hw_compat_7_2_len = G_N_ELEMENTS(hw_compat_7_2);
-+
-+GlobalProperty hw_compat_7_1[] = {
-+    { "virtio-device", "queue_reset", "false" },
-+    { "virtio-rng-pci", "vectors", "0" },
-+    { "virtio-rng-pci-transitional", "vectors", "0" },
-+    { "virtio-rng-pci-non-transitional", "vectors", "0" },
-+};
-+const size_t hw_compat_7_1_len = G_N_ELEMENTS(hw_compat_7_1);
-+
-+GlobalProperty hw_compat_7_0[] = {
-+    { "arm-gicv3-common", "force-8-bit-prio", "on" },
-+    { "nvme-ns", "eui64-default", "on"},
-+};
-+const size_t hw_compat_7_0_len = G_N_ELEMENTS(hw_compat_7_0);
-+
-+GlobalProperty hw_compat_6_2[] = {
-+    { "PIIX4_PM", "x-not-migrate-acpi-index", "on"},
-+};
-+const size_t hw_compat_6_2_len = G_N_ELEMENTS(hw_compat_6_2);
-+
-+GlobalProperty hw_compat_6_1[] = {
-+    { "vhost-user-vsock-device", "seqpacket", "off" },
-+    { "nvme-ns", "shared", "off" },
-+};
-+const size_t hw_compat_6_1_len = G_N_ELEMENTS(hw_compat_6_1);
-+
-+GlobalProperty hw_compat_6_0[] = {
-+    { "gpex-pcihost", "allow-unmapped-accesses", "false" },
-+    { "i8042", "extended-state", "false"},
-+    { "nvme-ns", "eui64-default", "off"},
-+    { "e1000", "init-vet", "off" },
-+    { "e1000e", "init-vet", "off" },
-+    { "vhost-vsock-device", "seqpacket", "off" },
-+};
-+const size_t hw_compat_6_0_len = G_N_ELEMENTS(hw_compat_6_0);
-+
-+GlobalProperty hw_compat_5_2[] = {
-+    { "ICH9-LPC", "smm-compat", "on"},
-+    { "PIIX4_PM", "smm-compat", "on"},
-+    { "virtio-blk-device", "report-discard-granularity", "off" },
-+    { "virtio-net-pci-base", "vectors", "3"},
-+    { "nvme", "msix-exclusive-bar", "on"},
-+};
-+const size_t hw_compat_5_2_len = G_N_ELEMENTS(hw_compat_5_2);
-+
-+GlobalProperty hw_compat_5_1[] = {
-+    { "vhost-scsi", "num_queues", "1"},
-+    { "vhost-user-blk", "num-queues", "1"},
-+    { "vhost-user-scsi", "num_queues", "1"},
-+    { "virtio-blk-device", "num-queues", "1"},
-+    { "virtio-scsi-device", "num_queues", "1"},
-+    { "nvme", "use-intel-id", "on"},
-+    { "pvpanic", "events", "1"}, /* PVPANIC_PANICKED */
-+    { "pl011", "migrate-clk", "off" },
-+    { "virtio-pci", "x-ats-page-aligned", "off"},
-+};
-+const size_t hw_compat_5_1_len = G_N_ELEMENTS(hw_compat_5_1);
-+
-+GlobalProperty hw_compat_5_0[] = {
-+    { "pci-host-bridge", "x-config-reg-migration-enabled", "off" },
-+    { "virtio-balloon-device", "page-poison", "false" },
-+    { "vmport", "x-read-set-eax", "off" },
-+    { "vmport", "x-signal-unsupported-cmd", "off" },
-+    { "vmport", "x-report-vmx-type", "off" },
-+    { "vmport", "x-cmds-v2", "off" },
-+    { "virtio-device", "x-disable-legacy-check", "true" },
-+};
-+const size_t hw_compat_5_0_len = G_N_ELEMENTS(hw_compat_5_0);
-+
-+GlobalProperty hw_compat_4_2[] = {
-+    { "virtio-blk-device", "queue-size", "128"},
-+    { "virtio-scsi-device", "virtqueue_size", "128"},
-+    { "virtio-blk-device", "x-enable-wce-if-config-wce", "off" },
-+    { "virtio-blk-device", "seg-max-adjust", "off"},
-+    { "virtio-scsi-device", "seg_max_adjust", "off"},
-+    { "vhost-blk-device", "seg_max_adjust", "off"},
-+    { "usb-host", "suppress-remote-wake", "off" },
-+    { "usb-redir", "suppress-remote-wake", "off" },
-+    { "qxl", "revision", "4" },
-+    { "qxl-vga", "revision", "4" },
-+    { "fw_cfg", "acpi-mr-restore", "false" },
-+    { "virtio-device", "use-disabled-flag", "false" },
-+};
-+const size_t hw_compat_4_2_len = G_N_ELEMENTS(hw_compat_4_2);
-+
-+GlobalProperty hw_compat_4_1[] = {
-+    { "virtio-pci", "x-pcie-flr-init", "off" },
-+};
-+const size_t hw_compat_4_1_len = G_N_ELEMENTS(hw_compat_4_1);
-+
-+GlobalProperty hw_compat_4_0[] = {
-+    { "VGA",            "edid", "false" },
-+    { "secondary-vga",  "edid", "false" },
-+    { "bochs-display",  "edid", "false" },
-+    { "virtio-vga",     "edid", "false" },
-+    { "virtio-gpu-device", "edid", "false" },
-+    { "virtio-device", "use-started", "false" },
-+    { "virtio-balloon-device", "qemu-4-0-config-size", "true" },
-+    { "pl031", "migrate-tick-offset", "false" },
-+};
-+const size_t hw_compat_4_0_len = G_N_ELEMENTS(hw_compat_4_0);
-+
-+GlobalProperty hw_compat_3_1[] = {
-+    { "pcie-root-port", "x-speed", "2_5" },
-+    { "pcie-root-port", "x-width", "1" },
-+    { "memory-backend-file", "x-use-canonical-path-for-ramblock-id", "true" },
-+    { "memory-backend-memfd", "x-use-canonical-path-for-ramblock-id", "true" },
-+    { "tpm-crb", "ppi", "false" },
-+    { "tpm-tis", "ppi", "false" },
-+    { "usb-kbd", "serial", "42" },
-+    { "usb-mouse", "serial", "42" },
-+    { "usb-tablet", "serial", "42" },
-+    { "virtio-blk-device", "discard", "false" },
-+    { "virtio-blk-device", "write-zeroes", "false" },
-+    { "virtio-balloon-device", "qemu-4-0-config-size", "false" },
-+    { "pcie-root-port-base", "disable-acs", "true" }, /* Added in 4.1 */
-+};
-+const size_t hw_compat_3_1_len = G_N_ELEMENTS(hw_compat_3_1);
-+
-+GlobalProperty hw_compat_3_0[] = {};
-+const size_t hw_compat_3_0_len = G_N_ELEMENTS(hw_compat_3_0);
-+
-+GlobalProperty hw_compat_2_12[] = {
-+    { "hda-audio", "use-timer", "false" },
-+    { "cirrus-vga", "global-vmstate", "true" },
-+    { "VGA", "global-vmstate", "true" },
-+    { "vmware-svga", "global-vmstate", "true" },
-+    { "qxl-vga", "global-vmstate", "true" },
-+};
-+const size_t hw_compat_2_12_len = G_N_ELEMENTS(hw_compat_2_12);
-+
-+GlobalProperty hw_compat_2_11[] = {
-+    { "hpet", "hpet-offset-saved", "false" },
-+    { "virtio-blk-pci", "vectors", "2" },
-+    { "vhost-user-blk-pci", "vectors", "2" },
-+    { "e1000", "migrate_tso_props", "off" },
-+};
-+const size_t hw_compat_2_11_len = G_N_ELEMENTS(hw_compat_2_11);
-+
-+GlobalProperty hw_compat_2_10[] = {
-+    { "virtio-mouse-device", "wheel-axis", "false" },
-+    { "virtio-tablet-device", "wheel-axis", "false" },
-+};
-+const size_t hw_compat_2_10_len = G_N_ELEMENTS(hw_compat_2_10);
-+
-+GlobalProperty hw_compat_2_9[] = {
-+    { "pci-bridge", "shpc", "off" },
-+    { "intel-iommu", "pt", "off" },
-+    { "virtio-net-device", "x-mtu-bypass-backend", "off" },
-+    { "pcie-root-port", "x-migrate-msix", "false" },
-+};
-+const size_t hw_compat_2_9_len = G_N_ELEMENTS(hw_compat_2_9);
-+
-+GlobalProperty hw_compat_2_8[] = {
-+    { "fw_cfg_mem", "x-file-slots", "0x10" },
-+    { "fw_cfg_io", "x-file-slots", "0x10" },
-+    { "pflash_cfi01", "old-multiple-chip-handling", "on" },
-+    { "pci-bridge", "shpc", "on" },
-+    { TYPE_PCI_DEVICE, "x-pcie-extcap-init", "off" },
-+    { "virtio-pci", "x-pcie-deverr-init", "off" },
-+    { "virtio-pci", "x-pcie-lnkctl-init", "off" },
-+    { "virtio-pci", "x-pcie-pm-init", "off" },
-+    { "cirrus-vga", "vgamem_mb", "8" },
-+    { "isa-cirrus-vga", "vgamem_mb", "8" },
-+};
-+const size_t hw_compat_2_8_len = G_N_ELEMENTS(hw_compat_2_8);
-+
-+GlobalProperty hw_compat_2_7[] = {
-+    { "virtio-pci", "page-per-vq", "on" },
-+    { "virtio-serial-device", "emergency-write", "off" },
-+    { "ioapic", "version", "0x11" },
-+    { "intel-iommu", "x-buggy-eim", "true" },
-+    { "virtio-pci", "x-ignore-backend-features", "on" },
-+};
-+const size_t hw_compat_2_7_len = G_N_ELEMENTS(hw_compat_2_7);
-+
-+GlobalProperty hw_compat_2_6[] = {
-+    { "virtio-mmio", "format_transport_address", "off" },
-+    /* Optional because not all virtio-pci devices support legacy mode */
-+    { "virtio-pci", "disable-modern", "on",  .optional = true },
-+    { "virtio-pci", "disable-legacy", "off", .optional = true },
-+};
-+const size_t hw_compat_2_6_len = G_N_ELEMENTS(hw_compat_2_6);
-+
-+GlobalProperty hw_compat_2_5[] = {
-+    { "isa-fdc", "fallback", "144" },
-+    { "pvscsi", "x-old-pci-configuration", "on" },
-+    { "pvscsi", "x-disable-pcie", "on" },
-+    { "vmxnet3", "x-old-msi-offsets", "on" },
-+    { "vmxnet3", "x-disable-pcie", "on" },
-+};
-+const size_t hw_compat_2_5_len = G_N_ELEMENTS(hw_compat_2_5);
-+
-+GlobalProperty hw_compat_2_4[] = {
-+    { "e1000", "extra_mac_registers", "off" },
-+    { "virtio-pci", "x-disable-pcie", "on" },
-+    { "virtio-pci", "migrate-extra", "off" },
-+    { "fw_cfg_mem", "dma_enabled", "off" },
-+    { "fw_cfg_io", "dma_enabled", "off" }
-+};
-+const size_t hw_compat_2_4_len = G_N_ELEMENTS(hw_compat_2_4);
-+
-+GlobalProperty hw_compat_2_3[] = {
-+    { "virtio-blk-pci", "any_layout", "off" },
-+    { "virtio-balloon-pci", "any_layout", "off" },
-+    { "virtio-serial-pci", "any_layout", "off" },
-+    { "virtio-9p-pci", "any_layout", "off" },
-+    { "virtio-rng-pci", "any_layout", "off" },
-+    { TYPE_PCI_DEVICE, "x-pcie-lnksta-dllla", "off" },
-+    { "migration", "send-configuration", "off" },
-+    { "migration", "send-section-footer", "off" },
-+    { "migration", "store-global-state", "off" },
-+};
-+const size_t hw_compat_2_3_len = G_N_ELEMENTS(hw_compat_2_3);
-+
-+GlobalProperty hw_compat_2_2[] = {};
-+const size_t hw_compat_2_2_len = G_N_ELEMENTS(hw_compat_2_2);
-+
-+GlobalProperty hw_compat_2_1[] = {
-+    { "intel-hda", "old_msi_addr", "on" },
-+    { "VGA", "qemu-extended-regs", "off" },
-+    { "secondary-vga", "qemu-extended-regs", "off" },
-+    { "virtio-scsi-pci", "any_layout", "off" },
-+    { "usb-mouse", "usb_version", "1" },
-+    { "usb-kbd", "usb_version", "1" },
-+    { "virtio-pci", "virtio-pci-bus-master-bug-migration", "on" },
-+};
-+const size_t hw_compat_2_1_len = G_N_ELEMENTS(hw_compat_2_1);
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 94d3b11a53..31463cc8ec 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -27,289 +27,12 @@
- #include "sysemu/runstate.h"
- #include "sysemu/xen.h"
- #include "sysemu/qtest.h"
--#include "hw/pci/pci_bridge.h"
- #include "hw/mem/nvdimm.h"
- #include "migration/global_state.h"
- #include "exec/confidential-guest-support.h"
- #include "hw/virtio/virtio-pci.h"
--#include "hw/virtio/virtio-net.h"
--#include "hw/virtio/virtio-iommu.h"
- #include "audio/audio.h"
- 
--GlobalProperty hw_compat_9_1[] = {};
--const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
--
--GlobalProperty hw_compat_9_0[] = {
--    {"arm-cpu", "backcompat-cntfrq", "true" },
--    { "scsi-hd", "migrate-emulated-scsi-request", "false" },
--    { "scsi-cd", "migrate-emulated-scsi-request", "false" },
--    {"vfio-pci", "skip-vsc-check", "false" },
--    { "virtio-pci", "x-pcie-pm-no-soft-reset", "off" },
--    {"sd-card", "spec_version", "2" },
--};
--const size_t hw_compat_9_0_len = G_N_ELEMENTS(hw_compat_9_0);
--
--GlobalProperty hw_compat_8_2[] = {
--    { "migration", "zero-page-detection", "legacy"},
--    { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
--    { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
--    { "virtio-gpu-device", "x-scanout-vmstate-version", "1" },
--};
--const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
--
--GlobalProperty hw_compat_8_1[] = {
--    { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
--    { "ramfb", "x-migrate", "off" },
--    { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" },
--    { "igb", "x-pcie-flr-init", "off" },
--    { TYPE_VIRTIO_NET, "host_uso", "off"},
--    { TYPE_VIRTIO_NET, "guest_uso4", "off"},
--    { TYPE_VIRTIO_NET, "guest_uso6", "off"},
--};
--const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
--
--GlobalProperty hw_compat_8_0[] = {
--    { "migration", "multifd-flush-after-each-section", "on"},
--    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
--};
--const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
--
--GlobalProperty hw_compat_7_2[] = {
--    { "e1000e", "migrate-timadj", "off" },
--    { "virtio-mem", "x-early-migration", "false" },
--    { "migration", "x-preempt-pre-7-2", "true" },
--    { TYPE_PCI_DEVICE, "x-pcie-err-unc-mask", "off" },
--};
--const size_t hw_compat_7_2_len = G_N_ELEMENTS(hw_compat_7_2);
--
--GlobalProperty hw_compat_7_1[] = {
--    { "virtio-device", "queue_reset", "false" },
--    { "virtio-rng-pci", "vectors", "0" },
--    { "virtio-rng-pci-transitional", "vectors", "0" },
--    { "virtio-rng-pci-non-transitional", "vectors", "0" },
--};
--const size_t hw_compat_7_1_len = G_N_ELEMENTS(hw_compat_7_1);
--
--GlobalProperty hw_compat_7_0[] = {
--    { "arm-gicv3-common", "force-8-bit-prio", "on" },
--    { "nvme-ns", "eui64-default", "on"},
--};
--const size_t hw_compat_7_0_len = G_N_ELEMENTS(hw_compat_7_0);
--
--GlobalProperty hw_compat_6_2[] = {
--    { "PIIX4_PM", "x-not-migrate-acpi-index", "on"},
--};
--const size_t hw_compat_6_2_len = G_N_ELEMENTS(hw_compat_6_2);
--
--GlobalProperty hw_compat_6_1[] = {
--    { "vhost-user-vsock-device", "seqpacket", "off" },
--    { "nvme-ns", "shared", "off" },
--};
--const size_t hw_compat_6_1_len = G_N_ELEMENTS(hw_compat_6_1);
--
--GlobalProperty hw_compat_6_0[] = {
--    { "gpex-pcihost", "allow-unmapped-accesses", "false" },
--    { "i8042", "extended-state", "false"},
--    { "nvme-ns", "eui64-default", "off"},
--    { "e1000", "init-vet", "off" },
--    { "e1000e", "init-vet", "off" },
--    { "vhost-vsock-device", "seqpacket", "off" },
--};
--const size_t hw_compat_6_0_len = G_N_ELEMENTS(hw_compat_6_0);
--
--GlobalProperty hw_compat_5_2[] = {
--    { "ICH9-LPC", "smm-compat", "on"},
--    { "PIIX4_PM", "smm-compat", "on"},
--    { "virtio-blk-device", "report-discard-granularity", "off" },
--    { "virtio-net-pci-base", "vectors", "3"},
--    { "nvme", "msix-exclusive-bar", "on"},
--};
--const size_t hw_compat_5_2_len = G_N_ELEMENTS(hw_compat_5_2);
--
--GlobalProperty hw_compat_5_1[] = {
--    { "vhost-scsi", "num_queues", "1"},
--    { "vhost-user-blk", "num-queues", "1"},
--    { "vhost-user-scsi", "num_queues", "1"},
--    { "virtio-blk-device", "num-queues", "1"},
--    { "virtio-scsi-device", "num_queues", "1"},
--    { "nvme", "use-intel-id", "on"},
--    { "pvpanic", "events", "1"}, /* PVPANIC_PANICKED */
--    { "pl011", "migrate-clk", "off" },
--    { "virtio-pci", "x-ats-page-aligned", "off"},
--};
--const size_t hw_compat_5_1_len = G_N_ELEMENTS(hw_compat_5_1);
--
--GlobalProperty hw_compat_5_0[] = {
--    { "pci-host-bridge", "x-config-reg-migration-enabled", "off" },
--    { "virtio-balloon-device", "page-poison", "false" },
--    { "vmport", "x-read-set-eax", "off" },
--    { "vmport", "x-signal-unsupported-cmd", "off" },
--    { "vmport", "x-report-vmx-type", "off" },
--    { "vmport", "x-cmds-v2", "off" },
--    { "virtio-device", "x-disable-legacy-check", "true" },
--};
--const size_t hw_compat_5_0_len = G_N_ELEMENTS(hw_compat_5_0);
--
--GlobalProperty hw_compat_4_2[] = {
--    { "virtio-blk-device", "queue-size", "128"},
--    { "virtio-scsi-device", "virtqueue_size", "128"},
--    { "virtio-blk-device", "x-enable-wce-if-config-wce", "off" },
--    { "virtio-blk-device", "seg-max-adjust", "off"},
--    { "virtio-scsi-device", "seg_max_adjust", "off"},
--    { "vhost-blk-device", "seg_max_adjust", "off"},
--    { "usb-host", "suppress-remote-wake", "off" },
--    { "usb-redir", "suppress-remote-wake", "off" },
--    { "qxl", "revision", "4" },
--    { "qxl-vga", "revision", "4" },
--    { "fw_cfg", "acpi-mr-restore", "false" },
--    { "virtio-device", "use-disabled-flag", "false" },
--};
--const size_t hw_compat_4_2_len = G_N_ELEMENTS(hw_compat_4_2);
--
--GlobalProperty hw_compat_4_1[] = {
--    { "virtio-pci", "x-pcie-flr-init", "off" },
--};
--const size_t hw_compat_4_1_len = G_N_ELEMENTS(hw_compat_4_1);
--
--GlobalProperty hw_compat_4_0[] = {
--    { "VGA",            "edid", "false" },
--    { "secondary-vga",  "edid", "false" },
--    { "bochs-display",  "edid", "false" },
--    { "virtio-vga",     "edid", "false" },
--    { "virtio-gpu-device", "edid", "false" },
--    { "virtio-device", "use-started", "false" },
--    { "virtio-balloon-device", "qemu-4-0-config-size", "true" },
--    { "pl031", "migrate-tick-offset", "false" },
--};
--const size_t hw_compat_4_0_len = G_N_ELEMENTS(hw_compat_4_0);
--
--GlobalProperty hw_compat_3_1[] = {
--    { "pcie-root-port", "x-speed", "2_5" },
--    { "pcie-root-port", "x-width", "1" },
--    { "memory-backend-file", "x-use-canonical-path-for-ramblock-id", "true" },
--    { "memory-backend-memfd", "x-use-canonical-path-for-ramblock-id", "true" },
--    { "tpm-crb", "ppi", "false" },
--    { "tpm-tis", "ppi", "false" },
--    { "usb-kbd", "serial", "42" },
--    { "usb-mouse", "serial", "42" },
--    { "usb-tablet", "serial", "42" },
--    { "virtio-blk-device", "discard", "false" },
--    { "virtio-blk-device", "write-zeroes", "false" },
--    { "virtio-balloon-device", "qemu-4-0-config-size", "false" },
--    { "pcie-root-port-base", "disable-acs", "true" }, /* Added in 4.1 */
--};
--const size_t hw_compat_3_1_len = G_N_ELEMENTS(hw_compat_3_1);
--
--GlobalProperty hw_compat_3_0[] = {};
--const size_t hw_compat_3_0_len = G_N_ELEMENTS(hw_compat_3_0);
--
--GlobalProperty hw_compat_2_12[] = {
--    { "hda-audio", "use-timer", "false" },
--    { "cirrus-vga", "global-vmstate", "true" },
--    { "VGA", "global-vmstate", "true" },
--    { "vmware-svga", "global-vmstate", "true" },
--    { "qxl-vga", "global-vmstate", "true" },
--};
--const size_t hw_compat_2_12_len = G_N_ELEMENTS(hw_compat_2_12);
--
--GlobalProperty hw_compat_2_11[] = {
--    { "hpet", "hpet-offset-saved", "false" },
--    { "virtio-blk-pci", "vectors", "2" },
--    { "vhost-user-blk-pci", "vectors", "2" },
--    { "e1000", "migrate_tso_props", "off" },
--};
--const size_t hw_compat_2_11_len = G_N_ELEMENTS(hw_compat_2_11);
--
--GlobalProperty hw_compat_2_10[] = {
--    { "virtio-mouse-device", "wheel-axis", "false" },
--    { "virtio-tablet-device", "wheel-axis", "false" },
--};
--const size_t hw_compat_2_10_len = G_N_ELEMENTS(hw_compat_2_10);
--
--GlobalProperty hw_compat_2_9[] = {
--    { "pci-bridge", "shpc", "off" },
--    { "intel-iommu", "pt", "off" },
--    { "virtio-net-device", "x-mtu-bypass-backend", "off" },
--    { "pcie-root-port", "x-migrate-msix", "false" },
--};
--const size_t hw_compat_2_9_len = G_N_ELEMENTS(hw_compat_2_9);
--
--GlobalProperty hw_compat_2_8[] = {
--    { "fw_cfg_mem", "x-file-slots", "0x10" },
--    { "fw_cfg_io", "x-file-slots", "0x10" },
--    { "pflash_cfi01", "old-multiple-chip-handling", "on" },
--    { "pci-bridge", "shpc", "on" },
--    { TYPE_PCI_DEVICE, "x-pcie-extcap-init", "off" },
--    { "virtio-pci", "x-pcie-deverr-init", "off" },
--    { "virtio-pci", "x-pcie-lnkctl-init", "off" },
--    { "virtio-pci", "x-pcie-pm-init", "off" },
--    { "cirrus-vga", "vgamem_mb", "8" },
--    { "isa-cirrus-vga", "vgamem_mb", "8" },
--};
--const size_t hw_compat_2_8_len = G_N_ELEMENTS(hw_compat_2_8);
--
--GlobalProperty hw_compat_2_7[] = {
--    { "virtio-pci", "page-per-vq", "on" },
--    { "virtio-serial-device", "emergency-write", "off" },
--    { "ioapic", "version", "0x11" },
--    { "intel-iommu", "x-buggy-eim", "true" },
--    { "virtio-pci", "x-ignore-backend-features", "on" },
--};
--const size_t hw_compat_2_7_len = G_N_ELEMENTS(hw_compat_2_7);
--
--GlobalProperty hw_compat_2_6[] = {
--    { "virtio-mmio", "format_transport_address", "off" },
--    /* Optional because not all virtio-pci devices support legacy mode */
--    { "virtio-pci", "disable-modern", "on",  .optional = true },
--    { "virtio-pci", "disable-legacy", "off", .optional = true },
--};
--const size_t hw_compat_2_6_len = G_N_ELEMENTS(hw_compat_2_6);
--
--GlobalProperty hw_compat_2_5[] = {
--    { "isa-fdc", "fallback", "144" },
--    { "pvscsi", "x-old-pci-configuration", "on" },
--    { "pvscsi", "x-disable-pcie", "on" },
--    { "vmxnet3", "x-old-msi-offsets", "on" },
--    { "vmxnet3", "x-disable-pcie", "on" },
--};
--const size_t hw_compat_2_5_len = G_N_ELEMENTS(hw_compat_2_5);
--
--GlobalProperty hw_compat_2_4[] = {
--    { "e1000", "extra_mac_registers", "off" },
--    { "virtio-pci", "x-disable-pcie", "on" },
--    { "virtio-pci", "migrate-extra", "off" },
--    { "fw_cfg_mem", "dma_enabled", "off" },
--    { "fw_cfg_io", "dma_enabled", "off" }
--};
--const size_t hw_compat_2_4_len = G_N_ELEMENTS(hw_compat_2_4);
--
--GlobalProperty hw_compat_2_3[] = {
--    { "virtio-blk-pci", "any_layout", "off" },
--    { "virtio-balloon-pci", "any_layout", "off" },
--    { "virtio-serial-pci", "any_layout", "off" },
--    { "virtio-9p-pci", "any_layout", "off" },
--    { "virtio-rng-pci", "any_layout", "off" },
--    { TYPE_PCI_DEVICE, "x-pcie-lnksta-dllla", "off" },
--    { "migration", "send-configuration", "off" },
--    { "migration", "send-section-footer", "off" },
--    { "migration", "store-global-state", "off" },
--};
--const size_t hw_compat_2_3_len = G_N_ELEMENTS(hw_compat_2_3);
--
--GlobalProperty hw_compat_2_2[] = {};
--const size_t hw_compat_2_2_len = G_N_ELEMENTS(hw_compat_2_2);
--
--GlobalProperty hw_compat_2_1[] = {
--    { "intel-hda", "old_msi_addr", "on" },
--    { "VGA", "qemu-extended-regs", "off" },
--    { "secondary-vga", "qemu-extended-regs", "off" },
--    { "virtio-scsi-pci", "any_layout", "off" },
--    { "usb-mouse", "usb_version", "1" },
--    { "usb-kbd", "usb_version", "1" },
--    { "virtio-pci", "virtio-pci-bus-master-bug-migration", "on" },
--};
--const size_t hw_compat_2_1_len = G_N_ELEMENTS(hw_compat_2_1);
--
- MachineState *current_machine;
- 
- static char *machine_get_kernel(Object *obj, Error **errp)
-diff --git a/hw/core/meson.build b/hw/core/meson.build
-index a3d9bab9f4..1087f4bfad 100644
---- a/hw/core/meson.build
-+++ b/hw/core/meson.build
-@@ -45,3 +45,6 @@ system_ss.add(files(
-   'vm-change-state-handler.c',
-   'clock-vmstate.c',
- ))
-+specific_ss.add(files(
-+  'machine-compat.c',
-+))
--- 
-2.45.2
+On 9/30/24 9:10 AM, Ilya Leoshkevich wrote:
+> On Sat, 2024-09-28 at 17:40 -0300, Daniel Henrique Barboza wrote:
+>>
+>>
+>> On 9/28/24 8:34 AM, Peter Maydell wrote:
+>>> On Tue, 24 Sept 2024 at 23:18, Alistair Francis
+>>> <alistair23@gmail.com> wrote:
+>>>>
+>>>> The following changes since commit
+>>>> 01dc65a3bc262ab1bec8fe89775e9bbfa627becb:
+>>>>
+>>>>     Merge tag 'pull-target-arm-20240919' of
+>>>> https://git.linaro.org/people/pmaydell/qemu-arm into staging
+>>>> (2024-09-19 14:15:15 +0100)
+>>>>
+>>>> are available in the Git repository at:
+>>>>
+>>>>     https://github.com/alistair23/qemu.git tags/pull-riscv-to-
+>>>> apply-20240925-1
+>>>>
+>>>> for you to fetch changes up to
+>>>> 6bfa92c5757fe7a9580e1f6e065076777cae650f:
+>>>>
+>>>>     bsd-user: Add RISC-V 64-bit Target Configuration and Debug XML
+>>>> Files (2024-09-24 12:53:16 +1000)
+>>>>
+>>>> ----------------------------------------------------------------
+>>>> RISC-V PR for 9.2
+>>>>
+>>>> * Add a property to set vl to ceil(AVL/2)
+>>>> * Enable numamem testing for RISC-V
+>>>> * Consider MISA bit choice in implied rule
+>>>> * Fix the za64rs priv spec requirements
+>>>> * Enable Bit Manip for OpenTitan Ibex CPU
+>>>> * Fix the group bit setting of AIA with KVM
+>>>> * Stop timer with infinite timecmp
+>>>> * Add 'fcsr' register to QEMU log as a part of F extension
+>>>> * Fix riscv64 build on musl libc
+>>>> * Add preliminary textra trigger CSR functions
+>>>> * RISC-V IOMMU support
+>>>> * RISC-V bsd-user support
+>>>> * Respect firmware ELF entry point
+>>>> * Add Svvptc extension support
+>>>> * Fix masking of rv32 physical address
+>>>> * Fix linking problem with semihosting disabled
+>>>> * Fix IMSIC interrupt state updates
+>>>>
+>>>
+>>> This fails the riscv qos-tests on s390x. My guess is that the new
+>>> IOMMU support has endianness bugs and fails on bigendian hosts.
+>>>
+>>> https://gitlab.com/qemu-project/qemu/-/jobs/7942189143
+>>>
+>>> full test log (4MB) at
+>>> https://qemu-project.gitlab.io/-/qemu/-/jobs/7942189143/artifacts/build/meson-logs/testlog.txt
+>>>
+>>> The assertion failure is
+>>> ERROR:../tests/qtest/riscv-iommu-test.c:72:test_reg_reset:
+>>> assertion
+>>> failed (cap & RISCV_IOMMU_CAP_VERSION == 0x10): (0 == 16)
+>>
+>> The root cause is that the qtests I added aren't considering the
+>> endianess of the
+>> host. The RISC-V IOMMU is being implemented as LE only and all regs
+>> are being
+>> read/written in memory as LE. The qtest read/write helpers must take
+>> the qtest
+>> endianess into account. We make this type of handling in other qtest
+>> archs like
+>> ppc64.
+>>
+>> I have a fix for the tests but I'm unable to run the ubuntu-22.04-
+>> s390x-all-system
+>> job to verify it, even after setting Cirrus like Thomas taught me a
+>> week ago. In
+>> fact I have no 'ubuntu-22-*' jobs available to run.
+>>
+>> If there's a way to run these ubuntu s390x tests, let me know.
+>> Otherwise I'm inclined
+>> to remove the IOMMU qtests for now until I'm able to verify that
+>> they'll work in a
+>> BE host (I'll install a BE VM to verify).
+> 
+> You can get a free s390x VM here:
+> 
+> https://linuxone.cloud.marist.edu/#/register?flag=VM
 
+Thanks! This was surprisingly easy to set up and run. Please send my best regards
+to the LinuxOne Community Cloud team.
+
+Peter, in fact there were some endianness problems in the code like you hinted
+before. I fixed them up and the tests are now (apparently) passing. I'll clean
+stuff up and see if I can send a new version of the whole series in the next
+few days.
+
+
+Thanks,
+
+Daniel
+
+> 
+> Best regards,
+> Ilya
+> 
+> [...]
 
