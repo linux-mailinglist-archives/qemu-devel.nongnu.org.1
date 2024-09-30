@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE98C989C27
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F22989C31
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:07:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svBMv-0003f4-PV; Mon, 30 Sep 2024 04:03:00 -0400
+	id 1svBQt-0002Gt-Eq; Mon, 30 Sep 2024 04:07:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svBMe-00035X-T6
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:02:42 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svBQq-00022k-T9
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:07:01 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svBMd-0003rQ-49
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:02:40 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2f75c56f16aso48037901fa.0
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 01:02:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svBQp-0004Zw-0r
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:07:00 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a8a7cdfdd80so675769966b.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 01:06:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727683356; x=1728288156; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727683616; x=1728288416; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yXipE1vCqUL/2GGIC/pfDOg0/7HE+1Efkqb3qV24aq0=;
- b=tx5YoGJWFUckrveB3VdNhtiMFf8LVpRUmQRun9jJ/lC67d8QYi4SMyMMbXBnljtpoj
- wkyN5usEcONB4tKJsCPpFy1CdBoBoONoZ0aZEmdrxNKBGskQWB0TtVJ3DKAXESyUpQMP
- h9s4KMYR5TtNb0MsYMpCKxhJwZ26hMokWHvFSeU31dYxC8REpQOr39Siiy+/DS1tzmwi
- Dr6+2Z7eDCJZSxl/wDviY5tM3bRno+IGXisK1nQLxJyvUlO7qvwxqHXV08VaCWdkED2b
- 4oNM+xmKYbPs9SnVIZtw2L1VinsJdC23dVvjA+mym0hShxbnDk2ywXG2diGM49+OVN2m
- iLEw==
+ bh=PDKmxhtETyeu/iYuY2neXJ4cpuVufAHpcFENKpKvuEg=;
+ b=xVF6KTM+0CFj485bBWdgFq0qOxYKOhacrjn1HJ2nJ1V/pVC4H8398JBBgo0SRDGs6S
+ vYw5ByKwjXvhdQOdFYlEQmritoE35GTfaHbBi4AIF8XCjn4sB6mjRHvuCNFDdhG/EZJz
+ bLHOykP+sbslfqLzENUZQtkyz61obuKx03/M7eI/xAIq0QPsWrox7wWOplULL2qHceZh
+ spFMGitNckIBz9EJUT5nTMHMYLyuJ9FQshMFlGtwaDAs3zriC1R++GTqHSJ5/1iNmCzT
+ J2dSJlhhA+STFeoELbwdbz48h9DFt4HFolZ5BH0T6tj3k7a261jOpD3RvS+qPZ7Tn30G
+ n0VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727683356; x=1728288156;
+ d=1e100.net; s=20230601; t=1727683616; x=1728288416;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yXipE1vCqUL/2GGIC/pfDOg0/7HE+1Efkqb3qV24aq0=;
- b=bqbv1owSjADILEY7McaMNYqeVYV0Qm6hf6IQuiJTh9dwiXzbZ6hBARlsKLg6MQT+FG
- b4lCpbqkp8udT2JOKnMeCNDBvRwRWbU2+zHOs9ujTvlB2vny1T8xrQDqy0GTR5rfoRcm
- AnErrliHxR8QziJ5ygxt6OMiuJxy2H+IhtuCbrm9UoEvdNcwjZ+j7rYVjgCAn+udrtr8
- R2BXhGZOoqqn1gvq0Yt5FUEdkYENkVwqRcNswLZtK+sHy1loE4kuYNLLulgDu5v9IxMI
- bNl/bofMIirqqAaChi+jcpz6Pg0BfS6d0LefGJSLsNfCMI/AeQchqWa6Qucg+QfPDPL8
- xeKw==
-X-Gm-Message-State: AOJu0YxWdxrHdF4xDnoXYgesAUTitpLqeqHPp0/a2sVO4J8m6HWR777D
- 1NOoBRBlARvm6lK4I2DuEn+RaMX9yJYKhcp8Gyb4LnQg28oEgQZjsu4pVKS9Axqsjd5AbaU2zTB
- ngyo=
-X-Google-Smtp-Source: AGHT+IE8wS4WpCF0/bxJggWg+4eccixi5G2yV44Nj13zqRqQ7E/h8vxjwxEQnrMTjigRWr4M/8ssTA==
-X-Received: by 2002:a05:600c:4f86:b0:42c:bae0:f066 with SMTP id
- 5b1f17b1804b1-42f58434768mr72915825e9.13.1727681712926; 
- Mon, 30 Sep 2024 00:35:12 -0700 (PDT)
+ bh=PDKmxhtETyeu/iYuY2neXJ4cpuVufAHpcFENKpKvuEg=;
+ b=k+ovtGvfdRtdcrX5LounSyeWQ27Z8pX7w0XHj5ayKb8BEOOB3uQdT6JuJ1cU8uJbkz
+ L3jcOAqxvqorJsWpClMVux8VyUNG9zk+8kxBabRjGv633maEY6l/ewOpHEZ7c3ENKUgV
+ tf/o/n+KLNV4QFvnG8TWPh6oBTCznV6XdRTgpjA0fvYqOIoph3DNigs/W3S2KtgnpI4T
+ q2M+K+z9xmEct/6kgvyEQYIvDaNzqewmSBXtd5mCSIJn+nEYqE86Q7CNFts5thnN94vO
+ nZAFrNZ/D/onnxAW9sosrTF+Yzq8hYovoQU6PQq8FarHIwuRa+xlx4vcKNpcfTFyfsFA
+ jAtg==
+X-Gm-Message-State: AOJu0YxUvjCHAAqiFggJLVPmdCd+9o3jqmJZcGJj4kcLUQuAZmJrWGjc
+ ruGoZ4nhjDDMqD8qunePdJ7ljGXuyGJet5hRgbFgyTfE7vwegTGpD+EhZ3jUTmWUflfwC9etfRx
+ JCaI=
+X-Google-Smtp-Source: AGHT+IHYEAXZvTMQIghMVZv8Pw1TDOBPf+W7tpo+teIiQ7939xyVfth4qR6F5Ris9NSp4atmfNQHng==
+X-Received: by 2002:a05:600c:3b93:b0:426:689b:65b7 with SMTP id
+ 5b1f17b1804b1-42f58485cc1mr80571605e9.25.1727681720993; 
+ Mon, 30 Sep 2024 00:35:20 -0700 (PDT)
 Received: from localhost.localdomain (186.red-88-28-13.dynamicip.rima-tde.net.
  [88.28.13.186]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42f58c523dbsm91069205e9.38.2024.09.30.00.35.09
+ ffacd0b85a97d-37cd5742a23sm8324073f8f.105.2024.09.30.00.35.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Sep 2024 00:35:12 -0700 (PDT)
+ Mon, 30 Sep 2024 00:35:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
@@ -71,17 +71,17 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Aurelien Jarno <aurelien@aurel32.net>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, Paul Burton <paulburton@kernel.org>
-Subject: [PATCH 02/13] hw/virtio/virtio-access: Use the ld/st_endian_p() API
-Date: Mon, 30 Sep 2024 09:34:39 +0200
-Message-ID: <20240930073450.33195-3-philmd@linaro.org>
+Subject: [PATCH 03/13] target/arm/ptw: Use the ld/st_endian_p() API
+Date: Mon, 30 Sep 2024 09:34:40 +0200
+Message-ID: <20240930073450.33195-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240930073450.33195-1-philmd@linaro.org>
 References: <20240930073450.33195-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,76 +108,46 @@ No logical change intended.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/virtio/virtio-access.h | 36 ++++++-------------------------
- 1 file changed, 6 insertions(+), 30 deletions(-)
+ target/arm/ptw.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-access.h b/include/hw/virtio/virtio-access.h
-index 07aae69042..b920874be8 100644
---- a/include/hw/virtio/virtio-access.h
-+++ b/include/hw/virtio/virtio-access.h
-@@ -95,56 +95,32 @@ static inline void virtio_stl_phys(VirtIODevice *vdev, hwaddr pa,
- 
- static inline void virtio_stw_p(VirtIODevice *vdev, void *ptr, uint16_t v)
- {
--    if (virtio_access_is_big_endian(vdev)) {
--        stw_be_p(ptr, v);
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index defd6b84de..a1a6b1fec3 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -699,11 +699,7 @@ static uint64_t arm_ldq_ptw(CPUARMState *env, S1Translate *ptw,
+             data = le64_to_cpu(data);
+         }
+ #else
+-        if (ptw->out_be) {
+-            data = ldq_be_p(host);
+-        } else {
+-            data = ldq_le_p(host);
+-        }
++        data = ldq_endian_p(ptw->out_be, host);
+ #endif
+     } else {
+         /* Page tables are in MMIO. */
+@@ -860,16 +856,9 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
+     if (!locked) {
+         bql_lock();
+     }
+-    if (ptw->out_be) {
+-        cur_val = ldq_be_p(host);
+-        if (cur_val == old_val) {
+-            stq_be_p(host, new_val);
+-        }
 -    } else {
--        stw_le_p(ptr, v);
--    }
-+    stw_endian_p(virtio_access_is_big_endian(vdev), ptr, v);
- }
- 
- static inline void virtio_stl_p(VirtIODevice *vdev, void *ptr, uint32_t v)
- {
--    if (virtio_access_is_big_endian(vdev)) {
--        stl_be_p(ptr, v);
--    } else {
--        stl_le_p(ptr, v);
--    }
-+    stl_endian_p(virtio_access_is_big_endian(vdev), ptr, v);
- }
- 
- static inline void virtio_stq_p(VirtIODevice *vdev, void *ptr, uint64_t v)
- {
--    if (virtio_access_is_big_endian(vdev)) {
--        stq_be_p(ptr, v);
--    } else {
--        stq_le_p(ptr, v);
--    }
-+    stq_endian_p(virtio_access_is_big_endian(vdev), ptr, v);
- }
- 
- static inline int virtio_lduw_p(VirtIODevice *vdev, const void *ptr)
- {
--    if (virtio_access_is_big_endian(vdev)) {
--        return lduw_be_p(ptr);
--    } else {
--        return lduw_le_p(ptr);
--    }
-+    return lduw_endian_p(virtio_access_is_big_endian(vdev), ptr);
- }
- 
- static inline int virtio_ldl_p(VirtIODevice *vdev, const void *ptr)
- {
--    if (virtio_access_is_big_endian(vdev)) {
--        return ldl_be_p(ptr);
--    } else {
--        return ldl_le_p(ptr);
--    }
-+    return ldl_endian_p(virtio_access_is_big_endian(vdev), ptr);
- }
- 
- static inline uint64_t virtio_ldq_p(VirtIODevice *vdev, const void *ptr)
- {
--    if (virtio_access_is_big_endian(vdev)) {
--        return ldq_be_p(ptr);
--    } else {
--        return ldq_le_p(ptr);
--    }
-+    return ldq_endian_p(virtio_access_is_big_endian(vdev), ptr);
- }
- 
- static inline uint16_t virtio_tswap16(VirtIODevice *vdev, uint16_t s)
+-        cur_val = ldq_le_p(host);
+-        if (cur_val == old_val) {
+-            stq_le_p(host, new_val);
+-        }
++    cur_val = ldq_endian_p(ptw->out_be, host);
++    if (cur_val == old_val) {
++        stq_endian_p(ptw->out_be, host, new_val);
+     }
+     if (!locked) {
+         bql_unlock();
 -- 
 2.45.2
 
