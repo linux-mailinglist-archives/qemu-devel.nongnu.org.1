@@ -2,66 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DE0989E1A
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB428989E48
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:31:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svCf6-00069W-Ih; Mon, 30 Sep 2024 05:25:48 -0400
+	id 1svCiv-0006gO-8J; Mon, 30 Sep 2024 05:29:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svCf2-0005yl-Vm; Mon, 30 Sep 2024 05:25:44 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1svCit-0006Zb-12
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:29:43 -0400
+Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svCf0-0006NI-El; Mon, 30 Sep 2024 05:25:44 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c23:1301:0:640:a2b5:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 1EADB60D30;
- Mon, 30 Sep 2024 12:25:37 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b737::1:2c] (unknown
- [2a02:6b8:b081:b737::1:2c])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id aPVMAE1IWKo0-jEv0KO1r; Mon, 30 Sep 2024 12:25:36 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1727688336;
- bh=yNd2tEXVFldbPpGa92EU28elQt4tdL/SOMDRSmaK1qA=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=vBKQJ+zNBX1x9Jbv8603UwNUae+AbqWED/5PFZKye0V33I4qnruM509HMEVwGaOeJ
- cKZcKqxz6k19lH4Rm8yM99burRtTv7+zFUUZrVatwtof26MwwPwuJmxfLVqLborKOB
- qZrZkGTZP+O5RktRE7LdLfhaIa/frep+K2eM9HHg=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <6fb3340a-f685-422f-acaf-ad968e854847@yandex-team.ru>
-Date: Mon, 30 Sep 2024 12:25:36 +0300
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1svCiq-0006mv-G6
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:29:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1727688580; x=1759224580;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1z5y/ZrhxOMlPGO2v3B2B57N+0ZV/2D1npEB/7zK6w4=;
+ b=mSnekJ7NY1cpGc1OmnwGTvRcej7QSkPmlqMLfd5PJzLsvmOEI67nMjb3
+ NyHSuQZsn/KHqdbLM6jaYJeRC6wJHznpOYNlfwsB1dZyA7DyV8ZbfNAOU
+ FyT5/ghFtleGfzXlkTpzodY8cPRZxxgNye9aU7bXFIvBF/CtMWKWHfAcS
+ V18FojSgJ16rvh/LLXjQsCHz9hgFxEWHgzYVQlC88S2siQ/LgL6RblZDI
+ FzcaqA3mY4gcTRHnmumSc5t9uqaFJGJiUFI0R67BtOW0KmrIS5MjVhUJo
+ 0iQWP5Z5kiZp85k//5SCQ9O0tBN57DE8MC0oi5UBPVn2WpM6/EoitNXsw g==;
+X-CSE-ConnectionGUID: mAxs5XcCTtiy/9k2llHPjw==
+X-CSE-MsgGUID: m9Yg2W07TZO9wF4KFcJSww==
+X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26721608"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26721608"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2024 02:29:37 -0700
+X-CSE-ConnectionGUID: Gw7z+QwqS/KGiDir3Yp0aw==
+X-CSE-MsgGUID: bvB0RmjtQoS2ebmKKEuT9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="77749375"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2024 02:29:34 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com,
+ clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v4 00/17] intel_iommu: Enable stage-1 translation for emulated
+ device
+Date: Mon, 30 Sep 2024 17:26:14 +0800
+Message-Id: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Bug Report][RFC PATCH 1/1] block: fix failing assert on paused
- VM migration
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
- eesposit@redhat.com, den@virtuozzo.com, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-References: <20240924125611.664315-1-andrey.drobyshev@virtuozzo.com>
- <20240924125611.664315-2-andrey.drobyshev@virtuozzo.com>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20240924125611.664315-2-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Yandex-Filter: 1
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.21;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.095,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,53 +83,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[add migration maintainers]
+Hi,
 
-On 24.09.24 15:56, Andrey Drobyshev wrote:
-> Instead of throwing an assert let's just ignore that flag is already set
-> and return.  We assume that it's going to be safe to ignore.  Otherwise
-> this assert fails when migrating a paused VM back and forth.
-> 
-> Ideally we'd like to have a more sophisticated solution, e.g. not even
-> scan the nodes which should be inactive at this point.
-> 
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> ---
->   block.c | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/block.c b/block.c
-> index 7d90007cae..c1dcf906d1 100644
-> --- a/block.c
-> +++ b/block.c
-> @@ -6973,7 +6973,15 @@ static int GRAPH_RDLOCK bdrv_inactivate_recurse(BlockDriverState *bs)
->           return 0;
->       }
->   
-> -    assert(!(bs->open_flags & BDRV_O_INACTIVE));
-> +    if (bs->open_flags & BDRV_O_INACTIVE) {
-> +        /*
-> +         * Return here instead of throwing assert as a workaround to
-> +         * prevent failure on migrating paused VM.
-> +         * Here we assume that if we're trying to inactivate BDS that's
-> +         * already inactive, it's safe to just ignore it.
-> +         */
-> +        return 0;
-> +    }
->   
->       /* Inactivate this node */
->       if (bs->drv->bdrv_inactivate) {
+Per Jason Wang's suggestion, iommufd nesting series[1] is split into
+"Enable stage-1 translation for emulated device" series and
+"Enable stage-1 translation for passthrough device" series.
 
-I doubt that this a correct way to go.
+This series enables stage-1 translation support for emulated device
+in intel iommu which we called "modern" mode.
 
-As far as I understand, "inactive" actually means that "storage is not belong to qemu, but to someone else (another qemu process for example), and may be changed transparently". In turn this means that Qemu should do nothing with inactive disks. So the problem is that nobody called bdrv_activate_all on target, and we shouldn't ignore that.
+PATCH1-5:  Some preparing work before support stage-1 translation
+PATCH6-8:  Implement stage-1 translation for emulated device
+PATCH9-13: Emulate iotlb invalidation of stage-1 mapping
+PATCH14:   Set default aw_bits to 48 in scalable modren mode
+PATCH15-16:Expose scalable modern mode "x-fls" and "fs1gp" to cmdline
+PATCH17:   Add qtest
 
-Hmm, I see in process_incoming_migration_bh() we do call bdrv_activate_all(), but only in some scenarios. May be, the condition should be less strict here.
+Note in spec revision 3.4, it renames "First-level" to "First-stage",
+"Second-level" to "Second-stage". But the scalable mode was added
+before that change. So we keep old favor using First-level/fl/Second-level/sl
+in code but change to use stage-1/stage-2 in commit log.
+But keep in mind First-level/fl/stage-1 all have same meaning,
+same for Second-level/sl/stage-2.
 
-Why we need any condition here at all? Don't we want to activate block-layer on target after migration anyway?
+Qemu code can be found at [2]
+The whole nesting series can be found at [3]
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02740.html
+[2] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_stage1_emu_v4
+[3] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_rfcv2
+
+Thanks
+Zhenzhong
+
+Changelog:
+v4:
+- s/Scalable legacy/Scalable in logging (Clement)
+- test the mode first to make the intention clearer (Clement)
+- s/x-cap-fs1gp/fs1gp and s/VTD_FL_RW_MASK/VTD_FL_RW (Jason)
+- introduce x-fls instead of updating x-scalable-mode (Jason)
+- Refine comment log in patch4 (jason)
+- s/tansltion/translation/ and s/VTD_SPTE_RSVD_LEN/VTD_FPTE_RSVD_LEN/ (Liuyi)
+- Update the order and naming of VTD_FPTE_PAGE_* (Liuyi)
+
+v3:
+- drop unnecessary !(s->ecap & VTD_ECAP_SMTS) (Clement)
+- simplify calculation of return value for vtd_iova_fl_check_canonical() (Liuyi)
+- make A/D bit setting atomic (Liuyi)
+- refine error msg (Clement, Liuyi)
+
+v2:
+- check ecap/cap bits instead of s->scalable_modern in vtd_pe_type_check() (Clement)
+- declare VTD_ECAP_FLTS/FS1GP after the feature is implemented (Clement)
+- define VTD_INV_DESC_PIOTLB_G (Clement)
+- make error msg consistent in vtd_process_piotlb_desc() (Clement)
+- refine commit log in patch16 (Clement)
+- add VTD_ECAP_IR to ECAP_MODERN_FIXED1 (Clement)
+- add a knob x-cap-fs1gp to control stage-1 1G paging capability
+- collect Clement's R-B
+
+v1:
+- define VTD_HOST_AW_AUTO (Clement)
+- passing pgtt as a parameter to vtd_update_iotlb (Clement)
+- prefix sl_/fl_ to second/first level specific functions (Clement)
+- pick reserved bit check from Clement, add his Co-developed-by
+- Update test without using libqtest-single.h (Thomas)
+
+rfcv2:
+- split from nesting series (Jason)
+- merged some commits from Clement
+- add qtest (jason)
+
+
+Clément Mathieu--Drif (4):
+  intel_iommu: Check if the input address is canonical
+  intel_iommu: Set accessed and dirty bits during first stage
+    translation
+  intel_iommu: Add an internal API to find an address space with PASID
+  intel_iommu: Add support for PASID-based device IOTLB invalidation
+
+Yi Liu (2):
+  intel_iommu: Rename slpte to pte
+  intel_iommu: Implement stage-1 translation
+
+Yu Zhang (1):
+  intel_iommu: Use the latest fault reasons defined by spec
+
+Zhenzhong Duan (10):
+  intel_iommu: Make pasid entry type check accurate
+  intel_iommu: Add a placeholder variable for scalable modern mode
+  intel_iommu: Flush stage-2 cache in PASID-selective PASID-based iotlb
+    invalidation
+  intel_iommu: Flush stage-1 cache in iotlb invalidation
+  intel_iommu: Process PASID-based iotlb invalidation
+  intel_iommu: piotlb invalidation should notify unmap
+  intel_iommu: Set default aw_bits to 48 in scalable modern mode
+  intel_iommu: Introduce a property x-fls for scalable modern mode
+  intel_iommu: Introduce a property to control FS1GP cap bit setting
+  tests/qtest: Add intel-iommu test
+
+ MAINTAINERS                    |   1 +
+ hw/i386/intel_iommu_internal.h |  92 ++++-
+ include/hw/i386/intel_iommu.h  |   8 +-
+ hw/i386/intel_iommu.c          | 681 +++++++++++++++++++++++++++------
+ tests/qtest/intel-iommu-test.c |  65 ++++
+ tests/qtest/meson.build        |   1 +
+ 6 files changed, 716 insertions(+), 132 deletions(-)
+ create mode 100644 tests/qtest/intel-iommu-test.c
 
 -- 
-Best regards,
-Vladimir
+2.34.1
 
 
