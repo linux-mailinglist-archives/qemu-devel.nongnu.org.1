@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3637A989DC9
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D68989DBE
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:13:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svCSK-0004Xl-3j; Mon, 30 Sep 2024 05:12:36 -0400
+	id 1svCSN-00052h-Vq; Mon, 30 Sep 2024 05:12:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svCSD-0003pg-8B
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:12:31 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svCSK-0004kY-Cq
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:12:36 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svCSB-0004gP-Fe
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:12:28 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-37cc810ce73so2354718f8f.1
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 02:12:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svCSI-0004gh-OW
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:12:36 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42cb9a0c300so31647385e9.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 02:12:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727687545; x=1728292345; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727687552; x=1728292352; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xp7nwUCJaW/bkSknjoRe7vWWzJDVDixFzfBIDbsBbN4=;
- b=GGPZEOA8hogiznbFQswVoWayJ0t63tZGAlYPlzg2/GXS592aabz/XDD0I81nvVnkQl
- SenxeqWuE9pr0ZNGThrzk4jhD6ey98SiWHjkL+/Cb2JlZtnAAJm4GkyaVKLef2XIlrqG
- PChan2LQlk49P15lqMXICglWzSPHAiy73bbPk9xr1eQwOMpLXE/O1XsewvgVuE4qrGNm
- ib5xEXYPxv6BkwScYd/yWc7Z+kMWyryKzYZOEROg0RhVZzeicMZabdvn+zVHeKXmrp/T
- PopUfxVkIHdu1/YI8mdVcuhRgvCBqGWISonFeydNYK1C9Hbr5QOsz9aI6oh3pn2VHi2f
- W7Qg==
+ bh=EToKFctF2fRtYpb52soo3m8yr83BCZf/5mioMKUv2bg=;
+ b=L8Y6AQHh799tW7TKo2t/YZQ6SB+Lso2wVe0mPLV/Sd0F8axe6JRotPqm59lcmIafbb
+ 8bAawoc4VP9mnRR36YGpmhVdZZnZ7uq8ToxUuYO+bTdoOGhnaRt800mWZ8+3E2Kh/E1e
+ tAw+C6RGKZZToC4wP0dPR+/C8CZR1CXoOyfJjUm6DFHNJgAXnzC4jZBxm6jj7pJUgy+6
+ CfZrnfy5Pxm47doyGLLjCV8Fy4z8JZS+A7GhINQBo6mWQxFL0nMaSe0tAZxmt8G4VSEt
+ zpUeH7MvkkPOYzf/zv21bt47Por2ZYLvmcN0zjRsGVKTskKT6BE5xv8WdSy8TyLcU7UN
+ KwtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727687545; x=1728292345;
+ d=1e100.net; s=20230601; t=1727687552; x=1728292352;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xp7nwUCJaW/bkSknjoRe7vWWzJDVDixFzfBIDbsBbN4=;
- b=WIYFlCSosXP6+bIUwgSZmNtNDV9j4oPzb/ShQlAlbwgl8YGJN1p2HyYI5dySF5MByi
- xJJakBJXMqGeUgJJh5cw1yoNG71m1/HUmtz6bFjN+56+BbZMHNTNpMXcHMd34MIPOGBH
- CAdtiz9F3e8b6IEJWDZY/BCjC0rqN0cRaEBUvRXtCVlZCNR6ZmwCZ30NdWnb3fGjp9qV
- Y6V3s3WlkupAkT/U2ID720GC39uNqPEGsrbbwZ7PELtw65OvBFRonB+3hiKBrF9qZiRX
- 9X9yEkuTR6KvwEx4o2JT2Mlox+o8bLiZsSnShQUXGpq/MiLrjELNgLNGaDmbz1vZvWdz
- lOLw==
-X-Gm-Message-State: AOJu0Yyka8oqBQQLz4XIUPhkyhiK3pus+n16QQb/9t1vZzz7Mv8vaaIm
- Bo4wVt8vfOFIn8sDIVrcGJhRw4P1VVsbIbiTR6c8ymC5BWK3ruX8/BqiPYnqM+PWyJE7Pl9fPd3
- c
-X-Google-Smtp-Source: AGHT+IHvRdEPeY44ajJFKE6t3GBs8/tEavMd+4IYJeqCp6TUbQmrdfNCKixTO0T4rV7ABAE5is0PIg==
-X-Received: by 2002:a05:6000:d82:b0:37c:ca11:78c1 with SMTP id
- ffacd0b85a97d-37cd5ab7440mr5385294f8f.27.1727687545557; 
- Mon, 30 Sep 2024 02:12:25 -0700 (PDT)
+ bh=EToKFctF2fRtYpb52soo3m8yr83BCZf/5mioMKUv2bg=;
+ b=qskFoFVlTZum36JgkutnO3K2RdlyyZG1qslzXsBs5cWvs/eR3aMOq1U4ZbPKWzMf2G
+ drLHUUEXqhNpWzSSsxtMVZqteY4q9GbWy8zRCjTXx4SxYLfFFzzAybA/qwUcFEwV5EZ+
+ dQDk5h8Kvnwrw5f3qxqCTa0Cobq9HG4/KlPZG51EwUECZKFZHi9xRgdWfX9YxXS7zvAW
+ KkNt6bYlXvzOmvYqKrPvoD+rznSKA/UDmy3uPNqf7dXRDGykCXyURZ7vPZ39Cc/dR+P4
+ xbT9Z3ToBMtXM44zSUlPlcsYn7v0FI+jdjx8+s/Y5uR9RuFsVdOYKFd7shp0UKG1OKsU
+ U/Cg==
+X-Gm-Message-State: AOJu0Yzr45Pn3bD7H/8yowpbb9HOa0PJvN7H8BMY68PTzVkBIDbjmVet
+ XeB7Z73WUAs7rKohh3MAQtKDo5vvQ+H9aaREzxECrXklr8I3L32X87MTuaoB05+oqwAnIRls6Qg
+ A
+X-Google-Smtp-Source: AGHT+IFNQ+dcllj3FH/1H792+7wbVFI2MZSpAoA7GTZoNegr+HAz4WlN3eoWFLqSIuVCmm04wDSc2Q==
+X-Received: by 2002:a05:600c:4751:b0:42c:de9b:a1b5 with SMTP id
+ 5b1f17b1804b1-42f5849732amr77291775e9.32.1727687552382; 
+ Mon, 30 Sep 2024 02:12:32 -0700 (PDT)
 Received: from localhost.localdomain (183.red-88-28-18.dynamicip.rima-tde.net.
  [88.28.18.183]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd574282esm8469346f8f.104.2024.09.30.02.12.23
+ 5b1f17b1804b1-42e96a52915sm144727645e9.39.2024.09.30.02.12.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Sep 2024 02:12:25 -0700 (PDT)
+ Mon, 30 Sep 2024 02:12:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
@@ -64,18 +64,17 @@ Cc: Thomas Huth <thuth@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Aleksandar Rikalo <arikalo@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [PATCH 11/12] target/mips: Remove target-specific code in
- mips_cpu_reset_hold()
-Date: Mon, 30 Sep 2024 11:11:00 +0200
-Message-ID: <20240930091101.40591-12-philmd@linaro.org>
+Subject: [PATCH 12/12] hw/mips/malta: Remove TARGET_BIG_ENDIAN #ifdef'ry
+Date: Mon, 30 Sep 2024 11:11:01 +0200
+Message-ID: <20240930091101.40591-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240930091101.40591-1-philmd@linaro.org>
 References: <20240930091101.40591-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,29 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since all code creating vCPUs now set the 'cpu-big-endian' property,
-we can remove the target-specific #ifdef'ry in mips_cpu_reset_hold():
-the CP0C0_BE bit is set using the property cpu->is_big_endian value.
+Move code evaluation from preprocessor to compiler so
+the if() ladder is always processed. Mostly to unify
+style in not using TARGET_BIG_ENDIAN #ifdef anymore.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/cpu.c | 3 ---
- 1 file changed, 3 deletions(-)
+ hw/mips/malta.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 02e2e72f2d..9724e71a5e 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -202,9 +202,6 @@ static void mips_cpu_reset_hold(Object *obj, ResetType type)
-     env->CP0_PRid = env->cpu_model->CP0_PRid;
-     env->CP0_Config0 = deposit32(env->cpu_model->CP0_Config0,
-                                  CP0C0_BE, 1, cpu->is_big_endian);
--#if TARGET_BIG_ENDIAN
--    env->CP0_Config0 |= (1 << CP0C0_BE);
+diff --git a/hw/mips/malta.c b/hw/mips/malta.c
+index 71cc11fc45..a3b6f63089 100644
+--- a/hw/mips/malta.c
++++ b/hw/mips/malta.c
+@@ -1196,8 +1196,7 @@ void mips_malta_init(MachineState *machine)
+          * In little endian mode the 32bit words in the bios are swapped,
+          * a neat trick which allows bi-endian firmware.
+          */
+-#if !TARGET_BIG_ENDIAN
+-        {
++        if (!TARGET_BIG_ENDIAN) {
+             uint32_t *end, *addr;
+             const size_t swapsize = MIN(bios_size, 0x3e0000);
+             addr = rom_ptr(FLASH_ADDRESS, swapsize);
+@@ -1210,7 +1209,6 @@ void mips_malta_init(MachineState *machine)
+                 addr++;
+             }
+         }
 -#endif
-     env->CP0_Config1 = env->cpu_model->CP0_Config1;
-     env->CP0_Config2 = env->cpu_model->CP0_Config2;
-     env->CP0_Config3 = env->cpu_model->CP0_Config3;
+     }
+ 
+     /*
 -- 
 2.45.2
 
