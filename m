@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76CBA989E3F
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DB3989E66
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:32:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svCk4-0003Cv-4x; Mon, 30 Sep 2024 05:30:56 -0400
+	id 1svCkC-0004I7-Ic; Mon, 30 Sep 2024 05:31:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1svCjo-0002Vq-22
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:30:41 -0400
+ id 1svCjs-0002rC-Od
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:30:45 -0400
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1svCjl-000759-Ou
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:30:39 -0400
+ id 1svCjp-000759-Qd
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:30:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727688637; x=1759224637;
+ t=1727688642; x=1759224642;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=uv3EwOp49dN1Ts3DhCpB+ZiI5HBtex65yynW/uWCjZA=;
- b=mtLOf0MoKDkYUAYOOgkexCeY6IQidzzy428vLnYedhjliIWTTVfzpiTY
- HzrvuxZV5nAIWKRcKkMPEIYr9bEwN89uoLQN9wjVZ86RAFdK6HXCS32/B
- eW0XbzOAoP9d8J+AG4dH2z+CN/nr4FfDLlIMlAoswqV44WAIpJXYrmRUV
- 8BeTTUTkKqsk0Qg5I/AgGbRwfRIEg4ZcIyzMABgwBbuR/XgqcwHbFkNZH
- 6r4gczO9/EY3VKl+c9Yn01+MDp/x+CCKmUk5zGq6FmxJSlmtbxYjY0EJO
- y+OdeEspc748MO7UiwOu0EdjGEmu8kFq6Vf3EQAPnQrwvZ+PpUzJYpQAO A==;
-X-CSE-ConnectionGUID: bH1oLGQSRmG60D/j6IE+cA==
-X-CSE-MsgGUID: yBm0cCqmQJiVAmEoIT1nTQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26721854"
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26721854"
+ bh=RrAQkRUYfObcpECM4cNq8g66930XyTTutz9CzXx+Jy4=;
+ b=GTs/Wu06gd7PWN+qiKgb0Fh7b62mWKVgwUqXZP4q6vTD1khhR7mN5pBf
+ ToPF8u2yY5t9pGh8+CIZ/8QAwor8tRC/yjtgzEZvtMbSDLjntP6gZn5IN
+ O5JIiKYLWZj0kfvhqo1zvI12sdBFQfpGQv1UvonZkV8gLeIh/S/UvzDTC
+ 7ujlYw7/G2m+jVP0JYabcXuXxgO5rgDeh6YKemBqO2QvjaIPrqCiw5wr6
+ QzYL3LO1P4oZD79C708pZCvjFqsxItLWvQweuv3Xg1j08Db+rycaBqhIq
+ DJPMdnPalZAxqS/Ti+brsdN0rsWyL/sjPjkkJMJSfkoFLVCbeLrUWvNK8 A==;
+X-CSE-ConnectionGUID: tWajr16RRNab8pBk49mQ8g==
+X-CSE-MsgGUID: UrzHpd7GRT+4GfbleDBliA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26721876"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26721876"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 02:30:36 -0700
-X-CSE-ConnectionGUID: lfJb0AUvSuWKT8qGunn6mA==
-X-CSE-MsgGUID: 65058/OASRqQMrCtWhMVuw==
+ 30 Sep 2024 02:30:41 -0700
+X-CSE-ConnectionGUID: OVE3Nl2HRqCEeTVEgutNMg==
+X-CSE-MsgGUID: h4GFLtx3R8y/11sSXlbalQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="77749872"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="77749876"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 02:30:32 -0700
+ 30 Sep 2024 02:30:36 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,13 +51,14 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Yi Sun <yi.y.sun@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v4 13/17] intel_iommu: piotlb invalidation should notify unmap
-Date: Mon, 30 Sep 2024 17:26:27 +0800
-Message-Id: <20240930092631.2997543-14-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 14/17] intel_iommu: Set default aw_bits to 48 in scalable
+ modern mode
+Date: Mon, 30 Sep 2024 17:26:28 +0800
+Message-Id: <20240930092631.2997543-15-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
 References: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
@@ -88,82 +89,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is used by some emulated devices which caches address
-translation result. When piotlb invalidation issued in guest,
-those caches should be refreshed.
+According to VTD spec, stage-1 page table could support 4-level and
+5-level paging.
 
-For device that does not implement ATS capability or disable
-it but still caches the translation result, it is better to
-implement ATS cap or enable it if there is need to cache the
-translation result.
+However, 5-level paging translation emulation is unsupported yet.
+That means the only supported value for aw_bits is 48.
 
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+So default aw_bits to 48 in scalable modern mode. In other cases,
+it is still default to 39 for backward compatibility.
+
+Add a check to ensure user specified value is 48 in modern mode
+for now.
+
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
 ---
- hw/i386/intel_iommu.c | 35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+ include/hw/i386/intel_iommu.h |  2 +-
+ hw/i386/intel_iommu.c         | 10 +++++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
+diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+index b843d069cc..48134bda11 100644
+--- a/include/hw/i386/intel_iommu.h
++++ b/include/hw/i386/intel_iommu.h
+@@ -45,7 +45,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState, INTEL_IOMMU_DEVICE)
+ #define DMAR_REG_SIZE               0x230
+ #define VTD_HOST_AW_39BIT           39
+ #define VTD_HOST_AW_48BIT           48
+-#define VTD_HOST_ADDRESS_WIDTH      VTD_HOST_AW_39BIT
++#define VTD_HOST_AW_AUTO            0xff
+ #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
+ 
+ #define DMAR_REPORT_F_INTR          (1)
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 5ea59167b3..91d7b1abfa 100644
+index 91d7b1abfa..068a08f522 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -2908,7 +2908,7 @@ static void vtd_piotlb_pasid_invalidate(IntelIOMMUState *s,
-                 continue;
-             }
- 
--            if (!s->scalable_modern) {
-+            if (!s->scalable_modern || !vtd_as_has_map_notifier(vtd_as)) {
-                 vtd_address_space_sync(vtd_as);
-             }
+@@ -3776,7 +3776,7 @@ static Property vtd_properties[] = {
+                             ON_OFF_AUTO_AUTO),
+     DEFINE_PROP_BOOL("x-buggy-eim", IntelIOMMUState, buggy_eim, false),
+     DEFINE_PROP_UINT8("aw-bits", IntelIOMMUState, aw_bits,
+-                      VTD_HOST_ADDRESS_WIDTH),
++                      VTD_HOST_AW_AUTO),
+     DEFINE_PROP_BOOL("caching-mode", IntelIOMMUState, caching_mode, FALSE),
+     DEFINE_PROP_BOOL("x-scalable-mode", IntelIOMMUState, scalable_mode, FALSE),
+     DEFINE_PROP_BOOL("snoop-control", IntelIOMMUState, snoop_control, false),
+@@ -4683,6 +4683,14 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
          }
-@@ -2920,6 +2920,9 @@ static void vtd_piotlb_page_invalidate(IntelIOMMUState *s, uint16_t domain_id,
-                                        bool ih)
- {
-     VTDIOTLBPageInvInfo info;
-+    VTDAddressSpace *vtd_as;
-+    VTDContextEntry ce;
-+    hwaddr size = (1 << am) * VTD_PAGE_SIZE;
+     }
  
-     info.domain_id = domain_id;
-     info.pasid = pasid;
-@@ -2930,6 +2933,36 @@ static void vtd_piotlb_page_invalidate(IntelIOMMUState *s, uint16_t domain_id,
-     g_hash_table_foreach_remove(s->iotlb,
-                                 vtd_hash_remove_by_page_piotlb, &info);
-     vtd_iommu_unlock(s);
-+
-+    QLIST_FOREACH(vtd_as, &s->vtd_as_with_notifiers, next) {
-+        if (!vtd_dev_to_context_entry(s, pci_bus_num(vtd_as->bus),
-+                                      vtd_as->devfn, &ce) &&
-+            domain_id == vtd_get_domain_id(s, &ce, vtd_as->pasid)) {
-+            uint32_t rid2pasid = VTD_CE_GET_RID2PASID(&ce);
-+            IOMMUTLBEvent event;
-+
-+            if ((vtd_as->pasid != PCI_NO_PASID || pasid != rid2pasid) &&
-+                vtd_as->pasid != pasid) {
-+                continue;
-+            }
-+
-+            /*
-+             * Page-Selective-within-PASID PASID-based-IOTLB Invalidation
-+             * does not flush stage-2 entries. See spec section 6.5.2.4
-+             */
-+            if (!s->scalable_modern) {
-+                continue;
-+            }
-+
-+            event.type = IOMMU_NOTIFIER_UNMAP;
-+            event.entry.target_as = &address_space_memory;
-+            event.entry.iova = addr;
-+            event.entry.perm = IOMMU_NONE;
-+            event.entry.addr_mask = size - 1;
-+            event.entry.translated_addr = 0;
-+            memory_region_notify_iommu(&vtd_as->iommu, 0, event);
++    if (s->aw_bits == VTD_HOST_AW_AUTO) {
++        if (s->scalable_modern) {
++            s->aw_bits = VTD_HOST_AW_48BIT;
++        } else {
++            s->aw_bits = VTD_HOST_AW_39BIT;
 +        }
 +    }
- }
- 
- static bool vtd_process_piotlb_desc(IntelIOMMUState *s,
++
+     if (!s->scalable_modern && s->aw_bits != VTD_HOST_AW_39BIT &&
+         s->aw_bits != VTD_HOST_AW_48BIT) {
+         error_setg(errp, "%s mode: supported values for aw-bits are: %d, %d",
 -- 
 2.34.1
 
