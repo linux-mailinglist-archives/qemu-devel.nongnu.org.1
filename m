@@ -2,147 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F9A98AD2C
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 21:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A456F98AD3B
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 21:48:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svMJV-00056X-LU; Mon, 30 Sep 2024 15:44:09 -0400
+	id 1svMN6-00067u-Ot; Mon, 30 Sep 2024 15:47:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1svMJN-0004VF-Ao; Mon, 30 Sep 2024 15:44:01 -0400
-Received: from mail-dm6nam12on2060f.outbound.protection.outlook.com
- ([2a01:111:f403:2417::60f]
- helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1svMN2-0005tw-Sa
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 15:47:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1svMJK-00027Z-KS; Mon, 30 Sep 2024 15:44:00 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OvK5McjrfPENgxRXNem2SBTUqmBLhFQBsxkWve94K0901wslqgMt5YykaqCQe/dg+1VeSa3/pcUSzZORGb0XJKF9Fcdk4YL2QNttm8yhgxq5PEEnp4+7SrfHkhb1lIytgOBxqqa1MnwOlAN93/rGR/w/p6vzJvcXbaWvlK8bnWI5lmRi8HUrs8nzXzUY0fr+eLGiXNFt7jxWBMWu7NM+Gos13Qh91TI0NHqW9VOxFyXEJ/Ytg/OzPC0dSSpHNkFfsOmTtsSbsf2YDKfBVAiX6lrgzulwZZNkid0GABWJFAqvNb5eESz1Yv1jvfXRZTsO/xwH++an4S7b0h09CwZ/AQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h1XAbPDYIK/R57zKBNcqpFRULcIrha3/IJ0YEwvG8tg=;
- b=bBx/lisQwwSHKgby742W+NGedXMFlU6dbIsQoTQez2I3pDJRDcwsySRsuvaUZPKvStnsRA8DlHwXUV4l9uGn5c9/Ppc9dGyZ6j6g6A1920YQGYc/Jku+JUzA0WvrXpd4kEY5vU1CWshmYYrjQ8q1C+ZmryWO+IzqnB9JkOJkzB9hfKSWtG4JbLZwjRhVyfO9FjUeWzN25tgPMkQTA/47xdr8pfIEqno/JY96iAMW8bqWxNNHvCGUGTmpIkXRgEYKOMAdhf24G8mvVVfF3cMdmU/1yS/cKadRE+Hun/mk//91QCmtiMhmJhPLF48GclrRafc7FMn3ANyMQ36+WzH9tQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h1XAbPDYIK/R57zKBNcqpFRULcIrha3/IJ0YEwvG8tg=;
- b=OqpfBLMxeu3Pd5QgR1xQ6vGyTSHNy6QYJATTzvS4vtbRsOmYGvZ69vxGsVt7kECUkpEAx88+duYhQM85x/UNEYdz0uo0sX6uV7jMFl61n3O13ykeufLytotTX9sLz9B1YsOgySEBq9KnvJekuahzN1qpoXfzUiU344fDL3Jw8x6Mm68pa8p7f+lYuhRHMW3JPZXalJBZ8K0wVgNsfl5k0qn+Hcd0Omjp8ulzOB0mUa1UQpiLQrzmC1xkqgxLKNkIUnwks0uH+/34HCTeMviNEIgCgiYoACHLMJRrfary2rieHfiROGkxscMszbSvdw8rx/2bMGlNSDKuSb69py1ACA==
-Received: from LV3P220CA0018.NAMP220.PROD.OUTLOOK.COM (2603:10b6:408:234::19)
- by SJ2PR12MB8805.namprd12.prod.outlook.com (2603:10b6:a03:4d0::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.26; Mon, 30 Sep
- 2024 19:43:48 +0000
-Received: from MN1PEPF0000ECDA.namprd02.prod.outlook.com
- (2603:10b6:408:234:cafe::2a) by LV3P220CA0018.outlook.office365.com
- (2603:10b6:408:234::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.27 via Frontend
- Transport; Mon, 30 Sep 2024 19:43:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- MN1PEPF0000ECDA.mail.protection.outlook.com (10.167.242.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8026.11 via Frontend Transport; Mon, 30 Sep 2024 19:43:47 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 30 Sep
- 2024 12:43:44 -0700
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Mon, 30 Sep 2024 12:43:43 -0700
-Received: from Asurada-Nvidia (10.127.8.13) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Mon, 30 Sep 2024 12:43:43 -0700
-Date: Mon, 30 Sep 2024 12:43:41 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-CC: Eric Auger <eric.auger@redhat.com>, Mostafa Saleh <smostafa@google.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, Peter Maydell <peter.maydell@linaro.org>, "Jason
- Gunthorpe" <jgg@nvidia.com>, Jean-Philippe Brucker
- <jean-philippe@linaro.org>, Moritz Fischer <mdf@kernel.org>, Michael Shavit
- <mshavit@google.com>, "Andrea Bolognani" <abologna@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, "Peter Xu" <peterx@redhat.com>
-Subject: Re: nested-smmuv3 topic, Sep 2024
-Message-ID: <Zvr/bf7KgLN1cjOl@Asurada-Nvidia>
-References: <ZtlrLJzZqpnUrZQf@Asurada-Nvidia>
- <d0e3a60713da4ff1bb10245e789ecf24@huawei.com>
- <ZtoWVjmSXfQStlkF@nvidia.com>
- <e06e0a8a89d74d88b653d4f49d0b08fe@huawei.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1svMN0-0002XN-ET
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 15:47:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727725664;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=prGBeKA86QLhKRADp0eTX+tNoVAx4dt5Wv+6p9pM42E=;
+ b=NH8kGqgCtsWbuosUU8KmkFsdUPbQ4Bsbqtfl18wbJC/SMp1oyI5TFrx+KozIBOkKf++ef+
+ g1pxoG0xU3VPG+FYWCaCosCNnmxhYdMDwEaotTf4A1PtuZ3srKfECTKJKrCk/ih697oI7g
+ 030i7EAoMMQyvVITNPoqtz64+JpvtDs=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-0muyMiVIND2ZQ07kw1VHUQ-1; Mon, 30 Sep 2024 15:47:41 -0400
+X-MC-Unique: 0muyMiVIND2ZQ07kw1VHUQ-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7ac8d3dbe5bso550499785a.3
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 12:47:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727725660; x=1728330460;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=prGBeKA86QLhKRADp0eTX+tNoVAx4dt5Wv+6p9pM42E=;
+ b=YP4RvIee0S4Aa6EOsBN8xHDr932Axzlmi/s1IVe6UAK6u0bc0G+PDulhwzdKJtZx7S
+ Ck2gRYKVDvcuWk96Qj+tR9l1mrAYSqgsMMD4XDS91ZG0X78jCLMhlBy9BoTOcTV2OyjS
+ oDkeoDX6DIU6Y5y3prYEwvnuteT6NvkVinBZPMZhYm7lgwXiROQlaq+PtOP18LUR0I7I
+ DhMMVynLpqoAguL4RULy+oQVtpWPKGgOWMgVXWNdO9Dtp6A108R1ty07fpHBtGfiR54M
+ e0gOQmUYBL2ofr8n5qDnlIjy3eX+h2br7jpql5zlUewVZh5TcEjGbyjbJvdmhNu0mX4z
+ FpCA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVvsgSM8mv9KIVhpmniNyFqk03M/ArZ22fFtZ4dy5yHFj/0G7IJ5gy7xkbWzFAqMM561GxkVQQYVjeC@nongnu.org
+X-Gm-Message-State: AOJu0YzKVnF/rl8HNXerr2efmXS9tlU4gZgmxDJnJoG/TXdh+BjEe6Bd
+ W3Q1438yu2JBie3LKYMs9VgxJJcOwy4kQmLjhHAdJH6g6+Vh9jSb2THydlHZ9WyLIaIDzbMXjKA
+ PXOdbbLORrUZWh2KhKSPsx3+C+rlG2dl75KBuFQlEYkrYch7N6YwpCG+It7hB
+X-Received: by 2002:a05:620a:450c:b0:7a9:b04a:b324 with SMTP id
+ af79cd13be357-7ae378ddb4cmr1930912585a.64.1727725659757; 
+ Mon, 30 Sep 2024 12:47:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGX81kf1iR/0lZtJ1lFzJzUc0+892Dm3hNPAy43+5BBqc4BJnAj900bLjAI/dH3V8YZuNyxIg==
+X-Received: by 2002:a05:620a:450c:b0:7a9:b04a:b324 with SMTP id
+ af79cd13be357-7ae378ddb4cmr1930908785a.64.1727725659234; 
+ Mon, 30 Sep 2024 12:47:39 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7ae377d8a68sm441384785a.37.2024.09.30.12.47.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 30 Sep 2024 12:47:38 -0700 (PDT)
+Date: Mon, 30 Sep 2024 15:47:35 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Sean Hefty <shefty@nvidia.com>
+Cc: Michael Galaxy <mgalaxy@akamai.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "yu.zhang@ionos.com" <yu.zhang@ionos.com>,
+ "elmar.gerdes@ionos.com" <elmar.gerdes@ionos.com>,
+ zhengchuan <zhengchuan@huawei.com>,
+ "berrange@redhat.com" <berrange@redhat.com>,
+ "armbru@redhat.com" <armbru@redhat.com>,
+ "lizhijian@fujitsu.com" <lizhijian@fujitsu.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ Xiexiangyou <xiexiangyou@huawei.com>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "lixiao (H)" <lixiao91@huawei.com>,
+ "jinpu.wang@ionos.com" <jinpu.wang@ionos.com>,
+ Wangjialin <wangjialin23@huawei.com>
+Subject: Re: [PATCH 0/6] refactor RDMA live migration based on rsocket API
+Message-ID: <ZvsAV0MugV85HuZf@x1n>
+References: <1717503252-51884-1-git-send-email-arei.gonglei@huawei.com>
+ <Zs4z7tKWif6K4EbT@x1n>
+ <20240827165643-mutt-send-email-mst@kernel.org>
+ <027c4f24-f515-4fdb-8770-6bf2433e0f43@akamai.com>
+ <84c74f1a95a648b18c9d41b8c5ef2f60@huawei.com>
+ <ZvQnbzV9SlXKlarV@x1n>
+ <DM6PR12MB431364C7A2D94609B4AAF9A8BD6B2@DM6PR12MB4313.namprd12.prod.outlook.com>
+ <0730fa9b-49cd-46e4-9264-afabe2486154@akamai.com>
+ <Zvrq7nSbiLfPQoIY@x1n>
+ <DM6PR12MB4313D6BA256740DE1ACA29E9BD762@DM6PR12MB4313.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e06e0a8a89d74d88b653d4f49d0b08fe@huawei.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECDA:EE_|SJ2PR12MB8805:EE_
-X-MS-Office365-Filtering-Correlation-Id: d5b07682-e93a-49cb-8ae8-08dce1883364
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|36860700013|1800799024|7416014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?TWuIDXa+gc6yEK62Nn8UNiOwRnerYq04iXZKbvW9u5aOAhaTL0FWjyXJpkry?=
- =?us-ascii?Q?sB1+r65wC4DkM5jHIPmOR7ZIe/Es5mTSZ266E+6L9YnLy3TmRUt0M+JTGzDy?=
- =?us-ascii?Q?B7lmE/68vgvpRctjQDOqGPfOuFJb7xrChoffQmrnqsi2mS+cnECAkWMq0JFi?=
- =?us-ascii?Q?1te03bwvCUUqUN3OuYXctNSpbpe3DismXqH1oAHX+cDgQtxOobB+VhFy0G4J?=
- =?us-ascii?Q?fyS9OVK5XdP0OBU0NnB57+Z7srVm8Dnaohl+61k6bcC8S0Grm1Vmq6YNe9Z3?=
- =?us-ascii?Q?EPfCRy/mHGpZoM35jMTbbMZoi76keAiN3i7qs4PZxzymCeoRCrxhErWafOb5?=
- =?us-ascii?Q?qSBUnhHqQRi3TYlCcrAuT5dSx2DhajVlMQzxC4Y9e1TxKzGiW7qZEQIYnZi4?=
- =?us-ascii?Q?pSFg/NdZE7KOLlWjIyE90xDijQ5j/IYVQ5aNY5fcF+rYpFgS6XkNTMu4AhjU?=
- =?us-ascii?Q?GF0HNaMcq77mFQE7YaooeHBATL9v8NDyXBGRGs4xFW3onMjOKOjKxe0VO08G?=
- =?us-ascii?Q?ZUtkyBhm/FSjfy5BhWPDBhSzOZIRvRgjJNAOrs4wGCnaDTUFlu8FV3maiKxT?=
- =?us-ascii?Q?lS8hgvm1sAbInS2tSxUiphRBTna1QgarHMO+tNCv01B8Ft9xVkcrGUZR5SNc?=
- =?us-ascii?Q?X0Vx0S8HY9nRHPE/tdzVMiV4iTtZR9fIeF+8yDsYYPPBpsupABnKTsiCPA2e?=
- =?us-ascii?Q?z6zKvExjwRHwdHK2x4QEVyPKu8ewCb1Rji+LfgjRT/Z5h5VUXCB2Q3m7dvPq?=
- =?us-ascii?Q?dFQcrEas5QXn2FI2je736wNDKQGtWZBeV8uNn1w8a4wXbES87ZeoWSEB0aUB?=
- =?us-ascii?Q?FeZSaGvutd18G8QS2BMRnKPNjOBpQX5xTKC4xf4k1ElHiwl0UXxwowB/48vn?=
- =?us-ascii?Q?xcoGmCEQ9gcDR99aHpp4T1kr6pp3dAghQCzkvMY24tLkvikNrkvaLzgjea9G?=
- =?us-ascii?Q?RzPLFNtJ6rGP/nb9sYb2qhopKAsoK1PKcHzJNzo51JRNYCshNKscQDI8Z4qJ?=
- =?us-ascii?Q?fKRKU7byJZtWVQB0lrFqgdGJpTCEsR82ulZERPjOLkJmYPRSks3BlGBXz3xH?=
- =?us-ascii?Q?L5QoH7ByONNDtv8oAN2OZ6ITJqSsYT9IX85iXYZFC1mpF6HQJjRfzJoZHbV2?=
- =?us-ascii?Q?jT7uODH6+JaI2hxh/uynhP4Xuf6vOcOH+hccf9WnvZEL0B43P0txuCV0oHJY?=
- =?us-ascii?Q?ehyfPT52uLenhOpfde6udA8RHKqQTncZ5/T4QC2iAIQmKQVPdIAlzyq2U+LB?=
- =?us-ascii?Q?KjgR19kX8IoE9jZpWoYFnzTSpbtJTIe018kd3QdYruVIKnDtyFArcf7KWL5i?=
- =?us-ascii?Q?5ItulKwRFOZvwP/XOfLaua7ZWB63y1dP60sdXP9ojXedfyoUTNX8M+9y9xOU?=
- =?us-ascii?Q?d9fmpIowvqIWVcyThRt4kpY/5930?=
-X-Forefront-Antispam-Report: CIP:216.228.118.232; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(376014)(36860700013)(1800799024)(7416014)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2024 19:43:47.2234 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5b07682-e93a-49cb-8ae8-08dce1883364
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.232];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: MN1PEPF0000ECDA.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8805
-Received-SPF: softfail client-ip=2a01:111:f403:2417::60f;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM12-DM6-obe.outbound.protection.outlook.com
+In-Reply-To: <DM6PR12MB4313D6BA256740DE1ACA29E9BD762@DM6PR12MB4313.namprd12.prod.outlook.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,108 +122,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 30, 2024 at 10:45:31AM +0000, Shameerali Kolothum Thodi wrote:
-> > -----Original Message-----
-> > From: Nicolin Chen <nicolinc@nvidia.com>
-> > Sent: Thursday, September 5, 2024 9:37 PM
-> > To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-> > Cc: Eric Auger <eric.auger@redhat.com>; Mostafa Saleh
-> > <smostafa@google.com>; qemu-arm@nongnu.org; qemu-
-> > devel@nongnu.org; Peter Maydell <peter.maydell@linaro.org>; Jason
-> > Gunthorpe <jgg@nvidia.com>; Jean-Philippe Brucker <jean-
-> > philippe@linaro.org>; Moritz Fischer <mdf@kernel.org>; Michael Shavit
-> > <mshavit@google.com>; Andrea Bolognani <abologna@redhat.com>;
-> > Michael S. Tsirkin <mst@redhat.com>; Peter Xu <peterx@redhat.com>
-> > Subject: Re: nested-smmuv3 topic, Sep 2024
-> >
-> > Hi Shameer,
-> >
-> > Thanks for the reply!
-> >
-> > On Thu, Sep 05, 2024 at 12:55:52PM +0000, Shameerali Kolothum Thodi
-> > wrote:
-> > > > The main takeaway from the discussion is to
-> > > > 1) Turn the vSMMU module into a pluggable one, like intel-iommu
-> > > > 2) Move the per-SMMU pxb bus and device auto-assign into libvirt
-> > > >
-> > > > Apart from the multi-vSMMU thing, there's basic nesting series:
-> > > > 0) Keep updating to the latest kernel uAPIs to support nesting
-> > >
-> > > By this you mean the old HWPT based nested-smmuv3 support?
-> >
-> > HWPT + vIOMMU. The for-viommu/virq branches that I shared in my
-> > kernel series have those changes. Invalidations is done via the
-> > vIOMMU infrastructure.
-> >
-> > > >
-> > > > I was trying to do all these three, but apparently too ambitious.
-> > > > The kernel side of work is still taking a lot of my bandwidth. So
-> > > > far I had almost-zero progress on task (1) and completely-zero on
-> > > > task (2).
-> > > >
-> > > > <-- Help Needed --->
-> > > > So, I'm wondering if anyone(s) might have some extra bandwidth in
-> > > > the following months helping these two tasks, either of which can
-> > > > be a standalone project I think.
-> > > >
-> > > > For task (0), I think I can keep updating the uAPI part, although
-> > > > it'd need some help for reviews, which I was hoping to occur after
-> > > > Intel sends the QEMU nesting backend patches. Once we know how big
-> > > > the rework is going to be, we may need to borrow some help at that
-> > > > point once again..
-> > >
-> > > I might have some bandwidth starting October and can take a look at
-> > > task 1 above. I haven't gone through the VIOMMU API model completely
-> > > yet and plan to do that soon.
-> >
+On Mon, Sep 30, 2024 at 07:20:56PM +0000, Sean Hefty wrote:
+> > > I'm sure rsocket has its place with much smaller transfer sizes, but
+> > > this is very different.
+> > 
+> > Is it possible to make rsocket be friendly with large buffers (>4GB) like the VM
+> > use case?
 > 
-> I had  an initial look at this and also had some discussions with Eric at KVM
-> Forum(Thanks Eric!).
-
-Wow, thank both of you!
-
-> Going through the code, is it ok to introduce a "pci-bus" for the proposed
-> nested SMMUv3 device which will create the link between the SMMUv3 dev
-> and the associated root complex(pxb-pcie).
+> If you can perform large VM migrations using streaming sockets, rsockets is likely usable, but it will involve data copies.  The problem is the socket API semantics.
 > 
-> Something like below,
+> There are rsocket API extensions (riowrite, riomap) to support RDMA write operations.  This avoids the data copy at the target, but not the sender.   (riowrite follows the socket send semantics on buffer ownership.)
 > 
-> -device pxb-pcie,id=pcie.1,bus_nr=2,bus=pcie.0 \
-> -device arm-nested-smmuv3,pci-bus=pcie.1 \
-> -device pcie-root-port,id=pcie.port1,bus=pcie.1 \
-> -device vfio-pci,host=0000:75:00.1, bus=pcie.port1 \
-> ...
-> -device pxb-pcie,id=pcie.2,bus_nr=8,bus=pcie.0 \
-> -device arm-nested-smmuv3,pci-bus=pcie.2 \
-> -device pcie-root-port,id=pcie.port2,bus=pcie.2 \
-> -device vfio-pci,host=0000:75:00.2, bus=pcie.port2 \
-> 
-> This way we can invoke the pci_setup_iommu() with the
-> right PCIBus during the nested SMMUv3 device realize fn.
-> 
-> Please let me know, if this works/scales with all the use cases we have.
+> It may be possible to enhance rsockets with MSG_ZEROCOPY or io_uring extensions to enable zero-copy for large transfers, but that's not something I've looked at.  True zero copy may require combining MSG_ZEROCOPY with riowrite, but then that moves further away from using traditional socket calls.
 
-That looks nice to me. Hopefully, IORT or Device Tree would be
-easy to tie to the corresponding pci-bus as well..
+Thanks, Sean.
 
-> Also Eric mentioned that when he initially added the support for SMMUv3,
-> the initial approach was -device based solution, but later changed to machine
-> option instead based on review comments. I managed to find the link where
-> this change was proposed(by Peter),
-> 
-> https://lore.kernel.org/all/CAFEAcA_H+sraWNVhEZc48eS11n6dC9CyEwTL44tPERiPBO+hbw@mail.gmail.com/
-> 
-> I hope the use cases we now have make it reasonable to introduce a "-device arm-nested-smmuv3" model.
-> Please let me know if there are still objections to going this way.
+One thing to mention is that QEMU has QIO_CHANNEL_WRITE_FLAG_ZERO_COPY,
+which already supports MSG_ZEROCOPY but only on sender side, and only if
+when multifd is enabled, because it requires page pinning and alignments,
+while it's more challenging to pin a random buffer than a guest page.
 
-I assume so. With multiple smmuv3 devices in the VM, we would need
-this kinda flexibility to create them.
+Nobody moved on yet with zerocopy recv for TCP; there might be similar
+challenges that normal socket APIs may not work easily on top of current
+iochannel design, but I don't know well to say..
 
-And FYI, I also found some resource in NVIDIA who will help me on
-the QEMU workload, including our remaining task -- libvirt. I'll
-align with them in the days ahead, and will keep all of us updated
-after.
+Not sure whether it means there can be a shared goal with QEMU ultimately
+supporting better zerocopy via either TCP or RDMA.  If that's true, maybe
+there's chance we can move towards rsocket with all the above facilities,
+meanwhile RDMA can, ideally, run similiarly like TCP with the same (to be
+enhanced..) iochannel API, so that it can do zerocopy on both sides with
+either transport.
 
-Thanks!
-Nicolin
+-- 
+Peter Xu
+
 
