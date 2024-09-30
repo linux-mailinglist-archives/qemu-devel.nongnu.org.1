@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55EFC98AD2E
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 21:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F7198AD23
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 21:43:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svMGX-0006sA-DQ; Mon, 30 Sep 2024 15:41:05 -0400
+	id 1svMGX-0006s9-FX; Mon, 30 Sep 2024 15:41:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1svMGT-0006pc-NR
+ id 1svMGT-0006pb-N9
  for qemu-devel@nongnu.org; Mon, 30 Sep 2024 15:41:02 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1svMGR-00020X-7b
+ id 1svMGR-00020g-7i
  for qemu-devel@nongnu.org; Mon, 30 Sep 2024 15:41:01 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48UIubjA017816;
- Mon, 30 Sep 2024 19:40:53 GMT
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48UIuavs010900;
+ Mon, 30 Sep 2024 19:40:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- from:to:cc:subject:date:message-id; s=corp-2023-11-20; bh=Er3afh
- KHVsHwYJZzoe2mWOD1w2rl0Mm69OVmGep4hS0=; b=jcIOJkj9SSLwmv4tdz+nys
- owl3VqWFu4vbThxr2SMEVRbtBqvi5YIjqcx0TrxbLdwTun66v4469rkNddU7sYl8
- SOXo1y3V5og8hbRuoiMW6jVrTusGMHur+BhhURLytF9tFvnjiO5ba5Zx52Rwh8cW
- k/FAzwo4E96Gx38iSrtymr2pSMGQXtehERnWkmO62A4+//qtGv2jYWUmg/ZG1Lzd
- 0ZmtM7sRpb8+SO0DQ5J4xjR3PZVBLaC046cV/dW+01fCWf3CuskUlFpyl3HqSm5h
- NysT8bWsrqP0KiwHIFQj9qdAbv8vn24aGAAqEijeI8tu5lKdet0RALQX0GQ6nkcw
- ==
+ from:to:cc:subject:date:message-id:in-reply-to:references; s=
+ corp-2023-11-20; bh=XPUCEy1XwbNzVfK9wtX+YFAg5j38iy3gw15i0pRy/L0=; b=
+ aGWCDr4NCUDZ/zE31PWy1OVh9l7puV00LT0KQlRJ4GHjfX+/EUIrPpLAqPXhziCj
+ eUM8yj3YovqpBHHIki2LcmiwNAi0rcQcRHhsfacw/7QUkGP//AWVd6QnxiEl3D8L
+ PfnoDg9/cyTBG6FSmOi2ggFZGwcMrqPazJJoW+S7vv6z/Xj+OPdHZZaSBxJ+gW7K
+ Wx2Elw96KSqhAChBlrhzWo1KnZchYJMx2rNEAZS2pTg0+GOcZ7mZ/mM9HHp+Dt0N
+ jDPM5VEXuC9WO4L3btjt8RlvxB2dAlpZMLn6iYaC2k7asj49W8HYEAqSL76iqvkz
+ B89bUwp+P0vX+VDQxqCVdg==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x87d4m30-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x9ucmpv4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Sep 2024 19:40:52 +0000 (GMT)
+ Mon, 30 Sep 2024 19:40:54 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 48UJWkVL012531; Mon, 30 Sep 2024 19:40:52 GMT
+ with ESMTP id 48UIsC2m012568; Mon, 30 Sep 2024 19:40:53 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 41x8868trf-1
+ 41x8868tsf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Sep 2024 19:40:52 +0000
+ Mon, 30 Sep 2024 19:40:53 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48UJepUi028204;
- Mon, 30 Sep 2024 19:40:51 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48UJepUk028204;
+ Mon, 30 Sep 2024 19:40:53 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 41x8868thj-1; Mon, 30 Sep 2024 19:40:51 +0000
+ ESMTP id 41x8868thj-2; Mon, 30 Sep 2024 19:40:53 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,10 +62,12 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 00/13] Live update: cpr-transfer
-Date: Mon, 30 Sep 2024 12:40:31 -0700
-Message-Id: <1727725244-105198-1-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 01/13] machine: alloc-anon option
+Date: Mon, 30 Sep 2024 12:40:32 -0700
+Message-Id: <1727725244-105198-2-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1727725244-105198-1-git-send-email-steven.sistare@oracle.com>
+References: <1727725244-105198-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-09-30_19,2024-09-30_01,2024-09-30_01
@@ -74,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0 adultscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2408220000 definitions=main-2409300142
-X-Proofpoint-GUID: iS2gWaLwEN2xI5Fh6p62Yz3q5nZOnQWf
-X-Proofpoint-ORIG-GUID: iS2gWaLwEN2xI5Fh6p62Yz3q5nZOnQWf
+X-Proofpoint-GUID: lrVHDFyKKakh7TzuWoYXuZ2LaiJjZDFP
+X-Proofpoint-ORIG-GUID: lrVHDFyKKakh7TzuWoYXuZ2LaiJjZDFP
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -101,179 +103,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-What?
+Allocate anonymous memory using mmap MAP_ANON or memfd_create depending
+on the value of the anon-alloc machine property.  This option applies to
+memory allocated as a side effect of creating various devices. It does
+not apply to memory-backend-objects, whether explicitly specified on
+the command line, or implicitly created by the -m command line option.
 
-This patch series adds the live migration cpr-transfer mode, which
-allows the user to transfer a guest to a new QEMU instance on the same
-host with minimal guest pause time, by preserving guest RAM in place,
-albeit with new virtual addresses in new QEMU, and by preserving device
-file descriptors.
+The memfd option is intended to support new migration modes, in which the
+memory region can be transferred in place to a new QEMU process, by sending
+the memfd file descriptor to the process.  Memory contents are preserved,
+and if the mode also transfers device descriptors, then pages that are
+locked in memory for DMA remain locked.  This behavior is a pre-requisite
+for supporting vfio, vdpa, and iommufd devices with the new modes.
 
-The new user-visible interfaces are:
-  * cpr-transfer (MigMode migration parameter)
-  * cpr-uri (migration parameter)
-  * cpr-uri (command-line argument)
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+---
+ hw/core/machine.c   | 19 +++++++++++++++++++
+ include/hw/boards.h |  1 +
+ qapi/machine.json   | 14 ++++++++++++++
+ qemu-options.hx     | 11 +++++++++++
+ system/physmem.c    | 35 +++++++++++++++++++++++++++++++++++
+ system/trace-events |  3 +++
+ 6 files changed, 83 insertions(+)
 
-The user sets the mode parameter before invoking the migrate command.
-In this mode, the user starts new QEMU on the same host as old QEMU, with
-the same arguments as old QEMU, plus the -incoming and the -cpr-uri options.
-The user issues the migrate command to old QEMU, which stops the VM, saves
-state to the migration channels, and enters the postmigrate state.  Execution
-resumes in new QEMU.
-
-Memory-backend objects must have the share=on attribute, but
-memory-backend-epc is not supported.  The VM must be started
-with the '-machine anon-alloc=memfd' option, which allows anonymous
-memory to be transferred in place to the new process.
-
-This mode requires a second migration channel, specified by the cpr-uri
-migration property on the outgoing side, and by the cpr-uri QEMU command-line
-option on the incoming side.  The channel must be a type, such as unix socket,
-that supports SCM_RIGHTS.
-
-Why?
-
-This mode has less impact on the guest than any other method of updating
-in place.  The pause time is much lower, because devices need not be torn
-down and recreated, DMA does not need to be drained and quiesced, and minimal
-state is copied to new QEMU.  Further, there are no constraints on the guest.
-By contrast, cpr-reboot mode requires the guest to support S3 suspend-to-ram,
-and suspending plus resuming vfio devices adds multiple seconds to the
-guest pause time.  Lastly, there is no loss of connectivity to the guest,
-because chardev descriptors remain open and connected.
-
-These benefits all derive from the core design principle of this mode,
-which is preserving open descriptors.  This approach is very general and
-can be used to support a wide variety of devices that do not have hardware
-support for live migration, including but not limited to: vfio, chardev,
-vhost, vdpa, and iommufd.  Some devices need new kernel software interfaces
-to allow a descriptor to be used in a process that did not originally open it.
-
-How?
-
-All memory that is mapped by the guest is preserved in place.  Indeed,
-it must be, because it may be the target of DMA requests, which are not
-quiesced during cpr-transfer.  All such memory must be mmap'able in new QEMU.
-This is easy for named memory-backend objects, as long as they are mapped
-shared, because they are visible in the file system in both old and new QEMU.
-Anonymous memory must be allocated using memfd_create rather than MAP_ANON,
-so the memfd's can be sent to new QEMU.  Pages that were locked in memory
-for DMA in old QEMU remain locked in new QEMU, because the descriptor of
-the device that locked them remains open.
-
-cpr-transfer preserves descriptors by sending them to new QEMU via the
-cpr-uri, which must support SCM_RIGHTS, and by sending the unique name
-and value of each descriptor to new QEMU
-via CPR state.
-
-For device descriptors, new QEMU reuses the descriptor when creating the
-device, rather than opening it again.  For memfd descriptors, new QEMU
-mmap's the preserved memfd when a ramblock is created.
-
-CPR state cannot be sent over the normal migration channel, because devices
-and backends are created prior to reading the channel, so this mode sends
-CPR state over a second migration channel, specified by cpr-uri.  New QEMU
-reads the second channel prior to creating devices or backends.
-
-Example:
-
-In this example, we simply restart the same version of QEMU, but in
-a real scenario one would use a new QEMU binary path in terminal 2.
-
-  Terminal 1: start old QEMU
-  # qemu-kvm -monitor stdio -object
-  memory-backend-file,id=ram0,size=4G,mem-path=/dev/shm/ram0,share=on
-  -m 4G -machine anon-alloc=memfd ...
-
-  Terminal 2: start new QEMU
-  # qemu-kvm ... -incoming unix:vm.sock -cpr-uri unix:cpr.sock
-
-  Terminal 1:
-  QEMU 9.1.50 monitor - type 'help' for more information
-  (qemu) info status
-  VM status: running
-  (qemu) migrate_set_parameter mode cpr-transfer
-  (qemu) migrate_set_parameter cpr-uri unix:cpr.sock
-  (qemu) migrate -d unix:vm.sock
-  (qemu) info status
-  VM status: paused (postmigrate)
-
-  Terminal 2:
-  QEMU 9.1.50 monitor - type 'help' for more information
-  (qemu) info status
-  VM status: running
-
-This patch series implements a minimal version of cpr-transfer.  Additional
-series are ready to be posted to deliver the complete vision described
-above, including
-  * vfio
-  * chardev
-  * vhost and tap
-  * blockers
-  * migration-test cases
-  * cpr-exec mode
-
-Works in progress include:
-  * vdpa
-  * iommufd
-
-Changes in V2:
-  * cpr-transfer is the first new mode proposed, and cpr-exec is deferred
-  * anon-alloc does not apply to memory-backend-object
-  * replaced hack with proper synchronization between source and target
-  * defined QEMU_CPR_FILE_MAGIC
-  * addressed misc review comments
-
-The first 6 patches below are foundational and are needed for both cpr-transfer
-mode and the proposed cpr-exec mode.  The last 7 patches are specific to
-cpr-transfer and implement the mechanisms for sharing state across a socket
-using SCM_RIGHTS.
-
-Steve Sistare (13):
-  machine: alloc-anon option
-  migration: cpr-state
-  migration: save cpr mode
-  migration: stop vm earlier for cpr
-  physmem: preserve ram blocks for cpr
-  hostmem-memfd: preserve for cpr
-  migration: SCM_RIGHTS for QEMUFile
-  migration: VMSTATE_FD
-  migration: cpr-transfer save and load
-  migration: cpr-uri parameter
-  migration: cpr-uri option
-  migration: split qmp_migrate
-  migration: cpr-transfer mode
-
- backends/hostmem-memfd.c       |  12 +-
- hw/core/machine.c              |  19 +++
- include/hw/boards.h            |   1 +
- include/migration/cpr.h        |  38 ++++++
- include/migration/vmstate.h    |   9 ++
- migration/cpr-transfer.c       |  81 +++++++++++++
- migration/cpr.c                | 269 +++++++++++++++++++++++++++++++++++++++++
- migration/meson.build          |   2 +
- migration/migration-hmp-cmds.c |  10 ++
- migration/migration.c          | 116 ++++++++++++++++--
- migration/migration.h          |   2 +
- migration/options.c            |  37 +++++-
- migration/options.h            |   1 +
- migration/qemu-file.c          |  83 ++++++++++++-
- migration/qemu-file.h          |   2 +
- migration/ram.c                |   2 +
- migration/trace-events         |   7 ++
- migration/vmstate-types.c      |  33 +++++
- qapi/machine.json              |  14 +++
- qapi/migration.json            |  45 ++++++-
- qemu-options.hx                |  19 +++
- stubs/vmstate.c                |   7 ++
- system/physmem.c               |  58 +++++++++
- system/trace-events            |   3 +
- system/vl.c                    |  10 ++
- 25 files changed, 857 insertions(+), 23 deletions(-)
- create mode 100644 include/migration/cpr.h
- create mode 100644 migration/cpr-transfer.c
- create mode 100644 migration/cpr.c
-
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index adaba17..a89a32b 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -460,6 +460,20 @@ static void machine_set_mem_merge(Object *obj, bool value, Error **errp)
+     ms->mem_merge = value;
+ }
+ 
++static int machine_get_anon_alloc(Object *obj, Error **errp)
++{
++    MachineState *ms = MACHINE(obj);
++
++    return ms->anon_alloc;
++}
++
++static void machine_set_anon_alloc(Object *obj, int value, Error **errp)
++{
++    MachineState *ms = MACHINE(obj);
++
++    ms->anon_alloc = value;
++}
++
+ static bool machine_get_usb(Object *obj, Error **errp)
+ {
+     MachineState *ms = MACHINE(obj);
+@@ -1078,6 +1092,11 @@ static void machine_class_init(ObjectClass *oc, void *data)
+     object_class_property_set_description(oc, "mem-merge",
+         "Enable/disable memory merge support");
+ 
++    object_class_property_add_enum(oc, "anon-alloc", "AnonAllocOption",
++                                   &AnonAllocOption_lookup,
++                                   machine_get_anon_alloc,
++                                   machine_set_anon_alloc);
++
+     object_class_property_add_bool(oc, "usb",
+         machine_get_usb, machine_set_usb);
+     object_class_property_set_description(oc, "usb",
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 5966069..5a87647 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -393,6 +393,7 @@ struct MachineState {
+     bool enable_graphics;
+     ConfidentialGuestSupport *cgs;
+     HostMemoryBackend *memdev;
++    AnonAllocOption anon_alloc;
+     /*
+      * convenience alias to ram_memdev_id backend memory region
+      * or to numa container memory region
+diff --git a/qapi/machine.json b/qapi/machine.json
+index a6b8795..d4a63f5 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1898,3 +1898,17 @@
+ { 'command': 'x-query-interrupt-controllers',
+   'returns': 'HumanReadableText',
+   'features': [ 'unstable' ]}
++
++##
++# @AnonAllocOption:
++#
++# An enumeration of the options for allocating anonymous guest memory.
++#
++# @mmap: allocate using mmap MAP_ANON
++#
++# @memfd: allocate using memfd_create
++#
++# Since: 9.2
++##
++{ 'enum': 'AnonAllocOption',
++  'data': [ 'mmap', 'memfd' ] }
+diff --git a/qemu-options.hx b/qemu-options.hx
+index d94e2cb..90ab943 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -38,6 +38,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+     "                nvdimm=on|off controls NVDIMM support (default=off)\n"
+     "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
+     "                hmat=on|off controls ACPI HMAT support (default=off)\n"
++    "                anon-alloc=mmap|memfd allocate anonymous guest RAM using mmap MAP_ANON or memfd_create (default: mmap)\n"
+     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
+     "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n",
+     QEMU_ARCH_ALL)
+@@ -101,6 +102,16 @@ SRST
+         Enables or disables ACPI Heterogeneous Memory Attribute Table
+         (HMAT) support. The default is off.
+ 
++    ``anon-alloc=mmap|memfd``
++        Allocate anonymous guest RAM using mmap MAP_ANON (the default)
++        or memfd_create.  This option applies to memory allocated as a
++        side effect of creating various devices. It does not apply to
++        memory-backend-objects, whether explicitly specified on the
++        command line, or implicitly created by the -m command line
++        option.
++
++        Some migration modes require anon-alloc=memfd.
++
+     ``memory-backend='id'``
+         An alternative to legacy ``-mem-path`` and ``mem-prealloc`` options.
+         Allows to use a memory backend as main RAM.
+diff --git a/system/physmem.c b/system/physmem.c
+index dc1db3a..174f7e0 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -47,6 +47,7 @@
+ #include "qemu/qemu-print.h"
+ #include "qemu/log.h"
+ #include "qemu/memalign.h"
++#include "qemu/memfd.h"
+ #include "exec/memory.h"
+ #include "exec/ioport.h"
+ #include "sysemu/dma.h"
+@@ -69,6 +70,8 @@
+ 
+ #include "qemu/pmem.h"
+ 
++#include "qapi/qapi-types-migration.h"
++#include "migration/options.h"
+ #include "migration/vmstate.h"
+ 
+ #include "qemu/range.h"
+@@ -1849,6 +1852,35 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+                 qemu_mutex_unlock_ramlist();
+                 return;
+             }
++
++        } else if (current_machine->anon_alloc == ANON_ALLOC_OPTION_MEMFD &&
++                   !object_dynamic_cast(new_block->mr->parent_obj.parent,
++                                        TYPE_MEMORY_BACKEND)) {
++            size_t max_length = new_block->max_length;
++            MemoryRegion *mr = new_block->mr;
++            const char *name = memory_region_name(mr);
++
++            new_block->mr->align = QEMU_VMALLOC_ALIGN;
++            new_block->flags |= RAM_SHARED;
++
++            if (new_block->fd == -1) {
++                new_block->fd = qemu_memfd_create(name, max_length + mr->align,
++                                                  0, 0, 0, errp);
++            }
++
++            if (new_block->fd >= 0) {
++                int mfd = new_block->fd;
++                qemu_set_cloexec(mfd);
++                new_block->host = file_ram_alloc(new_block, max_length, mfd,
++                                                 false, 0, errp);
++            }
++            if (!new_block->host) {
++                qemu_mutex_unlock_ramlist();
++                return;
++            }
++            memory_try_enable_merging(new_block->host, new_block->max_length);
++            free_on_error = true;
++
+         } else {
+             new_block->host = qemu_anon_ram_alloc(new_block->max_length,
+                                                   &new_block->mr->align,
+@@ -1932,6 +1964,9 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+         ram_block_notify_add(new_block->host, new_block->used_length,
+                              new_block->max_length);
+     }
++    trace_ram_block_add(memory_region_name(new_block->mr), new_block->flags,
++                        new_block->fd, new_block->used_length,
++                        new_block->max_length);
+     return;
+ 
+ out_free:
+diff --git a/system/trace-events b/system/trace-events
+index 074d001..4669411 100644
+--- a/system/trace-events
++++ b/system/trace-events
+@@ -47,3 +47,6 @@ dirtylimit_vcpu_execute(int cpu_index, int64_t sleep_time_us) "CPU[%d] sleep %"P
+ 
+ # cpu-throttle.c
+ cpu_throttle_set(int new_throttle_pct)  "set guest CPU throttled by %d%%"
++
++#physmem.c
++ram_block_add(const char *name, uint32_t flags, int fd, size_t used_length, size_t max_length) "%s, flags %u, fd %d, len %lu, maxlen %lu"
 -- 
 1.8.3.1
 
