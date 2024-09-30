@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE41989D4E
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A03B989DBA
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:12:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svC9y-0006hM-Fk; Mon, 30 Sep 2024 04:53:38 -0400
+	id 1svCR1-0007A7-Kb; Mon, 30 Sep 2024 05:11:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svC9u-0006Lj-LO; Mon, 30 Sep 2024 04:53:34 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svC9s-0002FN-T5; Mon, 30 Sep 2024 04:53:34 -0400
-Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:b1cb:0:640:2a1e:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id A5E9F60A82;
- Mon, 30 Sep 2024 11:53:29 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b737::1:2c] (unknown
- [2a02:6b8:b081:b737::1:2c])
- by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id NrUT1U1IdiE0-PSY7miTJ; Mon, 30 Sep 2024 11:53:28 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1727686409;
- bh=31IalTs5yR45JyTuoL2KSX6vOE1vwE3pLzEHWDHIfW8=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=ipObI/rS30nTnhOPIlhBpQoiH1R779AIAIybqot72K9yXO1NdonjlpCMpdkAEUalb
- yNgnxkMH9vidU+YwE0u2tzNV9Iq5LeEInv5D2vjbLVYrh4PHrLjQ5NxY3stB7TFs+W
- uau9OHKm7E33CDCogpV6zvpoWgwNvW9eU+KXOlOs=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <4a8cbc61-b299-4df0-bc69-23fbca9829d2@yandex-team.ru>
-Date: Mon, 30 Sep 2024 11:53:23 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svCQy-00072c-P7
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:11:12 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svCQv-0004Td-BR
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:11:12 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-37ce8458ae3so784889f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 02:11:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1727687465; x=1728292265; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+ihK9o5dHmtKhPgrnG29oGIU3kZSMmFzLphFn+0DByE=;
+ b=L71YxnptPr54uFrX9MBVt3J3HWiALhZN8WZifaGPRVmE675J/KV0ZRbqywSyrzpUCi
+ 8DN7fuxVZQTcAlO+iPKyKmnuBqWUt4HQPtj1R0bJa/vNIrHzQyVlPG3hlVmgoMvXrpW6
+ fPNGQb7K2WFH3RQyWSQ2YsmEi5XSPe1ge2AqbQDLHNtIzLQ6UpGwwyL5Gn0V/qzT+wFI
+ QD1gDBOF9cQuE1cDiDii0AGwNur78GaZJeKrc3rQ/BvOPJq+fz6PH4fOXOMwJJBckdlM
+ Kun37V9mOENaPmqAh/14WQKNuk+6PYaQzuZUmiei+aFlFZvZ1jsmQqStSBwswL9qhI3M
+ kALA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727687465; x=1728292265;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+ihK9o5dHmtKhPgrnG29oGIU3kZSMmFzLphFn+0DByE=;
+ b=iQ3Mudk4eTFTPfAG2OCMWylISHWY1lpBNRrL+4N5uy+bpHXnej0Khwv9lZHbG6I5nZ
+ z8+WnQW3URgM+1twMmoYojKhWdaE5zG379fpVgSHEi37zqcoZnBmco4KG0oiwJ27Bmgg
+ CTqAqvCvj6OuhrB2bLen2v+P8L9kIuICeIMGYWS6Y9ODqOngyjuJwtSdMJr0/Jp3YmCM
+ gVjhZtWf+BdKpjdvcr9DBy3SYbFaPNxhYBSAXjl3SJ0DSrx1BTH5uGyF9JuoJr9/7jll
+ uNEM3Idou4VFh3rdVVJt3AqOXM7ruUBlG5TP6ylzoxyrNJ7No+eFTjRKJi7unzh3Xyim
+ ePnA==
+X-Gm-Message-State: AOJu0YzNfZO32IqLb+09lei4tjdomf1muQzl+PR9Gs1TEUtruXKN5uF7
+ 8v2CPNcsjKNxgly9vNY7gZsm9FDe0rG4RQ7Q038F8f5+FyRvwsMvIdmbzA8TWfQFN0tCkCngCXW
+ j
+X-Google-Smtp-Source: AGHT+IHu1eXryV/Isywn6vAGs1g0F5qBPvQiNUxXWGyLCr2xT4deq+RgOzUEuGCFlA6qqms9orPoWg==
+X-Received: by 2002:a5d:530c:0:b0:37c:d1fb:82f4 with SMTP id
+ ffacd0b85a97d-37cd5b04d71mr10031316f8f.36.1727687465351; 
+ Mon, 30 Sep 2024 02:11:05 -0700 (PDT)
+Received: from localhost.localdomain (183.red-88-28-18.dynamicip.rima-tde.net.
+ [88.28.18.183]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42e969ddb64sm144649535e9.8.2024.09.30.02.11.03
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 30 Sep 2024 02:11:04 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Anton Johansson <anjo@rev.ng>
+Subject: [PATCH 00/12] target/mips: Remove target-specific endianness knowledge
+Date: Mon, 30 Sep 2024 11:10:49 +0200
+Message-ID: <20240930091101.40591-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 17/22] tests: fix -Werror=maybe-uninitialized
- false-positive
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>, Fam Zheng <fam@euphon.net>,
- Song Gao <gaosong@loongson.cn>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, qemu-block@nongnu.org,
- Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Greg Kurz <groug@kaod.org>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
- Eric Blake <eblake@redhat.com>, Hyman Huang <yong.huang@smartx.com>,
- Kevin Wolf <kwolf@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, John Snow <jsnow@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Jesper Devantier <foss@defmacro.it>,
- Peter Xu <peterx@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Klaus Jensen <its@irrelevant.dk>, Keith Busch <kbusch@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Yuval Shaia <yuval.shaia.ml@gmail.com>,
- Bin Meng <bin.meng@windriver.com>
-References: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
- <20240930081458.1926382-18-marcandre.lureau@redhat.com>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20240930081458.1926382-18-marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Yandex-Filter: 1
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,18 +93,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.09.24 11:14, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau<marcandre.lureau@redhat.com>
-> 
-> ../tests/unit/test-block-iothread.c:773:17: error: ‘job’ may be used uninitialized [-Werror=maybe-uninitialized]
-> /usr/include/glib-2.0/glib/gtestutils.h:73:53: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
-> 
-> Signed-off-by: Marc-André Lureau<marcandre.lureau@redhat.com>
+Get vCPU endianness from CP0::BE bit.
+Propagate endianness at the board level, using QOM property.
+Remove target-specific endianness knowledge from target/.
 
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Philippe Mathieu-Daudé (12):
+  target/mips: Declare cpu_is_bigendian_env() in 'internal.h'
+  target/mips: Introduce mo_endian_env() helper
+  target/mips: Replace MO_TE by  mo_endian_env() in get_pte()
+  target/mips: Convert mips16e decr_and_load/store() macros to functions
+  target/mips: Introduce mo_endian() helper
+  target/mips: Explode MO_TExx -> MO_TE | MO_xx
+  target/mips: Replace MO_TE by mo_endian()
+  target/mips: Expose MIPSCPU::is_big_endian property
+  hw/mips/cps: Set the vCPU 'cpu-big-endian' property
+  hw/mips: Have mips_cpu_create_with_clock() take an endianness argument
+  target/mips: Remove target-specific code in mips_cpu_reset_hold()
+  hw/mips/malta: Remove TARGET_BIG_ENDIAN #ifdef'ry
+
+ include/hw/mips/cps.h                     |   1 +
+ target/mips/cpu.h                         |   7 +-
+ target/mips/internal.h                    |  11 ++
+ target/mips/tcg/translate.h               |   5 +
+ hw/mips/cps.c                             |   4 +
+ hw/mips/fuloong2e.c                       |   2 +-
+ hw/mips/jazz.c                            |   2 +-
+ hw/mips/loongson3_virt.c                  |   2 +-
+ hw/mips/malta.c                           |   9 +-
+ hw/mips/mipssim.c                         |   2 +-
+ target/mips/cpu.c                         |  17 ++-
+ target/mips/tcg/ldst_helper.c             |  15 +--
+ target/mips/tcg/msa_helper.c              |   2 +-
+ target/mips/tcg/mxu_translate.c           |  18 ++--
+ target/mips/tcg/sysemu/tlb_helper.c       |   2 +-
+ target/mips/tcg/translate.c               | 120 +++++++++++-----------
+ target/mips/tcg/tx79_translate.c          |   8 +-
+ target/mips/tcg/micromips_translate.c.inc |  22 ++--
+ target/mips/tcg/mips16e_translate.c.inc   | 109 ++++++++++----------
+ target/mips/tcg/nanomips_translate.c.inc  |  32 +++---
+ 20 files changed, 212 insertions(+), 178 deletions(-)
 
 -- 
-Best regards,
-Vladimir
+2.45.2
 
 
