@@ -2,136 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C27D989A8B
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 08:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F90B989BD5
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 09:48:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sv9fq-0002Po-U3; Mon, 30 Sep 2024 02:14:32 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1svAYa-0005jn-4C; Mon, 30 Sep 2024 03:11:07 -0400
+Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sv9fT-0002Lr-LQ
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 02:13:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sv9el-0003OF-BN
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 02:13:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727676700;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=pGInMw/3XFrZSzuNuSvc0thMedsEaGsWI/UvMX4cdJM=;
- b=e4iyD1rWDch0SXTdqf+oDq4qUoU/n7guIlVrh3vrPP2MwGjO1shJlDVRSggWhyCHOa8l3O
- qOddlHTLPvC78TTDD/MXHxnp20SR8dSXx18iewMQVdCISDWSMr5KyharyZ+lQlH3C9NlSN
- yaD+/dCwhGQdhQ6qSAJyUG7KbZ51C4E=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-9B5RxJZ2M4ykVsxasIewHQ-1; Mon, 30 Sep 2024 02:11:38 -0400
-X-MC-Unique: 9B5RxJZ2M4ykVsxasIewHQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37cd2044558so1634194f8f.1
- for <qemu-devel@nongnu.org>; Sun, 29 Sep 2024 23:11:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727676697; x=1728281497;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pGInMw/3XFrZSzuNuSvc0thMedsEaGsWI/UvMX4cdJM=;
- b=OKdKW1+JJ0egtWbOTKiqaHwUV/kXlQpcLEDjZGu+QQ3TW7Z9cH2QPVR/C8MkakiUGe
- SUdlUeulkMALSFM47LuivuSc7xAFvECxCK/iy0X5FfO1ITWmyDqyCe3EbJVY8o18tdVa
- eaJPLKMOWSMGfQPL46staZSij8GxHlOCkm+xvdLkatnA9QoWOFL0WUfUrm5cq7Qdywwp
- b+PcvA/F8k6uLwtKFVOEC5utSgrP4UQRQPo1P/ith53lHDrI/eFnCQqSD2T/hwvD41PX
- Ty1OIuuy5llnhiTgeXFggm6qgsLiTY7kBQakrELiTAC6UOnP4yc8Nkr4Z+Xn/C8ds/8+
- XTGQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXnMH3QZEFxF2uDUPAPNPrg4uBgdDzo3ltqJABWNHHJKGwG1jzTqxe/JVTtfdNpOMQCc//CgjgJeKAV@nongnu.org
-X-Gm-Message-State: AOJu0Yxt3FBHpR0UztkvxeHHERP9dBr9hlr/rOrv7CTsIs71Npqy+5ft
- YQaUkTZOmFYFZonw22C4QdxYcE8m4By2FDxAToe3zxQdAKLseCU3c+jxTf3Xsug6wnXYJps7Ks7
- 2wxZMDt0MerIcQ8g0+2Ig5u7rUKicwDgNj3GSOL5fKFqXh/8pe5lj
-X-Received: by 2002:a5d:6741:0:b0:378:e8a9:98c5 with SMTP id
- ffacd0b85a97d-37cd5aaa6d4mr6398006f8f.34.1727676696961; 
- Sun, 29 Sep 2024 23:11:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFrtnP7Rd2/dy/ZZ69asTz/Ey1jO3goQLUcHJSX4Ors9equtPG/xe9QIywu5khnEtvbFXd3Cw==
-X-Received: by 2002:a5d:6741:0:b0:378:e8a9:98c5 with SMTP id
- ffacd0b85a97d-37cd5aaa6d4mr6397984f8f.34.1727676696503; 
- Sun, 29 Sep 2024 23:11:36 -0700 (PDT)
-Received: from [192.168.0.7] (ip-109-42-48-176.web.vodafone.de.
- [109.42.48.176]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd5748918sm8117544f8f.107.2024.09.29.23.11.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 29 Sep 2024 23:11:36 -0700 (PDT)
-Message-ID: <614a48bd-0130-434a-8a9b-6e3059254f2a@redhat.com>
-Date: Mon, 30 Sep 2024 08:11:34 +0200
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1svAY6-0005iS-Vz
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 03:10:27 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1svAXM-0006iX-J6
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 03:10:14 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8DxhbDpR_pm_HIEAA--.4289S3;
+ Mon, 30 Sep 2024 14:40:41 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMBxHeToR_pms+wVAA--.59376S2;
+ Mon, 30 Sep 2024 14:40:40 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org
+Subject: [PATCH v2] target/loongarch: Add steal time support on migration
+Date: Mon, 30 Sep 2024 14:40:40 +0800
+Message-Id: <20240930064040.753929-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/18] pc-bios/s390-ccw: Remove panics from ISO IPL path
-To: Jared Rossi <jrossi@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org
-Cc: frankja@linux.ibm.com
-References: <20240927005117.1679506-1-jrossi@linux.ibm.com>
- <20240927005117.1679506-8-jrossi@linux.ibm.com>
- <77cad234-524d-4166-ab1b-10666c8c676e@redhat.com>
- <00351eda-78c2-46f6-a122-3527736d0fa5@linux.ibm.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <00351eda-78c2-46f6-a122-3527736d0fa5@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- T_SPF_HELO_TEMPERROR=0.01,
+X-CM-TRANSID: qMiowMBxHeToR_pms+wVAA--.59376S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, T_SPF_HELO_TEMPERROR=0.01,
  T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -148,125 +59,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/09/2024 19.15, Jared Rossi wrote:
-> 
-> On 9/27/24 11:02 AM, Thomas Huth wrote:
->> On 27/09/2024 02.51, jrossi@linux.ibm.com wrote:
->>> From: Jared Rossi <jrossi@linux.ibm.com>
->>>
->>> Remove panic-on-error from IPL ISO El Torito specific functions so that 
->>> error
->>> recovery may be possible in the future.
->>>
->>> Functions that would previously panic now provide a return code.
->>>
->>> Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
->>>
->>> ---
->>>   pc-bios/s390-ccw/bootmap.h  | 17 +++++++---
->>>   pc-bios/s390-ccw/s390-ccw.h |  1 +
->>>   pc-bios/s390-ccw/bootmap.c  | 64 ++++++++++++++++++++++++-------------
->>>   3 files changed, 55 insertions(+), 27 deletions(-)
->>>
->>> diff --git a/pc-bios/s390-ccw/bootmap.h b/pc-bios/s390-ccw/bootmap.h
->>> index bbe2c132aa..cb5346829b 100644
->>> --- a/pc-bios/s390-ccw/bootmap.h
->>> +++ b/pc-bios/s390-ccw/bootmap.h
->>> @@ -385,17 +385,24 @@ static inline uint32_t iso_733_to_u32(uint64_t x)
->>>     #define ISO_PRIMARY_VD_SECTOR 16
->>>   -static inline void read_iso_sector(uint32_t block_offset, void *buf,
->>> +static inline int read_iso_sector(uint32_t block_offset, void *buf,
->>>                                      const char *errmsg)
->>>   {
->>> -    IPL_assert(virtio_read_many(block_offset, buf, 1) == 0, errmsg);
+With pv steal time supported, VM machine needs get physical address
+of each vcpu and notify new host during migration. Here two
+functions kvm_get_stealtime/kvm_set_stealtime, and guest steal time
+physical address is only updated on KVM_PUT_FULL_STATE stage.
 
-This IPL_assert() made sure that virtio_read_many() returned 0 (for success)...
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+v1 ... v2:
+  1. Call function kvm_set_stealtime() at kvm_arch_put_registers()
+     rather than new added cpu_post_load() interface
 
->>> +    if (virtio_read(block_offset, buf)) {
+---
+ target/loongarch/cpu.h     |  3 ++
+ target/loongarch/kvm/kvm.c | 65 ++++++++++++++++++++++++++++++++++++++
+ target/loongarch/machine.c |  6 ++--
+ 3 files changed, 72 insertions(+), 2 deletions(-)
 
-... so the new code here checks that virtio_read() (which returns the same 
-error code as virtio_read_many()) does *not* return 0 to signal that there 
-was an error...
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 6c41fafb70..c99b72ae16 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -346,6 +346,9 @@ typedef struct CPUArchState {
+     uint64_t CSR_DBG;
+     uint64_t CSR_DERA;
+     uint64_t CSR_DSAVE;
++    struct {
++        uint64_t guest_addr;
++    } stealtime;
+ 
+ #ifdef CONFIG_TCG
+     float_status fp_status;
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index 4786cd5efa..27d4a2783b 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -33,6 +33,55 @@ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
+     KVM_CAP_LAST_INFO
+ };
+ 
++static int kvm_get_stealtime(CPUState *cs)
++{
++    CPULoongArchState *env = cpu_env(cs);
++    int err;
++    struct kvm_device_attr attr = {
++        .group = KVM_LOONGARCH_VCPU_PVTIME_CTRL,
++        .attr = KVM_LOONGARCH_VCPU_PVTIME_GPA,
++        .addr = (uint64_t)&env->stealtime.guest_addr,
++    };
++
++    err = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, attr);
++    if (err) {
++        return 0;
++    }
++
++    err = kvm_vcpu_ioctl(cs, KVM_GET_DEVICE_ATTR, attr);
++    if (err) {
++        error_report("PVTIME: KVM_GET_DEVICE_ATTR: %s", strerror(errno));
++        return err;
++    }
++
++    return 0;
++}
++
++static int kvm_set_stealtime(CPUState *cs)
++{
++    CPULoongArchState *env = cpu_env(cs);
++    int err;
++    struct kvm_device_attr attr = {
++        .group = KVM_LOONGARCH_VCPU_PVTIME_CTRL,
++        .attr = KVM_LOONGARCH_VCPU_PVTIME_GPA,
++        .addr = (uint64_t)&env->stealtime.guest_addr,
++    };
++
++    err = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, attr);
++    if (err) {
++        return 0;
++    }
++
++    err = kvm_vcpu_ioctl(cs, KVM_SET_DEVICE_ATTR, attr);
++    if (err) {
++        error_report("PVTIME: KVM_SET_DEVICE_ATTR %s with gpa "TARGET_FMT_lx,
++                      strerror(errno), env->stealtime.guest_addr);
++        return err;
++    }
++
++    return 0;
++}
++
+ static int kvm_loongarch_get_regs_core(CPUState *cs)
+ {
+     int ret = 0;
+@@ -612,6 +661,11 @@ int kvm_arch_get_registers(CPUState *cs)
+         return ret;
+     }
+ 
++    ret = kvm_get_stealtime(cs);
++    if (ret) {
++        return ret;
++    }
++
+     ret = kvm_loongarch_get_mpstate(cs);
+     return ret;
+ }
+@@ -640,6 +694,17 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+         return ret;
+     }
+ 
++    if (level >= KVM_PUT_FULL_STATE) {
++        /*
++         * only KVM_PUT_FULL_STATE is required, kvm kernel will clear
++         * guest_addr for KVM_PUT_RESET_STATE
++         */
++        ret = kvm_set_stealtime(cs);
++        if (ret) {
++            return ret;
++        }
++    }
++
+     ret = kvm_loongarch_put_mpstate(cs);
+     return ret;
+ }
+diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
+index 08a7fa5370..0b6f4f5551 100644
+--- a/target/loongarch/machine.c
++++ b/target/loongarch/machine.c
+@@ -145,8 +145,8 @@ static const VMStateDescription vmstate_tlb = {
+ /* LoongArch CPU state */
+ const VMStateDescription vmstate_loongarch_cpu = {
+     .name = "cpu",
+-    .version_id = 2,
+-    .minimum_version_id = 2,
++    .version_id = 3,
++    .minimum_version_id = 3,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
+         VMSTATE_UINTTL(env.pc, LoongArchCPU),
+@@ -209,6 +209,8 @@ const VMStateDescription vmstate_loongarch_cpu = {
+         VMSTATE_UINT64(env.CSR_DSAVE, LoongArchCPU),
+ 
+         VMSTATE_UINT64(kvm_state_counter, LoongArchCPU),
++        /* PV steal time */
++        VMSTATE_UINT64(env.stealtime.guest_addr, LoongArchCPU),
+ 
+         VMSTATE_END_OF_LIST()
+     },
 
->>> +        puts(errmsg);
->>> +        return 1;
->>> +    }
->>> +    return 0;
->>>   }
->>>   -static inline void read_iso_boot_image(uint32_t block_offset, void 
->>> *load_addr,
->>> +static inline int read_iso_boot_image(uint32_t block_offset, void 
->>> *load_addr,
->>>                                          uint32_t blks_to_load)
->>>   {
->>> -    IPL_assert(virtio_read_many(block_offset, load_addr, blks_to_load) 
->>> == 0,
->>> -               "Failed to read boot image!");
-
-... and this IPL_assert() also checks that virtio_read_many() returns 0 for 
-success...
-
->>> +    if (!virtio_read_many(block_offset, load_addr, blks_to_load)) {
-
-... but this code here checks that virtio_read_many() now returns 0 to 
-signal that there is an error...
-
-Either I need more coffee or one of the two if-conditions is wrong...?
-
->> That "!" looks wrong here? Or do I misunderstood the original IPL_assert() 
->> condition?
->>
-> 
-> Basically all of the IPL_assert() conditions become logically flipped, but 
-> it is
-> intended. IPL_assert() panics if success condition is NOT met, but in the new
-> version an error code is returned if an failure condition IS met, so we are
-> branching on the inverse condition.
-
-Why is one of the two if-statements using a "!" and why is one without it?
-
->>> +        puts("Failed to read boot image!");
->>> +        return 1;
->>> +    }
->>> +    return 0;
->>>   }
->>>     #define ISO9660_MAX_DIR_DEPTH 8
-...
->>> @@ -706,14 +708,18 @@ static inline uint32_t iso_get_file_size(uint32_t 
->>> load_rba)
->>>       sec_offset[0] = 0;
->>>         while (level >= 0) {
->>> -        IPL_assert(sec_offset[level] <= ISO_SECTOR_SIZE,
->>> -                   "Directory tree structure violation");
->>> +        if (sec_offset[level] > ISO_SECTOR_SIZE) {
->>> +            puts("Directory tree structure violation");
->>> +            return -EIO;
->>> +        }
->>>             cur_record = (IsoDirHdr *)(temp + sec_offset[level]);
->>>             if (sec_offset[level] == 0) {
->>> -            read_iso_sector(sec_loc[level], temp,
->>> -                            "Failed to read ISO directory");
->>> +            if (virtio_read(sec_loc[level], temp)) {
->>> +                puts("Failed to read ISO directory");
->>> +                return -EIO;
->>> +            }
->>
->> Any reasons for switching from read_iso_sector() directly to virtio_read() 
->> here?
-> 
-> I think this is just an oversight on my part.  I had thought to remove the
-> read_iso_sector() function entirely since it is just a wrapper for
-> virtio_read() that becomes redundant once the panic is removed, but it looks
-> like I wasn't consistent with where I removed it.  In my opinion we can remove
-> read_iso_sector() and just call virtio_read(), but either way it should be
-> consistent, so I will standardize the calls.  I don't see any compelling reason
-> to keep the read_iso_sector() function since all it is doing is checking the
-> RC of virtio_read(), which we will want to check anyway to determine if we need
-> to abort the IPL here.
-
-I agree, I also don't see a compelling reason for keeping read_iso_sector() 
-anymore.
-
-  Thomas
+base-commit: 3b14a767eaca3df5534a162851f04787b363670e
+-- 
+2.39.3
 
 
