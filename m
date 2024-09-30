@@ -2,64 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69ECF989E3A
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE123989E37
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:30:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svCix-0006nd-3w; Mon, 30 Sep 2024 05:29:47 -0400
+	id 1svCj2-00079g-0B; Mon, 30 Sep 2024 05:29:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1svCiv-0006it-7n
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:29:45 -0400
+ id 1svCiz-000734-Oh
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:29:49 -0400
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1svCit-0006mv-BI
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:29:44 -0400
+ id 1svCiy-0006o0-5G
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:29:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727688583; x=1759224583;
+ t=1727688588; x=1759224588;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=gAzdXE8kbIu6eqGeu2m9d5lr+H3IV9C0qMeJOpIAWuA=;
- b=id6ixY1NSoPRghGjCY/0gkCJbP6i4U0UAxJcNPbU+PN6LergAAiGvM9l
- Losj77RjIwlZj6LGlyirQXEjInNEmUYShmRyohPfBQt+tOFzJxDOzp16Y
- vAEa4Qen8BWPV8ZO6pJo6MlkyiBiqfBkU4GIBZRTMNoM/PbwRJUjFaTKY
- X4nqmM6fSeJIax7BK3GaN5PrPeAUdP1Ry7VH9d9pex39u8Xu3gbMeciEE
- nTj7aaiR2WHuoOV0X1gKXJ9PPTtgI7DyeGh5Uz5OsjJTxYm9lLV6oFfCj
- ZGznO+jmElqYxWxL8WhJkyTjZPZc8Tjk4Y4xnbH/5/UGPFpIbMTsHNJ9T g==;
-X-CSE-ConnectionGUID: 0diPlE2mTPuxHDLSnSpniw==
-X-CSE-MsgGUID: ZoPvsCk6TgqDAyn33e7hzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26721617"
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26721617"
+ bh=88uz1UM1GGahDK2LNy5CbGB+pZ76LOKNLEqrvFGThgU=;
+ b=UJ/isuFJVq4/i6JRYQwLHFPLL46GWdfj1YzWsiqEsByE0JklSzlJh+M4
+ PiQJipIH+N1pxljoflvmR5CzLjzdEDzZdf8mGZ1dWAgvUN8v2DgZnclQQ
+ YmZhefm7hrTeuHlk1IcqO2UGeoFtb0hnaR30hiFG0S1WsHUS4ie2KAZ/O
+ so5mqpAJPFlHyUvsvIC7+OucuuJmy9oljf/IJgwag6hU2DPBtAYTh2wRL
+ fGs9U08FWmlpt2SSFRppNykqT3C89+xlTMdcG4jJQS0wPmxHoYHXPx+qP
+ q+YRjssLjTdqEi9qs36exo+gH3SkJirXPP1esVIOPZNBUFDE3GKFmdbCv A==;
+X-CSE-ConnectionGUID: SDzzop0qQueW943Rv3O0BA==
+X-CSE-MsgGUID: FFeMxSqiTcKZnIXzhVvg6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26721634"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26721634"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 02:29:42 -0700
-X-CSE-ConnectionGUID: EeTM1D4yT1WkoBwr6vdHbQ==
-X-CSE-MsgGUID: i1PhKHChQEW4tFDrkA65xQ==
+ 30 Sep 2024 02:29:46 -0700
+X-CSE-ConnectionGUID: PD6F3U8lTlWImd/4XU/AeA==
+X-CSE-MsgGUID: KV2eD3JFRWeXmJNr8DGRog==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="77749381"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="77749396"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 02:29:37 -0700
+ 30 Sep 2024 02:29:42 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Yu Zhang <yu.c.zhang@linux.intel.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v4 01/17] intel_iommu: Use the latest fault reasons defined by
- spec
-Date: Mon, 30 Sep 2024 17:26:15 +0800
-Message-Id: <20240930092631.2997543-2-zhenzhong.duan@intel.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH v4 02/17] intel_iommu: Make pasid entry type check accurate
+Date: Mon, 30 Sep 2024 17:26:16 +0800
+Message-Id: <20240930092631.2997543-3-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
 References: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
@@ -90,133 +88,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yu Zhang <yu.c.zhang@linux.intel.com>
+When guest configures Nested Translation(011b) or First-stage Translation only
+(001b), type check passed unaccurately.
 
-Spec revision 3.0 or above defines more detailed fault reasons for
-scalable mode. So introduce them into emulation code, see spec
-section 7.1.2 for details.
+Fails the type check in those cases as their simulation isn't supported yet.
 
-Note spec revision has no relation with VERSION register, Guest
-kernel should not use that register to judge what features are
-supported. Instead cap/ecap bits should be checked.
-
-Signed-off-by: Yu Zhang <yu.c.zhang@linux.intel.com>
+Fixes: fb43cf739e1 ("intel_iommu: scalable mode emulation")
+Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
 Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/i386/intel_iommu_internal.h |  9 ++++++++-
- hw/i386/intel_iommu.c          | 25 ++++++++++++++++---------
- 2 files changed, 24 insertions(+), 10 deletions(-)
+ hw/i386/intel_iommu.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index c818c819fe..d0f9d4589d 100644
---- a/hw/i386/intel_iommu_internal.h
-+++ b/hw/i386/intel_iommu_internal.h
-@@ -311,7 +311,14 @@ typedef enum VTDFaultReason {
-                                   * request while disabled */
-     VTD_FR_IR_SID_ERR = 0x26,   /* Invalid Source-ID */
- 
--    VTD_FR_PASID_TABLE_INV = 0x58,  /*Invalid PASID table entry */
-+    /* PASID directory entry access failure */
-+    VTD_FR_PASID_DIR_ACCESS_ERR = 0x50,
-+    /* The Present(P) field of pasid directory entry is 0 */
-+    VTD_FR_PASID_DIR_ENTRY_P = 0x51,
-+    VTD_FR_PASID_TABLE_ACCESS_ERR = 0x58, /* PASID table entry access failure */
-+    /* The Present(P) field of pasid table entry is 0 */
-+    VTD_FR_PASID_ENTRY_P = 0x59,
-+    VTD_FR_PASID_TABLE_ENTRY_INV = 0x5b,  /*Invalid PASID table entry */
- 
-     /* Output address in the interrupt address range for scalable mode */
-     VTD_FR_SM_INTERRUPT_ADDR = 0x87,
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index eb5aa2b2d5..378e417b27 100644
+index 378e417b27..be7c8a670b 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -796,7 +796,7 @@ static int vtd_get_pdire_from_pdir_table(dma_addr_t pasid_dir_base,
-     addr = pasid_dir_base + index * entry_size;
-     if (dma_memory_read(&address_space_memory, addr,
-                         pdire, entry_size, MEMTXATTRS_UNSPECIFIED)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_DIR_ACCESS_ERR;
-     }
- 
-     pdire->val = le64_to_cpu(pdire->val);
-@@ -814,6 +814,7 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
-                                           dma_addr_t addr,
-                                           VTDPASIDEntry *pe)
+@@ -759,20 +759,16 @@ static inline bool vtd_pe_type_check(X86IOMMUState *x86_iommu,
+                                      VTDPASIDEntry *pe)
  {
-+    uint8_t pgtt;
-     uint32_t index;
-     dma_addr_t entry_size;
-     X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
-@@ -823,7 +824,7 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
-     addr = addr + index * entry_size;
-     if (dma_memory_read(&address_space_memory, addr,
-                         pe, entry_size, MEMTXATTRS_UNSPECIFIED)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_TABLE_ACCESS_ERR;
+     switch (VTD_PE_GET_TYPE(pe)) {
+-    case VTD_SM_PASID_ENTRY_FLT:
+     case VTD_SM_PASID_ENTRY_SLT:
+-    case VTD_SM_PASID_ENTRY_NESTED:
+-        break;
++        return true;
+     case VTD_SM_PASID_ENTRY_PT:
+-        if (!x86_iommu->pt_supported) {
+-            return false;
+-        }
+-        break;
++        return x86_iommu->pt_supported;
++    case VTD_SM_PASID_ENTRY_FLT:
++    case VTD_SM_PASID_ENTRY_NESTED:
+     default:
+         /* Unknown type */
+         return false;
      }
-     for (size_t i = 0; i < ARRAY_SIZE(pe->val); i++) {
-         pe->val[i] = le64_to_cpu(pe->val[i]);
-@@ -831,11 +832,13 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
+-    return true;
+ }
  
-     /* Do translation type check */
-     if (!vtd_pe_type_check(x86_iommu, pe)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_TABLE_ENTRY_INV;
-     }
- 
--    if (!vtd_is_level_supported(s, VTD_PE_GET_LEVEL(pe))) {
--        return -VTD_FR_PASID_TABLE_INV;
-+    pgtt = VTD_PE_GET_TYPE(pe);
-+    if (pgtt == VTD_SM_PASID_ENTRY_SLT &&
-+        !vtd_is_level_supported(s, VTD_PE_GET_LEVEL(pe))) {
-+            return -VTD_FR_PASID_TABLE_ENTRY_INV;
-     }
- 
-     return 0;
-@@ -876,7 +879,7 @@ static int vtd_get_pe_from_pasid_table(IntelIOMMUState *s,
-     }
- 
-     if (!vtd_pdire_present(&pdire)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_DIR_ENTRY_P;
-     }
- 
-     ret = vtd_get_pe_from_pdire(s, pasid, &pdire, pe);
-@@ -885,7 +888,7 @@ static int vtd_get_pe_from_pasid_table(IntelIOMMUState *s,
-     }
- 
-     if (!vtd_pe_present(pe)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_ENTRY_P;
-     }
- 
-     return 0;
-@@ -938,7 +941,7 @@ static int vtd_ce_get_pasid_fpd(IntelIOMMUState *s,
-     }
- 
-     if (!vtd_pdire_present(&pdire)) {
--        return -VTD_FR_PASID_TABLE_INV;
-+        return -VTD_FR_PASID_DIR_ENTRY_P;
-     }
- 
-     /*
-@@ -1795,7 +1798,11 @@ static const bool vtd_qualified_faults[] = {
-     [VTD_FR_ROOT_ENTRY_RSVD] = false,
-     [VTD_FR_PAGING_ENTRY_RSVD] = true,
-     [VTD_FR_CONTEXT_ENTRY_TT] = true,
--    [VTD_FR_PASID_TABLE_INV] = false,
-+    [VTD_FR_PASID_DIR_ACCESS_ERR] = false,
-+    [VTD_FR_PASID_DIR_ENTRY_P] = true,
-+    [VTD_FR_PASID_TABLE_ACCESS_ERR] = false,
-+    [VTD_FR_PASID_ENTRY_P] = true,
-+    [VTD_FR_PASID_TABLE_ENTRY_INV] = true,
-     [VTD_FR_SM_INTERRUPT_ADDR] = true,
-     [VTD_FR_MAX] = false,
- };
+ static inline bool vtd_pdire_present(VTDPASIDDirEntry *pdire)
 -- 
 2.34.1
 
