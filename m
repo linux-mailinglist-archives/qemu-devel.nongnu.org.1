@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD06989BDC
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 09:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90067989C18
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:01:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svB8F-0006qE-GD; Mon, 30 Sep 2024 03:47:56 -0400
+	id 1svBL6-0005h7-DS; Mon, 30 Sep 2024 04:01:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svB5X-0006nJ-R4
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 03:45:08 -0400
-Received: from [2a00:1450:4864:20::629] (helo=mail-ej1-x629.google.com)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svBL3-0005dp-6P
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:01:01 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svB4x-0000Zk-O6
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 03:44:51 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a8d6d0fe021so710801266b.1
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 00:43:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1svBL1-0003g6-AM
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:01:00 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5c5bca6603aso4750296a12.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 01:00:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727682198; x=1728286998; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gRCWILJ5tP1CDEp4iIo0yM0ySxnxf6B3WCed3GxvioA=;
- b=IGP2mgu7/T2OoJ04wHAWdF64y60TYBkDyqdYoi1so0DWyhD+SA4OR9DeSQ91IM05xg
- FPxXRS22IlaX4f0kqgNXO7YO48EDrddndinSV1pENM+cRHZmlwOV3ZbrmiKSblXZJD91
- 6tPzrQFOmSYowvJlcAjIgDafR/FzW4TpUORlvK1U68CIRZBQ5zWZ05MlxE/7UT6u0teM
- otfVO7UGh66jLwlGIAF2+Ja/HIjMgb8jcQ5x5mcQx1dwt0flwsKiuW0eF28es1i5AaK5
- LHbYrbSvCzrxfZLqG/Ul0rwY2D85qfhuzHW0R2poR8oBiac9g8iF/ig/DDzbAV08lyTW
- Db/Q==
+ d=linaro.org; s=google; t=1727683257; x=1728288057; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Dt537SuyKX8S7JgDRKIhn/HH1R6QVwglbjLetvuqYf0=;
+ b=G/jtgVKdVuHgxz/nrLFTiQ/HbQ6BT5IUG3YYGsV2h99SldLxswUi4DFD3M2akT1cSD
+ +vfiEtyCWSy6qKVenTxN0pgH2IQjOGVXi1aP+HjAqGWt2ZFexf1lT3QqCE5i0PYPiZJg
+ qodHsu0v8uou18Q7VHiRsepMCtfpoo9kym6ihfTVvm4doM8n39XIjy+aHe58v30L93PI
+ fQyp5RCfTYHej2USARxCD7beiSreTVLPTqXttvrNtw0y7TNts8P/BMgUuw8JUokBEyWK
+ 4X/VGFr9+x15XeLVJg+fQNg/XwQxPqOgfW58lT8njEBq8ntoJ/Ta+k/8krjFN4YnhVxJ
+ EAZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727682198; x=1728286998;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gRCWILJ5tP1CDEp4iIo0yM0ySxnxf6B3WCed3GxvioA=;
- b=dhkx4E82TWGLnfPYdN9bYH3Bmvhh/cQyHnV+NSvwgP969kP7PNagFfWe2GY3W/DVzj
- WDBD1ApsxanTuHHtXVls2uvj/7hsiYMQa9hMRFYNIQjtbEE8dWgXH6SHP0VAWYVsbLJZ
- mP24UryiVm5CIDqmTvlQX5+AikzBMctzBbn8pXifCBwuu/lVBlHGXSWvE18kDBd6bfDD
- XpyxJ43jRwnYzaLmqFh2p3CyGvW65thCrMDJ0m/OEFQAYU4NGvDVo4DV5OK/I2VDv75x
- ct6VDqd6snlh1igC5N4qzQKCa8O6pPOccCHiTfKBVL/+lEWnFpbiloOwmlAt9t0JfDlx
- zlwQ==
-X-Gm-Message-State: AOJu0YyvBjDs907s2uWsR9VYp/IO4f99VM69HENuRO+gaf+jh00Yc6SY
- ILSlTSYff99HQvJJEj/Tbu3V6diJe70gSQ6DYWx9GIXmF2IGudUz6fklHakvNlEbGzqyqmsPQWA
- xrzI=
-X-Google-Smtp-Source: AGHT+IGOtyU4Ofketg2XtEwaLaGUAiZZznXObn/Hil68D/dTg/agb5ZVPgC/bKHQcLcITIBmDftCLw==
-X-Received: by 2002:a05:600c:1c85:b0:42c:c073:412b with SMTP id
- 5b1f17b1804b1-42f58490786mr87695785e9.30.1727681696153; 
- Mon, 30 Sep 2024 00:34:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1727683257; x=1728288057;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Dt537SuyKX8S7JgDRKIhn/HH1R6QVwglbjLetvuqYf0=;
+ b=hgIcueZcPXnD2tberq5jlEl+xfauoFIJKjVnFq6jkadPcSzTxJPTGWEFXy7QDzmlwH
+ 1cZkf8BpuuFNHOk0iYRUji9pck23CUshW7hz+to8xlyNaTLusXkLqv8JrDAkL0TMcAj6
+ M7Gm7Us96vkCn4f4u9SqeUxIWnGubfA/AI0FVGT92sdORftMbmyK2HO9JUXa3GTMshmF
+ 9MHRt73gtQoanRkxc59X1ggQPFd1CTTjs9qBcnZjJaSLYsg/9EW0R9vjwstv48/hoUyn
+ WdSXToHIdIZ13nDYalANgfJPxCp25xfVCNXuE2l+TSkhIto9kzEgp4Q+60KznOGoMW0w
+ fkmg==
+X-Gm-Message-State: AOJu0YwaXhptLO1v8+P/XsfvTgyOKkoCwwR/NxTzdzZUtWdC6QkQVbaH
+ zrrKKOzeJCxjCcxZegUYzPnuCfqgfB5IdzdakB52y3v7pQhBYa3S9/99oNvvefYMmb7K5zBejPq
+ UbaE=
+X-Google-Smtp-Source: AGHT+IFFqjO07Ex6VXaJnBp0fLXrztRoPGuiC1qPJjA4ACoyyr6faMY/cMGoyF46pDMcCkFmfDJSuA==
+X-Received: by 2002:a05:600c:310e:b0:42c:c28c:e477 with SMTP id
+ 5b1f17b1804b1-42f58488779mr69873155e9.23.1727681705036; 
+ Mon, 30 Sep 2024 00:35:05 -0700 (PDT)
 Received: from localhost.localdomain (186.red-88-28-13.dynamicip.rima-tde.net.
  [88.28.13.186]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd575dd04sm8282495f8f.114.2024.09.30.00.34.53
+ 5b1f17b1804b1-42f57debe5csm94870215e9.24.2024.09.30.00.35.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 30 Sep 2024 00:34:55 -0700 (PDT)
+ Mon, 30 Sep 2024 00:35:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
@@ -70,24 +71,23 @@ Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
  Aurelien Jarno <aurelien@aurel32.net>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, Paul Burton <paulburton@kernel.org>
-Subject: [PATCH 00/13] hw: Add ld/st_endian() APIs
-Date: Mon, 30 Sep 2024 09:34:37 +0200
-Message-ID: <20240930073450.33195-1-philmd@linaro.org>
+Subject: [PATCH 01/13] qemu/bswap: Introduce ld/st_endian_p() API
+Date: Mon, 30 Sep 2024 09:34:38 +0200
+Message-ID: <20240930073450.33195-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240930073450.33195-1-philmd@linaro.org>
+References: <20240930073450.33195-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 2a00:1450:4864:20::629
- (deferred)
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RDNS_NONE=0.793,
- T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,39 +103,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of heterogeneous machines, remove knowledge of the
-target endianness in generic hw/ code. Move it to the machine level.
+Introduce the ld/st_endian_p() API, which takes an extra
+boolean argument to dispatch to ld/st_{be,le}_p() methods.
 
-Philippe Mathieu-Daudé (13):
-  qemu/bswap: Introduce ld/st_endian_p() API
-  hw/virtio/virtio-access: Use the ld/st_endian_p() API
-  target/arm/ptw: Use the ld/st_endian_p() API
-  hw/mips: Pass BlCpuCfg argument to bootloader API
-  hw/mips: Add cpu_is_bigendian field to BlCpuCfg structure
-  tests/tcg/plugins: Use the ld/st_endian_p() API
-  hw/xtensa/xtfpga: Remove TARGET_BIG_ENDIAN #ifdef'ry
-  hw/xtensa/xtfpga: Replace memcpy()+tswap32() by stl_endian_p()
-  exec/memory_ldst_phys: Introduce ld/st_endian_phys() API
-  hw/virtio/virtio-access: Use ld/st_endian_phys() API
-  hw/pci/pci_device: Add PCI_DMA_DEFINE_LDST_END() macro
-  hw/pci/pci_device: Introduce ld/st_endian_pci_dma() API
-  hw/net/tulip: Use ld/st_endian_pci_dma() API
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+TODO: Update docstring regexp
+---
+ include/qemu/bswap.h | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
- include/hw/mips/bootloader.h        |  18 +++-
- include/hw/pci/pci_device.h         |  35 +++++--
- include/hw/virtio/virtio-access.h   |  63 ++----------
- include/qemu/bswap.h                |  19 ++++
- include/exec/memory_ldst_phys.h.inc |  66 ++++++++++++
- hw/mips/bootloader.c                | 152 +++++++++++++++-------------
- hw/mips/boston.c                    |   9 +-
- hw/mips/fuloong2e.c                 |   3 +-
- hw/mips/malta.c                     |  21 ++--
- hw/net/tulip.c                      |  32 ++----
- hw/xtensa/xtfpga.c                  |  18 ++--
- target/arm/ptw.c                    |  19 +---
- tests/tcg/plugins/mem.c             |  24 ++---
- 13 files changed, 269 insertions(+), 210 deletions(-)
-
+diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
+index ad22910a5d..ec813a756d 100644
+--- a/include/qemu/bswap.h
++++ b/include/qemu/bswap.h
+@@ -433,4 +433,23 @@ DO_STN_LDN_P(be)
+ #undef le_bswaps
+ #undef be_bswaps
+ 
++#define lduw_endian_p(big_endian, p) \
++                     (big_endian) ? lduw_be_p(p) : lduw_le_p(p)
++#define ldsw_endian_p(big_endian, p) \
++                     (big_endian) ? ldsw_be_p(p) : ldsw_be_p(p)
++#define ldl_endian_p(big_endian, p) \
++                    (big_endian) ? ldl_be_p(p) : ldl_le_p(p)
++#define ldq_endian_p(big_endian, p) \
++                    (big_endian) ? ldq_be_p(p) : ldq_le_p(p)
++#define stw_endian_p(big_endian, p, v) \
++                    (big_endian) ? stw_be_p(p, v) : stw_le_p(p, v)
++#define stl_endian_p(big_endian, p, v) \
++                    (big_endian) ? stl_be_p(p, v) : stl_le_p(p, v)
++#define stq_endian_p(big_endian, p, v) \
++                    (big_endian) ? stq_be_p(p, v) : stq_le_p(p, v)
++#define ldn_endian_p(big_endian, p, sz) \
++                     (big_endian) ? ldn_be_p(p, sz) : ldn_le_p(p, sz)
++#define stn_endian_p(big_endian, p, sz, v) \
++                    (big_endian) ? stn_be_p(p, sz, v) : stn_le_p(p, sz, v)
++
+ #endif /* BSWAP_H */
 -- 
 2.45.2
 
