@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F5D98AAAA
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 19:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B555B98AAA9
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 19:09:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svJsp-0006wj-Qy; Mon, 30 Sep 2024 13:08:27 -0400
+	id 1svJsn-0006uX-ME; Mon, 30 Sep 2024 13:08:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1svJsl-0006sz-KQ
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 13:08:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1svJsh-0006sC-K6
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 13:08:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1svJsg-0001Cn-6q
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 13:08:21 -0400
+ (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1svJsc-0001Cp-PN
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 13:08:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1727716092;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KRiyw0at5DGRgBVyJeLHnY8AwyrMo6ngg550Y6llmjo=;
- b=dwfPm7WEJs7WnzG8AsMcJ1llr7zkeiakTTKf6BoF5x9yOs6v/VZrKyVF1pJADwwXXunT61
- 8YW0HT5882/HxAO45YG1VzNIYZXMQ+9flIJYyD/Vx/NioWrnwPOa33m40SdXEQkVk6oHPL
- rH5CvvPK74a1/0TdIUIQR6YDG7WhEus=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/gMF25+OQ76L5kMFSaQJWClmZBFiY84FfTl382gIXGg=;
+ b=YbsRbmBGITRYTD+kRglGx1oo2Dp2rj7KI9jsJ/EPDTpOSveyhM7GzUdG6/LrtHzooqO3+s
+ 3bp60IzcRXScGYR7RdyT157tfITx8rsKLQNoSZdViWz8pb8Zrs3o66nSSOoMvRLdml/2+p
+ JgIO7aYJCa5D8Za9MauLQqgZGeijfxM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-363-G1IVGgumNZu7_gkzPcgcxw-1; Mon, 30 Sep 2024 13:08:10 -0400
-X-MC-Unique: G1IVGgumNZu7_gkzPcgcxw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-42cb89fbb8cso25986975e9.0
+ us-mta-472-HsYOZA7iMkuI99KTcA2O0Q-1; Mon, 30 Sep 2024 13:08:11 -0400
+X-MC-Unique: HsYOZA7iMkuI99KTcA2O0Q-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-42cb6dc3365so35989175e9.2
  for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 10:08:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1727716089; x=1728320889;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KRiyw0at5DGRgBVyJeLHnY8AwyrMo6ngg550Y6llmjo=;
- b=pzI5sgrTZKiQs2DNt2wLpjrb7q4/b2OTjExwK4EGjntrThtgNMgrRpN8ewSRx7iur/
- 0yc1+hKkWlXl196DSKOa3LrYQ8g3skQHfbg8NmjmEfZ22509mkOEM/ZvnXqSeKCHq+0j
- DUZ32KITiwzjmXH+uGYtlYT9WuoLweeaWPEkNBIDlKQ384LQalbh4FtYwxChxxCtBiMU
- ZxXvkUdCCBi4BnyhCmViNw4ccjGQF5mLO2dx/m6IseB9LQqS/thoGqud5IIiTPP1P/6I
- Gvnjb9XlfyGmgzQf4VTs2eliLdkFhq0Rl6PnoMW/Qv9d+rVuvLj65o6lfj6kuTNKW6eh
- a1WQ==
-X-Gm-Message-State: AOJu0YyYLQ+sHn2y7QZFU1OPySzby4qPsCIGG2xjpzd4nzy7PXBSk9jQ
- Zqjcb7kVorAazjPdhpmbdzAxIenL5K98ge85Ej6LuxPEVdidt1Ek9yPWwJiR5VmmtxC5j6g6FBD
- Jx+tWNr9Op+nkgV5YAGDsJ5mZKX+LLW5hveYmVgUxyXpoXGf7Jw97hRS+7vDGQceaiRMYw2MD0w
- n0Z50aysCok1L/Zb1MjQ20euofmo7KgNWQ
-X-Received: by 2002:a05:600c:1d2a:b0:428:ec2a:8c94 with SMTP id
- 5b1f17b1804b1-42f58434112mr102934285e9.10.1727716088588; 
+ bh=/gMF25+OQ76L5kMFSaQJWClmZBFiY84FfTl382gIXGg=;
+ b=LxmLoRLx/sw7FEicmMp/bM/fZAM30zuBUQGsp33hn4j6L9KiV68fwOp7wgLFZRIelJ
+ j8SQ3dO3Zmo+5k+7nyA2oTZ2dblJFXBvbW6jXHzSQZK1cMtetzNqsv+aF2kTGQcbXe8d
+ MjvAosdpCWvyMVoQsWAHvB8ypChCdqqsLkjSs+h9fOuqU5ew8VLXYHsnoHR6qUmzcbQ6
+ LGUpWeP8hTOL8CI5sE37TviA4bhMs3EXPUKh0HVqZn4n9wWPf3fxfd7aXCCvcW8Tphx0
+ 6aQmf83wdj4WTN1ApHB8leRyvHF32YUaK0TZph7muySF85imthZsebO0VTcsphuubiLx
+ XuEg==
+X-Gm-Message-State: AOJu0YxFFbnvOreJWEkwCN16U+c3X13hbyPw+oARlrX0Y6VQDswfXXGl
+ dAEKVKn/9C+MEx6bMTXjlmmcQGMPRoPc853U1qLcSDRmwscWG7mXIxWnqyXRU8vuuShWZyDWCEY
+ FV34QZm37mUKrG+sHJHFNE/FXDc+xHUncww9lcMgRt0iWB/lGS7bwzmNokClr99T0IPAzJPy1iX
+ KNXt8a2AowjhB8MiO7ZqmkhMN2sWQ5GTfH
+X-Received: by 2002:adf:e589:0:b0:37c:d183:abd6 with SMTP id
+ ffacd0b85a97d-37cd5a9a255mr6178283f8f.32.1727716089343; 
+ Mon, 30 Sep 2024 10:08:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHDYxRbGGYxiVQ0XxAulD2olEwWFTDQT5EDwOvgXHoxtOPUm4U9YZsKyhSk65cdjyYe5bknzQ==
+X-Received: by 2002:adf:e589:0:b0:37c:d183:abd6 with SMTP id
+ ffacd0b85a97d-37cd5a9a255mr6178259f8f.32.1727716088798; 
  Mon, 30 Sep 2024 10:08:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEq69dp95nNBHahJdCCcXf1JlB73PN7Y1Vw+9/UNeDGgUzD9nqwu8hZOHluIzmSkBz8ohWLDg==
-X-Received: by 2002:a05:600c:1d2a:b0:428:ec2a:8c94 with SMTP id
- 5b1f17b1804b1-42f58434112mr102933915e9.10.1727716087999; 
- Mon, 30 Sep 2024 10:08:07 -0700 (PDT)
 Received: from top.fritz.box (p4fdf9fd8.dip0.t-ipconnect.de. [79.223.159.216])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42e96a36251sm156842415e9.37.2024.09.30.10.08.06
+ 5b1f17b1804b1-42e96a36251sm156842415e9.37.2024.09.30.10.08.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Sep 2024 10:08:07 -0700 (PDT)
+ Mon, 30 Sep 2024 10:08:08 -0700 (PDT)
 From: Michael Vogt <mvogt@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Vogt <michael.vogt@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, Michael Vogt <mvogt@redhat.com>
-Subject: [PATCH v8 1/2] linux-user: add openat2 support in linux-user
-Date: Mon, 30 Sep 2024 19:07:18 +0200
-Message-ID: <1c2c8c9db3731ed4c6fd9b10c63637c3e4caf8f5.1727715697.git.mvogt@redhat.com>
+Subject: [PATCH v8 2/2] linux-user: add strace support for openat2
+Date: Mon, 30 Sep 2024 19:07:19 +0200
+Message-ID: <4e65ab27fa0eda54034299802cb176ce78db9091.1727715697.git.mvogt@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1727715697.git.mvogt@redhat.com>
 References: <cover.1727715697.git.mvogt@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mvogt@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mvogt@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -100,223 +100,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds support for the `openat2()` syscall in the
-`linux-user` userspace emulator.
+This commit adds support for the `openat2()` to `QEMU_STRACE`. It
+will use the `openat2.h` header if available to create user
+readable flags for the `resolve` argument but does not require
+the header otherwise.
 
-It is implemented by extracting a new helper `maybe_do_fake_open()`
-out of the exiting `do_guest_openat()` and share that with the
-new `do_guest_openat2()`. Unfortunately we cannot just make
-do_guest_openat2() a superset of do_guest_openat() because the
-openat2() syscall is stricter with the argument checking and
-will return an error for invalid flags or mode combinations (which
-open()/openat() will ignore).
-
-The implementation is similar to SYSCALL_DEFINE(openat2), i.e.
-a new `copy_struct_from_user()` is used that works the same
-as the kernels version to support backwards-compatibility
-for struct syscall argument.
-
-Instead of including openat2.h we create a copy of `open_how`
-as `open_how_ver0` to ensure that if the structure grows we
-can log a LOG_UNIMP warning.
-
-Note that in this commit using openat2() for a "faked" file in
-/proc will honor the "resolve" flags for
-RESOLVE_NO_{MAGIC,SYM}LINKS for path based access to /proc/self/exe
-(which is the only magic link we support for faked files).
-Note it will not catch special access via e.g. dirfd. This is not
-great but it seems similar to the exiting behavior when openat()
-is called with a dirfd to "/proc". Here too the fake file lookup
-may not catch the special file because no dirfd is used to
-determine if the path is in /proc.
+It also makes `copy_struct_from_user()` available via `qemu.h`
+and `open_how_ver0` via `syscall_defs.h` so that strace.c can use
+them.
 
 Signed-off-by: Michael Vogt <mvogt@redhat.com>
-Buglink: https://github.com/osbuild/bootc-image-builder/issues/619
 ---
- linux-user/syscall.c      | 105 +++++++++++++++++++++++++++++++++++++-
- linux-user/syscall_defs.h |  13 +++++
- 2 files changed, 116 insertions(+), 2 deletions(-)
+ linux-user/qemu.h         |  9 +++++++++
+ linux-user/strace.c       | 40 +++++++++++++++++++++++++++++++++++++++
+ linux-user/strace.list    |  3 +++
+ linux-user/syscall.c      |  8 +-------
+ linux-user/syscall_defs.h |  5 +++++
+ meson.build               |  1 +
+ 6 files changed, 59 insertions(+), 7 deletions(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index a666986189..2febc3bc3f 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -602,6 +602,34 @@ static int check_zeroed_user(abi_long addr, size_t ksize, size_t usize)
-     return 1;
- }
+diff --git a/linux-user/qemu.h b/linux-user/qemu.h
+index 2e90a97175..98ad848ab2 100644
+--- a/linux-user/qemu.h
++++ b/linux-user/qemu.h
+@@ -313,6 +313,15 @@ static inline bool access_ok(CPUState *cpu, int type,
+ int copy_from_user(void *hptr, abi_ulong gaddr, ssize_t len);
+ int copy_to_user(abi_ulong gaddr, void *hptr, ssize_t len);
  
 +/*
-+ * Copies a target struct to a host struct, in a way that guarantees
-+ * backwards-compatibility for struct syscall arguments.
++ * copy_struct_from_user() copies a target struct to a host struct, in
++ * a way that guarantees backwards-compatibility for struct syscall
++ * arguments.
 + *
 + * Similar to kernels uaccess.h:copy_struct_from_user()
 + */
-+static int
-+copy_struct_from_user(void *dst, size_t ksize, abi_ptr src, size_t usize)
++int copy_struct_from_user(void *dst, size_t ksize, abi_ptr src, size_t usize);
++
+ /* Functions for accessing guest memory.  The tget and tput functions
+    read/write single values, byteswapping as necessary.  The lock_user function
+    gets a pointer to a contiguous area of guest memory, but does not perform
+diff --git a/linux-user/strace.c b/linux-user/strace.c
+index b4d1098170..42a34e599d 100644
+--- a/linux-user/strace.c
++++ b/linux-user/strace.c
+@@ -13,6 +13,9 @@
+ #include <linux/if_packet.h>
+ #include <linux/in6.h>
+ #include <linux/netlink.h>
++#ifdef HAVE_OPENAT2_H
++#include <linux/openat2.h>
++#endif
+ #include <sched.h>
+ #include "qemu.h"
+ #include "user-internals.h"
+@@ -1063,6 +1066,18 @@ UNUSED static const struct flags open_flags[] = {
+     FLAG_END,
+ };
+ 
++UNUSED static const struct flags openat2_resolve_flags[] = {
++#ifdef HAVE_OPENAT2_H
++    FLAG_GENERIC(RESOLVE_NO_XDEV),
++    FLAG_GENERIC(RESOLVE_NO_MAGICLINKS),
++    FLAG_GENERIC(RESOLVE_NO_SYMLINKS),
++    FLAG_GENERIC(RESOLVE_BENEATH),
++    FLAG_GENERIC(RESOLVE_IN_ROOT),
++    FLAG_GENERIC(RESOLVE_CACHED),
++#endif
++    FLAG_END,
++};
++
+ UNUSED static const struct flags mount_flags[] = {
+ #ifdef MS_BIND
+     FLAG_GENERIC(MS_BIND),
+@@ -3483,6 +3498,31 @@ print_openat(CPUArchState *cpu_env, const struct syscallname *name,
+ }
+ #endif
+ 
++#ifdef TARGET_NR_openat2
++static void
++print_openat2(CPUArchState *cpu_env, const struct syscallname *name,
++              abi_long arg0, abi_long arg1, abi_long arg2,
++              abi_long arg3, abi_long arg4, abi_long arg5)
 +{
-+    size_t size = MIN(ksize, usize);
-+    size_t rest = MAX(ksize, usize) - size;
++    struct open_how_ver0 how = {0};
 +
-+    /* Deal with trailing bytes. */
-+    if (usize < ksize) {
-+        memset(dst + size, 0, rest);
-+    } else if (usize > ksize) {
-+        int ret = check_zeroed_user(src, ksize, usize);
-+        if (ret <= 0) {
-+            return ret ?: -TARGET_E2BIG;
++    print_syscall_prologue(name);
++    print_at_dirfd(arg0, 0);
++    print_string(arg1, 0);
++    if (copy_struct_from_user(&how, sizeof(how), arg2, arg3) == 0) {
++        print_open_flags(how.flags, 0);
++        if (how.flags & TARGET_O_CREAT) {
++            print_file_mode(how.mode, 0);
 +        }
++        print_flags(openat2_resolve_flags, how.resolve, 0);
++    } else {
++        print_pointer(arg2, 0);
 +    }
-+    /* Copy the interoperable parts of the struct. */
-+    if (copy_from_user(dst, src, size)) {
-+        return -TARGET_EFAULT;
-+    }
-+    return 0;
++    print_raw_param(TARGET_ABI_FMT_lu, arg3, 1);
++    print_syscall_epilogue(name);
 +}
++#endif
 +
- #define safe_syscall0(type, name) \
- static type safe_##name(void) \
- { \
-@@ -653,6 +681,15 @@ safe_syscall3(ssize_t, read, int, fd, void *, buff, size_t, count)
- safe_syscall3(ssize_t, write, int, fd, const void *, buff, size_t, count)
+ #ifdef TARGET_NR_pidfd_send_signal
+ static void
+ print_pidfd_send_signal(CPUArchState *cpu_env, const struct syscallname *name,
+diff --git a/linux-user/strace.list b/linux-user/strace.list
+index dfd4237d14..ef658224fc 100644
+--- a/linux-user/strace.list
++++ b/linux-user/strace.list
+@@ -715,6 +715,9 @@
+ #ifdef TARGET_NR_openat
+ { TARGET_NR_openat, "openat" , NULL, print_openat, NULL },
+ #endif
++#ifdef TARGET_NR_openat2
++{ TARGET_NR_openat2, "openat2" , NULL, print_openat2, NULL },
++#endif
+ #ifdef TARGET_NR_osf_adjtime
+ { TARGET_NR_osf_adjtime, "osf_adjtime" , NULL, NULL, NULL },
+ #endif
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 2febc3bc3f..1354e75694 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -608,8 +608,7 @@ static int check_zeroed_user(abi_long addr, size_t ksize, size_t usize)
+  *
+  * Similar to kernels uaccess.h:copy_struct_from_user()
+  */
+-static int
+-copy_struct_from_user(void *dst, size_t ksize, abi_ptr src, size_t usize)
++int copy_struct_from_user(void *dst, size_t ksize, abi_ptr src, size_t usize)
+ {
+     size_t size = MIN(ksize, usize);
+     size_t rest = MAX(ksize, usize) - size;
+@@ -682,11 +681,6 @@ safe_syscall3(ssize_t, write, int, fd, const void *, buff, size_t, count)
  safe_syscall4(int, openat, int, dirfd, const char *, pathname, \
                int, flags, mode_t, mode)
-+
+ 
+-struct open_how_ver0 {
+-    __u64 flags;
+-    __u64 mode;
+-    __u64 resolve;
+-};
+ safe_syscall4(int, openat2, int, dirfd, const char *, pathname, \
+               const struct open_how_ver0 *, how, size_t, size)
+ 
+diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
+index de5091c977..0ade83745e 100644
+--- a/linux-user/syscall_defs.h
++++ b/linux-user/syscall_defs.h
+@@ -2749,6 +2749,11 @@ struct target_sched_param {
+ };
+ 
+ /* from kernel's include/uapi/linux/openat2.h */
 +struct open_how_ver0 {
 +    __u64 flags;
 +    __u64 mode;
 +    __u64 resolve;
 +};
-+safe_syscall4(int, openat2, int, dirfd, const char *, pathname, \
-+              const struct open_how_ver0 *, how, size_t, size)
-+
- #if defined(TARGET_NR_wait4) || defined(TARGET_NR_waitpid)
- safe_syscall4(pid_t, wait4, pid_t, pid, int *, status, int, options, \
-               struct rusage *, rusage)
-@@ -8332,8 +8369,9 @@ static int open_net_route(CPUArchState *cpu_env, int fd)
- }
- #endif
- 
--int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
--                    int flags, mode_t mode, bool safe)
-+static int maybe_do_fake_open(CPUArchState *cpu_env, int dirfd,
-+                              const char *fname, int flags, mode_t mode,
-+                              int openat2_resolve, bool safe)
- {
-     g_autofree char *proc_name = NULL;
-     const char *pathname;
-@@ -8370,6 +8408,12 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-     }
- 
-     if (is_proc_myself(pathname, "exe")) {
-+        /* Honor openat2 resolve flags */
-+        if ((openat2_resolve & RESOLVE_NO_MAGICLINKS) ||
-+            (openat2_resolve & RESOLVE_NO_SYMLINKS)) {
-+            errno = ELOOP;
-+            return -1;
-+        }
-         if (safe) {
-             return safe_openat(dirfd, exec_path, flags, mode);
-         } else {
-@@ -8416,6 +8460,17 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-         return fd;
-     }
- 
-+    return -2;
-+}
-+
-+int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
-+                    int flags, mode_t mode, bool safe)
-+{
-+    int fd = maybe_do_fake_open(cpu_env, dirfd, pathname, flags, mode, 0, safe);
-+    if (fd > -2) {
-+        return fd;
-+    }
-+
-     if (safe) {
-         return safe_openat(dirfd, path(pathname), flags, mode);
-     } else {
-@@ -8423,6 +8478,49 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-     }
- }
- 
-+
-+static int do_openat2(CPUArchState *cpu_env, abi_long dirfd,
-+                      abi_ptr guest_pathname, abi_ptr guest_open_how,
-+                      abi_ulong guest_size)
-+{
-+    struct open_how_ver0 how = {0};
-+    char *pathname;
-+    int ret;
-+
-+    if (guest_size < sizeof(struct target_open_how_ver0)) {
-+        return -TARGET_EINVAL;
-+    }
-+    ret = copy_struct_from_user(&how, sizeof(how), guest_open_how, guest_size);
-+    if (ret) {
-+        if (ret == -TARGET_E2BIG) {
-+            qemu_log_mask(LOG_UNIMP,
-+                          "Unimplemented openat2 open_how size: "
-+                          TARGET_ABI_FMT_lu "\n", guest_size);
-+        }
-+        return ret;
-+    }
-+    pathname = lock_user_string(guest_pathname);
-+    if (!pathname) {
-+        return -TARGET_EFAULT;
-+    }
-+
-+    how.flags = target_to_host_bitmask(tswap64(how.flags), fcntl_flags_tbl);
-+    how.mode = tswap64(how.mode);
-+    how.resolve = tswap64(how.resolve);
-+    int fd = maybe_do_fake_open(cpu_env, dirfd, pathname, how.flags, how.mode,
-+                                how.resolve, true);
-+    if (fd > -2) {
-+        ret = get_errno(fd);
-+    } else {
-+        ret = get_errno(safe_openat2(dirfd, pathname, &how,
-+                                     sizeof(struct open_how_ver0)));
-+    }
-+
-+    fd_trans_unregister(ret);
-+    unlock_user(pathname, guest_pathname, 0);
-+    return ret;
-+}
-+
- ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz)
- {
-     ssize_t ret;
-@@ -9195,6 +9293,9 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         fd_trans_unregister(ret);
-         unlock_user(p, arg2, 0);
-         return ret;
-+    case TARGET_NR_openat2:
-+        ret = do_openat2(cpu_env, arg1, arg2, arg3, arg4);
-+        return ret;
- #if defined(TARGET_NR_name_to_handle_at) && defined(CONFIG_OPEN_BY_HANDLE)
-     case TARGET_NR_name_to_handle_at:
-         ret = do_name_to_handle_at(arg1, arg2, arg3, arg4, arg5);
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index e08d088740..de5091c977 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -2748,4 +2748,17 @@ struct target_sched_param {
-     abi_int sched_priority;
- };
- 
-+/* from kernel's include/uapi/linux/openat2.h */
-+struct target_open_how_ver0 {
-+    abi_ullong flags;
-+    abi_ullong mode;
-+    abi_ullong resolve;
-+};
-+#ifndef RESOLVE_NO_MAGICLINKS
-+#define RESOLVE_NO_MAGICLINKS   0x02
-+#endif
-+#ifndef RESOLVE_NO_SYMLINKS
-+#define RESOLVE_NO_SYMLINKS     0x04
-+#endif
-+
- #endif
+ struct target_open_how_ver0 {
+     abi_ullong flags;
+     abi_ullong mode;
+diff --git a/meson.build b/meson.build
+index 10464466ff..77cb5c41d8 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2488,6 +2488,7 @@ config_host_data.set('CONFIG_LINUX_MAGIC_H', cc.has_header('linux/magic.h'))
+ config_host_data.set('CONFIG_VALGRIND_H', cc.has_header('valgrind/valgrind.h'))
+ config_host_data.set('HAVE_BTRFS_H', cc.has_header('linux/btrfs.h'))
+ config_host_data.set('HAVE_DRM_H', cc.has_header('libdrm/drm.h'))
++config_host_data.set('HAVE_OPENAT2_H', cc.has_header('linux/openat2.h'))
+ config_host_data.set('HAVE_PTY_H', cc.has_header('pty.h'))
+ config_host_data.set('HAVE_SYS_DISK_H', cc.has_header('sys/disk.h'))
+ config_host_data.set('HAVE_SYS_IOCCOM_H', cc.has_header('sys/ioccom.h'))
 -- 
 2.45.2
 
