@@ -2,58 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCA7989D25
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A43989D24
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:45:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svC0j-000744-2e; Mon, 30 Sep 2024 04:44:05 -0400
+	id 1svC0i-0006yT-BR; Mon, 30 Sep 2024 04:44:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svC0e-0006km-15; Mon, 30 Sep 2024 04:44:00 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ id 1svC0d-0006ka-Vf; Mon, 30 Sep 2024 04:43:59 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svC0a-0000u6-Iv; Mon, 30 Sep 2024 04:43:59 -0400
+ id 1svC0a-0000uF-Uv; Mon, 30 Sep 2024 04:43:59 -0400
 Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:8a3:0:640:33b5:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 04BBA60B1B;
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id B6FA260E17;
  Mon, 30 Sep 2024 11:43:52 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b737::1:2c])
  by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id WhU2Sb1IXiE0-yFvb1rX8; Mon, 30 Sep 2024 11:43:51 +0300
+ ESMTPSA id WhU2Sb1IXiE0-HZoBTFZ6; Mon, 30 Sep 2024 11:43:52 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1727685831;
- bh=TNo371By6R1gWLzBQzjueDMSgHamik/HswYQWJjXTkA=;
+ s=default; t=1727685832;
+ bh=BtuTV4i6Dso4pgdFfeN1B9eAAXqbLI7RCSe0Zk64D1I=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=TlW670tc3oluM5H8yvUrvl2/Fv8iBy52XtuR9zrTrqOzK0ioaxav585Fvy3XA4NYN
- cG/gqUaXxY63CEp354351Z/IgXrKvlEmEVZ5nZ4TOPcGg3l5bLfZOcN4Lth29/h2Wk
- Tkg6h5qd41Hd0c0RBfCUJ/650espKjHCEJ1AbQ5w=
+ b=BuPsJ54nBlfwlxyF2AWy/MH6C55VhSN5jT7NSxyJhGv8yhe2J3j8mdztHt+Uwwk1w
+ rP7cR33zUiouI5Jlou69dYydHGLngeqMKj7kMAnRQ9Ibt94MahLkC1yt+5YQ4zf7WP
+ lnk8Dz98jfFEgRpC1qY2JS0xxb/EsIEUf6BQjzCg=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, vsementsov@yandex-team.ru, peter.maydell@linaro.org,
  "Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PULL 4/5] block: Remove unused aio_task_pool_empty
-Date: Mon, 30 Sep 2024 11:43:24 +0300
-Message-Id: <20240930084325.187606-5-vsementsov@yandex-team.ru>
+Subject: [PULL 5/5] util/co-shared-resource: Remove unused
+ co_try_get_from_shres
+Date: Mon, 30 Sep 2024 11:43:25 +0300
+Message-Id: <20240930084325.187606-6-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240930084325.187606-1-vsementsov@yandex-team.ru>
 References: <20240930084325.187606-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Yandex-Filter: 1
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -73,45 +75,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-aio_task_pool_empty has been unused since it was added in
-  6e9b225f73 ("block: introduce aio task pool")
+co_try_get_from_shres hasn't been used since it was added in
+  55fa54a789 ("co-shared-resource: protect with a mutex")
 
+(Everyone uses the _locked version)
 Remove it.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Message-Id: <20240917002007.330689-1-dave@treblig.org>
+Message-Id: <20240918124220.27871-1-dave@treblig.org>
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- block/aio_task.c         | 5 -----
- include/block/aio_task.h | 2 --
- 2 files changed, 7 deletions(-)
+ include/qemu/co-shared-resource.h | 7 -------
+ util/qemu-co-shared-resource.c    | 6 ------
+ 2 files changed, 13 deletions(-)
 
-diff --git a/block/aio_task.c b/block/aio_task.c
-index 9bd17ea2c1..bb5c05f455 100644
---- a/block/aio_task.c
-+++ b/block/aio_task.c
-@@ -119,8 +119,3 @@ int aio_task_pool_status(AioTaskPool *pool)
+diff --git a/include/qemu/co-shared-resource.h b/include/qemu/co-shared-resource.h
+index 78ca5850f8..41be1a8131 100644
+--- a/include/qemu/co-shared-resource.h
++++ b/include/qemu/co-shared-resource.h
+@@ -44,13 +44,6 @@ SharedResource *shres_create(uint64_t total);
+  */
+ void shres_destroy(SharedResource *s);
  
-     return pool->status;
+-/*
+- * Try to allocate an amount of @n.  Return true on success, and false
+- * if there is too little left of the collective resource to fulfill
+- * the request.
+- */
+-bool co_try_get_from_shres(SharedResource *s, uint64_t n);
+-
+ /*
+  * Allocate an amount of @n, and, if necessary, yield until
+  * that becomes possible.
+diff --git a/util/qemu-co-shared-resource.c b/util/qemu-co-shared-resource.c
+index a66cc07e75..752eb5a1c5 100644
+--- a/util/qemu-co-shared-resource.c
++++ b/util/qemu-co-shared-resource.c
+@@ -66,12 +66,6 @@ static bool co_try_get_from_shres_locked(SharedResource *s, uint64_t n)
+     return false;
  }
--
--bool aio_task_pool_empty(AioTaskPool *pool)
+ 
+-bool co_try_get_from_shres(SharedResource *s, uint64_t n)
 -{
--    return pool->busy_tasks == 0;
+-    QEMU_LOCK_GUARD(&s->lock);
+-    return co_try_get_from_shres_locked(s, n);
 -}
-diff --git a/include/block/aio_task.h b/include/block/aio_task.h
-index 18a9c41f4e..c81d637617 100644
---- a/include/block/aio_task.h
-+++ b/include/block/aio_task.h
-@@ -40,8 +40,6 @@ void aio_task_pool_free(AioTaskPool *);
- /* error code of failed task or 0 if all is OK */
- int aio_task_pool_status(AioTaskPool *pool);
- 
--bool aio_task_pool_empty(AioTaskPool *pool);
 -
- /* User provides filled @task, however task->pool will be set automatically */
- void coroutine_fn aio_task_pool_start_task(AioTaskPool *pool, AioTask *task);
- 
+ void coroutine_fn co_get_from_shres(SharedResource *s, uint64_t n)
+ {
+     assert(n <= s->total);
 -- 
 2.34.1
 
