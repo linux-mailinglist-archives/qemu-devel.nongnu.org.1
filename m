@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100DB989CA0
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF859989C92
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:20:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svBcr-0007Te-1A; Mon, 30 Sep 2024 04:19:25 -0400
+	id 1svBbp-0002ZN-Gf; Mon, 30 Sep 2024 04:18:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svBaO-0005Ea-Je
+ id 1svBaO-0005Eb-Iz
  for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:17:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svBaL-0005sH-N8
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:16:51 -0400
+ id 1svBaM-0005se-Am
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 04:16:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727684205;
+ s=mimecast20190719; t=1727684209;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NBIdUVg4Ambg7bYy+M68UshrEz83KnaBQNGOPS+kl2w=;
- b=BL16SZV9MT7VREegDOOGcT5WLFv1+yM3hk3nxd4j1iJjiffzv+fVpz2G3mvsE0qtAw/hqS
- fBVjY2Cmw4w3i0noON/9tSZSCoQknlTXPw3RovvSL0YeN2bStFma4G1vfveO3s9LAkYAJe
- e8GrnoXJNQ0q2rAQJc6s2fvzJOkSEJs=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=rkCDdXwIPlr39y+SeAk0OhVm7wJjgw4TMj43kjTyWsQ=;
+ b=BWe6EDuwxqA0Q8YckiBuS0g1vH3P5vv/DCoQnBG0A5XmEB2ysp1qt339e9jjfzlxt6LITP
+ FDefZYOh5JMKJjkF2BS6jYDpcKSVH0qZTaoHOSoHCiTs7pQxXIu6tF3XDnGvrr170lfB0W
+ EdznGtD6HK0hM/BuVPHl8c0GMWzzM7k=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-muZz1Fg8Peq94dAr0jhFLA-1; Mon,
- 30 Sep 2024 04:16:41 -0400
-X-MC-Unique: muZz1Fg8Peq94dAr0jhFLA-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
- [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-282-3l9AFWjfPFu1qQK9PJCZ4w-1; Mon,
+ 30 Sep 2024 04:16:45 -0400
+X-MC-Unique: 3l9AFWjfPFu1qQK9PJCZ4w-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1F24A190598D; Mon, 30 Sep 2024 08:16:38 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E487D1945118; Mon, 30 Sep 2024 08:16:42 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 65E7619373D7; Mon, 30 Sep 2024 08:16:32 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D7B0D1955DCA; Mon, 30 Sep 2024 08:16:41 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>,
@@ -70,16 +70,16 @@ Cc: Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Yuval Shaia <yuval.shaia.ml@gmail.com>, Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v3 13/22] hw/virtio-blk: fix -Werror=maybe-uninitialized
+Subject: [PATCH v3 14/22] migration: fix -Werror=maybe-uninitialized
  false-positive
-Date: Mon, 30 Sep 2024 12:14:48 +0400
-Message-ID: <20240930081458.1926382-14-marcandre.lureau@redhat.com>
+Date: Mon, 30 Sep 2024 12:14:49 +0400
+Message-ID: <20240930081458.1926382-15-marcandre.lureau@redhat.com>
 In-Reply-To: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
 References: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -108,28 +108,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../hw/block/virtio-blk.c:1212:12: error: ‘rq’ may be used uninitialized [-Werror=maybe-uninitialized]
+../migration/ram.c:1873:23: error: ‘dirty’ may be used uninitialized [-Werror=maybe-uninitialized]
+
+When 'block' != NULL, 'dirty' is initialized.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Peter Xu <peterx@redhat.com>
 ---
- hw/block/virtio-blk.c | 2 +-
+ migration/ram.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 115795392c..9166d7974d 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -1060,7 +1060,7 @@ static void virtio_blk_dma_restart_cb(void *opaque, bool running,
-     VirtIOBlock *s = opaque;
-     uint16_t num_queues = s->conf.num_queues;
-     g_autofree VirtIOBlockReq **vq_rq = NULL;
--    VirtIOBlockReq *rq;
-+    VirtIOBlockReq *rq = NULL;
+diff --git a/migration/ram.c b/migration/ram.c
+index 81eda2736a..326ce7eb79 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1793,7 +1793,7 @@ static bool get_queued_page(RAMState *rs, PageSearchStatus *pss)
+ {
+     RAMBlock  *block;
+     ram_addr_t offset;
+-    bool dirty;
++    bool dirty = false;
  
-     if (!running) {
-         return;
+     do {
+         block = unqueue_page(rs, &offset);
 -- 
 2.45.2.827.g557ae147e6
 
