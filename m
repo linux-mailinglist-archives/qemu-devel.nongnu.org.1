@@ -2,76 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575DF989E55
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF151989E71
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 11:33:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svCkF-0004cn-Ir; Mon, 30 Sep 2024 05:31:07 -0400
+	id 1svCmP-0000zd-3P; Mon, 30 Sep 2024 05:33:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1svCk5-0003sa-AK
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:30:57 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1svCk3-000759-D3
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:30:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727688655; x=1759224655;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ZowRfC+nAiQ1hfhgMgDwaPiGobGdPzqhoNhjzniUYdM=;
- b=HzY2g/BHT9aYkncN+Ec2lemHEwQe0awHXjoC1wQiJub436W7rKi5cnjJ
- JEGU5jBUzGApmiGwYHpPFE1RntgS6GyfGvgvXlENdZfv1lm17/cLdMlXj
- EA7Wz4uHe0gRj1A90ag5+ejKrX9VIhvYQJgCxOlpIXxgkeduV3LBD6JZJ
- ULu0w6Ma3LGjD5TmmLuDW31Rc3HmszYvKvkVK7IVnyoypo2Fh08of89SM
- aXmIagZ4UnuL9OzX3uFIvBsfBcS2mcAs7IzItrcVGctlASNobIfihXslo
- 7laCl5YL5gz7UFjNZeITdMZXE5EvAs89lJTcby/VmkVMbCdGIFPs4MsFf w==;
-X-CSE-ConnectionGUID: rjqN23GxTnaI+a2S5APk8g==
-X-CSE-MsgGUID: I1m92J5+S+Gpmtp/3+zKbw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26721914"
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26721914"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 02:30:54 -0700
-X-CSE-ConnectionGUID: qJFWanF1R/ioNtJtKQFP2Q==
-X-CSE-MsgGUID: 0BqGXAyURFKGkTl/UE8OBg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="77749907"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 02:30:50 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Thomas Huth <thuth@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 17/17] tests/qtest: Add intel-iommu test
-Date: Mon, 30 Sep 2024 17:26:31 +0800
-Message-Id: <20240930092631.2997543-18-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
-References: <20240930092631.2997543-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1svCm9-00006K-9G
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:33:12 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1svCm5-0007OJ-7q
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 05:33:02 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a8d29b7edc2so586176866b.1
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 02:32:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1727688778; x=1728293578; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SIQ5oy6F0LgxLI7PQPhdHvHZLISU/dLKj0n+QWStUjw=;
+ b=pImUMimVu83/iQTdnIa3tR69Le102HCW0SygWLd8eynbr/WlAkHxLGerqiKrr6qmw/
+ CpnTX3NEUxBH5cqMRVa6Y0431DMwcvAMF5hNoXbfd3WJE16b+8aXTj+9qk3QuaOHsLHC
+ 81ivjUHYLy5sZ/DeX3m8sPSDyaL6Togc9tBbHvUzH9Fr4jj6kqjK1WPN56O6kf6LZ4UO
+ xBweXl4+ZCJd3yBAMofAq9WfibRh/ekTEWFXaJQPzTZ7GPw0sMpSMCW1Qn9W3tDHj/ct
+ XUL5lbrU4guA4T7zS/oWEkyi57vRafsRfoVeW5Ll9jwlmgHp0UenQrzScKCy/EGUeiXL
+ 1+pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727688778; x=1728293578;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=SIQ5oy6F0LgxLI7PQPhdHvHZLISU/dLKj0n+QWStUjw=;
+ b=ReviM37JDkcvRZUVSsqOB48qBS9UtY51urcsmaAESWyuoaTiSd07ZdkwAwLNX/JzWl
+ o55HRAZx9UvxajvG7UxHHWieLax613ZDSUeoKAEwOa7Pd5oL2An1B2zZmxpminRC+eMh
+ B7hmdYJJgSFEFOkxT9DqK5v7vkyaL55JmDsBjffM+P0XnWe0HeT7KXNd89oqZjMh0CP9
+ 4EeBw2ygcAdKj4vS6z5LarPUPFuMhdZ9+S1QTnafhMO3yA7lwzidk+X0wWpyemfu+mMv
+ LxPpa3dPpVRY235n3HRsrFNkXwAs6FgdXzBiuFkcbGlyGsVIkMhNVhUayV8TbJCRTZx4
+ K6eg==
+X-Gm-Message-State: AOJu0Yz0A9ZZUu3ehdPn9J2/4Tiz9L1BS0kccaQDX7USfEyg/RAUU0d5
+ qmlctPu77Q0SwhcXU1zdLNNLyA8aeKFCE647iC62XJ60wE898lc4D0/1Wl7pirg=
+X-Google-Smtp-Source: AGHT+IHUhlVWNtN/w1WwPKrmVQZHaP7RTUXtvsmLiyFI/PHmI3L3gOtOvGILAIAkiwywdcJZXCTn0w==
+X-Received: by 2002:a17:907:6d12:b0:a77:b4e3:4fca with SMTP id
+ a640c23a62f3a-a93c48f711amr1288165866b.9.1727688777629; 
+ Mon, 30 Sep 2024 02:32:57 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a93c2997d20sm499296266b.196.2024.09.30.02.32.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 30 Sep 2024 02:32:56 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 2AD515F7CB;
+ Mon, 30 Sep 2024 10:32:56 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Tokarev <mjt@tls.msk.ru>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Wainer dos Santos
+ Moschetta <wainersm@redhat.com>,  Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH] testing: bump mips64el cross to bookworm and allow to fail
+In-Reply-To: <a3644805-e4ba-4cfb-a429-0604d7282f06@redhat.com> (Thomas Huth's
+ message of "Wed, 25 Sep 2024 13:17:10 +0200")
+References: <20240923081537.3846145-1-alex.bennee@linaro.org>
+ <a3644805-e4ba-4cfb-a429-0604d7282f06@redhat.com>
+User-Agent: mu4e 1.12.6; emacs 29.4
+Date: Mon, 30 Sep 2024 10:32:56 +0100
+Message-ID: <874j5xpjuf.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.21;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.095,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,132 +97,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the framework to test the intel-iommu device.
+Thomas Huth <thuth@redhat.com> writes:
 
-Currently only tested cap/ecap bits correctness in scalable
-modern mode. Also tested cap/ecap bits consistency before
-and after system reset.
+> On 23/09/2024 10.15, Alex Benn=C3=A9e wrote:
+>> The mips64el cross setup is very broken for bullseye which has now
+>> entered LTS support so is unlikely to be fixed. While we still can't
+>> build the container for bookworm due to a single missing dependency
+>> that will hopefully get fixed in due course. For the sake of keeping
+>> the CI green we mark it as allow_fail for the time being.
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> Cc: Michael Tokarev <mjt@tls.msk.ru>
+>> ---
+> ...
+>> @@ -143,6 +140,7 @@ RUN export DEBIAN_FRONTEND=3Dnoninteractive && \
+>>                         libvdeplug-dev:mips64el \
+>>                         libvirglrenderer-dev:mips64el \
+>>                         libvte-2.91-dev:mips64el \
+>> +                      libxdp-dev:mips64el \
+>>                         libzstd-dev:mips64el \
+>>                         nettle-dev:mips64el \
+>>                         systemtap-sdt-dev:mips64el \
+>
+> We could also do a temporary manual hack and remove the problematic
+> packages from the list that cause the failure. I guess removing
+> libdrm-dev:mips64el , libgtk-3-dev:mips64el and the SDL2 packages
+> might help to avoid that the mesa stuff gets installed (which causes
+> the trouble)...
+> Of course this will be overwritten the next time someone runs lcitool
+> again, but with a little bit of luck, Debian already got fixed at that
+> point in time. What do you think?
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Acked-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Clément Mathieu--Drif<clement.mathieu--drif@eviden.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
----
- MAINTAINERS                    |  1 +
- include/hw/i386/intel_iommu.h  |  1 +
- tests/qtest/intel-iommu-test.c | 65 ++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build        |  1 +
- 4 files changed, 68 insertions(+)
- create mode 100644 tests/qtest/intel-iommu-test.c
+I was hoping the blockage would get cleared by now but I guess not. If
+the distros no longer have enough eyeballs to care about mips64el and we
+have it as Odd Fixes then I think the allow_fail approach allows us to
+move forward without manual hacks.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 62f5255f40..331b7c7a13 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3679,6 +3679,7 @@ S: Supported
- F: hw/i386/intel_iommu.c
- F: hw/i386/intel_iommu_internal.h
- F: include/hw/i386/intel_iommu.h
-+F: tests/qtest/intel-iommu-test.c
- 
- AMD-Vi Emulation
- S: Orphan
-diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index 4d6acb2314..a1858898f1 100644
---- a/include/hw/i386/intel_iommu.h
-+++ b/include/hw/i386/intel_iommu.h
-@@ -47,6 +47,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState, INTEL_IOMMU_DEVICE)
- #define VTD_HOST_AW_48BIT           48
- #define VTD_HOST_AW_AUTO            0xff
- #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
-+#define VTD_MGAW_FROM_CAP(cap)      ((cap >> 16) & 0x3fULL)
- 
- #define DMAR_REPORT_F_INTR          (1)
- 
-diff --git a/tests/qtest/intel-iommu-test.c b/tests/qtest/intel-iommu-test.c
-new file mode 100644
-index 0000000000..6131e20117
---- /dev/null
-+++ b/tests/qtest/intel-iommu-test.c
-@@ -0,0 +1,65 @@
-+/*
-+ * QTest testcase for intel-iommu
-+ *
-+ * Copyright (c) 2024 Intel, Inc.
-+ *
-+ * Author: Zhenzhong Duan <zhenzhong.duan@intel.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+#include "hw/i386/intel_iommu_internal.h"
-+
-+#define CAP_MODERN_FIXED1    (VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND | \
-+                              VTD_CAP_MAMV | VTD_CAP_PSI | VTD_CAP_SLLPS)
-+#define ECAP_MODERN_FIXED1   (VTD_ECAP_QI |  VTD_ECAP_IR | VTD_ECAP_IRO | \
-+                              VTD_ECAP_MHMV | VTD_ECAP_SMTS | VTD_ECAP_FLTS)
-+
-+static inline uint64_t vtd_reg_readq(QTestState *s, uint64_t offset)
-+{
-+    return qtest_readq(s, Q35_HOST_BRIDGE_IOMMU_ADDR + offset);
-+}
-+
-+static void test_intel_iommu_modern(void)
-+{
-+    uint8_t init_csr[DMAR_REG_SIZE];     /* register values */
-+    uint8_t post_reset_csr[DMAR_REG_SIZE];     /* register values */
-+    uint64_t cap, ecap, tmp;
-+    QTestState *s;
-+
-+    s = qtest_init("-M q35 -device intel-iommu,x-scalable-mode=modern");
-+
-+    cap = vtd_reg_readq(s, DMAR_CAP_REG);
-+    g_assert((cap & CAP_MODERN_FIXED1) == CAP_MODERN_FIXED1);
-+
-+    tmp = cap & VTD_CAP_SAGAW_MASK;
-+    g_assert(tmp == (VTD_CAP_SAGAW_39bit | VTD_CAP_SAGAW_48bit));
-+
-+    tmp = VTD_MGAW_FROM_CAP(cap);
-+    g_assert(tmp == VTD_HOST_AW_48BIT - 1);
-+
-+    ecap = vtd_reg_readq(s, DMAR_ECAP_REG);
-+    g_assert((ecap & ECAP_MODERN_FIXED1) == ECAP_MODERN_FIXED1);
-+
-+    qtest_memread(s, Q35_HOST_BRIDGE_IOMMU_ADDR, init_csr, DMAR_REG_SIZE);
-+
-+    qobject_unref(qtest_qmp(s, "{ 'execute': 'system_reset' }"));
-+    qtest_qmp_eventwait(s, "RESET");
-+
-+    qtest_memread(s, Q35_HOST_BRIDGE_IOMMU_ADDR, post_reset_csr, DMAR_REG_SIZE);
-+    /* Ensure registers are consistent after hard reset */
-+    g_assert(!memcmp(init_csr, post_reset_csr, DMAR_REG_SIZE));
-+
-+    qtest_quit(s);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    qtest_add_func("/q35/intel-iommu/modern", test_intel_iommu_modern);
-+
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 310865e49c..8a928caf70 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -90,6 +90,7 @@ qtests_i386 = \
-   (config_all_devices.has_key('CONFIG_SB16') ? ['fuzz-sb16-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_SDHCI_PCI') ? ['fuzz-sdcard-test'] : []) +            \
-   (config_all_devices.has_key('CONFIG_ESP_PCI') ? ['am53c974-test'] : []) +                 \
-+  (config_all_devices.has_key('CONFIG_VTD') ? ['intel-iommu-test'] : []) +                 \
-   (host_os != 'windows' and                                                                \
-    config_all_devices.has_key('CONFIG_ACPI_ERST') ? ['erst-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_PCIE_PORT') and                                       \
--- 
-2.34.1
+If the CI runs and is green great, if not it doesn't hold anything up.
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
