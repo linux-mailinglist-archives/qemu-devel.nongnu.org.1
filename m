@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B300698AD12
-	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 21:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E4998AD28
+	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 21:44:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svMGc-00078w-HI; Mon, 30 Sep 2024 15:41:10 -0400
+	id 1svMGa-00072z-Ro; Mon, 30 Sep 2024 15:41:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1svMGW-0006sB-Rh
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 15:41:04 -0400
+ id 1svMGX-0006wJ-UJ
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 15:41:05 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1svMGU-00021E-Uc
- for qemu-devel@nongnu.org; Mon, 30 Sep 2024 15:41:04 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48UIuYaC012947;
- Mon, 30 Sep 2024 19:40:59 GMT
+ id 1svMGW-00021N-4b
+ for qemu-devel@nongnu.org; Mon, 30 Sep 2024 15:41:05 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48UIupxd032528;
+ Mon, 30 Sep 2024 19:41:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=ndjvLJsdu51DMy7eDCtg/l0CqbKAOQKFVTo1vLFehdM=; b=
- cFjaQSYW42RNIEsUPPxrdGNCQvEeGaZRrLYFPdl+oYW4wFHwZ6JegAzlw/bQOEOc
- BtniwphJvPI8R3kzjGbFjlsj/pIcXNfaN8G1FlSVpCYzY7BetNt6ZmO/S7YEVOj1
- OV/CL4yaF7MhATLLq9pFelq/BQJ69tVK/0i18SiQbklxXfvca494alF+fCI0Mjx6
- 8gLUvsfRb0f6aH0Mjb9ZDrxZ/3R4h+vvZ9w8e08DTUY0zM+om1GBgKOA0yb8pE8k
- UnCPaHRkozZ97OJdbeHMbgvIyjG+qPs1ftAJ9uIwB03OpAJdVb5OloepcD8GrsWP
- o2gPkMFCxYTNcNvt8hq8Nw==
+ corp-2023-11-20; bh=KwGezQsbaxyNvQUe8leFQCulaOvYxB4euobFa9Bxvjw=; b=
+ B00Fop2huhdMjG5YtL3He8aksnkMp21ExxmF3/bwZ5ZdkHky387GvdHWCMd9gjse
+ RbAvDrVK2wE9mmCG8pY0hQnm7uCYigw1KL5KZIXwhmLs0Uf4m8UF1E9RGSyWNM4k
+ +0y3TqIkT2UOFVP7C1MehbaLCLWdI4l/WwZ9nAjZO11ly8iD+e9vrNrxRDFiXRbQ
+ TG9HJccf6HWycB6CwULKwmDDSUrlcu0ihWvPHdM37OyLO4/BxLpACxaz/KWwMfVY
+ 5n0wy7lwbNMW49EcoLgLEcfGktMz+6oaRwfSHAWSVQht9Sbs5S4ptnsIPqub2/Im
+ 25zH+lVE3uo0w4UqZ5a42A==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x9p9mgbe-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x8d1ckpf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Sep 2024 19:40:59 +0000 (GMT)
+ Mon, 30 Sep 2024 19:41:00 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 48UJWkVU012531; Mon, 30 Sep 2024 19:40:57 GMT
+ with ESMTP id 48UIWjRT012524; Mon, 30 Sep 2024 19:40:59 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 41x8868tuy-1
+ 41x8868tvu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Sep 2024 19:40:57 +0000
+ Mon, 30 Sep 2024 19:40:58 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48UJepUq028204;
- Mon, 30 Sep 2024 19:40:57 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48UJepUs028204;
+ Mon, 30 Sep 2024 19:40:58 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 41x8868thj-5; Mon, 30 Sep 2024 19:40:57 +0000
+ ESMTP id 41x8868thj-6; Mon, 30 Sep 2024 19:40:58 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 04/13] migration: stop vm earlier for cpr
-Date: Mon, 30 Sep 2024 12:40:35 -0700
-Message-Id: <1727725244-105198-5-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 05/13] physmem: preserve ram blocks for cpr
+Date: Mon, 30 Sep 2024 12:40:36 -0700
+Message-Id: <1727725244-105198-6-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1727725244-105198-1-git-send-email-steven.sistare@oracle.com>
 References: <1727725244-105198-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0 adultscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2408220000 definitions=main-2409300142
-X-Proofpoint-ORIG-GUID: tShV9qcyZpla2sZqeAaAgbQVPBKXMRp8
-X-Proofpoint-GUID: tShV9qcyZpla2sZqeAaAgbQVPBKXMRp8
+X-Proofpoint-ORIG-GUID: 3H57nQpD4fwOf5l3fSjuuHoVavi2_Kum
+X-Proofpoint-GUID: 3H57nQpD4fwOf5l3fSjuuHoVavi2_Kum
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -103,75 +103,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stop the vm earlier for cpr, to guarantee consistent device state when
-CPR state is saved.
+Save the memfd for anonymous ramblocks in CPR state, along with a name
+that uniquely identifies it.  The block's idstr is not yet set, so it
+cannot be used for this purpose.  Find the saved memfd in new QEMU when
+creating a block.  QEMU hard-codes the length of some internally-created
+blocks, so to guard against that length changing, use lseek to get the
+actual length of an incoming memfd.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- migration/migration.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ system/physmem.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index df00e5c..868bf0e 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2082,6 +2082,7 @@ void qmp_migrate(const char *uri, bool has_channels,
-     MigrationState *s = migrate_get_current();
-     g_autoptr(MigrationChannel) channel = NULL;
-     MigrationAddress *addr = NULL;
-+    bool stopped = false;
+diff --git a/system/physmem.c b/system/physmem.c
+index 174f7e0..ddbeec9 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -72,6 +72,7 @@
  
-     /*
-      * Having preliminary checks for uri and channel
-@@ -2125,6 +2126,15 @@ void qmp_migrate(const char *uri, bool has_channels,
-         }
-     }
+ #include "qapi/qapi-types-migration.h"
+ #include "migration/options.h"
++#include "migration/cpr.h"
+ #include "migration/vmstate.h"
  
-+    if (migrate_mode_is_cpr(s)) {
-+        int ret = migration_stop_vm(s, RUN_STATE_FINISH_MIGRATE);
-+        if (ret < 0) {
-+            error_setg(&local_err, "migration_stop_vm failed, error %d", -ret);
-+            goto out;
-+        }
-+        stopped = true;
-+    }
-+
-     if (cpr_state_save(&local_err)) {
-         goto out;
-     }
-@@ -2160,6 +2170,9 @@ out:
-         }
-         migrate_fd_error(s, local_err);
-         error_propagate(errp, local_err);
-+        if (stopped) {
-+            vm_resume(s->vm_old_state);
-+        }
-         return;
+ #include "qemu/range.h"
+@@ -1663,6 +1664,19 @@ void qemu_ram_unset_idstr(RAMBlock *block)
      }
  }
-@@ -3743,7 +3756,6 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
-     Error *local_err = NULL;
-     uint64_t rate_limit;
-     bool resume = (s->state == MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP);
--    int ret;
  
-     /*
-      * If there's a previous error, free it and prepare for another one.
-@@ -3815,14 +3827,6 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
++static char *cpr_name(RAMBlock *block)
++{
++    MemoryRegion *mr = block->mr;
++    const char *mr_name = memory_region_name(mr);
++    g_autofree char *id = mr->dev ? qdev_get_dev_path(mr->dev) : NULL;
++
++    if (id) {
++        return g_strdup_printf("%s/%s", id, mr_name);
++    } else {
++        return g_strdup(mr_name);
++    }
++}
++
+ size_t qemu_ram_pagesize(RAMBlock *rb)
+ {
+     return rb->page_size;
+@@ -1858,14 +1872,18 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+                                         TYPE_MEMORY_BACKEND)) {
+             size_t max_length = new_block->max_length;
+             MemoryRegion *mr = new_block->mr;
+-            const char *name = memory_region_name(mr);
++            g_autofree char *name = cpr_name(new_block);
+ 
+             new_block->mr->align = QEMU_VMALLOC_ALIGN;
+             new_block->flags |= RAM_SHARED;
++            new_block->fd = cpr_find_fd(name, 0);
+ 
+             if (new_block->fd == -1) {
+                 new_block->fd = qemu_memfd_create(name, max_length + mr->align,
+                                                   0, 0, 0, errp);
++                cpr_save_fd(name, 0, new_block->fd);
++            } else {
++                new_block->max_length = lseek(new_block->fd, 0, SEEK_END);
+             }
+ 
+             if (new_block->fd >= 0) {
+@@ -1875,6 +1893,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+                                                  false, 0, errp);
+             }
+             if (!new_block->host) {
++                cpr_delete_fd(name, 0);
+                 qemu_mutex_unlock_ramlist();
+                 return;
+             }
+@@ -2182,6 +2201,8 @@ static void reclaim_ramblock(RAMBlock *block)
+ 
+ void qemu_ram_free(RAMBlock *block)
+ {
++    g_autofree char *name = NULL;
++
+     if (!block) {
          return;
      }
+@@ -2192,6 +2213,8 @@ void qemu_ram_free(RAMBlock *block)
+     }
  
--    if (migrate_mode_is_cpr(s)) {
--        ret = migration_stop_vm(s, RUN_STATE_FINISH_MIGRATE);
--        if (ret < 0) {
--            error_setg(&local_err, "migration_stop_vm failed, error %d", -ret);
--            goto fail;
--        }
--    }
--
-     if (migrate_background_snapshot()) {
-         qemu_thread_create(&s->thread, "mig/snapshot",
-                 bg_migration_thread, s, QEMU_THREAD_JOINABLE);
+     qemu_mutex_lock_ramlist();
++    name = cpr_name(block);
++    cpr_delete_fd(name, 0);
+     QLIST_REMOVE_RCU(block, next);
+     ram_list.mru_block = NULL;
+     /* Write list before version */
 -- 
 1.8.3.1
 
