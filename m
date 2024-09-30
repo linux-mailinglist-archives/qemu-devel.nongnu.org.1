@@ -2,57 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E670989D1F
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A0E989D21
 	for <lists+qemu-devel@lfdr.de>; Mon, 30 Sep 2024 10:45:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svC0f-0006pL-V7; Mon, 30 Sep 2024 04:44:02 -0400
+	id 1svC0g-0006uP-SZ; Mon, 30 Sep 2024 04:44:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svC0c-0006eo-IN; Mon, 30 Sep 2024 04:43:58 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ id 1svC0d-0006hw-BQ; Mon, 30 Sep 2024 04:43:59 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svC0a-0000tr-Fl; Mon, 30 Sep 2024 04:43:58 -0400
+ id 1svC0a-0000u8-5S; Mon, 30 Sep 2024 04:43:58 -0400
 Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:8a3:0:640:33b5:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 2930060DF1;
- Mon, 30 Sep 2024 11:43:48 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 63F1060C23;
+ Mon, 30 Sep 2024 11:43:49 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b737::1:2c])
  by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id WhU2Sb1IXiE0-P7yEq2gG; Mon, 30 Sep 2024 11:43:47 +0300
+ ESMTPSA id WhU2Sb1IXiE0-cyZRRwx5; Mon, 30 Sep 2024 11:43:48 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1727685827;
- bh=mjrW9mv3SeuApEPDqObDjoIiWO3yn4I81I3kfVmogt0=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=sDHy/4O/U+74AkV5Q28wTkinkKfToXhSQpyaMOpUxRGmQuvPYUFvpWq52Z+SzLR33
- DszYzseG+k0UdxmDqnb5cQYkCUp43lDzRHau2s8deP3HKsE7iHd7vDgj+xMTeHqL0N
- oVVQIv1sczj7h1LdUg0Bw+g2CRKtvE/1YorRIXu4=
+ s=default; t=1727685828;
+ bh=CA0ozR2MoFs8iqJMkGwT6szoTB2uzbt1omtnLOIN2UU=;
+ h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=aJrhtueKuTAtkyxJ2JKTMDozG9n52O516UkIclLfZ3lUUhA4VBt9teCcpdvyUUp6B
+ f+XNDDHNsM862fNPl1vPL42GfqY/5WjdLJCD+a+UyTrlwx9Qrm6c1N7aj1C2a61qvf
+ h9CuHURWHjW7Oe43caiDJCWJ546mwUPY7E1eJRiw=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, vsementsov@yandex-team.ru, peter.maydell@linaro.org
-Subject: [PULL 0/5] Block-jobs 2024-09-30
-Date: Mon, 30 Sep 2024 11:43:20 +0300
-Message-Id: <20240930084325.187606-1-vsementsov@yandex-team.ru>
+Cc: qemu-block@nongnu.org, vsementsov@yandex-team.ru, peter.maydell@linaro.org,
+ Fiona Ebner <f.ebner@proxmox.com>, Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 1/5] copy-before-write: allow specifying minimum cluster size
+Date: Mon, 30 Sep 2024 11:43:21 +0300
+Message-Id: <20240930084325.187606-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240930084325.187606-1-vsementsov@yandex-team.ru>
+References: <20240930084325.187606-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Yandex-Filter: 1
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: 0
-X-Spam_score: 0.0
-X-Spam_bar: /
-X-Spam_report: (0.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUBJ_LACKS_WORDS=2.112 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,46 +71,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 3b14a767eaca3df5534a162851f04787b363670e:
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-  Merge tag 'qemu-openbios-20240924' of https://github.com/mcayland/qemu into staging (2024-09-28 12:34:44 +0100)
+In the context of backup fleecing, discarding the source will not work
+when the fleecing image has a larger granularity than the one used for
+block-copy operations (can happen if the backup target has smaller
+cluster size), because cbw_co_pdiscard_snapshot() will align down the
+discard requests and thus effectively ignore then.
 
-are available in the Git repository at:
+To make @discard-source work in such a scenario, allow specifying the
+minimum cluster size used for block-copy operations and thus in
+particular also the granularity for discard requests to the source.
 
-  https://gitlab.com/vsementsov/qemu.git tags/pull-block-jobs-2024-09-30
+The type 'size' (corresponding to uint64_t in C) is used in QAPI to
+rule out negative inputs and for consistency with already existing
+@cluster-size parameters. Since block_copy_calculate_cluster_size()
+uses int64_t for its result, a check that the input is not too large
+is added in block_copy_state_new() before calling it. The calculation
+in block_copy_calculate_cluster_size() is done in the target int64_t
+type.
 
-for you to fetch changes up to b74987cd3bf9bd4bf452ed371d864cbd1dccb08e:
+Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Acked-by: Markus Armbruster <armbru@redhat.com> (QAPI schema)
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Message-Id: <20240711120915.310243-2-f.ebner@proxmox.com>
+[vsementsov: switch version to 9.2 in QAPI doc]
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ block/block-copy.c         | 36 ++++++++++++++++++++++++++----------
+ block/copy-before-write.c  |  5 ++++-
+ include/block/block-copy.h |  1 +
+ qapi/block-core.json       |  8 +++++++-
+ 4 files changed, 38 insertions(+), 12 deletions(-)
 
-  util/co-shared-resource: Remove unused co_try_get_from_shres (2024-09-30 10:53:18 +0300)
-
-----------------------------------------------------------------
-Block-jobs: improve backup fleecing
-
-----------------------------------------------------------------
-
-Dr. David Alan Gilbert (2):
-  block: Remove unused aio_task_pool_empty
-  util/co-shared-resource: Remove unused co_try_get_from_shres
-
-Fiona Ebner (3):
-  copy-before-write: allow specifying minimum cluster size
-  backup: add minimum cluster size to performance options
-  block/reqlist: allow adding overlapping requests
-
- block/aio_task.c                  |  5 -----
- block/backup.c                    |  2 +-
- block/block-copy.c                | 36 ++++++++++++++++++++++---------
- block/copy-before-write.c         | 17 +++++++++++++--
- block/copy-before-write.h         |  1 +
- block/reqlist.c                   |  2 --
- blockdev.c                        |  3 +++
- include/block/aio_task.h          |  2 --
- include/block/block-copy.h        |  1 +
- include/qemu/co-shared-resource.h |  7 ------
- qapi/block-core.json              | 17 ++++++++++++---
- util/qemu-co-shared-resource.c    |  6 ------
- 12 files changed, 61 insertions(+), 38 deletions(-)
-
+diff --git a/block/block-copy.c b/block/block-copy.c
+index cc618e4561..93eb1b2664 100644
+--- a/block/block-copy.c
++++ b/block/block-copy.c
+@@ -310,6 +310,7 @@ void block_copy_set_copy_opts(BlockCopyState *s, bool use_copy_range,
+ }
+ 
+ static int64_t block_copy_calculate_cluster_size(BlockDriverState *target,
++                                                 int64_t min_cluster_size,
+                                                  Error **errp)
+ {
+     int ret;
+@@ -319,6 +320,9 @@ static int64_t block_copy_calculate_cluster_size(BlockDriverState *target,
+     GLOBAL_STATE_CODE();
+     GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
++    min_cluster_size = MAX(min_cluster_size,
++                           (int64_t)BLOCK_COPY_CLUSTER_SIZE_DEFAULT);
++
+     target_does_cow = bdrv_backing_chain_next(target);
+ 
+     /*
+@@ -329,13 +333,13 @@ static int64_t block_copy_calculate_cluster_size(BlockDriverState *target,
+     ret = bdrv_get_info(target, &bdi);
+     if (ret == -ENOTSUP && !target_does_cow) {
+         /* Cluster size is not defined */
+-        warn_report("The target block device doesn't provide "
+-                    "information about the block size and it doesn't have a "
+-                    "backing file. The default block size of %u bytes is "
+-                    "used. If the actual block size of the target exceeds "
+-                    "this default, the backup may be unusable",
+-                    BLOCK_COPY_CLUSTER_SIZE_DEFAULT);
+-        return BLOCK_COPY_CLUSTER_SIZE_DEFAULT;
++        warn_report("The target block device doesn't provide information about "
++                    "the block size and it doesn't have a backing file. The "
++                    "(default) block size of %" PRIi64 " bytes is used. If the "
++                    "actual block size of the target exceeds this value, the "
++                    "backup may be unusable",
++                    min_cluster_size);
++        return min_cluster_size;
+     } else if (ret < 0 && !target_does_cow) {
+         error_setg_errno(errp, -ret,
+             "Couldn't determine the cluster size of the target image, "
+@@ -345,16 +349,17 @@ static int64_t block_copy_calculate_cluster_size(BlockDriverState *target,
+         return ret;
+     } else if (ret < 0 && target_does_cow) {
+         /* Not fatal; just trudge on ahead. */
+-        return BLOCK_COPY_CLUSTER_SIZE_DEFAULT;
++        return min_cluster_size;
+     }
+ 
+-    return MAX(BLOCK_COPY_CLUSTER_SIZE_DEFAULT, bdi.cluster_size);
++    return MAX(min_cluster_size, bdi.cluster_size);
+ }
+ 
+ BlockCopyState *block_copy_state_new(BdrvChild *source, BdrvChild *target,
+                                      BlockDriverState *copy_bitmap_bs,
+                                      const BdrvDirtyBitmap *bitmap,
+                                      bool discard_source,
++                                     uint64_t min_cluster_size,
+                                      Error **errp)
+ {
+     ERRP_GUARD();
+@@ -365,7 +370,18 @@ BlockCopyState *block_copy_state_new(BdrvChild *source, BdrvChild *target,
+ 
+     GLOBAL_STATE_CODE();
+ 
+-    cluster_size = block_copy_calculate_cluster_size(target->bs, errp);
++    if (min_cluster_size > INT64_MAX) {
++        error_setg(errp, "min-cluster-size too large: %" PRIu64 " > %" PRIi64,
++                   min_cluster_size, INT64_MAX);
++        return NULL;
++    } else if (min_cluster_size && !is_power_of_2(min_cluster_size)) {
++        error_setg(errp, "min-cluster-size needs to be a power of 2");
++        return NULL;
++    }
++
++    cluster_size = block_copy_calculate_cluster_size(target->bs,
++                                                     (int64_t)min_cluster_size,
++                                                     errp);
+     if (cluster_size < 0) {
+         return NULL;
+     }
+diff --git a/block/copy-before-write.c b/block/copy-before-write.c
+index 853e01a1eb..a919b1f41b 100644
+--- a/block/copy-before-write.c
++++ b/block/copy-before-write.c
+@@ -417,6 +417,7 @@ static BlockdevOptions *cbw_parse_options(QDict *options, Error **errp)
+     qdict_extract_subqdict(options, NULL, "bitmap");
+     qdict_del(options, "on-cbw-error");
+     qdict_del(options, "cbw-timeout");
++    qdict_del(options, "min-cluster-size");
+ 
+ out:
+     visit_free(v);
+@@ -476,8 +477,10 @@ static int cbw_open(BlockDriverState *bs, QDict *options, int flags,
+              bs->file->bs->supported_zero_flags);
+ 
+     s->discard_source = flags & BDRV_O_CBW_DISCARD_SOURCE;
++
+     s->bcs = block_copy_state_new(bs->file, s->target, bs, bitmap,
+-                                  flags & BDRV_O_CBW_DISCARD_SOURCE, errp);
++                                  flags & BDRV_O_CBW_DISCARD_SOURCE,
++                                  opts->min_cluster_size, errp);
+     if (!s->bcs) {
+         error_prepend(errp, "Cannot create block-copy-state: ");
+         return -EINVAL;
+diff --git a/include/block/block-copy.h b/include/block/block-copy.h
+index bdc703bacd..dd5cc82f3b 100644
+--- a/include/block/block-copy.h
++++ b/include/block/block-copy.h
+@@ -28,6 +28,7 @@ BlockCopyState *block_copy_state_new(BdrvChild *source, BdrvChild *target,
+                                      BlockDriverState *copy_bitmap_bs,
+                                      const BdrvDirtyBitmap *bitmap,
+                                      bool discard_source,
++                                     uint64_t min_cluster_size,
+                                      Error **errp);
+ 
+ /* Function should be called prior any actual copy request */
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 9f6dd59298..6751022428 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -4639,12 +4639,18 @@
+ #     @on-cbw-error parameter will decide how this failure is handled.
+ #     Default 0.  (Since 7.1)
+ #
++# @min-cluster-size: Minimum size of blocks used by copy-before-write
++#     operations.  Has to be a power of 2.  No effect if smaller than
++#     the maximum of the target's cluster size and 64 KiB.  Default 0.
++#     (Since 9.2)
++#
+ # Since: 6.2
+ ##
+ { 'struct': 'BlockdevOptionsCbw',
+   'base': 'BlockdevOptionsGenericFormat',
+   'data': { 'target': 'BlockdevRef', '*bitmap': 'BlockDirtyBitmap',
+-            '*on-cbw-error': 'OnCbwError', '*cbw-timeout': 'uint32' } }
++            '*on-cbw-error': 'OnCbwError', '*cbw-timeout': 'uint32',
++            '*min-cluster-size': 'size' } }
+ 
+ ##
+ # @BlockdevOptions:
 -- 
 2.34.1
 
