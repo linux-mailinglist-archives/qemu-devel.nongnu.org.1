@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB8398C079
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BA798BF1D
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:09:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sve3s-00043H-Fw; Tue, 01 Oct 2024 10:41:12 -0400
+	id 1svdZH-0002DN-By; Tue, 01 Oct 2024 10:09:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sve3p-00041F-48
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:41:09 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ id 1svdZ6-00020Y-7l
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:09:25 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sve3l-00030m-NH
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:41:08 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2facf00b0c7so19093901fa.1
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 07:41:04 -0700 (PDT)
+ id 1svdZ2-0002DG-Dl
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:09:23 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5c88c9e45c2so5010374a12.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 07:09:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727793662; x=1728398462; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SbuUT9EGajx0g1hYB1DGCdOdT0DPQMJrhPwUaR6K6v8=;
- b=DC6ttWAut4HJ1xl2gkpJpq+BACW0yudi9qSQzya3ViPWKhg0WBHHYpzrqhYD0w3W8+
- +Q/BC2L8RbuqX9B2KhQtly23LDUfB7kVtOxlkCPK+ArHFc5cXN+izrogzhg/C0g6Pdgh
- GPdfcZ3h3BRyUt4cSaGz6JmeQ6RbO4BHg4wSXFC27uWF/WHT33lUqa1BOyg9xoNP4fvh
- MyCvzniHvyLiNWnx3rzJc/Qy+CwjUpqhcMssmiq//qkGbR6VCLKQSaO+dF3EXad3hF0E
- QH9k9vM3evnTem0+x4vyqap5eM1wF2Sr5i4D3tgvpyQym+0EClx54oawlR9K9WiJce7T
- V+5A==
+ d=linaro.org; s=google; t=1727791759; x=1728396559; darn=nongnu.org;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=UpW4yH467d0379s5Vgwk5GAfGeKWVP/pynA3yjAnFWQ=;
+ b=AqD7h+7uCybNUE3C5BHW8Kk7M2nGSaPzmlaVzlZPhSAUlidVXoTZAntyJJNyt2rZ7M
+ T7OhRQPiToaLff+7JJfS7Qf46FHoOCxOdThyUJiMxqXjJtOS2K1sLz4FaCkAeuqPGhRG
+ G00pAKeDL8F3uC9jpSYXnSGzQ44EEXAmDnREQTF3WVHI0RKnDwTOx8ltQZ5RaM1Xo+cP
+ ruq1vOYnZqQ60q0N/fTVluN0Lx6YREKR2k2HO4zPj8AZyYxYhAk/Xx2PgEYb8I+5nvl2
+ wXyEsg6UQJIETqtB7KR1yGXtlrXBmb5sYD8vCySWBIE+jVgPR7sKjx0YFAw61HeFalfV
+ eZSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727793662; x=1728398462;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SbuUT9EGajx0g1hYB1DGCdOdT0DPQMJrhPwUaR6K6v8=;
- b=dEv/au0hwxEy1Q8c9idXWDWt3gOfvdlkizQ/zE76nFnms6q1fX0/LqUPnO2L//XgZx
- 8HqOePzzlO9eYiP5EmivbvoVRZMc9DTTd6zTFEiylzTSneBhEXTxR/Jh5n0f2ly52aYv
- A82cr1c/u60WcTB3RpLy7lI430N1AOqcllKo4ig63A5FaFYRolSd9RKOT1mWD/fSiN9O
- KfhE6FGsUksVbYfJm5zbBmLdI9VU/UfjzTQqhY69dON0EXJQ7ypZlwO0hav/6gs0d31Q
- TV7+cjc759/DhK/uy71QK5UIgNs81Jr12nD4zhk+yDB+iO82ORjXm2q8A06dquiuWKi6
- w6BA==
-X-Gm-Message-State: AOJu0YxvhtR5txRAR5HhDE0FokzxOqgMnQpw5gpL97CNxKscQZci1RGd
- Ty1jR+x8WnXEEK24bubBI5RcdXkIwxIgcSwh/a2YnO3cAfrdtnZGbuAD39p76GJGV+fiGV7Aq8F
- 6NSIiRYiQGC/Dc3NEwzpYnhrF3A8QwtxnbWKqErUFXFXBeUff
-X-Google-Smtp-Source: AGHT+IGFdvj6QKOfG+IZOH1nx4C63t/O6K0scOfJNZJY58Szabr+jo343pyor7nq0Rk9wMFLyVoUp1tfMf3boaP++v4=
-X-Received: by 2002:a05:6402:1599:b0:5c3:d8fb:df6a with SMTP id
- 4fb4d7f45d1cf-5c8a2a3199bmr3250932a12.14.1727787724017; Tue, 01 Oct 2024
- 06:02:04 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1727791759; x=1728396559;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UpW4yH467d0379s5Vgwk5GAfGeKWVP/pynA3yjAnFWQ=;
+ b=lPMEnmQwJPiP/vqGJC12U6y1NP/NwdyUJF4L+S9Jwi5UCmx2WPpbweBJ4opLJngp8g
+ KERe0MudWeexLgloFJqph4NddcMSqlLNhnp0E3qSPN4EAHVmJG3TSSSrs8nR6trwdDFS
+ aJYMpp5jJTTVu3q1MMsXdnZ3XtO9argNJkjblXCAhCU3L8K9D+adpxgCRPg8pEyGDIkG
+ UALi0n874n3ghAahVJCBaZtGbIQS7Wo4Jt7Wx4e0d/snwsb68zBvYJUQDS3Ur0pDeCR6
+ DLfGmyteAArQoBHEXuWFJamAqKlQioRQ2UaCIvV4sGWJQYrYJFLSCmVaMe72Gu1f5LdL
+ fLiQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXw673baRlOQrXrjusCpREvL9AB7keggd74E7O09cHS5FVYi6BDt/E89YCA2W6iB0nEJSgAfaNjfBLF@nongnu.org
+X-Gm-Message-State: AOJu0YxtdmotPwjMBvSwdwo3FmH0PrgzHgZMzdbnjBORBwYvNY1OxFMM
+ FK4gg+7cWbQiE982T5YoR2R7My+a6PK821gjpPTxt9Efcklhhs85m1cpkbCU3D7NOYiHGAQNv/z
+ pSLlFxo0XcgLMIu8l1DuYDeyz/mxzoliwp6+u6aLDJJu7tg+q
+X-Google-Smtp-Source: AGHT+IGyHcJ05tj28COGPO4EKwC6iV9XRQZLVNhtmi0wqIoloskb4hMdogzbvNhi/gNi7BTpvOvwMTtRvqGwSJbT1v0=
+X-Received: by 2002:a05:6402:2550:b0:5c4:2d5d:b25f with SMTP id
+ 4fb4d7f45d1cf-5c8a2a4d72cmr3213218a12.13.1727787882522; Tue, 01 Oct 2024
+ 06:04:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240906164834.130257-1-jlu@pengutronix.de>
- <CAFEAcA-_=vrtqVPUdu02ryUtdH5MwifEnHgeQVq=V4Z2Jp_dUg@mail.gmail.com>
- <d6e9f2f8d7185e90e7b80dff7b222fd99c899903.camel@pengutronix.de>
-In-Reply-To: <d6e9f2f8d7185e90e7b80dff7b222fd99c899903.camel@pengutronix.de>
+References: <20240903160751.4100218-1-peter.maydell@linaro.org>
+ <CAFEAcA9hH6b72pVMAVkGHWXye9t+RXHE13RD73AabQN+p_JOyw@mail.gmail.com>
+In-Reply-To: <CAFEAcA9hH6b72pVMAVkGHWXye9t+RXHE13RD73AabQN+p_JOyw@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 1 Oct 2024 14:01:51 +0100
-Message-ID: <CAFEAcA-uMnP3Zyw5f2ha_9H1+QrnZXMau4FwEjP4UXNnjs-OqA@mail.gmail.com>
-Subject: Re: [PATCH] hw/sd/sdcard: Fix handling of disabled boot partitions
-To: jlu@pengutronix.de
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org
+Date: Tue, 1 Oct 2024 14:04:31 +0100
+Message-ID: <CAFEAcA9P+Eu+aFag1vpXTzevLDBuUk8zXd=kZVeYHbnvEL=80g@mail.gmail.com>
+Subject: Re: [PATCH for-9.2 00/53] arm: Drop deprecated boards
+To: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,56 +87,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 30 Sept 2024 at 21:05, Jan L=C3=BCbbe <jlu@pengutronix.de> wrote:
+On Mon, 16 Sept 2024 at 11:26, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> On Mon, 2024-09-30 at 15:18 +0100, Peter Maydell wrote:
-> > On Fri, 6 Sept 2024 at 17:51, Jan Luebbe <jlu@pengutronix.de> wrote:
-> > >
-> > > The enable bits in the EXT_CSD_PART_CONFIG ext_csd register do *not*
-> > > specify whether the boot partitions exist, but whether they are enabl=
-ed
-> > > for booting. Existence of the boot partitions is specified by a
-> > > EXT_CSD_BOOT_MULT !=3D 0.
-> > >
-> > > Currently, in the case of boot-partition-size=3D1M and boot-config=3D=
-0,
-> > > Linux detects boot partitions of 1M. But as sd_bootpart_offset always
-> > > returns 0, all reads/writes are mapped to the same offset in the back=
-ing
-> > > file.
-> > >
-> > > Fix this bug by calculating the offset independent of which partition=
- is
-> > > enabled for booting.
+> On Tue, 3 Sept 2024 at 17:07, Peter Maydell <peter.maydell@linaro.org> wrote:
 > >
-> > Looking at the spec this change seems correct to me.
-> >
-> > Can you elaborate on when users might run into this bug?
-> > As far as I can see only aspeed.c sets boot-partition-size,
-> > and when it does so it also sets boot-config to 8. Or are
-> > we fixing this for the benefit of future board types?
+> > This patchset removes the various Arm machines which we deprecated
+> > for the 9.0 release and are therefore allowed to remove for the 9.2
+> > release:
+> >  akita, borzoi, cheetah, connex, mainstone, n800, n810,
+> >  spitz, terrier, tosa, verdex, z2
+> > We get to drop over 30,000 lines of unmaintained code. So it's
+> > a big patchset but it's almost all deletions.
 >
-> I stumbled across this when trying to use the eMMC emulation for the RAUC=
- test
-> suite (with some unrelated local hacks, which I still need to clean up fo=
-r
-> submission) [1]. Future boards would be affected as well.
+> Hi -- ping for review on at least patches 06, 08, 18:
 >
-> One other possible issue would be disabling the boot partition by using '=
-mmc
-> bootpart enable 0 0 /dev/mmcblk0' (or similar) from Linux. The layout of =
-the
-> backing file shouldn't change in that case.
+> >   hw/display: Remove tc6393xb device
+> >   hw/arm: Remove 'cheetah' machine
+> >   hw/display: Remove pxa2xx_lcd.c
+>
+> These are all straightforward removals of either
+> deprecated machines or devices that are definitely
+> exclusively used by those machines. That would be
+> enough for me to get the bulk of the uncontroversial
+> reviewed parts of this series upstream. I can then
+> roll a much smaller v2 with the parts still under
+> discussion.
+>
+> Patches 22, 26 would also be helpful but they're a
+> bit further down the patchstack so less critical:
+>
+> >   hw/arm: Remove pxa2xx_pic
+> >   hw/misc: Remove cbus
 
-Thanks for the clarification. I've applied this patch to
-target-arm.next with the following paragraph added to the
-commit message:
- This bug is unlikely to affect many users with QEMU's current set of
- boards, because only aspeed sets boot-partition-size, and it also
- sets boot-config to 8. So to run into this a user would have to
- manually mark the boot partition non-booting from within the guest.
+In the absence of further review I'm taking these patches
+anyway; they're only removals, so not complex stuff that
+benefits from close review, and this patchset is too big to be
+sat unapplied for long.
 
-and I cc'd it to stable.
-
+thanks
 -- PMM
 
