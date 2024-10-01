@@ -2,61 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B920A98C0A7
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 311E198BF50
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:13:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sveAm-00041K-Tb; Tue, 01 Oct 2024 10:48:20 -0400
+	id 1svdbi-0007Uo-Px; Tue, 01 Oct 2024 10:12:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab@kernel.org>)
- id 1sveA7-000322-5K; Tue, 01 Oct 2024 10:47:42 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1svdbe-0007Sf-Fd
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:12:02 -0400
+Received: from fout-a4-smtp.messagingengine.com ([103.168.172.147])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab@kernel.org>)
- id 1sveA4-0004VD-K1; Tue, 01 Oct 2024 10:47:38 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 8DA0B5C54C9;
- Tue,  1 Oct 2024 07:04:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB54C4CEE1;
- Tue,  1 Oct 2024 07:04:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1727766252;
- bh=bZBTFsxaIkRHKH/tMfUarpWye8vmGL/o69fO3i5EElA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=IGsrzWfajA9Mf6z3n5LvEQ3g9cBwTF6hVuULNaoOMuE1pbu3OfussfwUQLdWU/K0L
- cEZTiYIWhnu4hJ4gp3pprr0EvX0TZxtx6PFHDbAwk0VRBW38y5J/4vudvA0MQEFMOk
- wZKVvY7a6qdP1mwSr2cPYNLuu0XLaDDJMmpHOFh5/y7JPqVvjE+rF8ZslUXjLH5gAm
- WfDSBg+TQuIcFWmK/nS2XbyNfxHvjDu/UJ0ACoVOAKaVGknm/F78BVIHhuG5TuCgRW
- cKpGr4yG1+e86KtVELRvaP44WbiSrKTwk9+1emeo+IScaAU+u+xUQ/Wgp/mLiAu3Uc
- flXPGiD2GLxbg==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab@kernel.org>) id 1svWvY-00000001V1L-3xBi;
- Tue, 01 Oct 2024 09:04:08 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 15/15] docs: acpi_hest_ghes: fix documentation for CPER size
-Date: Tue,  1 Oct 2024 09:03:52 +0200
-Message-ID: <1d2c5d8dfe077677a1a45558c518b4e58f77e830.1727766088.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <cover.1727766088.git.mchehab+huawei@kernel.org>
-References: <cover.1727766088.git.mchehab+huawei@kernel.org>
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1svdbc-00034Q-ED
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:12:02 -0400
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal
+ [10.202.2.51])
+ by mailfout.phl.internal (Postfix) with ESMTP id 704D01381F31;
+ Tue,  1 Oct 2024 03:04:35 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+ by phl-compute-11.internal (MEProxy); Tue, 01 Oct 2024 03:04:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:date:date:from
+ :from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to; s=fm1; t=1727766275; x=1727852675; bh=tVDlkG1VIM
+ f1BhFI1WXmkrLMhlGmLAqcVKSJOcbyRx8=; b=fNIvkfTt/23Z3SKGrhTXus3XHA
+ F3NfFyXmlg8xUmkj3dECDqDzm3LRIsHSZPa8/svPSSm2OpslZCcSOYXlcn+clRmK
+ WMT9R3xWaUFHzJHHmrZe3WNBqvWjABB8XZ3TSMn8dttB2uxza5vcYtBiyPwqa9aa
+ p8tDr+ddKZxbM5nHM89vXRH6thjm+Vror5acEXlDEe3mKvtLdD6jdW+uunVFRv4Z
+ DrlpIs1xKCVQ/0/98ufHkqp8BQ0FKd1RX+BlFIXciiFSo6Tw47fMHWew6ckjIqBI
+ 0S7mtbQeRe1ZaSk7I0hfw0vNYkYP8n6XiUavrWzJ4BLFYs4g7TCTjv20+46A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm2; t=1727766275; x=1727852675; bh=tVDlkG1VIMf1BhFI1WXmkrLMhlGm
+ LAqcVKSJOcbyRx8=; b=l5//QZrvC0q0wnFqqD75jVlpfIQMyoCbgi4vLucCfrnX
+ BBHWmAqQGzT2zDFdpDA8vlkCD0GqZD0WwWWKSGYszDfku8AfGWMz7QWdcfdIwGLO
+ wnn+zPx7IgqfANBUmW9QwlNNziJAmdubaHcvfOtvhcebWC+srN0qnFx7f53X0kRU
+ yMqnc3GPgGqaEY1gn/rFTCupuuKSn0/b8sUmKFVDJupUQBP3BGQuhp/zt+GBQF+E
+ CkD7lW2ikG0UCqitcgNjGGu2a2WLU3chBBMM4N6mr3JqVWGZoH2qLPKMfWcJ18zj
+ Ap9hN9Ey+p7EjEFdbnHX7IlGOts9cdIMBSUVYTip3g==
+X-ME-Sender: <xms:Ap_7ZgqEcEXOVif6aueidRkcWoFpjgS9qCLqYF50guq75UiQPwFAEw>
+ <xme:Ap_7ZmpQt1RIxV34OngjmvAfROwegawzQ1FAZESCeLivlRvgnWAtUeS9L8CzXzLSA
+ O6S_jrp0TSQdHMFaKs>
+X-ME-Received: <xmr:Ap_7ZlPRZMlO5B-qbH18ArHShaORP-NOyTa2yI4-x2VNlKWa3gAXEdqg0GqGWHbRk5J1LXHpGKh5KaBrxugc6g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduiedgudduiecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+ uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+ hnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecu
+ hfhrohhmpefmlhgruhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrug
+ hkqeenucggtffrrghtthgvrhhnpedtvefgjeehtdevudfhleelheeujeelgeetieeukeef
+ ledvhedtgeevgfekvedtvdenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhgihhtlh
+ grsgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
+ ohhmpehithhssehirhhrvghlvghvrghnthdrughkpdhnsggprhgtphhtthhopeefpdhmoh
+ guvgepshhmthhpohhuthdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhu
+ rdhorhhgpdhrtghpthhtohepphgvthgvrhdrmhgrhiguvghllheslhhinhgrrhhordhorh
+ hgpdhrtghpthhtohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtohhm
+X-ME-Proxy: <xmx:Ap_7Zn4eZYvBr7VMS-IWtEpBBS1IIzY-TQDxrd2aq6KMC_eqwIfitg>
+ <xmx:Ap_7Zv7z3s-4cAjQVtpVb1YojqMNCWN4ugkwAypk_9hhDNqgEvQLJw>
+ <xmx:Ap_7ZnizMoRKxzAZQoQHQ5s5jlLFKJR103FXaUM42HvXuN37X-KthA>
+ <xmx:Ap_7Zp7LEcyNG43VslhDHIwVU5nzCZ78V4SlGBWYf_kKsZBV1FbjKA>
+ <xmx:A5_7ZhkQAeYdziyyOoVHFjfMUt0PAp3mPOxY7nHOJ9Q2YX13UdTmVlYR>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 1 Oct 2024 03:04:33 -0400 (EDT)
+From: Klaus Jensen <its@irrelevant.dk>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Klaus Jensen <k.jensen@samsung.com>
+Subject: [PULL 0/5] nvme queue
+Date: Tue,  1 Oct 2024 09:04:12 +0200
+Message-ID: <20241001070418.28737-1-its@irrelevant.dk>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=mchehab@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -71
-X-Spam_score: -7.2
-X-Spam_bar: -------
-X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=103.168.172.147; envelope-from=its@irrelevant.dk;
+ helo=fout-a4-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,36 +103,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While the spec defines a CPER size of 4KiB for each record,
-currently it is set to 1KiB. Fix the documentation and add
-a pointer to the macro name there, as this may help to keep
-it updated.
+From: Klaus Jensen <k.jensen@samsung.com>
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- docs/specs/acpi_hest_ghes.rst | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+The following changes since commit 3b14a767eaca3df5534a162851f04787b363670e:
 
-diff --git a/docs/specs/acpi_hest_ghes.rst b/docs/specs/acpi_hest_ghes.rst
-index 68f1fbe0a4af..c3e9f8d9a702 100644
---- a/docs/specs/acpi_hest_ghes.rst
-+++ b/docs/specs/acpi_hest_ghes.rst
-@@ -67,8 +67,10 @@ Design Details
- (3) The address registers table contains N Error Block Address entries
-     and N Read Ack Register entries. The size for each entry is 8-byte.
-     The Error Status Data Block table contains N Error Status Data Block
--    entries. The size for each entry is 4096(0x1000) bytes. The total size
--    for the "etc/hardware_errors" fw_cfg blob is (N * 8 * 2 + N * 4096) bytes.
-+    entries. The size for each entry is defined at the source code as
-+    ACPI_GHES_MAX_RAW_DATA_LENGTH (currently 1024 bytes). The total size
-+    for the "etc/hardware_errors" fw_cfg blob is
-+    (N * 8 * 2 + N * ACPI_GHES_MAX_RAW_DATA_LENGTH) bytes.
-     N is the number of the kinds of hardware error sources.
- 
- (4) QEMU generates the ACPI linker/loader script for the firmware. The
--- 
-2.46.0
+  Merge tag 'qemu-openbios-20240924' of https://github.com/mcayland/qemu into staging (2024-09-28 12:34:44 +0100)
 
+are available in the Git repository at:
+
+  https://gitlab.com/birkelund/qemu.git tags/pull-nvme-20241001
+
+for you to fetch changes up to ebd1568fc73209bbc1339a449f3df0b6c9a12358:
+
+  hw/nvme: add atomic write support (2024-10-01 09:02:05 +0200)
+
+----------------------------------------------------------------
+nvme queue
+
+----------------------------------------------------------------
+Alan Adamson (1):
+      hw/nvme: add atomic write support
+
+Arun Kumar (2):
+      hw/nvme: clear masked events from the aer queue
+      hw/nvme: support CTRATT.MEM
+
+Keith Busch (1):
+      hw/nvme: report id controller metadata sgl support
+
+Klaus Jensen (1):
+      hw/nvme: add knob for CTRATT.MEM
+
+ hw/nvme/ctrl.c       | 194 ++++++++++++++++++++++++++++++++++++++++++++++++---
+ hw/nvme/nvme.h       |  16 +++++
+ include/block/nvme.h |   3 +
+ 3 files changed, 205 insertions(+), 8 deletions(-)
 
