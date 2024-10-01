@@ -2,93 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A19798C10D
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 17:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB8398C079
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:42:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sveQE-0005NN-MZ; Tue, 01 Oct 2024 11:04:19 -0400
+	id 1sve3s-00043H-Fw; Tue, 01 Oct 2024 10:41:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sveOg-00055X-Es
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:02:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sveOe-00007y-Ko
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:02:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727794959;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=QBjl694dZRzTw8MMM7D4i49DF9KvCq0UAnuRtfQmI4g=;
- b=SIKUC1omnjsk+o21SS2uTI0C+KtFNsemPWMOvnW5MF5g3xEnbjQDjiUWGnFNulsWv2vxZD
- 9bYg+YgcCCOqs97rztzVbql0FDzs7rPdPtvvMpbLKlfepqcaG3nrNtHWSERQ9Jc2NVsdLD
- NzjEhqK0A8jud8rm1Gyhj8o0RxRbgdQ=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-IHbeWuSGOqu2SFQ0zEgDLg-1; Tue, 01 Oct 2024 08:49:53 -0400
-X-MC-Unique: IHbeWuSGOqu2SFQ0zEgDLg-1
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-7c6a9c1a9b8so3431780a12.0
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 05:49:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727786992; x=1728391792;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sve3p-00041F-48
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:41:09 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sve3l-00030m-NH
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:41:08 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2facf00b0c7so19093901fa.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 07:41:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1727793662; x=1728398462; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QBjl694dZRzTw8MMM7D4i49DF9KvCq0UAnuRtfQmI4g=;
- b=JRFXbiC3TfODdK32/zvXQ1Se5pOYSl+b6Fmgu04C11xcPpkjWd4NdyH4VI/Lpj8Ss7
- L9O3nIJ8OA66yLqfOvMyHbJBESeXD132XnNV274FKPdx9dDT7z+nd+cqJHllF+URrbPD
- pDDBtXxHBz3kSN32lt7Lc+ic54Hn7bC3u//HBPkouAZO4Dfce7rZAV3ibiNkzybUK7YZ
- QTOoCEQESkCOzh6n3AkV4xAAfZHc1nks4D8/aiCsp2ZDToMSbX93+2aGKfol5EZtwj5O
- re+LXVsSOFavz2W/vwRJ1zgmZ6SPdRkv274WfZtkGcn7N0BvZ+dMscEgPioCkTetphEg
- 1New==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV+DyNwkUV9PkBFCtB4xHQYUUjNV3qOdtGqCF9HbLd+ITU4c45dSwppjx+bip7gREXZ0sGtKbvrgF8c@nongnu.org
-X-Gm-Message-State: AOJu0YyjGSOlkECLZ+TVkjvIsDmwy/DM1tRntdJ2jIXoELMqnUxbh4jf
- CVZiG9oqDxmnR+IV4yfmiLWJg9qEQufd90wEp90MdLlyGBVwugz6Zi1rfoDvjBJPmNzZjgKhQKL
- t6jPt3dQAIXrVRZGgGsW/n9x/Rt4ri/VPR8NtrpngMcuPYtOuToJT
-X-Received: by 2002:a05:6a20:9c8e:b0:1c0:ef24:4125 with SMTP id
- adf61e73a8af0-1d4fa6feaa8mr20297145637.26.1727786992123; 
- Tue, 01 Oct 2024 05:49:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHWWh7OvXqIoi2fArxikG6xwa+Azfi/JDOtD9AV9hh0XlVGbpBAbaeRv7l7M8ELFMdfrSKAmg==
-X-Received: by 2002:a05:6a20:9c8e:b0:1c0:ef24:4125 with SMTP id
- adf61e73a8af0-1d4fa6feaa8mr20297123637.26.1727786991670; 
- Tue, 01 Oct 2024 05:49:51 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-46-200-231.retail.telecomitalia.it.
- [79.46.200.231]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71b2652492csm8232840b3a.147.2024.10.01.05.49.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 05:49:51 -0700 (PDT)
-Date: Tue, 1 Oct 2024 14:49:38 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-block@nongnu.org, raphael@enfabrica.net, mst@redhat.com, 
- kwolf@redhat.com, hreitz@redhat.com, pbonzini@redhat.com, berrange@redhat.com, 
- eduardo@habkost.net, eblake@redhat.com, armbru@redhat.com,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 2/3] vhost-user-blk: split vhost_user_blk_sync_config()
-Message-ID: <lemecbqh2krbemhpt2m7r2gc5reet7ikjoh2gxcbeig2l552tr@al2eoewutqwp>
-References: <20240920094936.450987-1-vsementsov@yandex-team.ru>
- <20240920094936.450987-3-vsementsov@yandex-team.ru>
+ bh=SbuUT9EGajx0g1hYB1DGCdOdT0DPQMJrhPwUaR6K6v8=;
+ b=DC6ttWAut4HJ1xl2gkpJpq+BACW0yudi9qSQzya3ViPWKhg0WBHHYpzrqhYD0w3W8+
+ +Q/BC2L8RbuqX9B2KhQtly23LDUfB7kVtOxlkCPK+ArHFc5cXN+izrogzhg/C0g6Pdgh
+ GPdfcZ3h3BRyUt4cSaGz6JmeQ6RbO4BHg4wSXFC27uWF/WHT33lUqa1BOyg9xoNP4fvh
+ MyCvzniHvyLiNWnx3rzJc/Qy+CwjUpqhcMssmiq//qkGbR6VCLKQSaO+dF3EXad3hF0E
+ QH9k9vM3evnTem0+x4vyqap5eM1wF2Sr5i4D3tgvpyQym+0EClx54oawlR9K9WiJce7T
+ V+5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727793662; x=1728398462;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SbuUT9EGajx0g1hYB1DGCdOdT0DPQMJrhPwUaR6K6v8=;
+ b=dEv/au0hwxEy1Q8c9idXWDWt3gOfvdlkizQ/zE76nFnms6q1fX0/LqUPnO2L//XgZx
+ 8HqOePzzlO9eYiP5EmivbvoVRZMc9DTTd6zTFEiylzTSneBhEXTxR/Jh5n0f2ly52aYv
+ A82cr1c/u60WcTB3RpLy7lI430N1AOqcllKo4ig63A5FaFYRolSd9RKOT1mWD/fSiN9O
+ KfhE6FGsUksVbYfJm5zbBmLdI9VU/UfjzTQqhY69dON0EXJQ7ypZlwO0hav/6gs0d31Q
+ TV7+cjc759/DhK/uy71QK5UIgNs81Jr12nD4zhk+yDB+iO82ORjXm2q8A06dquiuWKi6
+ w6BA==
+X-Gm-Message-State: AOJu0YxvhtR5txRAR5HhDE0FokzxOqgMnQpw5gpL97CNxKscQZci1RGd
+ Ty1jR+x8WnXEEK24bubBI5RcdXkIwxIgcSwh/a2YnO3cAfrdtnZGbuAD39p76GJGV+fiGV7Aq8F
+ 6NSIiRYiQGC/Dc3NEwzpYnhrF3A8QwtxnbWKqErUFXFXBeUff
+X-Google-Smtp-Source: AGHT+IGFdvj6QKOfG+IZOH1nx4C63t/O6K0scOfJNZJY58Szabr+jo343pyor7nq0Rk9wMFLyVoUp1tfMf3boaP++v4=
+X-Received: by 2002:a05:6402:1599:b0:5c3:d8fb:df6a with SMTP id
+ 4fb4d7f45d1cf-5c8a2a3199bmr3250932a12.14.1727787724017; Tue, 01 Oct 2024
+ 06:02:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20240920094936.450987-3-vsementsov@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240906164834.130257-1-jlu@pengutronix.de>
+ <CAFEAcA-_=vrtqVPUdu02ryUtdH5MwifEnHgeQVq=V4Z2Jp_dUg@mail.gmail.com>
+ <d6e9f2f8d7185e90e7b80dff7b222fd99c899903.camel@pengutronix.de>
+In-Reply-To: <d6e9f2f8d7185e90e7b80dff7b222fd99c899903.camel@pengutronix.de>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 1 Oct 2024 14:01:51 +0100
+Message-ID: <CAFEAcA-uMnP3Zyw5f2ha_9H1+QrnZXMau4FwEjP4UXNnjs-OqA@mail.gmail.com>
+Subject: Re: [PATCH] hw/sd/sdcard: Fix handling of disabled boot partitions
+To: jlu@pengutronix.de
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,78 +91,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 20, 2024 at 12:49:35PM GMT, Vladimir Sementsov-Ogievskiy wrote:
->Split vhost_user_blk_sync_config() out from
->vhost_user_blk_handle_config_change(), to be reused in the following
->commit.
+On Mon, 30 Sept 2024 at 21:05, Jan L=C3=BCbbe <jlu@pengutronix.de> wrote:
 >
->Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->Acked-by: Raphael Norwitz <raphael@enfabrica.net>
->---
-> hw/block/vhost-user-blk.c | 26 +++++++++++++++++++-------
-> 1 file changed, 19 insertions(+), 7 deletions(-)
+> On Mon, 2024-09-30 at 15:18 +0100, Peter Maydell wrote:
+> > On Fri, 6 Sept 2024 at 17:51, Jan Luebbe <jlu@pengutronix.de> wrote:
+> > >
+> > > The enable bits in the EXT_CSD_PART_CONFIG ext_csd register do *not*
+> > > specify whether the boot partitions exist, but whether they are enabl=
+ed
+> > > for booting. Existence of the boot partitions is specified by a
+> > > EXT_CSD_BOOT_MULT !=3D 0.
+> > >
+> > > Currently, in the case of boot-partition-size=3D1M and boot-config=3D=
+0,
+> > > Linux detects boot partitions of 1M. But as sd_bootpart_offset always
+> > > returns 0, all reads/writes are mapped to the same offset in the back=
+ing
+> > > file.
+> > >
+> > > Fix this bug by calculating the offset independent of which partition=
+ is
+> > > enabled for booting.
+> >
+> > Looking at the spec this change seems correct to me.
+> >
+> > Can you elaborate on when users might run into this bug?
+> > As far as I can see only aspeed.c sets boot-partition-size,
+> > and when it does so it also sets boot-config to 8. Or are
+> > we fixing this for the benefit of future board types?
 >
->diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
->index 5b7f46bbb0..48b3dabb8d 100644
->--- a/hw/block/vhost-user-blk.c
->+++ b/hw/block/vhost-user-blk.c
->@@ -90,27 +90,39 @@ static void vhost_user_blk_set_config(VirtIODevice *vdev, const uint8_t *config)
->     s->blkcfg.wce = blkcfg->wce;
-> }
+> I stumbled across this when trying to use the eMMC emulation for the RAUC=
+ test
+> suite (with some unrelated local hacks, which I still need to clean up fo=
+r
+> submission) [1]. Future boards would be affected as well.
 >
->+static int vhost_user_blk_sync_config(DeviceState *dev, Error **errp)
+> One other possible issue would be disabling the boot partition by using '=
+mmc
+> bootpart enable 0 0 /dev/mmcblk0' (or similar) from Linux. The layout of =
+the
+> backing file shouldn't change in that case.
 
-I was going to ask why use `DeviceState *`, but then I saw the next 
-commit where it's needed by `dc->sync_config` callback.
+Thanks for the clarification. I've applied this patch to
+target-arm.next with the following paragraph added to the
+commit message:
+ This bug is unlikely to affect many users with QEMU's current set of
+ boards, because only aspeed sets boot-partition-size, and it also
+ sets boot-config to 8. So to run into this a user would have to
+ manually mark the boot partition non-booting from within the guest.
 
-LGTM!
+and I cc'd it to stable.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-
->+{
->+    int ret;
->+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
->+    VHostUserBlk *s = VHOST_USER_BLK(vdev);
->+
->+    ret = vhost_dev_get_config(&s->dev, (uint8_t *)&s->blkcfg,
->+                               vdev->config_len, errp);
->+    if (ret < 0) {
->+        return ret;
->+    }
->+
->+    memcpy(vdev->config, &s->blkcfg, vdev->config_len);
->+    virtio_notify_config(vdev);
->+
->+    return 0;
->+}
->+
-> static int vhost_user_blk_handle_config_change(struct vhost_dev *dev)
-> {
->     int ret;
->-    VirtIODevice *vdev = dev->vdev;
->-    VHostUserBlk *s = VHOST_USER_BLK(dev->vdev);
->     Error *local_err = NULL;
->
->     if (!dev->started) {
->         return 0;
->     }
->
->-    ret = vhost_dev_get_config(dev, (uint8_t *)&s->blkcfg,
->-                               vdev->config_len, &local_err);
->+    ret = vhost_user_blk_sync_config(DEVICE(dev->vdev), &local_err);
->     if (ret < 0) {
->         error_report_err(local_err);
->         return ret;
->     }
->
->-    memcpy(dev->vdev->config, &s->blkcfg, vdev->config_len);
->-    virtio_notify_config(dev->vdev);
->-
->     return 0;
-> }
->
->-- 
->2.34.1
->
-
+-- PMM
 
