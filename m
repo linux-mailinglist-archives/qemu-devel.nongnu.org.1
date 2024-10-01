@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BA798BF1D
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 557C498BFCD
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:23:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdZH-0002DN-By; Tue, 01 Oct 2024 10:09:35 -0400
+	id 1svdlY-00041R-13; Tue, 01 Oct 2024 10:22:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svdZ6-00020Y-7l
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:09:25 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svdZ2-0002DG-Dl
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:09:23 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5c88c9e45c2so5010374a12.0
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 07:09:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727791759; x=1728396559; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UpW4yH467d0379s5Vgwk5GAfGeKWVP/pynA3yjAnFWQ=;
- b=AqD7h+7uCybNUE3C5BHW8Kk7M2nGSaPzmlaVzlZPhSAUlidVXoTZAntyJJNyt2rZ7M
- T7OhRQPiToaLff+7JJfS7Qf46FHoOCxOdThyUJiMxqXjJtOS2K1sLz4FaCkAeuqPGhRG
- G00pAKeDL8F3uC9jpSYXnSGzQ44EEXAmDnREQTF3WVHI0RKnDwTOx8ltQZ5RaM1Xo+cP
- ruq1vOYnZqQ60q0N/fTVluN0Lx6YREKR2k2HO4zPj8AZyYxYhAk/Xx2PgEYb8I+5nvl2
- wXyEsg6UQJIETqtB7KR1yGXtlrXBmb5sYD8vCySWBIE+jVgPR7sKjx0YFAw61HeFalfV
- eZSg==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1svdhs-0002dn-Ma
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:18:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1svdhd-0004ZA-33
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:18:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727792289;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=IPD6ZvvWxHHxq3Qn4DcBLd7P+iaV3q6rH7h5YefbD4s=;
+ b=UpVGQgxLvvVwhdXYuMv0HgIvqZfaS8fuDVfvIcwByMFzAMXeLlisAGa+RoR+8gDjMV1mQ2
+ FNL8AIrTMFIVoaCfkB35RalRG5+NgzUwJFh6WeMP+hnLBszIQ+AcJtpfzuSTTofZeTsHr6
+ cas/6dmE+MK0Q9wVygsq/NSskqSqvd4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-570-NoXjy6wBP0-_Fcv4SWT-6g-1; Tue, 01 Oct 2024 09:15:25 -0400
+X-MC-Unique: NoXjy6wBP0-_Fcv4SWT-6g-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-42e611963c2so42137455e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 06:15:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727791759; x=1728396559;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UpW4yH467d0379s5Vgwk5GAfGeKWVP/pynA3yjAnFWQ=;
- b=lPMEnmQwJPiP/vqGJC12U6y1NP/NwdyUJF4L+S9Jwi5UCmx2WPpbweBJ4opLJngp8g
- KERe0MudWeexLgloFJqph4NddcMSqlLNhnp0E3qSPN4EAHVmJG3TSSSrs8nR6trwdDFS
- aJYMpp5jJTTVu3q1MMsXdnZ3XtO9argNJkjblXCAhCU3L8K9D+adpxgCRPg8pEyGDIkG
- UALi0n874n3ghAahVJCBaZtGbIQS7Wo4Jt7Wx4e0d/snwsb68zBvYJUQDS3Ur0pDeCR6
- DLfGmyteAArQoBHEXuWFJamAqKlQioRQ2UaCIvV4sGWJQYrYJFLSCmVaMe72Gu1f5LdL
- fLiQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXw673baRlOQrXrjusCpREvL9AB7keggd74E7O09cHS5FVYi6BDt/E89YCA2W6iB0nEJSgAfaNjfBLF@nongnu.org
-X-Gm-Message-State: AOJu0YxtdmotPwjMBvSwdwo3FmH0PrgzHgZMzdbnjBORBwYvNY1OxFMM
- FK4gg+7cWbQiE982T5YoR2R7My+a6PK821gjpPTxt9Efcklhhs85m1cpkbCU3D7NOYiHGAQNv/z
- pSLlFxo0XcgLMIu8l1DuYDeyz/mxzoliwp6+u6aLDJJu7tg+q
-X-Google-Smtp-Source: AGHT+IGyHcJ05tj28COGPO4EKwC6iV9XRQZLVNhtmi0wqIoloskb4hMdogzbvNhi/gNi7BTpvOvwMTtRvqGwSJbT1v0=
-X-Received: by 2002:a05:6402:2550:b0:5c4:2d5d:b25f with SMTP id
- 4fb4d7f45d1cf-5c8a2a4d72cmr3213218a12.13.1727787882522; Tue, 01 Oct 2024
- 06:04:42 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1727788524; x=1728393324;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IPD6ZvvWxHHxq3Qn4DcBLd7P+iaV3q6rH7h5YefbD4s=;
+ b=BwEFAiKONZgNkbyfb74X1dnHWOYUDMxWZ/8eBEUG+r6rQGbBHar/0rftWMZ3aYE/lY
+ 43TUKqNloOwNlS951I5Zg4vbgQzOaBW+Khp+MsuZ5+PHuN3Q3Wjnjny7SqeBmFlpdMY6
+ Fbx+FTDaXdqDtprNw51D214dJnWIf2lSuxH4KaSlLP54AQt4ALeB1x+neVOw0W/ZFoJA
+ OCVXURZ6/ccsjSR242JsRzXwTqT1JZDHc0Lkf5DpWGo4Ek5OxFhtVmhYKZ1e696vpGz2
+ eudZvbkWo9FT40BnH3UHAPDgIhSbrcV+gsH4sNvw5wZja3FrK7WOkeQaVYh+6isC9gYt
+ MfCA==
+X-Gm-Message-State: AOJu0YypTKEGlZ2UQ+fv+ZHaj9/+EEVhbNIBmDIe08LdVilBbhFBwlCo
+ 37eWm3TdLCZhE91zx1Y2+OWykaTHU4a0lyd1piuJPnsQW7qFLjaGElRUlmBdxg72lRA6Bpu+olw
+ ecVpYCS05UvoxRJlAret6pjMgN9FUGgY0rCsZKZHEHvNCPgjtfBKj
+X-Received: by 2002:a05:600c:1d97:b0:428:e866:3933 with SMTP id
+ 5b1f17b1804b1-42f58464a07mr146258415e9.22.1727788523657; 
+ Tue, 01 Oct 2024 06:15:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEzxbWnmdl/vVZ5NHkSzauwE1lz58+IOylCR7ely6xJ4HTHwOOnPnI23qRDGuSjHG49v6ywuA==
+X-Received: by 2002:a05:600c:1d97:b0:428:e866:3933 with SMTP id
+ 5b1f17b1804b1-42f58464a07mr146258035e9.22.1727788523248; 
+ Tue, 01 Oct 2024 06:15:23 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc7:55e:42b2:2c3a:bdd9:126e:d43a])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42f57de1192sm132241625e9.14.2024.10.01.06.15.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Oct 2024 06:15:22 -0700 (PDT)
+Date: Tue, 1 Oct 2024 09:15:18 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Cc: qemu-devel@nongnu.org, graf@amazon.com, agraf@csgraf.de,
+ stefanha@redhat.com, pbonzini@redhat.com, slp@redhat.com,
+ richard.henderson@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, berrange@redhat.com, philmd@linaro.org
+Subject: Re: [PATCH v7 0/5] AWS Nitro Enclave emulation support
+Message-ID: <20241001091436-mutt-send-email-mst@kernel.org>
+References: <20240922094441.23802-1-dorjoychy111@gmail.com>
 MIME-Version: 1.0
-References: <20240903160751.4100218-1-peter.maydell@linaro.org>
- <CAFEAcA9hH6b72pVMAVkGHWXye9t+RXHE13RD73AabQN+p_JOyw@mail.gmail.com>
-In-Reply-To: <CAFEAcA9hH6b72pVMAVkGHWXye9t+RXHE13RD73AabQN+p_JOyw@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 1 Oct 2024 14:04:31 +0100
-Message-ID: <CAFEAcA9P+Eu+aFag1vpXTzevLDBuUk8zXd=kZVeYHbnvEL=80g@mail.gmail.com>
-Subject: Re: [PATCH for-9.2 00/53] arm: Drop deprecated boards
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240922094441.23802-1-dorjoychy111@gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,43 +98,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 16 Sept 2024 at 11:26, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Tue, 3 Sept 2024 at 17:07, Peter Maydell <peter.maydell@linaro.org> wrote:
-> >
-> > This patchset removes the various Arm machines which we deprecated
-> > for the 9.0 release and are therefore allowed to remove for the 9.2
-> > release:
-> >  akita, borzoi, cheetah, connex, mainstone, n800, n810,
-> >  spitz, terrier, tosa, verdex, z2
-> > We get to drop over 30,000 lines of unmaintained code. So it's
-> > a big patchset but it's almost all deletions.
->
-> Hi -- ping for review on at least patches 06, 08, 18:
->
-> >   hw/display: Remove tc6393xb device
-> >   hw/arm: Remove 'cheetah' machine
-> >   hw/display: Remove pxa2xx_lcd.c
->
-> These are all straightforward removals of either
-> deprecated machines or devices that are definitely
-> exclusively used by those machines. That would be
-> enough for me to get the bulk of the uncontroversial
-> reviewed parts of this series upstream. I can then
-> roll a much smaller v2 with the parts still under
-> discussion.
->
-> Patches 22, 26 would also be helpful but they're a
-> bit further down the patchstack so less critical:
->
-> >   hw/arm: Remove pxa2xx_pic
-> >   hw/misc: Remove cbus
+On Sun, Sep 22, 2024 at 03:44:36PM +0600, Dorjoy Chowdhury wrote:
+> [7] https://lists.oasis-open.org/archives/virtio-comment/202310/msg00387.html
 
-In the absence of further review I'm taking these patches
-anyway; they're only removals, so not complex stuff that
-benefits from close review, and this patchset is too big to be
-sat unapplied for long.
+That list is dead, would you mind reposting to the new list,
+so we can vote on it?
+Thanks!
+-- 
+MST
 
-thanks
--- PMM
 
