@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA8998C3B4
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 697BC98C3A7
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:43:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svfwK-0001zw-Fe; Tue, 01 Oct 2024 12:41:32 -0400
+	id 1svfvJ-0006v8-DE; Tue, 01 Oct 2024 12:40:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuj-0005gg-Q1
+ id 1svfuj-0005ff-GR
  for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:55 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuc-00069s-Qw
+ id 1svfud-0006A1-CS
  for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:53 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-42cba6cdf32so50973915e9.1
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-42f6bec84b5so20165545e9.1
  for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727800785; x=1728405585; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727800786; x=1728405586; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MyQMYurSoVT4LraZt6ibHbKbByl9wat5HqHvkispgMQ=;
- b=nijjoxqf3qqrm3VVpeD/cqYn9M9nIY2dXNs5XKCCqVzN0FBA+sx0e7AibRHO6sIw42
- 5AlzM+uWIfv80Vs8eYeor1QHdodTaQi+rMBvbpcwfVM9SjTD+xS+2uxsITZgzotuKOnK
- DBnhf7F8K0XxazqUUuctJ/CI6d3k7V5tAIWodWwTNFwnxhn/8mSjAMSCbWwiB7B63U96
- RHZ3T6ioKlyvn58Gv/DCapTho1HSDK1gMNmm5bjJkjDfxa6SEw7pYcILQS8oHmyeOloo
- 6qmUwkArD1q5+e9kPEbBcdxIrw/ZzKbJEorXGUAbpkyUpVP48WpB5/zu8teslNqmAz9H
- sW1Q==
+ :reply-to; bh=m6tPZvdqCcLp9Z7epWPNdtOB9CLTYpwOU9D1H5zmta4=;
+ b=SOoqggAX68qET1mziEe25kj6oeRKfQhF8NmCNM8xkanUMe+j+qsKIA5DJzI8lrL65P
+ B0Gj8+To5fk1DCsAv9jBLtZjHdoG5hKD2dZL2dyJE0UuoYzlLkriMbjX5KopWPbekuFA
+ 55OMSk9GpYqR8OAgjgg1NaEmFSHnTYmrD0p2EBJDxcf7Z1qh1h04UkWq2X712JJDBwkO
+ IW1uG1CWKj6cIbE/5xj0BxHeY2WS8qq75M49B5lZwbIsQRYB/lOIz3v4Nbe8x1sSpK3R
+ 8UmOL+XN0FcXF+v/6n+HNePANnoG8FQtXC/nNVZytoe+2hneCbPSNksMRpR9NkMN8xSK
+ WTwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727800785; x=1728405585;
+ d=1e100.net; s=20230601; t=1727800786; x=1728405586;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MyQMYurSoVT4LraZt6ibHbKbByl9wat5HqHvkispgMQ=;
- b=dtmwC+LmOe+4GStmUbCkDcjtjLKHu99CTewsYeAhPqOg6bX9qtBsRSu2yla23Vyr11
- XYpmqw/qcj8Ohs0IQf5fIfRB+/VDbOLnB74/rjdn/3UXywM3HUjIhf/LZdzqGKnwM5Ds
- Lsi/ATc24kpiIOzfqUIzOLNMoNm7Q5wr0zvu660QOCsOptGJ9aRAGQKbObEYYsPiS2DE
- XIA/VDyDFinJDIVvir8KEwKZzR+YQPAjBB5Eqd1gWd872aLd1/byV0f3UPfuk0IBokx8
- 4bMKETVdDQCT3dfngcMS/GXYOiHZAPZt9i+4MOoY8Z2pb8tHEKNkeObtjRsqH3QZgs8Q
- kgiQ==
-X-Gm-Message-State: AOJu0YzIv30O8wkC0gKC/73YhnwT1jfSNmW9ZFjgfeDUfKcw/z7gl9An
- UzJRS2aOd5vLqeojrTbixIzKB7R34DEfzXuR7KnZBs9sBh5se60HAd7LtiiNEfi5Zr9Ltntdf0H
- v
-X-Google-Smtp-Source: AGHT+IFfmD0XvzsjqWUpixTLYeNsGuirSdTHgWBAepcmQSpDt9qmBYqUIAKFnv7ueU2R7b2ebXVDgA==
-X-Received: by 2002:a05:6000:1567:b0:37c:f933:48a9 with SMTP id
- ffacd0b85a97d-37cfb8b530amr232174f8f.1.1727800785240; 
+ bh=m6tPZvdqCcLp9Z7epWPNdtOB9CLTYpwOU9D1H5zmta4=;
+ b=n56/+V48VxEB7GN/+0CGSO83rIw/zh1ilhcHLC4qIL6lV1YYrpyvksHqz5Vr3IEH4L
+ UVnjexnGHGKE1PT0l9DNUruoDT6T0t8VQjQQUz1b1Avfq/qU05mEKroYwmHz8KTsbDWf
+ An67JVjzB2Kd7FEMF56j0cENg/f3SZbWx10Co7aVFTaCXx7iQWMnNYBYDj1O6kLU5xLU
+ bTIOrmXfXzDts0SxD2h2IDlN9Uw4gHPFzdGlr21k7OGKodgcqAzXet2RwqcTT9n0dEXJ
+ Qkq/jsEeH4A0KdBOaIQLSdGUcGUK6cS+vFsnpTJRcBxB2mQKuZlREOxwaxk28eKxcE94
+ ZLbw==
+X-Gm-Message-State: AOJu0YxIKt3n2EiFl0lkn98cVXOnjVWwNoYQf42GaiGuYiSjzw4/FWOs
+ 2aeJE+SyvN5mIVrOmumQOSVoXNel6UAZMzKn5I0HkHYH3L8cmBKaBmhYQLYp1Jy8ow9abR2caAr
+ n
+X-Google-Smtp-Source: AGHT+IF9q7PwlqBNSMUJLme+zelMT6zvNWmoV3dq3bbvKlFkDe0ZJGUXv+8tM5rVfMfHzq7w//B8SA==
+X-Received: by 2002:a05:600c:2246:b0:42c:be90:fa1b with SMTP id
+ 5b1f17b1804b1-42f777b982amr918645e9.14.1727800785753; 
  Tue, 01 Oct 2024 09:39:45 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.44
+ ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 01 Oct 2024 09:39:45 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 46/54] hw/timer: Remove omap_gptimer
-Date: Tue,  1 Oct 2024 17:39:10 +0100
-Message-Id: <20241001163918.1275441-47-peter.maydell@linaro.org>
+Subject: [PULL 47/54] hw/timer: Remove omap_synctimer
+Date: Tue,  1 Oct 2024 17:39:11 +0100
+Message-Id: <20241001163918.1275441-48-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241001163918.1275441-1-peter.maydell@linaro.org>
 References: <20241001163918.1275441-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,54 +92,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The omap_gptimer device is only in the OMAP2 SoC, which we
-are removing.
+Remove the omap_synctimer device, which is only in the OMAP2 SoC.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240903160751.4100218-45-peter.maydell@linaro.org
+Message-id: 20240903160751.4100218-46-peter.maydell@linaro.org
 ---
- include/hw/arm/omap.h   |   8 -
- hw/timer/omap_gptimer.c | 512 ----------------------------------------
- hw/timer/meson.build    |   1 -
- 3 files changed, 521 deletions(-)
- delete mode 100644 hw/timer/omap_gptimer.c
+ include/hw/arm/omap.h     |   8 ---
+ hw/timer/omap_synctimer.c | 110 --------------------------------------
+ hw/timer/meson.build      |   1 -
+ 3 files changed, 119 deletions(-)
+ delete mode 100644 hw/timer/omap_synctimer.c
 
 diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index 0cbbf2fecb5..cced3d28605 100644
+index cced3d28605..982341d0079 100644
 --- a/include/hw/arm/omap.h
 +++ b/include/hw/arm/omap.h
-@@ -676,13 +676,6 @@ struct omap_dma_lcd_channel_s {
+@@ -676,12 +676,6 @@ struct omap_dma_lcd_channel_s {
  # define OMAP24XX_DMA_MS		63	/* Not in OMAP2420 */
  # define OMAP24XX_DMA_EXT_DMAREQ5	64
  
--/* omap[123].c */
--/* OMAP2 gp timer */
--struct omap_gp_timer_s;
--struct omap_gp_timer_s *omap_gp_timer_init(struct omap_target_agent_s *ta,
--                qemu_irq irq, omap_clk fclk, omap_clk iclk);
--void omap_gp_timer_reset(struct omap_gp_timer_s *s);
+-/* OMAP2 sysctimer */
+-struct omap_synctimer_s;
+-struct omap_synctimer_s *omap_synctimer_init(struct omap_target_agent_s *ta,
+-                struct omap_mpu_state_s *mpu, omap_clk fclk, omap_clk iclk);
+-void omap_synctimer_reset(struct omap_synctimer_s *s);
 -
- /* OMAP2 sysctimer */
- struct omap_synctimer_s;
- struct omap_synctimer_s *omap_synctimer_init(struct omap_target_agent_s *ta,
-@@ -936,7 +929,6 @@ struct omap_mpu_state_s {
+ struct omap_uart_s;
+ struct omap_uart_s *omap_uart_init(hwaddr base,
+                 qemu_irq irq, omap_clk fclk, omap_clk iclk,
+@@ -929,8 +923,6 @@ struct omap_mpu_state_s {
      /* OMAP2-only peripherals */
      struct omap_l4_s *l4;
  
--    struct omap_gp_timer_s *gptimer[12];
-     struct omap_synctimer_s *synctimer;
- 
+-    struct omap_synctimer_s *synctimer;
+-
      struct omap_mcspi_s *mcspi[2];
-diff --git a/hw/timer/omap_gptimer.c b/hw/timer/omap_gptimer.c
+ 
+     struct omap_dss_s *dss;
+diff --git a/hw/timer/omap_synctimer.c b/hw/timer/omap_synctimer.c
 deleted file mode 100644
-index 34e6af7aff5..00000000000
---- a/hw/timer/omap_gptimer.c
+index d93a9344ede..00000000000
+--- a/hw/timer/omap_synctimer.c
 +++ /dev/null
-@@ -1,512 +0,0 @@
+@@ -1,110 +0,0 @@
 -/*
-- * TI OMAP2 general purpose timers emulation.
+- * TI OMAP2 32kHz sync timer emulation.
 - *
 - * Copyright (C) 2007-2008 Nokia Corporation
 - * Written by Andrzej Zaborowski <andrew@openedhand.com>
@@ -157,511 +156,109 @@ index 34e6af7aff5..00000000000
 - * You should have received a copy of the GNU General Public License along
 - * with this program; if not, see <http://www.gnu.org/licenses/>.
 - */
--
 -#include "qemu/osdep.h"
--#include "hw/irq.h"
 -#include "qemu/timer.h"
 -#include "hw/arm/omap.h"
--
--/* GP timers */
--struct omap_gp_timer_s {
+-struct omap_synctimer_s {
 -    MemoryRegion iomem;
--    qemu_irq irq;
--    qemu_irq wkup;
--    qemu_irq in;
--    qemu_irq out;
--    omap_clk clk;
--    QEMUTimer *timer;
--    QEMUTimer *match;
--    struct omap_target_agent_s *ta;
--
--    int in_val;
--    int out_val;
--    int64_t time;
--    int64_t rate;
--    int64_t ticks_per_sec;
--
--    int16_t config;
--    int status;
--    int it_ena;
--    int wu_ena;
--    int enable;
--    int inout;
--    int capt2;
--    int pt;
--    enum {
--        gpt_trigger_none, gpt_trigger_overflow, gpt_trigger_both
--    } trigger;
--    enum {
--        gpt_capture_none, gpt_capture_rising,
--        gpt_capture_falling, gpt_capture_both
--    } capture;
--    int scpwm;
--    int ce;
--    int pre;
--    int ptv;
--    int ar;
--    int st;
--    int posted;
 -    uint32_t val;
--    uint32_t load_val;
--    uint32_t capture_val[2];
--    uint32_t match_val;
--    int capt_num;
--
--    uint16_t writeh;	/* LSB */
--    uint16_t readh;	/* MSB */
+-    uint16_t readh;
 -};
 -
--#define GPT_TCAR_IT	(1 << 2)
--#define GPT_OVF_IT	(1 << 1)
--#define GPT_MAT_IT	(1 << 0)
--
--static inline void omap_gp_timer_intr(struct omap_gp_timer_s *timer, int it)
--{
--    if (timer->it_ena & it) {
--        if (!timer->status)
--            qemu_irq_raise(timer->irq);
--
--        timer->status |= it;
--        /* Or are the status bits set even when masked?
--         * i.e. is masking applied before or after the status register?  */
--    }
--
--    if (timer->wu_ena & it)
--        qemu_irq_pulse(timer->wkup);
+-/* 32-kHz Sync Timer of the OMAP2 */
+-static uint32_t omap_synctimer_read(struct omap_synctimer_s *s) {
+-    return muldiv64(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), 0x8000,
+-                    NANOSECONDS_PER_SECOND);
 -}
 -
--static inline void omap_gp_timer_out(struct omap_gp_timer_s *timer, int level)
+-void omap_synctimer_reset(struct omap_synctimer_s *s)
 -{
--    if (!timer->inout && timer->out_val != level) {
--        timer->out_val = level;
--        qemu_set_irq(timer->out, level);
--    }
+-    s->val = omap_synctimer_read(s);
 -}
 -
--static inline uint32_t omap_gp_timer_read(struct omap_gp_timer_s *timer)
+-static uint32_t omap_synctimer_readw(void *opaque, hwaddr addr)
 -{
--    uint64_t distance;
--
--    if (timer->st && timer->rate) {
--        distance = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) - timer->time;
--        distance = muldiv64(distance, timer->rate, timer->ticks_per_sec);
--
--        if (distance >= 0xffffffff - timer->val)
--            return 0xffffffff;
--        else
--            return timer->val + distance;
--    } else
--        return timer->val;
--}
--
--static inline void omap_gp_timer_sync(struct omap_gp_timer_s *timer)
--{
--    if (timer->st) {
--        timer->val = omap_gp_timer_read(timer);
--        timer->time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--    }
--}
--
--static inline void omap_gp_timer_update(struct omap_gp_timer_s *timer)
--{
--    int64_t expires, matches;
--
--    if (timer->st && timer->rate) {
--        expires = muldiv64(0x100000000ll - timer->val,
--                        timer->ticks_per_sec, timer->rate);
--        timer_mod(timer->timer, timer->time + expires);
--
--        if (timer->ce && timer->match_val >= timer->val) {
--            matches = muldiv64(timer->ticks_per_sec,
--                               timer->match_val - timer->val, timer->rate);
--            timer_mod(timer->match, timer->time + matches);
--        } else
--            timer_del(timer->match);
--    } else {
--        timer_del(timer->timer);
--        timer_del(timer->match);
--        omap_gp_timer_out(timer, timer->scpwm);
--    }
--}
--
--static inline void omap_gp_timer_trigger(struct omap_gp_timer_s *timer)
--{
--    if (timer->pt)
--        /* TODO in overflow-and-match mode if the first event to
--         * occur is the match, don't toggle.  */
--        omap_gp_timer_out(timer, !timer->out_val);
--    else
--        /* TODO inverted pulse on timer->out_val == 1?  */
--        qemu_irq_pulse(timer->out);
--}
--
--static void omap_gp_timer_tick(void *opaque)
--{
--    struct omap_gp_timer_s *timer = opaque;
--
--    if (!timer->ar) {
--        timer->st = 0;
--        timer->val = 0;
--    } else {
--        timer->val = timer->load_val;
--        timer->time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--    }
--
--    if (timer->trigger == gpt_trigger_overflow ||
--                    timer->trigger == gpt_trigger_both)
--        omap_gp_timer_trigger(timer);
--
--    omap_gp_timer_intr(timer, GPT_OVF_IT);
--    omap_gp_timer_update(timer);
--}
--
--static void omap_gp_timer_match(void *opaque)
--{
--    struct omap_gp_timer_s *timer = opaque;
--
--    if (timer->trigger == gpt_trigger_both)
--        omap_gp_timer_trigger(timer);
--
--    omap_gp_timer_intr(timer, GPT_MAT_IT);
--}
--
--static void omap_gp_timer_input(void *opaque, int line, int on)
--{
--    struct omap_gp_timer_s *s = opaque;
--    int trigger;
--
--    switch (s->capture) {
--    default:
--    case gpt_capture_none:
--        trigger = 0;
--        break;
--    case gpt_capture_rising:
--        trigger = !s->in_val && on;
--        break;
--    case gpt_capture_falling:
--        trigger = s->in_val && !on;
--        break;
--    case gpt_capture_both:
--        trigger = (s->in_val == !on);
--        break;
--    }
--    s->in_val = on;
--
--    if (s->inout && trigger && s->capt_num < 2) {
--        s->capture_val[s->capt_num] = omap_gp_timer_read(s);
--
--        if (s->capt2 == s->capt_num ++)
--            omap_gp_timer_intr(s, GPT_TCAR_IT);
--    }
--}
--
--static void omap_gp_timer_clk_update(void *opaque, int line, int on)
--{
--    struct omap_gp_timer_s *timer = opaque;
--
--    omap_gp_timer_sync(timer);
--    timer->rate = on ? omap_clk_getrate(timer->clk) : 0;
--    omap_gp_timer_update(timer);
--}
--
--static void omap_gp_timer_clk_setup(struct omap_gp_timer_s *timer)
--{
--    omap_clk_adduser(timer->clk,
--                     qemu_allocate_irq(omap_gp_timer_clk_update, timer, 0));
--    timer->rate = omap_clk_getrate(timer->clk);
--}
--
--void omap_gp_timer_reset(struct omap_gp_timer_s *s)
--{
--    s->config = 0x000;
--    s->status = 0;
--    s->it_ena = 0;
--    s->wu_ena = 0;
--    s->inout = 0;
--    s->capt2 = 0;
--    s->capt_num = 0;
--    s->pt = 0;
--    s->trigger = gpt_trigger_none;
--    s->capture = gpt_capture_none;
--    s->scpwm = 0;
--    s->ce = 0;
--    s->pre = 0;
--    s->ptv = 0;
--    s->ar = 0;
--    s->st = 0;
--    s->posted = 1;
--    s->val = 0x00000000;
--    s->load_val = 0x00000000;
--    s->capture_val[0] = 0x00000000;
--    s->capture_val[1] = 0x00000000;
--    s->match_val = 0x00000000;
--    omap_gp_timer_update(s);
--}
--
--static uint32_t omap_gp_timer_readw(void *opaque, hwaddr addr)
--{
--    struct omap_gp_timer_s *s = opaque;
+-    struct omap_synctimer_s *s = opaque;
 -
 -    switch (addr) {
--    case 0x00:	/* TIDR */
+-    case 0x00:	/* 32KSYNCNT_REV */
 -        return 0x21;
 -
--    case 0x10:	/* TIOCP_CFG */
--        return s->config;
--
--    case 0x14:	/* TISTAT */
--        /* ??? When's this bit reset? */
--        return 1;						/* RESETDONE */
--
--    case 0x18:	/* TISR */
--        return s->status;
--
--    case 0x1c:	/* TIER */
--        return s->it_ena;
--
--    case 0x20:	/* TWER */
--        return s->wu_ena;
--
--    case 0x24:	/* TCLR */
--        return (s->inout << 14) |
--                (s->capt2 << 13) |
--                (s->pt << 12) |
--                (s->trigger << 10) |
--                (s->capture << 8) |
--                (s->scpwm << 7) |
--                (s->ce << 6) |
--                (s->pre << 5) |
--                (s->ptv << 2) |
--                (s->ar << 1) |
--                (s->st << 0);
--
--    case 0x28:	/* TCRR */
--        return omap_gp_timer_read(s);
--
--    case 0x2c:	/* TLDR */
--        return s->load_val;
--
--    case 0x30:	/* TTGR */
--        return 0xffffffff;
--
--    case 0x34:	/* TWPS */
--        return 0x00000000;	/* No posted writes pending.  */
--
--    case 0x38:	/* TMAR */
--        return s->match_val;
--
--    case 0x3c:	/* TCAR1 */
--        return s->capture_val[0];
--
--    case 0x40:	/* TSICR */
--        return s->posted << 2;
--
--    case 0x44:	/* TCAR2 */
--        return s->capture_val[1];
+-    case 0x10:	/* CR */
+-        return omap_synctimer_read(s) - s->val;
 -    }
 -
 -    OMAP_BAD_REG(addr);
 -    return 0;
 -}
 -
--static uint32_t omap_gp_timer_readh(void *opaque, hwaddr addr)
+-static uint32_t omap_synctimer_readh(void *opaque, hwaddr addr)
 -{
--    struct omap_gp_timer_s *s = opaque;
+-    struct omap_synctimer_s *s = opaque;
 -    uint32_t ret;
 -
 -    if (addr & 2)
 -        return s->readh;
 -    else {
--        ret = omap_gp_timer_readw(opaque, addr);
+-        ret = omap_synctimer_readw(opaque, addr);
 -        s->readh = ret >> 16;
 -        return ret & 0xffff;
 -    }
 -}
 -
--static void omap_gp_timer_write(void *opaque, hwaddr addr, uint32_t value)
--{
--    struct omap_gp_timer_s *s = opaque;
--
--    switch (addr) {
--    case 0x00:	/* TIDR */
--    case 0x14:	/* TISTAT */
--    case 0x34:	/* TWPS */
--    case 0x3c:	/* TCAR1 */
--    case 0x44:	/* TCAR2 */
--        OMAP_RO_REG(addr);
--        break;
--
--    case 0x10:	/* TIOCP_CFG */
--        s->config = value & 0x33d;
--        if (((value >> 3) & 3) == 3)				/* IDLEMODE */
--            fprintf(stderr, "%s: illegal IDLEMODE value in TIOCP_CFG\n",
--                            __func__);
--        if (value & 2)						/* SOFTRESET */
--            omap_gp_timer_reset(s);
--        break;
--
--    case 0x18:	/* TISR */
--        if (value & GPT_TCAR_IT)
--            s->capt_num = 0;
--        if (s->status && !(s->status &= ~value))
--            qemu_irq_lower(s->irq);
--        break;
--
--    case 0x1c:	/* TIER */
--        s->it_ena = value & 7;
--        break;
--
--    case 0x20:	/* TWER */
--        s->wu_ena = value & 7;
--        break;
--
--    case 0x24:	/* TCLR */
--        omap_gp_timer_sync(s);
--        s->inout = (value >> 14) & 1;
--        s->capt2 = (value >> 13) & 1;
--        s->pt = (value >> 12) & 1;
--        s->trigger = (value >> 10) & 3;
--        if (s->capture == gpt_capture_none &&
--                        ((value >> 8) & 3) != gpt_capture_none)
--            s->capt_num = 0;
--        s->capture = (value >> 8) & 3;
--        s->scpwm = (value >> 7) & 1;
--        s->ce = (value >> 6) & 1;
--        s->pre = (value >> 5) & 1;
--        s->ptv = (value >> 2) & 7;
--        s->ar = (value >> 1) & 1;
--        s->st = (value >> 0) & 1;
--        if (s->inout && s->trigger != gpt_trigger_none)
--            fprintf(stderr, "%s: GP timer pin must be an output "
--                            "for this trigger mode\n", __func__);
--        if (!s->inout && s->capture != gpt_capture_none)
--            fprintf(stderr, "%s: GP timer pin must be an input "
--                            "for this capture mode\n", __func__);
--        if (s->trigger == gpt_trigger_none)
--            omap_gp_timer_out(s, s->scpwm);
--        /* TODO: make sure this doesn't overflow 32-bits */
--        s->ticks_per_sec = NANOSECONDS_PER_SECOND << (s->pre ? s->ptv + 1 : 0);
--        omap_gp_timer_update(s);
--        break;
--
--    case 0x28:	/* TCRR */
--        s->time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--        s->val = value;
--        omap_gp_timer_update(s);
--        break;
--
--    case 0x2c:	/* TLDR */
--        s->load_val = value;
--        break;
--
--    case 0x30:	/* TTGR */
--        s->time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--        s->val = s->load_val;
--        omap_gp_timer_update(s);
--        break;
--
--    case 0x38:	/* TMAR */
--        omap_gp_timer_sync(s);
--        s->match_val = value;
--        omap_gp_timer_update(s);
--        break;
--
--    case 0x40:	/* TSICR */
--        s->posted = (value >> 2) & 1;
--        if (value & 2)	/* How much exactly are we supposed to reset? */
--            omap_gp_timer_reset(s);
--        break;
--
--    default:
--        OMAP_BAD_REG(addr);
--    }
--}
--
--static void omap_gp_timer_writeh(void *opaque, hwaddr addr, uint32_t value)
--{
--    struct omap_gp_timer_s *s = opaque;
--
--    if (addr & 2)
--        omap_gp_timer_write(opaque, addr, (value << 16) | s->writeh);
--    else
--        s->writeh = (uint16_t) value;
--}
--
--static uint64_t omap_gp_timer_readfn(void *opaque, hwaddr addr,
--                                     unsigned size)
+-static uint64_t omap_synctimer_readfn(void *opaque, hwaddr addr,
+-                                      unsigned size)
 -{
 -    switch (size) {
 -    case 1:
 -        return omap_badwidth_read32(opaque, addr);
 -    case 2:
--        return omap_gp_timer_readh(opaque, addr);
+-        return omap_synctimer_readh(opaque, addr);
 -    case 4:
--        return omap_gp_timer_readw(opaque, addr);
+-        return omap_synctimer_readw(opaque, addr);
 -    default:
 -        g_assert_not_reached();
 -    }
 -}
 -
--static void omap_gp_timer_writefn(void *opaque, hwaddr addr,
--                                  uint64_t value, unsigned size)
+-static void omap_synctimer_writefn(void *opaque, hwaddr addr,
+-                                   uint64_t value, unsigned size)
 -{
--    switch (size) {
--    case 1:
--        omap_badwidth_write32(opaque, addr, value);
--        break;
--    case 2:
--        omap_gp_timer_writeh(opaque, addr, value);
--        break;
--    case 4:
--        omap_gp_timer_write(opaque, addr, value);
--        break;
--    default:
--        g_assert_not_reached();
--    }
+-    OMAP_BAD_REG(addr);
 -}
 -
--static const MemoryRegionOps omap_gp_timer_ops = {
--    .read = omap_gp_timer_readfn,
--    .write = omap_gp_timer_writefn,
+-static const MemoryRegionOps omap_synctimer_ops = {
+-    .read = omap_synctimer_readfn,
+-    .write = omap_synctimer_writefn,
 -    .valid.min_access_size = 1,
 -    .valid.max_access_size = 4,
 -    .endianness = DEVICE_NATIVE_ENDIAN,
 -};
 -
--struct omap_gp_timer_s *omap_gp_timer_init(struct omap_target_agent_s *ta,
--                qemu_irq irq, omap_clk fclk, omap_clk iclk)
+-struct omap_synctimer_s *omap_synctimer_init(struct omap_target_agent_s *ta,
+-                struct omap_mpu_state_s *mpu, omap_clk fclk, omap_clk iclk)
 -{
--    struct omap_gp_timer_s *s = g_new0(struct omap_gp_timer_s, 1);
+-    struct omap_synctimer_s *s = g_malloc0(sizeof(*s));
 -
--    s->ta = ta;
--    s->irq = irq;
--    s->clk = fclk;
--    s->timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, omap_gp_timer_tick, s);
--    s->match = timer_new_ns(QEMU_CLOCK_VIRTUAL, omap_gp_timer_match, s);
--    s->in = qemu_allocate_irq(omap_gp_timer_input, s, 0);
--    omap_gp_timer_reset(s);
--    omap_gp_timer_clk_setup(s);
--
--    memory_region_init_io(&s->iomem, NULL, &omap_gp_timer_ops, s, "omap.gptimer",
+-    omap_synctimer_reset(s);
+-    memory_region_init_io(&s->iomem, NULL, &omap_synctimer_ops, s, "omap.synctimer",
 -                          omap_l4_region_size(ta, 0));
 -    omap_l4_attach(ta, 0, &s->iomem);
 -
 -    return s;
 -}
 diff --git a/hw/timer/meson.build b/hw/timer/meson.build
-index c1113eb90b1..73cb9541269 100644
+index 73cb9541269..f5f9eed2d0a 100644
 --- a/hw/timer/meson.build
 +++ b/hw/timer/meson.build
 @@ -21,7 +21,6 @@ system_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_gictimer.c'))
  system_ss.add(when: 'CONFIG_MSF2', if_true: files('mss-timer.c'))
  system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_timer.c'))
  system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_timer.c'))
--system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_gptimer.c'))
- system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_synctimer.c'))
+-system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_synctimer.c'))
  system_ss.add(when: 'CONFIG_PXA2XX_TIMER', if_true: files('pxa2xx_timer.c'))
  system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_systmr.c'))
+ system_ss.add(when: 'CONFIG_SH_TIMER', if_true: files('sh_timer.c'))
 -- 
 2.34.1
 
