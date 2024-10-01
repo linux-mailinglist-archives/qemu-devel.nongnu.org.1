@@ -2,74 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F77B98C0A1
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A19798C10D
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 17:05:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sveAZ-0003bU-QJ; Tue, 01 Oct 2024 10:48:07 -0400
+	id 1sveQE-0005NN-MZ; Tue, 01 Oct 2024 11:04:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sveAJ-0003AM-Hd
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:47:54 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sveAG-0004a2-Ib
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:47:51 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5c87c7d6ad4so5751713a12.3
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 07:47:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727794066; x=1728398866; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=6XkU7I0K0uZBG6OSGJgu0iuzUvI5igoc/AC8//Kv2dI=;
- b=ZPb/Gn5rzsstl2BixYE3s7DsgILojVOtZLAPkT/iTEeFSL9YM0f79rMg8AWCB/IEvl
- uVb+oWs/TXyFyf2VrO27vfNyNFbKq+oCyxqCYXpPkciyimVB8ZncN/sThi8iBC6jQzPY
- u0qndu4SsEMexy16QiCli4ANQ5hSkGMQLzUEYM+8ZzI/p09elujnH1O8xfjrbgorEVDJ
- 2ZeXaDBwiChAD9RWSlMXbSC9LvBYGFFW8hU7gFlZCxy184WCQbq6UD21TcuBgY/WZsDn
- UnxMElOPdvT84j147ZkX4iT3oOR8L5lxt1ajO39pdilkPi84nfRuEgCCWJ1hCO7H99Bd
- rFvA==
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1sveOg-00055X-Es
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:02:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1sveOe-00007y-Ko
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:02:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727794959;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QBjl694dZRzTw8MMM7D4i49DF9KvCq0UAnuRtfQmI4g=;
+ b=SIKUC1omnjsk+o21SS2uTI0C+KtFNsemPWMOvnW5MF5g3xEnbjQDjiUWGnFNulsWv2vxZD
+ 9bYg+YgcCCOqs97rztzVbql0FDzs7rPdPtvvMpbLKlfepqcaG3nrNtHWSERQ9Jc2NVsdLD
+ NzjEhqK0A8jud8rm1Gyhj8o0RxRbgdQ=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-IHbeWuSGOqu2SFQ0zEgDLg-1; Tue, 01 Oct 2024 08:49:53 -0400
+X-MC-Unique: IHbeWuSGOqu2SFQ0zEgDLg-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-7c6a9c1a9b8so3431780a12.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 05:49:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727794066; x=1728398866;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6XkU7I0K0uZBG6OSGJgu0iuzUvI5igoc/AC8//Kv2dI=;
- b=xCo40/b3oYlNPokXKN1RR35ClT+eefgqper+QMAX8DaXjp2Tkf/5+CWL9f34hOo8Vd
- QKKGaAbjvRxD0tcE3FWYyrgH+HiB2RMGHjRcxTmr5ZVfhOSwCuf70gKPaPaH9CejYyj2
- UInhePpC7idY/cVyET0ZaaOx2IjNRtO1ZzKTdLjxfPK56sLJjOIuOx2ZtiJad3RqrNeG
- JAfk5ULyNOhzjV+2VJ4+FrQd+smAznlgvvz++CahqgGj4RQgvyWuNiFbo0NGXyNZrCoj
- fMegl5GREEcnVbh3aCKvNxj+21uRAUNR5ZykM8Yc/H0MPwUmJbKxFRpFs0liipHVf7Hz
- LqPA==
-X-Gm-Message-State: AOJu0YzcdYbe+TtiPlHzNFtj+TsM0LseEqf88FAHhedgdanB2k07ubLm
- kLJL83hUCdLnRXyeNMFD8nkm9oDlMqMoEUEvmfIBSyfpM/K0RWmpeUzkOxGIUi4WzUlZNUycLPR
- ymR5EFC8UIikNdctLhV6JfPgcnvuTmkItdgU4POhy1lSv02qa
-X-Google-Smtp-Source: AGHT+IE5PL3fg6W7DFYMQ5xvdPYZpCACooBukklQuAFPILLlX35gHZVVdlUytTBggwjRg74aazMux3RMkdct+HIN5Xw=
-X-Received: by 2002:a05:6402:1947:b0:5bf:50:266b with SMTP id
- 4fb4d7f45d1cf-5c8824e7f04mr14184317a12.19.1727786638510; Tue, 01 Oct 2024
- 05:43:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1727786992; x=1728391792;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QBjl694dZRzTw8MMM7D4i49DF9KvCq0UAnuRtfQmI4g=;
+ b=JRFXbiC3TfODdK32/zvXQ1Se5pOYSl+b6Fmgu04C11xcPpkjWd4NdyH4VI/Lpj8Ss7
+ L9O3nIJ8OA66yLqfOvMyHbJBESeXD132XnNV274FKPdx9dDT7z+nd+cqJHllF+URrbPD
+ pDDBtXxHBz3kSN32lt7Lc+ic54Hn7bC3u//HBPkouAZO4Dfce7rZAV3ibiNkzybUK7YZ
+ QTOoCEQESkCOzh6n3AkV4xAAfZHc1nks4D8/aiCsp2ZDToMSbX93+2aGKfol5EZtwj5O
+ re+LXVsSOFavz2W/vwRJ1zgmZ6SPdRkv274WfZtkGcn7N0BvZ+dMscEgPioCkTetphEg
+ 1New==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV+DyNwkUV9PkBFCtB4xHQYUUjNV3qOdtGqCF9HbLd+ITU4c45dSwppjx+bip7gREXZ0sGtKbvrgF8c@nongnu.org
+X-Gm-Message-State: AOJu0YyjGSOlkECLZ+TVkjvIsDmwy/DM1tRntdJ2jIXoELMqnUxbh4jf
+ CVZiG9oqDxmnR+IV4yfmiLWJg9qEQufd90wEp90MdLlyGBVwugz6Zi1rfoDvjBJPmNzZjgKhQKL
+ t6jPt3dQAIXrVRZGgGsW/n9x/Rt4ri/VPR8NtrpngMcuPYtOuToJT
+X-Received: by 2002:a05:6a20:9c8e:b0:1c0:ef24:4125 with SMTP id
+ adf61e73a8af0-1d4fa6feaa8mr20297145637.26.1727786992123; 
+ Tue, 01 Oct 2024 05:49:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHWWh7OvXqIoi2fArxikG6xwa+Azfi/JDOtD9AV9hh0XlVGbpBAbaeRv7l7M8ELFMdfrSKAmg==
+X-Received: by 2002:a05:6a20:9c8e:b0:1c0:ef24:4125 with SMTP id
+ adf61e73a8af0-1d4fa6feaa8mr20297123637.26.1727786991670; 
+ Tue, 01 Oct 2024 05:49:51 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-46-200-231.retail.telecomitalia.it.
+ [79.46.200.231]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-71b2652492csm8232840b3a.147.2024.10.01.05.49.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Oct 2024 05:49:51 -0700 (PDT)
+Date: Tue, 1 Oct 2024 14:49:38 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-block@nongnu.org, raphael@enfabrica.net, mst@redhat.com, 
+ kwolf@redhat.com, hreitz@redhat.com, pbonzini@redhat.com, berrange@redhat.com, 
+ eduardo@habkost.net, eblake@redhat.com, armbru@redhat.com,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v6 2/3] vhost-user-blk: split vhost_user_blk_sync_config()
+Message-ID: <lemecbqh2krbemhpt2m7r2gc5reet7ikjoh2gxcbeig2l552tr@al2eoewutqwp>
+References: <20240920094936.450987-1-vsementsov@yandex-team.ru>
+ <20240920094936.450987-3-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 1 Oct 2024 13:43:47 +0100
-Message-ID: <CAFEAcA8N8NoaPMKQN=_Ph1mmgE1DEn=7kDOuOVMUX4zBEaBmug@mail.gmail.com>
-Subject: what is the right way for an avocado test to do "wait for text that
- doesn't end in newline" ?
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: Thomas Huth <thuth@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>, John Snow <jsnow@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240920094936.450987-3-vsementsov@yandex-team.ru>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,46 +104,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-One common thing to want to do in an avocado test is log into
-the guest. The obvious way to do that would seem to be:
+On Fri, Sep 20, 2024 at 12:49:35PM GMT, Vladimir Sementsov-Ogievskiy wrote:
+>Split vhost_user_blk_sync_config() out from
+>vhost_user_blk_handle_config_change(), to be reused in the following
+>commit.
+>
+>Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>Acked-by: Raphael Norwitz <raphael@enfabrica.net>
+>---
+> hw/block/vhost-user-blk.c | 26 +++++++++++++++++++-------
+> 1 file changed, 19 insertions(+), 7 deletions(-)
+>
+>diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+>index 5b7f46bbb0..48b3dabb8d 100644
+>--- a/hw/block/vhost-user-blk.c
+>+++ b/hw/block/vhost-user-blk.c
+>@@ -90,27 +90,39 @@ static void vhost_user_blk_set_config(VirtIODevice *vdev, const uint8_t *config)
+>     s->blkcfg.wce = blkcfg->wce;
+> }
+>
+>+static int vhost_user_blk_sync_config(DeviceState *dev, Error **errp)
 
-         self.wait_for_console_pattern('login:')
-         exec_command(self, 'root')
-         self.wait_for_console_pattern('Password:')
-         exec_command(self, "passw0rd")
+I was going to ask why use `DeviceState *`, but then I saw the next 
+commit where it's needed by `dc->sync_config` callback.
 
-This doesn't work; Thomas tells me that's because the
-wait_for_console_pattern function requires that the guest outputs
-a newline, but the 'login:' and 'Password:' prompt lines don't
-have a newline after them.
+LGTM!
 
-What is the right way to do this common thing?
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-In tests/avocado at the moment we have:
+>+{
+>+    int ret;
+>+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+>+    VHostUserBlk *s = VHOST_USER_BLK(vdev);
+>+
+>+    ret = vhost_dev_get_config(&s->dev, (uint8_t *)&s->blkcfg,
+>+                               vdev->config_len, errp);
+>+    if (ret < 0) {
+>+        return ret;
+>+    }
+>+
+>+    memcpy(vdev->config, &s->blkcfg, vdev->config_len);
+>+    virtio_notify_config(vdev);
+>+
+>+    return 0;
+>+}
+>+
+> static int vhost_user_blk_handle_config_change(struct vhost_dev *dev)
+> {
+>     int ret;
+>-    VirtIODevice *vdev = dev->vdev;
+>-    VHostUserBlk *s = VHOST_USER_BLK(dev->vdev);
+>     Error *local_err = NULL;
+>
+>     if (!dev->started) {
+>         return 0;
+>     }
+>
+>-    ret = vhost_dev_get_config(dev, (uint8_t *)&s->blkcfg,
+>-                               vdev->config_len, &local_err);
+>+    ret = vhost_user_blk_sync_config(DEVICE(dev->vdev), &local_err);
+>     if (ret < 0) {
+>         error_report_err(local_err);
+>         return ret;
+>     }
+>
+>-    memcpy(dev->vdev->config, &s->blkcfg, vdev->config_len);
+>-    virtio_notify_config(dev->vdev);
+>-
+>     return 0;
+> }
+>
+>-- 
+>2.34.1
+>
 
-tests/avocado/machine_aspeed.py:
-        self.wait_for_console_pattern("the last line before login:")
-        time.sleep(0.1)
-        exec_command(self, 'root')
-        time.sleep(0.1)
-        exec_command(self, "passw0rd")
-
-This is flaky -- on my machine the test times out once in every
-two or three iterations.
-run_tuxtest_tests also tries the same sleep trick.
-
-tests/functional/test_ppc64_hv.py:
-        wait_for_console_pattern(self, 'Welcome to Alpine Linux 3.18')
-        exec_command(self, 'root')
-        wait_for_console_pattern(self, 'localhost login:')
-which sends the login username and *then* waits for the login prompt.
-
-tests/avocado/boot_linux_console.py:
-doesn't try to log in, just ends the test at login:
-        self.wait_for_console_pattern('gsj login:')
-This test has been marked as "might timeout", which suggests this
-isn't actually effective...
-
-thanks
--- PMM
 
