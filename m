@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697BC98C3A7
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B0798C3D6
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:47:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svfvJ-0006v8-DE; Tue, 01 Oct 2024 12:40:31 -0400
+	id 1svfvC-0006nB-Jq; Tue, 01 Oct 2024 12:40:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuj-0005ff-GR
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:55 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1svfuk-0005gk-83
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:56 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfud-0006A1-CS
+ id 1svfud-0006AA-Oe
  for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:53 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-42f6bec84b5so20165545e9.1
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:46 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-37cc810ce73so3343571f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1727800786; x=1728405586; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=m6tPZvdqCcLp9Z7epWPNdtOB9CLTYpwOU9D1H5zmta4=;
- b=SOoqggAX68qET1mziEe25kj6oeRKfQhF8NmCNM8xkanUMe+j+qsKIA5DJzI8lrL65P
- B0Gj8+To5fk1DCsAv9jBLtZjHdoG5hKD2dZL2dyJE0UuoYzlLkriMbjX5KopWPbekuFA
- 55OMSk9GpYqR8OAgjgg1NaEmFSHnTYmrD0p2EBJDxcf7Z1qh1h04UkWq2X712JJDBwkO
- IW1uG1CWKj6cIbE/5xj0BxHeY2WS8qq75M49B5lZwbIsQRYB/lOIz3v4Nbe8x1sSpK3R
- 8UmOL+XN0FcXF+v/6n+HNePANnoG8FQtXC/nNVZytoe+2hneCbPSNksMRpR9NkMN8xSK
- WTwg==
+ :reply-to; bh=rGgOylqPmA98kWK9qIr0jVYd8Pn+WsSFNAuXNokWMsE=;
+ b=XIgRnIQP68p7i2tCRyAQqHhNAR6weSDN2ih6mfepY0G7J4Q/bwWlxQldzRusN7/M0N
+ DDt/IqGCHIGIVwVIM3Jb7YxoXqtP81yRon088Qx0WW5iQ2kgwMVooVYBLp6V31srPTqp
+ LGL6VZ/hIJzzb6R6Grk8fvmaL9kOu8gvueReUNNmMBfuL+cyHjjE0VkdK+iWZCLeazrN
+ 0ox5wlYSwLWsrDexzjA0LiaZfxgPhYuHqUPkDWdM21a89qisycuA0+kG22KRSiE2O/mp
+ MZ/vOKK9FZi5tXUMS5EkAUqdWrY3rCYEEDusNuruFjr0V3MIg+F+G2Tu0n6XBkaIe+fp
+ X6OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1727800786; x=1728405586;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m6tPZvdqCcLp9Z7epWPNdtOB9CLTYpwOU9D1H5zmta4=;
- b=n56/+V48VxEB7GN/+0CGSO83rIw/zh1ilhcHLC4qIL6lV1YYrpyvksHqz5Vr3IEH4L
- UVnjexnGHGKE1PT0l9DNUruoDT6T0t8VQjQQUz1b1Avfq/qU05mEKroYwmHz8KTsbDWf
- An67JVjzB2Kd7FEMF56j0cENg/f3SZbWx10Co7aVFTaCXx7iQWMnNYBYDj1O6kLU5xLU
- bTIOrmXfXzDts0SxD2h2IDlN9Uw4gHPFzdGlr21k7OGKodgcqAzXet2RwqcTT9n0dEXJ
- Qkq/jsEeH4A0KdBOaIQLSdGUcGUK6cS+vFsnpTJRcBxB2mQKuZlREOxwaxk28eKxcE94
- ZLbw==
-X-Gm-Message-State: AOJu0YxIKt3n2EiFl0lkn98cVXOnjVWwNoYQf42GaiGuYiSjzw4/FWOs
- 2aeJE+SyvN5mIVrOmumQOSVoXNel6UAZMzKn5I0HkHYH3L8cmBKaBmhYQLYp1Jy8ow9abR2caAr
- n
-X-Google-Smtp-Source: AGHT+IF9q7PwlqBNSMUJLme+zelMT6zvNWmoV3dq3bbvKlFkDe0ZJGUXv+8tM5rVfMfHzq7w//B8SA==
-X-Received: by 2002:a05:600c:2246:b0:42c:be90:fa1b with SMTP id
- 5b1f17b1804b1-42f777b982amr918645e9.14.1727800785753; 
- Tue, 01 Oct 2024 09:39:45 -0700 (PDT)
+ bh=rGgOylqPmA98kWK9qIr0jVYd8Pn+WsSFNAuXNokWMsE=;
+ b=mcC4eIGnX4Z91p+SqR5d456tyug6NXMeqnStGeGDpc6gCQH9vLBQ8wG7eDjUmTzEhe
+ oU+E0jYTul/yIa2YRiFcURVIxxcj5XZwWiitTXtTM6eJ9QHLIsPSoxLLu9d2A7m2cbLu
+ +ywpt6NXUowyw6R/SwK9MwGGrsNGo+cbx4aiRVi1Qwotf757Lbf4frVRONusmzOx/8Sm
+ pWi4x5zW+aZ+IiDXSbdT5Su+QxwSsWLEHG4i6NhMQhzXir+ib2oK9FPocNIlnI7ERt0A
+ 1MpQM03w/72vItpPG8YqAJ595ptl9rv5dE8lw4Cy8W6Ni8vQM0S8xL6Rj6c/9yNJfbyR
+ upoA==
+X-Gm-Message-State: AOJu0YyASr+UQzFOImkrMGa8yt6C3vmBsZzY+q31R3M3Lykkw5DNLypm
+ Ixr6b51vVRW44U3MmTZrN2KvMhYXnASgNYudYRnYjHK6W8XTOQaRCzLhUblBHYedTWynvPkycOb
+ x
+X-Google-Smtp-Source: AGHT+IFcCf8n9j3Xg6dSXYuq9+Vq/2mi4zKMTtUEtSIwD1gKl7tp5LK8oKvZAwzD1iaNM8ksnmRJTw==
+X-Received: by 2002:a05:6000:2a3:b0:37c:cec1:6292 with SMTP id
+ ffacd0b85a97d-37cfb8a5e9amr137908f8f.8.1727800786283; 
+ Tue, 01 Oct 2024 09:39:46 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 09:39:45 -0700 (PDT)
+ Tue, 01 Oct 2024 09:39:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 47/54] hw/timer: Remove omap_synctimer
-Date: Tue,  1 Oct 2024 17:39:11 +0100
-Message-Id: <20241001163918.1275441-48-peter.maydell@linaro.org>
+Subject: [PULL 48/54] hw/ssi: Remove omap_mcspi
+Date: Tue,  1 Oct 2024 17:39:12 +0100
+Message-Id: <20241001163918.1275441-49-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241001163918.1275441-1-peter.maydell@linaro.org>
 References: <20241001163918.1275441-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,56 +91,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the omap_synctimer device, which is only in the OMAP2 SoC.
+The omap_mcspi device is used only in the OMAP2 SoC, which we
+are removing.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240903160751.4100218-46-peter.maydell@linaro.org
+Message-id: 20240903160751.4100218-48-peter.maydell@linaro.org
 ---
- include/hw/arm/omap.h     |   8 ---
- hw/timer/omap_synctimer.c | 110 --------------------------------------
- hw/timer/meson.build      |   1 -
- 3 files changed, 119 deletions(-)
- delete mode 100644 hw/timer/omap_synctimer.c
+ include/hw/arm/omap.h |  11 --
+ hw/ssi/omap_spi.c     | 380 ------------------------------------------
+ hw/ssi/meson.build    |   1 -
+ 3 files changed, 392 deletions(-)
+ delete mode 100644 hw/ssi/omap_spi.c
 
 diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index cced3d28605..982341d0079 100644
+index 982341d0079..118874d8775 100644
 --- a/include/hw/arm/omap.h
 +++ b/include/hw/arm/omap.h
-@@ -676,12 +676,6 @@ struct omap_dma_lcd_channel_s {
- # define OMAP24XX_DMA_MS		63	/* Not in OMAP2420 */
- # define OMAP24XX_DMA_EXT_DMAREQ5	64
+@@ -698,15 +698,6 @@ struct omap_uwire_s;
+ void omap_uwire_attach(struct omap_uwire_s *s,
+                 uWireSlave *slave, int chipselect);
  
--/* OMAP2 sysctimer */
--struct omap_synctimer_s;
--struct omap_synctimer_s *omap_synctimer_init(struct omap_target_agent_s *ta,
--                struct omap_mpu_state_s *mpu, omap_clk fclk, omap_clk iclk);
--void omap_synctimer_reset(struct omap_synctimer_s *s);
+-/* OMAP2 spi */
+-struct omap_mcspi_s;
+-struct omap_mcspi_s *omap_mcspi_init(struct omap_target_agent_s *ta, int chnum,
+-                qemu_irq irq, qemu_irq *drq, omap_clk fclk, omap_clk iclk);
+-void omap_mcspi_attach(struct omap_mcspi_s *s,
+-                uint32_t (*txrx)(void *opaque, uint32_t, int), void *opaque,
+-                int chipselect);
+-void omap_mcspi_reset(struct omap_mcspi_s *s);
 -
- struct omap_uart_s;
- struct omap_uart_s *omap_uart_init(hwaddr base,
-                 qemu_irq irq, omap_clk fclk, omap_clk iclk,
-@@ -929,8 +923,6 @@ struct omap_mpu_state_s {
+ struct I2SCodec {
+     void *opaque;
+ 
+@@ -923,8 +914,6 @@ struct omap_mpu_state_s {
      /* OMAP2-only peripherals */
      struct omap_l4_s *l4;
  
--    struct omap_synctimer_s *synctimer;
+-    struct omap_mcspi_s *mcspi[2];
 -
-     struct omap_mcspi_s *mcspi[2];
- 
      struct omap_dss_s *dss;
-diff --git a/hw/timer/omap_synctimer.c b/hw/timer/omap_synctimer.c
+ };
+ 
+diff --git a/hw/ssi/omap_spi.c b/hw/ssi/omap_spi.c
 deleted file mode 100644
-index d93a9344ede..00000000000
---- a/hw/timer/omap_synctimer.c
+index 8f85c3e3918..00000000000
+--- a/hw/ssi/omap_spi.c
 +++ /dev/null
-@@ -1,110 +0,0 @@
+@@ -1,380 +0,0 @@
 -/*
-- * TI OMAP2 32kHz sync timer emulation.
+- * TI OMAP processor's Multichannel SPI emulation.
 - *
-- * Copyright (C) 2007-2008 Nokia Corporation
-- * Written by Andrzej Zaborowski <andrew@openedhand.com>
+- * Copyright (C) 2007-2009 Nokia Corporation
+- *
+- * Original code for OMAP2 by Andrzej Zaborowski <andrew@openedhand.com>
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -154,111 +156,380 @@ index d93a9344ede..00000000000
 - * GNU General Public License for more details.
 - *
 - * You should have received a copy of the GNU General Public License along
-- * with this program; if not, see <http://www.gnu.org/licenses/>.
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 - */
+-
 -#include "qemu/osdep.h"
--#include "qemu/timer.h"
+-#include "qemu/log.h"
+-#include "hw/hw.h"
+-#include "hw/irq.h"
 -#include "hw/arm/omap.h"
--struct omap_synctimer_s {
+-
+-/* Multichannel SPI */
+-struct omap_mcspi_s {
 -    MemoryRegion iomem;
--    uint32_t val;
--    uint16_t readh;
+-    qemu_irq irq;
+-    int chnum;
+-
+-    uint32_t sysconfig;
+-    uint32_t systest;
+-    uint32_t irqst;
+-    uint32_t irqen;
+-    uint32_t wken;
+-    uint32_t control;
+-
+-    struct omap_mcspi_ch_s {
+-        qemu_irq txdrq;
+-        qemu_irq rxdrq;
+-        uint32_t (*txrx)(void *opaque, uint32_t, int);
+-        void *opaque;
+-
+-        uint32_t tx;
+-        uint32_t rx;
+-
+-        uint32_t config;
+-        uint32_t status;
+-        uint32_t control;
+-    } ch[4];
 -};
 -
--/* 32-kHz Sync Timer of the OMAP2 */
--static uint32_t omap_synctimer_read(struct omap_synctimer_s *s) {
--    return muldiv64(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), 0x8000,
--                    NANOSECONDS_PER_SECOND);
+-static inline void omap_mcspi_interrupt_update(struct omap_mcspi_s *s)
+-{
+-    qemu_set_irq(s->irq, s->irqst & s->irqen);
 -}
 -
--void omap_synctimer_reset(struct omap_synctimer_s *s)
+-static inline void omap_mcspi_dmarequest_update(struct omap_mcspi_ch_s *ch)
 -{
--    s->val = omap_synctimer_read(s);
+-    qemu_set_irq(ch->txdrq,
+-                    (ch->control & 1) &&		/* EN */
+-                    (ch->config & (1 << 14)) &&		/* DMAW */
+-                    (ch->status & (1 << 1)) &&		/* TXS */
+-                    ((ch->config >> 12) & 3) != 1);	/* TRM */
+-    qemu_set_irq(ch->rxdrq,
+-                    (ch->control & 1) &&		/* EN */
+-                    (ch->config & (1 << 15)) &&		/* DMAW */
+-                    (ch->status & (1 << 0)) &&		/* RXS */
+-                    ((ch->config >> 12) & 3) != 2);	/* TRM */
 -}
 -
--static uint32_t omap_synctimer_readw(void *opaque, hwaddr addr)
+-static void omap_mcspi_transfer_run(struct omap_mcspi_s *s, int chnum)
 -{
--    struct omap_synctimer_s *s = opaque;
+-    struct omap_mcspi_ch_s *ch = s->ch + chnum;
+-
+-    if (!(ch->control & 1))				/* EN */
+-        return;
+-    if ((ch->status & (1 << 0)) &&			/* RXS */
+-                    ((ch->config >> 12) & 3) != 2 &&	/* TRM */
+-                    !(ch->config & (1 << 19)))		/* TURBO */
+-        goto intr_update;
+-    if ((ch->status & (1 << 1)) &&			/* TXS */
+-                    ((ch->config >> 12) & 3) != 1)	/* TRM */
+-        goto intr_update;
+-
+-    if (!(s->control & 1) ||				/* SINGLE */
+-                    (ch->config & (1 << 20))) {		/* FORCE */
+-        if (ch->txrx)
+-            ch->rx = ch->txrx(ch->opaque, ch->tx,	/* WL */
+-                            1 + (0x1f & (ch->config >> 7)));
+-    }
+-
+-    ch->tx = 0;
+-    ch->status |= 1 << 2;				/* EOT */
+-    ch->status |= 1 << 1;				/* TXS */
+-    if (((ch->config >> 12) & 3) != 2)			/* TRM */
+-        ch->status |= 1 << 0;				/* RXS */
+-
+-intr_update:
+-    if ((ch->status & (1 << 0)) &&			/* RXS */
+-                    ((ch->config >> 12) & 3) != 2 &&	/* TRM */
+-                    !(ch->config & (1 << 19)))		/* TURBO */
+-        s->irqst |= 1 << (2 + 4 * chnum);		/* RX_FULL */
+-    if ((ch->status & (1 << 1)) &&			/* TXS */
+-                    ((ch->config >> 12) & 3) != 1)	/* TRM */
+-        s->irqst |= 1 << (0 + 4 * chnum);		/* TX_EMPTY */
+-    omap_mcspi_interrupt_update(s);
+-    omap_mcspi_dmarequest_update(ch);
+-}
+-
+-void omap_mcspi_reset(struct omap_mcspi_s *s)
+-{
+-    int ch;
+-
+-    s->sysconfig = 0;
+-    s->systest = 0;
+-    s->irqst = 0;
+-    s->irqen = 0;
+-    s->wken = 0;
+-    s->control = 4;
+-
+-    for (ch = 0; ch < 4; ch ++) {
+-        s->ch[ch].config = 0x060000;
+-        s->ch[ch].status = 2;				/* TXS */
+-        s->ch[ch].control = 0;
+-
+-        omap_mcspi_dmarequest_update(s->ch + ch);
+-    }
+-
+-    omap_mcspi_interrupt_update(s);
+-}
+-
+-static uint64_t omap_mcspi_read(void *opaque, hwaddr addr, unsigned size)
+-{
+-    struct omap_mcspi_s *s = opaque;
+-    int ch = 0;
+-    uint32_t ret;
+-
+-    if (size != 4) {
+-        return omap_badwidth_read32(opaque, addr);
+-    }
 -
 -    switch (addr) {
--    case 0x00:	/* 32KSYNCNT_REV */
--        return 0x21;
+-    case 0x00:	/* MCSPI_REVISION */
+-        return 0x91;
 -
--    case 0x10:	/* CR */
--        return omap_synctimer_read(s) - s->val;
+-    case 0x10:	/* MCSPI_SYSCONFIG */
+-        return s->sysconfig;
+-
+-    case 0x14:	/* MCSPI_SYSSTATUS */
+-        return 1;					/* RESETDONE */
+-
+-    case 0x18:	/* MCSPI_IRQSTATUS */
+-        return s->irqst;
+-
+-    case 0x1c:	/* MCSPI_IRQENABLE */
+-        return s->irqen;
+-
+-    case 0x20:	/* MCSPI_WAKEUPENABLE */
+-        return s->wken;
+-
+-    case 0x24:	/* MCSPI_SYST */
+-        return s->systest;
+-
+-    case 0x28:	/* MCSPI_MODULCTRL */
+-        return s->control;
+-
+-    case 0x68: ch ++;
+-        /* fall through */
+-    case 0x54: ch ++;
+-        /* fall through */
+-    case 0x40: ch ++;
+-        /* fall through */
+-    case 0x2c:	/* MCSPI_CHCONF */
+-        return s->ch[ch].config;
+-
+-    case 0x6c: ch ++;
+-        /* fall through */
+-    case 0x58: ch ++;
+-        /* fall through */
+-    case 0x44: ch ++;
+-        /* fall through */
+-    case 0x30:	/* MCSPI_CHSTAT */
+-        return s->ch[ch].status;
+-
+-    case 0x70: ch ++;
+-        /* fall through */
+-    case 0x5c: ch ++;
+-        /* fall through */
+-    case 0x48: ch ++;
+-        /* fall through */
+-    case 0x34:	/* MCSPI_CHCTRL */
+-        return s->ch[ch].control;
+-
+-    case 0x74: ch ++;
+-        /* fall through */
+-    case 0x60: ch ++;
+-        /* fall through */
+-    case 0x4c: ch ++;
+-        /* fall through */
+-    case 0x38:	/* MCSPI_TX */
+-        return s->ch[ch].tx;
+-
+-    case 0x78: ch ++;
+-        /* fall through */
+-    case 0x64: ch ++;
+-        /* fall through */
+-    case 0x50: ch ++;
+-        /* fall through */
+-    case 0x3c:	/* MCSPI_RX */
+-        s->ch[ch].status &= ~(1 << 0);			/* RXS */
+-        ret = s->ch[ch].rx;
+-        omap_mcspi_transfer_run(s, ch);
+-        return ret;
 -    }
 -
 -    OMAP_BAD_REG(addr);
 -    return 0;
 -}
 -
--static uint32_t omap_synctimer_readh(void *opaque, hwaddr addr)
+-static void omap_mcspi_write(void *opaque, hwaddr addr,
+-                             uint64_t value, unsigned size)
 -{
--    struct omap_synctimer_s *s = opaque;
--    uint32_t ret;
+-    struct omap_mcspi_s *s = opaque;
+-    int ch = 0;
 -
--    if (addr & 2)
--        return s->readh;
--    else {
--        ret = omap_synctimer_readw(opaque, addr);
--        s->readh = ret >> 16;
--        return ret & 0xffff;
+-    if (size != 4) {
+-        omap_badwidth_write32(opaque, addr, value);
+-        return;
 -    }
--}
 -
--static uint64_t omap_synctimer_readfn(void *opaque, hwaddr addr,
--                                      unsigned size)
--{
--    switch (size) {
--    case 1:
--        return omap_badwidth_read32(opaque, addr);
--    case 2:
--        return omap_synctimer_readh(opaque, addr);
--    case 4:
--        return omap_synctimer_readw(opaque, addr);
+-    switch (addr) {
+-    case 0x00:	/* MCSPI_REVISION */
+-    case 0x14:	/* MCSPI_SYSSTATUS */
+-    case 0x30:	/* MCSPI_CHSTAT0 */
+-    case 0x3c:	/* MCSPI_RX0 */
+-    case 0x44:	/* MCSPI_CHSTAT1 */
+-    case 0x50:	/* MCSPI_RX1 */
+-    case 0x58:	/* MCSPI_CHSTAT2 */
+-    case 0x64:	/* MCSPI_RX2 */
+-    case 0x6c:	/* MCSPI_CHSTAT3 */
+-    case 0x78:	/* MCSPI_RX3 */
+-        OMAP_RO_REG(addr);
+-        return;
+-
+-    case 0x10:	/* MCSPI_SYSCONFIG */
+-        if (value & (1 << 1))				/* SOFTRESET */
+-            omap_mcspi_reset(s);
+-        s->sysconfig = value & 0x31d;
+-        break;
+-
+-    case 0x18:	/* MCSPI_IRQSTATUS */
+-        if (!((s->control & (1 << 3)) && (s->systest & (1 << 11)))) {
+-            s->irqst &= ~value;
+-            omap_mcspi_interrupt_update(s);
+-        }
+-        break;
+-
+-    case 0x1c:	/* MCSPI_IRQENABLE */
+-        s->irqen = value & 0x1777f;
+-        omap_mcspi_interrupt_update(s);
+-        break;
+-
+-    case 0x20:	/* MCSPI_WAKEUPENABLE */
+-        s->wken = value & 1;
+-        break;
+-
+-    case 0x24:	/* MCSPI_SYST */
+-        if (s->control & (1 << 3))			/* SYSTEM_TEST */
+-            if (value & (1 << 11)) {			/* SSB */
+-                s->irqst |= 0x1777f;
+-                omap_mcspi_interrupt_update(s);
+-            }
+-        s->systest = value & 0xfff;
+-        break;
+-
+-    case 0x28:	/* MCSPI_MODULCTRL */
+-        if (value & (1 << 3))				/* SYSTEM_TEST */
+-            if (s->systest & (1 << 11)) {		/* SSB */
+-                s->irqst |= 0x1777f;
+-                omap_mcspi_interrupt_update(s);
+-            }
+-        s->control = value & 0xf;
+-        break;
+-
+-    case 0x68: ch ++;
+-        /* fall through */
+-    case 0x54: ch ++;
+-        /* fall through */
+-    case 0x40: ch ++;
+-        /* fall through */
+-    case 0x2c:	/* MCSPI_CHCONF */
+-        if ((value ^ s->ch[ch].config) & (3 << 14))	/* DMAR | DMAW */
+-            omap_mcspi_dmarequest_update(s->ch + ch);
+-        if (((value >> 12) & 3) == 3) { /* TRM */
+-            qemu_log_mask(LOG_GUEST_ERROR, "%s: invalid TRM value (3)\n",
+-                          __func__);
+-        }
+-        if (((value >> 7) & 0x1f) < 3) { /* WL */
+-            qemu_log_mask(LOG_GUEST_ERROR,
+-                          "%s: invalid WL value (%" PRIx64 ")\n",
+-                          __func__, (value >> 7) & 0x1f);
+-        }
+-        s->ch[ch].config = value & 0x7fffff;
+-        break;
+-
+-    case 0x70: ch ++;
+-        /* fall through */
+-    case 0x5c: ch ++;
+-        /* fall through */
+-    case 0x48: ch ++;
+-        /* fall through */
+-    case 0x34:	/* MCSPI_CHCTRL */
+-        if (value & ~s->ch[ch].control & 1) {		/* EN */
+-            s->ch[ch].control |= 1;
+-            omap_mcspi_transfer_run(s, ch);
+-        } else
+-            s->ch[ch].control = value & 1;
+-        break;
+-
+-    case 0x74: ch ++;
+-        /* fall through */
+-    case 0x60: ch ++;
+-        /* fall through */
+-    case 0x4c: ch ++;
+-        /* fall through */
+-    case 0x38:	/* MCSPI_TX */
+-        s->ch[ch].tx = value;
+-        s->ch[ch].status &= ~(1 << 1);			/* TXS */
+-        omap_mcspi_transfer_run(s, ch);
+-        break;
+-
 -    default:
--        g_assert_not_reached();
+-        OMAP_BAD_REG(addr);
+-        return;
 -    }
 -}
 -
--static void omap_synctimer_writefn(void *opaque, hwaddr addr,
--                                   uint64_t value, unsigned size)
--{
--    OMAP_BAD_REG(addr);
--}
--
--static const MemoryRegionOps omap_synctimer_ops = {
--    .read = omap_synctimer_readfn,
--    .write = omap_synctimer_writefn,
--    .valid.min_access_size = 1,
--    .valid.max_access_size = 4,
+-static const MemoryRegionOps omap_mcspi_ops = {
+-    .read = omap_mcspi_read,
+-    .write = omap_mcspi_write,
 -    .endianness = DEVICE_NATIVE_ENDIAN,
 -};
 -
--struct omap_synctimer_s *omap_synctimer_init(struct omap_target_agent_s *ta,
--                struct omap_mpu_state_s *mpu, omap_clk fclk, omap_clk iclk)
+-struct omap_mcspi_s *omap_mcspi_init(struct omap_target_agent_s *ta, int chnum,
+-                qemu_irq irq, qemu_irq *drq, omap_clk fclk, omap_clk iclk)
 -{
--    struct omap_synctimer_s *s = g_malloc0(sizeof(*s));
+-    struct omap_mcspi_s *s = g_new0(struct omap_mcspi_s, 1);
+-    struct omap_mcspi_ch_s *ch = s->ch;
 -
--    omap_synctimer_reset(s);
--    memory_region_init_io(&s->iomem, NULL, &omap_synctimer_ops, s, "omap.synctimer",
+-    s->irq = irq;
+-    s->chnum = chnum;
+-    while (chnum --) {
+-        ch->txdrq = *drq ++;
+-        ch->rxdrq = *drq ++;
+-        ch ++;
+-    }
+-    omap_mcspi_reset(s);
+-
+-    memory_region_init_io(&s->iomem, NULL, &omap_mcspi_ops, s, "omap.mcspi",
 -                          omap_l4_region_size(ta, 0));
 -    omap_l4_attach(ta, 0, &s->iomem);
 -
 -    return s;
 -}
-diff --git a/hw/timer/meson.build b/hw/timer/meson.build
-index 73cb9541269..f5f9eed2d0a 100644
---- a/hw/timer/meson.build
-+++ b/hw/timer/meson.build
-@@ -21,7 +21,6 @@ system_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_gictimer.c'))
- system_ss.add(when: 'CONFIG_MSF2', if_true: files('mss-timer.c'))
- system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_timer.c'))
- system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_timer.c'))
--system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_synctimer.c'))
- system_ss.add(when: 'CONFIG_PXA2XX_TIMER', if_true: files('pxa2xx_timer.c'))
- system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_systmr.c'))
- system_ss.add(when: 'CONFIG_SH_TIMER', if_true: files('sh_timer.c'))
+-
+-void omap_mcspi_attach(struct omap_mcspi_s *s,
+-                uint32_t (*txrx)(void *opaque, uint32_t, int), void *opaque,
+-                int chipselect)
+-{
+-    if (chipselect < 0 || chipselect >= s->chnum)
+-        hw_error("%s: Bad chipselect %i\n", __func__, chipselect);
+-
+-    s->ch[chipselect].txrx = txrx;
+-    s->ch[chipselect].opaque = opaque;
+-}
+diff --git a/hw/ssi/meson.build b/hw/ssi/meson.build
+index b7ad7fca3b3..23cd425ab00 100644
+--- a/hw/ssi/meson.build
++++ b/hw/ssi/meson.build
+@@ -9,7 +9,6 @@ system_ss.add(when: 'CONFIG_XILINX_SPI', if_true: files('xilinx_spi.c'))
+ system_ss.add(when: 'CONFIG_XILINX_SPIPS', if_true: files('xilinx_spips.c'))
+ system_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal-ospi.c'))
+ system_ss.add(when: 'CONFIG_IMX', if_true: files('imx_spi.c'))
+-system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_spi.c'))
+ system_ss.add(when: 'CONFIG_IBEX', if_true: files('ibex_spi_host.c'))
+ system_ss.add(when: 'CONFIG_BCM2835_SPI', if_true: files('bcm2835_spi.c'))
+ system_ss.add(when: 'CONFIG_PNV_SPI', if_true: files('pnv_spi.c'))
 -- 
 2.34.1
 
