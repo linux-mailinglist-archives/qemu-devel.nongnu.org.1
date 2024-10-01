@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF69698C200
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 17:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C79FF98C2BA
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:13:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svf5P-0002fG-Co; Tue, 01 Oct 2024 11:46:51 -0400
+	id 1svfU7-0005ZC-Q5; Tue, 01 Oct 2024 12:12:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svf5M-0002eN-Tt
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:46:48 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1svfTe-0005Wo-Pe; Tue, 01 Oct 2024 12:11:56 -0400
+Received: from mail-qv1-xf2c.google.com ([2607:f8b0:4864:20::f2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svf5L-0007uL-Ca
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:46:48 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5c42e7adbddso8071002a12.2
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 08:46:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1svfTc-0003Ab-78; Tue, 01 Oct 2024 12:11:54 -0400
+Received: by mail-qv1-xf2c.google.com with SMTP id
+ 6a1803df08f44-6cb37b34a87so40816006d6.0; 
+ Tue, 01 Oct 2024 09:11:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727797606; x=1728402406; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727799110; x=1728403910; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2vIRPIva2oUSmXVkDJAitUMfHspseN0nhtWV3ZtInJI=;
- b=TIyZgARMZ2+sOf+mFMA24ySP4jTk1Cy9G4bgyJMtYEgxbiVosaC/MgBrlZt4/FfXab
- /yw7CnRypQPOuUCIUGdPM/FzQdzHl0RAekB9MGC2uMYdXO+qYs2dxw+w+qAdgXIhndfn
- 1eVSTCHgNufnzYNzlPxj17OBc+xZ0tFR4tbDXAOj+iyNTW7tI37PgBbf2HphN4lmwDo3
- AWHXMY/GGOx/O3xxgY9QyUj/XzmHe6jVWja1Sp0bJuAqLm6xxVdMMjcYkPE6mjcx9a2v
- WoSDVorZodXDqyVJ82g/59vXEbH6GN2D6Biat6Mn5bRNGCZ3kn7ABRMPGGeFfqowt6FO
- 3wAA==
+ bh=4W/uO5gFzop3Vn7VW7r+255Jx/9QDITdeNJGg8Y6eKA=;
+ b=J+HB8aCM2RqnW2vbJjroVgDlsKda2ttI8zKeng+5++G8Zf0wNxWAMyzIsKesk7DyIr
+ ErbrMGhEsf1NTQfruhZcNNkbLDxvG6GwowvHDWMVoPP6u0pqHiH4US2WM2KX0lLpAeAv
+ QUgiF86sNC0j68+qtXRlP37ILY5VkvCdVDUYGT+9BJh4iRCJxAzOnVL4XGEAGx7sdsFJ
+ 3eyNodPZ8dCNqLCUwtR6WtrGye/IYLhzLaoZjaUB/QCoEDTAYVgQ/RRe/97o7uTzMPuA
+ 9eH0dmUfuuXjo4u9ed2puGSQOJh8grJISsdVs9cIyFL3AvjopuzumYRaOZ/6WMJxiiFo
+ Dftw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727797606; x=1728402406;
+ d=1e100.net; s=20230601; t=1727799110; x=1728403910;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2vIRPIva2oUSmXVkDJAitUMfHspseN0nhtWV3ZtInJI=;
- b=OJGn1b15pcTq2zoQVpfasBx7nlrqFdeIHL13wB1QVX9U6E95VjRSfhjMFcQ4Erjr6R
- 2hKnlQLyPh1hmKxr2rzWGFU1c3xvTbiwgcbDjwGr7NtDRAppbtzJRyThVAH8v/TsTsjW
- CcuAbhNEA2AmYGcfeGpUgM7hrGom+y4tmuzjvT86dxBCMxFfbYzU0dK+eW0LF79idBII
- wZEHqzsLH1y87k31nycHhSxh3RJRpL2L3JRUAV+aoWRkrY6IZVlar5a47yyWG/QqomBN
- Bl1JsoETKMjbgVfvUGV/jutWliPKgnX1TXF0rVhEWxP6TZooFGWsJAjHZuFRtRSafySr
- E5IA==
+ bh=4W/uO5gFzop3Vn7VW7r+255Jx/9QDITdeNJGg8Y6eKA=;
+ b=l9O+WvwW83/XCbMI1PtogjJ3RjoZGQqY/qz56Fo/qCFKHrzDMCtoCRJIvjFNT4ydVR
+ Lc3+l2l3rKkp7uWJ2m8lY+lRW0oHtRsa+XP145hJz6yFoibk3Q5UhJYjPDeyW8HqP3sr
+ W3v/+IL6L0/Gh/5Poq8U0YguU4EvDBfNHl3dI3r0Hi0rv7SgdJQokL4NS+vY9DH3QQkR
+ jt5t6f0AHJ79xq77WtChSBMRMCa6i60QlhI7nxHy65Br9hB0L2NewNompx70kcV9Z2An
+ PzYlZAmacIHIdfMT2NpZ3uwMHdtHvoEAVmHNrpWuAB6OoIGdpUb04/8xp8N6zxKweKa8
+ m73w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX44ALWZhuSW2qp1I4/xe5JU97TS0P75mEy+KEfYlbjTex+vRNW7rXptoY6OPHBAyfVHqx15es++Ls/@nongnu.org
-X-Gm-Message-State: AOJu0YxLt26J0dN+ET5n+0bOmTxIwefYfrCh7m6ACTXnN1/ZSfsfkLS7
- rfDDzinR1R3E9L5sLexRoTxWAq/w8Qk6k9i4WxuxcLDQ2qb2LtcXCu5b8Ds9jvrQRyDBdyURWGp
- Rmj5XkOmhZeauS8igxuhksXOphF1Wgu97pn385roKaz3h/hl1
-X-Google-Smtp-Source: AGHT+IHx1dvDkULkqr3OvASf3DAivfY1X3hPeUXYXsnY7v5AqNJLeErjFcRQUyXtKXXaz4a7tHbz6MvgkYo8pp0Bp3M=
-X-Received: by 2002:a05:6402:358c:b0:5c8:9476:2bf with SMTP id
- 4fb4d7f45d1cf-5c8947603c9mr7622108a12.35.1727797605501; Tue, 01 Oct 2024
- 08:46:45 -0700 (PDT)
+ AJvYcCWi7qDG2lpDB/A8/aNVvdAMX/M8nclY6FFYYhlUOWzDz2LG4jlpLA6IlffhI8Y16r+mqn0O3UPd5S2N@nongnu.org
+X-Gm-Message-State: AOJu0YxCJGpSWpjQKhe6wBU2q/yTagBNofdBRd8HR6pmHPH/ojME99Ww
+ vKiej17v0A7ITSctjSKA4+ocQdNqk3meAAALBTxXaXcjSL3IJA1zpKWv9eDDmgDNcIuJdskXNVa
+ WjXZqOIwWjene+CnxTd20QQI73Tt6VA==
+X-Google-Smtp-Source: AGHT+IEpEsyewQ0afuqTTdtpQz9qrkWBgU9QYZcef+7U5vYkLHyOBUdq1L0IQA3KyAkl6UTHatv5Ri7K77h9Nm9V9SY=
+X-Received: by 2002:a05:6102:54a2:b0:49b:e7d7:3e1b with SMTP id
+ ada2fe7eead31-4a2cefe047cmr13081735137.3.1727763160902; Mon, 30 Sep 2024
+ 23:12:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20241001024334.834807-1-jamin_lin@aspeedtech.com>
- <SI2PR06MB5041260E63C468FB348E1F2BFC772@SI2PR06MB5041.apcprd06.prod.outlook.com>
- <8e725955-8696-4809-a23a-87e390cccb5e@kaod.org>
-In-Reply-To: <8e725955-8696-4809-a23a-87e390cccb5e@kaod.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 1 Oct 2024 16:46:34 +0100
-Message-ID: <CAFEAcA8cetzuXmwbTZFZC6fpBASwboiu2SSOznZ-GoFvQ6pfvg@mail.gmail.com>
-Subject: Re: [PATCH v7 0/8] Support GPIO for AST2700
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
- Steven Lee <steven_lee@aspeedtech.com>, 
- Troy Lee <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Joel Stanley <joel@jms.id.au>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
- "open list:All patches CC here" <qemu-devel@nongnu.org>,
- Troy Lee <troy_lee@aspeedtech.com>, 
- Yunlin Tang <yunlin.tang@aspeedtech.com>
+References: <20240927083508.59483-1-yanmingzhu@iscas.ac.cn>
+In-Reply-To: <20240927083508.59483-1-yanmingzhu@iscas.ac.cn>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 1 Oct 2024 16:12:14 +1000
+Message-ID: <CAKmqyKMobSzu-q8jdPhAU9PMG2GsGG1eOsemSS-Ny2vrX+wSbQ@mail.gmail.com>
+Subject: Re: [PATCH] hw/char/riscv_htif: Fix htif_mm_write that causes
+ infinite loop in ACT.
+To: MingZhu Yan <trdthg47@gmail.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ MingZhu Yan <yanmingzhu@iscas.ac.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2c;
+ envelope-from=alistair23@gmail.com; helo=mail-qv1-xf2c.google.com
+X-Spam_score_int: -2
+X-Spam_score: -0.3
+X-Spam_bar: /
+X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,34 +90,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 1 Oct 2024 at 12:56, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+On Fri, Sep 27, 2024 at 11:26=E2=80=AFPM MingZhu Yan <trdthg47@gmail.com> w=
+rote:
 >
-> On 10/1/24 11:43, Jamin Lin wrote:
-> > Hi all,
-> >
-> >> Subject: [PATCH v7 0/8] Support GPIO for AST2700
-> >>
-> >
-> > I don't know why I send this patch series failed to the following email=
- addresses and got the following errors.
-> > open list:All patches CC here <qemu-devel@nongnu.org>
-> > open list:ASPEED BMCs <qemu-arm@nongnu.org>
-> >
-> > 2024/10/1 =E4=B8=8A=E5=8D=88 06:43:04 - Server at nongnu.org (2001:470:=
-142:3::10) returned '451 4.4.397 Error communicating with target host. -> 4=
-21 4.2.1 Unable to connect ->
-> > SocketError: Failed to connect. Winsock error code: 10051, Win32 error =
-code: 10051'
-> >
-> > Do you encounter the same issue?
+> Applications sometimes only write the lower 32-bit payload bytes, this is=
+ used
+> in ACT tests. As a workaround, this refers to the solution of sail-riscv.
+
+I'm not sure what ACT is, but this feels like a guest bug, not a QEMU issue=
+.
+
+Alistair
+
+> if the payload is written a few times with the same value, we process the=
+ whole
+> htif command anyway.
 >
-> There seem to be an issue with the mailing list. I don't know what
-> though.
-
-The data centre hosting the GNU servers (including the mailing
-list server for nongnu.org lists) had an outage earlier, and
-everything was inaccessible. It should all be back up now, I think.
-
-thanks
--- PMM
+> Signed-off-by: MingZhu Yan <yanmingzhu@iscas.ac.cn>
+> ---
+>  hw/char/riscv_htif.c | 35 +++++++++++++++++++----------------
+>  1 file changed, 19 insertions(+), 16 deletions(-)
+>
+> diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c
+> index 9bef60def1..d74cce3bef 100644
+> --- a/hw/char/riscv_htif.c
+> +++ b/hw/char/riscv_htif.c
+> @@ -65,16 +65,8 @@ void htif_symbol_callback(const char *st_name, int st_=
+info, uint64_t st_value,
+>  {
+>      if (strcmp("fromhost", st_name) =3D=3D 0) {
+>          fromhost_addr =3D st_value;
+> -        if (st_size !=3D 8) {
+> -            error_report("HTIF fromhost must be 8 bytes");
+> -            exit(1);
+> -        }
+>      } else if (strcmp("tohost", st_name) =3D=3D 0) {
+>          tohost_addr =3D st_value;
+> -        if (st_size !=3D 8) {
+> -            error_report("HTIF tohost must be 8 bytes");
+> -            exit(1);
+> -        }
+>      } else if (strcmp("begin_signature", st_name) =3D=3D 0) {
+>          begin_sig_addr =3D st_value;
+>      } else if (strcmp("end_signature", st_name) =3D=3D 0) {
+> @@ -290,18 +282,26 @@ static void htif_mm_write(void *opaque, hwaddr addr=
+,
+>                            uint64_t value, unsigned size)
+>  {
+>      HTIFState *s =3D opaque;
+> -    if (addr =3D=3D TOHOST_OFFSET1) {
+> -        if (s->tohost =3D=3D 0x0) {
+> -            s->allow_tohost =3D 1;
+> -            s->tohost =3D value & 0xFFFFFFFF;
+> +    int htif_cmd_write =3D 0;
+> +    if (size =3D=3D 8 && addr =3D=3D TOHOST_OFFSET1) {
+> +        htif_cmd_write =3D 1;
+> +        s->tohost =3D value;
+> +        htif_handle_tohost_write(s, s->tohost);
+> +    } else if (size =3D=3D 4 && addr =3D=3D TOHOST_OFFSET1) {
+> +        if ((value) =3D=3D (s->tohost & 0xFFFF)) {
+> +            s->allow_tohost =3D s->allow_tohost + 1;
+>          } else {
+>              s->allow_tohost =3D 0;
+>          }
+> -    } else if (addr =3D=3D TOHOST_OFFSET2) {
+> -        if (s->allow_tohost) {
+> -            s->tohost |=3D value << 32;
+> -            htif_handle_tohost_write(s, s->tohost);
+> +        s->tohost =3D deposit64(s->tohost, 0, 32, value);
+> +    } else if (size =3D=3D 4 && addr =3D=3D TOHOST_OFFSET2) {
+> +        if ((value & 0xFF) =3D=3D (s->tohost & 0xFF00)) {
+> +            s->allow_tohost =3D s->allow_tohost + 1;
+> +        } else {
+> +            s->allow_tohost =3D 1;
+>          }
+> +        htif_cmd_write =3D 1;
+> +        s->tohost =3D deposit64(s->tohost, 32, 32, value);
+>      } else if (addr =3D=3D FROMHOST_OFFSET1) {
+>          s->fromhost_inprogress =3D 1;
+>          s->fromhost =3D value & 0xFFFFFFFF;
+> @@ -312,6 +312,9 @@ static void htif_mm_write(void *opaque, hwaddr addr,
+>          qemu_log("Invalid htif write: address %016" PRIx64 "\n",
+>              (uint64_t)addr);
+>      }
+> +    if ((s->tohost =3D=3D 1 && htif_cmd_write) || s->allow_tohost > 2) {
+> +        htif_handle_tohost_write(s, s->tohost);
+> +    }
+>  }
+>
+>  static const MemoryRegionOps htif_mm_ops =3D {
+> --
+> 2.34.1
+>
+>
 
