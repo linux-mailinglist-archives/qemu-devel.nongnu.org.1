@@ -2,84 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF8B98BF3A
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D9498C0A6
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:49:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdb8-0006DB-VC; Tue, 01 Oct 2024 10:11:32 -0400
+	id 1sveAo-00048n-31; Tue, 01 Oct 2024 10:48:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svdan-00060p-N4; Tue, 01 Oct 2024 10:11:10 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
+ id 1sveAM-0003CI-Qa; Tue, 01 Oct 2024 10:47:54 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svdak-0002ns-7U; Tue, 01 Oct 2024 10:11:09 -0400
-Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c1f:6401:0:640:7e6f:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id DF84760AC4;
- Tue,  1 Oct 2024 16:31:17 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:8026::1:2f] (unknown
- [2a02:6b8:b081:8026::1:2f])
- by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id CVads01XmCg0-vfo89jbp; Tue, 01 Oct 2024 16:31:17 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1727789477;
- bh=gQwCdZypdEm01RErLgxsYAknqghB+ZOck69x/rB4xtE=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=JJuxo+FrFt5W5ihr6sKBVDxTBChDBSnd/l85nQWSPtbEQD7W2AtO5j7EaVy3N7EpW
- W3WSH4AqeRwtye+cD29/XVPSsPl3Y0uo6enOhFvGOW3odCF0FQJ8+qZjUuwLsKxr31
- MPS+qFemwNAqffHGFpoGxhWrJm2uuu2le2UbffJA=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <3ad84f34-0eb1-4238-8acb-50730f8274a9@yandex-team.ru>
-Date: Tue, 1 Oct 2024 16:31:12 +0300
+ (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
+ id 1sveAK-0004a9-GH; Tue, 01 Oct 2024 10:47:54 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4917K5xD007351;
+ Tue, 1 Oct 2024 13:31:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+ :from:to:cc:subject:message-id:in-reply-to:references
+ :mime-version:content-type:content-transfer-encoding; s=pp1; bh=
+ wkwuqj3xo0sDlDS6NaBJ9C76OarCygB0435fFUMPiIg=; b=bl4KMKz0Tvagt7wc
+ 9166E9Wlg2G0RWN0R0S7yXDrNpaOoIYtQvHvRSvPuRLLejKB8VkKR0sx90NoDW8D
+ j7t588U4bLYmEsQ+W/Ff7knIexvEt5w/MNr4kYINSir/YqdAr0gVs3+40cEsgU0d
+ tbwD0dFtQ0BYxpMtLjDS7ibmGJhyPT/Kox0FVbB2HkNiDWPNen0Szhfpm93+dBqV
+ 9QyuleqgNuVre0rfSCRWyQtrTlwTNrN86oKUFHYD5+VouwemSunDamlD51oJPWwr
+ SbUUJxV1CiHYd9DdIJkrKa1+P5XszMw+113k5fyb6AChgC79U03s++PJynUTIE6X
+ oOB0mA==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 420ckj9wch-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2024 13:31:41 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 491DVeYg025888;
+ Tue, 1 Oct 2024 13:31:40 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 420ckj9wcc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2024 13:31:40 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 491CK4KV017852;
+ Tue, 1 Oct 2024 13:31:39 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41xw4mvmrc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2024 13:31:39 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 491DVZBP52822412
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Oct 2024 13:31:35 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 697A72004D;
+ Tue,  1 Oct 2024 13:31:35 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6C43520040;
+ Tue,  1 Oct 2024 13:31:34 +0000 (GMT)
+Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.179.3.72])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
+ Tue,  1 Oct 2024 13:31:34 +0000 (GMT)
+Date: Tue, 1 Oct 2024 15:31:32 +0200
+From: Halil Pasic <pasic@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>, Janosch Frank
+ <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Ilya Leoshkevich
+ <iii@linux.ibm.com>, "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck
+ <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
+Subject: Re: [PATCH v1 07/14] s390x/s390-hypercall: introduce DIAG500
+ STORAGE_LIMIT
+Message-ID: <20241001153132.08b0dca9.pasic@linux.ibm.com>
+In-Reply-To: <972044f1-62e4-4ac0-8b24-e0bb78770309@linux.ibm.com>
+References: <20240910175809.2135596-1-david@redhat.com>
+ <20240910175809.2135596-8-david@redhat.com>
+ <6636c963-228f-4bea-87c5-bd4f75521c75@redhat.com>
+ <20240927200525.5a90f172.pasic@linux.ibm.com>
+ <10165d22-c3e8-4db1-9874-8b63ca59afe9@linux.ibm.com>
+ <20240930145712.526a1c79.pasic@linux.ibm.com>
+ <972044f1-62e4-4ac0-8b24-e0bb78770309@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 16/22] target/loongarch: fix
- -Werror=maybe-uninitialized false-positive
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>, Fam Zheng <fam@euphon.net>,
- Song Gao <gaosong@loongson.cn>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, qemu-block@nongnu.org,
- Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Greg Kurz <groug@kaod.org>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
- Eric Blake <eblake@redhat.com>, Hyman Huang <yong.huang@smartx.com>,
- Kevin Wolf <kwolf@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, John Snow <jsnow@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Jesper Devantier <foss@defmacro.it>,
- Peter Xu <peterx@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Klaus Jensen <its@irrelevant.dk>, Keith Busch <kbusch@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Yuval Shaia <yuval.shaia.ml@gmail.com>,
- Bin Meng <bin.meng@windriver.com>
-References: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
- <20240930081458.1926382-17-marcandre.lureau@redhat.com>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20240930081458.1926382-17-marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 8bit
-X-Yandex-Filter: 1
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: YD0iDV6GFGEJoQVXxgep0y-yVGcVseEe
+X-Proofpoint-GUID: Pc_q931itZ8Div3LZoIGkwSqd3n1Xv4u
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-01_09,2024-09-30_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0
+ phishscore=0 adultscore=0 mlxlogscore=735 suspectscore=0 malwarescore=0
+ priorityscore=1501 lowpriorityscore=0 bulkscore=0 mlxscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2410010084
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=pasic@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,22 +127,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.09.24 11:14, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau<marcandre.lureau@redhat.com>
+On Tue, 1 Oct 2024 11:15:02 +0200
+Christian Borntraeger <borntraeger@linux.ibm.com> wrote:
+[..]
+> >> So 500+4 should probably not cause any harm apart from branch prediction
+> >> going wrong the first 2 or 3 notifies.
+> >>
+> >> 502 will make kvm_s390_handle_diag larger.  
+> > 
+> > What do you mean by this last paragraph?
+[..]
+
+> gcc has logic for switch statements that decide about branch table or
+> a chained compare+jump. I think due to spectre gcc now avoids indirect
+> branches as much as possible but still a larger switch statement might
+> kick the decision from inline compare/jump to a branch table.
 > 
-> ../target/loongarch/gdbstub.c:55:20: error: ‘val’ may be used uninitialized [-Werror=maybe-uninitialized]
->     55 |             return gdb_get_reg32(mem_buf, val);
->        |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> ../target/loongarch/gdbstub.c:39:18: note: ‘val’ was declared here
->     39 |         uint64_t val;
-> 
-> Signed-off-by: Marc-André Lureau<marcandre.lureau@redhat.com>
+> I am not worried in this particular case this was more or less a
+> "what could go wrong".
 
+Hm, you did state that "502 will make kvm_s390_handle_diag larger". I
+suppose now we agree that 502 would not make kvm_s390_handle_diag larger.
+Right?
 
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+I understood that you prefer 500+4 over 502 because the latter would
+make kvm_s390_handle_diag larger. Now that we have, I hope clarified,
+that 502 would not make the switch larger, do you still prefer 500+4?
 
--- 
-Best regards,
-Vladimir
+BTW your insights are very appreciated!
 
+Regards,
+Halil
 
