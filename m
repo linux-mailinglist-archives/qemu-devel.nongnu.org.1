@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CEA098C3B6
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA8998C3B4
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:44:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svfvB-0006fG-Jk; Tue, 01 Oct 2024 12:40:21 -0400
+	id 1svfwK-0001zw-Fe; Tue, 01 Oct 2024 12:41:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuk-0005gj-7X
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:56 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1svfuj-0005gg-Q1
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:55 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuc-00069m-N7
+ id 1svfuc-00069s-Qw
  for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:53 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-37ccd50faafso3715676f8f.3
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42cba6cdf32so50973915e9.1
  for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1727800785; x=1728405585; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aorc6XJkbAJ4kXWEeY1ru5peT3Lg4RYhf4yhAzIPL4U=;
- b=thByechgQ+EBt1JiXkpv/XpvZMg+83UJmFEolarWpt6G3xbA2RUxFCU1mxg+A13CvC
- tmuDTxd07dRJEAG7yjvX03poM9xoBwXP6C6A44aUQ2DqZvi6z46zgKzYf6QhET4u9O+Q
- 7m1WHgms0tOKllSeRiEGHTz6mWNjeHNbUa0rkDoIoEVtfAkbQgWGkkihlr7u65JBtu0h
- qK8eFMUf8xSaoT1uL0xoEQ3TvujvY2+XEz8HD9DgW22bCBUeDuHLo20nYUmEkzrtg5vg
- GXt+MzcNPMJGyZDrg7Bb6ZXo49EBXVTrRpjy9pIXGZ40IwG1/lgCccapJUCO92exQ4n1
- 0VYQ==
+ :reply-to; bh=MyQMYurSoVT4LraZt6ibHbKbByl9wat5HqHvkispgMQ=;
+ b=nijjoxqf3qqrm3VVpeD/cqYn9M9nIY2dXNs5XKCCqVzN0FBA+sx0e7AibRHO6sIw42
+ 5AlzM+uWIfv80Vs8eYeor1QHdodTaQi+rMBvbpcwfVM9SjTD+xS+2uxsITZgzotuKOnK
+ DBnhf7F8K0XxazqUUuctJ/CI6d3k7V5tAIWodWwTNFwnxhn/8mSjAMSCbWwiB7B63U96
+ RHZ3T6ioKlyvn58Gv/DCapTho1HSDK1gMNmm5bjJkjDfxa6SEw7pYcILQS8oHmyeOloo
+ 6qmUwkArD1q5+e9kPEbBcdxIrw/ZzKbJEorXGUAbpkyUpVP48WpB5/zu8teslNqmAz9H
+ sW1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1727800785; x=1728405585;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aorc6XJkbAJ4kXWEeY1ru5peT3Lg4RYhf4yhAzIPL4U=;
- b=n0JqtS6SInp8yk0zElKreDmqqE90MUMIIRnU+1jaa94X7i/FN/dBwQHk2o/NusvU3G
- XZvQ/V5YCxmTPQJ+SNPYvMbo5HyM6PnQuFbx8JFklmPvl2Ls6ju8sFtBqiohgnp/GG/1
- k9JO6a0SIslFXJcPJSjZJIMqrVPF+WtxqtocNA1VSRfk6z7A1PCmLarL7wejxoKjp5aW
- 748vey7nfKmrrh5cFIgsMBW09rKZflSoUgZmMI0Hv3+4aN+v7+vRxXYroKZYGM+SH8rU
- iHjHfh0LYE0hxd/r0ZnbqrfP9mMEtez/XUYMToNghJT2tsc7CL31DppXSNjhE2s/mOBq
- NH2g==
-X-Gm-Message-State: AOJu0YzepJ4ncpulKQdqt4fVfRHUr4Z77pEe3+pCz9aNaO4TwlXV5f5u
- tmkE3r4GKj5qn/ShU6GkCJMelFW9i+wngOE8CxGhm0rxs51DtUxgBIOlEzdFu0zVtkj1bYQ97Mv
- I
-X-Google-Smtp-Source: AGHT+IHOfaEnFLY28iZfK5sjigrI1DI56l7CGESYJyPmVVpsft6JgzaOdVN2sTZDpnlkRvrxqrB8ng==
-X-Received: by 2002:adf:f34f:0:b0:37c:d200:4fea with SMTP id
- ffacd0b85a97d-37cfb9d1efdmr143164f8f.34.1727800784749; 
- Tue, 01 Oct 2024 09:39:44 -0700 (PDT)
+ bh=MyQMYurSoVT4LraZt6ibHbKbByl9wat5HqHvkispgMQ=;
+ b=dtmwC+LmOe+4GStmUbCkDcjtjLKHu99CTewsYeAhPqOg6bX9qtBsRSu2yla23Vyr11
+ XYpmqw/qcj8Ohs0IQf5fIfRB+/VDbOLnB74/rjdn/3UXywM3HUjIhf/LZdzqGKnwM5Ds
+ Lsi/ATc24kpiIOzfqUIzOLNMoNm7Q5wr0zvu660QOCsOptGJ9aRAGQKbObEYYsPiS2DE
+ XIA/VDyDFinJDIVvir8KEwKZzR+YQPAjBB5Eqd1gWd872aLd1/byV0f3UPfuk0IBokx8
+ 4bMKETVdDQCT3dfngcMS/GXYOiHZAPZt9i+4MOoY8Z2pb8tHEKNkeObtjRsqH3QZgs8Q
+ kgiQ==
+X-Gm-Message-State: AOJu0YzIv30O8wkC0gKC/73YhnwT1jfSNmW9ZFjgfeDUfKcw/z7gl9An
+ UzJRS2aOd5vLqeojrTbixIzKB7R34DEfzXuR7KnZBs9sBh5se60HAd7LtiiNEfi5Zr9Ltntdf0H
+ v
+X-Google-Smtp-Source: AGHT+IFfmD0XvzsjqWUpixTLYeNsGuirSdTHgWBAepcmQSpDt9qmBYqUIAKFnv7ueU2R7b2ebXVDgA==
+X-Received: by 2002:a05:6000:1567:b0:37c:f933:48a9 with SMTP id
+ ffacd0b85a97d-37cfb8b530amr232174f8f.1.1727800785240; 
+ Tue, 01 Oct 2024 09:39:45 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 09:39:44 -0700 (PDT)
+ Tue, 01 Oct 2024 09:39:45 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 45/54] hw/misc: Remove omap_gpmc
-Date: Tue,  1 Oct 2024 17:39:09 +0100
-Message-Id: <20241001163918.1275441-46-peter.maydell@linaro.org>
+Subject: [PULL 46/54] hw/timer: Remove omap_gptimer
+Date: Tue,  1 Oct 2024 17:39:10 +0100
+Message-Id: <20241001163918.1275441-47-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241001163918.1275441-1-peter.maydell@linaro.org>
 References: <20241001163918.1275441-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,60 +92,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The omap_gpmc device is only in OMAP2, which we are removing.
+The omap_gptimer device is only in the OMAP2 SoC, which we
+are removing.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240903160751.4100218-44-peter.maydell@linaro.org
+Message-id: 20240903160751.4100218-45-peter.maydell@linaro.org
 ---
- include/hw/arm/omap.h |  11 -
- hw/misc/omap_gpmc.c   | 898 ------------------------------------------
- hw/misc/meson.build   |   1 -
- 3 files changed, 910 deletions(-)
- delete mode 100644 hw/misc/omap_gpmc.c
+ include/hw/arm/omap.h   |   8 -
+ hw/timer/omap_gptimer.c | 512 ----------------------------------------
+ hw/timer/meson.build    |   1 -
+ 3 files changed, 521 deletions(-)
+ delete mode 100644 hw/timer/omap_gptimer.c
 
 diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
-index dcd338c7c49..0cbbf2fecb5 100644
+index 0cbbf2fecb5..cced3d28605 100644
 --- a/include/hw/arm/omap.h
 +++ b/include/hw/arm/omap.h
-@@ -147,15 +147,6 @@ hwaddr omap_l4_region_base(struct omap_target_agent_s *ta,
- hwaddr omap_l4_region_size(struct omap_target_agent_s *ta,
-                                        int region);
+@@ -676,13 +676,6 @@ struct omap_dma_lcd_channel_s {
+ # define OMAP24XX_DMA_MS		63	/* Not in OMAP2420 */
+ # define OMAP24XX_DMA_EXT_DMAREQ5	64
  
--/* OMAP2 general purpose memory controller */
--struct omap_gpmc_s;
--struct omap_gpmc_s *omap_gpmc_init(struct omap_mpu_state_s *mpu,
--                                   hwaddr base,
--                                   qemu_irq irq, qemu_irq drq);
--void omap_gpmc_reset(struct omap_gpmc_s *s);
--void omap_gpmc_attach(struct omap_gpmc_s *s, int cs, MemoryRegion *iomem);
--void omap_gpmc_attach_nand(struct omap_gpmc_s *s, int cs, DeviceState *nand);
+-/* omap[123].c */
+-/* OMAP2 gp timer */
+-struct omap_gp_timer_s;
+-struct omap_gp_timer_s *omap_gp_timer_init(struct omap_target_agent_s *ta,
+-                qemu_irq irq, omap_clk fclk, omap_clk iclk);
+-void omap_gp_timer_reset(struct omap_gp_timer_s *s);
 -
- /*
-  * Common IRQ numbers for level 1 interrupt handler
-  * See /usr/include/asm-arm/arch-omap/irqs.h in Linux.
-@@ -948,8 +939,6 @@ struct omap_mpu_state_s {
-     struct omap_gp_timer_s *gptimer[12];
+ /* OMAP2 sysctimer */
+ struct omap_synctimer_s;
+ struct omap_synctimer_s *omap_synctimer_init(struct omap_target_agent_s *ta,
+@@ -936,7 +929,6 @@ struct omap_mpu_state_s {
+     /* OMAP2-only peripherals */
+     struct omap_l4_s *l4;
+ 
+-    struct omap_gp_timer_s *gptimer[12];
      struct omap_synctimer_s *synctimer;
  
--    struct omap_gpmc_s *gpmc;
--
      struct omap_mcspi_s *mcspi[2];
- 
-     struct omap_dss_s *dss;
-diff --git a/hw/misc/omap_gpmc.c b/hw/misc/omap_gpmc.c
+diff --git a/hw/timer/omap_gptimer.c b/hw/timer/omap_gptimer.c
 deleted file mode 100644
-index 67158eb1649..00000000000
---- a/hw/misc/omap_gpmc.c
+index 34e6af7aff5..00000000000
+--- a/hw/timer/omap_gptimer.c
 +++ /dev/null
-@@ -1,898 +0,0 @@
+@@ -1,512 +0,0 @@
 -/*
-- * TI OMAP general purpose memory controller emulation.
+- * TI OMAP2 general purpose timers emulation.
 - *
-- * Copyright (C) 2007-2009 Nokia Corporation
-- * Original code written by Andrzej Zaborowski <andrew@openedhand.com>
-- * Enhancements for OMAP3 and NAND support written by Juha Riihimäki
+- * Copyright (C) 2007-2008 Nokia Corporation
+- * Written by Andrzej Zaborowski <andrew@openedhand.com>
 - *
 - * This program is free software; you can redistribute it and/or
 - * modify it under the terms of the GNU General Public License as
@@ -163,893 +160,508 @@ index 67158eb1649..00000000000
 -
 -#include "qemu/osdep.h"
 -#include "hw/irq.h"
--#include "hw/block/flash.h"
+-#include "qemu/timer.h"
 -#include "hw/arm/omap.h"
--#include "exec/memory.h"
--#include "exec/address-spaces.h"
 -
--/* General-Purpose Memory Controller */
--struct omap_gpmc_s {
--    qemu_irq irq;
--    qemu_irq drq;
+-/* GP timers */
+-struct omap_gp_timer_s {
 -    MemoryRegion iomem;
--    int accept_256;
+-    qemu_irq irq;
+-    qemu_irq wkup;
+-    qemu_irq in;
+-    qemu_irq out;
+-    omap_clk clk;
+-    QEMUTimer *timer;
+-    QEMUTimer *match;
+-    struct omap_target_agent_s *ta;
 -
--    uint8_t revision;
--    uint8_t sysconfig;
--    uint16_t irqst;
--    uint16_t irqen;
--    uint16_t lastirq;
--    uint16_t timeout;
--    uint16_t config;
--    struct omap_gpmc_cs_file_s {
--        uint32_t config[7];
--        MemoryRegion *iomem;
--        MemoryRegion container;
--        MemoryRegion nandiomem;
--        DeviceState *dev;
--    } cs_file[8];
--    int ecc_cs;
--    int ecc_ptr;
--    uint32_t ecc_cfg;
--    ECCState ecc[9];
--    struct prefetch {
--        uint32_t config1; /* GPMC_PREFETCH_CONFIG1 */
--        uint32_t transfercount; /* GPMC_PREFETCH_CONFIG2:TRANSFERCOUNT */
--        int startengine; /* GPMC_PREFETCH_CONTROL:STARTENGINE */
--        int fifopointer; /* GPMC_PREFETCH_STATUS:FIFOPOINTER */
--        int count; /* GPMC_PREFETCH_STATUS:COUNTVALUE */
--        MemoryRegion iomem;
--        uint8_t fifo[64];
--    } prefetch;
+-    int in_val;
+-    int out_val;
+-    int64_t time;
+-    int64_t rate;
+-    int64_t ticks_per_sec;
+-
+-    int16_t config;
+-    int status;
+-    int it_ena;
+-    int wu_ena;
+-    int enable;
+-    int inout;
+-    int capt2;
+-    int pt;
+-    enum {
+-        gpt_trigger_none, gpt_trigger_overflow, gpt_trigger_both
+-    } trigger;
+-    enum {
+-        gpt_capture_none, gpt_capture_rising,
+-        gpt_capture_falling, gpt_capture_both
+-    } capture;
+-    int scpwm;
+-    int ce;
+-    int pre;
+-    int ptv;
+-    int ar;
+-    int st;
+-    int posted;
+-    uint32_t val;
+-    uint32_t load_val;
+-    uint32_t capture_val[2];
+-    uint32_t match_val;
+-    int capt_num;
+-
+-    uint16_t writeh;	/* LSB */
+-    uint16_t readh;	/* MSB */
 -};
 -
--#define OMAP_GPMC_8BIT 0
--#define OMAP_GPMC_16BIT 1
--#define OMAP_GPMC_NOR 0
--#define OMAP_GPMC_NAND 2
+-#define GPT_TCAR_IT	(1 << 2)
+-#define GPT_OVF_IT	(1 << 1)
+-#define GPT_MAT_IT	(1 << 0)
 -
--static int omap_gpmc_devtype(struct omap_gpmc_cs_file_s *f)
+-static inline void omap_gp_timer_intr(struct omap_gp_timer_s *timer, int it)
 -{
--    return (f->config[0] >> 10) & 3;
--}
+-    if (timer->it_ena & it) {
+-        if (!timer->status)
+-            qemu_irq_raise(timer->irq);
 -
--static int omap_gpmc_devsize(struct omap_gpmc_cs_file_s *f)
--{
--    /* devsize field is really 2 bits but we ignore the high
--     * bit to ensure consistent behaviour if the guest sets
--     * it (values 2 and 3 are reserved in the TRM)
--     */
--    return (f->config[0] >> 12) & 1;
--}
--
--/* Extract the chip-select value from the prefetch config1 register */
--static int prefetch_cs(uint32_t config1)
--{
--    return (config1 >> 24) & 7;
--}
--
--static int prefetch_threshold(uint32_t config1)
--{
--    return (config1 >> 8) & 0x7f;
--}
--
--static void omap_gpmc_int_update(struct omap_gpmc_s *s)
--{
--    /* The TRM is a bit unclear, but it seems to say that
--     * the TERMINALCOUNTSTATUS bit is set only on the
--     * transition when the prefetch engine goes from
--     * active to inactive, whereas the FIFOEVENTSTATUS
--     * bit is held high as long as the fifo has at
--     * least THRESHOLD bytes available.
--     * So we do the latter here, but TERMINALCOUNTSTATUS
--     * is set elsewhere.
--     */
--    if (s->prefetch.fifopointer >= prefetch_threshold(s->prefetch.config1)) {
--        s->irqst |= 1;
+-        timer->status |= it;
+-        /* Or are the status bits set even when masked?
+-         * i.e. is masking applied before or after the status register?  */
 -    }
--    if ((s->irqen & s->irqst) != s->lastirq) {
--        s->lastirq = s->irqen & s->irqst;
--        qemu_set_irq(s->irq, s->lastirq);
+-
+-    if (timer->wu_ena & it)
+-        qemu_irq_pulse(timer->wkup);
+-}
+-
+-static inline void omap_gp_timer_out(struct omap_gp_timer_s *timer, int level)
+-{
+-    if (!timer->inout && timer->out_val != level) {
+-        timer->out_val = level;
+-        qemu_set_irq(timer->out, level);
 -    }
 -}
 -
--static void omap_gpmc_dma_update(struct omap_gpmc_s *s, int value)
+-static inline uint32_t omap_gp_timer_read(struct omap_gp_timer_s *timer)
 -{
--    if (s->prefetch.config1 & 4) {
--        qemu_set_irq(s->drq, value);
+-    uint64_t distance;
+-
+-    if (timer->st && timer->rate) {
+-        distance = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) - timer->time;
+-        distance = muldiv64(distance, timer->rate, timer->ticks_per_sec);
+-
+-        if (distance >= 0xffffffff - timer->val)
+-            return 0xffffffff;
+-        else
+-            return timer->val + distance;
+-    } else
+-        return timer->val;
+-}
+-
+-static inline void omap_gp_timer_sync(struct omap_gp_timer_s *timer)
+-{
+-    if (timer->st) {
+-        timer->val = omap_gp_timer_read(timer);
+-        timer->time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
 -    }
 -}
 -
--/* Access functions for when a NAND-like device is mapped into memory:
-- * all addresses in the region behave like accesses to the relevant
-- * GPMC_NAND_DATA_i register (which is actually implemented to call these)
-- */
--static uint64_t omap_nand_read(void *opaque, hwaddr addr,
--                               unsigned size)
+-static inline void omap_gp_timer_update(struct omap_gp_timer_s *timer)
 -{
--    struct omap_gpmc_cs_file_s *f = opaque;
--    uint64_t v;
--    nand_setpins(f->dev, 0, 0, 0, 1, 0);
--    switch (omap_gpmc_devsize(f)) {
--    case OMAP_GPMC_8BIT:
--        v = nand_getio(f->dev);
--        if (size == 1) {
--            return v;
--        }
--        v |= (nand_getio(f->dev) << 8);
--        if (size == 2) {
--            return v;
--        }
--        v |= (nand_getio(f->dev) << 16);
--        v |= (nand_getio(f->dev) << 24);
--        return v;
--    case OMAP_GPMC_16BIT:
--        v = nand_getio(f->dev);
--        if (size == 1) {
--            /* 8 bit read from 16 bit device : probably a guest bug */
--            return v & 0xff;
--        }
--        if (size == 2) {
--            return v;
--        }
--        v |= (nand_getio(f->dev) << 16);
--        return v;
--    default:
--        abort();
--    }
--}
+-    int64_t expires, matches;
 -
--static void omap_nand_setio(DeviceState *dev, uint64_t value,
--                            int nandsize, int size)
--{
--    /* Write the specified value to the NAND device, respecting
--     * both size of the NAND device and size of the write access.
--     */
--    switch (nandsize) {
--    case OMAP_GPMC_8BIT:
--        switch (size) {
--        case 1:
--            nand_setio(dev, value & 0xff);
--            break;
--        case 2:
--            nand_setio(dev, value & 0xff);
--            nand_setio(dev, (value >> 8) & 0xff);
--            break;
--        case 4:
--        default:
--            nand_setio(dev, value & 0xff);
--            nand_setio(dev, (value >> 8) & 0xff);
--            nand_setio(dev, (value >> 16) & 0xff);
--            nand_setio(dev, (value >> 24) & 0xff);
--            break;
--        }
--        break;
--    case OMAP_GPMC_16BIT:
--        switch (size) {
--        case 1:
--            /* writing to a 16bit device with 8bit access is probably a guest
--             * bug; pass the value through anyway.
--             */
--        case 2:
--            nand_setio(dev, value & 0xffff);
--            break;
--        case 4:
--        default:
--            nand_setio(dev, value & 0xffff);
--            nand_setio(dev, (value >> 16) & 0xffff);
--            break;
--        }
--        break;
--    }
--}
+-    if (timer->st && timer->rate) {
+-        expires = muldiv64(0x100000000ll - timer->val,
+-                        timer->ticks_per_sec, timer->rate);
+-        timer_mod(timer->timer, timer->time + expires);
 -
--static void omap_nand_write(void *opaque, hwaddr addr,
--                            uint64_t value, unsigned size)
--{
--    struct omap_gpmc_cs_file_s *f = opaque;
--    nand_setpins(f->dev, 0, 0, 0, 1, 0);
--    omap_nand_setio(f->dev, value, omap_gpmc_devsize(f), size);
--}
--
--static const MemoryRegionOps omap_nand_ops = {
--    .read = omap_nand_read,
--    .write = omap_nand_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
--};
--
--static void fill_prefetch_fifo(struct omap_gpmc_s *s)
--{
--    /* Fill the prefetch FIFO by reading data from NAND.
--     * We do this synchronously, unlike the hardware which
--     * will do this asynchronously. We refill when the
--     * FIFO has THRESHOLD bytes free, and we always refill
--     * as much data as possible starting at the top end
--     * of the FIFO.
--     * (We have to refill at THRESHOLD rather than waiting
--     * for the FIFO to empty to allow for the case where
--     * the FIFO size isn't an exact multiple of THRESHOLD
--     * and we're doing DMA transfers.)
--     * This means we never need to handle wrap-around in
--     * the fifo-reading code, and the next byte of data
--     * to read is always fifo[63 - fifopointer].
--     */
--    int fptr;
--    int cs = prefetch_cs(s->prefetch.config1);
--    int is16bit = (((s->cs_file[cs].config[0] >> 12) & 3) != 0);
--    int bytes;
--    /* Don't believe the bit of the OMAP TRM that says that COUNTVALUE
--     * and TRANSFERCOUNT are in units of 16 bit words for 16 bit NAND.
--     * Instead believe the bit that says it is always a byte count.
--     */
--    bytes = 64 - s->prefetch.fifopointer;
--    if (bytes > s->prefetch.count) {
--        bytes = s->prefetch.count;
--    }
--    if (is16bit) {
--        bytes &= ~1;
--    }
--
--    s->prefetch.count -= bytes;
--    s->prefetch.fifopointer += bytes;
--    fptr = 64 - s->prefetch.fifopointer;
--    /* Move the existing data in the FIFO so it sits just
--     * before what we're about to read in
--     */
--    while (fptr < (64 - bytes)) {
--        s->prefetch.fifo[fptr] = s->prefetch.fifo[fptr + bytes];
--        fptr++;
--    }
--    while (fptr < 64) {
--        if (is16bit) {
--            uint32_t v = omap_nand_read(&s->cs_file[cs], 0, 2);
--            s->prefetch.fifo[fptr++] = v & 0xff;
--            s->prefetch.fifo[fptr++] = (v >> 8) & 0xff;
--        } else {
--            s->prefetch.fifo[fptr++] = omap_nand_read(&s->cs_file[cs], 0, 1);
--        }
--    }
--    if (s->prefetch.startengine && (s->prefetch.count == 0)) {
--        /* This was the final transfer: raise TERMINALCOUNTSTATUS */
--        s->irqst |= 2;
--        s->prefetch.startengine = 0;
--    }
--    /* If there are any bytes in the FIFO at this point then
--     * we must raise a DMA request (either this is a final part
--     * transfer, or we filled the FIFO in which case we certainly
--     * have THRESHOLD bytes available)
--     */
--    if (s->prefetch.fifopointer != 0) {
--        omap_gpmc_dma_update(s, 1);
--    }
--    omap_gpmc_int_update(s);
--}
--
--/* Access functions for a NAND-like device when the prefetch/postwrite
-- * engine is enabled -- all addresses in the region behave alike:
-- * data is read or written to the FIFO.
-- */
--static uint64_t omap_gpmc_prefetch_read(void *opaque, hwaddr addr,
--                                        unsigned size)
--{
--    struct omap_gpmc_s *s = opaque;
--    uint32_t data;
--    if (s->prefetch.config1 & 1) {
--        /* The TRM doesn't define the behaviour if you read from the
--         * FIFO when the prefetch engine is in write mode. We choose
--         * to always return zero.
--         */
--        return 0;
--    }
--    /* Note that trying to read an empty fifo repeats the last byte */
--    if (s->prefetch.fifopointer) {
--        s->prefetch.fifopointer--;
--    }
--    data = s->prefetch.fifo[63 - s->prefetch.fifopointer];
--    if (s->prefetch.fifopointer ==
--        (64 - prefetch_threshold(s->prefetch.config1))) {
--        /* We've drained THRESHOLD bytes now. So deassert the
--         * DMA request, then refill the FIFO (which will probably
--         * assert it again.)
--         */
--        omap_gpmc_dma_update(s, 0);
--        fill_prefetch_fifo(s);
--    }
--    omap_gpmc_int_update(s);
--    return data;
--}
--
--static void omap_gpmc_prefetch_write(void *opaque, hwaddr addr,
--                                     uint64_t value, unsigned size)
--{
--    struct omap_gpmc_s *s = opaque;
--    int cs = prefetch_cs(s->prefetch.config1);
--    if ((s->prefetch.config1 & 1) == 0) {
--        /* The TRM doesn't define the behaviour of writing to the
--         * FIFO when the prefetch engine is in read mode. We
--         * choose to ignore the write.
--         */
--        return;
--    }
--    if (s->prefetch.count == 0) {
--        /* The TRM doesn't define the behaviour of writing to the
--         * FIFO if the transfer is complete. We choose to ignore.
--         */
--        return;
--    }
--    /* The only reason we do any data buffering in postwrite
--     * mode is if we are talking to a 16 bit NAND device, in
--     * which case we need to buffer the first byte of the
--     * 16 bit word until the other byte arrives.
--     */
--    int is16bit = (((s->cs_file[cs].config[0] >> 12) & 3) != 0);
--    if (is16bit) {
--        /* fifopointer alternates between 64 (waiting for first
--         * byte of word) and 63 (waiting for second byte)
--         */
--        if (s->prefetch.fifopointer == 64) {
--            s->prefetch.fifo[0] = value;
--            s->prefetch.fifopointer--;
--        } else {
--            value = (value << 8) | s->prefetch.fifo[0];
--            omap_nand_write(&s->cs_file[cs], 0, value, 2);
--            s->prefetch.count--;
--            s->prefetch.fifopointer = 64;
--        }
+-        if (timer->ce && timer->match_val >= timer->val) {
+-            matches = muldiv64(timer->ticks_per_sec,
+-                               timer->match_val - timer->val, timer->rate);
+-            timer_mod(timer->match, timer->time + matches);
+-        } else
+-            timer_del(timer->match);
 -    } else {
--        /* Just write the byte : fifopointer remains 64 at all times */
--        omap_nand_write(&s->cs_file[cs], 0, value, 1);
--        s->prefetch.count--;
+-        timer_del(timer->timer);
+-        timer_del(timer->match);
+-        omap_gp_timer_out(timer, timer->scpwm);
 -    }
--    if (s->prefetch.count == 0) {
--        /* Final transfer: raise TERMINALCOUNTSTATUS */
--        s->irqst |= 2;
--        s->prefetch.startengine = 0;
--    }
--    omap_gpmc_int_update(s);
 -}
 -
--static const MemoryRegionOps omap_prefetch_ops = {
--    .read = omap_gpmc_prefetch_read,
--    .write = omap_gpmc_prefetch_write,
--    .endianness = DEVICE_NATIVE_ENDIAN,
--    .impl.min_access_size = 1,
--    .impl.max_access_size = 1,
--};
--
--static MemoryRegion *omap_gpmc_cs_memregion(struct omap_gpmc_s *s, int cs)
+-static inline void omap_gp_timer_trigger(struct omap_gp_timer_s *timer)
 -{
--    /* Return the MemoryRegion* to map/unmap for this chipselect */
--    struct omap_gpmc_cs_file_s *f = &s->cs_file[cs];
--    if (omap_gpmc_devtype(f) == OMAP_GPMC_NOR) {
--        return f->iomem;
--    }
--    if ((s->prefetch.config1 & 0x80) &&
--        (prefetch_cs(s->prefetch.config1) == cs)) {
--        /* The prefetch engine is enabled for this CS: map the FIFO */
--        return &s->prefetch.iomem;
--    }
--    return &f->nandiomem;
+-    if (timer->pt)
+-        /* TODO in overflow-and-match mode if the first event to
+-         * occur is the match, don't toggle.  */
+-        omap_gp_timer_out(timer, !timer->out_val);
+-    else
+-        /* TODO inverted pulse on timer->out_val == 1?  */
+-        qemu_irq_pulse(timer->out);
 -}
 -
--static void omap_gpmc_cs_map(struct omap_gpmc_s *s, int cs)
+-static void omap_gp_timer_tick(void *opaque)
 -{
--    struct omap_gpmc_cs_file_s *f = &s->cs_file[cs];
--    uint32_t mask = (f->config[6] >> 8) & 0xf;
--    uint32_t base = f->config[6] & 0x3f;
--    uint32_t size;
+-    struct omap_gp_timer_s *timer = opaque;
 -
--    if (!f->iomem && !f->dev) {
--        return;
+-    if (!timer->ar) {
+-        timer->st = 0;
+-        timer->val = 0;
+-    } else {
+-        timer->val = timer->load_val;
+-        timer->time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
 -    }
 -
--    if (!(f->config[6] & (1 << 6))) {
--        /* Do nothing unless CSVALID */
--        return;
--    }
+-    if (timer->trigger == gpt_trigger_overflow ||
+-                    timer->trigger == gpt_trigger_both)
+-        omap_gp_timer_trigger(timer);
 -
--    /* TODO: check for overlapping regions and report access errors */
--    if (mask != 0x8 && mask != 0xc && mask != 0xe && mask != 0xf
--         && !(s->accept_256 && !mask)) {
--        fprintf(stderr, "%s: invalid chip-select mask address (0x%x)\n",
--                 __func__, mask);
--    }
--
--    base <<= 24;
--    size = (0x0fffffff & ~(mask << 24)) + 1;
--    /* TODO: rather than setting the size of the mapping (which should be
--     * constant), the mask should cause wrapping of the address space, so
--     * that the same memory becomes accessible at every <i>size</i> bytes
--     * starting from <i>base</i>.  */
--    memory_region_init(&f->container, NULL, "omap-gpmc-file", size);
--    memory_region_add_subregion(&f->container, 0,
--                                omap_gpmc_cs_memregion(s, cs));
--    memory_region_add_subregion(get_system_memory(), base,
--                                &f->container);
+-    omap_gp_timer_intr(timer, GPT_OVF_IT);
+-    omap_gp_timer_update(timer);
 -}
 -
--static void omap_gpmc_cs_unmap(struct omap_gpmc_s *s, int cs)
+-static void omap_gp_timer_match(void *opaque)
 -{
--    struct omap_gpmc_cs_file_s *f = &s->cs_file[cs];
--    if (!(f->config[6] & (1 << 6))) {
--        /* Do nothing unless CSVALID */
--        return;
--    }
--    if (!f->iomem && !f->dev) {
--        return;
--    }
--    memory_region_del_subregion(get_system_memory(), &f->container);
--    memory_region_del_subregion(&f->container, omap_gpmc_cs_memregion(s, cs));
--    object_unparent(OBJECT(&f->container));
+-    struct omap_gp_timer_s *timer = opaque;
+-
+-    if (timer->trigger == gpt_trigger_both)
+-        omap_gp_timer_trigger(timer);
+-
+-    omap_gp_timer_intr(timer, GPT_MAT_IT);
 -}
 -
--void omap_gpmc_reset(struct omap_gpmc_s *s)
+-static void omap_gp_timer_input(void *opaque, int line, int on)
 -{
--    int i;
+-    struct omap_gp_timer_s *s = opaque;
+-    int trigger;
 -
--    s->sysconfig = 0;
--    s->irqst = 0;
--    s->irqen = 0;
--    omap_gpmc_int_update(s);
--    for (i = 0; i < 8; i++) {
--        /* This has to happen before we change any of the config
--         * used to determine which memory regions are mapped or unmapped.
--         */
--        omap_gpmc_cs_unmap(s, i);
+-    switch (s->capture) {
+-    default:
+-    case gpt_capture_none:
+-        trigger = 0;
+-        break;
+-    case gpt_capture_rising:
+-        trigger = !s->in_val && on;
+-        break;
+-    case gpt_capture_falling:
+-        trigger = s->in_val && !on;
+-        break;
+-    case gpt_capture_both:
+-        trigger = (s->in_val == !on);
+-        break;
 -    }
--    s->timeout = 0;
--    s->config = 0xa00;
--    s->prefetch.config1 = 0x00004000;
--    s->prefetch.transfercount = 0x00000000;
--    s->prefetch.startengine = 0;
--    s->prefetch.fifopointer = 0;
--    s->prefetch.count = 0;
--    for (i = 0; i < 8; i ++) {
--        s->cs_file[i].config[1] = 0x101001;
--        s->cs_file[i].config[2] = 0x020201;
--        s->cs_file[i].config[3] = 0x10031003;
--        s->cs_file[i].config[4] = 0x10f1111;
--        s->cs_file[i].config[5] = 0;
--        s->cs_file[i].config[6] = 0xf00;
--        /* In theory we could probe attached devices for some CFG1
--         * bits here, but we just retain them across resets as they
--         * were set initially by omap_gpmc_attach().
--         */
--        if (i == 0) {
--            s->cs_file[i].config[0] &= 0x00433e00;
--            s->cs_file[i].config[6] |= 1 << 6; /* CSVALID */
--            omap_gpmc_cs_map(s, i);
--        } else {
--            s->cs_file[i].config[0] &= 0x00403c00;
--        }
+-    s->in_val = on;
+-
+-    if (s->inout && trigger && s->capt_num < 2) {
+-        s->capture_val[s->capt_num] = omap_gp_timer_read(s);
+-
+-        if (s->capt2 == s->capt_num ++)
+-            omap_gp_timer_intr(s, GPT_TCAR_IT);
 -    }
--    s->ecc_cs = 0;
--    s->ecc_ptr = 0;
--    s->ecc_cfg = 0x3fcff000;
--    for (i = 0; i < 9; i ++)
--        ecc_reset(&s->ecc[i]);
 -}
 -
--static int gpmc_wordaccess_only(hwaddr addr)
+-static void omap_gp_timer_clk_update(void *opaque, int line, int on)
 -{
--    /* Return true if the register offset is to a register that
--     * only permits word width accesses.
--     * Non-word accesses are only OK for GPMC_NAND_DATA/ADDRESS/COMMAND
--     * for any chipselect.
--     */
--    if (addr >= 0x60 && addr <= 0x1d4) {
--        int cs = (addr - 0x60) / 0x30;
--        addr -= cs * 0x30;
--        if (addr >= 0x7c && addr < 0x88) {
--            /* GPMC_NAND_COMMAND, GPMC_NAND_ADDRESS, GPMC_NAND_DATA */
--            return 0;
--        }
--    }
--    return 1;
+-    struct omap_gp_timer_s *timer = opaque;
+-
+-    omap_gp_timer_sync(timer);
+-    timer->rate = on ? omap_clk_getrate(timer->clk) : 0;
+-    omap_gp_timer_update(timer);
 -}
 -
--static uint64_t omap_gpmc_read(void *opaque, hwaddr addr,
--                               unsigned size)
+-static void omap_gp_timer_clk_setup(struct omap_gp_timer_s *timer)
 -{
--    struct omap_gpmc_s *s = opaque;
--    int cs;
--    struct omap_gpmc_cs_file_s *f;
+-    omap_clk_adduser(timer->clk,
+-                     qemu_allocate_irq(omap_gp_timer_clk_update, timer, 0));
+-    timer->rate = omap_clk_getrate(timer->clk);
+-}
 -
--    if (size != 4 && gpmc_wordaccess_only(addr)) {
--        return omap_badwidth_read32(opaque, addr);
--    }
+-void omap_gp_timer_reset(struct omap_gp_timer_s *s)
+-{
+-    s->config = 0x000;
+-    s->status = 0;
+-    s->it_ena = 0;
+-    s->wu_ena = 0;
+-    s->inout = 0;
+-    s->capt2 = 0;
+-    s->capt_num = 0;
+-    s->pt = 0;
+-    s->trigger = gpt_trigger_none;
+-    s->capture = gpt_capture_none;
+-    s->scpwm = 0;
+-    s->ce = 0;
+-    s->pre = 0;
+-    s->ptv = 0;
+-    s->ar = 0;
+-    s->st = 0;
+-    s->posted = 1;
+-    s->val = 0x00000000;
+-    s->load_val = 0x00000000;
+-    s->capture_val[0] = 0x00000000;
+-    s->capture_val[1] = 0x00000000;
+-    s->match_val = 0x00000000;
+-    omap_gp_timer_update(s);
+-}
+-
+-static uint32_t omap_gp_timer_readw(void *opaque, hwaddr addr)
+-{
+-    struct omap_gp_timer_s *s = opaque;
 -
 -    switch (addr) {
--    case 0x000:	/* GPMC_REVISION */
--        return s->revision;
+-    case 0x00:	/* TIDR */
+-        return 0x21;
 -
--    case 0x010:	/* GPMC_SYSCONFIG */
--        return s->sysconfig;
--
--    case 0x014:	/* GPMC_SYSSTATUS */
--        return 1;						/* RESETDONE */
--
--    case 0x018:	/* GPMC_IRQSTATUS */
--        return s->irqst;
--
--    case 0x01c:	/* GPMC_IRQENABLE */
--        return s->irqen;
--
--    case 0x040:	/* GPMC_TIMEOUT_CONTROL */
--        return s->timeout;
--
--    case 0x044:	/* GPMC_ERR_ADDRESS */
--    case 0x048:	/* GPMC_ERR_TYPE */
--        return 0;
--
--    case 0x050:	/* GPMC_CONFIG */
+-    case 0x10:	/* TIOCP_CFG */
 -        return s->config;
 -
--    case 0x054:	/* GPMC_STATUS */
--        return 0x001;
+-    case 0x14:	/* TISTAT */
+-        /* ??? When's this bit reset? */
+-        return 1;						/* RESETDONE */
 -
--    case 0x060 ... 0x1d4:
--        cs = (addr - 0x060) / 0x30;
--        addr -= cs * 0x30;
--        f = s->cs_file + cs;
--        switch (addr) {
--        case 0x60:      /* GPMC_CONFIG1 */
--            return f->config[0];
--        case 0x64:      /* GPMC_CONFIG2 */
--            return f->config[1];
--        case 0x68:      /* GPMC_CONFIG3 */
--            return f->config[2];
--        case 0x6c:      /* GPMC_CONFIG4 */
--            return f->config[3];
--        case 0x70:      /* GPMC_CONFIG5 */
--            return f->config[4];
--        case 0x74:      /* GPMC_CONFIG6 */
--            return f->config[5];
--        case 0x78:      /* GPMC_CONFIG7 */
--            return f->config[6];
--        case 0x84 ... 0x87: /* GPMC_NAND_DATA */
--            if (omap_gpmc_devtype(f) == OMAP_GPMC_NAND) {
--                return omap_nand_read(f, 0, size);
--            }
--            return 0;
--        }
--        break;
+-    case 0x18:	/* TISR */
+-        return s->status;
 -
--    case 0x1e0:	/* GPMC_PREFETCH_CONFIG1 */
--        return s->prefetch.config1;
--    case 0x1e4:	/* GPMC_PREFETCH_CONFIG2 */
--        return s->prefetch.transfercount;
--    case 0x1ec:	/* GPMC_PREFETCH_CONTROL */
--        return s->prefetch.startengine;
--    case 0x1f0:	/* GPMC_PREFETCH_STATUS */
--        /* NB: The OMAP3 TRM is inconsistent about whether the GPMC
--         * FIFOTHRESHOLDSTATUS bit should be set when
--         * FIFOPOINTER > FIFOTHRESHOLD or when it is >= FIFOTHRESHOLD.
--         * Apparently the underlying functional spec from which the TRM was
--         * created states that the behaviour is ">=", and this also
--         * makes more conceptual sense.
--         */
--        return (s->prefetch.fifopointer << 24) |
--                ((s->prefetch.fifopointer >=
--                  ((s->prefetch.config1 >> 8) & 0x7f) ? 1 : 0) << 16) |
--                s->prefetch.count;
+-    case 0x1c:	/* TIER */
+-        return s->it_ena;
 -
--    case 0x1f4:	/* GPMC_ECC_CONFIG */
--        return s->ecc_cs;
--    case 0x1f8:	/* GPMC_ECC_CONTROL */
--        return s->ecc_ptr;
--    case 0x1fc:	/* GPMC_ECC_SIZE_CONFIG */
--        return s->ecc_cfg;
--    case 0x200 ... 0x220:	/* GPMC_ECC_RESULT */
--        cs = (addr & 0x1f) >> 2;
--        /* TODO: check correctness */
--        return
--                ((s->ecc[cs].cp    &  0x07) <<  0) |
--                ((s->ecc[cs].cp    &  0x38) << 13) |
--                ((s->ecc[cs].lp[0] & 0x1ff) <<  3) |
--                ((s->ecc[cs].lp[1] & 0x1ff) << 19);
+-    case 0x20:	/* TWER */
+-        return s->wu_ena;
 -
--    case 0x230:	/* GPMC_TESTMODE_CTRL */
--        return 0;
--    case 0x234:	/* GPMC_PSA_LSB */
--    case 0x238:	/* GPMC_PSA_MSB */
--        return 0x00000000;
+-    case 0x24:	/* TCLR */
+-        return (s->inout << 14) |
+-                (s->capt2 << 13) |
+-                (s->pt << 12) |
+-                (s->trigger << 10) |
+-                (s->capture << 8) |
+-                (s->scpwm << 7) |
+-                (s->ce << 6) |
+-                (s->pre << 5) |
+-                (s->ptv << 2) |
+-                (s->ar << 1) |
+-                (s->st << 0);
+-
+-    case 0x28:	/* TCRR */
+-        return omap_gp_timer_read(s);
+-
+-    case 0x2c:	/* TLDR */
+-        return s->load_val;
+-
+-    case 0x30:	/* TTGR */
+-        return 0xffffffff;
+-
+-    case 0x34:	/* TWPS */
+-        return 0x00000000;	/* No posted writes pending.  */
+-
+-    case 0x38:	/* TMAR */
+-        return s->match_val;
+-
+-    case 0x3c:	/* TCAR1 */
+-        return s->capture_val[0];
+-
+-    case 0x40:	/* TSICR */
+-        return s->posted << 2;
+-
+-    case 0x44:	/* TCAR2 */
+-        return s->capture_val[1];
 -    }
 -
 -    OMAP_BAD_REG(addr);
 -    return 0;
 -}
 -
--static void omap_gpmc_write(void *opaque, hwaddr addr,
--                            uint64_t value, unsigned size)
+-static uint32_t omap_gp_timer_readh(void *opaque, hwaddr addr)
 -{
--    struct omap_gpmc_s *s = opaque;
--    int cs;
--    struct omap_gpmc_cs_file_s *f;
+-    struct omap_gp_timer_s *s = opaque;
+-    uint32_t ret;
 -
--    if (size != 4 && gpmc_wordaccess_only(addr)) {
--        omap_badwidth_write32(opaque, addr, value);
--        return;
+-    if (addr & 2)
+-        return s->readh;
+-    else {
+-        ret = omap_gp_timer_readw(opaque, addr);
+-        s->readh = ret >> 16;
+-        return ret & 0xffff;
 -    }
+-}
+-
+-static void omap_gp_timer_write(void *opaque, hwaddr addr, uint32_t value)
+-{
+-    struct omap_gp_timer_s *s = opaque;
 -
 -    switch (addr) {
--    case 0x000:	/* GPMC_REVISION */
--    case 0x014:	/* GPMC_SYSSTATUS */
--    case 0x054:	/* GPMC_STATUS */
--    case 0x1f0:	/* GPMC_PREFETCH_STATUS */
--    case 0x200 ... 0x220:	/* GPMC_ECC_RESULT */
--    case 0x234:	/* GPMC_PSA_LSB */
--    case 0x238:	/* GPMC_PSA_MSB */
+-    case 0x00:	/* TIDR */
+-    case 0x14:	/* TISTAT */
+-    case 0x34:	/* TWPS */
+-    case 0x3c:	/* TCAR1 */
+-    case 0x44:	/* TCAR2 */
 -        OMAP_RO_REG(addr);
 -        break;
 -
--    case 0x010:	/* GPMC_SYSCONFIG */
--        if ((value >> 3) == 0x3)
--            fprintf(stderr, "%s: bad SDRAM idle mode %"PRIi64"\n",
--                            __func__, value >> 3);
--        if (value & 2)
--            omap_gpmc_reset(s);
--        s->sysconfig = value & 0x19;
+-    case 0x10:	/* TIOCP_CFG */
+-        s->config = value & 0x33d;
+-        if (((value >> 3) & 3) == 3)				/* IDLEMODE */
+-            fprintf(stderr, "%s: illegal IDLEMODE value in TIOCP_CFG\n",
+-                            __func__);
+-        if (value & 2)						/* SOFTRESET */
+-            omap_gp_timer_reset(s);
 -        break;
 -
--    case 0x018:	/* GPMC_IRQSTATUS */
--        s->irqst &= ~value;
--        omap_gpmc_int_update(s);
+-    case 0x18:	/* TISR */
+-        if (value & GPT_TCAR_IT)
+-            s->capt_num = 0;
+-        if (s->status && !(s->status &= ~value))
+-            qemu_irq_lower(s->irq);
 -        break;
 -
--    case 0x01c:	/* GPMC_IRQENABLE */
--        s->irqen = value & 0xf03;
--        omap_gpmc_int_update(s);
+-    case 0x1c:	/* TIER */
+-        s->it_ena = value & 7;
 -        break;
 -
--    case 0x040:	/* GPMC_TIMEOUT_CONTROL */
--        s->timeout = value & 0x1ff1;
+-    case 0x20:	/* TWER */
+-        s->wu_ena = value & 7;
 -        break;
 -
--    case 0x044:	/* GPMC_ERR_ADDRESS */
--    case 0x048:	/* GPMC_ERR_TYPE */
+-    case 0x24:	/* TCLR */
+-        omap_gp_timer_sync(s);
+-        s->inout = (value >> 14) & 1;
+-        s->capt2 = (value >> 13) & 1;
+-        s->pt = (value >> 12) & 1;
+-        s->trigger = (value >> 10) & 3;
+-        if (s->capture == gpt_capture_none &&
+-                        ((value >> 8) & 3) != gpt_capture_none)
+-            s->capt_num = 0;
+-        s->capture = (value >> 8) & 3;
+-        s->scpwm = (value >> 7) & 1;
+-        s->ce = (value >> 6) & 1;
+-        s->pre = (value >> 5) & 1;
+-        s->ptv = (value >> 2) & 7;
+-        s->ar = (value >> 1) & 1;
+-        s->st = (value >> 0) & 1;
+-        if (s->inout && s->trigger != gpt_trigger_none)
+-            fprintf(stderr, "%s: GP timer pin must be an output "
+-                            "for this trigger mode\n", __func__);
+-        if (!s->inout && s->capture != gpt_capture_none)
+-            fprintf(stderr, "%s: GP timer pin must be an input "
+-                            "for this capture mode\n", __func__);
+-        if (s->trigger == gpt_trigger_none)
+-            omap_gp_timer_out(s, s->scpwm);
+-        /* TODO: make sure this doesn't overflow 32-bits */
+-        s->ticks_per_sec = NANOSECONDS_PER_SECOND << (s->pre ? s->ptv + 1 : 0);
+-        omap_gp_timer_update(s);
 -        break;
 -
--    case 0x050:	/* GPMC_CONFIG */
--        s->config = value & 0xf13;
+-    case 0x28:	/* TCRR */
+-        s->time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-        s->val = value;
+-        omap_gp_timer_update(s);
 -        break;
 -
--    case 0x060 ... 0x1d4:
--        cs = (addr - 0x060) / 0x30;
--        addr -= cs * 0x30;
--        f = s->cs_file + cs;
--        switch (addr) {
--        case 0x60:      /* GPMC_CONFIG1 */
--            f->config[0] = value & 0xffef3e13;
--            break;
--        case 0x64:      /* GPMC_CONFIG2 */
--            f->config[1] = value & 0x001f1f8f;
--            break;
--        case 0x68:      /* GPMC_CONFIG3 */
--            f->config[2] = value & 0x001f1f8f;
--            break;
--        case 0x6c:      /* GPMC_CONFIG4 */
--            f->config[3] = value & 0x1f8f1f8f;
--            break;
--        case 0x70:      /* GPMC_CONFIG5 */
--            f->config[4] = value & 0x0f1f1f1f;
--            break;
--        case 0x74:      /* GPMC_CONFIG6 */
--            f->config[5] = value & 0x00000fcf;
--            break;
--        case 0x78:      /* GPMC_CONFIG7 */
--            if ((f->config[6] ^ value) & 0xf7f) {
--                omap_gpmc_cs_unmap(s, cs);
--                f->config[6] = value & 0x00000f7f;
--                omap_gpmc_cs_map(s, cs);
--            }
--            break;
--        case 0x7c ... 0x7f: /* GPMC_NAND_COMMAND */
--            if (omap_gpmc_devtype(f) == OMAP_GPMC_NAND) {
--                nand_setpins(f->dev, 1, 0, 0, 1, 0); /* CLE */
--                omap_nand_setio(f->dev, value, omap_gpmc_devsize(f), size);
--            }
--            break;
--        case 0x80 ... 0x83: /* GPMC_NAND_ADDRESS */
--            if (omap_gpmc_devtype(f) == OMAP_GPMC_NAND) {
--                nand_setpins(f->dev, 0, 1, 0, 1, 0); /* ALE */
--                omap_nand_setio(f->dev, value, omap_gpmc_devsize(f), size);
--            }
--            break;
--        case 0x84 ... 0x87: /* GPMC_NAND_DATA */
--            if (omap_gpmc_devtype(f) == OMAP_GPMC_NAND) {
--                omap_nand_write(f, 0, value, size);
--            }
--            break;
--        default:
--            goto bad_reg;
--        }
+-    case 0x2c:	/* TLDR */
+-        s->load_val = value;
 -        break;
 -
--    case 0x1e0:	/* GPMC_PREFETCH_CONFIG1 */
--        if (!s->prefetch.startengine) {
--            uint32_t newconfig1 = value & 0x7f8f7fbf;
--            uint32_t changed;
--            changed = newconfig1 ^ s->prefetch.config1;
--            if (changed & (0x80 | 0x7000000)) {
--                /* Turning the engine on or off, or mapping it somewhere else.
--                 * cs_map() and cs_unmap() check the prefetch config and
--                 * overall CSVALID bits, so it is sufficient to unmap-and-map
--                 * both the old cs and the new one. Note that we adhere to
--                 * the "unmap/change config/map" order (and not unmap twice
--                 * if newcs == oldcs), otherwise we'll try to delete the wrong
--                 * memory region.
--                 */
--                int oldcs = prefetch_cs(s->prefetch.config1);
--                int newcs = prefetch_cs(newconfig1);
--                omap_gpmc_cs_unmap(s, oldcs);
--                if (oldcs != newcs) {
--                    omap_gpmc_cs_unmap(s, newcs);
--                }
--                s->prefetch.config1 = newconfig1;
--                omap_gpmc_cs_map(s, oldcs);
--                if (oldcs != newcs) {
--                    omap_gpmc_cs_map(s, newcs);
--                }
--            } else {
--                s->prefetch.config1 = newconfig1;
--            }
--        }
+-    case 0x30:	/* TTGR */
+-        s->time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-        s->val = s->load_val;
+-        omap_gp_timer_update(s);
 -        break;
 -
--    case 0x1e4:	/* GPMC_PREFETCH_CONFIG2 */
--        if (!s->prefetch.startengine) {
--            s->prefetch.transfercount = value & 0x3fff;
--        }
+-    case 0x38:	/* TMAR */
+-        omap_gp_timer_sync(s);
+-        s->match_val = value;
+-        omap_gp_timer_update(s);
 -        break;
 -
--    case 0x1ec:	/* GPMC_PREFETCH_CONTROL */
--        if (s->prefetch.startengine != (value & 1)) {
--            s->prefetch.startengine = value & 1;
--            if (s->prefetch.startengine) {
--                /* Prefetch engine start */
--                s->prefetch.count = s->prefetch.transfercount;
--                if (s->prefetch.config1 & 1) {
--                    /* Write */
--                    s->prefetch.fifopointer = 64;
--                } else {
--                    /* Read */
--                    s->prefetch.fifopointer = 0;
--                    fill_prefetch_fifo(s);
--                }
--            } else {
--                /* Prefetch engine forcibly stopped. The TRM
--                 * doesn't define the behaviour if you do this.
--                 * We clear the prefetch count, which means that
--                 * we permit no more writes, and don't read any
--                 * more data from NAND. The CPU can still drain
--                 * the FIFO of unread data.
--                 */
--                s->prefetch.count = 0;
--            }
--            omap_gpmc_int_update(s);
--        }
--        break;
--
--    case 0x1f4:	/* GPMC_ECC_CONFIG */
--        s->ecc_cs = 0x8f;
--        break;
--    case 0x1f8:	/* GPMC_ECC_CONTROL */
--        if (value & (1 << 8))
--            for (cs = 0; cs < 9; cs ++)
--                ecc_reset(&s->ecc[cs]);
--        s->ecc_ptr = value & 0xf;
--        if (s->ecc_ptr == 0 || s->ecc_ptr > 9) {
--            s->ecc_ptr = 0;
--            s->ecc_cs &= ~1;
--        }
--        break;
--    case 0x1fc:	/* GPMC_ECC_SIZE_CONFIG */
--        s->ecc_cfg = value & 0x3fcff1ff;
--        break;
--    case 0x230:	/* GPMC_TESTMODE_CTRL */
--        if (value & 7)
--            fprintf(stderr, "%s: test mode enable attempt\n", __func__);
+-    case 0x40:	/* TSICR */
+-        s->posted = (value >> 2) & 1;
+-        if (value & 2)	/* How much exactly are we supposed to reset? */
+-            omap_gp_timer_reset(s);
 -        break;
 -
 -    default:
--    bad_reg:
 -        OMAP_BAD_REG(addr);
--        return;
 -    }
 -}
 -
--static const MemoryRegionOps omap_gpmc_ops = {
--    .read = omap_gpmc_read,
--    .write = omap_gpmc_write,
+-static void omap_gp_timer_writeh(void *opaque, hwaddr addr, uint32_t value)
+-{
+-    struct omap_gp_timer_s *s = opaque;
+-
+-    if (addr & 2)
+-        omap_gp_timer_write(opaque, addr, (value << 16) | s->writeh);
+-    else
+-        s->writeh = (uint16_t) value;
+-}
+-
+-static uint64_t omap_gp_timer_readfn(void *opaque, hwaddr addr,
+-                                     unsigned size)
+-{
+-    switch (size) {
+-    case 1:
+-        return omap_badwidth_read32(opaque, addr);
+-    case 2:
+-        return omap_gp_timer_readh(opaque, addr);
+-    case 4:
+-        return omap_gp_timer_readw(opaque, addr);
+-    default:
+-        g_assert_not_reached();
+-    }
+-}
+-
+-static void omap_gp_timer_writefn(void *opaque, hwaddr addr,
+-                                  uint64_t value, unsigned size)
+-{
+-    switch (size) {
+-    case 1:
+-        omap_badwidth_write32(opaque, addr, value);
+-        break;
+-    case 2:
+-        omap_gp_timer_writeh(opaque, addr, value);
+-        break;
+-    case 4:
+-        omap_gp_timer_write(opaque, addr, value);
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
+-}
+-
+-static const MemoryRegionOps omap_gp_timer_ops = {
+-    .read = omap_gp_timer_readfn,
+-    .write = omap_gp_timer_writefn,
+-    .valid.min_access_size = 1,
+-    .valid.max_access_size = 4,
 -    .endianness = DEVICE_NATIVE_ENDIAN,
 -};
 -
--struct omap_gpmc_s *omap_gpmc_init(struct omap_mpu_state_s *mpu,
--                                   hwaddr base,
--                                   qemu_irq irq, qemu_irq drq)
+-struct omap_gp_timer_s *omap_gp_timer_init(struct omap_target_agent_s *ta,
+-                qemu_irq irq, omap_clk fclk, omap_clk iclk)
 -{
--    int cs;
--    struct omap_gpmc_s *s = g_new0(struct omap_gpmc_s, 1);
+-    struct omap_gp_timer_s *s = g_new0(struct omap_gp_timer_s, 1);
 -
--    memory_region_init_io(&s->iomem, NULL, &omap_gpmc_ops, s, "omap-gpmc", 0x1000);
--    memory_region_add_subregion(get_system_memory(), base, &s->iomem);
--
+-    s->ta = ta;
 -    s->irq = irq;
--    s->drq = drq;
--    s->accept_256 = cpu_is_omap3630(mpu);
--    s->revision = cpu_class_omap3(mpu) ? 0x50 : 0x20;
--    s->lastirq = 0;
--    omap_gpmc_reset(s);
+-    s->clk = fclk;
+-    s->timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, omap_gp_timer_tick, s);
+-    s->match = timer_new_ns(QEMU_CLOCK_VIRTUAL, omap_gp_timer_match, s);
+-    s->in = qemu_allocate_irq(omap_gp_timer_input, s, 0);
+-    omap_gp_timer_reset(s);
+-    omap_gp_timer_clk_setup(s);
 -
--    /* We have to register a different IO memory handler for each
--     * chip select region in case a NAND device is mapped there. We
--     * make the region the worst-case size of 256MB and rely on the
--     * container memory region in cs_map to chop it down to the actual
--     * guest-requested size.
--     */
--    for (cs = 0; cs < 8; cs++) {
--        memory_region_init_io(&s->cs_file[cs].nandiomem, NULL,
--                              &omap_nand_ops,
--                              &s->cs_file[cs],
--                              "omap-nand",
--                              256 * 1024 * 1024);
--    }
+-    memory_region_init_io(&s->iomem, NULL, &omap_gp_timer_ops, s, "omap.gptimer",
+-                          omap_l4_region_size(ta, 0));
+-    omap_l4_attach(ta, 0, &s->iomem);
 -
--    memory_region_init_io(&s->prefetch.iomem, NULL, &omap_prefetch_ops, s,
--                          "omap-gpmc-prefetch", 256 * 1024 * 1024);
 -    return s;
 -}
--
--void omap_gpmc_attach(struct omap_gpmc_s *s, int cs, MemoryRegion *iomem)
--{
--    struct omap_gpmc_cs_file_s *f;
--    assert(iomem);
--
--    if (cs < 0 || cs >= 8) {
--        fprintf(stderr, "%s: bad chip-select %i\n", __func__, cs);
--        exit(-1);
--    }
--    f = &s->cs_file[cs];
--
--    omap_gpmc_cs_unmap(s, cs);
--    f->config[0] &= ~(0xf << 10);
--    f->iomem = iomem;
--    omap_gpmc_cs_map(s, cs);
--}
--
--void omap_gpmc_attach_nand(struct omap_gpmc_s *s, int cs, DeviceState *nand)
--{
--    struct omap_gpmc_cs_file_s *f;
--    assert(nand);
--
--    if (cs < 0 || cs >= 8) {
--        fprintf(stderr, "%s: bad chip-select %i\n", __func__, cs);
--        exit(-1);
--    }
--    f = &s->cs_file[cs];
--
--    omap_gpmc_cs_unmap(s, cs);
--    f->config[0] &= ~(0xf << 10);
--    f->config[0] |= (OMAP_GPMC_NAND << 10);
--    f->dev = nand;
--    if (nand_getbuswidth(f->dev) == 16) {
--        f->config[0] |= OMAP_GPMC_16BIT << 12;
--    }
--    omap_gpmc_cs_map(s, cs);
--}
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 7c9addbe68f..122084b1694 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -75,7 +75,6 @@ system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files(
- ))
- system_ss.add(when: 'CONFIG_OMAP', if_true: files(
-   'omap_clk.c',
--  'omap_gpmc.c',
-   'omap_l4.c',
-   'omap_tap.c',
- ))
+diff --git a/hw/timer/meson.build b/hw/timer/meson.build
+index c1113eb90b1..73cb9541269 100644
+--- a/hw/timer/meson.build
++++ b/hw/timer/meson.build
+@@ -21,7 +21,6 @@ system_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_gictimer.c'))
+ system_ss.add(when: 'CONFIG_MSF2', if_true: files('mss-timer.c'))
+ system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_timer.c'))
+ system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_timer.c'))
+-system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_gptimer.c'))
+ system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_synctimer.c'))
+ system_ss.add(when: 'CONFIG_PXA2XX_TIMER', if_true: files('pxa2xx_timer.c'))
+ system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_systmr.c'))
 -- 
 2.34.1
 
