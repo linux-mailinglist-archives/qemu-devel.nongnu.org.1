@@ -2,89 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C4598C15E
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 17:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFEC198C17D
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 17:23:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svean-0005rj-MH; Tue, 01 Oct 2024 11:15:13 -0400
+	id 1sveiH-0000vM-IF; Tue, 01 Oct 2024 11:22:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1sveaj-0005pC-Qe
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:15:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1sveah-000317-Gd
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:15:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727795706;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Z+DDLwciT2U9s6YaMw5ad3NppqiC8fN15Iiq9AYSzTQ=;
- b=a6ybsV6WBzMtvCVCbljUy9IuOy3oLkTwaGbaAbwnlLYhDTaSQ094EnRUXqWkUtAnPSnG9n
- 1S23fIU9Bc4bxg7XxTACT5xA4n2kd7lAMKA8n1BvbqHb5nkkLcrskx9HIYH62qjg9HB9XW
- 8MohYvUNROfjj0A6SY8WtJMbtjYBV0w=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-207-dmHBveO6NWi2hGNacavDvA-1; Tue, 01 Oct 2024 11:15:05 -0400
-X-MC-Unique: dmHBveO6NWi2hGNacavDvA-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a8711c48990so464977266b.2
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 08:15:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1sveiE-0000v0-TE; Tue, 01 Oct 2024 11:22:54 -0400
+Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1sveiD-0004Ga-87; Tue, 01 Oct 2024 11:22:54 -0400
+Received: by mail-qt1-x82e.google.com with SMTP id
+ d75a77b69052e-45830ff5b70so48667661cf.1; 
+ Tue, 01 Oct 2024 08:22:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1727796172; x=1728400972; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=5r+8l6d1yc4+rx/9n55Z20Fjh7fS7wMTmjiWQnu0O8Y=;
+ b=PKazP9x8akZ9b8zmhD3vvoysAADfBU3yLfirmRKFXlzGfp0E62/d59uEbA++tsyJpI
+ rqN2A92X8tSj293H4Ji+pulo4HTgpyUF4jvAECqi0YB06kK89KjlsHWAp90bLtYKmDI0
+ ayKChB+e+VzGzkQzYDF9HrreEgdm6VrGCMkq8Lpvp6oq1VQAkWJFk1/uld2DYf+eJeUQ
+ r7l5vtEwLgaYxJaL0vGX05BMR71cwJC4zGmAIPQ5B5EYYpZFHzUtDsmS2YlD3vdOTYBI
+ xxcOYFXUBWWFVcBjHZTB+IN/J2SZXDQ/ghyQemzsv4Cdy/mtfEdgCdSKTIllzDVG5U3V
+ yZRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727795704; x=1728400504;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Z+DDLwciT2U9s6YaMw5ad3NppqiC8fN15Iiq9AYSzTQ=;
- b=pgAOftfJFnZxKBy4S9/S9+aiCKw5jyzX3M1w3e72oRIsyxzdiA5ze4NJncu+UacDwp
- D8r+4sbk0Smh+9YRsjvlTIupP9+9LlgQXDrw+F35kcKX5va8V2hLZK0HSkdF/Hs5pUOY
- 1pjJGlLSfhywfQ0sUKzQEE/7c58U9xYkjjUcv7+JOFm3yYF9OAE84ldGHTK9V+bEZp+N
- ogloHIpJf/RKo212Hr03HdOe6OKBiB6HOH2cNypJYh6SnBuMM+BuwhMdlWvWQ5zGIOBF
- vqTgZpKGm/I8dJ1XIO8BG6d1oMoJPfX7gPLpq8uXf3VF6QcRJnHqU8MrMUxOxtBi6zRW
- dy9Q==
-X-Gm-Message-State: AOJu0YyYS50SvntzM39vDt+3UtGRHevnZjCCuR9xyDGJbC5MQYEK2GgK
- YjcDDQMFbuciNlGZF1lYH+8NJGN/Qaqp+kvAf4w/H0RLEQsWTMjTSv9K9UmtJSyuxqH2oHEwx5S
- t3yJLQ170QYS2j6q0VlmMZj73mIzEv2hSJ5ChgvuSDuKHKLbidGZNaw+GC+l+3Jtu8hXEdgg7DD
- oyMsuiOALBTJ6uB5+Y4x8k+WzK/0EWEuQS
-X-Received: by 2002:a17:907:74b:b0:a8a:53fb:d571 with SMTP id
- a640c23a62f3a-a93c48e8009mr1917857366b.11.1727795704152; 
- Tue, 01 Oct 2024 08:15:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE3AtHV0UP/RLGc9t6tkda11KoxmLU0QNbSKwZB2U4GzkdAXVsq7RFsI8zdkWXlTBkJ8rDq6A==
-X-Received: by 2002:a17:907:74b:b0:a8a:53fb:d571 with SMTP id
- a640c23a62f3a-a93c48e8009mr1917853766b.11.1727795703683; 
- Tue, 01 Oct 2024 08:15:03 -0700 (PDT)
-Received: from top.fritz.box (p4fdf9fd8.dip0.t-ipconnect.de. [79.223.159.216])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a93c2775d23sm732438166b.4.2024.10.01.08.15.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 08:15:03 -0700 (PDT)
-From: Michael Vogt <mvogt@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Michael Vogt <michael.vogt@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Michael Vogt <mvogt@redhat.com>
-Subject: [PATCH v9 2/2] linux-user: add strace support for openat2
-Date: Tue,  1 Oct 2024 17:14:54 +0200
-Message-ID: <f02d40c7751c03af885ced6dd94e4734d4be4d8f.1727795334.git.mvogt@redhat.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1727795334.git.mvogt@redhat.com>
-References: <cover.1727795334.git.mvogt@redhat.com>
+ d=1e100.net; s=20230601; t=1727796172; x=1728400972;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5r+8l6d1yc4+rx/9n55Z20Fjh7fS7wMTmjiWQnu0O8Y=;
+ b=WtNa0rEExj6R5LNdp1Yv0RATjmYYlsanizmrzbDobBsjB7QE3HJITCu8+rqnRasS63
+ 0zhTI+3TL7GIlBWk0sZbE22mwdRgkCkrnyixrhliYsxLI7txKUjWk55M95roj9GnNFVZ
+ A9TNOO7Jc8T5qQBnaybYiCiCBr7nlp/npu6ww/NqRRKpwkll5WjIekSpKHHcnSvUtqiP
+ /AyYdvUwWh0/5IkdtvvMqV9zzpMbH6R64w0EP4GZJ/fK0yJmSd37Wzv5J83dvbkjiV6e
+ 7Gb3d8dekLTVzzGT1zcBPKd6xaVCkBq7jmSB2ezQIDvnjojHr+TZDlmPlqYdKG0cmugZ
+ Kv0Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW5vWCThoi6X84rVnxs/jS8fddYfQHXORRTtfLvkXouN4UAIK78Ah9aayftuE3O2wLjlipitb6cjgxZ@nongnu.org
+X-Gm-Message-State: AOJu0YxJEQw1fnb/hJ1lLN7JWzl253lQ09fuJcBRXwrPIkLI95qvK+tT
+ t9QHKZW8ird3hLrpHcf0grNi3ic6+/SyNV1EDrZjshPxe6rEJL1xQRuJLya8zvW+eNJGctapRpO
+ cNypNTbczMMOEskAINhVjbu7vRM4=
+X-Google-Smtp-Source: AGHT+IF8SOPwZxnvk7risdSDQLSXO34a+DpJmuvtx0tpj3liJW3CDuI/JHTCqkyQXlLeiOgoSeXDDa3hM1UiqAIF+B8=
+X-Received: by 2002:a05:622a:d1:b0:458:34df:1e6a with SMTP id
+ d75a77b69052e-45c9f292b5bmr255834181cf.48.1727796171604; Tue, 01 Oct 2024
+ 08:22:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mvogt@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
+ <20240930081458.1926382-22-marcandre.lureau@redhat.com>
+ <c02e70b2-c76a-49ff-844d-3e8b66a4fe3b@yandex-team.ru>
+In-Reply-To: <c02e70b2-c76a-49ff-844d-3e8b66a4fe3b@yandex-team.ru>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 1 Oct 2024 19:22:40 +0400
+Message-ID: <CAJ+F1C+n3NJDmSP53o9p6qZvPnVzKv20rB0_U7vn+8JRq0Rc0A@mail.gmail.com>
+Subject: Re: [PATCH v3 21/22] qom/object: fix -Werror=maybe-uninitialized
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, 
+ Christian Schoenebeck <qemu_oss@crudebyte.com>, Fam Zheng <fam@euphon.net>,
+ Song Gao <gaosong@loongson.cn>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, 
+ qemu-block@nongnu.org, Laurent Vivier <laurent@vivier.eu>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Greg Kurz <groug@kaod.org>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Fabiano Rosas <farosas@suse.de>, 
+ Eric Blake <eblake@redhat.com>, Hyman Huang <yong.huang@smartx.com>,
+ Kevin Wolf <kwolf@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Jesper Devantier <foss@defmacro.it>, Peter Xu <peterx@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Klaus Jensen <its@irrelevant.dk>,
+ Keith Busch <kbusch@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, Bin Meng <bin.meng@windriver.com>
+Content-Type: multipart/alternative; boundary="0000000000000d8b4506236be51b"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82e;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,183 +109,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds support for the `openat2()` to `QEMU_STRACE`. It
-will use the `openat2.h` header if available to create user
-readable flags for the `resolve` argument but does not require
-the header otherwise.
+--0000000000000d8b4506236be51b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-It also makes `copy_struct_from_user()` available via `qemu.h`
-and `open_how_ver0` via `syscall_defs.h` so that strace.c can use
-them.
+Hi Vladimir
 
-Signed-off-by: Michael Vogt <mvogt@redhat.com>
----
- linux-user/qemu.h         |  9 ++++++++
- linux-user/strace.c       | 44 +++++++++++++++++++++++++++++++++++++++
- linux-user/strace.list    |  3 +++
- linux-user/syscall.c      |  8 +------
- linux-user/syscall_defs.h |  5 +++++
- meson.build               |  1 +
- 6 files changed, 63 insertions(+), 7 deletions(-)
+On Tue, Oct 1, 2024 at 6:06=E2=80=AFPM Vladimir Sementsov-Ogievskiy <
+vsementsov@yandex-team.ru> wrote:
 
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 2e90a97175..98ad848ab2 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -313,6 +313,15 @@ static inline bool access_ok(CPUState *cpu, int type,
- int copy_from_user(void *hptr, abi_ulong gaddr, ssize_t len);
- int copy_to_user(abi_ulong gaddr, void *hptr, ssize_t len);
- 
-+/*
-+ * copy_struct_from_user() copies a target struct to a host struct, in
-+ * a way that guarantees backwards-compatibility for struct syscall
-+ * arguments.
-+ *
-+ * Similar to kernels uaccess.h:copy_struct_from_user()
-+ */
-+int copy_struct_from_user(void *dst, size_t ksize, abi_ptr src, size_t usize);
-+
- /* Functions for accessing guest memory.  The tget and tput functions
-    read/write single values, byteswapping as necessary.  The lock_user function
-    gets a pointer to a contiguous area of guest memory, but does not perform
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index b4d1098170..350cb707e4 100644
---- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -13,6 +13,9 @@
- #include <linux/if_packet.h>
- #include <linux/in6.h>
- #include <linux/netlink.h>
-+#ifdef HAVE_OPENAT2_H
-+#include <linux/openat2.h>
-+#endif
- #include <sched.h>
- #include "qemu.h"
- #include "user-internals.h"
-@@ -1063,6 +1066,18 @@ UNUSED static const struct flags open_flags[] = {
-     FLAG_END,
- };
- 
-+UNUSED static const struct flags openat2_resolve_flags[] = {
-+#ifdef HAVE_OPENAT2_H
-+    FLAG_GENERIC(RESOLVE_NO_XDEV),
-+    FLAG_GENERIC(RESOLVE_NO_MAGICLINKS),
-+    FLAG_GENERIC(RESOLVE_NO_SYMLINKS),
-+    FLAG_GENERIC(RESOLVE_BENEATH),
-+    FLAG_GENERIC(RESOLVE_IN_ROOT),
-+    FLAG_GENERIC(RESOLVE_CACHED),
-+#endif
-+    FLAG_END,
-+};
-+
- UNUSED static const struct flags mount_flags[] = {
- #ifdef MS_BIND
-     FLAG_GENERIC(MS_BIND),
-@@ -3483,6 +3498,35 @@ print_openat(CPUArchState *cpu_env, const struct syscallname *name,
- }
- #endif
- 
-+#ifdef TARGET_NR_openat2
-+static void
-+print_openat2(CPUArchState *cpu_env, const struct syscallname *name,
-+              abi_long arg0, abi_long arg1, abi_long arg2,
-+              abi_long arg3, abi_long arg4, abi_long arg5)
-+{
-+    struct open_how_ver0 how = {0};
-+
-+    print_syscall_prologue(name);
-+    print_at_dirfd(arg0, 0);
-+    print_string(arg1, 0);
-+    if (copy_struct_from_user(&how, sizeof(how), arg2, arg3) == 0) {
-+        how.flags = tswap64(how.flags);
-+        how.mode = tswap64(how.mode);
-+        how.resolve = tswap64(how.resolve);
-+
-+        print_open_flags(how.flags, 0);
-+        if (how.flags & TARGET_O_CREAT) {
-+            print_file_mode(how.mode, 0);
-+        }
-+        print_flags(openat2_resolve_flags, how.resolve, 0);
-+    } else {
-+        print_pointer(arg2, 0);
-+    }
-+    print_raw_param(TARGET_ABI_FMT_lu, arg3, 1);
-+    print_syscall_epilogue(name);
-+}
-+#endif
-+
- #ifdef TARGET_NR_pidfd_send_signal
- static void
- print_pidfd_send_signal(CPUArchState *cpu_env, const struct syscallname *name,
-diff --git a/linux-user/strace.list b/linux-user/strace.list
-index dfd4237d14..ef658224fc 100644
---- a/linux-user/strace.list
-+++ b/linux-user/strace.list
-@@ -715,6 +715,9 @@
- #ifdef TARGET_NR_openat
- { TARGET_NR_openat, "openat" , NULL, print_openat, NULL },
- #endif
-+#ifdef TARGET_NR_openat2
-+{ TARGET_NR_openat2, "openat2" , NULL, print_openat2, NULL },
-+#endif
- #ifdef TARGET_NR_osf_adjtime
- { TARGET_NR_osf_adjtime, "osf_adjtime" , NULL, NULL, NULL },
- #endif
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 2febc3bc3f..1354e75694 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -608,8 +608,7 @@ static int check_zeroed_user(abi_long addr, size_t ksize, size_t usize)
-  *
-  * Similar to kernels uaccess.h:copy_struct_from_user()
-  */
--static int
--copy_struct_from_user(void *dst, size_t ksize, abi_ptr src, size_t usize)
-+int copy_struct_from_user(void *dst, size_t ksize, abi_ptr src, size_t usize)
+> On 30.09.24 11:14, marcandre.lureau@redhat.com wrote:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >
+> > object_resolve_path_type() didn't always set *ambiguousp.
+> >
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > ---
+> >   qom/object.c | 5 ++++-
+> >   1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/qom/object.c b/qom/object.c
+> > index 28c5b66eab..bdc8a2c666 100644
+> > --- a/qom/object.c
+> > +++ b/qom/object.c
+> > @@ -2201,6 +2201,9 @@ Object *object_resolve_path_type(const char *path=
+,
+> const char *typename,
+> >           }
+> >       } else {
+> >           obj =3D object_resolve_abs_path(object_get_root(), parts + 1,
+> typename);
+> > +        if (ambiguousp) {
+> > +            *ambiguousp =3D false;
+> > +        }
+>
+> Doesn't this hunk in isolation fix the issue? With this
+> object_resolve_path_type() should set the pointer on all paths if it is
+> non-null..
+>
+>
+
+
+> Hmm, called object_resolve_partial_path() also doesn't set ambiguous on
+> every path, so this hunk is at lease incomplete.
+>
+
+yeah, but object_resolve_path_type() initializes it.
+
+I'm unsure about what semantics expected around ambigous pointers, but it
+> seems to me that it is set only on failure paths, as a reason, why we
+> failed. If this is true, I think, we need only the second hunk, which
+> initializes local "ambig".
+>
+>
+right, and that seems good enough.
+
+Do you ack/rb this change then?
+
+
+    qom/object: fix -Werror=3Dmaybe-uninitialized
+
+    object_resolve_path_type() didn't always set *ambiguousp.
+
+    Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
+diff --git a/qom/object.c b/qom/object.c
+index 28c5b66eab..d3d3003541 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -2226,7 +2226,7 @@ Object *object_resolve_path_at(Object *parent, const
+char *path)
+
+ Object *object_resolve_type_unambiguous(const char *typename, Error **errp=
+)
  {
-     size_t size = MIN(ksize, usize);
-     size_t rest = MAX(ksize, usize) - size;
-@@ -682,11 +681,6 @@ safe_syscall3(ssize_t, write, int, fd, const void *, buff, size_t, count)
- safe_syscall4(int, openat, int, dirfd, const char *, pathname, \
-               int, flags, mode_t, mode)
- 
--struct open_how_ver0 {
--    __u64 flags;
--    __u64 mode;
--    __u64 resolve;
--};
- safe_syscall4(int, openat2, int, dirfd, const char *, pathname, \
-               const struct open_how_ver0 *, how, size_t, size)
- 
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index de5091c977..0ade83745e 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -2749,6 +2749,11 @@ struct target_sched_param {
- };
- 
- /* from kernel's include/uapi/linux/openat2.h */
-+struct open_how_ver0 {
-+    __u64 flags;
-+    __u64 mode;
-+    __u64 resolve;
-+};
- struct target_open_how_ver0 {
-     abi_ullong flags;
-     abi_ullong mode;
-diff --git a/meson.build b/meson.build
-index 10464466ff..77cb5c41d8 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2488,6 +2488,7 @@ config_host_data.set('CONFIG_LINUX_MAGIC_H', cc.has_header('linux/magic.h'))
- config_host_data.set('CONFIG_VALGRIND_H', cc.has_header('valgrind/valgrind.h'))
- config_host_data.set('HAVE_BTRFS_H', cc.has_header('linux/btrfs.h'))
- config_host_data.set('HAVE_DRM_H', cc.has_header('libdrm/drm.h'))
-+config_host_data.set('HAVE_OPENAT2_H', cc.has_header('linux/openat2.h'))
- config_host_data.set('HAVE_PTY_H', cc.has_header('pty.h'))
- config_host_data.set('HAVE_SYS_DISK_H', cc.has_header('sys/disk.h'))
- config_host_data.set('HAVE_SYS_IOCCOM_H', cc.has_header('sys/ioccom.h'))
--- 
-2.45.2
+-    bool ambig;
++    bool ambig =3D false;
+     Object *o =3D object_resolve_path_type("", typename, &ambig);
 
+     if (ambig) {
+
+
+thanks!
+
+
+> >       }
+> >
+> >       g_strfreev(parts);
+> > @@ -2226,7 +2229,7 @@ Object *object_resolve_path_at(Object *parent,
+> const char *path)
+> >
+> >   Object *object_resolve_type_unambiguous(const char *typename, Error
+> **errp)
+> >   {
+> > -    bool ambig;
+> > +    bool ambig =3D false;
+> >       Object *o =3D object_resolve_path_type("", typename, &ambig);
+> >
+> >       if (ambig) {
+>
+> --
+> Best regards,
+> Vladimir
+>
+>
+>
+
+--=20
+Marc-Andr=C3=A9 Lureau
+
+--0000000000000d8b4506236be51b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi Vladimir<br></div><br><div><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Oct 1, 2024 =
+at 6:06=E2=80=AFPM Vladimir Sementsov-Ogievskiy &lt;<a href=3D"mailto:vseme=
+ntsov@yandex-team.ru" target=3D"_blank">vsementsov@yandex-team.ru</a>&gt; w=
+rote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
+x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On 30.09.2=
+4 11:14, <a href=3D"mailto:marcandre.lureau@redhat.com" target=3D"_blank">m=
+arcandre.lureau@redhat.com</a> wrote:<br>
+&gt; From: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@re=
+dhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
+&gt; <br>
+&gt; object_resolve_path_type() didn&#39;t always set *ambiguousp.<br>
+&gt; <br>
+&gt; Signed-off-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.=
+lureau@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br=
+>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0qom/object.c | 5 ++++-<br>
+&gt;=C2=A0 =C2=A01 file changed, 4 insertions(+), 1 deletion(-)<br>
+&gt; <br>
+&gt; diff --git a/qom/object.c b/qom/object.c<br>
+&gt; index 28c5b66eab..bdc8a2c666 100644<br>
+&gt; --- a/qom/object.c<br>
+&gt; +++ b/qom/object.c<br>
+&gt; @@ -2201,6 +2201,9 @@ Object *object_resolve_path_type(const char *pat=
+h, const char *typename,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0} else {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0obj =3D object_resolve_abs_pat=
+h(object_get_root(), parts + 1, typename);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ambiguousp) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 *ambiguousp =3D false;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+<br>
+Doesn&#39;t this hunk in isolation fix the issue? With this object_resolve_=
+path_type() should set the pointer on all paths if it is non-null..<br>
+<br></blockquote><div><br></div><div>=C2=A0<br></div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex">
+Hmm, called object_resolve_partial_path() also doesn&#39;t set ambiguous on=
+ every path, so this hunk is at lease incomplete.<br></blockquote><div><br>=
+</div><div>yeah, but object_resolve_path_type() initializes it.</div><div><=
+br> </div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
+ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+I&#39;m unsure about what semantics expected around ambigous pointers, but =
+it seems to me that it is set only on failure paths, as a reason, why we fa=
+iled. If this is true, I think, we need only the second hunk, which initial=
+izes local &quot;ambig&quot;.<br>
+<br></blockquote><div><br></div><div>right, and that seems good enough.</di=
+v><div><br></div><div>Do you ack/rb this change then?<br></div><div><br></d=
+iv><div><br>=C2=A0 =C2=A0 qom/object: fix -Werror=3Dmaybe-uninitialized<br>=
+=C2=A0 =C2=A0 <br>=C2=A0 =C2=A0 object_resolve_path_type() didn&#39;t alway=
+s set *ambiguousp.<br>=C2=A0 =C2=A0 <br>=C2=A0 =C2=A0 Signed-off-by: Marc-A=
+ndr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.com">marcand=
+re.lureau@redhat.com</a>&gt;<br><br>diff --git a/qom/object.c b/qom/object.=
+c<br>index 28c5b66eab..d3d3003541 100644<br>--- a/qom/object.c<br>+++ b/qom=
+/object.c<br>@@ -2226,7 +2226,7 @@ Object *object_resolve_path_at(Object *p=
+arent, const char *path)<br>=C2=A0<br>=C2=A0Object *object_resolve_type_una=
+mbiguous(const char *typename, Error **errp)<br>=C2=A0{<br>- =C2=A0 =C2=A0b=
+ool ambig;<br>+ =C2=A0 =C2=A0bool ambig =3D false;<br>=C2=A0 =C2=A0 =C2=A0O=
+bject *o =3D object_resolve_path_type(&quot;&quot;, typename, &amp;ambig);<=
+br>=C2=A0<br>=C2=A0 =C2=A0 =C2=A0if (ambig) {</div><div><br></div><div><br>=
+</div><div>thanks!<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0g_strfreev(parts);<br>
+&gt; @@ -2226,7 +2229,7 @@ Object *object_resolve_path_at(Object *parent, c=
+onst char *path)<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0Object *object_resolve_type_unambiguous(const char *typena=
+me, Error **errp)<br>
+&gt;=C2=A0 =C2=A0{<br>
+&gt; -=C2=A0 =C2=A0 bool ambig;<br>
+&gt; +=C2=A0 =C2=A0 bool ambig =3D false;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0Object *o =3D object_resolve_path_type(&quot=
+;&quot;, typename, &amp;ambig);<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (ambig) {<br>
+<br>
+-- <br>
+Best regards,<br>
+Vladimir<br>
+<br>
+<br>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
+=A9 Lureau<br></div></div></div>
+
+--0000000000000d8b4506236be51b--
 
