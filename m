@@ -2,83 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B029198C0BB
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE3198C220
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:03:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sveDo-0003G2-40; Tue, 01 Oct 2024 10:51:29 -0400
+	id 1svfKR-00085J-2l; Tue, 01 Oct 2024 12:02:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sveDX-0002rp-MK
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:51:12 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sveDT-0005YR-Su
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:51:09 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-42cb1e623d1so52264095e9.0
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 07:51:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727794266; x=1728399066; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=T1NDpBhJvX7cA4nuu6OkQSIHt4wMJgEGOAOYgzp3VUY=;
- b=D5RCZlp6UMflUvwBJvD7Zz6KGdgIs/6xC26eVGwcSB6LlUhO0uyNK5EJKmZeZCs964
- DXRY0m2TFyLYhMPUDkYzwp0rVuKdBiIBcl+u2rplphAe6PAQygnDlLrxMUNzhqTjg+0P
- SI1RtsyCNUCINMDcbP5S3RKUXMB5lCJ+MB4dun8thxNZr0oLQw+lbC+m2l/IZjXI5E+H
- IoaJEWeniMBarJT4aDQqRnAgV6+K19YM5SzctUicXsPzuvZGA2ejlgvxG9j+tBMB486t
- blRvr7k60QatcAVQPiJmugTs5BSO4jBgPe0PHlP8nCbPiREwSzsSnoeb+osgKIQtEJpK
- cF9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727794266; x=1728399066;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=T1NDpBhJvX7cA4nuu6OkQSIHt4wMJgEGOAOYgzp3VUY=;
- b=WxQv8FzngyTN/ngMvm2fJD+7h7xMRmHoU9yYhO0Go7naILmNimnDJ+ik740SN0yEeE
- o8imqmky2ZyPfvmZraUbK7t/y6ZBNlMUKuVhyO1jtukdVaffPM5n57a7rU2HF0ANlhsG
- 51oeA1aig0EIkvjiJEQfjGs5S0Sg5+NiSzfs3VLjEtz873hrC8ikbbt8V87vjucQ7kga
- cZJnS4dx/VZuiq5WJAQSiCVbp4s7kbCDCEoLGtEv8XzUtqOatdiA61phz+JpZKR/hV8U
- SKH5FaS0EsbKD2GxI9OuEHszAzOnh72h0T8PcN6L+drkxv9KfHgapJAAG3MlCTd1dxzh
- QppA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWIsADwb496Gr01ljEA0grAqY33VX6rOf0rPbvmALaSqePS9d7AkUcJIZcYftg4k1BEyqfUk4GBo6iw@nongnu.org
-X-Gm-Message-State: AOJu0Yw8BaHc+NEUN5w+A7cXGWJp1jYa261/6jg1+BQVdrMNWQAuEEoF
- +eXNIOrcJDTKOAQhhpkxQMVQq2dEowoc24uheogaEt3bRzPBaoVdfY1SYf/HbB6UIBY3YVy7uLj
- yifDKaQ6hXD8UH7wlERB/55VG5rsm8W7s7Zybs9Z6e6Uh14Gs
-X-Google-Smtp-Source: AGHT+IFyetdaICrfhgiWyGSW6h8+lWdURpRvGAVU800RNgK2W5F+XbB901R7+QPGm21SQQ8OJJ+e75SCdKzBsJ5SE0c=
-X-Received: by 2002:a05:6402:1ec3:b0:5c7:229a:b49d with SMTP id
- 4fb4d7f45d1cf-5c88262bf4cmr12144866a12.30.1727774677751; Tue, 01 Oct 2024
- 02:24:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1svfJk-0007qU-TC
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:01:44 -0400
+Received: from mout.kundenserver.de ([212.227.126.134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1svfJf-0001ec-QP
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:01:39 -0400
+Received: from [192.168.100.1] ([82.64.211.94]) by mrelayeu.kundenserver.de
+ (mreue009 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1MbAYi-1sK1Nf3nSK-00jEfO; Tue, 01 Oct 2024 11:24:39 +0200
+Message-ID: <80db56c6-9c82-450a-a09b-b5c5d8e32892@vivier.eu>
+Date: Tue, 1 Oct 2024 11:24:37 +0200
 MIME-Version: 1.0
-References: <20240919215525.22398-1-strahinja.p.jankovic@gmail.com>
- <CAFEAcA_RkwPgTksJCEP4=V0WY0wp0OiYP28PzXDJKRvpi_KWvw@mail.gmail.com>
- <CABtshVSsXPoMQy1EZaq2veo-80UMrUX+cqkvh5wq6cujW60s7A@mail.gmail.com>
-In-Reply-To: <CABtshVSsXPoMQy1EZaq2veo-80UMrUX+cqkvh5wq6cujW60s7A@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 1 Oct 2024 10:24:26 +0100
-Message-ID: <CAFEAcA89cd3zNE3sC_+tSKo51S9V=COoGnqC-Ce37W6c4et_mg@mail.gmail.com>
-Subject: Re: [PATCH] {hw/ssi,docs/system/arm}: Allwinner A10 SPI emulation
-To: Strahinja Jankovic <strahinjapjankovic@gmail.com>
-Cc: Beniamino Galvani <b.galvani@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Alistair Francis <alistair@alistair23.me>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/2] linux-user: add openat2 support in linux-user
+To: Michael Vogt <mvogt@redhat.com>, qemu-devel@nongnu.org
+Cc: Michael Vogt <michael.vogt@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <cover.1727715697.git.mvogt@redhat.com>
+ <1c2c8c9db3731ed4c6fd9b10c63637c3e4caf8f5.1727715697.git.mvogt@redhat.com>
+Content-Language: fr
+From: Laurent Vivier <laurent@vivier.eu>
+Autocrypt: addr=laurent@vivier.eu; keydata=
+ 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
+In-Reply-To: <1c2c8c9db3731ed4c6fd9b10c63637c3e4caf8f5.1727715697.git.mvogt@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:3ZyGNvQsfvhZAyOmIZik/7NcL+k3t4DCBzzWJ1eFXIz/xzcOjJA
+ vjewqOfnumXuht54rSGqLp369ZUA/J8i9YgZZB1ag8WrGmmL9teXCRa8ds7u7/sIcCJuNbv
+ FbbWI+xmX3Kdzie8yAtvFbofaXvhyOLXb2wXPdNyvc8+pru3pKU8CH9YnQHDvwiyhBnYtSG
+ Rjpr5ajPvChNDpu5JREmg==
+UI-OutboundReport: notjunk:1;M01:P0:4p9AEAy3kMU=;ocbfCNXOiklOrUosHzkSMUVEMtR
+ Kv+ARSoVTF10HJPcRz3/DPJbgYCU2hkn3Lp5IJN3cM/X2VmahgBWvB3xC4lV2PEgROzXBoh0M
+ 4OdPwyFV7XmzrXoPliJ+/3WcMeRMI9lEHw6JIk9E4yoAcmgmRZnRse5VvEo76jIggSygyepb8
+ rrKMTyzwjzufuTHi0I6TYRnmYNRgbk7UEM6Yki/NPB08qATPFdqKkwVxRojlv9ss0c2gmNhU3
+ r71RsXbU81BU5a114GnQlI5xwRMupINTfKRn8x89WewpXhntEs8mBr/Kn9HUtEy0+S9Hr7QjU
+ Gk+3XOzC/93/M/k9PGAu9Ps9VSoljPYx+2SsWXjnwnHA3JWDaMWaIUkYwogLqe7B8PGv3gu8+
+ o47mNTl0GxBFeU+MjRqVljqZu+J0n/CGWzlXpqzpgB5j6Vv4HGq5oYvwDrGvV3iA6ByIp9pvE
+ 1sDy9PfkjxrSqC8/i4lgg90q3DB1SK4sY8MuLAZ617hcVM3nrz1LoAMY/SnpsmxzXtR3oZCQj
+ zbGW5TWfrq69S/qTs9g3tEcPOCfu+AFg/v7IYEZ6vdKUd6S2UQ7guEF8qUAzij4gnvGRN9Uw1
+ ki7NGxXWX2TSxhpUjFF2y56ynD5q7uA6gmi8AYuB+CHAfGVYbI7AACKDYds5AZicuVPtXZQ3D
+ ACTp9bjFlpoR9JBISChd2QCSxhGB8C2IKKTBg4GN2Za8sac+a6o8jRpwt35G6CsQdxft7dRjm
+ 1VJxyk18P1bawjkqREYlkQ0WlxWm0W5Iw==
+Received-SPF: pass client-ip=212.227.126.134; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,82 +116,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 30 Sept 2024 at 22:28, Strahinja Jankovic
-<strahinjapjankovic@gmail.com> wrote:
->
-> Hi Peter,
->
-> Thank you very much for the review and detailed comments.
->
-> I will try to address all comments in the v2 of the patches, but I have s=
-ome questions I added below.
->
-> On Mon, Sep 30, 2024 at 4:45=E2=80=AFPM Peter Maydell <peter.maydell@lina=
-ro.org> wrote:
->> > +static uint64_t allwinner_a10_spi_read(void *opaque, hwaddr offset,
->> > +                                       unsigned size)
->> > +{
->> > +    uint32_t value =3D 0;
->> > +    AWA10SPIState *s =3D opaque;
->> > +    uint32_t index =3D offset >> 2;
->>
->> The MemoryRegionOps defines that size =3D=3D 1 is permitted,
->> but this calculation of index without any validation
->> of offset means that if the guest writes a byte to
->> offset 1 we will treat that identically to writing a byte
->> to offset 0. This probably isn't what the hardware does.
->
-> I checked once more the User manual, and it does not mention
-> unaligned access (example for RXDATA)
->
-> In 8-bits SPI bus width, this register can be accessed in byte,
-> half-word or word unit by AHB. In byte accessing method,
-> if there are words in RXFIFO, the top word is returned and
-> the RXFIFO depth is decreased by 1. In half-word accessing
-> method, the two SPI bursts are returned and the RXFIFO
-> depth is decrease by 2. In word accessing method, the four
-> SPI bursts are returned and the RXFIFO depth is decreased
-> by 4.
->
-> I chose not to cover the half-word and word access methods,
-> since neither Linux kernel nor U-Boot use it
-> (both use only byte access).
->
-> I guess that I could add `.valid.unaligned =3D false` when
-> initializing `MemoryRegionOps`?
+Le 30/09/2024 à 19:07, Michael Vogt a écrit :
+> This commit adds support for the `openat2()` syscall in the
+> `linux-user` userspace emulator.
+> 
+> It is implemented by extracting a new helper `maybe_do_fake_open()`
+> out of the exiting `do_guest_openat()` and share that with the
+> new `do_guest_openat2()`. Unfortunately we cannot just make
+> do_guest_openat2() a superset of do_guest_openat() because the
+> openat2() syscall is stricter with the argument checking and
+> will return an error for invalid flags or mode combinations (which
+> open()/openat() will ignore).
+> 
+> The implementation is similar to SYSCALL_DEFINE(openat2), i.e.
+> a new `copy_struct_from_user()` is used that works the same
+> as the kernels version to support backwards-compatibility
+> for struct syscall argument.
+> 
+> Instead of including openat2.h we create a copy of `open_how`
+> as `open_how_ver0` to ensure that if the structure grows we
+> can log a LOG_UNIMP warning.
+> 
+> Note that in this commit using openat2() for a "faked" file in
+> /proc will honor the "resolve" flags for
+> RESOLVE_NO_{MAGIC,SYM}LINKS for path based access to /proc/self/exe
+> (which is the only magic link we support for faked files).
+> Note it will not catch special access via e.g. dirfd. This is not
+> great but it seems similar to the exiting behavior when openat()
+> is called with a dirfd to "/proc". Here too the fake file lookup
+> may not catch the special file because no dirfd is used to
+> determine if the path is in /proc.
+> 
+> Signed-off-by: Michael Vogt <mvogt@redhat.com>
+> Buglink: https://github.com/osbuild/bootc-image-builder/issues/619
+> ---
+>   linux-user/syscall.c      | 105 +++++++++++++++++++++++++++++++++++++-
+>   linux-user/syscall_defs.h |  13 +++++
+>   2 files changed, 116 insertions(+), 2 deletions(-)
+> 
 
-This wouldn't help, because a 2-byte load at offset 2
-is not "unaligned" from the memory system's point of view.
-(Also, unaligned =3D false is the default.)
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
-Looking again at your code I see I misread it a bit:
-I thought it was doing a switch() on index, but it is on
-offset.
-
-Using a switch on offset makes it easy to handle the case
-of "bogus write to an offset that isn't the start of a
-register":
-
-   switch (offset) {
-   case SOME_REG_OFFSET:
-       /*
-        * handle it; if size 1/2/4 behave differently,
-        * then look at 'size' to do the right thing.
-        */
-       break;
-   /* etc */
-   default:
-       qemu_log_mask(LOG_GUEST_ERROR,
-                     "%s: bad offset 0x%x\n", __func__,
-                     (uint32_t)offset);
-       break;
-   }
-
-Then both the "offset that's not a defined register"
-and "offset that's not aligned to the start of a register"
-go into the default case, we log it as a guest error,
-and do nothing.
-
-thanks
--- PMM
 
