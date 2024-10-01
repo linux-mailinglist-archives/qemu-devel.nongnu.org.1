@@ -2,64 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D0198C081
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3737398BEFD
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:06:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sve5F-0005Ux-O4; Tue, 01 Oct 2024 10:42:37 -0400
+	id 1svdWK-0002B1-09; Tue, 01 Oct 2024 10:06:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sve5C-0005Rl-NX; Tue, 01 Oct 2024 10:42:34 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1svdVl-00022v-KO
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:05:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1sve5B-0003Hi-70; Tue, 01 Oct 2024 10:42:34 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 4421E5C4D92;
- Tue,  1 Oct 2024 11:43:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CB5C4CED1;
- Tue,  1 Oct 2024 11:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1727782996;
- bh=IyUOOIPt26ymtGpZVs8Q3SZ/F5X7AIWjPA1DhypfsoI=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=MqkLMWwqY4LgSRssHKEOUG8SdbQoskVNezXq0ZLvCnHxw5RAMZoXBUg92txi1lzu8
- FCGzX+oDVbXdDsnSLKhsTC1b/hWGmqURIg+x+dmMSjXkedwzZD2yWIIvFpREEHORT/
- NN99RYPUfzk779N7GUDTtJDMK4i2qAGpeaBUoUiuYW5lhtb+yCsFwkDlh2lGDQl+SY
- I998W4eVY6yuiEw0+HORF0Ipz8fkqWlLCRwGNJ8D8SR3oHYrcKWAfP4or5rrn3U7ig
- GjDQl24qfdpxIbSYre5o7mYDsEZMFDdip8aSWENiYyX4GwJvzlZnjrHyvT+gNrZ3IE
- z26nyMabNTPEg==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab+huawei@kernel.org>)
- id 1svbHd-0000000Add8-3d7C; Tue, 01 Oct 2024 13:43:13 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Shiju Jose <shiju.jose@huawei.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH RFC 5/5] arm/virt-acpi-build: Properly handle virt-9.1
-Date: Tue,  1 Oct 2024 13:42:50 +0200
-Message-ID: <2b5b4e57eb5332c83789d4bd0f01214861cc7f0a.1727782588.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <cover.1727782588.git.mchehab+huawei@kernel.org>
-References: <cover.1727782588.git.mchehab+huawei@kernel.org>
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1svdVC-0000ot-0l
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:05:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727791518;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+3m7OVNpznujsu7qOxVL/uQtm7Rs8kTly7ode/QB05g=;
+ b=UULYP7BbLDY0yuz+GvPbq/4+RAaLZyZltrDvheW92EqD07GRosQ8u/bYhRR2t7ntikSgay
+ oO+K6YBUzDurQCJGr3tKjcXlBuXe9PAto5I1EcTTsG490+zwTNYM1vWQrIsHkzE6i46jdD
+ FuODG7StZzUy+uvh+Kv05W9HG5nnP0s=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-33-oqw6LrByOBOxFrdfP8f6tA-1; Tue, 01 Oct 2024 07:53:05 -0400
+X-MC-Unique: oqw6LrByOBOxFrdfP8f6tA-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7a9a85e4a85so1252325685a.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 04:53:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727783585; x=1728388385;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+3m7OVNpznujsu7qOxVL/uQtm7Rs8kTly7ode/QB05g=;
+ b=eyRDuWBMvfTJ+SCKCL+yskntvyZGYIzQhLvxkGgKvYtt5kQFQibzYB5ZncyJVAIa2g
+ S2rcYsw2BeKHqUltdJfywWFxhNE2H27PYdf41zGhM1tYMNSvaOqFQox+dxkaUtW3j/Zk
+ ov5Tnm/NkDowdIP7GVCm/a5ybk83FPBrlRD3Y3CfkZtneL6auVqMfzFrDyogFFdwc6Xw
+ BHPDxTIhi4PSpqFXZG6v47oQoDC3Wkr0fAhyHUINK1Kdi/6RmZ89KHmTHiE0MlyToaDW
+ W4KCS7Yt5pOT4dO73Vb7W9mulExyKtwrNx67LNmcmhGo73kHPgHsg1CgoaqvXKdbV7Pj
+ kW6Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXCV4Tvr6G34NF5M+z6FiUfRcjYjVgmkmzRbjgQmu/qlGRJaN2wrKFnu5jbNDF0RbqdJLKgOfD1Yity@nongnu.org
+X-Gm-Message-State: AOJu0YyptqT9K5AFnQlCzuVE+XttGMKpKVDa0YgFoteSeoE6bUK5kB7m
+ GlIg4qepCzbPbx+EUwJoOq4OIHvw6xFCerkxxBtvtQObEghaeh0Ryro+kxF7C7Ag6/dl7ZXfmwJ
+ OOgphV+/RWoek2LlObryBSjkRnpqiSdDLYvF5IvVkjoTyx29dvyrA0kXAABQ56XU=
+X-Received: by 2002:a05:620a:408e:b0:7a9:c964:b32d with SMTP id
+ af79cd13be357-7ae378dbcfbmr2447471785a.54.1727783585033; 
+ Tue, 01 Oct 2024 04:53:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF43tzPuuDvAtWFQKjlBLhrSQo+sftQCCqO+G2BY2jqCQk/vAHXwKrdyhO5Y2282Uo5YSHfbw==
+X-Received: by 2002:a05:620a:408e:b0:7a9:c964:b32d with SMTP id
+ af79cd13be357-7ae378dbcfbmr2447468385a.54.1727783584529; 
+ Tue, 01 Oct 2024 04:53:04 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-46-200-231.retail.telecomitalia.it.
+ [79.46.200.231]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6cb3b67f5efsm48992496d6.110.2024.10.01.04.53.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Oct 2024 04:53:03 -0700 (PDT)
+Date: Tue, 1 Oct 2024 13:53:00 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: dave@treblig.org
+Cc: mst@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH] vhost: Remove unused vhost_dev_{load|save}_inflight
+Message-ID: <xyxixpzdemv6xrg7orqdz56mw7z4sphuuxv63igjnm5qdgblzh@v56b2we4ll3y>
+References: <20240918121034.16417-1-dave@treblig.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240918121034.16417-1-dave@treblig.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,62 +100,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A virt-9.1 machine can have only one source ID.
+On Wed, Sep 18, 2024 at 01:10:34PM GMT, dave@treblig.org wrote:
+>From: "Dr. David Alan Gilbert" <dave@treblig.org>
+>
+>vhost_dev_load_inflight and vhost_dev_save_inflight have been
+>unused since they were added in 2019 by:
+>
+>5ad204bf2a ("vhost-user: Support transferring inflight buffer between qemu and backend")
+>
+>Remove them, and their helper vhost_dev_resize_inflight.
+>
+>Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+>---
+> hw/virtio/vhost.c         | 56 ---------------------------------------
+> include/hw/virtio/vhost.h |  2 --
+> 2 files changed, 58 deletions(-)
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- hw/arm/virt-acpi-build.c | 30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 476c365851c4..8036eb5953d0 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -894,6 +894,10 @@ static const AcpiNotificationSourceId hest_ghes_notify[] = {
-     {ACPI_HEST_SRC_ID_SYNC, ACPI_GHES_NOTIFY_SEA},
- };
- 
-+static const AcpiNotificationSourceId hest_ghes_notify_9_1[] = {
-+    {ACPI_HEST_SRC_ID_QMP, ACPI_GHES_NOTIFY_GPIO},
-+};
-+
- static
- void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
- {
-@@ -947,10 +951,28 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuildTables *tables)
-     build_dbg2(tables_blob, tables->linker, vms);
- 
-     if (vms->ras) {
--        acpi_add_table(table_offsets, tables_blob);
--        acpi_build_hest(tables_blob, tables->hardware_errors, tables->linker,
--                        hest_ghes_notify, ARRAY_SIZE(hest_ghes_notify),
--                        vms->oem_id, vms->oem_table_id);
-+        AcpiGhesState *ags;
-+        AcpiGedState *acpi_ged_state;
-+
-+        acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
-+                                                       NULL));
-+        if (acpi_ged_state) {
-+            ags = &acpi_ged_state->ghes_state;
-+
-+            acpi_add_table(table_offsets, tables_blob);
-+
-+            if (!ags->hest_lookup) {
-+                acpi_build_hest(tables_blob, tables->hardware_errors,
-+                                tables->linker, hest_ghes_notify_9_1,
-+                                ARRAY_SIZE(hest_ghes_notify_9_1),
-+                                vms->oem_id, vms->oem_table_id);
-+            } else {
-+                acpi_build_hest(tables_blob, tables->hardware_errors,
-+                                tables->linker, hest_ghes_notify,
-+                                ARRAY_SIZE(hest_ghes_notify),
-+                                vms->oem_id, vms->oem_table_id);
-+            }
-+        }
-     }
- 
-     if (ms->numa_state->num_nodes > 0) {
--- 
-2.46.1
+>
+>diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+>index 7c5ef81b55..76f9b2aaad 100644
+>--- a/hw/virtio/vhost.c
+>+++ b/hw/virtio/vhost.c
+>@@ -1930,62 +1930,6 @@ void vhost_dev_free_inflight(struct vhost_inflight *inflight)
+>     }
+> }
+>
+>-static int vhost_dev_resize_inflight(struct vhost_inflight *inflight,
+>-                                     uint64_t new_size)
+>-{
+>-    Error *err = NULL;
+>-    int fd = -1;
+>-    void *addr = qemu_memfd_alloc("vhost-inflight", new_size,
+>-                                  F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL,
+>-                                  &fd, &err);
+>-
+>-    if (err) {
+>-        error_report_err(err);
+>-        return -ENOMEM;
+>-    }
+>-
+>-    vhost_dev_free_inflight(inflight);
+>-    inflight->offset = 0;
+>-    inflight->addr = addr;
+>-    inflight->fd = fd;
+>-    inflight->size = new_size;
+>-
+>-    return 0;
+>-}
+>-
+>-void vhost_dev_save_inflight(struct vhost_inflight *inflight, QEMUFile *f)
+>-{
+>-    if (inflight->addr) {
+>-        qemu_put_be64(f, inflight->size);
+>-        qemu_put_be16(f, inflight->queue_size);
+>-        qemu_put_buffer(f, inflight->addr, inflight->size);
+>-    } else {
+>-        qemu_put_be64(f, 0);
+>-    }
+>-}
+>-
+>-int vhost_dev_load_inflight(struct vhost_inflight *inflight, QEMUFile *f)
+>-{
+>-    uint64_t size;
+>-
+>-    size = qemu_get_be64(f);
+>-    if (!size) {
+>-        return 0;
+>-    }
+>-
+>-    if (inflight->size != size) {
+>-        int ret = vhost_dev_resize_inflight(inflight, size);
+>-        if (ret < 0) {
+>-            return ret;
+>-        }
+>-    }
+>-    inflight->queue_size = qemu_get_be16(f);
+>-
+>-    qemu_get_buffer(f, inflight->addr, size);
+>-
+>-    return 0;
+>-}
+>-
+> int vhost_dev_prepare_inflight(struct vhost_dev *hdev, VirtIODevice *vdev)
+> {
+>     int r;
+>diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+>index c75be46c06..461c168c37 100644
+>--- a/include/hw/virtio/vhost.h
+>+++ b/include/hw/virtio/vhost.h
+>@@ -338,8 +338,6 @@ void vhost_virtqueue_stop(struct vhost_dev *dev, struct VirtIODevice *vdev,
+>
+> void vhost_dev_reset_inflight(struct vhost_inflight *inflight);
+> void vhost_dev_free_inflight(struct vhost_inflight *inflight);
+>-void vhost_dev_save_inflight(struct vhost_inflight *inflight, QEMUFile *f);
+>-int vhost_dev_load_inflight(struct vhost_inflight *inflight, QEMUFile *f);
+> int vhost_dev_prepare_inflight(struct vhost_dev *hdev, VirtIODevice *vdev);
+> int vhost_dev_set_inflight(struct vhost_dev *dev,
+>                            struct vhost_inflight *inflight);
+>-- 
+>2.46.0
+>
+>
 
 
