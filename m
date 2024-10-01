@@ -2,42 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9195E98C0C5
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C394F98C0C1
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:52:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sveDX-0002R7-HT; Tue, 01 Oct 2024 10:51:12 -0400
+	id 1sveE7-00041M-U9; Tue, 01 Oct 2024 10:51:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adiupina@astralinux.ru>)
- id 1sveCb-0001eW-RH; Tue, 01 Oct 2024 10:50:14 -0400
+ id 1sveCm-0001uU-4e; Tue, 01 Oct 2024 10:50:26 -0400
 Received: from mx.astralinux.ru ([89.232.161.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adiupina@astralinux.ru>)
- id 1sveCZ-00058E-O5; Tue, 01 Oct 2024 10:50:13 -0400
+ id 1sveCk-00058E-1X; Tue, 01 Oct 2024 10:50:23 -0400
 Received: from [10.177.185.109] (helo=new-mail.astralinux.ru)
  by mx.astralinux.ru with esmtps (TLS1.3) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <adiupina@astralinux.ru>)
- id 1svZWC-00FsZE-Ma; Tue, 01 Oct 2024 12:50:08 +0300
+ id 1svZWG-00FsZP-O8; Tue, 01 Oct 2024 12:50:12 +0300
 Received: from rbta-msk-lt-302690.astralinux.ru (unknown [10.198.11.47])
- by new-mail.astralinux.ru (Postfix) with ESMTPA id 4XHtWK1y8PzkWwW;
- Tue,  1 Oct 2024 12:51:41 +0300 (MSK)
+ by new-mail.astralinux.ru (Postfix) with ESMTPA id 4XHtWP30KLzkWwW;
+ Tue,  1 Oct 2024 12:51:45 +0300 (MSK)
 From: Alexandra Diupina <adiupina@astralinux.ru>
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: Alexandra Diupina <adiupina@astralinux.ru>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org
-Subject: [PATCH 1/3] hw/intc/arm_gicv3: Add cast to match the documentation
-Date: Tue,  1 Oct 2024 12:51:23 +0300
-Message-Id: <20241001095125.26043-1-adiupina@astralinux.ru>
+Subject: [PATCH 2/3] hw/intc/arm_gicv3_cpuif: Add cast to match the
+ documentation
+Date: Tue,  1 Oct 2024 12:51:24 +0300
+Message-Id: <20241001095125.26043-2-adiupina@astralinux.ru>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20241001095125.26043-1-adiupina@astralinux.ru>
+References: <20241001095125.26043-1-adiupina@astralinux.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DrWeb-SpamScore: 0
 X-DrWeb-SpamState: legit
-X-DrWeb-SpamDetail: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtddvucetufdoteggodetrfcurfhrohhfihhlvgemucfftfghgfeunecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeetlhgvgigrnhgurhgrucffihhuphhinhgruceorgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhuqeenucggtffrrghtthgvrhhnpeduleetfeehffekueeuffektefgudfgffeutdefudfghedvieffheehleeuieehteenucffohhmrghinheplhhinhhugihtvghsthhinhhgrdhorhhgnecukfhppedutddrudelkedruddurdegjeenucfrrghrrghmpehhvghloheprhgsthgrqdhmshhkqdhlthdqfedtvdeiledtrdgrshhtrhgrlhhinhhugidrrhhupdhinhgvthepuddtrdduleekrdduuddrgeejmeefleelledvpdhmrghilhhfrhhomheprgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhupdhnsggprhgtphhtthhopeehpdhrtghpthhtohepphgvthgvrhdrmhgrhiguvghllheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhupdhrtghpthhtohepqhgvmhhuqdgrrhhmsehnohhnghhnuhdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepshgulhdrqhgvmhhuse
- hlihhnuhigthgvshhtihhnghdrohhrghenucffrhdrhggvsgcutehnthhishhprghmmecunecuvfgrghhsme
+X-DrWeb-SpamDetail: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtddvucetufdoteggodetrfcurfhrohhfihhlvgemucfftfghgfeunecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeetlhgvgigrnhgurhgrucffihhuphhinhgruceorgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhuqeenucggtffrrghtthgvrhhnpeefkedufedvkeffuedtgfdugeeutdegvdffffejfffgleffieduhfejvdelffdvudenucffohhmrghinheplhhinhhugihtvghsthhinhhgrdhorhhgnecukfhppedutddrudelkedruddurdegjeenucfrrghrrghmpehhvghloheprhgsthgrqdhmshhkqdhlthdqfedtvdeiledtrdgrshhtrhgrlhhinhhugidrrhhupdhinhgvthepuddtrdduleekrdduuddrgeejmeefleelledvpdhmrghilhhfrhhomheprgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhupdhnsggprhgtphhtthhopeehpdhrtghpthhtohepphgvthgvrhdrmhgrhiguvghllheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhupdhrtghpthhtohepqhgvmhhuqdgrrhhmsehnohhnghhnuhdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepshgulhdrqhgvmh
+ husehlihhnuhigthgvshhtihhnghdrohhrghenucffrhdrhggvsgcutehnthhishhprghmmecunecuvfgrghhsme
 X-DrWeb-SpamVersion: Dr.Web Antispam 1.0.7.202406240#1727772118#02
 X-AntiVirus: Checked by Dr.Web [MailD: 11.1.19.2307031128,
  SE: 11.1.12.2210241838, Core engine: 7.00.65.05230, Virus records: 12191152,
@@ -74,23 +77,23 @@ Add an explicit cast to match the documentation.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: d2c0c6aab6 ("hw/intc/arm_gicv3: Handle icv_nmiar1_read() for icc_nmiar1_read()")
+Fixes: c3f21b065a ("hw/intc/arm_gicv3_cpuif: Support vLPIs")
 Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
 ---
  hw/intc/arm_gicv3_cpuif.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index bdb13b00e9..ebad7aaea1 100644
+index bdb13b00e9..b7bb4bc2d6 100644
 --- a/hw/intc/arm_gicv3_cpuif.c
 +++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -781,7 +781,7 @@ static void icv_activate_irq(GICv3CPUState *cs, int idx, int grp)
-     if (nmi) {
-         cs->ich_apr[grp][regno] |= ICV_AP1R_EL1_NMI;
-     } else {
--        cs->ich_apr[grp][regno] |= (1 << regbit);
-+        cs->ich_apr[grp][regno] |= (1U << regbit);
-     }
+@@ -793,7 +793,7 @@ static void icv_activate_vlpi(GICv3CPUState *cs)
+     int regno = aprbit / 32;
+     int regbit = aprbit % 32;
+ 
+-    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1 << regbit);
++    cs->ich_apr[cs->hppvlpi.grp][regno] |= (1U << regbit);
+     gicv3_redist_vlpi_pending(cs, cs->hppvlpi.irq, 0);
  }
  
 -- 
