@@ -2,51 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A177A98BFDB
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4ED98C03A
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:39:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdnk-0005iO-Qr; Tue, 01 Oct 2024 10:24:33 -0400
+	id 1svdzY-0006NK-MZ; Tue, 01 Oct 2024 10:36:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1svdmb-000509-AP; Tue, 01 Oct 2024 10:23:24 -0400
+ id 1svdw4-0003jr-KQ; Tue, 01 Oct 2024 10:33:14 -0400
 Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1svdmK-0005e3-To; Tue, 01 Oct 2024 10:23:14 -0400
+ id 1svdvx-00013U-7x; Tue, 01 Oct 2024 10:33:05 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 2A966A4268E;
- Tue,  1 Oct 2024 05:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABB8C4CEC6;
- Tue,  1 Oct 2024 05:29:16 +0000 (UTC)
+ by nyc.source.kernel.org (Postfix) with ESMTP id 76DD7A428C2;
+ Tue,  1 Oct 2024 05:38:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D3EC4CEC6;
+ Tue,  1 Oct 2024 05:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1727760559;
- bh=tuLz94NqQ0hls7myXaXA23/ISr3v1CUTbd7LWGCd4io=;
+ s=k20201202; t=1727761100;
+ bh=KWHKsBqafASDIcbljdst2Hf9v1Awn2C+S3J8HKqz9zQ=;
  h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=YBFFONSBtvJJFQ8iKLKuuaV4H9YYl59U0QKPr6g1Iyn4qPsTKZFnhnECkM7TMeCQ3
- 1HV1ROY3v9Z3rAco2EsYCwlKVzqkC31f5XgWvhkKYUaHZXxSXtwSyGTtoGOcgpreNu
- OZjGDxAqB/DCCqwTyKzfiFqZbyj2iP0bQTgtF4rNWGF0u1Y216Mh88w1XlKQsWCJsS
- XmTxNKBMiwQGSruXWIysbyCY4QJGqKLQaEdzVRLZeYX4rMhJze1xs8B49A++xgz1XN
- oypw8BLl1vABYo3B93reJG4AOdBeJ3wT4lHqPANUyvqFHygTXPmIJrNssik4+/7RJb
- G4tVBOW6CbcSw==
-Date: Tue, 1 Oct 2024 07:29:13 +0200
+ b=MLft1ETqhuR+CYOGxey7FAl9KzwHTi606ejrkAgQUwX7PmST7+XdLxQsxu81hzqFp
+ lbqfLgzQcXbzq62hbSkx7gRbHG+deOfHSZcRy+GXp5V2xxQm1VFR76SnvZxZavastI
+ V7hhwfbkTAVcQPcu4p5QLIF++ZP+XV5ynbXuw21zKcNuj+X7WU9CTSMMUJLcagtHjT
+ gN3yePvGSk2KFs/WxdRlNYvgf3RErGl5vM3Aj5f2D3IgSYvE30G0bFMWgb6lm8uzJJ
+ +HwwF6pel/0q7SPIf7EgtZ5gdkmBtKwcLYMQoO6D9mz79ZiGKawjrqF9YETS2KsEr2
+ g9q0ZSNfe5Acw==
+Date: Tue, 1 Oct 2024 07:38:15 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 Cc: Igor Mammedov <imammedo@redhat.com>, Shiju Jose <shiju.jose@huawei.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Dongjiu Geng <gengdongjiu1@gmail.com>, Peter Maydell
- <peter.maydell@linaro.org>, Shannon Zhao <shannon.zhaosl@gmail.com>,
- <linux-kernel@vger.kernel.org>, <qemu-arm@nongnu.org>,
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 08/15] acpi/ghes: Prepare to support multiple sources on
- ghes
-Message-ID: <20241001072913.09f82e9f@foz.lan>
-In-Reply-To: <20240925152333.0000110d@Huawei.com>
+ Dongjiu Geng <gengdongjiu1@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 10/15] acpi/ghes: move offset calculus to a separate
+ function
+Message-ID: <20241001073815.4720a986@foz.lan>
+In-Reply-To: <20240926130348.00005e45@Huawei.com>
 References: <cover.1727236561.git.mchehab+huawei@kernel.org>
- <05fb5c6a7d26eeb730bf5fe1f67bb6581ec6d730.1727236561.git.mchehab+huawei@kernel.org>
- <20240925152333.0000110d@Huawei.com>
+ <5e8c2f0267a21d05ed09c8af616a92d94638c474.1727236561.git.mchehab+huawei@kernel.org>
+ <20240926130348.00005e45@Huawei.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -74,70 +72,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Em Wed, 25 Sep 2024 15:23:33 +0100
+Em Thu, 26 Sep 2024 13:03:48 +0100
 Jonathan Cameron <Jonathan.Cameron@Huawei.com> escreveu:
 
-> On Wed, 25 Sep 2024 06:04:13 +0200
+> On Wed, 25 Sep 2024 06:04:15 +0200
 > Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 > 
-> > The current code is actually dependent on having just one
-> > error structure with a single source.
+> > Currently, CPER address location is calculated as an offset of
+> > the hardware_errors table. It is also badly named, as the
+> > offset actually used is the address where the CPER data starts,
+> > and not the beginning of the error source.
 > > 
-> > As the number of sources should be arch-dependent, as it
-> > will depend on what kind of synchronous/assynchronous
-> > notifications will exist, change the logic to dynamically
-> > build the table.  
-> Not really arch dependent.  Depends on both arch and some
-> firmware implementation choices, but I guess that detail
-> doesn't matter here.
-> 
+> > Move the logic which calculates such offset to a separate
+> > function, in preparation for a patch that will be changing the
+> > logic to calculate it from the HEST table.
 > > 
-> > Yet, for a proper support, we need to get the number of
-> > sources by reading the number from the HEST table. However,
-> > bios currently doesn't store a pointer to it.
-> > 
-> > For now just change the logic at table build time, while
-> > enforcing that it will behave like before with a single
-> > source ID.
-> > 
-> > A future patch will add a HEST table bios pointer and
-> > change the logic at acpi_ghes_record_errors() to
-> > dynamically use the new size.
+> > While here, properly name the variable which stores the cper
+> > address.
 > > 
 > > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>  
-> Trivial comment inline
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Trivial comment inline.
 > 
-> > @@ -335,9 +346,10 @@ static void build_ghes_v2(GArray *table_data,
-> >      build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 0x40, 0,
-> >                       4 /* QWord access */, 0);
-> >      bios_linker_loader_add_pointer(linker, ACPI_BUILD_TABLE_FILE,
-> > -        address_offset + GAS_ADDR_OFFSET,
-> > -        sizeof(uint64_t), ACPI_GHES_ERRORS_FW_CFG_FILE,
-> > -        (ACPI_GHES_ERROR_SOURCE_COUNT + source_id) * sizeof(uint64_t));
-> > +                                   address_offset + GAS_ADDR_OFFSET,  
-> 
-> I'd prefer if we avoided realigning unless absolutely necessary or
-> that it is split into a separate patch.
-> Makes things a tiny bit harder to review.
+> Given this is a placeholder for more radical refactor I'll not comment on
+> the maths etc being less flexible than it will hopefully end up!
 
-Heh, Igor nacked a patch doing the alignment change on a separate patch,
-so let's do it at the patches that are actually changing the code.
+Actually there will be two versions of the math calculus after the
+next patch series:
 
-At least for me, it is a low easier to review patches that are properly
-aligned with parenthesis. So, yeah it may be a little more painful to
-review a patch changing alignments, but IMO it pays off on future
-revisions, specially if we place one argument per line, like in this
-function.
+1. one compatible with versions up to 9.1 that work with a single
+   source ID, using offsets calculated from the hardware_errors
+   table, which doesn't contain the number of sources. Such code
+   will be used only for migration. This is the one on this series;
 
-> 
-> > +                                   sizeof(uint64_t),
-> > +                                   ACPI_GHES_ERRORS_FW_CFG_FILE,
-> > +                                   (num_sources + index) * sizeof(uint64_t));
-> >    
-> 
+2. one that will get the number of source IDs from the HEST table.
+   Such math will be added at the next patch series.
+   This requires a migration-incompatible change to store a
+   pointer to HEST table. The math there is flexible and should
+   work with all future changes, as it uses all offsets from the
+   HEST table, using the links there to the harware_errors firmware
+   file.
 
-
+So, basically, the migration logic will check if a HEST pointer
+is stored. If so, it will use (2). If not, it is because the VM
+that was running on QEMU 9.1 had its state stored, and then
+was recovered on QEMU 9.2. Such machine will then use the math
+from (1), which supports a single source ID.
 
 Thanks,
 Mauro
