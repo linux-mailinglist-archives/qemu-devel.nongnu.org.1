@@ -2,89 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E476798C004
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1676E98BF16
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:09:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdto-0001S9-7y; Tue, 01 Oct 2024 10:30:51 -0400
+	id 1svdYJ-0008S8-Tg; Tue, 01 Oct 2024 10:08:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1svdqG-0008RD-HX
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:27:18 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1svdqD-0007Vn-DD
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:27:07 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a8d4093722bso839319866b.0
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 07:27:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727792821; x=1728397621; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AmxmWQKJiawU7J7tshrMb5YEm8SUr36MYrvdY6rkgtI=;
- b=fyqHJ9h+mPE8EYGr21K6L3F2iff0vavZ1EEqFhZKNyNfoDbdpPCbHB+JBoU+9NoA2J
- Y/PwvpC+ROIflUHUt6MWoRKmpHw0HlxnhMJuhSkI7y2rFgNuY9X8BbqQSlMTHWWat4B8
- QaPOL2oJlPuByAsNlcFnTiI7mzUWl51fjMQCP/rYYxBJ+muB7TT9UMW+M+nkY0JpaPx1
- vF27m8woRaxabl4of+dwTtKACAsG0jaZ+s/cxEVOgukbQhFEksxqpD2limNsHoq+zzdl
- GQ9Jh+gqa/JrDwugM8RdKG6Ih5pwohlsIBjC8Vq8i+jByuLSmIWitIkrKvsV4EG3qEY/
- EV+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727792821; x=1728397621;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=AmxmWQKJiawU7J7tshrMb5YEm8SUr36MYrvdY6rkgtI=;
- b=KMbZ86WtskyVR5zEqNr1NCUPaEqrVhzpdmdeiUH1+o0B+iIZOdrqy4qeNThfT/bpCU
- BWi5flF5P5sHI0kL6eTpLCS9dQ6+XjfB1poWQ7ZeDs1Hmcb4ptFBCNQ3iGscs5c4JELp
- OPPzRkoJRTij31MteMqy3dGdPMyfOjfjSE97uI5R1jFNwdHyf+qa4lRqN/fn4lhZWDxP
- qaqFHfBOzBpRry3d0DGQpgqyjjBTI5fdylJHGGmWiR7627qo14aja+g4KUItIsEMeuBy
- I26RbxUsO7QeVKzXira9ZsaQE27m/b0PEPzmzz3J4uXWzKYCEHqCuaWcy5yYbwWx0vMt
- cSFQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWwNXlU6JeTFCYuLJo8HJw4Nwaj7EnXlufSAPkJM7MVMWhSJbU4yRoFRIXCYJbCu0DCdPj5DZ6hG9QG@nongnu.org
-X-Gm-Message-State: AOJu0Yw9mIrtknipKiUqebwdT9M5IwP0tQ4A/AyrEsWAeNpb6G+iMDXo
- frzJi/8nzFsCbNSyOA2wB9PNEDhCmoaEv0F36hYfzot7VLk5vY8u4uzbLWEmgR2/hZVXRIHUTMZ
- H
-X-Google-Smtp-Source: AGHT+IExmZ8mwUveSVXjfxQECo3qKvs4DhRznbITdNYQe5ZIwDLn5pb4n3xAJRX3Ze+iaC/pmtZmmA==
-X-Received: by 2002:a17:907:25c3:b0:a77:b01b:f949 with SMTP id
- a640c23a62f3a-a93c492a3a9mr1608321366b.35.1727781501550; 
- Tue, 01 Oct 2024 04:18:21 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a93c2947ae8sm691527766b.112.2024.10.01.04.18.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 04:18:21 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3F7335F871;
- Tue,  1 Oct 2024 12:18:20 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,  qemu-devel@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Michael
- Tokarev <mjt@tls.msk.ru>
-Subject: Re: [PATCH v2] testing: bump mips64el cross to bookworm and allow
- to fail
-In-Reply-To: <20241001105148.74182-1-thuth@redhat.com> (Thomas Huth's message
- of "Tue, 1 Oct 2024 12:51:48 +0200")
-References: <20241001105148.74182-1-thuth@redhat.com>
-User-Agent: mu4e 1.12.6; emacs 29.4
-Date: Tue, 01 Oct 2024 12:18:20 +0100
-Message-ID: <87bk04nkar.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <Shivasagar.Myana@amd.com>)
+ id 1svdYH-0008MG-CY
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:08:33 -0400
+Received: from mail-co1nam11on2068.outbound.protection.outlook.com
+ ([40.107.220.68] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Shivasagar.Myana@amd.com>)
+ id 1svdYC-0001tW-S2
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:08:33 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yWXxpYuc9/osL0/K+/V/EynaIvITbfnnftwW5PzxLXxuyrRGYESLNu26SqNzowiFhWwItMlaBpkjXYMXH8Pd/f1Iz2BV9Q8BXM0a3IIr0IKxPDqNAkAe/coWZroLwmZtGZCLjG8+jg8JDPcuN5i4G8m9Tk3L3i7CeO17g1EGOlnTxCnXa7nyh/jOwofegP9qzVf3qXCT2i2Nv9JSSrK4flPMzKf0dVN00JwqEHnwwauI5NUWOosZOVmDMX77jf4t5liVzp4ePUusibbnKAcm1Gp2M9reYXaXfwZ+Iq49sDBRFu6bydeD2vmwABc/z/gKyC8VaNyT5R3bw6shyMt9Qw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+yHLKKqXz1ogxF3td3faievP5VGLqm8g6H6WnmolOBU=;
+ b=UOAAqzQvPu3+yGZZdbDnD8TN0bFEVOM9F1w+62eMC8ojAb+6eEd9GuvVO25pLINPLYdOod8fKOpVKDAWBaje0TTZRqGgpKe2SGJuxqGHfI6RUHLsB/Gwb7Zo/QhpDIFrvLOWD0aj1bqycb/qzLYN4CvMCq67E+kW7P+kw2+AowPTS/f0+mwnioRTEabtNHOB/cYqXl9/eDWJFipN+jgaIu9YJ93gao91PpiuN7kmn4UXRMvAR/mDpaMga3aiTT7uW05KfEzwBiFXZbywTxmHZWHRAVub0nDtTeX98F5XnC2jk3/9Cig3EwkkBI2Ae7KTMhVIQ1awZjFQRcJyUCfk2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+yHLKKqXz1ogxF3td3faievP5VGLqm8g6H6WnmolOBU=;
+ b=TjbrekCc9fAzDn+6tu5sDZkSkJRAnXNodiDgneAB52jY2gab1vxi6evgnrYIj6a5sZRUa/qqOC8T6CvTTeoyGt6WhBYoKzXbAFhCCTMrdA+X9NIgxyrwGTA8Hh2rmC2gLEhUAkNgz2HKV9UYIln1ehuJbN8XFfimF7iXOscvYZw=
+Received: from CH2PR16CA0003.namprd16.prod.outlook.com (2603:10b6:610:50::13)
+ by SN7PR12MB7348.namprd12.prod.outlook.com (2603:10b6:806:29b::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.15; Tue, 1 Oct
+ 2024 11:32:47 +0000
+Received: from CH1PEPF0000AD79.namprd04.prod.outlook.com
+ (2603:10b6:610:50:cafe::3f) by CH2PR16CA0003.outlook.office365.com
+ (2603:10b6:610:50::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.27 via Frontend
+ Transport; Tue, 1 Oct 2024 11:32:46 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH1PEPF0000AD79.mail.protection.outlook.com (10.167.244.57) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8026.11 via Frontend Transport; Tue, 1 Oct 2024 11:32:45 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 1 Oct
+ 2024 06:32:45 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 1 Oct
+ 2024 06:32:44 -0500
+Received: from xhdsaipava41.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via
+ Frontend Transport; Tue, 1 Oct 2024 06:32:43 -0500
+From: Shiva sagar Myana <Shivasagar.Myana@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <alistair@alistair23.me>, <francisco.iglesias@amd.com>,
+ <sai.pavan.boddu@amd.com>
+Subject: [PATCH v2 1/1] hw/ssi/xilinx_spips: Fix flash erase assert in dual
+ parallel configuration
+Date: Tue, 1 Oct 2024 17:02:40 +0530
+Message-ID: <20241001113240.2755645-1-Shivasagar.Myana@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB05.amd.com: Shivasagar.Myana@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD79:EE_|SN7PR12MB7348:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cc57b87-2df8-4dce-e899-08dce20cc55c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|36860700013|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?0LqKYzxbYMn2ULL/F9rbv+YPbFQKsi2u4QH6M7gbCeFzjKCsmBwBStkxhhur?=
+ =?us-ascii?Q?A5eLDD/se5noCJNvcxah9pS4BtIgLWETBwDrBvApAwvDQDo87/DwRnccagom?=
+ =?us-ascii?Q?VoRRzWxhi9QCV/TMMX9jkRQiV6wq8PT3TfEDf02vZXXp9yv0pAG/sQurIkPv?=
+ =?us-ascii?Q?X8ETWAqC9bg4kMm3B4+J5OmNZZEBArz+qgEF0zOG98YpcTCoU2j0tzJuFkqE?=
+ =?us-ascii?Q?nMr3Ig4Ox4znxaaRx0FyYsJizp2BFktnQCIheb0oFHOPZGqLso+tN1V2G2y4?=
+ =?us-ascii?Q?l2jya1NVmyf2nnVvuwsbKACFWlFi25GIQiCBXlD4Nf/gXEyoEHOSAJ0q10EM?=
+ =?us-ascii?Q?aq4AxejkA3GgFzGffY2ZsJzod1NYQTix60yoLmwLZH+fOEfVZkwSLFxPlvoB?=
+ =?us-ascii?Q?tG45+5LkupJ6rDyWPIn+PyTMi7eQvJ+kOHEHRFNRkvzBHXBbm7++U9XQhc0V?=
+ =?us-ascii?Q?Qf49YHi+B6e+s7TteIttKKERW+I42zmaT0W9jnHnQqIctYntD6+vfIvUGwjA?=
+ =?us-ascii?Q?9p7+84o8DbvdZsetyLS0XntH6R/LWdsQLtK8XOUW4WJx9YiPo9OdrUZpgrAf?=
+ =?us-ascii?Q?xCzPfRjRvITCaGPZjKYvr6cr0lEq9OwXIttk90c3fuL+IoPC8roSRi2BM2XA?=
+ =?us-ascii?Q?8xgJzbbDWPvIZZZ1f9CdMsvUrVnlahoDyQHtO7hpg99MEJRRBCTFLDV98S59?=
+ =?us-ascii?Q?GGOrxzbluvrE2kJrnZd0+CctcvtoloF7qDjt2c8ewifbtOxSLltox7w6HZYq?=
+ =?us-ascii?Q?vHa/mLnHvu666o/fKloSJWVtX7XQBHXWpFHQY4sGfydaF4U0q3KK0MyBdu69?=
+ =?us-ascii?Q?shNkY+0waqNZrYTNsGtBeugxaLm3PYc+boCChbgdCDcCJ0Iyx5csyXNHSmS5?=
+ =?us-ascii?Q?Yk7UDtcNs4QchKdk6NMO48J+kJjc5aUX9kLv/UzkE0LrLTafvg0xncorVC63?=
+ =?us-ascii?Q?JzUgq0195kfsiUQe2QnG50EpmN4IqPZpNuSA9aKGcuUn6p74UBMs6D/pY+ZM?=
+ =?us-ascii?Q?aB/F+FuTlmphFAUH9oZcr1jyHisw9d20d9v9pwoJXiZxKgEwmuBwcqmT/d9T?=
+ =?us-ascii?Q?P2qv22UwUJAcxpINsUH6wwgne4qmKe/J5eHFGV+ZpacEsje+nEHS6J0vUom7?=
+ =?us-ascii?Q?zhm78Qit+5FBVLhma7RF++PZFS6fd2+PwqY6vOhPosBuaoix4Bv2gGSHOAu7?=
+ =?us-ascii?Q?Lhuet2SftEKszibGr2Em6XHSViGYNKKpbGHHniGDG72exGbyCnjqC4ztrpSZ?=
+ =?us-ascii?Q?sviiFlyhl22Ot4J7YuvxjhUQAQAqhfL6c191pLdaO9A28P4iWtGsKNnUzaGW?=
+ =?us-ascii?Q?oO8xU7Ll9a9CPOIoTN47E3axFGigJpJ6aMIr4BMThelnGuYAvdQUBGvZfx6W?=
+ =?us-ascii?Q?lB7/nViWidejzw4yVeBw0RQC//1Suk0O28Cbm1xrssCaFdB4OjiJspUv6S0p?=
+ =?us-ascii?Q?gi5C6EFQTqx7qKHroEOsBV53l7SqTgaX?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2024 11:32:45.7516 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cc57b87-2df8-4dce-e899-08dce20cc55c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD79.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7348
+Received-SPF: permerror client-ip=40.107.220.68;
+ envelope-from=Shivasagar.Myana@amd.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,163 +152,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+Ensure that the FIFO is checked for emptiness before popping data from it.
+Previously, the code directly popped the data from the FIFO without checking, which
+could cause an assertion failure:
+../util/fifo8.c:67: fifo8_pop: Assertion `fifo->num > 0
 
-> From: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->
-> The mips64el cross setup is very broken for bullseye which has now
-> entered LTS support so is unlikely to be fixed. While we still can't
-> build the container for bookworm due to a single missing dependency
-> that will hopefully get fixed in due course. For the sake of keeping
-> the CI green we mark it as allow_fail for the time being.
->
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> [thuth: Temporarily remove the problematic packages manually]
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  Removing the packages that depend on mesa manually helps to get the
->  job green again:
->   https://gitlab.com/thuth/qemu/-/jobs/7961678029
->  That's of course just a temporary fix 'til the next update via lcitool,
->  but hopefully Debian will have fixed their distro by that point in time.
->
->  .gitlab-ci.d/container-cross.yml              |  3 +++
->  .../dockerfiles/debian-mips64el-cross.docker  | 20 ++++---------------
->  tests/lcitool/refresh                         |  2 +-
->  3 files changed, 8 insertions(+), 17 deletions(-)
->
-> diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cr=
-oss.yml
-> index 34c0e729ad..c567926182 100644
-> --- a/.gitlab-ci.d/container-cross.yml
-> +++ b/.gitlab-ci.d/container-cross.yml
-> @@ -49,6 +49,9 @@ i686-debian-cross-container:
->  mips64el-debian-cross-container:
->    extends: .container_job_template
->    stage: containers
-> +  # Currently waiting for Debian to fix:
-> +  #  libgl1-mesa-dri:mips64el : Depends: libllvm15:mips64el but it is
-> not going to be installed
+Signed-off-by: Shiva sagar Myana <Shivasagar.Myana@amd.com>
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+---
+V1->V2: corrected the subject line.
 
-Peter if you merge this one then it might be worth using the bugref
-instead: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1081535
+ hw/ssi/xilinx_spips.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> +  allow_failure: true
->    variables:
->      NAME: debian-mips64el-cross
->=20=20
-> diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/test=
-s/docker/dockerfiles/debian-mips64el-cross.docker
-> index 2862785692..4f3277a3a6 100644
-> --- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
-> +++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-> @@ -1,10 +1,10 @@
->  # THIS FILE WAS AUTO-GENERATED
->  #
-> -#  $ lcitool dockerfile --layers all --cross-arch mips64el debian-11 qemu
-> +#  $ lcitool dockerfile --layers all --cross-arch mips64el debian-12 qemu
->  #
->  # https://gitlab.com/libvirt/libvirt-ci
->=20=20
-> -FROM docker.io/library/debian:11-slim
-> +FROM docker.io/library/debian:12-slim
->=20=20
->  RUN export DEBIAN_FRONTEND=3Dnoninteractive && \
->      apt-get update && \
-> @@ -33,7 +33,6 @@ RUN export DEBIAN_FRONTEND=3Dnoninteractive && \
->                        libgtk-vnc-2.0-dev \
->                        libpcre2-dev \
->                        libsndio-dev \
-> -                      libspice-protocol-dev \
->                        llvm \
->                        locales \
->                        make \
-> @@ -48,16 +47,15 @@ RUN export DEBIAN_FRONTEND=3Dnoninteractive && \
->                        python3-opencv \
->                        python3-pillow \
->                        python3-pip \
-> -                      python3-setuptools \
->                        python3-sphinx \
->                        python3-sphinx-rtd-theme \
->                        python3-venv \
-> -                      python3-wheel \
->                        python3-yaml \
->                        rpm2cpio \
->                        sed \
->                        socat \
->                        sparse \
-> +                      swtpm \
->                        tar \
->                        tesseract-ocr \
->                        tesseract-ocr-eng \
-> @@ -69,8 +67,6 @@ RUN export DEBIAN_FRONTEND=3Dnoninteractive && \
->      dpkg-reconfigure locales && \
->      rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED
->=20=20
-> -RUN /usr/bin/pip3 install tomli
-> -
->  ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
->  ENV LANG "en_US.UTF-8"
->  ENV MAKE "/usr/bin/make"
-> @@ -97,17 +93,13 @@ RUN export DEBIAN_FRONTEND=3Dnoninteractive && \
->                        libcmocka-dev:mips64el \
->                        libcurl4-gnutls-dev:mips64el \
->                        libdaxctl-dev:mips64el \
-> -                      libdrm-dev:mips64el \
-> -                      libepoxy-dev:mips64el \
->                        libfdt-dev:mips64el \
->                        libffi-dev:mips64el \
->                        libfuse3-dev:mips64el \
-> -                      libgbm-dev:mips64el \
->                        libgcrypt20-dev:mips64el \
->                        libglib2.0-dev:mips64el \
->                        libglusterfs-dev:mips64el \
->                        libgnutls28-dev:mips64el \
-> -                      libgtk-3-dev:mips64el \
->                        libibverbs-dev:mips64el \
->                        libiscsi-dev:mips64el \
->                        libjemalloc-dev:mips64el \
-> @@ -126,13 +118,10 @@ RUN export DEBIAN_FRONTEND=3Dnoninteractive && \
->                        librbd-dev:mips64el \
->                        librdmacm-dev:mips64el \
->                        libsasl2-dev:mips64el \
-> -                      libsdl2-dev:mips64el \
-> -                      libsdl2-image-dev:mips64el \
->                        libseccomp-dev:mips64el \
->                        libselinux1-dev:mips64el \
->                        libslirp-dev:mips64el \
->                        libsnappy-dev:mips64el \
-> -                      libspice-server-dev:mips64el \
->                        libssh-gcrypt-dev:mips64el \
->                        libsystemd-dev:mips64el \
->                        libtasn1-6-dev:mips64el \
-> @@ -141,8 +130,7 @@ RUN export DEBIAN_FRONTEND=3Dnoninteractive && \
->                        libusb-1.0-0-dev:mips64el \
->                        libusbredirhost-dev:mips64el \
->                        libvdeplug-dev:mips64el \
-> -                      libvirglrenderer-dev:mips64el \
-> -                      libvte-2.91-dev:mips64el \
-> +                      libxdp-dev:mips64el \
->                        libzstd-dev:mips64el \
->                        nettle-dev:mips64el \
->                        systemtap-sdt-dev:mips64el \
-> diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-> index 92381f3c46..a78219f7bc 100755
-> --- a/tests/lcitool/refresh
-> +++ b/tests/lcitool/refresh
-> @@ -166,7 +166,7 @@ try:
->                                              "x86_64-linux-user,"
->                                              "i386-softmmu,i386-linux-use=
-r"))
->=20=20
-> -    generate_dockerfile("debian-mips64el-cross", "debian-11",
-> +    generate_dockerfile("debian-mips64el-cross", "debian-12",
->                          cross=3D"mips64el",
->                          trailer=3Dcross_build("mips64el-linux-gnuabi64-",
->                                              "mips64el-softmmu,mips64el-l=
-inux-user"))
+diff --git a/hw/ssi/xilinx_spips.c b/hw/ssi/xilinx_spips.c
+index 71952a410d..adaf404f54 100644
+--- a/hw/ssi/xilinx_spips.c
++++ b/hw/ssi/xilinx_spips.c
+@@ -620,7 +620,9 @@ static void xilinx_spips_flush_txfifo(XilinxSPIPS *s)
+         } else if (s->snoop_state == SNOOP_STRIPING ||
+                    s->snoop_state == SNOOP_NONE) {
+             for (i = 0; i < num_effective_busses(s); ++i) {
+-                tx_rx[i] = fifo8_pop(&s->tx_fifo);
++                if (!fifo8_is_empty(&s->tx_fifo)) {
++                    tx_rx[i] = fifo8_pop(&s->tx_fifo);
++                }
+             }
+             stripe8(tx_rx, num_effective_busses(s), false);
+         } else if (s->snoop_state >= SNOOP_ADDR) {
+-- 
+2.34.1
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
