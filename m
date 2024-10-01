@@ -2,93 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B889B98BFF4
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2024598C046
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:39:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdsr-0000bd-9j; Tue, 01 Oct 2024 10:29:50 -0400
+	id 1sve0I-0006w0-M7; Tue, 01 Oct 2024 10:37:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1svdpj-000825-BJ; Tue, 01 Oct 2024 10:26:37 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1svdpg-00077j-GU; Tue, 01 Oct 2024 10:26:33 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a8b155b5e9eso27906866b.1; 
- Tue, 01 Oct 2024 07:26:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727792787; x=1728397587; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NN2B7VErLWPNZAtEBLafKn89g/c1M4zkYThceVJkgyE=;
- b=YgoOPOyO1LJxJsKLNJ9JJ7gWxV5fzlprZr/TBFfyaedupPvUKiXcLiP/D85QE4vSgA
- AH5cxctf53ngIU7miWEBvwbiA50Rt39GvSl9nJWlgevXiVj/WI28dmPz9UxlkzseKQIy
- ZQtWla+KMKS/Zpq6WATzE77mdlAm+bmWrmCMiB0wxrYGWNE8QsuGmDPWhDpGpUXMO0ZC
- ujXlw1Jl5269/lIbb8kUVNPXQAU8eaU7e8njff1heKpcTpzbot978MM+JUavw1DiRMkC
- 5oYXTaYWqPkBrbay4Kb24F8jfSdcEaYlA31cbEMS4bPLqQCFTMgM30NI5ig2TwTq/Dc+
- 1idA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727792787; x=1728397587;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NN2B7VErLWPNZAtEBLafKn89g/c1M4zkYThceVJkgyE=;
- b=QqCkez09RZqQe3qL8nJ/liMHkFfAHfMJdmY5LVJmbO/iyy6/VBDDE2FKMc8dknH+lA
- m5gcbuqMszKH9cvJ3HKLtarFxD5lzza2YocYdYuTQyohYsnWS/d9sSObUHGTp1bDY4wo
- A95XKJsPl+kezpMAJSDtoAnTzGMGe+yu1PuEl3xCvO7Yyy7ywlOsW/my8zXwyRDdyt9j
- rqdvVIwYdxCrMIDwU/i0/zAOzpUSMyEvF6iJEJK226PbAyvlkBJzkvkIDHUKWOXyqGRd
- kjD5TNWbPIo/7r6Oxr97f5/nyQrq7boG49OcqlgdZ1NTgEW8MuQk2dHrIzYrIOFOZ4hI
- uC+g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVRvDwiWI18p0Eh7uzUak0trJ4x6MujCtacLcQ4RSWPUQmeqgCd5149E0ObKpa6VFFnS54vA5XxOT0=@nongnu.org,
- AJvYcCXYW0KqMQ4tYMpWCJeDNLqfuNJPCZD8QptbcfZ9YEbBQ1X7UBCPtcg6CSWhcnMVHi9OTh+csKwoTSsf@nongnu.org
-X-Gm-Message-State: AOJu0YwnthdMkSE8hHBm7bIIo5HPPxQvV37VZVMLYgNwC6v/DhnyKzfi
- F9lTZrlWLgvCOoFVJofOqBRfgLTjvD3Co1kk7GCgbXdnS44MED+p
-X-Google-Smtp-Source: AGHT+IErvdaE2ki+7gKMX3Hiw+/3p59I4VmvYLzSDEz4uFtc741R4p5k4vC2PGTZeTZjR+Zxj0QptQ==
-X-Received: by 2002:a17:906:4fd4:b0:a8a:4e39:a462 with SMTP id
- a640c23a62f3a-a93c48f90c2mr1820928166b.7.1727792786347; 
- Tue, 01 Oct 2024 07:26:26 -0700 (PDT)
-Received: from [127.0.0.1] (business-90-187-110-129.pool2.vodafone-ip.de.
- [90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a93c2998634sm712671466b.206.2024.10.01.07.26.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Oct 2024 07:26:26 -0700 (PDT)
-Date: Tue, 01 Oct 2024 14:26:26 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>,
- =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@redhat.com>
-CC: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, qemu-ppc@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Corey Minyard <cminyard@mvista.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-block@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>
-Subject: Re: [PATCH 01/23] hw/ppc/e500: Do not leak struct boot_info
-In-Reply-To: <c823aedf-767f-6ddf-31f1-16ba667abeff@eik.bme.hu>
-References: <20240923093016.66437-1-shentey@gmail.com>
- <20240923093016.66437-2-shentey@gmail.com>
- <72a2d6aa-07c2-403f-9db5-5a17d98de6ad@redhat.com>
- <c823aedf-767f-6ddf-31f1-16ba667abeff@eik.bme.hu>
-Message-ID: <2F9AA8B2-BF07-4F9C-BA0E-6403BFADF75D@gmail.com>
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1svdyg-00061v-3S; Tue, 01 Oct 2024 10:36:01 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1svdyZ-0001m1-V2; Tue, 01 Oct 2024 10:35:49 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 491AqeV2001220;
+ Tue, 1 Oct 2024 14:35:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:date:mime-version:subject:to:cc:references:from
+ :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=s
+ rQQUchNIJld8bhmehnFEP4gVjCBS71EgQW5AELT2BE=; b=k/ntstqN7uX+SMKZ3
+ Y3CZwnU2nh/k827//jXGH487lnUYtFZxr0KI2JtGkujytqe2z1le8CcPPDd4BetH
+ pHe6tekf5zdvbPmm+ddCKasQm4B7vFQ30vHjn4B0mBRWqDJ4lxoheXmXRRJre0vi
+ /5hRkvQn+hYJ3Rk0r796PGFrIF7T9313H26oVGmJTwu8QVau81qvNz9vXgHUDyy6
+ Um0Xgr6ti5JvDqzNv5ytmJqAaqQy+xToy6aXWxbRJEMiUKFRYLbCNNrOmXtQmuIp
+ rJvHFt1935OJtWMm6oJ3ZFsulwbsjdk0AyuE4f/1+Bu54OZ2wjijfZOBjFJB9NnA
+ XsQ2Q==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 420fq4s816-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2024 14:35:41 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 491EZefc002920;
+ Tue, 1 Oct 2024 14:35:41 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 420fq4s811-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2024 14:35:40 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 491CVF78013975;
+ Tue, 1 Oct 2024 14:35:40 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41xwmk4ujq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Oct 2024 14:35:40 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 491EZa5K54722956
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Oct 2024 14:35:36 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6AF3820049;
+ Tue,  1 Oct 2024 14:35:36 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DB98320040;
+ Tue,  1 Oct 2024 14:35:35 +0000 (GMT)
+Received: from [9.171.29.251] (unknown [9.171.29.251])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Oct 2024 14:35:35 +0000 (GMT)
+Message-ID: <e8dc19e7-7e46-4b10-aad4-4430c10c7b12@linux.ibm.com>
+Date: Tue, 1 Oct 2024 16:35:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 07/14] s390x/s390-hypercall: introduce DIAG500
+ STORAGE_LIMIT
+To: Halil Pasic <pasic@linux.ibm.com>
+Cc: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>
+References: <20240910175809.2135596-1-david@redhat.com>
+ <20240910175809.2135596-8-david@redhat.com>
+ <6636c963-228f-4bea-87c5-bd4f75521c75@redhat.com>
+ <20240927200525.5a90f172.pasic@linux.ibm.com>
+ <10165d22-c3e8-4db1-9874-8b63ca59afe9@linux.ibm.com>
+ <20240930145712.526a1c79.pasic@linux.ibm.com>
+ <972044f1-62e4-4ac0-8b24-e0bb78770309@linux.ibm.com>
+ <20241001153132.08b0dca9.pasic@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20241001153132.08b0dca9.pasic@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: EIXRmopc9ZPMyRg_fScy4q7eHVtBRLR_
+X-Proofpoint-GUID: y7fzWI23JOzBkEUWfEY_QZEMjy5bjMit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-01_11,2024-09-30_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0
+ suspectscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
+ mlxlogscore=753 clxscore=1015 mlxscore=0 priorityscore=1501 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2410010092
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=borntraeger@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,119 +130,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 26=2E September 2024 00:14:04 UTC schrieb BALATON Zoltan <balaton@eik=
-=2Ebme=2Ehu>:
->On Wed, 25 Sep 2024, C=C3=A9dric Le Goater wrote:
->> On 9/23/24 11:29, Bernhard Beschow wrote:
->>> The struct is allocated once with g_new0() but never free()'d=2E Fix t=
-he leakage
->>> by adding an attribute to struct PPCE500MachineState which avoids the
->>> allocation=2E
->>>=20
->>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->>> ---
->>>   hw/ppc/e500=2Eh |  8 ++++++++
->>>   hw/ppc/e500=2Ec | 17 ++++-------------
->>>   2 files changed, 12 insertions(+), 13 deletions(-)
->>>=20
->>> diff --git a/hw/ppc/e500=2Eh b/hw/ppc/e500=2Eh
->>> index 8c09ef92e4=2E=2E557ce6ad93 100644
->>> --- a/hw/ppc/e500=2Eh
->>> +++ b/hw/ppc/e500=2Eh
->>> @@ -5,10 +5,18 @@
->>>   #include "hw/platform-bus=2Eh"
->>>   #include "qom/object=2Eh"
->>>   +typedef struct boot_info {
->>> +    uint32_t dt_base;
->>> +    uint32_t dt_size;
->>> +    uint32_t entry;
->>> +} boot_info;
->>=20
->> or simply move the fields under the machine state struct to avoif
->> the struct boot_info which doesn't seem that necessary=2E Is it ?
->
->It's passed to CPU reset function via env->load_info=2E It could be possi=
-ble to pass the whole machine state but it seems that's unneeded so this st=
-ruct just contains what's needed for this=2E Other machines also have simil=
-ar boot_info structs although they seem to be different and not common to a=
-ll machines=2E Thus I don't think merging with machine state would be bette=
-r than keeping is separate as this is more CPU related=2E
-
-I agree that having a consistent style across machines is prefereable, so =
-I'll keep struct boot_info=2E It also avoids conflicts with your TLB cleanu=
-p series=2E
-
-Best regards,
-Bernhard
-
->
->Regards,
->BALATON Zoltan
->
->>=20
->> Thanks,
->>=20
->> C=2E
->>=20
->>=20
->>=20
->>> +
->>>   struct PPCE500MachineState {
->>>       /*< private >*/
->>>       MachineState parent_obj;
->>>   +    boot_info boot_info;
->>> +
->>>       /* points to instance of TYPE_PLATFORM_BUS_DEVICE if
->>>        * board supports dynamic sysbus devices
->>>        */
->>> diff --git a/hw/ppc/e500=2Ec b/hw/ppc/e500=2Ec
->>> index 3bd12b54ab=2E=2E75b051009f 100644
->>> --- a/hw/ppc/e500=2Ec
->>> +++ b/hw/ppc/e500=2Ec
->>> @@ -80,13 +80,6 @@
->>>     #define PLATFORM_CLK_FREQ_HZ       (400 * 1000 * 1000)
->>>   -struct boot_info
->>> -{
->>> -    uint32_t dt_base;
->>> -    uint32_t dt_size;
->>> -    uint32_t entry;
->>> -};
->>> -
->>>   static uint32_t *pci_map_create(void *fdt, uint32_t mpic, int first_=
-slot,
->>>                                   int nr_slots, int *len)
->>>   {
->>> @@ -919,7 +912,6 @@ void ppce500_init(MachineState *machine)
->>>       bool kernel_as_payload;
->>>       hwaddr bios_entry =3D 0;
->>>       target_long payload_size;
->>> -    struct boot_info *boot_info =3D NULL;
->>>       int dt_size;
->>>       int i;
->>>       unsigned int smp_cpus =3D machine->smp=2Ecpus;
->>> @@ -974,9 +966,8 @@ void ppce500_init(MachineState *machine)
->>>           /* Register reset handler */
->>>           if (!i) {
->>>               /* Primary CPU */
->>> -            boot_info =3D g_new0(struct boot_info, 1);
->>>               qemu_register_reset(ppce500_cpu_reset, cpu);
->>> -            env->load_info =3D boot_info;
->>> +            env->load_info =3D &pms->boot_info;
->>>           } else {
->>>               /* Secondary CPUs */
->>>               qemu_register_reset(ppce500_cpu_reset_sec, cpu);
->>> @@ -1274,9 +1265,9 @@ void ppce500_init(MachineState *machine)
->>>       }
->>>       assert(dt_size < DTB_MAX_SIZE);
->>>   -    boot_info->entry =3D bios_entry;
->>> -    boot_info->dt_base =3D dt_base;
->>> -    boot_info->dt_size =3D dt_size;
->>> +    pms->boot_info=2Eentry =3D bios_entry;
->>> +    pms->boot_info=2Edt_base =3D dt_base;
->>> +    pms->boot_info=2Edt_size =3D dt_size;
->>>   }
->>>     static void e500_ccsr_initfn(Object *obj)
->>=20
->>=20
+Am 01.10.24 um 15:31 schrieb Halil Pasic:
+> On Tue, 1 Oct 2024 11:15:02 +0200
+> Christian Borntraeger <borntraeger@linux.ibm.com> wrote:
+> [..]
+>>>> So 500+4 should probably not cause any harm apart from branch prediction
+>>>> going wrong the first 2 or 3 notifies.
+>>>>
+>>>> 502 will make kvm_s390_handle_diag larger.
+>>>
+>>> What do you mean by this last paragraph?
+> [..]
+> 
+>> gcc has logic for switch statements that decide about branch table or
+>> a chained compare+jump. I think due to spectre gcc now avoids indirect
+>> branches as much as possible but still a larger switch statement might
+>> kick the decision from inline compare/jump to a branch table.
 >>
+>> I am not worried in this particular case this was more or less a
+>> "what could go wrong".
+> 
+> Hm, you did state that "502 will make kvm_s390_handle_diag larger". I
+> suppose now we agree that 502 would not make kvm_s390_handle_diag larger.
+> Right?
+> 
+> I understood that you prefer 500+4 over 502 because the latter would
+> make kvm_s390_handle_diag larger. Now that we have, I hope clarified,
+> that 502 would not make the switch larger, do you still prefer 500+4?
+> 
+> BTW your insights are very appreciated!
+
+OK you mean that diag502 is not handled in the kernel but instead via default.
+Yes you are right. So it should not matter I guess.
 
