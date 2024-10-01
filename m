@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D31998C395
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 455B998C3AD
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:43:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svfvC-0006g9-6w; Tue, 01 Oct 2024 12:40:22 -0400
+	id 1svfwF-0001SU-E7; Tue, 01 Oct 2024 12:41:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuf-0005b5-8k
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:49 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1svfuh-0005bs-5I
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:52 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuX-00067m-Eq
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:48 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-37cd5016d98so2937391f8f.1
+ id 1svfuY-000684-BL
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:50 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-37cd831ab06so2261756f8f.0
  for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727800780; x=1728405580; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727800781; x=1728405581; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lN5N9PE7bzrcCssPx+iPLjtblkoFTjF/+ObX9haBXyY=;
- b=LePZVTO8gCu7+jRUMSg8OjWcBwECDpJXUCLyGywKkIB3LWTVqf3aKeCCQCCt0Lzz9G
- gi7uzi9ujtjsKnzT3a5pquOkKg6uVFajzmAcTEM+y9TTVAjdQZQJzOvUf4sREF7DZ93j
- o5zTKDBhxaDQmp5P3rXuNRsAzaAKkEA6oFtXhZMv0WVv/+GdHuDuz9xu/SINXIwh+JBJ
- JqC7lC6hsjOYsu7YcuRrHhFXj/3UnAF36qyiaK36nfYswgGZgzk9Dirl1aQflQoKWjXy
- Z4RZ9gquZSsxJREeYhWFEZJqxwX4ol0ylkkLa+cZLghIxRMuHVUq21efPoP0nrJQgYJJ
- w3UQ==
+ :reply-to; bh=94RVQpuK9voVWfsQM4YutnLzLF8FHptQjDrqDBSiE/Q=;
+ b=SpqxQBoZS+2YStqCVEhS2LA1E7U+d8T8+tPe7bPcchioMfVHdu6RkbR0VH4sg4pnv7
+ W4pKVuZE6dofAcnJXOAhBfQ3yRAyJ3GGsQdLuA0b+IAfi2dKKAmzDTZrzGPHATD6aMW/
+ 2eQ7sRcabxacOAxC7wy6V6VklmhyRFOWgt6F71kyvARFWbtLHYezgs7AGvZUWhPpZrxI
+ 6P9HQiMYi5mrNMOHURW204N6yr7SFtgo5RyH5enFU7G2izOAcqcb5TuIMsMNVvY7RvfB
+ nvHehqAFxw9bDex4V3FTHHd1249qyhmK6xAMufZI6mLjflpT7UxGqvInYBV40wAAgLMF
+ FoIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727800780; x=1728405580;
+ d=1e100.net; s=20230601; t=1727800781; x=1728405581;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lN5N9PE7bzrcCssPx+iPLjtblkoFTjF/+ObX9haBXyY=;
- b=WuKdLk3nIFi7F+o6kLZGUDcZ+vGpp04dYPjiVonJSJFgfOmDsEdvRNuwbpPzgu1X90
- H8yjflm8lpJrWpdFwCYiyoBHmV9TOo+8HTcH3iUKLM+pxE9lbTkLOFGnGdXCbtK8B+P7
- cnNgdcQk2XnzTQ/oHD3SoDWFE0FEo8uuDTjiRqFPUNYXCUzFYWriUACnb3Q73tm/U70N
- cTX/z3tn06xos2vQJgMLZPHRInZI9LpBq3qA5sF5WhoZHE+/3WEA2PVWPzyYY1flrvKz
- aD3RCPBlnv8VRAyVPPFzGyEWzyXEKJ2H94qiqu4t4+ws7XU1+uGdBVFGvEJRs+chVdXD
- P+cQ==
-X-Gm-Message-State: AOJu0Yz3FViGNXa7aTDGZfgukAOyaYZCCGH93JiDVdrK3OOMApsNZhhk
- TXhhEfk80c2c0wkfdIgG0r8Ki4SVpa5Qp/sQ3QvChbTHc1KnOOpG5mxlNKBO3Nk8+8xTGMDRnGm
- 2
-X-Google-Smtp-Source: AGHT+IFxTXHPWttVmWso7Hr7rQzZK3+JRFSVmJs997ux5poRPuEGTMwL78+163ldWAaMRSuQ/bav2g==
-X-Received: by 2002:a5d:4843:0:b0:374:c142:80e7 with SMTP id
- ffacd0b85a97d-37cfb8b14eamr188074f8f.1.1727800779647; 
- Tue, 01 Oct 2024 09:39:39 -0700 (PDT)
+ bh=94RVQpuK9voVWfsQM4YutnLzLF8FHptQjDrqDBSiE/Q=;
+ b=i3z0glKfPhkhHVPKPRc7058y2aGlN0E1s0F0bQz19gXVWMmtAr+AupAxxZAT9tJfWv
+ CpynjcWAjcAIU8K+2bUs2839CvRoYZYsegfsiSuB6O9WuMWAb+XT8YiQ7UzvsTNlZPJu
+ 2q/E9za8et3eL2iC+bTrhiVmdSF1awwX3zneGpvajdNkgh2vwvvtchGwOfkHF3op6Xmh
+ fuwXeyMqtfjM4oHtdV7SSqwHH3bLbRjuZwlNJa+e9MhxIhsBiqs2/KPKS9yqgXocf/rc
+ TzbORcGAbbVXnXyiwK74ju+hvuqkjUTxvuNx3sHT5XX/rfAT5epJy2f0DexbOMSBn89+
+ Xh6A==
+X-Gm-Message-State: AOJu0YzGqakHiMsx0rc6tn9Nprh+ejYYDcz7rdWBaxnTCFk690VNyNnb
+ H+WS8FMYoNtl/2yPHN3zhRocj7/OkiRXWtNOvVuzdXEUsjo5E0r5aIB289DGPTgP2YypyW4Mozv
+ 1
+X-Google-Smtp-Source: AGHT+IGImZ1JcwxbtbpTehWCamnVv2IptVy7b5/FKtbMFE1WHpuYEO0FoFjrxqyGTuvxJQIg4HrK0g==
+X-Received: by 2002:adf:b31b:0:b0:37c:cfe4:6997 with SMTP id
+ ffacd0b85a97d-37cfb9f9cf5mr112956f8f.47.1727800780521; 
+ Tue, 01 Oct 2024 09:39:40 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.39
@@ -59,16 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 01 Oct 2024 09:39:39 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 36/54] hw/usb: Remove tusb6010 USB controller
-Date: Tue,  1 Oct 2024 17:39:00 +0100
-Message-Id: <20241001163918.1275441-37-peter.maydell@linaro.org>
+Subject: [PULL 37/54] hw/usb: Remove MUSB USB host controller
+Date: Tue,  1 Oct 2024 17:39:01 +0100
+Message-Id: <20241001163918.1275441-38-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241001163918.1275441-1-peter.maydell@linaro.org>
 References: <20241001163918.1275441-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,28 +91,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tusb6010 was only used by the n800/n810 machines, so it
-can be removed now.
+Remove the MUSB USB2.0 OTG-compliant USB host controller
+device model. This was only used by the tusb6010 USB
+controller in the n800/n810 machines.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20240903160751.4100218-34-peter.maydell@linaro.org
+Message-id: 20240903160751.4100218-35-peter.maydell@linaro.org
 ---
- hw/usb/tusb6010.c  | 850 ---------------------------------------------
- hw/usb/Kconfig     |   4 -
- hw/usb/meson.build |   1 -
- 3 files changed, 855 deletions(-)
- delete mode 100644 hw/usb/tusb6010.c
+ include/hw/usb/hcd-musb.h |   49 --
+ hw/usb/hcd-musb.c         | 1553 -------------------------------------
+ hw/usb/Kconfig            |    4 -
+ hw/usb/meson.build        |    1 -
+ 4 files changed, 1607 deletions(-)
+ delete mode 100644 include/hw/usb/hcd-musb.h
+ delete mode 100644 hw/usb/hcd-musb.c
 
-diff --git a/hw/usb/tusb6010.c b/hw/usb/tusb6010.c
+diff --git a/include/hw/usb/hcd-musb.h b/include/hw/usb/hcd-musb.h
 deleted file mode 100644
-index 4a9114021b0..00000000000
---- a/hw/usb/tusb6010.c
+index 4d4b1ec0fc2..00000000000
+--- a/include/hw/usb/hcd-musb.h
 +++ /dev/null
-@@ -1,850 +0,0 @@
+@@ -1,49 +0,0 @@
 -/*
-- * Texas Instruments TUSB6010 emulation.
-- * Based on reverse-engineering of a linux driver.
+- * "Inventra" High-speed Dual-Role Controller (MUSB-HDRC), Mentor Graphics,
+- * USB2.0 OTG compliant core used in various chips.
+- *
+- * Only host-mode and non-DMA accesses are currently supported.
+- *
+- * Copyright (C) 2008 Nokia Corporation
+- * Written by Andrzej Zaborowski <balrog@zabor.org>
+- *
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- */
+-
+-#ifndef HW_USB_HCD_MUSB_H
+-#define HW_USB_HCD_MUSB_H
+-
+-#include "exec/hwaddr.h"
+-
+-enum musb_irq_source_e {
+-    musb_irq_suspend = 0,
+-    musb_irq_resume,
+-    musb_irq_rst_babble,
+-    musb_irq_sof,
+-    musb_irq_connect,
+-    musb_irq_disconnect,
+-    musb_irq_vbus_request,
+-    musb_irq_vbus_error,
+-    musb_irq_rx,
+-    musb_irq_tx,
+-    musb_set_vbus,
+-    musb_set_session,
+-    /* Add new interrupts here */
+-    musb_irq_max /* total number of interrupts defined */
+-};
+-
+-/* TODO convert hcd-musb to QOM/qdev and remove MUSBReadFunc/MUSBWriteFunc */
+-typedef void MUSBWriteFunc(void *opaque, hwaddr addr, uint32_t value);
+-typedef uint32_t MUSBReadFunc(void *opaque, hwaddr addr);
+-extern MUSBReadFunc * const musb_read[];
+-extern MUSBWriteFunc * const musb_write[];
+-
+-typedef struct MUSBState MUSBState;
+-
+-MUSBState *musb_init(DeviceState *parent_device, int gpio_base);
+-void musb_reset(MUSBState *s);
+-uint32_t musb_core_intr_get(MUSBState *s);
+-void musb_core_intr_clear(MUSBState *s, uint32_t mask);
+-void musb_set_size(MUSBState *s, int epnum, int size, int is_tx);
+-
+-#endif
+diff --git a/hw/usb/hcd-musb.c b/hw/usb/hcd-musb.c
+deleted file mode 100644
+index 6dca373cb1f..00000000000
+--- a/hw/usb/hcd-musb.c
++++ /dev/null
+@@ -1,1553 +0,0 @@
+-/*
+- * "Inventra" High-speed Dual-Role Controller (MUSB-HDRC), Mentor Graphics,
+- * USB2.0 OTG compliant core used in various chips.
 - *
 - * Copyright (C) 2008 Nokia Corporation
 - * Written by Andrzej Zaborowski <andrew@openedhand.com>
@@ -129,864 +187,1567 @@ index 4a9114021b0..00000000000
 - *
 - * You should have received a copy of the GNU General Public License along
 - * with this program; if not, see <http://www.gnu.org/licenses/>.
+- *
+- * Only host-mode and non-DMA accesses are currently supported.
 - */
--
 -#include "qemu/osdep.h"
--#include "qemu/module.h"
 -#include "qemu/timer.h"
 -#include "hw/usb.h"
 -#include "hw/usb/hcd-musb.h"
--#include "hw/arm/omap.h"
--#include "hw/hw.h"
 -#include "hw/irq.h"
--#include "hw/sysbus.h"
--#include "qom/object.h"
+-#include "hw/hw.h"
 -
--#define TYPE_TUSB6010 "tusb6010"
--OBJECT_DECLARE_SIMPLE_TYPE(TUSBState, TUSB6010)
+-/* Common USB registers */
+-#define MUSB_HDRC_FADDR         0x00    /* 8-bit */
+-#define MUSB_HDRC_POWER         0x01    /* 8-bit */
 -
--struct TUSBState {
--    SysBusDevice parent_obj;
+-#define MUSB_HDRC_INTRTX        0x02    /* 16-bit */
+-#define MUSB_HDRC_INTRRX        0x04
+-#define MUSB_HDRC_INTRTXE       0x06
+-#define MUSB_HDRC_INTRRXE       0x08
+-#define MUSB_HDRC_INTRUSB       0x0a    /* 8 bit */
+-#define MUSB_HDRC_INTRUSBE      0x0b    /* 8 bit */
+-#define MUSB_HDRC_FRAME         0x0c    /* 16-bit */
+-#define MUSB_HDRC_INDEX         0x0e    /* 8 bit */
+-#define MUSB_HDRC_TESTMODE      0x0f    /* 8 bit */
 -
--    MemoryRegion iomem[2];
--    qemu_irq irq;
--    MUSBState *musb;
--    QEMUTimer *otg_timer;
--    QEMUTimer *pwr_timer;
+-/* Per-EP registers in indexed mode */
+-#define MUSB_HDRC_EP_IDX        0x10    /* 8-bit */
 -
--    int power;
--    uint32_t scratch;
--    uint16_t test_reset;
--    uint32_t prcm_config;
--    uint32_t prcm_mngmt;
--    uint16_t otg_status;
--    uint32_t dev_config;
--    int host_mode;
--    uint32_t intr;
--    uint32_t intr_ok;
--    uint32_t mask;
--    uint32_t usbip_intr;
--    uint32_t usbip_mask;
--    uint32_t gpio_intr;
--    uint32_t gpio_mask;
--    uint32_t gpio_config;
--    uint32_t dma_intr;
--    uint32_t dma_mask;
--    uint32_t dma_map;
--    uint32_t dma_config;
--    uint32_t ep0_config;
--    uint32_t rx_config[15];
--    uint32_t tx_config[15];
--    uint32_t wkup_mask;
--    uint32_t pullup[2];
--    uint32_t control_config;
--    uint32_t otg_timer_val;
--};
+-/* EP FIFOs */
+-#define MUSB_HDRC_FIFO          0x20
 -
--#define TUSB_DEVCLOCK			60000000	/* 60 MHz */
+-/* Additional Control Registers */
+-#define MUSB_HDRC_DEVCTL        0x60    /* 8 bit */
 -
--#define TUSB_VLYNQ_CTRL			0x004
+-/* These are indexed */
+-#define MUSB_HDRC_TXFIFOSZ      0x62    /* 8 bit (see masks) */
+-#define MUSB_HDRC_RXFIFOSZ      0x63    /* 8 bit (see masks) */
+-#define MUSB_HDRC_TXFIFOADDR    0x64    /* 16 bit offset shifted right 3 */
+-#define MUSB_HDRC_RXFIFOADDR    0x66    /* 16 bit offset shifted right 3 */
 -
--/* Mentor Graphics OTG core registers.  */
--#define TUSB_BASE_OFFSET		0x400
+-/* Some more registers */
+-#define MUSB_HDRC_VCTRL         0x68    /* 8 bit */
+-#define MUSB_HDRC_HWVERS        0x6c    /* 8 bit */
 -
--/* FIFO registers, 32-bit.  */
--#define TUSB_FIFO_BASE			0x600
+-/* Added in HDRC 1.9(?) & MHDRC 1.4 */
+-/* ULPI pass-through */
+-#define MUSB_HDRC_ULPI_VBUSCTL  0x70
+-#define MUSB_HDRC_ULPI_REGDATA  0x74
+-#define MUSB_HDRC_ULPI_REGADDR  0x75
+-#define MUSB_HDRC_ULPI_REGCTL   0x76
 -
--/* Device System & Control registers, 32-bit.  */
--#define TUSB_SYS_REG_BASE		0x800
+-/* Extended config & PHY control */
+-#define MUSB_HDRC_ENDCOUNT      0x78    /* 8 bit */
+-#define MUSB_HDRC_DMARAMCFG     0x79    /* 8 bit */
+-#define MUSB_HDRC_PHYWAIT       0x7a    /* 8 bit */
+-#define MUSB_HDRC_PHYVPLEN      0x7b    /* 8 bit */
+-#define MUSB_HDRC_HS_EOF1       0x7c    /* 8 bit, units of 546.1 us */
+-#define MUSB_HDRC_FS_EOF1       0x7d    /* 8 bit, units of 533.3 ns */
+-#define MUSB_HDRC_LS_EOF1       0x7e    /* 8 bit, units of 1.067 us */
 -
--#define TUSB_DEV_CONF			(TUSB_SYS_REG_BASE + 0x000)
--#define	TUSB_DEV_CONF_USB_HOST_MODE	(1 << 16)
--#define	TUSB_DEV_CONF_PROD_TEST_MODE	(1 << 15)
--#define	TUSB_DEV_CONF_SOFT_ID		(1 << 1)
--#define	TUSB_DEV_CONF_ID_SEL		(1 << 0)
+-/* Per-EP BUSCTL registers */
+-#define MUSB_HDRC_BUSCTL        0x80
 -
--#define TUSB_PHY_OTG_CTRL_ENABLE	(TUSB_SYS_REG_BASE + 0x004)
--#define TUSB_PHY_OTG_CTRL		(TUSB_SYS_REG_BASE + 0x008)
--#define	TUSB_PHY_OTG_CTRL_WRPROTECT	(0xa5 << 24)
--#define	TUSB_PHY_OTG_CTRL_O_ID_PULLUP	(1 << 23)
--#define	TUSB_PHY_OTG_CTRL_O_VBUS_DET_EN	(1 << 19)
--#define	TUSB_PHY_OTG_CTRL_O_SESS_END_EN	(1 << 18)
--#define	TUSB_PHY_OTG_CTRL_TESTM2	(1 << 17)
--#define	TUSB_PHY_OTG_CTRL_TESTM1	(1 << 16)
--#define	TUSB_PHY_OTG_CTRL_TESTM0	(1 << 15)
--#define	TUSB_PHY_OTG_CTRL_TX_DATA2	(1 << 14)
--#define	TUSB_PHY_OTG_CTRL_TX_GZ2	(1 << 13)
--#define	TUSB_PHY_OTG_CTRL_TX_ENABLE2	(1 << 12)
--#define	TUSB_PHY_OTG_CTRL_DM_PULLDOWN	(1 << 11)
--#define	TUSB_PHY_OTG_CTRL_DP_PULLDOWN	(1 << 10)
--#define	TUSB_PHY_OTG_CTRL_OSC_EN	(1 << 9)
--#define	TUSB_PHY_OTG_CTRL_PHYREF_CLK(v)	(((v) & 3) << 7)
--#define	TUSB_PHY_OTG_CTRL_PD		(1 << 6)
--#define	TUSB_PHY_OTG_CTRL_PLL_ON	(1 << 5)
--#define	TUSB_PHY_OTG_CTRL_EXT_RPU	(1 << 4)
--#define	TUSB_PHY_OTG_CTRL_PWR_GOOD	(1 << 3)
--#define	TUSB_PHY_OTG_CTRL_RESET		(1 << 2)
--#define	TUSB_PHY_OTG_CTRL_SUSPENDM	(1 << 1)
--#define	TUSB_PHY_OTG_CTRL_CLK_MODE	(1 << 0)
+-/* Per-EP registers in flat mode */
+-#define MUSB_HDRC_EP            0x100
 -
--/* OTG status register */
--#define TUSB_DEV_OTG_STAT		(TUSB_SYS_REG_BASE + 0x00c)
--#define	TUSB_DEV_OTG_STAT_PWR_CLK_GOOD	(1 << 8)
--#define	TUSB_DEV_OTG_STAT_SESS_END	(1 << 7)
--#define	TUSB_DEV_OTG_STAT_SESS_VALID	(1 << 6)
--#define	TUSB_DEV_OTG_STAT_VBUS_VALID	(1 << 5)
--#define	TUSB_DEV_OTG_STAT_VBUS_SENSE	(1 << 4)
--#define	TUSB_DEV_OTG_STAT_ID_STATUS	(1 << 3)
--#define	TUSB_DEV_OTG_STAT_HOST_DISCON	(1 << 2)
--#define	TUSB_DEV_OTG_STAT_LINE_STATE	(3 << 0)
--#define	TUSB_DEV_OTG_STAT_DP_ENABLE	(1 << 1)
--#define	TUSB_DEV_OTG_STAT_DM_ENABLE	(1 << 0)
+-/* offsets to registers in flat model */
+-#define MUSB_HDRC_TXMAXP        0x00    /* 16 bit apparently */
+-#define MUSB_HDRC_TXCSR         0x02    /* 16 bit apparently */
+-#define MUSB_HDRC_CSR0          MUSB_HDRC_TXCSR         /* re-used for EP0 */
+-#define MUSB_HDRC_RXMAXP        0x04    /* 16 bit apparently */
+-#define MUSB_HDRC_RXCSR         0x06    /* 16 bit apparently */
+-#define MUSB_HDRC_RXCOUNT       0x08    /* 16 bit apparently */
+-#define MUSB_HDRC_COUNT0        MUSB_HDRC_RXCOUNT       /* re-used for EP0 */
+-#define MUSB_HDRC_TXTYPE        0x0a    /* 8 bit apparently */
+-#define MUSB_HDRC_TYPE0         MUSB_HDRC_TXTYPE        /* re-used for EP0 */
+-#define MUSB_HDRC_TXINTERVAL    0x0b    /* 8 bit apparently */
+-#define MUSB_HDRC_NAKLIMIT0     MUSB_HDRC_TXINTERVAL    /* re-used for EP0 */
+-#define MUSB_HDRC_RXTYPE        0x0c    /* 8 bit apparently */
+-#define MUSB_HDRC_RXINTERVAL    0x0d    /* 8 bit apparently */
+-#define MUSB_HDRC_FIFOSIZE      0x0f    /* 8 bit apparently */
+-#define MUSB_HDRC_CONFIGDATA    MGC_O_HDRC_FIFOSIZE     /* re-used for EP0 */
 -
--#define TUSB_DEV_OTG_TIMER		(TUSB_SYS_REG_BASE + 0x010)
--#define TUSB_DEV_OTG_TIMER_ENABLE	(1 << 31)
--#define TUSB_DEV_OTG_TIMER_VAL(v)	((v) & 0x07ffffff)
--#define TUSB_PRCM_REV			(TUSB_SYS_REG_BASE + 0x014)
+-/* "Bus control" registers */
+-#define MUSB_HDRC_TXFUNCADDR    0x00
+-#define MUSB_HDRC_TXHUBADDR     0x02
+-#define MUSB_HDRC_TXHUBPORT     0x03
 -
--/* PRCM configuration register */
--#define TUSB_PRCM_CONF			(TUSB_SYS_REG_BASE + 0x018)
--#define	TUSB_PRCM_CONF_SFW_CPEN		(1 << 24)
--#define	TUSB_PRCM_CONF_SYS_CLKSEL(v)	(((v) & 3) << 16)
+-#define MUSB_HDRC_RXFUNCADDR    0x04
+-#define MUSB_HDRC_RXHUBADDR     0x06
+-#define MUSB_HDRC_RXHUBPORT     0x07
 -
--/* PRCM management register */
--#define TUSB_PRCM_MNGMT			(TUSB_SYS_REG_BASE + 0x01c)
--#define	TUSB_PRCM_MNGMT_SRP_FIX_TMR(v)	(((v) & 0xf) << 25)
--#define	TUSB_PRCM_MNGMT_SRP_FIX_EN	(1 << 24)
--#define	TUSB_PRCM_MNGMT_VBUS_VAL_TMR(v)	(((v) & 0xf) << 20)
--#define	TUSB_PRCM_MNGMT_VBUS_VAL_FLT_EN	(1 << 19)
--#define	TUSB_PRCM_MNGMT_DFT_CLK_DIS	(1 << 18)
--#define	TUSB_PRCM_MNGMT_VLYNQ_CLK_DIS	(1 << 17)
--#define	TUSB_PRCM_MNGMT_OTG_SESS_END_EN	(1 << 10)
--#define	TUSB_PRCM_MNGMT_OTG_VBUS_DET_EN	(1 << 9)
--#define	TUSB_PRCM_MNGMT_OTG_ID_PULLUP	(1 << 8)
--#define	TUSB_PRCM_MNGMT_15_SW_EN	(1 << 4)
--#define	TUSB_PRCM_MNGMT_33_SW_EN	(1 << 3)
--#define	TUSB_PRCM_MNGMT_5V_CPEN		(1 << 2)
--#define	TUSB_PRCM_MNGMT_PM_IDLE		(1 << 1)
--#define	TUSB_PRCM_MNGMT_DEV_IDLE	(1 << 0)
+-/*
+- * MUSBHDRC Register bit masks
+- */
 -
--/* Wake-up source clear and mask registers */
--#define TUSB_PRCM_WAKEUP_SOURCE		(TUSB_SYS_REG_BASE + 0x020)
--#define TUSB_PRCM_WAKEUP_CLEAR		(TUSB_SYS_REG_BASE + 0x028)
--#define TUSB_PRCM_WAKEUP_MASK		(TUSB_SYS_REG_BASE + 0x02c)
--#define	TUSB_PRCM_WAKEUP_RESERVED_BITS	(0xffffe << 13)
--#define	TUSB_PRCM_WGPIO_7		(1 << 12)
--#define	TUSB_PRCM_WGPIO_6		(1 << 11)
--#define	TUSB_PRCM_WGPIO_5		(1 << 10)
--#define	TUSB_PRCM_WGPIO_4		(1 << 9)
--#define	TUSB_PRCM_WGPIO_3		(1 << 8)
--#define	TUSB_PRCM_WGPIO_2		(1 << 7)
--#define	TUSB_PRCM_WGPIO_1		(1 << 6)
--#define	TUSB_PRCM_WGPIO_0		(1 << 5)
--#define	TUSB_PRCM_WHOSTDISCON		(1 << 4)	/* Host disconnect */
--#define	TUSB_PRCM_WBUS			(1 << 3)	/* USB bus resume */
--#define	TUSB_PRCM_WNORCS		(1 << 2)	/* NOR chip select */
--#define	TUSB_PRCM_WVBUS			(1 << 1)	/* OTG PHY VBUS */
--#define	TUSB_PRCM_WID			(1 << 0)	/* OTG PHY ID detect */
+-/* POWER */
+-#define MGC_M_POWER_ISOUPDATE           0x80
+-#define MGC_M_POWER_SOFTCONN            0x40
+-#define MGC_M_POWER_HSENAB              0x20
+-#define MGC_M_POWER_HSMODE              0x10
+-#define MGC_M_POWER_RESET               0x08
+-#define MGC_M_POWER_RESUME              0x04
+-#define MGC_M_POWER_SUSPENDM            0x02
+-#define MGC_M_POWER_ENSUSPEND           0x01
 -
--#define TUSB_PULLUP_1_CTRL		(TUSB_SYS_REG_BASE + 0x030)
--#define TUSB_PULLUP_2_CTRL		(TUSB_SYS_REG_BASE + 0x034)
--#define TUSB_INT_CTRL_REV		(TUSB_SYS_REG_BASE + 0x038)
--#define TUSB_INT_CTRL_CONF		(TUSB_SYS_REG_BASE + 0x03c)
--#define TUSB_USBIP_INT_SRC		(TUSB_SYS_REG_BASE + 0x040)
--#define TUSB_USBIP_INT_SET		(TUSB_SYS_REG_BASE + 0x044)
--#define TUSB_USBIP_INT_CLEAR		(TUSB_SYS_REG_BASE + 0x048)
--#define TUSB_USBIP_INT_MASK		(TUSB_SYS_REG_BASE + 0x04c)
--#define TUSB_DMA_INT_SRC		(TUSB_SYS_REG_BASE + 0x050)
--#define TUSB_DMA_INT_SET		(TUSB_SYS_REG_BASE + 0x054)
--#define TUSB_DMA_INT_CLEAR		(TUSB_SYS_REG_BASE + 0x058)
--#define TUSB_DMA_INT_MASK		(TUSB_SYS_REG_BASE + 0x05c)
--#define TUSB_GPIO_INT_SRC		(TUSB_SYS_REG_BASE + 0x060)
--#define TUSB_GPIO_INT_SET		(TUSB_SYS_REG_BASE + 0x064)
--#define TUSB_GPIO_INT_CLEAR		(TUSB_SYS_REG_BASE + 0x068)
--#define TUSB_GPIO_INT_MASK		(TUSB_SYS_REG_BASE + 0x06c)
+-/* INTRUSB */
+-#define MGC_M_INTR_SUSPEND              0x01
+-#define MGC_M_INTR_RESUME               0x02
+-#define MGC_M_INTR_RESET                0x04
+-#define MGC_M_INTR_BABBLE               0x04
+-#define MGC_M_INTR_SOF                  0x08
+-#define MGC_M_INTR_CONNECT              0x10
+-#define MGC_M_INTR_DISCONNECT           0x20
+-#define MGC_M_INTR_SESSREQ              0x40
+-#define MGC_M_INTR_VBUSERROR            0x80    /* FOR SESSION END */
+-#define MGC_M_INTR_EP0                  0x01    /* FOR EP0 INTERRUPT */
 -
--/* NOR flash interrupt source registers */
--#define TUSB_INT_SRC			(TUSB_SYS_REG_BASE + 0x070)
--#define TUSB_INT_SRC_SET		(TUSB_SYS_REG_BASE + 0x074)
--#define TUSB_INT_SRC_CLEAR		(TUSB_SYS_REG_BASE + 0x078)
--#define TUSB_INT_MASK			(TUSB_SYS_REG_BASE + 0x07c)
--#define	TUSB_INT_SRC_TXRX_DMA_DONE	(1 << 24)
--#define	TUSB_INT_SRC_USB_IP_CORE	(1 << 17)
--#define	TUSB_INT_SRC_OTG_TIMEOUT	(1 << 16)
--#define	TUSB_INT_SRC_VBUS_SENSE_CHNG	(1 << 15)
--#define	TUSB_INT_SRC_ID_STATUS_CHNG	(1 << 14)
--#define	TUSB_INT_SRC_DEV_WAKEUP		(1 << 13)
--#define	TUSB_INT_SRC_DEV_READY		(1 << 12)
--#define	TUSB_INT_SRC_USB_IP_TX		(1 << 9)
--#define	TUSB_INT_SRC_USB_IP_RX		(1 << 8)
--#define	TUSB_INT_SRC_USB_IP_VBUS_ERR	(1 << 7)
--#define	TUSB_INT_SRC_USB_IP_VBUS_REQ	(1 << 6)
--#define	TUSB_INT_SRC_USB_IP_DISCON	(1 << 5)
--#define	TUSB_INT_SRC_USB_IP_CONN	(1 << 4)
--#define	TUSB_INT_SRC_USB_IP_SOF		(1 << 3)
--#define	TUSB_INT_SRC_USB_IP_RST_BABBLE	(1 << 2)
--#define	TUSB_INT_SRC_USB_IP_RESUME	(1 << 1)
--#define	TUSB_INT_SRC_USB_IP_SUSPEND	(1 << 0)
+-/* DEVCTL */
+-#define MGC_M_DEVCTL_BDEVICE            0x80
+-#define MGC_M_DEVCTL_FSDEV              0x40
+-#define MGC_M_DEVCTL_LSDEV              0x20
+-#define MGC_M_DEVCTL_VBUS               0x18
+-#define MGC_S_DEVCTL_VBUS               3
+-#define MGC_M_DEVCTL_HM                 0x04
+-#define MGC_M_DEVCTL_HR                 0x02
+-#define MGC_M_DEVCTL_SESSION            0x01
 -
--#define TUSB_GPIO_REV			(TUSB_SYS_REG_BASE + 0x080)
--#define TUSB_GPIO_CONF			(TUSB_SYS_REG_BASE + 0x084)
--#define TUSB_DMA_CTRL_REV		(TUSB_SYS_REG_BASE + 0x100)
--#define TUSB_DMA_REQ_CONF		(TUSB_SYS_REG_BASE + 0x104)
--#define TUSB_EP0_CONF			(TUSB_SYS_REG_BASE + 0x108)
--#define TUSB_EP_IN_SIZE			(TUSB_SYS_REG_BASE + 0x10c)
--#define TUSB_DMA_EP_MAP			(TUSB_SYS_REG_BASE + 0x148)
--#define TUSB_EP_OUT_SIZE		(TUSB_SYS_REG_BASE + 0x14c)
--#define TUSB_EP_MAX_PACKET_SIZE_OFFSET	(TUSB_SYS_REG_BASE + 0x188)
--#define TUSB_SCRATCH_PAD		(TUSB_SYS_REG_BASE + 0x1c4)
--#define TUSB_WAIT_COUNT			(TUSB_SYS_REG_BASE + 0x1c8)
--#define TUSB_PROD_TEST_RESET		(TUSB_SYS_REG_BASE + 0x1d8)
+-/* TESTMODE */
+-#define MGC_M_TEST_FORCE_HOST           0x80
+-#define MGC_M_TEST_FIFO_ACCESS          0x40
+-#define MGC_M_TEST_FORCE_FS             0x20
+-#define MGC_M_TEST_FORCE_HS             0x10
+-#define MGC_M_TEST_PACKET               0x08
+-#define MGC_M_TEST_K                    0x04
+-#define MGC_M_TEST_J                    0x02
+-#define MGC_M_TEST_SE0_NAK              0x01
 -
--#define TUSB_DIDR1_LO			(TUSB_SYS_REG_BASE + 0x1f8)
--#define TUSB_DIDR1_HI			(TUSB_SYS_REG_BASE + 0x1fc)
+-/* CSR0 */
+-#define MGC_M_CSR0_FLUSHFIFO            0x0100
+-#define MGC_M_CSR0_TXPKTRDY             0x0002
+-#define MGC_M_CSR0_RXPKTRDY             0x0001
 -
--/* Device System & Control register bitfields */
--#define TUSB_INT_CTRL_CONF_INT_RLCYC(v)	(((v) & 0x7) << 18)
--#define TUSB_INT_CTRL_CONF_INT_POLARITY	(1 << 17)
--#define TUSB_INT_CTRL_CONF_INT_MODE	(1 << 16)
--#define TUSB_GPIO_CONF_DMAREQ(v)	(((v) & 0x3f) << 24)
--#define TUSB_DMA_REQ_CONF_BURST_SIZE(v)	(((v) & 3) << 26)
--#define TUSB_DMA_REQ_CONF_DMA_RQ_EN(v)	(((v) & 0x3f) << 20)
--#define TUSB_DMA_REQ_CONF_DMA_RQ_ASR(v)	(((v) & 0xf) << 16)
--#define TUSB_EP0_CONFIG_SW_EN		(1 << 8)
--#define TUSB_EP0_CONFIG_DIR_TX		(1 << 7)
--#define TUSB_EP0_CONFIG_XFR_SIZE(v)	((v) & 0x7f)
--#define TUSB_EP_CONFIG_SW_EN		(1 << 31)
--#define TUSB_EP_CONFIG_XFR_SIZE(v)	((v) & 0x7fffffff)
--#define TUSB_PROD_TEST_RESET_VAL	0xa596
+-/* CSR0 in Peripheral mode */
+-#define MGC_M_CSR0_P_SVDSETUPEND        0x0080
+-#define MGC_M_CSR0_P_SVDRXPKTRDY        0x0040
+-#define MGC_M_CSR0_P_SENDSTALL          0x0020
+-#define MGC_M_CSR0_P_SETUPEND           0x0010
+-#define MGC_M_CSR0_P_DATAEND            0x0008
+-#define MGC_M_CSR0_P_SENTSTALL          0x0004
 -
--static void tusb_intr_update(TUSBState *s)
--{
--    if (s->control_config & TUSB_INT_CTRL_CONF_INT_POLARITY)
--        qemu_set_irq(s->irq, s->intr & ~s->mask & s->intr_ok);
--    else
--        qemu_set_irq(s->irq, (!(s->intr & ~s->mask)) & s->intr_ok);
--}
+-/* CSR0 in Host mode */
+-#define MGC_M_CSR0_H_NO_PING            0x0800
+-#define MGC_M_CSR0_H_WR_DATATOGGLE      0x0400  /* set to allow setting: */
+-#define MGC_M_CSR0_H_DATATOGGLE         0x0200  /* data toggle control */
+-#define MGC_M_CSR0_H_NAKTIMEOUT         0x0080
+-#define MGC_M_CSR0_H_STATUSPKT          0x0040
+-#define MGC_M_CSR0_H_REQPKT             0x0020
+-#define MGC_M_CSR0_H_ERROR              0x0010
+-#define MGC_M_CSR0_H_SETUPPKT           0x0008
+-#define MGC_M_CSR0_H_RXSTALL            0x0004
 -
--static void tusb_usbip_intr_update(TUSBState *s)
--{
--    /* TX interrupt in the MUSB */
--    if (s->usbip_intr & 0x0000ffff & ~s->usbip_mask)
--        s->intr |= TUSB_INT_SRC_USB_IP_TX;
--    else
--        s->intr &= ~TUSB_INT_SRC_USB_IP_TX;
+-/* CONFIGDATA */
+-#define MGC_M_CONFIGDATA_MPRXE          0x80    /* auto bulk pkt combining */
+-#define MGC_M_CONFIGDATA_MPTXE          0x40    /* auto bulk pkt splitting */
+-#define MGC_M_CONFIGDATA_BIGENDIAN      0x20
+-#define MGC_M_CONFIGDATA_HBRXE          0x10    /* HB-ISO for RX */
+-#define MGC_M_CONFIGDATA_HBTXE          0x08    /* HB-ISO for TX */
+-#define MGC_M_CONFIGDATA_DYNFIFO        0x04    /* dynamic FIFO sizing */
+-#define MGC_M_CONFIGDATA_SOFTCONE       0x02    /* SoftConnect */
+-#define MGC_M_CONFIGDATA_UTMIDW         0x01    /* Width, 0 => 8b, 1 => 16b */
 -
--    /* RX interrupt in the MUSB */
--    if (s->usbip_intr & 0xffff0000 & ~s->usbip_mask)
--        s->intr |= TUSB_INT_SRC_USB_IP_RX;
--    else
--        s->intr &= ~TUSB_INT_SRC_USB_IP_RX;
+-/* TXCSR in Peripheral and Host mode */
+-#define MGC_M_TXCSR_AUTOSET             0x8000
+-#define MGC_M_TXCSR_ISO                 0x4000
+-#define MGC_M_TXCSR_MODE                0x2000
+-#define MGC_M_TXCSR_DMAENAB             0x1000
+-#define MGC_M_TXCSR_FRCDATATOG          0x0800
+-#define MGC_M_TXCSR_DMAMODE             0x0400
+-#define MGC_M_TXCSR_CLRDATATOG          0x0040
+-#define MGC_M_TXCSR_FLUSHFIFO           0x0008
+-#define MGC_M_TXCSR_FIFONOTEMPTY        0x0002
+-#define MGC_M_TXCSR_TXPKTRDY            0x0001
 -
--    /* XXX: What about TUSB_INT_SRC_USB_IP_CORE?  */
+-/* TXCSR in Peripheral mode */
+-#define MGC_M_TXCSR_P_INCOMPTX          0x0080
+-#define MGC_M_TXCSR_P_SENTSTALL         0x0020
+-#define MGC_M_TXCSR_P_SENDSTALL         0x0010
+-#define MGC_M_TXCSR_P_UNDERRUN          0x0004
 -
--    tusb_intr_update(s);
--}
+-/* TXCSR in Host mode */
+-#define MGC_M_TXCSR_H_WR_DATATOGGLE     0x0200
+-#define MGC_M_TXCSR_H_DATATOGGLE        0x0100
+-#define MGC_M_TXCSR_H_NAKTIMEOUT        0x0080
+-#define MGC_M_TXCSR_H_RXSTALL           0x0020
+-#define MGC_M_TXCSR_H_ERROR             0x0004
 -
--static void tusb_dma_intr_update(TUSBState *s)
--{
--    if (s->dma_intr & ~s->dma_mask)
--        s->intr |= TUSB_INT_SRC_TXRX_DMA_DONE;
--    else
--        s->intr &= ~TUSB_INT_SRC_TXRX_DMA_DONE;
+-/* RXCSR in Peripheral and Host mode */
+-#define MGC_M_RXCSR_AUTOCLEAR           0x8000
+-#define MGC_M_RXCSR_DMAENAB             0x2000
+-#define MGC_M_RXCSR_DISNYET             0x1000
+-#define MGC_M_RXCSR_DMAMODE             0x0800
+-#define MGC_M_RXCSR_INCOMPRX            0x0100
+-#define MGC_M_RXCSR_CLRDATATOG          0x0080
+-#define MGC_M_RXCSR_FLUSHFIFO           0x0010
+-#define MGC_M_RXCSR_DATAERROR           0x0008
+-#define MGC_M_RXCSR_FIFOFULL            0x0002
+-#define MGC_M_RXCSR_RXPKTRDY            0x0001
 -
--    tusb_intr_update(s);
--}
+-/* RXCSR in Peripheral mode */
+-#define MGC_M_RXCSR_P_ISO               0x4000
+-#define MGC_M_RXCSR_P_SENTSTALL         0x0040
+-#define MGC_M_RXCSR_P_SENDSTALL         0x0020
+-#define MGC_M_RXCSR_P_OVERRUN           0x0004
 -
--static void tusb_gpio_intr_update(TUSBState *s)
--{
--    /* TODO: How is this signalled?  */
--}
+-/* RXCSR in Host mode */
+-#define MGC_M_RXCSR_H_AUTOREQ           0x4000
+-#define MGC_M_RXCSR_H_WR_DATATOGGLE     0x0400
+-#define MGC_M_RXCSR_H_DATATOGGLE        0x0200
+-#define MGC_M_RXCSR_H_RXSTALL           0x0040
+-#define MGC_M_RXCSR_H_REQPKT            0x0020
+-#define MGC_M_RXCSR_H_ERROR             0x0004
 -
--static uint32_t tusb_async_readb(void *opaque, hwaddr addr)
--{
--    TUSBState *s = (TUSBState *) opaque;
+-/* HUBADDR */
+-#define MGC_M_HUBADDR_MULTI_TT          0x80
 -
--    switch (addr & 0xfff) {
--    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
--        return musb_read[0](s->musb, addr & 0x1ff);
+-/* ULPI: Added in HDRC 1.9(?) & MHDRC 1.4 */
+-#define MGC_M_ULPI_VBCTL_USEEXTVBUSIND  0x02
+-#define MGC_M_ULPI_VBCTL_USEEXTVBUS     0x01
+-#define MGC_M_ULPI_REGCTL_INT_ENABLE    0x08
+-#define MGC_M_ULPI_REGCTL_READNOTWRITE  0x04
+-#define MGC_M_ULPI_REGCTL_COMPLETE      0x02
+-#define MGC_M_ULPI_REGCTL_REG           0x01
 -
--    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
--        return musb_read[0](s->musb, 0x20 + ((addr >> 3) & 0x3c));
--    }
+-/* #define MUSB_DEBUG */
 -
--    printf("%s: unknown register at %03x\n",
--                    __func__, (int) (addr & 0xfff));
--    return 0;
--}
--
--static uint32_t tusb_async_readh(void *opaque, hwaddr addr)
--{
--    TUSBState *s = (TUSBState *) opaque;
--
--    switch (addr & 0xfff) {
--    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
--        return musb_read[1](s->musb, addr & 0x1ff);
--
--    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
--        return musb_read[1](s->musb, 0x20 + ((addr >> 3) & 0x3c));
--    }
--
--    printf("%s: unknown register at %03x\n",
--                    __func__, (int) (addr & 0xfff));
--    return 0;
--}
--
--static uint32_t tusb_async_readw(void *opaque, hwaddr addr)
--{
--    TUSBState *s = (TUSBState *) opaque;
--    int offset = addr & 0xfff;
--    int epnum;
--    uint32_t ret;
--
--    switch (offset) {
--    case TUSB_DEV_CONF:
--        return s->dev_config;
--
--    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
--        return musb_read[2](s->musb, offset & 0x1ff);
--
--    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
--        return musb_read[2](s->musb, 0x20 + ((addr >> 3) & 0x3c));
--
--    case TUSB_PHY_OTG_CTRL_ENABLE:
--    case TUSB_PHY_OTG_CTRL:
--        return 0x00;	/* TODO */
--
--    case TUSB_DEV_OTG_STAT:
--        ret = s->otg_status;
--#if 0
--        if (!(s->prcm_mngmt & TUSB_PRCM_MNGMT_OTG_VBUS_DET_EN))
--            ret &= ~TUSB_DEV_OTG_STAT_VBUS_VALID;
+-#ifdef MUSB_DEBUG
+-#define TRACE(fmt, ...) fprintf(stderr, "%s@%d: " fmt "\n", __func__, \
+-                                __LINE__, ##__VA_ARGS__)
+-#else
+-#define TRACE(...)
 -#endif
--        return ret;
--    case TUSB_DEV_OTG_TIMER:
--        return s->otg_timer_val;
 -
--    case TUSB_PRCM_REV:
--        return 0x20;
--    case TUSB_PRCM_CONF:
--        return s->prcm_config;
--    case TUSB_PRCM_MNGMT:
--        return s->prcm_mngmt;
--    case TUSB_PRCM_WAKEUP_SOURCE:
--    case TUSB_PRCM_WAKEUP_CLEAR:	/* TODO: What does this one return?  */
--        return 0x00000000;
--    case TUSB_PRCM_WAKEUP_MASK:
--        return s->wkup_mask;
 -
--    case TUSB_PULLUP_1_CTRL:
--        return s->pullup[0];
--    case TUSB_PULLUP_2_CTRL:
--        return s->pullup[1];
+-static void musb_attach(USBPort *port);
+-static void musb_detach(USBPort *port);
+-static void musb_child_detach(USBPort *port, USBDevice *child);
+-static void musb_schedule_cb(USBPort *port, USBPacket *p);
+-static void musb_async_cancel_device(MUSBState *s, USBDevice *dev);
 -
--    case TUSB_INT_CTRL_REV:
--        return 0x20;
--    case TUSB_INT_CTRL_CONF:
--        return s->control_config;
--
--    case TUSB_USBIP_INT_SRC:
--    case TUSB_USBIP_INT_SET:	/* TODO: What do these two return?  */
--    case TUSB_USBIP_INT_CLEAR:
--        return s->usbip_intr;
--    case TUSB_USBIP_INT_MASK:
--        return s->usbip_mask;
--
--    case TUSB_DMA_INT_SRC:
--    case TUSB_DMA_INT_SET:	/* TODO: What do these two return?  */
--    case TUSB_DMA_INT_CLEAR:
--        return s->dma_intr;
--    case TUSB_DMA_INT_MASK:
--        return s->dma_mask;
--
--    case TUSB_GPIO_INT_SRC:	/* TODO: What do these two return?  */
--    case TUSB_GPIO_INT_SET:
--    case TUSB_GPIO_INT_CLEAR:
--        return s->gpio_intr;
--    case TUSB_GPIO_INT_MASK:
--        return s->gpio_mask;
--
--    case TUSB_INT_SRC:
--    case TUSB_INT_SRC_SET:	/* TODO: What do these two return?  */
--    case TUSB_INT_SRC_CLEAR:
--        return s->intr;
--    case TUSB_INT_MASK:
--        return s->mask;
--
--    case TUSB_GPIO_REV:
--        return 0x30;
--    case TUSB_GPIO_CONF:
--        return s->gpio_config;
--
--    case TUSB_DMA_CTRL_REV:
--        return 0x30;
--    case TUSB_DMA_REQ_CONF:
--        return s->dma_config;
--    case TUSB_EP0_CONF:
--        return s->ep0_config;
--    case TUSB_EP_IN_SIZE ... (TUSB_EP_IN_SIZE + 0x3b):
--        epnum = (offset - TUSB_EP_IN_SIZE) >> 2;
--        return s->tx_config[epnum];
--    case TUSB_DMA_EP_MAP:
--        return s->dma_map;
--    case TUSB_EP_OUT_SIZE ... (TUSB_EP_OUT_SIZE + 0x3b):
--        epnum = (offset - TUSB_EP_OUT_SIZE) >> 2;
--        return s->rx_config[epnum];
--    case TUSB_EP_MAX_PACKET_SIZE_OFFSET ...
--            (TUSB_EP_MAX_PACKET_SIZE_OFFSET + 0x3b):
--        return 0x00000000;	/* TODO */
--    case TUSB_WAIT_COUNT:
--        return 0x00;		/* TODO */
--
--    case TUSB_SCRATCH_PAD:
--        return s->scratch;
--
--    case TUSB_PROD_TEST_RESET:
--        return s->test_reset;
--
--    /* DIE IDs */
--    case TUSB_DIDR1_LO:
--        return 0xa9453c59;
--    case TUSB_DIDR1_HI:
--        return 0x54059adf;
--    }
--
--    printf("%s: unknown register at %03x\n", __func__, offset);
--    return 0;
--}
--
--static void tusb_async_writeb(void *opaque, hwaddr addr,
--                uint32_t value)
--{
--    TUSBState *s = (TUSBState *) opaque;
--
--    switch (addr & 0xfff) {
--    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
--        musb_write[0](s->musb, addr & 0x1ff, value);
--        break;
--
--    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
--        musb_write[0](s->musb, 0x20 + ((addr >> 3) & 0x3c), value);
--        break;
--
--    default:
--        printf("%s: unknown register at %03x\n",
--                        __func__, (int) (addr & 0xfff));
--        return;
--    }
--}
--
--static void tusb_async_writeh(void *opaque, hwaddr addr,
--                uint32_t value)
--{
--    TUSBState *s = (TUSBState *) opaque;
--
--    switch (addr & 0xfff) {
--    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
--        musb_write[1](s->musb, addr & 0x1ff, value);
--        break;
--
--    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
--        musb_write[1](s->musb, 0x20 + ((addr >> 3) & 0x3c), value);
--        break;
--
--    default:
--        printf("%s: unknown register at %03x\n",
--                        __func__, (int) (addr & 0xfff));
--        return;
--    }
--}
--
--static void tusb_async_writew(void *opaque, hwaddr addr,
--                uint32_t value)
--{
--    TUSBState *s = (TUSBState *) opaque;
--    int offset = addr & 0xfff;
--    int epnum;
--
--    switch (offset) {
--    case TUSB_VLYNQ_CTRL:
--        break;
--
--    case TUSB_BASE_OFFSET ... (TUSB_BASE_OFFSET | 0x1ff):
--        musb_write[2](s->musb, offset & 0x1ff, value);
--        break;
--
--    case TUSB_FIFO_BASE ... (TUSB_FIFO_BASE | 0x1ff):
--        musb_write[2](s->musb, 0x20 + ((addr >> 3) & 0x3c), value);
--        break;
--
--    case TUSB_DEV_CONF:
--        s->dev_config = value;
--        s->host_mode = (value & TUSB_DEV_CONF_USB_HOST_MODE);
--        if (value & TUSB_DEV_CONF_PROD_TEST_MODE)
--            hw_error("%s: Product Test mode not allowed\n", __func__);
--        break;
--
--    case TUSB_PHY_OTG_CTRL_ENABLE:
--    case TUSB_PHY_OTG_CTRL:
--        return;		/* TODO */
--    case TUSB_DEV_OTG_TIMER:
--        s->otg_timer_val = value;
--        if (value & TUSB_DEV_OTG_TIMER_ENABLE)
--            timer_mod(s->otg_timer, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
--                            muldiv64(TUSB_DEV_OTG_TIMER_VAL(value),
--                                     NANOSECONDS_PER_SECOND, TUSB_DEVCLOCK));
--        else
--            timer_del(s->otg_timer);
--        break;
--
--    case TUSB_PRCM_CONF:
--        s->prcm_config = value;
--        break;
--    case TUSB_PRCM_MNGMT:
--        s->prcm_mngmt = value;
--        break;
--    case TUSB_PRCM_WAKEUP_CLEAR:
--        break;
--    case TUSB_PRCM_WAKEUP_MASK:
--        s->wkup_mask = value;
--        break;
--
--    case TUSB_PULLUP_1_CTRL:
--        s->pullup[0] = value;
--        break;
--    case TUSB_PULLUP_2_CTRL:
--        s->pullup[1] = value;
--        break;
--    case TUSB_INT_CTRL_CONF:
--        s->control_config = value;
--        tusb_intr_update(s);
--        break;
--
--    case TUSB_USBIP_INT_SET:
--        s->usbip_intr |= value;
--        tusb_usbip_intr_update(s);
--        break;
--    case TUSB_USBIP_INT_CLEAR:
--        s->usbip_intr &= ~value;
--        tusb_usbip_intr_update(s);
--        musb_core_intr_clear(s->musb, ~value);
--        break;
--    case TUSB_USBIP_INT_MASK:
--        s->usbip_mask = value;
--        tusb_usbip_intr_update(s);
--        break;
--
--    case TUSB_DMA_INT_SET:
--        s->dma_intr |= value;
--        tusb_dma_intr_update(s);
--        break;
--    case TUSB_DMA_INT_CLEAR:
--        s->dma_intr &= ~value;
--        tusb_dma_intr_update(s);
--        break;
--    case TUSB_DMA_INT_MASK:
--        s->dma_mask = value;
--        tusb_dma_intr_update(s);
--        break;
--
--    case TUSB_GPIO_INT_SET:
--        s->gpio_intr |= value;
--        tusb_gpio_intr_update(s);
--        break;
--    case TUSB_GPIO_INT_CLEAR:
--        s->gpio_intr &= ~value;
--        tusb_gpio_intr_update(s);
--        break;
--    case TUSB_GPIO_INT_MASK:
--        s->gpio_mask = value;
--        tusb_gpio_intr_update(s);
--        break;
--
--    case TUSB_INT_SRC_SET:
--        s->intr |= value;
--        tusb_intr_update(s);
--        break;
--    case TUSB_INT_SRC_CLEAR:
--        s->intr &= ~value;
--        tusb_intr_update(s);
--        break;
--    case TUSB_INT_MASK:
--        s->mask = value;
--        tusb_intr_update(s);
--        break;
--
--    case TUSB_GPIO_CONF:
--        s->gpio_config = value;
--        break;
--    case TUSB_DMA_REQ_CONF:
--        s->dma_config = value;
--        break;
--    case TUSB_EP0_CONF:
--        s->ep0_config = value & 0x1ff;
--        musb_set_size(s->musb, 0, TUSB_EP0_CONFIG_XFR_SIZE(value),
--                        value & TUSB_EP0_CONFIG_DIR_TX);
--        break;
--    case TUSB_EP_IN_SIZE ... (TUSB_EP_IN_SIZE + 0x3b):
--        epnum = (offset - TUSB_EP_IN_SIZE) >> 2;
--        s->tx_config[epnum] = value;
--        musb_set_size(s->musb, epnum + 1, TUSB_EP_CONFIG_XFR_SIZE(value), 1);
--        break;
--    case TUSB_DMA_EP_MAP:
--        s->dma_map = value;
--        break;
--    case TUSB_EP_OUT_SIZE ... (TUSB_EP_OUT_SIZE + 0x3b):
--        epnum = (offset - TUSB_EP_OUT_SIZE) >> 2;
--        s->rx_config[epnum] = value;
--        musb_set_size(s->musb, epnum + 1, TUSB_EP_CONFIG_XFR_SIZE(value), 0);
--        break;
--    case TUSB_EP_MAX_PACKET_SIZE_OFFSET ...
--            (TUSB_EP_MAX_PACKET_SIZE_OFFSET + 0x3b):
--        return;		/* TODO */
--    case TUSB_WAIT_COUNT:
--        return;		/* TODO */
--
--    case TUSB_SCRATCH_PAD:
--        s->scratch = value;
--        break;
--
--    case TUSB_PROD_TEST_RESET:
--        s->test_reset = value;
--        break;
--
--    default:
--        printf("%s: unknown register at %03x\n", __func__, offset);
--        return;
--    }
--}
--
--static uint64_t tusb_async_readfn(void *opaque, hwaddr addr, unsigned size)
--{
--    switch (size) {
--    case 1:
--        return tusb_async_readb(opaque, addr);
--    case 2:
--        return tusb_async_readh(opaque, addr);
--    case 4:
--        return tusb_async_readw(opaque, addr);
--    default:
--        g_assert_not_reached();
--    }
--}
--
--static void tusb_async_writefn(void *opaque, hwaddr addr,
--                               uint64_t value, unsigned size)
--{
--    switch (size) {
--    case 1:
--        tusb_async_writeb(opaque, addr, value);
--        break;
--    case 2:
--        tusb_async_writeh(opaque, addr, value);
--        break;
--    case 4:
--        tusb_async_writew(opaque, addr, value);
--        break;
--    default:
--        g_assert_not_reached();
--    }
--}
--
--static const MemoryRegionOps tusb_async_ops = {
--    .read = tusb_async_readfn,
--    .write = tusb_async_writefn,
--    .valid.min_access_size = 1,
--    .valid.max_access_size = 4,
--    .endianness = DEVICE_NATIVE_ENDIAN,
+-static USBPortOps musb_port_ops = {
+-    .attach = musb_attach,
+-    .detach = musb_detach,
+-    .child_detach = musb_child_detach,
+-    .complete = musb_schedule_cb,
 -};
 -
--static void tusb_otg_tick(void *opaque)
+-static USBBusOps musb_bus_ops = {
+-};
+-
+-typedef struct MUSBPacket MUSBPacket;
+-typedef struct MUSBEndPoint MUSBEndPoint;
+-
+-struct MUSBPacket {
+-    USBPacket p;
+-    MUSBEndPoint *ep;
+-    int dir;
+-};
+-
+-struct MUSBEndPoint {
+-    uint16_t faddr[2];
+-    uint8_t haddr[2];
+-    uint8_t hport[2];
+-    uint16_t csr[2];
+-    uint16_t maxp[2];
+-    uint16_t rxcount;
+-    uint8_t type[2];
+-    uint8_t interval[2];
+-    uint8_t config;
+-    uint8_t fifosize;
+-    int timeout[2];     /* Always in microframes */
+-
+-    uint8_t *buf[2];
+-    int fifolen[2];
+-    int fifostart[2];
+-    int fifoaddr[2];
+-    MUSBPacket packey[2];
+-    int status[2];
+-    int ext_size[2];
+-
+-    /* For callbacks' use */
+-    int epnum;
+-    int interrupt[2];
+-    MUSBState *musb;
+-    USBCallback *delayed_cb[2];
+-    QEMUTimer *intv_timer[2];
+-};
+-
+-struct MUSBState {
+-    qemu_irq irqs[musb_irq_max];
+-    USBBus bus;
+-    USBPort port;
+-
+-    int idx;
+-    uint8_t devctl;
+-    uint8_t power;
+-    uint8_t faddr;
+-
+-    uint8_t intr;
+-    uint8_t mask;
+-    uint16_t tx_intr;
+-    uint16_t tx_mask;
+-    uint16_t rx_intr;
+-    uint16_t rx_mask;
+-
+-    int setup_len;
+-    int session;
+-
+-    uint8_t buf[0x8000];
+-
+-        /* Duplicating the world since 2008!...  probably we should have 32
+-         * logical, single endpoints instead.  */
+-    MUSBEndPoint ep[16];
+-};
+-
+-void musb_reset(MUSBState *s)
 -{
--    TUSBState *s = (TUSBState *) opaque;
--
--    s->otg_timer_val = 0;
--    s->intr |= TUSB_INT_SRC_OTG_TIMEOUT;
--    tusb_intr_update(s);
--}
--
--static void tusb_power_tick(void *opaque)
--{
--    TUSBState *s = (TUSBState *) opaque;
--
--    if (s->power) {
--        s->intr_ok = ~0;
--        tusb_intr_update(s);
--    }
--}
--
--static void tusb_musb_core_intr(void *opaque, int source, int level)
--{
--    TUSBState *s = (TUSBState *) opaque;
--    uint16_t otg_status = s->otg_status;
--
--    switch (source) {
--    case musb_set_vbus:
--        if (level)
--            otg_status |= TUSB_DEV_OTG_STAT_VBUS_VALID;
--        else
--            otg_status &= ~TUSB_DEV_OTG_STAT_VBUS_VALID;
--
--        /* XXX: only if TUSB_PHY_OTG_CTRL_OTG_VBUS_DET_EN set?  */
--        /* XXX: only if TUSB_PRCM_MNGMT_OTG_VBUS_DET_EN set?  */
--        if (s->otg_status != otg_status) {
--            s->otg_status = otg_status;
--            s->intr |= TUSB_INT_SRC_VBUS_SENSE_CHNG;
--            tusb_intr_update(s);
--        }
--        break;
--
--    case musb_set_session:
--        /* XXX: only if TUSB_PHY_OTG_CTRL_OTG_SESS_END_EN set?  */
--        /* XXX: only if TUSB_PRCM_MNGMT_OTG_SESS_END_EN set?  */
--        if (level) {
--            s->otg_status |= TUSB_DEV_OTG_STAT_SESS_VALID;
--            s->otg_status &= ~TUSB_DEV_OTG_STAT_SESS_END;
--        } else {
--            s->otg_status &= ~TUSB_DEV_OTG_STAT_SESS_VALID;
--            s->otg_status |= TUSB_DEV_OTG_STAT_SESS_END;
--        }
--
--        /* XXX: some IRQ or anything?  */
--        break;
--
--    case musb_irq_tx:
--    case musb_irq_rx:
--        s->usbip_intr = musb_core_intr_get(s->musb);
--        /* Fall through.  */
--    default:
--        if (level)
--            s->intr |= 1 << source;
--        else
--            s->intr &= ~(1 << source);
--        tusb_intr_update(s);
--        break;
--    }
--}
--
--static void tusb6010_power(TUSBState *s, int on)
--{
--    if (!on) {
--        s->power = 0;
--    } else if (!s->power && on) {
--        s->power = 1;
--        /* Pull the interrupt down after TUSB6010 comes up.  */
--        s->intr_ok = 0;
--        tusb_intr_update(s);
--        timer_mod(s->pwr_timer, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
--                  NANOSECONDS_PER_SECOND / 2);
--    }
--}
--
--static void tusb6010_irq(void *opaque, int source, int level)
--{
--    if (source) {
--        tusb_musb_core_intr(opaque, source - 1, level);
--    } else {
--        tusb6010_power(opaque, level);
--    }
--}
--
--static void tusb6010_reset(DeviceState *dev)
--{
--    TUSBState *s = TUSB6010(dev);
 -    int i;
 -
--    s->test_reset = TUSB_PROD_TEST_RESET_VAL;
--    s->host_mode = 0;
--    s->dev_config = 0;
--    s->otg_status = 0;	/* !TUSB_DEV_OTG_STAT_ID_STATUS means host mode */
--    s->power = 0;
--    s->mask = 0xffffffff;
--    s->intr = 0x00000000;
--    s->otg_timer_val = 0;
--    s->scratch = 0;
--    s->prcm_config = 0;
--    s->prcm_mngmt = 0;
--    s->intr_ok = 0;
--    s->usbip_intr = 0;
--    s->usbip_mask = 0;
--    s->gpio_intr = 0;
--    s->gpio_mask = 0;
--    s->gpio_config = 0;
--    s->dma_intr = 0;
--    s->dma_mask = 0;
--    s->dma_map = 0;
--    s->dma_config = 0;
--    s->ep0_config = 0;
--    s->wkup_mask = 0;
--    s->pullup[0] = s->pullup[1] = 0;
--    s->control_config = 0;
--    for (i = 0; i < 15; i++) {
--        s->rx_config[i] = s->tx_config[i] = 0;
+-    s->faddr = 0x00;
+-    s->devctl = 0;
+-    s->power = MGC_M_POWER_HSENAB;
+-    s->tx_intr = 0x0000;
+-    s->rx_intr = 0x0000;
+-    s->tx_mask = 0xffff;
+-    s->rx_mask = 0xffff;
+-    s->intr = 0x00;
+-    s->mask = 0x06;
+-    s->idx = 0;
+-
+-    s->setup_len = 0;
+-    s->session = 0;
+-    memset(s->buf, 0, sizeof(s->buf));
+-
+-    /* TODO: _DW */
+-    s->ep[0].config = MGC_M_CONFIGDATA_SOFTCONE | MGC_M_CONFIGDATA_DYNFIFO;
+-    for (i = 0; i < 16; i ++) {
+-        s->ep[i].fifosize = 64;
+-        s->ep[i].maxp[0] = 0x40;
+-        s->ep[i].maxp[1] = 0x40;
+-        s->ep[i].musb = s;
+-        s->ep[i].epnum = i;
+-        usb_packet_init(&s->ep[i].packey[0].p);
+-        usb_packet_init(&s->ep[i].packey[1].p);
 -    }
--    musb_reset(s->musb);
 -}
 -
--static void tusb6010_realize(DeviceState *dev, Error **errp)
+-struct MUSBState *musb_init(DeviceState *parent_device, int gpio_base)
 -{
--    TUSBState *s = TUSB6010(dev);
--    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+-    MUSBState *s = g_malloc0(sizeof(*s));
+-    int i;
 -
--    s->otg_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, tusb_otg_tick, s);
--    s->pwr_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, tusb_power_tick, s);
--    memory_region_init_io(&s->iomem[1], OBJECT(s), &tusb_async_ops, s,
--                          "tusb-async", UINT32_MAX);
--    sysbus_init_mmio(sbd, &s->iomem[0]);
--    sysbus_init_mmio(sbd, &s->iomem[1]);
--    sysbus_init_irq(sbd, &s->irq);
--    qdev_init_gpio_in(dev, tusb6010_irq, musb_irq_max + 1);
--    s->musb = musb_init(dev, 1);
+-    for (i = 0; i < musb_irq_max; i++) {
+-        s->irqs[i] = qdev_get_gpio_in(parent_device, gpio_base + i);
+-    }
+-
+-    musb_reset(s);
+-
+-    usb_bus_new(&s->bus, sizeof(s->bus), &musb_bus_ops, parent_device);
+-    usb_register_port(&s->bus, &s->port, s, 0, &musb_port_ops,
+-                      USB_SPEED_MASK_LOW | USB_SPEED_MASK_FULL);
+-
+-    return s;
 -}
 -
--static void tusb6010_class_init(ObjectClass *klass, void *data)
+-static void musb_vbus_set(MUSBState *s, int level)
 -{
--    DeviceClass *dc = DEVICE_CLASS(klass);
+-    if (level)
+-        s->devctl |= 3 << MGC_S_DEVCTL_VBUS;
+-    else
+-        s->devctl &= ~MGC_M_DEVCTL_VBUS;
 -
--    dc->realize = tusb6010_realize;
--    device_class_set_legacy_reset(dc, tusb6010_reset);
+-    qemu_set_irq(s->irqs[musb_set_vbus], level);
 -}
 -
--static const TypeInfo tusb6010_info = {
--    .name          = TYPE_TUSB6010,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(TUSBState),
--    .class_init    = tusb6010_class_init,
+-static void musb_intr_set(MUSBState *s, int line, int level)
+-{
+-    if (!level) {
+-        s->intr &= ~(1 << line);
+-        qemu_irq_lower(s->irqs[line]);
+-    } else if (s->mask & (1 << line)) {
+-        s->intr |= 1 << line;
+-        qemu_irq_raise(s->irqs[line]);
+-    }
+-}
+-
+-static void musb_tx_intr_set(MUSBState *s, int line, int level)
+-{
+-    if (!level) {
+-        s->tx_intr &= ~(1 << line);
+-        if (!s->tx_intr)
+-            qemu_irq_lower(s->irqs[musb_irq_tx]);
+-    } else if (s->tx_mask & (1 << line)) {
+-        s->tx_intr |= 1 << line;
+-        qemu_irq_raise(s->irqs[musb_irq_tx]);
+-    }
+-}
+-
+-static void musb_rx_intr_set(MUSBState *s, int line, int level)
+-{
+-    if (line) {
+-        if (!level) {
+-            s->rx_intr &= ~(1 << line);
+-            if (!s->rx_intr)
+-                qemu_irq_lower(s->irqs[musb_irq_rx]);
+-        } else if (s->rx_mask & (1 << line)) {
+-            s->rx_intr |= 1 << line;
+-            qemu_irq_raise(s->irqs[musb_irq_rx]);
+-        }
+-    } else
+-        musb_tx_intr_set(s, line, level);
+-}
+-
+-uint32_t musb_core_intr_get(MUSBState *s)
+-{
+-    return (s->rx_intr << 15) | s->tx_intr;
+-}
+-
+-void musb_core_intr_clear(MUSBState *s, uint32_t mask)
+-{
+-    if (s->rx_intr) {
+-        s->rx_intr &= mask >> 15;
+-        if (!s->rx_intr)
+-            qemu_irq_lower(s->irqs[musb_irq_rx]);
+-    }
+-
+-    if (s->tx_intr) {
+-        s->tx_intr &= mask & 0xffff;
+-        if (!s->tx_intr)
+-            qemu_irq_lower(s->irqs[musb_irq_tx]);
+-    }
+-}
+-
+-void musb_set_size(MUSBState *s, int epnum, int size, int is_tx)
+-{
+-    s->ep[epnum].ext_size[!is_tx] = size;
+-    s->ep[epnum].fifostart[0] = 0;
+-    s->ep[epnum].fifostart[1] = 0;
+-    s->ep[epnum].fifolen[0] = 0;
+-    s->ep[epnum].fifolen[1] = 0;
+-}
+-
+-static void musb_session_update(MUSBState *s, int prev_dev, int prev_sess)
+-{
+-    int detect_prev = prev_dev && prev_sess;
+-    int detect = !!s->port.dev && s->session;
+-
+-    if (detect && !detect_prev) {
+-        /* Let's skip the ID pin sense and VBUS sense formalities and
+-         * and signal a successful SRP directly.  This should work at least
+-         * for the Linux driver stack.  */
+-        musb_intr_set(s, musb_irq_connect, 1);
+-
+-        if (s->port.dev->speed == USB_SPEED_LOW) {
+-            s->devctl &= ~MGC_M_DEVCTL_FSDEV;
+-            s->devctl |= MGC_M_DEVCTL_LSDEV;
+-        } else {
+-            s->devctl |= MGC_M_DEVCTL_FSDEV;
+-            s->devctl &= ~MGC_M_DEVCTL_LSDEV;
+-        }
+-
+-        /* A-mode?  */
+-        s->devctl &= ~MGC_M_DEVCTL_BDEVICE;
+-
+-        /* Host-mode bit?  */
+-        s->devctl |= MGC_M_DEVCTL_HM;
+-#if 1
+-        musb_vbus_set(s, 1);
+-#endif
+-    } else if (!detect && detect_prev) {
+-#if 1
+-        musb_vbus_set(s, 0);
+-#endif
+-    }
+-}
+-
+-/* Attach or detach a device on our only port.  */
+-static void musb_attach(USBPort *port)
+-{
+-    MUSBState *s = (MUSBState *) port->opaque;
+-
+-    musb_intr_set(s, musb_irq_vbus_request, 1);
+-    musb_session_update(s, 0, s->session);
+-}
+-
+-static void musb_detach(USBPort *port)
+-{
+-    MUSBState *s = (MUSBState *) port->opaque;
+-
+-    musb_async_cancel_device(s, port->dev);
+-
+-    musb_intr_set(s, musb_irq_disconnect, 1);
+-    musb_session_update(s, 1, s->session);
+-}
+-
+-static void musb_child_detach(USBPort *port, USBDevice *child)
+-{
+-    MUSBState *s = (MUSBState *) port->opaque;
+-
+-    musb_async_cancel_device(s, child);
+-}
+-
+-static void musb_cb_tick0(void *opaque)
+-{
+-    MUSBEndPoint *ep = (MUSBEndPoint *) opaque;
+-
+-    ep->delayed_cb[0](&ep->packey[0].p, opaque);
+-}
+-
+-static void musb_cb_tick1(void *opaque)
+-{
+-    MUSBEndPoint *ep = (MUSBEndPoint *) opaque;
+-
+-    ep->delayed_cb[1](&ep->packey[1].p, opaque);
+-}
+-
+-#define musb_cb_tick    (dir ? musb_cb_tick1 : musb_cb_tick0)
+-
+-static void musb_schedule_cb(USBPort *port, USBPacket *packey)
+-{
+-    MUSBPacket *p = container_of(packey, MUSBPacket, p);
+-    MUSBEndPoint *ep = p->ep;
+-    int dir = p->dir;
+-    int timeout = 0;
+-
+-    if (ep->status[dir] == USB_RET_NAK)
+-        timeout = ep->timeout[dir];
+-    else if (ep->interrupt[dir])
+-        timeout = 8;
+-    else {
+-        musb_cb_tick(ep);
+-        return;
+-    }
+-
+-    if (!ep->intv_timer[dir])
+-        ep->intv_timer[dir] = timer_new_ns(QEMU_CLOCK_VIRTUAL, musb_cb_tick, ep);
+-
+-    timer_mod(ep->intv_timer[dir], qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
+-                   muldiv64(timeout, NANOSECONDS_PER_SECOND, 8000));
+-}
+-
+-static int musb_timeout(int ttype, int speed, int val)
+-{
+-#if 1
+-    return val << 3;
+-#endif
+-
+-    switch (ttype) {
+-    case USB_ENDPOINT_XFER_CONTROL:
+-        if (val < 2)
+-            return 0;
+-        else if (speed == USB_SPEED_HIGH)
+-            return 1 << (val - 1);
+-        else
+-            return 8 << (val - 1);
+-
+-    case USB_ENDPOINT_XFER_INT:
+-        if (speed == USB_SPEED_HIGH)
+-            if (val < 2)
+-                return 0;
+-            else
+-                return 1 << (val - 1);
+-        else
+-            return val << 3;
+-
+-    case USB_ENDPOINT_XFER_BULK:
+-    case USB_ENDPOINT_XFER_ISOC:
+-        if (val < 2)
+-            return 0;
+-        else if (speed == USB_SPEED_HIGH)
+-            return 1 << (val - 1);
+-        else
+-            return 8 << (val - 1);
+-        /* TODO: what with low-speed Bulk and Isochronous?  */
+-    }
+-
+-    hw_error("bad interval\n");
+-}
+-
+-static void musb_packet(MUSBState *s, MUSBEndPoint *ep,
+-                int epnum, int pid, int len, USBCallback cb, int dir)
+-{
+-    USBDevice *dev;
+-    USBEndpoint *uep;
+-    int idx = epnum && dir;
+-    int id;
+-    int ttype;
+-
+-    /* ep->type[0,1] contains:
+-     * in bits 7:6 the speed (0 - invalid, 1 - high, 2 - full, 3 - slow)
+-     * in bits 5:4 the transfer type (BULK / INT)
+-     * in bits 3:0 the EP num
+-     */
+-    ttype = epnum ? (ep->type[idx] >> 4) & 3 : 0;
+-
+-    ep->timeout[dir] = musb_timeout(ttype,
+-                    ep->type[idx] >> 6, ep->interval[idx]);
+-    ep->interrupt[dir] = ttype == USB_ENDPOINT_XFER_INT;
+-    ep->delayed_cb[dir] = cb;
+-
+-    /* A wild guess on the FADDR semantics... */
+-    dev = usb_find_device(&s->port, ep->faddr[idx]);
+-    if (dev == NULL) {
+-        return;
+-    }
+-    uep = usb_ep_get(dev, pid, ep->type[idx] & 0xf);
+-    id = pid | (dev->addr << 16) | (uep->nr << 8);
+-    usb_packet_setup(&ep->packey[dir].p, pid, uep, 0, id, false, true);
+-    usb_packet_addbuf(&ep->packey[dir].p, ep->buf[idx], len);
+-    ep->packey[dir].ep = ep;
+-    ep->packey[dir].dir = dir;
+-
+-    usb_handle_packet(dev, &ep->packey[dir].p);
+-
+-    if (ep->packey[dir].p.status == USB_RET_ASYNC) {
+-        usb_device_flush_ep_queue(dev, uep);
+-        ep->status[dir] = len;
+-        return;
+-    }
+-
+-    if (ep->packey[dir].p.status == USB_RET_SUCCESS) {
+-        ep->status[dir] = ep->packey[dir].p.actual_length;
+-    } else {
+-        ep->status[dir] = ep->packey[dir].p.status;
+-    }
+-    musb_schedule_cb(&s->port, &ep->packey[dir].p);
+-}
+-
+-static void musb_tx_packet_complete(USBPacket *packey, void *opaque)
+-{
+-    /* Unfortunately we can't use packey->devep because that's the remote
+-     * endpoint number and may be different than our local.  */
+-    MUSBEndPoint *ep = (MUSBEndPoint *) opaque;
+-    int epnum = ep->epnum;
+-    MUSBState *s = ep->musb;
+-
+-    ep->fifostart[0] = 0;
+-    ep->fifolen[0] = 0;
+-#ifdef CLEAR_NAK
+-    if (ep->status[0] != USB_RET_NAK) {
+-#endif
+-        if (epnum)
+-            ep->csr[0] &= ~(MGC_M_TXCSR_FIFONOTEMPTY | MGC_M_TXCSR_TXPKTRDY);
+-        else
+-            ep->csr[0] &= ~MGC_M_CSR0_TXPKTRDY;
+-#ifdef CLEAR_NAK
+-    }
+-#endif
+-
+-    /* Clear all of the error bits first */
+-    if (epnum)
+-        ep->csr[0] &= ~(MGC_M_TXCSR_H_ERROR | MGC_M_TXCSR_H_RXSTALL |
+-                        MGC_M_TXCSR_H_NAKTIMEOUT);
+-    else
+-        ep->csr[0] &= ~(MGC_M_CSR0_H_ERROR | MGC_M_CSR0_H_RXSTALL |
+-                        MGC_M_CSR0_H_NAKTIMEOUT | MGC_M_CSR0_H_NO_PING);
+-
+-    if (ep->status[0] == USB_RET_STALL) {
+-        /* Command not supported by target! */
+-        ep->status[0] = 0;
+-
+-        if (epnum)
+-            ep->csr[0] |= MGC_M_TXCSR_H_RXSTALL;
+-        else
+-            ep->csr[0] |= MGC_M_CSR0_H_RXSTALL;
+-    }
+-
+-    if (ep->status[0] == USB_RET_NAK) {
+-        ep->status[0] = 0;
+-
+-        /* NAK timeouts are only generated in Bulk transfers and
+-         * Data-errors in Isochronous.  */
+-        if (ep->interrupt[0]) {
+-            return;
+-        }
+-
+-        if (epnum)
+-            ep->csr[0] |= MGC_M_TXCSR_H_NAKTIMEOUT;
+-        else
+-            ep->csr[0] |= MGC_M_CSR0_H_NAKTIMEOUT;
+-    }
+-
+-    if (ep->status[0] < 0) {
+-        if (ep->status[0] == USB_RET_BABBLE)
+-            musb_intr_set(s, musb_irq_rst_babble, 1);
+-
+-        /* Pretend we've tried three times already and failed (in
+-         * case of USB_TOKEN_SETUP).  */
+-        if (epnum)
+-            ep->csr[0] |= MGC_M_TXCSR_H_ERROR;
+-        else
+-            ep->csr[0] |= MGC_M_CSR0_H_ERROR;
+-
+-        musb_tx_intr_set(s, epnum, 1);
+-        return;
+-    }
+-    /* TODO: check len for over/underruns of an OUT packet?  */
+-
+-#ifdef SETUPLEN_HACK
+-    if (!epnum && ep->packey[0].pid == USB_TOKEN_SETUP)
+-        s->setup_len = ep->packey[0].data[6];
+-#endif
+-
+-    /* In DMA mode: if no error, assert DMA request for this EP,
+-     * and skip the interrupt.  */
+-    musb_tx_intr_set(s, epnum, 1);
+-}
+-
+-static void musb_rx_packet_complete(USBPacket *packey, void *opaque)
+-{
+-    /* Unfortunately we can't use packey->devep because that's the remote
+-     * endpoint number and may be different than our local.  */
+-    MUSBEndPoint *ep = (MUSBEndPoint *) opaque;
+-    int epnum = ep->epnum;
+-    MUSBState *s = ep->musb;
+-
+-    ep->fifostart[1] = 0;
+-    ep->fifolen[1] = 0;
+-
+-#ifdef CLEAR_NAK
+-    if (ep->status[1] != USB_RET_NAK) {
+-#endif
+-        ep->csr[1] &= ~MGC_M_RXCSR_H_REQPKT;
+-        if (!epnum)
+-            ep->csr[0] &= ~MGC_M_CSR0_H_REQPKT;
+-#ifdef CLEAR_NAK
+-    }
+-#endif
+-
+-    /* Clear all of the imaginable error bits first */
+-    ep->csr[1] &= ~(MGC_M_RXCSR_H_ERROR | MGC_M_RXCSR_H_RXSTALL |
+-                    MGC_M_RXCSR_DATAERROR);
+-    if (!epnum)
+-        ep->csr[0] &= ~(MGC_M_CSR0_H_ERROR | MGC_M_CSR0_H_RXSTALL |
+-                        MGC_M_CSR0_H_NAKTIMEOUT | MGC_M_CSR0_H_NO_PING);
+-
+-    if (ep->status[1] == USB_RET_STALL) {
+-        ep->status[1] = 0;
+-
+-        ep->csr[1] |= MGC_M_RXCSR_H_RXSTALL;
+-        if (!epnum)
+-            ep->csr[0] |= MGC_M_CSR0_H_RXSTALL;
+-    }
+-
+-    if (ep->status[1] == USB_RET_NAK) {
+-        ep->status[1] = 0;
+-
+-        /* NAK timeouts are only generated in Bulk transfers and
+-         * Data-errors in Isochronous.  */
+-        if (ep->interrupt[1]) {
+-            musb_packet(s, ep, epnum, USB_TOKEN_IN,
+-                        packey->iov.size, musb_rx_packet_complete, 1);
+-            return;
+-        }
+-
+-        ep->csr[1] |= MGC_M_RXCSR_DATAERROR;
+-        if (!epnum)
+-            ep->csr[0] |= MGC_M_CSR0_H_NAKTIMEOUT;
+-    }
+-
+-    if (ep->status[1] < 0) {
+-        if (ep->status[1] == USB_RET_BABBLE) {
+-            musb_intr_set(s, musb_irq_rst_babble, 1);
+-            return;
+-        }
+-
+-        /* Pretend we've tried three times already and failed (in
+-         * case of a control transfer).  */
+-        ep->csr[1] |= MGC_M_RXCSR_H_ERROR;
+-        if (!epnum)
+-            ep->csr[0] |= MGC_M_CSR0_H_ERROR;
+-
+-        musb_rx_intr_set(s, epnum, 1);
+-        return;
+-    }
+-    /* TODO: check len for over/underruns of an OUT packet?  */
+-    /* TODO: perhaps make use of e->ext_size[1] here.  */
+-
+-    if (!(ep->csr[1] & (MGC_M_RXCSR_H_RXSTALL | MGC_M_RXCSR_DATAERROR))) {
+-        ep->csr[1] |= MGC_M_RXCSR_FIFOFULL | MGC_M_RXCSR_RXPKTRDY;
+-        if (!epnum)
+-            ep->csr[0] |= MGC_M_CSR0_RXPKTRDY;
+-
+-        ep->rxcount = ep->status[1]; /* XXX: MIN(packey->len, ep->maxp[1]); */
+-        /* In DMA mode: assert DMA request for this EP */
+-    }
+-
+-    /* Only if DMA has not been asserted */
+-    musb_rx_intr_set(s, epnum, 1);
+-}
+-
+-static void musb_async_cancel_device(MUSBState *s, USBDevice *dev)
+-{
+-    int ep, dir;
+-
+-    for (ep = 0; ep < 16; ep++) {
+-        for (dir = 0; dir < 2; dir++) {
+-            if (!usb_packet_is_inflight(&s->ep[ep].packey[dir].p) ||
+-                s->ep[ep].packey[dir].p.ep->dev != dev) {
+-                continue;
+-            }
+-            usb_cancel_packet(&s->ep[ep].packey[dir].p);
+-            /* status updates needed here? */
+-        }
+-    }
+-}
+-
+-static void musb_tx_rdy(MUSBState *s, int epnum)
+-{
+-    MUSBEndPoint *ep = s->ep + epnum;
+-    int pid;
+-    int total, valid = 0;
+-    TRACE("start %d, len %d",  ep->fifostart[0], ep->fifolen[0] );
+-    ep->fifostart[0] += ep->fifolen[0];
+-    ep->fifolen[0] = 0;
+-
+-    /* XXX: how's the total size of the packet retrieved exactly in
+-     * the generic case?  */
+-    total = ep->maxp[0] & 0x3ff;
+-
+-    if (ep->ext_size[0]) {
+-        total = ep->ext_size[0];
+-        ep->ext_size[0] = 0;
+-        valid = 1;
+-    }
+-
+-    /* If the packet is not fully ready yet, wait for a next segment.  */
+-    if (epnum && (ep->fifostart[0]) < total)
+-        return;
+-
+-    if (!valid)
+-        total = ep->fifostart[0];
+-
+-    pid = USB_TOKEN_OUT;
+-    if (!epnum && (ep->csr[0] & MGC_M_CSR0_H_SETUPPKT)) {
+-        pid = USB_TOKEN_SETUP;
+-        if (total != 8) {
+-            TRACE("illegal SETUPPKT length of %i bytes", total);
+-        }
+-        /* Controller should retry SETUP packets three times on errors
+-         * but it doesn't make sense for us to do that.  */
+-    }
+-
+-    musb_packet(s, ep, epnum, pid, total, musb_tx_packet_complete, 0);
+-}
+-
+-static void musb_rx_req(MUSBState *s, int epnum)
+-{
+-    MUSBEndPoint *ep = s->ep + epnum;
+-    int total;
+-
+-    /* If we already have a packet, which didn't fit into the
+-     * 64 bytes of the FIFO, only move the FIFO start and return. (Obsolete) */
+-    if (ep->packey[1].p.pid == USB_TOKEN_IN && ep->status[1] >= 0 &&
+-                    (ep->fifostart[1]) + ep->rxcount <
+-                    ep->packey[1].p.iov.size) {
+-        TRACE("0x%08x, %d",  ep->fifostart[1], ep->rxcount );
+-        ep->fifostart[1] += ep->rxcount;
+-        ep->fifolen[1] = 0;
+-
+-        ep->rxcount = MIN(ep->packey[0].p.iov.size - (ep->fifostart[1]),
+-                        ep->maxp[1]);
+-
+-        ep->csr[1] &= ~MGC_M_RXCSR_H_REQPKT;
+-        if (!epnum)
+-            ep->csr[0] &= ~MGC_M_CSR0_H_REQPKT;
+-
+-        /* Clear all of the error bits first */
+-        ep->csr[1] &= ~(MGC_M_RXCSR_H_ERROR | MGC_M_RXCSR_H_RXSTALL |
+-                        MGC_M_RXCSR_DATAERROR);
+-        if (!epnum)
+-            ep->csr[0] &= ~(MGC_M_CSR0_H_ERROR | MGC_M_CSR0_H_RXSTALL |
+-                            MGC_M_CSR0_H_NAKTIMEOUT | MGC_M_CSR0_H_NO_PING);
+-
+-        ep->csr[1] |= MGC_M_RXCSR_FIFOFULL | MGC_M_RXCSR_RXPKTRDY;
+-        if (!epnum)
+-            ep->csr[0] |= MGC_M_CSR0_RXPKTRDY;
+-        musb_rx_intr_set(s, epnum, 1);
+-        return;
+-    }
+-
+-    /* The driver sets maxp[1] to 64 or less because it knows the hardware
+-     * FIFO is this deep.  Bigger packets get split in
+-     * usb_generic_handle_packet but we can also do the splitting locally
+-     * for performance.  It turns out we can also have a bigger FIFO and
+-     * ignore the limit set in ep->maxp[1].  The Linux MUSB driver deals
+-     * OK with single packets of even 32KB and we avoid splitting, however
+-     * usb_msd.c sometimes sends a packet bigger than what Linux expects
+-     * (e.g. 8192 bytes instead of 4096) and we get an OVERRUN.  Splitting
+-     * hides this overrun from Linux.  Up to 4096 everything is fine
+-     * though.  Currently this is disabled.
+-     *
+-     * XXX: mind ep->fifosize.  */
+-    total = MIN(ep->maxp[1] & 0x3ff, sizeof(s->buf));
+-
+-#ifdef SETUPLEN_HACK
+-    /* Why should *we* do that instead of Linux?  */
+-    if (!epnum) {
+-        if (ep->packey[0].p.devaddr == 2) {
+-            total = MIN(s->setup_len, 8);
+-        } else {
+-            total = MIN(s->setup_len, 64);
+-        }
+-        s->setup_len -= total;
+-    }
+-#endif
+-
+-    musb_packet(s, ep, epnum, USB_TOKEN_IN, total, musb_rx_packet_complete, 1);
+-}
+-
+-static uint8_t musb_read_fifo(MUSBEndPoint *ep)
+-{
+-    uint8_t value;
+-    if (ep->fifolen[1] >= 64) {
+-        /* We have a FIFO underrun */
+-        TRACE("EP%d FIFO is now empty, stop reading", ep->epnum);
+-        return 0x00000000;
+-    }
+-    /* In DMA mode clear RXPKTRDY and set REQPKT automatically
+-     * (if AUTOREQ is set) */
+-
+-    ep->csr[1] &= ~MGC_M_RXCSR_FIFOFULL;
+-    value=ep->buf[1][ep->fifostart[1] + ep->fifolen[1] ++];
+-    TRACE("EP%d 0x%02x, %d", ep->epnum, value, ep->fifolen[1] );
+-    return value;
+-}
+-
+-static void musb_write_fifo(MUSBEndPoint *ep, uint8_t value)
+-{
+-    TRACE("EP%d = %02x", ep->epnum, value);
+-    if (ep->fifolen[0] >= 64) {
+-        /* We have a FIFO overrun */
+-        TRACE("EP%d FIFO exceeded 64 bytes, stop feeding data", ep->epnum);
+-        return;
+-     }
+-
+-     ep->buf[0][ep->fifostart[0] + ep->fifolen[0] ++] = value;
+-     ep->csr[0] |= MGC_M_TXCSR_FIFONOTEMPTY;
+-}
+-
+-static void musb_ep_frame_cancel(MUSBEndPoint *ep, int dir)
+-{
+-    if (ep->intv_timer[dir])
+-        timer_del(ep->intv_timer[dir]);
+-}
+-
+-/* Bus control */
+-static uint8_t musb_busctl_readb(void *opaque, int ep, int addr)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-
+-    switch (addr) {
+-    /* For USB2.0 HS hubs only */
+-    case MUSB_HDRC_TXHUBADDR:
+-        return s->ep[ep].haddr[0];
+-    case MUSB_HDRC_TXHUBPORT:
+-        return s->ep[ep].hport[0];
+-    case MUSB_HDRC_RXHUBADDR:
+-        return s->ep[ep].haddr[1];
+-    case MUSB_HDRC_RXHUBPORT:
+-        return s->ep[ep].hport[1];
+-
+-    default:
+-        TRACE("unknown register 0x%02x", addr);
+-        return 0x00;
+-    };
+-}
+-
+-static void musb_busctl_writeb(void *opaque, int ep, int addr, uint8_t value)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_TXFUNCADDR:
+-        s->ep[ep].faddr[0] = value;
+-        break;
+-    case MUSB_HDRC_RXFUNCADDR:
+-        s->ep[ep].faddr[1] = value;
+-        break;
+-    case MUSB_HDRC_TXHUBADDR:
+-        s->ep[ep].haddr[0] = value;
+-        break;
+-    case MUSB_HDRC_TXHUBPORT:
+-        s->ep[ep].hport[0] = value;
+-        break;
+-    case MUSB_HDRC_RXHUBADDR:
+-        s->ep[ep].haddr[1] = value;
+-        break;
+-    case MUSB_HDRC_RXHUBPORT:
+-        s->ep[ep].hport[1] = value;
+-        break;
+-
+-    default:
+-        TRACE("unknown register 0x%02x", addr);
+-        break;
+-    };
+-}
+-
+-static uint16_t musb_busctl_readh(void *opaque, int ep, int addr)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_TXFUNCADDR:
+-        return s->ep[ep].faddr[0];
+-    case MUSB_HDRC_RXFUNCADDR:
+-        return s->ep[ep].faddr[1];
+-
+-    default:
+-        return musb_busctl_readb(s, ep, addr) |
+-                (musb_busctl_readb(s, ep, addr | 1) << 8);
+-    };
+-}
+-
+-static void musb_busctl_writeh(void *opaque, int ep, int addr, uint16_t value)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_TXFUNCADDR:
+-        s->ep[ep].faddr[0] = value;
+-        break;
+-    case MUSB_HDRC_RXFUNCADDR:
+-        s->ep[ep].faddr[1] = value;
+-        break;
+-
+-    default:
+-        musb_busctl_writeb(s, ep, addr, value & 0xff);
+-        musb_busctl_writeb(s, ep, addr | 1, value >> 8);
+-    };
+-}
+-
+-/* Endpoint control */
+-static uint8_t musb_ep_readb(void *opaque, int ep, int addr)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_TXTYPE:
+-        return s->ep[ep].type[0];
+-    case MUSB_HDRC_TXINTERVAL:
+-        return s->ep[ep].interval[0];
+-    case MUSB_HDRC_RXTYPE:
+-        return s->ep[ep].type[1];
+-    case MUSB_HDRC_RXINTERVAL:
+-        return s->ep[ep].interval[1];
+-    case (MUSB_HDRC_FIFOSIZE & ~1):
+-        return 0x00;
+-    case MUSB_HDRC_FIFOSIZE:
+-        return ep ? s->ep[ep].fifosize : s->ep[ep].config;
+-    case MUSB_HDRC_RXCOUNT:
+-        return s->ep[ep].rxcount;
+-
+-    default:
+-        TRACE("unknown register 0x%02x", addr);
+-        return 0x00;
+-    };
+-}
+-
+-static void musb_ep_writeb(void *opaque, int ep, int addr, uint8_t value)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_TXTYPE:
+-        s->ep[ep].type[0] = value;
+-        break;
+-    case MUSB_HDRC_TXINTERVAL:
+-        s->ep[ep].interval[0] = value;
+-        musb_ep_frame_cancel(&s->ep[ep], 0);
+-        break;
+-    case MUSB_HDRC_RXTYPE:
+-        s->ep[ep].type[1] = value;
+-        break;
+-    case MUSB_HDRC_RXINTERVAL:
+-        s->ep[ep].interval[1] = value;
+-        musb_ep_frame_cancel(&s->ep[ep], 1);
+-        break;
+-    case (MUSB_HDRC_FIFOSIZE & ~1):
+-        break;
+-    case MUSB_HDRC_FIFOSIZE:
+-        TRACE("somebody messes with fifosize (now %i bytes)", value);
+-        s->ep[ep].fifosize = value;
+-        break;
+-    default:
+-        TRACE("unknown register 0x%02x", addr);
+-        break;
+-    };
+-}
+-
+-static uint16_t musb_ep_readh(void *opaque, int ep, int addr)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-    uint16_t ret;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_TXMAXP:
+-        return s->ep[ep].maxp[0];
+-    case MUSB_HDRC_TXCSR:
+-        return s->ep[ep].csr[0];
+-    case MUSB_HDRC_RXMAXP:
+-        return s->ep[ep].maxp[1];
+-    case MUSB_HDRC_RXCSR:
+-        ret = s->ep[ep].csr[1];
+-
+-        /* TODO: This and other bits probably depend on
+-         * ep->csr[1] & MGC_M_RXCSR_AUTOCLEAR.  */
+-        if (s->ep[ep].csr[1] & MGC_M_RXCSR_AUTOCLEAR)
+-            s->ep[ep].csr[1] &= ~MGC_M_RXCSR_RXPKTRDY;
+-
+-        return ret;
+-    case MUSB_HDRC_RXCOUNT:
+-        return s->ep[ep].rxcount;
+-
+-    default:
+-        return musb_ep_readb(s, ep, addr) |
+-                (musb_ep_readb(s, ep, addr | 1) << 8);
+-    };
+-}
+-
+-static void musb_ep_writeh(void *opaque, int ep, int addr, uint16_t value)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_TXMAXP:
+-        s->ep[ep].maxp[0] = value;
+-        break;
+-    case MUSB_HDRC_TXCSR:
+-        if (ep) {
+-            s->ep[ep].csr[0] &= value & 0xa6;
+-            s->ep[ep].csr[0] |= value & 0xff59;
+-        } else {
+-            s->ep[ep].csr[0] &= value & 0x85;
+-            s->ep[ep].csr[0] |= value & 0xf7a;
+-        }
+-
+-        musb_ep_frame_cancel(&s->ep[ep], 0);
+-
+-        if ((ep && (value & MGC_M_TXCSR_FLUSHFIFO)) ||
+-                        (!ep && (value & MGC_M_CSR0_FLUSHFIFO))) {
+-            s->ep[ep].fifolen[0] = 0;
+-            s->ep[ep].fifostart[0] = 0;
+-            if (ep)
+-                s->ep[ep].csr[0] &=
+-                        ~(MGC_M_TXCSR_FIFONOTEMPTY | MGC_M_TXCSR_TXPKTRDY);
+-            else
+-                s->ep[ep].csr[0] &=
+-                        ~(MGC_M_CSR0_TXPKTRDY | MGC_M_CSR0_RXPKTRDY);
+-        }
+-        if (
+-                        (ep &&
+-#ifdef CLEAR_NAK
+-                         (value & MGC_M_TXCSR_TXPKTRDY) &&
+-                         !(value & MGC_M_TXCSR_H_NAKTIMEOUT)) ||
+-#else
+-                         (value & MGC_M_TXCSR_TXPKTRDY)) ||
+-#endif
+-                        (!ep &&
+-#ifdef CLEAR_NAK
+-                         (value & MGC_M_CSR0_TXPKTRDY) &&
+-                         !(value & MGC_M_CSR0_H_NAKTIMEOUT)))
+-#else
+-                         (value & MGC_M_CSR0_TXPKTRDY)))
+-#endif
+-            musb_tx_rdy(s, ep);
+-        if (!ep &&
+-                        (value & MGC_M_CSR0_H_REQPKT) &&
+-#ifdef CLEAR_NAK
+-                        !(value & (MGC_M_CSR0_H_NAKTIMEOUT |
+-                                        MGC_M_CSR0_RXPKTRDY)))
+-#else
+-                        !(value & MGC_M_CSR0_RXPKTRDY))
+-#endif
+-            musb_rx_req(s, ep);
+-        break;
+-
+-    case MUSB_HDRC_RXMAXP:
+-        s->ep[ep].maxp[1] = value;
+-        break;
+-    case MUSB_HDRC_RXCSR:
+-        /* (DMA mode only) */
+-        if (
+-                (value & MGC_M_RXCSR_H_AUTOREQ) &&
+-                !(value & MGC_M_RXCSR_RXPKTRDY) &&
+-                (s->ep[ep].csr[1] & MGC_M_RXCSR_RXPKTRDY))
+-            value |= MGC_M_RXCSR_H_REQPKT;
+-
+-        s->ep[ep].csr[1] &= 0x102 | (value & 0x4d);
+-        s->ep[ep].csr[1] |= value & 0xfeb0;
+-
+-        musb_ep_frame_cancel(&s->ep[ep], 1);
+-
+-        if (value & MGC_M_RXCSR_FLUSHFIFO) {
+-            s->ep[ep].fifolen[1] = 0;
+-            s->ep[ep].fifostart[1] = 0;
+-            s->ep[ep].csr[1] &= ~(MGC_M_RXCSR_FIFOFULL | MGC_M_RXCSR_RXPKTRDY);
+-            /* If double buffering and we have two packets ready, flush
+-             * only the first one and set up the fifo at the second packet.  */
+-        }
+-#ifdef CLEAR_NAK
+-        if ((value & MGC_M_RXCSR_H_REQPKT) && !(value & MGC_M_RXCSR_DATAERROR))
+-#else
+-        if (value & MGC_M_RXCSR_H_REQPKT)
+-#endif
+-            musb_rx_req(s, ep);
+-        break;
+-    case MUSB_HDRC_RXCOUNT:
+-        s->ep[ep].rxcount = value;
+-        break;
+-
+-    default:
+-        musb_ep_writeb(s, ep, addr, value & 0xff);
+-        musb_ep_writeb(s, ep, addr | 1, value >> 8);
+-    };
+-}
+-
+-/* Generic control */
+-static uint32_t musb_readb(void *opaque, hwaddr addr)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-    int ep, i;
+-    uint8_t ret;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_FADDR:
+-        return s->faddr;
+-    case MUSB_HDRC_POWER:
+-        return s->power;
+-    case MUSB_HDRC_INTRUSB:
+-        ret = s->intr;
+-        for (i = 0; i < sizeof(ret) * 8; i ++)
+-            if (ret & (1 << i))
+-                musb_intr_set(s, i, 0);
+-        return ret;
+-    case MUSB_HDRC_INTRUSBE:
+-        return s->mask;
+-    case MUSB_HDRC_INDEX:
+-        return s->idx;
+-    case MUSB_HDRC_TESTMODE:
+-        return 0x00;
+-
+-    case MUSB_HDRC_EP_IDX ... (MUSB_HDRC_EP_IDX + 0xf):
+-        return musb_ep_readb(s, s->idx, addr & 0xf);
+-
+-    case MUSB_HDRC_DEVCTL:
+-        return s->devctl;
+-
+-    case MUSB_HDRC_TXFIFOSZ:
+-    case MUSB_HDRC_RXFIFOSZ:
+-    case MUSB_HDRC_VCTRL:
+-        /* TODO */
+-        return 0x00;
+-
+-    case MUSB_HDRC_HWVERS:
+-        return (1 << 10) | 400;
+-
+-    case (MUSB_HDRC_VCTRL | 1):
+-    case (MUSB_HDRC_HWVERS | 1):
+-    case (MUSB_HDRC_DEVCTL | 1):
+-        return 0x00;
+-
+-    case MUSB_HDRC_BUSCTL ... (MUSB_HDRC_BUSCTL + 0x7f):
+-        ep = (addr >> 3) & 0xf;
+-        return musb_busctl_readb(s, ep, addr & 0x7);
+-
+-    case MUSB_HDRC_EP ... (MUSB_HDRC_EP + 0xff):
+-        ep = (addr >> 4) & 0xf;
+-        return musb_ep_readb(s, ep, addr & 0xf);
+-
+-    case MUSB_HDRC_FIFO ... (MUSB_HDRC_FIFO + 0x3f):
+-        ep = ((addr - MUSB_HDRC_FIFO) >> 2) & 0xf;
+-        return musb_read_fifo(s->ep + ep);
+-
+-    default:
+-        TRACE("unknown register 0x%02x", (int) addr);
+-        return 0x00;
+-    };
+-}
+-
+-static void musb_writeb(void *opaque, hwaddr addr, uint32_t value)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-    int ep;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_FADDR:
+-        s->faddr = value & 0x7f;
+-        break;
+-    case MUSB_HDRC_POWER:
+-        s->power = (value & 0xef) | (s->power & 0x10);
+-        /* MGC_M_POWER_RESET is also read-only in Peripheral Mode */
+-        if ((value & MGC_M_POWER_RESET) && s->port.dev) {
+-            usb_device_reset(s->port.dev);
+-            /* Negotiate high-speed operation if MGC_M_POWER_HSENAB is set.  */
+-            if ((value & MGC_M_POWER_HSENAB) &&
+-                            s->port.dev->speed == USB_SPEED_HIGH)
+-                s->power |= MGC_M_POWER_HSMODE; /* Success */
+-            /* Restart frame counting.  */
+-        }
+-        if (value & MGC_M_POWER_SUSPENDM) {
+-            /* When all transfers finish, suspend and if MGC_M_POWER_ENSUSPEND
+-             * is set, also go into low power mode.  Frame counting stops.  */
+-            /* XXX: Cleared when the interrupt register is read */
+-        }
+-        if (value & MGC_M_POWER_RESUME) {
+-            /* Wait 20ms and signal resuming on the bus.  Frame counting
+-             * restarts.  */
+-        }
+-        break;
+-    case MUSB_HDRC_INTRUSB:
+-        break;
+-    case MUSB_HDRC_INTRUSBE:
+-        s->mask = value & 0xff;
+-        break;
+-    case MUSB_HDRC_INDEX:
+-        s->idx = value & 0xf;
+-        break;
+-    case MUSB_HDRC_TESTMODE:
+-        break;
+-
+-    case MUSB_HDRC_EP_IDX ... (MUSB_HDRC_EP_IDX + 0xf):
+-        musb_ep_writeb(s, s->idx, addr & 0xf, value);
+-        break;
+-
+-    case MUSB_HDRC_DEVCTL:
+-        s->session = !!(value & MGC_M_DEVCTL_SESSION);
+-        musb_session_update(s,
+-                        !!s->port.dev,
+-                        !!(s->devctl & MGC_M_DEVCTL_SESSION));
+-
+-        /* It seems this is the only R/W bit in this register?  */
+-        s->devctl &= ~MGC_M_DEVCTL_SESSION;
+-        s->devctl |= value & MGC_M_DEVCTL_SESSION;
+-        break;
+-
+-    case MUSB_HDRC_TXFIFOSZ:
+-    case MUSB_HDRC_RXFIFOSZ:
+-    case MUSB_HDRC_VCTRL:
+-        /* TODO */
+-        break;
+-
+-    case (MUSB_HDRC_VCTRL | 1):
+-    case (MUSB_HDRC_DEVCTL | 1):
+-        break;
+-
+-    case MUSB_HDRC_BUSCTL ... (MUSB_HDRC_BUSCTL + 0x7f):
+-        ep = (addr >> 3) & 0xf;
+-        musb_busctl_writeb(s, ep, addr & 0x7, value);
+-        break;
+-
+-    case MUSB_HDRC_EP ... (MUSB_HDRC_EP + 0xff):
+-        ep = (addr >> 4) & 0xf;
+-        musb_ep_writeb(s, ep, addr & 0xf, value);
+-        break;
+-
+-    case MUSB_HDRC_FIFO ... (MUSB_HDRC_FIFO + 0x3f):
+-        ep = ((addr - MUSB_HDRC_FIFO) >> 2) & 0xf;
+-        musb_write_fifo(s->ep + ep, value & 0xff);
+-        break;
+-
+-    default:
+-        TRACE("unknown register 0x%02x", (int) addr);
+-        break;
+-    };
+-}
+-
+-static uint32_t musb_readh(void *opaque, hwaddr addr)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-    int ep, i;
+-    uint16_t ret;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_INTRTX:
+-        ret = s->tx_intr;
+-        /* Auto clear */
+-        for (i = 0; i < sizeof(ret) * 8; i ++)
+-            if (ret & (1 << i))
+-                musb_tx_intr_set(s, i, 0);
+-        return ret;
+-    case MUSB_HDRC_INTRRX:
+-        ret = s->rx_intr;
+-        /* Auto clear */
+-        for (i = 0; i < sizeof(ret) * 8; i ++)
+-            if (ret & (1 << i))
+-                musb_rx_intr_set(s, i, 0);
+-        return ret;
+-    case MUSB_HDRC_INTRTXE:
+-        return s->tx_mask;
+-    case MUSB_HDRC_INTRRXE:
+-        return s->rx_mask;
+-
+-    case MUSB_HDRC_FRAME:
+-        /* TODO */
+-        return 0x0000;
+-    case MUSB_HDRC_TXFIFOADDR:
+-        return s->ep[s->idx].fifoaddr[0];
+-    case MUSB_HDRC_RXFIFOADDR:
+-        return s->ep[s->idx].fifoaddr[1];
+-
+-    case MUSB_HDRC_EP_IDX ... (MUSB_HDRC_EP_IDX + 0xf):
+-        return musb_ep_readh(s, s->idx, addr & 0xf);
+-
+-    case MUSB_HDRC_BUSCTL ... (MUSB_HDRC_BUSCTL + 0x7f):
+-        ep = (addr >> 3) & 0xf;
+-        return musb_busctl_readh(s, ep, addr & 0x7);
+-
+-    case MUSB_HDRC_EP ... (MUSB_HDRC_EP + 0xff):
+-        ep = (addr >> 4) & 0xf;
+-        return musb_ep_readh(s, ep, addr & 0xf);
+-
+-    case MUSB_HDRC_FIFO ... (MUSB_HDRC_FIFO + 0x3f):
+-        ep = ((addr - MUSB_HDRC_FIFO) >> 2) & 0xf;
+-        return (musb_read_fifo(s->ep + ep) | musb_read_fifo(s->ep + ep) << 8);
+-
+-    default:
+-        return musb_readb(s, addr) | (musb_readb(s, addr | 1) << 8);
+-    };
+-}
+-
+-static void musb_writeh(void *opaque, hwaddr addr, uint32_t value)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-    int ep;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_INTRTXE:
+-        s->tx_mask = value;
+-        /* XXX: the masks seem to apply on the raising edge like with
+-         * edge-triggered interrupts, thus no need to update.  I may be
+-         * wrong though.  */
+-        break;
+-    case MUSB_HDRC_INTRRXE:
+-        s->rx_mask = value;
+-        break;
+-
+-    case MUSB_HDRC_FRAME:
+-        /* TODO */
+-        break;
+-    case MUSB_HDRC_TXFIFOADDR:
+-        s->ep[s->idx].fifoaddr[0] = value;
+-        s->ep[s->idx].buf[0] =
+-                s->buf + ((value << 3) & 0x7ff );
+-        break;
+-    case MUSB_HDRC_RXFIFOADDR:
+-        s->ep[s->idx].fifoaddr[1] = value;
+-        s->ep[s->idx].buf[1] =
+-                s->buf + ((value << 3) & 0x7ff);
+-        break;
+-
+-    case MUSB_HDRC_EP_IDX ... (MUSB_HDRC_EP_IDX + 0xf):
+-        musb_ep_writeh(s, s->idx, addr & 0xf, value);
+-        break;
+-
+-    case MUSB_HDRC_BUSCTL ... (MUSB_HDRC_BUSCTL + 0x7f):
+-        ep = (addr >> 3) & 0xf;
+-        musb_busctl_writeh(s, ep, addr & 0x7, value);
+-        break;
+-
+-    case MUSB_HDRC_EP ... (MUSB_HDRC_EP + 0xff):
+-        ep = (addr >> 4) & 0xf;
+-        musb_ep_writeh(s, ep, addr & 0xf, value);
+-        break;
+-
+-    case MUSB_HDRC_FIFO ... (MUSB_HDRC_FIFO + 0x3f):
+-        ep = ((addr - MUSB_HDRC_FIFO) >> 2) & 0xf;
+-        musb_write_fifo(s->ep + ep, value & 0xff);
+-        musb_write_fifo(s->ep + ep, (value >> 8) & 0xff);
+-        break;
+-
+-    default:
+-        musb_writeb(s, addr, value & 0xff);
+-        musb_writeb(s, addr | 1, value >> 8);
+-    };
+-}
+-
+-static uint32_t musb_readw(void *opaque, hwaddr addr)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-    int ep;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_FIFO ... (MUSB_HDRC_FIFO + 0x3f):
+-        ep = ((addr - MUSB_HDRC_FIFO) >> 2) & 0xf;
+-        return ( musb_read_fifo(s->ep + ep)       |
+-                 musb_read_fifo(s->ep + ep) << 8  |
+-                 musb_read_fifo(s->ep + ep) << 16 |
+-                 musb_read_fifo(s->ep + ep) << 24 );
+-    default:
+-        TRACE("unknown register 0x%02x", (int) addr);
+-        return 0x00000000;
+-    };
+-}
+-
+-static void musb_writew(void *opaque, hwaddr addr, uint32_t value)
+-{
+-    MUSBState *s = (MUSBState *) opaque;
+-    int ep;
+-
+-    switch (addr) {
+-    case MUSB_HDRC_FIFO ... (MUSB_HDRC_FIFO + 0x3f):
+-        ep = ((addr - MUSB_HDRC_FIFO) >> 2) & 0xf;
+-        musb_write_fifo(s->ep + ep, value & 0xff);
+-        musb_write_fifo(s->ep + ep, (value >> 8 ) & 0xff);
+-        musb_write_fifo(s->ep + ep, (value >> 16) & 0xff);
+-        musb_write_fifo(s->ep + ep, (value >> 24) & 0xff);
+-            break;
+-    default:
+-        TRACE("unknown register 0x%02x", (int) addr);
+-        break;
+-    };
+-}
+-
+-MUSBReadFunc * const musb_read[] = {
+-    musb_readb,
+-    musb_readh,
+-    musb_readw,
 -};
 -
--static void tusb6010_register_types(void)
--{
--    type_register_static(&tusb6010_info);
--}
--
--type_init(tusb6010_register_types)
+-MUSBWriteFunc * const musb_write[] = {
+-    musb_writeb,
+-    musb_writeh,
+-    musb_writew,
+-};
 diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-index 84bc7fbe36c..0bffcda1b19 100644
+index 0bffcda1b19..5fbecd2f43b 100644
 --- a/hw/usb/Kconfig
 +++ b/hw/usb/Kconfig
-@@ -61,10 +61,6 @@ config USB_DWC2
+@@ -53,10 +53,6 @@ config USB_XHCI_SYSBUS
+     bool
+     select USB_XHCI
+ 
+-config USB_MUSB
+-    bool
+-    select USB
+-
+ config USB_DWC2
      bool
      select USB
- 
--config TUSB6010
--    bool
--    select USB_MUSB
--
- config USB_HUB
-     bool
-     default y
 diff --git a/hw/usb/meson.build b/hw/usb/meson.build
-index d7de1003e3d..ae901481597 100644
+index ae901481597..1b4d1507e41 100644
 --- a/hw/usb/meson.build
 +++ b/hw/usb/meson.build
-@@ -27,7 +27,6 @@ system_ss.add(when: 'CONFIG_USB_MUSB', if_true: files('hcd-musb.c'))
+@@ -23,7 +23,6 @@ system_ss.add(when: 'CONFIG_USB_XHCI', if_true: files('hcd-xhci.c'))
+ system_ss.add(when: 'CONFIG_USB_XHCI_PCI', if_true: files('hcd-xhci-pci.c'))
+ system_ss.add(when: 'CONFIG_USB_XHCI_SYSBUS', if_true: files('hcd-xhci-sysbus.c'))
+ system_ss.add(when: 'CONFIG_USB_XHCI_NEC', if_true: files('hcd-xhci-nec.c'))
+-system_ss.add(when: 'CONFIG_USB_MUSB', if_true: files('hcd-musb.c'))
  system_ss.add(when: 'CONFIG_USB_DWC2', if_true: files('hcd-dwc2.c'))
  system_ss.add(when: 'CONFIG_USB_DWC3', if_true: files('hcd-dwc3.c'))
  
--system_ss.add(when: 'CONFIG_TUSB6010', if_true: files('tusb6010.c'))
- system_ss.add(when: 'CONFIG_IMX', if_true: files('chipidea.c'))
- system_ss.add(when: 'CONFIG_IMX_USBPHY', if_true: files('imx-usb-phy.c'))
- system_ss.add(when: 'CONFIG_VT82C686', if_true: files('vt82c686-uhci-pci.c'))
 -- 
 2.34.1
 
