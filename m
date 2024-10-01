@@ -2,60 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4ED98C03A
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C61D98BF74
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:15:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdzY-0006NK-MZ; Tue, 01 Oct 2024 10:36:45 -0400
+	id 1svdeF-0003PU-8k; Tue, 01 Oct 2024 10:14:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1svdw4-0003jr-KQ; Tue, 01 Oct 2024 10:33:14 -0400
-Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1svdde-0001vI-Al
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:14:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1svdvx-00013U-7x; Tue, 01 Oct 2024 10:33:05 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 76DD7A428C2;
- Tue,  1 Oct 2024 05:38:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D3EC4CEC6;
- Tue,  1 Oct 2024 05:38:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1727761100;
- bh=KWHKsBqafASDIcbljdst2Hf9v1Awn2C+S3J8HKqz9zQ=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=MLft1ETqhuR+CYOGxey7FAl9KzwHTi606ejrkAgQUwX7PmST7+XdLxQsxu81hzqFp
- lbqfLgzQcXbzq62hbSkx7gRbHG+deOfHSZcRy+GXp5V2xxQm1VFR76SnvZxZavastI
- V7hhwfbkTAVcQPcu4p5QLIF++ZP+XV5ynbXuw21zKcNuj+X7WU9CTSMMUJLcagtHjT
- gN3yePvGSk2KFs/WxdRlNYvgf3RErGl5vM3Aj5f2D3IgSYvE30G0bFMWgb6lm8uzJJ
- +HwwF6pel/0q7SPIf7EgtZ5gdkmBtKwcLYMQoO6D9mz79ZiGKawjrqF9YETS2KsEr2
- g9q0ZSNfe5Acw==
-Date: Tue, 1 Oct 2024 07:38:15 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, Shiju Jose <shiju.jose@huawei.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Dongjiu Geng <gengdongjiu1@gmail.com>, <linux-kernel@vger.kernel.org>,
- <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 10/15] acpi/ghes: move offset calculus to a separate
- function
-Message-ID: <20241001073815.4720a986@foz.lan>
-In-Reply-To: <20240926130348.00005e45@Huawei.com>
-References: <cover.1727236561.git.mchehab+huawei@kernel.org>
- <5e8c2f0267a21d05ed09c8af616a92d94638c474.1727236561.git.mchehab+huawei@kernel.org>
- <20240926130348.00005e45@Huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1svddc-0003eO-T9
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:14:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727792043;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Eg/44RY4Un3g7HsiR04QOslj35pWulf+XNx+KulBrV0=;
+ b=XUw1WcQvJwchFfa6R6iRezVqhHUCDElVjINGx88zBKN4QBNWhXWA1nISgVpgVq7jkrk+tS
+ UjfeHGUamj7jfJt/NDbx/h6sRqAK1YGoDUHvq84t61wJMJsBwO5JjQ4UdiC2Nn9kaMJ916
+ 53zTgJPNuMZQFwFvwWNAURU5dN6b8e0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-286-zBNjPCwQPEG6CXQVw6o9MA-1; Tue,
+ 01 Oct 2024 01:46:15 -0400
+X-MC-Unique: zBNjPCwQPEG6CXQVw6o9MA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9A006196FAFD; Tue,  1 Oct 2024 05:46:14 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.47])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 126273003DEC; Tue,  1 Oct 2024 05:46:13 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A86A621E6A28; Tue,  1 Oct 2024 07:46:09 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  Prasad Pandit <ppandit@redhat.com>,  Julia
+ Suvorova <jusual@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Juraj
+ Marcin <jmarcin@redhat.com>,  "Dr . David Alan Gilbert" <dave@treblig.org>
+Subject: Re: [PATCH 0/7] migration: query-migrationthreads enhancements and
+ cleanups
+In-Reply-To: <20240930195837.825728-1-peterx@redhat.com> (Peter Xu's message
+ of "Mon, 30 Sep 2024 15:58:30 -0400")
+References: <20240930195837.825728-1-peterx@redhat.com>
+Date: Tue, 01 Oct 2024 07:46:09 +0200
+Message-ID: <87o744e5pa.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
- envelope-from=mchehab+huawei@kernel.org; helo=nyc.source.kernel.org
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,52 +84,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Em Thu, 26 Sep 2024 13:03:48 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> escreveu:
+Command query-migrationthreads went in without a QAPI ACK.  Issues
+review should have caught:
 
-> On Wed, 25 Sep 2024 06:04:15 +0200
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
-> 
-> > Currently, CPER address location is calculated as an offset of
-> > the hardware_errors table. It is also badly named, as the
-> > offset actually used is the address where the CPER data starts,
-> > and not the beginning of the error source.
-> > 
-> > Move the logic which calculates such offset to a separate
-> > function, in preparation for a patch that will be changing the
-> > logic to calculate it from the HEST table.
-> > 
-> > While here, properly name the variable which stores the cper
-> > address.
-> > 
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>  
-> Trivial comment inline.
-> 
-> Given this is a placeholder for more radical refactor I'll not comment on
-> the maths etc being less flexible than it will hopefully end up!
+* Flawed documentation.  Fixed in commit e6c60bf02d1.
 
-Actually there will be two versions of the math calculus after the
-next patch series:
+* It should have been spelled query-migration-threads.  Not worth fixing
+  now, I guess.
 
-1. one compatible with versions up to 9.1 that work with a single
-   source ID, using offsets calculated from the hardware_errors
-   table, which doesn't contain the number of sources. Such code
-   will be used only for migration. This is the one on this series;
+* What are the use cases?  The commit message doesn't tell!  If it's
+  just for debugging, the command should be marked unstable.
 
-2. one that will get the number of source IDs from the HEST table.
-   Such math will be added at the next patch series.
-   This requires a migration-incompatible change to store a
-   pointer to HEST table. The math there is flexible and should
-   work with all future changes, as it uses all offsets from the
-   HEST table, using the links there to the harware_errors firmware
-   file.
-
-So, basically, the migration logic will check if a HEST pointer
-is stored. If so, it will use (2). If not, it is because the VM
-that was running on QEMU 9.1 had its state stored, and then
-was recovered on QEMU 9.2. Such machine will then use the math
-from (1), which supports a single source ID.
-
-Thanks,
-Mauro
 
