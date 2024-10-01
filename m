@@ -2,116 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D9498C0A6
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B16198BF03
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:07:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sveAo-00048n-31; Tue, 01 Oct 2024 10:48:22 -0400
+	id 1svdX5-0004lS-2t; Tue, 01 Oct 2024 10:07:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1sveAM-0003CI-Qa; Tue, 01 Oct 2024 10:47:54 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1svdWk-0004fE-2r
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:06:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1sveAK-0004a9-GH; Tue, 01 Oct 2024 10:47:54 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4917K5xD007351;
- Tue, 1 Oct 2024 13:31:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
- :from:to:cc:subject:message-id:in-reply-to:references
- :mime-version:content-type:content-transfer-encoding; s=pp1; bh=
- wkwuqj3xo0sDlDS6NaBJ9C76OarCygB0435fFUMPiIg=; b=bl4KMKz0Tvagt7wc
- 9166E9Wlg2G0RWN0R0S7yXDrNpaOoIYtQvHvRSvPuRLLejKB8VkKR0sx90NoDW8D
- j7t588U4bLYmEsQ+W/Ff7knIexvEt5w/MNr4kYINSir/YqdAr0gVs3+40cEsgU0d
- tbwD0dFtQ0BYxpMtLjDS7ibmGJhyPT/Kox0FVbB2HkNiDWPNen0Szhfpm93+dBqV
- 9QyuleqgNuVre0rfSCRWyQtrTlwTNrN86oKUFHYD5+VouwemSunDamlD51oJPWwr
- SbUUJxV1CiHYd9DdIJkrKa1+P5XszMw+113k5fyb6AChgC79U03s++PJynUTIE6X
- oOB0mA==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 420ckj9wch-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2024 13:31:41 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 491DVeYg025888;
- Tue, 1 Oct 2024 13:31:40 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 420ckj9wcc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2024 13:31:40 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 491CK4KV017852;
- Tue, 1 Oct 2024 13:31:39 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41xw4mvmrc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Oct 2024 13:31:39 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 491DVZBP52822412
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Oct 2024 13:31:35 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 697A72004D;
- Tue,  1 Oct 2024 13:31:35 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C43520040;
- Tue,  1 Oct 2024 13:31:34 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.179.3.72])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
- Tue,  1 Oct 2024 13:31:34 +0000 (GMT)
-Date: Tue, 1 Oct 2024 15:31:32 +0200
-From: Halil Pasic <pasic@linux.ibm.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
- qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>, Janosch Frank
- <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, qemu-s390x@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Ilya Leoshkevich
- <iii@linux.ibm.com>, "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck
- <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH v1 07/14] s390x/s390-hypercall: introduce DIAG500
- STORAGE_LIMIT
-Message-ID: <20241001153132.08b0dca9.pasic@linux.ibm.com>
-In-Reply-To: <972044f1-62e4-4ac0-8b24-e0bb78770309@linux.ibm.com>
-References: <20240910175809.2135596-1-david@redhat.com>
- <20240910175809.2135596-8-david@redhat.com>
- <6636c963-228f-4bea-87c5-bd4f75521c75@redhat.com>
- <20240927200525.5a90f172.pasic@linux.ibm.com>
- <10165d22-c3e8-4db1-9874-8b63ca59afe9@linux.ibm.com>
- <20240930145712.526a1c79.pasic@linux.ibm.com>
- <972044f1-62e4-4ac0-8b24-e0bb78770309@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1svdW7-00019f-12
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:06:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727791575;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=IxOJMBIhZ7BYPRZOylCZ/kHwLgaQnlhkUTGdAmBCh2g=;
+ b=QlLdWdaN/1IyJyoKnm6tI7lgdXCLyQ54zQZU151jWb/p9mpg3X1RJFGvADmfTxg0EXhWcw
+ etdRP3JZGyfzv/LH5MHv52yY6xd2OhUPFEmpRPSSfPanS9lxDUSSp/8KL5HomiTnnjwVO6
+ O5rrVX83hMncGkJFRlqdv1p4EAQ5XIY=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-470-0nBAxJsmNAe8PgOa5xIqhQ-1; Tue,
+ 01 Oct 2024 09:33:39 -0400
+X-MC-Unique: 0nBAxJsmNAe8PgOa5xIqhQ-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C58121944DF4; Tue,  1 Oct 2024 13:33:36 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.186])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9D85018CC1BE; Tue,  1 Oct 2024 13:33:28 +0000 (UTC)
+Date: Tue, 1 Oct 2024 14:33:24 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Sandesh Patel <sandesh.patel@nutanix.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Rob Scheepens <rob.scheepens@nutanix.com>,
+ Prerna Saxena <confluence@nutanix.com>, Alexander Graf <agraf@csgraf.de>
+Subject: Re: More than 255 vcpus Windows VM setup without viommu ?
+Message-ID: <Zvv6JOiyyQZp39pI@redhat.com>
+References: <B75A5788-630B-4898-8758-52B57D3D5895@nutanix.com>
+ <a80c99b0e10e71a5a301c884d699eeaff3893349.camel@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: YD0iDV6GFGEJoQVXxgep0y-yVGcVseEe
-X-Proofpoint-GUID: Pc_q931itZ8Div3LZoIGkwSqd3n1Xv4u
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-01_09,2024-09-30_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0
- phishscore=0 adultscore=0 mlxlogscore=735 suspectscore=0 malwarescore=0
- priorityscore=1501 lowpriorityscore=0 bulkscore=0 mlxscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
- definitions=main-2410010084
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=pasic@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <a80c99b0e10e71a5a301c884d699eeaff3893349.camel@infradead.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,38 +80,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 1 Oct 2024 11:15:02 +0200
-Christian Borntraeger <borntraeger@linux.ibm.com> wrote:
-[..]
-> >> So 500+4 should probably not cause any harm apart from branch prediction
-> >> going wrong the first 2 or 3 notifies.
-> >>
-> >> 502 will make kvm_s390_handle_diag larger.  
+On Sat, Sep 28, 2024 at 03:59:32PM +0100, David Woodhouse wrote:
+> On Tue, 2024-07-02 at 05:17 +0000, Sandesh Patel wrote:
 > > 
-> > What do you mean by this last paragraph?
-[..]
-
-> gcc has logic for switch statements that decide about branch table or
-> a chained compare+jump. I think due to spectre gcc now avoids indirect
-> branches as much as possible but still a larger switch statement might
-> kick the decision from inline compare/jump to a branch table.
+> > The error is due to invalid MSIX routing entry passed to KVM.
+> > 
+> > The VM boots fine if we attach a vIOMMU but adding a vIOMMU can
+> > potentially result in IO performance loss in guest.
+> > I was interested to know if someone could boot a large Windows VM by
+> > some other means like kvm-msi-ext-dest-id.
 > 
-> I am not worried in this particular case this was more or less a
-> "what could go wrong".
+> I think I may (with Alex Graf's suggestion) have found the Windows bug
+> with Intel IOMMU.
+> 
+> It looks like when interrupt remapping is enabled with an AMD CPU,
+> Windows *assumes* it can generate AMD-style MSI messages even if the
+> IOMMU is an Intel one. If we put a little hack into the IOMMU interrupt
+> remapping to make it interpret an AMD-style message, Windows seems to
+> boot at least a little bit further than it did before...
 
-Hm, you did state that "502 will make kvm_s390_handle_diag larger". I
-suppose now we agree that 502 would not make kvm_s390_handle_diag larger.
-Right?
+Rather than filling the intel IOMMU impl with hacks to make Windows
+boot on AMD virtualized CPUs, shouldn't we steer people to use the
+amd-iommu that QEMU already ships [1] ?
 
-I understood that you prefer 500+4 over 502 because the latter would
-make kvm_s390_handle_diag larger. Now that we have, I hope clarified,
-that 502 would not make the switch larger, do you still prefer 500+4?
+Even if we hack the intel iommu, so current Windows boots, can we
+have confidence that future Windows releases will correctly boot
+on an intel iommu with AMD CPUs virtualized ?
 
-BTW your insights are very appreciated!
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -3550,9 +3550,14 @@ static int vtd_interrupt_remap_msi(IntelIOMMUState *iommu,
+>  
+>      /* This is compatible mode. */
+>      if (addr.addr.int_mode != VTD_IR_INT_FORMAT_REMAP) {
+> -        memcpy(translated, origin, sizeof(*origin));
+> -        goto out;
+> -    }
+> +        if (0) {
+> +            memcpy(translated, origin, sizeof(*origin));
+> +            goto out;
+> +        }
+> +        /* Pretend it's an AMD-format remappable MSI (Yay Windows!) */
+> +        index = origin->data & 0x7ff;
+> +        printf("Compat mode index 0x%x\n", index);
+> +    } else
+>  
+>      index = addr.addr.index_h << 15 | addr.addr.index_l;
 
-Regards,
-Halil
+
+With regards,
+Daniel
+
+[1] the AMD IOMMU is not perfect, because currently it has a significant
+    QEMU impl flaw in that it secretly creates an extra PCI device behind
+    the scenes. This makes it impossible for libvirt to manage the PCI
+    resources from the AMD IOMMU. I feel like this ought to be solvable
+    though, as it is just a QEMU impl decison that can be corrected.
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
