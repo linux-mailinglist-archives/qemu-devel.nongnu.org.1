@@ -2,82 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D3A98C01A
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A46A898C03B
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:39:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdw8-0003Kv-Ew; Tue, 01 Oct 2024 10:33:16 -0400
+	id 1sve1B-0007mG-Vk; Tue, 01 Oct 2024 10:38:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1svduB-00020q-P2
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:31:17 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svdz9-0006Aw-1r
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:36:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1svdu9-0000hT-OL
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:31:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svdz1-0001t1-Vy
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:36:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727793068;
+ s=mimecast20190719; t=1727793369;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4NNzv58JsALzSqMsD+lcQKPY0bUNJ5HaoIAyx9nv3Mw=;
- b=g4JzIZmjapLLv25LzcX1yxpsR+JrKMogyOFJw5CwsVw7R4xFKeuVpZTG5AJ6C49Ra1OxsC
- 9oQHWgNMuifDQS7LldcGAYYWPMHGQJ9CAi7sGB01YVgoERC5KLi9QCnD7wuVVQWe1E5e+/
- 3VhuIK1NqqQUlmMeSGlEBHSAMfcBxz8=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-295-50ufbRhaPBuAwSbn5_SNkg-1; Tue, 01 Oct 2024 08:22:02 -0400
-X-MC-Unique: 50ufbRhaPBuAwSbn5_SNkg-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-45b6057797cso89982281cf.3
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 05:22:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727785322; x=1728390122;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4NNzv58JsALzSqMsD+lcQKPY0bUNJ5HaoIAyx9nv3Mw=;
- b=K7o5JNJkoK+x2yyGosEgHQ/4/nSmlK5Gtkq/gjnV06JSRnoA8NFh7oRYGXc05ml2HU
- jxrr0oIeNJglEOijGA2mt0/8DSVDJGbmmYukdjKPifRsXe8Q4I8y7gUK6zpsJ1G3RZZe
- KFgSaA+2OJEmHDxJxut0yp4qAeNMMQgPAp5KGclJFo82ZIL966KFLeT/GFP527KA4wE5
- etktgKOGFIS3h+9laznFuxfEXDv0ohOxZawaY4fym7z33zgsBEh5MHTV4LsOZgn5wNj2
- TeTOcR4yxJ1RmCVvCaA4VzPTeRwSMWnmHOf9AJZkhInWuVPK7at9M0ccJtEeVpS2QO0C
- BEgg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVMF/L5A/lnk10ngig+09LAgR2FWAbcVtgVP+qb+y7kaKLaqW96FYVKb9rVEyNxZBfhty036KBX68Y4@nongnu.org
-X-Gm-Message-State: AOJu0YzdS1LgK479lvbfNZhKANTSU518+N5649RO2rHI0wswvUYAan1R
- IFF0qcCgVQDken5WmhjrhKmAMaTbOA9Z47DCYbZD4y59wz9M6crynHG7Rkk4fBSr+cU5w8NNh6L
- 7lIPqWOahI+/xave1FLyWJQL++pVh8P1nClNa7qEJqE8UHJgC8e/YURmSR1G9Z0I=
-X-Received: by 2002:a05:622a:1a87:b0:447:db4f:9f00 with SMTP id
- d75a77b69052e-45c9f224fe4mr233173181cf.32.1727785322145; 
- Tue, 01 Oct 2024 05:22:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEto9e2bj0OqlD39XBbA6rML/CaZgUSn6Rq2IgTgJv3oMY0rq7IM5gDhcqgIm/bUw8PXvhe1A==
-X-Received: by 2002:a05:622a:1a87:b0:447:db4f:9f00 with SMTP id
- d75a77b69052e-45c9f224fe4mr233172711cf.32.1727785321649; 
- Tue, 01 Oct 2024 05:22:01 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-46-200-231.retail.telecomitalia.it.
- [79.46.200.231]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-45c9f28e481sm44914141cf.16.2024.10.01.05.22.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 05:22:01 -0700 (PDT)
-Date: Tue, 1 Oct 2024 14:21:55 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: yaozhenguo <yaozhenguo1@gmail.com>
-Cc: alex.bennee@linaro.org, mst@redhat.com, qemu-devel@nongnu.org, 
- yaozhenguo@jd.com
-Subject: Re: [PATCH V2] virtio/vhost-user: fix qemu abort when hotunplug
- vhost-user-net device
-Message-ID: <akeix6af5fnabwotvaxdvr6ag3xyeuopgsurs3yqtyetwnli2s@cutfouykwadf>
-References: <20240919072944.21262-1-yaozhenguo@jd.com>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=YaaBJlvvT4aBpllk4zknfnDGkUkU3l0CNeGiHyxQqXM=;
+ b=AXMXEKTadtRcbK2gi8ns0rysMRq7Jm6lYgQ7mqSZpEaCl7Kc78IcN1Tw/5Pg9Kgbo8F+U2
+ 9dF8WsPs0kjCFUv7OLxKr/idQY4qU197jKPxj+urxGzwZOmHcd6Y2/ttr6xbjt2LAo6XnW
+ KcPYnM2/SNsmPVxl8Ecnku+MkCxIANg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-ft7SIRcRO6u2D7rshFrn6A-1; Tue,
+ 01 Oct 2024 08:32:57 -0400
+X-MC-Unique: ft7SIRcRO6u2D7rshFrn6A-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2AAFE1936164; Tue,  1 Oct 2024 12:32:55 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.193.152])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E0D131979064; Tue,  1 Oct 2024 12:32:49 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v3] testing: bump mips64el cross to bookworm and allow to fail
+Date: Tue,  1 Oct 2024 14:32:47 +0200
+Message-ID: <20241001123247.85610-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20240919072944.21262-1-yaozhenguo@jd.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -102,196 +79,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 19, 2024 at 03:29:44PM GMT, yaozhenguo wrote:
->During the process of hot-unplug in vhost-user-net NIC, vhost_user_cleanup
->may add same rcu node to rcu list. Function calls are as follows:
->
->vhost_user_cleanup
->    ->vhost_user_host_notifier_remove
->        ->call_rcu(n, vhost_user_host_notifier_free, rcu);
->    ->g_free_rcu(n, rcu);
->
->When this happens, QEMU will abort in try_dequeue:
->
->if (head == &dummy && qatomic_mb_read(&tail) == &dummy.next) {
->    abort();
->}
->
->Backtrace is as follows:
->0  __pthread_kill_implementation () at /usr/lib64/libc.so.6
->1  raise () at /usr/lib64/libc.so.6
->2  abort () at /usr/lib64/libc.so.6
->3  try_dequeue () at ../util/rcu.c:235
->4  call_rcu_thread (0) at ../util/rcu.c:288
->5  qemu_thread_start (0) at ../util/qemu-thread-posix.c:541
->6  start_thread () at /usr/lib64/libc.so.6
->7  clone3 () at /usr/lib64/libc.so.6
->
->Reason for the abort is that adding two identical nodes to the rcu list will
->cause it becomes a ring. After dummy node is added to the tail of the list in
->try_dequeue, the ring is opened. But lead to a situation that only one node is
->added to list and rcu_call_count is added twice. This will cause try_dequeue
->abort.
->
->This issue happens when n->addr != 0 in vhost_user_host_notifier_remove. It can
->happens in a hotplug stress test with a 32queue vhost-user-net type NIC.
->Because n->addr is set in VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG function.
->during device hotplug process and it is cleared in vhost_dev_stop during device
->hot-unplug. Since VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG is a message sent
->by DPDK to qemu, it is asynchronous. So, there is no guaranteed order between
->the two processes of setting n->addr and clearing n->addr. If setting n->addr
->in hotplug occurs after clearing n->addr in hotunplug, the issue will occur.
->So, it is necessary to merge g_free_rcu and vhost_user_host_notifier_free into
->one rcu node.
->
->Fixes: 503e355465 ("virtio/vhost-user: dynamically assign VhostUserHostNotifiers")
->
->Signed-off-by: yaozhenguo <yaozhenguo@jd.com>
->---
->
->V1->V2:
->    add n->addr check in vhost_user_get_vring_base and vhost_user_backend_handle_vring_host_notifier
->    to prevent submit same node to rcu list.
->
->---
-> hw/virtio/vhost-user.c         | 39 +++++++++++++++++++++------------------
-> include/hw/virtio/vhost-user.h |  1 +
-> 2 files changed, 22 insertions(+), 18 deletions(-)
->
->diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
->index 00561da..ba4c09c 100644
->--- a/hw/virtio/vhost-user.c
->+++ b/hw/virtio/vhost-user.c
->@@ -51,7 +51,6 @@
-> #else
-> #define VHOST_USER_MAX_RAM_SLOTS 512
-> #endif
->-
-> /*
->  * Maximum size of virtio device config space
->  */
->@@ -1185,9 +1184,16 @@ static int vhost_user_set_vring_num(struct vhost_dev *dev,
->
-> static void vhost_user_host_notifier_free(VhostUserHostNotifier *n)
-> {
->-    assert(n && n->unmap_addr);
->-    munmap(n->unmap_addr, qemu_real_host_page_size());
->-    n->unmap_addr = NULL;
->+    if (n->unmap_addr) {
->+        munmap(n->unmap_addr, qemu_real_host_page_size());
->+        n->unmap_addr = NULL;
->+    }
->+    if (n->need_free) {
->+        memory_region_transaction_begin();
->+        object_unparent(OBJECT(&n->mr));
->+        memory_region_transaction_commit();
->+        g_free(n);
->+    }
-> }
->
-> /*
->@@ -1195,17 +1201,20 @@ static void vhost_user_host_notifier_free(VhostUserHostNotifier *n)
->  * under rcu.
->  */
-> static void vhost_user_host_notifier_remove(VhostUserHostNotifier *n,
->-                                            VirtIODevice *vdev)
->+                                            VirtIODevice *vdev, bool free)
+From: Alex Bennée <alex.bennee@linaro.org>
 
-What about `destroy` instead of `free`?
+The mips64el cross setup is very broken for bullseye which has now
+entered LTS support so is unlikely to be fixed. While we still can't
+build the container for bookworm due to a single missing dependency
+that will hopefully get fixed in due course. For the sake of keeping
+the CI green we mark it as allow_fail for the time being and disable
+the problematic packages via the lcitool's mappings.yml file.
 
-In that way is more clear that it should be true when called by
-`vhost_user_state_destroy()`.
+See also: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1081535
 
-> {
->     if (n->addr) {
->         if (vdev) {
->+            memory_region_transaction_begin();
->             virtio_queue_set_host_notifier_mr(vdev, n->idx, &n->mr, false);
->+            memory_region_transaction_commit();
->         }
->         assert(!n->unmap_addr);
->         n->unmap_addr = n->addr;
->         n->addr = NULL;
->-        call_rcu(n, vhost_user_host_notifier_free, rcu);
->     }
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+[thuth: Disable the problematic packages via lcitool's mappings.yml]
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ v3: Disable packages via lcitool's mappings.yml and add bugs.debian.org URLs
 
-Instead of checking n->addr in the caller, I suggest to move the check
-here:
+ .gitlab-ci.d/container-cross.yml              |  4 ++++
+ .../dockerfiles/debian-mips64el-cross.docker  | 18 ++++----------
+ tests/lcitool/mappings.yml                    | 24 +++++++++++++++++++
+ tests/lcitool/refresh                         |  2 +-
+ 4 files changed, 33 insertions(+), 15 deletions(-)
 
-       if (destroy || n->unmap_addr) {
-           s->destroy = destroy;
-           call_rcu(n, vhost_user_host_notifier_free, rcu);
-       }
-
-Thanks,
-Stefano
-
->+    n->need_free = free;
->+    call_rcu(n, vhost_user_host_notifier_free, rcu);
-> }
->
-> static int vhost_user_set_vring_base(struct vhost_dev *dev,
->@@ -1279,8 +1288,8 @@ static int vhost_user_get_vring_base(struct vhost_dev *dev,
->     struct vhost_user *u = dev->opaque;
->
->     VhostUserHostNotifier *n = fetch_notifier(u->user, ring->index);
->-    if (n) {
->-        vhost_user_host_notifier_remove(n, dev->vdev);
->+    if (n && n->addr) {
->+        vhost_user_host_notifier_remove(n, dev->vdev, false);
->     }
->
->     ret = vhost_user_write(dev, &msg, NULL, 0);
->@@ -1562,7 +1571,9 @@ static int vhost_user_backend_handle_vring_host_notifier(struct vhost_dev *dev,
->      * new mapped address.
->      */
->     n = fetch_or_create_notifier(user, queue_idx);
->-    vhost_user_host_notifier_remove(n, vdev);
->+    if (n && n->addr) {
->+        vhost_user_host_notifier_remove(n, vdev, false);
->+    }
->
->     if (area->u64 & VHOST_USER_VRING_NOFD_MASK) {
->         return 0;
->@@ -2737,13 +2748,7 @@ static void vhost_user_state_destroy(gpointer data)
-> {
->     VhostUserHostNotifier *n = (VhostUserHostNotifier *) data;
->     if (n) {
->-        vhost_user_host_notifier_remove(n, NULL);
->-        object_unparent(OBJECT(&n->mr));
->-        /*
->-         * We can't free until vhost_user_host_notifier_remove has
->-         * done it's thing so schedule the free with RCU.
->-         */
->-        g_free_rcu(n, rcu);
->+        vhost_user_host_notifier_remove(n, NULL, true);
->     }
-> }
->
->@@ -2765,9 +2770,7 @@ void vhost_user_cleanup(VhostUserState *user)
->     if (!user->chr) {
->         return;
->     }
->-    memory_region_transaction_begin();
->     user->notifiers = (GPtrArray *) g_ptr_array_free(user->notifiers, true);
->-    memory_region_transaction_commit();
->     user->chr = NULL;
-> }
->
->diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
->index 324cd86..a171f29 100644
->--- a/include/hw/virtio/vhost-user.h
->+++ b/include/hw/virtio/vhost-user.h
->@@ -54,6 +54,7 @@ typedef struct VhostUserHostNotifier {
->     void *addr;
->     void *unmap_addr;
->     int idx;
->+    bool need_free;
-> } VhostUserHostNotifier;
->
-> /**
->-- 
->1.8.3.1
->
+diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
+index 34c0e729ad..4fdd0b2e77 100644
+--- a/.gitlab-ci.d/container-cross.yml
++++ b/.gitlab-ci.d/container-cross.yml
+@@ -49,6 +49,10 @@ i686-debian-cross-container:
+ mips64el-debian-cross-container:
+   extends: .container_job_template
+   stage: containers
++  # Currently waiting for Debian to fix:
++  #  libgl1-mesa-dri:mips64el : Depends: libllvm15:mips64el but it is not going to be installed
++  # See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1081535
++  allow_failure: true
+   variables:
+     NAME: debian-mips64el-cross
+ 
+diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+index 2862785692..bfa96cb507 100644
+--- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all --cross-arch mips64el debian-11 qemu
++#  $ lcitool dockerfile --layers all --cross-arch mips64el debian-12 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+-FROM docker.io/library/debian:11-slim
++FROM docker.io/library/debian:12-slim
+ 
+ RUN export DEBIAN_FRONTEND=noninteractive && \
+     apt-get update && \
+@@ -48,16 +48,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
+-                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
+-                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       tar \
+                       tesseract-ocr \
+                       tesseract-ocr-eng \
+@@ -69,8 +68,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     dpkg-reconfigure locales && \
+     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED
+ 
+-RUN /usr/bin/pip3 install tomli
+-
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+@@ -97,17 +94,13 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libcmocka-dev:mips64el \
+                       libcurl4-gnutls-dev:mips64el \
+                       libdaxctl-dev:mips64el \
+-                      libdrm-dev:mips64el \
+-                      libepoxy-dev:mips64el \
+                       libfdt-dev:mips64el \
+                       libffi-dev:mips64el \
+                       libfuse3-dev:mips64el \
+-                      libgbm-dev:mips64el \
+                       libgcrypt20-dev:mips64el \
+                       libglib2.0-dev:mips64el \
+                       libglusterfs-dev:mips64el \
+                       libgnutls28-dev:mips64el \
+-                      libgtk-3-dev:mips64el \
+                       libibverbs-dev:mips64el \
+                       libiscsi-dev:mips64el \
+                       libjemalloc-dev:mips64el \
+@@ -126,8 +119,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       librbd-dev:mips64el \
+                       librdmacm-dev:mips64el \
+                       libsasl2-dev:mips64el \
+-                      libsdl2-dev:mips64el \
+-                      libsdl2-image-dev:mips64el \
+                       libseccomp-dev:mips64el \
+                       libselinux1-dev:mips64el \
+                       libslirp-dev:mips64el \
+@@ -141,8 +132,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libusb-1.0-0-dev:mips64el \
+                       libusbredirhost-dev:mips64el \
+                       libvdeplug-dev:mips64el \
+-                      libvirglrenderer-dev:mips64el \
+-                      libvte-2.91-dev:mips64el \
++                      libxdp-dev:mips64el \
+                       libzstd-dev:mips64el \
+                       nettle-dev:mips64el \
+                       systemtap-sdt-dev:mips64el \
+diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
+index 03b974ad02..33bb01a97a 100644
+--- a/tests/lcitool/mappings.yml
++++ b/tests/lcitool/mappings.yml
+@@ -2,6 +2,18 @@ mappings:
+   flake8:
+     OpenSUSELeap15:
+ 
++  gtk3:
++    mips64el-deb:
++
++  libdrm:
++    mips64el-deb:
++
++  libepoxy:
++    mips64el-deb:
++
++  mesa-libgbm:
++    mips64el-deb:
++
+   meson:
+     OpenSUSELeap15:
+ 
+@@ -60,6 +72,18 @@ mappings:
+   python3-wheel:
+     OpenSUSELeap15: python311-pip
+ 
++  sdl2:
++    mips64el-deb:
++
++  sdl2-image:
++    mips64el-deb:
++
++  virglrenderer:
++    mips64el-deb:
++
++  vte:
++    mips64el-deb:
++
+ pypi_mappings:
+   # Request more recent version
+   meson:
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index 92381f3c46..a78219f7bc 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -166,7 +166,7 @@ try:
+                                             "x86_64-linux-user,"
+                                             "i386-softmmu,i386-linux-user"))
+ 
+-    generate_dockerfile("debian-mips64el-cross", "debian-11",
++    generate_dockerfile("debian-mips64el-cross", "debian-12",
+                         cross="mips64el",
+                         trailer=cross_build("mips64el-linux-gnuabi64-",
+                                             "mips64el-softmmu,mips64el-linux-user"))
+-- 
+2.46.1
 
 
