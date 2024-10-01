@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4524998BF52
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9D498BF4B
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:12:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdbo-0007XW-1I; Tue, 01 Oct 2024 10:12:14 -0400
+	id 1svdcF-0008Lx-P2; Tue, 01 Oct 2024 10:12:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1svdbf-0007TS-IC; Tue, 01 Oct 2024 10:12:03 -0400
-Received: from fhigh-a2-smtp.messagingengine.com ([103.168.172.153])
+ id 1svdbo-0007fG-97; Tue, 01 Oct 2024 10:12:14 -0400
+Received: from fout-a4-smtp.messagingengine.com ([103.168.172.147])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1svdbc-00033t-OG; Tue, 01 Oct 2024 10:12:03 -0400
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal
- [10.202.2.50])
- by mailfhigh.phl.internal (Postfix) with ESMTP id D91EF1141A91;
- Tue,  1 Oct 2024 03:04:37 -0400 (EDT)
+ id 1svdbc-000340-OB; Tue, 01 Oct 2024 10:12:11 -0400
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal
+ [10.202.2.45])
+ by mailfout.phl.internal (Postfix) with ESMTP id 86B191381F44;
+ Tue,  1 Oct 2024 03:04:39 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
- by phl-compute-10.internal (MEProxy); Tue, 01 Oct 2024 03:04:37 -0400
+ by phl-compute-05.internal (MEProxy); Tue, 01 Oct 2024 03:04:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm1; t=1727766277; x=
- 1727852677; bh=fg5ajWBIkDI9g+3hZuI8UIo2TtY7qRypApN90qn3Dxc=; b=B
- 6CJyEGNCtqzQt73GjA1rDV83tge9oedh+LZJRIK7stEcR3hJDEpoubD2JVYxs/Zd
- eLGajRT7kCg9C2OrE5a4dqFq9lsADpmt8yDRZdAlTDkR80h0pZ3eFX0ua4W/wBNG
- nnMNkyfabzv8e8Ps40v7TIa559mm+Wukcan5cmumpci2r+XflS9sE4tsq2dZn/tk
- zBUYikTypLYVVHv3OGBH4NnZkaeIWIVdfDR2wPNe7SNT0NfwC4kXwduDgeXu8Asa
- 947HqeP+3mOMyMyxC8ZgRN0EFvPKbRYvMImzuBXvttganlwa9apgBSSb4G0wvYuk
- Jvg1Nbkue7qryd5gEuIqQ==
+ :reply-to:subject:subject:to:to; s=fm1; t=1727766279; x=
+ 1727852679; bh=5XqoLTAFqCtY2x87btFp3v8D5GoR0hqn0xoHj6uIjac=; b=i
+ 2PtjMJwsyizlr60ds1MHGn/u5tQPDIqPJ4iT97iBdQyK1FDKwxTZNPwlERQED775
+ 4xrb/XdKkkTfvTW5ucNomhpz+Ktwoz8O3Y8Zrll6aVtUoB2et5Tt9NABR1AMbuxk
+ PYCR9ZQhW6Esjj1/iOxLYc5RaPQAPTXJyWEbMe1oJAnEVFC03pAwluGY05qBbGhz
+ 1+SZhJT1/uToZ/Z1Y0Ug/gWnZJgLJyW8hQMfJdQ/6NbMhBxvqj+xUT1r6ipGrpq3
+ O+C/dcjh6JOenQAoB3za9sIgMo8RptAVmknEYtw6ZtoYyDPGihHpxlFiZ4n9FiCn
+ jRE6a214FCpCYUMpwacyw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727766277; x=
- 1727852677; bh=fg5ajWBIkDI9g+3hZuI8UIo2TtY7qRypApN90qn3Dxc=; b=h
- zFLPD2MLds6aaA4rGjK/iNL5s2bLKVDiXomhEb6Gt31P78dPLwBEVuiPuspBwIdt
- IZNxTPdC1MZes/zraCT62n0+lpFmQQAk4V0YU0EobaItZshHSqaEceECbEjT3QxL
- tuI77Xxh2gs65wElPULxtBOfmrc/K/0BoPydg3M9y36EkJQih99V1aDwluaO8Bdf
- AI1icRX/kn6P40p94bdcNPXDnOLcJvly50UHzSb1Otr29V3XEmKRzVcNBgLyT+eQ
- aDPV6/0FjcZgcO2tswAHCn0PuRCazsx9RLADI7H4VxB3qWlpFV4TdlP1o/5MBG4Q
- NR3OIc7xvPj3xc/Pa1Qsw==
-X-ME-Sender: <xms:BJ_7ZmBCWp9j5Ij52e_LDr_tfa9MTQy9kw-mPohQNCD8EqkyE9cSFw>
- <xme:BJ_7ZgifhqliWEDKb1YY_R5mqafGVBXIbA5mIiQEV7UoV9WghMVDqHlnjanG8cQ-w
- 7E8RyC-xcoyWRZ5nTE>
-X-ME-Received: <xmr:BJ_7Zpk-86N1cosaAOCDzweyCF-oeqx1qYrPOeME-Eqix_x26DKAp3WBWV9roeSDgfukDQlTIo0WefJ6cVuxFg>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727766279; x=
+ 1727852679; bh=5XqoLTAFqCtY2x87btFp3v8D5GoR0hqn0xoHj6uIjac=; b=R
+ QmSEW90OBx9LCgVcL/X1VOcbyZurRcOrpC7ucTydNqnDruxNZSY0NLrrSc6BjinZ
+ JMQDcvQuGSPUVZiMLrdvT76fOINC4uWfaySj4oTupiBuYVBDFbmFgMvlH2Z0nKtY
+ ult2u5ztmTFfgzHYgkx95CJ+zH2f1YMni+vePGUhdm3lwW2+XClV6YsQjgvER6gB
+ VqznFM2+57it5pow4E3BXhENjr99+a7OoPwTP0i7DDocsHgAXKUqHQ4GRaNeLXqA
+ FNADr8YK+L15x17GreIHJH5K/XXLKK0MA8zyMC5QZp/HKfpeJi3ZZe86sP3GVyf8
+ 9yPAyj9XihyYZ3qMqGq1g==
+X-ME-Sender: <xms:B5_7Zn6oHnt4qudOmkEQveEjEZPz2PN69n5uN8HN6PxdUdXB06Cr3w>
+ <xme:B5_7Zs4Njdc6NlIqUBs1i0HKLTwMKUDdR2rbwX-QasYzhy27qvI7rvWd-Cix_Sx3_
+ acpIagp8lgsj8KhzF0>
+X-ME-Received: <xmr:B5_7ZudMvtY6qLT5RAC6b-NQElcCeYvqru8kOWxfk63wNd9veeQJdbQoV_z56Fr_EInO4tfu1TQytCkxYlqVgQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduiedgudduiecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
  uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
@@ -58,42 +58,42 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduiedgudduiecutefuodetgg
  drughkqeenucggtffrrghtthgvrhhnpeejgfeilefgieevheekueevheehkeefveegiefg
  heefgfejjeehffefgedujedugeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
  epmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughkpdhnsggprhgtphht
- thhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehqvghmuhdquggvvhgvlh
+ thhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehqvghmuhdquggvvhgvlh
  esnhhonhhgnhhurdhorhhgpdhrtghpthhtohepphgvthgvrhdrmhgrhiguvghllheslhhi
- nhgrrhhordhorhhgpdhrtghpthhtohepkhgsuhhstghhsehkvghrnhgvlhdrohhrghdprh
- gtphhtthhopehkrdhjvghnshgvnhesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopehi
- thhssehirhhrvghlvghvrghnthdrughkpdhrtghpthhtohepfhhoshhsseguvghfmhgrtg
- hrohdrihhtpdhrtghpthhtohepqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrgh
-X-ME-Proxy: <xmx:BJ_7ZkyJvgAK8J4BCV0DYZBThcopq29tjN5j7wHe_I7E5YqcMjOfug>
- <xmx:BJ_7ZrSBzjYNNkyRd0er-oCjFYUd5nsRrHJVoDEgNl_uKGWOTQX3og>
- <xmx:BJ_7ZvaNSwlGW6adop8C9B5czCzCwbTrwN_J8uppqXJu7Ai2A6e50g>
- <xmx:BJ_7ZkQHHHxNSmIjQqmpac1VNSwcqU-c3RK8E_MoyVIK-zt7y0sSVQ>
- <xmx:BZ_7ZkT7dRqlAuV_fIew5wCRzyoaDwcFhQ7eK64pccsyj_NaD8Ai8HUz>
+ nhgrrhhordhorhhgpdhrtghpthhtoheprghruhhnrdhkkhgrsehsrghmshhunhhgrdgtoh
+ hmpdhrtghpthhtohepkhdrjhgvnhhsvghnsehsrghmshhunhhgrdgtohhmpdhrtghpthht
+ ohepkhgsuhhstghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehithhssehirhhrvg
+ hlvghvrghnthdrughkpdhrtghpthhtohepfhhoshhsseguvghfmhgrtghrohdrihhtpdhr
+ tghpthhtohepqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrgh
+X-ME-Proxy: <xmx:B5_7ZoK09eN0s8ouv7Uu9V9nfU8omTKnS7YHWZjYjXLfLQY0SBjGlQ>
+ <xmx:B5_7ZrJr5i_yAD5yXByVNQDyIG5OBgje4TqtdUGYOEL-kdthKuApow>
+ <xmx:B5_7Zhxj3I4l-82QLv2mcRlK8kNxzuHC2d_y1UWL81KYo2s2G6f5Yw>
+ <xmx:B5_7ZnLsTu1cXRlwl-J-iEiBcGiWWSs_Mbq5FUjJNqi_rHdBPjanRA>
+ <xmx:B5_7Zi89RrNOFIz-nZsnVUkpjs0P3MZ7HXS2SP4U4pB58N9MeIMSCj-7>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Oct 2024 03:04:35 -0400 (EDT)
+ 1 Oct 2024 03:04:38 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <k.jensen@samsung.com>, Klaus Jensen <its@irrelevant.dk>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Arun Kumar <arun.kka@samsung.com>, Klaus Jensen <k.jensen@samsung.com>,
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
  Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org
-Subject: [PULL 1/5] hw/nvme: report id controller metadata sgl support
-Date: Tue,  1 Oct 2024 09:04:13 +0200
-Message-ID: <20241001070418.28737-2-its@irrelevant.dk>
+Subject: [PULL 2/5] hw/nvme: clear masked events from the aer queue
+Date: Tue,  1 Oct 2024 09:04:14 +0200
+Message-ID: <20241001070418.28737-3-its@irrelevant.dk>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241001070418.28737-1-its@irrelevant.dk>
 References: <20241001070418.28737-1-its@irrelevant.dk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=103.168.172.153; envelope-from=its@irrelevant.dk;
- helo=fhigh-a2-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=103.168.172.147; envelope-from=its@irrelevant.dk;
+ helo=fout-a4-smtp.messagingengine.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,31 +110,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Keith Busch <kbusch@kernel.org>
+From: Arun Kumar <arun.kka@samsung.com>
 
-The controller already supports this decoding, so just set the
-ID_CTRL.SGLS field accordingly.
+Clear masked events from the aer queue when get log page is issued with
+RAE 0 without checking for the presence of outstanding aer requests.
 
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
+Signed-off-by: Arun Kumar <arun.kka@samsung.com>
+[k.jensen: remove unnecessary QTAILQ_EMPTY check]
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ctrl.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/nvme/ctrl.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 2589e1968ea6..d5ea9ad653f2 100644
+index d5ea9ad653f2..a720dbc354a2 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -8536,7 +8536,8 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
+@@ -1649,9 +1649,16 @@ static void nvme_smart_event(NvmeCtrl *n, uint8_t event)
  
-     id->ocfs = cpu_to_le16(NVME_OCFS_COPY_FORMAT_0 | NVME_OCFS_COPY_FORMAT_1 |
-                             NVME_OCFS_COPY_FORMAT_2 | NVME_OCFS_COPY_FORMAT_3);
--    id->sgls = cpu_to_le32(NVME_CTRL_SGLS_SUPPORT_NO_ALIGN);
-+    id->sgls = cpu_to_le32(NVME_CTRL_SGLS_SUPPORT_NO_ALIGN |
-+                           NVME_CTRL_SGLS_MPTR_SGL);
- 
-     nvme_init_subnqn(n);
+ static void nvme_clear_events(NvmeCtrl *n, uint8_t event_type)
+ {
++    NvmeAsyncEvent *event, *next;
++
+     n->aer_mask &= ~(1 << event_type);
+-    if (!QTAILQ_EMPTY(&n->aer_queue)) {
+-        nvme_process_aers(n);
++
++    QTAILQ_FOREACH_SAFE(event, &n->aer_queue, entry, next) {
++        if (event->result.event_type == event_type) {
++            QTAILQ_REMOVE(&n->aer_queue, event, entry);
++            n->aer_queued--;
++            g_free(event);
++        }
+     }
+ }
  
 -- 
 2.45.2
