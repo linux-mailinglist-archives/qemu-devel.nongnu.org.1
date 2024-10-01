@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B7398BEFC
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACAF98BFF5
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:30:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdVA-0000z5-Tx; Tue, 01 Oct 2024 10:05:20 -0400
+	id 1svdqv-0008LT-6f; Tue, 01 Oct 2024 10:27:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svdV5-0000x9-4I; Tue, 01 Oct 2024 10:05:15 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1svdp6-0007ZX-Da
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:26:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1svdUX-0000b6-6M; Tue, 01 Oct 2024 10:05:14 -0400
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:8a3:0:640:33b5:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 0834A60C24;
- Tue,  1 Oct 2024 17:04:22 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:8026::1:2f] (unknown
- [2a02:6b8:b081:8026::1:2f])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id H4b0022IjCg0-Cie0rsFw; Tue, 01 Oct 2024 17:04:21 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1727791461;
- bh=WTXvn8yZtuYQcYr8hPJx3JBwo8rHZ/olZn0CniOH4LE=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=bDnH7TJ8oDsS+DgDqH1ArTx826wjPXskRl0yKXpa33YFjJxE0kvpOnrirX4n7wAJP
- B+gL+OFwwvkeJ4RrDbwuaPVTdByFnMzf6KXW5xWeqXvNyYU5OMztcz+A+KhsiPg6oi
- r1y8Ue+ZA0LFzXcgpcKyp60aQase3bIDzyq2zOdk=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <c02e70b2-c76a-49ff-844d-3e8b66a4fe3b@yandex-team.ru>
-Date: Tue, 1 Oct 2024 17:04:17 +0300
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1svdov-0006cn-Cs
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:25:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727792740;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=hFAooNKd01/7jy/TVgwpCQpkboRyQ3CLsMqdDCLTRzM=;
+ b=gVcUlrH5+15dR03MiVV4x/oJLt4th6Uo7J9TCLuS8AInlGq7ywFJ56EatpQ8tbz+8rCsIh
+ V/k80sBztiGezMtCXK/bEPLa9QAjhjXmHM0siW2Upaxj8Ezw+3GuAVM1bhjgYvAbPTPQ+n
+ GID6J8jYvtevcyrXV9lpXzhInf5kEYY=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-473-Vu2TZG6SNUG3Yw-gc51xTw-1; Tue,
+ 01 Oct 2024 10:25:36 -0400
+X-MC-Unique: Vu2TZG6SNUG3Yw-gc51xTw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (unknown
+ [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EC3601955D4C; Tue,  1 Oct 2024 14:25:33 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.186])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 381F21944AA4; Tue,  1 Oct 2024 14:25:17 +0000 (UTC)
+Date: Tue, 1 Oct 2024 15:25:14 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
+ Prasad Pandit <ppandit@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Juraj Marcin <jmarcin@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>
+Subject: Re: [PATCH 0/7] migration: query-migrationthreads enhancements and
+ cleanups
+Message-ID: <ZvwGSgDnW8KfgFEh@redhat.com>
+References: <20240930195837.825728-1-peterx@redhat.com>
+ <87o744e5pa.fsf@pond.sub.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 21/22] qom/object: fix -Werror=maybe-uninitialized
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>, Fam Zheng <fam@euphon.net>,
- Song Gao <gaosong@loongson.cn>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, qemu-block@nongnu.org,
- Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Greg Kurz <groug@kaod.org>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Bin Meng <bmeng.cn@gmail.com>, Fabiano Rosas <farosas@suse.de>,
- Eric Blake <eblake@redhat.com>, Hyman Huang <yong.huang@smartx.com>,
- Kevin Wolf <kwolf@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, John Snow <jsnow@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Jesper Devantier <foss@defmacro.it>,
- Peter Xu <peterx@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Klaus Jensen <its@irrelevant.dk>, Keith Busch <kbusch@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Yuval Shaia <yuval.shaia.ml@gmail.com>,
- Bin Meng <bin.meng@windriver.com>
-References: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
- <20240930081458.1926382-22-marcandre.lureau@redhat.com>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20240930081458.1926382-22-marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Yandex-Filter: 1
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87o744e5pa.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,52 +84,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.09.24 11:14, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On Tue, Oct 01, 2024 at 07:46:09AM +0200, Markus Armbruster wrote:
+> Command query-migrationthreads went in without a QAPI ACK.  Issues
+> review should have caught:
 > 
-> object_resolve_path_type() didn't always set *ambiguousp.
+> * Flawed documentation.  Fixed in commit e6c60bf02d1.
 > 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->   qom/object.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
+> * It should have been spelled query-migration-threads.  Not worth fixing
+>   now, I guess.
 > 
-> diff --git a/qom/object.c b/qom/object.c
-> index 28c5b66eab..bdc8a2c666 100644
-> --- a/qom/object.c
-> +++ b/qom/object.c
-> @@ -2201,6 +2201,9 @@ Object *object_resolve_path_type(const char *path, const char *typename,
->           }
->       } else {
->           obj = object_resolve_abs_path(object_get_root(), parts + 1, typename);
-> +        if (ambiguousp) {
-> +            *ambiguousp = false;
-> +        }
+> * What are the use cases?  The commit message doesn't tell!  If it's
+>   just for debugging, the command should be marked unstable.
 
-Doesn't this hunk in isolation fix the issue? With this object_resolve_path_type() should set the pointer on all paths if it is non-null..
+It is hard to use too.
 
-Hmm, called object_resolve_partial_path() also doesn't set ambiguous on every path, so this hunk is at lease incomplete.
+Lets say a mgmt app wants to restrict migration threads to some
+certain pCPUs. It can't call query-migrationthreads beforehand
+as the threads don't exist until migration is started. If it
+calls after migration is started, then there's a window where
+threads are running on arbitrary pCPUs that QEMU has access
+to. There's no synchronization point where threads have been
+created & can be queried, but are not yet sending data (and
+thus burning CPU time)
 
-I'm unsure about what semantics expected around ambigous pointers, but it seems to me that it is set only on failure paths, as a reason, why we failed. If this is true, I think, we need only the second hunk, which initializes local "ambig".
 
->       }
->   
->       g_strfreev(parts);
-> @@ -2226,7 +2229,7 @@ Object *object_resolve_path_at(Object *parent, const char *path)
->   
->   Object *object_resolve_type_unambiguous(const char *typename, Error **errp)
->   {
-> -    bool ambig;
-> +    bool ambig = false;
->       Object *o = object_resolve_path_type("", typename, &ambig);
->   
->       if (ambig) {
-
+With regards,
+Daniel
 -- 
-Best regards,
-Vladimir
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
