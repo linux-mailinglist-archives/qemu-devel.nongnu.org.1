@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FFB598C3E8
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:50:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFFF98C405
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:56:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svfuQ-0005MV-KP; Tue, 01 Oct 2024 12:39:35 -0400
+	id 1svfuR-0005N6-IA; Tue, 01 Oct 2024 12:39:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuO-0005Kt-0b
+ id 1svfuO-0005Lh-Rr
  for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:32 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuK-00061v-NG
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:31 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-37cd831ab06so2261598f8f.0
+ id 1svfuL-000624-8f
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:32 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-37ccd81de57so3609134f8f.0
  for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727800767; x=1728405567; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727800768; x=1728405568; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5s9Yhc6WePnm5jACFBQjH8puspUYA1WJOK7FySZGVZ4=;
- b=hOxh/w1FYiqpuoTuhmBE3tVPsNDtSgO4COdZzPgOJKYE1t08Li3TnCtWguXO0GAceB
- 5ZSMkuL4PLV4VSwCrBMEPx9/GvYbgmVsjfj1Q73FcH5hx29nAA+h2tP//Lk+l1/fBgIi
- mUVA6evBAB5VDKGbRSvZLij0k2HMTeGsdwv4qPffT4XPzY/rRqFHmgNBOFTgOIMDbFys
- PdL87AHzWydoJ9dH1LeZ2wL/zJscAse4tHYMGH4BoJUQxp4qiBdtmbwLUJ31G07UT/9I
- wl+h5/FiOlUmdH9lapCZ3EUZg9Z4/s5L6Rux+dToSuJuTwZnZbN5S+L72ewq5Kr2XpOe
- VI2Q==
+ :reply-to; bh=76Q9/MPhqJLyp+QdvJeBalV62/ghJS34ET4Qdb+QrRY=;
+ b=HwQwsKN+RYMLug4IQE6fwaRRcVe4Ml86OlQDjQHJYceyhPm8bQeKUP+w/pK5iQk3aK
+ +pGKWX6D6LWdTUVgkWXum6qKjv3xu9ljGUWnjDHds3KQgzpP47JQLdV0kS0rw6Cxh2q+
+ 64CCNcDNU3KnIsB+Q8DEGw9l0GPi9yHUhV9ab+IbX2mgWsgFb+SsiVeSwE2jvTXAMTZ5
+ HmnLQV74GOyuJvQO/gYOKQroDnAv4WeZvdKV5w/qFDM3yAD+mrBC8th8jZ/6DMs230hx
+ XgXCAE8a/oE1QEPBIXCmwJI4zvTTb1za/yu5iQSt2BzlaWESv0TT0deH6XZSuguePFI+
+ JHKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727800767; x=1728405567;
+ d=1e100.net; s=20230601; t=1727800768; x=1728405568;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5s9Yhc6WePnm5jACFBQjH8puspUYA1WJOK7FySZGVZ4=;
- b=wukLLuAu3eNf2u3B0O+qWbY8qNBaGW02edk7gkJjdk0VwRQ9X8+pPTkgCSy7H5NYuJ
- 1Din/7XX7x6l+UN4hAStedKEoLOa2WQNqLEQ99ni3POYMt3Fh3/UTfUqHPLuE0f8lEWY
- dYFTN6tkelQgXvgqhbriWplOC/I94/XuASSTVXG0j4jflP6vSn5A1vFyYU3rncwhUsVh
- o+vqfpwL2ulgv2mVq91yc5sRwjSqw8vPUk3832ornmqjpZl8xErWRl78SpT3TMLwKNlP
- /6smS3khWj0SNqxGWhZvcVyT7LSJH/DPSM38HRbU8AhbnpxJkYEYDjG56/fume+bHjci
- +jDA==
-X-Gm-Message-State: AOJu0Yzh1Rwzly5VjK0ZApTkkziHTQR/smalV/G0dRYnds6PIs1EAv8W
- ZE3ES2Yxz87befKeVjJcZbl/Sj82LDlCTmLR1aWekOB+XJzHaZMNJk6uzfrAGQYxJwvU9um8JE8
- C
-X-Google-Smtp-Source: AGHT+IGNYeKJgTrhl843/kdDNBkvrIdNeUlKcNLJuOYypSHYVShLVeuJN9ws4cUOiWmaQbiMckUOYA==
-X-Received: by 2002:adf:e7c4:0:b0:37c:c80e:d030 with SMTP id
- ffacd0b85a97d-37cfba0a72bmr145575f8f.53.1727800767148; 
+ bh=76Q9/MPhqJLyp+QdvJeBalV62/ghJS34ET4Qdb+QrRY=;
+ b=oPAeqgWXJYaeMQQ+5t6VEJ2Z0HmEZNb+0aXzxsfb7owzHvM1bv31fPStQ/T5+IpM+n
+ /66Ap0djbA/YL4g380z3xdJzO7hA7lvheqZCUWN1XzJiRw+QzTI75z0jRBCGGJFzhzM+
+ 1455n0ARdeOWM2ed1Z/X2sQGo2lqfI9zJdJLitU2t+9LrYNVjnEqcxi0nUMuR0hfR7LN
+ 8avg3DCAI+Dim9+kGcrpQcM10Fx2zyktvETd1GunGRzEerExjkz6K0YzweLnu/IAAjjg
+ GWloYzCWu3hNJBqYZs/XdHRyQIjBDICbw/ag06+TENAHpdZJomsUQ3PP93dO8qEYRljj
+ tqCQ==
+X-Gm-Message-State: AOJu0YyESwrsAGlhm39vnXz5n2naQELZ2o3BJDWXJSDbVfRcex09tNTJ
+ LAutgxkcI/S3KRWHuxbLLe8aytX5izsejg3vzjRPVqn8VHSWLCrEBTJDkehHlsYRk9Cde/m0d/v
+ F
+X-Google-Smtp-Source: AGHT+IH9QatZqTWDndzdrODH+cqJnp6aatWvlQGtWdZEBOM5gPWp0JBUYVTNoa/PiFIuyxc5TYQkxA==
+X-Received: by 2002:adf:a452:0:b0:37c:ca20:52a with SMTP id
+ ffacd0b85a97d-37cfb9d11b4mr166942f8f.8.1727800767592; 
  Tue, 01 Oct 2024 09:39:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.26
+ ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 09:39:26 -0700 (PDT)
+ Tue, 01 Oct 2024 09:39:27 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/54] hw/arm: Remove 'connex' and 'verdex' machines
-Date: Tue,  1 Oct 2024 17:38:37 +0100
-Message-Id: <20241001163918.1275441-14-peter.maydell@linaro.org>
+Subject: [PULL 14/54] hw/arm: Remove 'mainstone' machine
+Date: Tue,  1 Oct 2024 17:38:38 +0100
+Message-Id: <20241001163918.1275441-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241001163918.1275441-1-peter.maydell@linaro.org>
 References: <20241001163918.1275441-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,105 +92,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The connex and verdex machines have been deprecated since
-9.0 and so can be removed for the 9.2 release.
+The 'mainstone' machine has been deprecated since 9.0, and
+so we can remove it for the 9.2 release.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240903160751.4100218-10-peter.maydell@linaro.org
+Message-id: 20240903160751.4100218-11-peter.maydell@linaro.org
 ---
- MAINTAINERS                             |   8 --
- docs/system/arm/gumstix.rst             |  21 ----
+ MAINTAINERS                             |   2 -
+ docs/system/arm/mainstone.rst           |  25 ----
  docs/system/target-arm.rst              |   1 -
  configs/devices/arm-softmmu/default.mak |   1 -
- hw/arm/gumstix.c                        | 141 ------------------------
+ hw/arm/mainstone.c                      | 175 ------------------------
  hw/arm/Kconfig                          |   8 --
  hw/arm/meson.build                      |   1 -
- 7 files changed, 181 deletions(-)
- delete mode 100644 docs/system/arm/gumstix.rst
- delete mode 100644 hw/arm/gumstix.c
+ 7 files changed, 213 deletions(-)
+ delete mode 100644 docs/system/arm/mainstone.rst
+ delete mode 100644 hw/arm/mainstone.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 16de5c67e1c..329fea2bf04 100644
+index 329fea2bf04..8d7f7b32701 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -750,14 +750,6 @@ S: Maintained
- F: hw/rtc/goldfish_rtc.c
- F: include/hw/rtc/goldfish_rtc.h
- 
--Gumstix
--M: Peter Maydell <peter.maydell@linaro.org>
--R: Philippe Mathieu-Daudé <philmd@linaro.org>
--L: qemu-arm@nongnu.org
--S: Odd Fixes
--F: hw/arm/gumstix.c
--F: docs/system/arm/gumstix.rst
--
- i.MX25 PDK
+@@ -917,7 +917,6 @@ PXA2XX
  M: Peter Maydell <peter.maydell@linaro.org>
- R: Jean-Christophe Dubois <jcd@tribudubois.net>
-diff --git a/docs/system/arm/gumstix.rst b/docs/system/arm/gumstix.rst
+ L: qemu-arm@nongnu.org
+ S: Odd Fixes
+-F: hw/arm/mainstone.c
+ F: hw/arm/z2.c
+ F: hw/*/pxa2xx*
+ F: hw/gpio/max7310.c
+@@ -925,7 +924,6 @@ F: hw/misc/mst_fpga.c
+ F: hw/adc/max111x.c
+ F: include/hw/adc/max111x.h
+ F: include/hw/arm/pxa.h
+-F: docs/system/arm/mainstone.rst
+ 
+ SABRELITE / i.MX6
+ M: Peter Maydell <peter.maydell@linaro.org>
+diff --git a/docs/system/arm/mainstone.rst b/docs/system/arm/mainstone.rst
 deleted file mode 100644
-index cb373139dcb..00000000000
---- a/docs/system/arm/gumstix.rst
+index 05310f42c7f..00000000000
+--- a/docs/system/arm/mainstone.rst
 +++ /dev/null
-@@ -1,21 +0,0 @@
--Gumstix Connex and Verdex (``connex``, ``verdex``)
--==================================================
+@@ -1,25 +0,0 @@
+-Intel Mainstone II board (``mainstone``)
+-========================================
 -
--These machines model the Gumstix Connex and Verdex boards.
--The Connex has a PXA255 CPU and the Verdex has a PXA270.
+-The ``mainstone`` board emulates the Intel Mainstone II development
+-board, which uses a PXA270 CPU.
 -
--Implemented devices:
+-Emulated devices:
 -
-- * NOR flash
-- * SMC91C111 ethernet
-- * Interrupt controller
-- * DMA
-- * Timer
-- * GPIO
-- * MMC/SD card
-- * Fast infra-red communications port (FIR)
-- * LCD controller
-- * Synchronous serial ports (SPI)
-- * PCMCIA interface
-- * I2C
-- * I2S
+-- Flash memory
+-- Keypad
+-- MMC controller
+-- 91C111 ethernet
+-- PIC
+-- Timer
+-- DMA
+-- GPIO
+-- FIR
+-- Serial
+-- LCD controller
+-- SSP
+-- USB controller
+-- RTC
+-- PCMCIA
+-- I2C
+-- I2S
 diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
-index fde37385224..ddaf1675dcc 100644
+index ddaf1675dcc..28af58135e4 100644
 --- a/docs/system/target-arm.rst
 +++ b/docs/system/target-arm.rst
 @@ -91,7 +91,6 @@ undocumented; you can get a complete list by running
     arm/cubieboard
     arm/emcraft-sf2
     arm/musicpal
--   arm/gumstix
-    arm/mainstone
+-   arm/mainstone
     arm/kzm
     arm/nseries
+    arm/nrf
 diff --git a/configs/devices/arm-softmmu/default.mak b/configs/devices/arm-softmmu/default.mak
-index 6ed821be220..490ef4b3943 100644
+index 490ef4b3943..547100a06f3 100644
 --- a/configs/devices/arm-softmmu/default.mak
 +++ b/configs/devices/arm-softmmu/default.mak
-@@ -28,7 +28,6 @@
+@@ -27,7 +27,6 @@
+ # CONFIG_VERSATILE=n
  # CONFIG_VEXPRESS=n
  # CONFIG_ZYNQ=n
- # CONFIG_MAINSTONE=n
--# CONFIG_GUMSTIX=n
+-# CONFIG_MAINSTONE=n
  # CONFIG_Z2=n
  # CONFIG_NPCM7XX=n
  # CONFIG_COLLIE=n
-diff --git a/hw/arm/gumstix.c b/hw/arm/gumstix.c
+diff --git a/hw/arm/mainstone.c b/hw/arm/mainstone.c
 deleted file mode 100644
-index 91462691531..00000000000
---- a/hw/arm/gumstix.c
+index 3a6c22fddbc..00000000000
+--- a/hw/arm/mainstone.c
 +++ /dev/null
-@@ -1,141 +0,0 @@
+@@ -1,175 +0,0 @@
 -/*
-- * Gumstix Platforms
+- * PXA270-based Intel Mainstone platforms.
 - *
-- * Copyright (c) 2007 by Thorsten Zitterell <info@bitmux.org>
+- * Copyright (c) 2007 by Armin Kuster <akuster@kama-aina.net> or
+- *                                    <akuster@mvista.com>
 - *
 - * Code based on spitz platform by Andrzej Zaborowski <balrog@zabor.org>
 - *
@@ -199,166 +204,199 @@ index 91462691531..00000000000
 - * Contributions after 2012-01-13 are licensed under the terms of the
 - * GNU GPL, version 2 or (at your option) any later version.
 - */
--
--/* 
-- * Example usage:
-- * 
-- * connex:
-- * =======
-- * create image:
-- * # dd of=flash bs=1k count=16k if=/dev/zero
-- * # dd of=flash bs=1k conv=notrunc if=u-boot.bin
-- * # dd of=flash bs=1k conv=notrunc seek=256 if=rootfs.arm_nofpu.jffs2
-- * start it:
-- * # qemu-system-arm -M connex -pflash flash -monitor null -nographic
-- *
-- * verdex:
-- * =======
-- * create image:
-- * # dd of=flash bs=1k count=32k if=/dev/zero
-- * # dd of=flash bs=1k conv=notrunc if=u-boot.bin
-- * # dd of=flash bs=1k conv=notrunc seek=256 if=rootfs.arm_nofpu.jffs2
-- * # dd of=flash bs=1k conv=notrunc seek=31744 if=uImage
-- * start it:
-- * # qemu-system-arm -M verdex -pflash flash -monitor null -nographic -m 289
-- */
--
 -#include "qemu/osdep.h"
 -#include "qemu/units.h"
 -#include "qemu/error-report.h"
+-#include "qapi/error.h"
 -#include "hw/arm/pxa.h"
+-#include "hw/arm/boot.h"
 -#include "net/net.h"
--#include "hw/block/flash.h"
 -#include "hw/net/smc91c111.h"
 -#include "hw/boards.h"
+-#include "hw/block/flash.h"
+-#include "hw/sysbus.h"
 -#include "exec/address-spaces.h"
--#include "sysemu/qtest.h"
 -
--#define CONNEX_FLASH_SIZE   (16 * MiB)
--#define CONNEX_RAM_SIZE     (64 * MiB)
+-/* Device addresses */
+-#define MST_FPGA_PHYS	0x08000000
+-#define MST_ETH_PHYS	0x10000300
+-#define MST_FLASH_0		0x00000000
+-#define MST_FLASH_1		0x04000000
 -
--#define VERDEX_FLASH_SIZE   (32 * MiB)
--#define VERDEX_RAM_SIZE     (256 * MiB)
+-/* IRQ definitions */
+-#define MMC_IRQ       0
+-#define USIM_IRQ      1
+-#define USBC_IRQ      2
+-#define ETHERNET_IRQ  3
+-#define AC97_IRQ      4
+-#define PEN_IRQ       5
+-#define MSINS_IRQ     6
+-#define EXBRD_IRQ     7
+-#define S0_CD_IRQ     9
+-#define S0_STSCHG_IRQ 10
+-#define S0_IRQ        11
+-#define S1_CD_IRQ     13
+-#define S1_STSCHG_IRQ 14
+-#define S1_IRQ        15
 -
--#define FLASH_SECTOR_SIZE   (128 * KiB)
+-static const struct keymap map[0xE0] = {
+-    [0 ... 0xDF] = { -1, -1 },
+-    [0x1e] = {0,0}, /* a */
+-    [0x30] = {0,1}, /* b */
+-    [0x2e] = {0,2}, /* c */
+-    [0x20] = {0,3}, /* d */
+-    [0x12] = {0,4}, /* e */
+-    [0x21] = {0,5}, /* f */
+-    [0x22] = {1,0}, /* g */
+-    [0x23] = {1,1}, /* h */
+-    [0x17] = {1,2}, /* i */
+-    [0x24] = {1,3}, /* j */
+-    [0x25] = {1,4}, /* k */
+-    [0x26] = {1,5}, /* l */
+-    [0x32] = {2,0}, /* m */
+-    [0x31] = {2,1}, /* n */
+-    [0x18] = {2,2}, /* o */
+-    [0x19] = {2,3}, /* p */
+-    [0x10] = {2,4}, /* q */
+-    [0x13] = {2,5}, /* r */
+-    [0x1f] = {3,0}, /* s */
+-    [0x14] = {3,1}, /* t */
+-    [0x16] = {3,2}, /* u */
+-    [0x2f] = {3,3}, /* v */
+-    [0x11] = {3,4}, /* w */
+-    [0x2d] = {3,5}, /* x */
+-    [0x34] = {4,0}, /* . */
+-    [0x15] = {4,2}, /* y */
+-    [0x2c] = {4,3}, /* z */
+-    [0x35] = {4,4}, /* / */
+-    [0xc7] = {5,0}, /* Home */
+-    [0x2a] = {5,1}, /* shift */
+-    /*
+-     * There are two matrix positions which map to space,
+-     * but QEMU can only use one of them for the reverse
+-     * mapping, so simply use the second one.
+-     */
+-    /* [0x39] = {5,2}, space */
+-    [0x39] = {5,3}, /* space */
+-    /*
+-     * Matrix position {5,4} and other keys are missing here.
+-     * TODO: Compare with Linux code and test real hardware.
+-     */
+-    [0x1c] = {5,4}, /* enter */
+-    [0x0e] = {5,5}, /* backspace */
+-    [0xc8] = {6,0}, /* up */
+-    [0xd0] = {6,1}, /* down */
+-    [0xcb] = {6,2}, /* left */
+-    [0xcd] = {6,3}, /* right */
+-};
 -
--static void connex_init(MachineState *machine)
+-enum mainstone_model_e { mainstone };
+-
+-#define MAINSTONE_RAM_SIZE      (64 * MiB)
+-#define MAINSTONE_ROM_SIZE      (8 * MiB)
+-#define MAINSTONE_FLASH_SIZE    (32 * MiB)
+-
+-static struct arm_boot_info mainstone_binfo = {
+-    .loader_start = PXA2XX_SDRAM_BASE,
+-    .ram_size = MAINSTONE_RAM_SIZE,
+-};
+-
+-#define FLASH_SECTOR_SIZE   (256 * KiB)
+-
+-static void mainstone_common_init(MachineState *machine,
+-                                  enum mainstone_model_e model, int arm_id)
 -{
--    PXA2xxState *cpu;
+-    hwaddr mainstone_flash_base[] = { MST_FLASH_0, MST_FLASH_1 };
+-    PXA2xxState *mpu;
+-    DeviceState *mst_irq;
 -    DriveInfo *dinfo;
+-    int i;
+-    MemoryRegion *rom = g_new(MemoryRegion, 1);
 -
--    cpu = pxa255_init(CONNEX_RAM_SIZE);
+-    /* Setup CPU & memory */
+-    mpu = pxa270_init(mainstone_binfo.ram_size, machine->cpu_type);
+-    memory_region_init_rom(rom, NULL, "mainstone.rom", MAINSTONE_ROM_SIZE,
+-                           &error_fatal);
+-    memory_region_add_subregion(get_system_memory(), 0x00000000, rom);
 -
--    dinfo = drive_get(IF_PFLASH, 0, 0);
--    if (!dinfo && !qtest_enabled()) {
--        error_report("A flash image must be given with the "
--                     "'pflash' parameter");
--        exit(1);
+-    /* There are two 32MiB flash devices on the board */
+-    for (i = 0; i < 2; i ++) {
+-        dinfo = drive_get(IF_PFLASH, 0, i);
+-        pflash_cfi01_register(mainstone_flash_base[i],
+-                              i ? "mainstone.flash1" : "mainstone.flash0",
+-                              MAINSTONE_FLASH_SIZE,
+-                              dinfo ? blk_by_legacy_dinfo(dinfo) : NULL,
+-                              FLASH_SECTOR_SIZE, 4, 0, 0, 0, 0, 0);
 -    }
 -
--    /* Numonyx RC28F128J3F75 */
--    pflash_cfi01_register(0x00000000, "connext.rom", CONNEX_FLASH_SIZE,
--                          dinfo ? blk_by_legacy_dinfo(dinfo) : NULL,
--                          FLASH_SECTOR_SIZE, 2, 0, 0, 0, 0, 0);
+-    mst_irq = sysbus_create_simple("mainstone-fpga", MST_FPGA_PHYS,
+-                    qdev_get_gpio_in(mpu->gpio, 0));
 -
--    /* Interrupt line of NIC is connected to GPIO line 36 */
--    smc91c111_init(0x04000300, qdev_get_gpio_in(cpu->gpio, 36));
+-    /* setup keypad */
+-    pxa27x_register_keypad(mpu->kp, map, 0xe0);
+-
+-    /* MMC/SD host */
+-    pxa2xx_mmci_handlers(mpu->mmc, NULL, qdev_get_gpio_in(mst_irq, MMC_IRQ));
+-
+-    pxa2xx_pcmcia_set_irq_cb(mpu->pcmcia[0],
+-            qdev_get_gpio_in(mst_irq, S0_IRQ),
+-            qdev_get_gpio_in(mst_irq, S0_CD_IRQ));
+-    pxa2xx_pcmcia_set_irq_cb(mpu->pcmcia[1],
+-            qdev_get_gpio_in(mst_irq, S1_IRQ),
+-            qdev_get_gpio_in(mst_irq, S1_CD_IRQ));
+-
+-    smc91c111_init(MST_ETH_PHYS, qdev_get_gpio_in(mst_irq, ETHERNET_IRQ));
+-
+-    mainstone_binfo.board_id = arm_id;
+-    arm_load_kernel(mpu->cpu, machine, &mainstone_binfo);
 -}
 -
--static void verdex_init(MachineState *machine)
+-static void mainstone_init(MachineState *machine)
 -{
--    PXA2xxState *cpu;
--    DriveInfo *dinfo;
--
--    cpu = pxa270_init(VERDEX_RAM_SIZE, machine->cpu_type);
--
--    dinfo = drive_get(IF_PFLASH, 0, 0);
--    if (!dinfo && !qtest_enabled()) {
--        error_report("A flash image must be given with the "
--                     "'pflash' parameter");
--        exit(1);
--    }
--
--    /* Micron RC28F256P30TFA */
--    pflash_cfi01_register(0x00000000, "verdex.rom", VERDEX_FLASH_SIZE,
--                          dinfo ? blk_by_legacy_dinfo(dinfo) : NULL,
--                          FLASH_SECTOR_SIZE, 2, 0, 0, 0, 0, 0);
--
--    /* Interrupt line of NIC is connected to GPIO line 99 */
--    smc91c111_init(0x04000300, qdev_get_gpio_in(cpu->gpio, 99));
+-    mainstone_common_init(machine, mainstone, 0x196);
 -}
 -
--static void connex_class_init(ObjectClass *oc, void *data)
+-static void mainstone2_machine_init(MachineClass *mc)
 -{
--    MachineClass *mc = MACHINE_CLASS(oc);
--
--    mc->desc = "Gumstix Connex (PXA255)";
--    mc->init = connex_init;
+-    mc->desc = "Mainstone II (PXA27x)";
+-    mc->init = mainstone_init;
 -    mc->ignore_memory_transaction_failures = true;
+-    mc->default_cpu_type = ARM_CPU_TYPE_NAME("pxa270-c5");
 -    mc->deprecation_reason = "machine is old and unmaintained";
 -}
 -
--static const TypeInfo connex_type = {
--    .name = MACHINE_TYPE_NAME("connex"),
--    .parent = TYPE_MACHINE,
--    .class_init = connex_class_init,
--};
--
--static void verdex_class_init(ObjectClass *oc, void *data)
--{
--    MachineClass *mc = MACHINE_CLASS(oc);
--
--    mc->desc = "Gumstix Verdex Pro XL6P COMs (PXA270)";
--    mc->init = verdex_init;
--    mc->ignore_memory_transaction_failures = true;
--    mc->deprecation_reason = "machine is old and unmaintained";
--    mc->default_cpu_type = ARM_CPU_TYPE_NAME("pxa270-c0");
--}
--
--static const TypeInfo verdex_type = {
--    .name = MACHINE_TYPE_NAME("verdex"),
--    .parent = TYPE_MACHINE,
--    .class_init = verdex_class_init,
--};
--
--static void gumstix_machine_init(void)
--{
--    type_register_static(&connex_type);
--    type_register_static(&verdex_type);
--}
--
--type_init(gumstix_machine_init)
+-DEFINE_MACHINE("mainstone", mainstone2_machine_init)
 diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 3261618ea74..d3e07262b14 100644
+index d3e07262b14..84cc34f016c 100644
 --- a/hw/arm/Kconfig
 +++ b/hw/arm/Kconfig
-@@ -184,14 +184,6 @@ config PXA2XX
-     select USB_OHCI_SYSBUS
-     select PCMCIA
+@@ -94,14 +94,6 @@ config INTEGRATOR
+     select PL181 # display
+     select SMC91C111
  
--config GUMSTIX
+-config MAINSTONE
 -    bool
 -    default y
 -    depends on TCG && ARM
+-    select PXA2XX
 -    select PFLASH_CFI01
 -    select SMC91C111
--    select PXA2XX
 -
- config Z2
+ config MPS3R
      bool
      default y
 diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index ae8d49f00f7..565d6a5f28e 100644
+index 565d6a5f28e..08261979150 100644
 --- a/hw/arm/meson.build
 +++ b/hw/arm/meson.build
-@@ -67,7 +67,6 @@ arm_ss.add(when: 'CONFIG_XEN', if_true: files(
- system_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmu-common.c'))
- system_ss.add(when: 'CONFIG_COLLIE', if_true: files('collie.c'))
- system_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4_boards.c'))
--system_ss.add(when: 'CONFIG_GUMSTIX', if_true: files('gumstix.c'))
- system_ss.add(when: 'CONFIG_NETDUINO2', if_true: files('netduino2.c'))
- system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap2.c'))
- system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_peripherals.c'))
+@@ -6,7 +6,6 @@ arm_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic_boards.c'))
+ arm_ss.add(when: 'CONFIG_EMCRAFT_SF2', if_true: files('msf2-som.c'))
+ arm_ss.add(when: 'CONFIG_HIGHBANK', if_true: files('highbank.c'))
+ arm_ss.add(when: 'CONFIG_INTEGRATOR', if_true: files('integratorcp.c'))
+-arm_ss.add(when: 'CONFIG_MAINSTONE', if_true: files('mainstone.c'))
+ arm_ss.add(when: 'CONFIG_MICROBIT', if_true: files('microbit.c'))
+ arm_ss.add(when: 'CONFIG_MPS3R', if_true: files('mps3r.c'))
+ arm_ss.add(when: 'CONFIG_MUSICPAL', if_true: files('musicpal.c'))
 -- 
 2.34.1
 
