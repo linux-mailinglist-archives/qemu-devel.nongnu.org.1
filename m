@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A04498C0B9
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E89C98C0D8
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:55:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sveCp-0001eh-D0; Tue, 01 Oct 2024 10:50:30 -0400
+	id 1sveGh-0005Ae-BI; Tue, 01 Oct 2024 10:54:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sveCT-0001K0-Tv
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:50:06 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sveGU-00052m-Dy
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:54:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sveCS-00058D-5d
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:50:05 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sveGR-0006GH-39
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:54:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727794201;
+ s=mimecast20190719; t=1727794441;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=WHZimejTlJNNv6hp0Zcpv89/u5axwT1MRsR/8yD7+w8=;
- b=B3bAYboVo6n13tP/wNCmWLI8DVfJ7y002oQog+Glr9zGQqjwr/AjTdayQg4ALxBZ3AKcV7
- OHD3cYAH8q1Opz+V/hs2DGIvtiwzicjq0lyxB4f+m6fwnP1QGIl6BUjVn2FJ+jFJOmUK0B
- PxNoI2B+BVwAfCiy9oQF0N0QJyeoH8Q=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=AGHX9GwxBiemSql2PHEpMBW570ILwIEBVtI698ydyKU=;
+ b=NQcTXgiZxDZGU8M+s8jYTA7xLckwXEyVRBGNLBgr81okzfUPakJG6IG4cBYyMFB1C+2BUd
+ EeZo8X15xu9v+En4Ktor9RcoyEdR7SH2SnNEFLsufbwVs7yHl60srQJEdEy58Sn5HW4jUi
+ 69KT2Q/9+I/el4QpdSQaJw6RhjG5BQM=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-L4zkXaIwNx-ofn25YhA7DQ-1; Tue, 01 Oct 2024 01:17:45 -0400
-X-MC-Unique: L4zkXaIwNx-ofn25YhA7DQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a8a84b60255so482207266b.1
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 22:17:45 -0700 (PDT)
+ us-mta-460-Zfn3ckX0O7-ZfQ9UXoMBTw-1; Tue, 01 Oct 2024 01:21:39 -0400
+X-MC-Unique: Zfn3ckX0O7-ZfQ9UXoMBTw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a8d15eff783so339254366b.3
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 22:21:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727759864; x=1728364664;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WHZimejTlJNNv6hp0Zcpv89/u5axwT1MRsR/8yD7+w8=;
- b=XToYPZdiRTCJ/kdx4Koew/UsOp52Q9RqI8x8tNVTHElkgsgro8mYbUenz78IczZ5Nx
- zpnxUliGjvAp0Kt8IHNfqsTmut9A2e09oo53VxPRUTAjX6Upoz2ePg3D8ExCvExgMgiC
- zZXLTV5s7o8lKr2DpqOIjgLb6c2umRecGVAsGnuihicXIbxz+jGsUr5/SqvHTfkGnbDe
- mpnxXqFCfQ+JTpXT+DyXKfnKu64ZPhwnHs5CIzJgbWSgmMkV3aj2DWYNRHsh6/PQivgD
- RnwwAZOZx0ojhvhy5wX/hT84PZch+19MEyQp34OWvqaPAd7y7zBEiuwpQXafBAl6DeIS
- TnOQ==
+ d=1e100.net; s=20230601; t=1727760098; x=1728364898;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AGHX9GwxBiemSql2PHEpMBW570ILwIEBVtI698ydyKU=;
+ b=m8jeOv5x6JmwIVm0uy7bp2sVTvLRTEPoZHQd7n5ATAQVlvp4LQZ7ku5kTkAaGJ7I0K
+ zZnl2b4CcPRZeoIBnIM3YR9vjhrg9tWdM6QeL8ySEce2L8VMF2ExnvLVFRGW5ShakNgB
+ nMYTasqlQjNDaaP9pfhN+UkvQGYJAbGo427yskzWwMu2ShIjZq/lsUEWX7ZblaAALyjM
+ ivljiSqYQBb0mqtfwUqf5eSEVgl8QoPO6gmUV1gJVgxHi0PuV1ktIQakXUEvSJc+EepM
+ o4Dt9wVipWPRhvIv40chvxtENyb6EpJjTjXO3A2wWka93TulBMBNhlYv6bsqujmxW3S2
+ JMsA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUQLM4M7oyCc5+cs7fkDcTucQ12pyU5PNChXcZDISgrKb6jgwRhjaYA48g/0h1jiqJg3lNt4xzx6Btc@nongnu.org
-X-Gm-Message-State: AOJu0Yxv8RP4+ADceziTM0lMfvLENc1clV1Begrqe1O+bzHq3UwQoZ/5
- wPjSVMJ83T72LcDb1F2ShRUF8krpAX0HyM6kE92R9AuhH6DBiZYyGAQ+PDgIH7cZ7jouXGgdKwc
- DOZPD166YWZCkGaYwtS6na/Z2Q01mdQo/x3Plb/MFUaSdztkFqqRl
-X-Received: by 2002:a17:907:a4a:b0:a8b:6ee7:ba10 with SMTP id
- a640c23a62f3a-a93c4946dd7mr1557709066b.33.1727759864548; 
- Mon, 30 Sep 2024 22:17:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFVBjEmFF8CBGB9faWvfhamGSYR3plCl253+McQ5GRinGk3wjkLHTQzI4/7ox4YAc3R4VYjag==
-X-Received: by 2002:a17:907:a4a:b0:a8b:6ee7:ba10 with SMTP id
- a640c23a62f3a-a93c4946dd7mr1557707666b.33.1727759864124; 
- Mon, 30 Sep 2024 22:17:44 -0700 (PDT)
+ AJvYcCVj/WnMjpaSy1KAtUmEobqDVatqEJWOpoSObEPlHdZ3ruLdQrTkB6iTwuxMWuaLv1cbMJ1E+G6WUKSf@nongnu.org
+X-Gm-Message-State: AOJu0YwlzROjD2pbX9mmrslENlkel0IvrKNpoL2ee911xIxi5aPU19bB
+ jslYs07QaItgtYnLkv/z9Cu2WWpiTSbxG+JlfnzOtXpyEHfNcwjsvTQ4PmAhxzp9yDlc1ElwLLq
+ JS1O6oh1ePrNbBlVHCvLPIABAlyzsMP++epJCd52R08Ex2g0/axFUw1NYliUDvuc=
+X-Received: by 2002:a17:906:99c5:b0:a8d:7210:e28d with SMTP id
+ a640c23a62f3a-a93c4946cc8mr1607131666b.29.1727760098136; 
+ Mon, 30 Sep 2024 22:21:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6ZVQMv0a0dF/nrlrcq2AhgPxf7+8Ghkb44BTPhd2pzPqZjgR7ZeuKnYlxil11NScvX+UdMQ==
+X-Received: by 2002:a17:906:99c5:b0:a8d:7210:e28d with SMTP id
+ a640c23a62f3a-a93c4946cc8mr1607130266b.29.1727760097709; 
+ Mon, 30 Sep 2024 22:21:37 -0700 (PDT)
 Received: from [192.168.0.7] (ip-109-42-49-143.web.vodafone.de.
  [109.42.49.143]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a93c27ecd10sm636129466b.96.2024.09.30.22.17.43
+ a640c23a62f3a-a93c297bb40sm632474166b.181.2024.09.30.22.21.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Sep 2024 22:17:43 -0700 (PDT)
-Message-ID: <f2efd88e-9300-4dba-9076-8d84c0c21192@redhat.com>
-Date: Tue, 1 Oct 2024 07:17:41 +0200
+ Mon, 30 Sep 2024 22:21:37 -0700 (PDT)
+Message-ID: <84a0a395-4b11-4db9-b7e3-c006d84394bb@redhat.com>
+Date: Tue, 1 Oct 2024 07:21:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/sh4/r2d: Replace tswap32() by stl_endian_p()
+Subject: Re: [PATCH 2/2] hw/core/machine: Extract compat properties to
+ machine-compat.c
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Magnus Damm <magnus.damm@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Anton Johansson <anjo@rev.ng>
-References: <20240930220732.58757-1-philmd@linaro.org>
-Content-Language: en-US
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Anton Johansson <anjo@rev.ng>,
+ Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>
+References: <20240930221900.59525-1-philmd@linaro.org>
+ <20240930221900.59525-3-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -118,7 +121,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240930220732.58757-1-philmd@linaro.org>
+In-Reply-To: <20240930221900.59525-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -146,40 +149,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01/10/2024 00.07, Philippe Mathieu-Daudé wrote:
-> Replace the target-specific tswap32() calls by stl_endian_p()
-> which does the same but takes the endianness as argument, thus
-> is target-agnostic.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> Based-on: <20240930073450.33195-2-philmd@linaro.org>
->            "qemu/bswap: Introduce ld/st_endian_p() API"
-> ---
->   hw/sh4/r2d.c | 8 +++++---
->   1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-> index e5ac6751bd..6739ac435a 100644
-> --- a/hw/sh4/r2d.c
-> +++ b/hw/sh4/r2d.c
-> @@ -353,9 +353,11 @@ static void r2d_init(MachineState *machine)
->           }
->   
->           /* initialization which should be done by firmware */
-> -        boot_params.loader_type = tswap32(1);
-> -        boot_params.initrd_start = tswap32(INITRD_LOAD_OFFSET);
-> -        boot_params.initrd_size = tswap32(initrd_size);
-> +        stl_endian_p(TARGET_BIG_ENDIAN, &boot_params.loader_type, 1);
-> +        stl_endian_p(TARGET_BIG_ENDIAN, &boot_params.initrd_start,
-> +                     INITRD_LOAD_OFFSET);
-> +        stl_endian_p(TARGET_BIG_ENDIAN, &boot_params.initrd_size,
-> +                     initrd_size);
->       }
+On 01/10/2024 00.19, Philippe Mathieu-Daudé wrote:
+> Extract machine compat properties to machine-compat.c.
+> Add the unit to the meson specific_ss[] source set so
+> we can use target specific (poisoned) definitions.
 
-I still don't quite get it - the tswap functions already use 
-target_words_bigendian() when being used in common code, so what do you 
-really gain by these changes?
+Why is this required? Shouldn't target-specific settings rather be done in 
+the various machine files instead?
 
   Thomas
 
