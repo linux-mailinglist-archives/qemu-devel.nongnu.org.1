@@ -2,81 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB7698BFD9
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9B198BF09
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:08:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdnj-0005gG-OU; Tue, 01 Oct 2024 10:24:32 -0400
+	id 1svdXJ-0005eY-42; Tue, 01 Oct 2024 10:07:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1svdm8-0004nH-Hn
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:23:00 -0400
-Received: from mail-qv1-xf34.google.com ([2607:f8b0:4864:20::f34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1svdm2-0005bH-G6
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:22:50 -0400
-Received: by mail-qv1-xf34.google.com with SMTP id
- 6a1803df08f44-6cb321145easo46247176d6.1
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 07:22:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727792565; x=1728397365; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AsxWXnfjxGZ3DY3wCUr2eO19f8E2tCESeHOUB5/59yQ=;
- b=Ht3h5sT7mTHp9Bydy3+ZNjNFccd7jxCDlBzI2Pq2Zz5CqRRUYrMGYsuTOE+IwYbivI
- KIdyQf7R8rqXndrLvRGw5wMsvQzg12zUsGjkXonj2aMdrupgahq2zL1tfnBFtp0VrN7d
- wx+kPzxM+7iut2sB5RfqpYKdXa/QFmEPHxfxFOA43sLdEPtmjGYTrqXEC/1GUPJFXatW
- 2mQfOM18duqYBIJDzXcTCRYDNw6yEOs3mKIK0gVHe76E/Co/4HuK0d0lG75npCcv8Sue
- jUKKeci+PwuCtjwkwKk+ewTl/3oc1tE3ZXUNmsPQfn7ohAcPmnZ3m7nfq/CrYG4CQO6p
- D8Eg==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1svdXG-0005YH-D3
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:07:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1svdX0-0001V0-P8
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:07:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727791632;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=s2IKp/hgAKRk9lcdxrxyUzTzXKsQG/+we0OoGwiinoI=;
+ b=S2r8af/RgaMeU4iKwcmN0zGOvb8b8iipUOg0Yp4XhN86VgrKZc/KsETRO4Rfdx04+nelwB
+ WlAua13z827ZV/0OLLGumR7ZpaD7oBI4GlsDcZVFZWJn9su5JvMwoHxt9tIsL8F1MBFnHs
+ 4BNAGnEWgYn+JdC87sZt+aE9hk2Wg6E=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-32-TAoivW_MO8CX0L5gx88KBQ-1; Tue, 01 Oct 2024 09:27:47 -0400
+X-MC-Unique: TAoivW_MO8CX0L5gx88KBQ-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6cb45b4c988so67130496d6.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 06:27:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727792565; x=1728397365;
+ d=1e100.net; s=20230601; t=1727789267; x=1728394067;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AsxWXnfjxGZ3DY3wCUr2eO19f8E2tCESeHOUB5/59yQ=;
- b=ANHfR7IFyXdpIqxGVhKw8JNfb7RP6DAHZBjBZ4ikGSyUBTFMyOBw3VnMhiBLYu/TWs
- Ns1TQag7S0bxtEACHkOfOXRVKboIQWXiwiKizLT4FLMQneyeuJftbddeMvAnYcTIAS0m
- QqNSqEtgJZSg9FC+vzU2A1GpwAlcFCr4tMAyXFHN6vxc7k/IEaowMYUefneFenu523Fy
- lIz+q+h6BSbXAPOoK73RyZTrRH2XacHy0R3Xeia8113qdgbl4Lw9s6uOVhzOheYaskev
- Zycx8X8OTH2sw47CaIp6yhZ0vHEBjqqpduTnH6wF5pqvnk+0zF/9KYOYJGqpmy2RipaW
- IWCA==
-X-Gm-Message-State: AOJu0YyVat6Ve7c+nVShH4eM5Aqz1h/pHczLWJ73fH/LRX9eYNU4bPOE
- xMQnNlwvIRkmLFaVR+xXchuOfvoOXzfFwr74lFqQ3O1jjL8hMxOD+IVy20YHG7ucXGsESoqIJTm
- 8pUys8Lqifjanyk8fZ+X5eQopidWtMkHH
-X-Google-Smtp-Source: AGHT+IHldUhVyMXLnQ7G05SJihFIgGcahVFQevyNBrje/0VHPJEjkqrA6jJIP5kpNnhoHQXU1ZqY+3kl41AVLD0i00k=
-X-Received: by 2002:a05:6102:2921:b0:49b:d489:d467 with SMTP id
- ada2fe7eead31-4a3d5d4691bmr1712711137.8.1727789112306; Tue, 01 Oct 2024
- 06:25:12 -0700 (PDT)
+ bh=s2IKp/hgAKRk9lcdxrxyUzTzXKsQG/+we0OoGwiinoI=;
+ b=oS++lnU9I9drCUWOZBOYKrFzI3SDhARi9UyK7puQcu2B0/j/m8ut+Q+jIB4yzCRcHB
+ XeGQSglwJwQ0iLwEtCN6ukGYUjstlv3SN7diBYuVu3RQzglhkWFgwoo4UH9vKGvbjtgp
+ TSkStLJmRvBScNyyBDunuiEYixOcjRThEPU4i0ve2Np4nijQF7r2jJW9Fj5xBnrOopsO
+ iTzXo2eeuiuLj97zKXhf7HGkdKh63L5QtubQEfQiYaITDViYLmibpUY4K9oV2DaxI243
+ u+qaVCWiyJWyHnwWGfSep29kT4GOaU2oTb2uEfsIOaCZUkr05hJH0UZt1aOIseqrdXpH
+ d01g==
+X-Gm-Message-State: AOJu0YwhEP493aCeGHDhPn5Pf75U6OKuSo+yhGHYeGywarNosgQiYi6O
+ nse4FuNNuwqBg2uLI1v4nL68o+PqkXMFK78fF7sohlFPz5ggkfBWPlpVobWbO/AChFB3okMKiR0
+ ze7vcqEuFlwo22ZllSUIk1VB46tU8Sz/8xLg4TZFDbsynCE7ihY/ubXLyIEwwuAtRck7XQivY17
+ Gp2z0iIOMgLeNSIURZSbmOzGeIsnNrJAanl5gad37R
+X-Received: by 2002:a05:6214:3d8a:b0:6c5:73a6:ff37 with SMTP id
+ 6a1803df08f44-6cb3b5b8004mr266344616d6.5.1727789267124; 
+ Tue, 01 Oct 2024 06:27:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExt98DhAhlxrG0Lx85b9ryB7vLD3C2tss3THgsfIabVXU7zN1gPHQveDHdm2taAXKXuV6A2m7JlDiUsPr6R6U=
+X-Received: by 2002:a05:6214:3d8a:b0:6c5:73a6:ff37 with SMTP id
+ 6a1803df08f44-6cb3b5b8004mr266344426d6.5.1727789266887; Tue, 01 Oct 2024
+ 06:27:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240922094441.23802-1-dorjoychy111@gmail.com>
- <20241001091436-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20241001091436-mutt-send-email-mst@kernel.org>
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Date: Tue, 1 Oct 2024 19:25:09 +0600
-Message-ID: <CAFfO_h78jFc1w93VXYLjsK89kXMjbJ782Eo77O2XGzQLRxvX+w@mail.gmail.com>
-Subject: Re: [PATCH v7 0/5] AWS Nitro Enclave emulation support
-To: "Michael S. Tsirkin" <mst@redhat.com>, graf@amazon.com
-Cc: qemu-devel@nongnu.org, agraf@csgraf.de, stefanha@redhat.com, 
- pbonzini@redhat.com, slp@redhat.com, richard.henderson@linaro.org, 
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, berrange@redhat.com, 
- philmd@linaro.org
+References: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20240930081458.1926382-1-marcandre.lureau@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Tue, 1 Oct 2024 17:27:35 +0400
+Message-ID: <CAMxuvazmjoWNedfh2a=g2NcdQSRjKY2WNcVYkHPfYKpc_1uY7A@mail.gmail.com>
+Subject: Re: [PATCH v3 00/22] -Werror=maybe-uninitialized fixes
+To: qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>, 
+ Fam Zheng <fam@euphon.net>, Song Gao <gaosong@loongson.cn>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, 
+ qemu-block@nongnu.org, Laurent Vivier <laurent@vivier.eu>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Greg Kurz <groug@kaod.org>, 
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Fabiano Rosas <farosas@suse.de>, 
+ Eric Blake <eblake@redhat.com>, Hyman Huang <yong.huang@smartx.com>,
+ Kevin Wolf <kwolf@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Jesper Devantier <foss@defmacro.it>, Peter Xu <peterx@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Klaus Jensen <its@irrelevant.dk>,
+ Keith Busch <kbusch@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, Bin Meng <bin.meng@windriver.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f34;
- envelope-from=dorjoychy111@gmail.com; helo=mail-qv1-xf34.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,22 +118,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 1, 2024 at 7:15=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->
-> On Sun, Sep 22, 2024 at 03:44:36PM +0600, Dorjoy Chowdhury wrote:
-> > [7] https://lists.oasis-open.org/archives/virtio-comment/202310/msg0038=
-7.html
->
-> That list is dead, would you mind reposting to the new list,
-> so we can vote on it?
+Hi
 
-Yeah the URL seems to be dead too but I found the lore URL:
-https://lore.kernel.org/virtio-comment/20231025235345.17788-1-graf@amazon.c=
-om/
-Probably Alex needs to repost, right?
-cc Alex
+On Mon, Sep 30, 2024 at 12:15=E2=80=AFPM <marcandre.lureau@redhat.com> wrot=
+e:
+>
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> Hi,
+>
+> Depending on -Doptimization=3D<value>, GCC (14.2.1 here) produces differe=
+nt
+> maybe-uninitialized warnings:
+> - g: produces -Werror=3Dmaybe-uninitialized errors
+> - 0: clean build
+> - 1: produces -Werror=3Dmaybe-uninitialized errors
+> - 2: clean build
+> - 3: produces few -Werror=3Dmaybe-uninitialized errors
+> - s: produces -Werror=3Dmaybe-uninitialized errors
+>
+> Most are false-positive, because prior LOCK_GUARD should guarantee an
+> initialization path. Few of them are a bit trickier. Finally, I found
+> a potential related memory leak.
+>
+> Patches missing r-b: 6, 10-11, 15-21
 
-Regards,
-Dorjoy
+Patches missing review: 16, 20, 21.
+"target/loongarch: fix -Werror=3Dmaybe-uninitialized false-positive"
+"block: fix -Werror=3Dmaybe-uninitialized false-positive"
+"qom/object: fix -Werror=3Dmaybe-uninitialized"
+
+thanks!
+
 
