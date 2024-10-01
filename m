@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC7498C394
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F94D98C3EB
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:51:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svfua-0005Xt-1p; Tue, 01 Oct 2024 12:39:45 -0400
+	id 1svfut-0005sn-Dp; Tue, 01 Oct 2024 12:40:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuT-0005OW-Qw
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:37 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1svfuW-0005XN-5Y
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:40 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuO-00063M-PU
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:37 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-42f6bec84b5so20163105e9.1
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:32 -0700 (PDT)
+ id 1svfuP-00063i-Ok
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:39 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-37cdb6ebc1cso2222408f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727800771; x=1728405571; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727800772; x=1728405572; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1NFdQFBmhDhh52nx6Dx9xhs8L+fjw/7HyeJJPyE/TKQ=;
- b=xAyaABtPKuaY+29c812obR9dKcNhFDzww7bie3+XLwF3badD/2XIIchzrIfLnG5cSn
- lRg/xf35RgGkWcxNNrzAe+920ZapylscUna+ou9IgE9GahFUrOv68bDXokSPzEBX27O1
- uMFXYFnvm968RDajXlbfSzjLbuY+axJxxyFbUZMAuaBqSInizN6OBqhKsmTc4QXNKPr9
- 3pxcwzn5lv2RDMfjdt3e3mRkJeVznPKZNpCq8N0LN2WGViDJHawJq9GyRIPZ0QHoSWV3
- dR6FzHGWCOkiIBKrQPwc/JH1SPSsI+9H91NfO5cHG/vi+vOVVIEO8zyd9Df6/QyVz+qv
- rpBw==
+ :reply-to; bh=gjs5YN8ma0/CyY4dsSuwuOEtEAbDPIv+2IYudABsSBw=;
+ b=vOtrcYN69PQvwqRGDck0LpuatgkYUVhpq7I5xinoWB/fcfkqRLH2Brz6zOrwTZTNid
+ o8nuBfGxneXcC54dOeIXfh/TIuKumkjEV0U14dFahZ4MJ/KWniFM3LcKMNjtuMjLawr1
+ Wr/MhSuCSKeEKlHygpeP/2TAUn/Bdk9I4DGgSqW0J1DtB2qSyY/+U6RChPtIEpqXlOFe
+ /fq2XgIk8XA59XPTZ6jc/E7yP4IpnFC7apA5KMOzUsNK4lIEPwpGEnv9gBHKaG9iEcfy
+ 01XVvGjNgMiEvdb1JmiEwO1Jzd8Vep6dlnEOQrX75c6e7GpZ5h+8S9Vpp15FwE161WUN
+ JuRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727800771; x=1728405571;
+ d=1e100.net; s=20230601; t=1727800772; x=1728405572;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1NFdQFBmhDhh52nx6Dx9xhs8L+fjw/7HyeJJPyE/TKQ=;
- b=AND1lIhfxRthNUfgTgynlPUFhdLpLc3QLRHYp96PmVyDEA5/ebETwCcBJMkv5zjAG6
- /xt4nzD7vCMut8Vvchv9+xhBpmci1pU4SFYBBHNwCio+JR/NFTKV8QkfCUSCrbsfrVZh
- aHItC9fFAgYbiUg36h7ZcJabjEtg5nAqiqfV/WxZtS+Go1smQTnbrl/7pizH26PE/O6B
- OyIijQQdsioppKLI+iPtoJGjzp5tqU7suuMan0+A7NBrIH0OoZgnmiLNDFtA2bOUZY9h
- ELUVOzo+H5xG0UFKRtuHT1h7J+GUF3XbS+AM/5fgSY0T56Dt1GPdXC1iPO3fWERTu31n
- BJjA==
-X-Gm-Message-State: AOJu0YwXJKmElnzZmTMV2Zz12UCJnsQCjphQn9F1K+BRLygSh0o54oUN
- WwVDdLLdk/293vkpqt+RIQawJcV/D+p+R0J7acLWlGa+qMuK9a85JFIpmKdDE+44Y9QO6vqSDfl
- C
-X-Google-Smtp-Source: AGHT+IFhlVuGC6+MNnwHB1eTHKDyW9/RO2S8KkAS/X4YTUDzmqjqhaM5jDLbfQLPR3BkYSfHzNFdow==
-X-Received: by 2002:a5d:4a0c:0:b0:374:c64d:5379 with SMTP id
- ffacd0b85a97d-37cfb9d022bmr134821f8f.27.1727800771258; 
+ bh=gjs5YN8ma0/CyY4dsSuwuOEtEAbDPIv+2IYudABsSBw=;
+ b=uf1LIZaTdSgxNRww+EkfRkBlxQexjcpoZ82n9BhtAzuJIa5FJlxS7S6xLAySumkL1+
+ e1/DfZ6F0FANlFZDSDyRuBqIBvpvs+WhIUeFs1SE/8Nqr+6LfoJN66i1Gz3r72t7dRr+
+ F9wvCc1WfV7kqECVt74QD51YpL2T62oFbt/JOhPuAJdfUhoanPsOGcKcxTunniCJRC17
+ Gv4EYhHM/f/NbQHxkVEERwVOQyxHSOGCHjPNAyrPI2V2fUgGShyrX6zAJbxC8i5U/LwZ
+ vZZ8cn7LGU+epcVg4/wYLcLU4c+H8jlCnuBQ+If79zhPvkqaZglbxbENmrdhL8/TP+DS
+ GkaA==
+X-Gm-Message-State: AOJu0YweyHIiFbbPEhn26N06Ic5R1Xq4oO8TdnLFEJ9A2OQQJy4h227D
+ 6u31k8d76wd3w1kJHLzRyhQo0Ga0Kk+INZM9w6TL/tRpvkP8E5MYjoe+5ryNs65evpk5ygYb+6o
+ J
+X-Google-Smtp-Source: AGHT+IGVp83/dBg7O2ek9U5S5uAxddS5g8NV5jMOWAmI6KXePZ7LarxIAIX6CwNCmg6rXB6uzUn2rg==
+X-Received: by 2002:adf:eece:0:b0:374:c8d1:70be with SMTP id
+ ffacd0b85a97d-37cfba0a47fmr114672f8f.38.1727800771796; 
  Tue, 01 Oct 2024 09:39:31 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.30
+ ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 01 Oct 2024 09:39:31 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/54] hw/input: Remove pxa2xx_keypad
-Date: Tue,  1 Oct 2024 17:38:45 +0100
-Message-Id: <20241001163918.1275441-22-peter.maydell@linaro.org>
+Subject: [PULL 22/54] hw/display: Remove pxa2xx_lcd.c
+Date: Tue,  1 Oct 2024 17:38:46 +0100
+Message-Id: <20241001163918.1275441-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241001163918.1275441-1-peter.maydell@linaro.org>
 References: <20241001163918.1275441-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,52 +91,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the pxa2xx-specific pxa2xx_keypad device.
+Remove the pxa2xx-specific pxa2xx_lcd device.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240903160751.4100218-18-peter.maydell@linaro.org
+Message-id: 20240903160751.4100218-19-peter.maydell@linaro.org
 ---
- include/hw/arm/pxa.h     |  12 --
- hw/input/pxa2xx_keypad.c | 331 ---------------------------------------
- hw/input/meson.build     |   1 -
- 3 files changed, 344 deletions(-)
- delete mode 100644 hw/input/pxa2xx_keypad.c
+ include/hw/arm/pxa.h    |    6 -
+ hw/display/pxa2xx_lcd.c | 1451 ---------------------------------------
+ hw/display/meson.build  |    1 -
+ 3 files changed, 1458 deletions(-)
+ delete mode 100644 hw/display/pxa2xx_lcd.c
 
 diff --git a/include/hw/arm/pxa.h b/include/hw/arm/pxa.h
-index cc4de0750af..40f9356b226 100644
+index 40f9356b226..ef7976e1821 100644
 --- a/include/hw/arm/pxa.h
 +++ b/include/hw/arm/pxa.h
-@@ -94,16 +94,4 @@ int pxa2xx_pcmcia_attach(void *opaque, PCMCIACardState *card);
- int pxa2xx_pcmcia_detach(void *opaque);
- void pxa2xx_pcmcia_set_irq_cb(void *opaque, qemu_irq irq, qemu_irq cd_irq);
+@@ -80,12 +80,6 @@ void pxa2xx_gpio_read_notifier(DeviceState *dev, qemu_irq handler);
+ DeviceState *pxa255_dma_init(hwaddr base, qemu_irq irq);
+ DeviceState *pxa27x_dma_init(hwaddr base, qemu_irq irq);
  
--/* pxa2xx_keypad.c */
--struct  keymap {
--    int8_t column;
--    int8_t row;
--};
--typedef struct PXA2xxKeyPadState PXA2xxKeyPadState;
--PXA2xxKeyPadState *pxa27x_keypad_init(MemoryRegion *sysmem,
--                                      hwaddr base,
--                                      qemu_irq irq);
--void pxa27x_register_keypad(PXA2xxKeyPadState *kp,
--                            const struct keymap *map, int size);
+-/* pxa2xx_lcd.c */
+-typedef struct PXA2xxLCDState PXA2xxLCDState;
+-PXA2xxLCDState *pxa2xx_lcdc_init(MemoryRegion *sysmem,
+-                hwaddr base, qemu_irq irq);
+-void pxa2xx_lcd_vsync_notifier(PXA2xxLCDState *s, qemu_irq handler);
 -
- #endif /* PXA_H */
-diff --git a/hw/input/pxa2xx_keypad.c b/hw/input/pxa2xx_keypad.c
+ /* pxa2xx_pcmcia.c */
+ #define TYPE_PXA2XX_PCMCIA "pxa2xx-pcmcia"
+ OBJECT_DECLARE_SIMPLE_TYPE(PXA2xxPCMCIAState, PXA2XX_PCMCIA)
+diff --git a/hw/display/pxa2xx_lcd.c b/hw/display/pxa2xx_lcd.c
 deleted file mode 100644
-index 3858648d9f6..00000000000
---- a/hw/input/pxa2xx_keypad.c
+index a9d0d981a08..00000000000
+--- a/hw/display/pxa2xx_lcd.c
 +++ /dev/null
-@@ -1,331 +0,0 @@
+@@ -1,1451 +0,0 @@
 -/*
-- * Intel PXA27X Keypad Controller emulation.
+- * Intel XScale PXA255/270 LCDC emulation.
 - *
-- * Copyright (c) 2007 MontaVista Software, Inc
-- * Written by Armin Kuster <akuster@kama-aina.net>
-- *              or  <Akuster@mvista.com>
+- * Copyright (c) 2006 Openedhand Ltd.
+- * Written by Andrzej Zaborowski <balrog@zabor.org>
 - *
 - * This code is licensed under the GPLv2.
 - *
@@ -149,331 +141,1453 @@ index 3858648d9f6..00000000000
 -#include "qemu/log.h"
 -#include "hw/irq.h"
 -#include "migration/vmstate.h"
--#include "hw/arm/pxa.h"
 -#include "ui/console.h"
+-#include "hw/arm/pxa.h"
+-#include "ui/pixel_ops.h"
+-#include "hw/boards.h"
+-/* FIXME: For graphic_rotate. Should probably be done in common code.  */
+-#include "sysemu/sysemu.h"
+-#include "framebuffer.h"
 -
--/*
-- * Keypad
-- */
--#define KPC         0x00    /* Keypad Interface Control register */
--#define KPDK        0x08    /* Keypad Interface Direct Key register */
--#define KPREC       0x10    /* Keypad Interface Rotary Encoder register */
--#define KPMK        0x18    /* Keypad Interface Matrix Key register */
--#define KPAS        0x20    /* Keypad Interface Automatic Scan register */
--#define KPASMKP0    0x28    /* Keypad Interface Automatic Scan Multiple
--                                Key Presser register 0 */
--#define KPASMKP1    0x30    /* Keypad Interface Automatic Scan Multiple
--                                Key Presser register 1 */
--#define KPASMKP2    0x38    /* Keypad Interface Automatic Scan Multiple
--                                Key Presser register 2 */
--#define KPASMKP3    0x40    /* Keypad Interface Automatic Scan Multiple
--                                Key Presser register 3 */
--#define KPKDI       0x48    /* Keypad Interface Key Debounce Interval
--                                register */
+-struct DMAChannel {
+-    uint32_t branch;
+-    uint8_t up;
+-    uint8_t palette[1024];
+-    uint8_t pbuffer[1024];
+-    void (*redraw)(PXA2xxLCDState *s, hwaddr addr,
+-                   int *miny, int *maxy);
 -
--/* Keypad defines */
--#define KPC_AS          (0x1 << 30)  /* Automatic Scan bit */
--#define KPC_ASACT       (0x1 << 29)  /* Automatic Scan on Activity */
--#define KPC_MI          (0x1 << 22)  /* Matrix interrupt bit */
--#define KPC_IMKP        (0x1 << 21)  /* Ignore Multiple Key Press */
--#define KPC_MS7         (0x1 << 20)  /* Matrix scan line 7 */
--#define KPC_MS6         (0x1 << 19)  /* Matrix scan line 6 */
--#define KPC_MS5         (0x1 << 18)  /* Matrix scan line 5 */
--#define KPC_MS4         (0x1 << 17)  /* Matrix scan line 4 */
--#define KPC_MS3         (0x1 << 16)  /* Matrix scan line 3 */
--#define KPC_MS2         (0x1 << 15)  /* Matrix scan line 2 */
--#define KPC_MS1         (0x1 << 14)  /* Matrix scan line 1 */
--#define KPC_MS0         (0x1 << 13)  /* Matrix scan line 0 */
--#define KPC_ME          (0x1 << 12)  /* Matrix Keypad Enable */
--#define KPC_MIE         (0x1 << 11)  /* Matrix Interrupt Enable */
--#define KPC_DK_DEB_SEL  (0x1 <<  9)  /* Direct Keypad Debounce Select */
--#define KPC_DI          (0x1 <<  5)  /* Direct key interrupt bit */
--#define KPC_RE_ZERO_DEB (0x1 <<  4)  /* Rotary Encoder Zero Debounce */
--#define KPC_REE1        (0x1 <<  3)  /* Rotary Encoder1 Enable */
--#define KPC_REE0        (0x1 <<  2)  /* Rotary Encoder0 Enable */
--#define KPC_DE          (0x1 <<  1)  /* Direct Keypad Enable */
--#define KPC_DIE         (0x1 <<  0)  /* Direct Keypad interrupt Enable */
--
--#define KPDK_DKP        (0x1 << 31)
--#define KPDK_DK7        (0x1 <<  7)
--#define KPDK_DK6        (0x1 <<  6)
--#define KPDK_DK5        (0x1 <<  5)
--#define KPDK_DK4        (0x1 <<  4)
--#define KPDK_DK3        (0x1 <<  3)
--#define KPDK_DK2        (0x1 <<  2)
--#define KPDK_DK1        (0x1 <<  1)
--#define KPDK_DK0        (0x1 <<  0)
--
--#define KPREC_OF1       (0x1 << 31)
--#define KPREC_UF1       (0x1 << 30)
--#define KPREC_OF0       (0x1 << 15)
--#define KPREC_UF0       (0x1 << 14)
--
--#define KPMK_MKP        (0x1 << 31)
--#define KPAS_SO         (0x1 << 31)
--#define KPASMKPx_SO     (0x1 << 31)
--
--
--#define KPASMKPx_MKC(row, col)  (1 << (row + 16 * (col % 2)))
--
--#define PXAKBD_MAXROW   8
--#define PXAKBD_MAXCOL   8
--
--struct PXA2xxKeyPadState {
--    MemoryRegion iomem;
--    qemu_irq    irq;
--    const struct  keymap *map;
--    int         pressed_cnt;
--    int         alt_code;
--
--    uint32_t    kpc;
--    uint32_t    kpdk;
--    uint32_t    kprec;
--    uint32_t    kpmk;
--    uint32_t    kpas;
--    uint32_t    kpasmkp[4];
--    uint32_t    kpkdi;
+-    uint32_t descriptor;
+-    uint32_t source;
+-    uint32_t id;
+-    uint32_t command;
 -};
 -
--static void pxa27x_keypad_find_pressed_key(PXA2xxKeyPadState *kp, int *row, int *col)
+-struct PXA2xxLCDState {
+-    MemoryRegion *sysmem;
+-    MemoryRegion iomem;
+-    MemoryRegionSection fbsection;
+-    qemu_irq irq;
+-    int irqlevel;
+-
+-    int invalidated;
+-    QemuConsole *con;
+-    int dest_width;
+-    int xres, yres;
+-    int pal_for;
+-    int transp;
+-    enum {
+-        pxa_lcdc_2bpp = 1,
+-        pxa_lcdc_4bpp = 2,
+-        pxa_lcdc_8bpp = 3,
+-        pxa_lcdc_16bpp = 4,
+-        pxa_lcdc_18bpp = 5,
+-        pxa_lcdc_18pbpp = 6,
+-        pxa_lcdc_19bpp = 7,
+-        pxa_lcdc_19pbpp = 8,
+-        pxa_lcdc_24bpp = 9,
+-        pxa_lcdc_25bpp = 10,
+-    } bpp;
+-
+-    uint32_t control[6];
+-    uint32_t status[2];
+-    uint32_t ovl1c[2];
+-    uint32_t ovl2c[2];
+-    uint32_t ccr;
+-    uint32_t cmdcr;
+-    uint32_t trgbr;
+-    uint32_t tcr;
+-    uint32_t liidr;
+-    uint8_t bscntr;
+-
+-    struct DMAChannel dma_ch[7];
+-
+-    qemu_irq vsync_cb;
+-    int orientation;
+-};
+-
+-typedef struct QEMU_PACKED {
+-    uint32_t fdaddr;
+-    uint32_t fsaddr;
+-    uint32_t fidr;
+-    uint32_t ldcmd;
+-} PXAFrameDescriptor;
+-
+-#define LCCR0   0x000   /* LCD Controller Control register 0 */
+-#define LCCR1   0x004   /* LCD Controller Control register 1 */
+-#define LCCR2   0x008   /* LCD Controller Control register 2 */
+-#define LCCR3   0x00c   /* LCD Controller Control register 3 */
+-#define LCCR4   0x010   /* LCD Controller Control register 4 */
+-#define LCCR5   0x014   /* LCD Controller Control register 5 */
+-
+-#define FBR0    0x020   /* DMA Channel 0 Frame Branch register */
+-#define FBR1    0x024   /* DMA Channel 1 Frame Branch register */
+-#define FBR2    0x028   /* DMA Channel 2 Frame Branch register */
+-#define FBR3    0x02c   /* DMA Channel 3 Frame Branch register */
+-#define FBR4    0x030   /* DMA Channel 4 Frame Branch register */
+-#define FBR5    0x110   /* DMA Channel 5 Frame Branch register */
+-#define FBR6    0x114   /* DMA Channel 6 Frame Branch register */
+-
+-#define LCSR1   0x034   /* LCD Controller Status register 1 */
+-#define LCSR0   0x038   /* LCD Controller Status register 0 */
+-#define LIIDR   0x03c   /* LCD Controller Interrupt ID register */
+-
+-#define TRGBR   0x040   /* TMED RGB Seed register */
+-#define TCR     0x044   /* TMED Control register */
+-
+-#define OVL1C1  0x050   /* Overlay 1 Control register 1 */
+-#define OVL1C2  0x060   /* Overlay 1 Control register 2 */
+-#define OVL2C1  0x070   /* Overlay 2 Control register 1 */
+-#define OVL2C2  0x080   /* Overlay 2 Control register 2 */
+-#define CCR     0x090   /* Cursor Control register */
+-
+-#define CMDCR   0x100   /* Command Control register */
+-#define PRSR    0x104   /* Panel Read Status register */
+-
+-#define PXA_LCDDMA_CHANS        7
+-#define DMA_FDADR               0x00    /* Frame Descriptor Address register */
+-#define DMA_FSADR               0x04    /* Frame Source Address register */
+-#define DMA_FIDR                0x08    /* Frame ID register */
+-#define DMA_LDCMD               0x0c    /* Command register */
+-
+-/* LCD Buffer Strength Control register */
+-#define BSCNTR  0x04000054
+-
+-/* Bitfield masks */
+-#define LCCR0_ENB       (1 << 0)
+-#define LCCR0_CMS       (1 << 1)
+-#define LCCR0_SDS       (1 << 2)
+-#define LCCR0_LDM       (1 << 3)
+-#define LCCR0_SOFM0     (1 << 4)
+-#define LCCR0_IUM       (1 << 5)
+-#define LCCR0_EOFM0     (1 << 6)
+-#define LCCR0_PAS       (1 << 7)
+-#define LCCR0_DPD       (1 << 9)
+-#define LCCR0_DIS       (1 << 10)
+-#define LCCR0_QDM       (1 << 11)
+-#define LCCR0_PDD       (0xff << 12)
+-#define LCCR0_BSM0      (1 << 20)
+-#define LCCR0_OUM       (1 << 21)
+-#define LCCR0_LCDT      (1 << 22)
+-#define LCCR0_RDSTM     (1 << 23)
+-#define LCCR0_CMDIM     (1 << 24)
+-#define LCCR0_OUC       (1 << 25)
+-#define LCCR0_LDDALT    (1 << 26)
+-#define LCCR1_PPL(x)    ((x) & 0x3ff)
+-#define LCCR2_LPP(x)    ((x) & 0x3ff)
+-#define LCCR3_API       (15 << 16)
+-#define LCCR3_BPP(x)    ((((x) >> 24) & 7) | (((x) >> 26) & 8))
+-#define LCCR3_PDFOR(x)  (((x) >> 30) & 3)
+-#define LCCR4_K1(x)     (((x) >> 0) & 7)
+-#define LCCR4_K2(x)     (((x) >> 3) & 7)
+-#define LCCR4_K3(x)     (((x) >> 6) & 7)
+-#define LCCR4_PALFOR(x) (((x) >> 15) & 3)
+-#define LCCR5_SOFM(ch)  (1 << (ch - 1))
+-#define LCCR5_EOFM(ch)  (1 << (ch + 7))
+-#define LCCR5_BSM(ch)   (1 << (ch + 15))
+-#define LCCR5_IUM(ch)   (1 << (ch + 23))
+-#define OVLC1_EN        (1 << 31)
+-#define CCR_CEN         (1 << 31)
+-#define FBR_BRA         (1 << 0)
+-#define FBR_BINT        (1 << 1)
+-#define FBR_SRCADDR     (0xfffffff << 4)
+-#define LCSR0_LDD       (1 << 0)
+-#define LCSR0_SOF0      (1 << 1)
+-#define LCSR0_BER       (1 << 2)
+-#define LCSR0_ABC       (1 << 3)
+-#define LCSR0_IU0       (1 << 4)
+-#define LCSR0_IU1       (1 << 5)
+-#define LCSR0_OU        (1 << 6)
+-#define LCSR0_QD        (1 << 7)
+-#define LCSR0_EOF0      (1 << 8)
+-#define LCSR0_BS0       (1 << 9)
+-#define LCSR0_SINT      (1 << 10)
+-#define LCSR0_RDST      (1 << 11)
+-#define LCSR0_CMDINT    (1 << 12)
+-#define LCSR0_BERCH(x)  (((x) & 7) << 28)
+-#define LCSR1_SOF(ch)   (1 << (ch - 1))
+-#define LCSR1_EOF(ch)   (1 << (ch + 7))
+-#define LCSR1_BS(ch)    (1 << (ch + 15))
+-#define LCSR1_IU(ch)    (1 << (ch + 23))
+-#define LDCMD_LENGTH(x) ((x) & 0x001ffffc)
+-#define LDCMD_EOFINT    (1 << 21)
+-#define LDCMD_SOFINT    (1 << 22)
+-#define LDCMD_PAL       (1 << 26)
+-
+-/* Size of a pixel in the QEMU UI output surface, in bytes */
+-#define DEST_PIXEL_WIDTH 4
+-
+-/* Line drawing code to handle the various possible guest pixel formats */
+-
+-# define SKIP_PIXEL(to) do { to += deststep; } while (0)
+-# define COPY_PIXEL(to, from)    \
+-    do {                         \
+-        *(uint32_t *) to = from; \
+-        SKIP_PIXEL(to);          \
+-    } while (0)
+-
+-#if HOST_BIG_ENDIAN
+-# define SWAP_WORDS 1
+-#endif
+-
+-#define FN_2(x) FN(x + 1) FN(x)
+-#define FN_4(x) FN_2(x + 2) FN_2(x)
+-
+-static void pxa2xx_draw_line2(void *opaque, uint8_t *dest, const uint8_t *src,
+-                              int width, int deststep)
 -{
--    int i;
--    for (i = 0; i < 4; i++)
--    {
--        *col = i * 2;
--        for (*row = 0; *row < 8; (*row)++) {
--            if (kp->kpasmkp[i] & (1 << *row))
--                return;
--        }
--        *col = i * 2 + 1;
--        for (*row = 0; *row < 8; (*row)++) {
--            if (kp->kpasmkp[i] & (1 << (*row + 16)))
--                return;
--        }
+-    uint32_t *palette = opaque;
+-    uint32_t data;
+-    while (width > 0) {
+-        data = *(uint32_t *) src;
+-#define FN(x) COPY_PIXEL(dest, palette[(data >> ((x) * 2)) & 3]);
+-#ifdef SWAP_WORDS
+-        FN_4(12)
+-        FN_4(8)
+-        FN_4(4)
+-        FN_4(0)
+-#else
+-        FN_4(0)
+-        FN_4(4)
+-        FN_4(8)
+-        FN_4(12)
+-#endif
+-#undef FN
+-        width -= 16;
+-        src += 4;
 -    }
 -}
 -
--static void pxa27x_keyboard_event (PXA2xxKeyPadState *kp, int keycode)
+-static void pxa2xx_draw_line4(void *opaque, uint8_t *dest, const uint8_t *src,
+-                              int width, int deststep)
 -{
--    int row, col, rel, assert_irq = 0;
--    uint32_t val;
--
--    if (keycode == 0xe0) {
--        kp->alt_code = 1;
--        return;
+-    uint32_t *palette = opaque;
+-    uint32_t data;
+-    while (width > 0) {
+-        data = *(uint32_t *) src;
+-#define FN(x) COPY_PIXEL(dest, palette[(data >> ((x) * 4)) & 0xf]);
+-#ifdef SWAP_WORDS
+-        FN_2(6)
+-        FN_2(4)
+-        FN_2(2)
+-        FN_2(0)
+-#else
+-        FN_2(0)
+-        FN_2(2)
+-        FN_2(4)
+-        FN_2(6)
+-#endif
+-#undef FN
+-        width -= 8;
+-        src += 4;
 -    }
+-}
 -
--    if(!(kp->kpc & KPC_ME)) /* skip if not enabled */
--        return;
--
--    rel = (keycode & 0x80) ? 1 : 0; /* key release from qemu */
--    keycode &= ~0x80; /* strip qemu key release bit */
--    if (kp->alt_code) {
--        keycode |= 0x80;
--        kp->alt_code = 0;
+-static void pxa2xx_draw_line8(void *opaque, uint8_t *dest, const uint8_t *src,
+-                              int width, int deststep)
+-{
+-    uint32_t *palette = opaque;
+-    uint32_t data;
+-    while (width > 0) {
+-        data = *(uint32_t *) src;
+-#define FN(x) COPY_PIXEL(dest, palette[(data >> (x)) & 0xff]);
+-#ifdef SWAP_WORDS
+-        FN(24)
+-        FN(16)
+-        FN(8)
+-        FN(0)
+-#else
+-        FN(0)
+-        FN(8)
+-        FN(16)
+-        FN(24)
+-#endif
+-#undef FN
+-        width -= 4;
+-        src += 4;
 -    }
+-}
 -
--    row = kp->map[keycode].row;
--    col = kp->map[keycode].column;
--    if (row == -1 || col == -1) {
--        return;
+-static void pxa2xx_draw_line16(void *opaque, uint8_t *dest, const uint8_t *src,
+-                               int width, int deststep)
+-{
+-    uint32_t data;
+-    unsigned int r, g, b;
+-    while (width > 0) {
+-        data = *(uint32_t *) src;
+-#ifdef SWAP_WORDS
+-        data = bswap32(data);
+-#endif
+-        b = (data & 0x1f) << 3;
+-        data >>= 5;
+-        g = (data & 0x3f) << 2;
+-        data >>= 6;
+-        r = (data & 0x1f) << 3;
+-        data >>= 5;
+-        COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        b = (data & 0x1f) << 3;
+-        data >>= 5;
+-        g = (data & 0x3f) << 2;
+-        data >>= 6;
+-        r = (data & 0x1f) << 3;
+-        COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        width -= 2;
+-        src += 4;
 -    }
+-}
 -
--    val = KPASMKPx_MKC(row, col);
--    if (rel) {
--        if (kp->kpasmkp[col / 2] & val) {
--            kp->kpasmkp[col / 2] &= ~val;
--            kp->pressed_cnt--;
--            assert_irq = 1;
+-static void pxa2xx_draw_line16t(void *opaque, uint8_t *dest, const uint8_t *src,
+-                                int width, int deststep)
+-{
+-    uint32_t data;
+-    unsigned int r, g, b;
+-    while (width > 0) {
+-        data = *(uint32_t *) src;
+-#ifdef SWAP_WORDS
+-        data = bswap32(data);
+-#endif
+-        b = (data & 0x1f) << 3;
+-        data >>= 5;
+-        g = (data & 0x1f) << 3;
+-        data >>= 5;
+-        r = (data & 0x1f) << 3;
+-        data >>= 5;
+-        if (data & 1) {
+-            SKIP_PIXEL(dest);
+-        } else {
+-            COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
 -        }
+-        data >>= 1;
+-        b = (data & 0x1f) << 3;
+-        data >>= 5;
+-        g = (data & 0x1f) << 3;
+-        data >>= 5;
+-        r = (data & 0x1f) << 3;
+-        data >>= 5;
+-        if (data & 1) {
+-            SKIP_PIXEL(dest);
+-        } else {
+-            COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        }
+-        width -= 2;
+-        src += 4;
+-    }
+-}
+-
+-static void pxa2xx_draw_line18(void *opaque, uint8_t *dest, const uint8_t *src,
+-                               int width, int deststep)
+-{
+-    uint32_t data;
+-    unsigned int r, g, b;
+-    while (width > 0) {
+-        data = *(uint32_t *) src;
+-#ifdef SWAP_WORDS
+-        data = bswap32(data);
+-#endif
+-        b = (data & 0x3f) << 2;
+-        data >>= 6;
+-        g = (data & 0x3f) << 2;
+-        data >>= 6;
+-        r = (data & 0x3f) << 2;
+-        COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        width -= 1;
+-        src += 4;
+-    }
+-}
+-
+-/* The wicked packed format */
+-static void pxa2xx_draw_line18p(void *opaque, uint8_t *dest, const uint8_t *src,
+-                                int width, int deststep)
+-{
+-    uint32_t data[3];
+-    unsigned int r, g, b;
+-    while (width > 0) {
+-        data[0] = *(uint32_t *) src;
+-        src += 4;
+-        data[1] = *(uint32_t *) src;
+-        src += 4;
+-        data[2] = *(uint32_t *) src;
+-        src += 4;
+-#ifdef SWAP_WORDS
+-        data[0] = bswap32(data[0]);
+-        data[1] = bswap32(data[1]);
+-        data[2] = bswap32(data[2]);
+-#endif
+-        b = (data[0] & 0x3f) << 2;
+-        data[0] >>= 6;
+-        g = (data[0] & 0x3f) << 2;
+-        data[0] >>= 6;
+-        r = (data[0] & 0x3f) << 2;
+-        data[0] >>= 12;
+-        COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        b = (data[0] & 0x3f) << 2;
+-        data[0] >>= 6;
+-        g = ((data[1] & 0xf) << 4) | (data[0] << 2);
+-        data[1] >>= 4;
+-        r = (data[1] & 0x3f) << 2;
+-        data[1] >>= 12;
+-        COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        b = (data[1] & 0x3f) << 2;
+-        data[1] >>= 6;
+-        g = (data[1] & 0x3f) << 2;
+-        data[1] >>= 6;
+-        r = ((data[2] & 0x3) << 6) | (data[1] << 2);
+-        data[2] >>= 8;
+-        COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        b = (data[2] & 0x3f) << 2;
+-        data[2] >>= 6;
+-        g = (data[2] & 0x3f) << 2;
+-        data[2] >>= 6;
+-        r = data[2] << 2;
+-        COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        width -= 4;
+-    }
+-}
+-
+-static void pxa2xx_draw_line19(void *opaque, uint8_t *dest, const uint8_t *src,
+-                               int width, int deststep)
+-{
+-    uint32_t data;
+-    unsigned int r, g, b;
+-    while (width > 0) {
+-        data = *(uint32_t *) src;
+-#ifdef SWAP_WORDS
+-        data = bswap32(data);
+-#endif
+-        b = (data & 0x3f) << 2;
+-        data >>= 6;
+-        g = (data & 0x3f) << 2;
+-        data >>= 6;
+-        r = (data & 0x3f) << 2;
+-        data >>= 6;
+-        if (data & 1) {
+-            SKIP_PIXEL(dest);
+-        } else {
+-            COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        }
+-        width -= 1;
+-        src += 4;
+-    }
+-}
+-
+-/* The wicked packed format */
+-static void pxa2xx_draw_line19p(void *opaque, uint8_t *dest, const uint8_t *src,
+-                                int width, int deststep)
+-{
+-    uint32_t data[3];
+-    unsigned int r, g, b;
+-    while (width > 0) {
+-        data[0] = *(uint32_t *) src;
+-        src += 4;
+-        data[1] = *(uint32_t *) src;
+-        src += 4;
+-        data[2] = *(uint32_t *) src;
+-        src += 4;
+-# ifdef SWAP_WORDS
+-        data[0] = bswap32(data[0]);
+-        data[1] = bswap32(data[1]);
+-        data[2] = bswap32(data[2]);
+-# endif
+-        b = (data[0] & 0x3f) << 2;
+-        data[0] >>= 6;
+-        g = (data[0] & 0x3f) << 2;
+-        data[0] >>= 6;
+-        r = (data[0] & 0x3f) << 2;
+-        data[0] >>= 6;
+-        if (data[0] & 1) {
+-            SKIP_PIXEL(dest);
+-        } else {
+-            COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        }
+-        data[0] >>= 6;
+-        b = (data[0] & 0x3f) << 2;
+-        data[0] >>= 6;
+-        g = ((data[1] & 0xf) << 4) | (data[0] << 2);
+-        data[1] >>= 4;
+-        r = (data[1] & 0x3f) << 2;
+-        data[1] >>= 6;
+-        if (data[1] & 1) {
+-            SKIP_PIXEL(dest);
+-        } else {
+-            COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        }
+-        data[1] >>= 6;
+-        b = (data[1] & 0x3f) << 2;
+-        data[1] >>= 6;
+-        g = (data[1] & 0x3f) << 2;
+-        data[1] >>= 6;
+-        r = ((data[2] & 0x3) << 6) | (data[1] << 2);
+-        data[2] >>= 2;
+-        if (data[2] & 1) {
+-            SKIP_PIXEL(dest);
+-        } else {
+-            COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        }
+-        data[2] >>= 6;
+-        b = (data[2] & 0x3f) << 2;
+-        data[2] >>= 6;
+-        g = (data[2] & 0x3f) << 2;
+-        data[2] >>= 6;
+-        r = data[2] << 2;
+-        data[2] >>= 6;
+-        if (data[2] & 1) {
+-            SKIP_PIXEL(dest);
+-        } else {
+-            COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        }
+-        width -= 4;
+-    }
+-}
+-
+-static void pxa2xx_draw_line24(void *opaque, uint8_t *dest, const uint8_t *src,
+-                               int width, int deststep)
+-{
+-    uint32_t data;
+-    unsigned int r, g, b;
+-    while (width > 0) {
+-        data = *(uint32_t *) src;
+-#ifdef SWAP_WORDS
+-        data = bswap32(data);
+-#endif
+-        b = data & 0xff;
+-        data >>= 8;
+-        g = data & 0xff;
+-        data >>= 8;
+-        r = data & 0xff;
+-        COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        width -= 1;
+-        src += 4;
+-    }
+-}
+-
+-static void pxa2xx_draw_line24t(void *opaque, uint8_t *dest, const uint8_t *src,
+-                                int width, int deststep)
+-{
+-    uint32_t data;
+-    unsigned int r, g, b;
+-    while (width > 0) {
+-        data = *(uint32_t *) src;
+-#ifdef SWAP_WORDS
+-        data = bswap32(data);
+-#endif
+-        b = (data & 0x7f) << 1;
+-        data >>= 7;
+-        g = data & 0xff;
+-        data >>= 8;
+-        r = data & 0xff;
+-        data >>= 8;
+-        if (data & 1) {
+-            SKIP_PIXEL(dest);
+-        } else {
+-            COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        }
+-        width -= 1;
+-        src += 4;
+-    }
+-}
+-
+-static void pxa2xx_draw_line25(void *opaque, uint8_t *dest, const uint8_t *src,
+-                               int width, int deststep)
+-{
+-    uint32_t data;
+-    unsigned int r, g, b;
+-    while (width > 0) {
+-        data = *(uint32_t *) src;
+-#ifdef SWAP_WORDS
+-        data = bswap32(data);
+-#endif
+-        b = data & 0xff;
+-        data >>= 8;
+-        g = data & 0xff;
+-        data >>= 8;
+-        r = data & 0xff;
+-        data >>= 8;
+-        if (data & 1) {
+-            SKIP_PIXEL(dest);
+-        } else {
+-            COPY_PIXEL(dest, rgb_to_pixel32(r, g, b));
+-        }
+-        width -= 1;
+-        src += 4;
+-    }
+-}
+-
+-/* Overlay planes disabled, no transparency */
+-static drawfn pxa2xx_draw_fn_32[16] = {
+-    [0 ... 0xf]       = NULL,
+-    [pxa_lcdc_2bpp]   = pxa2xx_draw_line2,
+-    [pxa_lcdc_4bpp]   = pxa2xx_draw_line4,
+-    [pxa_lcdc_8bpp]   = pxa2xx_draw_line8,
+-    [pxa_lcdc_16bpp]  = pxa2xx_draw_line16,
+-    [pxa_lcdc_18bpp]  = pxa2xx_draw_line18,
+-    [pxa_lcdc_18pbpp] = pxa2xx_draw_line18p,
+-    [pxa_lcdc_24bpp]  = pxa2xx_draw_line24,
+-};
+-
+-/* Overlay planes enabled, transparency used */
+-static drawfn pxa2xx_draw_fn_32t[16] = {
+-    [0 ... 0xf]       = NULL,
+-    [pxa_lcdc_4bpp]   = pxa2xx_draw_line4,
+-    [pxa_lcdc_8bpp]   = pxa2xx_draw_line8,
+-    [pxa_lcdc_16bpp]  = pxa2xx_draw_line16t,
+-    [pxa_lcdc_19bpp]  = pxa2xx_draw_line19,
+-    [pxa_lcdc_19pbpp] = pxa2xx_draw_line19p,
+-    [pxa_lcdc_24bpp]  = pxa2xx_draw_line24t,
+-    [pxa_lcdc_25bpp]  = pxa2xx_draw_line25,
+-};
+-
+-#undef COPY_PIXEL
+-#undef SKIP_PIXEL
+-
+-#ifdef SWAP_WORDS
+-# undef SWAP_WORDS
+-#endif
+-
+-/* Route internal interrupt lines to the global IC */
+-static void pxa2xx_lcdc_int_update(PXA2xxLCDState *s)
+-{
+-    int level = 0;
+-    level |= (s->status[0] & LCSR0_LDD)    && !(s->control[0] & LCCR0_LDM);
+-    level |= (s->status[0] & LCSR0_SOF0)   && !(s->control[0] & LCCR0_SOFM0);
+-    level |= (s->status[0] & LCSR0_IU0)    && !(s->control[0] & LCCR0_IUM);
+-    level |= (s->status[0] & LCSR0_IU1)    && !(s->control[5] & LCCR5_IUM(1));
+-    level |= (s->status[0] & LCSR0_OU)     && !(s->control[0] & LCCR0_OUM);
+-    level |= (s->status[0] & LCSR0_QD)     && !(s->control[0] & LCCR0_QDM);
+-    level |= (s->status[0] & LCSR0_EOF0)   && !(s->control[0] & LCCR0_EOFM0);
+-    level |= (s->status[0] & LCSR0_BS0)    && !(s->control[0] & LCCR0_BSM0);
+-    level |= (s->status[0] & LCSR0_RDST)   && !(s->control[0] & LCCR0_RDSTM);
+-    level |= (s->status[0] & LCSR0_CMDINT) && !(s->control[0] & LCCR0_CMDIM);
+-    level |= (s->status[1] & ~s->control[5]);
+-
+-    qemu_set_irq(s->irq, !!level);
+-    s->irqlevel = level;
+-}
+-
+-/* Set Branch Status interrupt high and poke associated registers */
+-static inline void pxa2xx_dma_bs_set(PXA2xxLCDState *s, int ch)
+-{
+-    int unmasked;
+-    if (ch == 0) {
+-        s->status[0] |= LCSR0_BS0;
+-        unmasked = !(s->control[0] & LCCR0_BSM0);
 -    } else {
--        if (!(kp->kpasmkp[col / 2] & val)) {
--            kp->kpasmkp[col / 2] |= val;
--            kp->pressed_cnt++;
--            assert_irq = 1;
--        }
--    }
--    kp->kpas = ((kp->pressed_cnt & 0x1f) << 26) | (0xf << 4) | 0xf;
--    if (kp->pressed_cnt == 1) {
--        kp->kpas &= ~((0xf << 4) | 0xf);
--        if (rel) {
--            pxa27x_keypad_find_pressed_key(kp, &row, &col);
--        }
--        kp->kpas |= ((row & 0xf) << 4) | (col & 0xf);
+-        s->status[1] |= LCSR1_BS(ch);
+-        unmasked = !(s->control[5] & LCCR5_BSM(ch));
 -    }
 -
--    if (!(kp->kpc & (KPC_AS | KPC_ASACT)))
--        assert_irq = 0;
--
--    if (assert_irq && (kp->kpc & KPC_MIE)) {
--        kp->kpc |= KPC_MI;
--        qemu_irq_raise(kp->irq);
+-    if (unmasked) {
+-        if (s->irqlevel)
+-            s->status[0] |= LCSR0_SINT;
+-        else
+-            s->liidr = s->dma_ch[ch].id;
 -    }
 -}
 -
--static uint64_t pxa2xx_keypad_read(void *opaque, hwaddr offset,
--                                   unsigned size)
+-/* Set Start Of Frame Status interrupt high and poke associated registers */
+-static inline void pxa2xx_dma_sof_set(PXA2xxLCDState *s, int ch)
 -{
--    PXA2xxKeyPadState *s = (PXA2xxKeyPadState *) opaque;
--    uint32_t tmp;
+-    int unmasked;
+-    if (!(s->dma_ch[ch].command & LDCMD_SOFINT))
+-        return;
+-
+-    if (ch == 0) {
+-        s->status[0] |= LCSR0_SOF0;
+-        unmasked = !(s->control[0] & LCCR0_SOFM0);
+-    } else {
+-        s->status[1] |= LCSR1_SOF(ch);
+-        unmasked = !(s->control[5] & LCCR5_SOFM(ch));
+-    }
+-
+-    if (unmasked) {
+-        if (s->irqlevel)
+-            s->status[0] |= LCSR0_SINT;
+-        else
+-            s->liidr = s->dma_ch[ch].id;
+-    }
+-}
+-
+-/* Set End Of Frame Status interrupt high and poke associated registers */
+-static inline void pxa2xx_dma_eof_set(PXA2xxLCDState *s, int ch)
+-{
+-    int unmasked;
+-    if (!(s->dma_ch[ch].command & LDCMD_EOFINT))
+-        return;
+-
+-    if (ch == 0) {
+-        s->status[0] |= LCSR0_EOF0;
+-        unmasked = !(s->control[0] & LCCR0_EOFM0);
+-    } else {
+-        s->status[1] |= LCSR1_EOF(ch);
+-        unmasked = !(s->control[5] & LCCR5_EOFM(ch));
+-    }
+-
+-    if (unmasked) {
+-        if (s->irqlevel)
+-            s->status[0] |= LCSR0_SINT;
+-        else
+-            s->liidr = s->dma_ch[ch].id;
+-    }
+-}
+-
+-/* Set Bus Error Status interrupt high and poke associated registers */
+-static inline void pxa2xx_dma_ber_set(PXA2xxLCDState *s, int ch)
+-{
+-    s->status[0] |= LCSR0_BERCH(ch) | LCSR0_BER;
+-    if (s->irqlevel)
+-        s->status[0] |= LCSR0_SINT;
+-    else
+-        s->liidr = s->dma_ch[ch].id;
+-}
+-
+-/* Load new Frame Descriptors from DMA */
+-static void pxa2xx_descriptor_load(PXA2xxLCDState *s)
+-{
+-    PXAFrameDescriptor desc;
+-    hwaddr descptr;
+-    int i;
+-
+-    for (i = 0; i < PXA_LCDDMA_CHANS; i ++) {
+-        s->dma_ch[i].source = 0;
+-
+-        if (!s->dma_ch[i].up)
+-            continue;
+-
+-        if (s->dma_ch[i].branch & FBR_BRA) {
+-            descptr = s->dma_ch[i].branch & FBR_SRCADDR;
+-            if (s->dma_ch[i].branch & FBR_BINT)
+-                pxa2xx_dma_bs_set(s, i);
+-            s->dma_ch[i].branch &= ~FBR_BRA;
+-        } else
+-            descptr = s->dma_ch[i].descriptor;
+-
+-        if (!((descptr >= PXA2XX_SDRAM_BASE && descptr +
+-                 sizeof(desc) <= PXA2XX_SDRAM_BASE + current_machine->ram_size) ||
+-                (descptr >= PXA2XX_INTERNAL_BASE && descptr + sizeof(desc) <=
+-                 PXA2XX_INTERNAL_BASE + PXA2XX_INTERNAL_SIZE))) {
+-            continue;
+-        }
+-
+-        cpu_physical_memory_read(descptr, &desc, sizeof(desc));
+-        s->dma_ch[i].descriptor = le32_to_cpu(desc.fdaddr);
+-        s->dma_ch[i].source = le32_to_cpu(desc.fsaddr);
+-        s->dma_ch[i].id = le32_to_cpu(desc.fidr);
+-        s->dma_ch[i].command = le32_to_cpu(desc.ldcmd);
+-    }
+-}
+-
+-static uint64_t pxa2xx_lcdc_read(void *opaque, hwaddr offset,
+-                                 unsigned size)
+-{
+-    PXA2xxLCDState *s = (PXA2xxLCDState *) opaque;
+-    int ch;
 -
 -    switch (offset) {
--    case KPC:
--        tmp = s->kpc;
--        if(tmp & KPC_MI)
--            s->kpc &= ~(KPC_MI);
--        if(tmp & KPC_DI)
--            s->kpc &= ~(KPC_DI);
--        qemu_irq_lower(s->irq);
--        return tmp;
--    case KPDK:
--        return s->kpdk;
--    case KPREC:
--        tmp = s->kprec;
--        if(tmp & KPREC_OF1)
--            s->kprec &= ~(KPREC_OF1);
--        if(tmp & KPREC_UF1)
--            s->kprec &= ~(KPREC_UF1);
--        if(tmp & KPREC_OF0)
--            s->kprec &= ~(KPREC_OF0);
--        if(tmp & KPREC_UF0)
--            s->kprec &= ~(KPREC_UF0);
--        return tmp;
--    case KPMK:
--        tmp = s->kpmk;
--        if(tmp & KPMK_MKP)
--            s->kpmk &= ~(KPMK_MKP);
--        return tmp;
--    case KPAS:
--        return s->kpas;
--    case KPASMKP0:
--        return s->kpasmkp[0];
--    case KPASMKP1:
--        return s->kpasmkp[1];
--    case KPASMKP2:
--        return s->kpasmkp[2];
--    case KPASMKP3:
--        return s->kpasmkp[3];
--    case KPKDI:
--        return s->kpkdi;
+-    case LCCR0:
+-        return s->control[0];
+-    case LCCR1:
+-        return s->control[1];
+-    case LCCR2:
+-        return s->control[2];
+-    case LCCR3:
+-        return s->control[3];
+-    case LCCR4:
+-        return s->control[4];
+-    case LCCR5:
+-        return s->control[5];
+-
+-    case OVL1C1:
+-        return s->ovl1c[0];
+-    case OVL1C2:
+-        return s->ovl1c[1];
+-    case OVL2C1:
+-        return s->ovl2c[0];
+-    case OVL2C2:
+-        return s->ovl2c[1];
+-
+-    case CCR:
+-        return s->ccr;
+-
+-    case CMDCR:
+-        return s->cmdcr;
+-
+-    case TRGBR:
+-        return s->trgbr;
+-    case TCR:
+-        return s->tcr;
+-
+-    case 0x200 ... 0x1000:      /* DMA per-channel registers */
+-        ch = (offset - 0x200) >> 4;
+-        if (!(ch >= 0 && ch < PXA_LCDDMA_CHANS))
+-            goto fail;
+-
+-        switch (offset & 0xf) {
+-        case DMA_FDADR:
+-            return s->dma_ch[ch].descriptor;
+-        case DMA_FSADR:
+-            return s->dma_ch[ch].source;
+-        case DMA_FIDR:
+-            return s->dma_ch[ch].id;
+-        case DMA_LDCMD:
+-            return s->dma_ch[ch].command;
+-        default:
+-            goto fail;
+-        }
+-
+-    case FBR0:
+-        return s->dma_ch[0].branch;
+-    case FBR1:
+-        return s->dma_ch[1].branch;
+-    case FBR2:
+-        return s->dma_ch[2].branch;
+-    case FBR3:
+-        return s->dma_ch[3].branch;
+-    case FBR4:
+-        return s->dma_ch[4].branch;
+-    case FBR5:
+-        return s->dma_ch[5].branch;
+-    case FBR6:
+-        return s->dma_ch[6].branch;
+-
+-    case BSCNTR:
+-        return s->bscntr;
+-
+-    case PRSR:
+-        return 0;
+-
+-    case LCSR0:
+-        return s->status[0];
+-    case LCSR1:
+-        return s->status[1];
+-    case LIIDR:
+-        return s->liidr;
+-
 -    default:
--        qemu_log_mask(LOG_GUEST_ERROR,
--                      "%s: Bad read offset 0x%"HWADDR_PRIx"\n",
+-    fail:
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIX "\n",
 -                      __func__, offset);
 -    }
 -
 -    return 0;
 -}
 -
--static void pxa2xx_keypad_write(void *opaque, hwaddr offset,
--                                uint64_t value, unsigned size)
+-static void pxa2xx_lcdc_write(void *opaque, hwaddr offset,
+-                              uint64_t value, unsigned size)
 -{
--    PXA2xxKeyPadState *s = (PXA2xxKeyPadState *) opaque;
+-    PXA2xxLCDState *s = (PXA2xxLCDState *) opaque;
+-    int ch;
 -
 -    switch (offset) {
--    case KPC:
--        s->kpc = value;
--        if (s->kpc & KPC_AS) {
--            s->kpc &= ~(KPC_AS);
+-    case LCCR0:
+-        /* ACK Quick Disable done */
+-        if ((s->control[0] & LCCR0_ENB) && !(value & LCCR0_ENB))
+-            s->status[0] |= LCSR0_QD;
+-
+-        if (!(s->control[0] & LCCR0_LCDT) && (value & LCCR0_LCDT)) {
+-            qemu_log_mask(LOG_UNIMP,
+-                          "%s: internal frame buffer unsupported\n", __func__);
+-        }
+-        if ((s->control[3] & LCCR3_API) &&
+-                (value & LCCR0_ENB) && !(value & LCCR0_LCDT))
+-            s->status[0] |= LCSR0_ABC;
+-
+-        s->control[0] = value & 0x07ffffff;
+-        pxa2xx_lcdc_int_update(s);
+-
+-        s->dma_ch[0].up = !!(value & LCCR0_ENB);
+-        s->dma_ch[1].up = (s->ovl1c[0] & OVLC1_EN) || (value & LCCR0_SDS);
+-        break;
+-
+-    case LCCR1:
+-        s->control[1] = value;
+-        break;
+-
+-    case LCCR2:
+-        s->control[2] = value;
+-        break;
+-
+-    case LCCR3:
+-        s->control[3] = value & 0xefffffff;
+-        s->bpp = LCCR3_BPP(value);
+-        break;
+-
+-    case LCCR4:
+-        s->control[4] = value & 0x83ff81ff;
+-        break;
+-
+-    case LCCR5:
+-        s->control[5] = value & 0x3f3f3f3f;
+-        break;
+-
+-    case OVL1C1:
+-        if (!(s->ovl1c[0] & OVLC1_EN) && (value & OVLC1_EN)) {
+-            qemu_log_mask(LOG_UNIMP, "%s: Overlay 1 not supported\n", __func__);
+-        }
+-        s->ovl1c[0] = value & 0x80ffffff;
+-        s->dma_ch[1].up = (value & OVLC1_EN) || (s->control[0] & LCCR0_SDS);
+-        break;
+-
+-    case OVL1C2:
+-        s->ovl1c[1] = value & 0x000fffff;
+-        break;
+-
+-    case OVL2C1:
+-        if (!(s->ovl2c[0] & OVLC1_EN) && (value & OVLC1_EN)) {
+-            qemu_log_mask(LOG_UNIMP, "%s: Overlay 2 not supported\n", __func__);
+-        }
+-        s->ovl2c[0] = value & 0x80ffffff;
+-        s->dma_ch[2].up = !!(value & OVLC1_EN);
+-        s->dma_ch[3].up = !!(value & OVLC1_EN);
+-        s->dma_ch[4].up = !!(value & OVLC1_EN);
+-        break;
+-
+-    case OVL2C2:
+-        s->ovl2c[1] = value & 0x007fffff;
+-        break;
+-
+-    case CCR:
+-        if (!(s->ccr & CCR_CEN) && (value & CCR_CEN)) {
+-            qemu_log_mask(LOG_UNIMP,
+-                          "%s: Hardware cursor unimplemented\n", __func__);
+-        }
+-        s->ccr = value & 0x81ffffe7;
+-        s->dma_ch[5].up = !!(value & CCR_CEN);
+-        break;
+-
+-    case CMDCR:
+-        s->cmdcr = value & 0xff;
+-        break;
+-
+-    case TRGBR:
+-        s->trgbr = value & 0x00ffffff;
+-        break;
+-
+-    case TCR:
+-        s->tcr = value & 0x7fff;
+-        break;
+-
+-    case 0x200 ... 0x1000:      /* DMA per-channel registers */
+-        ch = (offset - 0x200) >> 4;
+-        if (!(ch >= 0 && ch < PXA_LCDDMA_CHANS))
+-            goto fail;
+-
+-        switch (offset & 0xf) {
+-        case DMA_FDADR:
+-            s->dma_ch[ch].descriptor = value & 0xfffffff0;
+-            break;
+-
+-        default:
+-            goto fail;
 -        }
 -        break;
--    case KPDK:
--        s->kpdk = value;
+-
+-    case FBR0:
+-        s->dma_ch[0].branch = value & 0xfffffff3;
 -        break;
--    case KPREC:
--        s->kprec = value;
+-    case FBR1:
+-        s->dma_ch[1].branch = value & 0xfffffff3;
 -        break;
--    case KPMK:
--        s->kpmk = value;
+-    case FBR2:
+-        s->dma_ch[2].branch = value & 0xfffffff3;
 -        break;
--    case KPAS:
--        s->kpas = value;
+-    case FBR3:
+-        s->dma_ch[3].branch = value & 0xfffffff3;
 -        break;
--    case KPASMKP0:
--        s->kpasmkp[0] = value;
+-    case FBR4:
+-        s->dma_ch[4].branch = value & 0xfffffff3;
 -        break;
--    case KPASMKP1:
--        s->kpasmkp[1] = value;
+-    case FBR5:
+-        s->dma_ch[5].branch = value & 0xfffffff3;
 -        break;
--    case KPASMKP2:
--        s->kpasmkp[2] = value;
+-    case FBR6:
+-        s->dma_ch[6].branch = value & 0xfffffff3;
 -        break;
--    case KPASMKP3:
--        s->kpasmkp[3] = value;
+-
+-    case BSCNTR:
+-        s->bscntr = value & 0xf;
 -        break;
--    case KPKDI:
--        s->kpkdi = value;
+-
+-    case PRSR:
+-        break;
+-
+-    case LCSR0:
+-        s->status[0] &= ~(value & 0xfff);
+-        if (value & LCSR0_BER)
+-            s->status[0] &= ~LCSR0_BERCH(7);
+-        break;
+-
+-    case LCSR1:
+-        s->status[1] &= ~(value & 0x3e3f3f);
 -        break;
 -
 -    default:
--        qemu_log_mask(LOG_GUEST_ERROR,
--                      "%s: Bad write offset 0x%"HWADDR_PRIx"\n",
+-    fail:
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" HWADDR_PRIX "\n",
 -                      __func__, offset);
 -    }
 -}
 -
--static const MemoryRegionOps pxa2xx_keypad_ops = {
--    .read = pxa2xx_keypad_read,
--    .write = pxa2xx_keypad_write,
+-static const MemoryRegionOps pxa2xx_lcdc_ops = {
+-    .read = pxa2xx_lcdc_read,
+-    .write = pxa2xx_lcdc_write,
 -    .endianness = DEVICE_NATIVE_ENDIAN,
 -};
 -
--static const VMStateDescription vmstate_pxa2xx_keypad = {
--    .name = "pxa2xx_keypad",
+-/* Load new palette for a given DMA channel, convert to internal format */
+-static void pxa2xx_palette_parse(PXA2xxLCDState *s, int ch, int bpp)
+-{
+-    DisplaySurface *surface = qemu_console_surface(s->con);
+-    int i, n, format, r, g, b, alpha;
+-    uint32_t *dest;
+-    uint8_t *src;
+-    s->pal_for = LCCR4_PALFOR(s->control[4]);
+-    format = s->pal_for;
+-
+-    switch (bpp) {
+-    case pxa_lcdc_2bpp:
+-        n = 4;
+-        break;
+-    case pxa_lcdc_4bpp:
+-        n = 16;
+-        break;
+-    case pxa_lcdc_8bpp:
+-        n = 256;
+-        break;
+-    default:
+-        return;
+-    }
+-
+-    src = (uint8_t *) s->dma_ch[ch].pbuffer;
+-    dest = (uint32_t *) s->dma_ch[ch].palette;
+-    alpha = r = g = b = 0;
+-
+-    for (i = 0; i < n; i ++) {
+-        switch (format) {
+-        case 0: /* 16 bpp, no transparency */
+-            alpha = 0;
+-            if (s->control[0] & LCCR0_CMS) {
+-                r = g = b = *(uint16_t *) src & 0xff;
+-            }
+-            else {
+-                r = (*(uint16_t *) src & 0xf800) >> 8;
+-                g = (*(uint16_t *) src & 0x07e0) >> 3;
+-                b = (*(uint16_t *) src & 0x001f) << 3;
+-            }
+-            src += 2;
+-            break;
+-        case 1: /* 16 bpp plus transparency */
+-            alpha = *(uint32_t *) src & (1 << 24);
+-            if (s->control[0] & LCCR0_CMS)
+-                r = g = b = *(uint32_t *) src & 0xff;
+-            else {
+-                r = (*(uint32_t *) src & 0xf80000) >> 16;
+-                g = (*(uint32_t *) src & 0x00fc00) >> 8;
+-                b = (*(uint32_t *) src & 0x0000f8);
+-            }
+-            src += 4;
+-            break;
+-        case 2: /* 18 bpp plus transparency */
+-            alpha = *(uint32_t *) src & (1 << 24);
+-            if (s->control[0] & LCCR0_CMS)
+-                r = g = b = *(uint32_t *) src & 0xff;
+-            else {
+-                r = (*(uint32_t *) src & 0xfc0000) >> 16;
+-                g = (*(uint32_t *) src & 0x00fc00) >> 8;
+-                b = (*(uint32_t *) src & 0x0000fc);
+-            }
+-            src += 4;
+-            break;
+-        case 3: /* 24 bpp plus transparency */
+-            alpha = *(uint32_t *) src & (1 << 24);
+-            if (s->control[0] & LCCR0_CMS)
+-                r = g = b = *(uint32_t *) src & 0xff;
+-            else {
+-                r = (*(uint32_t *) src & 0xff0000) >> 16;
+-                g = (*(uint32_t *) src & 0x00ff00) >> 8;
+-                b = (*(uint32_t *) src & 0x0000ff);
+-            }
+-            src += 4;
+-            break;
+-        }
+-        switch (surface_bits_per_pixel(surface)) {
+-        case 8:
+-            *dest = rgb_to_pixel8(r, g, b) | alpha;
+-            break;
+-        case 15:
+-            *dest = rgb_to_pixel15(r, g, b) | alpha;
+-            break;
+-        case 16:
+-            *dest = rgb_to_pixel16(r, g, b) | alpha;
+-            break;
+-        case 24:
+-            *dest = rgb_to_pixel24(r, g, b) | alpha;
+-            break;
+-        case 32:
+-            *dest = rgb_to_pixel32(r, g, b) | alpha;
+-            break;
+-        }
+-        dest ++;
+-    }
+-}
+-
+-static inline drawfn pxa2xx_drawfn(PXA2xxLCDState *s)
+-{
+-    if (s->transp) {
+-        return pxa2xx_draw_fn_32t[s->bpp];
+-    } else {
+-        return pxa2xx_draw_fn_32[s->bpp];
+-    }
+-}
+-
+-static void pxa2xx_lcdc_dma0_redraw_rot0(PXA2xxLCDState *s,
+-                hwaddr addr, int *miny, int *maxy)
+-{
+-    DisplaySurface *surface = qemu_console_surface(s->con);
+-    int src_width, dest_width;
+-    drawfn fn = pxa2xx_drawfn(s);
+-    if (!fn)
+-        return;
+-
+-    src_width = (s->xres + 3) & ~3;     /* Pad to a 4 pixels multiple */
+-    if (s->bpp == pxa_lcdc_19pbpp || s->bpp == pxa_lcdc_18pbpp)
+-        src_width *= 3;
+-    else if (s->bpp > pxa_lcdc_16bpp)
+-        src_width *= 4;
+-    else if (s->bpp > pxa_lcdc_8bpp)
+-        src_width *= 2;
+-
+-    dest_width = s->xres * DEST_PIXEL_WIDTH;
+-    *miny = 0;
+-    if (s->invalidated) {
+-        framebuffer_update_memory_section(&s->fbsection, s->sysmem,
+-                                          addr, s->yres, src_width);
+-    }
+-    framebuffer_update_display(surface, &s->fbsection, s->xres, s->yres,
+-                               src_width, dest_width, DEST_PIXEL_WIDTH,
+-                               s->invalidated,
+-                               fn, s->dma_ch[0].palette, miny, maxy);
+-}
+-
+-static void pxa2xx_lcdc_dma0_redraw_rot90(PXA2xxLCDState *s,
+-               hwaddr addr, int *miny, int *maxy)
+-{
+-    DisplaySurface *surface = qemu_console_surface(s->con);
+-    int src_width, dest_width;
+-    drawfn fn = pxa2xx_drawfn(s);
+-    if (!fn)
+-        return;
+-
+-    src_width = (s->xres + 3) & ~3;     /* Pad to a 4 pixels multiple */
+-    if (s->bpp == pxa_lcdc_19pbpp || s->bpp == pxa_lcdc_18pbpp)
+-        src_width *= 3;
+-    else if (s->bpp > pxa_lcdc_16bpp)
+-        src_width *= 4;
+-    else if (s->bpp > pxa_lcdc_8bpp)
+-        src_width *= 2;
+-
+-    dest_width = s->yres * DEST_PIXEL_WIDTH;
+-    *miny = 0;
+-    if (s->invalidated) {
+-        framebuffer_update_memory_section(&s->fbsection, s->sysmem,
+-                                          addr, s->yres, src_width);
+-    }
+-    framebuffer_update_display(surface, &s->fbsection, s->xres, s->yres,
+-                               src_width, DEST_PIXEL_WIDTH, -dest_width,
+-                               s->invalidated,
+-                               fn, s->dma_ch[0].palette,
+-                               miny, maxy);
+-}
+-
+-static void pxa2xx_lcdc_dma0_redraw_rot180(PXA2xxLCDState *s,
+-                hwaddr addr, int *miny, int *maxy)
+-{
+-    DisplaySurface *surface = qemu_console_surface(s->con);
+-    int src_width, dest_width;
+-    drawfn fn = pxa2xx_drawfn(s);
+-    if (!fn) {
+-        return;
+-    }
+-
+-    src_width = (s->xres + 3) & ~3;     /* Pad to a 4 pixels multiple */
+-    if (s->bpp == pxa_lcdc_19pbpp || s->bpp == pxa_lcdc_18pbpp) {
+-        src_width *= 3;
+-    } else if (s->bpp > pxa_lcdc_16bpp) {
+-        src_width *= 4;
+-    } else if (s->bpp > pxa_lcdc_8bpp) {
+-        src_width *= 2;
+-    }
+-
+-    dest_width = s->xres * DEST_PIXEL_WIDTH;
+-    *miny = 0;
+-    if (s->invalidated) {
+-        framebuffer_update_memory_section(&s->fbsection, s->sysmem,
+-                                          addr, s->yres, src_width);
+-    }
+-    framebuffer_update_display(surface, &s->fbsection, s->xres, s->yres,
+-                               src_width, -dest_width, -DEST_PIXEL_WIDTH,
+-                               s->invalidated,
+-                               fn, s->dma_ch[0].palette, miny, maxy);
+-}
+-
+-static void pxa2xx_lcdc_dma0_redraw_rot270(PXA2xxLCDState *s,
+-               hwaddr addr, int *miny, int *maxy)
+-{
+-    DisplaySurface *surface = qemu_console_surface(s->con);
+-    int src_width, dest_width;
+-    drawfn fn = pxa2xx_drawfn(s);
+-    if (!fn) {
+-        return;
+-    }
+-
+-    src_width = (s->xres + 3) & ~3;     /* Pad to a 4 pixels multiple */
+-    if (s->bpp == pxa_lcdc_19pbpp || s->bpp == pxa_lcdc_18pbpp) {
+-        src_width *= 3;
+-    } else if (s->bpp > pxa_lcdc_16bpp) {
+-        src_width *= 4;
+-    } else if (s->bpp > pxa_lcdc_8bpp) {
+-        src_width *= 2;
+-    }
+-
+-    dest_width = s->yres * DEST_PIXEL_WIDTH;
+-    *miny = 0;
+-    if (s->invalidated) {
+-        framebuffer_update_memory_section(&s->fbsection, s->sysmem,
+-                                          addr, s->yres, src_width);
+-    }
+-    framebuffer_update_display(surface, &s->fbsection, s->xres, s->yres,
+-                               src_width, -DEST_PIXEL_WIDTH, dest_width,
+-                               s->invalidated,
+-                               fn, s->dma_ch[0].palette,
+-                               miny, maxy);
+-}
+-
+-static void pxa2xx_lcdc_resize(PXA2xxLCDState *s)
+-{
+-    int width, height;
+-    if (!(s->control[0] & LCCR0_ENB))
+-        return;
+-
+-    width = LCCR1_PPL(s->control[1]) + 1;
+-    height = LCCR2_LPP(s->control[2]) + 1;
+-
+-    if (width != s->xres || height != s->yres) {
+-        if (s->orientation == 90 || s->orientation == 270) {
+-            qemu_console_resize(s->con, height, width);
+-        } else {
+-            qemu_console_resize(s->con, width, height);
+-        }
+-        s->invalidated = 1;
+-        s->xres = width;
+-        s->yres = height;
+-    }
+-}
+-
+-static void pxa2xx_update_display(void *opaque)
+-{
+-    PXA2xxLCDState *s = (PXA2xxLCDState *) opaque;
+-    hwaddr fbptr;
+-    int miny, maxy;
+-    int ch;
+-    if (!(s->control[0] & LCCR0_ENB))
+-        return;
+-
+-    pxa2xx_descriptor_load(s);
+-
+-    pxa2xx_lcdc_resize(s);
+-    miny = s->yres;
+-    maxy = 0;
+-    s->transp = s->dma_ch[2].up || s->dma_ch[3].up;
+-    /* Note: With overlay planes the order depends on LCCR0 bit 25.  */
+-    for (ch = 0; ch < PXA_LCDDMA_CHANS; ch ++)
+-        if (s->dma_ch[ch].up) {
+-            if (!s->dma_ch[ch].source) {
+-                pxa2xx_dma_ber_set(s, ch);
+-                continue;
+-            }
+-            fbptr = s->dma_ch[ch].source;
+-            if (!((fbptr >= PXA2XX_SDRAM_BASE &&
+-                     fbptr <= PXA2XX_SDRAM_BASE + current_machine->ram_size) ||
+-                    (fbptr >= PXA2XX_INTERNAL_BASE &&
+-                     fbptr <= PXA2XX_INTERNAL_BASE + PXA2XX_INTERNAL_SIZE))) {
+-                pxa2xx_dma_ber_set(s, ch);
+-                continue;
+-            }
+-
+-            if (s->dma_ch[ch].command & LDCMD_PAL) {
+-                cpu_physical_memory_read(fbptr, s->dma_ch[ch].pbuffer,
+-                    MAX(LDCMD_LENGTH(s->dma_ch[ch].command),
+-                        sizeof(s->dma_ch[ch].pbuffer)));
+-                pxa2xx_palette_parse(s, ch, s->bpp);
+-            } else {
+-                /* Do we need to reparse palette */
+-                if (LCCR4_PALFOR(s->control[4]) != s->pal_for)
+-                    pxa2xx_palette_parse(s, ch, s->bpp);
+-
+-                /* ACK frame start */
+-                pxa2xx_dma_sof_set(s, ch);
+-
+-                s->dma_ch[ch].redraw(s, fbptr, &miny, &maxy);
+-                s->invalidated = 0;
+-
+-                /* ACK frame completed */
+-                pxa2xx_dma_eof_set(s, ch);
+-            }
+-        }
+-
+-    if (s->control[0] & LCCR0_DIS) {
+-        /* ACK last frame completed */
+-        s->control[0] &= ~LCCR0_ENB;
+-        s->status[0] |= LCSR0_LDD;
+-    }
+-
+-    if (miny >= 0) {
+-        switch (s->orientation) {
+-        case 0:
+-            dpy_gfx_update(s->con, 0, miny, s->xres, maxy - miny + 1);
+-            break;
+-        case 90:
+-            dpy_gfx_update(s->con, miny, 0, maxy - miny + 1, s->xres);
+-            break;
+-        case 180:
+-            maxy = s->yres - maxy - 1;
+-            miny = s->yres - miny - 1;
+-            dpy_gfx_update(s->con, 0, maxy, s->xres, miny - maxy + 1);
+-            break;
+-        case 270:
+-            maxy = s->yres - maxy - 1;
+-            miny = s->yres - miny - 1;
+-            dpy_gfx_update(s->con, maxy, 0, miny - maxy + 1, s->xres);
+-            break;
+-        }
+-    }
+-    pxa2xx_lcdc_int_update(s);
+-
+-    qemu_irq_raise(s->vsync_cb);
+-}
+-
+-static void pxa2xx_invalidate_display(void *opaque)
+-{
+-    PXA2xxLCDState *s = (PXA2xxLCDState *) opaque;
+-    s->invalidated = 1;
+-}
+-
+-static void pxa2xx_lcdc_orientation(void *opaque, int angle)
+-{
+-    PXA2xxLCDState *s = (PXA2xxLCDState *) opaque;
+-
+-    switch (angle) {
+-    case 0:
+-        s->dma_ch[0].redraw = pxa2xx_lcdc_dma0_redraw_rot0;
+-        break;
+-    case 90:
+-        s->dma_ch[0].redraw = pxa2xx_lcdc_dma0_redraw_rot90;
+-        break;
+-    case 180:
+-        s->dma_ch[0].redraw = pxa2xx_lcdc_dma0_redraw_rot180;
+-        break;
+-    case 270:
+-        s->dma_ch[0].redraw = pxa2xx_lcdc_dma0_redraw_rot270;
+-        break;
+-    }
+-
+-    s->orientation = angle;
+-    s->xres = s->yres = -1;
+-    pxa2xx_lcdc_resize(s);
+-}
+-
+-static const VMStateDescription vmstate_dma_channel = {
+-    .name = "dma_channel",
 -    .version_id = 0,
 -    .minimum_version_id = 0,
 -    .fields = (const VMStateField[]) {
--        VMSTATE_UINT32(kpc, PXA2xxKeyPadState),
--        VMSTATE_UINT32(kpdk, PXA2xxKeyPadState),
--        VMSTATE_UINT32(kprec, PXA2xxKeyPadState),
--        VMSTATE_UINT32(kpmk, PXA2xxKeyPadState),
--        VMSTATE_UINT32(kpas, PXA2xxKeyPadState),
--        VMSTATE_UINT32_ARRAY(kpasmkp, PXA2xxKeyPadState, 4),
--        VMSTATE_UINT32(kpkdi, PXA2xxKeyPadState),
+-        VMSTATE_UINT32(branch, struct DMAChannel),
+-        VMSTATE_UINT8(up, struct DMAChannel),
+-        VMSTATE_BUFFER(pbuffer, struct DMAChannel),
+-        VMSTATE_UINT32(descriptor, struct DMAChannel),
+-        VMSTATE_UINT32(source, struct DMAChannel),
+-        VMSTATE_UINT32(id, struct DMAChannel),
+-        VMSTATE_UINT32(command, struct DMAChannel),
 -        VMSTATE_END_OF_LIST()
 -    }
 -};
 -
--PXA2xxKeyPadState *pxa27x_keypad_init(MemoryRegion *sysmem,
--                                      hwaddr base,
--                                      qemu_irq irq)
+-static int pxa2xx_lcdc_post_load(void *opaque, int version_id)
 -{
--    PXA2xxKeyPadState *s;
+-    PXA2xxLCDState *s = opaque;
 -
--    s = g_new0(PXA2xxKeyPadState, 1);
+-    s->bpp = LCCR3_BPP(s->control[3]);
+-    s->xres = s->yres = s->pal_for = -1;
+-
+-    return 0;
+-}
+-
+-static const VMStateDescription vmstate_pxa2xx_lcdc = {
+-    .name = "pxa2xx_lcdc",
+-    .version_id = 0,
+-    .minimum_version_id = 0,
+-    .post_load = pxa2xx_lcdc_post_load,
+-    .fields = (const VMStateField[]) {
+-        VMSTATE_INT32(irqlevel, PXA2xxLCDState),
+-        VMSTATE_INT32(transp, PXA2xxLCDState),
+-        VMSTATE_UINT32_ARRAY(control, PXA2xxLCDState, 6),
+-        VMSTATE_UINT32_ARRAY(status, PXA2xxLCDState, 2),
+-        VMSTATE_UINT32_ARRAY(ovl1c, PXA2xxLCDState, 2),
+-        VMSTATE_UINT32_ARRAY(ovl2c, PXA2xxLCDState, 2),
+-        VMSTATE_UINT32(ccr, PXA2xxLCDState),
+-        VMSTATE_UINT32(cmdcr, PXA2xxLCDState),
+-        VMSTATE_UINT32(trgbr, PXA2xxLCDState),
+-        VMSTATE_UINT32(tcr, PXA2xxLCDState),
+-        VMSTATE_UINT32(liidr, PXA2xxLCDState),
+-        VMSTATE_UINT8(bscntr, PXA2xxLCDState),
+-        VMSTATE_STRUCT_ARRAY(dma_ch, PXA2xxLCDState, 7, 0,
+-                             vmstate_dma_channel, struct DMAChannel),
+-        VMSTATE_END_OF_LIST()
+-    }
+-};
+-
+-static const GraphicHwOps pxa2xx_ops = {
+-    .invalidate  = pxa2xx_invalidate_display,
+-    .gfx_update  = pxa2xx_update_display,
+-};
+-
+-PXA2xxLCDState *pxa2xx_lcdc_init(MemoryRegion *sysmem,
+-                                 hwaddr base, qemu_irq irq)
+-{
+-    PXA2xxLCDState *s;
+-
+-    s = g_new0(PXA2xxLCDState, 1);
+-    s->invalidated = 1;
 -    s->irq = irq;
+-    s->sysmem = sysmem;
 -
--    memory_region_init_io(&s->iomem, NULL, &pxa2xx_keypad_ops, s,
--                          "pxa2xx-keypad", 0x00100000);
+-    pxa2xx_lcdc_orientation(s, graphic_rotate);
+-
+-    memory_region_init_io(&s->iomem, NULL, &pxa2xx_lcdc_ops, s,
+-                          "pxa2xx-lcd-controller", 0x00100000);
 -    memory_region_add_subregion(sysmem, base, &s->iomem);
 -
--    vmstate_register(NULL, 0, &vmstate_pxa2xx_keypad, s);
+-    s->con = graphic_console_init(NULL, 0, &pxa2xx_ops, s);
+-
+-    vmstate_register(NULL, 0, &vmstate_pxa2xx_lcdc, s);
 -
 -    return s;
 -}
 -
--void pxa27x_register_keypad(PXA2xxKeyPadState *kp,
--                            const struct keymap *map, int size)
+-void pxa2xx_lcd_vsync_notifier(PXA2xxLCDState *s, qemu_irq handler)
 -{
--    if(!map || size < 0x80) {
--        fprintf(stderr, "%s - No PXA keypad map defined\n", __func__);
--        exit(-1);
--    }
--
--    kp->map = map;
--    qemu_add_kbd_event_handler((QEMUPutKBDEvent *) pxa27x_keyboard_event, kp);
+-    s->vsync_cb = handler;
 -}
-diff --git a/hw/input/meson.build b/hw/input/meson.build
-index 07a28c2c01c..fe60b6e28fc 100644
---- a/hw/input/meson.build
-+++ b/hw/input/meson.build
-@@ -11,6 +11,5 @@ system_ss.add(when: 'CONFIG_VIRTIO_INPUT', if_true: files('virtio-input.c'))
- system_ss.add(when: 'CONFIG_VIRTIO_INPUT', if_true: files('virtio-input-hid.c'))
- system_ss.add(when: 'CONFIG_VIRTIO_INPUT_HOST', if_true: files('virtio-input-host.c'))
+diff --git a/hw/display/meson.build b/hw/display/meson.build
+index dabc0d1da6b..1f965a1be84 100644
+--- a/hw/display/meson.build
++++ b/hw/display/meson.build
+@@ -27,7 +27,6 @@ system_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4210_fimd.c'))
+ system_ss.add(when: 'CONFIG_FRAMEBUFFER', if_true: files('framebuffer.c'))
  
--system_ss.add(when: 'CONFIG_PXA2XX', if_true: files('pxa2xx_keypad.c'))
- system_ss.add(when: 'CONFIG_TSC210X', if_true: files('tsc210x.c'))
- system_ss.add(when: 'CONFIG_LASIPS2', if_true: files('lasips2.c'))
+ system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_dss.c'))
+-system_ss.add(when: 'CONFIG_PXA2XX', if_true: files('pxa2xx_lcd.c'))
+ system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_fb.c'))
+ system_ss.add(when: 'CONFIG_SM501', if_true: files('sm501.c'))
+ system_ss.add(when: 'CONFIG_TCX', if_true: files('tcx.c'))
 -- 
 2.34.1
 
