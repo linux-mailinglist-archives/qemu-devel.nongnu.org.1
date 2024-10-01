@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D76898C0BC
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E1498C0BF
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:52:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sveAY-0003Za-RZ; Tue, 01 Oct 2024 10:48:06 -0400
+	id 1sveAl-000410-DJ; Tue, 01 Oct 2024 10:48:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab@kernel.org>)
- id 1sveAB-00035f-Dw; Tue, 01 Oct 2024 10:47:43 -0400
+ id 1sveAB-000354-6L; Tue, 01 Oct 2024 10:47:43 -0400
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab@kernel.org>)
- id 1sveA9-0004XW-5y; Tue, 01 Oct 2024 10:47:43 -0400
+ id 1sveA9-0004XY-5h; Tue, 01 Oct 2024 10:47:42 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 68B075C105B;
+ by dfw.source.kernel.org (Postfix) with ESMTP id C86625C5460;
  Tue,  1 Oct 2024 07:04:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3B5C4CECF;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FC0C4CECE;
  Tue,  1 Oct 2024 07:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1727766251;
- bh=OPn+v+8+BveQRdEyioQUgXVoI5BFnHOQMXslK4VQRmM=;
+ bh=EJVWpswAKBYpia55XxrfUeFsgJFUVC4eU7FXqYotZ8s=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=nX6vCR5Ry8sK/PUt1JzItEvx062H3XhEucp8Rhka53c8x/0JqWIT0p380FeK3XL4E
- XkAKf1Blro7LrHPrnnqrsfDhhl1VNoesmb0VaT1+Eulwb1QDnrm6Ye3N7GItVRu5//
- gnJPs2kh2+Oe62QjUNpu6TNn0n0w2HidemsIEhey2Mpwa9pMLuuoMqY7I7uRlF3jL9
- Mg6rjW1khLrmC6kvCLrav/WgHdTIq1+ed29jDGlwAmSlw6yytDznnvYYg2e9edFoR2
- +WgpkpdjTNYOUBh6Sj36+ZEnb8jQ/1VryyhkN3tIcIpqO0k57OSJpRdrvzA1MBipW0
- gczzKdU5vfU8Q==
+ b=lbdEIOSHXyxJBttsD0hhLCe1RusKtnmHmQWlTOIgxddLpLsFEsqpcbEpB73I602zd
+ GwP0gijk7IYDGWRLIrvPtxOXCYvZDPAMNOT5XwR6W12DuRxgFatuHZaedPHt2bKpFK
+ jfXRFt8xAFKRysku8opfATzqaocQXoGIXWMOSYIsXob6tXdgmd+JkOWsWiYGJRKin4
+ lza3R/CGU2XC/+2MdboJbLC9cXS2WJ0LbjTM3FISoMD7i0OCF6t4wttvzh2nKJkwxh
+ ATOmJAN+x8zZh1SCA7t+bkznmQWQe2rnkvDZNbi7VaZNseRG5I3cFxWZyhGUOhP25/
+ nKpLOxus0fK1A==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
- (envelope-from <mchehab@kernel.org>) id 1svWvY-00000001V0l-2CWy;
+ (envelope-from <mchehab@kernel.org>) id 1svWvY-00000001V0o-2NKo;
  Tue, 01 Oct 2024 09:04:08 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>
@@ -41,9 +41,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
  Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
  qemu-arm@nongnu.org, qemu-devel@nongnu.org,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 06/15] acpi/ghes: Remove a duplicated out of bounds check
-Date: Tue,  1 Oct 2024 09:03:43 +0200
-Message-ID: <ccb2123649c35e0a268b9745e9b295c8208e92bd.1727766088.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v2 07/15] acpi/ghes: Change the type for source_id
+Date: Tue,  1 Oct 2024 09:03:44 +0200
+Message-ID: <4149830f15bcad19f6e32981754d437493f3aeba.1727766088.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <cover.1727766088.git.mchehab+huawei@kernel.org>
 References: <cover.1727766088.git.mchehab+huawei@kernel.org>
@@ -73,32 +73,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-acpi_ghes_record_errors() has an assert() at the beginning
-to ensure that source_id will be lower than
-ACPI_GHES_ERROR_SOURCE_COUNT. Remove a duplicated check.
+HEST source ID is actually a 16-bit value
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- hw/acpi/ghes.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/acpi/ghes-stub.c    | 2 +-
+ hw/acpi/ghes.c         | 2 +-
+ include/hw/acpi/ghes.h | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/hw/acpi/ghes-stub.c b/hw/acpi/ghes-stub.c
+index c315de1802d6..2b64cbd2819a 100644
+--- a/hw/acpi/ghes-stub.c
++++ b/hw/acpi/ghes-stub.c
+@@ -11,7 +11,7 @@
+ #include "qemu/osdep.h"
+ #include "hw/acpi/ghes.h"
+ 
+-int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
++int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+ {
+     return -1;
+ }
 diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-index 29cd7e4d8171..5f67322bf0f2 100644
+index 5f67322bf0f2..edc74c38bf8a 100644
 --- a/hw/acpi/ghes.c
 +++ b/hw/acpi/ghes.c
-@@ -404,9 +404,7 @@ int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
-         return -1;
-     }
+@@ -383,7 +383,7 @@ void acpi_ghes_add_fw_cfg(AcpiGhesState *ags, FWCfgState *s,
+     ags->present = true;
+ }
  
--    if (source_id < ACPI_GHES_ERROR_SOURCE_COUNT) {
--        start_addr += source_id * sizeof(uint64_t);
--    }
-+    start_addr += source_id * sizeof(uint64_t);
+-int acpi_ghes_record_errors(uint8_t source_id, uint64_t physical_address)
++int acpi_ghes_record_errors(uint16_t source_id, uint64_t physical_address)
+ {
+     uint64_t error_block_addr, read_ack_register_addr, read_ack_register = 0;
+     uint64_t start_addr;
+diff --git a/include/hw/acpi/ghes.h b/include/hw/acpi/ghes.h
+index 50e3a25ea384..9295e46be25e 100644
+--- a/include/hw/acpi/ghes.h
++++ b/include/hw/acpi/ghes.h
+@@ -73,7 +73,7 @@ void acpi_build_hest(GArray *table_data, GArray *hardware_errors,
+                      const char *oem_id, const char *oem_table_id);
+ void acpi_ghes_add_fw_cfg(AcpiGhesState *vms, FWCfgState *s,
+                           GArray *hardware_errors);
+-int acpi_ghes_record_errors(uint8_t source_id, uint64_t error_physical_addr);
++int acpi_ghes_record_errors(uint16_t source_id, uint64_t error_physical_addr);
  
-     cpu_physical_memory_read(start_addr, &error_block_addr,
-                              sizeof(error_block_addr));
+ /**
+  * acpi_ghes_present: Report whether ACPI GHES table is present
 -- 
 2.46.0
 
