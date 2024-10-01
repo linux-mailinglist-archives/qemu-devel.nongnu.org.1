@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F5D98C3E2
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDEB98C3B7
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:44:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svfuT-0005O3-5b; Tue, 01 Oct 2024 12:39:37 -0400
+	id 1svfuU-0005Rw-Vy; Tue, 01 Oct 2024 12:39:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuP-0005Lv-7S
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:33 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1svfuQ-0005Mi-19
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:34 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuM-00062V-IB
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:32 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-37cfa129074so329719f8f.1
+ id 1svfuM-00062b-Uh
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:33 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-37ccd50faafso3715544f8f.3
  for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1727800769; x=1728405569; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UWAHt89Llm0J4lLGHqjfGDFPlwsKF+8ZikfEYfZxuJ8=;
- b=pKz3O3ybKoTjFgdV293ZBP6j6Ocn/dkWUIVIFmELNYQr5CePrzg9kduxDE3mFsAaZ0
- yOXOIL6Zfa+girR4tP+e+Y3pMvlnjG27/aK2z/bYiLu8OfWNGK5JepnvzWzHm1H5Hoav
- lmES5AE0kQhXuldLwX9r5V1G1/s0df5Vy9HbStEotnv5tfiAdM9B+D/BGnPl/xbcq8yy
- 7bmG7TGyxlEX0nviF4y4Zgu2QmtMPa+M/Fo2FPWMNEEOxL5+8uC7VmWwwXy8s9vFlJJ5
- J32qkEWAeYVIx/uxJlAeI6YN6vYxzwROmlawNmZ+oEnqUvEp8Rwm28VTkETb80XSMGgO
- PNAw==
+ :reply-to; bh=HFx/GnAnRaknHxr+8cfa7m7LXk6D0SNwz0Fg7yuRYls=;
+ b=JWQZOgPGSCLtsadxW/LNtStce52wn3c6WCNiTMk5fSrrP763iipk4nbA3dvOL41G2w
+ Wlj7u3ws4WwwAAMe9Xk0QAaeFjKZMdz3mWFjUnIFeJEco4fdRVSM+0T4Jd6dnvuOiKHn
+ KgyeFBYFPX3HiwksceK3ekWNTvHfOnYdc+ozVbbbBw94gXyoPSLzYDBNwSP+TFGntxzD
+ Z4HbpLkulzPMAspt6Mb9ILYt+JVtIH8EsCIvgeyJ+Z7yHyhU5vaA9biknq/sRldUfj5L
+ I7xMFzLnZT95rgKYuFn0ttxOC+0sQLSRZTNJPLC9gtxqLxYTIWb+PsDbLzhG8nVTTqcW
+ IA3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1727800769; x=1728405569;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UWAHt89Llm0J4lLGHqjfGDFPlwsKF+8ZikfEYfZxuJ8=;
- b=hQjHvPC1cg1UWYr9V9ixBYtbI/icZw2DGnOshYFb8ciAAxs4Tn3uDFC5vTwjX8N29F
- 0Mq5Q42bBiD9I97aKRwXrbYu8nQscD6kTP4iX1OcOLJukYCn+mSEPi4u3qLaURmLCoph
- IIpxZVYfkzAgAGtDAR7lmubxQKsl2ukoeaApp7FFkqgpEQp/Z/Xo6Ik0kETv2lNMDmjl
- QB6JrTeW/PrehoCNpGqlpPR3Ks1O2VCnvbudy2xYWh/R61FwwUV/tjxdguCxZgLOpJN6
- qJzp5FX/UzuP/8cebeSXU3Mu8JEmfZJ76O9J6BIeREUfed5l29ac/OeAXsWjUFRNdP+E
- 1MIg==
-X-Gm-Message-State: AOJu0YxmICyx13wyzP8PzLdwl37+xvX7aIW8cd0BoKM1KyA9lfMGLpPx
- VHq3iRbMHbxMSv32q0THwEuBVOpmAu58dJ4P8riMg28flVfJugPhMshGbZkAf3iYp21+EyrVDkQ
- o
-X-Google-Smtp-Source: AGHT+IFfl2ltvV4PJl02rBtej8Eopzw3T35QlgzbBCrb1YTIPqKuWDUCtvfWU5fySv630d2Fm+P3Hw==
-X-Received: by 2002:a5d:5f4e:0:b0:374:c4c2:fc23 with SMTP id
- ffacd0b85a97d-37cfba182d9mr146538f8f.56.1727800768990; 
- Tue, 01 Oct 2024 09:39:28 -0700 (PDT)
+ bh=HFx/GnAnRaknHxr+8cfa7m7LXk6D0SNwz0Fg7yuRYls=;
+ b=L5Hs7AOL21UKFdg+XSgtqIgeFEwCywwIQf5EaFUAELLGV5uia4Pakw3XfWOTxHIZHO
+ STtuMaHT6/2qFrEka8MIYt2xTW+pNMrnKmMnBM3BBkhA/5PM5GQtmgRumU/saFO7XhrZ
+ qNwhv9JWa/bu2jvcnhQZI3RHaRaZ8Qu05lSpR8y1ibjigNfH1sJMRy9niYKvu0qNXQZN
+ B5SUvcVs6sM3SnD4R1+I2deuCGieVB4D6ItByr+W+4DHaAfAGFm6poDJ12S6aOVRT/w7
+ HMXHGuXe19LSxRTLn7o3H6iAJ0cS1FiJHL02VwNj3VDBy7u+HDPYan0u3WST/HdDg4tu
+ R+Fw==
+X-Gm-Message-State: AOJu0YzrN+oG7Bmo3k0621F4WPf/S1fCS35QJyEOLthURct3UGsDEtDE
+ L5nfuvX2V5B+niCbLaunFJgAxyhkWvJGeIN2tdEFSxSIrRYTT4SaipZFOmlIDRNFA82oWQEBKpQ
+ d
+X-Google-Smtp-Source: AGHT+IGGBgIRmU9BCbrzaOcMeuPxIzOfT6qmlXZzhMaIRfKJjtiKMl99TeVXTn5SYuSehUjjC00w4g==
+X-Received: by 2002:a05:6000:cd0:b0:374:c287:929b with SMTP id
+ ffacd0b85a97d-37cfb8b1895mr150709f8f.4.1727800769484; 
+ Tue, 01 Oct 2024 09:39:29 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.28
+ ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.29
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 09:39:28 -0700 (PDT)
+ Tue, 01 Oct 2024 09:39:29 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/54] hw/arm: Remove STRONGARM->PXA2XX dependency
-Date: Tue,  1 Oct 2024 17:38:41 +0100
-Message-Id: <20241001163918.1275441-18-peter.maydell@linaro.org>
+Subject: [PULL 18/54] hw/timer/pxa2xx_timer: Remove use of pxa.h header
+Date: Tue,  1 Oct 2024 17:38:42 +0100
+Message-Id: <20241001163918.1275441-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241001163918.1275441-1-peter.maydell@linaro.org>
 References: <20241001163918.1275441-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,72 +92,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the STRONGARM KConfig symbol pulls in PXA2XX. Since we've now
-removed all the true uses of PXA2XX, we'd like to remove the PXA2XX
-symbol too. To permit that, make STRONGARM directly select the things
-it truly depends on:
- * pxa25x-timer
- * SSI
+pxa2xx_timer includes pxa.h, but it doesn't actually make
+use of any of the #defines, function prototypes or structs
+defined there. Remove the unnecessary include (we will
+shortly be removing the whole header file).
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240903160751.4100218-14-peter.maydell@linaro.org
+Message-id: 20240903160751.4100218-15-peter.maydell@linaro.org
 ---
- hw/arm/Kconfig       | 4 +++-
- hw/timer/Kconfig     | 3 +++
- hw/timer/meson.build | 2 +-
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ hw/timer/pxa2xx_timer.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index c2452bd7b91..8f6cbf94855 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -175,6 +175,7 @@ config PXA2XX
-     select SSI
-     select USB_OHCI_SYSBUS
-     select PCMCIA
-+    select PXA2XX_TIMER
- 
- config REALVIEW
-     bool
-@@ -261,7 +262,8 @@ config STM32VLDISCOVERY
- 
- config STRONGARM
-     bool
--    select PXA2XX
-+    select PXA2XX_TIMER
-+    select SSI
- 
- config COLLIE
-     bool
-diff --git a/hw/timer/Kconfig b/hw/timer/Kconfig
-index 61fbb62b65c..c96fd5d97ae 100644
---- a/hw/timer/Kconfig
-+++ b/hw/timer/Kconfig
-@@ -21,6 +21,9 @@ config ALLWINNER_A10_PIT
-     bool
-     select PTIMER
- 
-+config PXA2XX_TIMER
-+    bool
-+
- config SIFIVE_PWM
-     bool
- 
-diff --git a/hw/timer/meson.build b/hw/timer/meson.build
-index 5b6c8b4be9e..c1113eb90b1 100644
---- a/hw/timer/meson.build
-+++ b/hw/timer/meson.build
-@@ -23,7 +23,7 @@ system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_timer.c'))
- system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_timer.c'))
- system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_gptimer.c'))
- system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_synctimer.c'))
--system_ss.add(when: 'CONFIG_PXA2XX', if_true: files('pxa2xx_timer.c'))
-+system_ss.add(when: 'CONFIG_PXA2XX_TIMER', if_true: files('pxa2xx_timer.c'))
- system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_systmr.c'))
- system_ss.add(when: 'CONFIG_SH_TIMER', if_true: files('sh_timer.c'))
- system_ss.add(when: 'CONFIG_SLAVIO', if_true: files('slavio_timer.c'))
+diff --git a/hw/timer/pxa2xx_timer.c b/hw/timer/pxa2xx_timer.c
+index 6479ab1a8b3..d1a3ecac2b5 100644
+--- a/hw/timer/pxa2xx_timer.c
++++ b/hw/timer/pxa2xx_timer.c
+@@ -12,7 +12,6 @@
+ #include "hw/qdev-properties.h"
+ #include "qemu/timer.h"
+ #include "sysemu/runstate.h"
+-#include "hw/arm/pxa.h"
+ #include "hw/sysbus.h"
+ #include "migration/vmstate.h"
+ #include "qemu/log.h"
 -- 
 2.34.1
 
