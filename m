@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A34A98C11A
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 17:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D0E98C15C
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 17:16:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sveSy-0001eG-NL; Tue, 01 Oct 2024 11:07:08 -0400
+	id 1sveao-0005sF-Kh; Tue, 01 Oct 2024 11:15:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sveSs-0001Xa-Bt
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:07:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1sveam-0005rk-N3
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:15:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sveSo-0001N3-SQ
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:07:01 -0400
+ (Exim 4.90_1) (envelope-from <mvogt@redhat.com>) id 1sveag-00030l-Il
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 11:15:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727795213;
+ s=mimecast20190719; t=1727795705;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hEH3qBVYTHP8CFwTdUPPeaUdYBeTi1xbeartC6vgI8o=;
- b=iF37eSv7SdUUqwQDfs+qBSXHbBtejUis+0Wg7NdGOBUjiYN1tPL6cco4LRjKrrn8Gq3G3D
- fUJ2pyX7cSCwueTHid21ZTNP68NWhysabt96TmmiWqT82p8SZ9nBqekhBYRjoWbZva0F4j
- DGqk6Vthww/wG65sZLpCj52R5PFl6vE=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Ct0DP631aMHKPh1GV9JBtCpwCw8dhuxw3vRy4mMX34U=;
+ b=DypcPCj4jXwYsP0BYk45yZJynq9gvq+hmJ2sO4405hmAf+xAaPxdvT2zm64n3/gQv+m7O5
+ PM+R+LX+yVUXz1EMYTYJ0cCfSmD2jEV+jvCR6QuclnztLgfPnFxboGg+e/ol/DF5KzzaBj
+ jTMUVgaXwGn4plvJ6mKGz2EouDT6gMw=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-9bmWCpynMIGBnT49eueoPA-1; Tue, 01 Oct 2024 11:06:51 -0400
-X-MC-Unique: 9bmWCpynMIGBnT49eueoPA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7a9a85e4a85so1281269485a.0
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 08:06:51 -0700 (PDT)
+ us-mta-526-EkJVVaraPhisGof1x5wnDQ-1; Tue, 01 Oct 2024 11:15:04 -0400
+X-MC-Unique: EkJVVaraPhisGof1x5wnDQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a8a84b60255so534019166b.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 08:15:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727795211; x=1728400011;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hEH3qBVYTHP8CFwTdUPPeaUdYBeTi1xbeartC6vgI8o=;
- b=gK0Wt9fdCKvB25ab7qbWKFrNGzW9T2dOo3+2QZPQKlqVGuzO3RcpLYYRi7y0nlw4qn
- rQR6bW2P5Uc+S+mX39/xF8uajtL80u9Nhyp2FUOb8kYNw663AYleVbSNhsK02G4vLJc9
- g4oZ0BrBwA1RhmCTOS84jM516W2DVzKBMKa78IRO3CnwVt6bvbaJoW/Fe/qQ4EnvgTvR
- ugSTusEunjn2ynciG+2jnWvosDrbmXPNq6xHhnqQjBxJyxBqzc2i4AFGX4qktM1j6aop
- JOhl3bPXFvDNKCa1THPj5Z1GP3eemoj6ZR3Q1aRQqo70xx6N72Q2iDF7oJ8cLpJ5GUBE
- IgdA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXBtw+ti4IrSCLImpWmo6aWQpYvuBW4D449Ww1iNwYCGR4BxBiBfv0zpAbYWlBNo9K3cYpAGlyIEdaw@nongnu.org
-X-Gm-Message-State: AOJu0YygMNmWMLfdpB6fNMlu32tEOCplQa9GWphQeu1x8qhOlV+lzJ1F
- hdlWlMua6FXQ1UIA1Em+xdz0V7QVClFuGgKPzs7d9qVDH3848v0Z7MK+CRtk6yqSMYQh62Unjlr
- y0BNuI4Cxr5aLKXEToOHofMdbK5nCMzKrtmNf/0Y20Z9RBY2AJIvr
-X-Received: by 2002:a05:620a:4624:b0:7a9:b9dc:1b72 with SMTP id
- af79cd13be357-7ae626c2947mr585585a.23.1727795211088; 
- Tue, 01 Oct 2024 08:06:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGh2srrZOw47ZH9X2y/DYSL84I+bUz8CGmxoq4lAyO+S7r2RmU7mGEjfUExjhmKahlztD+CoQ==
-X-Received: by 2002:a05:620a:4624:b0:7a9:b9dc:1b72 with SMTP id
- af79cd13be357-7ae626c2947mr580685a.23.1727795210580; 
- Tue, 01 Oct 2024 08:06:50 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7ae3783d086sm510953885a.107.2024.10.01.08.06.49
+ d=1e100.net; s=20230601; t=1727795703; x=1728400503;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ct0DP631aMHKPh1GV9JBtCpwCw8dhuxw3vRy4mMX34U=;
+ b=ldAqpH5WO4azXmZyt8lBeiZIzMmJDbh/bNwKl1JauZBXTrn72RufeT4PsWJlx2+Twq
+ 5Uc67SbBSQ2BHrkyEqQEAZ772wdgAD+Gq36BAQm6qq2N27jmuAB4V0GfT6ANwDItNi88
+ Sv9CK+hKX7wgwIuikND7fBaiu5mWpEuCVrSijrFohEIbPYuTxPIaxUr3XPNoQYTawVVG
+ NjoW8qhiSafu17VUsku2BNgZbpGR5b7z3A7ctZZHSGC9mLN7b9TWyRbR1mDyDkmzWOFc
+ mUjk3orptkG/7keyLvQNnUf5FnmiGMRa1twM8FBSlt4/ohsxAzR9a/rNZIFlDUn19vRR
+ 8rug==
+X-Gm-Message-State: AOJu0YwEFPUrXoc2tkiTu8aTC6UCMQ/gQbQH0v9lf+a58YbaIhrYmiZN
+ QxY2TYyBRepuBuRWN1IYEqPPNm2VEJklOfBizs0ERWCNzTE7I/e5nfJeAqHHS+uS2NjaxEX08mj
+ zAWOhh7lBGkqrz40qjjkZ5C8t4JW7zhXZn9dUPFXuHojnHuUJ0LxzUXcR83q6QPSrBNoWy57dZc
+ uKnr8pUE9HuhJDvl15orvQOqktu+cSwoNi
+X-Received: by 2002:a17:907:9444:b0:a8f:f799:e7db with SMTP id
+ a640c23a62f3a-a93c49180a3mr1935238866b.16.1727795702715; 
+ Tue, 01 Oct 2024 08:15:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IERBLVHpdAJtbOpfeBp8EwUos3Fcp/eVE3nGpGxgHV89fk3GArQzCHma2e46uRpO19NEumRxQ==
+X-Received: by 2002:a17:907:9444:b0:a8f:f799:e7db with SMTP id
+ a640c23a62f3a-a93c49180a3mr1935234366b.16.1727795702213; 
+ Tue, 01 Oct 2024 08:15:02 -0700 (PDT)
+Received: from top.fritz.box (p4fdf9fd8.dip0.t-ipconnect.de. [79.223.159.216])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a93c2775d23sm732438166b.4.2024.10.01.08.15.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 08:06:50 -0700 (PDT)
-Date: Tue, 1 Oct 2024 11:06:47 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Jiang Jiacheng <jiangjiacheng@huawei.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- Prasad Pandit <ppandit@redhat.com>,
- Julia Suvorova <jusual@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Juraj Marcin <jmarcin@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>,
- Jiang Jiacheng <jiangjiacheng@huawei.com>
-Subject: Re: [PATCH 0/7] migration: query-migrationthreads enhancements and
- cleanups
-Message-ID: <ZvwQB1Calv407MH0@x1n>
-References: <20240930195837.825728-1-peterx@redhat.com>
- <87o744e5pa.fsf@pond.sub.org> <ZvwGSgDnW8KfgFEh@redhat.com>
+ Tue, 01 Oct 2024 08:15:01 -0700 (PDT)
+From: Michael Vogt <mvogt@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Michael Vogt <michael.vogt@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Michael Vogt <mvogt@redhat.com>
+Subject: [PATCH v9 0/2] linux-user: add openat2 support in linux-user
+Date: Tue,  1 Oct 2024 17:14:52 +0200
+Message-ID: <cover.1727795334.git.mvogt@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZvwGSgDnW8KfgFEh@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mvogt@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -108,52 +97,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 01, 2024 at 03:25:14PM +0100, Daniel P. Berrangé wrote:
-> On Tue, Oct 01, 2024 at 07:46:09AM +0200, Markus Armbruster wrote:
-> > Command query-migrationthreads went in without a QAPI ACK.  Issues
-> > review should have caught:
-> > 
-> > * Flawed documentation.  Fixed in commit e6c60bf02d1.
-> > 
-> > * It should have been spelled query-migration-threads.  Not worth fixing
-> >   now, I guess.
-> > 
-> > * What are the use cases?  The commit message doesn't tell!  If it's
-> >   just for debugging, the command should be marked unstable.
-> 
-> It is hard to use too.
-> 
-> Lets say a mgmt app wants to restrict migration threads to some
-> certain pCPUs. It can't call query-migrationthreads beforehand
-> as the threads don't exist until migration is started. If it
-> calls after migration is started, then there's a window where
-> threads are running on arbitrary pCPUs that QEMU has access
-> to. There's no synchronization point where threads have been
-> created & can be queried, but are not yet sending data (and
-> thus burning CPU time)
+This is v9 of the openat2 support in linux-user. Thanks to Laurent for
+spotting another missing tswap64() in v8 (and my appologies that I
+overlooked this).
 
-Indeed, I suppose tricks needed if to work with such model, e.g., mgmt
-needs to turn bw=0, start migration, query TIDs, then restore bw.
 
-However that still lacks at least the dest multifd threads, as currently it
-only reports src multifd threads TIDs.  I don't see why a serious mgmt
-would like to pin and care only src threads, not dest threads, which can
-also eat as much (or even more) pCPU resources.
-
-For real debugging purpose, I actually don't see a major value out of it
-either, because GDB can provide all information that this API wants to
-provide, and only better with thread stacks if we want.
-
-Since I don't see how this can be used right, it didn't get proper QAPI
-reviews, and further I highly suspect whether this API is consumed by
-anyone at all.. in any serious way.  Shall we remove this API (with/without
-going through the deprecation process)?
-
-I added the author Jiacheng too.
+Looking forward to your feedback/ideas!
 
 Thanks,
+ Michael
+
+v8 -> v9
+- use "tswap64()" in strace.c for how.{flags,mode,resolve}
+
+v7 -> v8
+- use "tswap64(how.flags)" in do_openat2()
+- drop printing "size=" from strace.c
+
+v6 -> v7
+- use abi_ulong in guest_size
+- use TARGET_ABI_FMT_lu to format guest size in qemu_log_mask()
+- drop #ifdef for TARGET_NR_openat2
+- fix LTP test by checking for RESOLVE_NO_{MAGIC,SYM}LINKS in
+  maybe_do_fake_open()
+- add support for openat2 in strace.c
+- add copy_struct_from_user definition to qemu.h
+- add open_how_v0 to syscall_defs.h
+
+v5 -> v6
+- do not use get_errno(fd) in do_guest_openat()
+- do not put declarations in the middle of the code
+- do not return early in do_openat2() when we get a faked file
+
+v4 -> v5
+- drop "*use_returned_fd" from maybe_do_fake_open() and use return value
+  -2 to signal to the caller to continue
+- keep "pathname" in parameter to do_guest_openat() for a cleaner diff
+- fix two missing get_errno(fd)
+
+v3 -> v4:
+- fix typos in the commit message
+
+v2 -> v3:
+- fix coding style (braches)
+- improve argument args/naming in do_openat2()
+- merge do_openat2/do_guest_openat2
+- do size checks first in do_openat2
+- add "copy_struct_from_user" and use in "do_openat2()"
+- drop using openat2.h and create "struct open_how_v0"
+- log if open_how guest struct is bigger than our supported struct
+
+v1 -> v2:
+- do not include <sys/syscall.h>
+- drop do_guest_openat2 from qemu.h and make static
+- drop "safe" from do_guest_openat2
+- ensure maybe_do_fake_open() is correct about when the result should
+  be used or not
+- Extract do_openat2() helper from do_syscall1()
+- Call user_unlock* if a lock call fails
+- Fix silly incorrect use of "target_open_how" when "open_how" is required
+- Fix coding style comments
+- Fix validation of arg4 in openat2
+- Fix missing zero initialization of open_how
+- Define target_open_how with abi_* types
+- Warn about unimplemented size if "size" of openat2 is bigger than
+  target_open_how
+
+Michael Vogt (2):
+  linux-user: add openat2 support in linux-user
+  linux-user: add strace support for openat2
+
+ linux-user/qemu.h         |  9 ++++
+ linux-user/strace.c       | 44 +++++++++++++++++
+ linux-user/strace.list    |  3 ++
+ linux-user/syscall.c      | 99 ++++++++++++++++++++++++++++++++++++++-
+ linux-user/syscall_defs.h | 18 +++++++
+ meson.build               |  1 +
+ 6 files changed, 172 insertions(+), 2 deletions(-)
 
 -- 
-Peter Xu
+2.45.2
 
 
