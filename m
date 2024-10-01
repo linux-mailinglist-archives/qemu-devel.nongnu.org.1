@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFF8898C3C1
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BBBF98C392
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:41:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svfuU-0005OO-3u; Tue, 01 Oct 2024 12:39:38 -0400
+	id 1svfuW-0005V7-4F; Tue, 01 Oct 2024 12:39:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuP-0005MW-Sp
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:33 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1svfuR-0005N9-6x
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:35 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuL-00062A-Mw
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:33 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-37cd26c6dd1so4460336f8f.3
+ id 1svfuN-00062O-5Z
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:34 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-42cde6b5094so50880195e9.3
  for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727800768; x=1728405568; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727800769; x=1728405569; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IsPZhNIFegAxCcZG/FTVhI93D91jlaEziq4+P1vw8sA=;
- b=cQirRuScTAlTCRF0oXLSPcA6YWbsHjWxSQ19PqbM8Ltpti6lMRktr9fGIIKEXDYOQm
- OWdg8F1RH6Dc8KmgA2ICzWvegmQeXihAPwafnO0JGxEsSgpGPdNQrADSN601RzqIxbtq
- yDlBLzfe2dbBEpRu+9nwURGmNp+zjVmUEs4054X2A4d94PU0V3KthqGgvRjrxQYspJLb
- Cli6PwAgW9Unslf5eWiZ038eJgj0qBBWT79vQHtDgjaURm90SBz1xCKRWL1vzRtryFX+
- 7IX4Imk1MFxAzTj8vpnNjwTR0Munsdw88tA6WqI74lDV1X0oxcQlRPz02T0aPRaPDUZ+
- XwiQ==
+ :reply-to; bh=HKjTYJEFohV6R02I73k2NBtlUyQevnIYWn72eDo26Sw=;
+ b=Ewyt6hKzPJZ9GdYp/W/AXQQqqhB0DLuiJQxj/IGCUKrRRLY4EptK586o/yaSuvh9tl
+ GqRCmzPr6Cf6QUxWeDDdj8n+FENX5gbfe8zy12DuTL5vQ3pVSnjA/eR5JPBp/NMghhHw
+ FAjlXAYTDYx7ukwvahT2/f/mme9C2DyQ8mB81xXhF65Z9l2B7Uxn9Fbx6/XI4KJ4OgiH
+ JxRWuGAy0nRmb9zyCx1Q0Rys45LrOEgItW9av9m8FLt/cWDVZY8LfhvGaS2F4g85W6Np
+ a94W4CZJRHfUBOLI09DEuNpbHmZs0C9rpn6HcUvcVQlzSrYYMBHqhTH82aBhbp6Qi8G/
+ +uKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727800768; x=1728405568;
+ d=1e100.net; s=20230601; t=1727800769; x=1728405569;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IsPZhNIFegAxCcZG/FTVhI93D91jlaEziq4+P1vw8sA=;
- b=bNP7iKzIfOtcEeNLJruSZJy9htey6LomYpC/Ix5kQluZbCex4rakNgFU21xpTMFl5s
- G8Z1Lv8fWPLP5LJ1sW2gX5Olqgt1HZXxpYakE4Pc6G8HguEcZNECvuoEV5XypoRyfYSg
- tmaVztuz7DiPP0xf0rCNWnt9VdcHVvnDU/FUASbEFALlDsdwVyIy0FkudL0/TpNwj2dx
- xCMRPMHw43yDdBnIvF6JOxuLTHeRq47jmv6gRz/cZfJJBElcW0+Fq3gaqc6QDIcoQx0s
- dj6EC9osr4dsg7Sc6jQlCJyTbS7wT85XSGkzThVIyYqanCq898wSJE8dxlX2R/HcW4l/
- vSPg==
-X-Gm-Message-State: AOJu0Yz74ha++i/2eodfhE/wtp0cPiLz5qNorg4W8Yp/KUjr812kEPYq
- 9DLlUaHviCVwJDX3vkyMCoeuNB5sK+pM6HRFHOmtY9dWIAvS38+RLngWKnERZYl2cF3N+6bLs5i
- j
-X-Google-Smtp-Source: AGHT+IGJQbcjnHcLxPoYl9FKaDwtJ8Y8tEqaUbX2RvXuxIgi6TRCR+clx8PwEyqOjSjqlm7yC6gHkw==
-X-Received: by 2002:adf:e8d2:0:b0:374:c11c:c5ca with SMTP id
- ffacd0b85a97d-37cfba0a75dmr142013f8f.46.1727800768046; 
+ bh=HKjTYJEFohV6R02I73k2NBtlUyQevnIYWn72eDo26Sw=;
+ b=rjkTt0SXGnaGi6xQ6/++EIyU2I0wwcQPA6fhNrvCr0F8unTdARrwkB6ioJ+zRfKfzm
+ B3ANu4AsI230h/D6vPzdb4aSjyTtzC7MXg2bR/6RW7NqzkJ5AOem6SPPJzmUBHqpoqJ1
+ vJOWxKCQEBzXnV2U6MdTENieEcFfZWgaMBJmgM+CoJCjtto6gvd6qWyA0+uR+lowrdkc
+ hVAf4c0TBqhUq9QFUZNKF07rJoDUsd0ht44Or1tp5rgbXbjPyOoiL4wXro01Dm39kvIc
+ PVXfRmRvxvoqusNdIr0ogUp56OpMuY1Zw7zsqD+bnDpsQKn7sCnRDywPlV0YmEBvopf+
+ aAJQ==
+X-Gm-Message-State: AOJu0YwbH1/G7jIzxow++gEKkKf8NNhMEONrWGSDckBNs902IFmh/E1G
+ R0q2xs4eB0K1HthnfV24q89C48iOSpeTl2vul890M6gKB3u2iHAw8/YnZDBbAs7H9Ng+5/0JegS
+ o
+X-Google-Smtp-Source: AGHT+IEbqapQqQYIWnQGyveuOLeh5ZPUl9ocqiEsXPhwhrGs3r/Z0OYCkDoXXDXl+jIYjqGbAMeB4g==
+X-Received: by 2002:a05:600c:1c98:b0:42c:bb41:a079 with SMTP id
+ 5b1f17b1804b1-42f777b631bmr1041235e9.1.1727800768545; 
  Tue, 01 Oct 2024 09:39:28 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.27
+ ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.28
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 09:39:27 -0700 (PDT)
+ Tue, 01 Oct 2024 09:39:28 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/54] hw/misc: Remove MAINSTONE_FPGA device
-Date: Tue,  1 Oct 2024 17:38:39 +0100
-Message-Id: <20241001163918.1275441-16-peter.maydell@linaro.org>
+Subject: [PULL 16/54] hw/arm: Remove 'z2' machine
+Date: Tue,  1 Oct 2024 17:38:40 +0100
+Message-Id: <20241001163918.1275441-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241001163918.1275441-1-peter.maydell@linaro.org>
 References: <20241001163918.1275441-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,43 +92,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MAINSTONE_FPGA device was used only by the 'mainstone' machine
-type, so we can remove it now.
+The 'z2' machine was deprecated in 9.0, so we can remove it for
+9.2.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240903160751.4100218-12-peter.maydell@linaro.org
+Message-id: 20240903160751.4100218-13-peter.maydell@linaro.org
 ---
- MAINTAINERS         |   1 -
- hw/misc/mst_fpga.c  | 269 --------------------------------------------
- hw/misc/meson.build |   1 -
- 3 files changed, 271 deletions(-)
- delete mode 100644 hw/misc/mst_fpga.c
+ MAINTAINERS                             |   1 -
+ configs/devices/arm-softmmu/default.mak |   1 -
+ hw/arm/z2.c                             | 355 ------------------------
+ hw/arm/Kconfig                          |   9 -
+ hw/arm/meson.build                      |   1 -
+ 5 files changed, 367 deletions(-)
+ delete mode 100644 hw/arm/z2.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 8d7f7b32701..d9dd257843b 100644
+index d9dd257843b..eb27bbdfd01 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -920,7 +920,6 @@ S: Odd Fixes
- F: hw/arm/z2.c
+@@ -917,7 +917,6 @@ PXA2XX
+ M: Peter Maydell <peter.maydell@linaro.org>
+ L: qemu-arm@nongnu.org
+ S: Odd Fixes
+-F: hw/arm/z2.c
  F: hw/*/pxa2xx*
  F: hw/gpio/max7310.c
--F: hw/misc/mst_fpga.c
  F: hw/adc/max111x.c
- F: include/hw/adc/max111x.h
- F: include/hw/arm/pxa.h
-diff --git a/hw/misc/mst_fpga.c b/hw/misc/mst_fpga.c
+diff --git a/configs/devices/arm-softmmu/default.mak b/configs/devices/arm-softmmu/default.mak
+index 547100a06f3..260b0cf9772 100644
+--- a/configs/devices/arm-softmmu/default.mak
++++ b/configs/devices/arm-softmmu/default.mak
+@@ -27,7 +27,6 @@
+ # CONFIG_VERSATILE=n
+ # CONFIG_VEXPRESS=n
+ # CONFIG_ZYNQ=n
+-# CONFIG_Z2=n
+ # CONFIG_NPCM7XX=n
+ # CONFIG_COLLIE=n
+ # CONFIG_ASPEED_SOC=n
+diff --git a/hw/arm/z2.c b/hw/arm/z2.c
 deleted file mode 100644
-index 2d7bfa5ad9e..00000000000
---- a/hw/misc/mst_fpga.c
+index fc5672e7ab2..00000000000
+--- a/hw/arm/z2.c
 +++ /dev/null
-@@ -1,269 +0,0 @@
+@@ -1,355 +0,0 @@
 -/*
-- * PXA270-based Intel Mainstone platforms.
-- * FPGA driver
+- * PXA270-based Zipit Z2 device
 - *
-- * Copyright (c) 2007 by Armin Kuster <akuster@kama-aina.net> or
-- *                                    <akuster@mvista.com>
+- * Copyright (c) 2011 by Vasily Khoruzhick <anarsoul@gmail.com>
+- *
+- * Code is based on mainstone platform.
 - *
 - * This code is licensed under the GNU GPL v2.
 - *
@@ -137,273 +151,378 @@ index 2d7bfa5ad9e..00000000000
 - */
 -
 -#include "qemu/osdep.h"
+-#include "qemu/units.h"
+-#include "hw/arm/pxa.h"
+-#include "hw/arm/boot.h"
+-#include "hw/i2c/i2c.h"
 -#include "hw/irq.h"
--#include "hw/sysbus.h"
+-#include "hw/ssi/ssi.h"
 -#include "migration/vmstate.h"
--#include "qemu/module.h"
+-#include "hw/boards.h"
+-#include "hw/block/flash.h"
+-#include "ui/console.h"
+-#include "hw/audio/wm8750.h"
+-#include "audio/audio.h"
+-#include "exec/address-spaces.h"
 -#include "qom/object.h"
+-#include "qapi/error.h"
+-#include "trace.h"
 -
--/* Mainstone FPGA for extern irqs */
--#define FPGA_GPIO_PIN	0
--#define MST_NUM_IRQS	16
--#define MST_LEDDAT1		0x10
--#define MST_LEDDAT2		0x14
--#define MST_LEDCTRL		0x40
--#define MST_GPSWR		0x60
--#define MST_MSCWR1		0x80
--#define MST_MSCWR2		0x84
--#define MST_MSCWR3		0x88
--#define MST_MSCRD		0x90
--#define MST_INTMSKENA	0xc0
--#define MST_INTSETCLR	0xd0
--#define MST_PCMCIA0		0xe0
--#define MST_PCMCIA1		0xe4
--
--#define MST_PCMCIAx_READY	(1 << 10)
--#define MST_PCMCIAx_nCD		(1 << 5)
--
--#define MST_PCMCIA_CD0_IRQ	9
--#define MST_PCMCIA_CD1_IRQ	13
--
--#define TYPE_MAINSTONE_FPGA "mainstone-fpga"
--OBJECT_DECLARE_SIMPLE_TYPE(mst_irq_state, MAINSTONE_FPGA)
--
--struct mst_irq_state {
--    SysBusDevice parent_obj;
--
--    MemoryRegion iomem;
--
--    qemu_irq parent;
--
--    uint32_t prev_level;
--    uint32_t leddat1;
--    uint32_t leddat2;
--    uint32_t ledctrl;
--    uint32_t gpswr;
--    uint32_t mscwr1;
--    uint32_t mscwr2;
--    uint32_t mscwr3;
--    uint32_t mscrd;
--    uint32_t intmskena;
--    uint32_t intsetclr;
--    uint32_t pcmcia0;
--    uint32_t pcmcia1;
+-static const struct keymap map[0x100] = {
+-    [0 ... 0xff] = { -1, -1 },
+-    [0x3b] = {0, 0}, /* Option = F1 */
+-    [0xc8] = {0, 1}, /* Up */
+-    [0xd0] = {0, 2}, /* Down */
+-    [0xcb] = {0, 3}, /* Left */
+-    [0xcd] = {0, 4}, /* Right */
+-    [0xcf] = {0, 5}, /* End */
+-    [0x0d] = {0, 6}, /* KPPLUS */
+-    [0xc7] = {1, 0}, /* Home */
+-    [0x10] = {1, 1}, /* Q */
+-    [0x17] = {1, 2}, /* I */
+-    [0x22] = {1, 3}, /* G */
+-    [0x2d] = {1, 4}, /* X */
+-    [0x1c] = {1, 5}, /* Enter */
+-    [0x0c] = {1, 6}, /* KPMINUS */
+-    [0xc9] = {2, 0}, /* PageUp */
+-    [0x11] = {2, 1}, /* W */
+-    [0x18] = {2, 2}, /* O */
+-    [0x23] = {2, 3}, /* H */
+-    [0x2e] = {2, 4}, /* C */
+-    [0x38] = {2, 5}, /* LeftAlt */
+-    [0xd1] = {3, 0}, /* PageDown */
+-    [0x12] = {3, 1}, /* E */
+-    [0x19] = {3, 2}, /* P */
+-    [0x24] = {3, 3}, /* J */
+-    [0x2f] = {3, 4}, /* V */
+-    [0x2a] = {3, 5}, /* LeftShift */
+-    [0x01] = {4, 0}, /* Esc */
+-    [0x13] = {4, 1}, /* R */
+-    [0x1e] = {4, 2}, /* A */
+-    [0x25] = {4, 3}, /* K */
+-    [0x30] = {4, 4}, /* B */
+-    [0x1d] = {4, 5}, /* LeftCtrl */
+-    [0x0f] = {5, 0}, /* Tab */
+-    [0x14] = {5, 1}, /* T */
+-    [0x1f] = {5, 2}, /* S */
+-    [0x26] = {5, 3}, /* L */
+-    [0x31] = {5, 4}, /* N */
+-    [0x39] = {5, 5}, /* Space */
+-    [0x3c] = {6, 0}, /* Stop = F2 */
+-    [0x15] = {6, 1}, /* Y */
+-    [0x20] = {6, 2}, /* D */
+-    [0x0e] = {6, 3}, /* Backspace */
+-    [0x32] = {6, 4}, /* M */
+-    [0x33] = {6, 5}, /* Comma */
+-    [0x3d] = {7, 0}, /* Play = F3 */
+-    [0x16] = {7, 1}, /* U */
+-    [0x21] = {7, 2}, /* F */
+-    [0x2c] = {7, 3}, /* Z */
+-    [0x27] = {7, 4}, /* Semicolon */
+-    [0x34] = {7, 5}, /* Dot */
 -};
 -
--static void
--mst_fpga_set_irq(void *opaque, int irq, int level)
--{
--	mst_irq_state *s = (mst_irq_state *)opaque;
--	uint32_t oldint = s->intsetclr & s->intmskena;
+-#define Z2_RAM_SIZE     0x02000000
+-#define Z2_FLASH_BASE   0x00000000
+-#define Z2_FLASH_SIZE   0x00800000
 -
--	if (level)
--		s->prev_level |= 1u << irq;
--	else
--		s->prev_level &= ~(1u << irq);
--
--	switch(irq) {
--	case MST_PCMCIA_CD0_IRQ:
--		if (level)
--			s->pcmcia0 &= ~MST_PCMCIAx_nCD;
--		else
--			s->pcmcia0 |=  MST_PCMCIAx_nCD;
--		break;
--	case MST_PCMCIA_CD1_IRQ:
--		if (level)
--			s->pcmcia1 &= ~MST_PCMCIAx_nCD;
--		else
--			s->pcmcia1 |=  MST_PCMCIAx_nCD;
--		break;
--	}
--
--	if ((s->intmskena & (1u << irq)) && level)
--		s->intsetclr |= 1u << irq;
--
--	if (oldint != (s->intsetclr & s->intmskena))
--		qemu_set_irq(s->parent, s->intsetclr & s->intmskena);
--}
--
--
--static uint64_t
--mst_fpga_readb(void *opaque, hwaddr addr, unsigned size)
--{
--	mst_irq_state *s = (mst_irq_state *) opaque;
--
--	switch (addr) {
--	case MST_LEDDAT1:
--		return s->leddat1;
--	case MST_LEDDAT2:
--		return s->leddat2;
--	case MST_LEDCTRL:
--		return s->ledctrl;
--	case MST_GPSWR:
--		return s->gpswr;
--	case MST_MSCWR1:
--		return s->mscwr1;
--	case MST_MSCWR2:
--		return s->mscwr2;
--	case MST_MSCWR3:
--		return s->mscwr3;
--	case MST_MSCRD:
--		return s->mscrd;
--	case MST_INTMSKENA:
--		return s->intmskena;
--	case MST_INTSETCLR:
--		return s->intsetclr;
--	case MST_PCMCIA0:
--		return s->pcmcia0;
--	case MST_PCMCIA1:
--		return s->pcmcia1;
--	default:
--		printf("Mainstone - mst_fpga_readb: Bad register offset "
--			"0x" HWADDR_FMT_plx "\n", addr);
--	}
--	return 0;
--}
--
--static void
--mst_fpga_writeb(void *opaque, hwaddr addr, uint64_t value,
--		unsigned size)
--{
--	mst_irq_state *s = (mst_irq_state *) opaque;
--	value &= 0xffffffff;
--
--	switch (addr) {
--	case MST_LEDDAT1:
--		s->leddat1 = value;
--		break;
--	case MST_LEDDAT2:
--		s->leddat2 = value;
--		break;
--	case MST_LEDCTRL:
--		s->ledctrl = value;
--		break;
--	case MST_GPSWR:
--		s->gpswr = value;
--		break;
--	case MST_MSCWR1:
--		s->mscwr1 = value;
--		break;
--	case MST_MSCWR2:
--		s->mscwr2 = value;
--		break;
--	case MST_MSCWR3:
--		s->mscwr3 = value;
--		break;
--	case MST_MSCRD:
--		s->mscrd =  value;
--		break;
--	case MST_INTMSKENA:	/* Mask interrupt */
--		s->intmskena = (value & 0xFEEFF);
--		qemu_set_irq(s->parent, s->intsetclr & s->intmskena);
--		break;
--	case MST_INTSETCLR:	/* clear or set interrupt */
--		s->intsetclr = (value & 0xFEEFF);
--		qemu_set_irq(s->parent, s->intsetclr & s->intmskena);
--		break;
--		/* For PCMCIAx allow the to change only power and reset */
--	case MST_PCMCIA0:
--		s->pcmcia0 = (value & 0x1f) | (s->pcmcia0 & ~0x1f);
--		break;
--	case MST_PCMCIA1:
--		s->pcmcia1 = (value & 0x1f) | (s->pcmcia1 & ~0x1f);
--		break;
--	default:
--		printf("Mainstone - mst_fpga_writeb: Bad register offset "
--			"0x" HWADDR_FMT_plx "\n", addr);
--	}
--}
--
--static const MemoryRegionOps mst_fpga_ops = {
--	.read = mst_fpga_readb,
--	.write = mst_fpga_writeb,
--	.endianness = DEVICE_NATIVE_ENDIAN,
+-static struct arm_boot_info z2_binfo = {
+-    .loader_start   = PXA2XX_SDRAM_BASE,
+-    .ram_size       = Z2_RAM_SIZE,
 -};
 -
--static int mst_fpga_post_load(void *opaque, int version_id)
--{
--	mst_irq_state *s = (mst_irq_state *) opaque;
+-#define Z2_GPIO_SD_DETECT   96
+-#define Z2_GPIO_AC_IN       0
+-#define Z2_GPIO_KEY_ON      1
+-#define Z2_GPIO_LCD_CS      88
 -
--	qemu_set_irq(s->parent, s->intsetclr & s->intmskena);
--	return 0;
+-struct ZipitLCD {
+-    SSIPeripheral ssidev;
+-    int32_t selected;
+-    int32_t enabled;
+-    uint8_t buf[3];
+-    uint32_t cur_reg;
+-    int pos;
+-};
+-
+-#define TYPE_ZIPIT_LCD "zipit-lcd"
+-OBJECT_DECLARE_SIMPLE_TYPE(ZipitLCD, ZIPIT_LCD)
+-
+-static uint32_t zipit_lcd_transfer(SSIPeripheral *dev, uint32_t value)
+-{
+-    ZipitLCD *z = ZIPIT_LCD(dev);
+-    uint16_t val;
+-
+-    trace_z2_lcd_reg_update(z->cur_reg, z->buf[0], z->buf[1], z->buf[2], value);
+-    if (z->selected) {
+-        z->buf[z->pos] = value & 0xff;
+-        z->pos++;
+-    }
+-    if (z->pos == 3) {
+-        switch (z->buf[0]) {
+-        case 0x74:
+-            z->cur_reg = z->buf[2];
+-            break;
+-        case 0x76:
+-            val = z->buf[1] << 8 | z->buf[2];
+-            if (z->cur_reg == 0x22 && val == 0x0000) {
+-                z->enabled = 1;
+-                trace_z2_lcd_enable_disable_result("enabled");
+-            } else if (z->cur_reg == 0x10 && val == 0x0000) {
+-                z->enabled = 0;
+-                trace_z2_lcd_enable_disable_result("disabled");
+-            }
+-            break;
+-        default:
+-            break;
+-        }
+-        z->pos = 0;
+-    }
+-    return 0;
 -}
 -
--static void mst_fpga_init(Object *obj)
+-static void z2_lcd_cs(void *opaque, int line, int level)
 -{
--    DeviceState *dev = DEVICE(obj);
--    mst_irq_state *s = MAINSTONE_FPGA(obj);
--    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
--
--    s->pcmcia0 = MST_PCMCIAx_READY | MST_PCMCIAx_nCD;
--    s->pcmcia1 = MST_PCMCIAx_READY | MST_PCMCIAx_nCD;
--
--    sysbus_init_irq(sbd, &s->parent);
--
--    /* alloc the external 16 irqs */
--    qdev_init_gpio_in(dev, mst_fpga_set_irq, MST_NUM_IRQS);
--
--    memory_region_init_io(&s->iomem, obj, &mst_fpga_ops, s,
--                          "fpga", 0x00100000);
--    sysbus_init_mmio(sbd, &s->iomem);
+-    ZipitLCD *z2_lcd = opaque;
+-    z2_lcd->selected = !level;
 -}
 -
--static const VMStateDescription vmstate_mst_fpga_regs = {
--    .name = "mainstone_fpga",
--    .version_id = 0,
--    .minimum_version_id = 0,
--    .post_load = mst_fpga_post_load,
+-static void zipit_lcd_realize(SSIPeripheral *dev, Error **errp)
+-{
+-    ZipitLCD *z = ZIPIT_LCD(dev);
+-    z->selected = 0;
+-    z->enabled = 0;
+-    z->pos = 0;
+-}
+-
+-static const VMStateDescription vmstate_zipit_lcd_state = {
+-    .name = "zipit-lcd",
+-    .version_id = 2,
+-    .minimum_version_id = 2,
 -    .fields = (const VMStateField[]) {
--		VMSTATE_UINT32(prev_level, mst_irq_state),
--		VMSTATE_UINT32(leddat1, mst_irq_state),
--		VMSTATE_UINT32(leddat2, mst_irq_state),
--		VMSTATE_UINT32(ledctrl, mst_irq_state),
--		VMSTATE_UINT32(gpswr, mst_irq_state),
--		VMSTATE_UINT32(mscwr1, mst_irq_state),
--		VMSTATE_UINT32(mscwr2, mst_irq_state),
--		VMSTATE_UINT32(mscwr3, mst_irq_state),
--		VMSTATE_UINT32(mscrd, mst_irq_state),
--		VMSTATE_UINT32(intmskena, mst_irq_state),
--		VMSTATE_UINT32(intsetclr, mst_irq_state),
--		VMSTATE_UINT32(pcmcia0, mst_irq_state),
--		VMSTATE_UINT32(pcmcia1, mst_irq_state),
--		VMSTATE_END_OF_LIST(),
--	},
+-        VMSTATE_SSI_PERIPHERAL(ssidev, ZipitLCD),
+-        VMSTATE_INT32(selected, ZipitLCD),
+-        VMSTATE_INT32(enabled, ZipitLCD),
+-        VMSTATE_BUFFER(buf, ZipitLCD),
+-        VMSTATE_UINT32(cur_reg, ZipitLCD),
+-        VMSTATE_INT32(pos, ZipitLCD),
+-        VMSTATE_END_OF_LIST(),
+-    }
 -};
 -
--static void mst_fpga_class_init(ObjectClass *klass, void *data)
+-static void zipit_lcd_class_init(ObjectClass *klass, void *data)
 -{
 -    DeviceClass *dc = DEVICE_CLASS(klass);
+-    SSIPeripheralClass *k = SSI_PERIPHERAL_CLASS(klass);
 -
--    dc->desc = "Mainstone II FPGA";
--    dc->vmsd = &vmstate_mst_fpga_regs;
+-    k->realize = zipit_lcd_realize;
+-    k->transfer = zipit_lcd_transfer;
+-    dc->vmsd = &vmstate_zipit_lcd_state;
 -}
 -
--static const TypeInfo mst_fpga_info = {
--    .name          = TYPE_MAINSTONE_FPGA,
--    .parent        = TYPE_SYS_BUS_DEVICE,
--    .instance_size = sizeof(mst_irq_state),
--    .instance_init = mst_fpga_init,
--    .class_init    = mst_fpga_class_init,
+-static const TypeInfo zipit_lcd_info = {
+-    .name          = TYPE_ZIPIT_LCD,
+-    .parent        = TYPE_SSI_PERIPHERAL,
+-    .instance_size = sizeof(ZipitLCD),
+-    .class_init    = zipit_lcd_class_init,
 -};
 -
--static void mst_fpga_register_types(void)
+-#define TYPE_AER915 "aer915"
+-OBJECT_DECLARE_SIMPLE_TYPE(AER915State, AER915)
+-
+-struct AER915State {
+-    I2CSlave parent_obj;
+-
+-    int len;
+-    uint8_t buf[3];
+-};
+-
+-static int aer915_send(I2CSlave *i2c, uint8_t data)
 -{
--    type_register_static(&mst_fpga_info);
+-    AER915State *s = AER915(i2c);
+-
+-    s->buf[s->len] = data;
+-    if (s->len++ > 2) {
+-        trace_z2_aer915_send_too_long(s->len);
+-        return 1;
+-    }
+-
+-    if (s->len == 2) {
+-        trace_z2_aer915_send(s->buf[0], s->buf[1]);
+-    }
+-
+-    return 0;
 -}
 -
--type_init(mst_fpga_register_types)
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 2ca8717be28..56b94655152 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -67,7 +67,6 @@ system_ss.add(when: 'CONFIG_IMX', if_true: files(
-   'imx_ccm.c',
-   'imx_rngc.c',
- ))
--system_ss.add(when: 'CONFIG_MAINSTONE', if_true: files('mst_fpga.c'))
- system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files(
-   'npcm7xx_clk.c',
-   'npcm7xx_gcr.c',
+-static int aer915_event(I2CSlave *i2c, enum i2c_event event)
+-{
+-    AER915State *s = AER915(i2c);
+-
+-    trace_z2_aer915_event(s->len, event);
+-    switch (event) {
+-    case I2C_START_SEND:
+-        s->len = 0;
+-        break;
+-    case I2C_START_RECV:
+-        break;
+-    case I2C_FINISH:
+-        break;
+-    default:
+-        break;
+-    }
+-
+-    return 0;
+-}
+-
+-static uint8_t aer915_recv(I2CSlave *slave)
+-{
+-    AER915State *s = AER915(slave);
+-    int retval = 0x00;
+-
+-    switch (s->buf[0]) {
+-    /* Return hardcoded battery voltage,
+-     * 0xf0 means ~4.1V
+-     */
+-    case 0x02:
+-        retval = 0xf0;
+-        break;
+-    /* Return 0x00 for other regs,
+-     * we don't know what they are for,
+-     * anyway they return 0x00 on real hardware.
+-     */
+-    default:
+-        break;
+-    }
+-
+-    return retval;
+-}
+-
+-static const VMStateDescription vmstate_aer915_state = {
+-    .name = "aer915",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
+-    .fields = (const VMStateField[]) {
+-        VMSTATE_INT32(len, AER915State),
+-        VMSTATE_BUFFER(buf, AER915State),
+-        VMSTATE_END_OF_LIST(),
+-    }
+-};
+-
+-static void aer915_class_init(ObjectClass *klass, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(klass);
+-    I2CSlaveClass *k = I2C_SLAVE_CLASS(klass);
+-
+-    k->event = aer915_event;
+-    k->recv = aer915_recv;
+-    k->send = aer915_send;
+-    dc->vmsd = &vmstate_aer915_state;
+-}
+-
+-static const TypeInfo aer915_info = {
+-    .name          = TYPE_AER915,
+-    .parent        = TYPE_I2C_SLAVE,
+-    .instance_size = sizeof(AER915State),
+-    .class_init    = aer915_class_init,
+-};
+-
+-#define FLASH_SECTOR_SIZE   (64 * KiB)
+-
+-static void z2_init(MachineState *machine)
+-{
+-    PXA2xxState *mpu;
+-    DriveInfo *dinfo;
+-    void *z2_lcd;
+-    I2CBus *bus;
+-    DeviceState *wm;
+-    I2CSlave *i2c_dev;
+-
+-    /* Setup CPU & memory */
+-    mpu = pxa270_init(z2_binfo.ram_size, machine->cpu_type);
+-
+-    dinfo = drive_get(IF_PFLASH, 0, 0);
+-    pflash_cfi01_register(Z2_FLASH_BASE, "z2.flash0", Z2_FLASH_SIZE,
+-                          dinfo ? blk_by_legacy_dinfo(dinfo) : NULL,
+-                          FLASH_SECTOR_SIZE, 4, 0, 0, 0, 0, 0);
+-
+-    /* setup keypad */
+-    pxa27x_register_keypad(mpu->kp, map, 0x100);
+-
+-    /* MMC/SD host */
+-    pxa2xx_mmci_handlers(mpu->mmc,
+-        NULL,
+-        qdev_get_gpio_in(mpu->gpio, Z2_GPIO_SD_DETECT));
+-
+-    type_register_static(&zipit_lcd_info);
+-    type_register_static(&aer915_info);
+-    z2_lcd = ssi_create_peripheral(mpu->ssp[1], TYPE_ZIPIT_LCD);
+-    bus = pxa2xx_i2c_bus(mpu->i2c[0]);
+-
+-    i2c_slave_create_simple(bus, TYPE_AER915, 0x55);
+-
+-    i2c_dev = i2c_slave_new(TYPE_WM8750, 0x1b);
+-    wm = DEVICE(i2c_dev);
+-
+-    if (machine->audiodev) {
+-        qdev_prop_set_string(wm, "audiodev", machine->audiodev);
+-    }
+-    i2c_slave_realize_and_unref(i2c_dev, bus, &error_abort);
+-
+-    mpu->i2s->opaque = wm;
+-    mpu->i2s->codec_out = wm8750_dac_dat;
+-    mpu->i2s->codec_in = wm8750_adc_dat;
+-    wm8750_data_req_set(wm, mpu->i2s->data_req, mpu->i2s);
+-
+-    qdev_connect_gpio_out(mpu->gpio, Z2_GPIO_LCD_CS,
+-                          qemu_allocate_irq(z2_lcd_cs, z2_lcd, 0));
+-
+-    z2_binfo.board_id = 0x6dd;
+-    arm_load_kernel(mpu->cpu, machine, &z2_binfo);
+-}
+-
+-static void z2_machine_init(MachineClass *mc)
+-{
+-    mc->desc = "Zipit Z2 (PXA27x)";
+-    mc->init = z2_init;
+-    mc->ignore_memory_transaction_failures = true;
+-    mc->default_cpu_type = ARM_CPU_TYPE_NAME("pxa270-c5");
+-    mc->deprecation_reason = "machine is old and unmaintained";
+-
+-    machine_add_audiodev_property(mc);
+-}
+-
+-DEFINE_MACHINE("z2", z2_machine_init)
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 84cc34f016c..c2452bd7b91 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -176,15 +176,6 @@ config PXA2XX
+     select USB_OHCI_SYSBUS
+     select PCMCIA
+ 
+-config Z2
+-    bool
+-    default y
+-    depends on TCG && ARM
+-    select PFLASH_CFI01
+-    select WM8750
+-    select PL011 # UART
+-    select PXA2XX
+-
+ config REALVIEW
+     bool
+     default y
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index 08261979150..b913795f56e 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -74,6 +74,5 @@ system_ss.add(when: 'CONFIG_STRONGARM', if_true: files('strongarm.c'))
+ system_ss.add(when: 'CONFIG_SX1', if_true: files('omap_sx1.c'))
+ system_ss.add(when: 'CONFIG_VERSATILE', if_true: files('versatilepb.c'))
+ system_ss.add(when: 'CONFIG_VEXPRESS', if_true: files('vexpress.c'))
+-system_ss.add(when: 'CONFIG_Z2', if_true: files('z2.c'))
+ 
+ hw_arch += {'arm': arm_ss}
 -- 
 2.34.1
 
