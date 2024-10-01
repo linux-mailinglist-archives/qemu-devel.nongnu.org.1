@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A22998C3E6
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CDB98C393
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 18:41:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svfut-0005tM-N5; Tue, 01 Oct 2024 12:40:03 -0400
+	id 1svfv9-0006UV-KY; Tue, 01 Oct 2024 12:40:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfud-0005ap-2h
+ id 1svfue-0005az-Go
  for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:49 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1svfuW-00066l-C6
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:46 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-37cd831ab06so2261732f8f.0
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:39 -0700 (PDT)
+ id 1svfuX-00067X-2o
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 12:39:48 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-42cb2191107so47324675e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 09:39:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727800778; x=1728405578; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727800779; x=1728405579; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=JG57QVpHrLALzZR+9s2olzjjtYqV+9hQmExoUYKYmvA=;
- b=yARlAyQ+G9mNb5RL01SF04FVyGXsic/g+5x4OgJ0ZfOpk8XU5B+SVBUeoDfPO5bbuz
- fjLupfmx5lSEapxWelZ+gZUGUjWhZzTG/fZvnMxbEGLTQJOF1qPJTlxC0a13cXPCwOMG
- 9h4NX+zpCpVbELwDFark4ljkhhOOlYdtI3YHTjNl0rMX+MgTqhWOgWWM5rWrAk34r7Yd
- 13PSQvMMxp5JQCOlSrKu4fdjC2G7KAYJBLAM950ZubU40JlWyt5+MHPasP7FvlQIXFbN
- ke8hG08MrfXsC5m+s1lFfHWmQt39NhD/z/Ozxqwnn/IP/Dm/KWJzkZcDuDSVO4naiTHB
- zQhg==
+ :reply-to; bh=53pEIt9s0bnCcSIgZXbV9AZbXeM3UuZWJiVbFJjtweI=;
+ b=lZNA4Wis2Zqo3Zjto+7hauW4aze6vlQ8N34W7rlfmxgQEPSNGGg1hRORtsxYLh1ixQ
+ po4hQUfg3YjHsSunn12ciAxpb7/SqkbTB8QUhKUbwmTLDD80B5lZecQWl9WQ+AsjTN41
+ aDjMCdzD88mrJIVnkQIv7rvnakgEKGeHlfrR+O0Bg3wetkhhZB25DQXHVLHClWc+j2XH
+ IX2s1KLReDY3b13i2ZGF0yZ+AAraf+WYtbN5WsoNxKCpgJ6vpZX9gFyFC2HRBrhBgpIn
+ 4V6sP+YBG2uK70PxRgRr+nR0AWiDXjiMu1SjEurWFNtAgwyayQRLU89Mqj3BPe9Crn5g
+ k6MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727800778; x=1728405578;
+ d=1e100.net; s=20230601; t=1727800779; x=1728405579;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JG57QVpHrLALzZR+9s2olzjjtYqV+9hQmExoUYKYmvA=;
- b=umXcT/IoMXoxe3EITcmEpj/O/xatPN+EcwtUrFNBcUf8jg6a48Os+oXIANGmLOZmXT
- h+hooVDGJwRQtPo5fM7ZoLaEsoJ3U3A8xCk7tHas7sUqtpQyn2ob9dMH4l1/ivclJIyy
- DGAYQpjCKzFmvdM8qbFga6BgqO9466hTHjIDof8bdLFDhdnTkYSFcBfofO3iBpYsAfVk
- b0CmkcW3XjgyqOpZUHIuLbR1ohrh/iBgdybJnuNCR5hbhKYyefoy3dPCp9B+dogKN6OR
- 1ovNOIfWXfx9s9q8mV1GLu597wcu2cc5iFNz2eZa3F1AMOeEsPc6XxI1vVQIRLl6j80k
- sJYA==
-X-Gm-Message-State: AOJu0YxPH0vnBo0dO9fZIf+BE5Znr4yWnsQOGcyJqC3if/xG0m04pC0y
- KJgSRr1Hb5eevkT9zONJ/35K3IZDlLy3rEKpNz29AwRnApAgFDW+QEYtu14MIu8RypwZjb2J23T
- F
-X-Google-Smtp-Source: AGHT+IFaMqaqXTiPq1GLRA6gutjgS3+O0burdaaXLEQf7uzcQIL/stMJLkN3Ua0kIrySMkbnwnjUPQ==
-X-Received: by 2002:a5d:584c:0:b0:374:ae04:c7c5 with SMTP id
- ffacd0b85a97d-37cfb9fc32bmr174137f8f.36.1727800778382; 
- Tue, 01 Oct 2024 09:39:38 -0700 (PDT)
+ bh=53pEIt9s0bnCcSIgZXbV9AZbXeM3UuZWJiVbFJjtweI=;
+ b=M4wU0KuXsVPwVU7mV5RSP2RNmn8nmJiT+Pm9IxM90Zuk5Jl60iBSPSRAdWCL7mSAKe
+ RBFyBb1BZ+rLvxSAHNXye4UDXxMisZwX7dSa/fdX70SI+SmYl3Jz4w2+iKvzyUk5uI2+
+ dEglmRJ3FK/vJ83C76iS6u0OW6zwgnaakQ946D7l6PVln34Stu1X0METngNW3tufV8kw
+ aney2wM8UTwMDmNOwjC5zX2+OcC5KEfnCgIIKiQjOH8a75j1IkZMZKrwbFcrKFRwYmHR
+ hX2ezl+8MiFb7Fe3BLR562csJfc815HQT9KSIAbxHJ4aJuhb+dp460bMsqGGo3gPe282
+ Zpkw==
+X-Gm-Message-State: AOJu0YxP79wJP2mSpbIu13lI6RWDHkPMCq7bdgHRBpbAL66TUrCT8eVB
+ 6s+m42JdylJdxojtTZFxnQ0LtvgGAsdwwRRf4PnmwwbEZmoma2wIWlOwRWB8x8GEMyNq8aGx643
+ 9
+X-Google-Smtp-Source: AGHT+IEMZ2z8SV5sQ7cOjPjyftKpQo9pQ3ro0rMpZK6Cfqf5Q6jAmNW1rojfkJF7kzFeapqvboPkgw==
+X-Received: by 2002:adf:ce12:0:b0:374:c31e:971a with SMTP id
+ ffacd0b85a97d-37cfb8157bemr183054f8f.0.1727800779072; 
+ Tue, 01 Oct 2024 09:39:39 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.37
+ ffacd0b85a97d-37cd56e6547sm12243771f8f.58.2024.10.01.09.39.38
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 01 Oct 2024 09:39:38 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 34/54] hw/input: Remove lm832x device
-Date: Tue,  1 Oct 2024 17:38:58 +0100
-Message-Id: <20241001163918.1275441-35-peter.maydell@linaro.org>
+Subject: [PULL 35/54] hw/block: Remove OneNAND device
+Date: Tue,  1 Oct 2024 17:38:59 +0100
+Message-Id: <20241001163918.1275441-36-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241001163918.1275441-1-peter.maydell@linaro.org>
 References: <20241001163918.1275441-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,88 +91,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the lm832x keyboard-and-pwm i2c device model. This
-was only used by the n800 and n810 machines.
-
-(Although this is an i2c device and so in theory available to create
-on the command line, in practice it has an outbound IRQ line that the
-machine model needs to wire up, and the only way to inject keys events
-into it is to call the lm832x_key_event() function, so it isn't
-in practice possible to use it separately from the n800/n810.)
+The OneNAND devices were only used by n800/n810, so they
+can be removed now.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20240903160751.4100218-32-peter.maydell@linaro.org
+Message-id: 20240903160751.4100218-33-peter.maydell@linaro.org
 ---
- MAINTAINERS               |   7 -
- include/hw/input/lm832x.h |  28 --
- hw/input/lm832x.c         | 528 --------------------------------------
- hw/input/Kconfig          |   4 -
- hw/input/meson.build      |   1 -
- 5 files changed, 568 deletions(-)
- delete mode 100644 include/hw/input/lm832x.h
- delete mode 100644 hw/input/lm832x.c
+ include/hw/block/flash.h |   3 -
+ hw/block/onenand.c       | 872 ---------------------------------------
+ hw/block/Kconfig         |   3 -
+ hw/block/meson.build     |   1 -
+ 4 files changed, 879 deletions(-)
+ delete mode 100644 hw/block/onenand.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 98314d157c2..4ee26995436 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -870,13 +870,6 @@ F: pc-bios/npcm7xx_bootrom.bin
- F: roms/vbootrom
- F: docs/system/arm/nuvoton.rst
+diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
+index 2b5ccd92f46..b985c825a01 100644
+--- a/include/hw/block/flash.h
++++ b/include/hw/block/flash.h
+@@ -62,9 +62,6 @@ uint32_t nand_getbuswidth(DeviceState *dev);
+ #define NAND_MFR_HYNIX      0xad
+ #define NAND_MFR_MICRON     0x2c
  
--nSeries
--M: Peter Maydell <peter.maydell@linaro.org>
--L: qemu-arm@nongnu.org
--S: Odd Fixes
--F: hw/input/lm832x.c
--F: include/hw/input/lm832x.h
+-/* onenand.c */
+-void *onenand_raw_otp(DeviceState *onenand_device);
 -
- Raspberry Pi
- M: Peter Maydell <peter.maydell@linaro.org>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
-diff --git a/include/hw/input/lm832x.h b/include/hw/input/lm832x.h
+ /* ecc.c */
+ typedef struct {
+     uint8_t cp;     /* Column parity */
+diff --git a/hw/block/onenand.c b/hw/block/onenand.c
 deleted file mode 100644
-index e0e5d5ef20e..00000000000
---- a/include/hw/input/lm832x.h
+index a7c215d2040..00000000000
+--- a/hw/block/onenand.c
 +++ /dev/null
-@@ -1,28 +0,0 @@
+@@ -1,872 +0,0 @@
 -/*
-- * National Semiconductor LM8322/8323 GPIO keyboard & PWM chips.
-- *
-- * Copyright (C) 2008 Nokia Corporation
-- * Written by Andrzej Zaborowski <andrew@openedhand.com>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 or
-- * (at your option) version 3 of the License.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License along
-- * with this program; if not, see <http://www.gnu.org/licenses/>.
-- */
--
--#ifndef HW_INPUT_LM832X_H
--#define HW_INPUT_LM832X_H
--
--#define TYPE_LM8323 "lm8323"
--
--void lm832x_key_event(DeviceState *dev, int key, int state);
--
--#endif
-diff --git a/hw/input/lm832x.c b/hw/input/lm832x.c
-deleted file mode 100644
-index ef65ad18b89..00000000000
---- a/hw/input/lm832x.c
-+++ /dev/null
-@@ -1,528 +0,0 @@
--/*
-- * National Semiconductor LM8322/8323 GPIO keyboard & PWM chips.
+- * OneNAND flash memories emulation.
 - *
 - * Copyright (C) 2008 Nokia Corporation
 - * Written by Andrzej Zaborowski <andrew@openedhand.com>
@@ -193,539 +146,883 @@ index ef65ad18b89..00000000000
 - */
 -
 -#include "qemu/osdep.h"
--#include "hw/input/lm832x.h"
--#include "hw/i2c/i2c.h"
+-#include "qapi/error.h"
+-#include "hw/hw.h"
+-#include "hw/block/flash.h"
 -#include "hw/irq.h"
+-#include "hw/qdev-properties.h"
+-#include "hw/qdev-properties-system.h"
+-#include "sysemu/block-backend.h"
+-#include "exec/memory.h"
+-#include "hw/sysbus.h"
 -#include "migration/vmstate.h"
+-#include "qemu/error-report.h"
+-#include "qemu/log.h"
 -#include "qemu/module.h"
--#include "qemu/timer.h"
--#include "ui/console.h"
 -#include "qom/object.h"
 -
--OBJECT_DECLARE_SIMPLE_TYPE(LM823KbdState, LM8323)
+-/* 11 for 2kB-page OneNAND ("2nd generation") and 10 for 1kB-page chips */
+-#define PAGE_SHIFT 11
 -
--struct LM823KbdState {
--    I2CSlave parent_obj;
+-/* Fixed */
+-#define BLOCK_SHIFT (PAGE_SHIFT + 6)
 -
--    uint8_t i2c_dir;
--    uint8_t i2c_cycle;
--    uint8_t reg;
+-#define TYPE_ONE_NAND "onenand"
+-OBJECT_DECLARE_SIMPLE_TYPE(OneNANDState, ONE_NAND)
 -
--    qemu_irq nirq;
--    uint16_t model;
--
--    struct {
--        qemu_irq out[2];
--        int in[2][2];
--    } mux;
--
--    uint8_t config;
--    uint8_t status;
--    uint8_t acttime;
--    uint8_t error;
--    uint8_t clock;
+-struct OneNANDState {
+-    SysBusDevice parent_obj;
 -
 -    struct {
--        uint16_t pull;
--        uint16_t mask;
--        uint16_t dir;
--        uint16_t level;
--        qemu_irq out[16];
--    } gpio;
+-        uint16_t man;
+-        uint16_t dev;
+-        uint16_t ver;
+-    } id;
+-    int shift;
+-    hwaddr base;
+-    qemu_irq intr;
+-    qemu_irq rdy;
+-    BlockBackend *blk;
+-    BlockBackend *blk_cur;
+-    uint8_t *image;
+-    uint8_t *otp;
+-    uint8_t *current;
+-    MemoryRegion ram;
+-    MemoryRegion mapped_ram;
+-    uint8_t current_direction;
+-    uint8_t *boot[2];
+-    uint8_t *data[2][2];
+-    MemoryRegion iomem;
+-    MemoryRegion container;
+-    int cycle;
+-    int otpmode;
 -
--    struct {
--        uint8_t dbnctime;
--        uint8_t size;
--        uint8_t start;
--        uint8_t len;
--        uint8_t fifo[16];
--    } kbd;
+-    uint16_t addr[8];
+-    uint16_t unladdr[8];
+-    int bufaddr;
+-    int count;
+-    uint16_t command;
+-    uint16_t config[2];
+-    uint16_t status;
+-    uint16_t intstatus;
+-    uint16_t wpstatus;
 -
--    struct {
--        uint16_t file[256];
--        uint8_t faddr;
--        uint8_t addr[3];
--        QEMUTimer *tm[3];
--    } pwm;
+-    ECCState ecc;
+-
+-    int density_mask;
+-    int secs;
+-    int secs_cur;
+-    int blocks;
+-    uint8_t *blockwp;
 -};
--
--#define INT_KEYPAD		(1 << 0)
--#define INT_ERROR		(1 << 3)
--#define INT_NOINIT		(1 << 4)
--#define INT_PWMEND(n)		(1 << (5 + n))
--
--#define ERR_BADPAR		(1 << 0)
--#define ERR_CMDUNK		(1 << 1)
--#define ERR_KEYOVR		(1 << 2)
--#define ERR_FIFOOVR		(1 << 6)
--
--static void lm_kbd_irq_update(LM823KbdState *s)
--{
--    qemu_set_irq(s->nirq, !s->status);
--}
--
--static void lm_kbd_gpio_update(LM823KbdState *s)
--{
--}
--
--static void lm_kbd_reset(DeviceState *dev)
--{
--    LM823KbdState *s = LM8323(dev);
--
--    s->config = 0x80;
--    s->status = INT_NOINIT;
--    s->acttime = 125;
--    s->kbd.dbnctime = 3;
--    s->kbd.size = 0x33;
--    s->clock = 0x08;
--
--    lm_kbd_irq_update(s);
--    lm_kbd_gpio_update(s);
--}
--
--static void lm_kbd_error(LM823KbdState *s, int err)
--{
--    s->error |= err;
--    s->status |= INT_ERROR;
--    lm_kbd_irq_update(s);
--}
--
--static void lm_kbd_pwm_tick(LM823KbdState *s, int line)
--{
--}
--
--static void lm_kbd_pwm_start(LM823KbdState *s, int line)
--{
--    lm_kbd_pwm_tick(s, line);
--}
--
--static void lm_kbd_pwm0_tick(void *opaque)
--{
--    lm_kbd_pwm_tick(opaque, 0);
--}
--static void lm_kbd_pwm1_tick(void *opaque)
--{
--    lm_kbd_pwm_tick(opaque, 1);
--}
--static void lm_kbd_pwm2_tick(void *opaque)
--{
--    lm_kbd_pwm_tick(opaque, 2);
--}
 -
 -enum {
--    LM832x_CMD_READ_ID		= 0x80, /* Read chip ID. */
--    LM832x_CMD_WRITE_CFG	= 0x81, /* Set configuration item. */
--    LM832x_CMD_READ_INT		= 0x82, /* Get interrupt status. */
--    LM832x_CMD_RESET		= 0x83, /* Reset, same as external one */
--    LM823x_CMD_WRITE_PULL_DOWN	= 0x84, /* Select GPIO pull-up/down. */
--    LM832x_CMD_WRITE_PORT_SEL	= 0x85, /* Select GPIO in/out. */
--    LM832x_CMD_WRITE_PORT_STATE	= 0x86, /* Set GPIO pull-up/down. */
--    LM832x_CMD_READ_PORT_SEL	= 0x87, /* Get GPIO in/out. */
--    LM832x_CMD_READ_PORT_STATE	= 0x88, /* Get GPIO pull-up/down. */
--    LM832x_CMD_READ_FIFO	= 0x89, /* Read byte from FIFO. */
--    LM832x_CMD_RPT_READ_FIFO	= 0x8a, /* Read FIFO (no increment). */
--    LM832x_CMD_SET_ACTIVE	= 0x8b, /* Set active time. */
--    LM832x_CMD_READ_ERROR	= 0x8c, /* Get error status. */
--    LM832x_CMD_READ_ROTATOR	= 0x8e, /* Read rotator status. */
--    LM832x_CMD_SET_DEBOUNCE	= 0x8f, /* Set debouncing time. */
--    LM832x_CMD_SET_KEY_SIZE	= 0x90, /* Set keypad size. */
--    LM832x_CMD_READ_KEY_SIZE	= 0x91, /* Get keypad size. */
--    LM832x_CMD_READ_CFG		= 0x92, /* Get configuration item. */
--    LM832x_CMD_WRITE_CLOCK	= 0x93, /* Set clock config. */
--    LM832x_CMD_READ_CLOCK	= 0x94, /* Get clock config. */
--    LM832x_CMD_PWM_WRITE	= 0x95, /* Write PWM script. */
--    LM832x_CMD_PWM_START	= 0x96, /* Start PWM engine. */
--    LM832x_CMD_PWM_STOP		= 0x97, /* Stop PWM engine. */
--    LM832x_GENERAL_ERROR	= 0xff, /* There was one error.
--                                           Previously was represented by -1
--                                           This is not a command */
+-    ONEN_BUF_BLOCK = 0,
+-    ONEN_BUF_BLOCK2 = 1,
+-    ONEN_BUF_DEST_BLOCK = 2,
+-    ONEN_BUF_DEST_PAGE = 3,
+-    ONEN_BUF_PAGE = 7,
 -};
 -
--#define LM832x_MAX_KPX		8
--#define LM832x_MAX_KPY		12
+-enum {
+-    ONEN_ERR_CMD = 1 << 10,
+-    ONEN_ERR_ERASE = 1 << 11,
+-    ONEN_ERR_PROG = 1 << 12,
+-    ONEN_ERR_LOAD = 1 << 13,
+-};
 -
--static uint8_t lm_kbd_read(LM823KbdState *s, int reg, int byte)
+-enum {
+-    ONEN_INT_RESET = 1 << 4,
+-    ONEN_INT_ERASE = 1 << 5,
+-    ONEN_INT_PROG = 1 << 6,
+-    ONEN_INT_LOAD = 1 << 7,
+-    ONEN_INT = 1 << 15,
+-};
+-
+-enum {
+-    ONEN_LOCK_LOCKTIGHTEN = 1 << 0,
+-    ONEN_LOCK_LOCKED = 1 << 1,
+-    ONEN_LOCK_UNLOCKED = 1 << 2,
+-};
+-
+-static void onenand_mem_setup(OneNANDState *s)
 -{
--    int ret;
--
--    switch (reg) {
--    case LM832x_CMD_READ_ID:
--        ret = 0x0400;
--        break;
--
--    case LM832x_CMD_READ_INT:
--        ret = s->status;
--        if (!(s->status & INT_NOINIT)) {
--            s->status = 0;
--            lm_kbd_irq_update(s);
--        }
--        break;
--
--    case LM832x_CMD_READ_PORT_SEL:
--        ret = s->gpio.dir;
--        break;
--    case LM832x_CMD_READ_PORT_STATE:
--        ret = s->gpio.mask;
--        break;
--
--    case LM832x_CMD_READ_FIFO:
--        if (s->kbd.len <= 1)
--            return 0x00;
--
--        /* Example response from the two commands after a INT_KEYPAD
--         * interrupt caused by the key 0x3c being pressed:
--         * RPT_READ_FIFO: 55 bc 00 4e ff 0a 50 08 00 29 d9 08 01 c9 01
--         *     READ_FIFO: bc 00 00 4e ff 0a 50 08 00 29 d9 08 01 c9 01
--         * RPT_READ_FIFO: bc 00 00 4e ff 0a 50 08 00 29 d9 08 01 c9 01
--         *
--         * 55 is the code of the key release event serviced in the previous
--         * interrupt handling.
--         *
--         * TODO: find out whether the FIFO is advanced a single character
--         * before reading every byte or the whole size of the FIFO at the
--         * last LM832x_CMD_READ_FIFO.  This affects LM832x_CMD_RPT_READ_FIFO
--         * output in cases where there are more than one event in the FIFO.
--         * Assume 0xbc and 0x3c events are in the FIFO:
--         * RPT_READ_FIFO: 55 bc 3c 00 4e ff 0a 50 08 00 29 d9 08 01 c9
--         *     READ_FIFO: bc 3c 00 00 4e ff 0a 50 08 00 29 d9 08 01 c9
--         * Does RPT_READ_FIFO now return 0xbc and 0x3c or only 0x3c?
--         */
--        s->kbd.start ++;
--        s->kbd.start &= sizeof(s->kbd.fifo) - 1;
--        s->kbd.len --;
--
--        return s->kbd.fifo[s->kbd.start];
--    case LM832x_CMD_RPT_READ_FIFO:
--        if (byte >= s->kbd.len)
--            return 0x00;
--
--        return s->kbd.fifo[(s->kbd.start + byte) & (sizeof(s->kbd.fifo) - 1)];
--
--    case LM832x_CMD_READ_ERROR:
--        return s->error;
--
--    case LM832x_CMD_READ_ROTATOR:
--        return 0;
--
--    case LM832x_CMD_READ_KEY_SIZE:
--        return s->kbd.size;
--
--    case LM832x_CMD_READ_CFG:
--        return s->config & 0xf;
--
--    case LM832x_CMD_READ_CLOCK:
--        return (s->clock & 0xfc) | 2;
--
--    default:
--        lm_kbd_error(s, ERR_CMDUNK);
--        fprintf(stderr, "%s: unknown command %02x\n", __func__, reg);
--        return 0x00;
--    }
--
--    return ret >> (byte << 3);
+-    /* XXX: We should use IO_MEM_ROMD but we broke it earlier...
+-     * Both 0x0000 ... 0x01ff and 0x8000 ... 0x800f can be used to
+-     * write boot commands.  Also take note of the BWPS bit.  */
+-    memory_region_init(&s->container, OBJECT(s), "onenand",
+-                       0x10000 << s->shift);
+-    memory_region_add_subregion(&s->container, 0, &s->iomem);
+-    memory_region_init_alias(&s->mapped_ram, OBJECT(s), "onenand-mapped-ram",
+-                             &s->ram, 0x0200 << s->shift,
+-                             0xbe00 << s->shift);
+-    memory_region_add_subregion_overlap(&s->container,
+-                                        0x0200 << s->shift,
+-                                        &s->mapped_ram,
+-                                        1);
 -}
 -
--static void lm_kbd_write(LM823KbdState *s, int reg, int byte, uint8_t value)
+-static void onenand_intr_update(OneNANDState *s)
 -{
--    switch (reg) {
--    case LM832x_CMD_WRITE_CFG:
--        s->config = value;
--        /* This must be done whenever s->mux.in is updated (never).  */
--        if ((s->config >> 1) & 1)			/* MUX1EN */
--            qemu_set_irq(s->mux.out[0], s->mux.in[0][(s->config >> 0) & 1]);
--        if ((s->config >> 3) & 1)			/* MUX2EN */
--            qemu_set_irq(s->mux.out[0], s->mux.in[0][(s->config >> 2) & 1]);
--        /* TODO: check that this is issued only following the chip reset
--         * and not in the middle of operation and that it is followed by
--         * the GPIO ports re-resablishing through WRITE_PORT_SEL and
--         * WRITE_PORT_STATE (using a timer perhaps) and otherwise output
--         * warnings.  */
--        s->status = 0;
--        lm_kbd_irq_update(s);
--        s->kbd.len = 0;
--        s->kbd.start = 0;
--        s->reg = LM832x_GENERAL_ERROR;
--        break;
--
--    case LM832x_CMD_RESET:
--        if (value == 0xaa)
--            lm_kbd_reset(DEVICE(s));
--        else
--            lm_kbd_error(s, ERR_BADPAR);
--        s->reg = LM832x_GENERAL_ERROR;
--        break;
--
--    case LM823x_CMD_WRITE_PULL_DOWN:
--        if (!byte)
--            s->gpio.pull = value;
--        else {
--            s->gpio.pull |= value << 8;
--            lm_kbd_gpio_update(s);
--            s->reg = LM832x_GENERAL_ERROR;
--        }
--        break;
--    case LM832x_CMD_WRITE_PORT_SEL:
--        if (!byte)
--            s->gpio.dir = value;
--        else {
--            s->gpio.dir |= value << 8;
--            lm_kbd_gpio_update(s);
--            s->reg = LM832x_GENERAL_ERROR;
--        }
--        break;
--    case LM832x_CMD_WRITE_PORT_STATE:
--        if (!byte)
--            s->gpio.mask = value;
--        else {
--            s->gpio.mask |= value << 8;
--            lm_kbd_gpio_update(s);
--            s->reg = LM832x_GENERAL_ERROR;
--        }
--        break;
--
--    case LM832x_CMD_SET_ACTIVE:
--        s->acttime = value;
--        s->reg = LM832x_GENERAL_ERROR;
--        break;
--
--    case LM832x_CMD_SET_DEBOUNCE:
--        s->kbd.dbnctime = value;
--        s->reg = LM832x_GENERAL_ERROR;
--        if (!value)
--            lm_kbd_error(s, ERR_BADPAR);
--        break;
--
--    case LM832x_CMD_SET_KEY_SIZE:
--        s->kbd.size = value;
--        s->reg = LM832x_GENERAL_ERROR;
--        if (
--                        (value & 0xf) < 3 || (value & 0xf) > LM832x_MAX_KPY ||
--                        (value >> 4) < 3 || (value >> 4) > LM832x_MAX_KPX)
--            lm_kbd_error(s, ERR_BADPAR);
--        break;
--
--    case LM832x_CMD_WRITE_CLOCK:
--        s->clock = value;
--        s->reg = LM832x_GENERAL_ERROR;
--        if ((value & 3) && (value & 3) != 3) {
--            lm_kbd_error(s, ERR_BADPAR);
--            fprintf(stderr, "%s: invalid clock setting in RCPWM\n",
--                            __func__);
--        }
--        /* TODO: Validate that the command is only issued once */
--        break;
--
--    case LM832x_CMD_PWM_WRITE:
--        if (byte == 0) {
--            if (!(value & 3) || (value >> 2) > 59) {
--                lm_kbd_error(s, ERR_BADPAR);
--                s->reg = LM832x_GENERAL_ERROR;
--                break;
--            }
--
--            s->pwm.faddr = value;
--            s->pwm.file[s->pwm.faddr] = 0;
--        } else if (byte == 1) {
--            s->pwm.file[s->pwm.faddr] |= value << 8;
--        } else if (byte == 2) {
--            s->pwm.file[s->pwm.faddr] |= value << 0;
--            s->reg = LM832x_GENERAL_ERROR;
--        }
--        break;
--    case LM832x_CMD_PWM_START:
--        s->reg = LM832x_GENERAL_ERROR;
--        if (!(value & 3) || (value >> 2) > 59) {
--            lm_kbd_error(s, ERR_BADPAR);
--            break;
--        }
--
--        s->pwm.addr[(value & 3) - 1] = value >> 2;
--        lm_kbd_pwm_start(s, (value & 3) - 1);
--        break;
--    case LM832x_CMD_PWM_STOP:
--        s->reg = LM832x_GENERAL_ERROR;
--        if (!(value & 3)) {
--            lm_kbd_error(s, ERR_BADPAR);
--            break;
--        }
--
--        timer_del(s->pwm.tm[(value & 3) - 1]);
--        break;
--
--    case LM832x_GENERAL_ERROR:
--        lm_kbd_error(s, ERR_BADPAR);
--        break;
--    default:
--        lm_kbd_error(s, ERR_CMDUNK);
--        fprintf(stderr, "%s: unknown command %02x\n", __func__, reg);
--        break;
--    }
+-    qemu_set_irq(s->intr, ((s->intstatus >> 15) ^ (~s->config[0] >> 6)) & 1);
 -}
 -
--static int lm_i2c_event(I2CSlave *i2c, enum i2c_event event)
+-static int onenand_pre_save(void *opaque)
 -{
--    LM823KbdState *s = LM8323(i2c);
--
--    switch (event) {
--    case I2C_START_RECV:
--    case I2C_START_SEND:
--        s->i2c_cycle = 0;
--        s->i2c_dir = (event == I2C_START_SEND);
--        break;
--
--    default:
--        break;
+-    OneNANDState *s = opaque;
+-    if (s->current == s->otp) {
+-        s->current_direction = 1;
+-    } else if (s->current == s->image) {
+-        s->current_direction = 2;
+-    } else {
+-        s->current_direction = 0;
 -    }
 -
 -    return 0;
 -}
 -
--static uint8_t lm_i2c_rx(I2CSlave *i2c)
+-static int onenand_post_load(void *opaque, int version_id)
 -{
--    LM823KbdState *s = LM8323(i2c);
--
--    return lm_kbd_read(s, s->reg, s->i2c_cycle ++);
--}
--
--static int lm_i2c_tx(I2CSlave *i2c, uint8_t data)
--{
--    LM823KbdState *s = LM8323(i2c);
--
--    if (!s->i2c_cycle)
--        s->reg = data;
--    else
--        lm_kbd_write(s, s->reg, s->i2c_cycle - 1, data);
--    s->i2c_cycle ++;
--
+-    OneNANDState *s = opaque;
+-    switch (s->current_direction) {
+-    case 0:
+-        break;
+-    case 1:
+-        s->current = s->otp;
+-        break;
+-    case 2:
+-        s->current = s->image;
+-        break;
+-    default:
+-        return -1;
+-    }
+-    onenand_intr_update(s);
 -    return 0;
 -}
 -
--static int lm_kbd_post_load(void *opaque, int version_id)
--{
--    LM823KbdState *s = opaque;
--
--    lm_kbd_irq_update(s);
--    lm_kbd_gpio_update(s);
--
--    return 0;
--}
--
--static const VMStateDescription vmstate_lm_kbd = {
--    .name = "LM8323",
--    .version_id = 0,
--    .minimum_version_id = 0,
--    .post_load = lm_kbd_post_load,
+-static const VMStateDescription vmstate_onenand = {
+-    .name = "onenand",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
+-    .pre_save = onenand_pre_save,
+-    .post_load = onenand_post_load,
 -    .fields = (const VMStateField[]) {
--        VMSTATE_I2C_SLAVE(parent_obj, LM823KbdState),
--        VMSTATE_UINT8(i2c_dir, LM823KbdState),
--        VMSTATE_UINT8(i2c_cycle, LM823KbdState),
--        VMSTATE_UINT8(reg, LM823KbdState),
--        VMSTATE_UINT8(config, LM823KbdState),
--        VMSTATE_UINT8(status, LM823KbdState),
--        VMSTATE_UINT8(acttime, LM823KbdState),
--        VMSTATE_UINT8(error, LM823KbdState),
--        VMSTATE_UINT8(clock, LM823KbdState),
--        VMSTATE_UINT16(gpio.pull, LM823KbdState),
--        VMSTATE_UINT16(gpio.mask, LM823KbdState),
--        VMSTATE_UINT16(gpio.dir, LM823KbdState),
--        VMSTATE_UINT16(gpio.level, LM823KbdState),
--        VMSTATE_UINT8(kbd.dbnctime, LM823KbdState),
--        VMSTATE_UINT8(kbd.size, LM823KbdState),
--        VMSTATE_UINT8(kbd.start, LM823KbdState),
--        VMSTATE_UINT8(kbd.len, LM823KbdState),
--        VMSTATE_BUFFER(kbd.fifo, LM823KbdState),
--        VMSTATE_UINT16_ARRAY(pwm.file, LM823KbdState, 256),
--        VMSTATE_UINT8(pwm.faddr, LM823KbdState),
--        VMSTATE_BUFFER(pwm.addr, LM823KbdState),
--        VMSTATE_TIMER_PTR_ARRAY(pwm.tm, LM823KbdState, 3),
+-        VMSTATE_UINT8(current_direction, OneNANDState),
+-        VMSTATE_INT32(cycle, OneNANDState),
+-        VMSTATE_INT32(otpmode, OneNANDState),
+-        VMSTATE_UINT16_ARRAY(addr, OneNANDState, 8),
+-        VMSTATE_UINT16_ARRAY(unladdr, OneNANDState, 8),
+-        VMSTATE_INT32(bufaddr, OneNANDState),
+-        VMSTATE_INT32(count, OneNANDState),
+-        VMSTATE_UINT16(command, OneNANDState),
+-        VMSTATE_UINT16_ARRAY(config, OneNANDState, 2),
+-        VMSTATE_UINT16(status, OneNANDState),
+-        VMSTATE_UINT16(intstatus, OneNANDState),
+-        VMSTATE_UINT16(wpstatus, OneNANDState),
+-        VMSTATE_INT32(secs_cur, OneNANDState),
+-        VMSTATE_PARTIAL_VBUFFER(blockwp, OneNANDState, blocks),
+-        VMSTATE_UINT8(ecc.cp, OneNANDState),
+-        VMSTATE_UINT16_ARRAY(ecc.lp, OneNANDState, 2),
+-        VMSTATE_UINT16(ecc.count, OneNANDState),
+-        VMSTATE_BUFFER_POINTER_UNSAFE(otp, OneNANDState, 0,
+-            ((64 + 2) << PAGE_SHIFT)),
 -        VMSTATE_END_OF_LIST()
 -    }
 -};
 -
--
--static void lm8323_realize(DeviceState *dev, Error **errp)
+-/* Hot reset (Reset OneNAND command) or warm reset (RP pin low) */
+-static void onenand_reset(OneNANDState *s, int cold)
 -{
--    LM823KbdState *s = LM8323(dev);
+-    memset(&s->addr, 0, sizeof(s->addr));
+-    s->command = 0;
+-    s->count = 1;
+-    s->bufaddr = 0;
+-    s->config[0] = 0x40c0;
+-    s->config[1] = 0x0000;
+-    onenand_intr_update(s);
+-    qemu_irq_raise(s->rdy);
+-    s->status = 0x0000;
+-    s->intstatus = cold ? 0x8080 : 0x8010;
+-    s->unladdr[0] = 0;
+-    s->unladdr[1] = 0;
+-    s->wpstatus = 0x0002;
+-    s->cycle = 0;
+-    s->otpmode = 0;
+-    s->blk_cur = s->blk;
+-    s->current = s->image;
+-    s->secs_cur = s->secs;
 -
--    s->model = 0x8323;
--    s->pwm.tm[0] = timer_new_ns(QEMU_CLOCK_VIRTUAL, lm_kbd_pwm0_tick, s);
--    s->pwm.tm[1] = timer_new_ns(QEMU_CLOCK_VIRTUAL, lm_kbd_pwm1_tick, s);
--    s->pwm.tm[2] = timer_new_ns(QEMU_CLOCK_VIRTUAL, lm_kbd_pwm2_tick, s);
--    qdev_init_gpio_out(dev, &s->nirq, 1);
+-    if (cold) {
+-        /* Lock the whole flash */
+-        memset(s->blockwp, ONEN_LOCK_LOCKED, s->blocks);
+-
+-        if (s->blk_cur && blk_pread(s->blk_cur, 0, 8 << BDRV_SECTOR_BITS,
+-                                    s->boot[0], 0) < 0) {
+-            hw_error("%s: Loading the BootRAM failed.\n", __func__);
+-        }
+-    }
 -}
 -
--void lm832x_key_event(DeviceState *dev, int key, int state)
+-static void onenand_system_reset(DeviceState *dev)
 -{
--    LM823KbdState *s = LM8323(dev);
+-    OneNANDState *s = ONE_NAND(dev);
 -
--    if ((s->status & INT_ERROR) && (s->error & ERR_FIFOOVR))
--        return;
+-    onenand_reset(s, 1);
+-}
 -
--    if (s->kbd.len >= sizeof(s->kbd.fifo)) {
--        lm_kbd_error(s, ERR_FIFOOVR);
--        return;
+-static inline int onenand_load_main(OneNANDState *s, int sec, int secn,
+-                void *dest)
+-{
+-    assert(UINT32_MAX >> BDRV_SECTOR_BITS > sec);
+-    assert(UINT32_MAX >> BDRV_SECTOR_BITS > secn);
+-    if (s->blk_cur) {
+-        return blk_pread(s->blk_cur, sec << BDRV_SECTOR_BITS,
+-                         secn << BDRV_SECTOR_BITS, dest, 0) < 0;
+-    } else if (sec + secn > s->secs_cur) {
+-        return 1;
 -    }
 -
--    s->kbd.fifo[(s->kbd.start + s->kbd.len ++) & (sizeof(s->kbd.fifo) - 1)] =
--            key | (state << 7);
+-    memcpy(dest, s->current + (sec << 9), secn << 9);
 -
--    /* We never set ERR_KEYOVR because we support multiple keys fine.  */
--    s->status |= INT_KEYPAD;
--    lm_kbd_irq_update(s);
+-    return 0;
 -}
 -
--static void lm8323_class_init(ObjectClass *klass, void *data)
+-static inline int onenand_prog_main(OneNANDState *s, int sec, int secn,
+-                void *src)
 -{
--    DeviceClass *dc = DEVICE_CLASS(klass);
--    I2CSlaveClass *k = I2C_SLAVE_CLASS(klass);
+-    int result = 0;
 -
--    device_class_set_legacy_reset(dc, lm_kbd_reset);
--    dc->realize = lm8323_realize;
--    k->event = lm_i2c_event;
--    k->recv = lm_i2c_rx;
--    k->send = lm_i2c_tx;
--    dc->vmsd = &vmstate_lm_kbd;
+-    if (secn > 0) {
+-        uint32_t size = secn << BDRV_SECTOR_BITS;
+-        uint32_t offset = sec << BDRV_SECTOR_BITS;
+-        assert(UINT32_MAX >> BDRV_SECTOR_BITS > sec);
+-        assert(UINT32_MAX >> BDRV_SECTOR_BITS > secn);
+-        const uint8_t *sp = (const uint8_t *)src;
+-        uint8_t *dp = 0;
+-        if (s->blk_cur) {
+-            dp = g_malloc(size);
+-            if (!dp || blk_pread(s->blk_cur, offset, size, dp, 0) < 0) {
+-                result = 1;
+-            }
+-        } else {
+-            if (sec + secn > s->secs_cur) {
+-                result = 1;
+-            } else {
+-                dp = (uint8_t *)s->current + offset;
+-            }
+-        }
+-        if (!result) {
+-            uint32_t i;
+-            for (i = 0; i < size; i++) {
+-                dp[i] &= sp[i];
+-            }
+-            if (s->blk_cur) {
+-                result = blk_pwrite(s->blk_cur, offset, size, dp, 0) < 0;
+-            }
+-        }
+-        if (dp && s->blk_cur) {
+-            g_free(dp);
+-        }
+-    }
+-
+-    return result;
 -}
 -
--static const TypeInfo lm8323_info = {
--    .name          = TYPE_LM8323,
--    .parent        = TYPE_I2C_SLAVE,
--    .instance_size = sizeof(LM823KbdState),
--    .class_init    = lm8323_class_init,
+-static inline int onenand_load_spare(OneNANDState *s, int sec, int secn,
+-                void *dest)
+-{
+-    uint8_t buf[512];
+-
+-    if (s->blk_cur) {
+-        uint32_t offset = (s->secs_cur + (sec >> 5)) << BDRV_SECTOR_BITS;
+-        if (blk_pread(s->blk_cur, offset, BDRV_SECTOR_SIZE, buf, 0) < 0) {
+-            return 1;
+-        }
+-        memcpy(dest, buf + ((sec & 31) << 4), secn << 4);
+-    } else if (sec + secn > s->secs_cur) {
+-        return 1;
+-    } else {
+-        memcpy(dest, s->current + (s->secs_cur << 9) + (sec << 4), secn << 4);
+-    }
+-
+-    return 0;
+-}
+-
+-static inline int onenand_prog_spare(OneNANDState *s, int sec, int secn,
+-                void *src)
+-{
+-    int result = 0;
+-    if (secn > 0) {
+-        const uint8_t *sp = (const uint8_t *)src;
+-        uint8_t *dp = 0, *dpp = 0;
+-        uint32_t offset = (s->secs_cur + (sec >> 5)) << BDRV_SECTOR_BITS;
+-        assert(UINT32_MAX >> BDRV_SECTOR_BITS > s->secs_cur + (sec >> 5));
+-        if (s->blk_cur) {
+-            dp = g_malloc(512);
+-            if (!dp
+-                || blk_pread(s->blk_cur, offset, BDRV_SECTOR_SIZE, dp, 0) < 0) {
+-                result = 1;
+-            } else {
+-                dpp = dp + ((sec & 31) << 4);
+-            }
+-        } else {
+-            if (sec + secn > s->secs_cur) {
+-                result = 1;
+-            } else {
+-                dpp = s->current + (s->secs_cur << 9) + (sec << 4);
+-            }
+-        }
+-        if (!result) {
+-            uint32_t i;
+-            for (i = 0; i < (secn << 4); i++) {
+-                dpp[i] &= sp[i];
+-            }
+-            if (s->blk_cur) {
+-                result = blk_pwrite(s->blk_cur, offset, BDRV_SECTOR_SIZE, dp,
+-                                    0) < 0;
+-            }
+-        }
+-        g_free(dp);
+-    }
+-    return result;
+-}
+-
+-static inline int onenand_erase(OneNANDState *s, int sec, int num)
+-{
+-    uint8_t *blankbuf, *tmpbuf;
+-
+-    blankbuf = g_malloc(512);
+-    tmpbuf = g_malloc(512);
+-    memset(blankbuf, 0xff, 512);
+-    for (; num > 0; num--, sec++) {
+-        if (s->blk_cur) {
+-            int erasesec = s->secs_cur + (sec >> 5);
+-            if (blk_pwrite(s->blk_cur, sec << BDRV_SECTOR_BITS,
+-                           BDRV_SECTOR_SIZE, blankbuf, 0) < 0) {
+-                goto fail;
+-            }
+-            if (blk_pread(s->blk_cur, erasesec << BDRV_SECTOR_BITS,
+-                          BDRV_SECTOR_SIZE, tmpbuf, 0) < 0) {
+-                goto fail;
+-            }
+-            memcpy(tmpbuf + ((sec & 31) << 4), blankbuf, 1 << 4);
+-            if (blk_pwrite(s->blk_cur, erasesec << BDRV_SECTOR_BITS,
+-                           BDRV_SECTOR_SIZE, tmpbuf, 0) < 0) {
+-                goto fail;
+-            }
+-        } else {
+-            if (sec + 1 > s->secs_cur) {
+-                goto fail;
+-            }
+-            memcpy(s->current + (sec << 9), blankbuf, 512);
+-            memcpy(s->current + (s->secs_cur << 9) + (sec << 4),
+-                   blankbuf, 1 << 4);
+-        }
+-    }
+-
+-    g_free(tmpbuf);
+-    g_free(blankbuf);
+-    return 0;
+-
+-fail:
+-    g_free(tmpbuf);
+-    g_free(blankbuf);
+-    return 1;
+-}
+-
+-static void onenand_command(OneNANDState *s)
+-{
+-    int b;
+-    int sec;
+-    void *buf;
+-#define SETADDR(block, page)                                \
+-    sec = (s->addr[page] & 3) +                             \
+-          ((((s->addr[page] >> 2) & 0x3f) +                 \
+-            (((s->addr[block] & 0xfff) |                    \
+-              (s->addr[block] >> 15 ? s->density_mask : 0)) \
+-             << 6))                                         \
+-           << (PAGE_SHIFT - 9));
+-#define SETBUF_M()                                                           \
+-    buf = (s->bufaddr & 8) ? s->data[(s->bufaddr >> 2) & 1][0] : s->boot[0]; \
+-    buf += (s->bufaddr & 3) << 9;
+-#define SETBUF_S()                                          \
+-    buf = (s->bufaddr & 8) ?                                \
+-            s->data[(s->bufaddr >> 2) & 1][1] : s->boot[1]; \
+-    buf += (s->bufaddr & 3) << 4;
+-
+-    switch (s->command) {
+-    case 0x00:  /* Load single/multiple sector data unit into buffer */
+-        SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
+-
+-        SETBUF_M()
+-        if (onenand_load_main(s, sec, s->count, buf))
+-            s->status |= ONEN_ERR_CMD | ONEN_ERR_LOAD;
+-
+-#if 0
+-        SETBUF_S()
+-        if (onenand_load_spare(s, sec, s->count, buf))
+-            s->status |= ONEN_ERR_CMD | ONEN_ERR_LOAD;
+-#endif
+-
+-        /* TODO: if (s->bufaddr & 3) + s->count was > 4 (2k-pages)
+-         * or    if (s->bufaddr & 1) + s->count was > 2 (1k-pages)
+-         * then we need two split the read/write into two chunks.
+-         */
+-        s->intstatus |= ONEN_INT | ONEN_INT_LOAD;
+-        break;
+-    case 0x13:  /* Load single/multiple spare sector into buffer */
+-        SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
+-
+-        SETBUF_S()
+-        if (onenand_load_spare(s, sec, s->count, buf))
+-            s->status |= ONEN_ERR_CMD | ONEN_ERR_LOAD;
+-
+-        /* TODO: if (s->bufaddr & 3) + s->count was > 4 (2k-pages)
+-         * or    if (s->bufaddr & 1) + s->count was > 2 (1k-pages)
+-         * then we need two split the read/write into two chunks.
+-         */
+-        s->intstatus |= ONEN_INT | ONEN_INT_LOAD;
+-        break;
+-    case 0x80:  /* Program single/multiple sector data unit from buffer */
+-        SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
+-
+-        SETBUF_M()
+-        if (onenand_prog_main(s, sec, s->count, buf))
+-            s->status |= ONEN_ERR_CMD | ONEN_ERR_PROG;
+-
+-#if 0
+-        SETBUF_S()
+-        if (onenand_prog_spare(s, sec, s->count, buf))
+-            s->status |= ONEN_ERR_CMD | ONEN_ERR_PROG;
+-#endif
+-
+-        /* TODO: if (s->bufaddr & 3) + s->count was > 4 (2k-pages)
+-         * or    if (s->bufaddr & 1) + s->count was > 2 (1k-pages)
+-         * then we need two split the read/write into two chunks.
+-         */
+-        s->intstatus |= ONEN_INT | ONEN_INT_PROG;
+-        break;
+-    case 0x1a:  /* Program single/multiple spare area sector from buffer */
+-        SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
+-
+-        SETBUF_S()
+-        if (onenand_prog_spare(s, sec, s->count, buf))
+-            s->status |= ONEN_ERR_CMD | ONEN_ERR_PROG;
+-
+-        /* TODO: if (s->bufaddr & 3) + s->count was > 4 (2k-pages)
+-         * or    if (s->bufaddr & 1) + s->count was > 2 (1k-pages)
+-         * then we need two split the read/write into two chunks.
+-         */
+-        s->intstatus |= ONEN_INT | ONEN_INT_PROG;
+-        break;
+-    case 0x1b:  /* Copy-back program */
+-        SETBUF_S()
+-
+-        SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
+-        if (onenand_load_main(s, sec, s->count, buf))
+-            s->status |= ONEN_ERR_CMD | ONEN_ERR_PROG;
+-
+-        SETADDR(ONEN_BUF_DEST_BLOCK, ONEN_BUF_DEST_PAGE)
+-        if (onenand_prog_main(s, sec, s->count, buf))
+-            s->status |= ONEN_ERR_CMD | ONEN_ERR_PROG;
+-
+-        /* TODO: spare areas */
+-
+-        s->intstatus |= ONEN_INT | ONEN_INT_PROG;
+-        break;
+-
+-    case 0x23:  /* Unlock NAND array block(s) */
+-        s->intstatus |= ONEN_INT;
+-
+-        /* XXX the previous (?) area should be locked automatically */
+-        for (b = s->unladdr[0]; b <= s->unladdr[1]; b ++) {
+-            if (b >= s->blocks) {
+-                s->status |= ONEN_ERR_CMD;
+-                break;
+-            }
+-            if (s->blockwp[b] == ONEN_LOCK_LOCKTIGHTEN)
+-                break;
+-
+-            s->wpstatus = s->blockwp[b] = ONEN_LOCK_UNLOCKED;
+-        }
+-        break;
+-    case 0x27:  /* Unlock All NAND array blocks */
+-        s->intstatus |= ONEN_INT;
+-
+-        for (b = 0; b < s->blocks; b ++) {
+-            if (s->blockwp[b] == ONEN_LOCK_LOCKTIGHTEN)
+-                break;
+-
+-            s->wpstatus = s->blockwp[b] = ONEN_LOCK_UNLOCKED;
+-        }
+-        break;
+-
+-    case 0x2a:  /* Lock NAND array block(s) */
+-        s->intstatus |= ONEN_INT;
+-
+-        for (b = s->unladdr[0]; b <= s->unladdr[1]; b ++) {
+-            if (b >= s->blocks) {
+-                s->status |= ONEN_ERR_CMD;
+-                break;
+-            }
+-            if (s->blockwp[b] == ONEN_LOCK_LOCKTIGHTEN)
+-                break;
+-
+-            s->wpstatus = s->blockwp[b] = ONEN_LOCK_LOCKED;
+-        }
+-        break;
+-    case 0x2c:  /* Lock-tight NAND array block(s) */
+-        s->intstatus |= ONEN_INT;
+-
+-        for (b = s->unladdr[0]; b <= s->unladdr[1]; b ++) {
+-            if (b >= s->blocks) {
+-                s->status |= ONEN_ERR_CMD;
+-                break;
+-            }
+-            if (s->blockwp[b] == ONEN_LOCK_UNLOCKED)
+-                continue;
+-
+-            s->wpstatus = s->blockwp[b] = ONEN_LOCK_LOCKTIGHTEN;
+-        }
+-        break;
+-
+-    case 0x71:  /* Erase-Verify-Read */
+-        s->intstatus |= ONEN_INT;
+-        break;
+-    case 0x95:  /* Multi-block erase */
+-        qemu_irq_pulse(s->intr);
+-        /* Fall through.  */
+-    case 0x94:  /* Block erase */
+-        sec = ((s->addr[ONEN_BUF_BLOCK] & 0xfff) |
+-                        (s->addr[ONEN_BUF_BLOCK] >> 15 ? s->density_mask : 0))
+-                << (BLOCK_SHIFT - 9);
+-        if (onenand_erase(s, sec, 1 << (BLOCK_SHIFT - 9)))
+-            s->status |= ONEN_ERR_CMD | ONEN_ERR_ERASE;
+-
+-        s->intstatus |= ONEN_INT | ONEN_INT_ERASE;
+-        break;
+-    case 0xb0:  /* Erase suspend */
+-        break;
+-    case 0x30:  /* Erase resume */
+-        s->intstatus |= ONEN_INT | ONEN_INT_ERASE;
+-        break;
+-
+-    case 0xf0:  /* Reset NAND Flash core */
+-        onenand_reset(s, 0);
+-        break;
+-    case 0xf3:  /* Reset OneNAND */
+-        onenand_reset(s, 0);
+-        break;
+-
+-    case 0x65:  /* OTP Access */
+-        s->intstatus |= ONEN_INT;
+-        s->blk_cur = NULL;
+-        s->current = s->otp;
+-        s->secs_cur = 1 << (BLOCK_SHIFT - 9);
+-        s->addr[ONEN_BUF_BLOCK] = 0;
+-        s->otpmode = 1;
+-        break;
+-
+-    default:
+-        s->status |= ONEN_ERR_CMD;
+-        s->intstatus |= ONEN_INT;
+-        qemu_log_mask(LOG_GUEST_ERROR, "unknown OneNAND command %x\n",
+-                      s->command);
+-    }
+-
+-    onenand_intr_update(s);
+-}
+-
+-static uint64_t onenand_read(void *opaque, hwaddr addr,
+-                             unsigned size)
+-{
+-    OneNANDState *s = (OneNANDState *) opaque;
+-    int offset = addr >> s->shift;
+-
+-    switch (offset) {
+-    case 0x0000 ... 0xbffe:
+-        return lduw_le_p(s->boot[0] + addr);
+-
+-    case 0xf000:  /* Manufacturer ID */
+-        return s->id.man;
+-    case 0xf001:  /* Device ID */
+-        return s->id.dev;
+-    case 0xf002:  /* Version ID */
+-        return s->id.ver;
+-    /* TODO: get the following values from a real chip!  */
+-    case 0xf003:  /* Data Buffer size */
+-        return 1 << PAGE_SHIFT;
+-    case 0xf004:  /* Boot Buffer size */
+-        return 0x200;
+-    case 0xf005:  /* Amount of buffers */
+-        return 1 | (2 << 8);
+-    case 0xf006:  /* Technology */
+-        return 0;
+-
+-    case 0xf100 ... 0xf107:  /* Start addresses */
+-        return s->addr[offset - 0xf100];
+-
+-    case 0xf200:  /* Start buffer */
+-        return (s->bufaddr << 8) | ((s->count - 1) & (1 << (PAGE_SHIFT - 10)));
+-
+-    case 0xf220:  /* Command */
+-        return s->command;
+-    case 0xf221:  /* System Configuration 1 */
+-        return s->config[0] & 0xffe0;
+-    case 0xf222:  /* System Configuration 2 */
+-        return s->config[1];
+-
+-    case 0xf240:  /* Controller Status */
+-        return s->status;
+-    case 0xf241:  /* Interrupt */
+-        return s->intstatus;
+-    case 0xf24c:  /* Unlock Start Block Address */
+-        return s->unladdr[0];
+-    case 0xf24d:  /* Unlock End Block Address */
+-        return s->unladdr[1];
+-    case 0xf24e:  /* Write Protection Status */
+-        return s->wpstatus;
+-
+-    case 0xff00:  /* ECC Status */
+-        return 0x00;
+-    case 0xff01:  /* ECC Result of main area data */
+-    case 0xff02:  /* ECC Result of spare area data */
+-    case 0xff03:  /* ECC Result of main area data */
+-    case 0xff04:  /* ECC Result of spare area data */
+-        qemu_log_mask(LOG_UNIMP,
+-                      "onenand: ECC result registers unimplemented\n");
+-        return 0x0000;
+-    }
+-
+-    qemu_log_mask(LOG_GUEST_ERROR, "read of unknown OneNAND register 0x%x\n",
+-                  offset);
+-    return 0;
+-}
+-
+-static void onenand_write(void *opaque, hwaddr addr,
+-                          uint64_t value, unsigned size)
+-{
+-    OneNANDState *s = (OneNANDState *) opaque;
+-    int offset = addr >> s->shift;
+-    int sec;
+-
+-    switch (offset) {
+-    case 0x0000 ... 0x01ff:
+-    case 0x8000 ... 0x800f:
+-        if (s->cycle) {
+-            s->cycle = 0;
+-
+-            if (value == 0x0000) {
+-                SETADDR(ONEN_BUF_BLOCK, ONEN_BUF_PAGE)
+-                onenand_load_main(s, sec,
+-                                1 << (PAGE_SHIFT - 9), s->data[0][0]);
+-                s->addr[ONEN_BUF_PAGE] += 4;
+-                s->addr[ONEN_BUF_PAGE] &= 0xff;
+-            }
+-            break;
+-        }
+-
+-        switch (value) {
+-        case 0x00f0:  /* Reset OneNAND */
+-            onenand_reset(s, 0);
+-            break;
+-
+-        case 0x00e0:  /* Load Data into Buffer */
+-            s->cycle = 1;
+-            break;
+-
+-        case 0x0090:  /* Read Identification Data */
+-            memset(s->boot[0], 0, 3 << s->shift);
+-            s->boot[0][0 << s->shift] = s->id.man & 0xff;
+-            s->boot[0][1 << s->shift] = s->id.dev & 0xff;
+-            s->boot[0][2 << s->shift] = s->wpstatus & 0xff;
+-            break;
+-
+-        default:
+-            qemu_log_mask(LOG_GUEST_ERROR,
+-                          "unknown OneNAND boot command %" PRIx64 "\n",
+-                          value);
+-        }
+-        break;
+-
+-    case 0xf100 ... 0xf107:  /* Start addresses */
+-        s->addr[offset - 0xf100] = value;
+-        break;
+-
+-    case 0xf200:  /* Start buffer */
+-        s->bufaddr = (value >> 8) & 0xf;
+-        if (PAGE_SHIFT == 11)
+-            s->count = (value & 3) ?: 4;
+-        else if (PAGE_SHIFT == 10)
+-            s->count = (value & 1) ?: 2;
+-        break;
+-
+-    case 0xf220:  /* Command */
+-        if (s->intstatus & (1 << 15))
+-            break;
+-        s->command = value;
+-        onenand_command(s);
+-        break;
+-    case 0xf221:  /* System Configuration 1 */
+-        s->config[0] = value;
+-        onenand_intr_update(s);
+-        qemu_set_irq(s->rdy, (s->config[0] >> 7) & 1);
+-        break;
+-    case 0xf222:  /* System Configuration 2 */
+-        s->config[1] = value;
+-        break;
+-
+-    case 0xf241:  /* Interrupt */
+-        s->intstatus &= value;
+-        if ((1 << 15) & ~s->intstatus)
+-            s->status &= ~(ONEN_ERR_CMD | ONEN_ERR_ERASE |
+-                            ONEN_ERR_PROG | ONEN_ERR_LOAD);
+-        onenand_intr_update(s);
+-        break;
+-    case 0xf24c:  /* Unlock Start Block Address */
+-        s->unladdr[0] = value & (s->blocks - 1);
+-        /* For some reason we have to set the end address to by default
+-         * be same as start because the software forgets to write anything
+-         * in there.  */
+-        s->unladdr[1] = value & (s->blocks - 1);
+-        break;
+-    case 0xf24d:  /* Unlock End Block Address */
+-        s->unladdr[1] = value & (s->blocks - 1);
+-        break;
+-
+-    default:
+-        qemu_log_mask(LOG_GUEST_ERROR,
+-                      "write to unknown OneNAND register 0x%x\n",
+-                      offset);
+-    }
+-}
+-
+-static const MemoryRegionOps onenand_ops = {
+-    .read = onenand_read,
+-    .write = onenand_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
 -};
 -
--static void lm832x_register_types(void)
+-static void onenand_realize(DeviceState *dev, Error **errp)
 -{
--    type_register_static(&lm8323_info);
+-    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+-    OneNANDState *s = ONE_NAND(dev);
+-    uint32_t size = 1 << (24 + ((s->id.dev >> 4) & 7));
+-    void *ram;
+-    Error *local_err = NULL;
+-
+-    s->base = (hwaddr)-1;
+-    s->rdy = NULL;
+-    s->blocks = size >> BLOCK_SHIFT;
+-    s->secs = size >> 9;
+-    s->blockwp = g_malloc(s->blocks);
+-    s->density_mask = (s->id.dev & 0x08)
+-        ? (1 << (6 + ((s->id.dev >> 4) & 7))) : 0;
+-    memory_region_init_io(&s->iomem, OBJECT(s), &onenand_ops, s, "onenand",
+-                          0x10000 << s->shift);
+-    if (!s->blk) {
+-        s->image = memset(g_malloc(size + (size >> 5)),
+-                          0xff, size + (size >> 5));
+-    } else {
+-        if (!blk_supports_write_perm(s->blk)) {
+-            error_setg(errp, "Can't use a read-only drive");
+-            return;
+-        }
+-        blk_set_perm(s->blk, BLK_PERM_CONSISTENT_READ | BLK_PERM_WRITE,
+-                     BLK_PERM_ALL, &local_err);
+-        if (local_err) {
+-            error_propagate(errp, local_err);
+-            return;
+-        }
+-        s->blk_cur = s->blk;
+-    }
+-    s->otp = memset(g_malloc((64 + 2) << PAGE_SHIFT),
+-                    0xff, (64 + 2) << PAGE_SHIFT);
+-    memory_region_init_ram_nomigrate(&s->ram, OBJECT(s), "onenand.ram",
+-                           0xc000 << s->shift, &error_fatal);
+-    vmstate_register_ram_global(&s->ram);
+-    ram = memory_region_get_ram_ptr(&s->ram);
+-    s->boot[0] = ram + (0x0000 << s->shift);
+-    s->boot[1] = ram + (0x8000 << s->shift);
+-    s->data[0][0] = ram + ((0x0200 + (0 << (PAGE_SHIFT - 1))) << s->shift);
+-    s->data[0][1] = ram + ((0x8010 + (0 << (PAGE_SHIFT - 6))) << s->shift);
+-    s->data[1][0] = ram + ((0x0200 + (1 << (PAGE_SHIFT - 1))) << s->shift);
+-    s->data[1][1] = ram + ((0x8010 + (1 << (PAGE_SHIFT - 6))) << s->shift);
+-    onenand_mem_setup(s);
+-    sysbus_init_irq(sbd, &s->intr);
+-    sysbus_init_mmio(sbd, &s->container);
+-    vmstate_register(VMSTATE_IF(dev),
+-                     ((s->shift & 0x7f) << 24)
+-                     | ((s->id.man & 0xff) << 16)
+-                     | ((s->id.dev & 0xff) << 8)
+-                     | (s->id.ver & 0xff),
+-                     &vmstate_onenand, s);
 -}
 -
--type_init(lm832x_register_types)
-diff --git a/hw/input/Kconfig b/hw/input/Kconfig
-index 6f3ffbc5aa1..a116cb82dff 100644
---- a/hw/input/Kconfig
-+++ b/hw/input/Kconfig
-@@ -1,10 +1,6 @@
- config ADB
+-static Property onenand_properties[] = {
+-    DEFINE_PROP_UINT16("manufacturer_id", OneNANDState, id.man, 0),
+-    DEFINE_PROP_UINT16("device_id", OneNANDState, id.dev, 0),
+-    DEFINE_PROP_UINT16("version_id", OneNANDState, id.ver, 0),
+-    DEFINE_PROP_INT32("shift", OneNANDState, shift, 0),
+-    DEFINE_PROP_DRIVE("drive", OneNANDState, blk),
+-    DEFINE_PROP_END_OF_LIST(),
+-};
+-
+-static void onenand_class_init(ObjectClass *klass, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(klass);
+-
+-    dc->realize = onenand_realize;
+-    device_class_set_legacy_reset(dc, onenand_system_reset);
+-    device_class_set_props(dc, onenand_properties);
+-}
+-
+-static const TypeInfo onenand_info = {
+-    .name          = TYPE_ONE_NAND,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(OneNANDState),
+-    .class_init    = onenand_class_init,
+-};
+-
+-static void onenand_register_types(void)
+-{
+-    type_register_static(&onenand_info);
+-}
+-
+-void *onenand_raw_otp(DeviceState *onenand_device)
+-{
+-    OneNANDState *s = ONE_NAND(onenand_device);
+-
+-    return s->otp;
+-}
+-
+-type_init(onenand_register_types)
+diff --git a/hw/block/Kconfig b/hw/block/Kconfig
+index ef6709b1061..e67a6fd8af7 100644
+--- a/hw/block/Kconfig
++++ b/hw/block/Kconfig
+@@ -25,9 +25,6 @@ config PFLASH_CFI02
+ config ECC
      bool
  
--config LM832X
+-config ONENAND
 -    bool
--    depends on I2C
 -
- config PCKBD
+ config VIRTIO_BLK
      bool
-     select PS2
-diff --git a/hw/input/meson.build b/hw/input/meson.build
-index f12796fb695..90a214962c7 100644
---- a/hw/input/meson.build
-+++ b/hw/input/meson.build
-@@ -1,6 +1,5 @@
- system_ss.add(files('hid.c'))
- system_ss.add(when: 'CONFIG_ADB', if_true: files('adb.c', 'adb-mouse.c', 'adb-kbd.c'))
--system_ss.add(when: 'CONFIG_LM832X', if_true: files('lm832x.c'))
- system_ss.add(when: 'CONFIG_PCKBD', if_true: files('pckbd.c'))
- system_ss.add(when: 'CONFIG_PL050', if_true: files('pl050.c'))
- system_ss.add(when: 'CONFIG_PS2', if_true: files('ps2.c'))
+     default y
+diff --git a/hw/block/meson.build b/hw/block/meson.build
+index 0fb0f41f427..999a93d900f 100644
+--- a/hw/block/meson.build
++++ b/hw/block/meson.build
+@@ -8,7 +8,6 @@ system_ss.add(when: 'CONFIG_FDC', if_true: files('fdc.c'))
+ system_ss.add(when: 'CONFIG_FDC_ISA', if_true: files('fdc-isa.c'))
+ system_ss.add(when: 'CONFIG_FDC_SYSBUS', if_true: files('fdc-sysbus.c'))
+ system_ss.add(when: 'CONFIG_NAND', if_true: files('nand.c'))
+-system_ss.add(when: 'CONFIG_ONENAND', if_true: files('onenand.c'))
+ system_ss.add(when: 'CONFIG_PFLASH_CFI01', if_true: files('pflash_cfi01.c'))
+ system_ss.add(when: 'CONFIG_PFLASH_CFI02', if_true: files('pflash_cfi02.c'))
+ system_ss.add(when: 'CONFIG_SSI_M25P80', if_true: files('m25p80.c'))
 -- 
 2.34.1
 
