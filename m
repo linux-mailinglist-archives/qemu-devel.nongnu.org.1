@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CBA98BF1E
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 705E698BFDC
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:26:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdYy-0001rj-A3; Tue, 01 Oct 2024 10:09:16 -0400
+	id 1svdok-0006mt-9j; Tue, 01 Oct 2024 10:25:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philippe.mathieu.daude@gmail.com>)
- id 1svdYw-0001pr-1a
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:09:14 -0400
-Received: from mail-qk1-f171.google.com ([209.85.222.171])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1svdnp-0006FX-7v
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:24:38 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philippe.mathieu.daude@gmail.com>)
- id 1svdYu-00029j-5C
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:09:13 -0400
-Received: by mail-qk1-f171.google.com with SMTP id
- af79cd13be357-7a99fd4ea26so481857685a.1
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 07:09:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1svdnm-00068Q-NQ
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:24:36 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2fad6de2590so22072541fa.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 07:24:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1727792670; x=1728397470; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=FLJSkJjinENX7RpB5/Edwqkj4/i5cta4HH4Q++ARRE8=;
+ b=UjvI8d+IwPc5CPOw7lcqMpWzPWGwpHGynrdWUMeYeIBKm9VWUMWLWZzYUk/9FhNjzq
+ bCJvk5IYf1INymaPJp1LOg72m6gzBtG5DGT9XufxqglYUxTa+E1fcJVwhVLWuWdc9DIi
+ uy5V3/4LZKyn5St8GvY9Gq7g/N7t0qCCpXsvqsl+y9yGeHzWeZtt6950j9JOdMXCVXej
+ WVlSAJ5bID7iSzekGuVd9vhZTlH1YYFGx4V/bHNTDt8pkdNx37iFQwDUwxhcnwHDtGY3
+ gxgsaEkxWs656TacPz6WE9rduBWM49x+EhW6B2wVZx4DTMTjF9f6ooEMwcZi7PVMsv5d
+ v3QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727791751; x=1728396551;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8xgpnbokG+om7dpAa9n6IsHIRK4ZSoeDZAnfFMhIiAY=;
- b=nN7SnVrmnHbNrlzc4vB/gl8y7Wgdt6b65aXnzoyMg6ux1JJgodRpBR0ZRGmDVT0CMz
- xyyiXCSgIdcZsV6W0W358eYxywL9zS/lMn8zhe69jaEpVXd8C+QK+0v+BvsnQ32IezbO
- e0w1gZBg/VK13SF4QVN6lk4pVAcqbYa3R8bFyAZ10ZZQecmhoqrz5voXhnGu467o+D5y
- 1+vDpzQr1vs1BF1vXqgu76q/ozODBYkBvA2smipRhWS0//W7SmG/NmRu7AkAsT1MqAFE
- aSvHgtoaKX+xHyIon8vEuYqQv/UdF5mXHY0XryRpu3Vm/XuWpZGAWrJd/NzNVjSpVljO
- 1YGA==
-X-Gm-Message-State: AOJu0Yyn1SRGBdTdCocS+vFDr6llXGawTi4iIKgiDKuyDsrryF07TYar
- yqrxCKHZfN39fJBp8UBQNwlbK0tSz5ylFXpsvsvesgAzxDXUHNcolKSknnUNxikJJezmuUasCAJ
- 8U/PSGUmYRKn+UIewi5iirFd0U3PBg50Y
-X-Google-Smtp-Source: AGHT+IGwrOONTaI58XAUyNq/rtXt0rc60zwjWM4UmEdl0aYePxSKYF+/nkVkdMLGx7MZhmjlBFO3mFBbDvz4H4MlqNA=
-X-Received: by 2002:a05:6e02:18ca:b0:3a0:986e:e112 with SMTP id
- e9e14a558f8ab-3a3452d0434mr125571375ab.23.1727776592094; Tue, 01 Oct 2024
- 02:56:32 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1727792670; x=1728397470;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FLJSkJjinENX7RpB5/Edwqkj4/i5cta4HH4Q++ARRE8=;
+ b=NvllFtGTpsQ8J3dhPZA7Wq8T9NCL6Omyl4cd7Jgxq1IbLJULnWHKEVEcUk9EiJaxwI
+ lCHnM4EuSDJp5ADFQwQLn+5gBq5zGTu6y1iZeQmaGce7aCUzc7qUi4/v0hEUp/PmBWf1
+ 8NQV1B0AsFLsfKiDxpDDwp/B+YFWVrTIOo606vMHi+wbf4RfCKiaso+4ZdneekDUAeeU
+ dfiA4odH2Djafj5B5N1fOhAeDDACYPlAI1AlMb0OuM5fCb5mm3zOhTaPEyW/F33KyWJc
+ /TT13w+1L2y1kq8liUDJn2jikhEXAgBWrY5Pob27J7KP0EUmZOiewZqAP1YUoWFFciJP
+ YMbw==
+X-Gm-Message-State: AOJu0YyhzK25dkdXtCGX12DTv/LJdASDcC2GU0W5GtCTbSgC2KeejW5R
+ d19fEcxTJwO/0IGabqjSLHh/Gl3S8rGQE5wbbCjSWghpWSAHfdFakWDiAQxRBRTgnzTIoW36tYZ
+ U+/75Ta6+Innr6h6gE/wolU2EDt967hLX/eVk0IJHB5Qjvphz
+X-Google-Smtp-Source: AGHT+IECrUjIPW4qMCzTEOeDF7GnhNfH3HKuiabce7cCNaaWsgJFfvBIqNF2H3VTsGZG0J/wV8IRNODPdusf0rQgdWo=
+X-Received: by 2002:a05:6402:35c4:b0:5c8:9f44:a0b2 with SMTP id
+ 4fb4d7f45d1cf-5c89f44a0e9mr5850306a12.5.1727778646108; Tue, 01 Oct 2024
+ 03:30:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240930091101.40591-1-philmd@linaro.org>
- <20240930091101.40591-7-philmd@linaro.org>
-In-Reply-To: <20240930091101.40591-7-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <f4bug@amsat.org>
-Date: Tue, 1 Oct 2024 11:56:19 +0200
-Message-ID: <CAAdtpL4EQh9jRMeXSQ=qX6XgL6tXJV+=_d_Dn44QNbtos3PVhA@mail.gmail.com>
-Subject: Re: [PATCH 06/12] target/mips: Explode MO_TExx -> MO_TE | MO_xx
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
- Aurelien Jarno <aurelien@aurel32.net>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Aleksandar Rikalo <arikalo@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
- Anton Johansson <anjo@rev.ng>
+References: <20240930084325.187606-1-vsementsov@yandex-team.ru>
+In-Reply-To: <20240930084325.187606-1-vsementsov@yandex-team.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 1 Oct 2024 11:30:34 +0100
+Message-ID: <CAFEAcA_3BQwRTv7QSDqnU_yqSu9fxhknGCV0GPqJKC-m2fBvcA@mail.gmail.com>
+Subject: Re: [PULL 0/5] Block-jobs 2024-09-30
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=209.85.222.171;
- envelope-from=philippe.mathieu.daude@gmail.com; helo=mail-qk1-f171.google.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+X-Spam_score_int: 14
+X-Spam_score: 1.4
+X-Spam_bar: +
+X-Spam_report: (1.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUBJ_LACKS_WORDS=1.955 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,74 +85,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 30, 2024 at 11:12=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
+On Mon, 30 Sept 2024 at 09:43, Vladimir Sementsov-Ogievskiy
+<vsementsov@yandex-team.ru> wrote:
 >
-> Extract the implicit MO_TE definition in order to replace
-> it by runtime variable in the next commit.
+> The following changes since commit 3b14a767eaca3df5534a162851f04787b363670e:
 >
-> Mechanical change using:
+>   Merge tag 'qemu-openbios-20240924' of https://github.com/mcayland/qemu into staging (2024-09-28 12:34:44 +0100)
 >
->   $ for n in UW UL UQ UO SW SL SQ; do \
->       sed -i -e "s/MO_TE$n/MO_TE | MO_$n/" \
->            $(git grep -l MO_TE$n target/mips); \
->     done
+> are available in the Git repository at:
 >
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  target/mips/tcg/mxu_translate.c           |   8 +-
->  target/mips/tcg/translate.c               | 120 +++++++++++-----------
->  target/mips/tcg/tx79_translate.c          |   8 +-
->  target/mips/tcg/micromips_translate.c.inc |  22 ++--
->  target/mips/tcg/mips16e_translate.c.inc   |  12 +--
->  target/mips/tcg/nanomips_translate.c.inc  |  32 +++---
->  6 files changed, 101 insertions(+), 101 deletions(-)
+>   https://gitlab.com/vsementsov/qemu.git tags/pull-block-jobs-2024-09-30
 >
-> diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_transl=
-ate.c
-> index c517258ac5..b221f7a4a0 100644
-> --- a/target/mips/tcg/mxu_translate.c
-> +++ b/target/mips/tcg/mxu_translate.c
-> @@ -1533,7 +1533,7 @@ static void gen_mxu_s32ldxx(DisasContext *ctx, bool=
- reversed, bool postinc)
->      tcg_gen_add_tl(t0, t0, t1);
+> for you to fetch changes up to b74987cd3bf9bd4bf452ed371d864cbd1dccb08e:
 >
->      tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx,
-> -                       (MO_TESL ^ (reversed ? MO_BSWAP : 0)) |
-> +                       (MO_TE | MO_SL ^ (reversed ? MO_BSWAP : 0)) |
+>   util/co-shared-resource: Remove unused co_try_get_from_shres (2024-09-30 10:53:18 +0300)
+>
+> ----------------------------------------------------------------
+> Block-jobs: improve backup fleecing
+>
+> ----------------------------------------------------------------
 
-Hmm either I need to use parenthesis here or swap the arguments.
 
->                          ctx->default_tcg_memop_mask);
->      gen_store_mxu_gpr(t1, XRa);
->
-> @@ -1569,7 +1569,7 @@ static void gen_mxu_s32stxx(DisasContext *ctx, bool=
- reversed, bool postinc)
->
->      gen_load_mxu_gpr(t1, XRa);
->      tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx,
-> -                       (MO_TESL ^ (reversed ? MO_BSWAP : 0)) |
-> +                       (MO_TE | MO_SL ^ (reversed ? MO_BSWAP : 0)) |
->                          ctx->default_tcg_memop_mask);
->
->      if (postinc) {
-> @@ -1605,7 +1605,7 @@ static void gen_mxu_s32ldxvx(DisasContext *ctx, boo=
-l reversed,
->      tcg_gen_add_tl(t0, t0, t1);
->
->      tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx,
-> -                       (MO_TESL ^ (reversed ? MO_BSWAP : 0)) |
-> +                       (MO_TE | MO_SL ^ (reversed ? MO_BSWAP : 0)) |
->                          ctx->default_tcg_memop_mask);
->      gen_store_mxu_gpr(t1, XRa);
->
-> @@ -1675,7 +1675,7 @@ static void gen_mxu_s32stxvx(DisasContext *ctx, boo=
-l reversed,
->
->      gen_load_mxu_gpr(t1, XRa);
->      tcg_gen_qemu_st_tl(t1, t0, ctx->mem_idx,
-> -                       (MO_TESL ^ (reversed ? MO_BSWAP : 0)) |
-> +                       (MO_TE | MO_SL ^ (reversed ? MO_BSWAP : 0)) |
->                          ctx->default_tcg_memop_mask);
->
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
+
+-- PMM
 
