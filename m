@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E89C98C0D8
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DF398C0C6
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:53:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sveGh-0005Ae-BI; Tue, 01 Oct 2024 10:54:29 -0400
+	id 1sveDm-0003EW-HQ; Tue, 01 Oct 2024 10:51:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sveGU-00052m-Dy
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:54:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sveCl-0001uJ-BF
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:50:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sveGR-0006GH-39
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:54:13 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sveCj-0005O7-9I
+ for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:50:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727794441;
+ s=mimecast20190719; t=1727794218;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=AGHX9GwxBiemSql2PHEpMBW570ILwIEBVtI698ydyKU=;
- b=NQcTXgiZxDZGU8M+s8jYTA7xLckwXEyVRBGNLBgr81okzfUPakJG6IG4cBYyMFB1C+2BUd
- EeZo8X15xu9v+En4Ktor9RcoyEdR7SH2SnNEFLsufbwVs7yHl60srQJEdEy58Sn5HW4jUi
- 69KT2Q/9+I/el4QpdSQaJw6RhjG5BQM=
+ bh=oX5e8KJFPVCsIMiJ1/A5vFhu5mTRzo9awdA64YgTDyI=;
+ b=ffCxjcJZ/PZ8QWhDyhQmTMgCc1cAGxbnDjX/zxmSfy2Ky6t0SzJp61Vm4oBx1QLbkErTC9
+ 7THfnVd8YvAuJKxcMONvxMq0nWQoLNInUyj1rJrdscjW6qL9SsYbomokUxgKpyMF0AoTHJ
+ yAjITG83nFSS6CkzxKc/ENSTzsbKzEs=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-Zfn3ckX0O7-ZfQ9UXoMBTw-1; Tue, 01 Oct 2024 01:21:39 -0400
-X-MC-Unique: Zfn3ckX0O7-ZfQ9UXoMBTw-1
+ us-mta-648-0oEO2u91M3CldOvzT126vw-1; Tue, 01 Oct 2024 01:24:07 -0400
+X-MC-Unique: 0oEO2u91M3CldOvzT126vw-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a8d15eff783so339254366b.3
- for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 22:21:39 -0700 (PDT)
+ a640c23a62f3a-a8d26b5857cso394473266b.0
+ for <qemu-devel@nongnu.org>; Mon, 30 Sep 2024 22:24:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727760098; x=1728364898;
+ d=1e100.net; s=20230601; t=1727760246; x=1728365046;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=AGHX9GwxBiemSql2PHEpMBW570ILwIEBVtI698ydyKU=;
- b=m8jeOv5x6JmwIVm0uy7bp2sVTvLRTEPoZHQd7n5ATAQVlvp4LQZ7ku5kTkAaGJ7I0K
- zZnl2b4CcPRZeoIBnIM3YR9vjhrg9tWdM6QeL8ySEce2L8VMF2ExnvLVFRGW5ShakNgB
- nMYTasqlQjNDaaP9pfhN+UkvQGYJAbGo427yskzWwMu2ShIjZq/lsUEWX7ZblaAALyjM
- ivljiSqYQBb0mqtfwUqf5eSEVgl8QoPO6gmUV1gJVgxHi0PuV1ktIQakXUEvSJc+EepM
- o4Dt9wVipWPRhvIv40chvxtENyb6EpJjTjXO3A2wWka93TulBMBNhlYv6bsqujmxW3S2
- JMsA==
+ bh=oX5e8KJFPVCsIMiJ1/A5vFhu5mTRzo9awdA64YgTDyI=;
+ b=ryEs6Ei6JUdUCFFjELskx8l0KNadJVYOy/BG74/xERTY3Sjg4X2FipcB1w6/lvqZSU
+ bT6X5+UnS6PrPTwceqsKHE2m8+8KfszdmcKlTCfc8Qzz97s817XX65Y/4UXpbPybJdNh
+ wAsksU5/KIx7FY5rjEr/5uUwzaQzonzTQjnoRuCGYpo82PwVnUr1+csOxk+UIVnRYiru
+ cjVzbQGBcOIHwH0b5/WKuTaNAPDK9AtCci5B7tGVe2qNvWJJesr5+Mut0ux5urQe0p/s
+ xwz7QCCtLDYpkuDRVGP8rDLgQLGcvz1SUBK5zbHRas/6Dv9/mmtkAYa2c5CYsTqSnLKo
+ usdg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVj/WnMjpaSy1KAtUmEobqDVatqEJWOpoSObEPlHdZ3ruLdQrTkB6iTwuxMWuaLv1cbMJ1E+G6WUKSf@nongnu.org
-X-Gm-Message-State: AOJu0YwlzROjD2pbX9mmrslENlkel0IvrKNpoL2ee911xIxi5aPU19bB
- jslYs07QaItgtYnLkv/z9Cu2WWpiTSbxG+JlfnzOtXpyEHfNcwjsvTQ4PmAhxzp9yDlc1ElwLLq
- JS1O6oh1ePrNbBlVHCvLPIABAlyzsMP++epJCd52R08Ex2g0/axFUw1NYliUDvuc=
-X-Received: by 2002:a17:906:99c5:b0:a8d:7210:e28d with SMTP id
- a640c23a62f3a-a93c4946cc8mr1607131666b.29.1727760098136; 
- Mon, 30 Sep 2024 22:21:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6ZVQMv0a0dF/nrlrcq2AhgPxf7+8Ghkb44BTPhd2pzPqZjgR7ZeuKnYlxil11NScvX+UdMQ==
-X-Received: by 2002:a17:906:99c5:b0:a8d:7210:e28d with SMTP id
- a640c23a62f3a-a93c4946cc8mr1607130266b.29.1727760097709; 
- Mon, 30 Sep 2024 22:21:37 -0700 (PDT)
+ AJvYcCWf6EqNLpCCG582M+s+UvsCf3B59rD1p56/8e5FGBL716yy1ce00ITHtZAIIcPV31OJ3kNVDm9dFoYG@nongnu.org
+X-Gm-Message-State: AOJu0YxGiZBMpSO4DnkTIuYv9p2GBvWF9/tG/9S09uy9YlUbB7XP6izq
+ bRz9dUGKU+P2coiB4eVBEpdJIkvTaWSoaQvlG1yfwJhpLNaoEkk5CaX06qxTJADYJSwRHfTGmas
+ 91szzn1HubNffXVF8lK5ZFdvjvcxOh+PbA26t5eNDjYpEWPtw788P
+X-Received: by 2002:a17:907:3f1c:b0:a8a:837c:ebd4 with SMTP id
+ a640c23a62f3a-a93c4926f43mr1733196066b.27.1727760246492; 
+ Mon, 30 Sep 2024 22:24:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUc4blwtyu+teAUd1XE+/hghqt9OPbsT/5T0X+xFRpQd0fU2hxGQG8t2QzRklpUZWtrrnZOg==
+X-Received: by 2002:a17:907:3f1c:b0:a8a:837c:ebd4 with SMTP id
+ a640c23a62f3a-a93c4926f43mr1733193666b.27.1727760246010; 
+ Mon, 30 Sep 2024 22:24:06 -0700 (PDT)
 Received: from [192.168.0.7] (ip-109-42-49-143.web.vodafone.de.
  [109.42.49.143]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a93c297bb40sm632474166b.181.2024.09.30.22.21.36
+ a640c23a62f3a-a93e5324b4dsm418884766b.0.2024.09.30.22.24.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 30 Sep 2024 22:21:37 -0700 (PDT)
-Message-ID: <84a0a395-4b11-4db9-b7e3-c006d84394bb@redhat.com>
-Date: Tue, 1 Oct 2024 07:21:35 +0200
+ Mon, 30 Sep 2024 22:24:05 -0700 (PDT)
+Message-ID: <b1ec36e3-e910-41ae-9330-ed71dd038f64@redhat.com>
+Date: Tue, 1 Oct 2024 07:24:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] hw/core/machine: Extract compat properties to
- machine-compat.c
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Zhao Liu <zhao1.liu@intel.com>, Anton Johansson <anjo@rev.ng>,
- Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>
-References: <20240930221900.59525-1-philmd@linaro.org>
- <20240930221900.59525-3-philmd@linaro.org>
+Subject: Re: [PATCH v7 8/8] tests/qtest:ast2700-gpio-test: Add GPIO test case
+ for AST2700
+To: Jamin Lin <jamin_lin@aspeedtech.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
+References: <20241001024334.834807-1-jamin_lin@aspeedtech.com>
+ <20241001024334.834807-9-jamin_lin@aspeedtech.com>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -121,10 +124,10 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240930221900.59525-3-philmd@linaro.org>
+In-Reply-To: <20241001024334.834807-9-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -133,7 +136,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -149,14 +152,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01/10/2024 00.19, Philippe Mathieu-Daudé wrote:
-> Extract machine compat properties to machine-compat.c.
-> Add the unit to the meson specific_ss[] source set so
-> we can use target specific (poisoned) definitions.
+On 01/10/2024 04.43, Jamin Lin wrote:
+> Add GPIO test cases to test output and input pins from A0 to D7 for AST2700.
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> ---
+>   tests/qtest/ast2700-gpio-test.c | 95 +++++++++++++++++++++++++++++++++
+>   tests/qtest/meson.build         |  3 ++
+>   2 files changed, 98 insertions(+)
+>   create mode 100644 tests/qtest/ast2700-gpio-test.c
+> 
+> diff --git a/tests/qtest/ast2700-gpio-test.c b/tests/qtest/ast2700-gpio-test.c
+...
+> +int main(int argc, char **argv)
+> +{
+> +    g_test_init(&argc, &argv, NULL);
+> +
+> +    qtest_add_func("/ast2700/gpio/input_pins", test_2700_input_pins);
+> +    qtest_add_func("/ast2700/gpio/output_pins", test_2700_output_pins);
+> +
+> +    return g_test_run();
+> +}
+> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+> index 310865e49c..e1b62d34d8 100644
+> --- a/tests/qtest/meson.build
+> +++ b/tests/qtest/meson.build
+> @@ -209,6 +209,8 @@ qtests_aspeed = \
+>     ['aspeed_hace-test',
+>      'aspeed_smc-test',
+>      'aspeed_gpio-test']
+> +qtests_aspeed64 = \
+> +  ['ast2700-gpio-test']
+>   
+>   qtests_stm32l4x5 = \
+>     ['stm32l4x5_exti-test',
+> @@ -247,6 +249,7 @@ qtests_aarch64 = \
+>     (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test', 'bcm2835-i2c-test'] : []) +  \
+>     (config_all_accel.has_key('CONFIG_TCG') and                                            \
+>      config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
+> +  (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed64 : []) + \
+>     ['arm-cpu-features',
+>      'numa-test',
+>      'boot-serial-test',
 
-Why is this required? Shouldn't target-specific settings rather be done in 
-the various machine files instead?
+Thanks, that looks way simpler now!
 
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
