@@ -2,97 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DF398BF8E
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 618AE98BF15
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Oct 2024 16:09:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svdcD-0008Es-Np; Tue, 01 Oct 2024 10:12:37 -0400
+	id 1svdYp-0001db-Mi; Tue, 01 Oct 2024 10:09:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1svdc0-0007ok-9A
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:12:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1svdYn-0001Wj-2m; Tue, 01 Oct 2024 10:09:05 -0400
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1svdbr-00038t-Pg
- for qemu-devel@nongnu.org; Tue, 01 Oct 2024 10:12:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727791932;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hHGZqlVbW7MCScvkF1IowomfSd7QuTBgUrlyUTAquM0=;
- b=GscK21ALxdWsvvV59tj6nvxJbWSZjY+LYL/k9r69kVmGb8/OmudAnLC7/B3AOgiH3YY4lf
- sGgp6x04H2DckFZsIjfYRkrn/kfu3r3J4XFdYgAJm5gzf9/iZ9n1TT/L8H1ObFUfkl0Bsi
- fYIeEzC7UXSgT+an8c2n2oPVzJMfISI=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-lZzZc48APCuOhaQkbSHOGA-1; Tue, 01 Oct 2024 05:53:43 -0400
-X-MC-Unique: lZzZc48APCuOhaQkbSHOGA-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-20b583a48f4so43936145ad.2
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 02:53:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727776422; x=1728381222;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hHGZqlVbW7MCScvkF1IowomfSd7QuTBgUrlyUTAquM0=;
- b=nZBimEMcAs1QRm1O81P49gFirqyzGdJBIOpQoXIaicD5XvsflZQEA8D8qRX+bFW6KI
- oHXVtZSHlHxGdlOoQkUtDkz1kHJ/3ej20nnN4llNyWAJGHvfIVs8mdlGtxPVlKMurLGG
- RyjPQy8rIYf/O31cISzagfzlmC1f8QhvweCXMQdgNawYxHAu0kv0hmQN4xFmSuSkFACq
- bk7Uq9dhitW2+eWGCdVQhb+3A7yWBRB0fVrqK7TtpcYNoYGYgVBvBAfm53W8YkavQD8m
- AMpYd8Y4AXWlBXeamxRAmrbjbrj02pCOSsePFXUtJeRwvPbhxKxchg7FvWiWfRPJbXAi
- nGkQ==
-X-Gm-Message-State: AOJu0YzUk0nM/J9DPZ6+WshkCeElVcsmtiNXl2boGgJWFmvNCWhw1jCw
- W4j6JVSzRd6T7DiWHOxrRQfRGuyRnCpZbEZvfTgzFHhwTDYg/PuxBHtCjkTtXa2g3WpPT2lTsX5
- ra/RMGxPiBFovSYHhsw4vCVuWFzGg/TwMCof1LM5QvWeorH6wvbLw
-X-Received: by 2002:a17:903:110e:b0:206:fd9d:b88d with SMTP id
- d9443c01a7336-20b37bdb78fmr187873145ad.61.1727776421932; 
- Tue, 01 Oct 2024 02:53:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJyPS8jiSDIefK69rHM9l/vXArFcDMjlSeAyHSI9QO/iTbyxcgzwZVvH3ECPV9p3jIajveAw==
-X-Received: by 2002:a17:903:110e:b0:206:fd9d:b88d with SMTP id
- d9443c01a7336-20b37bdb78fmr187872915ad.61.1727776421435; 
- Tue, 01 Oct 2024 02:53:41 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-46-200-231.retail.telecomitalia.it.
- [79.46.200.231]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20b37e2072fsm66391385ad.128.2024.10.01.02.53.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 02:53:40 -0700 (PDT)
-Date: Tue, 1 Oct 2024 11:53:33 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Roy Hopkins <roy.hopkins@suse.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez <slp@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair@alistair23.me>, 
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
- Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>, 
- =?utf-8?B?SsO2cmc=?= Roedel <jroedel@suse.com>
-Subject: Re: [PATCH v6 04/16] hw/i386: Add igvm-cfg object and processing for
- IGVM files
-Message-ID: <zgjym2u5k4p7h5bwi6nef62vvs6snzw6defg5la7yey6oub5kg@ile7murbz3mt>
-References: <cover.1727341768.git.roy.hopkins@suse.com>
- <9506d5c8954c78d5890d48129156abfb93691397.1727341768.git.roy.hopkins@suse.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1svdYe-00023t-As; Tue, 01 Oct 2024 10:09:04 -0400
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:8a3:0:640:33b5:0])
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 21F976003B;
+ Tue,  1 Oct 2024 12:54:07 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8026::1:2f] (unknown
+ [2a02:6b8:b081:8026::1:2f])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 5sWnJw1Iga60-O0dn97Jg; Tue, 01 Oct 2024 12:54:06 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1727776446;
+ bh=uLNJt9cmEOePQhreo7TH0vvPWBVritTAxkgy9K7Bd5k=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=Rny1Cn5W1oKcWxueGsYbBPsLEuOL89UPUaySYLafHlXLFMGL0RweAMYkE4l6f/tQn
+ wTmMhsWwIWY+aPb3NQbLHnN+Ik5PcFx7Uss+k+p27Mj75v7a94AlWKBkNasZCGTlIh
+ brD3X8krMu0roSluQpgE3bFahnu+W5Kfr67fruF4=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <29cd78e2-be26-41a4-92c4-a327efe76177@yandex-team.ru>
+Date: Tue, 1 Oct 2024 12:54:05 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <9506d5c8954c78d5890d48129156abfb93691397.1727341768.git.roy.hopkins@suse.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Bug Report][RFC PATCH 1/1] block: fix failing assert on paused
+ VM migration
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ eesposit@redhat.com, den@virtuozzo.com, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+References: <20240924125611.664315-1-andrey.drobyshev@virtuozzo.com>
+ <20240924125611.664315-2-andrey.drobyshev@virtuozzo.com>
+ <6fb3340a-f685-422f-acaf-ad968e854847@yandex-team.ru>
+ <0faf2b77-0cda-4823-8c3f-986be7d6964c@virtuozzo.com>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <0faf2b77-0cda-4823-8c3f-986be7d6964c@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Yandex-Filter: 1
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -110,158 +79,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 26, 2024 at 12:41:53PM GMT, Roy Hopkins wrote:
->An IGVM file contains configuration of guest state that should be
->applied during configuration of the guest, before the guest is started.
->
->This patch allows the user to add an igvm-cfg object to an X86 machine
->configuration that allows an IGVM file to be configured that will be
->applied to the guest before it is started.
->
->If an IGVM configuration is provided then the IGVM file is processed at
->the end of the board initialization, before the state transition to
->PHASE_MACHINE_INITIALIZED.
->
->Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
->Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->---
-> hw/i386/pc.c          | 12 ++++++++++++
-> hw/i386/pc_piix.c     | 10 ++++++++++
-> hw/i386/pc_q35.c      | 10 ++++++++++
-> include/hw/i386/x86.h |  3 +++
-> qemu-options.hx       | 28 ++++++++++++++++++++++++++++
-> 5 files changed, 63 insertions(+)
+On 30.09.24 17:07, Andrey Drobyshev wrote:
+> On 9/30/24 12:25 PM, Vladimir Sementsov-Ogievskiy wrote:
+>> [add migration maintainers]
+>>
+>> On 24.09.24 15:56, Andrey Drobyshev wrote:
+>>> [...]
+>>
+>> I doubt that this a correct way to go.
+>>
+>> As far as I understand, "inactive" actually means that "storage is not
+>> belong to qemu, but to someone else (another qemu process for example),
+>> and may be changed transparently". In turn this means that Qemu should
+>> do nothing with inactive disks. So the problem is that nobody called
+>> bdrv_activate_all on target, and we shouldn't ignore that.
+>>
+>> Hmm, I see in process_incoming_migration_bh() we do call
+>> bdrv_activate_all(), but only in some scenarios. May be, the condition
+>> should be less strict here.
+>>
+>> Why we need any condition here at all? Don't we want to activate
+>> block-layer on target after migration anyway?
+>>
+> 
+> Hmm I'm not sure about the unconditional activation, since we at least
+> have to honor LATE_BLOCK_ACTIVATE cap if it's set (and probably delay it
+> in such a case).  In current libvirt upstream I see such code:
+> 
+>> /* Migration capabilities which should always be enabled as long as they
+>>   * are supported by QEMU. If the capability is supposed to be enabled on both
+>>   * sides of migration, it won't be enabled unless both sides support it.
+>>   */
+>> static const qemuMigrationParamsAlwaysOnItem qemuMigrationParamsAlwaysOn[] = {
+>>      {QEMU_MIGRATION_CAP_PAUSE_BEFORE_SWITCHOVER,
+>>       QEMU_MIGRATION_SOURCE},
+>>                                                                                  
+>>      {QEMU_MIGRATION_CAP_LATE_BLOCK_ACTIVATE,
+>>       QEMU_MIGRATION_DESTINATION},
+>> };
+> 
+> which means that libvirt always wants LATE_BLOCK_ACTIVATE to be set.
+> 
+> The code from process_incoming_migration_bh() you're referring to:
+> 
+>>      /* If capability late_block_activate is set:
+>>       * Only fire up the block code now if we're going to restart the
+>>       * VM, else 'cont' will do it.
+>>       * This causes file locking to happen; so we don't want it to happen
+>>       * unless we really are starting the VM.
+>>       */
+>>      if (!migrate_late_block_activate() ||
+>>           (autostart && (!global_state_received() ||
+>>              runstate_is_live(global_state_get_runstate())))) {
+>>          /* Make sure all file formats throw away their mutable metadata.
+>>           * If we get an error here, just don't restart the VM yet. */
+>>          bdrv_activate_all(&local_err);
+>>          if (local_err) {
+>>              error_report_err(local_err);
+>>              local_err = NULL;
+>>              autostart = false;
+>>          }
+>>      }
+> 
+> It states explicitly that we're either going to start VM right at this
+> point if (autostart == true), or we wait till "cont" command happens.
+> None of this is going to happen if we start another migration while
+> still being in PAUSED state.  So I think it seems reasonable to take
+> such case into account.  For instance, this patch does prevent the crash:
+> 
+>> diff --git a/migration/migration.c b/migration/migration.c
+>> index ae2be31557..3222f6745b 100644
+>> --- a/migration/migration.c
+>> +++ b/migration/migration.c
+>> @@ -733,7 +733,8 @@ static void process_incoming_migration_bh(void *opaque)
+>>        */
+>>       if (!migrate_late_block_activate() ||
+>>            (autostart && (!global_state_received() ||
+>> -            runstate_is_live(global_state_get_runstate())))) {
+>> +            runstate_is_live(global_state_get_runstate()))) ||
+>> +         (!autostart && global_state_get_runstate() == RUN_STATE_PAUSED)) {
+>>           /* Make sure all file formats throw away their mutable metadata.
+>>            * If we get an error here, just don't restart the VM yet. */
+>>           bdrv_activate_all(&local_err);
+> 
+> What are your thoughts on it?
+> 
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Hmmm... Don't we violate "late-block-activate" contract by this?
 
->
->diff --git a/hw/i386/pc.c b/hw/i386/pc.c
->index 8d84c22458..695fc1dbfe 100644
->--- a/hw/i386/pc.c
->+++ b/hw/i386/pc.c
->@@ -1843,6 +1843,18 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
->     object_class_property_add_bool(oc, "fd-bootchk",
->         pc_machine_get_fd_bootchk,
->         pc_machine_set_fd_bootchk);
->+
->+#if defined(CONFIG_IGVM)
->+    object_class_property_add_link(oc, "igvm-cfg",
->+                                   TYPE_IGVM_CFG,
->+                                   offsetof(X86MachineState, igvm),
->+                                   object_property_allow_set_link,
->+                                   OBJ_PROP_LINK_STRONG);
->+    object_class_property_set_description(oc, "igvm-cfg",
->+                                          "Set IGVM configuration");
->+#endif
->+
->+
-> }
->
-> static const TypeInfo pc_machine_info = {
->diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
->index 2bf6865d40..5adf7da6f4 100644
->--- a/hw/i386/pc_piix.c
->+++ b/hw/i386/pc_piix.c
->@@ -360,6 +360,16 @@ static void pc_init1(MachineState *machine, const char *pci_type)
->                                x86_nvdimm_acpi_dsmio,
->                                x86ms->fw_cfg, OBJECT(pcms));
->     }
->+
->+#if defined(CONFIG_IGVM)
->+    /* Apply guest state from IGVM if supplied */
->+    if (x86ms->igvm) {
->+        if (IGVM_CFG_GET_CLASS(x86ms->igvm)
->+                ->process(x86ms->igvm, machine->cgs, &error_fatal) < 0) {
->+            g_assert_not_reached();
->+        }
->+    }
->+#endif
-> }
->
-> typedef enum PCSouthBridgeOption {
->diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
->index 8319b6d45e..483e0a0a40 100644
->--- a/hw/i386/pc_q35.c
->+++ b/hw/i386/pc_q35.c
->@@ -324,6 +324,16 @@ static void pc_q35_init(MachineState *machine)
->                                x86_nvdimm_acpi_dsmio,
->                                x86ms->fw_cfg, OBJECT(pcms));
->     }
->+
->+#if defined(CONFIG_IGVM)
->+    /* Apply guest state from IGVM if supplied */
->+    if (x86ms->igvm) {
->+        if (IGVM_CFG_GET_CLASS(x86ms->igvm)
->+                ->process(x86ms->igvm, machine->cgs, &error_fatal) < 0) {
->+            g_assert_not_reached();
->+        }
->+    }
->+#endif
-> }
->
-> #define DEFINE_Q35_MACHINE(major, minor) \
->diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
->index d43cb3908e..01ac29acf6 100644
->--- a/include/hw/i386/x86.h
->+++ b/include/hw/i386/x86.h
->@@ -25,6 +25,7 @@
-> #include "hw/intc/ioapic.h"
-> #include "hw/isa/isa.h"
-> #include "qom/object.h"
->+#include "sysemu/igvm-cfg.h"
->
-> struct X86MachineClass {
->     /*< private >*/
->@@ -97,6 +98,8 @@ struct X86MachineState {
->      * which means no limitation on the guest's bus locks.
->      */
->     uint64_t bus_lock_ratelimit;
->+
->+    IgvmCfg *igvm;
-> };
->
-> #define X86_MACHINE_SMM              "smm"
->diff --git a/qemu-options.hx b/qemu-options.hx
->index d94e2cbbae..66292c160b 100644
->--- a/qemu-options.hx
->+++ b/qemu-options.hx
->@@ -5927,6 +5927,34 @@ SRST
->                  -machine ...,memory-encryption=sev0 \\
->                  .....
->
->+    ``-object igvm-cfg,file=file``
->+        Create an IGVM configuration object that defines the initial state
->+        of the guest using a file in that conforms to the Independent Guest
->+        Virtual Machine (IGVM) file format.
->+
->+        This is currently only supported by ``-machine q35`` and
->+        ``-machine pc``.
->+
->+        The ``file`` parameter is used to specify the IGVM file to load.
->+        When provided, the IGVM file is used to populate the initial
->+        memory of the virtual machine and, depending on the platform, can
->+        define the initial processor state, memory map and parameters.
->+
->+        The IGVM file is expected to contain the firmware for the virtual
->+        machine, therefore an ``igvm-cfg`` object cannot be provided along
->+        with other ways of specifying firmware, such as the ``-bios``
->+        parameter on x86 machines.
->+
->+        e.g to launch a machine providing the firmware in an IGVM file
->+
->+        .. parsed-literal::
->+
->+             # |qemu_system_x86| \\
->+                 ...... \\
->+                 -object igvm-cfg,id=igvm0,file=bios.igvm \\
->+                 -machine ...,igvm-cfg=igvm0 \\
->+                 .....
->+
->     ``-object authz-simple,id=id,identity=string``
->         Create an authorization object that will control access to
->         network services.
->-- 
->2.43.0
->
+Me go and check:
+
+# @late-block-activate: If enabled, the destination will not activate
+#     block devices (and thus take locks) immediately at the end of
+#     migration.  (since 3.0)
+
+Yes, we'll violate it by this patch. So, for now the only exception is when autostart is enabled, but libvirt correctly use late-block-activate + !autostart.
+
+Interesting, when block layer is assumed to be activated.. Aha, only in qmp_cont().
+
+
+So, what to do with this all:
+
+Either libvirt should not use late-block-activate for migration of stopped vm. This way target would be automatically activated
+
+Or if libvirt still need postponed activation (I assume, for correctly switching shared disks, etc), Libvirt should do some additional QMP call. It can't be "cont", if we don't want to run the VM. So, probably, we need additional "block-activate" QMP command for this.
+
+And, anyway, trying to migrate inactive block layer should fail with some good error message rather than crash.
+
+-- 
+Best regards,
+Vladimir
 
 
