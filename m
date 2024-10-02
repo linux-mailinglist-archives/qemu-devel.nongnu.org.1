@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32D3898CEEE
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:39:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE93398CEF3
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:39:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svusp-0004bm-MB; Wed, 02 Oct 2024 04:38:55 -0400
+	id 1svuss-00053N-GJ; Wed, 02 Oct 2024 04:38:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svusX-0004Ip-1L
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:40 -0400
+ id 1svusc-0004PG-61
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svusU-0005nI-QK
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:36 -0400
+ id 1svusa-0005nS-Jl
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727858314;
+ s=mimecast20190719; t=1727858319;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h1JuQuL2UkuXBJWfc7ll+XmI7QlTCOtmrJShYAzAwNE=;
- b=OvaaijcDCr11OaKI4dnx7O9u0VPR9LMqKbjaS8KXtBS50p6u1SL24ZuvTWyLhqMnWpHhhM
- CspAX9fYzr1yusrG5xxhBumVVeIJztuoJbAjIhOU4Cp1mkEUS2fG73P+TlEq7iB6jJjTd6
- QJ5aSCQ8sMM3zAHvtDcLIsnFTmw7Ous=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=mVvlpzifK/oFPsb1lZB/F7EDF/ofNvPrMCS+ebNt03Q=;
+ b=dHofhzJDIxZElfLf+4qys9WXaMMC+7E5Lx2VQ9iGvOeswQK2Rhid7lCgFFscxZilcJHqyW
+ FPIupP/k8fF0xgIRTxDQMKoZ0LlvrDwF3D3kQDHCZOcJhbMo7HJ7hh/+1UdNK69kMCuoM3
+ UkD6kuGGf80/z3Znd4+M28JfzoatdtI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-297-k8mOC4ZhOwi5eFX2xPJHcw-1; Wed,
- 02 Oct 2024 04:38:32 -0400
-X-MC-Unique: k8mOC4ZhOwi5eFX2xPJHcw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-489-Rv7oUskWN0a7DLFzSXfYpw-1; Wed,
+ 02 Oct 2024 04:38:37 -0400
+X-MC-Unique: Rv7oUskWN0a7DLFzSXfYpw-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5A4C019560A5; Wed,  2 Oct 2024 08:38:31 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D2A78195609E; Wed,  2 Oct 2024 08:38:35 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C5B7319560A2; Wed,  2 Oct 2024 08:38:29 +0000 (UTC)
+ id A24E819560A2; Wed,  2 Oct 2024 08:38:34 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Greg Kurz <groug@kaod.org>, Christian Schoenebeck <qemu_oss@crudebyte.com>
-Subject: [PULL 21/22] fsdep/9p: fix -Werror=maybe-uninitialized false-positive
-Date: Wed,  2 Oct 2024 12:36:44 +0400
-Message-ID: <20241002083646.2893078-22-marcandre.lureau@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 22/22] qom/object: fix -Werror=maybe-uninitialized
+Date: Wed,  2 Oct 2024 12:36:45 +0400
+Message-ID: <20241002083646.2893078-23-marcandre.lureau@redhat.com>
 In-Reply-To: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 References: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -86,61 +88,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../fsdev/9p-iov-marshal.c:93:23: error: ‘val’ may be used uninitialized [-Werror=maybe-uninitialized]
-and similar
+object_resolve_path_type() sets *ambiguousp only when it is.
 
+Fixes: 81c48dd79655 (hw/i386/acpi: Add object_resolve_type_unambiguous to improve modularity)
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- fsdev/9p-iov-marshal.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ qom/object.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fsdev/9p-iov-marshal.c b/fsdev/9p-iov-marshal.c
-index a1c9beddd2..0c5a1a0fa2 100644
---- a/fsdev/9p-iov-marshal.c
-+++ b/fsdev/9p-iov-marshal.c
-@@ -84,9 +84,12 @@ ssize_t v9fs_iov_vunmarshal(struct iovec *out_sg, int out_num, size_t offset,
-             break;
-         }
-         case 'w': {
--            uint16_t val, *valp;
-+            uint16_t val = 0, *valp;
-             valp = va_arg(ap, uint16_t *);
-             copied = v9fs_unpack(&val, out_sg, out_num, offset, sizeof(val));
-+            if (copied <= 0) {
-+                break;
-+            }
-             if (bswap) {
-                 *valp = le16_to_cpu(val);
-             } else {
-@@ -95,9 +98,12 @@ ssize_t v9fs_iov_vunmarshal(struct iovec *out_sg, int out_num, size_t offset,
-             break;
-         }
-         case 'd': {
--            uint32_t val, *valp;
-+            uint32_t val = 0, *valp;
-             valp = va_arg(ap, uint32_t *);
-             copied = v9fs_unpack(&val, out_sg, out_num, offset, sizeof(val));
-+            if (copied <= 0) {
-+                break;
-+            }
-             if (bswap) {
-                 *valp = le32_to_cpu(val);
-             } else {
-@@ -106,9 +112,12 @@ ssize_t v9fs_iov_vunmarshal(struct iovec *out_sg, int out_num, size_t offset,
-             break;
-         }
-         case 'q': {
--            uint64_t val, *valp;
-+            uint64_t val = 0, *valp;
-             valp = va_arg(ap, uint64_t *);
-             copied = v9fs_unpack(&val, out_sg, out_num, offset, sizeof(val));
-+            if (copied <= 0) {
-+                break;
-+            }
-             if (bswap) {
-                 *valp = le64_to_cpu(val);
-             } else {
+diff --git a/qom/object.c b/qom/object.c
+index 28c5b66eab..d3d3003541 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -2226,7 +2226,7 @@ Object *object_resolve_path_at(Object *parent, const char *path)
+ 
+ Object *object_resolve_type_unambiguous(const char *typename, Error **errp)
+ {
+-    bool ambig;
++    bool ambig = false;
+     Object *o = object_resolve_path_type("", typename, &ambig);
+ 
+     if (ambig) {
 -- 
 2.45.2.827.g557ae147e6
 
