@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1773598DC14
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 16:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992CE98DC93
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 16:42:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sw0Tn-0007H4-EC; Wed, 02 Oct 2024 10:37:27 -0400
+	id 1sw0Xu-0000b7-Fr; Wed, 02 Oct 2024 10:41:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sw0Tg-0007Fl-Go
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 10:37:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1sw0Xr-0000am-R4; Wed, 02 Oct 2024 10:41:39 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sw0Tf-0000Gt-2e
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 10:37:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727879838;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=8PzYlXcTHI+XbylzOa+MzqYmE04Bg7H8Zs2uNXwnOL0=;
- b=Vx6fWBYIUVf8f5HqgTmhA4Dv1ojiCaGMnBb+gCuyCJVAZ9J3sx2C/MZihuNri1XPYUQmAd
- 4B8uFU0bD6J0Pu52Ws8mTUMIk9AsVgnB3+XlMUkSbWdqF0xS27pTG+1SDTYLeQZJIrBKSl
- 7gAbse44PJ+Q8X8lvkmBb8rolUBFzMY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-495-oGH_wDerP86HpcdNg1S4RA-1; Wed,
- 02 Oct 2024 10:37:14 -0400
-X-MC-Unique: oGH_wDerP86HpcdNg1S4RA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8A2A11955E8E; Wed,  2 Oct 2024 14:37:13 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.193.239])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A231319560A2; Wed,  2 Oct 2024 14:37:10 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-trivial@nongnu.org
-Subject: [PATCH] tests/tcg/plugins: Remove remainder of the cris target
-Date: Wed,  2 Oct 2024 16:37:08 +0200
-Message-ID: <20241002143708.376707-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1sw0Xl-0000nV-T4; Wed, 02 Oct 2024 10:41:38 -0400
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c23:1301:0:640:a2b5:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id C6C1960D0B;
+ Wed,  2 Oct 2024 17:41:25 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8026::1:2f] (unknown
+ [2a02:6b8:b081:8026::1:2f])
+ by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id Ofc49m1IduQ0-X6K2iRg7; Wed, 02 Oct 2024 17:41:25 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1727880085;
+ bh=XC3crJxlRJjb/4x5Gb5JGWDx9Iy3ysTnlWNlw7GG5uo=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=GgicBUg5rG+7h0WrnyWuaOx4+aTnj+zD12j6CGITqc5gaqEmxw2ossWIy6rIiPms7
+ iAA4WobNr/DBblE+CG2TxQqIBw/vBwmKaAh31Efxv6f0pSs0GixZnDuazEyFRB0ROy
+ l6Ymw/2xaoYjZr6Bs4Xnq8QOV13xJT7wtu1qNw5I=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <992e1551-6d75-441f-af6e-5df9e6c85c31@yandex-team.ru>
+Date: Wed, 2 Oct 2024 17:41:24 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 4/7] qapi: add blockdev-replace command
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, hreitz@redhat.com, kwolf@redhat.com
+References: <20240626115350.405778-1-vsementsov@yandex-team.ru>
+ <20240626115350.405778-5-vsementsov@yandex-team.ru>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20240626115350.405778-5-vsementsov@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Yandex-Filter: 1
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,28 +75,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The cris target has recently been removed (see commit 44e4075bf4 -
-"target/cris: Remove the deprecated CRIS target"), but apparently this
-line has been forgotten. So clean it up now.
+On 26.06.24 14:53, Vladimir Sementsov-Ogievskiy wrote:
+> diff --git a/qapi/block-core.json b/qapi/block-core.json
+> index df5e07debd..0a6f08a6e0 100644
+> --- a/qapi/block-core.json
+> +++ b/qapi/block-core.json
+> @@ -6148,3 +6148,91 @@
+>   ##
+>   { 'struct': 'DummyBlockCoreForceArrays',
+>     'data': { 'unused-block-graph-info': ['BlockGraphInfo'] } }
+> +
+> +##
+> +# @BlockParentType:
+> +#
+> +# @qdev: block device, such as created by device_add, and denoted by
+> +#     qdev-id
+> +#
+> +# @driver: block driver node, such as created by blockdev-add, and
+> +#     denoted by node-name
+> +#
+> +# @export: block export, such created by block-export-add, and
+> +#     denoted by export-id
+> +#
+> +# Since 9.1
+> +##
+> +{ 'enum': 'BlockParentType',
+> +  'data': ['qdev', 'driver', 'export'] }
+> +
+> +##
+> +# @BdrvChildRefQdev:
+> +#
+> +# @qdev-id: the device's ID or QOM path
+> +#
+> +# Since 9.1
+> +##
+> +{ 'struct': 'BdrvChildRefQdev',
+> +  'data': { 'qdev-id': 'str' } }
+> +
+> +##
+> +# @BdrvChildRefExport:
+> +#
+> +# @export-id: block export identifier
+> +#
+> +# Since 9.1
+> +##
+> +{ 'struct': 'BdrvChildRefExport',
+> +  'data': { 'export-id': 'str' } }
+> +
+> +##
+> +# @BdrvChildRefDriver:
+> +#
+> +# @node-name: the node name of the parent block node
+> +#
+> +# @child: name of the child to be replaced, like "file" or "backing"
+> +#
+> +# Since 9.1
+> +##
+> +{ 'struct': 'BdrvChildRefDriver',
+> +  'data': { 'node-name': 'str', 'child': 'str' } }
+> +
+> +##
+> +# @BlockdevReplace:
+> +#
+> +# @parent-type: type of the parent, which child is to be replaced
+> +#
+> +# @new-child: new child for replacement
+> +#
+> +# Since 9.1
+> +##
+> +{ 'union': 'BlockdevReplace',
+> +  'base': {
+> +      'parent-type': 'BlockParentType',
+> +      'new-child': 'str'
+> +  },
+> +  'discriminator': 'parent-type',
+> +  'data': {
+> +      'qdev': 'BdrvChildRefQdev',
+> +      'export': 'BdrvChildRefExport',
+> +      'driver': 'BdrvChildRefDriver'
+> +  } }
+> +
+> +##
+> +# @blockdev-replace:
+> +#
+> +# Replace a block-node associated with device (selected by
+> +# @qdev-id) or with block-export (selected by @export-id) or
+> +# any child of block-node (selected by @node-name and @child)
+> +# with @new-child block-node.
+> +#
+> +# Features:
+> +#
+> +# @unstable: This command is experimental.
+> +#
+> +# Since 9.1
+> +##
+> +{ 'command': 'blockdev-replace', 'boxed': true,
+> +  'features': [ 'unstable' ],
+> +  'data': 'BlockdevReplace' }
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/tcg/plugins/syscall.c | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/tests/tcg/plugins/syscall.c b/tests/tcg/plugins/syscall.c
-index 89dc7f49b1..ff452178b1 100644
---- a/tests/tcg/plugins/syscall.c
-+++ b/tests/tcg/plugins/syscall.c
-@@ -34,7 +34,6 @@ static const struct SyscallInfo arch_syscall_info[] = {
-     { "arm", 4 },
-     { "armeb", 4 },
-     { "avr", -1 },
--    { "cris", -1 },
-     { "hexagon", 64 },
-     { "hppa", -1 },
-     { "i386", 4 },
+Looking back at this all, I now have another idea: instead of trying to unite different types of parents, maybe just publish concept of BdrvChild to QAPI? So that it will have unique id. Like for block-nodes, it could be auto-generated or specified by user.
+
+Then we'll add parameters for commands:
+
+device-add
+    root-child-slot-id: ID
+
+block-export-add
+    block-child-slot-id: ID
+
+and for block-drivers we already have BlockdevRef structure, it only lacks an id.
+
+{ 'alternate': 'BlockdevRef',
+   'data': { 'definition': 'BlockdevOptions',
+             'reference': 'str' } }
+
+hmm.. Could it be as simple as
+
+
+{ 'alternate': 'BlockdevRef',
+   'base': { '*child-slot-id': 'str' },
+   'data': { 'definition': 'BlockdevOptions',
+             'reference': 'str' } }
+
+?
+
+Unfortunately, no: "../qapi/block-core.json:4781: alternate has unknown key 'base'"
+
+Anyway, I believe, some solution should exist, probably by improving QAPI generator. Or, add "child-slot-id" to base of BlockdevOptions, and add virtual "reference" BlockdevDriver, to handle case with reference.
+
+
+----
+
+And finally, the new command becomes as simple as:
+
+{ 'command': 'blockdev-replace',
+   'data': {'child-slot': 'str', 'new-child': 'str' } }
+
 -- 
-2.46.1
+Best regards,
+Vladimir
 
 
