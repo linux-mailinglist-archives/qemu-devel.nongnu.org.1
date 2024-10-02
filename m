@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD20598CEFE
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68ABA98CF17
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:43:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svuv4-0003nl-9o; Wed, 02 Oct 2024 04:41:14 -0400
+	id 1svuwi-0007j4-Ko; Wed, 02 Oct 2024 04:42:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svuuu-0003aL-MV
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:41:07 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svuwg-0007ib-CF
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:42:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svuus-00066r-HK
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:41:03 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svuwe-0006B5-Jo
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:42:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727858461;
+ s=mimecast20190719; t=1727858571;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Bf7bUGbfn45kkWkCeAtjATqma3lzkfZHzX7jY78hLKo=;
- b=dHgWEYVxvHyZxyHSlPZp8sAnWt0+NOeMkqT5qd37es6ekn+0aYjuegPPg3vtjOHC40lTF2
- hjm1Qzm6x7WfnG3ezm4AH+WiCw9R0dpQSRG0T4B4a1dEcWN6PyYQEJERTRyvUcrq9oFgUB
- sgMWRhSbQGzSrp8ewrlRkg9e0xZ7s3w=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RbFtn9FhGqAxcHKtxZb72MHdP4zhZ+jCp7w1UDuexB8=;
+ b=Zkdx4vD2lTRI7luQz6EvhXbBr6f0B1tGZT5uib5qrWEi99mAS4Vqkw1z+Ab/za58jjfzxQ
+ NVb/jFcLQnYiMVnFymbwQG3lLrR170EmW1S1qog8zRNpETg3k7hyPE0LM5JjZDwSMQxpPd
+ M6DM5qanuUZv9yuxFFRmGrvfWSIwzJU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-aytDivwpNoCqbccUukm6WA-1; Wed, 02 Oct 2024 04:41:00 -0400
-X-MC-Unique: aytDivwpNoCqbccUukm6WA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37cc9b5e533so2667346f8f.3
- for <qemu-devel@nongnu.org>; Wed, 02 Oct 2024 01:41:00 -0700 (PDT)
+ us-mta-47-l_1QSqJeNiunDgvDim_V2g-1; Wed, 02 Oct 2024 04:42:50 -0400
+X-MC-Unique: l_1QSqJeNiunDgvDim_V2g-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-37cd6655ef0so1836990f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 02 Oct 2024 01:42:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727858459; x=1728463259;
+ d=1e100.net; s=20230601; t=1727858569; x=1728463369;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Bf7bUGbfn45kkWkCeAtjATqma3lzkfZHzX7jY78hLKo=;
- b=axUx5krihDWGUL0zfVlFwp+2aZN4mriOlyxA9hg6A61qPIHJSV5pRv2/Ul7iJ7EvHQ
- ENhlDPJHfHytlU13AJtUd8pbz1334CwQ/VQ1rCwo8cxEG1ruKbxBv8Gu5b3YhNmBElcL
- 8BIUFEiRnlxwB4qOtT1/QZp3ZtAbTyogZfRDp6RagsLvq8TaxsBm7jVn+2q7qDhxz8+G
- gxjulkhMv6sA4fTtpyLV0QyKcW6Lo+ADBVMP1GprK6JWuWroJAEPduB3AFwdvr1iP7Ey
- 2iYm1iScSGdWZCLRG3CSDpgqKenlyQKTdqHxqG2jyJ6VwAQ8s2dqTR23SfUTzus5WEZe
- QoSw==
+ bh=RbFtn9FhGqAxcHKtxZb72MHdP4zhZ+jCp7w1UDuexB8=;
+ b=Nn+XbAml7lV4/MP2WbULVMm6QNbRV0nI433Aa7E0jY7Ugc/yzMvbvf2ZzzHiG8/YrB
+ SqzS0HAxIvBfl6YZFVoJ5lJL5b0vEKciiXato5/ZvnWgXB2Un+QkyffTO2AcjmMvXxYp
+ Jl3UAi2+NbnAT2sBJ3bGLr71EoYD/EU42VmThxkpinA0MM04XsGqzzBcBzHMEQ/hgrwn
+ zJ/SoO/v4YN7AlQPOQBkTH07yrwevFcsZ2s+3P9cMz56vpGp5owTsN8glQkGSrwSqOva
+ lgMXJXHHrdxduPtkWV6/MfBRkdpcvMENWWpTCWPEy3fd6cjBlEGrFcOplYSnGWt0HXGc
+ rC/Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVd7/Yh/twnqdLmMnGnJW6Xh/VsULvcm4iEwJkDGhE2k4btLVlIq9JtuB4rJzzgQ0OogtwrkiEA+McE@nongnu.org
-X-Gm-Message-State: AOJu0Yx9z9H0Di9a2/eE0yvZu5CPmvVCdUnR8ketXyAoO7V2SKBaFf9l
- 5d1ZY13t04w4dfxPe/3bt2/aL94Gk6E725MtntDfRE7ZnhLgwah07PwkFFnNRX8mdi+IPIXt7g9
- xLTvjLUMyWy2VSuQXdccFzNtwMm9pKKAbC0ZwT0rAEp5ejcdzmRBb
-X-Received: by 2002:a5d:5d85:0:b0:37c:fce8:b51f with SMTP id
- ffacd0b85a97d-37cfce8b58dmr1027360f8f.27.1727858459177; 
- Wed, 02 Oct 2024 01:40:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGPRfc50s0FdJeKkBN9GdviCWKt3DW1JoW0M8Mi0AKOjKg+4MJKiDfHVFEAIQbymrAIOhPKuA==
-X-Received: by 2002:a5d:5d85:0:b0:37c:fce8:b51f with SMTP id
- ffacd0b85a97d-37cfce8b58dmr1027345f8f.27.1727858458701; 
- Wed, 02 Oct 2024 01:40:58 -0700 (PDT)
+ AJvYcCXyUQxVOI55edzxZf1IqUynD2Y1o3hK35rCB0Y4uaCKykfFDr/c3s2sPMqqzOUiZxykporpPU89UKDV@nongnu.org
+X-Gm-Message-State: AOJu0Yxsm8+y0YSg+KsNw3tO9PWZAJyO4XKthZIIaqRZDegRlgq2gh1N
+ 0ibZDXEkHd0DBkvvy6XcgKaHRI0Cf19EYoxs0O4vNhTS83KCntWHqhqk35AMGgh1DsC+61VGf8p
+ W0HjfhKIZOYF02Mgchy8z9PbArfkLiVn1HlmOr0wd+0H9G+NRnNpE
+X-Received: by 2002:adf:fb0f:0:b0:37c:d23f:e465 with SMTP id
+ ffacd0b85a97d-37cfba12331mr1269450f8f.55.1727858569412; 
+ Wed, 02 Oct 2024 01:42:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGUW8zPw6jW+WZzfsSVL83REpK7hpycIdAjoTgQ05VgVGw2hKLF4Pgyb3I/UHQ+9ne5gwnj5g==
+X-Received: by 2002:adf:fb0f:0:b0:37c:d23f:e465 with SMTP id
+ ffacd0b85a97d-37cfba12331mr1269259f8f.55.1727858562835; 
+ Wed, 02 Oct 2024 01:42:42 -0700 (PDT)
 Received: from [192.168.0.7] (ip-109-42-49-143.web.vodafone.de.
  [109.42.49.143]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd56e6408sm13438120f8f.48.2024.10.02.01.40.57
+ ffacd0b85a97d-37cd57429e5sm13443890f8f.98.2024.10.02.01.42.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Oct 2024 01:40:58 -0700 (PDT)
-Message-ID: <49100b14-cadd-4b86-b9dc-e158d71e1088@redhat.com>
-Date: Wed, 2 Oct 2024 10:40:56 +0200
+ Wed, 02 Oct 2024 01:42:42 -0700 (PDT)
+Message-ID: <b5c138db-2632-4ae4-bb65-afaf20aa89b9@redhat.com>
+Date: Wed, 2 Oct 2024 10:42:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 03/22] hw/qxl: fix -Werror=maybe-uninitialized
- false-positives
+Subject: Re: [PULL 00/22] -Werror=maybe-uninitialized fixes
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
 References: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
- <20241002083646.2893078-4-marcandre.lureau@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -118,7 +116,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20241002083646.2893078-4-marcandre.lureau@redhat.com>
+In-Reply-To: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -149,22 +147,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 02/10/2024 10.36, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> ../hw/display/qxl.c:1352:5: error: ‘pci_region’ may be used uninitialized [-Werror=maybe-uninitialized]
-> ../hw/display/qxl.c:1365:22: error: ‘pci_start’ may be used uninitialized [-Werror=maybe-uninitialized]
+> The following changes since commit 718780d20470c66a3a36d036b29148d5809dc855:
 > 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
-...
-> diff --git a/roms/openbios b/roms/openbios
-> index c3a19c1e54..af97fd7af5 160000
-> --- a/roms/openbios
-> +++ b/roms/openbios
-> @@ -1 +1 @@
-> -Subproject commit c3a19c1e54977a53027d6232050e1e3e39a98a1b
-> +Subproject commit af97fd7af5e7c18f591a7b987291d3db4ffb28b5
+>    Merge tag 'pull-nvme-20241001' of https://gitlab.com/birkelund/qemu into staging (2024-10-01 11:34:07 +0100)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/marcandre.lureau/qemu.git tags/warn-pull-request
+> 
+> for you to fetch changes up to baad82ecfb27474f17f4318502725622ab7170fc:
+> 
+>    qom/object: fix -Werror=maybe-uninitialized (2024-10-02 11:36:12 +0400)
+> 
+> ----------------------------------------------------------------
+> -Werror=maybe-uninitialized fixes
+> 
+> ----------------------------------------------------------------
+> 
+> Marc-André Lureau (22):
+>    util/coroutine: fix -Werror=maybe-uninitialized false-positive
+>    util/timer: fix -Werror=maybe-uninitialized false-positive
+>    hw/qxl: fix -Werror=maybe-uninitialized false-positives
+>    nbd: fix -Werror=maybe-uninitialized false-positive
+>    block/mirror: fix -Werror=maybe-uninitialized false-positive
+>    block/mirror: fix -Werror=maybe-uninitialized false-positive
+>    block/stream: fix -Werror=maybe-uninitialized false-positives
+>    hw/ahci: fix -Werror=maybe-uninitialized false-positive
+>    hw/vhost-scsi: fix -Werror=maybe-uninitialized
+>    hw/sdhci: fix -Werror=maybe-uninitialized false-positive
+>    block/block-copy: fix -Werror=maybe-uninitialized false-positive
+>    migration: fix -Werror=maybe-uninitialized false-positives
+>    hw/virtio-blk: fix -Werror=maybe-uninitialized false-positive
+>    migration: fix -Werror=maybe-uninitialized false-positive
+>    linux-user/hppa: fix -Werror=maybe-uninitialized false-positive
+>    target/loongarch: fix -Werror=maybe-uninitialized false-positive
+>    tests: fix -Werror=maybe-uninitialized false-positive
+>    hw/virtio: fix -Werror=maybe-uninitialized
+>    hw/virtio: freeing leaked memory from vhost_svq_get_buf in
+>      vhost_svq_poll
+>    block: fix -Werror=maybe-uninitialized false-positive
+>    fsdep/9p: fix -Werror=maybe-uninitialized false-positive
+>    qom/object: fix -Werror=maybe-uninitialized
+> 
+>   block/block-copy.c                 |  2 +-
+>   block/file-posix.c                 |  2 +-
+>   block/mirror.c                     |  8 ++++----
+>   block/stream.c                     |  6 +++---
+>   fsdev/9p-iov-marshal.c             | 15 ++++++++++++---
+>   hw/block/virtio-blk.c              |  2 +-
+>   hw/display/qxl.c                   |  4 ++--
+>   hw/ide/ahci.c                      |  3 ++-
+>   hw/scsi/vhost-scsi.c               |  2 +-
+>   hw/sd/sdhci.c                      |  2 +-
+>   hw/virtio/vhost-shadow-virtqueue.c |  6 ++++--
+>   linux-user/hppa/cpu_loop.c         |  2 ++
+>   migration/dirtyrate.c              |  4 ++--
+>   migration/migration.c              |  2 +-
+>   migration/ram.c                    |  2 +-
+>   nbd/client-connection.c            |  2 +-
+>   qom/object.c                       |  2 +-
+>   target/loongarch/gdbstub.c         | 26 ++++++++++++++------------
+>   tests/unit/test-bdrv-drain.c       |  2 +-
+>   tests/unit/test-block-iothread.c   |  2 +-
+>   util/qemu-coroutine.c              |  2 +-
+>   util/qemu-timer.c                  |  6 +++---
+>   roms/openbios                      |  2 +-
 
-That looks like an unintentional change?
+Replying here as well, so that Peter has a chance to see it:
+
+The update to roms/openbios in patch 03 seems to have slipped in by 
+accident, so I'd suggest to fix that first before merging this.
 
   Thomas
 
