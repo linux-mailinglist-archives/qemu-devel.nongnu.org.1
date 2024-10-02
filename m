@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0614898CEE6
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA01598CF04
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:41:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svus6-0002QU-9c; Wed, 02 Oct 2024 04:38:10 -0400
+	id 1svus8-0002gA-FN; Wed, 02 Oct 2024 04:38:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svurz-0002DV-AF
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:04 -0400
+ id 1svus5-0002Qb-Ac
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svurx-0005kx-Uc
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:03 -0400
+ id 1svus4-0005lP-1F
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727858281;
+ s=mimecast20190719; t=1727858286;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rkCDdXwIPlr39y+SeAk0OhVm7wJjgw4TMj43kjTyWsQ=;
- b=g9xGO40ZP/xZoRTMKjMkLE2LNJS4iZr1kktFBsXBnKOxsGdFnXqDw6Vkd0s9iBL/uo+YSg
- FpGjQymoKRybs/evt4CTSh9qgcUjC5T+VJt5OcVUcBgG7FS7Vp6Bq4ZdJkTUGIKoiJB0J4
- FbbqNXifvfa2cxcy5mXYlv+A9zm0aZE=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=h0TucsGaDkti7HZLhRtFl+SgwnfZTPnZhvzxf2cTiUg=;
+ b=BKR27thZisIbaLJH12HlOZcf9O48CZYvo2BLyYtK+Tg8TvJWerZyz3DXnAO2YeMYyCk68O
+ nbPeqhtCOJ2Se37EPrKxNkcG2gL5/AzcMM+v1vIjPxZwad4zZLBQ390ackiBrh4iQE2eRs
+ /0vIRyJTAzzRQkPufz0pWEucr7kmapQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-125-cK-JW_NEMXCWD5WBhw3J_g-1; Wed,
- 02 Oct 2024 04:37:58 -0400
-X-MC-Unique: cK-JW_NEMXCWD5WBhw3J_g-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-YjvJGunPMFWsh4sZBKNEVQ-1; Wed,
+ 02 Oct 2024 04:38:02 -0400
+X-MC-Unique: YjvJGunPMFWsh4sZBKNEVQ-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B1EFF19560B0; Wed,  2 Oct 2024 08:37:56 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8D76E19560B0; Wed,  2 Oct 2024 08:38:01 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2E2F4300019B; Wed,  2 Oct 2024 08:37:54 +0000 (UTC)
+ id 4831B300019B; Wed,  2 Oct 2024 08:37:59 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 14/22] migration: fix -Werror=maybe-uninitialized false-positive
-Date: Wed,  2 Oct 2024 12:36:37 +0400
-Message-ID: <20241002083646.2893078-15-marcandre.lureau@redhat.com>
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PULL 15/22] linux-user/hppa: fix -Werror=maybe-uninitialized
+ false-positive
+Date: Wed,  2 Oct 2024 12:36:38 +0400
+Message-ID: <20241002083646.2893078-16-marcandre.lureau@redhat.com>
 In-Reply-To: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 References: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -86,29 +87,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../migration/ram.c:1873:23: error: ‘dirty’ may be used uninitialized [-Werror=maybe-uninitialized]
+../linux-user/hppa/cpu_loop.c: In function ‘hppa_lws’:
+../linux-user/hppa/cpu_loop.c:106:17: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
+  106 |     env->gr[28] = ret;
 
-When 'block' != NULL, 'dirty' is initialized.
+Add g_assert_not_reached() to help compiler, as suggested by Laurent.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- migration/ram.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ linux-user/hppa/cpu_loop.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 81eda2736a..326ce7eb79 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1793,7 +1793,7 @@ static bool get_queued_page(RAMState *rs, PageSearchStatus *pss)
- {
-     RAMBlock  *block;
-     ram_addr_t offset;
--    bool dirty;
-+    bool dirty = false;
- 
-     do {
-         block = unqueue_page(rs, &offset);
+diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
+index bc093b8fe8..23b38ff9b2 100644
+--- a/linux-user/hppa/cpu_loop.c
++++ b/linux-user/hppa/cpu_loop.c
+@@ -99,6 +99,8 @@ static abi_ulong hppa_lws(CPUHPPAState *env)
+ #endif
+             }
+             break;
++        default:
++            g_assert_not_reached();
+         }
+         break;
+     }
 -- 
 2.45.2.827.g557ae147e6
 
