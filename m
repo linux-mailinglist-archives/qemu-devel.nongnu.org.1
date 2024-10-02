@@ -2,58 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07AC98CE69
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FEBE98CE60
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:08:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svuPP-0006iI-O7; Wed, 02 Oct 2024 04:08:31 -0400
+	id 1svuPP-0006iU-OF; Wed, 02 Oct 2024 04:08:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svuPG-0006hd-O0
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:08:22 -0400
+ id 1svuPL-0006hv-77
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:08:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svuPC-0002Ye-Ej
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:08:21 -0400
+ id 1svuPD-0002Yn-Qd
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:08:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727856496;
+ s=mimecast20190719; t=1727856498;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ArpsfsyExTnApc84ajW6+udyBNJHxUg4bPzu+OBHzhw=;
- b=OOsNk1jZqgqfS5fJc3T2HNw/0k4feyyqXvkyoxD04Li2OwWsufFhqfeXaskE4P78x2AWjE
- vrItf+DIoayC7pT3UPeSWZ1Fi8fKw2tsR/NoODi4Lxy3yk1nDaVsZVuhbnz0RMgYbG6TiS
- g2mcPdzwGvqg4fQGEP+ZO2dOfw9ex6A=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DVkQIUGda3DTCbaq/5d+CBdPER8ydShcszuxJPMfK7U=;
+ b=NDyyX1hcNoOqnty/kpBNwW/i9KWTKUWQVa7GgYDBD2GwU9T2nWEo3yyDqZ3UE9aj3D1xD2
+ NkwSpnbsd1EnvdSNSLhRa2ItIoy3yNNqlx8ezeoj/B+Ur5Ssn4+tt7QmMUg4J7R8dV8s/9
+ eWwCHLrSbHMb56oJozzPg4fs1BJCWUA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-TIUb4GWyP-SvWHEdBaYK8g-1; Wed,
- 02 Oct 2024 04:08:12 -0400
-X-MC-Unique: TIUb4GWyP-SvWHEdBaYK8g-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-529-8g1PFlA9PMyXtMVrHSjTmg-1; Wed,
+ 02 Oct 2024 04:08:16 -0400
+X-MC-Unique: 8g1PFlA9PMyXtMVrHSjTmg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1CC491955EA7; Wed,  2 Oct 2024 08:08:11 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E12661955E8E; Wed,  2 Oct 2024 08:08:15 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F30D23000197; Wed,  2 Oct 2024 08:08:09 +0000 (UTC)
+ id BBD133000197; Wed,  2 Oct 2024 08:08:14 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: armbru@redhat.com, Eduardo Habkost <eduardo@habkost.net>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 0/3] QOM: little improvements to object_resolve_path*()
-Date: Wed,  2 Oct 2024 12:08:03 +0400
-Message-ID: <20241002080806.2868406-1-marcandre.lureau@redhat.com>
+Subject: [PATCH 1/3] qom: rename object_resolve_path_type() "ambiguousp"
+Date: Wed,  2 Oct 2024 12:08:04 +0400
+Message-ID: <20241002080806.2868406-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20241002080806.2868406-1-marcandre.lureau@redhat.com>
+References: <20241002080806.2868406-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124;
@@ -84,20 +87,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Hi,
+Make it match the function declaration & documentation.
 
-Some improvements suggested by Markus during the review of "[PATCH v3 21/22]
-qom/object: fix -Werror=maybe-uninitialized".
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ qom/object.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Marc-André Lureau (3):
-  qom: rename object_resolve_path_type() "ambiguousp"
-  qom: set *ambiguous on all paths
-  qom: update object_resolve_path*() documentation
-
- include/qom/object.h | 12 ++++++------
- qom/object.c         | 13 ++++++++-----
- 2 files changed, 14 insertions(+), 11 deletions(-)
-
+diff --git a/qom/object.c b/qom/object.c
+index 28c5b66eab..0adbef2946 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -2184,7 +2184,7 @@ static Object *object_resolve_partial_path(Object *parent,
+ }
+ 
+ Object *object_resolve_path_type(const char *path, const char *typename,
+-                                 bool *ambiguousp)
++                                 bool *ambiguous)
+ {
+     Object *obj;
+     char **parts;
+@@ -2193,11 +2193,11 @@ Object *object_resolve_path_type(const char *path, const char *typename,
+     assert(parts);
+ 
+     if (parts[0] == NULL || strcmp(parts[0], "") != 0) {
+-        bool ambiguous = false;
++        bool ambig = false;
+         obj = object_resolve_partial_path(object_get_root(), parts,
+-                                          typename, &ambiguous);
+-        if (ambiguousp) {
+-            *ambiguousp = ambiguous;
++                                          typename, &ambig);
++        if (ambiguous) {
++            *ambiguous = ambig;
+         }
+     } else {
+         obj = object_resolve_abs_path(object_get_root(), parts + 1, typename);
 -- 
 2.45.2.827.g557ae147e6
 
