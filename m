@@ -2,102 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD9998DC20
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 16:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E753D98DBDB
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 16:35:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sw0Ug-0007vT-7g; Wed, 02 Oct 2024 10:38:22 -0400
+	id 1sw0Qu-0006VR-67; Wed, 02 Oct 2024 10:34:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sw0Uc-0007qu-1M
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 10:38:18 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sw0Qr-0006VB-Oq
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 10:34:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sw0UZ-0000J1-SW
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 10:38:17 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492Dsp6T018244;
- Wed, 2 Oct 2024 14:38:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:subject:from:to:date:in-reply-to:references
- :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
- K6J2JteUpSz/KpUEOJZC78lU8CPL14Srsc2bcUAr7q0=; b=INxJNvf1cTNhDS0M
- iqnSqPjO7fecBk1neSrUw/fSXcUR5vDlwh1I67sKtOouwuUzoURYRZ2bDBYFxqln
- CZ1FHdQYwPTW81tVNmuiAyCanHDYvUAqs+sg/0VRd3F/u/pZSyDrAqR1EAoz0WpZ
- lr13jqvQahQUssDtQKBW6DqeI1dBUZ3Qya+KIIB7SNxKjJOm1+UMlecQjsUWN0PF
- HzUlT9rLPZJ8kj9vPF+oEuF37i6e5NO3e1b2YIhPA6UIJe0DhQCfTaVc7X7kgxZR
- KHF7MpFtaPG2I1gG/DIAWapt6E1otVOgohb78wpMm7lxgY7mJTy3DWY4UKkzFFz4
- aBz/qQ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4217fm08hn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Oct 2024 14:38:13 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 492EcDlE021565;
- Wed, 2 Oct 2024 14:38:13 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4217fm08fq-12
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Oct 2024 14:38:12 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 492CgH5S007989;
- Wed, 2 Oct 2024 14:25:44 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41xvgy2x66-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Oct 2024 14:25:44 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 492EPgRW34800282
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Oct 2024 14:25:42 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1652720043;
- Wed,  2 Oct 2024 14:25:42 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C402720040;
- Wed,  2 Oct 2024 14:25:41 +0000 (GMT)
-Received: from [127.0.0.1] (unknown [9.152.108.100])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  2 Oct 2024 14:25:41 +0000 (GMT)
-Message-ID: <4d6c668781d12b8cd0c1fd18fbc4ef2abcf74806.camel@linux.ibm.com>
-Subject: Re: [PATCH v1] linux-user: Add option to run `execve`d programs
- through QEMU
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Laurent Vivier <laurent@vivier.eu>, Noah Goldstein
- <goldstein.w.n@gmail.com>, qemu-devel@nongnu.org
-Date: Wed, 02 Oct 2024 16:25:41 +0200
-In-Reply-To: <1251d17b-71f4-4630-b71f-990860bd9366@vivier.eu>
-References: <20240830223601.2796327-1-goldstein.w.n@gmail.com>
- <6109eea4230bb3aa7caf6deff526878231aa2136.camel@linux.ibm.com>
- <1251d17b-71f4-4630-b71f-990860bd9366@vivier.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sw0Qq-0008HF-Al
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 10:34:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727879662;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=sjz/kErgthNHrgId+j8I66MsIKAMvhgVNjnFBaOKGqo=;
+ b=ZE2TJno88sA8FzE9Wdtf1RBhIeHDRfF0Lk/Mrxprt9MISHa2DHvam6NBq061FDhIldaoj8
+ xBNfXLs3L4AbcCGRtE9K+SHu2wSKEvGG3lFdkr6YrHma0uxgsvSJi8kMDXll0tjn7yoenm
+ kgsnZjo2gaaVNmxayzx+Kefj5DOXic0=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-167-xbbky2YRO8675hC9q55lKQ-1; Wed, 02 Oct 2024 10:34:20 -0400
+X-MC-Unique: xbbky2YRO8675hC9q55lKQ-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7a9a653c6cdso155125785a.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Oct 2024 07:34:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727879660; x=1728484460;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=sjz/kErgthNHrgId+j8I66MsIKAMvhgVNjnFBaOKGqo=;
+ b=nLawJOdMeQzjpXTy7afm2I8MqFOXNhu6kOmlQv82xLTCT9tQStk8GTZ+eTr1LHC1fS
+ DNsqTx/cunUoxY7UNTGEm/6ctp//scVzEIk2hD62E1zb/R8hh7QZSSsz/sZbApj4h/Qv
+ tOzpst9yfKg6YNWcRKNEhz16GHdkCCJaA6ZvnoOk9k5DuwvNVfR5PKkjoTVoMGGUSXs8
+ 3dIJ6RRFzfPYEfFUDsRfS2XMF4H+8PcspcWGT3PE8TOgKZtV654/SmESyFE80OqeJymz
+ jr8f84NqoDQ7nvN4h2RxsAKr7xUeh82EvpvNlU9KOH0jBbM8uMjr2XD4qTv7lNRgDCkQ
+ +z9w==
+X-Gm-Message-State: AOJu0YwKCkPviung9Evak1xHDsyqnKjMh5CjgCcJTyGtZfEiJS7pxuzp
+ 374ZbM8z4QSVgrYxL6u7kH/oETwSjJLQt9s1lG4qgCdXeBR7tEwSH5Hs65AWzJbojFudn/EiJSD
+ 5hs0QpGgwmh6n8b6t0v4QF1HKslaBkS57n+X/Swkv9COBKCatwFl95V/8vqDK
+X-Received: by 2002:a05:620a:408d:b0:7ac:bc66:5efb with SMTP id
+ af79cd13be357-7ae5b85d76emr1116377285a.27.1727879659714; 
+ Wed, 02 Oct 2024 07:34:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHszOjV5NTXsPtGADssIFMys0Q2PF420hTYkdeR5uwWzwl8TXBnWgBK/JGr1Za4rrjN8fbkjw==
+X-Received: by 2002:a05:620a:408d:b0:7ac:bc66:5efb with SMTP id
+ af79cd13be357-7ae5b85d76emr1116373385a.27.1727879659264; 
+ Wed, 02 Oct 2024 07:34:19 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7ae3782b956sm626789485a.84.2024.10.02.07.34.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 02 Oct 2024 07:34:18 -0700 (PDT)
+Date: Wed, 2 Oct 2024 10:34:15 -0400
+From: Peter Xu <peterx@redhat.com>
+To: dave@treblig.org
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] util/iova-tree: Remove deadcode
+Message-ID: <Zv1Z59b4urtFTPg8@x1n>
+References: <20240918142515.153074-1-dave@treblig.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cql6ii7tAA_-hApB5Zbx5MS70XY70k4C
-X-Proofpoint-ORIG-GUID: GnBKXT1e4sxyeWPdvipJoJBzbmJ2nv9E
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-02_14,2024-09-30_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0
- spamscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015 suspectscore=0
- mlxlogscore=999 malwarescore=0 mlxscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2410020106
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240918142515.153074-1-dave@treblig.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -115,94 +96,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2024-10-02 at 16:08 +0200, Laurent Vivier wrote:
-> Le 02/10/2024 =C3=A0 10:08, Ilya Leoshkevich a =C3=A9crit=C2=A0:
-> > On Fri, 2024-08-30 at 15:36 -0700, Noah Goldstein wrote:
-> > > The new option '-qemu-children' makes it so that on `execve` the
-> > > child
-> > > process will be launch by the same `qemu` executable that is
-> > > currently
-> > > running along with its current commandline arguments.
-> > >=20
-> > > The motivation for the change is to make it so that plugins
-> > > running
-> > > through `qemu` can continue to run on children.=C2=A0 Why not just
-> > > `binfmt`?: Plugins can be desirable regardless of
-> > > system/architecture
-> > > emulation, and can sometimes be useful for elf files that can run
-> > > natively. Enabling `binfmt` for all natively runnable elf files
-> > > may
-> > > not be desirable.
-> >=20
-> > Another reason to have this is that one may not have root
-> > permissions
-> > to configure binfmt-misc.
->=20
-> A little note on that: binfmt_misc is now part of the user namespace
-> (since linux v6.7), so you can=20
-> configure binfmt_misc as a non root user in a given namepace.
->=20
-> There is helper to use it with unshare from util-linux, you can do
-> things like that:
->=20
-> =C2=A0=C2=A0 With 'F' flag, load the interpreter from the initial namespa=
-ce:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0 $ /bin/qemu-m68k-static --version
-> =C2=A0=C2=A0=C2=A0=C2=A0 qemu-m68k version 8.2.2 (qemu-8.2.2-1.fc40)
-> =C2=A0=C2=A0=C2=A0=C2=A0 Copyright (c) 2003-2023 Fabrice Bellard and the =
-QEMU Project
-> developers
-> =C2=A0=C2=A0=C2=A0=C2=A0 $ unshare --map-root-user --fork --pid=20
-> --load-interp=3D":qemu-
-> m68k:M::\\x7fELF\\x01\\x02\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x
-> 00\\x00\\x00\\x02\\x00\\x04:\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\x00\
-> \xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\xff\\xff:/bin/qemu
-> -m68k-static:OCF"=20
-> --root=3Dchroot/m68k/sid
-> =C2=A0=C2=A0=C2=A0=C2=A0 # QEMU_VERSION=3D ls
-> =C2=A0=C2=A0=C2=A0=C2=A0 qemu-m68k version 8.2.2 (qemu-8.2.2-1.fc40)
-> =C2=A0=C2=A0=C2=A0=C2=A0 Copyright (c) 2003-2023 Fabrice Bellard and the =
-QEMU Project
-> developers
-> =C2=A0=C2=A0=C2=A0=C2=A0 # /qemu-m68k=C2=A0 --version
-> =C2=A0=C2=A0=C2=A0=C2=A0 qemu-m68k version 8.0.50 (v8.0.0-340-gb1cff5e2da=
-95)
-> =C2=A0=C2=A0=C2=A0=C2=A0 Copyright (c) 2003-2022 Fabrice Bellard and the =
-QEMU Project
-> developers
->=20
-> =C2=A0=C2=A0 Without 'F' flag, from inside the namespace:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0 $ unshare --map-root-user --fork --pid=20
-> --load-interp=3D":qemu-
-> m68k:M::\\x7fELF\\x01\\x02\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x
-> 00\\x00\\x00\\x02\\x00\\x04:\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\x00\
-> \xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\xff\\xff:/qemu-
-> m68k:OC"=20
-> --root=3Dchroot/m68k/sid
-> =C2=A0=C2=A0=C2=A0=C2=A0 # QEMU_VERSION=3D ls
-> =C2=A0=C2=A0=C2=A0=C2=A0 qemu-m68k version 8.0.50 (v8.0.0-340-gb1cff5e2da=
-95)
-> =C2=A0=C2=A0=C2=A0=C2=A0 Copyright (c) 2003-2022 Fabrice Bellard and the =
-QEMU Project
-> developers
-> =C2=A0=C2=A0=C2=A0=C2=A0 # /qemu-m68k=C2=A0 --version
-> =C2=A0=C2=A0=C2=A0=C2=A0 qemu-m68k version 8.0.50 (v8.0.0-340-gb1cff5e2da=
-95)
-> =C2=A0=C2=A0=C2=A0=C2=A0 Copyright (c) 2003-2022 Fabrice Bellard and the =
-QEMU Project
-> developers
->=20
-> Thanks,
-> Laurent
->=20
+On Wed, Sep 18, 2024 at 03:25:15PM +0100, dave@treblig.org wrote:
+> From: "Dr. David Alan Gilbert" <dave@treblig.org>
+> 
+> iova_tree_find_address, and iova_tree_foreach have never been
+> used since the code was originally added by:
+>   eecf5eedbd ("util: implement simple iova tree")
+> 
+> Remove them.
+> 
+> Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 
-Thanks for posting this, I wasn't aware of this feature and it looks
-really useful.=20
+queued.
 
-IIUC it also resolves the main problem this patch is dealing with:
+-- 
+Peter Xu
 
-  Enabling `binfmt` for all natively runnable elf files may
-  not be desirable.
 
