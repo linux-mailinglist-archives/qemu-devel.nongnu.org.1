@@ -2,86 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382DA98D39F
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 14:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 928A598D3B5
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 14:53:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svyki-00052h-Fw; Wed, 02 Oct 2024 08:46:48 -0400
+	id 1svyqW-0006cU-St; Wed, 02 Oct 2024 08:52:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1svykX-0004ti-3w
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 08:46:42 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svyqM-0006bD-8X
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 08:52:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1svykV-0002m3-Ct
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 08:46:36 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1svyqJ-0003Zt-D4
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 08:52:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727873194;
+ s=mimecast20190719; t=1727873552;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DRd2IPTTLSDR0JY8la8Jnse8DqiuCfGZKtSPqIBVrXM=;
- b=MzLwmOU7bPTc5rA7/fLESHz/LA3zv/KskZ3HRLcaxUhTBNtmV4Ea6E+BR5AJCYKtt7hsZI
- 3K/asLMO6DiVoTEzc4P8o7pEvzKZRavyoJftiNmwYembFU8P3IhTt3G9iSGHTN/gDHLpz7
- BNDJEvqK5WXQOr81lNxVqPpBefpI0uI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-MQZ_1pBOMKi1CjVtfWLkNQ-1; Wed, 02 Oct 2024 08:46:32 -0400
-X-MC-Unique: MQZ_1pBOMKi1CjVtfWLkNQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-37cd19d0e83so2854139f8f.2
- for <qemu-devel@nongnu.org>; Wed, 02 Oct 2024 05:46:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727873192; x=1728477992;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DRd2IPTTLSDR0JY8la8Jnse8DqiuCfGZKtSPqIBVrXM=;
- b=MI6ScC6hTTgfRTD24YMIbDKIU2HDVAXNVwl78vz084MzLuAaAOJGMd8ZGzlN2JVLlb
- 8jmiBBSBeCh1F/3U1SXn8FwzH6BoTLSeJxpQ9aZtNauxMrOgpmgIpTN85RD095bA5+CI
- ODNefaF4QLhzpJCK4PwDA/aGLR4EfzTNW3TyLOo2O4mVkzw3e9oPDt0oUa4dxzzmk7+a
- FMc0hUOuy5zxr7frzE73FpMzIHei1irjq+14stPB2/VBS4EbKJz3/qZiaObOrrUdDtkd
- GrX5VlEoOQ+3GaXqS/KPMGOiz78q2VgWgKt1uzknfPkKL964qDwRgaskrSD6Z1uP3UKe
- 1SmA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWQPjCNAdVZi3idImYgH07oPCF0GfyyItiAaWXyFbZOMXoXwBCPgzd+kl2bRmHJtmr8BJWDIOzTk/bk@nongnu.org
-X-Gm-Message-State: AOJu0YwyK2gwT97IbygQ4nyHSXLsF4Sj/af6K6KwIW3ME66PfTqlJq3j
- jMgOQpKcOg6NuLXXVZDABWrP38Umb+1oyM/3F5Ss/IsEexPso7wQIOlg76zJyixBKkUoxRKnF+f
- cEk6AFNu3BUQMZU5xHnQd9T+imW0qEM7zE6fzUXIYttsn3SHrGEeb
-X-Received: by 2002:a5d:6283:0:b0:374:c942:a6b4 with SMTP id
- ffacd0b85a97d-37cfb8b567bmr2019748f8f.20.1727873191658; 
- Wed, 02 Oct 2024 05:46:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF2PexkVT7Txl6Bb82fMhSXSDAiku9xoeWYMrqFmP3lO1ymceSSFLAoDOWFkn8RM4zZGf3o9g==
-X-Received: by 2002:a5d:6283:0:b0:374:c942:a6b4 with SMTP id
- ffacd0b85a97d-37cfb8b567bmr2019732f8f.20.1727873191343; 
- Wed, 02 Oct 2024 05:46:31 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42f79ff6e28sm17615235e9.37.2024.10.02.05.46.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Oct 2024 05:46:30 -0700 (PDT)
-Date: Wed, 2 Oct 2024 14:46:30 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Dongjiu Geng <gengdongjiu1@gmail.com>, linux-kernel@vger.kernel.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 12/15] acpi/ghes: don't crash QEMU if ghes GED is not
- found
-Message-ID: <20241002144630.1f8b68c1@imammedo.users.ipa.redhat.com>
-In-Reply-To: <18c69e8c7a6b6ac365397fe1f442f3ba0cb83be8.1727766088.git.mchehab+huawei@kernel.org>
-References: <cover.1727766088.git.mchehab+huawei@kernel.org>
- <18c69e8c7a6b6ac365397fe1f442f3ba0cb83be8.1727766088.git.mchehab+huawei@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=HThwxNwZNRfgKJDbCFqjVZF+wGzGqXhm4mwO6948BdU=;
+ b=XpDnoooaodTsa1T43vjIEnaz5uXg4bEBUXW4MjsPqJ/zm3RZ7avuJVx8Mzw4Tw5aAGkrss
+ M3b0DayGvZVcZ/dI17sbeNgIzUkCmDl6YXgJE2XtTwU2UQ2/lWQkFwOHct3BpkFt7knejD
+ CHO/apxAZu9X9YL6PV6rBKumUk7UBDg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-159-DQzsjjdyOXuOnzkUYq8yBg-1; Wed,
+ 02 Oct 2024 08:52:30 -0400
+X-MC-Unique: DQzsjjdyOXuOnzkUYq8yBg-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BF0B91955D59; Wed,  2 Oct 2024 12:52:29 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.193.239])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 5CDAA1956056; Wed,  2 Oct 2024 12:52:28 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 0/5] Fix mips64el CI job + some other misc patches
+Date: Wed,  2 Oct 2024 14:52:21 +0200
+Message-ID: <20241002125226.282193-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -90,7 +60,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,35 +76,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue,  1 Oct 2024 09:03:49 +0200
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+The following changes since commit 718780d20470c66a3a36d036b29148d5809dc855:
 
-> Instead, produce an error and continue working
+  Merge tag 'pull-nvme-20241001' of https://gitlab.com/birkelund/qemu into staging (2024-10-01 11:34:07 +0100)
 
-s/^^^^/make error handling within ... consistent, i.e. instead abort just print a error in case ... /
+are available in the Git repository at:
 
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-10-02
 
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  hw/acpi/ghes.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-> index 3af1cd16d4d7..209095f67e9a 100644
-> --- a/hw/acpi/ghes.c
-> +++ b/hw/acpi/ghes.c
-> @@ -418,7 +418,10 @@ void ghes_record_cper_errors(const void *cper, size_t len,
->  
->      acpi_ged_state = ACPI_GED(object_resolve_path_type("", TYPE_ACPI_GED,
->                                                         NULL));
-> -    g_assert(acpi_ged_state);
-> +    if (!acpi_ged_state) {
-> +        error_setg(errp, "Can't find ACPI_GED object");
-> +        return;
-> +    }
->      ags = &acpi_ged_state->ghes_state;
->  
->      get_ghes_offsets(le64_to_cpu(ags->ghes_addr_le),
+for you to fetch changes up to e5a007001824f9cde0db58cc960d4efcf1b93f27:
+
+  tests/tcg/s390x: Test modifying an EXECUTE target (2024-10-02 13:01:26 +0200)
+
+----------------------------------------------------------------
+* Fix mips64el in the CI
+* Remove unused sh4eb target
+* Add an additional EXECUTE TCG test for s390x
+
+----------------------------------------------------------------
+Alex Bennée (1):
+      testing: bump mips64el cross to bookworm and fix package list
+
+Dr. David Alan Gilbert (1):
+      qemu-timer: Remove unused timer functions
+
+Ilya Leoshkevich (1):
+      tests/tcg/s390x: Test modifying an EXECUTE target
+
+Thomas Huth (2):
+      configs: Fix typo in the sh4-softmmu devices config file
+      Remove the unused sh4eb target
+
+ configs/devices/sh4-softmmu/default.mak            |  2 +-
+ configs/devices/sh4eb-softmmu/default.mak          |  3 --
+ configs/targets/sh4eb-softmmu.mak                  |  2 -
+ qapi/machine.json                                  |  2 +-
+ include/qemu/timer.h                               | 21 --------
+ tests/qtest/endianness-test.c                      |  1 -
+ tests/qtest/machine-none-test.c                    |  1 -
+ tests/tcg/s390x/ex-smc.c                           | 57 ++++++++++++++++++++++
+ util/qemu-timer.c                                  | 10 ----
+ .gitlab-ci.d/buildtest.yml                         |  2 +-
+ .gitlab-ci.d/cirrus.yml                            |  2 +-
+ .gitlab-ci.d/crossbuilds.yml                       |  2 +-
+ .travis.yml                                        |  2 +-
+ .../dockerfiles/debian-mips64el-cross.docker       | 18 ++-----
+ tests/lcitool/mappings.yml                         | 26 ++++++++++
+ tests/lcitool/refresh                              |  2 +-
+ tests/qemu-iotests/testenv.py                      |  1 -
+ tests/qtest/meson.build                            |  1 -
+ tests/tcg/s390x/Makefile.target                    |  1 +
+ 19 files changed, 95 insertions(+), 61 deletions(-)
+ delete mode 100644 configs/devices/sh4eb-softmmu/default.mak
+ delete mode 100644 configs/targets/sh4eb-softmmu.mak
+ create mode 100644 tests/tcg/s390x/ex-smc.c
 
 
