@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70F098CCB8
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 07:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C601898CCCD
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 07:59:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svsIb-0000zC-8u; Wed, 02 Oct 2024 01:53:21 -0400
+	id 1svsOb-0007wn-IV; Wed, 02 Oct 2024 01:59:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1svsIG-00006q-8G
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 01:53:02 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1svsIA-0004xN-1b
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 01:53:00 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-20b5affde14so29363775ad.3
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 22:52:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727848369; x=1728453169; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GgHJFHRErVXv8iC/NtA98MYttf4gmQ2c6OzCMYUuB3I=;
- b=RmyPm50zeQ9XTFY/hw7YyJwY4h0fapOMS1WOkvZ7vs7lQjCvKuUfPhA6y4ztpwrbtt
- Ora1lW35YafBIbJsf+La3GnVAMqs82Avk00ny/m3VWOjzxvX3pspyf4VtwWK1snp2sV9
- 5pUVjqVTikDZFgQ9yxti1oJDc7AXmPGE9ObllaXGHI/e9Hq2HOzz6yra0YM9idAY23yE
- MMdn74cGScTilkJ0kcGI8vcuGD457VLfcosDTlAEZ6c4AUFP0tTyw+W1lwo2zi1wVzcV
- 9KFwRBQqNBd04sDC0zhAaOt49zodcc+HsvjOkZ+OoOeNsrhIPRgwyo3lOWJRNqyK1QQR
- Ve9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727848369; x=1728453169;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GgHJFHRErVXv8iC/NtA98MYttf4gmQ2c6OzCMYUuB3I=;
- b=NDuR+O88Ec64TqZf+o2m+sOoaLh3gMB+/YiuqyzUkBd7o0bqFTMf40MUufBxcSSBuk
- f7/fI2jTF/crQ1kVqc7sPLodG5T42eGJPAkbd1W2f6WVgaoyU7RRdf4C87GZHF8+RFzy
- P+eKj38B9qFFhlOJykkEIHTuKgNdtfIJ1SP2wbA+EjNBDPacu2gA4s47+5x6mQ6FFrvK
- HGl5sjddSIUf4yPBV/OaDwCAfYGgYIzLbjjD6X13M18G81uLxxuaBkiHbAa1xfqBAHS+
- tMQt8VULtFXrsJWU4FnYukWEka27+tod2V9w8vOMO6A+omrpscp4LECDXcx/o8a/PqqJ
- hFyQ==
-X-Gm-Message-State: AOJu0Yy3Jaw+S000JPVxZa4a2gBQMuetk6eEgrrKnBltEjnuwFR3dv9S
- R8AHq5EkGYRaMm/4iPKM+f9gZtLTDawXYYHljpzW4Lbsw7G5UGPhllXF4fRZ
-X-Google-Smtp-Source: AGHT+IF6TjlUeb+rAwzXkOND+C79GlUefC0c2fsBDvkhdJfLaL34MixMKemsHJ3yPgM9I9nnuENevg==
-X-Received: by 2002:a17:902:e743:b0:203:a0ea:63c5 with SMTP id
- d9443c01a7336-20bc54c0e90mr30111935ad.0.1727848369381; 
- Tue, 01 Oct 2024 22:52:49 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20b37e60c76sm78324235ad.269.2024.10.01.22.52.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 22:52:48 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Warner Losh <imp@bsdimp.com>,
- Ajeet Singh <itachis@FreeBSD.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v3 35/35] bsd-user: Add RISC-V 64-bit Target Configuration and
- Debug XML Files
-Date: Wed,  2 Oct 2024 15:50:48 +1000
-Message-ID: <20241002055048.556083-36-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002055048.556083-1-alistair.francis@wdc.com>
-References: <20241002055048.556083-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1svsOP-0007p9-3D
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 01:59:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1svsON-0005OT-K1
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 01:59:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727848757;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0AMb/Hh/Wj5DDVpqPxcI9SO65BGEzu2ChwEglgq8vg4=;
+ b=ZBMWOepW0Ce/KhV1M8uht0deQmfuiI/f8IXalVZmxJAzhaMgP1KK8QtZz15cpKnJNGtYEq
+ sZmo+CFHrjN3wUA5NNBO6UoF6FCJX3A/YtkraQJvc3k5mjwKUuxjl5lzKv5/KqZq2S++1H
+ K6dN+GA0NZdLqeBn/IkMhD2o+n748DQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-102-tTePpOpjNnaVWdliVZPdPw-1; Wed,
+ 02 Oct 2024 01:59:08 -0400
+X-MC-Unique: tTePpOpjNnaVWdliVZPdPw-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 193A719560A2; Wed,  2 Oct 2024 05:59:07 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.47])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 80BF93000198; Wed,  2 Oct 2024 05:59:06 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 508F021E6A28; Wed,  2 Oct 2024 07:58:48 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Jiang Jiacheng
+ <jiangjiacheng@huawei.com>,  qemu-devel@nongnu.org,  Prasad Pandit
+ <ppandit@redhat.com>,  Julia Suvorova <jusual@redhat.com>,  Fabiano Rosas
+ <farosas@suse.de>,  Juraj Marcin <jmarcin@redhat.com>,  "Dr . David Alan
+ Gilbert" <dave@treblig.org>
+Subject: Re: [PATCH 0/7] migration: query-migrationthreads enhancements and
+ cleanups
+In-Reply-To: <ZvwQB1Calv407MH0@x1n> (Peter Xu's message of "Tue, 1 Oct 2024
+ 11:06:47 -0400")
+References: <20240930195837.825728-1-peterx@redhat.com>
+ <87o744e5pa.fsf@pond.sub.org> <ZvwGSgDnW8KfgFEh@redhat.com>
+ <ZvwQB1Calv407MH0@x1n>
+Date: Wed, 02 Oct 2024 07:58:48 +0200
+Message-ID: <87h69vavvr.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,31 +90,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
+Peter Xu <peterx@redhat.com> writes:
 
-Added configuration for RISC-V 64-bit target to the build system.
+> On Tue, Oct 01, 2024 at 03:25:14PM +0100, Daniel P. Berrang=C3=A9 wrote:
+>> On Tue, Oct 01, 2024 at 07:46:09AM +0200, Markus Armbruster wrote:
+>> > Command query-migrationthreads went in without a QAPI ACK.  Issues
+>> > review should have caught:
+>> >=20
+>> > * Flawed documentation.  Fixed in commit e6c60bf02d1.
+>> >=20
+>> > * It should have been spelled query-migration-threads.  Not worth fixi=
+ng
+>> >   now, I guess.
+>> >=20
+>> > * What are the use cases?  The commit message doesn't tell!  If it's
+>> >   just for debugging, the command should be marked unstable.
+>>=20
+>> It is hard to use too.
+>>=20
+>> Lets say a mgmt app wants to restrict migration threads to some
+>> certain pCPUs. It can't call query-migrationthreads beforehand
+>> as the threads don't exist until migration is started. If it
+>> calls after migration is started, then there's a window where
+>> threads are running on arbitrary pCPUs that QEMU has access
+>> to. There's no synchronization point where threads have been
+>> created & can be queried, but are not yet sending data (and
+>> thus burning CPU time)
+>
+> Indeed, I suppose tricks needed if to work with such model, e.g., mgmt
+> needs to turn bw=3D0, start migration, query TIDs, then restore bw.
+>
+> However that still lacks at least the dest multifd threads, as currently =
+it
+> only reports src multifd threads TIDs.  I don't see why a serious mgmt
+> would like to pin and care only src threads, not dest threads, which can
+> also eat as much (or even more) pCPU resources.
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
-Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240916155119.14610-18-itachis@FreeBSD.org>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- configs/targets/riscv64-bsd-user.mak | 4 ++++
- 1 file changed, 4 insertions(+)
- create mode 100644 configs/targets/riscv64-bsd-user.mak
+Sounds like there's a use case for management applications querying
+TIDs, but query-migrationthreads falls short of serving it.
 
-diff --git a/configs/targets/riscv64-bsd-user.mak b/configs/targets/riscv64-bsd-user.mak
-new file mode 100644
-index 0000000000..191c2c483f
---- /dev/null
-+++ b/configs/targets/riscv64-bsd-user.mak
-@@ -0,0 +1,4 @@
-+TARGET_ARCH=riscv64
-+TARGET_BASE_ARCH=riscv
-+TARGET_ABI_DIR=riscv
-+TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml
--- 
-2.46.2
+> For real debugging purpose, I actually don't see a major value out of it
+> either, because GDB can provide all information that this API wants to
+> provide, and only better with thread stacks if we want.
+
+True.
+
+> Since I don't see how this can be used right, it didn't get proper QAPI
+> reviews, and further I highly suspect whether this API is consumed by
+> anyone at all.. in any serious way.  Shall we remove this API (with/witho=
+ut
+> going through the deprecation process)?
+
+If we decide we want to serve the management application use case now,
+we should provide a suitable interface, then deprecate
+query-migrationthreads.
+
+If we decide not now or not at all, we can deprecate it right away.
+Removal without deprecation is also possible, but I doubt breaking our
+compatibility promise is justified.
+
+> I added the author Jiacheng too.
+
+Users of query-migrationthreads, please speak up!
 
 
