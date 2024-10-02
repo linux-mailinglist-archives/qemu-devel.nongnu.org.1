@@ -2,64 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57CB98CEE5
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:38:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 417AE98CEFB
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:41:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svusB-0002sa-3g; Wed, 02 Oct 2024 04:38:15 -0400
+	id 1svusE-00038e-BT; Wed, 02 Oct 2024 04:38:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svus8-0002lY-9n
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1svusC-00031R-0q
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svus6-0005lq-Ld
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:12 -0400
+ id 1svusA-0005m7-Au
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727858289;
+ s=mimecast20190719; t=1727858293;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T8/u+VPoMiEM0MMm1KzR655zodS3TzdLVN+AaPgKy20=;
- b=H7C9dU0nVyxS5SY3q7d0y0D9xi1RmyVy9kwT5e4djqWtelbwOxHqHVRK/aa3VlNC7yxzIY
- OY7NdBk2TD3j4ToVG+HAU+F/al6G3sZqm2HIKaLlSZ35Cs5SHfZVbO7rp15HQCt7HuoSM/
- Xk05Kw/trZDxKP5yIEkCm+UqvW51c1I=
+ bh=K8zuyWRlcmgvCrvJZZ7j0OY3Iv09WHadPXfLiGdv5Rw=;
+ b=Ie81L7E9UhXKdKLHJYL9WSBzEUw78MoJdwWZLAGXviEDdl2JmZXOW7rK59AGRCvSDvQs07
+ +qWPUqrUJBpe0dV3nRRL7JoZ2ltiGxDiZQjDhaNl9SfAwscJUrkyKrTRR78LVINnlcb+85
+ ECHM3BzDkDEwKdMu6C1xodRFFVOsHik=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-520-fAqlNs8uPiesTnKiNgRS1w-1; Wed,
- 02 Oct 2024 04:38:08 -0400
-X-MC-Unique: fAqlNs8uPiesTnKiNgRS1w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-153-CzVmtc_aOj2H0QqGcDcECA-1; Wed,
+ 02 Oct 2024 04:38:12 -0400
+X-MC-Unique: CzVmtc_aOj2H0QqGcDcECA-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D095B1955E8E; Wed,  2 Oct 2024 08:38:06 +0000 (UTC)
+ id 3B62A1956088; Wed,  2 Oct 2024 08:38:11 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9054D3000197; Wed,  2 Oct 2024 08:38:05 +0000 (UTC)
+ id 42E4B3000197; Wed,  2 Oct 2024 08:38:09 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Song Gao <gaosong@loongson.cn>
-Subject: [PULL 16/22] target/loongarch: fix -Werror=maybe-uninitialized
- false-positive
-Date: Wed,  2 Oct 2024 12:36:39 +0400
-Message-ID: <20241002083646.2893078-17-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 17/22] tests: fix -Werror=maybe-uninitialized false-positive
+Date: Wed,  2 Oct 2024 12:36:40 +0400
+Message-ID: <20241002083646.2893078-18-marcandre.lureau@redhat.com>
 In-Reply-To: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 References: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -87,63 +85,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../target/loongarch/gdbstub.c:55:20: error: ‘val’ may be used uninitialized [-Werror=maybe-uninitialized]
-   55 |             return gdb_get_reg32(mem_buf, val);
-      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-../target/loongarch/gdbstub.c:39:18: note: ‘val’ was declared here
-   39 |         uint64_t val;
+../tests/unit/test-block-iothread.c:773:17: error: ‘job’ may be used uninitialized [-Werror=maybe-uninitialized]
+/usr/include/glib-2.0/glib/gtestutils.h:73:53: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- target/loongarch/gdbstub.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ tests/unit/test-bdrv-drain.c     | 2 +-
+ tests/unit/test-block-iothread.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
-index 7ca245ee81..3a03cf9cba 100644
---- a/target/loongarch/gdbstub.c
-+++ b/target/loongarch/gdbstub.c
-@@ -34,26 +34,28 @@ void write_fcc(CPULoongArchState *env, uint64_t val)
- int loongarch_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- {
-     CPULoongArchState *env = cpu_env(cs);
--    uint64_t val;
--
--    if (0 <= n && n < 32) {
--        val = env->gpr[n];
--    } else if (n == 32) {
--        /* orig_a0 */
--        val = 0;
--    } else if (n == 33) {
--        val = env->pc;
--    } else if (n == 34) {
--        val = env->CSR_BADV;
--    }
+diff --git a/tests/unit/test-bdrv-drain.c b/tests/unit/test-bdrv-drain.c
+index 666880472b..c112d5b189 100644
+--- a/tests/unit/test-bdrv-drain.c
++++ b/tests/unit/test-bdrv-drain.c
+@@ -722,7 +722,7 @@ static void test_blockjob_common_drain_node(enum drain_type drain_type,
+     BlockJob *job;
+     TestBlockJob *tjob;
+     IOThread *iothread = NULL;
+-    int ret;
++    int ret = -1;
  
-     if (0 <= n && n <= 34) {
-+        uint64_t val;
-+
-+        if (n < 32) {
-+            val = env->gpr[n];
-+        } else if (n == 32) {
-+            /* orig_a0 */
-+            val = 0;
-+        } else if (n == 33) {
-+            val = env->pc;
-+        } else /* if (n == 34) */ {
-+            val = env->CSR_BADV;
-+        }
-+
-         if (is_la64(env)) {
-             return gdb_get_reg64(mem_buf, val);
-         } else {
-             return gdb_get_reg32(mem_buf, val);
-         }
-     }
-+
-     return 0;
- }
+     src = bdrv_new_open_driver(&bdrv_test, "source", BDRV_O_RDWR,
+                                &error_abort);
+diff --git a/tests/unit/test-block-iothread.c b/tests/unit/test-block-iothread.c
+index 3766d5de6b..20ed54f570 100644
+--- a/tests/unit/test-block-iothread.c
++++ b/tests/unit/test-block-iothread.c
+@@ -745,7 +745,7 @@ static void test_propagate_mirror(void)
+     AioContext *main_ctx = qemu_get_aio_context();
+     BlockDriverState *src, *target, *filter;
+     BlockBackend *blk;
+-    Job *job;
++    Job *job = NULL;
+     Error *local_err = NULL;
  
+     /* Create src and target*/
 -- 
 2.45.2.827.g557ae147e6
 
