@@ -2,78 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A871798CE98
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51EB498CE6B
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:09:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svuY9-00037B-Tv; Wed, 02 Oct 2024 04:17:35 -0400
+	id 1svuPX-0006ki-JI; Wed, 02 Oct 2024 04:08:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1svuXl-00033G-AI
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:17:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1svuPT-0006jc-By
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:08:35 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1svuXj-0003Og-GV
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:17:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727857026;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:resent-to:
- resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=0vs7+OFJSuY+WDv1wtM1DY+hESGV99w+zOBIPUEJFV8=;
- b=eWPyoF1RncjpD/9b+OTJXTr8b6cYivCezE4WLiUaQLXh/Cmyiv7+rPGEvcjdFeBWSFZ7Bo
- PgaX53aTRG0fP48fXIoRof8bVmQoiVYuCcL9EFjVBfnK/QJsi3rGgezFiq5LDLkNU8v0UT
- 31brr4HFa0AxkXzl11ES6RBJs6mj7Wk=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-383-JbcWMql7PESz7cOIBB96xg-1; Wed,
- 02 Oct 2024 04:17:02 -0400
-X-MC-Unique: JbcWMql7PESz7cOIBB96xg-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5C6B81955EAA; Wed,  2 Oct 2024 08:17:01 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.47])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 06EDA3000199; Wed,  2 Oct 2024 08:17:01 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id EC4F221E6A28; Wed,  2 Oct 2024 10:16:56 +0200 (CEST)
-Resent-To: peter.maydell@linaro.org, qemu-devel@nongnu.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Wed, 02 Oct 2024 10:16:56 +0200
-Resent-Message-ID: <87ldz66hs7.fsf@pond.sub.org>
-X-From-Line: armbru@redhat.com  Wed Oct  2 09:44:04 2024
-X-Original-To: armbru
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id EF97E21E6828; Wed,  2 Oct 2024 09:44:04 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	Eric Blake <eblake@redhat.com>
-Subject: [PULL 10/10] qapi/block-core: Drop drive-backup's "Any other error"
- documentation
-Date: Wed,  2 Oct 2024 09:44:04 +0200
-Message-ID: <20241002074404.1983368-11-armbru@redhat.com>
-In-Reply-To: <20241002074404.1983368-1-armbru@redhat.com>
-References: <20241002074404.1983368-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1svuPR-0002bT-AM
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:08:35 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49284i7q012248;
+ Wed, 2 Oct 2024 08:08:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+ C3wkXVEnJJToyLZInQR0lVnJ4vl+x4k4gnBBFJ5X6gw=; b=oTk7Jo+OUf9hbPYy
+ uNOHyp2L6qHeUd+bVLS7iAy9XMgMdXsblsm6AOal4NTcWHCljrICA3t522TnZMBY
+ ha211U6saD/TUsovL3WfT6rMfbV7euSJSVvz+sJ0QwzU2IUZjdoNs9bZHrE4gdgN
+ 77dy1ik85OM5DeUUAwniqtPQcbmm576FoG5zmHVA8860/3zpx3JvgNDFtjE4D1ls
+ KiRqGvnT1AD8ZD69Mx8+KS2MqZAZ1unbRBLkquZI2w/AXPR06NIIHjT+GZPoA4Xz
+ aw2ixxTr8QWyr+AIPZ60ONLZYilBk3OWKizSsbKaz3RCfilUT2fE1ipmUc4tNHzV
+ ocn68w==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4212bmr0ng-5
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Oct 2024 08:08:31 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4927PHce014145;
+ Wed, 2 Oct 2024 07:54:10 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41xwmk8tmm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Oct 2024 07:54:10 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4927s8Kk50331976
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 2 Oct 2024 07:54:08 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6AFCA20043;
+ Wed,  2 Oct 2024 07:54:08 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 142DF20040;
+ Wed,  2 Oct 2024 07:54:08 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.152.108.100])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  2 Oct 2024 07:54:07 +0000 (GMT)
+Message-ID: <476e5647ed10327c955809de9a4bafd45e8c2c1f.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 1/5] linux-user: Correct print_sockaddr() format
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Zach van Rijn <me@zv.io>, Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Date: Wed, 02 Oct 2024 09:54:07 +0200
+In-Reply-To: <20240807124306.52903-2-philmd@linaro.org>
+References: <20240807124306.52903-1-philmd@linaro.org>
+ <20240807124306.52903-2-philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Lines: 29
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: q9ZEgbyBPkrE8aTw4vb2mKvPTFxSGfce
+X-Proofpoint-ORIG-GUID: q9ZEgbyBPkrE8aTw4vb2mKvPTFxSGfce
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-02_07,2024-09-30_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0
+ mlxlogscore=999 mlxscore=0 priorityscore=1501 clxscore=1015 adultscore=0
+ lowpriorityscore=0 phishscore=0 malwarescore=0 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2410020059
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,33 +108,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We've always been rather lax about documenting errors.  Many "Errors"
-sections are obviously not exhaustive.  Only drive-backup is explicit
-about this: "Any other error returns a GenericError".
+On Wed, 2024-08-07 at 14:43 +0200, Philippe Mathieu-Daud=C3=A9 wrote:
+> When the %addr argument can not be accessed, a double comma
+> is logged (the final qemu_log call prepend a comma). Call
+> print_raw_param with last=3D1 to avoid the extra comma.
+> Remove spurious space.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> =C2=A0linux-user/strace.c | 4 ++--
+> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/linux-user/strace.c b/linux-user/strace.c
+> index b4d1098170..73f81e66fc 100644
+> --- a/linux-user/strace.c
+> +++ b/linux-user/strace.c
+> @@ -434,9 +434,9 @@ print_sockaddr(abi_ulong addr, abi_long addrlen,
+> int last)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unlock_user(sa, addr, 0)=
+;
+> =C2=A0=C2=A0=C2=A0=C2=A0 } else {
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 print_raw_param("0x"TARGET_AB=
+I_FMT_lx, addr, 0);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 print_raw_param("0x"TARGET_AB=
+I_FMT_lx, addr, 1);
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
+> -=C2=A0=C2=A0=C2=A0 qemu_log(", "TARGET_ABI_FMT_ld"%s", addrlen, get_comm=
+a(last));
+> +=C2=A0=C2=A0=C2=A0 qemu_log(","TARGET_ABI_FMT_ld"%s", addrlen, get_comma=
+(last));
+> =C2=A0}
+> =C2=A0
+> =C2=A0static void
 
-Not useful.  Drop.
+I see why this works, but it feels a bit wrong semantically: addr is
+not the last argument.
+Wouldn't it be better to add commas to the preceding switch's cases?
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240911132459.2548063-3-armbru@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
----
- qapi/block-core.json | 1 -
- 1 file changed, 1 deletion(-)
+Anyhow:
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index d3f076db9d..5c2b3ac0d4 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -1858,7 +1858,6 @@
- #
- # Errors:
- #     - If @device does not exist, DeviceNotFound
--#     - Any other error returns a GenericError.
- #
- # Since: 1.3
- #
--- 
-2.46.0
-
-
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
