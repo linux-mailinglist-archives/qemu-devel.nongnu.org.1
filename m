@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A7398CCA0
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 07:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A838C98CCAB
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 07:55:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svsIH-0008JJ-3u; Wed, 02 Oct 2024 01:53:06 -0400
+	id 1svsIX-0000FD-5T; Wed, 02 Oct 2024 01:53:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1svsHn-0007vq-V8
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 01:52:32 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1svsHr-00087Z-4v
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 01:52:36 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1svsHm-0004wc-9g
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 01:52:31 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-20b7463dd89so35784825ad.2
- for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 22:52:29 -0700 (PDT)
+ id 1svsHp-0004wn-FV
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 01:52:34 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-20b7a4336easo22781995ad.3
+ for <qemu-devel@nongnu.org>; Tue, 01 Oct 2024 22:52:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727848349; x=1728453149; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1727848352; x=1728453152; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=a8/eqSFR6IGIJa8Y4u4kxgSIB5m8G9YNXabKD73+56A=;
- b=Wd9jsWld4B77rbCXpJNEnm2QMphF9RyFVPSOy238COmPY3prA9tY1l9x5hHSiFZ5Q2
- D68VidYIFhF/8zIrq51Eo+glX16P1dWSVBxmDEKfPLVDN7nXGzvGqLWzwPWuZybPYuPr
- RczbhVxJvfaRnzyGFZNKEJWfbJuJPc5nVg2HGv1kH4DIqY9VN7yfYGKO69F4mzQmB0yM
- SplvGSR9+RldOyMrer596bzgVPTKHwc9ZiR4zKyt/qpUy9Ep3NdjrnaxE8dO5MhOppq5
- Hf0l3zWHptGz+1J7wwIJk+Y8oR0y0swmJSB4C5KIlrAlR+knIs03gnfqLIf2qpIpoC+s
- rubQ==
+ bh=vnlfuKkE3mjHxtW855QtQu3cjtwX4ze7WPpDrASKibs=;
+ b=iB+TbKgy6lQJeCDJ+T4dGBtJWMuLwPJK8Cp7It8VFugrBuQi7G+KMNtRvi8w4PXY0M
+ 3t2a8MJ/xgCaKC2C290Yo1Ugu1fq/Wy/d8z3IMwOT9+2zLEMQci7nZp7FqAymRb023kv
+ NKUKgzbXirDYJxbfTyk3Rhwj0P7CMay64dQkZhv8z9nvUK/r0FMAsNtg7KXVgvOfaBBF
+ 8zvjydv3SuSXxJ9ogWXubflm3QkBcNz+TixDFGHeBmLeHka8DCgpsc/vK8QnJuPMjOg3
+ VP9ott+YE4o83bNzfLeznA5OMWaC77j55KTZm7x/I5ktVD2hR/xHghur6NL+55rvI8ds
+ p9+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727848349; x=1728453149;
+ d=1e100.net; s=20230601; t=1727848352; x=1728453152;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a8/eqSFR6IGIJa8Y4u4kxgSIB5m8G9YNXabKD73+56A=;
- b=kzJ8ia9kJZDSMdmsvpVLf5znprdwYXgMATu3KNsJ/SzZRoCvJALjOpNeO7sakfrlni
- 2cZR04cQmaf6nh73+ZtVCcEXXVPnX++K+AGZwexa5hbhtuCoqwEAcOZ23Ycn1BuGPzJV
- NJuRwMwqn9HuSElNCVATn75dMCIchDnnZU6TkUSoZDyHdiecFXCL0XRtfmQOOybrV4MV
- fH1CejapZPn3nfXGD8MRh7wP62zVbJ4cITtC4f1XEj/VYzJO0G/n+FZTForNtxIGlT6T
- juEmdAux8wtmizPFpGhzQzaUXAQNdNwCWowsX7kmuVyJj4ObPpMOUGJ4gyl4iVo4+VNx
- KwPQ==
-X-Gm-Message-State: AOJu0YzXh3VfXNhd1/4j1leXvVsqZKM9V2DCzfJOitlsBEBADv77NyCT
- 7hs2R+PE0qtQT02JXmG45A51WkAfaSOcQZ5LuYEkji1Hk/sIJ4mz6Awca8hA
-X-Google-Smtp-Source: AGHT+IHzLWA8j57eGydM2z8SPJu/6NBLZC050+Oq0h69SIh2ksLA6Lxzrf74UsGn+Z4MTehdxeMepQ==
-X-Received: by 2002:a17:902:e88f:b0:20b:4f95:9335 with SMTP id
- d9443c01a7336-20bc5a6a4a1mr28762505ad.43.1727848348780; 
- Tue, 01 Oct 2024 22:52:28 -0700 (PDT)
+ bh=vnlfuKkE3mjHxtW855QtQu3cjtwX4ze7WPpDrASKibs=;
+ b=QGprfTlcty4+Am0TWAKMXdYOrDHHDGfK4ow9jV6mc5qc6MjcKm6h+xUXXjH46x8DD0
+ q49MqLjIEZSblo0OtGMUp66JqJPyrTABbldm0gWZ0yrvr/u7OLO+dd1NMSfUe3aTe+P+
+ c5ehJSbd5UM+kIZWFh4lB4xbgFVJ4KUeYSwFCuzXRQQ5XxqIybqyVpg5J64pyhJZ668X
+ 6QDtCLqoVhAQufcvAlaxjAJBwuKtSQfznf0w4UfqWxzSEPS6jck+ai10wsvSQO49N5HG
+ ULZLdqYnszTSvhm/TcvImAWOYJwDa7qx3EAK9eeAl8vDH9kxJv3Bzs3oVqtcabG2VJQM
+ wGVw==
+X-Gm-Message-State: AOJu0Yxj7pBfib82rKdg5jMgn4g9IbVJfRbov18ZAkD/N6wwrGyihX8x
+ iGH9TUGAC74K5TLusDRfYaR1+hNF1NxRLty6T037XrcReG9lCurWEmYM+phK
+X-Google-Smtp-Source: AGHT+IGKtbT/8CemlXCdck0cKADc5yDypVpsy3X41AZJhlzxn6qgCSvSBQW9ArYkrIFfTgtSb5/vBg==
+X-Received: by 2002:a17:903:22d2:b0:20b:751f:c9ca with SMTP id
+ d9443c01a7336-20bc59ae37emr30579175ad.5.1727848352017; 
+ Tue, 01 Oct 2024 22:52:32 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20b37e60c76sm78324235ad.269.2024.10.01.22.52.25
+ d9443c01a7336-20b37e60c76sm78324235ad.269.2024.10.01.22.52.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Oct 2024 22:52:28 -0700 (PDT)
+ Tue, 01 Oct 2024 22:52:31 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Mark Corbin <mark@dibsco.co.uk>,
- Ajeet Singh <itachis@FreeBSD.org>, Jessica Clarke <jrtc27@jrtc27.com>,
+Cc: alistair23@gmail.com, Warner Losh <imp@bsdimp.com>,
+ Ajeet Singh <itachis@FreeBSD.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v3 29/35] bsd-user: Define RISC-V system call structures and
- constants
-Date: Wed,  2 Oct 2024 15:50:42 +1000
-Message-ID: <20241002055048.556083-30-alistair.francis@wdc.com>
+Subject: [PULL v3 30/35] bsd-user: Add generic RISC-V64 target definitions
+Date: Wed,  2 Oct 2024 15:50:43 +1000
+Message-ID: <20241002055048.556083-31-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002055048.556083-1-alistair.francis@wdc.com>
 References: <20241002055048.556083-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,68 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Corbin <mark@dibsco.co.uk>
+From: Warner Losh <imp@bsdimp.com>
 
-Introduced definitions for the RISC-V system call interface, including
-the 'target_pt_regs' structure that outlines the register storage
-layout during a system call.
-Added constants for hardware machine identifiers.
+Added a generic definition for RISC-V64 target-specific details.
+Implemented the 'regpairs_aligned' function,which returns 'false'
+to indicate that register pairs are not aligned in the RISC-V64 ABI.
 
-Signed-off-by: Mark Corbin <mark@dibsco.co.uk>
+Signed-off-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Co-authored-by: Jessica Clarke <jrtc27@jrtc27.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240916155119.14610-12-itachis@FreeBSD.org>
+Message-ID: <20240916155119.14610-13-itachis@FreeBSD.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- bsd-user/riscv/target_syscall.h | 38 +++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
- create mode 100644 bsd-user/riscv/target_syscall.h
+ bsd-user/riscv/target.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+ create mode 100644 bsd-user/riscv/target.h
 
-diff --git a/bsd-user/riscv/target_syscall.h b/bsd-user/riscv/target_syscall.h
+diff --git a/bsd-user/riscv/target.h b/bsd-user/riscv/target.h
 new file mode 100644
-index 0000000000..e7e5231309
+index 0000000000..036ddd185e
 --- /dev/null
-+++ b/bsd-user/riscv/target_syscall.h
-@@ -0,0 +1,38 @@
++++ b/bsd-user/riscv/target.h
+@@ -0,0 +1,20 @@
 +/*
-+ *  RISC-V system call definitions
++ * Riscv64 general target stuff that's common to all aarch details
 + *
-+ *  Copyright (c) Mark Corbin
++ * Copyright (c) 2022 M. Warner Losh <imp@bsdimp.com>
 + *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+#ifndef BSD_USER_RISCV_TARGET_SYSCALL_H
-+#define BSD_USER_RISCV_TARGET_SYSCALL_H
++#ifndef TARGET_H
++#define TARGET_H
 +
 +/*
-+ * struct target_pt_regs defines the way the registers are stored on the stack
-+ * during a system call.
++ * riscv64 ABI does not 'lump' the registers for 64-bit args.
 + */
++static inline bool regpairs_aligned(void *cpu_env)
++{
++    return false;
++}
 +
-+struct target_pt_regs {
-+    abi_ulong regs[32];
-+    abi_ulong sepc;
-+};
-+
-+#define UNAME_MACHINE "riscv64"
-+
-+#define TARGET_HW_MACHINE       "riscv"
-+#define TARGET_HW_MACHINE_ARCH  UNAME_MACHINE
-+
-+#endif /* BSD_USER_RISCV_TARGET_SYSCALL_H */
++#endif /* TARGET_H */
 -- 
 2.46.2
 
