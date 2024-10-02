@@ -2,94 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A14998DAEF
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 16:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD9998DC20
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 16:38:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sw0I9-00052I-W6; Wed, 02 Oct 2024 10:25:26 -0400
+	id 1sw0Ug-0007vT-7g; Wed, 02 Oct 2024 10:38:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sw0I1-00051r-R0
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 10:25:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sw0Uc-0007qu-1M
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 10:38:18 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sw0I0-0007DX-5n
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 10:25:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727879114;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7yYLFWSqoKhXSseNrFGZ+H7UKls7TXd7XUU0eMiJ64U=;
- b=iR2b7CRk3bWAXvWLxf9bULOqOW7ntkckUWDIXT8Al5JKeq8z419+R1xAjaGFmTLsUtgDsd
- fyfsCJ/H+p2VOr6u73Hp5jfHaiRquVcHaXQ+meaF/3FhgwSKHoK7+QBRSfcmc8CbuhwBnZ
- kEpMTeVWa+9hsjdLe9jALM+JMb9/fBs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-tb7LT-r_MRagraUiTvQLfg-1; Wed, 02 Oct 2024 10:25:13 -0400
-X-MC-Unique: tb7LT-r_MRagraUiTvQLfg-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-42f310f0ed2so67222905e9.1
- for <qemu-devel@nongnu.org>; Wed, 02 Oct 2024 07:25:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727879112; x=1728483912;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7yYLFWSqoKhXSseNrFGZ+H7UKls7TXd7XUU0eMiJ64U=;
- b=keG+u6Psa1s0vBK6vb6kQEqPKLcDMdT/yapJ7WyyZWiaAzYTOKdWWHShXkjwDAOBW9
- Icr0X10v9schGxw5pevU+jZgNLjhS1Wp//9y6Q8/Hvast2kv1GrjnMeBx56nRwR8yej2
- ajvYGSkOHDJA04nW1NACcp/fAPtixUYU9B7W2OWiUZCv8+73fitBsHh6V4zJL7IZF7+v
- anJT7ZcAhoHnl3bnTDGEBo+j4r3UWWeNRGHBsv9O4Ib/W/l31qQzXteadi1mqAW0kvt4
- 54ow2DHRNNxJdRVg6bUiSJR+51llQZNzMKPowOasK4+P7idnhpxAYz9FJCUr4lh9St2B
- eRtQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWfdi/kbENOIXwjXQpfqnEcybyoMMHQXIml1d/XplY6T4u5hvgWjwudjc6au5rlPGkZc1dM8PZKJqZR@nongnu.org
-X-Gm-Message-State: AOJu0YygiAMtWXQ7UOjy9V7zjvwHAm/9n5goGTrECqT1jI6A8yyUF5yG
- WTvN5UiVoDbe8BmNeVHRQACVkZN5uhCv3TK1qCg9JNYjKZ6RZw95fescF/9KWMfmqa5c+lBgHZ6
- sJmheddZP8z6E7g0yXkrTseYeCYiG69OnLER42u8ZVOT+g4i/zJUB
-X-Received: by 2002:adf:e712:0:b0:37c:d1c6:7e45 with SMTP id
- ffacd0b85a97d-37cfba0a614mr2591332f8f.40.1727879112094; 
- Wed, 02 Oct 2024 07:25:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGvsBZu6kUdqGD6UWXQeMJQdhI82ZeuVK+z+lgmZ2rR4jdzCitMuuMV5JcjWjKCcTMKcXxDcg==
-X-Received: by 2002:adf:e712:0:b0:37c:d1c6:7e45 with SMTP id
- ffacd0b85a97d-37cfba0a614mr2591309f8f.40.1727879111650; 
- Wed, 02 Oct 2024 07:25:11 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37cd564d2aasm14147627f8f.4.2024.10.02.07.25.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Oct 2024 07:25:11 -0700 (PDT)
-Date: Wed, 2 Oct 2024 16:25:10 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Shiju Jose
- <shiju.jose@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
- <anisinha@redhat.com>, Dongjiu Geng <gengdongjiu1@gmail.com>,
- linux-kernel@vger.kernel.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH RFC 2/5] acpi/ghes: Use HEST table offsets when
- preparing GHES records
-Message-ID: <20241002162510.6cb7aef6@imammedo.users.ipa.redhat.com>
-In-Reply-To: <9eacb24e5e13b2028be90d19e936868a921f8e34.1727782588.git.mchehab+huawei@kernel.org>
-References: <cover.1727782588.git.mchehab+huawei@kernel.org>
- <9eacb24e5e13b2028be90d19e936868a921f8e34.1727782588.git.mchehab+huawei@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1sw0UZ-0000J1-SW
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 10:38:17 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492Dsp6T018244;
+ Wed, 2 Oct 2024 14:38:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:subject:from:to:date:in-reply-to:references
+ :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+ K6J2JteUpSz/KpUEOJZC78lU8CPL14Srsc2bcUAr7q0=; b=INxJNvf1cTNhDS0M
+ iqnSqPjO7fecBk1neSrUw/fSXcUR5vDlwh1I67sKtOouwuUzoURYRZ2bDBYFxqln
+ CZ1FHdQYwPTW81tVNmuiAyCanHDYvUAqs+sg/0VRd3F/u/pZSyDrAqR1EAoz0WpZ
+ lr13jqvQahQUssDtQKBW6DqeI1dBUZ3Qya+KIIB7SNxKjJOm1+UMlecQjsUWN0PF
+ HzUlT9rLPZJ8kj9vPF+oEuF37i6e5NO3e1b2YIhPA6UIJe0DhQCfTaVc7X7kgxZR
+ KHF7MpFtaPG2I1gG/DIAWapt6E1otVOgohb78wpMm7lxgY7mJTy3DWY4UKkzFFz4
+ aBz/qQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4217fm08hn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Oct 2024 14:38:13 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 492EcDlE021565;
+ Wed, 2 Oct 2024 14:38:13 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4217fm08fq-12
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Oct 2024 14:38:12 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 492CgH5S007989;
+ Wed, 2 Oct 2024 14:25:44 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41xvgy2x66-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Oct 2024 14:25:44 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 492EPgRW34800282
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 2 Oct 2024 14:25:42 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1652720043;
+ Wed,  2 Oct 2024 14:25:42 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C402720040;
+ Wed,  2 Oct 2024 14:25:41 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.152.108.100])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  2 Oct 2024 14:25:41 +0000 (GMT)
+Message-ID: <4d6c668781d12b8cd0c1fd18fbc4ef2abcf74806.camel@linux.ibm.com>
+Subject: Re: [PATCH v1] linux-user: Add option to run `execve`d programs
+ through QEMU
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Laurent Vivier <laurent@vivier.eu>, Noah Goldstein
+ <goldstein.w.n@gmail.com>, qemu-devel@nongnu.org
+Date: Wed, 02 Oct 2024 16:25:41 +0200
+In-Reply-To: <1251d17b-71f4-4630-b71f-990860bd9366@vivier.eu>
+References: <20240830223601.2796327-1-goldstein.w.n@gmail.com>
+ <6109eea4230bb3aa7caf6deff526878231aa2136.camel@linux.ibm.com>
+ <1251d17b-71f4-4630-b71f-990860bd9366@vivier.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cql6ii7tAA_-hApB5Zbx5MS70XY70k4C
+X-Proofpoint-ORIG-GUID: GnBKXT1e4sxyeWPdvipJoJBzbmJ2nv9E
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-02_14,2024-09-30_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015 suspectscore=0
+ mlxlogscore=999 malwarescore=0 mlxscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2410020106
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,182 +115,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue,  1 Oct 2024 13:42:47 +0200
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+On Wed, 2024-10-02 at 16:08 +0200, Laurent Vivier wrote:
+> Le 02/10/2024 =C3=A0 10:08, Ilya Leoshkevich a =C3=A9crit=C2=A0:
+> > On Fri, 2024-08-30 at 15:36 -0700, Noah Goldstein wrote:
+> > > The new option '-qemu-children' makes it so that on `execve` the
+> > > child
+> > > process will be launch by the same `qemu` executable that is
+> > > currently
+> > > running along with its current commandline arguments.
+> > >=20
+> > > The motivation for the change is to make it so that plugins
+> > > running
+> > > through `qemu` can continue to run on children.=C2=A0 Why not just
+> > > `binfmt`?: Plugins can be desirable regardless of
+> > > system/architecture
+> > > emulation, and can sometimes be useful for elf files that can run
+> > > natively. Enabling `binfmt` for all natively runnable elf files
+> > > may
+> > > not be desirable.
+> >=20
+> > Another reason to have this is that one may not have root
+> > permissions
+> > to configure binfmt-misc.
+>=20
+> A little note on that: binfmt_misc is now part of the user namespace
+> (since linux v6.7), so you can=20
+> configure binfmt_misc as a non root user in a given namepace.
+>=20
+> There is helper to use it with unshare from util-linux, you can do
+> things like that:
+>=20
+> =C2=A0=C2=A0 With 'F' flag, load the interpreter from the initial namespa=
+ce:
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0 $ /bin/qemu-m68k-static --version
+> =C2=A0=C2=A0=C2=A0=C2=A0 qemu-m68k version 8.2.2 (qemu-8.2.2-1.fc40)
+> =C2=A0=C2=A0=C2=A0=C2=A0 Copyright (c) 2003-2023 Fabrice Bellard and the =
+QEMU Project
+> developers
+> =C2=A0=C2=A0=C2=A0=C2=A0 $ unshare --map-root-user --fork --pid=20
+> --load-interp=3D":qemu-
+> m68k:M::\\x7fELF\\x01\\x02\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x
+> 00\\x00\\x00\\x02\\x00\\x04:\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\x00\
+> \xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\xff\\xff:/bin/qemu
+> -m68k-static:OCF"=20
+> --root=3Dchroot/m68k/sid
+> =C2=A0=C2=A0=C2=A0=C2=A0 # QEMU_VERSION=3D ls
+> =C2=A0=C2=A0=C2=A0=C2=A0 qemu-m68k version 8.2.2 (qemu-8.2.2-1.fc40)
+> =C2=A0=C2=A0=C2=A0=C2=A0 Copyright (c) 2003-2023 Fabrice Bellard and the =
+QEMU Project
+> developers
+> =C2=A0=C2=A0=C2=A0=C2=A0 # /qemu-m68k=C2=A0 --version
+> =C2=A0=C2=A0=C2=A0=C2=A0 qemu-m68k version 8.0.50 (v8.0.0-340-gb1cff5e2da=
+95)
+> =C2=A0=C2=A0=C2=A0=C2=A0 Copyright (c) 2003-2022 Fabrice Bellard and the =
+QEMU Project
+> developers
+>=20
+> =C2=A0=C2=A0 Without 'F' flag, from inside the namespace:
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0 $ unshare --map-root-user --fork --pid=20
+> --load-interp=3D":qemu-
+> m68k:M::\\x7fELF\\x01\\x02\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x
+> 00\\x00\\x00\\x02\\x00\\x04:\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\x00\
+> \xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\xff\\xff:/qemu-
+> m68k:OC"=20
+> --root=3Dchroot/m68k/sid
+> =C2=A0=C2=A0=C2=A0=C2=A0 # QEMU_VERSION=3D ls
+> =C2=A0=C2=A0=C2=A0=C2=A0 qemu-m68k version 8.0.50 (v8.0.0-340-gb1cff5e2da=
+95)
+> =C2=A0=C2=A0=C2=A0=C2=A0 Copyright (c) 2003-2022 Fabrice Bellard and the =
+QEMU Project
+> developers
+> =C2=A0=C2=A0=C2=A0=C2=A0 # /qemu-m68k=C2=A0 --version
+> =C2=A0=C2=A0=C2=A0=C2=A0 qemu-m68k version 8.0.50 (v8.0.0-340-gb1cff5e2da=
+95)
+> =C2=A0=C2=A0=C2=A0=C2=A0 Copyright (c) 2003-2022 Fabrice Bellard and the =
+QEMU Project
+> developers
+>=20
+> Thanks,
+> Laurent
+>=20
 
-> There are two pointers that are needed during error injection:
-> 
-> 1. The start address of the CPER block to be stored;
-> 2. The address of the ack, which needs a reset before next error.
-> 
-> Calculate them preferrable from the HEST table, as this allows
-> checking the source ID, the size of the table and the type of
-> HEST error block structures.
-> 
-> Yet, keep the old code, as this is needed for migration purposes.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  hw/acpi/ghes.c | 93 ++++++++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 83 insertions(+), 10 deletions(-)
-> 
-> diff --git a/hw/acpi/ghes.c b/hw/acpi/ghes.c
-> index 2c2cf444edeb..313a6e453af6 100644
-> --- a/hw/acpi/ghes.c
-> +++ b/hw/acpi/ghes.c
-> @@ -61,6 +61,23 @@
->   */
->  #define ACPI_GHES_GESB_SIZE                 20
->  
-> +/*
-> + * Offsets with regards to the start of the HEST table stored at
-> + * ags->hest_addr_le, according with the memory layout map at
-> + * docs/specs/acpi_hest_ghes.rst.
-> + */
-> +
-> +/* ACPI 6.2: 18.3.2.8 Generic Hardware Error Source version 2
-> + * Table 18-382 Generic Hardware Error Source version 2 (GHESv2) Structure
-> + */
-> +#define HEST_GHES_V2_TABLE_SIZE  92
-> +#define GHES_ACK_OFFSET          (64 + GAS_ADDR_OFFSET)
-> +
-> +/* ACPI 6.2: 18.3.2.7: Generic Hardware Error Source
-> + * Table 18-380: 'Error Status Address' field
-> + */
-> +#define GHES_ERR_ST_ADDR_OFFSET  (20 + GAS_ADDR_OFFSET)
-> +
->  /*
->   * Values for error_severity field
->   */
-> @@ -218,14 +235,6 @@ static void build_ghes_error_table(GArray *hardware_errors, BIOSLinker *linker,
->  {
->      int i, error_status_block_offset;
->  
-> -    /*
-> -     * TODO: Current version supports only one source.
-> -     * A further patch will drop this check, after adding a proper migration
-> -     * code, as, for the code to work, we need to store a bios pointer to the
-> -     * HEST table.
-> -     */
-> -    assert(num_sources == 1);
-> -
->      /* Build error_block_address */
->      for (i = 0; i < num_sources; i++) {
->          build_append_int_noprefix(hardware_errors, 0, sizeof(uint64_t));
-> @@ -425,6 +434,65 @@ static void get_ghes_offsets(uint64_t ghes_addr,
->      *read_ack_register_addr = ghes_addr + sizeof(uint64_t);
->  }
->  
-> +static void get_hest_offsets(uint16_t source_id, uint64_t hest_addr,
-> +                             uint64_t *cper_addr,
-> +                             uint64_t *read_ack_start_addr,
-> +                              Error **errp)
+Thanks for posting this, I wasn't aware of this feature and it looks
+really useful.=20
 
-cper/read_ack are GHES specific only, aren't they?
+IIUC it also resolves the main problem this patch is dealing with:
 
-perhaps s/get_hest_offsets/get_ghes_source_offsets/
-
-
-> +{
-> +    uint64_t hest_err_block_addr, hest_read_ack_start_addr;
-> +    uint64_t err_source_struct, error_block_addr;
-> +    uint32_t num_sources, i;
-> +
-> +    if (!hest_addr) {
-> +        return;
-> +    }
-> +
-> +    cpu_physical_memory_read(hest_addr, &num_sources, sizeof(num_sources));
-> +
-> +    err_source_struct = hest_addr + sizeof(num_sources);
-> +
-> +    /*
-> +     * Currently, HEST Error source navigates only for GHESv2 tables
-> +     */
-> +
-> +    for (i = 0; i < num_sources; i++) {
-
-missing le2cpu(num_sources)
-
-> +        uint64_t addr = err_source_struct;
-> +        uint16_t type, src_id;
-> +
-> +        cpu_physical_memory_read(addr, &type, sizeof(type));
-
-ditto for anything larger than 1 byte that you read from guest memory
-(all over the patch)
-
-> +
-> +        /* For now, we only know the size of GHESv2 table */
-> +        assert(type == ACPI_GHES_SOURCE_GENERIC_ERROR_V2);
-
-Imagine in qemu-9.3 we add non GHES error source, and then try to migrate
-such guest to qemu-9.2. It will explode here.
-Of-cause we can add some compat property to ged or machine type to
-make sure that code works old way in qemu-9.3 for virt-9.2
-at expense of keeping 9.2 code in 9.3. Which adds to maintenance burden
-and fragile, also it's a matter of time before we screw it up and release
-non-migratable/broken QEMU.
-
-So I'd like to avoid piling up compat code/knobs on to of each other
-and do it in a way where this src id lookup could gracefully skip
-not implemented yet error sources.
-This way we won't need any compat knobs to deal with in the future. 
-
-> +
-> +        /* It is GHES. Compare CPER source address */
-> +        addr += sizeof(type);
-> +        cpu_physical_memory_read(addr, &src_id, sizeof(src_id));
-> +
-> +        if (src_id == source_id) {
-> +            break;
-> +        }
-> +
-> +        err_source_struct += HEST_GHES_V2_TABLE_SIZE;
-> +    }
-> +    if (i == num_sources) {
-> +        error_setg(errp, "HEST: Source %d not found.", source_id);
-> +        return;
-> +    }
-> +
-> +    /* Navigate though table address pointers */
-> +    hest_err_block_addr = err_source_struct + GHES_ERR_ST_ADDR_OFFSET;
-> +    hest_read_ack_start_addr = err_source_struct + GHES_ACK_OFFSET;
-
-s/hest_read_ack_start_addr/hest_read_ack_addr/
-
-> +
-> +    cpu_physical_memory_read(hest_err_block_addr, &error_block_addr,
-> +                             sizeof(error_block_addr));
-> +
-> +    cpu_physical_memory_read(error_block_addr, cper_addr,
-> +                             sizeof(*cper_addr));
-> +
-> +    cpu_physical_memory_read(hest_read_ack_start_addr, read_ack_start_addr,
-> +                             sizeof(*read_ack_start_addr));
-> +}
-> +
->  void ghes_record_cper_errors(const void *cper, size_t len,
->                               uint16_t source_id, Error **errp)
->  {
-> @@ -445,8 +513,13 @@ void ghes_record_cper_errors(const void *cper, size_t len,
->      }
->      ags = &acpi_ged_state->ghes_state;
->  
-> -    get_ghes_offsets(le64_to_cpu(ags->hw_error_le),
-> -                     &cper_addr, &read_ack_register_addr);
-> +    if (!ags->hest_addr_le) {
-> +        get_ghes_offsets(le64_to_cpu(ags->hw_error_le),
-
-should it be named get_hw_error_offsets
-
-> +                         &cper_addr, &read_ack_register_addr);
-> +    } else {
-> +        get_hest_offsets(source_id, le64_to_cpu(ags->hest_addr_le),
-> +                         &cper_addr, &read_ack_register_addr, errp);
-> +    }
->  
->      if (!cper_addr) {
->          error_setg(errp, "can not find Generic Error Status Block");
-
+  Enabling `binfmt` for all natively runnable elf files may
+  not be desirable.
 
