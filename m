@@ -2,64 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771EB98DEB7
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 17:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC1698DEC5
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 17:20:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sw17o-0005lY-6T; Wed, 02 Oct 2024 11:18:49 -0400
+	id 1sw19e-0007my-G5; Wed, 02 Oct 2024 11:20:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sw17b-0005im-Gh; Wed, 02 Oct 2024 11:18:36 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sw19X-0007mV-M0
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 11:20:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sw17Y-0004px-Ta; Wed, 02 Oct 2024 11:18:35 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c23:1301:0:640:a2b5:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id AB03360D4F;
- Wed,  2 Oct 2024 18:18:28 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:8026::1:2f])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 7IdRVm1IaeA0-1YgGQtpV; Wed, 02 Oct 2024 18:18:28 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1727882308;
- bh=QoBSQBwzTsqhFyxMo8qE6QO6e5IVO+nGcgo0RDbBEiE=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=0Gkwnh0GhT9gFWZFCUclO9X2pAiG8656m/or9MMSf1P++k6yLDeEsnaxzCgaaCJu3
- JZ0gjtysWzJINLHytOyi5jAfV9Z20eVRQWbGW89ONF+Qnlk2+J68nzXTTalp/EP3w2
- ecPxaZmTRF6bj4oQuxqWDTPEUPFpMSOgKjK+JMOo=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, eblake@redhat.com, armbru@redhat.com,
- dave@treblig.org, hreitz@redhat.com, kwolf@redhat.com,
- Leonid Kaplan <xeor@yandex-team.ru>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH v3 2/2] block-backend: per-device throttling of BLOCK_IO_ERROR
- reports
-Date: Wed,  2 Oct 2024 18:18:06 +0300
-Message-Id: <20241002151806.592469-3-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241002151806.592469-1-vsementsov@yandex-team.ru>
-References: <20241002151806.592469-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sw19Q-0005By-T9
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 11:20:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1727882427;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xA8j/QiodrNhUy9Ai+oLP/BYSVovSL5o50N6yUL04M8=;
+ b=SZbSs2kutlRQRaJYXpFShUmjT0pWnE2siTT9hofvaLBwTyLQ3gCvb9KD5O/rRGgUAhNHlo
+ BzheO2O1/diDDcTry9OFCGbL4bylPsyYDaLyQMRsHTDyI8LHOWHqdGI44uaqpDaurLPzsi
+ 0SSH0QpCPH7lx9j3WutBs5p6saQt9mc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-ioE2P-UEP5C2DVuziJDlbA-1; Wed,
+ 02 Oct 2024 11:20:26 -0400
+X-MC-Unique: ioE2P-UEP5C2DVuziJDlbA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C30C8195608D; Wed,  2 Oct 2024 15:20:23 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.6])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E74A43000197; Wed,  2 Oct 2024 15:20:20 +0000 (UTC)
+Date: Wed, 2 Oct 2024 10:20:18 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, 
+ qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com, berrange@redhat.com,
+ qemu-block@nongnu.org, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com, 
+ alexander.ivanov@virtuozzo.com
+Subject: Re: [PATCH 2/2] nbd/server: Allow users to adjust handshake limit in
+ QMP
+Message-ID: <7n423sqlktdc5cqd247nz5i75vrqgzgmu7fkqssjaqaoausov6@k4qb2yhabalg>
+References: <20240809161828.1342831-4-eblake@redhat.com>
+ <20240809161828.1342831-6-eblake@redhat.com>
+ <87wmiqy5rl.fsf@pond.sub.org>
+ <a2747d44-9f1d-4bec-a9dd-c7e9f7363575@yandex-team.ru>
+ <87ed4ywn8d.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Yandex-Filter: 1
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ed4ywn8d.fsf@pond.sub.org>
+User-Agent: NeoMutt/20240425
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,64 +87,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leonid Kaplan <xeor@yandex-team.ru>
+On Wed, Oct 02, 2024 at 05:14:42PM GMT, Markus Armbruster wrote:
+> >> Are we confident we'll never need less than a full second?
+> >
+> > Hmm, recent "[PATCH v2] chardev: introduce 'reconnect-ms' and deprecate 'reconnect'" shows that at least sometimes second is not enough precision.
+> >
+> > Maybe, using milliseconds consistently for all relatively short time intervals in QAPI would be a good rule?
+> 
+> Ideally, we'd use a single unit for time: nanoseconds.  But we missed
+> that chance long ago, and now are stuck with a mix of seconds,
+> milliseconds, microseconds, and nanoseconds.
+> 
+> I think a good rule is to pick the first from this list that will surely
+> provide all the precision we'll ever need.
+> 
+> In this case, milliseconds should do.
 
-BLOCK_IO_ERROR events comes from guest, so we must throttle them.
-We still want per-device throttling, so let's use device id as a key.
+I'll use milliseconds in the next revision.
 
-Signed-off-by: Leonid Kaplan <xeor@yandex-team.ru>
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- monitor/monitor.c    | 7 +++++--
- qapi/block-core.json | 2 ++
- 2 files changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index db52a9c7ef..56786c0ccc 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -308,6 +308,7 @@ int error_printf_unless_qmp(const char *fmt, ...)
- static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     /* Limit guest-triggerable events to 1 per second */
-     [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_BLOCK_IO_ERROR]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_WATCHDOG]          = { 1000 * SCALE_MS },
-     [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
-@@ -493,7 +494,8 @@ static unsigned int qapi_event_throttle_hash(const void *key)
-         hash += g_str_hash(qdict_get_str(evstate->data, "node-name"));
-     }
- 
--    if (evstate->event == QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE) {
-+    if (evstate->event == QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE ||
-+        evstate->event == QAPI_EVENT_BLOCK_IO_ERROR) {
-         hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
-     }
- 
-@@ -519,7 +521,8 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
-                        qdict_get_str(evb->data, "node-name"));
-     }
- 
--    if (eva->event == QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE) {
-+    if (eva->event == QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE ||
-+        eva->event == QAPI_EVENT_BLOCK_IO_ERROR) {
-         return !strcmp(qdict_get_str(eva->data, "qom-path"),
-                        qdict_get_str(evb->data, "qom-path"));
-     }
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index b3743022be..835f90b118 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -5607,6 +5607,8 @@
- # .. note:: If action is "stop", a STOP event will eventually follow
- #    the BLOCK_IO_ERROR event.
- #
-+# .. note:: This event is rate-limited.
-+#
- # Since: 0.13
- #
- # .. qmp-example::
 -- 
-2.34.1
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
