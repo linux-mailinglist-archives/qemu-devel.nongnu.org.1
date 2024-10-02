@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747F598CEFC
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC4198CEE9
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:39:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svurm-0001mF-By; Wed, 02 Oct 2024 04:37:50 -0400
+	id 1svurq-0001qd-4I; Wed, 02 Oct 2024 04:37:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svurc-0001ds-EL
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:37:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1svurk-0001nx-N0
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:37:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svura-0005ib-WA
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:37:40 -0400
+ id 1svuri-0005jh-ML
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:37:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727858257;
+ s=mimecast20190719; t=1727858265;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JWGVABklCLrU7/ALyC116NV9eFWhHW+S/KvcK29JhAU=;
- b=Gp9rkI+IolBYUnDEK+bOJiFU+gwlhCmpSfyjd3SR0bGKhr8ojfeJ+8NNicMDvaASXeHlF1
- 9bsZBvhnFZdFme1bUG8WbdCKAJfrk3MVCsoSvN88WiwezMmO8u6vtNQhbWnrgRRG7v30kB
- Ip9GINBSU8EEUGly3HsQAVCzrQHp6qI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=spwqmLWqFphyzD9JjnJ9g139Tq6qkYbqu8XRC6qnYMw=;
+ b=RlaRubU3PgE+lI9nWhKXY/67I1Msx1I837EXLLt1L9Z1HDQIs/ycBAQ/FO0I6dAXyuzSkm
+ 7nAtZgJ/gU2W1jvbITcvvhXwj39r/yClXA43tJFvRvUlzJHmJVm7Fd5YgSE+Ns6BqGbRb/
+ L85nWhXr83lWF/R2eL1Ha5bj6nF30sI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-h3KgxobKNgubi7Xauoo3ow-1; Wed,
- 02 Oct 2024 04:37:33 -0400
-X-MC-Unique: h3KgxobKNgubi7Xauoo3ow-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-564-9ZGoeoj3MLWH8qpRNQ7sRQ-1; Wed,
+ 02 Oct 2024 04:37:39 -0400
+X-MC-Unique: 9ZGoeoj3MLWH8qpRNQ7sRQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 77BE71955EE9; Wed,  2 Oct 2024 08:37:32 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0CB4F19541BB; Wed,  2 Oct 2024 08:37:37 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 66AA33000197; Wed,  2 Oct 2024 08:37:31 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id F23001955E77; Wed,  2 Oct 2024 08:37:35 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PULL 09/22] hw/vhost-scsi: fix -Werror=maybe-uninitialized
-Date: Wed,  2 Oct 2024 12:36:32 +0400
-Message-ID: <20241002083646.2893078-10-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Bin Meng <bmeng.cn@gmail.com>,
+ qemu-block@nongnu.org (open list:SD (Secure Card))
+Subject: [PULL 10/22] hw/sdhci: fix -Werror=maybe-uninitialized false-positive
+Date: Wed,  2 Oct 2024 12:36:33 +0400
+Message-ID: <20241002083646.2893078-11-marcandre.lureau@redhat.com>
 In-Reply-To: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 References: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -70,7 +70,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,32 +88,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../hw/scsi/vhost-scsi.c:173:12: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
+../hw/sd/sdhci.c:846:16: error: ‘res’ may be used uninitialized [-Werror=maybe-uninitialized]
 
-It can be reached when num_queues=0. It probably doesn't make much sense
-to instantiate a vhost-scsi with 0 IO queues though. For now, make
-vhost_scsi_set_workers() return success/0 anyway, when no workers have
-been setup.
+False-positive, because "length" is non-null.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- hw/scsi/vhost-scsi.c | 2 +-
+ hw/sd/sdhci.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 49cff2a0cb..22d16dc26b 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -172,7 +172,7 @@ static int vhost_scsi_set_workers(VHostSCSICommon *vsc, bool per_virtqueue)
-     struct vhost_dev *dev = &vsc->dev;
-     struct vhost_vring_worker vq_worker;
-     struct vhost_worker_state worker;
--    int i, ret;
-+    int i, ret = 0;
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 87122e4245..ed01499391 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -747,7 +747,7 @@ static void sdhci_do_adma(SDHCIState *s)
+     const uint16_t block_size = s->blksize & BLOCK_SIZE_MASK;
+     const MemTxAttrs attrs = { .memory = true };
+     ADMADescr dscr = {};
+-    MemTxResult res;
++    MemTxResult res = MEMTX_ERROR;
+     int i;
  
-     /* Use default worker */
-     if (!per_virtqueue || dev->nvqs == VHOST_SCSI_VQ_NUM_FIXED + 1) {
+     if (s->trnmod & SDHC_TRNS_BLK_CNT_EN && !s->blkcnt) {
 -- 
 2.45.2.827.g557ae147e6
 
