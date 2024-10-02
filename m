@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA01598CF04
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E57CB98CEE5
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Oct 2024 10:38:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1svus8-0002gA-FN; Wed, 02 Oct 2024 04:38:12 -0400
+	id 1svusB-0002sa-3g; Wed, 02 Oct 2024 04:38:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svus5-0002Qb-Ac
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1svus8-0002lY-9n
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1svus4-0005lP-1F
- for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:09 -0400
+ id 1svus6-0005lq-Ld
+ for qemu-devel@nongnu.org; Wed, 02 Oct 2024 04:38:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727858286;
+ s=mimecast20190719; t=1727858289;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h0TucsGaDkti7HZLhRtFl+SgwnfZTPnZhvzxf2cTiUg=;
- b=BKR27thZisIbaLJH12HlOZcf9O48CZYvo2BLyYtK+Tg8TvJWerZyz3DXnAO2YeMYyCk68O
- nbPeqhtCOJ2Se37EPrKxNkcG2gL5/AzcMM+v1vIjPxZwad4zZLBQ390ackiBrh4iQE2eRs
- /0vIRyJTAzzRQkPufz0pWEucr7kmapQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=T8/u+VPoMiEM0MMm1KzR655zodS3TzdLVN+AaPgKy20=;
+ b=H7C9dU0nVyxS5SY3q7d0y0D9xi1RmyVy9kwT5e4djqWtelbwOxHqHVRK/aa3VlNC7yxzIY
+ OY7NdBk2TD3j4ToVG+HAU+F/al6G3sZqm2HIKaLlSZ35Cs5SHfZVbO7rp15HQCt7HuoSM/
+ Xk05Kw/trZDxKP5yIEkCm+UqvW51c1I=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-YjvJGunPMFWsh4sZBKNEVQ-1; Wed,
- 02 Oct 2024 04:38:02 -0400
-X-MC-Unique: YjvJGunPMFWsh4sZBKNEVQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-520-fAqlNs8uPiesTnKiNgRS1w-1; Wed,
+ 02 Oct 2024 04:38:08 -0400
+X-MC-Unique: fAqlNs8uPiesTnKiNgRS1w-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8D76E19560B0; Wed,  2 Oct 2024 08:38:01 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D095B1955E8E; Wed,  2 Oct 2024 08:38:06 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4831B300019B; Wed,  2 Oct 2024 08:37:59 +0000 (UTC)
+ id 9054D3000197; Wed,  2 Oct 2024 08:38:05 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 15/22] linux-user/hppa: fix -Werror=maybe-uninitialized
+ Song Gao <gaosong@loongson.cn>
+Subject: [PULL 16/22] target/loongarch: fix -Werror=maybe-uninitialized
  false-positive
-Date: Wed,  2 Oct 2024 12:36:38 +0400
-Message-ID: <20241002083646.2893078-16-marcandre.lureau@redhat.com>
+Date: Wed,  2 Oct 2024 12:36:39 +0400
+Message-ID: <20241002083646.2893078-17-marcandre.lureau@redhat.com>
 In-Reply-To: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 References: <20241002083646.2893078-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -87,31 +87,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../linux-user/hppa/cpu_loop.c: In function ‘hppa_lws’:
-../linux-user/hppa/cpu_loop.c:106:17: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
-  106 |     env->gr[28] = ret;
-
-Add g_assert_not_reached() to help compiler, as suggested by Laurent.
+../target/loongarch/gdbstub.c:55:20: error: ‘val’ may be used uninitialized [-Werror=maybe-uninitialized]
+   55 |             return gdb_get_reg32(mem_buf, val);
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+../target/loongarch/gdbstub.c:39:18: note: ‘val’ was declared here
+   39 |         uint64_t val;
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- linux-user/hppa/cpu_loop.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/loongarch/gdbstub.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
-index bc093b8fe8..23b38ff9b2 100644
---- a/linux-user/hppa/cpu_loop.c
-+++ b/linux-user/hppa/cpu_loop.c
-@@ -99,6 +99,8 @@ static abi_ulong hppa_lws(CPUHPPAState *env)
- #endif
-             }
-             break;
-+        default:
-+            g_assert_not_reached();
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index 7ca245ee81..3a03cf9cba 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -34,26 +34,28 @@ void write_fcc(CPULoongArchState *env, uint64_t val)
+ int loongarch_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ {
+     CPULoongArchState *env = cpu_env(cs);
+-    uint64_t val;
+-
+-    if (0 <= n && n < 32) {
+-        val = env->gpr[n];
+-    } else if (n == 32) {
+-        /* orig_a0 */
+-        val = 0;
+-    } else if (n == 33) {
+-        val = env->pc;
+-    } else if (n == 34) {
+-        val = env->CSR_BADV;
+-    }
+ 
+     if (0 <= n && n <= 34) {
++        uint64_t val;
++
++        if (n < 32) {
++            val = env->gpr[n];
++        } else if (n == 32) {
++            /* orig_a0 */
++            val = 0;
++        } else if (n == 33) {
++            val = env->pc;
++        } else /* if (n == 34) */ {
++            val = env->CSR_BADV;
++        }
++
+         if (is_la64(env)) {
+             return gdb_get_reg64(mem_buf, val);
+         } else {
+             return gdb_get_reg32(mem_buf, val);
          }
-         break;
      }
++
+     return 0;
+ }
+ 
 -- 
 2.45.2.827.g557ae147e6
 
