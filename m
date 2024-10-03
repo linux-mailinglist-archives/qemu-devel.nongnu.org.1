@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22D398F63B
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 20:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B3998F64E
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 20:38:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swQew-0007ZL-93; Thu, 03 Oct 2024 14:34:42 -0400
+	id 1swQes-0007Vp-3O; Thu, 03 Oct 2024 14:34:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1swQeQ-0007G5-Mu
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:34:17 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1swQeR-0007GF-98
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:34:18 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1swQeM-00053l-3b
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:34:09 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2e06acff261so995088a91.2
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 11:34:04 -0700 (PDT)
+ id 1swQeO-000549-JK
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:34:10 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2e0b9bca173so1031190a91.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 11:34:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1727980443; x=1728585243;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1727980444; x=1728585244;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qMl0wOVdpYR1ANnhlgzvb07hHsnxQN9qOy6OtOfW7ZU=;
- b=H3pbGgYUJwsbCjG0fPsrcFHLVp0Nom8Oh66MnBFb2hQkEJXmjJQw3BhWMurAiBg96+
- rZElq9nCN5ccb3wgnorTv6NwjVVPVwf3OXs3FHfFy5jATfy88TXvgbgUQO62S6N4N3Y4
- MKTSQAZQUIsMFxf0hkG+O/CgzDCUIWF76Gkwm7eHNzg15lWtf7Ml+NzRrHjp0QuOcR/F
- 3tmzwc9TLUTFOLQP0BU01h4brKusAAJv+wusLQ9XP1sDcl+aDgZvo5FMO0cnRWVUTA+s
- T+PLDfD9r4K1D52AZPXNM94Kk29T/85+7splhUb6UY7EqggYVi4KquqqcNFrKd81D4yM
- 2nCA==
+ bh=JhjOwzCsS1orZG5ZY7aLF1dqoua4hIdgdYgEn8nEbDM=;
+ b=17bnmnJT/xO9g5nY3abJSOpQscKhsYF5mTV6p6TvikhZi7Qa+YtM+2PbRREg+AZSwm
+ nnTHM/RceU6Fkh8IvYNPmvUuw1IXBwNNhCwRpEQ+Fh/1vIyuhP94hkJ0iDyg68SYz//W
+ hAByOILCOziI3HrOGTgxVKyQro5K/kozLORtcC2n7h8U66CBuoAU1ZYgvtKupAOkIFoW
+ bJbo2M3xGMQyTnPrSv1c3eJhVDeFZ16EtxZZfZSgEjxbgOvbGQ2sXT7FPh35heNuTKZJ
+ oxu2VWV7jw8juyy7Eg8vPF3cKe6MOwoDGsCm5k1H7EpPYXsz6JbZIvb1zCe/VOJ/juIJ
+ jUQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727980443; x=1728585243;
+ d=1e100.net; s=20230601; t=1727980444; x=1728585244;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qMl0wOVdpYR1ANnhlgzvb07hHsnxQN9qOy6OtOfW7ZU=;
- b=EMnN1ShNz2ixR5EhdqWFecvmYBxKa06CKy/y6JrdekZ7d+uUbZJKr80dLmPbazH6Wf
- ammzMPieljOhraKDG4ny3iL72L2/udO7bfjxLhzW0q+w2/I7nVM9ShTG3I5u1Stq1J+u
- jKrI7m4aSyb1NkB3SA9XXYGbXi5g390ndkU49pIwyBwcAjE0NWhkJpq+vJBInBIptNP9
- nsMVzTBgdrf1lQLu7UokZTrBbI1BQkbPqkqO2NlYRM5QdkPCHKMfT3XBC2gKzqwuYzEv
- CCmP/gyfNsgTuXvD1mSXf/8SUOIQHb4HQW4THg8KWW/dMbXVwiQfml5dogku8j4Ouxlb
- 6iYQ==
+ bh=JhjOwzCsS1orZG5ZY7aLF1dqoua4hIdgdYgEn8nEbDM=;
+ b=q9kTJUbSPYWT3h/7Kf340s/kMe1av4aKYVFrzTLayCtL8pg6hjOg0VRK96dns7DDCp
+ nmi6cXeek6HfN6QIvmz6Q2WZxNpA1BrHzA3ourFtx6Ge5quKAURIyaxECbXwPhdj0ZKq
+ rXel34NeiihXNMgvfGTz8rItKTvzKy3o9zp+eqcKuebhAr/ClfawBPfyA3DP7nZh+1tr
+ xsejCLR05ZJZmBHBHm9fc5wqJfscxSDMuN6g0Y63yMfunG7bVCV91r1kYsE35vCsK9nl
+ /YZt/L6y0NUR+arEHnV/nI+7LVvtV1UN6pEFIOGRM9/UBvlASJLkIltHvY85fyr3O2cF
+ s6pw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU6h005PBcIAECk8FVyD8EW71/JGsjsYwW4Lk5XeUYzdh9qQt+lAGevSAnh38zIGS2u3xfSayyJBmp6@nongnu.org
-X-Gm-Message-State: AOJu0YwG+0+s+WBrKpSn/urGT/Jvz7G3pkGaVZR78W2+hhgR89id4oDq
- 3lVzZEa6jNXKDi8EIzHIfUJGJkftVMQtNGdYncEa6sVv29XnJF0VctSGgPz+3Ps=
-X-Google-Smtp-Source: AGHT+IGLo4MreZoXQTJEzJCUIv40m4e+6rGR7rvkLa2eEP0wZO882OoaYvQSFqscWjJ+Y7q7+6LR9w==
-X-Received: by 2002:a17:90b:1185:b0:2d3:d066:f58b with SMTP id
- 98e67ed59e1d1-2e1e62259c0mr42633a91.12.1727980443344; 
- Thu, 03 Oct 2024 11:34:03 -0700 (PDT)
+ AJvYcCVif3rST5bFn+tZIEQxQunwNQHsPpZoyfT9mJQdFLSf9J+nEvkYT2vdAZAZclu++XbWvgFuwOstXY4E@nongnu.org
+X-Gm-Message-State: AOJu0YwWP8XsQKHR89Y+SEWc6lsjcGpyKAr7W+YqLTnBFEarnAxUVXGA
+ 448H2Wb103YrR3bFP4rEhEdJJMlfwPi5wpyEJNCzGJcgQC2EADauhjkXcJJoq0g=
+X-Google-Smtp-Source: AGHT+IFfU/G7oq1PDmVTtJJXpBzYI9aDFAfcrvqJiPQ8RN0I/Bb4yRpCKfZue/6BaQS0hSVwWhcthA==
+X-Received: by 2002:a17:90b:51cf:b0:2e0:f81c:731f with SMTP id
+ 98e67ed59e1d1-2e1e6296d4cmr36033a91.24.1727980444471; 
+ Thu, 03 Oct 2024 11:34:04 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20beefad16asm11796245ad.193.2024.10.03.11.34.02
+ d9443c01a7336-20beefad16asm11796245ad.193.2024.10.03.11.34.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Oct 2024 11:34:03 -0700 (PDT)
+ Thu, 03 Oct 2024 11:34:04 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, bmeng.cn@gmail.com,
  liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, kito.cheng@sifive.com,
- Deepak Gupta <debug@rivosinc.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v15 13/21] target/riscv: mmu changes for zicfiss shadow stack
- protection
-Date: Thu,  3 Oct 2024 11:33:34 -0700
-Message-ID: <20241003183342.679249-14-debug@rivosinc.com>
+ Deepak Gupta <debug@rivosinc.com>
+Subject: [PATCH v15 14/21] target/riscv: disallow probe accesses to shadow
+ stack
+Date: Thu,  3 Oct 2024 11:33:35 -0700
+Message-ID: <20241003183342.679249-15-debug@rivosinc.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241003183342.679249-1-debug@rivosinc.com>
 References: <20241003183342.679249-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=debug@rivosinc.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=debug@rivosinc.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,137 +98,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-zicfiss protects shadow stack using new page table encodings PTE.W=1,
-PTE.R=0 and PTE.X=0. This encoding is reserved if zicfiss is not
-implemented or if shadow stack are not enabled.
-Loads on shadow stack memory are allowed while stores to shadow stack
-memory leads to access faults. Shadow stack accesses to RO memory
-leads to store page fault.
+`check_zicbom_access` (`cbo.clean/flush/inval`) may probe shadow stack
+memory and must always raise store/AMO access fault because it has store
+semantics.
 
-To implement special nature of shadow stack memory where only selected
-stores (shadow stack stores from sspush) have to be allowed while rest
-of regular stores disallowed, new MMU TLB index is created for shadow
-stack.
+For non-shadow stack memory even though `cbo.clean/flush/inval` have
+store semantics, it will not fault if read is allowed (probably to follow
+`clflush` on x86). Although if read is not allowed, eventually
+`probe_write` will do store page (or access) fault (if permissions don't
+allow it).
+
+cbo operations on shadow stack memory must always raise store access fault.
+Thus extending `get_physical_address` to recieve `probe` parameter as well.
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/cpu_helper.c | 46 +++++++++++++++++++++++++++++++++------
- target/riscv/internals.h  |  3 +++
- 2 files changed, 42 insertions(+), 7 deletions(-)
+ target/riscv/cpu_helper.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 93d199748e..5580f5f3f3 100644
+index 5580f5f3f3..ab46f694b5 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -898,6 +898,8 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
-     hwaddr ppn;
-     int napot_bits = 0;
-     target_ulong napot_mask;
-+    bool is_sstack_idx = ((mmu_idx & MMU_IDX_SS_WRITE) == MMU_IDX_SS_WRITE);
-+    bool sstack_page = false;
- 
+@@ -884,7 +884,7 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
+                                 target_ulong *fault_pte_addr,
+                                 int access_type, int mmu_idx,
+                                 bool first_stage, bool two_stage,
+-                                bool is_debug)
++                                bool is_debug, bool is_probe)
+ {
      /*
-      * Check if we should use the background registers for the two
-@@ -1106,21 +1108,40 @@ restart:
+      * NOTE: the env->pc value visible here will not be
+@@ -1030,7 +1030,7 @@ restart:
+             int vbase_ret = get_physical_address(env, &vbase, &vbase_prot,
+                                                  base, NULL, MMU_DATA_LOAD,
+                                                  MMUIdx_U, false, true,
+-                                                 is_debug);
++                                                 is_debug, false);
+ 
+             if (vbase_ret != TRANSLATE_SUCCESS) {
+                 if (fault_pte_addr) {
+@@ -1117,8 +1117,11 @@ restart:
+         /* if bcfi enabled, PTE_W is not reserved and shadow stack page */
+         if (cpu_get_bcfien(env) && first_stage) {
+             sstack_page = true;
+-            /* if ss index, read and write allowed. else only read allowed */
+-            rwx = is_sstack_idx ? PTE_R | PTE_W : PTE_R;
++            /*
++             * if ss index, read and write allowed. else if not a probe
++             * then only read allowed
++             */
++            rwx = is_sstack_idx ? (PTE_R | PTE_W) : (is_probe ? rwx :  PTE_R);
+             break;
+         }
          return TRANSLATE_FAIL;
+@@ -1327,13 +1330,13 @@ hwaddr riscv_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+     int mmu_idx = riscv_env_mmu_index(&cpu->env, false);
+ 
+     if (get_physical_address(env, &phys_addr, &prot, addr, NULL, 0, mmu_idx,
+-                             true, env->virt_enabled, true)) {
++                             true, env->virt_enabled, true, false)) {
+         return -1;
      }
  
-+    target_ulong rwx = pte & (PTE_R | PTE_W | PTE_X);
-     /* Check for reserved combinations of RWX flags. */
--    switch (pte & (PTE_R | PTE_W | PTE_X)) {
--    case PTE_W:
-+    switch (rwx) {
-     case PTE_W | PTE_X:
-         return TRANSLATE_FAIL;
-+    case PTE_W:
-+        /* if bcfi enabled, PTE_W is not reserved and shadow stack page */
-+        if (cpu_get_bcfien(env) && first_stage) {
-+            sstack_page = true;
-+            /* if ss index, read and write allowed. else only read allowed */
-+            rwx = is_sstack_idx ? PTE_R | PTE_W : PTE_R;
-+            break;
-+        }
-+        return TRANSLATE_FAIL;
-+    case PTE_R:
-+        /*
-+         * no matter what's the `access_type`, shadow stack access to readonly
-+         * memory are always store page faults. During unwind, loads will be
-+         * promoted as store fault.
-+         */
-+        if (is_sstack_idx) {
-+            return TRANSLATE_FAIL;
-+        }
-+        break;
+     if (env->virt_enabled) {
+         if (get_physical_address(env, &phys_addr, &prot, phys_addr, NULL,
+-                                 0, MMUIdx_U, false, true, true)) {
++                                 0, MMUIdx_U, false, true, true, false)) {
+             return -1;
+         }
      }
- 
-     int prot = 0;
--    if (pte & PTE_R) {
-+    if (rwx & PTE_R) {
-         prot |= PAGE_READ;
-     }
--    if (pte & PTE_W) {
-+    if (rwx & PTE_W) {
-         prot |= PAGE_WRITE;
-     }
--    if (pte & PTE_X) {
-+    if (rwx & PTE_X) {
-         bool mxr = false;
+@@ -1447,7 +1450,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+         /* Two stage lookup */
+         ret = get_physical_address(env, &pa, &prot, address,
+                                    &env->guest_phys_fault_addr, access_type,
+-                                   mmu_idx, true, true, false);
++                                   mmu_idx, true, true, false, probe);
  
          /*
-@@ -1164,8 +1185,11 @@ restart:
-     }
+          * A G-stage exception may be triggered during two state lookup.
+@@ -1470,7 +1473,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
  
-     if (!((prot >> access_type) & 1)) {
--        /* Access check failed */
--        return TRANSLATE_FAIL;
-+        /*
-+         * Access check failed, access check failures for shadow stack are
-+         * access faults.
-+         */
-+        return sstack_page ? TRANSLATE_PMP_FAIL : TRANSLATE_FAIL;
-     }
+             ret = get_physical_address(env, &pa, &prot2, im_address, NULL,
+                                        access_type, MMUIdx_U, false, true,
+-                                       false);
++                                       false, probe);
  
-     target_ulong updated_pte = pte;
-@@ -1352,9 +1376,17 @@ void riscv_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
-         break;
-     case MMU_DATA_LOAD:
-         cs->exception_index = RISCV_EXCP_LOAD_ADDR_MIS;
-+        /* shadow stack mis aligned accesses are access faults */
-+        if (mmu_idx & MMU_IDX_SS_WRITE) {
-+            cs->exception_index = RISCV_EXCP_LOAD_ACCESS_FAULT;
-+        }
-         break;
-     case MMU_DATA_STORE:
-         cs->exception_index = RISCV_EXCP_STORE_AMO_ADDR_MIS;
-+        /* shadow stack mis aligned accesses are access faults */
-+        if (mmu_idx & MMU_IDX_SS_WRITE) {
-+            cs->exception_index = RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
-+        }
-         break;
-     default:
-         g_assert_not_reached();
-diff --git a/target/riscv/internals.h b/target/riscv/internals.h
-index 0ac17bc5ad..ddbdee885b 100644
---- a/target/riscv/internals.h
-+++ b/target/riscv/internals.h
-@@ -30,12 +30,15 @@
-  *  - U+2STAGE          0b100
-  *  - S+2STAGE          0b101
-  *  - S+SUM+2STAGE      0b110
-+ *  - Shadow stack+U   0b1000
-+ *  - Shadow stack+S   0b1001
-  */
- #define MMUIdx_U            0
- #define MMUIdx_S            1
- #define MMUIdx_S_SUM        2
- #define MMUIdx_M            3
- #define MMU_2STAGE_BIT      (1 << 2)
-+#define MMU_IDX_SS_WRITE    (1 << 3)
+             qemu_log_mask(CPU_LOG_MMU,
+                           "%s 2nd-stage address=%" VADDR_PRIx
+@@ -1507,7 +1510,8 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     } else {
+         /* Single stage lookup */
+         ret = get_physical_address(env, &pa, &prot, address, NULL,
+-                                   access_type, mmu_idx, true, false, false);
++                                   access_type, mmu_idx, true, false, false,
++                                   probe);
  
- static inline int mmuidx_priv(int mmu_idx)
- {
+         qemu_log_mask(CPU_LOG_MMU,
+                       "%s address=%" VADDR_PRIx " ret %d physical "
 -- 
 2.45.0
 
