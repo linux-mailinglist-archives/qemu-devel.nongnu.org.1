@@ -2,73 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9666298ED7C
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 12:59:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C88E98EE06
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 13:24:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swJY4-0004NS-Ks; Thu, 03 Oct 2024 06:59:08 -0400
+	id 1swJvA-0000eB-18; Thu, 03 Oct 2024 07:23:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1swJY2-0004N6-HG
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 06:59:06 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1swJv8-0000e0-6W
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:22:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1swJY0-0003H2-PX
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 06:59:06 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1swJv6-0004oS-OT
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:22:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727953143;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=ve8SluRQWsJbUb/sHWf136hFfh9On4akHKETqQ/MBbU=;
- b=ckLKYjDONAeDLxudOZFLIsA/+SqI+ev2PYkr2YfOigwjIeYix2zHCe1S8qwaWu85IhxZZn
- G8Jgic1ttQ7tmbJe1k0ZhrfBN5CDGP/OqxuUraFhF2vIrOmFBhJYhP5eims662iyZCWJ47
- +zEKXDQqKC73iyGYzJEkUcufKKWD41U=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ s=mimecast20190719; t=1727954574;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6bth4926wIzHhVHfX8jPxrIgKBuo8dYA68LjeYUbCqs=;
+ b=VXybySaBZPQP9V4QioT1x3nCTH0QnlAQQUb+5GU2tw1NPsvtZkM3L1yE7egnotFjw7OS8r
+ E7X97sAwa58Ytu+Ty1z6fSjKhMV5JnaZJxoj7D/TBDOg3fXZ8rvJn6eNFehvYwFEroVO36
+ T8cvZXyh3nF43YgXuz8aXcL/HrRszgk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-dGSBT1kKPYqBgXTHWC2KAA-1; Thu,
- 03 Oct 2024 06:58:58 -0400
-X-MC-Unique: dGSBT1kKPYqBgXTHWC2KAA-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-Yf8iHmtdMdmjD4slADuB2A-1; Thu,
+ 03 Oct 2024 07:22:51 -0400
+X-MC-Unique: Yf8iHmtdMdmjD4slADuB2A-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C8B34195609E; Thu,  3 Oct 2024 10:58:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.46])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 348901956086; Thu,  3 Oct 2024 10:58:33 +0000 (UTC)
-Date: Thu, 3 Oct 2024 11:58:27 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Warner Losh <imp@bsdimp.com>
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel <qemu-devel@nongnu.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- pkg-qemu-devel@lists.alioth.debian.org,
- Michael Tokarev <mjt@tls.msk.ru>, ncopa@alpinelinux.org,
- bofh@freebsd.org, emulation@freebsd.org, virtualization@gentoo.org,
- dilfridge@gentoo.org, hi@alyssa.is, edolstra+nixpkgs@gmail.com,
- brad@comstyle.com, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, dvzrv@archlinux.org,
- anatol.pomozov@gmail.com, Miroslav Rezanina <mrezanin@redhat.com>
-Subject: Re: Rust BoF and maintainer minutes and planning the roadmap to Rust
-Message-ID: <Zv540yb8V1sSnZP3@redhat.com>
-References: <871q16fq9c.fsf@draig.linaro.org>
- <CANCZdfoU4stiEDJKOUEpU-ek_tOBHe0rBH3G9S2Wymc8jHKzCQ@mail.gmail.com>
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C833819560B1; Thu,  3 Oct 2024 11:22:49 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.36])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 08FC430000DF; Thu,  3 Oct 2024 11:22:47 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ belmouss@redhat.com, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH 00/16] UI-related fixes & shareable 2d memory with -display
+ dbus
+Date: Thu,  3 Oct 2024 15:22:27 +0400
+Message-ID: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CANCZdfoU4stiEDJKOUEpU-ek_tOBHe0rBH3G9S2Wymc8jHKzCQ@mail.gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -90,47 +83,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 03, 2024 at 02:53:08AM -0600, Warner Losh wrote:
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-> commitment by the Rust community is troubling. Even more troubling because
-> rust still uses the old FreeBSD 11 compat syscalls, despite upgraded
-> being available for years at this point (though maybe this info has changed
-> in the last month or two, the years long delay in moving off the interfaces
-> that the FreeBSD project obsoleted about 8 years ago is troubling on its
-> own).
+Hi,
 
-Is this problem resolved by this change updating to FreeBSD 12 ABI:
+This series adds Listener.Unix.Map interface to -display dbus, to allow shared
+memory for the display (similar to Listener.Win32.Map interface).
 
-  https://github.com/rust-lang/libc/pull/3434
+While working on it, I collected a few fixes. I can re-send them in a different
+series or queue them once they are reviewed.
 
-Or is there more beyond that which remains an issue ?
+thanks
 
-Also what's the best source of truth about Rust support in FreeBSD 
-eg I see this:
+Marc-André Lureau (16):
+  hw/audio/hda: free timer on exit
+  hw/audio/hda: fix memory leak on audio setup
+  ui/dbus: fix leak on message filtering
+  ui/win32: fix potential use-after-free with dbus shared memory
+  ui/dbus: fix filtering all update messages
+  ui/dbus: discard display messages on disable
+  ui/dbus: discard pending CursorDefine on new one
+  util/memfd: report potential errors on free
+  ui/pixman: generalize shared_image_destroy
+  ui/dbus: do not limit to one listener per connection / bus name
+  ui/dbus: add trace for can_share_map
+  ui/surface: allocate shared memory on !win32
+  ui/dbus: add Listener.Unix.Map interface XML
+  ui/dbus: implement Unix.Map
+  virtio-gpu: allocate shareable 2d resources on !win32
+  tests: add basic -display dbus Map.Unix test
 
-  https://wiki.freebsd.org/Rust
+ include/hw/virtio/virtio-gpu.h  |   4 +-
+ include/ui/qemu-pixman.h        |   2 +
+ include/ui/surface.h            |   8 ++
+ hw/audio/hda-codec.c            |  33 ++++---
+ hw/display/virtio-gpu.c         |  49 +++++-----
+ tests/qtest/dbus-display-test.c |  64 ++++++++++++--
+ ui/console.c                    |  50 ++++++-----
+ ui/dbus-console.c               |  23 ++---
+ ui/dbus-listener.c              | 152 ++++++++++++++++++++++++++++----
+ ui/qemu-pixman.c                |  19 ++++
+ util/memfd.c                    |   9 +-
+ roms/openbios                   |   2 +-
+ ui/dbus-display1.xml            |  45 ++++++++++
+ ui/trace-events                 |   1 +
+ 14 files changed, 361 insertions(+), 100 deletions(-)
 
- Reports i386, amd64, armv6, armv7, aarch64, power64, power64le
- and riscv64
-
-and then this
-
-  https://www.freshports.org/lang/rust
-
-but doesn't say anything about riscv64, and armv6/i386 is listed as
-"N/A" for FreeBSD 15 - are those arches no longer supported in 15 ?
-
-power64le is outdated there compared to other arches
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.45.2.827.g557ae147e6
 
 
