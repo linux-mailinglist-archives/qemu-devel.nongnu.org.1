@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F7698EE11
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 13:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D70E98EE03
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 13:24:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swJwO-0001vu-GS; Thu, 03 Oct 2024 07:24:16 -0400
+	id 1swJwK-0001aZ-Oj; Thu, 03 Oct 2024 07:24:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1swJwF-0001Mo-PR
+ id 1swJwF-0001Lu-EK
  for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:24:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1swJwB-0004zf-AU
+ id 1swJwB-000507-9s
  for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:24:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727954632;
+ s=mimecast20190719; t=1727954635;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VcKY8NbRO5rE3QymUOzFCDyaN/n6+6K2gQ+Ykq/T3aU=;
- b=hvZxb6xtcxDhXNsXtjJf/iQtfgEb5rOqkXijWLPrQCIo4fFUIgIWQFv04Qc13+JshnwGmb
- YTT3lRNLnWnpKhhlN3+Ozwtl9I2+zqsm7OBQkSg4xNglKAwCMXCNOxUQJ7A7Fd58lmShEZ
- iGRUHxdcTEHQWo8ccGwvFNcs6FQuh1s=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=WfcQ4b5SI+4FXetDTYi/1ouyGBuP9W7sNYnRn2XsVrY=;
+ b=eLEYHdxxLq0XpG+j4YfMxlZl5sbMlipZGfWKyF5oS++SXHqVvwVrGDayJyzyyCo2cN8fG2
+ 1VEFeJQ/F6bSdclwOzxEEtCI9hl0pqsnIqpygaHJD+atB8kSnj315rtWjsY6gQq3rX2N6y
+ D04XXF70GeoXH3i8Q3Mhk+LpIXSkdEU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-qBOFjRvwO-eonGj18PX_hA-1; Thu,
- 03 Oct 2024 07:23:49 -0400
-X-MC-Unique: qBOFjRvwO-eonGj18PX_hA-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-513-zhwzUBegOrSmnOlo6Pb04g-1; Thu,
+ 03 Oct 2024 07:23:54 -0400
+X-MC-Unique: zhwzUBegOrSmnOlo6Pb04g-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E5D801956096; Thu,  3 Oct 2024 11:23:47 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DA0881955EB4; Thu,  3 Oct 2024 11:23:52 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9C47E19560A3; Thu,  3 Oct 2024 11:23:46 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A97FF30000DF; Thu,  3 Oct 2024 11:23:51 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -53,16 +53,16 @@ Cc: peter.maydell@linaro.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 12/16] ui/surface: allocate shared memory on !win32
-Date: Thu,  3 Oct 2024 15:22:39 +0400
-Message-ID: <20241003112244.3340697-13-marcandre.lureau@redhat.com>
+Subject: [PATCH 13/16] ui/dbus: add Listener.Unix.Map interface XML
+Date: Thu,  3 Oct 2024 15:22:40 +0400
+Message-ID: <20241003112244.3340697-14-marcandre.lureau@redhat.com>
 In-Reply-To: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
 References: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -90,128 +90,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Use qemu_memfd_alloc() to allocate the display surface memory, which
-will fallback on tmpfile/mmap() on systems without memfd, and allow to
-share the display with other processes.
-
-This is similar to how display memory is allocated on win32 since commit
-09b4c198 ("console/win32: allocate shareable display surface").
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/ui/surface.h |  8 ++++++++
- ui/console.c         | 30 ++++++++++++++++++++++++++++--
- 2 files changed, 36 insertions(+), 2 deletions(-)
+ ui/dbus-display1.xml | 45 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/include/ui/surface.h b/include/ui/surface.h
-index 345b19169d..dacf12ffe2 100644
---- a/include/ui/surface.h
-+++ b/include/ui/surface.h
-@@ -23,6 +23,10 @@ typedef struct DisplaySurface {
-     GLenum gltype;
-     GLuint texture;
- #endif
-+#ifndef WIN32
-+    int shmfd;
-+    uint32_t shmfd_offset;
-+#endif
- #ifdef WIN32
-     HANDLE handle;
-     uint32_t handle_offset;
-@@ -37,6 +41,10 @@ DisplaySurface *qemu_create_displaysurface_from(int width, int height,
- DisplaySurface *qemu_create_displaysurface_pixman(pixman_image_t *image);
- DisplaySurface *qemu_create_placeholder_surface(int w, int h,
-                                                 const char *msg);
-+#ifndef WIN32
-+void qemu_displaysurface_set_shmfd(DisplaySurface *surface,
-+                                   int shmfd, uint32_t offset);
-+#endif
- #ifdef WIN32
- void qemu_displaysurface_win32_set_handle(DisplaySurface *surface,
-                                           HANDLE h, uint32_t offset);
-diff --git a/ui/console.c b/ui/console.c
-index fdd76c2be4..56f2462c3d 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -37,6 +37,7 @@
- #include "trace.h"
- #include "exec/memory.h"
- #include "qom/object.h"
-+#include "qemu/memfd.h"
+diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
+index ce35d64eea..4ae14288bc 100644
+--- a/ui/dbus-display1.xml
++++ b/ui/dbus-display1.xml
+@@ -469,6 +469,51 @@
+     <property name="Interfaces" type="as" access="read"/>
+   </interface>
  
- #include "console-priv.h"
- 
-@@ -452,6 +453,17 @@ qemu_graphic_console_init(Object *obj)
- {
- }
- 
-+#ifndef WIN32
-+void qemu_displaysurface_set_shmfd(DisplaySurface *surface,
-+                                   int shmfd, uint32_t offset)
-+{
-+    assert(surface->shmfd == -1);
++  <!--
++      org.qemu.Display1.Listener.Unix.Map:
 +
-+    surface->shmfd = shmfd;
-+    surface->shmfd_offset = offset;
-+}
-+#endif
++      This optional client-side interface can complement
++      org.qemu.Display1.Listener on ``/org/qemu/Display1/Listener`` for
++      Unix-specific shared memory scanouts.
++  -->
++  <interface name="org.qemu.Display1.Listener.Unix.Map">
++    <!--
++        ScanoutMap:
++        @handle: the shared map FD.
++        @offset: mapping offset, in bytes.
++        @width: display width, in pixels.
++        @height: display height, in pixels.
++        @stride: stride, in bytes.
++        @pixman_format: image format (ex: ``PIXMAN_X8R8G8B8``).
 +
- #ifdef WIN32
- void qemu_displaysurface_win32_set_handle(DisplaySurface *surface,
-                                           HANDLE h, uint32_t offset)
-@@ -469,12 +481,16 @@ DisplaySurface *qemu_create_displaysurface(int width, int height)
-     void *bits = NULL;
- #ifdef WIN32
-     HANDLE handle = NULL;
-+#else
-+    int shmfd = -1;
- #endif
- 
-     trace_displaysurface_create(width, height);
- 
- #ifdef WIN32
-     bits = qemu_win32_map_alloc(width * height * 4, &handle, &error_abort);
-+#else
-+    bits = qemu_memfd_alloc("displaysurface", width * height * 4, 0, &shmfd, &error_abort);
- #endif
- 
-     surface = qemu_create_displaysurface_from(
-@@ -486,9 +502,13 @@ DisplaySurface *qemu_create_displaysurface(int width, int height)
- 
- #ifdef WIN32
-     qemu_displaysurface_win32_set_handle(surface, handle, 0);
--    pixman_image_set_destroy_function(surface->image,
--                                      qemu_pixman_shared_image_destroy, handle);
-+    void *data = handle;
-+#else
-+    qemu_displaysurface_set_shmfd(surface, shmfd, 0);
-+    void *data = GINT_TO_POINTER(shmfd);
- #endif
-+    pixman_image_set_destroy_function(surface->image, qemu_pixman_shared_image_destroy, data);
++        Resize and update the display content with a shared map.
++    -->
++    <method name="ScanoutMap">
++      <arg type="h" name="handle" direction="in"/>
++      <arg type="u" name="offset" direction="in"/>
++      <arg type="u" name="width" direction="in"/>
++      <arg type="u" name="height" direction="in"/>
++      <arg type="u" name="stride" direction="in"/>
++      <arg type="u" name="pixman_format" direction="in"/>
++    </method>
 +
-     return surface;
- }
++    <!--
++        UpdateMap:
++        @x: the X update position, in pixels.
++        @y: the Y update position, in pixels.
++        @width: the update width, in pixels.
++        @height: the update height, in pixels.
++
++        Update the display content with the current shared map and the given region.
++    -->
++    <method name="UpdateMap">
++      <arg type="i" name="x" direction="in"/>
++      <arg type="i" name="y" direction="in"/>
++      <arg type="i" name="width" direction="in"/>
++      <arg type="i" name="height" direction="in"/>
++    </method>
++  </interface>
++
+   <!--
+       org.qemu.Display1.Listener.Win32.Map:
  
-@@ -499,6 +519,9 @@ DisplaySurface *qemu_create_displaysurface_from(int width, int height,
-     DisplaySurface *surface = g_new0(DisplaySurface, 1);
- 
-     trace_displaysurface_create_from(surface, width, height, format);
-+#ifndef WIN32
-+    surface->shmfd = -1;
-+#endif
-     surface->image = pixman_image_create_bits(format,
-                                               width, height,
-                                               (void *)data, linesize);
-@@ -512,6 +535,9 @@ DisplaySurface *qemu_create_displaysurface_pixman(pixman_image_t *image)
-     DisplaySurface *surface = g_new0(DisplaySurface, 1);
- 
-     trace_displaysurface_create_pixman(surface);
-+#ifndef WIN32
-+    surface->shmfd = -1;
-+#endif
-     surface->image = pixman_image_ref(image);
- 
-     return surface;
 -- 
 2.45.2.827.g557ae147e6
 
