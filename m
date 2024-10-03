@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8441298EE0F
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 13:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5FF998EE04
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 13:24:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swJvZ-0000nl-BS; Thu, 03 Oct 2024 07:23:25 -0400
+	id 1swJvi-0000qA-Jf; Thu, 03 Oct 2024 07:23:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1swJvY-0000nQ-86
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:23:24 -0400
+ id 1swJve-0000pQ-9e
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:23:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1swJvW-0004uG-Te
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:23:24 -0400
+ id 1swJvc-0004vd-R7
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:23:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727954602;
+ s=mimecast20190719; t=1727954608;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fT3Q75y9U/TwgYuHTQ23ZMlJcVZ68x1SDstEaJ1IH8s=;
- b=BLGa23o5/mUl0HDEHHj+mxuMSW8hPKAwOFi6aXT/m4AKJlOH87hxswum5UPAgHZB0MIP3q
- nrRKzW/ZiaDAtVoMMcSj5L2M1ARE8gy42KhMV1AU95exQ1TkpWA9k9nHUoCO0u+jdcUXxW
- hb65sKxOZK5GqKVvpTXN2Op6NPTiMqY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ZENKUukW7gMehbQn4GRO0qFPgQRF/WoC6lO4OjmVRlQ=;
+ b=OFpCGy0l8sfE6NyHezNzbr1A9KZ0KyXc7+G9KNs2JdEbqZ7hNhkyXU6/BqmJDx2elo8zzi
+ Om6No7+mlXhWc+P4drZ6xOj9U7XRWqBmuO79hW9osN39s1GjcOZ6dWqavPpC+Eg3sjDWh8
+ jsK92JrtkEoX3e/MUM2VHl8UP48s6zU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-55-W-nQY8KDOtetA3UHXT-ixw-1; Thu,
- 03 Oct 2024 07:23:21 -0400
-X-MC-Unique: W-nQY8KDOtetA3UHXT-ixw-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-621-ljZDcF7FPWqhQPJ2LsdILw-1; Thu,
+ 03 Oct 2024 07:23:25 -0400
+X-MC-Unique: ljZDcF7FPWqhQPJ2LsdILw-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CD55B193579B; Thu,  3 Oct 2024 11:23:18 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ED2791955E84; Thu,  3 Oct 2024 11:23:23 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 32A4E19560AE; Thu,  3 Oct 2024 11:23:16 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 50088300019D; Thu,  3 Oct 2024 11:23:21 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -53,15 +53,15 @@ Cc: peter.maydell@linaro.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 06/16] ui/dbus: discard display messages on disable
-Date: Thu,  3 Oct 2024 15:22:33 +0400
-Message-ID: <20241003112244.3340697-7-marcandre.lureau@redhat.com>
+Subject: [PATCH 07/16] ui/dbus: discard pending CursorDefine on new one
+Date: Thu,  3 Oct 2024 15:22:34 +0400
+Message-ID: <20241003112244.3340697-8-marcandre.lureau@redhat.com>
 In-Reply-To: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
 References: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -90,24 +90,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Similar to scanout updates, let's discard pending cursor changes.
+
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/dbus-listener.c | 2 ++
- 1 file changed, 2 insertions(+)
+ ui/dbus-listener.c | 23 +++++++++++++++++++++++
+ roms/openbios      |  2 +-
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
 diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index a70cad3a90..23a4633fa4 100644
+index 23a4633fa4..020c05198b 100644
 --- a/ui/dbus-listener.c
 +++ b/ui/dbus-listener.c
-@@ -107,6 +107,8 @@ static void dbus_scanout_disable(DisplayChangeListener *dcl)
- {
-     DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
+@@ -87,6 +87,7 @@ struct _DBusDisplayListener {
  
-+    ddl_discard_display_messages(ddl);
-+
-     qemu_dbus_display1_listener_call_disable(
-         ddl->proxy, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+     guint dbus_filter;
+     guint32 display_serial_to_discard;
++    guint32 cursor_serial_to_discard;
+ };
+ 
+ G_DEFINE_TYPE(DBusDisplayListener, dbus_display_listener, G_TYPE_OBJECT)
+@@ -102,6 +103,14 @@ static void ddl_discard_display_messages(DBusDisplayListener *ddl)
+     g_atomic_int_set(&ddl->display_serial_to_discard, serial);
  }
+ 
++static void ddl_discard_cursor_messages(DBusDisplayListener *ddl)
++{
++    guint32 serial = g_dbus_connection_get_last_serial(
++        g_dbus_proxy_get_connection(G_DBUS_PROXY(ddl->proxy)));
++
++    g_atomic_int_set(&ddl->cursor_serial_to_discard, serial);
++}
++
+ #ifdef CONFIG_OPENGL
+ static void dbus_scanout_disable(DisplayChangeListener *dcl)
+ {
+@@ -502,6 +511,8 @@ static void dbus_cursor_dmabuf(DisplayChangeListener *dcl,
+         return;
+     }
+ 
++    ddl_discard_cursor_messages(ddl);
++
+     egl_dmabuf_import_texture(dmabuf);
+     texture = qemu_dmabuf_get_texture(dmabuf);
+     if (!texture) {
+@@ -745,6 +756,8 @@ static void dbus_cursor_define(DisplayChangeListener *dcl,
+     DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
+     GVariant *v_data = NULL;
+ 
++    ddl_discard_cursor_messages(ddl);
++
+     v_data = g_variant_new_from_data(
+         G_VARIANT_TYPE("ay"),
+         c->data,
+@@ -1027,6 +1040,16 @@ dbus_filter(GDBusConnection *connection,
+         }
+     }
+ 
++    discard_serial = g_atomic_int_get(&ddl->cursor_serial_to_discard);
++    if (serial <= discard_serial) {
++        member = g_dbus_message_get_member(message);
++        if (g_strv_contains((const gchar *[]) { "CursorDefine", NULL }, member)) {
++            trace_dbus_filter(serial, discard_serial);
++            g_object_unref(message);
++            return NULL;
++        }
++    }
++
+     return message;
+ }
+ 
+diff --git a/roms/openbios b/roms/openbios
+index c3a19c1e54..af97fd7af5 160000
+--- a/roms/openbios
++++ b/roms/openbios
+@@ -1 +1 @@
+-Subproject commit c3a19c1e54977a53027d6232050e1e3e39a98a1b
++Subproject commit af97fd7af5e7c18f591a7b987291d3db4ffb28b5
 -- 
 2.45.2.827.g557ae147e6
 
