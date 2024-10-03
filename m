@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF25998F34E
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 17:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3442E98F34F
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 17:56:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swO9i-0006T4-Sy; Thu, 03 Oct 2024 11:54:18 -0400
+	id 1swOBK-0000kZ-EO; Thu, 03 Oct 2024 11:55:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swO9g-0006Si-Is
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 11:54:16 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swOB6-0000V2-GV
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 11:55:45 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swO9f-0003Xt-2X
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 11:54:16 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-37cd8972738so880710f8f.3
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 08:54:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swOB4-0004mf-3K
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 11:55:44 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-37cc5fb1e45so935514f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 08:55:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727970853; x=1728575653; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727970940; x=1728575740; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=H4iuofAzmjQ69v9z61keFGhIgoYW/hbzQrKzWVkUNAU=;
- b=fNPzrsaP3dxSFF+gCQfAFEqDwC9ZvRIY+rmpXk2DoIkqAH5WpsEgRZvlLpCrqzeREe
- iFOhn8PmsT0nueqbjcPjEjJ8FWOvQC0ssLF8nRUyLZBWWqum1RPbdVWj/wzz2oRCXzbT
- uV9S5g7qHbtph40GrALblgEORWt5IToJy/WN3gtnlDQPnTPkpHvr4ju5TZpF7ChG18Ja
- 0xqvFBoA0vaKBADelrd9j7RyyLo1SQMY7SUQNqgVgzwUx+muDB5j9otqFOkfW0MJviJR
- FCkPSzaqnDrcjotXF4CBY+miTK8ZRT9RGcF/esbkrTD5BOUqyEevokVKiW296wwf6+bZ
- JTHg==
+ bh=4LcvxLvUuSJ/+4Vqu61S+TKGcuUJJdo6fzBIEzZfS48=;
+ b=TiJIN0KrYraeceyJBh2qjKyf6zIT/oNPhtGMtud965VJI45gaKZ7hPlqTCy4+hVjtC
+ kVPSP1Ditqh/NOdp/8t2i401jiNE0TIm0xYB5SF9Iy6csQ8vN/bhqqvQpT9Yqx1TaEgh
+ i5jl5xBxncE1/ZkmrBV2tpyO7T2HvIrLqDCm1ZpnzgtHCNDDNAuZeUuqDCnuXTgENqSB
+ o7vNzM+18aG0xkTwtD6QKCxmc3a5nPKOQBYxdfj48QCGqOMuadk0Z0ul1R7ehtbAeu/d
+ dlQtwbAa5J4LIr0ArD/JT76Cyg5RtQ09VYNrGNA14+4SWqblvPULsLdtVVpPlP7iUo8L
+ ja4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727970853; x=1728575653;
+ d=1e100.net; s=20230601; t=1727970940; x=1728575740;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=H4iuofAzmjQ69v9z61keFGhIgoYW/hbzQrKzWVkUNAU=;
- b=Qu4zwnNYsHo0ni+iUVnzxxehb5hOYVJmXNQeKvWUF/Kg6yxNtzae1Be9tAwNGaeGFY
- WrMCIILxkbOC/DSf1vByczzCHKHmRZDfBazqi92RNkLP9s4wDDAVo7PGO9FPn8QHBiTe
- hepYc7NGCYHO1vPlGKsv7hRbRMFQLdzn/b2gRyRwEoX7iOckfut0mS43UlNdl9rjlIkO
- 2yUw8XiCCmT5Wd3DwId2FzmpF5KyjQiOyrre60buO9IcXDuaEKrLkHnJzlxFiQQjMqX/
- XL8kizvEnqexVhbtulssN0CLnzBktZDBiWMLOqj/FOAab36oPPd0XFLctDFmJoPpZTz+
- 7q4g==
+ bh=4LcvxLvUuSJ/+4Vqu61S+TKGcuUJJdo6fzBIEzZfS48=;
+ b=rY4CTxye83vwJbpP6+szRg9U3TZTFXcqZNYCx3Y1AvudolZ6hU7l8BeLWsXSX/gc6Q
+ 2IH8woLdiS/8kSJ7h/I+MxUYKlQyVOT9H8vOQPnoYBbL+xIijJ0TohWFw85i7/lFrjkj
+ PzS69VuGDdid/Whx1PjQX1BaiJsQJioSEhYU08v8EFNq3zDfHb2YIN8xiQvXhOLww3Og
+ a53Mk/CK0OEvA487BSIEcNHEzb64Pd/3JkId+BuRDbWdhEyt18Qh4eIFroqdHvkgSySL
+ FGNy9OOK0Lm20UTpCVI2+a7SAgKGpHCOa+kWwqKGxo3aKxNO9mWgMIRCXIfqW6IGUnkc
+ B4/A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWI/rX8upnG5n+AJOIJlWHIp4aNMHHIrrr1wWfg4ctw/sRJF7/h5RWb6XjU/7ad5m2+5l6QX6qdsSpf@nongnu.org
-X-Gm-Message-State: AOJu0YzAXwVuMOB9J3jN8pr6sX7diewlVajQTw2bw6VgavrvYWRaI+2e
- OsZBRbi07Cs9daDU5SBMNEF7nzltPUYVeyCO9TXmddv31bm7oucjXzYB8cUmZro=
-X-Google-Smtp-Source: AGHT+IHOFx7F6Mh8L2bDLOZiCcAxlvdHMiurNEg/B5/5c5WNtylAf8nNky3eRxTMqVAOpefllBXKxQ==
-X-Received: by 2002:a5d:5d85:0:b0:37c:fce8:b51f with SMTP id
- ffacd0b85a97d-37cfce8b58dmr4154026f8f.27.1727970853296; 
- Thu, 03 Oct 2024 08:54:13 -0700 (PDT)
+ AJvYcCXGPEiV7MZO+yGbH8Zc3pHmu8XwwVSfWtX5TfD1+K7/hDEBggug/n3JiAEa5VDJn4nMkW31gDxJDxBw@nongnu.org
+X-Gm-Message-State: AOJu0Yy8NWdBaV07Pxukokt/x2MyDEO+jh3G8U4aWQWYNQOVTCUe6oJI
+ n31uCwzdZupKJ/OzmyF3Sf+SDEZRz103BUwHCv9NjLBpQ+Bh8PmA+wh9ayZM65w=
+X-Google-Smtp-Source: AGHT+IGqRKwEJbPbcC+bqihg9GvRgQqmwy0OTbBkWtWjZDID9Cc3f5G87dFAuo1v1UoLYUH4Y6/r0Q==
+X-Received: by 2002:a5d:584c:0:b0:374:c3e4:d6de with SMTP id
+ ffacd0b85a97d-37cfba04c62mr6668172f8f.41.1727970940146; 
+ Thu, 03 Oct 2024 08:55:40 -0700 (PDT)
 Received: from [192.168.13.175] (49.red-88-29-183.dynamicip.rima-tde.net.
  [88.29.183.49]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d082425f5sm1544489f8f.50.2024.10.03.08.54.11
+ ffacd0b85a97d-37d08226177sm1536397f8f.36.2024.10.03.08.55.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Oct 2024 08:54:12 -0700 (PDT)
-Message-ID: <25c66f65-f642-42d8-8b5e-46a3a6b97909@linaro.org>
-Date: Thu, 3 Oct 2024 17:49:25 +0200
+ Thu, 03 Oct 2024 08:55:39 -0700 (PDT)
+Message-ID: <2a36635b-90ca-451a-b1f0-e69f6cbd9ca5@linaro.org>
+Date: Thu, 3 Oct 2024 17:55:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] target/arm: Avoid target_ulong for physical address
- lookups
-To: Ard Biesheuvel <ardb+git@google.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20240927071051.1444768-1-ardb+git@google.com>
+Subject: Re: [PATCH] MAINTAINERS: Update STM32L4x5 and B-L475E-IOT01A
+ maintainers
+To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
+ qemu-devel@nongnu.org
+Cc: Samuel Tardieu <sam@rfc1149.net>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Jacob Abrams <satur9nine@gmail.com>
+References: <20240921104751.43671-1-ines.varhol@telecom-paris.fr>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240927071051.1444768-1-ardb+git@google.com>
+In-Reply-To: <20240921104751.43671-1-ines.varhol@telecom-paris.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,31 +97,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/9/24 09:10, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
+On 21/9/24 12:47, Inès Varhol wrote:
+> It has been a learning experience to contribute to QEMU for our
+> end-of-studies project. For a few months now, Arnaud and I aren't
+> actively involved anymore as we lack time and access to the hardware.
+> Therefore it's high time to update the maintainers file: from now on,
+> Samuel Tardieu who is behind the project will be taking up the role of
+> maintainer.
 > 
-> target_ulong is typedef'ed as a 32-bit integer when building the
-> qemu-system-arm target, and this is smaller than the size of an
-> intermediate physical address when LPAE is being used.
+> This commit updates maintainers and the list of files, and places the
+> two devices in alphabetical order.
 > 
-> Given that Linux may place leaf level user page tables in high memory
-> when built for LPAE, the kernel will crash with an external abort as
-> soon as it enters user space when running with more than ~3 GiB of
-> system RAM.
-> 
-> So replace target_ulong with vaddr in places where it may carry an
-> address value that is not representable in 32 bits.
-
-Yay!
-
-> Fixes: f3639a64f602ea ("target/arm: Use softmmu tlbs for page table walking")
-> Reported-by: Arnd Bergmann <arnd@arndb.de>
-> Tested-by: Arnd Bergmann <arnd@arndb.de>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
 > ---
->   target/arm/internals.h |  4 ++--
->   target/arm/ptw.c       | 16 ++++++++--------
->   2 files changed, 10 insertions(+), 10 deletions(-)
+>   MAINTAINERS | 41 +++++++++++++++++++++--------------------
+>   1 file changed, 21 insertions(+), 20 deletions(-)
+
+
+> -STM32L4x5 SoC Family
+> -M: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> -M: Inès Varhol <ines.varhol@telecom-paris.fr>
+
+Thank you both Inès and Arnaud, it was a good experience to review
+your contributions and see how you improved over time :)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
