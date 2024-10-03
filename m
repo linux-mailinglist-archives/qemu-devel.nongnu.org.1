@@ -2,72 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F1E98ECD5
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 12:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6FB98ECDD
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 12:21:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swItX-0007se-MZ; Thu, 03 Oct 2024 06:17:21 -0400
+	id 1swHa5-000060-E4; Thu, 03 Oct 2024 04:53:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1swItF-0007qb-2x
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 06:16:57 -0400
-Received: from [86.62.121.231] (helo=isrv.corpit.ru)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1swIsj-0001sd-0U
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 06:16:51 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5C0D494CCE;
- Thu,  3 Oct 2024 11:26:37 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0CB5A14B5C6;
- Thu,  3 Oct 2024 11:27:17 +0300 (MSK)
-Message-ID: <2cd10ae8-8937-474a-b7fc-a98613416330@tls.msk.ru>
-Date: Thu, 3 Oct 2024 11:27:17 +0300
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1swHZB-00005M-I6
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 04:52:10 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1swHYT-0001co-Pg
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 04:51:55 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-5398b589032so1034751e87.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 01:50:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1727945415; x=1728550215; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ng2RRQj1rwznDqCdctwvH9aF5s3qPDBD6pkK7AHVxsM=;
+ b=RlOEqMKwpC7VI1A668VHS8TsaUxIceKoTMeH3BucrDOq9nhTFqQjLMpZpl5al4zJye
+ PbTZoDhnD4rEFCONG5dxT4LYYajrWkQbo+2aifQeXk7Vjn7aLTuCMyQvXMvGmwR0MCHV
+ YDd0hm1Xi8azaGZ8oOEH2VnzZqD0jmozn/aFlelSGNPM9MSIKht3wI3RTrsu7EY4ra0R
+ u2XfcSyqyRAfFvxO+XcqS/Jw9SwDB0yogk7J3KHeCSkalUbdC7joMd55HrXAZ/w2IjsY
+ PU25qElQPb71XWj/8gJrlv2UjhqqKvt7QK8VsSVc0M3ix7xxwfdk5fKjg8ksVDSYbM4m
+ wiwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727945415; x=1728550215;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ng2RRQj1rwznDqCdctwvH9aF5s3qPDBD6pkK7AHVxsM=;
+ b=DEWP+rX+bAgmcTTFZxtHLQhBodUhbYRmLoNyVddaLG1NUqdEi6TKl9gkhVblzsvKsx
+ TtDzb+ONyNr36uK4qmEsQV+EVxIgQFas0lgZrUDSMlaXI2b2ZcyYPWDfxQ5bJ6B7y1TE
+ QyOkaK16n/Dg3cVMEbaZA8quyBOZMJZ+3VWo5Ey7X2qXrhA8iPcNg4d1povy/kX9ppj0
+ LtdtPHZBdVnq98M4wlbcTzg9AMosTSxPTBGssvLN/NcmdscKz7ECDVzb9GbHCfygyVon
+ fYBPRgZte93Zr7lva+P2a4pCFnYUsdvu8JTRDl/NU714wnukENh0dubsFj9cCErg+56e
+ y9qQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWBI3dKXyVPmCEhGoYK55H9mnCLqv9HBXu3v1qbJAy2T/YMkoplIDJS4sUV/SGHF2mhQD3Ab9ref1Hg@nongnu.org
+X-Gm-Message-State: AOJu0YzTLz3yyJ/zC+j2FWXr7+IjGQb70NrJ5dhER7J7VfwL6aoyfvc/
+ dC34DpwUFdoMKg7FKcqGpCK8CmxjBWFgrnaZjjGRjFlXXZQQCTrJ0m3uPwuxCnKjfMOJIIqxtlz
+ L
+X-Google-Smtp-Source: AGHT+IHBqM3EFmD6A8uGHtQcxg4zMHf/yZFY95k//nWHcIiBArkmvueC7fnCP5oYU1pfM4013UcTbw==
+X-Received: by 2002:a5d:66cf:0:b0:37c:cda4:a6ca with SMTP id
+ ffacd0b85a97d-37cfb8cf261mr4214890f8f.17.1727944951143; 
+ Thu, 03 Oct 2024 01:42:31 -0700 (PDT)
+Received: from localhost (cst2-173-13.cust.vodafone.cz. [31.30.173.13])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42f79c67c5csm39870425e9.0.2024.10.03.01.42.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Oct 2024 01:42:30 -0700 (PDT)
+Date: Thu, 3 Oct 2024 10:42:29 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Tomasz Jeznach <tjeznach@rivosinc.com>, 
+ Jason Chien <jason.chien@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, 
+ alistair.francis@wdc.com, bmeng@tinylab.org, liwei1518@gmail.com, 
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, frank.chang@sifive.com, 
+ Sebastien Boeuf <seb@rivosinc.com>
+Subject: Re: [PATCH for-9.2 v6 03/12] hw/riscv: add RISC-V IOMMU base emulation
+Message-ID: <20241003-c4e8eae2c7f018797cec8b94@orel>
+References: <20240801154334.1009852-1-dbarboza@ventanamicro.com>
+ <20240801154334.1009852-4-dbarboza@ventanamicro.com>
+ <c89c6027-ff72-4c25-af29-697da2e90888@sifive.com>
+ <d1fdc3f6-fa9d-4aa4-9899-06105f88f68d@ventanamicro.com>
+ <CAH2o1u7NQ+zqVSSj+xXWiCKGXbkdivj_u8XW6mchucizzmzsxg@mail.gmail.com>
+ <2912ffbe-0ae6-42b7-86b0-379e4c1db5c5@ventanamicro.com>
+ <CAH2o1u6vbYPubev2ZYv-W4Y0icA0y=MRHrjPF8vPtjJRNPnoSg@mail.gmail.com>
+ <a11481a5-6d00-4392-9413-4c7c2c045481@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/net/net_rx_pkt: Remove deadcode
-To: dave@treblig.org, dmitry.fleytman@gmail.com, akihiko.odaki@daynix.com,
- jasowang@redhat.com, qemu-devel@nongnu.org
-References: <20240918225128.455043-1-dave@treblig.org>
-Content-Language: en-US, ru-RU
-Cc: QEMU Trivial <qemu-trivial@nongnu.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240918225128.455043-1-dave@treblig.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 86.62.121.231 (deferred)
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -10
-X-Spam_score: -1.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a11481a5-6d00-4392-9413-4c7c2c045481@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=ajones@ventanamicro.com; helo=mail-lf1-x135.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, RDNS_NONE=0.793,
- T_SPF_HELO_TEMPERROR=0.01,
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,18 +106,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-19.09.2024 01:51, dave@treblig.org wrote:
-> From: "Dr. David Alan Gilbert" <dave@treblig.org>
+On Tue, Oct 01, 2024 at 09:05:52PM GMT, Daniel Henrique Barboza wrote:
 > 
-> net_rx_pkt_get_l3_hdr_offset and net_rx_pkt_get_iovec_len haven't
-> been used since they were added.
 > 
-> Remove them.
+> On 10/1/24 8:28 PM, Tomasz Jeznach wrote:
+> > On Tue, Sep 3, 2024 at 4:46 AM Daniel Henrique Barboza
+> > <dbarboza@ventanamicro.com> wrote:
+> > > 
+> > > 
+> > > 
+> > > On 8/26/24 11:18 PM, Tomasz Jeznach wrote:
+> > > > On Fri, Aug 23, 2024 at 5:42 AM Daniel Henrique Barboza
+> > > > <dbarboza@ventanamicro.com> wrote:
+> > > > > 
+> > > > > 
+> > > > > 
+> > > > > On 8/20/24 12:16 PM, Jason Chien wrote:
+> > > > > > Hi Daniel,
+> > > > > > 
+> 
+> (...)
+> 
+> > > >            iotlb->target_as = &s->trap_as;
+> > > > 
+> > > > I'd suggest fixing the missing en_s check, to enable proper handling of MSIP.
+> > > 
+> > > The '!en_s' check was removed because it was breaking irqbypass. I'll let Drew explain
+> > > more about it since he's been working in the kernel support for this use case.
+> > > 
+> > > 
+> > 
+> > Is the missing `!en_s` check still problematic?
+> > Re-reading the code I'd say it's required here to catch only GPAs if S
+> > stage is BARE, not untranslated IOVA.
+> 
+> 
+> Yeah, for some reason the existence of that check  breaks irqbypass, removing
+> it fixes it.
+> 
+> I don't think it has to do with the check per se, but perhaps with a missing
+> conditional to proper handle the irqbypass case. This is one of the TODOs that
+> we should look at later, in particular when the irqbypass support starts to
+> get reviewed in the kernel.
 
-Applied to the trivial-patches tree, removing net_rx_pkt_get_l3_hdr_offset()
-prototype from hw/net/net_rx_pkt.h in the process)
+Right. VFIO only uses S-stage to translate GPAs. When irqbypass support
+is added, as it is here [1] (which is a series I've been waiting to post
+as an RFC after the first round of IOMMU driver patches gets merged),
+then this '!en_s' check breaks MSI translations.
 
 Thanks,
-
-/mjt
+drew
 
