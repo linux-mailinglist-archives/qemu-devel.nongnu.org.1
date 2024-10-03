@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C568F98EE13
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 13:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3A098EE0A
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 13:24:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swJwN-0001q3-82; Thu, 03 Oct 2024 07:24:15 -0400
+	id 1swJwJ-0001Ri-S4; Thu, 03 Oct 2024 07:24:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1swJwG-0001Pl-Lp
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:24:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1swJwE-0001F6-36
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:24:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1swJwC-0004xj-29
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:24:08 -0400
+ id 1swJwB-0004yP-2M
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:24:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727954618;
+ s=mimecast20190719; t=1727954623;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZQg67E1IJjAhY1Pn9xg3BZY0ftT3elkl0R27HI1slrM=;
- b=UMD5RsFKLYPCClCTEUJrfv7vzwtjoDzs1b5Bb6ZJ36YdWikPJDv5yMKmF8AmwIYugNws4g
- Lt7p1JiA/is5+pvKe9xPlmRdF7gde3DKN4NA4CxDYYcvc6xZiNpfHkhlNbYmN/zI0ldFe7
- V2AZ0RYCzP06aGf3ulhWKKIHJJXi/6o=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=LbA5VfDAr/RwkKCrilX42feGwXJTiuFwpzMtEmeaq7Y=;
+ b=bGxmtQTiP/63wYQvWrcoRLgAW4l65cwETZssUw56tCXY2fyD5TKVAWzRnPDY7S1wfZwqbH
+ x/BwLuFkAUSOpI+hukavK1+SgXZ3u2dk2rF7ypLpJFvljpGapkvn2SqqAZpPWAWjQ4qKpj
+ m7Za2QuNxpUlTND26reuBo9R2plDQOs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-148-NTCjL42uOw6GGt4IbeNUqw-1; Thu,
- 03 Oct 2024 07:23:35 -0400
-X-MC-Unique: NTCjL42uOw6GGt4IbeNUqw-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-267-Hc2NFTKTMo6-korZlr0z-Q-1; Thu,
+ 03 Oct 2024 07:23:40 -0400
+X-MC-Unique: Hc2NFTKTMo6-korZlr0z-Q-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 00E9219560A1; Thu,  3 Oct 2024 11:23:34 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B51B11955E84; Thu,  3 Oct 2024 11:23:38 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1BC2C19560A3; Thu,  3 Oct 2024 11:23:31 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 5D2781956054; Thu,  3 Oct 2024 11:23:37 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -53,16 +53,17 @@ Cc: peter.maydell@linaro.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 09/16] ui/pixman: generalize shared_image_destroy
-Date: Thu,  3 Oct 2024 15:22:36 +0400
-Message-ID: <20241003112244.3340697-10-marcandre.lureau@redhat.com>
+Subject: [PATCH 10/16] ui/dbus: do not limit to one listener per connection /
+ bus name
+Date: Thu,  3 Oct 2024 15:22:37 +0400
+Message-ID: <20241003112244.3340697-11-marcandre.lureau@redhat.com>
 In-Reply-To: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
 References: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -90,104 +91,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Learn to free memfd-allocated shared memory.
+This is an arbitrary limitation that doesn't concern QEMU directly and
+may make some use cases unnecessarily more complicated.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/ui/qemu-pixman.h |  2 +-
- hw/display/virtio-gpu.c  |  4 ++--
- ui/console.c             |  2 +-
- ui/qemu-pixman.c         | 20 ++++++++++++--------
- 4 files changed, 16 insertions(+), 12 deletions(-)
+ ui/dbus-console.c | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
-diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
-index e3dd72b9e3..a97f56d09a 100644
---- a/include/ui/qemu-pixman.h
-+++ b/include/ui/qemu-pixman.h
-@@ -97,7 +97,7 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
+diff --git a/ui/dbus-console.c b/ui/dbus-console.c
+index 578b67f62b..5eb1d40d16 100644
+--- a/ui/dbus-console.c
++++ b/ui/dbus-console.c
+@@ -41,7 +41,7 @@ struct _DBusDisplayConsole {
+     DisplayChangeListener dcl;
  
- void qemu_pixman_image_unref(pixman_image_t *image);
+     DBusDisplay *display;
+-    GHashTable *listeners;
++    GPtrArray *listeners;
+     QemuDBusDisplay1Console *iface;
  
--void qemu_pixman_win32_image_destroy(pixman_image_t *image, void *data);
-+void qemu_pixman_shared_image_destroy(pixman_image_t *image, void *data);
- 
- G_DEFINE_AUTOPTR_CLEANUP_FUNC(pixman_image_t, qemu_pixman_image_unref)
- 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 017a0f170c..77f6e76f23 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -298,7 +298,7 @@ static void virtio_gpu_resource_create_2d(VirtIOGPU *g,
-             bits, c2d.height ? res->hostmem / c2d.height : 0);
- #ifdef WIN32
-         if (res->image) {
--            pixman_image_set_destroy_function(res->image, qemu_pixman_win32_image_destroy, res->handle);
-+            pixman_image_set_destroy_function(res->image, qemu_pixman_shared_image_destroy, res->handle);
-         }
- #endif
-     }
-@@ -1317,7 +1317,7 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
-             return -EINVAL;
-         }
- #ifdef WIN32
--        pixman_image_set_destroy_function(res->image, qemu_pixman_win32_image_destroy, res->handle);
-+        pixman_image_set_destroy_function(res->image, qemu_pixman_shared_image_destroy, res->handle);
- #endif
- 
-         res->addrs = g_new(uint64_t, res->iov_cnt);
-diff --git a/ui/console.c b/ui/console.c
-index 8f416ff0b9..fdd76c2be4 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -487,7 +487,7 @@ DisplaySurface *qemu_create_displaysurface(int width, int height)
- #ifdef WIN32
-     qemu_displaysurface_win32_set_handle(surface, handle, 0);
-     pixman_image_set_destroy_function(surface->image,
--                                      qemu_pixman_win32_image_destroy, handle);
-+                                      qemu_pixman_shared_image_destroy, handle);
- #endif
-     return surface;
- }
-diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
-index 3870e1a215..43050ab7c5 100644
---- a/ui/qemu-pixman.c
-+++ b/ui/qemu-pixman.c
-@@ -6,6 +6,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "ui/console.h"
-+#include "qemu/memfd.h"
- #include "standard-headers/drm/drm_fourcc.h"
- #include "trace.h"
- 
-@@ -269,16 +270,19 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
- }
- #endif /* CONFIG_PIXMAN */
- 
--#ifdef WIN32
- void
--qemu_pixman_win32_image_destroy(pixman_image_t *image, void *data)
-+qemu_pixman_shared_image_destroy(pixman_image_t *image, void *data)
+     QemuDBusDisplay1Keyboard *iface_kbd;
+@@ -142,8 +142,7 @@ dbus_display_console_init(DBusDisplayConsole *object)
  {
-+    void *ptr = pixman_image_get_data(image);
-+
-+#ifndef WIN32
-+    int shmfd = GPOINTER_TO_INT(data);
-+    size_t size = pixman_image_get_height(image) * pixman_image_get_stride(image);
-+
-+    qemu_memfd_free(ptr, size, shmfd);
-+#else
-     HANDLE handle = data;
+     DBusDisplayConsole *ddc = DBUS_DISPLAY_CONSOLE(object);
  
--    qemu_win32_map_free(
--        pixman_image_get_data(image),
--        handle,
--        &error_warn
--    );
--}
-+    qemu_win32_map_free(ptr, handle, &error_warn);
- #endif
-+}
+-    ddc->listeners = g_hash_table_new_full(g_str_hash, g_str_equal,
+-                                            NULL, g_object_unref);
++    ddc->listeners = g_ptr_array_new_with_free_func(g_object_unref);
+     ddc->dcl.ops = &dbus_console_dcl_ops;
+ }
+ 
+@@ -157,7 +156,7 @@ dbus_display_console_dispose(GObject *object)
+     g_clear_object(&ddc->iface_mouse);
+     g_clear_object(&ddc->iface_kbd);
+     g_clear_object(&ddc->iface);
+-    g_clear_pointer(&ddc->listeners, g_hash_table_unref);
++    g_clear_pointer(&ddc->listeners, g_ptr_array_unref);
+     g_clear_pointer(&ddc->kbd, qkbd_state_free);
+ 
+     G_OBJECT_CLASS(dbus_display_console_parent_class)->dispose(object);
+@@ -179,7 +178,7 @@ listener_vanished_cb(DBusDisplayListener *listener)
+ 
+     trace_dbus_listener_vanished(name);
+ 
+-    g_hash_table_remove(ddc->listeners, name);
++    g_ptr_array_remove_fast(ddc->listeners, listener);
+     qkbd_state_lift_all_keys(ddc->kbd);
+ }
+ 
+@@ -267,16 +266,6 @@ dbus_console_register_listener(DBusDisplayConsole *ddc,
+     DBusDisplayListener *listener;
+     int fd;
+ 
+-    if (sender && g_hash_table_contains(ddc->listeners, sender)) {
+-        g_dbus_method_invocation_return_error(
+-            invocation,
+-            DBUS_DISPLAY_ERROR,
+-            DBUS_DISPLAY_ERROR_INVALID,
+-            "`%s` is already registered!",
+-            sender);
+-        return DBUS_METHOD_INVOCATION_HANDLED;
+-    }
+-
+ #ifdef G_OS_WIN32
+     if (!dbus_win32_import_socket(invocation, arg_listener, &fd)) {
+         return DBUS_METHOD_INVOCATION_HANDLED;
+@@ -331,9 +320,7 @@ dbus_console_register_listener(DBusDisplayConsole *ddc,
+         return DBUS_METHOD_INVOCATION_HANDLED;
+     }
+ 
+-    g_hash_table_insert(ddc->listeners,
+-                        (gpointer)dbus_display_listener_get_bus_name(listener),
+-                        listener);
++    g_ptr_array_add(ddc->listeners, listener);
+     g_object_connect(listener_conn,
+                      "swapped-signal::closed", listener_vanished_cb, listener,
+                      NULL);
 -- 
 2.45.2.827.g557ae147e6
 
