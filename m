@@ -2,74 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D81198EC75
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 11:50:17 +0200 (CEST)
-Received: from localhost ([::1] helo=lists1p.gnu.org)
+	by mail.lfdr.de (Postfix) with ESMTPS id 190C198ECD3
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 12:20:16 +0200 (CEST)
+Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swIHD-0000RU-5q; Thu, 03 Oct 2024 05:37:45 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1swI2T-0006Tv-Pp; Thu, 03 Oct 2024 05:22:28 -0400
+Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1swIEi-0000NG-Lw
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 05:35:07 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1swIDz-00016T-0k
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 05:34:59 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2faccada15bso7851611fa.3
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 02:32:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727947948; x=1728552748; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=keauJ5uKWDGk1vURGpPsSf3/hOl1FhrfQ4AArH0jO/0=;
- b=keVLk7ALan7ziK328t+6/jbIET68m9CazkCxNWucQWBfg0nj3v6is9fwa+ZiHFMV4I
- ST2vInmTv1GIc6oBmuG6sGG4CMYCl+ywim1SIvRmCZQToqioxbar9CVRLLXy+EA0x07P
- HuSXw74QrGvpovm61ZFdOJvXSnTil3/fTwdfHzpf8G0N7gbmS5DLO3s4I84nTP1Vb83a
- HOJgEnbViSgOMe5R+fjPMqy/pkyV7enwQVBs0yZBd75NznMTmT3kRQQVVpYk5fGAPXQG
- Ghgx5z1l2Ru5v4TJGFl2WqnpKLZhOibcVYEEMEZ2LeBFs+1sbCcs0FWJi3z5o/lglrJ1
- tSJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727947948; x=1728552748;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=keauJ5uKWDGk1vURGpPsSf3/hOl1FhrfQ4AArH0jO/0=;
- b=sqLx/Ep97pm4VXVHG8ihOnaxqv0ghzzWJBz5bRu0MDjZe344rPu4SiGYITrRIfAFqK
- yg2dLdq2k5ns8QZ7YcJV0H6PjL5NL2sHEimOhH9ZMIUDaWBj2OPpENhfONSqJQg8rExS
- yUtCBdL3SK/iaLJ2toiFR53DIv1LGsIs9QQJC6qbf5UB7pM173a6cxVVy0NbmSBuR1Qb
- nsdzmjGD+7wM2MXVQBDyOuLCdLdo/YdO9waEEj74r5kWrltV4XxKErh4Ty6VO2MAEYvX
- Hq6+ucQ7aJr71InaNS7JCha7AtGoTPv+md0gQv0ULVbyVwD/R2Cxl9mZ9LEc28ywiJiM
- 2JOg==
-X-Gm-Message-State: AOJu0YxOChBp+BQWclroSME+RRrE2kyh0vRTGlfe5FuX+Z4NczKdQsSk
- ZXXutERupLAhgyq+ZcG0Ta3ZFK7aZg2ah7jRdtpcEdGWkl6y5XONjZH8S+jtDHbwyjrQAkiIa8b
- 8B1Uz41DKlZXLbYrhOSWQda0UIMImj+JLzWU5fA==
-X-Google-Smtp-Source: AGHT+IHSsvYClCg23lAg/JZ6Y7dGABSb3LZfg3E/Ovj9Em413KduCgq3Zh+i6aYKuRzRs6NV33YJQNqpUW/LLaxaO3Y=
-X-Received: by 2002:a2e:515a:0:b0:2fa:c0fc:e3d8 with SMTP id
- 38308e7fff4ca-2fae10e7f15mr26969121fa.38.1727947947755; Thu, 03 Oct 2024
- 02:32:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1swI1v-0006Ib-63
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 05:21:51 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <vsementsov@yandex-team.ru>) id 1swI1R-0007Xl-8R
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 05:21:42 -0400
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:8a3:0:640:33b5:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id BBC7260E33;
+ Thu,  3 Oct 2024 11:05:59 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8026::1:2f] (unknown
+ [2a02:6b8:b081:8026::1:2f])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id w5Xx5d2IYCg0-bOD3oZIq; Thu, 03 Oct 2024 11:05:59 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1727942759;
+ bh=b0+TwChyBeK2gf+lghBcsbb2F4D/kTslY/rx5m+Ajrk=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=BOBKoxBSzz0GP/rBWYTJaXRX9Y/pA8IlwrlNMFxDM0K3zLK0zNrwLQF1SpdR/TZwb
+ IiGftEIZ9SThFfGjJsHE/p3aLIZNBGkHO9oKyPGHlD559zuvAhmtQYYGj4z8PaI/2m
+ RzK2OY3IKax3Zza4ow3Tu8vbpdhj4PbNo6/8t8K0=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <0e62dbcd-b642-41d1-bda9-8eef16f6c7bd@yandex-team.ru>
+Date: Thu, 3 Oct 2024 11:05:58 +0300
 MIME-Version: 1.0
-References: <20241002125226.282193-1-thuth@redhat.com>
-In-Reply-To: <20241002125226.282193-1-thuth@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Oct 2024 10:32:16 +0100
-Message-ID: <CAFEAcA9FuJ4dJwu6oXt4Tkj-2Y5yg2i2c0OBBav8FQGOJX+WNQ@mail.gmail.com>
-Subject: Re: [PULL 0/5] Fix mips64el CI job + some other misc patches
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22a.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/3] vhost-user-blk: live resize additional APIs
+To: qemu-block@nongnu.org, raphael@enfabrica.net, mst@redhat.com
+Cc: sgarzare@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
+ pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
+ eblake@redhat.com, armbru@redhat.com, qemu-devel@nongnu.org
+References: <20240920094936.450987-1-vsementsov@yandex-team.ru>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20240920094936.450987-1-vsementsov@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Yandex-Filter: 1
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,32 +76,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2 Oct 2024 at 13:52, Thomas Huth <thuth@redhat.com> wrote:
->
-> The following changes since commit 718780d20470c66a3a36d036b29148d5809dc855:
->
->   Merge tag 'pull-nvme-20241001' of https://gitlab.com/birkelund/qemu into staging (2024-10-01 11:34:07 +0100)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/thuth/qemu.git tags/pull-request-2024-10-02
->
-> for you to fetch changes up to e5a007001824f9cde0db58cc960d4efcf1b93f27:
->
->   tests/tcg/s390x: Test modifying an EXECUTE target (2024-10-02 13:01:26 +0200)
->
-> ----------------------------------------------------------------
-> * Fix mips64el in the CI
-> * Remove unused sh4eb target
-> * Add an additional EXECUTE TCG test for s390x
->
-> ----------------------------------------------------------------
+Ping
 
+On 20.09.24 12:49, Vladimir Sementsov-Ogievskiy wrote:
+> v6: tiny fix: add document comment for sync_config field to fix qdoc
+> generation. Also, add r-b and a-b marks.
+> 
+> Vladimir Sementsov-Ogievskiy (3):
+>    qdev-monitor: add option to report GenericError from find_device_state
+>    vhost-user-blk: split vhost_user_blk_sync_config()
+>    qapi: introduce device-sync-config
+> 
+>   hw/block/vhost-user-blk.c | 27 ++++++++++++++------
+>   hw/virtio/virtio-pci.c    |  9 +++++++
+>   include/hw/qdev-core.h    |  6 +++++
+>   qapi/qdev.json            | 24 ++++++++++++++++++
+>   system/qdev-monitor.c     | 53 ++++++++++++++++++++++++++++++++++++---
+>   5 files changed, 108 insertions(+), 11 deletions(-)
+> 
 
-Applied, thanks.
+-- 
+Best regards,
+Vladimir
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
-for any user-visible changes.
-
--- PMM
 
