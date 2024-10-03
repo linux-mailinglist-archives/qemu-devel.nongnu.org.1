@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B3998F64E
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 20:38:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E408098F644
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 20:37:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swQes-0007Vp-3O; Thu, 03 Oct 2024 14:34:38 -0400
+	id 1swQep-0007Sx-4i; Thu, 03 Oct 2024 14:34:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1swQeR-0007GF-98
+ id 1swQeR-0007GE-7F
  for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:34:18 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1swQeO-000549-JK
+ id 1swQeO-00054V-Ma
  for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:34:10 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-2e0b9bca173so1031190a91.0
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 11:34:05 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-20b01da232aso10891505ad.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 11:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1727980444; x=1728585244;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1727980446; x=1728585246;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JhjOwzCsS1orZG5ZY7aLF1dqoua4hIdgdYgEn8nEbDM=;
- b=17bnmnJT/xO9g5nY3abJSOpQscKhsYF5mTV6p6TvikhZi7Qa+YtM+2PbRREg+AZSwm
- nnTHM/RceU6Fkh8IvYNPmvUuw1IXBwNNhCwRpEQ+Fh/1vIyuhP94hkJ0iDyg68SYz//W
- hAByOILCOziI3HrOGTgxVKyQro5K/kozLORtcC2n7h8U66CBuoAU1ZYgvtKupAOkIFoW
- bJbo2M3xGMQyTnPrSv1c3eJhVDeFZ16EtxZZfZSgEjxbgOvbGQ2sXT7FPh35heNuTKZJ
- oxu2VWV7jw8juyy7Eg8vPF3cKe6MOwoDGsCm5k1H7EpPYXsz6JbZIvb1zCe/VOJ/juIJ
- jUQQ==
+ bh=vfipH9u/Brft1+pMPkbr2H8aBkNzishpVxTjwiAZbgo=;
+ b=wGcJvp6Ne4CebEuqCK6XC8wk7/KvoLO9ZPC9QYohA1SbelXXObRdpoLdcPHPGYywaN
+ hSX+aQKCjeGKE7pyOTnALq915vEz2KsUFMrdMUiZuTsGGISubCg8HQO03K0V1dg6ltsC
+ q4XMvRSSON/EosmuIu8PeTO4n+6zEda0OSHp6BLSOg+2iGIron0C9woISJorDncRtXRd
+ 5f+2+qzMknrrTqiOnvIr6mTumt0PIcqAmT2Y51+U3ieMOeuu5VKLfpF8HD5VnmCWZxui
+ LRPl2dWpSYEHcsZyuqUDDd434iqWf53A0z9egi69UHKiiQsV3RUwzFjZ8fzL6NIaistX
+ Xctg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727980444; x=1728585244;
+ d=1e100.net; s=20230601; t=1727980446; x=1728585246;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JhjOwzCsS1orZG5ZY7aLF1dqoua4hIdgdYgEn8nEbDM=;
- b=q9kTJUbSPYWT3h/7Kf340s/kMe1av4aKYVFrzTLayCtL8pg6hjOg0VRK96dns7DDCp
- nmi6cXeek6HfN6QIvmz6Q2WZxNpA1BrHzA3ourFtx6Ge5quKAURIyaxECbXwPhdj0ZKq
- rXel34NeiihXNMgvfGTz8rItKTvzKy3o9zp+eqcKuebhAr/ClfawBPfyA3DP7nZh+1tr
- xsejCLR05ZJZmBHBHm9fc5wqJfscxSDMuN6g0Y63yMfunG7bVCV91r1kYsE35vCsK9nl
- /YZt/L6y0NUR+arEHnV/nI+7LVvtV1UN6pEFIOGRM9/UBvlASJLkIltHvY85fyr3O2cF
- s6pw==
+ bh=vfipH9u/Brft1+pMPkbr2H8aBkNzishpVxTjwiAZbgo=;
+ b=UnaKtMffawBq5a6r+TuYvXFLcZeMWbN3JQhBebBOhm8mXLcVvcVYi4jkzzNfMR7nf9
+ I+lrqWietlji/2QvXl85mXck6A+8D/TPBnpqgoOTJKW2fgHYnm+SsgC2BL2eWmZjHemx
+ flSAJJJkSrwgm3INvv3HjkhCGHrMOnRNXpYoMCbjY2u6J6op9tqImUtlnBajoaPEptTQ
+ jEwq7M08XycV02H2yyyNL3xkdXecoNbvSewgElap7EoycTe9aVvg2m+4w1PatcgHUBl4
+ V8Lp/7FlbDLhXXhuHd8V3Uv/6e51AX5VDeo0Zx1NpAlLAMCCVXyeNLgaubGss8zVjrnl
+ 4CLQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVif3rST5bFn+tZIEQxQunwNQHsPpZoyfT9mJQdFLSf9J+nEvkYT2vdAZAZclu++XbWvgFuwOstXY4E@nongnu.org
-X-Gm-Message-State: AOJu0YwWP8XsQKHR89Y+SEWc6lsjcGpyKAr7W+YqLTnBFEarnAxUVXGA
- 448H2Wb103YrR3bFP4rEhEdJJMlfwPi5wpyEJNCzGJcgQC2EADauhjkXcJJoq0g=
-X-Google-Smtp-Source: AGHT+IFfU/G7oq1PDmVTtJJXpBzYI9aDFAfcrvqJiPQ8RN0I/Bb4yRpCKfZue/6BaQS0hSVwWhcthA==
-X-Received: by 2002:a17:90b:51cf:b0:2e0:f81c:731f with SMTP id
- 98e67ed59e1d1-2e1e6296d4cmr36033a91.24.1727980444471; 
- Thu, 03 Oct 2024 11:34:04 -0700 (PDT)
+ AJvYcCVPGoaJ517+nCBoXUH23ibsduhiMhXK6WVdiHJHLkWybt/zgFdTaDqgD0Dkkg5cXJUABGAqHC2MVm0e@nongnu.org
+X-Gm-Message-State: AOJu0YyBcYc9wcA/3GY7szMdYLiGgsNKzXa9xFPN82YzVkeT8M+1N4NB
+ i6QwpVT0YUUzxpOi36UBW1Lo9r2mFot0kMjp708GhEPHdnAesZQkDwyZY+LJ29E=
+X-Google-Smtp-Source: AGHT+IGln98to+rnjQphNzDQ6PSBtC3MJRzk0GS8c0HMy/MXimzHC2Fz6sfe1iuMEHNfCF4qxsm+dQ==
+X-Received: by 2002:a17:902:f683:b0:20b:5231:cd58 with SMTP id
+ d9443c01a7336-20bff4b3472mr1204245ad.16.1727980445650; 
+ Thu, 03 Oct 2024 11:34:05 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20beefad16asm11796245ad.193.2024.10.03.11.34.03
+ d9443c01a7336-20beefad16asm11796245ad.193.2024.10.03.11.34.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Oct 2024 11:34:04 -0700 (PDT)
+ Thu, 03 Oct 2024 11:34:05 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, bmeng.cn@gmail.com,
  liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, kito.cheng@sifive.com,
- Deepak Gupta <debug@rivosinc.com>
-Subject: [PATCH v15 14/21] target/riscv: disallow probe accesses to shadow
- stack
-Date: Thu,  3 Oct 2024 11:33:35 -0700
-Message-ID: <20241003183342.679249-15-debug@rivosinc.com>
+ Deepak Gupta <debug@rivosinc.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PATCH v15 15/21] target/riscv: AMO operations always raise store/AMO
+ fault
+Date: Thu,  3 Oct 2024 11:33:36 -0700
+Message-ID: <20241003183342.679249-16-debug@rivosinc.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241003183342.679249-1-debug@rivosinc.com>
 References: <20241003183342.679249-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=debug@rivosinc.com; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=debug@rivosinc.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,104 +100,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-`check_zicbom_access` (`cbo.clean/flush/inval`) may probe shadow stack
-memory and must always raise store/AMO access fault because it has store
-semantics.
-
-For non-shadow stack memory even though `cbo.clean/flush/inval` have
-store semantics, it will not fault if read is allowed (probably to follow
-`clflush` on x86). Although if read is not allowed, eventually
-`probe_write` will do store page (or access) fault (if permissions don't
-allow it).
-
-cbo operations on shadow stack memory must always raise store access fault.
-Thus extending `get_physical_address` to recieve `probe` parameter as well.
+This patch adds one more word for tcg compile which can be obtained during
+unwind time to determine fault type for original operation (example AMO).
+Depending on that, fault can be promoted to store/AMO fault.
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ target/riscv/cpu.h         |  9 ++++++++-
+ target/riscv/cpu_helper.c  | 20 ++++++++++++++++++++
+ target/riscv/tcg/tcg-cpu.c |  1 +
+ target/riscv/translate.c   |  2 +-
+ 4 files changed, 30 insertions(+), 2 deletions(-)
 
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index d39650636c..fb93b0c859 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -46,8 +46,13 @@ typedef struct CPUArchState CPURISCVState;
+ /*
+  * RISC-V-specific extra insn start words:
+  * 1: Original instruction opcode
++ * 2: more information about instruction
+  */
+-#define TARGET_INSN_START_EXTRA_WORDS 1
++#define TARGET_INSN_START_EXTRA_WORDS 2
++/*
++ * b0: Whether a instruction always raise a store AMO or not.
++ */
++#define RISCV_UW2_ALWAYS_STORE_AMO 1
+ 
+ #define RV(x) ((target_ulong)1 << (x - 'A'))
+ 
+@@ -234,6 +239,8 @@ struct CPUArchState {
+     bool      elp;
+     /* shadow stack register for zicfiss extension */
+     target_ulong ssp;
++    /* env place holder for extra word 2 during unwind */
++    target_ulong excp_uw2;
+     /* sw check code for sw check exception */
+     target_ulong sw_check_code;
+ #ifdef CONFIG_USER_ONLY
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 5580f5f3f3..ab46f694b5 100644
+index ab46f694b5..3aae6343c8 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -884,7 +884,7 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
-                                 target_ulong *fault_pte_addr,
-                                 int access_type, int mmu_idx,
-                                 bool first_stage, bool two_stage,
--                                bool is_debug)
-+                                bool is_debug, bool is_probe)
- {
+@@ -1757,6 +1757,22 @@ static target_ulong riscv_transformed_insn(CPURISCVState *env,
+     return xinsn;
+ }
+ 
++static target_ulong promote_load_fault(target_ulong orig_cause)
++{
++    switch (orig_cause) {
++    case RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT:
++        return RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT;
++
++    case RISCV_EXCP_LOAD_ACCESS_FAULT:
++        return RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
++
++    case RISCV_EXCP_LOAD_PAGE_FAULT:
++        return RISCV_EXCP_STORE_PAGE_FAULT;
++    }
++
++    /* if no promotion, return original cause */
++    return orig_cause;
++}
+ /*
+  * Handle Traps
+  *
+@@ -1769,6 +1785,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+     CPURISCVState *env = &cpu->env;
+     bool virt = env->virt_enabled;
+     bool write_gva = false;
++    bool always_storeamo = (env->excp_uw2 & RISCV_UW2_ALWAYS_STORE_AMO);
+     uint64_t s;
+ 
      /*
-      * NOTE: the env->pc value visible here will not be
-@@ -1030,7 +1030,7 @@ restart:
-             int vbase_ret = get_physical_address(env, &vbase, &vbase_prot,
-                                                  base, NULL, MMU_DATA_LOAD,
-                                                  MMUIdx_U, false, true,
--                                                 is_debug);
-+                                                 is_debug, false);
+@@ -1804,6 +1821,9 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+         case RISCV_EXCP_STORE_AMO_ACCESS_FAULT:
+         case RISCV_EXCP_LOAD_PAGE_FAULT:
+         case RISCV_EXCP_STORE_PAGE_FAULT:
++            if (always_storeamo) {
++                cause = promote_load_fault(cause);
++            }
+             write_gva = env->two_stage_lookup;
+             tval = env->badaddr;
+             if (env->two_stage_indirect_lookup) {
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 6c0c319499..c62c221696 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -129,6 +129,7 @@ static void riscv_restore_state_to_opc(CPUState *cs,
+         env->pc = pc;
+     }
+     env->bins = data[1];
++    env->excp_uw2 = data[2];
+ }
  
-             if (vbase_ret != TRANSLATE_SUCCESS) {
-                 if (fault_pte_addr) {
-@@ -1117,8 +1117,11 @@ restart:
-         /* if bcfi enabled, PTE_W is not reserved and shadow stack page */
-         if (cpu_get_bcfien(env) && first_stage) {
-             sstack_page = true;
--            /* if ss index, read and write allowed. else only read allowed */
--            rwx = is_sstack_idx ? PTE_R | PTE_W : PTE_R;
-+            /*
-+             * if ss index, read and write allowed. else if not a probe
-+             * then only read allowed
-+             */
-+            rwx = is_sstack_idx ? (PTE_R | PTE_W) : (is_probe ? rwx :  PTE_R);
-             break;
-         }
-         return TRANSLATE_FAIL;
-@@ -1327,13 +1330,13 @@ hwaddr riscv_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
-     int mmu_idx = riscv_env_mmu_index(&cpu->env, false);
- 
-     if (get_physical_address(env, &phys_addr, &prot, addr, NULL, 0, mmu_idx,
--                             true, env->virt_enabled, true)) {
-+                             true, env->virt_enabled, true, false)) {
-         return -1;
+ static const TCGCPUOps riscv_tcg_ops = {
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index afa2ed4e3a..0322597bf6 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -1264,7 +1264,7 @@ static void riscv_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
+         pc_next &= ~TARGET_PAGE_MASK;
      }
  
-     if (env->virt_enabled) {
-         if (get_physical_address(env, &phys_addr, &prot, phys_addr, NULL,
--                                 0, MMUIdx_U, false, true, true)) {
-+                                 0, MMUIdx_U, false, true, true, false)) {
-             return -1;
-         }
-     }
-@@ -1447,7 +1450,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-         /* Two stage lookup */
-         ret = get_physical_address(env, &pa, &prot, address,
-                                    &env->guest_phys_fault_addr, access_type,
--                                   mmu_idx, true, true, false);
-+                                   mmu_idx, true, true, false, probe);
+-    tcg_gen_insn_start(pc_next, 0);
++    tcg_gen_insn_start(pc_next, 0, 0);
+     ctx->insn_start_updated = false;
+ }
  
-         /*
-          * A G-stage exception may be triggered during two state lookup.
-@@ -1470,7 +1473,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
- 
-             ret = get_physical_address(env, &pa, &prot2, im_address, NULL,
-                                        access_type, MMUIdx_U, false, true,
--                                       false);
-+                                       false, probe);
- 
-             qemu_log_mask(CPU_LOG_MMU,
-                           "%s 2nd-stage address=%" VADDR_PRIx
-@@ -1507,7 +1510,8 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-     } else {
-         /* Single stage lookup */
-         ret = get_physical_address(env, &pa, &prot, address, NULL,
--                                   access_type, mmu_idx, true, false, false);
-+                                   access_type, mmu_idx, true, false, false,
-+                                   probe);
- 
-         qemu_log_mask(CPU_LOG_MMU,
-                       "%s address=%" VADDR_PRIx " ret %d physical "
 -- 
 2.45.0
 
