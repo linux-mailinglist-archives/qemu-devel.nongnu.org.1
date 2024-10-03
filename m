@@ -2,85 +2,185 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC5098F073
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 15:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5DA98F07E
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 15:34:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swLw3-0003Gt-DA; Thu, 03 Oct 2024 09:32:03 -0400
+	id 1swLyG-0007g2-JU; Thu, 03 Oct 2024 09:34:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1swLvx-00031c-PG
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 09:31:58 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1swLvs-0006Np-Ss
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 09:31:57 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-37cd5016d98so751594f8f.1
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 06:31:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1727962308; x=1728567108; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=F9cOXpNhSmBifNEyV/bBsyxBMVGRUf/psW3BKjgVN30=;
- b=Oz1+mYa91cYyx4WqyrR2Ayc4ChITEm0Bw2eUeuQtqlTmKZ7xv8jE70JnyR0WCyDXbL
- 5yhedo7jZ1KAqO+5dZysTZZ1m7MjQK2QnF2Hh6VrZKCImZQdinYzvDSCKA1XJFdkTPLW
- y1h7Ta1b89DhDnvezlaZMZHpcJEYSe5VxxFuVOoTk4eHMwThk14dd3DHvTKI2xVas426
- nLgXWmrLXvEcGrykYFAyHpyosTrfY93nnER7LP0xZj+XBDUjAxvcf1KA4TU/1patOayy
- hzPiTF5nuyAokDU4e9+elvd4Fyxp3uBvPjzDjC67UHuSHUXi3p1aZJeM3/ej5bDaq3hj
- CAVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727962308; x=1728567108;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=F9cOXpNhSmBifNEyV/bBsyxBMVGRUf/psW3BKjgVN30=;
- b=InfINo1F49IusKNTJLaauZn1+1InMahOn7MQKyLNo79B4BY5YL4UkKaLH9En8pODJm
- jxVK2Etmv4wcxHMIkpx+C56zG/dHIBF7hW1GojkZ4fiYjq9woxQjpJ01fsEC8+VH335A
- AKX+zAKhkNpu/qxEtx5u533LS0n+XIeGu99lTdN0k8CaIZy3Oj0PkoL3I9ARts+1yHAB
- jIK48DvQVtF55pXumLTX8mAMPYlFqQqNwI+QxRj0iBEcvmCQ9YRpU5sztnxdOOaHBY0T
- kRqdZBBG4HodD4ln8cQ6UihUMONGGFGmASndvWxfAQznTJExERI5QEDFBi/Uzm7bQIJ+
- Hnrw==
-X-Gm-Message-State: AOJu0YyXTq6H9nLQVpvsln4+bYpFYTOPJJDDV+6E+VyZ7odx1pFXDJ14
- MXUA6Qf4dN9JMcOCcpONTZ9iOrbNFHANEsP6j6G0Izjrpt6/SXiBSwfsMBRV9R0=
-X-Google-Smtp-Source: AGHT+IGJmAISL+dKwgLSNoTCm5TjYgEQYsuTea/TcfdXlz6huTi7P2+8RHZ3GwjvxHq7KKUij2mmxg==
-X-Received: by 2002:adf:a791:0:b0:37c:ccdf:a2e3 with SMTP id
- ffacd0b85a97d-37cfb9d0f43mr3607978f8f.33.1727962307705; 
- Thu, 03 Oct 2024 06:31:47 -0700 (PDT)
-Received: from localhost (cst2-173-13.cust.vodafone.cz. [31.30.173.13])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d082e6f35sm1270467f8f.113.2024.10.03.06.31.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Oct 2024 06:31:47 -0700 (PDT)
-Date: Thu, 3 Oct 2024 15:31:46 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, peter.maydell@linaro.org,
- Tomasz Jeznach <tjeznach@rivosinc.com>, Sebastien Boeuf <seb@rivosinc.com>
-Subject: Re: [PATCH v8 03/12] hw/riscv: add RISC-V IOMMU base emulation
-Message-ID: <20241003-bd98395898af6d83eeef0be4@orel>
-References: <20241002010314.1928515-1-dbarboza@ventanamicro.com>
- <20241002010314.1928515-4-dbarboza@ventanamicro.com>
- <20241003-c10c27e0855533db764a1490@orel>
- <7c5f0fce-fc66-4fca-90be-aa2d4f7a4b04@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <simon.rowe@nutanix.com>)
+ id 1swLyE-0007fn-G0
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 09:34:18 -0400
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <simon.rowe@nutanix.com>)
+ id 1swLyC-0006cp-2D
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 09:34:18 -0400
+Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 493CsfnR016203;
+ Thu, 3 Oct 2024 06:34:12 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ cc:content-type:date:from:in-reply-to:message-id:mime-version
+ :references:subject:to; s=proofpoint20171006; bh=qXZTylAB0X+DiBK
+ lvE4mclZJY2saz34U4VYlyz5EMuE=; b=a8lH4qg3WKm3EDa6faVFABMsGHQa8/e
+ 65yCCLogyrOHt4wNSLRFP47+sypCfpVeL56AkrM0pri5MCmn9DRKBve8dSvdXDFf
+ oBp1/dn0K7obm7T4w8nyj0gUReyVnR6WpIeXDvg33PiVYTqyA6w1zrB66JeCkXv8
+ Nq2aCxlBRbT7x93+zzuzc76Xw+E7zxIMX8maoKnLkXnU3ENU0IwaA9CrSt+YGPNo
+ XJHqadBWl5Jes1qDSkKpjG9cSlyDBxNy13HKEBgH6uPdffr7gqeap2fUb8X+3KVX
+ MLki6iOH3Wu8KTFLty4bypgq2C8sT9hLMDBo8/ewD2h9iWI4nXc/xOg==
+Received: from sn4pr2101cu001.outbound.protection.outlook.com
+ (mail-southcentralusazlp17012054.outbound.protection.outlook.com
+ [40.93.14.54])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 41xhc0mjpt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Oct 2024 06:34:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=URbfzYVx7GoTaz+oVCp82v8ceSnhwh4OrJsZLj7WfS4VU0J6H2Z4i5NOBtF35JDr+28aQzHth5yGsxzqmaYu01KJknayXSvCXGd2jkLkLCmTQbIcjMIz17vI/ieRnUsh7MVJyvYQl2mXGVqN8QHx6OLRdTVrK13aWWqFd0iX0ULQN/kbh3rwZ9hXN0Zy2Fr4vH9J4+dltrepF0yP7SquGDf1a5MJt6QimgCOqz6wO9RzMuNM7txOaP1N26yYos0nD4gqjmkBwLyokaFOftqoeZ+pMP6/4JtuMc1UUHkor4nn7n7UKqmwYYQGSzDVxRjuNMN5Y3zrEQEkUr12+hoMYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qXZTylAB0X+DiBKlvE4mclZJY2saz34U4VYlyz5EMuE=;
+ b=V7BfxwCm2cviHFUOA5IMpCjyhdsq6wN4m82pezJKnKqQIJMxlU5rb4G9kdPoC+2xtuRoaD3fjcJp2gsl5/Sg/wObC0oAIvc/zkeyfakeg7mDz/4jVySPMzASUC4W4AY7lfX1XGzPpNuGMbVX7vPERSA3d6KyYbxpYS4IiRvLivEx+Zvr49cayz0EgLnbti949ThR1BdaYsyymbdTGPeolAH6sn7Qayvbqa23uPgKb5Xjlu7qM1bonHPSMnXSSEVVQVQw7x9gRWcnt6Habx7vG3nC8C8tBA8ILJxSYvru9axIjdc61JK6618d4mhNHUNjUa3jnzqBF4ttO8chJ5S8Nw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qXZTylAB0X+DiBKlvE4mclZJY2saz34U4VYlyz5EMuE=;
+ b=xQOz3BBJwVHFWgj5iaO4S0oleIHCvr7IoOONHGTOtFCT/BDd98cSQ3EP5s5z4hArmw+kd0rQH07sILR/nvy/Y4surKpjA23vVuVlsf9aju+n7LrTLrPLje1ckSNjf13KuFpbKmhSt7R/GM1fbkdgBSVdQMiomF+AWav+0/PltusBVSjmkuskM/xuUy7WqyErLdTvCuD0knozyMAApKAiM96i55mlo08TrirhTkBYEEnYGOcm5aTfQYkYG2EakOk43rEzT1EdVoGnvkgR+CjLwNkA6ciqMd1aBUR81WGYS7K4MuI663K6vWQ49d1jLfQxDBTqAxDAX5xoWS1Pb4uhvQ==
+Received: from DM8PR02MB8121.namprd02.prod.outlook.com (2603:10b6:8:1a::12) by
+ CY5PR02MB8896.namprd02.prod.outlook.com (2603:10b6:930:3c::19) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8026.18; Thu, 3 Oct 2024 13:34:09 +0000
+Received: from DM8PR02MB8121.namprd02.prod.outlook.com
+ ([fe80::ca00:b1fb:aa3a:f3e4]) by DM8PR02MB8121.namprd02.prod.outlook.com
+ ([fe80::ca00:b1fb:aa3a:f3e4%4]) with mapi id 15.20.8026.016; Thu, 3 Oct 2024
+ 13:34:09 +0000
+From: Simon Rowe <simon.rowe@nutanix.com>
+To: =?Windows-1252?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
+CC: QEMU Developers <qemu-devel@nongnu.org>, "freddy77@gmail.com"
+ <freddy77@gmail.com>
+Subject: Re: Corrupt VNC display for 1366x768
+Thread-Topic: Corrupt VNC display for 1366x768
+Thread-Index: AQHbFLkdixseYmY/b0qksh89icazUbJzXCMAgAAOaueAAZMVfoAAAsEAgAAGkoc=
+Date: Thu, 3 Oct 2024 13:34:09 +0000
+Message-ID: <DM8PR02MB8121501483C00871CB927C4D93712@DM8PR02MB8121.namprd02.prod.outlook.com>
+References: <DM8PR02MB81217D61C42562572F8AFFB093702@DM8PR02MB8121.namprd02.prod.outlook.com>
+ <Zv02EDIKgmq2L0fg@redhat.com>
+ <DM8PR02MB81211BB23F192988ECCF4BE193702@DM8PR02MB8121.namprd02.prod.outlook.com>
+ <DM8PR02MB81211F01833922F781C21E5893712@DM8PR02MB8121.namprd02.prod.outlook.com>
+ <Zv6WmOeg7lcHLxs0@redhat.com>
+In-Reply-To: <Zv6WmOeg7lcHLxs0@redhat.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM8PR02MB8121:EE_|CY5PR02MB8896:EE_
+x-ms-office365-filtering-correlation-id: e8df3a20-acbf-443b-0cf7-08dce3b00f80
+x-proofpoint-crosstenant: true
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?Windows-1252?Q?bwF7smnMUqMNYTscI0KnXqmepjCbMUwPGI+hdPztzlMzsgryE/l/y5pa?=
+ =?Windows-1252?Q?F51LLMaEgZeu8b7JzRatdY9IPmYeC/prOvqiZG0f45yWHPT5bI2sAJGU?=
+ =?Windows-1252?Q?dXR1CQgbYWz8AC0mQ1Q65RD0eEbVzhg+hgpdwnfAse+Zw767H2KhPmnU?=
+ =?Windows-1252?Q?D3GFgfJEGAVe/1odfokdMW3OaWx0r19RDn3wsvCDADBIYs/5CB0XoDhr?=
+ =?Windows-1252?Q?tPcSbBlSfCjVJ1mUiqfFfH65IzR6bHI/SM5zT5ETU/b/h5LfVaDfMJGe?=
+ =?Windows-1252?Q?L6YI1bzDcReQo8CyGb/zp8FtjfLg1ZEv0n0WrbZ25OnQQc+2Rb+1//to?=
+ =?Windows-1252?Q?nXXte0uI33w0i1wY+HCMgI2NFksGI/pFZqCHmllrq1m4UA3Wm4qlUpsy?=
+ =?Windows-1252?Q?CRngL3NUfhK3LkhOUWm/COzsdozo+p2U2ab8GVwxJL3MbgTGJ4adebYN?=
+ =?Windows-1252?Q?AMwjw+N5DLVqacta1JiH84QnNK+yPquZwChvr90qAieHezE1l3t7FvnA?=
+ =?Windows-1252?Q?4pqnlL6nnSo3aR2x2LAvhqUCveCVR2Ix1BxKQQi2zUhZKxaMkb3A5Tgb?=
+ =?Windows-1252?Q?mgHJxIEn0vk5zBYwn6DdFoF/luK1fOuPT4QUIrhRpRi3Tqqw8Fo4ibS3?=
+ =?Windows-1252?Q?ysI/+Nhh6Odzw6DFcOyG9NplDBlcL0+h0yr9EXLOkGLf2reu0vyrU2Fw?=
+ =?Windows-1252?Q?0iPjjBBcdJl1EW9PLMp0IdI2fiMYjPqPuG2LGC+wjKSdaClEuJYpcUzS?=
+ =?Windows-1252?Q?7P1MHsBbo4WsMR7bjQEiNghjkLWDeNaLOiX8In97KnwD0N31U+ndFU1j?=
+ =?Windows-1252?Q?H8kg8E0+14pSO4lYSkS7VN4+2jI06Ulfaxq6kX5PD6GabxGe/8wIXuP9?=
+ =?Windows-1252?Q?ayg1QcJYmDmd9gls3TT0kE8/YIFNuEzXWNMjbRSTImcBUOiY6zCBE5pB?=
+ =?Windows-1252?Q?0Q49uJkP76YN0b0cmQ6HsBiplZ7weN+OIXnGYIURnGXNBLEDwvPhCoTi?=
+ =?Windows-1252?Q?dJ9AwbgpoTELld2EHwANTwgvTZrzvrDdyf3QUZCWxHWSX4LWFqgS2N1S?=
+ =?Windows-1252?Q?DV9at7odn5PGK9QyfT2y6JH0MJl3I+0umposi1onQtssDl2W/Ydt3ydX?=
+ =?Windows-1252?Q?AaFo7zxhMeWyyakjWEs4I4cwRTxSEJpXPCCxpK3T79auIFBrQmnXNn93?=
+ =?Windows-1252?Q?RlmzCGeaa6orjaexN6p7uyW1xKUO/x2lQA8sqWJIvHu+CcvZsp5b5dZm?=
+ =?Windows-1252?Q?BHlJ+dKJJowSYLIJT1CUlg4hICeqqmfPub0whzbf6Ure43f3yOrsR8No?=
+ =?Windows-1252?Q?H2mmwNlVBffcgmwkovJJSc36DSF6qdVTZ+pC+Syu1H6Zwmo0zO9QX2Ha?=
+ =?Windows-1252?Q?wG7mL4O6OGdJVDOzeh/wyzB9g0uhHcEq/45luMABzary8+9Qvxo/5f1T?=
+ =?Windows-1252?Q?uEfnYZTj7lHK3sOG7JYLXg=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM8PR02MB8121.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(38070700018); DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?Windows-1252?Q?tV8LgKGOk4Px+1aLUjTD4T4mUYrJMEJH9QwiEFbuZWqrLriA07qNe0pd?=
+ =?Windows-1252?Q?1DipFfD37ENdMDFbFXpwVheGA6//yx5qmdutnAiGeHWxc6e3wJ59a1jG?=
+ =?Windows-1252?Q?7tx37poRu2jES+k9NUcVgk+uMgTMLokea4W4RroeQEq4+uRznxHWO8VO?=
+ =?Windows-1252?Q?p8Zo5XlKTSpPAPYzBuE2WVBlQ8KwcigQrtdwtv5lKxMekNjWRGm6PBlu?=
+ =?Windows-1252?Q?vEqe03BfhB5daOnfSEO3QwfLULQVJyg+EUPEGiry0Pnj5X4aBRXE6Wm7?=
+ =?Windows-1252?Q?NwmjFPWM4uIXEUrgi8uTos8+f1jHofBZ6QflEVdnhaDBi0elZD97Z4Lf?=
+ =?Windows-1252?Q?6lZ5f+UpcRCRQ90cQsyZKbfs6/YtbHhUj/zZ7Gd7N7wAS1Ej4+hom62W?=
+ =?Windows-1252?Q?xryUA95r2aE+F1ONH93JFAoBXUu9wSfwfFfM2582Ui/LL63VrEoZMwEb?=
+ =?Windows-1252?Q?MKq3NLM5gHMNndqqvB1fXW8yHDoDtXgphhjFTqnjUw4wmNy9XvFBbRQG?=
+ =?Windows-1252?Q?z8fOGbcwt70bdZwsCt1tvMxY3Kjy/ivfNJCdtdu5yuwifK+JiFJtc9qH?=
+ =?Windows-1252?Q?2oLIM6qyEx4VZTKUMb3j/yguJxwjYeJSx9lAdgYjFt/68IwExz82WY0o?=
+ =?Windows-1252?Q?0Y3KFPOm3fCPwuPeGIcWEvxze6ZrT4ZjAFoDlBt58QozGbgJLDUgxnLR?=
+ =?Windows-1252?Q?nNg+iiJ0vK/bjeWFazFlABjwHAqq9Wm3p0/g4vBZBwSi6DXOqloBpexp?=
+ =?Windows-1252?Q?gn7Hfg9NhTY+lFp97S6fTac46XEpm+2LSkKPd3467mVSQ2YDGtcfvkU1?=
+ =?Windows-1252?Q?IZuOsYScCFKLfBPu2cQeXYYe/C+ARnsZouzs4xOs0G6ogcokDLb7mnT7?=
+ =?Windows-1252?Q?aDQ+2A9c422kepyeuobf6DwBxSW2jIB6XTWu6K2qP02wtIgLeAcxuEQX?=
+ =?Windows-1252?Q?fRKqt+Qn1moO5N74dCH6wmz9IVTTbJOi4uXg5futV6lke9X4JdS1wCIm?=
+ =?Windows-1252?Q?jJQi7UomFbeKU4pJXcbNhru7xhIBu54vLlQ+SHDsxoU7AnaqDMK5OjWZ?=
+ =?Windows-1252?Q?RvsIU5DYSGmnQ3TkzkCC/rVLjW3JDPh4+TOXBiQCWD/Ic3gDCLruHRaN?=
+ =?Windows-1252?Q?/Eao+uZA845zpNS+t6KZ6drh9FulAAecAQPrdBqasXh4clE/laYgQtCz?=
+ =?Windows-1252?Q?tbeMIpX6Vq4qHLv8J3n5pCWznLGdprWDjwYUVIetTAy9wCZhyHzi+HJK?=
+ =?Windows-1252?Q?985Fgbd2Ux0bpfwI5tzsinjuU5gGcGLm7uYyk2VfKqxgtNMZ/zcNy+P8?=
+ =?Windows-1252?Q?ie7celrLC5u5nT5plGkJpstd/rE3lU/ZNoBE74vhQxenYryTvk+/CRFZ?=
+ =?Windows-1252?Q?MX8v/aXtjXPkdENb0UYggXuSOESTLnUw/HToDYW0pe+9LLqBZ2bZh0AU?=
+ =?Windows-1252?Q?31eme1S3mOZVXBTYQibefR7KAeG+ZVGl2n1xZ3P7nr6ARTJYojVfkbil?=
+ =?Windows-1252?Q?lzGzasf3u9Ba0b3GeCZOja+RCh6xMW4Q4+x0aK/lgoxXOqyRCwmevI8p?=
+ =?Windows-1252?Q?z/ThfWA3a8Sf4GuVZ6JejUP/JQiik7DtPaluRMIl2v92nf5ps7khuRQ9?=
+ =?Windows-1252?Q?LGUlPcWK1Sm/X/5cA9nNo3AIkNv5Irap/gTD8F3Q/AE1L6JZHQVg98v0?=
+ =?Windows-1252?Q?1/rYPZw3MUQ+FF4pgZWhF+WoJWdGthMvs0v/9kph2FQXLyR1w2yc+A?=
+ =?Windows-1252?Q?=3D=3D?=
+Content-Type: multipart/alternative;
+ boundary="_000_DM8PR02MB8121501483C00871CB927C4D93712DM8PR02MB8121namp_"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7c5f0fce-fc66-4fca-90be-aa2d4f7a4b04@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR02MB8121.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8df3a20-acbf-443b-0cf7-08dce3b00f80
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Oct 2024 13:34:09.3357 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mF12VKUGbqq/p2+RffzGBAXz1A+HArAIBhJKR14oaOeY7VQDsfN4CnMyaUK9k3Bq09sA4whUXncpY6WLF5A2Sw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR02MB8896
+X-Proofpoint-GUID: 1qEP5R4sP4W6KfGjpt0VFjlf2iTUbRls
+X-Authority-Analysis: v=2.4 cv=c4P5Qg9l c=1 sm=1 tr=0 ts=66fe9d53 cx=c_pps
+ a=gG0DghikVijJ7AhSPEVdoQ==:117 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=DAUX931o1VcA:10 a=0034W8JfsZAA:10 a=0kUYKlekyDsA:10
+ a=20KFwNOVAAAA:8 a=ufcXl1-Q7icorsUqSL4A:9
+ a=pILNOxqGKmIA:10 a=yMhMjlubAAAA:8 a=SSmOFEACAAAA:8 a=xRuOQi62iESJQ6r94r0A:9
+ a=vrceNMz27zi3eHoV:21 a=gKO2Hq4RSVkA:10 a=UiCQ7L4-1S4A:10 a=hTZeC7Yk6K0A:10
+ a=frz4AuCg-hUA:10
+X-Proofpoint-ORIG-GUID: 1qEP5R4sP4W6KfGjpt0VFjlf2iTUbRls
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-03_06,2024-10-03_01,2024-09-30_01
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.151.68;
+ envelope-from=simon.rowe@nutanix.com; helo=mx0a-002c1b01.pphosted.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,148 +196,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 03, 2024 at 10:06:11AM GMT, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 10/3/24 6:26 AM, Andrew Jones wrote:
-> > On Tue, Oct 01, 2024 at 10:02:58PM GMT, Daniel Henrique Barboza wrote:
-> > ...
-> > > +/*
-> > > + * RISCV IOMMU Address Translation Lookup - Page Table Walk
-> > > + *
-> > > + * Note: Code is based on get_physical_address() from target/riscv/cpu_helper.c
-> > > + * Both implementation can be merged into single helper function in future.
-> > > + * Keeping them separate for now, as error reporting and flow specifics are
-> > > + * sufficiently different for separate implementation.
-> > > + *
-> > > + * @s        : IOMMU Device State
-> > > + * @ctx      : Translation context for device id and process address space id.
-> > > + * @iotlb    : translation data: physical address and access mode.
-> > > + * @return   : success or fault cause code.
-> > > + */
-> > > +static int riscv_iommu_spa_fetch(RISCVIOMMUState *s, RISCVIOMMUContext *ctx,
-> > > +    IOMMUTLBEntry *iotlb)
-> > > +{
-> > > +    dma_addr_t addr, base;
-> > > +    uint64_t satp, gatp, pte;
-> > > +    bool en_s, en_g;
-> > > +    struct {
-> > > +        unsigned char step;
-> > > +        unsigned char levels;
-> > > +        unsigned char ptidxbits;
-> > > +        unsigned char ptesize;
-> > > +    } sc[2];
-> > > +    /* Translation stage phase */
-> > > +    enum {
-> > > +        S_STAGE = 0,
-> > > +        G_STAGE = 1,
-> > > +    } pass;
-> > > +    MemTxResult ret;
-> > > +
-> > > +    satp = get_field(ctx->satp, RISCV_IOMMU_ATP_MODE_FIELD);
-> > > +    gatp = get_field(ctx->gatp, RISCV_IOMMU_ATP_MODE_FIELD);
-> > > +
-> > > +    en_s = satp != RISCV_IOMMU_DC_FSC_MODE_BARE;
-> > > +    en_g = gatp != RISCV_IOMMU_DC_IOHGATP_MODE_BARE;
-> > > +
-> > > +    /*
-> > > +     * Early check for MSI address match when IOVA == GPA. This check
-> > > +     * is required to ensure MSI translation is applied in case
-> > > +     * first-stage translation is set to BARE mode. In this case IOVA
-> > > +     * provided is a valid GPA. Running translation through page walk
-> > > +     * second stage translation will incorrectly try to translate GPA
-> > > +     * to host physical page, likely hitting IOPF.
-> > > +     */
-> > 
-> > Why was this comment expanded from the simple
-> > 
-> > "Early check for MSI address match when IOVA == GPA."
-> > 
-> > The comment is now incorrect since the check is required even when
-> > first-stage translation is not BARE. I just skimmed the spec again trying
-> > to figure out if the removal of '!en_s' is a hack or a fix, and I'm
-> > inclined to say "fix", but it's an incomplete fix. I found a sentence that
-> > says
-> > 
-> > "If the virtual memory scheme selected for first-stage is Bare but the
-> > scheme for the second-stage is not Bare then the IOVA is a GPA."
-> > 
-> > which, in a way, defines a GPA to only be a GPA when second-stage is used
-> > (and all MSI translation specifications refer to GPAs). However, maybe I
-> > missed it, but I couldn't find any actual reason that the MSI table can't
-> > be used when first-stage is not BARE and second-stage is (and, of course,
-> > it makes no difference for single-stage translations to call IOVAs GPAs
-> > or not).
-> > 
-> > Now, I also see
-> > 
-> > "If the virtual memory scheme selected for neither stage is Bare then the
-> > IOVA is a VA. Two-stage address translation is in effect. The first-stage
-> > translates the VA to a GPA and the second-stage translates the GPA to a
-> > SPA."
-> > 
-> > in the spec, which means we should probably change the removal of '!en_s'
-> > to '!(en_s && en_g)'. VFIO+irqbypass would still work with that and, when
-> > Linux learns to support two-stage translation, we wouldn't incorrectly try
-> > to check for a GVA in the MSI table.
-> 
-> Ok. It seems to me that we can't rely on the riscv-iommu spec alone to let
-> us know how to detect if IOVA == GPA, given that one of the main usages
-> we have ATM (VFIO irqbypass) will use GPAs with S-stage enabled.
-> 
-> (Note: shouldn't we open a bug against the riscv-iommu spec?)
-> 
+--_000_DM8PR02MB8121501483C00871CB927C4D93712DM8PR02MB8121namp_
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-I can try writing a sentence or two for the spec to clarify this and send
-a PR.
+On 03/10/2024, 14:05, "Daniel P. Berrang=E9" <berrange@redhat.com> wrote:
 
-> I like the idea of ruling out the case where IOVA == VA since that is clear
-> in the spec. We also know that MSI entries will always contains GPAs.
-> 
-> This is the change I'm going to make in v9:
-> 
-> 
->     /*
->      * Early check for MSI address match when IOVA == GPA to
->      * support VFIO+irqbypass. The riscv-iommu spec doesn't
->      * consider the case where a GPA can be produced by S-stage
->      * only, but we have real life examples like Linux VFIO that
->      * work that way. The spec alone does not provide a reliable
->      * way of detecting if IOVA == GPA.
->      *
->      * The spec is clear about what is a VA: "If the virtual
->      * memory scheme selected for neither stage is Bare then
->      * the IOVA is a VA", in our case "(en_s && en_g)". We also
->      * know that MSI tables will always hold GPAs.
->      *
->      * Thus the check consists of ruling out VAs and checking
->      * the MSI table.
->      */
->     if (!(en_s && en_g) && (iotlb->perm & IOMMU_WO) &&
->         riscv_iommu_msi_check(s, ctx, iotlb->iova)) {
->         iotlb->target_as = &s->trap_as;
->         iotlb->translated_addr = iotlb->iova;
->         iotlb->addr_mask = ~TARGET_PAGE_MASK;
->         return 0;
->     }
+> The QEMU VNC code has logic which rounds up display sizes to a multiple
+> of 16:
+>
+>  static int vnc_width(VncDisplay *vd)
+>  {
+>      return MIN(VNC_MAX_WIDTH, ROUND_UP(surface_width(vd->ds),
+>                                         VNC_DIRTY_PIXELS_PER_BIT));
+>  }
+>
+> Separately, it also tracks the "true" width, but untangling which it
+> uses where & the implications is hard to do. ie i'm not going to try
+> to explain it further, as I don't know what's going on without spending
+> some hours to trace through it all :-)
 
-LGTM
+On a hunch I revisited Frediano's patch (mentioned in the original post). I=
+ had focused on the change to the VNC functions but he also had a small cha=
+nge to the masking of the display width in the VGA code. I've applied a sim=
+ilar change and =85 I now get a proper display!
 
-Thanks,
-drew
+Patch is simply
 
-> 
-> Tomasz, let me know if you have any opinions against it. I intend to send
-> the v9 start of next week.
-> 
-> 
-> Thanks,
-> 
-> 
-> Daniel
-> 
-> 
-> > 
-> > Thanks,
-> > drew
+diff --git a/hw/display/vga.c b/hw/display/vga.c
+index 892fedc8dc..ea659e2812 100644
+--- a/hw/display/vga.c
++++ b/hw/display/vga.c
+@@ -581,14 +581,14 @@ static void vbe_fixup_regs(VGACommonState *s)
+     }
+
+     /* check width */
+-    r[VBE_DISPI_INDEX_XRES] &=3D ~7u;
++    r[VBE_DISPI_INDEX_XRES] &=3D ~1u;
+     if (r[VBE_DISPI_INDEX_XRES] =3D=3D 0) {
+         r[VBE_DISPI_INDEX_XRES] =3D 8;
+     }
+     if (r[VBE_DISPI_INDEX_XRES] > VBE_DISPI_MAX_XRES) {
+         r[VBE_DISPI_INDEX_XRES] =3D VBE_DISPI_MAX_XRES;
+     }
+-    r[VBE_DISPI_INDEX_VIRT_WIDTH] &=3D ~7u;
++    r[VBE_DISPI_INDEX_VIRT_WIDTH] &=3D ~1u;
+     if (r[VBE_DISPI_INDEX_VIRT_WIDTH] > VBE_DISPI_MAX_XRES) {
+         r[VBE_DISPI_INDEX_VIRT_WIDTH] =3D VBE_DISPI_MAX_XRES;
+     }
+
+I don't know how functional correct this is.
+Regards
+Simon
+
+--_000_DM8PR02MB8121501483C00871CB927C4D93712DM8PR02MB8121namp_
+Content-Type: text/html; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:w=3D"urn:sc=
+hemas-microsoft-com:office:word" xmlns:m=3D"http://schemas.microsoft.com/of=
+fice/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Aptos;
+	panose-1:2 11 0 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"Andale Mono";
+	panose-1:2 11 5 9 0 0 0 0 0 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+span.EmailStyle19
+	{mso-style-type:personal-reply;
+	font-family:"Aptos",sans-serif;
+	color:windowtext;}
+span.s1
+	{mso-style-name:s1;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;
+	mso-ligatures:none;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style>
+</head>
+<body lang=3D"EN-GB" link=3D"blue" vlink=3D"purple" style=3D"word-wrap:brea=
+k-word">
+<div class=3D"WordSection1">
+<div id=3D"mail-editor-reference-message-container">
+<div>
+<div>
+<p class=3D"MsoNormal">On 03/10/2024, 14:05, &quot;Daniel P. Berrang=E9&quo=
+t; &lt;berrange@redhat.com&gt; wrote:<o:p></o:p></p>
+</div>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&gt; The QEMU VNC c=
+ode has logic which rounds up display sizes to a multiple<br>
+&gt; of 16:<br>
+&gt;<br>
+&gt;&nbsp; static int vnc_width(VncDisplay *vd)<br>
+&gt;&nbsp; {<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return MIN(VNC_MAX_WIDTH, ROUND_UP(surfa=
+ce_width(vd-&gt;ds),<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; VNC_DIRTY_PIXELS_PER_BIT));<br>
+&gt;&nbsp; }<br>
+&gt;<br>
+&gt; Separately, it also tracks the &quot;true&quot; width, but untangling =
+which it<br>
+&gt; uses where &amp; the implications is hard to do. ie i'm not going to t=
+ry<br>
+&gt; to explain it further, as I don't know what's going on without spendin=
+g<br>
+&gt; some hours to trace through it all :-)<br>
+<br>
+</span><span style=3D"font-size:11.0pt"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">On a hunch I revisi=
+ted Frediano's patch (mentioned in the original post). I had focused on the=
+ change to the VNC functions but he also had a small change to the masking =
+of the display width in the VGA code.
+ I've applied a similar change and =85 I now get a proper display!<o:p></o:=
+p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Patch is simply<o:p=
+></o:p></span></p>
+<p class=3D"MsoNormal"><span class=3D"s1"><span style=3D"font-family:&quot;=
+Andale Mono&quot;;color:lime"><o:p>&nbsp;</o:p></span></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">diff --git a/hw/dis=
+play/vga.c b/hw/display/vga.c<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">index 892fedc8dc..e=
+a659e2812 100644<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">--- a/hw/display/vg=
+a.c<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">+++ b/hw/display/vg=
+a.c<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">@@ -581,14 +581,14 =
+@@ static void vbe_fixup_regs(VGACommonState *s)<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ }<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;<o:p></o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ /* check width */<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">-&nbsp; &nbsp; r[VB=
+E_DISPI_INDEX_XRES] &amp;=3D ~7u;<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">+&nbsp; &nbsp; r[VB=
+E_DISPI_INDEX_XRES] &amp;=3D ~1u;<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ if (r[VBE_DISPI_INDEX_XRES] =3D=3D 0) {<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ &nbsp; &nbsp; r[VBE_DISPI_INDEX_XRES] =3D 8;<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ }<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ if (r[VBE_DISPI_INDEX_XRES] &gt; VBE_DISPI_MAX_XRES) {<o:p></o:p></span></=
+p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ &nbsp; &nbsp; r[VBE_DISPI_INDEX_XRES] =3D VBE_DISPI_MAX_XRES;<o:p></o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ }<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">-&nbsp; &nbsp; r[VB=
+E_DISPI_INDEX_VIRT_WIDTH] &amp;=3D ~7u;<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">+&nbsp; &nbsp; r[VB=
+E_DISPI_INDEX_VIRT_WIDTH] &amp;=3D ~1u;<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ if (r[VBE_DISPI_INDEX_VIRT_WIDTH] &gt; VBE_DISPI_MAX_XRES) {<o:p></o:p></s=
+pan></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ &nbsp; &nbsp; r[VBE_DISPI_INDEX_VIRT_WIDTH] =3D VBE_DISPI_MAX_XRES;<o:p></=
+o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp; &nbsp;=
+ }<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<div>
+<p class=3D"MsoNormal" style=3D"margin-bottom:12.0pt"><span style=3D"font-s=
+ize:11.0pt">I don't know how functional correct this is.<o:p></o:p></span><=
+/p>
+<p class=3D"MsoNormal" style=3D"margin-bottom:12.0pt"><span style=3D"font-s=
+ize:11.0pt">Regards<br>
+Simon<o:p></o:p></span></p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+--_000_DM8PR02MB8121501483C00871CB927C4D93712DM8PR02MB8121namp_--
 
