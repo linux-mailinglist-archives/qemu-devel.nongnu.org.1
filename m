@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4007A98F0F4
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 16:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D5298F0F5
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 16:03:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swMOE-0004Lf-J5; Thu, 03 Oct 2024 10:01:18 -0400
+	id 1swMO8-0004HR-WB; Thu, 03 Oct 2024 10:01:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1swMNQ-000471-NU
+ id 1swMNS-00047E-M7
  for qemu-devel@nongnu.org; Thu, 03 Oct 2024 10:00:25 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1swMNO-0002rV-Af
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 10:00:20 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-37ccd81de57so617229f8f.0
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 07:00:17 -0700 (PDT)
+ id 1swMNQ-0002rn-5l
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 10:00:21 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-42cba6cdf32so10200095e9.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 07:00:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727964016; x=1728568816; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727964017; x=1728568817; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LPD0ziR8yfL/HjZu6b/yEmmqErN3Sv3BQp33o6QEumo=;
- b=paSZkejcLJehhIKtxeAm7c6dbsEA+0qHftsZSbuKCTOOt2h23ReqjdvnTr459qqFas
- TJ6RFkql2+9bZs3+AwImySZZr4kuZsGUwxzVR/ikY5yQTCpHeWhbyT4dpu4+FFt06Gfx
- 8GYfOy4/eeL1b48CCoJbucAl/E1aDZOQPB+7eQsF8qUbnjOCbkv/oUPGcljLXUwQ0mmo
- 0Lh+S1A2ZKwGgVJMDVz8BQuki+EYEdUa3kaLzsdySnBhoIckdR7do1RKoh8MYcb2lszJ
- ZKUrXRfb/JhFB/Fy8XJ64qxVrQhVaUb76T20iiTqGOAdi9Bs46yFJTmmQW3NptT1RIkX
- qcyg==
+ bh=/NdtSVHO79et12wC7mRevKMLx4j9u2HZmS8+HJMur2g=;
+ b=Fik2p2y4e8bfjLBLZoePIJA+OcBr5qffo7kBeyD2APPYg19agQI22883QKHqHZg42T
+ F8TK1u7Pq8t6tZbpdTqpuuYzrErmW3O1+BX4jCWrUA1uswWZhuG0MNsjzON+aF/NAXV+
+ joXjViGMmuNvEd1aauhcnGRK7lQ+xnN0reLBOWx6GOJ91LPSZD3nFnD98dD8MrSSjB6B
+ 85e84d69BVCQmsfSjoCxGveig83QhybmC99UkQYBH4RebJedGfwfaVC/IUC/tYqy7Is0
+ YxZuiGJmr/We5MMMA4ka07mqScE5o1rNWspAnZJw31nuarBFjjQPu3FLhyP3ZV3R9+C2
+ eDMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727964016; x=1728568816;
+ d=1e100.net; s=20230601; t=1727964017; x=1728568817;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LPD0ziR8yfL/HjZu6b/yEmmqErN3Sv3BQp33o6QEumo=;
- b=cjkHQ7Jx6flfQLZON+hbs52XsIM3sKXaunGjnhVt+0GvAftLeLUcC3eYxdNe6vOwD+
- IpJUImSrabxkJYoFtUiaTLLzvyttyR8MbdsU7CVoPRSqDRLsBLTbdfWqd6OeQOWxi8+r
- w4ethW1ClEL0yG624enIPJDujiax8xI8PmXG5Ds9Kdlu85D/OZcdMbZ4mkE3dqJ75p8H
- kcLC1YgWGLwFRIi1ka/kkuWqCdfYrkDYNXFistfmDmTG9nD/hdUjdFgSR3dOsLOLo7U7
- ZBNQHrc+bYa0lUHxXU33okhuN543NfEl1BOh9nEGFeoxTeMqzWQdquf0DP1aeJUaDEVW
- P/VQ==
+ bh=/NdtSVHO79et12wC7mRevKMLx4j9u2HZmS8+HJMur2g=;
+ b=OyVfgnLEWCJ9DOHKf2qyu/NkglAzyUPMGD6iqeJmCfNQBvGgxFZTLsw5otTUCM+As3
+ vu+U2kfjTh96jKLcXy4DBscSj2dfQR2hzGbThpAZaRzzuJFQ0CC0WLydcu8/gXARNNGp
+ yGCq79j+C5mhzy22PMT3stJUk2XzCpBWLdZbJdC3k4zBXBH4F+XzbpaMFQQEQcOiO+k6
+ 4aBJBoOnDX6C0MNn7WcAvV+qpqmyi2pxQAWW3KwOIBMbO5pd2Q6y+80Gsz8rdxFlhR+Z
+ iXZUv2wlsENfKL6wgLbu3h7a8cSu+jg6iGm/I/6dcVp5s6clAtz3tGsrNziUTMppAA3W
+ xmSA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVKO71mNCBpQ6qo8AM3s3odT4B0M/YtXVSoa/v/NgY8+W4kP7mwnE52v2mY+YDW1v7Zdsh4pa9JwZzZ@nongnu.org
-X-Gm-Message-State: AOJu0Yx9n0Mb9/lcBk80LGRdKIhFuZ7BA908flw2eFBAsiTM+/H63CN/
- B2GJ4QxkbqVxbJIw93Vhc3KKQyJB/r5FHs86xi1mXtkHeY7Vboila6g7ydRjRck=
-X-Google-Smtp-Source: AGHT+IH5Z0RKAGC5X2uA0/Qz4r3miR4YAsUlg8Gozod07a36v2WxqNiXC10l952fNrLtXzgkADKkLw==
-X-Received: by 2002:adf:a30d:0:b0:37c:f561:1130 with SMTP id
- ffacd0b85a97d-37d04a04aa2mr2286429f8f.18.1727964016185; 
+ AJvYcCWlHp+H45oWWl3x+/vCjCM+yI0OzOYQzGSpMn6J836XMAfsskiUf+cmIUK2Nt59FXGyZcAqD63GsAK9@nongnu.org
+X-Gm-Message-State: AOJu0YxvzIzL7COQhxAJdqmvTHBybO/b4xVCpJY42gg5CMiAEYSodt4p
+ ywu34h+Jv3L/zmZ0O7mD8RGrzBX5z0adcLuxkOPRuePbEyIC3H9d9QvEc45gcRY=
+X-Google-Smtp-Source: AGHT+IGswXIv1ZrcC8pf6aHiyeaC3qhby2ON4qMxtTiQHZn+uCHwdqJEtrpobrH+wIj702j3S5WLLw==
+X-Received: by 2002:a05:600c:4f10:b0:42c:b5f1:4508 with SMTP id
+ 5b1f17b1804b1-42f778f360emr45374425e9.23.1727964016820; 
  Thu, 03 Oct 2024 07:00:16 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d0822bc38sm1340255f8f.45.2024.10.03.07.00.15
+ ffacd0b85a97d-37d0822bc38sm1340255f8f.45.2024.10.03.07.00.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Oct 2024 07:00:15 -0700 (PDT)
+ Thu, 03 Oct 2024 07:00:16 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Guenter Roeck <linux@roeck-us.net>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 5/6] hw/block: Remove ecc
-Date: Thu,  3 Oct 2024 15:00:09 +0100
-Message-Id: <20241003140010.1653808-6-peter.maydell@linaro.org>
+Subject: [PATCH v2 6/6] vl.c: Remove pxa2xx-specific -portrait and -rotate
+ options
+Date: Thu,  3 Oct 2024 15:00:10 +0100
+Message-Id: <20241003140010.1653808-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241003140010.1653808-1-peter.maydell@linaro.org>
 References: <20241003140010.1653808-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,192 +96,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ecc.c code was used only by the PXA2xx and OMAP2 SoC devices,
-which we have removed, so it is now completely unused.
+The ``-portrait`` and ``-rotate`` options were documented as only
+working with the PXA LCD device, and all the machine types using
+that display device were removed in 9.2.
 
-Note that hw/misc/eccmemctl.c does not in fact use any of the
-code frome ecc.c, so that KConfig dependency was incorrect.
+These options were intended to simulate a mobile device being
+rotated by the user, and had three effects:
+ * the display output was rotated by 90, 180 or 270 degrees
+   (implemented in the PXA display device models)
+ * the mouse/trackpad input was rotated the opposite way
+   (implemented in generic code)
+ * the machine model would signal to the guest about its
+   orientation
+   (implemented by e.g. the spitz machine model)
+
+Of these three things, the input-rotation was coded without being
+restricted to boards which supported the full set of device-rotation
+handling, so in theory the options were usable on other machine
+models with odd effects (rotating input but not display output).  But
+this was never intended or documented behaviour, so we can reasonably
+drop these command line arguments without a formal deprecate-and-drop
+cycle for them.
+
+Remove the options, and their implementation and documentation.
+Describe the removal in removed-features.rst.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/block/flash.h | 11 -----
- hw/block/ecc.c           | 91 ----------------------------------------
- hw/arm/Kconfig           |  1 -
- hw/block/Kconfig         |  3 --
- hw/block/meson.build     |  1 -
- hw/misc/Kconfig          |  1 -
- 6 files changed, 108 deletions(-)
- delete mode 100644 hw/block/ecc.c
+ docs/about/removed-features.rst | 22 ++++++++++++++++++++
+ include/sysemu/sysemu.h         |  1 -
+ system/globals.c                |  1 -
+ system/vl.c                     | 11 ----------
+ ui/input.c                      | 36 ---------------------------------
+ qemu-options.hx                 | 16 ---------------
+ 6 files changed, 22 insertions(+), 65 deletions(-)
 
-diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
-index b985c825a01..5fd67f5bb79 100644
---- a/include/hw/block/flash.h
-+++ b/include/hw/block/flash.h
-@@ -62,17 +62,6 @@ uint32_t nand_getbuswidth(DeviceState *dev);
- #define NAND_MFR_HYNIX      0xad
- #define NAND_MFR_MICRON     0x2c
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index 6e96cd067fa..567e653e1d3 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -517,6 +517,28 @@ The virtio-blk SCSI passthrough feature is a legacy VIRTIO feature.  VIRTIO 1.0
+ and later do not support it because the virtio-scsi device was introduced for
+ full SCSI support.  Use virtio-scsi instead when SCSI passthrough is required.
  
--/* ecc.c */
--typedef struct {
--    uint8_t cp;     /* Column parity */
--    uint16_t lp[2]; /* Line parity */
--    uint16_t count;
--} ECCState;
--
--uint8_t ecc_digest(ECCState *s, uint8_t sample);
--void ecc_reset(ECCState *s);
--extern const VMStateDescription vmstate_ecc_state;
--
- /* m25p80.c */
++``-portrait`` and ``-rotate`` (since 9.2)
++'''''''''''''''''''''''''''''''''''''''''
++
++The ``-portrait`` and ``-rotate`` options were documented as only
++working with the PXA LCD device, and all the machine types using
++that display device were removed in 9.2, so these options also
++have been dropped.
++
++These options were intended to simulate a mobile device being
++rotated by the user, and had three effects:
++
++* the display output was rotated by 90, 180 or 270 degrees
++* the mouse/trackpad input was rotated the opposite way
++* the machine model would signal to the guest about its
++  orientation
++
++Of these three things, the input-rotation was coded without being
++restricted to boards which supported the full set of device-rotation
++handling, so in theory the options were usable on other machine models
++to produce an odd effect (rotating input but not display output). But
++this was never intended or documented behaviour, so we have dropped
++the options along with the machine models they were intended for.
  
- #define TYPE_M25P80 "m25p80-generic"
-diff --git a/hw/block/ecc.c b/hw/block/ecc.c
-deleted file mode 100644
-index ed889a4184f..00000000000
---- a/hw/block/ecc.c
-+++ /dev/null
-@@ -1,91 +0,0 @@
--/*
-- * Calculate Error-correcting Codes. Used by NAND Flash controllers
-- * (not by NAND chips).
-- *
-- * Copyright (c) 2006 Openedhand Ltd.
-- * Written by Andrzej Zaborowski <balrog@zabor.org>
-- *
-- * This code is licensed under the GNU GPL v2.
-- *
-- * Contributions after 2012-01-13 are licensed under the terms of the
-- * GNU GPL, version 2 or (at your option) any later version.
-- */
--
--#include "qemu/osdep.h"
--#include "migration/vmstate.h"
--#include "hw/block/flash.h"
--
--/*
-- * Pre-calculated 256-way 1 byte column parity.  Table borrowed from Linux.
-- */
--static const uint8_t nand_ecc_precalc_table[] = {
--    0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a,
--    0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00,
--    0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f,
--    0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
--    0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c,
--    0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
--    0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59,
--    0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
--    0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33,
--    0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
--    0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56,
--    0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
--    0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55,
--    0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
--    0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30,
--    0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
--    0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30,
--    0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
--    0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55,
--    0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
--    0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56,
--    0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
--    0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33,
--    0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
--    0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59,
--    0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
--    0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c,
--    0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
--    0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f,
--    0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
--    0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a,
--    0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00,
--};
--
--/* Update ECC parity count.  */
--uint8_t ecc_digest(ECCState *s, uint8_t sample)
+ User-mode emulator command line arguments
+ -----------------------------------------
+diff --git a/include/sysemu/sysemu.h b/include/sysemu/sysemu.h
+index 5b4397eeb80..7ec419ce132 100644
+--- a/include/sysemu/sysemu.h
++++ b/include/sysemu/sysemu.h
+@@ -41,7 +41,6 @@ extern int graphic_height;
+ extern int graphic_depth;
+ extern int display_opengl;
+ extern const char *keyboard_layout;
+-extern int graphic_rotate;
+ extern int old_param;
+ extern uint8_t *boot_splash_filedata;
+ extern bool enable_mlock;
+diff --git a/system/globals.c b/system/globals.c
+index d602a04fa28..84ce943ac96 100644
+--- a/system/globals.c
++++ b/system/globals.c
+@@ -40,7 +40,6 @@ int autostart = 1;
+ int vga_interface_type = VGA_NONE;
+ bool vga_interface_created;
+ Chardev *parallel_hds[MAX_PARALLEL_PORTS];
+-int graphic_rotate;
+ QEMUOptionRom option_rom[MAX_OPTION_ROMS];
+ int nb_option_roms;
+ int old_param;
+diff --git a/system/vl.c b/system/vl.c
+index fe547ca47c2..e83b3b2608b 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2910,17 +2910,6 @@ void qemu_init(int argc, char **argv)
+                 nographic = true;
+                 dpy.type = DISPLAY_TYPE_NONE;
+                 break;
+-            case QEMU_OPTION_portrait:
+-                graphic_rotate = 90;
+-                break;
+-            case QEMU_OPTION_rotate:
+-                graphic_rotate = strtol(optarg, (char **) &optarg, 10);
+-                if (graphic_rotate != 0 && graphic_rotate != 90 &&
+-                    graphic_rotate != 180 && graphic_rotate != 270) {
+-                    error_report("only 90, 180, 270 deg rotation is available");
+-                    exit(1);
+-                }
+-                break;
+             case QEMU_OPTION_kernel:
+                 qdict_put_str(machine_opts_dict, "kernel", optarg);
+                 break;
+diff --git a/ui/input.c b/ui/input.c
+index dc745860f48..7ddefebc439 100644
+--- a/ui/input.c
++++ b/ui/input.c
+@@ -174,37 +174,6 @@ void qmp_input_send_event(const char *device,
+     qemu_input_event_sync();
+ }
+ 
+-static int qemu_input_transform_invert_abs_value(int value)
 -{
--    uint8_t idx = nand_ecc_precalc_table[sample];
+-  return (int64_t)INPUT_EVENT_ABS_MAX - value + INPUT_EVENT_ABS_MIN;
+-}
 -
--    s->cp ^= idx & 0x3f;
--    if (idx & 0x40) {
--        s->lp[0] ^= ~s->count;
--        s->lp[1] ^= s->count;
+-static void qemu_input_transform_abs_rotate(InputEvent *evt)
+-{
+-    InputMoveEvent *move = evt->u.abs.data;
+-    switch (graphic_rotate) {
+-    case 90:
+-        if (move->axis == INPUT_AXIS_X) {
+-            move->axis = INPUT_AXIS_Y;
+-        } else if (move->axis == INPUT_AXIS_Y) {
+-            move->axis = INPUT_AXIS_X;
+-            move->value = qemu_input_transform_invert_abs_value(move->value);
+-        }
+-        break;
+-    case 180:
+-        move->value = qemu_input_transform_invert_abs_value(move->value);
+-        break;
+-    case 270:
+-        if (move->axis == INPUT_AXIS_X) {
+-            move->axis = INPUT_AXIS_Y;
+-            move->value = qemu_input_transform_invert_abs_value(move->value);
+-        } else if (move->axis == INPUT_AXIS_Y) {
+-            move->axis = INPUT_AXIS_X;
+-        }
+-        break;
 -    }
--    s->count ++;
--
--    return sample;
 -}
 -
--/* Reinitialise the counters.  */
--void ecc_reset(ECCState *s)
--{
--    s->lp[0] = 0x0000;
--    s->lp[1] = 0x0000;
--    s->cp = 0x00;
--    s->count = 0;
--}
+ static void qemu_input_event_trace(QemuConsole *src, InputEvent *evt)
+ {
+     const char *name;
+@@ -340,11 +309,6 @@ void qemu_input_event_send_impl(QemuConsole *src, InputEvent *evt)
+ 
+     qemu_input_event_trace(src, evt);
+ 
+-    /* pre processing */
+-    if (graphic_rotate && (evt->type == INPUT_EVENT_KIND_ABS)) {
+-            qemu_input_transform_abs_rotate(evt);
+-    }
 -
--/* Save/restore */
--const VMStateDescription vmstate_ecc_state = {
--    .name = "ecc-state",
--    .version_id = 0,
--    .minimum_version_id = 0,
--    .fields = (const VMStateField[]) {
--        VMSTATE_UINT8(cp, ECCState),
--        VMSTATE_UINT16_ARRAY(lp, ECCState, 2),
--        VMSTATE_UINT16(count, ECCState),
--        VMSTATE_END_OF_LIST(),
--    },
--};
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index a70ceff504b..7b19a9559f6 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -146,7 +146,6 @@ config OMAP
-     bool
-     select FRAMEBUFFER
-     select I2C
--    select ECC
-     select NAND
-     select PFLASH_CFI01
-     select SD
-diff --git a/hw/block/Kconfig b/hw/block/Kconfig
-index e67a6fd8af7..a898e04f03b 100644
---- a/hw/block/Kconfig
-+++ b/hw/block/Kconfig
-@@ -22,9 +22,6 @@ config PFLASH_CFI01
- config PFLASH_CFI02
-     bool
+     /* send event */
+     s = qemu_input_find_handler(1 << evt->type, src);
+     if (!s) {
+diff --git a/qemu-options.hx b/qemu-options.hx
+index d94e2cbbaeb..d013742e4a3 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -2377,22 +2377,6 @@ SRST
+         pick the first available. (Since 2.9)
+ ERST
  
--config ECC
--    bool
+-DEF("portrait", 0, QEMU_OPTION_portrait,
+-    "-portrait       rotate graphical output 90 deg left (only PXA LCD)\n",
+-    QEMU_ARCH_ALL)
+-SRST
+-``-portrait``
+-    Rotate graphical output 90 deg left (only PXA LCD).
+-ERST
 -
- config VIRTIO_BLK
-     bool
-     default y
-diff --git a/hw/block/meson.build b/hw/block/meson.build
-index 999a93d900f..16a51bf8e21 100644
---- a/hw/block/meson.build
-+++ b/hw/block/meson.build
-@@ -3,7 +3,6 @@ system_ss.add(files(
-   'cdrom.c',
-   'hd-geometry.c'
- ))
--system_ss.add(when: 'CONFIG_ECC', if_true: files('ecc.c'))
- system_ss.add(when: 'CONFIG_FDC', if_true: files('fdc.c'))
- system_ss.add(when: 'CONFIG_FDC_ISA', if_true: files('fdc-isa.c'))
- system_ss.add(when: 'CONFIG_FDC_SYSBUS', if_true: files('fdc-sysbus.c'))
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index 1e08785b832..8568aaa2293 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -74,7 +74,6 @@ config IVSHMEM_DEVICE
- 
- config ECCMEMCTL
-     bool
--    select ECC
- 
- config IMX
-     bool
+-DEF("rotate", HAS_ARG, QEMU_OPTION_rotate,
+-    "-rotate <deg>   rotate graphical output some deg left (only PXA LCD)\n",
+-    QEMU_ARCH_ALL)
+-SRST
+-``-rotate deg``
+-    Rotate graphical output some deg left (only PXA LCD).
+-ERST
+-
+ DEF("vga", HAS_ARG, QEMU_OPTION_vga,
+     "-vga [std|cirrus|vmware|qxl|xenfb|tcx|cg3|virtio|none]\n"
+     "                select video card type\n", QEMU_ARCH_ALL)
 -- 
 2.34.1
 
