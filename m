@@ -2,80 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FB398FA48
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 01:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5D098FAC3
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 01:43:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swUwL-0002jz-1f; Thu, 03 Oct 2024 19:08:57 -0400
+	id 1swVSi-0007Hu-Li; Thu, 03 Oct 2024 19:42:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1swUwI-0002jh-AU
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 19:08:54 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swVSf-0007Gj-QQ
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 19:42:21 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1swUwG-0004iW-Se
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 19:08:54 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-20b9b35c7c3so15327785ad.3
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 16:08:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swVSe-0003KB-AZ
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 19:42:21 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42cae102702so12304275e9.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 16:42:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727996931; x=1728601731; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fq49TKAL9KYj/9vFkhY/8M25ZrgzMs6TnCNYxCvIdD8=;
- b=Vlj61hEIDFddcLEBlQs72O0EnQde2cUzXac0EthxSG8JfCUGPnbXYkkBLZly6Y/ij9
- SR6hFwgyEW3KiIbamtKhROb6Z/bdO5/uPjdDSa36clB4t4XsWT0qOBluDm3i8yrSd+tq
- c78R909jS6Y6NmZRCkisHH15Nsv3Je8NBkAoRQYPnf7h3wRbuJU1IOAXCwu5LWJ3w5Lg
- RTRDHvw7H1gD4WqaVvDn2kaBIyj++I2YIyQcHn/qWR8I1CfbeXtlE8UGMe/wq5mk/LJd
- jG1D4aFsFeuhk6DN7KSU12ZgQL9o2+Z1OrjtADl4+Df7mMGLBpXMBLbbqFatJ5zOQIeH
- mZbQ==
+ d=linaro.org; s=google; t=1727998938; x=1728603738; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Oi+Nd0fKgFyor+xTImivGQKXTHkB761wIWp1Jw+5YTQ=;
+ b=R7OwxPxYjolpQqftGUAL2EMrChhRjFufowp6Z6AnvkkHmiHLPvj/lDw9FCaaYQ1Nv0
+ oVqDMe+x11HzTiMBGJG2sTHkLWC6TZV/E/zKlN7M8HWwSaFAfsyDeT/QgU1C9nzHXK1p
+ pG+PQgG9Yi511ymFGb69TrJMydxX8hWnCLkPdDcCJf0t0/Yzx08L7N99OE85lc36+IFQ
+ iVLwkXqGeCablPOaVfADGFr0CIXYkDP2KwuW3PrThKkfpN3lHtHqCQU1n4wgY5BFUdU8
+ yCDIFUtPd58UEMz9UZrotxR2glu2eC23PC0OPOMayNs3BYG4NTcQ5MDiPpa+cKF7Lul8
+ 922A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727996931; x=1728601731;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fq49TKAL9KYj/9vFkhY/8M25ZrgzMs6TnCNYxCvIdD8=;
- b=vsqB1RQVzY1xEozi/97tOCPf6z2IFDl3YHYyVGdVFJ6ANxUQurXwaw7sqIi9UDWCxI
- KIIOi5UpcBrvjhoCGxCgCoUdXTMXy/eCZ6mOlyXmtiXd79LcvR4Q4kxuQ8p+U6v2uXiS
- sj4NL8MvizrtcFRqSIa0O1HDhP19yPKIJmFw42b/GY120evFL0Ztw9ozEydydXrOz/4a
- 3W9tmGbt47UFE77Ih+knWexwjD6hzgJ84P7oNUq/U54I5PMHptzh9HtibnNjPN52EGVv
- ajmR0HyP4EXs0gpB2cKwkKwPEBwOOxBVa660ERrPgfuP4PyOAnZ4/A4YLrE+Lb3bhG5P
- xURg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVBVPS68PwiCy3YqOtaOpvakDhovUxwVZHmVNOQCTlv2g0lBHvkc8VvIDgf67iL9X/LmuiuRmsBV1b4@nongnu.org
-X-Gm-Message-State: AOJu0Yx569AdvQ+T1EmssxczzYDx0GHWa3gDJp7vZby0trZH8kSLDyig
- Sd7DKV+O80LXnQ5bO9Opsiz3DMwbEKyMsWzRRnSw4d66pYhxvclsJ7s/ta2iT9Y=
-X-Google-Smtp-Source: AGHT+IH6OJ4/Uk3BY0xSOJOLFONofUTjInCargyH5ZqquWtNHXAf25T/7/V34A8Fz0nm7YlN0wT8gA==
-X-Received: by 2002:a17:902:f688:b0:20b:6308:fd2f with SMTP id
- d9443c01a7336-20bfdf6bdc6mr10331065ad.11.1727996931083; 
- Thu, 03 Oct 2024 16:08:51 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20beef8ea48sm13719805ad.149.2024.10.03.16.08.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Oct 2024 16:08:50 -0700 (PDT)
-Message-ID: <9635d3ed-b60f-4406-aa57-3d8764b4f5bb@linaro.org>
-Date: Thu, 3 Oct 2024 16:08:48 -0700
+ d=1e100.net; s=20230601; t=1727998938; x=1728603738;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Oi+Nd0fKgFyor+xTImivGQKXTHkB761wIWp1Jw+5YTQ=;
+ b=RZskEdrV/8uFEtZO7H7ziL3wvm803L2Rjqen8sYHIhqeJ9/elJrU6Goh+DNZmCasRQ
+ safoFGmHq/VlulmKFHbScriBxrxkzUCl/krQK+FctpI5n97V4qpuXDME93/62ScAghPh
+ 7mMohsXVOWZXgbdYTN6LCkEvZzQO5NcGS6YTDtzRG07wF9eXREuRfeDALlZPLCnh4vCy
+ wUW2QSpXdS9K1yhZ0xzDDv70avAbcAERDDRtHQRTxuX53bneVw/Lsgp9zPIPxlieplbG
+ JuHsrLvGw3nFaskb+fcE2NQ6bYdD+GQd4IYKK9CrHAJHQzJoRvmeMyrYDHqgthZCNpRV
+ Yvfw==
+X-Gm-Message-State: AOJu0YxqZHhBUSjoSZ84AoPoqXC4/16WJ8lNiFKlksSQ0oJL6x7kMsw/
+ DYFhFKanNHIvyvrrqBszWQAGIfpIoJVZE0madvwiJRGkIhPKM0wx7lomkQqF5K/Ma9rZGxc7rlj
+ yD0I=
+X-Google-Smtp-Source: AGHT+IF7RXCj0eajhxQMCXEMmgztQYlVpAQZuia71eg609Enynbk7e/lVBzNP8zy+EsKiM+OA63l/A==
+X-Received: by 2002:a05:600c:4f86:b0:42a:a6d2:3270 with SMTP id
+ 5b1f17b1804b1-42f85ac0c07mr3543565e9.21.1727998938003; 
+ Thu, 03 Oct 2024 16:42:18 -0700 (PDT)
+Received: from localhost.localdomain (45.red-88-29-191.dynamicip.rima-tde.net.
+ [88.29.191.45]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42f86a1f74fsm1320275e9.2.2024.10.03.16.42.13
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 03 Oct 2024 16:42:16 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Frederic Konrad <konrad.frederic@yahoo.fr>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Song Gao <gaosong@loongson.cn>,
+ Thomas Huth <thuth@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-s390x@nongnu.org,
+ Laurent Vivier <laurent@vivier.eu>, Eric Farman <farman@linux.ibm.com>,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Thomas Huth <huth@tuxfamily.org>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH 00/16] misc: Use explicit endian LD/ST API
+Date: Fri,  4 Oct 2024 01:41:55 +0200
+Message-ID: <20241003234211.53644-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: {PATCH] accel/tcg: Fix CPU specific unaligned behaviour
-To: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Helge Deller <deller@kernel.org>, qemu-devel@nongnu.org,
- linux-parisc@vger.kernel.org
-References: <Zvyx1kM4JljbzxQW@p100> <87cykimsb9.fsf@draig.linaro.org>
- <CAFEAcA81YtAGO0iFZRWXGjJb91DhWEDTGr+cjWbNWEW4yJDksQ@mail.gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA81YtAGO0iFZRWXGjJb91DhWEDTGr+cjWbNWEW4yJDksQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,31 +107,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/2/24 08:47, Peter Maydell wrote:
-> There's also something curious going on here -- this patch
-> says "we check alignment before permissions, and that's wrong
-> on PARISC". But there's a comment in target/arm/ptw.c that
-> says "we check permissions before alignment, and that's
-> wrong on Arm":
-> 
->       * Enable alignment checks on Device memory.
->       *
->       * Per R_XCHFJ, this check is mis-ordered. The correct ordering
->       * for alignment, permission, and stage 2 faults should be:
->       *    - Alignment fault caused by the memory type
->       *    - Permission fault
->       *    - A stage 2 fault on the memory access
->       * but due to the way the TCG softmmu TLB operates, we will have
->       * implicitly done the permission check and the stage2 lookup in
->       * finding the TLB entry, so the alignment check cannot be done sooner.
-> 
-> So do we check alignment first, or permissions first, or does
-> the order vary depending on what we're doing?
+For targets (or HW) which are only built for a particular
+endianness, the generic LD/ST helpers are defined as the
+target endianness variant. For example, on big-endian
+targets, stl_p() is equivalent of stl_be_p().
 
-There are two different alignment fault checks.  The one for 'alignment fault caused by 
-memory type' is later, after we verify that the TLB entry is for the correct page, which 
-implicitly tests r/w permissions.
+This series replaces in bulk these LD/ST calls.
 
+This is helpful for the single binary project where we
+want to build a single binary for multiple targets of
+different endianness.
 
-r~
+Philippe Mathieu-Daudé (16):
+  qemu/bswap: Undefine CPU_CONVERT() once done
+  exec/memop: Remove unused memop_big_endian() helper
+  linux-user/i386: Use explicit little-endian LD/ST API
+  hw/i386: Use explicit little-endian LD/ST API
+  target/i386: Use explicit little-endian LD/ST API
+  hw/m68k: Use explicit big-endian LD/ST API
+  target/m68k: Use explicit big-endian LD/ST API
+  hw/ppc/e500: Use explicit big-endian LD/ST API
+  hw/s390x: Use explicit big-endian LD/ST API
+  target/s390x: Use explicit big-endian LD/ST API
+  hw/sparc: Use explicit big-endian LD/ST API
+  target/sparc: Use explicit big-endian LD/ST API
+  target/avr: Use explicit little-endian LD/ST API
+  target/hppa: Use explicit big-endian LD/ST API
+  target/loongarch: Use explicit little-endian LD/ST API
+  target/tricore: Use explicit big-endian LD/ST API
+
+ hw/m68k/bootinfo.h                   |  28 ++---
+ include/exec/memop.h                 |   6 -
+ include/qemu/bswap.h                 |   2 +
+ hw/i386/multiboot.c                  |  36 +++---
+ hw/i386/x86-common.c                 |  26 ++---
+ hw/m68k/mcf5208.c                    |   2 +-
+ hw/m68k/next-cube.c                  |   2 +-
+ hw/m68k/q800.c                       |   4 +-
+ hw/ppc/ppce500_spin.c                |  24 ++--
+ hw/s390x/ipl.c                       |   4 +-
+ hw/s390x/s390-pci-inst.c             | 166 +++++++++++++--------------
+ hw/sparc/leon3.c                     |  42 +++----
+ hw/sparc/sun4m.c                     |   6 +-
+ hw/sparc64/sun4u.c                   |   6 +-
+ linux-user/i386/signal.c             |   4 +-
+ target/avr/gdbstub.c                 |   4 +-
+ target/hppa/gdbstub.c                |   2 +-
+ target/i386/gdbstub.c                |  26 ++---
+ target/i386/tcg/sysemu/excp_helper.c |   4 +-
+ target/i386/xsave_helper.c           |  32 +++---
+ target/loongarch/gdbstub.c           |   8 +-
+ target/m68k/gdbstub.c                |   2 +-
+ target/m68k/helper.c                 |  10 +-
+ target/s390x/gdbstub.c               |   4 +-
+ target/s390x/ioinst.c                |   2 +-
+ target/sparc/gdbstub.c               |   4 +-
+ target/tricore/gdbstub.c             |   2 +-
+ 27 files changed, 227 insertions(+), 231 deletions(-)
+
+-- 
+2.45.2
+
 
