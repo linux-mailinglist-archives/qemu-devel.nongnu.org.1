@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E42A98F5D9
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 20:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6933798F639
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 20:36:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swQHY-0003op-M6; Thu, 03 Oct 2024 14:10:32 -0400
+	id 1swQei-0007M7-KB; Thu, 03 Oct 2024 14:34:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1swQHW-0003mU-1l
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:10:30 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1swQe8-00079f-0x
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:33:52 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1swQHU-0006xJ-9u
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:10:29 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-20bb39d97d1so11342405ad.2
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 11:10:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1swQe5-0004qt-Hm
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:33:51 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-20b8be13cb1so13600295ad.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 11:33:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727979026; x=1728583826; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wlExpvMTsPp3gUtX3rXfzKJzkoOyoB0lLS5DEqxnYeE=;
- b=Hj05F+uRbomWSxWiiVxPV/L0KVzKZ0gjbdOltAAcb6ilvf/QczHGCQjWxH26bK0PmV
- XveMQGMhP7RCFH6uiGuFihaUgp7/RrrI2ULQmo/ANdTahkDlLKuoPSIpKU7sdcnpKa3E
- 2An5n5QJepbrb7s6UzSXADLlbpu3On+Z4QOzq6qvFn49SdeoHw1LZj6/RYbktXOK2mXe
- 15LTO9mTHTgpC6GzCeMw8WO1DHFnW5fJn05xjTwULbbNKBQhTC1T+5eBJMeRzZy/YX8g
- GHDrkOZvZTXbS3ed56/pFWSwJPx4NagDarf6O4Lalb1mUzBqMaArbBNBfeuOo9Z1s/AH
- IwkQ==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1727980427; x=1728585227;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0bfeDVPBZSmp2+YS83iZFQ1P4nx4twWjptbvaC9FnRY=;
+ b=RDZ5ce8VjPHYufLlh4mqcY6ffZKCCgFt9u0p8/dSSRJmvSW1T/q5D72rGx8dHyk/TD
+ 1DLjILidlFP6g98DIDM2Pj+JMzl+bCKcAijzMOlrBvyI+UuTYzmtgzPenrrI1kgjdNjM
+ SAOCKSiS++6gxcrO8pIznrRRrgflnK6hr4RJA/+LSnz6b0jtYvEFb0WmlHW/Ix7W+0Ze
+ 1yWcVA3g5nsNOiIu942o3EVlX57SHifHyGZ0FPfk8dzKJAfw3jcqSiM5Y8iCUQjYqP0z
+ F9/KNSfruh4wD4j/e8Vv3vx0gfACAAIZOKNHemzbbAhXlEd+IVQcMj0jS2K9xu0iXolw
+ psWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727979026; x=1728583826;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wlExpvMTsPp3gUtX3rXfzKJzkoOyoB0lLS5DEqxnYeE=;
- b=NQULm6L6ezqJFUzAzHm71F+r5j+uxUz78qZi7NP0nPcarvoiF1ED21ROSp43nJq/js
- iw2poR14ug1BvaaM8KgPADy3itedH4luBAfZvJQzSoZ6io/LgMptuAhZG/rTRJWvS4Aq
- DK33EdGWKb3zJaW8ZXwS0mfwtq2hCVKi8KrS82vweJygauzbxJlZhc9CvXpE6lP15P0q
- oPPr3GtGoW9p09N8wrztIdvBVMmeenwAMD4aQ2jzWNTi2/tTzrDWYPEAW0o/Tp6wmsJ9
- +KHEljq9bUV+2A8bg/kOANpJ/HcR+xd67oWqBVCUoINbiOu+KPoikkcBYwVKKRyvPPJs
- HwEg==
+ d=1e100.net; s=20230601; t=1727980427; x=1728585227;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0bfeDVPBZSmp2+YS83iZFQ1P4nx4twWjptbvaC9FnRY=;
+ b=YpQbAXv/+oC64IKsJdtEtIC+k6PDeJYVzwuL4nWQDMhNpgd/KpyqqkB8iQPhz9Z1dZ
+ HbGFJyotPfzJE0wkWb+BsMdCcN31njJlQFo/bszhTNCjgYlpC5Jml958uwsPqu/jYMbm
+ 6LCTAwLFUaoDdfe3QlSxuO58lHGqigC6zwfI74+x5L1WuO4m454XGr1CmmWQ9BIOb1D/
+ EPhcerrPOqCb5Ctn0BFYpiMQdTaBMQbKt/qCUXSi49HDhZUHO6rpIYRz3TtcuIIG8ZiX
+ 0lmWlXdRjyFMhLZz9P6b4zwXFmTRaztfHNQ2mANKjTWxlPPj9N05mAJOrz1dOHiNeZsW
+ iZaA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWLeA4U24bh5P2jrCtTaxGq7xqg15mzMO8GwJZlNi1I68poxsOXkaiMT6ZAN3+DqD6iiIxbk9q5bMwB@nongnu.org
-X-Gm-Message-State: AOJu0Yy4HhysfKoq7EcwX7PLbaukCQYCp4OcZPA5Te9JNISx0vi+1oYq
- ELMsziJuSVJNunCSXihTAR/ncNsjIV8NbqRzwfh/QuNYdj2Olam9+K+JjKH8bJU=
-X-Google-Smtp-Source: AGHT+IFYO76hNNAtpQEv3crXMRlJHAatZ31D8xb65ApUHIvCMTiYgfhuE2GQnmDOrRKgf59LZSAAvA==
-X-Received: by 2002:a17:902:e94e:b0:207:18f5:7e78 with SMTP id
- d9443c01a7336-20bff1c8aaamr654315ad.48.1727979026477; 
- Thu, 03 Oct 2024 11:10:26 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
+ AJvYcCWL5NOcv/FpF/C2+Z9rISTYpBtpFtP3Mip+m190cE9cujugCvbsw7Clmi5m+qU3S3WKbhZZ9B2071Fj@nongnu.org
+X-Gm-Message-State: AOJu0YzjwCEvLVf8UbHKvS0+n957+5RsAQ2wzrrlvBAXlOt8nMdENO38
+ +M2Jg0/AEF9fNEsuaRYGjiHNSNoc2FODSivwjQ55m2jBW56fKVCQaf12eSV0JNg=
+X-Google-Smtp-Source: AGHT+IHsljXce6llMyx2ID95OCmfQhStjlvfsMqpMIFv5FfxqYNYd4gv5PmIgACDWh6rDTL9ddQu4Q==
+X-Received: by 2002:a17:903:32c1:b0:20b:58f2:e1a0 with SMTP id
+ d9443c01a7336-20bfdfd4340mr1893385ad.18.1727980427259; 
+ Thu, 03 Oct 2024 11:33:47 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20bef706e87sm11637075ad.239.2024.10.03.11.10.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Oct 2024 11:10:26 -0700 (PDT)
-Message-ID: <8920d4e9-9289-4a7d-be04-ff0f60806e78@linaro.org>
-Date: Thu, 3 Oct 2024 11:10:24 -0700
+ d9443c01a7336-20beefad16asm11796245ad.193.2024.10.03.11.33.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Oct 2024 11:33:46 -0700 (PDT)
+From: Deepak Gupta <debug@rivosinc.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, bmeng.cn@gmail.com,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, kito.cheng@sifive.com,
+ Deepak Gupta <debug@rivosinc.com>
+Subject: [PATCH v15 00/21] riscv support for control flow integrity extensions
+Date: Thu,  3 Oct 2024 11:33:21 -0700
+Message-ID: <20241003183342.679249-1-debug@rivosinc.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/12] target/arm: Implement the SETG* instructions
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>
-References: <20230912140434.1333369-1-peter.maydell@linaro.org>
- <20230912140434.1333369-10-peter.maydell@linaro.org>
- <7c750b58-e845-4d80-b5a5-7eda8f505fb6@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <7c750b58-e845-4d80-b5a5-7eda8f505fb6@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=debug@rivosinc.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,92 +94,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/24/24 12:14, Philippe Mathieu-Daudé wrote:
-> Hi Peter,
-> 
-> (patch merged as commit 6087df574400659226861fa5ba47970f1fbd277b).
-> 
-> On 12/9/23 16:04, Peter Maydell wrote:
->> The FEAT_MOPS SETG* instructions are very similar to the SET*
->> instructions, but as well as setting memory contents they also
->> set the MTE tags. They are architecturally required to operate
->> on tag-granule aligned regions only.
->>
->> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->> v2: - separate helper functions calling do_setp/setm/sete
->>      - use cpu_st16_mmu()
-> 
-> So you replaced the pair of cpu_stq_mmuidx_ra() from v1 by
-> cpu_st16_mmu().
-> 
->> ---
->>   target/arm/internals.h         | 10 ++++
->>   target/arm/tcg/helper-a64.h    |  3 ++
->>   target/arm/tcg/a64.decode      |  5 ++
->>   target/arm/tcg/helper-a64.c    | 86 ++++++++++++++++++++++++++++++++--
->>   target/arm/tcg/mte_helper.c    | 40 ++++++++++++++++
->>   target/arm/tcg/translate-a64.c | 20 +++++---
->>   6 files changed, 155 insertions(+), 9 deletions(-)
-> 
-> 
->> +/*
->> + * Similar, but setting tags. The architecture requires us to do this
->> + * in 16-byte chunks. SETP accesses are not tag checked; they set
->> + * the tags.
->> + */
->> +static uint64_t set_step_tags(CPUARMState *env, uint64_t toaddr,
->> +                              uint64_t setsize, uint32_t data, int memidx,
->> +                              uint32_t *mtedesc, uintptr_t ra)
->> +{
->> +    void *mem;
->> +    uint64_t cleanaddr;
->> +
->> +    setsize = MIN(setsize, page_limit(toaddr));
->> +
->> +    cleanaddr = useronly_clean_ptr(toaddr);
->> +    /*
->> +     * Trapless lookup: returns NULL for invalid page, I/O,
->> +     * watchpoints, clean pages, etc.
->> +     */
->> +    mem = tlb_vaddr_to_host(env, cleanaddr, MMU_DATA_STORE, memidx);
->> +
->> +#ifndef CONFIG_USER_ONLY
->> +    if (unlikely(!mem)) {
->> +        /*
->> +         * Slow-path: just do one write. This will handle the
->> +         * watchpoint, invalid page, etc handling correctly.
->> +         * The architecture requires that we do 16 bytes at a time,
->> +         * and we know both ptr and size are 16 byte aligned.
->> +         * For clean code pages, the next iteration will see
->> +         * the page dirty and will use the fast path.
->> +         */
->> +        uint64_t repldata = data * 0x0101010101010101ULL;
->> +        MemOpIdx oi16 = make_memop_idx(MO_TE | MO_128, memidx);
-> 
-> I'm trying to understand the MO_TE use, but I'm not seeing it in
-> https://developer.arm.com/documentation/ddi0602/2024-06/Base-Instructions/SETGP--SETGM-- 
-> SETGE--Memory-set-with-tag-setting-
-> pseudo code. I also checked
-> https://developer.arm.com/documentation/ddi0602/2024-06/Shared-Pseudocode/aarch64- 
-> functions-mops?lang=en#impl-aarch64.MemSetBytes.4
-> and https://developer.arm.com/documentation/ddi0602/2024-06/Shared-Pseudocode/aarch64- 
-> functions-memory?lang=en#AArch64.MemSingleWrite.5
+v15 for riscv zicfilp and zicfiss extensions support in qemu.
 
-It's not actually needed.  All of the bytes stored are identical (see the construction of 
-repldata).
+I've rebased again on https://github.com/alistair23/qemu/blob/riscv-to-apply.next
+(tag: pull-riscv-to-apply-20241002)
 
-Removing MO_TE will store the bytes in host byte order, which will avoid an unnecessary 
-bswap on big-endian hosts.
+There is an additional patch in this with comment title
+"target/riscv: disallow probe accesses to shadow stack"
 
-The stores here are all from
+cache block operations of clean, flush and inval have store semantics.
+These operations on shadow stack must look like regular stores and must
+always raise store/AMO access fault. However with current logic,
+`probe_access_flags` will succeed because it will be seen as a load.
+In order to prevent that `get_physical_address` must receive `probe`
+parameter. Depending on that parameter, `get_physical_address` can return
+TRANSLATE_PMP_FAIL.
 
-     while tagstep > 0 do
-         tagaddr = memset.toaddress + memset.setsize + (tagstep - 1) * 16;
-         AArch64.MemTag[tagaddr, accdesc] = tag;
-         tagstep = tagstep - 1;
+In v15, this is created as a new commit so that we can review and discuss
+it out and placed this next to below commit.
+"target/riscv: mmu changes for zicfiss shadow stack protection"
+
+If this looks good, eventually I'll squash both the commits.
+
+zicfilp and zicfiss spec pdf
+----------------------------
+https://github.com/riscv/riscv-cfi/releases/download/v1.0/riscv-cfi.pdf
+
+github sources to spec
+https://github.com/riscv/riscv-cfi
 
 
-r~
+Links for previous versions
+[1] - v1 https://lists.nongnu.org/archive/html/qemu-devel/2024-07/msg06017.html
+[2] - v2 https://lore.kernel.org/all/ed23bcbc-fdc4-4492-803c-daa95880375a@linaro.org/T/
+[3] - v3 https://lists.nongnu.org/archive/html/qemu-devel/2024-08/msg01005.html
+[4] - v4 https://lore.kernel.org/all/20240816010711.3055425-6-debug@rivosinc.com/T/
+[5] - v5
++https://lore.kernel.org/all/20240820000129.3522346-1-debug@rivosinc.com/T/#m7b9cc847e739ec86f9569a3ca9f3d9377b01e21
+[6] - v6 https://mail.gnu.org/archive/html/qemu-riscv/2024-08/msg00418.html
+[7] - v7 https://lore.kernel.org/all/20240822082504.3979610-1-debug@rivosinc.com/
+[8] - v8 https://lore.kernel.org/all/20240823190140.4156920-1-debug@rivosinc.com/T/
+[9] - v9 https://lore.kernel.org/all/20240826152949.294506-1-debug@rivosinc.com/
+[10]- v10 https://lore.kernel.org/all/20240827231906.553327-1-debug@rivosinc.com/
+[11]- v11 https://lore.kernel.org/all/20240828174739.714313-1-debug@rivosinc.com/
+[12]- v12 https://lore.kernel.org/all/20240829233425.1005029-1-debug@rivosinc.com/
+[13]- v14 https://lore.kernel.org/all/20240912235320.3768582-1-debug@rivosinc.com/
+
+---
+v15:
+   - Extended `get_physical_address` to take `probe` parameter. This is to ensure
+     that cbo.clean/flush/inval accesses to shadow stack always lead to store/AMO
+     access fault
+
+v14:
+   - Rebased on https://github.com/alistair23/qemu/blob/riscv-to-apply.next
+v13:
+   - Fixed bug(s) reported by richard that
+         - shadow stack doesn't exist in M-mode
+         - shadow stack is not available in M + U only config
+   - updated commit messages with removal of `ufcfien` and `ubcfien` mentions
+v12
+   - Moved ssamoswap to trans_rvzicfiss.
+   - Fixed bcfi_enabled in disascontext to rely only on tb flag
+   - added comment on why PMP_TRANSLATE_FAIL for stores on shadow stack page
+
+v11:
+   - default *envcfg and priv for qemu-user are handled in `riscv_cpu_reset_hold`
+v10:
+   - Exposed *envcfg CSR and priv to qemu-user as well and removed special
+     state management for *envcfg related feature enabling for qemu-user
+   - Exposing zicfilp and zicfiss as different patch
+v9:
+   - fix switch case fallthrough for sw_check excp in patch 4
+v8:
+   - fixed up `gen_cmpxchg` to store extra word2 during compile to raise storeAMO always
+v7:
+   - Updated decode_save_opc to take extra argument of excp_uw2 and
+     updated callsites
+   - added a helper for promoting load faults to store faults
+   - Removed stale comments and edited existed comments
+v6:
+   - Added support extra store word 2 for tcg compile and extraction during unwind
+   - Using extra word, AMO instructions and shadow stack instructions can raise store fault
+   - some alignment and cosmetic changes
+   - added vmstate migration support for elp and ssp cpu state
+v5:
+   - Simplified elp tracking and lpad implementation as per suggestion by richard
+   - Simplified shadow stack mmu checks as per suggestion by richard
+   - Converged zicfiss compressed and non-comressed instructions to same translation
+   - Removed trace hooks. Don't need for upstream.
+
+v4:
+   - elp state in cpu is true/false instead of enum and elp cleared
+     unconditionally on trap entry. elp in *status cleared unconditionally on
+     trap return.
+   - Moved logic for branch tracking in instruction translation from tb_start.
+   - fixed zicfiss dependency on 'A'
+   - `cpu_get_fcfien/bcfien` helpers checks fixed to check for extension first.
+   - removed trace hook enums. Instead added dedicated trace helpers wherever needed.
+   - fixed/simplified instruction format in decoder for lpad, sspush, sspopchk
+   - simplified tlb index logic for shadow stack instructions. Removed SUM TB_FLAG
+   - access to ssp CSR is gated on `cpu_get_bcfien` instead of duplicated logic
+   - removed vDSO related changes for now.
+v3:
+   - Removed prctl specific patches because they need to be upstream
+     in kernel first.
+   - As suggested by Richard, added TB flag if fcfi enabled
+   - Re-worked translation for landing pad and shadow stack instructions
+     to not require helper.
+   - tcg helpers only for cfi violation cases so that trace hooks can be
+     placed.
+   - Style changes.
+   - fixes assert condition in accel/tcg
+
+v2:
+   - added missed file (in v1) for shadow stack instructions implementation.
+
+Deepak Gupta (21):
+  target/riscv: expose *envcfg csr and priv to qemu-user as well
+  target/riscv: Add zicfilp extension
+  target/riscv: Introduce elp state and enabling controls for zicfilp
+  target/riscv: save and restore elp state on priv transitions
+  target/riscv: additional code information for sw check
+  target/riscv: tracking indirect branches (fcfi) for zicfilp
+  target/riscv: zicfilp `lpad` impl and branch tracking
+  disas/riscv: enable `lpad` disassembly
+  target/riscv: Expose zicfilp extension as a cpu property
+  target/riscv: Add zicfiss extension
+  target/riscv: introduce ssp and enabling controls for zicfiss
+  target/riscv: tb flag for shadow stack  instructions
+  target/riscv: mmu changes for zicfiss shadow stack protection
+  target/riscv: disallow probe accesses to shadow stack
+  target/riscv: AMO operations always raise store/AMO fault
+  target/riscv: update `decode_save_opc` to store extra word2
+  target/riscv: implement zicfiss instructions
+  target/riscv: compressed encodings for sspush and sspopchk
+  disas/riscv: enable disassembly for zicfiss instructions
+  disas/riscv: enable disassembly for compressed sspush/sspopchk
+  target/riscv: Expose zicfiss extension as a cpu property
+
+ disas/riscv.c                                 |  77 +++++++-
+ disas/riscv.h                                 |   4 +
+ target/riscv/cpu.c                            |  14 ++
+ target/riscv/cpu.h                            |  31 ++-
+ target/riscv/cpu_bits.h                       |  17 ++
+ target/riscv/cpu_cfg.h                        |   2 +
+ target/riscv/cpu_helper.c                     | 184 ++++++++++++++++--
+ target/riscv/cpu_user.h                       |   1 +
+ target/riscv/csr.c                            |  84 ++++++++
+ target/riscv/insn16.decode                    |   4 +
+ target/riscv/insn32.decode                    |  26 ++-
+ .../riscv/insn_trans/trans_privileged.c.inc   |   8 +-
+ target/riscv/insn_trans/trans_rva.c.inc       |   4 +-
+ target/riscv/insn_trans/trans_rvd.c.inc       |   4 +-
+ target/riscv/insn_trans/trans_rvf.c.inc       |   4 +-
+ target/riscv/insn_trans/trans_rvh.c.inc       |   8 +-
+ target/riscv/insn_trans/trans_rvi.c.inc       |  61 +++++-
+ target/riscv/insn_trans/trans_rvvk.c.inc      |  10 +-
+ target/riscv/insn_trans/trans_rvzacas.c.inc   |   4 +-
+ target/riscv/insn_trans/trans_rvzfh.c.inc     |   4 +-
+ target/riscv/insn_trans/trans_rvzicfiss.c.inc | 114 +++++++++++
+ target/riscv/insn_trans/trans_svinval.c.inc   |   6 +-
+ target/riscv/internals.h                      |   3 +
+ target/riscv/machine.c                        |  38 ++++
+ target/riscv/op_helper.c                      |  17 ++
+ target/riscv/pmp.c                            |   5 +
+ target/riscv/pmp.h                            |   3 +-
+ target/riscv/tcg/tcg-cpu.c                    |  29 +++
+ target/riscv/translate.c                      |  44 ++++-
+ 29 files changed, 749 insertions(+), 61 deletions(-)
+ create mode 100644 target/riscv/insn_trans/trans_rvzicfiss.c.inc
+
+-- 
+2.45.0
+
 
