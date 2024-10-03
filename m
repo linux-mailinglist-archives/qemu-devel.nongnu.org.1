@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0EDB98F180
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 16:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B4998F182
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 16:34:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swMrX-0006Bs-Bm; Thu, 03 Oct 2024 10:31:27 -0400
+	id 1swMu9-0001Rb-5G; Thu, 03 Oct 2024 10:34:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1swMrS-0006Ab-5Y; Thu, 03 Oct 2024 10:31:22 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1swMu6-0001RA-Aq
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 10:34:06 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1swMrQ-0003wr-Jx; Thu, 03 Oct 2024 10:31:21 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-539885dd4bcso1333422e87.0; 
- Thu, 03 Oct 2024 07:31:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1swMu4-0005Xb-P6
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 10:34:06 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-42cb57f8b41so13648235e9.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 07:34:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1727965878; x=1728570678; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7NqZgDSIdmym8k9v4wrElx9POiJdcsjS85l4BMSFw2Y=;
- b=UVeQZv4/Io8jMBSHA0aUpBQmGK8XKp9k0Di8GT0opisDt0VaZpyYE3P/bn5YbDXe49
- kFffsCHOMCdKlP8WXIVALVzObJkIH1Ti6Sc8lIZZi30YNfq2XfefP1fHyT2LliOnzO2H
- 63hvJ7PB5NycJGq9a7iwaMHrzXe6f2Vy7+t5vqhl+NrzwxkhFO3oyVcbSIeJpd8WHKFp
- YFqUzAsUdi1uOih51ZGsWD/UsfXMdz7xIaJgrpxPLtNfgodgHtqGXibnh2lcSipPLsjm
- FT5LNFVFw++3d1yZ30eQSA+Pd+bbAYT+lgqfCdMJaJd87yhnHG1I8MV5O8jGpWDemCCP
- WZIQ==
+ d=linaro.org; s=google; t=1727966043; x=1728570843; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=UIRX407hgwnjoisfCwDQ2w8aP49x/yvTbjNOX9wTl3E=;
+ b=TkNE+wyLuWvcFblOMlDMZ0WaKl5JbACyp40yKaH8HhgKqNhqJHSTVeBcKbBXHh/LAB
+ 5skHg5z3zUDZHyALiibGu6wsgpjWOHDttU0VYfhJ9mgMhmrdEx3UPUKOTOI9nevGGqAk
+ 0eht8hBxBpgw8SvqqGBJ/4HfrXLtA0Zq4S9+5s1HAwqnpBsNoTpu6+0HZVwbUJefmp7D
+ 5O6Kaeqt5qDORd64XFm648GFPoXu5tvbtUx+O0nArPa8RryTpwAlO2Idhh+VzdTrjqBI
+ 0oUzcbxUEJc8RbLbRHv9e+XRMW1/8OPU+Wq2X0wBMzQtUHFNjGduMWWWE6qKP2j0G/0Q
+ Uljg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727965878; x=1728570678;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7NqZgDSIdmym8k9v4wrElx9POiJdcsjS85l4BMSFw2Y=;
- b=KRISi4yl6VTC0NWGo0cOOKCopR7Am5H0xp/GYc5ujZZQoYcxHV/nkJT98FvNBYFDMG
- ycV2rFkGOymgujRrGnRAhRI3LQ3pabCt5x7Qy1UCGuvxEWh5TWc1qCu6D7Fj/vCnG7UN
- 1iXWVCxzyoTmXDaB4ZGuEGK4ltbiodus9+7LCEA7M+rEzqcBcic/nWNbXCtSv9W9Ro9k
- 90Dm2YImiL5QiEWK3TR7GoBjB27MglQGy54rfb5VEiIBxU9y/nV4e9d7doyMC9eBXj5i
- RZCxpgKJtBw5XeFa905Y5vC8CB7UYD0VQ57CVtd1l0/Wwhe6VvPbRjzaV0AsZD06zl+j
- nXdg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWb8aWd1XQjY8PU+bX/sIsaxlXE/7xtz37twYievxwdBJtZJXzwxl9u4Csp4cWWeNYATlfA1RuXew==@nongnu.org
-X-Gm-Message-State: AOJu0YzBCksheHLCy7qq92/7Q755CMsXuVXhNN7GV+wdc3lJMwgyRxLg
- jXp/w7zFRDOpf1Dud7qQiX1WKts8+mpbkyZsf024jFhO11kDx+QEVBoqdYdO
-X-Google-Smtp-Source: AGHT+IET81PHAds/Q3QNcBRs8kVhS58wFGAWTG93rqF8wvxXNPYtyFncOLDYwbQheecmXThSjwTeoQ==
-X-Received: by 2002:a05:6512:3da1:b0:539:93b2:1383 with SMTP id
- 2adb3069b0e04-539a07a1d8emr4381480e87.46.1727965877639; 
- Thu, 03 Oct 2024 07:31:17 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ d=1e100.net; s=20230601; t=1727966043; x=1728570843;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UIRX407hgwnjoisfCwDQ2w8aP49x/yvTbjNOX9wTl3E=;
+ b=myG5Q8UiL6MEnH8zT/Ate759zBnqQQiXojqQsFidq08UKsuVAdg7GJNxU+884Hj1Wu
+ XNXMgEQ5UFa3CZP85x90H8AtGlhFcxbi+Feny8IRrryK16YZzp8w01hllT2fd9be/Q74
+ d1kmIJBWOfTKnehD0yQpSPbWGh9zeYQSlG46FdQpFy/7YCT8WUcvXQwZY3UmFHtb9iHq
+ hOVAqxVy7sALC5rOkkH4kq6J5lA6J7bKp5mBkiyeabTvcQCOxtRjzHSsae5dps/6/4Uc
+ 381/6SFESdQdHjpahpxal7hAy3eqdFD77hQ8Z/au9rVv6KAdfqH1rRnuDN9Cxa6Z7Io9
+ XH5w==
+X-Gm-Message-State: AOJu0YyPGkxUVYPulfaex8ZMVDRHmilGSzvYyLmB7ALIWkwdp5/vP0Xh
+ pIT17BvzWZejokn7FGBEM9jvkem+e4f+aKznm6xd2zfkWVH7a8BYi0Wz1PQLQSdc0pC+cXsObtI
+ v
+X-Google-Smtp-Source: AGHT+IH5Oab/LMrXmkgKAmiBX/RJxfN/EnTesdfRW7PHSph6xQVoiEOu7INodxafGdGtJ8vpQ1fVcA==
+X-Received: by 2002:a05:600c:1d88:b0:42c:a387:6a6f with SMTP id
+ 5b1f17b1804b1-42f777c365fmr61672515e9.20.1727966043067; 
+ Thu, 03 Oct 2024 07:34:03 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-539a82570b4sm190849e87.91.2024.10.03.07.31.16
+ 5b1f17b1804b1-42f802a01fesm16925865e9.32.2024.10.03.07.34.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Oct 2024 07:31:16 -0700 (PDT)
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
- peter.maydell@linaro.org, edgar.iglesias@amd.com,
- xen-devel@lists.xenproject.org, qemu-arm@nongnu.org
-Subject: [PULL v1 5/5] hw/arm: xenpvh: Enable PCI for ARM PVH
-Date: Thu,  3 Oct 2024 16:31:02 +0200
-Message-ID: <20241003143103.1476805-6-edgar.iglesias@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241003143103.1476805-1-edgar.iglesias@gmail.com>
-References: <20241003143103.1476805-1-edgar.iglesias@gmail.com>
+ Thu, 03 Oct 2024 07:34:02 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org,
+	qemu-trivial@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH] docs/devel: Mention post_load hook restrictions where we
+ document the hook
+Date: Thu,  3 Oct 2024 15:34:01 +0100
+Message-Id: <20241003143401.1676548-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,50 +91,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+Accessing another device in a post_load hook is a bad idea, because
+the order of device save/restore is not fixed, and so this
+cross-device access makes the save/restore non-deterministic.
 
-Enable PCI support for the ARM Xen PVH machine.
+We previously only flagged up this requirement in the
+record-and-replay developer docs; repeat it in the main migration
+documentation, where a developer trying to implement a post_load hook
+is more likely to see it.
 
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/xen-pvh.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+This came up in an IRC discussion.
 
-diff --git a/hw/arm/xen-pvh.c b/hw/arm/xen-pvh.c
-index 28af3910ea..33f0dd5982 100644
---- a/hw/arm/xen-pvh.c
-+++ b/hw/arm/xen-pvh.c
-@@ -39,6 +39,16 @@ static void xen_arm_instance_init(Object *obj)
-                                          VIRTIO_MMIO_DEV_SIZE };
- }
+ docs/devel/migration/main.rst | 6 ++++++
+ docs/devel/replay.rst         | 3 +++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/docs/devel/migration/main.rst b/docs/devel/migration/main.rst
+index 784c899dca6..c2857fc2446 100644
+--- a/docs/devel/migration/main.rst
++++ b/docs/devel/migration/main.rst
+@@ -465,6 +465,12 @@ Examples of such API functions are:
+   - portio_list_set_address()
+   - portio_list_set_enabled()
  
-+static void xen_pvh_set_pci_intx_irq(void *opaque, int intx_irq, int level)
-+{
-+    XenPVHMachineState *s = XEN_PVH_MACHINE(opaque);
-+    int irq = s->cfg.pci_intx_irq_base + intx_irq;
++Since the order of device save/restore is not defined, you must
++avoid accessing or changing any other device's state in one of these
++callbacks. (For instance, don't do anything that calls ``update_irq()``
++in a ``post_load`` hook.) Otherwise, restore will not be deterministic,
++and this will break execution record/replay.
 +
-+    if (xendevicemodel_set_irq_level(xen_dmod, xen_domid, irq, level)) {
-+        error_report("xendevicemodel_set_pci_intx_level failed");
-+    }
-+}
-+
- static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
- {
-     XenPVHMachineClass *xpc = XEN_PVH_MACHINE_CLASS(oc);
-@@ -69,7 +79,11 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
-     /* Xen/ARM does not use buffered IOREQs.  */
-     xpc->handle_bufioreq = HVM_IOREQSRV_BUFIOREQ_OFF;
+ Iterative device migration
+ --------------------------
  
-+    /* PCI INTX delivery.  */
-+    xpc->set_pci_intx_irq = xen_pvh_set_pci_intx_irq;
+diff --git a/docs/devel/replay.rst b/docs/devel/replay.rst
+index effd856f0c6..40f58d9d4fc 100644
+--- a/docs/devel/replay.rst
++++ b/docs/devel/replay.rst
+@@ -202,6 +202,9 @@ into the log.
+ Saving/restoring the VM state
+ -----------------------------
+ 
++Record/replay relies on VM state save and restore being complete and
++deterministic.
 +
-     /* List of supported features known to work on PVH ARM.  */
-+    xpc->has_pci = true;
-     xpc->has_tpm = true;
-     xpc->has_virtio_mmio = true;
+ All fields in the device state structure (including virtual timers)
+ should be restored by loadvm to the same values they had before savevm.
  
 -- 
-2.43.0
+2.34.1
 
 
