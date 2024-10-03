@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E36998FAC6
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A03D98FAC5
 	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 01:43:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swVSy-0007Mt-Ux; Thu, 03 Oct 2024 19:42:40 -0400
+	id 1swVT7-0007R6-M1; Thu, 03 Oct 2024 19:42:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swVSv-0007ME-Ln
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 19:42:37 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swVT3-0007PV-EK
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 19:42:45 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swVSt-0003Sw-8y
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 19:42:37 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-42cbbb1727eso15203235e9.2
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 16:42:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swVT1-0003Xc-VK
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 19:42:45 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42cbc22e1c4so12169225e9.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 16:42:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727998953; x=1728603753; darn=nongnu.org;
+ d=linaro.org; s=google; t=1727998962; x=1728603762; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TcCRLsqYRrcM/7jknEY1pNA2GOIFR+Tysnifvuzq9yg=;
- b=VLZS/p4b3cPVk1SpmpLXfm0vR+hMLyvQbQngtYb7kghcFN3fcbceDorfgSJmmHHR/v
- 8fIKfLhEOn3+oNq8m3KOCOBdqO0Zq2o5hwAjmKLHVWOWOoOQ0FscgV2Z7tps+NV6fBH3
- X4wrNEhWMou6guvJk/+XLV0cOTn7DbSebtikPJ/O2ZvkbQbkXwDhTKUeIo7raLOevXxK
- 5J0q+FbbXsQB2dFw4gjuOU20sHiP2+uOd6jFzw8bvH8+997HZ1R9l+Of3AXVd1ji22m5
- /SnGSegNwz748lD3cCD/cjexaL8jWl0LRn6JU9vaKjBrf1+VYffQXmeeuG8K83VuhbMs
- Z/kw==
+ bh=A2b2LwHBDDNlQ4lpraog9QbauHHDsoDaj9FTLQzChw4=;
+ b=Dv6K9vlHkdK0ZrufRyplTCH1bPArT/8GdAbHw5Xr7QwQqTAzTF7ObyfqtnbQF5FS8W
+ dk1NlJouizbAl/AuU1TTSjYZJu/3cHCxReWxyGspBlR6p8YwmJhzD3U8sZSSalT0WJXK
+ xphsrmmdY5Fdj1V1mMpR/4xZVZTBb06hFrEYwzF+HNzceqM4FJacKToZ3PytVr4WtY3c
+ F0UKU/KhrkmSgo+T2xPBWQl7G4IZF7D185mV8dp8Z+WWG68WzHCgvG58SXSRfTvibawk
+ BmDxTYKEkO8S1yWkb0JY4I6bzJ7RuhvGuF6/nRFrRTL19DnT2r6irP/jWJLnZfai/+v2
+ Myig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727998953; x=1728603753;
+ d=1e100.net; s=20230601; t=1727998962; x=1728603762;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TcCRLsqYRrcM/7jknEY1pNA2GOIFR+Tysnifvuzq9yg=;
- b=TIeAAL92Y36oXygk++cyTLVCmX3wjFdoXCIngUVy+FVDHsmmPFWgra6GZ24duxRP3m
- 3UZQgyjSQO5wxOr0iV/3w0QqebC0dCEO76VDwe3gZWTVmWg1qr/CmqQ9lmINt1OOzYSz
- yD8k0kgkxXWc6oVDqrHMe+2ayF0ji4JmM/4tv1WLMLA3IHQ7HE+iyfSQt+P+2vHGLMKF
- 5KeKsSAM24yDoHV4NmcqzB3kcvFEQ0k9U8XZ5/791+qmWf/m/VduqSk36IjGs7B0ELqT
- vaGiCN5nZ+1nS0whWd99xCmGLDJnoANZQSB24Nn+CWMpdaBtfWc4xP1+Pa7u12hB5/cO
- w5hw==
-X-Gm-Message-State: AOJu0YynOa2hovdLcJdKqjQW0xHsvG0CihLhOozO6YfnmfOznOWSJJVh
- +vJlJp7VW9TItdPGYP5uu0FiUVGDkID6D45ocxxAxJZhFCUNXVMSDA1lVeD6jJnnP95yHY4GDNn
- t+QQ=
-X-Google-Smtp-Source: AGHT+IFAX5JsfYFznjj6kznenaTo+F69obC9mIHSdm+s6fhWvEVRA+aYLlo8UcVg7quHOQXqgCCcgw==
-X-Received: by 2002:a5d:5048:0:b0:37c:d49c:3ac7 with SMTP id
- ffacd0b85a97d-37d0e8f4b9fmr555862f8f.48.1727998953470; 
- Thu, 03 Oct 2024 16:42:33 -0700 (PDT)
+ bh=A2b2LwHBDDNlQ4lpraog9QbauHHDsoDaj9FTLQzChw4=;
+ b=rK7BCS64L9tG+1xGMq72N0KSPzUvdksbKwqlMhzQED6Tj2JePdpZUUyKl5UNzlDF/1
+ 5gpHOfqMuTinSkoQQAS+8O+wphVD7PQLRb3Z6BnDoqs1iRiQlKyhToArpVmOxNMI5M9t
+ 1163O0UgqcfGbbXvopoidstk7GN53r1lmg9Y4pTlOLKzNb3JnjpApAZy3torCacwjTbD
+ UxURDWPH4EaKB1VYTfB4zM7JQUyJDbfdLIKZduPX59IsC1w/p+Ra3QwpMXMK8fRap+mD
+ htaQrD6gIuXODB+H2BMAASyi2WBrroAalC0Q7PQdRf8uR6VqPrbrnkIqb1iiNOniI5il
+ Y+BQ==
+X-Gm-Message-State: AOJu0YxZpz80fkPrW0OkwhQfAKqxtVpWwm2mFADRFS3bAJqvg0MPlJm2
+ 6K7pvAbf4HGXiMaixdHpPRKWNdRsTbD4klDX4kFTe3euZiNltF1M7JvlLV47gn3/xeufwKk+J3p
+ oIPM=
+X-Google-Smtp-Source: AGHT+IFUhQSBkMnwy2l0lFzF+iJGccfusHlORuoJfYCEHpm//0iz8GifaG1pW6FqC7DwbSM5AG2H1w==
+X-Received: by 2002:adf:fe8a:0:b0:37c:ccfc:92c0 with SMTP id
+ ffacd0b85a97d-37d0eb1b83emr472244f8f.57.1727998962052; 
+ Thu, 03 Oct 2024 16:42:42 -0700 (PDT)
 Received: from localhost.localdomain (45.red-88-29-191.dynamicip.rima-tde.net.
  [88.29.191.45]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d081f7141sm2192334f8f.6.2024.10.03.16.42.30
+ ffacd0b85a97d-37d07fde1fesm2201806f8f.0.2024.10.03.16.42.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 03 Oct 2024 16:42:32 -0700 (PDT)
+ Thu, 03 Oct 2024 16:42:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
@@ -77,17 +77,17 @@ Cc: qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
  Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 02/16] exec/memop: Remove unused memop_big_endian() helper
-Date: Fri,  4 Oct 2024 01:41:57 +0200
-Message-ID: <20241003234211.53644-3-philmd@linaro.org>
+Subject: [PATCH 03/16] linux-user/i386: Use explicit little-endian LD/ST API
+Date: Fri,  4 Oct 2024 01:41:58 +0200
+Message-ID: <20241003234211.53644-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241003234211.53644-1-philmd@linaro.org>
 References: <20241003234211.53644-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,29 +110,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Last use of memop_big_endian() was removed in commit 592134617c9
-("accel/tcg: Reorg system mode store helpers").
+The x86 architecture uses little endianness. Directly use
+the little-endian LD/ST API.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/memop.h | 6 ------
- 1 file changed, 6 deletions(-)
+ linux-user/i386/signal.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/memop.h b/include/exec/memop.h
-index f881fe7af4e..899ea0a2aae 100644
---- a/include/exec/memop.h
-+++ b/include/exec/memop.h
-@@ -164,10 +164,4 @@ static inline MemOp size_memop(unsigned size)
-     return (MemOp)ctz32(size);
- }
- 
--/* Big endianness from MemOp.  */
--static inline bool memop_big_endian(MemOp op)
--{
--    return (op & MO_BSWAP) == MO_BE;
--}
--
+diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
+index cb90711834f..0f11dba831f 100644
+--- a/linux-user/i386/signal.c
++++ b/linux-user/i386/signal.c
+@@ -754,8 +754,8 @@ static bool restore_sigcontext(CPUX86State *env, struct target_sigcontext *sc)
+     env->eip = tswapl(sc->rip);
  #endif
+ 
+-    cpu_x86_load_seg(env, R_CS, lduw_p(&sc->cs) | 3);
+-    cpu_x86_load_seg(env, R_SS, lduw_p(&sc->ss) | 3);
++    cpu_x86_load_seg(env, R_CS, lduw_le_p(&sc->cs) | 3);
++    cpu_x86_load_seg(env, R_SS, lduw_le_p(&sc->ss) | 3);
+ 
+     tmpflags = tswapl(sc->eflags);
+     env->eflags = (env->eflags & ~0x40DD5) | (tmpflags & 0x40DD5);
 -- 
 2.45.2
 
