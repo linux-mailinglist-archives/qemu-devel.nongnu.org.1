@@ -2,122 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481C898E983
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 07:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 616B598E938
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 06:55:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swEfq-0003PD-N5; Thu, 03 Oct 2024 01:46:51 -0400
+	id 1swDqZ-0005VX-B7; Thu, 03 Oct 2024 00:53:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ayush.m55@samsung.com>)
- id 1swEfe-0003On-2r
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 01:46:39 -0400
-Received: from mailout3.samsung.com ([203.254.224.33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ayush.m55@samsung.com>)
- id 1swEfa-0007xT-PU
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 01:46:37 -0400
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
- by mailout3.samsung.com (KnoxPortal) with ESMTP id
- 20241003054622epoutp039bc36b1af394ab7e6c7e5486f5fb9cb6~62yqBzydJ3225032250epoutp03T
- for <qemu-devel@nongnu.org>; Thu,  3 Oct 2024 05:46:22 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
- 20241003054622epoutp039bc36b1af394ab7e6c7e5486f5fb9cb6~62yqBzydJ3225032250epoutp03T
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1727934382;
- bh=F2ING18sTsuH4MsE6f3JYYfilOiYycl42ucfktm12No=;
- h=From:To:Cc:Subject:Date:References:From;
- b=l/vLADnDlz/zoy4nzansZDTOCX0T8F24H7chfdVqGEMSl3F5ZnmP196EYkkzi8OUn
- JgwfsRQ4r6ld0ZiGnFCP5qBr8Iv+u2rC8EeySb0Ayd8TVEpgdrHfW4vZRo77rJmyhN
- CaVGsAIraLOyv9en69M7UWI7gUYAbq6Z3K6IchoQ=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
- epcas5p3.samsung.com (KnoxPortal) with ESMTP id
- 20241003054622epcas5p3db8aae163ed9986099398e967211771a~62ypio5hm2618226182epcas5p3o;
- Thu,  3 Oct 2024 05:46:22 +0000 (GMT)
-Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.176]) by
- epsnrtp2.localdomain (Postfix) with ESMTP id 4XK0zJ3kJwz4x9Pt; Thu,  3 Oct
- 2024 05:46:20 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
- epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
- 5F.57.18935.CAF2EF66; Thu,  3 Oct 2024 14:46:20 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
- epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
- 20241001065838epcas5p158f96030a744df180b1b3818287c2a84~6QfLHlPiB0421904219epcas5p1E;
- Tue,  1 Oct 2024 06:58:38 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
- epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
- 20241001065838epsmtrp2f3ca34085bafe870cdea73889e1cb026~6QfLG58tb1529415294epsmtrp2c;
- Tue,  1 Oct 2024 06:58:38 +0000 (GMT)
-X-AuditID: b6c32a50-cb1f8700000049f7-86-66fe2fac11dc
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
- epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
- AA.F8.07371.D9D9BF66; Tue,  1 Oct 2024 15:58:37 +0900 (KST)
-Received: from open-sourcing.sa.corp.samsungelectronics.net (unknown
- [107.99.41.223]) by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20241001065837epsmtip2ca5aeb743abb809f55fbe115ea986f0c~6QfKSRQGx2308723087epsmtip2k;
- Tue,  1 Oct 2024 06:58:37 +0000 (GMT)
-From: Ayush Mishra <ayush.m55@samsung.com>
-To: qemu-devel@nongnu.org
-Cc: kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, Ayush Mishra
- <ayush.m55@samsung.com>
-Subject: [PATCH v2] hw/nvme: Adding support for NPDAL and NPDGL
-Date: Tue,  1 Oct 2024 06:58:33 +0530
-Message-ID: <20241001012833.3551820-1-ayush.m55@samsung.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1swDqW-0005VC-Op
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 00:53:49 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1swDqT-0006IN-5n
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 00:53:46 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2e0a74ce880so489173a91.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Oct 2024 21:53:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1727931223; x=1728536023;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=9O9/5HrYnoCV2W17XeAiaPMEm4FUkuOB95wysgj+FSo=;
+ b=jPcgFhltLIO1k2psD/Aar1vhbupak6VfEa703SJxz0t1zdZe6/sP/X3z4Je7iIhoRL
+ 2yvnK1TVPfdDNMQViddpUgMSehbhv4phtfABpQsyL0N7wFS0G3MV4ZIVKGJaYAb2Zp/2
+ Rzp7DQ2EIWdORZh1DriT4s/AmIwEPQ/dcvuJT8p0iboiswlMnFVF2iiWZSkztP3oH8ID
+ BH8dxB6qncrGkXNp7AN5gp8z8RuiGLpPRvySoWDiELjfrmn3Zq1AV5FUe3gaCnbnYBB4
+ ftz9T9tQCfcolCL1REcfjTZ7aKYSAIodr/HyAacj9fkGOidPbDspiOwYvIqKj9Zo4KI0
+ m0hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1727931223; x=1728536023;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9O9/5HrYnoCV2W17XeAiaPMEm4FUkuOB95wysgj+FSo=;
+ b=QK1j8yAqpkQRsLlOjlsfM4lp+bbUL+SmwSp4KSHob3DyX4Yvs+hnGWwZOY709GWAsP
+ JB4vBg9pjWadFJOlCr//j/NE5/MLhcUrxKYjdvjZJK+rE+sNqoA4pwf7dL/e1VpgFHQn
+ 2IIbj1jsRwURgtHvnPlZD5HFzzjU4U6loivrzN+Bksako8G+ZgW3v9OzLNyGkjCJcE+5
+ T9OC0+mNqUAN4MiGVDvKopIFiDw4z1agWevdbYDxTwxTovYErbN3UDdMa7kcKyfZNGQh
+ Vg4BLEtZ+r6RcJ12alxo89xdJjbhdWjh93tt9mfoo52wJGrCSQLCMv7zgPpSTmo8p49Y
+ ctpg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU9lcl/zs6MN/S/xfqM1N38TXj7f7Oby2CqdfFv92arnAOYxo5aABI7UXrtEtMyLPuFeJGpRlevMaeU@nongnu.org
+X-Gm-Message-State: AOJu0YyiXAOMiENmCFMURt4WfXJz3FmrtulFVx0hy84K5ESWbqP0KbE/
+ imfeXOZvXlkHc8Ksd8fquxpnYdU0v1f7luOK4qjiQ5EnP2woK22S1Xm6nVXTIuk=
+X-Google-Smtp-Source: AGHT+IEndh8s4YDisVRcElmT9o8ITtXYAUcmHxNUJSWqmqil5mmgkzPw9R1w9TjCU9NSJL7M2V+tgQ==
+X-Received: by 2002:a17:90a:c7cb:b0:2e0:6c40:e389 with SMTP id
+ 98e67ed59e1d1-2e18497114fmr7064088a91.33.1727931223284; 
+ Wed, 02 Oct 2024 21:53:43 -0700 (PDT)
+Received: from [157.82.207.107] ([157.82.207.107])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-20beec9ead0sm1555115ad.78.2024.10.02.21.53.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Oct 2024 21:53:42 -0700 (PDT)
+Message-ID: <e386eceb-1579-4445-ad93-2beb43aeb5ba@daynix.com>
+Date: Thu, 3 Oct 2024 13:53:40 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrKKsWRmVeSWpSXmKPExsWy7bCmhu4a/X9pBjtmSFjcnsxjcWJKmMX+
- g99YLSYdusZocbx3B4sDq8eUadfYPc7tOM/usWlVJ5vHk2ubmTz6tqxiDGCNyrbJSE1MSS1S
- SM1Lzk/JzEu3VfIOjneONzUzMNQ1tLQwV1LIS8xNtVVy8QnQdcvMAdqtpFCWmFMKFApILC5W
- 0rezKcovLUlVyMgvLrFVSi1IySkwKdArTswtLs1L18tLLbEyNDAwMgUqTMjOONX3hbVgjnDF
- l86lTA2MM/m6GDk5JARMJF42HmTqYuTiEBLYwygxo6udCSQhJPCJUeLepEKIxDdGibcHbrDC
- dNw/8IkFIrGXUeLvuT5miI4uJokn67hBbDYBLYl7L2+xgNgiApISv7tOA9VwcDALJEl0fdYG
- CQsL2Ess/boXbBmLgKrE0bm/mEBKeAVsJJ4+1YdYJS+xeMdysOm8AoISJ2c+AZvIDBRv3jqb
- GeQECYF97BINczZB3eYiMWF/EzuELSzx6vgWKFtK4vO7vWwQdrbEnNZvjBB2icTaeddYIGx7
- iYt7/jJBnKkpsX4X1A2yElNPrWOC2Msn0fv7CRNEnFdix7wnYOUSAsoSPYcMIMKSEk9ef4Ha
- 5CHR8/MFCyRwYiWWrWlgncAoPwvJN7OQfDMLYfECRuZVjFKpBcW56anJpgWGunmp5fBYTc7P
- 3cQITn9aATsYV2/4q3eIkYmD8RCjBAezkgjvvO1/04R4UxIrq1KL8uOLSnNSiw8xmgKDeCKz
- lGhyPjAB55XEG5pYGpiYmZmZWBqbGSqJ875unZsiJJCeWJKanZpakFoE08fEwSnVwKTJP+Fs
- z0GfnBOF7fFHVr1ryTDa+67lufSlrTs/lhblMB7hu3TBe57xky8/qnYlBrp9vKLf+v/A4tKk
- c2uvpFdV3i4xWMCbeyH/wu7/Fy5c05Q9WTprtsrPLK+LEZ8e3Zi8bs/K25Kda5aULDTL8vNY
- 0bzO/psn9/VccU/ev3LJxx9veZcWs9Nz07Hg6Z0NH59c1MzY59P82fVDwmmfV/8sVq+UWftK
- 9epMpv6Q+5uXL/gmZ3D5DF/+BicJ5oMSTk+11m7++kPZ4/X6M8vLFtTv9P2jmVCt0F6+rEqh
- +/i/z2snSayIfFx9/O2mreXcDI//HWm16ty0tjv0+a4gadey8+2nmxikd21/kKt2bYKZihJL
- cUaioRZzUXEiAHxyptUIBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMLMWRmVeSWpSXmKPExsWy7bCSvO7cub/TDJY9tbK4PZnH4sSUMIv9
- B7+xWkw6dI3R4njvDhYHVo8p066xe5zbcZ7dY9OqTjaPJ9c2M3n0bVnFGMAaxWWTkpqTWZZa
- pG+XwJVxqu8La8Ec4YovnUuZGhhn8nUxcnJICJhI3D/wiaWLkYtDSGA3o8TRrU2sEAlJibnb
- vkHZwhIr/z1nhyjqYJJY+GEVG0iCTUBL4t7LWywgtghQw++u08wgNrNAmsTXlsdgNcIC9hJL
- v+5lArFZBFQljs79BWRzcPAK2Eg8faoPMV9eYvGO5WCtvAKCEidnPmGBGCMv0bx1NvMERr5Z
- SFKzkKQWMDKtYpRMLSjOTc9NNiwwzEst1ytOzC0uzUvXS87P3cQIDkctjR2M9+b/0zvEyMTB
- eIhRgoNZSYT33qGfaUK8KYmVValF+fFFpTmpxYcYpTlYlMR5DWfMThESSE8sSc1OTS1ILYLJ
- MnFwSjUwve1yn2e90tX2h0eEbKZyr6hGLGN3uu3anhN1W3g1nr2b8TQyb8Hcl0vEH3l/aFzj
- fCVjiuoK7uas/SrTalTfSPE3buzcfLNsrczEi9zi9f8TCkJ4PCtMnCfyHVDr2H1+W49VbYbK
- nI8XJt3i0r7HW1ptLbtGN0R7+vnAoNrWygA3g9fnHnyZnS79q3n/rk1HZYuiLS8rnhSUvXZs
- 4YlDEd9mOr9SPplU8/H+85jtn9+9clxwZnPlf2cP5/kZH37xS272/fjALdNN9Yr3ohulWXwX
- +B+u232KzTg27gHP0R+dik9PvZ1b8vloCf/sskwr3zmv+Z9lf3xUVvz+VdPGeRd2L+Sq7pp7
- 4RLP7Q8dfkosxRmJhlrMRcWJAONIvNG2AgAA
-X-CMS-MailID: 20241001065838epcas5p158f96030a744df180b1b3818287c2a84
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20241001065838epcas5p158f96030a744df180b1b3818287c2a84
-References: <CGME20241001065838epcas5p158f96030a744df180b1b3818287c2a84@epcas5p1.samsung.com>
-Received-SPF: pass client-ip=203.254.224.33;
- envelope-from=ayush.m55@samsung.com; helo=mailout3.samsung.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- DKIMWL_WL_HIGH=-0.144, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/net/net_rx_pkt: Remove deadcode
+To: dave@treblig.org, dmitry.fleytman@gmail.com, jasowang@redhat.com,
+ qemu-devel@nongnu.org
+References: <20240918225128.455043-1-dave@treblig.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20240918225128.455043-1-dave@treblig.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,84 +95,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adding support for new 32 bit NPDGL and NPDAL fields to address the
-needs of larger granularities.
+On 2024/09/19 7:51, dave@treblig.org wrote:
+> From: "Dr. David Alan Gilbert" <dave@treblig.org>
+> 
+> net_rx_pkt_get_l3_hdr_offset and net_rx_pkt_get_iovec_len haven't
+> been used since they were added.
 
-Signed-off-by: Ayush Mishra <ayush.m55@samsung.com>
----
- v1 -> v2: Added macros for NSFEAT in /include/block/nvme.h as suggested
-by Klaus.
+You forgot to remove net_rx_pkt_get_l3_hdr_offset() from: 
+hw/net/net_rx_pkt.h
+It looks good otherwise.
 
- hw/nvme/ns.c         |  5 ++++-
- include/block/nvme.h | 17 ++++++++++++++++-
- 2 files changed, 20 insertions(+), 2 deletions(-)
+Regards,
+Akihiko Odaki
 
-diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
-index ea8db175db..7f51b6eec4 100644
---- a/hw/nvme/ns.c
-+++ b/hw/nvme/ns.c
-@@ -30,6 +30,7 @@
- void nvme_ns_init_format(NvmeNamespace *ns)
- {
-     NvmeIdNs *id_ns = &ns->id_ns;
-+    NvmeIdNsNvm *id_ns_nvm = &ns->id_ns_nvm;
-     BlockDriverInfo bdi;
-     int npdg, ret;
-     int64_t nlbas;
-@@ -55,6 +56,8 @@ void nvme_ns_init_format(NvmeNamespace *ns)
-     }
- 
-     id_ns->npda = id_ns->npdg = npdg - 1;
-+    id_ns_nvm->npdal = npdg;
-+    id_ns_nvm->npdgl = npdg;
- }
- 
- static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
-@@ -72,7 +75,7 @@ static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
-     ns->id_ns.dlfeat = 0x1;
- 
-     /* support DULBE and I/O optimization fields */
--    id_ns->nsfeat |= (0x4 | 0x10);
-+    id_ns->nsfeat |= (NVME_DEALLOCATED_ERROR | NVME_OPTIONAL_WRITE_PERF);
- 
-     if (ns->params.shared) {
-         id_ns->nmic |= NVME_NMIC_NS_SHARED;
-diff --git a/include/block/nvme.h b/include/block/nvme.h
-index 5298bc4a28..7a84664bf2 100644
---- a/include/block/nvme.h
-+++ b/include/block/nvme.h
-@@ -1413,7 +1413,12 @@ typedef struct QEMU_PACKED NvmeIdNsNvm {
-     uint8_t     pic;
-     uint8_t     rsvd9[3];
-     uint32_t    elbaf[NVME_MAX_NLBAF];
--    uint8_t     rsvd268[3828];
-+    uint32_t    npdgl;
-+    uint32_t    nprg;
-+    uint32_t    npra;
-+    uint32_t    nors;
-+    uint32_t    npdal;
-+    uint8_t     rsvd288[3808];
- } NvmeIdNsNvm;
- 
- typedef struct QEMU_PACKED NvmeIdNsDescr {
-@@ -1536,6 +1541,16 @@ typedef union NvmeDifTuple {
-     } g64;
- } NvmeDifTuple;
- 
-+enum {
-+    NVME_THIN_PROVISIONING          = 1 << 0,
-+    NVME_NS_SUPP_ATOMIC_BOUND_POW   = 1 << 1,
-+    NVME_DEALLOCATED_ERROR          = 1 << 2,
-+    NVME_UID_REUSE                  = 1 << 3,
-+    NVME_OPTIONAL_WRITE_PERF        = 3 << 4,
-+    NVME_MULTIPLE_ATOMICITY_MODE    = 1 << 6,
-+    NVME_OPTIONAL_READ_PERF         = 1 << 7,
-+};
-+
- enum NvmeZoneAttr {
-     NVME_ZA_FINISHED_BY_CTLR         = 1 << 0,
-     NVME_ZA_FINISH_RECOMMENDED       = 1 << 1,
--- 
-2.43.0
+> 
+> Remove them.
+> 
+> Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+> ---
+>   hw/net/net_rx_pkt.c | 13 -------------
+>   hw/net/net_rx_pkt.h |  9 ---------
+>   2 files changed, 22 deletions(-)
+> 
+> diff --git a/hw/net/net_rx_pkt.c b/hw/net/net_rx_pkt.c
+> index 32e5f3f9cf..cec1d0523d 100644
+> --- a/hw/net/net_rx_pkt.c
+> +++ b/hw/net/net_rx_pkt.c
+> @@ -209,12 +209,6 @@ void net_rx_pkt_get_protocols(struct NetRxPkt *pkt,
+>       *l4hdr_proto = pkt->l4hdr_info.proto;
+>   }
+>   
+> -size_t net_rx_pkt_get_l3_hdr_offset(struct NetRxPkt *pkt)
+> -{
+> -    assert(pkt);
+> -    return pkt->l3hdr_off;
+> -}
+> -
+>   size_t net_rx_pkt_get_l4_hdr_offset(struct NetRxPkt *pkt)
+>   {
+>       assert(pkt);
+> @@ -427,13 +421,6 @@ struct iovec *net_rx_pkt_get_iovec(struct NetRxPkt *pkt)
+>       return pkt->vec;
+>   }
+>   
+> -uint16_t net_rx_pkt_get_iovec_len(struct NetRxPkt *pkt)
+> -{
+> -    assert(pkt);
+> -
+> -    return pkt->vec_len;
+> -}
+> -
+>   void net_rx_pkt_set_vhdr(struct NetRxPkt *pkt,
+>                               struct virtio_net_hdr *vhdr)
+>   {
+> diff --git a/hw/net/net_rx_pkt.h b/hw/net/net_rx_pkt.h
+> index 55ec67a1a7..e8df9cfd52 100644
+> --- a/hw/net/net_rx_pkt.h
+> +++ b/hw/net/net_rx_pkt.h
+> @@ -267,15 +267,6 @@ net_rx_pkt_attach_data(struct NetRxPkt *pkt, const void *data,
+>    */
+>   struct iovec *net_rx_pkt_get_iovec(struct NetRxPkt *pkt);
+>   
+> -/**
+> -* returns io vector length that holds the attached data
+> -*
+> -* @pkt:            packet
+> -* @ret:            IOVec length
+> -*
+> -*/
+> -uint16_t net_rx_pkt_get_iovec_len(struct NetRxPkt *pkt);
+> -
+>   /**
+>    * prints rx packet data if debug is enabled
+>    *
 
 
