@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3A098EE0A
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 13:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8915398EE0C
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 13:25:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swJwJ-0001Ri-S4; Thu, 03 Oct 2024 07:24:11 -0400
+	id 1swJwL-0001it-UP; Thu, 03 Oct 2024 07:24:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1swJwE-0001F6-36
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:24:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1swJwF-0001Jn-4p
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:24:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1swJwB-0004yP-2M
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:24:05 -0400
+ id 1swJwB-0004zU-1y
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 07:24:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1727954623;
+ s=mimecast20190719; t=1727954630;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LbA5VfDAr/RwkKCrilX42feGwXJTiuFwpzMtEmeaq7Y=;
- b=bGxmtQTiP/63wYQvWrcoRLgAW4l65cwETZssUw56tCXY2fyD5TKVAWzRnPDY7S1wfZwqbH
- x/BwLuFkAUSOpI+hukavK1+SgXZ3u2dk2rF7ypLpJFvljpGapkvn2SqqAZpPWAWjQ4qKpj
- m7Za2QuNxpUlTND26reuBo9R2plDQOs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=UU2orHXi/BSaeuFJ2dFG3p9R7+3Imog/8OR1UiqXm3s=;
+ b=TI04sUkB9BMIhD7h0KbMtiLEj7GfcaCuNGTXo8E9k6t9X4ik3RlWlsPMmmmrhNHnspVsZY
+ j7XgQhm+2Ov9hm1L/iRsqjXS5GGPGffPM1Ol9rqtTloZ2WiAxNBJTZoIvMLXUqgjq/HPDL
+ LBJC9iBRsgO7vU1rz2pNcp/4AQSSTPU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-267-Hc2NFTKTMo6-korZlr0z-Q-1; Thu,
- 03 Oct 2024 07:23:40 -0400
-X-MC-Unique: Hc2NFTKTMo6-korZlr0z-Q-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-424-ii7wm8c-MYyFFceob_Q33g-1; Thu,
+ 03 Oct 2024 07:23:45 -0400
+X-MC-Unique: ii7wm8c-MYyFFceob_Q33g-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B51B11955E84; Thu,  3 Oct 2024 11:23:38 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 34E62195423C; Thu,  3 Oct 2024 11:23:43 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5D2781956054; Thu,  3 Oct 2024 11:23:37 +0000 (UTC)
+ id 24F311956054; Thu,  3 Oct 2024 11:23:41 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -53,17 +53,16 @@ Cc: peter.maydell@linaro.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 10/16] ui/dbus: do not limit to one listener per connection /
- bus name
-Date: Thu,  3 Oct 2024 15:22:37 +0400
-Message-ID: <20241003112244.3340697-11-marcandre.lureau@redhat.com>
+Subject: [PATCH 11/16] ui/dbus: add trace for can_share_map
+Date: Thu,  3 Oct 2024 15:22:38 +0400
+Message-ID: <20241003112244.3340697-12-marcandre.lureau@redhat.com>
 In-Reply-To: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
 References: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -91,83 +90,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-This is an arbitrary limitation that doesn't concern QEMU directly and
-may make some use cases unnecessarily more complicated.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/dbus-console.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ ui/dbus-listener.c | 1 +
+ ui/trace-events    | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/ui/dbus-console.c b/ui/dbus-console.c
-index 578b67f62b..5eb1d40d16 100644
---- a/ui/dbus-console.c
-+++ b/ui/dbus-console.c
-@@ -41,7 +41,7 @@ struct _DBusDisplayConsole {
-     DisplayChangeListener dcl;
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 020c05198b..f55e197768 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -1083,6 +1083,7 @@ dbus_display_listener_new(const char *bus_name,
+     ddl->console = console;
  
-     DBusDisplay *display;
--    GHashTable *listeners;
-+    GPtrArray *listeners;
-     QemuDBusDisplay1Console *iface;
+     dbus_display_listener_setup_shared_map(ddl);
++    trace_dbus_can_share_map(ddl->can_share_map);
+     dbus_display_listener_setup_d3d11(ddl);
  
-     QemuDBusDisplay1Keyboard *iface_kbd;
-@@ -142,8 +142,7 @@ dbus_display_console_init(DBusDisplayConsole *object)
- {
-     DBusDisplayConsole *ddc = DBUS_DISPLAY_CONSOLE(object);
+     con = qemu_console_lookup_by_index(dbus_display_console_get_index(console));
+diff --git a/ui/trace-events b/ui/trace-events
+index fb253c1666..3da0d5e280 100644
+--- a/ui/trace-events
++++ b/ui/trace-events
+@@ -166,6 +166,7 @@ dbus_clipboard_unregister(const char *bus_name) "peer %s"
+ dbus_scanout_texture(uint32_t tex_id, bool backing_y_0_top, uint32_t backing_width, uint32_t backing_height, uint32_t x, uint32_t y, uint32_t w, uint32_t h) "tex_id:%u y0top:%d back:%ux%u %u+%u-%ux%u"
+ dbus_gl_gfx_switch(void *p) "surf: %p"
+ dbus_filter(unsigned int serial, unsigned int filter) "serial=%u (<= %u)"
++dbus_can_share_map(bool share) "can_share_map: %d"
  
--    ddc->listeners = g_hash_table_new_full(g_str_hash, g_str_equal,
--                                            NULL, g_object_unref);
-+    ddc->listeners = g_ptr_array_new_with_free_func(g_object_unref);
-     ddc->dcl.ops = &dbus_console_dcl_ops;
- }
- 
-@@ -157,7 +156,7 @@ dbus_display_console_dispose(GObject *object)
-     g_clear_object(&ddc->iface_mouse);
-     g_clear_object(&ddc->iface_kbd);
-     g_clear_object(&ddc->iface);
--    g_clear_pointer(&ddc->listeners, g_hash_table_unref);
-+    g_clear_pointer(&ddc->listeners, g_ptr_array_unref);
-     g_clear_pointer(&ddc->kbd, qkbd_state_free);
- 
-     G_OBJECT_CLASS(dbus_display_console_parent_class)->dispose(object);
-@@ -179,7 +178,7 @@ listener_vanished_cb(DBusDisplayListener *listener)
- 
-     trace_dbus_listener_vanished(name);
- 
--    g_hash_table_remove(ddc->listeners, name);
-+    g_ptr_array_remove_fast(ddc->listeners, listener);
-     qkbd_state_lift_all_keys(ddc->kbd);
- }
- 
-@@ -267,16 +266,6 @@ dbus_console_register_listener(DBusDisplayConsole *ddc,
-     DBusDisplayListener *listener;
-     int fd;
- 
--    if (sender && g_hash_table_contains(ddc->listeners, sender)) {
--        g_dbus_method_invocation_return_error(
--            invocation,
--            DBUS_DISPLAY_ERROR,
--            DBUS_DISPLAY_ERROR_INVALID,
--            "`%s` is already registered!",
--            sender);
--        return DBUS_METHOD_INVOCATION_HANDLED;
--    }
--
- #ifdef G_OS_WIN32
-     if (!dbus_win32_import_socket(invocation, arg_listener, &fd)) {
-         return DBUS_METHOD_INVOCATION_HANDLED;
-@@ -331,9 +320,7 @@ dbus_console_register_listener(DBusDisplayConsole *ddc,
-         return DBUS_METHOD_INVOCATION_HANDLED;
-     }
- 
--    g_hash_table_insert(ddc->listeners,
--                        (gpointer)dbus_display_listener_get_bus_name(listener),
--                        listener);
-+    g_ptr_array_add(ddc->listeners, listener);
-     g_object_connect(listener_conn,
-                      "swapped-signal::closed", listener_vanished_cb, listener,
-                      NULL);
+ # egl-helpers.c
+ egl_init_d3d11_device(void *p) "d3d device: %p"
 -- 
 2.45.2.827.g557ae147e6
 
