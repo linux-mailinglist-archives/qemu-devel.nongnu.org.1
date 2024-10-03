@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E552D98F633
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFFC98F631
 	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 20:35:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swQee-0007C7-8v; Thu, 03 Oct 2024 14:34:24 -0400
+	id 1swQei-0007M6-N1; Thu, 03 Oct 2024 14:34:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1swQe8-00079g-3e
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:33:52 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1swQe9-0007AW-L9
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:33:54 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1swQe5-0004r6-Nz
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:33:51 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-20b7a4336easo9116875ad.3
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 11:33:49 -0700 (PDT)
+ id 1swQe7-0004rR-2k
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:33:53 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-20b7eb9e81eso14986995ad.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 11:33:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1727980428; x=1728585228;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1727980430; x=1728585230;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=61DmhqGlxZdTdu0z6XnaxhiYNNsj39PmvrjUzzuF3V4=;
- b=sLt6YP/RwUo1to8+zstg7Uob7uVYaXz5GVX1XYxJh5pdPVa8uuatNiiKBASLwjiGvb
- N8MRzzvPHftmB7J4L1QwWQ4+gi3qJVTZtgzpImuvRsfsrMKETyxuW3Nz1AqIoygA78NS
- rF4pPopo9NTABY519SbWW3XoX7b+GlyYeoDMrQyx6aYfHMnEmQaexKOnWl4rqLdaF9RD
- hebQwdaa5come12xhpKoXM5Rq3u9f14KMfMql9GFV8a8etO47zn38YD8bTFkIyhMkW4o
- 8120POL1wKmBGFDn38OFyWWc2ccfbkmE2C405HMnMAJ0UoeJf4qutruhaochf8iFSgD9
- vXcw==
+ bh=AAmFNgO6MN8uMyYd2N3W1c951PV1oQBhf1Qm4FKEhUY=;
+ b=sC2Bu/44Z++ULGZHJe01ygZ7vxxVYncjNL8Ti5VtVI2bs95F0RMGQz4A1+bIwdio/n
+ EcI/hSxiA+2rVtq+HLcNqd7CVq2VOBJUwKzG27IUW/iNpNa9QiF9aJfX1jdZTRDJmlrM
+ SyMtQ6rGKmqNnm4US7xkEYMFvyDjDlHmpByqoemttjgz/KaLsg+5y/3jbQ1GeygCBFtQ
+ 8ozZY/c2DfxC8C0h5FgPxLL5ZIJr6ctE5PQ2ReUECp1MqGr23YluXu1tPWs0JmygjpZg
+ U2JuqnRXRxPlZNyki/M5MK2sZpSydhnDFBcjJzOCa1kMpsA25qb+3YZwmmD16VXVZtSk
+ cqzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727980428; x=1728585228;
+ d=1e100.net; s=20230601; t=1727980430; x=1728585230;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=61DmhqGlxZdTdu0z6XnaxhiYNNsj39PmvrjUzzuF3V4=;
- b=S+hIJ72zqx4EfFREAE4SR4JeS2MNFrmKfzCzJsl1RT1iB0sGPe+hPAhtJdZgSyEalI
- PH6qKODKVYareLfdlk+cT5avFAP4YU/3+Zm641qvr74xNLML1JIs73XDNkZV1KqNQKmD
- QFv/KoxMUepvU5cq/j0zeF0uuHFXzpnrTxJ8Fbbzx5VjLQYMqBWNgkNhnVkaTF7NhfVu
- DSgQ3jaijrIocdpSDNkg+ZSokEIxDb8duAukUkfWMBbGIRGNXgtZMX5z5dB7j6BWi5to
- OCYGlFwA5CSznhrVnJz/f5/UdkzfG55sleL3AzMG60Wt8K8thQJTZEEUfI5y0TgrjLJg
- i+9g==
+ bh=AAmFNgO6MN8uMyYd2N3W1c951PV1oQBhf1Qm4FKEhUY=;
+ b=Z0O3ITHdhhKlye5Xkr1vKvtV66X/2o/9/rf6QMlxS1ClzWGYGBgOsCIHxtc02TnFMv
+ drrNWwo37oPgeRtkliUIeieJCYErAGtt+ngnbAK5B1ZzuNqJGVdEowE1haaPn3xZ1fVf
+ 0p43qUGXzX/SGrDMdY3ZqWe6wChTEPGqOBBrm9aHfl6ch7z4miWhgvDj7wgsiFLOil2x
+ fPwBenhMEXumKq1pucw10oA/kpSLCjcqC7Ysp4QNh9CLIcy1t41jhKFTBUapbscJ0nrz
+ p6Js1X2EfzhpDn7g98Qxv00y+AkKlVgRkciGVARaiUiJssFRF6gLzgPjt685eHWeuRe2
+ Jf8w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU3YM0MIHwdi7idr0LsgNxZgXO0uqc/vpbrbA/73umMdC5/zW9B/RftmaHSlugG69hmVQmFJ0gZ4A3j@nongnu.org
-X-Gm-Message-State: AOJu0YzCxt3NSfT+RUNcqvxa8QXBhkLchoWhn5DlyXeWQ4tsU0+7cRQD
- n29GXMcjZdnpR/+mgi4/DMIrQa/GPHqJvQl8R8Kd0C/aCRfkl9HLiEIv2+InJzauJwduPXSjgs5
- e
-X-Google-Smtp-Source: AGHT+IFHdojLysk0kiPQ8c2xfJDeSL4ZBTFyJN5pnu6nNEn45E1lZ9MYevDkhkTEm62GQXgJcJx3Eg==
-X-Received: by 2002:a17:902:d48a:b0:20b:57f0:b37e with SMTP id
- d9443c01a7336-20bfde583d2mr1965695ad.1.1727980428551; 
- Thu, 03 Oct 2024 11:33:48 -0700 (PDT)
+ AJvYcCW/ap+OjZwVk8z7yjnCtECBjUm+WowBroDy0QI2AeOURiPfbhxDGE7SFQ3JW59Be6vrqhux188NBTOa@nongnu.org
+X-Gm-Message-State: AOJu0YycSdDRjBhHyWe7qeJUV02GSnLk99PsE+Qby/kWxe2DEloyf1k1
+ ruWBycrsktNvuYyKjMNbekQX4a4p6REQ5aRHOeYHfy6vIr+vCHT9IDveknaZFGU92P3aPYSbytM
+ X
+X-Google-Smtp-Source: AGHT+IF0PdIVNBjxhfYqVDty8AvcJRheY3qIUlv+V73/WxVPDtVci13Y1h9sDnpsUmejPS5B4Ji2ww==
+X-Received: by 2002:a17:902:ce12:b0:207:4c7c:743b with SMTP id
+ d9443c01a7336-20bfd99c820mr2026905ad.0.1727980429758; 
+ Thu, 03 Oct 2024 11:33:49 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20beefad16asm11796245ad.193.2024.10.03.11.33.47
+ d9443c01a7336-20beefad16asm11796245ad.193.2024.10.03.11.33.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Oct 2024 11:33:48 -0700 (PDT)
+ Thu, 03 Oct 2024 11:33:49 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: palmer@dabbelt.com, Alistair.Francis@wdc.com, bmeng.cn@gmail.com,
  liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, jim.shu@sifive.com, kito.cheng@sifive.com,
- Deepak Gupta <debug@rivosinc.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+ Deepak Gupta <debug@rivosinc.com>, Andy Chiu <andy.chiu@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v15 01/21] target/riscv: expose *envcfg csr and priv to
- qemu-user as well
-Date: Thu,  3 Oct 2024 11:33:22 -0700
-Message-ID: <20241003183342.679249-2-debug@rivosinc.com>
+Subject: [PATCH v15 02/21] target/riscv: Add zicfilp extension
+Date: Thu,  3 Oct 2024 11:33:23 -0700
+Message-ID: <20241003183342.679249-3-debug@rivosinc.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241003183342.679249-1-debug@rivosinc.com>
 References: <20241003183342.679249-1-debug@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=debug@rivosinc.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=debug@rivosinc.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,82 +99,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Execution environment config CSR controlling user env and current
-privilege state shouldn't be limited to qemu-system only. *envcfg
-CSRs control enabling of features in next lesser mode. In some cases
-bits *envcfg CSR can be lit up by kernel as part of kernel policy or
-software (user app) can choose to opt-in by issuing a system call
-(e.g. prctl). In case of qemu-user, it should be no different because
-qemu is providing underlying execution environment facility and thus
-either should provide some default value in *envcfg CSRs or react to
-system calls (prctls) initiated from application. priv is set to PRV_U
-and menvcfg/senvcfg set to 0 for qemu-user on reest.
+zicfilp [1] riscv cpu extension enables forward control flow integrity.
+If enabled, all indirect calls must land on a landing pad instruction.
 
-`henvcfg` has been left for qemu-system only because it is not expected
-that someone will use qemu-user where application is expected to have
-hypervisor underneath which is controlling its execution environment. If
-such a need arises then `henvcfg` could be exposed as well.
+This patch sets up space for zicfilp extension in cpuconfig. zicfilp
+is dependend on zicsr.
 
-Relevant discussion:
-https://lore.kernel.org/all/CAKmqyKOTVWPFep2msTQVdUmJErkH+bqCcKEQ4hAnyDFPdWKe0Q@mail.gmail.com/
+[1] - https://github.com/riscv/riscv-cfi
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Co-developed-by: Jim Shu <jim.shu@sifive.com>
+Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 5 +++++
- target/riscv/cpu.h | 9 +++++----
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ target/riscv/cpu.c         | 1 +
+ target/riscv/cpu_cfg.h     | 1 +
+ target/riscv/tcg/tcg-cpu.c | 5 +++++
+ 3 files changed, 7 insertions(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 658bdb4ae1..24ca0bfcaa 100644
+index 24ca0bfcaa..b7201a69df 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1003,7 +1003,12 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
+@@ -106,6 +106,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(ziccif, PRIV_VERSION_1_11_0, has_priv_1_11),
+     ISA_EXT_DATA_ENTRY(zicclsm, PRIV_VERSION_1_11_0, has_priv_1_11),
+     ISA_EXT_DATA_ENTRY(ziccrse, PRIV_VERSION_1_11_0, has_priv_1_11),
++    ISA_EXT_DATA_ENTRY(zicfilp, PRIV_VERSION_1_12_0, ext_zicfilp),
+     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+     ISA_EXT_DATA_ENTRY(zicntr, PRIV_VERSION_1_12_0, ext_zicntr),
+     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_zicsr),
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 355afedfd3..fe7ad85b66 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -67,6 +67,7 @@ struct RISCVCPUConfig {
+     bool ext_zicbom;
+     bool ext_zicbop;
+     bool ext_zicboz;
++    bool ext_zicfilp;
+     bool ext_zicond;
+     bool ext_zihintntl;
+     bool ext_zihintpause;
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index dea8ab7a43..963c1c604a 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -623,6 +623,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         cpu->pmu_avail_ctrs = 0;
      }
  
-     pmp_unlock_entries(env);
-+#else
-+    env->priv = PRV_U;
-+    env->senvcfg = 0;
-+    env->menvcfg = 0;
- #endif
++    if (cpu->cfg.ext_zicfilp && !cpu->cfg.ext_zicsr) {
++        error_setg(errp, "zicfilp extension requires zicsr extension");
++        return;
++    }
 +
-     env->xl = riscv_cpu_mxl(env);
-     riscv_cpu_update_mask(env);
-     cs->exception_index = RISCV_EXCP_NONE;
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 1619c3acb6..2623f6cf75 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -234,8 +234,12 @@ struct CPUArchState {
-     uint32_t elf_flags;
- #endif
- 
--#ifndef CONFIG_USER_ONLY
-     target_ulong priv;
-+    /* CSRs for execution environment configuration */
-+    uint64_t menvcfg;
-+    target_ulong senvcfg;
-+
-+#ifndef CONFIG_USER_ONLY
-     /* This contains QEMU specific information about the virt state. */
-     bool virt_enabled;
-     target_ulong geilen;
-@@ -445,12 +449,9 @@ struct CPUArchState {
-     target_ulong upmmask;
-     target_ulong upmbase;
- 
--    /* CSRs for execution environment configuration */
--    uint64_t menvcfg;
-     uint64_t mstateen[SMSTATEEN_MAX_COUNT];
-     uint64_t hstateen[SMSTATEEN_MAX_COUNT];
-     uint64_t sstateen[SMSTATEEN_MAX_COUNT];
--    target_ulong senvcfg;
-     uint64_t henvcfg;
- #endif
-     target_ulong cur_pmmask;
+     /*
+      * Disable isa extensions based on priv spec after we
+      * validated and set everything we need.
 -- 
 2.45.0
 
