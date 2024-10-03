@@ -2,91 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534F598F658
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 20:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6F798F6AD
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Oct 2024 20:58:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swQkU-0006Cc-JK; Thu, 03 Oct 2024 14:40:26 -0400
+	id 1swR0e-0000kR-T1; Thu, 03 Oct 2024 14:57:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1swQkN-0006A2-Dh
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:40:19 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1swR0d-0000kI-3g
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:57:07 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1swQkL-00075N-6q
- for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:40:18 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-71afb729f24so1103921b3a.0
- for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 11:40:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1swR0b-0003I6-Gb
+ for qemu-devel@nongnu.org; Thu, 03 Oct 2024 14:57:06 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2fac3f1287bso16286801fa.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Oct 2024 11:57:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1727980816; x=1728585616; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2fkMoD0i9taLeZEjrUv4HUb+iox9NK53uddLKBBo2XE=;
- b=FS6nqf/EMAKlL6UMvKU8qiY7fwKcaxxhcaWXd5mNZLXIg3pRkNd23DRCVNs9B/ofPP
- y6Y4dKxQiecFWApJUyUjQyl1tBVtGLl0sLNhgC+zOPSjaQD1ADFe3MeUXbivqA/jBdND
- QR5jWZ9tXwBAKJpGzpJ9bE8v+sRuboYFrxKH7EOcSQTC4ja/xbArpUWKPApBltB+tDr+
- 07qC8Ve7hFHQcjrZDda+BOEP8JZOURFzEgKozOZJIRLvnJ1o+Nm2nkFHlt1sGNoBN9wc
- QSZgaQsA0TbP1edGshI7O4SzDM/WR+u5XbgJK7Uu5N2gcS+gSxGS6tl/pHJYoKpP1gIH
- xC7Q==
+ d=gmail.com; s=20230601; t=1727981823; x=1728586623; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cdaNDaEOcn6vuQNjiuMDjzYnUO3vmcmh1n8TpB8KZRA=;
+ b=W43hLgmmjSip2tlVA+ffn11EfzXt8flBfzFP1Ot/2KH2vxmg1MUBkSHJQN2DwW43Pk
+ j51/T6rD1k3LJZISfkNdMgiM/F/1Ag+EMqdP9eVERseUw6EBjxbShE18bt5IXUk9CQzb
+ pbtvhsLwQcZN21wzC6prgioure/KYd4QMTh724aMACU+uGnsjpFTZJz0E3KF72i03Nwh
+ x1vgpw+UG+D5nyfxY1mQV7oLrAnQlEumA3v+13VWsWwuEf7PMC7AhVTcC0PLRwrRX86t
+ lY0InOQt6FA9H+cHxQobmCeIOzrvFtiFfXiviJYD/7h0dl17ywPE1LQaB0Mf1dqw5hj0
+ 1Z/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1727980816; x=1728585616;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2fkMoD0i9taLeZEjrUv4HUb+iox9NK53uddLKBBo2XE=;
- b=mn4aMQ8GMMZXEJ6zonF+v31IZawPqzVKIU0KYXbEX6+KcF+PPQ7pRCEIS6u08sMF3p
- Qn8GQZbiIIIw0QnBl3FW1kyqc53ehTHsREp/xNJUhsdWKfJDArEUgcXV12z23tReIamG
- 5nzF7eDOom3UFzuvh3i3fWxTOoynfJkIvRwSHcfZn3JMvSvHhaFenp2KB1gaBrCST4Fk
- I9Y5kBCVkp/FOeFMPNcZWsdxY3W1iEDpiuNqJ6p+jCAa2qjdtGwFtSW7QcFz3rv1tYEE
- dWKyTQ/ZbzhmOiWiMb1f/8bjE/HmLNrJqmVdXGXC6V5WR5yfqNH0RhYzGrIgVIRfbAGg
- hAnw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXZKUgzg138Wo0pSkvNXaWLHIJSzzqLNzUa2kDV3bbRpZD4M2vXQyXgP3/T02NgD/RycTDZTBjje2Fa@nongnu.org
-X-Gm-Message-State: AOJu0Yx9Kb3GB/uCx4dp2w3hISFeZX+llv/e0uF2SVV99Z2lERytNBps
- vVxfzXKKJso4AKBnzYPZ5MjDWUmjC3+zoq8ttLEj1wpyA/c252UTfor9v4bEJdQ=
-X-Google-Smtp-Source: AGHT+IHPrfoFmJfxRdMnQa1fizFfUp4Z4DbduIgNHmu8NlYDjDZabKfVgF9CzvwSNFw261SU60j8zg==
-X-Received: by 2002:a05:6a00:4b52:b0:714:1fc3:79fb with SMTP id
- d2e1a72fcca58-71de22dd687mr193130b3a.0.1727980815598; 
- Thu, 03 Oct 2024 11:40:15 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
+ d=1e100.net; s=20230601; t=1727981823; x=1728586623;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cdaNDaEOcn6vuQNjiuMDjzYnUO3vmcmh1n8TpB8KZRA=;
+ b=RtakYjIHb05MmZa9fTXpqQq4uA5uL7bpQYNF4Fc0YPv/e3Urv3po0BEeKDhniS/o6f
+ EOwFq5jI7XTULAeb2YYGMftHJL5iDEnl8R1IpFhFyPtCTrFgNF0m/haP537Srejz3Gw9
+ NTZMP/59iUa8fg0w5jzXJHnKxzO72/+XVKnr8qSDC2jZLhaL9CH2faEpyY8L5uL8YSE8
+ jRrtNwhswkyqmUdDcecihqyeGx2CKDJlfgD95tC17n2neYG8b0xszIYXtrEItVKdSqB1
+ SAzjjRo4DNv4Ld+oiiKbxWO+wwKU0NwzFezgmrF6KZcgeYGk2bc36xgo9kvAkvC1t3Yd
+ 5POA==
+X-Gm-Message-State: AOJu0YxmaYygmBJm4UpXqiVehTR72/wovL1ZvtZXOAn3mSum4TinR6fq
+ 32sr7AYN1k8We+Pv1htYRodA+cCQb3dHOv0ZFuCchnfWXlrjky6XKQOnvRE3
+X-Google-Smtp-Source: AGHT+IFdeBkkNKz7zU2CTecNYILP4aX1U9f8WPyScxz91qp4ENEdsSBhsUSyvViSiJmd41SQ99VMWA==
+X-Received: by 2002:a2e:b8c3:0:b0:2ec:55b5:ed45 with SMTP id
+ 38308e7fff4ca-2faf3c420b2mr190871fa.24.1727981822607; 
+ Thu, 03 Oct 2024 11:57:02 -0700 (PDT)
+Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71dd9ddeee5sm1685558b3a.106.2024.10.03.11.40.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Oct 2024 11:40:15 -0700 (PDT)
-Message-ID: <ec6ed202-f67c-402a-9abc-19c31f03ec8d@linaro.org>
-Date: Thu, 3 Oct 2024 11:40:12 -0700
+ 38308e7fff4ca-2faecbf6feesm2796571fa.18.2024.10.03.11.57.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Oct 2024 11:57:01 -0700 (PDT)
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
+ peter.maydell@linaro.org, edgar.iglesias@amd.com,
+ xen-devel@lists.xenproject.org
+Subject: [PULL v2 0/5] Xen Queue
+Date: Thu,  3 Oct 2024 20:56:49 +0200
+Message-ID: <20241003185655.1480819-1-edgar.iglesias@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] target/riscv: enable floating point unit
-To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>
-Cc: Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, kvm-riscv@lists.infradead.org
-References: <20240925061704.12440-1-heinrich.schuchardt@canonical.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240925061704.12440-1-heinrich.schuchardt@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,32 +90,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/24/24 23:17, Heinrich Schuchardt wrote:
-> The status and mstatus CSRs contain bit field FS, which control if the
-> floating point unit of RISC-V hart is enabled.
-> 
-> There seems to be no specification prescribing the value of the field when
-> entering S-mode from M-mode. But OpenSBI, as the leading SBI M-mode
-> firmware, has set a precedent by enabling the FPU by setting the value of
-> FS to 3 (dirty).
-> 
-> In TCG mode, QEMU uses OpenSBI by default. Users can reasonably expect that
-> software running QEMU in TCG mode and in KVM mode behaves similarly.
-> 
-> When QEMU in KVM mode creates a vCPU, Linux' KVM code sets FS=1 (initial)
-> in kvm_riscv_vcpu_fp_reset(). However, QEMU internally keeps a value of
-> FS=0 (off) and then synchronizes this value into KVM. Thus VS-mode software
-> is invoked with a disabled floating point unit.
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-This suggests that qemu is incorrectly syncing the registers from kvm at vcpu startup.
+The following changes since commit 423be09ab9492735924e73a2d36069784441ebc6:
 
-> +    if (riscv_has_ext(env, RVF) || riscv_has_ext(env, RVD)) {
-> +        env->mstatus = set_field(env->mstatus, MSTATUS_FS, env->misa_mxl);
+  Merge tag 'warn-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2024-10-03 10:32:54 +0100)
 
-Storing misa_mxl here is wrong.  That's '1' for rv32 and '2' for rv64.
-You want a single constant value, either '1' (initial) or '2' (clean).
- From the kvm source, initial seems preferable.
+are available in the Git repository at:
 
+  https://gitlab.com/edgar.iglesias/qemu.git tags/edgar/xen-queue-2024-10-03-v2.for-upstream
 
-r~
+for you to fetch changes up to ca9275a4b11aced3074219d1712e29fce5036f72:
+
+  hw/arm: xenpvh: Enable PCI for ARM PVH (2024-10-03 19:37:35 +0200)
+
+----------------------------------------------------------------
+Edgars Xen Queue.
+
+----------------------------------------------------------------
+
+ChangeLog:
+
+v1 -> v2:
+* Removed left over trace call
+
+----------------------------------------------------------------
+
+Dr. David Alan Gilbert (1):
+      hw/xen: Remove deadcode
+
+Edgar E. Iglesias (4):
+      hw/xen: Expose handle_bufioreq in xen_register_ioreq
+      hw/xen: xenpvh: Disable buffered IOREQs for ARM
+      hw/xen: xenpvh: Add pci-intx-irq-base property
+      hw/arm: xenpvh: Enable PCI for ARM PVH
+
+ hw/arm/xen-pvh.c                    |  17 ++++++
+ hw/i386/xen/xen-hvm.c               |   4 +-
+ hw/i386/xen/xen-pvh.c               |   3 ++
+ hw/xen/xen-hvm-common.c             | 100 ++++++++++++++++++++++--------------
+ hw/xen/xen-legacy-backend.c         |  18 -------
+ hw/xen/xen-pvh-common.c             |  40 ++++++++++++++-
+ hw/xen/xen_devconfig.c              |   8 ---
+ include/hw/xen/xen-hvm-common.h     |   3 ++
+ include/hw/xen/xen-legacy-backend.h |   5 --
+ include/hw/xen/xen-pvh-common.h     |   3 ++
+ include/hw/xen/xen_native.h         |   3 +-
+ 11 files changed, 132 insertions(+), 72 deletions(-)
+-- 
+2.43.0
+
 
