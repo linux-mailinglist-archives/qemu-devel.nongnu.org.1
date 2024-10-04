@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0304990987
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D88990968
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:37:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swlJQ-0006Lt-NZ; Fri, 04 Oct 2024 12:37:53 -0400
+	id 1swlIx-0002p3-Bs; Fri, 04 Oct 2024 12:37:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlHT-00018l-Cv
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:52 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlHh-0001Kc-Un
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:36:09 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlHR-0006ZT-Ck
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:51 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-5398d171fa2so2884789e87.0
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:35:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlHe-0006b3-TW
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:36:05 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2fad100dd9eso26961711fa.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:36:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728059746; x=1728664546; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728059761; x=1728664561; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hBcEgRLUs4YPVNfRAPRCJw9z4l7rdD9SQBWLJrOyEBM=;
- b=NAqeAgM5WLkAgc+qIO89u+x0Eky4qIE0QJ1oxky0egZsOUqSXFBRjbuXdPzf+TBHyL
- 83tgZOf9PKkSB3t4u0DT8AfsBd004WqiyLXKMYaqbn4bQOAjLRAWrBeDyntIYvYtqeJ3
- u8fS5ZmaJGScSTxSUjYfPYqRqd7LN0e2QX0LLXZI9sMgYGqLcpJHgvz62sSDCLzHmnEO
- 0PtGaBB46KiVbegrp68sFIs3uHTO7LDOwLalDTahsYzfw7oeJQJgTecliN+nyj69WO9n
- tIpA5Mn09flysF+YGVs/HaRw3WB0e2V8P20S8eac6dAjUBP+jYfp6gsrglR7phLbmbZ2
- WuDQ==
+ bh=OORWjVjOZFqIjyOcIzgstQ5I3F8E3+RG/c415FzxU5E=;
+ b=TyBD6zukJ3Kij6T6j4InFLVBuqL1a3MAlIXxjuTQxV+6Zu/i5pii/71GF6SuoJ+gHs
+ 6QMFLfe50P5cywZ3AfnS0b3MrU/zpe4boKYgyuQCLnhZ86zQDyUopGvPTempbvuTtX3u
+ yGoHsb/NMoF7QWg0nrtr8sgTIQMqwDljtbUZkA1CWOe6mBliX7MDXl0mhwuffiatMGsy
+ Gp0TqnRmuZWfmz3dtoIYm8KsW21lMB1QrvmvvYFN0qEXcXfkBwVBscjRcZ7/SFIFj+e5
+ gAtkaxlPV5eyFdzv75CRKZMoZmWUeB3q86j4plAg9j1L4r/gP8E6dgH9XNs+Nz2Nm4zO
+ 3RQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728059746; x=1728664546;
+ d=1e100.net; s=20230601; t=1728059761; x=1728664561;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hBcEgRLUs4YPVNfRAPRCJw9z4l7rdD9SQBWLJrOyEBM=;
- b=IRNQ+MW48CFmJ6fZwxaIXqZ22LSk52icr79Qm7BKLklG8RnUGpA6jSOdM56Ia7si/8
- 5msNdNbLlx7pOQKCyOI3zrlhrC579gCSECwgyvdFmL57B8/upnsqE7xBcx1+IJrWJaX1
- K8i7+sZsZ5235jgYV0I48ZO5mOvFjOuGC3qbYvjBZNi1ItaaYnjDvDyxvRfuwWRo2JWF
- vlAv3RQMCuhcKd3tS67n4h6sriwGKIwFDfeRPSgwpE7yRdhCisQxVLQ8EIamE4uUM1w1
- kC6JMOVugaV5J7Yh2YBgqbXqKQM5egIkF0qwP33WKGyQdggb5qQ/dModELMG9ks4QF9j
- HCrw==
-X-Gm-Message-State: AOJu0Yxh2aNdjj52VMx2wDrkTx0wYPMOYeokgTPSW0Z49e43+BLGOhjC
- DCdVpL+Vfd/6eLd/8PfVBDGpg4sW5vvKwJEkpDe+U5LI3HwnS/18fTl45tFcaH2/VTWreqDgD/u
- IUYgHIg==
-X-Google-Smtp-Source: AGHT+IHucy4PeMuJnAv+0a/4zi8dryHCmTMpG9TGBmqNAHiRNScZqBASIFheRPXmNdzuhNdKH+WYmA==
-X-Received: by 2002:a05:6512:3d87:b0:52e:9b9e:a6cb with SMTP id
- 2adb3069b0e04-539ab876cedmr2107733e87.15.1728059746062; 
- Fri, 04 Oct 2024 09:35:46 -0700 (PDT)
+ bh=OORWjVjOZFqIjyOcIzgstQ5I3F8E3+RG/c415FzxU5E=;
+ b=X/ur9Y0RuVSfMcEM2GTCwL8yFDVdeZydpWTkKWJiiF+uN1wuR/INrGZiBdxBgxIxXW
+ /wgT/68GuTc60B7Sq+EgVKXC6nidO7/CB9pODa2pNpkj5Wf3waAb2RshQoIXiXKW8JJI
+ vf1miI34CmcfWQdsaC0EMmXsmEI+YJdSZeAVJXkYSklRoKopG9rkLA6rPRfirjIhJQWZ
+ wep0BHa+1VUAGEUkYTB66T1d2v2C87tKgFXLqz8y5ALiabaHCG56iRKJUV4CVa/RxUJs
+ Pjp0I8+oJ5QpbzSNH079bjxEeY2GVYdf9m03xK/gmBBocfqZfVZWqDTqhe+JZbY/fsOp
+ VgmA==
+X-Gm-Message-State: AOJu0YxTlcj3fZHWLKNRVNuBJdMSWeKdudYtcrydEtsIuE5bbH/BTZN/
+ VjWPM/bdGXmtFa/kqePTg8mZN344+Mdpu6Q8kq7Fn1Oeot2+FSZvWhmEhdjIRMRQm4xWzpDEk0/
+ 7Xl/RTQ==
+X-Google-Smtp-Source: AGHT+IGThjDUuL9uRpDV3ZvuaVWWraIJPbDLq54yh68I9sL1Oe1J7rZUEDrM7ohnD0TaA40IBq0wDg==
+X-Received: by 2002:a2e:a543:0:b0:2fa:c5b0:3994 with SMTP id
+ 38308e7fff4ca-2faf3c60358mr21419471fa.13.1728059760737; 
+ Fri, 04 Oct 2024 09:36:00 -0700 (PDT)
 Received: from localhost.localdomain ([91.223.100.150])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-539aff23588sm1192e87.196.2024.10.04.09.35.40
+ 38308e7fff4ca-2faf9b336c3sm214031fa.113.2024.10.04.09.35.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Oct 2024 09:35:44 -0700 (PDT)
+ Fri, 04 Oct 2024 09:35:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
@@ -62,17 +62,17 @@ Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 20/25] target/sparc: Use explicit big-endian LD/ST API
-Date: Fri,  4 Oct 2024 13:30:36 -0300
-Message-ID: <20241004163042.85922-21-philmd@linaro.org>
+Subject: [PATCH v2 21/25] target/hppa: Use explicit big-endian LD/ST API
+Date: Fri,  4 Oct 2024 13:30:37 -0300
+Message-ID: <20241004163042.85922-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241004163042.85922-1-philmd@linaro.org>
 References: <20241004163042.85922-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,7 +95,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SPARC architectures use big endianness. Directly use
+The HPPA architecture uses big endianness. Directly use
 the big-endian LD/ST API.
 
 Mechanical change using:
@@ -104,41 +104,27 @@ Mechanical change using:
     for acc in uw w l q tul; do \
       sed -i -e "s/ld${acc}_p(/ld${acc}_${end}_p(/" \
              -e "s/st${acc}_p(/st${acc}_${end}_p(/" \
-        $(git grep -wlE '(ld|st)t?u?[wlq]_p' target/sparc/); \
+        $(git grep -wlE '(ld|st)t?u?[wlq]_p' target/hppa/); \
     done
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/sparc/gdbstub.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/hppa/gdbstub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
-index ec0036e9ef6..6c82b7db8cf 100644
---- a/target/sparc/gdbstub.c
-+++ b/target/sparc/gdbstub.c
-@@ -110,11 +110,11 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- #if defined(TARGET_ABI32)
-     uint32_t tmp;
+diff --git a/target/hppa/gdbstub.c b/target/hppa/gdbstub.c
+index 0daa52f7af2..537d0d2dfff 100644
+--- a/target/hppa/gdbstub.c
++++ b/target/hppa/gdbstub.c
+@@ -150,7 +150,7 @@ int hppa_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ int hppa_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+     CPUHPPAState *env = cpu_env(cs);
+-    uint32_t val = ldl_p(mem_buf);
++    uint32_t val = ldl_be_p(mem_buf);
  
--    tmp = ldl_p(mem_buf);
-+    tmp = ldl_be_p(mem_buf);
- #else
-     target_ulong tmp;
- 
--    tmp = ldtul_p(mem_buf);
-+    tmp = ldtul_be_p(mem_buf);
- #endif
- 
-     if (n < 8) {
-@@ -165,7 +165,7 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- #else
-     else if (n < 64) {
-         /* f0-f31 */
--        tmp = ldl_p(mem_buf);
-+        tmp = ldl_be_p(mem_buf);
-         if (n & 1) {
-             env->fpr[(n - 32) / 2].l.lower = tmp;
-         } else {
+     switch (n) {
+     case 0:
 -- 
 2.45.2
 
