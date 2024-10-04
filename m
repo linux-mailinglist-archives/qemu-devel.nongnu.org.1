@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AB5990983
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D58CA990969
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:37:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swlJH-0005T2-9L; Fri, 04 Oct 2024 12:37:43 -0400
+	id 1swlJG-0005Rw-KR; Fri, 04 Oct 2024 12:37:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1swlH7-0000At-4D
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1swlHA-0000b6-5J
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1swlH5-0006Ur-AW
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:28 -0400
+ id 1swlH8-0006Vm-Ha
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728059726;
+ s=mimecast20190719; t=1728059729;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7uWdMuqfxCw5Np2FFSdp69OVDoJ5makDfahK/kSKpIQ=;
- b=fwJOjlZhSavzcgw1iJWC0R+VWjJJ6Bs9xO5omkRubaPM6hCZMj1QKdFfDX0DH3+lLLEQNi
- VJW8BfvW93kGpOPoFD8ohF6S7F6OBY3rC9qUtjUrz7wZmQGqQWfJPhYsCyWrmE7IhJMxGw
- 6J+6MDPW/F6Wqm6Y9RIlDbB3e4naysM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xpRZLu1LDAQ4lHu80CpSku7vlaQLxLoF4YRF8+/3PN0=;
+ b=XiPSAYtuhtFx50PBVtAozB4ncIkm4gJ3/EpElGYbVH94cKtej7/BKhf1emsHKlnCodx1zA
+ YOH88rluighllbtd62az6GLnizFp4eG98JKknHFuozduWdAw9VYkeAyHXe7B1Q6YTYiBSC
+ 5pwSnrWMEHzxn53RKbPWX7H2wXYRbkY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-12-jyCNDfw-P_O9bT8D3ARejA-1; Fri, 04 Oct 2024 12:35:25 -0400
-X-MC-Unique: jyCNDfw-P_O9bT8D3ARejA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-42ca8037d9aso14223555e9.3
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:35:25 -0700 (PDT)
+ us-mta-601-9K51u9bUMf660_J3xpLaPA-1; Fri, 04 Oct 2024 12:35:28 -0400
+X-MC-Unique: 9K51u9bUMf660_J3xpLaPA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-42cb6f3c476so17432845e9.0
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:35:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728059723; x=1728664523;
+ d=1e100.net; s=20230601; t=1728059727; x=1728664527;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7uWdMuqfxCw5Np2FFSdp69OVDoJ5makDfahK/kSKpIQ=;
- b=qlOXXDncW6gO5g0EA2GY+RvIVeW4GdHQWHGKbxT3YLaAuO+VEKpJbu2ohX+PBMII3r
- Pg/nZkl8c/+9pPFLVjiLB51JFvkDmP8ERF1ZSBuiM80v562t47JTJgtiDpHo8V0Y5oGs
- DBQ2W7lwoKys7Z5UMDH7rH2f86t/JR1NuDLCmLfaTD0WmXGXLdqVAANFQA5c6JZka7Ct
- ol1zvfGOIEV+O78MIRk2RE2ohBAvehXc9yS7uDgEAUxVbVk3iXgbNdlyAuVe+PS6aR8M
- M+hkP/LQCTPkmuXinHKsG0FpFLbhZdZttx6rOjfd2xIDqgWlELbpjbGUJpSpHexAofh+
- ULGw==
-X-Gm-Message-State: AOJu0YxnZFj0LVRkMKI7xjUEfFmrAvp+TVhc4jeTd1K7wWI/A6IOL/0o
- 19UoYfPQl2AkItyaxJXjcTD7niy/VzL2zW7pbciAKGscYQkgcclSUyLATcWP0rTv4bc1oLEsZQD
- RLLx2DkNPAEN16xyJp48wwQPl2ktcbjls/vLQ6OsX8r9suXfszUR5FbEiAfcUGgvJCq4CXffCed
- litKuAZj7ZEbh4ie1gmT+yyBoKq5AtY7tpgWDqres=
-X-Received: by 2002:a7b:cc89:0:b0:42c:bd5b:cb53 with SMTP id
- 5b1f17b1804b1-42f85aef0bamr21673885e9.23.1728059723484; 
- Fri, 04 Oct 2024 09:35:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLzkEF37x5PLR6J1A5gexFqbXLzkwyiSj7Q1gt03RPmTcumKVNCk27V4o3cYgscuYDLOENeA==
-X-Received: by 2002:a7b:cc89:0:b0:42c:bd5b:cb53 with SMTP id
- 5b1f17b1804b1-42f85aef0bamr21673655e9.23.1728059723014; 
- Fri, 04 Oct 2024 09:35:23 -0700 (PDT)
+ bh=xpRZLu1LDAQ4lHu80CpSku7vlaQLxLoF4YRF8+/3PN0=;
+ b=ancgBlHWpcha1sBgm8kDJPAfX4qa/Sj8XR2vfvYFhWMljVVO9exB9CB+/cpz5YtziH
+ dIIzRd2uXoMxg9QbuXpfDM+n+hvoI1M3T0TFBV8SUZ+qx2xO2Pri7essEiJo9RIMv3k2
+ RJqC0N9WCYOLS9ir+rhWKKz4BuGvBF4IE58aog2AqPezPLIsSudYcVxoh4vNuE43XWFv
+ wb3l+1RMbMhBY1f7WJ5Cqhg7eut9zUlKDANzuqgzt4llUcnNRyLJhz68Q3qguJpbz065
+ dTYqHA3C4mAFtMvGfVfiWbF7cGqIs0YO2wpkPshd5cc9G+eL2AA+I3l2ywtt1rYRDVV1
+ TZwQ==
+X-Gm-Message-State: AOJu0Yxn8lJKh690h0uCV1ajTs3Tjn+88CX2J3j72ej2ls7YCCHuGZ9U
+ CpGW4hddkODTveySHh7/1+wYsz2UswvkjIRRKdk5ADD6DEuDammQWkq7s1DvvVcaQ0BcibhnJo6
+ EGQP6J2Z9sDV9zzo9o9l8qWon7dZc9d7xKwDH5exMHOBreu5TLKV4mCBh2nuSS4uBzsBW+AVvTn
+ yIrUD/uZ9sAGe8PCpuw7W+Egr8FCqCcKUOZmsB1Ww=
+X-Received: by 2002:a05:600c:4f4b:b0:42c:bd27:4be4 with SMTP id
+ 5b1f17b1804b1-42f85aa62e7mr26746795e9.8.1728059726597; 
+ Fri, 04 Oct 2024 09:35:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG/0YrhisACE/5G2wPphIx2CVyjsEnTn8543n1EBu2AAxiG0Gn0cmRPWf1RCBhWcQpYxKxY6g==
+X-Received: by 2002:a05:600c:4f4b:b0:42c:bd27:4be4 with SMTP id
+ 5b1f17b1804b1-42f85aa62e7mr26746575e9.8.1728059726071; 
+ Fri, 04 Oct 2024 09:35:26 -0700 (PDT)
 Received: from avogadro.local ([151.95.43.71])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42f89ed9d4bsm1459855e9.42.2024.10.04.09.35.22
+ 5b1f17b1804b1-42f89e83363sm1633325e9.6.2024.10.04.09.35.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Oct 2024 09:35:22 -0700 (PDT)
+ Fri, 04 Oct 2024 09:35:25 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 21/23] qom: rename object_resolve_path_type() "ambiguousp"
-Date: Fri,  4 Oct 2024 18:34:13 +0200
-Message-ID: <20241004163415.951106-22-pbonzini@redhat.com>
+Subject: [PULL 22/23] qom: set *ambiguous on all paths
+Date: Fri,  4 Oct 2024 18:34:14 +0200
+Message-ID: <20241004163415.951106-23-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20241004163415.951106-1-pbonzini@redhat.com>
 References: <20241004163415.951106-1-pbonzini@redhat.com>
@@ -77,7 +77,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -104,44 +104,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Make it match the function declaration & documentation.
+So the caller contract is simpler.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Link: https://lore.kernel.org/r/20241002080806.2868406-2-marcandre.lureau@redhat.com
+Link: https://lore.kernel.org/r/20241002080806.2868406-3-marcandre.lureau@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qom/object.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ qom/object.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/qom/object.c b/qom/object.c
-index 28c5b66eab5..0adbef29462 100644
+index 0adbef29462..222804dcfb5 100644
 --- a/qom/object.c
 +++ b/qom/object.c
-@@ -2184,7 +2184,7 @@ static Object *object_resolve_partial_path(Object *parent,
- }
- 
- Object *object_resolve_path_type(const char *path, const char *typename,
--                                 bool *ambiguousp)
-+                                 bool *ambiguous)
- {
-     Object *obj;
-     char **parts;
-@@ -2193,11 +2193,11 @@ Object *object_resolve_path_type(const char *path, const char *typename,
-     assert(parts);
- 
-     if (parts[0] == NULL || strcmp(parts[0], "") != 0) {
--        bool ambiguous = false;
-+        bool ambig = false;
-         obj = object_resolve_partial_path(object_get_root(), parts,
--                                          typename, &ambiguous);
--        if (ambiguousp) {
--            *ambiguousp = ambiguous;
-+                                          typename, &ambig);
-+        if (ambiguous) {
-+            *ambiguous = ambig;
+@@ -2201,6 +2201,9 @@ Object *object_resolve_path_type(const char *path, const char *typename,
          }
      } else {
          obj = object_resolve_abs_path(object_get_root(), parts + 1, typename);
++        if (ambiguous) {
++            *ambiguous = false;
++        }
+     }
+ 
+     g_strfreev(parts);
 -- 
 2.46.1
 
