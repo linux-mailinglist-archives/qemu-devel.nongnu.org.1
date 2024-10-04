@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D640A990981
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D657199097E
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:40:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swlHZ-0000n2-Uh; Fri, 04 Oct 2024 12:36:03 -0400
+	id 1swlIr-0002iq-Hr; Fri, 04 Oct 2024 12:37:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1swlGa-0006mv-Ex
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:34:59 -0400
+ id 1swlGe-0006r3-AN
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1swlGY-0006Bg-Q9
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:34:56 -0400
+ id 1swlGa-0006Bx-57
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:34:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728059693;
+ s=mimecast20190719; t=1728059695;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IxyQuyi8N7jciKzaMKuNNPCxNDYD7MTkwKRlfXHgIsE=;
- b=dYCB7+jlc3aeDprBt4vc+ZmQAvogKgfkz9MNe7EUdiRZZ56Tgk0DqNiz5ClbuGlGAQayVY
- jz1ZAbk5V4HcW549xnlpAchNcgcayND0WZXIAQeDIj1qI/xpvKvxXpYa6EocMpau+jQ4X8
- W+Lfvby+Vi7GnfXRcHC0Ky17f8EHs30=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ggDZoeB06EyPk6F7B4bvzLC8eI1WG/pc242INantOA0=;
+ b=GL2aTVvzmu3aXr2lkR9oGwZYOdu5CUUANvMx4GMlRyha+B95oK1F6AsK2UxsedKKZTb2uU
+ IqfxmAWGdvZQPU1GMKCn2npzBA7PqbLfTyUppcp31k2M6gIBri0zhFL7qmUSohUEhZimgr
+ w5Tp5k4JSXlK736NcNciOmqulJez2r0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-5-5INQv13uP7eKcXw1wRS8EA-1; Fri, 04 Oct 2024 12:34:51 -0400
-X-MC-Unique: 5INQv13uP7eKcXw1wRS8EA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-42cb236ad4aso13063635e9.3
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:34:51 -0700 (PDT)
+ us-mta-227-xtaQa8NdP0GOFNUsJRTFag-1; Fri, 04 Oct 2024 12:34:54 -0400
+X-MC-Unique: xtaQa8NdP0GOFNUsJRTFag-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-42ca8037d9aso14215905e9.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:34:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728059690; x=1728664490;
+ d=1e100.net; s=20230601; t=1728059692; x=1728664492;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IxyQuyi8N7jciKzaMKuNNPCxNDYD7MTkwKRlfXHgIsE=;
- b=PidLhJzv5RVz5OIsruCiL+eAXKq01Mal8dM4Rj2+meG1EwES44qJC7svKKFY2cEXiP
- hJQwe2dcUFX4X55P51xu6TsBBBLJEnbZGYENaavvw5RbQqscALP4fZaOTW/onv+M+gR4
- URPsIWvbzOSgFAvJapukgr8wayfcgWz6EogqcwhzzeHdJ92MAllBH1mGeZ1zEXrV4ApK
- Um6J9lgb8yDYf7ZsJEZQ0QLoxwavMn99AFkhP2bCAPUXSQQrxCSCuOAXWJfvz3EA0nRi
- edpvOuFuEBBZJm4wILLS7MmI1hd9LA7mwFov+3zDpj3HHBPQyc78eFESLL6BZfAEaZfJ
- EnEg==
-X-Gm-Message-State: AOJu0YylP79WLeg0w8rZXdCG1Qyk7ozZAsKxDiGdqNSaijrJqEnL7G+2
- Si45h+AuNlo6GHoqL+dGAjg0SKMdXkFtLOdiYWZIGOX2AY79jvrfM06WeyB3Ew1Zyw3negRXo4c
- AweRXAKyFLD8UvE8sKk4UnhnepuvMEihFxZly3/h53yJbr/2DFV0gBvcSpM5dVC8AoyMBgXacZ6
- y41MKbQN0itS88gRr7ZoadhbLuWMs2mcOLGHQofgE=
-X-Received: by 2002:a05:600c:350c:b0:42f:4f6:f8f3 with SMTP id
- 5b1f17b1804b1-42f85aa3a92mr22609325e9.7.1728059689787; 
- Fri, 04 Oct 2024 09:34:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFvufESLsI8uopANpwm26nJMqI24XmFRK0/zowBzanzjJvDJcRgIzaDSXoJBgJ2XsGEMaK26Q==
-X-Received: by 2002:a05:600c:350c:b0:42f:4f6:f8f3 with SMTP id
- 5b1f17b1804b1-42f85aa3a92mr22609125e9.7.1728059689284; 
- Fri, 04 Oct 2024 09:34:49 -0700 (PDT)
+ bh=ggDZoeB06EyPk6F7B4bvzLC8eI1WG/pc242INantOA0=;
+ b=I2eS4qT/ZjOKWEe0vl8rAD+iu27dF3YrZMd/rPgktZdHeCO6Zk13Zk/ibmWmmtA3BJ
+ h0XSpuqiu1597/zsSYWCI55xX+fbM36LDR91ScODhIsKWEOjnALO033AbU7/LLO0YDDv
+ 2kyycFx8uuAbsTxMKnwQXwE/6vtd5xB3xm0Q+D/lH3g4TN5u99xANUQYIX4Ua2LxY5p/
+ iqxkCKo0sRJno1W02LS1h4WlB3T8YGdbEL8XjitCBA4enCh0OGuUw2//Vy/UEbMGyAGD
+ vsu66UX4XDWCcvPZ8zSboJug6krknCN0GRgj9nt39i0TK4UmejRneJFj9Mz5CDL15AeU
+ YPGQ==
+X-Gm-Message-State: AOJu0Yw58diqM5nnGtJzOOFqcjFRrZ6uZrp5IZjwf0hhKlIIM/YPRkjg
+ 0uxb9x49QrumsvYddlBnEBpzc4cu98300KYmkj4z9TsaW0pj6L0aHM7gY7HFeV23piGJEhCnjM0
+ VRbUACox6rCJnVKXh4+xEYG6k4yEG/dJKZHZoz5tDhi9xS0rFVTzKZj6o59eQx4Trste8Lfu8VR
+ v6cA5l3/ALUQjBXJ3Hnu731p4N/SteBpdF06cdwLs=
+X-Received: by 2002:a05:600c:1ca5:b0:42c:cd88:d0f7 with SMTP id
+ 5b1f17b1804b1-42f85ab4830mr24588705e9.10.1728059692429; 
+ Fri, 04 Oct 2024 09:34:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECHg3vsdUjUEJJbqmvmUEZaThBhJBapO/NtQiLSmiqlIOEFPxe37fO36XfDRJJGmmr4yMPeQ==
+X-Received: by 2002:a05:600c:1ca5:b0:42c:cd88:d0f7 with SMTP id
+ 5b1f17b1804b1-42f85ab4830mr24588505e9.10.1728059692048; 
+ Fri, 04 Oct 2024 09:34:52 -0700 (PDT)
 Received: from avogadro.local ([151.95.43.71])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d1690f3b1sm37844f8f.14.2024.10.04.09.34.48
+ 5b1f17b1804b1-42f86b4a38bsm19428535e9.39.2024.10.04.09.34.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Oct 2024 09:34:48 -0700 (PDT)
+ Fri, 04 Oct 2024 09:34:51 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 10/23] kvm/i386: replace identity_base variable with a constant
-Date: Fri,  4 Oct 2024 18:34:02 +0200
-Message-ID: <20241004163415.951106-11-pbonzini@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>, pbonzini@redhat.com, zhao1.liu@intel.com
+Subject: [PULL 11/23] kvm: refactor core virtual machine creation into its own
+ function
+Date: Fri,  4 Oct 2024 18:34:03 +0200
+Message-ID: <20241004163415.951106-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20241004163415.951106-1-pbonzini@redhat.com>
 References: <20241004163415.951106-1-pbonzini@redhat.com>
@@ -101,103 +102,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-identity_base variable is first initialzied to address 0xfffbc000 and then
-kvm_vm_set_identity_map_addr() overrides this value to address 0xfeffc000.
-The initial address to which the variable was initialized was never used. Clean
-everything up, placing 0xfeffc000 in a preprocessor constant.
+From: Ani Sinha <anisinha@redhat.com>
 
-Reported-by: Ani Sinha <anisinha@redhat.com>
+Refactoring the core logic around KVM_CREATE_VM into its own separate function
+so that it can be called from other functions in subsequent patches. There is
+no functional change in this patch.
+
+CC: pbonzini@redhat.com
+CC: zhao1.liu@intel.com
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Link: https://lore.kernel.org/r/20240808113838.1697366-1-anisinha@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ accel/kvm/kvm-all.c | 89 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 56 insertions(+), 33 deletions(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 64ef2db9238..7a1f2bda767 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -81,6 +81,16 @@
-     do { } while (0)
- #endif
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 4c920b7bfe7..e06cf3a4157 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2381,6 +2381,60 @@ uint32_t kvm_dirty_ring_size(void)
+     return kvm_state->kvm_dirty_ring_size;
+ }
  
-+/*
-+ * On older Intel CPUs, KVM uses vm86 mode to emulate 16-bit code directly.
-+ * In order to use vm86 mode, an EPT identity map and a TSS  are needed.
-+ * Since these must be part of guest physical memory, we need to allocate
-+ * them, both by setting their start addresses in the kernel and by
-+ * creating a corresponding e820 entry. We need 4 pages before the BIOS,
-+ * so this value allows up to 16M BIOSes.
-+ */
-+#define KVM_IDENTITY_BASE 0xfeffc000
++static int do_kvm_create_vm(MachineState *ms, int type)
++{
++    KVMState *s;
++    int ret;
 +
- /* From arch/x86/kvm/lapic.h */
- #define KVM_APIC_BUS_CYCLE_NS       1
- #define KVM_APIC_BUS_FREQUENCY      (1000000000ULL / KVM_APIC_BUS_CYCLE_NS)
-@@ -3036,18 +3046,9 @@ static int kvm_vm_enable_triple_fault_event(KVMState *s)
-     return ret;
- }
- 
--static int kvm_vm_set_identity_map_addr(KVMState *s, uint64_t *identity_base)
-+static int kvm_vm_set_identity_map_addr(KVMState *s, uint64_t identity_base)
++    s = KVM_STATE(ms->accelerator);
++
++    do {
++        ret = kvm_ioctl(s, KVM_CREATE_VM, type);
++    } while (ret == -EINTR);
++
++    if (ret < 0) {
++        error_report("ioctl(KVM_CREATE_VM) failed: %s", strerror(-ret));
++
++#ifdef TARGET_S390X
++        if (ret == -EINVAL) {
++            error_printf("Host kernel setup problem detected."
++                         " Please verify:\n");
++            error_printf("- for kernels supporting the"
++                        " switch_amode or user_mode parameters, whether");
++            error_printf(" user space is running in primary address space\n");
++            error_printf("- for kernels supporting the vm.allocate_pgste"
++                         " sysctl, whether it is enabled\n");
++        }
++#elif defined(TARGET_PPC)
++        if (ret == -EINVAL) {
++            error_printf("PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
++                         (type == 2) ? "pr" : "hv");
++        }
++#endif
++    }
++
++    return ret;
++}
++
++static int find_kvm_machine_type(MachineState *ms)
++{
++    MachineClass *mc = MACHINE_GET_CLASS(ms);
++    int type;
++
++    if (object_property_find(OBJECT(current_machine), "kvm-type")) {
++        g_autofree char *kvm_type;
++        kvm_type = object_property_get_str(OBJECT(current_machine),
++                                           "kvm-type",
++                                           &error_abort);
++        type = mc->kvm_type(ms, kvm_type);
++    } else if (mc->kvm_type) {
++        type = mc->kvm_type(ms, NULL);
++    } else {
++        type = kvm_arch_get_default_type(ms);
++    }
++    return type;
++}
++
+ static int kvm_init(MachineState *ms)
  {
--    /*
--     * On older Intel CPUs, KVM uses vm86 mode to emulate 16-bit code directly.
--     * In order to use vm86 mode, an EPT identity map and a TSS  are needed.
--     * Since these must be part of guest physical memory, we need to allocate
--     * them, both by setting their start addresses in the kernel and by
--     * creating a corresponding e820 entry. We need 4 pages before the BIOS,
--     * so this value allows up to 16M BIOSes.
--     */
--    *identity_base = 0xfeffc000;
--    return kvm_vm_ioctl(s, KVM_SET_IDENTITY_MAP_ADDR, identity_base);
-+    return kvm_vm_ioctl(s, KVM_SET_IDENTITY_MAP_ADDR, &identity_base);
- }
+     MachineClass *mc = MACHINE_GET_CLASS(ms);
+@@ -2463,45 +2517,14 @@ static int kvm_init(MachineState *ms)
+     }
+     s->as = g_new0(struct KVMAs, s->nr_as);
  
- static int kvm_vm_set_nr_mmu_pages(KVMState *s)
-@@ -3064,10 +3065,9 @@ static int kvm_vm_set_nr_mmu_pages(KVMState *s)
-     return ret;
- }
- 
--static int kvm_vm_set_tss_addr(KVMState *s, uint64_t identity_base)
-+static int kvm_vm_set_tss_addr(KVMState *s, uint64_t tss_base)
- {
--    /* Set TSS base one page after EPT identity map. */
--    return kvm_vm_ioctl(s, KVM_SET_TSS_ADDR, identity_base);
-+    return kvm_vm_ioctl(s, KVM_SET_TSS_ADDR, tss_base);
- }
- 
- static int kvm_vm_enable_disable_exits(KVMState *s)
-@@ -3183,7 +3183,6 @@ static void kvm_vm_enable_energy_msrs(KVMState *s)
- 
- int kvm_arch_init(MachineState *ms, KVMState *s)
- {
--    uint64_t identity_base = 0xfffbc000;
-     int ret;
-     struct utsname utsname;
-     Error *local_err = NULL;
-@@ -3251,18 +3250,19 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-     uname(&utsname);
-     lm_capable_kernel = strcmp(utsname.machine, "x86_64") == 0;
- 
--    ret = kvm_vm_set_identity_map_addr(s, &identity_base);
-+    ret = kvm_vm_set_identity_map_addr(s, KVM_IDENTITY_BASE);
-     if (ret < 0) {
-         return ret;
+-    if (object_property_find(OBJECT(current_machine), "kvm-type")) {
+-        g_autofree char *kvm_type = object_property_get_str(OBJECT(current_machine),
+-                                                            "kvm-type",
+-                                                            &error_abort);
+-        type = mc->kvm_type(ms, kvm_type);
+-    } else if (mc->kvm_type) {
+-        type = mc->kvm_type(ms, NULL);
+-    } else {
+-        type = kvm_arch_get_default_type(ms);
+-    }
+-
++    type = find_kvm_machine_type(ms);
+     if (type < 0) {
+         ret = -EINVAL;
+         goto err;
      }
  
--    ret = kvm_vm_set_tss_addr(s, identity_base + 0x1000);
-+    /* Set TSS base one page after EPT identity map. */
-+    ret = kvm_vm_set_tss_addr(s, KVM_IDENTITY_BASE + 0x1000);
+-    do {
+-        ret = kvm_ioctl(s, KVM_CREATE_VM, type);
+-    } while (ret == -EINTR);
+-
++    ret = do_kvm_create_vm(ms, type);
      if (ret < 0) {
-         return ret;
+-        error_report("ioctl(KVM_CREATE_VM) failed: %s", strerror(-ret));
+-
+-#ifdef TARGET_S390X
+-        if (ret == -EINVAL) {
+-            error_printf("Host kernel setup problem detected."
+-                         " Please verify:\n");
+-            error_printf("- for kernels supporting the"
+-                        " switch_amode or user_mode parameters, whether");
+-            error_printf(" user space is running in primary address space\n");
+-            error_printf("- for kernels supporting the vm.allocate_pgste"
+-                         " sysctl, whether it is enabled\n");
+-        }
+-#elif defined(TARGET_PPC)
+-        if (ret == -EINVAL) {
+-            error_printf("PPC KVM module is not loaded. Try modprobe kvm_%s.\n",
+-                         (type == 2) ? "pr" : "hv");
+-        }
+-#endif
+         goto err;
      }
  
-     /* Tell fw_cfg to notify the BIOS to reserve the range. */
--    e820_add_entry(identity_base, 0x4000, E820_RESERVED);
-+    e820_add_entry(KVM_IDENTITY_BASE, 0x4000, E820_RESERVED);
- 
-     ret = kvm_vm_set_nr_mmu_pages(s);
-     if (ret < 0) {
 -- 
 2.46.1
 
