@@ -2,77 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C232990B39
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 20:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8242990B5F
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 20:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swmy9-00012e-1t; Fri, 04 Oct 2024 14:24:01 -0400
+	id 1swn0p-0002WD-Nl; Fri, 04 Oct 2024 14:26:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1swmy6-000127-VO
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 14:23:58 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ id 1swn0k-0002VY-0l
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 14:26:42 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1swmy5-0002ZS-Fs
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 14:23:58 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2fac47f0b1aso30897811fa.1
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 11:23:57 -0700 (PDT)
+ id 1swn0i-0002pt-9m
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 14:26:41 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-5398e4ae9efso2857209e87.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 11:26:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728066236; x=1728671036; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=daj2G7v6GYNNMy/YdduAt2P4YOw8SO/gZvr0DGLa6xA=;
- b=h3q0omy8BpO9FP5XKwlgTc0q0+1Fn6+/aY5eCf0jNPBYTkXfE9JMcEWKsXLelQkFId
- A2TYzC/RsqCw/9rjej45EtNbhQabADpZc4Becs3x2Q52NL4cobi+vdeoF//ubPyxGX5z
- 3ChcGL4T5m48WCHWCYWowEZV1qt1+th1BL40Q/x7CBjKu0urLF08zr/z1tkCiiYTU0mY
- 4/yZAT7zTOceDlPd6E6pjGPKJKaewLN0zB87OPBAcBRcgZmwuRIhomJrshfUgHlLGkIb
- vS0Ruyp2OWK4jDwAbEeOgOjYTycoMbaUTKn0tYG0msNFfCsvKN3m1+lZVjUTu9uEMKkS
- fc4g==
+ d=linaro.org; s=google; t=1728066398; x=1728671198; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=2yEjesP4qQwFvs3HmZf4KN/MQveFZrQn2HjkTmy5WOc=;
+ b=BLjUptsDZTjytVsLKBNfLkRE0Qom9Ea5Degdhb84GPdPJENYSvJAW19geLvjd426du
+ WbqxS6zl8TjGqjBaOQG/8GmfZAdXh8IUNAJ52pG0/Cdpk2A9o4M0ZfuncDUu37xPymqh
+ nrPUW0Z2u3mnsWEpLLUyPxEIJMnTMvuL9KffzzMn8mfdh65wMt7qlaUmbMDQI22qtU5s
+ q1GiJFGaXRbS/6yIoQ/rEr8guQBwlaYWWzFkpHGsVi3+/pFpK4atG/f0iimlXHDBQUga
+ 4XV1jTf8VfLljbys4+tzTm4c3yqFaoL+Vqb8oQAyTrRjxm4PjzaF+2Osz7IuFzoja2LK
+ m97g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728066236; x=1728671036;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=daj2G7v6GYNNMy/YdduAt2P4YOw8SO/gZvr0DGLa6xA=;
- b=YZRubMfi/R8HW1JwvXUigu557umkUX8SWnL9Pu8h7+ipEfTntqJUSf/DPTc8No58OC
- 8FqGpMkJ6YXIXRNvgL8pBSXLYvV0GnfqcYzqXoSdOAMqBSUiqqgFJA925cpjiIbPbIGc
- GisswsxUuq7cCWrV3Bh76QLYUNRLqmzhSoiZqTBdSV4jG0RuNUJoMykz6jSPdxO3zLvF
- Pl4MBaPiqavVHnnc2ReUgXmh5Ypjd1GEm9EQJVf4H2hniLvzGmYTfYKnnWdekehPaaKR
- lMYVUCQ5LHCFY/eN5P7C5yd7a+IuctZNs2MiTxO6aR4L6RKZL5NdbM/eco50Os6RIDTz
- 75ng==
-X-Gm-Message-State: AOJu0Yz3xQjEJeksQINjuvW7KihT8ni4yvf4NHYA3rhWrWHgmgH4cKG5
- wJw3RCKuDbMnDgrSrv2kWr2yATnvzsL8r1Yjc6DxIx0eVp+gN9NTDh5zCBSflv4EwS6zpzx48w3
- j33701ZI+6gb49yF5AMRWplq95uNduVXe1PPsdg==
-X-Google-Smtp-Source: AGHT+IFBJjEW1kMCwAyHlwhBlE1yj8cG75q4enI+4phx/Q3RWNwqBoMW7qYRVGmm2+shpK2fXPC8pnHyCzHVEzb8ySs=
-X-Received: by 2002:a2e:d1a:0:b0:2f1:a19b:d5a4 with SMTP id
- 38308e7fff4ca-2faf5cdead9mr13292311fa.22.1728066235764; Fri, 04 Oct 2024
- 11:23:55 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1728066398; x=1728671198;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2yEjesP4qQwFvs3HmZf4KN/MQveFZrQn2HjkTmy5WOc=;
+ b=Hnt51CMRdwtywIK8rScJ1c5u+yz9DXrGE9/0wsHOHT6yGyhut1y3qevA2zmlxlZQuZ
+ JHQszSTFmHfEh/ZccePakozGhqzhrU51ZETajmQsuOt5bZYfCCvTb3S7eTNH/Z8HBSwp
+ 8YXAibhAXWAuGZ/7Zyw2II5EnbeCPHRmWUOL5ZxtyD5QYmYvr9c1AFsu2CNsZ90J+XnV
+ iqouwA/Iqvn8zLlt+5/Nk5JHyxscXzHIpYoWS0n42HUMbkhbDolLEQGa1twmUwuyBM8z
+ Y+czkFgwGDAPd07qX9xxYGuca0lEflrZGa2Ad1UgRllUwVL3f1hZG3enm3Vx8AqTMXn5
+ 0cHA==
+X-Gm-Message-State: AOJu0YxjybQaA+Gf3wxw2vAGYbs/Hr2D42WfA4aL7oFtI1JHxK1HBncL
+ RYqbuP3xpI1sECyfT1orJ2FEqx0BHgey1kfa4jQN3ziShEsSnp8NCM1WquUDznTm5VPaDk7xcnL
+ Fbq33htOD+wFvTPJd6uIlVaH0GNj11uPcZkjnQw==
+X-Google-Smtp-Source: AGHT+IEnO7qfCP1Jwtwc3yRwMmCi45qn91QDIo/eIoIxF5BWJ7azQmBL0S3B2SHBtSibSERW+cxcqZZnrrBPOd+Filg=
+X-Received: by 2002:a05:6512:3c97:b0:52e:91ff:4709 with SMTP id
+ 2adb3069b0e04-539ab87757amr2503893e87.21.1728066397895; Fri, 04 Oct 2024
+ 11:26:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20241003081105.40836-1-ines.varhol@telecom-paris.fr>
-In-Reply-To: <20241003081105.40836-1-ines.varhol@telecom-paris.fr>
+References: <20241004160331.1282441-1-mjt@tls.msk.ru>
+In-Reply-To: <20241004160331.1282441-1-mjt@tls.msk.ru>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 4 Oct 2024 19:23:45 +0100
-Message-ID: <CAFEAcA9=We-DwTezYw6=KApSQ14iExgdek8YLPTzU6HLLv_jpw@mail.gmail.com>
-Subject: Re: [PING PATCH v5 0/3] Check clock connection between STM32L4x5 RCC
- and peripherals
-To: =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>
-Cc: qemu-devel@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
- Paolo Bonzini <pbonzini@redhat.com>, Luc Michel <luc@lmichel.fr>,
- qemu-arm@nongnu.org, 
- Thomas Huth <thuth@redhat.com>, Samuel Tardieu <sam@rfc1149.net>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Alistair Francis <alistair@alistair23.me>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Damien Hedde <damien.hedde@dahe.fr>, Laurent Vivier <lvivier@redhat.com>
+Date: Fri, 4 Oct 2024 19:26:27 +0100
+Message-ID: <CAFEAcA-pBSDX=p7pqAHuA_B_yFnCi_-VhdAbec=HiETAe=ZWYA@mail.gmail.com>
+Subject: Re: [PULL 00/23] Trivial patches for 2024-10-04
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,23 +85,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 3 Oct 2024 at 09:11, In=C3=A8s Varhol <ines.varhol@telecom-paris.fr=
-> wrote:
+On Fri, 4 Oct 2024 at 17:07, Michael Tokarev <mjt@tls.msk.ru> wrote:
 >
-> Among implemented STM32L4x5 devices, USART, GPIO and SYSCFG
-> have a clock source, but none has a corresponding test in QEMU.
+> The following changes since commit 423be09ab9492735924e73a2d36069784441ebc6:
 >
-> This patch makes sure that all 3 devices create a clock correctly,
-> adds a QOM property to access clocks' periods from QTests,
-> and adds QTests checking that clock enable in RCC has the
-> expected results for all 3 devices.
+>   Merge tag 'warn-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2024-10-03 10:32:54 +0100)
 >
-> Thank you for the reviews.
+> are available in the Git repository at:
 >
-> Changes from v4 to v5: none
-> (just added new reviewers in commit messages)
+>   https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+>
+> for you to fetch changes up to 6b7d2f6e1896fb675e8518ed61c792d4dd92e034:
+>
+>   MAINTAINERS: Add myself as maintainer of e500 machines (2024-10-04 18:57:38 +0300)
+>
+> ----------------------------------------------------------------
+> trivial patches for 2024-10-04
+>
+> - many dead code removals by Dr. David Alan Gilbert
+> - forgotten minor bugfixes (vnc, resource freeing in qemu-keymap)
+> - some more..
 
-Thanks for the resend -- I've applied this to target-arm.next.
+
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.2
+for any user-visible changes.
 
 -- PMM
 
