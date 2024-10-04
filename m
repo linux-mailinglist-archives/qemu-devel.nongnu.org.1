@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E59599097D
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25DB9990993
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:43:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swlJV-0006m6-BH; Fri, 04 Oct 2024 12:37:57 -0400
+	id 1swlLd-0002Du-0Z; Fri, 04 Oct 2024 12:40:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>)
- id 1swlID-0001nv-Sd; Fri, 04 Oct 2024 12:36:40 -0400
-Received: from mail-ed1-f45.google.com ([209.85.208.45])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlLQ-00020Z-Ty
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:39:59 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>)
- id 1swlI9-0006g2-4R; Fri, 04 Oct 2024 12:36:36 -0400
-Received: by mail-ed1-f45.google.com with SMTP id
- 4fb4d7f45d1cf-5c42f406e29so2895417a12.2; 
- Fri, 04 Oct 2024 09:36:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlLM-0006qf-5H
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:39:54 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2fac3f20f1dso27049821fa.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:39:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728059990; x=1728664790; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OduKhiXCyYFySIBtIZ3CtR/jspZalHt3tyCkSIlunGo=;
+ b=ixBaspbj/nqI6/gBTmYRt/ITBm6V+/tvnm0rfIqDvC6ESzzSLGi5bKnu0BVlN/ndT8
+ whVsRJtYDlVq7kcBHdRkT1VkYwzlyv/asW9CqoijTy8nyPT6BC92aYnEDZl36dfFZEoC
+ q+DFoIEpGLrb7njiIisUBraNNjabIN96oslB554cI7g+AFL+74IAx3vqXba+Ma5SfdJ+
+ ny1ZuZ/WkmyEqOn+SGS0LaKlA/DDks2CgAUNhOYqgkurlQ3hR516fWntkWfmVtwxM6Xi
+ Ue7UkoMOPZjCDwXzuEwJ7ChCtJRAl/1Spgem7VUhki55xqvVaN1mIidw/avPInW/1I3K
+ K3Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728059790; x=1728664590;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vMHZvx7l7Rej3OyF/0JYKtgw2tqUJj8iyIX5kSCvVi8=;
- b=ISYhVCY8qrJFtZ/vmdstBPPz7MiUi0qN+qzROEOAKJR9P5V6kbXHuo3XwdDyYnwPOx
- baI19ZNp3xCbHvNc2mk8VYYh5xoGBxiF462ijtRg5l74AKu0ZNQQFRRtOinde3V79gi6
- dVR7jT9JV4rf13TE0BXoHdtMsv653e2wQd2VjjtpuCNXVSdJ5iTtBSroAP3oO9u8/sxD
- tj3kZ/Sz9e4lIkIJU6KF4n9ncEa1dMyw5eQMPY73IExpN1rtx/gaT7ZXQGCGO50vP59O
- POnLk8kNGzBQOlgJfoeAwH6+nVoszElp3hZSy+O3dA5IAv+M/gQBmRPsNDPUcJVhF0Hr
- olUg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWG52MCfs0IP1wDt3rrD7RvzTKYnksjB/0ePQEedR/L/Bd+PDZQ30sbPv9Fw6lnqJepL2f5puaQDZTmdA==@nongnu.org,
- AJvYcCXQEAFIIv0/SZ6d1XaRggcSvaOtgS7GBX7mXH2WsdO/++/c0sBZ3hopT99DYb3mJba/uhXM2918fA==@nongnu.org
-X-Gm-Message-State: AOJu0Yx4DPDp2L99Y1AH3Ny5/y81VD92gVl+xmbbUEvJzTAwDDuw9G1t
- BGkqz9MqDjyhHDuTq3pSoT17sNpHszcs1Y0Aw8g5BS91z+/Bbtw/
-X-Google-Smtp-Source: AGHT+IGOU3Z3nHR4Ccqar0N+GTmld2Hg4NB7JpdaL6Kuns8YGn+84uNxzNyfs5ZU2KTtgsTYQzwNMA==
-X-Received: by 2002:a17:906:bc14:b0:a86:6d39:cbfd with SMTP id
- a640c23a62f3a-a991bed85f5mr285065466b.57.1728059789989; 
- Fri, 04 Oct 2024 09:36:29 -0700 (PDT)
-Received: from tpx1 (ip-109-42-49-143.web.vodafone.de. [109.42.49.143])
+ d=1e100.net; s=20230601; t=1728059990; x=1728664790;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OduKhiXCyYFySIBtIZ3CtR/jspZalHt3tyCkSIlunGo=;
+ b=mWG+S4IDS3v5IFMNx3GI1zAwAQAasATzr+JzbRHJaHJGMTpTPoKyh2TMG0mWEHvQvm
+ jOZq8HYae2wEUaHRZfennRR2mGm8FuhHtB/Wj3lnc4Wy5Q0xkrwvgSZnWmk9avylglX8
+ lL3R+eyt6e9hqjSz7/2+xBIM5M+5F5tMQvxkh5HhLNd6mDyootxpdLAEaZMxQ/A0oPIn
+ 7QorolU+D/5cWnRP/wNp64xOs4S7dxZuLHEbRQ24Td60uu0ebTRBKZxqpCdW3zqiNRkB
+ G1ymz5pu9PdhEUup3XJpDIrtGbYyjrzf44hgzSm3J5ZCmgjcVnNKwJCL8ho4bX8nrtlT
+ w+sA==
+X-Gm-Message-State: AOJu0YwRiGxtfFrjRA7D3/qcKrO0bX5x70giaGvfChh7Ha5zceirXV3G
+ +wdCQnmm7ZckFIom5VOxGUIk2l5Jizcjn9UxoLVGcscylXlAa3FgsYd3tm7E+EXlNFRMZGwtRUf
+ fmzbP1Q==
+X-Google-Smtp-Source: AGHT+IFN41KCa3rQKIQLm9FRgNXP9TI22UuiVASOiLeECzngWfDBpupAX0t2k5IkMlSp/I1qiUwNpw==
+X-Received: by 2002:a2e:511a:0:b0:2ef:c281:54f7 with SMTP id
+ 38308e7fff4ca-2faf3d6e4a7mr14502871fa.37.1728059989804; 
+ Fri, 04 Oct 2024 09:39:49 -0700 (PDT)
+Received: from [192.168.132.175] ([91.223.100.150])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a992e6239b1sm13669566b.51.2024.10.04.09.36.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Oct 2024 09:36:29 -0700 (PDT)
-Date: Fri, 4 Oct 2024 18:36:26 +0200
-From: Thomas Huth <huth@tuxfamily.org>
-To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, Michael Rolnik
- <mrolnik@gmail.com>, Halil Pasic <pasic@linux.ibm.com>, Christian
- Borntraeger <borntraeger@linux.ibm.com>, Mark Cave-Ayland
- <mark.cave-ayland@ilande.co.uk>, Frederic Konrad
- <konrad.frederic@yahoo.fr>, Artyom Tarasenko <atar4qemu@gmail.com>, Matthew
- Rosato <mjrosato@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
- Peter Xu <peterx@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Song
- Gao <gaosong@loongson.cn>, Thomas Huth <thuth@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- qemu-s390x@nongnu.org, Laurent Vivier <laurent@vivier.eu>, Eric Farman
- <farman@linux.ibm.com>, =?UTF-8?B?Q2zDqW1lbnQ=?= Chigot
- <chigot@adacore.com>, Paolo Bonzini <pbonzini@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Bastian Koppelmann
- <kbastian@mail.uni-paderborn.de>, Richard Henderson
- <richard.henderson@linaro.org>, Pierrick Bouvier
- <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH 07/16] target/m68k: Use explicit big-endian LD/ST API
-Message-ID: <20241004183626.73846f26@tpx1>
-In-Reply-To: <20241003234211.53644-8-philmd@linaro.org>
-References: <20241003234211.53644-1-philmd@linaro.org>
- <20241003234211.53644-8-philmd@linaro.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ 38308e7fff4ca-2faf9ab2b19sm222001fa.5.2024.10.04.09.39.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 04 Oct 2024 09:39:49 -0700 (PDT)
+Message-ID: <ee7d7f37-50d8-4cb1-a95e-1214f9ac8f0a@linaro.org>
+Date: Fri, 4 Oct 2024 13:39:43 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=209.85.208.45; envelope-from=th.huth@gmail.com;
- helo=mail-ed1-f45.google.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/25] misc: Use explicit endian LD/ST API
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-ppc@nongnu.org
+References: <20241004163042.85922-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241004163042.85922-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,17 +95,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Fri,  4 Oct 2024 01:42:02 +0200
-schrieb Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>:
+On 4/10/24 18:30, Philippe Mathieu-Daudé wrote:
+> For targets (or HW) which are only built for a particular
+> endianness, the generic LD/ST helpers are defined as the
+> target endianness variant. For example, on big-endian
+> targets, stl_p() is equivalent of stl_be_p().
+> 
+> This series replaces in bulk these LD/ST calls.
 
-> The M68K architecture uses big endianness. Directly use
-> the big-endian LD/ST API.
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  target/m68k/gdbstub.c |  2 +-
->  target/m68k/helper.c  | 10 +++++-----
->  2 files changed, 6 insertions(+), 6 deletions(-)
+This is the first part where we only convert the targets
+built for a single endianness.
 
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+The rest (MIPS, ARM, PPC, MicroBlaze and Xtensa) will be
+handled in different series.
+
+I'm keeping hw/virtio/virtio-config-io.c last. Possibly
+current API will then be restricted to user-emu & system/
+to avoid further uses.
+
+$ git grep -wlE '(ld|st)t?u?[wlq]_p'
+hw/mips/bootloader.c
+hw/mips/fuloong2e.c
+hw/mips/malta.c
+hw/ppc/spapr.c
+hw/ppc/spapr_vhyp_mmu.c
+target/arm/cpu.c
+target/arm/gdbstub.c
+target/arm/gdbstub64.c
+target/microblaze/gdbstub.c
+target/mips/gdbstub.c
+target/ppc/gdbstub.c
+target/ppc/mmu-hash64.h
+target/xtensa/gdbstub.c
+
+accel/tcg/user-exec.c
+hw/virtio/virtio-config-io.c
+include/exec/cpu-all.h
+include/gdbstub/helpers.h
+monitor/hmp-cmds-target.c
+system/ioport.c
+system/memory_ldst.c.inc
+
+
+> This is helpful for the single binary project where we
+> want to build a single binary for multiple targets of
+> different endianness.
+> 
+> Philippe Mathieu-Daudé (25):
+>    gdbstub/helpers: Have ldtul_p() definition use ldn_p()
+>    target/hexagon: Replace ldtul_p() -> ldl_p()
+>    target/alpha: Replace ldtul_p() -> ldq_p()
+>    target/s390x: Replace ldtul_p() -> ldq_p()
+>    gdbstub/helpers: Introduce ldtul_$endian_p() helpers
+>    target/alpha: Use explicit little-endian LD/ST API
+>    target/hexagon: Use explicit little-endian LD/ST API
+>    hw/i386: Use explicit little-endian LD/ST API
+>    target/i386: Use explicit little-endian LD/ST API
+>    target/avr: Use explicit little-endian LD/ST API
+>    linux-user/i386: Use explicit little-endian LD/ST API
+>    target/loongarch: Use explicit little-endian LD/ST API
+>    target/sh4: Use explicit little-endian LD/ST API
+>    target/tricore: Use explicit little-endian LD/ST API
+>    target/rx: Use explicit little-endian LD/ST API
+>    target/riscv: Use explicit little-endian LD/ST API
+>    hw/m68k: Use explicit big-endian LD/ST API
+>    target/m68k: Use explicit big-endian LD/ST API
+>    hw/sparc: Use explicit big-endian LD/ST API
+>    target/sparc: Use explicit big-endian LD/ST API
+>    target/hppa: Use explicit big-endian LD/ST API
+>    hw/s390x: Use explicit big-endian LD/ST API
+>    target/s390x: Use explicit big-endian LD/ST API
+>    target/openrisc: Use explicit big-endian LD/ST API
+>    hw/ppc/e500: Use explicit big-endian LD/ST API
+> 
+>   hw/m68k/bootinfo.h                   |  28 ++---
+>   include/gdbstub/helpers.h            |   6 +-
+>   hw/i386/multiboot.c                  |  36 +++---
+>   hw/i386/x86-common.c                 |  26 ++---
+>   hw/m68k/mcf5208.c                    |   2 +-
+>   hw/m68k/next-cube.c                  |   2 +-
+>   hw/m68k/q800.c                       |   4 +-
+>   hw/ppc/ppce500_spin.c                |  24 ++--
+>   hw/s390x/ipl.c                       |   4 +-
+>   hw/s390x/s390-pci-inst.c             | 166 +++++++++++++--------------
+>   hw/sparc/leon3.c                     |  42 +++----
+>   hw/sparc/sun4m.c                     |   6 +-
+>   hw/sparc64/sun4u.c                   |   6 +-
+>   linux-user/i386/signal.c             |   4 +-
+>   target/alpha/gdbstub.c               |   2 +-
+>   target/avr/gdbstub.c                 |   4 +-
+>   target/hexagon/gdbstub.c             |  10 +-
+>   target/hppa/gdbstub.c                |   2 +-
+>   target/i386/gdbstub.c                |  30 ++---
+>   target/i386/tcg/sysemu/excp_helper.c |   4 +-
+>   target/i386/xsave_helper.c           |  32 +++---
+>   target/loongarch/gdbstub.c           |   8 +-
+>   target/m68k/gdbstub.c                |   2 +-
+>   target/m68k/helper.c                 |  10 +-
+>   target/openrisc/gdbstub.c            |   2 +-
+>   target/riscv/gdbstub.c               |  14 +--
+>   target/rx/cpu.c                      |   2 +-
+>   target/rx/gdbstub.c                  |  24 ++--
+>   target/s390x/gdbstub.c               |  34 +++---
+>   target/s390x/ioinst.c                |   2 +-
+>   target/sh4/gdbstub.c                 |  36 +++---
+>   target/sparc/gdbstub.c               |   6 +-
+>   target/tricore/gdbstub.c             |   2 +-
+>   33 files changed, 292 insertions(+), 290 deletions(-)
+> 
+
 
