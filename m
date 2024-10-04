@@ -2,91 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79CDD99097C
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E4799098A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:41:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swlJM-000673-Fk; Fri, 04 Oct 2024 12:37:48 -0400
+	id 1swlJT-0006fI-TI; Fri, 04 Oct 2024 12:37:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1swlHC-0000oq-OV
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1swlHA-0006Wa-RI
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728059732;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fOYQxlb8dWb3hQAPR7qPAEAmjAvpcOZoKc0Lj5UkEYs=;
- b=JtoQ4w44vROSQ2tPoBG/oUbpTYRGZORJxdmI2JVkYW04E4QZlRHauufdCBiap1TLg2LbcD
- 8o4IViGsFkrpZ2txjYDTBuhfMhTYJEeQnjo8V1IetjzLKOqRa5o53gfgTjSxMP26QbA019
- +sJEVMAcYXbmHk1aCD4E8p3RmsliyEo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-403-Hism51xiOWmITFYCq6oljg-1; Fri, 04 Oct 2024 12:35:31 -0400
-X-MC-Unique: Hism51xiOWmITFYCq6oljg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-37cd1fb9497so1691082f8f.1
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:35:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>)
+ id 1swlHc-0001J0-Hp; Fri, 04 Oct 2024 12:36:04 -0400
+Received: from mail-ej1-f52.google.com ([209.85.218.52])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>)
+ id 1swlHa-0006aR-3q; Fri, 04 Oct 2024 12:36:00 -0400
+Received: by mail-ej1-f52.google.com with SMTP id
+ a640c23a62f3a-a8a7b1c2f2bso346537866b.0; 
+ Fri, 04 Oct 2024 09:35:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728059729; x=1728664529;
+ d=1e100.net; s=20230601; t=1728059755; x=1728664555;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fOYQxlb8dWb3hQAPR7qPAEAmjAvpcOZoKc0Lj5UkEYs=;
- b=Fq8Nzm9jmf/qm3Z6S2fIn4MvGp1GblDMwpDqZh8I1GMB5LwLJM53bYsOoNJO1EptmQ
- rL+JK88q0JDkfIRFbNsY7q/GPOXy64TMwTU/eDy79GULagjFssUDoEhFxtJA42PS88DK
- 6+gwa4TpW9InU/CaFlLrWgNgToy8YIKc1+bq7+XTKvi6yjWIpKhAY2TSkcBm0sVk/hXq
- xA2ELAnI0w4jppU3Y+hsHbKvWsYHgmEDG1d+2QYYYj3Z3RMfb+IoFZTCvVPyZC9OYcoG
- mcxYLY/fqudqBdxpMdUM4tSRWAe0EW04L3MCQDYibko43QT75dsPTHX5uABAnrSp2mrZ
- +P6A==
-X-Gm-Message-State: AOJu0YzTHfkxFU1ouMhA5m7DP5jKzMWRaz0rrg1L2oKhA3ZxxCHQ/vyd
- QDtgbG/31JSkn47plIppA8UbszZ5RnZZFhMg2Z3i027y3gBN5tXO8v/Syx9oySLTq8NzYmLcduS
- DTd2cVqsPd909THHbYGxnHFT8iXRpIY8NxbD0TZGbDPMaUB5sLawpNazd5XT5lB39JGlPHE4bbB
- PMx4WaXItiEd+RXAMm33BMQp6NcejPpIvbTUgzUNQ=
-X-Received: by 2002:a05:6000:4027:b0:37c:c4c0:4545 with SMTP id
- ffacd0b85a97d-37d0f6a273emr2756055f8f.10.1728059729276; 
- Fri, 04 Oct 2024 09:35:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXclZtSxrABT4Js56F5JgVI3AVPXr7Hp3OvWFOa+a+Md33A9vrxn8IFmtd5Ezw0CXC8fLSzA==
-X-Received: by 2002:a05:6000:4027:b0:37c:c4c0:4545 with SMTP id
- ffacd0b85a97d-37d0f6a273emr2756027f8f.10.1728059728757; 
- Fri, 04 Oct 2024 09:35:28 -0700 (PDT)
-Received: from avogadro.local ([151.95.43.71])
+ bh=B0EUiGvwv3mrmOCKDKoPvafdNdyF/xLK2qEfhfH4y3A=;
+ b=IRTF9vGdZb8u+jG65IEiY+9dUGBww95G4MDfPysxlEBRvbX62dhy7sLvt2ldJaHWo4
+ cmnLxDrom9HwrijuR7X//f2boxjGL6Kmnded6twlD5IbFVoydlVMiolTRDNDloderik7
+ 0H+SxxlFzoTmqyVGOfqxEw34cieKtS8PqPbSZGYp5oDxkLWBN7bSAz4jUswC/mBT2EG5
+ jU64ZAedz/gyKEexThWlDidOArggnwXml15WtfzW5oSS0Ps4xQzaiArM4/JdstfgAT1s
+ AY+y5QHIHJrOl587foFaVTyysWkU+beyLEAcmn3uzj2X25m0sd1FPorJW/Igazvktms/
+ whZA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUgkVf+1YhIAlJgZqwdxunY5IfqRK/uKLmORKaJRpUsq9QaS/7TeHk+DQhxZ9q5kL29gYHg6yfiSHYA1w==@nongnu.org,
+ AJvYcCVB7gXLqw1IiW/aczc9eTMVi1wV43uccdYVmKpjuqec8dqMrmcOzD5BHJxE7xPWb7+cOlEfUWlTcQ==@nongnu.org
+X-Gm-Message-State: AOJu0Yzsf3oIfyWnPu4whBKl/GVDN6+Poxpai7OLB8lz72afFNYPQE5H
+ SDnGmfjrlhgurn4YFEoNrtDxxPIL+1t21rAUpoPG4ES46Ser1GRh
+X-Google-Smtp-Source: AGHT+IGyfV5NLgU2kyU63zECXxYIt4UujchRL/O/Chddwg3oQ+2hYI5Z520eY29axIsOb3em8yX/ng==
+X-Received: by 2002:a17:907:e6ca:b0:a7a:bcbc:f7e1 with SMTP id
+ a640c23a62f3a-a991bd0b7demr322476466b.15.1728059754944; 
+ Fri, 04 Oct 2024 09:35:54 -0700 (PDT)
+Received: from tpx1 (ip-109-42-49-143.web.vodafone.de. [109.42.49.143])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d1688a486sm55812f8f.0.2024.10.04.09.35.28
+ a640c23a62f3a-a992e7e226bsm12542566b.210.2024.10.04.09.35.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Oct 2024 09:35:28 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 23/23] qom: update object_resolve_path*() documentation
-Date: Fri,  4 Oct 2024 18:34:15 +0200
-Message-ID: <20241004163415.951106-24-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20241004163415.951106-1-pbonzini@redhat.com>
-References: <20241004163415.951106-1-pbonzini@redhat.com>
+ Fri, 04 Oct 2024 09:35:54 -0700 (PDT)
+Date: Fri, 4 Oct 2024 18:35:51 +0200
+From: Thomas Huth <huth@tuxfamily.org>
+To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, Michael Rolnik
+ <mrolnik@gmail.com>, Halil Pasic <pasic@linux.ibm.com>, Christian
+ Borntraeger <borntraeger@linux.ibm.com>, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>, Frederic Konrad
+ <konrad.frederic@yahoo.fr>, Artyom Tarasenko <atar4qemu@gmail.com>, Matthew
+ Rosato <mjrosato@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Song
+ Gao <gaosong@loongson.cn>, Thomas Huth <thuth@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
+ qemu-s390x@nongnu.org, Laurent Vivier <laurent@vivier.eu>, Eric Farman
+ <farman@linux.ibm.com>, =?UTF-8?B?Q2zDqW1lbnQ=?= Chigot
+ <chigot@adacore.com>, Paolo Bonzini <pbonzini@redhat.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Bastian Koppelmann
+ <kbastian@mail.uni-paderborn.de>, Richard Henderson
+ <richard.henderson@linaro.org>, Pierrick Bouvier
+ <pierrick.bouvier@linaro.org>
+Subject: Re: [PATCH 06/16] hw/m68k: Use explicit big-endian LD/ST API
+Message-ID: <20241004183551.5f84a103@tpx1>
+In-Reply-To: <20241003234211.53644-7-philmd@linaro.org>
+References: <20241003234211.53644-1-philmd@linaro.org>
+ <20241003234211.53644-7-philmd@linaro.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.146,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=209.85.218.52; envelope-from=th.huth@gmail.com;
+ helo=mail-ej1-f52.google.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,58 +99,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+Am Fri,  4 Oct 2024 01:42:01 +0200
+schrieb Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>:
 
-- update doc to reflect that @ambiguous is now set true or false on failure
-- specify that @ambiguous is nullable
-- use some gtk-doc annotations
+> The M68K architecture uses big endianness. Directly use
+> the big-endian LD/ST API.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/m68k/bootinfo.h  | 28 ++++++++++++++--------------
+>  hw/m68k/mcf5208.c   |  2 +-
+>  hw/m68k/next-cube.c |  2 +-
+>  hw/m68k/q800.c      |  4 ++--
+>  4 files changed, 18 insertions(+), 18 deletions(-)
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Link: https://lore.kernel.org/r/20241002080806.2868406-4-marcandre.lureau@redhat.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- include/qom/object.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/include/qom/object.h b/include/qom/object.h
-index 13d3a655ddf..2af9854675c 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -1569,8 +1569,8 @@ char *object_get_canonical_path(const Object *obj);
- /**
-  * object_resolve_path:
-  * @path: the path to resolve
-- * @ambiguous: returns true if the path resolution failed because of an
-- *   ambiguous match
-+ * @ambiguous: (out) (optional): location to store whether the lookup failed
-+ *   because it was ambiguous, or %NULL. Set to %false on success.
-  *
-  * There are two types of supported paths--absolute paths and partial paths.
-  * 
-@@ -1587,7 +1587,7 @@ char *object_get_canonical_path(const Object *obj);
-  * only one match is found.  If more than one match is found, a flag is
-  * returned to indicate that the match was ambiguous.
-  *
-- * Returns: The matched object or NULL on path lookup failure.
-+ * Returns: The matched object or %NULL on path lookup failure.
-  */
- Object *object_resolve_path(const char *path, bool *ambiguous);
- 
-@@ -1595,10 +1595,10 @@ Object *object_resolve_path(const char *path, bool *ambiguous);
-  * object_resolve_path_type:
-  * @path: the path to resolve
-  * @typename: the type to look for.
-- * @ambiguous: returns true if the path resolution failed because of an
-- *   ambiguous match
-+ * @ambiguous: (out) (optional): location to store whether the lookup failed
-+ *   because it was ambiguous, or %NULL. Set to %false on success.
-  *
-- * This is similar to object_resolve_path.  However, when looking for a
-+ * This is similar to object_resolve_path().  However, when looking for a
-  * partial path only matches that implement the given type are considered.
-  * This restricts the search and avoids spuriously flagging matches as
-  * ambiguous.
--- 
-2.46.1
-
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 
