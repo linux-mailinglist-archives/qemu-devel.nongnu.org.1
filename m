@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2923990881
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF27990899
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:07:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swkn7-00020u-V6; Fri, 04 Oct 2024 12:04:30 -0400
+	id 1swknA-000235-Kk; Fri, 04 Oct 2024 12:04:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1swkn4-0001zk-1U; Fri, 04 Oct 2024 12:04:26 -0400
+ id 1swkn5-00020v-TC; Fri, 04 Oct 2024 12:04:27 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1swkn2-0001bC-Jo; Fri, 04 Oct 2024 12:04:25 -0400
+ id 1swkn4-0001bc-EA; Fri, 04 Oct 2024 12:04:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 61D1395570;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6D97295571;
  Fri,  4 Oct 2024 19:03:30 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9BE7614D97E;
+ by tsrv.corpit.ru (Postfix) with SMTP id A86FD14D97F;
  Fri,  4 Oct 2024 19:03:32 +0300 (MSK)
-Received: (nullmailer pid 1282536 invoked by uid 1000);
+Received: (nullmailer pid 1282539 invoked by uid 1000);
  Fri, 04 Oct 2024 16:03:32 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 11/23] hw: Remove unused fw_cfg_init_io
-Date: Fri,  4 Oct 2024 19:03:19 +0300
-Message-Id: <20241004160331.1282441-12-mjt@tls.msk.ru>
+Subject: [PULL 12/23] ui/cursor: remove cursor_get_mono_image
+Date: Fri,  4 Oct 2024 19:03:20 +0300
+Message-Id: <20241004160331.1282441-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241004160331.1282441-1-mjt@tls.msk.ru>
 References: <20241004160331.1282441-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,49 +62,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-fw_cfg_init_io has been unused since
-  918a7f706b ("i386: load kernel on xen using DMA")
+cursor_get_mono_image has been unused since 2018's
+  0015ca5cba ("ui: remove support for SDL1.2 in favour of SDL2")
 
 Remove it.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/nvram/fw_cfg.c         | 5 -----
- include/hw/nvram/fw_cfg.h | 1 -
- 2 files changed, 6 deletions(-)
+ include/ui/console.h |  1 -
+ ui/cursor.c          | 24 ------------------------
+ 2 files changed, 25 deletions(-)
 
-diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index 2dadfd6e1f..b644577734 100644
---- a/hw/nvram/fw_cfg.c
-+++ b/hw/nvram/fw_cfg.c
-@@ -1171,11 +1171,6 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
-     return s;
+diff --git a/include/ui/console.h b/include/ui/console.h
+index fa986ab97e..5832d52a8a 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -175,7 +175,6 @@ int cursor_get_mono_bpl(QEMUCursor *c);
+ void cursor_set_mono(QEMUCursor *c,
+                      uint32_t foreground, uint32_t background, uint8_t *image,
+                      int transparent, uint8_t *mask);
+-void cursor_get_mono_image(QEMUCursor *c, int foreground, uint8_t *mask);
+ void cursor_get_mono_mask(QEMUCursor *c, int transparent, uint8_t *mask);
+ 
+ typedef void *QEMUGLContext;
+diff --git a/ui/cursor.c b/ui/cursor.c
+index dd3853320d..6e23244fbe 100644
+--- a/ui/cursor.c
++++ b/ui/cursor.c
+@@ -197,30 +197,6 @@ void cursor_set_mono(QEMUCursor *c,
+     }
  }
  
--FWCfgState *fw_cfg_init_io(uint32_t iobase)
+-void cursor_get_mono_image(QEMUCursor *c, int foreground, uint8_t *image)
 -{
--    return fw_cfg_init_io_dma(iobase, 0, NULL);
+-    uint32_t *data = c->data;
+-    uint8_t bit;
+-    int x,y,bpl;
+-
+-    bpl = cursor_get_mono_bpl(c);
+-    memset(image, 0, bpl * c->height);
+-    for (y = 0; y < c->height; y++) {
+-        bit = 0x80;
+-        for (x = 0; x < c->width; x++, data++) {
+-            if (((*data & 0xff000000) == 0xff000000) &&
+-                ((*data & 0x00ffffff) == foreground)) {
+-                image[x/8] |= bit;
+-            }
+-            bit >>= 1;
+-            if (bit == 0) {
+-                bit = 0x80;
+-            }
+-        }
+-        image += bpl;
+-    }
 -}
 -
- FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
-                                  hwaddr data_addr, uint32_t data_width,
-                                  hwaddr dma_addr, AddressSpace *dma_as)
-diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
-index d173998803..fa42677619 100644
---- a/include/hw/nvram/fw_cfg.h
-+++ b/include/hw/nvram/fw_cfg.h
-@@ -321,7 +321,6 @@ void fw_cfg_add_extra_pci_roots(PCIBus *bus, FWCfgState *s);
- 
- FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
-                                 AddressSpace *dma_as);
--FWCfgState *fw_cfg_init_io(uint32_t iobase);
- FWCfgState *fw_cfg_init_mem(hwaddr ctl_addr, hwaddr data_addr);
- FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
-                                  hwaddr data_addr, uint32_t data_width,
+ void cursor_get_mono_mask(QEMUCursor *c, int transparent, uint8_t *mask)
+ {
+     uint32_t *data = c->data;
 -- 
 2.39.5
 
