@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164D499096A
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1029399098B
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:42:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swlJB-0004gS-MY; Fri, 04 Oct 2024 12:37:37 -0400
+	id 1swlKG-0008BP-ER; Fri, 04 Oct 2024 12:38:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlIE-0001p2-HA
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:36:40 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlIV-0002Dq-MA
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:36:56 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlI8-0006fr-Ho
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:36:36 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2fac6b3c220so34773751fa.2
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:36:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlIT-0006iU-2X
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:36:55 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2fad100dd9fso36948121fa.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:36:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728059788; x=1728664588; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728059802; x=1728664602; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NkIrQblPdREZDLEsszsFCn2NBix9iyMsfxXdICSQWJM=;
- b=pU3hSHe8xnDOmzLEEnVMOeqmlNZu5cvpqCCCzAIYx/+ZufvQuam50aPZhDWuLLVP33
- Stk21TgLBxz4vTM6lc3yZ50trFiWFqHl0939T8ZuUefKEDc6XkHQffnynuN1HRts9wPa
- hVinW0Y/jPQQi4rmEqNDRjtneo5yfoSq9H2EZL7bWelTb+uWxUgDxKWvMmOiXe5wIFrP
- GjzI6MJSJkZbDTW/DxEKBqpIjhOKcskaNlv7Uz1HTC9VJuTtQyK/MC7PNqa/lTxRaoJt
- ZLocksa57hTbJ9xl22NEmm58T7JR2+zNnv2qwGhuT4xPlXzgAiLgnUWT8SEyDmri8Q3C
- 2APA==
+ bh=0KcWyV0l74Ltt00k0SuMNwX9PI5KG07PSsGD0S0u9KA=;
+ b=gf2/F9QbraxPaiXc1wQaBI1zwl4PbxhGiq4sIt+XqH4xA8fGrezjxjAL7zC3f9Ai+k
+ psmiODmZV3aCRRIZW7MLfwukv/bHeqID4P8EHi3ErHb1xMSL3BIcdmBZIxx8Hp7sDQ2/
+ /19VjHW0RTYXdyUujLHGNYI9lKzuDhgtsW2tXku5d0j/DNCfMkyrUPnWKq01o06mjwD8
+ cic9kir4yO9o5oKr3dQ82zINlWZ1pxp0m6JGIWqaNxywQ67eOZNgjFCbhCK2fwJN6F0F
+ X22sp2OnjkNV2WKi2YpCswQdAP7jkgiVf8Qwbv1Eh6r7zy/8dIsEhY4AYMDRWFX4r2f1
+ y+xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728059789; x=1728664589;
+ d=1e100.net; s=20230601; t=1728059802; x=1728664602;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NkIrQblPdREZDLEsszsFCn2NBix9iyMsfxXdICSQWJM=;
- b=CkB9VobOzpldW+QXjyl8MSRwHj5KltA0PBeWvC8rPNBu2sQDtgWa0LARAXeIuI5ENm
- 8PjSPKbQe2dotkdt2XMdCLvtalcgh0UzNg+6HrSJKBYmsOlh22R0aam8rxM4dcj6Z2/M
- AyQ+GD+yKT92T4f9RBgNTqlnzseidugMqd0fWGdyrphoy/kyH0NDuCPnGnNUN3ERB9FW
- bhR86n49E44EjIaIOQ9KenU8JIP1WdUROGhWeVAINY46wDWyiKkRWjJoSU6DdvVAnKM5
- z9AD86lZ05gfVcax2oqwJjX0cL98r5xNXNxkt+QaBdPoIuVFwOjdKYOTe3HKIO3MbKai
- 3qHA==
-X-Gm-Message-State: AOJu0Yxlh/KJLOoWBmNiBPlCzOeORz3Udromz80JTNmxsKUmRFoq2fpl
- efF4B/Sg/qUkSPB6NfH9KQQqMAn57z4408fIFnepNOqZ05P6QuEc4Tza/o/ZdQT/bIj753njIsJ
- 8XBdugg==
-X-Google-Smtp-Source: AGHT+IFXe3VmMv5EzunM2JXMxyDiLVkssr/VTcquycpTrBjrxYevQ0JVM6YBDEfYkhyEpIO0rZPlKw==
-X-Received: by 2002:a05:651c:b0b:b0:2fa:f5f9:4194 with SMTP id
- 38308e7fff4ca-2faf5f94416mr23634551fa.27.1728059788500; 
- Fri, 04 Oct 2024 09:36:28 -0700 (PDT)
+ bh=0KcWyV0l74Ltt00k0SuMNwX9PI5KG07PSsGD0S0u9KA=;
+ b=WnjRdPngoJ3L/es/taMzPUNI8L8NW0QvSo51DUjejIbJMzQCwi7mZoO/iypUbV0Hs9
+ WyPOESc4S2wV0sBAHnWfFbEpppqkuA4aV3pOjZqOhOc3UJUXq95utrupQXS5onIb1oOL
+ qclbef/4UvAYFllnBuRwZWFpKfQ5+/4oinKs7xDYaJhP+eIUOBuFyGYcrkXVx6g0s2NG
+ /e9SPE0I7o88cWGtNDtj25l8jDoUSUxBZWzj4bFt8Tok25uRvTHWDDdDTDl7a3GVnSGy
+ QOfu00rV0dadBJGTTAdaD62gRxPix0T26xSGhGYD6xbeNJNJqWi+AYTuaBhyvR+im33Z
+ JhIQ==
+X-Gm-Message-State: AOJu0YzjBXhUe907eCmPlL64WFHHgkvWVN5wNcvIhh1Y2rAx736UZ+hj
+ /a03jSF+q1f+/0vtXScyEY5feINuA/xujVc/A05CM+zYoUXzBB7ZjeVaamEf+bxoR50CFo+b9qD
+ IZk3wuQ==
+X-Google-Smtp-Source: AGHT+IF8A/8sWLV5TdRzxw5qh0XNl7VBbsvFLTyOZ6rsSJNMzL1DNDdqCMQUu/CA7u+x5BcevOfwMQ==
+X-Received: by 2002:a05:651c:1545:b0:2f7:712d:d08 with SMTP id
+ 38308e7fff4ca-2faf3c2978amr28480481fa.23.1728059802212; 
+ Fri, 04 Oct 2024 09:36:42 -0700 (PDT)
 Received: from localhost.localdomain ([91.223.100.150])
  by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-2faf9ac4415sm210841fa.34.2024.10.04.09.36.22
+ 38308e7fff4ca-2faf9b248b3sm208721fa.75.2024.10.04.09.36.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Oct 2024 09:36:26 -0700 (PDT)
+ Fri, 04 Oct 2024 09:36:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
@@ -62,17 +62,17 @@ Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 23/25] target/s390x: Use explicit big-endian LD/ST API
-Date: Fri,  4 Oct 2024 13:30:39 -0300
-Message-ID: <20241004163042.85922-24-philmd@linaro.org>
+Subject: [PATCH v2 24/25] target/openrisc: Use explicit big-endian LD/ST API
+Date: Fri,  4 Oct 2024 13:30:40 -0300
+Message-ID: <20241004163042.85922-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241004163042.85922-1-philmd@linaro.org>
 References: <20241004163042.85922-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,7 +95,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The S390X architecture uses big endianness. Directly use
+The OpenRISC architecture uses big endianness. Directly use
 the big-endian LD/ST API.
 
 Mechanical change using:
@@ -104,144 +104,27 @@ Mechanical change using:
     for acc in uw w l q tul; do \
       sed -i -e "s/ld${acc}_p(/ld${acc}_${end}_p(/" \
              -e "s/st${acc}_p(/st${acc}_${end}_p(/" \
-        $(git grep -wlE '(ld|st)t?u?[wlq]_p' target/s390x/); \
+        $(git grep -wlE '(ld|st)t?u?[wlq]_p' target/openrisc/); \
     done
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/s390x/gdbstub.c | 34 +++++++++++++++++-----------------
- target/s390x/ioinst.c  |  2 +-
- 2 files changed, 18 insertions(+), 18 deletions(-)
+ target/openrisc/gdbstub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/s390x/gdbstub.c b/target/s390x/gdbstub.c
-index 9ffec0bccbc..63373f02cef 100644
---- a/target/s390x/gdbstub.c
-+++ b/target/s390x/gdbstub.c
-@@ -46,7 +46,7 @@ int s390_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- int s390_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
-     CPUS390XState *env = cpu_env(cs);
--    target_ulong tmpl = ldq_p(mem_buf);
-+    target_ulong tmpl = ldq_be_p(mem_buf);
- 
-     switch (n) {
-     case S390_PSWM_REGNUM:
-@@ -88,7 +88,7 @@ static int cpu_write_ac_reg(CPUState *cs, uint8_t *mem_buf, int n)
- 
-     switch (n) {
-     case S390_A0_REGNUM ... S390_A15_REGNUM:
--        env->aregs[n] = ldl_p(mem_buf);
-+        env->aregs[n] = ldl_be_p(mem_buf);
-         cpu_synchronize_post_init(env_cpu(env));
-         return 4;
-     default:
-@@ -123,10 +123,10 @@ static int cpu_write_fp_reg(CPUState *cs, uint8_t *mem_buf, int n)
- 
-     switch (n) {
-     case S390_FPC_REGNUM:
--        env->fpc = ldl_p(mem_buf);
-+        env->fpc = ldl_be_p(mem_buf);
-         return 4;
-     case S390_F0_REGNUM ... S390_F15_REGNUM:
--        *get_freg(env, n - S390_F0_REGNUM) = ldq_p(mem_buf);
-+        *get_freg(env, n - S390_F0_REGNUM) = ldq_be_p(mem_buf);
-         return 8;
-     default:
+diff --git a/target/openrisc/gdbstub.c b/target/openrisc/gdbstub.c
+index c2a77d5d4d5..11f5c50423b 100644
+--- a/target/openrisc/gdbstub.c
++++ b/target/openrisc/gdbstub.c
+@@ -55,7 +55,7 @@ int openrisc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
          return 0;
-@@ -167,11 +167,11 @@ static int cpu_write_vreg(CPUState *cs, uint8_t *mem_buf, int n)
+     }
  
-     switch (n) {
-     case S390_V0L_REGNUM ... S390_V15L_REGNUM:
--        env->vregs[n][1] = ldq_p(mem_buf + 8);
-+        env->vregs[n][1] = ldq_be_p(mem_buf + 8);
-         return 8;
-     case S390_V16_REGNUM ... S390_V31_REGNUM:
--        env->vregs[n][0] = ldq_p(mem_buf);
--        env->vregs[n][1] = ldq_p(mem_buf + 8);
-+        env->vregs[n][0] = ldq_be_p(mem_buf);
-+        env->vregs[n][1] = ldq_be_p(mem_buf + 8);
-         return 16;
-     default:
-         return 0;
-@@ -203,7 +203,7 @@ static int cpu_write_c_reg(CPUState *cs, uint8_t *mem_buf, int n)
+-    tmp = ldl_p(mem_buf);
++    tmp = ldl_be_p(mem_buf);
  
-     switch (n) {
-     case S390_C0_REGNUM ... S390_C15_REGNUM:
--        env->cregs[n] = ldq_p(mem_buf);
-+        env->cregs[n] = ldq_be_p(mem_buf);
-         if (tcg_enabled()) {
-             tlb_flush(env_cpu(env));
-         }
-@@ -246,19 +246,19 @@ static int cpu_write_virt_reg(CPUState *cs, uint8_t *mem_buf, int n)
- 
-     switch (n) {
-     case S390_VIRT_CKC_REGNUM:
--        env->ckc = ldq_p(mem_buf);
-+        env->ckc = ldq_be_p(mem_buf);
-         cpu_synchronize_post_init(cs);
-         return 8;
-     case S390_VIRT_CPUTM_REGNUM:
--        env->cputm = ldq_p(mem_buf);
-+        env->cputm = ldq_be_p(mem_buf);
-         cpu_synchronize_post_init(cs);
-         return 8;
-     case S390_VIRT_BEA_REGNUM:
--        env->gbea = ldq_p(mem_buf);
-+        env->gbea = ldq_be_p(mem_buf);
-         cpu_synchronize_post_init(cs);
-         return 8;
-     case S390_VIRT_PREFIX_REGNUM:
--        env->psa = ldq_p(mem_buf);
-+        env->psa = ldq_be_p(mem_buf);
-         cpu_synchronize_post_init(cs);
-         return 8;
-     default:
-@@ -298,19 +298,19 @@ static int cpu_write_virt_kvm_reg(CPUState *cs, uint8_t *mem_buf, int n)
- 
-     switch (n) {
-     case S390_VIRT_KVM_PP_REGNUM:
--        env->pp = ldq_p(mem_buf);
-+        env->pp = ldq_be_p(mem_buf);
-         cpu_synchronize_post_init(env_cpu(env));
-         return 8;
-     case S390_VIRT_KVM_PFT_REGNUM:
--        env->pfault_token = ldq_p(mem_buf);
-+        env->pfault_token = ldq_be_p(mem_buf);
-         cpu_synchronize_post_init(env_cpu(env));
-         return 8;
-     case S390_VIRT_KVM_PFS_REGNUM:
--        env->pfault_select = ldq_p(mem_buf);
-+        env->pfault_select = ldq_be_p(mem_buf);
-         cpu_synchronize_post_init(env_cpu(env));
-         return 8;
-     case S390_VIRT_KVM_PFC_REGNUM:
--        env->pfault_compare = ldq_p(mem_buf);
-+        env->pfault_compare = ldq_be_p(mem_buf);
-         cpu_synchronize_post_init(env_cpu(env));
-         return 8;
-     default:
-@@ -338,7 +338,7 @@ static int cpu_write_gs_reg(CPUState *cs, uint8_t *mem_buf, int n)
-     S390CPU *cpu = S390_CPU(cs);
-     CPUS390XState *env = &cpu->env;
- 
--    env->gscb[n] = ldq_p(mem_buf);
-+    env->gscb[n] = ldq_be_p(mem_buf);
-     cpu_synchronize_post_init(env_cpu(env));
-     return 8;
- }
-diff --git a/target/s390x/ioinst.c b/target/s390x/ioinst.c
-index bbe45a497a8..a944f16c254 100644
---- a/target/s390x/ioinst.c
-+++ b/target/s390x/ioinst.c
-@@ -603,7 +603,7 @@ static int chsc_sei_nt2_have_event(void)
- #define CHSC_SEI_NT2    (1ULL << 61)
- static void ioinst_handle_chsc_sei(ChscReq *req, ChscResp *res)
- {
--    uint64_t selection_mask = ldq_p(&req->param1);
-+    uint64_t selection_mask = ldq_be_p(&req->param1);
-     uint8_t *res_flags = (uint8_t *)res->data;
-     int have_event = 0;
-     int have_more = 0;
+     if (n < 32) {
+         cpu_set_gpr(env, n, tmp);
 -- 
 2.45.2
 
