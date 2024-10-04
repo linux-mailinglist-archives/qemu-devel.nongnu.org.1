@@ -2,82 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851E9990915
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:24:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE74699093B
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:32:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swl6R-00012W-Gb; Fri, 04 Oct 2024 12:24:28 -0400
+	id 1swlCq-00043w-3M; Fri, 04 Oct 2024 12:31:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swl60-0000vM-LG
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:24:02 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlCm-00042U-LH
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:31:00 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swl5w-0004Xv-Cu
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:23:58 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-5366fd6fdf1so3343835e87.0
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:23:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlCj-0005VP-Ll
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:31:00 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-5398a26b64fso2383044e87.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:30:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728059033; x=1728663833; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Nhw11vsNB7sU+tP522HMuXKhN8uIssw/t+jNogdyCDQ=;
- b=JSCsNJ4/h4mDFcEIhn6sh/a5cHlTQB0CClsvKocKhtPvyhyblvIgqCujFye5hkL9lC
- P4HGffO9jgJf/A3qRR+AUliJMiJ1vvDTpBAEEpO4bJy8DgfTUAMMi3M3aiOkwy8wkNlJ
- T6XDK2shCOscBdQjIaeBIzFTLvig6SBCHKtqdTEmn3q3cmjpDN/LqrPoJp9VCf1nsE0r
- JmbEM1eq6FynZsw93quaNYNC1jDTPNfIPHSunCwGpbTFZB5bKjHZnehhxtLWk6Wp5145
- F66b2OaScIJ3gzd4NvFlEBWVMPF5jENLCZZaE7oYbi0tM1lm79ULgYTDppaJWmWhBs5K
- S1FQ==
+ d=linaro.org; s=google; t=1728059455; x=1728664255; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=5nyIdscBf9eExt1kzAJJIA/rxjuPVcdO2ELN/HXgCsA=;
+ b=nxA9KIXYqC19s8kcDB1MZPLC5n5M7wDvXRaLCGZws4KNByrh/gLWmNVu3Rcmuh/+VQ
+ WOKS0NKx3Ij6a8BGC2gIhj500792alM2/ve1XPbNfV/UKhFpqI9QDra27l7Os42mCEa1
+ 8QEPfqh+35U8z8wr5R8lDoLlVxzsQI8fFOvt2M1sX7e/8VgMKDnx3lNlGwxstlN/fCo1
+ fw56/sGzUHDrGqYBtp2+QL5QehL9V2FX6Ys7K2YFZO2QmHIBlCcgsNzBNzJDKmCZlLC+
+ LiHenaaM2A0Azh9HF+LnwmYWSfZDS+2d6Sxp2jeQrSzuVyci5hmtkqOS3ujNNZibqTOJ
+ Naag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728059033; x=1728663833;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Nhw11vsNB7sU+tP522HMuXKhN8uIssw/t+jNogdyCDQ=;
- b=ZM2bfjzkD46huaIEwicHi+Wk2+PpuGQisohq9bwM1ZMAMj5+8Czia5VKPi8ZzEVej5
- 3Z416jimIIS/AAi5A6lprCUH++uBtPJsLgW6PFiqEA1tRuA0a8rf/YjMo0WZvbm+uRw6
- mpFOcIM2/OcIwuV0dZb+ZANEF+9K2xVEjBp30OJY5CoWey6ZK6nBN5jS/ye3UKAd99um
- Wz9E5yq4xyjzGBlCD2K/PWknfr1Xif6eFvk7uoY+g3KRU30CXgC00i+z6ExyicDaAm57
- aN8EcS4fd8FFwWhpcBmQG3WTcflogdmT1LdnBXomloj/W0c8WW1iwQltVGgmXWnJ/pgx
- YZmA==
-X-Gm-Message-State: AOJu0YxxYpNtOnUo+l9PSamYjp4CUAJO4N1jtS4F3URGmiv9sQpzu0RR
- x+EeSk9wQik6UnJfscsL5+G98VB522BgCsEzgH8jBjuhKg2UF6LrKSH7DdJA8AKX7LdrxuGpnE8
- 9urJKmQ==
-X-Google-Smtp-Source: AGHT+IHWTTiAZOwthxRrD0LHwYIRgQaHTbQjlLwjBS4Gzn+++9wvg+ZcwP4Fw3jRdEsMVW1LFfnmoQ==
-X-Received: by 2002:a05:6512:a96:b0:52c:8979:9627 with SMTP id
- 2adb3069b0e04-539ab84a43cmr2465175e87.3.1728059033509; 
- Fri, 04 Oct 2024 09:23:53 -0700 (PDT)
-Received: from localhost.localdomain ([91.223.100.208])
+ d=1e100.net; s=20230601; t=1728059455; x=1728664255;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5nyIdscBf9eExt1kzAJJIA/rxjuPVcdO2ELN/HXgCsA=;
+ b=KZjVAFla4dCpuMdsKJStmaykD8j4ttgq9dm6ukWektDjr67k2LulBpl4HsVJJtKOpW
+ nsHxLDE8JHWu2ReHbdWqafXSvBXmCwuqycPl2I6GTHOUUy1qFaYdbzV4VskyJh47hK17
+ xx33/vY+1E0be4KkQy/drxCmLc3md6D29frt57mLS2cl1fNXjc5huCC2H2VSsoHbOf9I
+ oCxd16DRF1JkWLNja8ieERp6r8/GQp/pEK+POLcJDsc1e+1OLmxF2zMlKMVr8KOe1EyP
+ zyZ7yERyl4KFVEiPUegyPLTMhWTsUPwjSLMcBlsgZ0eFFhccF4uLPuvm4HnMP5c475hL
+ Q9Ag==
+X-Gm-Message-State: AOJu0YybUuTa6Hd5f6EbuoLS7QGu3VYG3yFwG8xZpL+gBMFQQsR63+E0
+ gxNEBpnMMi4tUdGTjvoOi9NFBRxnFAGQkmtW5pjQi+p99f0apGLM+7ZWgNGdvhkEWGp7ziRfzAJ
+ 9qEeKyA==
+X-Google-Smtp-Source: AGHT+IHmjxOjWQa3xJUQaDHEtw0LVQF0onnQXPwHXy/V6NSJ50nhb5B/Ol9t4OvRDYTK4rI87UyR7A==
+X-Received: by 2002:a05:6512:a8f:b0:536:a50a:3c25 with SMTP id
+ 2adb3069b0e04-539ab8625dbmr2108527e87.12.1728059454912; 
+ Fri, 04 Oct 2024 09:30:54 -0700 (PDT)
+Received: from localhost.localdomain ([91.223.100.150])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-539afec83efsm684e87.75.2024.10.04.09.23.44
+ 2adb3069b0e04-539aff281aasm305e87.256.2024.10.04.09.30.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Oct 2024 09:23:53 -0700 (PDT)
+ Fri, 04 Oct 2024 09:30:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Aurelien Jarno <aurelien@aurel32.net>,
- Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-ppc@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Aleksandar Rikalo <arikalo@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-arm@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, Peter Maydell <peter.maydell@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 8/8] hw/core/cpu: Expose cpu_is_big_endian() method
-Date: Fri,  4 Oct 2024 13:21:18 -0300
-Message-ID: <20241004162118.84570-9-philmd@linaro.org>
+Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-ppc@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 00/25] misc: Use explicit endian LD/ST API
+Date: Fri,  4 Oct 2024 13:30:16 -0300
+Message-ID: <20241004163042.85922-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241004162118.84570-1-philmd@linaro.org>
-References: <20241004162118.84570-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,49 +92,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/core/cpu.h | 8 ++++++++
- hw/core/cpu-common.c  | 7 +++++++
- 2 files changed, 15 insertions(+)
+For targets (or HW) which are only built for a particular
+endianness, the generic LD/ST helpers are defined as the
+target endianness variant. For example, on big-endian
+targets, stl_p() is equivalent of stl_be_p().
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 22ef7a44e86..2550bc98dee 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -608,6 +608,14 @@ extern __thread CPUState *current_cpu;
- extern bool mttcg_enabled;
- #define qemu_tcg_mttcg_enabled() (mttcg_enabled)
- 
-+/**
-+ * cpu_is_big_endian:
-+ * @cpu: The CPU whose state is to be inspected.
-+ *
-+ * Returns: %true if the CPU runs in big endianness, %false otherwise.
-+ */
-+bool cpu_is_big_endian(CPUState *cpu);
-+
- /**
-  * cpu_paging_enabled:
-  * @cpu: The CPU whose state is to be inspected.
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index aa5ea9761e4..277c4ee6720 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -66,6 +66,13 @@ CPUState *cpu_create(const char *typename)
-     return cpu;
- }
- 
-+bool cpu_is_big_endian(CPUState *cpu)
-+{
-+    CPUClass *cc = CPU_GET_CLASS(cpu);
-+
-+    return cc->is_big_endian(cpu);
-+}
-+
- /* Resetting the IRQ comes from across the code base so we take the
-  * BQL here if we need to.  cpu_interrupt assumes it is held.*/
- void cpu_reset_interrupt(CPUState *cpu, int mask)
+This series replaces in bulk these LD/ST calls.
+
+This is helpful for the single binary project where we
+want to build a single binary for multiple targets of
+different endianness.
+
+Philippe Mathieu-Daudé (25):
+  gdbstub/helpers: Have ldtul_p() definition use ldn_p()
+  target/hexagon: Replace ldtul_p() -> ldl_p()
+  target/alpha: Replace ldtul_p() -> ldq_p()
+  target/s390x: Replace ldtul_p() -> ldq_p()
+  gdbstub/helpers: Introduce ldtul_$endian_p() helpers
+  target/alpha: Use explicit little-endian LD/ST API
+  target/hexagon: Use explicit little-endian LD/ST API
+  hw/i386: Use explicit little-endian LD/ST API
+  target/i386: Use explicit little-endian LD/ST API
+  target/avr: Use explicit little-endian LD/ST API
+  linux-user/i386: Use explicit little-endian LD/ST API
+  target/loongarch: Use explicit little-endian LD/ST API
+  target/sh4: Use explicit little-endian LD/ST API
+  target/tricore: Use explicit little-endian LD/ST API
+  target/rx: Use explicit little-endian LD/ST API
+  target/riscv: Use explicit little-endian LD/ST API
+  hw/m68k: Use explicit big-endian LD/ST API
+  target/m68k: Use explicit big-endian LD/ST API
+  hw/sparc: Use explicit big-endian LD/ST API
+  target/sparc: Use explicit big-endian LD/ST API
+  target/hppa: Use explicit big-endian LD/ST API
+  hw/s390x: Use explicit big-endian LD/ST API
+  target/s390x: Use explicit big-endian LD/ST API
+  target/openrisc: Use explicit big-endian LD/ST API
+  hw/ppc/e500: Use explicit big-endian LD/ST API
+
+ hw/m68k/bootinfo.h                   |  28 ++---
+ include/gdbstub/helpers.h            |   6 +-
+ hw/i386/multiboot.c                  |  36 +++---
+ hw/i386/x86-common.c                 |  26 ++---
+ hw/m68k/mcf5208.c                    |   2 +-
+ hw/m68k/next-cube.c                  |   2 +-
+ hw/m68k/q800.c                       |   4 +-
+ hw/ppc/ppce500_spin.c                |  24 ++--
+ hw/s390x/ipl.c                       |   4 +-
+ hw/s390x/s390-pci-inst.c             | 166 +++++++++++++--------------
+ hw/sparc/leon3.c                     |  42 +++----
+ hw/sparc/sun4m.c                     |   6 +-
+ hw/sparc64/sun4u.c                   |   6 +-
+ linux-user/i386/signal.c             |   4 +-
+ target/alpha/gdbstub.c               |   2 +-
+ target/avr/gdbstub.c                 |   4 +-
+ target/hexagon/gdbstub.c             |  10 +-
+ target/hppa/gdbstub.c                |   2 +-
+ target/i386/gdbstub.c                |  30 ++---
+ target/i386/tcg/sysemu/excp_helper.c |   4 +-
+ target/i386/xsave_helper.c           |  32 +++---
+ target/loongarch/gdbstub.c           |   8 +-
+ target/m68k/gdbstub.c                |   2 +-
+ target/m68k/helper.c                 |  10 +-
+ target/openrisc/gdbstub.c            |   2 +-
+ target/riscv/gdbstub.c               |  14 +--
+ target/rx/cpu.c                      |   2 +-
+ target/rx/gdbstub.c                  |  24 ++--
+ target/s390x/gdbstub.c               |  34 +++---
+ target/s390x/ioinst.c                |   2 +-
+ target/sh4/gdbstub.c                 |  36 +++---
+ target/sparc/gdbstub.c               |   6 +-
+ target/tricore/gdbstub.c             |   2 +-
+ 33 files changed, 292 insertions(+), 290 deletions(-)
+
 -- 
 2.45.2
 
