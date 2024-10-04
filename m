@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF67B99087C
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7681E99087B
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:05:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swknU-0002Pc-TC; Fri, 04 Oct 2024 12:04:53 -0400
+	id 1swknb-0002Xg-06; Fri, 04 Oct 2024 12:04:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1swknR-0002G7-65; Fri, 04 Oct 2024 12:04:49 -0400
+ id 1swknS-0002OP-Qb; Fri, 04 Oct 2024 12:04:50 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1swknP-0001bs-CE; Fri, 04 Oct 2024 12:04:48 -0400
+ id 1swknR-0001cD-8x; Fri, 04 Oct 2024 12:04:50 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7A55D95572;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8727C95573;
  Fri,  4 Oct 2024 19:03:30 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B45E514D980;
+ by tsrv.corpit.ru (Postfix) with SMTP id C13E014D981;
  Fri,  4 Oct 2024 19:03:32 +0300 (MSK)
-Received: (nullmailer pid 1282542 invoked by uid 1000);
+Received: (nullmailer pid 1282545 invoked by uid 1000);
  Fri, 04 Oct 2024 16:03:32 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 13/23] vhost: Remove unused vhost_dev_{load|save}_inflight
-Date: Fri,  4 Oct 2024 19:03:21 +0300
-Message-Id: <20241004160331.1282441-14-mjt@tls.msk.ru>
+Subject: [PULL 14/23] remote: Remove unused remote_iohub_finalize
+Date: Fri,  4 Oct 2024 19:03:22 +0300
+Message-Id: <20241004160331.1282441-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241004160331.1282441-1-mjt@tls.msk.ru>
 References: <20241004160331.1282441-1-mjt@tls.msk.ru>
@@ -61,104 +61,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-vhost_dev_load_inflight and vhost_dev_save_inflight have been
-unused since they were added in 2019 by:
+remote_iohub_finalize has never been used.
 
-5ad204bf2a ("vhost-user: Support transferring inflight buffer between qemu and backend")
-
-Remove them, and their helper vhost_dev_resize_inflight.
+Remove it.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Jagannathan Raman <jag.raman@oracle.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/virtio/vhost.c         | 56 ---------------------------------------
- include/hw/virtio/vhost.h |  2 --
- 2 files changed, 58 deletions(-)
+ hw/remote/iohub.c         | 13 -------------
+ include/hw/remote/iohub.h |  1 -
+ 2 files changed, 14 deletions(-)
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 7c5ef81b55..76f9b2aaad 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1930,62 +1930,6 @@ void vhost_dev_free_inflight(struct vhost_inflight *inflight)
+diff --git a/hw/remote/iohub.c b/hw/remote/iohub.c
+index 40dfee4bad..988d3285cc 100644
+--- a/hw/remote/iohub.c
++++ b/hw/remote/iohub.c
+@@ -33,19 +33,6 @@ void remote_iohub_init(RemoteIOHubState *iohub)
      }
  }
  
--static int vhost_dev_resize_inflight(struct vhost_inflight *inflight,
--                                     uint64_t new_size)
+-void remote_iohub_finalize(RemoteIOHubState *iohub)
 -{
--    Error *err = NULL;
--    int fd = -1;
--    void *addr = qemu_memfd_alloc("vhost-inflight", new_size,
--                                  F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL,
--                                  &fd, &err);
+-    int pirq;
 -
--    if (err) {
--        error_report_err(err);
--        return -ENOMEM;
--    }
--
--    vhost_dev_free_inflight(inflight);
--    inflight->offset = 0;
--    inflight->addr = addr;
--    inflight->fd = fd;
--    inflight->size = new_size;
--
--    return 0;
--}
--
--void vhost_dev_save_inflight(struct vhost_inflight *inflight, QEMUFile *f)
--{
--    if (inflight->addr) {
--        qemu_put_be64(f, inflight->size);
--        qemu_put_be16(f, inflight->queue_size);
--        qemu_put_buffer(f, inflight->addr, inflight->size);
--    } else {
--        qemu_put_be64(f, 0);
+-    for (pirq = 0; pirq < REMOTE_IOHUB_NB_PIRQS; pirq++) {
+-        qemu_set_fd_handler(event_notifier_get_fd(&iohub->resamplefds[pirq]),
+-                            NULL, NULL, NULL);
+-        event_notifier_cleanup(&iohub->irqfds[pirq]);
+-        event_notifier_cleanup(&iohub->resamplefds[pirq]);
+-        qemu_mutex_destroy(&iohub->irq_level_lock[pirq]);
 -    }
 -}
 -
--int vhost_dev_load_inflight(struct vhost_inflight *inflight, QEMUFile *f)
--{
--    uint64_t size;
--
--    size = qemu_get_be64(f);
--    if (!size) {
--        return 0;
--    }
--
--    if (inflight->size != size) {
--        int ret = vhost_dev_resize_inflight(inflight, size);
--        if (ret < 0) {
--            return ret;
--        }
--    }
--    inflight->queue_size = qemu_get_be16(f);
--
--    qemu_get_buffer(f, inflight->addr, size);
--
--    return 0;
--}
--
- int vhost_dev_prepare_inflight(struct vhost_dev *hdev, VirtIODevice *vdev)
+ int remote_iohub_map_irq(PCIDevice *pci_dev, int intx)
  {
-     int r;
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index c75be46c06..461c168c37 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -338,8 +338,6 @@ void vhost_virtqueue_stop(struct vhost_dev *dev, struct VirtIODevice *vdev,
+     return pci_dev->devfn;
+diff --git a/include/hw/remote/iohub.h b/include/hw/remote/iohub.h
+index 6a8444f9a9..09ee6c77b6 100644
+--- a/include/hw/remote/iohub.h
++++ b/include/hw/remote/iohub.h
+@@ -37,6 +37,5 @@ void remote_iohub_set_irq(void *opaque, int pirq, int level);
+ void process_set_irqfd_msg(PCIDevice *pci_dev, MPQemuMsg *msg);
  
- void vhost_dev_reset_inflight(struct vhost_inflight *inflight);
- void vhost_dev_free_inflight(struct vhost_inflight *inflight);
--void vhost_dev_save_inflight(struct vhost_inflight *inflight, QEMUFile *f);
--int vhost_dev_load_inflight(struct vhost_inflight *inflight, QEMUFile *f);
- int vhost_dev_prepare_inflight(struct vhost_dev *hdev, VirtIODevice *vdev);
- int vhost_dev_set_inflight(struct vhost_dev *dev,
-                            struct vhost_inflight *inflight);
+ void remote_iohub_init(RemoteIOHubState *iohub);
+-void remote_iohub_finalize(RemoteIOHubState *iohub);
+ 
+ #endif
 -- 
 2.39.5
 
