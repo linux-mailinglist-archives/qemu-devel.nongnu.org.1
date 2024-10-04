@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EBD99096D
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4685990967
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:37:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swlJ6-0003iU-32; Fri, 04 Oct 2024 12:37:32 -0400
+	id 1swlHx-00012x-3B; Fri, 04 Oct 2024 12:36:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1swlH2-0008Q6-6H
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:24 -0400
+ id 1swlH4-0008V8-BV
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1swlGy-0006St-W5
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:23 -0400
+ id 1swlH2-0006Tv-K3
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:35:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728059720;
+ s=mimecast20190719; t=1728059724;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Setl3AJEVs0vHNQj7xHFFLMsRz7zXPg367b8l0cBJ90=;
- b=KYf9zxYYjXy6B8rKwx/UP+elyqfawLD7xFKmOTP3lMEi6tvQWrcB6HyaFd4gPIJ9rTF5KE
- 5j6CkIZ9/3KwYJ0JiF503cWQn9Kz3PK8upKn58VGxu+x5lKSMajUjbLMTQOjaCGKYuW15n
- GdC9e4sMPcAxS4Nd2g3f89pbICS/JWA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zRvC2mnVWmRmKdKLdnn9nYwUy+TnAkjqCft8CNX5ggI=;
+ b=ArzJk3s77tNl0biz4NSbnAtfOSZ0nK3RNCL9kghG11aqZ1SX7MXq7/JQWqdW6IcPnv9NNM
+ iWooYdGH2Zsu0n0B3zJqAaM1Us0LNYC4dxIJzmuHhX7Jy8/IoWpToc318hY23N5giCLomY
+ U4vffPN8zgy7E3PBUyi71ra+H85FqQo=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-4vL_DBguPh-braosBtRBbA-1; Fri, 04 Oct 2024 12:35:19 -0400
-X-MC-Unique: 4vL_DBguPh-braosBtRBbA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-37d002fb48fso1065906f8f.3
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:35:19 -0700 (PDT)
+ us-mta-452-GgKRimlUNx-hNyryCpXzsw-1; Fri, 04 Oct 2024 12:35:22 -0400
+X-MC-Unique: GgKRimlUNx-hNyryCpXzsw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-37ccc21ceb1so1022037f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:35:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728059717; x=1728664517;
+ d=1e100.net; s=20230601; t=1728059721; x=1728664521;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Setl3AJEVs0vHNQj7xHFFLMsRz7zXPg367b8l0cBJ90=;
- b=f35s0x2GNKU6PDtpSb0LMzzSollIIaD0Uh1bseN51hRtm6nONYfj1yDEsGOUOkxJta
- mMMUz6RWbiq00LEgWbMgPV+Cy7UgvU2g7PCdoI2efsA8b+DnEuvxyUQmhcxaEv4R+I47
- Roqv+UZ5gQiJySdPPbHCNiKEL1SB7Q1wKg00nX2wKop3/HVxyXOfQM5RFy66zjZWzaA2
- O7Fpkwi795TgsTix9uMeHb2LfR5/+7ojQgQvJKA2ndGKhNga8eAZhFBbfg/k276FqnL0
- r5vIa1Wxk5Sm4LLHz+hyochHO1h5q1ph6ei6BBuRn2cDcYOEhRuwOu2ggihbnMhf/X9x
- sLGg==
-X-Gm-Message-State: AOJu0YwgeZZorj+21TuB+Ns4NplSDRDUvvRjvB4fG1ieWncr2c8HsZw0
- q0iPcTrsErAd86Xu1hoagxCWYonIPCsZc3IxKFZ/BEgU5v52pZK+uB1P9tCyhFTOeUdUnEqQM25
- IpuMPaVMqdEp8SiJHxUyB4wHOQVw2PltkpIFJT0ybZnwYSGr/iIqRhknyA4p2eVKo+oQwsM+i7v
- j/xyg7q+U73WxuOELuSzEEX05km+blra1Zds/FYAM=
-X-Received: by 2002:a5d:61d2:0:b0:37c:c9b9:3732 with SMTP id
- ffacd0b85a97d-37d0e748d0bmr2071635f8f.21.1728059717589; 
- Fri, 04 Oct 2024 09:35:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFxPhRqM9+Ss3iSXEHgauXPy5dtYAUhUYxZwRTzfRL/212X9bkUoLbQ28Fw52eqX790RAYQfg==
-X-Received: by 2002:a5d:61d2:0:b0:37c:c9b9:3732 with SMTP id
- ffacd0b85a97d-37d0e748d0bmr2071617f8f.21.1728059717095; 
- Fri, 04 Oct 2024 09:35:17 -0700 (PDT)
+ bh=zRvC2mnVWmRmKdKLdnn9nYwUy+TnAkjqCft8CNX5ggI=;
+ b=uLVgImRrrpoInLl9NOe69lfDyuwhdjD0/Fz8MOEBWS+Jebb4Hbo3vxFk3YO+JKo7bj
+ fgS1ToCPwfsy7hhkT9A2gfOGqpndGas5HTFHSPs23wUVeP+AGUsT+dcyWjehGjxP2pBK
+ 7vc+lOWaUN0bywX8k25xqn0lgz1UBByV88wCnqFxvIyi/Df221wtVZ0BoB+UDdlSDcW9
+ He9eJsXC3mJ48EX6Wb5DUQAdi3KjZVL8IsAd0a6cF5cWjGIR+HMWFuK7TbNbycuqxqct
+ qbZ0VR6SiCV9V1vubysdJHXT+I5P1AY49qw/fB11oDiIgWCwKv39gezt7jexPk+XNmj7
+ 98dw==
+X-Gm-Message-State: AOJu0YzE8SwCPJ06UpUj6+2zj/Unp1e0XyeD5KHklv8QLOeiDSJdJiAL
+ ChY/VPYZJHFyZW3wmu6LkhbxAoalaRGhUt2go5uvZL25/bg1KcOob6sI0FIIwTgco+I3YQuZord
+ TabEReTkDtQSVlNIZaa4nRtTL0UzdYHGO9X7g0et3RwZFzBiwCa/8kMN08HdX4zrJdRiMp7j1l4
+ TgA4ywkgBc9ZNgF+mID//vglZwG9scl103ZOwtmCQ=
+X-Received: by 2002:adf:8b16:0:b0:374:c69b:5a16 with SMTP id
+ ffacd0b85a97d-37d0e8de89dmr2082813f8f.50.1728059720672; 
+ Fri, 04 Oct 2024 09:35:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHttAAS7WFdCRd0lnPyIqwC72c4U8D+Wb8GtiGTtzGKuEPe2HB8WuxzXTGE8w7cDwkKYO/EKw==
+X-Received: by 2002:adf:8b16:0:b0:374:c69b:5a16 with SMTP id
+ ffacd0b85a97d-37d0e8de89dmr2082792f8f.50.1728059720166; 
+ Fri, 04 Oct 2024 09:35:20 -0700 (PDT)
 Received: from avogadro.local ([151.95.43.71])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d1691a56dsm37118f8f.41.2024.10.04.09.35.15
+ ffacd0b85a97d-37d16921aa4sm34583f8f.64.2024.10.04.09.35.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Oct 2024 09:35:15 -0700 (PDT)
+ Fri, 04 Oct 2024 09:35:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Julia Suvorova <jusual@redhat.com>,
 	Peter Xu <peterx@redhat.com>
-Subject: [PULL 19/23] kvm: Allow kvm_arch_get/put_registers to accept Error**
-Date: Fri,  4 Oct 2024 18:34:11 +0200
-Message-ID: <20241004163415.951106-20-pbonzini@redhat.com>
+Subject: [PULL 20/23] target/i386/kvm: Report which action failed in
+ kvm_arch_put/get_registers
+Date: Fri,  4 Oct 2024 18:34:12 +0200
+Message-ID: <20241004163415.951106-21-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20241004163415.951106-1-pbonzini@redhat.com>
 References: <20241004163415.951106-1-pbonzini@redhat.com>
@@ -104,277 +105,165 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Julia Suvorova <jusual@redhat.com>
 
-This is necessary to provide discernible error messages to the caller.
+To help debug and triage future failure reports (akin to [1,2]) that
+may occur during kvm_arch_put/get_registers, the error path of each
+action is accompanied by unique error message.
+
+[1] https://issues.redhat.com/browse/RHEL-7558
+[2] https://issues.redhat.com/browse/RHEL-21761
 
 Signed-off-by: Julia Suvorova <jusual@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20240927104743.218468-2-jusual@redhat.com
+Link: https://lore.kernel.org/r/20240927104743.218468-3-jusual@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/sysemu/kvm.h       |  4 ++--
- accel/kvm/kvm-all.c        | 41 +++++++++++++++++++++++++++++---------
- target/arm/kvm.c           |  4 ++--
- target/i386/kvm/kvm.c      |  4 ++--
- target/loongarch/kvm/kvm.c |  4 ++--
- target/mips/kvm.c          |  4 ++--
- target/ppc/kvm.c           |  4 ++--
- target/riscv/kvm/kvm-cpu.c |  4 ++--
- target/s390x/kvm/kvm.c     |  4 ++--
- 9 files changed, 48 insertions(+), 25 deletions(-)
+ target/i386/kvm/kvm.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index 613d3f7581f..c3a60b28909 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -359,7 +359,7 @@ int kvm_arch_handle_exit(CPUState *cpu, struct kvm_run *run);
- 
- int kvm_arch_process_async_events(CPUState *cpu);
- 
--int kvm_arch_get_registers(CPUState *cpu);
-+int kvm_arch_get_registers(CPUState *cpu, Error **errp);
- 
- /* state subset only touched by the VCPU itself during runtime */
- #define KVM_PUT_RUNTIME_STATE   1
-@@ -368,7 +368,7 @@ int kvm_arch_get_registers(CPUState *cpu);
- /* full state set, modified during initialization or on vmload */
- #define KVM_PUT_FULL_STATE      3
- 
--int kvm_arch_put_registers(CPUState *cpu, int level);
-+int kvm_arch_put_registers(CPUState *cpu, int level, Error **errp);
- 
- int kvm_arch_get_default_type(MachineState *ms);
- 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index e57492fda5c..905fb844e46 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2793,9 +2793,15 @@ void kvm_flush_coalesced_mmio_buffer(void)
- static void do_kvm_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
- {
-     if (!cpu->vcpu_dirty && !kvm_state->guest_state_protected) {
--        int ret = kvm_arch_get_registers(cpu);
-+        Error *err = NULL;
-+        int ret = kvm_arch_get_registers(cpu, &err);
-         if (ret) {
--            error_report("Failed to get registers: %s", strerror(-ret));
-+            if (err) {
-+                error_reportf_err(err, "Failed to synchronize CPU state: ");
-+            } else {
-+                error_report("Failed to get registers: %s", strerror(-ret));
-+            }
-+
-             cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
-             vm_stop(RUN_STATE_INTERNAL_ERROR);
-         }
-@@ -2813,9 +2819,15 @@ void kvm_cpu_synchronize_state(CPUState *cpu)
- 
- static void do_kvm_cpu_synchronize_post_reset(CPUState *cpu, run_on_cpu_data arg)
- {
--    int ret = kvm_arch_put_registers(cpu, KVM_PUT_RESET_STATE);
-+    Error *err = NULL;
-+    int ret = kvm_arch_put_registers(cpu, KVM_PUT_RESET_STATE, &err);
-     if (ret) {
--        error_report("Failed to put registers after reset: %s", strerror(-ret));
-+        if (err) {
-+            error_reportf_err(err, "Restoring resisters after reset: ");
-+        } else {
-+            error_report("Failed to put registers after reset: %s",
-+                         strerror(-ret));
-+        }
-         cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
-         vm_stop(RUN_STATE_INTERNAL_ERROR);
-     }
-@@ -2830,9 +2842,15 @@ void kvm_cpu_synchronize_post_reset(CPUState *cpu)
- 
- static void do_kvm_cpu_synchronize_post_init(CPUState *cpu, run_on_cpu_data arg)
- {
--    int ret = kvm_arch_put_registers(cpu, KVM_PUT_FULL_STATE);
-+    Error *err = NULL;
-+    int ret = kvm_arch_put_registers(cpu, KVM_PUT_FULL_STATE, &err);
-     if (ret) {
--        error_report("Failed to put registers after init: %s", strerror(-ret));
-+        if (err) {
-+            error_reportf_err(err, "Putting registers after init: ");
-+        } else {
-+            error_report("Failed to put registers after init: %s",
-+                         strerror(-ret));
-+        }
-         exit(1);
-     }
- 
-@@ -3022,10 +3040,15 @@ int kvm_cpu_exec(CPUState *cpu)
-         MemTxAttrs attrs;
- 
-         if (cpu->vcpu_dirty) {
--            ret = kvm_arch_put_registers(cpu, KVM_PUT_RUNTIME_STATE);
-+            Error *err = NULL;
-+            ret = kvm_arch_put_registers(cpu, KVM_PUT_RUNTIME_STATE, &err);
-             if (ret) {
--                error_report("Failed to put registers after init: %s",
--                             strerror(-ret));
-+                if (err) {
-+                    error_reportf_err(err, "Putting registers after init: ");
-+                } else {
-+                    error_report("Failed to put registers after init: %s",
-+                                 strerror(-ret));
-+                }
-                 ret = -1;
-                 break;
-             }
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 849e2e21b30..f1f1b5b375a 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -2042,7 +2042,7 @@ static int kvm_arch_put_sve(CPUState *cs)
-     return 0;
- }
- 
--int kvm_arch_put_registers(CPUState *cs, int level)
-+int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
- {
-     uint64_t val;
-     uint32_t fpr;
-@@ -2226,7 +2226,7 @@ static int kvm_arch_get_sve(CPUState *cs)
-     return 0;
- }
- 
--int kvm_arch_get_registers(CPUState *cs)
-+int kvm_arch_get_registers(CPUState *cs, Error **errp)
- {
-     uint64_t val;
-     unsigned int el;
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 7a1f2bda767..0b03fb0577f 100644
+index 0b03fb0577f..e6f94900f3c 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -5210,7 +5210,7 @@ static int kvm_get_nested_state(X86CPU *cpu)
-     return ret;
- }
+@@ -5225,6 +5225,7 @@ int kvm_arch_put_registers(CPUState *cpu, int level, Error **errp)
+     if (level >= KVM_PUT_RESET_STATE) {
+         ret = kvm_put_msr_feature_control(x86_cpu);
+         if (ret < 0) {
++            error_setg_errno(errp, -ret, "Failed to set feature control MSR");
+             return ret;
+         }
+     }
+@@ -5232,12 +5233,14 @@ int kvm_arch_put_registers(CPUState *cpu, int level, Error **errp)
+     /* must be before kvm_put_nested_state so that EFER.SVME is set */
+     ret = has_sregs2 ? kvm_put_sregs2(x86_cpu) : kvm_put_sregs(x86_cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to set special registers");
+         return ret;
+     }
  
--int kvm_arch_put_registers(CPUState *cpu, int level)
-+int kvm_arch_put_registers(CPUState *cpu, int level, Error **errp)
- {
-     X86CPU *x86_cpu = X86_CPU(cpu);
-     int ret;
-@@ -5298,7 +5298,7 @@ int kvm_arch_put_registers(CPUState *cpu, int level)
+     if (level >= KVM_PUT_RESET_STATE) {
+         ret = kvm_put_nested_state(x86_cpu);
+         if (ret < 0) {
++            error_setg_errno(errp, -ret, "Failed to set nested state");
+             return ret;
+         }
+     }
+@@ -5255,6 +5258,7 @@ int kvm_arch_put_registers(CPUState *cpu, int level, Error **errp)
+     if (xen_mode == XEN_EMULATE && level == KVM_PUT_FULL_STATE) {
+         ret = kvm_put_xen_state(cpu);
+         if (ret < 0) {
++            error_setg_errno(errp, -ret, "Failed to set Xen state");
+             return ret;
+         }
+     }
+@@ -5262,37 +5266,45 @@ int kvm_arch_put_registers(CPUState *cpu, int level, Error **errp)
+ 
+     ret = kvm_getput_regs(x86_cpu, 1);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to set general purpose registers");
+         return ret;
+     }
+     ret = kvm_put_xsave(x86_cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to set XSAVE");
+         return ret;
+     }
+     ret = kvm_put_xcrs(x86_cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to set XCRs");
+         return ret;
+     }
+     ret = kvm_put_msrs(x86_cpu, level);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to set MSRs");
+         return ret;
+     }
+     ret = kvm_put_vcpu_events(x86_cpu, level);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to set vCPU events");
+         return ret;
+     }
+     if (level >= KVM_PUT_RESET_STATE) {
+         ret = kvm_put_mp_state(x86_cpu);
+         if (ret < 0) {
++            error_setg_errno(errp, -ret, "Failed to set MP state");
+             return ret;
+         }
+     }
+ 
+     ret = kvm_put_tscdeadline_msr(x86_cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to set TSC deadline MSR");
+         return ret;
+     }
+     ret = kvm_put_debugregs(x86_cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to set debug registers");
+         return ret;
+     }
      return 0;
- }
+@@ -5307,6 +5319,7 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
  
--int kvm_arch_get_registers(CPUState *cs)
-+int kvm_arch_get_registers(CPUState *cs, Error **errp)
- {
-     X86CPU *cpu = X86_CPU(cs);
-     int ret;
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 4786cd5efa4..30ec16025d4 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -588,7 +588,7 @@ static int kvm_loongarch_put_cpucfg(CPUState *cs)
-     return ret;
- }
- 
--int kvm_arch_get_registers(CPUState *cs)
-+int kvm_arch_get_registers(CPUState *cs, Error **errp)
- {
-     int ret;
- 
-@@ -616,7 +616,7 @@ int kvm_arch_get_registers(CPUState *cs)
-     return ret;
- }
- 
--int kvm_arch_put_registers(CPUState *cs, int level)
-+int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
- {
-     int ret;
- 
-diff --git a/target/mips/kvm.c b/target/mips/kvm.c
-index a631ab544f5..a98798c6691 100644
---- a/target/mips/kvm.c
-+++ b/target/mips/kvm.c
-@@ -1172,7 +1172,7 @@ static int kvm_mips_get_cp0_registers(CPUState *cs)
-     return ret;
- }
- 
--int kvm_arch_put_registers(CPUState *cs, int level)
-+int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
- {
-     CPUMIPSState *env = cpu_env(cs);
-     struct kvm_regs regs;
-@@ -1207,7 +1207,7 @@ int kvm_arch_put_registers(CPUState *cs, int level)
-     return ret;
- }
- 
--int kvm_arch_get_registers(CPUState *cs)
-+int kvm_arch_get_registers(CPUState *cs, Error **errp)
- {
-     CPUMIPSState *env = cpu_env(cs);
-     int ret = 0;
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index 907dba60d1b..3efc28f18b3 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -900,7 +900,7 @@ int kvmppc_put_books_sregs(PowerPCCPU *cpu)
-     return kvm_vcpu_ioctl(CPU(cpu), KVM_SET_SREGS, &sregs);
- }
- 
--int kvm_arch_put_registers(CPUState *cs, int level)
-+int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
- {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
-     CPUPPCState *env = &cpu->env;
-@@ -1205,7 +1205,7 @@ static int kvmppc_get_books_sregs(PowerPCCPU *cpu)
-     return 0;
- }
- 
--int kvm_arch_get_registers(CPUState *cs)
-+int kvm_arch_get_registers(CPUState *cs, Error **errp)
- {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
-     CPUPPCState *env = &cpu->env;
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index f6e3156b8d2..2bfb112be08 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1192,7 +1192,7 @@ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
-     KVM_CAP_LAST_INFO
- };
- 
--int kvm_arch_get_registers(CPUState *cs)
-+int kvm_arch_get_registers(CPUState *cs, Error **errp)
- {
-     int ret = 0;
- 
-@@ -1237,7 +1237,7 @@ int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
-     return 0;
- }
- 
--int kvm_arch_put_registers(CPUState *cs, int level)
-+int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
- {
-     int ret = 0;
- 
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index 94181d9281f..8ffe0159d82 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -472,7 +472,7 @@ static int can_sync_regs(CPUState *cs, int regs)
- #define KVM_SYNC_REQUIRED_REGS (KVM_SYNC_GPRS | KVM_SYNC_ACRS | \
-                                 KVM_SYNC_CRS | KVM_SYNC_PREFIX)
- 
--int kvm_arch_put_registers(CPUState *cs, int level)
-+int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
- {
-     CPUS390XState *env = cpu_env(cs);
-     struct kvm_fpu fpu = {};
-@@ -598,7 +598,7 @@ int kvm_arch_put_registers(CPUState *cs, int level)
-     return 0;
- }
- 
--int kvm_arch_get_registers(CPUState *cs)
-+int kvm_arch_get_registers(CPUState *cs, Error **errp)
- {
-     CPUS390XState *env = cpu_env(cs);
-     struct kvm_fpu fpu;
+     ret = kvm_get_vcpu_events(cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to get vCPU events");
+         goto out;
+     }
+     /*
+@@ -5315,44 +5328,54 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
+      */
+     ret = kvm_get_mp_state(cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to get MP state");
+         goto out;
+     }
+     ret = kvm_getput_regs(cpu, 0);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to get general purpose registers");
+         goto out;
+     }
+     ret = kvm_get_xsave(cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to get XSAVE");
+         goto out;
+     }
+     ret = kvm_get_xcrs(cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to get XCRs");
+         goto out;
+     }
+     ret = has_sregs2 ? kvm_get_sregs2(cpu) : kvm_get_sregs(cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to get special registers");
+         goto out;
+     }
+     ret = kvm_get_msrs(cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to get MSRs");
+         goto out;
+     }
+     ret = kvm_get_apic(cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to get APIC");
+         goto out;
+     }
+     ret = kvm_get_debugregs(cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to get debug registers");
+         goto out;
+     }
+     ret = kvm_get_nested_state(cpu);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Failed to get nested state");
+         goto out;
+     }
+ #ifdef CONFIG_XEN_EMU
+     if (xen_mode == XEN_EMULATE) {
+         ret = kvm_get_xen_state(cs);
+         if (ret < 0) {
++            error_setg_errno(errp, -ret, "Failed to get Xen state");
+             goto out;
+         }
+     }
 -- 
 2.46.1
 
