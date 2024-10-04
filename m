@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7528990948
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A00B699094C
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:34:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swlFo-0001hr-RZ; Fri, 04 Oct 2024 12:34:09 -0400
+	id 1swlFu-0002Y5-Kd; Fri, 04 Oct 2024 12:34:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlFX-0000Q2-3f
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:33:51 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlFo-0001vu-9d
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:34:08 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlFU-0005yj-Ph
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:33:50 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-5399041167cso4063653e87.0
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:33:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlFl-00061M-SK
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:34:08 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-5398a26b64fso2386005e87.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:34:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728059627; x=1728664427; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728059643; x=1728664443; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hLzg4uMG2cx+IKbaUwzfii1q1L/0Wc5xbNn8QzHBma0=;
- b=ZGrzTCf0aCI/SK37IHwhcqfSdUL0BqiYgZlmmGh9E5PRuKKQtMsCFhpfEPhnJKOZpM
- vqxW/IMXXxRX+SJjfAvBdyT1ahHT+jgYymKp1oh8BtS7SfuUy0XMCWjGBULu+CG1Hhge
- PDEwk6NO8dZnWz7xQIc2KsgOXAxCfDPvWL9fIVvEoFp7DuXZ9ki0FhNvTppASATzKJCq
- cx0PWWffM29TZ10u9jJ+ZOWgMR1VD/ezvd86tZHdPwUZ5PSWQvtNICCQgLW4EM+U2Ys7
- gu45omNUfAzy0hvL/4Lgw3qyMf4MfMhq0sNqcYrW2EV8c6cZGEDHwf5iRcBgP2Lh+K3N
- 8HTg==
+ bh=uKaUzar4CyW9b+VidODguwjQPRzdI1IQfcANAiFe0bI=;
+ b=WupiJwVHeCXB6aPmjNqYTZQbwDvic76JnBZYSNwJcF6NcAnh5iuWAJYBTnkXvvT1/u
+ 1LKwvMKpx5NG+nkDD3hIT9ZhdNLM4Ynd5LkvF0VuIpzDmWGEBTmCvuCq89h+cWAGtSBu
+ pl7dPt2xRYfNE3HfjbIbThhcWzicmn0U5rtFys5Tt5Sbpfuka87E3dCO/v19YoC9K0Rr
+ WHX5RvUtRad2mIaM/U9VV7elCk05c5urP93tZezjGLuijrUVJX+aqF4T/n/EhmJ+LeWq
+ TCYu6wA2z2ptkWwQQgntaXGr1/TFF989nVW438YvhK+nRfr0YhKKKWgOdy2I5rT5csx5
+ LKng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728059627; x=1728664427;
+ d=1e100.net; s=20230601; t=1728059643; x=1728664443;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hLzg4uMG2cx+IKbaUwzfii1q1L/0Wc5xbNn8QzHBma0=;
- b=hzyT9Dox2rNDs/86IFgbuKDb16Jlq8UrqDK0aVT+7r44dQ0bjCLRG5pDdaXnjROOZT
- kL/H25iZd4vk4zHodQhII8uQWKomO/j3ibYlRr1kDnFLw1lF+stzSfY3VNE63nm2qAHv
- yNr1AxQAc9lDocxle7fZ6ivZ+bNOUQsojkyl2s67WDo4Ew/wx0otzdIVYEy1JvJPqTpz
- PREp++uHnP2bYg5bRC1CarbbcpJacLw7Wgf3cBrdsljSWkTNpunt6Bc37kSN/yu+nIr+
- +xXhEnX16rcuy8rpc/HYVqSR6ncb7CbdbOiZj3Pv2bg/Oxh6LBzwPWRiTEYnVhavJptG
- Pchw==
-X-Gm-Message-State: AOJu0Yw2QCSJoiBAXZka+7BJzsvlICd9CTUtk9r3JnQcJ1MsMIHC/VIA
- yifvJQhvSeI8FkHozMibtXu04X6hVIMQtka1BlbsXhV64MVGJa0f8HaKu0evSNp48yl4lwW3fd8
- 1qBj5lQ==
-X-Google-Smtp-Source: AGHT+IEuSAOZSCN26tBePII+5E9mmDeltRZqJrGv08/GBrPxmSMNYn/k2BT5kWYju5saHekA9/bXHQ==
-X-Received: by 2002:a05:6512:3b98:b0:539:9ee4:baab with SMTP id
- 2adb3069b0e04-539ab87dcbfmr3297739e87.30.1728059626757; 
- Fri, 04 Oct 2024 09:33:46 -0700 (PDT)
+ bh=uKaUzar4CyW9b+VidODguwjQPRzdI1IQfcANAiFe0bI=;
+ b=K2OBCgWA2Qs6R/VxyGikl52Xs4yZIuilad0q4PVSgyiHu3gp0XKQlI6JYE8MStV3xw
+ J4swRm/UG1ojC5edXaamaU7gGVZzzIldsf9nqpzFEQKOSYSfWCPPdBOiWd/+p/Ukqdi6
+ +px1nAxnwXS4qEpCGCZPg5lnh8874H7+oQ5KKqT670b1lx0xWrE+EKboGIf/QZXP0DEO
+ IBCRdU/62qXLaY0aic+0ZQz+2eUqjMYbsNaFYH4nLJh1ozanfoYlhe0V5Qq4l5YIHREr
+ ULEn+zE8uWOXl9H5tQFAjFV07AkYWpIL/xuLZaM2PvMdGVypU7gmUEQoXV92vJNOGL/q
+ XF3g==
+X-Gm-Message-State: AOJu0YwwynnQ9XOpSJczXScnMZw4VY7R47kh6Wfa0o/KNJKiWLp0LkhE
+ a9510h1QnC5d7RPor9Pcep5Se/JdqBebMQ8afuCvUK6FBVWi4cXfzCxPr04rWhzuJ2jzwwJS1DG
+ nZia4zw==
+X-Google-Smtp-Source: AGHT+IFuVaVw2FeEj02CoP4GD4TKrUCRAAI2yJWWIn245ZaDyKf2L+98Bsw33FI6NNiG3GQCT3c70w==
+X-Received: by 2002:a05:6512:318e:b0:536:7cfb:6998 with SMTP id
+ 2adb3069b0e04-539ab89e01bmr2589237e87.35.1728059642951; 
+ Fri, 04 Oct 2024 09:34:02 -0700 (PDT)
 Received: from localhost.localdomain ([91.223.100.150])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-539afec8430sm2064e87.98.2024.10.04.09.33.40
+ 2adb3069b0e04-539b0025812sm766e87.307.2024.10.04.09.33.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 04 Oct 2024 09:33:44 -0700 (PDT)
+ Fri, 04 Oct 2024 09:34:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
@@ -62,18 +62,17 @@ Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 12/25] target/loongarch: Use explicit little-endian LD/ST
- API
-Date: Fri,  4 Oct 2024 13:30:28 -0300
-Message-ID: <20241004163042.85922-13-philmd@linaro.org>
+Subject: [PATCH v2 13/25] target/sh4: Use explicit little-endian LD/ST API
+Date: Fri,  4 Oct 2024 13:30:29 -0300
+Message-ID: <20241004163042.85922-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241004163042.85922-1-philmd@linaro.org>
 References: <20241004163042.85922-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,8 +95,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The LoongArch architecture uses little endianness. Directly
-use the little-endian LD/ST API.
+Since commit 73ceb12960e ("Remove the unused sh4eb target")
+we only build the SH4 architecture for little endianness.
+Directly use the little-endian LD/ST API.
 
 Mechanical change using:
 
@@ -105,47 +105,96 @@ Mechanical change using:
     for acc in uw w l q tul; do \
       sed -i -e "s/ld${acc}_p(/ld${acc}_${end}_p(/" \
              -e "s/st${acc}_p(/st${acc}_${end}_p(/" \
-        $(git grep -wlE '(ld|st)t?u?[wlq]_p' target/loongarch/); \
+        $(git grep -wlE '(ld|st)t?u?[wlq]_p' target/sh4/); \
     done
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/loongarch/gdbstub.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/sh4/gdbstub.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
-index 3a03cf9cba9..dafa4feb75d 100644
---- a/target/loongarch/gdbstub.c
-+++ b/target/loongarch/gdbstub.c
-@@ -67,10 +67,10 @@ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-     int length = 0;
- 
-     if (is_la64(env)) {
--        tmp = ldq_p(mem_buf);
-+        tmp = ldq_le_p(mem_buf);
-         read_length = 8;
-     } else {
--        tmp = ldl_p(mem_buf);
-+        tmp = ldl_le_p(mem_buf);
-         read_length = 4;
-     }
- 
-@@ -106,13 +106,13 @@ static int loongarch_gdb_set_fpu(CPUState *cs, uint8_t *mem_buf, int n)
-     int length = 0;
- 
-     if (0 <= n && n < 32) {
--        env->fpr[n].vreg.D(0) = ldq_p(mem_buf);
-+        env->fpr[n].vreg.D(0) = ldq_le_p(mem_buf);
-         length = 8;
-     } else if (32 <= n && n < 40) {
-         env->cf[n - 32] = ldub_p(mem_buf);
-         length = 1;
-     } else if (n == 40) {
--        env->fcsr0 = ldl_p(mem_buf);
-+        env->fcsr0 = ldl_le_p(mem_buf);
-         length = 4;
-     }
-     return length;
+diff --git a/target/sh4/gdbstub.c b/target/sh4/gdbstub.c
+index 75926d4e049..194be1d5db3 100644
+--- a/target/sh4/gdbstub.c
++++ b/target/sh4/gdbstub.c
+@@ -80,59 +80,59 @@ int superh_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     switch (n) {
+     case 0 ... 7:
+         if ((env->sr & (1u << SR_MD)) && (env->sr & (1u << SR_RB))) {
+-            env->gregs[n + 16] = ldl_p(mem_buf);
++            env->gregs[n + 16] = ldl_le_p(mem_buf);
+         } else {
+-            env->gregs[n] = ldl_p(mem_buf);
++            env->gregs[n] = ldl_le_p(mem_buf);
+         }
+         break;
+     case 8 ... 15:
+-        env->gregs[n] = ldl_p(mem_buf);
++        env->gregs[n] = ldl_le_p(mem_buf);
+         break;
+     case 16:
+-        env->pc = ldl_p(mem_buf);
++        env->pc = ldl_le_p(mem_buf);
+         break;
+     case 17:
+-        env->pr = ldl_p(mem_buf);
++        env->pr = ldl_le_p(mem_buf);
+         break;
+     case 18:
+-        env->gbr = ldl_p(mem_buf);
++        env->gbr = ldl_le_p(mem_buf);
+         break;
+     case 19:
+-        env->vbr = ldl_p(mem_buf);
++        env->vbr = ldl_le_p(mem_buf);
+         break;
+     case 20:
+-        env->mach = ldl_p(mem_buf);
++        env->mach = ldl_le_p(mem_buf);
+         break;
+     case 21:
+-        env->macl = ldl_p(mem_buf);
++        env->macl = ldl_le_p(mem_buf);
+         break;
+     case 22:
+-        cpu_write_sr(env, ldl_p(mem_buf));
++        cpu_write_sr(env, ldl_le_p(mem_buf));
+         break;
+     case 23:
+-        env->fpul = ldl_p(mem_buf);
++        env->fpul = ldl_le_p(mem_buf);
+         break;
+     case 24:
+-        env->fpscr = ldl_p(mem_buf);
++        env->fpscr = ldl_le_p(mem_buf);
+         break;
+     case 25 ... 40:
+         if (env->fpscr & FPSCR_FR) {
+-            env->fregs[n - 9] = ldl_p(mem_buf);
++            env->fregs[n - 9] = ldl_le_p(mem_buf);
+         } else {
+-            env->fregs[n - 25] = ldl_p(mem_buf);
++            env->fregs[n - 25] = ldl_le_p(mem_buf);
+         }
+         break;
+     case 41:
+-        env->ssr = ldl_p(mem_buf);
++        env->ssr = ldl_le_p(mem_buf);
+         break;
+     case 42:
+-        env->spc = ldl_p(mem_buf);
++        env->spc = ldl_le_p(mem_buf);
+         break;
+     case 43 ... 50:
+-        env->gregs[n - 43] = ldl_p(mem_buf);
++        env->gregs[n - 43] = ldl_le_p(mem_buf);
+         break;
+     case 51 ... 58:
+-        env->gregs[n - (51 - 16)] = ldl_p(mem_buf);
++        env->gregs[n - (51 - 16)] = ldl_le_p(mem_buf);
+         break;
+     default:
+         return 0;
 -- 
 2.45.2
 
