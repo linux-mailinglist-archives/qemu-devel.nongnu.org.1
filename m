@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DBE99088A
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC03990888
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:06:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swko4-0003hJ-1o; Fri, 04 Oct 2024 12:05:28 -0400
+	id 1swkoO-0005ef-Is; Fri, 04 Oct 2024 12:05:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1swknx-0003MJ-B7; Fri, 04 Oct 2024 12:05:21 -0400
+ id 1swkoJ-0005QP-Eb; Fri, 04 Oct 2024 12:05:43 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1swknv-0001xD-SZ; Fri, 04 Oct 2024 12:05:21 -0400
+ id 1swkoH-0001xw-IM; Fri, 04 Oct 2024 12:05:43 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E25509557A;
+ by isrv.corpit.ru (Postfix) with ESMTP id F00D59557B;
  Fri,  4 Oct 2024 19:03:30 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 285B914D988;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3519814D989;
  Fri,  4 Oct 2024 19:03:33 +0300 (MSK)
-Received: (nullmailer pid 1282569 invoked by uid 1000);
+Received: (nullmailer pid 1282572 invoked by uid 1000);
  Fri, 04 Oct 2024 16:03:32 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 21/23] tests/functional: Fix hash validation
-Date: Fri,  4 Oct 2024 19:03:29 +0300
-Message-Id: <20241004160331.1282441-22-mjt@tls.msk.ru>
+Subject: [PULL 22/23] docs/devel: Mention post_load hook restrictions where we
+ document the hook
+Date: Fri,  4 Oct 2024 19:03:30 +0300
+Message-Id: <20241004160331.1282441-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241004160331.1282441-1-mjt@tls.msk.ru>
 References: <20241004160331.1282441-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,36 +61,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-The _check() function is supposed to check whether the hash of the
-downloaded file matches the expected one. Unfortunately, during the
-last rework of this function, the check was accidentally turned into
-returning the hash value itself instead of a True/False value,
-effectively accepting each hash as valid. Let's do a proper check
-again now.
+Accessing another device in a post_load hook is a bad idea, because
+the order of device save/restore is not fixed, and so this
+cross-device access makes the save/restore non-deterministic.
 
-Fixes:05e303210d ("tests/functional/qemu_test: Use Python hashlib ...")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+We previously only flagged up this requirement in the
+record-and-replay developer docs; repeat it in the main migration
+documentation, where a developer trying to implement a post_load hook
+is more likely to see it.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tests/functional/qemu_test/asset.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/devel/migration/main.rst | 6 ++++++
+ docs/devel/replay.rst         | 3 +++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-index 3ec429217e..e47bfac035 100644
---- a/tests/functional/qemu_test/asset.py
-+++ b/tests/functional/qemu_test/asset.py
-@@ -57,7 +57,7 @@ def _check(self, cache_file):
-                     break
-                 hl.update(chunk)
+diff --git a/docs/devel/migration/main.rst b/docs/devel/migration/main.rst
+index 784c899dca..c2857fc244 100644
+--- a/docs/devel/migration/main.rst
++++ b/docs/devel/migration/main.rst
+@@ -465,6 +465,12 @@ Examples of such API functions are:
+   - portio_list_set_address()
+   - portio_list_set_enabled()
  
--        return  hl.hexdigest()
-+        return self.hash == hl.hexdigest()
++Since the order of device save/restore is not defined, you must
++avoid accessing or changing any other device's state in one of these
++callbacks. (For instance, don't do anything that calls ``update_irq()``
++in a ``post_load`` hook.) Otherwise, restore will not be deterministic,
++and this will break execution record/replay.
++
+ Iterative device migration
+ --------------------------
  
-     def valid(self):
-         return self.cache_file.exists() and self._check(self.cache_file)
+diff --git a/docs/devel/replay.rst b/docs/devel/replay.rst
+index effd856f0c..40f58d9d4f 100644
+--- a/docs/devel/replay.rst
++++ b/docs/devel/replay.rst
+@@ -202,6 +202,9 @@ into the log.
+ Saving/restoring the VM state
+ -----------------------------
+ 
++Record/replay relies on VM state save and restore being complete and
++deterministic.
++
+ All fields in the device state structure (including virtual timers)
+ should be restored by loadvm to the same values they had before savevm.
+ 
 -- 
 2.39.5
 
