@@ -2,85 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0AB990994
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A262999099A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:44:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swlNY-0002de-Ob; Fri, 04 Oct 2024 12:42:08 -0400
+	id 1swlPS-0001W2-9p; Fri, 04 Oct 2024 12:44:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlND-00029b-UJ
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:41:48 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swlNB-0007D3-Tm
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:41:47 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-53988c54ec8so2788604e87.0
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:41:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728060103; x=1728664903; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kB3ZtAz3XEwZvlOLzS/NbhoRCoAtuz8HX62gKHoEQpw=;
- b=M0icU7F2VuYiSj9KTnn3A2f3rSQYFyvWoiCry9pxvmtiLZfWF63eOGxA2biM4WuPRK
- VQSKlu87Ckpaln0GY3H9ymol/p2J9gRpgabD2EC5UemYNnR3r2m2biCDolFNl+ROBuV4
- mQ2dJvPjFkyKREBf6KgaXh21X4hrWOUi0Ihr7aqjLvVC+Kpv3AZAhSlbAZbNTL713RF7
- srjk3BggUOVHJs3U64NAE3xZ7m38YyMsqBT/BiFlMudSf6DKksZt3sn+RA0L/I5IZgB9
- 89N1eNA7BaTabvSZHN1tDtfSO2lCBzWvhsG7M9IYb90z1U4dVbV3w9WqCCOjTKVoygux
- O5rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728060103; x=1728664903;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kB3ZtAz3XEwZvlOLzS/NbhoRCoAtuz8HX62gKHoEQpw=;
- b=RXohVCQWzVX4feWpT4GHFEhXesjpj7SWVBHZOuyEXoEWdE8pLWxZch2gKQQypCOHks
- pahRYM7KbtcoiU8vAd7pX4cCeKtV4BD+uSGvsceIAVjigSF+MWpQV+GOmNHMKwMlxO8i
- AMwHQPbr3NNPCAPXQ+lGTV/mVN8EWRf67fEby3as7fQVFzVdcpH7tzs564YWkjvqo5lO
- w7nDXNnfS+Vb2uUXXvYVfs4YW+A7enRVuXmCNcflWb/xuKf6GHwwSN8ZcBlbWYuFTzh7
- /osG0QsOVn47AlXnxIzuh2WFkH3NGHs1vDBxgLZOfKsU1qxlWnuVZXAEFaBvySnCwZtV
- ji/A==
-X-Gm-Message-State: AOJu0Yyl3OhG7/FTximFlu0ot8W8Cf9UBTUd4Pq2nls0FLSkKQpLF1hf
- 3GtrZFn1PZrtO8Tqdvjxj3IHZ+k+16zGS00GVl3L/S1gMPK6EEU8oCUwXysI+4RZNzReexRFvJj
- 2xr0BvA==
-X-Google-Smtp-Source: AGHT+IHTzZyLnKKAduJSs3wJNzJl6SJnKRygY12UTU4C/h9iSNFiY0vz+TFehs7M6+JHAZ/+ng36WQ==
-X-Received: by 2002:a05:6512:318e:b0:536:7cfb:6998 with SMTP id
- 2adb3069b0e04-539ab89e01bmr2604563e87.35.1728060102940; 
- Fri, 04 Oct 2024 09:41:42 -0700 (PDT)
-Received: from [192.168.132.175] ([91.223.100.150])
- by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-539aff1d12esm2651e87.175.2024.10.04.09.41.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 04 Oct 2024 09:41:41 -0700 (PDT)
-Message-ID: <7d0b35a9-52c4-4ec9-878d-06c1f54c599a@linaro.org>
-Date: Fri, 4 Oct 2024 13:41:34 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 18/25] target/m68k: Use explicit big-endian LD/ST API
+ (Exim 4.90_1) (envelope-from <dbassey@redhat.com>)
+ id 1swlPP-0001UO-Kq
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:44:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dbassey@redhat.com>)
+ id 1swlPO-0007S3-7X
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:44:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728060241;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=qSIrWQzyqIbvFpyCcmPMmQMofmnNEjbQDVMyANwxsD0=;
+ b=Pjcl7fQfBnOSFmYUXr5eb5LOC4ZlnNokng48vQmoNm1Mv8kstj35puswmK3EFjgkLbaumg
+ IRllmyKFSJDU/Ip9pd7i5aNg0URXPxdmerWJqgD5/3MiHpBVvsWFEbba/YvMXx6dtrcNTz
+ VVJc0Y3V4dcREIZlIw2Ggds5mb5iVUQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-326-_UTtbFfZMBuxNKk9V3baQw-1; Fri,
+ 04 Oct 2024 12:42:02 -0400
+X-MC-Unique: _UTtbFfZMBuxNKk9V3baQw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 98D0F19560BE
+ for <qemu-devel@nongnu.org>; Fri,  4 Oct 2024 16:41:56 +0000 (UTC)
+Received: from corp.redhat.com (unknown [10.39.192.92])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4FDA519560AD; Fri,  4 Oct 2024 16:41:53 +0000 (UTC)
+From: Dorinda Bassey <dbassey@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-ppc@nongnu.org
-References: <20241004163042.85922-1-philmd@linaro.org>
- <20241004163042.85922-19-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20241004163042.85922-19-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc: marcandre.lureau@redhat.com, mhrica@redhat.com,
+ Dorinda Bassey <dbassey@redhat.com>
+Subject: [PATCH] virtio-gpu: Add definition for resource_uuid feature
+Date: Fri,  4 Oct 2024 18:41:40 +0200
+Message-ID: <20241004164140.1886877-1-dbassey@redhat.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=dbassey@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.146,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,27 +79,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/10/24 18:30, Philippe Mathieu-Daudé wrote:
-> The M68K architecture uses big endianness. Directly use
-> the big-endian LD/ST API.
-> 
-> Mechanical change using:
-> 
->    $ end=be; \
->      for acc in uw w l q tul; do \
->        sed -i -e "s/ld${acc}_p(/ld${acc}_${end}_p(/" \
->               -e "s/st${acc}_p(/st${acc}_${end}_p(/" \
->          $(git grep -wlE '(ld|st)t?u?[wlq]_p' target/m68k/); \
->      done
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Add the VIRTIO_GPU_F_RESOURCE_UUID feature to enable the assignment
+of resources UUIDs for export to other virtio devices.
 
-Per v1:
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
+---
+ hw/display/vhost-user-gpu.c    | 4 ++++
+ hw/display/virtio-gpu-base.c   | 3 +++
+ include/hw/virtio/virtio-gpu.h | 3 +++
+ 3 files changed, 10 insertions(+)
 
-> ---
->   target/m68k/gdbstub.c |  2 +-
->   target/m68k/helper.c  | 10 +++++-----
->   2 files changed, 6 insertions(+), 6 deletions(-)
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index 14548f1a57..053cfd9cff 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -631,6 +631,10 @@ vhost_user_gpu_device_realize(DeviceState *qdev, Error **errp)
+         error_report("EDID requested but the backend doesn't support it.");
+         g->parent_obj.conf.flags &= ~(1 << VIRTIO_GPU_FLAG_EDID_ENABLED);
+     }
++    if (virtio_has_feature(g->vhost->dev.features,
++        VIRTIO_GPU_F_RESOURCE_UUID)) {
++        g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_F_RESOURCE_UUID_ENABLED;
++    }
+ 
+     if (!virtio_gpu_base_device_realize(qdev, NULL, NULL, errp)) {
+         return;
+diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+index 4fc7ef8896..7827536ac4 100644
+--- a/hw/display/virtio-gpu-base.c
++++ b/hw/display/virtio-gpu-base.c
+@@ -235,6 +235,9 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
+     if (virtio_gpu_context_init_enabled(g->conf)) {
+         features |= (1 << VIRTIO_GPU_F_CONTEXT_INIT);
+     }
++    if (virtio_gpu_resource_uuid_enabled(g->conf)) {
++        features |= (1 << VIRTIO_GPU_F_RESOURCE_UUID);
++    }
+ 
+     return features;
+ }
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index 7a59379f5a..15e193bb6d 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -99,6 +99,7 @@ enum virtio_gpu_base_conf_flags {
+     VIRTIO_GPU_FLAG_BLOB_ENABLED,
+     VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
+     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
++    VIRTIO_GPU_F_RESOURCE_UUID_ENABLED,
+ };
+ 
+ #define virtio_gpu_virgl_enabled(_cfg) \
+@@ -115,6 +116,8 @@ enum virtio_gpu_base_conf_flags {
+     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED))
+ #define virtio_gpu_rutabaga_enabled(_cfg) \
+     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
++#define virtio_gpu_resource_uuid_enabled(_cfg) \
++    (_cfg.flags & (1 << VIRTIO_GPU_F_RESOURCE_UUID_ENABLED))
+ #define virtio_gpu_hostmem_enabled(_cfg) \
+     (_cfg.hostmem > 0)
+ 
+-- 
+2.46.1
 
 
