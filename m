@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D64299096E
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A28F99095F
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:37:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swlGu-0007Ii-BG; Fri, 04 Oct 2024 12:35:16 -0400
+	id 1swlH1-0007yO-Bo; Fri, 04 Oct 2024 12:35:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1swlGJ-0006QL-1V
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:34:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1swlGN-0006WH-0n
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:34:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1swlGG-00069Q-Pp
- for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:34:38 -0400
+ id 1swlGK-0006A6-FG
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:34:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728059674;
+ s=mimecast20190719; t=1728059679;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mUn5c3pfQStI53Zd5c7QBE8d3u2NmM4zj5U6cf4nThw=;
- b=WhufGUE0stSbsi2A5O9zPzZl5K2bFMVQCGYSF/XNdo84LtQwFj/ALJSYQG5X19hxfkR5pA
- p31XiQ0tJ1vad6/Ea8C53UoUyZP2HYY3wCSZ+xjfhEj1iCErRRDJ8NvTSmyZHIiWRUoX2P
- jwoKKbP6IFX6lrWXMvxtJy91newqXH0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PwAi0zbVtrrkRs71yZC6BRcXMXEBnLA8T1zN9S8kLxs=;
+ b=T7gPxmNXN9p21AGDMIx0IrrtRVnz0H1f7A3woJ8xdKIaQoHEiZqzi1HB9vOMZZcxQ4siU9
+ coX9yh8pehFSEhqZFbnlk14bGppcYAptmgCcGhmvxKnPT+uC3g2NuI8s1IlG7NuprcDfK6
+ pA3HQCEAN6hA0NJZwFbnSzIzBWaz+5o=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-550-1AHYwE1wMze52jC-k4kiuA-1; Fri, 04 Oct 2024 12:34:32 -0400
-X-MC-Unique: 1AHYwE1wMze52jC-k4kiuA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-37cd23c9226so1457957f8f.0
- for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:34:32 -0700 (PDT)
+ us-mta-41-Ick7QVX5MNe6wZYnYzRxzQ-1; Fri, 04 Oct 2024 12:34:35 -0400
+X-MC-Unique: Ick7QVX5MNe6wZYnYzRxzQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-42e611963c2so17700305e9.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:34:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728059671; x=1728664471;
+ d=1e100.net; s=20230601; t=1728059674; x=1728664474;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mUn5c3pfQStI53Zd5c7QBE8d3u2NmM4zj5U6cf4nThw=;
- b=mLvjzYXk+moI0cfXVnMYxDHO8tM1oRs+Yc2moHHO6Hcvlo2/nARP+gWLIMgT3ARg8W
- XnYOvNCYMwppS1axD2HwdYSqWioT/6Sml7zzlJB3pCRadzWFE8aJml+p1OGtuZFChV+j
- jeNpWyRFfzNnqvFSk3Z+X95c9MixH4MRN803BpIwr9+NdCYST4a/bngvW3ZZEXwhL7dr
- EmU20d2cYkB0wONPfq0pr9Al6BHVkLgxSV6+4DWsYMWYfYr0wsm20VzHFx9QyncSZ7EZ
- p2t5S/ommwC3INRuxYoCwxKdV7PXApaPmqII1QhtbxfCXKEHw3S8RohSFJyM+7sZe3rW
- qABQ==
-X-Gm-Message-State: AOJu0Yzri1u31J5cFEkPSxp9/iKg1s3/0RPfbbyiQQmFAjtWsLlEe965
- c0PplLnGC6JW3f2n2TgQT26npx+E3nzAE0QSwbAFwvtKMU+91ohNw0HJXIU7ZeiVA7oiSmVYD2t
- eslL6pqZLdifNtK4ATQTCJ4PG4yFsWYmF0Ob1E5EuhhYFl041esjPIEcPNyMMFol5lYf9/QkoHW
- dLMkpDP4eoHefotFNL4hIacnFvQZMLx2TunhVEM84=
-X-Received: by 2002:adf:e84c:0:b0:37c:c9bc:1be6 with SMTP id
- ffacd0b85a97d-37d049f1696mr4894225f8f.16.1728059671213; 
- Fri, 04 Oct 2024 09:34:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6gmi0oaYzGhsHfQThqMQqQ5urlDPyPAZIY9iDoMG5e9M2WeYUlDnvJNfI9f5B2B82gMsC9A==
-X-Received: by 2002:adf:e84c:0:b0:37c:c9bc:1be6 with SMTP id
- ffacd0b85a97d-37d049f1696mr4894207f8f.16.1728059670760; 
- Fri, 04 Oct 2024 09:34:30 -0700 (PDT)
+ bh=PwAi0zbVtrrkRs71yZC6BRcXMXEBnLA8T1zN9S8kLxs=;
+ b=G1uYcmamIGS+PY0BG8wNb4vOaNtLGWO1EyuUhH+QZKPWZoWix9+XOBFJh4DRvfr75D
+ Efc7HSqd8HE2o7Bjk/cGQ+NkA5NrYV1xgkI1TJsvNCMwvh3Zg1dSIhddTprfCXGp2gTe
+ kY4J+Vt/tb89iyftuiZXsm57/8lGzUXC8bPdlaUts3KnR2qlvn8tm5fK3RHl4Ad9mH7d
+ u4VnMwIfIoHbrlRNCu35nrO04dwDr5UHSNRq2QG5jKpBnf3SHFD17eVIytqF0uMAkAkd
+ 9PB9ubKI09aghyU33as0AXtixfJgxst9pcKnkciIfN970hQhDxXTZRMgV6cwxHDO5RTZ
+ XvNQ==
+X-Gm-Message-State: AOJu0Yx0E8HF27NmKMj0wNO1zODWFeSdmEXEWBV68+aifieljLj0nvsr
+ ryxO76jg2XatXjLptq6b+vFJGb4ziHvpaNCyoVBkyiZe7ep52qREOlfplZyoGgsSY+zlr+qh5Ut
+ ZVyhwQXdZsVO46H6I8L651od4PsbGr3CR/V1looIYSSvH3laigldNbfBlpVuigr+F8vJT/wTk/Y
+ SmvBqL4Xmsn+VxqKj7H0cORe81+hdJ7bxvznEQnv4=
+X-Received: by 2002:a05:600c:1c17:b0:42c:ae76:6cea with SMTP id
+ 5b1f17b1804b1-42f85aab261mr30139565e9.9.1728059674214; 
+ Fri, 04 Oct 2024 09:34:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0AhMMEYhIXPAT9qO1lOS42kcGtW02NqXex6DfuEN30Jby/XFPwJXH3dc+RhkjKFJRShMoIA==
+X-Received: by 2002:a05:600c:1c17:b0:42c:ae76:6cea with SMTP id
+ 5b1f17b1804b1-42f85aab261mr30139325e9.9.1728059673748; 
+ Fri, 04 Oct 2024 09:34:33 -0700 (PDT)
 Received: from avogadro.local ([151.95.43.71])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42f86b1d672sm19469335e9.28.2024.10.04.09.34.30
+ 5b1f17b1804b1-42f89e8360asm1611325e9.1.2024.10.04.09.34.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Oct 2024 09:34:30 -0700 (PDT)
+ Fri, 04 Oct 2024 09:34:33 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: "Richard W.M. Jones" <rjones@redhat.com>
-Subject: [PULL 04/23] tests/unit: remove block layer code from
- test-nested-aio-poll
-Date: Fri,  4 Oct 2024 18:33:56 +0200
-Message-ID: <20241004163415.951106-5-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Kamil=20Szcz=C4=99k?= <kamil@szczek.dev>
+Subject: [PULL 05/23] hw/i386/pc: Add a description for the i8042 property
+Date: Fri,  4 Oct 2024 18:33:57 +0200
+Message-ID: <20241004163415.951106-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20241004163415.951106-1-pbonzini@redhat.com>
 References: <20241004163415.951106-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -102,39 +102,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GCC is reporting a NULL pointer dereference when compiling aio_wait_kick()
-with LTO.
+From: Kamil Szczęk <kamil@szczek.dev>
 
-The issue is that test-nested-aio-poll.c does not call qemu_init_main_loop().
-It doesn't _need_ to because it never calls AIO_WAIT_WHILE(), but it seems
-that LTO does not do enough dead-code elimination to catch that.
+While working on exposing the i8042 property in libvirt I noticed that
+the property is missing a description. This adds a simple description
+so that QEMU users don't have to dig in the source code to figure out
+what this option does.
 
-Fortunately aio_wait_kick() is only used in few places, and only in block
-layer or system emulation code; and this test only needs the core event loop
-functionality.  It does not even need iothreads.   So remove everything that
-calls aio_wait_kick(), which is nice for coverage compared to adding the call
-to qemu_init_main_loop().
-
-Reported-by: Richard W.M. Jones <rjones@redhat.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2434
+Signed-off-by: Kamil Szczęk <kamil@szczek.dev>
+Link: https://lore.kernel.org/r/15fhXFY6x78KW8P5gw0eKTW8kc17zejrJFxqnOyoBy6vw4W9rCmgDhoxssWosWFs_dbFtfsyjn9wpPrV3x8Nlzhy8mTJSEnXCr4qyHAhXSw=@szczek.dev
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/unit/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/pc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index 21d101301bc..d5248ae51de 100644
---- a/tests/unit/meson.build
-+++ b/tests/unit/meson.build
-@@ -116,7 +116,7 @@ if have_block
-   if host_os != 'windows'
-     tests += {
-       'test-image-locking': [testblock],
--      'test-nested-aio-poll': [testblock],
-+      'test-nested-aio-poll': [],
-     }
-   endif
-   if config_host_data.get('CONFIG_REPLICATION')
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 80a65d965fb..67a921779ca 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1823,6 +1823,8 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+ 
+     object_class_property_add_bool(oc, PC_MACHINE_I8042,
+         pc_machine_get_i8042, pc_machine_set_i8042);
++    object_class_property_set_description(oc, PC_MACHINE_I8042,
++        "Enable/disable Intel 8042 PS/2 controller emulation");
+ 
+     object_class_property_add_bool(oc, "default-bus-bypass-iommu",
+         pc_machine_get_default_bus_bypass_iommu,
 -- 
 2.46.1
 
