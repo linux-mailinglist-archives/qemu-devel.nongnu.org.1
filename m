@@ -2,49 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6049B99088D
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:06:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5204A9908F7
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Oct 2024 18:22:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1swkoO-0005eW-Iu; Fri, 04 Oct 2024 12:05:48 -0400
+	id 1swl32-00037w-6v; Fri, 04 Oct 2024 12:20:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1swkoK-0005Sa-5P; Fri, 04 Oct 2024 12:05:44 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1swkoI-0001yV-MV; Fri, 04 Oct 2024 12:05:43 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 08C559557C;
- Fri,  4 Oct 2024 19:03:31 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 42AC914D98A;
- Fri,  4 Oct 2024 19:03:33 +0300 (MSK)
-Received: (nullmailer pid 1282575 invoked by uid 1000);
- Fri, 04 Oct 2024 16:03:32 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 23/23] MAINTAINERS: Add myself as maintainer of e500 machines
-Date: Fri,  4 Oct 2024 19:03:31 +0300
-Message-Id: <20241004160331.1282441-24-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241004160331.1282441-1-mjt@tls.msk.ru>
-References: <20241004160331.1282441-1-mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swl2y-00037X-Fu
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:20:52 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1swl2w-0004D5-OW
+ for qemu-devel@nongnu.org; Fri, 04 Oct 2024 12:20:52 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2facaa16826so22263871fa.0
+ for <qemu-devel@nongnu.org>; Fri, 04 Oct 2024 09:20:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1728058848; x=1728663648; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zW55LOJ76NeoOT9W0YOfNGpNOQ9kwtN3+Sb2BN2bq28=;
+ b=wfxKeYkPQy0cv1I1AvmOHjoQhI9Trl02tvV1z2V3vbPPbe8kuooe1Szeaa7NinoSz+
+ kdTvI/XsRwSu0GiG2qkcpTEQXgGtNyRlHUZxArsY2jIyvYWTEbTHqdmvtCrv5VClxwEy
+ ig5HVfzZytcKyRmYPFZxPsr104y0wDZPKJjR/R4r4Weg/QGxiWJjKVFeCr2/KdQ+j/3s
+ 25yUyBYBXajoAMJ5sCSPGDnB3X7lsxnzHeKpCz8Q0N37rdDXuTmTNfYXPrf6pXCAim4u
+ iJM4+8gLGlSr9O/NkTzVQV9/6Y6W5I8yELXWGmVYBdaTNqy08W9nVWBGi/0rzJXIyHOZ
+ 3Ebg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728058848; x=1728663648;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zW55LOJ76NeoOT9W0YOfNGpNOQ9kwtN3+Sb2BN2bq28=;
+ b=QPeyp1vNLZVsFQsODsXlJbszNvCbuWwhWgNfNiqmdcvPeqXhkxk9ii45B0SF7sYCcj
+ 2R8z3I79v4qsVFZ2L3OYCiAfZ2ga9FbAMKjGRoaTlTgN/ofHb7UfsCq35FEC3HomFfAL
+ pxdBe5WsoKh3beAPX6yYa+Ql+w8nKhFMnRvy+0HOpyW646Siw7o/o2ajAivu5Nc9a/h1
+ Ezfinmex7HqkCpqTJ04qX2K0IvbMxhRIBqKtZaC7l+qhDrkmMZrDwbKOqvYsAEW2B9fG
+ /qBUVN6+yCKHzZ3sx64dmP1d6t33BOyJDX7u6A97yMzwEf90ac6NKlaXFYzK4EoiN6Ma
+ eOsQ==
+X-Gm-Message-State: AOJu0Yw/l0JMeR9IDxST9pjD4I0mmV1MLrIKT13xnCX4mWUspv8N7lAS
+ Aw4vUhfpCXjNFJg4y/Fha+QLxu9x3VG9Zdp4o/Lx12yxAWCiIgAIaX2NuVJ8YDZzudersa3lye+
+ iW066vg==
+X-Google-Smtp-Source: AGHT+IHeItffcZ7BrcsJcJh9s+eJfbY9xuAKcsYyHc2nZaW5V0+OuvCZYNOkK5swEPRF4FOKCyH6pw==
+X-Received: by 2002:a2e:bc1a:0:b0:2fa:d25e:39e4 with SMTP id
+ 38308e7fff4ca-2faf3d8fec9mr19732861fa.36.1728058848210; 
+ Fri, 04 Oct 2024 09:20:48 -0700 (PDT)
+Received: from [192.168.39.175] ([91.223.100.208])
+ by smtp.gmail.com with ESMTPSA id
+ 38308e7fff4ca-2faf9b3b332sm147951fa.134.2024.10.04.09.20.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 04 Oct 2024 09:20:46 -0700 (PDT)
+Message-ID: <29ad8192-d60f-4ce8-a5f5-d39c864767fd@linaro.org>
+Date: Fri, 4 Oct 2024 10:41:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/16] hw/i386: Use explicit little-endian LD/ST API
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Frederic Konrad <konrad.frederic@yahoo.fr>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, David Hildenbrand
+ <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Song Gao <gaosong@loongson.cn>,
+ Thomas Huth <thuth@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
+ qemu-s390x@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
+ Eric Farman <farman@linux.ibm.com>, =?UTF-8?Q?Cl=C3=A9ment_Chigot?=
+ <chigot@adacore.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <huth@tuxfamily.org>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+References: <20241003234211.53644-1-philmd@linaro.org>
+ <20241003234211.53644-5-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20241003234211.53644-5-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,44 +110,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+On 4/10/24 01:41, Philippe Mathieu-Daudé wrote:
+> The x86 architecture uses little endianness. Directly use
+> the little-endian LD/ST API.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/i386/multiboot.c  | 36 ++++++++++++++++++------------------
+>   hw/i386/x86-common.c | 26 +++++++++++++-------------
+>   2 files changed, 31 insertions(+), 31 deletions(-)
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- MAINTAINERS | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d013db1ccb..34fffcb5be 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1378,8 +1378,9 @@ F: hw/pci-host/ppc4xx_pci.c
- F: tests/functional/test_ppc_bamboo.py
- 
- e500
-+M: Bernhard Beschow <shentey@gmail.com>
- L: qemu-ppc@nongnu.org
--S: Orphan
-+S: Odd Fixes
- F: hw/ppc/e500*
- F: hw/ppc/ppce500_spin.c
- F: hw/gpio/mpc8xxx.c
-@@ -1395,8 +1396,9 @@ F: docs/system/ppc/ppce500.rst
- F: tests/functional/test_ppc64_e500.py
- 
- mpc8544ds
-+M: Bernhard Beschow <shentey@gmail.com>
- L: qemu-ppc@nongnu.org
--S: Orphan
-+S: Odd Fixes
- F: hw/ppc/mpc8544ds.c
- F: hw/ppc/mpc8544_guts.c
- F: tests/functional/test_ppc_mpc8544ds.py
--- 
-2.39.5
+> diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+> index 992ea1f25e9..daa6a5d500c 100644
+> --- a/hw/i386/x86-common.c
+> +++ b/hw/i386/x86-common.c
+> @@ -586,7 +586,7 @@ static bool load_elfboot(const char *kernel_filename,
+>       uint64_t elf_low, elf_high;
+>       int kernel_size;
+>   
+> -    if (ldl_p(header) != 0x464c457f) {
+> +    if (ldl_le_p(header) != 0x464c457f) {
+>           return false; /* no elfboot */
+>       }
+>   
+> @@ -669,8 +669,8 @@ void x86_load_linux(X86MachineState *x86ms,
+>        * kernel protocol version.
+>        * Please see https://www.kernel.org/doc/Documentation/x86/boot.txt
+>        */
+> -    if (ldl_p(header + 0x202) == 0x53726448) /* Magic signature "HdrS" */ {
+> -        protocol = lduw_p(header + 0x206);
+> +    if (ldl_le_p(header + 0x202) == 0x53726448) /* Magic signature "HdrS" */ {
+> +        protocol = lduw_be_p(header + 0x206);
+
+Oops.
+
+>       } else {
+>           /*
+>            * This could be a multiboot kernel. If it is, let's stop treating it
+> @@ -762,7 +762,7 @@ void x86_load_linux(X86MachineState *x86ms,
+>   
+>       /* highest address for loading the initrd */
+>       if (protocol >= 0x20c &&
+> -        lduw_p(header + 0x236) & XLF_CAN_BE_LOADED_ABOVE_4G) {
+> +        lduw_be_p(header + 0x236) & XLF_CAN_BE_LOADED_ABOVE_4G) {
+>           /*
+>            * Linux has supported initrd up to 4 GB for a very long time (2007,
+>            * long before XLF_CAN_BE_LOADED_ABOVE_4G which was added in 2013),
 
 
