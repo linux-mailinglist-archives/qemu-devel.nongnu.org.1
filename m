@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B07991A86
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97563991A88
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:07:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxB2g-0006Oq-EG; Sat, 05 Oct 2024 16:06:18 -0400
+	id 1sxB2p-0006T1-LA; Sat, 05 Oct 2024 16:06:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxB2e-0006ND-CH
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:16 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1sxB2f-0006On-Si
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:17 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxB2c-0001m9-5k
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:16 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-20bb610be6aso36805795ad.1
- for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:13 -0700 (PDT)
+ id 1sxB2e-0001n1-Cp
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:17 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-20b01da232aso25564635ad.1
+ for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728158773; x=1728763573; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728158775; x=1728763575; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rc7m2CC+o/vfg9459Vx/ro/giFzSXc14VGjLvy+03yM=;
- b=ZC78gVrHhnobGyYxt0y01dTaw24akCBzHEV+MREDyk+pTKhVFoPJ0LYKcyiP0yoj5w
- NltfYMwUcvfw3MpYNpzV1WFHq1683PT9zRrL6kZ50ymy9GFKK3XfAgUpXvRPluQROipK
- NDmk5m+6oMAhUOc8MrAq59Qw4WFviFlkZ61Wj/3fzmPmMCJ1v13uy6ZbvLloEFtlHbIw
- QxC5uOZNh/08ScUse/6xO9HxJsmzTGT7zBsFVl4zkJRHlaVmpifa8jQA46eFlOMzPMGa
- eXwXmvxa1C+uSpwSB9Q7+LJLAwGIUsIXdt97aMqp35CvVSa5nPJMmoZ/KV6k9L03/Pr/
- DVzw==
+ bh=or+46uGq1e2/GbDMKkBXfTr+x8kd8hih+f1GC2rPQFE=;
+ b=ALs6xGQZEfb9+x/t/egHxvOEcBfGC29eE+mpgBu78nFAWVtu4MQLHnc33lvGIfGZDk
+ nnM0Rbw+w2iq07PJ2PGv9QorquM1BicyQ3ZdgWueIs+ZWc/fC4CEswsDSg73oYi8TUUR
+ 6pWDDlyhVhst8fbVBwANj8oF3HWqVJnV2Lz+V3TfbOv85EbUUxShTsAfZxhLMuYevG0c
+ rAHhTF2fd5k0vNTpIG2mcEkXYpmY84b3cygXR0zmcVykUKga/DG4kMLyGHuDsf2n3mCf
+ oB9yd3eBQ1456kTwZ8vCzQJzf2w+xf5ztSbVdO/0/Kju+cURnouyrn8XOLhROaTRZaNl
+ k5EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728158773; x=1728763573;
+ d=1e100.net; s=20230601; t=1728158775; x=1728763575;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rc7m2CC+o/vfg9459Vx/ro/giFzSXc14VGjLvy+03yM=;
- b=m0CxWZUyZMu0PbBF9A0GW6JonqkR0BJUpXVEw28vJ8XaYPe3L+jhepJy70gkBcIMGi
- KDTdcBjnwuB2q017qtIz1S0L9OMwqO9DhhhEjuxoDJ+m423HuclM18vNoowrBIYPjdV9
- 5AmiJrUWspxfUn9X+CA0vkvjWckopybDNDM4ozwW/DkXgA+Bc2kV65mtUzM/7e/z45HP
- wgHJ743Fauz+ZicyyI3h46VbFjB6SQkgeibIp7g1tOteq2Guaswu2ULbk7W/kss+uYha
- F7sikWzjJUOkwFq67dSLvRG4UdGg20BPoSnB5c61acCA8s3CGuBtbzcn/EwqkkWs/jt9
- bC6Q==
-X-Gm-Message-State: AOJu0YxHoN+z9eqNhH2Vkr/F3rvzGZslpSZikTGf3Ol+Yr9uZEQaRXpi
- 6ghKr6FUvNyMivRTo9npHEd/VCSIkA+cMez/G5JzomWi5BBgCTLDxJpEmjWvQbeIytWxNMY5uw9
- O
-X-Google-Smtp-Source: AGHT+IGHEK6fjBSmL22oUUwIkylcWSfEnGAMH/PbqEEDgjtyaqNVMTdBmg2DLFABo2GcKikjZC9wnw==
-X-Received: by 2002:a17:902:e54f:b0:20b:9698:a234 with SMTP id
- d9443c01a7336-20bfde65b4dmr91370085ad.8.1728158772729; 
- Sat, 05 Oct 2024 13:06:12 -0700 (PDT)
+ bh=or+46uGq1e2/GbDMKkBXfTr+x8kd8hih+f1GC2rPQFE=;
+ b=lWkPvbU8ywhC2VMp1njpYg++a3Uo3RWuCJPqDPg8I26eWf3mWuFGGoevZBQiHPfzTl
+ qX7dgFV+osfA3rzky2eoB/zQV1OEZLBPxz4cDggxbcNu/rsrt56n0BVEkMaYBaSZzucF
+ opArStBIrEn6w/11dJGaWSxlNpmiaKGdq2KejClYHlq42K0+rPuzXfpT4ha7++GfTG0+
+ iob+cf/gGAldbwe+FIVqCAH3rq4+Riv3Xu7AacWUZ6bSvlwq2z0Kx18yW+CwfIwz/wFU
+ MbD/fQwqsewvz38W6EIpxy98stokhsHUORd88Cor9X58XUZ5YSjHb4l1ep6y1FUVNtrv
+ 7+DQ==
+X-Gm-Message-State: AOJu0YyBiV31wOdJuf1nYNZFvR26FQXVjgyzLU2OFtjlDGNRwlVNjdfd
+ VyJGl5KvepOPRz+WVGzWIMZeeLw+bHogdXnUsb0ZvFT+ZhHrQm5+kv07mIEW8eKhgvCHgsGF/XY
+ 1
+X-Google-Smtp-Source: AGHT+IGg8sgiEBRoSbtsp5hCkfkIAZ+oEWQnrBAFFM+N7oyUTJv3AhGKcIaJbMYi1S9IuPikpnwrog==
+X-Received: by 2002:a17:902:d2ca:b0:206:9dfb:3e9e with SMTP id
+ d9443c01a7336-20be189892dmr148488525ad.10.1728158774767; 
+ Sat, 05 Oct 2024 13:06:14 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.12
+ d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 13:06:12 -0700 (PDT)
+ Sat, 05 Oct 2024 13:06:14 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Subject: [PATCH v2 12/21] target/hppa: Add hppa_cpu_tlb_fill_align
-Date: Sat,  5 Oct 2024 13:05:51 -0700
-Message-ID: <20241005200600.493604-13-richard.henderson@linaro.org>
+Subject: [PATCH v2 14/21] target/arm: Pass MemOp to
+ get_phys_addr_with_space_nogpc
+Date: Sat,  5 Oct 2024 13:05:53 -0700
+Message-ID: <20241005200600.493604-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005200600.493604-1-richard.henderson@linaro.org>
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,84 +94,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fill in the tlb_fill_align hook, so that we can recognize
-alignment exceptions in the correct priority order.
+Zero is the safe do-nothing value for callers to use.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h        |  3 +++
- target/hppa/cpu.c        |  2 +-
- target/hppa/mem_helper.c | 16 ++++++++++++----
- 3 files changed, 16 insertions(+), 5 deletions(-)
+ target/arm/internals.h | 3 ++-
+ target/arm/helper.c    | 4 ++--
+ target/arm/ptw.c       | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 526855f982..c0567ce0ab 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -366,6 +366,9 @@ void hppa_set_ior_and_isr(CPUHPPAState *env, vaddr addr, bool mmu_disabled);
- bool hppa_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                        MMUAccessType access_type, int mmu_idx,
-                        bool probe, uintptr_t retaddr);
-+bool hppa_cpu_tlb_fill_align(CPUState *cs, vaddr address, MemOp mop, int size,
-+                             MMUAccessType access_type, int mmu_idx,
-+                             bool probe, uintptr_t retaddr);
- void hppa_cpu_do_interrupt(CPUState *cpu);
- bool hppa_cpu_exec_interrupt(CPUState *cpu, int int_req);
- int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 3b6c325e09..768abc6e5d 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -226,7 +226,7 @@ static const TCGCPUOps hppa_tcg_ops = {
-     .restore_state_to_opc = hppa_restore_state_to_opc,
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 2b16579fa5..a6088d551c 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1461,6 +1461,7 @@ bool get_phys_addr(CPUARMState *env, vaddr address,
+  * @env: CPUARMState
+  * @address: virtual address to get physical address for
+  * @access_type: 0 for read, 1 for write, 2 for execute
++ * @memop: memory operation feeding this access, or 0 for none
+  * @mmu_idx: MMU index indicating required translation regime
+  * @space: security space for the access
+  * @result: set on translation success.
+@@ -1470,7 +1471,7 @@ bool get_phys_addr(CPUARMState *env, vaddr address,
+  * a Granule Protection Check on the resulting address.
+  */
+ bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
+-                                    MMUAccessType access_type,
++                                    MMUAccessType access_type, MemOp memop,
+                                     ARMMMUIdx mmu_idx, ARMSecuritySpace space,
+                                     GetPhysAddrResult *result,
+                                     ARMMMUFaultInfo *fi)
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 3f77b40734..f2f329e00a 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -3602,8 +3602,8 @@ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
+      * I_MXTJT: Granule protection checks are not performed on the final address
+      * of a successful translation.
+      */
+-    ret = get_phys_addr_with_space_nogpc(env, value, access_type, mmu_idx, ss,
+-                                         &res, &fi);
++    ret = get_phys_addr_with_space_nogpc(env, value, access_type, 0,
++                                         mmu_idx, ss, &res, &fi);
  
- #ifndef CONFIG_USER_ONLY
--    .tlb_fill_align = tlb_fill_align_first,
-+    .tlb_fill_align = hppa_cpu_tlb_fill_align,
-     .tlb_fill = hppa_cpu_tlb_fill,
-     .cpu_exec_interrupt = hppa_cpu_exec_interrupt,
-     .cpu_exec_halt = hppa_cpu_has_work,
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index d38054da8a..35e9170bf3 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -424,9 +424,9 @@ void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-     }
+     /*
+      * ATS operations only do S1 or S1+S2 translations, so we never
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 373095a339..9af86da597 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -3559,7 +3559,7 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
  }
  
--bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
--                       MMUAccessType type, int mmu_idx,
--                       bool probe, uintptr_t retaddr)
-+bool hppa_cpu_tlb_fill_align(CPUState *cs, vaddr addr, MemOp mop, int size,
-+                             MMUAccessType type, int mmu_idx,
-+                             bool probe, uintptr_t retaddr)
- {
-     HPPACPU *cpu = HPPA_CPU(cs);
-     CPUHPPAState *env = &cpu->env;
-@@ -445,7 +445,7 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
-         break;
-     }
- 
--    excp = hppa_get_physical_address(env, addr, mmu_idx, a_prot, 0,
-+    excp = hppa_get_physical_address(env, addr, mmu_idx, a_prot, mop,
-                                      &phys, &prot);
-     if (unlikely(excp >= 0)) {
-         if (probe) {
-@@ -473,6 +473,14 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
-     return true;
- }
- 
-+bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
-+                       MMUAccessType type, int mmu_idx,
-+                       bool probe, uintptr_t retaddr)
-+{
-+    return hppa_cpu_tlb_fill_align(cs, addr, 0, size, type,
-+                                   mmu_idx, probe, retaddr);
-+}
-+
- /* Insert (Insn/Data) TLB Address.  Note this is PA 1.1 only.  */
- void HELPER(itlba_pa11)(CPUHPPAState *env, target_ulong addr, target_ulong reg)
- {
+ bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
+-                                    MMUAccessType access_type,
++                                    MMUAccessType access_type, MemOp memop,
+                                     ARMMMUIdx mmu_idx, ARMSecuritySpace space,
+                                     GetPhysAddrResult *result,
+                                     ARMMMUFaultInfo *fi)
 -- 
 2.43.0
 
