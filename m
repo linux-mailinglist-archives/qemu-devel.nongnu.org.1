@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10755991B5C
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Oct 2024 01:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE64E991B5B
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Oct 2024 01:35:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxEHa-0006BY-UX; Sat, 05 Oct 2024 19:33:54 -0400
+	id 1sxEHb-0006C6-TH; Sat, 05 Oct 2024 19:33:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxEHY-0006AT-3b
+ id 1sxEHY-0006Aj-Mr
  for qemu-devel@nongnu.org; Sat, 05 Oct 2024 19:33:52 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxEHW-0004DL-Av
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 19:33:51 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-2e082bf1c7fso2329947a91.3
- for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 16:33:49 -0700 (PDT)
+ id 1sxEHX-0004DT-9K
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 19:33:52 -0400
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-2e1bfa9ddb3so2481927a91.0
+ for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 16:33:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728171229; x=1728776029; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728171230; x=1728776030; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o3MlKySkLCqcubwj2AlCHtEZtre6EurFM45v8Ib7p+Y=;
- b=EcBr3RROnng+Kwd7MidtFRmZhKsqTueJzo3ri8MjfFdWzInTss+j+LgDjdM2yzcDbw
- EUWs8WCI6A+zN6eApZYTel26gk0+/ljcwywAiIjGMgZKtHR9yMMUojX+swUmXGnJZ2ge
- Ob5+Xiw6BS94Eb9HtlidcHVITF3ceU0AmajrGowx/laz6jFkWKkroNUd1ugP8nFFkPb1
- XGhwE9RNvvNnKFbukjCQ+4JCbEZnWrDnjtktN9sAztfulnJmYEDy1iRfdOGA99Fcm742
- T5XlRZJAzMSMCPWe6Kz9/zo3IeXYu1KMqUTTZMlpHbPQORaM0fuXmpwwvuGzau7qMaNp
- yEVw==
+ bh=5CYklN5kY6AhJz0z8fnMo7i52/61zUcEwxCjMHlZ3PY=;
+ b=OFGG4gZLWdA8Zh95OBZQBsTVgvkGfJOlEsAFbO2+xe15ypmhyr40Y5TF8oD16djA1u
+ KUIqngAeHx0vyjHyeCu9fBFxH67+ydsoH5swH1UTmlbHKeb+Jcj0ashTk2VJDlCgaWV7
+ 0O885zKIe+/F5Qjcv6wv/4+hWh9RLAv6dn0AMZZyhoqFdGZ8EX1E1B5RVu75gtTvRiJ8
+ vtPinvEcQK0rE7KFU/PqiLbsu/37Ud8lv52HF7JZzxabbjqHbeIBaXD3mL5ZD9i/tI1k
+ 7nVGXzrZOrNcYm4pmUBNk4Pt2YbpeF0OfqXL9vvB6qwb36v+I7xK+QRV5Dp6SZXLHxGp
+ NWEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728171229; x=1728776029;
+ d=1e100.net; s=20230601; t=1728171230; x=1728776030;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o3MlKySkLCqcubwj2AlCHtEZtre6EurFM45v8Ib7p+Y=;
- b=iKrHh/4CGFytxbNo+sVwAUtPqSiB/OyUfBNNmdx+4TMeanbkdf0Rw54OOxTgYWSgYV
- T6DPyxCr+S0iS3+UFN4DDqKh7WZLgJm4zqM3nw140U/7oGD/R6zECaU6uqd/CYiNppcS
- 4s/cfOghsf1CFG2Eyeg3aiuvxhlePeLMNghe+kMR5qzsKqKKibJDoDIWlMVu6Sy2HaMS
- 1g9EAdDPKbJE0h1OQYZrzjQKmLeKD2ocOQqf8hzt+lC+s+ANZhupogGB9tmL5OhRNltB
- s1nThVgpBfUEpAXxy+ululWdbF07Y59F2GaPYHV/11nPZX2kFC2Q+kyu235rxBFyqYXl
- 0xxg==
-X-Gm-Message-State: AOJu0Yyu1J5XRwV9dt741uoxW/akjTjgYs0WCngvBbAS/ZrTRNHeEFgl
- Nk1qwsSM2y/IYVRUDf3kFMA14uXLaPFEY98iHOF0r5I5mgFIoxf3D/Fp0dr/MU6080Q0mprPtDV
- W
-X-Google-Smtp-Source: AGHT+IGq3p9VqELP9PXjvI3r57OJOmk0cuVTkV7kNU/+hzbRvy2+yy7SLLjWJpVurDnbDVgzag14mA==
-X-Received: by 2002:a17:90a:c82:b0:2e0:80e8:a312 with SMTP id
- 98e67ed59e1d1-2e1e63bb8a8mr8356508a91.34.1728171229044; 
- Sat, 05 Oct 2024 16:33:49 -0700 (PDT)
+ bh=5CYklN5kY6AhJz0z8fnMo7i52/61zUcEwxCjMHlZ3PY=;
+ b=DapsBxGBmJNVSIlrPMvw23EIwRk2XxOx43KUY714bxB1NchbHZF6/nFnmyMa/GvzL9
+ grl1SCK9wa4PzZtD63SHXVtE2LvmCeL10cyFzmp3wmQpNPYzAH0UFv/XMTwxIe5eHU3k
+ 4PpPE5S2wCMQxk7+2PQomJaH0oo4pzQzTts+SK0qNEDO1rMhNOS2ycA5fsUEip4NG2iJ
+ FAmFaZN33VU81n9/lSeqQaHw/GFAH743U8wfkWNA6SPaYYfTrllhmrLShYxfXyuqwz7A
+ pJ5KOfeDGftts6GvAFRaZAONNrcfvb7WvMNnqo9kHlQmQQGju2KyaqQGl07X97vjXz1V
+ l7ow==
+X-Gm-Message-State: AOJu0YxQl8BjCthJNtxKryqu7BfsXUpxKmXBG4op4dEZHsUh9PomY7M6
+ em47VG5JqsXG4+P97ah2sIH+eUzBUSmG5BVnXrCsb7ZoVKMKcKd+ygvY0Di9oe8A9BSBb8ZLpfg
+ D
+X-Google-Smtp-Source: AGHT+IHZ7lB2HBEEaSoCsqQ4bCfcwXtOkm38qYLhjb19Dq3r9lJ21H5uCuGJRoHYTOLEyZD2AEnw7Q==
+X-Received: by 2002:a17:90a:fc96:b0:2c9:6aa9:1d76 with SMTP id
+ 98e67ed59e1d1-2e1e626bc1amr8125478a91.18.1728171230067; 
+ Sat, 05 Oct 2024 16:33:50 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2e20b129cc2sm2394600a91.51.2024.10.05.16.33.48
+ 98e67ed59e1d1-2e20b129cc2sm2394600a91.51.2024.10.05.16.33.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 16:33:48 -0700 (PDT)
+ Sat, 05 Oct 2024 16:33:49 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 05/10] linux-user: Trace wait4()'s and waitpid()'s wstatus
-Date: Sat,  5 Oct 2024 16:33:38 -0700
-Message-ID: <20241005233343.503426-6-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 06/10] linux-user: Correct print_sockaddr() format
+Date: Sat,  5 Oct 2024 16:33:39 -0700
+Message-ID: <20241005233343.503426-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005233343.503426-1-richard.henderson@linaro.org>
 References: <20241005233343.503426-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,116 +94,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Borrow the code for formatting the most frequent WIFEXITED() and
-WIFSIGNALED() special cases from from the strace's printstatus().
+When the %addr argument can not be accessed, a double comma
+is logged (the final qemu_log call prepend a comma).  Move
+the comma from the final qemu_log to the preceeding switch
+cases that had omitted it.
 
-Output examples:
-
-    474729 wait4(-1,0x7f00767ff0a0,0,(nil)) = 474733 (wstatus={WIFEXITED(s) && WEXITSTATUS(s) == 1})
-    475833 wait4(-1,0x7f7de61ff0a0,0,(nil)) = 475837 (wstatus={WIFSIGNALED(s) && WTERMSIG(s) == SIGKILL})
-    1168 waitpid(1171,0x7f44eea00340,0) = 1171 (wstatus={WIFSIGNALED(s) && WTERMSIG(s) == SIGKILL})
-
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20241001193244.14939-1-iii@linux.ibm.com>
-[rth: Drop extra output for NULL wstatus or error reading.]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240807124306.52903-2-philmd@linaro.org>
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+[rth: Move comma into the various switch cases.]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/strace.c    | 57 ++++++++++++++++++++++++++++++++++++++++++
- linux-user/strace.list |  6 +++--
- 2 files changed, 61 insertions(+), 2 deletions(-)
+ linux-user/strace.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/linux-user/strace.c b/linux-user/strace.c
-index d3cdd09dc1..cf9eaf71c9 100644
+index cf9eaf71c9..dfdec58542 100644
 --- a/linux-user/strace.c
 +++ b/linux-user/strace.c
-@@ -4215,6 +4215,63 @@ print_ioctl(CPUArchState *cpu_env, const struct syscallname *name,
+@@ -376,7 +376,7 @@ print_sockaddr(abi_ulong addr, abi_long addrlen, int last)
+                  un->sun_path[i]; i++) {
+                 qemu_log("%c", un->sun_path[i]);
+             }
+-            qemu_log("\"}");
++            qemu_log("\"},");
+             break;
+         }
+         case AF_INET: {
+@@ -386,7 +386,7 @@ print_sockaddr(abi_ulong addr, abi_long addrlen, int last)
+                      ntohs(in->sin_port));
+             qemu_log("sin_addr=inet_addr(\"%d.%d.%d.%d\")",
+                      c[0], c[1], c[2], c[3]);
+-            qemu_log("}");
++            qemu_log("},");
+             break;
+         }
+         case AF_PACKET: {
+@@ -417,12 +417,12 @@ print_sockaddr(abi_ulong addr, abi_long addrlen, int last)
+             }
+             qemu_log(",sll_addr=%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x",
+                      c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7]);
+-            qemu_log("}");
++            qemu_log("},");
+             break;
+         }
+         case AF_NETLINK: {
+             struct target_sockaddr_nl *nl = (struct target_sockaddr_nl *)sa;
+-            qemu_log("{nl_family=AF_NETLINK,nl_pid=%u,nl_groups=%u}",
++            qemu_log("{nl_family=AF_NETLINK,nl_pid=%u,nl_groups=%u},",
+                      tswap32(nl->nl_pid), tswap32(nl->nl_groups));
+             break;
+         }
+@@ -432,14 +432,14 @@ print_sockaddr(abi_ulong addr, abi_long addrlen, int last)
+                 qemu_log("%02x, ", sa->sa_data[i]);
+             }
+             qemu_log("%02x}", sa->sa_data[i]);
+-            qemu_log("}");
++            qemu_log("},");
+             break;
+         }
+         unlock_user(sa, addr, 0);
+     } else {
+         print_raw_param("0x"TARGET_ABI_FMT_lx, addr, 0);
+     }
+-    qemu_log(", "TARGET_ABI_FMT_ld"%s", addrlen, get_comma(last));
++    qemu_log(TARGET_ABI_FMT_ld"%s", addrlen, get_comma(last));
  }
- #endif
  
-+#if defined(TARGET_NR_wait4) || defined(TARGET_NR_waitpid)
-+static void print_wstatus(int wstatus)
-+{
-+    if (WIFSIGNALED(wstatus)) {
-+        qemu_log("{WIFSIGNALED(s) && WTERMSIG(s) == ");
-+        print_signal(WTERMSIG(wstatus), 1);
-+        if (WCOREDUMP(wstatus)) {
-+            qemu_log(" && WCOREDUMP(s)");
-+        }
-+        qemu_log("}");
-+    } else if (WIFEXITED(wstatus)) {
-+        qemu_log("{WIFEXITED(s) && WEXITSTATUS(s) == %d}",
-+                 WEXITSTATUS(wstatus));
-+    } else {
-+        print_number(wstatus, 1);
-+    }
-+}
-+
-+static void print_ret_wstatus(abi_long ret, abi_long wstatus_addr)
-+{
-+    int wstatus;
-+
-+    if (!print_syscall_err(ret)
-+        && wstatus_addr
-+        && get_user_s32(wstatus, wstatus_addr)) {
-+        qemu_log(TARGET_ABI_FMT_ld " (wstatus=", ret);
-+        print_wstatus(wstatus);
-+        qemu_log(")");
-+    }
-+    qemu_log("\n");
-+}
-+#endif
-+
-+#ifdef TARGET_NR_wait4
-+static void
-+print_syscall_ret_wait4(CPUArchState *cpu_env,
-+                        const struct syscallname *name,
-+                        abi_long ret, abi_long arg0, abi_long arg1,
-+                        abi_long arg2, abi_long arg3, abi_long arg4,
-+                        abi_long arg5)
-+{
-+    print_ret_wstatus(ret, arg1);
-+}
-+#endif
-+
-+#ifdef TARGET_NR_waitpid
-+static void
-+print_syscall_ret_waitpid(CPUArchState *cpu_env,
-+                          const struct syscallname *name,
-+                          abi_long ret, abi_long arg0, abi_long arg1,
-+                          abi_long arg2, abi_long arg3, abi_long arg4,
-+                          abi_long arg5)
-+{
-+    print_ret_wstatus(ret, arg1);
-+}
-+#endif
-+
- /*
-  * An array of all of the syscalls we know about
-  */
-diff --git a/linux-user/strace.list b/linux-user/strace.list
-index ef658224fc..f8899710b5 100644
---- a/linux-user/strace.list
-+++ b/linux-user/strace.list
-@@ -1662,13 +1662,15 @@
- { TARGET_NR_vserver, "vserver" , NULL, NULL, NULL },
- #endif
- #ifdef TARGET_NR_wait4
--{ TARGET_NR_wait4, "wait4" , "%s(%d,%p,%d,%p)", NULL, NULL },
-+{ TARGET_NR_wait4, "wait4" , "%s(%d,%p,%d,%p)", NULL,
-+                   print_syscall_ret_wait4 },
- #endif
- #ifdef TARGET_NR_waitid
- { TARGET_NR_waitid, "waitid" , "%s(%#x,%d,%p,%#x)", NULL, NULL },
- #endif
- #ifdef TARGET_NR_waitpid
--{ TARGET_NR_waitpid, "waitpid" , "%s(%d,%p,%#x)", NULL, NULL },
-+{ TARGET_NR_waitpid, "waitpid", "%s(%d,%p,%#x)", NULL,
-+                     print_syscall_ret_waitpid },
- #endif
- #ifdef TARGET_NR_write
- { TARGET_NR_write, "write" , "%s(%d,%#x,%d)", NULL, NULL },
+ static void
 -- 
 2.43.0
 
