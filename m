@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B459917C8
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 17:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E90CD9917D3
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 17:28:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sx6fj-0002Br-Fj; Sat, 05 Oct 2024 11:26:19 -0400
+	id 1sx6fn-0002Cg-4x; Sat, 05 Oct 2024 11:26:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sx6fe-00029f-OQ
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 11:26:14 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1sx6ff-0002AA-Hh
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 11:26:15 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sx6fc-0002QI-J8
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 11:26:14 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-20ba9f3824fso24155675ad.0
- for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 08:26:12 -0700 (PDT)
+ id 1sx6fd-0002Qt-Jl
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 11:26:15 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-20b95359440so27109595ad.0
+ for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 08:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728141971; x=1728746771; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728141972; x=1728746772; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/ZHU/9Bj/Yhl/fLIAf9ED9KKjqQvRkGT+c+Pl2SvUJY=;
- b=NbCZxWDXl67vfNw5Ketw445FX8j/e3765S4th3nWnATFSoeU0iFpCPG2GYzm3XrV8V
- gij4rxIdteJBA7wmVPzqnNP9ZHKmMOUDgCC0tPkxdHxlq6fcmLSnpnRmQAkyf75lus6m
- wGpOYbqnosdLZ3rrL6uxV6oH8mDoqHBLO6wHejMg+pJ4tP6q97gCT2jIxUcRS62/8YSK
- PeAD+ldOp+SWwJFpbYHu+VRrrtA1c5l9EloFWyD5MzZFBrJIo6O07EsoIeguFgijZgjz
- 0Q02AupovWS9eNzThw72F1xaPhy3d2LRl2f6vMkBjWlW67xoULsI0juBfgKqrlyPDv8W
- L6Ew==
+ bh=qIlBHpyIHO+kiCFyGgZVBXgacr4yw5gCrMn63zUSz3U=;
+ b=eDMItdVME/VsMLfCoup7x9FWV5tSbBjc2rTrL3G3ZRO7H97Uwh6WV8kZY98RIWxYVz
+ 0LQe7c9kLru7UOTrQFY7W70Or/R9UMzquKSYRy0WwJPdFtVTOf44zds9NmL9Q6xt05/f
+ YAwFMkxdOmAiXSt/11m8K/uNVG7NTo7+HsySX2Vsc0Dlwt2UZRHDeIq3YZ9Nwreg2qT/
+ G98b+nQhKzYdtYuIDD/zJdwVpIr/AMwUhOxB7neBWLkpbALAPQwDBcp8slJ2tiy7nc4J
+ BijDdZZfpr5+pp7w+w5H/o3gXS0afn0LVidyoUzcMV42KvGFhuNr8XlDz0UGcx7pKK//
+ y93Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728141971; x=1728746771;
+ d=1e100.net; s=20230601; t=1728141972; x=1728746772;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/ZHU/9Bj/Yhl/fLIAf9ED9KKjqQvRkGT+c+Pl2SvUJY=;
- b=eecp76kMR23tMCvjdFWBFfZcv4p/3pH2KlCAqgC/b79hKGxNh+9ZfVEfDbYKlGXyzD
- aMLdcqE1x32XXpfyiaK3Y38A/s5AWXZaZ8juWYH8Cv85yZNbjlZORIBkSsbwDhwESRti
- YcCrCq/TmF7Sb0cdn5D5iqX5RaNKkaugdhxaKTr5RN2C4WVO6caJXvR0dyBvrj2l/qlw
- szu17nxYkLtvyq5JmBSwYAK/ffcT/xGK78ekTL6bWDkylFy2dBr/GwgMZtwcP+kfShsg
- xnKJFgf03jRVU4QhI9Z5NmjTDRqhSAuaQ+Iv2gzVxn0J6KBoRWrRCaU+JTeinS4Hlc+P
- UNAw==
-X-Gm-Message-State: AOJu0Yya0hvSQrPwkIpLXm8llXtUz9WKTVovAc9RTn12+9+QdHwkiVgn
- drd3cm+mJ3qsznvtpR79yWAVwWRzX7UBjMCvjZUtMs9IIilnV6MPTwJD0KJcj5D/Huh1q8c8FER
- l
-X-Google-Smtp-Source: AGHT+IH4Lr64SQZfzlOO2MyBkQGMuSWCJxA1Uid5flyT3IfspQk+qHg9k3FYTQCTF9/9yq+5XQ2JSg==
-X-Received: by 2002:a17:903:2b07:b0:20b:8e18:a395 with SMTP id
- d9443c01a7336-20bfe291f03mr89154495ad.44.1728141971365; 
- Sat, 05 Oct 2024 08:26:11 -0700 (PDT)
+ bh=qIlBHpyIHO+kiCFyGgZVBXgacr4yw5gCrMn63zUSz3U=;
+ b=YDan9tVefdTHkpPZDIeXV7XSC8RtDZnpw6FNTD3sbaMUMGd+tnsmlFGBEmn8CmuqjV
+ kqEJigEZQLrtzNviyNTelYUmrciprEfObQ5jhuEB7tnL87LRZGfvoRXfuHUbUazIM7t9
+ d7/wRtsbiUqTLqvL7huzZ7XeEcZerKTeJyEk8/uj+DasEAQKT7EArYdaM8ewOHJkz3pS
+ XP2/SvF3EbiGDNTrHt2ikDjRbQwHNUM2lW2gp6KGhrC7oNpHSlsPOxEBZDD2oMqhz9UF
+ fQ1GLW0/jlACzD3yF1p09KKyrehhgOAQ9sKf8J4MIz1dvFhsv7V1tye8L/Zv0UMeipz1
+ hVtw==
+X-Gm-Message-State: AOJu0YyTqW26ldEfwVbeSvCik+YYB4fvVAt+pxVtNEI/CuqE1uSCbyyA
+ IhGOUf0/EvINS+hkrBUoDMQJGjNxFJ5xk6icS4jwrjc5I/tKf0mO3qxR0vWcxa4R3AfeHwYEYdF
+ t
+X-Google-Smtp-Source: AGHT+IGWHKPtHA2twxKvGB6E/ujF3z3IoFDGiLN3geSfu/MXfka4dtEv6hp0P2DmLjyD/i9iV2pkew==
+X-Received: by 2002:a17:902:d2d1:b0:20b:9547:9b2d with SMTP id
+ d9443c01a7336-20bfde55510mr91868295ad.2.1728141972285; 
+ Sat, 05 Oct 2024 08:26:12 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.26.10
+ d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.26.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 08:26:10 -0700 (PDT)
+ Sat, 05 Oct 2024 08:26:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Subject: [PATCH 19/20] target/arm: Move device detection earlier in
+Subject: [PATCH 20/20] target/arm: Fix alignment fault priority in
  get_phys_addr_lpae
-Date: Sat,  5 Oct 2024 08:25:50 -0700
-Message-ID: <20241005152551.307923-20-richard.henderson@linaro.org>
+Date: Sat,  5 Oct 2024 08:25:51 -0700
+Message-ID: <20241005152551.307923-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005152551.307923-1-richard.henderson@linaro.org>
 References: <20241005152551.307923-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,91 +94,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Determine cache attributes, and thence Device vs Normal memory,
-earlier in the function.  We have an existing regime_is_stage2
-if block into which this can be slotted.
+Now that we have the MemOp for the access, we can order
+the alignment fault caused by memory type before the
+permission fault for the page.
+
+For subsequent page hits, permission and stage 2 checks
+are known to pass, and so the TLB_CHECK_ALIGNED fault
+raised in generic code is not mis-ordered.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 49 ++++++++++++++++++++++++------------------------
- 1 file changed, 25 insertions(+), 24 deletions(-)
+ target/arm/ptw.c | 49 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 28 insertions(+), 21 deletions(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 238b2c92a9..0a1a820362 100644
+index 0a1a820362..50aa5e338c 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -2029,8 +2029,20 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-             xn = extract64(attrs, 53, 2);
-             result->f.prot = get_S2prot(env, ap, xn, ptw->in_s1_is_el0);
-         }
-+
-+        result->cacheattrs.is_s2_format = true;
-+        result->cacheattrs.attrs = extract32(attrs, 2, 4);
-+        /*
-+         * Security state does not really affect HCR_EL2.FWB;
-+         * we only need to filter FWB for aa32 or other FEAT.
-+         */
-+        device = S2_attrs_are_device(arm_hcr_el2_eff(env),
-+                                     result->cacheattrs.attrs);
-     } else {
-         int nse, ns = extract32(attrs, 5, 1);
-+        uint8_t attrindx;
-+        uint64_t mair;
-+
-         switch (out_space) {
-         case ARMSS_Root:
-             /*
-@@ -2102,6 +2114,19 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-          */
-         result->f.prot = get_S1prot(env, mmu_idx, aarch64, ap, xn, pxn,
-                                     result->f.attrs.space, out_space);
-+
-+        /* Index into MAIR registers for cache attributes */
-+        attrindx = extract32(attrs, 2, 3);
-+        mair = env->cp15.mair_el[regime_el(env, mmu_idx)];
-+        assert(attrindx <= 7);
-+        result->cacheattrs.is_s2_format = false;
-+        result->cacheattrs.attrs = extract64(mair, attrindx * 8, 8);
-+
-+        /* When in aarch64 mode, and BTI is enabled, remember GP in the TLB. */
-+        if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
-+            result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
-+        }
-+        device = S1_attrs_are_device(result->cacheattrs.attrs);
+@@ -2129,6 +2129,34 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+         device = S1_attrs_are_device(result->cacheattrs.attrs);
      }
  
++    /*
++     * Enable alignment checks on Device memory.
++     *
++     * Per R_XCHFJ, the correct ordering for alignment, permission,
++     * and stage 2 faults is:
++     *    - Alignment fault caused by the memory type
++     *    - Permission fault
++     *    - A stage 2 fault on the memory access
++     * Perform the alignment check now, so that we recognize it in
++     * the correct order.  Set TLB_CHECK_ALIGNED so that any subsequent
++     * softmmu tlb hit will also check the alignment.
++     *
++     * In v7, for a CPU without the Virtualization Extensions this
++     * access is UNPREDICTABLE; we choose to make it take the alignment
++     * fault as is required for a v7VE CPU. (QEMU doesn't emulate any
++     * CPUs with ARM_FEATURE_LPAE but not ARM_FEATURE_V7VE anyway.)
++     */
++    if (device) {
++        unsigned a_bits = memop_atomicity_bits(memop);
++        if (address & ((1 << a_bits) - 1)) {
++            fi->type = ARMFault_Alignment;
++            goto do_fault;
++        }
++        result->f.tlb_fill_flags = TLB_CHECK_ALIGNED;
++    } else {
++        result->f.tlb_fill_flags = 0;
++    }
++
      if (!(result->f.prot & (1 << access_type))) {
-@@ -2131,30 +2156,6 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+         fi->type = ARMFault_Permission;
+         goto do_fault;
+@@ -2156,27 +2184,6 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
      result->f.attrs.space = out_space;
      result->f.attrs.secure = arm_space_is_secure(out_space);
  
--    if (regime_is_stage2(mmu_idx)) {
--        result->cacheattrs.is_s2_format = true;
--        result->cacheattrs.attrs = extract32(attrs, 2, 4);
--        /*
--         * Security state does not really affect HCR_EL2.FWB;
--         * we only need to filter FWB for aa32 or other FEAT.
--         */
--        device = S2_attrs_are_device(arm_hcr_el2_eff(env),
--                                     result->cacheattrs.attrs);
--    } else {
--        /* Index into MAIR registers for cache attributes */
--        uint8_t attrindx = extract32(attrs, 2, 3);
--        uint64_t mair = env->cp15.mair_el[regime_el(env, mmu_idx)];
--        assert(attrindx <= 7);
--        result->cacheattrs.is_s2_format = false;
--        result->cacheattrs.attrs = extract64(mair, attrindx * 8, 8);
--
--        /* When in aarch64 mode, and BTI is enabled, remember GP in the TLB. */
--        if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
--            result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
--        }
--        device = S1_attrs_are_device(result->cacheattrs.attrs);
+-    /*
+-     * Enable alignment checks on Device memory.
+-     *
+-     * Per R_XCHFJ, this check is mis-ordered. The correct ordering
+-     * for alignment, permission, and stage 2 faults should be:
+-     *    - Alignment fault caused by the memory type
+-     *    - Permission fault
+-     *    - A stage 2 fault on the memory access
+-     * but due to the way the TCG softmmu TLB operates, we will have
+-     * implicitly done the permission check and the stage2 lookup in
+-     * finding the TLB entry, so the alignment check cannot be done sooner.
+-     *
+-     * In v7, for a CPU without the Virtualization Extensions this
+-     * access is UNPREDICTABLE; we choose to make it take the alignment
+-     * fault as is required for a v7VE CPU. (QEMU doesn't emulate any
+-     * CPUs with ARM_FEATURE_LPAE but not ARM_FEATURE_V7VE anyway.)
+-     */
+-    if (device) {
+-        result->f.tlb_fill_flags |= TLB_CHECK_ALIGNED;
 -    }
 -
      /*
-      * Enable alignment checks on Device memory.
-      *
+      * For FEAT_LPA2 and effective DS, the SH field in the attributes
+      * was re-purposed for output address bits.  The SH attribute in
 -- 
 2.43.0
 
