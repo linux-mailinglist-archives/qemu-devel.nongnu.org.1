@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBFC991A90
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE14991A96
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:09:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxB2Y-0006HX-IF; Sat, 05 Oct 2024 16:06:10 -0400
+	id 1sxB2a-0006Ib-3N; Sat, 05 Oct 2024 16:06:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxB2V-0006Fs-9D
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:07 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1sxB2Y-0006HZ-1V
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:10 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxB2T-0001iD-P9
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:07 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-20aff65aa37so27611155ad.1
- for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:05 -0700 (PDT)
+ id 1sxB2W-0001j2-HI
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:09 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-20bcae5e482so28618625ad.0
+ for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728158764; x=1728763564; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728158766; x=1728763566; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=js9k8IR/cEhAqGc5dKpCioG/n/UgV+piB56d5dg8Aiw=;
- b=uiErL/iL5fiZsmvpRKLEV3mSd4tKAGuHXDlECqRIZFX6tC7NTj3TrDzKnEoVl5IntU
- nIWzxlgGgcdeH5ayoyRpGmAn1p5XhzhPjaZe3DAsbq2lJ05T6bDPFsT+eGbWbkrsrP0q
- XtL3mUHYl3f72OqIlzpyjLpbhlnDmefJo6jXzh3sDPgEKxwgRj01ZXHZ0kXwAlhyPhD6
- Ad5gEy55JNQG4LnIox0JOqcbVvxw0mvI/sa/V3e8+3p9HMGTaTB/JNIXeEBGJLP3dxVv
- yGxT6+8eto/YFjMNEeXTxImBqACYrpa04Kw7b5oZs3QbZWTJKA+LC5Tf+SAdkfEy37tc
- E5Og==
+ bh=rMIQXnxelIQ86qxYbOA8sg/WFq9fqYpMUetqZ1DDKfA=;
+ b=PGghxLTt2ynfVDocQ4D+KSHzuhMQ0qVlz0psDELCA8gLqiC+FCLCUzlLQu44sPtQht
+ ytLS/5S4bu3wlr3cF093Kjh7LiNYP8dgjzPtsu9JkNVvi7Im+DhRZkEhitGusUMqSQIR
+ AkRprgZaiHHZXLcrs4Bq7UYp2Uev7H0n1LRQh9XUmiKj5+2cWKDZy1+S5bonyzXyN6Jg
+ /blAXFcVcE48xmUmXCJorOooh+pYnscnAeTPwgy2v8PHsQP4hrEQ4eYTvLPWIDS2vnQH
+ +W1aTMlxxxrI2ITsS2KQNAN9sTbQIc9dA5RPE82DPagKoDe4LrQJyYsrMQZrUWDd1+YR
+ JpBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728158764; x=1728763564;
+ d=1e100.net; s=20230601; t=1728158766; x=1728763566;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=js9k8IR/cEhAqGc5dKpCioG/n/UgV+piB56d5dg8Aiw=;
- b=Tr/A8mpaiLBJN9JHJ42CMDhJTf/I6HQR1lAGWpbq8C732A9iYpSaqeaSlQ8fqLihbs
- yCpdkbIt/X3p7PcaNE2n0Jpqbd4QEUPSlpTfzTK4MPicBsEdBLtnuFKd1k6oNuyeVRp5
- ljeUHp3U9petwn83zEyEtEea5jXzdR1RuRG3c13WkHo23zitNOiWNsupN/fkf5nIxWma
- 9p+q7pbzTtOPcR2obbvyMuO6kcOKqiJLtIuRsVSb7bH4PyNh0hUTqSeODj6o0uJcl4Km
- xHDCjZ1tKfZTciyO8Wqcy/EkEthKCTo3b01p9xJVjOhfbGgx7EeHZi3bDPwp1tZpKTZ/
- VuHQ==
-X-Gm-Message-State: AOJu0YyEFhUq2clRFx2i5z5px2ofZxk5cxYd8XhPgf71swQPVRob28y2
- MSB/9vFfTgUGQfr6n5KtRzUuYwuiG3QpKZma4PgX/Hl79ppXMMWpCDJaLadjZmegzffb32Gq+nM
- n
-X-Google-Smtp-Source: AGHT+IG2QzkqWQJ6aa5SACwUNhrBcwJqwMcmd6FgF+mUSPNCiyiBOS8ZrrP8asqO/lz2F3toxq/lxg==
-X-Received: by 2002:a17:902:db0d:b0:20b:8642:9863 with SMTP id
- d9443c01a7336-20bfdfc268dmr105234565ad.18.1728158764343; 
- Sat, 05 Oct 2024 13:06:04 -0700 (PDT)
+ bh=rMIQXnxelIQ86qxYbOA8sg/WFq9fqYpMUetqZ1DDKfA=;
+ b=waRF1jZs+A8u53rMlMiYVGze4Bm7zGIhLRgkV3ekI1O7/xdeydwxl97OB54bq081Kx
+ ou3EjSjqmmvM6xXjwgxSJM4VaDfJmV98rgeBgWcNs9bxye2avb9dUaClTWlpokBo02h9
+ W0IZIhNQexVsj2TwbI2jF24hYQ1HIQgc796vfPVpi6iGKkzd0Rhq8PYEGE1kyWLailGj
+ ciTfDY6VKLBHAiCoidAG5817NsxTLVPj6rP5VxlLRQX5t1rBxUxZqYSGazhd3QDvUDx8
+ ToPwY9CIieJYatO+rM5vjJY0T4i12pA/L7tIkPHQwpoUdavFZTMIu/rLvFQSDvwzv6NZ
+ lEGw==
+X-Gm-Message-State: AOJu0YxO9f80Ko+k5F+1aLYfPdk4kk3rKAJvnVFUDhKF7bxA5TPkjXRr
+ GMdCeKTi5kP4DCbsNfga4nI6PRr3t6lC8MDCZ0xDeSc+rm9zuGgpXkBm/xHVOqrbHi8601WpneK
+ U
+X-Google-Smtp-Source: AGHT+IHH1UPbilIVxeQbQP7YVJkO3rAkayOpruqAQpJ8VTJH0ulhL8QO7zYfsZKakqfCs3+vPIEAIw==
+X-Received: by 2002:a17:902:f545:b0:20b:a576:1896 with SMTP id
+ d9443c01a7336-20bff190668mr89400615ad.43.1728158766201; 
+ Sat, 05 Oct 2024 13:06:06 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.03
+ d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 13:06:03 -0700 (PDT)
+ Sat, 05 Oct 2024 13:06:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Subject: [PATCH v2 03/21] include/exec/memop: Move get_alignment_bits from
- tcg.h
-Date: Sat,  5 Oct 2024 13:05:42 -0700
-Message-ID: <20241005200600.493604-4-richard.henderson@linaro.org>
+Subject: [PATCH v2 05/21] include/exec/memop: Introduce memop_atomicity_bits
+Date: Sat,  5 Oct 2024 13:05:44 -0700
+Message-ID: <20241005200600.493604-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005200600.493604-1-richard.henderson@linaro.org>
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,80 +93,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function is specific to MemOp, not TCG in general.
+Split out of mmu_lookup.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/memop.h | 23 +++++++++++++++++++++++
- include/tcg/tcg.h    | 23 -----------------------
- 2 files changed, 23 insertions(+), 23 deletions(-)
+ include/exec/memop.h | 24 ++++++++++++++++++++++++
+ accel/tcg/cputlb.c   | 16 ++--------------
+ 2 files changed, 26 insertions(+), 14 deletions(-)
 
 diff --git a/include/exec/memop.h b/include/exec/memop.h
-index f881fe7af4..97720a8ee7 100644
+index f53bf618c6..b699bf7688 100644
 --- a/include/exec/memop.h
 +++ b/include/exec/memop.h
-@@ -170,4 +170,27 @@ static inline bool memop_big_endian(MemOp op)
-     return (op & MO_BSWAP) == MO_BE;
+@@ -193,4 +193,28 @@ static inline unsigned memop_alignment_bits(MemOp memop)
+     return a;
  }
  
-+/**
-+ * get_alignment_bits
++/*
++ * memop_atomicity_bits:
 + * @memop: MemOp value
 + *
-+ * Extract the alignment size from the memop.
++ * Extract the atomicity size from the memop.
 + */
-+static inline unsigned get_alignment_bits(MemOp memop)
++static inline unsigned memop_atomicity_bits(MemOp memop)
 +{
-+    unsigned a = memop & MO_AMASK;
++    unsigned size = memop & MO_SIZE;
 +
-+    if (a == MO_UNALN) {
-+        /* No alignment required.  */
-+        a = 0;
-+    } else if (a == MO_ALIGN) {
-+        /* A natural alignment requirement.  */
-+        a = memop & MO_SIZE;
-+    } else {
-+        /* A specific alignment requirement.  */
-+        a = a >> MO_ASHIFT;
++    switch (memop & MO_ATOM_MASK) {
++    case MO_ATOM_NONE:
++        size = MO_8;
++        break;
++    case MO_ATOM_IFALIGN_PAIR:
++    case MO_ATOM_WITHIN16_PAIR:
++        size = size ? size - 1 : 0;
++        break;
++    default:
++        break;
 +    }
-+    return a;
++    return size;
 +}
 +
  #endif
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 21d5884741..824fb3560d 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -281,29 +281,6 @@ static inline int tcg_type_size(TCGType t)
-     return 4 << i;
- }
- 
--/**
-- * get_alignment_bits
-- * @memop: MemOp value
-- *
-- * Extract the alignment size from the memop.
-- */
--static inline unsigned get_alignment_bits(MemOp memop)
--{
--    unsigned a = memop & MO_AMASK;
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index b5bff220a3..f5fca5a118 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1751,20 +1751,8 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+      * Device memory type require alignment.
+      */
+     if (unlikely(flags & TLB_CHECK_ALIGNED)) {
+-        MemOp size = l->memop & MO_SIZE;
 -
--    if (a == MO_UNALN) {
--        /* No alignment required.  */
--        a = 0;
--    } else if (a == MO_ALIGN) {
--        /* A natural alignment requirement.  */
--        a = memop & MO_SIZE;
--    } else {
--        /* A specific alignment requirement.  */
--        a = a >> MO_ASHIFT;
--    }
--    return a;
--}
--
- typedef tcg_target_ulong TCGArg;
- 
- /* Define type and accessor macros for TCG variables.
+-        switch (l->memop & MO_ATOM_MASK) {
+-        case MO_ATOM_NONE:
+-            size = MO_8;
+-            break;
+-        case MO_ATOM_IFALIGN_PAIR:
+-        case MO_ATOM_WITHIN16_PAIR:
+-            size = size ? size - 1 : 0;
+-            break;
+-        default:
+-            break;
+-        }
+-        if (addr & ((1 << size) - 1)) {
++        a_bits = memop_atomicity_bits(l->memop);
++        if (addr & ((1 << a_bits) - 1)) {
+             cpu_unaligned_access(cpu, addr, type, l->mmu_idx, ra);
+         }
+     }
 -- 
 2.43.0
 
