@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFB1991A19
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 21:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 846F6991A0A
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 21:48:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxAk4-0005Im-LS; Sat, 05 Oct 2024 15:47:04 -0400
+	id 1sxAk7-0005LY-Ma; Sat, 05 Oct 2024 15:47:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1sxAk2-0005Hu-S1; Sat, 05 Oct 2024 15:47:02 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1sxAk4-0005J2-Er; Sat, 05 Oct 2024 15:47:04 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1sxAk1-0007dm-0p; Sat, 05 Oct 2024 15:47:02 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-42cb7a2e4d6so31848255e9.0; 
- Sat, 05 Oct 2024 12:47:00 -0700 (PDT)
+ id 1sxAk2-0007e7-WF; Sat, 05 Oct 2024 15:47:04 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-42cbb08a1a5so31348055e9.3; 
+ Sat, 05 Oct 2024 12:47:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728157619; x=1728762419; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1728157620; x=1728762420; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2BezNNdk3PkYioTUt7iat3P1nWyR9v8iNK3NeX7XEJk=;
- b=CMrg7EZZN7E69XS/vcRD2eb8Ex1691lP1qro00GCZJ1NVHCjH8Vn2SZ4Q/C/H5+ZTc
- yfVEa6xkWEWaqW21mn1ngh4toMUdPfFNcLRAnLRnB/bAOSvO6Z1z7XZITX85om8f5miu
- A848M/aqPkYXUMsYEnpcTqE4oIJEJyUQxXSHzHnj/ZgDqXYqwLXKD7cxtnhKMbNjpcBe
- wUeAlRjb/2a44pHpDjzm9d/0UTSkFcCPpepGCNLXGoD402SjsuPVeF0XOxHzV+iysXky
- ANB7aFle+T98UVqAtg7VjgId6/xn+wJjizot05rlG14T5LbMTdyorqrRez7BMI93IFwx
- XukA==
+ bh=+Fp8HwTIonO2XomuIOPjS+r/ipl54dMPaCsUxMaTJz4=;
+ b=Xxw1BwAtRNDTgdRzKkKG45a/DhiEOQdBX1/y549Z4yu98eEZw/CcgiY2ziBjr12HZi
+ YxuF3dMyY3wnpK7nLDiAzoNynNOIfnSkI+BV4GagxzO/jx8FI8sgX8oYxvqOK6bEhLkA
+ F5Bc26FVL/gbrw5kdDEs37htcAlGJQg2wjPAoOynmm5WFXyZUcanXnuU9f8zgoAzzmpE
+ +NBH4IH4JD6DUGjRgb3sbTvZiSBgEltcEgmhOlKNe1m/FsKWscO0DInIlupC3gWYPPd0
+ sH3q48rMWZGwptMBJ4JMP8r7W0p7BWlsZNPz4vfVbAPyWt773h47WYXvkhk3ndV+4yEx
+ ub7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728157619; x=1728762419;
+ d=1e100.net; s=20230601; t=1728157620; x=1728762420;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2BezNNdk3PkYioTUt7iat3P1nWyR9v8iNK3NeX7XEJk=;
- b=j46PWGdMgW69adUFgQpT4VYJEKcI2gG6oSHdoYI4imRIOW8ympKUtHyS6AR3ubKdnw
- DxVDLnFhwyhqNjL3lwVrP6B7z+MUhJW9keKb5dUa4864Z4HLsWD8EQ1b3S5jqqQBejLK
- 2BTubMQf0lK2HMjYTN6F4qvg/bsaz03Ye2rAHjXr0iU8wVZ7lzhCFVV9Y6p3ifDYGVXv
- ATrRTK0cIE2NoNjJSpedVjPr6bsMnRX+bXBH49rClYuLfrhbF81Z8yvVF+JORfjOH6iu
- IgquG7ldsn86nFZLUnsk0AmFLWKOpWc9GmjmgxntxnqHe7aeCqjiARpUALuyrnjlztS/
- TtnQ==
+ bh=+Fp8HwTIonO2XomuIOPjS+r/ipl54dMPaCsUxMaTJz4=;
+ b=HUahKX80ojJWr52/9xduej0NaoKTRjCG+lz7OIb5k/76NCC5XrabmrwQFCUIfuIvB0
+ pF8/XB7QfAipyGq2yGwpsu1LG8M60kZ7BCUIyCT+0jirpvwlYHh4vKRkv/kxcgjuCViu
+ XWoOmUo3sF81vZnnbq1+BVVSa0y0uLqqyybjWZCtSX9ArtmlNhH6Dd/nVEXtaLIhEz+O
+ 79ZwrOq63CMhCfN7199Y85DKTo/9cG9iqDrfcW4wj3LqdMtVIkenkUx2xygnycLf1Hba
+ OYia4Zr42yZDcNX0C/vQ9w5E4ZJqwbAC/ULU7DavmLci0T+SWwgZsr1KvbHXyHhgnvhN
+ yKcQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUXeFkzJ7dRbGPy6MLfv+Fn/J7747N9d+B/CdcYNVrzIM2eKl5zQ4CRkFlb7v3Xd3WnDGJWlympeGDr@nongnu.org,
- AJvYcCWvUkuSA3Zb/FZuf8FH2bisXjOYYKm9dI0JQwyPt03Wj46BiDKogmyncCc0ak5EjrjKe7KN+pNRGYk=@nongnu.org
-X-Gm-Message-State: AOJu0Yzv4XvM5kA82Sofw5veqMP2leeit0sRaF59Ok8R986/Qbl7p4V6
- SRT/H5Tn4aPc/C9w6hSmDvUeDExxW23BM6DfB+p2eaqwb7p0I+9Pax5eGw==
-X-Google-Smtp-Source: AGHT+IGFgBbGivkDy5FOm98fjJjeBpPC2RekHxbbgLD7+eRwJKg2lYf75ZfPH7R3MfKq270SkHlUBQ==
-X-Received: by 2002:a7b:c454:0:b0:42f:8ac6:4f34 with SMTP id
- 5b1f17b1804b1-42f8ac65216mr20162675e9.35.1728157618622; 
- Sat, 05 Oct 2024 12:46:58 -0700 (PDT)
+ AJvYcCVC7KgBC9/phY6DOOZHCjCTiohzFURPT4gL+BRnHfPlQgLXleRKGHDJLyW4hQ/zHp5WX0ShlhGAFP1p@nongnu.org,
+ AJvYcCVS8nDE1Wd0HE9tBdaqGXxORpErG0xaU+5FKwa67Msesx5ux2A0ZKBzZUpkuPRgFCsrTUgAkXgwK4s=@nongnu.org
+X-Gm-Message-State: AOJu0YwSDO8gC/ZQneMpG/+bLAoSoWXEa6XdAITZdLyq2gGCH2QQpLiw
+ u4139ICtJ77jzVR4uCtQt2tpLiq+z3Na2N3GwDhtzZDhM0eZGIaTfC7nbw==
+X-Google-Smtp-Source: AGHT+IEDxi7Jj6zagMzFN1e0/myWtE5IgAW2hv47W3MrPmBlC8GpjNNzpDKyypxcw3DFCZqEtTz4iw==
+X-Received: by 2002:a05:600c:138b:b0:42c:b950:680b with SMTP id
+ 5b1f17b1804b1-42f8ddadbd3mr9167475e9.20.1728157619957; 
+ Sat, 05 Oct 2024 12:46:59 -0700 (PDT)
 Received: from archlinux.. (pd95ed790.dip0.t-ipconnect.de. [217.94.215.144])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42f86a0afc1sm47506775e9.1.2024.10.05.12.46.57
+ 5b1f17b1804b1-42f86a0afc1sm47506775e9.1.2024.10.05.12.46.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 12:46:58 -0700 (PDT)
+ Sat, 05 Oct 2024 12:46:59 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -67,18 +67,19 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
  qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 04/23] hw/ppc/e500: Remove unused "irqs" parameter
-Date: Sat,  5 Oct 2024 21:45:44 +0200
-Message-ID: <20241005194603.23139-5-shentey@gmail.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v2 05/23] hw/ppc/e500: Add missing device tree properties to
+ i2c controller node
+Date: Sat,  5 Oct 2024 21:45:45 +0200
+Message-ID: <20241005194603.23139-6-shentey@gmail.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241005194603.23139-1-shentey@gmail.com>
 References: <20241005194603.23139-1-shentey@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,34 +102,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+When compiling a decompiled device tree blob created with dumpdtb, dtc complains
+with:
+
+  /soc@e0000000/i2c@3000: incorrect #address-cells for I2C bus
+  /soc@e0000000/i2c@3000: incorrect #size-cells for I2C bus
+
+Fix this by adding the missing device tree properties.
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/ppc/e500.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/ppc/e500.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index 32996c188e..228287b457 100644
+index 228287b457..e2a4f265a5 100644
 --- a/hw/ppc/e500.c
 +++ b/hw/ppc/e500.c
-@@ -825,7 +825,7 @@ static DeviceState *ppce500_init_mpic_qemu(PPCE500MachineState *pms,
- }
+@@ -196,6 +196,8 @@ static void dt_i2c_create(void *fdt, const char *soc, const char *mpic,
+     qemu_fdt_setprop_cells(fdt, i2c, "cell-index", 0);
+     qemu_fdt_setprop_cells(fdt, i2c, "interrupts", irq0, 0x2);
+     qemu_fdt_setprop_phandle(fdt, i2c, "interrupt-parent", mpic);
++    qemu_fdt_setprop_cell(fdt, i2c, "#size-cells", 0);
++    qemu_fdt_setprop_cell(fdt, i2c, "#address-cells", 1);
+     qemu_fdt_setprop_string(fdt, "/aliases", alias, i2c);
  
- static DeviceState *ppce500_init_mpic_kvm(const PPCE500MachineClass *pmc,
--                                          IrqLines *irqs, Error **errp)
-+                                          Error **errp)
- {
- #ifdef CONFIG_KVM
-     DeviceState *dev;
-@@ -865,7 +865,7 @@ static DeviceState *ppce500_init_mpic(PPCE500MachineState *pms,
-         Error *err = NULL;
- 
-         if (kvm_kernel_irqchip_allowed()) {
--            dev = ppce500_init_mpic_kvm(pmc, irqs, &err);
-+            dev = ppce500_init_mpic_kvm(pmc, &err);
-         }
-         if (kvm_kernel_irqchip_required() && !dev) {
-             error_reportf_err(err,
+     g_free(i2c);
 -- 
 2.46.2
 
