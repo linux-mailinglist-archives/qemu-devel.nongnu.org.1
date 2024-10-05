@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6D4991A93
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1272E991A97
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:10:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxB2g-0006Oy-Hs; Sat, 05 Oct 2024 16:06:18 -0400
+	id 1sxB2y-0006Wi-OM; Sat, 05 Oct 2024 16:06:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxB2e-0006Nk-Mz
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:16 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1sxB2w-0006V7-FP
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:34 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxB2d-0001mb-15
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:16 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-20b9b35c7c7so22719685ad.1
- for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:14 -0700 (PDT)
+ id 1sxB2s-0001p9-IJ
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:33 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-20b5fb2e89dso24663535ad.1
+ for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728158774; x=1728763574; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728158779; x=1728763579; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E1uh5v8Er5HwrssIP/tcmhd1DyyVCAW+cpRhBaU0frQ=;
- b=mIDgLo1YeoAjIlsCWmFQGzKzAAiQ/7g1smqZIr3qEPDWucOIJ/htjXDDOV4XBToFj5
- HO0qFZUhtxtCwlKYBxvj/4LiiB6MoNkALnJGNR5JIxX8XdjIQ9JFOyrAdDr3vGzuSDSJ
- mKYaQn/2bZgiK19UAR8X1kQOnlLnv+/0TmNCpaJcsn6P+zbpqECPrVcVslYGfqBlkKxg
- zenry6k7bMejARRn9knX0bc2Mqb0QgxvtK6y9UpyY2qZnf1W2ZnAIJ+MJsF+hCUqWtSk
- Unl6Lj+Q/SSu7awBGOmO6GpKy8+eS4Jk6wpZ1xkaXqj42B2VWaL+JzDX7uvTWA1rm2BG
- ucyg==
+ bh=/ZHU/9Bj/Yhl/fLIAf9ED9KKjqQvRkGT+c+Pl2SvUJY=;
+ b=iwueuDNexQJ5b9aqfwad/mV8GZjyQRtqNKzG3Cbvg4xrQDQ8lOlmHV5/5OKvn44EvL
+ r8HoAN2UOxglWfrmDnF1+HDWs98BHLEcRvGw8b55idEZeHOW9jXqe6mBInInPTyEhOVa
+ 5dASRg84vrzFIjM0TQo7AW70do7DE5YzG7P4aLCfuX3I6BZIJuOQ/WypCfmv2yoIUsQy
+ YNmPo6+4IcicIH2KPX4VO5ekqi8YYSVNnM4Pbv+4xbOWzWjIqmyA21ioS3K7Bnf0a2X5
+ GPR7PQqRA3i+dZ5IG7MGojwQ57p7FV4eIQ8kkkCVZApx46GgPhAMqshib0ACBkWEjW06
+ DCGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728158774; x=1728763574;
+ d=1e100.net; s=20230601; t=1728158780; x=1728763580;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E1uh5v8Er5HwrssIP/tcmhd1DyyVCAW+cpRhBaU0frQ=;
- b=IRzV94U4wsFVwJNQxavvAlDoSGNcbDC+HTKdxynbofuhnRnQZUCeZ66mB94mrkQGtv
- TUj5qVBTtGxjpH11FeEnQLrXS9VxjUMGboZXtt9s8FNYJXh6qvS7Aa6WK/2v7sAJRqzh
- rGO5NPSZ9wkvHTXouNwDIHUsMtImgckXyIlpwXmEdw2LKHEa7EBmJVrf7+dNgv16BIal
- iEOdrCds3kekinvWvPkXgjCGkiU6ibSg8kOPa3Jl6XTJBj7zAoR1rKWyNxZWSMerrZaa
- rO30RInCj2siWo8smzSrxzxl6mS0z1ZLcETaueVe6cjXA37UhWtYPZcB7mP/6fMJtm4H
- Cm0g==
-X-Gm-Message-State: AOJu0YzGBF6JTmgocOfbgNbeadOOslk9MdtFZ7EwQeqRnAZACkHDGAK7
- 0ttg3rixvTr+S6L4wT0ZGa55I5C239rn/f0AcZ73Xc0ByEOb2u7DO6FAGw2bPaEtVS6DsLU/Oa/
- W
-X-Google-Smtp-Source: AGHT+IFuIEZa4i6J0XzDsWHUBnGbrBzjQrdOCbbZFKtwtRYvhgzw6qHzcnt8mJfy/cgTXRoh5crEPg==
-X-Received: by 2002:a17:902:d4c6:b0:20b:b48d:68e with SMTP id
- d9443c01a7336-20bfde57cf8mr99495885ad.7.1728158773783; 
- Sat, 05 Oct 2024 13:06:13 -0700 (PDT)
+ bh=/ZHU/9Bj/Yhl/fLIAf9ED9KKjqQvRkGT+c+Pl2SvUJY=;
+ b=OUaIXh4AXEQC8mGzv/4DAZD986CODRofpRdnyQn5Ovp6MAM5SqwQ5AGwjljeprW6Cg
+ /QBgpAhi14dV4RBUvD6ZsvZJuG2MzlU9Y8wbWPuqs+d1VKPwpLa1jgZ9etFTYLgEQX3a
+ pYzWgZAVlHWVKYXDbmfpZ4iuThztRGH8uvg6tb1OzPvyVZRxJYctUxGsCPPBD8wdAjn4
+ BD2Fvn8kYqF5nUO1rAX9ZRfpjCBKAwPMLgKhDslVuQje88glBafT/rwA2Bn2rYCJOHBG
+ rM3jhJPHSYbG4h2HI5Jy0enkaMOnroGDJKzHe1/q1UXOWu9vOtx8rbRh7RYOyxj23syX
+ 3ptQ==
+X-Gm-Message-State: AOJu0YyNJQX/IuBw2E4HrihdIzzeHuuopn2z5CGtjbteYcG6mRZ0b9ZZ
+ Ud6OywFpxUUXUCCTJposaRmktpfO3LdrYIG8uLBiZi+lyRVIro+MqFaqEvWqP33i6N1c+FRogzJ
+ q
+X-Google-Smtp-Source: AGHT+IGaG41RXKz72+WYu6xA+vlkOEFZ7bvd3v+g0ts4N6YOcoq8IJtsLlpIollZYFin0+jpif++rQ==
+X-Received: by 2002:a17:903:228a:b0:207:1825:c65e with SMTP id
+ d9443c01a7336-20bfe05f3c5mr90235625ad.18.1728158779678; 
+ Sat, 05 Oct 2024 13:06:19 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.13
+ d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 13:06:13 -0700 (PDT)
+ Sat, 05 Oct 2024 13:06:19 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Subject: [PATCH v2 13/21] target/arm: Pass MemOp to get_phys_addr
-Date: Sat,  5 Oct 2024 13:05:52 -0700
-Message-ID: <20241005200600.493604-14-richard.henderson@linaro.org>
+Subject: [PATCH v2 19/21] target/arm: Move device detection earlier in
+ get_phys_addr_lpae
+Date: Sat,  5 Oct 2024 13:05:58 -0700
+Message-ID: <20241005200600.493604-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005200600.493604-1-richard.henderson@linaro.org>
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,103 +94,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zero is the safe do-nothing value for callers to use.
+Determine cache attributes, and thence Device vs Normal memory,
+earlier in the function.  We have an existing regime_is_stage2
+if block into which this can be slotted.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/internals.h      | 3 ++-
- target/arm/ptw.c            | 2 +-
- target/arm/tcg/m_helper.c   | 8 ++++----
- target/arm/tcg/tlb_helper.c | 2 +-
- 4 files changed, 8 insertions(+), 7 deletions(-)
+ target/arm/ptw.c | 49 ++++++++++++++++++++++++------------------------
+ 1 file changed, 25 insertions(+), 24 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 1e5da81ce9..2b16579fa5 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1432,6 +1432,7 @@ typedef struct GetPhysAddrResult {
-  * @env: CPUARMState
-  * @address: virtual address to get physical address for
-  * @access_type: 0 for read, 1 for write, 2 for execute
-+ * @memop: memory operation feeding this access, or 0 for none
-  * @mmu_idx: MMU index indicating required translation regime
-  * @result: set on translation success.
-  * @fi: set to fault info if the translation fails
-@@ -1450,7 +1451,7 @@ typedef struct GetPhysAddrResult {
-  *    value.
-  */
- bool get_phys_addr(CPUARMState *env, vaddr address,
--                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
-+                   MMUAccessType access_type, MemOp memop, ARMMMUIdx mmu_idx,
-                    GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
-     __attribute__((nonnull));
- 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 659855133c..373095a339 100644
+index 238b2c92a9..0a1a820362 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -3572,7 +3572,7 @@ bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
- }
- 
- bool get_phys_addr(CPUARMState *env, vaddr address,
--                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
-+                   MMUAccessType access_type, MemOp memop, ARMMMUIdx mmu_idx,
-                    GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
- {
-     S1Translate ptw = {
-diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
-index 23d7f73035..f7354f3c6e 100644
---- a/target/arm/tcg/m_helper.c
-+++ b/target/arm/tcg/m_helper.c
-@@ -222,7 +222,7 @@ static bool v7m_stack_write(ARMCPU *cpu, uint32_t addr, uint32_t value,
-     int exc;
-     bool exc_secure;
- 
--    if (get_phys_addr(env, addr, MMU_DATA_STORE, mmu_idx, &res, &fi)) {
-+    if (get_phys_addr(env, addr, MMU_DATA_STORE, 0, mmu_idx, &res, &fi)) {
-         /* MPU/SAU lookup failed */
-         if (fi.type == ARMFault_QEMU_SFault) {
-             if (mode == STACK_LAZYFP) {
-@@ -311,7 +311,7 @@ static bool v7m_stack_read(ARMCPU *cpu, uint32_t *dest, uint32_t addr,
-     bool exc_secure;
-     uint32_t value;
- 
--    if (get_phys_addr(env, addr, MMU_DATA_LOAD, mmu_idx, &res, &fi)) {
-+    if (get_phys_addr(env, addr, MMU_DATA_LOAD, 0, mmu_idx, &res, &fi)) {
-         /* MPU/SAU lookup failed */
-         if (fi.type == ARMFault_QEMU_SFault) {
-             qemu_log_mask(CPU_LOG_INT,
-@@ -2009,7 +2009,7 @@ static bool v7m_read_half_insn(ARMCPU *cpu, ARMMMUIdx mmu_idx, bool secure,
-                       "...really SecureFault with SFSR.INVEP\n");
-         return false;
+@@ -2029,8 +2029,20 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+             xn = extract64(attrs, 53, 2);
+             result->f.prot = get_S2prot(env, ap, xn, ptw->in_s1_is_el0);
+         }
++
++        result->cacheattrs.is_s2_format = true;
++        result->cacheattrs.attrs = extract32(attrs, 2, 4);
++        /*
++         * Security state does not really affect HCR_EL2.FWB;
++         * we only need to filter FWB for aa32 or other FEAT.
++         */
++        device = S2_attrs_are_device(arm_hcr_el2_eff(env),
++                                     result->cacheattrs.attrs);
+     } else {
+         int nse, ns = extract32(attrs, 5, 1);
++        uint8_t attrindx;
++        uint64_t mair;
++
+         switch (out_space) {
+         case ARMSS_Root:
+             /*
+@@ -2102,6 +2114,19 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+          */
+         result->f.prot = get_S1prot(env, mmu_idx, aarch64, ap, xn, pxn,
+                                     result->f.attrs.space, out_space);
++
++        /* Index into MAIR registers for cache attributes */
++        attrindx = extract32(attrs, 2, 3);
++        mair = env->cp15.mair_el[regime_el(env, mmu_idx)];
++        assert(attrindx <= 7);
++        result->cacheattrs.is_s2_format = false;
++        result->cacheattrs.attrs = extract64(mair, attrindx * 8, 8);
++
++        /* When in aarch64 mode, and BTI is enabled, remember GP in the TLB. */
++        if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
++            result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
++        }
++        device = S1_attrs_are_device(result->cacheattrs.attrs);
      }
--    if (get_phys_addr(env, addr, MMU_INST_FETCH, mmu_idx, &res, &fi)) {
-+    if (get_phys_addr(env, addr, MMU_INST_FETCH, 0, mmu_idx, &res, &fi)) {
-         /* the MPU lookup failed */
-         env->v7m.cfsr[env->v7m.secure] |= R_V7M_CFSR_IACCVIOL_MASK;
-         armv7m_nvic_set_pending(env->nvic, ARMV7M_EXCP_MEM, env->v7m.secure);
-@@ -2045,7 +2045,7 @@ static bool v7m_read_sg_stack_word(ARMCPU *cpu, ARMMMUIdx mmu_idx,
-     ARMMMUFaultInfo fi = {};
-     uint32_t value;
  
--    if (get_phys_addr(env, addr, MMU_DATA_LOAD, mmu_idx, &res, &fi)) {
-+    if (get_phys_addr(env, addr, MMU_DATA_LOAD, 0, mmu_idx, &res, &fi)) {
-         /* MPU/SAU lookup failed */
-         if (fi.type == ARMFault_QEMU_SFault) {
-             qemu_log_mask(CPU_LOG_INT,
-diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
-index 885bf4ec14..1d8b7bcaa2 100644
---- a/target/arm/tcg/tlb_helper.c
-+++ b/target/arm/tcg/tlb_helper.c
-@@ -344,7 +344,7 @@ bool arm_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-      * return false.  Otherwise populate fsr with ARM DFSR/IFSR fault
-      * register format, and signal the fault.
-      */
--    ret = get_phys_addr(&cpu->env, address, access_type,
-+    ret = get_phys_addr(&cpu->env, address, access_type, 0,
-                         core_to_arm_mmu_idx(&cpu->env, mmu_idx),
-                         &res, fi);
-     if (likely(!ret)) {
+     if (!(result->f.prot & (1 << access_type))) {
+@@ -2131,30 +2156,6 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+     result->f.attrs.space = out_space;
+     result->f.attrs.secure = arm_space_is_secure(out_space);
+ 
+-    if (regime_is_stage2(mmu_idx)) {
+-        result->cacheattrs.is_s2_format = true;
+-        result->cacheattrs.attrs = extract32(attrs, 2, 4);
+-        /*
+-         * Security state does not really affect HCR_EL2.FWB;
+-         * we only need to filter FWB for aa32 or other FEAT.
+-         */
+-        device = S2_attrs_are_device(arm_hcr_el2_eff(env),
+-                                     result->cacheattrs.attrs);
+-    } else {
+-        /* Index into MAIR registers for cache attributes */
+-        uint8_t attrindx = extract32(attrs, 2, 3);
+-        uint64_t mair = env->cp15.mair_el[regime_el(env, mmu_idx)];
+-        assert(attrindx <= 7);
+-        result->cacheattrs.is_s2_format = false;
+-        result->cacheattrs.attrs = extract64(mair, attrindx * 8, 8);
+-
+-        /* When in aarch64 mode, and BTI is enabled, remember GP in the TLB. */
+-        if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
+-            result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
+-        }
+-        device = S1_attrs_are_device(result->cacheattrs.attrs);
+-    }
+-
+     /*
+      * Enable alignment checks on Device memory.
+      *
 -- 
 2.43.0
 
