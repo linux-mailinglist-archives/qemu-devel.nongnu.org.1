@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC959917D8
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 17:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E269917CB
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 17:27:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sx6fP-0001xc-27; Sat, 05 Oct 2024 11:25:59 -0400
+	id 1sx6fQ-0001yR-7h; Sat, 05 Oct 2024 11:26:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sx6fN-0001wa-9k
+ id 1sx6fN-0001wq-Pp
  for qemu-devel@nongnu.org; Sat, 05 Oct 2024 11:25:57 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sx6fL-0002KG-4j
+ id 1sx6fM-0002KS-85
  for qemu-devel@nongnu.org; Sat, 05 Oct 2024 11:25:57 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-20b49ee353cso28727765ad.2
- for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 08:25:54 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-20b6458ee37so36306035ad.1
+ for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 08:25:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728141954; x=1728746754; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728141955; x=1728746755; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qpc+gtvz4QF2D7U7hwk6I/PwDTmOhNNc5A8A2G2CqV8=;
- b=b5bH8TzNryOOwnuIPccE5c3jXQcoTLmj3rhK301DiqYSSeqiN2hywFG/BtDwp2cXFz
- qQ88SomeL5d2m86/ddrR3T1paVASX8MWN+ATOdfYr9OC7+UBQ/T4rdVcdHBIP0MHO5Ld
- ZC3wBUHZ1VisVlKtKn02HbJ49qcfXy9pijUw+FOVBgg9PTlU5ri2taTePGH+UljZRWbE
- rTpqTcWJDBIXl/c6cFj/DRkVBi1BmoFLCxyEk3Q9SkLLEofbYyZgBQdGlqGHSuHKznXI
- jdGWipLdEI8UGiqx6LYR7tIWCqXhtBvU5P+hAJYUBYF7jz57sj48w6NIaC64iRjGLNBU
- EjsQ==
+ bh=wBthGFf8BfR2i4dob959bB47CFsEJX0Mf+aRMHd0jM4=;
+ b=NRxMumqhUyi4JtJy/8PTggZsUF1jOR0NNV50ryHAaU2cqj05VlICmZs3b06OiKYHnv
+ gmjMgSyapT0roF9bCsU9+qDLqmCHetHwarcbolRovDLfXFsn23n1LAsNuG+GZE0aDE8H
+ vSeelEQ/kaGrblkkrNZ1SQl9DEJMHPaBozsr3CjaMXvok/vpShsAWVfSdfvBsZYginUf
+ DsvXzJOndqPLLcROLUngHqT/DOj4ZxMWt7vh5gRCbZdz+IOMZj6e6Pguas53nIEYEqBJ
+ iYSKUlPHLkG1SitzO9aBt6OLh/8J8teDYp6LRx70eZPtGfjge0+f7PxwQcCCxgek8fAt
+ DAfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728141954; x=1728746754;
+ d=1e100.net; s=20230601; t=1728141955; x=1728746755;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Qpc+gtvz4QF2D7U7hwk6I/PwDTmOhNNc5A8A2G2CqV8=;
- b=v8o8cF3wzBNwtSe8as87X/Z1ju8X1VnZn7REqwlDFRe8hbmaFmpruPJcJBKeBJ4ZI+
- P47QQRk8VceTQNQbvUJm3RNlQ6N8SYr9z9C6aV6Eg98/tL/f32JFDXbdqGytMZFTNoLo
- beeoPAVFuxrD81cLy07OuLPkJ+sHkbCj3qoFC1mJW3soX6dNGmazZ74P2VVjmmZpTYW5
- XAlbUceLYzjeDE/ATnn5NxRCGavHhhn6zjImF4YY6dO0KUXh7zqaHwWKUv+ECjoPmcTe
- SgWVRJomncZpHpy9ksH4GdOQ25vKIA47RCqHQHwIkjFaCfuOGrwuLVIUMgLZfLqHQ4yD
- 2/CQ==
-X-Gm-Message-State: AOJu0YyijW5WyFzmFXV1C5bNwcjTKHpBLBMIJBx03URX/X8LS/v/aKP8
- T789MubXKOTSZo9LPv4pO60QDhQbgH2JRhe8pnBHuYWMp82XbZHvtIxaJnEwcmq4s8roGeR+GrM
- S
-X-Google-Smtp-Source: AGHT+IELKa52UOR7Ytz4WC8NdW2qQ7qz0VWYMH9P15Fb5pfsJzTN9y4328hD9lJpQGFW7j/3iwlUjQ==
-X-Received: by 2002:a17:902:f68f:b0:20b:54cc:b34e with SMTP id
- d9443c01a7336-20bfee34d54mr84315875ad.51.1728141953851; 
- Sat, 05 Oct 2024 08:25:53 -0700 (PDT)
+ bh=wBthGFf8BfR2i4dob959bB47CFsEJX0Mf+aRMHd0jM4=;
+ b=ocWFPcy6DZgGoY42joWFetRjXpKZgHfl+PvOWeHHEq5+tCnFV+MHyS0Dcj/rzTwD/N
+ 4gU/0YbIDVUQHXIjpWygT3G5aY6owK0izWw6SEiQu0DaAQ6QapT3acTqaGOltN0RB07e
+ qlOW1mj6oVty+BZZKTjV2imrOhlqLyqoWiW46nE+pPfQSB/XjcTvR54GB2tqLTxQChcD
+ kRXfOmjQsQXadhoWFi1Ty4rYU2TVw0GG7QgpeMboqKOBEvyrm3v9fvmsFGffzXlmJ8aK
+ 2YQiRF423XSkkO0hQdYHfA8fDlYv35fuXkQsBSBIAV6QAc/MIGVNrWf2vB4ZjpCvYaIy
+ hiWQ==
+X-Gm-Message-State: AOJu0Ywz9MnbOQWAgNPbQXU4P0ktrQeIPnLSF/1qz7Jz96LyzM2d18C0
+ xcWRz7zeXP27LlYhFdVajIITrQ7J2Z5c6id7jD/adfYm8y/OnEsVH40FC+/Ylt4n3o6PdCCeF67
+ Q
+X-Google-Smtp-Source: AGHT+IH7Xmy/UoZFDozrpGZR2JXAjehjcUEjjy3Gt9EAYcog/cZlmR6Wqao6wjaMYAvpmgnjtSqiEQ==
+X-Received: by 2002:a17:902:d581:b0:20b:419e:9f15 with SMTP id
+ d9443c01a7336-20bfea570admr86092045ad.46.1728141954795; 
+ Sat, 05 Oct 2024 08:25:54 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.25.53
+ d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.25.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 08:25:53 -0700 (PDT)
+ Sat, 05 Oct 2024 08:25:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Subject: [PATCH 01/20] accel/tcg: Assert noreturn from write-only page for
- atomics
-Date: Sat,  5 Oct 2024 08:25:32 -0700
-Message-ID: <20241005152551.307923-2-richard.henderson@linaro.org>
+Subject: [PATCH 02/20] accel/tcg: Expand tlb_fill for 3 callers
+Date: Sat,  5 Oct 2024 08:25:33 -0700
+Message-ID: <20241005152551.307923-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005152551.307923-1-richard.henderson@linaro.org>
 References: <20241005152551.307923-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,31 +93,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There should be no "just in case"; the page is already
-in the tlb, and known to be not readable.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ accel/tcg/cputlb.c | 33 ++++++++++-----------------------
+ 1 file changed, 10 insertions(+), 23 deletions(-)
 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 117b516739..fd6459b695 100644
+index fd6459b695..58960969f4 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1852,10 +1852,9 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+@@ -1220,25 +1220,6 @@ void tlb_set_page(CPUState *cpu, vaddr addr,
+                             prot, mmu_idx, size);
+ }
+ 
+-/*
+- * Note: tlb_fill() can trigger a resize of the TLB. This means that all of the
+- * caller's prior references to the TLB table (e.g. CPUTLBEntry pointers) must
+- * be discarded and looked up again (e.g. via tlb_entry()).
+- */
+-static void tlb_fill(CPUState *cpu, vaddr addr, int size,
+-                     MMUAccessType access_type, int mmu_idx, uintptr_t retaddr)
+-{
+-    bool ok;
+-
+-    /*
+-     * This is not a probe, so only valid return is success; failure
+-     * should result in exception + longjmp to the cpu loop.
+-     */
+-    ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, size,
+-                                    access_type, mmu_idx, false, retaddr);
+-    assert(ok);
+-}
+-
+ static inline void cpu_unaligned_access(CPUState *cpu, vaddr addr,
+                                         MMUAccessType access_type,
+                                         int mmu_idx, uintptr_t retaddr)
+@@ -1631,7 +1612,10 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
+     if (!tlb_hit(tlb_addr, addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, access_type,
+                             addr & TARGET_PAGE_MASK)) {
+-            tlb_fill(cpu, addr, data->size, access_type, mmu_idx, ra);
++            bool ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, data->size,
++                                                 access_type, mmu_idx,
++                                                 false, ra);
++            assert(ok);
+             maybe_resized = true;
+             index = tlb_index(cpu, mmu_idx, addr);
+             entry = tlb_entry(cpu, mmu_idx, addr);
+@@ -1833,8 +1817,10 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     if (!tlb_hit(tlb_addr, addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, MMU_DATA_STORE,
+                             addr & TARGET_PAGE_MASK)) {
+-            tlb_fill(cpu, addr, size,
+-                     MMU_DATA_STORE, mmu_idx, retaddr);
++            bool ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, size,
++                                                 MMU_DATA_STORE, mmu_idx,
++                                                 false, retaddr);
++            assert(ok);
+             index = tlb_index(cpu, mmu_idx, addr);
+             tlbe = tlb_entry(cpu, mmu_idx, addr);
+         }
+@@ -1848,7 +1834,8 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+      * but addr_read will only be -1 if PAGE_READ was unset.
+      */
+     if (unlikely(tlbe->addr_read == -1)) {
+-        tlb_fill(cpu, addr, size, MMU_DATA_LOAD, mmu_idx, retaddr);
++        cpu->cc->tcg_ops->tlb_fill(cpu, addr, size, MMU_DATA_LOAD,
++                                   mmu_idx, false, retaddr);
          /*
           * Since we don't support reads and writes to different
           * addresses, and we do have the proper page loaded for
--         * write, this shouldn't ever return.  But just in case,
--         * handle via stop-the-world.
-+         * write, this shouldn't ever return.
-          */
--        goto stop_the_world;
-+        g_assert_not_reached();
-     }
-     /* Collect tlb flags for read. */
-     tlb_addr |= tlbe->addr_read;
 -- 
 2.43.0
 
