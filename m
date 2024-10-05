@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0051C991A91
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B87D6991A8E
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:08:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxB2g-0006OV-1Y; Sat, 05 Oct 2024 16:06:18 -0400
+	id 1sxB2e-0006Mq-HY; Sat, 05 Oct 2024 16:06:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxB2Z-0006Ik-KS
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:11 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1sxB2b-0006L5-OC
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:13 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxB2X-0001jz-Cp
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:11 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2e07b031da3so2368507a91.3
- for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:09 -0700 (PDT)
+ id 1sxB2Z-0001ks-N0
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:13 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-7db90a28cf6so2839772a12.0
+ for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728158768; x=1728763568; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728158770; x=1728763570; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aSpIks7wgvzrdGiSzq/HYW4dr1jFM7gjMRozlRGemJM=;
- b=Uv+nHdFwsLvSThV9MoBoki4al0a6ekJ9ww4iF6f00UhKcW1izC8pMylkj6ikNzksDc
- gPxWkE86daY7vcZjvcX160ygxFYiVaJ5XiYSSOQWEOJZAgJ3ddfv3QIM5MmZf7f5CSWa
- LLuNZDa3chTDKUd3CL9YFQgl1vzE9VE2aZZ6JqehlpC+Sh3sMCN32C7aOOe8OY+Lsys3
- ge/dW60XHX57kKh4L4lORsVLWn1SnoK7YDDTRimjSy27gN1A0GEHU0oVvDMVTpC8iPdd
- /9qwqpEfwDoEPCtpgHYVHeOFfzJTjsJ/LNAtUa9xpSa9pY1MNBglXKMk+xJ9BuWRrShO
- padg==
+ bh=/wa2JC5GTiuZOa9FUt+c/E5R/4D7wBSs90VoPwelenc=;
+ b=Oph6G3SGoaxulsvPO1cbl6De/4CT6GGM7Sy8hNzKtC90KA43cXIGH5Sd6nL042+ksJ
+ kWkRdklwrKgYVUGRmqJbuBwrmt97y6VFCOqWUJppjx8tPN2XSH3wv/p/WA0DNQHdb9+a
+ fWD0x2q5cGQQ24WrYqNzPBfp8qq3rZzZaXKBtB7UC8DA4Qw7ad4+v3d+LR2DG/aaruhU
+ r9iJiM/twGXHSlVCcdl8zk1ulaRSh11ttMc7jntQUlBpG8zk6dsxyYqgJoL6tbNIBlNX
+ TNDvwO3VoIzAm0GMyAlFgHwlZZLz565FOjMW/ytJkBByI6qeGxXKPBAU7JIwyJncUAXl
+ l9yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728158768; x=1728763568;
+ d=1e100.net; s=20230601; t=1728158770; x=1728763570;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aSpIks7wgvzrdGiSzq/HYW4dr1jFM7gjMRozlRGemJM=;
- b=rMC2bjsJZ0eaLL+3f+fmReM5N0TLd2zuH20bki9BC01idxrZQ1OMWzoqR718Oha1Ry
- v6yRtbtx4hIht80j6N9XvD/4O3g5Hfj8BH8hf2b2E1lT1vp+i6Mo7L6yu7JE6iWtWxmQ
- 2RY6heVhrDb+iwZxY02TNjsc290dd3Fn9J4UtVed8MkEojzoH6SYdbfSqY2EDoijTHNp
- k15ZeXP52hWS0/NXbfZeR6+qu/BTS20qCvhIVZKDPMbrCKp7mt9Jjxdq4BDz25ddLvEu
- geRa0AczNkZz1NEoRDt6EWz3jjtATq6vkEuxMFqZ/ByO/Sl0PY6r8+5I8AUdEqBW2ict
- celQ==
-X-Gm-Message-State: AOJu0YzIPGGoq0Hv/oRyJAAxhReM1chsqqSNDkzfeX4YcWmun/TYOok1
- tlybM3430S10rMU1EUh1RpQm/tBpSschMCjNev8wk6AbdGJec/IJKoM9lISz70tzU/VvLPhiOqh
- N
-X-Google-Smtp-Source: AGHT+IEaeCLxh/V4FYDHhcizmCqrbA2X6RtS9JLzATD1GoweD02dQoKPmQSlloLgWaenfDYRsJ7amg==
-X-Received: by 2002:a17:90a:a107:b0:2e0:7560:9334 with SMTP id
- 98e67ed59e1d1-2e1e636f75bmr8187622a91.36.1728158768046; 
- Sat, 05 Oct 2024 13:06:08 -0700 (PDT)
+ bh=/wa2JC5GTiuZOa9FUt+c/E5R/4D7wBSs90VoPwelenc=;
+ b=dRNfKjHxOKAyvD/G8ivCT+xUClwK4bu7mtl6lYB4vKkOgCgjpFwq76n8eZy4ShVnbS
+ AUrMCmLNloxXbP5zwEgoO6DcTfIk5ku6xm+BjMyTWK2CBZM2paYG5qljWRrRcg322zHj
+ nnrazNxgbBWb9s87KRHZAJWqNJwlKJAGDodFS2lRX+0FaLrTWQ9x5Aywy++AeKNPKGUY
+ wVdLkam2iwlzmoG66JVj8OYaolJp3FP8laz7ucI+dPPx55TW7c9++L2TvBeUw7SgaeJZ
+ cGZXIe2DGaZ160ZMz+7QKHuLkdLJrQb8REFKnBSNEDIL2/VL/JyG+KkRa2MV8W67clSC
+ aK+A==
+X-Gm-Message-State: AOJu0YwL9Eks/ZUgdO5PFDOVBCmP5sDE1mH94YuoEbAq9/5Y24IKBRnK
+ lD0WOMOJfXv6+MK4qmtlAXpGGfzeoHRhGhpC6m0kRyjNLxtkbSlMW4f9zS1MCW7VqYqgwy2JVgL
+ R
+X-Google-Smtp-Source: AGHT+IEu/yRGIXzgnnxtsNkCW1Gem8iXzS/ffba0hjtpfN6ZQ1VIoxbuDWZWql5a5WIxSKhWPrRs6g==
+X-Received: by 2002:a17:90b:3709:b0:2e0:7b03:1908 with SMTP id
+ 98e67ed59e1d1-2e1b38c7582mr16486887a91.10.1728158770066; 
+ Sat, 05 Oct 2024 13:06:10 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.07
+ d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 13:06:07 -0700 (PDT)
+ Sat, 05 Oct 2024 13:06:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Subject: [PATCH v2 07/21] accel/tcg: Use the tlb_fill_align hook
-Date: Sat,  5 Oct 2024 13:05:46 -0700
-Message-ID: <20241005200600.493604-8-richard.henderson@linaro.org>
+Subject: [PATCH v2 09/21] target/hppa: Perform access rights before protection
+ id check
+Date: Sat,  5 Oct 2024 13:05:48 -0700
+Message-ID: <20241005200600.493604-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005200600.493604-1-richard.henderson@linaro.org>
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,217 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we have a tlb miss, defer the alignment check to
-the new tlb_fill_align hook.  Move the existing alignment
-check so that we only perform it with a tlb hit.
+In Chapter 5, Interruptions, the group 3 exceptions lists
+"Data memory access rights trap" in priority order ahead of
+"Data memory protection ID trap".
+
+Swap these checks in hppa_get_physical_address.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 89 +++++++++++++++++++++++++---------------------
- 1 file changed, 49 insertions(+), 40 deletions(-)
+ target/hppa/mem_helper.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 4bc34c8a37..0e6ae65a39 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1616,14 +1616,14 @@ typedef struct MMULookupLocals {
-  * tlb_fill will longjmp out.  Return true if the softmmu tlb for
-  * @mmu_idx may have resized.
-  */
--static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
-+static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data, MemOp memop,
-                         int mmu_idx, MMUAccessType access_type, uintptr_t ra)
- {
-     vaddr addr = data->addr;
-     uintptr_t index = tlb_index(cpu, mmu_idx, addr);
-     CPUTLBEntry *entry = tlb_entry(cpu, mmu_idx, addr);
-     uint64_t tlb_addr = tlb_read_idx(entry, access_type);
--    bool maybe_resized = false;
-+    bool did_tlb_fill = false;
-     CPUTLBEntryFull *full;
-     int flags;
- 
-@@ -1631,17 +1631,26 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
-     if (!tlb_hit(tlb_addr, addr)) {
-         if (!victim_tlb_hit(cpu, mmu_idx, index, access_type,
-                             addr & TARGET_PAGE_MASK)) {
--            bool ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, data->size,
--                                                 access_type, mmu_idx,
--                                                 false, ra);
-+            bool ok = cpu->cc->tcg_ops->tlb_fill_align(cpu, addr, memop,
-+                                                       data->size, access_type,
-+                                                       mmu_idx, false, ra);
-             assert(ok);
--            maybe_resized = true;
-+            did_tlb_fill = true;
-             index = tlb_index(cpu, mmu_idx, addr);
-             entry = tlb_entry(cpu, mmu_idx, addr);
-         }
-         tlb_addr = tlb_read_idx(entry, access_type) & ~TLB_INVALID_MASK;
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index a386c80fa4..f027c494e2 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -267,6 +267,12 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+         goto egress;
      }
  
-+    if (!did_tlb_fill) {
-+        /* We didn't use tlb_fill_align, so alignment not yet checked. */
-+        unsigned a_bits = memop_alignment_bits(memop);
-+
-+        if (unlikely(addr & ((1 << a_bits) - 1))) {
-+            cpu_unaligned_access(cpu, addr, access_type, mmu_idx, ra);
-+        }
++    if (unlikely(!(prot & type))) {
++        /* Not allowed -- Inst/Data Memory Access Rights Fault. */
++        ret = (type & PAGE_EXEC) ? EXCP_IMP : EXCP_DMAR;
++        goto egress;
 +    }
 +
-     full = &cpu->neg.tlb.d[mmu_idx].fulltlb[index];
-     flags = tlb_addr & (TLB_FLAGS_MASK & ~TLB_FORCE_SLOW);
-     flags |= full->slow_flags[access_type];
-@@ -1651,7 +1660,7 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
-     /* Compute haddr speculatively; depending on flags it might be invalid. */
-     data->haddr = (void *)((uintptr_t)addr + entry->addend);
- 
--    return maybe_resized;
-+    return did_tlb_fill;
- }
- 
- /**
-@@ -1702,7 +1711,6 @@ static void mmu_watch_or_dirty(CPUState *cpu, MMULookupPageData *data,
- static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                        uintptr_t ra, MMUAccessType type, MMULookupLocals *l)
- {
--    unsigned a_bits;
-     bool crosspage;
-     int flags;
- 
-@@ -1711,12 +1719,6 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
- 
-     tcg_debug_assert(l->mmu_idx < NB_MMU_MODES);
- 
--    /* Handle CPU specific unaligned behaviour */
--    a_bits = memop_alignment_bits(l->memop);
--    if (addr & ((1 << a_bits) - 1)) {
--        cpu_unaligned_access(cpu, addr, type, l->mmu_idx, ra);
--    }
--
-     l->page[0].addr = addr;
-     l->page[0].size = memop_size(l->memop);
-     l->page[1].addr = (addr + l->page[0].size - 1) & TARGET_PAGE_MASK;
-@@ -1724,7 +1726,7 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     crosspage = (addr ^ l->page[1].addr) & TARGET_PAGE_MASK;
- 
-     if (likely(!crosspage)) {
--        mmu_lookup1(cpu, &l->page[0], l->mmu_idx, type, ra);
-+        mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
- 
-         flags = l->page[0].flags;
-         if (unlikely(flags & (TLB_WATCHPOINT | TLB_NOTDIRTY))) {
-@@ -1743,8 +1745,8 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-          * Lookup both pages, recognizing exceptions from either.  If the
-          * second lookup potentially resized, refresh first CPUTLBEntryFull.
-          */
--        mmu_lookup1(cpu, &l->page[0], l->mmu_idx, type, ra);
--        if (mmu_lookup1(cpu, &l->page[1], l->mmu_idx, type, ra)) {
-+        mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
-+        if (mmu_lookup1(cpu, &l->page[1], 0, l->mmu_idx, type, ra)) {
-             uintptr_t index = tlb_index(cpu, l->mmu_idx, addr);
-             l->page[0].full = &cpu->neg.tlb.d[l->mmu_idx].fulltlb[index];
-         }
-@@ -1770,7 +1772,7 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-      * Device memory type require alignment.
-      */
-     if (unlikely(flags & TLB_CHECK_ALIGNED)) {
--        a_bits = memop_atomicity_bits(l->memop);
-+        unsigned a_bits = memop_atomicity_bits(l->memop);
-         if (addr & ((1 << a_bits) - 1)) {
-             cpu_unaligned_access(cpu, addr, type, l->mmu_idx, ra);
-         }
-@@ -1788,34 +1790,18 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
- {
-     uintptr_t mmu_idx = get_mmuidx(oi);
-     MemOp mop = get_memop(oi);
--    int a_bits = memop_alignment_bits(mop);
-     uintptr_t index;
-     CPUTLBEntry *tlbe;
-     vaddr tlb_addr;
-     void *hostaddr;
-     CPUTLBEntryFull *full;
-+    bool did_tlb_fill = false;
- 
-     tcg_debug_assert(mmu_idx < NB_MMU_MODES);
- 
-     /* Adjust the given return address.  */
-     retaddr -= GETPC_ADJ;
- 
--    /* Enforce guest required alignment.  */
--    if (unlikely(a_bits > 0 && (addr & ((1 << a_bits) - 1)))) {
--        /* ??? Maybe indicate atomic op to cpu_unaligned_access */
--        cpu_unaligned_access(cpu, addr, MMU_DATA_STORE,
--                             mmu_idx, retaddr);
--    }
--
--    /* Enforce qemu required alignment.  */
--    if (unlikely(addr & (size - 1))) {
--        /* We get here if guest alignment was not requested,
--           or was not enforced by cpu_unaligned_access above.
--           We might widen the access and emulate, but for now
--           mark an exception and exit the cpu loop.  */
--        goto stop_the_world;
--    }
--
-     index = tlb_index(cpu, mmu_idx, addr);
-     tlbe = tlb_entry(cpu, mmu_idx, addr);
- 
-@@ -1824,10 +1810,11 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     if (!tlb_hit(tlb_addr, addr)) {
-         if (!victim_tlb_hit(cpu, mmu_idx, index, MMU_DATA_STORE,
-                             addr & TARGET_PAGE_MASK)) {
--            bool ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, size,
--                                                 MMU_DATA_STORE, mmu_idx,
--                                                 false, retaddr);
-+            bool ok = cpu->cc->tcg_ops->tlb_fill_align(cpu, addr, mop, size,
-+                                                       MMU_DATA_STORE, mmu_idx,
-+                                                       false, retaddr);
-             assert(ok);
-+            did_tlb_fill = true;
-             index = tlb_index(cpu, mmu_idx, addr);
-             tlbe = tlb_entry(cpu, mmu_idx, addr);
-         }
-@@ -1841,8 +1828,8 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-      * but addr_read will only be -1 if PAGE_READ was unset.
-      */
-     if (unlikely(tlbe->addr_read == -1)) {
--        cpu->cc->tcg_ops->tlb_fill(cpu, addr, size, MMU_DATA_LOAD,
--                                   mmu_idx, false, retaddr);
-+        cpu->cc->tcg_ops->tlb_fill_align(cpu, addr, mop, size, MMU_DATA_LOAD,
-+                                         mmu_idx, false, retaddr);
-         /*
-          * Since we don't support reads and writes to different
-          * addresses, and we do have the proper page loaded for
-@@ -1850,6 +1837,28 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-          */
-         g_assert_not_reached();
+     /* access_id == 0 means public page and no check is performed */
+     if (ent->access_id && MMU_IDX_TO_P(mmu_idx)) {
+         int access_prot = (hppa_is_pa20(env)
+@@ -281,12 +287,6 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+         prot &= access_prot;
      }
-+
-+    /* Enforce guest required alignment, if not handled by tlb_fill_align. */
-+    if (!did_tlb_fill) {
-+        int a_bits = memop_alignment_bits(mop);
-+        if (unlikely(a_bits > 0 && (addr & ((1 << a_bits) - 1)))) {
-+            /* ??? Maybe indicate atomic op to cpu_unaligned_access */
-+            cpu_unaligned_access(cpu, addr, MMU_DATA_STORE,
-+                                 mmu_idx, retaddr);
-+        }
-+    }
-+
-+    /* Enforce qemu required alignment.  */
-+    if (unlikely(addr & (size - 1))) {
-+        /*
-+         * We get here if guest alignment was not requested,
-+         * or was not enforced by cpu_unaligned_access above.
-+         * We might widen the access and emulate, but for now
-+         * mark an exception and exit the cpu loop.
-+         */
-+        goto stop_the_world;
-+    }
-+
-     /* Collect tlb flags for read. */
-     tlb_addr |= tlbe->addr_read;
  
+-    if (unlikely(!(prot & type))) {
+-        /* Not allowed -- Inst/Data Memory Access Rights Fault. */
+-        ret = (type & PAGE_EXEC) ? EXCP_IMP : EXCP_DMAR;
+-        goto egress;
+-    }
+-
+     /*
+      * In priority order, check for conditions which raise faults.
+      * Remove PROT bits that cover the condition we want to check,
 -- 
 2.43.0
 
