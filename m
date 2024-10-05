@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAED49917D9
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 17:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6D39917CA
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 17:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sx6fv-0002KF-Lm; Sat, 05 Oct 2024 11:26:32 -0400
+	id 1sx6fw-0002NL-M9; Sat, 05 Oct 2024 11:26:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sx6fd-00028Z-Rj
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 11:26:13 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1sx6fe-00028o-6F
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 11:26:14 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sx6fb-0002Pr-3b
+ id 1sx6fc-0002Q3-7K
  for qemu-devel@nongnu.org; Sat, 05 Oct 2024 11:26:13 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-207115e3056so28290475ad.2
- for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 08:26:10 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-20b93887decso25572495ad.3
+ for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 08:26:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728141969; x=1728746769; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728141970; x=1728746770; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oB3S/z+Tf/YurYPbjZAkQ2iOmy2pkllXkguo9aONGm0=;
- b=OtTQd1cdWPLuugQ5KG+BA0nlxRGl2kTb7ZBDToC5K+jfsnGgnMHovf332GqIFgnEDC
- RcPxcxk3tDjW7MImV2NdgrPlGUz5tBwqsOH+xlde72GeT9XHVgNj6f4sfC/Bvld6lMlB
- oLD3ymtbwEc3ba4Ipt4Jx6eW515SwyZiCCK7Hj08CzR+6mKUrMP3bIbrC6IP7rRPjox8
- 1cMmpzmuY047u8PMfMA/Ds8RknVwrEiGmAFkV/NodaV4f86Es19IpNeJ15jxNudoCn1j
- Z4jRcatJLO0x7TMAmQW2E5BloR7uFvo/vhxv94M7ZYeNKcuU6itZFcMtVNgfFUlIJAiK
- tHOw==
+ bh=9tqb0TUsQOZF/sRJ8YxWqhKeQa3g/EH2JXyCvd2UdW4=;
+ b=y2YAOQ2M3rfwVjP+EOOSPePWmxRMBHW1uH657FCgoy7ROq1LhmaJzs1ghCh/J3ort3
+ YV35cL/qbEzjFpljuHz6nghVuPykH6xfIPQ1mQw8ZL9LXYSscObyfGaWCX+SmNUk6w6t
+ d4jL+HRo4lhJYbof1Q9Wsg0e5oFARsMDcnF4aB3t+XKs8mu1QGNdcLWJWka2HcsZ8NYi
+ M4veyKjocwq/FrOIkDFflDwxPkN4Ccvd1dPAmOisORPaPxiLm/L2Iiqo5to9YU089RZ5
+ IyAe2GbW9ed/4R+3U+9SM5mNpZPMrSwMVQw/Zm2aKsoH7GgobyvmJXhRMpuDhci4cHzT
+ WzWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728141969; x=1728746769;
+ d=1e100.net; s=20230601; t=1728141970; x=1728746770;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oB3S/z+Tf/YurYPbjZAkQ2iOmy2pkllXkguo9aONGm0=;
- b=RvrqLV+AsUY0BwTTpgr9fC29fyRwF6sSr0itYBWgZNNwb6+Bxw+6JTJIYeOkVyD4FR
- kf5DPlELoJT63O6NQoUb4OJwuof2XT/QlGKlcnYRzcMdM80bhpbUaA6scEPtjm43RSKR
- pNM0iXmkrvcS89Se7iuMjJ6zihjNEaLmJfJaA7HGV00hzDkhrXeDxbF4IRVDBTkffi6s
- bKfN2m/tSSv3qNcEOiQfPtMiAvX0dax1e1FZO89og8LcxOWz9jLD7Y0ArKRj+aE9mJOh
- PjmPfcDm8qpVfwlAfhBNnIt4s+0Qdfct3719tD6dL5Y5buHa7Nr+/PfFrAJBiiNwT5RE
- JY0Q==
-X-Gm-Message-State: AOJu0Yw+hE3UkOtec9OJqDkNhtnBxVyrfdXnHpOl1SkOvEmOdJcKE7UY
- Jbc6IgP3EQZE2k0EYvaiqququjXzTiTG1J20fnoSMWvFdVZsrMSwsEtWQXA8gBslsWmYL9ho5A1
- E
-X-Google-Smtp-Source: AGHT+IHGjDyFhoX1JFcZLwPMzIWk0VZ6VyK/OgPBEe0dpV3tD5qpqz+OhbMKSWs06HyBvYG2qhd0Ew==
-X-Received: by 2002:a17:903:2343:b0:20b:8924:3a77 with SMTP id
- d9443c01a7336-20bfe071396mr82155675ad.26.1728141969294; 
- Sat, 05 Oct 2024 08:26:09 -0700 (PDT)
+ bh=9tqb0TUsQOZF/sRJ8YxWqhKeQa3g/EH2JXyCvd2UdW4=;
+ b=TRFNORhotHzzPgQtlldw1nGOsjPZItWKvKXrD6CtUz0vK8A9zR9GWzyMGFgvp/2uCX
+ tnZ3G+gKPnCSgmrOb8yK6BOPJfOzscwyW6uf/L3vQFW25sXPrmhHQaYuTXNSQ5wA89IR
+ 4ow83iWO1XUIEz68dqKA3RbKXHz7Wyi+5DUXXr3G899jqlNyqfeMak5vdMlCyeshJwXD
+ 1f1UyZjtopEf0kV2bDYYWb3E0RvRVV12SACTbT3f3D4eYYxXuIS1M9kaTlk9Y9WUHDIK
+ g6FZOvVKKZ71+pCHzFWeoHvVLDYQRJBHvuSjoqn+g1SRciZJOYw6fcjjkCdlPmQXatCV
+ xXew==
+X-Gm-Message-State: AOJu0Yyf+kWrWRYW5DhnRwCV5tbbtj2jzzBhkqbceQFpAqsOQZWpHofv
+ La7F8QeEpoiWSjQfzQ9cJ3oml5g/YDoO1T4Mk//7ASETNC+d55MTGBLfwDJYs00kEyXdNSptNzQ
+ c
+X-Google-Smtp-Source: AGHT+IHAcc49fQDj+6dUv1WwyItmZo+VQhDVyFSsiB0HVGJtSbOyDZXUNQcKgpb3qKjj8UutpLm7Eg==
+X-Received: by 2002:a17:902:d2d0:b0:20b:be06:f3d9 with SMTP id
+ d9443c01a7336-20bfe1887c8mr91971805ad.24.1728141970334; 
+ Sat, 05 Oct 2024 08:26:10 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.26.08
+ d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.26.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 08:26:08 -0700 (PDT)
+ Sat, 05 Oct 2024 08:26:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Subject: [PATCH 17/20] target/arm: Pass MemOp through get_phys_addr_twostage
-Date: Sat,  5 Oct 2024 08:25:48 -0700
-Message-ID: <20241005152551.307923-18-richard.henderson@linaro.org>
+Subject: [PATCH 18/20] target/arm: Pass MemOp to get_phys_addr_lpae
+Date: Sat,  5 Oct 2024 08:25:49 -0700
+Message-ID: <20241005152551.307923-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005152551.307923-1-richard.henderson@linaro.org>
 References: <20241005152551.307923-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,56 +93,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass memop through get_phys_addr_twostage with its
-recursion with get_phys_addr_nogpc.
+Pass the value through from get_phys_addr_nogpc.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ target/arm/ptw.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 0445c3ccf3..f1fca086a4 100644
+index f1fca086a4..238b2c92a9 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -3301,7 +3301,7 @@ static bool get_phys_addr_disabled(CPUARMState *env,
- 
- static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-                                    vaddr address,
--                                   MMUAccessType access_type,
-+                                   MMUAccessType access_type, MemOp memop,
-                                    GetPhysAddrResult *result,
-                                    ARMMMUFaultInfo *fi)
+@@ -1684,12 +1684,13 @@ static bool nv_nv1_enabled(CPUARMState *env, S1Translate *ptw)
+  * @ptw: Current and next stage parameters for the walk.
+  * @address: virtual address to get physical address for
+  * @access_type: MMU_DATA_LOAD, MMU_DATA_STORE or MMU_INST_FETCH
++ * @memop: memory operation feeding this access, or 0 for none
+  * @result: set on translation success,
+  * @fi: set to fault info if the translation fails
+  */
+ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+                                uint64_t address,
+-                               MMUAccessType access_type,
++                               MMUAccessType access_type, MemOp memop,
+                                GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
  {
-@@ -3313,7 +3313,8 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-     ARMSecuritySpace ipa_space;
-     uint64_t hcr;
+     ARMCPU *cpu = env_archcpu(env);
+@@ -3534,7 +3535,8 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+     }
  
--    ret = get_phys_addr_nogpc(env, ptw, address, access_type, 0, result, fi);
-+    ret = get_phys_addr_nogpc(env, ptw, address, access_type,
-+                              memop, result, fi);
- 
-     /* If S1 fails, return early.  */
-     if (ret) {
-@@ -3339,7 +3340,8 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-     cacheattrs1 = result->cacheattrs;
-     memset(result, 0, sizeof(*result));
- 
--    ret = get_phys_addr_nogpc(env, ptw, ipa, access_type, 0, result, fi);
-+    ret = get_phys_addr_nogpc(env, ptw, ipa, access_type,
-+                              memop, result, fi);
-     fi->s2addr = ipa;
- 
-     /* Combine the S1 and S2 perms.  */
-@@ -3469,7 +3471,7 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
-         if (arm_feature(env, ARM_FEATURE_EL2) &&
-             !regime_translation_disabled(env, ARMMMUIdx_Stage2, ptw->in_space)) {
-             return get_phys_addr_twostage(env, ptw, address, access_type,
--                                          result, fi);
-+                                          memop, result, fi);
-         }
-         /* fall through */
- 
+     if (regime_using_lpae_format(env, mmu_idx)) {
+-        return get_phys_addr_lpae(env, ptw, address, access_type, result, fi);
++        return get_phys_addr_lpae(env, ptw, address, access_type,
++                                  memop, result, fi);
+     } else if (arm_feature(env, ARM_FEATURE_V7) ||
+                regime_sctlr(env, mmu_idx) & SCTLR_XP) {
+         return get_phys_addr_v6(env, ptw, address, access_type, result, fi);
 -- 
 2.43.0
 
