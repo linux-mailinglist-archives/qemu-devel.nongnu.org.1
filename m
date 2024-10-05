@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B87D6991A8E
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:08:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33EC991A95
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:09:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxB2e-0006Mq-HY; Sat, 05 Oct 2024 16:06:16 -0400
+	id 1sxB2f-0006Ns-KU; Sat, 05 Oct 2024 16:06:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxB2b-0006L5-OC
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:13 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1sxB2c-0006MM-V9
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:15 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxB2Z-0001ks-N0
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:13 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-7db90a28cf6so2839772a12.0
- for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:11 -0700 (PDT)
+ id 1sxB2b-0001ll-GV
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:14 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-20b0b5cdb57so31579105ad.1
+ for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728158770; x=1728763570; darn=nongnu.org;
+ d=linaro.org; s=google; t=1728158772; x=1728763572; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/wa2JC5GTiuZOa9FUt+c/E5R/4D7wBSs90VoPwelenc=;
- b=Oph6G3SGoaxulsvPO1cbl6De/4CT6GGM7Sy8hNzKtC90KA43cXIGH5Sd6nL042+ksJ
- kWkRdklwrKgYVUGRmqJbuBwrmt97y6VFCOqWUJppjx8tPN2XSH3wv/p/WA0DNQHdb9+a
- fWD0x2q5cGQQ24WrYqNzPBfp8qq3rZzZaXKBtB7UC8DA4Qw7ad4+v3d+LR2DG/aaruhU
- r9iJiM/twGXHSlVCcdl8zk1ulaRSh11ttMc7jntQUlBpG8zk6dsxyYqgJoL6tbNIBlNX
- TNDvwO3VoIzAm0GMyAlFgHwlZZLz565FOjMW/ytJkBByI6qeGxXKPBAU7JIwyJncUAXl
- l9yA==
+ bh=TZFSB9ZUy/VXACo96L3HUXARpyVU9ywq9XNxX+p9inM=;
+ b=q8PjW6IzI6J5qSFAcwUsV+z/0WbaX+3XpAU/L8uimhuEJ8JoZDc0komF8RnXmxv/Xk
+ gdsWO0XLA4dOgS7guvwoADKjZPEo5+JKXtoXqLBAYDAoA0dxj2qjiT76hrIMANPodPSx
+ nGA/JiYU80MjLs7nALKLQzGeMJxv84ubIyzvQwYEuxTPk67hXoJ0e0k+xjWIBRxe7JXZ
+ lef3upSuj2Id1hmWWVNWH7gaYgIm4L/yRsTNqHn45Hncd4VCz/TOsG4N9S3dYXJG0Bof
+ NOsVg+qP9cLzGAAfdXhDBgD2s136NwPosYTBnutUWvVs4IXbO4dtl6yFseE3P0/2AUd0
+ fDVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728158770; x=1728763570;
+ d=1e100.net; s=20230601; t=1728158772; x=1728763572;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/wa2JC5GTiuZOa9FUt+c/E5R/4D7wBSs90VoPwelenc=;
- b=dRNfKjHxOKAyvD/G8ivCT+xUClwK4bu7mtl6lYB4vKkOgCgjpFwq76n8eZy4ShVnbS
- AUrMCmLNloxXbP5zwEgoO6DcTfIk5ku6xm+BjMyTWK2CBZM2paYG5qljWRrRcg322zHj
- nnrazNxgbBWb9s87KRHZAJWqNJwlKJAGDodFS2lRX+0FaLrTWQ9x5Aywy++AeKNPKGUY
- wVdLkam2iwlzmoG66JVj8OYaolJp3FP8laz7ucI+dPPx55TW7c9++L2TvBeUw7SgaeJZ
- cGZXIe2DGaZ160ZMz+7QKHuLkdLJrQb8REFKnBSNEDIL2/VL/JyG+KkRa2MV8W67clSC
- aK+A==
-X-Gm-Message-State: AOJu0YwL9Eks/ZUgdO5PFDOVBCmP5sDE1mH94YuoEbAq9/5Y24IKBRnK
- lD0WOMOJfXv6+MK4qmtlAXpGGfzeoHRhGhpC6m0kRyjNLxtkbSlMW4f9zS1MCW7VqYqgwy2JVgL
- R
-X-Google-Smtp-Source: AGHT+IEu/yRGIXzgnnxtsNkCW1Gem8iXzS/ffba0hjtpfN6ZQ1VIoxbuDWZWql5a5WIxSKhWPrRs6g==
-X-Received: by 2002:a17:90b:3709:b0:2e0:7b03:1908 with SMTP id
- 98e67ed59e1d1-2e1b38c7582mr16486887a91.10.1728158770066; 
- Sat, 05 Oct 2024 13:06:10 -0700 (PDT)
+ bh=TZFSB9ZUy/VXACo96L3HUXARpyVU9ywq9XNxX+p9inM=;
+ b=Znx1GKBWCH7AqDILUT2movPHJQfqlbobJU4yflEQhDcBrEDJYP0TryKz2ohg4KH/Lh
+ q2za77MFfB4rQ5H64By6U6A7XccyP3HGlbUSNtfSdfHU4UzRmqeIVGv5gUEj+cZpnacv
+ LZsAeNHFP8X5CWJE4HsOSianie4ZOcUiLsqmKsqBkqse3uDfSJjz8p5C0jZqzDWwtPzH
+ tc12VvwbiWz3r/haq/ohyzicBJUNHpEFBgS6Dzj/GABrbsPZ5/qfcJYOXIGyWaQ8nvEA
+ kEErk7MOGUR1mGEQP+hnuvwnY+C/WrO9ux6X0Y6xUKzVDGjn3KjbLdXws6DX7DAWwLic
+ 6sJA==
+X-Gm-Message-State: AOJu0YwJ3UYMuk7xINITFH81KackfsETI5O657/UoP3DqGJDNQAN4S4n
+ 5SWSGJ++QFlwan7DXsQgkb3gryx0z0d9UdwDU74TRS76BtemPMVg7bExtw0vR6DOZDhIbm8EDZz
+ h
+X-Google-Smtp-Source: AGHT+IEnSEOUIrHMqhl+2wC7MJEt2x3LJD6slbQirH4WqyRvisJVw+9UvtZb97XvweZZ36AVIQ0gZA==
+X-Received: by 2002:a17:902:ecca:b0:20b:805d:bfe5 with SMTP id
+ d9443c01a7336-20be19c0fb0mr135947635ad.30.1728158771892; 
+ Sat, 05 Oct 2024 13:06:11 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.09
+ d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 13:06:09 -0700 (PDT)
+ Sat, 05 Oct 2024 13:06:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Subject: [PATCH v2 09/21] target/hppa: Perform access rights before protection
- id check
-Date: Sat,  5 Oct 2024 13:05:48 -0700
-Message-ID: <20241005200600.493604-10-richard.henderson@linaro.org>
+Subject: [PATCH v2 11/21] target/hppa: Handle alignment faults in
+ hppa_get_physical_address
+Date: Sat,  5 Oct 2024 13:05:50 -0700
+Message-ID: <20241005200600.493604-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005200600.493604-1-richard.henderson@linaro.org>
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,46 +95,39 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 In Chapter 5, Interruptions, the group 3 exceptions lists
-"Data memory access rights trap" in priority order ahead of
-"Data memory protection ID trap".
-
-Swap these checks in hppa_get_physical_address.
+"Unaligned data reference trap" has higher priority than
+"Data memory break trap".
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/mem_helper.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/hppa/mem_helper.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index a386c80fa4..f027c494e2 100644
+index f71cedd7a9..d38054da8a 100644
 --- a/target/hppa/mem_helper.c
 +++ b/target/hppa/mem_helper.c
-@@ -267,6 +267,12 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-         goto egress;
+@@ -221,7 +221,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+             g_assert_not_reached();
+         }
+         prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+-        goto egress;
++        goto egress_align;
      }
  
-+    if (unlikely(!(prot & type))) {
-+        /* Not allowed -- Inst/Data Memory Access Rights Fault. */
-+        ret = (type & PAGE_EXEC) ? EXCP_IMP : EXCP_DMAR;
-+        goto egress;
+     /* Find a valid tlb entry that matches the virtual address.  */
+@@ -323,6 +323,11 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+         }
+     }
+ 
++ egress_align:
++    if (addr & ((1u << memop_alignment_bits(mop)) - 1)) {
++        ret = EXCP_UNALIGN;
 +    }
 +
-     /* access_id == 0 means public page and no check is performed */
-     if (ent->access_id && MMU_IDX_TO_P(mmu_idx)) {
-         int access_prot = (hppa_is_pa20(env)
-@@ -281,12 +287,6 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-         prot &= access_prot;
-     }
- 
--    if (unlikely(!(prot & type))) {
--        /* Not allowed -- Inst/Data Memory Access Rights Fault. */
--        ret = (type & PAGE_EXEC) ? EXCP_IMP : EXCP_DMAR;
--        goto egress;
--    }
--
-     /*
-      * In priority order, check for conditions which raise faults.
-      * Remove PROT bits that cover the condition we want to check,
+  egress:
+     *pphys = phys;
+     *pprot = prot;
 -- 
 2.43.0
 
