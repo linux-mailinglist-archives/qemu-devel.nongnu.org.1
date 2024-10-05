@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B29F991A06
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 21:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3381F991A1C
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 21:50:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxAkP-0005S2-5b; Sat, 05 Oct 2024 15:47:25 -0400
+	id 1sxAkO-0005Ok-2g; Sat, 05 Oct 2024 15:47:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1sxAkC-0005Nh-59; Sat, 05 Oct 2024 15:47:14 -0400
+ id 1sxAkD-0005Nl-Sw; Sat, 05 Oct 2024 15:47:14 -0400
 Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1sxAk8-0007fG-U3; Sat, 05 Oct 2024 15:47:11 -0400
+ id 1sxAkB-0007fb-6E; Sat, 05 Oct 2024 15:47:13 -0400
 Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-42cd74c0d16so31425425e9.1; 
- Sat, 05 Oct 2024 12:47:07 -0700 (PDT)
+ 5b1f17b1804b1-42cc8782869so31362605e9.2; 
+ Sat, 05 Oct 2024 12:47:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728157626; x=1728762426; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1728157628; x=1728762428; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w+XxmN8aD/MZ6DGzlhF4E6QfY0KHf9UNl0Gr9lvIaYE=;
- b=hB7qymWJDBYO9eR7JvhaZ681VDYse6aU+va8/2Hs7HPsTEPCJ8O5EBfSj9ITwaf7zq
- 5xlXeyzvNao2oNL43LUsG4sVFZJgMv7OSvCM1xosgzNLAVXMPwwZtsvvRPpX4ODia1F6
- TfhzPz6YpURLcgZD0QBImTEF8hYyc9T3tF+/y74re0I+KOr5OnDKS8FPuvFq2PZLcvEc
- Djy90lFOOjFnv1niIWFZaQeHaPSpiCAeeME1D0q8m1qOsDAlNFU1MkgP+W64bgKHDxgY
- zoKx9aTKVYN9PZtfcgxSw5JaqEaV7TiMcX8p4bWzY84MXkgoa34rx1GADhoZzBOfzzF/
- SZww==
+ bh=kmPlGvENuR506VnaTPZdPC+ldftCElBorI3DqzYxhaE=;
+ b=m7g43lRQcH4BNfZMMx9JcdxBuq0bDoObF5ozfqg2rbsTJ5jUwtF7CEGqpLykTk4d8H
+ DqbvVFMzZjrOjxDfKCmS1aarlAGG9/+KU9eNujRMFlxMjkTrhXQoFnhMdVa/YPfsbLRu
+ KC0BQgRGsU/AnjdnJwx27smDLOiCQKXteuVdJmacQEpuRBBxnrcxgZaZDAWKupT8i82x
+ DHWYCjStxLfyzz1obSdxn5D7mG1qRD7TVvkW7u9WUDrdBGl8jV263EvimUSTEKAnZYTp
+ P1qEVSkOmuXIwjuuaXjPZ11Fr+NHulG3fLAyFSgsp9oHyXNyx0zpnAhoF6SY7wShSl/H
+ sHRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728157626; x=1728762426;
+ d=1e100.net; s=20230601; t=1728157628; x=1728762428;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w+XxmN8aD/MZ6DGzlhF4E6QfY0KHf9UNl0Gr9lvIaYE=;
- b=cLiWdqzJ+bX/vAmcGPcHIaJ7RRRkTwQIEiuNR4nm60CVJcWGwRl+aiTD+pBSYvQRVz
- ew1gsYnz3Cs8pMCRNt9ALPceO7t34i7PqSYWOsmoOM2BTumsSr1oEgstiFZtWBsAFT4/
- Ovuz51XAPp1N48vxYvMPBaCn/dMdcQZRnCwnK+VE0CP7ZN8d693WMSlTQJKuuUlytSjj
- 2q0E2n3z7z/3KgPnl1Pkxk5ce18koXwJk4NbqvqRnAdiSDoIRyvoHS0T66YJ1N1IcgIy
- NUFpBhM721A5iNatg1AAJRpaYdaBVDz95h07W0y3NpXZ1SJSq3Q+swShkrDVCwfHJtx7
- k50g==
+ bh=kmPlGvENuR506VnaTPZdPC+ldftCElBorI3DqzYxhaE=;
+ b=bb0E3z5/1hEebiQnOAVN4uQ3+XZqlzviG18568qa8EI7vhBPDO2ehQYojp5SK8DJkv
+ UnfDH/I7g9cYVvXyIyLYX5YZgp9TBRIZdeZbSepvte3+HebroJwt+XGxrbw4RLlnEOmx
+ aXJNCyIzyLh8ov4aQOZaOSdSsLFaHAzPvwbtcsNKKHwGvgwoNwxc1SVnfJm6aFtb3xRU
+ DZMeP6QASUp2ra2FrceEdktvqIVhyrp9UrwWeS4/2H2xTyw+Lw0eD7HlzXBW7ruv03FZ
+ +ytdmq/ihoxroTP3jmxKrs6dqWjSmI7v7KYXw1UDyKqtNLh0I0+rl2i7hlUKI2IkSRss
+ t4eQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVOlFjla8vdGh53AgbilTfcECYzKZZTsO47AyphYJMfLEpCvDXJHBqKFjQLQMy9FBys65hBZsZ+y4d/@nongnu.org,
- AJvYcCWm3V3wXjkQQkAUtB2WCOErqPcfLPPwQr3fEWAbgqfW46ystMAWQSv28ECycTYUBN0t7QNI5E/AiO8=@nongnu.org
-X-Gm-Message-State: AOJu0YyaY084xNv6y5ru7njuHPO/emI1ytbNUxVtP4BPjjnZcuox5Ydz
- 8EqXVo0rADveFKSXJ64/Ul5l88lF/pY7Mhz+nHxylr0nohY7NnTOGwQcbg==
-X-Google-Smtp-Source: AGHT+IF6LakbRBuk2PKoeaM+x98od3+6dNX5dPx9nGmSnBzmoj/+W8+58VaL74PBpL0eWovVGY0sTA==
-X-Received: by 2002:a05:600c:3c83:b0:42c:b037:5fce with SMTP id
- 5b1f17b1804b1-42f85a6c5d5mr52557465e9.3.1728157625983; 
- Sat, 05 Oct 2024 12:47:05 -0700 (PDT)
+ AJvYcCUNGR7xRfdev4jpLr5S9IA36BDQa8l3RsTnT8HxwzDeUQNlAvZkcQsoJR1otx/rNPOBMKSZoBF5Uh4=@nongnu.org,
+ AJvYcCW7ucrVBe0Gh/8dz887XKiGVRI1ZvIYFLx8jMAwhbc0luYP4yVHAM81zLP4yZNaO3wCwkgWE++r5URa@nongnu.org
+X-Gm-Message-State: AOJu0YzMabCmkh3ataHG9CKdlqxb9s/qxPi+YGLueFK/TZzD9qiTc6HQ
+ ktKwZ7jDdW09iouv7TRjkTBAn0eSAZQwskCoEQ/6OG6Wsa4/jdbwY9a4Ew==
+X-Google-Smtp-Source: AGHT+IHCsiwuPA/bhLZdggdOI4/TTDTLJzSH3fEg5GRZT8UWre2zyV9P0+AYxzv9bouG3BcBq/RJRQ==
+X-Received: by 2002:a05:600c:5105:b0:42c:b22e:fc2e with SMTP id
+ 5b1f17b1804b1-42f85ab6657mr44233995e9.15.1728157627484; 
+ Sat, 05 Oct 2024 12:47:07 -0700 (PDT)
 Received: from archlinux.. (pd95ed790.dip0.t-ipconnect.de. [217.94.215.144])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42f86a0afc1sm47506775e9.1.2024.10.05.12.47.04
+ 5b1f17b1804b1-42f86a0afc1sm47506775e9.1.2024.10.05.12.47.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Oct 2024 12:47:05 -0700 (PDT)
+ Sat, 05 Oct 2024 12:47:07 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,14 +68,15 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 09/23] hw/ppc/mpc8544_guts: Populate POR PLL ratio status
- register
-Date: Sat,  5 Oct 2024 21:45:49 +0200
-Message-ID: <20241005194603.23139-10-shentey@gmail.com>
+Subject: [PATCH v2 10/23] hw/i2c/mpc_i2c: Convert DPRINTF to trace events for
+ register access
+Date: Sat,  5 Oct 2024 21:45:50 +0200
+Message-ID: <20241005194603.23139-11-shentey@gmail.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241005194603.23139-1-shentey@gmail.com>
 References: <20241005194603.23139-1-shentey@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
  envelope-from=shentey@gmail.com; helo=mail-wm1-x32a.google.com
@@ -101,44 +102,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Populate this read-only register with some arbitrary values which avoids
-U-Boot's get_clocks() to hang().
-
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/ppc/mpc8544_guts.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ hw/i2c/mpc_i2c.c    | 9 +++++----
+ hw/i2c/trace-events | 5 +++++
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/hw/ppc/mpc8544_guts.c b/hw/ppc/mpc8544_guts.c
-index e3540b0281..c02b34ccde 100644
---- a/hw/ppc/mpc8544_guts.c
-+++ b/hw/ppc/mpc8544_guts.c
-@@ -29,6 +29,12 @@
- #define MPC8544_GUTS_RSTCR_RESET      0x02
+diff --git a/hw/i2c/mpc_i2c.c b/hw/i2c/mpc_i2c.c
+index 2467d1a9aa..3d79c15653 100644
+--- a/hw/i2c/mpc_i2c.c
++++ b/hw/i2c/mpc_i2c.c
+@@ -24,6 +24,7 @@
+ #include "hw/sysbus.h"
+ #include "migration/vmstate.h"
+ #include "qom/object.h"
++#include "trace.h"
  
- #define MPC8544_GUTS_ADDR_PORPLLSR    0x00
-+REG32(GUTS_PORPLLSR, 0x00)
-+    FIELD(GUTS_PORPLLSR, E500_1_RATIO, 24, 6)
-+    FIELD(GUTS_PORPLLSR, E500_0_RATIO, 16, 6)
-+    FIELD(GUTS_PORPLLSR, DDR_RATIO, 9, 5)
-+    FIELD(GUTS_PORPLLSR, PLAT_RATIO, 1, 5)
-+
- #define MPC8544_GUTS_ADDR_PORBMSR     0x04
- #define MPC8544_GUTS_ADDR_PORIMPSCR   0x08
- #define MPC8544_GUTS_ADDR_PORDEVSR    0x0C
-@@ -75,6 +81,12 @@ static uint64_t mpc8544_guts_read(void *opaque, hwaddr addr,
+ /* #define DEBUG_I2C */
  
-     addr &= MPC8544_GUTS_MMIO_SIZE - 1;
-     switch (addr) {
-+    case MPC8544_GUTS_ADDR_PORPLLSR:
-+        value = FIELD_DP32(value, GUTS_PORPLLSR, E500_1_RATIO, 6); /* 3:1 */
-+        value = FIELD_DP32(value, GUTS_PORPLLSR, E500_0_RATIO, 6); /* 3:1 */
-+        value = FIELD_DP32(value, GUTS_PORPLLSR, DDR_RATIO, 12); /* 12:1 */
-+        value = FIELD_DP32(value, GUTS_PORPLLSR, PLAT_RATIO, 6); /* 6:1 */
-+        break;
-     case MPC8544_GUTS_ADDR_PVR:
-         value = env->spr[SPR_PVR];
+@@ -224,8 +225,8 @@ static uint64_t mpc_i2c_read(void *opaque, hwaddr addr, unsigned size)
          break;
+     }
+ 
+-    DPRINTF("%s: addr " HWADDR_FMT_plx " %02" PRIx32 "\n", __func__,
+-                                         addr, value);
++    trace_mpc_i2c_read(addr, value);
++
+     return (uint64_t)value;
+ }
+ 
+@@ -234,8 +235,8 @@ static void mpc_i2c_write(void *opaque, hwaddr addr,
+ {
+     MPCI2CState *s = opaque;
+ 
+-    DPRINTF("%s: addr " HWADDR_FMT_plx " val %08" PRIx64 "\n", __func__,
+-                                             addr, value);
++    trace_mpc_i2c_write(addr, value);
++
+     switch (addr) {
+     case MPC_I2C_ADR:
+         s->adr = value & CADR_MASK;
+diff --git a/hw/i2c/trace-events b/hw/i2c/trace-events
+index 6900e06eda..f708a7ace1 100644
+--- a/hw/i2c/trace-events
++++ b/hw/i2c/trace-events
+@@ -35,6 +35,11 @@ aspeed_i2c_bus_write(uint32_t busid, uint64_t offset, unsigned size, uint64_t va
+ aspeed_i2c_bus_send(const char *mode, int i, int count, uint8_t byte) "%s send %d/%d 0x%02x"
+ aspeed_i2c_bus_recv(const char *mode, int i, int count, uint8_t byte) "%s recv %d/%d 0x%02x"
+ 
++# mpc_i2c.c
++
++mpc_i2c_read(uint64_t addr, uint32_t value) "[0x%" PRIx64 "] -> 0x%02" PRIx32
++mpc_i2c_write(uint64_t addr, uint32_t value) "[0x%" PRIx64 "] <- 0x%02" PRIx32
++
+ # npcm7xx_smbus.c
+ 
+ npcm7xx_smbus_read(const char *id, uint64_t offset, uint64_t value, unsigned size) "%s offset: 0x%04" PRIx64 " value: 0x%02" PRIx64 " size: %u"
 -- 
 2.46.2
 
