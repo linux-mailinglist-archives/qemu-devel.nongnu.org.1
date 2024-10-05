@@ -2,81 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC83F991A23
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 21:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A783991A8A
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Oct 2024 22:07:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxAoI-0003jH-Tx; Sat, 05 Oct 2024 15:51:26 -0400
+	id 1sxB2X-0006Gz-HD; Sat, 05 Oct 2024 16:06:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxAoG-0003br-FZ
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 15:51:24 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1sxB2U-0006Ez-Nd
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:06 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxAoE-0008M1-Ls
- for qemu-devel@nongnu.org; Sat, 05 Oct 2024 15:51:24 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-71df0dbee46so645183b3a.0
- for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 12:51:22 -0700 (PDT)
+ id 1sxB2S-0001hr-0H
+ for qemu-devel@nongnu.org; Sat, 05 Oct 2024 16:06:06 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-20b58f2e1f4so21812115ad.2
+ for <qemu-devel@nongnu.org>; Sat, 05 Oct 2024 13:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728157881; x=1728762681; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=U/LwouViJq+HB0xpw3jHJTahhjSrGiduLo7aelhKuSk=;
- b=zLHgWP9QoLTVDXBrA/NAFW6+12Gx+xArNt281rUOT9kFHPCUOWoXL+c6nXAvLsqSse
- DZL4Rix8BqOv3S1YniJlxfdt0cfBwiwDPP8Vf4FJOl4Cj7g0wste702bLH9dNwB+ABVk
- LONHBFK9jaClqvkTYZM9cIgkxhCKs3Ww9Z0SxM0kvB5sO8KU/YkipEds5cVTduBpe/gv
- m+Yq3a4+OyRUyo3eXhiPGDqmiYkGXApNC2QySZCZxVUW4xz7vOKOXHrehhQeAYRgTO3r
- LDrGsQ2E9mXicYCpLWZ6qZ8wuPqAbdvvP2m0RGreKnE/B1AKw84Zy/9E643j01LuXFGA
- 2ZHQ==
+ d=linaro.org; s=google; t=1728158763; x=1728763563; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Qpc+gtvz4QF2D7U7hwk6I/PwDTmOhNNc5A8A2G2CqV8=;
+ b=J7ETou96MJsubgZ7bZXJ1Lpb2hWHSpxbRLjFp2u1d+wjN5yvudDHCgKssjd2UKt6Kl
+ Mk3Ltpy1k9tWHj9KzZocGvPWT6Gdx732waYHFLHGPjdG22sP9zo2nF/DkuLAVN5KeZLa
+ SIZFPwDhiEQwqt8GxnKFAh9kOR3dKbIjZyxA3G2j+1f+VciBOm4lqfYLe2Ug6p4JV/jN
+ UApNsZXFs3KiIli88gNk0U1SwZpI6mXfXexRQwea2pULDHSjpZRnaiY5n0O6hVpw7CLF
+ nKsH2yXvBjsZkdeWwaD1zWpR8jE0WeGeJaG5L5YmfyjtY/mqrDc8GjQU5uxRx5LCRcKq
+ huAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728157881; x=1728762681;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=U/LwouViJq+HB0xpw3jHJTahhjSrGiduLo7aelhKuSk=;
- b=P6eYtl0VWUE0urNqAV0WfubGo9RWyQfhclj52URAqgx0xiTa+kPy3F3N2UzUO5Z0sz
- Fiy2Jt4T95EGvX+dR1UqgWQnHj3wUBVH/olyrj1bngb190LzSZJwe4mVmNI6qRqGpKex
- rfNwG8x/fl4VaNRP7/4xaMUU5P6UqQH1n3jLtJU7V9KMUr9Ln7/gp4MX16F+rjxU1p+y
- IO5JLrMgrl17bnSdi5KsMBSlzWFuPSQh+caq+84dHMpVCR8FXhZz3Av25STNjhHrUjcu
- GdmQk4nX0eiMI6N3a6p9bKtg2TI6ys05WlVcnMXaE7gVoSlxc6QIjD1LreEiXDErklTV
- pAhw==
-X-Gm-Message-State: AOJu0YyIIXcmvg09qZUlm/Yr8uKvFGHt/+pb3u6+9hKMN9w/eA8414Vg
- sZETUPF47+isr2/PV1CrwuHtV7Tz9uWVrDD/FmQG2BixU9oMyvsrNFxLiat2f8PiCv5GNpuvgIL
- q
-X-Google-Smtp-Source: AGHT+IEjU2DXjoxwm1G1yH5cjNZ4oG2uuIBe2vlv+xD9Yqxc6m2GWSCYiQxn2Kzna1Kogu0gDRfSPg==
-X-Received: by 2002:a05:6a00:888:b0:70a:f65e:b13d with SMTP id
- d2e1a72fcca58-71de245f362mr10675320b3a.27.1728157880824; 
- Sat, 05 Oct 2024 12:51:20 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
+ d=1e100.net; s=20230601; t=1728158763; x=1728763563;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Qpc+gtvz4QF2D7U7hwk6I/PwDTmOhNNc5A8A2G2CqV8=;
+ b=sy752RxiRO4zcick0KA55F/ygDBpdLm8lVPm3i0iT2D+qtXFjNzuDqrxdxRVSoKOif
+ McIWheIjeAXHWep4J3g3fnMPu3PVlTkNz29wXUfras3mIrtkCGj5/WNxG91A5sx79cXL
+ yhYtktEUeq/yewMoDhYF7MA7Nv+Fi2tljbgZyV92eWs42bEMC8qbl/pDqciuUq2cbOtn
+ +CW4uvrDwbrAsEHNs/1f5l8bsdCGDeJOianaPxVQqSu3BJmjF3RoML8xMosTWjSIKKP3
+ uvekFn7Py/ZH6cFUSTpg/0xF586c+4n9vX31V3mtGWWFu/7ivhGC7UqiA8t+csaJI+yx
+ Zt5A==
+X-Gm-Message-State: AOJu0YxLyq5CJ2LcGF0GC3etB3Bu5V80lQuwFKqjq7d4ibd/3x6wd4rt
+ gQcMoJ9rfja3NWYgOdtUAtV9InfW8eLxH1YYkcxexby2FFt5+kERoSwad5tJ5O2CyUXgVbGCgFz
+ O
+X-Google-Smtp-Source: AGHT+IFmM8Oxp421B76h4UpAzO5VbLx+wqOrR4XfQnLhl5uTco5sEvRm26Oyl1URtBb3k58uPkW8Hg==
+X-Received: by 2002:a17:902:f545:b0:20b:a576:1896 with SMTP id
+ d9443c01a7336-20bff190668mr89398765ad.43.1728158762695; 
+ Sat, 05 Oct 2024 13:06:02 -0700 (PDT)
+Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71df0d7d407sm1806250b3a.210.2024.10.05.12.51.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 05 Oct 2024 12:51:20 -0700 (PDT)
-Message-ID: <6d820efe-7f0b-4b6b-946d-e1815934e4e9@linaro.org>
-Date: Sat, 5 Oct 2024 12:51:18 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/18] Stop all qemu-cpu threads on a breakpoint
-To: Ilya Leoshkevich <iii@linux.ibm.com>, Paolo Bonzini
- <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20240923162208.90745-1-iii@linux.ibm.com>
- <8c7ed3d0-15c2-426b-baf5-304a984d2559@linaro.org>
- <7164df57c9c3eae2e6f27be7f6c890081740b2cc.camel@linux.ibm.com>
-Content-Language: en-US
+ d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 05 Oct 2024 13:06:02 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <7164df57c9c3eae2e6f27be7f6c890081740b2cc.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org
+Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
+ linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
+Subject: [PATCH v2 01/21] accel/tcg: Assert noreturn from write-only page for
+ atomics
+Date: Sat,  5 Oct 2024 13:05:40 -0700
+Message-ID: <20241005200600.493604-2-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241005200600.493604-1-richard.henderson@linaro.org>
+References: <20241005200600.493604-1-richard.henderson@linaro.org>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,45 +94,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/25/24 00:43, Ilya Leoshkevich wrote:
-> On Tue, 2024-09-24 at 13:46 +0200, Richard Henderson wrote:
->> On 9/23/24 18:12, Ilya Leoshkevich wrote:
->>> Hi,
->>>
->>> On reporting a breakpoint in a non-non-stop mode, GDB remotes must
->>> stop
->>> all threads. Currently qemu-user doesn't do that, breaking the
->>> debugging session for at least two reasons: concurrent access to
->>> the
->>> GDB socket, and an assertion within GDB [1].
->>>
->>> This series fixes this by importing pause_all_vcpus() from qemu-
->>> system.
->>> This in turn requires introducing BQL and a few stubs to qemu-user.
->>
->> I would have expected you to reuse (some portion of) start_exclusive,
->> which is already
->> part of qemu-user.  Is there a reason you chose a solution which
->> requires...
->>
->>>     replay: Add replay_mutex_{lock,unlock}() stubs for qemu-user
->>>     qemu-timer: Provide qemu_clock_enable() stub for qemu-user
->>>     cpu: Use BQL in qemu-user
->>
->> all sorts of other infrastructure?
->>
->>
->> r~
-> 
-> I don't think start_exclusive() would protect the gdb socket from
-> concurrent accesses (e.g., if two threads are simultaneously stopped).
+There should be no "just in case"; the page is already
+in the tlb, and known to be not readable.
 
-Of course it would, otherwise "exclusive" has no meaning.
-All other cpus are blocked in exclusive_idle().
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ accel/tcg/cputlb.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Importantly, no cpus are blocked in syscalls, where the kernel can modify memory behind 
-gdbstub's back (e.g. read).  I think considering "in_syscall" to be "paused" a mistake.
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 117b516739..fd6459b695 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1852,10 +1852,9 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+         /*
+          * Since we don't support reads and writes to different
+          * addresses, and we do have the proper page loaded for
+-         * write, this shouldn't ever return.  But just in case,
+-         * handle via stop-the-world.
++         * write, this shouldn't ever return.
+          */
+-        goto stop_the_world;
++        g_assert_not_reached();
+     }
+     /* Collect tlb flags for read. */
+     tlb_addr |= tlbe->addr_read;
+-- 
+2.43.0
 
-
-r~
 
