@@ -2,40 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C89991FBE
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Oct 2024 18:50:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2238A991FC7
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Oct 2024 18:57:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxURi-00060i-E2; Sun, 06 Oct 2024 12:49:26 -0400
+	id 1sxUZ1-000886-A8; Sun, 06 Oct 2024 12:56:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sxURe-0005zU-Ua
- for qemu-devel@nongnu.org; Sun, 06 Oct 2024 12:49:23 -0400
+ id 1sxUYz-00087q-Md; Sun, 06 Oct 2024 12:56:57 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sxURc-0008Au-Dy
- for qemu-devel@nongnu.org; Sun, 06 Oct 2024 12:49:22 -0400
+ id 1sxUYy-0000cB-4f; Sun, 06 Oct 2024 12:56:57 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 6D0C94E6039;
- Sun, 06 Oct 2024 18:49:16 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 543694E6004;
+ Sun, 06 Oct 2024 18:56:54 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id TXdJrdIPRymz; Sun,  6 Oct 2024 18:49:14 +0200 (CEST)
+ with ESMTP id 12nZs-NBiZTg; Sun,  6 Oct 2024 18:56:52 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 7E3F54E6031; Sun, 06 Oct 2024 18:49:14 +0200 (CEST)
-Message-Id: <0f5949d8ece522e30f990d25981f79965bf05bbf.1728232526.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1728232526.git.balaton@eik.bme.hu>
-References: <cover.1728232526.git.balaton@eik.bme.hu>
+ id 5A61B4E6001; Sun, 06 Oct 2024 18:56:52 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 581E0746F60;
+ Sun, 06 Oct 2024 18:56:52 +0200 (CEST)
+Date: Sun, 6 Oct 2024 18:56:52 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 2/2] log: Suggest using -d guest_error,memaccess instead of
- guest_errors
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org
-Date: Sun, 06 Oct 2024 18:49:14 +0200 (CEST)
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Bin Meng <bmeng.cn@gmail.com>, 
+ Corey Minyard <cminyard@mvista.com>, qemu-ppc@nongnu.org, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@redhat.com>
+Subject: Re: [PATCH v2 01/23] hw/ppc/e500: Do not leak struct boot_info
+In-Reply-To: <20241005194603.23139-2-shentey@gmail.com>
+Message-ID: <631e016f-730f-7b2d-2ab0-49ce767e5e37@eik.bme.hu>
+References: <20241005194603.23139-1-shentey@gmail.com>
+ <20241005194603.23139-2-shentey@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -58,86 +69,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename guest_errors to guest_error to match the log constant and print
-a warning for -d guest_errors to remind using guest_error,memaccess
-instead but preserve previous behaviour for convenience.
+On Sat, 5 Oct 2024, Bernhard Beschow wrote:
+> The struct is allocated once with g_new0() but never free()'d. Fix the leakage
+> by adding an attribute to struct PPCE500MachineState which avoids the
+> allocation.
+>
+> While at it remove the obsolete /*< private >*/ markers.
+>
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+> hw/ppc/e500.h |  9 +++++++--
+> hw/ppc/e500.c | 17 ++++-------------
+> 2 files changed, 11 insertions(+), 15 deletions(-)
+>
+> diff --git a/hw/ppc/e500.h b/hw/ppc/e500.h
+> index 8c09ef92e4..5654bb7907 100644
+> --- a/hw/ppc/e500.h
+> +++ b/hw/ppc/e500.h
+> @@ -5,18 +5,23 @@
+> #include "hw/platform-bus.h"
+> #include "qom/object.h"
+>
+> +typedef struct boot_info {
+> +    uint32_t dt_base;
+> +    uint32_t dt_size;
+> +    uint32_t entry;
+> +} boot_info;
+> +
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
-As this is a debug switch I think no formal deprecation is needed but
-this is to allow people to change their commands and scripts then it
-may be removed eventually.
+You either don't need a typedef or don't need a struct name. Since coding 
+style says typedefs should be camel case but other machines don't use a 
+typedef it's probably simplest to drop the typedef and define the machine 
+state field as struct boot_info below for consistency with other similar 
+structs. Otherwise you'd have to come up with some camel case type name 
+here but that would be less consistent with other machines. So I'd go 
+without the typedef.
 
- docs/devel/secure-coding-practices.rst | 2 +-
- tests/avocado/smmu.py                  | 2 +-
- tests/qtest/pnv-host-i2c-test.c        | 2 +-
- util/log.c                             | 6 +++++-
- 4 files changed, 8 insertions(+), 4 deletions(-)
+Regards,
+BALATON Zoltan
 
-diff --git a/docs/devel/secure-coding-practices.rst b/docs/devel/secure-coding-practices.rst
-index 0454cc527e..b330b01956 100644
---- a/docs/devel/secure-coding-practices.rst
-+++ b/docs/devel/secure-coding-practices.rst
-@@ -85,7 +85,7 @@ request completes.  Unexpected accesses must not cause memory corruption or
- leaks in QEMU.
- 
- Invalid device register accesses can be reported with
--``qemu_log_mask(LOG_GUEST_ERROR, ...)``.  The ``-d guest_errors`` command-line
-+``qemu_log_mask(LOG_GUEST_ERROR, ...)``.  The ``-d guest_error`` command-line
- option enables these log messages.
- 
- Live Migration
-diff --git a/tests/avocado/smmu.py b/tests/avocado/smmu.py
-index 83fd79e922..7ed836c12d 100644
---- a/tests/avocado/smmu.py
-+++ b/tests/avocado/smmu.py
-@@ -46,7 +46,7 @@ def common_vm_setup(self, custom_kernel=False):
-         self.vm.add_args("-accel", "kvm")
-         self.vm.add_args("-cpu", "host")
-         self.vm.add_args("-machine", "iommu=smmuv3")
--        self.vm.add_args("-d", "guest_errors")
-+        self.vm.add_args("-d", "guest_error,memaccess")
-         self.vm.add_args('-bios', os.path.join(BUILD_DIR, 'pc-bios',
-                          'edk2-aarch64-code.fd'))
-         self.vm.add_args('-device', 'virtio-rng-pci,rng=rng0')
-diff --git a/tests/qtest/pnv-host-i2c-test.c b/tests/qtest/pnv-host-i2c-test.c
-index 7f64d597ac..63a2acf9de 100644
---- a/tests/qtest/pnv-host-i2c-test.c
-+++ b/tests/qtest/pnv-host-i2c-test.c
-@@ -418,7 +418,7 @@ static void test_host_i2c(const void *data)
- 
-     qts = qtest_initf("-M %s -smp %d,cores=1,threads=%d -nographic "
-                       "-nodefaults -serial mon:stdio -S "
--                      "-d guest_errors",
-+                      "-d guest_error,memaccess",
-                       machine, SMT, SMT);
- 
-     /* Check the I2C master status registers after POR */
-diff --git a/util/log.c b/util/log.c
-index 1aa7396277..279c2b5cfb 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -486,7 +486,7 @@ const QEMULogItem qemu_log_items[] = {
-       "show CPU state before CPU resets" },
-     { LOG_UNIMP, "unimp",
-       "log unimplemented functionality" },
--    { LOG_GUEST_ERROR, "guest_errors",
-+    { LOG_GUEST_ERROR, "guest_error",
-       "log when the guest OS does something invalid (eg accessing a\n"
-       "non-existent register)" },
-     { CPU_LOG_PAGE, "page",
-@@ -521,6 +521,10 @@ int qemu_str_to_log_mask(const char *str)
-             for (item = qemu_log_items; item->mask != 0; item++) {
-                 mask |= item->mask;
-             }
-+        } else if (g_str_equal(*tmp, "guest_errors")) {
-+            warn_report("Log option guest_errors is deprecated. "
-+                        "Use guest_error,memaccess instead.");
-+            mask |= LOG_GUEST_ERROR | LOG_MEM_ACCESS;
- #ifdef CONFIG_TRACE_LOG
-         } else if (g_str_has_prefix(*tmp, "trace:") && (*tmp)[6] != '\0') {
-             trace_enable_events((*tmp) + 6);
--- 
-2.30.9
-
+> struct PPCE500MachineState {
+> -    /*< private >*/
+>     MachineState parent_obj;
+>
+>     /* points to instance of TYPE_PLATFORM_BUS_DEVICE if
+>      * board supports dynamic sysbus devices
+>      */
+>     PlatformBusDevice *pbus_dev;
+> +    boot_info boot_info;
+> };
+>
+> struct PPCE500MachineClass {
+> -    /*< private >*/
+>     MachineClass parent_class;
+>
+>     /* required -- must at least add toplevel board compatible */
+> diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+> index 3bd12b54ab..75b051009f 100644
+> --- a/hw/ppc/e500.c
+> +++ b/hw/ppc/e500.c
+> @@ -80,13 +80,6 @@
+>
+> #define PLATFORM_CLK_FREQ_HZ       (400 * 1000 * 1000)
+>
+> -struct boot_info
+> -{
+> -    uint32_t dt_base;
+> -    uint32_t dt_size;
+> -    uint32_t entry;
+> -};
+> -
+> static uint32_t *pci_map_create(void *fdt, uint32_t mpic, int first_slot,
+>                                 int nr_slots, int *len)
+> {
+> @@ -919,7 +912,6 @@ void ppce500_init(MachineState *machine)
+>     bool kernel_as_payload;
+>     hwaddr bios_entry = 0;
+>     target_long payload_size;
+> -    struct boot_info *boot_info = NULL;
+>     int dt_size;
+>     int i;
+>     unsigned int smp_cpus = machine->smp.cpus;
+> @@ -974,9 +966,8 @@ void ppce500_init(MachineState *machine)
+>         /* Register reset handler */
+>         if (!i) {
+>             /* Primary CPU */
+> -            boot_info = g_new0(struct boot_info, 1);
+>             qemu_register_reset(ppce500_cpu_reset, cpu);
+> -            env->load_info = boot_info;
+> +            env->load_info = &pms->boot_info;
+>         } else {
+>             /* Secondary CPUs */
+>             qemu_register_reset(ppce500_cpu_reset_sec, cpu);
+> @@ -1274,9 +1265,9 @@ void ppce500_init(MachineState *machine)
+>     }
+>     assert(dt_size < DTB_MAX_SIZE);
+>
+> -    boot_info->entry = bios_entry;
+> -    boot_info->dt_base = dt_base;
+> -    boot_info->dt_size = dt_size;
+> +    pms->boot_info.entry = bios_entry;
+> +    pms->boot_info.dt_base = dt_base;
+> +    pms->boot_info.dt_size = dt_size;
+> }
+>
+> static void e500_ccsr_initfn(Object *obj)
+>
 
