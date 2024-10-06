@@ -2,37 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB1A991FBF
+	by mail.lfdr.de (Postfix) with ESMTPS id 157DA991FBD
 	for <lists+qemu-devel@lfdr.de>; Sun,  6 Oct 2024 18:50:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxURh-0005zr-Sx; Sun, 06 Oct 2024 12:49:25 -0400
+	id 1sxURh-000608-Uy; Sun, 06 Oct 2024 12:49:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sxURe-0005zT-UW
+ id 1sxURe-0005zS-QP
  for qemu-devel@nongnu.org; Sun, 06 Oct 2024 12:49:23 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sxURc-0008Ap-Dh
+ id 1sxURc-0008At-DM
  for qemu-devel@nongnu.org; Sun, 06 Oct 2024 12:49:22 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 5BAC94E6013;
- Sun, 06 Oct 2024 18:49:14 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6B46D4E6001;
+ Sun, 06 Oct 2024 18:49:15 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id Dwi0N41WvtK9; Sun,  6 Oct 2024 18:49:12 +0200 (CEST)
+ with ESMTP id YdPnJhRLz9Ie; Sun,  6 Oct 2024 18:49:13 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 6A3594E6001; Sun, 06 Oct 2024 18:49:12 +0200 (CEST)
-Message-Id: <cover.1728232526.git.balaton@eik.bme.hu>
+ id 75D804E6004; Sun, 06 Oct 2024 18:49:13 +0200 (CEST)
+Message-Id: <59dd3361ca8ede93122e87752c7d66a304b05c0f.1728232526.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1728232526.git.balaton@eik.bme.hu>
+References: <cover.1728232526.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 0/2] Separate memory access logs from guest_errors
+Subject: [PATCH 1/2] log: Add separate debug option for logging invalid memory
+ accesses
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Date: Sun, 06 Oct 2024 18:49:12 +0200 (CEST)
+Date: Sun, 06 Oct 2024 18:49:13 +0200 (CEST)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -55,36 +58,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Originally memory access logs were a debug define that then were
-converted to log messages but were classified as guest_errors which
-already logs misc errors. As invalid memory access logs can come from
-accessing not emulated peripherals or memory areas, these often
-generate a lot of messages that are better be controlled separately
-from other errors to avoid obscuring those. As an example try
-'qemu-system-ppc -d guest_errors' to see the problem. After this
-series the actual guest error logs are easier to spot. I've tried to
-submit this before but there were some people who liked the current
-behaviour so now this series has another patch that preserves the old
-optino printing a warning to allow time to get used to the new
-behaviour (which actually brings back the old behaviour when mem
-access logs were a debug define).
+Currently -d guest_errors enables logging of different invalid actions
+by the guest such as misusing hardware, accessing missing features or
+invalid memory areas. The memory access logging can be quite verbose
+which obscures the other messages enabled by this debug switch so
+separate it by adding a new -d memaccess option to make it possible to
+control it independently of other guest error logs.
 
-Regards,
-BALATON Zoltan
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ include/qemu/log.h | 1 +
+ system/memory.c    | 6 +++---
+ system/physmem.c   | 2 +-
+ util/log.c         | 2 ++
+ 4 files changed, 7 insertions(+), 4 deletions(-)
 
-BALATON Zoltan (2):
-  log: Add separate debug option for logging invalid memory accesses
-  log: Suggest using -d guest_error,memaccess instead of guest_errors
-
- docs/devel/secure-coding-practices.rst | 2 +-
- include/qemu/log.h                     | 1 +
- system/memory.c                        | 6 +++---
- system/physmem.c                       | 2 +-
- tests/avocado/smmu.py                  | 2 +-
- tests/qtest/pnv-host-i2c-test.c        | 2 +-
- util/log.c                             | 8 +++++++-
- 7 files changed, 15 insertions(+), 8 deletions(-)
-
+diff --git a/include/qemu/log.h b/include/qemu/log.h
+index e10e24cd4f..6122e34bdd 100644
+--- a/include/qemu/log.h
++++ b/include/qemu/log.h
+@@ -37,6 +37,7 @@ bool qemu_log_separate(void);
+ #define LOG_PER_THREAD     (1 << 20)
+ #define CPU_LOG_TB_VPU     (1 << 21)
+ #define LOG_TB_OP_PLUGIN   (1 << 22)
++#define LOG_MEM_ACCESS     (1 << 23)
+ 
+ /* Lock/unlock output. */
+ 
+diff --git a/system/memory.c b/system/memory.c
+index f6f6fee6d8..e35a473248 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1380,7 +1380,7 @@ bool memory_region_access_valid(MemoryRegion *mr,
+ {
+     if (mr->ops->valid.accepts
+         && !mr->ops->valid.accepts(mr->opaque, addr, size, is_write, attrs)) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "Invalid %s at addr 0x%" HWADDR_PRIX
++        qemu_log_mask(LOG_MEM_ACCESS, "Invalid %s at addr 0x%" HWADDR_PRIX
+                       ", size %u, region '%s', reason: rejected\n",
+                       is_write ? "write" : "read",
+                       addr, size, memory_region_name(mr));
+@@ -1388,7 +1388,7 @@ bool memory_region_access_valid(MemoryRegion *mr,
+     }
+ 
+     if (!mr->ops->valid.unaligned && (addr & (size - 1))) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "Invalid %s at addr 0x%" HWADDR_PRIX
++        qemu_log_mask(LOG_MEM_ACCESS, "Invalid %s at addr 0x%" HWADDR_PRIX
+                       ", size %u, region '%s', reason: unaligned\n",
+                       is_write ? "write" : "read",
+                       addr, size, memory_region_name(mr));
+@@ -1402,7 +1402,7 @@ bool memory_region_access_valid(MemoryRegion *mr,
+ 
+     if (size > mr->ops->valid.max_access_size
+         || size < mr->ops->valid.min_access_size) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "Invalid %s at addr 0x%" HWADDR_PRIX
++        qemu_log_mask(LOG_MEM_ACCESS, "Invalid %s at addr 0x%" HWADDR_PRIX
+                       ", size %u, region '%s', reason: invalid size "
+                       "(min:%u max:%u)\n",
+                       is_write ? "write" : "read",
+diff --git a/system/physmem.c b/system/physmem.c
+index dc1db3a384..0f0e8f3bed 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -2745,7 +2745,7 @@ static bool flatview_access_allowed(MemoryRegion *mr, MemTxAttrs attrs,
+     if (memory_region_is_ram(mr)) {
+         return true;
+     }
+-    qemu_log_mask(LOG_GUEST_ERROR,
++    qemu_log_mask(LOG_MEM_ACCESS,
+                   "Invalid access to non-RAM device at "
+                   "addr 0x%" HWADDR_PRIX ", size %" HWADDR_PRIu ", "
+                   "region '%s'\n", addr, len, memory_region_name(mr));
+diff --git a/util/log.c b/util/log.c
+index 6219819855..1aa7396277 100644
+--- a/util/log.c
++++ b/util/log.c
+@@ -503,6 +503,8 @@ const QEMULogItem qemu_log_items[] = {
+       "open a separate log file per thread; filename must contain '%d'" },
+     { CPU_LOG_TB_VPU, "vpu",
+       "include VPU registers in the 'cpu' logging" },
++    { LOG_MEM_ACCESS, "memaccess",
++      "log invalid memory accesses" },
+     { 0, NULL, NULL },
+ };
+ 
 -- 
 2.30.9
 
