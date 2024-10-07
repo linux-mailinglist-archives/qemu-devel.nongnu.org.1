@@ -2,58 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0356992AC2
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E4D992AD8
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:53:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxmGg-000791-U2; Mon, 07 Oct 2024 07:51:14 -0400
+	id 1sxmIX-0005bR-4H; Mon, 07 Oct 2024 07:53:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGb-000709-Gv
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:51:09 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sxmIT-0005Pe-QB
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:53:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGZ-0005B6-Fm
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:51:08 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sxmIR-0005Qv-Vg
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:53:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728301866;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ s=mimecast20190719; t=1728301983;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wPDlYeelsiOUxueMnbeOEZktoxapf88zSycanT1ye1E=;
- b=ATCj2j7XrA5hLn6HevBDq4MqunJnWhwNS2nH23tt2ibx1sOFXekhCOhPjG8nG75ifuRHl9
- 8o+kLkSFBWKxHleXmynNuwl+eFMoy735NldEdVEFbRGdsH/3PJm5cEIrE1U76tSkN+5JQo
- O7lgJohY1zPs02seuvCPD4t1xXwAw38=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=tP6v/7KBE1urotP00HVvnGBRqvrFRtQkqNumFlZqDpo=;
+ b=bbqq5RHZM4c5psj3JV1zvWHkcEM/F6ZgWdzRP5NPBC4ZmUWHJ8o9O5/CzHCJxQNB+iOOl3
+ SJXvVuQC0feihGcQsrUgHrpav/FDM1MuPxxrV3KZAlvWZKHHpuDMtAJaNCn7Jy3EpqQL6l
+ XCyZRw/E7/rNM74Kw6/lPKCIHjBMFYI=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-512-QtKYOUedPvCtmOiY-58FWQ-1; Mon,
- 07 Oct 2024 07:51:05 -0400
-X-MC-Unique: QtKYOUedPvCtmOiY-58FWQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-674-0d8e2uZpNKu91laRyoPMdw-1; Mon,
+ 07 Oct 2024 07:53:00 -0400
+X-MC-Unique: 0d8e2uZpNKu91laRyoPMdw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CC39F19300FE; Mon,  7 Oct 2024 11:51:04 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.194.46])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5B19419560AE; Mon,  7 Oct 2024 11:51:03 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 12/12] tests/functional: Bump timeout of some tests
-Date: Mon,  7 Oct 2024 13:50:27 +0200
-Message-ID: <20241007115027.243425-13-thuth@redhat.com>
-In-Reply-To: <20241007115027.243425-1-thuth@redhat.com>
-References: <20241007115027.243425-1-thuth@redhat.com>
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EAB5319560AF; Mon,  7 Oct 2024 11:52:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.61])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 52D8419560A3; Mon,  7 Oct 2024 11:52:56 +0000 (UTC)
+Date: Mon, 7 Oct 2024 12:52:52 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ manos.pitsidianakis@linaro.org, zhao1.liu@intel.com,
+ junjie.mao@intel.com, pierrick.bouvier@linaro.org, alex.bennee@linaro.org
+Subject: Re: [PULL 00/12] Rust initial PoC + meson changes for 2024-10-07
+Message-ID: <ZwPLlHxQkRbf3QBx@redhat.com>
+References: <20241007110342.1298598-1-pbonzini@redhat.com>
+ <ZwPB9SnTvkr082NA@redhat.com>
+ <CABgObfYZgR9xNnP9mHWU92XZZ_VeFLHimkd-t-63KX_KWeDZ=A@mail.gmail.com>
+ <ZwPKPGkpklnY9i5z@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+In-Reply-To: <ZwPKPGkpklnY9i5z@redhat.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -75,45 +85,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These tests occasionally time out when the host system is under heavy
-load. Increase the timeout setting to allow for more headroom here.
+On Mon, Oct 07, 2024 at 12:47:08PM +0100, Daniel P. Berrangé wrote:
+> On Mon, Oct 07, 2024 at 01:26:52PM +0200, Paolo Bonzini wrote:
+> > On Mon, Oct 7, 2024 at 1:11 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
+> > > The current dockerfiles don't include rust, and I see nothing
+> > > here updating them to add rust, so how is any of this getting
+> > > test coverage ?
+> > >
+> > > Even though this has Rust disabled by default, I would still
+> > > consider CI enablement to be a pre-requsite for merging even
+> > > basic Rust support.
+> > 
+> > I agree in general, but there's already a lot of work that can be
+> > parallelized and the idea of someone managing Rust-related patches
+> > out-of-tree was discarded. So this seemed to be the only way to
+> > proceed.
+> > 
+> > Right now only Fedora 39 and 40 (with updates) are able to compile
+> > QEMU with Rust enabled. Full CI enablement requires further work to
+> > reduce the minimum supported version of the compiler, after which
+> > rustc can be added to the libvirt-ci inputs and to the Dockerfiles.
+> 
+> Full CI enablement isn't a requirement until we want to turn on
+> Rust by default. It would be sufficient to have a single job in
+> CI using Fedora 40 that passes '--enable-rust' to demonstrate that
+> this at least working on one platform we expect.
+> 
+> > Adding a CI job that uses nightly rust (via rustup) is high on my
+> > priority list, but first of all I wanted to integrate clippy (because
+> > the main point of having a job with nightly rust is to have a heads-up
+> > on future clippy warnings). That said, I'm also not sure how one would
+> > go adding rustup to a container generated by lcitool (for example
+> > should I add a new dockerfile that is _based_ on one that already
+> > exists? would that change when Rust/rustc is added to that
+> > dockerfile?).
+> 
+> Having layered dockerfiles is something we try to aviod these days,
+> since each layer turns into another job dependancy in the CI
+> pipeline, expanding the number of stages.
 
-Message-ID: <20241002140212.350467-1-thuth@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/functional/meson.build | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+I forgot to say that QEMU's 'refresh' script can customize the
+dockerfiles from lcitool with an arbitrary amount of trailing
+text - see the 'debian12_extras' for example.
 
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 7713f8eb55..c90c02517a 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -11,15 +11,18 @@ endif
- 
- # Timeouts for individual tests that can be slow e.g. with debugging enabled
- test_timeouts = {
-+  'aarch64_raspi4' : 120,
-   'aarch64_sbsaref' : 600,
-   'aarch64_virt' : 360,
-   'acpi_bits' : 240,
-+  'arm_raspi2' : 120,
-+  'mips_malta' : 120,
-   'netdev_ethtool' : 180,
-   'ppc_40p' : 240,
-   'ppc64_hv' : 1000,
--  'ppc64_powernv' : 120,
--  'ppc64_pseries' : 120,
--  's390x_ccw_virtio' : 180,
-+  'ppc64_powernv' : 240,
-+  'ppc64_pseries' : 240,
-+  's390x_ccw_virtio' : 240,
- }
- 
- tests_generic_system = [
+> 
+> If the job is merely to validate nightly clippy do we even need
+> any of the rest of the QEMU build deps present ?  Can we not just
+> use a generic pre-existing Rust container and only run clippy
+> in it.
+> 
+> If we want to actually build with the cutting edge, then I'd say
+> it is sufficient to have a container based on Fedora rawhide, since
+> that gives a heads up on what's soon to be impacting the next stable
+> distro release, upto 6 months ahead of time - we don't need to be
+> watching& debugging stuff that hasn't even been released by Rust
+> yet IMHO.
+
+With regards,
+Daniel
 -- 
-2.46.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
