@@ -2,85 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981F0992945
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 12:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 898839929DC
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:03:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxl2I-0001H7-BM; Mon, 07 Oct 2024 06:32:18 -0400
+	id 1sxlVb-0000uS-9g; Mon, 07 Oct 2024 07:02:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sxl2A-0001DS-4W; Mon, 07 Oct 2024 06:32:11 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1sxlVY-0000tz-TU
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:02:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sxl27-0002G4-GZ; Mon, 07 Oct 2024 06:32:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728297127; x=1759833127;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=jhJUK+AWFll4gfSxpcVeHGVJ440uyTmTNkzlK2H16Kk=;
- b=N7SXfege0Wes4ly/Gd3A9xQO711B8hnOWG3ZuLqhG/aySauWUAARX7uy
- JcPKyqUzMGBxRNMxycFL+YmUUb013ZuyDVC/lV5r0qOIzz+Dni7IwIKIX
- /yKcgStu/XOYA2ueQVjQw/vR4cuS8MrrFti3EU5sxXJLnZlNaPNKS72Yu
- WbjBrRpUBk82uo+zm9sp+H0xomhKEZYUB4wU9Es1+0CUiDb7OqKRyvqqV
- g/uG/jhIQA7BubqqjRuCwFQiMErnrQtwR6Vw4+6NW0/9PZEV7O6EjdX1+
- ClSZdzuMS6Y5XtqRF3gukqJNGBqTZVepY9S45iRzO03qlWhfBNJnkKpeX g==;
-X-CSE-ConnectionGUID: C8JhfIWuQAWIYLtHYy3j4A==
-X-CSE-MsgGUID: ZSWHk0pCSBa+paBmVjEFUQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38044285"
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="38044285"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 03:32:02 -0700
-X-CSE-ConnectionGUID: o2wxnFLcQ8aCs2GXkI/Wpg==
-X-CSE-MsgGUID: 9taj1YQOS2OUtO3z+NOWIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="80401926"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 07 Oct 2024 03:31:56 -0700
-Date: Mon, 7 Oct 2024 18:48:07 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S.Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v2 2/7] qapi/qom: Define cache enumeration and properties
-Message-ID: <ZwO8Z6pABtp2Zfi3@intel.com>
-References: <20240908125920.1160236-1-zhao1.liu@intel.com>
- <20240908125920.1160236-3-zhao1.liu@intel.com>
- <20240917095126.000036f1@Huawei.com>
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1sxlVV-00068A-W1
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:02:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728298948;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GgPqqb4SXPyiYwIuH3Q5rOkHuhPDOHjfBA7k0hDGpbs=;
+ b=TUaxGZ2E7Q5+f5nWyGdQp8Mu8znmGZ/yA/Emfgjr0L4wzHJnoA0oTtaZRXloUYMGv2xwBS
+ X/UBEqRz9wYYOqjHk0Fzmh70+cLRzN8zr/Zy5NH8kwZBZeUqrmJhpWuUcRpD9zbla1o5wt
+ Cq5GVWrElj0HG0nmvADThhwyOIt92m8=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-196-NQqUD_JANyStRYdzia07sQ-1; Mon, 07 Oct 2024 07:02:27 -0400
+X-MC-Unique: NQqUD_JANyStRYdzia07sQ-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6cb317cd72eso96585896d6.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 04:02:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728298947; x=1728903747;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GgPqqb4SXPyiYwIuH3Q5rOkHuhPDOHjfBA7k0hDGpbs=;
+ b=XyzT4K37PtK2r0YJBen7Mvj5KR/8eRTPAPkeUwL3td/wZZIxSjW6tepgu9vVp1+yAp
+ 68amj1Zceh4DL3uBRV2qSQTs+GPJq1cFR1LNbcGHqcti930DW63/x43r55hpEuT2F8gc
+ 8XajuaFGF58HH4/9EAKMNsfq/idQ9lF4R8WJ2LfXex20jsLIznFSbm3dLrlC/PmW/hG/
+ NA8Vok5qFqrOpg8znmaL5PkIRI2Rl1velvVAzqlQ4zyk3calq6R1Bt3GL7VCVIr/MXMP
+ Nf5t2+owl6IfDD18I7oiSHzt+oMy7WRQn5GVSPW3+2zXZ1q7PCLHHi0GpiRmMf5CNXBY
+ ISkg==
+X-Gm-Message-State: AOJu0YzhXTnmpimsyPpEB/3zwx8aQ3hhG5l5jLW3AQIInxOzmF6mUxKi
+ 34fQPgXLxIXQdxMP/e/aJlnlxPMkwCMkZuDYAPbNICteF5fYjBz5By4lSp4Rn2+O0AC++gf+G0g
+ QlAz6xKeKF70cF1NmvaXMotDejSNtox/thMkuUdSossJeArVarzeNBXIpLfksAIvHpjDFmba7oi
+ BqmKTU/Rofd7xvHHafiiFyUDO+a7E=
+X-Received: by 2002:a05:6214:4602:b0:6cb:4c23:6573 with SMTP id
+ 6a1803df08f44-6cb9a3096c8mr193602906d6.21.1728298947099; 
+ Mon, 07 Oct 2024 04:02:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHn9K2LYsBPMGuk81rCrMz00qryMyGxFt5o7H5FnGK09CoVbzLXWyvdFcpYcoPyYee/DrOUJZqjqhgFySeaBsg=
+X-Received: by 2002:a05:6214:4602:b0:6cb:4c23:6573 with SMTP id
+ 6a1803df08f44-6cb9a3096c8mr193602586d6.21.1728298946798; Mon, 07 Oct 2024
+ 04:02:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240917095126.000036f1@Huawei.com>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
+References: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
+ <20241003112244.3340697-8-marcandre.lureau@redhat.com>
+ <db9f3849-adce-4362-afaa-b580829e8934@daynix.com>
+In-Reply-To: <db9f3849-adce-4362-afaa-b580829e8934@daynix.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Mon, 7 Oct 2024 15:02:15 +0400
+Message-ID: <CAMxuvaxgBqr4+U7CY8po4ZsBv_weAbvR5sE-X-YsUUb36=y9zw@mail.gmail.com>
+Subject: Re: [PATCH 07/16] ui/dbus: discard pending CursorDefine on new one
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ belmouss@redhat.com, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,75 +102,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jonathan,
+Hi
 
-Thanks for your review and feedback!
-
-[snip]
-
-> > Note, define cache topology based on CPU topology level with two
-> > reasons:
-> > 
-> >  1. In practice, a cache will always be bound to the CPU container
-> >     (either private in the CPU container or shared among multiple
-> >     containers), and CPU container is often expressed in terms of CPU
-> >     topology level.
-> >  2. The x86's cache-related CPUIDs encode cache topology based on APIC
-> >     ID's CPU topology layout. And the ACPI PPTT table that ARM/RISCV
-> >     relies on also requires CPU containers to help indicate the private
-> 
-> Really trivial but CPU Containers are a different ACPI concept.
-> For PPTT they are referred to as Processor Groups. Wonderfully they
-> 'might match a Processor Container in the namespace' which rather implies
-> they might not.  In QEMU they always will because the next bit of the
-> spec matters. "In that case this entry will match the value of the _UID
-> method of the associated processor container. Where there is a match it must
-> be represented."
-> 
-> So having said all that, CPU container is probably fine as a description.
-
-Thanks for the explanation!
-
-> >     shared hierarchy of the cache. Therefore, for SMP systems, it is
-> >     natural to use the CPU topology hierarchy directly in QEMU to define
-> >     the cache topology.
-> > 
-> > Suggested-by: Daniel P. Berrange <berrange@redhat.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+On Sat, Oct 5, 2024 at 12:45=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
+.com> wrote:
 >
-> Seems fine but my gut would be to combine this and next patch so we can
-> see how it is used (assuming no one asked for it to be separate!)
+> On 2024/10/03 20:22, marcandre.lureau@redhat.com wrote:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >
+> > Similar to scanout updates, let's discard pending cursor changes.
+> >
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > ---
+> >   ui/dbus-listener.c | 23 +++++++++++++++++++++++
+> >   roms/openbios      |  2 +-
+> >   2 files changed, 24 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+> > index 23a4633fa4..020c05198b 100644
+> > --- a/ui/dbus-listener.c
+> > +++ b/ui/dbus-listener.c
+> > @@ -87,6 +87,7 @@ struct _DBusDisplayListener {
+> >
+> >       guint dbus_filter;
+> >       guint32 display_serial_to_discard;
+> > +    guint32 cursor_serial_to_discard;
+> >   };
+> >
+> >   G_DEFINE_TYPE(DBusDisplayListener, dbus_display_listener, G_TYPE_OBJE=
+CT)
+> > @@ -102,6 +103,14 @@ static void ddl_discard_display_messages(DBusDispl=
+ayListener *ddl)
+> >       g_atomic_int_set(&ddl->display_serial_to_discard, serial);
+> >   }
+> >
+> > +static void ddl_discard_cursor_messages(DBusDisplayListener *ddl)
+> > +{
+> > +    guint32 serial =3D g_dbus_connection_get_last_serial(
+> > +        g_dbus_proxy_get_connection(G_DBUS_PROXY(ddl->proxy)));
+> > +
+> > +    g_atomic_int_set(&ddl->cursor_serial_to_discard, serial);
+> > +}
+> > +
+> >   #ifdef CONFIG_OPENGL
+> >   static void dbus_scanout_disable(DisplayChangeListener *dcl)
+> >   {
+> > @@ -502,6 +511,8 @@ static void dbus_cursor_dmabuf(DisplayChangeListene=
+r *dcl,
+> >           return;
+> >       }
+> >
+> > +    ddl_discard_cursor_messages(ddl);
+> > +
+> >       egl_dmabuf_import_texture(dmabuf);
+> >       texture =3D qemu_dmabuf_get_texture(dmabuf);
+> >       if (!texture) {
+> > @@ -745,6 +756,8 @@ static void dbus_cursor_define(DisplayChangeListene=
+r *dcl,
+> >       DBusDisplayListener *ddl =3D container_of(dcl, DBusDisplayListene=
+r, dcl);
+> >       GVariant *v_data =3D NULL;
+> >
+> > +    ddl_discard_cursor_messages(ddl);
+> > +
+> >       v_data =3D g_variant_new_from_data(
+> >           G_VARIANT_TYPE("ay"),
+> >           c->data,
+> > @@ -1027,6 +1040,16 @@ dbus_filter(GDBusConnection *connection,
+> >           }
+> >       }
+> >
+> > +    discard_serial =3D g_atomic_int_get(&ddl->cursor_serial_to_discard=
+);
+> > +    if (serial <=3D discard_serial) {
+> > +        member =3D g_dbus_message_get_member(message);
+> > +        if (g_strv_contains((const gchar *[]) { "CursorDefine", NULL }=
+, member)) {
+> > +            trace_dbus_filter(serial, discard_serial);
+> > +            g_object_unref(message);
+> > +            return NULL;
+> > +        }
+> > +    }
+> > +
+> >       return message;
+> >   }
+> >
+> > diff --git a/roms/openbios b/roms/openbios
+> > index c3a19c1e54..af97fd7af5 160000
+> > --- a/roms/openbios
+> > +++ b/roms/openbios
+> > @@ -1 +1 @@
+> > -Subproject commit c3a19c1e54977a53027d6232050e1e3e39a98a1b
+> > +Subproject commit af97fd7af5e7c18f591a7b987291d3db4ffb28b5
+>
+> An accidental change of roms/openbios.
 
-No problem. I intended to make it easier to review the QAPI part, but
-these two patches were simple enough that I was happy to combine them.
+good catch.. thanks
 
-> Version numbers need an update I guess.
-
-Ah, yes!
-
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Thanks!
-
-> > +##
-> > +# @SmpCachePropertiesWrapper:
-> > +#
-> > +# List wrapper of SmpCacheProperties.
-> > +#
-> > +# @caches: the list of SmpCacheProperties.
-> > +#
-> > +# Since 9.1
-> 
-> Needs updating to 9.2 I guess.
-
-Yes, I think so, too.
-
-Thanks,
-Zhao
-
-> > +##
-> > +{ 'struct': 'SmpCachePropertiesWrapper',
-> > +  'data': { 'caches': ['SmpCacheProperties'] } }
-> 
 
