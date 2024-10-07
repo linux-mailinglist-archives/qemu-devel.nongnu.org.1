@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91CD993715
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:18:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DCC99373B
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:23:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxtEA-00045n-Nu; Mon, 07 Oct 2024 15:17:07 -0400
+	id 1sxtEH-0004JI-UG; Mon, 07 Oct 2024 15:17:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtE4-00042Q-Gy; Mon, 07 Oct 2024 15:17:01 -0400
+ id 1sxtE8-00046a-NN; Mon, 07 Oct 2024 15:17:04 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtE2-00042e-GG; Mon, 07 Oct 2024 15:17:00 -0400
+ id 1sxtE7-000433-0c; Mon, 07 Oct 2024 15:17:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CDFA89623D;
+ by isrv.corpit.ru (Postfix) with ESMTP id E82D99623E;
  Mon,  7 Oct 2024 22:16:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A75BC14F71E;
+ by tsrv.corpit.ru (Postfix) with SMTP id B707B14F71F;
  Mon,  7 Oct 2024 22:16:54 +0300 (MSK)
-Received: (nullmailer pid 2592703 invoked by uid 1000);
+Received: (nullmailer pid 2592706 invoked by uid 1000);
  Mon, 07 Oct 2024 19:16:54 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- Guenter Roeck <linux@roeck-us.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 01/32] target/hppa: Fix PSW V-bit packaging in
- cpu_hppa_get for hppa64
-Date: Mon,  7 Oct 2024 22:16:18 +0300
-Message-Id: <20241007191654.2592616-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 02/32] iotests: fix expected output from gnutls
+Date: Mon,  7 Oct 2024 22:16:19 +0300
+Message-Id: <20241007191654.2592616-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,53 +61,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-While adding hppa64 support, the psw_v variable got extended from 32 to 64
-bits.  So, when packaging the PSW-V bit from the psw_v variable for interrupt
-processing, check bit 31 instead the 63th (sign) bit.
+Error reporting from gnutls was improved by:
 
-This fixes a hard to find Linux kernel boot issue where the loss of the PSW-V
-bit due to an ITLB interruption in the middle of a series of ds/addc
-instructions (from the divU milicode library) generated the wrong division
-result and thus triggered a Linux kernel crash.
+  commit 57941c9c86357a6a642f9ee3279d881df4043b6d
+  Author: Daniel P. Berrangé <berrange@redhat.com>
+  Date:   Fri Mar 15 14:07:58 2024 +0000
 
-Link: https://lore.kernel.org/lkml/718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net/
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: 931adff31478 ("target/hppa: Update cpu_hppa_get/put_psw for hppa64")
-Cc: qemu-stable@nongnu.org # v8.2+
-(cherry picked from commit ead5078cf1a5f11d16e3e8462154c859620bcc7e)
+    crypto: push error reporting into TLS session I/O APIs
+
+This has the effect of changing the output from one of the NBD
+tests.
+
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+(cherry picked from commit 48b8583698d96d6290726400789fcd51c55691b1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 2bcb3b602b..5478b183dc 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -211,7 +211,7 @@ typedef struct CPUArchState {
-     uint32_t psw;            /* All psw bits except the following:  */
-     uint32_t psw_xb;         /* X and B, in their normal positions */
-     target_ulong psw_n;      /* boolean */
--    target_long psw_v;       /* in most significant bit */
-+    target_long psw_v;       /* in bit 31 */
+diff --git a/tests/qemu-iotests/233.out b/tests/qemu-iotests/233.out
+index 1910f7df20..d498d55e0e 100644
+--- a/tests/qemu-iotests/233.out
++++ b/tests/qemu-iotests/233.out
+@@ -69,8 +69,8 @@ read 1048576/1048576 bytes at offset 1048576
+ 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
  
-     /* Splitting the carry-borrow field into the MSB and "the rest", allows
-      * for "the rest" to be deleted when it is unused, but the MSB is in use.
-diff --git a/target/hppa/helper.c b/target/hppa/helper.c
-index b79ddd8184..d4b1a3cd5a 100644
---- a/target/hppa/helper.c
-+++ b/target/hppa/helper.c
-@@ -53,7 +53,7 @@ target_ulong cpu_hppa_get_psw(CPUHPPAState *env)
-     }
+ == check TLS with authorization ==
+-qemu-img: Could not open 'driver=nbd,host=127.0.0.1,port=PORT,tls-creds=tls0': Failed to read option reply: Cannot read from TLS channel: Software caused connection abort
+-qemu-img: Could not open 'driver=nbd,host=127.0.0.1,port=PORT,tls-creds=tls0': Failed to read option reply: Cannot read from TLS channel: Software caused connection abort
++qemu-img: Could not open 'driver=nbd,host=127.0.0.1,port=PORT,tls-creds=tls0': Failed to read option reply: Cannot read from TLS channel: The TLS connection was non-properly terminated.
++qemu-img: Could not open 'driver=nbd,host=127.0.0.1,port=PORT,tls-creds=tls0': Failed to read option reply: Cannot read from TLS channel: The TLS connection was non-properly terminated.
  
-     psw |= env->psw_n * PSW_N;
--    psw |= (env->psw_v < 0) * PSW_V;
-+    psw |= ((env->psw_v >> 31) & 1) * PSW_V;
-     psw |= env->psw | env->psw_xb;
+ == check TLS fail over UNIX with no hostname ==
+ qemu-img: Could not open 'driver=nbd,path=SOCK_DIR/qemu-nbd.sock,tls-creds=tls0': No hostname for certificate validation
+@@ -103,14 +103,14 @@ qemu-img: Could not open 'driver=nbd,path=SOCK_DIR/qemu-nbd.sock,tls-creds=tls0'
+ qemu-nbd: TLS handshake failed: The TLS connection was non-properly terminated.
  
-     return psw;
+ == final server log ==
+-qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: Software caused connection abort
+-qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: Software caused connection abort
++qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: The TLS connection was non-properly terminated.
++qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: The TLS connection was non-properly terminated.
+ qemu-nbd: option negotiation failed: Verify failed: No certificate was found.
+ qemu-nbd: option negotiation failed: Verify failed: No certificate was found.
+ qemu-nbd: option negotiation failed: TLS x509 authz check for DISTINGUISHED-NAME is denied
+ qemu-nbd: option negotiation failed: TLS x509 authz check for DISTINGUISHED-NAME is denied
+-qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: Software caused connection abort
+-qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: Software caused connection abort
++qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: The TLS connection was non-properly terminated.
++qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: The TLS connection was non-properly terminated.
+ qemu-nbd: option negotiation failed: TLS handshake failed: An illegal parameter has been received.
+ qemu-nbd: option negotiation failed: TLS handshake failed: An illegal parameter has been received.
+ *** done
 -- 
 2.39.5
 
