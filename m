@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8DF992AB7
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04111992AD0
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:52:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxmGJ-0006ke-NS; Mon, 07 Oct 2024 07:50:51 -0400
+	id 1sxmGK-0006lb-Ol; Mon, 07 Oct 2024 07:50:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmG8-0006jT-Ak
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:50:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGB-0006jr-4m
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:50:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmG6-00056q-KR
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:50:40 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmG9-00057K-Bj
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:50:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728301838;
+ s=mimecast20190719; t=1728301840;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dP6uGr+fy58ZGPXR38kWez6WFlz7rDCeh/E4BG4jKUQ=;
- b=iz5EYsu5SoeHOjnBL2OqFNMdou/Qmx4ILkTep8ex0tdJujzvjpXggOQpOAwUZwVIUqhosj
- y7cg6HhY2JHmdumVUfQQ3m7gBnbOr1ckwK4T+taRHlGCPXgs/bK2O2GseWLv8998vj7XUD
- o2FAOFPSmIMeQn3j3FBrvNRfqPvA0pM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Cw3DXzGVMTD80OJfum3c1czK7e0hQ+t0YIZ9YLyw8Js=;
+ b=JKpPt32h5+Qi+4ZZwqi0AguM5ehz/UlAz5xLFr5ypfzuiqzln1lc6ojFb6ZATTZsb6z7fc
+ D0HKIoYVGiALnhbmafo3Hw2MwFZr61C+hMo6dbnaCikHjcQ8d5atAAlcS6eJRq7Blfb/VI
+ f0q6P7OUer+VqH+Tj+opXSxdmCO7U80=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-vL9GJXmVMQOors-vZdY4fg-1; Mon,
- 07 Oct 2024 07:50:35 -0400
-X-MC-Unique: vL9GJXmVMQOors-vZdY4fg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-1_gPRDvWPNOeJoFTtr4-YA-1; Mon,
+ 07 Oct 2024 07:50:37 -0400
+X-MC-Unique: 1_gPRDvWPNOeJoFTtr4-YA-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F22CF1955EA8; Mon,  7 Oct 2024 11:50:33 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 542E81944AAD; Mon,  7 Oct 2024 11:50:36 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.46])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3D7AF19560AE; Mon,  7 Oct 2024 11:50:31 +0000 (UTC)
+ id 877CD19560AE; Mon,  7 Oct 2024 11:50:34 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Niels de Vos <ndevos@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 01/12] docs: Mark "gluster" support in QEMU as deprecated
-Date: Mon,  7 Oct 2024 13:50:16 +0200
-Message-ID: <20241007115027.243425-2-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 02/12] .gitlab-ci.d/cirrus: Drop support for macOS 13 (Ventura)
+Date: Mon,  7 Oct 2024 13:50:17 +0200
+Message-ID: <20241007115027.243425-3-thuth@redhat.com>
 In-Reply-To: <20241007115027.243425-1-thuth@redhat.com>
 References: <20241007115027.243425-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -79,78 +80,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to https://marc.info/?l=fedora-devel-list&m=171934833215726
-the GlusterFS development effectively ended. Thus mark it as deprecated
-in QEMU, so we can remove it in a future release if the project does
-not gain momentum again.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Acked-by: Niels de Vos <ndevos@redhat.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20241002082033.129022-1-thuth@redhat.com>
+macOS 15 "Sequoia" was released on September 16, 2024 [1].
+
+According to QEMU's support policy, we stop supporting
+the previous major release two years after the the new
+major release has been published. Time to remove support
+for macOS 13 (Ventura, released on October 2022, [2]).
+
+Promote the macOS 14 job, which was only built manually,
+to be run by default.
+
+[1] https://www.apple.com/newsroom/2024/09/macos-sequoia-is-available-today/
+[2] https://www.apple.com/newsroom/2022/10/macos-ventura-is-now-available/
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240917085058.1740-3-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/about/deprecated.rst | 9 +++++++++
- qapi/block-core.json      | 8 +++++++-
- block/gluster.c           | 2 ++
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ .gitlab-ci.d/cirrus.yml           | 17 -----------------
+ .gitlab-ci.d/cirrus/macos-13.vars | 16 ----------------
+ tests/lcitool/refresh             |  1 -
+ 3 files changed, 34 deletions(-)
+ delete mode 100644 .gitlab-ci.d/cirrus/macos-13.vars
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 48b230b0a0..c02bbb66f7 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -377,6 +377,15 @@ Specifying the iSCSI password in plain text on the command line using the
- used instead, to refer to a ``--object secret...`` instance that provides
- a password via a file, or encrypted.
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+index e49e1b61f0..cee089be76 100644
+--- a/.gitlab-ci.d/cirrus.yml
++++ b/.gitlab-ci.d/cirrus.yml
+@@ -60,22 +60,6 @@ x64-freebsd-14-build:
+     CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblaze-softmmu,mips64el-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,xtensa-softmmu
+     TEST_TARGETS: check
  
-+``gluster`` backend (since 9.2)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+According to https://marc.info/?l=fedora-devel-list&m=171934833215726
-+the GlusterFS development effectively ended. Unless the development
-+gains momentum again, the QEMU project will remove the gluster backend
-+in a future release.
-+
-+
- Character device options
- ''''''''''''''''''''''''
+-aarch64-macos-13-base-build:
+-  extends: .cirrus_build_job
+-  variables:
+-    NAME: macos-13
+-    CIRRUS_VM_INSTANCE_TYPE: macos_instance
+-    CIRRUS_VM_IMAGE_SELECTOR: image
+-    CIRRUS_VM_IMAGE_NAME: ghcr.io/cirruslabs/macos-ventura-base:latest
+-    CIRRUS_VM_CPUS: 12
+-    CIRRUS_VM_RAM: 24G
+-    UPDATE_COMMAND: brew update
+-    INSTALL_COMMAND: brew install
+-    PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gettext/bin
+-    PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
+-    CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblazeel-softmmu,mips64-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4-softmmu,xtensaeb-softmmu
+-    TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
+-
+ aarch64-macos-14-base-build:
+   extends: .cirrus_build_job
+   variables:
+@@ -90,4 +74,3 @@ aarch64-macos-14-base-build:
+     PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gettext/bin
+     PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
+     TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
+-    QEMU_JOB_OPTIONAL: 1
+diff --git a/.gitlab-ci.d/cirrus/macos-13.vars b/.gitlab-ci.d/cirrus/macos-13.vars
+deleted file mode 100644
+index ac3fa3a847..0000000000
+--- a/.gitlab-ci.d/cirrus/macos-13.vars
++++ /dev/null
+@@ -1,16 +0,0 @@
+-# THIS FILE WAS AUTO-GENERATED
+-#
+-#  $ lcitool variables macos-13 qemu
+-#
+-# https://gitlab.com/libvirt/libvirt-ci
+-
+-CCACHE='/opt/homebrew/bin/ccache'
+-CPAN_PKGS=''
+-CROSS_PKGS=''
+-MAKE='/opt/homebrew/bin/gmake'
+-NINJA='/opt/homebrew/bin/ninja'
+-PACKAGING_COMMAND='brew'
+-PIP3='/opt/homebrew/bin/pip3'
+-PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 gtk-vnc jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
+-PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+-PYTHON='/opt/homebrew/bin/python3'
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index a78219f7bc..5bc2edde7b 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -202,7 +202,6 @@ try:
+     # Cirrus packages lists for GitLab
+     #
+     generate_cirrus("freebsd-14")
+-    generate_cirrus("macos-13")
+     generate_cirrus("macos-14")
  
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 5c2b3ac0d4..2feae8e697 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -3190,12 +3190,18 @@
- #
- # @snapshot-access: Since 7.0
- #
-+# Features:
-+#
-+# @deprecated: Member @gluster is deprecated because GlusterFS
-+#     development ceased.
-+#
- # Since: 2.9
- ##
- { 'enum': 'BlockdevDriver',
-   'data': [ 'blkdebug', 'blklogwrites', 'blkreplay', 'blkverify', 'bochs',
-             'cloop', 'compress', 'copy-before-write', 'copy-on-read', 'dmg',
--            'file', 'snapshot-access', 'ftp', 'ftps', 'gluster',
-+            'file', 'snapshot-access', 'ftp', 'ftps',
-+            {'name': 'gluster', 'features': [ 'deprecated' ] },
-             {'name': 'host_cdrom', 'if': 'HAVE_HOST_BLOCK_DEVICE' },
-             {'name': 'host_device', 'if': 'HAVE_HOST_BLOCK_DEVICE' },
-             'http', 'https',
-diff --git a/block/gluster.c b/block/gluster.c
-index f8b415f381..f03d05251e 100644
---- a/block/gluster.c
-+++ b/block/gluster.c
-@@ -809,6 +809,8 @@ static int qemu_gluster_open(BlockDriverState *bs,  QDict *options,
-         goto out;
-     }
- 
-+    warn_report_once("'gluster' is deprecated");
-+
-     filename = qemu_opt_get(opts, GLUSTER_OPT_FILENAME);
- 
-     s->debug = qemu_opt_get_number(opts, GLUSTER_OPT_DEBUG,
+     #
 -- 
 2.46.1
 
