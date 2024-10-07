@@ -2,88 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA3A99371E
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE01199373A
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:23:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxtEb-0004q3-IO; Mon, 07 Oct 2024 15:17:33 -0400
+	id 1sxtGo-00085G-Q9; Mon, 07 Oct 2024 15:19:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sxtEZ-0004mf-DA
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 15:17:31 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sxtEW-000480-QP
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 15:17:31 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a9939f20ca0so367732866b.1
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 12:17:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728328647; x=1728933447; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=44Ilveo1rOi0WF58SKa3CGpa8bXpbaP11AShh6JMiTQ=;
- b=GFLL1QGHbE8MiN4fZP62DCmX406jzl0qxfnrBEuEwHe/f6hOCCC86P8w7dP8KVzNOu
- QUiyiFu8kFPyZkG9U/Mqr3wV8YDEB6GHioJuSxZ1+dd8pbEltWFH/UREKKoru8qZ5d19
- yGkUgzGnzXzHS2GCpuoX6KoTKuzLKshOtbHwVhoyIN3212wTbOqCAF0hoUSS+pGV3lpk
- QtIg2FZgn0pYg/uA6PfBmUSFbcGUBcHMIxpLeu9OVr5DfZ6dpGgjRiA9jCn57mW5x1yo
- P78guCEaDf98aOcLPaAvGM7BpI+BDZaXHP0y/eR5JT3J4icOlb2Osyh/uuoWjc3SpB83
- WPvQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sxtFV-0006Ft-G9
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 15:18:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sxtFU-0004Ji-0n
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 15:18:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728328706;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=FC0do8QLQZQojwm5xRr5vLz+YlYwWK2qOE1wPRkAkSA=;
+ b=jMm2PqIoKsoGBgC8dGs5YPSQCd5fojdmcxw6FEM2PkmpQvgtQqfSAcuzqUl99A+Zjvbl7r
+ 8pgHa5RBBlRPGWUruVSVSCblmz1qnxEh3OiRgz8LwYfZyyw6mMoMyZMRsc+z2Dximj2jF6
+ 8Pw9AT8Pv9nfyw7ESdxXvufCIl1HYIw=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-389-U17hylVxPBShPbwdLzoyeg-1; Mon, 07 Oct 2024 15:18:24 -0400
+X-MC-Unique: U17hylVxPBShPbwdLzoyeg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6cb3a855022so89364156d6.2
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 12:18:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728328647; x=1728933447;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=44Ilveo1rOi0WF58SKa3CGpa8bXpbaP11AShh6JMiTQ=;
- b=Wv8kugtRFK+pciPdS5EFx5WAYLe+aHn7iL2iGwlIwFmxcRJrfVaLirMZ7Mc/jH0rMD
- HZ2Tlh/5VX0XCNBvETZRVHfKKHaNbHBF1hAPYWajKYV9bdOsDpvsYL4RBM68tBkAxIul
- wUqM6lu9rc9LP02WnVwBLSubL0Hrczzz09B+wT3mRXOY5RfZgFd4iK6GJI8qZiz05VZQ
- uD2M+mzDpBprhypKaVjfxXbUDMnA0jVQHM7A4L92NaHENrFagOQNXJRjQXwmRCBRvcE0
- 2GBK/HBUfQ8Kx4LYUQHi7uW2/9G0WMYkzsC5I/zgXy1s255a4+F8NSuxqHzU0vpreSi2
- s+QA==
-X-Gm-Message-State: AOJu0YzhPVaZybKQJipU9ad8HGECQClCqWri8OTKJLktTqwDyhLZxo0D
- knDFLtsU4w6tVovuzbQ8/Yr2gwy/JK/OEj1dw9WwlMm2k2vB8d//Paj1Uw==
-X-Google-Smtp-Source: AGHT+IFB4fSlbFXzTjjaWw8hVEmQyFSoCaaZ9YtjhP7039ZT+/vLLrBQjRL4Kk1IDNIGQbP1h09PnA==
-X-Received: by 2002:a17:907:9301:b0:a99:389a:63c2 with SMTP id
- a640c23a62f3a-a99389a66edmr805858866b.62.1728328646425; 
- Mon, 07 Oct 2024 12:17:26 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-078-054-083-243.78.54.pool.telefonica.de.
- [78.54.83.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a993c1b353dsm354618666b.35.2024.10.07.12.17.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Oct 2024 12:17:25 -0700 (PDT)
-Date: Mon, 07 Oct 2024 19:17:22 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?ISO-8859-1?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
-CC: Gert Wollny <gert.wollny@collabora.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v1_1/2=5D_ui/sdl2=3A_Don=27t_dis?=
- =?US-ASCII?Q?able_scanout_when_display_is_refreshed?=
-In-Reply-To: <6ae662db-fba6-43a5-8be9-8de01dd4f476@daynix.com>
-References: <20241006234353.3201037-1-dmitry.osipenko@collabora.com>
- <20241006234353.3201037-2-dmitry.osipenko@collabora.com>
- <6ae662db-fba6-43a5-8be9-8de01dd4f476@daynix.com>
-Message-ID: <5BB676BD-9F53-421A-BBE1-35FC5AF3B47B@gmail.com>
+ d=1e100.net; s=20230601; t=1728328704; x=1728933504;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FC0do8QLQZQojwm5xRr5vLz+YlYwWK2qOE1wPRkAkSA=;
+ b=SteOBpuBhRkM38KDO0K/hCWEIJYxLuO0w6jYMNrqNHw8bMjNJsmE8bQHMa6EJiBALd
+ /7Dg1kDF8FS/kwMOLQ7BN7M3nv3eJHO7OoeMMrKjleMC9/Ipyy6q2u4YvEXa7h3N5/rH
+ 3WYPjRnoGlmY4E3PE//iwcvwyXFkcx34zJKQHLoQv1gk2UpUXhhF8TwGwH0BPHSaWPir
+ Pw0LkutNZvYWgKwLoH2R69YHXl2hoU3/UqARcsep1G9vf09bjWLg65aR0D+DqLQOFeAS
+ Z2vbNMW5xeI3Tg1uNze9dd5s6j7y4/EnOdhjtvwujwDbeXMeJvdU5tJj2xebSoKYZ48r
+ N8Pw==
+X-Gm-Message-State: AOJu0YzGuP06SQLVp9pXARRaiV3RbX0bfRPVdX3c5ozeKfQT18j1CnhB
+ m0cTjG0r1cB+J457L5rSFaS0wRCu71DW5e0uhb9X9FP9iMohJwrebGUVZNDFjOofopCv662DDhp
+ /gqaSReLQ9ohVa9R/jT+qGpQbSRkMK8pQBg5GX7laZpi+6oPmjXun
+X-Received: by 2002:a05:6214:4906:b0:6cb:8267:4a0e with SMTP id
+ 6a1803df08f44-6cb9a0328abmr215031336d6.0.1728328703771; 
+ Mon, 07 Oct 2024 12:18:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFE8JDz1gXTVDyv0R9+srHcOHH2I2SWti/CtyYLzbDhmIPlDbw9rkHXuqJ+8uqf82fyzzM8Hg==
+X-Received: by 2002:a05:6214:4906:b0:6cb:8267:4a0e with SMTP id
+ 6a1803df08f44-6cb9a0328abmr215030886d6.0.1728328703384; 
+ Mon, 07 Oct 2024 12:18:23 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6cba46cad49sm28413456d6.4.2024.10.07.12.18.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Oct 2024 12:18:22 -0700 (PDT)
+Date: Mon, 7 Oct 2024 15:18:20 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH V2 12/13] migration: split qmp_migrate
+Message-ID: <ZwQz_JpY7ZBJIptN@x1n>
+References: <1727725244-105198-1-git-send-email-steven.sistare@oracle.com>
+ <1727725244-105198-13-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1727725244-105198-13-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,41 +104,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Sep 30, 2024 at 12:40:43PM -0700, Steve Sistare wrote:
+> Split qmp_migrate into start and finish functions.  Finish will be
+> called asynchronously in a subsequent patch, but for now, call it
+> immediately.  No functional change.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Am 7=2E Oktober 2024 18:15:11 UTC schrieb Akihiko Odaki <akihiko=2Eodaki@d=
-aynix=2Ecom>:
->On 2024/10/07 8:43, Dmitry Osipenko wrote:
->> Display refreshment is invoked by a timer and it erroneously disables
->> the active scanout if it happens to be invoked after scanout has been
->> enabled=2E This offending scanout-disable race condition with a timer
->> can be easily hit when Qemu runs with a disabled vsync by using SDL or
->> GTK displays (with vblank_mode=3D0 for GTK)=2E Refreshment of display's
->> content shouldn't disable the active display=2E Fix it by keeping the
->> scanout's state unchanged when display is redrawn=2E
->>=20
->> Signed-off-by: Dmitry Osipenko <dmitry=2Eosipenko@collabora=2Ecom>
->
->Reviewed-by: Akihiko Odaki <akihiko=2Eodaki@daynix=2Ecom>
+-- 
+Peter Xu
 
-Tested-by: Bernhard Beschow <shentey@gmail=2Ecom>
-
->
->> ---
->>   ui/sdl2-gl=2Ec | 1 -
->>   1 file changed, 1 deletion(-)
->>=20
->> diff --git a/ui/sdl2-gl=2Ec b/ui/sdl2-gl=2Ec
->> index e01d9ab0c7bf=2E=2E4975d923db38 100644
->> --- a/ui/sdl2-gl=2Ec
->> +++ b/ui/sdl2-gl=2Ec
->> @@ -51,7 +51,6 @@ static void sdl2_gl_render_surface(struct sdl2_consol=
-e *scon)
->>       int ww, wh;
->>         SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
->> -    sdl2_set_scanout_mode(scon, false);
->>         SDL_GetWindowSize(scon->real_window, &ww, &wh);
->>       surface_gl_setup_viewport(scon->gls, scon->surface, ww, wh);
->
->
 
