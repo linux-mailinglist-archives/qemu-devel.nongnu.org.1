@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D738199371F
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76891993721
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:20:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxtEU-0004es-C4; Mon, 07 Oct 2024 15:17:26 -0400
+	id 1sxtEi-00052j-BJ; Mon, 07 Oct 2024 15:17:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtEK-0004US-Ln; Mon, 07 Oct 2024 15:17:17 -0400
+ id 1sxtEf-0004zD-LQ; Mon, 07 Oct 2024 15:17:37 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtEI-00046H-UP; Mon, 07 Oct 2024 15:17:16 -0400
+ id 1sxtEd-00046W-Tr; Mon, 07 Oct 2024 15:17:37 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A6BA996246;
+ by isrv.corpit.ru (Postfix) with ESMTP id B79A596247;
  Mon,  7 Oct 2024 22:16:48 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7409A14F727;
+ by tsrv.corpit.ru (Postfix) with SMTP id 90A1014F728;
  Mon,  7 Oct 2024 22:16:55 +0300 (MSK)
-Received: (nullmailer pid 2592731 invoked by uid 1000);
+Received: (nullmailer pid 2592734 invoked by uid 1000);
  Mon, 07 Oct 2024 19:16:54 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Jan=20Kl=C3=B6tzke?= <jan.kloetzke@kernkonzept.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 10/32] hw/intc/arm_gic: fix spurious level triggered
- interrupts
-Date: Mon,  7 Oct 2024 22:16:27 +0300
-Message-Id: <20241007191654.2592616-10-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Gert Wollny <gert.wollny@collabora.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 11/32] ui/sdl2: set swap interval explicitly when
+ OpenGL is enabled
+Date: Mon,  7 Oct 2024 22:16:28 +0300
+Message-Id: <20241007191654.2592616-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
@@ -62,76 +63,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jan Klötzke <jan.kloetzke@kernkonzept.com>
+From: Gert Wollny <gert.wollny@collabora.com>
 
-On GICv2 and later, level triggered interrupts are pending when either
-the interrupt line is asserted or the interrupt was made pending by a
-GICD_ISPENDRn write. Making a level triggered interrupt pending by
-software persists until either the interrupt is acknowledged or cleared
-by writing GICD_ICPENDRn. As long as the interrupt line is asserted,
-the interrupt is pending in any case.
+Before 176e3783f2ab (ui/sdl2: OpenGL window context)
+SDL_CreateRenderer was called unconditionally setting
+the swap interval to 0. Since SDL_CreateRenderer is now no
+longer called when OpenGL is enabled, the swap interval is
+no longer set explicitly and vsync handling depends on
+the environment settings which may lead to a performance
+regression with virgl as reported in
+   https://gitlab.com/qemu-project/qemu/-/issues/2565
 
-This logic is transparently implemented in gic_test_pending() for
-GICv1 and GICv2.  The function combines the "pending" irq_state flag
-(used for edge triggered interrupts and software requests) and the
-line status (tracked in the "level" field).  However, we also
-incorrectly set the pending flag on a guest write to GICD_ISENABLERn
-if the line of a level triggered interrupt was asserted.  This keeps
-the interrupt pending even if the line is de-asserted after some
-time.
+Restore the old vsync handling by explicitly calling
+SDL_GL_SetSwapInterval if OpenGL is enabled.
 
-This incorrect logic is a leftover of the initial 11MPCore GIC
-implementation.  That handles things slightly differently to the
-architected GICv1 and GICv2.  The 11MPCore TRM does not give a lot of
-detail on the corner cases of its GIC's behaviour, and historically
-we have not wanted to investigate exactly what it does in reality, so
-QEMU's GIC model takes the approach of "retain our existing behaviour
-for 11MPCore, and implement the architectural standard for later GIC
-revisions".
+Fixes: 176e3783f2ab (ui/sdl2: OpenGL window context)
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/2565
 
-On that basis, commit 8d999995e45c10 in 2013 is where we added the
-"level-triggered interrupt with the line asserted" handling to
-gic_test_pending(), and we deliberately kept the old behaviour of
-gic_test_pending() for REV_11MPCORE.  That commit should have added
-the "only if 11MPCore" condition to the setting of the pending bit on
-writes to GICD_ISENABLERn, but forgot it.
-
-Add the missing "if REV_11MPCORE" condition, so that our behaviour
-on GICv1 and GICv2 matches the GIC architecture requirements.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 8d999995e45c10 ("arm_gic: Fix GIC pending behavior")
-Signed-off-by: Jan Klötzke <jan.kloetzke@kernkonzept.com>
-Message-id: 20240911114826.3558302-1-jan.kloetzke@kernkonzept.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: expanded comment a little and converted to coding-style form;
- expanded commit message with the historical backstory]
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 110684c9a69a02cbabfbddcd3afa921826ad565c)
+Signed-off-by: Gert Wollny <gert.wollny@collabora.com>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <01020191e05ce6df-84da6386-62c2-4ce8-840e-ad216ac253dd-000000@eu-west-1.amazonses.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit ae23cd00170baaa2777eb1ee87b70f472dbb3c44)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/arm_gic.c b/hw/intc/arm_gic.c
-index 806832439b..2a48f0da2f 100644
---- a/hw/intc/arm_gic.c
-+++ b/hw/intc/arm_gic.c
-@@ -1263,9 +1263,14 @@ static void gic_dist_writeb(void *opaque, hwaddr offset,
-                     trace_gic_enable_irq(irq + i);
-                 }
-                 GIC_DIST_SET_ENABLED(irq + i, cm);
--                /* If a raised level triggered IRQ enabled then mark
--                   is as pending.  */
--                if (GIC_DIST_TEST_LEVEL(irq + i, mask)
-+                /*
-+                 * If a raised level triggered IRQ enabled then mark
-+                 * it as pending on 11MPCore. For other GIC revisions we
-+                 * handle the "level triggered and line asserted" check
-+                 * at the other end in gic_test_pending().
-+                 */
-+                if (s->revision == REV_11MPCORE
-+                        && GIC_DIST_TEST_LEVEL(irq + i, mask)
-                         && !GIC_DIST_TEST_EDGE_TRIGGER(irq + i)) {
-                     DPRINTF("Set %d pending mask %x\n", irq + i, mask);
-                     GIC_DIST_SET_PENDING(irq + i, mask);
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index 98ed974371..51299f3645 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -115,6 +115,7 @@ void sdl2_window_create(struct sdl2_console *scon)
+         SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
+ 
+         scon->winctx = SDL_GL_CreateContext(scon->real_window);
++        SDL_GL_SetSwapInterval(0);
+     } else {
+         /* The SDL renderer is only used by sdl2-2D, when OpenGL is disabled */
+         scon->real_renderer = SDL_CreateRenderer(scon->real_window, -1, 0);
 -- 
 2.39.5
 
