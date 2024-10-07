@@ -2,91 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3EC992A15
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C0A992A05
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxlgG-0004OU-MP; Mon, 07 Oct 2024 07:13:36 -0400
+	id 1sxlbQ-0001XX-Lk; Mon, 07 Oct 2024 07:08:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1sxlgC-0004OG-Sd
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:13:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sxlbN-0001Wn-P8; Mon, 07 Oct 2024 07:08:34 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1sxlgB-0007qK-4F
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:13:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728299610;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=N39HMJKUuubVnSpToBC43TWYRWU8uMjoeLchpJ32A9k=;
- b=hb0zuLkb175e8IdsZPTiW7+LoJB2AkWDgvxyT1z6YcYlDtEUpVvIJrLBDWDcNROgmrq2xt
- ges6ku0UOGbOcHi3/eNaaWc1O3M5Hv56e+DrZ6c2x4miQXjCZRjISFkrDWWHS3iJVTXD0n
- bDeh+Uc+YgeGmIQ+b5iTGzbjajxNdUo=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-277-RlGhCry5P4KeQlUC-0vjOQ-1; Mon, 07 Oct 2024 07:13:29 -0400
-X-MC-Unique: RlGhCry5P4KeQlUC-0vjOQ-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-6cb317cd72eso96742066d6.1
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 04:13:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728299609; x=1728904409;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=N39HMJKUuubVnSpToBC43TWYRWU8uMjoeLchpJ32A9k=;
- b=eZq8tmIYkXPv0REkpyOUBf1cOjmp/ruWRp1lMu6RauXh3dOBH3YoDn7we+huHHaIsG
- VuoE3cDJ2rC8OYR+hewtCSiclihyUYwnFZezXKCtOIMfASZV31HYqeJ2NlMpqCp0dsEl
- s5G2n+e4vOno/0g88XkxAqeljIG6fG6qpDWfJe/MqBXqM5kcMqQDRFm9HM1W3gddroiS
- qaMvrIdC9+xKI/8WaBOBtMvXZxNpZH53ZxU6yP/cSR5uRL5Y8K/SNZ/v5Nfse08Zx2X+
- IdYs5T1nx1a996flsq5ckSUxv+on9e71oWU/4oPaoMjeasfvxwGqUdvVaTa1/oYEbyE9
- IAzw==
-X-Gm-Message-State: AOJu0YxRKcWRYbTpFY7ubCsFAEI3ieQpiwHD6qCXcPDNMazp5kmHqYKQ
- 6zFS1wmI9vb2O/VEn9MchQEwUK1lXtIbgm6qQocYQzJ44ATpbdpoJ6OumYDMF/XEFdulCEfbsfR
- Wtd3BU4Uza5ZlmRgndwboYEDToufibGTggCvoB+KIE/9oC35FVRtyxQrrA0DyH0DkPhkvg9Ai6m
- YUCCMPew7cqX/2g9HRJEHg+stbMv0=
-X-Received: by 2002:a05:6214:5890:b0:6cb:60c8:b698 with SMTP id
- 6a1803df08f44-6cb9a30922bmr171037356d6.19.1728299608817; 
- Mon, 07 Oct 2024 04:13:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFPWm8CoeB+aGA0AWKvBfnLnASGupErTEQ5Jha2auxzLGberMAN+Eja8RKT9fNXRgsnm2gWYujDfybF1TRT88s=
-X-Received: by 2002:a05:6214:5890:b0:6cb:60c8:b698 with SMTP id
- 6a1803df08f44-6cb9a30922bmr171036946d6.19.1728299608459; Mon, 07 Oct 2024
- 04:13:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sxlbL-0007Bn-4M; Mon, 07 Oct 2024 07:08:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728299311; x=1759835311;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=hpwrGxuedAeKuZjTNzgbaWYzvlowhimdFInbSjmkp9g=;
+ b=d8uHpSd7VqE+IOBbTYYgEqYxHitjEPuxJmKvf2nYCy8XdR6JoK7YT6DV
+ ovKnoW9J7Ddg4PhRhrMsJSd+mHZGCaHS7f4Of34RBZRkFGxgwIAX59MmZ
+ n1ZSaRB4qDBTj6pyUd1xohtGXmHbvNoOkJvSEv5/FybChG9WW4vrWLQzp
+ zGsqDpJLn4xyy3bAc608yVI8JVcC6ddslbHYKcyCK2Eh7/bc0za5y2UKd
+ 6kwynbE+L+13R9id77L1za0l1nn3R67L5fRuOELvE4o/0ZZg98iirN6VX
+ e41XodDciEOsn8rP1cgUsqbzMsOWrDt5+v/1CbUr81k6nusq5n5Oqwrfk Q==;
+X-CSE-ConnectionGUID: LwG4B1seS9adT4dB/XjpfA==
+X-CSE-MsgGUID: vGyqoNywSIKrksKb+ID0Iw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="31233863"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="31233863"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2024 04:08:27 -0700
+X-CSE-ConnectionGUID: AQYZDfABQIaxfDs9ei+I9g==
+X-CSE-MsgGUID: h8O7y00TS2SmBdz6F04s3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="75875239"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa007.jf.intel.com with ESMTP; 07 Oct 2024 04:08:22 -0700
+Date: Mon, 7 Oct 2024 19:24:33 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S.Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v2 5/7] i386/cpu: Support thread and module level cache
+ topology
+Message-ID: <ZwPE8foi2qviMQSB@intel.com>
+References: <20240908125920.1160236-1-zhao1.liu@intel.com>
+ <20240908125920.1160236-6-zhao1.liu@intel.com>
+ <20240917100508.00001907@Huawei.com>
 MIME-Version: 1.0
-References: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
- <20241003112244.3340697-10-marcandre.lureau@redhat.com>
- <e02d28c2-d192-49d9-9f83-d45204e63642@daynix.com>
-In-Reply-To: <e02d28c2-d192-49d9-9f83-d45204e63642@daynix.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Mon, 7 Oct 2024 15:13:17 +0400
-Message-ID: <CAMxuvawRGtZqZmXAS+KOQr61UJc1vDPjRKcmmAg_MKpDWZAU7w@mail.gmail.com>
-Subject: Re: [PATCH 09/16] ui/pixman: generalize shared_image_destroy
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- belmouss@redhat.com, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240917100508.00001907@Huawei.com>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,135 +97,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On Tue, Sep 17, 2024 at 10:05:08AM +0100, Jonathan Cameron wrote:
+> Date: Tue, 17 Sep 2024 10:05:08 +0100
+> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> Subject: Re: [PATCH v2 5/7] i386/cpu: Support thread and module level cache
+>  topology
+> X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+> 
+> On Sun,  8 Sep 2024 20:59:18 +0800
+> Zhao Liu <zhao1.liu@intel.com> wrote:
+> 
+> > Allow cache to be defined at the thread and module level. This
+> > increases flexibility for x86 users to customize their cache topology.
+> > 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+>
+> Will be interesting to see if anyone uses the thread level, but
+> no harm in supporting it.
 
-On Sat, Oct 5, 2024 at 12:50=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
-.com> wrote:
->
-> On 2024/10/03 20:22, marcandre.lureau@redhat.com wrote:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > Learn to free memfd-allocated shared memory.
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > ---
-> >   include/ui/qemu-pixman.h |  2 +-
-> >   hw/display/virtio-gpu.c  |  4 ++--
-> >   ui/console.c             |  2 +-
-> >   ui/qemu-pixman.c         | 20 ++++++++++++--------
-> >   4 files changed, 16 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
-> > index e3dd72b9e3..a97f56d09a 100644
-> > --- a/include/ui/qemu-pixman.h
-> > +++ b/include/ui/qemu-pixman.h
-> > @@ -97,7 +97,7 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
-> >
-> >   void qemu_pixman_image_unref(pixman_image_t *image);
-> >
-> > -void qemu_pixman_win32_image_destroy(pixman_image_t *image, void *data=
-);
-> > +void qemu_pixman_shared_image_destroy(pixman_image_t *image, void *dat=
-a);
-> >
-> >   G_DEFINE_AUTOPTR_CLEANUP_FUNC(pixman_image_t, qemu_pixman_image_unref=
-)
-> >
-> > diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> > index 017a0f170c..77f6e76f23 100644
-> > --- a/hw/display/virtio-gpu.c
-> > +++ b/hw/display/virtio-gpu.c
-> > @@ -298,7 +298,7 @@ static void virtio_gpu_resource_create_2d(VirtIOGPU=
- *g,
-> >               bits, c2d.height ? res->hostmem / c2d.height : 0);
-> >   #ifdef WIN32
-> >           if (res->image) {
-> > -            pixman_image_set_destroy_function(res->image, qemu_pixman_=
-win32_image_destroy, res->handle);
-> > +            pixman_image_set_destroy_function(res->image, qemu_pixman_=
-shared_image_destroy, res->handle);
-> >           }
-> >   #endif
-> >       }
-> > @@ -1317,7 +1317,7 @@ static int virtio_gpu_load(QEMUFile *f, void *opa=
-que, size_t size,
-> >               return -EINVAL;
-> >           }
-> >   #ifdef WIN32
-> > -        pixman_image_set_destroy_function(res->image, qemu_pixman_win3=
-2_image_destroy, res->handle);
-> > +        pixman_image_set_destroy_function(res->image, qemu_pixman_shar=
-ed_image_destroy, res->handle);
-> >   #endif
-> >
-> >           res->addrs =3D g_new(uint64_t, res->iov_cnt);
-> > diff --git a/ui/console.c b/ui/console.c
-> > index 8f416ff0b9..fdd76c2be4 100644
-> > --- a/ui/console.c
-> > +++ b/ui/console.c
-> > @@ -487,7 +487,7 @@ DisplaySurface *qemu_create_displaysurface(int widt=
-h, int height)
-> >   #ifdef WIN32
-> >       qemu_displaysurface_win32_set_handle(surface, handle, 0);
-> >       pixman_image_set_destroy_function(surface->image,
-> > -                                      qemu_pixman_win32_image_destroy,=
- handle);
-> > +                                      qemu_pixman_shared_image_destroy=
-, handle);
-> >   #endif
-> >       return surface;
-> >   }
-> > diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
-> > index 3870e1a215..43050ab7c5 100644
-> > --- a/ui/qemu-pixman.c
-> > +++ b/ui/qemu-pixman.c
-> > @@ -6,6 +6,7 @@
-> >   #include "qemu/osdep.h"
-> >   #include "qapi/error.h"
-> >   #include "ui/console.h"
-> > +#include "qemu/memfd.h"
-> >   #include "standard-headers/drm/drm_fourcc.h"
-> >   #include "trace.h"
-> >
-> > @@ -269,16 +270,19 @@ void qemu_pixman_glyph_render(pixman_image_t *gly=
-ph,
-> >   }
-> >   #endif /* CONFIG_PIXMAN */
-> >
-> > -#ifdef WIN32
-> >   void
-> > -qemu_pixman_win32_image_destroy(pixman_image_t *image, void *data)
-> > +qemu_pixman_shared_image_destroy(pixman_image_t *image, void *data)
-> >   {
-> > +    void *ptr =3D pixman_image_get_data(image);
-> > +
-> > +#ifndef WIN32
->
-> I think it is better to have #ifdef instead of #ifndef. It is a common
-> pattern to have #ifdef and #elif defined() for the platform-specific
-> code and follow them with #else that implements the generic code. This
-> allows supporting multiple platform conditions.
+x86 CPU has a legacy property "x-l1-cache-per-thread". This is the old
+QEMU cache topology behavior, kept for compatibility. Now add thread
+level and I can refactor the code for this thread level.
 
-indeed! thanks
+> I guess this would be a case of RDT
+> / MPAM etc as I'm not sure I've seen an SMT processor with
+> private caches. Some old papers seems to suggest that it might
+> make sense for smt 8 and above.
 
->
-> > +    int shmfd =3D GPOINTER_TO_INT(data);
-> > +    size_t size =3D pixman_image_get_height(image) * pixman_image_get_=
-stride(image);
-> > +
-> > +    qemu_memfd_free(ptr, size, shmfd);
-> > +#else
-> >       HANDLE handle =3D data;
-> >
-> > -    qemu_win32_map_free(
-> > -        pixman_image_get_data(image),
-> > -        handle,
-> > -        &error_warn
-> > -    );
-> > -}
-> > +    qemu_win32_map_free(ptr, handle, &error_warn);
-> >   #endif
-> > +}
->
+Thanks for the hint, I'll think about whether some of the RDT / MPAM
+cases can be applied here.
+
+> Anyhow, patch is fine
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+Thanks!
+
+-Zhao
 
 
