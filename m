@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D3499373F
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5CC99372A
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:21:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxtFo-0005zo-Uf; Mon, 07 Oct 2024 15:18:50 -0400
+	id 1sxtGi-0007JY-J5; Mon, 07 Oct 2024 15:19:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtFD-0005ia-1H; Mon, 07 Oct 2024 15:18:11 -0400
+ id 1sxtFZ-0006In-Js; Mon, 07 Oct 2024 15:18:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtFB-0004GP-8L; Mon, 07 Oct 2024 15:18:10 -0400
+ id 1sxtFY-0004HZ-0O; Mon, 07 Oct 2024 15:18:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 51BB596250;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6019596251;
  Mon,  7 Oct 2024 22:16:49 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2B88514F730;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3B16E14F731;
  Mon,  7 Oct 2024 22:16:56 +0300 (MSK)
-Received: (nullmailer pid 2592759 invoked by uid 1000);
+Received: (nullmailer pid 2592762 invoked by uid 1000);
  Mon, 07 Oct 2024 19:16:54 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 19/32] target/arm: Correct ID_AA64ISAR1_EL1 value for
- neoverse-v1
-Date: Mon,  7 Oct 2024 22:16:36 +0300
-Message-Id: <20241007191654.2592616-19-mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 20/32] target/hppa: Fix random 32-bit linux-user crashes
+Date: Mon,  7 Oct 2024 22:16:37 +0300
+Message-Id: <20241007191654.2592616-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
@@ -62,37 +60,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Helge Deller <deller@gmx.de>
 
-The Neoverse-V1 TRM is a bit confused about the layout of the
-ID_AA64ISAR1_EL1 register, and so its table 3-6 has the wrong value
-for this ID register.  Trust instead section 3.2.74's list of which
-fields are set.
+The linux-user hppa target crashes randomly for me since commit
+081a0ed188d8 ("target/hppa: Do not mask in copy_iaoq_entry").
 
-This means that we stop incorrectly reporting FEAT_XS as present, and
-now report the presence of FEAT_BF16.
+That commit dropped the masking of the IAOQ addresses while copying them
+from other registers and instead keeps them with all 64 bits up until
+the full gva is formed with the help of hppa_form_gva_psw().
 
-Cc: qemu-stable@nongnu.org
-Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+So, when running in linux-user mode on an emulated 64-bit CPU, we need
+to mask to a 32-bit address space at the very end in hppa_form_gva_psw()
+if the PSW-W flag isn't set (which is the case for linux-user on hppa).
+
+Fixes: 081a0ed188d8 ("target/hppa: Do not mask in copy_iaoq_entry")
+Cc: qemu-stable@nongnu.org # v9.1+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240917161337.3012188-1-peter.maydell@linaro.org
-(cherry picked from commit 8676007eff04bb4e454bcdf92fab3f855bcc59b3)
+(cherry picked from commit d33d3adb573794903380e03e767e06470514cefe)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index fe232eb306..8516daefca 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -685,7 +685,7 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
-     cpu->isar.id_aa64dfr0  = 0x000001f210305519ull;
-     cpu->isar.id_aa64dfr1 = 0x00000000;
-     cpu->isar.id_aa64isar0 = 0x1011111110212120ull; /* with FEAT_RNG */
--    cpu->isar.id_aa64isar1 = 0x0111000001211032ull;
-+    cpu->isar.id_aa64isar1 = 0x0011100001211032ull;
-     cpu->isar.id_aa64mmfr0 = 0x0000000000101125ull;
-     cpu->isar.id_aa64mmfr1 = 0x0000000010212122ull;
-     cpu->isar.id_aa64mmfr2 = 0x0220011102101011ull;
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 5478b183dc..43074d80bf 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -319,7 +319,7 @@ static inline target_ulong hppa_form_gva_psw(target_ulong psw, uint64_t spc,
+                                              target_ulong off)
+ {
+ #ifdef CONFIG_USER_ONLY
+-    return off;
++    return off & gva_offset_mask(psw);
+ #else
+     return spc | (off & gva_offset_mask(psw));
+ #endif
 -- 
 2.39.5
 
