@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6102B992ABE
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E782992ACF
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:52:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxmGf-000764-B7; Mon, 07 Oct 2024 07:51:13 -0400
+	id 1sxmGd-000705-QD; Mon, 07 Oct 2024 07:51:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGV-0006yB-IC
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:51:03 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGU-0006vj-R3
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:51:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGR-0005A2-Sr
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:51:03 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGT-0005A7-2F
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:51:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728301859;
+ s=mimecast20190719; t=1728301860;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3p/JdbEmhqBo7P2VBNn0c9W5O1Bv98YLzQl48+JwteE=;
- b=VyV1BGfX//lHCjLgFUtlkybtNZsgPk5ohKlG9n1xW10J90IwhF13LQt3P/A5PubP5RetnB
- XRWBb1GsJX+vgiycfCXjC3Iq4439wHqUqN/z9se4ML2lOckKKzQTdO4WF1Tt939JDbPytw
- W8ECAcRJ7cPFwaAv3iz1z0Mt4OVpUYk=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=P+4EUWDQDbf57uL93QwVw8I4I0w22pv7O5Ga/qquH3k=;
+ b=Z/6/tTvTMuoHkEmy/RpQIucQuBjkviSqQJZjUsANAaF0dInDcFKIwkueQNm125cc7dPH/Z
+ Ivqw4plDQzeIk8f3UGFMVZgHgwRmUovqiBG4L0XSmdvfuPbkazw8ShuytPj8ZgckVSrPbC
+ uq8J4RGTJmVMl4Hqrk0uWUzeDHEqCus=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-x6UJK5MeO9eDPPuxM6qPTA-1; Mon,
- 07 Oct 2024 07:50:55 -0400
-X-MC-Unique: x6UJK5MeO9eDPPuxM6qPTA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-5-yWAZNP1VPlyoMK97VzWA8w-1; Mon,
+ 07 Oct 2024 07:50:58 -0400
+X-MC-Unique: yWAZNP1VPlyoMK97VzWA8w-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C1D741944D1D; Mon,  7 Oct 2024 11:50:54 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5593F1955EAA; Mon,  7 Oct 2024 11:50:57 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.46])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ED8F819560AE; Mon,  7 Oct 2024 11:50:52 +0000 (UTC)
+ id 88C9219560B2; Mon,  7 Oct 2024 11:50:55 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/12] hw/s390x: Use explicit big-endian LD/ST API
-Date: Mon,  7 Oct 2024 13:50:23 +0200
-Message-ID: <20241007115027.243425-9-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 09/12] target/s390x: Replace ldtul_p() -> ldq_p()
+Date: Mon,  7 Oct 2024 13:50:24 +0200
+Message-ID: <20241007115027.243425-10-thuth@redhat.com>
 In-Reply-To: <20241007115027.243425-1-thuth@redhat.com>
 References: <20241007115027.243425-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,441 +83,124 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The S390X architecture uses big endianness. Directly use
-the big-endian LD/ST API.
+The S390X  target is only built for 64-bit.
+Using ldtul_p() is pointless, replace by ldq_p().
 
-Mechanical change using:
+Mechanical change doing:
 
-  $ end=be; \
-    for acc in uw w l q tul; do \
-      sed -i -e "s/ld${acc}_p(/ld${acc}_${end}_p(/" \
-             -e "s/st${acc}_p(/st${acc}_${end}_p(/" \
-        $(git grep -wlE '(ld|st)t?u?[wlq]_p' hw/s390x/); \
-    done
+  $ sed -i -e 's/ldtul_p/ldq_p/' $(git grep -wl ldtul_p target/s390x/)
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241004163042.85922-23-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20241004163042.85922-5-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/ipl.c           |   4 +-
- hw/s390x/s390-pci-inst.c | 166 +++++++++++++++++++--------------------
- 2 files changed, 85 insertions(+), 85 deletions(-)
+ target/s390x/gdbstub.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-index dd71689642..5ab7433908 100644
---- a/hw/s390x/ipl.c
-+++ b/hw/s390x/ipl.c
-@@ -252,8 +252,8 @@ static void s390_ipl_realize(DeviceState *dev, Error **errp)
-              */
-             romptr = rom_ptr(INITRD_PARM_START, 16);
-             if (romptr) {
--                stq_p(romptr, initrd_offset);
--                stq_p(romptr + 1, initrd_size);
-+                stq_be_p(romptr, initrd_offset);
-+                stq_be_p(romptr + 1, initrd_size);
-             }
-         }
-     }
-diff --git a/hw/s390x/s390-pci-inst.c b/hw/s390x/s390-pci-inst.c
-index 30149546c0..41655082da 100644
---- a/hw/s390x/s390-pci-inst.c
-+++ b/hw/s390x/s390-pci-inst.c
-@@ -55,26 +55,26 @@ static int list_pci(ClpReqRspListPci *rrb, uint8_t *cc)
-     uint64_t resume_token;
+diff --git a/target/s390x/gdbstub.c b/target/s390x/gdbstub.c
+index a9f4eb92ad..9ffec0bccb 100644
+--- a/target/s390x/gdbstub.c
++++ b/target/s390x/gdbstub.c
+@@ -46,7 +46,7 @@ int s390_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ int s390_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+     CPUS390XState *env = cpu_env(cs);
+-    target_ulong tmpl = ldtul_p(mem_buf);
++    target_ulong tmpl = ldq_p(mem_buf);
  
-     rc = 0;
--    if (lduw_p(&rrb->request.hdr.len) != 32) {
-+    if (lduw_be_p(&rrb->request.hdr.len) != 32) {
-         res_code = CLP_RC_LEN;
-         rc = -EINVAL;
-         goto out;
-     }
- 
--    if ((ldl_p(&rrb->request.fmt) & CLP_MASK_FMT) != 0) {
-+    if ((ldl_be_p(&rrb->request.fmt) & CLP_MASK_FMT) != 0) {
-         res_code = CLP_RC_FMT;
-         rc = -EINVAL;
-         goto out;
-     }
- 
--    if ((ldl_p(&rrb->request.fmt) & ~CLP_MASK_FMT) != 0 ||
--        ldq_p(&rrb->request.reserved1) != 0) {
-+    if ((ldl_be_p(&rrb->request.fmt) & ~CLP_MASK_FMT) != 0 ||
-+        ldq_be_p(&rrb->request.reserved1) != 0) {
-         res_code = CLP_RC_RESNOT0;
-         rc = -EINVAL;
-         goto out;
-     }
- 
--    resume_token = ldq_p(&rrb->request.resume_token);
-+    resume_token = ldq_be_p(&rrb->request.resume_token);
- 
-     if (resume_token) {
-         pbdev = s390_pci_find_dev_by_idx(s, resume_token);
-@@ -87,13 +87,13 @@ static int list_pci(ClpReqRspListPci *rrb, uint8_t *cc)
-         pbdev = s390_pci_find_next_avail_dev(s, NULL);
-     }
- 
--    if (lduw_p(&rrb->response.hdr.len) < 48) {
-+    if (lduw_be_p(&rrb->response.hdr.len) < 48) {
-         res_code = CLP_RC_8K;
-         rc = -EINVAL;
-         goto out;
-     }
- 
--    initial_l2 = lduw_p(&rrb->response.hdr.len);
-+    initial_l2 = lduw_be_p(&rrb->response.hdr.len);
-     if ((initial_l2 - LIST_PCI_HDR_LEN) % sizeof(ClpFhListEntry)
-         != 0) {
-         res_code = CLP_RC_LEN;
-@@ -102,33 +102,33 @@ static int list_pci(ClpReqRspListPci *rrb, uint8_t *cc)
-         goto out;
-     }
- 
--    stl_p(&rrb->response.fmt, 0);
--    stq_p(&rrb->response.reserved1, 0);
--    stl_p(&rrb->response.mdd, FH_MASK_SHM);
--    stw_p(&rrb->response.max_fn, PCI_MAX_FUNCTIONS);
-+    stl_be_p(&rrb->response.fmt, 0);
-+    stq_be_p(&rrb->response.reserved1, 0);
-+    stl_be_p(&rrb->response.mdd, FH_MASK_SHM);
-+    stw_be_p(&rrb->response.max_fn, PCI_MAX_FUNCTIONS);
-     rrb->response.flags = UID_CHECKING_ENABLED;
-     rrb->response.entry_size = sizeof(ClpFhListEntry);
- 
-     i = 0;
-     g_l2 = LIST_PCI_HDR_LEN;
-     while (g_l2 < initial_l2 && pbdev) {
--        stw_p(&rrb->response.fh_list[i].device_id,
-+        stw_be_p(&rrb->response.fh_list[i].device_id,
-             pci_get_word(pbdev->pdev->config + PCI_DEVICE_ID));
--        stw_p(&rrb->response.fh_list[i].vendor_id,
-+        stw_be_p(&rrb->response.fh_list[i].vendor_id,
-             pci_get_word(pbdev->pdev->config + PCI_VENDOR_ID));
-         /* Ignore RESERVED devices. */
--        stl_p(&rrb->response.fh_list[i].config,
-+        stl_be_p(&rrb->response.fh_list[i].config,
-             pbdev->state == ZPCI_FS_STANDBY ? 0 : 1 << 31);
--        stl_p(&rrb->response.fh_list[i].fid, pbdev->fid);
--        stl_p(&rrb->response.fh_list[i].fh, pbdev->fh);
-+        stl_be_p(&rrb->response.fh_list[i].fid, pbdev->fid);
-+        stl_be_p(&rrb->response.fh_list[i].fh, pbdev->fh);
- 
-         g_l2 += sizeof(ClpFhListEntry);
-         /* Add endian check for DPRINTF? */
-         trace_s390_pci_list_entry(g_l2,
--                lduw_p(&rrb->response.fh_list[i].vendor_id),
--                lduw_p(&rrb->response.fh_list[i].device_id),
--                ldl_p(&rrb->response.fh_list[i].fid),
--                ldl_p(&rrb->response.fh_list[i].fh));
-+                lduw_be_p(&rrb->response.fh_list[i].vendor_id),
-+                lduw_be_p(&rrb->response.fh_list[i].device_id),
-+                ldl_be_p(&rrb->response.fh_list[i].fid),
-+                ldl_be_p(&rrb->response.fh_list[i].fh));
-         pbdev = s390_pci_find_next_avail_dev(s, pbdev);
-         i++;
-     }
-@@ -138,13 +138,13 @@ static int list_pci(ClpReqRspListPci *rrb, uint8_t *cc)
-     } else {
-         resume_token = pbdev->fh & FH_MASK_INDEX;
-     }
--    stq_p(&rrb->response.resume_token, resume_token);
--    stw_p(&rrb->response.hdr.len, g_l2);
--    stw_p(&rrb->response.hdr.rsp, CLP_RC_OK);
-+    stq_be_p(&rrb->response.resume_token, resume_token);
-+    stw_be_p(&rrb->response.hdr.len, g_l2);
-+    stw_be_p(&rrb->response.hdr.rsp, CLP_RC_OK);
- out:
-     if (rc) {
-         trace_s390_pci_list(rc);
--        stw_p(&rrb->response.hdr.rsp, res_code);
-+        stw_be_p(&rrb->response.hdr.rsp, res_code);
-     }
-     return rc;
- }
-@@ -172,7 +172,7 @@ int clp_service_call(S390CPU *cpu, uint8_t r2, uintptr_t ra)
-         return 0;
-     }
-     reqh = (ClpReqHdr *)buffer;
--    req_len = lduw_p(&reqh->len);
-+    req_len = lduw_be_p(&reqh->len);
-     if (req_len < 16 || req_len > 8184 || (req_len % 8 != 0)) {
-         s390_program_interrupt(env, PGM_OPERAND, ra);
-         return 0;
-@@ -184,7 +184,7 @@ int clp_service_call(S390CPU *cpu, uint8_t r2, uintptr_t ra)
-         return 0;
-     }
-     resh = (ClpRspHdr *)(buffer + req_len);
--    res_len = lduw_p(&resh->len);
-+    res_len = lduw_be_p(&resh->len);
-     if (res_len < 8 || res_len > 8176 || (res_len % 8 != 0)) {
-         s390_program_interrupt(env, PGM_OPERAND, ra);
-         return 0;
-@@ -201,11 +201,11 @@ int clp_service_call(S390CPU *cpu, uint8_t r2, uintptr_t ra)
-     }
- 
-     if (req_len != 32) {
--        stw_p(&resh->rsp, CLP_RC_LEN);
-+        stw_be_p(&resh->rsp, CLP_RC_LEN);
-         goto out;
-     }
- 
--    switch (lduw_p(&reqh->cmd)) {
-+    switch (lduw_be_p(&reqh->cmd)) {
-     case CLP_LIST_PCI: {
-         ClpReqRspListPci *rrb = (ClpReqRspListPci *)buffer;
-         list_pci(rrb, &cc);
-@@ -215,9 +215,9 @@ int clp_service_call(S390CPU *cpu, uint8_t r2, uintptr_t ra)
-         ClpReqSetPci *reqsetpci = (ClpReqSetPci *)reqh;
-         ClpRspSetPci *ressetpci = (ClpRspSetPci *)resh;
- 
--        pbdev = s390_pci_find_dev_by_fh(s, ldl_p(&reqsetpci->fh));
-+        pbdev = s390_pci_find_dev_by_fh(s, ldl_be_p(&reqsetpci->fh));
-         if (!pbdev) {
--                stw_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_FH);
-+                stw_be_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_FH);
-                 goto out;
-         }
- 
-@@ -225,17 +225,17 @@ int clp_service_call(S390CPU *cpu, uint8_t r2, uintptr_t ra)
-         case CLP_SET_ENABLE_PCI_FN:
-             switch (reqsetpci->ndas) {
-             case 0:
--                stw_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_DMAAS);
-+                stw_be_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_DMAAS);
-                 goto out;
-             case 1:
-                 break;
-             default:
--                stw_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_RES);
-+                stw_be_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_RES);
-                 goto out;
-             }
- 
-             if (pbdev->fh & FH_MASK_ENABLE) {
--                stw_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_FHOP);
-+                stw_be_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_FHOP);
-                 goto out;
-             }
- 
-@@ -249,29 +249,29 @@ int clp_service_call(S390CPU *cpu, uint8_t r2, uintptr_t ra)
-                 /* Take this opportunity to make sure we are sync'd with host */
-                 if (!s390_pci_get_host_fh(pbdev, &pbdev->fh) ||
-                     !(pbdev->fh & FH_MASK_ENABLE)) {
--                    stw_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_FH);
-+                    stw_be_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_FH);
-                     goto out;
-                 }
-             }
-             pbdev->fh |= FH_MASK_ENABLE;
-             pbdev->state = ZPCI_FS_ENABLED;
--            stl_p(&ressetpci->fh, pbdev->fh);
--            stw_p(&ressetpci->hdr.rsp, CLP_RC_OK);
-+            stl_be_p(&ressetpci->fh, pbdev->fh);
-+            stw_be_p(&ressetpci->hdr.rsp, CLP_RC_OK);
-             break;
-         case CLP_SET_DISABLE_PCI_FN:
-             if (!(pbdev->fh & FH_MASK_ENABLE)) {
--                stw_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_FHOP);
-+                stw_be_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_FHOP);
-                 goto out;
-             }
-             device_cold_reset(DEVICE(pbdev));
-             pbdev->fh &= ~FH_MASK_ENABLE;
-             pbdev->state = ZPCI_FS_DISABLED;
--            stl_p(&ressetpci->fh, pbdev->fh);
--            stw_p(&ressetpci->hdr.rsp, CLP_RC_OK);
-+            stl_be_p(&ressetpci->fh, pbdev->fh);
-+            stw_be_p(&ressetpci->hdr.rsp, CLP_RC_OK);
-             break;
-         default:
-             trace_s390_pci_unknown("set-pci", reqsetpci->oc);
--            stw_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_FHOP);
-+            stw_be_p(&ressetpci->hdr.rsp, CLP_RC_SETPCIFN_FHOP);
-             break;
-         }
-         break;
-@@ -280,23 +280,23 @@ int clp_service_call(S390CPU *cpu, uint8_t r2, uintptr_t ra)
-         ClpReqQueryPci *reqquery = (ClpReqQueryPci *)reqh;
-         ClpRspQueryPci *resquery = (ClpRspQueryPci *)resh;
- 
--        pbdev = s390_pci_find_dev_by_fh(s, ldl_p(&reqquery->fh));
-+        pbdev = s390_pci_find_dev_by_fh(s, ldl_be_p(&reqquery->fh));
-         if (!pbdev) {
--            trace_s390_pci_nodev("query", ldl_p(&reqquery->fh));
--            stw_p(&resquery->hdr.rsp, CLP_RC_SETPCIFN_FH);
-+            trace_s390_pci_nodev("query", ldl_be_p(&reqquery->fh));
-+            stw_be_p(&resquery->hdr.rsp, CLP_RC_SETPCIFN_FH);
-             goto out;
-         }
- 
--        stq_p(&resquery->sdma, pbdev->zpci_fn.sdma);
--        stq_p(&resquery->edma, pbdev->zpci_fn.edma);
--        stw_p(&resquery->pchid, pbdev->zpci_fn.pchid);
--        stw_p(&resquery->vfn, pbdev->zpci_fn.vfn);
-+        stq_be_p(&resquery->sdma, pbdev->zpci_fn.sdma);
-+        stq_be_p(&resquery->edma, pbdev->zpci_fn.edma);
-+        stw_be_p(&resquery->pchid, pbdev->zpci_fn.pchid);
-+        stw_be_p(&resquery->vfn, pbdev->zpci_fn.vfn);
-         resquery->flags = pbdev->zpci_fn.flags;
-         resquery->pfgid = pbdev->zpci_fn.pfgid;
-         resquery->pft = pbdev->zpci_fn.pft;
-         resquery->fmbl = pbdev->zpci_fn.fmbl;
--        stl_p(&resquery->fid, pbdev->zpci_fn.fid);
--        stl_p(&resquery->uid, pbdev->zpci_fn.uid);
-+        stl_be_p(&resquery->fid, pbdev->zpci_fn.fid);
-+        stl_be_p(&resquery->uid, pbdev->zpci_fn.uid);
-         memcpy(resquery->pfip, pbdev->zpci_fn.pfip, CLP_PFIP_NR_SEGMENTS);
-         memcpy(resquery->util_str, pbdev->zpci_fn.util_str, CLP_UTIL_STR_LEN);
- 
-@@ -304,16 +304,16 @@ int clp_service_call(S390CPU *cpu, uint8_t r2, uintptr_t ra)
-             uint32_t data = pci_get_long(pbdev->pdev->config +
-                 PCI_BASE_ADDRESS_0 + (i * 4));
- 
--            stl_p(&resquery->bar[i], data);
-+            stl_be_p(&resquery->bar[i], data);
-             resquery->bar_size[i] = pbdev->pdev->io_regions[i].size ?
-                                     ctz64(pbdev->pdev->io_regions[i].size) : 0;
-             trace_s390_pci_bar(i,
--                    ldl_p(&resquery->bar[i]),
-+                    ldl_be_p(&resquery->bar[i]),
-                     pbdev->pdev->io_regions[i].size,
-                     resquery->bar_size[i]);
-         }
- 
--        stw_p(&resquery->hdr.rsp, CLP_RC_OK);
-+        stw_be_p(&resquery->hdr.rsp, CLP_RC_OK);
-         break;
-     }
-     case CLP_QUERY_PCI_FNGRP: {
-@@ -326,23 +326,23 @@ int clp_service_call(S390CPU *cpu, uint8_t r2, uintptr_t ra)
-         if (!group) {
-             /* We do not allow access to unknown groups */
-             /* The group must have been obtained with a vfio device */
--            stw_p(&resgrp->hdr.rsp, CLP_RC_QUERYPCIFG_PFGID);
-+            stw_be_p(&resgrp->hdr.rsp, CLP_RC_QUERYPCIFG_PFGID);
-             goto out;
-         }
-         resgrp->fr = group->zpci_group.fr;
--        stq_p(&resgrp->dasm, group->zpci_group.dasm);
--        stq_p(&resgrp->msia, group->zpci_group.msia);
--        stw_p(&resgrp->mui, group->zpci_group.mui);
--        stw_p(&resgrp->i, group->zpci_group.i);
--        stw_p(&resgrp->maxstbl, group->zpci_group.maxstbl);
-+        stq_be_p(&resgrp->dasm, group->zpci_group.dasm);
-+        stq_be_p(&resgrp->msia, group->zpci_group.msia);
-+        stw_be_p(&resgrp->mui, group->zpci_group.mui);
-+        stw_be_p(&resgrp->i, group->zpci_group.i);
-+        stw_be_p(&resgrp->maxstbl, group->zpci_group.maxstbl);
-         resgrp->version = group->zpci_group.version;
-         resgrp->dtsm = group->zpci_group.dtsm;
--        stw_p(&resgrp->hdr.rsp, CLP_RC_OK);
-+        stw_be_p(&resgrp->hdr.rsp, CLP_RC_OK);
-         break;
-     }
+     switch (n) {
+     case S390_PSWM_REGNUM:
+@@ -126,7 +126,7 @@ static int cpu_write_fp_reg(CPUState *cs, uint8_t *mem_buf, int n)
+         env->fpc = ldl_p(mem_buf);
+         return 4;
+     case S390_F0_REGNUM ... S390_F15_REGNUM:
+-        *get_freg(env, n - S390_F0_REGNUM) = ldtul_p(mem_buf);
++        *get_freg(env, n - S390_F0_REGNUM) = ldq_p(mem_buf);
+         return 8;
      default:
--        trace_s390_pci_unknown("clp", lduw_p(&reqh->cmd));
--        stw_p(&resh->rsp, CLP_RC_CMD);
-+        trace_s390_pci_unknown("clp", lduw_be_p(&reqh->cmd));
-+        stw_be_p(&resh->rsp, CLP_RC_CMD);
-         break;
-     }
- 
-@@ -914,7 +914,7 @@ int pcistb_service_call(S390CPU *cpu, uint8_t r1, uint8_t r3, uint64_t gaddr,
- 
-     for (i = 0; i < len / 8; i++) {
-         result = memory_region_dispatch_write(mr, offset + i * 8,
--                                              ldq_p(buffer + i * 8),
-+                                              ldq_be_p(buffer + i * 8),
-                                               MO_64, MEMTXATTRS_UNSPECIFIED);
-         if (result != MEMTX_OK) {
-             s390_program_interrupt(env, PGM_OPERAND, ra);
-@@ -935,13 +935,13 @@ specification_error:
- static int reg_irqs(CPUS390XState *env, S390PCIBusDevice *pbdev, ZpciFib fib)
- {
-     int ret, len;
--    uint8_t isc = FIB_DATA_ISC(ldl_p(&fib.data));
-+    uint8_t isc = FIB_DATA_ISC(ldl_be_p(&fib.data));
- 
-     pbdev->routes.adapter.adapter_id = css_get_adapter_id(
-                                        CSS_IO_ADAPTER_PCI, isc);
--    pbdev->summary_ind = get_indicator(ldq_p(&fib.aisb), sizeof(uint64_t));
--    len = BITS_TO_LONGS(FIB_DATA_NOI(ldl_p(&fib.data))) * sizeof(unsigned long);
--    pbdev->indicator = get_indicator(ldq_p(&fib.aibv), len);
-+    pbdev->summary_ind = get_indicator(ldq_be_p(&fib.aisb), sizeof(uint64_t));
-+    len = BITS_TO_LONGS(FIB_DATA_NOI(ldl_be_p(&fib.data))) * sizeof(unsigned long);
-+    pbdev->indicator = get_indicator(ldq_be_p(&fib.aibv), len);
- 
-     ret = map_indicator(&pbdev->routes.adapter, pbdev->summary_ind);
-     if (ret) {
-@@ -953,13 +953,13 @@ static int reg_irqs(CPUS390XState *env, S390PCIBusDevice *pbdev, ZpciFib fib)
-         goto out;
-     }
- 
--    pbdev->routes.adapter.summary_addr = ldq_p(&fib.aisb);
--    pbdev->routes.adapter.summary_offset = FIB_DATA_AISBO(ldl_p(&fib.data));
--    pbdev->routes.adapter.ind_addr = ldq_p(&fib.aibv);
--    pbdev->routes.adapter.ind_offset = FIB_DATA_AIBVO(ldl_p(&fib.data));
-+    pbdev->routes.adapter.summary_addr = ldq_be_p(&fib.aisb);
-+    pbdev->routes.adapter.summary_offset = FIB_DATA_AISBO(ldl_be_p(&fib.data));
-+    pbdev->routes.adapter.ind_addr = ldq_be_p(&fib.aibv);
-+    pbdev->routes.adapter.ind_offset = FIB_DATA_AIBVO(ldl_be_p(&fib.data));
-     pbdev->isc = isc;
--    pbdev->noi = FIB_DATA_NOI(ldl_p(&fib.data));
--    pbdev->sum = FIB_DATA_SUM(ldl_p(&fib.data));
-+    pbdev->noi = FIB_DATA_NOI(ldl_be_p(&fib.data));
-+    pbdev->sum = FIB_DATA_SUM(ldl_be_p(&fib.data));
- 
-     trace_s390_pci_irqs("register", pbdev->routes.adapter.adapter_id);
-     return 0;
-@@ -994,9 +994,9 @@ static int reg_ioat(CPUS390XState *env, S390PCIBusDevice *pbdev, ZpciFib fib,
-                     uintptr_t ra)
- {
-     S390PCIIOMMU *iommu = pbdev->iommu;
--    uint64_t pba = ldq_p(&fib.pba);
--    uint64_t pal = ldq_p(&fib.pal);
--    uint64_t g_iota = ldq_p(&fib.iota);
-+    uint64_t pba = ldq_be_p(&fib.pba);
-+    uint64_t pal = ldq_be_p(&fib.pal);
-+    uint64_t g_iota = ldq_be_p(&fib.iota);
-     uint8_t dt = (g_iota >> 2) & 0x7;
-     uint8_t t = (g_iota >> 11) & 0x1;
- 
-@@ -1289,7 +1289,7 @@ int mpcifc_service_call(S390CPU *cpu, uint8_t r1, uint64_t fiba, uint8_t ar,
-         }
-         break;
-     case ZPCI_MOD_FC_SET_MEASURE: {
--        uint64_t fmb_addr = ldq_p(&fib.fmb_addr);
-+        uint64_t fmb_addr = ldq_be_p(&fib.fmb_addr);
- 
-         if (fmb_addr & FMBK_MASK) {
-             cc = ZPCI_PCI_LS_ERR;
-@@ -1399,17 +1399,17 @@ int stpcifc_service_call(S390CPU *cpu, uint8_t r1, uint64_t fiba, uint8_t ar,
          return 0;
-     }
+@@ -167,11 +167,11 @@ static int cpu_write_vreg(CPUState *cs, uint8_t *mem_buf, int n)
  
--    stq_p(&fib.pba, pbdev->iommu->pba);
--    stq_p(&fib.pal, pbdev->iommu->pal);
--    stq_p(&fib.iota, pbdev->iommu->g_iota);
--    stq_p(&fib.aibv, pbdev->routes.adapter.ind_addr);
--    stq_p(&fib.aisb, pbdev->routes.adapter.summary_addr);
--    stq_p(&fib.fmb_addr, pbdev->fmb_addr);
-+    stq_be_p(&fib.pba, pbdev->iommu->pba);
-+    stq_be_p(&fib.pal, pbdev->iommu->pal);
-+    stq_be_p(&fib.iota, pbdev->iommu->g_iota);
-+    stq_be_p(&fib.aibv, pbdev->routes.adapter.ind_addr);
-+    stq_be_p(&fib.aisb, pbdev->routes.adapter.summary_addr);
-+    stq_be_p(&fib.fmb_addr, pbdev->fmb_addr);
+     switch (n) {
+     case S390_V0L_REGNUM ... S390_V15L_REGNUM:
+-        env->vregs[n][1] = ldtul_p(mem_buf + 8);
++        env->vregs[n][1] = ldq_p(mem_buf + 8);
+         return 8;
+     case S390_V16_REGNUM ... S390_V31_REGNUM:
+-        env->vregs[n][0] = ldtul_p(mem_buf);
+-        env->vregs[n][1] = ldtul_p(mem_buf + 8);
++        env->vregs[n][0] = ldq_p(mem_buf);
++        env->vregs[n][1] = ldq_p(mem_buf + 8);
+         return 16;
+     default:
+         return 0;
+@@ -203,7 +203,7 @@ static int cpu_write_c_reg(CPUState *cs, uint8_t *mem_buf, int n)
  
-     data = ((uint32_t)pbdev->isc << 28) | ((uint32_t)pbdev->noi << 16) |
-            ((uint32_t)pbdev->routes.adapter.ind_offset << 8) |
-            ((uint32_t)pbdev->sum << 7) | pbdev->routes.adapter.summary_offset;
--    stl_p(&fib.data, data);
-+    stl_be_p(&fib.data, data);
+     switch (n) {
+     case S390_C0_REGNUM ... S390_C15_REGNUM:
+-        env->cregs[n] = ldtul_p(mem_buf);
++        env->cregs[n] = ldq_p(mem_buf);
+         if (tcg_enabled()) {
+             tlb_flush(env_cpu(env));
+         }
+@@ -246,19 +246,19 @@ static int cpu_write_virt_reg(CPUState *cs, uint8_t *mem_buf, int n)
  
- out:
-     if (s390_cpu_virt_mem_write(cpu, fiba, ar, (uint8_t *)&fib, sizeof(fib))) {
+     switch (n) {
+     case S390_VIRT_CKC_REGNUM:
+-        env->ckc = ldtul_p(mem_buf);
++        env->ckc = ldq_p(mem_buf);
+         cpu_synchronize_post_init(cs);
+         return 8;
+     case S390_VIRT_CPUTM_REGNUM:
+-        env->cputm = ldtul_p(mem_buf);
++        env->cputm = ldq_p(mem_buf);
+         cpu_synchronize_post_init(cs);
+         return 8;
+     case S390_VIRT_BEA_REGNUM:
+-        env->gbea = ldtul_p(mem_buf);
++        env->gbea = ldq_p(mem_buf);
+         cpu_synchronize_post_init(cs);
+         return 8;
+     case S390_VIRT_PREFIX_REGNUM:
+-        env->psa = ldtul_p(mem_buf);
++        env->psa = ldq_p(mem_buf);
+         cpu_synchronize_post_init(cs);
+         return 8;
+     default:
+@@ -298,19 +298,19 @@ static int cpu_write_virt_kvm_reg(CPUState *cs, uint8_t *mem_buf, int n)
+ 
+     switch (n) {
+     case S390_VIRT_KVM_PP_REGNUM:
+-        env->pp = ldtul_p(mem_buf);
++        env->pp = ldq_p(mem_buf);
+         cpu_synchronize_post_init(env_cpu(env));
+         return 8;
+     case S390_VIRT_KVM_PFT_REGNUM:
+-        env->pfault_token = ldtul_p(mem_buf);
++        env->pfault_token = ldq_p(mem_buf);
+         cpu_synchronize_post_init(env_cpu(env));
+         return 8;
+     case S390_VIRT_KVM_PFS_REGNUM:
+-        env->pfault_select = ldtul_p(mem_buf);
++        env->pfault_select = ldq_p(mem_buf);
+         cpu_synchronize_post_init(env_cpu(env));
+         return 8;
+     case S390_VIRT_KVM_PFC_REGNUM:
+-        env->pfault_compare = ldtul_p(mem_buf);
++        env->pfault_compare = ldq_p(mem_buf);
+         cpu_synchronize_post_init(env_cpu(env));
+         return 8;
+     default:
+@@ -338,7 +338,7 @@ static int cpu_write_gs_reg(CPUState *cs, uint8_t *mem_buf, int n)
+     S390CPU *cpu = S390_CPU(cs);
+     CPUS390XState *env = &cpu->env;
+ 
+-    env->gscb[n] = ldtul_p(mem_buf);
++    env->gscb[n] = ldq_p(mem_buf);
+     cpu_synchronize_post_init(env_cpu(env));
+     return 8;
+ }
 -- 
 2.46.1
 
