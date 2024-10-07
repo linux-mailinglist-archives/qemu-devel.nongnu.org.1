@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD60A9934B4
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 19:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 979719934DD
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 19:24:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxrMW-000362-6r; Mon, 07 Oct 2024 13:17:36 -0400
+	id 1sxrSG-0006Lm-Cu; Mon, 07 Oct 2024 13:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sxrMU-00035h-7K
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 13:17:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sxrSC-0006LB-1H
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 13:23:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sxrMS-00052H-RG
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 13:17:33 -0400
+ id 1sxrSA-0005aW-J5
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 13:23:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728321452;
+ s=mimecast20190719; t=1728321805;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sc2hTj7jpfWdjMhpPHr+7m+wRgj4Ifxu8Int0E+iwWE=;
- b=G9rNZzy7jdw1ZY0+TW+rDaL53/CLbCNsBwqg9k/0TcqmefbMDKEpnxZde2Ktn+ldxWMmZN
- oyD/NBcBknD3QhWp5YJWQPgd+mtfbwacMFYnnkmW3OMeEsyWt0hGHCLcPJ9e0s2MRaZUGb
- aselw8DkLKs/SS9542ldgKe7F3SFKcM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ucrpKLn1HpdVKtjBpPZEs1LmsmxUjIOBtWsmN0O1HSI=;
+ b=jVbXqjfgfc6bN+sGZ+YkNCGVmxcmT3XR+8y3Or96IpuqydlR/ZVb0JG+wuUJAsIVAXbKHZ
+ nKMP+cluFJNR0C+m3f9K1KJuMXSkaASq0u3+cOuc/Yy6vIZkt8ImzOVjESIFdhF2ocTuoO
+ e6j+izX0/InhkyIhzELcUlABwrCZk9I=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-48-fKBvb-yYPDaWGAnockJE6A-1; Mon, 07 Oct 2024 13:17:29 -0400
-X-MC-Unique: fKBvb-yYPDaWGAnockJE6A-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-37d002fb48fso1802343f8f.3
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 10:17:29 -0700 (PDT)
+ us-mta-367-jctGC2riPRWIuMxclAY9tA-1; Mon, 07 Oct 2024 13:23:22 -0400
+X-MC-Unique: jctGC2riPRWIuMxclAY9tA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-42cceb06940so36859445e9.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 10:23:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728321448; x=1728926248;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sc2hTj7jpfWdjMhpPHr+7m+wRgj4Ifxu8Int0E+iwWE=;
- b=dnBBRugfg0g33bb9CMFbw5QhYejX00TiSBjkZ1f4j0iTC5HrKwiyObVGPD78+jlipS
- K3w3dr6YWM5VD9JbvX3ieGncpBDpNA7kz0xwoABl8vH56mf1CcGd9dc6HPyHGqNPSslK
- wQ81uEzwZJjDqv8aHuCHhBYKW2Qhbn9apihPI0Rv7cXvfVOY7MwEwF4MTkeToSCiEUgb
- LpOHgTaGETEcBGDpWSFKzZtQte/yMfgwd4eO9hIGEUkRYrqBgIEGbJFRAaUXGBI6YdoM
- 8/MI9Uwgf4KhIuZ/Lh1Zwo6IazcUeAqrYb3DVdTqebRNRFndRCTmlXwDEbb7NIMbyLT1
- b8Ag==
-X-Gm-Message-State: AOJu0YzxAWjKZSTk5MH6uI0jH6Z6WQD8as+IgnfZg+cuyQ0EJrI31QQp
- 84xMLyzy4DM+zZCdx47hOfjtMuC1aWIJhoUmvJg/DhwTvv19tr66fsOj8Hzj5eQLKdgNj1PDzrT
- ya6zVfHe75fAdHYemBzHfnamctCQVl3/wrC++a38uqJKCD/Jiq+ZcZgFDkIOy7SSng0Xy4FxK3p
- oxP3q77j6UthjU5X6KOYXpIYDkX7HMuB+HJCGXPkY=
-X-Received: by 2002:a5d:4535:0:b0:37c:cc77:3e72 with SMTP id
- ffacd0b85a97d-37d0e789f6cmr6501282f8f.33.1728321447884; 
- Mon, 07 Oct 2024 10:17:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhlIAAsprEg/+BS9hnnHB+Vx/eDmljbssj/ojVxlm1aIDVFQ6D8j1Gr0oqrKacyuAKUrOUDA==
-X-Received: by 2002:a5d:4535:0:b0:37c:cc77:3e72 with SMTP id
- ffacd0b85a97d-37d0e789f6cmr6501265f8f.33.1728321447326; 
- Mon, 07 Oct 2024 10:17:27 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1728321800; x=1728926600;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ucrpKLn1HpdVKtjBpPZEs1LmsmxUjIOBtWsmN0O1HSI=;
+ b=WVbbOzAKqdqRISYy/Rmyu58XodSOyoHjeASgeJxqUtVq/Mjb66GJj7JcOyrkhzd13d
+ +54+GZX1/fTLF+FtlESsq2YdqxvtzxUWsx2eK3FVbkOLupedYMhiaIlAkX1/pSSl3YfB
+ vMnT5lJpBiqBLgMWHWuQUk6VRXGAouvsjb9Liq8saSyWWj9eNuF9+a8Vj/ntYi9uOudZ
+ /B0lfivCF2eZ/l/HOmzsQTKDM+bSE2nN+D2jVKOdQ1t0UDU0S9vOEcp0eYvbMByyzxxD
+ yiuPaC/rKVwEjBdGRyBN44NbyNRZnEvjeioey1PwJkirpxxTCa9/E629AF5EYyHvgwb7
+ sATQ==
+X-Gm-Message-State: AOJu0Yze5ZN7pv8HGhkA79nz2bvY7erUXYsv5FLyLeK0ExN5brAw7ehK
+ +gY1yZ4bXzm89CaeNS4gtisszl1HiJot4KmL5KXNk2U1Q8V94IG+2tglenx7WDYwrrWXjuflWro
+ +SSR/3MOpeJtscqH0YDo6I3Qt5xdJPCkkfuyH2bi862S1wgup6NW6WnNXesocggnE4R5R2CgWCP
+ QCBC/tZ4nlNovNsqw98FZLvzrnwK7WFrVdTTNSUaM=
+X-Received: by 2002:a05:600c:4692:b0:42c:b2fa:1c0a with SMTP id
+ 5b1f17b1804b1-42f85af4331mr87535745e9.23.1728321800378; 
+ Mon, 07 Oct 2024 10:23:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFjs9HeTJLeQ5z9/1CTLOe6IJ3c61Hx34ilDspqRRPS29zU6lwLzWFQKPFdX8cCpf1bdt0HgQ==
+X-Received: by 2002:a05:600c:4692:b0:42c:b2fa:1c0a with SMTP id
+ 5b1f17b1804b1-42f85af4331mr87535555e9.23.1728321799951; 
+ Mon, 07 Oct 2024 10:23:19 -0700 (PDT)
 Received: from avogadro.local ([151.62.111.131])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-37d1695e8b6sm6175030f8f.71.2024.10.07.10.17.26
+ 5b1f17b1804b1-42f8599487fsm99826285e9.0.2024.10.07.10.23.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Oct 2024 10:17:26 -0700 (PDT)
+ Mon, 07 Oct 2024 10:23:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 2/2] gitlab-ci: add Rust-enabled CI job
-Date: Mon,  7 Oct 2024 19:17:13 +0200
-Message-ID: <20241007171717.1436982-3-pbonzini@redhat.com>
+Cc: mjt@tls.msk.ru,
+	alex.bennee@linaro.org,
+	richard.henderson@linaro.org
+Subject: [PATCH v3 0/2] meson: ensure we enable CMPXCHG128 on x86_64
+Date: Mon,  7 Oct 2024 19:23:14 +0200
+Message-ID: <20241007172317.1439564-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20241007171717.1436982-1-pbonzini@redhat.com>
-References: <20241007171717.1436982-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -102,50 +100,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- .gitlab-ci.d/buildtest.yml  | 13 +++++++++++++
- .gitlab-ci.d/containers.yml |  6 ++++++
- 2 files changed, 19 insertions(+)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 669c980c4b4..a92e731d6af 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -120,6 +120,19 @@ build-system-fedora:
-       xtensa-softmmu m68k-softmmu riscv32-softmmu ppc-softmmu sparc64-softmmu
-     MAKE_CHECK_ARGS: check-build
- 
-+build-system-fedora-rust:
-+  extends:
-+    - .native_build_job_template
-+    - .native_build_artifact_template
-+  needs:
-+    job: amd64-fedora-rust-container
-+  variables:
-+    IMAGE: fedora-rust-nightly
-+    CONFIGURE_ARGS: --disable-gcrypt --enable-nettle --disable-docs --enable-rust
-+    TARGETS: aarch64-softmmu
-+    MAKE_CHECK_ARGS: check-build
-+  allow_failure: true
-+
- check-system-fedora:
-   extends: .native_test_job_template
-   needs:
-diff --git a/.gitlab-ci.d/containers.yml b/.gitlab-ci.d/containers.yml
-index ae79d4c58bc..414ae5e828b 100644
---- a/.gitlab-ci.d/containers.yml
-+++ b/.gitlab-ci.d/containers.yml
-@@ -27,3 +27,9 @@ python-container:
-   extends: .container_job_template
-   variables:
-     NAME: python
-+
-+amd64-fedora-rust-container:
-+  extends: .container_job_template
-+  variables:
-+    NAME: fedora-rust-nightly
-+  allow_failure: true
+Alex discovered that CMPXCHG128 was not enabled when building for
+x86_64, resulting in slow execution for wide atomic instructions,
+creating a huge contention when combined with a high number of cpus
+(found while booting android aarch64 guest on x86_64 host).
+
+The problem is that even though we enable -mcx16 option for x86_64, this
+is not used when testing for CMPXCHG128. Thus, we silently turn it off.
+
+x86_64 is the only architecture adding machine flags for now, so the
+problem is limited to this host architecture.  However, the problem
+is generic, so define a new variable for all the -m options, so that
+they can be used for other such tests in the future.
+
+Based-on: <20241004223715.1275428-1-pierrick.bouvier@linaro.org>
+
+v2->v3: collect *-by tags
+        append to qemu_isa_flags instead of prepending
+
+Paolo Bonzini (2):
+  meson: define qemu_isa_flags
+  meson: ensure -mcx16 is passed when detecting ATOMIC128
+
+ meson.build | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
+
 -- 
 2.46.1
 
