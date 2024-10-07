@@ -2,60 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF45992AC3
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0356992AC2
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:52:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxmGh-00079a-9t; Mon, 07 Oct 2024 07:51:15 -0400
+	id 1sxmGg-000791-U2; Mon, 07 Oct 2024 07:51:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGd-00075D-Ch
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:51:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGb-000709-Gv
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:51:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGa-0005BD-14
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:51:10 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGZ-0005B6-Fm
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:51:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728301867;
+ s=mimecast20190719; t=1728301866;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RtVo9EMu8jtLHJWmwGFKeDwOlJDdkCZNjVtulGrCD00=;
- b=OFk3oRvjgPj61Pu32/SKCCQNsDnHrxnJyryPMkJr5drHzNejzAbVu+hqwlKoTl5pfsPo4t
- SB5ZSk00xUGDINbht3Yov8lH3naXkZO5inIiVxvATaN7YoQ/EpASur+MlDWwI85ZNLmhdF
- VJekrq91ORaMD9NGuZyeB8tdSVKcTRw=
+ bh=wPDlYeelsiOUxueMnbeOEZktoxapf88zSycanT1ye1E=;
+ b=ATCj2j7XrA5hLn6HevBDq4MqunJnWhwNS2nH23tt2ibx1sOFXekhCOhPjG8nG75ifuRHl9
+ 8o+kLkSFBWKxHleXmynNuwl+eFMoy735NldEdVEFbRGdsH/3PJm5cEIrE1U76tSkN+5JQo
+ O7lgJohY1zPs02seuvCPD4t1xXwAw38=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-1mpvRyRFPZyUE6gwOY62ew-1; Mon,
- 07 Oct 2024 07:51:04 -0400
-X-MC-Unique: 1mpvRyRFPZyUE6gwOY62ew-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-512-QtKYOUedPvCtmOiY-58FWQ-1; Mon,
+ 07 Oct 2024 07:51:05 -0400
+X-MC-Unique: QtKYOUedPvCtmOiY-58FWQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DB12119792DE; Mon,  7 Oct 2024 11:51:02 +0000 (UTC)
+ id CC39F19300FE; Mon,  7 Oct 2024 11:51:04 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.46])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7D36E19560AE; Mon,  7 Oct 2024 11:51:01 +0000 (UTC)
+ id 5B19419560AE; Mon,  7 Oct 2024 11:51:03 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 11/12] tests/functional: Switch back to the gitlab URLs for the
- advent calendar tests
-Date: Mon,  7 Oct 2024 13:50:26 +0200
-Message-ID: <20241007115027.243425-12-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 12/12] tests/functional: Bump timeout of some tests
+Date: Mon,  7 Oct 2024 13:50:27 +0200
+Message-ID: <20241007115027.243425-13-thuth@redhat.com>
 In-Reply-To: <20241007115027.243425-1-thuth@redhat.com>
 References: <20241007115027.243425-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -80,128 +78,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Shortly after we switched to the original URLs on qemu-advent-calendar.org,
-the server went offline - looks like we are better off using the gitlab
-URLs again instead.
+These tests occasionally time out when the host system is under heavy
+load. Increase the timeout setting to allow for more headroom here.
 
-Message-ID: <20241007083649.204886-1-thuth@redhat.com>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-ID: <20241002140212.350467-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/test_arm_vexpress.py    | 2 +-
- tests/functional/test_m68k_mcf5208evb.py | 2 +-
- tests/functional/test_or1k_sim.py        | 2 +-
- tests/functional/test_ppc64_e500.py      | 2 +-
- tests/functional/test_ppc_mac.py         | 2 +-
- tests/functional/test_sh4_r2d.py         | 2 +-
- tests/functional/test_sparc_sun4m.py     | 2 +-
- tests/functional/test_xtensa_lx60.py     | 2 +-
- 8 files changed, 8 insertions(+), 8 deletions(-)
+ tests/functional/meson.build | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tests/functional/test_arm_vexpress.py b/tests/functional/test_arm_vexpress.py
-index cc6015112b..6bd6290030 100755
---- a/tests/functional/test_arm_vexpress.py
-+++ b/tests/functional/test_arm_vexpress.py
-@@ -11,7 +11,7 @@
- class VExpressTest(LinuxKernelTest):
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 7713f8eb55..c90c02517a 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -11,15 +11,18 @@ endif
  
-     ASSET_DAY16 = Asset(
--        'https://www.qemu-advent-calendar.org/2018/download/day16.tar.xz',
-+        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day16.tar.xz',
-         '63311adb2d4c4e7a73214a86d29988add87266a909719c56acfadd026b4110a7')
+ # Timeouts for individual tests that can be slow e.g. with debugging enabled
+ test_timeouts = {
++  'aarch64_raspi4' : 120,
+   'aarch64_sbsaref' : 600,
+   'aarch64_virt' : 360,
+   'acpi_bits' : 240,
++  'arm_raspi2' : 120,
++  'mips_malta' : 120,
+   'netdev_ethtool' : 180,
+   'ppc_40p' : 240,
+   'ppc64_hv' : 1000,
+-  'ppc64_powernv' : 120,
+-  'ppc64_pseries' : 120,
+-  's390x_ccw_virtio' : 180,
++  'ppc64_powernv' : 240,
++  'ppc64_pseries' : 240,
++  's390x_ccw_virtio' : 240,
+ }
  
-     def test_arm_vexpressa9(self):
-diff --git a/tests/functional/test_m68k_mcf5208evb.py b/tests/functional/test_m68k_mcf5208evb.py
-index 869ccc88df..00c59590c3 100755
---- a/tests/functional/test_m68k_mcf5208evb.py
-+++ b/tests/functional/test_m68k_mcf5208evb.py
-@@ -13,7 +13,7 @@
- class Mcf5208EvbTest(LinuxKernelTest):
- 
-     ASSET_DAY07 = Asset(
--        'https://www.qemu-advent-calendar.org/2018/download/day07.tar.xz',
-+        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day07.tar.xz',
-         '753c2f3837126b7c6ba92d0b1e0b156e8a2c5131d2d576bb0b9a763fae73c08a')
- 
-     def test_m68k_mcf5208evb(self):
-diff --git a/tests/functional/test_or1k_sim.py b/tests/functional/test_or1k_sim.py
-index aa2a1f08d2..10e0437c50 100755
---- a/tests/functional/test_or1k_sim.py
-+++ b/tests/functional/test_or1k_sim.py
-@@ -13,7 +13,7 @@
- class OpenRISC1kSimTest(LinuxKernelTest):
- 
-     ASSET_DAY20 = Asset(
--        'https://www.qemu-advent-calendar.org/2018/download/day20.tar.xz',
-+        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day20.tar.xz',
-         'ff9d7dd7c6bdba325bd85ee85c02db61ff653e129558aeffe6aff55bffb6763a')
- 
-     def test_or1k_sim(self):
-diff --git a/tests/functional/test_ppc64_e500.py b/tests/functional/test_ppc64_e500.py
-index 3558ae0c8c..f1af92373e 100755
---- a/tests/functional/test_ppc64_e500.py
-+++ b/tests/functional/test_ppc64_e500.py
-@@ -10,7 +10,7 @@
- class E500Test(LinuxKernelTest):
- 
-     ASSET_DAY19 = Asset(
--        'https://www.qemu-advent-calendar.org/2018/download/day19.tar.xz',
-+        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day19.tar.xz',
-         '20b1bb5a8488c664defbb5d283addc91a05335a936c63b3f5ff7eee74b725755')
- 
-     def test_ppc64_e500(self):
-diff --git a/tests/functional/test_ppc_mac.py b/tests/functional/test_ppc_mac.py
-index a6b1ca2d4c..3f45e37a45 100755
---- a/tests/functional/test_ppc_mac.py
-+++ b/tests/functional/test_ppc_mac.py
-@@ -10,7 +10,7 @@
- class MacTest(LinuxKernelTest):
- 
-     ASSET_DAY15 = Asset(
--        'https://www.qemu-advent-calendar.org/2018/download/day15.tar.xz',
-+        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day15.tar.xz',
-         '03e0757c131d2959decf293a3572d3b96c5a53587165bf05ce41b2818a2bccd5')
- 
-     def do_day15_test(self):
-diff --git a/tests/functional/test_sh4_r2d.py b/tests/functional/test_sh4_r2d.py
-index 5fe8cf9f8d..c3cfff79ad 100755
---- a/tests/functional/test_sh4_r2d.py
-+++ b/tests/functional/test_sh4_r2d.py
-@@ -13,7 +13,7 @@
- class R2dTest(LinuxKernelTest):
- 
-     ASSET_DAY09 = Asset(
--        'https://www.qemu-advent-calendar.org/2018/download/day09.tar.xz',
-+        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day09.tar.xz',
-         'a61b44d2630a739d1380cc4ff4b80981d47ccfd5992f1484ccf48322c35f09ac')
- 
-     # This test has a 6-10% failure rate on various hosts that look
-diff --git a/tests/functional/test_sparc_sun4m.py b/tests/functional/test_sparc_sun4m.py
-index b334375820..573f85222a 100755
---- a/tests/functional/test_sparc_sun4m.py
-+++ b/tests/functional/test_sparc_sun4m.py
-@@ -11,7 +11,7 @@
- class Sun4mTest(LinuxKernelTest):
- 
-     ASSET_DAY11 = Asset(
--        'https://www.qemu-advent-calendar.org/2018/download/day11.tar.xz',
-+        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day11.tar.xz',
-         'c776533ba756bf4dd3f1fc4c024fb50ef0d853e05c5f5ddf0900a32d1eaa49e0')
- 
-     def test_sparc_ss20(self):
-diff --git a/tests/functional/test_xtensa_lx60.py b/tests/functional/test_xtensa_lx60.py
-index 8ce5206a4f..d4ad92dc6c 100755
---- a/tests/functional/test_xtensa_lx60.py
-+++ b/tests/functional/test_xtensa_lx60.py
-@@ -11,7 +11,7 @@
- class XTensaLX60Test(LinuxKernelTest):
- 
-     ASSET_DAY02 = Asset(
--        'https://www.qemu-advent-calendar.org/2018/download/day02.tar.xz',
-+        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day02.tar.xz',
-         '68ff07f9b3fd3df36d015eb46299ba44748e94bfbb2d5295fddc1a8d4a9fd324')
- 
-     def test_xtensa_lx60(self):
+ tests_generic_system = [
 -- 
 2.46.1
 
