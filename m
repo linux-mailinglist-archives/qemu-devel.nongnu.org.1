@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289CB99371D
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DC6993726
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:20:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxtEV-0004hs-Ac; Mon, 07 Oct 2024 15:17:27 -0400
+	id 1sxtEX-0004lB-Be; Mon, 07 Oct 2024 15:17:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtEH-0004Np-Ha; Mon, 07 Oct 2024 15:17:13 -0400
+ id 1sxtEI-0004PN-EO; Mon, 07 Oct 2024 15:17:14 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtEG-000450-2X; Mon, 07 Oct 2024 15:17:13 -0400
+ id 1sxtEG-00045I-Of; Mon, 07 Oct 2024 15:17:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6E1F796244;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8835F96245;
  Mon,  7 Oct 2024 22:16:48 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4414914F725;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5A98D14F726;
  Mon,  7 Oct 2024 22:16:55 +0300 (MSK)
-Received: (nullmailer pid 2592724 invoked by uid 1000);
+Received: (nullmailer pid 2592728 invoked by uid 1000);
  Mon, 07 Oct 2024 19:16:54 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 08/32] contrib/plugins/Makefile: Add a 'distclean'
- target
-Date: Mon,  7 Oct 2024 22:16:25 +0300
-Message-Id: <20241007191654.2592616-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 09/32] hw/audio/virtio-sound: fix heap buffer overflow
+Date: Mon,  7 Oct 2024 22:16:26 +0300
+Message-Id: <20241007191654.2592616-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,48 +61,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Volker Rümelin <vr_qemu@t-online.de>
 
-Running "make distclean" in the build tree currently fails since this
-tries to run the "distclean" target in the contrib/plugins/ folder, too,
-but the Makefile there is missing this target. Thus add 'distclean' there
-to fix this issue.
+Currently, the guest may write to the device configuration space,
+whereas the virtio sound device specification in chapter 5.14.4
+clearly states that the fields in the device configuration space
+are driver-read-only.
 
-And to avoid regressions with "make distclean", add this command to one
-of the build jobs, too.
+Remove the set_config function from the virtio_snd class.
 
-Message-ID: <20240902154749.73876-1-thuth@redhat.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 1231bc7d12c373e445171dda9e7e5146eee7da55)
+This also prevents a heap buffer overflow. See QEMU issue #2296.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2296
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+Message-Id: <20240901130112.8242-1-vr_qemu@t-online.de>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 7fc6611cad3e9627b23ce83e550b668abba6c886)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index aa32782405..0c624813cf 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -345,6 +345,8 @@ build-tcg-disabled:
-             124 132 139 142 144 145 151 152 155 157 165 194 196 200 202
-             208 209 216 218 227 234 246 247 248 250 254 255 257 258
-             260 261 262 263 264 270 272 273 277 279 image-fleecing
-+    - cd ../..
-+    - make distclean
+diff --git a/hw/audio/trace-events b/hw/audio/trace-events
+index b1870ff224..b8ef572767 100644
+--- a/hw/audio/trace-events
++++ b/hw/audio/trace-events
+@@ -41,7 +41,6 @@ asc_update_irq(int irq, int a, int b) "set IRQ to %d (A: 0x%x B: 0x%x)"
  
- build-user:
-   extends: .native_build_job_template
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-index edf256cd9d..05a2a45c5c 100644
---- a/contrib/plugins/Makefile
-+++ b/contrib/plugins/Makefile
-@@ -77,7 +77,7 @@ lib%$(SO_SUFFIX): %.o
- endif
+ #virtio-snd.c
+ virtio_snd_get_config(void *vdev, uint32_t jacks, uint32_t streams, uint32_t chmaps) "snd %p: get_config jacks=%"PRIu32" streams=%"PRIu32" chmaps=%"PRIu32""
+-virtio_snd_set_config(void *vdev, uint32_t jacks, uint32_t new_jacks, uint32_t streams, uint32_t new_streams, uint32_t chmaps, uint32_t new_chmaps) "snd %p: set_config jacks from %"PRIu32"->%"PRIu32", streams from %"PRIu32"->%"PRIu32", chmaps from %"PRIu32"->%"PRIu32
+ virtio_snd_get_features(void *vdev, uint64_t features) "snd %p: get_features 0x%"PRIx64
+ virtio_snd_vm_state_running(void) "vm state running"
+ virtio_snd_vm_state_stopped(void) "vm state stopped"
+diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
+index d1cf5eb445..69838181dd 100644
+--- a/hw/audio/virtio-snd.c
++++ b/hw/audio/virtio-snd.c
+@@ -107,29 +107,6 @@ virtio_snd_get_config(VirtIODevice *vdev, uint8_t *config)
  
+ }
  
--clean:
-+clean distclean:
- 	rm -f *.o *$(SO_SUFFIX) *.d
- 	rm -Rf .libs
- 
+-static void
+-virtio_snd_set_config(VirtIODevice *vdev, const uint8_t *config)
+-{
+-    VirtIOSound *s = VIRTIO_SND(vdev);
+-    const virtio_snd_config *sndconfig =
+-        (const virtio_snd_config *)config;
+-
+-
+-   trace_virtio_snd_set_config(vdev,
+-                               s->snd_conf.jacks,
+-                               sndconfig->jacks,
+-                               s->snd_conf.streams,
+-                               sndconfig->streams,
+-                               s->snd_conf.chmaps,
+-                               sndconfig->chmaps);
+-
+-    memcpy(&s->snd_conf, sndconfig, sizeof(virtio_snd_config));
+-    le32_to_cpus(&s->snd_conf.jacks);
+-    le32_to_cpus(&s->snd_conf.streams);
+-    le32_to_cpus(&s->snd_conf.chmaps);
+-
+-}
+-
+ static void
+ virtio_snd_pcm_buffer_free(VirtIOSoundPCMBuffer *buffer)
+ {
+@@ -1400,7 +1377,6 @@ static void virtio_snd_class_init(ObjectClass *klass, void *data)
+     vdc->realize = virtio_snd_realize;
+     vdc->unrealize = virtio_snd_unrealize;
+     vdc->get_config = virtio_snd_get_config;
+-    vdc->set_config = virtio_snd_set_config;
+     vdc->get_features = get_features;
+     vdc->reset = virtio_snd_reset;
+     vdc->legacy_features = 0;
 -- 
 2.39.5
 
