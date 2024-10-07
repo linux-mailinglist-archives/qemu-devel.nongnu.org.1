@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C0E99372D
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E05499371C
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:19:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxtFH-0005an-Ps; Mon, 07 Oct 2024 15:18:16 -0400
+	id 1sxtGK-0006wd-UT; Mon, 07 Oct 2024 15:19:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtF9-0005X6-TY; Mon, 07 Oct 2024 15:18:08 -0400
+ id 1sxtFC-0005hs-LY; Mon, 07 Oct 2024 15:18:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtF7-0004CP-PK; Mon, 07 Oct 2024 15:18:07 -0400
+ id 1sxtFA-0004G6-QH; Mon, 07 Oct 2024 15:18:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 273D29624E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 421F49624F;
  Mon,  7 Oct 2024 22:16:49 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 018F714F72E;
+ by tsrv.corpit.ru (Postfix) with SMTP id 1089514F72F;
  Mon,  7 Oct 2024 22:16:56 +0300 (MSK)
-Received: (nullmailer pid 2592752 invoked by uid 1000);
+Received: (nullmailer pid 2592756 invoked by uid 1000);
  Mon, 07 Oct 2024 19:16:54 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 17/32] migration/multifd: Fix rb->receivedmap cleanup
- race
-Date: Mon,  7 Oct 2024 22:16:34 +0300
-Message-Id: <20241007191654.2592616-17-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Jacob Abrams <satur9nine@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 18/32] hw/char/stm32l4x5_usart.c: Enable USART ACK bit
+ response
+Date: Mon,  7 Oct 2024 22:16:35 +0300
+Message-Id: <20241007191654.2592616-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
@@ -60,83 +60,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Jacob Abrams <satur9nine@gmail.com>
 
-Fix a segmentation fault in multifd when rb->receivedmap is cleared
-too early.
+SW modifying USART_CR1 TE bit should cuase HW to respond by altering
+USART_ISR TEACK bit, and likewise for RE and REACK bit.
 
-After commit 5ef7e26bdb ("migration/multifd: solve zero page causing
-multiple page faults"), multifd started using the rb->receivedmap
-bitmap, which belongs to ram.c and is initialized and *freed* from the
-ram SaveVMHandlers.
+This resolves some but not all issues necessary for the official STM USART
+HAL driver to function as is.
 
-Multifd threads are live until migration_incoming_state_destroy(),
-which is called after qemu_loadvm_state_cleanup(), leading to a crash
-when accessing rb->receivedmap.
-
-process_incoming_migration_co()        ...
-  qemu_loadvm_state()                  multifd_nocomp_recv()
-    qemu_loadvm_state_cleanup()          ramblock_recv_bitmap_set_offset()
-      rb->receivedmap = NULL               set_bit_atomic(..., rb->receivedmap)
-  ...
-  migration_incoming_state_destroy()
-    multifd_recv_cleanup()
-      multifd_recv_terminate_threads(NULL)
-
-Move the loadvm cleanup into migration_incoming_state_destroy(), after
-multifd_recv_cleanup() to ensure multifd threads have already exited
-when rb->receivedmap is cleared.
-
-Adjust the postcopy listen thread comment to indicate that we still
-want to skip the cpu synchronization.
-
-CC: qemu-stable@nongnu.org
-Fixes: 5ef7e26bdb ("migration/multifd: solve zero page causing multiple page faults")
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240917185802.15619-3-farosas@suse.de
-[peterx: added comment in migration_incoming_state_destroy()]
-Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 4ce56229087860805877075ddb29dd44578365a9)
+Fixes: 87b77e6e01ca ("hw/char/stm32l4x5_usart: Enable serial read and write")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2540
+Signed-off-by: Jacob Abrams <satur9nine@gmail.com>
+Message-id: 20240911043255.51966-1-satur9nine@gmail.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 6cce0dcc6f7aaaeb7f17577776da510b04f67c99)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 3dea06d577..ae2be31557 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -378,6 +378,11 @@ void migration_incoming_state_destroy(void)
-     struct MigrationIncomingState *mis = migration_incoming_get_current();
+diff --git a/hw/char/stm32l4x5_usart.c b/hw/char/stm32l4x5_usart.c
+index fc5dcac0c4..3cf200c080 100644
+--- a/hw/char/stm32l4x5_usart.c
++++ b/hw/char/stm32l4x5_usart.c
+@@ -154,6 +154,21 @@ REG32(RDR, 0x24)
+ REG32(TDR, 0x28)
+     FIELD(TDR, TDR, 0, 9)
  
-     multifd_recv_cleanup();
-+    /*
-+     * RAM state cleanup needs to happen after multifd cleanup, because
-+     * multifd threads can use some of its states (receivedmap).
-+     */
-+    qemu_loadvm_state_cleanup();
++static void stm32l4x5_update_isr(Stm32l4x5UsartBaseState *s)
++{
++    if (s->cr1 & R_CR1_TE_MASK) {
++        s->isr |= R_ISR_TEACK_MASK;
++    } else {
++        s->isr &= ~R_ISR_TEACK_MASK;
++    }
++
++    if (s->cr1 & R_CR1_RE_MASK) {
++        s->isr |= R_ISR_REACK_MASK;
++    } else {
++        s->isr &= ~R_ISR_REACK_MASK;
++    }
++}
++
+ static void stm32l4x5_update_irq(Stm32l4x5UsartBaseState *s)
+ {
+     if (((s->isr & R_ISR_WUF_MASK) && (s->cr3 & R_CR3_WUFIE_MASK))        ||
+@@ -456,6 +471,7 @@ static void stm32l4x5_usart_base_write(void *opaque, hwaddr addr,
+     case A_CR1:
+         s->cr1 = value;
+         stm32l4x5_update_params(s);
++        stm32l4x5_update_isr(s);
+         stm32l4x5_update_irq(s);
+         return;
+     case A_CR2:
+diff --git a/tests/qtest/stm32l4x5_usart-test.c b/tests/qtest/stm32l4x5_usart-test.c
+index 8902518233..0630f8d53b 100644
+--- a/tests/qtest/stm32l4x5_usart-test.c
++++ b/tests/qtest/stm32l4x5_usart-test.c
+@@ -36,6 +36,8 @@ REG32(GTPR, 0x10)
+ REG32(RTOR, 0x14)
+ REG32(RQR, 0x18)
+ REG32(ISR, 0x1C)
++    FIELD(ISR, REACK, 22, 1)
++    FIELD(ISR, TEACK, 21, 1)
+     FIELD(ISR, TXE, 7, 1)
+     FIELD(ISR, RXNE, 5, 1)
+     FIELD(ISR, ORE, 3, 1)
+@@ -191,7 +193,7 @@ static void init_uart(QTestState *qts)
  
-     if (mis->to_src_file) {
-         /* Tell source that we are done */
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 6bb404b9c8..b71eba218f 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2983,7 +2983,10 @@ int qemu_loadvm_state(QEMUFile *f)
-     trace_qemu_loadvm_state_post_main(ret);
+     /* Enable the transmitter, the receiver and the USART. */
+     qtest_writel(qts, (USART1_BASE_ADDR + A_CR1),
+-        R_CR1_UE_MASK | R_CR1_RE_MASK | R_CR1_TE_MASK);
++        cr1 | R_CR1_UE_MASK | R_CR1_RE_MASK | R_CR1_TE_MASK);
+ }
  
-     if (mis->have_listen_thread) {
--        /* Listen thread still going, can't clean up yet */
-+        /*
-+         * Postcopy listen thread still going, don't synchronize the
-+         * cpus yet.
-+         */
-         return ret;
-     }
+ static void test_write_read(void)
+@@ -296,6 +298,37 @@ static void test_send_str(void)
+     qtest_quit(qts);
+ }
  
-@@ -3026,7 +3029,6 @@ int qemu_loadvm_state(QEMUFile *f)
-         }
-     }
- 
--    qemu_loadvm_state_cleanup();
-     cpu_synchronize_all_post_init();
++static void test_ack(void)
++{
++    uint32_t cr1;
++    uint32_t isr;
++    QTestState *qts = qtest_init("-M b-l475e-iot01a");
++
++    init_uart(qts);
++
++    cr1 = qtest_readl(qts, (USART1_BASE_ADDR + A_CR1));
++
++    /* Disable the transmitter and receiver. */
++    qtest_writel(qts, (USART1_BASE_ADDR + A_CR1),
++        cr1 & ~(R_CR1_RE_MASK | R_CR1_TE_MASK));
++
++    /* Test ISR ACK for transmitter and receiver disabled */
++    isr = qtest_readl(qts, (USART1_BASE_ADDR + A_ISR));
++    g_assert_false(isr & R_ISR_TEACK_MASK);
++    g_assert_false(isr & R_ISR_REACK_MASK);
++
++    /* Enable the transmitter and receiver. */
++    qtest_writel(qts, (USART1_BASE_ADDR + A_CR1),
++        cr1 | (R_CR1_RE_MASK | R_CR1_TE_MASK));
++
++    /* Test ISR ACK for transmitter and receiver disabled */
++    isr = qtest_readl(qts, (USART1_BASE_ADDR + A_ISR));
++    g_assert_true(isr & R_ISR_TEACK_MASK);
++    g_assert_true(isr & R_ISR_REACK_MASK);
++
++    qtest_quit(qts);
++}
++
+ int main(int argc, char **argv)
+ {
+     int ret;
+@@ -308,6 +341,7 @@ int main(int argc, char **argv)
+     qtest_add_func("stm32l4x5/usart/send_char", test_send_char);
+     qtest_add_func("stm32l4x5/usart/receive_str", test_receive_str);
+     qtest_add_func("stm32l4x5/usart/send_str", test_send_str);
++    qtest_add_func("stm32l4x5/usart/ack", test_ack);
+     ret = g_test_run();
  
      return ret;
 -- 
