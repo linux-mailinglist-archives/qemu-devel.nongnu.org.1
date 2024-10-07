@@ -2,86 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C0A992A05
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F31992A2F
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:26:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxlbQ-0001XX-Lk; Mon, 07 Oct 2024 07:08:36 -0400
+	id 1sxlrg-0007KJ-0F; Mon, 07 Oct 2024 07:25:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sxlbN-0001Wn-P8; Mon, 07 Oct 2024 07:08:34 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sxlbL-0007Bn-4M; Mon, 07 Oct 2024 07:08:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728299311; x=1759835311;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=hpwrGxuedAeKuZjTNzgbaWYzvlowhimdFInbSjmkp9g=;
- b=d8uHpSd7VqE+IOBbTYYgEqYxHitjEPuxJmKvf2nYCy8XdR6JoK7YT6DV
- ovKnoW9J7Ddg4PhRhrMsJSd+mHZGCaHS7f4Of34RBZRkFGxgwIAX59MmZ
- n1ZSaRB4qDBTj6pyUd1xohtGXmHbvNoOkJvSEv5/FybChG9WW4vrWLQzp
- zGsqDpJLn4xyy3bAc608yVI8JVcC6ddslbHYKcyCK2Eh7/bc0za5y2UKd
- 6kwynbE+L+13R9id77L1za0l1nn3R67L5fRuOELvE4o/0ZZg98iirN6VX
- e41XodDciEOsn8rP1cgUsqbzMsOWrDt5+v/1CbUr81k6nusq5n5Oqwrfk Q==;
-X-CSE-ConnectionGUID: LwG4B1seS9adT4dB/XjpfA==
-X-CSE-MsgGUID: vGyqoNywSIKrksKb+ID0Iw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="31233863"
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="31233863"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 04:08:27 -0700
-X-CSE-ConnectionGUID: AQYZDfABQIaxfDs9ei+I9g==
-X-CSE-MsgGUID: h8O7y00TS2SmBdz6F04s3A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="75875239"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa007.jf.intel.com with ESMTP; 07 Oct 2024 04:08:22 -0700
-Date: Mon, 7 Oct 2024 19:24:33 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S.Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v2 5/7] i386/cpu: Support thread and module level cache
- topology
-Message-ID: <ZwPE8foi2qviMQSB@intel.com>
-References: <20240908125920.1160236-1-zhao1.liu@intel.com>
- <20240908125920.1160236-6-zhao1.liu@intel.com>
- <20240917100508.00001907@Huawei.com>
+ (Exim 4.90_1) (envelope-from <chao.liu@yeah.net>) id 1sxlre-0007Jt-9L
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:25:22 -0400
+Received: from mail-m16.yeah.net ([220.197.32.18])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <chao.liu@yeah.net>) id 1sxlra-00017P-TG
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:25:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+ s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=ZmdNc
+ 3IF/kjBwLfNdOw4FBcA5N40qdDiUyFgWihYMr4=; b=gKySBCtJtMLaei6zLihja
+ 60ei4RHHV2E2X/JmMh1fmzt190S02u8BYzBoAprkCWr1e0vNN/tHLpgMkto0evCu
+ MOzTF6eFYgZcabWH09CjB6FP+ggumtO12XhAYjJ9/FmyO7VxYnCdgpNNr8aJkLnX
+ teU2JC17Qm4kI2Wvplvxnk=
+Received: from localhost.localdomain (unknown [])
+ by gzsmtp3 (Coremail) with SMTP id M88vCgAnSOcMxQNnGGjGAQ--.32547S2;
+ Mon, 07 Oct 2024 19:25:00 +0800 (CST)
+From: Chao Liu <chao.liu@yeah.net>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, bin.meng@windriver.com, edgar.iglesias@gmail.com,
+ alistair@alistair23.me, Chao Liu <chao.liu@yeah.net>
+Subject: [PATCH v4 0/3] Drop ignore_memory_transaction_failures for xilink_zynq
+Date: Mon,  7 Oct 2024 19:24:52 +0800
+Message-ID: <cover.1728299530.git.chao.liu@yeah.net>
+X-Mailer: git-send-email 2.46.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240917100508.00001907@Huawei.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: M88vCgAnSOcMxQNnGGjGAQ--.32547S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Wr18ur13WF1fXFW3AF1kXwb_yoWDAwc_Ar
+ WSka4DXr4kZ3W3AFWkGF1kKrZIvw4I9rW8JF18try7X3yUZF13Cr1DKa4Yv3Wfua98AFZ0
+ v3ZrAF1fJw1jgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjyCJPUUUUU==
+X-Originating-IP: [112.19.146.115]
+X-CM-SenderInfo: pfkd0hxolxq5hhdkh0dhw/1tbiEQpxKGcDw+gCTwAAsA
+Received-SPF: pass client-ip=220.197.32.18; envelope-from=chao.liu@yeah.net;
+ helo=mail-m16.yeah.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,42 +67,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 17, 2024 at 10:05:08AM +0100, Jonathan Cameron wrote:
-> Date: Tue, 17 Sep 2024 10:05:08 +0100
-> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> Subject: Re: [PATCH v2 5/7] i386/cpu: Support thread and module level cache
->  topology
-> X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
-> 
-> On Sun,  8 Sep 2024 20:59:18 +0800
-> Zhao Liu <zhao1.liu@intel.com> wrote:
-> 
-> > Allow cache to be defined at the thread and module level. This
-> > increases flexibility for x86 users to customize their cache topology.
-> > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
->
-> Will be interesting to see if anyone uses the thread level, but
-> no harm in supporting it.
+Hi, maintainer,
 
-x86 CPU has a legacy property "x-l1-cache-per-thread". This is the old
-QEMU cache topology behavior, kept for compatibility. Now add thread
-level and I can refactor the code for this thread level.
+Following the reference from the chip manualug585-Zynq-7000-TRM manual
+B.3 (Module Summary), placeholders have been added for all unimplemented
+devices, including the AXI and AMBA bus controllers that interact with
+the FPGA.
 
-> I guess this would be a case of RDT
-> / MPAM etc as I'm not sure I've seen an SMT processor with
-> private caches. Some old papers seems to suggest that it might
-> make sense for smt 8 and above.
+We can check against the manual by printing the address space of the
+zynq board with the following qemu command:
+    ${QEMU_PATH}/qemu-system-aarch64 \
+    -M xilinx-zynq-a9 \
+    -display none \
+    -monitor stdio -s
+    (qemu) info mtree -f
 
-Thanks for the hint, I'll think about whether some of the RDT / MPAM
-cases can be applied here.
+The testing methodology previously discussed in earlier email exchanges
+will not be repeated here.
 
-> Anyhow, patch is fine
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Chao Liu (3):
+  xilink_zynq: Add various missing unimplemented devices
+  xilink-zynq-devcfg: Fix up for memory address range size not set
+    correctly
+  xilink-zynq-devcfg: Avoid disabling devcfg memory region during
+    initialization
 
-Thanks!
+ hw/arm/xilinx_zynq.c              | 71 ++++++++++++++++++++++++++++++-
+ hw/dma/xlnx-zynq-devcfg.c         |  9 +++-
+ include/hw/dma/xlnx-zynq-devcfg.h |  2 +-
+ 3 files changed, 78 insertions(+), 4 deletions(-)
 
--Zhao
+-- 
+2.46.1
 
 
