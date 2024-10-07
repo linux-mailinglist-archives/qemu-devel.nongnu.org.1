@@ -2,59 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC19F992ABD
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91BA4992ABF
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:52:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxmGU-0006qs-48; Mon, 07 Oct 2024 07:51:02 -0400
+	id 1sxmGV-0006vR-EM; Mon, 07 Oct 2024 07:51:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGL-0006mK-4D
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:50:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGO-0006my-U6
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:50:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGJ-00058f-Li
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:50:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sxmGN-000596-86
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:50:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728301850;
+ s=mimecast20190719; t=1728301853;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+WoMzCiXM4pA8Lpp1pnLdwd/6UlAnSuE1EoMVwCxQHQ=;
- b=djtZ2Vus1kQt7t9ByseSGn9KMFLWj/5Jl8JGLmcWj5kl4mmifkeMuMlsyS0HjEle4pce3X
- E3BW5j7TOYREf48YRLVumo7KMt3E6t1bjJmgT4zWVK3HnrwBYdVY50/8bR7O7ijYVlJFEg
- rSKnTEgzjN29ip+0uhnnj3Bk6Jdat1k=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=oTJbKpOPjVPX3a+d9rQHvAnWplw8tf04UC4z6wdI0GM=;
+ b=R+5BJHCFKD3VbVV3MOflvaH+QqG9jNsYBkAC2TLFwpkTEJv9nUk9LwvsjiSSSfl6M4/2sf
+ w75C59W3P1VuyiU/NTTmT0gWveMRlAKi6DLegLhgoeeEagcNTJmJAQDU4FL6fmEnVMUb93
+ P5ljjxltppwMtvE6pdA+y0eylTmAsDg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-451-aqM-ThftNFCpCQtfp0r5zA-1; Mon,
- 07 Oct 2024 07:50:47 -0400
-X-MC-Unique: aqM-ThftNFCpCQtfp0r5zA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-Sp3Od9CMOfOevX0zgAkM9w-1; Mon,
+ 07 Oct 2024 07:50:50 -0400
+X-MC-Unique: Sp3Od9CMOfOevX0zgAkM9w-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1EAEA19560B5; Mon,  7 Oct 2024 11:50:46 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A81621944A8A; Mon,  7 Oct 2024 11:50:49 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.46])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7AFB219560AE; Mon,  7 Oct 2024 11:50:43 +0000 (UTC)
+ id BC90D19560AE; Mon,  7 Oct 2024 11:50:46 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 05/12] gitlab-ci/build-oss-fuzz: print FAILED marker in case
- the test failed and run all tests
-Date: Mon,  7 Oct 2024 13:50:20 +0200
-Message-ID: <20241007115027.243425-6-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <huth@tuxfamily.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 06/12] hw/m68k: Use explicit big-endian LD/ST API
+Date: Mon,  7 Oct 2024 13:50:21 +0200
+Message-ID: <20241007115027.243425-7-thuth@redhat.com>
 In-Reply-To: <20241007115027.243425-1-thuth@redhat.com>
 References: <20241007115027.243425-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -79,48 +82,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Tokarev <mjt@tls.msk.ru>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-currently, if an oss-fuzz fails, the script does just `exit 1`
-without any additional output, and looking at the build log in
-the gitlab ci it is not clear what actually failed, without
-looking at build-oss-fuzz script and seeing this `exit 1`.
+The M68K architecture uses big endianness. Directly use
+the big-endian LD/ST API.
 
-Print easily recognizable error message about test failure, so
-it becomes obvious what exactly has failed.
+Mechanical change using:
 
-While at it, continue running other tests even in case of
-failure, and exit non-zero if at least one test failed.
+  $ end=be; \
+    for acc in uw w l q tul; do \
+      sed -i -e "s/ld${acc}_p(/ld${acc}_${end}_p(/" \
+             -e "s/st${acc}_p(/st${acc}_${end}_p(/" \
+        $(git grep -wlE '(ld|st)t?u?[wlq]_p' hw/m68k/); \
+    done
 
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20241003121656.1173612-1-mjt@tls.msk.ru>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20241004163042.85922-18-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ hw/m68k/bootinfo.h  | 28 ++++++++++++++--------------
+ hw/m68k/mcf5208.c   |  2 +-
+ hw/m68k/next-cube.c |  2 +-
+ hw/m68k/q800.c      |  4 ++--
+ 4 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 669c980c4b..34d3f4e9ab 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -628,12 +628,15 @@ build-oss-fuzz:
-     - CC="clang" CXX="clang++" CFLAGS="-fsanitize=address"
-       ./scripts/oss-fuzz/build.sh
-     - export ASAN_OPTIONS="fast_unwind_on_malloc=0"
-+    - failures=0
-     - for fuzzer in $(find ./build-oss-fuzz/DEST_DIR/ -executable -type f
-                       | grep -v slirp); do
-         grep "LLVMFuzzerTestOneInput" ${fuzzer} > /dev/null 2>&1 || continue ;
-         echo Testing ${fuzzer} ... ;
--        "${fuzzer}" -runs=1 -seed=1 || exit 1 ;
-+        "${fuzzer}" -runs=1 -seed=1 || { echo "FAILED:"" ${fuzzer} exit code is $?"; failures=$(($failures+1)); };
-       done
-+    - echo "Number of failures:"" $failures"
-+    - test $failures = 0
+diff --git a/hw/m68k/bootinfo.h b/hw/m68k/bootinfo.h
+index 70c1dc0e8c..0b3e7c4ea0 100644
+--- a/hw/m68k/bootinfo.h
++++ b/hw/m68k/bootinfo.h
+@@ -14,39 +14,39 @@
  
- build-tci:
-   extends: .native_build_job_template
+ #define BOOTINFO0(base, id) \
+     do { \
+-        stw_p(base, id); \
++        stw_be_p(base, id); \
+         base += 2; \
+-        stw_p(base, sizeof(struct bi_record)); \
++        stw_be_p(base, sizeof(struct bi_record)); \
+         base += 2; \
+     } while (0)
+ 
+ #define BOOTINFO1(base, id, value) \
+     do { \
+-        stw_p(base, id); \
++        stw_be_p(base, id); \
+         base += 2; \
+-        stw_p(base, sizeof(struct bi_record) + 4); \
++        stw_be_p(base, sizeof(struct bi_record) + 4); \
+         base += 2; \
+-        stl_p(base, value); \
++        stl_be_p(base, value); \
+         base += 4; \
+     } while (0)
+ 
+ #define BOOTINFO2(base, id, value1, value2) \
+     do { \
+-        stw_p(base, id); \
++        stw_be_p(base, id); \
+         base += 2; \
+-        stw_p(base, sizeof(struct bi_record) + 8); \
++        stw_be_p(base, sizeof(struct bi_record) + 8); \
+         base += 2; \
+-        stl_p(base, value1); \
++        stl_be_p(base, value1); \
+         base += 4; \
+-        stl_p(base, value2); \
++        stl_be_p(base, value2); \
+         base += 4; \
+     } while (0)
+ 
+ #define BOOTINFOSTR(base, id, string) \
+     do { \
+-        stw_p(base, id); \
++        stw_be_p(base, id); \
+         base += 2; \
+-        stw_p(base, \
++        stw_be_p(base, \
+                  (sizeof(struct bi_record) + strlen(string) + \
+                   1 /* null termination */ + 3 /* padding */) & ~3); \
+         base += 2; \
+@@ -59,13 +59,13 @@
+ 
+ #define BOOTINFODATA(base, id, data, len) \
+     do { \
+-        stw_p(base, id); \
++        stw_be_p(base, id); \
+         base += 2; \
+-        stw_p(base, \
++        stw_be_p(base, \
+                  (sizeof(struct bi_record) + len + \
+                   2 /* length field */ + 3 /* padding */) & ~3); \
+         base += 2; \
+-        stw_p(base, len); \
++        stw_be_p(base, len); \
+         base += 2; \
+         for (unsigned i_ = 0; i_ < len; ++i_) { \
+             stb_p(base++, data[i_]); \
+diff --git a/hw/m68k/mcf5208.c b/hw/m68k/mcf5208.c
+index b6677ad6bc..e37cd50d18 100644
+--- a/hw/m68k/mcf5208.c
++++ b/hw/m68k/mcf5208.c
+@@ -359,7 +359,7 @@ static void mcf5208evb_init(MachineState *machine)
+         /* Initial PC is always at offset 4 in firmware binaries */
+         ptr = rom_ptr(0x4, 4);
+         assert(ptr != NULL);
+-        env->pc = ldl_p(ptr);
++        env->pc = ldl_be_p(ptr);
+     }
+ 
+     /* Load kernel.  */
+diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+index 9b78767ea8..9832213e7e 100644
+--- a/hw/m68k/next-cube.c
++++ b/hw/m68k/next-cube.c
+@@ -1036,7 +1036,7 @@ static void next_cube_init(MachineState *machine)
+         /* Initial PC is always at offset 4 in firmware binaries */
+         ptr = rom_ptr(0x01000004, 4);
+         g_assert(ptr != NULL);
+-        env->pc = ldl_p(ptr);
++        env->pc = ldl_be_p(ptr);
+         if (env->pc >= 0x01020000) {
+             error_report("'%s' does not seem to be a valid firmware image.",
+                          bios_name);
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index fa7683bf76..556604e1dc 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -684,9 +684,9 @@ static void q800_machine_init(MachineState *machine)
+ 
+             ptr = rom_ptr(MACROM_ADDR, bios_size);
+             assert(ptr != NULL);
+-            stl_phys(cs->as, 0, ldl_p(ptr));    /* reset initial SP */
++            stl_phys(cs->as, 0, ldl_be_p(ptr));    /* reset initial SP */
+             stl_phys(cs->as, 4,
+-                     MACROM_ADDR + ldl_p(ptr + 4)); /* reset initial PC */
++                     MACROM_ADDR + ldl_be_p(ptr + 4)); /* reset initial PC */
+         }
+     }
+ }
 -- 
 2.46.1
 
