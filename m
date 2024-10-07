@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9604F992A07
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A40992A30
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:27:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxlc5-0002bZ-HP; Mon, 07 Oct 2024 07:09:17 -0400
+	id 1sxltR-0001BA-AJ; Mon, 07 Oct 2024 07:27:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sxlc3-0002aT-36; Mon, 07 Oct 2024 07:09:15 -0400
-Received: from mgamail.intel.com ([198.175.65.17])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sxltP-0001AX-FN
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:27:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sxlc1-0007HA-Eb; Mon, 07 Oct 2024 07:09:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728299353; x=1759835353;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=mdl3O6UZDSmkKcS6mryVKnf7fIORJIf2348ydZdIMdU=;
- b=B6VBP0pumfUC1EZ68fsvhMS7/8SGWq7cMt+DgK/fzJTOgX12N4KuqRUe
- IMpfBE7pCNBNSD8C5gJ5hjGPXXz55GKuS59QChuZUdupGtBDc5lSIqbdl
- V4OgKIbA0iQy+VxwyvC8ryIVnuSWORRrWkvTXYoZFioms4TPYRu0wpPoa
- 4pDOeP5CzTDnMVoNlnnSwHG0EYbuBTlc5Nr67PEmTX35qPZ2OxLvJojTI
- Ij2LitoiIfi1G3ng9XvuOMv6N4lrAUTBUJSJLNK+H0ZJYQu7JUew4nmfT
- S33E1DtBB53dN+i9ZZjxV/ofB60cxGWhSsOx0wqR1Edwz2qj1Dm5PCTM9 g==;
-X-CSE-ConnectionGUID: f9yAN2jOQL2A/pNrMzVfbg==
-X-CSE-MsgGUID: qQmaOpixT+WeNx9oYujViw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="27567916"
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="27567916"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 04:09:11 -0700
-X-CSE-ConnectionGUID: NG4iK1/SQZutev+AM5LZCQ==
-X-CSE-MsgGUID: SRN2jDpjQQqXbhSdUU9EgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="75413361"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 07 Oct 2024 04:09:05 -0700
-Date: Mon, 7 Oct 2024 19:25:17 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S.Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v2 6/7] i386/cpu: Update cache topology with machine's
- configuration
-Message-ID: <ZwPFHZQA4ar1j2+0@intel.com>
-References: <20240908125920.1160236-1-zhao1.liu@intel.com>
- <20240908125920.1160236-7-zhao1.liu@intel.com>
- <20240917100641.000050a8@Huawei.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sxltN-0001K6-57
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:27:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728300427;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8nKqBnt/fCOBu40ubx4JznSGepSs7ghbPdITuSOSGVo=;
+ b=OcxS4h0S8SjqskIua9jZsHd4cGWa1W7H3bFZzOk1PgYqpPZot0pUsiHymhMhkmtzy31Vw3
+ AxYsXvdL+I2IZFElCYYdT2tXeS5jiRnIqZ1bizrS6AFNTtP+WSrjJyJ7D7IuycrAFY9kol
+ OpgfPuZPX/ucbPnaNgVjzGBwez+Dt4U=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-686-oXG8utIwOQi1r1PFW6bZYw-1; Mon, 07 Oct 2024 07:27:06 -0400
+X-MC-Unique: oXG8utIwOQi1r1PFW6bZYw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-37cd4ec04a1so1761370f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 04:27:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1728300425; x=1728905225;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8nKqBnt/fCOBu40ubx4JznSGepSs7ghbPdITuSOSGVo=;
+ b=DQXxg/ibQIZJYiCeztd57O/aAN/g+GW4lg9owjRo4EZZEwmFN08mjKdPYuPouRPqyX
+ VSj9SdEKmT+2bWyNB64FBQm3mlWMha2H4S53f7GKKI0YAP6woGZLf2idswiUw+Q5+RxK
+ 8xM4+CfFnMvsSHs8GT32d+lIFIXXZw97aOVKEttisYs5R4l/scpl1zaUmtihWRfnPq6k
+ wY/i2P4UKwY7+9jq1ioDytW/J7nnkwcXdJZ11erlI6tLAjzDvi5Q3JxPVjXS17CXUbyB
+ Abf2gTRXgqCGGDuD89gKXeeyGeFk5KdleUwtPBd/QIu7zSAvbEQ/i8pxExLHyZlE8DSN
+ 8dLA==
+X-Gm-Message-State: AOJu0YzWpoqdh90vCTjYiH4TW7/nXITEnRPtG2wAjTg8QxfrEuwVEY3e
+ DMSJO1NYgeQEHhR4Wdv1U+dE1pPx87cKlTeX9asQQM2eIbfuXuG8Y+c+xxvItI6HA4xBGt3Ds9W
+ T45J4ON70ac+MEZzcVvGVRUideAPezmJW6zfANCW09wFdkm8YeB5/0Oiah8bUybtp2/8ER+VExr
+ Q8WytLZeadDx4Y4YeUW3ZlJq9PW/o=
+X-Received: by 2002:adf:e501:0:b0:374:ba83:8d73 with SMTP id
+ ffacd0b85a97d-37d0e6dae2amr6181354f8f.8.1728300424838; 
+ Mon, 07 Oct 2024 04:27:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHBFQwRnfH6pJlQQqrFl3l1SMSt7cNX3VLUkFV1aiUPe14k06IqUT1J1SEqsgazNkqq1S28P9+FSYd9ciYJM+g=
+X-Received: by 2002:adf:e501:0:b0:374:ba83:8d73 with SMTP id
+ ffacd0b85a97d-37d0e6dae2amr6181343f8f.8.1728300424500; Mon, 07 Oct 2024
+ 04:27:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240917100641.000050a8@Huawei.com>
-Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
+References: <20241007110342.1298598-1-pbonzini@redhat.com>
+ <ZwPB9SnTvkr082NA@redhat.com>
+In-Reply-To: <ZwPB9SnTvkr082NA@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 7 Oct 2024 13:26:52 +0200
+Message-ID: <CABgObfYZgR9xNnP9mHWU92XZZ_VeFLHimkd-t-63KX_KWeDZ=A@mail.gmail.com>
+Subject: Re: [PULL 00/12] Rust initial PoC + meson changes for 2024-10-07
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org, zhao1.liu@intel.com,
+ junjie.mao@intel.com, pierrick.bouvier@linaro.org, alex.bennee@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,29 +97,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 17, 2024 at 10:06:41AM +0100, Jonathan Cameron wrote:
-> Date: Tue, 17 Sep 2024 10:06:41 +0100
-> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> Subject: Re: [PATCH v2 6/7] i386/cpu: Update cache topology with machine's
->  configuration
-> X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
-> 
-> On Sun,  8 Sep 2024 20:59:19 +0800
-> Zhao Liu <zhao1.liu@intel.com> wrote:
-> 
-> > User will configure smp cache topology via -machine smp-cache.
-> > 
-> > For this case, update the x86 CPUs' cache topology with user's
-> > configuration in MachineState.
-> > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> Seems simple enough.
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, Oct 7, 2024 at 1:11=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@re=
+dhat.com> wrote:
+> The current dockerfiles don't include rust, and I see nothing
+> here updating them to add rust, so how is any of this getting
+> test coverage ?
+>
+> Even though this has Rust disabled by default, I would still
+> consider CI enablement to be a pre-requsite for merging even
+> basic Rust support.
 
-Thanks!
+I agree in general, but there's already a lot of work that can be
+parallelized and the idea of someone managing Rust-related patches
+out-of-tree was discarded. So this seemed to be the only way to
+proceed.
 
--Zhao
+Right now only Fedora 39 and 40 (with updates) are able to compile
+QEMU with Rust enabled. Full CI enablement requires further work to
+reduce the minimum supported version of the compiler, after which
+rustc can be added to the libvirt-ci inputs and to the Dockerfiles.
 
+Adding a CI job that uses nightly rust (via rustup) is high on my
+priority list, but first of all I wanted to integrate clippy (because
+the main point of having a job with nightly rust is to have a heads-up
+on future clippy warnings). That said, I'm also not sure how one would
+go adding rustup to a container generated by lcitool (for example
+should I add a new dockerfile that is _based_ on one that already
+exists? would that change when Rust/rustc is added to that
+dockerfile?).
+
+I think the best thing to do is to do a presentation to the whole
+community, maybe next week, explaining the state of the experiment and
+asking for help.
+
+Paolo
 
 
