@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24EC9931DC
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 17:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3EE9931E9
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 17:47:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxpvz-0005Nd-Ia; Mon, 07 Oct 2024 11:46:07 -0400
+	id 1sxpxP-000066-WE; Mon, 07 Oct 2024 11:47:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sxpvu-0005Al-1N
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 11:46:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sxpxN-00005B-3Q
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 11:47:33 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sxpvs-0002ZX-Gb
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 11:46:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728315958;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oWdSJqNTu1f2aCVErVpBxq7bLKJEcOtDRM7rNUFeIe4=;
- b=NkaRg+6yiv6wrS3AoXeaGTDCZRkHxThb7Ud+Alb663B3Elz0nyvPRFafQjmCoLVLZdkJte
- fcD0Civno63twb+NF0jokUDRcJZ3RRYQ9aAaUhD81cD9+rNeeywJS9GiccHrMO0u/ggpAz
- yCh0jdYJ4Jyz7ZgRGmUoV1iaHmFsI4M=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-443-hIrEPruWPMezXKwrd_ZquA-1; Mon,
- 07 Oct 2024 11:45:56 -0400
-X-MC-Unique: hIrEPruWPMezXKwrd_ZquA-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AEE02196C40B
- for <qemu-devel@nongnu.org>; Mon,  7 Oct 2024 15:45:55 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.61])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D0BD530001A0; Mon,  7 Oct 2024 15:45:54 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 3/3] scripts: forbid use of arbitrary SPDX tags besides
- license identifiers
-Date: Mon,  7 Oct 2024 16:45:48 +0100
-Message-ID: <20241007154548.1144961-4-berrange@redhat.com>
-In-Reply-To: <20241007154548.1144961-1-berrange@redhat.com>
-References: <20241007154548.1144961-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sxpxL-0002eu-ES
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 11:47:32 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id A9F45961A6;
+ Mon,  7 Oct 2024 18:47:22 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4B55814F611;
+ Mon,  7 Oct 2024 18:47:29 +0300 (MSK)
+Message-ID: <a4ed7ba2-2cf5-4ac3-a9df-97c42eb881ec@tls.msk.ru>
+Date: Mon, 7 Oct 2024 18:47:29 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net/tap-win32: Fix gcc 14 format truncation errors
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>, Stefan Weil <sw@weilnetz.de>
+References: <20241007101313.3900-1-shentey@gmail.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20241007101313.3900-1-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,50 +82,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While SPDX-License-Identifier is a well known SPDX tag, there are a
-great many more besides that[1]. This are around making machine readable
-metadata available to the 'reuse' tool and similar for things like
-author names, copyright owners, and much more. It is even possible to
-define source file line groups and apply different SPDX tags to just
-that region of code.
+07.10.2024 13:13, Bernhard Beschow wrote:
+> The patch fixes the following errors generated by GCC 14.2:
+> 
+> ../src/net/tap-win32.c:343:19: error: '%s' directive output may be truncated writing up to 255 bytes into a region of size 176 [-Werror=format-truncation=]
+>    343 |              "%s\\%s\\Connection",
+>        |                   ^~
+>    344 |              NETWORK_CONNECTIONS_KEY, enum_name);
+>        |                                       ~~~~~~~~~
+...
 
-At this time we're only interested in adopting SPDX for recording the
-licensing info, so detect & reject any other SPDX metadata. If we want
-to explicitly collect extra data in SPDX format, we can evaluate each
-case on its merits.
+>       for (;;) {
+>           char enum_name[256];
+> -        char unit_string[256];
+> +        char unit_string[512];
 
-[1] https://spdx.github.io/spdx-spec/v2.2.2/file-tags/
-    https://spdx.github.io/spdx-spec/v2.2.2/file-information/
+Is it maybe better to use something like g_format_string() or asprintf() here?
+Here and also in net/slirp.c
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- scripts/checkpatch.pl | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Thanks,
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index cd1ed90f4c..5ad2d4ca2e 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -1707,6 +1707,18 @@ sub process {
- 		    &checkspdx($realfile, $1);
- 		}
- 
-+		if ($rawline =~ m,(SPDX-[a-zA-Z0-9-_]+):,) {
-+		    my $tag = $1;
-+		    my @permitted = qw(
-+			SPDX-License-Identifier
-+		    );
-+
-+		    unless (grep { /^$tag$/ } @permitted) {
-+			ERROR("Tag $tag not permitted in QEMU code, valid " .
-+			      "choices are: " . join(", ", @permitted));
-+		    }
-+		}
-+
- # Check for wrappage within a valid hunk of the file
- 		if ($realcnt != 0 && $line !~ m{^(?:\+|-| |\\ No newline|$)}) {
- 			ERROR("patch seems to be corrupt (line wrapped?)\n" .
--- 
-2.46.0
-
+/mjt
 
