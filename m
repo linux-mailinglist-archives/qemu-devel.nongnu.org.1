@@ -2,102 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A50F993344
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 18:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C20889932D4
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 18:13:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxqbQ-0005db-VV; Mon, 07 Oct 2024 12:28:57 -0400
+	id 1sxqLs-0000yE-4Z; Mon, 07 Oct 2024 12:12:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richardcochran@gmail.com>)
- id 1sxqIk-0000iA-0t
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:09:38 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richardcochran@gmail.com>)
- id 1sxqIi-0005HT-Fd
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:09:37 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-20b0b2528d8so52503925ad.2
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 09:09:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728317374; x=1728922174; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=jbnVqVnf/+P0rl51L6+didESx8C92ZvLSqC1mWtGnLk=;
- b=IYJ2LRkEEdsjRhTXtM7eWv46Qc++zT561Cxf34fAV00MHtvFw7D3mpmMbEkF1ndq40
- U/jflQwS+Sog6bRIGHmskuJOYd8jScfrFkJkML3tEm3yDWPsymQUVJ7BrW0XnmWT6CN9
- +Z+QuItKhpW78ECPhzvOTj/1mCdXCyaHQZCjXLWDE4gkc48VjW4LMvBvtUqL5viVl2t0
- GiCoeG+CX/iHsp4saD2uRcI3MAJ8vNzh9fB7abavMeshEZ98sRMiig36QLgqbcL0DcVh
- Vs+jV6oPmDbpbWrGJ/ucXfMhT8V/EGoUFFh9KOO+pVOpbgjxRT4sDyTvPPThKZRYAhPV
- bXWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728317374; x=1728922174;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jbnVqVnf/+P0rl51L6+didESx8C92ZvLSqC1mWtGnLk=;
- b=BBSLhPG1vLM45MTsGqcLvDLTD1ycwiPO5ATc23woWiitjR3CDWDmCTH8x0tFwrFVJx
- eopIgZxFwkUnMoRRuLdrKr/YAF1Q61/vk3BJFDlo+K4o5TtZhTD2xMlYsTATY2BZD7oS
- KvbajpMLNHibLiHazuydYMr/SFRbX8NB4PdEjfIITqs+2J3YOk4JQ26jQ85foJohHgC0
- Rae5VO3EFUvz56k/74eNaJSwNtJVRFad7y2lq/cnD+67kk/6KZf+eh/usg3wtJs+Pjez
- tUogcfdkJeymDifBuuGFifONxfwIeLzuEM4QKDooFHFkje1kiBSW9lgLdYL0s0C1bntd
- YsEQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW5qBn7nypOb0ur8MsQbcNPZ/kTVEyrpi4Xl8THfsL3adZ3cJz1T3LnpP10Fe2By5kc5kw3NcG9P0KR@nongnu.org
-X-Gm-Message-State: AOJu0Ywnw6qwq4NF0j6Ho4BcoBCtJTF1o8E6sxzvQLVvzDmIpEegGF6d
- rI06GAC9TAa+W8mp5neirsy/XD6r+rVwyns02xRApqYGgkWiT5Cz
-X-Google-Smtp-Source: AGHT+IGRJ8PDY2uvOdrScF+lvW+ErLKYmvUUU9Ley7KXKt2lpYDNWDc7FzwaUgY9vidSx6egFuHhvA==
-X-Received: by 2002:a17:903:2445:b0:20b:ab4b:544a with SMTP id
- d9443c01a7336-20bfe49471amr194072435ad.43.1728317373996; 
- Mon, 07 Oct 2024 09:09:33 -0700 (PDT)
-Received: from hoboy.vegasvil.org ([198.59.164.146])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c13988d0bsm41141785ad.262.2024.10.07.09.09.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Oct 2024 09:09:33 -0700 (PDT)
-Date: Mon, 7 Oct 2024 09:09:24 -0700
-From: Richard Cochran <richardcochran@gmail.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Peter Hilber <peter.hilber@opensynergy.com>,
- linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-rtc@vger.kernel.org,
- "Ridoux, Julien" <ridouxj@amazon.com>, virtio-dev@lists.linux.dev,
- "Luu, Ryan" <rluu@amazon.com>, "Chashper, David" <chashper@amazon.com>,
- "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>,
- Paolo Abeni <pabeni@redhat.com>,
- "Christopher S . Hall" <christopher.s.hall@intel.com>,
- Jason Wang <jasowang@redhat.com>, John Stultz <jstultz@google.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org,
- Stephen Boyd <sboyd@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Marc Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Alessandro Zummo <a.zummo@towertech.it>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- qemu-devel <qemu-devel@nongnu.org>, Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net-next v7] ptp: Add support for the AMZNC10C 'vmclock'
- device
-Message-ID: <ZwQHtD5lVNuc4aAf@hoboy.vegasvil.org>
-References: <78969a39b51ec00e85551b752767be65f6794b46.camel@infradead.org>
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1sxqLo-0000y5-LY
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:12:49 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
+ id 1sxqLl-0005g5-1O
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:12:46 -0400
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 497F6fDg003930;
+ Mon, 7 Oct 2024 16:12:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ 1MjTtkvMjyOgc0ZbCwQBoKvvfnej7uN5ZnpfCOGi1Fw=; b=I4RhnQVrE1UT19VF
+ Wy+lOCrw7FfAY3IcjjP5mSVPWk5Wk6512WjvA78kY9mAvCt5IoSBKRVW4YaRFnRf
+ fuulgxte6EKS6F5i2rI/xiYNdbjwXS9mIY8OvIFglUVrZjjnfWbToJvd9SipDUt1
+ XToh4JmG7SHFTWH7ki5iGY+bR5/xc/paPuR2JjDTKFEu9c9WY1ODRBFaPU37XWBd
+ rHzJfd1Bd7ItRjOTw0SzrCnSV7ClFXHgIRiv4HdnBqE4+5SCuwF++a3sEeDWyrnJ
+ xq9943W/trE/TePXtvOCAQvuJD3CmRWrVJMeJjj5pWBPobkYrJy4m8bszWjBm5SY
+ GbWkuA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 422xv6vref-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Oct 2024 16:12:40 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 497GCdr4025906
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 7 Oct 2024 16:12:39 GMT
+Received: from [10.111.168.217] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 7 Oct 2024
+ 09:12:39 -0700
+Message-ID: <d9ffbc39-3fc6-49df-9140-9b5aeacc24d0@quicinc.com>
+Date: Mon, 7 Oct 2024 11:12:37 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] scripts: mandate that new files have
+ SPDX-License-Identifier
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ <qemu-devel@nongnu.org>
+References: <20241007154548.1144961-1-berrange@redhat.com>
+ <20241007154548.1144961-2-berrange@redhat.com>
+Content-Language: en-US
+From: Brian Cain <quic_bcain@quicinc.com>
+In-Reply-To: <20241007154548.1144961-2-berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <78969a39b51ec00e85551b752767be65f6794b46.camel@infradead.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richardcochran@gmail.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: 78GpBbWr7pZ4ELwXayNEiFlXwqXwbBkH
+X-Proofpoint-GUID: 78GpBbWr7pZ4ELwXayNEiFlXwqXwbBkH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011
+ priorityscore=1501 impostorscore=0 adultscore=0 lowpriorityscore=0
+ mlxlogscore=999 mlxscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410070115
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_bcain@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 07 Oct 2024 12:28:53 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,47 +102,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Oct 06, 2024 at 08:17:58AM +0100, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> The vmclock device addresses the problem of live migration with
-> precision clocks. The tolerances of a hardware counter (e.g. TSC) are
-> typically around �50PPM. A guest will use NTP/PTP/PPS to discipline that
-> counter against an external source of 'real' time, and track the precise
-> frequency of the counter as it changes with environmental conditions.
-> 
-> When a guest is live migrated, anything it knows about the frequency of
-> the underlying counter becomes invalid. It may move from a host where
-> the counter running at -50PPM of its nominal frequency, to a host where
-> it runs at +50PPM. There will also be a step change in the value of the
-> counter, as the correctness of its absolute value at migration is
-> limited by the accuracy of the source and destination host's time
-> synchronization.
-> 
-> In its simplest form, the device merely advertises a 'disruption_marker'
-> which indicates that the guest should throw away any NTP synchronization
-> it thinks it has, and start again.
-> 
-> Because the shared memory region can be exposed all the way to userspace
-> through the /dev/vmclock0 node, applications can still use time from a
-> fast vDSO 'system call', and check the disruption marker to be sure that
-> their timestamp is indeed truthful.
-> 
-> The structure also allows for the precise time, as known by the host, to
-> be exposed directly to guests so that they don't have to wait for NTP to
-> resync from scratch. The PTP driver consumes this information if present.
-> Like the KVM PTP clock, this PTP driver can convert TSC-based cross
-> timestamps into KVM clock values. Unlike the KVM PTP clock, it does so
-> only when such is actually helpful.
-> 
-> The values and fields are based on the nascent virtio-rtc specification,
-> and the intent is that a version (hopefully precisely this version) of
-> this structure will be included as an optional part of that spec. In the
-> meantime, this driver supports the simple ACPI form of the device which
-> is being shipped in certain commercial hypervisors (and submitted for
-> inclusion in QEMU).
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 
-Acked-by: Richard Cochran <richardcochran@gmail.com>
+On 10/7/2024 10:45 AM, Daniel P. Berrangé wrote:
+> Going forward we want all newly created source files to have an
+> SPDX-License-Identifier tag present.
+>
+> Initially mandate this for C, Python and Perl source files, and
+> encourage this for other file types.
+>
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   scripts/checkpatch.pl | 26 ++++++++++++++++++++++++++
+>   1 file changed, 26 insertions(+)
+>
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> index 1b21249c91..cc266abdcd 100755
+> --- a/scripts/checkpatch.pl
+> +++ b/scripts/checkpatch.pl
+> @@ -1378,6 +1378,8 @@ sub process {
+>   	my $in_imported_file = 0;
+>   	my $in_no_imported_file = 0;
+>   	my $non_utf8_charset = 0;
+> +	my $expect_spdx = 0;
+> +	my $expect_spdx_file;
+>   
+>   	our @report = ();
+>   	our $cnt_lines = 0;
+> @@ -1615,6 +1617,30 @@ sub process {
+>   			WARN("added, moved or deleted file(s), does MAINTAINERS need updating?\n" . $herecurr);
+>   		}
+>   
+> +# All new files should have a SPDX-License-Identifier tag
+> +		if ($line =~ /^new file mode\s*\d+\s*$/) {
+> +		    if ($expect_spdx) {
+> +			if ($expect_spdx_file =~ /\.(c|h|py|pl|c\.inc)$/) {
+> +			    # source code files MUST have SPDX license declared
+> +			    ERROR("expected 'SPDX-License-Identifer' in new file $expect_spdx_file");
+> +			} else {
+> +			    # Other files MAY have SPDX license if appropriate
+> +			    WARNING("Does new file $expect_spdx_file need 'SPDX-License-Identifer'?");
+> +			}
+> +		    }
+> +		    $expect_spdx = 1;
+> +		    $expect_spdx_file = undef;
+> +		} elsif ($expect_spdx) {
+> +		    $expect_spdx_file = $realfile unless defined $expect_spdx_file;
+> +
+> +		    # SPDX tagsd may occurr in comments which were
+> +		    # stripped from '$line', so use '$rawline'
+> +		    if ($rawline =~ /SPDX-License-Identifier/) {
+> +			$expect_spdx = 0;
+> +			$expect_spdx_file = undef;
+> +		    }
+> +		}
+> +
+>   # Check for wrappage within a valid hunk of the file
+>   		if ($realcnt != 0 && $line !~ m{^(?:\+|-| |\\ No newline|$)}) {
+>   			ERROR("patch seems to be corrupt (line wrapped?)\n" .
+
+This change makes sense to me, thanks for suggesting it.
+
+
+Reviewed-by: Brian Cain <bcain@quicinc.com>
+
 
