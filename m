@@ -2,100 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61FC19928F5
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 12:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 077F8992958
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 12:38:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxknM-0007oJ-9Z; Mon, 07 Oct 2024 06:16:52 -0400
+	id 1sxl7H-0003CN-1O; Mon, 07 Oct 2024 06:37:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sxknJ-0007nl-4k
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 06:16:49 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sxl75-00039m-J4
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 06:37:16 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sxknH-0000SQ-BT
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 06:16:48 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-71e023635acso544970b3a.2
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 03:16:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sxl73-0002m3-SO
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 06:37:15 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2fabfc06de3so44998061fa.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 03:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1728296206; x=1728901006;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=//p0QAZIFxBdtctr+n8wpv2jCgbiwpxUcQc3BVVy7ek=;
- b=DBlPTB3+spCzXpRm+fps17aHo8qCxXAhGZ9lmWxC2S8CN75Z16d9q1CJ+C7BcUF7xM
- pizSc6wlPt5kvcX4YTNbJ80AC2mW7ouTceTn9qf9XqDfziG/c++LgqOVA1Jd2WOOkO/x
- r5GdeelPg0P9oaD2Jz1ejJwxwPhtETC7u+ubsON5YNE770c2tOYvDpzQWD4iJ65iBF+l
- 1zTGqCYD+XLyCzlP44cA3k/u6i0kjL3P0+MK8F7FRqzO0VisukSUhI39fryAXWadr/Id
- 5L2U++ERMhkFQW3wu0MEouV45OokiDCvYHlCO+wraBAER0OaZCUcmkc5Yqcpp1ytn+QF
- GLRQ==
+ d=linaro.org; s=google; t=1728297431; x=1728902231; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ngPWRvFSjCMt+74SoKPh5f+HvsBf1msKQnpxsK8zLbs=;
+ b=l0JP8x1mxS3jfi9tuaogunYMxBts1dq1mYb0jueCQPq1uPydUKlJkXHEwniU2/UJDr
+ exj15SQ3MMA3IpdgNBbs4q/oM7hq9v0Hg3jEFTAza7eSeKJmH0AcbvlCH/flSgg5F7Ph
+ QBSHyo0Ax+SvGZ6ZA3owUgTn76fiuzzfSay7wBTxxTjLpMWiLnUd3x2tswNrUDpyB8OG
+ OHHUKA8YKxaV8WDca+5W3w7/7ldiNb4Dw86TOSTlgoZj0XCNYSt8DRNnVw7WcabSmkEw
+ ZKFzGxyRtbsEzH23RnHNVW6kNUcRGcvS//QywdRbczLWVOw9cuBO+86MEXQsel4wHrOj
+ Q4EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728296206; x=1728901006;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=//p0QAZIFxBdtctr+n8wpv2jCgbiwpxUcQc3BVVy7ek=;
- b=pVhsKs3J0nBYw5q9aQzBf6Y9csja3EM4GDM+hUtrMBwmy0QcETCKTBicUM9GmEZSE4
- zQreax0J+XQzgSHa34WW7BNqzYd+tUhjJQlPB7nYl6KKxIq25BgOHSK5qDXS1TC5XMy7
- iRKVTWBOvqrEQMANiTqRoGClGVG1HxWU8BbOvoOsrKNTvn4/J40gFJ7KZgSkbW52NfER
- irCuGf/Htf/yZcGK3oq9mbULf0YACU1f1QP+rv5Wn3jlaS4gwZxChw2B7kQBxnbbVlKO
- 2dftp3J75naPQb2xSu6tEtTT4Ohk8Hl6db7M3Cl0/8GnYpfPlUdJQg26TFfFanfDvXu5
- TW0A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVnOJhJjqLrSd6DDj80Z+vgbeM+x52ixJgZ6/LSS56e+l7BfLofChN3EjtQFcwgqV+kdVDwBti/aaQ8@nongnu.org
-X-Gm-Message-State: AOJu0YzSGH/ok3JvT0sbvLkGIlllXdPEKr3W0o3P1mcNbhtIMZi/G1C5
- RfOMwXBQiANw+VY+9s/cS1kq6SrrmPHVT6fyJzTzR8f2CJ1FkKVWXIsKJW4Oz/g=
-X-Google-Smtp-Source: AGHT+IHKVJkRjXt91/py9aUQuP1q6p3GWUtklwgIqKyDsEVEzv7LXHVozo1iXI93XcZZ/VvmlxUIVg==
-X-Received: by 2002:a05:6a00:b42:b0:71e:48b:6422 with SMTP id
- d2e1a72fcca58-71e048b6681mr3759789b3a.2.1728296205713; 
- Mon, 07 Oct 2024 03:16:45 -0700 (PDT)
-Received: from [157.82.207.107] ([157.82.207.107])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-71df0d66319sm4055051b3a.156.2024.10.07.03.16.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Oct 2024 03:16:45 -0700 (PDT)
-Message-ID: <05f5e97a-f5fb-43c1-8538-8dc77b629a0f@daynix.com>
-Date: Mon, 7 Oct 2024 19:16:40 +0900
+ d=1e100.net; s=20230601; t=1728297431; x=1728902231;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ngPWRvFSjCMt+74SoKPh5f+HvsBf1msKQnpxsK8zLbs=;
+ b=wa8Yv5EFY9OIt8K3EKqRyrQikeItROCr564SpYpZl8Ql8FCgz6vPneWRi0NJQGgMLF
+ pHA2PkesvjevoPXdhsnJHGdS8xTG6udcyWHwFF4nd24ntAqaBh7mbztsXiHAkCpNBiQs
+ RW0qSwqK+iMkv6s3SzifQ2LUazBNAmIWaV4y6V+jr8i6BkOAUBvxoWaR4rRIsJgkJvJ0
+ QXaK2shaK0RLEbtgtAeprMAEmoQ+PNHBqLglLdT1mxssDd9H05nAlIdR/3mLfFT6Sadg
+ Y2J37czboZ+xuarFdkRmitu0PBDP2W5XTm3qlMn1OJh0/hhTWLnTlhGiP8ZixgXu/Sw0
+ Q46A==
+X-Gm-Message-State: AOJu0YxbbYIP84uzzqa/6W36WDDaOA8wPMml62Rm0M5iGNtowTKcdw4b
+ sIqgMst4MFUC3SGyI4YfrUxoiL6Rix6MeRWok0Zfx+UvAUTD5Uu4tibxQXWltvP+b48n3DU/Lqw
+ m2/1XLugSxoaOxL9Fuw84nTl8da2GHfwJBc0GHg==
+X-Google-Smtp-Source: AGHT+IET1Dv9yDJgZGasEKqfv1tZ/g91Bp2R/MxxEdBiaBFlbU6jnYnUvrXRfeQsL3EXMRjVEt4Ue7YGf9VuSeLtgWM=
+X-Received: by 2002:a2e:a9a5:0:b0:2fb:b8a:7abb with SMTP id
+ 38308e7fff4ca-2fb0b8a7b17mr6739151fa.21.1728297430629; Mon, 07 Oct 2024
+ 03:37:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 6/6] virtio-gpu: Support DRM native context
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Rob Clark <robdclark@gmail.com>
-References: <20241006232350.3198759-1-dmitry.osipenko@collabora.com>
- <20241006232350.3198759-7-dmitry.osipenko@collabora.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20241006232350.3198759-7-dmitry.osipenko@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::434;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20241007101313.3900-1-shentey@gmail.com>
+In-Reply-To: <20241007101313.3900-1-shentey@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 7 Oct 2024 11:36:59 +0100
+Message-ID: <CAFEAcA-d0jcDiJASmvS5S2jWUijUGuk5Vu7QT8wrD+HKUgEJqQ@mail.gmail.com>
+Subject: Re: [PATCH] net/tap-win32: Fix gcc 14 format truncation errors
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>, 
+ Stefan Weil <sw@weilnetz.de>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,134 +86,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/10/07 8:23, Dmitry Osipenko wrote:
-> Add support for DRM native contexts to VirtIO-GPU. DRM context is enabled
-> using a new virtio-gpu-gl device option "drm=true".
-> 
-> Unlike Virgl and Venus contexts that operate on application API level,
-> DRM native contexts work on a kernel UAPI level. This lower level results
-> in a lightweight context implementations that yield better performance.
-> 
-> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+On Mon, 7 Oct 2024 at 11:14, Bernhard Beschow <shentey@gmail.com> wrote:
+>
+> The patch fixes the following errors generated by GCC 14.2:
+>
+> ../src/net/tap-win32.c:343:19: error: '%s' directive output may be truncated writing up to 255 bytes into a region of size 176 [-Werror=format-truncation=]
+>   343 |              "%s\\%s\\Connection",
+>       |                   ^~
+>   344 |              NETWORK_CONNECTIONS_KEY, enum_name);
+>       |                                       ~~~~~~~~~
+>
+> ../src/net/tap-win32.c:341:9: note: 'snprintf' output between 92 and 347 bytes into a destination of size 256
+>   341 |         snprintf(connection_string,
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   342 |              sizeof(connection_string),
+>       |              ~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   343 |              "%s\\%s\\Connection",
+>       |              ~~~~~~~~~~~~~~~~~~~~~
+>   344 |              NETWORK_CONNECTIONS_KEY, enum_name);
+>       |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> ../src/net/tap-win32.c:242:58: error: '%s' directive output may be truncated writing up to 255 bytes into a region of size 178 [-Werror=format-truncation=]
+>   242 |         snprintf (unit_string, sizeof(unit_string), "%s\\%s",
+>       |                                                          ^~
+>   243 |                   ADAPTER_KEY, enum_name);
+>       |                                ~~~~~~~~~
+>
+> ../src/net/tap-win32.c:242:9: note: 'snprintf' output between 79 and 334 bytes into a destination of size 256
+>   242 |         snprintf (unit_string, sizeof(unit_string), "%s\\%s",
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   243 |                   ADAPTER_KEY, enum_name);
+>       |                   ~~~~~~~~~~~~~~~~~~~~~~~
+>
+> ../src/net/tap-win32.c:620:52: error: '%s' directive output may be truncated writing up to 255 bytes into a region of size 245 [-Werror=format-truncation=]
+>   620 |     snprintf (device_path, sizeof(device_path), "%s%s%s",
+>       |                                                    ^~
+>   621 |               USERMODEDEVICEDIR,
+>   622 |               device_guid,
+>       |               ~~~~~~~~~~~
+> ../src/net/tap-win32.c:620:5: note: 'snprintf' output between 16 and 271 bytes into a destination of size 256
+>   620 |     snprintf (device_path, sizeof(device_path), "%s%s%s",
+>       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   621 |               USERMODEDEVICEDIR,
+>       |               ~~~~~~~~~~~~~~~~~~
+>   622 |               device_guid,
+>       |               ~~~~~~~~~~~~
+>   623 |               TAPSUFFIX);
+>       |               ~~~~~~~~~~
+>
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2607
+Probably also worth
+Cc: qemu-stable@nongnu.org
+
 > ---
->   docs/system/devices/virtio-gpu.rst | 11 +++++++++++
->   hw/display/virtio-gpu-gl.c         |  2 ++
->   hw/display/virtio-gpu-virgl.c      | 12 ++++++++++++
->   hw/display/virtio-gpu.c            | 15 +++++++++++++++
->   include/hw/virtio/virtio-gpu.h     |  3 +++
->   5 files changed, 43 insertions(+)
-> 
-> diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
-> index b7eb0fc0e727..8ce67c98aae2 100644
-> --- a/docs/system/devices/virtio-gpu.rst
-> +++ b/docs/system/devices/virtio-gpu.rst
-> @@ -82,6 +82,17 @@ of virtio-gpu host memory window. This is typically between 256M and 8G.
->   
->   .. _venus: https://gitlab.freedesktop.org/virgl/venus-protocol/
->   
-> +DRM native context is supported since release of `virglrenderer`_ v1.0.0
-> +using `drm`_ protocol. ``DRM`` virtio-gpu capability set ("capset") requires
-> +host blob support (``hostmem`` and ``blob`` fields) and should be enabled
-> +using ``drm`` field. The ``hostmem`` field specifies the size of virtio-gpu
-> +host memory window. This is typically between 256M and 8G.
-> +
-> +.. parsed-literal::
-> +    -device virtio-gpu-gl,hostmem=8G,blob=true,drm=true
+>  net/tap-win32.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/tap-win32.c b/net/tap-win32.c
+> index 7edbd71633..4a4625af2b 100644
+> --- a/net/tap-win32.c
+> +++ b/net/tap-win32.c
+> @@ -214,7 +214,7 @@ static int is_tap_win32_dev(const char *guid)
+>
+>      for (;;) {
+>          char enum_name[256];
+> -        char unit_string[256];
+> +        char unit_string[512];
+>          HKEY unit_key;
+>          char component_id_string[] = "ComponentId";
+>          char component_id[256];
+> @@ -315,7 +315,7 @@ static int get_device_guid(
+>      while (!stop)
+>      {
+>          char enum_name[256];
+> -        char connection_string[256];
+> +        char connection_string[512];
+>          HKEY connection_key;
+>          char name_data[256];
+>          DWORD name_type;
+> @@ -595,7 +595,7 @@ static void tap_win32_free_buffer(tap_win32_overlapped_t *overlapped,
+>  static int tap_win32_open(tap_win32_overlapped_t **phandle,
+>                            const char *preferred_name)
+>  {
+> -    char device_path[256];
+> +    char device_path[512];
+>      char device_guid[0x100];
+>      int rc;
+>      HANDLE handle;
 
-"on" is more commonly used than "true".
+Rather than just increasing the array sizes, I think we
+should use g_autofree and g_strdup_printf(), like:
 
-> +
-> +.. _drm: https://gitlab.freedesktop.org/virgl/virglrenderer/-/tree/main/src/drm
-> +
->   virtio-gpu rutabaga
->   -------------------
->   
-> diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-> index 53d938f23f20..bd0c0692a5c4 100644
-> --- a/hw/display/virtio-gpu-gl.c
-> +++ b/hw/display/virtio-gpu-gl.c
-> @@ -159,6 +159,8 @@ static Property virtio_gpu_gl_properties[] = {
->                       VIRTIO_GPU_FLAG_STATS_ENABLED, false),
->       DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
->                       VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-> +    DEFINE_PROP_BIT("drm", VirtIOGPU, parent_obj.conf.flags,
-> +                    VIRTIO_GPU_FLAG_DRM_ENABLED, false),
->       DEFINE_PROP_END_OF_LIST(),
->   };
->   
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index ad1d40901bff..d61f78a28881 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -1227,6 +1227,18 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
->       if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
->           flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
->       }
-> +    if (virtio_gpu_drm_enabled(g->parent_obj.conf)) {
-> +        flags |= VIRGL_RENDERER_DRM;
-> +
-> +        if (!gl->context_fence_enabled) {
-> +            /*
-> +             * Virglrenderer skips enabling DRM context support without
-> +             * enabled async-fence feature. VirtIO-GPU will initialize
-> +             * successfully, but DRM context won't be available in guest.
-> +             */
-> +            warn_report("DRM native context requires EGL display");
+       g_autofree char* unit_string = NULL;
 
-It should report an error and stop when an explicitly requested feature 
-is unavailable.
+       [...]
+       unit_string = g_strdup_printf("%s\\%s", ADAPTER_KEY, enum_name);
 
-> +        }
-> +    }
->   #endif
->   
->       ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index 0d1de7dc398c..cfd4ed8a104f 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -1521,6 +1521,21 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
->   #endif
->       }
->   
-> +    if (virtio_gpu_drm_enabled(g->parent_obj.conf)) {
-> +#ifdef VIRGL_VERSION_MAJOR
-> +    #if VIRGL_VERSION_MAJOR >= 1
-> +        if (!virtio_gpu_blob_enabled(g->parent_obj.conf) ||
-> +            !virtio_gpu_hostmem_enabled(g->parent_obj.conf)) {
-> +            error_setg(errp, "drm requires enabled blob and hostmem options");
-> +            return;
-> +        }
-> +    #else
-> +        error_setg(errp, "old virglrenderer, drm unsupported");
-> +        return;
-> +    #endif
-> +#endif
-> +    }
-> +
->       if (!virtio_gpu_base_device_realize(qdev,
->                                           virtio_gpu_handle_ctrl_cb,
->                                           virtio_gpu_handle_cursor_cb,
-> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-> index e95d1619c885..6aaf27d1b319 100644
-> --- a/include/hw/virtio/virtio-gpu.h
-> +++ b/include/hw/virtio/virtio-gpu.h
-> @@ -100,6 +100,7 @@ enum virtio_gpu_base_conf_flags {
->       VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
->       VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
->       VIRTIO_GPU_FLAG_VENUS_ENABLED,
-> +    VIRTIO_GPU_FLAG_DRM_ENABLED,
->   };
->   
->   #define virtio_gpu_virgl_enabled(_cfg) \
-> @@ -120,6 +121,8 @@ enum virtio_gpu_base_conf_flags {
->       (_cfg.hostmem > 0)
->   #define virtio_gpu_venus_enabled(_cfg) \
->       (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
-> +#define virtio_gpu_drm_enabled(_cfg) \
-> +    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_DRM_ENABLED))
->   
->   struct virtio_gpu_base_conf {
->       uint32_t max_outputs;
+       (then no need for an explicit free)
 
+All this only happens once at open, so we can certainly
+happily take the cost of memory allocation, and it saves
+us wondering about whether there's actually a maximum
+limit on these string values. (Looking at the MS documentation,
+I think registry keys have a limit of 255 chars, but
+values are 16383 chars, so 512 would be more than needed
+for a key and less than the theoretical maximum for a value.)
+
+thanks
+-- PMM
 
