@@ -2,36 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0863993737
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6CC99372E
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:21:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxtH2-0000wE-PD; Mon, 07 Oct 2024 15:20:05 -0400
+	id 1sxtH0-0000fx-Lv; Mon, 07 Oct 2024 15:20:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtGD-00075u-76; Mon, 07 Oct 2024 15:19:15 -0400
+ id 1sxtGG-0007AM-Qe; Mon, 07 Oct 2024 15:19:19 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtG4-0004MZ-5D; Mon, 07 Oct 2024 15:19:12 -0400
+ id 1sxtGE-0004P8-Uy; Mon, 07 Oct 2024 15:19:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BF95F96257;
+ by isrv.corpit.ru (Postfix) with ESMTP id CEDC596258;
  Mon,  7 Oct 2024 22:16:49 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9906314F737;
+ by tsrv.corpit.ru (Postfix) with SMTP id A8AE214F738;
  Mon,  7 Oct 2024 22:16:56 +0300 (MSK)
-Received: (nullmailer pid 2592780 invoked by uid 1000);
+Received: (nullmailer pid 2592783 invoked by uid 1000);
  Mon, 07 Oct 2024 19:16:54 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Woodhouse <dwmw@amazon.co.uk>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 26/32] hw/mips/jazz: fix typo in in-built NIC alias
-Date: Mon,  7 Oct 2024 22:16:43 +0300
-Message-Id: <20241007191654.2592616-26-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Elisha Hollander <just4now666666@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 27/32] util/timer: avoid deadlock when shutting down
+Date: Mon,  7 Oct 2024 22:16:44 +0300
+Message-Id: <20241007191654.2592616-27-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
@@ -61,34 +63,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+From: Alex Bennée <alex.bennee@linaro.org>
 
-Commit e104edbb9d ("hw/mips/jazz: use qemu_find_nic_info()") contained a typo
-in the NIC alias which caused initialisation of the in-built dp83932 NIC to fail
-when using the normal -nic user,model=dp83932 command line.
+When we shut down a guest we disable the timers. However this can
+cause deadlock if the guest has queued some async work that is trying
+to advance system time and spins forever trying to wind time forward.
+Pay attention to the return code and bail early if we can't wind time
+forward.
 
-Fixes: e104edbb9d ("hw/mips/jazz: use qemu_find_nic_info()")
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Reported-by: Elisha Hollander <just4now666666@gmail.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20240916085400.1046925-15-alex.bennee@linaro.org>
+(cherry picked from commit bc02be4508d8753d1f6071b77d10f4661587df6f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 2e4fdf566062c03456230fd8136b88c5c1e5c4bf)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
-index 1bc17e69d3..0d44e19707 100644
---- a/hw/mips/jazz.c
-+++ b/hw/mips/jazz.c
-@@ -128,7 +128,7 @@ static void mips_jazz_init_net(IOMMUMemoryRegion *rc4030_dma_mr,
-     uint8_t *prom;
-     NICInfo *nd;
+diff --git a/util/qemu-timer.c b/util/qemu-timer.c
+index 213114be68..6b1533bc2a 100644
+--- a/util/qemu-timer.c
++++ b/util/qemu-timer.c
+@@ -685,10 +685,17 @@ int64_t qemu_clock_advance_virtual_time(int64_t dest)
+ {
+     int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     AioContext *aio_context;
++    int64_t deadline;
++
+     aio_context = qemu_get_aio_context();
+-    while (clock < dest) {
+-        int64_t deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
++
++    deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
+                                                       QEMU_TIMER_ATTR_ALL);
++    /*
++     * A deadline of < 0 indicates this timer is not enabled, so we
++     * won't get far trying to run it forward.
++     */
++    while (deadline >= 0 && clock < dest) {
+         int64_t warp = qemu_soonest_timeout(dest - clock, deadline);
  
--    nd = qemu_find_nic_info("dp8393x", true, "dp82932");
-+    nd = qemu_find_nic_info("dp8393x", true, "dp83932");
-     if (!nd) {
-         return;
+         qemu_virtual_clock_set_ns(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + warp);
+@@ -696,6 +703,9 @@ int64_t qemu_clock_advance_virtual_time(int64_t dest)
+         qemu_clock_run_timers(QEMU_CLOCK_VIRTUAL);
+         timerlist_run_timers(aio_context->tlg.tl[QEMU_CLOCK_VIRTUAL]);
+         clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++
++        deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
++                                              QEMU_TIMER_ATTR_ALL);
      }
+     qemu_clock_notify(QEMU_CLOCK_VIRTUAL);
+ 
 -- 
 2.39.5
 
