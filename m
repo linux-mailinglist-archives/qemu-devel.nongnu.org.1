@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8015199331F
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 18:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3515299332D
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 18:27:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxqXb-0003UZ-JD; Mon, 07 Oct 2024 12:24:59 -0400
+	id 1sxqZa-0004xI-Vh; Mon, 07 Oct 2024 12:27:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxqXH-0003Ow-S8
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:24:40 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sxqXG-00077q-0B
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:24:39 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-20b01da232aso36374375ad.1
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 09:24:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1728318276; x=1728923076; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZhTNi0J0LZKB7af7Zb43WsGxxujabzbI10ATH65EwyQ=;
- b=PDAQ+7XDyNXWVQ+VjaqHW6+s331zBzvmUOgp+R5RBOORppork13kElRvdGDtOwpjnq
- u/JRiCYGHs2rxr7r6tdaGnSegE/1jeNv1AuWUHjqLCebQwcdl+ZCbTXNMhaVvMv4oIa6
- rHwNxVpK1J3eVoiQAY3fidd3e8EpDG3ndzpWHDTQ02/N3+Orq1r/yXKCDPkEutennOom
- PDhDuCBCI4cSZkG3OW1GF6z0eWyJjqCQHLIPJ7djiZMIEftnilYLAfwmXzc/DJIOOmcs
- j6MxEfKRSvANqQ0w6wLIhNn8X5GZB+bdFRZIvDCnfIsSgsL6cnqwWY+N7Uz3Xcek2LQb
- xyag==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sxqZZ-0004x8-J6
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:27:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sxqZY-0007Tf-2x
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:27:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1728318418;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UTY1mlwU6WbXeF5OqYqeFphjvbXR90wyPybdu//WD3c=;
+ b=QMOFlAiYY+4Yrvbp8S33GirdMhPRP4xfx21ALhYGQTlUOzbapHHSoA1kxmFuiQ+UQennOs
+ Nx1B7bxqTwj9BIwe08tIsB57UlFZ12bslGFlc28dwRrVPwBTonmlF6gXHsGALnB3V2c6NC
+ qvHMH2SK6rjGUgsUviCjW/Hk8Us0TpA=
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com
+ [209.85.166.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-664-k0vRwe8TOjSMO_uHktqJpA-1; Mon, 07 Oct 2024 12:26:57 -0400
+X-MC-Unique: k0vRwe8TOjSMO_uHktqJpA-1
+Received: by mail-il1-f200.google.com with SMTP id
+ e9e14a558f8ab-3a19665ed40so34485815ab.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 09:26:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728318276; x=1728923076;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZhTNi0J0LZKB7af7Zb43WsGxxujabzbI10ATH65EwyQ=;
- b=PxeMMC4ZOvOZZNU6hLx1+qhrxdza1+g959ZncRcs186UoDIJqrBZVh8D+xuxrKqgP4
- B5lIqOPNBaEtbY6HOcE/V8tnMXKmuQR18p+bTSOB4p+49CW440aP/7I2bANUZftDeTq2
- YKHnEd8Q9yWN8XwlFS9fAHlYngC3fUmwAi3HzIAJ8velfbI4MGKiNbEULKL6+SCnr8ov
- f8ob3KY7NTV4U98XSK7C604TFoGYyzHYUOKj0Jo1+vX//Pd5FyeJSqYx6+MulRHTedYs
- j5lfLHQXXCdLt0PH/d8MxjAKklhVq/TjMI/Jlmkkap37Y8n3d0FM7VwS9H7GIbXwrrhI
- i7hA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXHMyv/HM4Ap4aapj46At2BzSi931469EO4NsG+Gt3CW8YorNRpDhzK9juLZGhfVpxFMahfMAu7nsBu@nongnu.org
-X-Gm-Message-State: AOJu0YyG9p5T7UUuCJ+p6LuHy4fRV8C5sUD2FNNVumCyTbc7G+4s0yan
- /JIVVOTAGJmvm2qhgU6Bn+Ej3n2126hK5i1SAyrRMvEkAasCO68uHshfJqsTrhU=
-X-Google-Smtp-Source: AGHT+IEKyIORfwqOkOmBehKLwE0qdAMn+mXsN+6Wkf2tLiMLc/o194vS7/tfOfQ0ccxc4CfdsFcS2g==
-X-Received: by 2002:a17:902:f54d:b0:20b:a8ad:9b0c with SMTP id
- d9443c01a7336-20c4e27a5c9mr2933115ad.3.1728318276589; 
- Mon, 07 Oct 2024 09:24:36 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-20c138af8ccsm41481565ad.29.2024.10.07.09.24.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Oct 2024 09:24:36 -0700 (PDT)
-Message-ID: <77a9c9c5-9c6c-42cc-821f-1340e06ac685@linaro.org>
-Date: Mon, 7 Oct 2024 09:24:34 -0700
+ d=1e100.net; s=20230601; t=1728318417; x=1728923217;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=UTY1mlwU6WbXeF5OqYqeFphjvbXR90wyPybdu//WD3c=;
+ b=bw864Mgf+TxTNvfkbw/7diZcCNv5zMXrb9Eg4De1L4NslmSTV0x8Y5VYT5q1Tlqwn2
+ Xo5VxrKjMnxja7/XWwfqPMVfpVCEINLsZ8zGebHqXN5BZgD+AfNKVQBmMWS3Rz+u2JC4
+ ELvkUcjb7WWZBnaFVi+aOXP1qSz/2pqksydjh1pr+jnw0IZwDW6WNmCjfBwD57sT+9oH
+ +Dgkyyk+IHxjQFId4vVcXf62xt5nlhrqRBNPF6Q2Goiepm7+x2t1fZuoU/UK9ofOZTao
+ 6Ju1Ilfq68zNvi7dEm4ilRYXtcinTkPUY6Sk8/0Lu0Kts1iVJp15/o+1XzXxgF5YlaR6
+ dihA==
+X-Gm-Message-State: AOJu0YwoBpURpOstqPonoRUMEqIQ7gN5ImLsU/JR/JqUZzJOhTDJSL9O
+ x5VjbS37fo/jKg8aH1drqJ0/f3fucDQC2N5e0utG9zFr0pd7t2HqgAO0Hr1wdg1Nd7dHLdWUTnC
+ ZrkwoWgLwaBxxulAP3wlanxVMbSMcUJ//Jc0RGv4pmmkby8d6kace
+X-Received: by 2002:a05:6e02:1d84:b0:3a3:637f:1012 with SMTP id
+ e9e14a558f8ab-3a38af7899bmr1382135ab.12.1728318416699; 
+ Mon, 07 Oct 2024 09:26:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHV4H3TH7bCNHhbNx6uMRM8w7fShx3AZJbLhKwhfZbKX3do5JUVdsm+BGHkCXn8RI7ObGFiPQ==
+X-Received: by 2002:a05:6e02:1d84:b0:3a3:637f:1012 with SMTP id
+ e9e14a558f8ab-3a38af7899bmr1382065ab.12.1728318416357; 
+ Mon, 07 Oct 2024 09:26:56 -0700 (PDT)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
+ [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
+ 8926c6da1cb9f-4db8d6484c7sm267298173.140.2024.10.07.09.26.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Oct 2024 09:26:56 -0700 (PDT)
+Date: Mon, 7 Oct 2024 12:26:53 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Shivam Kumar <shivam.kumar1@nutanix.com>
+Cc: qemu-devel@nongnu.org, farosas@suse.de
+Subject: Re: [PATCH] Use multifd state to determine if multifd cleanup is
+ needed
+Message-ID: <ZwQLzf8mGHCr1Itg@x1n>
+References: <20241007154451.107007-1-shivam.kumar1@nutanix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 02/12] tcg/riscv: Add basic support for vector
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
- Huang Shiyuan <swung0x48@outlook.com>,
- TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-References: <20241007025700.47259-1-zhiwei_liu@linux.alibaba.com>
- <20241007025700.47259-3-zhiwei_liu@linux.alibaba.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20241007025700.47259-3-zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241007154451.107007-1-shivam.kumar1@nutanix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,38 +97,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/6/24 19:56, LIU Zhiwei wrote:
-> @@ -2100,6 +2136,30 @@ static void tcg_target_init(TCGContext *s)
->   {
->       tcg_target_available_regs[TCG_TYPE_I32] = 0xffffffff;
->       tcg_target_available_regs[TCG_TYPE_I64] = 0xffffffff;
-> +    s->reserved_regs = 0;
-> +
-> +    switch (riscv_lg2_vlenb) {
-> +    case TCG_TYPE_V64:
-> +        tcg_target_available_regs[TCG_TYPE_V64] = ALL_VECTOR_REGS;
-> +        tcg_target_available_regs[TCG_TYPE_V128] = ALL_DVECTOR_REG_GROUPS;
-> +        tcg_target_available_regs[TCG_TYPE_V256] = ALL_QVECTOR_REG_GROUPS;
-> +        s->reserved_regs |= (~ALL_QVECTOR_REG_GROUPS & ALL_VECTOR_REGS);
-> +        break;
-> +    case TCG_TYPE_V128:
-> +        tcg_target_available_regs[TCG_TYPE_V64] = ALL_VECTOR_REGS;
-> +        tcg_target_available_regs[TCG_TYPE_V128] = ALL_VECTOR_REGS;
-> +        tcg_target_available_regs[TCG_TYPE_V256] = ALL_DVECTOR_REG_GROUPS;
-> +        s->reserved_regs |= (~ALL_DVECTOR_REG_GROUPS & ALL_VECTOR_REGS);
-> +        break;
-> +    default:
-> +        /* Guaranteed by Zve64x. */
-> +        tcg_debug_assert(riscv_lg2_vlenb >= TCG_TYPE_V256);
-> +
-> +        tcg_target_available_regs[TCG_TYPE_V64] = ALL_VECTOR_REGS;
-> +        tcg_target_available_regs[TCG_TYPE_V128] = ALL_VECTOR_REGS;
-> +        tcg_target_available_regs[TCG_TYPE_V256] = ALL_VECTOR_REGS;
-> +        break;
-> +    }
+On Mon, Oct 07, 2024 at 03:44:51PM +0000, Shivam Kumar wrote:
+> If the client calls the QMP command to reset the migration
+> capabilities after the migration status is set to failed or cancelled
 
-Missing a check for host vector support.
+Is cancelled ok?
 
+Asked because I think migrate_fd_cleanup() should still be in CANCELLING
+stage there, so no one can disable multifd capability before that, it
+should fail the QMP command.
 
-r~
+But FAILED indeed looks problematic.
+
+IIUC it's not only to multifd alone - is it a race condition that
+migrate_fd_cleanup() can be invoked without migration_is_running() keeps
+being true?  Then I wonder what happens if a concurrent QMP "migrate"
+happens together with migrate_fd_cleanup(), even with multifd always off.
+
+Do we perhaps need to cleanup everything before the state changes to
+FAILED?
+
+> but before multifd cleanup starts, multifd cleanup can be skipped as
+> it will falsely assume that multifd was not used for migration. This
+> will eventually lead to source QEMU crashing due to the following
+> assertion failure:
+> 
+> yank_unregister_instance: Assertion `QLIST_EMPTY(&entry->yankfns)`
+> failed
+> 
+> Check multifd state to determine whether multifd was used or not for
+> the migration rather than checking the state of multifd migration
+> capability.
+> 
+> Signed-off-by: Shivam Kumar <shivam.kumar1@nutanix.com>
+> ---
+>  migration/multifd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 9b200f4ad9..427c9a7956 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -487,7 +487,7 @@ void multifd_send_shutdown(void)
+>  {
+>      int i;
+>  
+> -    if (!migrate_multifd()) {
+> +    if (!multifd_send_state) {
+>          return;
+>      }
+>  
+> -- 
+> 2.22.3
+> 
+
+-- 
+Peter Xu
+
 
