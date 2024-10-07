@@ -2,91 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE01199373A
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE9D993751
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:27:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxtGo-00085G-Q9; Mon, 07 Oct 2024 15:19:50 -0400
+	id 1sxtNo-00028a-Pv; Mon, 07 Oct 2024 15:27:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sxtFV-0006Ft-G9
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 15:18:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sxtNk-000285-K3
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 15:27:00 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sxtFU-0004Ji-0n
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 15:18:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728328706;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FC0do8QLQZQojwm5xRr5vLz+YlYwWK2qOE1wPRkAkSA=;
- b=jMm2PqIoKsoGBgC8dGs5YPSQCd5fojdmcxw6FEM2PkmpQvgtQqfSAcuzqUl99A+Zjvbl7r
- 8pgHa5RBBlRPGWUruVSVSCblmz1qnxEh3OiRgz8LwYfZyyw6mMoMyZMRsc+z2Dximj2jF6
- 8Pw9AT8Pv9nfyw7ESdxXvufCIl1HYIw=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-389-U17hylVxPBShPbwdLzoyeg-1; Mon, 07 Oct 2024 15:18:24 -0400
-X-MC-Unique: U17hylVxPBShPbwdLzoyeg-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6cb3a855022so89364156d6.2
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 12:18:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728328704; x=1728933504;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FC0do8QLQZQojwm5xRr5vLz+YlYwWK2qOE1wPRkAkSA=;
- b=SteOBpuBhRkM38KDO0K/hCWEIJYxLuO0w6jYMNrqNHw8bMjNJsmE8bQHMa6EJiBALd
- /7Dg1kDF8FS/kwMOLQ7BN7M3nv3eJHO7OoeMMrKjleMC9/Ipyy6q2u4YvEXa7h3N5/rH
- 3WYPjRnoGlmY4E3PE//iwcvwyXFkcx34zJKQHLoQv1gk2UpUXhhF8TwGwH0BPHSaWPir
- Pw0LkutNZvYWgKwLoH2R69YHXl2hoU3/UqARcsep1G9vf09bjWLg65aR0D+DqLQOFeAS
- Z2vbNMW5xeI3Tg1uNze9dd5s6j7y4/EnOdhjtvwujwDbeXMeJvdU5tJj2xebSoKYZ48r
- N8Pw==
-X-Gm-Message-State: AOJu0YzGuP06SQLVp9pXARRaiV3RbX0bfRPVdX3c5ozeKfQT18j1CnhB
- m0cTjG0r1cB+J457L5rSFaS0wRCu71DW5e0uhb9X9FP9iMohJwrebGUVZNDFjOofopCv662DDhp
- /gqaSReLQ9ohVa9R/jT+qGpQbSRkMK8pQBg5GX7laZpi+6oPmjXun
-X-Received: by 2002:a05:6214:4906:b0:6cb:8267:4a0e with SMTP id
- 6a1803df08f44-6cb9a0328abmr215031336d6.0.1728328703771; 
- Mon, 07 Oct 2024 12:18:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFE8JDz1gXTVDyv0R9+srHcOHH2I2SWti/CtyYLzbDhmIPlDbw9rkHXuqJ+8uqf82fyzzM8Hg==
-X-Received: by 2002:a05:6214:4906:b0:6cb:8267:4a0e with SMTP id
- 6a1803df08f44-6cb9a0328abmr215030886d6.0.1728328703384; 
- Mon, 07 Oct 2024 12:18:23 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6cba46cad49sm28413456d6.4.2024.10.07.12.18.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Oct 2024 12:18:22 -0700 (PDT)
-Date: Mon, 7 Oct 2024 15:18:20 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH V2 12/13] migration: split qmp_migrate
-Message-ID: <ZwQz_JpY7ZBJIptN@x1n>
-References: <1727725244-105198-1-git-send-email-steven.sistare@oracle.com>
- <1727725244-105198-13-git-send-email-steven.sistare@oracle.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sxtNi-0005aZ-S6
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 15:27:00 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id DFECE962AA;
+ Mon,  7 Oct 2024 22:26:48 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id AFF0D14F748;
+ Mon,  7 Oct 2024 22:26:55 +0300 (MSK)
+Message-ID: <94066700-2a07-4d5f-bf0a-be7c1ce7bc62@tls.msk.ru>
+Date: Mon, 7 Oct 2024 22:26:55 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1727725244-105198-13-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/2] GTK/SDL fixes for a black screen displayed by
+ virtio-gpu
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Cc: Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+References: <20241006234353.3201037-1-dmitry.osipenko@collabora.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20241006234353.3201037-1-dmitry.osipenko@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,16 +89,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 30, 2024 at 12:40:43PM -0700, Steve Sistare wrote:
-> Split qmp_migrate into start and finish functions.  Finish will be
-> called asynchronously in a subsequent patch, but for now, call it
-> immediately.  No functional change.
+07.10.2024 02:43, Dmitry Osipenko wrote:
+> Hi,
 > 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> This patchset fixes black screen displayed by Qemu using virtio-gpu.
+> There is a race condition bug with a timer that disables display output
+> after it has been enabled by virtio-gpu. The problem is reproducible
+> by running Qemu with a disabled GL vsync. Note vsync is disabled for
+> SDL display by default.
+> 
+> Dmitry Osipenko (2):
+>    ui/sdl2: Don't disable scanout when display is refreshed
+>    ui/gtk: Don't disable scanout when display is refreshed
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Is it a -stable material?  Myself I haven't seen this prob so far, so
+it might be not worth the effort.  Also, any idea when the prob has been
+introduced (or since when it has become real)?
 
--- 
-Peter Xu
+Thanks,
 
+/mjt
 
