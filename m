@@ -2,86 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CC3993341
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 18:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9E7993379
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 18:37:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxqbb-0005fg-4Q; Mon, 07 Oct 2024 12:29:07 -0400
+	id 1sxqiM-0008J1-8T; Mon, 07 Oct 2024 12:36:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sxqbX-0005eP-2j
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:29:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sxqiC-0008ID-5N
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:35:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sxqbV-0007od-Gl
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:29:02 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sxqi7-0000OV-PP
+ for qemu-devel@nongnu.org; Mon, 07 Oct 2024 12:35:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728318540;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=aqyGj7XKQ5Qwm5Y7ZXLkMTOwcVoaKIkBF102LtqvvHk=;
- b=ZZFVZ2/Q5dnqIIaq+CsDDqG2kuGop7MHurfqglazV6e2/OPh/CYKHSiGogS281aWlLktv+
- hWuMbfE6xBgp2EZC0BWbg+JeK47YmeGqdulZ2l42MHRfx72Bjo/GN1RdJ3oPMraiKIuJQE
- P8rSRh+L72HMvEQukKIJ0RPtKV+kP6E=
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
- [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589--5ZChC35Nsu4NP17tsSdMQ-1; Mon, 07 Oct 2024 12:28:58 -0400
-X-MC-Unique: -5ZChC35Nsu4NP17tsSdMQ-1
-Received: by mail-il1-f199.google.com with SMTP id
- e9e14a558f8ab-3a34205e146so63511245ab.3
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 09:28:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728318537; x=1728923337;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aqyGj7XKQ5Qwm5Y7ZXLkMTOwcVoaKIkBF102LtqvvHk=;
- b=fULk9RY+V1/oqFJuBJ8RLAIwi01SRhbfrPh5m/4t1i4Wil2osAB+2FLIEetZmpyozM
- 4QrSeffYqU3BWMffGRoxbXPWEYwle1VftzJ+C1s9ExWCoPnukZQays+sjgJ/I/pDbnpP
- D3q3adufds8nSAFcxMHe1kF+aK8nOm1lZ7kOffZTli1Y9B72zQhcC97hm3MCDjrNCZ3d
- oe32e916eALaSPOe20LIFk3FIQ811b2KzKLp1m57GByeXbU1fC0nFqYjAA91+gniiH5G
- aroOIM1ojcXIWVXJiLxFfiAQlgvgO/R6n35qYYGxld/WEfGEgULINBQt7SSHifuevqck
- m0/g==
-X-Gm-Message-State: AOJu0YwGCAgjNGqzEoXaW/rGhT6Yt1A1+wTMRy2b3wGD7APf4yCrUHf1
- odERnrENxN83klpOIS7X/sTvfh62mKbNNLx6QQw+bXic5nBRRQ8KLaCXHaycCLhoIOWSvNCN0eP
- s7fLU8ypebUKOolxdu+PbepIZ9ND9JgV5BBJZ1YcqGkEDx8lOOGgX
-X-Received: by 2002:a92:c269:0:b0:3a0:ae35:f2eb with SMTP id
- e9e14a558f8ab-3a375bafe0bmr116749815ab.19.1728318537405; 
- Mon, 07 Oct 2024 09:28:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF0ubEzsD9oO/1+RTGVok4YLY53cORHUcy717UbPdM9+H0eo+UK3QNfGdyF8NpWtozzAxz1zw==
-X-Received: by 2002:a92:c269:0:b0:3a0:ae35:f2eb with SMTP id
- e9e14a558f8ab-3a375bafe0bmr116749535ab.19.1728318536978; 
- Mon, 07 Oct 2024 09:28:56 -0700 (PDT)
-Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com.
- [99.254.114.190]) by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-3a37a7e790bsm14120955ab.10.2024.10.07.09.28.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Oct 2024 09:28:56 -0700 (PDT)
-Date: Mon, 7 Oct 2024 12:28:54 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>,
- Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- David Hildenbrand <david@redhat.com>,
+ s=mimecast20190719; t=1728318950;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=kHD3iE/R0F7OoFYcOqlWl6V6vI5EzHdLStBeQNp5F3U=;
+ b=Yl3CBcz11mzBYZCEDkCvZmK4bVzyKiTE+7EATbOrmDt2yCjhELZVjgbZKcgrHVLe5jM/Tb
+ Wht6kOVXD5xbyrjOQhA1jji2QWZvMnFVVEFvyYmL09FlsS0pyJh/RJIEqRCQFDPU8LoGfc
+ +GorebxHfc24If3nd8Ls3n4wWDNPiXg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-D3ceVTUVN9eeUCnhKQPLYg-1; Mon,
+ 07 Oct 2024 12:35:46 -0400
+X-MC-Unique: D3ceVTUVN9eeUCnhKQPLYg-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1222A1955D47; Mon,  7 Oct 2024 16:35:45 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.61])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AF9A71956088; Mon,  7 Oct 2024 16:35:41 +0000 (UTC)
+Date: Mon, 7 Oct 2024 17:35:37 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH V2 05/13] physmem: preserve ram blocks for cpr
-Message-ID: <ZwQMRlSSqP0i0ITb@x1n>
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH V2 07/13] migration: SCM_RIGHTS for QEMUFile
+Message-ID: <ZwQN2YoMWNTMdop3@redhat.com>
 References: <1727725244-105198-1-git-send-email-steven.sistare@oracle.com>
- <1727725244-105198-6-git-send-email-steven.sistare@oracle.com>
- <ZwQDBc-8niK2A0Vt@x1n>
+ <1727725244-105198-8-git-send-email-steven.sistare@oracle.com>
+ <ZwQG_dvmTFFA2Xom@x1n>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZwQDBc-8niK2A0Vt@x1n>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <ZwQG_dvmTFFA2Xom@x1n>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -103,131 +85,174 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 07, 2024 at 11:49:25AM -0400, Peter Xu wrote:
-> On Mon, Sep 30, 2024 at 12:40:36PM -0700, Steve Sistare wrote:
-> > Save the memfd for anonymous ramblocks in CPR state, along with a name
-> > that uniquely identifies it.  The block's idstr is not yet set, so it
-> > cannot be used for this purpose.  Find the saved memfd in new QEMU when
-> > creating a block.  QEMU hard-codes the length of some internally-created
-> > blocks, so to guard against that length changing, use lseek to get the
-> > actual length of an incoming memfd.
+On Mon, Oct 07, 2024 at 12:06:21PM -0400, Peter Xu wrote:
+> On Mon, Sep 30, 2024 at 12:40:38PM -0700, Steve Sistare wrote:
+> > Define functions to put/get file descriptors to/from a QEMUFile, for qio
+> > channels that support SCM_RIGHTS.  Maintain ordering such that
+> >   put(A), put(fd), put(B)
+> > followed by
+> >   get(A), get(fd), get(B)
+> > always succeeds.  Other get orderings may succeed but are not guaranteed.
 > > 
 > > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 > > ---
-> >  system/physmem.c | 25 ++++++++++++++++++++++++-
-> >  1 file changed, 24 insertions(+), 1 deletion(-)
+> >  migration/qemu-file.c  | 83 +++++++++++++++++++++++++++++++++++++++++++++++---
+> >  migration/qemu-file.h  |  2 ++
+> >  migration/trace-events |  2 ++
+> >  3 files changed, 83 insertions(+), 4 deletions(-)
 > > 
-> > diff --git a/system/physmem.c b/system/physmem.c
-> > index 174f7e0..ddbeec9 100644
-> > --- a/system/physmem.c
-> > +++ b/system/physmem.c
-> > @@ -72,6 +72,7 @@
+> > diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+> > index b6d2f58..7f951ab 100644
+> > --- a/migration/qemu-file.c
+> > +++ b/migration/qemu-file.c
+> > @@ -37,6 +37,11 @@
+> >  #define IO_BUF_SIZE 32768
+> >  #define MAX_IOV_SIZE MIN_CONST(IOV_MAX, 64)
 > >  
-> >  #include "qapi/qapi-types-migration.h"
-> >  #include "migration/options.h"
-> > +#include "migration/cpr.h"
-> >  #include "migration/vmstate.h"
+> > +typedef struct FdEntry {
+> > +    QTAILQ_ENTRY(FdEntry) entry;
+> > +    int fd;
+> > +} FdEntry;
+> > +
+> >  struct QEMUFile {
+> >      QIOChannel *ioc;
+> >      bool is_writable;
+> > @@ -51,6 +56,9 @@ struct QEMUFile {
 > >  
-> >  #include "qemu/range.h"
-> > @@ -1663,6 +1664,19 @@ void qemu_ram_unset_idstr(RAMBlock *block)
+> >      int last_error;
+> >      Error *last_error_obj;
+> > +
+> > +    bool fd_pass;
+> > +    QTAILQ_HEAD(, FdEntry) fds;
+> >  };
+> >  
+> >  /*
+> > @@ -109,6 +117,8 @@ static QEMUFile *qemu_file_new_impl(QIOChannel *ioc, bool is_writable)
+> >      object_ref(ioc);
+> >      f->ioc = ioc;
+> >      f->is_writable = is_writable;
+> > +    f->fd_pass = qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_FD_PASS);
+> > +    QTAILQ_INIT(&f->fds);
+> >  
+> >      return f;
+> >  }
+> > @@ -310,6 +320,10 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
+> >      int len;
+> >      int pending;
+> >      Error *local_error = NULL;
+> > +    g_autofree int *fds = NULL;
+> > +    size_t nfd = 0;
+> > +    int **pfds = f->fd_pass ? &fds : NULL;
+> > +    size_t *pnfd = f->fd_pass ? &nfd : NULL;
+> >  
+> >      assert(!qemu_file_is_writable(f));
+> >  
+> > @@ -325,10 +339,9 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
 > >      }
+> >  
+> >      do {
+> > -        len = qio_channel_read(f->ioc,
+> > -                               (char *)f->buf + pending,
+> > -                               IO_BUF_SIZE - pending,
+> > -                               &local_error);
+> > +        struct iovec iov = { f->buf + pending, IO_BUF_SIZE - pending };
+> > +        len = qio_channel_readv_full(f->ioc, &iov, 1, pfds, pnfd, 0,
+> > +                                     &local_error);
+> >          if (len == QIO_CHANNEL_ERR_BLOCK) {
+> >              if (qemu_in_coroutine()) {
+> >                  qio_channel_yield(f->ioc, G_IO_IN);
+> > @@ -348,9 +361,65 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
+> >          qemu_file_set_error_obj(f, len, local_error);
+> >      }
+> >  
+> > +    for (int i = 0; i < nfd; i++) {
+> > +        FdEntry *fde = g_new0(FdEntry, 1);
+> > +        fde->fd = fds[i];
+> > +        QTAILQ_INSERT_TAIL(&f->fds, fde, entry);
+> > +    }
+> > +
+> >      return len;
 > >  }
 > >  
-> > +static char *cpr_name(RAMBlock *block)
+> > +int qemu_file_put_fd(QEMUFile *f, int fd)
 > > +{
-> > +    MemoryRegion *mr = block->mr;
-> > +    const char *mr_name = memory_region_name(mr);
-> > +    g_autofree char *id = mr->dev ? qdev_get_dev_path(mr->dev) : NULL;
+> > +    int ret = 0;
+> > +    QIOChannel *ioc = qemu_file_get_ioc(f);
+> > +    Error *err = NULL;
+> > +    struct iovec iov = { (void *)" ", 1 };
 > > +
-> > +    if (id) {
-> > +        return g_strdup_printf("%s/%s", id, mr_name);
-> > +    } else {
-> > +        return g_strdup(mr_name);
+> > +    /*
+> > +     * Send a dummy byte so qemu_fill_buffer on the receiving side does not
+> > +     * fail with a len=0 error.  Flush first to maintain ordering wrt other
+> > +     * data.
+> > +     */
+> > +
+> > +    qemu_fflush(f);
+> > +    if (qio_channel_writev_full(ioc, &iov, 1, &fd, 1, 0, &err) < 1) {
+> > +        error_report_err(error_copy(err));
+> > +        qemu_file_set_error_obj(f, -EIO, err);
+> > +        ret = -1;
 > > +    }
+> > +    trace_qemu_file_put_fd(f->ioc->name, fd, ret);
+> > +    return ret;
 > > +}
 > > +
-> >  size_t qemu_ram_pagesize(RAMBlock *rb)
-> >  {
-> >      return rb->page_size;
-> > @@ -1858,14 +1872,18 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-> >                                          TYPE_MEMORY_BACKEND)) {
-> >              size_t max_length = new_block->max_length;
-> >              MemoryRegion *mr = new_block->mr;
-> > -            const char *name = memory_region_name(mr);
-> > +            g_autofree char *name = cpr_name(new_block);
-> >  
-> >              new_block->mr->align = QEMU_VMALLOC_ALIGN;
-> >              new_block->flags |= RAM_SHARED;
-> > +            new_block->fd = cpr_find_fd(name, 0);
-> >  
-> >              if (new_block->fd == -1) {
-> >                  new_block->fd = qemu_memfd_create(name, max_length + mr->align,
-> >                                                    0, 0, 0, errp);
-> > +                cpr_save_fd(name, 0, new_block->fd);
-> > +            } else {
-> > +                new_block->max_length = lseek(new_block->fd, 0, SEEK_END);
-> 
-> So this can overwrite the max_length that the caller specified..
-> 
-> I remember we used to have some tricks on specifying different max_length
-> for ROMs on dest QEMU (on which, qemu firmwares also upgraded on the dest
-> host so the size can be bigger than src qemu's old ramblocks), so that the
-> MR is always large enough to reload even the new firmwares, while migration
-> only migrates the smaller size (used_length) so it's fine as we keep the
-> extra sizes empty. I think that can relevant to the qemu_ram_resize() call
-> of parse_ramblock().
-> 
-> The reload will not happen until some point, perhaps system resets.  I
-> wonder whether that is an issue in this case.
-> 
-> +Igor +Mst for this.
-
-PS: If this is needed by CPR-transfer only because mmap() later can fail
-due to a bigger max_length, I wonder whether it can be fixed by passing
-truncate=true in the upcoming file_ram_alloc(), rather than overwritting
-the max_length value itself.
-
-> 
-> >              }
-> >  
-> >              if (new_block->fd >= 0) {
-> > @@ -1875,6 +1893,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-> >                                                   false, 0, errp);
-> >              }
-> >              if (!new_block->host) {
-> > +                cpr_delete_fd(name, 0);
-> >                  qemu_mutex_unlock_ramlist();
-> >                  return;
-> >              }
-> > @@ -2182,6 +2201,8 @@ static void reclaim_ramblock(RAMBlock *block)
-> >  
-> >  void qemu_ram_free(RAMBlock *block)
-> >  {
-> > +    g_autofree char *name = NULL;
+> > +int qemu_file_get_fd(QEMUFile *f)
+> > +{
+> > +    int fd = -1;
+> > +    FdEntry *fde;
 > > +
-> >      if (!block) {
-> >          return;
-> >      }
-> > @@ -2192,6 +2213,8 @@ void qemu_ram_free(RAMBlock *block)
-> >      }
-> >  
-> >      qemu_mutex_lock_ramlist();
-> > +    name = cpr_name(block);
-> > +    cpr_delete_fd(name, 0);
-> >      QLIST_REMOVE_RCU(block, next);
-> >      ram_list.mru_block = NULL;
-> >      /* Write list before version */
-> > -- 
-> > 1.8.3.1
-> > 
+> > +    if (!f->fd_pass) {
+> > +        Error *err = NULL;
+> > +        error_setg(&err, "%s does not support fd passing", f->ioc->name);
+> > +        error_report_err(error_copy(err));
+> > +        qemu_file_set_error_obj(f, -EIO, err);
+> > +        goto out;
+> > +    }
+> > +
+> > +    /* Force the dummy byte and its fd passenger to appear. */
+> > +    qemu_peek_byte(f, 0);
+> > +
+> > +    fde = QTAILQ_FIRST(&f->fds);
+> > +    if (fde) {
+> > +        qemu_get_byte(f);       /* Drop the dummy byte */
 > 
-> -- 
-> Peter Xu
+> Can we still try to get rid of this magical byte?
+> 
+> Ideally this function should check for no byte but f->fds bening non-empty,
+> if it is it could invoke qemu_fill_buffer(). OTOH, qemu_fill_buffer() needs
+> to take len==0&&nfds!=0 as legal.  Would that work?
 
+When passing ancilliary data with sendmsg/recvmsg, on Linux at least,
+it is required that there is at least 1 byte of data present.
+
+See 'man 7 unix':
+
+[quote]
+   At  least  one  byte  of real data should be sent when
+   sending ancillary data.  On Linux, this is required to
+   successfully send ancillary data over  a  UNIX  domain
+   stream  socket.   When  sending  ancillary data over a
+   UNIX domain datagram socket, it is  not  necessary  on
+   Linux  to  send  any accompanying real data.  However,
+   portable applications should also include at least one
+   byte of real data when sending ancillary data  over  a
+   datagram socket.
+[/quote]
+
+So if your protocol doesn't already have a convenient bit of real data to
+attach the SCM_RIGHTS data to, it is common practice to send a single dummy
+data byte that is discarded.
+
+With regards,
+Daniel
 -- 
-Peter Xu
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
