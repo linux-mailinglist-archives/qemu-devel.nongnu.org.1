@@ -2,77 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E4D992AD8
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CBF992A5C
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:38:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxmIX-0005bR-4H; Mon, 07 Oct 2024 07:53:09 -0400
+	id 1sxm37-0002oe-Qi; Mon, 07 Oct 2024 07:37:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sxmIT-0005Pe-QB
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:53:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sxm33-0002oF-Ao; Mon, 07 Oct 2024 07:37:09 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sxmIR-0005Qv-Vg
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:53:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728301983;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tP6v/7KBE1urotP00HVvnGBRqvrFRtQkqNumFlZqDpo=;
- b=bbqq5RHZM4c5psj3JV1zvWHkcEM/F6ZgWdzRP5NPBC4ZmUWHJ8o9O5/CzHCJxQNB+iOOl3
- SJXvVuQC0feihGcQsrUgHrpav/FDM1MuPxxrV3KZAlvWZKHHpuDMtAJaNCn7Jy3EpqQL6l
- XCyZRw/E7/rNM74Kw6/lPKCIHjBMFYI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-674-0d8e2uZpNKu91laRyoPMdw-1; Mon,
- 07 Oct 2024 07:53:00 -0400
-X-MC-Unique: 0d8e2uZpNKu91laRyoPMdw-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EAB5319560AF; Mon,  7 Oct 2024 11:52:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.61])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 52D8419560A3; Mon,  7 Oct 2024 11:52:56 +0000 (UTC)
-Date: Mon, 7 Oct 2024 12:52:52 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- manos.pitsidianakis@linaro.org, zhao1.liu@intel.com,
- junjie.mao@intel.com, pierrick.bouvier@linaro.org, alex.bennee@linaro.org
-Subject: Re: [PULL 00/12] Rust initial PoC + meson changes for 2024-10-07
-Message-ID: <ZwPLlHxQkRbf3QBx@redhat.com>
-References: <20241007110342.1298598-1-pbonzini@redhat.com>
- <ZwPB9SnTvkr082NA@redhat.com>
- <CABgObfYZgR9xNnP9mHWU92XZZ_VeFLHimkd-t-63KX_KWeDZ=A@mail.gmail.com>
- <ZwPKPGkpklnY9i5z@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sxm30-000336-Ov; Mon, 07 Oct 2024 07:37:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728301027; x=1759837027;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=jaVghokLkYagComBJOIsqVtMl7fwxtcDqAjAsloR16M=;
+ b=kUdlt26rj2xuEPDGSDQy2j6gZRIN/KiW3NDVfSepp1VwvMMKqOh1flvi
+ hCkVcMf46Y2FNI9VTE4tyYKDow0/VvHjPphM+32P0OdmL1VY+zCZ1M9nr
+ 9ZyM3nBa/CfEW6zR/O79ohSkdoPkRrkaTFZIUqCkGMtKXEaypdiFtLfi1
+ w3lGMWvvxBKMJoTQ357uVhEb5PXS9AVi1ScDOrbiZW/EiFX5Fg+Hp/H7Q
+ CEyY7zv8HCZCaoIcRWii3+sAcVSIaDmqWGqdr6rcGUxi8nST+3aOosoG8
+ l+X7YY0ura0vV/qXY6FMpvaIbjoiBdsKKQY66AU7/AEMOcT14il1YWB7/ w==;
+X-CSE-ConnectionGUID: JQ7StqtbTaC0JHrXpLiYCA==
+X-CSE-MsgGUID: UJGLbFIdQ7WQ8hoAJC5MJA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="31237685"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="31237685"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2024 04:37:03 -0700
+X-CSE-ConnectionGUID: 0/ZcA+bqQ8i8F/qPbC/qAA==
+X-CSE-MsgGUID: b1Gs2tQfTSqj5/6woMuvZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="98764773"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa002.fm.intel.com with ESMTP; 07 Oct 2024 04:36:57 -0700
+Date: Mon, 7 Oct 2024 19:53:08 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S.Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v2 7/7] i386/pc: Support cache topology in -machine for
+ PC machine
+Message-ID: <ZwPLpOt/DIvNO70f@intel.com>
+References: <20240908125920.1160236-1-zhao1.liu@intel.com>
+ <20240908125920.1160236-8-zhao1.liu@intel.com>
+ <20240917101631.00003dcb@Huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZwPKPGkpklnY9i5z@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
+In-Reply-To: <20240917101631.00003dcb@Huawei.com>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.153,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,71 +94,118 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 07, 2024 at 12:47:08PM +0100, Daniel P. Berrangé wrote:
-> On Mon, Oct 07, 2024 at 01:26:52PM +0200, Paolo Bonzini wrote:
-> > On Mon, Oct 7, 2024 at 1:11 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> > > The current dockerfiles don't include rust, and I see nothing
-> > > here updating them to add rust, so how is any of this getting
-> > > test coverage ?
-> > >
-> > > Even though this has Rust disabled by default, I would still
-> > > consider CI enablement to be a pre-requsite for merging even
-> > > basic Rust support.
+On Tue, Sep 17, 2024 at 10:16:31AM +0100, Jonathan Cameron wrote:
+> Date: Tue, 17 Sep 2024 10:16:31 +0100
+> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> Subject: Re: [PATCH v2 7/7] i386/pc: Support cache topology in -machine for
+>  PC machine
+> X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+> 
+> On Sun,  8 Sep 2024 20:59:20 +0800
+> Zhao Liu <zhao1.liu@intel.com> wrote:
+> 
+> > Allow user to configure l1d, l1i, l2 and l3 cache topologies for PC
+> > machine.
 > > 
-> > I agree in general, but there's already a lot of work that can be
-> > parallelized and the idea of someone managing Rust-related patches
-> > out-of-tree was discarded. So this seemed to be the only way to
-> > proceed.
+> > Additionally, add the document of "-machine smp-cache" in
+> > qemu-options.hx.
 > > 
-> > Right now only Fedora 39 and 40 (with updates) are able to compile
-> > QEMU with Rust enabled. Full CI enablement requires further work to
-> > reduce the minimum supported version of the compiler, after which
-> > rustc can be added to the libvirt-ci inputs and to the Dockerfiles.
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+>
+> Trivial language suggestions.
+> In general looks good to me.
 > 
-> Full CI enablement isn't a requirement until we want to turn on
-> Rust by default. It would be sufficient to have a single job in
-> CI using Fedora 40 that passes '--enable-rust' to demonstrate that
-> this at least working on one platform we expect.
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> > Adding a CI job that uses nightly rust (via rustup) is high on my
-> > priority list, but first of all I wanted to integrate clippy (because
-> > the main point of having a job with nightly rust is to have a heads-up
-> > on future clippy warnings). That said, I'm also not sure how one would
-> > go adding rustup to a container generated by lcitool (for example
-> > should I add a new dockerfile that is _based_ on one that already
-> > exists? would that change when Rust/rustc is added to that
-> > dockerfile?).
-> 
-> Having layered dockerfiles is something we try to aviod these days,
-> since each layer turns into another job dependancy in the CI
-> pipeline, expanding the number of stages.
+> Hopefully QOM maintainers and others will get to this soon. 
+> I'd like Ali's ARM series to land this cycle as well
+> as the lack of this support has been a pain point for us
+> for a while.
+>
+> Jonathan
 
-I forgot to say that QEMU's 'refresh' script can customize the
-dockerfiles from lcitool with an arbitrary amount of trailing
-text - see the 'debian12_extras' for example.
+Thanks! I'll refresh a new version.
 
-> 
-> If the job is merely to validate nightly clippy do we even need
-> any of the rest of the QEMU build deps present ?  Can we not just
-> use a generic pre-existing Rust container and only run clippy
-> in it.
-> 
-> If we want to actually build with the cutting edge, then I'd say
-> it is sufficient to have a container based on Fedora rawhide, since
-> that gives a heads up on what's soon to be impacting the next stable
-> distro release, upto 6 months ahead of time - we don't need to be
-> watching& debugging stuff that hasn't even been released by Rust
-> yet IMHO.
+[snip]
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> > diff --git a/qemu-options.hx b/qemu-options.hx
+> > index d94e2cbbaeb1..3936ff3e77f9 100644
+> > --- a/qemu-options.hx
+> > +++ b/qemu-options.hx
+> > @@ -39,7 +39,8 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+> >      "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
+> >      "                hmat=on|off controls ACPI HMAT support (default=off)\n"
+> >      "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
+> > -    "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n",
+> > +    "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
+> > +    "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n",
+> 
+> Now my cxl-fmw stuff has competition for most hideous element :)
+> When we add a few more properties maybe we'll get an even longer line!
+
+May JSON support can save us :). When I have time I will consider this.
+Command line's keyval format is more convenient for configuring a single
+element in an array.
+ 
+> >      QEMU_ARCH_ALL)
+> >  SRST
+> >  ``-machine [type=]name[,prop=value[,...]]``
+> > @@ -159,6 +160,31 @@ SRST
+> >          ::
+> >  
+> >              -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
+> > +
+> > +    ``smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel``
+> > +        Define cache properties (now only the cache topology level) for SMP
+> > +        system.
+> 
+> I'd drop the 'now only' bit.  Just means we have add noise updating that
+> later.   It's easy enough to look down and see what is available anyway give
+> the parameter docs follow immediately after this.
+
+Agree.
+
+> > +
+> > +        ``cache=cachename`` specifies the cache that the properties will be
+> > +        applied on. This field is the combination of cache level and cache
+> > +        type. Currently it supports ``l1d`` (L1 data cache), ``l1i`` (L1
+> 
+> Drop the word Currently as I don't think it adds anything to he meaning.
+> We are never going to add docs that say 'previously it supported' or 'in the
+> future it will support'.
+> 
+> 	   "Supports ...
+> 
+
+Thanks! I will change to "It supports ..."
+
+> > +        instruction cache), ``l2`` (L2 unified cache) and ``l3`` (L3 unified
+> > +        cache).
+> > +
+> > +        ``topology=topologylevel`` sets the cache topology level. It accepts
+> > +        CPU topology levels including ``thread``, ``core``, ``module``,
+> > +        ``cluster``, ``die``, ``socket``, ``book``, ``drawer`` and a special
+> > +        value ``default``. If ``default`` is set, then the cache topology will
+> > +        follow the architecture's default cache topology model. If other CPU
+> If another topology level is set
+> 
+> would be clearer.   I briefly read this as saying the topology for another CPU
+> rather than a different value here.
+
+Ah, yes, I agree.
+
+> > +        topology level is set, the cache will be shared at corresponding CPU
+> > +        topology level. For example, ``topology=core`` makes the cache shared
+> > +        in a core.
+> "by all threads within a core." perhaps?
+
+Nice, it's more accurate.
+
+Thanks,
+Zhao
 
 
