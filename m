@@ -2,91 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898839929DC
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 13:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 151AE99297A
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 12:48:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxlVb-0000uS-9g; Mon, 07 Oct 2024 07:02:35 -0400
+	id 1sxlGD-0005KH-LD; Mon, 07 Oct 2024 06:46:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1sxlVY-0000tz-TU
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:02:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sxlFs-00055e-2W; Mon, 07 Oct 2024 06:46:25 -0400
+Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1sxlVV-00068A-W1
- for qemu-devel@nongnu.org; Mon, 07 Oct 2024 07:02:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1728298948;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GgPqqb4SXPyiYwIuH3Q5rOkHuhPDOHjfBA7k0hDGpbs=;
- b=TUaxGZ2E7Q5+f5nWyGdQp8Mu8znmGZ/yA/Emfgjr0L4wzHJnoA0oTtaZRXloUYMGv2xwBS
- X/UBEqRz9wYYOqjHk0Fzmh70+cLRzN8zr/Zy5NH8kwZBZeUqrmJhpWuUcRpD9zbla1o5wt
- Cq5GVWrElj0HG0nmvADThhwyOIt92m8=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-NQqUD_JANyStRYdzia07sQ-1; Mon, 07 Oct 2024 07:02:27 -0400
-X-MC-Unique: NQqUD_JANyStRYdzia07sQ-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6cb317cd72eso96585896d6.1
- for <qemu-devel@nongnu.org>; Mon, 07 Oct 2024 04:02:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728298947; x=1728903747;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GgPqqb4SXPyiYwIuH3Q5rOkHuhPDOHjfBA7k0hDGpbs=;
- b=XyzT4K37PtK2r0YJBen7Mvj5KR/8eRTPAPkeUwL3td/wZZIxSjW6tepgu9vVp1+yAp
- 68amj1Zceh4DL3uBRV2qSQTs+GPJq1cFR1LNbcGHqcti930DW63/x43r55hpEuT2F8gc
- 8XajuaFGF58HH4/9EAKMNsfq/idQ9lF4R8WJ2LfXex20jsLIznFSbm3dLrlC/PmW/hG/
- NA8Vok5qFqrOpg8znmaL5PkIRI2Rl1velvVAzqlQ4zyk3calq6R1Bt3GL7VCVIr/MXMP
- Nf5t2+owl6IfDD18I7oiSHzt+oMy7WRQn5GVSPW3+2zXZ1q7PCLHHi0GpiRmMf5CNXBY
- ISkg==
-X-Gm-Message-State: AOJu0YzhXTnmpimsyPpEB/3zwx8aQ3hhG5l5jLW3AQIInxOzmF6mUxKi
- 34fQPgXLxIXQdxMP/e/aJlnlxPMkwCMkZuDYAPbNICteF5fYjBz5By4lSp4Rn2+O0AC++gf+G0g
- QlAz6xKeKF70cF1NmvaXMotDejSNtox/thMkuUdSossJeArVarzeNBXIpLfksAIvHpjDFmba7oi
- BqmKTU/Rofd7xvHHafiiFyUDO+a7E=
-X-Received: by 2002:a05:6214:4602:b0:6cb:4c23:6573 with SMTP id
- 6a1803df08f44-6cb9a3096c8mr193602906d6.21.1728298947099; 
- Mon, 07 Oct 2024 04:02:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHn9K2LYsBPMGuk81rCrMz00qryMyGxFt5o7H5FnGK09CoVbzLXWyvdFcpYcoPyYee/DrOUJZqjqhgFySeaBsg=
-X-Received: by 2002:a05:6214:4602:b0:6cb:4c23:6573 with SMTP id
- 6a1803df08f44-6cb9a3096c8mr193602586d6.21.1728298946798; Mon, 07 Oct 2024
- 04:02:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sxlFp-0003ut-6X; Mon, 07 Oct 2024 06:46:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728297977; x=1759833977;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=B7T9+eTv/Zw/x8yFPq2kpJfgxfT66Zaq5LvJc4Qn1No=;
+ b=A7Cs4CCDBCU/22adE7q9iA8HB/FdCbfhAjdOlDJ495mTOH0hiQaMbiUg
+ fSmyoKDRHNivo+HK7qeFiCiTqmqtC6MxovmsbUTrdDJ1TATCA51nwNJ+g
+ WCcwnRl2IBS62h+tAL8e5K9fidpA9xTCDdKJsbdFO0dlH+o8NagK60F4q
+ aZqmOM3CDJF8GpT2qGGGtv4QVFEtXY7Qo+4mAKwaVKZ+iUx+YwAwPH5sh
+ iehH2jrJ0et3MqA21lsniEj8kU7zPhCEfYqJS3RzE5MGZ9ptdZy7xijR8
+ PCBB/oBO5BbzPilxavot/QF0aQfJcKlReva/OWR4a5Q1wwUUD1B5YfYmN w==;
+X-CSE-ConnectionGUID: 0TVyqe1uTA2pWQIC8scj8g==
+X-CSE-MsgGUID: xDMG9nJTQrqptVXXuSeWAA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="30323839"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="30323839"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2024 03:46:14 -0700
+X-CSE-ConnectionGUID: AX+g0EMbQD6q55DiWdQOyA==
+X-CSE-MsgGUID: dW1FG9hzTJijhkJ9dGXajQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="75004461"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa006.fm.intel.com with ESMTP; 07 Oct 2024 03:46:09 -0700
+Date: Mon, 7 Oct 2024 19:02:19 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S.Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v2 3/7] hw/core: Add smp cache topology for machine
+Message-ID: <ZwO/u0T+65b2/cFg@intel.com>
+References: <20240908125920.1160236-1-zhao1.liu@intel.com>
+ <20240908125920.1160236-4-zhao1.liu@intel.com>
+ <20240917100048.00001bcf@Huawei.com>
 MIME-Version: 1.0
-References: <20241003112244.3340697-1-marcandre.lureau@redhat.com>
- <20241003112244.3340697-8-marcandre.lureau@redhat.com>
- <db9f3849-adce-4362-afaa-b580829e8934@daynix.com>
-In-Reply-To: <db9f3849-adce-4362-afaa-b580829e8934@daynix.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Mon, 7 Oct 2024 15:02:15 +0400
-Message-ID: <CAMxuvaxgBqr4+U7CY8po4ZsBv_weAbvR5sE-X-YsUUb36=y9zw@mail.gmail.com>
-Subject: Re: [PATCH 07/16] ui/dbus: discard pending CursorDefine on new one
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- belmouss@redhat.com, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240917100048.00001bcf@Huawei.com>
+Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,101 +96,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Sat, Oct 5, 2024 at 12:45=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
-.com> wrote:
+On Tue, Sep 17, 2024 at 10:00:48AM +0100, Jonathan Cameron wrote:
+> Date: Tue, 17 Sep 2024 10:00:48 +0100
+> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> Subject: Re: [PATCH v2 3/7] hw/core: Add smp cache topology for machine
+> X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+> 
+> On Sun,  8 Sep 2024 20:59:16 +0800
+> Zhao Liu <zhao1.liu@intel.com> wrote:
+> 
+> > With smp-cache object support, add smp cache topology for machine by
+> > linking the smp-cache object.
+> > 
+> > Also add a helper to access cache topology level.
+> > 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
 >
-> On 2024/10/03 20:22, marcandre.lureau@redhat.com wrote:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > Similar to scanout updates, let's discard pending cursor changes.
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> Minor stuff. The property stuff is something I seems to mostly get wrong
+> so needs more eyes but fwiw looks fine to me.
+
+Yes and thank you!
+
+> With the tweaks suggested below.
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
 > > ---
-> >   ui/dbus-listener.c | 23 +++++++++++++++++++++++
-> >   roms/openbios      |  2 +-
-> >   2 files changed, 24 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-> > index 23a4633fa4..020c05198b 100644
-> > --- a/ui/dbus-listener.c
-> > +++ b/ui/dbus-listener.c
-> > @@ -87,6 +87,7 @@ struct _DBusDisplayListener {
-> >
-> >       guint dbus_filter;
-> >       guint32 display_serial_to_discard;
-> > +    guint32 cursor_serial_to_discard;
-> >   };
-> >
-> >   G_DEFINE_TYPE(DBusDisplayListener, dbus_display_listener, G_TYPE_OBJE=
-CT)
-> > @@ -102,6 +103,14 @@ static void ddl_discard_display_messages(DBusDispl=
-ayListener *ddl)
-> >       g_atomic_int_set(&ddl->display_serial_to_discard, serial);
-> >   }
-> >
-> > +static void ddl_discard_cursor_messages(DBusDisplayListener *ddl)
+> > Changes since Patch v1:
+> >  * Integrated cache properties list into MachineState and used -machine
+> >    to configure SMP cache properties. (Markus)
+> > 
+> > Changes since RFC v2:
+> >  * Linked machine's smp_cache to smp-cache object instead of a builtin
+> >    structure. This is to get around the fact that the keyval format of
+> >    -machine can't support JSON.
+> >  * Wrapped the cache topology level access into a helper.
+> > ---
+> >  hw/core/machine-smp.c | 41 ++++++++++++++++++++++++++++++++++++++++
+> >  hw/core/machine.c     | 44 +++++++++++++++++++++++++++++++++++++++++++
+> >  include/hw/boards.h   | 10 ++++++++++
+> >  3 files changed, 95 insertions(+)
+> > 
+> > diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+> > index 5d8d7edcbd3f..b517c3471d1a 100644
+> > --- a/hw/core/machine-smp.c
+> > +++ b/hw/core/machine-smp.c
+> > @@ -261,6 +261,41 @@ void machine_parse_smp_config(MachineState *ms,
+> >      }
+> >  }
+> >  
+> > +bool machine_parse_smp_cache(MachineState *ms,
+> > +                             const SmpCachePropertiesList *caches,
+> > +                             Error **errp)
 > > +{
-> > +    guint32 serial =3D g_dbus_connection_get_last_serial(
-> > +        g_dbus_proxy_get_connection(G_DBUS_PROXY(ddl->proxy)));
+> > +    const SmpCachePropertiesList *node;
+> > +    DECLARE_BITMAP(caches_bitmap, CACHE_LEVEL_AND_TYPE__MAX);
 > > +
-> > +    g_atomic_int_set(&ddl->cursor_serial_to_discard, serial);
-> > +}
+> > +    for (node = caches; node; node = node->next) {
+> > +        /* Prohibit users from setting the cache topology level to invalid. */
+> > +        if (node->value->topology == CPU_TOPOLOGY_LEVEL_INVALID) {
+> > +            error_setg(errp,
+> > +                       "Invalid cache topology level: %s. "
+> > +                       "The topology should match the "
+> > +                       "valid CPU topology level",
+> 
+> I think that's too much wrapping for an error message. Makes them hard
+> to grep for.
+
+I understand you mean the last sentence should not be on separate lines
+but should be continuous in one line, right?
+
+> > +                       CpuTopologyLevel_str(node->value->topology));
+> > +            return false;
+> > +        }
 > > +
-> >   #ifdef CONFIG_OPENGL
-> >   static void dbus_scanout_disable(DisplayChangeListener *dcl)
-> >   {
-> > @@ -502,6 +511,8 @@ static void dbus_cursor_dmabuf(DisplayChangeListene=
-r *dcl,
-> >           return;
-> >       }
-> >
-> > +    ddl_discard_cursor_messages(ddl);
-> > +
-> >       egl_dmabuf_import_texture(dmabuf);
-> >       texture =3D qemu_dmabuf_get_texture(dmabuf);
-> >       if (!texture) {
-> > @@ -745,6 +756,8 @@ static void dbus_cursor_define(DisplayChangeListene=
-r *dcl,
-> >       DBusDisplayListener *ddl =3D container_of(dcl, DBusDisplayListene=
-r, dcl);
-> >       GVariant *v_data =3D NULL;
-> >
-> > +    ddl_discard_cursor_messages(ddl);
-> > +
-> >       v_data =3D g_variant_new_from_data(
-> >           G_VARIANT_TYPE("ay"),
-> >           c->data,
-> > @@ -1027,6 +1040,16 @@ dbus_filter(GDBusConnection *connection,
-> >           }
-> >       }
-> >
-> > +    discard_serial =3D g_atomic_int_get(&ddl->cursor_serial_to_discard=
-);
-> > +    if (serial <=3D discard_serial) {
-> > +        member =3D g_dbus_message_get_member(message);
-> > +        if (g_strv_contains((const gchar *[]) { "CursorDefine", NULL }=
-, member)) {
-> > +            trace_dbus_filter(serial, discard_serial);
-> > +            g_object_unref(message);
-> > +            return NULL;
+> > +        /* Prohibit users from repeating settings. */
+> > +        if (test_bit(node->value->cache, caches_bitmap)) {
+> > +            error_setg(errp,
+> > +                       "Invalid cache properties: %s. "
+> > +                       "The cache properties are duplicated",
+> > +                       CacheLevelAndType_str(node->value->cache));
+> > +            return false;
+> > +        } else {
+> 
+> returned anyway in the above path, so can drop the else and reduce
+> indent a little.
+
+Sure.
+
+Thanks,
+Zhao
+
+> > +            ms->smp_cache.props[node->value->cache].topology =
+> > +                node->value->topology;
+> > +            set_bit(node->value->cache, caches_bitmap);
 > > +        }
 > > +    }
 > > +
-> >       return message;
-> >   }
-> >
-> > diff --git a/roms/openbios b/roms/openbios
-> > index c3a19c1e54..af97fd7af5 160000
-> > --- a/roms/openbios
-> > +++ b/roms/openbios
-> > @@ -1 +1 @@
-> > -Subproject commit c3a19c1e54977a53027d6232050e1e3e39a98a1b
-> > +Subproject commit af97fd7af5e7c18f591a7b987291d3db4ffb28b5
->
-> An accidental change of roms/openbios.
-
-good catch.. thanks
-
+> > +    return true;
+> > +}
+> > +
+> 
+> 
 
