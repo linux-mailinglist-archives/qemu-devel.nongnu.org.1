@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76891993721
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2091993720
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxtEi-00052j-BJ; Mon, 07 Oct 2024 15:17:40 -0400
+	id 1sxtEk-00056k-TP; Mon, 07 Oct 2024 15:17:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtEf-0004zD-LQ; Mon, 07 Oct 2024 15:17:37 -0400
+ id 1sxtEi-00054K-0C; Mon, 07 Oct 2024 15:17:40 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtEd-00046W-Tr; Mon, 07 Oct 2024 15:17:37 -0400
+ id 1sxtEg-00046x-4R; Mon, 07 Oct 2024 15:17:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B79A596247;
+ by isrv.corpit.ru (Postfix) with ESMTP id C5F5296248;
  Mon,  7 Oct 2024 22:16:48 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 90A1014F728;
+ by tsrv.corpit.ru (Postfix) with SMTP id A0C4214F729;
  Mon,  7 Oct 2024 22:16:55 +0300 (MSK)
-Received: (nullmailer pid 2592734 invoked by uid 1000);
+Received: (nullmailer pid 2592737 invoked by uid 1000);
  Mon, 07 Oct 2024 19:16:54 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 11/32] ui/sdl2: set swap interval explicitly when
- OpenGL is enabled
-Date: Mon,  7 Oct 2024 22:16:28 +0300
-Message-Id: <20241007191654.2592616-11-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, Thomas Huth <thuth@redhat.com>
+Subject: [Stable-9.1.1 12/32] gitlab: fix logic for changing docker tag on
+ stable branches
+Date: Mon,  7 Oct 2024 22:16:29 +0300
+Message-Id: <20241007191654.2592616-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
@@ -63,42 +62,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gert Wollny <gert.wollny@collabora.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-Before 176e3783f2ab (ui/sdl2: OpenGL window context)
-SDL_CreateRenderer was called unconditionally setting
-the swap interval to 0. Since SDL_CreateRenderer is now no
-longer called when OpenGL is enabled, the swap interval is
-no longer set explicitly and vsync handling depends on
-the environment settings which may lead to a performance
-regression with virgl as reported in
-   https://gitlab.com/qemu-project/qemu/-/issues/2565
+This fixes:
 
-Restore the old vsync handling by explicitly calling
-SDL_GL_SetSwapInterval if OpenGL is enabled.
+  commit e28112d00703abd136e2411d23931f4f891c9244
+  Author: Daniel P. Berrangé <berrange@redhat.com>
+  Date:   Thu Jun 8 17:40:16 2023 +0100
 
-Fixes: 176e3783f2ab (ui/sdl2: OpenGL window context)
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/2565
+    gitlab: stable staging branches publish containers in a separate tag
 
-Signed-off-by: Gert Wollny <gert.wollny@collabora.com>
-Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <01020191e05ce6df-84da6386-62c2-4ce8-840e-ad216ac253dd-000000@eu-west-1.amazonses.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit ae23cd00170baaa2777eb1ee87b70f472dbb3c44)
+Due to a copy+paste mistake, that commit included "QEMU_JOB_SKIPPED"
+in the final rule that was meant to be a 'catch all' for staging
+branches.
+
+As a result stable branches are still splattering dockers from the
+primary development branch.
+
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Tested-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-ID: <20240906140958.84755-1-berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 8d5ab746b1e6668ffb0378820b25665b385c8573)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/sdl2.c b/ui/sdl2.c
-index 98ed974371..51299f3645 100644
---- a/ui/sdl2.c
-+++ b/ui/sdl2.c
-@@ -115,6 +115,7 @@ void sdl2_window_create(struct sdl2_console *scon)
-         SDL_SetHint(SDL_HINT_RENDER_BATCHING, "1");
+diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
+index bf3d8efab6..25b88aaa06 100644
+--- a/.gitlab-ci.d/base.yml
++++ b/.gitlab-ci.d/base.yml
+@@ -128,7 +128,7 @@ variables:
+       when: manual
  
-         scon->winctx = SDL_GL_CreateContext(scon->real_window);
-+        SDL_GL_SetSwapInterval(0);
-     } else {
-         /* The SDL renderer is only used by sdl2-2D, when OpenGL is disabled */
-         scon->real_renderer = SDL_CreateRenderer(scon->real_window, -1, 0);
+     # Jobs can run if any jobs they depend on were successful
+-    - if: '$QEMU_JOB_SKIPPED && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /staging-[[:digit:]]+\.[[:digit:]]/'
++    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /staging-[[:digit:]]+\.[[:digit:]]/'
+       when: on_success
+       variables:
+         QEMU_CI_CONTAINER_TAG: $CI_COMMIT_REF_SLUG
 -- 
 2.39.5
 
