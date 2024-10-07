@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5CC99372A
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D5899372C
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Oct 2024 21:21:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxtGi-0007JY-J5; Mon, 07 Oct 2024 15:19:47 -0400
+	id 1sxtGq-0008Io-So; Mon, 07 Oct 2024 15:19:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtFZ-0006In-Js; Mon, 07 Oct 2024 15:18:35 -0400
+ id 1sxtFa-0006JI-6u; Mon, 07 Oct 2024 15:18:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sxtFY-0004HZ-0O; Mon, 07 Oct 2024 15:18:33 -0400
+ id 1sxtFY-0004Hh-Fb; Mon, 07 Oct 2024 15:18:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6019596251;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7069F96252;
  Mon,  7 Oct 2024 22:16:49 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3B16E14F731;
+ by tsrv.corpit.ru (Postfix) with SMTP id 496D114F732;
  Mon,  7 Oct 2024 22:16:56 +0300 (MSK)
-Received: (nullmailer pid 2592762 invoked by uid 1000);
+Received: (nullmailer pid 2592765 invoked by uid 1000);
  Mon, 07 Oct 2024 19:16:54 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Arman Nabiev <nabiev.arman13@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.1.1 20/32] target/hppa: Fix random 32-bit linux-user crashes
-Date: Mon,  7 Oct 2024 22:16:37 +0300
-Message-Id: <20241007191654.2592616-20-mjt@tls.msk.ru>
+Subject: [Stable-9.1.1 21/32] target/ppc: Fix migration of CPUs with TLB_EMB
+ TLB type
+Date: Mon,  7 Oct 2024 22:16:38 +0300
+Message-Id: <20241007191654.2592616-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
 References: <qemu-stable-9.1.1-20241007221311@cover.tls.msk.ru>
@@ -60,39 +61,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+From: Arman Nabiev <nabiev.arman13@gmail.com>
 
-The linux-user hppa target crashes randomly for me since commit
-081a0ed188d8 ("target/hppa: Do not mask in copy_iaoq_entry").
+In vmstate_tlbemb a cut-and-paste error meant we gave
+this vmstate subsection the same "cpu/tlb6xx" name as
+the vmstate_tlb6xx subsection. This breaks migration load
+for any CPU using the TLB_EMB CPU type, because when we
+see the "tlb6xx" name in the incoming data we try to
+interpret it as a vmstate_tlb6xx subsection, which it
+isn't the right format for:
 
-That commit dropped the masking of the IAOQ addresses while copying them
-from other registers and instead keeps them with all 64 bits up until
-the full gva is formed with the help of hppa_form_gva_psw().
+ $ qemu-system-ppc -drive
+ if=none,format=qcow2,file=/home/petmay01/test-images/virt/dummy.qcow2
+ -monitor stdio -M bamboo
+ QEMU 9.0.92 monitor - type 'help' for more information
+ (qemu) savevm foo
+ (qemu) loadvm foo
+ Missing section footer for cpu
+ Error: Error -22 while loading VM state
 
-So, when running in linux-user mode on an emulated 64-bit CPU, we need
-to mask to a 32-bit address space at the very end in hppa_form_gva_psw()
-if the PSW-W flag isn't set (which is the case for linux-user on hppa).
+Correct the incorrect vmstate section name. Since migration
+for these CPU types was completely broken before, we don't
+need to care that this is a migration compatibility break.
 
-Fixes: 081a0ed188d8 ("target/hppa: Do not mask in copy_iaoq_entry")
-Cc: qemu-stable@nongnu.org # v9.1+
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit d33d3adb573794903380e03e767e06470514cefe)
+This affects the PPC 405, 440, 460 and e200 CPU families.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2522
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Arman Nabiev <nabiev.arman13@gmail.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+(cherry picked from commit 203beb6f047467a4abfc8267c234393cea3f471c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 5478b183dc..43074d80bf 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -319,7 +319,7 @@ static inline target_ulong hppa_form_gva_psw(target_ulong psw, uint64_t spc,
-                                              target_ulong off)
- {
- #ifdef CONFIG_USER_ONLY
--    return off;
-+    return off & gva_offset_mask(psw);
- #else
-     return spc | (off & gva_offset_mask(psw));
- #endif
+diff --git a/target/ppc/machine.c b/target/ppc/machine.c
+index 731dd8df35..d433fd45fc 100644
+--- a/target/ppc/machine.c
++++ b/target/ppc/machine.c
+@@ -621,7 +621,7 @@ static bool tlbemb_needed(void *opaque)
+ }
+ 
+ static const VMStateDescription vmstate_tlbemb = {
+-    .name = "cpu/tlb6xx",
++    .name = "cpu/tlbemb",
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = tlbemb_needed,
 -- 
 2.39.5
 
