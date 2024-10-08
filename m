@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A6A993C35
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67372993C1B
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Oct 2024 03:19:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sxyq4-0004Ec-25; Mon, 07 Oct 2024 21:16:36 -0400
+	id 1sxyq4-0004F3-Ng; Mon, 07 Oct 2024 21:16:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1sxypw-0004Ai-Ts; Mon, 07 Oct 2024 21:16:29 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1sxypw-0004Ah-Tz; Mon, 07 Oct 2024 21:16:29 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1sxypt-0008MQ-7m; Mon, 07 Oct 2024 21:16:28 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4980Oilw001965;
- Tue, 8 Oct 2024 01:16:22 GMT
+ id 1sxypt-0008Mc-7f; Mon, 07 Oct 2024 21:16:27 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 497Nt6Oh026136;
+ Tue, 8 Oct 2024 01:16:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=pp1; bh=euZloCm8a9GNE
- nfWZUg21vqw3h2rtbaczDvWkSYKM/w=; b=kKIdnzoeWgWbODQgz50+cEVCrdRgA
- KAA6UM23YB4P8l1K1ZBuYyksgJ8fMU2f8jMcqsa5xyYRICnReopIloJ+gNwjRjAp
- 24TiqeNQcdz7AilUSyJcQM03NSFT5ax1jo5wVZ6LEQmNcWU+ehq78jOyTbDkh4O6
- 6uChX4UbWuF/92mAG/Jem5HM6SICvXdHTTBxxt36eBfa3sAGP2vCFJPDWdwoNqGp
- jcxSEdRDzvNJRlfwn4+e3gHF3i7703p2PVmsQ32eW/wQKDfypCygGdXDwJXHZOQ6
- FQ/t9OqpgJyXIXDpXlVfaUJLqEW68fSzohIoKgip/VpDeEq/EjaBP+a+Q==
+ :mime-version:content-transfer-encoding; s=pp1; bh=kF5dPfxF8Y8gE
+ NUt8C3/z/Ntb9QSp63LYS6fH7P+zvM=; b=SJ57YM0+Zq4P65nknYchi+NtPLa7V
+ MEtt2IQoYsTBR8nlhSTolgiC84OXH4J+dnA1V0nd2/b/MQS5kmWlXtqGu6TzUi1e
+ gCq3QwtP2w900sZAD6SlXWEglw0QwVDTc0P4C93hSLXhn0URiTozj1gdnwILnjqh
+ Dkve3QA2/BlkWPRy9FWzEJzsjl9MukjyredWOtfnr4NA2725x/ocIxxYsUlwK87i
+ fAOAmRrhu6FAYJXQTl4f9TYEwxByqEssQWTizHVzBFqQHPXFUoQso5OnvzqCUtmy
+ 0QpLnf4nbUyE6OKhZev3nahuktUxjLJYRcL0RsjwTKWyZ9n0v7z4VjQmw==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 424t5tg5e9-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 424sr4g7hx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Oct 2024 01:16:23 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4981GMNv017880;
+ Tue, 8 Oct 2024 01:16:22 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 424sr4g7hv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Tue, 08 Oct 2024 01:16:22 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4981GLrh001051;
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 497NC6u3022840;
  Tue, 8 Oct 2024 01:16:21 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 424t5tg5e6-1
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 423jg0s7pm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Oct 2024 01:16:21 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49813fBp013790;
- Tue, 8 Oct 2024 01:16:20 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 423fss1r47-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Oct 2024 01:16:20 +0000
+ Tue, 08 Oct 2024 01:16:21 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
  [10.241.53.105])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4981GJMs7340562
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4981GKPs24969830
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 8 Oct 2024 01:16:19 GMT
+ Tue, 8 Oct 2024 01:16:20 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 05BCE58055;
+ by IMSVA (Postfix) with ESMTP id 2A1B258043;
+ Tue,  8 Oct 2024 01:16:20 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A9F7A58055;
  Tue,  8 Oct 2024 01:16:19 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7D08C58043;
- Tue,  8 Oct 2024 01:16:18 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.61.51.58])
  by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  8 Oct 2024 01:16:18 +0000 (GMT)
+ Tue,  8 Oct 2024 01:16:19 +0000 (GMT)
 From: jrossi@linux.ibm.com
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
 Cc: frankja@linux.ibm.com, jrossi@linux.ibm.com
-Subject: [PATCH v3 17/19] pc-bios/s390x: Enable multi-device boot loop
-Date: Mon,  7 Oct 2024 21:15:50 -0400
-Message-ID: <20241008011552.2645520-18-jrossi@linux.ibm.com>
+Subject: [PATCH v3 18/19] docs/system: Update documentation for s390x IPL
+Date: Mon,  7 Oct 2024 21:15:51 -0400
+Message-ID: <20241008011552.2645520-19-jrossi@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20241008011552.2645520-1-jrossi@linux.ibm.com>
 References: <20241008011552.2645520-1-jrossi@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ni67osOLnUd0oGxsjCI28xfB1UeGE7_f
-X-Proofpoint-GUID: cSwvwVh7_f_h9EELESTof0nsz0yqkxIP
+X-Proofpoint-ORIG-GUID: -uNYwC_waoNLXv66RvApjIu-ukA9TllH
+X-Proofpoint-GUID: NBP6MlgOsOiYyGrsSHhAmaIWt8UCo5Ol
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-07_16,2024-10-07_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0
- bulkscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0 clxscore=1015
- mlxlogscore=999 adultscore=0 spamscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410080006
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=jrossi@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ priorityscore=1501
+ impostorscore=0 bulkscore=0 clxscore=1015 spamscore=0 mlxscore=0
+ lowpriorityscore=0 phishscore=0 malwarescore=0 suspectscore=0
+ mlxlogscore=756 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2409260000 definitions=main-2410080003
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=jrossi@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -112,229 +112,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jared Rossi <jrossi@linux.ibm.com>
 
-Allow attempts to boot from multiple IPL devices. If the first device fails to
-IPL, select the pre-built IPLB for the next device in the boot order and attempt
-to IPL from it. Continue this process until IPL is successful or there are no
-devices left to try.
+Update docs to show that s390x PC BIOS can support more than one boot device.
 
 Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
- pc-bios/s390-ccw/iplb.h     | 23 ++++++++++++++++++
- pc-bios/s390-ccw/jump2ipl.c |  7 +++---
- pc-bios/s390-ccw/main.c     | 47 ++++++++++++++++++++++---------------
- pc-bios/s390-ccw/netmain.c  |  3 ++-
- 4 files changed, 57 insertions(+), 23 deletions(-)
 ---
- pc-bios/s390-ccw/iplb.h     | 23 ++++++++++++++++++
- pc-bios/s390-ccw/jump2ipl.c |  7 +++---
- pc-bios/s390-ccw/main.c     | 47 ++++++++++++++++++++++---------------
- pc-bios/s390-ccw/netmain.c  |  3 ++-
- 4 files changed, 57 insertions(+), 23 deletions(-)
+ docs/system/bootindex.rst         | 7 ++++---
+ docs/system/s390x/bootdevices.rst | 9 ++++++---
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/pc-bios/s390-ccw/iplb.h b/pc-bios/s390-ccw/iplb.h
-index 16643f5879..d58fe71974 100644
---- a/pc-bios/s390-ccw/iplb.h
-+++ b/pc-bios/s390-ccw/iplb.h
-@@ -17,6 +17,7 @@
- #endif
+diff --git a/docs/system/bootindex.rst b/docs/system/bootindex.rst
+index 8b057f812f..988f7b3beb 100644
+--- a/docs/system/bootindex.rst
++++ b/docs/system/bootindex.rst
+@@ -49,10 +49,11 @@ Limitations
+ -----------
  
- #include <qipl.h>
-+#include <string.h>
+ Some firmware has limitations on which devices can be considered for
+-booting.  For instance, the PC BIOS boot specification allows only one
+-disk to be bootable.  If boot from disk fails for some reason, the BIOS
++booting.  For instance, the x86 PC BIOS boot specification allows only one
++disk to be bootable.  If boot from disk fails for some reason, the x86 BIOS
+ won't retry booting from other disk.  It can still try to boot from
+-floppy or net, though.
++floppy or net, though. In the case of s390x BIOS, the BIOS will try up to
++8 total devices, any number of which may be disks.
  
- extern QemuIplParameters qipl;
- extern IplParameterBlock iplb __attribute__((__aligned__(PAGE_SIZE)));
-@@ -49,4 +50,26 @@ static inline bool set_iplb(IplParameterBlock *iplb)
-     return manage_iplb(iplb, false);
- }
+ Sometimes, firmware cannot map the device path QEMU wants firmware to
+ boot from to a boot method.  It doesn't happen for devices the firmware
+diff --git a/docs/system/s390x/bootdevices.rst b/docs/system/s390x/bootdevices.rst
+index c97efb8fc0..1a1a764c1c 100644
+--- a/docs/system/s390x/bootdevices.rst
++++ b/docs/system/s390x/bootdevices.rst
+@@ -6,9 +6,7 @@ Booting with bootindex parameter
  
-+/*
-+ * The IPL started on the device, but failed in some way.  If the IPLB chain
-+ * still has more devices left to try, use the next device in order.
-+ */
-+static inline bool load_next_iplb(void)
-+{
-+    IplParameterBlock *next_iplb;
+ For classical mainframe guests (i.e. LPAR or z/VM installations), you always
+ have to explicitly specify the disk where you want to boot from (or "IPL" from,
+-in s390x-speak -- IPL means "Initial Program Load"). In particular, there can
+-also be only one boot device according to the architecture specification, thus
+-specifying multiple boot devices is not possible (yet).
++in s390x-speak -- IPL means "Initial Program Load").
+ 
+ So for booting an s390x guest in QEMU, you should always mark the
+ device where you want to boot from with the ``bootindex`` property, for
+@@ -17,6 +15,11 @@ example::
+  qemu-system-s390x -drive if=none,id=dr1,file=guest.qcow2 \
+                    -device virtio-blk,drive=dr1,bootindex=1
+ 
++Multiple devices may have a bootindex. The lowest bootindex is assigned to the
++device to IPL first.  If the IPL fails for the first, the device with the second
++lowest bootindex will be tried and so on until IPL is successful or there are no
++remaining boot devices to try.
 +
-+    if (qipl.chain_len < 1) {
-+        return false;
-+    }
-+
-+    qipl.index++;
-+    next_iplb = (IplParameterBlock *) qipl.next_iplb;
-+    memcpy(&iplb, next_iplb, sizeof(IplParameterBlock));
-+
-+    qipl.chain_len--;
-+    qipl.next_iplb = qipl.next_iplb + sizeof(IplParameterBlock);
-+
-+    return true;
-+}
-+
- #endif /* IPLB_H */
-diff --git a/pc-bios/s390-ccw/jump2ipl.c b/pc-bios/s390-ccw/jump2ipl.c
-index 711a69a206..a3e5d55499 100644
---- a/pc-bios/s390-ccw/jump2ipl.c
-+++ b/pc-bios/s390-ccw/jump2ipl.c
-@@ -46,9 +46,10 @@ int jump_to_IPL_code(uint64_t address)
-      */
-     if (iplb.pbt == S390_IPL_TYPE_QEMU_SCSI) {
-         iplb.devno = qipl.index;
--        if (!set_iplb(&iplb)) {
--            panic("Failed to set IPLB");
--        }
-+    }
-+
-+    if (have_iplb && !set_iplb(&iplb)) {
-+        panic("Failed to set IPLB");
-     }
- 
-     /*
-diff --git a/pc-bios/s390-ccw/main.c b/pc-bios/s390-ccw/main.c
-index d7c457e0ed..1b05174ace 100644
---- a/pc-bios/s390-ccw/main.c
-+++ b/pc-bios/s390-ccw/main.c
-@@ -23,7 +23,7 @@ static SubChannelId blk_schid = { .one = 1 };
- static char loadparm_str[LOADPARM_LEN + 1];
- QemuIplParameters qipl;
- IplParameterBlock iplb __attribute__((__aligned__(PAGE_SIZE)));
--static bool have_iplb;
-+bool have_iplb;
- static uint16_t cutype;
- LowCore *lowcore; /* Yes, this *is* a pointer to address 0 */
- 
-@@ -55,6 +55,12 @@ void write_iplb_location(void)
-     }
- }
- 
-+static void copy_qipl(void)
-+{
-+    QemuIplParameters *early_qipl = (QemuIplParameters *)QIPL_ADDRESS;
-+    memcpy(&qipl, early_qipl, sizeof(QemuIplParameters));
-+}
-+
- unsigned int get_loadparm_index(void)
- {
-     return atoi(loadparm_str);
-@@ -152,6 +158,7 @@ static void menu_setup(void)
- 
-     /* If loadparm was set to any other value, then do not enable menu */
-     if (memcmp(loadparm_str, LOADPARM_EMPTY, LOADPARM_LEN) != 0) {
-+        menu_set_parms(qipl.qipl_flags && ~BOOT_MENU_FLAG_MASK, 0);
-         return;
-     }
- 
-@@ -183,7 +190,6 @@ static void css_setup(void)
- static void boot_setup(void)
- {
-     char lpmsg[] = "LOADPARM=[________]\n";
--    have_iplb = store_iplb(&iplb);
- 
-     if (memcmp(iplb.loadparm, "@@@@@@@@", LOADPARM_LEN) != 0) {
-         ebcdic_to_ascii((char *) iplb.loadparm, loadparm_str, LOADPARM_LEN);
-@@ -191,6 +197,10 @@ static void boot_setup(void)
-         sclp_get_loadparm_ascii(loadparm_str);
-     }
- 
-+    if (have_iplb) {
-+        menu_setup();
-+    }
-+
-     memcpy(lpmsg + 10, loadparm_str, 8);
-     puts(lpmsg);
- 
-@@ -208,6 +218,7 @@ static bool find_boot_device(void)
- 
-     switch (iplb.pbt) {
-     case S390_IPL_TYPE_CCW:
-+        vdev->scsi_device_selected = false;
-         debug_print_int("device no. ", iplb.ccw.devno);
-         blk_schid.ssid = iplb.ccw.ssid & 0x3;
-         debug_print_int("ssid ", blk_schid.ssid);
-@@ -231,15 +242,8 @@ static bool find_boot_device(void)
- static int virtio_setup(void)
- {
-     VDev *vdev = virtio_get_device();
--    QemuIplParameters *early_qipl = (QemuIplParameters *)QIPL_ADDRESS;
-     int ret;
- 
--    memcpy(&qipl, early_qipl, sizeof(QemuIplParameters));
--
--    if (have_iplb) {
--        menu_setup();
--    }
--
-     switch (vdev->senseid.cu_model) {
-     case VIRTIO_ID_NET:
-         puts("Network boot device detected");
-@@ -271,11 +275,9 @@ static void ipl_boot_device(void)
-         dasd_ipl(blk_schid, cutype);
-         break;
-     case CU_TYPE_VIRTIO:
--        if (virtio_setup()) {
--            return;    /* Only returns in case of errors */
-+        if (virtio_setup() == 0) {
-+            zipl_load();
-         }
--        zipl_load();
--        break;
-     default:
-         printf("Attempting to boot from unexpected device type 0x%X", cutype);
-     }
-@@ -298,7 +300,6 @@ static void probe_boot_device(void)
-             }
-             if (ret == true) {
-                 ipl_boot_device(); /* Only returns if unsuccessful */
--                return;
-             }
-         }
-     }
-@@ -308,14 +309,22 @@ static void probe_boot_device(void)
- 
- void main(void)
- {
-+    copy_qipl();
-     sclp_setup();
-     css_setup();
--    boot_setup();
--    if (have_iplb && find_boot_device()) {
--        ipl_boot_device();
--    } else {
-+    have_iplb = store_iplb(&iplb);
-+    if (!have_iplb) {
-         probe_boot_device();
-     }
- 
--    panic("Failed to IPL. Halting...");
-+    while (have_iplb) {
-+        boot_setup();
-+        if (have_iplb && find_boot_device()) {
-+            ipl_boot_device();
-+        }
-+        have_iplb = load_next_iplb();
-+    }
-+
-+    panic("No suitable device for IPL. Halting...");
-+
- }
-diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
-index 0c2329c752..5e62ea2724 100644
---- a/pc-bios/s390-ccw/netmain.c
-+++ b/pc-bios/s390-ccw/netmain.c
-@@ -41,6 +41,7 @@
- #define DEFAULT_TFTP_RETRIES 20
- 
- extern char _start[];
-+extern bool have_iplb;
- 
- #define KERNEL_ADDR             ((void *)0L)
- #define KERNEL_MAX_SIZE         ((long)_start)
-@@ -478,7 +479,7 @@ static int virtio_setup(void)
-      */
-     enable_mss_facility();
- 
--    if (store_iplb(&iplb)) {
-+    if (have_iplb || store_iplb(&iplb)) {
-         IPL_assert(iplb.pbt == S390_IPL_TYPE_CCW, "IPL_TYPE_CCW expected");
-         dev_no = iplb.ccw.devno;
-         debug_print_int("device no. ", dev_no);
+ For booting from a CD-ROM ISO image (which needs to include El-Torito boot
+ information in order to be bootable), it is recommended to specify a ``scsi-cd``
+ device, for example like this::
 -- 
 2.45.1
 
